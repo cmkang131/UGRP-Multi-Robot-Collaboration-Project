@@ -109,7 +109,9 @@ def source_fingerprint(root: Path) -> dict:
 
 def git_identity(root: Path) -> dict:
     def command(*parts):
-        return subprocess.check_output(["git", "-C", str(root), *parts], text=True, stderr=subprocess.DEVNULL).strip()
+        return subprocess.check_output(["git", "-C", str(root), *parts], text=True,
+                                       encoding="utf-8", errors="replace",
+                                       stderr=subprocess.DEVNULL).strip()
     try:
         return {"source_sha": command("rev-parse", "HEAD"),
                 "source_dirty": bool(command("status", "--porcelain", "--untracked-files=all"))}

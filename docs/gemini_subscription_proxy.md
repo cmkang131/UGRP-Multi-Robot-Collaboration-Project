@@ -14,6 +14,32 @@ UGRP 저장소의 `harness/gemini_proxy.py`는 HTTP 클라이언트다. 서버�
 
 이 경로는 별도 Gemini API 키 대신 본인의 Google 로그인을 사용한다. 구독 이름만으로 Antigravity 접근 권한이나 특정 모델의 사용 가능 여부가 보장되지는 않는다. 본인 계정으로 로그인하고 실제 응답을 확인해야 한다.
 
+### Windows 11 PowerShell
+
+Windows에서는 WSL이 없어도 저장소 루트에서 아래 고정 버전 설치기를 사용한다. 실행 파일과 OAuth 인증은 저장소가 아닌 `%LOCALAPPDATA%\UGRP\gemini-proxy`에 저장되며, 설치 단계에서 공식 `checksums.txt`와 SHA-256을 대조한다.
+
+```powershell
+.\scripts\gemini_proxy_windows.ps1 Install
+.\scripts\gemini_proxy_windows.ps1 Login
+```
+
+로그인 후 첫 번째 PowerShell 창에서 서버를 실행하고 창을 열어 둔다.
+
+```powershell
+.\scripts\gemini_proxy_windows.ps1 Start
+```
+
+두 번째 PowerShell 창에서 모델 목록과 짧은 실제 응답을 각각 확인한다. `Test`는 실제 사용량을 소비한다.
+
+```powershell
+.\scripts\gemini_proxy_windows.ps1 Models
+.\scripts\gemini_proxy_windows.ps1 Test -Model gemini-3.8-flash-high
+$env:GEMINI_PROXY_URL = 'http://127.0.0.1:8391/v1/chat/completions'
+$env:UGRP_SIM_MODEL = 'gemini-3.8-flash-high'
+```
+
+종료할 때 서버 창에서 `Ctrl-C`를 누른다. 로그인 파일이나 `%LOCALAPPDATA%\UGRP\gemini-proxy\auth` 폴더를 공유하지 않는다.
+
 ## 1. Ubuntu 24.04 x86_64에 설치
 
 먼저 [Ubuntu 기본 설치와 무료 데모](ubuntu_quickstart.md)를 완료한다. 아래 명령은 UGRP 저장소 루트에서 실행한다. 같은 버전이 이미 설치됐다면 재설치하지 않아도 된다.

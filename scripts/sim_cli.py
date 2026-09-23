@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import base64
 import hashlib
 import json
@@ -25,13 +26,26 @@ from sim.simulation_launch_options import build_command, dispatch_maps, preview_
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@contextmanager
+def blocked_cleanup_signals(signals):
+    """Atomically replace handlers on POSIX; Windows has no pthread mask."""
+    mask = getattr(signal, "pthread_sigmask", None)
+    previous = mask(signal.SIG_BLOCK, signals) if mask is not None else None
+    try:
+        yield
+    finally:
+        if mask is not None:
+            mask(signal.SIG_SETMASK, previous)
+
+
 def write_json(path, value):
     Path(path).write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def source_info():
     def git(*args):
-        return subprocess.check_output(["git", "-C", str(ROOT), *args], text=True).strip()
+        return subprocess.check_output(["git", "-C", str(ROOT), *args], text=True,
+                                       encoding="utf-8", errors="replace").strip()
     try:
         return {"source_sha": git("rev-parse", "HEAD"), "source_dirty": bool(git("status", "--porcelain"))}
     except (OSError, subprocess.CalledProcessError):
@@ -254,12 +268,9 @@ def run(config, args):
         # Ctrl-C in the terminal can be followed by the session owner's
         # SIGTERM. Keep both signals from aborting artifact finalization.
         cleanup_signals = {signal.SIGINT, signal.SIGTERM}
-        previous_mask = signal.pthread_sigmask(signal.SIG_BLOCK, cleanup_signals)
-        try:
+        with blocked_cleanup_signals(cleanup_signals):
             previous_int = signal.signal(signal.SIGINT, note_cleanup_interrupt)
             signal.signal(signal.SIGTERM, note_cleanup_interrupt)
-        finally:
-            signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
         try:
             if console is not None:
                 console.close()
@@ -307,12 +318,9 @@ def run(config, args):
                 write_json(output / "result.json", result)
                 print(f"Stopped: {result['stop_reason']} | {output.resolve() / 'result.json'}", flush=True)
             finally:
-                previous_mask = signal.pthread_sigmask(signal.SIG_BLOCK, cleanup_signals)
-                try:
+                with blocked_cleanup_signals(cleanup_signals):
                     signal.signal(signal.SIGTERM, previous_term)
                     signal.signal(signal.SIGINT, previous_int)
-                finally:
-                    signal.pthread_sigmask(signal.SIG_SETMASK, previous_mask)
     return 130 if cleanup_interrupted else exit_code
 
 
