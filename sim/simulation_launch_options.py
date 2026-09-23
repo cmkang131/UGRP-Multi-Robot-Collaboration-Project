@@ -11,7 +11,7 @@ from sim.research_dispatch_arena import VARIANTS
 from sim.session_scenes import catalog
 
 
-_SPEEDS = {0.5: "0.5", 1: "1", 2: "2", 4: "4", 8: "8", 16: "16"}
+_SPEEDS = {0.5: "0.5", 1: "1", 2: "2", 4: "4", 8: "8", 16: "16", 50: "50"}
 _FIELDS = frozenset({"mode", "map", "speed", "model", "task"})
 
 
@@ -27,14 +27,14 @@ def preview_maps() -> list[str]:
 
 def _speed(value: object) -> str:
     if isinstance(value, bool):
-        raise ValueError("speed: choose 0.5, 1, 2, 4, 8, or 16")
+        raise ValueError("speed: choose 0.5, 1, 2, 4, 8, 16, or 50")
     if isinstance(value, str):
         if value in set(_SPEEDS.values()):
             return value
     elif type(value) in (int, float):
         if value in _SPEEDS:
             return _SPEEDS[value]
-    raise ValueError("speed: choose 0.5, 1, 2, 4, 8, or 16")
+    raise ValueError("speed: choose 0.5, 1, 2, 4, 8, 16, or 50")
 
 
 def build_command(root: Path, selection: dict) -> list[str]:
