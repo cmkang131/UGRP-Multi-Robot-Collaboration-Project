@@ -127,6 +127,29 @@ def test_native_observer_cannot_mutate_research_physics(monkeypatch):
         view.close()
 
 
+def test_native_observer_batches_short_windows_sleeps(monkeypatch):
+    from scripts.dispatch_native_view import DispatchNativeView
+    clock = {'wall': 0., 'sim': 0.}
+    sleeps = []
+    monkeypatch.setattr('scripts.dispatch_native_view.time.monotonic', lambda: clock['wall'])
+
+    def sleep(seconds):
+        sleeps.append(seconds)
+        clock['wall'] += seconds
+
+    monkeypatch.setattr('scripts.dispatch_native_view.time.sleep', sleep)
+    view = DispatchNativeView.__new__(DispatchNativeView)
+    view.scene = SimpleNamespace(time=lambda: clock['sim'])
+    view.factor = 4.
+    view.last_sim = view.last_wall = view.target_wall = 0.
+    view.poll = lambda: None
+    for _ in range(4):
+        clock['sim'] += .002
+        view.tick()
+    assert len(sleeps) == 1
+    assert sleeps[0] == pytest.approx(.002)
+
+
 def test_real_native_observer_lifecycle():
     import os
     if os.environ.get('UGRP_TEST_NATIVE_VIEWER') != '1':

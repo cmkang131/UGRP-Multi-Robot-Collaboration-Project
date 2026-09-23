@@ -458,8 +458,9 @@ def _choose_launch():
     else:
         print(f"기본 장면: {default_map}. ACT 등은 관찰용 장면이며 정책 실행·성공 검증이 아닙니다.")
         selected_map = _preview_map_choice(maps)
-    speed = _menu_choice("관찰 속도 [2 = 1× 기본; ? 목록]: ", ["0.5", "1", "2", "4"], "1",
-                         labels=["0.5×", "1×", "2×", "4×"])
+    speed = _menu_choice("관찰 속도 [2 = 1× 기본; ? 목록]: ",
+                         ["0.5", "1", "2", "4", "8", "16"], "1",
+                         labels=["0.5×", "1×", "2×", "4×", "8×", "16× (고속)"])
     selection = {"mode": selected_mode, "map": selected_map, "speed": speed}
     if selected_mode == "llm_dispatch":
         default_model = os.environ.get("UGRP_SIM_MODEL", "gemini-3.8-flash")

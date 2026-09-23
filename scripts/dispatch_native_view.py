@@ -32,6 +32,7 @@ class DispatchNativeView:
             self.viewer.cam.elevation = -55
         self.last_sim = scene.time()
         self.last_wall = time.monotonic()
+        self.target_wall = self.last_wall
         self.next_sync = 0.
         self.poll()
         print('MuJoCo 관찰 창: Space 일시정지/재개 · Q 또는 창 닫기로 종료. 계획 대기 중 물리는 정지합니다.', flush=True)
@@ -63,9 +64,15 @@ class DispatchNativeView:
     def tick(self):
         self.poll()
         now_sim = self.scene.time()
-        # An inference pause never incurs catch-up physics on resumption.
-        delay = (now_sim - self.last_sim) / self.factor - (time.monotonic() - self.last_wall)
-        if delay > 0:
+        now_wall = time.monotonic()
+        # Preserve average pacing without issuing a sub-millisecond sleep for
+        # every 2 ms physics tick. Those sleeps are disproportionately slow on
+        # Windows. An inference pause still never incurs catch-up physics.
+        if now_wall - self.target_wall > .05:
+            self.target_wall = now_wall
+        self.target_wall += max(0., now_sim - self.last_sim) / self.factor
+        delay = self.target_wall - now_wall
+        if delay >= .002:
             time.sleep(delay)
         self.last_sim, self.last_wall = now_sim, time.monotonic()
 
