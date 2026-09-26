@@ -24,7 +24,7 @@ from harness.zone_own_status import CARRY_PHASES
 from harness.zone_study_contract import ROBOTS
 
 CONTACT_DEDUPE_S = .1
-HOST_APIS = ('deliver', 'goto', 'look_around', 'hold', 'wait', 'abort')
+HOST_APIS = ('deliver', 'goto', 'look_around', 'hold', 'wait', 'abort', 'pair_carry')
 CONTACT_PROFILE_DECISION = {'cargo_noslip_v1': 'approved by the user 2026-09-26 as the study-wide contact profile'}
 
 
@@ -63,15 +63,29 @@ class OwnCamTeamHost:
         from sim.zone_landmarks import TaggedZoneScene
 
         self.spec, self.student, self.root = dict(spec), dict(student), Path(root)
+        if spec.get('pair_order_sheets'):
+            cargo = spec.get('team_cargo', [])
+            if (len(cargo) != 1 or cargo[0].get('kind') != 'long_beam'
+                    or set(spec['pair_order_sheets']) != {cargo[0].get('item_id')}):
+                raise ValueError('M2 requires one long_beam; item_id, order_id and static sheet key must match')
+            if frames_dir is None:
+                raise ValueError('M2 requires frames_dir to preserve every own-camera input')
         profile = spec['contact_profile']
-        self.scene = TaggedZoneScene.from_tagged(spec['map'], spec['seed'], spec['goal'], spec.get('extra_boxes'),
-                                                 contact_profile=base_profile(profile))
+        if spec.get('team_cargo'):
+            from sim.zone_tagged_cargo_scene import TaggedCargoZoneScene
+            self.scene = TaggedCargoZoneScene.from_tagged_cargo(
+                spec['map'], spec['seed'], cargo=spec['team_cargo'], goal=spec['goal'],
+                contact_profile=base_profile(profile))
+        else:
+            self.scene = TaggedZoneScene.from_tagged(spec['map'], spec['seed'], spec['goal'], spec.get('extra_boxes'),
+                                                     contact_profile=base_profile(profile))
         xml_transform = ((lambda xml: apply_cargo_profile(self.scene.transform(xml), profile))
                          if profile in CARGO_PROFILES else self.scene.transform)
         self.world = MultiMasterPiProductionV2(seed=spec['seed'], width=640, height=480, render=True,
                                                warehouse_layout=self.scene.engine_layout, warehouse_cargo_ids=None,
                                                xml_transform=xml_transform)
         self.scene.setup(self.world)
+        self.pairs = None
         self.contact_record = {'profile': profile, 'base_profile': base_profile(profile),
                                'cargo_profile': profile_record(profile) if profile in CARGO_PROFILES else None,
                                'noslip_iterations': int(self.world.model.opt.noslip_iterations),
@@ -80,7 +94,9 @@ class OwnCamTeamHost:
         if profile == 'cargo_noslip_v1' and self.contact_record['noslip_iterations'] <= 0:
             raise RuntimeError('cargo_noslip_v1 requested but noslip_iterations is 0')
         self.static = self.scene.config['static_map']
-        self.objects = self.scene.config['setup_only']['objects']
+        self.objects = copy.deepcopy(self.scene.config['setup_only']['objects'])
+        for cargo in getattr(self.scene, 'cargo', ()):
+            self.objects[cargo.item_id] = {'kind': cargo.kind, 'body_name': cargo.body}
         self.spawns = self.scene.config['setup_only']['spawns']
         calibration = json.loads((self.root / student['calibration']).read_text())
         skill_cls = getattr(importlib.import_module(student['skill_module']), student['skill_class'])
@@ -137,6 +153,23 @@ class OwnCamTeamHost:
         for rid in self.robots:
             pulses = {int(k): int(v) for k, v in self.world.robot(rid).servo_command_pulses.items()}
             self._sink(rid, {'t': 0.0, 'kind': 'initial_servo_command', 'pulses': pulses})
+        if spec.get('pair_order_sheets'):
+            # Explicit static task sheets, not generated from the cargo's live pose.
+            from scripts.run_m2_pair import CALIBRATION
+            pair_params = json.loads(CALIBRATION.read_text())['params']
+            self.enable_pair_carry(spec['pair_order_sheets'], pair_params)
+
+    def enable_pair_carry(self, sheets, params, *, controller_factory=None):
+        """Attach the M2 dispatcher; may also be used with a simulator-free host."""
+        from harness.zone_pair_executor import PairTeam, m2_controller
+        self.pairs = PairTeam({r: s.executor for r, s in self.robots.items()}, sheets, params,
+                              cancel_scheduled=self._drop_scheduled,
+                              contact_profile=self.contact_record['profile'], weld=False,
+                              controller_factory=controller_factory or m2_controller)
+
+    def _pair_safety(self, now):
+        if getattr(self, 'pairs', None) is not None:
+            self.pairs.poll(now)
 
     # ------------------------------------------------------------ eval-only geometry
     def _geoms(self):
@@ -150,6 +183,9 @@ class OwnCamTeamHost:
                              {g for g, n in enumerate(names) if n == r + '__right_finger'}) for r in ROBOTS}
         self._box_geom = {oid: {g for g, n in enumerate(names) if n == o['body_name'] + '_geom'}
                           for oid, o in self.objects.items()}
+        for cargo in getattr(self.scene, 'cargo', ()):
+            self._box_geom[cargo.item_id] = {g for g, n in enumerate(names)
+                                             if n in {cargo.geom(p.name) for p in cargo.spec().parts}}
         self._all_box = set().union(*self._box_geom.values())
         self.assigned_box = {}                  # eval-only: robot -> box id of its scripted order line
 
@@ -193,6 +229,7 @@ class OwnCamTeamHost:
             slot.dead = True
             slot.executor.stop(now, f'EXCEPTION:{type(exc).__name__}')
             self._drop_scheduled(rid, now, 'exception')
+            self._pair_safety(now)
             return None
 
     def _capture(self, rid, now):
@@ -292,7 +329,9 @@ class OwnCamTeamHost:
                                                                              for r in ROBOTS},
                                              'boxes': {b: [round(float(v), 4) for v in
                                                            data.body(o['body_name']).xpos]
-                                                       for b, o in self.objects.items() if o['kind'] == 'cyan'}})
+                                                       for b, o in self.objects.items() if o['kind'] == 'cyan'},
+                                             'team_cargo': {b: [round(float(v), 4) for v in data.body(o['body_name']).xpos]
+                                                            for b, o in self.objects.items() if o['kind'] == 'long_beam'}})
                 self._next_gt = now + self.GT_S
             for rid, s in self.robots.items():
                 if not s.dead and now + 1e-9 >= s.next_frame:
@@ -340,7 +379,13 @@ class OwnCamTeamHost:
         slot = self.robots[rid]
         ex = slot.executor
         for _ in range(12):
+            pair_before = ex._pair
             decision = ex.step(now)
+            self._pair_safety(now)
+            if slot.dead:
+                return
+            if pair_before is not None and pair_before.terminal:
+                decision = {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
             mode = decision['mode']
             if mode == 'capture':
                 self._capture(rid, now)
@@ -367,6 +412,7 @@ class OwnCamTeamHost:
         return self._guard(rid, now, self._run_timeline_raw)
 
     def _run_timeline_raw(self, rid, now):
+        self._pair_safety(now)
         slot = self.robots[rid]
         while slot.timeline and slot.timeline[0][0] <= now + 1e-9:
             _, cmds = slot.timeline.pop(0)
@@ -384,6 +430,7 @@ class OwnCamTeamHost:
         """Local SIM deadline, also while a macro runs: drop the schedule, hold, one terminal event."""
         if self.robots[rid].executor.expire_if_due(now):
             self._drop_scheduled(rid, now, 'local_timeout')
+        self._pair_safety(now)
 
     def call(self, rid, api, *args):
         """The study layer's only door into an executor: the job API of THAT robot."""
@@ -395,10 +442,18 @@ class OwnCamTeamHost:
         ex.now = now
         if self.closed:
             ack = ex.refuse(api, 'EPISODE_ENDED')
+        elif api == 'pair_carry':
+            if getattr(self, 'pairs', None) is None:
+                ack = ex.refuse(api, 'PAIR_NOT_CONFIGURED')
+            elif len(args) != 3:
+                ack = ex.refuse(api, 'BAD_PAIR_ARGUMENTS')
+            else:
+                ack = self.pairs.start(rid, *args, now=now)
         else:
             ack = getattr(ex, api)(*args)
             if api == 'abort' and ack['accepted']:
                 self._drop_scheduled(rid, now, 'abort')
+        self._pair_safety(now)
         self.api_calls.append(ack)
         return ack
 

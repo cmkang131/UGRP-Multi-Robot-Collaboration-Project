@@ -16,17 +16,17 @@ from harness import zone_study_contract as A
 from harness.zone_event_scheduler import TRIGGERS as D_TRIGGERS
 from harness.zone_map_schematic import pickup_bays
 
-JOB_APIS = ('deliver', 'goto', 'look_around', 'hold', 'abort')
+JOB_APIS = ('deliver', 'goto', 'look_around', 'hold', 'abort', 'pair_carry')
 API_TO_ACTION_KIND = {'deliver': 'claim_order', 'goto': 'goto', 'look_around': 'observe', 'hold': 'wait',
-                      'abort': 'abort_job'}
+                      'abort': 'abort_job', 'pair_carry': 'claim_order'}
 assert set(API_TO_ACTION_KIND.values()) <= set(A.ACTION_KINDS)
-EVENTS = ('job_started', 'job_done', 'job_failed', 'blockage_seen', 'pose_uncertain')
+EVENTS = ('job_started', 'job_done', 'job_failed', 'blockage_seen', 'pose_uncertain', 'pair_progress')
 # Package D wake trigger per executor event; None = logged, no call. D has no dedicated label for a
 # pose-uncertainty entry: it is an own execution fault seen on the own camera, so 'failure' (package A
 # ``own_view_change`` through ``zone_sim_cost.TRIGGER_TO_CONTRACT``). With the gate's hysteresis it
 # fires once per entry, not per frame (Codex review 2 of PR #206, P1-3).
 EVENT_TO_TRIGGER = {'job_started': None, 'job_done': 'idle', 'job_failed': 'failure',
-                    'blockage_seen': 'blockage', 'pose_uncertain': 'failure'}
+                    'blockage_seen': 'blockage', 'pose_uncertain': 'failure', 'pair_progress': None}
 assert set(EVENT_TO_TRIGGER.values()) - {None} <= set(D_TRIGGERS)
 # job_failed reasons that are a local SIM budget (own timer) rather than a view change.
 TIMEOUT_REASONS = ('LOCAL_TIMEOUT', 'EPISODE_END')
