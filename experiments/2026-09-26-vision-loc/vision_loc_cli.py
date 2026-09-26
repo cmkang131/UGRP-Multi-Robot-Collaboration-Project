@@ -39,6 +39,7 @@ import numpy as np
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import vision_loc as vl  # noqa: E402
+import vision_pf  # noqa: E402
 
 mp = vl.mp
 PRIMARY_OUT = Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926')
@@ -54,16 +55,46 @@ def sha_file(path: Path) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+EPISODE_FILES = ('episodes.json', 'episodes_v3.json')        # round 2, round 3 (independent dev/test)
+# Per round: the test registration and the one registered test scoring. Round 2 (vl-*) is closed: its test
+# was scored once (results/metrics_test.json) and turned out not independent of train (overlap audit).
+ROUNDS = {'vl': {'prereg': 'prereg.json', 'metrics': 'results/metrics_test.json'},
+          'vl3': {'prereg': 'prereg_v3.json', 'metrics': 'results/metrics_test_v3.json'}}
+
+
 def episodes_table() -> dict:
-    return json.loads((HERE/'episodes.json').read_text())
+    """Both episode tables merged (episode ids are unique across rounds)."""
+    eps = []
+    for name in EPISODE_FILES:
+        path = HERE/name
+        if path.exists():
+            eps += json.loads(path.read_text())['episodes']
+    ids = [e['episode_id'] for e in eps]
+    if len(set(ids)) != len(ids):
+        raise SystemExit('duplicate episode ids across the episode tables')
+    return {'episodes': eps}
+
+
+def episode(ep: str) -> dict:
+    for e in episodes_table()['episodes']:
+        if e['episode_id'] == ep:
+            return e
+    raise SystemExit(f'unknown episode {ep!r}')
 
 
 def split_of(ep: str) -> str:
-    return next(e['split'] for e in episodes_table()['episodes'] if e['episode_id'] == ep)
+    return episode(ep)['split']
+
+
+def round_of(ep: str) -> str:
+    prefix = ep.split('-', 1)[0]
+    if prefix not in ROUNDS:
+        raise SystemExit(f'episode {ep!r} belongs to no round')
+    return prefix
 
 
 def spawn_y(ep: str) -> float:
-    return float(next(e['spawn_y'] for e in episodes_table()['episodes'] if e['episode_id'] == ep))
+    return float(episode(ep)['spawn_y'])
 
 
 def load_map() -> dict:
@@ -74,28 +105,38 @@ def load_json(path):
     return json.loads(Path(path).read_text()) if path else {}
 
 
-TEST_METRICS = HERE/'results'/'metrics_test.json'      # the one registered test scoring (round 2)
+def test_round(episodes) -> str | None:
+    """The round of the test episodes in ``episodes`` (None: no test episode); mixing rounds is refused."""
+    rounds = {round_of(e) for e in episodes if split_of(e) == 'test'}
+    if len(rounds) > 1:
+        raise SystemExit(f'test episodes of several rounds in one call: {sorted(rounds)}')
+    return next(iter(rounds), None)
 
 
 def require_frozen(episodes, *, checkpoint=None, config=None, calibration=None, needs=()):
-    """Test episodes only with the pre-registered student: prereg.json present and every frozen hash unchanged.
+    """Test episodes only with the pre-registered student: the round's prereg present and every frozen hash unchanged.
 
     ``needs`` names the inputs this subcommand uses ('checkpoint', 'config',
     'calibration'); each must be given for a test run (an omitted file would
     silently fall back to code defaults that differ from the frozen values).
+    Round 3: only the registered test episodes (independence audit passed) run.
     """
-    if not any(split_of(e) == 'test' for e in episodes):
+    rnd = test_round(episodes)
+    if rnd is None:
         return None
-    path = HERE/'prereg.json'
+    path = HERE/ROUNDS[rnd]['prereg']
     if not path.exists():
-        raise SystemExit('test refused: no prereg.json (register the gate and the frozen student first)')
+        raise SystemExit(f'test refused: no {path.name} (register the gate and the frozen student first)')
     pre = json.loads(path.read_text())
     st = pre['student']
+    unregistered = [e for e in episodes if split_of(e) == 'test' and e not in pre['test_episodes']]
+    if unregistered:
+        raise SystemExit(f'test refused: not registered test episodes {unregistered}')
     given = {'checkpoint': checkpoint, 'config': config, 'calibration': calibration}
     missing = [k for k in needs if given[k] is None]
     if missing:
         raise SystemExit(f'test refused: {missing} must be the registered files (no code defaults on test)')
-    bad = [f for f, h in st['frozen_files_sha256'].items() if sha_file(HERE/f) != h]
+    bad = [f for f, h in st['frozen_files_sha256'].items() if not (HERE/f).exists() or sha_file(HERE/f) != h]
     if checkpoint is not None and sha_file(checkpoint) != st['model']['sha256']:
         bad.append('checkpoint')
     if config is not None and sha_file(config) != st['config']['sha256']:
@@ -103,8 +144,8 @@ def require_frozen(episodes, *, checkpoint=None, config=None, calibration=None, 
     if calibration is not None and sha_file(calibration) != st['calibration']['sha256']:
         bad.append('calibration')
     if bad:
-        raise SystemExit(f'test refused: differs from prereg.json: {bad}')
-    return {'prereg_sha256': sha_file(path)}
+        raise SystemExit(f'test refused: differs from {path.name}: {bad}')
+    return {'round': rnd, 'prereg': path.name, 'prereg_sha256': sha_file(path)}
 
 
 # ----------------------------------------------------------------------------- calibrate (TRAIN, GT offline)
@@ -305,7 +346,7 @@ def fit_motion_cmd(args):
 # ----------------------------------------------------------------------------- train
 def train_cmd(args):
     import seg_model
-    tab = episodes_table()['episodes']
+    tab = json.loads((HERE/'episodes.json').read_text())['episodes']     # the model is round-2 (train, dev val)
     train_eps = [RENDER_ROOT/e['episode_id'] for e in tab if e['split'] == 'train']
     val_eps = [RENDER_ROOT/e['episode_id'] for e in tab if e['split'] == 'dev']
     for ep in train_eps + val_eps:
@@ -533,6 +574,65 @@ class Sink:
         return est
 
 
+def _make_sinks(args, ep, ctx) -> dict:
+    """One PF per requested filter, all from the same config (round-3 extensions via ``vision_pf``)."""
+    cfg, seed = ctx['cfg'], int(episode(ep)['seed'])
+
+    def pf():
+        return vision_pf.make_robust_pf(ctx['m1'], ctx['static'], ctx['params'], cfg.get('measurement', {}),
+                                        cfg.get('obs', {}), ctx['cal']['sag'], seed,
+                                        ctx['cal'].get('pan_base_yaw') if cfg.get('pan_coupling', True) else None,
+                                        cfg.get('robust', {}))
+    sinks = {}
+    for name in args.filters.split(','):
+        if name == 'vision':
+            if not args.obs:
+                raise SystemExit('the vision filter needs --obs')
+            obs, _ = load_obs(Path(args.obs)/f'{ep}.obs.npz', kind='vision', episode=ep, obs_params=ctx['obs_params'],
+                              checkpoint_sha256=ctx['ckpt_sha'], infer_size=config_infer_size(cfg))
+            sinks[name] = Sink(pf(), 'vision', obs)
+        elif name == 'oracle':
+            if not args.oracle_obs:
+                raise SystemExit('the oracle filter needs --oracle-obs')
+            obs, _ = load_obs(Path(args.oracle_obs)/f'{ep}.obs.npz', kind='oracle', episode=ep,
+                              obs_params=ctx['obs_params'])
+            sinks[name] = Sink(pf(), 'oracle', obs)
+        elif name == 'boundary':
+            pr210 = ctx['pr210']
+            det = {**mp.DEFAULT_DETECTOR, **pr210.get('detector', {}), 'wall_height_m': vl.WALL_HEIGHT_M}
+            meas = {**mp.DEFAULT_MEASUREMENT, **{k: v for k, v in pr210['measurement'].items() if k != 'bias_rad'}}
+            cols = mp.column_positions(det['columns'], int(det['strip_half_px']))
+            sinks[name] = Sink(pf(), 'boundary', boundary={'detector': det, 'measurement': meas, 'columns': cols})
+        elif name == 'deadreck':
+            sinks[name] = Sink(pf(), 'deadreck')
+        else:
+            raise SystemExit(f'unknown filter {name}')
+    for s in sinks.values():
+        s.loc.init_gaussian((DOCK_X, spawn_y(ep), DOCK_YAW), DOCK_STD)
+    return sinks
+
+
+def _frame_record(row, sinks) -> dict:
+    any_sink = next(iter(sinks.values()))
+    rec = {'frame': row['frame'], 't': row['t'], 'phase': row['phase'], 'skill_phase': row['skill_phase'],
+           'loaded': bool(any_sink.loc.load.loaded), 's3': int(row['commanded_servo']['3']),
+           's6': int(row['commanded_servo']['6']), 'settled': bool(any_sink.loc.settled(float(row['t'])))}
+    for name, s in sinks.items():
+        e = s.last
+        rec[name] = None if not e.get('initialized') else {
+            'xyyaw': [round(e['x'], 5), round(e['y'], 5), round(e['yaw'], 6)],
+            'std_xy_m': round(e['std_xy_m'], 5), 'std_yaw_rad': round(e['std_yaw_rad'], 5),
+            'measured': bool(e.get('measured')), 'n_cols': e.get('n_cols'), 'diag': e.get('diag'),
+            'since_lateral_info_s': e.get('since_lateral_info_s')}
+    return rec
+
+
+def _write_estimates(path: Path, rows) -> None:
+    with open(path, 'w') as fh:
+        for r in rows:
+            fh.write(json.dumps(r) + '\n')
+
+
 def localize(args):
     wanted = args.filters.split(',')
     if 'vision' in wanted and not args.checkpoint:
@@ -542,86 +642,45 @@ def localize(args):
                             needs=('config', 'calibration') + (('checkpoint',) if 'vision' in wanted else ()))
     if frozen and args.motion:
         raise SystemExit('test refused: the registered student uses the M1 motion model')
-    m1 = mp.load_m1_localizer()
     m1_cal, m1_prov = mp.load_m1_calibration()
-    params = m1_cal['params']
+    ctx = {'m1': mp.load_m1_localizer(), 'params': m1_cal['params'], 'static': load_map(),
+           'cal': load_json(args.calibration), 'cfg': load_json(args.config),
+           'ckpt_sha': sha_file(args.checkpoint) if args.checkpoint else None,
+           'pr210': json.loads((mp.ROOT/'experiments'/'2026-09-26-markerless-probe'/'calibration_dev.json').read_text())}
+    ctx['obs_params'] = config_obs_params(ctx['cfg'])
     if args.motion:
-        refit = load_json(args.motion)
-        params = refit['params']
+        ctx['params'] = load_json(args.motion)['params']
         m1_prov = {**m1_prov, 'motion_refit': {'path': str(args.motion), 'sha256': sha_file(args.motion)}}
-    static = load_map()
-    cal = load_json(args.calibration)
-    cfg = load_json(args.config)
-    obs_params = config_obs_params(cfg)
-    ckpt_sha = sha_file(args.checkpoint) if args.checkpoint else None
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)
-    pr210 = json.loads((mp.ROOT/'experiments'/'2026-09-26-markerless-probe'/'calibration_dev.json').read_text())
     for ep in args.episodes:
-        if (out/f'{ep}.estimates.jsonl').exists():
+        if (out/f'{ep}.estimates.jsonl').exists() or (out/f'{ep}.meta.json').exists():
             raise SystemExit(f'refusing to overwrite {out/ep}.estimates.jsonl')
-        seed = int(next(e['seed'] for e in episodes_table()['episodes'] if e['episode_id'] == ep))
-        sinks = {}
-
-        def pf():
-            return vl.make_vision_pf(m1, static, params, cfg.get('measurement', {}), cfg.get('obs', {}), cal['sag'],
-                                     seed, cal.get('pan_base_yaw') if cfg.get('pan_coupling', True) else None)
-        for name in wanted:
-            if name == 'vision':
-                if not args.obs:
-                    raise SystemExit('the vision filter needs --obs')
-                obs, _ = load_obs(Path(args.obs)/f'{ep}.obs.npz', kind='vision', episode=ep, obs_params=obs_params,
-                                  checkpoint_sha256=ckpt_sha, infer_size=config_infer_size(cfg))
-                sinks[name] = Sink(pf(), 'vision', obs)
-            elif name == 'oracle':
-                if not args.oracle_obs:
-                    raise SystemExit('the oracle filter needs --oracle-obs')
-                obs, _ = load_obs(Path(args.oracle_obs)/f'{ep}.obs.npz', kind='oracle', episode=ep,
-                                  obs_params=obs_params)
-                sinks[name] = Sink(pf(), 'oracle', obs)
-            elif name == 'boundary':
-                det = {**mp.DEFAULT_DETECTOR, **pr210.get('detector', {}), 'wall_height_m': vl.WALL_HEIGHT_M}
-                meas = {**mp.DEFAULT_MEASUREMENT, **{k: v for k, v in pr210['measurement'].items() if k != 'bias_rad'}}
-                cols = mp.column_positions(det['columns'], int(det['strip_half_px']))
-                sinks[name] = Sink(pf(), 'boundary', boundary={'detector': det, 'measurement': meas, 'columns': cols})
-            elif name == 'deadreck':
-                sinks[name] = Sink(pf(), 'deadreck')
-            else:
-                raise SystemExit(f'unknown filter {name}')
-        for s in sinks.values():
-            s.loc.init_gaussian((DOCK_X, spawn_y(ep), DOCK_YAW), DOCK_STD)
-        rows_out = []
-        t0 = time.time()
-
-        def on_frame(k, row):
-            any_sink = next(iter(sinks.values()))
-            rec = {'frame': row['frame'], 't': row['t'], 'phase': row['phase'], 'skill_phase': row['skill_phase'],
-                   'loaded': bool(any_sink.loc.load.loaded), 's3': int(row['commanded_servo']['3']),
-                   's6': int(row['commanded_servo']['6']), 'settled': bool(any_sink.loc.settled(float(row['t'])))}
-            for name, s in sinks.items():
-                e = s.last
-                rec[name] = None if not e.get('initialized') else {
-                    'xyyaw': [round(e['x'], 5), round(e['y'], 5), round(e['yaw'], 6)],
-                    'std_xy_m': round(e['std_xy_m'], 5), 'std_yaw_rad': round(e['std_yaw_rad'], 5),
-                    'measured': bool(e.get('measured')), 'n_cols': e.get('n_cols')}
-            rows_out.append(rec)
-        n = vl.replay(RENDER_ROOT/ep, list(sinks.values()), on_frame=on_frame)
-        with open(out/f'{ep}.estimates.jsonl', 'w') as fh:
-            for r in rows_out:
-                fh.write(json.dumps(r) + '\n')
-        meta = {'schema': vl.SCHEMA, 'episode': ep, 'frames': n, 'filters': list(sinks), 'seed': seed,
-                'dock': [DOCK_X, spawn_y(ep), DOCK_YAW], 'dock_std': list(DOCK_STD), 'wall_s': round(time.time() - t0, 1),
-                'stats': {k: dict(s.loc.stats) for k, s in sinks.items()}, 'load_average': list(os.getloadavg()),
-                'map': {'file': str(MAP_FILE.relative_to(mp.ROOT)), 'sha256': sha_file(MAP_FILE)},
-                'm1_calibration': m1_prov,
-                'm1_localizer': {'source': f'{mp.M1_SHA}:{mp.M1_LOCALIZER}', 'sha256': mp.M1_LOCALIZER_SHA256},
-                'calibration': {'path': str(args.calibration), 'sha256': sha_file(args.calibration)},
-                'config': {'path': str(args.config), 'sha256': sha_file(args.config), 'value': cfg},
-                'checkpoint_sha256': ckpt_sha,
-                'obs_dirs': {'vision': args.obs, 'oracle': args.oracle_obs},
-                'module_sha256': {f: sha_file(HERE/f) for f in ('vision_loc.py', 'vision_loc_cli.py')},
-                'pr210_probe_sha256': sha_file(vl._PROBE)}
-        (out/f'{ep}.meta.json').write_text(json.dumps(meta, indent=1))
+        sinks = _make_sinks(args, ep, ctx)
+        rows_out, t0, failure, n = [], time.time(), None, 0
+        try:
+            n = vl.replay(RENDER_ROOT/ep, list(sinks.values()), on_frame=lambda k, row: rows_out.append(
+                _frame_record(row, sinks)))
+        except BaseException as exc:            # keep the partial estimates and the reason, then re-raise
+            failure = f'{type(exc).__name__}: {exc}'
+            raise
+        finally:
+            _write_estimates(out/(f'{ep}.estimates.jsonl' if failure is None else f'{ep}.estimates.partial.jsonl'),
+                             rows_out)
+            meta = {'schema': vl.SCHEMA, 'episode': ep, 'frames': n, 'frames_written': len(rows_out),
+                    'failure': failure, 'filters': list(sinks), 'seed': int(episode(ep)['seed']), 'frozen': frozen,
+                    'dock': [DOCK_X, spawn_y(ep), DOCK_YAW], 'dock_std': list(DOCK_STD),
+                    'wall_s': round(time.time() - t0, 1),
+                    'stats': {k: dict(s.loc.stats) for k, s in sinks.items()}, 'load_average': list(os.getloadavg()),
+                    'map': {'file': str(MAP_FILE.relative_to(mp.ROOT)), 'sha256': sha_file(MAP_FILE)},
+                    'm1_calibration': m1_prov,
+                    'm1_localizer': {'source': f'{mp.M1_SHA}:{mp.M1_LOCALIZER}', 'sha256': mp.M1_LOCALIZER_SHA256},
+                    'calibration': {'path': str(args.calibration), 'sha256': sha_file(args.calibration)},
+                    'config': {'path': str(args.config), 'sha256': sha_file(args.config), 'value': ctx['cfg']},
+                    'checkpoint_sha256': ctx['ckpt_sha'], 'obs_dirs': {'vision': args.obs, 'oracle': args.oracle_obs},
+                    'module_sha256': {f: sha_file(HERE/f) for f in ('vision_loc.py', 'vision_pf.py', 'vision_loc_cli.py')},
+                    'pr210_probe_sha256': sha_file(vl._PROBE)}
+            (out/f'{ep}.meta.json').write_text(json.dumps(meta, indent=1))
         print(f'{ep}: {n} frames, {meta["wall_s"]} s', flush=True)
 
 
@@ -681,53 +740,116 @@ def false_detections(vis: vl.ColumnObs, orc: vl.ColumnObs, tol_px: float) -> dic
     return out
 
 
-def score(args):
-    """GT metrics. The registered test set is scored once: a second test scoring is refused."""
+LOST_M, OK_M = .30, .10
+
+
+def recovery_summary(rows: list) -> dict:
+    """Lost / recovered episodes of one filter from (t, position error, diag) rows in time order.
+
+    lost: error > 0.30 m; a recovery is a return below 0.10 m after being lost;
+    an injection while the error is below 0.10 m counts as a false trigger.
+    """
+    lost_frames = recoveries = inj = inj_ok = injected = 0
+    lost, lost_since, longest = False, None, 0.
+    for t, err, diag in rows:
+        n = int((diag or {}).get('injected') or 0)
+        if n:
+            inj += 1
+            injected += n
+            inj_ok += int(err < OK_M)
+        if err > LOST_M:
+            lost_frames += 1
+            if not lost:
+                lost, lost_since = True, t
+        elif lost and err < OK_M:
+            recoveries += 1
+            longest = max(longest, t - lost_since)
+            lost = False
+    if lost:
+        longest = max(longest, rows[-1][0] - lost_since)
+    return {'lost_frames': lost_frames, 'recoveries': recoveries, 'ends_lost': lost,
+            'longest_lost_s': round(longest, 1), 'injection_frames': inj, 'injected_particles': injected,
+            'injection_frames_while_ok': inj_ok, 'thresholds_m': {'lost': LOST_M, 'ok': OK_M}}
+
+
+def _score_guard(args) -> None:
     out_path = Path(args.output)
     if out_path.exists():
         raise SystemExit(f'refusing to overwrite {out_path}')
-    if any(split_of(e) == 'test' for e in args.episodes) and TEST_METRICS.exists():
-        raise SystemExit(f'test refused: the registered test set was already scored ({TEST_METRICS.name})')
-    require_frozen(args.episodes)
+    rnd = test_round(args.episodes)
+    if rnd is not None:
+        metrics = HERE/ROUNDS[rnd]['metrics']
+        if metrics.exists():
+            raise SystemExit(f'test refused: the registered test set was already scored ({metrics.name})')
+        if out_path.resolve() != metrics.resolve():
+            raise SystemExit(f'test refused: the registered test scoring writes only {metrics.relative_to(HERE)}')
+        pre = json.loads((HERE/ROUNDS[rnd]['prereg']).read_text()) if (HERE/ROUNDS[rnd]['prereg']).exists() else {}
+        if sorted(args.episodes) != sorted(pre.get('test_episodes', [])):
+            raise SystemExit('test refused: score exactly the registered test episodes, all at once')
+        require_frozen(args.episodes, config=args.config, checkpoint=args.checkpoint,
+                       needs=('config', 'checkpoint') if args.obs else ())
     if bool(args.obs) != bool(args.oracle_obs):
         raise SystemExit('false-detection scoring needs both --obs and --oracle-obs (or neither)')
     if args.obs and not (args.config and args.checkpoint):
         raise SystemExit('--obs scoring needs --config and --checkpoint (observation provenance check)')
+
+
+def _episode_errors(est_dir: Path, ep: str, pooled: dict) -> tuple[dict, dict]:
+    est = vl.read_jsonl(est_dir/f'{ep}.estimates.jsonl')
+    ev = {r['frame']: r for r in vl.read_jsonl(RENDER_ROOT/ep/'eval_only'/'frames_eval.jsonl')}
+    if len(est) != len(ev):
+        raise SystemExit(f'{ep}: {len(est)} estimate rows for {len(ev)} frames')
+    per: dict = {}
+    trace: dict = {}
+    for rec in est:
+        gt = ev[rec['frame']]['gt']
+        for fname, v in rec.items():
+            if not isinstance(v, dict) or 'xyyaw' not in v:
+                continue
+            x, y, yaw = v['xyyaw']
+            err = (math.hypot(x - gt[0], y - gt[1]), abs(math.degrees(ang(yaw - gt[2]))), abs(y - gt[1]))
+            trace.setdefault(fname, []).append((float(rec['t']), err[0], v.get('diag')))
+            for key in groups_of(rec, gt):
+                per.setdefault(fname, {}).setdefault(key, []).append(err)
+                pooled.setdefault(fname, {}).setdefault(key, []).append(err)
+    return per, {f: recovery_summary(rows) for f, rows in trace.items()}
+
+
+def _false_detection_totals(args, cfg, ep, fd_pool) -> dict:
+    op = config_obs_params(cfg)
+    vis, _ = load_obs(Path(args.obs)/f'{ep}.obs.npz', kind='vision', episode=ep, obs_params=op,
+                      checkpoint_sha256=sha_file(args.checkpoint), infer_size=config_infer_size(cfg))
+    orc, _ = load_obs(Path(args.oracle_obs)/f'{ep}.obs.npz', kind='oracle', episode=ep, obs_params=op)
+    tot = {'b': {}, 't': {}}
+    for f in vis:
+        d = false_detections(vis[f], orc[f], args.tol_px)
+        for part in d:
+            for k, v in d[part].items():
+                tot[part][k] = tot[part].get(k, 0) + v
+                fd_pool[part][k] = fd_pool[part].get(k, 0) + v
+    return tot
+
+
+def score(args):
+    """GT metrics. The registered test set is scored once: a second test scoring is refused."""
+    _score_guard(args)
     cfg = load_json(args.config) if args.config else {}
-    est_dir = Path(args.estimates)
-    report = {'schema': 'ugrp.vision_loc.metrics.v1', 'episodes': {}, 'pooled': {}, 'false_detections': {}}
+    report = {'schema': 'ugrp.vision_loc.metrics.v2', 'episodes': {}, 'recovery': {}, 'pooled': {},
+              'false_detections': {}}
     pooled: dict = {}
     fd_pool = {'b': {}, 't': {}}
     for ep in args.episodes:
-        est = vl.read_jsonl(est_dir/f'{ep}.estimates.jsonl')
-        ev = {r['frame']: r for r in vl.read_jsonl(RENDER_ROOT/ep/'eval_only'/'frames_eval.jsonl')}
-        per: dict = {}
-        for rec in est:
-            gt = ev[rec['frame']]['gt']
-            for fname, v in rec.items():
-                if not isinstance(v, dict) or 'xyyaw' not in v:
-                    continue
-                x, y, yaw = v['xyyaw']
-                err = (math.hypot(x - gt[0], y - gt[1]), abs(math.degrees(ang(yaw - gt[2]))), abs(y - gt[1]))
-                for key in groups_of(rec, gt):
-                    per.setdefault(fname, {}).setdefault(key, []).append(err)
-                    pooled.setdefault(fname, {}).setdefault(key, []).append(err)
+        per, rec = _episode_errors(Path(args.estimates), ep, pooled)
         report['episodes'][ep] = {f: {g: summary(v) for g, v in d.items()} for f, d in per.items()}
-        if args.obs and args.oracle_obs:
-            op = config_obs_params(cfg)
-            vis, _ = load_obs(Path(args.obs)/f'{ep}.obs.npz', kind='vision', episode=ep, obs_params=op,
-                              checkpoint_sha256=sha_file(args.checkpoint), infer_size=config_infer_size(cfg))
-            orc, _ = load_obs(Path(args.oracle_obs)/f'{ep}.obs.npz', kind='oracle', episode=ep, obs_params=op)
-            tot = {'b': {}, 't': {}}
-            for f in vis:
-                d = false_detections(vis[f], orc[f], args.tol_px)
-                for part in d:
-                    for k, v in d[part].items():
-                        tot[part][k] = tot[part].get(k, 0) + v
-                        fd_pool[part][k] = fd_pool[part].get(k, 0) + v
-            report['false_detections'][ep] = tot
+        report['recovery'][ep] = rec
+        if args.obs:
+            report['false_detections'][ep] = _false_detection_totals(args, cfg, ep, fd_pool)
     report['pooled'] = {f: {g: summary(v) for g, v in d.items()} for f, d in pooled.items()}
-    if args.obs and args.oracle_obs:
+    report['recovery_pooled'] = {f: {k: sum(r[f][k] for r in report['recovery'].values() if f in r)
+                                     for k in ('lost_frames', 'recoveries', 'injection_frames', 'injected_particles',
+                                               'injection_frames_while_ok')}
+                                 for f in report['pooled']}
+    if args.obs:
         report['false_detections']['pooled'] = fd_pool
         for part, d in fd_pool.items():
             d['false_edge_rate'] = round(d.get('false_edges', 0)/max(d.get('edges', 0), 1), 5)
@@ -737,10 +859,14 @@ def score(args):
                         'loaded': 'own-command load state (LoadState of the M1 localizer)',
                         'lateral': '|y_est - y_gt| (door_1 is crossed along x)'}
     Path(args.output).write_text(json.dumps(report, indent=1))
+    _print_report(report)
+
+
+def _print_report(report: dict) -> None:
     for f, d in report['pooled'].items():
         a = d['all']
         print(f"{f:9s} n={a['n']:6d} p50={a['pos_p50_m']} p90={a['pos_p90_m']} p99={a['pos_p99_m']} "
-              f"max={a['pos_max_m']} yaw_p90={a['yaw_p90_deg']}")
+              f"max={a['pos_max_m']} yaw_p90={a['yaw_p90_deg']} recovery={report['recovery_pooled'].get(f)}")
         for g in ('door_zone', 'door_loaded', 'door_unloaded', 'loaded', 'unloaded', 'search_approach', 'carry',
                   'manipulate', 'look_back'):
             if g in d:

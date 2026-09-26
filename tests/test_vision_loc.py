@@ -428,10 +428,21 @@ def test_score_refuses_overwrite_and_a_second_test_scoring(tmp_path):
     out.write_text('{}')
     with pytest.raises(SystemExit, match='overwrite'):
         cli.main(['score', '--episodes', 'vl-dev-s910', '--estimates', str(tmp_path), '--output', str(out)])
-    assert cli.TEST_METRICS.exists()                  # round 2 test scored once (results/metrics_test.json)
+    assert (cli.HERE/cli.ROUNDS['vl']['metrics']).exists()   # round 2 test scored once (results/metrics_test.json)
     with pytest.raises(SystemExit, match="already scored"):
         cli.main(['score', '--episodes', 'vl-test-s912', '--estimates', str(tmp_path),
                   '--output', str(tmp_path/'again.json')])
+    with pytest.raises(SystemExit, match='several rounds'):
+        cli.test_round(['vl-test-s912', 'vl3-test-s951'])
+    if not (cli.HERE/cli.ROUNDS['vl3']['metrics']).exists():
+        # round 3 test: only into the registered metrics file, only the full registered set
+        with pytest.raises(SystemExit, match='writes only|registered'):
+            cli.main(['score', '--episodes', 'vl3-test-s951', '--estimates', str(tmp_path),
+                      '--output', str(tmp_path/'t3.json')])
+    with pytest.raises(SystemExit, match='unknown episode'):
+        cli.split_of('vl3-test-s999')
+    with pytest.raises(SystemExit, match='no round'):
+        cli.round_of('xx-test-s1')
 
 
 def test_vision_loc_tests_are_collected_by_ci():
@@ -517,3 +528,139 @@ def test_round3_episodes_follow_the_registered_design_rule():
         assert .012 - 1e-4 <= math.hypot(*e['teacher_pose_bias'][:2]) <= .03 + 1e-4
         assert e['episode_id'] == f"vl3-{e['split']}-s{e['seed']}"
     assert v3['controller'] == r2['controller'] and v3['base_map'] == r2['base_map']
+
+
+# ----------------------------------------------------------------------------- round 3: likelihood and filter fixes
+def test_interval_prob_open_ends_and_off_screen_edges():
+    kind = np.array([vl.INTERVAL, vl.INTERVAL, vl.INTERVAL, vl.EDGE, vl.INTERVAL])
+    lo = np.array([200., vl.NEG_INF, 200., 150., vl.NEG_INF])
+    hi = np.array([vl.POS_INF, 100., 300., 150., 100.])
+    exp = np.array([[vl.POS_INF, vl.NEG_INF, vl.POS_INF, vl.POS_INF, vl.POS_INF],   # off-screen predictions
+                    [500., 50., 250., 150., 0.]])                                   # finite predictions
+    p = vl.interval_prob(exp, kind, lo, hi, 2.5)
+    # hidden below / no edge in view are exactly consistent with the matching open interval (round 2: 0.5)
+    assert p[0].tolist() == [1., 1., 0., 0., 0.]
+    assert np.allclose(p[1], [1., 1., 1., 1., 1.], atol=1e-6)
+    legacy = vl.interval_prob(exp, kind, lo, hi, 2.5, open_ends=False)
+    assert np.allclose(legacy[0, :2], .5) and np.allclose(legacy[1, :2], 1.)
+    # NaN expected rows keep the round-2 meaning (treated as hidden below); NONE columns stay NaN
+    kind2 = np.array([vl.INTERVAL, vl.NONE])
+    q = vl.interval_prob(np.array([[np.nan, 5.]]), kind2, np.array([10., np.nan]), np.array([vl.POS_INF, np.nan]), 2.5)
+    assert q[0, 0] == 1. and np.isnan(q[0, 1])
+    # sigma 0 would divide by zero: the measurement defaults never use it, and column_loglik refuses no columns
+    ll, n = vl.column_loglik(np.zeros((3, 4)), np.zeros((3, 4)), vl.ColumnObs(
+        np.arange(4), np.zeros(4, int), *(np.full(4, np.nan),)*2, np.zeros(4, int), *(np.full(4, np.nan),)*2), {},
+        per_column=True)
+    assert n == 0 and np.all(ll == 0.)
+
+
+def _robust_pf(robust, seed=3, particles=600):
+    import harness.owncam_localizer as base
+    import vision_pf
+    params = json.loads(json.dumps(base.DEFAULT_PARAMS))
+    params['particles'] = particles
+    params['motion_loaded'] = {**params['motion'], 'scale_std': .01}
+    sag = {s: {'s3': [740], 'bias': [0.], 'dz': [0.]} for s in ('loaded', 'unloaded')}
+    return vision_pf.make_robust_pf(base, MAP, params, {'settle_s': 0.}, {'columns': 48}, sag, seed=seed,
+                                    robust=robust), params
+
+
+def _drive(pf, params, true, steps, *, moves=True, cmd_turn=.15, start_t=0.):
+    """Issue mecanum commands for ``steps`` frames; the true robot moves only when ``moves``."""
+    t, errs, ests = start_t, [], []
+    for k in range(steps):
+        cmd = {'t': t, 'kind': 'mecanum', 'forward': .06, 'left': 0., 'turn': cmd_turn if k % 20 < 10 else -cmd_turn,
+               'duration_s': .2}
+        pf.command(cmd)
+        if moves:
+            g = np.asarray(params['motion']['gain']) @ np.array([.06, 0., cmd['turn']])
+            c, s = math.cos(true[2]), math.sin(true[2])
+            true = true + .2*np.array([c*g[0] - s*g[1], s*g[0] + c*g[1], g[2]])
+        t += .2
+        obs = vl.column_observations(vl.one_hot(render_labels(true, SEARCH)), pf.columns)
+        est = pf.update_obs(t, obs, SEARCH)
+        errs.append(math.hypot(est['x'] - true[0], est['y'] - true[1]))
+        ests.append(est)
+    return true, t, errs, ests
+
+
+def test_robust_pf_without_options_is_the_round2_filter():
+    import harness.owncam_localizer as base
+    a, params = _robust_pf({})
+    sag = {s: {'s3': [740], 'bias': [0.], 'dz': [0.]} for s in ('loaded', 'unloaded')}
+    b = vl.make_vision_pf(base, MAP, params, {'settle_s': 0.}, {'columns': 48}, sag, seed=3)
+    for pf in (a, b):
+        pf.init_gaussian((-.4, -.68, math.radians(5)), (.15, .15, math.radians(10)))
+        pf.command({'t': 0., 'kind': 'initial_servo_command', 'pulses': SEARCH})
+    _drive(a, params, np.array([-.5, -.6, 0.]), 12)
+    _drive(b, params, np.array([-.5, -.6, 0.]), 12)
+    assert np.array_equal(a.px, b.px) and np.array_equal(a.logw, b.logw) and a.stats['resamples'] > 0
+
+
+def test_stuck_mode_keeps_a_hypothesis_at_a_wedged_robot():
+    """Robot wedged (true pose fixed) while it keeps issuing wheel commands: only the stuck mode stays near it."""
+    true = np.array([-.5, -.6, 0.])
+    out = {}
+    for name, robust in (('off', {}), ('stuck', {'stuck': {'enter_per_s': .1, 'exit_per_s': .05}})):
+        pf, params = _robust_pf(robust)
+        pf.init_gaussian(true, (.02, .02, .02))
+        pf.command({'t': 0., 'kind': 'initial_servo_command', 'pulses': SEARCH})
+        _, _, errs, ests = _drive(pf, params, true, 40, moves=False, cmd_turn=.3)
+        out[name] = (max(errs[-10:]), ests[-1]['diag']['stuck_share'])
+    assert out['stuck'][0] < .05 and out['stuck'][1] > .5
+    assert out['off'][0] > 2*out['stuck'][0]
+
+
+def test_augmented_mcl_recovers_a_kidnapped_filter_and_records_injections():
+    """Tracked, then kidnapped by 0.35 m / 20 deg: the fit drops, w_fast falls below w_slow, random poses recover it."""
+    res = {}
+    for name, robust in (('off', {}), ('amcl', {'recovery': {'alpha_slow': .01, 'alpha_fast': .3,
+                                                              'uniform_share': .0, 'local_std': [.4, .4, .4]}})):
+        pf, params = _robust_pf(robust, particles=1500)
+        true = np.array([-.5, -.6, 0.])
+        pf.init_gaussian(true, (.03, .03, .02))
+        pf.command({'t': 0., 'kind': 'initial_servo_command', 'pulses': SEARCH})
+        true, t, errs0, _ = _drive(pf, params, true, 15)
+        true = true + np.array([.25, -.25, math.radians(20)])        # kidnap (the filter is not told)
+        _, _, errs, ests = _drive(pf, params, true, 60, start_t=t)
+        res[name] = (errs0[-1], min(errs[-10:]), max(errs[-10:]), pf.stats['injections'],
+                     max(e['diag'].get('w_diff', 0.) for e in ests if e.get('diag')), errs[10])
+    assert res['off'][0] < .05 and res['amcl'][0] < .05
+    assert res['off'][1] > .15 and res['off'][3] == 0              # the round-2 filter only drifts back slowly
+    assert res['amcl'][5] < .08 and res['amcl'][2] < .06 and res['amcl'][3] > 0 and res['amcl'][4] > 0
+
+
+def test_loaded_scale_reinit_uses_the_loaded_plant_scale_std():
+    pf, params = _robust_pf({'loaded_scale_reinit': True})
+    pf.init_gaussian((-.5, -.6, 0.), (.02, .02, .02))
+    pf.command({'t': 0., 'kind': 'initial_servo_command', 'pulses': {1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500}})
+    assert np.std(pf.scale) > .03                                  # unloaded scale_std .05
+    # grasp as in dev s910 (t 152.5 s): arm at floor height, gripper commanded closed (own commands only)
+    for sid, pulse in ((3, 1003), (4, 1836), (5, 2500), (1, 1570)):
+        pf.command({'t': .1, 'kind': 'arm', 'servo_id': sid, 'pulse': pulse})
+    assert pf.load.loaded and pf.stats['load_scale_resets'] == 1 and np.std(pf.scale) < .02   # loaded scale_std .01
+    pf.command({'t': .2, 'kind': 'arm', 'servo_id': 1, 'pulse': 2000})
+    assert not pf.load.loaded and pf.stats['load_scale_resets'] == 2 and np.std(pf.scale) > .03
+    off, _ = _robust_pf({})
+    off.init_gaussian((-.5, -.6, 0.), (.02, .02, .02))
+    off.command({'t': 0., 'kind': 'initial_servo_command', 'pulses': {1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500}})
+    before = off.scale.copy()
+    for sid, pulse in ((3, 1003), (4, 1836), (5, 2500), (1, 1570)):
+        off.command({'t': .1, 'kind': 'arm', 'servo_id': sid, 'pulse': pulse})
+    assert off.load.loaded and np.array_equal(off.scale, before)    # round 2: scales kept across the grasp
+
+
+@pytest.mark.parametrize('robust', [
+    {'nope': 1}, {'loaded_scale_reinit': 1}, {'info_gain_min': float('nan')}, {'info_gain_min': 2.},
+    {'stuck': {'enter_per_s': 0., 'exit_per_s': .1}}, {'stuck': {'enter_per_s': None, 'exit_per_s': .1}},
+    {'stuck': {'enter_per_s': .1}}, {'stuck': {'enter_per_s': float('inf'), 'exit_per_s': .1}},
+    {'recovery': {'alpha_slow': .1, 'alpha_fast': .01}}, {'recovery': {'alpha_slow': 0, 'alpha_fast': .1}},
+    {'recovery': {'alpha_slow': '.001', 'alpha_fast': .1}}, {'recovery': {'alpha_slow': .001}},
+    {'recovery': {'alpha_slow': .001, 'alpha_fast': .1, 'max_fraction': 0.}},
+    {'recovery': {'alpha_slow': .001, 'alpha_fast': .1, 'local_std': [.3, .3]}},
+    {'recovery': {'alpha_slow': .001, 'alpha_fast': .1, 'local_std': [.3, float('nan'), .3]}}, [], 'x'])
+def test_robust_options_reject_bad_values(robust):
+    import vision_pf
+    with pytest.raises(ValueError):
+        vision_pf.validate_robust(robust)
+    assert vision_pf.validate_robust(None) == vl.DEFAULT_ROBUST and vision_pf.validate_robust({}) == vl.DEFAULT_ROBUST

@@ -99,6 +99,18 @@ DEFAULT_MEASUREMENT = {
     # (a near wall behind the carried box) do not dilute the few informative ones (door jambs)
     'scale_by': 'all',
     'discriminative_min': .1,
+    'open_ends': True,         # round 3: sentinel rows are infinite (``interval_prob``); False = round-2 likelihood
+}
+# Round-3 filter extensions (all off by default = the round-2 filter; see ``make_vision_pf``).
+DEFAULT_ROBUST = {
+    # slip scales redrawn from the new plant's scale_std when the own load state changes
+    'loaded_scale_reinit': False,
+    # near-stationary motion hypothesis: {'enter_per_s', 'exit_per_s', 'jitter_xy_m', 'jitter_yaw_rad'} (per sqrt s)
+    'stuck': None,
+    # augmented MCL (Probabilistic Robotics Table 8.3, Nav2 AMCL pf.c): {'alpha_slow', 'alpha_fast',
+    # 'max_fraction' (1 = Nav2), 'uniform_share' (rest: Gaussian around the estimate with 'local_std')}
+    'recovery': None,
+    'info_gain_min': .1,       # a direction counts as corrected when the frame shrinks its variance by this share
 }
 
 
@@ -425,40 +437,77 @@ def _erf(x: np.ndarray) -> np.ndarray:
     return s*y
 
 
-def interval_prob(expected: np.ndarray, kind: np.ndarray, lo: np.ndarray, hi: np.ndarray, sigma: float) -> np.ndarray:
+def interval_prob(expected: np.ndarray, kind: np.ndarray, lo: np.ndarray, hi: np.ndarray, sigma: float,
+                  open_ends: bool = True) -> np.ndarray:
     """P(observation | expected row) per (particle, column), max 1; NaN where kind == NONE.
 
     EDGE: exp(-0.5 d^2/sigma^2) (unnormalised Gaussian). INTERVAL: probability that
     the expected row plus N(0, sigma^2) noise falls in [lo, hi].
+
+    ``open_ends`` (round 3, default): the sentinels NEG_INF / POS_INF are treated as
+    infinite, not as rows 10000 px away. An open interval end contains every row
+    beyond it, and an expected edge off screen (POS_INF: hidden below the image,
+    NEG_INF: no edge in the column / above the view) lies in an interval exactly
+    when that interval is open on the same side (EDGE observations: never). The
+    round-2 code (``open_ends=False``) put a Gaussian at +-10000 px, so an
+    observation consistent with an off-screen edge scored 0.5 instead of 1
+    (Codex filter analysis, P0).
     """
     e = np.where(np.isfinite(expected), expected, POS_INF)
     out = np.full(np.broadcast_shapes(e.shape, lo.shape), np.nan)
     edge = kind == EDGE
     iv = kind == INTERVAL
+    if not open_ends:
+        if edge.any():
+            d = (lo[None, edge] - e[:, edge])/sigma
+            out[:, edge] = np.exp(-.5*d*d)
+        if iv.any():
+            a = (lo[None, iv] - e[:, iv])/sigma
+            b = (hi[None, iv] - e[:, iv])/sigma
+            pa = .5*(1 + _erf(np.clip(a, -30, 30)/math.sqrt(2)))
+            pb = .5*(1 + _erf(np.clip(b, -30, 30)/math.sqrt(2)))
+            out[:, iv] = np.maximum(pb - pa, 0.)
+        return out
+    below, above = e >= POS_INF, e <= NEG_INF
+    finite = ~(below | above)
+    ef = np.where(finite, e, 0.)
     if edge.any():
-        d = (lo[None, edge] - e[:, edge])/sigma
-        out[:, edge] = np.exp(-.5*d*d)
+        d = (lo[None, edge] - ef[:, edge])/sigma
+        out[:, edge] = np.where(finite[:, edge], np.exp(-.5*d*d), 0.)
     if iv.any():
-        a = (lo[None, iv] - e[:, iv])/sigma
-        b = (hi[None, iv] - e[:, iv])/sigma
-        pa = .5*(1 + _erf(np.clip(a, -30, 30)/math.sqrt(2)))
-        pb = .5*(1 + _erf(np.clip(b, -30, 30)/math.sqrt(2)))
-        out[:, iv] = np.maximum(pb - pa, 0.)
+        lo_i, hi_i = lo[iv], hi[iv]
+        lo_open, hi_open = lo_i <= NEG_INF, hi_i >= POS_INF
+        a = (np.where(lo_open, 0., lo_i)[None, :] - ef[:, iv])/sigma
+        b = (np.where(hi_open, 0., hi_i)[None, :] - ef[:, iv])/sigma
+        pa = np.where(lo_open[None, :], 0., .5*(1 + _erf(np.clip(a, -30, 30)/math.sqrt(2))))
+        pb = np.where(hi_open[None, :], 1., .5*(1 + _erf(np.clip(b, -30, 30)/math.sqrt(2))))
+        p = np.maximum(pb - pa, 0.)
+        p = np.where(below[:, iv], hi_open[None, :].astype(float), p)
+        p = np.where(above[:, iv], lo_open[None, :].astype(float), p)
+        out[:, iv] = p
     return out
 
 
-def column_loglik(vb_exp: np.ndarray, vt_exp: np.ndarray, obs: ColumnObs, params: Mapping) -> np.ndarray:
-    """Robust per-particle log-likelihood of one frame's column observations."""
+def column_loglik(vb_exp: np.ndarray, vt_exp: np.ndarray, obs: ColumnObs, params: Mapping,
+                  per_column: bool = False):
+    """Robust per-particle log-likelihood of one frame's column observations.
+
+    ``per_column``: also return the number of observed column terms (the tempered
+    total divided by min(n_terms, effective_columns) is the per-column mean log
+    probability, used as the frame's fit quality by the recovery).
+    """
     m = {**DEFAULT_MEASUREMENT, **params}
     eps = float(m['outlier_prob'])
+    open_ends = bool(m.get('open_ends', True))
     n_cols = int(obs.informative.sum())
     if n_cols < int(m['min_columns']):
-        return np.zeros(vb_exp.shape[0])
+        z = np.zeros(vb_exp.shape[0])
+        return (z, 0) if per_column else z
     terms = []
-    pb = interval_prob(vb_exp, obs.b_kind, obs.b_lo, obs.b_hi, float(m['sigma_px']))
+    pb = interval_prob(vb_exp, obs.b_kind, obs.b_lo, obs.b_hi, float(m['sigma_px']), open_ends)
     terms.append((pb[:, obs.b_kind != NONE], 1.))
     if params.get('use_top_edge', True) and (obs.t_kind != NONE).any():
-        pt = interval_prob(vt_exp, obs.t_kind, obs.t_lo, obs.t_hi, float(m['sigma_px']))
+        pt = interval_prob(vt_exp, obs.t_kind, obs.t_lo, obs.t_hi, float(m['sigma_px']), open_ends)
         terms.append((pt[:, obs.t_kind != NONE], float(m['top_weight'])))
     total = np.zeros(vb_exp.shape[0])
     n_terms = 0
@@ -470,7 +519,8 @@ def column_loglik(vb_exp: np.ndarray, vt_exp: np.ndarray, obs: ColumnObs, params
             n_terms += int(((p.max(0) - p.min(0)) > float(m['discriminative_min'])).sum())
         else:
             n_terms += p.shape[1]
-    return total*min(1., float(m['effective_columns'])/max(n_terms, 1))
+    ll = total*min(1., float(m['effective_columns'])/max(n_terms, 1))
+    return (ll, n_terms) if per_column else ll
 
 
 # ----------------------------------------------------------------------------- expected rows
@@ -626,10 +676,17 @@ def expected_rows(geometry, poses: np.ndarray, cm: 'ColumnModelDZ', wall_height_
 def make_vision_pf(m1_module, static_map: Mapping, params: Mapping, measurement: Mapping, obs_params: Mapping,
                    sag_table: Mapping, seed: int, pan_table: Mapping | None = None):
     """Subclass of the M1 ``OwnCamLocalizer`` whose measurement is the segmentation column scan."""
+    return vision_pf_class(m1_module)(static_map, params, measurement, obs_params, sag_table, seed, pan_table)
+
+
+def vision_pf_class(m1_module):
+    """``VisionScanLocalizer`` class on the given M1 localizer module (round-3 filters subclass it, ``vision_pf.py``)."""
     base = m1_module.OwnCamLocalizer
 
     class VisionScanLocalizer(base):
-        def __init__(self):
+        wrap = staticmethod(m1_module.wrap)
+
+        def __init__(self, static_map, params, measurement, obs_params, sag_table, seed, pan_table=None):
             super().__init__(static_map, params, seed=seed)
             self.geometry = mp.MapGeometry(static_map, include_posts=False)
             self.measurement = {**DEFAULT_MEASUREMENT, **measurement}
@@ -674,6 +731,15 @@ def make_vision_pf(m1_module, static_map: Mapping, params: Mapping, measurement:
         def settled(self, t: float) -> bool:
             return t - self.own_servo_cmd_t >= float(self.measurement['settle_s']) - 1e-9
 
+        def scan_loglik(self, obs: ColumnObs, pose: Mapping):
+            """(per-particle log-likelihood, number of observed column terms) of one frame."""
+            vb, vt = self.expected(self.px, pose)
+            return column_loglik(vb, vt, obs, {**self.measurement, 'use_top_edge': self.obs_params['use_top_edge']},
+                                 per_column=True)
+
+        def apply_scan(self, t: float, obs: ColumnObs, pose: Mapping) -> None:
+            self.logw = self.logw + self.scan_loglik(obs, pose)[0]
+
         def update_obs(self, t: float, obs: ColumnObs | None, pose: Mapping) -> dict:
             self.predict_to(t)
             used = False
@@ -681,9 +747,7 @@ def make_vision_pf(m1_module, static_map: Mapping, params: Mapping, measurement:
                 if not self.settled(t):
                     self.stats['unsettled_skips'] += 1
                 elif int(obs.informative.sum()) >= int(self.measurement['min_columns']):
-                    vb, vt = self.expected(self.px, pose)
-                    self.logw = self.logw + column_loglik(vb, vt, obs, {**self.measurement,
-                                                                         'use_top_edge': self.obs_params['use_top_edge']})
+                    self.apply_scan(t, obs, pose)
                     self.stats['scan_updates'] += 1
                     self.stats['scan_columns'] += int(obs.informative.sum())
                     self.last_scan_t = t
@@ -695,7 +759,7 @@ def make_vision_pf(m1_module, static_map: Mapping, params: Mapping, measurement:
             est['measured'] = used
             return est
 
-    return VisionScanLocalizer()
+    return VisionScanLocalizer
 
 
 # ----------------------------------------------------------------------------- episode inputs (student view)
