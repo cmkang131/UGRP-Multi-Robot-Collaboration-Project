@@ -447,7 +447,13 @@ def _write_estimates(path: Path, rows) -> None:
             fh.write(json.dumps(r) + '\n')
 
 
+def _term_as_exit(signum, frame):
+    raise SystemExit(f'terminated by signal {signum}')
+
+
 def localize(args):
+    import signal
+    signal.signal(signal.SIGTERM, _term_as_exit)       # a stopped session still writes partial estimates + reason
     wanted = args.filters.split(',')
     if 'vision' in wanted and not args.checkpoint:
         raise SystemExit('the vision filter needs --checkpoint (its hash must match the observation cache)')

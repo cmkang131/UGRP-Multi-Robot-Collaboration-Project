@@ -67,6 +67,8 @@ def validate_robust(robust: Mapping | None) -> dict:
     cfg = {**vl.DEFAULT_ROBUST, **(robust or {})}
     if not isinstance(cfg['loaded_scale_reinit'], bool):
         raise ValueError('loaded_scale_reinit must be true or false')
+    if cfg['estimate'] not in ('mean', 'dominant'):
+        raise ValueError(f"estimate must be 'mean' or 'dominant', got {cfg['estimate']!r}")
     _num(cfg['info_gain_min'], 'info_gain_min', 0., 1.)
     st = cfg['stuck']
     if st is not None:
@@ -267,11 +269,32 @@ def make_robust_pf(m1_module, static_map: Mapping, params: Mapping, measurement:
 
         # ------------------------------------------------------------ report
         def estimate(self):
+            if self.robust['estimate'] == 'dominant' and self.initialized and self.stuck.any() and not self.stuck.all():
+                return self._dominant_estimate()
             est = super().estimate()
+            return self._with_diag(est)
+
+        def _with_diag(self, est):
             if est.get('initialized'):
-                est['diag'] = {**self.diag, 'stuck_share': round(float(self.stuck.mean()), 4)}
+                w = self._weights()
+                est['diag'] = {**self.diag, 'stuck_share': round(float(self.stuck.mean()), 4),
+                               'stuck_weight': round(float(w[self.stuck].sum()), 4)}
                 est['since_lateral_info_s'] = (None if self.last_info_t['lat'] is None
                                                else round(self.t - self.last_info_t['lat'], 3))
             return est
+
+        def _dominant_estimate(self):
+            """The M1 estimate computed over the motion mode (stuck / moving) holding most of the weight."""
+            w = self._weights()
+            sel = self.stuck if float(w[self.stuck].sum()) > .5 else ~self.stuck
+            px, logw = self.px, self.logw
+            try:
+                self.px, self.logw = px[sel], logw[sel]
+                est = super().estimate()
+            finally:
+                self.px, self.logw = px, logw
+            est['n_eff_all'] = float(1./np.sum(w*w))
+            est['mode'] = 'stuck' if sel is self.stuck else 'moving'
+            return self._with_diag(est)
 
     return RobustVisionLocalizer()

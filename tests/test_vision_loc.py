@@ -655,8 +655,26 @@ def test_loaded_scale_reinit_uses_the_loaded_plant_scale_std():
     assert off.load.loaded and np.array_equal(off.scale, before)    # round 2: scales kept across the grasp
 
 
+def test_dominant_estimate_ignores_a_trailing_minority_mode():
+    pf, _ = _robust_pf({'stuck': {'enter_per_s': .01, 'exit_per_s': .5}, 'estimate': 'dominant'})
+    pf.init_gaussian((-.5, -.6, 0.), (.005, .005, .005))
+    pf.stuck[:150] = True                               # 25 % of the particles trail 0.3 m behind
+    pf.px[:150, 0] -= .3
+    est = pf.estimate()
+    assert est['mode'] == 'moving' and abs(est['x'] + .5) < .01 and est['diag']['stuck_weight'] == pytest.approx(.25)
+    mean_pf, _ = _robust_pf({'stuck': {'enter_per_s': .01, 'exit_per_s': .5}})
+    mean_pf.init_gaussian((-.5, -.6, 0.), (.005, .005, .005))
+    mean_pf.stuck[:150] = True
+    mean_pf.px[:150, 0] -= .3
+    assert abs(mean_pf.estimate()['x'] + .575) < .01    # the M1 weighted mean is pulled by the trailing mode
+    pf.logw[:150] += 5.                                 # the stuck mode now holds most of the weight
+    est = pf.estimate()
+    assert est['mode'] == 'stuck' and abs(est['x'] + .8) < .01
+    assert pf.px.shape == (600, 3) and pf.logw.shape == (600,)       # restored after the subset estimate
+
+
 @pytest.mark.parametrize('robust', [
-    {'nope': 1}, {'loaded_scale_reinit': 1}, {'info_gain_min': float('nan')}, {'info_gain_min': 2.},
+    {'nope': 1}, {'loaded_scale_reinit': 1}, {'estimate': 'median'}, {'estimate': None}, {'info_gain_min': float('nan')}, {'info_gain_min': 2.},
     {'stuck': {'enter_per_s': 0., 'exit_per_s': .1}}, {'stuck': {'enter_per_s': None, 'exit_per_s': .1}},
     {'stuck': {'enter_per_s': .1}}, {'stuck': {'enter_per_s': float('inf'), 'exit_per_s': .1}},
     {'recovery': {'alpha_slow': .1, 'alpha_fast': .01}}, {'recovery': {'alpha_slow': 0, 'alpha_fast': .1}},

@@ -111,6 +111,9 @@ DEFAULT_ROBUST = {
     # 'max_fraction' (1 = Nav2), 'uniform_share' (rest: Gaussian around the estimate with 'local_std')}
     'recovery': None,
     'info_gain_min': .1,       # a direction counts as corrected when the frame shrinks its variance by this share
+    # reported pose: 'mean' (M1: weighted mean of all particles) or 'dominant' (weighted mean of the motion mode,
+    # stuck or moving, that holds most of the weight; only differs when the stuck mode is on)
+    'estimate': 'mean',
 }
 
 
