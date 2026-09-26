@@ -71,7 +71,7 @@ def write_run(writer_cls, out: Path, name: str, hp: dict, summary: dict, series:
 
 def build(args):
     from scripts.tensorboard_tools.export import Writer
-    import vision_loc_cli as cli
+    import vision_loc_io as vio
     results = json.loads(args.results.read_text())
     out = args.logdir/args.snapshot
     if out.exists():
@@ -85,7 +85,7 @@ def build(args):
     exported = []
     for ep, per in test['metrics']['episodes'].items():
         est = [json.loads(x) for x in (est_dir/f'{ep}.estimates.jsonl').read_text().splitlines() if x.strip()]
-        ev_path = cli.RENDER_ROOT/ep/'eval_only'/'frames_eval.jsonl'
+        ev_path = vio.RENDER_ROOT/ep/'eval_only'/'frames_eval.jsonl'
         ev = {r['frame']: r for r in (json.loads(x) for x in ev_path.read_text().splitlines() if x.strip())}
         for f, summary in per.items():
             pos, yaw, cols = [], [], []
@@ -102,23 +102,26 @@ def build(args):
             series = {'localization/pos_err_m': pos, 'localization/yaw_err_deg': yaw}
             if cols:
                 series['localization/informative_columns'] = cols
-            run = f"vl-{ep.split('-s')[-1]}-{f}"
+            run = f"{args.prefix}-{ep.split('-s')[-1]}-{f}"
             hp = {**common, 'filter': f, 'filter_label': FILTER_LABELS.get(f, f), 'episode': ep, 'split': 'test'}
             prov = {'estimates': str(est_dir/f'{ep}.estimates.jsonl'),
                     'estimates_sha256': sha((est_dir/f'{ep}.estimates.jsonl').read_bytes()),
                     'eval_only': str(ev_path), 'eval_only_sha256': sha(ev_path.read_bytes()),
                     'results_sha256': sha(args.results.read_bytes())}
-            counts = write_run(Writer, out, run, hp, summary, series, prov)
+            rec = test['metrics'].get('recovery', {}).get(ep, {}).get(f) or {}
+            extra = {f'recovery/{k}': float(rec[k]) for k in ('lost_frames', 'recoveries', 'injection_frames',
+                                                              'injection_frames_while_ok') if k in rec}
+            counts = write_run(Writer, out, run, hp, summary, series, prov, extra)
             exported.append({'name': run, 'kind': 'episode', 'episode': ep, 'filter': f, 'counts': counts})
     gate = results.get('gate', {})
     for f, summary in test['metrics']['pooled'].items():
-        run = f'vl-pooled-{f}'
+        run = f'{args.prefix}-pooled-{f}'
         hp = {**common, 'filter': f, 'filter_label': FILTER_LABELS.get(f, f), 'episode': 'test pooled', 'split': 'test'}
         extra = {'gate/pass': float(bool(gate.get('pass')))} if f == 'vision' and 'pass' in gate else None
         counts = write_run(Writer, out, run, hp, summary, None, {'results_sha256': sha(args.results.read_bytes())}, extra)
         exported.append({'name': run, 'kind': 'pooled', 'filter': f, 'counts': counts})
     for name, ref in results.get('references', {}).items():
-        run = f'vl-ref-{name}'
+        run = f'{args.prefix}-ref-{name}'
         hp = {**common, 'filter': name, 'filter_label': ref['label'], 'episode': ref['episodes'], 'split': 'reference',
               'environment': ref['environment'], 'claim_scope': ref['scope']}
         counts = write_run(Writer, out, run, hp, ref['summary'], None, {'source': ref['source']})
@@ -192,6 +195,7 @@ def main(argv=None):
     ap.add_argument('--logdir', type=Path, default=Path('/Users/changmin/projects/ugrp/outputs/tensorboard'))
     ap.add_argument('--snapshot', default='0926-vision-loc')
     ap.add_argument('--source-sha', default='')
+    ap.add_argument('--prefix', default='vl', help='run name prefix (round 3: vl3)')
     ap.add_argument('--verify', action='store_true')
     ap.add_argument('--report')
     args = ap.parse_args(argv)

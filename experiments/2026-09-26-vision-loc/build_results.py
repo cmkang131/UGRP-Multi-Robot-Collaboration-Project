@@ -9,7 +9,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
 from pathlib import Path
 
 import numpy as np
@@ -96,18 +95,21 @@ def main(argv=None):
     ap.add_argument('--train-info', type=Path, required=True)
     ap.add_argument('--bench', type=Path)
     ap.add_argument('--renders', type=Path, default=Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/render'))
+    ap.add_argument('--render-glob', default='vl-*', help='render folders to list (round 3: vl3-*)')
     ap.add_argument('--output', type=Path, default=HERE/'results'/'results.json')
     args = ap.parse_args(argv)
     prereg = json.loads(args.prereg.read_text())
     metrics = json.loads(args.metrics.read_text())
     train = json.loads(args.train_info.read_text())
     renders = {}
-    for d in sorted(args.renders.glob('vl-*')):
+    if args.output.exists():
+        raise SystemExit(f'refusing to overwrite {args.output}')
+    for d in sorted(args.renders.glob(args.render_glob)):
         m = d/'teacher_manifest.json'
         if m.exists():
             t = json.loads(m.read_text())
-            renders[d.name] = {k: t[k] for k in ('split', 'role', 'outcome', 'diagnostic_success', 'sim_s', 'frames',
-                                                 'wall_s', 'load_average')}
+            renders[d.name] = {k: t.get(k) for k in ('split', 'role', 'outcome', 'diagnostic_success', 'sim_s', 'frames',
+                                                     'wall_s', 'load_average', 'spawn_offset', 'teacher_pose_bias')}
             renders[d.name]['teacher_manifest_sha256'] = sha_file(m)
     refs = {'tag_m1_v2': reference_tags_m1()}
     v3 = reference_tags_v3()
