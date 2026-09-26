@@ -629,6 +629,19 @@
       "output_kind": "directory"
     },
     {
+      "id": "zone-m1-owncam-memory-v3-run",
+      "version": "3.0.0",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "entry": "scripts/run_m1_owncam_memory_v3.py",
+      "docs": "docs/design/2026-09-27-owncam-memory-v3.md",
+      "description": "DRAFT memory_v3; coordinator registration required, no cohort launched",
+      "runner": "scripts.run_m1_owncam_memory_v3",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": ["--prereg", "--condition"],
+      "output_kind": "directory"
+    },
+    {
       "id": "zone-m1-owncam-memory-run",
       "purpose": "M1 자기 카메라 배달의 관측 기억 ON/OFF 비교(같은 M1 러너, 조건별 제어기만 교체: off = 동결 M1, memory_v2 = 표식 비의존 기억 + 임시 태그 제공자)",
       "entry": "scripts/run_m1_owncam_memory.py",

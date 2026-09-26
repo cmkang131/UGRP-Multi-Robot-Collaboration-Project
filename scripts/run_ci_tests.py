@@ -18,6 +18,7 @@ if __name__ == "__main__":
 from scripts import agent_lock
 
 TEST_PATTERNS = (
+    "tests/test_owncam_memory_v3.py",
     "tests/test_model_artifacts.py",
     "tests/test_simulation_session.py",
     "tests/test_agent_lock.py",

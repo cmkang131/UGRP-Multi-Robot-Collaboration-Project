@@ -1,0 +1,88 @@
+{
+  "schema": "ugrp.m1_owncam_memory_prereg.v3",
+  "status": "DRAFT",
+  "execution_authorized": false,
+  "question": "memory_v3가 새 관측 검증과 회피 안전성을 유지하면서 memory OFF보다 SIM 둘러보기 시간을 줄이는가?",
+  "dependency_gate": "PR #227 준비 후 coordinator가 vision pose source/provider와 일관성 진단 어댑터를 연결하고 공통 소스/지도/교정을 동결한다. 현재 v3는 interim tag provider이므로 본 비교 실행 금지.",
+  "conditions": [
+    "off",
+    "memory_v2",
+    "memory_v3"
+  ],
+  "baseline_contract": "현재 off/v2는 동결된 tag 기반 재현 경로. vision 교체 시 모든 조건의 관측원/입력/물리/스킬/예산을 일치시킨 새 비교 버전으로 별도 동결. 옛 161-166은 진단 배경일 뿐 새 test에 재사용하지 않는다.",
+  "proposed_seeds": {
+    "dev": [
+      27101,
+      27102,
+      27103,
+      27104
+    ],
+    "test": [
+      27201,
+      27202,
+      27203,
+      27204,
+      27205,
+      27206,
+      27207,
+      27208
+    ]
+  },
+  "seed_status": "로컬 v2 seed와 불일치 확인. 원격 열린 PR 전체와 미실행 여부는 coordinator가 최종 예약한다. 배치/슬롯은 사전등록 시 짝지어 고정.",
+  "dev_only_tuning": {
+    "parameters": [
+      "FIX_MAX_AGE_S",
+      "FIX_MAX_TRAVEL_M",
+      "MAX_NIS",
+      "MIN_LOG_LIKELIHOOD",
+      "EVIDENCE_MAX_AGE_S",
+      "SURVIVAL_HAZARD_S",
+      "P_MISS_NEAR",
+      "P_FALSE_NEAR",
+      "P_MISS_FAR",
+      "P_FALSE_FAR",
+      "P_ABSENT",
+      "P_CONFIRMED",
+      "MIN_HIT_INTERVAL_S",
+      "KEEPOUT_SIGMAS",
+      "BLIND_SPOT_RETREAT_M"
+    ],
+    "budget": "제안: dev 4 seeds x 최대 3 후보 x 조건별 1회, 각 720 SIM s. 모든 실패와 변경 이유 보존. coordinator 승인 전 실행하지 않는다.",
+    "data_boundary": "dev의 자기 RGB/명령/측정 진단으로 조정. GT는 별도 오프라인 채점만. test 결과로 임계값 재조정 금지."
+  },
+  "gates": {
+    "before_test": [
+      "vision localization gate 통과 및 진단 scalar 의미/단위 확인",
+      "전체 회귀 테스트 통과, v2 해시 불변",
+      "dev 4/4 목표 달성, false success=0, false confirmed tracks=0",
+      "부재/가림/모호 대응/과신/먼 상자/도착/파지/배치 경계 실패 재현 통과",
+      "dev의 하중 시야에서 목적 슬롯 관측 가능성 확인; unknown 배치 차단에 따른 교착 없어야 함",
+      "실행 소스 커밋, calibration/map/input/controller 해시와 최종 seed 예약, prereg REGISTERED"
+    ],
+    "claim": [
+      "v3 성공 수 >= matched OFF 성공 수",
+      "false_success=0, false confirmed tracks=0, false absent=0",
+      "비목표 상자 접촉 step 총합 <= matched OFF; 개별 실패도 모두 보고",
+      "짝 성공 >= 4 seeds; 짝 성공 전체에서 SIM 시간 감소, median look time 감소",
+      "실패/timeout 포함 성공 분모와 예산 소진 비용을 함께 보고; 성공쌍 속도로 전체 효과 주장 금지"
+    ]
+  },
+  "metrics": [
+    "success k/N",
+    "SIM makespan with failures/censoring at 720 s",
+    "look time, pans, commands",
+    "false confirmed and false absent tracks; existence calibration bins",
+    "evaluation-only pose error at grasp/place/arrival gates",
+    "non-target contact steps; keep-out geometry",
+    "full/short escalation, search blind-spot retries, verification refusals",
+    "model calls/tokens/cost (zero for no-LLM M1), load average (not performance claim)"
+  ],
+  "stop_rules": {
+    "test": "동결 후 새 seeds 조건당 1회; 제어기 실패 재시도 금지. 인프라 중단은 원본 보존 뒤 coordinator 판정.",
+    "episode": "최대 720 SIM s 또는 기존 M1 종료/새 검증 거부 종료",
+    "tuning": "test 개봉 뒤 tuning 금지; 수정 시 새로운 버전과 seed로 다시 등록"
+  },
+  "records": "로컬 실험 폴더에 소스/환경/입력/모든 결과/실패/해시. 실제 실험 뒤 TensorBoard 새 snapshot과 원본 대비 값·영상 검증. 이번 작업에는 실험/평가 결과 및 TensorBoard 변환 없음.",
+  "student": {},
+  "episodes": []
+}
