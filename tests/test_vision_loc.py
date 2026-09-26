@@ -321,9 +321,14 @@ def _cli():
     return cli
 
 
+def _vio():
+    import vision_loc_io as vio
+    return vio
+
+
 def _obs_fixture(tmp_path, monkeypatch, ep='vl-dev-s910', n=3):
     """Fake render root with ``n`` own frames and labels; returns (cli, config path, checkpoint path)."""
-    cli = _cli()
+    cli = _vio()
     root = tmp_path/'render'
     d = root/ep
     (d/'inputs').mkdir(parents=True)
@@ -404,45 +409,45 @@ def test_load_obs_refuses_round2_caches_without_provenance(tmp_path, monkeypatch
 
 @pytest.mark.parametrize('size', [None, [], [480], [0, 360], [480.0, 360], ['480', 360], [480, -1]])
 def test_config_infer_size_rejects_missing_or_bad_values(size):
-    cli = _cli()
+    cli = _vio()
     with pytest.raises(SystemExit):
         cli.config_infer_size({} if size is None else {'infer_size': size})
     assert cli.config_infer_size({'infer_size': [480, 360]}) == (480, 360)
 
 
 def test_test_runs_need_every_registered_file(tmp_path):
-    cli = _cli()
+    cli, vio = _cli(), _vio()
     # no config / calibration on a test episode: refused before any hash comparison
     with pytest.raises(SystemExit, match='registered files'):
-        cli.require_frozen(['vl-test-s912'], calibration=None, config=None, needs=('config', 'calibration'))
+        vio.require_frozen(['vl-test-s912'], calibration=None, config=None, needs=('config', 'calibration'))
     with pytest.raises(SystemExit, match='registered files'):
-        cli.require_frozen(['vl-test-s912'], config=cli.HERE/'selected_config.json', needs=('config', 'checkpoint'))
-    assert cli.require_frozen(['vl-dev-s910'], needs=('config',)) is None     # dev: no registration needed
+        vio.require_frozen(['vl-test-s912'], config=vio.HERE/'selected_config.json', needs=('config', 'checkpoint'))
+    assert vio.require_frozen(['vl-dev-s910'], needs=('config',)) is None     # dev: no registration needed
     with pytest.raises(SystemExit):
         cli.main(['localize', '--episodes', 'vl-dev-s910', '--calibration', 'c.json', '--output', str(tmp_path)])
 
 
 def test_score_refuses_overwrite_and_a_second_test_scoring(tmp_path):
-    cli = _cli()
+    cli, vio = _cli(), _vio()
     out = tmp_path/'metrics.json'
     out.write_text('{}')
     with pytest.raises(SystemExit, match='overwrite'):
         cli.main(['score', '--episodes', 'vl-dev-s910', '--estimates', str(tmp_path), '--output', str(out)])
-    assert (cli.HERE/cli.ROUNDS['vl']['metrics']).exists()   # round 2 test scored once (results/metrics_test.json)
+    assert (vio.HERE/vio.ROUNDS['vl']['metrics']).exists()   # round 2 test scored once (results/metrics_test.json)
     with pytest.raises(SystemExit, match="already scored"):
         cli.main(['score', '--episodes', 'vl-test-s912', '--estimates', str(tmp_path),
                   '--output', str(tmp_path/'again.json')])
     with pytest.raises(SystemExit, match='several rounds'):
-        cli.test_round(['vl-test-s912', 'vl3-test-s951'])
-    if not (cli.HERE/cli.ROUNDS['vl3']['metrics']).exists():
+        vio.test_round(['vl-test-s912', 'vl3-test-s951'])
+    if not (vio.HERE/vio.ROUNDS['vl3']['metrics']).exists():
         # round 3 test: only into the registered metrics file, only the full registered set
         with pytest.raises(SystemExit, match='writes only|registered'):
             cli.main(['score', '--episodes', 'vl3-test-s951', '--estimates', str(tmp_path),
                       '--output', str(tmp_path/'t3.json')])
     with pytest.raises(SystemExit, match='unknown episode'):
-        cli.split_of('vl3-test-s999')
+        vio.split_of('vl3-test-s999')
     with pytest.raises(SystemExit, match='no round'):
-        cli.round_of('xx-test-s1')
+        vio.round_of('xx-test-s1')
 
 
 def test_vision_loc_tests_are_collected_by_ci():
