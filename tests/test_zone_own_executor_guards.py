@@ -14,6 +14,8 @@ from pathlib import Path
 
 import pytest
 
+NAN = float('nan')
+
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -237,21 +239,97 @@ def test_p1_look_around_near_a_tall_wall_never_commands_a_colliding_pan():
 
 # ---------------------------------------------------------------- 3. progress monitor
 def test_progress_monitor_is_nav2_style():
+    step = guards.STALL_COMMANDED_M
     m = guards.ProgressMonitor()
     m.trusted((0., 0.), 1.)
-    m.drove(guards.MOVEMENT_TIME_ALLOWANCE_S - .1)
-    assert not m.stalled()
+    m.drove(step - .01)
+    assert not m.stalled() and not m.needs_check()
+    m.drove(.02)
+    assert m.needs_check() and not m.stalled()           # commanded enough, but no trusted estimate since: look
     m.trusted((.05, 0.), .95)
-    m.drove(.2)
-    assert m.stalled()
+    assert m.stalled()                                  # the fresh trusted estimate did not move the baseline
     m.trusted((.2, 0.), .8)                             # moved > REQUIRED_MOVEMENT_M: new baseline
-    assert not m.stalled()
+    assert not m.stalled() and not m.needs_check()
     m2 = guards.ProgressMonitor()
     m2.trusted((0., 0.), .06)                          # near the goal: half the remaining distance is progress
-    m2.drove(guards.MOVEMENT_TIME_ALLOWANCE_S - 1.)
+    m2.drove(step + .1)
     m2.trusted((.035, 0.), .025)
-    m2.drove(2.)
     assert not m2.stalled()
+    m3 = guards.ProgressMonitor()                       # a long look (no commanded motion) is never a stall
+    m3.trusted((0., 0.), 1.)
+    m3.drove(0.)
+    m3.drove(float('nan'))
+    m3.drove(-1.)
+    assert not m3.needs_check() and not m3.stalled()
+    m3.drove(step + .01)
+    m3.inconclusive((0., 0.), 1.)                       # confirming look without a fix: restart, no false stall
+    assert not m3.stalled() and not m3.needs_check()
+    assert guards.commanded_step_m({'kind': 'mecanum', 'forward': .12, 'left': .0}) == pytest.approx(.012)
+    assert guards.commanded_step_m({'kind': 'hold'}) == 0. and guards.commanded_step_m({'kind': 'mecanum',
+                                                                                        'forward': NAN, 'left': 0.}) == 0.
+
+
+class CommandFollowing:
+    """Own-estimate fixture that integrates the robot's own mecanum commands (yaw 0): full speed above
+    ``deadband`` m/s, ``crawl`` of the commanded speed below it (chassis barely moves on tiny commands,
+    wrist_zone_skill.NAV_MIN_COMMAND)."""
+
+    def __init__(self, x, y, deadband=.035, crawl=.2):
+        self.x, self.y, self.deadband, self.crawl, self.t, self.cmd = x, y, deadband, crawl, 0., None
+
+    def __call__(self, t, commands):
+        while commands:
+            row = commands.pop(0)
+            if row['kind'] in ('mecanum', 'hold', 'drive'):
+                self._advance(row['t'])
+                self.cmd = row if row['kind'] == 'mecanum' else None
+        self._advance(t)
+        return (self.x, self.y, 0., .02, .01, .1)
+
+    def _advance(self, t):
+        if t > self.t and self.cmd is not None:
+            end = min(t, self.cmd['t'] + self.cmd['duration_s'])
+            dt = max(0., end - self.t)
+            v = math.hypot(self.cmd['forward'], self.cmd['left'])
+            g = 1. if v >= self.deadband else self.crawl
+            self.x += g * self.cmd['forward'] * dt
+            self.y += g * self.cmd['left'] * dt
+        self.t = max(self.t, t)
+
+
+def following(fx):
+    pose = ScriptedPose(None)
+    pose.loc.fn = lambda t: fx(t, pose.loc.commands)
+    return make(mode='diagnostic', pose_source=pose, judgments=False)
+
+
+def test_v2_false_stall_slow_crawl_near_the_goal_is_not_a_stall():
+    """Smoke v2 s700 r2 (diagnosis_v2.json): a crawl ~0.07 m from the goal (tiny commands, chassis barely
+    moving) fired the drive-time stall rule; its keep-out covered the goal -> SEARCH_LEG_no_path."""
+    ex = following(CommandFollowing(-0.77, -2.45, crawl=.1))      # v2 raw: ~0.1 of the commanded speed
+    d = Driver(ex)
+    assert ex.goto([-0.47, -2.45])['accepted']
+    d.run(200., stop=lambda: ex.job is None)
+    done = [e for e in ex.drain_events() if e['event'] in ('job_done', 'job_failed')]
+    summary = next(s for s in ex._summaries if 'driver_log' in s)
+    assert not [e for e in summary['driver_log'] if e['event'] == 'stall_recovery']
+    assert len(done) == 1 and done[0]['event'] == 'job_done' and done[0]['detail']['outcome'] == 'ARRIVED', done
+
+
+def test_v2_stall_keepout_never_covers_the_goal_or_the_door():
+    """Smoke v2 s701 r1 / s701 r3: the stall keep-out covered the leg goal; s700 r1: the door lane."""
+    for start, goal in (((0.30, -1.50), (0.40, -1.50)), ((1.70, 0.05), (2.65, 0.05))):
+        ex = scripted(lambda t, s=start: (s[0], s[1], 0., .02, .01, .1), job_sim_limit_s=300.)
+        d = Driver(ex)
+        assert ex.goto(list(goal))['accepted']
+        d.run(300., stop=lambda: ex.job is None)
+        failed = [e for e in ex.drain_events() if e['event'] == 'job_failed']
+        assert len(failed) == 1 and failed[0]['detail']['reason'] == 'GOTO_blocked', (goal, failed)
+        summary = next(s for s in ex._summaries if 'driver_log' in s)
+        for k in summary['stall_keepouts']:
+            c = k['center_m']
+            assert math.hypot(c[0] - goal[0], c[1] - goal[1]) >= guards.STALL_KEEPOUT_MIN_GOAL_M
+            assert math.hypot(c[0] - 2.2, c[1] - 0.05) >= guards.STALL_KEEPOUT_MIN_DOOR_M
 
 
 def test_p1_blocked_leg_recovers_a_bounded_number_of_times_then_fails():
@@ -270,7 +348,7 @@ def test_p1_blocked_leg_recovers_a_bounded_number_of_times_then_fails():
     assert failed[0]['sim_s'] < 150.
     blocked = [e for e in ev if e['event'] == 'blockage_seen']
     assert len(blocked) == 1 and blocked[0]['detail']['source'] == 'own_progress_stall'
-    assert len(blocked[0]['detail']['stall_keepouts']) == guards.MAX_RECOVERIES
+    assert len(blocked[0]['detail']['stall_keepouts']) <= guards.MAX_RECOVERIES
     summary = next(s for s in ex._summaries if 'driver_log' in s)
     recoveries = [e for e in summary['driver_log'] if e['event'] == 'stall_recovery']
     assert len(recoveries) == guards.MAX_RECOVERIES and all(r['backoff'] for r in recoveries)

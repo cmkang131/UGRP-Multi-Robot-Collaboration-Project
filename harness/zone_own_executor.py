@@ -28,7 +28,7 @@ Internally (read-only reuse, nothing forked):
 * pose: ``harness.owncam_pose_source.OwnCamPoseSource`` - ONE localizer per robot;
 * deliver: ``harness.m1_owncam_delivery.M1OwnCamDelivery`` (PR #201) with skill
   ``harness.wrist_zone_skill_v9`` (PR #181) in ``mode='m1'``;
-* driving: ``harness.zone_own_guards.GuardedDriver`` (``OwnCamDriverV2`` + uncertainty
+* driving: ``harness.zone_own_driver.GuardedDriver`` (``OwnCamDriverV2`` + uncertainty
   gate, look-sweep collision guard, progress monitor) for goto and every M1 leg;
 * judgments: ``harness.zone_own_perception`` (PR #193) ``judge_route_blockage`` and
   ``judge_holding_item`` on own frames taken in the agreed postures.
@@ -55,6 +55,7 @@ from harness.zone_own_contract import (API_TO_ACTION_KIND, EVENT_TO_TRIGGER, EVE
                                        pickup_slot_of, pickup_slots, scheduler_trigger, validate_order_sheet,
                                        zone_slot)
 from harness.zone_own_deliver import _DeliverController
+from harness.zone_own_driver import GuardedDriver
 from harness.zone_own_status import (BLOCKAGE_CONSECUTIVE, GRIPPER_OPEN_MIN_PWM, JUDGE_PERIOD_S,  # noqa: F401
                                      STATUS_SCHEMA, UNCERTAINTY_LEVELS, OwnStatusMixin, uncertainty_level)
 from harness.zone_study_contract import ROBOTS
@@ -82,7 +83,7 @@ class _Job:
         self.started_at, self.deadline = float(now), float(now) + float(limit_s)
         self.phase = 'start'
         self.ctl: _DeliverController | None = None
-        self.driver: guards.GuardedDriver | None = None
+        self.driver: GuardedDriver | None = None
         self.sweep: dict | None = None
         self.hold_until: float | None = None
 
@@ -518,7 +519,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
     def _step_goto(self, now, job):
         if job.driver is None:
             loaded = self.holding()['answer'] == 'yes' or self._holding_after.get('answer') == 'unknown'
-            job.driver = guards.GuardedDriver(self.pose.loc, self.map, self.params, loaded=loaded,
+            job.driver = GuardedDriver(self.pose.loc, self.map, self.params, loaded=loaded,
                                               goal_xy=job.args['goal_xy'], door_xy=self.door_xy,
                                               initial_servo=dict(self.servo), seed=self.seed, gate=self.gate,
                                               guard=self.guard)

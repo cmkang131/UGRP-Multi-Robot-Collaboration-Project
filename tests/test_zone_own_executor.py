@@ -122,8 +122,9 @@ def test_executor_source_reads_no_simulator_state():
     import ast
     import textwrap
     names = set()
-    from harness import zone_own_deliver, zone_own_guards, zone_own_status
-    for cls in (zox.ZoneOwnExecutor, zone_own_deliver._DeliverController, zone_own_guards.GuardedDriver,
+    from harness import zone_own_deliver, zone_own_driver, zone_own_guards, zone_own_status
+    for cls in (zox.ZoneOwnExecutor, zone_own_deliver._DeliverController, zone_own_driver.GuardedDriver,
+                zone_own_guards.BlockageStreak,
                 zone_own_guards.SweepGuard, zone_own_guards.UncertaintyGate, zone_own_guards.ProgressMonitor,
                 zone_own_status.OwnStatusMixin):
         tree = ast.parse(textwrap.dedent(inspect.getsource(cls)))

@@ -24,7 +24,8 @@ from build_results import TB, derived, jsonl, robot_row, sha  # noqa: E402
 from harness import m1_contract  # noqa: E402
 
 EPISODES = ('smoke-v2-s700', 'smoke-v2-s701')
-V1_RESULTS = HERE / 'results.json'
+VERSION = 'v2'                  # build_results_v3.py sets 'v3' and its own EPISODES
+EARLIER = {'v1': HERE / 'results.json'}
 
 
 def gates(smoke):
@@ -90,22 +91,22 @@ def main():
             row = robot_row(e, rid, rr, per[e]['r'])
             row['guards'] = rr['guards']
             robots.append(row)
-    v1 = json.loads(V1_RESULTS.read_text()) if V1_RESULTS.exists() else {}
-    results = {'schema': 'ugrp.zone_own_executor_smoke_results.v2', 'smoke_dir': str(smoke),
+    earlier = {k: json.loads(p.read_text()) for k, p in EARLIER.items() if p.exists()}
+    results = {'schema': f'ugrp.zone_own_executor_smoke_results.{VERSION}', 'smoke_dir': str(smoke),
                'source_sha': sorted({per[e]['m']['code']['sha'] for e in EPISODES if per[e]['result']}),
                'dirty': sorted({per[e]['m']['code']['dirty'] for e in EPISODES if per[e]['result']}),
                'gates': rows, 'smoke_pass': all(g['pass'] for g in rows.values()),
                'm1_style_success': f"{sum(r['m1_success'] for r in robots)}/{len(robots)}",
                'own_camera_confirmed': f"{sum(r['confirmation'] == 'own_camera_confirmed' for r in robots)}/{len(robots)}",
-               'v1_for_reference_not_pooled': {k: v1.get(k) for k in ('m1_style_success', 'own_camera_confirmed',
-                                                                        'source_sha')},
+               **{f'{k}_for_reference_not_pooled': {x: v.get(x) for x in ('m1_style_success', 'own_camera_confirmed',
+                                                                         'source_sha')} for k, v in earlier.items()},
                'robots': robots,
                'runs': {e: {'run': per[e]['r']['run'], 'wall_s': per[e]['m']['wall_s'],
                             'load_average': per[e]['m']['load_average']} for e in EPISODES if per[e]['result']}}
-    (HERE / 'results_v2.json').write_text(json.dumps(results, indent=1, ensure_ascii=False, default=str) + '\n')
+    (HERE / f'results_{VERSION}.json').write_text(json.dumps(results, indent=1, ensure_ascii=False, default=str) + '\n')
     index = {str(p.relative_to(smoke)): {'bytes': p.stat().st_size, 'sha256': sha(p)}
              for p in sorted(smoke.rglob('*')) if p.is_file() and p.suffix in ('.json', '.jsonl', '.log', '.txt')}
-    (HERE / 'raw_index_v2.json').write_text(json.dumps({'root': str(smoke), 'note': 'local only, not a remote backup; '
+    (HERE / f'raw_index_{VERSION}.json').write_text(json.dumps({'root': str(smoke), 'note': 'local only, not a remote backup; '
                                                         'frames/*.jpg and scene.xml hashed in each manifest',
                                                         'files': index}, indent=1) + '\n')
     print(json.dumps({'smoke_pass': results['smoke_pass'], 'gates': {k: v['pass'] for k, v in rows.items()},
@@ -117,15 +118,15 @@ def main():
     for row in robots:
         e, rid = row['episode'], row['robot_id']
         rr = per[e]['r']['robots'][rid]
-        name = f"exec2-{e.split('-')[-1]}-{rid}"
+        name = f"exec{VERSION[1:]}-{e.split('-')[-1]}-{rid}"
         g = rr['guards']
         payload = {'derived_view_only': True, 'derived_from': str(smoke / e),
                    'source_result_sha256': sha(smoke / e / 'result.json'),
                    **{k: rr[k] for k in m1_contract.REQUIRED_OUTCOME_KEYS}, 'success': rr['m1_success'],
-                   'stop_reason': row['deliver_outcome'], 'policy': 'zone_own_executor v2 (#221 guards) + M1 chain + skill v9',
+                   'stop_reason': row['deliver_outcome'], 'policy': f'zone_own_executor smoke {VERSION} (#221 guards) + M1 chain + skill v9',
                    'case': f"{e} {rid} {row['pickup_slot']}->{row['zone_slot']}",
                    'config': {'contact_profile': 'cargo_noslip_v1', 'robots': 3, 'scripted_no_llm': True,
-                              'hold_before_deliver_s': per[e]['r']['scripted_jobs'][rid]['hold_s'], 'cohort': 'smoke-v2'},
+                              'hold_before_deliver_s': per[e]['r']['scripted_jobs'][rid]['hold_s'], 'cohort': f'smoke-{VERSION}'},
                    'sim_s': row['deliver_duration_s'], 'wall_s': per[e]['m']['wall_s'], 'commands': row['commands'],
                    'model_calls': 0,
                    'evaluation': {'m1_success': rr['m1_success'], 'diagnostic_success': rr['diagnostic_success'],
@@ -145,10 +146,10 @@ def main():
                    'offline_source': {'path': str(smoke / e / 'result.json'), 'sha256': sha(smoke / e / 'result.json')},
                    'offline_source_pointer': f'robots.{rid}.guards / robots.{rid}.evaluation_only.contact_steps',
                    'offline_scalar_scope': 'executor guard counters and eval-only wall contact steps of this robot-episode, '
-                                           'copied from the smoke-v2 raw result.json; diagnostics, not task success or time',
+                                           f'copied from the smoke-{VERSION} raw result.json; diagnostics, not task success or time',
                    'seed': per[e]['r']['seed'], 'source_sha': per[e]['m']['code']['sha']}
         runs.append(derived(view, name, payload))
-        conditions[name] = f'executor smoke v2 {e} robot {rid} (3 robots in one world, scripted, no LLM)'
+        conditions[name] = f'executor smoke {VERSION} {e} robot {rid} (3 robots in one world, scripted, no LLM)'
     target = TB / snapshot
     if target.exists():
         raise SystemExit(f'{target} exists; snapshots are never overwritten')
