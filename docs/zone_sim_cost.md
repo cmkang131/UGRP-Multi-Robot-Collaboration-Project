@@ -73,13 +73,15 @@ d_q   = quantum * ceil(raw_q / quantum)
 - **표지를 바꾸지 않는다.** 재시도 예산 거절로 재생 응답을 자를 때도 원래 응답의 표지를 물려받는다. 잘린 응답의 `provider_usage`는 보내지 않은 시도까지 포함한 보고이므로 버린다(`None`).
 - **알려진 하한을 지우지 않는다.** 일부 시도의 사용량만 알면 그 수(예: 입력 833·출력 40)를 기록하고 `usage_bound='lower_bound'`로 표시한다. horizon에서 censor된 호출도 같다. 스케줄러가 계산한 청구 SIM 비용(`charged_sim_s`, `would_release_sim_s`)도 비용 모형의 사실이므로 남긴다.
 - 실제 전송 계층은 `TransportFailure(..., attempts=..., usage_known=False)`로 "아는 것이 전부가 아니다"를 알린다. 시도를 하나도 밝히지 않은 `TransportFailure`는 미상으로 기록한다.
-- **보낸 시도와 그 예산을 돌려주지 않는다(Codex 5차 검토 P1).** 준수하는 전송 계층은 시도마다 보내기 직전에 `PendingCall.reserve`로 예약한다. 사용량 미상 응답(예외, `TransportFailure`, `usage_known=False`인 `CallReply`)이 예약보다 적은 시도를 밝히면, 스케줄러는 **예약한 시도를 모두 보낸 것으로 센다.** 빠진 시도는 비용을 내는 `error` 시도로 채워 앞에 두고(응답의 마지막 시도가 호출 결과로 남는다), `unreported_attempts`(`contract_log()`에도 포함)와 `attempts_unreported` 사건에 기록한다. 그래서 `commit`이 예약을 돌려주지 않고, 스케줄러 재시도가 이미 쓴 예산을 다시 쓰지 못한다. 사용량을 **아는** 응답은 자기 시도 수를 밝히는 것으로 보고, 쓰지 않은 예약은 전처럼 반환한다. 예약보다 많은 시도는 전처럼 예산 위반(`over_budget_attempts`)이다.
-- **`submit()` 실패도 호출이다(Codex 6차 검토 P1).** 전에는 `submit()`이 예외를 내면 예약을 돌려주고 예외를 다시 던졌다. 그래서 요청을 보낸 뒤 실패한 호출이 호출·censor 기록에서 빠지고 SIM 비용이 0이었다. HTTP 상한 1에서 호출자가 예외를 처리하고 다시 실행하면 실제 전송 2회·장부 0회였다. 이제 규칙은 다음과 같다.
-  - **`NotSent`만 반환한다.** 전송 계층이 "요청을 하나도 보내지 않았다"를 증명할 때(예: 보내기 전 입력 검증 실패) `NotSent`를 던진다. 스케줄러는 그 호출이 예약한 시도를 모두 돌려주고, `unsent_calls`와 `call_not_sent` 사건에 남기고, 예외를 다시 던진다.
-  - **그 밖의 예외는 실패한 호출로 정산한다.** 보낸 뒤 실패했을 수 있기 때문이다. 호출은 `reply()` 실패와 같이 시도 1회(또는 `submit` 안에서 예약한 수)로 세고, SIM 비용을 내고, hold하고, 기록에 남는다. 사용량은 미상이다(`TransportFailure`가 밝힌 시도·토큰은 하한으로 남는다). `transport_errors`의 `stage`가 `submit`이다. 예외는 다시 던지지 않고 루프가 계속된다.
-  - `reply()`가 던진 `NotSent`는 증명이 되지 않는다. `submit()`이 토큰을 돌려준 순간 첫 요청은 넘겨진 것이기 때문이다. 이 경우는 일반 실패다.
-  - `KeyboardInterrupt` 같은 중단은 예약을 **돌려주지 않고**(`attempt_budget.outstanding`에 남는다) ledger 상태를 `interrupted`로 적은 뒤 다시 던진다.
-- **보낸 수를 아는 전송 계층은 밝힌다(`sent_attempts`, Codex 6차 검토 권고).** 위 5차 규칙은 예약한 재시도를 보내지 않은 경우 실제 1회를 2회로 센다(보수적 과대 청구). `CallReply`와 `TransportFailure`는 `sent_attempts`(첫 요청 포함, 실제로 나간 요청 수)를 받는다. 값이 있으면 예약 수 대신 그 수를 세고 청구하며, 쓰지 않은 예약은 반환한다. `None`(기본값)은 "모른다"이며 5차 규칙대로 예약을 모두 보낸 것으로 센다. 값은 1 이상의 정수여야 한다(0회는 `NotSent`로만 표현한다). 보고한 시도 수보다 작을 수 없고, 사용량이 확정이면 보고한 시도 수와 같아야 한다. bool·소수·문자열·NaN·Inf는 거절한다. 예약보다 큰 값은 전처럼 예산 위반이다.
+- **보낸 수는 전송 장부가 센다(Codex 7차 검토 P1, 5·6차 규칙을 대체).** 5·6차 규칙은 전송 계층의 자기 신고(`NotSent`, `sent_attempts`, 보고한 시도 수, 예약)를 믿었다. 그래서 요청을 보낸 뒤 `NotSent`를 던지면 환불됐고(상한 1에서 실제 3회·장부 0회), 너무 작은 `sent_attempts`는 예산 한 칸을 풀어 요청 하나를 더 보내게 했다(상한 2에서 실제 3회·장부 2회). 이제 규칙은 다음과 같다.
+  - 모든 요청은 전송 계층의 `harness.zone_send_ledger.SendLedger`를 지난다. 실제 경로에서는 `harness.gemini_proxy.GeminiProxyCompleter`의 `http_open`이 호출마다 묶인 장부 opener(`PendingCall.http_open`)다. 2026-09-25 한국어 파일럿의 감사 opener와 같은 자리다. 오프라인 경로(`ReplayTransport`, 오프라인 스모크)도 같은 장부를 지나며, wire만 오프라인(`ScriptedWire`, `FixtureWire`)이다. 장부가 없는 전송 계층은 스케줄러가 거절한다.
+  - 장부는 요청이 wire에 닿기 **전에** 스케줄러에게 허가를 받는다(`EventScheduler._authorize_send`). 호출이 이미 예약한 칸을 쓰거나, 예산 소유자에게서 한 칸을 더 예약한다. 칸이 없으면 요청을 막는다(`SendBlocked`, `blocked_sends`). 그래서 상한을 넘는 요청은 나가지 않는다. `PendingCall.reserve`는 이제 권고용 사전 예약이다.
+  - 장부는 wire를 부르기 전에 요청을 기록한다. wire가 예외를 내도 보낸 것으로 센다. 요청이 이미 나갔을 수 있기 때문이다. `store_dir`를 주면 요청·응답 바이트를 저장하며, 기존 파일은 덮어쓰지 않는다(`live_send_ledger`).
+  - 호출의 시도 수와 청구는 **장부가 센 수**다. 장부가 0회를 보이는 호출만 환불한다(`unsent_calls`, SIM 비용 0, 실행·재시도 없음, hold 해제). `submit()`이 던진 `NotSent`는 0회일 때만 환불 뒤 다시 던진다.
+  - 신고는 장부와 대조한다. 어긋나면 `send_violations`에 기록하고, 장부 수로 청구하며, 그 응답은 아무것도 실행하지 않고 재시도하지 않는다. 종류는 `not_sent_contradicted`(보냈는데 `NotSent`), `declared_sent_mismatch`(`sent_attempts` ≠ 장부), `attempts_overreported`(보고 시도 > 장부, 마지막 장부 수만큼 청구), `attempts_underreported`(사용량 확정인데 보고 시도 < 장부, 사용량 미상으로 바꾸고 채움), `reply_without_send`·`attempts_without_send`(보낸 것 없이 응답·시도를 신고), `send_after_settlement`(응답을 넘긴 뒤 보낸 요청, 막힘)다.
+  - 사용량 미상 응답이 장부보다 적은 시도를 보고하면(위반 아님) 빠진 시도를 `error` 시도로 앞에 채우고 `unreported_attempts`에 남긴다(5차 규칙을 장부 수로 적용). 예약했지만 보내지 않은 재시도는 더 이상 보낸 것으로 세지 않는다.
+  - `KeyboardInterrupt` 같은 중단은 예약을 돌려주지 않고 ledger 상태를 `interrupted`로, 그때까지의 장부 전송 수를 `ledger_sends`로 적은 뒤 다시 던진다.
+  - 신뢰 경계: 전송 계층이 장부를 거치지 않고 소켓을 직접 열면 장부는 그 요청을 볼 수 없다. `ModelCallTransport`(`harness/zone_study_llm_transport.py`)는 호출의 opener만 completer에 넘기고, completer의 네트워크 경로는 `http_open` 하나다. 테스트는 `urlopen`·소켓을 막은 채 실제 completer 경로를 돌린다.
 
 ### 재질문 타이머 (`REASK_POLICY = 'single_pending_own_timer.v1'`)
 

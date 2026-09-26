@@ -15,6 +15,7 @@ import pytest
 from harness import zone_sim_cost as zc
 from harness.zone_event_scheduler import (CallPolicy, CallReply, EventScheduler, KIND_ORDER, Message,
                                           ReplayTransport, TRIGGERS)
+from harness.zone_send_ledger import ScriptedWire, SendLedger, send
 
 ACTORS = ('r1', 'r2', 'r3')
 
@@ -142,8 +143,10 @@ class ScrambledTransport:
         self.replies, self.completion_order = replies, list(completion_order)
         self.wall_order, self._done = [], []
         self._queues = {}
+        self.send_ledger = SendLedger(ScriptedWire())
 
     def submit(self, call):
+        send(call.http_open)                 # the request leaves when the call starts
         return call
 
     def reply(self, token):
@@ -201,8 +204,10 @@ class ThreadedTransport:
         self.pool = ThreadPoolExecutor(max_workers=3)
         self.wall_order = []
         self._queues = {}
+        self.send_ledger = SendLedger(ScriptedWire())
 
     def submit(self, call):
+        send(call.http_open)                 # sent on the SIM thread; the pool only waits
         def work():
             time.sleep(self.latency_s[call.actor])
             self.wall_order.append(call.actor)
@@ -305,7 +310,11 @@ def test_a_transport_error_costs_the_pre_registered_error_time():
 
 def test_a_raising_transport_is_charged_as_an_error_and_recorded():
     class Broken:
+        def __init__(self):
+            self.send_ledger = SendLedger(ScriptedWire())
+
         def submit(self, call):
+            send(call.http_open)
             return call
 
         def reply(self, token):

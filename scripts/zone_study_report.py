@@ -203,16 +203,18 @@ def boundary_section(summary, statuses=None, failures=None):
     counts = statuses or summary.get('boundary_status_counts') or {}
     if not main:
         rows.append('주 4조건의 모든 시행에서 금지 입력 key·미검증 payload·알 수 없는 입력 key·'
-                    '금지 근거 인용·채널 위반이 없었다.')
+                    '기록 계약 버전 위반·금지 근거 인용·채널 위반이 없었다.')
     else:
-        rows.append('| 시행 | 상태 | 금지 입력 key | 미검증 payload | 알 수 없는 key | 금지 근거 | 채널 위반 |')
-        rows.append('|---|---|---|---:|---|---|---:|')
+        rows.append('| 시행 | 상태 | 금지 입력 key | 미검증 payload | 알 수 없는 key | 계약 버전 위반 | 금지 근거 | '
+                    '채널 위반 |')
+        rows.append('|---|---|---|---:|---|---:|---|---:|')
         for trial_id, b in main:
             keys = sorted({k for r in b['input_leaks'] for k in r['forbidden_input_keys']})
             grounds = sorted({g for r in b['forbidden_grounds'] for g in r['forbidden_grounds']})
             odd = sorted({k for r in b['unknown_input_keys'] for k in r['unknown_input_keys']})
             rows.append(f'| {trial_id} | {ev.boundary_status(b)} | {", ".join(keys) or "—"} | '
                         f'{len(b["unvalidated_payloads"])} | {", ".join(odd) or "—"} | '
+                        f'{len(b.get("payload_contract_violations") or ())} | '
                         f'{", ".join(grounds) or "—"} | {len(b["channel_violations"])} |')
         rows.append('')
         rows.append('**입력 경계 감사에 실패한 시행이 있다. '

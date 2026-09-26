@@ -25,6 +25,7 @@ import math
 import pytest
 
 from harness import zone_event_scheduler as ds
+from harness import zone_send_ledger as sl
 from harness import zone_sim_cost as zc
 from harness import zone_study_contract as c
 from harness import zone_study_eval as ev
@@ -53,16 +54,19 @@ class _SendsRetryThenFails:
 
     ``sent`` counts requests that actually left: the submit, and each retry whose
     reservation the scheduler granted (a compliant transport sends only those).
+    Seventh review: every one of them goes through the send ledger.
     ``outcome`` is what ``reply`` finally does: raise an exception, or return a
     :class:`CallReply` built from the number of attempts it sent.
     """
 
-    def __init__(self, outcome, *, retries=1):
+    def __init__(self, outcome, *, retries=1, send_retries=True):
         self.outcome = outcome
-        self.retries = retries
+        self.retries, self.send_retries = retries, send_retries
         self.sent = 0
+        self.send_ledger = sl.SendLedger(sl.ScriptedWire())
 
     def submit(self, call):
+        sl.send(call.http_open)
         self.sent += 1
         return call
 
@@ -71,6 +75,9 @@ class _SendsRetryThenFails:
         for _ in range(self.retries):
             if not token.reserve(1):
                 break
+            if not self.send_retries:            # reserved, then decided not to send
+                continue
+            sl.send(token.http_open)
             self.sent += 1
             sent += 1
         result = self.outcome(sent)
@@ -133,7 +140,7 @@ def test_r5_p1_an_unknown_usage_failure_keeps_the_attempts_it_sent(failure):
     assert record['http_attempts'] == 2 and record['cost_terms']['usage_bound'] == 'lower_bound'
     if failure == 'failure_partly_known':          # the known part stays a lower bound
         assert (record['input_tokens']['text'], record['output_tokens']) == (833, 40)
-    assert sched.over_budget_attempts == []
+    assert sched.send_violations == [] and sched.send_ledger.sends() == 2
 
 
 def test_r5_p1_a_reply_that_declares_its_usage_unknown_keeps_its_reserved_attempts():
@@ -196,23 +203,28 @@ def test_r5_p1_boundary_a_refused_retry_reservation_is_not_counted_as_sent():
 
 
 def test_r5_p1_boundary_a_known_usage_reply_accounts_for_its_own_attempts():
-    """A reply whose usage is KNOWN states how many attempts it sent; an unused
-    reservation is refunded, and nothing is padded."""
-    transport = _SendsRetryThenFails(lambda sent: ds.CallReply(attempts=(zc.Attempt(),), action='go'))
+    """A reply whose usage is KNOWN and agrees with the ledger (1 send) is taken as
+    is; the reserved retry it never sent is refunded, and nothing is padded.
+    (Seventh review: a known-usage reply that under-reports the ledger is a
+    violation instead, ``test_zone_study_review_r7``.)"""
+    transport = _SendsRetryThenFails(lambda sent: ds.CallReply(attempts=(zc.Attempt(),), action='go'),
+                                     send_retries=False)
     sched = _run(transport, _cap2(max_retries=0))
     assert [len(call.cost.attempts) for call in sched.calls] == [1]
     assert sched.budget.used['r1'] == 1 and sched.unreported_attempts == []
     assert sched.calls[0].notes['usage_known'] is True
 
 
-def test_r5_p1_boundary_more_attempts_than_reserved_stay_a_budget_breach():
-    """Reporting MORE attempts than reserved is still the finding 15 breach."""
+def test_r5_p1_boundary_more_attempts_than_sent_are_a_violation_charged_by_the_ledger():
+    """Reporting MORE attempts than sent was the finding 15 breach; seventh review:
+    the ledger (1 send) is charged, the over-report is a recorded violation."""
     three = (zc.Attempt(outcome='error'),) * 3
     transport = _SendsRetryThenFails(lambda sent: ds.TransportFailure('x', attempts=three,
                                                                       usage_known=False), retries=0)
     sched = _run(transport, _cap2(max_retries=0))
-    assert sched.unreported_attempts == []
-    assert sched.over_budget_attempts[0]['unreserved'] == 2 and sched.discarded[0]['reason'] == 'budget_breach'
+    assert sched.unreported_attempts == [] and [len(c.cost.attempts) for c in sched.calls] == [1]
+    assert sched.send_violations[0]['violations'] == ['attempts_overreported']
+    assert sched.discarded[0]['reason'] == 'send_ledger_violation'
 
 
 # =========================================================================== #

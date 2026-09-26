@@ -44,6 +44,8 @@
 
 **계약 버전 (v2, 2026-09-26).** 현재 버전은 `ugrp.zone_study_contract.v2`다. v2는 태그 지도 v2(`*_tags_v2`)의 `landmarks.placement` 키 세 개(`near_door_spacing_m`, `near_door_radius_m`, `door_posts`; `door_posts`는 `offset_from_edge_m`·`width_m`·`height_m`·`tag_center_heights_m`만 받는 닫힌 객체)를 추가했다. 통합 PR #229가 먼저 올린 변경을 같은 키·같은 검사로 PR 194에 옮긴 것이다. 조건 registry 내용은 그대로이며 버전 문자열만 바뀌어 registry 해시는 `c9bb5556…`이다. **v1은 남겨 둔다.** 오프라인 스모크 v1~v4 기록이 v1로 만들어졌으므로 `registry_sha256(CONTRACT_VERSION_V1)`은 그 기록의 `f1ff6a49…`을 그대로 재현하고, `payload_violations(..., contract_version=CONTRACT_VERSION_V1)`는 v2 전용 키를 계속 거절한다(`PLACEMENT_KEYS_BY_VERSION`). 모르는 버전은 `ValueError`다. 테스트: `tests/test_zone_study_review_r6_paths_contract.py`.
 
+**기록의 계약 버전은 기록 자신의 registry 해시로 정한다 (2026-09-27, Codex 7차 검토 P2).** `contract_version_for_registry(sha)`는 알려진 버전의 registry 해시만 받는다(`registry_versions()`: `f1ff6a49…` → v1, `c9bb5556…` → v2). 모르는 해시는 `ContractViolation`이다. 호출 기록 검사(`call_record_violations`)도 `provenance.registry_sha256`이 알려진 해시인지 확인한다. 패키지 I의 `parse_trial()`은 호출 기록과 시행 provenance가 **하나의** registry 해시를 쓰는지 확인하고 그 버전을 `trial['contract_version']`에 적는다. 섞여 있거나, 직접 적은 `contract_version`이 해시와 다르면 거절한다. 저장된 요청 본문(`request_archive[].user`에서 `dialogue_window`를 뺀 payload)은 **그 버전**으로 `payload_violations`에 다시 넣는다. 이때 호출 provenance의 주문서·지도 해시로 고정(pin)한다. 문제가 있으면 입력 경계 감사의 `payload_contract_violations`가 되어 시행이 `violation`이 된다. 그래서 tags_v2 기록을 v1 해시로 표시하면 감사에 실패한다. 동결 기록 v3~v5의 파일 해시와 판정은 그대로다. 테스트: `tests/test_zone_study_review_r7_contract.py`.
+
 **(2) 이름·값·구조 검사.** 그 위에서 다음을 거부한다.
 
 - **TOP 카메라와 그 파생물**(`top_*`, `cctv*`, `nav_cam*`, 하이픈·공백 변형 포함). 공개 지도 투영에서 `top_cameras`를 아예 제외한다.

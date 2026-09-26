@@ -258,6 +258,30 @@ def registry_sha256(contract_version: str = CONTRACT_VERSION) -> str:
                    for name in sorted(CONDITIONS)})
 
 
+_REGISTRY_VERSIONS: dict = {}
+
+
+def registry_versions() -> dict:
+    """``{registry_sha256: contract version}`` of every known contract version."""
+    if not _REGISTRY_VERSIONS:
+        _REGISTRY_VERSIONS.update({registry_sha256(version): version for version in CONTRACT_VERSIONS})
+    return dict(_REGISTRY_VERSIONS)
+
+
+def contract_version_for_registry(value: object) -> str:
+    """The contract version a record's ``registry_sha256`` names (seventh review, P2).
+
+    A record is audited against the contract version its OWN registry hash
+    identifies, never against the current default; an unknown hash raises
+    ``ContractViolation`` instead of being read as the current version.
+    """
+    version = registry_versions().get(value) if isinstance(value, str) else None
+    if version is None:
+        raise ContractViolation(f'registry_sha256 {value!r} is not the registry hash of any known contract '
+                                f'version ({CONTRACT_VERSIONS})')
+    return version
+
+
 # ---------------------------------------------------------------------------
 # Structured messages (condition ``structured`` and the commander downlink)
 
@@ -1404,6 +1428,12 @@ def call_record_violations(record: Mapping) -> list[str]:
     out.extend(_closed(record.get('provenance'), PROVENANCE_KEYS, 'provenance',
                        required=('registry_sha256', 'order_sheet_sha256', 'map_file_sha256', 'code_sha',
                                  'model')))
+    registry = record['provenance'].get('registry_sha256') if isinstance(record.get('provenance'), Mapping) \
+        else None
+    if registry is not None and registry not in registry_versions():
+        # seventh review, P2: the version of a record is read from this hash, so
+        # a hash no contract version produces cannot be audited at all
+        out.append(f'provenance.registry_sha256 {registry!r} is not the registry of a known contract version')
     if not isinstance(record.get('cost_terms'), Mapping) or not isinstance(record.get('input_tokens'), Mapping):
         out.append('cost_terms and input_tokens must be objects')
     return out

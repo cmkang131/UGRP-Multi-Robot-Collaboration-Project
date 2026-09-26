@@ -28,6 +28,7 @@ import pytest
 
 from harness import zone_event_scheduler as ds
 from harness import zone_map_schematic as zms
+from harness import zone_send_ledger as sl
 from harness import zone_sim_cost as zc
 from harness import zone_study_contract as c
 from harness import zone_study_eval as ev
@@ -745,43 +746,62 @@ def test_f15_a_compliant_transport_reserves_every_retry_before_sending_it():
                               on_action=lambda a, action, t: actions.append(action))
     sched.trigger('r1', 'start')
     sched.run(until_s=200)
-    assert sched.budget.used_total() == 1 and sched.over_budget_attempts == []
+    assert sched.budget.used_total() == 1 == sched.send_ledger.sends() and sched.send_violations == []
     assert [len(call.cost.attempts) for call in sched.calls] == [1]     # the retries never left
     assert sched.calls[0].cost.outcome == 'error' and actions == []
     assert sched.metrics['r1']['budget_refused'] == 1                   # the scheduler retry too
-    assert len(sched.budget.refusals) == 2
+    assert len(sched.budget.refusals) == 2 and sched.send_ledger.blocked() == 1
 
 
 class _IgnoresTheBudget:
-    """A NON-compliant transport: retries internally without reserving."""
+    """A NON-compliant transport: tries every retry without reserving it.
+
+    Seventh review: its requests still pass the send ledger, which blocks the
+    ones the budget cannot cover; it ignores the refusal and reports all its
+    scripted attempts anyway.
+    """
 
     def __init__(self, reply):
         self.reply_value = reply
+        self.send_ledger = sl.SendLedger(sl.ScriptedWire())
 
     def submit(self, call):
         return call
 
     def reply(self, token):
+        for _ in self.reply_value.attempts:
+            try:
+                sl.send(token.http_open)
+            except sl.SendBlocked:
+                pass
         return self.reply_value
 
 
-def test_f15_an_unreserved_retry_is_counted_exactly_and_executes_nothing():
+def test_f15_an_unreserved_retry_is_blocked_at_the_wire_and_executes_nothing():
+    """Second review: 3 attempts under a cap of 1 were counted as a breach AFTER
+    they left. Seventh review: the two over the cap never reach the wire, the
+    over-report is a recorded violation, the call is charged by the ledger (1)
+    and its reply executes nothing and is not retried."""
     greedy = ds.CallReply(attempts=(zc.Attempt(outcome='error'), zc.Attempt(outcome='error'),
                                     zc.Attempt(outcome='ok')), action='go')
     actions = []
     policy = ds.CallPolicy(max_attempts_total=1, max_http_attempts_per_actor=1, max_retries=1)
-    sched = ds.EventScheduler(_IgnoresTheBudget(greedy), policy=policy,
+    transport = _IgnoresTheBudget(greedy)
+    sched = ds.EventScheduler(transport, policy=policy,
                               on_action=lambda a, action, t: actions.append(action))
     sched.trigger('r1', 'start')
     sched.run(until_s=200)
-    assert sched.over_budget_attempts == [{'call_id': sched.calls[0].call_id, 'actor': 'r1',
-                                          'reserved': 1, 'actual': 3, 'unreserved': 2, 'over': 2}]
+    assert len(transport.send_ledger._wire.requests) == 1 == sched.send_ledger.sends()
+    assert sched.send_ledger.blocked() == 2 and [r['reason'] for r in sched.blocked_sends] == ['http_budget'] * 2
+    assert [len(call.cost.attempts) for call in sched.calls] == [1] and sched.budget.used_total() == 1
+    assert sched.send_violations[0]['violations'] == ['attempts_overreported']
     assert actions == []                                      # the breach is not rewarded
-    assert sched.discarded[0]['reason'] == 'budget_breach'
+    assert sched.discarded[0]['reason'] == 'send_ledger_violation'
     assert len(sched.calls) == 1                              # and it is not retried
     budget = ds.AttemptBudget(per_actor=1, total=1)
     assert budget.reserve('r1', 1) is True
-    assert budget.commit('r1', reserved=1, actual=3) == 2
+    with pytest.raises(AssertionError, match='reserved'):
+        budget.commit('r1', reserved=1, actual=3)
 
 
 def test_f15_the_offline_loop_keeps_the_attempt_budget_inside_its_cap():
@@ -1142,7 +1162,11 @@ def test_r2_f06_a_malformed_reply_bills_its_tokens_and_every_utterance(monkeypat
 
 def test_r2_f06_a_transport_failure_keeps_the_usage_it_knows():
     class Failing:
+        def __init__(self):
+            self.send_ledger = sl.SendLedger(sl.ScriptedWire())
+
         def submit(self, call):
+            sl.send(call.http_open)
             return call
 
         def reply(self, token):
@@ -1457,9 +1481,13 @@ def test_r3_f12_dialogue_metrics_count_one_claim_for_a_qualified_item():
 # --- #16: the usage-unknown flag survives end to end -------------------------
 
 class _PlainFailure:
-    """A transport whose reply raises a plain exception: usage unknown."""
+    """A transport whose reply raises a plain exception after sending: usage unknown."""
+
+    def __init__(self):
+        self.send_ledger = sl.SendLedger(sl.ScriptedWire())
 
     def submit(self, call):
+        sl.send(call.http_open)
         return call
 
     def reply(self, token):
@@ -1564,10 +1592,15 @@ def test_r4_f16_a_transport_failure_can_declare_its_usage_incomplete():
     """The real-transport form of a partly known retry: the first attempt's usage
     was read, the last one failed without a report."""
     class PartlyKnown:
+        def __init__(self):
+            self.send_ledger = sl.SendLedger(sl.ScriptedWire())
+
         def submit(self, call):
+            sl.send(call.http_open)
             return call
 
         def reply(self, token):
+            sl.send(token.http_open)                   # the internal retry
             raise ds.TransportFailure('retry failed without a usage report', usage_known=False,
                                       attempts=(zc.Attempt(outcome='invalid', input_tokens=833,
                                                            output_tokens=40),
@@ -1583,7 +1616,7 @@ def test_r4_f16_a_transport_failure_can_declare_its_usage_incomplete():
     # a failure that states NO attempt knows nothing: it is not a confirmed 0
     class Silent(PartlyKnown):
         def reply(self, token):
-            raise ds.TransportFailure('no usage at all', attempts=())
+            raise ds.TransportFailure('no usage at all', attempts=())      # 1 send, in submit
 
     silent = ds.EventScheduler(Silent(), policy=ds.CallPolicy(max_retries=0, max_calls_per_actor=1))
     silent.trigger('r1', 'start')

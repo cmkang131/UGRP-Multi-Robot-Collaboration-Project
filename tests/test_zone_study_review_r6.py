@@ -27,6 +27,7 @@ from pathlib import Path
 import pytest
 
 from harness import zone_event_scheduler as ds
+from harness import zone_send_ledger as sl
 from harness import zone_sim_cost as zc
 from harness import zone_study_contract as c
 from harness import zone_study_offline as off
@@ -58,17 +59,23 @@ def _ledger_attempts(sched):
 # P1 — a submit() failure after sending is a charged call with an unknown usage
 
 class _SubmitSendsThenRaises:
-    """``submit`` sends the request (``sent`` += 1), then raises ``error()``."""
+    """``submit`` sends the request (``sent`` += 1), then raises ``error()``.
+
+    Seventh review: the sends go through the send ledger, as every send must.
+    """
 
     def __init__(self, error, *, reserve_in_submit=0):
         self.error, self.reserve_in_submit = error, reserve_in_submit
         self.sent = 0
         self.replies = 0
+        self.send_ledger = sl.SendLedger(sl.ScriptedWire())
 
     def submit(self, call):
         for _ in range(self.reserve_in_submit):
             if call.reserve(1):
+                sl.send(call.http_open)
                 self.sent += 1
+        sl.send(call.http_open)
         self.sent += 1
         raise self.error()
 
@@ -169,6 +176,7 @@ def test_r6_p1_the_team_cap_holds_when_two_actors_fail_in_submit():
 class _NotSentInSubmit:
     def __init__(self, *, reserve_in_submit=0):
         self.reserve_in_submit, self.sent = reserve_in_submit, 0
+        self.send_ledger = sl.SendLedger(sl.ScriptedWire())
 
     def submit(self, call):
         for _ in range(self.reserve_in_submit):
@@ -180,7 +188,8 @@ class _NotSentInSubmit:
 
 
 @pytest.mark.parametrize('reserve_in_submit', [0, 1])
-def test_r6_p1_not_sent_is_the_only_refunded_submit_failure(reserve_in_submit):
+def test_r6_p1_not_sent_with_no_ledgered_send_is_refunded_and_re_raised(reserve_in_submit):
+    """Seventh review: the refund rests on the ledger's 0 sends, not on the claim."""
     sched = ds.EventScheduler(_NotSentInSubmit(reserve_in_submit=reserve_in_submit), policy=_cap(http=2))
     sched.trigger('r1', 'start')
     with pytest.raises(ds.NotSent):
@@ -197,10 +206,15 @@ def test_r6_p1_not_sent_is_the_only_refunded_submit_failure(reserve_in_submit):
     assert sched.budget.used['r1'] == 1 and sched.calls[0].cost.outcome == 'ok'
 
 
-def test_r6_p1_boundary_not_sent_raised_by_reply_is_not_a_refund():
-    """``submit()`` returned a token, so the request was handed off."""
+def test_r6_p1_boundary_not_sent_raised_by_reply_after_a_send_is_charged():
+    """``submit()`` sent the request, so a later ``NotSent`` is contradicted by the
+    ledger (seventh review): charged, recorded as a violation, not refunded."""
     class Transport:
+        def __init__(self):
+            self.send_ledger = sl.SendLedger(sl.ScriptedWire())
+
         def submit(self, call):
+            sl.send(call.http_open)
             return call
 
         def reply(self, token):
@@ -211,10 +225,14 @@ def test_r6_p1_boundary_not_sent_raised_by_reply_is_not_a_refund():
     sched.run(until_s=60.0)
     assert sched.budget.used['r1'] == 1 and sched.unsent_calls == []
     assert sched.calls[0].notes['usage_known'] is False and sched.transport_errors[0]['stage'] == 'reply'
+    assert sched.send_violations[0]['violations'] == ['not_sent_contradicted']
 
 
 def test_r6_p1_boundary_an_interrupt_in_submit_keeps_the_reservation():
     class Transport:
+        def __init__(self):
+            self.send_ledger = sl.SendLedger(sl.ScriptedWire())
+
         def submit(self, call):
             raise KeyboardInterrupt
 
@@ -243,8 +261,10 @@ class _ReservesRetryButNeverSendsIt:
     def __init__(self, *, declare, returns=False):
         self.declare, self.returns = declare, returns
         self.sent = 0
+        self.send_ledger = sl.SendLedger(sl.ScriptedWire())
 
     def submit(self, call):
+        sl.send(call.http_open)
         self.sent += 1
         return call
 
@@ -272,23 +292,32 @@ def test_r6_sent_a_declared_sent_count_refunds_a_reserved_retry_that_never_left(
     assert sched.ledger[first.call_id]['sent_attempts_declared'] == 1
 
 
-def test_r6_sent_without_a_declaration_every_reserved_attempt_still_counts_as_sent():
-    """The documented conservative rule: 1 real send is counted as 2."""
+def test_r6_sent_without_a_declaration_the_ledger_count_is_charged_not_the_reservation():
+    """Sixth review: 1 real send was counted as 2 (the conservative reservation rule).
+    Seventh review: the ledger count (1) is charged, the unused reservation is
+    refunded and the scheduler's own retry may use it."""
     transport = _ReservesRetryButNeverSendsIt(declare=False)
     sched = ds.EventScheduler(transport, policy=_cap(http=2))
     sched.trigger('r1', 'start')
     sched.run(until_s=60.0)
-    assert transport.sent == 1 and _ledger_attempts(sched) == 2 == sched.budget.used['r1']
-    assert sched.unreported_attempts[0]['counted'] == 2 and len(sched.calls) == 1
+    first, second = sched.calls
+    assert len(first.cost.attempts) == 1 and second.retry_of == first.call_id
+    assert transport.sent == 2 == _ledger_attempts(sched) == sched.budget.used['r1']
+    assert sched.unreported_attempts == [] and sched.send_violations == []
 
 
 def test_r6_sent_a_declared_count_above_the_reported_attempts_is_padded_to_it():
     class Transport:
+        def __init__(self):
+            self.send_ledger = sl.SendLedger(sl.ScriptedWire())
+
         def submit(self, call):
+            sl.send(call.http_open)
             return call
 
         def reply(self, token):
             assert token.reserve(1)
+            sl.send(token.http_open)
             raise ds.TransportFailure('two left, usage of one known', usage_known=False, sent_attempts=2,
                                       attempts=(zc.Attempt(outcome='invalid', input_tokens=500),))
 
@@ -300,9 +329,15 @@ def test_r6_sent_a_declared_count_above_the_reported_attempts_is_padded_to_it():
                                           'reported': 1, 'counted': 2}]
 
 
-def test_r6_sent_a_declared_count_above_the_reservation_stays_a_budget_breach():
+def test_r6_sent_a_declared_count_above_the_ledger_is_a_violation_charged_by_the_ledger():
+    """Sixth review: a declared 3 above 1 reservation was a budget breach. Seventh
+    review: the ledger saw 1 send; 1 is charged and the declaration is a violation."""
     class Transport:
+        def __init__(self):
+            self.send_ledger = sl.SendLedger(sl.ScriptedWire())
+
         def submit(self, call):
+            sl.send(call.http_open)
             return call
 
         def reply(self, token):
@@ -312,8 +347,9 @@ def test_r6_sent_a_declared_count_above_the_reservation_stays_a_budget_breach():
     sched = ds.EventScheduler(Transport(), policy=_cap(http=5, max_retries=0))
     sched.trigger('r1', 'start')
     sched.run(until_s=60.0)
-    assert sched.over_budget_attempts[0]['unreserved'] == 2
-    assert sched.discarded[0]['reason'] == 'budget_breach'
+    assert [len(c.cost.attempts) for c in sched.calls] == [1] == [sched.send_ledger.sends()]
+    assert sched.send_violations[0]['violations'] == ['declared_sent_mismatch']
+    assert sched.discarded[0]['reason'] == 'send_ledger_violation'
 
 
 @pytest.mark.parametrize('value', [0, -1, True, False, 1.5, '1', math.nan, math.inf, [1]])
@@ -408,9 +444,10 @@ def test_r6_reask_offline_trial_never_runs_parallel_reask_chains(condition):
 
 
 def test_r6_reask_the_offline_bundle_id_names_the_new_rule():
-    assert off.EXECUTION_BUNDLE_ID == 'zone_study_offline_v2'
+    # v2 introduced the re-ask rule; v3 (seventh review) keeps it and adds the send ledger
+    assert off.EXECUTION_BUNDLE_ID == 'zone_study_offline_v3'
     trial = off.OfflineTrial(load_scenario('s1_normal_mixed'), condition='no_comm', seed=SEED)
-    assert trial.provenance['execution_bundle_id'] == 'zone_study_offline_v2'
+    assert trial.provenance['execution_bundle_id'] == 'zone_study_offline_v3'
     assert trial.provenance['registry_sha256'] == c.registry_sha256(c.CONTRACT_VERSION)
 
 
