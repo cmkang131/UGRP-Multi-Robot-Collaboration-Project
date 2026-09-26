@@ -3,6 +3,8 @@
 # per config over all episodes. Refuses to reuse an existing config output directory.
 # Usage: grid_v3.sh <out root> <calibration> <obs dir> <oracle obs dir> <filters> "<episodes>" <cfg1.json> [...]
 # VL_CKPT: segmentation checkpoint of the vision observation caches (required with the vision filter).
+# VL_APPEND=1: add episodes to existing config directories (localize still refuses per-episode overwrites).
+# VL_SCORE_EPS: episodes to score (default: the episodes of this call); VL_NO_SCORE=1 skips scoring.
 set -euo pipefail
 out=$1; cal=$2; obs=$3; orc=$4; filters=$5; eps=$6; shift 6
 HERE=$(cd "$(dirname "$0")" && pwd)
@@ -14,7 +16,7 @@ extra=(--obs "$obs" --oracle-obs "$orc")
 [ -n "${VL_CKPT:-}" ] && extra+=(--checkpoint "$VL_CKPT")
 for cfg in "$@"; do
   name=$(basename "$cfg" .json)
-  if [ -e "$out/$name" ]; then echo "refusing to reuse $out/$name" >&2; exit 2; fi
+  if [ -e "$out/$name" ] && [ -z "${VL_APPEND:-}" ]; then echo "refusing to reuse $out/$name" >&2; exit 2; fi
 done
 for cfg in "$@"; do
   name=$(basename "$cfg" .json); d="$out/$name"; mkdir -p "$d"
@@ -28,9 +30,11 @@ for cfg in "$@"; do
   done
 done
 wait
+[ -n "${VL_NO_SCORE:-}" ] && exit 0
+seps=${VL_SCORE_EPS:-$eps}
 for cfg in "$@"; do
   name=$(basename "$cfg" .json); d="$out/$name"
-  "$PY" "$HERE/vision_loc_cli.py" score --episodes $eps --estimates "$d" "${extra[@]}" --config "$cfg" \
+  "$PY" "$HERE/vision_loc_cli.py" score --episodes $seps --estimates "$d" "${extra[@]}" --config "$cfg" \
     --output "$d/metrics.json" > "$d/score.txt" 2>&1 || echo "score FAILED $name" >> "$out/grid_load.txt"
 done
 echo "$(date -u +%FT%TZ) grid done $(uptime)" >> "$out/grid_load.txt"
