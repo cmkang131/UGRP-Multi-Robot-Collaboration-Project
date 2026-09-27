@@ -233,10 +233,19 @@ class OwnCamTeamHost:
     def _contact_kinds(self, data):
         kinds = {r: set() for r in ROBOTS}
         fingers = {r: {} for r in ROBOTS}
+        carried = {}
+        for r in ROBOTS:
+            job = self.robots[r].executor.job
+            sk = job.ctl.skill if job is not None and job.ctl is not None else None
+            # Evaluation attribution only: the assigned cargo during the controller's carry phase.
+            carried[r] = (self._box_geom.get(self.assigned_box.get(r), set())
+                          if sk is not None and sk.phase in CARRY_PHASES else set())
         for i in range(data.ncon):
             c = data.contact[i]
             pair = {int(c.geom1), int(c.geom2)}
             for r in ROBOTS:
+                if pair & carried[r] and pair & self._wall:
+                    kinds[r].update(('wall', 'cargo_wall'))
                 mine = pair & self._own[r]
                 if not mine:
                     continue
@@ -419,14 +428,19 @@ class OwnCamTeamHost:
 
     def run(self, sim_limit_s: float, done: Callable[[], bool] | None = None) -> dict:
         data = self.world.data
-        self._physics_until(.5)
+        if not math.isfinite(sim_limit_s) or sim_limit_s < float(data.time):
+            raise ValueError('sim_limit_s must be finite and at or after current SIM time')
+        dt = float(self.world.model.opt.timestep)
+        # Stop on the last available physics tick, including non-integral episode budgets.
+        horizon = float(data.time) + math.floor((sim_limit_s - float(data.time)) / dt + 1e-9) * dt
+        self._physics_until(min(.5, horizon))
         for s in self.robots.values():
             s.next_decide = float(data.time)
         self.study_layer(self, 'start', None, float(data.time))
         outcome = None
         while True:
             now = float(data.time)
-            if now > sim_limit_s:
+            if now + 1e-9 >= horizon:
                 outcome = 'SIM_LIMIT'
                 break
             for rid in ROBOTS:
@@ -446,9 +460,9 @@ class OwnCamTeamHost:
             if not live:
                 outcome = 'ALL_ROBOTS_STOPPED'
                 break
-            self._physics_until(max(self._next_wake(live), now + float(self.world.model.opt.timestep)))
+            self._physics_until(min(horizon, max(self._next_wake(live), now + dt)))
         self.close_episode(outcome)
-        self._physics_until(float(data.time) + .5)
+        self._physics_until(min(horizon, float(data.time) + .5))
         return {'outcome': outcome, 'sim_s': round(float(data.time), 3)}
 
     def close_episode(self, outcome):

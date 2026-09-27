@@ -188,8 +188,9 @@ def robot_result(rid, slot, host, spec, jobs, assigned, sheet, prereg):
                       'sweeps_restricted': sum(g.get('reason') not in ('clear', 'no_own_estimate') for g in guard_logs),
                       'sweep_backoffs': sum(bool(g.get('backoff')) for g in guard_logs),
                       'm1_sweeps_restricted': sum(e['event'] == 'sweep_guard' for e in ctl_events),
-                      'stall_recoveries': sum(len(leg.get('stall_keepouts', [])) for leg in legs) +
-                      sum(len(s.get('stall_keepouts', [])) for s in ex._summaries if 'driver_log' in s),
+                      'stall_recoveries': sum(leg['recoveries'] for leg in legs) +
+                      sum(sum(e['event'] == 'stall_recovery' for e in s['driver_log'])
+                          for s in ex._summaries if 'driver_log' in s),
                       'blocked_legs': sum(str(leg.get('outcome')) == 'blocked' for leg in legs),
                       'near_clip_retreats': sum(e['event'] == 'near_clipped' for e in ctl_events),
                       'cancellations': slot.cancellations},

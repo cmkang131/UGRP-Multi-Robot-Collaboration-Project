@@ -56,6 +56,7 @@ from harness.zone_own_contract import (API_TO_ACTION_KIND, EVENT_TO_TRIGGER, EVE
                                        zone_slot)
 from harness.zone_own_deliver import _DeliverController
 from harness.zone_own_driver import GuardedDriver
+from harness.zone_own_sweep import SweepRecheck, reachable_pan
 from harness.zone_own_status import (BLOCKAGE_CONSECUTIVE, GRIPPER_OPEN_MIN_PWM, JUDGE_PERIOD_S,  # noqa: F401
                                      STATUS_SCHEMA, UNCERTAINTY_LEVELS, OwnStatusMixin, uncertainty_level)
 from harness.zone_study_contract import ROBOTS
@@ -390,13 +391,19 @@ class ZoneOwnExecutor(OwnStatusMixin):
                                'slot_id': job.args.get('slot_id'), **detail})
 
     def _finish(self, now, confirmation, outcome, **detail):
-        if confirmation == 'own_camera_confirmed' and not self.gate.ok:
+        rep = self.pose.report(now)
+        if confirmation == 'own_camera_confirmed' and not self.gate.allows(rep.initialized, rep.std_xy_m, rep.std_yaw_rad):
             confirmation, detail = 'unconfirmed', {**detail, 'confirmation_blocked_by': 'pose_uncertainty_gate'}
         self._record(now, outcome, confirmation, detail)
         self._emit(now, 'job_done', confirmation=confirmation, outcome=outcome, **detail)
         self._end_job(now)
 
     def _fail(self, now, reason, **detail):
+        if 'transition_blocked' in reason.lower() and 'guard' not in detail:
+            ctl = self.job.ctl or self.job.driver
+            evidence = getattr(ctl, 'sweep_failure', None) or getattr(getattr(ctl, 'leg', None), 'sweep_failure', None)
+            if evidence is not None:
+                detail['guard'] = evidence
         self._record(now, reason, 'failed', detail)
         if reason.startswith(UNCERTAIN_REASONS) or reason.endswith(UNCERTAIN_SUFFIXES):
             self._emit(now, 'pose_uncertain', level=self._level, gate_profile=self.gate.profile.name, ends_job=True,
@@ -426,7 +433,9 @@ class ZoneOwnExecutor(OwnStatusMixin):
                 self.pose.set_motion_profile(now, None)
         if job.driver is not None:
             self._summaries.append({'job_id': job.job_id, 'driver_log': list(job.driver.log),
-                                    'guard_log': job.driver.guard_log, 'stall_keepouts': job.driver.stall_keepouts})
+                                    'guard_log': job.driver.guard_log, 'stall_keepouts': job.driver.stall_keepouts,
+                                    'recoveries': job.driver.recoveries,
+                                    'progress_look_failures': job.driver.monitor.look_failures})
         if job.sweep is not None and job.sweep.get('guard'):
             self._summaries.append({'job_id': job.job_id, 'sweep_guard': job.sweep['guard']})
         self.job = None
@@ -544,7 +553,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
         rep = self.pose.report(now)
         level = uncertainty_level(rep)
         tag_in_sweep = rep.since_tag_s is not None and rep.since_tag_s <= now - job.started_at
-        if self.gate.ok and tag_in_sweep:
+        if self.gate.allows(rep.initialized, rep.std_xy_m, rep.std_yaw_rad) and tag_in_sweep:
             self._finish(now, 'own_camera_confirmed', 'LOOKED', level=level, std_xy_m=round(rep.std_xy_m, 4))
         else:
             self._finish(now, 'unconfirmed', 'LOOKED_POSE_UNCERTAIN', level=level, gate=self.gate.state)
@@ -557,6 +566,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
             pose = dict(LOOK_P20)
             if self.servo.get(1, 0) < GRIPPER_OPEN_MIN_PWM:
                 pose[1] = self.servo.get(1, 1500)        # keep the grip as issued
+            pose[6] = int(self.servo.get(6, 1500))       # arm transition was checked at the current pan
             loaded = self.holding()['answer'] != 'no'
             plan = self.guard.plan(self.servo, pose, WIDE_LOOK_PANS, guards.OwnPose.from_report(self.pose.report(now)),
                                    loaded=loaded, allow_backoff=True)
@@ -571,6 +581,13 @@ class ZoneOwnExecutor(OwnStatusMixin):
         if s['stage'] == 'done':
             return None
         if s['stage'] == 'backoff':
+            rep = self.pose.report(now)
+            if self.gate.classify(rep.initialized, rep.std_xy_m, rep.std_yaw_rad) == 'high':
+                self._fail(now, 'SWEEP_POSE_UNCERTAIN')
+                return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
+            if not self.gate.ok:
+                s['until'] += TICK_S                 # bootstrap gate dwell uses no backoff motion budget
+                return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
             if now + 1e-9 < s['until']:
                 return {'mode': 'tick', 'commands': [dict(s['cmd'])]}
             if now + 1e-9 < s['until'] + SETTLE_S:
@@ -581,13 +598,13 @@ class ZoneOwnExecutor(OwnStatusMixin):
             s['queue'] = list(plan['pans']) or [int(self.servo.get(6, 1500))]
             s['stage'] = 'arm'
         if s['stage'] == 'arm':
-            steps = self._arm_steps(s['pose'])
+            steps = self._sweep_steps(now, s['pose'], s['loaded'])
             if steps:
                 return {'mode': 'tick', 'commands': [{'kind': 'hold'}] + steps}
             s['stage'], s['since'], s['target'] = 'pan', now, s['queue'].pop(0)
             return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
         if s['stage'] == 'pan':
-            steps = self._arm_steps({6: s['target']})
+            steps = self._sweep_steps(now, {6: s['target']}, s['loaded'])
             if steps:
                 s['since'] = now
                 return {'mode': 'tick', 'commands': [{'kind': 'hold'}] + steps}
@@ -598,13 +615,42 @@ class ZoneOwnExecutor(OwnStatusMixin):
                 return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
             s['stage'], s['since'] = 'restore', now
             return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
-        steps = self._arm_steps(s['restore'])
+        steps = self._sweep_steps(now, s['restore'], s['loaded'])
         if steps:
             return {'mode': 'tick', 'commands': [{'kind': 'hold'}] + steps}
         if now - s['since'] < SETTLE_S:
             return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
         s['stage'] = 'done'
         return None
+
+    def _sweep_steps(self, now, target, loaded):
+        s = self.job.sweep
+        pose = guards.OwnPose.from_report(self.pose.report(now))
+        retry = s.setdefault('recheck', SweepRecheck())
+        was_waiting = retry.last_wait is not None
+        result = retry.check(now, self.guard, self.servo, target, pose, loaded=loaded)
+        if result == 'clear' and was_waiting and s['stage'] == 'arm':
+            plan = self.guard.plan(self.servo, target, WIDE_LOOK_PANS, pose, loaded=loaded)
+            s['queue'] = list(plan['pans']) or [int(self.servo[6])]
+        if result != 'clear' and s['stage'] == 'pan':
+            pan = reachable_pan(self.guard, self.servo, s['queue'], pose, loaded=loaded)
+            if pan is not None:
+                s.setdefault('guard', []).append({'t': round(now, 3), 'reason': 'pan_replanned',
+                                                  'dropped_target': target[6], 'selected_pan': pan})
+                s['queue'] = [p for p in s['queue'] if p != pan and self.guard.transition_clear(
+                    {**self.servo, 6: pan}, {6: p}, pose, loaded=loaded)]
+                s['target'], s['since'], target = pan, now, {6: pan}
+                result = retry.check(now, self.guard, self.servo, target, pose, loaded=loaded)
+        if result != 'clear':
+            evidence = self.guard.transition_diagnostic(self.servo, target, pose, loaded=loaded)
+            evidence.update(stage=s['stage'], waited_s=retry.waited_s)
+            if result == 'blocked':
+                self._fail(now, 'SWEEP_TRANSITION_BLOCKED', guard=evidence)
+            elif retry.waited_s == 0.:
+                s.setdefault('guard', []).append({'t': round(now, 3), 'reason': 'stationary_reobserve',
+                                                  'guard': evidence})
+            return [{'kind': 'hold'}]
+        return self._arm_steps(target)
 
     def _arm_steps(self, target):
         out = []
