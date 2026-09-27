@@ -1,5 +1,20 @@
 # Pair executor dev PHYSICAL 게이트 준비 — 2026-09-27
 
+## dev05/dev06 결과 진단 — 소스 4a17e7d4, prereg_v3
+
+**tags_temporary · dev · 연구 결과 아님.** dock x=−0.65 m의 기존 실행을 읽기 전용으로 진단했다.
+코드 변경·신규 물리 step·모델 호출·git 커밋 없음. [진단 v4](diagnosis_v4.md) · [수치/원본 해시](diagnosis_v4.json).
+
+| 실행 | 결과·실패 (SIM 절대시각) | 미도달·판정 |
+|---|---|---|
+| dev05 / seed901 / 정상 시도 | r1·r2 approach 성공 → 190.42875 s r1 `PAIR_COLLISION_GUARD` → r2 `PARTNER_ABORT`. PF 위치 오차 0.759 m와 미파지 전체 빔 영역이 정적 벽 여유를 소진 | joint_grasp·lift·door·배치 미도달, `DEV_NOT_CONFIRMED` |
+| dev06 / seed902 / abort 진단 | r1·r2 approach 성공 → r2 wait_lift 중 193.7 s `POSE_UNCERTAIN` → r1 `PARTNER_ABORT`. 실제 초과값은 **yaw σ 3.00115° > 3°**; XY σ 0.05753 m는 loaded HIGH 0.07 m 이하 | joint_grasp·lift·door·배치 미도달, `intervention_not_reached`, `DEV_NOT_CONFIRMED` |
+
+양쪽 실패를 모두 보존한다. 권고는 임계값 완화보다 **파지 전 공통 위치 추정 재관측·양쪽 준비 동기화**다.
+원본 해시 16,926개 일치, 비물리 회귀 65개 통과. TensorBoard 임시 변환·이벤트/영상 등록은 확인했고,
+primary 쓰기 범위 제한으로 공유 snapshot 게시·화면/핀/HParams 확인은 남았다.
+아래 준비 절과 dev01~dev04 기록은 작성 당시 상태로 보존한다.
+
 **최신 사전등록: [dock v3 변경·검증·실행 절차](dock_v3.md), [prereg_v3.json](prereg_v3.json).**
 dev05/dev06은 기존 `zone_wide_door_tags_v2`의 벽·태그를 유지하고 세 로봇의 dock x만
 −0.85 → −0.65 m로 옮긴다. workflow는 `zone-pair-dev` 0.2.0이다.
