@@ -15,6 +15,7 @@ from harness import owncam_memory as v2
 from harness.owncam_memory_kf import associate, kf_update, observation_to_map
 from harness.owncam_pose_guard_v3 import CONFIG as POSE_CONFIG
 from harness.owncam_pose_guard_v3 import FIX_MAX_AGE_S, FIX_MAX_TRAVEL_M, PoseGuardV3
+from harness.owncam_visibility_v3 import absence_visible
 
 SCHEMA = 'ugrp.owncam_memory.v3'
 SURVIVAL_HAZARD_S = .005
@@ -160,27 +161,13 @@ class OwnCamMemoryV3(v2.OwnCamMemory):
         return bool(f is not None and f['t'] >= t - 1e-8 and self.guard.consistent(now, since=t))
 
     def _visible_for_absence(self, tr, pose, cov, servo, rows):
-        # Require the WHOLE 2-sigma support (plus box half-size) inside reliable
-        # range/FOV, unoccluded by static geometry and own observed foreground boxes.
+        # All translations/headings in the 2-sigma support must be visible;
+        # unknown arm visibility and swept wall/box occlusion defer the miss.
         if not self._frame_pose_good or self._frame_loaded or tr.sigma_m() > VISIBILITY_MAX_SIGMA_M:
             return False
-        cam = self.view.camera_world(pose, servo)
-        radius = v2.KEEPOUT_BASE_HALF_M + 2*math.sqrt(tr.sigma_m()**2 + max(np.linalg.eigvalsh(cov[:2, :2])))
-        points = [tr.x + radius*np.array([x, y]) for x, y in
-                  ((0, 0), (-1, -1), (-1, 1), (1, -1), (1, 1), (1, 0), (-1, 0), (0, 1), (0, -1))]
-        for pt in points:
-            if np.linalg.norm(pt - cam[:2]) > v2.ABSENT_RANGE_M:
-                return False
-            if not self.view.point_in_view(pose, servo, False, (*pt, v2.BOX_CENTRE_Z_M)):
-                return False
-        ray = tr.x - cam[:2]
-        length2 = float(ray @ ray)
-        for row in rows:
-            rel = np.asarray(row['map_xy']) - cam[:2]
-            f = float(rel @ ray) / max(length2, 1e-12)
-            if 0 < f < 1 and np.linalg.norm(rel - f*ray) <= radius + .03 + 2*row['sigma_m']:
-                return False
-        return True
+        return absence_visible(self.view, tr, pose, cov, servo, rows,
+                               box_half=v2.KEEPOUT_BASE_HALF_M, box_z=v2.BOX_CENTRE_Z_M,
+                               max_range=v2.ABSENT_RANGE_M)
 
     def _observe_boxes(self, now, frame_id, image, pose, cov, servo):
         dets = self._detections(image, servo)

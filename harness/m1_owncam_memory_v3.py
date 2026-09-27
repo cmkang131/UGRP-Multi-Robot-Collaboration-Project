@@ -6,6 +6,8 @@ failed verification stops instead of falling through to the skill.
 """
 from __future__ import annotations
 
+import math
+
 from harness.m1_owncam_delivery import CLOSER_VIEW_STANDOFF_M, MAX_GATE_LOOKS, M1OwnCamDelivery
 from harness.m1_owncam_memory import M1OwnCamDeliveryMem, _RecordingDetector
 from harness.owncam_drive import CARRY_POSTURE, SEARCH_POSE, WIDE_LOOK_PANS
@@ -18,6 +20,8 @@ from harness.owncam_pose_source import PoseLimits, check_limits
 SCHEMA = 'ugrp.m1_owncam_memory.v3'
 BLIND_SPOT_RETREAT_M = .45
 BOUNDARY_LIMITS = PoseLimits(.05, .035, max_age_s=.25)
+RELEASE_POSITION_TOL_M = .03
+RELEASE_YAW_TOL_RAD = .04
 
 
 class M1OwnCamDeliveryMemV3(M1OwnCamDeliveryMem):
@@ -154,15 +158,48 @@ class M1OwnCamDeliveryMemV3(M1OwnCamDeliveryMem):
         else:
             self.slot_record = self.memory.slot_state(now, self.slot_xy, self._slot_half(),
                                                       exclude=[self.target_track_id], since=gate['since'])
-            observation_ok = self.slot_record['state'] == 'free'
+            if self.slot_record['state'] == 'occupied':
+                self.outcome = 'SLOT_OCCUPIED_IN_MEMORY'
+                return {'mode': 'done', 'outcome': self.outcome}
+            # Loaded LOOK cannot see the slot floor. Verify release readiness
+            # using evidence available at the restored lift-top posture. This
+            # does NOT certify an empty slot or successful placement; the frozen
+            # skill still requires its post-release own-RGB look-back.
+            evidence = self._release_evidence(now, obs, rep)
+            gate['release_evidence'] = evidence
+            observation_ok = evidence['ready'] and evidence['observed_at'] >= gate['since']
         if pose_ok and observation_ok:
-            self._event(now, 'boundary_verified', boundary=kind, since=gate['since'])
+            self._event(now, 'boundary_verified', boundary=kind, since=gate['since'],
+                        **({'release_evidence': evidence, 'slot_state': self.slot_record['state'],
+                            'empty_slot_verified': self.slot_record['state'] == 'free'} if kind == 'place' else {}))
             return None
         if gate['looks'] >= MAX_GATE_LOOKS:
             self.outcome = kind.upper() + '_UNVERIFIED'
             return {'mode': 'done', 'outcome': self.outcome}
         gate['looks'] += 1
         return self._gate_look(now, 'verify_' + kind + '_v3', obs, loaded=kind == 'place')
+
+    def _release_evidence(self, now, obs, rep):
+        row = {'ready': False, 'observed_at': float(obs['sim_time']),
+               'frame_id': obs.get('frame_id'), 'source': 'own_rgb_release_posture'}
+        sk = self.skill
+        if sk is None or sk.phase != 'pre_release' or not sk.box.held or sk.box.phase != 'carry':
+            return {**row, 'reason': 'not_carrying_at_release'}
+        if not rep.initialized or not all(math.isfinite(v) for v in (rep.x_m, rep.y_m, rep.yaw_rad)):
+            return {**row, 'reason': 'no_release_pose'}
+        expected = sk.box.lift_top_pose()
+        issued = obs.get('actuator_state', {}).get('servo_pulses', {})
+        if any(issued.get(str(k)) != v for k, v in expected.items()):
+            return {**row, 'reason': 'release_posture_not_restored'}
+        distance = math.dist((rep.x_m, rep.y_m), sk._preplace_goal())
+        yaw = abs(math.atan2(math.sin(rep.yaw_rad), math.cos(rep.yaw_rad)))
+        if distance > RELEASE_POSITION_TOL_M or yaw > RELEASE_YAW_TOL_RAD:
+            return {**row, 'reason': 'outside_release_pose', 'distance_m': distance, 'yaw_rad': yaw}
+        # Non-consuming comparison: the normal reanchor/probe path owns the
+        # skill's observation sequence and attachment anchor updates.
+        check = sk.box._compare_attachment(sk.box._attachment_image, obs['image'])
+        return {**row, 'ready': bool(check.get('attached')), 'reason': check['reason'],
+                'attachment': check, 'issued_posture': dict(issued), 'distance_m': distance}
 
     def _skill(self, now):
         sk = self.skill
@@ -174,6 +211,17 @@ class M1OwnCamDeliveryMemV3(M1OwnCamDeliveryMem):
                 return result
             self.verification['grasp']['passed'] = True
         if sk is not None and sk.phase == 'pre_release':
+            self.verification.setdefault('place', {'since': float(now), 'looks': 0})
+            # A look changes the held camera's posture. Complete the existing
+            # strict reanchor / bounded pan probe before checking readiness.
+            # These branches return before the frozen skill can begin release.
+            obs = self.last_obs
+            if self.probe is not None or self.reanchor_needed:
+                leg_busy = self.leg is not None and self.leg.state in ('look_arm', 'look_pan', 'posture_back')
+                if (obs is None or not -1e-8 <= now - float(obs['sim_time']) <= .25 + 1e-8
+                        or obs['frame_id'] == self.last_skill_frame or leg_busy):
+                    return {'mode': 'capture'}
+                return M1OwnCamDelivery._skill(self, now)
             result = self._boundary_gate(now, 'place')
             if result is not None:
                 return result

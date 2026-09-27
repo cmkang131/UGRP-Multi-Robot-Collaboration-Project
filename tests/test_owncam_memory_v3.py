@@ -462,7 +462,7 @@ class ControllerAndBoundaryTests(unittest.TestCase):
         self.assertIsNone(ctl.memory.best_target('cyan', 1.8))
         self.assertTrue(ctl.memory.keepouts())
 
-    def test_boundary_requires_sigma_limit_and_accepts_recent_own_free_slot(self):
+    def test_boundary_requires_sigma_limit_and_release_evidence_even_for_free_slot(self):
         ctl = controller()
         ctl.verification['place'] = {'since': 1., 'looks': 0}
         ctl.last_obs = {'sim_time': 2.}
@@ -473,7 +473,9 @@ class ControllerAndBoundaryTests(unittest.TestCase):
         with mock.patch.object(ctl, '_gate_look', return_value=ctl._hold()):
             self.assertIsNotNone(ctl._boundary_gate(2., 'place'))
         ctl.pose.report = lambda t: report(t)
-        self.assertIsNone(ctl._boundary_gate(2., 'place'))
+        with mock.patch.object(ctl, '_gate_look', return_value=ctl._hold()):
+            # Free floor alone says nothing about the held box at release.
+            self.assertIsNotNone(ctl._boundary_gate(2., 'place'))
 
     def test_new_far_box_invalidates_active_leg_path(self):
         ctl = controller()

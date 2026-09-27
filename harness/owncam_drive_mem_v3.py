@@ -1,8 +1,11 @@
 """Memory v3 leg policy: mandatory arrival verification and guarded uncertainty."""
 from __future__ import annotations
 
+import math
+
 from harness.m1_owncam_delivery import _LegDriver
-from harness.owncam_drive_mem import MemoryLookPolicy
+from harness.owncam_drive import LOOK_IF_STD_YAW_RAD
+from harness.owncam_drive_mem import MemoryLookPolicy, SHORT_ACCEPT_YAW_RAD
 from harness.owncam_pose_guard_v3 import GuardedLocalizerV3
 
 SCHEMA = 'ugrp.owncam_drive_mem.v3'
@@ -37,11 +40,18 @@ class LegDriverMemV3(MemoryLookPolicy, _LegDriver):
 
     def _should_refix(self, fixed):
         est = self.loc.estimate()
-        good = (fixed and self.memory.look_fix_since(self.current_look_since)
+        yaw_limit = SHORT_ACCEPT_YAW_RAD if self.look_mode == 'short' else LOOK_IF_STD_YAW_RAD
+        # The inherited `fixed` flag only checks xy. Loaded driving hysteresis
+        # also cannot certify a fix: zero travel must not excuse uncertain yaw.
+        good = (fixed and math.isfinite(est['std_xy_m']) and math.isfinite(est['std_yaw_rad'])
+                and 0 <= est['std_xy_m'] <= self._fix_std_xy_m()
+                and 0 <= est['std_yaw_rad'] <= yaw_limit
+                and self.memory.look_fix_since(self.current_look_since)
                 and self.memory.look_fix_fresh(self.loc.t, (est['x'], est['y']))) if est.get('initialized') else False
         if not good:
             self.unverified_looks += 1
-            self._mem_event(self.loc.t, 'fix_unverified', attempts=self.unverified_looks)
+            self._mem_event(self.loc.t, 'fix_unverified', attempts=self.unverified_looks,
+                            **self._sig(est), yaw_limit_rad=yaw_limit)
             if self.look_mode == 'short':
                 self.look_counts['escalated'] += 1
             if self.unverified_looks >= MAX_UNVERIFIED_LOOKS:
