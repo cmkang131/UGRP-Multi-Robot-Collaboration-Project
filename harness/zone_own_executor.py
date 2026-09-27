@@ -397,7 +397,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
         job = self.job
         ack = self._ack('abort', arguments, True, job=job)
         if self._pair is not None:
-            self._pair.abort(self.now, 'ABORTED:' + reason_code)
+            self._pair.abort(self.now, 'ABORTED')  # caller text stays in its own API audit only
         else:
             self._fail(self.now, 'ABORTED:' + reason_code)
         self._local_state = 'hold_requested'

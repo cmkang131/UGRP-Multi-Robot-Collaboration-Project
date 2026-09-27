@@ -167,10 +167,33 @@ class OwnCamTeamHost:
                               contact_profile=self.contact_record['profile'], weld=False,
                               controller_factory=controller_factory or m2_controller,
                               rendezvous_timeout_s=rendezvous_timeout_s, heartbeat_timeout_s=heartbeat_timeout_s)
+        self._next_pair_arm = 0.  # original CLI clock lifetime, never reset on a submission
 
     def _pair_safety(self, now):
         if getattr(self, 'pairs', None) is not None:
             self.pairs.poll(now)
+
+    def _pair_arm_tick(self, now):
+        """Original CLI arm gate on every physics sample, without epsilon or rounding.
+
+        Run after controllers at host wakes and before stepping physics between
+        wakes. Advancing while idle preserves the CLI clock phase across jobs.
+        """
+        if getattr(self, 'pairs', None) is None or now < self._next_pair_arm:
+            return
+        self._next_pair_arm = now + .05
+        self._pair_safety(now)
+        for rid in self.robots:
+            if self.robots[rid].executor._pair is not None:
+                self._guard(rid, now, self._pair_arm_raw)
+
+    def _pair_arm_raw(self, rid, now):
+        ep = self.robots[rid].executor._pair
+        commands = ep.arm_step(now)
+        self._pair_safety(now)
+        if not ep.terminal:
+            for cmd in commands:
+                self._apply(rid, cmd, now)
 
     # ------------------------------------------------------------ eval-only geometry
     def _geoms(self):
@@ -306,6 +329,7 @@ class OwnCamTeamHost:
         world, data = self.world, self.world.data
         while float(data.time) < t_end - 1e-9:
             now = float(data.time)
+            self._pair_arm_tick(now)
             for s in self.robots.values():
                 s.port.tick(now)
             world._physics_step_for(world.controllers['r1'])
@@ -399,7 +423,7 @@ class OwnCamTeamHost:
                         self._hold(rid, now)
                     else:
                         self._apply(rid, cmd, now)
-                slot.next_decide = now + (ex._pair.poll_s if ex._pair is not None else TICK_S)
+                slot.next_decide = ex._pair.next_wake(now) if ex._pair is not None else now + TICK_S
                 return
             if mode == 'macro':
                 slot.decisions.append({'t': round(now, 3), 'action': decision['action']})
@@ -460,6 +484,8 @@ class OwnCamTeamHost:
 
     def _next_wake(self, live):
         times = []
+        if getattr(self, 'pairs', None) is not None:
+            times.append(self._next_pair_arm)
         for s in live:
             times.append(s.timeline[0][0] if s.timeline else s.next_decide)
             deadline = s.executor.deadline()
@@ -494,6 +520,7 @@ class OwnCamTeamHost:
                     self._run_timeline(rid, now)
                 if not slot.dead and not slot.timeline and not slot.capture_after and now + 1e-9 >= slot.next_decide:
                     self._decide(rid, now)
+            self._pair_arm_tick(now)
             self._deliver_events(now)
             if done is not None and done():
                 outcome = 'STUDY_LAYER_DONE'

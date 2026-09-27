@@ -9,7 +9,7 @@ from collections.abc import Mapping
 import math
 import re
 
-PROFILE = 'zone_pair_status_v3'
+PROFILE = 'zone_pair_status_v4'
 MAX_SEGMENTS = 8
 CONTROL_S = .1
 ARM_S = .05
@@ -104,7 +104,9 @@ class PairStatusEndpoint:
     def tick(self, state, now, *, force=False):
         if self.state == 'abort':
             return
-        if self.latched and now >= self.evidence['ready_until_s'] - EPS:
+        if state == 'abort':
+            self.latched = None  # explicit stop always wins, including at evidence expiry
+        elif self.latched and now >= self.evidence['ready_until_s'] - EPS:
             self.latched, state = None, 'not_ready'
         state = 'abort' if state == 'abort' else self.latched or state
         evidence = self.evidence if '_ready_' in state else dict.fromkeys(EVIDENCE)

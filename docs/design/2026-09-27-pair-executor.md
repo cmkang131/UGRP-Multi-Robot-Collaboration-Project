@@ -1,8 +1,9 @@
 # M2 공동 운반 executor 연결 — 2026-09-27
 
-이슈 #221 / PR #235의 `zone_pair_executor_v2_dev` 설계다. 기준 커밋
-`6bda018b`의 독립 적대 리뷰(P1 4건, P2 1건)와 코디네이터의 랑데부 결정을
-반영했다. M2 물리 성공을 새 executor에 승계하지 않는다.
+이슈 #221 / PR #235의 `zone_pair_executor_v3_dev` 설계다. 기준 커밋
+`6bda018b`의 1차 리뷰와 `9fd4cf14`의 2차 리뷰(NEW P1 2건, P2 2건),
+코디네이터의 독립 랑데부·통신 경계 결정을 반영했다.
+M2 물리 성공을 새 executor에 승계하지 않는다.
 
 ## API와 독립 제출
 
@@ -33,10 +34,14 @@ r1/r2, long_beam 1개, M2 문 지도와 문 앞 개략 주문서 범위만 지�
 `accepted=True`는 자기 제출의 수락이다. 상대 제출 전에는 `waiting_partner`로
 hold하며, 기본 5 SIM초 안에 같은 화물·상대·목적지를 제출해야 한다.
 불일치는 `PAIR_SUBMISSION_MISMATCH`, 만료는 `PAIR_RENDEZVOUS_TIMEOUT`이다.
-제출한 로봇은 `job_failed`, 아직 작업이 없는 상대는 `pair_refused`를 받는다.
-이 알림에는 거절 코드와 의미 없는 rendezvous ID만 들어가며 상대 작업 내용을
-전달하지 않는다. 늦게 도착한 제출도 timeout으로 거절한다. 자기 busy/stopped/
-불확실한 pose/짐 보유/잘못된 영상은 자기 제출을 거절하며, 대기 중인 짝도 종료한다.
+제출한 로봇의 timeout은 자기 `job_failed`로만 알린다. 미제출 상대에게는
+이벤트·알림을 전혀 보내지 않으며, abort 자유문과 제출 시도·시점도 노출하지 않는다.
+명세 불일치 때는 실제 제출한 양쪽에만 고정 거절 코드를 준다. host의 임의 상대
+알림 함수는 제거했다. 거절·timeout에는 자유문 예외 내용을 붙이지 않는다.
+자기 busy/stopped 검사가 상대 명세 비교보다 먼저라 일치 여부를 조회할 수 없다.
+자기 불확실한 pose/짐 보유/잘못된 영상으로 거절된 호출도 상대에게 알리지 않는다.
+상대의 과거 timeout 때문에 새로운 자기 제출을 거절하지 않으며, 새 제출은 자기
+5초 창에서 기다린다. STATUS task ID는 host의 전역 시도 횟수가 없는 임의 UUID다.
 `enable_pair_carry(..., rendezvous_timeout_s=5., heartbeat_timeout_s=.15)`로 한도를 설정한다.
 
 ## 제어·영상 경계
@@ -50,16 +55,19 @@ hold하며, 기본 5 SIM초 안에 같은 화물·상대·목적지를 제출해
   대비를 검사한다. 검정·넓은 검정 가림·균일 영상·손상/잘린 JPEG는 즉시 거절/중단한다.
   어두운 grip band와 저조도 v3 기록은 유지한다. 임의의 질감 있는 가림까지 검출한다는
   뜻은 아니며, 임계값은 물리 검증 전 dev 방어 조건이다.
-- controller는 0.1초, arm과 안전 점검은 0.05초로 분리했다. 새 영상 요청 중에는
-  controller timer를 진행하지 않는다. 1.2초 arm queue의 24개 명령을 원본
-  `ArmSequence.tick(0.05)` 실행과 비교해 시각·순서·내용 일치를 검사한다.
+- controller는 공통 0.1초 격자, arm은 원본 CLI의 별도 0.05초 시계를 쓴다.
+  새 영상 요청 중에는 controller timer를 진행하지 않는다. arm 시계는 초기 0부터
+  idle/초기 대기 중에도 매 physics 시각에서 `now >= next_arm`으로 검사하고
+  `next_arm = now + .05`로 갱신한다. epsilon·반올림·제출 때 시계 초기화가 없다.
+  controller 처리 후 arm을 발행하며, 사이에도 STATUS·영상 유효성을 먼저 확인한다.
+  같은 queue에 대해 원본 발행 조건과 비교한 범위이며 전체 물리 궤적 일치를 뜻하지 않는다.
 - 원본 종점 `(3.2, .05)`에서 목적 구역 중심까지 정적 횡방향/축방향 구간을 추가한다.
   구간은 최대 0.85 m, 총 8개 이하이며 기존 M2 내려놓기·위치 재추정·재파지를 쓴다.
   정적 footprint 검사는 계획 검사다. 추가 횡방향 운반·B 배치는 아직 물리 미검증이다.
 
 ## STATUS와 안전 종료
 
-`zone_pair_status_v3`는 네 조건에서 동일하다. 고정 enum과
+`zone_pair_status_v4`는 네 조건에서 동일하다. 고정 enum과
 `robot_id, task_id, seq, state, sent_at_s, observed_at_s, frame_id, ready_until_s`만
 전달한다. frame ID는 `로봇-정수번호-12자리해시` 형식이다. 작업명·목적지·역할 지시·
 좌표·영상·자유문은 없다. 동결 v1 STATUS 모듈은 그대로 둔다.
@@ -72,24 +80,28 @@ frame ID에 묶이며 TTL은 0.6초다. heartbeat 재전송은 같은 증거와 
 접근/들기/운반/내리기/방출마다 `<phase>_ready_<0..7>`을 보고한다. 공통 GO는
 양쪽 준비 후 0.2초 이상 지난 공통 0.1초 격자 시각이다. 늦거나 만료된 GO는
 `LATE_OR_EXPIRED_GO`로 중단한다. 정상 소비는 `<phase>_go_<0..7>` enum으로
-기록한다. 상대가 같은 GO를 소비하지 않았으면 다음 0.05초 점검에서 arm의 첫
+기록한다. host의 다음 wake를 heartbeat와 다음 제어 격자 중 이른 시각으로
+잡으므로 t=0.03 제출도 격자에서 실행한다. 상대가 같은 GO를 소비하지 않았으면 arm의 첫
 명령 전에 `PARTNER_MISSED_GO`로 중단한다. 시간표를 늦은 소비 시각으로 이동시키지 않는다.
 
 abort·timeout·상대 소실·controller 예외·영상 이상·낙하는 STATUS abort를 통해
 양쪽 arm queue, carry schedule, host macro를 지우고 hold한다. 상세 이유는 로컬
-기록에만 남긴다. 접근 재시도 1회, 위치 재초기화 2회, 파지 전 sweep 2회와
+기록에만 남긴다. 명시적 abort는 readiness TTL 만료와 같은 시각에도 우선한다.
+호출자의 자유문 abort 사유는 자기 API 기록에만 남고 pair 종료 코드는 `ABORTED`다.
+접근 재시도 1회, 위치 재초기화 2회, 파지 전 sweep 2회와
 job deadline을 유지하며 낙하 후 자동 재파지는 없다.
 완료는 양쪽 done 뒤 `PAIR_SEQUENCE_DONE / unconfirmed`다. GT 성공을 전달하지
 않으며, 운반 이후 holding은 확인 전 unknown이다.
 
-## 적대 리뷰 재현과 검증
+## 1차 리뷰 당시 재현과 검증
 
 `tests/test_zone_pair_review.py`의 같은 24개 사례에 대해 기준 커밋은
 **21 failed / 3 passed**였다. `git show 6bda018b:<path>`로 읽은 생산 모듈 6개를
 import loader로 대체해 비교했으며 checkout/index를 쓰지 않았다.
 수정 후 24개가 모두 통과했고, 기존 executor/M2/프로토콜/workflow 회귀를 포함한
-최종 실행은 **293 passed / 3 deselected**였다. 대기 중 abort/episode 종료 알림과
-0.1초 격자 사이에서 시작한 host의 동일 GO 시각도 검사했다.
+당시 실행은 **293 passed / 3 deselected**였다. 당시 미제출 상대 알림과 반올림된
+0.05초 시계 검사는 통신 경계·원본 시각 일치를 충분히 검증하지 못했다.
+아래 2차 검증으로 대체하며 과거 통과를 물리/전체 타이밍 보증으로 쓰지 않는다.
 동결 import 32개 SHA-256, M2 원본 3개 바이트 동일성, Python 10개 구문 검사와
 `git diff --check`가 통과했다. 영상 gate는 기록된 저조도 JPEG 5개를 모두 수락했다.
 
@@ -105,8 +117,27 @@ import loader로 대체해 비교했으며 checkout/index를 쓰지 않았다.
 
 네 조건 통합은 no_comm의 채널 차단, 자유 한국어 mesh, 지휘자 3개 순환/star,
 정형 schema·자유문 거절을 실제 구현으로 통과한다. 메시지 전달이 상대 job을
-생성하지 않는 것과 최종 STATUS transcript 동일성도 검사한다. 응답은 테스트용
+생성하지 않는 것과 UUID만 정규화한 STATUS transcript 동일성도 검사한다. 응답은 테스트용
 고정 fixture이며 실제 LLM 호출이나 통신 효과 실험은 아니다.
+
+## 2차 리뷰 재현과 검증
+
+`tests/test_zone_pair_review2.py`의 같은 14개 반례는 `9fd4cf14` 생산 모듈에서
+**14 failed**, 수정 후 **14 passed**다. 기준 소스는 `git show`로 읽고 import
+loader에서만 대체했다. checkout/index 변경은 없다.
+
+| 항목 | 수정 전 → 수정 후 검증 |
+|---|---|
+| NEW P1-1 host 우회 | 네 조건 × abort/timeout 8개: 상대 event/outbox/API/status/command 변화 → 모두 0건. 실제 prompt·reply validator·조건별 Transport 거절 경로 사용. BUSY 일치 조회·과거 timeout의 새 제출 거절도 차단 |
+| NEW P1-2 GO 시계 | t=0.03에서 실제 M2 lift와 단계 fake 모두 늦은 GO 실패 → 양쪽 공통 격자 GO 소비 |
+| NEW P2-3 abort 우선 | t=0.6 readiness 만료와 abort 동시 입력: not_ready·상대 이동 가능 → abort 패킷·양쪽 queue 제거·즉시 hold |
+| NEW P2-4 arm 시계 | 2 ms를 반올림 없이 누적하고 t=3.0에 같은 1.2초 queue: 첫 명령 3.050/3.092 차이 → 양쪽 24개 명령의 전체 시각 `float.hex()`, 순서·payload 일치(첫 3.092, 끝 4.236 근방) |
+
+관련 회귀 최종 실행은 **307 passed / 3 deselected**다. 새 테스트는 CI 목록에
+등록했고 기존 M2 lift/approach/tagged-cargo 3개 등록도 유지했다. 미제출 알림을
+기대하던 기존 검사는 새 명세로 바꾸고, 기존 반올림 시계 arm 검사에도 원본 outer
+loop 조건을 적용했다. 동결 import 32개 SHA-256 일치, M2 원본 3개 바이트
+동일성, 수정 Python 8개 구문 검사와 `git diff --check`를 확인했다.
 
 최종 명령은 스레드 1개, worktree 임시 경로를 사용한다. 코디네이터가 확인한
 MuJoCo 없는 계약·단위 검사 범위이므로 agent_lock과 공용 잠금 파일은 건드리지 않았다.
@@ -116,7 +147,8 @@ mkdir -p .pytest_tmp_env
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 \
 NUMEXPR_NUM_THREADS=1 GIT_OPTIONAL_LOCKS=0 PYTHONDONTWRITEBYTECODE=1 TMPDIR="$PWD/.pytest_tmp_env" \
 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
-  tests/test_zone_pair_review.py tests/test_zone_pair_executor.py tests/test_zone_pair_status.py \
+  tests/test_zone_pair_review2.py tests/test_zone_pair_review.py \
+  tests/test_zone_pair_executor.py tests/test_zone_pair_status.py \
   tests/test_zone_own_executor.py tests/test_zone_own_executor_host.py \
   tests/test_zone_own_executor_guards.py tests/test_zone_own_executor_boundaries.py \
   tests/test_pair_owncam_approach.py tests/test_m2_pair_door_v3.py \
@@ -134,6 +166,7 @@ workflow 양쪽 항목을 보존한 33개와 동결 import 32개 해시·M2 원�
 ## 참고 자료
 
 - 코디네이터 제공 독립 리뷰: `codex-235-review.md` (기준 `6bda018b`, P1 4건/P2 1건)
+- 코디네이터 제공 2차 리뷰: `codex-235-review2.md` (기준 `9fd4cf14`, NEW P1 2건/P2 2건)
 - [M2 경로·검증 범위](../zone_m2_pair.md), [동결 제어기](../../scripts/run_m2_pair.py)
 - [M2 동결 import](../../experiments/2026-09-26-zone-m2-pair/imports.json)
 - [executor](../../harness/zone_own_executor.py), [STATUS](../../harness/zone_pair_status.py)

@@ -73,12 +73,8 @@ def test_p1_1_missing_submission_times_out_without_creating_peer_job():
     h.call('r1', 'pair_carry', 'cargoX', 'B', 'r2')
     h.pairs.poll(5.01)
     assert exs['r2'].job is None
-    assert all(any(e['detail'].get('reason') == 'PAIR_RENDEZVOUS_TIMEOUT' for e in exs[r].events)
-               for r in ('r1', 'r2'))
-    h.world.data.time = 5.01
-    late = h.call('r2', 'pair_carry', 'cargoX', 'B', 'r1')
-    assert late['rejected_reason'] == 'PAIR_RENDEZVOUS_TIMEOUT'
-    assert len(h.pairs.sessions) == 1 and exs['r2'].job is None
+    assert any(e['detail'].get('reason') == 'PAIR_RENDEZVOUS_TIMEOUT' for e in exs['r1'].events)
+    assert not exs['r2'].events and not exs['r2'].drain_events()
 
 
 def test_either_actor_can_submit_first_and_a_duplicate_cannot_select_peer():
@@ -93,7 +89,7 @@ def test_either_actor_can_submit_first_and_a_duplicate_cannot_select_peer():
 
 
 @pytest.mark.parametrize('cause', ['abort', 'episode_end'])
-def test_pending_cancellation_notifies_peer_without_creating_or_cancelling_its_job(cause):
+def test_pending_cancellation_sends_no_event_to_the_non_submitter(cause):
     h, exs = setup()
     assert h.call('r1', 'pair_carry', 'cargoX', 'B', 'r2')['accepted']
     assert exs['r2'].job is None
@@ -102,7 +98,7 @@ def test_pending_cancellation_notifies_peer_without_creating_or_cancelling_its_j
     else:
         h.close_episode('TEST')
     assert exs['r2'].job is None
-    assert len([e for e in exs['r2'].events if e['event'] == 'pair_refused']) == 1
+    assert not exs['r2'].events and not exs['r2'].drain_events()
     assert len(ends(exs['r1'])) == 1
 
 
@@ -223,8 +219,12 @@ def test_original_arm_command_emission_times_are_preserved_by_host():
         reference = FakePort(r)
         arm = ArmSequence(reference, reference.servo)
         arm.queue({3: 1400}, .5, duration=1.2, settle=.3)
-        for t in np.arange(.5, 1.76, .05):
-            arm.tick(float(t))
+        t, next_arm = 0., 0.
+        while t <= 1.75:
+            if t >= next_arm:  # original outer loop on this fixture's rounded clock
+                next_arm = t + .05
+                arm.tick(t)
+            t = round(t + .05, 6)
         assert actual == [(t, a) for t, k, a in reference.log if k == 'arm']
 
 
@@ -296,7 +296,8 @@ def test_real_condition_protocols_feed_only_independent_submissions_then_identic
         assert all(ends(exs[r])[0]['event'] == 'job_done' for r in ('r1', 'r2'))
         assert all(receipt.accepted for receipt in accepted_messages)
         assert transport.sent_count() == (0 if condition == 'no_comm' else 2)
-        transcripts.append(copy.deepcopy(active(h)['r1'].status.channel.log))
+        # Opaque per-session UUIDs carry no host-wide attempt counter.
+        transcripts.append([{**m, 'task_id': '<session>'} for m in active(h)['r1'].status.channel.log])
     assert all(log == transcripts[0] for log in transcripts)
     assert len(set(prompts)) >= 6
 

@@ -90,6 +90,7 @@ class FakeHost(OwnCamTeamHost):
     def _physics_until(self, t_end):
         d = self.world.data
         while d.time < t_end - 1e-9:
+            self._pair_arm_tick(d.time)
             d.time = round(d.time + .05, 6)
             while self.hooks and d.time + 1e-9 >= self.hooks[0][0]:
                 self.hooks.pop(0)[1](self)
