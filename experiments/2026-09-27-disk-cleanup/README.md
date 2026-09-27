@@ -134,6 +134,84 @@
 
 **사용자에게 물을 것:** (1) 외장 디스크를 살지(A) (2) T4 실시간·속도 raw 삭제에 동의하는지 (3) 외장 없이 B 수준으로 삭제할지, 아니면 C로 두고 예산 초과를 받아들일지 (4) dev 캡처를 1 Hz로 줄이는 설정을 러너에 적용할지.
 
+## 추가: raw 선택지 B 준비 (2026-09-27 16:27–16:32) — **삭제는 실행하지 않음**
+
+코디네이터가 "사용자 결정: B(외장 없이 크게 삭제)"를 전달했다. 이 작업은 다음까지 했다: 계획, 제외 판정, 전체 파일 영수증, 실행 도구. **영구 삭제는 하지 않았다.**
+
+- 되돌릴 수 없는 raw 삭제는 에이전트가 전달받은 결정만으로 실행하지 않는다. 사용자가 직접 확인하고 아래 명령을 실행해야 한다.
+- 대상 안의 미배포 체크포인트를 공개 저장소의 Release asset으로 올리는 일도 사용자의 직접 승인이 필요하다. 그래서 올리지 않았고, 규칙 2에 따라 그 폴더들은 삭제에서 뺐다.
+
+### 계획 ([`plan_raw_b.py`](plan_raw_b.py) `plan`, [제외 목록](footprint/plan-b-excluded.json))
+
+- 삭제 단위는 세 가지다.
+  - T3: `retired-worktrees/<라벨>`
+  - T4: 폴더 전체
+  - T6: 폴더. 안에 test 이름의 하위 폴더가 있으면 하위 폴더 단위로 나눈다.
+- T1 test, T5, T7, T0(`tensorboard*`, `agent-locks`, 모델 설치본, 디스크 기록)은 대상에서 뺐다.
+- 제외 규칙
+  - `test`: 경로의 어느 단계든 test 이름이 있음
+  - `model`: `configs/model_artifacts.json`의 `available` 파일과 sha256이 다른 체크포인트(safetensors·pt·pth·ckpt·onnx·joblib·pkl)가 있음
+  - `code_ref`: origin/main이나 열린 PR의 코드·설정(py·sh·yaml·toml·configs json·experiments py)이 그 폴더를 입력 경로로 씀. 예: `tests/test_dispatch_pair_process.py` → `simulation-realtime-20260923/native-v17-repeat`, `configs/dispatch_stage_priors.json` → `post-run-replay-20260924`, `probe_markerless_*` 동결 실행, `sim/workflow_manager.py` → `simulation-runs`
+  - `open_pr`: 열린 PR이 추가·변경한 파일(#239 제외)이 그 폴더를 가리킴
+  - `active`: 120분 안에 수정됐거나 열린 파일이 있음
+  - `archive`: 보관본일 수 있음
+- origin/main 기록(README·results)이 raw 위치로만 적어 둔 경우는 B의 정의상 삭제 대상에 남겼다. 그 기록의 raw는 해시로만 남는다.
+
+| | 단위 | 파일 | GiB (`du`) |
+|---|---|---|---|
+| 삭제 계획 | 936 | 433,653 | 30.38 (T3 10.63, T4 2.23, T6 17.52) |
+| 제외 | 1,228 | | 19.15 |
+
+- 제외 사유별 GiB(겹침 있음): test 6.24, code_ref 7.04, model 6.37, open_pr 4.66, archive 0.31, active 0.00.
+- 가장 큰 삭제: `retired-worktrees` 10.63, `jev-semantic-motion-20260921-v1` 3.52, `rgb-common-physical-recovery-20260923` 2.66, `dispatch-action-act-refinement-20260924` 1.37, `simulation-realtime-20260924-faster` 1.29, `jev-skills-dev-v4·v6·v5·v3·v2·final` 3.42, `simulation-performance-20260923` 0.94, `navigation-generalization-repair-20260908` 0.84.
+- 가장 큰 제외
+  - `simulation-realtime-20260923` 3.69: 테스트가 입력으로 씀 + pkl
+  - `act-action-training-20260924/model-release-tools` 2.0: 열린 PR #199
+  - ACT 체크포인트가 든 은퇴 폴더 4개 2.46
+  - `markerless-improvement-20260909` 0.65, `fine-gain-schedule-*` 0.99: 코드 입력
+- 예상 결과: `outputs/` `du`는 75.59 → 약 45.2 GiB다. **예산 40에는 약 5 GiB 모자란다.** 제외분을 풀려면 모델을 배포하거나 참조하는 코드를 정리해야 한다.
+  - `df` 확보량은 이보다 작다. 삭제 대상 중 남는 파일과 clone을 공유하는 블록은 돌아오지 않는다.
+
+### 배포하지 않은 체크포인트 (삭제에서 뺀 이유, 30개)
+
+| 위치 | 개수 | 크기 |
+|---|---|---|
+| `retired-worktrees/act-recovery-generalization/outputs/{nominal,aggregated,bootstrap,recovery}-seed16/17-v1/r1·r3/act/model.safetensors` | 14 | 각 43.7 MiB |
+| `retired-worktrees/act-feasibility-training/outputs/act-{old20-balanced-3000,old20-uniform-3000-v2,expanded50-balanced-10000-seed16/17}/r1·r3/act/model.safetensors` | 8 | 각 43.7 MiB |
+| `retired-worktrees/act-double-speed-generalization/outputs/act-fast-seed16/17-v1/r1·r3/act/model.safetensors` | 4 | 각 43.7 MiB |
+| `retired-worktrees/reference-act-baseline/outputs/reference-act-f0ee14d/r1·r3/act/model.safetensors` | 2 | 각 43.7 MiB |
+| `act-action-training-20260924/train-seed24{,-deployed-first}-managed/artifacts/resume.pt` | 2 | 각 89.4 MiB. 학습 재개 상태. 배포된 seed24 모델과 sha256이 다름 |
+| `simulation-realtime-20260923/v12-carry-beam-baseline.pkl` | 1 | 0.1 MiB |
+
+파일별 sha256은 [제외 목록](footprint/plan-b-excluded.json)에 있다. Release로 올린 모델은 **0개**다.
+
+### 영수증 ([`plan_raw_b.py`](plan_raw_b.py) `receipt`)
+
+- 삭제 계획의 모든 파일을 경로·크기·mtime_ns·sha256(링크는 대상 경로)으로 기록했다: 433,653개, 29.48 GiB(논리 크기).
+- 로컬(커밋 안 함, 크기 20.8 MB)
+  - `outputs/disk-cleanup-20260927/raw-b/receipt-b.jsonl.gz`: sha256 `9526fcb5e437445bcc10ad4888edb77211e16fb07328718962b72f7517118219`
+  - `plan-b.json`: sha256 `0ebfe39e…`
+- 단위별 파일 수·GiB·목록 해시: [`receipt-b-summary.json`](footprint/receipt-b-summary.json)(로컬 원본 sha256 `4a2c01d5…`)
+- 이 영수증은 삭제 뒤 "무엇이 있었는지"의 증거일 뿐이다. 사본이 아니므로 복원할 수 없다.
+
+### 실행 (사용자가 직접)
+
+```sh
+cd /Users/changmin/projects/ugrp-wt/claude-disk-cleanup-0927
+python3 experiments/2026-09-27-disk-cleanup/plan_raw_b.py execute \
+  --summary /Users/changmin/projects/ugrp/outputs/disk-cleanup-20260927/raw-b/receipt-b-summary.json \
+  --log /Users/changmin/projects/ugrp/outputs/disk-cleanup-20260927/raw-b/execute-log.jsonl \
+  --i-confirm-permanent-deletion
+```
+
+- 단위마다 다시 목록을 만들고 다시 해시한다. 60분 안에 바뀌었거나 목록 해시가 영수증과 다르면 건너뛰고 로그에 남긴다.
+- 실행 전후로 `disk_report.py`와 `df`를 기록한다.
+- 제외분(모델 30개)을 풀려면 먼저 `docs/model_artifacts.md` 절차를 사용자가 승인해야 한다. 절차는 Release 업로드 → 재다운로드 → 전체 해시 → 로딩이다.
+
+### 캡처 설정
+
+"dev만 1초 1장, test 5장 유지, 결정 프레임 항상"은 [PR #241](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/241)에 버전 고정 프로필 `dev_1hz_decisions_v1`로 넣었다. 공용 기록 계층이 없어 러너는 아직 연결하지 않았다. 러너 목록과 연결 방법은 그 PR의 `docs/disk_management.md` 5.1절에 있다.
+
 ## 파일
 
 - 커밋한 기록
