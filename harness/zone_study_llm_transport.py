@@ -4,7 +4,7 @@
 ``EventScheduler`` and a chat completer. The completer is
 ``harness.gemini_proxy.GeminiProxyCompleter`` for the live proxy and the SAME
 class for the offline smoke; only the wire behind the send ledger differs
-(``urllib.request.urlopen`` vs :class:`harness.zone_send_ledger.FixtureWire`).
+(``no_redirect_opener`` vs :class:`harness.zone_send_ledger.FixtureWire`).
 Every HTTP request therefore passes the scheduler's
 :class:`~harness.zone_send_ledger.SendLedger`: the completer's ``http_open`` is
 the ledger opener of the call (``PendingCall.http_open``), and that is its only
@@ -27,14 +27,17 @@ smoke; :func:`live_send_ledger` exists so a runner never builds its own opener.
 """
 from __future__ import annotations
 
-from urllib.request import urlopen
+import threading
+from urllib.error import HTTPError
+from urllib.request import HTTPRedirectHandler, ProxyHandler, build_opener
 
 from harness.gemini_proxy import GeminiProxyCompleter, GeminiProxyError
 from harness.zone_event_scheduler import TransportFailure
 from harness.zone_send_ledger import SendLedger
 from harness.zone_sim_cost import Attempt
+from harness.zone_pilot_network import NetworkFence
 
-TRANSPORT_VERSION = 'ugrp.zone_study_llm_transport.v1'
+TRANSPORT_VERSION = 'ugrp.zone_study_llm_transport.v2'
 
 
 def gemini_client_factory(*, model, url, max_tokens, temperature, reasoning_effort='none', timeout=45.0):
@@ -57,9 +60,23 @@ def gemini_client_factory(*, model, url, max_tokens, temperature, reasoning_effo
     return make
 
 
+class RefuseRedirects(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise HTTPError(req.full_url, code, 'pilot redirects forbidden', headers, fp)
+
+
+def no_redirect_opener():
+    # Do not inherit HTTP_PROXY or the process-global urllib opener either.
+    return build_opener(ProxyHandler({}), RefuseRedirects())
+
+
 def live_send_ledger(*, store_dir):
-    """The send ledger of a LIVE run: the real wire, every request stored on disk."""
-    return SendLedger(urlopen, store_dir=store_dir)
+    """Private redirect-refusing HTTP ledger. A study transport additionally
+    requires PilotSendLedger's durable global budget before it permits live I/O.
+    """
+    ledger = SendLedger(no_redirect_opener().open, store_dir=store_dir)
+    ledger.live = True
+    return ledger
 
 
 class ModelCallTransport:
@@ -80,15 +97,33 @@ class ModelCallTransport:
                 raise TypeError(f'the pipeline needs {name}()')
         self.pipeline, self.send_ledger, self.client_factory = pipeline, send_ledger, client_factory
         self.submitted, self.resolved = [], []
+        self._thread = threading.get_ident()
+        self.guard = getattr(send_ledger, 'guard', None) or NetworkFence()
+        if getattr(send_ledger, 'live', False) and not hasattr(send_ledger, 'budget'):
+            raise ValueError('live study transport requires the persistent PilotSendLedger budget')
+
+    def _assert_thread(self):
+        if threading.get_ident() != self._thread:
+            raise RuntimeError('single-thread model transport required')
 
     def submit(self, call):
+        self._assert_thread()
         self.submitted.append(call.call_id)
         return call
 
     def reply(self, call):
+        self._assert_thread()
+        if getattr(call.http_open, 'ledger', None) is not self.send_ledger:
+            raise RuntimeError('study call must use its own send-ledger opener')
+        with self.guard:
+            return self._reply(call)
+
+    def _reply(self, call):
         self.resolved.append(call.call_id)
         prepared = self.pipeline.prepare_call(call)
         client = self.client_factory(call.http_open)
+        if type(client) is not GeminiProxyCompleter or client.http_open is not call.http_open:
+            raise RuntimeError('study client must be the registered GeminiProxyCompleter with its ledger opener')
         request = prepared.request
         try:
             raw = client.complete(request['messages'], images=request['images'])

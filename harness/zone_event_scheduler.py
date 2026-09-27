@@ -45,6 +45,7 @@ that steps physics from one SIM time to the next.
 from __future__ import annotations
 
 import collections
+import threading
 import heapq
 import math
 from collections.abc import Mapping
@@ -323,9 +324,14 @@ class AttemptBudget:
     when only one is left. A transport that retries internally must reserve each
     of its own attempts through the same object, and ``commit`` reconciles the
     reservation with what the reply actually reports.
+
+    R8: all mutations require the constructing thread. Worker threads may wait
+    for offline futures, but cannot reserve/send/settle. This is an enforced
+    synchronous contract, not an assertion of asynchronous atomicity.
     """
 
     def __init__(self, *, per_actor=None, total=None):
+        self._thread = threading.get_ident()
         self.per_actor = per_actor
         self.total = total
         self.used = collections.Counter()      # committed attempts per actor
@@ -350,6 +356,7 @@ class AttemptBudget:
 
     def reserve(self, actor, count=1):
         """Reserve ``count`` attempts for ``actor``; False when the budget is out."""
+        self._assert_thread()
         if count < 1:
             raise ValueError('an attempt reservation must be at least 1')
         left = self.remaining(actor)
@@ -360,6 +367,7 @@ class AttemptBudget:
         return True
 
     def release(self, actor, count=1):
+        self._assert_thread()
         self.reserved[actor] = max(0, self.reserved[actor] - count)
 
     def commit(self, actor, *, reserved, actual):
@@ -370,11 +378,18 @@ class AttemptBudget:
         can never exceed ``reserved``; an ``actual`` above it is a scheduler bug,
         not a budget event, and raises. Unused reservations are refunded.
         """
+        self._assert_thread()
         if actual > reserved:
             raise AssertionError(f'{actor}: {actual} ledgered attempts but only {reserved} reserved; '
                                  'the send ledger must authorise every request')
         self.release(actor, reserved)
         self.used[actor] += actual
+
+    def _assert_thread(self):
+        # R8: the scheduler/transport pilot is deliberately synchronous. The
+        # ledger lock alone never made reserve/authorise/settle atomic.
+        if threading.get_ident() != self._thread:
+            raise RuntimeError('single-thread attempt budget: reserve/authorise/settle on owner only')
 
     def to_dict(self):
         return {'per_actor': self.per_actor, 'total': self.total, 'used': dict(self.used),

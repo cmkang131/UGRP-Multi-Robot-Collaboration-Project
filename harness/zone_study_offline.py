@@ -415,8 +415,7 @@ class OfflineTrial:
         # (review finding 6).
         utterances = len(value['messages'])
         attempts = (Attempt(outcome='ok', input_tokens=input_tokens,
-                            output_tokens=FIXTURE_OUTPUT_TOKENS_BASE
-                            + FIXTURE_OUTPUT_TOKENS_PER_MESSAGE * utterances,
+                            output_tokens=self.sim_output_tokens(raw, utterances),
                             utterances=utterances),)
         cost = call_cost(attempts, self.params)
         release = round(call.started_sim_s + cost.sim_s, 6)
@@ -441,6 +440,10 @@ class OfflineTrial:
         self._record(call, bundled, value, release, request, provider_usage=provider_usage)
         return CallReply(attempts=attempts, action=value['action'], messages=tuple(messages),
                          provider_usage=provider_usage)
+
+    def sim_output_tokens(self, raw, utterances):
+        """Frozen fixture cost. The real adapter overrides this with a text count."""
+        return FIXTURE_OUTPUT_TOKENS_BASE + FIXTURE_OUTPUT_TOKENS_PER_MESSAGE * utterances
 
     def _archive(self, call, bundled, request, *, status, messages_out, unparsed_utterances=0, error=None,
                  provider_usage=None):

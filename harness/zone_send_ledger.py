@@ -24,12 +24,17 @@ The ledger:
 Openers are bound to one call (:meth:`SendLedger.opener_for`), so a send is
 attributed to its call without any thread-local state. Nothing here reads a
 clock: the entries are deterministic for identical requests.
+
+R8: the counting unit is a proxy POST, not an upstream generation or a bill.
+The real pilot uses PilotSendLedger to reserve up to TWO upstream attempts
+per POST. All ledger I/O is restricted to its creating thread.
 """
 from __future__ import annotations
 
 import hashlib
 import io
 import json
+import os
 import threading
 from pathlib import Path
 from urllib.request import Request
@@ -72,6 +77,7 @@ class SendLedger:
         self._authorize = None
         self._owner = None
         self._lock = threading.Lock()
+        self._thread = threading.get_ident()
         self.entries = []
         self.store_dir = None if store_dir is None else Path(store_dir)
         if self.store_dir is not None:
@@ -99,10 +105,13 @@ class SendLedger:
             return self._send(call_id, actor, request, timeout)
 
         http_open.call_id = call_id
+        http_open.ledger = self
         return http_open
 
     # -- the wire --------------------------------------------------------------
     def _send(self, call_id, actor, request, timeout):
+        if threading.get_ident() != self._thread:
+            raise RuntimeError('single-thread send ledger: only the owner may send')
         body = getattr(request, 'data', None)
         if not isinstance(body, (bytes, bytearray)):
             raise TypeError('a ledgered request must carry its body as bytes (urllib Request.data)')
@@ -143,6 +152,8 @@ class SendLedger:
         path = self.store_dir / f'{row["seq"]:06d}-{safe}-{kind}.json'
         with open(path, 'xb') as handle:          # never overwrite a stored send
             handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
         row[f'{kind}_path'] = path.name
 
     # -- reading -----------------------------------------------------------------

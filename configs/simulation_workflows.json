@@ -3,6 +3,20 @@
   "scope": "entry points; sim_cli does not silently launch models, hardware or training",
   "workflows": [
     {
+      "id": "zone-study-pilot",
+      "purpose": "구역 연구 실어댑터 파일럿: 기본 dry-run, 4조건 pre-flight와 공유 영속 예산",
+      "entry": "scripts/run_zone_study_pilot.py",
+      "docs": "docs/zone_study_pilot.md",
+      "requires": "real calls require --execute, existing --budget-file and verified proxy PID; cohort requires reconciled preflight",
+      "version": "1.0.0",
+      "runner": "scripts.run_zone_study_pilot",
+      "output_flag": "--output",
+      "side_effect": "model_calls",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [],
+      "output_kind": "directory"
+    },
+    {
       "id": "local",
       "purpose": "기본 창·설정·raw action·사용자 제어기",
       "entry": "scripts/sim_cli.py",
