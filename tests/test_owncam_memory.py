@@ -103,6 +103,14 @@ class BoundaryTests(unittest.TestCase):
             '95b6b76cd381e78d71868a938c241aac39c58c4e534ab1608c6d0cb9ce7e256f':
                 'PR #236 sim-speed: opt-in --speedups; default none keeps the unchanged run() call',
         },
+        'sim/zone_scene.py': {
+            'ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714':
+                'PR #208 env v3: ZoneScene also accepts cargo contact profile names (cargo_noslip_v1)',
+        },
+        'sim/zone_landmarks.py': {
+            '2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1':
+                'PR #208 env v3: separate v3/v3a1 tagged-map registries; existing TAGGED_MAPS contract unchanged',
+        },
     }
 
     def test_frozen_m1_files_are_unchanged(self):
