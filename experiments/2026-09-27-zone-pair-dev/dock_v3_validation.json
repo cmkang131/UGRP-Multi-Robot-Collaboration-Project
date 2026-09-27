@@ -1,0 +1,353 @@
+{
+  "schema": "ugrp.zone_pair_dock_static_validation.v1",
+  "labels": [
+    "tags_temporary",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "base_source_sha": "83222fba2fc5a6d240c717bf91ba22e26d19f666",
+  "source_dirty": true,
+  "committed": false,
+  "physical_steps": 0,
+  "physical_step_attempts": 0,
+  "model_calls": 0,
+  "map": {
+    "path": "maps/zones/zone_wide_door_tags_v2_dock_v3.json",
+    "sha256": "ff85120be345f8c264c0a6158bce8b5102ac10aaff4d77e0820cb8cde7a3b4e8"
+  },
+  "dock_profile": {
+    "id": "zone_start_dock_v3",
+    "version": 3,
+    "spawn_x_m": -0.65,
+    "spawn_rows_y_m": [
+      -2.25,
+      -0.85,
+      0.55
+    ],
+    "spawn_yaw_rad": 0.0,
+    "idle_keepout_radius_m": 0.17,
+    "source": "authored static layout; no live robot positions or robot-to-row assignment",
+    "sha256": "96bcf08a25220d825f67070bae64ba18c9292935c06ccb5fae95edebc97c2d0a"
+  },
+  "scene_contract_sha256": "5fc08af67d214eb72aea82b1480502c1e58b6e11c48db4b77eee1f7220c53471",
+  "prereg": {
+    "path": "experiments/2026-09-27-zone-pair-dev/prereg_v3.json",
+    "sha256": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e"
+  },
+  "scene_instances": {
+    "dev05": {
+      "seed": 901,
+      "selection": "zones/zone_wide_door_tags_v2_dock_v3",
+      "resolved_sha256": "c28fab6926a092e620181f338cc9b2b4293aa3dc2fcf1045e748dab808d63f9d",
+      "scope": "setup-only configuration hash; not applied model/XML or runtime truth"
+    },
+    "dev06": {
+      "seed": 902,
+      "selection": "zones/zone_wide_door_tags_v2_dock_v3",
+      "resolved_sha256": "ac2059d31aa2120eea343eab903063d49a591f8facc5d91c73ab110a68348c77",
+      "scope": "setup-only configuration hash; not applied model/XML or runtime truth"
+    }
+  },
+  "static_assumptions": {
+    "sigma_xy_m": 0.05,
+    "sigma_yaw_rad": 0.06,
+    "west_wall_inner_x_m": -1.025,
+    "issued_initial_pwm": {
+      "1": 2000,
+      "3": 740,
+      "4": 2320,
+      "5": 1320,
+      "6": 1500
+    },
+    "scope": "static authored spawns, initial full body, east 8 cm guard, every robot pair, r3/static beam path; no tag visibility/PF/physical success claim"
+  },
+  "geometry": {
+    "dev05": {
+      "seed": 901,
+      "setup_only_spawns": {
+        "r1": [
+          -0.65,
+          -2.25,
+          0.032355118817659255,
+          0.0
+        ],
+        "r3": [
+          -0.65,
+          -0.85,
+          0.032355118817659255,
+          0.0
+        ],
+        "r2": [
+          -0.65,
+          0.55,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "chassis_wall_clearance_m": {
+        "r1": 0.06900857317855691,
+        "r3": 0.06900857317855691,
+        "r2": 0.06900857317855691
+      },
+      "arm_wall_clearance_m": {
+        "r1": 0.18814601419549976,
+        "r3": 0.18814601419549976,
+        "r2": 0.18814601419549976
+      },
+      "east_8cm_static_translation_clear": {
+        "r1": true,
+        "r3": true,
+        "r2": true
+      },
+      "inflated_whole_body_radius_m": {
+        "r1": 0.3309199836668021,
+        "r3": 0.3309199836668021,
+        "r2": 0.3309199836668021
+      },
+      "peer_clearance_lower_bound_m": {
+        "r1-r2": 2.138160032666396,
+        "r1-r3": 0.7381600326663958,
+        "r2-r3": 0.7381600326663958
+      },
+      "r3_to_static_cargo_route_clearance_lower_bound_m": 0.8984140887657398,
+      "static_keepouts": [
+        {
+          "id": "spawn_row_0",
+          "center_m": [
+            -0.65,
+            -2.25
+          ],
+          "radius_m": 0.17,
+          "source": "static_layout_idle_spawn"
+        },
+        {
+          "id": "spawn_row_1",
+          "center_m": [
+            -0.65,
+            -0.85
+          ],
+          "radius_m": 0.17,
+          "source": "static_layout_idle_spawn"
+        },
+        {
+          "id": "spawn_row_2",
+          "center_m": [
+            -0.65,
+            0.55
+          ],
+          "radius_m": 0.17,
+          "source": "static_layout_idle_spawn"
+        }
+      ],
+      "resolved_sha256": "c28fab6926a092e620181f338cc9b2b4293aa3dc2fcf1045e748dab808d63f9d"
+    },
+    "dev06": {
+      "seed": 902,
+      "setup_only_spawns": {
+        "r3": [
+          -0.65,
+          -2.25,
+          0.032355118817659255,
+          0.0
+        ],
+        "r2": [
+          -0.65,
+          -0.85,
+          0.032355118817659255,
+          0.0
+        ],
+        "r1": [
+          -0.65,
+          0.55,
+          0.032355118817659255,
+          0.0
+        ]
+      },
+      "chassis_wall_clearance_m": {
+        "r3": 0.06900857317855691,
+        "r2": 0.06900857317855691,
+        "r1": 0.06900857317855691
+      },
+      "arm_wall_clearance_m": {
+        "r3": 0.18814601419549976,
+        "r2": 0.18814601419549976,
+        "r1": 0.18814601419549976
+      },
+      "east_8cm_static_translation_clear": {
+        "r3": true,
+        "r2": true,
+        "r1": true
+      },
+      "inflated_whole_body_radius_m": {
+        "r3": 0.3309199836668021,
+        "r2": 0.3309199836668021,
+        "r1": 0.3309199836668021
+      },
+      "peer_clearance_lower_bound_m": {
+        "r1-r2": 0.7381600326663958,
+        "r1-r3": 2.138160032666396,
+        "r2-r3": 0.7381600326663958
+      },
+      "r3_to_static_cargo_route_clearance_lower_bound_m": 0.8284140887657399,
+      "static_keepouts": [
+        {
+          "id": "spawn_row_0",
+          "center_m": [
+            -0.65,
+            -2.25
+          ],
+          "radius_m": 0.17,
+          "source": "static_layout_idle_spawn"
+        },
+        {
+          "id": "spawn_row_1",
+          "center_m": [
+            -0.65,
+            -0.85
+          ],
+          "radius_m": 0.17,
+          "source": "static_layout_idle_spawn"
+        },
+        {
+          "id": "spawn_row_2",
+          "center_m": [
+            -0.65,
+            0.55
+          ],
+          "radius_m": 0.17,
+          "source": "static_layout_idle_spawn"
+        }
+      ],
+      "resolved_sha256": "ac2059d31aa2120eea343eab903063d49a591f8facc5d91c73ab110a68348c77"
+    }
+  },
+  "tests": {
+    "passed": 540,
+    "deselected": 2,
+    "seconds": 23.3,
+    "selection": [
+      "tests/test_zone_pair*.py",
+      "tests/test_zone_own_executor*.py",
+      "tests/test_zone_start_dock.py",
+      "tests/test_simulation_workflow_manager.py"
+    ],
+    "exclusions": {
+      "test_team_host_isolation_abort_and_horizon_on_the_real_world": "physical world/step forbidden",
+      "test_parent_exit_cleans_background_child": "existing test failed with PermissionError: ps blocked by sandbox"
+    },
+    "env": {
+      "OMP_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "pytest_args": [
+      "-q",
+      "--basetemp=./.pytest_tmp",
+      "-p",
+      "no:cacheprovider",
+      "--tb=short"
+    ],
+    "step_tripwire": [
+      "mujoco.mj_step",
+      "mujoco.mj_step1",
+      "mujoco.mj_step2"
+    ],
+    "pytest_tmp_removed": true,
+    "prepare": "dev05/dev06 subprocesses with MuJoCo import forbidden: prepared_not_executed, applied=null, exact prereg bytes, new map and old ORDER; temporary test outputs removed",
+    "fake_runtime": "normal and abort, v2/v3, matching and mismatched timestep; no simulator world"
+  },
+  "preserved_files": [
+    {
+      "path": "maps/zones/zone_wide_door_tags_v2.json",
+      "sha256": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b",
+      "equals_base_HEAD": true
+    },
+    {
+      "path": "sim/zone_arena.py",
+      "sha256": "8e9e6df8b231b4eaafb5a0f671eaf2d30f425d53a3939d419739ef5c2bf8ae88",
+      "equals_base_HEAD": true
+    },
+    {
+      "path": "sim/zone_landmarks.py",
+      "sha256": "e171482355dcbcd902f68527d380df28a506188b2058c99a07575f0916aa55f6",
+      "equals_base_HEAD": true
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json",
+      "sha256": "85334a68bae0d35c197c612cd610c84307c0eba268a34247e71f4e233a0fe0f3",
+      "equals_base_HEAD": true
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json",
+      "sha256": "896091d17022d569dfb34123587712395bf9870d065ce2b438d38acedee9108b",
+      "equals_base_HEAD": true
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json",
+      "sha256": "34ab87dc51467226221ca8c991e960bc0715a9bad9c67764b98b99049e9683c4",
+      "equals_base_HEAD": true
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/diagnosis_v3.json",
+      "sha256": "db565a1c76008c7dbade041a69167d9ea1e178e5f70c897f18f7c2efddea8514",
+      "equals_base_HEAD": true
+    }
+  ],
+  "frozen_m2_imports": {
+    "count": 32,
+    "all_sha256_match": true
+  },
+  "rgb_bundle": {
+    "local_ref_max_version": 63,
+    "new_bundle": null,
+    "changed_in_source_closure": [],
+    "added_to_source_closure": [],
+    "ref_inventory": "experiments/2026-09-27-zone-pair-dev/dock_v3_ref_inventory.json"
+  },
+  "changed_files": [
+    "configs/simulation_workflows.json",
+    "experiments/2026-09-27-zone-pair-dev/README.md",
+    "experiments/2026-09-27-zone-pair-dev/diagnosis_v3.md",
+    "experiments/2026-09-27-zone-pair-dev/dock_v3.md",
+    "experiments/2026-09-27-zone-pair-dev/dock_v3_ref_inventory.json",
+    "experiments/2026-09-27-zone-pair-dev/dock_v3_validation.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v3.json",
+    "harness/zone_own_team_host.py",
+    "maps/zones/zone_wide_door_tags_v2_dock_v3.json",
+    "scripts/run_ci_tests.py",
+    "scripts/run_zone_pair_dev.py",
+    "scripts/zone_pair_dev_contract.py",
+    "scripts/zone_pair_dev_runtime.py",
+    "sim/workflow_manager.py",
+    "sim/zone_dock_scene.py",
+    "sim/zone_start_dock.py",
+    "tests/test_zone_pair_dev.py",
+    "tests/test_zone_start_dock.py"
+  ],
+  "changed_files_sha256": {
+    "configs/simulation_workflows.json": "dbe252cc2dbbb7d38c9574d914868dbba12edc675734c01420b5dc15a62b43c9",
+    "experiments/2026-09-27-zone-pair-dev/README.md": "745428014a1f243dc3bcc2efee218e9ad4fb353df3cd2fea6a6651e3a4631a4b",
+    "experiments/2026-09-27-zone-pair-dev/diagnosis_v3.md": "64fb15e7bf6c5d2da342381fb2b31a84bddb60273a2cdbd98084ed537c28ba7e",
+    "experiments/2026-09-27-zone-pair-dev/dock_v3.md": "2e826d77704ff0b2fafff155cdf7b2b5b7cf803929454c7695a197f8703207d8",
+    "experiments/2026-09-27-zone-pair-dev/dock_v3_ref_inventory.json": "2884a3f07546d09f0b2b461022584f5492a24bb422cbdb733aa14cca0bf963e4",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v3.json": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e",
+    "harness/zone_own_team_host.py": "9a3f94547575c14d33328833fcda96ed8bf9c210478fa7999d1218b8a8284e13",
+    "maps/zones/zone_wide_door_tags_v2_dock_v3.json": "ff85120be345f8c264c0a6158bce8b5102ac10aaff4d77e0820cb8cde7a3b4e8",
+    "scripts/run_ci_tests.py": "ab606f4ff4eb3b25257004e924a8439e6cb029c9d0a2d1ef35044d34370d9ea4",
+    "scripts/run_zone_pair_dev.py": "ad829b4148aaaf859f47c871f5e0799883b744bf6bb21f46df5495b29b1e88e6",
+    "scripts/zone_pair_dev_contract.py": "641094904eacaae0a78f877b14b4cb525aefc8695d375176b51e59a3245a2d37",
+    "scripts/zone_pair_dev_runtime.py": "3c1cd30e105a1159ae2757e85e318281e299e916a6f93ed7139c185b76fa9a45",
+    "sim/workflow_manager.py": "451fe9646510ca9e0dd8b0b5b7a3b663152616a79331b78e0d8755bea42aa3a9",
+    "sim/zone_dock_scene.py": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+    "sim/zone_start_dock.py": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+    "tests/test_zone_pair_dev.py": "e1795d3a4a70186eeb80680ecb90399ac5606184a79bc0956eb0d30753996587",
+    "tests/test_zone_start_dock.py": "ef5ed8303efed766e30f7a5707b05cef00fd24f1df75803ec43c997578654821"
+  },
+  "record_self_hash": "omitted to avoid self-reference",
+  "remaining": [
+    "Coordinator review/commit/clean source freeze before physical execution",
+    "dev05/dev06 physical execution and startup visibility/PF/pickup/runtime r3 contact verification not performed",
+    "walls_v3(PR #208) 적용은 후속 작업",
+    "TensorBoard conversion/display after coordinator retrieves actual physical results"
+  ],
+  "storage": "local worktree only; no Drive; no commit/push; no primary/raw changes"
+}
