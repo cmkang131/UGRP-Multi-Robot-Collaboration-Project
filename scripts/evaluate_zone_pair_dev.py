@@ -78,12 +78,13 @@ def audit_protocol(status, commands, shutdown, required_go=(), *, require_abort=
 
 
 def planned_setdown(row, prereg, protocol):
-    """Evaluation-only exemption for an authorized, stationary route checkpoint.
+    """Return a candidate command window, not a physical set-down exemption.
 
     A state name alone is insufficient: both robots must be in the matching
     segment, within the paired lower-GO -> next carry-GO window and near its
     preregistered static target. Tilt, penetration and forbidden contacts are
-    never exempt. The last target is destination placement, not a regrasp.
+    never exempt. score also requires grip or current floor support, and closes
+    the exemption on confirmed re-lift. The last target is destination placement.
     """
     c, go = prereg['criteria'], protocol.get('go_times', {})
     targets = prereg['planned_setdown']['route_endpoints_m']
@@ -102,6 +103,25 @@ def planned_setdown(row, prereg, protocol):
                 and min(p[2] for p in row['beam_corners']) >= -c['floor_penetration_tolerance_m']):
             return i
     return None
+
+
+def floor_supported(row, previous, criteria):
+    """All eight corners near their floor-rest heights with low vertical speed.
+
+    EvalObserver orders box corners by product((-1, 1), repeat=3), so each
+    even/odd pair is a local vertical edge. Its length is the beam thickness,
+    not the current world-Z extent (which would also accept a tilted beam).
+    Reuse the registered release/floor tolerances; no new numeric threshold.
+    """
+    if previous is None or not 0 < row['t'] - previous['t'] <= criteria['max_sample_gap_s']:
+        return False
+    corners = row['beam_corners']
+    thickness = math.dist(corners[0], corners[1])
+    dt = row['t'] - previous['t']
+    return (all(-criteria['floor_penetration_tolerance_m'] <= p[2] - (i % 2) * thickness
+                <= criteria['release_bottom_m'] for i, p in enumerate(corners))
+            and all(abs(p[2] - q[2]) / dt <= criteria['release_speed_m_s']
+                    for p, q in zip(corners, previous['beam_corners'])))
 
 
 def score(manifest, prereg, rows, contacts, protocol, *, video_review=None):
@@ -142,11 +162,35 @@ def score(manifest, prereg, rows, contacts, protocol, *, video_review=None):
             if (len(r['beam_corners']) != 8 or set(r['robots']) != {'r1', 'r2', 'r3'} or set(r['finger_n']) != set(PAIR)
                     or set(r['segments']) != set(PAIR)):
                 raise ValueError('incomplete geometry or fingers')
-        setdowns = [planned_setdown(r, prereg, protocol) for r in rows]
+        grip = lambda r: all(len(r['finger_n'][rid]) == 2 and min(r['finger_n'][rid]) >= c['grasp_finger_n'] for rid in PAIR)
+        bottom = lambda r: min(p[2] for p in r['beam_corners'])
+        setdowns, supported_at, relifted_at = [], {}, {}
+        previous = previous_segment = relift_since = None
+        for r in rows:
+            segment = planned_setdown(r, prereg, protocol)
+            supported = floor_supported(r, previous, c)
+            if (segment != previous_segment or previous is None
+                    or not 0 < r['t'] - previous['t'] <= c['max_sample_gap_s']):
+                relift_since = None
+            if segment is not None and supported:
+                supported_at.setdefault(segment, r['t'])
+            if segment is not None and segment in supported_at and grip(r) and bottom(r) >= c['lift_bottom_m']:
+                if relift_since is None:
+                    relift_since = r['t']
+                if r['t'] - relift_since >= c['lift_dwell_s'] - 1e-8:
+                    relifted_at.setdefault(segment, r['t'])
+            else:
+                relift_since = None
+            # Releasing is safe only while currently supported. A later
+            # landing/recontact cannot erase a loss or reopen a re-lifted window.
+            setdowns.append(segment if segment is not None and segment not in relifted_at
+                            and (grip(r) or supported) else None)
+            previous, previous_segment = r, segment
         evidence['planned_setdowns'] = [
             {'segment': i, 'kind': 'destination' if i == len(prereg['planned_setdown']['route_endpoints_m']) - 1 else 'checkpoint',
              'first_observed_s': min(r['t'] for r, s in zip(rows, setdowns) if s == i),
              'last_observed_s': max(r['t'] for r, s in zip(rows, setdowns) if s == i),
+             'floor_supported_at_s': supported_at.get(i), 'relifted_at_s': relifted_at.get(i),
              'samples': setdowns.count(i)} for i in sorted({s for s in setdowns if s is not None})]
         # GT approach position at each locally consumed approach GO, not the controller's arrival claim alone.
         approach = {}
@@ -159,8 +203,6 @@ def score(manifest, prereg, rows, contacts, protocol, *, video_review=None):
                 yaw = abs((actual[2] - target[2] + math.pi) % (2 * math.pi) - math.pi)
                 approach[rid] = math.dist(actual[:2], target[:2]) <= c['approach_xy_m'] and yaw <= math.radians(c['approach_yaw_deg'])
         checks['approach'] = set(approach) == set(PAIR) and all(approach.values())
-        grip = lambda r: all(len(r['finger_n'][rid]) == 2 and min(r['finger_n'][rid]) >= c['grasp_finger_n'] for rid in PAIR)
-        bottom = lambda r: min(p[2] for p in r['beam_corners'])
         grasp_at = sustained(rows, grip, c['grasp_dwell_s'], c['max_sample_gap_s'])
         lifted_at = sustained(rows, lambda r: grip(r) and bottom(r) >= c['lift_bottom_m'], c['lift_dwell_s'], c['max_sample_gap_s'])
         checks['joint_grasp'], checks['lift'] = grasp_at is not None, lifted_at is not None
@@ -207,7 +249,7 @@ def score(manifest, prereg, rows, contacts, protocol, *, video_review=None):
         checks['placement_release'] = stable is not None and placed(rows[-1]) and bool(speeds) and max(speeds) <= c['release_speed_m_s']
         drops = [r['t'] for r, setdown in zip(rows, setdowns) if lifted_at is not None and r['t'] >= lifted_at and
                  (r['tilt_deg'] > c['max_transport_tilt_deg'] or bottom(r) < -c['floor_penetration_tolerance_m']
-                  or (bottom(r) < c['drop_bottom_m'] and setdown is None))]
+                  or ((bottom(r) < c['drop_bottom_m'] or not grip(r)) and setdown is None))]
         checks['no_drop'] = lifted_at is not None and not drops
         forbidden = ('robot_robot', 'robot_wall', 'beam_wall', 'robot_beam_approach', 'r3_interference')
         checks['contacts'] = checks['contacts_complete'] and all(contacts['counts'][k] == 0 for k in forbidden)

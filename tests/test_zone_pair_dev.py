@@ -272,6 +272,98 @@ def test_review_p1_planned_setdown_at_240_can_complete_door_then_release():
     assert result['evidence']['door_at_s'] > 4.9
 
 
+def set_beam_bottom(row, height):
+    dz = height - min(p[2] for p in row['beam_corners'])
+    row['beam_xyz'][2] += dz
+    for corner in row['beam_corners']:
+        corner[2] += dz
+
+
+@pytest.mark.parametrize('lost_robots', [('r1',), ('r2',), ev.PAIR])
+def test_review2_p1_destination_freefall_before_floor_support_fails(lost_robots):
+    m, p, rows, contacts, protocol = good_evidence()
+    # At B, lower GO authorizes lowering but the beam falls horizontally from
+    # 5 cm before the descending arms regain contact. Final release is normal.
+    falling = [r for r in rows if 8. <= r['t'] < 8.2]
+    for row, height in zip(falling, (.05, .03, .005, 0.)):
+        set_beam_bottom(row, height)
+        for rid in lost_robots:
+            row['finger_n'][rid] = [0., 0.]
+    result = ev.score(m, p, rows, contacts, protocol, video_review={'verified': True})
+    assert result['checks']['placement_release'], result
+    assert not result['checks']['no_drop'], result
+    assert 8. in result['evidence']['drop_samples']
+    assert not result['physical_success']
+
+
+@pytest.mark.parametrize('fault', ['none', 'grip_loss', 'height_loss'])
+def test_review2_p1_relift_closes_setdown_before_next_carry_go(fault):
+    m, p, rows, contacts, protocol = checkpoint_evidence()
+    # Re-lift is sustained at 4.65..4.85; delay carry GO until 5.20, leaving
+    # time for a second drop in wait_carry and recovery before normal transport.
+    extra = []
+    for i in range(6):
+        row = copy.deepcopy(rows[97])
+        row['t'] = round(4.9 + .05 * i, 8)
+        row['states'] = {r: 'wait_carry' for r in ev.PAIR}
+        if fault != 'none':
+            set_beam_bottom(row, (.05, .025, 0., 0., .05, .05)[i])
+            if fault == 'grip_loss' and i < 4:
+                row['finger_n'] = {r: [0., 0.] for r in ev.PAIR}
+        extra.append(row)
+    for row in rows[98:]:
+        row['t'] = round(row['t'] + .3, 8)
+    rows[98:98] = extra
+    m['sim_end_s'] += .3
+    contacts.update(physics_steps=6900, observation_end_s=13.8)
+    protocol['go_times'].update(carry_go_2=5.2, lower_go_7=9.8)
+    result = ev.score(m, p, rows, contacts, protocol, video_review={'verified': True})
+    assert result['checks']['no_drop'] is (fault == 'none'), result
+    assert result['physical_success'] is (fault == 'none'), result
+    checkpoint = next(s for s in result['evidence']['planned_setdowns'] if s['segment'] == 1)
+    assert checkpoint['floor_supported_at_s'] == 3.45
+    assert checkpoint['relifted_at_s'] == 4.85
+    assert checkpoint['last_observed_s'] < checkpoint['relifted_at_s']
+    if fault == 'none':
+        assert result['checks']['placement_release'], result
+    if fault != 'none':
+        assert 5. in result['evidence']['drop_samples']
+        assert 5.05 in result['evidence']['drop_samples']  # settled again; exemption stays closed
+    if fault == 'grip_loss':
+        assert 4.9 in result['evidence']['drop_samples']
+
+
+@pytest.mark.parametrize('fault', ['none', 'fast_touchdown', 'one_end_on_floor', 'single_finger_lost'])
+def test_review2_p1_released_beam_needs_all_corner_floor_support_and_low_vertical_speed(fault):
+    m, p, rows, contacts, protocol = good_evidence()
+    if fault == 'fast_touchdown':
+        # Both samples are within the floor-height tolerance, but the first
+        # released sample is still descending at 0.1 m/s.
+        set_beam_bottom(rows[179], .005)
+    elif fault == 'one_end_on_floor':
+        # Rigid pitch below the transport tilt limit: only one end rests on
+        # the floor. Keep it stationary so vertical speed alone cannot reject it.
+        angle = .03
+        for row in rows[179:181]:
+            center = [sum(p[k] for p in row['beam_corners']) / 8 for k in range(3)]
+            for corner in row['beam_corners']:
+                x, z = corner[0] - center[0], corner[2] - center[2]
+                corner[0] = center[0] + math.cos(angle) * x + math.sin(angle) * z
+                corner[2] = center[2] - math.sin(angle) * x + math.cos(angle) * z
+            row['beam_xyz'] = center
+            set_beam_bottom(row, 0.)
+            row['tilt_deg'] = math.degrees(angle)
+    elif fault == 'single_finger_lost':
+        # One remaining finger on r2 is insufficient before floor support.
+        set_beam_bottom(rows[160], .05)
+        rows[160]['finger_n']['r2'] = [2., 0.]
+    result = ev.score(m, p, rows, contacts, protocol, video_review={'verified': True})
+    assert result['checks']['no_drop'] is (fault == 'none'), result
+    assert result['physical_success'] is (fault == 'none'), result
+    if fault != 'none':
+        assert (8. if fault == 'single_finger_lost' else 9.) in result['evidence']['drop_samples']
+
+
 @pytest.mark.parametrize('fault', ['no_lower_go', 'one_robot_lowering', 'wrong_segment', 'off_checkpoint',
                                    'tilted_setdown', 'floor_penetration', 'wall_contact', 'drop_after_regrasp',
                                    'grounded_exit', 'ungripped_exit', 'not_carrying_exit'])
