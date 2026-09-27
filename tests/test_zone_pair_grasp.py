@@ -14,7 +14,7 @@ import pytest
 from harness.zone_own_guards import OwnPose
 from harness.zone_pair_geometry import PairSweepGuard
 from harness.zone_pair_grasp import FIX_STD_XY_M, FIX_STD_YAW_RAD
-from tests.test_zone_pair_executor import ROOT, active, m2_controller, pair_obs, setup, start
+from tests.test_zone_pair_executor import ROOT, active, beam_fit, m2_controller, pair_obs, setup, start
 from tests.test_zone_own_executor import rgb_of
 
 
@@ -163,7 +163,7 @@ def test_close_requires_current_own_readiness(fault):
     assert not any(s == 1 and p < 2000 for _, s, p in ep.controller.arm.events)
 
 
-def test_two_robots_close_on_same_go_only_after_both_announce_ready():
+def test_two_robots_close_on_same_go_only_after_both_announce_ready(beam_fit):
     _, _, eps = real_pair()
     a, b = eps.values()
     for ep in eps.values():
@@ -282,7 +282,7 @@ def test_v4_prepare_rejects_changed_contract(tmp_path, fault):
     assert not args.output.exists()
 
 
-def test_host_issues_synchronized_close_then_confirms_only_from_later_rgb():
+def test_host_issues_synchronized_close_then_confirms_only_from_later_rgb(beam_fit):
     host, _, eps = real_pair()
     for ep in eps.values():
         ready_to_close(ep, 1.)
@@ -308,7 +308,7 @@ def test_host_issues_synchronized_close_then_confirms_only_from_later_rgb():
     assert closing['r1'][-1] == (1.7, 1500)
 
 
-def test_one_ready_robot_waits_open_and_stops_at_close_timeout():
+def test_one_ready_robot_waits_open_and_stops_at_close_timeout(beam_fit):
     _, _, eps = real_pair()
     a, b = eps.values()
     ready_to_close(a, 1.)

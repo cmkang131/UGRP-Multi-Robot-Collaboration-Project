@@ -17,6 +17,30 @@ FIX_STD_YAW_RAD = math.radians(3.)
 CLOSE_WAIT_S = 20.
 
 
+def stationary_beam_estimate(obs, servo):
+    """Fresh own RGB fit, never the planned/stored grip or a commanded tool pose.
+
+    Reject clipped/partial end fits. Use transverse fit scatter as a position
+    uncertainty and its angle over visible length as an axis uncertainty.
+    These are dev geometry bounds, not calibrated localization accuracy.
+    """
+    from harness.owncam_pair_beam_v2 import observe_beam
+
+    beam = observe_beam(obs['image'], servo)
+    grip = beam.get('grip_base_m')
+    spread, length = beam.get('lateral_spread_m'), beam.get('visible_length_m')
+    if (not beam.get('visible') or not beam.get('end_visible')
+            or beam.get('grip_source') != 'band_centre'
+            or not isinstance(grip, (list, tuple)) or len(grip) != 2
+            or not all(finite_number(v) for v in (*grip, beam.get('axis_heading_rad'), spread, length))
+            or spread < 0 or length <= 0):
+        return None
+    syaw = math.atan2(spread, length)
+    if spread > FIX_STD_XY_M or syaw > FIX_STD_YAW_RAD:
+        return None
+    return {**beam, 'std_xy_m': spread, 'std_yaw_rad': syaw}
+
+
 class PairGraspRelook:
     """Mixin before M2DoorStudent. All live inputs come from the own port."""
 
@@ -148,8 +172,9 @@ class PairGraspRelook:
         ready = (self.pregrasp_done and self._grasp_pose_ready(now)
                  and own.servo.get(1) == m2.study.OPEN
                  and all(own.servo.get(k) == v for k, v in self.grasp_pose.items() if k != 1)
-                 and valid_frame(obs, self.rid, now) and m2.grip_view_m2(obs['image'])['seen'])
-        self.report('close', obs, now, ready=ready, reason='own relook + open grip view')
+                 and valid_frame(obs, self.rid, now) and m2.grip_view_m2(obs['image'])['seen']
+                 and self.preclose_check(now, obs))
+        self.report('close', obs, now, ready=ready, reason='own relook + open grip view + stationary beam clearance')
         if not ready:
             return self.fail('PREGRASP_NOT_READY', now)
         if now - self.state_t > CLOSE_WAIT_S:

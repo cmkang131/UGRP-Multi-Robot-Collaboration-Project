@@ -32,6 +32,22 @@ ORDER = {'orders': [{'order_id': 'cargoX', 'kind': 'long_beam', 'count': 1, 'req
 SHEETS = {'cargoX': m2.pa.coarse_order_sheet([1., .05, 0.])}
 
 
+@pytest.fixture
+def beam_fit(monkeypatch):
+    """Explicit own-RGB geometry fixture, independent of recorded grip pixels.
+
+    The grip JPEG tests the existing close-view classifier only; it does not
+    establish an unclipped whole-beam pose. Scheduling positives supply that
+    separate observation here, rather than silently assuming attachment.
+    """
+    from harness import owncam_pair_beam_v2 as ob2
+    beam = dict(visible=True, end_visible=True, grip_source='band_centre',
+                grip_base_m=[.162, 0.], axis_heading_rad=0.,
+                lateral_spread_m=.001, visible_length_m=.5)
+    monkeypatch.setattr(ob2, 'observe_beam', lambda image, servo: dict(beam))
+    return beam
+
+
 def pair_obs(rid, fid, now, servo):
     result = obs(rid, fid, now, servo)
     jpeg = (ROOT / 'tests/fixtures/m2_pair_door_v3/lift_824_r2_00759.jpg').read_bytes()
@@ -292,7 +308,7 @@ def test_done_is_joint_sequence_completion_never_zone_success():
 
 
 @pytest.mark.parametrize('start_s', [0., .55])
-def test_host_drives_checkpoint_barriers_to_joint_done_with_identical_go_times(start_s):
+def test_host_drives_checkpoint_barriers_to_joint_done_with_identical_go_times(start_s, beam_fit):
     host, exs = setup(factory=PhasedM2)
     if start_s:
         host.world.data.time = start_s

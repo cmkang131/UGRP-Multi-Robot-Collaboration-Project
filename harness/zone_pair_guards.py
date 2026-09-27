@@ -125,6 +125,33 @@ class PairCommandGuard:
         # Phase names and a closed PWM are not evidence of a held object.
         return bool(getattr(self.ep.controller, 'beam_grasp_confirmed', False))
 
+    def preclose_check(self, now, obs):
+        """Unattached stationary beam gate, shared by READY and each close PWM.
+
+        No cached beam, order-sheet pose or wrist attachment fallback. Losing
+        the own RGB estimate while closing safely aborts the remaining queue.
+        """
+        from harness.zone_pair_grasp import FIX_STD_XY_M, FIX_STD_YAW_RAD, stationary_beam_estimate
+        from harness.zone_pair_vision import valid_frame
+
+        own = self.ep.own
+        pose = OwnPose.from_report(own.last_report)
+        if (not pose_report_fresh(own.last_report, now) or pose is None or not own.gate.ok
+                or not 0 <= pose.std_xy <= FIX_STD_XY_M or not 0 <= pose.std_yaw <= FIX_STD_YAW_RAD
+                or now < self.motion_until or not valid_frame(obs, own.robot_id, now)):
+            return False
+        beam = stationary_beam_estimate(obs, own.servo)
+        if beam is None:
+            self.ep.log(own.robot_id, 'preclose_beam_guard', now, clear=False, reason='BEAM_UNCERTAIN')
+            return False
+        guard = PairSweepGuard(own.guard, self.ep.plan['beam_geometry'], self.ep.arguments['role'])
+        clearance, wall = guard.stationary_beam_clearance(beam, pose)
+        clear = clearance >= 0.  # margin() already includes the unchanged 35 mm
+        self.ep.log(own.robot_id, 'preclose_beam_guard', now, clear=clear,
+                    clearance_after_margin_m=clearance, wall_id=wall,
+                    frame_id=obs['frame_id'], sha256=obs['sha256'], beam=beam)
+        return clear
+
     def _pose(self, now):
         report = self.ep.own.last_report
         pose = OwnPose.from_report(report)
@@ -229,6 +256,10 @@ class PairCommandGuard:
             if cmd['kind'] in ('arm', 'look'):
                 sid = 6 if cmd['kind'] == 'look' else int(cmd['servo_id'])
                 target = {**servo, sid: cmd['pan_pulse'] if sid == 6 and cmd['kind'] == 'look' else cmd['pulse']}
+                if (sid == 1 and target[1] < servo.get(1, 2000) and not self.carrying_beam
+                        and not self.preclose_check(now, own.last_obs)):
+                    reason = 'PREGRASP_BEAM_UNSAFE'
+                    break
                 if self.reobserving:
                     result = self.recheck.check(now, guard, servo, target, pose, loaded=self.carrying_beam)
                     if result == 'wait':

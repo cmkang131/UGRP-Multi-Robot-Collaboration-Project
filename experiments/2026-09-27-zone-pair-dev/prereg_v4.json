@@ -398,7 +398,8 @@
     "sweeps_max": 2,
     "close_wait_s": 20.0,
     "attachment": "own RGB grip-view after issued CLOSED, segment bound; cleared on issued OPEN; post-lift co-motion still required",
-    "close": "own open grip-view and pose readiness -> close_ready_i -> same-grid close_go_i; evidence TTL 0.6 s",
+    "close": "own open grip-view, pose readiness and fresh stationary RGB beam clearance -> close_ready_i -> same-grid close_go_i; recheck beam before every close PWM; evidence TTL 0.6 s",
+    "stationary_beam": "unclipped own RGB band-centre/axis fit + static floor-supported catalogue geometry; no wrist attachment or stored-grip fallback; 35 mm + own pose inflation + 2*(fit scatter + atan2(scatter, visible length)*lever); missing/uncertain/unsafe fit aborts",
     "evaluation_state_equivalence": {
       "pregrasp_descend": "grasp",
       "wait_close": "grasp"
@@ -407,26 +408,29 @@
     "weld": false,
     "qualification": "not physically executed; no inherited result",
     "source_sha256": {
-      "harness/zone_pair_grasp.py": "a4fe0847b1d8fef3a09fc51dffb4e46929ce124e41fc189251b7073e32f7390d",
-      "harness/zone_pair_executor.py": "4d8d12705066af106b9f1c5221164e44b6106383e73f5b4c8b284273f33e9e6e",
-      "harness/zone_pair_guards.py": "f996661d5fc6e9c4ec5915d43edc5ac8524d11d367f52dec835d76297d4994ee",
-      "harness/zone_pair_geometry.py": "938f7308b752491d706e3367ec74d8f7cc68ef10675a041c647cf9d55b604038",
+      "harness/zone_pair_grasp.py": "0207713345cc7d6918a1a9d4efb6238ac21bf3c577564dbbc2f58bba5fc55337",
+      "harness/zone_pair_executor.py": "6a5ba509a7488b74f6a1a1083cf49c32070da1fbd8afe9e3d2d9bec7adfc3c7e",
+      "harness/zone_pair_guards.py": "75dc6024c2484b88058cb55299bf83defde03e4dd47b71d0f2183d68e2049d07",
+      "harness/zone_pair_geometry.py": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
       "harness/zone_pair_status.py": "bdacc2369212bdd8810d2f91498e971af572e1ef037a34baf76828a2702b1926",
       "harness/zone_pair_vision.py": "8552c044d498a6c3e02efdc7f53ca72c9b11c4b17b87abfa159e780673d8c7d4",
       "harness/owncam_pose_source.py": "9e0b458e88969327e51fba73d43fa7e868d57547e5976e279098cde793f9f72b",
       "harness/owncam_localizer.py": "0304d7c491dfe6ae68cea6550f7a13e3c99e8e1d3f8e8b6c4b7b1d06893b1d63",
+      "harness/owncam_pair_beam.py": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+      "harness/owncam_pair_beam_v2.py": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+      "harness/owncam_view.py": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
       "harness/zone_own_guards.py": "eec5b4942e4fa186fd7a40c3d47b087614055d35dad900d8126adb97d381f617",
       "scripts/run_zone_pair_dev.py": "2c40aaf99149ef250abb1bec879453576f70e0da09e5ca825e320cc8041afc18",
       "scripts/zone_pair_dev_runtime.py": "3c1cd30e105a1159ae2757e85e318281e299e916a6f93ed7139c185b76fa9a45",
-      "scripts/zone_pair_grasp_contract.py": "2dfc0756ad642744dfa1b1f97e5a01105e3624533f4d588dbad17c3501642cea",
+      "scripts/zone_pair_grasp_contract.py": "4ce345b24429f666c11751c27ceaee11576d996f90f5b07bb2097a007094d99f",
       "scripts/evaluate_zone_pair_dev.py": "679bf4c48fbb57317d1df697694738ae4393bf7cecfa080192593379cdc9b03d",
       "configs/simulation_workflows.json": "55f67d968f0ad889dd9dd380a09d0eca5e4c285b6ad67e7e099ef78dd1839842"
     },
-    "sha256": "1b7cec431b60bf9f701d3e38ab20ba486c2ad1d25c236b68a3e0454726fd2d7f"
+    "sha256": "059d507e9516333be7e76bec31a3d0d8bc29f1b41d820fbd8a671514d2f5bc4b"
   },
   "changes_from_v3": {
     "controller": "Mandatory own RGB look updates shared pose; requires a new tag in the sweep, sigma xy <=0.05 m and yaw <=3 deg; no VO-only skip.",
-    "guard": "Whole beam attached to own commanded wrist only after issued CLOSED plus fresh own RGB grip-view; released/old-segment evidence invalidated. Arm/chassis guards, 35 mm margin and covariance inflation unchanged.",
+    "guard": "Before close READY and every close PWM, check stationary whole-beam own RGB fit against static walls/posts with unchanged 35 mm + own uncertainty, adding beam-fit uncertainty; missing/uncertain/unsafe estimate aborts. Attached beam still requires issued CLOSED plus fresh own RGB grip-view; no stored-grip/tool attachment fallback before confirmation.",
     "synchronization": "Open descent -> own readiness on fixed close_ready_i -> common close_go_i -> close; no peer pose or free text. TTL and original arm timing unchanged.",
     "cohort": "dev07/903 and dev08/904; same two setup cargo poses/order/intervention as v3, new seeded spawn/PF draws.",
     "judgement": "criteria/stage_rules/planned_setdown/limits/timing/safety_coverage exactly v3; no success inherited.",

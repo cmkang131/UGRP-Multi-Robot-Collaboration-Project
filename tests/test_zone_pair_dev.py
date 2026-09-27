@@ -17,6 +17,7 @@ from types import SimpleNamespace as NS
 
 import pytest
 
+from tests.test_zone_pair_executor import beam_fit
 from scripts import run_zone_pair_dev as dev
 from scripts import evaluate_zone_pair_dev as ev
 from scripts.zone_pair_dev_runtime import endpoint, make_scene, queue_snapshot
@@ -793,7 +794,7 @@ def test_real_pairteam_fake_host_abort_is_auditable_without_physics():
 @pytest.mark.parametrize('case_index', [0, 1])
 @pytest.mark.parametrize('mismatched_timestep', [False, True])
 @pytest.mark.parametrize('registration', [2, 3, 4])
-def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_path, monkeypatch, case_index, mismatched_timestep, registration):
+def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_path, monkeypatch, case_index, mismatched_timestep, registration, beam_fit):
     pytest.importorskip('mujoco', reason='frozen M2 import required; physical world/observer replaced with fakes')
     import mujoco
     from harness.zone_own_team_host import OwnCamTeamHost

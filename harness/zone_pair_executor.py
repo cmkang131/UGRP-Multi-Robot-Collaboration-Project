@@ -125,6 +125,9 @@ def m2_controller(execution, plan, params):
     class RoutedM2(PairGraspRelook, m2.M2DoorStudent):
         requires_fresh_frame = True
 
+        def preclose_check(self, now, obs):
+            return execution.command_guard.preclose_check(now, obs)
+
         def fail(self, reason, now):
             if reason in ('APPROACH_BLOCKED', 'APPROACH_POSE_UNCERTAIN', 'APPROACH_LOST', 'APPROACH_ARRIVAL_UNCONFIRMED'):
                 reason = 'PAIR_APPROACH_' + reason.removeprefix('APPROACH_').lower()
