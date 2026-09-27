@@ -1,10 +1,13 @@
 """Collect the round-3 dev variants (metrics, configs, rule decisions) into dev_variants_v3.json (record, not a result).
 
-Applies the selection rule registered in ``dev_plan_v3.json`` mechanically:
-walk the fixes in priority order from b0; a fix is adopted iff against the
-current base L and P each rise by <= 0.3 cm AND (A or lost decreases, or L or P
-decreases by >= 0.3 cm); a4 / a5 are two parameterisations of one fix, ranked
-by (lost, L, A) with ties (0.2 cm, 1 % of frames) going to a4.
+Applies the selection rule of ``dev_plan_v3.json`` with its amendments 1-3
+mechanically: a fix is adopted iff against the current base L and P each rise
+by <= 0.3 cm AND (A or lost decreases, or L or P decreases by >= 0.3 cm).
+Order: a1 (open ends), a2 (slip scales on load changes), stuck step on the
+base (s1 / s2, amendment 3), AMCL step on the resulting base (Nav2 / local).
+Two parameterisations of one step are ranked by (lost, L, A); ties within 1 %
+of frames / 0.2 cm go to the registered default. a2-based variants are
+recorded as diagnostics only.
 """
 from __future__ import annotations
 
@@ -17,9 +20,13 @@ HERE = Path(__file__).resolve().parent
 GRID = Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/r3/dev-grid')
 KEYS = ('n', 'pos_p50_m', 'pos_p90_m', 'pos_p99_m', 'lat_abs_p99_m', 'yaw_p90_deg')
 GROUPS = ('all', 'door_zone', 'door_loaded', 'loaded', 'unloaded')
-ORDER = ('b0_w6_legacy', 'a1_open', 'a2_open_scale', 'a3_open_scale_stuck')
-AMCL = ('a4_open_scale_stuck_amcl', 'a5_open_scale_stuck_amcl_local')
+DIAGNOSTIC = ('a3_open_scale_stuck', 'a3b_open_scale_stuck_low', 'a3c_open_scale_stuck_low_dom',
+              'a3d_open_scale_stuck_dom', 'a4_open_scale_stuck_amcl', 'a5_open_scale_stuck_amcl_local')
 RISE_MAX, GAIN_MIN, TIE_M, TIE_SHARE = .003, .003, .002, .01
+# amendment 3: AMCL candidates on each possible base (Nav2 first)
+AMCL_ON = {'a1_open': ('m1_open_amcl', 'm2_open_amcl_local'),
+           's1_open_stuck_low': ('s1n_open_stuck_low_amcl', 's1l_open_stuck_low_amcl_local'),
+           's2_open_stuck_low_dom': ('s2n_open_stuck_low_dom_amcl', 's2l_open_stuck_low_dom_amcl_local')}
 
 
 def load(name: str, filt: str = 'vision') -> dict:
@@ -55,16 +62,21 @@ def adopt(base: dict, cand: dict) -> tuple[bool, str]:
     return better, ('adopted: ' if better else 'not adopted (no gain): ') + why
 
 
-def rank_amcl(a: dict, b: dict) -> tuple[str, str]:
+def better(a: dict, b: dict, tie: str) -> tuple[str, str]:
+    """'a' or 'b' by (lost, then L, then A); ties within 1 % of frames / 0.2 cm go to ``tie``."""
     La, _, Aa, lost_a, n = lpa(a)
     Lb, _, Ab, lost_b, _ = lpa(b)
     if abs(lost_a - lost_b) > TIE_SHARE*n:
-        return ('a4' if lost_a < lost_b else 'a5'), f'lost {lost_a} vs {lost_b}'
+        return ('a' if lost_a < lost_b else 'b'), f'lost {lost_a} vs {lost_b}'
     if abs(La - Lb) > TIE_M:
-        return ('a4' if La < Lb else 'a5'), f'L {La:.4f} vs {Lb:.4f}'
+        return ('a' if La < Lb else 'b'), f'L {La:.4f} vs {Lb:.4f}'
     if abs(Aa - Ab) > TIE_M:
-        return ('a4' if Aa < Ab else 'a5'), f'A {Aa:.4f} vs {Ab:.4f}'
-    return 'a4', 'tie -> a4 (Nav2 structure)'
+        return ('a' if Aa < Ab else 'b'), f'A {Aa:.4f} vs {Ab:.4f}'
+    return tie, f'tie -> {tie}'
+
+
+def complete(name: str) -> bool:
+    return (GRID/name/'metrics.json').exists()
 
 
 def main(argv=None):
@@ -72,28 +84,44 @@ def main(argv=None):
     ap.add_argument('--output', default=str(HERE/'dev_variants_v3.json'))
     ap.add_argument('--extra', nargs='*', default=[], help='further registered variants (name) to record')
     args = ap.parse_args(argv)
-    names = ORDER + AMCL + tuple(args.extra)
-    rows = {n: load(n) for n in names}
-    oracle = {n: load(n, 'oracle') for n in names if 'oracle' in json.loads((GRID/n/'metrics.json').read_text())['pooled']}
+    rows = {n: load(n) for n in ('b0_w6_legacy', 'a1_open', 'a2_open_scale') + tuple(args.extra)}
     steps, base = [], 'b0_w6_legacy'
-    for n in ORDER[1:]:
+    for n in ('a1_open', 'a2_open_scale'):                      # dev_plan_v3 priority order
         ok, why = adopt(rows[base], rows[n])
         steps.append({'step': n, 'base': base, 'adopted': ok, 'reason': why})
-        if ok:
-            base = n
-    pick, why = rank_amcl(rows[AMCL[0]], rows[AMCL[1]])
-    cand = AMCL[0] if pick == 'a4' else AMCL[1]
-    steps.append({'step': 'augmented MCL: a4 vs a5', 'candidate': cand, 'reason': why})
-    if base == ORDER[-1]:
+        base = n if ok else base
+    if base != 'a1_open':
+        raise SystemExit(f'amendment 3 assumes the base a1 after the a2 step, got {base}')
+    # amendment 3: stuck step on a1 (s1 mean pose vs s2 dominant-mode pose), then the AMCL step
+    for n in ('s1_open_stuck_low', 's2_open_stuck_low_dom'):
+        rows[n] = load(n)
+    pick, why = better(rows['s1_open_stuck_low'], rows['s2_open_stuck_low_dom'], 'b')
+    cand = 's1_open_stuck_low' if pick == 'a' else 's2_open_stuck_low_dom'
+    steps.append({'step': 'stuck: s1 vs s2', 'candidate': cand, 'reason': why})
+    ok, why = adopt(rows[base], rows[cand])
+    steps.append({'step': cand, 'base': base, 'adopted': ok, 'reason': why})
+    base = cand if ok else base
+    amcl = AMCL_ON.get(base)
+    if amcl and all(complete(n) for n in amcl):
+        for n in amcl:
+            rows[n] = load(n)
+        pick, why = better(rows[amcl[0]], rows[amcl[1]], 'a')
+        cand = amcl[0] if pick == 'a' else amcl[1]
+        steps.append({'step': f'AMCL: {amcl[0]} vs {amcl[1]}', 'candidate': cand, 'reason': why})
         ok, why = adopt(rows[base], rows[cand])
         steps.append({'step': cand, 'base': base, 'adopted': ok, 'reason': why})
-        if ok:
-            base = cand
+        base = cand if ok else base
     else:
-        steps.append({'step': cand, 'base': base, 'adopted': False,
-                      'reason': 'a4/a5 build on a3; a3 was not adopted, so they are not comparable to the base'})
-    out = {'schema': 'ugrp.vision_loc.dev_variants.v3', 'plan': 'dev_plan_v3.json',
-           'plan_sha256': hashlib.sha256((HERE/'dev_plan_v3.json').read_bytes()).hexdigest(),
+        steps.append({'step': 'AMCL', 'pending': amcl})
+    for n in DIAGNOSTIC + ('m1_open_amcl', 'm2_open_amcl_local'):
+        if n not in rows and complete(n):
+            rows[n] = load(n)
+    oracle = {n: load(n, 'oracle') for n in rows
+              if 'oracle' in json.loads((GRID/n/'metrics.json').read_text())['pooled']}
+    plans = ('dev_plan_v3.json', 'dev_plan_v3_amendment1.json', 'dev_plan_v3_amendment2.json',
+             'dev_plan_v3_amendment3.json')
+    out = {'schema': 'ugrp.vision_loc.dev_variants.v3', 'plan': list(plans),
+           'plan_sha256': {p: hashlib.sha256((HERE/p).read_bytes()).hexdigest() for p in plans},
            'variants': rows, 'oracle': oracle, 'rule_steps': steps, 'selected': base}
     Path(args.output).write_text(json.dumps(out, indent=1) + '\n')
     for n, r in rows.items():
