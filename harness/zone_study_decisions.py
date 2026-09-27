@@ -1,15 +1,15 @@
 """Own-job decision opportunities for the integrated study; no physics or model I/O.
 
-The legacy offline scheduler is unchanged. Message re-decisions wait for the
-own job boundary; start and own safety events retain their common eligibility.
-One deferred set per robot coalesces messages/timers while work continues.
+The legacy offline scheduler is unchanged. Message-only re-decisions wait for
+the own job boundary or the next common trigger, whichever comes first. They
+never change a common trigger's eligibility, even while work continues.
 """
 from dataclasses import asdict, dataclass
 import heapq
 
 from harness.zone_event_scheduler import EventScheduler, TRIGGERS
 
-DECISION_POLICY = 'own_job_boundary_multiturn.v1'
+DECISION_POLICY = 'own_job_boundary_or_common_trigger.v2'
 
 
 @dataclass(frozen=True)
@@ -27,10 +27,10 @@ class DecisionLimits:
 class DecisionScheduler(EventScheduler):
     """Keep the core's SIM ordering, send ledger, retries and HTTP budget gates.
 
-Only the integration's eligibility changes. A terminal own-executor event
-already queues its common trigger. It consumes the one deferred set when the
-job is gone, including report, rather than creating a second decision chain.
-Accepted utterance limits are enforced by the existing protocol, not here.
+Only message-only eligibility changes. Pending own-job reports are separate
+from the core's outstanding-call deferrals. A common trigger consumes them
+without delaying or removing the common decision opportunity. Accepted
+utterance limits are enforced by the existing protocol, not here.
 """
 
     def __init__(self, *args, own_job, decision_limits, external_budget_spent=lambda: False, **kwargs):
@@ -39,6 +39,7 @@ Accepted utterance limits are enforced by the existing protocol, not here.
         self.decision_limits = decision_limits
         self.external_budget_spent = external_budget_spent
         self.decision_events = []
+        self._job_reports = set()
 
     def calls_spent(self):
         return self._calls_started >= self.decision_limits.max_calls_total
@@ -62,16 +63,25 @@ Accepted utterance limits are enforced by the existing protocol, not here.
         held = self._deferred.pop(actor, None)
         if held:
             labels.update((held['trigger'], *held['merged']))
+        if actor in self._job_reports:
+            labels.add('report')
         best = max(labels, key=lambda t: (TRIGGERS[t], t))
         payload.update(trigger=best, merged=tuple(sorted(labels - {best})))
         job = self.own_job(actor)
-        if (job is not None and 'report' in labels
-                and not labels.intersection({'start', 'failure', 'blockage', 'timeout'})):
-            self._defer(actor, best, payload['merged'], 'own_job_boundary')
+        if job is not None and labels == {'report'}:
+            # Do not put an own-job wait into the core's outstanding-call set:
+            # completion of a model call is not necessarily a job boundary.
+            self._job_reports.add(actor)
+            self.metrics[actor]['deferred'] += 1
+            self._log(f'call_merged {actor} report (own_job_boundary)', kind='call_merged', actor=actor)
             self.decision_events.append({'sim_s': self.now(), 'actor': actor,
                                          'event': 'deferred_own_job', 'triggers': sorted(labels),
                                          'job_id': job.get('job_id'), 'job_kind': job['kind']})
             return
+        # timer/idle/retry/start/safety remain eligible exactly as in no_comm.
+        # The core still applies outstanding, minimum interval and budgets;
+        # if it defers, it carries BOTH the common label and report forward.
+        self._job_reports.discard(actor)
         if self.calls_spent() or self.external_budget_spent():
             reason = 'episode_call_cap' if self.calls_spent() else 'pilot_budget_exhausted'
             self.metrics[actor]['budget_refused'] += 1

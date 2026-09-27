@@ -84,8 +84,8 @@ QUANTUM_S = cost_params_for().quantum_s
 #: a hold), a running executor job continues (coordinator decision, issue #223).
 #: The thinking/talking cost reaches physics through the delayed action release.
 THINK_HOLD_POLICY = 'idle_robot_holds_busy_job_continues'
-ACTION_MAP_VERSION = 'zone_study_action_map.v3_interruptible_idle'
-#: Legacy v64 hold duration; v66 idle wait uses the common idle re-ask timer.
+ACTION_MAP_VERSION = 'zone_study_action_map.v2_pair'
+#: Preserve the v64 idle wait job, command history and common re-ask timing.
 WAIT_HOLD_S = 10.0
 FIXTURE_ACTOR = 'fixture_v1'
 #: Planned defaults only. CLI remains fixture-only; an embedding runner may
@@ -224,7 +224,7 @@ def executor_plan(action, job, *, actor=None, orders=()) -> Plan:
 
     ``job`` is the robot's OWN running job (``{'kind', 'order_id'}``) or None.
     claim -> deliver(order_id, destination_zone); continue -> no call;
-    wait -> abort the own job, or remain idle (native executor holds) when idle;
+    wait -> abort the own job, or hold ``WAIT_HOLD_S`` when idle;
     release -> abort the own deliver job of that order. Anything else is refused.
     """
     kind = action.get('kind') if isinstance(action, Mapping) else None
@@ -245,7 +245,7 @@ def executor_plan(action, job, *, actor=None, orders=()) -> Plan:
     if kind == 'continue':
         return Plan(None)
     if kind == 'wait':
-        return Plan('abort', ('wait_requested',)) if job else Plan(None)
+        return Plan('abort', ('wait_requested',)) if job else Plan('hold', (WAIT_HOLD_S,))
     if kind == 'release':
         order = action.get('order_id')
         if job and job.get('kind') in ('deliver', 'pair_carry') and job.get('order_id') == order:
@@ -482,7 +482,7 @@ class IntegratedTrial(zo.OfflineTrial):
             action_id=extra['action_id'], request_id=extra['request_id'], submitted_at_sim_s=sim_s, kind=kind,
             arguments=arguments, accepted=accepted, order_id=order_id, role=role, rejected_reason=reason,
             local_state=local))
-        if ack or reason or action.get('kind') == 'wait':
+        if ack or reason:
             self._remember_command(actor, call_id, sim_s, plan, ack, kind, arguments, local)
         self._arm_reask(actor, sim_s)
 
@@ -527,7 +527,7 @@ class IntegratedTrial(zo.OfflineTrial):
                 'cost_params': {'version': self.params.version, 'digest': self.params.digest()},
                 'call_policy': policy, 'quantum_s': QUANTUM_S,
                 'perception_delay_s': PERCEPTION_DELAY_S, 'think_hold_policy': THINK_HOLD_POLICY,
-                'action_map': {'version': ACTION_MAP_VERSION, 'idle_wait': 'native_idle_hold'},
+                'action_map': {'version': ACTION_MAP_VERSION, 'wait_hold_s': WAIT_HOLD_S},
                 'decision_policy': DECISION_POLICY, 'decision_limits': asdict(self.decision_limits),
                 'dialogue_caps': {'window': self.channel.cap_window, 'actor': self.channel.cap_robot,
                                   'episode': self.channel.cap_total, 'windows_per_episode': 1},

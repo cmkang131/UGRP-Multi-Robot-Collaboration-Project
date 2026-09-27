@@ -7,6 +7,7 @@ not estimate provider latency or language understanding.
 from collections import Counter
 import io
 import json
+from pathlib import Path
 import socket
 import sys
 
@@ -37,7 +38,7 @@ class TimingTrial(zi.IntegratedTrial):
 
 
 def make_trial(condition, *, first='claim', policy=None, limits=None, send=True, repeat=False,
-               budget=None, tmp_path=None, follow_claim=True):
+               budget=None, tmp_path=None, follow_claim=True, horizon=90.):
     clock = [0.]
     links = links_for(clock)
     requests, turns = [], Counter()
@@ -54,7 +55,7 @@ def make_trial(condition, *, first='claim', policy=None, limits=None, send=True,
         order = next(o for o in SCENARIO['orders'] if o['order_id'] == order_id)
         action = ({'kind': 'claim', 'order_id': order_id, 'role': 'west',
                    'destination_zone': order['destination_zone']}
-                  if first == 'claim' or (own_messages and follow_claim) else {'kind': 'wait'})
+                  if first == 'claim' or (own_messages and follow_claim) else {'kind': first})
         messages = []
         if send and rid == 'r3' and (turns[rid] == 1 or repeat) and condition != 'no_comm':
             for peer, target in [('r1', 'order-2'), ('r2', 'order-3')]:
@@ -86,7 +87,7 @@ def make_trial(condition, *, first='claim', policy=None, limits=None, send=True,
                                   profile={'source_sha256': PROXY_SHA256, 'url': settings['url']},
                                   context={'condition': condition, 'trial_id': 'offline-multiturn'})
     adapter = zi.ModelAdapter(gemini_client_factory(**settings, study_json=True), ledger)
-    trial = TimingTrial(SCENARIO, condition=condition, seed=11, links=links, horizon_s=90.,
+    trial = TimingTrial(SCENARIO, condition=condition, seed=11, links=links, horizon_s=horizon,
                          map_bundle=BUNDLE, actor='gemini_proxy', model_adapter=adapter,
                          cost_params=CostParams(input_token_s=0., output_token_s=.1, utterance_s=.1),
                          policy=policy, decision_limits=limits)
@@ -111,6 +112,64 @@ def advance(trial, clock, links, to, *, boundary=None, outcome='job_done'):
             for event in link.ex.drain_events():
                 trial.on_executor_event(event, at_s=clock[0])
         trial.step_to(clock[0])
+
+
+def wait_control_record(trial, requests):
+    """Pin every input byte semantically, plus readable times and command args.
+
+    Channel, inbox, dialogue limits and leader roles are condition-specific;
+    even request IDs stay in the common-input digest. own_rgb_refs pin the
+    actual request JPEGs already checked by the integration tests.
+    """
+    return {
+        'requests': [
+            {'actor': p['robot_id'], 'sim_s': p['sim_time_s'],
+             'input_sha256': zi.digest(p),
+             'common_input_sha256': zi.digest({k: v for k, v in p.items()
+                                               if k not in ('condition', 'channel', 'inbox',
+                                                            'dialogue_window', 'leader_id', 'role')}),
+             'last_command_args': p['own_command_history'][-1]['arguments']
+                                  if p['own_command_history'] else None}
+            for p in requests],
+        'calls': [{'actor': c.actor, 'start': c.started_sim_s, 'end': c.finished_sim_s,
+                   'trigger': c.trigger, 'merged': list(c.merged_triggers)}
+                  for c in trial.scheduler.calls],
+        'dispatch_sha256': zi.digest(trial.dispatch_log),
+    }
+
+
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+def test_90s_wait_preserves_v64_inputs_and_calls_in_all_conditions(condition):
+    golden = json.loads((Path(__file__).parent / 'fixtures/zone_study_multiturn/v64_wait_90s.json').read_text())
+    trial, clock, links, requests = make_trial(condition, first='wait', send=False, follow_claim=False)
+    advance(trial, clock, links, 90.)
+    actual = wait_control_record(trial, requests)
+    assert actual == golden['conditions'][condition]
+    common = lambda rows: [(r['actor'], r['sim_s'], r['common_input_sha256']) for r in rows]
+    assert common(actual['requests']) == common(golden['conditions']['no_comm']['requests'])
+    r1 = [p for p in requests if p['robot_id'] == 'r1']
+    assert len(r1) == 9
+    assert r1[1]['own_command_history'][0]['arguments'] == {'duration_s': 10.0}
+    assert not trial.scheduler.messages
+
+
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+@pytest.mark.parametrize('boundary', [None, 8., 65.3])
+def test_deferred_report_never_suppresses_common_timer_or_rearming(condition, boundary):
+    trial, clock, links, requests = make_trial(condition, horizon=150.)
+    advance(trial, clock, links, 150., boundary=boundary)
+    r1 = [p for p in requests if p['robot_id'] == 'r1']
+    expected = [0., 8., 65.3, 130.6] if boundary == 8. else [0., 65.3, 130.6]
+    assert [p['sim_time_s'] for p in r1] == expected
+    if condition != 'no_comm':
+        # By the FIRST own boundary or timer, every delivered message has
+        # reached an input snapshot. Inbox history itself is retained.
+        delivered = {m.message_id for m in trial.scheduler.messages if m.recipient == 'r1'}
+        assert {m['message_id'] for m in r1[1]['inbox']} == delivered
+        assert delivered
+    timer_call = next(c for c in trial.scheduler.calls if c.actor == 'r1' and c.started_sim_s == 65.3)
+    assert 'timer' in {timer_call.trigger, *timer_call.merged_triggers}
+    assert zi.zo.cost_checks(trial, trial.finish(150.))['ok']
 
 
 @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
@@ -151,8 +210,9 @@ def test_late_leader_changes_claim_only_at_own_boundary(condition):
 
 
 @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
-def test_waiting_robot_redecides_immediately_after_delivery(condition):
-    trial, clock, links, requests = make_trial(condition, first='wait')
+def test_idle_robot_redecides_immediately_after_delivery(condition):
+    # continue on an idle executor leaves it idle; explicit wait is a v64 hold.
+    trial, clock, links, requests = make_trial(condition, first='continue')
     advance(trial, clock, links, 12.)
     r1 = [p for p in requests if p['robot_id'] == 'r1']
     if condition == 'no_comm':
@@ -161,6 +221,20 @@ def test_waiting_robot_redecides_immediately_after_delivery(condition):
         assert [p['sim_time_s'] for p in r1] == [0., 6.1]
         assert links['r1'].job()['order_id'] == 'order-2'
         assert all(d['ack'] is None or d['ack']['accepted'] for d in trial.dispatch_log)
+
+
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+def test_explicit_wait_keeps_v64_hold_and_uses_message_at_hold_boundary(condition):
+    trial, clock, links, requests = make_trial(condition, first='wait')
+    advance(trial, clock, links, 12.)
+    assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [0.]
+    assert links['r1'].job()['kind'] == 'hold'
+    advance(trial, clock, links, 21.)
+    r1 = [p for p in requests if p['robot_id'] == 'r1']
+    assert [p['sim_time_s'] for p in r1] == [0., 15.3]
+    assert r1[1]['own_command_history'][0]['arguments'] == {'duration_s': 10.0}
+    if condition != 'no_comm':
+        assert r1[1]['inbox'] and links['r1'].job()['order_id'] == 'order-2'
 
 
 @pytest.mark.parametrize('outcome', ['job_done', 'job_failed'])
@@ -222,7 +296,7 @@ def test_simultaneous_boundary_and_delivery_coalesce_into_one_call():
 
 
 def test_episode_cap_during_inflight_still_charges_and_finishes():
-    trial, clock, links, requests = make_trial('leader_ko', first='wait',
+    trial, clock, links, requests = make_trial('leader_ko', first='continue',
                                               limits=zi.DecisionLimits(max_calls_total=4))
     advance(trial, clock, links, 12.)
     assert len(requests) == 4
@@ -255,24 +329,60 @@ def test_persistent_pilot_budget_blocks_followup_before_wire(tmp_path, monkeypat
     assert trial.finish(20.).end_reason == 'budget_exhausted'
 
 
-def test_message_arriving_during_decision_is_used_once_after_busy_boundary():
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+@pytest.mark.parametrize('trigger', ['timer', 'boundary'])
+def test_common_trigger_during_decision_keeps_same_start_with_pending_message(condition, trigger):
     # r1 begins a common timer call at 5.5, just before the 6.1 delivery.
+    trial, clock, links, requests = make_trial(condition)
+    trial.scheduler.trigger('r1', 'timer', at=5.5)
+    if trigger == 'timer':
+        trial.scheduler.trigger('r1', 'timer', at=6.2)
+    advance(trial, clock, links, 18., boundary=8. if trigger == 'boundary' else None)
+    starts = [p for p in requests if p['robot_id'] == 'r1']
+    assert [p['sim_time_s'] for p in starts] == [0., 5.5, 10.8]
+    if condition != 'no_comm':
+        assert starts[1]['inbox'] == []  # immutable snapshot, no future message leak
+        assert starts[2]['inbox']
+    # Even if the earlier reply starts a new job, an already eligible common
+    # trigger must not be delayed AGAIN by the pending report.
+    call = next(c for c in trial.scheduler.calls if c.actor == 'r1' and c.started_sim_s == 10.8)
+    assert ('timer' if trigger == 'timer' else 'idle') in {call.trigger, *call.merged_triggers}
+
+
+def test_message_during_decision_without_common_trigger_waits_for_next_timer():
     trial, clock, links, requests = make_trial('leader_ko')
     trial.scheduler.trigger('r1', 'timer', at=5.5)
-    advance(trial, clock, links, 18., boundary=8.)
+    advance(trial, clock, links, 90.)
     starts = [p for p in requests if p['robot_id'] == 'r1']
-    assert [p['sim_time_s'] for p in starts] == [0., 5.5]
-    assert starts[1]['inbox'] == []  # immutable snapshot, no future message leak
-    # The in-flight old claim resumed work at 10.8. The pending report waits
-    # for THAT own job's boundary too, rather than sending a doomed BUSY claim.
-    advance(trial, clock, links, 27., boundary=20.)
-    starts = [p for p in requests if p['robot_id'] == 'r1']
-    assert [p['sim_time_s'] for p in starts] == [0., 5.5, 20.]
-    assert starts[-1]['inbox'] and links['r1'].job()['order_id'] == 'order-2'
+    assert [p['sim_time_s'] for p in starts] == [0., 5.5, 65.3]
+    assert starts[1]['inbox'] == [] and starts[2]['inbox']
+
+
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+def test_common_timer_with_pending_report_obeys_same_minimum_interval(condition):
+    trial, clock, links, requests = make_trial(condition, policy=CallPolicy(min_interval_s=70.))
+    advance(trial, clock, links, 90.)
+    r1 = [p for p in requests if p['robot_id'] == 'r1']
+    assert [p['sim_time_s'] for p in r1] == [0., 70.]
+    if condition != 'no_comm':
+        assert r1[1]['inbox']
+
+
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+def test_same_time_timer_and_message_share_one_common_decision(condition):
+    trial, clock, links, requests = make_trial(condition)
+    trial.scheduler.timer('r1', at=6.1)
+    advance(trial, clock, links, 12.)
+    r1 = [p for p in requests if p['robot_id'] == 'r1']
+    assert [p['sim_time_s'] for p in r1] == [0., 6.1]
+    if condition != 'no_comm':
+        assert r1[1]['inbox']
+    call = next(c for c in trial.scheduler.calls if c.actor == 'r1' and c.started_sim_s == 6.1)
+    assert 'timer' in {call.trigger, *call.merged_triggers}
 
 
 def test_idle_message_still_obeys_common_minimum_call_interval():
-    trial, clock, links, requests = make_trial('leader_ko', first='wait',
+    trial, clock, links, requests = make_trial('leader_ko', first='continue',
                                               policy=CallPolicy(min_interval_s=10.))
     advance(trial, clock, links, 16.)
     assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [0., 10.]

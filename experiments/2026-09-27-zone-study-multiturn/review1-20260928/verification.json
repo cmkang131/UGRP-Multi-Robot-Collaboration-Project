@@ -1,0 +1,58 @@
+{
+  "scope": "offline code regression only; fake wire and clock, no study cohort",
+  "reviewed_head": "894de3dbf42b3dffa9fcc695d2b4f5a45e48f1a3",
+  "committed": false,
+  "model_calls": 0,
+  "physics_steps": 0,
+  "pytest_env": {
+    "OMP_NUM_THREADS": "1"
+  },
+  "pytest_basetemp": "./.pytest_tmp",
+  "pytest_tmp_removed": true,
+  "runs": [
+    {
+      "log": "before-fix.txt",
+      "exit_code": 1,
+      "summary": "7 failed, 9 passed, 43 deselected",
+      "sha256": "cdc11d23398d10a80dadbcbba8fac12fc4b67edc13e9706dac3d91c2dc34c744"
+    },
+    {
+      "log": "first-fix.txt",
+      "exit_code": 1,
+      "summary": "10 failed, 49 passed",
+      "sha256": "3a4927f397494991ea9a895fbf2980352c7a3b6891be91a8a5fe28e3b1564140"
+    },
+    {
+      "log": "targeted-projection-fix.txt",
+      "exit_code": 1,
+      "summary": "1 failed, 70 passed",
+      "sha256": "3c98e679c4c951d292a9b3b6594e8370c5c1087fbdfdfce5b0ae7bc99109e24c"
+    },
+    {
+      "log": "related-regression.txt",
+      "exit_code": 1,
+      "summary": "1 failed, 537 passed",
+      "sha256": "c38c3e2ca2af03b01cb5c0726a0f01fb73c35fd9fcc5d1af8c540fac45557cdc"
+    },
+    {
+      "log": "final-integration.txt",
+      "exit_code": 0,
+      "summary": "66 passed",
+      "sha256": "2bc20591c7dca2027f7723dc1b62ff2c50fc97c3807ae474d94543a52c31815f"
+    }
+  ],
+  "resolution": "All P1 regressions passed in related-regression. Its sole failure was the idle timer fixture using explicit wait. Changed that fixture to idle continue; final-integration reran all 66 tests successfully. Production source was unchanged between these two runs. Do not sum overlapping counts.",
+  "earlier_test_failures": "Idle tests assumed wait had no job; restored v64 hold semantics and used continue for actual idle tests. Common-input projection initially included dialogue_window/leader metadata; per-condition full input hashes always include these fields.",
+  "bundle_sha256": "84769cc9a1ac0d70af5fd1711b944f55e05eda65676603b0c57d29e478bd96dc",
+  "runtime_files_verified": 171,
+  "file_sha256": {
+    "harness/zone_study_decisions.py": "45c6d2357c2cb4f4b320f64cdfc2410bbf675cd68a3489f5210307c22c0e9d96",
+    "harness/zone_study_integration.py": "080d46c145e3db404919c9aa7b3af5018a4d289975bde457cf55c59fae96b668",
+    "tests/test_zone_study_multiturn.py": "68a763a3fc4d21c921ad802c3289fa1a09bdded8c38580d88b4e441d41da6892",
+    "tests/test_zone_study_integration.py": "c2955f419ddc29eb11925b9f93fc42630d4e66c049aa97dd3c9a2724d4438836",
+    "tests/fixtures/zone_study_multiturn/build_v64_wait_control.py": "b6adbbe89d0eed60dd195476f9d73242d04542c8c5e5e4bc2723ecfa8652d35d",
+    "tests/fixtures/zone_study_multiturn/v64_wait_90s.json": "f031209f19ad0ac7d3242299c4353802d390372678822d17bf7f00ade3e4a4b6"
+  },
+  "original_tracked_experiments_and_configs_unchanged": true,
+  "p2": "#240 병합 후 main 반영하며 v66을 pair v5 기반 합성 버전으로 재검증"
+}

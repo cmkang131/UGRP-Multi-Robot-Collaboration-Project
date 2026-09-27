@@ -330,7 +330,7 @@ def test_wait_aborts_the_own_running_job_and_release_needs_the_matching_order():
     ({'kind': 'claim', 'order_id': 'order-1', 'role': 'west', 'destination_zone': 'C'}, None,
      zi.Plan('deliver', ('order-1', 'C'))),
     ({'kind': 'continue'}, None, zi.Plan(None)),
-    ({'kind': 'wait'}, None, zi.Plan(None)),
+    ({'kind': 'wait'}, None, zi.Plan('hold', (10.0,))),
     ({'kind': 'wait'}, {'kind': 'deliver', 'order_id': 'order-1'}, zi.Plan('abort', ('wait_requested',))),
     ({'kind': 'release', 'order_id': 'order-1'}, {'kind': 'deliver', 'order_id': 'order-1'},
      zi.Plan('abort', ('release_requested',))),
@@ -496,7 +496,9 @@ def test_at_most_one_pending_own_reask_timer_per_robot(condition):
         fixture = zo.FixtureActor(rid, condition, SEED)
         def script(payload):
             value = json.loads(fixture.respond({'messages': [{}, {'content': json.dumps(payload)}]}))
-            value['action'] = {'kind': 'wait'}
+            # An idle continue leaves no job. Explicit wait is the v64 timed
+            # hold, whose subsequent abort/terminal events also arm re-asks.
+            value['action'] = {'kind': 'continue'}
             return value
         return Scripted(script)
     trial, result, _ = run(condition, horizon=200., actors={rid: idle_actor(rid) for rid in zox.ROBOTS})
