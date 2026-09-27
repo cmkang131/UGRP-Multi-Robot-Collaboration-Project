@@ -2,8 +2,10 @@
 import ast
 import hashlib
 import json
+import inspect
 from pathlib import Path
 import re
+import textwrap
 
 import pytest
 
@@ -29,7 +31,7 @@ def marker_refs(source):
 
 def test_all_current_pair_own_executors_have_no_marker_references():
     files = {*ROOT.glob('harness/zone_pair*.py'), *ROOT.glob('harness/zone_own*.py'),
-             ROOT / 'harness/owncam_time.py'}
+             ROOT / 'harness/owncam_time.py', ROOT / 'harness/owncam_drive_shared.py'}
     assert len(files) >= 25
     assert not set(str(p.relative_to(ROOT)) for p in files) & set(ALLOW['providers'])
     failures = {str(p.relative_to(ROOT)): marker_refs(p.read_text()) for p in sorted(files)}
@@ -52,14 +54,34 @@ def test_only_explicit_providers_evaluators_and_hash_frozen_paths_are_exempt():
     # Avoid merely whitelisting a historical method that is still active.
     from harness.zone_own_driver import GuardedDriver
     from harness.zone_pair_guards import GuardedPairApproach
-    for cls, hooks in ((GuardedDriver, ('_needs_look',)),
-                       (GuardedPairApproach, ('_look_step', '_event', '_relocalize', '_needs_look', 'observe'))):
+    for cls, hooks in ((GuardedDriver, ('__init__', '_needs_look')),
+                       (GuardedPairApproach, ('__init__', '_look_step', '_event', '_relocalize', '_needs_look', 'observe'))):
         for hook in hooks:
             assert getattr(cls, hook).__module__ in ('harness.zone_own_driver', 'harness.zone_pair_guards')
 
 
+def test_active_constructor_chain_stops_before_frozen_provider_initialization():
+    from harness.owncam_drive import OwnCamDriver
+    from harness.owncam_drive_shared import SharedPoseDriver
+    from harness.zone_own_driver import GuardedDriver
+    from harness.zone_pair_guards import GuardedPairApproach
+
+    for cls in (GuardedDriver, GuardedPairApproach):
+        chain = cls.__mro__
+        stop = chain.index(SharedPoseDriver)
+        assert stop < chain.index(OwnCamDriver)
+        # Check every cooperative constructor reached, including pair heading
+        # setup in frozen ancestors, rather than only the most-derived method.
+        for base in chain[:stop + 1]:
+            if '__init__' in base.__dict__:
+                assert not marker_refs(textwrap.dedent(inspect.getsource(base.__init__))), base
+    terminal = ast.parse(textwrap.dedent(inspect.getsource(SharedPoseDriver.__init__)))
+    assert not any(isinstance(n, ast.Name) and n.id in ('super', 'OwnCamDriver')
+                   for n in ast.walk(terminal))
+
+
 def test_new_interface_modules_have_no_truth_or_model_inference_dependencies():
-    files = ['harness/pose_provider.py', 'harness/owncam_time.py', 'harness/zone_pair_align.py',
+    files = ['harness/pose_provider.py', 'harness/owncam_time.py', 'harness/owncam_drive_shared.py', 'harness/zone_pair_align.py',
              'harness/zone_pair_grasp.py', 'harness/zone_pair_guards.py', 'harness/zone_own_driver.py']
     forbidden = {'mujoco', 'MjData', 'xpos', 'xquat', 'qpos', 'qvel', 'eval_only', 'GtStubPoseSource',
                  'cctv_top', 'nav_cam', 'torch'}

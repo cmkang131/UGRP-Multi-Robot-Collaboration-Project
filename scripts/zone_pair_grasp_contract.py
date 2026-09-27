@@ -6,7 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PATHS = (
     'harness/pose_provider.py', 'harness/vision_pose_source.py', 'harness/zone_study_pose_delay.py',
-    'harness/zone_own_driver.py', 'sim/zone_own_scene_provider.py',
+    'harness/zone_own_driver.py', 'harness/owncam_drive_shared.py', 'sim/zone_own_scene_provider.py',
     'harness/owncam_time.py', 'harness/zone_own_contract.py',
     'harness/zone_own_executor.py', 'harness/zone_own_status.py',
     'harness/zone_own_perception.py', 'harness/zone_pair_obstruction.py',

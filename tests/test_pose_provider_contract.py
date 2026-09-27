@@ -212,9 +212,10 @@ def test_unloaded_and_loaded_look_policy_matches_frozen_thresholds(loaded, age, 
     assert a.last_look_xy == b.last_look_xy and a.checkpoints_done == b.checkpoints_done
 
 
-def test_v5d_hold_and_old_registration_are_fail_closed(tmp_path):
+@pytest.mark.parametrize('revision', ['PREREG_V5D', 'PREREG_V5E'])
+def test_prepare_hold_and_old_registration_are_fail_closed(tmp_path, revision):
     from scripts import run_zone_pair_dev as d
-    args = d.parser().parse_args(['--prereg', str(d.PREREG_V5D), '--run-id', 'dev11',
+    args = d.parser().parse_args(['--prereg', str(getattr(d, revision)), '--run-id', 'dev11',
                                   '--output', str(tmp_path / 'unused'), '--execute'])
     with pytest.raises(ValueError, match='prepare-only'):
         d.load_config(args)

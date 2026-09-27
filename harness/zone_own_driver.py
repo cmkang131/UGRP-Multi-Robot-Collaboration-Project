@@ -10,6 +10,7 @@ import math
 
 from harness.owncam_drive import LOOK_P20, SETTLE_S, WIDE_LOOK_PANS
 from harness.owncam_drive_v2 import OwnCamDriverV2
+from harness.owncam_drive_shared import SharedPoseDriver
 from harness.zone_own_sweep import SweepRecheck, reachable_pan
 from harness.zone_own_guards import (GATE_LOADED, GATE_UNLOADED, MAX_LOOK_BACKOFFS, MAX_RECOVERIES,
                                      RECOVERY_BACKOFF_M, STALL_KEEPOUT_AHEAD_M, STALL_KEEPOUT_HALF_M,
@@ -24,7 +25,7 @@ ARRIVAL_MAX_RECHECKS = 2
 LOOK_IF_NO_FIX_S = 3.             # unchanged frozen unloaded recency trigger
 
 
-class GuardedDriver(OwnCamDriverV2):
+class GuardedDriver(OwnCamDriverV2, SharedPoseDriver):
     """Loop driver v2 on a shared localizer with the uncertainty gate, sweep guard and progress monitor.
 
     Commands and frames reach the shared localizer once (through the executor / pose source); this
@@ -34,9 +35,8 @@ class GuardedDriver(OwnCamDriverV2):
     """
 
     def __init__(self, shared_loc, *args, gate: UncertaintyGate, guard: SweepGuard, **kwargs):
-        super().__init__(*args, **kwargs)
         self.loc = shared_loc
-        self.last_estimate = self.loc.estimate()
+        super().__init__(*args, **kwargs)
         self.gate, self.guard = gate, guard
         self.gate.set_profile(GATE_LOADED if self.loaded else GATE_UNLOADED)
         self.monitor = ProgressMonitor()
