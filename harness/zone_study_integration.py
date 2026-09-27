@@ -67,7 +67,7 @@ from harness.zone_study_llm_transport import ModelCallTransport
 
 ROOT = Path(__file__).resolve().parents[1]
 INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
-EXECUTION_BUNDLE_ID = 'zone-study-integration-v2-pair-delay'
+EXECUTION_BUNDLE_ID = 'zone-study-integration-v64-source-closure'
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',

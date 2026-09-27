@@ -10,7 +10,21 @@
 
 `zone_pair_status_v4`가 유일한 짝 상태 채널이다. `PairStatusBus`는 실제 `PairTeam.records()`의 감사 기록만 반환하며 별도의 사용되지 않는 채널을 만들지 않는다. 상태 enum과 촬영 시각·프레임 ID·유효시한만 짝 동기화에 사용한다. 모델 입력·연구 스케줄러에는 짝 상태를 넣지 않고, GT·접촉·측정 관절·동료 작업 종료로 깨우지 않는다. 모델 사고 중에는 진행 중인 자기 작업을 계속하고, 유휴 로봇만 대기한다.
 
-`configs/zone_study_integration/i2_pair_long_beam.json`과 `pair_dev_DRAFT.json`은 2대 빔 주문의 실행 설정이다. coarse sheet는 실행 전에 고정하며 runtime 좌표에서 재생성하지 않는다. #235의 표준 `TaggedCargoZoneScene` 준비 함수를 재사용한다. 이 draft는 실행되지 않았고 source/bundle pin과 실행 예산 확정이 남아 있다. 기존 `prereg.json`과 과거 결과는 보존했다. 새 실행 식별자는 `zone-study-integration-v2-pair-delay`이며 과거 v1 성공을 승계하지 않는다.
+`configs/zone_study_integration/i2_pair_long_beam.json`과 `pair_dev_DRAFT.json`은 2대 빔 주문의 실행 설정이다. coarse sheet는 실행 전에 고정하며 runtime 좌표에서 재생성하지 않는다. #235의 표준 `TaggedCargoZoneScene` 준비 함수를 재사용한다. 이 draft는 실행되지 않았고 source/bundle pin과 실행 예산 확정이 남아 있다. 기존 `prereg.json`과 과거 결과는 보존했다. 앞선 `zone-study-integration-v2-pair-delay`의 기록은 그대로 보존한다. 현재 후보는 `zone-study-integration-v64-source-closure`이며 과거 실행의 성공을 승계하지 않는다.
+
+## 실행 소스 고정 (PR #229 P1 수정)
+
+번들의 `runtime_files_sha256`은 러너·지원 모델 transport의 전이 import closure에서 만든다. 함수 안의 import, 상대 import, package initializer도 읽으며 모듈을 실행하지 않는다. `student.skill_module`과 provider `factory`의 설정 선택 모듈도 시작점에 포함한다. provider 등록 파일·추가 source_files·실제 보정·지도·시나리오 해시는 함께 고정한다. `visual_arm.py`, `llm_completion.py`, `session_scenes.py`를 포함한 의존 소스 변경은 번들 해시를 바꾼다.
+
+비-dev 실행은 물리 모듈 import·host 생성·출력 디렉터리 생성 전에 `prereg.source_sha` 또는 `--expected-source-sha`를 Git commit으로 해석하여 HEAD와 대조한다. 둘 다 있으면 모두 일치해야 한다. 누락·미해결/다른 SHA·dirty 실행 소스·번들 불일치를 거절한다. dev는 미등록 배선 진단을 허용하지만 명시한 SHA는 dev에서도 검사한다. `--bundle`은 실행 없이 현재 후보의 해시를 출력한다. 이번 작업은 미커밋이므로 DRAFT의 source/bundle pin을 확정하지 않는다.
+
+번호는 로컬 branch/remote refs 259개에서 공통 RGB 최대 v63·통합 최대 v2를 확인해 v64를 선택했다. fetch/PR 목록 갱신은 sandbox·네트워크 제한으로 실패했으므로 원격의 최신 번호 예약 확인은 별도다. [수정·검증 기록](../experiments/2026-09-27-pr229-source-delay/README.md)에 확인 범위와 번들 후보를 보존한다.
+
+## 실제 M2와 지연 provider의 비물리 회귀 (P2 수정)
+
+`tests/test_zone_study_pair_delay.py`는 실제 `PairTeam`·`M2DoorStudent`·`GuardedPairApproach`·`DelayedPoseSource`·태그 검출기/PF를 가짜 물리 시계에서 연결한다. 저장된 r1/r2 자기 RGB 18장과 발행 서보 명령만 사용하며, 평가 좌표는 fixture에 넣지 않는다. 입장 시 추정과 gate도 영상에서 만든다. 열린 checkpoint부터 M2가 PF를 교체하고 재관측·파지 영상 판정·readiness·동시 GO를 수행하는 구간을 검증한다. 추정·guard·readiness를 stub으로 바꾸지 않는다.
+
+앞선 팔 안정화 대기가 6초 남은 r1 fixture에서는 두 로봇이 새 추정과 유효 readiness를 얻고 같은 시각에 `lift_go_1`을 발행한다. 대기 차가 없는 재생에서는 먼저 준비된 r1의 자세 불확실성이 상대 대기 중 커져 중단하며, 과거 readiness로 GO하지 않는 것도 검사한다. 두 경우 모두 PF 교체 후 0.16초 이전 추정 공개 차단을 확인한다. 이는 저장 영상의 시간·인터페이스 회귀이며 실제 접근·운반·물리 성공이나 네 조건 연구 비교가 아니다.
 
 ## 자기 손목 프레임과 다회 모델 호출
 

@@ -56,30 +56,18 @@ SLOT_HALF_M = .06
 SETTLE_S = 2.0
 TAP_FRAMES = 64
 PROGRESS_EVERY_S = 60.
-RUNTIME_FILES = (
-    'scripts/run_zone_study_integration.py', 'harness/zone_study_integration.py', 'harness/zone_study_offline.py',
-    'harness/zone_study_contract.py', 'harness/zone_study_inputs.py', 'harness/zone_study_prompts_ko.py',
-    'harness/zone_study_protocol.py', 'harness/zone_sim_cost.py', 'harness/zone_event_scheduler.py',
-    'harness/zone_send_ledger.py', 'harness/zone_study_llm_transport.py', 'harness/gemini_proxy.py',
-    'harness/zone_study_eval.py', 'harness/zone_study_scenarios.py', 'harness/zone_map_schematic.py',
-    'harness/team_carry_status.py', 'harness/zone_own_executor.py', 'harness/m1_owncam_delivery.py',
-    'harness/m1_owncam_contract.py', 'harness/m1_contract.py', 'harness/owncam_pose_source.py',
-    'harness/owncam_localizer.py', 'harness/owncam_drive.py', 'harness/owncam_drive_v2.py', 'harness/wall_tags.py',
-    'harness/map_goto.py', 'harness/zone_own_perception.py', 'harness/wrist_zone_skill_v9.py',
-    'harness/wrist_zone_skill_v6.py', 'sim/zone_cargo_contact.py', 'sim/zone_landmarks.py', 'sim/zone_scene.py',
-    'sim/camera_robot_port.py', 'sim/multi_masterpi_production.py',
-    'sim/zone_eval_top.py', 'sim/research_dispatch_arena.py',
-    'configs/zone_study_integration/pose_providers.json',
-    'harness/zone_study_pose_delay.py', 'harness/zone_own_team_host.py',
-    'harness/zone_pair_executor.py', 'harness/zone_pair_status.py', 'harness/zone_pair_guards.py',
-    'harness/zone_pair_geometry.py', 'harness/zone_pair_vision.py', 'scripts/run_m2_pair.py',
-    'harness/zone_own_contract.py', 'harness/zone_own_guards.py', 'harness/zone_own_driver.py',
-    'harness/zone_own_deliver.py', 'harness/zone_own_sweep.py', 'harness/zone_own_status.py',
-    'harness/owncam_pair_beam.py', 'harness/owncam_pair_beam_v2.py', 'harness/owncam_pair_hold_v3.py',
-    'harness/owncam_pair_lift_v3.py', 'harness/pair_owncam_approach.py', 'harness/pair_carry_sync.py',
-    'scripts/study_owncam_pair_beam.py', 'scripts/zone_teacher.py',
-    'scripts/zone_pair_dev_contract.py', 'scripts/zone_pair_dev_runtime.py', 'sim/zone_tagged_cargo_scene.py', 'sim/zone_cargo.py',
-    'sim/dispatch_contact_profile.py')
+# Module names selected by config (importlib) are roots too. External adapter
+# injection uses the supported transport entry point, even in fixture bundles.
+RUNTIME_ENTRY_POINTS = ('scripts/run_zone_study_integration.py',
+                        'harness/zone_study_llm_transport.py')
+RUNTIME_ASSETS = ('configs/zone_study_integration/pose_providers.json',)
+
+
+def runtime_files(prereg, provider):
+    from harness.python_source_closure import source_closure
+    return source_closure(ROOT, (*RUNTIME_ENTRY_POINTS, *RUNTIME_ASSETS, *provider['source_files']),
+                          modules=(prereg['student']['skill_module'], provider['factory'].partition(':')[0]))
+
 
 
 def git(*args):
@@ -327,7 +315,7 @@ def run_bundle(prereg, episode, *, model_adapter=None):
     if model_adapter is not None:
         invariant.update(zi.model_config('gemini_proxy', model_adapter.client_factory))
     bundle = {'execution_bundle_id': zi.EXECUTION_BUNDLE_ID, 'schema': SCHEMA,
-              'runtime_files_sha256': {f: zi.file_sha256(ROOT / f) for f in RUNTIME_FILES},
+              'runtime_files_sha256': {f: zi.file_sha256(ROOT / f) for f in runtime_files(prereg, provider)},
               'scenario': episode['scenario'], 'scenario_sha256': zi.file_sha256(ROOT / episode['scenario']),
               'map_id': episode['map'], 'map_file_sha256': map_bundle['map_file_sha256'],
               'public_map_sha256': map_bundle['public_map_sha256'], 'tagged_map_sha256': digest(tagged_map(episode['map'])),
@@ -415,21 +403,44 @@ def robot_eval(host, rid, boxes_final):
 # ---------------------------------------------------------------------------
 # One trial
 
-def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_adapter=None):
-    import cv2
-    import mujoco
-    import numpy as np
-    bundle, scenario, map_bundle, provider = run_bundle(prereg, episode, model_adapter=model_adapter)
-    bundle_sha = digest(bundle)
+def check_run_source(prereg, bundle_sha, *, dev=False, expected_source_sha=None):
+    """Fail before imports, output creation or host setup on a provenance mismatch.
+
+    Resolve abbreviated commit IDs through Git (not a string-prefix comparison).
+    --dev-horizon-s retains its unregistered plumbing escape only when no source
+    pin is supplied; any explicit source pin is always binding.
+    """
+    code = {'sha': git('rev-parse', '--verify', 'HEAD^{commit}'),
+            'dirty': bool(git('status', '--porcelain', '--', 'harness', 'sim', 'scripts', 'configs', 'maps'))}
+    pins = [pin for pin in (prereg.get('source_sha'), expected_source_sha) if pin is not None]
+    if not dev and not pins:
+        raise SystemExit('pre-registered source_sha (or --expected-source-sha) is required')
+    for pin in pins:
+        if not isinstance(pin, str) or not 7 <= len(pin) <= 40 or any(c not in '0123456789abcdefABCDEF' for c in pin):
+            raise SystemExit(f'invalid expected source SHA: {pin!r}')
+        resolved = git('rev-parse', '--verify', pin + '^{commit}')
+        if not resolved or resolved != code['sha']:
+            raise SystemExit(f'run source SHA {code["sha"]} differs from expected source SHA {pin}')
+    if not dev and code['dirty']:
+        raise SystemExit('execution source is dirty; commit and preregister the final source before running')
     if not dev and prereg.get('bundle_sha256') != bundle_sha:
         raise SystemExit(f'run bundle {bundle_sha[:12]} differs from the pre-registered '
                          f'{str(prereg.get("bundle_sha256"))[:12]}; commit, then refresh the prereg')
+    return code
+
+
+def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_adapter=None,
+              expected_source_sha=None):
+    bundle, scenario, map_bundle, provider = run_bundle(prereg, episode, model_adapter=model_adapter)
+    bundle_sha = digest(bundle)
+    code = check_run_source(prereg, bundle_sha, dev=dev, expected_source_sha=expected_source_sha)
+    import cv2
+    import mujoco
+    import numpy as np
     run_id = f'{condition}-{episode["episode_id"]}'
     out = Path(out) / run_id
     out.mkdir(parents=True, exist_ok=False)                   # never overwrite a result
     started, load0 = time.time(), os.getloadavg()
-    code = {'sha': git('rev-parse', 'HEAD'),
-            'dirty': bool(git('status', '--porcelain', '--', 'harness', 'sim', 'scripts', 'configs', 'maps'))}
     label = dict(bundle['pose_provider']['label'])
     (out / 'attempt_started.json').write_text(json.dumps(
         {'run_id': run_id, 'condition': condition, 'episode': episode['episode_id'], 'code': code, 'dev': dev,
@@ -599,6 +610,7 @@ def main(argv=None):
     p.add_argument('--episode', required=True)
     p.add_argument('--condition', choices=MAIN_CONDITIONS)
     p.add_argument('--output')
+    p.add_argument('--expected-source-sha', help='expected execution commit; checked alongside prereg.source_sha')
     p.add_argument('--bundle', action='store_true', help='print the run bundle and its sha256, run nothing')
     p.add_argument('--dev-horizon-s', type=float, help='dev plumbing only: shorter horizon, bundle not enforced')
     args = p.parse_args(argv)
@@ -615,7 +627,8 @@ def main(argv=None):
         raise SystemExit('--condition and --output are required to run')
     dev = args.dev_horizon_s is not None
     horizon = float(args.dev_horizon_s if dev else prereg['horizon_s'])
-    rec = run_trial(prereg, episode, args.condition, args.output, horizon_s=horizon, dev=dev)
+    rec = run_trial(prereg, episode, args.condition, args.output, horizon_s=horizon, dev=dev,
+                    expected_source_sha=args.expected_source_sha)
     study = rec.get('study', {})
     print(json.dumps({'run_id': rec['run_id'], 'stop': rec['stop'], 'sim_s': rec.get('sim_s'),
                       'end_reason': study.get('end_reason'), 'calls': study.get('calls'),
