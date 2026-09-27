@@ -185,7 +185,7 @@ raise SystemExit(3 if a.fail else 0)
 
     def test_catalog_has_thirty_selectable_workflows_and_distinct_adapters(self):
         data, digest = wm.catalog(PROJECT)
-        self.assertEqual(len(data["workflows"]), 38)
+        self.assertEqual(len(data["workflows"]), 39)
         self.assertEqual(len(digest), 64)
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "dispatch-skills")["runner"], "scripts.run_dispatch_e2e")
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "communication")["output_kind"]["prepare"], "file")
@@ -225,6 +225,7 @@ raise SystemExit(3 if a.fail else 0)
             "communication-study": ["prepare", "--config", str(source)],
             "communication-cloud-submit": ["--evidence-root", str(model), "--inventory", str(source)],
             "zone-dispatch": ["--mode", "fixture", "--coordination", "dynamic"],
+            "zone-teacher-fix": ["--mode", "fixture", "--coordination", "dynamic"],
             "zone-cargo-probe": ["--probe", "pair_crate"], "zone-cargo-catalogue": [],
             "zone-team-jobs-smoke": ["--probe", "pair_beam"],
             "zone-color-eval": ["render", "--split", "dev"],
