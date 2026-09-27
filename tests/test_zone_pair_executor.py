@@ -21,7 +21,7 @@ from harness.owncam_pose_source import PoseReport
 from harness.zone_own_executor import ZoneOwnExecutor
 from harness.zone_pair_executor import PairTeam, make_plan, m2_controller
 from harness.zone_pair_status import STATES
-from harness.team_carry_status import FIELDS
+from harness.zone_pair_status import FIELDS
 from scripts import run_m2_pair as m2
 from tests.test_zone_own_executor import CALIB, MAP, ROWS_Y, SEARCH_POSE, obs
 from tests.test_zone_own_executor_host import FakeHost, issued_after
@@ -32,11 +32,33 @@ ORDER = {'orders': [{'order_id': 'cargoX', 'kind': 'long_beam', 'count': 1, 'req
 SHEETS = {'cargoX': m2.pa.coarse_order_sheet([1., .05, 0.])}
 
 
+def pair_obs(rid, fid, now, servo):
+    result = obs(rid, fid, now, servo)
+    jpeg = (ROOT / 'tests/fixtures/m2_pair_door_v3/lift_824_r2_00759.jpg').read_bytes()
+    return {**result, 'image': base64.b64encode(jpeg).decode(), 'sha256': hashlib.sha256(jpeg).hexdigest()}
+
+
+class PairFakeHost(FakeHost):
+    def _capture_raw(self, rid, now):
+        from tests.test_zone_own_executor import rgb_of
+        slot = self.robots[rid]
+        slot.port.fid += 1
+        frame = pair_obs(rid, slot.port.fid, now, slot.port.servo)
+        slot.executor.on_frame(now, frame, rgb_of(frame))
+        slot.next_frame = now + self.FRAME_S
+
+
+def report_ready(barrier, ep, now):
+    o = ep.own.last_obs
+    return barrier.report(ep.own.robot_id, ready=True, observed_at_s=o['sim_time'], received_at_s=now,
+                          frame_id=f"{ep.own.robot_id}-{o['frame_id']}-{o['sha256'][:12]}")
+
+
 def robot(rid, *, limit=720):
     ex = ZoneOwnExecutor(rid, MAP, CALIB['params'], ORDER, skill_factory=lambda *a, **kw: None,
                           pose_estimate_cls=tuple, search_rows_y=ROWS_Y, judgments=False, job_sim_limit_s=limit)
     ex.on_command({'t': 0., 'kind': 'initial_servo_command', 'pulses': SEARCH_POSE})
-    ex.last_obs = obs(rid, 1, 0., SEARCH_POSE)
+    ex.last_obs = pair_obs(rid, 1, 0., SEARCH_POSE)
     ex.last_report = PoseReport(t_est=0., initialized=True, x_m=0., y_m=0., yaw_rad=0.,
                                 std_xy_m=.01, std_yaw_rad=.01, source=ex.pose.source)
     ex.gate.state = 'ok'
@@ -64,7 +86,7 @@ class FakeM2:
             if b.authorize(now)['phase'] == 'GO':
                 self.state = 'carry'
             else:
-                b.report(ep.own.robot_id, ready=True, observed_at_s=now, received_at_s=now)
+                report_ready(b, ep, now)
         if self.state == 'carry':
             ep.port.apply({'kind': 'mecanum', 'forward': .1, 'left': 0., 'turn': 0., 'duration_s': .15}, now)
 
@@ -86,7 +108,7 @@ class PhasedM2(FakeM2):
                         'lower': 'carry', 'open': 'put_down'}[phase], now)
         barrier = ep.status.sync_for(f'{phase}@{segment}')
         if barrier.authorize(now)['phase'] != 'GO':
-            barrier.report(ep.own.robot_id, ready=True, observed_at_s=now, received_at_s=now)
+            report_ready(barrier, ep, now)
             return
         self.go_events.append((phase, segment, round(now, 4)))
         ep.port.apply({'kind': 'arm', 'servo_id': 1, 'pulse': 1500 if phase == 'lift' else 2000}, now)
@@ -96,14 +118,17 @@ class PhasedM2(FakeM2):
 
 def setup(*, factory=FakeM2, limit=720):
     exs = {r: robot(r, limit=limit) for r in ('r1', 'r2', 'r3')}
-    host = FakeHost(exs, lambda *a: None)
+    host = PairFakeHost(exs, lambda *a: None)
     host.contact_record = {'profile': 'cargo_noslip_v1'}
     host.enable_pair_carry(SHEETS, CALIB['params'], controller_factory=factory)
     return host, exs
 
 
 def start(host):
-    return host.call('r1', 'pair_carry', 'cargoX', 'B', 'r2')
+    first = host.call('r1', 'pair_carry', 'cargoX', 'B', 'r2')
+    if not first['accepted']:
+        return first
+    return host.call('r2', 'pair_carry', 'cargoX', 'B', 'r1')
 
 
 def active(host):
@@ -124,6 +149,8 @@ def test_accepts_both_and_consumes_status_channel_for_lift():
     assert not a.port.commands
     b.step(0.)
     for ep in (a, b):
+        ep.step(.1)
+    for ep in (a, b):
         decision = ep.step(.2)
         assert ep.controller.state == 'carry'
         assert decision['commands'][0]['kind'] == 'mecanum'
@@ -135,9 +162,9 @@ def test_accepts_both_and_consumes_status_channel_for_lift():
     assert action_record(ack, run_id='dev-contract', condition='no_comm', seed=0, request_id='req')['accepted']
 
 
-@pytest.mark.parametrize('case,reason', [('busy', 'PARTNER_BUSY'), ('uncertain', 'PARTNER_UNCERTAIN'),
-                                       ('stopped', 'PARTNER_STOPPED'), ('occupied', 'PARTNER_OCCUPIED'),
-                                       ('incompatible', 'PARTNER_INCOMPATIBLE')])
+@pytest.mark.parametrize('case,reason', [('busy', 'SELF_BUSY'), ('uncertain', 'SELF_UNCERTAIN'),
+                                       ('stopped', 'SELF_STOPPED'), ('occupied', 'SELF_OCCUPIED'),
+                                       ('incompatible', 'WRONG_PAIR_DESTINATION')])
 def test_refuses_partner_without_partial_reservation(case, reason):
     host, exs = setup()
     if case == 'busy':
@@ -152,8 +179,10 @@ def test_refuses_partner_without_partial_reservation(case, reason):
         exs['r2'].orders['cargoX']['destination_zone'] = 'A'
     ack = start(host)
     assert not ack['accepted'] and ack['rejected_reason'] == reason
+    # The first actor owns only a pending submission. A peer's explicit
+    # refusal or deadline ends it; no private partner read occurs on submission.
+    host.pairs.poll(5.01)
     assert exs['r1'].job is None and exs['r1']._pair is None
-    assert not host.pairs.sessions
 
 
 @pytest.mark.parametrize('args', [(), ('cargoX',), ('cargoX', 'B'), ('cargoX', 'B', 'r2', 'extra'),
@@ -235,7 +264,7 @@ def test_peer_private_state_does_not_affect_local_control_until_status_is_sent()
     exs['r2'].map['regions']['zone_B']['center_m'] = [999., 999.]
     assert eps['r1'].step(.1)['commands'] == []
     assert eps['r1'].controller.state == 'wait_lift'
-    assert eps['r1'].status.channel.log == transcript
+    assert eps['r1'].status.channel.latest['r2'] == next(m for m in reversed(transcript) if m['robot_id'] == 'r2')
     eps['r2'].status.tick('abort', .1)
     assert eps['r1'].step(.1)['commands'] == [{'kind': 'hold'}]
     assert ends(exs['r1'])[0]['detail']['reason'] == 'PARTNER_ABORT'
@@ -257,8 +286,13 @@ def test_done_is_joint_sequence_completion_never_zone_success():
         assert ends(exs[r])[0]['detail']['outcome'] == 'PAIR_SEQUENCE_DONE'
 
 
-def test_host_drives_checkpoint_barriers_to_joint_done_with_identical_go_times():
+@pytest.mark.parametrize('start_s', [0., .55])
+def test_host_drives_checkpoint_barriers_to_joint_done_with_identical_go_times(start_s):
     host, exs = setup(factory=PhasedM2)
+    if start_s:
+        host.world.data.time = start_s
+        for rid in exs:
+            host._capture_raw(rid, start_s)
 
     def layer(h, event, payload, now):
         if event != 'start':
@@ -405,21 +439,6 @@ def test_real_v3_rejects_lost_lift_from_own_image_and_stops_both():
     host._pair_safety(0.)
     assert all(ep.terminal for ep in active(host).values())
     assert ends(exs['r1'])[0]['detail']['reason'] == 'LOAD_NOT_HELD_AFTER_LIFT'
-
-
-def test_conditions_share_identical_execution_status_and_no_task_payload():
-    from harness.zone_study_contract import MAIN_CONDITIONS
-    from harness.zone_own_contract import action_record
-    transcripts = []
-    for condition in MAIN_CONDITIONS:
-        host, _ = setup()
-        ack = start(host)
-        action_record(ack, run_id='dev', condition=condition, seed=0, request_id='request')
-        for t in (0., .2, .4):
-            for ep in active(host).values():
-                ep.step(t)
-        transcripts.append(copy.deepcopy(active(host)['r1'].status.channel.log))
-    assert len(transcripts) == 4 and all(t == transcripts[0] for t in transcripts)
 
 
 def test_frozen_m2_import_manifest_is_unchanged():

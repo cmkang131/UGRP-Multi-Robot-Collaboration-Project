@@ -2,7 +2,7 @@
 import pytest
 
 from harness.zone_pair_status import PairStatusChannel, PairStatusEndpoint, STATES
-from harness.team_carry_status import FIELDS
+from harness.zone_pair_status import FIELDS
 
 
 def endpoints():
@@ -12,7 +12,7 @@ def endpoints():
 
 def ready(ep, key, now, yes=True):
     return ep.sync_for(key).report(ep.robot_id, ready=yes, observed_at_s=now, received_at_s=now,
-                                   frame_id='LOCAL_ONLY', reason='비공개 영상 판단')
+                                   frame_id=f"{ep.robot_id}-{round(now * 1000)}-0123456789ab", reason='비공개 영상 판단')
 
 
 def test_joint_go_requires_both_status_readiness_and_survives_first_consumer():
@@ -24,7 +24,10 @@ def test_joint_go_requires_both_status_readiness_and_survives_first_consumer():
     assert a.authorize(0.)['phase'] == 'WAIT'
     # Coarse legacy publication must not erase latched readiness.
     e['r1'].tick('ready', .4)
+    ready(e['r1'], 'lift@0', .4)
     ready(e['r2'], 'lift@0', .4)
+    for ep in e.values():
+        ep.tick('ready', .5)
     assert a.authorize(.5)['phase'] == 'WAIT'
     assert a.authorize(.6)['phase'] == 'GO'
     e['r1'].tick('lift', .6)
@@ -61,7 +64,7 @@ def test_readiness_withdrawal_before_go_revokes_rendezvous():
 ])
 def test_invalid_wire_is_refused_without_raising(change):
     bus, _ = endpoints()
-    raw = dict(robot_id='r1', task_id=bus.task_id, seq=1, state='aligning', sent_at_s=0.)
+    raw = dict(robot_id='r1', task_id=bus.task_id, seq=1, state='aligning', sent_at_s=0., observed_at_s=None, frame_id=None, ready_until_s=None)
     assert not bus.publish({**raw, **change}, 0.)
     assert not bus.log
 

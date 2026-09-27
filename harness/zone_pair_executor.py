@@ -13,9 +13,9 @@ import math
 from collections.abc import Mapping
 
 from harness.zone_own_contract import finite_number
-from harness.zone_pair_status import MAX_SEGMENTS, PairStatusChannel, PairStatusEndpoint
+from harness.zone_pair_status import MAX_SEGMENTS, ARM_S, CONTROL_S, EPS, PROFILE as STATUS_PROFILE, PairStatusChannel, PairStatusEndpoint
 
-PROFILE = 'zone_pair_executor_v1_dev'
+PROFILE = 'zone_pair_executor_v2_dev'
 PAIR = ('r1', 'r2')                 # frozen M2 roles: end_neg / end_pos
 CONTACT_PROFILE = 'cargo_noslip_v1'
 
@@ -167,12 +167,16 @@ class PairExecution:
     def __init__(self, own, status, arguments, plan, params, factory=m2_controller):
         self.own, self.status = own, status
         self.partner_id = next(r for r in PAIR if r != own.robot_id)
+        self.poll_s = ARM_S
         self.plan, self.calibration_sha256 = copy.deepcopy(plan), _digest(params)
         self.arguments, self.port = dict(arguments), _OwnPort(own)
         self.events, self.inputs = [], []
         self.terminal, self.started, self.cleared = False, False, False
         self.job_id = None
         self.last_phase = None
+        self.rendezvous_deadline = own.now + 5.
+        self.next_control = own.now
+        self.control_started = False
         self.controller = factory(self, copy.deepcopy(plan), copy.deepcopy(params))
 
     def log(self, rid, kind, now, **detail):
@@ -195,7 +199,8 @@ class PairExecution:
         self._clear(now)
         self.terminal = True
         if self.own.job is not None and self.own.job.job_id == self.job_id:
-            self.own._holding_after = {'answer': 'unknown', 'source': 'pair stopped; no release confirmation'}
+            if self.started:
+                self.own._holding_after = {'answer': 'unknown', 'source': 'pair stopped; no release confirmation'}
             self.own._fail(now, reason)
 
     def _clear(self, now):
@@ -216,6 +221,18 @@ class PairExecution:
             return self.abort(now, 'PAIR_JOB_LOST')
         if now > self.own.job.deadline:
             return self.abort(now, 'LOCAL_TIMEOUT')
+        if self.status.state == 'abort':
+            return self.abort(now, self.status.failure or 'LOCAL_STATUS_ABORT')
+        ready = {m['robot_id'] for m in self.status.channel.log if m['state'] == 'start_ready'}
+        if ready != set(self.status.channel.participants):
+            if now >= self.rendezvous_deadline - EPS:
+                return self.abort(now, 'PAIR_RENDEZVOUS_TIMEOUT')
+            return
+        if self.status.grant and now > self.status.grant[1] + EPS:
+            consumed, at = self.status.grant
+            if not any(m['robot_id'] == self.partner_id and m['state'] == consumed
+                       and abs(m['sent_at_s'] - at) <= EPS for m in self.status.channel.log):
+                return self.abort(now, 'PARTNER_MISSED_GO')
         for v in self.status.channel.partner_view(self.own.robot_id, now).values():
             if v['state'] == 'abort':
                 return self.abort(now, 'PARTNER_ABORT')
@@ -226,20 +243,36 @@ class PairExecution:
         self.check(now)
         if self.terminal:
             return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
+        from harness.zone_pair_vision import valid_frame
+        if not valid_frame(self.own.last_obs, self.own.robot_id, now):
+            self.abort(now, 'INVALID_OWN_IMAGE')
+            return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
         if not self.started:
             self.status.tick('start_ready', now)
             ready = {m['robot_id'] for m in self.status.channel.log if m['state'] == 'start_ready'}
             if ready != set(self.status.channel.participants):
-                return {'mode': 'tick', 'commands': []}
+                return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
             self.started = True
-        if (getattr(self.controller, 'requires_fresh_frame', False) and self.controller.state != 'done'
+            self.next_control = round(math.ceil((now - EPS) / CONTROL_S) * CONTROL_S, 9)
+            self.own._holding_after = {'answer': 'unknown', 'source': 'pair manipulation in progress'}
+        control_due = now + EPS >= self.next_control
+        if (control_due and getattr(self.controller, 'requires_fresh_frame', False) and self.controller.state != 'done'
                 and (self.own.last_obs is None or self.own.last_obs['sim_time'] < now - 1e-6)):
             # Capture before calling the monolithic tick: unwinding halfway
             # through its look() would advance timers without an observation.
             return {'mode': 'capture'}
+        # Heartbeat cadence is separate from the controller and image TTL.
+        self.status.tick(self.status.state or 'start_ready', now)
         # A done controller must not republish the frozen coarse put_down state.
-        if self.controller.state != 'done':
+        if control_due and self.controller.state != 'done':
+            if not self.control_started:
+                self.controller.state_t = now
+                self.control_started = True
+            self.next_control = now + CONTROL_S
             self.controller.tick(now)
+        if self.status.state == 'abort' and self.controller.state != 'failed':
+            self.abort(now, self.status.failure or 'LOCAL_STATUS_ABORT')
+            return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
         if self.controller.state == 'failed':
             self.abort(now, self.controller.failure or 'M2_FAILED')
             return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
@@ -264,30 +297,70 @@ class PairExecution:
 
 
 class PairTeam:
-    """Host-side two-phase acceptance; dispatch task content outside the status channel.
+    """Compare independent submissions; never call a peer's job API on its behalf.
 
-    Every endpoint decides its own admission and publishes only a fixed enum.
-    Host cancellation callbacks never enter an endpoint's object graph.
+    Task equality is a dispatch admission check. Motion starts only when BOTH
+    locally submitted endpoints publish start_ready on their shared status wire.
+    Each endpoint computes its own plan and deterministic geometry/ID role.
     """
     def __init__(self, executors, sheets, params, *, cancel_scheduled, contact_profile, weld=False,
-                 controller_factory=m2_controller):
+                 controller_factory=m2_controller, rendezvous_timeout_s=5., heartbeat_timeout_s=.15):
+        if not finite_number(rendezvous_timeout_s) or not .2 <= rendezvous_timeout_s <= 30.:
+            raise ValueError('invalid rendezvous timeout')
         self.executors = dict(executors)
         self.sheets, self.params = copy.deepcopy(sheets), copy.deepcopy(params)
         self.cancel_scheduled = cancel_scheduled
         self.contact_profile, self.weld = contact_profile, weld
         self.factory = controller_factory
-        self.sessions = []
-        self.counter = 0
+        self.rendezvous_timeout_s, self.heartbeat_timeout_s = rendezvous_timeout_s, heartbeat_timeout_s
+        self.sessions, self.counter = [], 0
+
+    def _notify(self, session, rid, now, reason):
+        if rid not in session['notified']:
+            session['notified'].add(rid)
+            self.executors[rid]._emit(now, 'pair_refused', reason=reason,
+                                      rendezvous_id=session['channel'].task_id)
 
     def start(self, rid, item_ref=None, target_zone=None, partner_id=None, *, now):
         ex = self.executors[rid]
         ex.now = now
         args = {'order_id': ex._token(item_ref), 'target_ref': ex._token(target_zone),
                 'role': 'end_neg' if rid == 'r1' else 'end_pos'}
+        pending = None
         def refuse(reason):
+            if pending is not None and not pending['closed']:
+                next(iter(pending['endpoints'].values())).abort(now, 'PARTNER_REFUSED')
+                self._notify(pending, rid, now, reason)
+                pending['closed'] = True
+                self.poll(now)
             return ex._ack('pair_carry', args, False, reason)
         if not all(isinstance(v, str) and v for v in (item_ref, target_zone, partner_id)):
             return refuse('BAD_PAIR_ARGUMENTS')
+        # Inspect submitted requests, never the other robot's private state.
+        pending = next((s for s in reversed(self.sessions) if len(s['endpoints']) == 1
+                        and rid in PAIR and rid not in s['endpoints'] and not s['closed']), None)
+        if pending is None and self.sessions:
+            previous = self.sessions[-1]
+            if (rid in PAIR and rid not in previous['endpoints']
+                    and previous.get('closed_reason') == 'PAIR_RENDEZVOUS_TIMEOUT'
+                    and not previous.get('late_declined')):
+                previous['late_declined'] = True
+                return refuse('PAIR_RENDEZVOUS_TIMEOUT')
+        if pending:
+            first = next(iter(pending['endpoints'].values()))
+            if now >= first.rendezvous_deadline - EPS:
+                first.abort(now, 'PAIR_RENDEZVOUS_TIMEOUT')
+                self._notify(pending, rid, now, 'PAIR_RENDEZVOUS_TIMEOUT')
+                pending['closed'] = True
+                self.poll(now)
+                return refuse('PAIR_RENDEZVOUS_TIMEOUT')
+            expected = pending['submissions'][first.own.robot_id]
+            if (item_ref, target_zone, partner_id) != (expected[0], expected[1], first.own.robot_id):
+                first.abort(now, 'PAIR_SUBMISSION_MISMATCH')
+                self._notify(pending, rid, now, 'PAIR_SUBMISSION_MISMATCH')
+                pending['closed'] = True
+                self.poll(now)
+                return refuse('PAIR_SUBMISSION_MISMATCH')
         if rid not in PAIR or partner_id not in PAIR or rid == partner_id or partner_id not in self.executors:
             return refuse('UNSUPPORTED_PAIR')
         if self.contact_profile != CONTACT_PROFILE or self.weld is not False:
@@ -299,51 +372,51 @@ class PairTeam:
             return refuse('UNSUPPORTED_PAIR_ORDER')
         if target_zone != order.get('destination_zone') or target_zone not in ex.map['zone_slots']:
             return refuse('WRONG_PAIR_DESTINATION')
-        self.counter += 1
-        channel = PairStatusChannel(f'pair-{self.counter:06d}')  # opaque id, no task meaning
-        senders = {r: PairStatusEndpoint(channel, r) for r in PAIR}
-        for r in PAIR:
-            self.executors[r].now = now
-            senders[r].tick(self.executors[r].pair_readiness(now, item_ref, target_zone), now)
-        for r in (rid, partner_id):
-            state = channel.latest[r]['state']
-            if state != 'available':
-                return refuse(('SELF_' if r == rid else 'PARTNER_') + state.upper())
+        state = ex.pair_readiness(now, item_ref, target_zone)
+        if state != 'available':
+            if pending:
+                first.abort(now, 'PARTNER_REFUSED')
+                self._notify(pending, rid, now, 'SELF_' + state.upper())
+                pending['closed'] = True
+                self.poll(now)
+            return refuse('SELF_' + state.upper())
         try:
+            # Both actors compute from their own configured static inputs.
             plan = make_plan(ex.map, self.sheets.get(item_ref), target_zone)
-            endpoints = {}
-            for r in PAIR:
-                local = self.executors[r]
-                own_args = {**args, 'role': 'end_neg' if r == 'r1' else 'end_pos'}
-                endpoints[r] = PairExecution(local, senders[r], own_args, plan, self.params, self.factory)
+            if pending and _digest(plan) != _digest(first.plan):
+                first.abort(now, 'PAIR_STATIC_INPUT_MISMATCH')
+                self._notify(pending, rid, now, 'PAIR_STATIC_INPUT_MISMATCH')
+                pending['closed'] = True
+                self.poll(now)
+                return refuse('PAIR_STATIC_INPUT_MISMATCH')
+            if pending is None:
+                self.counter += 1
+                channel = PairStatusChannel(f'pair-{self.counter:06d}', heartbeat_timeout_s=self.heartbeat_timeout_s)
+                session = {'channel': channel, 'endpoints': {}, 'submissions': {}, 'acks': {},
+                           'plan': copy.deepcopy(plan), 'calibration_sha256': _digest(self.params),
+                           'notified': set(), 'closed': False}
+            else:
+                session, channel = pending, pending['channel']
+            ep = PairExecution(ex, PairStatusEndpoint(channel, rid), args, plan, self.params, self.factory)
         except (ValueError, KeyError, TypeError) as exc:
             return refuse(str(exc) or 'INVALID_PAIR_PLAN')
-        acks = {}
-        for r in PAIR:
-            local = self.executors[r]
-            local._pair = endpoints[r]
-            acks[r] = local.pair_carry(item_ref, target_zone, endpoints[r].partner_id)
-            if not acks[r]['accepted']:
-                local._pair = None
-        self.sessions.append({'channel': channel, 'endpoints': endpoints, 'acks': acks,
-                              'plan': copy.deepcopy(plan), 'calibration_sha256': _digest(self.params)})
-        if not all(a['accepted'] for a in acks.values()):
-            for ep in endpoints.values():
-                ep.abort(now, 'PAIR_ACCEPTANCE_ROLLBACK')
-            self.poll(now)
-            return refuse('PAIR_ACCEPTANCE_ROLLBACK')
-        for r in PAIR:
-            # Remove any previous host macro and poll both local status consumers
-            # at the acceptance time. Only the status rendezvous authorizes motion.
-            self.cancel_scheduled(r, now, 'pair_start')
-        # Initial joint readiness is sent by the two local acceptance paths.
-        return acks[rid]
+        ep.rendezvous_deadline = now + self.rendezvous_timeout_s
+        ex._pair = ep
+        ack = ex.pair_carry(item_ref, target_zone, partner_id)  # ONLY the caller's job
+        if not ack['accepted']:
+            ex._pair = None
+            return ack
+        session['endpoints'][rid] = ep
+        session['submissions'][rid] = (item_ref, target_zone, partner_id)
+        session['acks'][rid] = ack
+        if pending is None:
+            self.sessions.append(session)
+        self.cancel_scheduled(rid, now, 'pair_submission')
+        return ack
 
     def poll(self, now):
-        """Before/after host commands: propagate abort via enums, cancel BOTH macros."""
         for session in self.sessions:
             endpoints = session['endpoints']
-            # Two passes propagate a second endpoint's abort to the first too.
             for _ in range(2):
                 for ep in endpoints.values():
                     ep.check(now)
@@ -352,10 +425,21 @@ class PairTeam:
                     ep.cleared = True
                     if ep.job_id is not None:
                         self.cancel_scheduled(ep.own.robot_id, now, 'pair_terminal')
+                    if len(endpoints) == 1:
+                        reason = next((e['detail']['reason'] for e in reversed(ep.own.events)
+                                       if e['event'] == 'job_failed'), 'PAIR_CANCELLED')
+                        self._notify(session, ep.partner_id, now, reason)
+                        session['closed'] = True
+                        session['closed_reason'] = reason
 
     def records(self):
-        return [{'profile': PROFILE, 'status_profile': 'zone_pair_status_v2',
+        return [{'profile': PROFILE, 'status_profile': STATUS_PROFILE,
+                 'timing': {'control_s': CONTROL_S, 'arm_s': ARM_S,
+                            'heartbeat_timeout_s': s['channel'].heartbeat_timeout_s,
+                            'readiness_ttl_s': s['channel'].readiness_ttl_s,
+                            'rendezvous_timeout_s': self.rendezvous_timeout_s},
                  'status_messages': s['channel'].log, 'rejected_status': s['channel'].rejected,
+                 'submissions': copy.deepcopy(s['submissions']),
                  'plan': s['plan'], 'calibration_sha256': s['calibration_sha256'],
                  'acks': s['acks'], 'robots': {r: {'events': ep.events, 'inputs': ep.inputs}
                                              for r, ep in s['endpoints'].items()}} for s in self.sessions]

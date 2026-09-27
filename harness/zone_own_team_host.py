@@ -159,13 +159,14 @@ class OwnCamTeamHost:
             pair_params = json.loads(CALIBRATION.read_text())['params']
             self.enable_pair_carry(spec['pair_order_sheets'], pair_params)
 
-    def enable_pair_carry(self, sheets, params, *, controller_factory=None):
+    def enable_pair_carry(self, sheets, params, *, controller_factory=None, rendezvous_timeout_s=5., heartbeat_timeout_s=.15):
         """Attach the M2 dispatcher; may also be used with a simulator-free host."""
         from harness.zone_pair_executor import PairTeam, m2_controller
         self.pairs = PairTeam({r: s.executor for r, s in self.robots.items()}, sheets, params,
                               cancel_scheduled=self._drop_scheduled,
                               contact_profile=self.contact_record['profile'], weld=False,
-                              controller_factory=controller_factory or m2_controller)
+                              controller_factory=controller_factory or m2_controller,
+                              rendezvous_timeout_s=rendezvous_timeout_s, heartbeat_timeout_s=heartbeat_timeout_s)
 
     def _pair_safety(self, now):
         if getattr(self, 'pairs', None) is not None:
@@ -398,7 +399,7 @@ class OwnCamTeamHost:
                         self._hold(rid, now)
                     else:
                         self._apply(rid, cmd, now)
-                slot.next_decide = now + TICK_S
+                slot.next_decide = now + (ex._pair.poll_s if ex._pair is not None else TICK_S)
                 return
             if mode == 'macro':
                 slot.decisions.append({'t': round(now, 3), 'action': decision['action']})
@@ -516,6 +517,7 @@ class OwnCamTeamHost:
                 self._drop_scheduled(rid, now, f'episode_end:{outcome}')
             else:
                 self._hold(rid, now)
+        self._pair_safety(now)
         self._deliver_events(now)
 
     def close(self):
