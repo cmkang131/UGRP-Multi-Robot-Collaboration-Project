@@ -27,6 +27,15 @@
 
 자동 검사는 설정 누락과 알려진 실행 계약의 변경을 검출한다. 물리적 완주나 일반화 성능을 대신 검증하지 않는다. 적용된 실행 경로 밖의 도구는 별도 검토가 필요하다.
 
+## 구역 연구 통합 v64
+
+`zone-study-integration-v64-source-closure`는 PR #229 P1/P2 수정 후보다. 로컬 branch/remote refs 259개의 `RUNNABLE_ID` 최대 v63(통합 번들은 v2)을 확인해 다음 번호를 선택했다. 원격 fetch·열린 PR 재조회는 환경 제한으로 실패했으며, 최신 원격 예약까지 확인한 것은 아니다.
+
+- 수동 소스 목록을 전이 import closure + 설정 선택 모듈로 바꾸고, 실행 전 HEAD와 사전등록/기대 SHA를 대조한다.
+- 기존 `config/rgb_execution_bundles/`, 과거 integration prereg·번들·실행 기록은 수정하지 않는다. v2 및 과거 결과를 v64 성공으로 승계하지 않는다.
+- 제어·접촉 설정은 유지한다: GT 제어 입력 없음, weld OFF, `cargo_noslip_v1`, 인식 지연 0.16 SIM초.
+- 새 번들 JSON은 [미커밋 후보 기록](../experiments/2026-09-27-pr229-source-delay/README.md)에만 저장한다. 소스 커밋·실행 pin 확정·물리 완주는 별도이며 이번 검증은 오프라인 회귀다.
+
 ## 공통 RGB 실행기에 적용된 검사
 
 - `rgb-standard-dispatch-v63` (PR #194, 실제 R10 PREFLIGHT 펜스 회귀 수정):
