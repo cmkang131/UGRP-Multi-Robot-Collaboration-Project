@@ -168,6 +168,6 @@ def test_executor_tests_are_collected_by_ci():
     sys.path.insert(0, str(ROOT / 'scripts'))
     import run_ci_tests
     mine = sorted(str(p.relative_to(ROOT)) for p in (ROOT / 'tests').glob('test_zone_own_executor*.py'))
-    assert len(mine) == 4
+    assert len(mine) == 4 and all(p.startswith('tests/test_zone_own_executor') for p in mine)
     for path in mine:
         assert any(fnmatch.fnmatch(path, pat) for pat in run_ci_tests.TEST_PATTERNS), path

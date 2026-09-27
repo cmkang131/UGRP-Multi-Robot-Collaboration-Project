@@ -1,74 +1,96 @@
 # 자기 카메라 로봇별 실행기 API (패키지 F)
 
-한국어 대화 연구의 LLM 층(또는 no-LLM 스크립트)이 로봇 한 대에 작업을 맡기는 다리다. 코드는 `harness/zone_own_executor.py`, 테스트는 `tests/test_zone_own_executor.py`, 첫 물리 스모크는 [`experiments/2026-09-26-zone-own-executor/`](../experiments/2026-09-26-zone-own-executor/README.md)에 있다.
+한국어 대화 연구의 LLM 층(또는 no-LLM 스크립트)이 로봇 한 대에 작업을 맡기는 다리다.
 
-**의존성(병합 전).** PR #201(`claude/zone-m1-owncam`, `cceb7ee`까지 병합: M1 제어기·위치 추정·계약, 스킬 v9 `04a5e3c` 포함)과 PR #193(`kiro/zone-own-perception`, `fb44c2c`: 자기 RGB 판단)을 이 브랜치에 병합해 쓴다. 두 PR의 파일은 읽기 전용으로 재사용하고 수정하지 않았다. PR #194(패키지 A/D)는 병합하지 않았으며, 필요한 schema 값을 고정 복사해 어댑터를 만들었다(아래).
+| 파일 | 역할 |
+|---|---|
+| `harness/zone_own_executor.py` | 작업 API·사건·작업 수명 (`ZoneOwnExecutor`) |
+| `harness/zone_own_guards.py` | 자기 입력 안전장치: 위치 불확실도 게이트, 둘러보기 충돌 검사, 진행 감시, 위치별 막힘 누적 |
+| `harness/zone_own_driver.py` | `GuardedDriver`: loop driver v2 + 안전장치, 제한된 복구 |
+| `harness/zone_own_deliver.py` | M1 배송 사슬 어댑터 (`_DeliverController`) |
+| `harness/zone_own_status.py` | 자기 카메라 판단·`status()`·`belief_projection()` |
+| `harness/zone_own_contract.py` | 지도 어휘와 패키지 A/D 어댑터(main의 계약 모듈을 import) |
+| `harness/zone_own_team_host.py` | 3대 물리 소유자 `OwnCamTeamHost`(시뮬레이터는 여기서만 import) |
+
+테스트는 `tests/test_zone_own_executor*.py` 네 파일이고 모두 `scripts/run_ci_tests.py`에 수집된다. 스모크 기록은 [`experiments/2026-09-26-zone-own-executor/`](../experiments/2026-09-26-zone-own-executor/README.md)에 있다.
+
+**재사용.** PR #201(M1 제어기·위치 추정·계약, 스킬 v9 `04a5e3c` 포함)과 PR #193(자기 RGB 판단)의 파일은 읽기 전용으로 쓴다. 패키지 A/D 계약(`harness/zone_study_contract.py`, `harness/zone_event_scheduler.py`, `harness/zone_map_schematic.py`)은 main에서 import하며 복사하지 않는다.
 
 ## 입력 경계
 
-실행기(`ZoneOwnExecutor`)가 받는 것은 다음뿐이다.
-- 자기 `robot_cam` 관측(JPEG, 자기 발행 PWM)
-- 자기 포트에서 되돌려 받은 자기 발행 명령 이력
-- 정적 태그 지도(`zone_wide_door_tags_v2` 등)와 고정 교정값
+실행기가 받는 것은 다음뿐이다.
+- 자기 `robot_cam` 관측(JPEG, 자기 발행 PWM)과 자기 발행 명령 이력
+- 정적 태그 지도와 고정 교정값(카메라·운동, 자기 몸체 모델 `body_model_calibration.json`)
+- 정적 배치 keep-out(대기 spawn 원판)
 - 시나리오 설정에서 만든 주문서: 종류·수량·목적 구역·개략 pickup 슬롯 `P{열}-{행}`. 좌표는 거부한다.
 
-실행기는 시뮬레이터를 import하지 않는다. world·포트·다른 로봇·호스트 참조도 갖지 않는다. 물리 소유자가 자기 관측과 자기 명령만 넣어 준다. 다른 로봇의 관측, `nav_cam`, 오래된 프레임, 해시가 맞지 않는 프레임은 거부한다.
+실행기는 시뮬레이터를 import하지 않는다. world·포트·다른 로봇·호스트 참조도 없다. 다른 로봇의 관측, `nav_cam`, 오래된 프레임, 해시가 맞지 않는 프레임은 거부한다. 실행기에는 연구 조건 인자가 없으므로 모든 조건에서 같게 동작한다.
 
 ## 작업 API
 
 | 호출 | 동작 | 끝 사건 |
 |---|---|---|
-| `deliver(item_ref, zone_slot)` | 주문 줄 하나를 구역 슬롯(`A2`)이나 구역(`A` → 자기 기록상 다음 슬롯)으로 옮긴다. 먼저 넓게 둘러보고, M1 사슬(자기 RGB 탐색 → 파지 → 문 통과 운반 → 배치 → 다시 보기)을 따른다. 탐색은 주문서의 pickup 슬롯(+0.15 m) 안의 청록 검출만 쓴다. 서쪽 관측점에서 1 m 넘게 떨어진 bay(P2)는 bay 서쪽 가장자리의 행 사이 통로에서도 본다(`lane_viewpoints`) | 다시 보기 IN_SLOT → `job_done(own_camera_confirmed)`; 놓았지만 확인 불가 → `job_done(unconfirmed)`; OUTSIDE_SLOT·그 밖 → `job_failed(reason)` |
-| `goto(target)` | `[x, y]`, 구역 `A`(칠 서쪽 0.25 m), 구역 슬롯 `A2`(서쪽 0.40 m), pickup 슬롯 `P1-2`(서쪽 관측점 x=−0.47), 문 `door_1`(자기 추정상 반대편 0.45 m). loop driver v2(자기 추정 + 지도 A*, 멈춰서 둘러보기) | 도착 전 마지막 둘러보기 뒤 `ARRIVED` → confirmed; 경로 없음·위치 상실 → failed |
-| `look_around()` | LOOK_P20 자세로 ±48° 둘러보고 원래 자세로 돌아온다 | 불확실도 low/medium → confirmed, 아니면 unconfirmed |
-| `hold(sim_s)` / `wait(sim_s)` | 멈추고 마지막 안전 명령을 유지한다 | `job_done(unconfirmed, HOLD_ELAPSED)` |
-| `abort(reason_code)` | 현재 작업을 취소하고 멈춘다(들고 있으면 계속 든 채) | `job_failed('ABORTED:<reason>')` |
-| `status()` | 자기 상태와 자기 카메라 판단만 반환 | — |
+| `deliver(item_ref, zone_slot)` | 주문 줄 하나를 구역 슬롯(`A2`)이나 구역(`A`: 자기 기록상 다음 슬롯)으로 옮긴다. 먼저 넓게 둘러본 뒤 M1 사슬을 따른다(자기 RGB 탐색 → 파지 → 문 통과 운반 → 배치 → 다시 보기). 탐색은 주문 pickup 슬롯(+0.15 m) 안의 청록만 쓴다. 먼 bay(P2)는 통로 관측점을 더한다. 탐색 프레임에서 청록이 어안 테두리 아래에 잘리면(너무 가까움) 관측점마다 한 번 물러나 다시 본다 | 다시 보기 IN_SLOT이고 게이트 ok → `job_done(own_camera_confirmed)`; 확인 불가 → `job_done(unconfirmed)`; 그 밖 → `job_failed(reason)` |
+| `goto(target)` | `[x, y]`, 구역 `A`, 구역 슬롯 `A2`, pickup 슬롯 `P1-2`, 문 `door_1`. `GuardedDriver`(loop driver v2 + 안전장치) | 게이트 ok와 5 s 안의 고정된 자기 둘러보기가 있어야 `ARRIVED`(confirmed). 아니면 `GOTO_arrival_unconfirmed`·`GOTO_pose_uncertain`·`GOTO_lost`·`GOTO_blocked`·`GOTO_no_path` |
+| `look_around()` | LOOK_P20 둘러보기. pan은 충돌 없는 구간만, 필요하면 먼저 물러난다 | 게이트 ok이고 둘러보기 중 태그를 봤으면 confirmed, 아니면 unconfirmed |
+| `hold(sim_s)` / `wait(sim_s)` | 0–3600 SIM s 멈춤 | `job_done(unconfirmed, HOLD_ELAPSED)` |
+| `abort(reason_code)` | 현재 작업 취소. 호스트가 예약 명령을 버리고 즉시 hold한다 | `job_failed('ABORTED:<reason>')` |
+| `status()` | 자기 상태와 자기 카메라 판단만 | — |
 
-작업은 한 번에 하나다. 바쁜 중의 호출, 모르는 주문, 목적지와 다른 슬롯, M1 스킬이 지원하지 않는 종류(청록 외)는 `command_rejected`로 거부한다. 각 작업의 SIM 한도는 기본 720 s(M1과 같음)이며, 넘으면 `job_failed('LOCAL_TIMEOUT')`이다.
+작업은 한 번에 하나다. 바쁠 때의 호출, 모르는 주문·목적지 불일치·청록 외 종류, 잘못된 인자(`[]`, `None`, NaN/Inf, bool, 빈 문자열, 범위 밖 시간)는 예외 없이 `command_rejected`로 거부한다. 제어기 예외로 멈춘 로봇은 이후 모든 호출을 `ROBOT_STOPPED`로, 에피소드가 끝난 뒤의 호출은 `EPISODE_ENDED`로 거부한다.
 
-`status()`에 들어가는 항목:
-- `holding`(yes/no/unknown): 출처를 함께 적는다. 스킬의 자기 RGB 부착 확인, 자기 RGB 방출 확인, "마지막 방출 뒤 집게를 닫은 적 없음" 중 하나다. CARRY 자세 프레임에서 `judge_holding_item`이 확신(≥0.65)으로 반대 답을 내면 `unknown`으로 둔다.
-- `blocked_ahead`(yes/no/unknown): LOOK_P20·CARRY 자세, pan 1500, 정지 상태의 프레임에서 1 SIM s마다 `judge_route_blockage`를 돌린 결과다. 5 s가 지나면 `unknown`이 된다.
-- `localization.level`: 자기 PoseReport의 σ로 정한다. low는 σ ≤ 3.5 cm·0.035 rad(M1 look_back 한도), medium은 ≤ 8 cm·0.10 rad(M1 nav_unloaded), 그 밖은 high, 초기화 전은 unknown이다.
-- `region`: 자기 추정으로 본 개략 영역이다.
+## 한 가지 취소 경로 (호스트)
 
-`belief_projection()`은 같은 내용을 패키지 A의 `BELIEF_KEYS`로 투영한다. 두 출력 모두 A의 금지 키·부분 문자열에 걸리지 않음을 테스트로 확인한다.
+다음 네 경우 모두 (1) 그 로봇의 예약된 macro 명령을 버리고, (2) 즉시 hold하고, (3) 작업을 종료 사건 정확히 1회로 끝낸다.
+
+| 원인 | 사건 |
+|---|---|
+| 승인된 `abort` | `job_failed('ABORTED:…')` |
+| 작업 SIM 한도(기본 720 s). macro 실행 중에도 검사하며, 한도 시각을 호스트의 다음 깨움 시각에 넣는다 | `job_failed('LOCAL_TIMEOUT')`, D trigger `timeout` |
+| 에피소드 끝(SIM 한도·연구 층 종료·전원 정지) | `job_failed('EPISODE_END:<outcome>')`, D trigger `timeout` |
+| 제어기 예외 | `job_failed('EXCEPTION:<type>')`, 로봇 영구 정지 |
+
+## 안전장치 (`zone_own_guards.py`)
+
+- **위치 불확실도 게이트.** 자기 PoseReport σ에 두 임계와 머묾 시간을 둔 Schmitt trigger다.
+  - 빈손: HIGH σxy 0.08 m·σyaw 0.10 rad(M1 `nav_unloaded`), LOW 0.05 m·0.06 rad.
+  - 짐: HIGH 0.07 m·3°(M1 `nav_loaded`), LOW 0.06 m·2.5°.
+  - HIGH 초과가 0.6 s 이어지면 `uncertain`, LOW 이하가 0.4 s 이어지면 `ok`. 초기값은 `uncertain`.
+  - `uncertain`이면 주행하지 않고(둘러보기만, 연속 3회 실패 시 `pose_uncertain`으로 끝), 어떤 작업도 `own_camera_confirmed`를 내지 않는다.
+  - `pose_uncertain` 사건은 진입마다 1회이며 D trigger는 `failure`다.
+- **둘러보기 충돌 검사.** 자기 팔·집게(열림/닫힘)·든 상자를 구로 모델링한다(`harness/visual_arm.py` 순기구학, 발행 PWM).
+  - 정적 지도의 벽과 문설주를 높이와 함께 비교한다. 여유는 0.02 m + 몸체 모델 잔차 0.015 m + 2σxy + 2σyaw·팔 길이다.
+  - 현재 pan에서 이어지는 충돌 없는 pan 구간만 방문한다. 줄어들면 섀시가 벽에 닿지 않는 뒤·옆 이동(0.08/0.15 m)을 한 번 먼저 해 본다.
+  - M1 사슬 안의 둘러보기는 pan만 줄인다(물러나기 없음).
+- **진행 감시와 제한된 복구.** Nav2 `SimpleProgressChecker`를 옮긴 것이다(`zone_own_guards.ProgressMonitor`, 주행기는 `zone_own_driver.GuardedDriver`).
+  - 기준점 이후 자기 **명령 이동량**(명령 속도 × 제어 주기의 합)이 0.40 m를 넘었는데, 그 뒤에 얻은 믿을 만한 자기 추정(고정된 둘러보기, 또는 0.3 s 안의 태그와 LOW 이하 σ)이 0.10 m(목표 근처는 남은 거리의 절반)도 움직이지 않았으면 정체로 본다.
+  - 명령 이동량은 넘었지만 그 뒤의 믿을 만한 추정이 없으면, 먼저 확인용 둘러보기를 한 번 한다. 그 둘러보기가 고정되지 않으면 기준점을 새로 잡는다(거짓 정체 방지).
+  - 정체하면 Nav2 `BackUp`처럼 0.08 m 물러나고 다시 둘러보고 재계획한다. 진행 방향 0.20 m 앞에 keep-out을 두되, 구간 목표에서 0.45 m, 문 중심에서 0.60 m 안에는 두지 않는다.
+  - 정체 keep-out 때문에 계획이 실패하면 그 keep-out을 지우고 한 번 더 계획한다.
+  - 복구는 최대 2회다. 그 뒤, 또는 복구 뒤에도 계획이 없으면 `<leg>_blocked`로 실패하고 `blockage_seen(source=own_progress_stall)`을 1회 낸다.
+  - smoke v2(`a5b3687e`)의 규칙은 "명령 주행 6 s"였다. 느린 접근과 긴 둘러보기 뒤에 거짓 정체가 났고(5건 중 3건), keep-out이 목표·문을 덮어 4/6이 `no_path`로 끝났다(`experiments/2026-09-26-zone-own-executor/diagnosis_v2.json`).
+- **M1 접근 구간의 목표 상자.** 접근점까지 가는 구간에서는 자기 RGB로 찾은 목표 상자도 계획 장애물로 둔다(파지는 스킬이 그대로 한다).
+- **막힘 누적.** `judge_route_blockage`의 확신 yes를 위치 키(통로, 0.5 m 칸, 90° 방위)별로 센다. 같은 키에서 2.5 s 안에 2회면 `blockage_seen`이다. 그 키에서 `no`가 나와야 다시 무장한다.
 
 ## 사건과 패키지 A/D 연결
 
-`drain_events()`는 `ugrp.zone_own_executor_event.v1` 행을 돌려준다. 행마다 `scheduler_trigger`가 붙는다(패키지 D `TRIGGERS`).
+| 사건 | D trigger |
+|---|---|
+| `job_started` | 없음(기록만) |
+| `job_done` | `idle` |
+| `job_failed` | `failure`; `LOCAL_TIMEOUT`·`EPISODE_END:*`은 `timeout` |
+| `blockage_seen` | `blockage` |
+| `pose_uncertain` | `failure`(게이트 진입마다 1회) |
 
-| 사건 | D trigger | 비고 |
-|---|---|---|
-| `job_started` | 없음(기록만) | |
-| `job_done` | `idle` | `confirmation` = `own_camera_confirmed` / `unconfirmed` |
-| `job_failed` | `failure`, 단 `LOCAL_TIMEOUT`은 `timeout` | `reason` |
-| `blockage_seen` | `blockage` | 2회 연속 yes·신뢰도 ≥ 0.65. `no`가 나오면 다시 무장 |
-| `pose_uncertain` | 없음 | low/medium → high/unknown 전이(가장자리 검출). 작업을 끝내는 경우에는 `job_failed`가 따로 깨운다 |
+`action_record(...)`는 ack를 A의 `ugrp.zone_study_action.v1` 행으로 만들고 A의 `validate_log_record`로 검사한다. 조건은 A의 `CONDITIONS` 이름이어야 한다. v1 스모크가 쓴 `no_llm_scripted`는 거부된다. v2 스모크의 스크립트 층은 대화 채널이 없으므로 `no_comm`으로 기록한다.
 
-API 응답(ack)은 `action_record(...)`로 A의 `ugrp.zone_study_action.v1` 행이 된다. 대응은 deliver→`claim_order`, goto→`goto`, look_around→`observe`, hold→`wait`, abort→`abort_job`이다. `local_state`는 A의 `LOCAL_STATES`를 쓴다. 인자 키는 A의 `COMMAND_ARGUMENT_KEYS` 안에 있다. #194가 병합되면 테스트가 A 모듈의 실제 값과 `action_record_violations`로 다시 비교한다.
+## 짝 상태 채널
 
-## M1 계약
-
-- `mode='m1'`(기본)에서는 모든 PoseReport·스킬 추정의 출처가 `owncam_pf_v2:<교정 sha8>`여야 한다. `harness.m1_owncam_contract`와 `harness.m1_contract`가 모두 검사한다.
-- 주입된 자세 출처는 `OwnCamPoseSource`이면서 자기 카메라 라벨일 때만 받는다. `gt_stub_eval_only`는 거부한다.
-- `mode='diagnostic'`은 테스트용 주입을 받지만 `counts_as_m1_inputs=False`다.
-- 평가 전용 기록(정답 자세·상자 위치·접촉·weld)은 호스트의 `eval_only`에만 쌓이고 실행기로 흐르지 않는다.
-
-## 여러 로봇 장면: `OwnCamTeamHost`
-
-MuJoCo world 하나에 로봇 3대를 두고, `CameraRobotPort`와 실행기를 로봇마다 하나씩 붙인다.
-- 실행 조건: 동기 SIM, weld OFF, 접촉 프로필 선택(`cargo_noslip_v1`).
-- 관측: 로봇마다 5 Hz로 자기 카메라만 렌더링한다.
-- 결정: 0.1 s 간격이다. 스킬 macro(`drive`/`mecanum`/`pose`/`wait`)는 `scripts/run_m1_owncam.py`와 같은 시간 규칙으로 로봇별 일정표에 펼쳐져 다른 로봇과 병렬로 진행한다.
-- 예외: 한 로봇의 제어기에서 예외가 나면 그 로봇의 작업만 `job_failed('EXCEPTION:…')`로 끝나고, 그 로봇은 멈춘다.
-- 연구 층: `host.call(rid, api, ...)`로만 그 로봇의 API를 부른다. 사건만 받는다.
-- 격리: 실행기에서 도달 가능한 객체 그래프에 호스트·world·다른 포트·다른 실행기가 없음을 테스트로 확인한다. 세 실행기 사이에 공유된 변경 가능 객체가 없다는 것도 확인한다.
+사용자 결정(2026-09-26)에 따라 공동 운반 상태 채널(`harness/team_carry_status.py`, 고정 enum `aligning/ready/lift/carry/put_down/abort`)은 모든 조건에 같게 들어간다. 이 실행기는 단독 운반만 하므로 채널을 발행하지 않는다. 실행기에 조건 인자가 없어 조건별 차이가 생길 수 없다. 실제 소비자와 비영 트래픽 검증은 공동 운반 실행기(M2) 몫이다.
 
 ## 한계
 
-- deliver는 M1 사슬을 그대로 쓰므로 청록 상자·문 하나(`door_1`)·정적 spawn keep-out 가정을 물려받는다.
-- 로봇끼리 조정하지 않는다. 문 대치나 충돌 회피는 연구 층(대화)의 몫이다. 실행기는 막힘을 보고만 한다.
-- `pose_uncertain` 가장자리와 막힘 판단은 PR #193의 오프라인 게이트 범위에서만 검증됐다. 실행 중 막힘 판단의 정확도는 이 패키지에서 채점하지 않았다.
-- `goto`의 목표점 규칙(서쪽 접근)은 이 문서의 고정값이며, 교사 경로로 검증한 것이 아니다.
+- deliver는 M1 사슬의 청록 상자·문 하나·정적 spawn keep-out 가정을 물려받는다. M1 파지 스킬 내부의 macro 동작(파지 접근 등)은 진행 감시 대상이 아니다. 작업 SIM 한도가 상한이다.
+- 몸체 모델은 로봇 한 대의 MuJoCo 몸에서 한 번 교정했다. 0.40 m 벽 검증 자세는 5곳뿐이다. 실물 로봇 검증은 없다.
+- 로봇끼리 조정하지 않는다. 문 대치와 충돌 회피는 연구 층(대화)의 몫이고, 실행기는 막힘을 보고만 한다.
+- 막힘 판단의 실행 중 정확도는 이 패키지에서 채점하지 않았다(PR #193 오프라인 게이트 범위).

@@ -2,7 +2,7 @@
 
 ``_DeliverController`` is ``harness.m1_owncam_delivery.M1OwnCamDelivery`` (PR #201, read-only) with:
 the executor's shared localizer, uncertainty gate and sweep guard; every leg on
-``zone_own_guards.GuardedDriver``; M1 sweeps restricted to the collision-free pan interval; the own-RGB
+``zone_own_driver.GuardedDriver``; M1 sweeps restricted to the collision-free pan interval; the own-RGB
 search limited to the order sheet's coarse pickup slot; lane viewpoints for a far bay; and a retreat
 re-look when a cyan region is clipped at the bottom edge of a search frame (too close to fit).
 """
@@ -16,6 +16,7 @@ import numpy as np
 
 from harness import visual_arm as va
 from harness import zone_own_guards as guards
+from harness.zone_own_driver import GuardedDriver
 from harness.m1_owncam_delivery import NEAR_MIN_DETECTIONS, M1OwnCamDelivery
 from harness.owncam_drive import CARRY_POSTURE
 from harness.owncam_pose_source import OwnCamPoseSource
@@ -116,7 +117,7 @@ class _DeliverController(M1OwnCamDelivery):
 
     def _start_leg(self, goal, *, loaded):
         """Every M1 leg on the guarded driver (uncertainty gate, sweep guard, progress monitor)."""
-        self.leg = guards.GuardedDriver(self.pose.loc, self.map, self.params, loaded=loaded, goal_xy=goal,
+        self.leg = GuardedDriver(self.pose.loc, self.map, self.params, loaded=loaded, goal_xy=goal,
                                         door_xy=self.door_xy, keepouts=self._keepouts(), initial_servo=dict(self.servo),
                                         seed=self.seed, gate=self.gate, guard=self.guard)
         if loaded:
@@ -135,6 +136,16 @@ class _DeliverController(M1OwnCamDelivery):
         if purpose == 'search':
             self.near_clipped = []
         super()._start_sweep(now, purpose, pose, kept, restore, reason)
+
+    def _keepouts(self):
+        """M1 keep-outs; on the approach leg the target box itself is an obstacle too (smoke v2 s701 r3 drove
+        into it: M1 drops the target so the skill can reach it, but the leg only goes to the approach point)."""
+        out = super()._keepouts()
+        if self.phase == 'approach_leg' and self.target_xy is not None:
+            from harness.m1_owncam_delivery import SEEN_BOX_HALF_M
+            out.append({'id': 'target_box', 'center_m': [float(v) for v in self.target_xy],
+                        'half_extents_m': [SEEN_BOX_HALF_M] * 2, 'source': 'own RGB search result (approach leg only)'})
+        return out
 
     def _in_slot(self, xy) -> bool:
         (x0, x1), (y0, y1) = self.slot_rect

@@ -15,15 +15,16 @@ calibration. Nothing here imports the simulator, reads a peer or a ground-truth 
    sigma. A look keeps only the pans of the contiguous collision-free interval around the current
    pan, or backs off first (Codex P1-2: +-48 deg pans in a 0.40 m-wall door hit the jamb).
 3. :class:`ProgressMonitor` - no-progress check adapted from Nav2 ``SimpleProgressChecker``: the
-   own trusted estimate must move ``REQUIRED_MOVEMENT_M`` within ``MOVEMENT_TIME_ALLOWANCE_S`` of
-   commanded driving; on a stall :class:`GuardedDriver` backs off (Nav2 ``BackUp``), marks a keep-out
-   ahead and replans, at most ``MAX_RECOVERIES`` times (Nav2 ``RecoveryNode`` retries), then finishes
-   ``blocked`` (Codex P1-3: 660 SIM s pushing an unseen box until the 720 s job limit).
+   own trusted estimate must move ``REQUIRED_MOVEMENT_M`` within ``STALL_COMMANDED_M`` of own
+   commanded travel, confirmed by a fresh own look; on a stall the guarded driver backs off (Nav2
+   ``BackUp``), marks a keep-out ahead (never at the goal or a door) and replans, at most
+   ``MAX_RECOVERIES`` times (Nav2 ``RecoveryNode`` retries), then finishes ``blocked`` (Codex P1-3:
+   660 SIM s pushing an unseen box until the 720 s job limit).
 4. :class:`BlockageStreak` - route-blockage commits counted per location (passage, map cell,
    heading sector) with a maximum gap (Codex P2-7: two looks at different places made one streak).
 
-:class:`GuardedDriver` is ``OwnCamDriverV2`` (loop v2 pursuit, planner, look policy unchanged)
-with 1-3 applied; the executor uses it for ``goto`` and for every M1 delivery leg.
+:class:`harness.zone_own_driver.GuardedDriver` applies 1-3 to ``OwnCamDriverV2``; the executor uses it for
+``goto`` and for every M1 delivery leg.
 """
 from __future__ import annotations
 
@@ -35,11 +36,11 @@ import numpy as np
 
 from harness import visual_arm as va
 from harness.m1_owncam_delivery import LIMITS as M1_LIMITS
-from harness.owncam_drive import CONTROL_S, LOOK_P20, SETTLE_S, WIDE_LOOK_PANS
-from harness.owncam_drive_v2 import LOADED_FIX_STD_XY_M, OwnCamDriverV2
+from harness.owncam_drive import CONTROL_S
+from harness.owncam_drive_v2 import LOADED_FIX_STD_XY_M
 from harness.owncam_localizer import GRIP_OPEN_MIN
 
-SCHEMA = 'ugrp.zone_own_guards.v1'
+SCHEMA = 'ugrp.zone_own_guards.v2'   # v1 = smoke v2 (a5b3687e): drive-time stall rule
 
 # ---------------------------------------------------------------- 1. uncertainty gate
 
@@ -357,40 +358,74 @@ def backoff_commands(move: Mapping) -> tuple[dict, float]:
 
 
 # ---------------------------------------------------------------- 3. progress monitor (Nav2 adaptation)
-REQUIRED_MOVEMENT_M = .10           # Nav2 default 0.5 m, scaled to this robot's <= 0.12 m/s pursuit
-MOVEMENT_TIME_ALLOWANCE_S = 6.      # Nav2 default 10 s; here commanded-driving SIM time only (0.7 m at 0.12 m/s)
+REQUIRED_MOVEMENT_M = .10           # Nav2 required_movement_radius (default 0.5 m), scaled to this robot
+# Nav2 counts wall-clock time since the baseline. Smoke v2 (a5b3687e, diagnosis_v2.json) showed that
+# "6 s of commanded driving" fires on slow crawls near a goal and after long looks: 3 of 5 stalls were
+# false. v3 counts the robot's own COMMANDED displacement (sum |v_cmd| * tick) since the baseline.
+STALL_COMMANDED_M = .40             # 4x REQUIRED_MOVEMENT_M; ~0.56 m actual (gain ~1.4) > the 0.5 m loaded travel look
 TRUSTED_TAG_AGE_S = .3
 MAX_RECOVERIES = 2                  # Nav2 RecoveryNode number_of_retries style bound
 RECOVERY_BACKOFF_M = .08
 STALL_KEEPOUT_AHEAD_M = .20
 STALL_KEEPOUT_HALF_M = .08
+STALL_KEEPOUT_MIN_GOAL_M = .45      # never mark a stall keep-out on or next to the leg goal (v2: 4 goals covered)
+STALL_KEEPOUT_MIN_DOOR_M = .60      # ... nor in a door lane (v2 s700 r1: the only passage covered)
 
 
 class ProgressMonitor:
-    """No-progress check on trusted own estimates (after a fixed look, or with a fresh tag and low sigma)."""
+    """No-progress check on trusted own estimates (after a fixed look, or a fresh tag with low sigma).
+
+    ``stalled`` needs (1) ``STALL_COMMANDED_M`` of own commanded travel since the baseline and (2) a
+    trusted estimate taken AFTER that point that still did not move the baseline. When (1) holds
+    without (2), ``needs_check`` asks the driver for one confirming own look first.
+    """
 
     def __init__(self):
-        self.baseline: tuple[float, float, float, float] | None = None     # x, y, goal distance, drive time
-        self.drive_time_s = 0.
+        self.baseline: tuple[float, float, float, float] | None = None     # x, y, goal distance, commanded m
+        self.commanded_m = 0.
+        self.last_trusted_cmd_m: float | None = None
+        self.checks = 0
 
-    def drove(self, dt: float) -> None:
-        self.drive_time_s += float(dt)
+    def drove(self, commanded_m: float) -> None:
+        if math.isfinite(commanded_m) and commanded_m > 0:
+            self.commanded_m += float(commanded_m)
 
     def trusted(self, xy, goal_dist) -> None:
         x, y = float(xy[0]), float(xy[1])
+        self.last_trusted_cmd_m = self.commanded_m
         if self.baseline is None:
-            self.baseline = (x, y, float(goal_dist), self.drive_time_s)
+            self.baseline = (x, y, float(goal_dist), self.commanded_m)
             return
         bx, by, bd, _ = self.baseline
         need = min(REQUIRED_MOVEMENT_M, .5 * bd)
         if math.hypot(x - bx, y - by) > REQUIRED_MOVEMENT_M or bd - goal_dist > need:
-            self.baseline = (x, y, float(goal_dist), self.drive_time_s)
+            self.baseline = (x, y, float(goal_dist), self.commanded_m)
 
     def reset(self) -> None:
-        self.baseline = None
+        self.baseline, self.last_trusted_cmd_m = None, None
+
+    def _over(self) -> bool:
+        return self.baseline is not None and self.commanded_m - self.baseline[3] >= STALL_COMMANDED_M
 
     def stalled(self) -> bool:
-        return self.baseline is not None and self.drive_time_s - self.baseline[3] > MOVEMENT_TIME_ALLOWANCE_S
+        return (self._over() and self.last_trusted_cmd_m is not None
+                and self.last_trusted_cmd_m - self.baseline[3] >= STALL_COMMANDED_M)
+
+    def needs_check(self) -> bool:
+        return self._over() and not self.stalled()
+
+    def inconclusive(self, xy, goal_dist) -> None:
+        """A confirming look gave no trusted estimate: start again from the current estimate (no false stall)."""
+        self.checks += 1
+        self.baseline = (float(xy[0]), float(xy[1]), float(goal_dist), self.commanded_m)
+
+
+def commanded_step_m(cmd: Mapping) -> float:
+    """Own commanded planar travel of one control tick (the command itself, never a measurement)."""
+    if cmd.get('kind') not in ('mecanum', 'drive'):
+        return 0.
+    fwd, left = cmd.get('forward', 0.), cmd.get('left', 0.)
+    return math.hypot(float(fwd), float(left)) * CONTROL_S if _finite(fwd, left) else 0.
 
 
 # ---------------------------------------------------------------- 4. blockage streak per location
@@ -434,166 +469,3 @@ class BlockageStreak:
             self.disarmed.add(key)
             return True
         return False
-
-
-# ---------------------------------------------------------------- guarded loop driver
-GATE_MAX_LOOKS = 3                  # consecutive looks without the gate reaching ok -> 'pose_uncertain'
-ARRIVAL_FIX_MAX_AGE_S = 5.
-ARRIVAL_MAX_RECHECKS = 2
-
-
-class GuardedDriver(OwnCamDriverV2):
-    """Loop driver v2 on a shared localizer with the uncertainty gate, sweep guard and progress monitor.
-
-    Commands and frames reach the shared localizer once (through the executor / pose source); this
-    driver only does servo bookkeeping. New outcomes: ``pose_uncertain`` (gate never reached ok in
-    ``GATE_MAX_LOOKS`` looks), ``arrival_unconfirmed`` (at the goal without a fresh fixed own look and
-    an ok gate) and ``blocked`` (no progress after ``MAX_RECOVERIES`` back-off recoveries).
-    """
-
-    def __init__(self, shared_loc, *args, gate: UncertaintyGate, guard: SweepGuard, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.loc = shared_loc
-        self.last_estimate = self.loc.estimate()
-        self.gate, self.guard = gate, guard
-        self.gate.set_profile(GATE_LOADED if self.loaded else GATE_UNLOADED)
-        self.monitor = ProgressMonitor()
-        self.gate_looks = 0
-        self.recoveries = 0
-        self.arrival_rechecks = 0
-        self.last_look: dict | None = None
-        self.backoff: dict | None = None
-        self.guard_log: list[dict] = []
-        self.stall_keepouts: list[dict] = []
-
-    def on_command(self, row):
-        kind = row['kind']
-        if kind == 'initial_servo_command':
-            self.servo = {int(k): int(v) for k, v in row['pulses'].items()}
-        elif kind == 'arm':
-            self.servo[int(row['servo_id'])] = int(row['pulse'])
-        elif kind == 'look':
-            self.servo[6] = int(row['pan_pulse'])
-
-    # -------------------------------------------------- hooks
-    def _event(self, now, kind, **detail):
-        super()._event(now, kind, **detail)
-        if kind == 'look_done':
-            self.last_look = {'t': now, 'fixed': bool(detail.get('fixed'))}
-            est = self.loc.estimate()
-            if detail.get('fixed') and est.get('initialized'):
-                self.monitor.trusted((est['x'], est['y']), self._goal_dist(est))
-
-    def _goal_dist(self, est):
-        return math.hypot(self.goal[0] - est['x'], self.goal[1] - est['y'])
-
-    def _start_look(self, now, reason, *, allow_backoff=True):
-        est = self.loc.estimate()
-        look_pose = dict(LOOK_P20)
-        if self.loaded:
-            look_pose[1] = self.servo.get(1, 1500)
-        plan = self.guard.plan(self.servo, look_pose, WIDE_LOOK_PANS, OwnPose.from_estimate(est), loaded=self.loaded,
-                               allow_backoff=allow_backoff and self._backoffs_left(reason))
-        self.guard_log.append({'t': round(now, 3), 'reason': reason, **{k: plan[k] for k in ('pans', 'dropped', 'reason')},
-                               'backoff': plan['backoff']})
-        if plan['backoff'] is not None:
-            self._look_backoffs = getattr(self, '_look_backoffs', 0) + 1
-            return self._begin_backoff(now, plan['backoff'], then=('look', reason))
-        commands = super()._start_look(now, reason)
-        if plan['reason'] != 'clear':
-            pan0 = int(self.servo.get(6, 1500))
-            self.look_queue = list(plan['pans']) or [pan0]
-            if not plan['pans'] and not plan.get('transition_clear', True):
-                self.arm_target = {}                     # the look posture itself would hit: stay, dwell only
-        return commands
-
-    def _backoffs_left(self, reason):
-        return getattr(self, '_look_backoffs', 0) < MAX_LOOK_BACKOFFS and reason != 'stall_recovery'
-
-    def _begin_backoff(self, now, move, *, then):
-        cmd, duration = backoff_commands(move)
-        self.backoff = {'cmd': cmd, 'until': now + duration, 'then': then, 'settle_until': None, 'move': dict(move)}
-        self._set('guard_backoff', now, move=dict(move), then=list(then))
-        return [{'kind': 'hold'}]
-
-    def _tick_backoff(self, now):
-        b = self.backoff
-        if now + 1e-9 < b['until']:
-            return [dict(b['cmd'])]
-        if b['settle_until'] is None:
-            b['settle_until'] = now + SETTLE_S
-            return [{'kind': 'hold'}]
-        if now + 1e-9 < b['settle_until']:
-            return [{'kind': 'hold'}]
-        self.backoff = None
-        self.path = None
-        self._set('drive', now)
-        return self._start_look(now, b['then'][1], allow_backoff=False)
-
-    def _arrive(self, now):
-        fresh = self.last_look is not None and self.last_look['fixed'] and now - self.last_look['t'] <= ARRIVAL_FIX_MAX_AGE_S
-        if self.gate.ok and fresh:
-            return super()._arrive(now)
-        if self.arrival_rechecks < ARRIVAL_MAX_RECHECKS:
-            self.arrival_rechecks += 1
-            return self._start_look(now, 'arrival_recheck')
-        self._event(now, 'arrival_unconfirmed', gate=self.gate.state, last_look=self.last_look)
-        return self._finish(now, 'arrival_unconfirmed')
-
-    # -------------------------------------------------- control
-    def tick(self, now: float) -> list[dict]:
-        if self.outcome:
-            return []
-        if self.state == 'guard_backoff':
-            return self._tick_backoff(now)
-        if self.state == 'drive':
-            guarded = self._drive_guard(now)
-            if guarded is not None:
-                return guarded
-        cmds = super().tick(now)
-        if self.state == 'drive' and any(c.get('kind') in ('mecanum', 'drive') for c in cmds):
-            self.monitor.drove(CONTROL_S)
-        return cmds
-
-    def _drive_guard(self, now):
-        self.loc.predict_to(now)
-        est = self.loc.estimate()
-        if not self.gate.ok:
-            if self.gate_looks >= GATE_MAX_LOOKS:
-                self._event(now, 'gate_pose_uncertain', gate=self.gate.as_dict())
-                return self._finish(now, 'pose_uncertain')
-            self.gate_looks += 1
-            return self._start_look(now, 'gate_uncertain')
-        self.gate_looks = 0
-        if est.get('initialized') and est.get('since_tag_s') is not None and est['since_tag_s'] <= TRUSTED_TAG_AGE_S \
-                and est['std_xy_m'] <= self.gate.profile.low_xy_m:
-            self.monitor.trusted((est['x'], est['y']), self._goal_dist(est))
-        if not self.monitor.stalled():
-            return None
-        pose = OwnPose.from_estimate(est)
-        if self.recoveries >= MAX_RECOVERIES or pose is None:
-            self._event(now, 'blocked', recoveries=self.recoveries, keepouts=list(self.stall_keepouts))
-            return self._finish(now, 'blocked')
-        self.recoveries += 1
-        return self._start_recovery(now, pose)
-
-    def _start_recovery(self, now, pose: OwnPose):
-        tx, ty = self.path[0] if self.path else self.goal
-        heading = math.atan2(ty - pose.y, tx - pose.x)
-        ahead = (pose.x + STALL_KEEPOUT_AHEAD_M * math.cos(heading), pose.y + STALL_KEEPOUT_AHEAD_M * math.sin(heading))
-        keepout = {'id': f'stall_{self.recoveries}', 'center_m': [round(ahead[0], 3), round(ahead[1], 3)],
-                   'half_extents_m': [STALL_KEEPOUT_HALF_M] * 2,
-                   'source': 'own progress stall (own commands vs own trusted estimate)'}
-        self.stall_keepouts.append(keepout)
-        self.keepouts.append(keepout)
-        self.monitor.reset()
-        rel = heading - pose.yaw
-        move = {'dx_base_m': round(-RECOVERY_BACKOFF_M * math.cos(rel), 4),
-                'dy_base_m': round(-RECOVERY_BACKOFF_M * math.sin(rel), 4)}
-        clear = self.guard.chassis_clearance(pose.moved(move['dx_base_m'] * BACKOFF_GAIN_MAX,
-                                                        move['dy_base_m'] * BACKOFF_GAIN_MAX))[0] >= 0.
-        self._event(now, 'stall_recovery', recovery=self.recoveries, keepout=keepout, backoff=move if clear else None)
-        if not clear:
-            self.path = None
-            return self._start_look(now, 'stall_recovery')
-        return self._begin_backoff(now, move, then=('look', 'stall_recovery'))
