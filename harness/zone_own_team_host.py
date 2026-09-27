@@ -51,7 +51,7 @@ class OwnCamTeamHost:
     FRAME_S = .2
     GT_S = .05
 
-    def __init__(self, spec: Mapping, student: Mapping, *, root, study_layer: Callable, frames_dir=None):
+    def __init__(self, spec: Mapping, student: Mapping, *, root, study_layer: Callable, frames_dir=None, scene=None):
         import importlib
         import json
         from pathlib import Path
@@ -71,7 +71,16 @@ class OwnCamTeamHost:
             if frames_dir is None:
                 raise ValueError('M2 requires frames_dir to preserve every own-camera input')
         profile = spec['contact_profile']
-        if spec.get('team_cargo'):
+        if scene is not None:
+            from sim.zone_tagged_cargo_scene import TaggedCargoZoneScene
+            if (not isinstance(scene, TaggedCargoZoneScene)
+                    or scene.selection != 'zones/' + spec['map']
+                    or scene.scene['seed'] != spec['seed']
+                    or scene.scene['contact_profile'] != base_profile(profile)
+                    or scene.config['cargo_set']['items'] != list(spec.get('team_cargo', []))):
+                raise ValueError('injected standard cargo scene differs from host spec')
+            self.scene = scene
+        elif spec.get('team_cargo'):
             from sim.zone_tagged_cargo_scene import TaggedCargoZoneScene
             self.scene = TaggedCargoZoneScene.from_tagged_cargo(
                 spec['map'], spec['seed'], cargo=spec['team_cargo'], goal=spec['goal'],

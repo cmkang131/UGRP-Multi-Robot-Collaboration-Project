@@ -406,6 +406,14 @@ OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python 
    새 B 구역 경로의 도착·낙하·접촉 기준을 실행 전에 고정하고, 실패 포함 원본 입력·
    명령·STATUS·평가·영상·해시를 보존한 뒤 TensorBoard 실제 로딩까지 확인한다.
 
+## dev 게이트 구현 이관 — 미커밋 후속
+
+[dev 드라이버와 사전 기록](../../experiments/2026-09-27-zone-pair-dev/README.md)에
+실제 PairTeam/OwnCamTeamHost 표준 workflow, 요청/적용 manifest, r3 비참여 정책,
+정상/abort 2회 DRAFT, GT 분리 평가기와 비물리 테스트를 연결했다.
+물리 실행·커밋은 사용자 요청에 따라 코디네이터에게 남긴다. 게이트 1의 전체 CI,
+게이트 2의 소스 커밋, 게이트 3~6의 실제 실행·영상·TensorBoard 확인은 아직 완료가 아니다.
+
 ## 참고 자료
 
 - 코디네이터 제공 독립 리뷰: `codex-235-review.md` (기준 `6bda018b`, P1 4건/P2 1건)
