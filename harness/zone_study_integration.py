@@ -54,12 +54,14 @@ from harness import m1_contract, m1_owncam_contract
 from harness import team_carry_status as tcs
 from harness import zone_study_offline as zo
 from harness import zone_study_prompts_ko as pk
+from harness.zone_event_scheduler import REASK_POLICY
 from harness.zone_own_executor import API_TO_ACTION_KIND, EVENTS as EXECUTOR_EVENTS
 from harness.zone_sim_cost import params as cost_params_for
 from harness.zone_study_contract import (COMMAND_ARGUMENT_KEYS, MAIN_CONDITIONS, ROBOTS, ContractViolation,
                                          digest)
 from harness.zone_study_inputs import (action_log_record, build_call_input, command_entry, own_rgb_ref,
                                        provenance)
+from harness.zone_study_llm_transport import ModelCallTransport
 
 ROOT = Path(__file__).resolve().parents[1]
 INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
@@ -73,16 +75,10 @@ TEMPORARY_NOTE_KO = '임시, 표식 사용, 연구 결과 아님'
 #: Physics chunk = the SIM cost quantum, so scheduler events land on chunk boundaries.
 QUANTUM_S = cost_params_for().quantum_s
 #: While a robot's call is in flight: an idle robot holds (the executor idles with
-#: a hold), a running executor job continues. The executor API has no pause/resume
-#: (#206); the thinking cost reaches physics through the delayed action release.
+#: a hold), a running executor job continues (coordinator decision, issue #223).
+#: The thinking/talking cost reaches physics through the delayed action release.
 THINK_HOLD_POLICY = 'idle_robot_holds_busy_job_continues'
 ACTION_MAP_VERSION = 'zone_study_action_map.v1'
-#: Own re-ask timers: at most ONE pending per actor (idle 10 s / busy 60 s). The #194
-#: offline rule armed a new timer after EVERY action and never cancelled one, so each
-#: call started a perpetual chain; message-triggered calls in channel conditions then
-#: multiplied the chains and drained the HTTP budget (smoke 45999d9c, peer_ko: 90/90
-#: attempts by 445 SIM s, 81 of them ``continue``). Smoke v1 ran the old rule.
-REASK_POLICY = 'single_pending_own_timer.v1'
 #: ``wait`` on an idle executor = hold this long (then job_done -> idle wake).
 WAIT_HOLD_S = 10.0
 FIXTURE_ACTOR = 'fixture_v1'
@@ -286,11 +282,11 @@ class _NoStoredFrames:
         return {'frame_dir': None, 'note': 'live own robot_cam frames (RobotLink.frame_at)'}
 
 
-class _LiveTransport(zo._FixtureTransport):
-    """Snapshot the caller's own inputs at submit (= call start), reply offline."""
+class _LiveTransport(ModelCallTransport):
+    """Snapshot own inputs at call start; use the core's ledgered offline wire."""
 
     def submit(self, call):
-        self.trial.snapshot(call)
+        self.pipeline.snapshot(call)
         return super().submit(call)
 
 
@@ -310,10 +306,13 @@ class IntegratedTrial(zo.OfflineTrial):
                          horizon_s=horizon_s, run_id=None, code_sha=code_sha)
         self.provenance = provenance(source=self.source, code_sha=code_sha,
                                      execution_bundle_id=EXECUTION_BUNDLE_ID, model=zo.FIXTURE_MODEL,
-                                     provider=None, model_settings_sha256=None,
+                                     provider=None, model_settings_sha256=digest(self.client_factory.settings),
                                      prompt_template_sha256=digest(pk.PROMPT_VERSION),
                                      cost_profile_id=self.params.version)
-        self.transport = self.scheduler.transport = _LiveTransport(self)
+        # Reuse the ledger already owned by this scheduler; never replace its
+        # gate or create an unledgered fixture path when adapting live inputs.
+        self.transport = self.scheduler.transport = _LiveTransport(
+            self, send_ledger=self.send_ledger, client_factory=self.client_factory)
         self.links = dict(links)
         self.pose_label = dict(pose_label or {})
         self.pair_status = PairStatusBus(self.sheet)
@@ -321,8 +320,6 @@ class IntegratedTrial(zo.OfflineTrial):
         self.request_images: dict[str, bytes] = {}
         self.input_log, self.dispatch_log, self.executor_events = [], [], []
         self.clock_drift_s = 0.0
-        self._reask_at = {actor: None for actor in self.actors}
-        self.scheduler.on_timer = self._on_timer
 
     # -- clock --------------------------------------------------------------
     def begin(self, t0_s):
@@ -364,6 +361,7 @@ class IntegratedTrial(zo.OfflineTrial):
                               seed=self.seed, leader_id=self.leader_id, calls=self.calls, messages=self.messages,
                               actions=self.actions, requests=self.requests, trace=self.scheduler.trace(),
                               report=report.to_dict(), channel=self.channel_summary(), cost=self.cost_summary(),
+                              send_ledger=self.send_ledger_record(),
                               end_reason='budget_exhausted' if any(self.scheduler.metrics[a]['budget_refused']
                                                                    for a in self.actors) else 'sim_horizon')
 
@@ -440,22 +438,15 @@ class IntegratedTrial(zo.OfflineTrial):
     def _arm_reask(self, actor, sim_s):
         """Own timer: idle re-ask when the own executor is idle, busy re-ask while it runs.
 
-        At most one pending re-ask per actor (``REASK_POLICY``): a call while one is
-        pending arms nothing, so N close calls cannot start N perpetual chains.
+        The core's ``arm_reask`` owns the cap (``REASK_POLICY``); the integration
+        supplies only the own-job-dependent delay and the budget/horizon checks.
         """
         if self.scheduler.metrics[actor]['calls'] >= self.policy.max_calls_per_actor:
-            return
-        if self._reask_at[actor] is not None:
             return
         busy = self.links[actor].job() is not None
         at = sim_s + (self.policy.busy_reask_s if busy else self.policy.idle_reask_s)
         if at <= self.horizon_s:
-            self._reask_at[actor] = round(at, 6)
-            self.scheduler.timer(actor, 'timer' if busy else 'idle', at=at)
-
-    def _on_timer(self, actor, label, sim_s):
-        if self._reask_at.get(actor) is not None and abs(self._reask_at[actor] - sim_s) < 1e-6:
-            self._reask_at[actor] = None
+            self.scheduler.arm_reask(actor, 'timer' if busy else 'idle', at=at)
 
     # -- records --------------------------------------------------------------
     def wakeups(self, actor) -> list:

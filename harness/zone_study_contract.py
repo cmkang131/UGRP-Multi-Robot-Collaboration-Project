@@ -47,7 +47,14 @@ import unicodedata
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
 
-CONTRACT_VERSION = 'ugrp.zone_study_contract.v2'  # v2: tagged-map v2 landmark placement keys
+#: Contract versions. v2 (2026-09-26, PR 194 sixth round, adopted unchanged from
+#: the integration PR #229 / issue #223) declares three landmark placement keys
+#: of the tagged maps v2 (``*_tags_v2``). v1 is KEPT for the frozen records: the
+#: offline smoke v1-v4 ran under it, and ``registry_sha256(CONTRACT_VERSION_V1)``
+#: reproduces their registry hash ``f1ff6a49…``.
+CONTRACT_VERSION_V1 = 'ugrp.zone_study_contract.v1'
+CONTRACT_VERSION = 'ugrp.zone_study_contract.v2'
+CONTRACT_VERSIONS = (CONTRACT_VERSION_V1, CONTRACT_VERSION)
 PAYLOAD_SCHEMA = 'ugrp.zone_study_call_input.v1'
 MESSAGE_ENVELOPE_SCHEMA = 'ugrp.zone_study_message.v1'
 CALL_LOG_SCHEMA = 'ugrp.zone_study_call.v1'
@@ -217,10 +224,11 @@ def channel_section(name: str, actor: str, seed: int | None = None) -> dict:
             'role': role_of(name, actor, seed)}
 
 
-def condition_manifest(name: str, seed: int | None = None) -> dict:
+def condition_manifest(name: str, seed: int | None = None, *, contract_version: str = CONTRACT_VERSION) -> dict:
     """What a run bundle records about the condition (docs/execution_versioning.md)."""
     spec = condition(name)
-    value = {'contract_version': CONTRACT_VERSION, 'condition': name, 'korean_label': spec.korean_label,
+    value = {'contract_version': _version(contract_version), 'condition': name,
+             'korean_label': spec.korean_label,
              'topology': spec.topology, 'encoding': spec.encoding, 'robot_llm': spec.robot_llm,
              'is_main': spec.is_main, 'actors': list(spec.actors),
              'input_allowlist': sorted(spec.input_allowlist), 'notes': spec.notes}
@@ -233,9 +241,45 @@ def condition_manifest(name: str, seed: int | None = None) -> dict:
     return value
 
 
-def registry_sha256() -> str:
-    """Hash of the whole registry; pin it next to the code SHA of a cohort."""
-    return digest({name: condition_manifest(name) for name in sorted(CONDITIONS)})
+def _version(contract_version: object) -> str:
+    """A known contract version, or ``ValueError`` (never a silent default)."""
+    if not isinstance(contract_version, str) or contract_version not in CONTRACT_VERSIONS:
+        raise ValueError(f'unknown contract version {contract_version!r}; known: {CONTRACT_VERSIONS}')
+    return contract_version
+
+
+def registry_sha256(contract_version: str = CONTRACT_VERSION) -> str:
+    """Hash of the whole registry; pin it next to the code SHA of a cohort.
+
+    ``contract_version`` reproduces the hash an older contract recorded (v1:
+    the offline smoke v1-v4); the conditions themselves did not change in v2.
+    """
+    return digest({name: condition_manifest(name, contract_version=contract_version)
+                   for name in sorted(CONDITIONS)})
+
+
+_REGISTRY_VERSIONS: dict = {}
+
+
+def registry_versions() -> dict:
+    """``{registry_sha256: contract version}`` of every known contract version."""
+    if not _REGISTRY_VERSIONS:
+        _REGISTRY_VERSIONS.update({registry_sha256(version): version for version in CONTRACT_VERSIONS})
+    return dict(_REGISTRY_VERSIONS)
+
+
+def contract_version_for_registry(value: object) -> str:
+    """The contract version a record's ``registry_sha256`` names (seventh review, P2).
+
+    A record is audited against the contract version its OWN registry hash
+    identifies, never against the current default; an unknown hash raises
+    ``ContractViolation`` instead of being read as the current version.
+    """
+    version = registry_versions().get(value) if isinstance(value, str) else None
+    if version is None:
+        raise ContractViolation(f'registry_sha256 {value!r} is not the registry hash of any known contract '
+                                f'version ({CONTRACT_VERSIONS})')
+    return version
 
 
 # ---------------------------------------------------------------------------
@@ -614,7 +658,7 @@ MAP_LEAF_TYPES = {
     'width_px': _int, 'height_px': _int, 'px_per_m': _num,
 }
 #: ``landmarks.placement``: the fixed tag mounting geometry, numbers only.
-#: Contract v2 (2026-09-26, integration PR, issue #223): the tagged maps v2
+#: Contract v2 (2026-09-26, integration PR #229, issue #223): the tagged maps v2
 #: (``*_tags_v2``, PR #178/#201) add denser tags near doors and two door-post
 #: tags per door edge. Their mounting geometry is static map data, so the
 #: three keys are declared here, closed and typed like the rest.
@@ -635,10 +679,12 @@ def _door_posts(value, label):
     return out
 
 
-PLACEMENT_KEYS = ('cell_thickness_m', 'center_height_m', 'end_margin_m', 'faces', 'plate_m',
-                  'plate_thickness_m', 'size_m', 'spacing_m', 'near_door_spacing_m', 'near_door_radius_m',
-                  'door_posts')
+PLACEMENT_KEYS_V1 = ('cell_thickness_m', 'center_height_m', 'end_margin_m', 'faces', 'plate_m',
+                     'plate_thickness_m', 'size_m', 'spacing_m')
+PLACEMENT_KEYS = PLACEMENT_KEYS_V1 + ('near_door_spacing_m', 'near_door_radius_m', 'door_posts')
 PLACEMENT_TYPES = {**{k: _num for k in PLACEMENT_KEYS}, 'faces': _str, 'door_posts': _door_posts}
+#: The closed placement key set of each contract version (v1 kept for frozen records).
+PLACEMENT_KEYS_BY_VERSION = {CONTRACT_VERSION_V1: PLACEMENT_KEYS_V1, CONTRACT_VERSION: PLACEMENT_KEYS}
 
 
 def _either(*checks):
@@ -790,7 +836,7 @@ def map_bay_ids(public: object) -> frozenset[str]:
                      if isinstance(bay, Mapping) and isinstance(bay.get('bay_id'), str))
 
 
-def _public_map_hits(public: object) -> list[str]:
+def _public_map_hits(public: object, contract_version: str = CONTRACT_VERSION) -> list[str]:
     """Close the map projection down to its leaf objects, keys AND value types."""
     hits = _closed(public, PUBLIC_MAP_KEYS, 'static_map.public_map',
                    required=('map_id', 'bounds_m', 'walls', 'regions'))
@@ -853,7 +899,7 @@ def _public_map_hits(public: object) -> list[str]:
         if isinstance(marks, Mapping):
             hits.extend(_typed(marks, 'static_map.public_map.landmarks', skip=('placement', 'tags')))
             if 'placement' in marks:
-                hits.extend(_closed(marks['placement'], PLACEMENT_KEYS,
+                hits.extend(_closed(marks['placement'], PLACEMENT_KEYS_BY_VERSION[contract_version],
                                     'static_map.public_map.landmarks.placement'))
                 hits.extend(_typed(marks['placement'], 'static_map.public_map.landmarks.placement',
                                    types=PLACEMENT_TYPES))
@@ -868,7 +914,7 @@ def _public_map_hits(public: object) -> list[str]:
     return hits
 
 
-def _static_map_hits(payload: Mapping) -> list[str]:
+def _static_map_hits(payload: Mapping, contract_version: str = CONTRACT_VERSION) -> list[str]:
     static = payload.get('static_map')
     hits = _closed(static, STATIC_MAP_KEYS, 'static_map', required=STATIC_MAP_REQUIRED)
     if not isinstance(static, Mapping):
@@ -876,7 +922,7 @@ def _static_map_hits(payload: Mapping) -> list[str]:
     hits.extend(_sha(static.get('public_map_sha256'), 'static_map.public_map_sha256'))
     hits.extend(_sha(static.get('map_file_sha256'), 'static_map.map_file_sha256', required=False))
     public = static.get('public_map')
-    hits.extend(_public_map_hits(public))
+    hits.extend(_public_map_hits(public, contract_version))
     if isinstance(public, Mapping) and isinstance(static.get('public_map_sha256'), str) \
             and digest(public) != static['public_map_sha256']:
         hits.append('static_map.public_map_sha256 does not match the projection')
@@ -1049,10 +1095,11 @@ def _inbox_hits(payload: Mapping, spec: Condition, seed: int | None, now: float 
     return hits
 
 
-def _shape_hits(payload: Mapping, spec: Condition, seed: int | None) -> list[str]:
+def _shape_hits(payload: Mapping, spec: Condition, seed: int | None,
+                contract_version: str = CONTRACT_VERSION) -> list[str]:
     time_s = payload.get('sim_time_s')
     now = time_s if isinstance(time_s, (int, float)) and not isinstance(time_s, bool) else None
-    hits = _static_map_hits(payload) + _order_sheet_hits(payload)
+    hits = _static_map_hits(payload, contract_version) + _order_sheet_hits(payload)
     if not isinstance(payload.get('request_id'), str) or not ID_TOKEN.match(str(payload.get('request_id'))):
         hits.append('request_id must be a literal id token')
     if 'own_rgb_refs' in payload:
@@ -1105,9 +1152,13 @@ EVALUATION_ONLY = {
 }
 
 
-def boundary_manifest() -> dict:
+def boundary_manifest(contract_version: str = CONTRACT_VERSION) -> dict:
     """The public/private schema as data: what a robot may see and what stays in evaluation."""
-    return {'contract_version': CONTRACT_VERSION, 'payload_schema': PAYLOAD_SCHEMA,
+    placement = {'static_map.public_map.landmarks.placement':
+                 list(PLACEMENT_KEYS_BY_VERSION[_version(contract_version)])}
+    if 'door_posts' in placement['static_map.public_map.landmarks.placement']:
+        placement['static_map.public_map.landmarks.placement.door_posts'] = list(DOOR_POST_KEYS)
+    return {'contract_version': contract_version, 'payload_schema': PAYLOAD_SCHEMA,
             'robot_facing': dict(ROBOT_FACING),
             'input_allowlist': {name: sorted(spec.input_allowlist) for name, spec in CONDITIONS.items()},
             'evaluation_only': dict(EVALUATION_ONLY), 'forbidden_keys': sorted(FORBIDDEN_KEYS),
@@ -1123,6 +1174,7 @@ def boundary_manifest() -> dict:
                                    'static_map.public_map.pickup_bays[]': list(BAY_KEYS),
                                    'static_map.public_map.pickup_bays[].slots[]': list(SLOT_KEYS),
                                    'static_map.public_map.landmarks': list(LANDMARKS_KEYS),
+                                   **placement,
                                    'static_map.public_map.landmarks.tags[]': list(TAG_KEYS),
                                    'static_map.schematic_ref': list(SCHEMATIC_REF_KEYS),
                                    'order_sheet': list(ORDER_SHEET_KEYS),
@@ -1196,14 +1248,21 @@ def thaw_for_json(value: object) -> object:
 
 
 def payload_violations(payload: object, *, seed: int | None = None,
-                       pinned: Mapping | None = None) -> list[str]:
+                       pinned: Mapping | None = None,
+                       contract_version: str = CONTRACT_VERSION) -> list[str]:
     """Every contract violation of a robot-facing per-call payload (empty list = clean).
 
     ``pinned`` optionally carries the digests of the FROZEN order sheet and map
     bundle (``PINNED_KEYS``). Without it the validator can only check that the
     provider's hashes are self-consistent, which a provider that recomputes both
     the data and the hash would pass (review finding 3).
+
+    ``contract_version`` selects the closed key sets of that version (default:
+    the current one); ``CONTRACT_VERSION_V1`` re-checks a frozen v1 payload
+    strictly, so a v2-only map key is still reported there. An unknown version
+    raises ``ValueError``.
     """
+    _version(contract_version)
     if not isinstance(payload, Mapping):
         return ['payload must be an object']
     out: list[str] = []
@@ -1235,16 +1294,17 @@ def payload_violations(payload: object, *, seed: int | None = None,
     out.extend(forbidden_key_hits(payload))
     out.extend(non_ascii_keys(payload))
     out.extend(_value_hits(payload))
-    out.extend(_shape_hits(payload, spec, seed))
+    out.extend(_shape_hits(payload, spec, seed, contract_version))
     if pinned:
         out.extend(_pinned_hits(payload, pinned))
     return out
 
 
 def validate_robot_payload(payload: object, *, seed: int | None = None,
-                           pinned: Mapping | None = None) -> Mapping:
+                           pinned: Mapping | None = None,
+                           contract_version: str = CONTRACT_VERSION) -> Mapping:
     """Raise ``ContractViolation`` unless the payload is inside the robot-facing boundary."""
-    problems = payload_violations(payload, seed=seed, pinned=pinned)
+    problems = payload_violations(payload, seed=seed, pinned=pinned, contract_version=contract_version)
     if problems:
         raise ContractViolation('robot-facing payload violates the study contract: ' + '; '.join(problems))
     return payload
@@ -1368,6 +1428,12 @@ def call_record_violations(record: Mapping) -> list[str]:
     out.extend(_closed(record.get('provenance'), PROVENANCE_KEYS, 'provenance',
                        required=('registry_sha256', 'order_sheet_sha256', 'map_file_sha256', 'code_sha',
                                  'model')))
+    registry = record['provenance'].get('registry_sha256') if isinstance(record.get('provenance'), Mapping) \
+        else None
+    if registry is not None and registry not in registry_versions():
+        # seventh review, P2: the version of a record is read from this hash, so
+        # a hash no contract version produces cannot be audited at all
+        out.append(f'provenance.registry_sha256 {registry!r} is not the registry of a known contract version')
     if not isinstance(record.get('cost_terms'), Mapping) or not isinstance(record.get('input_tokens'), Mapping):
         out.append('cost_terms and input_tokens must be objects')
     return out

@@ -40,8 +40,10 @@ from pathlib import Path
 from harness import zone_study_prompts_ko as pk
 from harness import zone_study_protocol as zp
 from harness.zone_event_scheduler import CallPolicy, CallReply, EventScheduler, Message
+from harness.zone_send_ledger import LEDGER_SCHEMA, FixtureWire, SendLedger
 from harness.zone_sim_cost import (Attempt, call_cost, censored_call_record, contract_call_record,
                                    delivery_delay_s, params)
+from harness.zone_study_llm_transport import ModelCallTransport, gemini_client_factory
 from harness.zone_study_contract import (COMMANDER, ROBOTS, ZONE_IDS, ContractViolation,
                                          condition as contract_condition, digest, leader_for_seed)
 from harness.zone_study_eval import TRIAL_SCHEMA
@@ -55,8 +57,21 @@ OFFLINE_VERSION = 'ugrp.zone_study_offline.v1'
 #: canonical envelope id, the SIM scheduler decides WHEN an inbox changes
 #: (2026-09-26 review finding 2).
 BUS_OWNER = 'sim_scheduler'
-EXECUTION_BUNDLE_ID = 'zone_study_offline_v1'
+#: v2 (2026-09-26, sixth review round of PR 194): own re-ask timers follow
+#: ``zone_event_scheduler.REASK_POLICY`` (at most one pending per robot) instead
+#: of one more timer after every action, and the contract is v2. The offline
+#: smoke v1-v4 records ran ``zone_study_offline_v1``; v5 ran v2.
+#: v3 (2026-09-27, seventh review): a fixture reply reaches the scheduler the way
+#: a model reply will, through ``ModelCallTransport`` ->
+#: ``GeminiProxyCompleter`` -> the send ledger -> an offline :class:`FixtureWire`;
+#: the scheduler charges what the ledger counted. v6 is the first v3 run.
+EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'
 FIXTURE_MODEL = 'none-fixture-v1'
+#: The completer settings of the fixture path. The URL is not a network address:
+#: the ledger's wire is the offline :class:`FixtureWire`, never ``urlopen``.
+FIXTURE_URL = 'fixture://zone-study-offline'
+FIXTURE_CLIENT_SETTINGS = {'max_tokens': 1400, 'temperature': 0.0, 'reasoning_effort': 'none',
+                           'timeout': 45.0}
 #: Stored wrist frames referenced by the payloads. Real robot frames with real
 #: byte hashes; this loop runs no perception on them.
 FRAME_DIR = Path(__file__).resolve().parents[1] / 'tests' / 'fixtures' / 'markerless_box' / 'blue_floor_release'
@@ -209,6 +224,8 @@ class TrialResult:
     #: and a trial is never a success: ``budget_exhausted`` when an actor's call
     #: budget refused a call, otherwise ``sim_horizon``.
     end_reason: str = 'sim_horizon'
+    #: Seventh review: sends per call as the send ledger counted them.
+    send_ledger: dict = field(default_factory=dict)
 
     def trial_record(self, *, horizon_s=DEFAULT_HORIZON_S, provenance_row=None, literals=()) -> dict:
         """The package I trial record (``ugrp.zone_study_trial.v1``).
@@ -246,36 +263,20 @@ class TrialResult:
                                           'delivery': self.cost['delivery_sim_s'],
                                           'censored_elapsed': self.cost['censored_elapsed_sim_s']},
                            'wall_latency_ms': []},
-                 'provenance': dict(provenance_row or {})}
+                 'provenance': dict(provenance_row or {}),
+                 'send_ledger': copy.deepcopy(self.send_ledger)}
         if self.leader_id:
             value['leader_id'] = self.leader_id
         return value
 
 
-class _FixtureTransport:
-    """Scheduler transport that runs the whole per-call pipeline offline.
+@dataclass(frozen=True)
+class PreparedCall:
+    """The validated inputs and the package C request of one call, before it is sent."""
 
-    ``submit`` only records the call. ``reply`` builds the package A payload and
-    the package C request, asks the fixture actor, validates the reply with C,
-    relays the accepted messages through C's ``Transport`` at the call's charged
-    RELEASE time, and returns the costed attempts to the scheduler.
-
-    The release time is computed with the SAME ``call_cost`` and parameters the
-    scheduler uses, so the message a robot sends enters the channel exactly when
-    the scheduler charges the call.
-    """
-
-    def __init__(self, trial: 'OfflineTrial'):
-        self.trial = trial
-        self.submitted, self.resolved = [], []
-
-    def submit(self, call):
-        self.submitted.append(call.call_id)
-        return call
-
-    def reply(self, token):
-        self.resolved.append(token.call_id)
-        return self.trial.run_call(token)
+    bundled: object
+    request: dict
+    request_id: str
 
 
 class OfflineTrial:
@@ -298,9 +299,12 @@ class OfflineTrial:
         self.leader_id = leader_for_seed(condition, self.seed) if self.spec.rotating_leader else None
         self.actors = (COMMANDER,) if self.spec.commander_llm else ROBOTS
         self.run_id = run_id or f'{condition}-{self.scenario_id}-s{self.seed}'
+        self.client_factory = gemini_client_factory(model=FIXTURE_MODEL, url=FIXTURE_URL,
+                                                    **FIXTURE_CLIENT_SETTINGS)
         self.provenance = provenance(source=self.source, code_sha=code_sha,
                                      execution_bundle_id=EXECUTION_BUNDLE_ID, model=FIXTURE_MODEL,
-                                     provider=None, model_settings_sha256=None,
+                                     provider=None,
+                                     model_settings_sha256=digest(self.client_factory.settings),
                                      prompt_template_sha256=digest(pk.PROMPT_VERSION),
                                      cost_profile_id=self.params.version)
         # package C owns message VALIDATION and the canonical envelope id; the SIM
@@ -312,7 +316,12 @@ class OfflineTrial:
                                     delivery_delay_sim_s=delivery_delay_s(1, self.params))
         self.channel.open_window('w1', at_sim_s=0.)
         self.fixtures = {actor: FixtureActor(actor, condition, self.seed) for actor in self.actors}
-        self.transport = _FixtureTransport(self)
+        # seventh review: every fixture reply is one request through the send
+        # ledger, exactly as a model reply will be; the wire is offline
+        self.wire = FixtureWire(self._fixture_reply)
+        self.send_ledger = SendLedger(self.wire)
+        self.transport = ModelCallTransport(self, send_ledger=self.send_ledger,
+                                            client_factory=self.client_factory)
         self.policy = policy or CallPolicy()
         self.scheduler = EventScheduler(self.transport, cost_params=self.params,
                                         policy=self.policy, actors=self.actors,
@@ -360,15 +369,28 @@ class OfflineTrial:
         return pk.StudyInputs(payload=payload, wrist_jpeg=wrist, robot_views=views, seed=self.seed,
                               pinned=self.source.pinned)
 
-    def run_call(self, call) -> CallReply:
-        """Inputs -> prompt -> fixture reply -> validation -> relay -> costed attempts."""
-        actor = call.actor
+    def _fixture_reply(self, system_text, user_text):
+        """The offline wire's model: the fixture of the robot the request is for.
+
+        Its whole input is the request as it went on the wire (the system text and
+        the user JSON ``GeminiProxyCompleter`` wrote), never the host.
+        """
+        actor = json.loads(user_text)['robot_id']
+        return self.fixtures[actor].respond({'messages': [{'role': 'system', 'content': system_text},
+                                                          {'role': 'user', 'content': user_text}]})
+
+    def prepare_call(self, call) -> PreparedCall:
+        """Package A inputs -> package C request, captured at the call's start time."""
         request_id = f'req_{call.call_id.replace("-", "_")}'
-        bundled = self.build_inputs(actor, sim_time_s=call.started_sim_s, request_id=request_id)
-        window = self.channel.window_context(actor, now_sim_s=call.started_sim_s) \
+        bundled = self.build_inputs(call.actor, sim_time_s=call.started_sim_s, request_id=request_id)
+        window = self.channel.window_context(call.actor, now_sim_s=call.started_sim_s) \
             if self.spec.channel_open else None
-        request = pk.build_request(bundled, window=window)
-        raw = self.fixtures[actor].respond(request)
+        return PreparedCall(bundled=bundled, request=pk.build_request(bundled, window=window),
+                            request_id=request_id)
+
+    def finish_call(self, call, prepared, raw, *, provider_usage=None) -> CallReply:
+        """Reply text -> validation -> relay -> costed attempts (the reply was sent once)."""
+        actor, bundled, request, request_id = call.actor, prepared.bundled, prepared.request, prepared.request_id
         input_tokens = request['billed_tokens']['total_text_billed']
         try:
             value = zp.validate_reply(raw, request_id=request_id, condition=self.condition, actor=actor,
@@ -386,8 +408,9 @@ class OfflineTrial:
                                 output_tokens=pk.count_tokens(raw if isinstance(raw, str) else json.dumps(raw)),
                                 utterances=produced),)
             self._archive(call, bundled, request, status='invalid_json', messages_out=0,
-                          unparsed_utterances=produced, error=str(exc))
-            return CallReply(attempts=attempts, action=None, messages=(), unparsed_utterances=produced)
+                          unparsed_utterances=produced, error=str(exc), provider_usage=provider_usage)
+            return CallReply(attempts=attempts, action=None, messages=(), unparsed_utterances=produced,
+                             provider_usage=provider_usage)
         # Every utterance the model produced is billed, accepted or not
         # (review finding 6).
         utterances = len(value['messages'])
@@ -415,14 +438,17 @@ class OfflineTrial:
             messages.append(Message(sender=actor, recipients=tuple(envelope.recipients),
                                     body=envelope.body(), encoding=self.spec.encoding,
                                     message_id=envelope.message_id, reply_to=envelope.reply_to))
-        self._record(call, bundled, value, release, request)
-        return CallReply(attempts=attempts, action=value['action'], messages=tuple(messages))
+        self._record(call, bundled, value, release, request, provider_usage=provider_usage)
+        return CallReply(attempts=attempts, action=value['action'], messages=tuple(messages),
+                         provider_usage=provider_usage)
 
-    def _archive(self, call, bundled, request, *, status, messages_out, unparsed_utterances=0, error=None):
+    def _archive(self, call, bundled, request, *, status, messages_out, unparsed_utterances=0, error=None,
+                 provider_usage=None):
         """Keep the FINAL request of this call (second review, finding 1)."""
-        # offline: no provider answered, so its usage report is None — kept
-        # apart from the frozen local count (``tokens``) and the billed size
-        row = pk.archive_request(request, provider_usage=None)
+        # offline: the fixture wire reports no usage, so the provider usage is
+        # None — kept apart from the frozen local count (``tokens``) and the
+        # billed size
+        row = pk.archive_request(request, provider_usage=provider_usage)
         row.update({'call_id': call.call_id, 'robot': call.actor, 'sim_s': call.started_sim_s,
                     'payload_validated': True, 'status': status,
                     'input_keys': sorted(bundled.payload),
@@ -433,10 +459,11 @@ class OfflineTrial:
         self.requests.append(row)
         return row
 
-    def _record(self, call, bundled, value, release, request):
+    def _record(self, call, bundled, value, release, request, *, provider_usage=None):
         """Remember what this call WOULD do; it is logged only when it runs."""
         action_id = f'act-{call.call_id}'
-        self._archive(call, bundled, request, status='ok', messages_out=len(value['messages']))
+        self._archive(call, bundled, request, status='ok', messages_out=len(value['messages']),
+                      provider_usage=provider_usage)
         self._pending = getattr(self, '_pending', {})
         self._pending[call.call_id] = {
             'request_id': bundled.request_id, 'input_sha256': bundled.payload_sha256,
@@ -477,14 +504,16 @@ class OfflineTrial:
 
         A LOCAL timer, the study's own call trigger: never a peer's job end, a
         teacher receipt or global progress. Stops once the actor reached its call
-        budget or the timer would fire past the horizon.
+        budget or the timer would fire past the horizon. At most ONE is pending
+        per actor (``REASK_POLICY``, sixth review round): an action while one is
+        pending arms nothing, so close calls cannot start parallel chains.
         """
         del action
         if self.scheduler.metrics[actor]['calls'] >= self.policy.max_calls_per_actor:
             return
         at = sim_s + self.policy.idle_reask_s
         if at <= self.horizon_s:
-            self.scheduler.timer(actor, 'idle', at=at)
+            self.scheduler.arm_reask(actor, 'idle', at=at)
 
     def run(self) -> TrialResult:
         for actor in self.actors:
@@ -497,7 +526,7 @@ class OfflineTrial:
                              calls=self.calls, messages=self.messages, actions=self.actions,
                              requests=self.requests, trace=self.scheduler.trace(),
                              report=report.to_dict(), channel=self.channel_summary(),
-                             cost=self.cost_summary(),
+                             cost=self.cost_summary(), send_ledger=self.send_ledger_record(),
                              end_reason='budget_exhausted' if any(
                                  self.scheduler.metrics[a]['budget_refused']
                                  for a in self.actors) else 'sim_horizon')
@@ -515,6 +544,7 @@ class OfflineTrial:
         rank = {actor: i for i, actor in enumerate(self.actors)}
         index = {actor: 0 for actor in self.actors}
         executed = {row['action_id'] for row in self.actions}
+        self.request_call_ids = {}
         for _, actor, call_id, record, censored in sorted(rows, key=lambda r: (r[0], rank[r[1]], r[2])):
             extra = pending.get(call_id, {})
             if record is not None:
@@ -534,6 +564,7 @@ class OfflineTrial:
                     request_id=extra.get('request_id', call_id), call_index=index[actor],
                     input_sha256=extra.get('input_sha256', '0' * 64), provenance=self.provenance)
             self.calls.append(row)
+            self.request_call_ids[row['request_id']] = call_id
             index[actor] += 1
         edges = {}
         for edge in self.scheduler.messages:
@@ -600,7 +631,13 @@ class OfflineTrial:
                 'thinking_sim_s': {actor: self.scheduler.metrics[actor]['thinking_sim_s']
                                    for actor in self.actors},
                 'attempt_budget': self.scheduler.budget.to_dict(),
-                'over_budget_attempts': [dict(r) for r in self.scheduler.over_budget_attempts],
+                # seventh review: what the scheduler charged is what the send
+                # ledger counted; the adapter's report is only cross-checked
+                'send_ledger': self.send_ledger.to_dict(entries=False),
+                'wire_requests': self.wire.requests,
+                'send_violations': [dict(r) for r in self.scheduler.send_violations],
+                'blocked_sends': [dict(r) for r in self.scheduler.blocked_sends],
+                'unsent_calls': [dict(r) for r in self.scheduler.unsent_calls],
                 'rejected_messages': len(self.scheduler.rejected_messages),
                 'discarded_calls': len(self.scheduler.discarded),
                 'discarded_utterances': sum(r['messages'] + r['unparsed_utterances']
@@ -609,6 +646,21 @@ class OfflineTrial:
                                            for r in self.scheduler.censored),
                 'undelivered_messages': len(self.scheduler.undelivered()),
                 'params_version': self.params.version, 'params_digest': self.params.digest()}
+
+    def send_ledger_record(self) -> dict:
+        """The send-ledger section of the trial record: sends per call, by request id.
+
+        Package I cross-checks it with the call log (``http_attempts``), so a
+        record whose charged attempts differ from what reached the wire is
+        refused (seventh review, P1).
+        """
+        by_call = self.send_ledger.by_call()
+        return {'schema': LEDGER_SCHEMA, 'sent': self.send_ledger.sends(), 'blocked': self.send_ledger.blocked(),
+                'sha256': self.send_ledger.digest(),
+                'calls': {request_id: by_call.get(call_id, {}).get('sent', 0)
+                          for request_id, call_id in sorted(self.request_call_ids.items())},
+                'violations': len(self.scheduler.send_violations),
+                'unsent_calls': len(self.scheduler.unsent_calls)}
 
     def literals(self) -> tuple:
         """Tokens that stay literal in a Korean message: order/item/kind ids, grasp
@@ -794,8 +846,7 @@ def cost_checks(trial: 'OfflineTrial', result: TrialResult) -> dict:
         problems.append(f'{trial.condition} paid a talk cost without a channel')
     if trial.spec.channel_open and result.messages and not result.cost['talk_sim_s']:
         problems.append(f'{trial.condition} sent messages but paid no talk cost')
-    if result.cost.get('over_budget_attempts'):
-        problems.append(f'HTTP attempts sent without a reservation: {result.cost["over_budget_attempts"]}')
+    problems.extend(_send_ledger_problems(trial, result, used))
     # review finding 6: every utterance the model produced is billed — the
     # delivered log, the rejected ones, the ones of discarded (malformed) and
     # censored replies, and accepted ones still in transit at the horizon.
@@ -814,6 +865,25 @@ def cost_checks(trial: 'OfflineTrial', result: TrialResult) -> dict:
             'delivery_delay_s': expected_delay,
             'params_version': result.cost['params_version'],
             'params_digest': result.cost['params_digest']}
+
+
+def _send_ledger_problems(trial: 'OfflineTrial', result: TrialResult, used: int) -> list:
+    """The charged attempts are what the send ledger counted (seventh review, P1)."""
+    ledger, problems = result.cost['send_ledger'], []
+    if ledger['sent'] != used:
+        problems.append(f'send ledger counted {ledger["sent"]} request(s) but the call log {used} attempt(s)')
+    if result.cost['wire_requests'] != ledger['sent']:
+        problems.append(f'the wire received {result.cost["wire_requests"]} request(s), the ledger '
+                        f'{ledger["sent"]}')
+    for call in result.calls:
+        call_id = trial.request_call_ids.get(call['request_id'])
+        sent = ledger['by_call'].get(call_id, {}).get('sent', 0)
+        if sent != call['http_attempts']:
+            problems.append(f'{call["request_id"]}: {call["http_attempts"]} attempt(s) charged, {sent} sent')
+    for key in ('send_violations', 'blocked_sends', 'unsent_calls'):
+        if result.cost[key]:
+            problems.append(f'{key}: {result.cost[key][:3]}')
+    return problems
 
 
 #: A private section a backflow probe injects: a different hidden-event schedule

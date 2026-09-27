@@ -4,6 +4,9 @@
 
 `kiro/` 브랜치의 작업(Kiro). PR #229. Refs #223, #222, #221.
 
+2026-09-27: [study core round-7 병합 적응 기록](core-r7-integration.md). 아래 v1/v2는 당시
+고정 소스의 물리 결과다. 새 ledger·core 재질문·평가 TOP 연결에는 그 성공 판정을 승계하지 않는다.
+
 ## 무엇을 연결했나
 
 한 러너에서 다음 경로가 끝까지 이어진다.
@@ -77,7 +80,7 @@ A payload 그대로다. 정적 지도(태그 포함, 해시 고정), 시나리�
 - 스모크: `smoke-i700`/`smoke-i700b`(layout seed 700, trial seed 700 → leader r2), 주 4조건 × 1회, horizon 480 SIM s, `cargo_noslip_v1`, weld OFF, 동기 SIM, 스레드 1, 동시 2개. `leader_ko`·`structured`와 v2 전체는 고정한 detached worktree에서 실행했다(런처는 매 실행 번들을 다시 계산해 prereg와 대조한다).
 - 부하 평균: 실행 시작 13.8–38.9, 종료 5.1–76.2(manifest). 공유 Mac이다. wall 시간은 결과로 쓰지 않는다.
 - raw: `/Users/changmin/projects/ugrp/outputs/zone-study-integration-20260926/smoke-45999d9c/`(v1), `…/smoke-cbeb530/`(v2). 로컬 전용이며 원격 백업이 아니다.
-- 스모크 이후 이 브랜치에서 바뀐 런타임 코드는 없다. 결과·TensorBoard 도구와 문서만 추가했다.
+- 9/26 기록 시점에는 스모크 이후 런타임 변경 없이 결과·TensorBoard 도구와 문서만 추가했다.
 
 ## dev 배선 실행 (결과 아님)
 

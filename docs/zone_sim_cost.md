@@ -2,7 +2,7 @@
 
 - **날짜:** 2026-09-26
 - **상태:** 구현·자동 테스트 완료, **러너 미통합**. 물리 실행·모델 호출로 검증하지 않았다.
-- **파일:** `harness/zone_sim_cost.py`, `harness/zone_event_scheduler.py`, `tests/test_zone_sim_cost.py`, `tests/test_zone_event_scheduler.py`
+- **파일:** `harness/zone_sim_cost.py`, `harness/zone_event_scheduler.py`, `harness/zone_send_ledger.py`(전송 장부, 2026-09-27), `harness/zone_study_llm_transport.py`(모델 호출 어댑터, 2026-09-27), `tests/test_zone_sim_cost.py`, `tests/test_zone_event_scheduler.py`, `tests/test_zone_study_review_r7*.py`
 - **설계 근거:** [2026-09-25 통합 연구 설계(Codex) 5절](design/2026-09-25-zone-dialogue-study-design-codex.md). 지휘자 형태·자기 카메라 전용 등 이후 사용자 결정이 그 문서를 대체하는 부분은 결정을 따른다.
 
 ## 1. 왜 필요한가
@@ -73,6 +73,23 @@ d_q   = quantum * ceil(raw_q / quantum)
 - **표지를 바꾸지 않는다.** 재시도 예산 거절로 재생 응답을 자를 때도 원래 응답의 표지를 물려받는다. 잘린 응답의 `provider_usage`는 보내지 않은 시도까지 포함한 보고이므로 버린다(`None`).
 - **알려진 하한을 지우지 않는다.** 일부 시도의 사용량만 알면 그 수(예: 입력 833·출력 40)를 기록하고 `usage_bound='lower_bound'`로 표시한다. horizon에서 censor된 호출도 같다. 스케줄러가 계산한 청구 SIM 비용(`charged_sim_s`, `would_release_sim_s`)도 비용 모형의 사실이므로 남긴다.
 - 실제 전송 계층은 `TransportFailure(..., attempts=..., usage_known=False)`로 "아는 것이 전부가 아니다"를 알린다. 시도를 하나도 밝히지 않은 `TransportFailure`는 미상으로 기록한다.
+- **보낸 수는 전송 장부가 센다(Codex 7차 검토 P1, 5·6차 규칙을 대체).** 5·6차 규칙은 전송 계층의 자기 신고(`NotSent`, `sent_attempts`, 보고한 시도 수, 예약)를 믿었다. 그래서 요청을 보낸 뒤 `NotSent`를 던지면 환불됐고(상한 1에서 실제 3회·장부 0회), 너무 작은 `sent_attempts`는 예산 한 칸을 풀어 요청 하나를 더 보내게 했다(상한 2에서 실제 3회·장부 2회). 이제 규칙은 다음과 같다.
+  - 모든 요청은 전송 계층의 `harness.zone_send_ledger.SendLedger`를 지난다. 실제 경로에서는 `harness.gemini_proxy.GeminiProxyCompleter`의 `http_open`이 호출마다 묶인 장부 opener(`PendingCall.http_open`)다. 2026-09-25 한국어 파일럿의 감사 opener와 같은 자리다. 오프라인 경로(`ReplayTransport`, 오프라인 스모크)도 같은 장부를 지나며, wire만 오프라인(`ScriptedWire`, `FixtureWire`)이다. 장부가 없는 전송 계층은 스케줄러가 거절한다.
+  - 장부는 요청이 wire에 닿기 **전에** 스케줄러에게 허가를 받는다(`EventScheduler._authorize_send`). 호출이 이미 예약한 칸을 쓰거나, 예산 소유자에게서 한 칸을 더 예약한다. 칸이 없으면 요청을 막는다(`SendBlocked`, `blocked_sends`). 그래서 상한을 넘는 요청은 나가지 않는다. `PendingCall.reserve`는 이제 권고용 사전 예약이다.
+  - 장부는 wire를 부르기 전에 요청을 기록한다. wire가 예외를 내도 보낸 것으로 센다. 요청이 이미 나갔을 수 있기 때문이다. `store_dir`를 주면 요청·응답 바이트를 저장하며, 기존 파일은 덮어쓰지 않는다(`live_send_ledger`).
+  - 호출의 시도 수와 청구는 **장부가 센 수**다. 장부가 0회를 보이는 호출만 환불한다(`unsent_calls`, SIM 비용 0, 실행·재시도 없음, hold 해제). `submit()`이 던진 `NotSent`는 0회일 때만 환불 뒤 다시 던진다.
+  - 신고는 장부와 대조한다. 어긋나면 `send_violations`에 기록하고, 장부 수로 청구하며, 그 응답은 아무것도 실행하지 않고 재시도하지 않는다. 종류는 `not_sent_contradicted`(보냈는데 `NotSent`), `declared_sent_mismatch`(`sent_attempts` ≠ 장부), `attempts_overreported`(보고 시도 > 장부, 마지막 장부 수만큼 청구), `attempts_underreported`(사용량 확정인데 보고 시도 < 장부, 사용량 미상으로 바꾸고 채움), `reply_without_send`·`attempts_without_send`(보낸 것 없이 응답·시도를 신고), `send_after_settlement`(응답을 넘긴 뒤 보낸 요청, 막힘)다.
+  - 사용량 미상 응답이 장부보다 적은 시도를 보고하면(위반 아님) 빠진 시도를 `error` 시도로 앞에 채우고 `unreported_attempts`에 남긴다(5차 규칙을 장부 수로 적용). 예약했지만 보내지 않은 재시도는 더 이상 보낸 것으로 세지 않는다.
+  - `KeyboardInterrupt` 같은 중단은 예약을 돌려주지 않고 ledger 상태를 `interrupted`로, 그때까지의 장부 전송 수를 `ledger_sends`로 적은 뒤 다시 던진다.
+  - 신뢰 경계: 전송 계층이 장부를 거치지 않고 소켓을 직접 열면 장부는 그 요청을 볼 수 없다. `ModelCallTransport`(`harness/zone_study_llm_transport.py`)는 호출의 opener만 completer에 넘기고, completer의 네트워크 경로는 `http_open` 하나다. 테스트는 `urlopen`·소켓을 막은 채 실제 completer 경로를 돌린다.
+
+### 재질문 타이머 (`REASK_POLICY = 'single_pending_own_timer.v1'`)
+
+로봇 자기 재질문 타이머는 `EventScheduler.arm_reask(actor, label, at=...)`로만 건다. **로봇마다 대기 중인 재질문 타이머는 최대 1개다.** 타이머가 대기 중이면 새로 걸지 않고 `False`를 돌려준다(`reask_counts[actor]['skipped']`). 대기 중인 타이머는 처음 건 시각에 울리고, 뒤의 행동이 시각을 옮기지 않는다. 울리면 다음 행동이 다시 걸 수 있다. 일반 `timer()`는 이 표지를 건드리지 않는다. 시각은 유한한 수여야 하고 과거일 수 없다.
+
+- **이유(통합 PR #229, 이슈 #222):** 전에는 행동마다 타이머를 하나씩 더 걸었다. 그래서 호출마다 끝나지 않는 사슬이 하나씩 생겼고, 채널 조건에서 메시지로 시작된 호출이 사슬을 늘려 모든 조건이 445–478 SIM s에 호출 예산 90회를 다 썼다. 오프라인 스모크 v4의 채널 조건 18회도 모두 `budget_exhausted`였다.
+- 통합 러너의 임시 우회(`harness/zone_study_integration.py` `_arm_reask`)와 같은 규칙·같은 식별자다. 통합 쪽은 이 API를 쓰면 지역 우회를 지울 수 있다.
+- 오프라인 루프(`harness/zone_study_offline.py`)는 이 규칙을 쓰며, 실행 번들 ID를 `zone_study_offline_v2`로 올렸다. v1~v4 기록은 옛 규칙(`zone_study_offline_v1`)으로 실행됐다. 7차 수정에서 오프라인 루프가 전송 장부를 지나게 되어 번들 ID는 `zone_study_offline_v3`이다(스모크 v6부터).
 
 ## 3. 실행 의미 (스케줄러 계약)
 
@@ -107,7 +124,7 @@ d_q   = quantum * ceil(raw_q / quantum)
 |---|---:|---|
 | `min_interval_s` | 2.0 | actor당 최소 호출 간격. 이른 계기는 버리지 않고 뒤로 미룬다 |
 | `max_outstanding_per_actor` | 1 | 동시 미완료 호출 |
-| `idle_reask_s` / `busy_reask_s` | 10 / 60 | 재검토 타이머 시작값 |
+| `idle_reask_s` / `busy_reask_s` | 10 / 60 | 재검토 타이머 시작값. 로봇마다 대기 중인 타이머는 1개(`REASK_POLICY`) |
 | `observe_period_s` | 1.0 | 자기 카메라 관측 주기. `arm_observations()`로 시작한다 |
 | `max_retries` | 1 | 실패 호출의 추가 호출 수 |
 | `max_calls_per_actor` | 30 | 예산. 초과분은 조용히 사라지지 않고 `call_refused`로 기록된다 |

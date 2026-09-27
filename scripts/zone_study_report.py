@@ -24,8 +24,10 @@ import argparse
 import collections
 import hashlib
 import json
+import os
 import sys
 import time
+import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -201,16 +203,18 @@ def boundary_section(summary, statuses=None, failures=None):
     counts = statuses or summary.get('boundary_status_counts') or {}
     if not main:
         rows.append('주 4조건의 모든 시행에서 금지 입력 key·미검증 payload·알 수 없는 입력 key·'
-                    '금지 근거 인용·채널 위반이 없었다.')
+                    '기록 계약 버전 위반·금지 근거 인용·채널 위반이 없었다.')
     else:
-        rows.append('| 시행 | 상태 | 금지 입력 key | 미검증 payload | 알 수 없는 key | 금지 근거 | 채널 위반 |')
-        rows.append('|---|---|---|---:|---|---|---:|')
+        rows.append('| 시행 | 상태 | 금지 입력 key | 미검증 payload | 알 수 없는 key | 계약 버전 위반 | 금지 근거 | '
+                    '채널 위반 |')
+        rows.append('|---|---|---|---:|---|---:|---|---:|')
         for trial_id, b in main:
             keys = sorted({k for r in b['input_leaks'] for k in r['forbidden_input_keys']})
             grounds = sorted({g for r in b['forbidden_grounds'] for g in r['forbidden_grounds']})
             odd = sorted({k for r in b['unknown_input_keys'] for k in r['unknown_input_keys']})
             rows.append(f'| {trial_id} | {ev.boundary_status(b)} | {", ".join(keys) or "—"} | '
                         f'{len(b["unvalidated_payloads"])} | {", ".join(odd) or "—"} | '
+                        f'{len(b.get("payload_contract_violations") or ())} | '
                         f'{", ".join(grounds) or "—"} | {len(b["channel_violations"])} |')
         rows.append('')
         rows.append('**입력 경계 감사에 실패한 시행이 있다. '
@@ -305,19 +309,86 @@ def markdown(summary, comparisons, sources, generated_at):
     return '\n'.join(lines)
 
 
+def _run_paths(scalars, directory):
+    """Resolve every run directory BEFORE anything is written (fifth/sixth review, P2).
+
+    A run name is a relative path of non-empty components without ``.``, ``..``,
+    a backslash or a NUL. Sixth review: that lexical check alone let a SYMLINKED
+    directory inside the logdir carry a new run outside it, because nothing was
+    resolved and ``exists()`` of a run not yet written is False. Now:
+
+    * no component between the logdir and the run may be a symbolic link (even a
+      dangling one, or one that points back inside, which would alias a run);
+    * the REAL path (``Path.resolve``) must lie strictly inside the real logdir,
+      so a symlinked logdir itself is fine and its target is what is written;
+    * duplicates are compared on the real path, case- and Unicode-folded, since
+      the default macOS file system does not tell ``A`` from ``a``;
+    * a run that already exists (at its real path) is refused, never appended to
+      or rewritten: an old snapshot (e.g. v4's ``<condition>/<scenario>-s<seed>``
+      runs) stays as it was.
+
+    Returns the REAL run paths; ``write_events`` writes there and re-checks each
+    one just before creating it.
+    """
+    root = Path(directory)
+    if root.exists() and not root.is_dir():
+        raise NotADirectoryError(f'the TensorBoard logdir {root} is not a directory')
+    real_root = root.resolve()
+    paths, existing, seen = [], [], {}
+    for run in scalars['runs']:
+        name = run.get('run')
+        parts = name.split('/') if isinstance(name, str) else []
+        if (not parts or any(p in ('', '.', '..') or '\\' in p or '\x00' in p for p in parts)
+                or Path(name).is_absolute()):
+            raise ValueError(f'run name {name!r} is not a relative path inside the logdir')
+        for depth in range(1, len(parts) + 1):
+            if root.joinpath(*parts[:depth]).is_symlink():
+                raise ValueError(f'run name {name!r} passes through the symbolic link '
+                                 f'{"/".join(parts[:depth])!r} inside the logdir')
+        real = root.joinpath(*parts).resolve()
+        if real == real_root or not real.is_relative_to(real_root):
+            raise ValueError(f'run name {name!r} resolves to {real}, outside the logdir {real_root}')
+        key = unicodedata.normalize('NFC', str(real)).casefold()
+        if key in seen:
+            raise ValueError(f'duplicate run path in the scalar payload: {seen[key]!r} and {name!r}')
+        seen[key] = name
+        paths.append(real)
+        if real.exists():
+            existing.append(name)
+    # a run that is the parent directory of another would be created by the
+    # other's ``mkdir(parents=True)`` first and then fail half-way through
+    parents = {str(parent) for key in seen for parent in Path(key).parents}
+    nested = sorted(seen[key] for key in seen if key in parents)
+    if nested:
+        raise ValueError(f'run(s) {nested} would contain another run of the payload')
+    if existing:
+        raise FileExistsError(f'TensorBoard run(s) already exist under {directory}: {existing}; '
+                              'write a new snapshot directory instead of rewriting them')
+    return paths
+
+
+def _still_inside(path, directory):
+    """``write_events``: the checked real run path is still the real path now."""
+    if path.resolve() != path or os.path.lexists(path):
+        raise ValueError(f'run path {path} changed after the logdir check (symlink or existing entry)')
+    if not path.is_relative_to(Path(directory).resolve()):
+        raise ValueError(f'run path {path} is outside the logdir {directory}')
+
+
 def write_events(scalars, directory, at):
-    """Optional: real TensorBoard event files, one run per entry. No server change."""
+    """Optional: real TensorBoard event files, one NEW run per entry. No server change."""
+    directory = Path(directory)
+    paths = _run_paths(scalars, directory)
     from tensorboard.compat.proto.event_pb2 import Event
     from tensorboard.compat.proto.summary_pb2 import Summary
     from tensorboard.plugins.hparams import api_pb2, metadata, plugin_data_pb2
     from tensorboard.summary.writer.event_file_writer import EventFileWriter
     from tensorboard.util.tensor_util import make_tensor_proto
 
-    directory = Path(directory)
     written = 0
-    for run in scalars['runs']:
-        path = directory / run['run']
-        path.mkdir(parents=True, exist_ok=True)
+    for run, path in zip(scalars['runs'], paths):
+        _still_inside(path, directory)
+        path.mkdir(parents=True)
         writer = EventFileWriter(str(path), max_queue_size=50, flush_secs=5)
 
         def add(summary, step=0):
@@ -356,6 +427,8 @@ def build(paths, output, penalty_factor=ev.DEFAULT_PENALTY_FACTOR,
     comparisons = ev.compare_all(trials, include_reference=include_reference,
                                  resamples=resamples, seed=seed, penalty_factor=penalty_factor)
     scalars = ev.scalar_export(summary)
+    if tb_events:
+        _run_paths(scalars, Path(tb_events))      # refuse before any report file is written
     sources = sorted((t['source_path'], sha256_file(t['source_path'])) for t in trials)
     at = now if now is not None else time.time()
     generated_at = time.strftime('%Y-%m-%dT%H:%M:%S%z', time.localtime(at))

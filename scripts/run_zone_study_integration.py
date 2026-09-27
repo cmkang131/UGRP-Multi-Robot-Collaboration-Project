@@ -45,6 +45,7 @@ from harness import zone_study_integration as zi  # noqa: E402
 from harness import zone_study_offline as zo  # noqa: E402
 from harness.zone_own_executor import OwnCamTeamHost, ROBOTS  # noqa: E402
 from harness.zone_study_contract import MAIN_CONDITIONS, digest  # noqa: E402
+from sim import zone_eval_top  # noqa: E402
 
 SCHEMA = 'ugrp.zone_study_integration_run.v1'
 ON_FLOOR_MAX_Z_M = .05
@@ -56,6 +57,7 @@ RUNTIME_FILES = (
     'scripts/run_zone_study_integration.py', 'harness/zone_study_integration.py', 'harness/zone_study_offline.py',
     'harness/zone_study_contract.py', 'harness/zone_study_inputs.py', 'harness/zone_study_prompts_ko.py',
     'harness/zone_study_protocol.py', 'harness/zone_sim_cost.py', 'harness/zone_event_scheduler.py',
+    'harness/zone_send_ledger.py', 'harness/zone_study_llm_transport.py', 'harness/gemini_proxy.py',
     'harness/zone_study_eval.py', 'harness/zone_study_scenarios.py', 'harness/zone_map_schematic.py',
     'harness/team_carry_status.py', 'harness/zone_own_executor.py', 'harness/m1_owncam_delivery.py',
     'harness/m1_owncam_contract.py', 'harness/m1_contract.py', 'harness/owncam_pose_source.py',
@@ -63,6 +65,7 @@ RUNTIME_FILES = (
     'harness/map_goto.py', 'harness/zone_own_perception.py', 'harness/wrist_zone_skill_v9.py',
     'harness/wrist_zone_skill_v6.py', 'sim/zone_cargo_contact.py', 'sim/zone_landmarks.py', 'sim/zone_scene.py',
     'sim/camera_robot_port.py', 'sim/multi_masterpi_production.py',
+    'sim/zone_eval_top.py', 'sim/research_dispatch_arena.py',
     'configs/zone_study_integration/pose_providers.json')
 
 
@@ -88,9 +91,12 @@ class HostRobotLink:
         capture = self._slot.port.capture
 
         def tapped(camera='robot_cam'):
+            if camera != 'robot_cam':
+                raise zi.ContractViolation(f'{rid}: study inputs require own robot_cam, got {camera!r}')
             obs = capture(camera)
             jpeg = base64.b64decode(obs['image'])
-            if zi.hashlib.sha256(jpeg).hexdigest() != obs['sha256'] or obs['robot_id'] != rid:
+            if (zi.hashlib.sha256(jpeg).hexdigest() != obs['sha256'] or obs['robot_id'] != rid
+                    or obs['camera'] != 'robot_cam'):
                 raise RuntimeError(f'{rid}: frame tap got a foreign or corrupted frame')
             self._frames.append(zi.OwnFrame(len(self._slot.frames), round(float(obs['sim_time']), 4), jpeg,
                                             obs['sha256']))
@@ -132,6 +138,11 @@ class StudyTeamHost(OwnCamTeamHost):
 
     def __init__(self, spec, student, *, root, provider_spec):
         super().__init__(spec, student, root=root, study_layer=self._no_layer, frames_dir=None)
+        # scene.setup has finished. Overlay only the evaluation cameras in the
+        # world; keep self.static and every executor's own static map untouched.
+        profile = evaluation_top_config(self.static)['profile']['id']
+        self.eval_static = zone_eval_top.eval_static_map(self.static, profile)
+        self.eval_only['top_camera'] = zone_eval_top.apply_to_world(self.world, self.static, profile)
         self.provider_sources = {}
         for rid, slot in self.robots.items():
             ex = slot.executor
@@ -160,7 +171,11 @@ class StudyTeamHost(OwnCamTeamHost):
         return start
 
     def advance_to(self, t_end):
-        """Decisions, macros and physics up to ``t_end``; returns the executors' events."""
+        """Advance own jobs even while the scheduler charges thinking/talking (#223).
+
+        Idle executors wait; busy executors keep their current job/macros.
+        Scheduler holding is a pending decision, not a physical pause command.
+        """
         data, events = self.world.data, []
         while True:
             now = float(data.time)
@@ -184,6 +199,16 @@ class StudyTeamHost(OwnCamTeamHost):
 
 # ---------------------------------------------------------------------------
 # Bundle, scenario, plan
+
+def evaluation_top_config(static):
+    """Pinned evaluation/video overlay; never part of the robots' map/input bundle."""
+    base_id, _ = zone_eval_top.base_map_of(static)
+    profile = 'zone_eval_top_v2' if base_id == 'zone_wide_corridor' else 'zone_eval_top_v1'
+    cameras = zone_eval_top.eval_top_cameras(static, profile)
+    return {'profile': zone_eval_top.profile_record(profile), 'cameras': cameras,
+            'cameras_sha256': zone_eval_top.digest(cameras),
+            'note': 'evaluation/video only; never a robot input; apply after scene.setup on replay'}
+
 
 def load_prereg(path):
     prereg = json.loads(Path(path).read_text())
@@ -209,7 +234,8 @@ def run_bundle(prereg, episode):
     if not report.ok:
         raise SystemExit(f'scenario {episode["scenario"]} fails validation: {report.checks}')
     map_bundle = bundle_for(scenario)
-    if json.loads(Path(map_bundle['map_file']).read_text()) != tagged_map(episode['map']):
+    static = json.loads(Path(map_bundle['map_file']).read_text())
+    if static != tagged_map(episode['map']):
         raise SystemExit('the map file the robots read differs from the tagged map the scene builds')
     provider = zi.pose_provider_spec(prereg['pose_provider'], map_id=episode['map'])
     stub = {r: _StubLink(r) for r in ROBOTS}
@@ -226,6 +252,7 @@ def run_bundle(prereg, episode):
               'executor_tick_s': zi.QUANTUM_S, 'student': dict(prereg['student']),
               'student_calibration_sha256': zi.file_sha256(ROOT / prereg['student']['calibration']),
               'pose_provider': zi.provider_record(provider),
+              'eval_top_camera': evaluation_top_config(static),
               'study_invariant': zi.condition_invariant_config(trial.study_config()),
               'conditions': list(MAIN_CONDITIONS), 'horizon_s': prereg['horizon_s']}
     return bundle, scenario, map_bundle, provider
@@ -413,6 +440,8 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
         jsonl(out / 'eval_only' / 'frames_eval.jsonl', ev['frames_eval'])
         jsonl(out / 'eval_only' / 'contacts.jsonl', ev['contacts'])
         (out / 'eval_only' / 'referee.json').write_text(json.dumps(referee, indent=1) + '\n')
+        (out / 'eval_only' / 'top_camera.json').write_text(json.dumps(ev['top_camera'], indent=1) + '\n')
+        (out / 'eval_only' / 'static_map.json').write_text(json.dumps(host.eval_static, indent=1) + '\n')
         (out / 'scene.xml').write_text(host.world.scene_xml)
         summary['provider_sources'] = dict(host.provider_sources)
     if trial is not None:
@@ -444,6 +473,7 @@ def write_study(out, trial, result, summary):
     jsonl(study / 'scheduler_events.jsonl', trial.scheduler.events)
     (study / 'pair_status.json').write_text(json.dumps(trial.pair_status.record(), indent=1) + '\n')
     (study / 'study_config.json').write_text(json.dumps(trial.study_config(), indent=1, ensure_ascii=False) + '\n')
+    (study / 'send_ledger.json').write_text(json.dumps(trial.send_ledger.to_dict(), indent=1) + '\n')
     if result is None:
         return
     referee = summary.get('eval_only', {}).get('referee', {'deliveries': []})

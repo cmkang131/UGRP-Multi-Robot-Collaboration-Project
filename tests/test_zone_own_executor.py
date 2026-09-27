@@ -352,7 +352,7 @@ def test_action_record_adapter_matches_package_a_schema():
     ex = make()
     acks = [ex.hold(1.), ex.deliver('o1', 'A2'), ex.abort()]
     for i, ack in enumerate(acks):
-        rec = zox.action_record(ack, run_id='t', condition='no_llm_scripted', seed=1, request_id=f'q{i}')
+        rec = zox.action_record(ack, run_id='t', condition='no_comm', seed=1, request_id=f'q{i}')
         assert tuple(rec) == A_ACTION_FIELDS
         assert rec['kind'] in zox.A_ACTION_KINDS and rec['local_state'] in zox.A_LOCAL_STATES
         assert set(rec['arguments']) <= set(A_COMMAND_ARGUMENT_KEYS)

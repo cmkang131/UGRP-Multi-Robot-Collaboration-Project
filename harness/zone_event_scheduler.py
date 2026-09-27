@@ -29,6 +29,15 @@ in a fixed order (start time, actor, call id) rather than in arrival order.
 Deliveries are ordered by ``(delivery time, origin finish time, sender, message
 index, recipient)``.
 
+8. (seventh review, P1) What a call SENT is read from the transport's
+   :class:`~harness.zone_send_ledger.SendLedger`, never from the adapter's own
+   report. The ledger asks this scheduler to authorise every request before it
+   reaches the wire (:meth:`EventScheduler._authorize_send`), so no request
+   leaves without a budget slot; a call is refunded only when the ledger shows
+   0 sends for it, and ``NotSent``/``sent_attempts``/the reported attempts are
+   cross-checked against the ledger (a mismatch is a recorded violation, the
+   call is charged by the ledger and its reply executes nothing).
+
 Not integrated into any runner: the runner owner wires this in after PR 169.
 This module holds no simulator state; ``advance`` is a caller-supplied callback
 that steps physics from one SIM time to the next.
@@ -37,10 +46,12 @@ from __future__ import annotations
 
 import collections
 import heapq
+import math
 from collections.abc import Mapping
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from types import MappingProxyType
 
+from harness.zone_send_ledger import ScriptedWire, SendBlocked, SendLedger, send
 from harness.zone_sim_cost import (Attempt, CallCostRecord, FAILED_OUTCOMES, MessageCostRecord,
                                    TRIGGER_TO_CONTRACT, call_cost, censored_call_record,
                                    contract_call_record, contract_message_records, delivery_delay_s,
@@ -50,6 +61,10 @@ from harness.zone_study_contract import (CONDITIONS as CONTRACT_CONDITIONS, ENVE
 
 SCHEDULER_SCHEMA = 'ugrp.zone_event_scheduler.v1'
 DEFAULT_ACTORS = ROBOTS
+#: Own re-ask timers (``EventScheduler.arm_reask``): at most ONE pending per
+#: actor; arming while one is pending arms nothing. Same identifier and rule as
+#: the integration runner's local workaround (PR #229), which can now import it.
+REASK_POLICY = 'single_pending_own_timer.v1'
 #: Package A's message encodings (``harness.zone_study_contract``).
 ENCODINGS = tuple(sorted({c.encoding for c in CONTRACT_CONDITIONS.values()} - {'none'}))
 
@@ -142,12 +157,17 @@ class CallReply:
     #: Kept APART from the standardised billed size in ``attempts`` that the
     #: SIM cost uses (third review, finding 18 follow-up).
     provider_usage: object = None
+    #: Sixth review: how many HTTP requests of this call LEFT, as the transport
+    #: believes; None = it cannot tell. ADVISORY since the seventh review: the
+    #: scheduler counts the send ledger and records a mismatch as a violation.
+    sent_attempts: object = None
 
     def __post_init__(self):
         if not self.attempts:
             raise ValueError('a reply needs at least one attempt')
         if not isinstance(self.usage_known, bool):
             raise ValueError('usage_known must be a bool')
+        _sent_count(self.sent_attempts, self.attempts, usage_known=self.usage_known)
         if self.provider_usage is not None:
             if not isinstance(self.provider_usage, Mapping) or any(
                     isinstance(v, bool) or not isinstance(v, int) or v < 0
@@ -190,7 +210,7 @@ class TransportFailure(Exception):
     """
 
     def __init__(self, message, *, attempts, unparsed_utterances=0, provider_usage=None,
-                 usage_known=True):
+                 usage_known=True, sent_attempts=None):
         super().__init__(message)
         if not isinstance(usage_known, bool):
             raise ValueError('usage_known must be a bool')
@@ -198,6 +218,51 @@ class TransportFailure(Exception):
         self.unparsed_utterances = int(unparsed_utterances)
         self.provider_usage = provider_usage
         self.usage_known = usage_known
+        #: Sixth review: how many HTTP requests of this call the transport
+        #: believes LEFT (None = it cannot tell). Advisory: see ``_sent_count``.
+        self.sent_attempts = _sent_count(sent_attempts, self.attempts,
+                                         usage_known=usage_known and bool(self.attempts))
+
+
+class NotSent(Exception):
+    """``submit()``'s CLAIM that no request of the call left (sixth review, P1).
+
+    Seventh review: a claim, not a proof. The scheduler refunds a call only when
+    its send ledger shows 0 sends, whatever the transport raised. ``NotSent``
+    raised by ``submit()`` with 0 sends is re-raised after the refund (the
+    caller learns the call never went out); with sends on the ledger it is a
+    recorded violation (``not_sent_contradicted``) and the call is charged.
+    """
+
+
+def _sent_count(value, attempts, *, usage_known):
+    """Validate a transport's declared number of SENT requests of one call.
+
+    ``None`` = the transport cannot tell. An int is the count of requests it
+    believes left, the first one included, so it is at least 1 (a call with no
+    request raises instead) and at least the number of reported attempts. With a
+    KNOWN usage the reported attempts are the whole list, so the count must equal
+    it. The value is advisory: the scheduler compares it with the send ledger.
+    """
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+        raise ValueError(f'sent_attempts must be None or an int >= 1 (0 sent = NotSent), got {value!r}')
+    if value < len(attempts):
+        raise ValueError(f'sent_attempts={value} is fewer than the {len(attempts)} reported attempt(s)')
+    if usage_known and value != len(attempts):
+        raise ValueError(f'a reply with a known usage reports all its attempts: sent_attempts={value} '
+                         f'but {len(attempts)} attempt(s) reported')
+    return value
+
+
+class _SubmitFailed:
+    """Token of a call whose ``submit()`` raised after (possibly) sending it."""
+
+    __slots__ = ('error',)
+
+    def __init__(self, error):
+        self.error = error
 
 
 @dataclass
@@ -211,10 +276,15 @@ class PendingCall:
     token: object = None
     merged: tuple = ()
     retry_of: str = ''
-    #: ``reserve(count=1) -> bool``: a transport that retries internally MUST
-    #: reserve every further HTTP attempt through this before sending it
-    #: (second review, finding 15). False = the budget is out, do not send.
+    #: ``reserve(count=1) -> bool``: optional pre-reservation of further HTTP
+    #: attempts (second review, finding 15). Advisory since the seventh review:
+    #: the send ledger authorises every request against the budget anyway, and
+    #: an unused reservation is refunded when the call settles.
     reserve: object = None
+    #: The call's send-ledger opener (``http_open(request, *, timeout)``), bound
+    #: by the scheduler at the call start: the ONLY way a request of this call
+    #: reaches the wire (seventh review, P1).
+    http_open: object = None
 
 
 @dataclass(frozen=True)
@@ -295,18 +365,16 @@ class AttemptBudget:
     def commit(self, actor, *, reserved, actual):
         """Turn ``reserved`` reservations into ``actual`` used attempts.
 
-        Returns the number of attempts that were over the reservation and could
-        NOT be covered by the remaining budget; the caller records them instead
-        of silently exceeding the cap.
+        Seventh review: every request is authorised by the send ledger against a
+        reservation before it reaches the wire, so ``actual`` (the ledger count)
+        can never exceed ``reserved``; an ``actual`` above it is a scheduler bug,
+        not a budget event, and raises. Unused reservations are refunded.
         """
+        if actual > reserved:
+            raise AssertionError(f'{actor}: {actual} ledgered attempts but only {reserved} reserved; '
+                                 'the send ledger must authorise every request')
         self.release(actor, reserved)
-        # ``remaining`` after the release INCLUDES the slots this call had
-        # reserved, so the over-budget count is ``actual - remaining`` (the
-        # first round subtracted the reservation twice: cap 1, 3 attempts -> 1).
-        left = self.remaining(actor)
-        over = max(0, actual - max(left, 0)) if left is not None else 0
         self.used[actor] += actual
-        return over
 
     def to_dict(self):
         return {'per_actor': self.per_actor, 'total': self.total, 'used': dict(self.used),
@@ -346,7 +414,7 @@ def _metrics_row():
     return {'calls': 0, 'attempts': 0, 'retries': 0, 'invalid': 0, 'errors': 0, 'timeouts': 0,
             'thinking_sim_s': 0., 'utterances': 0, 'messages_sent': 0, 'messages_rejected': 0,
             'delivery_edges_out': 0, 'broadcasts': 0, 'messages_received': 0, 'merged_triggers': 0,
-            'deferred': 0, 'budget_refused': 0, 'rate_limited': 0}
+            'deferred': 0, 'budget_refused': 0, 'rate_limited': 0, 'not_sent': 0}
 
 
 class EventScheduler:
@@ -357,6 +425,17 @@ class EventScheduler:
 
         token = transport.submit(pending_call)   # start the work, return a handle
         reply = transport.reply(token)           # may block; returns a CallReply
+
+    Seventh review, P1: the transport sends every request through
+    ``pending_call.http_open``, the opener of its
+    :class:`~harness.zone_send_ledger.SendLedger` (``send_ledger=`` or the
+    transport's ``send_ledger`` attribute; a transport without one is refused).
+    The ledger count is what a call SENT: it is charged, and a call is refunded
+    only when the ledger shows 0 sends. What the transport reports (attempts,
+    ``sent_attempts``, :class:`NotSent`) is cross-checked against the ledger;
+    a mismatch is recorded in ``send_violations``, the call is charged by the
+    ledger and its reply executes nothing. A request the budget cannot cover is
+    blocked before the wire (``blocked_sends``).
 
     Optional callbacks, all pure observers from the scheduler's point of view:
 
@@ -370,8 +449,14 @@ class EventScheduler:
 
     def __init__(self, transport, *, cost_params=None, policy=None, actors=DEFAULT_ACTORS,
                  advance=None, on_hold=None, on_action=None, on_message=None, on_observe=None,
-                 on_timer=None, start_s=0., bus=None, bus_owner='sim_scheduler'):
+                 on_timer=None, start_s=0., bus=None, bus_owner='sim_scheduler', send_ledger=None):
         self.transport = transport
+        ledger = send_ledger if send_ledger is not None else getattr(transport, 'send_ledger', None)
+        if not isinstance(ledger, SendLedger):
+            raise TypeError('the transport must send through a harness.zone_send_ledger.SendLedger '
+                            '(pass send_ledger= or give the transport a send_ledger attribute): the '
+                            'scheduler charges what the ledger counted, not what the adapter reports')
+        self.send_ledger = ledger
         self.params = cost_params or params()
         self.policy = policy or CallPolicy()
         self.actors = tuple(actors)
@@ -406,7 +491,26 @@ class EventScheduler:
         self.rejected_messages = []
         self.discarded = []
         self.transport_errors = []
-        self.over_budget_attempts = []
+        #: Fifth review, P1: unknown-usage calls whose reply reported fewer
+        #: attempts than the send ledger counted; the missing ones are padded.
+        self.unreported_attempts = []
+        #: Calls that sent NOTHING according to the send ledger: the only calls
+        #: whose reservation is refunded (sixth review ``NotSent``, seventh review).
+        self.unsent_calls = []
+        #: Seventh review, P1: a transport report that contradicts the send
+        #: ledger (``NotSent`` with sends, a wrong ``sent_attempts``, more or
+        #: fewer attempts than sent with a known usage, a reply without a send,
+        #: a send after the reply). Charged by the ledger; the reply runs nothing.
+        self.send_violations = []
+        #: Requests the send ledger refused before the wire (no budget slot, or
+        #: the call was already settled). Nothing of them was sent.
+        self.blocked_sends = []
+        ledger.attach(self._authorize_send, owner=self)
+        #: ``REASK_POLICY``: the SIM time of the one pending own re-ask timer per
+        #: actor, and how often arming was skipped because one was pending
+        #: (integration PR #229, issue #222).
+        self._reask_pending = {}
+        self.reask_counts = {actor: {'armed': 0, 'skipped': 0} for actor in self.actors}
         #: Robot-facing inbox: package A's closed envelope (``ENVELOPE_KEYS``),
         #: the SAME shape as package C's ``Transport.inbox`` (second review,
         #: finding 2). Delivery times live in ``deliveries`` (evaluation).
@@ -454,6 +558,38 @@ class EventScheduler:
         self._check_actor(actor)
         when = self.clock + float(delay_s) if at is None else float(at)
         self._push('timer', when, (0., self._rank[actor], 0, 0), {'actor': actor, 'label': label})
+
+    def arm_reask(self, actor, label='idle', *, at):
+        """Arm ``actor``'s own re-ask timer unless one is still pending (``REASK_POLICY``).
+
+        Returns True when a timer was armed and False when one of this actor's
+        re-ask timers had not fired yet, in which case NOTHING is armed. The
+        offline rule used to arm a new timer after every action, so each call
+        started one more perpetual chain and message-triggered calls multiplied
+        them until every condition had spent its call budget (integration PR
+        #229, issue #222). The pending timer fires at the time it was armed for;
+        a later action does not move it. The caller decides the time (idle or
+        busy delay) and whether the actor still has budget and horizon left.
+        """
+        self._check_actor(actor)
+        if label not in TRIGGERS:
+            raise ValueError(f'unknown re-ask label {label!r}; known: {sorted(TRIGGERS)}')
+        if isinstance(at, bool) or not isinstance(at, (int, float)) or not math.isfinite(at):
+            raise ValueError(f're-ask time must be a finite number of SIM seconds, got {at!r}')
+        if at < self.clock - 1e-9:
+            raise ValueError('cannot arm a re-ask in the SIM past')
+        if actor in self._reask_pending:
+            self.reask_counts[actor]['skipped'] += 1
+            return False
+        self._push('timer', at, (0., self._rank[actor], 0, 0), {'actor': actor, 'label': label, 'reask': True})
+        self._reask_pending[actor] = _round(at)
+        self.reask_counts[actor]['armed'] += 1
+        return True
+
+    def reask_pending(self, actor):
+        """True while ``actor``'s re-ask timer is armed and has not fired."""
+        self._check_actor(actor)
+        return actor in self._reask_pending
 
     def arm_observations(self, actors=None, *, period_s=None, first_at=None):
         """Start the periodic own-camera observation tick (re-arms itself)."""
@@ -530,7 +666,12 @@ class EventScheduler:
             if envelopes else []
         return {'schema': SCHEDULER_SCHEMA, 'calls': calls, 'messages': messages,
                 'censored_calls': [dict(row) for row in self.censored],
-                'attempt_budget': self.budget.to_dict()}
+                'unreported_attempts': [dict(row) for row in self.unreported_attempts],
+                'attempt_budget': self.budget.to_dict(),
+                'send_ledger': self.send_ledger.to_dict(entries=False),
+                'send_violations': [dict(row) for row in self.send_violations],
+                'blocked_sends': [dict(row) for row in self.blocked_sends],
+                'unsent_calls': [dict(row) for row in self.unsent_calls]}
 
     def run(self, until_s=None, max_events=None, *, close_at_horizon=True):
         """Process events until the queue is quiet, ``until_s`` or ``max_events``.
@@ -594,18 +735,17 @@ class EventScheduler:
             if entry is None or entry['status'] != 'outstanding':
                 continue
             if reply is None:
-                reply = self._reply_of(call)
+                reply, _ = self._reply_of(call)
+                if reply is None:            # the ledger shows no send: refunded, not censored
+                    self._release_unsent(call)
+                    continue
                 cost = call_cost(reply.attempts, self.params)
             # third review, finding 16: the flag is the REPLY's, whether it was
             # fetched before the horizon or just now; it is never reset to True.
             usage_known = reply.usage_known
             reserved = entry.get('reserved_attempts', 1)
             actual = len(cost.attempts)
-            over = self.budget.commit(call.actor, reserved=reserved, actual=actual)
-            if actual > reserved or over:
-                self.over_budget_attempts.append({'call_id': call.call_id, 'actor': call.actor,
-                                                  'reserved': reserved, 'actual': actual,
-                                                  'unreserved': max(0, actual - reserved), 'over': over})
+            self.budget.commit(call.actor, reserved=reserved, actual=actual)
             self._thinking.pop(call.call_id, None)
             censored_ids.add(call.call_id)
             elapsed = _round(max(at - call.started_sim_s, 0.))
@@ -673,27 +813,121 @@ class EventScheduler:
             return False
         for call in sorted(due, key=lambda c: (c.started_sim_s, self._rank[c.actor], c.call_id)):
             del self._pending[call.call_id]
-            reply = self._reply_of(call)
+            reply, violation = self._reply_of(call)
+            if reply is None:                # the ledger shows no send: refunded, no SIM cost
+                self._release_unsent(call)
+                continue
             cost = call_cost(reply.attempts, self.params)
             finish = _round(call.started_sim_s + cost.sim_s)
             # The actor keeps holding until ``finish``, even though the reply is
             # already in hand: SIM time, not the HTTP response, ends the wait.
             self._thinking[call.call_id] = call.actor
             self._push('call_done', finish, (0., self._rank[call.actor], 0, 0),
-                       {'call': call, 'cost': cost, 'reply': reply})
+                       {'call': call, 'cost': cost, 'reply': reply, 'violation': violation})
         return True
 
     def _reply_of(self, call):
-        """Fetch the reply; a transport exception is itself a costed error attempt."""
+        """``(reply charged by the send ledger, violation)``, or ``(None, violation)`` if nothing left.
+
+        Seventh review, P1: the number of attempts of a call is the number of its
+        requests the send ledger saw reach the wire. The transport's report is
+        cross-checked, never trusted:
+
+        * 0 sends: the call is refunded (``_release_unsent``), whatever the
+          transport raised or returned. A returned reply, reported attempts or a
+          declared ``sent_attempts`` without a send is a violation.
+        * a declared ``sent_attempts`` other than the ledger count, or
+          :class:`NotSent` with sends, is a violation.
+        * more reported attempts than sends: a violation; the last ``sent``
+          attempts are charged (the call outcome stays the last attempt).
+        * fewer reported attempts than sends: the missing ones are costed
+          ``error`` attempts placed first (fifth review rule, now by the ledger
+          count) and recorded in ``unreported_attempts``; with a usage the
+          transport called KNOWN this is also a violation and the usage becomes
+          unknown.
+
+        No request of the call may leave after this point (``sends_closed``).
+        """
+        fetched = self._fetch_reply(call)
+        entry = self.ledger[call.call_id]
+        entry['sends_closed'] = True
+        sent = self.send_ledger.sends(call.call_id)
+        entry['ledger_sends'] = sent
+        reply, reported = fetched['reply'], fetched['reported']
+        if fetched['declared'] is not None:
+            entry['sent_attempts_declared'] = fetched['declared']
+        problems = []
+        if fetched['declared'] is not None and fetched['declared'] != sent:
+            problems.append('declared_sent_mismatch')
+        if fetched['not_sent'] and sent:
+            problems.append('not_sent_contradicted')
+        if not sent:
+            if fetched['returned']:
+                problems.append('reply_without_send')
+            elif reported:
+                problems.append('attempts_without_send')
+            self._violation(call, fetched, sent, problems)
+            entry['unsent'] = {'stage': fetched['stage'], 'error': fetched['error']}
+            return None, bool(problems)
+        attempts, usage_known = reply.attempts, reply.usage_known
+        if len(attempts) > sent:
+            problems.append('attempts_overreported')
+            attempts = attempts[-sent:]
+        elif len(attempts) < sent:
+            if usage_known:
+                problems.append('attempts_underreported')
+                usage_known = False
+            self.unreported_attempts.append({'call_id': call.call_id, 'actor': call.actor,
+                                             'reserved': entry['reserved_attempts'], 'reported': reported,
+                                             'counted': sent})
+            self._log(f'attempts_unreported {call.actor} {call.call_id} sent={sent} reported={reported}',
+                      kind='attempts_unreported', actor=call.actor, call_id=call.call_id)
+            attempts = (Attempt(outcome='error'),) * (sent - len(attempts)) + attempts
+        self._violation(call, fetched, sent, problems)
+        if attempts is not reply.attempts or usage_known is not reply.usage_known:
+            # the charged reply states the ledger count; the declaration is in the row
+            reply = replace(reply, attempts=attempts, usage_known=usage_known, sent_attempts=sent)
+        return reply, bool(problems)
+
+    def _violation(self, call, fetched, sent, problems):
+        if not problems:
+            return
+        self.send_violations.append({'call_id': call.call_id, 'actor': call.actor, 'stage': fetched['stage'],
+                                     'violations': list(problems), 'ledger_sends': sent,
+                                     'reported_attempts': fetched['reported'],
+                                     'declared_sent': fetched['declared'],
+                                     'not_sent_claimed': fetched['not_sent'], 'error': fetched['error'],
+                                     'sim_s': self.now()})
+        self._log(f'send_violation {call.actor} {call.call_id} {",".join(problems)} sent={sent}',
+                  kind='send_violation', actor=call.actor, call_id=call.call_id)
+
+    def _fetch_reply(self, call):
+        """What the transport REPORTED for ``call``; a failure becomes a costed error attempt.
+
+        A ``submit()`` that raised left a ``_SubmitFailed`` token: its reply is
+        that failure, with no ``reply()``.
+        """
+        if isinstance(call.token, _SubmitFailed):
+            return self._failure_reply(call, call.token.error, stage='submit')
         try:
             reply = self.transport.reply(call.token)
-        except TransportFailure as exc:
+        except Exception as exc:  # noqa: BLE001 - a failed call must still cost SIM time
+            return self._failure_reply(call, exc, stage='reply')
+        if not isinstance(reply, CallReply):
+            raise TypeError(f'transport returned {type(reply).__name__}, expected CallReply')
+        return {'reply': reply, 'reported': len(reply.attempts), 'declared': reply.sent_attempts,
+                'stage': 'reply', 'returned': True, 'not_sent': False, 'error': None}
+
+    def _failure_reply(self, call, exc, *, stage):
+        """The costed report of a transport exception raised by ``submit`` or ``reply``."""
+        error = f'{type(exc).__name__}: {exc}'
+        base = {'stage': stage, 'returned': False, 'not_sent': isinstance(exc, NotSent), 'error': error}
+        if isinstance(exc, TransportFailure):
             # the transport knows what the provider billed: keep it (finding 6)
             # fourth review: the transport says whether what it knows is ALL of it
             usage_known = bool(exc.usage_known) and bool(exc.attempts)
-            self.transport_errors.append({'call_id': call.call_id, 'actor': call.actor,
-                                         'error': f'{type(exc).__name__}: {exc}',
-                                         'usage_known': usage_known,
+            self.transport_errors.append({'call_id': call.call_id, 'actor': call.actor, 'stage': stage,
+                                         'error': error, 'usage_known': usage_known,
                                          'unparsed_utterances': exc.unparsed_utterances})
             attempts = exc.attempts or (Attempt(outcome='error'),)
             if attempts[-1].outcome not in FAILED_OUTCOMES:
@@ -701,15 +935,45 @@ class EventScheduler:
                                                     input_tokens=attempts[-1].input_tokens,
                                                     output_tokens=attempts[-1].output_tokens,
                                                     utterances=attempts[-1].utterances),)
-            return CallReply(attempts=attempts, unparsed_utterances=attempts[-1].utterances,
-                             provider_usage=exc.provider_usage, usage_known=usage_known)
-        except Exception as exc:  # noqa: BLE001 - a failed call must still cost SIM time
-            self.transport_errors.append({'call_id': call.call_id, 'actor': call.actor,
-                                         'error': f'{type(exc).__name__}: {exc}', 'usage_known': False})
-            return CallReply(attempts=(Attempt(outcome='error'),), usage_known=False)
-        if not isinstance(reply, CallReply):
-            raise TypeError(f'transport returned {type(reply).__name__}, expected CallReply')
-        return reply
+            return dict(base, reply=CallReply(attempts=attempts, unparsed_utterances=attempts[-1].utterances,
+                                              provider_usage=exc.provider_usage, usage_known=usage_known),
+                        reported=len(exc.attempts), declared=exc.sent_attempts)
+        self.transport_errors.append({'call_id': call.call_id, 'actor': call.actor, 'stage': stage,
+                                     'error': error, 'usage_known': False})
+        return dict(base, reply=CallReply(attempts=(Attempt(outcome='error'),), usage_known=False),
+                    reported=0, declared=None)
+
+    def _release_unsent(self, call):
+        """Settle a call the send ledger shows NOTHING for: refund, record, release.
+
+        The only refund of the scheduler (seventh review). The call costs no SIM
+        time and no attempt, executes nothing and is not retried (nothing reached
+        the model, so there is nothing to retry); its hold ends now.
+        """
+        actor, entry = call.actor, self.ledger[call.call_id]
+        self.budget.release(actor, entry['reserved_attempts'])
+        unsent = entry.pop('unsent', {'stage': 'submit', 'error': None})
+        entry.update({'status': 'not_sent', 'finished_sim_s': self.now(), 'attempts': 0})
+        self.unsent_calls.append({'call_id': call.call_id, 'actor': actor, 'trigger': call.trigger,
+                                  'sim_s': self.now(), 'refunded': entry['reserved_attempts'],
+                                  'stage': unsent['stage'], 'error': unsent['error'],
+                                  'blocked_sends': self.send_ledger.blocked(call.call_id)})
+        self._log(f'call_not_sent {actor} {call.trigger} {call.call_id}', kind='call_not_sent',
+                  actor=actor, call_id=call.call_id)
+        if unsent['stage'] == 'submit':
+            return                      # it never became pending: no hold, no call counted
+        self.metrics[actor]['calls'] -= 1
+        self.metrics[actor]['not_sent'] += 1
+        for hold in reversed(self.holds):
+            if hold['call_id'] == call.call_id:
+                hold['to_sim_s'] = self.now()
+                break
+        if self.on_hold:
+            self.on_hold(actor, False, self.now())
+        held = self._deferred.pop(actor, None)
+        if held:
+            self._push('call_start', self.clock, (0., self._rank[actor], 0, 0),
+                       {'actor': actor, 'trigger': held['trigger'], 'merged': held['merged'], 'retry_of': ''})
 
     # -- dispatch ----------------------------------------------------------
 
@@ -751,15 +1015,14 @@ class EventScheduler:
         # finding 16: the ledger row exists from the START of the call.
         self.ledger[call.call_id] = {'call_id': call.call_id, 'actor': actor, 'trigger': trigger,
                                      'started_sim_s': self.clock, 'reserved_attempts': 1,
-                                     'status': 'outstanding', 'finished_sim_s': None,
+                                     'authorized': 0, 'status': 'outstanding', 'finished_sim_s': None,
                                      'retry_of': call.retry_of, 'merged_triggers': tuple(merged)}
         call.reserve = lambda count=1, _call=call: self._reserve_more(_call, count)
-        try:
-            call.token = self.transport.submit(call)
-        except Exception:
-            self.budget.release(actor, 1)
-            self.ledger[call.call_id]['status'] = 'submit_failed'
-            raise
+        # seventh review: every request of this call reaches the wire through its
+        # ledger opener, which asks ``_authorize_send`` first
+        call.http_open = self.send_ledger.opener_for(call.call_id, actor)
+        if not self._submit(call):
+            return                      # the ledger shows no send: refunded, never pending
         self._pending[call.call_id] = call
         self._last_start[actor] = self.clock
         self.metrics[actor]['calls'] += 1
@@ -770,15 +1033,88 @@ class EventScheduler:
         self._log(f'call_start {actor} {trigger} {call.call_id}', kind='call_start', actor=actor,
                   call_id=call.call_id)
 
-    def _reserve_more(self, call, count=1):
-        """Reserve further HTTP attempts of an in-flight call (finding 15).
+    def _submit(self, call):
+        """Hand the call to the transport. False = it sent nothing and was refunded.
 
-        A transport calls this through ``PendingCall.reserve`` BEFORE each
-        internal retry. The reservation goes through the single budget owner, so
-        a refused retry is never sent instead of being found over budget later.
+        Seventh review, P1: what ``submit()`` raised no longer decides the
+        refund; the send ledger does. With 0 sends the call is refunded
+        (``_release_unsent``) and :class:`NotSent` is re-raised so the caller
+        learns the call never went out; any other exception is recorded and the
+        loop goes on. With sends the call is a failed, charged call whose reply is
+        that failure (``_SubmitFailed``), settled like a ``reply()`` failure; a
+        ``NotSent`` there is a recorded violation. An interrupt keeps the
+        reservation (the process is going down) and the row says why.
+        """
+        actor, entry = call.actor, self.ledger[call.call_id]
+        try:
+            call.token = self.transport.submit(call)
+            return True
+        except Exception as exc:  # noqa: BLE001 - settled by the ledger, below
+            if self.send_ledger.sends(call.call_id):
+                call.token = _SubmitFailed(exc)
+                return True
+            fetched = self._failure_reply(call, exc, stage='submit')
+            entry.update({'sends_closed': True, 'ledger_sends': 0,
+                          'unsent': {'stage': 'submit', 'error': fetched['error']}})
+            problems = []
+            if fetched['declared'] is not None:
+                problems.append('declared_sent_mismatch')
+            if fetched['reported']:
+                problems.append('attempts_without_send')
+            self._violation(call, fetched, 0, problems)
+            self._release_unsent(call)
+            if isinstance(exc, NotSent):
+                raise
+            return False
+        except BaseException as exc:
+            entry.update({'status': 'interrupted', 'error': f'{type(exc).__name__}: {exc}',
+                          'ledger_sends': self.send_ledger.sends(call.call_id)})
+            raise
+
+    def _authorize_send(self, call_id):
+        """The send ledger's gate: ``None`` lets ONE request of ``call_id`` reach the wire.
+
+        A request uses a slot the call already reserved, or reserves one more
+        through the single budget owner; without a slot it is blocked, so a
+        request the cap cannot cover never leaves (seventh review, P1). A request
+        of an unknown call or of a call whose reply was already taken is blocked
+        and is a violation.
+        """
+        entry = self.ledger.get(call_id)
+        reason = None
+        if entry is None:
+            reason = 'unknown_call'
+        elif entry['status'] != 'outstanding' or entry.get('sends_closed'):
+            reason = 'call_settled'
+        elif entry['authorized'] >= entry['reserved_attempts']:
+            if self.budget.reserve(entry['actor'], 1):
+                entry['reserved_attempts'] += 1
+            else:
+                reason = 'http_budget'
+        if reason is None:
+            entry['authorized'] += 1
+            return None
+        actor = entry['actor'] if entry else None
+        self.blocked_sends.append({'call_id': call_id, 'actor': actor, 'reason': reason, 'sim_s': self.now()})
+        self._log(f'send_blocked {actor} {call_id} {reason}', kind='send_blocked', actor=actor,
+                  call_id=call_id)
+        if reason != 'http_budget':
+            self.send_violations.append({'call_id': call_id, 'actor': actor, 'stage': 'wire',
+                                         'violations': ['send_after_settlement' if entry else 'unknown_call'],
+                                         'ledger_sends': self.send_ledger.sends(call_id),
+                                         'reported_attempts': None, 'declared_sent': None,
+                                         'not_sent_claimed': False, 'error': None, 'sim_s': self.now()})
+        return reason
+
+    def _reserve_more(self, call, count=1):
+        """Pre-reserve further HTTP attempts of an in-flight call (finding 15).
+
+        Advisory since the seventh review: the send ledger authorises each
+        request anyway. A transport may still ask first, so it knows before it
+        builds a retry; an unused reservation is refunded when the call settles.
         """
         entry = self.ledger.get(call.call_id)
-        if entry is None or entry['status'] != 'outstanding':
+        if entry is None or entry['status'] != 'outstanding' or entry.get('sends_closed'):
             raise ValueError(f'{call.call_id} is not outstanding; it cannot reserve attempts')
         if not self.budget.reserve(call.actor, count):
             self._log(f'retry_refused {call.actor} {call.call_id} http_budget', kind='retry_refused',
@@ -810,20 +1146,10 @@ class EventScheduler:
         row = self.metrics[actor]
         row['thinking_sim_s'] = _round(row['thinking_sim_s'] + cost.sim_s)
         row['attempts'] += len(cost.attempts)
-        entry = self.ledger.get(call.call_id, {})
-        reserved = entry.get('reserved_attempts', 1)
-        actual = len(cost.attempts)
-        unreserved = max(0, actual - reserved)
-        over = self.budget.commit(actor, reserved=reserved, actual=actual)
-        if unreserved or over:
-            # finding 15: an attempt the transport sent WITHOUT reserving it is a
-            # budget breach. It is recorded, and the reply that depended on it
-            # executes nothing (second review: the retry used to run anyway).
-            self.over_budget_attempts.append({'call_id': call.call_id, 'actor': actor,
-                                              'reserved': reserved, 'actual': actual,
-                                              'unreserved': unreserved, 'over': over})
-            self._log(f'attempts_over_budget {actor} {call.call_id} unreserved={unreserved} over={over}',
-                      kind='attempts_over_budget', actor=actor, call_id=call.call_id)
+        entry = self.ledger[call.call_id]
+        # seventh review: ``cost.attempts`` is the send-ledger count, and every
+        # ledgered request was authorised against a reservation of this call
+        self.budget.commit(actor, reserved=entry['reserved_attempts'], actual=len(cost.attempts))
         for attempt in cost.attempts:
             if attempt.outcome == 'invalid':
                 row['invalid'] += 1
@@ -833,10 +1159,12 @@ class EventScheduler:
                 row['timeouts'] += 1
         row['utterances'] += cost.breakdown['utterances']
         failed = cost.outcome in FAILED_OUTCOMES
-        breach = bool(unreserved)
+        # seventh review: a report that contradicts the send ledger is charged by
+        # the ledger and its reply executes nothing, like a failed call
+        breach = bool(payload.get('violation'))
         notes = {'messages': len(reply.messages), 'unparsed_utterances': reply.unparsed_utterances,
                  'usage_known': reply.usage_known, 'provider_usage': _usage_dict(reply.provider_usage),
-                 'failed': failed, 'attempts_over_budget': over, 'unreserved_attempts': unreserved}
+                 'failed': failed, 'send_violation': breach}
         if failed or breach:
             # finding 5: a failed call PAYS but executes nothing. Its action and
             # its utterances are recorded as discarded, and only then is it
@@ -844,7 +1172,7 @@ class EventScheduler:
             notes['discarded_action'] = reply.action is not None
             notes['discarded_messages'] = len(reply.messages)
             self.discarded.append({'call_id': call.call_id, 'actor': actor, 'outcome': cost.outcome,
-                                   'reason': 'budget_breach' if breach else 'failed',
+                                   'reason': 'send_ledger_violation' if breach else 'failed',
                                    'action': reply.action, 'messages': len(reply.messages),
                                    'unparsed_utterances': reply.unparsed_utterances,
                                    'sim_s': self.now()})
@@ -860,7 +1188,7 @@ class EventScheduler:
             self._log(f'call_discarded {actor} {call.call_id} {cost.outcome} '
                       f'action={reply.action is not None} messages={len(reply.messages)}',
                       kind='call_discarded', actor=actor, call_id=call.call_id)
-            if not breach:          # a budget breach is never rewarded with a retry
+            if not breach:          # a contradicted report is never rewarded with a retry
                 self._retry(call, cost)
         else:
             if reply.action is not None:
@@ -964,6 +1292,9 @@ class EventScheduler:
 
     def _on_timer(self, payload):
         actor, label = payload['actor'], payload['label']
+        if payload.get('reask'):
+            # the one pending re-ask of this actor fired: the next action may arm again
+            self._reask_pending.pop(actor, None)
         self._log(f'timer {actor} {label}', kind='timer', actor=actor)
         if self.on_timer:
             self.on_timer(actor, label, self.now())
@@ -986,13 +1317,20 @@ class ReplayTransport:
     or is a callable ``(PendingCall) -> CallReply``; once a list runs out,
     ``default`` is returned. ``submitted`` and ``resolved`` record the submit and
     fetch orders, so a test can show the SIM trace does not follow them.
+
+    Seventh review: it SENDS through a send ledger like the real adapter, one
+    offline request per scripted attempt (``wire``, default
+    :class:`~harness.zone_send_ledger.ScriptedWire`), so the scheduler's ledger
+    rules are exercised by every scripted test.
     """
 
-    def __init__(self, replies, *, default=None):
+    def __init__(self, replies, *, default=None, wire=None):
         self.replies = replies
         self.default = default or CallReply()
         self.submitted, self.resolved = [], []
         self._queues = {}
+        self.wire = wire if wire is not None else ScriptedWire()
+        self.send_ledger = SendLedger(self.wire)
 
     def submit(self, call):
         self.submitted.append(call.call_id)
@@ -1002,33 +1340,31 @@ class ReplayTransport:
         self.resolved.append(token.call_id)
         source = self.replies.get(token.actor) if isinstance(self.replies, dict) else self.replies
         if callable(source):
-            return self._reserved(token, source(token))
+            return self._sent(token, source(token))
         queue = self._queues.setdefault(token.actor, list(source or ()))
-        return self._reserved(token, queue.pop(0) if queue else self.default)
+        return self._sent(token, queue.pop(0) if queue else self.default)
 
     @staticmethod
-    def _reserved(token, reply):
-        """Replay a multi-attempt reply as a COMPLIANT transport would send it.
+    def _sent(token, reply):
+        """Send the scripted attempts as a COMPLIANT transport would.
 
-        Every attempt after the first is reserved through ``token.reserve``
-        before it is "sent" (second review, finding 15). A refused reservation
-        means the retry never left, so the reply ends at the last attempt the
-        budget covered, and a failed last attempt executes nothing.
-
-        Fourth review, finding 16: the truncated reply keeps the scripted
-        reply's ``usage_known`` (it was silently reset to True, so an unknown
-        usage became "0 confirmed tokens"). The scripted ``provider_usage``
-        described attempts that were never sent, so it cannot be attributed to
-        the kept ones and is dropped (None = no provider report).
+        Each attempt is one request through the call's ledger opener. A request
+        the ledger blocks (no budget slot) never left, so the reply ends at the
+        last attempt that was sent, and a failed last attempt executes nothing
+        (second review, finding 15). The truncated reply keeps the scripted
+        ``usage_known`` (fourth review, finding 16) and drops the scripted
+        ``provider_usage``, which described attempts that were never sent. A
+        blocked FIRST request propagates: nothing of the call was sent.
         """
-        reserve = getattr(token, 'reserve', None)
-        if reserve is None or len(reply.attempts) < 2:
-            return reply
-        for index in range(1, len(reply.attempts)):
-            if not reserve(1):
+        for index in range(len(reply.attempts)):
+            try:
+                send(token.http_open, f'{{"call_id":"{token.call_id}","attempt":{index + 1}}}'.encode())
+            except SendBlocked:
+                if index == 0:
+                    raise
                 kept = reply.attempts[:index]
                 if kept[-1].outcome not in FAILED_OUTCOMES:
-                    raise ValueError('a scripted reply cannot retry after a successful attempt')
+                    raise ValueError('a scripted reply cannot retry after a successful attempt') from None
                 return CallReply(attempts=kept, unparsed_utterances=kept[-1].utterances,
                                  usage_known=reply.usage_known, provider_usage=None)
         return reply

@@ -12,10 +12,11 @@ import pytest
 
 from harness import zone_sim_cost as zc
 from harness.zone_study_contract import (CALL_LOG_SCHEMA, CALL_STATUS, MESSAGE_LOG_SCHEMA,
-                                         message_envelope, validate_log_record)
+                                         message_envelope, registry_sha256, validate_log_record)
 
-#: Minimal package A ``provenance`` object (closed keys, see PROVENANCE_KEYS).
-_PROVENANCE = {'registry_sha256': 'a' * 64, 'order_sheet_sha256': 'b' * 64,
+#: Minimal package A ``provenance`` object (closed keys, see PROVENANCE_KEYS). The
+#: registry hash must be a known contract version's (seventh review, P2).
+_PROVENANCE = {'registry_sha256': registry_sha256(), 'order_sheet_sha256': 'b' * 64,
                'map_file_sha256': 'c' * 64, 'public_map_sha256': 'd' * 64,
                'code_sha': 'deadbee', 'execution_bundle_id': 'zone_study_offline_v1',
                'model': 'none-fixture', 'provider': None, 'model_settings_sha256': None,

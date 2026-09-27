@@ -13,6 +13,7 @@ import json
 import math
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -223,6 +224,49 @@ def test_structured_carries_no_free_text():
 
 # ---------------------------------------------------------------- SIM cost and decision -> executor
 @pytest.mark.parametrize('condition', CONDITIONS)
+def test_busy_job_keeps_executing_while_thinking_and_talking_only_idle_robots_wait(condition):
+    """Exercise the real host macro loop while all three scheduler calls are pending."""
+    from scripts.run_zone_study_integration import StudyTeamHost
+
+    clock = [1.3]
+    links = links_for(clock)
+    assert links['r1'].call('deliver', 'order-1', 'C')['accepted']
+    job = links['r1'].ex.job
+    trial = zi.IntegratedTrial(SCENARIO, condition=condition, seed=SEED, links=links,
+                               horizon_s=10., map_bundle=BUNDLE)
+    host = StudyTeamHost.__new__(StudyTeamHost)
+    host.world = SimpleNamespace(data=SimpleNamespace(time=clock[0]),
+                                 model=SimpleNamespace(opt=SimpleNamespace(timestep=.01)))
+    host.robots = {r: zox._RobotSlot(r, None, links[r].ex) for r in zox.ROBOTS}
+    host.event_log = []
+    # A current job already has a macro to execute. No physics or controller
+    # stub decides whether it may proceed: advance_to/_run_timeline do that.
+    host.robots['r1'].timeline = [(t, [{'kind': 'drive', 'forward': .1, 'turn': 0.}])
+                                  for t in (1.4, 1.6, 1.8, 9.)]
+    commands = []
+    host._apply = lambda rid, cmd, now: commands.append((rid, cmd['kind'], round(now, 3)))
+    host._hold = lambda rid, now: commands.append((rid, 'hold', round(now, 3)))
+
+    def advance_clock(t):
+        host.world.data.time = clock[0] = t
+    host._physics_until = advance_clock
+    trial.begin(clock[0])
+    for t in (1.4, 1.5, 1.6, 1.7, 1.8, 1.9):
+        assert trial.scheduler.holding() == zox.ROBOTS
+        for event in host.advance_to(t):
+            trial.on_executor_event(event, at_s=t)
+        trial.step_to(t)
+        assert links['r1'].ex.job is job
+        assert links['r2'].ex.job is links['r3'].ex.job is None
+        assert not trial.dispatch_log                # no action released ahead of its cost
+    assert commands == [('r1', 'drive', t) for t in (1.4, 1.6, 1.8)]
+    result = trial.finish(1.9)                       # pending calls are censored, still charged
+    assert result.cost['censored_elapsed_sim_s'] > 0
+    assert (result.cost['censored_utterances'] > 0) == (condition != 'no_comm')
+    assert trial.study_config()['think_hold_policy'] == 'idle_robot_holds_busy_job_continues'
+
+
+@pytest.mark.parametrize('condition', CONDITIONS)
 def test_talk_and_think_cost_sim_time_and_actions_land_at_the_charged_time(condition):
     trial, result, _ = run(condition)
     checks = zo.cost_checks(trial, result)
@@ -350,8 +394,14 @@ def test_a_call_needs_an_own_frame():
     trial = zi.IntegratedTrial(SCENARIO, condition='no_comm', seed=SEED, links=links, horizon_s=10.,
                                map_bundle=BUNDLE)
     clock[0] = 1.3
-    with pytest.raises(A.ContractViolation, match='no own robot_cam frame'):
-        trial.begin(1.3)
+    trial.begin(1.3)
+    # Core r7 records/refunds a submit failure with zero ledgered sends.
+    # It must never fabricate a frame, a fixture response or an executor action.
+    unsent = [row for row in trial.scheduler.unsent_calls if row['actor'] == 'r1']
+    assert len(unsent) == 1 and 'no own robot_cam frame' in unsent[0]['error']
+    assert trial.send_ledger.sends(unsent[0]['call_id']) == 0
+    assert not requests_of(trial, 'r1')
+    assert not [row for row in trial.dispatch_log if row['actor'] == 'r1']
 
 
 def test_only_the_fixture_actor_and_main_conditions_are_accepted():
@@ -445,3 +495,24 @@ def test_at_most_one_pending_own_reask_timer_per_robot(condition):
         timers = [row['sim_s'] for row in trial.scheduler.events if row.get('kind') == 'timer' and row['actor'] == rid]
         assert all(b - a >= trial.policy.idle_reask_s - 1e-9 for a, b in zip(timers, timers[1:])), (rid, timers)
     assert trial.study_config()['reask_policy'] == zi.REASK_POLICY
+    assert any(counts['skipped'] for counts in trial.scheduler.reask_counts.values()) == (condition != 'no_comm')
+
+
+@pytest.mark.parametrize('condition', CONDITIONS)
+def test_fixture_uses_the_core_transport_ledger_and_roundtrips_its_accounting(condition, tmp_path):
+    from harness.zone_study_llm_transport import ModelCallTransport
+    from scripts.run_zone_study_integration import write_study
+
+    trial, result, _ = run(condition)
+    assert isinstance(trial.transport, ModelCallTransport)
+    assert trial.transport.send_ledger is trial.scheduler.send_ledger is trial.send_ledger
+    sent = sum(c['http_attempts'] for c in result.calls)
+    assert sent > 0 and sent == trial.wire.requests == trial.send_ledger.sends() == result.send_ledger['sent']
+    assert sum(result.send_ledger['calls'].values()) == sent
+    assert result.send_ledger['violations'] == 0
+    assert trial.scheduler.unsent_calls == []
+    summary = {'pose_provider': {'pose_provider': 'tags_temporary', 'note_ko': zi.TEMPORARY_NOTE_KO}}
+    write_study(tmp_path, trial, result, summary)
+    assert json.loads((tmp_path / 'study/send_ledger.json').read_text()) == trial.send_ledger.to_dict()
+    assert json.loads((tmp_path / 'study/trial_record.json').read_text())['send_ledger'] == result.send_ledger
+    assert summary['study']['reopen']['ok']

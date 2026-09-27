@@ -7,12 +7,15 @@ the workflow/CI registration. Simulator-free, like ``test_zone_study_integration
 from __future__ import annotations
 
 import hashlib
+import base64
+import copy
 import json
 import math
 import subprocess
 import sys
 import textwrap
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -144,6 +147,7 @@ def test_provider_without_the_executor_interface_or_with_a_gt_label_is_refused()
 
 def test_the_study_modules_import_no_simulator():
     program = ('import sys; import harness.zone_study_integration, harness.owncam_pose_source; '
+               'import scripts.run_zone_study_integration; '
                'assert not ({"mujoco", "sim.multi_masterpi_production"} & sys.modules.keys())')
     subprocess.run([sys.executable, '-c', program], cwd=ROOT, check=True)
 
@@ -161,6 +165,8 @@ def test_contract_v2_accepts_the_tags_v2_landmark_placement():
     placement = payload['static_map']['public_map']['landmarks']['placement']
     assert {'near_door_spacing_m', 'near_door_radius_m', 'door_posts'} <= set(placement)
     assert A.CONTRACT_VERSION == 'ugrp.zone_study_contract.v2'
+    # Integration HEAD 844d9dfb and core r7 3b86842c computed the same v2 registry.
+    assert A.registry_sha256() == 'c9bb55567a82eef535e7b296ae69f35d5a08e8372479a56ef14c1ac76f08037c'
     A.validate_robot_payload(payload, seed=SEED)
 
 
@@ -219,6 +225,100 @@ def test_referee_counts_a_box_only_after_it_rests_in_a_zone():
 
 
 # ---------------------------------------------------------------- registration
+@pytest.mark.parametrize('map_id, profile', [
+    ('zone_wide_corridor', 'zone_eval_top_v2'),
+    ('zone_wide_corridor_tags_v1', 'zone_eval_top_v2'),
+    (MAP_ID, 'zone_eval_top_v1'),
+])
+def test_eval_top_profile_applies_after_setup_without_changing_robot_maps_or_cameras(monkeypatch, map_id, profile):
+    import numpy as np
+    from scripts import run_zone_study_integration as runner
+
+    static = json.loads((ROOT / 'maps/zones' / f'{map_id}.json').read_text())
+    before = copy.deepcopy(static)
+    cameras = {c['name']: SimpleNamespace(pos=np.array(c['position_m'], dtype=float),
+                                         quat=np.array(c['quaternion_wxyz'], dtype=float),
+                                         fovy=np.array([c['fov_y_deg']], dtype=float))
+               for c in static['top_cameras']}
+    cameras['r1__robot_cam'] = SimpleNamespace(pos=np.array([.1, .2, .3]),
+                                              quat=np.array([1., 0., 0., 0.]), fovy=np.array([100.]))
+    own_camera = copy.deepcopy(cameras['r1__robot_cam'])
+    forward = []
+    monkeypatch.setitem(sys.modules, 'mujoco', SimpleNamespace(mj_forward=lambda m, d: forward.append(m)))
+
+    def init_host(host, *args, **kwargs):
+        host.static, host.eval_only = static, {}
+        host.world = SimpleNamespace(model=SimpleNamespace(camera=cameras.__getitem__), data=object())
+        host.robots = {}
+        for rid in zox.ROBOTS:
+            ex = executor(rid)
+            ex.map = copy.deepcopy(static)
+            host.robots[rid] = zox._RobotSlot(rid, SimpleNamespace(capture=lambda camera: None), ex)
+    monkeypatch.setattr(zox.OwnCamTeamHost, '__init__', init_host)
+    monkeypatch.setattr(zi, 'build_pose_provider', lambda *args: SimpleNamespace(source='owncam_pf_v2:test'))
+    host = runner.StudyTeamHost({}, {}, root=ROOT, provider_spec={})
+    config = runner.evaluation_top_config(static)
+    assert config['profile']['id'] == profile
+    assert host.eval_only['top_camera']['profile'] == config['profile']
+    for applied, expected in zip(host.eval_only['top_camera']['applied'], config['cameras'], strict=True):
+        assert applied['name'] == expected['name']
+        for field in ('position_m', 'quaternion_wxyz', 'fov_y_deg'):
+            assert applied[field] == pytest.approx(expected[field], abs=1e-6)
+    assert forward == [host.world.model]
+    assert static == before and all(s.executor.map == before for s in host.robots.values())
+    assert host.eval_static['eval_top_profile'] == config['profile']
+    assert host.eval_static['top_cameras'] == config['cameras']
+    if profile == 'zone_eval_top_v2':
+        assert list(cameras['cctv_top_north_east'].pos) == [3.4, .8, 3.]
+        assert config['cameras'] != static['top_cameras']
+    else:
+        assert config['cameras'] == static['top_cameras']
+    for field in ('pos', 'quat', 'fovy'):
+        assert np.array_equal(getattr(cameras['r1__robot_cam'], field), getattr(own_camera, field))
+
+
+@pytest.mark.parametrize('condition', A.MAIN_CONDITIONS)
+def test_corridor_eval_overlay_never_changes_robot_request_bytes(condition):
+    from harness.zone_study_scenarios import load
+    from scripts import run_zone_study_integration as runner
+
+    scenario = load('s4_narrow_door_standoff')
+    bundle = bundle_for(scenario)
+    static = json.loads((ROOT / bundle['map_file']).read_text())
+    trial = zi.IntegratedTrial(scenario, condition=condition, seed=SEED,
+                               links={r: OneFrameLink(r) for r in zox.ROBOTS}, horizon_s=10., map_bundle=bundle)
+
+    def request():
+        call = SimpleNamespace(actor='r1', started_sim_s=1.3, call_id='call_own')
+        trial.snapshot(call)
+        return trial.prepare_call(call).request
+    before = request()
+    overlay = runner.zone_eval_top.eval_static_map(static, runner.evaluation_top_config(static)['profile']['id'])
+    after = request()
+    assert before == after
+    assert overlay['top_cameras'] != static['top_cameras']
+    assert [image['label'] for image in after['images']] == ['CURRENT OWN WRIST RGB']
+    assert 'eval_top' not in json.dumps(after) and 'top_cameras' not in json.dumps(after)
+
+
+def test_host_link_refuses_top_camera_requests_and_mislabeled_frames():
+    from scripts.run_zone_study_integration import HostRobotLink
+
+    captured = []
+    def capture(camera):
+        captured.append(camera)
+        return {'camera': 'cctv_top_north_east', 'robot_id': 'r1', 'image': base64.b64encode(FRAME).decode(),
+                'sha256': hashlib.sha256(FRAME).hexdigest(), 'sim_time': 0.}
+    slot = zox._RobotSlot('r1', SimpleNamespace(capture=capture), executor())
+    link = HostRobotLink(SimpleNamespace(robots={'r1': slot}), 'r1')
+    with pytest.raises(A.ContractViolation, match='own robot_cam'):
+        slot.port.capture('cctv_top_north_east')
+    assert captured == []
+    with pytest.raises(RuntimeError, match='foreign or corrupted'):
+        slot.port.capture('robot_cam')
+    assert link.frame_at(1.) is None
+
+
 def test_runner_is_registered_and_collected_by_ci():
     rows = json.loads((ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
     row = next(r for r in rows if r['id'] == 'zone-study-integration-run')

@@ -45,8 +45,10 @@ from pathlib import Path
 from harness import zone_dialogue_metrics as zm
 from harness.zone_study_contract import (ACTION_LOG_SCHEMA, CALL_LOG_SCHEMA, CONDITIONS as A_CONDITIONS,
                                          MAIN_CONDITIONS as A_MAIN_CONDITIONS, MESSAGE_LOG_SCHEMA,
-                                         allowed_edges as A_allowed_edges, forbidden_key_hits,
-                                         leader_for_seed as A_leader_for_seed, validate_log_record)
+                                         ContractViolation, allowed_edges as A_allowed_edges,
+                                         contract_version_for_registry, forbidden_key_hits,
+                                         leader_for_seed as A_leader_for_seed, payload_violations,
+                                         validate_log_record)
 from harness.zone_study_contract import (COMMANDER, CONFIDENCE as CONFIDENCE_LEVELS, ROBOTS, ROLE_NAMES,
                                          STRUCTURED_ACTS, STRUCTURED_STATES)
 
@@ -240,6 +242,8 @@ def _adapt_contract_rows(trial):
             if row.get('schema') != log_schema:
                 raise TrialError(f'{key}[] must carry schema {log_schema}, got {row.get("schema")!r}')
             validate_log_record(row)
+    version = _contract_version(trial)
+    calls_by_request = {call['request_id']: call for call in _rows(trial, 'calls')}
     archive = {}
     for row in _rows(trial, 'request_archive'):
         if set(row) - set(REQUEST_ARCHIVE_KEYS) or not isinstance(row.get('request_id'), str):
@@ -252,6 +256,7 @@ def _adapt_contract_rows(trial):
             if problems:
                 raise TrialError(f'request_archive {row["request_id"]}: ' + '; '.join(problems))
         archive[row['request_id']] = row
+    _check_send_ledger(trial)
     trial['requests'] = []
     for call in _rows(trial, 'calls'):
         view = _request_view(call)
@@ -262,8 +267,90 @@ def _adapt_contract_rows(trial):
             view['input_keys'] = list(stored.get('input_keys') or ())
             view['request_sha256'] = stored.get('request_sha256')
         view['request_rehashed'] = stored is not None and all(k in stored for k in REQUEST_BODY_KEYS)
+        if view['request_rehashed']:
+            view['contract_problems'] = _stored_payload_problems(stored, calls_by_request[call['request_id']],
+                                                                 trial, version)
         trial['requests'].append(view)
     trial['utterances'] = [_utterance_view(row) for row in _rows(trial, 'messages')]
+
+
+def _contract_version(trial):
+    """The contract version this record's OWN registry hash names (seventh review, P2).
+
+    Every call row and the trial provenance must carry one registry hash, and
+    that hash must be a known contract version's; the stored requests are then
+    re-validated against THAT version, never against the current default. A
+    record without call rows has nothing to re-validate (``None``).
+    """
+    hashes = {row['provenance']['registry_sha256'] for row in _rows(trial, 'calls')}
+    top = trial.get('provenance') if isinstance(trial.get('provenance'), dict) else {}
+    if top.get('registry_sha256') is not None:
+        hashes.add(top['registry_sha256'])
+    if not hashes:
+        return None
+    if len(hashes) > 1:
+        raise TrialError(f'the record mixes contract registry hashes {sorted(hashes)}: one record is one '
+                         'contract version')
+    try:
+        version = contract_version_for_registry(next(iter(hashes)))
+    except ContractViolation as exc:
+        raise TrialError(str(exc)) from None
+    if trial.get('contract_version') not in (None, version):
+        raise TrialError(f'contract_version {trial["contract_version"]!r} differs from the version its '
+                         f'registry hash names ({version})')
+    trial['contract_version'] = version
+    return version
+
+
+def _stored_payload_problems(stored, call, trial, version):
+    """Re-validate one archived request's payload against the record's contract version.
+
+    The payload is the stored user JSON without the dialogue window (the part
+    ``input_sha256`` covers, ``verify_archived_request``). It is pinned to the
+    call's own provenance (order sheet and map digests), so a stored body that
+    no longer matches what the record says it used is reported as well.
+    """
+    from harness.zone_study_prompts_ko import WINDOW_KEY
+
+    body = json.loads(stored['user'])
+    body.pop(WINDOW_KEY, None)
+    provenance = call['provenance']
+    pinned = {key: provenance[key] for key in ('order_sheet_sha256', 'public_map_sha256', 'map_file_sha256')
+              if provenance.get(key) is not None}
+    return payload_violations(body, seed=trial.get('seed'), pinned=pinned, contract_version=version)
+
+
+#: The send-ledger section of a trial record (``harness.zone_send_ledger``).
+SEND_LEDGER_KEYS = ('schema', 'sent', 'blocked', 'sha256', 'calls', 'violations', 'unsent_calls')
+
+
+def _check_send_ledger(trial):
+    """The charged attempts of every call must be what reached the wire (seventh review, P1).
+
+    Optional section (older records have none). When present it is closed, its
+    per-request send counts must equal the call log's ``http_attempts`` and its
+    total must equal their sum.
+    """
+    ledger = trial.get('send_ledger')
+    if ledger is None:
+        return
+    if not isinstance(ledger, dict) or set(ledger) != set(SEND_LEDGER_KEYS):
+        raise TrialError(f'send_ledger must carry exactly {SEND_LEDGER_KEYS}')
+    counts = ledger['calls']
+    if not isinstance(counts, dict) or any(isinstance(v, bool) or not isinstance(v, int) or v < 0
+                                           for v in counts.values()):
+        raise TrialError('send_ledger.calls must map request ids to non-negative ints')
+    for key in ('sent', 'blocked', 'violations', 'unsent_calls'):
+        if isinstance(ledger[key], bool) or not isinstance(ledger[key], int) or ledger[key] < 0:
+            raise TrialError(f'send_ledger.{key} must be a non-negative int')
+    calls = {row['request_id']: row['http_attempts'] for row in _rows(trial, 'calls')}
+    if set(calls) != set(counts):
+        raise TrialError('send_ledger.calls must name exactly the call log\'s request ids')
+    wrong = sorted(rid for rid, sent in counts.items() if sent != calls[rid])
+    if wrong:
+        raise TrialError(f'send_ledger: charged http_attempts differ from the sends of {wrong[:5]}')
+    if sum(counts.values()) != ledger['sent']:
+        raise TrialError('send_ledger.sent must be the sum of its per-call sends')
 
 
 def _request_view(call):
@@ -381,16 +468,20 @@ def model_aggregate(trial):
     """
     calls = _rows(trial, 'calls')
     summary = trial.get('model') if isinstance(trial.get('model'), dict) else None
+    marker = None if summary is None else _summary_usage_marker(summary)
     if not calls:
         if summary is None:
             return None
         tokens = summary.get('tokens') if isinstance(summary.get('tokens'), dict) else {}
         cost = summary.get('sim_cost_s') if isinstance(summary.get('sim_cost_s'), dict) else {}
+        # fifth review, P2: the unknown marker of a summary-only record travels
+        # with its counts, so the known 833 + 40 stay a LOWER bound of 873
         return {'source': 'summary', 'logical_calls': summary.get('logical_calls'),
                 'http_attempts': summary.get('http_attempts'),
                 'censored_calls': summary.get('censored_calls'),
-                'tokens': {k: (None if tokens.get(k) is None else int(tokens[k]))
-                           for k in ('input', 'output', 'image', 'cached')},
+                'usage_unknown_calls': marker['usage_unknown_calls'],
+                'tokens_complete': marker['tokens_complete'],
+                'tokens': {k: _summary_count(tokens, k) for k in ('input', 'output', 'image', 'cached')},
                 'call_sim_s': _opt_float(cost.get('call')),
                 'think_sim_s': _opt_float(cost.get('think')),
                 'talk_sim_s': _opt_float(cost.get('talk')),
@@ -439,9 +530,49 @@ def model_aggregate(trial):
            'think_sim_s': round(call_total - talk, 6), 'talk_sim_s': round(talk, 6),
            'delivery_sim_s': round(delivery, 6), 'wall_latency_ms': latencies, 'mismatch': []}
     if summary is not None:
-        out['mismatch'] = _summary_mismatch(summary, out)
+        out['mismatch'] = _summary_mismatch(summary, out, marker)
         out['source'] = 'calls+summary'
     return out
+
+
+def _summary_count(tokens, key):
+    """A summary token count: None, or a non-negative integral number.
+
+    Fifth review, P2: ``int(tokens[k])`` turned ``NaN`` into a crash, ``-1`` into
+    a negative lower bound and ``'833'`` into a silent cast; they are refused.
+    """
+    value = tokens.get(key)
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) \
+            or value < 0 or value != int(value):
+        raise TrialError(f'model.tokens.{key} must be a non-negative integer or null, got {value!r}')
+    return int(value)
+
+
+def _summary_usage_marker(summary):
+    """``tokens_complete`` / ``usage_unknown_calls`` of a model summary, validated.
+
+    Fifth review, P2: a summary-only record lost both, so its known tokens were
+    reported as a confirmed total. A summary may state either or both; when both
+    are present they must agree, and an incomplete summary must count its
+    unknown calls. A legacy summary with neither is complete, count unreported.
+    """
+    complete = summary.get('tokens_complete')
+    count = summary.get('usage_unknown_calls')
+    if complete is not None and not isinstance(complete, bool):
+        raise TrialError(f'model.tokens_complete must be true, false or absent, got {complete!r}')
+    if count is not None:
+        if isinstance(count, bool) or not isinstance(count, int) or count < 0:
+            raise TrialError(f'model.usage_unknown_calls must be a non-negative int, got {count!r}')
+        if complete is not None and complete != (count == 0):
+            raise TrialError(f'model.tokens_complete={complete} and usage_unknown_calls={count} '
+                             'contradict each other')
+        return {'tokens_complete': count == 0, 'usage_unknown_calls': count}
+    if complete is False:
+        raise TrialError('model.tokens_complete=false needs model.usage_unknown_calls (how many '
+                         'calls have an unknown usage)')
+    return {'tokens_complete': True, 'usage_unknown_calls': None}
 
 
 def _usage_unknown(call):
@@ -456,24 +587,26 @@ def _usage_unknown(call):
     return call.get('status') == CENSORED_STATUS and 'usage_known' not in terms
 
 
-def _summary_mismatch(summary, derived):
+def _summary_mismatch(summary, derived, marker):
     """Where a separate ``model`` summary disagrees with the call log.
 
     Second review: image/cache tokens and the delivery and call-total SIM cost
-    are compared too, so a summary cannot disagree with the log on them.
+    are compared too, so a summary cannot disagree with the log on them. Fifth
+    review: so is a stated unknown-usage count.
     """
     tokens = summary.get('tokens') if isinstance(summary.get('tokens'), dict) else {}
     cost = summary.get('sim_cost_s') if isinstance(summary.get('sim_cost_s'), dict) else {}
     out = []
     checks = [('logical_calls', summary.get('logical_calls'), derived['logical_calls']),
+              ('usage_unknown_calls', marker['usage_unknown_calls'], derived['usage_unknown_calls']),
               ('censored_calls', summary.get('censored_calls'), derived['censored_calls']),
               ('http_attempts', summary.get('http_attempts'), derived['http_attempts']),
               ('sim_cost_s.censored_elapsed', cost.get('censored_elapsed'),
                derived['censored_elapsed_sim_s']),
-              ('tokens.input', tokens.get('input'), derived['tokens']['input']),
-              ('tokens.output', tokens.get('output'), derived['tokens']['output']),
-              ('tokens.image', tokens.get('image'), derived['tokens']['image']),
-              ('tokens.cached', tokens.get('cached'), derived['tokens']['cached']),
+              ('tokens.input', _summary_count(tokens, 'input'), derived['tokens']['input']),
+              ('tokens.output', _summary_count(tokens, 'output'), derived['tokens']['output']),
+              ('tokens.image', _summary_count(tokens, 'image'), derived['tokens']['image']),
+              ('tokens.cached', _summary_count(tokens, 'cached'), derived['tokens']['cached']),
               ('sim_cost_s.call', cost.get('call'), derived['call_sim_s']),
               ('sim_cost_s.think', cost.get('think'), derived['think_sim_s']),
               ('sim_cost_s.talk', cost.get('talk'), derived['talk_sim_s']),
@@ -502,8 +635,14 @@ def audit_input_boundary(trial):
     archived the payload keys may add ``input_keys`` and both are checked.
     """
     condition = trial['condition']
-    leaks, unknown, unvalidated, unconfirmed = [], [], [], []
+    leaks, unknown, unvalidated, unconfirmed, contract = [], [], [], [], []
     for req in _rows(trial, 'requests'):
+        if req.get('contract_problems'):
+            # seventh review, P2: the stored request re-validated against the
+            # contract version the record's registry hash names
+            contract.append({'request_id': req.get('request_id'), 'robot': req.get('robot'),
+                             'contract_version': trial.get('contract_version'),
+                             'problems': list(req['contract_problems'])})
         keys = req.get('input_keys')
         keys = list(keys) if isinstance(keys, (list, tuple)) else []
         bad = sorted(set(keys) & FORBIDDEN_INPUT_KEYS
@@ -546,12 +685,14 @@ def audit_input_boundary(trial):
     not_archived = [r for r in _rows(trial, 'requests') if r.get('request_rehashed') is False]
     if not_archived:
         missing_evidence.append(f'{len(not_archived)} request(s) without a re-hashable final request')
-    clean = (not leaks and not unknown and not grounds and not unvalidated
+    clean = (not leaks and not unknown and not grounds and not unvalidated and not contract
              and not channel['violations'] and condition != REFERENCE_CONDITION
              and not missing_evidence)
     return {'condition': condition, 'requests_checked': len(_rows(trial, 'requests')),
+            'contract_version': trial.get('contract_version'),
             'input_leaks': leaks, 'unknown_input_keys': unknown,
             'unvalidated_payloads': unvalidated, 'unconfirmed_payloads': unconfirmed,
+            'payload_contract_violations': contract,
             'missing_evidence': missing_evidence,
             'forbidden_grounds': grounds, 'channel_violations': channel['violations'],
             'clean': clean,
@@ -563,7 +704,7 @@ def audit_input_boundary(trial):
 #: Every audit list that makes a trial NOT clean. One tuple, so the trial report,
 #: the cohort summary and the text report cannot disagree (review finding 14).
 BOUNDARY_FAILURE_KEYS = ('input_leaks', 'unknown_input_keys', 'unvalidated_payloads',
-                         'forbidden_grounds', 'channel_violations')
+                         'payload_contract_violations', 'forbidden_grounds', 'channel_violations')
 
 
 def boundary_failures(boundary):
@@ -859,7 +1000,9 @@ def efficiency_metrics(trial, penalty_factor=DEFAULT_PENALTY_FACTOR):
                          f'({"; ".join(model["mismatch"])}); calls/messages are the only aggregation '
                          'source (review finding 10)')
     tokens = (model or {}).get('tokens') or {}
-    tokens_complete = (model or {}).get('tokens_complete', True) is not False
+    # both aggregation sources now state the marker (fifth review, P2: the
+    # summary-only source did not, and this default turned it into "complete")
+    tokens_complete = model is None or model['tokens_complete'] is True
     # Second review, finding 10: a missing cost source stays None in the FINAL
     # metrics too (it used to become 0 here), and the terms do not overlap:
     # think + utterance == call total; delivery is the transport delay.
@@ -1842,6 +1985,29 @@ HPARAM_KEYS = ('condition', 'scenario', 'seed', 'leader_id', 'end_reason',
                'penalty_factor', 'sim_horizon_s', 'tokens_complete')
 
 
+#: A trial_id used as ONE TensorBoard run path component (fifth review, P2).
+RUN_COMPONENT = re.compile(r'[A-Za-z0-9][A-Za-z0-9_.-]*')
+#: v2 (fifth review, P2): trial runs are ``<condition>/<trial_id>``. v1 payloads
+#: (e.g. the v4 smoke report) named them ``<condition>/<scenario>-s<seed>``.
+SCALARS_SCHEMA = 'ugrp.zone_study_scalars.v2'
+
+
+def trial_run_name(eff):
+    """``<condition>/<trial_id>``: one TensorBoard run per trial.
+
+    Fifth review, P2: ``<condition>/<scenario>-s<seed>`` merged repeated trials
+    of one seed into one run, so the viewer showed the values of whichever was
+    written last. The trial_id is unique per cohort (``load_trials`` refuses a
+    duplicate), and it must be one safe path component because the run name
+    becomes a directory under the logdir. Scenario and seed stay in HParams.
+    """
+    trial_id = eff['trial_id']
+    if not isinstance(trial_id, str) or not RUN_COMPONENT.fullmatch(trial_id):
+        raise TrialError(f'trial_id {trial_id!r} cannot name a TensorBoard run: use ASCII letters, '
+                         'digits, "_", "-" and "." (not first), one path component')
+    return f'{eff["condition"]}/{trial_id}'
+
+
 def scalar_export(summary):
     """TB-friendly scalar payload: one run per trial plus per-condition runs.
 
@@ -1855,7 +2021,7 @@ def scalar_export(summary):
         scalars = {tag: _num(eff.get(key)) for tag, key in SCALAR_TAGS.items()}
         scalars.update({tag: _num(dia.get(key)) for tag, key in DIALOGUE_TAGS.items()})
         runs.append({
-            'run': f'{eff["condition"]}/{eff["scenario"]}-s{eff["seed"]}',
+            'run': trial_run_name(eff),
             'step': index,
             'hparams': {k: _hparam(eff.get(k, summary.get(k))) for k in HPARAM_KEYS},
             'scalars': {k: v for k, v in scalars.items() if v is not None},
@@ -1882,7 +2048,12 @@ def scalar_export(summary):
                                  'tokens_complete': row.get('cohort_tokens_total') is not None},
                      'scalars': {k: v for k, v in scalars.items() if v is not None},
                      'boundary_clean': row['boundary_violation_trials'] == 0})
-    return {'schema': 'ugrp.zone_study_scalars.v1',
+    names = collections.Counter(run['run'] for run in runs)
+    repeated = sorted(name for name, count in names.items() if count > 1)
+    if repeated:
+        raise TrialError(f'duplicate TensorBoard run name(s) {repeated}: each trial needs its own '
+                         'trial_id, or the viewer would merge their values')
+    return {'schema': SCALARS_SCHEMA,
             'note': 'EVALUATION-ONLY. 실패·중단·예산 소진을 분모에 유지한 값이다.',
             'hparam_columns': list(HPARAM_KEYS), 'runs': runs}
 
