@@ -1,5 +1,12 @@
 # Pair executor dev PHYSICAL 게이트 준비 — 2026-09-27
 
+**최신 사전등록: [dock v3 변경·검증·실행 절차](dock_v3.md), [prereg_v3.json](prereg_v3.json).**
+dev05/dev06은 기존 `zone_wide_door_tags_v2`의 벽·태그를 유지하고 세 로봇의 dock x만
+−0.85 → −0.65 m로 옮긴다. workflow는 `zone-pair-dev` 0.2.0이다.
+아래 v1/v2 및 v3 DRAFT 절은 당시 기록으로 보존한다. 확정 v3는 명시적으로
+`--prereg .../prereg_v3.json`을 선택한다. 물리 실행·모델 호출·커밋은 이번 작업에 없다.
+**walls_v3(PR #208) 적용은 후속 작업**이다.
+
 PR #235, 리뷰 기준 `2b4cab6700056e8602140a7f89571c27eff8a33a`의 후속이다.
 **tags_temporary, dev, 연구 결과 아님.** v1 dev01의 적용값 거부와 dev02 미실행은
 [원본 결과](results.md)에 보존했다. 이번 v2 수정에서는 물리 실행·모델 호출·git 커밋을 하지 않는다.

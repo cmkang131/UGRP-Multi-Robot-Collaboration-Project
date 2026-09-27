@@ -147,3 +147,22 @@ OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
   --raw-root /Users/changmin/projects/ugrp/outputs/zone-pair-dev-v2-9f28cbf030442a701a666899c02ebb4374e3e3e2 \
   --output /tmp/pair-dev-diagnosis-NEW.json
 ```
+
+## 후속 결정 적용 — dock-only v3, dev05/dev06
+
+위의 "코디네이터 미결정/prepare-only"는 진단 당시 상태다.
+[이슈 #218 결정](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/218#issuecomment-5853065426)
+및 후속 지시에 따라, dev05/dev06은 기존 벽 높이 0.10 m·tags_v2를 그대로 두고
+세 로봇의 출발 x만 −0.65 m로 옮긴 `zone_wide_door_tags_v2_dock_v3`를 사용한다.
+[확정 사전등록](prereg_v3.json)·[정적 검증과 변경 파일/해시](dock_v3.md)를 추가했다.
+기존 map·prereg DRAFT·진단 JSON·raw는 덮어쓰지 않았다.
+
+**walls_v3(PR #208) 적용은 후속 작업**이며 이 브랜치에 가져오지 않았다.
+후속 적용 시 벽 중심 x=−1.05 m, 반두께 0.025 m이므로 안쪽 면은 −1.025 m다.
+yaw=0에서 차체 뒤끝은 `spawn_x−0.15`이고,
+`margin = 0.020 + 0.015 + 2×min(σxy,0.15) + 2×min(σyaw,0.20)×sqrt(0.15²+0.09²)`다.
+새 x=−0.65, σxy=0.05 m/σyaw=0.06 rad이면
+`clearance = (−0.65−0.15)−(−1.025)−margin = 0.06900857317855691 m`.
+행 y=−2.25/−0.85/+0.55, seeded 로봇 배정, z/yaw 및 keepout 반경 0.17 m를 유지한다.
+walls_v3의 0.40 m 높이는 팔·카메라 가시성에 영향을 주므로, 차체의 이 수치만
+그대로 적용할 수 있다. 그 장면의 전신 sweep·가시성·PF·pickup·실제 r3 비간섭은 별도 검증한다.

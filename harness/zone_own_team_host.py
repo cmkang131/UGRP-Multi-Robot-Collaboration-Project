@@ -58,7 +58,7 @@ class OwnCamTeamHost:
 
         from sim.camera_robot_port import CameraRobotPort
         from sim.multi_masterpi_production import MultiMasterPiProductionV2
-        from sim.zone_arena import LAYOUTS, layout
+        from sim.zone_arena import LAYOUTS
         from sim.zone_cargo_contact import CARGO_PROFILES, apply as apply_cargo_profile, base_profile, profile_record
         from sim.zone_landmarks import TaggedZoneScene
 
@@ -82,7 +82,12 @@ class OwnCamTeamHost:
             self.scene = scene
         elif spec.get('team_cargo'):
             from sim.zone_tagged_cargo_scene import TaggedCargoZoneScene
-            self.scene = TaggedCargoZoneScene.from_tagged_cargo(
+            from sim.zone_start_dock import MAP_ID
+            scene_cls = TaggedCargoZoneScene
+            if spec['map'] == MAP_ID:
+                from sim.zone_dock_scene import DockTaggedCargoZoneScene
+                scene_cls = DockTaggedCargoZoneScene
+            self.scene = scene_cls.from_tagged_cargo(
                 spec['map'], spec['seed'], cargo=spec['team_cargo'], goal=spec['goal'],
                 contact_profile=base_profile(profile))
         else:
@@ -109,15 +114,12 @@ class OwnCamTeamHost:
         self.spawns = self.scene.config['setup_only']['spawns']
         calibration = json.loads((self.root / student['calibration']).read_text())
         skill_cls = getattr(importlib.import_module(student['skill_module']), student['skill_class'])
-        arena = layout(self.static['base_map']['map_id'])
+        from sim.zone_start_dock import static_spawn_keepouts
         # Static layout only (idle-spawn discs, #181 v6 contract; v9 inherits v6's class), never a live pose.
         from harness.wrist_zone_skill_v6 import StaticKeepout
-        keepouts = tuple(StaticKeepout(f'spawn_row_{i}', (float(arena['spawn_x']), float(y)), .17,
-                                       'static_layout_idle_spawn')
-                         for i, y in enumerate(arena['spawn_rows_y']))
+        discs = static_spawn_keepouts(self.static)
+        keepouts = tuple(StaticKeepout(d['id'], tuple(d['center_m']), d['radius_m'], d['source']) for d in discs)
         self.keepout_records = [k.record() for k in keepouts]
-        discs = [{'id': f'spawn_row_{i}', 'center_m': [float(arena['spawn_x']), float(y)], 'radius_m': .17,
-                  'source': 'static_layout_idle_spawn'} for i, y in enumerate(arena['spawn_rows_y'])]
         from harness.map_goto import UNLOADED_ENVELOPE, plan_path
         from harness.owncam_drive import LOADED_ENVELOPE
         from harness.wrist_zone_skill import PoseEstimate

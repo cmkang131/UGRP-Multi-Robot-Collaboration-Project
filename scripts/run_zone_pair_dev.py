@@ -23,12 +23,13 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.zone_pair_dev_contract import PREVIOUS_PREREG, profile_contract, timing_contract
+from scripts.zone_pair_dev_contract import PREVIOUS_PREREG, profile_contract, timing_contract, scene_contract
 
 WORKFLOW = 'zone-pair-dev'
 SCHEMA = 'ugrp.zone_pair_dev.v1'
 LABELS = ['tags_temporary', 'dev', '연구 결과 아님']
 PREREG = ROOT / 'experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json'
+PREREG_V3 = PREREG.with_name('prereg_v3.json')
 MAP = ROOT / 'maps/zones/zone_wide_door_tags_v2.json'
 CALIBRATION = ROOT / 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'
 PARTICIPANTS = ('r1', 'r2')
@@ -40,6 +41,21 @@ EXPECTED = {'map': 'zone_wide_door_tags_v2', 'participants': list(PARTICIPANTS),
             'timestep_s': PROFILE_CONTRACT['timestep_s']}
 ORDER = {'orders': [{'order_id': 'cargoX', 'kind': 'long_beam', 'count': 1, 'required_robots': 2,
                      'destination_zone': 'B', 'initial_location': {'pickup_bay': 'P2', 'slot': 'P2-3'}}]}
+
+
+def registered_v3(prereg):
+    return prereg.get('registration_version') == 3 and prereg.get('status') == 'REGISTERED'
+
+
+def map_path(prereg):
+    if registered_v3(prereg):
+        from sim.zone_start_dock import MAP_ID
+        return ROOT / f'maps/zones/{MAP_ID}.json'
+    return MAP
+
+
+def expected_environment(prereg):
+    return {**EXPECTED, 'map': map_path(prereg).stem}
 
 
 def digest(value):
@@ -82,15 +98,33 @@ def parser():
 
 def load_config(args):
     prereg = json.loads(args.prereg.read_text())
-    if prereg.get('schema') != SCHEMA or prereg.get('labels') != LABELS or prereg.get('environment') != EXPECTED:
+    expected = expected_environment(prereg)
+    if prereg.get('schema') != SCHEMA or prereg.get('labels') != LABELS or prereg.get('environment') != expected:
         raise ValueError('unsupported or altered dev environment/labels')
-    if prereg.get('status') != 'DRAFT' or prereg.get('research_result') is not False:
-        raise ValueError('this driver is for DRAFT dev only')
+    if (prereg.get('status') != 'DRAFT' and not registered_v3(prereg)) or prereg.get('research_result') is not False:
+        raise ValueError('this driver is for preregistered dev only')
     version = prereg.get('registration_version')
     if version not in (2, 3):
-        raise ValueError('use prereg v2 or prepare-only v3 with new run IDs; preserve v1')
-    if version == 3 and args.execute:
+        raise ValueError('use prereg v2 or registered v3; old v3 draft is prepare-only; preserve v1')
+    if version == 3 and args.execute and not registered_v3(prereg):
         raise ValueError('v3 is prepare-only: coordinator startup/dock decision and implementation are pending')
+    if registered_v3(prereg):
+        if prereg.get('scene_contract') != scene_contract():
+            raise ValueError('scene contract/hash mismatch')
+        v2 = json.loads(PREREG.read_text())
+        for key in ('criteria', 'planned_setdown', 'limits', 'safety_coverage'):
+            if prereg.get(key) != v2[key]:
+                raise ValueError(f'v3 must preserve v2 {key}')
+        if {k: v for k, v in prereg['stage_rules'].items() if k != 'admission_diagnostics'} != v2['stage_rules']:
+            raise ValueError('v3 must preserve v2 stage rules')
+        readiness = prereg.get('execution_readiness', {})
+        if (readiness.get('status') != 'READY_AFTER_SOURCE_FREEZE'
+                or readiness.get('spawn_change_applied') is not True
+                or readiness.get('startup_policy') != 'relocate_static_dock_x_minus_0_65'):
+            raise ValueError('v3 dock decision/readiness missing')
+        for old, new in zip(v2['runs'], prereg['runs'], strict=True):
+            if {k: v for k, v in new.items() if k != 'id'} != {k: v for k, v in old.items() if k != 'id'}:
+                raise ValueError('v3 must preserve v2 seeded cargo/order/intervention')
     if prereg.get('contact_profile_contract') != profile_contract():
         raise ValueError('contact profile contract/hash mismatch; freeze a new prereg before execution')
     previous_path = PREVIOUS_PREREG if version == 2 else PREREG
@@ -133,8 +167,9 @@ def load_config(args):
              'source': 'coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)'}
     if case['coarse_order_sheet'] != sheet:
         raise ValueError('predeclared coarse sheet does not match setup quantization')
-    for name, path in [('map', MAP), ('calibration', CALIBRATION)]:
-        if sha_file(path) != prereg['inputs'][name]['sha256']:
+    for name, path in [('map', map_path(prereg)), ('calibration', CALIBRATION)]:
+        if (sha_file(path) != prereg['inputs'][name]['sha256']
+                or prereg['inputs'][name]['path'] != str(path.relative_to(ROOT))):
             raise ValueError(f'{name} hash mismatch')
     if digest(ORDER) != prereg['inputs']['order_sheet_sha256']:
         raise ValueError('order sheet hash mismatch')
@@ -156,6 +191,7 @@ def build_manifest(prereg, case, *, source, environment, prereg_path, applied=No
             'seed': case['seed'], 'intervention': case['intervention'], 'source': source,
             'environment': environment, 'requested': copy.deepcopy(prereg['environment']), 'applied': applied,
             'contact_profile_contract': copy.deepcopy(prereg.get('contact_profile_contract')),
+            'scene_contract': copy.deepcopy(prereg.get('scene_contract')),
             'timing': copy.deepcopy(prereg.get('timing')),
             'state': 'prepared_not_executed' if applied is None else 'running',
             'limits': prereg['limits'], 'prereg': {'path': str(prereg_path), 'sha256': sha_file(prereg_path)},
@@ -181,10 +217,33 @@ def applied_settings(host, *, validate=True, expected=None):
               'timestep_s': float(host.world.model.opt.timestep)}
     if validate and actual != expected:
         raise ValueError(f'actual model settings differ: {actual}; expected: {expected}')
+    if validate and 'start_dock' in host.static:
+        from sim.zone_start_dock import static_spawn_keepouts
+        records = [{**{k: v for k, v in d.items() if k != 'center_m'}, 'xy_m': d['center_m']}
+                   for d in static_spawn_keepouts(host.static)]
+        if host.keepout_records != records:
+            raise ValueError('actual static spawn keepouts differ from map')
     from harness.zone_pair_executor import PairTeam
     if validate and not isinstance(host.pairs, PairTeam):
         raise ValueError('host is not using PairTeam')
     return actual
+
+
+def validate_scene(prereg, scene):
+    """Configuration receipt before world construction; never use settled/live poses."""
+    if registered_v3(prereg):
+        from sim.zone_start_dock import profile_record
+        static = json.loads(map_path(prereg).read_text())
+        spawns = scene.config['setup_only']['spawns']
+        dock = profile_record()
+        if (scene.config['static_map'] != static or set(spawns) != {'r1', 'r2', 'r3'}
+                or any(p[0] != dock['spawn_x_m'] or p[3] != dock['spawn_yaw_rad'] for p in spawns.values())
+                or sorted(p[1] for p in spawns.values()) != sorted(dock['spawn_rows_y_m'])):
+            raise ValueError('actual scene configuration differs from dock prereg')
+        cases = [r for r in prereg['runs'] if r['seed'] == scene.scene['seed']]
+        if (len(cases) != 1 or scene.record()['resolved_sha256']
+                != prereg['scene_instances'][cases[0]['id']]['resolved_sha256']):
+            raise ValueError('resolved scene configuration hash mismatch')
 
 
 class DevActor:
@@ -245,7 +304,7 @@ def main(argv=None):
         (args.output / 'prereg.json').write_bytes(prereg_bytes)
         # Setup-only values are saved apart from the static inputs actually supplied to actors.
         write_json(args.output / 'eval_only/setup.json', case)
-        write_json(args.output / 'inputs/static.json', {'map': json.loads(MAP.read_text()),
+        write_json(args.output / 'inputs/static.json', {'map': json.loads(map_path(prereg).read_text()),
                    'calibration': json.loads(CALIBRATION.read_text()), 'order_sheet': ORDER,
                    'coarse_order_sheet': case['coarse_order_sheet'], 'labels': LABELS})
         if not args.execute:

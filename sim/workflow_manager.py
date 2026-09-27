@@ -273,8 +273,11 @@ def _workflow_inputs(root: Path, workflow_id: str, argv: list[str], extra: list[
     if workflow_id == "dispatch-skills" and _option(argv, "--reference-top") is None:
         paths.append(root / "tests/fixtures/camera_goal_transport/reference-top.jpg")
     if workflow_id == "zone-pair-dev":
-        paths.extend([root / "maps/zones/zone_wide_door_tags_v2.json",
-                      root / "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json"])
+        prereg_path = _at_root(root, _option(argv, "--prereg"))
+        prereg = json.loads(prereg_path.read_text())
+        paths.extend(root / prereg['inputs'][name]['path'] for name in ('map', 'calibration'))
+        if prereg.get('scene_contract'):
+            paths.append(root / prereg['scene_contract']['parent_map']['path'])
     return _input_paths(root, argv, paths)
 
 

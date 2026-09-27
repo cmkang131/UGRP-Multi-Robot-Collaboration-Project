@@ -16,8 +16,8 @@ from pathlib import Path
 import signal
 import time
 
-from scripts.run_zone_pair_dev import (CALIBRATION, MAP, EXPECTED, ORDER, PARTICIPANTS, ROOT, DevActor,
-                                      WallLimit, applied_settings, sha_file, write_json)
+from scripts.run_zone_pair_dev import (CALIBRATION, EXPECTED, ORDER, PARTICIPANTS, ROOT, DevActor,
+                                      WallLimit, applied_settings, sha_file, write_json, validate_scene, map_path)
 
 
 class Jsonl:
@@ -218,7 +218,12 @@ class EvalObserver:
 def make_scene(spec):
     """Reuse the standard Scene subclass, before world construction; no runtime correction."""
     from sim.zone_tagged_cargo_scene import TaggedCargoZoneScene
-    scene = TaggedCargoZoneScene.from_tagged_cargo(spec['map'], spec['seed'], cargo=spec['team_cargo'],
+    from sim.zone_start_dock import MAP_ID
+    scene_cls = TaggedCargoZoneScene
+    if spec['map'] == MAP_ID:
+        from sim.zone_dock_scene import DockTaggedCargoZoneScene
+        scene_cls = DockTaggedCargoZoneScene
+    scene = scene_cls.from_tagged_cargo(spec['map'], spec['seed'], cargo=spec['team_cargo'],
                                                   goal=spec['goal'], contact_profile='local_contact_fine')
     # ZoneScene's colour-goal factory needs one placeholder box. The pair-only
     # scene excludes it BEFORE XML generation/reset, not by hiding live objects.
@@ -336,7 +341,7 @@ def run_physical(args, prereg, case, manifest):
 
     status_code = 0
     try:
-        spec = {'map': EXPECTED['map'], 'seed': case['seed'], 'goal': {'B': {'cyan': 1}},
+        spec = {'map': prereg['environment']['map'], 'seed': case['seed'], 'goal': {'B': {'cyan': 1}},
                 'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam', 'pose': case['setup_beam_xyyaw']}],
                 'pair_order_sheets': {'cargoX': case['coarse_order_sheet']}, 'order_sheet': copy.deepcopy(ORDER),
                 'contact_profile': EXPECTED['contact_profile'], 'job_sim_limit_s': prereg['limits']['sim_s']}
@@ -345,7 +350,9 @@ def run_physical(args, prereg, case, manifest):
         # Retain the partially constructed object so an init failure can still
         # close its world/render worker, without attempting more physics.
         host = DevHost.__new__(DevHost)
-        DevHost.__init__(host, spec, student, root=ROOT, study_layer=layer, frames_dir=out / 'frames', scene=make_scene(spec))
+        scene = make_scene(spec)
+        validate_scene(prereg, scene)
+        DevHost.__init__(host, spec, student, root=ROOT, study_layer=layer, frames_dir=out / 'frames', scene=scene)
         manifest['applied'] = applied_settings(host, validate=False)
         write_json(out / 'manifest.json', manifest)
         applied_settings(host, expected=prereg['environment'])
@@ -399,7 +406,7 @@ def run_physical(args, prereg, case, manifest):
         manifest['environment']['loadavg_at_end'] = list(os.getloadavg())
         manifest['source_after_sha256'] = source_fingerprint(ROOT)['sha256']
         manifest['source_changed'] = manifest['source_after_sha256'] != manifest['source']['execution_tree']['sha256']
-        manifest['inputs_changed'] = (sha_file(MAP) != manifest['inputs']['map']['sha256']
+        manifest['inputs_changed'] = (sha_file(map_path(prereg)) != manifest['inputs']['map']['sha256']
                                       or sha_file(CALIBRATION) != manifest['inputs']['calibration']['sha256']
                                       or sha_file(manifest['prereg']['path']) != manifest['prereg']['sha256'])
         if manifest['source_changed'] or manifest['inputs_changed']:
