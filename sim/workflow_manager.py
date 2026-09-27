@@ -35,7 +35,7 @@ MANAGED_CHILD = "UGRP_SIM_MANAGED_CHILD"
 INPUT_PATH_FLAGS = ("--plan-replay", "--grasp-model-dir", "--stage-model-dir", "--protocol", "--manifest",
                     "--artifacts", "--map-file", "--map", "--act-python", "--mjpython", "--grasp",
                     "--stages", "--cases-json", "--dataset", "--evidence-root", "--inventory", "--config",
-                    "--carry-act-model", "--carry-act-python", "--reference-top", "--spec")
+                    "--carry-act-model", "--carry-act-python", "--reference-top", "--spec", "--prereg")
 
 
 def _sha(path: Path) -> str:
@@ -272,6 +272,12 @@ def _workflow_inputs(root: Path, workflow_id: str, argv: list[str], extra: list[
         paths.append(root / "experiments/dispatch-skill-integration-20260917/models.zip")
     if workflow_id == "dispatch-skills" and _option(argv, "--reference-top") is None:
         paths.append(root / "tests/fixtures/camera_goal_transport/reference-top.jpg")
+    if workflow_id == "zone-pair-dev":
+        prereg_path = _at_root(root, _option(argv, "--prereg"))
+        prereg = json.loads(prereg_path.read_text())
+        paths.extend(root / prereg['inputs'][name]['path'] for name in ('map', 'calibration'))
+        if prereg.get('scene_contract'):
+            paths.append(root / prereg['scene_contract']['parent_map']['path'])
     return _input_paths(root, argv, paths)
 
 
