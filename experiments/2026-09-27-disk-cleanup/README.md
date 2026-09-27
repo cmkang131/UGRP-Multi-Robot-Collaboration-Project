@@ -236,3 +236,11 @@ python3 experiments/2026-09-27-disk-cleanup/plan_raw_b.py execute \
   - `scripts/agent_worktree.py`, `scripts/worktree_guard.py`, `scripts/tree_manifest.py`, `scripts/disk_report.py`
   - PR #212, #231
 - 문서: `man 2 clonefile`, `git help worktree`, `git help sparse-checkout`
+
+## B 실행 결과 (2026-09-27, 코디네이터 실행)
+- 근거: 사용자가 채팅의 선택 질문에서 "외장 없이 크게 삭제"를 직접 골랐다(이슈 #226).
+- 코디네이터 제외: `markerless-probe-20260926`의 3개 단위. 9/26 표식 없는 위치 추정 조사는 현재 연구 줄기로 보았다. 필터를 적용한 요약은 `receipt-b-summary-coordinator.json`이다.
+- 결과: 930개 단위 삭제(29.48 GiB, 영수증 목록 해시 일치), 3개 건너뜀(최근 60분 안에 변경), 누락 0.
+- 측정: outputs(du) 75.59 → 약 46 GiB. df 여유 108 → 126 GiB.
+- 실행 로그: `outputs/disk-cleanup-20260927/raw-b/execute-log.jsonl` (sha256 28a2f896cb4f6d9d…)
+- 남은 초과분은 약 6 GiB다. 모델 체크포인트 30개의 Release 업로드 여부는 사용자 결정 대기다(저장소가 공개이므로).
