@@ -9,10 +9,35 @@ from __future__ import annotations
 import math
 
 from harness.pair_owncam_approach import PairApproachDriverV2
+from harness.zone_own_contract import pose_report_fresh
 from harness.zone_own_driver import GuardedDriver
 from harness.zone_own_guards import (GATE_LOADED, GATE_UNLOADED,
                                      TRUSTED_TAG_AGE_S, OwnPose, ProgressMonitor, commanded_step_m)
 from harness.zone_pair_geometry import PairSweepGuard
+from harness.zone_own_sweep import SweepRecheck
+
+
+class _PairRecheck(SweepRecheck):
+    """One cumulative budget for HIGH estimates and blocked stationary sweeps.
+
+    A geometrically clear arm step may run while HIGH, but must not stop the
+    uncertainty clock. Overlapping gate/geometry waits count only once.
+    """
+    def __init__(self):
+        super().__init__()
+        self.uncertain = False
+        self.sweep_waiting = False
+
+    def check_gate(self, now, *, ready):
+        self.uncertain = not ready
+        return super().check_gate(now, ready=ready and not self.sweep_waiting)
+
+    def check(self, now, *args, **kwargs):
+        result = super().check(now, *args, **kwargs)
+        self.sweep_waiting = result == 'wait'
+        if result == 'clear' and self.uncertain and self._wait(now) == 'blocked':
+            return 'blocked'
+        return result
 
 
 class GuardedPairApproach(GuardedDriver, PairApproachDriverV2):
@@ -50,6 +75,13 @@ class GuardedPairApproach(GuardedDriver, PairApproachDriverV2):
         self._looks_before_step = self.looks_without_fix
         return super()._look_step(now)
 
+    def _start_look(self, now, reason, **kwargs):
+        budget = self.sweep_recheck
+        commands = super()._start_look(now, reason, **kwargs)
+        # Pair recovery is cumulative for the job, including repeated M2 looks.
+        self.sweep_recheck = budget
+        return commands
+
     def _event(self, now, kind, **detail):
         # Pair v2 rejects low-sigma looks without an actual tag. Apply that rule
         # before GuardedDriver lets the progress monitor trust the look.
@@ -72,6 +104,9 @@ class PairCommandGuard:
         self.last_evidence = None
         self.stationary_pose = None
         self.motion_until = -math.inf
+        self.recheck = _PairRecheck()
+        if isinstance(execution.controller.driver, GuardedPairApproach):
+            execution.controller.driver.sweep_recheck = self.recheck
         self._pose(execution.own.now)
 
     @property
@@ -93,7 +128,7 @@ class PairCommandGuard:
     def _pose(self, now):
         report = self.ep.own.last_report
         pose = OwnPose.from_report(report)
-        fresh = report is not None and 0 <= now - report.t_est <= .3 + 1e-9
+        fresh = pose_report_fresh(report, now)
         # Cache only a bounded own estimate AFTER the last base command ended.
         # A reset localizer has no pose yet, but cannot move a stationary base.
         if fresh and pose is not None:
@@ -124,27 +159,38 @@ class PairCommandGuard:
         own.gate.set_profile(GATE_UNLOADED if self.approach else GATE_LOADED)
         pose = self._pose(now)
         if self.reobserving:
-            if pose is not None and not self._high(pose) and now >= self.motion_until:
-                return True  # arm/camera sweeps only; check() still checks every command
-            self.ep.abort(now, 'POSE_UNCERTAIN')
-            return False
+            return self._stationary_reobserve(now, pose)
+        self.recheck.sweep_waiting = False
+        self.recheck.check_gate(now, ready=True)  # account prior wait; never refill
         if self.ep.controller.state not in ('approach', 'reapproach'):
             if not own.gate.ok or pose is None or self._high(pose):
                 self.ep.abort(now, 'POSE_UNCERTAIN')
                 return False
         return True
 
+    def _stationary_reobserve(self, now, pose):
+        if pose is None or now < self.motion_until:
+            self.ep.abort(now, 'POSE_UNCERTAIN')
+            return False
+        if self.recheck.check_gate(now, ready=not self._high(pose)) == 'blocked':
+            self.ep.log(self.ep.own.robot_id, 'reobserve_timeout', now, waited_s=self.recheck.waited_s)
+            self.ep.abort(now, 'PAIR_REOBSERVE_TIMEOUT')
+            return False
+        return True  # only checked stationary arm/camera commands, never base motion
+
     def check(self, now, commands):
         ep, own = self.ep, self.ep.own
         loaded = not self.approach
         own.gate.set_profile(GATE_LOADED if loaded else GATE_UNLOADED)
+        pose, report = self._pose(now), own.last_report
+        if self.reobserving and not self._stationary_reobserve(now, pose):
+            return [{'kind': 'hold'}]
         if not any(c['kind'] in ('arm', 'look', 'mecanum', 'drive') for c in commands):
             return commands
-        pose, report = self._pose(now), own.last_report
         reason = None
         if pose is None:
             reason = 'POSE_UNCERTAIN'
-        elif self._high(pose) or (loaded and not own.gate.ok and not self.reobserving):
+        elif not self.reobserving and (self._high(pose) or (loaded and not own.gate.ok)):
             reason = 'POSE_UNCERTAIN'
         if reason is None and self.reobserving and (now < self.motion_until or any(
                 c['kind'] not in ('hold', 'arm', 'look') for c in commands)):
@@ -173,6 +219,13 @@ class PairCommandGuard:
             if cmd['kind'] in ('arm', 'look'):
                 sid = 6 if cmd['kind'] == 'look' else int(cmd['servo_id'])
                 target = {**servo, sid: cmd['pan_pulse'] if sid == 6 and cmd['kind'] == 'look' else cmd['pulse']}
+                if self.reobserving:
+                    result = self.recheck.check(now, guard, servo, target, pose, loaded=self.carrying_beam)
+                    if result == 'wait':
+                        return [{'kind': 'hold'}]
+                    if result == 'blocked':
+                        reason = 'PAIR_COLLISION_GUARD'
+                        break
                 plan = guard.plan(servo, target, [target[6]], pose, loaded=self.carrying_beam, allow_backoff=False)
                 if plan['reason'] != 'clear' or not plan.get('transition_clear', False):
                     reason = 'PAIR_COLLISION_GUARD'

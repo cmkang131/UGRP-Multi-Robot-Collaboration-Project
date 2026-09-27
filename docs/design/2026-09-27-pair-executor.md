@@ -2,7 +2,7 @@
 
 이슈 #221 / PR #235의 `zone_pair_executor_v4_dev` 설계다. 1·2차 리뷰,
 `69dd0f0b`의 3차 리뷰와 Kiro 실행기 병합 `8f4fb676`, `50794498`의
-4차 리뷰 중 pair 전용 P1-1·2·3·5를 반영했다.
+4차 리뷰 중 pair 전용 P1-1·2·3·5와 `1628a03f`의 5차 리뷰 P1 2건을 반영했다.
 코디네이터가 정한 독립 랑데부·통신 경계는 유지한다.
 M2 물리 성공을 새 executor에 승계하지 않는다.
 
@@ -58,7 +58,7 @@ hold하며, 기본 5 SIM초 안에 같은 화물·상대·목적지를 제출해
 - 접근 이후 readiness·단계 전환 전에 자기 gate와 추정 freshness를 검사한다.
   controller 직접 명령과 arm queue 모두 발행 전에 pair 전용 `PairSweepGuard`로
   팔·집게·전체 빔의 3-D 전이와 명령 유효기간 전체 차체 이동 여유를 검사한다.
-  체크포인트의 정지 재관측만 별도 취급한다(아래 4차 리뷰 절).
+  접근·체크포인트의 정지 재관측만 별도 취급한다(아래 4·5차 리뷰 절).
   공동 파지 이후에는 한 대만 후진하지 않는다.
   정체가 확인되면 `PAIR_blocked`, 추정 확인이 안 되면 `POSE_UNCERTAIN_PROGRESS`로
   STATUS abort를 보내 양쪽 queue를 지우고 hold한다. 재개에는 새 독립 제출이 필요하다.
@@ -255,6 +255,47 @@ OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim/bin/python -m pytest -
 Git fetch는 공용 `.git` 쓰기 제한으로, `gh pr list`는 네트워크 오류로 실패했다.
 따라서 지정된 로컬 HEAD만 기준으로 삼았으며 원격 최신 상태·전체 CI·물리 검증은
 확인하지 않았다. 커밋·push·병합·Drive 작업은 하지 않았다.
+
+## 5차 리뷰 — 시각 정밀도와 정지 재관측 예산
+
+기준 HEAD는 `1628a03f717a`이며, 사용자 요청에 따라 **커밋하지 않은 로컬 수정**이다.
+리뷰 원문은
+`/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-235-review5.md`다.
+
+생산 코드 수정 전에 [5차 회귀](../../tests/test_zone_pair_review5.py) 첫 21개에서
+**10 failed / 11 passed**를 확인했다. P1-1 6개와 P1-2 4개가 실패했으며,
+같은 21개는 수정 후 모두 통과했다. 경계·충돌 대기 검사를 확장한 최종 5차 회귀는
+**37 passed**다.
+
+| 항목 | 수정 전 재현 | 수정 후 동작·검증 |
+|---|---|---|
+| P1-1 | 0.00025초를 2,400회 더한 `now=0.5999999999999617`에서 실제 `OwnCamPoseSource.report()`의 `t_est=0.6`이 신규 제출·제어 전·명령 검사 모두에서 거절됨 | admission과 guard가 같은 `pose_report_fresh`를 사용. 보고 시각에만 `1e-4`초의 미래 방향 반올림 여유를 허용하고 기존 0.3초 TTL 유지. 허용치 안·경계는 통과하고 초과 미래·stale·NaN·Inf는 계속 거절. 영상·STATUS 시계 조건은 변경하지 않음 |
+| P1-2 | 실제 접근 driver의 `gate_uncertain → look_arm` 뒤 `σxy=.081`, `σyaw=.01`에서 0.05초에 abort. 체크포인트의 고분산 보고도 예약 팔 명령 64개 삭제 | 정지 재관측의 HIGH와 충돌 대기가 공용 `SweepRecheck` 기반의 같은 누적 10 SIM초 예산을 사용. 짧은 회복·다음 look·체크포인트가 예산을 초기화하지 않음. 현재 σ를 적용한 팔 전이가 안전하면 sweep 허용, 불확실도로 막히면 hold 후 재검사. 기다리는 팔 queue와 보간·settle 간격 보존. 예산 소진은 `PAIR_REOBSERVE_TIMEOUT`, 상대는 `PARTNER_ABORT`로 같은 host 시각에 hold하고 팔 queue·운반 schedule·host timeline 제거 |
+
+실제 공통 guarded driver가 쓴 충돌 대기 6초와 pair의 HIGH 재관측 4초가 합산되는
+것도 검사했다. HIGH 또는 gate 대기 상태의 이동·운반 허가는 추가하지 않았다.
+공동 파지·들기·운반 상태에서는 기존 즉시 abort를 유지하고 두 로봇의 동기 정지를
+검사했다. 동결 M2와 pose source·localizer, 공통 guarded driver/sweep 소스는 그대로다.
+교사·정답·동료 비공개 상태를 제어 입력에 추가하지 않았다.
+
+최종 관련 회귀는 **469 passed / 1 deselected / 85 subtests passed (21.56 s)**다.
+제외한 1개는 실제 MuJoCo world 실행이며, 이번 작업은 물리 실행·모델 호출 없이
+공용 잠금을 잡지 않았다. 동결 import 32개와 원본 3개 해시, 기존 입력 경계·시계
+격리·horizon·공용 실행기 회귀도 포함했다. 새 파일은 CI 테스트 목록에 등록했다.
+
+```sh
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+  tests/test_zone_pair*.py tests/test_zone_own_executor*.py \
+  tests/test_pair_owncam_approach.py tests/test_m2_pair_door_v3.py \
+  tests/test_m1_owncam.py tests/test_zone_study_protocol.py \
+  --basetemp=./.pytest_tmp \
+  -k 'not test_team_host_isolation_abort_and_horizon_on_the_real_world'
+```
+
+검증 뒤 `.pytest_tmp`를 삭제하고 `git diff --check`와 HEAD 유지를 확인했다.
+Git fetch는 공용 `.git` 쓰기 제한, GitHub 조회는 네트워크 오류로 실패했다.
+원격 최신 상태·전체 CI·물리 성공은 검증 범위 밖이다. 커밋·push·병합·Drive 작업은
+하지 않았다. 비물리 소프트웨어 회귀이므로 TensorBoard 실험 스냅샷은 만들지 않았다.
 
 ## dev PHYSICAL 점검 게이트 — 3차 리뷰에서 이관
 

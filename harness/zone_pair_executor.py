@@ -187,6 +187,7 @@ class PairExecution:
         self.rendezvous_deadline = own.now + 5.
         self.next_control = own.now
         self.control_started = False
+        self.arm_wait_at = None
         self.controller = factory(self, copy.deepcopy(plan), copy.deepcopy(params))
         from harness.zone_pair_guards import PairCommandGuard
         self.command_guard = PairCommandGuard(self)
@@ -322,9 +323,23 @@ class PairExecution:
         if not valid_frame(self.own.last_obs, self.own.robot_id, now):
             self.abort(now, 'INVALID_OWN_IMAGE')
             return []
-        self.controller.arm.tick(now)
+        arm = self.controller.arm
+        if self.arm_wait_at is not None:
+            # Preserve interpolation/settling time after a rejected stationary
+            # sweep; do not burst all overdue PWM targets on recovery.
+            delay = max(0., now - self.arm_wait_at)
+            arm.events = [(t + delay, sid, pulse) for t, sid, pulse in arm.events]
+            arm.until += delay
+        pending = list(arm.events)
+        arm.tick(now)
         commands, self.port.commands = self.port.commands, []
-        return self.command_guard.check(now, commands)
+        checked = self.command_guard.check(now, commands)
+        if commands and checked == [{'kind': 'hold'}] and not self.terminal:
+            arm.events = pending
+            self.arm_wait_at = now
+        else:
+            self.arm_wait_at = None
+        return checked
 
 
 class PairTeam:

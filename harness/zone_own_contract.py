@@ -30,6 +30,17 @@ EVENT_TO_TRIGGER = {'job_started': None, 'job_done': 'idle', 'job_failed': 'fail
 assert set(EVENT_TO_TRIGGER.values()) - {None} <= set(D_TRIGGERS)
 # job_failed reasons that are a local SIM budget (own timer) rather than a view change.
 TIMEOUT_REASONS = ('LOCAL_TIMEOUT', 'EPISODE_END', 'PAIR_RENDEZVOUS_TIMEOUT')
+# OwnCamLocalizer.estimate() rounds control reports to four decimal places.
+# Cover that quantization plus accumulated SIM-clock error, never a future frame.
+POSE_TIME_ROUNDING_S = 1e-4
+
+
+def pose_report_fresh(report, now, *, max_age_s=.3):
+    """Same bounded report-time contract for pair admission and command guards."""
+    return (report is not None and finite_number(now) and finite_number(report.t_est)
+            and -POSE_TIME_ROUNDING_S <= now - report.t_est <= max_age_s + 1e-9)
+
+
 ORDER_KEYS = A.ORDER_KEYS
 SLOT_SEARCH_MARGIN_M = .15      # own-RGB cyan detections kept within the ordered pickup slot + this margin
 PICKUP_VIEW_X_M = -.47          # = m1_owncam_delivery.SEARCH_VIEW_X_M (west of the pickup grid)

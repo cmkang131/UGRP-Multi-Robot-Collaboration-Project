@@ -53,7 +53,7 @@ from harness.owncam_drive import CARRY_POSTURE, LOOK_P20, SETTLE_S, WIDE_LOOK_PA
 from harness.owncam_pose_source import OwnCamPoseSource, PoseReport
 from harness.zone_own_contract import (API_TO_ACTION_KIND, EVENT_TO_TRIGGER, EVENTS, PICKUP_VIEW_X_M,  # noqa: F401
                                        ExecutorContractError, action_record, finite_number, lane_viewpoints,
-                                       pickup_slot_of, pickup_slots, scheduler_trigger, validate_order_sheet,
+                                       pickup_slot_of, pickup_slots, pose_report_fresh, scheduler_trigger, validate_order_sheet,
                                        zone_slot)
 from harness.zone_own_deliver import _DeliverController
 from harness.zone_own_driver import GuardedDriver
@@ -306,7 +306,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
                     or order.get('required_robots') != 2 or order.get('destination_zone') != target_zone):
                 return 'incompatible'
         if (self.mode != 'm1' or not self.gate.ok or self.last_report is None
-                or not self.last_report.initialized or not 0 <= now - self.last_report.t_est <= .3
+                or not self.last_report.initialized or not pose_report_fresh(self.last_report, now)
                 or not finite_number(self.last_report.std_xy_m) or not finite_number(self.last_report.std_yaw_rad)
                 or self.last_obs is None or not 0 <= now - self.last_obs['sim_time'] <= .3
                 or not {1, 3, 4, 5, 6} <= set(self.servo)):
