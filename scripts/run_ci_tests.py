@@ -68,6 +68,7 @@ TEST_PATTERNS = (
     "tests/test_zone_dialogue_ko.py",
     "tests/test_zone_hard_routes.py",
     "tests/test_zone_team_a2.py",
+    "tests/test_zone_teacher_fix.py",
     "tests/test_zone_cargo_perception_v2.py",
     "tests/test_zone_study_contract.py", "tests/test_zone_study_inputs.py",
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
