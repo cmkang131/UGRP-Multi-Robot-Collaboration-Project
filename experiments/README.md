@@ -1,5 +1,7 @@
 # 실험 인덱스
 
+- [2026-09-27 태그 없는 위치 추정 VIS4 dev 수정·새 test 설계](2026-09-26-vision-loc/README_v4.md): 운동 x1/m1 및 VISW σ 보정 u1/u2 모두 사전 규칙에서 기각, b0/u0 유지·NO_GO. VISW >3σ 19.03%, 구역 A 실패는 yaw σ 상한 초과로 분리했다. 문·슬롯·경로 게이트와 독립 seed/중복 감사 초안 저장. 관련 pytest 132 passed/1 skipped, 두 TensorBoard 스냅샷 실제 로딩 검증 완료; viewer 화면 확인은 sandbox 차단. 새 test·렌더·커밋 미실행.
+
 - [2026-09-25 구역 화물 인식 v2 (`top_cargo_v2`)](2026-09-25-zone-cargo-perception-v2/README.md): PR #168 검토 결함 두 가지를 새 프로필로 수정했다(`330e856`, 제어 미연결, v1은 바이트 그대로). 새 split은 dev 501–504, test 601–612(180장면)이며 평행 빔·틀 안쪽 상자 표적 장면을 넣었다. test 병합 TOP 결과는 v1→v2 순으로, 빔 293/297→297/297, 붙은 평행 빔 쌍 5/11→11/11, 시야 경계 쌍 8/12→12/12, 틀 안쪽 상자 0/40→37/40, 오검출 8→7이다. 회귀는 빔 중복 0→4(신뢰도 <0.5)다.
 - [2026-09-25 구역 벽·문 경로 지도](2026-09-25-zone-hard-routes/README.md): `zone_wide` 위에 안쪽 벽을 더한 `zone_wide_door`(0.50 m 문)·`zone_wide_two_doors`(0.50 m + 1.00 m)·`zone_wide_corridor`(0.50 m 한 차선 1.7 m + 비켜 서는 자리). 교사 A*가 벽 직사각형을 피하고(`harness/static_keepouts.py`, v1 계획·SIM 바이트 동일), 한 차선 대치는 물리 상태만으로 푼다. fixture(LLM 0회, `dc27695`/`3183650`) plan_first·dynamic 28/28 목표 달성, makespan은 zone_wide 150–156 s 대비 door 217–252 s·two_doors 188–212 s·corridor 333–396 s. 통로 대치 6회는 모두 풀렸다. 복도 출구 밖 정면 밀기 1회(independent)는 미해결이다. `zone_open`은 은퇴(재현 전용). 교사 조건이며 LLM 협업 근거가 아니다.
 - [2026-09-25 구역 작업 결과 RGB 전용 판정 (L4 대체 후보 → 평가 보조)](2026-09-25-zone-rgb-outcome/README.md): **2026-09-25 결정으로 로봇 입력용 역할은 폐기, 평가 보조·향후 자기 카메라판 참고용.** TOP 전후 비교 모듈 v2(배정부터 SIM 1 s 고정 주기, 출발지 빈 상태 입증, 명시적 미확정, 기록된 발행 명령). 새 fixture test 12회(작업 269): 잘못된 delivered 0, 미확정 7(2.6%), 정답 256. 색 동일성 한계·L4b는 남음.

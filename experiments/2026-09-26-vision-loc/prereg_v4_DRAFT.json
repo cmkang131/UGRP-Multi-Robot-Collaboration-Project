@@ -1,0 +1,676 @@
+{
+ "schema": "ugrp.vision_loc.prereg.v4",
+ "status": "DRAFT",
+ "execution_enabled": false,
+ "source_commit": null,
+ "blocked_until": [
+  "coordinator review and commit source, gates, all configurations and episode table",
+  "continuous static-route clearance audit",
+  "freeze selected student hashes",
+  "register v4 test IO and once-only scoring guards",
+  "implement and test joint-geometry scoring, yaw p99, exceedance durations and episode bootstrap; legacy scorer does not implement these gates",
+  "obtain a DEV candidate satisfying both accuracy and uncertainty criteria; current b0/u0 fallback remains NO_GO",
+  "integrate full raw/reported covariance recording into the VISW worker/PoseReport path",
+  "implement and test exact covariance calibration scoring and VISW r2 overlap-reference adapter"
+ ],
+ "old_test_policy": "Round-2/3 test never used for tuning or selection; only scenario metadata used for independence design. VIS3 FAIL remains.",
+ "dev_selection": {
+  "plan": "dev_plan_v4.json",
+  "sha256": "ca9edfe79423bd745a5659f1517b5f66b4908013adae0d24ce35e88c88ce591e",
+  "selected": "b0",
+  "comparison": "outputs/vision-loc-v4/comparison/selection.json",
+  "accepted_new_variant": false,
+  "selection_sha256": "a58502db09e5ff973aa3e30909480643dfd4d2a4b6522c5cf436f0070390e787",
+  "promotion_recommendation": "NO_GO_NO_IMPROVING_DEV_CANDIDATE"
+ },
+ "student": {
+  "inputs": [
+   "own wrist RGB",
+   "static tag-free map and fixed camera calibration",
+   "own issued command history"
+  ],
+  "segmentation_sha256": "348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9",
+  "calibration": {
+   "file": "calibration_train.json",
+   "sha256": "60177d6b4e116f4d63aea0b5c0bd200cd5eaebe66a63080612c7949491f085dd"
+  },
+  "config": {
+   "file": "selected_config_v3.json",
+   "sha256": "87f94b342b260715b1c556da3dea3832cc11daeaf88ef0aa97f14b3c9a970707",
+   "note": "Unchanged baseline fallback; not a VIS4 gate pass."
+  },
+  "motion": {
+   "source": "22c84842b507264de496b54b1e8c9217701b9b5c:experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+   "file_sha256": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+   "new_v4_motion_enabled": false,
+   "note": "Retain original M1 params. x1 and m1 were rejected on the frozen DEV rule."
+  },
+  "runtime_gt": false,
+  "oracle": "teacher-label diagnostic only; never student or gate result",
+  "map": {
+   "file": "maps/zone_wide_door_walls_v3_notags.json",
+   "sha256": "61d35247e9a3f487c888ac4c6762e89962a4a33cb4853a671f02f0b12973f63e",
+   "tags": 0,
+   "wall_height_m": 0.4
+  },
+  "runtime_manifest": {
+   "file": "outputs/vision-loc-v4/comparison/source_freeze.json",
+   "sha256": "4df3213a80474fab9f9c74f3c91042ece2435b6f362ad8d098322dfddebe03ff",
+   "note": "Development cohort only; copy reviewed runtime hashes and source commit into formal registration before test."
+  }
+ },
+ "episodes": {
+  "file": "episodes_v4_DRAFT.json",
+  "sha256": "73a92da8b9354c33f78b10b5002be136a3e507c334945ec07890576291dc86ab",
+  "primary": [
+   "vl4-test-s1002",
+   "vl4-test-s1008",
+   "vl4-test-s1009",
+   "vl4-test-s1010",
+   "vl4-test-s1011",
+   "vl4-test-s1015",
+   "vl4-test-s1021",
+   "vl4-test-s1023"
+  ],
+  "reserve_order": [
+   "vl4-test-s1024",
+   "vl4-test-s1025",
+   "vl4-test-s1037",
+   "vl4-test-s1038"
+  ],
+  "table": [
+   {
+    "episode_id": "vl4-test-s1002",
+    "split": "test",
+    "role": "primary",
+    "seed": 1002,
+    "spawn_y": 0.55,
+    "slot_id": "C1",
+    "goal": {
+     "C": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     1.6,
+     -0.05
+    ],
+    "spawn_offset": [
+     0.0,
+     0.055,
+     -1.101
+    ],
+    "teacher_pose_bias": [
+     0.0106,
+     -0.0197,
+     -0.217
+    ]
+   },
+   {
+    "episode_id": "vl4-test-s1008",
+    "split": "test",
+    "role": "primary",
+    "seed": 1008,
+    "spawn_y": -0.85,
+    "slot_id": "B2",
+    "goal": {
+     "B": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     0.4,
+     -0.05
+    ],
+    "spawn_offset": [
+     0.0145,
+     -0.0551,
+     2.778
+    ],
+    "teacher_pose_bias": [
+     -0.0027,
+     0.0298,
+     -0.005
+    ]
+   },
+   {
+    "episode_id": "vl4-test-s1009",
+    "split": "test",
+    "role": "primary",
+    "seed": 1009,
+    "spawn_y": -2.25,
+    "slot_id": "A3",
+    "goal": {
+     "A": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     1.0,
+     -1.65
+    ],
+    "spawn_offset": [
+     0.0419,
+     0.0507,
+     0.986
+    ],
+    "teacher_pose_bias": [
+     0.0187,
+     0.01,
+     0.608
+    ]
+   },
+   {
+    "episode_id": "vl4-test-s1010",
+    "split": "test",
+    "role": "primary",
+    "seed": 1010,
+    "spawn_y": 0.55,
+    "slot_id": "B3",
+    "goal": {
+     "B": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     0.4,
+     0.75
+    ],
+    "spawn_offset": [
+     0.0247,
+     -0.0452,
+     0.742
+    ],
+    "teacher_pose_bias": [
+     -0.0292,
+     -0.0067,
+     0.822
+    ]
+   },
+   {
+    "episode_id": "vl4-test-s1011",
+    "split": "test",
+    "role": "primary",
+    "seed": 1011,
+    "spawn_y": -0.85,
+    "slot_id": "C2",
+    "goal": {
+     "C": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     0.4,
+     0.75
+    ],
+    "spawn_offset": [
+     0.0112,
+     -0.0219,
+     -1.525
+    ],
+    "teacher_pose_bias": [
+     -0.0161,
+     0.0018,
+     0.682
+    ]
+   },
+   {
+    "episode_id": "vl4-test-s1015",
+    "split": "test",
+    "role": "primary",
+    "seed": 1015,
+    "spawn_y": -2.25,
+    "slot_id": "A1",
+    "goal": {
+     "A": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     1.6,
+     -0.85
+    ],
+    "spawn_offset": [
+     -0.0377,
+     0.0481,
+     1.145
+    ],
+    "teacher_pose_bias": [
+     0.0138,
+     0.0127,
+     0.127
+    ]
+   },
+   {
+    "episode_id": "vl4-test-s1021",
+    "split": "test",
+    "role": "primary",
+    "seed": 1021,
+    "spawn_y": 0.55,
+    "slot_id": "A2",
+    "goal": {
+     "A": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     1.0,
+     -0.85
+    ],
+    "spawn_offset": [
+     0.0115,
+     -0.0428,
+     -1.235
+    ],
+    "teacher_pose_bias": [
+     -0.0025,
+     -0.0264,
+     -0.339
+    ]
+   },
+   {
+    "episode_id": "vl4-test-s1023",
+    "split": "test",
+    "role": "primary",
+    "seed": 1023,
+    "spawn_y": -0.85,
+    "slot_id": "B1",
+    "goal": {
+     "B": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     -0.2,
+     -1.65
+    ],
+    "spawn_offset": [
+     0.0075,
+     0.036,
+     1.218
+    ],
+    "teacher_pose_bias": [
+     -0.0261,
+     -0.0046,
+     0.724
+    ]
+   },
+   {
+    "episode_id": "vl4-test-s1024",
+    "split": "test",
+    "role": "reserve",
+    "seed": 1024,
+    "spawn_y": -2.25,
+    "slot_id": "C3",
+    "goal": {
+     "C": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     1.0,
+     0.75
+    ],
+    "spawn_offset": [
+     0.034,
+     0.0399,
+     -3.014
+    ],
+    "teacher_pose_bias": [
+     -0.0111,
+     -0.014,
+     0.994
+    ]
+   },
+   {
+    "episode_id": "vl4-test-s1025",
+    "split": "test",
+    "role": "reserve",
+    "seed": 1025,
+    "spawn_y": 0.55,
+    "slot_id": "A1",
+    "goal": {
+     "A": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     1.6,
+     -2.45
+    ],
+    "spawn_offset": [
+     0.0197,
+     -0.0236,
+     -5.336
+    ],
+    "teacher_pose_bias": [
+     -0.0103,
+     -0.0189,
+     0.632
+    ]
+   },
+   {
+    "episode_id": "vl4-test-s1037",
+    "split": "test",
+    "role": "reserve",
+    "seed": 1037,
+    "spawn_y": -0.85,
+    "slot_id": "C1",
+    "goal": {
+     "C": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     1.0,
+     -0.85
+    ],
+    "spawn_offset": [
+     -0.0222,
+     -0.0236,
+     4.251
+    ],
+    "teacher_pose_bias": [
+     0.0064,
+     0.0166,
+     -0.318
+    ]
+   },
+   {
+    "episode_id": "vl4-test-s1038",
+    "split": "test",
+    "role": "reserve",
+    "seed": 1038,
+    "spawn_y": -2.25,
+    "slot_id": "B2",
+    "goal": {
+     "B": {
+      "cyan": 1
+     }
+    },
+    "extra_boxes": {
+     "red": 2,
+     "green": 1
+    },
+    "cyan_cell": [
+     -0.2,
+     -1.65
+    ],
+    "spawn_offset": [
+     0.0229,
+     0.053,
+     -4.654
+    ],
+    "teacher_pose_bias": [
+     0.0221,
+     -0.0013,
+     0.706
+    ]
+   }
+  ]
+ },
+ "independence": {
+  "references": [
+   "vl-train-s901",
+   "vl-train-s902",
+   "vl-train-s903",
+   "vl-train-s904",
+   "vl-train-s905",
+   "vl-train-s906",
+   "vl-train-s907",
+   "vl-train-s908",
+   "vl-dev-s909",
+   "vl-dev-s910",
+   "vl-dev-s911",
+   "vl-test-s912",
+   "vl-test-s913",
+   "vl-test-s914",
+   "vl-test-s915",
+   "vl-test-s916",
+   "vl-test-s917",
+   "vl3-dev-s941",
+   "vl3-dev-s942",
+   "vl3-dev-s943",
+   "vl3-dev-s945",
+   "vl3-dev-s946",
+   "vl3-dev-s947",
+   "vl3-test-s951",
+   "vl3-test-s954",
+   "vl3-test-s955",
+   "vl3-test-s956",
+   "vl3-test-s959",
+   "vl3-test-s961",
+   "vl3-test-s962",
+   "vl3-test-s964",
+   "VISW-vl3-dev-s942-r2"
+  ],
+  "audit_before": [
+   "segmentation",
+   "localization",
+   "scoring"
+  ],
+  "metadata_checks": [
+   "seed unused",
+   "spawn row/cyan cell pair unused",
+   "cyan cell/slot pair unused"
+  ],
+  "render_checks": {
+   "jpeg_bytes": "any overlap fails",
+   "same_commanded_servo_pose": {
+    "position_m": 0.001,
+    "yaw_deg": 0.1,
+    "any_frame_fails": true
+   },
+   "aligned_trajectory": "same frame count and max XY difference <0.001 m fails",
+   "near_report_only": {
+    "position_m": 0.02,
+    "yaw_deg": 2.0
+   }
+  },
+  "candidate_pairs": "audit all ordered candidates against one another; exclude every implicated episode",
+  "replacement": "fixed reserve order only for independence failure or incomplete renderer artifacts; no outcome/metric-based exclusions; retain failed teacher missions and filter losses",
+  "min_episodes": 6,
+  "reserve_exhaustion": "INSUFFICIENT_DATA; no new search",
+  "additional_reference": {
+   "id": "VISW-vl3-dev-s942-r2",
+   "raw_root": "/Users/changmin/projects/ugrp/outputs/vision-worker-closed-loop-20260927/vl3-dev-s942",
+   "robot": "r2",
+   "layout_adapter": "pending: normalize own inputs, per-robot eval rows and JPEG paths into overlap_check input schema under worktree outputs; preserve originals; verify actual JPEG bytes"
+  }
+ },
+ "gate": {
+  "derivation": "gates_v4.md",
+  "sha256": "a208ddafa4787987443bce80e3157060925376b3d6cf536fe87caa14569b75ee",
+  "budgets": {
+   "yaw_cap_deg": 3.0,
+   "door_half_width_m": 0.25,
+   "loaded_envelope_half_y_at_3deg_m": 0.16026162146177483,
+   "door_lateral_remaining_m": 0.05473837853822518,
+   "door_lateral_gate_m": 0.05,
+   "door_joint_gate_m": 0.065,
+   "slot_x_remaining_m": 0.02670248573522813,
+   "slot_y_remaining_m": 0.013670506800189709,
+   "slot_position_gate_m": 0.01,
+   "existing_path_joint_budget_m": 0.005,
+   "required_path_clearance_m": 0.06,
+   "path_joint_gate_m": 0.045,
+   "path_translation_remaining_at_3deg_m": 0.031911525846063424,
+   "path_position_gate_m": 0.03
+  },
+  "quantile": "numpy.percentile(method=linear), pooled AND each episode",
+  "door_loaded": {
+   "xy_group": "|gt_x-2.2|<0.6 and -0.45<gt_y<0.55",
+   "own_loaded": true,
+   "lateral_p99_max_m": 0.05,
+   "yaw_p99_max_deg": 3.0,
+   "joint_p99_max_m": 0.065,
+   "min_frames_per_episode": 20
+  },
+  "slot": {
+   "own_skill_phase": [
+    "pre_release",
+    "release"
+   ],
+   "require_loaded": false,
+   "position_p99_max_m": 0.01,
+   "yaw_p99_max_deg": 3.0,
+   "min_frames_per_episode": 10,
+   "joint_extent_p99_max_m": 0.045,
+   "joint_extent": "max(abs(dx)+.20*(1-cos(dyaw))+.017*abs(cos(dyaw))+.020*abs(sin(dyaw)), abs(dy)+.20*abs(sin(dyaw))+.020*abs(cos(dyaw))+.017*abs(sin(dyaw)))"
+  },
+  "path": {
+   "own_skill_phase": [
+    "nav_preplace"
+   ],
+   "require_loaded": true,
+   "static_continuous_clearance_min_m": 0.06,
+   "position_p99_max_m": 0.03,
+   "joint_p99_max_m": 0.045,
+   "min_frames_per_episode": 20
+  },
+  "static_door_path_center_offset_max_m": 0.02,
+  "unverified_assumptions": [
+   "tracking <=0.010 m",
+   "map/envelope <=0.005 m",
+   "placement execution <=0.010 m",
+   "placement lever <=0.20 m"
+  ],
+  "rule": "All geometry contracts and all per-episode and pooled thresholds required; otherwise FAIL, ROUTE_CONTRACT_UNMET, or INSUFFICIENT_DATA. Not a physical safety guarantee."
+ },
+ "scoring": {
+  "once": true,
+  "all_registered_at_once": true,
+  "missing_or_partial": "no silent drop; incomplete result, no PASS",
+  "report": [
+   "p50 p90 p99 max",
+   "dx/dy signed and body-forward bias",
+   "yaw",
+   "joint errors",
+   "exceedance count and denominator",
+   "max contiguous exceedance time",
+   "lost >0.30 m and recovery",
+   "model calls / commands / time with source and offline-only scope",
+   "exact XY/yaw covariance consistency and 95% coverage by own state",
+   "raw and calibrated covariance sharpness and age behavior"
+  ],
+  "secondary_comparators": [
+   "frozen VIS3 a1",
+   "teacher-label oracle using selected filter"
+  ],
+  "secondary_not_used_for_selection": true,
+  "episode_bootstrap": {
+   "seed": 42004,
+   "replicates": 2000
+  },
+  "legacy_gate": "report original door P90 0.05 m,L99 0.06 m,Y90 3deg separately; never overwrite VIS3 verdict",
+  "output": "outputs/vision-loc-v4/test-once/metrics.json",
+  "write_policy": "exclusive create; reject if any scored result exists; frozen full episode list only; never append or overwrite"
+ },
+ "render": "render_requests_v4.md; coordinator only; no render in this task",
+ "artifacts": "new worktree outputs only; original /Users/changmin/projects/ugrp/outputs/vision-loc-20260926 is read-only",
+ "verification_completed": {
+  "offline_pytest": {
+   "passed": 132,
+   "skipped": 1,
+   "seconds": 29.19,
+   "OMP_NUM_THREADS": 1,
+   "basetemp": "./.pytest_tmp",
+   "temporary_directory_removed": true,
+   "lock_exception": "explicit coordinator/user authorization for offline tests without physics/model calls",
+   "log": "outputs/vision-loc-v4/pytest_sigma_final.log",
+   "skip_reason": "torch unavailable; optional segmenter shape test skipped"
+  },
+  "scope": "Local related tests only; not remote CI, new independent test or closed-loop success."
+ },
+ "uncertainty_calibration": {
+  "dev_plan": "sigma_plan_v4.json",
+  "plan_sha256": "b3a649629a29481fc27afc755004824573c35ad14ec79482c564284305b58a9c",
+  "selected": "u0",
+  "accepted_new_variant": false,
+  "enabled": false,
+  "selection_file": "outputs/vision-loc-v4/sigma/selection.json",
+  "selection_sha256": "8b9f6c01f1b73a4fa893bb38b91bdfcd730dd6676e71a590e05eb6a173d4b04f",
+  "calibration_scope": "Report-only XY covariance, fixed point estimator; u1/u2 rejected; yaw calibration not fitted.",
+  "required_frame_fields": [
+   "t",
+   "xyyaw",
+   "cov",
+   "raw_cov (same as cov when disabled)",
+   "std_xy_m=sqrt(trace(Pxy))",
+   "std_yaw_rad",
+   "last_scan_t",
+   "own inferred load",
+   "own commanded-servo settle state"
+  ],
+  "full_covariance_missing": "INSUFFICIENT_DATA; never replace exact NEES with isotropic proxy for formal pass",
+  "metrics": [
+   "exact XY NEES",
+   "1D wrapped-yaw NEES",
+   "95% XY ellipse and yaw interval coverage",
+   "XY Gaussian NLL",
+   "sigma sharpness",
+   "state and scan-age slices",
+   "stale covariance decreases"
+  ],
+  "draft_gate": {
+   "coverage95_min": 0.9,
+   "coverage95_max": 0.99,
+   "dimensions": [
+    "XY ellipse",
+    "yaw interval"
+   ],
+   "groups": "pooled and each own-load x own-settle state",
+   "min_frames_per_group": 100,
+   "missing_group": "INSUFFICIENT_DATA",
+   "NEES_mean": "diagnostic, not iid-frame chi-square significance test",
+   "review_and_commit_before_new_test": true
+  },
+  "motion_NO_GO_unchanged": true,
+  "VISW_fitting_data_not_independent_validation": true,
+  "source_freeze": "outputs/vision-loc-v4/sigma/source_freeze.json"
+ }
+}
