@@ -1,0 +1,572 @@
+{
+ "schema": "ugrp.zone_own_executor_smoke_results.v3",
+ "smoke_dir": "/Users/changmin/projects/ugrp/outputs/zone-own-executor-20260926/smoke-v3-92e0feeb",
+ "source_sha": [
+  "92e0feeb30fd1a1afdf01fbc5a8bf80b59922562"
+ ],
+ "dirty": [
+  false
+ ],
+ "gates": {
+  "E1": {
+   "pass": true,
+   "detail": {
+    "smoke-v3-s700": {
+     "result": true,
+     "failure_json": false
+    },
+    "smoke-v3-s701": {
+     "result": true,
+     "failure_json": false
+    }
+   }
+  },
+  "E2": {
+   "pass": true,
+   "detail": {
+    "smoke-v3-s700": {
+     "accepted_jobs": 5,
+     "starts_ok": true,
+     "ends_ok": true,
+     "open_jobs_at_end": [],
+     "episode_end_terminals": 0,
+     "every_robot_got_deliver": true
+    },
+    "smoke-v3-s701": {
+     "accepted_jobs": 5,
+     "starts_ok": true,
+     "ends_ok": true,
+     "open_jobs_at_end": [],
+     "episode_end_terminals": 0,
+     "every_robot_got_deliver": true
+    }
+   }
+  },
+  "E3": {
+   "pass": true,
+   "detail": {
+    "smoke-v3-s700": {
+     "r1": [
+      0,
+      [
+       "robot_cam"
+      ]
+     ],
+     "r2": [
+      0,
+      [
+       "robot_cam"
+      ]
+     ],
+     "r3": [
+      0,
+      [
+       "robot_cam"
+      ]
+     ]
+    },
+    "smoke-v3-s701": {
+     "r1": [
+      0,
+      [
+       "robot_cam"
+      ]
+     ],
+     "r2": [
+      0,
+      [
+       "robot_cam"
+      ]
+     ],
+     "r3": [
+      0,
+      [
+       "robot_cam"
+      ]
+     ]
+    }
+   }
+  },
+  "E4": {
+   "pass": true,
+   "counts_as_m1_reported_only": {
+    "smoke-v3-s700": {
+     "r1": true,
+     "r2": true,
+     "r3": true
+    },
+    "smoke-v3-s701": {
+     "r1": false,
+     "r2": true,
+     "r3": true
+    }
+   },
+   "detail": {
+    "smoke-v3-s700": {
+     "r1": [
+      "owncam_pf_v2:757f7f09"
+     ],
+     "r2": [
+      "owncam_pf_v2:757f7f09"
+     ],
+     "r3": [
+      "owncam_pf_v2:757f7f09"
+     ]
+    },
+    "smoke-v3-s701": {
+     "r1": [
+      "owncam_pf_v2:757f7f09"
+     ],
+     "r2": [
+      "owncam_pf_v2:757f7f09"
+     ],
+     "r3": [
+      "owncam_pf_v2:757f7f09"
+     ]
+    }
+   }
+  },
+  "E5": {
+   "pass": true,
+   "detail": {
+    "smoke-v3-s700": [
+     0,
+     10
+    ],
+    "smoke-v3-s701": [
+     0,
+     10
+    ]
+   }
+  },
+  "E6": {
+   "pass": true,
+   "detail": {
+    "smoke-v3-s700": 0,
+    "smoke-v3-s701": 0
+   }
+  },
+  "E7": {
+   "pass": true,
+   "detail": {
+    "smoke-v3-s700": {
+     "r1": [],
+     "r2": [],
+     "r3": []
+    },
+    "smoke-v3-s701": {
+     "r1": [],
+     "r2": [],
+     "r3": []
+    }
+   }
+  }
+ },
+ "smoke_pass": true,
+ "m1_style_success": "4/6",
+ "own_camera_confirmed": "4/6",
+ "v1_for_reference_not_pooled": {
+  "m1_style_success": "3/6",
+  "own_camera_confirmed": "3/6",
+  "source_sha": [
+   "4371f3686f0b52a6d513cdf77de5e8c5dde169b9"
+  ]
+ },
+ "v2_for_reference_not_pooled": {
+  "m1_style_success": "1/6",
+  "own_camera_confirmed": "1/6",
+  "source_sha": [
+   "a5b3687e4d770928e1f1469f53532ca1dc452591"
+  ]
+ },
+ "robots": [
+  {
+   "episode": "smoke-v3-s700",
+   "robot_id": "r1",
+   "order": "o2",
+   "pickup_slot": "P2-2",
+   "zone_slot": "C2",
+   "deliver_outcome": "SKILL_OWN_RGB_PLACEMENT_IN_SLOT",
+   "confirmation": "own_camera_confirmed",
+   "deliver_sim_s": [
+    121.4,
+    463.426
+   ],
+   "deliver_duration_s": 342.03,
+   "m1_success": true,
+   "m1_failed_checks": [],
+   "diagnostic_success": true,
+   "false_success": false,
+   "events": [
+    "job_started",
+    "job_done",
+    "job_started",
+    "pose_uncertain",
+    "pose_uncertain",
+    "job_done"
+   ],
+   "gt_assigned_box_in_slot": true,
+   "contact_steps": {
+    "box": 735070
+   },
+   "retention": {
+    "carry_steps": 677014,
+    "both_finger_steps": 677014,
+    "low_box_steps": 0,
+    "min_box_z_m": 0.08471252729013776
+   },
+   "pose_error_eval_only": {
+    "n": 3348,
+    "p50": 0.01454,
+    "p90": 0.05649
+   },
+   "frames": 3348,
+   "commands": 6062,
+   "exception": null,
+   "guards": {
+    "pose_uncertain_events": 2,
+    "gate_transitions": 5,
+    "confirmed_while_gate_uncertain": [],
+    "sweeps_restricted": 3,
+    "sweep_backoffs": 1,
+    "m1_sweeps_restricted": 0,
+    "stall_recoveries": 0,
+    "blocked_legs": 0,
+    "near_clip_retreats": 0,
+    "cancellations": []
+   }
+  },
+  {
+   "episode": "smoke-v3-s700",
+   "robot_id": "r2",
+   "order": "o3",
+   "pickup_slot": "P2-1",
+   "zone_slot": "B2",
+   "deliver_outcome": "SKILL_OWN_RGB_PLACEMENT_IN_SLOT",
+   "confirmation": "own_camera_confirmed",
+   "deliver_sim_s": [
+    241.4,
+    650.348
+   ],
+   "deliver_duration_s": 408.95,
+   "m1_success": true,
+   "m1_failed_checks": [],
+   "diagnostic_success": true,
+   "false_success": false,
+   "events": [
+    "job_started",
+    "job_done",
+    "job_started",
+    "pose_uncertain",
+    "blockage_seen",
+    "pose_uncertain",
+    "job_done"
+   ],
+   "gt_assigned_box_in_slot": true,
+   "contact_steps": {
+    "box": 1095068
+   },
+   "retention": {
+    "carry_steps": 1036988,
+    "both_finger_steps": 1036988,
+    "low_box_steps": 0,
+    "min_box_z_m": 0.0846035502211114
+   },
+   "pose_error_eval_only": {
+    "n": 3352,
+    "p50": 0.04486,
+    "p90": 0.10727
+   },
+   "frames": 3352,
+   "commands": 6926,
+   "exception": null,
+   "guards": {
+    "pose_uncertain_events": 2,
+    "gate_transitions": 5,
+    "confirmed_while_gate_uncertain": [],
+    "sweeps_restricted": 3,
+    "sweep_backoffs": 1,
+    "m1_sweeps_restricted": 0,
+    "stall_recoveries": 0,
+    "blocked_legs": 0,
+    "near_clip_retreats": 0,
+    "cancellations": []
+   }
+  },
+  {
+   "episode": "smoke-v3-s700",
+   "robot_id": "r3",
+   "order": "o1",
+   "pickup_slot": "P1-3",
+   "zone_slot": "A2",
+   "deliver_outcome": "SKILL_GRASP_TARGET_NOT_VISIBLE",
+   "confirmation": "failed",
+   "deliver_sim_s": [
+    1.3,
+    97.2
+   ],
+   "deliver_duration_s": 95.9,
+   "m1_success": false,
+   "m1_failed_checks": [
+    "skill_claims_in_slot",
+    "gt_box_in_slot",
+    "look_back_pose_gate_ok",
+    "grasp_physical_both_fingers",
+    "box_retained_in_carry"
+   ],
+   "diagnostic_success": false,
+   "false_success": false,
+   "events": [
+    "job_started",
+    "job_failed"
+   ],
+   "gt_assigned_box_in_slot": false,
+   "contact_steps": {},
+   "retention": {
+    "carry_steps": 0,
+    "both_finger_steps": 0,
+    "low_box_steps": 0,
+    "min_box_z_m": null
+   },
+   "pose_error_eval_only": {
+    "n": 3270,
+    "p50": 0.00234,
+    "p90": 0.01664
+   },
+   "frames": 3270,
+   "commands": 1197,
+   "exception": null,
+   "guards": {
+    "pose_uncertain_events": 0,
+    "gate_transitions": 1,
+    "confirmed_while_gate_uncertain": [],
+    "sweeps_restricted": 0,
+    "sweep_backoffs": 0,
+    "m1_sweeps_restricted": 0,
+    "stall_recoveries": 0,
+    "blocked_legs": 0,
+    "near_clip_retreats": 1,
+    "cancellations": []
+   }
+  },
+  {
+   "episode": "smoke-v3-s701",
+   "robot_id": "r1",
+   "order": "o3",
+   "pickup_slot": "P2-1",
+   "zone_slot": "B2",
+   "deliver_outcome": "SEARCH_LEG_blocked",
+   "confirmation": "failed",
+   "deliver_sim_s": [
+    241.4,
+    423.6
+   ],
+   "deliver_duration_s": 182.2,
+   "m1_success": false,
+   "m1_failed_checks": [
+    "pickup_from_own_rgb",
+    "skill_claims_in_slot",
+    "gt_box_in_slot",
+    "look_back_pose_gate_ok",
+    "grasp_physical_both_fingers",
+    "box_retained_in_carry"
+   ],
+   "diagnostic_success": false,
+   "false_success": false,
+   "events": [
+    "job_started",
+    "job_done",
+    "job_started",
+    "pose_uncertain",
+    "pose_uncertain",
+    "pose_uncertain",
+    "pose_uncertain",
+    "pose_uncertain",
+    "blockage_seen",
+    "job_failed"
+   ],
+   "gt_assigned_box_in_slot": false,
+   "contact_steps": {
+    "box": 229734
+   },
+   "retention": {
+    "carry_steps": 0,
+    "both_finger_steps": 0,
+    "low_box_steps": 0,
+    "min_box_z_m": null
+   },
+   "pose_error_eval_only": {
+    "n": 2764,
+    "p50": 0.08188,
+    "p90": 0.1111
+   },
+   "frames": 2764,
+   "commands": 2546,
+   "exception": null,
+   "guards": {
+    "pose_uncertain_events": 5,
+    "gate_transitions": 11,
+    "confirmed_while_gate_uncertain": [],
+    "sweeps_restricted": 1,
+    "sweep_backoffs": 0,
+    "m1_sweeps_restricted": 0,
+    "stall_recoveries": 0,
+    "blocked_legs": 1,
+    "near_clip_retreats": 0,
+    "cancellations": []
+   }
+  },
+  {
+   "episode": "smoke-v3-s701",
+   "robot_id": "r2",
+   "order": "o1",
+   "pickup_slot": "P1-3",
+   "zone_slot": "A2",
+   "deliver_outcome": "SKILL_OWN_RGB_PLACEMENT_IN_SLOT",
+   "confirmation": "own_camera_confirmed",
+   "deliver_sim_s": [
+    1.3,
+    302.597
+   ],
+   "deliver_duration_s": 301.3,
+   "m1_success": true,
+   "m1_failed_checks": [],
+   "diagnostic_success": true,
+   "false_success": false,
+   "events": [
+    "job_started",
+    "pose_uncertain",
+    "blockage_seen",
+    "pose_uncertain",
+    "job_done"
+   ],
+   "gt_assigned_box_in_slot": true,
+   "contact_steps": {
+    "box": 803887
+   },
+   "retention": {
+    "carry_steps": 746094,
+    "both_finger_steps": 746094,
+    "low_box_steps": 0,
+    "min_box_z_m": 0.08508810406334437
+   },
+   "pose_error_eval_only": {
+    "n": 2860,
+    "p50": 0.00603,
+    "p90": 0.04283
+   },
+   "frames": 2860,
+   "commands": 5488,
+   "exception": null,
+   "guards": {
+    "pose_uncertain_events": 2,
+    "gate_transitions": 5,
+    "confirmed_while_gate_uncertain": [],
+    "sweeps_restricted": 2,
+    "sweep_backoffs": 1,
+    "m1_sweeps_restricted": 0,
+    "stall_recoveries": 0,
+    "blocked_legs": 0,
+    "near_clip_retreats": 0,
+    "cancellations": []
+   }
+  },
+  {
+   "episode": "smoke-v3-s701",
+   "robot_id": "r3",
+   "order": "o2",
+   "pickup_slot": "P1-2",
+   "zone_slot": "C2",
+   "deliver_outcome": "SKILL_OWN_RGB_PLACEMENT_IN_SLOT",
+   "confirmation": "own_camera_confirmed",
+   "deliver_sim_s": [
+    121.4,
+    553.544
+   ],
+   "deliver_duration_s": 432.14,
+   "m1_success": true,
+   "m1_failed_checks": [],
+   "diagnostic_success": true,
+   "false_success": false,
+   "events": [
+    "job_started",
+    "job_done",
+    "job_started",
+    "pose_uncertain",
+    "pose_uncertain",
+    "pose_uncertain",
+    "job_done"
+   ],
+   "gt_assigned_box_in_slot": true,
+   "contact_steps": {
+    "box": 1006235
+   },
+   "retention": {
+    "carry_steps": 949068,
+    "both_finger_steps": 949068,
+    "low_box_steps": 0,
+    "min_box_z_m": 0.08422914676407864
+   },
+   "pose_error_eval_only": {
+    "n": 2904,
+    "p50": 0.03,
+    "p90": 0.08757
+   },
+   "frames": 2904,
+   "commands": 7125,
+   "exception": null,
+   "guards": {
+    "pose_uncertain_events": 3,
+    "gate_transitions": 7,
+    "confirmed_while_gate_uncertain": [],
+    "sweeps_restricted": 3,
+    "sweep_backoffs": 1,
+    "m1_sweeps_restricted": 0,
+    "stall_recoveries": 0,
+    "blocked_legs": 0,
+    "near_clip_retreats": 1,
+    "cancellations": []
+   }
+  }
+ ],
+ "runs": {
+  "smoke-v3-s700": {
+   "run": {
+    "outcome": "STUDY_LAYER_DONE",
+    "sim_s": 650.848
+   },
+   "wall_s": 4347.1,
+   "load_average": {
+    "start": [
+     60.52,
+     64.36,
+     60.46
+    ],
+    "end": [
+     19.17,
+     29.56,
+     42.67
+    ]
+   }
+  },
+  "smoke-v3-s701": {
+   "run": {
+    "outcome": "STUDY_LAYER_DONE",
+    "sim_s": 554.044
+   },
+   "wall_s": 3912.7,
+   "load_average": {
+    "start": [
+     60.52,
+     64.36,
+     60.46
+    ],
+    "end": [
+     28.94,
+     39.88,
+     53.41
+    ]
+   }
+  }
+ }
+}
