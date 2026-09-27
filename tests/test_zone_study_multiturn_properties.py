@@ -230,10 +230,18 @@ def signature(trial, requests):
     }
 
 
-@pytest.mark.parametrize('seed', range(300))
-def test_no_comm_bitwise_equivalent_to_frozen_v64(v64, seed):
+@pytest.fixture(scope='module')
+def no_comm_baseline(seed):
+    # Both properties inspect the same finished run without advancing/mutating
+    # it. Module-scoped seed grouping keeps only one baseline alive at a time.
+    # Real payload validation, fake wire, 900 ticks and all assertions remain.
+    return run_stream(seed)
+
+
+@pytest.mark.parametrize('seed', range(300), scope='module')
+def test_no_comm_bitwise_equivalent_to_frozen_v64(v64, seed, no_comm_baseline):
     old, old_requests = run_stream(seed, trial_cls=v64)
-    new, new_requests = run_stream(seed)
+    new, new_requests = no_comm_baseline
     assert signature(new, new_requests) == signature(old, old_requests), seed
     assert all(row['cause'] == 'common' for row in new.scheduler.call_causes.values())
 
@@ -279,9 +287,9 @@ def common_schedule(trial):
              by_id.get(r['retry_of'])) for r in rows]
 
 
-@pytest.mark.parametrize('seed', range(300))
-def test_three_communication_conditions_keep_common_schedule(seed):
-    baseline, _ = run_stream(seed)
+@pytest.mark.parametrize('seed', range(300), scope='module')
+def test_three_communication_conditions_keep_common_schedule(seed, no_comm_baseline):
+    baseline, _ = no_comm_baseline
     expected = common_schedule(baseline)
     for condition in zi.MAIN_CONDITIONS[1:]:
         trial, _ = run_stream(seed, condition, communication=True)
