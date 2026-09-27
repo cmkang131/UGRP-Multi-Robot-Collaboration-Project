@@ -1,5 +1,6 @@
 """M2 door v3: low-light lift co-motion check (recorded own frames), runner flags, jaw intervention port."""
 import base64
+import importlib.util
 import json
 import subprocess
 import sys
@@ -44,15 +45,19 @@ def test_band_not_admitted_by_low_brightness_floor():
 
 
 def test_runner_status_channel_default_on_and_help_text():
-    out = subprocess.run([sys.executable, str(ROOT / 'scripts' / 'run_m2_pair.py'), '--help'],
-                         capture_output=True, text=True, check=True).stdout
-    assert 'pending' not in out.lower() and 'candidate' not in out.lower()
-    assert '--status-channel {on,off}' in out and 'v3' in out and '--inject-open-at-lift' in out
+    # main() imports MuJoCo before building the parser, so --help needs the simulation extra;
+    # the offline CI environment (requirements-test.txt) checks the parser source below instead.
+    if importlib.util.find_spec('mujoco') is not None:
+        out = subprocess.run([sys.executable, str(ROOT / 'scripts' / 'run_m2_pair.py'), '--help'],
+                             capture_output=True, text=True, check=True).stdout
+        assert 'pending' not in out.lower() and 'candidate' not in out.lower()
+        assert '--status-channel {on,off}' in out and 'v3' in out and '--inject-open-at-lift' in out
     sys.path.insert(0, str(ROOT))
     import scripts.run_m2_pair as rm
     import inspect
     src = inspect.getsource(rm.main)
     assert "'--status-channel', choices=('on', 'off'), default='on'" in src
+    assert "'--inject-open-at-lift'" in src and "choices=('v1', 'v2', 'v3')" in src
 
 
 def test_stage2c_scenarios_match_generator_output():
