@@ -185,7 +185,7 @@ raise SystemExit(3 if a.fail else 0)
 
     def test_catalog_has_thirty_selectable_workflows_and_distinct_adapters(self):
         data, digest = wm.catalog(PROJECT)
-        self.assertEqual(len(data["workflows"]), 34)
+        self.assertEqual(len(data["workflows"]), 35)
         self.assertEqual(len(digest), 64)
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "dispatch-skills")["runner"], "scripts.run_dispatch_e2e")
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "communication")["output_kind"]["prepare"], "file")
@@ -199,6 +199,7 @@ raise SystemExit(3 if a.fail else 0)
         model.mkdir()
         (model / "weights.bin").write_bytes(b"fixture")
         samples = {
+            "zone-study-pilot": [],
             "local": ["run", str(PROJECT / "configs/simulation/drive.json"), "--headless"], "dispatch": ["--headless"],
             "dispatch-skills": ["--plan-replay", str(source), "--grasp-model-dir", str(model), "--stage-model-dir", str(model)],
             "communication": ["prepare", "--protocol", str(source)],
