@@ -15,9 +15,9 @@ from scripts import sim_slots as slots
 
 @pytest.mark.parametrize('signum', [signal.SIGINT, signal.SIGTERM])
 def test_interrupt_owned_descendant_after_leader_reaped(tmp_path, signum):
-    """Passes at 78945a3c; db8ed921 consumes signals without forwarding them."""
+    """Keep the legacy regression ID; round 6 now forbids that early reaping."""
     handlers, sent = {}, []
-    state = {'alive': True, 'sleeps': 0}
+    state = {'alive': True, 'sleeps': 0, 'exited': False}
     leader = ('leader-start', 222, 222, 'live')
     descendant = ('descendant-start', 222, 222, 'live')
 
@@ -26,8 +26,10 @@ def test_interrupt_owned_descendant_after_leader_reaped(tmp_path, signum):
         returncode = None
 
         def poll(self):
+            assert not state['alive'], 'must keep leader pinned until descendants stop'
             self.returncode = 0
             return 0
+        wait = poll
 
     child = Child()
 
@@ -38,18 +40,23 @@ def test_interrupt_owned_descendant_after_leader_reaped(tmp_path, signum):
 
     def members(pgid):
         assert pgid == child.pid
-        return ({222: leader} if child.returncode is None else {}) | (
+        return ({222: leader} if not state['exited'] else {}) | (
             {333: descendant} if state['alive'] else {})
 
+    def exited(_pid):
+        state['exited'] = True
+        return True
+
     def send(pid, sig):
-        assert pid in (222, 333) and sig == signum
+        assert pid == 222 and sig == signum
+        assert child.returncode is None, 'PGID must be pinned during signalling'
         sent.append((pid, sig))
         state['alive'] = False
 
     def sleep(_seconds):
         state['sleeps'] += 1
         assert state['sleeps'] <= 3, 'wrapper stuck: descendant received no interrupt'
-        assert child.returncode == 0  # signal arrives strictly AFTER reaping
+        assert child.returncode is None  # exited, deliberately NOT reaped
         handlers[signum](signum, None)
 
     slot = slots._try_slot(tmp_path, 1, {})
@@ -62,7 +69,8 @@ def test_interrupt_owned_descendant_after_leader_reaped(tmp_path, signum):
              mock.patch.object(slots, '_group_alive', side_effect=lambda _: state['alive']), \
              mock.patch.object(slots, '_group_members', side_effect=members, create=True), \
              mock.patch.object(slots, '_process_membership', return_value=descendant, create=True), \
-             mock.patch.object(slots.os, 'kill', side_effect=send), \
+             mock.patch.object(slots, '_child_exited', side_effect=exited), \
+             mock.patch.object(slots.os, 'kill', side_effect=AssertionError('individual PID signal')), \
              mock.patch.object(slots.os, 'killpg', side_effect=send), \
              mock.patch.object(slots.time, 'sleep', side_effect=sleep):
             assert slots.run_reserved(slot, ['fixture']) == 128 + signum
@@ -84,11 +92,16 @@ def test_unverified_descendants_error_without_signal_and_release_all_slots(tmp_p
     leader = ('leader-start', 222, 222, 'live')
     owned = ('descendant-start', 222, 222, 'live')
     child = types.SimpleNamespace(pid=222, returncode=None)
+    state = {'exited': False}
 
     def poll():
         child.returncode = 0
-        handlers[signal.SIGTERM](signal.SIGTERM, None)
         return 0
+
+    def exited(_pid):
+        state['exited'] = True
+        handlers[signal.SIGTERM](signal.SIGTERM, None)
+        return True
 
     child.poll = poll
 
@@ -98,7 +111,7 @@ def test_unverified_descendants_error_without_signal_and_release_all_slots(tmp_p
         return old
 
     def members(_pgid):
-        if child.returncode is None:
+        if not state['exited']:
             if case == 'initial_scan_error':
                 raise PermissionError('snapshot denied')
             if case == 'unobserved_descendant':
@@ -137,6 +150,7 @@ def test_unverified_descendants_error_without_signal_and_release_all_slots(tmp_p
                  else {'return_value': 'leader-start'})), \
              mock.patch.object(slots, '_group_members', side_effect=members), \
              mock.patch.object(slots, '_process_membership', side_effect=membership), \
+             mock.patch.object(slots, '_child_exited', side_effect=exited), \
              mock.patch.object(slots, '_group_alive', **(
                  {'side_effect': PermissionError('census denied')} if case == 'liveness_error'
                  else {'return_value': True})), \
@@ -161,7 +175,8 @@ def test_real_cli_interrupts_orphan_without_slot_fd(tmp_path, signum):
     """Real setsid/fork/identity/signal/flock; only admission census is isolated."""
     from test_sim_slots import isolated_cli
 
-    ready, stop, received, reaped = (tmp_path/name for name in ('ready', 'stop', 'received', 'reaped'))
+    ready, stop, received, exited, reaped = (tmp_path/name for name in
+                                           ('ready', 'stop', 'received', 'exited', 'reaped'))
     child_code = f'''
 import json, os, signal, sys, time
 from pathlib import Path
@@ -185,11 +200,22 @@ while not Path({str(stop)!r}).exists() and time.monotonic() < deadline:
     command = isolated_cli('--root', str(root), '--slots', '1', 'run',
                            '--owner', 'test', '--', sys.executable, '-c', parent_code)
     observer = f'''
+original_exited = s._child_exited
+def observe_exit(pid):
+    done = original_exited(pid)
+    if done:
+        s.Path({str(exited)!r}).touch()
+    return done
+s._child_exited = observe_exit
 class ObservedPopen(s.subprocess.Popen):
     def poll(self):
         code = super().poll()
         if code is not None:
             s.Path({str(reaped)!r}).touch()
+        return code
+    def wait(self, *args, **kwargs):
+        code = super().wait(*args, **kwargs)
+        s.Path({str(reaped)!r}).touch()
         return code
 s.subprocess.Popen = ObservedPopen
 '''
@@ -198,10 +224,11 @@ s.subprocess.Popen = ObservedPopen
     wrapper = subprocess.Popen(command, stderr=subprocess.PIPE, text=True)
     try:
         deadline = time.monotonic() + 5
-        while not (ready.exists() and reaped.exists()) and wrapper.poll() is None and time.monotonic() < deadline:
+        while not (ready.exists() and exited.exists()) and wrapper.poll() is None and time.monotonic() < deadline:
             time.sleep(.01)
         assert ready.exists(), 'descendant did not become orphaned'
-        assert reaped.exists(), 'wrapper did not reap the launcher'
+        assert exited.exists(), 'wrapper did not observe launcher exit without reaping'
+        assert not reaped.exists(), 'wrapper must retain the zombie to pin PGID'
         info = json.loads(ready.read_text())
         assert info['group'] == info['session']
         assert info['pid'] != info['group']
@@ -210,6 +237,7 @@ s.subprocess.Popen = ObservedPopen
         wrapper.send_signal(signum)
         assert wrapper.wait(5) == 128 + signum, wrapper.stderr.read()
         assert received.read_text() == str(signum)
+        assert reaped.exists(), 'wrapper must reap the leader after group signalling'
         assert slots.held_count(root) == 0
     finally:
         stop.touch()  # graceful bounded cleanup also works against the broken baseline

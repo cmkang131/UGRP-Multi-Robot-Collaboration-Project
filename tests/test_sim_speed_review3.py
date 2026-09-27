@@ -24,13 +24,16 @@ def test_never_signal_reaped_group_even_when_pgid_reused(tmp_path, moment):
             self.returncode = 0  # simulate waitpid reaping before Python poll returns
             if moment == 'during_poll': handlers[signal.SIGTERM](signal.SIGTERM, None)
             return 0
+        def wait(self):
+            code = self.poll()
+            if moment == 'after_reap': handlers[signal.SIGTERM](signal.SIGTERM, None)
+            return code
     child = Child()
     def handler(sig, value):
         old = handlers.get(sig, signal.SIG_DFL)
         handlers[sig] = value
         return old
     def group_alive(pgid):
-        if moment == 'after_reap': handlers[signal.SIGTERM](signal.SIGTERM, None)
         return False
     slot = slots._try_slot(tmp_path, 1, {})
     slot.additional = []
@@ -39,6 +42,8 @@ def test_never_signal_reaped_group_even_when_pgid_reused(tmp_path, moment):
              mock.patch.object(slots.signal, 'signal', side_effect=handler), \
              mock.patch.object(slots, 'process_identity', return_value='original'), \
              mock.patch.object(slots.os, 'getpgid', return_value=222), \
+             mock.patch.object(slots, '_child_exited', return_value=True), \
+             mock.patch.object(slots, '_group_members', return_value={}), \
              mock.patch.object(slots, '_group_alive', side_effect=group_alive), \
              mock.patch.object(slots.os, 'killpg', side_effect=lambda *a: sent.append(a)):
             slots.run_reserved(slot, ['fixture'])
@@ -190,13 +195,16 @@ def test_signal_during_live_poll_is_deferred_until_ownership_checked(tmp_path, i
         returncode = None
         calls = 0
         def poll(self):
+            self.returncode = 0
+            return 0
+        wait = poll
+        def exited(self, pid):
             self.calls += 1
             if self.calls == 1:
                 handlers[signal.SIGTERM](signal.SIGTERM, None)
                 assert not sent  # handler may interrupt a reaping syscall; it cannot send here
-                return None
-            self.returncode = 0
-            return 0
+                return False
+            return True
     child = Child()
     def handler(sig, value):
         old = handlers.get(sig, signal.SIG_DFL)
@@ -209,6 +217,8 @@ def test_signal_during_live_poll_is_deferred_until_ownership_checked(tmp_path, i
              mock.patch.object(slots.signal, 'signal', side_effect=handler), \
              mock.patch.object(slots, 'process_identity', side_effect=starts), \
              mock.patch.object(slots.os, 'getpgid', return_value=222), \
+             mock.patch.object(slots, '_child_exited', side_effect=child.exited), \
+             mock.patch.object(slots, '_group_members', return_value={}), \
              mock.patch.object(slots, '_group_alive', return_value=False), \
              mock.patch.object(slots.os, 'killpg', side_effect=lambda *a: sent.append(a)):
             assert slots.run_reserved(slot, ['fixture']) == 128 + signal.SIGTERM

@@ -610,17 +610,74 @@ def _group_members(pgid: int) -> dict[int, tuple[str, int, int, str]]:
 
 
 def _owned_descendants(pgid: int, known: dict) -> dict:
-    """After reaping, only identities observed while our leader pinned PGID count."""
+    """Audit descendants while the exited, UNREAPED leader still pins PGID.
+
+    This is diagnostic, never authorization for signalling an individual PID.
+    A descendant can exit/reuse its PID or leave the group after any lookup.
+    """
     current = _group_members(pgid)
     live = {pid: member for pid, member in current.items() if member[3] != 'Z'}
     for pid, member in live.items():
         if pid not in known or member[:3] != known[pid][:3] or member[1:3] != (pgid, pgid):
             raise RuntimeError(f'unverified descendant PID {pid} in process group {pgid}')
+    for pid, member in known.items():
+        if pid in live:
+            continue
+        try:
+            latest = _process_membership(pid)
+        except (FileNotFoundError, ProcessLookupError):
+            continue
+        if latest[0] == member[0] and latest[3] != 'Z' and latest[1:3] != (pgid, pgid):
+            raise RuntimeError(f'descendant PID {pid} left process group {pgid}; '
+                               'detached descendants are not signalled')
     return live
 
 
+class _DarwinSiginfo(ctypes.Structure):
+    # Darwin sys/signal.h siginfo_t. Python <3.13 does not expose os.waitid
+    # on macOS, even though libc/kernel support WNOWAIT. Keep pointer/long
+    # alignment (including the sigval union) on both arm64 and x86_64.
+    _fields_ = [(name, ctypes.c_int) for name in ('si_signo', 'si_errno', 'si_code', 'si_pid')]
+    _fields_ += [('si_uid', ctypes.c_uint), ('si_status', ctypes.c_int),
+                ('si_addr', ctypes.c_void_p), ('si_value', ctypes.c_void_p),
+                ('si_band', ctypes.c_long), ('pad', ctypes.c_ulong * 7)]
+
+
+@functools.cache
+def _darwin_waitid():
+    libc = ctypes.CDLL('/usr/lib/libSystem.B.dylib', use_errno=True)
+    waitid = libc.waitid
+    waitid.argtypes = (ctypes.c_uint, ctypes.c_uint, ctypes.POINTER(_DarwinSiginfo), ctypes.c_int)
+    waitid.restype = ctypes.c_int
+    return waitid
+
+
+def _child_exited(pid: int) -> bool:
+    """Observe exit WITHOUT reaping. ECHILD is an ownership error, not exit.
+
+    run_reserved exclusively owns this direct child's wait operations. No
+    poll/wait/context-manager exit is allowed until group signalling is over.
+    """
+    options = os.WEXITED | os.WNOHANG | os.WNOWAIT
+    if hasattr(os, 'waitid'):
+        return os.waitid(os.P_PID, pid, options) is not None
+    if sys.platform != 'darwin':
+        raise RuntimeError('non-reaping waitid is required for safe group signalling')
+    while True:
+        info = _DarwinSiginfo()
+        if _darwin_waitid()(os.P_PID, pid, ctypes.byref(info), options) == 0:
+            return info.si_pid != 0
+        error = ctypes.get_errno()
+        if error != errno.EINTR:
+            raise OSError(error, os.strerror(error))
+
+
 def run_reserved(slot: Slot, cmd: list[str]) -> int:
-    """Wait for our work group, or raise on unverifiable descendant ownership."""
+    """Pin our PGID with an unreaped direct child until all signalling is over.
+
+    Requires exclusive wait ownership and default SIGCHLD (no external reaper
+    or SA_NOCLDWAIT). Descendants outside this session/group are unsupported.
+    """
     child = None
     interrupted = 0
     previous = {}
@@ -629,19 +686,27 @@ def run_reserved(slot: Slot, cmd: list[str]) -> int:
     pending_signal = 0
     descendants = {}
     ownership_error = None
+    exited = False
 
     def deliver_pending():
         nonlocal pending_signal
-        # poll()/waitpid can reap the leader before returning to Python. Clear
-        # can_signal BEFORE calling it, not after checking child.returncode.
-        # No group forwarding after reaping: a numeric PGID is no longer our handle.
+        # The handler only queues signals. This direct child remains unreaped
+        # throughout delivery, so its PID/PGID cannot be reused between checking
+        # membership and killpg. Never fall back to per-descendant os.kill.
         if pending_signal and child is not None and can_signal and child.returncode is None:
             signum, pending_signal = pending_signal, 0
             try:
                 if process_identity(child.pid) == leader_start and os.getpgid(child.pid) == child.pid:
                     os.killpg(child.pid, signum)
-            except (OSError, RuntimeError):
-                pass  # ownership unavailable: do not signal a possibly unrelated group
+            except ProcessLookupError:
+                # The leader may become a libproc-invisible zombie after the
+                # non-reaping wait reported it live. Keep the stop request for
+                # the exited-leader path; losing it would strand descendants.
+                if not pending_signal:
+                    pending_signal = signum
+            except (OSError, RuntimeError) as exc:
+                raise RuntimeError(f'cannot verify/signal unreaped group {child.pid}: {exc}; '
+                                   'releasing wrapper reservation') from exc
 
     def forward(signum, _frame):
         nonlocal interrupted, pending_signal
@@ -655,6 +720,9 @@ def run_reserved(slot: Slot, cmd: list[str]) -> int:
     try:
         if signal.getsignal(signal.SIGCHLD) != signal.SIG_DFL:
             raise RuntimeError('run_reserved requires default SIGCHLD ownership (no external reaper)')
+        print('sim_slots: detached descendants (setsid/setpgid) are outside the managed group; '
+              'they are not signalled and must retain a slot FD or reserve their own slot. '
+              'Detachment before observation cannot be detected.', file=sys.stderr, flush=True)
         child = subprocess.Popen(cmd, pass_fds=slot.fds, start_new_session=True)
         setup_error = None
         try:
@@ -668,14 +736,11 @@ def run_reserved(slot: Slot, cmd: list[str]) -> int:
             pass  # short command; still wait for its work group below
         except Exception as exc:
             setup_error = exc  # even failed bookkeeping cannot release live work
-        if interrupted:
-            deliver_pending()
         while True:
             can_signal = False
-            if child.returncode is None:
+            if not exited:
                 try:
-                    # Before poll can reap, our child pins its PID/PGID/session.
-                    # Record descendants now; a later matching PGID alone is unsafe.
+                    # The leader pins its PID/PGID/session, including as a zombie.
                     members = _group_members(child.pid)
                     leader = members.get(child.pid)
                     # macOS libproc omits zombies, but without poll/waitpid the
@@ -683,49 +748,66 @@ def run_reserved(slot: Slot, cmd: list[str]) -> int:
                     if leader_start is None or (leader is not None and leader[:3] != (
                             leader_start, child.pid, child.pid)):
                         raise RuntimeError(f'cannot verify unreaped leader PID {child.pid}')
-                    descendants = {pid: member for pid, member in members.items()
-                                   if pid != child.pid and member[1:3] == (child.pid, child.pid)}
+                    descendants.update({pid: member for pid, member in members.items()
+                                        if pid != child.pid and member[1:3] == (child.pid, child.pid)})
                     ownership_error = None
                 except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
                     descendants, ownership_error = {}, exc
-            code = child.poll()
-            if code is None:
+            try:
+                exited = _child_exited(child.pid)
+            except (OSError, RuntimeError) as exc:
+                raise RuntimeError(f'cannot verify unreaped leader PID {child.pid}: {exc}; '
+                                   'no signal sent; releasing wrapper reservation') from exc
+            if not exited:
                 can_signal = leader_start is not None
                 deliver_pending()
-            if code is not None:
+            if exited:
                 try:
                     alive = _group_alive(child.pid)
                 except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
                     raise RuntimeError(f'cannot verify descendant ownership for group {child.pid}: {exc}; '
                                        'no signal sent; releasing wrapper reservation') from exc
-                if not alive:
-                    if setup_error is not None:
-                        raise setup_error
-                    return 128 + interrupted if interrupted else code
                 try:
-                    if ownership_error is not None:
+                    if ownership_error is not None and alive:
                         raise ownership_error
                     live = _owned_descendants(child.pid, descendants)
-                    if pending_signal:
+                    if pending_signal and alive:
                         signum, pending_signal = pending_signal, 0
                         for pid, member in live.items():
                             try:
-                                # Revalidate immediately before each PID delivery;
-                                # never killpg using a reaped leader's number.
+                                # Audit only: even this last check can race with
+                                # PID reuse. The signal below targets the pinned
+                                # GROUP, never any PID returned by the snapshot.
                                 latest = _process_membership(pid)
                                 if latest[:3] != member[:3]:
                                     raise RuntimeError(f'descendant identity changed before signal: {pid}')
-                                if latest[3] != 'Z':
-                                    os.kill(pid, signum)
                             except (FileNotFoundError, ProcessLookupError):
                                 pass  # exited before delivery
+                        try:
+                            os.killpg(child.pid, signum)
+                        except ProcessLookupError:
+                            pass  # last live member exited; leader is still pinned
                 except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
                     raise RuntimeError(f'cannot verify/signal owned descendants for group {child.pid}: {exc}; '
                                        'refusing further signals; releasing wrapper reservation') from exc
+                if not alive:
+                    if setup_error is not None:
+                        raise setup_error
+                    # No more delivery after this point, including from handlers
+                    # invoked inside waitpid. Only now may the PGID be reused.
+                    code = child.wait()
+                    return 128 + interrupted if interrupted else code
             time.sleep(.05)
     finally:
-        for sig, handler in previous.items():
-            signal.signal(sig, handler)
+        can_signal = False
+        try:
+            if child is not None:
+                # Error paths must also leave no exited direct-child zombie. This
+                # nonblocking reap is safe ONLY because no further signals can run.
+                child.poll()
+        finally:
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
 
 
 def status(root: Path, slots: int) -> list[dict]:
