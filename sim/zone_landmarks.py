@@ -26,8 +26,11 @@ import xml.etree.ElementTree as ET
 
 from sim.research_dispatch_arena import digest
 from sim.session_scenes import ROOT
-from sim.zone_arena import MAP_DIR, authored_map, episode
+from sim.zone_arena import MAP_DIR, apply_wall_profile, authored_map, episode
 from sim.zone_scene import ZoneScene
+from sim.zone_tag_rule_v3 import PLACEMENT_V3, PLACEMENT_V3A1, RULE_ID as RULE_V3, RULE_ID_A1 as RULE_V3A1
+from sim.zone_tag_rule_v3 import pickup_bays as rule_v3_pickup_bays
+from sim.zone_tag_rule_v3 import place_tags_v3
 
 LANDMARK_SCHEMA = 'ugrp.zone_landmarks.v1'
 FAMILY = 'tag36h11'
@@ -41,11 +44,49 @@ OPENCV_DICTIONARY = 'DICT_APRILTAG_36h11'
 DEFAULT_PLACEMENT = {'size_m': .072, 'plate_m': .090, 'center_height_m': .050, 'spacing_m': .50,
                      'end_margin_m': .03, 'plate_thickness_m': .001, 'cell_thickness_m': .001,
                      'faces': 'interior walls: both faces; perimeter walls: inner face'}
+# 2026-09-25 v2 (PR #176 wrist carry-view study): with a box held, the wrist
+# camera sees only a ~10 deg band above the box, so near doors the robot needs
+# tags higher than the 0.10 m wall. Door posts: a 0.09 m wide, 0.30 m high
+# visual plate on the wall end 0.05 m outside each door edge, tags on both
+# faces at 0.15 m and 0.25 m. Wall-face tags stay (0.05 m) but are 0.30 m
+# apart within 1 m of a door. Posts are visual only in SIM; they stand on the
+# wall footprint, which every planner keeps out of anyway.
+PLACEMENT_V2 = {**DEFAULT_PLACEMENT, 'near_door_spacing_m': .30, 'near_door_radius_m': 1.0,
+                'door_posts': {'offset_from_edge_m': .05, 'width_m': .09, 'height_m': .30,
+                               'tag_center_heights_m': [.15, .25]}}
+POST_RGBA = '.23 .28 .33 1'
 TAGGED_MAPS = {
     'zone_wide_door_tags_v1': {'base': 'zone_wide_door', 'placement': DEFAULT_PLACEMENT},
     'zone_wide_two_doors_tags_v1': {'base': 'zone_wide_two_doors', 'placement': DEFAULT_PLACEMENT},
     'zone_wide_corridor_tags_v1': {'base': 'zone_wide_corridor', 'placement': DEFAULT_PLACEMENT},
+    'zone_wide_door_tags_v2': {'base': 'zone_wide_door', 'placement': PLACEMENT_V2},
+    'zone_wide_two_doors_tags_v2': {'base': 'zone_wide_two_doors', 'placement': PLACEMENT_V2},
 }
+# 2026-09-26 environment v3 (sim/zone_tag_rule_v3.py, experiments/2026-09-26-zone-env-v3):
+# a separate family. TAGGED_MAPS above keep their contract "base map content + a
+# landmarks block"; a v3 map is "base map + wall profile walls_v3 (every wall 0.40 m,
+# sim/zone_arena.WALL_PROFILES) + a sparse, site-based tag rule" (door frames, pickup
+# bays, zones, corridor sites) instead of a tag every 0.3-0.5 m. The raised wall itself
+# is the door frame, so there are no separate posts.
+ENV_V3_TAGGED_MAPS = {
+    'zone_wide_door_tags_v3': {'base': 'zone_wide_door', 'placement': PLACEMENT_V3, 'wall_profile': 'walls_v3',
+                               'version': 3},
+    'zone_wide_two_doors_tags_v3': {'base': 'zone_wide_two_doors', 'placement': PLACEMENT_V3,
+                                    'wall_profile': 'walls_v3', 'version': 3},
+    'zone_wide_corridor_tags_v3': {'base': 'zone_wide_corridor', 'placement': PLACEMENT_V3,
+                                   'wall_profile': 'walls_v3', 'version': 3},
+}
+# 2026-09-26 amendment A1 (experiments/2026-09-26-zone-env-v3/prereg_amendments.json), written after
+# the v3 loop test failed: the v3 sites unchanged (same tag ids and poses) plus door-approach and
+# door-flank sites (sim/zone_tag_rule_v3.PLACEMENT_V3A1). New files; the v3 files stay as published.
+# The corridor map has no door, so A1 would equal v3 there and gets no A1 file.
+ENV_V3A1_TAGGED_MAPS = {
+    'zone_wide_door_tags_v3a1': {'base': 'zone_wide_door', 'placement': PLACEMENT_V3A1, 'wall_profile': 'walls_v3',
+                                 'version': 3, 'amends': 'zone_wide_door_tags_v3'},
+    'zone_wide_two_doors_tags_v3a1': {'base': 'zone_wide_two_doors', 'placement': PLACEMENT_V3A1,
+                                      'wall_profile': 'walls_v3', 'version': 3, 'amends': 'zone_wide_two_doors_tags_v3'},
+}
+ALL_TAGGED_MAPS = {**TAGGED_MAPS, **ENV_V3_TAGGED_MAPS, **ENV_V3A1_TAGGED_MAPS}
 PLATE_RGBA = '.95 .95 .95 1'
 CELL_RGBA = '.02 .02 .02 1'
 
@@ -119,10 +160,13 @@ def _free_intervals(static, face):
 
 def place_tags(static, placement=DEFAULT_PLACEMENT):
     """Deterministic tag list for a static map (ids in wall/face/position order)."""
+    if placement.get('rule') in (RULE_V3, RULE_V3A1):
+        return place_tags_v3(static, placement)[0]
     size, plate = placement['size_m'], placement['plate_m']
     if plate < size or placement['center_height_m'] - plate/2 < 0:
         raise ValueError('plate must hold the tag and stay above the floor')
     margin = plate/2 + placement['end_margin_m']
+    doors = [p for p in static.get('passages', []) if p['kind'] == 'door']
     tags = []
     for face in _faces(static):
         wid, axis, coord, normal, _, _ = face
@@ -130,24 +174,101 @@ def place_tags(static, placement=DEFAULT_PLACEMENT):
             a, b = lo + margin, hi - margin
             if b < a:
                 continue
-            count = 1 if b - a < 1e-9 else math.ceil((b - a)/placement['spacing_m']) + 1
-            for i in range(count):
-                s = (a + b)/2 if count == 1 else a + (b - a)*i/(count - 1)
+            for s in _positions(a, b, placement, lambda v: (v, coord) if axis == 'x' else (coord, v),
+                                doors):
                 x, y = (s, coord) if axis == 'x' else (coord, s)
                 tags.append({'id': len(tags), 'wall': wid, 'normal_xy': list(normal),
                              'center_m': [round(x, 4), round(y, 4), placement['center_height_m']],
                              'yaw_rad': round(math.atan2(normal[1], normal[0]), 6), 'size_m': size})
+    for post in door_posts(static, placement):
+        for normal in ((-1, 0), (1, 0)) if post['axis'] == 'x' else ((0, -1), (0, 1)):
+            (cx, cy), (hx, hy) = post['center_m'], post['half_extents_m']
+            fx, fy = cx + normal[0]*hx, cy + normal[1]*hy
+            for z in placement['door_posts']['tag_center_heights_m']:
+                tags.append({'id': len(tags), 'wall': post['wall'], 'mount': 'door_post', 'post': post['id'],
+                             'normal_xy': list(normal), 'center_m': [round(fx, 4), round(fy, 4), z],
+                             'yaw_rad': round(math.atan2(normal[1], normal[0]), 6), 'size_m': size})
     return tags
 
 
+def _door_edges(door):
+    (cx, cy), half = door['center_m'], door['width_m']/2
+    return [(cx, cy - half), (cx, cy + half)] if door['axis'] == 'x' else [(cx - half, cy), (cx + half, cy)]
+
+
+def _positions(a, b, placement, point, doors):
+    """Tag positions along [a, b]: v1 uniform spacing, or v2 denser near doors."""
+    if 'near_door_spacing_m' not in placement:
+        count = 1 if b - a < 1e-9 else math.ceil((b - a)/placement['spacing_m']) + 1
+        return [(a + b)/2 if count == 1 else a + (b - a)*i/(count - 1) for i in range(count)]
+    if b - a < 1e-9:
+        return [(a + b)/2]
+    near = placement['near_door_radius_m']
+
+    def spacing(v):
+        xy = point(v)
+        close = any(math.dist(xy, e) <= near for d in doors for e in _door_edges(d))
+        return placement['near_door_spacing_m'] if close else placement['spacing_m']
+    # walk from the end nearer a door so the dense spacing starts at the door
+    forward = min((math.dist(point(a), e) for d in doors for e in _door_edges(d)), default=0.) <= \
+        min((math.dist(point(b), e) for d in doors for e in _door_edges(d)), default=0.)
+    out, v = [], a if forward else b
+    while (v <= b + 1e-9) if forward else (v >= a - 1e-9):
+        out.append(round(v, 6))
+        v = v + spacing(v) if forward else v - spacing(v)
+    end = b if forward else a
+    if abs(out[-1] - end) > .10:
+        out.append(end)
+    elif len(out) > 1:
+        out[-1] = end
+    return sorted(out)
+
+
+def door_posts(static, placement):
+    """Door-post plates (v2 placement only) on wall ends next to door edges."""
+    spec = placement.get('door_posts')
+    if not spec:
+        return []
+    posts = []
+    walls = [o for o in static['obstacles'] if o.get('kind') == 'wall']
+    for door in (p for p in static.get('passages', []) if p['kind'] == 'door'):
+        cx, cy = door['center_m']
+        half = door['width_m']/2
+        for sign in (-1, 1):
+            if door['axis'] == 'x':
+                center = (cx, cy + sign*(half + spec['offset_from_edge_m']))
+            else:
+                center = (cx + sign*(half + spec['offset_from_edge_m']), cy)
+            wall = next((w for w in walls if abs(center[0] - w['center_m'][0]) < w['half_extents_m'][0] - 1e-9
+                         and abs(center[1] - w['center_m'][1]) < w['half_extents_m'][1] - 1e-9), None)
+            if wall is None:
+                continue  # the opening reaches a perimeter wall: no post there
+            thick = wall['half_extents_m'][0] if door['axis'] == 'x' else wall['half_extents_m'][1]
+            half_xy = [thick, spec['width_m']/2] if door['axis'] == 'x' else [spec['width_m']/2, thick]
+            posts.append({'id': f"post_{door['id']}_{'lo' if sign < 0 else 'hi'}", 'door': door['id'],
+                          'wall': wall['id'], 'axis': door['axis'],
+                          'center_m': [round(center[0], 4), round(center[1], 4)],
+                          'half_extents_m': [round(v, 4) for v in half_xy], 'height_m': spec['height_m']})
+    return posts
+
+
 def build_tagged_map(name):
-    spec = TAGGED_MAPS[name]
+    spec = ALL_TAGGED_MAPS[name]
     base = authored_map(spec['base'])
-    tags = place_tags(base, spec['placement'])
-    value = copy.deepcopy(base)
-    value.update(map_id=name, version=1,
+    # v3: the wall profile raises the walls of a copy; the base map file stays unchanged.
+    static = apply_wall_profile(base, spec['wall_profile']) if spec.get('wall_profile') else base
+    v3 = spec['placement'].get('rule') in (RULE_V3, RULE_V3A1)
+    if v3:
+        tags, sites, merged = place_tags_v3(static, spec['placement'])
+    else:
+        tags = place_tags(base, spec['placement'])
+    value = copy.deepcopy(static)
+    value.update(map_id=name, version=spec.get('version', 1),
                  base_map={'map_id': base['map_id'], 'version': base['version'],
                            'static_map_sha256': digest(base)})
+    if spec.get('amends'):
+        amended = json.loads((MAP_DIR/(spec['amends']+'.json')).read_text())
+        value['amends'] = {'map_id': spec['amends'], 'static_map_sha256': digest(amended)}
     value['landmarks'] = {
         'schema': LANDMARK_SCHEMA, 'family': FAMILY, 'opencv_dictionary': OPENCV_DICTIONARY,
         'dictionary_bits_sha256': dictionary_digest([t['id'] for t in tags]),
@@ -156,12 +277,17 @@ def build_tagged_map(name):
                       '(the side a camera sees it from); tag x = image right seen from the front, '
                       'tag y = up; size_m = outer black square'),
         'tags': tags}
+    if v3:
+        value['landmarks'].update(sites=sites, merged_sites=merged, pickup_bays=rule_v3_pickup_bays(static))
+    posts = door_posts(base, spec['placement'])
+    if posts:
+        value['landmarks']['door_posts'] = posts
     return value
 
 
 def tagged_map(name):
     """The committed tagged map; refuses drift from its definition or base map."""
-    if name not in TAGGED_MAPS:
+    if name not in ALL_TAGGED_MAPS:
         raise ValueError(f'unknown tagged zone map: {name}')
     value = json.loads((MAP_DIR/(name+'.json')).read_text())
     if value != build_tagged_map(name):
@@ -171,10 +297,10 @@ def tagged_map(name):
 
 def write_tagged_maps():
     """Author the JSON files once (used when a new version is created)."""
-    for name in TAGGED_MAPS:
+    for name in ALL_TAGGED_MAPS:
         path = MAP_DIR/(name+'.json')
         if path.exists():
-            raise FileExistsError(f'{path} exists; create a new version instead of overwriting')
+            continue  # never overwrite a published version (tagged_map() verifies it)
         path.write_text(json.dumps(build_tagged_map(name), indent=2) + '\n')
 
 
@@ -195,6 +321,10 @@ def add_tag_geoms(xml, static):
     block = static['landmarks']
     placement = block['placement']
     count = 0
+    for post in block.get('door_posts', []):
+        (cx, cy), (hx, hy) = post['center_m'], post['half_extents_m']
+        _box(world, f"tag_{post['id']}", (cx, cy, post['height_m']/2), (hx, hy, post['height_m']/2), POST_RGBA)
+        count += 1
     for tag in block['tags']:
         nx, ny = tag['normal_xy']
         cx, cy, cz = tag['center_m']
@@ -243,10 +373,10 @@ class TaggedZoneScene(ZoneScene):
 
     def _resolve(self):
         family, name = self.selection.split('/', 1)
-        if family != 'zones' or name not in TAGGED_MAPS:
+        if family != 'zones' or name not in ALL_TAGGED_MAPS:
             raise ValueError(f'unknown tagged zone scene: {self.selection}')
         self._read(MAP_DIR/(name+'.json'))
-        base = TAGGED_MAPS[name]['base']
+        base = ALL_TAGGED_MAPS[name]['base']
         self._read(MAP_DIR/(base+'.json'))
         params = self.scene.get('params') or {}
         config = episode(base, self.scene['seed'], goal=params['goal'], extra_boxes=params.get('extra_boxes'))
@@ -269,4 +399,6 @@ class TaggedZoneScene(ZoneScene):
             landmarks_sha256=landmarks_digest(static),
             tag_count=len(static['landmarks']['tags']), tag_geoms=count,
             tag_geom_physics='visual only: contype=0 conaffinity=0 mass=0')
+        if static.get('wall_profile'):
+            self.manifest['wall_profile'] = copy.deepcopy(static['wall_profile'])
         return xml
