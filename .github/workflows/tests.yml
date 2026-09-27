@@ -54,7 +54,8 @@ jobs:
 
   offline-regressions:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # 2026-09-27: the suite reached 9m38s (#194) and one run was cancelled at the 10 min limit (#238).
+    timeout-minutes: 20
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
