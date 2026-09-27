@@ -226,11 +226,28 @@ class PairCommandGuard:
         """
         own = self.ep.own
         pose = self._pose(now)
-        return bool(now > stopped_at and own.last_report.initialized
-                    and pose_report_fresh(own.last_report, now)
-                    and report_at_or_after(own.last_report, stopped_at) and stopped_at >= self.motion_until
-                    and own.gate.ok and pose is not None and not self._high(pose)
-                    and self.stationary_pose is pose)
+        report = own.last_report
+        checks = {
+            'after_stop': now > stopped_at,
+            'initialized': report is not None and report.initialized,
+            'report_fresh': pose_report_fresh(report, now),
+            'report_after_stop': report_at_or_after(report, stopped_at),
+            # Both are raw SIM times: only quantized REPORT comparisons above
+            # have the existing 1e-4 s tolerance. Never soften raw fix bounds.
+            'motion_ended_at_stop': stopped_at >= self.motion_until,
+            'gate_ok': own.gate.ok,
+            'pose_present': pose is not None,
+            'pose_bounded': pose is not None and not self._high(pose),
+            'stationary_pose_current': pose is not None and self.stationary_pose is pose,
+        }
+        ready = all(checks.values())
+        if not ready:
+            self.ep.log(own.robot_id, 'align_relook_stop_wait', now, checks=checks,
+                        failed_checks=[k for k, ok in checks.items() if not ok],
+                        stopped_at_s=stopped_at,
+                        motion_until_s=self.motion_until if math.isfinite(self.motion_until) else None,
+                        report_t=None if report is None else report.t_est)
+        return ready
 
     def on_command(self, row):
         self.beam_track.command(row, self.ep.own.servo)

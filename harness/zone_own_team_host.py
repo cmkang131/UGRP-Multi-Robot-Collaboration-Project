@@ -217,12 +217,15 @@ class OwnCamTeamHost:
         slot.executor.on_command(row)
 
     def _apply(self, rid, action, now):
-        row = {'t': round(float(now), 4), **action}
+        # This row is a control input, not just a display log. Use the same raw
+        # SIM clock as captures, holds and relook starts (including downstream
+        # motion/settling deadlines and monotonic command integrators).
+        row = {**action, 't': float(now)}
         self._sink(rid, row)
         self.robots[rid].port.apply(action, now)
 
     def _hold(self, rid, now):
-        self._sink(rid, {'t': round(float(now), 4), 'kind': 'hold'})
+        self._sink(rid, {'t': float(now), 'kind': 'hold'})
         self.robots[rid].port.hold(now)
 
     def _drop_scheduled(self, rid, now, why):

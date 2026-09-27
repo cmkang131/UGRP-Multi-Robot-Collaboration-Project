@@ -38,6 +38,7 @@ PREREG_V5D = PREREG.with_name('prereg_v5d.json')
 PREREG_V5E = PREREG.with_name('prereg_v5e.json')
 PREREG_V5F = PREREG.with_name('prereg_v5f.json')
 PREREG_V5G = PREREG.with_name('prereg_v5g.json')
+PREREG_V5H = PREREG.with_name('prereg_v5h.json')
 MAP = ROOT / 'maps/zones/zone_wide_door_tags_v2.json'
 CALIBRATION = ROOT / 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'
 PARTICIPANTS = ('r1', 'r2')
@@ -114,7 +115,7 @@ def load_config(args):
         raise ValueError('this driver is for preregistered dev only')
     version = prereg.get('registration_version')
     revision = prereg.get('registration_revision')
-    if revision is not None and (version != 5 or revision not in ('v5b', 'v5c', 'v5d', 'v5e', 'v5f', 'v5g')):
+    if revision is not None and (version != 5 or revision not in ('v5b', 'v5c', 'v5d', 'v5e', 'v5f', 'v5g', 'v5h')):
         raise ValueError('unsupported prereg revision')
     from scripts.zone_pair_authorization import validate_authorization
     validate_authorization(prereg)
@@ -134,7 +135,7 @@ def load_config(args):
         if {k: v for k, v in prereg['stage_rules'].items() if k != 'admission_diagnostics'} != v2['stage_rules']:
             raise ValueError('v3 must preserve v2 stage rules')
         readiness = prereg.get('execution_readiness', {})
-        readiness_status = ('AWAITING_EXECUTION_AUTHORIZATION' if revision in ('v5f', 'v5g') else
+        readiness_status = ('AWAITING_EXECUTION_AUTHORIZATION' if revision in ('v5f', 'v5g', 'v5h') else
                             'PREPARE_ONLY_REVIEW_HOLD' if revision in ('v5d', 'v5e') else 'READY_AFTER_SOURCE_FREEZE')
         if (readiness.get('status') != readiness_status
                 or readiness.get('spawn_change_applied') is not True
@@ -167,6 +168,8 @@ def load_config(args):
         previous_path = PREREG_V5E
     elif revision == 'v5g':
         previous_path = PREREG_V5F
+    elif revision == 'v5h':
+        previous_path = PREREG_V5G  # executed dev11/12 remain immutable
     previous = {'path': str(previous_path.relative_to(ROOT)), 'sha256': sha_file(previous_path)}
     if prereg.get('supersedes') != previous:
         raise ValueError('previous prereg hash mismatch')
@@ -186,6 +189,8 @@ def load_config(args):
                      4: [('dev07', 903), ('dev08', 904)], 5: [('dev09', 905), ('dev10', 906)]}[version]
     if revision in ('v5c', 'v5d', 'v5e', 'v5f', 'v5g'):
         expected_runs = [('dev11', 907), ('dev12', 908)]
+    elif revision == 'v5h':
+        expected_runs = [('dev13', 909), ('dev14', 910)]
     if [(r['id'], r['seed']) for r in rows] != expected_runs:
         raise ValueError(f'v{version} fixes {expected_runs}; do not reuse prior IDs')
     limits = prereg['limits']

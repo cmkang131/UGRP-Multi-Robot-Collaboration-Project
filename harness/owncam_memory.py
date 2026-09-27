@@ -534,7 +534,9 @@ class OwnCamMemory:
             for o in obs:
                 self.observations.append(o.as_dict())
                 self.obs_by_type[o.landmark_type] = self.obs_by_type.get(o.landmark_type, 0) + 1
-            self.last_fix = {'t': round(float(now), 3), 'frame_id': int(frame_id), 'posture': posture,
+            # Used by look_fix_since/fresh in v2/v3: preserve raw capture time,
+            # just like LandmarkObservation.t, instead of rounding a control input.
+            self.last_fix = {'t': float(now), 'frame_id': int(frame_id), 'posture': posture,
                              'landmarks': sorted({o.landmark_id for o in obs}), 'provider': self.provider.name,
                              'interim': bool(self.provider.interim), 'xyyaw': [round(float(v), 4) for v in pose],
                              'std_xy_m': round(report.std_xy_m, 4), 'std_yaw_rad': round(report.std_yaw_rad, 5)}

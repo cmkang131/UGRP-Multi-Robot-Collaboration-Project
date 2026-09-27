@@ -605,10 +605,16 @@ class ControllerAndBoundaryTests(unittest.TestCase):
             names = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name)} | {n.attr for n in ast.walk(tree) if isinstance(n, ast.Attribute)}
             self.assertFalse(names & forbidden, str(p))
 
-    def test_v2_files_and_recorded_experiments_remain_byte_identical(self):
+    def test_v2_records_preserved_with_explicit_v5h_clock_successor(self):
         record = json.loads((ROOT/'experiments/2026-09-27-zone-owncam-memory-v3/v2_preservation.json').read_text())
+        # PR #240 v5h audit: last_fix/last_look_fix are control inputs, so keep
+        # raw capture time. Historical v2 hashes/results remain untouched;
+        # this exact successor does not inherit their experiment qualification.
+        successors = {'harness/owncam_memory.py':
+                      'c33ac377c6eb5a4b9b6917520914b2009cfcfe75fa380b042dde6c9c0938b67b'}
         for name, sha in record['sha256'].items():
-            self.assertEqual(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(), sha, name)
+            self.assertIn(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),
+                          {sha, successors.get(name)}, name)
 
     def test_runner_selects_all_versions_and_draft_is_refused_before_launch(self):
         from scripts import run_m1_owncam_memory_v3 as runner
