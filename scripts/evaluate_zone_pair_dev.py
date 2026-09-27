@@ -7,6 +7,7 @@ outer result only points here so GT is not copied into controller inputs.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -48,6 +49,12 @@ def audit_protocol(status, commands, shutdown, required_go=(), *, require_abort=
         if set(times) != set(PAIR) or max(times.values()) - min(times.values()) > 1e-8:
             go_errors.append({'task_id': task, 'state': state, 'times': times})
     missing = sorted(set(required_go) - {s for _, s in first})
+    # Only a single task with paired, simultaneous consumption can authorize a
+    # planned set-down interval. Keep these command times separate from GT.
+    go_times = {state: times['r1'] for (_, state), times in first.items()
+                if set(times) == set(PAIR) and max(times.values()) - min(times.values()) <= 1e-8}
+    if malformed or len({task for task, _ in first}) != 1:
+        go_times = {}
     abort_times = [m['sent_at_s'] for m in status if m['state'] == 'abort']
     aborted = bool(abort_times)
     invalid_commands = any(type(c.get('after_abort')) is not bool for c in commands)
@@ -63,16 +70,44 @@ def audit_protocol(status, commands, shutdown, required_go=(), *, require_abort=
     abort_ok = (queues_empty and post_observed and not after) if aborted else not require_abort
     return {'ok': not go_errors and not missing and abort_ok and not invalid_commands and not malformed,
             'go_seen': bool(first), 'go_pairs': len(first), 'go_errors': go_errors, 'missing_go': missing,
+            'go_times': go_times,
             'abort_seen': aborted, 'abort_check': 'checked' if aborted else 'not_exercised',
             'abort_queues_empty': queues_empty if aborted else None,
             'post_abort_observation_complete': post_observed if aborted else None,
             'post_abort_motion_count': len(after), 'command_order_metadata_complete': not invalid_commands}
 
 
+def planned_setdown(row, prereg, protocol):
+    """Evaluation-only exemption for an authorized, stationary route checkpoint.
+
+    A state name alone is insufficient: both robots must be in the matching
+    segment, within the paired lower-GO -> next carry-GO window and near its
+    preregistered static target. Tilt, penetration and forbidden contacts are
+    never exempt. The last target is destination placement, not a regrasp.
+    """
+    c, go = prereg['criteria'], protocol.get('go_times', {})
+    targets = prereg['planned_setdown']['route_endpoints_m']
+    for i, target in enumerate(targets):
+        final = i == len(targets) - 1
+        start, end = go.get(f'lower_go_{i}'), go.get(f'carry_go_{i + 1}')
+        if start is None or row['t'] < start or (not final and (end is None or row['t'] >= end)):
+            continue
+        same_segment = {'lower', 'wait_open', 'released', 'done'} if final else {'lower', 'wait_open', 'cp_open'}
+        regrasp = {'pregrasp_look', 'grasp', 'wait_lift', 'lift', 'wait_carry'}
+        if not all((row['segments'][r] == i and row['states'][r] in same_segment) or
+                   (not final and row['segments'][r] == i + 1 and row['states'][r] in regrasp) for r in PAIR):
+            continue
+        if (math.dist(row['beam_xyz'][:2], target) <= c['planned_setdown_xy_m']
+                and row['tilt_deg'] <= c['max_transport_tilt_deg']
+                and min(p[2] for p in row['beam_corners']) >= -c['floor_penetration_tolerance_m']):
+            return i
+    return None
+
+
 def score(manifest, prereg, rows, contacts, protocol, *, video_review=None):
     """Pure evaluator; missing/NaN/partial evidence cannot become success."""
     c = prereg['criteria']
-    checks = {k: False for k in ('applied', 'trace_complete', 'approach', 'joint_grasp', 'lift',
+    checks = {k: False for k in ('applied', 'trace_complete', 'contacts_complete', 'approach', 'joint_grasp', 'lift',
                                 'door', 'placement_release', 'no_drop', 'contacts', 'r3', 'weld_off',
                                 'protocol', 'video')}
     checks['applied'] = manifest.get('applied') == EXPECTED
@@ -83,13 +118,36 @@ def score(manifest, prereg, rows, contacts, protocol, *, video_review=None):
         if not rows:
             raise ValueError('missing evaluation trace')
         # JSON recursion rejects nonfinite values even when they are outside selected stages.
-        json.dumps(rows, allow_nan=False)
+        json.dumps([rows, contacts], allow_nan=False)
         times = [r['t'] for r in rows]
-        checks['trace_complete'] = (len(times) > 1 and all(0 < b - a <= c['max_sample_gap_s'] for a, b in zip(times, times[1:]))
-                                    and abs(times[-1] - manifest['sim_end_s']) <= c['max_sample_gap_s'])
+        start, end = manifest['simulator_start_s'], manifest['sim_end_s']
+        dt, eps = manifest['applied']['timestep_s'], c['coverage_time_tolerance_s']
+        if not all(type(v) in (int, float) and math.isfinite(v) for v in (start, end, dt)) or dt <= 0 or end <= start:
+            raise ValueError('invalid observation time range/timestep')
+        expected_steps = round((end - start) / dt)
+        on_grid = lambda t: abs(t - start - round((t - start) / dt) * dt) <= eps
+        checks['trace_complete'] = (len(times) > 1 and on_grid(end) and all(on_grid(t) for t in times)
+                                    and all(0 < b - a <= c['max_sample_gap_s'] for a, b in zip(times, times[1:]))
+                                    and abs(times[0] - start) <= eps and abs(times[-1] - end) <= eps)
+        checks['contacts_complete'] = (on_grid(end) and type(contacts['physics_steps']) is int
+                                       and contacts['physics_steps'] == expected_steps and expected_steps > 0
+                                       and abs(contacts['observation_start_s'] - start) <= eps
+                                       and abs(contacts['observation_end_s'] - end) <= eps
+                                       and abs(contacts['timestep_s'] - dt) <= eps
+                                       and abs(contacts['max_step_gap_s'] - dt) <= eps
+                                       and contacts['invalid_step_intervals'] == 0)
+        evidence['coverage'] = {'start_s': start, 'end_s': end, 'timestep_s': dt, 'expected_physics_steps': expected_steps,
+                                'observed_physics_steps': contacts['physics_steps']}
         for r in rows:
-            if len(r['beam_corners']) != 8 or set(r['robots']) != {'r1', 'r2', 'r3'} or set(r['finger_n']) != set(PAIR):
+            if (len(r['beam_corners']) != 8 or set(r['robots']) != {'r1', 'r2', 'r3'} or set(r['finger_n']) != set(PAIR)
+                    or set(r['segments']) != set(PAIR)):
                 raise ValueError('incomplete geometry or fingers')
+        setdowns = [planned_setdown(r, prereg, protocol) for r in rows]
+        evidence['planned_setdowns'] = [
+            {'segment': i, 'kind': 'destination' if i == len(prereg['planned_setdown']['route_endpoints_m']) - 1 else 'checkpoint',
+             'first_observed_s': min(r['t'] for r, s in zip(rows, setdowns) if s == i),
+             'last_observed_s': max(r['t'] for r, s in zip(rows, setdowns) if s == i),
+             'samples': setdowns.count(i)} for i in sorted({s for s in setdowns if s is not None})]
         # GT approach position at each locally consumed approach GO, not the controller's arrival claim alone.
         approach = {}
         for rid in PAIR:
@@ -112,16 +170,26 @@ def score(manifest, prereg, rows, contacts, protocol, *, video_review=None):
         west_seen = False
         crossing = []
         door_at = None
-        for r in rows:
+        clear_since = None
+        for r, setdown in zip(rows, setdowns):
             xs = [p[0] for p in r['beam_corners']]
             ys = [p[1] for p in r['beam_corners']]
             if max(xs) < c['door_west_x_m']:
                 west_seen = True
             if min(xs) <= c['door_east_x_m'] and max(xs) >= c['door_west_x_m']:
-                crossing.append(bottom(r) >= c['lift_bottom_m'] and min(ys) >= c['door_y_min_m'] and max(ys) <= c['door_y_max_m'] and grip(r))
-            if west_seen and crossing and all(crossing) and min(xs) > c['door_east_x_m'] and lifted_at is not None and r['t'] > lifted_at:
-                door_at = r['t']
-                break
+                crossing.append(min(ys) >= c['door_y_min_m'] and max(ys) <= c['door_y_max_m']
+                                and (setdown is not None or (bottom(r) >= c['lift_bottom_m'] and grip(r))))
+            carrying_clear = (west_seen and crossing and all(crossing) and min(xs) > c['door_east_x_m']
+                              and lifted_at is not None and r['t'] > lifted_at and grip(r)
+                              and bottom(r) >= c['lift_bottom_m'] and all(r['states'][rid] == 'carry' for rid in PAIR))
+            if carrying_clear:
+                if clear_since is None:
+                    clear_since = r['t']
+                if r['t'] - clear_since >= c['door_clear_dwell_s'] - 1e-8:
+                    door_at = r['t']
+                    break
+            else:
+                clear_since = None
         checks['door'] = door_at is not None
         cx, cy = c['destination_center_m']
         hx, hy = c['destination_half_extents_m']
@@ -137,17 +205,15 @@ def score(manifest, prereg, rows, contacts, protocol, *, video_review=None):
         stable = sustained(tail, placed, c['release_dwell_s'], c['max_sample_gap_s'])
         speeds = [math.dist(a['beam_xyz'], b['beam_xyz']) / (b['t'] - a['t']) for a, b in zip(tail, tail[1:])]
         checks['placement_release'] = stable is not None and placed(rows[-1]) and bool(speeds) and max(speeds) <= c['release_speed_m_s']
-        # Checkpoints deliberately lower the beam. Only the explicit simultaneous lower/open interval is exempt.
-        lower = {'lower', 'wait_open', 'released', 'cp_open', 'cp_backoff', 'pregrasp_look', 'reapproach', 'align', 'wait_lift', 'grasp', 'done'}
-        drops = [r['t'] for r in rows if lifted_at is not None and r['t'] >= lifted_at and
-                 (bottom(r) < c['drop_bottom_m'] or r['tilt_deg'] > c['max_transport_tilt_deg']) and
-                 not all(r['states'][rid] in lower for rid in PAIR)]
+        drops = [r['t'] for r, setdown in zip(rows, setdowns) if lifted_at is not None and r['t'] >= lifted_at and
+                 (r['tilt_deg'] > c['max_transport_tilt_deg'] or bottom(r) < -c['floor_penetration_tolerance_m']
+                  or (bottom(r) < c['drop_bottom_m'] and setdown is None))]
         checks['no_drop'] = lifted_at is not None and not drops
         forbidden = ('robot_robot', 'robot_wall', 'beam_wall', 'robot_beam_approach', 'r3_interference')
-        checks['contacts'] = contacts['physics_steps'] > 0 and all(contacts['counts'][k] == 0 for k in forbidden)
-        checks['r3'] = (contacts['counts']['r3_interference'] == 0 and contacts['r3_motion_commands'] == 0
+        checks['contacts'] = checks['contacts_complete'] and all(contacts['counts'][k] == 0 for k in forbidden)
+        checks['r3'] = (checks['contacts_complete'] and contacts['counts']['r3_interference'] == 0 and contacts['r3_motion_commands'] == 0
                         and contacts['r3_api_calls'] == 0 and contacts['r3_max_displacement_m'] <= c['r3_max_displacement_m'])
-        checks['weld_off'] = contacts['max_eq_active'] == 0
+        checks['weld_off'] = checks['contacts_complete'] and contacts['max_eq_active'] == 0
         checks['video'] = bool(video_review and video_review.get('verified') is True)
         evidence.update(grasp_at_s=grasp_at, lifted_at_s=lifted_at, door_at_s=door_at, drop_samples=drops,
                         final_stable_at_s=stable, approach=approach)
@@ -157,9 +223,11 @@ def score(manifest, prereg, rows, contacts, protocol, *, video_review=None):
     complete = (manifest.get('state') == 'completed' and not manifest.get('host_error')
                 and manifest.get('source_changed') is False and manifest.get('inputs_changed') is False)
     passed = all(checks.values()) and not errors and nominal and complete
+    incomplete = not checks['trace_complete'] or not checks['contacts_complete'] or bool(errors)
     return {'schema': 'ugrp.zone_pair_dev_evaluation.v1', 'labels': LABELS, 'research_result': False,
             'physical_success': passed, 'dev_physical_success': passed,
-            'verdict': 'DEV_PASS' if passed else ('HOST_ERROR' if manifest.get('host_error') else 'DEV_NOT_CONFIRMED'),
+            'verdict': 'DEV_PASS' if passed else ('HOST_ERROR' if manifest.get('host_error') else
+                                                'EVIDENCE_INCOMPLETE' if incomplete else 'DEV_NOT_CONFIRMED'),
             'checks': checks, 'evidence': evidence, 'protocol': protocol, 'errors': errors,
             'sequence_done_is_success': False,
             'video_review': video_review or {'verified': False, 'reason': 'manual review pending'}}
@@ -173,8 +241,17 @@ def evaluate_run(run, review_path=None):
     run = Path(run)
     ev = run / 'eval_only'
     manifest = json.loads((run / 'manifest.json').read_text())
-    prereg = json.loads((run / 'prereg.json').read_text())
+    prereg_bytes = (run / 'prereg.json').read_bytes()
+    registration = manifest.get('prereg')
+    expected_hash = registration.get('sha256') if isinstance(registration, dict) else None
+    if hashlib.sha256(prereg_bytes).hexdigest() != expected_hash:
+        raise ValueError('prereg hash mismatch: snapshot does not match the original manifest prereg.sha256')
+    prereg = json.loads(prereg_bytes)
     records = json.loads((run / 'pair_records.json').read_text())
+    targets = prereg['planned_setdown']['route_endpoints_m']
+    if (len(records) != 1 or len(records[0]['plan']['route']) != len(targets) + 1
+            or any(math.dist(a, b) > 1e-9 for a, b in zip(records[0]['plan']['route'][1:], targets))):
+        raise ValueError('planned route does not match preregistered set-down targets')
     status = load_lines(run / 'status.jsonl')
     required = []
     if manifest['intervention'] == 'none' and len(records) == 1:
@@ -200,6 +277,7 @@ def evaluate_run(run, review_path=None):
                                       for q in injection['queues_before'].values()))
     result['abort_diagnostic'] = {'intervention_exercised_with_pending_motion': injection_exercised,
                                   'passed': bool(injection_exercised and protocol['ok'] and protocol['go_seen']
+                                                 and result['checks']['trace_complete'] and result['checks']['contacts_complete']
                                                  and manifest['state'] == 'completed'
                                                  and not manifest.get('intervention_not_reached'))}
     commands = load_lines(run / 'commands.jsonl')

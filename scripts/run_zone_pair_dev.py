@@ -213,8 +213,11 @@ def main(argv=None):
         args.output.mkdir(parents=True)
         environment = {**environment_identity(), 'loadavg_at_start': list(os.getloadavg())}
         manifest = build_manifest(prereg, case, source=source, environment=environment, prereg_path=args.prereg)
+        prereg_bytes = args.prereg.read_bytes()
+        if hashlib.sha256(prereg_bytes).hexdigest() != manifest['prereg']['sha256'] or json.loads(prereg_bytes) != prereg:
+            raise ValueError('prereg changed during preparation')
         write_json(args.output / 'manifest.json', manifest)
-        write_json(args.output / 'prereg.json', prereg)
+        (args.output / 'prereg.json').write_bytes(prereg_bytes)
         # Setup-only values are saved apart from the static inputs actually supplied to actors.
         write_json(args.output / 'eval_only/setup.json', case)
         write_json(args.output / 'inputs/static.json', {'map': json.loads(MAP.read_text()),

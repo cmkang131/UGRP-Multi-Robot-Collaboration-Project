@@ -201,7 +201,7 @@ def test_protocol_audit_detects_abort_and_go_faults(fault):
 def good_evidence():
     p = config()
     m = dev.build_manifest(p, p['runs'][0], source={}, environment={}, prereg_path=dev.PREREG, applied=dev.EXPECTED)
-    m.update(state='completed', source_changed=False, inputs_changed=False, sim_end_s=12.)
+    m.update(state='completed', source_changed=False, inputs_changed=False, simulator_start_s=0., sim_end_s=12.)
     rows = []
     targets = {'r1': [.275, 0., 0.], 'r2': [1.725, 0., math.pi]}
     for i in range(241):
@@ -211,13 +211,16 @@ def good_evidence():
         z = .05 if 1.5 <= t < 8 else 0.
         state = 'approach' if t < 1 else ('grasp' if t < 1.5 else ('carry' if t < 8 else ('lower' if t < 9 else 'done')))
         corners = [[x + a * .3, y + b * .02, z + .016 + c * .016] for a, b, c in itertools.product((-1, 1), repeat=3)]
-        rows.append({'t': t, 'states': {r: state for r in ev.PAIR}, 'beam_xyz': [x, y, z], 'beam_corners': corners, 'tilt_deg': 0.,
+        rows.append({'t': t, 'states': {r: state for r in ev.PAIR}, 'segments': {r: 7 if t >= 8 else 0 for r in ev.PAIR},
+                     'beam_xyz': [x, y, z], 'beam_corners': corners, 'tilt_deg': 0.,
                      'finger_n': {r: [2., 2.] if 1 <= t < 9 else [0., 0.] for r in ev.PAIR},
                      'robots': {**targets, 'r3': [-.7, -2., 0.]}, 'prestations': targets,
                      'approach_go_s': {r: .5 if t >= .5 else None for r in ev.PAIR}})
-    contacts = {'physics_steps': 6000, 'counts': {k: 0 for k in ('robot_robot', 'robot_wall', 'beam_wall', 'robot_beam_approach', 'r3_interference')},
+    contacts = {'physics_steps': 6000, 'observation_start_s': 0., 'observation_end_s': 12., 'timestep_s': .002,
+                'max_step_gap_s': .002, 'invalid_step_intervals': 0,
+                'counts': {k: 0 for k in ('robot_robot', 'robot_wall', 'beam_wall', 'robot_beam_approach', 'r3_interference')},
                 'max_eq_active': 0, 'r3_max_displacement_m': 0., 'r3_motion_commands': 0, 'r3_api_calls': 0}
-    return m, p, rows, contacts, {'ok': True, 'go_seen': True}
+    return m, p, rows, contacts, {'ok': True, 'go_seen': True, 'go_times': {'lower_go_7': 8.}}
 
 
 def test_complete_synthetic_evidence_can_pass_but_needs_video():
@@ -227,6 +230,269 @@ def test_complete_synthetic_evidence_can_pass_but_needs_video():
     assert [k for k, v in no_review['checks'].items() if not v] == ['video']
     result = ev.score(*args, video_review={'verified': True})
     assert result['physical_success'], result
+
+
+def checkpoint_evidence():
+    """Insert M2's planned x=2.40 set-down/relocalize/regrasp into the good trace."""
+    m, p, rows, contacts, protocol = good_evidence()
+    original = copy.deepcopy(rows[68])  # t=3.40, beam x=[2.10, 2.70] straddles the slab
+    pause = []
+    for i in range(30):
+        row = copy.deepcopy(original)
+        row['t'] = round(3.4 + .05 * i, 8)
+        state = ('lower' if i < 5 else 'wait_open' if i < 8 else 'cp_open' if i < 12 else
+                 'pregrasp_look' if i < 16 else 'grasp' if i < 20 else 'wait_lift' if i < 22 else 'lift')
+        row['states'] = {r: state for r in ev.PAIR}
+        row['segments'] = {r: 1 if i < 12 else 2 for r in ev.PAIR}
+        row['finger_n'] = {r: [0., 0.] if 8 <= i < 20 else [2., 2.] for r in ev.PAIR}
+        if i < 25:
+            row['beam_xyz'][2] -= .05
+            for corner in row['beam_corners']:
+                corner[2] -= .05
+        pause.append(row)
+    for row in rows[68:]:
+        row['t'] = round(row['t'] + 1.5, 8)
+        if row['segments']['r1'] == 0:
+            row['segments'] = {r: 2 for r in ev.PAIR}
+    rows[68:68] = pause
+    m['sim_end_s'] += 1.5
+    contacts.update(physics_steps=6750, observation_end_s=13.5)
+    protocol['go_times'] = {'lower_go_1': 3.4, 'open_go_1': 3.8, 'lift_go_2': 4.5,
+                            'carry_go_2': 4.9, 'lower_go_7': 9.5}
+    return m, p, rows, contacts, protocol
+
+
+def test_review_p1_planned_setdown_at_240_can_complete_door_then_release():
+    args = checkpoint_evidence()
+    result = ev.score(*args, video_review={'verified': True})
+    assert result['checks']['door'], result
+    assert result['checks']['placement_release'], result
+    assert result['physical_success'], result
+    assert result['evidence']['planned_setdowns']
+    assert result['evidence']['door_at_s'] > 4.9
+
+
+@pytest.mark.parametrize('fault', ['no_lower_go', 'one_robot_lowering', 'wrong_segment', 'off_checkpoint',
+                                   'tilted_setdown', 'floor_penetration', 'wall_contact', 'drop_after_regrasp',
+                                   'grounded_exit', 'ungripped_exit', 'not_carrying_exit'])
+def test_review_p1_setdown_exception_never_hides_unplanned_failure(fault):
+    m, p, rows, contacts, protocol = checkpoint_evidence()
+    row = rows[70]
+    if fault == 'no_lower_go':
+        del protocol['go_times']['lower_go_1']
+    elif fault == 'one_robot_lowering':
+        row['states']['r2'] = 'carry'
+    elif fault == 'wrong_segment':
+        row['segments']['r2'] = 5
+    elif fault == 'off_checkpoint':
+        row['beam_xyz'][0] += .3
+        for corner in row['beam_corners']:
+            corner[0] += .3
+    elif fault == 'tilted_setdown':
+        row['tilt_deg'] = 25.
+    elif fault == 'floor_penetration':
+        row['beam_corners'][0][2] = -.02
+    elif fault == 'wall_contact':
+        contacts['counts']['beam_wall'] = 1
+    elif fault == 'drop_after_regrasp':
+        rows[100]['beam_corners'][0][2] = 0.
+    else:
+        # Leave the slab correctly, then lose load/state exactly once wholly east.
+        for r in rows:
+            if 5.05 <= r['t'] < 9.5:
+                if fault == 'grounded_exit':
+                    for corner in r['beam_corners']:
+                        corner[2] = 0.
+                elif fault == 'ungripped_exit':
+                    r['finger_n']['r2'] = [0., 0.]
+                else:
+                    r['states'] = {rid: 'lower' for rid in ev.PAIR}
+    result = ev.score(m, p, rows, contacts, protocol, video_review={'verified': True})
+    assert not result['physical_success'], result
+    if fault.endswith('_exit'):
+        assert not result['checks']['door'], result
+
+
+@pytest.mark.parametrize('fault', ['missing_prefix', 'missing_final_sample', 'one_contact_step', 'missing_first_step',
+                                   'missing_last_step', 'extra_contact_step', 'interior_contact_gap',
+                                   'wrong_timestep', 'off_grid_sample', 'missing_start', 'nonfinite_contact_time'])
+def test_review_p2_observation_coverage_is_required(fault):
+    m, p, rows, contacts, protocol = good_evidence()
+    if fault == 'missing_prefix':
+        del rows[:10]
+    elif fault == 'missing_final_sample':
+        rows.pop()
+    elif fault == 'one_contact_step':
+        contacts['physics_steps'] = 1
+    elif fault == 'missing_first_step':
+        contacts.update(physics_steps=5999, observation_start_s=.002)
+    elif fault == 'missing_last_step':
+        contacts.update(physics_steps=5999, observation_end_s=11.998)
+    elif fault == 'extra_contact_step':
+        contacts['physics_steps'] += 1
+    elif fault == 'interior_contact_gap':
+        contacts.update(invalid_step_intervals=1, max_step_gap_s=.004)
+    elif fault == 'wrong_timestep':
+        contacts['timestep_s'] = .004
+    elif fault == 'off_grid_sample':
+        rows[10]['t'] += .001
+    elif fault == 'missing_start':
+        del m['simulator_start_s']
+    else:
+        contacts['observation_end_s'] = float('nan')
+    result = ev.score(m, p, rows, contacts, protocol, video_review={'verified': True})
+    assert not result['physical_success'], result
+    assert result['verdict'] == 'EVIDENCE_INCOMPLETE', result
+
+
+def saved_evidence(tmp_path):
+    """Only JSON and a dummy video receipt; never simulates or encodes a video."""
+    m, p, rows, contacts, _ = good_evidence()
+    run = tmp_path / 'run'
+    dev.write_json(run / 'manifest.json', m)
+    (run / 'prereg.json').write_bytes(dev.PREREG.read_bytes())
+    route = [[1., .05], *p['planned_setdown']['route_endpoints_m']]
+    dev.write_json(run / 'pair_records.json', [{'plan': {'route': route}}])
+    status = [wire('approach_go_0', .5, rid) for rid in ev.PAIR]
+    for i in range(len(route) - 1):
+        for j, phase in enumerate(('lift', 'carry', 'lower', 'open')):
+            at = (8. if phase == 'lower' else 9.) if i == 7 and phase in ('lower', 'open') else 1. + i * .8 + j * .1
+            status.extend(wire(f'{phase}_go_{i}', at, rid) for rid in ev.PAIR)
+    for name, records in [('status.jsonl', status), ('commands.jsonl', []), ('shutdown.jsonl', []),
+                          ('eval_only/trace.jsonl', rows)]:
+        path = run / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(''.join(json.dumps(row) + '\n' for row in records))
+    dev.write_json(run / 'eval_only/contacts.json', contacts)
+    video = run / 'eval_only/overview.mp4'
+    video.write_bytes(b'synthetic receipt only, not a real video')
+    review = run / 'eval_only/synthetic-review.json'
+    dev.write_json(review, {'run_id': m['run_id'], 'reviewer': 'synthetic-test-only',
+                           'trace_sha256': dev.sha_file(run / 'eval_only/trace.jsonl'),
+                           'videos': {video.name: dev.sha_file(video)},
+                           'stages': {s: True for s in ('approach', 'joint_grasp', 'lift', 'door', 'placement_release', 'drop_contact')}})
+    return run, review
+
+
+@pytest.mark.parametrize('fault', ['tolerance_edited', 'hash_missing', 'hash_altered'])
+def test_review_p2_prereg_hash_enforced_before_scoring(tmp_path, monkeypatch, fault):
+    run, review = saved_evidence(tmp_path)
+    if fault == 'tolerance_edited':
+        p = json.loads((run / 'prereg.json').read_text())
+        p['criteria']['footprint_tolerance_m'] = .20
+        dev.write_json(run / 'prereg.json', p)
+    else:
+        m = json.loads((run / 'manifest.json').read_text())
+        if fault == 'hash_missing':
+            del m['prereg']['sha256']
+        else:
+            m['prereg']['sha256'] = '0' * 64
+        dev.write_json(run / 'manifest.json', m)
+    calls = []
+    original = ev.score
+    def spy(*a, **kw):
+        calls.append(True)
+        return original(*a, **kw)
+    monkeypatch.setattr(ev, 'score', spy)
+    result_path = run / 'eval_only/rescore.json'
+    assert ev.main([str(run), '--video-review', str(review), '--output', str(result_path)]) == 1
+    result = json.loads(result_path.read_text())
+    assert result['verdict'] == 'EVIDENCE_INCOMPLETE'
+    assert 'prereg' in result['error'] and 'hash' in result['error']
+    assert calls == []
+
+
+def test_review_p2_prepare_preserves_exact_prereg_bytes(tmp_path):
+    prereg = tmp_path / 'compact-prereg.json'
+    prereg.write_text(json.dumps(config(), separators=(',', ':')))
+    out = tmp_path / 'prepared'
+    assert dev.main(['--prereg', str(prereg), '--run-id', 'dev01', '--output', str(out)]) == 0
+    m = json.loads((out / 'manifest.json').read_text())
+    assert dev.sha_file(out / 'prereg.json') == m['prereg']['sha256']
+    assert (out / 'prereg.json').read_bytes() == prereg.read_bytes()
+
+
+def test_review_p2_unchanged_prereg_can_be_evaluated_from_saved_files(tmp_path):
+    run, review = saved_evidence(tmp_path)
+    result = ev.evaluate_run(run, review)
+    assert result['physical_success'], result
+    assert result['input_sha256']['prereg.json'] == json.loads((run / 'manifest.json').read_text())['prereg']['sha256']
+
+
+def test_review_p2_failed_placement_cannot_be_rescored_with_relaxed_tolerance(tmp_path):
+    run, review = saved_evidence(tmp_path)
+    path = run / 'eval_only/trace.jsonl'
+    rows = ev.load_lines(path)
+    for row in rows:
+        if row['t'] >= 8.:
+            row['beam_xyz'][0] += .1
+            for corner in row['beam_corners']:
+                corner[0] += .1
+    path.write_text(''.join(json.dumps(row) + '\n' for row in rows))
+    receipt = json.loads(review.read_text())
+    receipt['trace_sha256'] = dev.sha_file(path)
+    dev.write_json(review, receipt)
+    original = ev.evaluate_run(run, review)
+    assert not original['physical_success'] and not original['checks']['placement_release']
+    p = json.loads((run / 'prereg.json').read_text())
+    p['criteria']['footprint_tolerance_m'] = .20  # 2 cm -> 20 cm after the fact
+    dev.write_json(run / 'prereg.json', p)
+    with pytest.raises(ValueError, match='prereg hash mismatch'):
+        ev.evaluate_run(run, review)
+
+
+@pytest.mark.parametrize('case_index', [0, 1])
+def test_review_p1_preregistered_setdown_targets_match_actual_static_plan(case_index):
+    from harness.zone_pair_executor import make_plan
+    p = config()
+    plan = make_plan(json.loads(dev.MAP.read_text()), p['runs'][case_index]['coarse_order_sheet'], 'B')
+    assert plan['route'][1:] == p['planned_setdown']['route_endpoints_m']
+    assert plan['route'][2] == [2.4, .05]
+
+
+@pytest.mark.parametrize('missing_tick', [False, True])
+def test_review_p2_observer_counts_initial_steps_and_exact_final_trace_without_physics(tmp_path, monkeypatch, missing_tick):
+    import numpy as np
+    from scripts import zone_pair_dev_runtime as runtime
+    # All MuJoCo access is a stub; no model, renderer, stepping or model call.
+    monkeypatch.setitem(sys.modules, 'mujoco', NS())
+    bar = NS(name='bar', center=np.zeros(3), size=np.array([.3, .02, .016]), collision=False)
+    cargo = NS(body='beam', spec=lambda: NS(parts=[bar]))
+    body = NS(xmat=np.eye(3), xpos=np.array([1., .05, .016]))
+    data = NS(time=1., ncon=0, eq_active=[False], body=lambda name: body)
+    host = NS(world=NS(data=data, model=NS(opt=NS(timestep=.002))), scene=NS(cargo=[cargo]),
+              pairs=NS(sessions=[]), robots={r: NS(commands=[]) for r in ('r1', 'r2', 'r3')},
+              _truth=lambda rid: (0., 0., 0.), api_calls=[])
+    observer = runtime.EvalObserver(host, tmp_path, config()['criteria'])
+    monkeypatch.setattr(observer, 'video', lambda now: None)
+    observer.tick()  # initial observation, no physics interval
+    observer.tick()  # same instant: no duplicate
+    data.time = 1.002
+    if not missing_tick:
+        observer.tick()
+    data.time = 1.004
+    observer.tick()
+    observer.close()  # tail is less than 50 ms, but must be sampled exactly
+    contacts = json.loads((tmp_path / 'eval_only/contacts.json').read_text())
+    assert contacts['physics_steps'] == (1 if missing_tick else 2)
+    assert contacts['invalid_step_intervals'] == (1 if missing_tick else 0)
+    assert contacts['max_step_gap_s'] == pytest.approx(.004 if missing_tick else .002)
+    assert contacts['observation_start_s'] == 1.
+    assert contacts['observation_end_s'] == 1.004
+    rows = ev.load_lines(tmp_path / 'eval_only/trace.jsonl')
+    assert [r['t'] for r in rows] == [1., 1.004]
+    assert rows[0]['segments'] == {r: None for r in ev.PAIR}
+
+
+def test_review_p2_complete_coverage_with_nonzero_simulator_start():
+    m, p, rows, contacts, protocol = good_evidence()
+    m.update(simulator_start_s=2., sim_end_s=14.)
+    contacts.update(observation_start_s=2., observation_end_s=14.)
+    protocol['go_times'] = {k: t + 2. for k, t in protocol['go_times'].items()}
+    for row in rows:
+        row['t'] += 2.
+        row['approach_go_s'] = {r: t + 2. if t is not None else None for r, t in row['approach_go_s'].items()}
+    assert ev.score(m, p, rows, contacts, protocol, video_review={'verified': True})['physical_success']
 
 
 @pytest.mark.parametrize('fault', ['only_sequence_done', 'missing_trace', 'trace_gap', 'nan', 'no_grip', 'no_lift',
@@ -316,7 +582,7 @@ def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_pat
     out.mkdir()
     (out / 'eval_only').mkdir()
     dev.write_json(out / 'prereg.json', p)
-    m = dev.build_manifest(p, case, source={'execution_tree': source_fingerprint(dev.ROOT)}, environment={}, prereg_path=dev.PREREG)
+    m = dev.build_manifest(p, case, source={'execution_tree': source_fingerprint(dev.ROOT)}, environment={}, prereg_path=out / 'prereg.json')
     dev.write_json(out / 'manifest.json', m)
     def fake_init(self, *args, **kwargs):
         fake, _ = setup(factory=PhasedM2)

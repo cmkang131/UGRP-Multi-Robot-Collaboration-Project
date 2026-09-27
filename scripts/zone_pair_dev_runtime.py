@@ -84,13 +84,17 @@ class EvalObserver:
         self.writer = None
         self.video_count = 0
         self.last_t = None
+        self.last_sample_t = None
         self.cargo = host.scene.cargo[0]
         self.body = host.world.data.body(self.cargo.body)
         self.bar = next(p for p in self.cargo.spec().parts if p.name == 'bar')
         self.cargo_geoms = {mujoco.mj_name2id(host.world.model, mujoco.mjtObj.mjOBJ_GEOM, self.cargo.geom(p.name))
                             for p in self.cargo.spec().parts if p.collision}
         self.r3_start = host._truth('r3')[:2]
-        self.stats = {'physics_steps': 0, 'counts': {k: 0 for k in
+        self.stats = {'physics_steps': 0, 'observation_start_s': None, 'observation_end_s': None,
+                      'timestep_s': float(host.world.model.opt.timestep),
+                      'max_step_gap_s': 0., 'invalid_step_intervals': 0,
+                      'counts': {k: 0 for k in
                       ('robot_robot', 'robot_wall', 'beam_wall', 'robot_beam_approach', 'r3_interference')},
                       'max_eq_active': 0, 'r3_max_displacement_m': 0., 'r3_motion_commands': 0, 'r3_api_calls': 0}
 
@@ -98,14 +102,24 @@ class EvalObserver:
         return {r: endpoint(self.host, r).controller.state if endpoint(self.host, r) else 'bootstrap'
                 for r in PARTICIPANTS}
 
-    def tick(self):
+    def tick(self, *, force_sample=False):
         import mujoco
         import numpy as np
         h, d, m = self.host, self.host.world.data, self.host.world.model
         now = float(d.time)
-        if self.last_t == now:
+        new_observation = self.last_t != now
+        if not new_observation and (not force_sample or self.last_sample_t == now):
             return
-        self.last_t = now
+        if new_observation:
+            if self.last_t is None:
+                self.stats['observation_start_s'] = now
+            else:
+                gap = now - self.last_t
+                self.stats['physics_steps'] += 1  # the initial observation is not an advanced physics step
+                self.stats['max_step_gap_s'] = max(self.stats['max_step_gap_s'], gap)
+                if abs(gap - self.stats['timestep_s']) > self.criteria['coverage_time_tolerance_s']:
+                    self.stats['invalid_step_intervals'] += 1
+            self.last_t = self.stats['observation_end_s'] = now
         states = self.states()
         forces = {r: [0., 0.] for r in PARTICIPANTS}
         hits = set()
@@ -135,20 +149,23 @@ class EvalObserver:
                     hits.add('beam_wall')
                 if x in h._own['r3'] and (y in self.cargo_geoms or any(y in h._own[r] for r in PARTICIPANTS)):
                     hits.add('r3_interference')
-        self.stats['physics_steps'] += 1
-        for k in hits:
-            self.stats['counts'][k] += 1
-        self.stats['max_eq_active'] = max(self.stats['max_eq_active'], int(any(d.eq_active)))
-        self.stats['r3_max_displacement_m'] = max(self.stats['r3_max_displacement_m'], math.dist(h._truth('r3')[:2], self.r3_start))
-        if now + 1e-9 >= self.next_sample:
+        if new_observation:
+            for k in hits:
+                self.stats['counts'][k] += 1
+            self.stats['max_eq_active'] = max(self.stats['max_eq_active'], int(any(d.eq_active)))
+            self.stats['r3_max_displacement_m'] = max(self.stats['r3_max_displacement_m'], math.dist(h._truth('r3')[:2], self.r3_start))
+        if force_sample or now + 1e-9 >= self.next_sample:
             self.next_sample = now + .05
+            self.last_sample_t = now
             mat = self.body.xmat.reshape(3, 3)
             corners = [(self.body.xpos + mat @ (np.array(self.bar.center) + np.array(signs) * self.bar.size)).tolist()
                        for signs in itertools.product((-1, 1), repeat=3)]
             plans = h.pairs.sessions[0]['plan'] if h.pairs.sessions else None
             go = {r: next((msg['sent_at_s'] for session in h.pairs.sessions for msg in session['channel'].log
                            if msg['robot_id'] == r and msg['state'] == 'approach_go_0'), None) for r in PARTICIPANTS}
-            self.trace.append({'t': now, 'states': states, 'beam_xyz': self.body.xpos.tolist(), 'beam_corners': corners,
+            self.trace.append({'t': now, 'states': states,
+                               'segments': {r: endpoint(h, r).controller.seg if endpoint(h, r) else None for r in PARTICIPANTS},
+                               'beam_xyz': self.body.xpos.tolist(), 'beam_corners': corners,
                                'tilt_deg': math.degrees(math.acos(max(-1., min(1., float(mat[2, 2]))))),
                                'robots': {r: list(h._truth(r)) for r in h.robots}, 'finger_n': forces,
                                'approach_go_s': go, 'prestations': plans['prestations'] if plans else {}})
@@ -174,10 +191,15 @@ class EvalObserver:
         self.video_count += 1
 
     def close(self):
-        self.trace.close()
-        self.video_times.close()
-        if self.writer is not None:
-            self.writer.release()
+        # The last physics tick need not coincide with a 20 Hz sample. Record it
+        # exactly without double-counting contacts or inventing a physics step.
+        try:
+            self.tick(force_sample=True)
+        finally:
+            self.trace.close()
+            self.video_times.close()
+            if self.writer is not None:
+                self.writer.release()
         h = self.host
         self.stats['r3_motion_commands'] = sum(c['kind'] in ('arm', 'look', 'drive', 'mecanum') for c in h.robots['r3'].commands)
         self.stats['r3_api_calls'] = sum(a['robot_id'] == 'r3' for a in h.api_calls)
