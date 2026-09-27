@@ -245,6 +245,10 @@ def run(spec, out, student, speedups=None):
                 p.tick(now)
             world._physics_step_for(world.controllers[rid])
             now = float(data.time)
+            # Scene setup already advanced SIM time. Stamp independently of the
+            # sampled lists so a missing initial frame/GT row remains detectable.
+            if 'recording_start_sim_s' not in state:
+                state['recording_start_sim_s'] = round(now, 4)
             kinds_now, lf, rf = set(), False, False
             for i in (range(data.ncon) if prefilter is None else prefilter.indices(data)):
                 c = data.contact[i]
@@ -429,6 +433,7 @@ def run(spec, out, student, speedups=None):
                 'calibration_sha256': sha_bytes(calibration_path.read_bytes()), 'pose_source': ctl.pose.source,
                 'weld': scene.manifest['weld'], 'contact_profile': contact_record,
                 'timestep_s': float(model.opt.timestep), 'frame_period_s': FRAME_S, 'tick_s': TICK_S, 'sync_sim': True,
+                'recording_start_sim_s': state.get('recording_start_sim_s'),
                 'speedups': speedup_record,
                 'env': {'python': platform.python_version(), 'platform': platform.platform(),
                         'mujoco': mujoco.__version__, 'opencv': cv2.__version__, 'numpy': np.__version__,

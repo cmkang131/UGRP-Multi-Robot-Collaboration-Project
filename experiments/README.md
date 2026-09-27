@@ -1,5 +1,8 @@
 # 실험 인덱스
 
+- [2026-09-27 비전 자세 제공자 폐루프 dev 확인 (연구 결과 아님)](2026-09-27-vision-worker-closed-loop/README.md): 태그 0개 walls_v3에서 VIS3 학생을 `vision_zero_tag_v1` 제공자(별도 torch worker)로 실행기에 연결해 dev `vl3-dev-s942` 1회. 문 통과(상자 든 채), 배송 실패(`CARRY_LEG_pose_uncertain`, 462 SIM s), 위치 오차 p50 3.8 cm·p90 32 cm(집기 구간 과신), 문 근처 p90 8.9 cm. 1회 dev이므로 성공률 아님.
+- [2026-09-26 평가 전용 TOP 프로필 v2: 복도 지도 차로·대피 bay 가림 해소](2026-09-26-zone-eval-topcam/README.md): 환경 v3(벽 0.40 m)에서 기울어진 복도 TOP 시선이 차로·대피 bay를 가리던 문제를 평가 전용 카메라 프로필 `zone_eval_top_v2`(복도 `cctv_top_north_east`만 (3.40, 0.80, 3.00)으로 이동)로 해소했다. 사전 등록 격자 탐색 뒤 결과를 보고 쓴 수정안 A1(G1b, 가림 0)로 선택했다. TOP은 로봇 입력이 아니며 지도·로봇 카메라·벽은 바꾸지 않았다. Kiro PR #232.
+- [2026-09-26 환경 v3: 벽 0.40 m + 희소 AprilTag 지도](2026-09-26-zone-env-v3/README.md): 벽 프로필 `walls_v3`와 희소 태그 규칙 `ugrp.zone_tag_rule.v3`(수정안 `.v3a1`)로 새 지도 버전을 만들었다(v1/v2는 바이트 고정). 자기 카메라 위치 추정 게이트(box ≥ 5/6, nobox 3/3, 접촉 0)는 v3(3/6, 0/3, 접촉 223)와 A1(4/6, 2/3, 접촉 2) 모두 실패해 M1 dev 점검은 실행하지 않았다. raw는 로컬 `outputs/`에만 있다. Kiro PR #208.
 - [2026-09-27 Pair executor dev 사전 기록](2026-09-27-zone-pair-dev/README.md): PR #235 실제 PairTeam/OwnCamTeamHost 드라이버, 정상 1회·abort 1회 DRAFT. 물리 실행·연구 결과 없음.
 
 - [2026-09-26 자기 카메라 실행기(패키지 F) no-LLM 3대 스모크 v1–v3](2026-09-26-zone-own-executor/README.md): world 하나에 로봇 3대, 로봇마다 자기 손목 카메라·자기 명령만 쓰는 실행기(스크립트 작업, LLM 0회, weld OFF, `cargo_noslip_v1`). v1(`4371f36`) m1-style 3/6. 이슈 #221 수정(한 가지 취소 경로, 위치 불확실도 게이트, 충돌을 고려한 둘러보기, 제한된 정체 복구) 뒤 같은 시나리오 v2(`a5b3687e`)는 1/6이었다. 정체 keep-out이 목표·문을 덮은 탓이다. 이를 고친 v3(`92e0feeb`)는 4/6, 게이트 E1–E7 통과, 세 판 모두 거짓 확인 0. 6 로봇-에피소드이므로 성공률이 아니며, 코호트는 합산하지 않는다.

@@ -39,7 +39,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-SCHEMA = 'ugrp.sim_profile.v1'
+SCHEMA = 'ugrp.sim_profile.v3'
 M1_PREREG = 'experiments/2026-09-26-zone-m1-owncam/prereg.json'
 
 
@@ -104,6 +104,11 @@ class Recorder:
         self.qpos_every = int(qpos_every)
         self.steps = 0
         self.checkpoints: list[dict] = []
+        self.initial_sim_s = self.timestep = None
+        self.final_checkpoint = None
+        self.last_step_checkpoint = None
+        self.checkpoint_error = None
+        self._last_data = None
         self.render_thread_cpu_s = None
         self.slice_stop: dict | None = None
         self._patched: list[tuple[object, str, object]] = []
@@ -140,11 +145,22 @@ class Recorder:
         rec = self
 
         def mj_step(m, d, *args, **kwargs):
+            if rec.initial_sim_s is None:
+                rec.initial_sim_s, rec.timestep = float(d.time), float(m.opt.timestep)
+            elif rec._last_data is not d or float(m.opt.timestep) != rec.timestep:
+                rec.checkpoint_error = 'multiple worlds or changed timestep'
             orig(m, d, *args, **kwargs)
-            rec.steps += 1
-            if rec.qpos_every and rec.steps % rec.qpos_every == 0:
-                h = hashlib.sha256(d.qpos.tobytes() + d.qvel.tobytes() + d.act.tobytes()).hexdigest()
-                rec.checkpoints.append({'step': rec.steps, 't': float(d.time), 'sha256': h})
+            nstep = kwargs.get('nstep', args[0] if args else 1)
+            rec.steps += int(nstep)
+            rec._last_data = d
+            if nstep != 1:
+                rec.checkpoint_error = 'batched mj_step cannot provide interval state evidence'
+            if rec.qpos_every:
+                # We cannot know which call will be the last. Snapshot immediately
+                # after EVERY step, before any caller can change d again.
+                rec.last_step_checkpoint = rec.state_checkpoint(d)
+                if rec.steps % rec.qpos_every == 0:
+                    rec.checkpoints.append(rec.last_step_checkpoint)
             if (rec.cpu_mark_sim_s and rec.cpu_at_mark is None and rec.cpu_origin is not None
                     and d.time >= rec.cpu_mark_sim_s):
                 # CPU used up to a fixed SIM instant, so full and truncated runs compare like for like
@@ -155,6 +171,20 @@ class Recorder:
                                    'counters': counter_delta(m0[2], proc_counters())}
         mj_step.__wrapped__ = orig
         self._set(mujoco, 'mj_step', mj_step)
+
+    def state_checkpoint(self, data):
+        return {'step': self.steps, 't': float(data.time),
+                'sha256': hashlib.sha256(data.qpos.tobytes() + data.qvel.tobytes()
+                                         + data.act.tobytes()).hexdigest()}
+
+    def finalize_checkpoints(self):
+        """Keep the last physics state and the termination state separately."""
+        if self.qpos_every and self._last_data is not None:
+            self.final_checkpoint = self.state_checkpoint(self._last_data)
+            if self.last_step_checkpoint != self.final_checkpoint:
+                self.checkpoint_error = 'state changed after final mj_step'
+            if not self.checkpoints or self.checkpoints[-1]['step'] != self.steps:
+                self.checkpoints.append(self.last_step_checkpoint)
 
     def install_render_thread_probe(self):
         from sim.multi_masterpi_production import MultiMasterPiProductionV2
@@ -318,6 +348,11 @@ def build_summary(args, rec: Recorder, error: str | None, s0: dict, s1: dict, cv
 
 
 def write_outputs(out: Path, args, rec: Recorder, summary: dict, prof) -> None:
+    rec.finalize_checkpoints()
+    summary.update(initial_sim_s=rec.initial_sim_s, timestep=rec.timestep,
+                   final_checkpoint=rec.final_checkpoint, last_step_checkpoint=rec.last_step_checkpoint,
+                   checkpoint_error=rec.checkpoint_error,
+                   checkpoints=len(rec.checkpoints))
     try:
         res = json.loads((out/'run'/'result.json').read_text())
         summary.update(sim_s=res.get('sim_s'), frames=res.get('frames'), commands=res.get('commands'),
