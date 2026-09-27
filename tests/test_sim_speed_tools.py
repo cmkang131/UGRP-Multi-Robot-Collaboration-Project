@@ -271,9 +271,12 @@ class EquivalenceTests(unittest.TestCase):
         self.assertInsufficient(sim_equivalence.compare(a, b, until=.1), 'rows without SIM time')
 
     def test_profile_checkpoints_required_and_nonempty(self) -> None:
-        cps = [{'step': 2000, 't': .1, 'sha256': 'h1'}, {'step': 4000, 't': .5, 'sha256': 'h2'}]
-        a = write_profile(self.root/'a', cps, [b'x', b'y'], self.cmds, {'outcome': 'OK'})
-        b = write_profile(self.root/'b', cps, [b'x', b'y'], self.cmds, {'outcome': 'OK'})
+        cps = [{'step': 2000, 't': .25, 'sha256': '1'*64}, {'step': 4000, 't': .5, 'sha256': '2'*64}]
+        a = write_profile(self.root/'a', cps, [b'x', b'y'], self.cmds, {'outcome': 'OK', 'sim_s': .5})
+        b = write_profile(self.root/'b', cps, [b'x', b'y'], self.cmds, {'outcome': 'OK', 'sim_s': .5})
+        for p in (a, b):
+            (p/'profile.json').write_text(json.dumps({'qpos_every': 2000, 'mj_steps': 4000,
+                'checkpoints': 2, 'initial_sim_s': 0., 'timestep': .000125, 'final_checkpoint': cps[-1]}))
         report = sim_equivalence.compare(a, b)
         self.assertTrue(report['equivalent'], report)
         self.assertEqual(report['checks']['qpos_checkpoints']['len_a'], 2)
@@ -284,7 +287,7 @@ class EquivalenceTests(unittest.TestCase):
         c = write_run(self.root/'c', [b'x', b'y'], self.cmds, {'outcome': 'OK'})     # a plain run directory
         report = sim_equivalence.compare(a, c)
         self.assertEqual(report['not_compared'], ['qpos_checkpoints: only A is a sim_profile directory'])
-        self.assertEqual(report['verdict'], 'equivalent')
+        self.assertEqual(report['verdict'], 'insufficient_evidence')
 
     def test_exit_codes(self) -> None:
         a = write_run(self.root/'a', [b'x'], self.cmds, {'outcome': 'OK'})

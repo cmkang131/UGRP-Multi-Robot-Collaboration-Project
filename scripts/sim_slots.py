@@ -1,47 +1,30 @@
 #!/usr/bin/env python3
-"""Machine-wide sim slot queue: at most N running sims, admitted atomically, counted by what actually runs.
+"""Cooperative reservations for a conservative upper bound on loaded MuJoCo processes.
 
-N slot files live under the primary checkout's ``outputs/sim-slots``. A slot is
-held by an exclusive ``fcntl.flock`` on its file, so the kernel releases it when
-the holder exits or crashes (no stale slots, no PID bookkeeping). The holder
-writes who/what/when into the file for ``status``. The child command inherits
-the locked descriptor, so the slot stays held while either the wrapper or the
-child is alive. Nothing here stops or signals another process.
+A mapping of libmujoco is NOT evidence of active stepping: idle imports, notebooks
+and pytest count too. Each held slot covers at most one mapped process, matched
+through a live owner/start identity, never merely an open slot FD. Extra children
+count separately. Launchers MUST reserve their peak process count with --workers;
+this is an admission queue, not a sandbox capable of preventing arbitrary forks.
 
-Admission is one critical section under a global ``admission.lock`` flock:
-count running sims, compare with N, take a free slot. Two wrappers can no
-longer both read "5 running" and start the 6th and 7th sim (Codex review of
-PR #209). Running sims = held slots + *unslotted* sims, where a sim is any
-process that has MuJoCo (``libmujoco``) loaded - found from the process's
-memory mappings (``lsof`` on macOS, ``/proc/<pid>/maps`` on Linux), not from
-argv strings - and it is unslotted unless it or an ancestor holds a slot file
-(holders and their children are already counted by their slot) or it is itself
-a queued waiter (``queue.lock`` open, not running yet). When the
-census cannot be taken (no ``lsof``/``/proc``), admission fails instead of
-passing.
+Reservations are closed, never explicitly unlocked, so inherited descriptors keep
+them alive. The CLI also waits for its entire work process group (including children
+that close inherited FDs). Detached work must retain a reservation FD or acquire its
+own slot. No unrelated process is signalled. All participants on a host must use the
+same root and cap. --root is for isolated tests/admin configuration, not agent roots.
 
-N defaults to 6, the user's machine-wide cap (``UGRP_SIM_SLOTS`` or ``--slots``
-override; every agent should use the default). Held slots are counted over
-every slot file present, so a different N cannot hide another holder.
-
-Examples::
-
-    python3 scripts/sim_slots.py status
-    python3 scripts/ugrp_session.py run kiro-m1 -- \\
-        python3 scripts/sim_slots.py run --owner kiro --label m1-s93 -- \\
-        .venv-sim-worker-mac/bin/python scripts/run_m1_owncam.py --prereg ... --speedups exact-v1
-
-Python (runner side)::
-
-    from scripts.sim_slots import sim_slot
-    with sim_slot(owner='kiro', label='m1-s93'):
-        run(...)
+Census is fail-closed and bounded, not advertised as cheap. A monotonic --timeout
+includes lock contention and census; timeout=0 still bounds each census attempt.
 """
 from __future__ import annotations
 
 import argparse
 import contextlib
+import ctypes
+import errno
+import signal
 import fcntl
+import functools
 import json
 import math
 import os
@@ -50,12 +33,22 @@ import sys
 import time
 from pathlib import Path
 
-DEFAULT_ROOT = Path('/Users/changmin/projects/ugrp/outputs/sim-slots')
+def default_root() -> Path:
+    # Fixed per host, independent of cwd, worktree, HOME and agent environment.
+    # Keep the established Mac root; Linux administrators provision this shared
+    # directory for the participating users (e.g. a common group).
+    return (Path('/Users/changmin/projects/ugrp/outputs/sim-slots') if sys.platform == 'darwin'
+            else Path('/var/tmp/ugrp-sim-slots'))
+
+
+DEFAULT_ROOT = default_root()
 MACHINE_CAP = 6          # AGENTS/user rule: at most 6 sim processes machine-wide
 POLL_S = 5.0
 SIM_LIBRARY = 'libmujoco'
 ADMISSION = 'admission.lock'
 QUEUE = 'queue.lock'
+CENSUS_TIMEOUT_S = 5.0
+COUNTING_CONTRACT = 'loaded_mujoco_process_upper_bound'
 
 
 def positive_int(value, name: str) -> int:
@@ -81,11 +74,12 @@ def _queue_role(path: str, prefix: str) -> str | None:
     if not path.startswith(prefix):
         return None
     name = path[len(prefix):]
-    return 'holder' if name.startswith('slot-') and name.endswith('.lock') else 'waiter'
+    return ('holder' if name.startswith('slot-') and name.endswith('.lock') else
+            'waiter' if name in (QUEUE, ADMISSION) else None)
 
 
 def parse_lsof(text: str, root: Path) -> tuple[set[int], set[int], set[int]]:
-    """(pids with libmujoco mapped, slot holders, queue waiters) from ``lsof -F pfn`` (regular descriptors only)."""
+    """(mapped-library PIDs, slot-file OPENERS, queue-file OPENERS) from ``lsof -F pfn`` (regular descriptors only)."""
     prefix = os.path.realpath(root) + os.sep
     sims, roles, pid, fd = set(), {'holder': set(), 'waiter': set()}, None, ''
     for line in text.splitlines():
@@ -102,72 +96,236 @@ def parse_lsof(text: str, root: Path) -> tuple[set[int], set[int], set[int]]:
     return sims, roles['holder'], roles['waiter']
 
 
-def scan_proc(root: Path, proc: Path = Path('/proc')) -> tuple[set[int], set[int], set[int], dict[int, int]]:
-    """Linux: the same census from ``/proc/<pid>/{stat,maps,fd}`` (unreadable processes are skipped)."""
+class ProcessTable(dict):
+    """Parent PIDs plus kernel start identities from the same census."""
+    def __init__(self):
+        super().__init__()
+        self.starts = {}
+        self.groups = {}
+        self.states = {}
+
+
+def _remaining(deadline: float | None) -> float:
+    if deadline is None:
+        return CENSUS_TIMEOUT_S
+    left = deadline - time.monotonic()
+    if left <= 0:
+        raise TimeoutError('sim admission/census deadline expired')
+    return left
+
+
+def _proc_stat(path: Path):
+    fields = path.read_text().rsplit(')', 1)[1].split()
+    return int(fields[1]), fields[19], int(fields[2]), fields[0]
+
+
+class _BSDInfo(ctypes.Structure):
+    # sys/proc_info.h: PROC_PIDTBSDINFO, microsecond start identity.
+    _fields_ = [(n, ctypes.c_uint32) for n in (
+        'flags', 'status', 'xstatus', 'pid', 'ppid', 'uid', 'gid', 'ruid', 'rgid', 'svuid', 'svgid', 'reserved')]
+    _fields_ += [('comm', ctypes.c_char * 16), ('name', ctypes.c_char * 32)]
+    _fields_ += [(n, ctypes.c_uint32) for n in ('nfiles', 'pgid', 'jobc', 'tdev', 'tpgid', 'nice')]
+    _fields_ += [('start_sec', ctypes.c_uint64), ('start_usec', ctypes.c_uint64)]
+
+
+@functools.cache
+def _libproc():
+    lib = ctypes.CDLL('/usr/lib/libproc.dylib', use_errno=True)
+    lib.proc_pidinfo.argtypes = (ctypes.c_int, ctypes.c_int, ctypes.c_uint64, ctypes.c_void_p, ctypes.c_int)
+    lib.proc_pidinfo.restype = ctypes.c_int
+    lib.proc_listallpids.argtypes = (ctypes.c_void_p, ctypes.c_int)
+    lib.proc_listallpids.restype = ctypes.c_int
+    lib.proc_listpgrppids.argtypes = (ctypes.c_int, ctypes.c_void_p, ctypes.c_int)
+    lib.proc_listpgrppids.restype = ctypes.c_int
+    return lib
+
+
+def _mac_info(pid: int):
+    lib = _libproc()
+    info = _BSDInfo()
+    n = lib.proc_pidinfo(pid, 3, 0, ctypes.byref(info), ctypes.sizeof(info))
+    if n != ctypes.sizeof(info):
+        error = ctypes.get_errno()
+        if error == errno.ESRCH:
+            raise ProcessLookupError(pid)
+        raise RuntimeError(f'incomplete process identity for PID {pid}: errno {error}')
+    return info
+
+
+def process_identity(pid: int) -> str:
+    if sys.platform.startswith('linux'):
+        return _proc_stat(Path('/proc')/str(pid)/'stat')[1]
+    info = _mac_info(pid)
+    return f'{info.start_sec}:{info.start_usec}'
+
+
+def _mac_table(deadline=None, *, pgid=None) -> ProcessTable:
+    _remaining(deadline)
+    lib = _libproc()
+    def listing(buffer, size):
+        return (lib.proc_listallpids(buffer, size) if pgid is None
+                else lib.proc_listpgrppids(pgid, buffer, size))
+
+    count = listing(None, 0)
+    if count < 0 or (count == 0 and pgid is None):
+        raise RuntimeError('cannot enumerate process identities')
+    buffer = (ctypes.c_int * (count * 2 + 64))()
+    count = listing(buffer, ctypes.sizeof(buffer))
+    if count < 0 or count >= len(buffer):
+        raise RuntimeError('incomplete process identity listing')
+    table = ProcessTable()
+    for pid in buffer[:count]:
+        _remaining(deadline)
+        if pid == 0:
+            continue
+        try:
+            info = _mac_info(pid)
+        except ProcessLookupError:
+            continue
+        table[pid] = info.ppid
+        table.starts[pid] = f'{info.start_sec}:{info.start_usec}'
+        table.groups[pid] = info.pgid
+        table.states[pid] = 'Z' if info.status == 5 else 'live'
+    if not table and pgid is None:
+        raise RuntimeError('empty process listing')
+    return table
+
+
+def scan_proc(root: Path, proc: Path = Path('/proc'), *, deadline=None):
+    """Linux mappings census. Only disappeared processes/FDs may be skipped."""
     prefix = os.path.realpath(root) + os.sep
-    sims, roles, parents = set(), {'holder': set(), 'waiter': set()}, {}
+    sims, roles, parents = set(), {'holder': set(), 'waiter': set()}, ProcessTable()
     for entry in proc.iterdir():
+        _remaining(deadline)
         if not entry.name.isdigit():
             continue
         pid = int(entry.name)
         try:
-            fields = (entry/'stat').read_text().rsplit(')', 1)[1].split()
-            parents[pid] = int(fields[1])
-        except (OSError, IndexError, ValueError):
-            continue
-        with contextlib.suppress(OSError):
-            if SIM_LIBRARY in (entry/'maps').read_text():
-                sims.add(pid)
-        with contextlib.suppress(OSError):
+            ppid, start, group, state = _proc_stat(entry/'stat')
+            mapped = (entry/'maps').read_text()
+            opened = set()
             for fd in (entry/'fd').iterdir():
-                with contextlib.suppress(OSError):
+                _remaining(deadline)
+                try:
                     if role := _queue_role(os.readlink(fd), prefix):
-                        roles[role].add(pid)
+                        opened.add(role)
+                except FileNotFoundError:  # an FD closed during enumeration
+                    continue
+            after = _proc_stat(entry/'stat')
+        except FileNotFoundError:
+            if (entry/'stat').exists():
+                raise RuntimeError(f'incomplete /proc census for live PID {pid}')
+            continue
+        except TimeoutError:
+            raise
+        except (OSError, IndexError, ValueError) as exc:
+            raise RuntimeError(f'incomplete /proc census for PID {pid}: {exc}') from exc
+        if after[:3] != (ppid, start, group):
+            raise RuntimeError(f'process changed during census: {pid}')
+        parents[pid], parents.starts[pid] = ppid, start
+        parents.groups[pid], parents.states[pid] = group, state
+        if SIM_LIBRARY in mapped:
+            sims.add(pid)
+        for role in opened:
+            roles[role].add(pid)
+    # Reject PID reuse between an early maps read and the end of the scan.
+    for pid in parents:
+        _remaining(deadline)
+        try:
+            after = _proc_stat(proc/str(pid)/'stat')
+        except FileNotFoundError:
+            continue  # counting a departed process is conservative
+        if after[:2] != (parents[pid], parents.starts[pid]):
+            raise RuntimeError(f'process identity changed during census: {pid}')
     return sims, roles['holder'], roles['waiter'], parents
 
 
-def _scan(root: Path) -> tuple[set[int], set[int], set[int], dict[int, int]]:
-    if sys.platform.startswith('linux'):
-        try:
-            return scan_proc(root)
-        except OSError as exc:
-            raise RuntimeError(f'cannot take the sim census (/proc): {exc}') from exc
+def _scan(root: Path, *, deadline=None):
+    deadline = min(deadline or float('inf'), time.monotonic() + CENSUS_TIMEOUT_S)
     try:
-        listing = subprocess.run(['lsof', '-n', '-P', '-w', '-F', 'pfn'], capture_output=True, text=True, timeout=60)
-        table = subprocess.run(['ps', '-Ao', 'pid=,ppid='], capture_output=True, text=True, timeout=60, check=True)
+        if sys.platform.startswith('linux'):
+            return scan_proc(root, deadline=deadline)
+        before = _mac_table(deadline)
+        listing = subprocess.run(['lsof', '-n', '-P', '-w', '-F', 'pfn'], capture_output=True, text=True,
+                                 timeout=_remaining(deadline))
+        if listing.returncode != 0 or not listing.stdout.strip() or listing.stderr.strip():
+            raise RuntimeError(f'incomplete lsof census (exit {listing.returncode}): {listing.stderr[:200]}')
+        sims, openers, waiters = parse_lsof(listing.stdout, root)
+        after = _mac_table(deadline)
+        relevant = sims | openers | waiters
+        for pid in list(relevant):
+            seen = set()
+            while pid > 1 and pid not in seen:
+                seen.add(pid)
+                relevant.add(pid)
+                pid = after.get(pid, 0)
+        for pid in relevant:
+            if (pid not in before or pid not in after or before[pid] != after[pid]
+                    or before.starts[pid] != after.starts[pid]):
+                raise RuntimeError(f'process identity changed during census: {pid}')
+        _remaining(deadline)
+        return sims, openers, waiters, after
+    except subprocess.TimeoutExpired as exc:
+        raise TimeoutError('sim census deadline expired') from exc
+    except TimeoutError:
+        raise
     except (OSError, subprocess.SubprocessError) as exc:
-        raise RuntimeError(f'cannot take the sim census (lsof/ps): {exc}') from exc
-    if not listing.stdout.strip():
-        raise RuntimeError(f'cannot take the sim census: lsof returned nothing (exit {listing.returncode}) '
-                           f'{listing.stderr.strip()[:200]}')
-    sims, holders, waiters = parse_lsof(listing.stdout, root)
-    parents = {}
-    for line in table.stdout.splitlines():
-        parts = line.split()
-        if len(parts) == 2 and parts[0].isdigit() and parts[1].isdigit():
-            parents[int(parts[0])] = int(parts[1])
-    return sims, holders, waiters, parents
+        raise RuntimeError(f'cannot take complete sim census: {exc}') from exc
 
 
-def census(root: Path) -> dict:
-    """Running MuJoCo processes and which of them are outside the slot queue.
+def _reservations(root: Path) -> dict:
+    records = {}
+    for path in sorted(root.glob('slot-*.lock')):
+        held, text = _is_held(path)
+        if held:
+            try:
+                record = json.loads(text)
+            except ValueError:
+                record = {}
+            records[path.name] = record if isinstance(record, dict) else {}
+    return records
 
-    A sim is inside the queue when it or an ancestor holds a slot file (its slot counts it), or when it is
-    itself waiting (queue/admission file open, not running yet). A waiter's children are not covered: the
-    admitting process may have started sims of its own outside any slot.
-    """
-    sims, holders, waiters, parents = _scan(root)
 
-    def under_holder(pid: int) -> bool:
-        seen = set()
-        while pid > 1 and pid not in seen:
-            if pid in holders:
-                return True
-            seen.add(pid)
-            pid = parents.get(pid, 0)
-        return False
-    return {'sim_pids': sorted(sims), 'holder_pids': sorted(holders), 'waiter_pids': sorted(waiters),
-            'unslotted_sim_pids': sorted(p for p in sims if p not in waiters and not under_holder(p))}
+def census(root: Path, *, deadline=None) -> dict:
+    deadline = min(deadline or float('inf'), time.monotonic() + CENSUS_TIMEOUT_S)
+    before = _reservations(root)
+    sims, openers, waiters, parents = _scan(root, deadline=deadline)
+    reservations = _reservations(root)
+    starts = getattr(parents, 'starts', {})
+    holders, covered = set(), set()
+    for name, record in reservations.items():
+        _remaining(deadline)
+        if record != before.get(name):
+            continue  # cannot use a reservation that changed across the snapshot
+        children = record.get('children', [])
+        owners = [record] + (children if isinstance(children, list) else [])
+        valid = set()
+        for owner in owners:
+            if not isinstance(owner, dict):
+                continue
+            pid, start = owner.get('pid'), owner.get('start_id')
+            if start is None or starts.get(pid) != start:
+                continue
+            try:
+                if process_identity(pid) == start:
+                    valid.add(pid)
+            except (ProcessLookupError, FileNotFoundError):
+                pass
+        holders.update(valid)
+        # A reservation covers ONE mapped process. Never exclude all descendants.
+        for candidate in sorted(sims - covered):
+            pid, visited = candidate, set()
+            while pid > 1 and pid not in visited and pid not in valid:
+                visited.add(pid)
+                pid = parents.get(pid, 0)
+            if pid in valid:
+                covered.add(candidate)
+                break
+    return {'counting_contract': COUNTING_CONTRACT, 'active_sim_count': None,
+            'sim_pids': sorted(sims), 'holder_pids': sorted(holders),
+            'slot_file_open_pids': sorted(openers), 'waiter_pids': sorted(waiters),
+            # An open queue FD is not proof that a process stopped doing work.
+            'unslotted_sim_pids': sorted(sims - covered), 'held_slots': len(reservations)}
 
 
 # ------------------------------------------------------------------ slots
@@ -177,12 +335,16 @@ class Slot:
 
     def release(self) -> None:
         if self.fd >= 0:
-            try:
-                os.ftruncate(self.fd, 0)
-            finally:
-                fcntl.flock(self.fd, fcntl.LOCK_UN)
-                os.close(self.fd)
-                self.fd = -1
+            # LOCK_UN affects inherited copies of this open-file description too.
+            # Close only our copy; preserve metadata for any still-live child.
+            os.close(self.fd)
+            self.fd = -1
+        for other in getattr(self, 'additional', []):
+            other.release()
+
+    @property
+    def fds(self):
+        return tuple(s.fd for s in [self, *getattr(self, 'additional', [])] if s.fd >= 0)
 
 
 def _slot_paths(root: Path, slots: int) -> list[Path]:
@@ -191,7 +353,7 @@ def _slot_paths(root: Path, slots: int) -> list[Path]:
 
 
 def _is_held(path: Path) -> tuple[bool, str]:
-    fd = os.open(path, os.O_RDWR | os.O_CREAT, 0o644)
+    fd = os.open(path, os.O_RDWR | os.O_CREAT, 0o664)
     try:
         try:
             fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -211,15 +373,21 @@ def held_count(root: Path) -> int:
 
 def _try_slot(root: Path, slots: int, record: dict) -> Slot | None:
     for index, path in enumerate(_slot_paths(root, slots)):
-        fd = os.open(path, os.O_RDWR | os.O_CREAT, 0o644)
+        fd = os.open(path, os.O_RDWR | os.O_CREAT, 0o664)
         try:
             fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             os.close(fd)
             continue
-        value = {**record, 'slot': index, 'slots': slots, 'acquired_unix': round(time.time(), 3),
-                 'loadavg_at_acquire': [round(v, 2) for v in os.getloadavg()]}
-        _write_record(fd, value)
+        try:
+            value = {**record, 'pid': os.getpid(), 'start_id': process_identity(os.getpid()),
+                     'slot': index, 'slots': slots, 'acquired_unix': time.time(),
+                     'reservation_id': f'{os.getpid()}-{time.time_ns()}',
+                     'loadavg_at_acquire': [round(v, 2) for v in os.getloadavg()]}
+            _write_record(fd, value)
+        except BaseException:
+            os.close(fd)
+            raise
         return Slot(path, fd, index, value)
     return None
 
@@ -230,56 +398,149 @@ def _write_record(fd: int, record: dict) -> None:
 
 
 @contextlib.contextmanager
-def _admission(root: Path):
-    fd = os.open(root/ADMISSION, os.O_RDWR | os.O_CREAT, 0o644)
+def _admission(root: Path, *, deadline=None):
+    fd = os.open(root/ADMISSION, os.O_RDWR | os.O_CREAT, 0o664)
+    locked = False
     try:
-        fcntl.flock(fd, fcntl.LOCK_EX)          # held only for one census + reservation
+        while not locked:
+            _remaining(deadline)
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                locked = True
+            except BlockingIOError:
+                time.sleep(min(.025, _remaining(deadline)))
         yield
     finally:
-        fcntl.flock(fd, fcntl.LOCK_UN)
         os.close(fd)
 
 
-def try_admit(root: Path, slots: int, record: dict) -> tuple[Slot | None, dict]:
-    """One atomic admission attempt: (slot or None, the census it was decided on)."""
-    slots = positive_int(slots, 'slots')
+def try_admit(root: Path, slots: int, record: dict, *, workers: int = 1, deadline=None):
+    """Atomically reserve the declared peak number of loaded work processes."""
+    slots, workers = positive_int(slots, 'slots'), positive_int(workers, 'workers')
+    if workers > slots:
+        raise ValueError('workers must not exceed slots')
     _slot_paths(root, slots)
-    with _admission(root):
-        seen = census(root)
-        held = held_count(root)
-        seen = {'held_slots': held, 'unslotted_sims': len(seen['unslotted_sim_pids']),
-                'unslotted_sim_pids': seen['unslotted_sim_pids'][:20]}
+    with _admission(root, deadline=deadline):
+        info = census(root, deadline=deadline)
+        held = info['held_slots'] if 'held_slots' in info else held_count(root)
+        seen = {'held_slots': held, 'unslotted_sims': len(info['unslotted_sim_pids']),
+                'unslotted_sim_pids': info['unslotted_sim_pids'][:20]}
         seen['running'] = held + seen['unslotted_sims']
-        slot = _try_slot(root, slots, record) if seen['running'] < slots else None
-    return slot, seen
+        _remaining(deadline)
+        reserved = []
+        try:
+            if seen['running'] + workers <= slots:
+                for _ in range(workers):
+                    slot = _try_slot(root, slots, record)
+                    if slot is None:
+                        return None, seen
+                    reserved.append(slot)
+                first = reserved[0]
+                first.additional = reserved[1:]
+                reserved = []  # transfer ownership
+                return first, seen
+            return None, seen
+        finally:
+            for slot in reserved:
+                slot.release()
 
 
-def acquire(root: Path, slots: int, record: dict, *, timeout_s: float = 0., poll_s: float = POLL_S,
-            log=None) -> Slot:
-    """Block until fewer than ``slots`` sims run machine-wide and a slot is free; timeout 0 = wait forever."""
+def acquire(root: Path, slots: int, record: dict, *, workers: int = 1, timeout_s: float = 0.,
+            poll_s: float = POLL_S, log=None) -> Slot:
+    """Wait for reservations; monotonic timeout includes lock and census time."""
     if isinstance(timeout_s, bool) or not math.isfinite(timeout_s) or timeout_s < 0:
         raise ValueError(f'timeout_s must be a finite number >= 0, got {timeout_s!r}')
-    slots = positive_int(slots, 'slots')
+    if isinstance(poll_s, bool) or not math.isfinite(poll_s) or poll_s <= 0:
+        raise ValueError('poll_s must be finite and positive')
+    slots, workers = positive_int(slots, 'slots'), positive_int(workers, 'workers')
+    if workers > slots:
+        raise ValueError('workers must not exceed slots')
     _slot_paths(root, slots)
-    started, last = time.time(), 0.
-    queue_fd = os.open(root/QUEUE, os.O_RDWR | os.O_CREAT, 0o644)   # marks this process as waiting, not running
+    started, last = time.monotonic(), float('-inf')
+    deadline = started + timeout_s if timeout_s else None
+    queue_fd = os.open(root/QUEUE, os.O_RDWR | os.O_CREAT, 0o664)
     try:
         while True:
-            slot, seen = try_admit(root, slots, record)
+            slot, seen = try_admit(root, slots, record, workers=workers, deadline=deadline)
             if slot is not None:
-                slot.record.update(waited_s=round(time.time() - started, 1), census_at_acquire=seen)
-                _write_record(slot.fd, slot.record)
+                try:
+                    _remaining(deadline)
+                    for member in [slot, *slot.additional]:
+                        member.record.update(waited_s=round(time.monotonic() - started, 1), census_at_acquire=seen)
+                        _write_record(member.fd, member.record)
+                except BaseException:
+                    slot.release()
+                    raise
                 return slot
-            if timeout_s and time.time() - started >= timeout_s:
-                raise TimeoutError(f'no sim slot within {timeout_s:.0f} s ({seen["held_slots"]} slots held, '
-                                   f'{seen["unslotted_sims"]} sims outside the queue, cap {slots})')
-            if log and time.time() - last >= 60:
-                log(f'sim_slots: waiting ({seen["held_slots"]} slots held + {seen["unslotted_sims"]} sims outside '
-                    f'the queue, cap {slots}, load {os.getloadavg()[0]:.1f})')
-                last = time.time()
-            time.sleep(poll_s)
+            _remaining(deadline)
+            if log and time.monotonic() - last >= 60:
+                log(f'sim_slots: waiting ({seen["running"]} loaded-process/reservation upper bound, cap {slots})')
+                last = time.monotonic()
+            time.sleep(min(poll_s, _remaining(deadline)))
     finally:
         os.close(queue_fd)
+
+
+def _group_alive(pgid: int) -> bool:
+    if sys.platform.startswith('linux'):
+        for entry in Path('/proc').iterdir():
+            if entry.name.isdigit():
+                try:
+                    _, _, group, state = _proc_stat(entry/'stat')
+                except FileNotFoundError:
+                    continue
+                if group == pgid and state != 'Z':
+                    return True
+        return False
+    table = _mac_table(time.monotonic() + CENSUS_TIMEOUT_S, pgid=pgid)
+    return any(table.groups[p] == pgid and table.states[p] != 'Z' for p in table)
+
+
+def run_reserved(slot: Slot, cmd: list[str]) -> int:
+    """Keep the reservation until all live members of OUR work group exit."""
+    child = None
+    interrupted = 0
+    previous = {}
+
+    def forward(signum, _frame):
+        nonlocal interrupted
+        interrupted = signum
+        if child is not None:
+            with contextlib.suppress(ProcessLookupError):
+                os.killpg(child.pid, signum)
+
+    # KeyboardInterrupt/SIGTERM must not unwind past a live child and release.
+    for sig in (signal.SIGINT, signal.SIGTERM):
+        previous[sig] = signal.signal(sig, forward)
+    try:
+        child = subprocess.Popen(cmd, pass_fds=slot.fds, start_new_session=True)
+        if interrupted:
+            forward(interrupted, None)
+        setup_error = None
+        try:
+            identity = {'pid': child.pid, 'start_id': process_identity(child.pid)}
+            for member in [slot, *slot.additional]:
+                member.record['children'] = [identity]
+                _write_record(member.fd, member.record)
+        except (FileNotFoundError, ProcessLookupError):
+            pass  # short command; still wait for its work group below
+        except Exception as exc:
+            setup_error = exc  # even failed bookkeeping cannot release live work
+        while True:
+            code = child.poll()
+            if code is not None:
+                try:
+                    alive = _group_alive(child.pid)
+                except (OSError, RuntimeError, subprocess.SubprocessError):
+                    alive = True  # fail closed: keep reservation if liveness is unknown
+                if not alive:
+                    if setup_error is not None:
+                        raise setup_error
+                    return 128 + interrupted if interrupted else code
+            time.sleep(.05)
+    finally:
+        for sig, handler in previous.items():
+            signal.signal(sig, handler)
 
 
 def status(root: Path, slots: int) -> list[dict]:
@@ -299,10 +560,10 @@ def status(root: Path, slots: int) -> list[dict]:
 
 @contextlib.contextmanager
 def sim_slot(*, owner: str, label: str = '', root: Path = DEFAULT_ROOT, slots: int | None = None,
-             timeout_s: float = 0.):
+             timeout_s: float = 0., workers: int = 1):
     slot = acquire(root, default_slots() if slots is None else slots,
                    {'owner': owner, 'label': label, 'pid': os.getpid(), 'command': ' '.join(sys.argv)[:500]},
-                   timeout_s=timeout_s, log=lambda m: print(m, file=sys.stderr, flush=True))
+                   workers=workers, timeout_s=timeout_s, log=lambda m: print(m, file=sys.stderr, flush=True))
     try:
         yield slot
     finally:
@@ -319,6 +580,7 @@ def main(argv=None) -> int:
     run = sub.add_parser('run', help='wait for a slot, run the command holding it, return its exit code')
     run.add_argument('--owner', required=True, help='claude, codex or kiro')
     run.add_argument('--label', default='')
+    run.add_argument('--workers', default='1', help='peak loaded work processes, reserved atomically')
     run.add_argument('--timeout', type=float, default=0., help='give up after this many seconds (0 = wait forever)')
     run.add_argument('cmd', nargs=argparse.REMAINDER)
     args = parser.parse_args(argv)
@@ -330,12 +592,13 @@ def main(argv=None) -> int:
         rows = status(args.root, slots)
         try:
             seen = census(args.root)
-        except RuntimeError as exc:
+        except (RuntimeError, TimeoutError) as exc:
             print(f'sim_slots: {exc}', file=sys.stderr)
             return 70
         mism = sorted({r['slots'] for r in rows if r.get('held') and r.get('slots') not in (None, slots)})
         print(json.dumps({'slots': slots, 'held': held_count(args.root), 'slot_count_mismatch': mism,
-                          'sim_processes_running': len(seen['sim_pids']),
+                          'counting_contract': COUNTING_CONTRACT, 'active_sim_count': None,
+                          'loaded_mujoco_processes': len(seen['sim_pids']),
                           'unslotted_sim_pids': seen['unslotted_sim_pids'],
                           'loadavg': [round(v, 2) for v in os.getloadavg()], 'holders': [r for r in rows if r['held']]},
                          ensure_ascii=False, indent=2))
@@ -345,9 +608,15 @@ def main(argv=None) -> int:
         parser.error('run needs a command after --')
     if not math.isfinite(args.timeout) or args.timeout < 0:
         parser.error(f'--timeout must be a finite number >= 0, got {args.timeout!r}')
+    try:
+        workers = positive_int(args.workers, '--workers')
+        if workers > slots:
+            raise ValueError('--workers must not exceed --slots')
+    except ValueError as exc:
+        parser.error(str(exc))
     record = {'owner': args.owner, 'label': args.label, 'pid': os.getpid(), 'command': ' '.join(cmd)[:500]}
     try:
-        slot = acquire(args.root, slots, record, timeout_s=args.timeout,
+        slot = acquire(args.root, slots, record, workers=workers, timeout_s=args.timeout,
                        log=lambda m: print(m, file=sys.stderr, flush=True))
     except TimeoutError as exc:
         print(f'sim_slots: {exc}', file=sys.stderr)
@@ -359,7 +628,7 @@ def main(argv=None) -> int:
           f'({slot.record["census_at_acquire"]["running"]} running before)', file=sys.stderr, flush=True)
     try:
         # the child inherits the locked descriptor: the slot is held while either process lives
-        return subprocess.call(cmd, pass_fds=(slot.fd,))
+        return run_reserved(slot, cmd)
     except KeyboardInterrupt:
         return 130
     finally:

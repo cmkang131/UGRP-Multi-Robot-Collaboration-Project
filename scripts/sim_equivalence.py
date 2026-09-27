@@ -28,6 +28,7 @@ import argparse
 import hashlib
 import json
 import math
+import re
 import sys
 from pathlib import Path
 
@@ -84,9 +85,66 @@ class Evidence:
 
 def split_dirs(path: Path) -> tuple[Path, Path | None]:
     """(run_dir, profile_dir or None)."""
-    if (path/'run'/'attempt_started.json').exists():
+    if (path/'run').is_dir() or (path/CHECKPOINTS).exists() or (path/'profile.json').exists():
         return path/'run', path
     return path, (path.parent if (path.parent/CHECKPOINTS).exists() else None)
+
+
+def validate_checkpoints(side: str, profile: Path, run: Path, rows: list[dict],
+                         until: float | None, ev: Evidence) -> None:
+    """Validate coverage independently on each side, even when both files match.
+
+    These are sampled states, not an every-step trajectory digest. Final metadata
+    binds the tail to the recorder's step count and the runner's rounded SIM time.
+    Old profiles without this evidence cannot certify a full state comparison.
+    """
+    def fail(message):
+        ev.errors.append(f'{side}: qpos checkpoints: {message}')
+
+    def positive_integer(value):
+        return type(value) is int and value > 0
+
+    def finite(value):
+        return type(value) in (int, float) and math.isfinite(value)
+
+    def valid_row(row):
+        return (isinstance(row, dict) and positive_integer(row.get('step'))
+                and finite(row.get('t')) and row['t'] >= 0
+                and isinstance(row.get('sha256'), str)
+                and re.fullmatch('[0-9a-f]{64}', row['sha256']) is not None)
+
+    meta = ev.document(side, profile/'profile.json')
+    every, total = meta.get('qpos_every'), meta.get('mj_steps')
+    start, dt, final = meta.get('initial_sim_s'), meta.get('timestep'), meta.get('final_checkpoint')
+    if not rows or not all(valid_row(row) for row in rows):
+        fail('empty or invalid step/t/sha256 schema')
+        return
+    if (not positive_integer(every) or not positive_integer(total)
+            or not finite(start) or start < 0 or not finite(dt) or dt <= 0
+            or not valid_row(final) or meta.get('checkpoint_error')):
+        fail('missing/invalid interval, total steps, initial time, timestep or final state')
+        return
+    expected_count = total // every + bool(total % every)
+    if len(rows) != expected_count or any(r['step'] != min(i * every, total)
+                                           for i, r in enumerate(rows, 1)):
+        fail('step interval/order/total coverage mismatch')
+    if type(meta.get('checkpoints')) is not int or meta['checkpoints'] != len(rows):
+        fail('checkpoint count mismatch')
+    # MuJoCo accumulates timestep with floating point error over millions of steps.
+    if any(not math.isclose(r['t'], start + r['step'] * dt, rel_tol=1e-8, abs_tol=1e-8)
+           for r in rows) or any(b['t'] <= a['t'] for a, b in zip(rows, rows[1:])):
+        fail('SIM time order/timestep mismatch')
+    if final != rows[-1] or final['step'] != total:
+        fail('final state does not match checkpoint tail/total steps')
+    if until is not None:
+        if rows[-1]['t'] < until:
+            fail(f'end at {rows[-1]["t"]} s, before the compared window {until} s')
+    else:
+        result = ev.document(side, run/'result.json')
+        sim_s = result.get('sim_s')
+        # run_m1_owncam records result.sim_s rounded to two decimal places.
+        if not finite(sim_s) or abs(sim_s - final['t']) > .00500001:
+            fail('final SIM time disagrees with result.sim_s')
 
 
 def row_time(row: dict):
@@ -163,6 +221,8 @@ def compare(a_path: Path, b_path: Path, until: float | None = None) -> dict:
     if a_prof and b_prof:
         ca = ev.rows('A', a_prof/CHECKPOINTS, required=True)
         cb = ev.rows('B', b_prof/CHECKPOINTS, required=True)
+        validate_checkpoints('A', a_prof, a_run, ca, until, ev)
+        validate_checkpoints('B', b_prof, b_run, cb, until, ev)
         checks['qpos_checkpoints'] = compare_lists(cut(ca, until), cut(cb, until))
         if until is None and len(ca) != len(cb):        # different lengths of full runs: compare the common prefix
             n = min(len(ca), len(cb))
@@ -173,6 +233,8 @@ def compare(a_path: Path, b_path: Path, until: float | None = None) -> dict:
         only = 'A' if a_prof else 'B' if b_prof else None
         report['not_compared'].append('qpos_checkpoints: ' + (f'only {only} is a sim_profile directory' if only
                                                               else 'neither side is a sim_profile directory'))
+        if only:
+            ev.errors.append('qpos checkpoints: missing profile evidence on one side')
     untimed, logs = [], {}
     for name in LOGS:
         required = name in REQUIRED_LOGS

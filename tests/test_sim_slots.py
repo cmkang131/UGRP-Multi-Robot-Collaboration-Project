@@ -28,8 +28,18 @@ SCRIPT = str(ROOT / 'scripts' / 'sim_slots.py')
 MANY = '64'       # subprocess tests: a cap the machine's own sims cannot reach, so only this test's slots matter
 
 
+def isolated_cli(*args):
+    # Real flock/lifecycle, deterministic census; never inspect other agents' jobs.
+    code = ('import importlib.util; '
+            f'spec = importlib.util.spec_from_file_location("isolated_slots", {sim_slots.__file__!r}); '
+            's = importlib.util.module_from_spec(spec); spec.loader.exec_module(s); '
+            's._scan = lambda root, **kw: (set(), set(), set(), {}); '
+            'raise SystemExit(s.main())')
+    return [sys.executable, '-c', code, *args]
+
+
 def fake_census(unslotted=(), delay: float = 0.):
-    def census(root):
+    def census(root, **kwargs):
         time.sleep(delay)
         return {'sim_pids': sorted(unslotted), 'holder_pids': [], 'waiter_pids': [],
                 'unslotted_sim_pids': sorted(unslotted)}
@@ -134,8 +144,8 @@ class SimSlotsTests(unittest.TestCase):
                 {10: 1, 11: 20, 12: 11, 20: 1, 30: 31, 31: 30, 40: 1, 41: 40})
         with mock.patch.object(sim_slots, '_scan', return_value=scan):
             seen = self.real_census(self.root)
-        self.assertEqual(seen['unslotted_sim_pids'], [10, 30, 41])
-        self.assertEqual((seen['holder_pids'], seen['waiter_pids']), ([20], [40]))
+        self.assertEqual(seen['unslotted_sim_pids'], [10, 11, 12, 30, 40, 41])
+        self.assertEqual((seen['holder_pids'], seen['waiter_pids']), ([], [40]))
 
     def test_census_failure_refuses_admission(self) -> None:
         with mock.patch.object(sim_slots, 'census', self.real_census), \
@@ -185,7 +195,7 @@ class SimSlotsTests(unittest.TestCase):
             d = proc/str(n)
             (d/'fd').mkdir(parents=True)
             if stat:
-                (d/'stat').write_text(f'{n} (py thon) S {ppid} 1 1\n')
+                (d/'stat').write_text(f'{n} (py thon) S {ppid} 1 ' + '0 '*16 + '123 0\n')
             (d/'maps').write_text(maps)
             for i, target in enumerate(fds):
                 os.symlink(target, d/'fd'/str(i))
@@ -201,20 +211,29 @@ class SimSlotsTests(unittest.TestCase):
         self.assertEqual(parents, {100: 1, 101: 1, 102: 101, 104: 1})
 
     def test_killed_holder_frees_its_slot(self) -> None:
-        proc = subprocess.Popen([sys.executable, SCRIPT, '--root', str(self.root), '--slots', MANY, 'run',
+        proc = subprocess.Popen(isolated_cli('--root', str(self.root), '--slots', MANY, 'run',
                                  '--owner', 'kiro', '--label', 'sleeper', '--', sys.executable, '-c',
-                                 'import time; time.sleep(60)'], start_new_session=True)
+                                 'import time; time.sleep(60)'), start_new_session=True)
         try:
             deadline = time.time() + 20
             while time.time() < deadline and not sim_slots.held_count(self.root):
                 time.sleep(.1)
             row = sim_slots.status(self.root, 1)[0]
+            deadline = time.time() + 5
+            while time.time() < deadline and not row.get('children'):
+                time.sleep(.02)
+                row = sim_slots.status(self.root, 1)[0]
             self.assertTrue(row['held'])
             self.assertEqual(row['label'], 'sleeper')
             self.assertEqual(row['slots'], 64)
             self.assertIn('census_at_acquire', row)
         finally:
-            os.killpg(proc.pid, signal.SIGKILL)       # our own test process group only
+            # The command now owns its own group. Kill only the recorded test child.
+            for child in sim_slots.status(self.root, 1)[0].get('children', []):
+                with contextlib.suppress(ProcessLookupError):
+                    os.kill(child['pid'], signal.SIGKILL)
+            if proc.poll() is None:
+                proc.kill()
             proc.wait(10)
         deadline = time.time() + 10
         while time.time() < deadline and sim_slots.held_count(self.root):
@@ -222,12 +241,12 @@ class SimSlotsTests(unittest.TestCase):
         self.assertEqual(sim_slots.held_count(self.root), 0)
 
     def test_run_returns_child_exit_code_and_releases(self) -> None:
-        code = subprocess.call([sys.executable, SCRIPT, '--root', str(self.root), '--slots', MANY, 'run',
-                                '--owner', 'kiro', '--', sys.executable, '-c', 'raise SystemExit(7)'],
+        code = subprocess.call(isolated_cli('--root', str(self.root), '--slots', MANY, 'run',
+                                '--owner', 'kiro', '--', sys.executable, '-c', 'raise SystemExit(7)'),
                                stderr=subprocess.DEVNULL)
         self.assertEqual(code, 7)
         self.assertEqual(sim_slots.held_count(self.root), 0)
-        out = subprocess.run([sys.executable, SCRIPT, '--root', str(self.root), '--slots', MANY, 'status'],
+        out = subprocess.run(isolated_cli('--root', str(self.root), '--slots', MANY, 'status'),
                              capture_output=True, text=True, check=True).stdout
         self.assertEqual(json.loads(out)['held'], 0)
 

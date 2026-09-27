@@ -22,7 +22,11 @@ python3 scripts/sim_equivalence.py <기준 run 폴더> <새 run 폴더>         
 python3 scripts/sim_equivalence.py <절단 run> <전체 run> --until-sim-s 120       # 절단 실행과 앞부분 비교
 ```
 
-명령·제어 입력 프레임 행과 JPEG 바이트·제어기/스킬/매크로 로그·평가 전용 로그·`result.json` 전 필드를 비교한다. `scripts/sim_profile.py` 출력끼리는 qpos/qvel/act SHA-256 체크포인트(기본 2,000 `mj_step`마다)도 비교한다. 증거가 부족하면 통과가 아니다(`verdict: insufficient_evidence`, 종료 코드 2): 두 경로가 폴더여야 하고, `inputs/commands.jsonl`·`inputs/frames.jsonl`(전체 비교는 `result.json`·`manifest.json`도)이 있어야 하며, 모든 행이 JSON 객체여야 하고, `--until-sim-s T`면 양쪽 제어 프레임이 T 이후까지 이어져야 하며, 비교한 명령·프레임·JPEG(양쪽이 프로파일 폴더면 체크포인트) 수가 0이면 안 된다. 종료 코드 0 = 동일, 1 = 다름. 새 가속 항목은 두 seed 이상의 전체 실행에서 모두 일치해야 채택한다. 하나라도 다르면 버리거나 [실행 버전 관리](execution_versioning.md)에 따라 새 실행 버전으로 표시한다. qpos 체크포인트는 `sim_profile.py`로 돌린 구간에만 있으므로, 전체 임무의 상태 동일성을 주장하려면 양쪽 모두 전체 임무를 프로파일러로 실행해야 한다.
+명령·제어 입력 프레임 행과 JPEG 바이트·제어기/스킬/매크로 로그·평가 로그·`result.json`을 비교한다. 종료 코드는 동일 0, 다름 1, 증거 부족 2(`insufficient_evidence`)다. 필수 파일·JSON 객체·비교 건수와 양쪽의 구간 도달을 검증한다.
+
+프로파일끼리는 `qpos_checkpoints.jsonl`의 `step`(양의 정수), `t`(유한한 음이 아닌 수), `sha256`(64자리 소문자 hex)을 검증하고, `profile.json`의 `qpos_every`, `mj_steps`, `checkpoints`, `initial_sim_s`, `timestep`, `final_checkpoint`와 대조한다. 간격·순서·시간·총 스텝·마지막 상태가 맞아야 한다. 전체 비교는 최종 시간을 러너의 `result.sim_s`(소수 둘째 자리 반올림)와 대조한다. 구간 비교는 **qpos와 제어 프레임 모두** 양쪽에서 끝까지 도달해야 하며, 양쪽이 똑같이 잘려도 증거 부족이다. 프로파일이 한쪽에만 있으면 증거 부족이다. 일반 run 두 개의 로그 비교는 qpos 미비교를 명시한다.
+
+`sim_profile.py`는 종료가 정규 간격 사이에 있으면 마지막 상태를 추가하고 최종 메타데이터를 기록한다. 종전 프로파일에서 이 메타데이터가 빠졌다면 새 검사로 전체 상태 동등성을 인증할 수 없다. 원본을 수정하거나 과거 판정을 소급 확대하지 않는다. **이 자료는 간격별 상태 샘플이며 매 스텝 누적 해시가 아니다.** 연구 기본값 채택에는 [전체 A/B 사전등록 초안](../experiments/2026-09-26-sim-speed/prereg_default_check_DRAFT.json)의 별도 연속 상태 기록·2 seed × 4회 검증이 필요하다. 초안은 미등록·미실행 상태다.
 
 ## 3. CPU 측정
 
@@ -42,9 +46,13 @@ python3 scripts/ugrp_session.py run kiro-m1 -- python3 scripts/sim_slots.py run 
   .venv-sim-worker-mac/bin/python scripts/run_m1_owncam.py ...
 ```
 
-- 슬롯 수 = 머신 전체 sim 상한(기본 6, 사용자 규칙; `UGRP_SIM_SLOTS`·`--slots`로 조정하되 모든 에이전트가 기본값을 쓴다). 슬롯은 `outputs/sim-slots/`의 파일 잠금(`fcntl.flock`)이며, 보유 프로세스가 끝나거나 죽으면 커널이 잠금을 푼다. 자식 명령도 잠금 파일 서술자를 물려받는다.
-- 입장은 원자적이다. 전역 `admission.lock`을 잡은 채 "실행 중 sim 수 집계 → 상한 비교 → 빈 슬롯 예약"을 한 번에 한다. 실행 중 = 잡힌 슬롯(모든 슬롯 파일) + 대기열 밖 sim. sim은 argv 문자열이 아니라 **MuJoCo(`libmujoco`)를 실제로 불러온 프로세스**다(macOS `lsof`, Linux `/proc/<pid>/maps`). 슬롯 보유자와 그 자손은 슬롯으로 이미 세고, 기다리는 러너(`queue.lock`)는 아직 실행 중이 아니다. 집계를 할 수 없으면(`lsof`·`/proc` 없음) 시작하지 않고 실패한다(종료 코드 70). 예전 `--ps-cap`은 경쟁 조건 때문에 없앴다.
-- Python 러너는 `with sim_slot(owner='kiro', label='...'):`로 감쌀 수 있다. 다른 프로세스를 멈추거나 신호를 보내지 않는다. `status`는 보유자 기록과 대기열 밖 sim PID를 보여 준다.
+- 이 대기열은 **MuJoCo 라이브러리를 로딩한 프로세스 수의 보수적인 상한**을 관리한다. import 후 대기하는 pytest·노트북도 센다. 실제 `mj_step` 실행 수를 관측하지 않으며 `active_sim_count`는 `null`이다. 열린 `queue.lock`만으로 일을 안 한다고 가정하지 않는다.
+- 기본 cap은 6이다. Mac 공용 root는 기존 `/Users/changmin/projects/ugrp/outputs/sim-slots`, Linux는 `/var/tmp/ugrp-sim-slots`다. Linux에서 여러 사용자가 참여하면 관리자가 해당 디렉터리의 공용 그룹/권한을 준비한다. 모든 참여자는 동일 root·cap을 사용한다. `--root`는 격리 테스트/관리자 설정용이며 에이전트별 root를 만들면 전역 제한이 분리된다.
+- `admission.lock` 안에서 집계와 예약을 수행한다. 슬롯 파일이 열려 있다는 사실은 예약 증거가 아니다. 커널 잠금, 예약 기록, PID와 커널 시작 식별자가 맞는 보유자/자식만 연결한다. 예약 **하나당 로딩 프로세스 하나**만 상쇄하고, 나머지 자식은 추가로 센다. 옛 기록에 시작 식별자가 없거나 PID가 재사용됐으면 중복 제외하지 않는다.
+- 여러 worker를 시작하는 명령은 시작 전에 **최대 동시 로딩 프로세스 수**를 `run --workers N` 또는 `sim_slot(..., workers=N)`으로 예약한다. N개 예약은 모두 한 번에 승인하거나 거부한다. 이미 로딩된 자식도 집계에서 숨기지 않는다. 이는 협력적 입장 제어이며, 예약을 과소 신고하거나 우회한 명령의 임의 fork를 OS 차원에서 차단하는 샌드박스는 아니다.
+- `release()`는 자기 FD를 닫으며 `LOCK_UN`·기록 삭제를 하지 않는다. 상속 FD가 살아 있으면 예약도 유지된다. CLI는 자기 명령을 별도 프로세스 그룹에서 시작하고 **직접 명령이 끝나도 살아 있는 작업 자손이 모두 종료될 때까지** 예약을 유지한다. SIGINT/SIGTERM은 그 작업 그룹에만 전달하고 종료를 기다린다. Python 호출에서 자식을 시작할 때는 `run_reserved(slot, cmd)`를 사용한다. 그룹을 벗어나 detach하는 작업은 FD를 유지하거나 자체 예약해야 한다. 단순 `with sim_slot(...)` 본문에서 미예약 자식을 남기면 안 된다.
+- Linux `/proc`의 살아 있는 PID에 대한 권한/파싱 오류, macOS `lsof`의 실패 코드/부분 결과, 커널 시작 식별자 변경은 입장을 거부한다. macOS 식별자·그룹은 `libproc`으로 확인한다. 가시성이 제한된 호스트/샌드박스는 전체 census를 확인할 수 없어 종료 코드 70으로 거부할 수 있다. 추정치로 진행하지 않는다.
+- census는 저비용이라고 보장하지 않는다. macOS의 전체 `lsof` 조회는 비용이 들며 결과를 오래 캐시하지 않는다. 단조 시계 `--timeout`은 전역 잠금 대기와 census 시간을 포함하며, 각 census도 최대 5초 예산을 받는다. 만료 시 시작하지 않고 75를 반환한다. 커널/파일시스템 호출의 스케줄링 지연까지 실시간 반환을 보장하는 것은 아니다.
 
 ## 5. 개발용 앞부분 절단(dev slice)
 
