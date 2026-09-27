@@ -22,10 +22,10 @@ ARRIVAL_FIX_ACCEPT_YAW_RAD = math.radians(1.3)
 MAX_LOOKS_WITHOUT_PROGRESS = 4
 MAX_LOOK_STAGNATION_S = 60.
 MIN_GOAL_PROGRESS_M = .10
-INIT_RECOVERY_S = 8.
+INIT_RECOVERY_S = 8.  # cumulative stationary time; paused only during a guarded sweep
 INIT_MAX_CAPTURES = 20
 INIT_CAPTURE_INTERVAL_S = .2
-INIT_TIMEOUT_S = 30.
+INIT_TIMEOUT_S = 30.  # includes sweeps; never paused/reset (rationale in the v3 design)
 
 
 class LegSafetyV3:
@@ -181,9 +181,19 @@ class ControllerSafetyV3:
     def _defer_initial_sweep(self, now, reason):
         if self.init_recovery is None:
             self.init_recovery = {'since': float(now), 'deadline': float(now) + INIT_RECOVERY_S,
+                                  'remaining_s': INIT_RECOVERY_S,
                                   'captures': 0, 'next_capture': float(now),
                                   'last_frame': self.last_frame_id}
+        else:
+            self._resume_init_recovery(now)
         self._event(now, 'init_sweep_deferred', reason=reason, recovery=dict(self.init_recovery))
+
+    def _resume_init_recovery(self, now):
+        recovery = self.init_recovery
+        if recovery is not None and recovery['deadline'] is None:
+            # After completion or command rejection, use only the unspent
+            # stationary time. Repeated rejections/captures never refill it.
+            recovery['deadline'] = float(now) + recovery['remaining_s']
 
     def _init_failed(self, now, reason):
         self.outcome, self.sweep = 'NOT_INITIALIZED', None
@@ -196,9 +206,13 @@ class ControllerSafetyV3:
                 self.init_started = float(now)
             if now - self.init_started >= INIT_TIMEOUT_S:
                 return self._init_failed(now, 'initialization_deadline')
-            if self.init_recovery is not None and now >= self.init_recovery['deadline']:
+            if (self.init_recovery is not None and self.init_recovery['deadline'] is not None
+                    and now >= self.init_recovery['deadline']):
                 return self._init_failed(now, 'stationary_deadline')
-        return super().decide(now)
+        result = super().decide(now)
+        if self.phase == 'init' and self.sweep is None and not self.outcome:
+            self._resume_init_recovery(now)
+        return result
 
     def _init(self, now):
         recovery = self.init_recovery
@@ -221,8 +235,6 @@ class ControllerSafetyV3:
         result = super()._init(now)
         if self.phase != 'init':
             self.init_recovery = None
-        # Successful sweep creation does not reset the recovery deadline. Its
-        # commands still pass the same guard as every other sweep.
         return result
 
     def _sweep_collision_failure(self, now, reason):
@@ -250,6 +262,13 @@ class ControllerSafetyV3:
         # Pan belongs to the pan stage; interpolate other servos first.
         super()._start_sweep(now, purpose, {k: v for k, v in pose.items() if int(k) != 6},
                              plan['pans'], restore, reason)
+        recovery = self.init_recovery
+        if self.phase == 'init' and recovery is not None and recovery['deadline'] is not None:
+            # A safe sweep has its own execution time under INIT_TIMEOUT_S;
+            # do not charge it to the stopped-camera recovery budget.
+            recovery['remaining_s'] = max(0., recovery['deadline'] - float(now))
+            recovery['deadline'] = None
+            self._event(now, 'init_sweep_resumed', recovery=dict(recovery))
 
     def _arm_steps(self, target):
         commands = super()._arm_steps(dict(sorted(target.items())))

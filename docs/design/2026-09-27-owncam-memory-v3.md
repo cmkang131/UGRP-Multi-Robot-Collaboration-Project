@@ -2,11 +2,11 @@
 
 2026-09-27, issue #217. 기준 worktree HEAD `367b40da`의 v2와 기록은 보존한다.
 이 문서는 단위 시나리오로 확인한 구현 설계다. 코호트·물리 성공·속도 개선을 뜻하지 않는다.
-PR #234 적대 리뷰 이후 변경은 [1차 기록](../../experiments/2026-09-27-zone-owncam-memory-v3/review-fixes/README.md), [2차 기록](../../experiments/2026-09-27-zone-owncam-memory-v3/review2-fixes/README.md), [3차 기록](../../experiments/2026-09-27-zone-owncam-memory-v3/review3-fixes/README.md), [4차 기록](../../experiments/2026-09-27-zone-owncam-memory-v3/review4-fixes/README.md), [5차 기록](../../experiments/2026-09-27-zone-owncam-memory-v3/review5-fixes/README.md)에 분리했다. 아래는 5차 수정과 coordinator의 안전 조건 통일 결정을 반영한 계약이다.
+PR #234 적대 리뷰 이후 변경은 [1차 기록](../../experiments/2026-09-27-zone-owncam-memory-v3/review-fixes/README.md), [2차 기록](../../experiments/2026-09-27-zone-owncam-memory-v3/review2-fixes/README.md), [3차 기록](../../experiments/2026-09-27-zone-owncam-memory-v3/review3-fixes/README.md), [4차 기록](../../experiments/2026-09-27-zone-owncam-memory-v3/review4-fixes/README.md), [5차 기록](../../experiments/2026-09-27-zone-owncam-memory-v3/review5-fixes/README.md), [6차 기록](../../experiments/2026-09-27-zone-owncam-memory-v3/review6-fixes/README.md)에 분리했다. 아래는 6차 초기화 예산 분리와 coordinator의 안전 조건 통일 결정을 반영한 계약이다.
 
 ## 비교 조건 — 5차 수정
 
-비교 질문은 **기억 기반 재관측 결정의 효과**다. `run_m1_owncam_memory_v3.py`의 `off`는 이제 `M1OwnCamDeliveryOffV3`, ON은 `memory_v3`이다. OFF는 ON과 같은 제어기를 상속하고 `memory_look_enabled=False`만 선택한다. 자기 pose source/일관성, 트랙과 회피, 목표 선택, 조작 스킬, 빈 슬롯 검증은 양쪽에 남는다. 따라서 전체 기억을 제거한 실험으로 해석하지 않는다.
+비교 질문은 **기억 기반 재관측 결정의 효과**다. `run_m1_owncam_memory_v3.py`의 `off`는 이제 `M1OwnCamDeliveryOffV3`, ON은 `memory_v3`이다. OFF는 ON과 같은 제어기를 상속하고 `memory_look_enabled=False`만 선택한다. 자기 pose source/일관성, 트랙과 회피, 목표 선택, 조작 스킬, 빈 슬롯 검증은 양쪽에 남는다. OFF에도 추적 기억이 있으므로 이 비교를 **전체 기억 유무 효과**로 해석하지 않는다. 6차 초기화 예산 분리 역시 양쪽에 같은 구현과 한도를 적용한다.
 
 | 조건 | 재관측 결정 | 안전/조작 |
 |---|---|---|
@@ -20,7 +20,10 @@ PR #234 적대 리뷰 이후 변경은 [1차 기록](../../experiments/2026-09-2
 
 - 주행 상한은 unloaded xy 0.05 m / loaded 0.07 m, yaw 3°를 유지한다. short/full 모두 fix 인정은 unloaded xy 0.04 m / loaded 0.05 m, yaw 2° 이하로 좁혀 carry 복귀의 예측 σ 증가에 여유를 둔다. 도착 look은 yaw 1.3° 이하를 요구하고 복귀 뒤 기존 도착 상한(xy 0.05/0.06 m, yaw 2°)을 다시 검사한다. σ를 잘라 줄이거나 이동량으로 차단을 우회하지 않는다.
 - fix 실패는 2회에 `pose_unverified`. 이와 독립적으로 목표 진전 없는 look은 최대 4회 또는 60 SIM s이며 다음 look/시간 한도에서 `look_stagnation`으로 끝난다. 정상 fix는 정체 횟수를 지우지 않는다. 주행 상태에서 발행된 비영 이동 명령과 자기 추정의 목표 거리 0.10 m 이상 감소가 함께 있어야 정체 예산을 초기화한다. hold/stop은 이동 명령 증거를 지운다. 이는 추정 진전이며 실제 이동 성공이 아니다.
-- 초기 sweep이 자기 pose 불확실성/충돌 검사에서 거부되면 팔·pan·차체를 움직이지 않고 hold와 capture만 수행한다. 첫 거부부터 최대 8 SIM s, 재촬영 요청 20회, 간격 0.2 SIM s이다. 새 시각의 신선한 프레임만 재시도하며 같은 시각 capture를 반복하지 않는다. 거부는 실제 look 횟수에 넣지 않는다. 수렴 후 sweep도 동일 충돌 검사를 통과해야 한다. 복구/전체 초기화 30 SIM s 한도는 갱신하지 않으며 소진 시 `NOT_INITIALIZED`. 초기화 밖의 충돌 거부는 기존 종료/handoff를 유지한다.
+- 초기 sweep이 자기 pose 불확실성/충돌 검사에서 거부되면 팔·pan·차체를 움직이지 않고 hold와 capture만 수행한다. 정지 재촬영 예산은 **누적 8 SIM s**(`INIT_RECOVERY_S`), 요청 총 20회, 간격 0.2 SIM s이다. 첫 거부부터 시간을 차감하되 충돌 검사를 통과한 sweep 생성 시 남은 시간을 보존하고 정지 deadline을 비활성화한다. sweep 완료 또는 명령 재검사 거부 후에는 **남은 시간만** 재개한다. 재거부·새 프레임·sweep 생성으로 시간/촬영 횟수를 새로 지급하지 않는다. 새 시각의 신선한 프레임만 재시도하며 같은 시각 capture를 반복하지 않는다. 계획 단계의 거부는 실제 look 횟수에 넣지 않으며, 시작 후 중단된 sweep은 실제 look 횟수에 남는다.
+- 재개된 sweep은 정지 재촬영 8초와 독립적으로 실행하되, **전체 초기화 30 SIM s**(`INIT_TIMEOUT_S`) 안에서만 진행한다. 최초 초기화 `decide` 시각부터 정지·sweep·복귀·판단 시간을 모두 포함하며 pause/reset하지 않는다. 명령이 진전하지 않는 sweep에도 적용한다. 기본 6-pan의 0.1초 명령 처리 회귀에서 sweep 하나는 9.0 SIM s를 사용한다. 기존 30초 상한을 유지하는 설계 근거는 정지 8초 + 이런 sweep 두 번 18초 + 전환/판단 여유 4초다. 이는 유한한 개발 예산이며 실제 물리 소요 시간의 보장이 아니다. 기존 실제 look 최대 3회와도 함께 적용하고, 모든 시도를 완주시키기 위해 전체 상한을 늘리지 않는다. 각 한도 소진은 `NOT_INITIALIZED`이며 초기화 밖의 충돌 거부는 기존 종료/handoff를 유지한다.
+
+6차 반례는 양 조건에 같은 합성 자기 추정을 넣어 1.8 s 거부 → 2.0 s σxy=0.09 m에서 6-pan 시작 → 2.8 s부터 σxy=0.02 m → 11.0 s sweep 완료 → 11.1 s `search_leg`를 확인한다. 수정 전에는 9.8 s의 정지 deadline이 sweep을 중단했다. 실제 충돌 검사·상태기계·발행 명령 처리를 사용하는 오프라인 회귀이며, 자기 카메라의 실제 수렴률이나 물리 성공·기억 효과를 측정한 결과는 아니다.
 
 이 문턱들은 dev 후보이며 실제 carry 복귀·슬롯 관측·성공률은 새 dev에서 검증한 뒤 양쪽 동일하게 동결한다.
 
