@@ -51,12 +51,19 @@ PR #233의 태그 없는 비전 위치 추정 학생(VIS3, 오프라인 게이�
 
 `manifest.json`의 `files`에 모든 json/jsonl의 해시가 있다. 모델 요청 이미지(자기 프레임 JPEG)는 `frames/r*/`에 그대로 보존했다.
 
-## 하지 않은 것 / 남은 문제
+## TensorBoard (dev closed-loop check, 연구 결과 아님)
 
-- TensorBoard 스냅샷: 이번에 만들지 않았다(크레딧 한도). 원본과 해시는 위에 있다.
+스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/0927-vision-worker-dev` (로컬 전용). `build_tensorboard.py`(`51ecb857`에서 생성)는 저장소 `Writer`(`scripts/tensorboard_tools/export.py`)와 VIS3 채점기의 `pct`·`near_door`(`experiments/2026-09-26-vision-loc/vision_loc_score.py`)를 재사용하는 접착 코드다. 기존 폴더는 덮어쓰지 않는다.
+
+- `vw-s942-closed`: 위치 오차(전체·VIS3 문 상자 `door_zone`·README 반경 0.5 m `near_door_r050`), σ 대 실제 오차(`sigma/*`, `localization/err_over_sigma`), 문 통과, 배송(`evaluation/reported_success`=m1_success 0), SIM·wall 시간, 명령 수, worker 호출·추론 ms. 시계열 step = SIM 시각 × 100. 백분위는 VIS3와 같은 numpy 선형 방식이어서 위 표(정렬 색인 방식)와 소수 넷째 자리가 조금 다르다(문 0.5 m p90 8.83 vs 8.87 cm).
+- `vis3-dev-a1`, `vis3-test-vision`: VIS3 **오프라인 재생** 기준선(pooled, 같은 설정 a1_open `87f94b34`). 위치 오차만 있고 문·배송·SIM·ms는 없다.
+- σ 대 오차: 오차/σ p50 1.20, p90 5.90, 오차 > 3σ 프레임 19.0%. 90–150 s 구간 오차 p50 53.3 cm, σ p50 3.9 cm.
+- 검증: EventAccumulator 재독 65항목 불일치 0(`tensorboard_verify.json`, 원본 해시 포함). 실행 중인 공용 서버(6006, 이 작업이 시작하지 않음, 재시작 안 함)의 `/data/runs`에 3 run, 고정 카드 12개 모두 `vw-s942-closed`에 존재, HParams session group 3개(`mode`·`deliver_outcome` 확인). 보기 설정은 `outputs/tensorboard-view.json`의 `vision_worker_dev_20260927` 키 하나만 추가했다(다른 키는 바이트 동일 확인). 스냅샷 목록 사본: `tensorboard_collection.json`.
+
+## 하지 않은 것 / 남은 문제
 - #229 등록(`pose_providers.json`)과 `init_prior` 호출·`close()` 연결은 #229 쪽 작업이다(PR #237 본문의 제안 항목).
 - 집기 구간 과신 원인과 운반 게이트 대 VIS3 σ 불일치의 조정은 dev 과제로 남긴다. 조정 없이 test 회차를 돌리지 않는다.
 
 ## 참고 자료
 
-PR #237 본문의 "참고 자료"와 같다. 요약: Boniardi 외 IROS 2019(https://arxiv.org/abs/1903.01804), Fox·Burgard·Thrun 1998 Active Markov Localization, Thrun·Burgard·Fox *Probabilistic Robotics* 2005, Howard 외 ICCV 2019 MobileNetV3(https://arxiv.org/abs/1905.02244); PyTorch 2.11.0·torchvision 0.26.0(BSD-3), OpenCV 4.13/5.0(Apache-2.0), NumPy(BSD-3), PythonRobotics `b2020cd`(MIT, M1 PF 경유); 내부: PR #233 VIS3 모듈, PR #210 `markerless_probe.py`, M1 PF `22c84842`, ACT worker 패턴(`harness/recovery_act_client.py` 등), PR #206 실행기·host·테스트, PR #229 제공자 인터페이스, `harness/zone_sim_cost.py`.
+PR #237 본문의 "참고 자료"와 같다. 요약: Boniardi 외 IROS 2019(https://arxiv.org/abs/1903.01804), Fox·Burgard·Thrun 1998 Active Markov Localization, Thrun·Burgard·Fox *Probabilistic Robotics* 2005, Howard 외 ICCV 2019 MobileNetV3(https://arxiv.org/abs/1905.02244); PyTorch 2.11.0·torchvision 0.26.0(BSD-3), OpenCV 4.13/5.0(Apache-2.0), NumPy(BSD-3), PythonRobotics `b2020cd`(MIT, M1 PF 경유); 내부: PR #233 VIS3 모듈, PR #210 `markerless_probe.py`, M1 PF `22c84842`, ACT worker 패턴(`harness/recovery_act_client.py` 등), PR #206 실행기·host·테스트, PR #229 제공자 인터페이스, `harness/zone_sim_cost.py`. TensorBoard 스냅샷: TensorBoard 2.21.0(Apache-2.0, event protobuf·EventAccumulator), 저장소 `scripts/tensorboard_tools/export.py` `Writer`, `docs/tensorboard.md`, VIS3 `vision_loc_score.py`·`build_tensorboard.py`(PR #233).

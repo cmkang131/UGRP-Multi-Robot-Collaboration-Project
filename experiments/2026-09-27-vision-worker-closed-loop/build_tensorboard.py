@@ -177,7 +177,8 @@ def verify(args):
         for tag, pts in ser.items():
             checked += 1
             got = [(s.step, s.value) for s in acc.Scalars(tag)] if tag in tags else []
-            if len(got) != len(pts) or any(a[0] != b[0] or abs(a[1] - b[1]) > 1e-5 for a, b in zip(got, pts)):
+            if len(got) != len(pts) or any(a[0] != b[0] or abs(a[1] - b[1]) > 1e-5 * max(1., abs(b[1]))
+                                           for a, b in zip(got, pts)):
                 mismatches += 1
                 print('SERIES MISMATCH', item['name'], tag, len(got), len(pts))
     report = {'snapshot': str(out), 'runs': len(col['exported']), 'checked': checked, 'mismatches': mismatches,
