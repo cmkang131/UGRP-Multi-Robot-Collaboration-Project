@@ -1,0 +1,145 @@
+{
+ "schema": "ugrp.vision_worker_dev.tensorboard_collection.v1",
+ "label": "dev closed-loop check, 연구 결과 아님",
+ "research_result": false,
+ "exported": [
+  {
+   "name": "vw-s942-closed",
+   "hparams": {
+    "label": "dev closed-loop check, 연구 결과 아님",
+    "mode": "closed_loop",
+    "split": "dev",
+    "episode": "vl3-dev-s942",
+    "robot": "r2",
+    "provider": "vision_zero_tag_v1",
+    "config_sha8": "87f94b34",
+    "source_sha8": "93936d36",
+    "deliver_outcome": "CARRY_LEG_pose_uncertain"
+   },
+   "counts": {
+    "scalars": 12289,
+    "texts": 1,
+    "images": 0
+   },
+   "scalars": {
+    "summary/all/pos_p50_m": 0.0379,
+    "summary/all/pos_p90_m": 0.3209,
+    "summary/all/pos_p99_m": 0.6149,
+    "summary/all/pos_max_m": 0.61849,
+    "summary/all/yaw_p90_deg": 5.9979,
+    "summary/all/frames": 2375,
+    "summary/door_zone/pos_p50_m": 0.0242,
+    "summary/door_zone/pos_p90_m": 0.088,
+    "summary/door_zone/pos_p99_m": 0.0998,
+    "summary/door_zone/pos_max_m": 0.10167,
+    "summary/door_zone/yaw_p90_deg": 2.2345,
+    "summary/door_zone/frames": 252,
+    "summary/near_door_r050/pos_p50_m": 0.0451,
+    "summary/near_door_r050/pos_p90_m": 0.0883,
+    "summary/near_door_r050/pos_p99_m": 0.0962,
+    "summary/near_door_r050/pos_max_m": 0.09767,
+    "summary/near_door_r050/yaw_p90_deg": 2.5692,
+    "summary/near_door_r050/frames": 190,
+    "sigma/std_xy_p50_m": 0.0366,
+    "sigma/err_over_sigma_p50": 1.2035,
+    "sigma/err_over_sigma_p90": 5.8975,
+    "sigma/frac_err_gt_2sigma": 0.2606,
+    "sigma/frac_err_gt_3sigma": 0.1903,
+    "sigma/win090_150/pos_p50_m": 0.5331,
+    "sigma/win090_150/std_xy_p50_m": 0.0389,
+    "result/sim_time_s": 462.05,
+    "result/wall_time_s": 1220.6,
+    "result/commands": 7218,
+    "result/llm_calls": 0,
+    "result/door_passed": 1.0,
+    "result/assigned_box_in_slot": 0.0,
+    "evaluation/reported_success": 0.0,
+    "result/false_confirmation": 0.0,
+    "result/pose_uncertain_events": 8,
+    "vision/worker_calls": 1375,
+    "vision/inference_ms_p50": 156.694,
+    "vision/inference_ms_p90": 201.619,
+    "vision/inference_ms_max": 647.848,
+    "vision/worker_startup_s": 1.921
+   },
+   "series_points": {
+    "localization/pos_err_m": 2375,
+    "localization/std_xy_m": 2375,
+    "localization/err_over_sigma": 2375,
+    "localization/yaw_err_deg": 2375,
+    "vision/worker_ms": 1375,
+    "vision/pf_ms": 1375
+   }
+  },
+  {
+   "name": "vis3-dev-a1",
+   "hparams": {
+    "label": "VIS3 offline baseline (open-loop replay of teacher renders)",
+    "mode": "offline_replay",
+    "split": "dev",
+    "episode": "dev pooled (offline)",
+    "robot": "-",
+    "provider": "VIS3 a1_open",
+    "config_sha8": "87f94b34",
+    "source_sha8": "619c0123",
+    "deliver_outcome": "-"
+   },
+   "counts": {
+    "scalars": 10,
+    "texts": 1,
+    "images": 0
+   },
+   "scalars": {
+    "summary/all/pos_p50_m": 0.0601,
+    "summary/all/pos_p90_m": 1.5118,
+    "summary/all/pos_p99_m": 2.6893,
+    "summary/all/yaw_p90_deg": 68.6743,
+    "summary/door_zone/pos_p50_m": 0.0322,
+    "summary/door_zone/pos_p90_m": 0.0645,
+    "summary/door_zone/pos_p99_m": 0.0798,
+    "summary/door_zone/yaw_p90_deg": 2.3605,
+    "summary/all/frames": 20433,
+    "summary/door_zone/frames": 1347
+   },
+   "series_points": {}
+  },
+  {
+   "name": "vis3-test-vision",
+   "hparams": {
+    "label": "VIS3 offline baseline (open-loop replay of teacher renders)",
+    "mode": "offline_replay",
+    "split": "test",
+    "episode": "test pooled (offline)",
+    "robot": "-",
+    "provider": "VIS3 a1_open",
+    "config_sha8": "87f94b34",
+    "source_sha8": "619c0123",
+    "deliver_outcome": "-"
+   },
+   "counts": {
+    "scalars": 10,
+    "texts": 1,
+    "images": 0
+   },
+   "scalars": {
+    "summary/all/pos_p50_m": 0.0277,
+    "summary/all/pos_p90_m": 0.1173,
+    "summary/all/pos_p99_m": 0.2885,
+    "summary/all/yaw_p90_deg": 1.702,
+    "summary/door_zone/pos_p50_m": 0.029,
+    "summary/door_zone/pos_p90_m": 0.0626,
+    "summary/door_zone/pos_p99_m": 0.085,
+    "summary/door_zone/yaw_p90_deg": 2.0708,
+    "summary/all/frames": 10374,
+    "summary/door_zone/frames": 1424
+   },
+   "series_points": {}
+  }
+ ],
+ "source_sha": "51ecb857c5e855621a12cd78a606e0090923473a",
+ "raw": "/Users/changmin/projects/ugrp/outputs/vision-worker-closed-loop-20260927/vl3-dev-s942",
+ "vis3_results": "/Users/changmin/projects/ugrp-wt/kiro-vision-worker/experiments/2026-09-26-vision-loc/results/results_v3.json",
+ "vis3_results_sha256": "a818d2ee1e2c096bcfc9907f60e947689e8848bdab5587ac620dad7a3cb4c0f1",
+ "exported_at_s": 1790479259.0309398,
+ "limits": "one dev episode (seed 942), no-LLM, SYNC SIM; VIS3 rows are offline replays (other scope)"
+}
