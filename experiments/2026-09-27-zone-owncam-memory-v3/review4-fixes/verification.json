@@ -1,0 +1,56 @@
+{
+  "base_commit": "c02db4d55510a5936dadebef6ef6ddf5dd5592fb",
+  "review_source": "/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-234-review4.md",
+  "review_sha256": "dee92fee2cd3bd9ef1c432bfd19d0cbadddd8b9359c2ab435d0427ede4fc6bf7",
+  "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "process_thread_caps": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "opencv_threads": 1,
+  "opencv_method": "setNumThreads(0)",
+  "basetemp": "./.pytest_tmp",
+  "basetemp_removed": true,
+  "tests": {
+    "before": "14 failed, 22 deselected (expected exit 1)",
+    "baseline_confirmed": "14 failed, 22 deselected (c02db4d5 modules loaded in memory, expected exit 1)",
+    "review4": "36 passed",
+    "related_regressions": "322 passed, 382 subtests passed",
+    "mock_ci_cap_2": "4 passed; mock.patch.dict isolates environment; process/library caps remain initialized at 1",
+    "full_project_or_remote_ci": false
+  },
+  "v2_hashes_checked": 23,
+  "v2_hash_mismatches": [],
+  "prior_review_records_unchanged": true,
+  "saved_fixtures_unchanged": true,
+  "diff_check": "pass",
+  "head_unchanged": true,
+  "source_and_document_sha256": {
+    "docs/design/2026-09-27-owncam-memory-v3.md": "a7aee9263974583a0a062e16d5d143bd086546b197fc2a733ba1fadf77c055cc",
+    "experiments/2026-09-27-zone-owncam-memory-v3/README.md": "dca6ac64fb2fe29a962ca4ffa4976246721a2de59d28a15ebff327d2c1c86453",
+    "harness/m1_owncam_memory_v3.py": "a91598a9cc3376a48437d25dd2f768fe6712a84c3a1699f59d94a785a9bfa408",
+    "harness/owncam_drive_mem_v3.py": "c6e699a5427ded19ecbabdc88a227da0f422af5d4fe6e55f6f4772d4e0d8077e",
+    "scripts/run_ci_tests.py": "f420a575901b08ae5fbba6b0895ddd20e1f5caff1130c34f64c0ef7e20a06541",
+    "tests/test_owncam_memory_v3_review4.py": "3be56a026aa11baaee853a54bb1377a65b125b8dabb00103607b4036fae02355"
+  },
+  "evidence_sha256": {
+    "README.md": "2a39235ff2925a9ef64508c4379b4347be3ac0a19e612392c5d14ac5279a855d",
+    "after.txt": "a6bbea559396ab2bb14a8104c6fd5545825fabb083d72d9264d64fd29ca31de3",
+    "before-confirmed.txt": "9eedb31363a8042ef56ca12de5f5da06c8da75d5ae76c2063184896abbb6977c",
+    "before.txt": "b73af585def74fd9c13b9d68f316d29eb45176c5a5adb824cd7de25a83316d80",
+    "check_ci_caps.py": "29d32046f599d4039121f0ecb1a235c70e135b2a4e759afed30a348298359dc2",
+    "ci-caps.txt": "5d34b8b3c01e4feeffdec8938023a56b9665de01d3727f5bad947a1038c93ae3",
+    "related-tests.txt": "292b83d9e3431f1a6bdef99311c912e7fcc1012b13653bc3b1608e435b47e102",
+    "reproduce_baseline.py": "9bcd7fcb508ed3ae5f8d75975413a74af04fe80895efa783a74556ab3cdde8a2"
+  },
+  "physics_run": false,
+  "cohort_run": false,
+  "commit_created": false,
+  "remote_checks": {
+    "fetch": "denied: FETCH_HEAD write outside writable roots",
+    "gh_pr_list": "api.github.com connection failed"
+  },
+  "scope": "Offline unit regressions using authored geometry, synthetic own pose, and existing own-camera fixtures; no new v3 episode/performance result."
+}
