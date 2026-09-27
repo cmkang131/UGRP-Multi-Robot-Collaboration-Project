@@ -241,9 +241,9 @@ class PairCommandGuard:
         pose = OwnPose.from_report(report)
         fresh = pose_report_fresh(report, now)
         if self.relative_enabled:
-            envelope = self.global_envelope.pose(report, now)
-            if not self.approach:
-                pose = envelope
+            # The driver may plan toward a PF-mean goal, but EVERY command
+            # (including approach/back-off and arm sweeps) uses this envelope.
+            pose = self.global_envelope.pose(report, now)
         # Cache only a bounded own estimate AFTER the last base command ended.
         # A reset localizer has no pose yet, but cannot move a stationary base.
         if fresh and pose is not None:

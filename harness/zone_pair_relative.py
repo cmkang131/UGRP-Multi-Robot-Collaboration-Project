@@ -2,9 +2,10 @@
 
 Uses the unchanged beam body colour to select silhouette/paired edges. Dark
 grip bands are neither detected nor assigned a position. Complete catalogue
-length and both end boundaries are required for a new metric anchor. Partial
-views may support an existing bounded anchor, but cannot refill its age or
-shrink its uncertainty. Loaded images never use the resting-plane model.
+length and both end boundaries are required to establish endpoint identity.
+A visible near end plus paired edges may update an existing identified beam
+when only the far end leaves the FOV. Support-only views cannot shrink bounds;
+partial updates cannot renew identity age. Loaded images never use this plane.
 """
 from __future__ import annotations
 
@@ -78,7 +79,7 @@ def shape_points(image, servo):
     return pts[keep], xs[hit][keep].astype(int), ys[hit][keep].astype(int), depth
 
 
-def shape_fit(image, servo):
+def shape_fit(image, servo, prior=None):
     pts, x, y, depth = shape_points(image, servo)
     if len(pts) < beam_v1.MIN_POINTS:
         return None, ('BEAM_NOT_VISIBLE',)
@@ -92,13 +93,19 @@ def shape_fit(image, servo):
     lo, hi = np.percentile(a, [1,99])
     width = float(np.percentile(b,98)-np.percentile(b,2))
     inner = beam_v1._inner_valid()
-    boundary = (a <= lo+.01) | (a >= hi-.01)
-    clipped = bool(np.any(~inner[y[boundary],x[boundary]]))
-    if clipped or hi-lo < .54:
+    near_boundary, far_boundary = a <= lo+.01, a >= hi-.01
+    near_clipped = bool(np.any(~inner[y[near_boundary],x[near_boundary]]))
+    far_clipped = bool(np.any(~inner[y[far_boundary],x[far_boundary]]))
+    partial = near_clipped or far_clipped or hi-lo < .54
+    # An unobserved far end is allowed ONLY for an already identified bar.
+    # A short isolated colour patch/occlusion is not a newly observed end.
+    near_update = (prior is not None and not near_clipped and far_clipped
+                   and .06 <= hi-lo <= .66)
+    if partial and not near_update:
         # Colour breaks/occlusions are not new ends. The historical label
         # BAND_CLIPPED is handled as the same unobserved-axis case downstream.
         return None, ('END_CLIPPED', 'AXIAL_POSITION_UNKNOWN', 'END_ID_AMBIGUOUS')
-    if not (.54 <= hi-lo <= .66 and .025 <= width <= .070):
+    if not ((near_update or .54 <= hi-lo <= .66) and .025 <= width <= .070):
         return None, ('SHAPE_AMBIGUOUS', 'MONOCULAR_DEPTH_AMBIGUOUS')
     strips = []
     for start in np.arange(lo, hi, .01):
@@ -123,10 +130,21 @@ def shape_fit(image, servo):
         return None, ('END_ID_AMBIGUOUS',)
     syaw = max(math.radians(1), math.atan2(2*residual+.001,float(np.ptp(along))))
     grip = near + .03*np.array([math.cos(heading),math.sin(heading)])
+    if near_update:
+        # Preserve the full-view endpoint association; do not initialize from
+        # a partial view or revive an unrelated end after a large jump.
+        delta = math.dist(grip,prior['grip_base_m'])
+        angle = abs((heading-prior['axis_heading_rad']+math.pi)%(2*math.pi)-math.pi)
+        if (delta > 2*(prior['std_xy_m']+prior['bias_bound_m']+max(.015,residual)+bias)
+                or angle > 2*(prior['std_yaw_rad']+syaw)):
+            return None, ('BEAM_MOVED_OR_ASSOCIATION_LOST',)
+    reasons = ('MONOCULAR_RESTING_PLANE_HYPOTHESIS',)
+    if near_update:
+        reasons += ('NEAR_END_AND_PAIRED_EDGES_UPDATE',)
     return {'grip_base_m': grip.tolist(), 'axis_heading_rad': heading,
             'std_xy_m': max(.015,residual), 'std_yaw_rad': syaw,
             'bias_bound_m': bias, 'visible_length_m': float(hi-lo),
-            'edge_residual_m': residual}, ('MONOCULAR_RESTING_PLANE_HYPOTHESIS',)
+            'edge_residual_m': residual}, reasons
 
 
 class RelativeBeamTrack(RestingBeamTrack):
@@ -174,6 +192,10 @@ class RelativeBeamTrack(RestingBeamTrack):
         self.report_command_epoch = self.command_epoch
         fitted, reasons = shape_fit(obs['image'],servo)
         old = self.beam if self.segment == segment else None
+        identity_t = None if old is None else old.get('identity_time_s',old['anchor_time_s'])
+        if (fitted is None and 'END_CLIPPED' in reasons and old is not None
+                and 0 <= now-identity_t <= MAX_AGE_S):
+            fitted, reasons = shape_fit(obs['image'],servo,old)
         if fitted is not None:
             if old is not None:
                 delta = math.dist(fitted['grip_base_m'],old['grip_base_m'])
@@ -183,9 +205,11 @@ class RelativeBeamTrack(RestingBeamTrack):
                     self.beam = None
                     return unknown('BEAM_MOVED_OR_ASSOCIATION_LOST')
             self.segment = segment
-            self.beam = {**fitted,'anchor_time_s':obs['sim_time'],'anchor_sha256':obs['sha256']}
+            partial_update = 'NEAR_END_AND_PAIRED_EDGES_UPDATE' in reasons
+            self.beam = {**fitted,'anchor_time_s':obs['sim_time'],'anchor_sha256':obs['sha256'],
+                         'identity_time_s':identity_t if partial_update else obs['sim_time']}
         elif (old is not None and any(r in reasons for r in ('END_CLIPPED','BAND_CLIPPED'))
-              and 0 <= now-old['anchor_time_s'] <= MAX_AGE_S):
+              and 0 <= now-identity_t <= MAX_AGE_S):
             pts,_,_,_ = shape_points(obs['image'],servo)
             u = np.array([math.cos(old['axis_heading_rad']),math.sin(old['axis_heading_rad'])])
             delta = pts-np.asarray(old['grip_base_m'])

@@ -21,6 +21,8 @@ class GlobalEnvelope:
         self.motion = (0.,0.,0.)
         self.until = -math.inf
         self.travel_bound = self.turn_bound = 0.
+        self.reacquisition = None
+        self.last_candidate_fix_t = -math.inf
 
     def advance(self, now):
         if self.t is None:
@@ -39,35 +41,75 @@ class GlobalEnvelope:
         if row['kind'] in ('drive','mecanum'):
             self.motion = tuple(row.get(k,0.) for k in ('forward','left','turn'))
             self.until = row['t']+row['duration_s']
+            self.reacquisition = None
         elif row['kind'] == 'hold':
             # Hold is issued intent; reserve finite stop lag, not instantaneous
             # physical stopping. Repeated holds do not refill the tail.
             self.until = min(self.until,row['t']+.2)
+
+    def _verified_reacquisition(self, p, fix_t):
+        """Three distinct, consecutive compact fixes while the base is stopped.
+
+        Re-reading a receipt is not corroboration. Motion, missing information,
+        disagreement or a >1 s gap restarts this separate recovery check. These
+        are development consistency bounds, not calibrated absolute accuracy.
+        """
+        if fix_t <= self.last_candidate_fix_t:
+            return False
+        self.last_candidate_fix_t = fix_t
+        if (fix_t < self.until + .2 or p.std_xy > .05 or p.std_yaw > math.radians(3)):
+            self.reacquisition = None
+            return False
+        previous = self.reacquisition
+        if previous is not None:
+            first, last, reference, count = previous
+            angle = abs((p.yaw-reference.yaw+math.pi)%(2*math.pi)-math.pi)
+            if (fix_t-last <= 1. and math.dist((p.x,p.y),(reference.x,reference.y)) <= .03
+                    and angle <= math.radians(3)):
+                self.reacquisition = (first,fix_t,reference,count+1)
+                return count+1 >= 3 and fix_t-first >= .3
+        self.reacquisition = (fix_t,fix_t,p,1)
+        return False
 
     def pose(self, report, now):
         self.advance(now)
         p = OwnPose.from_report(report)
         if (p is None or not pose_report_fresh(report,now)
                 or min(p.std_xy,p.std_yaw)<0):
+            self.reacquisition = None
             return None
         hypotheses = (report.observation_quality or {}).get('posterior_envelope')
         if hypotheses is not None:
             xy, yaw = hypotheses.get('xy_radius_m'),hypotheses.get('yaw_radius_rad')
             if not all(isinstance(v,(int,float)) and math.isfinite(v) and v>=0 for v in (xy,yaw)):
+                self.reacquisition = None
                 return None
             p = replace(p,std_xy=max(p.std_xy,xy/2),std_yaw=max(p.std_yaw,yaw/2))
+        quality = report.observation_quality or {}
+        current_rejected = (any(quality.get(k) is False for k in ('accepted','informative','settled'))
+                            or quality.get('ambiguous') is True)
+        # Providers retain last_fix_quality through a bad current observation.
+        # That receipt can age normally, but cannot bridge a recovery streak.
+        if (not informative_fix(report) or current_rejected
+                or report.last_fix_t is None or report.last_fix_t > now):
+            self.reacquisition = None
         if (informative_fix(report) and report.last_fix_t is not None
                 and report.last_fix_t <= now and (self.fix_t is None or report.last_fix_t>self.fix_t)):
             if not 0 <= report.t_est-report.last_fix_t+1e-4 <= .3002:
+                self.reacquisition = None
                 return None  # an old receipt cannot anchor a newer predicted mean
             # Reject a new compact mode outside the old reachable envelope;
             # lost recovery needs a new independently verified anchor.
             if self.anchor is not None:
                 budget = self.travel_bound+2*(self.anchor.std_xy+p.std_xy)+.03
-                if math.dist((p.x,p.y),(self.anchor.x,self.anchor.y))>budget:
-                    return None
+                yaw_budget = self.turn_bound+2*(self.anchor.std_yaw+p.std_yaw)+.001*(now-self.fix_t)
+                dyaw = abs((p.yaw-self.anchor.yaw+math.pi)%(2*math.pi)-math.pi)
+                if (math.dist((p.x,p.y),(self.anchor.x,self.anchor.y))>budget or dyaw>yaw_budget):
+                    if current_rejected or not self._verified_reacquisition(p,report.last_fix_t):
+                        return None
             self.anchor,self.fix_t = p,report.last_fix_t
             self.travel_bound = self.turn_bound = 0.
+            self.reacquisition = None
         if self.anchor is None or not 0 <= now-self.fix_t <= 30.:
             return None
         # Enclose both nominal PF and every position reachable from the anchor.

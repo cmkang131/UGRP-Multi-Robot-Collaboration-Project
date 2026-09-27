@@ -59,11 +59,12 @@ def target_context(own, report, now):
     else:
         return None
     return {'order_id': job.args['order_id'], 'grip_base_m': list(grip), 'axis_heading_rad': heading,
-            'xy_slack_m': xy_slack, 'yaw_slack_rad': yaw_slack, 'source': source}
+            'xy_slack_m': xy_slack, 'yaw_slack_rad': yaw_slack, 'source': source,
+            'allow_shape_identity': bool(getattr(getattr(ep,'policy',None),'beam_relative',False))}
 
 
 def target_component(frame, model, labels, index, pose, target):
-    """Require band identity, order/anchor association and whole-component support.
+    """Require band/full-shape identity, association and whole-component support.
 
     A yellow component alone is insufficient. The small shadow allowance must
     match floor chromaticity and be dimmer; arbitrary residual pixels, another
@@ -87,7 +88,16 @@ def target_component(frame, model, labels, index, pose, target):
         return None
     beam = observe_beam(frame, pose)
     if not beam.get('end_visible') or beam.get('grip_source') != 'band_centre':
-        return None
+        if not target.get('allow_shape_identity',False):
+            return None
+        # The v6 A flag allows a complete catalogue shape instead of a band.
+        # Partial endpoint updates cannot establish semantic object identity.
+        from harness.zone_pair_relative import shape_fit
+        from harness.zone_pair_grasp import FIX_STD_XY_M, FIX_STD_YAW_RAD
+        beam, _ = shape_fit(frame,pose)
+        if (beam is None or beam['std_xy_m']+beam['bias_bound_m'] > FIX_STD_XY_M
+                or beam['std_yaw_rad'] > FIX_STD_YAW_RAD):
+            return None
     delta = math.atan2(math.sin(beam['axis_heading_rad'] - target['axis_heading_rad']),
                        math.cos(beam['axis_heading_rad'] - target['axis_heading_rad']))
     if (math.dist(beam['grip_base_m'], target['grip_base_m']) > target['xy_slack_m']
