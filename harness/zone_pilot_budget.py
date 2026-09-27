@@ -122,8 +122,9 @@ class PilotBudget:
                 'attempt_cap': ATTEMPT_CAP, 'token_cap': TOKEN_CAP, 'identity': identity}),))
         return cls(path, identity=identity)
 
-    def __init__(self, path, *, identity=None):
+    def __init__(self, path, *, identity=None, read_only=False):
         self.path = Path(path).resolve(strict=True)
+        self.read_only = read_only
         meta = self.snapshot()['meta']
         if (meta.get('schema'), meta.get('attempt_cap'), meta.get('token_cap'), meta.get('budget_path')) != (
                 SCHEMA, ATTEMPT_CAP, TOKEN_CAP, str(self.path)):
@@ -133,8 +134,10 @@ class PilotBudget:
         self.meta = meta
 
     def _connect(self):
-        db = sqlite3.connect(self.path.as_uri() + '?mode=rw', uri=True, timeout=10)
-        db.execute('PRAGMA synchronous=FULL')
+        db = sqlite3.connect(self.path.as_uri() + ('?mode=ro' if self.read_only else '?mode=rw'),
+                             uri=True, timeout=10)
+        if not self.read_only:
+            db.execute('PRAGMA synchronous=FULL')
         return db
 
     def snapshot(self):

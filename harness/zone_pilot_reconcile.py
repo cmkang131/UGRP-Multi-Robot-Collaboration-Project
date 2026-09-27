@@ -1,8 +1,9 @@
-"""Read-only reconciliation. Uncorrelated legacy proxy log windows never pass.
+"""Read-only reconciliation with separately labelled ID and log-window evidence.
 
 A telemetry JSONL file is evidence supplied by the coordinator, not an override:
 its referenced raw trace file is hashed and must contain the very same row.
-All attempted upstream generations (including failures) need terminal usage.
+The ID path requires terminal usage for all attempts. #222 also permits weaker
+exclusive-window quota evidence; it never invents IDs or retry usage.
 """
 from __future__ import annotations
 
@@ -10,6 +11,8 @@ import json
 from pathlib import Path
 
 from harness.zone_pilot_budget import canonical, sha, usage_total
+from harness.zone_pilot_proxy_log import (ACCEPTED_EVIDENCE_LEVELS, EVIDENCE_LEVEL,
+                                        ID_EVIDENCE_LEVEL, LIMITATION, verify_telemetry)
 from harness.llm_completion import (COMPLETION_POLICY, PROXY_COMPLETION_LIMITATION,
                                      completion_aggregate, normal_completion, successful_call)
 
@@ -24,6 +27,7 @@ def reconcile(snapshot, telemetry=()):
         indexed[key] = item
     rows = []
     upstream_ids, proxy_ids = set(), set()
+    log_posts = set()
     for sent in snapshot['sends']:
         issues = []
         key = sent['reservation_id']
@@ -45,7 +49,16 @@ def reconcile(snapshot, telemetry=()):
             issues.append('proxy_request_and_upstream_attempts_unlinked')
             if usage_total(sent.get('provider_usage')) is None:
                 issues.append('unknown_provider_usage')
+        elif observed.get('evidence_level') == EVIDENCE_LEVEL:
+            issues.extend(verify_telemetry(sent, observed))
+            for post in observed.get('posts', []) if not issues else []:
+                event = (observed.get('evidence', {}).get('source_path'), post.get('offset'))
+                if event in log_posts:
+                    issues.append('proxy_log_post_reused_across_calls')
+                log_posts.add(event)
         else:
+            if observed.get('evidence_level', ID_EVIDENCE_LEVEL) != ID_EVIDENCE_LEVEL:
+                issues.append('unsupported_evidence_level')
             try:
                 evidence = observed['evidence']
                 raw = Path(evidence['path']).read_bytes()
@@ -94,6 +107,13 @@ def reconcile(snapshot, telemetry=()):
                      'proxy_response_id': sent.get('proxy_response_id'),
                      'proxy_request_id': observed.get('proxy_request_id') if observed else None,
                      'upstream_attempts': observed.get('upstream_attempts') if observed else None,
+                     'evidence_level': observed.get('evidence_level', ID_EVIDENCE_LEVEL) if observed else 'unresolved',
+                     'actual_upstream_attempts': (observed.get('actual_upstream_attempts')
+                         if observed and observed.get('evidence_level') == EVIDENCE_LEVEL
+                         else len(observed.get('upstream_attempts', [])) if observed
+                         and isinstance(observed.get('upstream_attempts'), list) else None),
+                     'evidence': observed.get('evidence') if observed else None,
+                     'evidence_limitation': LIMITATION if observed and observed.get('evidence_level') == EVIDENCE_LEVEL else None,
                      'provider_usage': sent.get('provider_usage'),
                      'completion': sent.get('completion'),
                      'local_status': sent['status'], 'late': sent.get('late', False),
@@ -108,7 +128,11 @@ def reconcile(snapshot, telemetry=()):
             'state_sha256': sha(canonical([snapshot['sends'], snapshot['runs']]).encode()),
             'completion_policy': COMPLETION_POLICY,
             'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
-            'complete_scope': 'upstream_attempts_and_billing_only_not_completion_or_physical_success',
+            'evidence_levels': sorted({r['evidence_level'] for r in rows}),
+            'accepted_evidence_levels': list(ACCEPTED_EVIDENCE_LEVELS),
+            'complete_scope': ('exclusive_window_quota_accounting_not_provider_billing_or_completion_or_physical_success'
+                               if any(r['evidence_level'] == EVIDENCE_LEVEL for r in rows)
+                               else 'upstream_attempts_and_billing_only_not_completion_or_physical_success'),
             'complete': not problems and all(r['reconciled'] for r in rows),
             'reserved_attempts': snapshot['reserved_attempts'], 'reserved_tokens': snapshot['reserved_tokens'],
             'refunds': 0, 'problems': problems, 'calls': rows}
@@ -118,6 +142,8 @@ def require_preflight(snapshot, report, manifest):
     from harness.zone_study_contract import MAIN_CONDITIONS
     if not report['complete']:
         raise ValueError('preflight reconciliation incomplete; cohort expansion refused')
+    if any(level not in ACCEPTED_EVIDENCE_LEVELS for level in report.get('evidence_levels', [])):
+        raise ValueError('unsupported reconciliation evidence level; cohort expansion refused')
     if manifest.get('stage') != 'preflight' or manifest.get('mode') != 'real_adapter':
         raise ValueError('real four-condition preflight manifest required')
     if manifest.get('pilot_id') != snapshot['meta']['pilot_id']:
@@ -166,3 +192,6 @@ def require_preflight(snapshot, report, manifest):
             valid = False
         if not valid:
             raise ValueError('preflight needs hashed successful stop call records and matching ledger completions')
+    return {'billing_complete': True, 'billing_evidence_levels': report.get('evidence_levels', []),
+            'accepted_evidence_levels': list(ACCEPTED_EVIDENCE_LEVELS),
+            'preflight_run_id': manifest['run_id'], 'admitted': True}

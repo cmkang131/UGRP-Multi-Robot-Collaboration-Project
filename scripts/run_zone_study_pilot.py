@@ -31,6 +31,7 @@ from harness.zone_pilot_budget import (ATTEMPT_CAP, TOKEN_CAP, UPSTREAM_BOUND, E
 from harness.rgb_execution_bundle import RUNNABLE_ID, REGISTRY, load_bundle, source_closure
 from harness.zone_pilot_ledger import PilotSendLedger, proxy_profile, runtime_identity
 from harness.zone_pilot_reconcile import reconcile, require_preflight
+from harness.zone_pilot_proxy_log import ACCEPTED_EVIDENCE_LEVELS
 from harness.zone_sim_cost import Attempt
 from harness.zone_study_contract import MAIN_CONDITIONS, condition_manifest, digest, registry_sha256
 from harness.zone_study_inputs import provenance
@@ -58,7 +59,8 @@ def write_new(path, value):
 def source_identity(profile):
     # Content as well as git SHA: uncommitted source cannot impersonate the
     # committed version, and fixture/image changes invalidate the budget seal.
-    paths = {ROOT / 'scripts/run_zone_study_pilot.py', ROOT / 'configs/simulation_workflows.json'}
+    paths = {ROOT / 'scripts/run_zone_study_pilot.py', ROOT / 'scripts/build_proxy_log_telemetry.py',
+             ROOT / 'configs/simulation_workflows.json'}
     bundle, bundle_sha = load_bundle(RUNNABLE_ID)
     paths.update(ROOT / name for name in source_closure())
     paths.add(ROOT / REGISTRY / (RUNNABLE_ID + '.json'))
@@ -224,6 +226,8 @@ def dry_run(out, stage, scenario, seed, profile, *, limitation_acknowledged=Fals
                       'request_path': str(path), 'saved_sha256': sha(saved), 'wire_body_sha256': sha(body),
                       'archive': pk.archive_request(request), 'reservation': envelope})
     value = {'schema': VERSION, 'mode': 'dry_run', 'stage': stage, 'model_calls': 0,
+             'reconciliation_evidence_levels': [],
+             'accepted_reconciliation_evidence_levels': list(ACCEPTED_EVIDENCE_LEVELS),
              'completion_policy': COMPLETION_POLICY,
              'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
              'upstream_finish_limitation_acknowledged': limitation_acknowledged,
@@ -282,12 +286,13 @@ def main(argv=None):
     telemetry = [] if args.upstream_telemetry is None else [
         json.loads(line) for line in args.upstream_telemetry.read_text().splitlines() if line.strip()]
     if args.reconcile_only:
-        budget = PilotBudget(args.budget_file)
+        budget = PilotBudget(args.budget_file, read_only=not args.recover_run)
         report = reconcile(budget.snapshot(), telemetry)
         write_new(out / 'reconciliation.json', report)
         if args.recover_run:
             budget.recover_run(args.recover_run, report=report, report_path=out / 'reconciliation.json')
-        print(json.dumps({'complete': report['complete'], 'report': str(out / 'reconciliation.json')}))
+        print(json.dumps({'complete': report['complete'], 'evidence_levels': report['evidence_levels'],
+                          'report': str(out / 'reconciliation.json')}))
         return 0 if report['complete'] else 2
     profile = proxy_profile(args.proxy_source, args.proxy_url)
     if args.migrate_source:
@@ -331,17 +336,24 @@ def main(argv=None):
     require_committed_source(identity)
     budget = PilotBudget(args.budget_file, identity=identity)
     before = budget.snapshot()
+    prior_report = reconcile(before, telemetry)
+    cohort_gate = {'admitted': False, 'billing_complete': prior_report['complete'],
+                   'billing_evidence_levels': prior_report['evidence_levels'],
+                   'accepted_evidence_levels': list(ACCEPTED_EVIDENCE_LEVELS)}
     if args.stage == 'cohort':
         if args.preflight_manifest is None:
             parser.error('--stage cohort requires --preflight-manifest')
-        require_preflight(before, reconcile(before, telemetry), json.loads(args.preflight_manifest.read_text()))
+        cohort_gate = require_preflight(before, prior_report, json.loads(args.preflight_manifest.read_text()))
     elif before['sends']:
         # Restart/retry is not permission to ignore unresolved requests.
-        if not reconcile(before, telemetry)['complete']:
+        if not prior_report['complete']:
             raise ValueError('prior pilot sends unresolved; reconcile before restarting preflight')
     runtime = runtime_identity(profile, args.proxy_pid)
     run_id = out.name
     run = {'schema': VERSION, 'run_id': run_id, 'mode': 'real_adapter', 'stage': args.stage,
+           'cohort_gate': cohort_gate,
+           'reconciliation_evidence_levels': prior_report['evidence_levels'],
+           'accepted_reconciliation_evidence_levels': list(ACCEPTED_EVIDENCE_LEVELS),
            'completion_policy': COMPLETION_POLICY,
            'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
            'upstream_finish_limitation_acknowledged': (args.acknowledge_upstream_finish_limitation
@@ -399,6 +411,10 @@ def main(argv=None):
         run['status'] = 'failed' if failed else 'recorded'
         report = reconcile(after, telemetry)
         run['reconciliation_complete'] = report['complete']
+        run['reconciliation_evidence_levels'] = report['evidence_levels']
+        grades = {r['reservation_id']: r['evidence_level'] for r in report['calls']}
+        run['call_links'] = [{**s, 'evidence_level': grades[s['reservation_id']]}
+                             for s in run['call_links']]
         write_new(out / 'reconciliation.json', report)
         digest_file = write_new(out / 'manifest.json', run)
         budget.finish_run(run_id, status=run['status'], manifest_sha256=digest_file)
@@ -406,6 +422,7 @@ def main(argv=None):
                       'accepted_upstream_unverified_calls': run['accepted_upstream_unverified_calls'],
                       'json_fence_removed_calls': run['json_fence_removed_calls'],
                       'accepted_upstream_unverified_label': ACCEPTED_UNVERIFIED_LABEL,
+                      'reconciliation_evidence_levels': report['evidence_levels'],
                       'reconciliation_complete': report['complete']}))
     return 0 if not failed and report['complete'] else 2
 

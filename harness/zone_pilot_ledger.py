@@ -68,8 +68,8 @@ def log_cursor(path):
 def log_window(cursor):
     """Only event categories and hashes; never copy unrelated proxy log content.
 
-    This proxy does NOT log request IDs. A window, even with one retry line,
-    cannot prove which study call caused it; never label it reconciled.
+    This alone is not correlation. The separate exclusive-window verifier
+    checks padded wall-time bounds, all POSTs, raw bytes and exact response usage.
     """
     if cursor is None:
         return {'available': False, 'correlated': False}
@@ -113,6 +113,7 @@ class PilotSendLedger(SendLedger):
 
     def _store(self, row, kind, data):
         if kind == 'response':
+            row['response_received_at_ns'] = time.time_ns()
             # Keep known usage even when response-file storage fails.
             response = None
             try:
@@ -148,6 +149,7 @@ class PilotSendLedger(SendLedger):
             row['reservation_id'] = reserved['reservation_id']
             row['reserved_attempts'] = reserved['reserved_attempts']
             row['reserved_tokens'] = reserved['reserved_tokens']
+            row['send_started_at_ns'] = time.time_ns()
 
     def _send(self, call_id, actor, request, timeout):
         if threading.get_ident() != self._thread:

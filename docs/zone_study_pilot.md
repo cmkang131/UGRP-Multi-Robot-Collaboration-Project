@@ -174,6 +174,7 @@ R8/R9 소스로 이미 봉인한 budget은 R10 소스와 맞지 않아 실행을
 
 ```sh
 OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+  tests/test_zone_pilot_proxy_log.py tests/test_zone_pilot_source_migration.py \
   tests/test_zone_study_review_r10.py tests/test_zone_study_review_r9.py tests/test_zone_study_review_r8.py \
   --basetemp=./.pytest_tmp -q
 rm -rf ./.pytest_tmp
@@ -202,15 +203,26 @@ OMP_NUM_THREADS=1 "$PYTHON" -m scripts.sim_cli workflow run zone-study-pilot -- 
 실제 CLI의 `workflow` 하위 명령은 `python -m scripts.sim_cli workflow --help`로 확인한다.
 직접 runner를 사용할 때는 `ugrp_session.py run`으로 수명을 관리한다.
 preflight가 성공해도 대조가 미완료면 exit 2이고 `reconciliation_complete=false`다.
+송신을 모두 멈춘 뒤 로그 telemetry를 생성한다. 모든 과거 send가 대상이며 매번 새 출력
+폴더를 쓴다. 시간대는 설치 로그의 로컬 시각과 같아야 한다.
+
+```sh
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.build_proxy_log_telemetry \
+  --budget-file "$PILOT_ROOT/budget.sqlite" \
+  --proxy-log "$HOME/.hermes/logs/gemini-subscription-proxy.log" --log-timezone Asia/Seoul \
+  --output "$PILOT_ROOT/log-evidence-01"
+```
+
+이하 `--upstream-telemetry`에는 생성한 `log-evidence-01/telemetry.jsonl`을 사용한다.
 
 ```sh
 OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --reconcile-only \
-  --budget-file "$PILOT_ROOT/budget.sqlite" --upstream-telemetry "$PILOT_ROOT/telemetry.jsonl" \
+  --budget-file "$PILOT_ROOT/budget.sqlite" --upstream-telemetry "$PILOT_ROOT/log-evidence-01/telemetry.jsonl" \
   --output "$PILOT_ROOT/reconcile-01"
 OMP_NUM_THREADS=1 "$PYTHON" -m scripts.sim_cli workflow run zone-study-pilot -- \
   --execute --stage cohort --budget-file "$PILOT_ROOT/budget.sqlite" --proxy-pid "$PROXY_PID" \
   --preflight-manifest "$PILOT_ROOT/preflight-01/manifest.json" \
-  --upstream-telemetry "$PILOT_ROOT/telemetry.jsonl" --output "$PILOT_ROOT/cohort-01"
+  --upstream-telemetry "$PILOT_ROOT/log-evidence-01/telemetry.jsonl" --output "$PILOT_ROOT/cohort-01"
 ```
 
 `--recover-run <중단된 output 폴더 이름>`은 `--reconcile-only`와 함께 사용한다.
@@ -259,8 +271,9 @@ wire 원문은 바꾸지 않고 SIM 출력 토큰은 펜스를 포함한 실제 
 진입할 수 없으며, 새 소스에서 4조건 preflight를 다시 해야 한다.
 
 소스 이관은 과금 대사가 아니다. `reserved_unknown`·실패 응답과 미해결 근거는 보존되고,
-새 전송 직전 기존 `reconcile` 게이트를 그대로 통과해야 한다. R10 원본은 현재
-`reconciliation_complete=false`이므로 원본에 대한 terminal upstream 근거 없이 재전송할 수 없다.
+새 전송 직전 기존 `reconcile` 게이트를 그대로 통과해야 한다. R10의 동결 manifest는
+`reconciliation_complete=false` 그대로 보존한다. 아래 ID 근거 또는 #222의
+`proxy_log_exclusive_window` 근거로 별도 대조를 완료하기 전에는 재전송할 수 없다.
 추정 ID·0 usage로 대체하거나 새 budget을 생성해 우회하지 않는다.
 
 ### 코디네이터 실행 절차 (이 수정 작업에서는 미실행)
@@ -290,37 +303,97 @@ OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --migrate-source \
    이관 행은 DB에 남는다. **다시 초기화/이관하지 말고** 새 `--reconcile-only` 보고서의
    `source_migrations`로 커밋 여부와 원본 감사 행을 회수한다. 상태/identity 해시가
    바뀌어 거절됐다면 새 보고서를 검토한다. 기존 proposal/receipt를 덮어쓰지 않는다.
-5. 이전 요청들의 실제 upstream 근거를 마련해 대사를 완료한 뒤 `preflight-02-v63` 같은
-   새 출력 경로로 같은 budget의 `--execute --stage preflight --upstream-telemetry ...`를
-   실행한다. 한계 인정 인자를 다시 명시한다. 기존 첫 실패에서 중단 정책은 유지한다.
-   새 호출들도 대사하고 4조건 모두 정상 채택된 뒤에만 새 manifest로 코호트에 진입한다.
+5. **이관 → 기존 send 대조 → 새 preflight** 순서를 지킨다. 아래처럼 같은 budget을
+   읽어 로그 원문을 새 폴더에 고정하고 별도 reconcile을 실행한다. 두 명령 모두
+   모델을 호출하지 않는다. 실패 시 exit 2와 실패 항목을 저장하고 재preflight는 중단한다.
+
+```sh
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.build_proxy_log_telemetry \
+  --budget-file "$PILOT_ROOT/budget.sqlite" \
+  --proxy-log "$HOME/.hermes/logs/gemini-subscription-proxy.log" --log-timezone Asia/Seoul \
+  --output "$PILOT_ROOT/log-evidence-v63-01"
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --reconcile-only \
+  --budget-file "$PILOT_ROOT/budget.sqlite" \
+  --upstream-telemetry "$PILOT_ROOT/log-evidence-v63-01/telemetry.jsonl" \
+  --output "$PILOT_ROOT/reconcile-v63-01"
+```
+
+6. `complete=true`와 `evidence_levels`를 확인한 뒤 `preflight-02-v63` 같은 새 출력
+   경로로 같은 budget의 `--execute --stage preflight --upstream-telemetry ...`를 실행한다.
+   한계 인정 인자를 다시 명시한다. 기존 첫 실패에서 중단 정책은 유지한다.
+7. 새 호출까지 포함해 telemetry를 새 폴더에 다시 만들고 대조한다. 네 조건 모두
+   정상 채택된 새 manifest와 전체 sends의 완료 보고서로만 코호트에 진입한다.
+   `cohort_gate.billing_evidence_levels`가 진입에 사용한 등급이다. 기존 manifest를
+   편집해 대조 완료나 새 소스 preflight로 바꾸지 않는다. 과거 실패는 그대로 남는다.
 
 오프라인 검사는 실제 원문 회귀, 네 조건 반례/기록/집계, 원자적 이관·실패 복구,
 한도 유지, 기존 preflight 차단과 새 소스의 재개 경로를 다룬다. 주입 wire·합성 대사
 근거의 테스트 결과를 실제 provider 대사 완료나 물리 성공으로 해석하지 않는다.
 
-## 대조 자료와 남는 실제 실행 게이트
+## 대조 자료와 증거 등급 (#222)
 
-manifest의 `call_links`는
-`trial_id + call_id → ledger_seq/body hash → reservation_id → proxy correlation header /
-response ID → upstream attempts → provider usage`를 보존한다.
-proxy request ID와 실제 upstream 목록은 증거가 없으면 `null`이다.
-현재 프록시는 `X-UGRP-Call-ID`를 기록하지 않고 일반 POST/429 로그만 남긴다.
-로그의 파일 위치·byte 구간·hash·이벤트 종류는 저장하지만 **다른 작업의 호출과
-구분할 수 없는 로그를 call별 대조 완료로 간주하지 않는다**.
+[코디네이터 결정](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/222#issuecomment-5852309068)에
+따라 대조는 두 경로를 구분한다. 구독 쿼터·비용 측정용이며 실제 청구서의 인증이 아니다.
+보고서의 `calls[].evidence_level`, `evidence_levels`, manifest의
+`reconciliation_evidence_levels`와 `cohort_gate.billing_evidence_levels`에 등급을 남긴다.
+새 호출이 아직 대조되지 않았으면 `unresolved`이고 코호트 확대를 막는다.
 
-따라서 기존 로그만으로 연결되지 않으면 coordinator가 실제 provider/proxy trace에서
-다음 JSONL을 마련해야 한다. 추정 ID·추정 0 usage를 채우지 않는다.
-설치 proxy 변경은 이 작업에 포함하지 않는다. 자료가 없으면 preflight 다음 단계는 계속 차단된다.
+### `proxy_log_exclusive_window`
+
+`scripts/build_proxy_log_telemetry.py`는 SQLite를 `mode=ro`로 열어 **모든 send**를 읽는다.
+설치 프록시를 import·수정·호출하지 않고 로그도 읽기만 한다. 기존 출력 경로는 거절한다.
+새 출력의 `telemetry.jsonl`, `reconciliation.json`, `manifest.json`과 호출별
+`*-proxy-window.log`를 저장하고 다시 읽어 해시를 확인한다. 실패 행도 보존한다.
+
+- 새 send의 `ledger.send_started_at_ns`/`response_received_at_ns`를 사용한다.
+  구형 R10에는 wall 시각이 없으므로 **원본** request/response 파일의 `st_mtime_ns`를
+  보수적 경계로 사용하고 `time_source=original_wire_file_mtime_ns_with_sealed_log_cursor`를
+  명시한다. 요청은 wire 이전에 fsync되고 응답 파일은 수신 뒤 쓰였다. SIM 시각이나
+  POST 시각 하나를 송신 시각으로 추정하지 않는다. 파일을 복사해 시각이 바뀌었거나
+  당시 봉인된 로그 byte 구간·inode·hash를 재현할 수 없으면 이 경로로 완료하지 않는다.
+- 로그는 초 단위이므로 양 끝을 초로 내린 뒤 **양쪽 1초 여유**, 양 끝 포함으로 검사한다.
+  `Asia/Seoul`은 명시적 기본값이며 다른 호스트는 `--log-timezone`으로 맞춘다.
+  여유 구간 바깥의 직전·직후 timestamp 줄까지 원문으로 보존해 범위를 확인한다.
+  경계 줄·POST·파일 누락, 잘린 줄, 해석 불가 이벤트, 역순 시각은 미완료다.
+- 구간의 **모든 경로 POST**를 세어 `/v1/chat/completions` POST 200이 정확히 1개여야 한다.
+  그 줄은 send 당시에 봉인한 byte 구간 안에도 있어야 한다. `/v1/usage` 등의 GET은
+  `other_http_request_count`로 별도 집계한다. 다른 POST가 여유 구간에 있어도 거절하며,
+  한 POST byte 위치를 둘 이상의 send에 재사용할 수 없다.
+- upstream 시도 수는 **1 + transient_429_retry 줄 수 + 오류/exception 줄 수**다.
+  예약 상한(2) 초과는 미완료다. 응답 원문의 양의 정수 usage와 장부를 대조하고,
+  저장된 call의 usage 표지가 있으면 `usage_known=true`, `usage_bound=exact`도 확인한다.
+  `total_tokens`의 숨은 reasoning 차이는 유지하며 prompt+completion으로 대체하지 않는다.
+- `proxy_request_id`와 `upstream_attempts`는 `null`이다. ID나 retry의 0 usage를 만들지 않는다.
+  `actual_upstream_attempts`는 이 약한 로그 등급의 계수이고 usage는 **마지막 응답만**의
+  exact 값이다. 재시도별 토큰·upstream STOP·완전한 동시 요청 추적을 입증하지 않는다.
+  예약한 2회분은 그대로 차감하며 환불하지 않는다. timeout·late·응답 원문/usage 누락도
+  이 경로에서는 완료하지 않는다. 더 강한 ID 근거로 별도 대조할 수 있다.
+- reconcile은 저장 로그 원문과 hash, 당시 cursor, 시간 경계, usage를 다시 검사한다.
+  telemetry의 `complete=true`나 계수를 그대로 믿지 않는다. 미충족 조건이 하나라도
+  있으면 `complete=false`다. 로그 등급의 완료는 실패 응답을 정상 채택으로 바꾸지 않는다.
+
+### 기존 `proxy_upstream_ids` 경로
+
+기존 ID 기반 JSONL은 그대로 지원한다. 과거 입력에서 `evidence_level`을 생략하면
+이 등급으로 해석한다. 원본 행·hash, 호출별 ID의 유일성, 각 upstream의 terminal/usage,
+마지막 usage와 응답의 일치를 검사한다. 429의 0 usage에는 원본의
+`provider_confirmed_nonbillable:true`가 계속 필요하다.
 
 ```json
 {"reservation_id":"...","body_sha256":"...","proxy_request_id":"...","proxy_response_id":"...","upstream_attempts":[{"id":"...","terminal":true,"usage":{"prompt_tokens":100,"completion_tokens":20,"total_tokens":130}}],"evidence":{"path":"/absolute/raw-upstream.jsonl","sha256":"..."}}
 ```
 
-`evidence`가 가리키는 원본에는 `evidence` 필드를 제외한 같은 행이 있어야 한다.
-각 upstream ID는 파일럿 전체에서 유일해야 하며 마지막 usage는 proxy 응답과 같아야 한다.
-429의 0 usage도 원본에 `provider_confirmed_nonbillable:true`가 있어야 허용한다.
-이 포맷은 coordinator가 수집한 원본을 검증하는 입력이지 제공자 서명을 인증하는 장치는 아니다.
+`evidence` 원본에는 `evidence` 필드를 제외한 같은 행이 있어야 한다. 위 포맷은
+코디네이터가 수집한 원본을 검증하는 입력이며 제공자 서명을 인증하지 않는다.
+
+### 이번 소스와 v63
+
+이번에 바뀐 `zone_pilot_budget/ledger/reconcile`, 새 `zone_pilot_proxy_log`와 두 CLI는
+RGB 번들의 `source_closure()` 174개에 포함되지 않는다. 따라서 v63 JSON·ID·hash는
+변경하지 않는다. 파일럿의 `source_identity.files`는 harness 전체와 두 CLI를 봉인하므로
+새 소스 이관과 재preflight는 필요하다. 실제 R10 예산의 v62→기존 v63 이관 규칙을 따른다.
+`docs/execution_versioning.md`의 실행 소스·조건 고정 규칙을 검토했으나 이번에는
+RGB 번들 갱신 대상이 아니므로 “미실행 v63 덮어쓰기” 예외를 적용할 필요가 없다.
 
 실호출 결과가 새로 생기면 `docs/tensorboard.md`에 따라 원본을 보존하고 새 snapshot으로
 등록·재열람한다. 이번 R8–R9 수정의 unit test/dry-run은 새 학습·물리 실험 결과가 아니므로
