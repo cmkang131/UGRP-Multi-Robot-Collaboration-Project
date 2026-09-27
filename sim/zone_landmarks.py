@@ -26,8 +26,11 @@ import xml.etree.ElementTree as ET
 
 from sim.research_dispatch_arena import digest
 from sim.session_scenes import ROOT
-from sim.zone_arena import MAP_DIR, authored_map, episode
+from sim.zone_arena import MAP_DIR, apply_wall_profile, authored_map, episode
 from sim.zone_scene import ZoneScene
+from sim.zone_tag_rule_v3 import PLACEMENT_V3, PLACEMENT_V3A1, RULE_ID as RULE_V3, RULE_ID_A1 as RULE_V3A1
+from sim.zone_tag_rule_v3 import pickup_bays as rule_v3_pickup_bays
+from sim.zone_tag_rule_v3 import place_tags_v3
 
 LANDMARK_SCHEMA = 'ugrp.zone_landmarks.v1'
 FAMILY = 'tag36h11'
@@ -59,6 +62,31 @@ TAGGED_MAPS = {
     'zone_wide_door_tags_v2': {'base': 'zone_wide_door', 'placement': PLACEMENT_V2},
     'zone_wide_two_doors_tags_v2': {'base': 'zone_wide_two_doors', 'placement': PLACEMENT_V2},
 }
+# 2026-09-26 environment v3 (sim/zone_tag_rule_v3.py, experiments/2026-09-26-zone-env-v3):
+# a separate family. TAGGED_MAPS above keep their contract "base map content + a
+# landmarks block"; a v3 map is "base map + wall profile walls_v3 (every wall 0.40 m,
+# sim/zone_arena.WALL_PROFILES) + a sparse, site-based tag rule" (door frames, pickup
+# bays, zones, corridor sites) instead of a tag every 0.3-0.5 m. The raised wall itself
+# is the door frame, so there are no separate posts.
+ENV_V3_TAGGED_MAPS = {
+    'zone_wide_door_tags_v3': {'base': 'zone_wide_door', 'placement': PLACEMENT_V3, 'wall_profile': 'walls_v3',
+                               'version': 3},
+    'zone_wide_two_doors_tags_v3': {'base': 'zone_wide_two_doors', 'placement': PLACEMENT_V3,
+                                    'wall_profile': 'walls_v3', 'version': 3},
+    'zone_wide_corridor_tags_v3': {'base': 'zone_wide_corridor', 'placement': PLACEMENT_V3,
+                                   'wall_profile': 'walls_v3', 'version': 3},
+}
+# 2026-09-26 amendment A1 (experiments/2026-09-26-zone-env-v3/prereg_amendments.json), written after
+# the v3 loop test failed: the v3 sites unchanged (same tag ids and poses) plus door-approach and
+# door-flank sites (sim/zone_tag_rule_v3.PLACEMENT_V3A1). New files; the v3 files stay as published.
+# The corridor map has no door, so A1 would equal v3 there and gets no A1 file.
+ENV_V3A1_TAGGED_MAPS = {
+    'zone_wide_door_tags_v3a1': {'base': 'zone_wide_door', 'placement': PLACEMENT_V3A1, 'wall_profile': 'walls_v3',
+                                 'version': 3, 'amends': 'zone_wide_door_tags_v3'},
+    'zone_wide_two_doors_tags_v3a1': {'base': 'zone_wide_two_doors', 'placement': PLACEMENT_V3A1,
+                                      'wall_profile': 'walls_v3', 'version': 3, 'amends': 'zone_wide_two_doors_tags_v3'},
+}
+ALL_TAGGED_MAPS = {**TAGGED_MAPS, **ENV_V3_TAGGED_MAPS, **ENV_V3A1_TAGGED_MAPS}
 PLATE_RGBA = '.95 .95 .95 1'
 CELL_RGBA = '.02 .02 .02 1'
 
@@ -132,6 +160,8 @@ def _free_intervals(static, face):
 
 def place_tags(static, placement=DEFAULT_PLACEMENT):
     """Deterministic tag list for a static map (ids in wall/face/position order)."""
+    if placement.get('rule') in (RULE_V3, RULE_V3A1):
+        return place_tags_v3(static, placement)[0]
     size, plate = placement['size_m'], placement['plate_m']
     if plate < size or placement['center_height_m'] - plate/2 < 0:
         raise ValueError('plate must hold the tag and stay above the floor')
@@ -223,13 +253,22 @@ def door_posts(static, placement):
 
 
 def build_tagged_map(name):
-    spec = TAGGED_MAPS[name]
+    spec = ALL_TAGGED_MAPS[name]
     base = authored_map(spec['base'])
-    tags = place_tags(base, spec['placement'])
-    value = copy.deepcopy(base)
-    value.update(map_id=name, version=1,
+    # v3: the wall profile raises the walls of a copy; the base map file stays unchanged.
+    static = apply_wall_profile(base, spec['wall_profile']) if spec.get('wall_profile') else base
+    v3 = spec['placement'].get('rule') in (RULE_V3, RULE_V3A1)
+    if v3:
+        tags, sites, merged = place_tags_v3(static, spec['placement'])
+    else:
+        tags = place_tags(base, spec['placement'])
+    value = copy.deepcopy(static)
+    value.update(map_id=name, version=spec.get('version', 1),
                  base_map={'map_id': base['map_id'], 'version': base['version'],
                            'static_map_sha256': digest(base)})
+    if spec.get('amends'):
+        amended = json.loads((MAP_DIR/(spec['amends']+'.json')).read_text())
+        value['amends'] = {'map_id': spec['amends'], 'static_map_sha256': digest(amended)}
     value['landmarks'] = {
         'schema': LANDMARK_SCHEMA, 'family': FAMILY, 'opencv_dictionary': OPENCV_DICTIONARY,
         'dictionary_bits_sha256': dictionary_digest([t['id'] for t in tags]),
@@ -238,6 +277,8 @@ def build_tagged_map(name):
                       '(the side a camera sees it from); tag x = image right seen from the front, '
                       'tag y = up; size_m = outer black square'),
         'tags': tags}
+    if v3:
+        value['landmarks'].update(sites=sites, merged_sites=merged, pickup_bays=rule_v3_pickup_bays(static))
     posts = door_posts(base, spec['placement'])
     if posts:
         value['landmarks']['door_posts'] = posts
@@ -246,7 +287,7 @@ def build_tagged_map(name):
 
 def tagged_map(name):
     """The committed tagged map; refuses drift from its definition or base map."""
-    if name not in TAGGED_MAPS:
+    if name not in ALL_TAGGED_MAPS:
         raise ValueError(f'unknown tagged zone map: {name}')
     value = json.loads((MAP_DIR/(name+'.json')).read_text())
     if value != build_tagged_map(name):
@@ -256,7 +297,7 @@ def tagged_map(name):
 
 def write_tagged_maps():
     """Author the JSON files once (used when a new version is created)."""
-    for name in TAGGED_MAPS:
+    for name in ALL_TAGGED_MAPS:
         path = MAP_DIR/(name+'.json')
         if path.exists():
             continue  # never overwrite a published version (tagged_map() verifies it)
@@ -332,10 +373,10 @@ class TaggedZoneScene(ZoneScene):
 
     def _resolve(self):
         family, name = self.selection.split('/', 1)
-        if family != 'zones' or name not in TAGGED_MAPS:
+        if family != 'zones' or name not in ALL_TAGGED_MAPS:
             raise ValueError(f'unknown tagged zone scene: {self.selection}')
         self._read(MAP_DIR/(name+'.json'))
-        base = TAGGED_MAPS[name]['base']
+        base = ALL_TAGGED_MAPS[name]['base']
         self._read(MAP_DIR/(base+'.json'))
         params = self.scene.get('params') or {}
         config = episode(base, self.scene['seed'], goal=params['goal'], extra_boxes=params.get('extra_boxes'))
@@ -358,4 +399,6 @@ class TaggedZoneScene(ZoneScene):
             landmarks_sha256=landmarks_digest(static),
             tag_count=len(static['landmarks']['tags']), tag_geoms=count,
             tag_geom_physics='visual only: contype=0 conaffinity=0 mass=0')
+        if static.get('wall_profile'):
+            self.manifest['wall_profile'] = copy.deepcopy(static['wall_profile'])
         return xml

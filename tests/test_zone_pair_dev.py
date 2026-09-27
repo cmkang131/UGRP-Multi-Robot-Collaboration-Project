@@ -39,6 +39,21 @@ def test_prereg_admission(tmp_path, run_id, seed):
     assert p['limits']['model_calls'] == 0
 
 
+@pytest.mark.parametrize('run_id', ['dev05', 'dev06'])
+def test_v3_draft_prepares_but_cannot_execute_before_startup_decision(tmp_path, run_id):
+    draft = dev.PREREG.with_name('prereg_v3_DRAFT.json')
+    args = arguments(tmp_path, '--prereg', str(draft), '--run-id', run_id)
+    p, case = dev.load_config(args)
+    assert p['supersedes']['sha256'] == dev.sha_file(dev.PREREG)
+    assert case['id'] == run_id and p['execution_readiness']['coordinator_decision'] is None
+    assert p['criteria'] == config()['criteria'] and p['limits'] == config()['limits']
+    assert p['execution_readiness']['spawn_change_applied'] is False
+    args.execute = True
+    with pytest.raises(ValueError, match='prepare-only'):
+        dev.load_config(args)
+    assert not args.output.exists()
+
+
 def test_v2_freezes_profile_hashes_and_recalculates_budgets():
     p = config()
     old = json.loads(dev.PREVIOUS_PREREG.read_text())
@@ -777,7 +792,8 @@ def test_real_pairteam_fake_host_abort_is_auditable_without_physics():
 
 @pytest.mark.parametrize('case_index', [0, 1])
 @pytest.mark.parametrize('mismatched_timestep', [False, True])
-def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_path, monkeypatch, case_index, mismatched_timestep):
+@pytest.mark.parametrize('registration', [2, 3])
+def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_path, monkeypatch, case_index, mismatched_timestep, registration):
     pytest.importorskip('mujoco', reason='frozen M2 import required; physical world/observer replaced with fakes')
     import mujoco
     from harness.zone_own_team_host import OwnCamTeamHost
@@ -785,7 +801,7 @@ def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_pat
     from tests.test_zone_pair_executor import setup, PhasedM2, PairFakeHost
     from sim.workflow_manager import source_fingerprint
 
-    p = config()
+    p = config() if registration == 2 else json.loads(dev.PREREG_V3.read_text())
     p['limits'].update(sim_s=8., submit_at_s=.03, post_terminal_s=.6, wall_s=30.)
     case = p['runs'][case_index]
     out = tmp_path / 'physical-entry-fake-world'
@@ -803,7 +819,11 @@ def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_pat
         self.world.data.eq_active = [False]
         self.scene = NS(cargo=[NS(item_id='cargoX', kind='long_beam')], config={'setup_only': {'objects': {}}},
                         manifest={'scene_xml_sha256': 'fixture-only'}, record=lambda: {'fixture': True})
-        self.static = {'map_id': dev.EXPECTED['map']}
+        self.static = kwargs['scene'].config['static_map']
+        from sim.zone_start_dock import static_spawn_keepouts
+        self.keepout_records = [{**{k: v for k, v in d.items() if k != 'center_m'}, 'xy_m': d['center_m']}
+                                for d in static_spawn_keepouts(self.static)]
+        assert args[0]['map'] == p['environment']['map']
         for slot in self.robots.values():
             slot.port._servo_targets = {}
             slot.port._motor_commands = [0, 0, 0, 0]
@@ -822,16 +842,15 @@ def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_pat
     monkeypatch.setattr(OwnCamTeamHost, '__init__', fake_init)
     monkeypatch.setattr(OwnCamTeamHost, '_physics_until', PairFakeHost._physics_until)
     monkeypatch.setattr(OwnCamTeamHost, '_capture_raw', PairFakeHost._capture_raw)
-    monkeypatch.setattr(runtime, 'make_scene', lambda spec: None)
     monkeypatch.setattr(runtime, 'DevActor', bootstrapped_actor)
     monkeypatch.setattr(runtime, 'EvalObserver', NoPhysicsObserver)
     monkeypatch.setattr(mujoco, 'mj_saveLastXML', lambda path, model: Path(path).write_text('<fake/>'))
     args = NS(output=out)
-    assert runtime.run_physical(args, p, case, m) == (2 if mismatched_timestep else 0)
+    assert runtime.run_physical(args, p, case, m) == (2 if mismatched_timestep else 0), m.get('host_error')
     final = json.loads((out / 'manifest.json').read_text())
     if mismatched_timestep:
         assert final['state'] == 'host_error'
-        assert 'actual model settings differ' in final['host_error']['message']
+        assert 'actual model settings differ' in final['host_error']['message'], final['host_error']
         result = json.loads((out / 'eval_only/result.json').read_text())
         assert result['verdict'] == 'HOST_ERROR' and result['host_error'] == final['host_error']
         assert 'eval_only/trace.jsonl' in result['missing_evidence']
@@ -839,7 +858,7 @@ def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_pat
         assert (out / 'artifacts.sha256.json').is_file()
         return
     assert final['state'] == 'completed', final
-    assert final['applied'] == dev.EXPECTED
+    assert final['applied'] == p['environment']
     records = json.loads((out / 'pair_records.json').read_text())
     assert set(records[0]['submissions']) == {'r1', 'r2'}
     assert ev.load_lines(out / 'status.jsonl')

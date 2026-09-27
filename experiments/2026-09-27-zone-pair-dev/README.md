@@ -1,5 +1,27 @@
 # Pair executor dev PHYSICAL 게이트 준비 — 2026-09-27
 
+## dev05/dev06 결과 진단 — 소스 4a17e7d4, prereg_v3
+
+**tags_temporary · dev · 연구 결과 아님.** dock x=−0.65 m의 기존 실행을 읽기 전용으로 진단했다.
+코드 변경·신규 물리 step·모델 호출·git 커밋 없음. [진단 v4](diagnosis_v4.md) · [수치/원본 해시](diagnosis_v4.json).
+
+| 실행 | 결과·실패 (SIM 절대시각) | 미도달·판정 |
+|---|---|---|
+| dev05 / seed901 / 정상 시도 | r1·r2 approach 성공 → 190.42875 s r1 `PAIR_COLLISION_GUARD` → r2 `PARTNER_ABORT`. PF 위치 오차 0.759 m와 미파지 전체 빔 영역이 정적 벽 여유를 소진 | joint_grasp·lift·door·배치 미도달, `DEV_NOT_CONFIRMED` |
+| dev06 / seed902 / abort 진단 | r1·r2 approach 성공 → r2 wait_lift 중 193.7 s `POSE_UNCERTAIN` → r1 `PARTNER_ABORT`. 실제 초과값은 **yaw σ 3.00115° > 3°**; XY σ 0.05753 m는 loaded HIGH 0.07 m 이하 | joint_grasp·lift·door·배치 미도달, `intervention_not_reached`, `DEV_NOT_CONFIRMED` |
+
+양쪽 실패를 모두 보존한다. 권고는 임계값 완화보다 **파지 전 공통 위치 추정 재관측·양쪽 준비 동기화**다.
+원본 해시 16,926개 일치, 비물리 회귀 65개 통과. TensorBoard 임시 변환·이벤트/영상 등록은 확인했고,
+primary 쓰기 범위 제한으로 공유 snapshot 게시·화면/핀/HParams 확인은 남았다.
+아래 준비 절과 dev01~dev04 기록은 작성 당시 상태로 보존한다.
+
+**최신 사전등록: [dock v3 변경·검증·실행 절차](dock_v3.md), [prereg_v3.json](prereg_v3.json).**
+dev05/dev06은 기존 `zone_wide_door_tags_v2`의 벽·태그를 유지하고 세 로봇의 dock x만
+−0.85 → −0.65 m로 옮긴다. workflow는 `zone-pair-dev` 0.2.0이다.
+아래 v1/v2 및 v3 DRAFT 절은 당시 기록으로 보존한다. 확정 v3는 명시적으로
+`--prereg .../prereg_v3.json`을 선택한다. 물리 실행·모델 호출·커밋은 이번 작업에 없다.
+**walls_v3(PR #208) 적용은 후속 작업**이다.
+
 PR #235, 리뷰 기준 `2b4cab6700056e8602140a7f89571c27eff8a33a`의 후속이다.
 **tags_temporary, dev, 연구 결과 아님.** v1 dev01의 적용값 거부와 dev02 미실행은
 [원본 결과](results.md)에 보존했다. 이번 v2 수정에서는 물리 실행·모델 호출·git 커밋을 하지 않는다.
@@ -203,9 +225,14 @@ ENOSPC는 HOST_ERROR다. 디스크가 이미 가득 찼다면 최종 파일 저�
   --video-review "$PAIR_OUT/eval_only/video-review-01.json" \
   --output "$PAIR_OUT/eval_only/review-01/result.json"
 # 성공이 아니면 exit 1; 결과 파일은 보존된다. 중단 진단을 정상 성공으로 표시하지 않는다.
-ln -s ../overview.mp4 "$PAIR_OUT/eval_only/review-01/overview.mp4"
+# 검토 result와 영상을 새 파생 뷰에 연결한다. 기존 raw/검토 파일은 수정하지 않는다.
+# 같은 파일시스템의 hardlink라 영상 바이트 복제가 없다. ../ symlink는 변환기가 거부한다.
+PAIR_VIEW=/Users/changmin/projects/ugrp/outputs/tb-view/pair-dev-NEW
+mkdir "$PAIR_VIEW"
+cp "$PAIR_OUT/eval_only/review-01/result.json" "$PAIR_VIEW/result.json"
+ln "$PAIR_OUT/eval_only/overview.mp4" "$PAIR_VIEW/overview.mp4"
 "$PAIR_PY" scripts/export_tensorboard.py \
-  --source "$PAIR_OUT/eval_only/review-01" \
+  --source "$PAIR_VIEW" \
   --output /Users/changmin/projects/ugrp/outputs/tensorboard/pair-dev-NEW --max-images 0
 ```
 
@@ -214,7 +241,26 @@ ln -s ../overview.mp4 "$PAIR_OUT/eval_only/review-01/overview.mp4"
 `outputs/tensorboard-view.json`은 쓰기 직전에 읽어 자기 항목만 갱신한다.
 기존 viewer 소유 PID/명령/logdir 확인 후 자기 viewer만 갱신한다. 실제 native TensorBoard에서
 새 run·영상 등록·HParams 열·성공/SIM·wall 시간/명령 수/모델 호출 0·응답 시간 해당 없음과
-관련 기준선을 확인한 뒤 대시보드 링크를 보고한다. **v2 dev03/dev04의 raw 실행·영상·snapshot·화면 검증은 없다.** v1 기록은 [결과](results.md)를 따른다.
+관련 기준선을 확인한 뒤 대시보드 링크를 보고한다. v1·v2 실제 실행 및 기존 snapshot 검증은
+[결과](results.md), v3 오프라인 원인 재구성과 영상 변환 확인은 [진단](diagnosis_v3.md)을 따른다.
+
+## v3 준비 초안 — dev05/dev06, 실행 금지
+
+[prereg_v3_DRAFT.json](prereg_v3_DRAFT.json)은 dev03/dev04 뒤의 **준비 전용** 초안이다.
+seed 901/902·빔 설정·60 s 1회 제출·평가 기준·물리 프로필·예산은 v2와 같다.
+거부 하위 조건은 `eval_only/pair_admission.jsonl`에 action_id로 연결하여 저장한다.
+기존 raw·v1/v2 사전 기록을 바꾸거나 코호트를 합산하지 않는다.
+
+서쪽 dock에서 기존 전신 guard가 출발 자세조차 보증하지 못한다. 시작 위치·관측 부트스트랩은
+코디네이터가 [근거와 선택지](diagnosis_v3.md)를 보고 정한다. 장면/위치 변경은 아직 적용하지 않았다.
+드라이버는 v3의 `--execute`를 거부한다. 결정 뒤 구현·정적 검증·장면/지도 해시·새 소스 커밋을
+완료하고 사전 기록과 실행 허용 경로를 함께 검토해야 한다. 아래는 물리 실행 없는 prepare다.
+
+```sh
+OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev.py \
+  --prereg experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json \
+  --run-id dev05 --output /tmp/zone-pair-dev05-prepare-NEW
+```
 
 ## 비물리 검증
 

@@ -58,6 +58,7 @@ def test_runner_status_channel_default_on_and_help_text():
     import inspect
     src = inspect.getsource(rm.main)
     assert "'--status-channel', choices=('on', 'off'), default='on'" in src
+    assert "'--inject-open-at-lift'" in src and "choices=('v1', 'v2', 'v3')" in src
 
 
 def test_stage2c_scenarios_match_generator_output():

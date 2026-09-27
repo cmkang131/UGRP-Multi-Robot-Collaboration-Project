@@ -1,0 +1,108 @@
+{
+  "base_commit": "b1eebc0e922a72c6c46395f6360f754de5412e74",
+  "review_source": "/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-234-review3.md",
+  "review_sha256": "af2165b8ad493c6157bbcc59f2209ebe20a442f1157aaaf82cc4bdb33441cafa",
+  "body_model": {
+    "commit": "499e4fd6445614a8b647eaea11f7bb9c77e5e2bd",
+    "source": "harness/zone_own_guards.py",
+    "source_sha256": "560e79fcd53081b030bd9ed73b2141b0bcc009dfb9ece8b171123dd76d38735b",
+    "source_text_identical": {
+      "body_spheres": true,
+      "static_boxes": true,
+      "OwnPose": true
+    },
+    "calibration_source": "experiments/2026-09-26-zone-own-executor/body_model_calibration.json",
+    "calibration_copy_sha256": "a775a476ff52ef1b79f3970220ec26ed7be1dd8d9bd97ad31244b59d78df0975",
+    "changes": "Remove pose-uncertainty cap; add joint-box transition enclosure, restore checking, command rechecking and no-safe-pan rejection. Calibrated sphere model unchanged."
+  },
+  "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "threads": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "opencv": 1,
+    "opencv_method": "setNumThreads(0); GCD parallel regions disabled; getNumThreads()==1",
+    "pytest_workers": "main process only"
+  },
+  "basetemp": "./.pytest_tmp",
+  "tests": {
+    "initial_before_corrected_fixture": "7 failed before runtime changes",
+    "final_baseline": "7 failed, 14 deselected against b1eebc0e; expected exit 1",
+    "review3_new_cases": 21,
+    "v3_all_regressions": "137 passed",
+    "final_all": "286 passed, 382 subtests passed in 34.94s",
+    "before_log": "before-confirmed.txt",
+    "after_log": "final-single-thread.txt",
+    "remote_or_full_project_ci_run": false
+  },
+  "v2_hashes_checked": 23,
+  "v2_hash_mismatches": [],
+  "prior_review_records_unchanged": true,
+  "saved_fixtures_unchanged": true,
+  "tracked_v3_draft_record_changes": [
+    "experiments/2026-09-27-zone-owncam-memory-v3/README.md",
+    "experiments/2026-09-27-zone-owncam-memory-v3/prereg_DRAFT.json"
+  ],
+  "new_ci_pattern_matches": 1,
+  "diff_check": "pass",
+  "source_and_document_sha256": {
+    "docs/design/2026-09-27-owncam-memory-v3.md": "78a946aaa16fea2ee4bdff6f6b8b525077022ccc5ced12641258e5b28441c28f",
+    "experiments/2026-09-27-zone-owncam-memory-v3/README.md": "6601969eaec5a129f7c59784252eb53b3d88c424fef12ad670b776453b6d2ab4",
+    "experiments/2026-09-27-zone-owncam-memory-v3/prereg_DRAFT.json": "cbb76d6d41dd7fa2add462ebf4273d5a39b386f8d17fcebb93f0bb8916845a26",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review3-fixes/README.md": "fda38fcf4fff1e7ea461a3ae70cd069a30a6df74be6dcb3e771d7022b4e7db38",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review3-fixes/reproduce_baseline.py": "83b3b47d9184aafe335fd71f9b41567ab0ed627dffae38c56f73959c991ea663",
+    "harness/m1_owncam_memory_v3.py": "9f3523a79f92af28473259b764bc90907902669333ea560bfafca8bf6846cd5f",
+    "harness/owncam_drive_mem_v3.py": "c6a6867542a3020fbf6f8d37f4abdc1687007ec8dbb6e53e7a3b2b502e9a3d0c",
+    "harness/owncam_memory_v3.py": "31611dd6498b0fd6632b167017ca694f5609807d3d776ca115438ea07de1eb1d",
+    "harness/owncam_search_projection_v3.py": "9a1ba7aafa6cf898de78385bd8476e9855167953f8a0ff991d564567f726be28",
+    "harness/owncam_slot_inspection_v3.py": "eb1fa9993654dd6cceab503ad2b9dc217e4fbe09094ebcb160582c1b7dd30bfe",
+    "harness/owncam_sweep_collision.py": "5d458f00c9f16c931c4356a62ab4e201f762fbe30d74563fe3c071dae5bf76c6",
+    "scripts/run_ci_tests.py": "67f09b299260d8e77a7013ab5d3ea1b20bac3f0156c2dcb077a1338dfce0b881",
+    "scripts/run_m1_owncam_memory_v3.py": "ed6b05db44d7eeb23ebf1b8a70185aeed32f0afeac090a701798014380d6e2b3",
+    "tests/test_owncam_memory_v3.py": "e1945aca01de0f1b21e167e56585086ba276da3b9e2a33bd735f5c6d36748d08",
+    "tests/test_owncam_memory_v3_review.py": "03f793ba5cf40c466a3d32de92258af2dcd40497b8da690f102de2dda4556531",
+    "tests/test_owncam_memory_v3_review2.py": "377070145bc63b474c8475cc44c031fbfccf885c4d9ebdc8f5137b158456cdf3",
+    "tests/test_owncam_memory_v3_review3.py": "e5bd7617d60cbba03ebc5942dd6c491606e24959a94cb6b00d992278ec38f1f0"
+  },
+  "log_sha256": {
+    "after-boundaries.txt": "9ae067effbc2c8a29f91bd4d64b91fc137d2d6b6e7f7b9ffa399cb364b8e1c9c",
+    "after-expanded.txt": "2688b177ce3cf68f00ce938973db165daf1c62168a3e0ff9e22277a46a2b902e",
+    "before-confirmed.txt": "f1af68325bc715ad25008d89474b4f7f694c8b9aa6ab58827158384a3d717623",
+    "before-corrected-fixture.txt": "cf2581db7d4849b3adf8fa72948829b79f4739a53d334c0ed6d615d2f5cbc9a7",
+    "before.txt": "e498ed4c55294fa3a9806127ace2583a67993e9ca71de1f8c499ddab49296b2e",
+    "compatibility-initial.txt": "17118b08362aabd7991cb5aaeb3be528b50ea98374d93186ee09c636e80a982d",
+    "core-after.txt": "0223c30823a39a3843a69d81ee5e7a3e668594bcbdb53eb413e13b16f97fcbb7",
+    "final-single-thread.txt": "6f8a7a625d9cae62f194b8bbf9b5eddd60620dfcd4ffc1849bb950adfefdc4fa"
+  },
+  "cohort_run": false,
+  "physics_run": false,
+  "commit_created": false,
+  "git_metadata_written": false,
+  "prereg_status": "DRAFT",
+  "execution_authorized": false,
+  "scope": "Unit scenarios and saved own-input checks. Body calibration is reused, no physical calibration/run. Not a v3 success-rate or speed claim.",
+  "exposed_fixture_policy": {
+    "origin": "memory_v2 preregistered test split: s162, s164, s165 (RGB 6 frames, issued servo and own pose reports)",
+    "used_for": "memory_v3 implementation development, geometry/attachment debugging and regression tests",
+    "exposed_seeds": [
+      161,
+      162,
+      163,
+      164,
+      165,
+      166
+    ],
+    "not_future_test": true,
+    "not_v3_success_samples": true,
+    "injected_assumptions": "v3 likelihood/innovation consistency and precise inspection pose / empty floor evidence are explicitly synthetic in unit fixtures, not recovered v3 execution evidence",
+    "future_test": "Only new never-opened seeds/episodes after new-dev tuning. Freeze code, vision source, conditions, thresholds and scoring before opening test. Never reuse exposed v2 seeds or fixture episodes as v3 test/performance evidence."
+  },
+  "remaining": [
+    "Coordinator review/commit and remote CI (gh API unavailable)",
+    "EXECFIX import migration / abort integration",
+    "PR 227 integration",
+    "New-dev physical collision/cargo/return/visibility checks",
+    "New unopened seeds only for future test"
+  ]
+}

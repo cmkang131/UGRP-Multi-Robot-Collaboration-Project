@@ -11,6 +11,27 @@ ROOT = Path(__file__).resolve().parents[1]
 PREVIOUS_PREREG = ROOT / 'experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json'
 
 
+def scene_contract():
+    """Dock-only successor identity; exact map bytes and setup/guard source hashes."""
+    from sim.zone_start_dock import MAP_ID, PARENT_MAP_ID, profile_record
+    sha = lambda path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
+    path = f'maps/zones/{MAP_ID}.json'
+    parent = f'maps/zones/{PARENT_MAP_ID}.json'
+    value = {'id': MAP_ID, 'version': 3, 'map': {'path': path, 'sha256': sha(path)},
+             'parent_map': {'path': parent, 'sha256': sha(parent)}, 'start_dock': profile_record(),
+             'changed': 'all three spawn x coordinates: -0.85 -> -0.65 m; matching static keepouts/text',
+             'preserved': 'seeded row assignment, z/yaw, walls 0.10 m, tags_v2, cameras, cargo, commands and guards',
+             'walls_v3': 'walls_v3(PR #208) 적용은 후속 작업',
+             'source_sha256': {p: sha(p) for p in (
+                 'sim/zone_start_dock.py', 'sim/zone_dock_scene.py', 'sim/zone_arena.py', 'sim/zone_landmarks.py',
+                 'sim/zone_scene.py', 'sim/zone_tagged_cargo_scene.py', 'harness/zone_own_team_host.py',
+                 'harness/zone_own_guards.py', 'scripts/run_zone_pair_dev.py',
+                 'scripts/zone_pair_dev_runtime.py', 'scripts/zone_pair_dev_contract.py')}}
+    value['sha256'] = hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'),
+                                               allow_nan=False).encode()).hexdigest()
+    return value
+
+
 def profile_contract():
     """Execute the unchanged base + cargo XML transforms to resolve options.
 

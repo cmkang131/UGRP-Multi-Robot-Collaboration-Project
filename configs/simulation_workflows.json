@@ -643,19 +643,31 @@
       "output_kind": "directory"
     },
     {
-      "id": "zone-study-integration-run",
-      "purpose": "구역 대화 연구 통합 러너: 연구 뼈대(#194 조건·프롬프트·프로토콜·SIM 비용·스케줄러)가 자기 카메라 실행기(#206) 3대와 공동 운반 PairTeam(#235)을 구동(no-LLM fixture, 자세 제공자는 설정으로 선택; tags_temporary = 임시, 표식 사용, 연구 결과 아님)",
-      "entry": "scripts/run_zone_study_integration.py",
-      "docs": "experiments/2026-09-26-zone-study-integration/README.md",
-      "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; run bundle must match the prereg bundle_sha256; robot inputs = own robot_cam + own commands + static map + order sheet + delivered messages; GT only in eval_only/; weld OFF; no model call",
-      "version": "1.0.0",
-      "runner": "scripts.run_zone_study_integration",
+      "id": "zone-m1-owncam-memory-v3-run",
+      "version": "3.0.0",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "entry": "scripts/run_m1_owncam_memory_v3.py",
+      "docs": "docs/design/2026-09-27-owncam-memory-v3.md",
+      "description": "DRAFT memory_v3; coordinator registration required, no cohort launched",
+      "runner": "scripts.run_m1_owncam_memory_v3",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": ["--prereg", "--condition"],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-m1-owncam-memory-run",
+      "purpose": "M1 자기 카메라 배달의 관측 기억 ON/OFF 비교(같은 M1 러너, 조건별 제어기만 교체: off = 동결 M1, memory_v2 = 표식 비의존 기억 + 임시 태그 제공자)",
+      "entry": "scripts/run_m1_owncam_memory.py",
+      "docs": "experiments/2026-09-26-zone-owncam-memory/README.md",
+      "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; thread caps 1 and >= 30 GiB free are enforced; M1 contract rejects any non own-camera pose source; GT only in eval_only/; weld OFF",
+      "version": "2.0.0",
+      "runner": "scripts.run_m1_owncam_memory",
       "output_flag": "--output",
       "side_effect": "local_simulation",
       "adapter": "managed_legacy_cli",
       "required_inputs": [
         "--prereg",
-        "--episode",
         "--condition"
       ],
       "output_kind": "directory"
@@ -683,7 +695,7 @@
       "entry": "scripts/run_zone_pair_dev.py",
       "docs": "experiments/2026-09-27-zone-pair-dev/README.md",
       "requires": "No model calls; prepare-only by default. Physical execution requires --execute, clean pinned SHA, matching agent_lock and absolute primary outputs path. GT stays in eval_only/.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "runner": "scripts.run_zone_pair_dev",
       "output_flag": "--output",
       "side_effect": "local_simulation",
@@ -691,6 +703,24 @@
       "required_inputs": [
         "--prereg",
         "--run-id"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-study-integration-run",
+      "purpose": "구역 대화 연구 통합 러너: 연구 뼈대(#194 조건·프롬프트·프로토콜·SIM 비용·스케줄러)가 자기 카메라 실행기(#206) 3대와 공동 운반 PairTeam(#235)을 구동(no-LLM fixture, 자세 제공자는 설정으로 선택; tags_temporary = 임시, 표식 사용, 연구 결과 아님)",
+      "entry": "scripts/run_zone_study_integration.py",
+      "docs": "experiments/2026-09-26-zone-study-integration/README.md",
+      "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; run bundle must match the prereg bundle_sha256; robot inputs = own robot_cam + own commands + static map + order sheet + delivered messages; GT only in eval_only/; weld OFF; no model call",
+      "version": "1.0.0",
+      "runner": "scripts.run_zone_study_integration",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--prereg",
+        "--episode",
+        "--condition"
       ],
       "output_kind": "directory"
     }
