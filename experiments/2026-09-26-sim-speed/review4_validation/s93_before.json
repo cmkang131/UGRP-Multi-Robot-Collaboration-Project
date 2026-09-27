@@ -1,0 +1,102 @@
+{
+  "a": "/Users/changmin/projects/ugrp/outputs/m1-owncam-20260926/dev-a8/m1dev-s93",
+  "b": "/Users/changmin/projects/ugrp/outputs/m1-owncam-20260926/dev-a8/m1dev-s93",
+  "until_sim_s": null,
+  "checks": {
+    "inputs/commands.jsonl": {
+      "identical": true,
+      "len_a": 6541,
+      "len_b": 6541,
+      "sha256_a": "92e275e972bb946205c7264e1504bbb80139d61b2736f90615a6d343d2fe18ea",
+      "sha256_b": "92e275e972bb946205c7264e1504bbb80139d61b2736f90615a6d343d2fe18ea"
+    },
+    "inputs/frames.jsonl": {
+      "identical": true,
+      "len_a": 2080,
+      "len_b": 2080,
+      "sha256_a": "168b4fd9eeadda87bb7877ea5678b48c02fc4e6139f5898d4d730c49dadb7568",
+      "sha256_b": "168b4fd9eeadda87bb7877ea5678b48c02fc4e6139f5898d4d730c49dadb7568"
+    },
+    "controller_events.jsonl": {
+      "identical": true,
+      "len_a": 37,
+      "len_b": 37,
+      "sha256_a": "bf68f607e59548e54456f5fca8080a707b9c772f9d0048fc7624695e98c4ea11",
+      "sha256_b": "bf68f607e59548e54456f5fca8080a707b9c772f9d0048fc7624695e98c4ea11"
+    },
+    "skill_events.jsonl": {
+      "identical": true,
+      "len_a": 7,
+      "len_b": 7,
+      "sha256_a": "cd4d817cfc089bc56e7a0fbcb448378d9a561f5a2a95812a3230cdd631f7ce42",
+      "sha256_b": "cd4d817cfc089bc56e7a0fbcb448378d9a561f5a2a95812a3230cdd631f7ce42"
+    },
+    "macros.jsonl": {
+      "identical": true,
+      "len_a": 128,
+      "len_b": 128,
+      "sha256_a": "d33ef498c8b9f398981e4b399de921e24e7ba58465dd6b88363f703c3af0030f",
+      "sha256_b": "d33ef498c8b9f398981e4b399de921e24e7ba58465dd6b88363f703c3af0030f"
+    },
+    "eval_only/frames_eval.jsonl": {
+      "identical": true,
+      "len_a": 2080,
+      "len_b": 2080,
+      "sha256_a": "2dba25a245c7b7252609291bad051fe1d42e9b937820221ec2a27fab2d18529a",
+      "sha256_b": "2dba25a245c7b7252609291bad051fe1d42e9b937820221ec2a27fab2d18529a"
+    },
+    "eval_only/gt_trajectory.jsonl": {
+      "identical": true,
+      "len_a": 7919,
+      "len_b": 7919,
+      "sha256_a": "f5739bff5efedefa4a1d384e0e6eefa7384f52e469d43ed6c02011acc0d6dc11",
+      "sha256_b": "f5739bff5efedefa4a1d384e0e6eefa7384f52e469d43ed6c02011acc0d6dc11"
+    },
+    "eval_only/contacts.jsonl": {
+      "identical": true,
+      "len_a": 0,
+      "len_b": 0,
+      "sha256_a": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sha256_b": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "eval_only/retention.jsonl": {
+      "identical": true,
+      "len_a": 3999,
+      "len_b": 3999,
+      "sha256_a": "fceac484bc1b1609b659a42e76f1a9a95cfe1143b2a2238b40b3d1448c42268b",
+      "sha256_b": "fceac484bc1b1609b659a42e76f1a9a95cfe1143b2a2238b40b3d1448c42268b"
+    },
+    "frame_jpeg_bytes": {
+      "identical": true,
+      "compared": 2080,
+      "mismatched": [],
+      "n_mismatched": 0
+    },
+    "result.json": {
+      "identical": true,
+      "sha256_a": "125bedd129bc4cada0734f461d5f2e99045ade5ced64ee50ae18b8a972b56209",
+      "sha256_b": "125bedd129bc4cada0734f461d5f2e99045ade5ced64ee50ae18b8a972b56209",
+      "fields": 31,
+      "differing_fields": []
+    }
+  },
+  "not_compared": [
+    "qpos_checkpoints: neither side is a sim_profile directory"
+  ],
+  "manifest_differences": {
+    "expected": [],
+    "unexpected": []
+  },
+  "speedups": {
+    "a": "none (field absent)",
+    "b": "none (field absent)"
+  },
+  "evidence_errors": [
+    "A: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap",
+    "A: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap",
+    "B: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap",
+    "B: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap"
+  ],
+  "verdict": "insufficient_evidence",
+  "equivalent": false
+}

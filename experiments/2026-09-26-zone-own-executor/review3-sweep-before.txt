@@ -1,0 +1,185 @@
+FFFFFFFF                                                                 [100%]
+=================================== FAILURES ===================================
+______ test_startup_hold_preserves_real_host_abort_and_horizon_semantics _______
+
+startup = {'r3': [-0.85, -2.25, 0.032355118817659255, 0.0], 'r2': [-0.85, -0.85, 0.032355118817659255, 0.0], 'r1': [-0.85, 0.55, 0.032355118817659255, 0.0]}
+
+    def test_startup_hold_preserves_real_host_abort_and_horizon_semantics(startup):
+        exs = {rid: spawn_executor(startup, rid) for rid in startup}
+        host = FakeHost(exs, start_looks, hooks=[(1.5, lambda h: h.call('r1', 'abort', 'test'))])
+        out = host.run(3.)
+        assert out['outcome'] == 'SIM_LIMIT'
+>       assert terminal(host, 'r1')[0]['detail']['reason'] == 'ABORTED:test'
+E       AssertionError: assert 'SWEEP_TRANSITION_BLOCKED' == 'ABORTED:test'
+E         
+E         - ABORTED:test
+E         + SWEEP_TRANSITION_BLOCKED
+
+tests/test_zone_own_executor_sweep_start.py:68: AssertionError
+_______ test_startup_reobserves_then_completes_a_sweep_after_refinement ________
+
+startup = {'r3': [-0.85, -2.25, 0.032355118817659255, 0.0], 'r2': [-0.85, -0.85, 0.032355118817659255, 0.0], 'r1': [-0.85, 0.55, 0.032355118817659255, 0.0]}
+
+    def test_startup_reobserves_then_completes_a_sweep_after_refinement(startup):
+        host = FakeHost({rid: spawn_executor(startup, rid) for rid in startup}, start_looks)
+        host.run(30.)
+        for rid, slot in host.robots.items():
+            ends = terminal(host, rid)
+>           assert len(ends) == 1 and ends[0]['event'] == 'job_done', ends
+E           AssertionError: [{'schema': 'ugrp.zone_own_executor_event.v1', 'robot_id': 'r3', 'event': 'job_failed', 'sim_s': 0.5, ...}]
+E           assert (1 == 1 and 'job_failed' == 'job_done'
+E            +  where 1 = len([{'schema': 'ugrp.zone_own_executor_event.v1', 'robot_id': 'r3', 'event': 'job_failed', 'sim_s': 0.5, ...}])
+E             
+E             - job_done
+E             + job_failed)
+
+tests/test_zone_own_executor_sweep_start.py:80: AssertionError
+__ test_startup_without_refinement_is_bounded_and_reports_own_guard_evidence ___
+
+startup = {'r3': [-0.85, -2.25, 0.032355118817659255, 0.0], 'r2': [-0.85, -0.85, 0.032355118817659255, 0.0], 'r1': [-0.85, 0.55, 0.032355118817659255, 0.0]}
+
+    def test_startup_without_refinement_is_bounded_and_reports_own_guard_evidence(startup):
+        ex = spawn_executor(startup, 'r2', converges=False)
+        d = Driver(ex)
+        ex.look_around()
+        d.run(SWEEP_REOBSERVE_S + 2., stop=lambda: ex.job is None)
+        end = [e for e in ex.events if e['event'] == 'job_failed']
+        assert len(end) == 1 and end[0]['detail']['reason'] == 'SWEEP_TRANSITION_BLOCKED'
+>       assert SWEEP_REOBSERVE_S <= end[0]['sim_s'] <= SWEEP_REOBSERVE_S + .2
+E       assert 10.0 <= 0.0
+
+tests/test_zone_own_executor_sweep_start.py:107: AssertionError
+_ test_initial_estimate_refinement_can_interrupt_and_resume_an_inflight_sweep[r2-1.4] _
+
+startup = {'r3': [-0.85, -2.25, 0.032355118817659255, 0.0], 'r2': [-0.85, -0.85, 0.032355118817659255, 0.0], 'r1': [-0.85, 0.55, 0.032355118817659255, 0.0]}
+rid = 'r2', jump_at = 1.4
+
+    @pytest.mark.parametrize('rid, jump_at', [('r2', 1.4), ('r3', 2.7)])
+    def test_initial_estimate_refinement_can_interrupt_and_resume_an_inflight_sweep(startup, rid, jump_at):
+        x, y, _, yaw = startup[rid]
+        ex = scripted(lambda t: (x, y, yaw, .15 if jump_at <= t < 6. else .01, .02, .1), rid=rid)
+        d = Driver(ex)
+        ex.look_around()
+        d.run(30., stop=lambda: ex.job is None)
+>       assert ex.jobs_done[-1]['outcome'] == 'LOOKED'
+E       AssertionError: assert 'SWEEP_TRANSITION_BLOCKED' == 'LOOKED'
+E         
+E         - LOOKED
+E         + SWEEP_TRANSITION_BLOCKED
+
+tests/test_zone_own_executor_sweep_start.py:126: AssertionError
+_ test_initial_estimate_refinement_can_interrupt_and_resume_an_inflight_sweep[r3-2.7] _
+
+startup = {'r3': [-0.85, -2.25, 0.032355118817659255, 0.0], 'r2': [-0.85, -0.85, 0.032355118817659255, 0.0], 'r1': [-0.85, 0.55, 0.032355118817659255, 0.0]}
+rid = 'r3', jump_at = 2.7
+
+    @pytest.mark.parametrize('rid, jump_at', [('r2', 1.4), ('r3', 2.7)])
+    def test_initial_estimate_refinement_can_interrupt_and_resume_an_inflight_sweep(startup, rid, jump_at):
+        x, y, _, yaw = startup[rid]
+        ex = scripted(lambda t: (x, y, yaw, .15 if jump_at <= t < 6. else .01, .02, .1), rid=rid)
+        d = Driver(ex)
+        ex.look_around()
+        d.run(30., stop=lambda: ex.job is None)
+>       assert ex.jobs_done[-1]['outcome'] == 'LOOKED'
+E       AssertionError: assert 'SWEEP_TRANSITION_BLOCKED' == 'LOOKED'
+E         
+E         - LOOKED
+E         + SWEEP_TRANSITION_BLOCKED
+
+tests/test_zone_own_executor_sweep_start.py:126: AssertionError
+_ test_stale_pan_queue_selects_a_reachable_pan_and_preserves_restore_guard[deliver] _
+
+caller = 'deliver'
+
+    @pytest.mark.parametrize('caller', ['deliver', 'driver', 'executor'])
+    def test_stale_pan_queue_selects_a_reachable_pan_and_preserves_restore_guard(caller):
+        values = (2.08, .14, 0., .01, .01, .1)
+        current = {**SEARCH_POSE, **LOOK_P20}
+        guard, pose = guards.SweepGuard(v3_like(MAP)), guards.OwnPose(*values[:5])
+        assert not guard.transition_clear(current, {6: 2030}, pose, loaded=False)
+        assert guard.transition_clear(current, {6: 1230}, pose, loaded=False)
+        if caller == 'deliver':
+            ctl = deliver_at(values, servo=current)
+            ctl.sweep = {'stage': 'pan', 'target': 2030, 'queue': [1230, 1500], 'since': 0.,
+                         'settled': False, 'restore': SEARCH_POSE}
+            commands = ctl._tick_sweep(1.)
+            target = ctl.sweep['target']
+>           assert ctl.outcome is None
+E           AssertionError: assert 'SWEEP_TRANSITION_BLOCKED' is None
+E            +  where 'SWEEP_TRANSITION_BLOCKED' = <harness.zone_own_deliver._DeliverController object at 0x1151caf60>.outcome
+
+tests/test_zone_own_executor_sweep_start.py:181: AssertionError
+_ test_stale_pan_queue_selects_a_reachable_pan_and_preserves_restore_guard[driver] _
+
+caller = 'driver'
+
+    @pytest.mark.parametrize('caller', ['deliver', 'driver', 'executor'])
+    def test_stale_pan_queue_selects_a_reachable_pan_and_preserves_restore_guard(caller):
+        values = (2.08, .14, 0., .01, .01, .1)
+        current = {**SEARCH_POSE, **LOOK_P20}
+        guard, pose = guards.SweepGuard(v3_like(MAP)), guards.OwnPose(*values[:5])
+        assert not guard.transition_clear(current, {6: 2030}, pose, loaded=False)
+        assert guard.transition_clear(current, {6: 1230}, pose, loaded=False)
+        if caller == 'deliver':
+            ctl = deliver_at(values, servo=current)
+            ctl.sweep = {'stage': 'pan', 'target': 2030, 'queue': [1230, 1500], 'since': 0.,
+                         'settled': False, 'restore': SEARCH_POSE}
+            commands = ctl._tick_sweep(1.)
+            target = ctl.sweep['target']
+            assert ctl.outcome is None
+        elif caller == 'driver':
+            ctl = driver_at(values, static=v3_like(MAP), servo=current)
+            ctl.loaded, ctl.state, ctl.arm_target, ctl.look_queue = False, 'look_pan', {6: 2030}, [1230, 1500]
+            commands = ctl._arm_step()
+            target = ctl.arm_target[6]
+>           assert ctl.outcome is None
+E           AssertionError: assert 'sweep_transition_blocked' is None
+E            +  where 'sweep_transition_blocked' = <harness.zone_own_driver.GuardedDriver object at 0x115176ea0>.outcome
+
+tests/test_zone_own_executor_sweep_start.py:187: AssertionError
+_ test_stale_pan_queue_selects_a_reachable_pan_and_preserves_restore_guard[executor] _
+
+caller = 'executor'
+
+    @pytest.mark.parametrize('caller', ['deliver', 'driver', 'executor'])
+    def test_stale_pan_queue_selects_a_reachable_pan_and_preserves_restore_guard(caller):
+        values = (2.08, .14, 0., .01, .01, .1)
+        current = {**SEARCH_POSE, **LOOK_P20}
+        guard, pose = guards.SweepGuard(v3_like(MAP)), guards.OwnPose(*values[:5])
+        assert not guard.transition_clear(current, {6: 2030}, pose, loaded=False)
+        assert guard.transition_clear(current, {6: 1230}, pose, loaded=False)
+        if caller == 'deliver':
+            ctl = deliver_at(values, servo=current)
+            ctl.sweep = {'stage': 'pan', 'target': 2030, 'queue': [1230, 1500], 'since': 0.,
+                         'settled': False, 'restore': SEARCH_POSE}
+            commands = ctl._tick_sweep(1.)
+            target = ctl.sweep['target']
+            assert ctl.outcome is None
+        elif caller == 'driver':
+            ctl = driver_at(values, static=v3_like(MAP), servo=current)
+            ctl.loaded, ctl.state, ctl.arm_target, ctl.look_queue = False, 'look_pan', {6: 2030}, [1230, 1500]
+            commands = ctl._arm_step()
+            target = ctl.arm_target[6]
+            assert ctl.outcome is None
+        else:
+            ctl = scripted(lambda t: values)
+            ctl.servo, ctl.guard = dict(current), guard
+            ctl.look_around()
+            ctl.job.sweep = {'stage': 'pan', 'target': 2030, 'queue': [1230, 1500], 'since': 0.,
+                             'loaded': False, 'restore': SEARCH_POSE}
+            commands = ctl._tick_sweep(1., ctl.job)['commands']
+>           target = ctl.job.sweep['target']
+                     ^^^^^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'sweep'
+
+tests/test_zone_own_executor_sweep_start.py:195: AttributeError
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_sweep_start.py::test_startup_hold_preserves_real_host_abort_and_horizon_semantics
+FAILED tests/test_zone_own_executor_sweep_start.py::test_startup_reobserves_then_completes_a_sweep_after_refinement
+FAILED tests/test_zone_own_executor_sweep_start.py::test_startup_without_refinement_is_bounded_and_reports_own_guard_evidence
+FAILED tests/test_zone_own_executor_sweep_start.py::test_initial_estimate_refinement_can_interrupt_and_resume_an_inflight_sweep[r2-1.4]
+FAILED tests/test_zone_own_executor_sweep_start.py::test_initial_estimate_refinement_can_interrupt_and_resume_an_inflight_sweep[r3-2.7]
+FAILED tests/test_zone_own_executor_sweep_start.py::test_stale_pan_queue_selects_a_reachable_pan_and_preserves_restore_guard[deliver]
+FAILED tests/test_zone_own_executor_sweep_start.py::test_stale_pan_queue_selects_a_reachable_pan_and_preserves_restore_guard[driver]
+FAILED tests/test_zone_own_executor_sweep_start.py::test_stale_pan_queue_selects_a_reachable_pan_and_preserves_restore_guard[executor]
+8 failed, 9 deselected in 0.69s

@@ -1,0 +1,761 @@
+........FF.FF........................................................... [ 77%]
+.....................                               [100%]
+=================================== FAILURES ===================================
+_ test_real_detached_descendant_is_not_signalled_and_wrapper_releases[setsid] __
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_0')
+detach = 'setsid'
+
+    @pytest.mark.parametrize('detach', ['setsid', 'setpgid'])
+    def test_real_detached_descendant_is_not_signalled_and_wrapper_releases(tmp_path, detach):
+        """Real Darwin/Linux detach after observation; no FD inherited by descendant."""
+        seen, ready, stop, received, done = (tmp_path/n for n in ('seen', 'ready', 'stop', 'received', 'done'))
+        child_code = f'''
+    import json, os, signal, time
+    from pathlib import Path
+    signal.signal(signal.SIGINT, lambda sig, frame: Path({str(received)!r}).touch())
+    signal.signal(signal.SIGTERM, lambda sig, frame: Path({str(received)!r}).touch())
+    deadline = time.monotonic() + 10
+    while not Path({str(seen)!r}).exists() and time.monotonic() < deadline:
+        time.sleep(.01)
+    {'os.setsid()' if detach == 'setsid' else 'os.setpgid(0, 0)'}
+    Path({str(ready)!r}).write_text(json.dumps({{'pid': os.getpid(), 'pgid': os.getpgrp()}}))
+    while not Path({str(stop)!r}).exists() and time.monotonic() < deadline:
+        time.sleep(.01)
+    Path({str(done)!r}).touch()
+    '''
+        parent_code = f'''
+    import os, subprocess, sys, time
+    from pathlib import Path
+    subprocess.Popen([sys.executable, '-c', {child_code!r}])
+    deadline = time.monotonic() + 10
+    while not Path({str(ready)!r}).exists() and time.monotonic() < deadline:
+        time.sleep(.01)
+    '''
+        root = tmp_path/'slots'
+        command = isolated_cli('--root', str(root), '--slots', '1', 'run', '--owner', 'test',
+                               '--', sys.executable, '-c', parent_code)
+        observer = f'''
+    original_members = s._group_members
+    def members(pgid):
+        found = original_members(pgid)
+        if any(pid != pgid for pid in found):
+            s.Path({str(seen)!r}).touch()
+        return found
+    s._group_members = members
+    '''
+        command[2] = command[2].replace('raise SystemExit(s.main())',
+                                       f'exec({observer!r}); raise SystemExit(s.main())')
+        wrapper = subprocess.Popen(command, stderr=subprocess.PIPE, text=True)
+        try:
+            assert wrapper.wait(5) == 70
+            error = wrapper.stderr.read()
+            assert 'left process group' in error and 'not signalled' in error
+            assert seen.exists() and ready.exists()
+>           assert not received.exists() and not done.exists()
+E           AssertionError: assert (not False and not True)
+E            +  where False = exists()
+E            +    where exists = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_0/received').exists
+E            +  and   True = exists()
+E            +    where exists = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_0/done').exists
+
+tests/test_sim_speed_review6.py:193: AssertionError
+_ test_real_detached_descendant_is_not_signalled_and_wrapper_releases[setpgid] _
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_1')
+detach = 'setpgid'
+
+    @pytest.mark.parametrize('detach', ['setsid', 'setpgid'])
+    def test_real_detached_descendant_is_not_signalled_and_wrapper_releases(tmp_path, detach):
+        """Real Darwin/Linux detach after observation; no FD inherited by descendant."""
+        seen, ready, stop, received, done = (tmp_path/n for n in ('seen', 'ready', 'stop', 'received', 'done'))
+        child_code = f'''
+    import json, os, signal, time
+    from pathlib import Path
+    signal.signal(signal.SIGINT, lambda sig, frame: Path({str(received)!r}).touch())
+    signal.signal(signal.SIGTERM, lambda sig, frame: Path({str(received)!r}).touch())
+    deadline = time.monotonic() + 10
+    while not Path({str(seen)!r}).exists() and time.monotonic() < deadline:
+        time.sleep(.01)
+    {'os.setsid()' if detach == 'setsid' else 'os.setpgid(0, 0)'}
+    Path({str(ready)!r}).write_text(json.dumps({{'pid': os.getpid(), 'pgid': os.getpgrp()}}))
+    while not Path({str(stop)!r}).exists() and time.monotonic() < deadline:
+        time.sleep(.01)
+    Path({str(done)!r}).touch()
+    '''
+        parent_code = f'''
+    import os, subprocess, sys, time
+    from pathlib import Path
+    subprocess.Popen([sys.executable, '-c', {child_code!r}])
+    deadline = time.monotonic() + 10
+    while not Path({str(ready)!r}).exists() and time.monotonic() < deadline:
+        time.sleep(.01)
+    '''
+        root = tmp_path/'slots'
+        command = isolated_cli('--root', str(root), '--slots', '1', 'run', '--owner', 'test',
+                               '--', sys.executable, '-c', parent_code)
+        observer = f'''
+    original_members = s._group_members
+    def members(pgid):
+        found = original_members(pgid)
+        if any(pid != pgid for pid in found):
+            s.Path({str(seen)!r}).touch()
+        return found
+    s._group_members = members
+    '''
+        command[2] = command[2].replace('raise SystemExit(s.main())',
+                                       f'exec({observer!r}); raise SystemExit(s.main())')
+        wrapper = subprocess.Popen(command, stderr=subprocess.PIPE, text=True)
+        try:
+            assert wrapper.wait(5) == 70
+            error = wrapper.stderr.read()
+            assert 'left process group' in error and 'not signalled' in error
+            assert seen.exists() and ready.exists()
+>           assert not received.exists() and not done.exists()
+E           AssertionError: assert (not False and not True)
+E            +  where False = exists()
+E            +    where exists = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_1/received').exists
+E            +  and   True = exists()
+E            +    where exists = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_real_detached_descendant_1/done').exists
+
+tests/test_sim_speed_review6.py:193: AssertionError
+____________ test_interrupt_owned_descendant_after_leader_exited[2] ____________
+
+slot = <scripts.sim_slots.Slot object at 0x1070f3470>, cmd = ['fixture']
+
+    def run_reserved(slot: Slot, cmd: list[str]) -> int:
+        """Pin our PGID with an unreaped direct child until all signalling is over.
+    
+        Requires exclusive wait ownership and default SIGCHLD (no external reaper
+        or SA_NOCLDWAIT). Descendants outside this session/group are unsupported.
+        """
+        child = None
+        interrupted = 0
+        previous = {}
+        leader_start = None
+        can_signal = False
+        pending_signal = 0
+        descendants = {}
+        ownership_error = None
+        exited = False
+    
+        def deliver_pending():
+            nonlocal pending_signal
+            # The handler only queues signals. This direct child remains unreaped
+            # throughout delivery, so its PID/PGID cannot be reused between checking
+            # membership and killpg. Never fall back to per-descendant os.kill.
+            if pending_signal and child is not None and can_signal and child.returncode is None:
+                signum, pending_signal = pending_signal, 0
+                try:
+                    if process_identity(child.pid) == leader_start and os.getpgid(child.pid) == child.pid:
+                        os.killpg(child.pid, signum)
+                except (OSError, RuntimeError):
+                    pass  # ownership unavailable: do not signal a possibly unrelated group
+    
+        def forward(signum, _frame):
+            nonlocal interrupted, pending_signal
+            interrupted = pending_signal = signum
+            # Do not interrupt a membership snapshot, waitpid or a signal delivery
+            # with another delivery. The loop consumes this after verifying ownership.
+    
+        # KeyboardInterrupt/SIGTERM must not unwind past a live child and release.
+        for sig in (signal.SIGINT, signal.SIGTERM):
+            previous[sig] = signal.signal(sig, forward)
+        try:
+            if signal.getsignal(signal.SIGCHLD) != signal.SIG_DFL:
+                raise RuntimeError('run_reserved requires default SIGCHLD ownership (no external reaper)')
+            print('sim_slots: detached descendants (setsid/setpgid) are outside the managed group; '
+                  'they are not signalled and must retain a slot FD or reserve their own slot. '
+                  'Detachment before observation cannot be detected.', file=sys.stderr, flush=True)
+            child = subprocess.Popen(cmd, pass_fds=slot.fds, start_new_session=True)
+            setup_error = None
+            try:
+                identity = {'pid': child.pid, 'start_id': process_identity(child.pid)}
+                leader_start = identity['start_id']
+                can_signal = True  # our unreaped child pins this PID/PGID lifetime
+                for member in [slot, *slot.additional]:
+                    member.record['children'] = [identity]
+                    _write_record(member.fd, member.record)
+            except (FileNotFoundError, ProcessLookupError):
+                pass  # short command; still wait for its work group below
+            except Exception as exc:
+                setup_error = exc  # even failed bookkeeping cannot release live work
+            while True:
+                can_signal = False
+                if not exited:
+                    try:
+                        # The leader pins its PID/PGID/session, including as a zombie.
+                        members = _group_members(child.pid)
+                        leader = members.get(child.pid)
+                        # macOS libproc omits zombies, but without poll/waitpid the
+                        # Popen child still pins its PID even when absent here.
+                        if leader_start is None or (leader is not None and leader[:3] != (
+                                leader_start, child.pid, child.pid)):
+                            raise RuntimeError(f'cannot verify unreaped leader PID {child.pid}')
+                        descendants.update({pid: member for pid, member in members.items()
+                                            if pid != child.pid and member[1:3] == (child.pid, child.pid)})
+                        ownership_error = None
+                    except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                        descendants, ownership_error = {}, exc
+                try:
+                    exited = _child_exited(child.pid)
+                except (OSError, RuntimeError) as exc:
+                    raise RuntimeError(f'cannot verify unreaped leader PID {child.pid}: {exc}; '
+                                       'no signal sent; releasing wrapper reservation') from exc
+                if not exited:
+                    can_signal = leader_start is not None
+                    deliver_pending()
+                if exited:
+                    try:
+                        alive = _group_alive(child.pid)
+                    except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                        raise RuntimeError(f'cannot verify descendant ownership for group {child.pid}: {exc}; '
+                                           'no signal sent; releasing wrapper reservation') from exc
+                    try:
+                        if ownership_error is not None and alive:
+                            raise ownership_error
+>                       live = _owned_descendants(child.pid, descendants)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts/sim_slots.py:766: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+pgid = 222, known = {333: ('descendant-start', 222, 222, 'live')}
+
+    def _owned_descendants(pgid: int, known: dict) -> dict:
+        """Audit descendants while the exited, UNREAPED leader still pins PGID.
+    
+        This is diagnostic, never authorization for signalling an individual PID.
+        A descendant can exit/reuse its PID or leave the group after any lookup.
+        """
+        current = _group_members(pgid)
+        live = {pid: member for pid, member in current.items() if member[3] != 'Z'}
+        for pid, member in live.items():
+            if pid not in known or member[:3] != known[pid][:3] or member[1:3] != (pgid, pgid):
+>               raise RuntimeError(f'unverified descendant PID {pid} in process group {pgid}')
+E               RuntimeError: unverified descendant PID 222 in process group 222
+
+scripts/sim_slots.py:622: RuntimeError
+
+The above exception was the direct cause of the following exception:
+
+slot = <scripts.sim_slots.Slot object at 0x1070f3470>, cmd = ['fixture']
+
+    def run_reserved(slot: Slot, cmd: list[str]) -> int:
+        """Pin our PGID with an unreaped direct child until all signalling is over.
+    
+        Requires exclusive wait ownership and default SIGCHLD (no external reaper
+        or SA_NOCLDWAIT). Descendants outside this session/group are unsupported.
+        """
+        child = None
+        interrupted = 0
+        previous = {}
+        leader_start = None
+        can_signal = False
+        pending_signal = 0
+        descendants = {}
+        ownership_error = None
+        exited = False
+    
+        def deliver_pending():
+            nonlocal pending_signal
+            # The handler only queues signals. This direct child remains unreaped
+            # throughout delivery, so its PID/PGID cannot be reused between checking
+            # membership and killpg. Never fall back to per-descendant os.kill.
+            if pending_signal and child is not None and can_signal and child.returncode is None:
+                signum, pending_signal = pending_signal, 0
+                try:
+                    if process_identity(child.pid) == leader_start and os.getpgid(child.pid) == child.pid:
+                        os.killpg(child.pid, signum)
+                except (OSError, RuntimeError):
+                    pass  # ownership unavailable: do not signal a possibly unrelated group
+    
+        def forward(signum, _frame):
+            nonlocal interrupted, pending_signal
+            interrupted = pending_signal = signum
+            # Do not interrupt a membership snapshot, waitpid or a signal delivery
+            # with another delivery. The loop consumes this after verifying ownership.
+    
+        # KeyboardInterrupt/SIGTERM must not unwind past a live child and release.
+        for sig in (signal.SIGINT, signal.SIGTERM):
+            previous[sig] = signal.signal(sig, forward)
+        try:
+            if signal.getsignal(signal.SIGCHLD) != signal.SIG_DFL:
+                raise RuntimeError('run_reserved requires default SIGCHLD ownership (no external reaper)')
+            print('sim_slots: detached descendants (setsid/setpgid) are outside the managed group; '
+                  'they are not signalled and must retain a slot FD or reserve their own slot. '
+                  'Detachment before observation cannot be detected.', file=sys.stderr, flush=True)
+            child = subprocess.Popen(cmd, pass_fds=slot.fds, start_new_session=True)
+            setup_error = None
+            try:
+                identity = {'pid': child.pid, 'start_id': process_identity(child.pid)}
+                leader_start = identity['start_id']
+                can_signal = True  # our unreaped child pins this PID/PGID lifetime
+                for member in [slot, *slot.additional]:
+                    member.record['children'] = [identity]
+                    _write_record(member.fd, member.record)
+            except (FileNotFoundError, ProcessLookupError):
+                pass  # short command; still wait for its work group below
+            except Exception as exc:
+                setup_error = exc  # even failed bookkeeping cannot release live work
+            while True:
+                can_signal = False
+                if not exited:
+                    try:
+                        # The leader pins its PID/PGID/session, including as a zombie.
+                        members = _group_members(child.pid)
+                        leader = members.get(child.pid)
+                        # macOS libproc omits zombies, but without poll/waitpid the
+                        # Popen child still pins its PID even when absent here.
+                        if leader_start is None or (leader is not None and leader[:3] != (
+                                leader_start, child.pid, child.pid)):
+                            raise RuntimeError(f'cannot verify unreaped leader PID {child.pid}')
+                        descendants.update({pid: member for pid, member in members.items()
+                                            if pid != child.pid and member[1:3] == (child.pid, child.pid)})
+                        ownership_error = None
+                    except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                        descendants, ownership_error = {}, exc
+                try:
+                    exited = _child_exited(child.pid)
+                except (OSError, RuntimeError) as exc:
+                    raise RuntimeError(f'cannot verify unreaped leader PID {child.pid}: {exc}; '
+                                       'no signal sent; releasing wrapper reservation') from exc
+                if not exited:
+                    can_signal = leader_start is not None
+                    deliver_pending()
+                if exited:
+                    try:
+                        alive = _group_alive(child.pid)
+                    except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                        raise RuntimeError(f'cannot verify descendant ownership for group {child.pid}: {exc}; '
+                                           'no signal sent; releasing wrapper reservation') from exc
+                    try:
+                        if ownership_error is not None and alive:
+                            raise ownership_error
+                        live = _owned_descendants(child.pid, descendants)
+                        if pending_signal and alive:
+                            signum, pending_signal = pending_signal, 0
+                            for pid, member in live.items():
+                                try:
+                                    # Audit only: even this last check can race with
+                                    # PID reuse. The signal below targets the pinned
+                                    # GROUP, never any PID returned by the snapshot.
+                                    latest = _process_membership(pid)
+                                    if latest[:3] != member[:3]:
+                                        raise RuntimeError(f'descendant identity changed before signal: {pid}')
+                                except (FileNotFoundError, ProcessLookupError):
+                                    pass  # exited before delivery
+                            try:
+                                os.killpg(child.pid, signum)
+                            except ProcessLookupError:
+                                pass  # last live member exited; leader is still pinned
+                    except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+>                       raise RuntimeError(f'cannot verify/signal owned descendants for group {child.pid}: {exc}; '
+                                           'refusing further signals; releasing wrapper reservation') from exc
+E                                          RuntimeError: cannot verify/signal owned descendants for group 222: unverified descendant PID 222 in process group 222; refusing further signals; releasing wrapper reservation
+
+scripts/sim_slots.py:784: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_interrupt_owned_descendan0')
+signum = <Signals.SIGINT: 2>
+
+    @pytest.mark.parametrize('signum', [signal.SIGINT, signal.SIGTERM])
+    def test_interrupt_owned_descendant_after_leader_exited(tmp_path, signum):
+        """Same orphan interrupt regression; round 6 now forbids early reaping."""
+        handlers, sent = {}, []
+        state = {'alive': True, 'sleeps': 0}
+        leader = ('leader-start', 222, 222, 'live')
+        descendant = ('descendant-start', 222, 222, 'live')
+    
+        class Child:
+            pid = 222
+            returncode = None
+    
+            def poll(self):
+                assert not state['alive'], 'must keep leader pinned until descendants stop'
+                self.returncode = 0
+                return 0
+            wait = poll
+    
+        child = Child()
+    
+        def handler(sig, value):
+            old = handlers.get(sig, signal.SIG_DFL)
+            handlers[sig] = value
+            return old
+    
+        def members(pgid):
+            assert pgid == child.pid
+            return ({222: leader} if not state['sleeps'] else {}) | (
+                {333: descendant} if state['alive'] else {})
+    
+        def send(pid, sig):
+            assert pid == 222 and sig == signum
+            assert child.returncode is None, 'PGID must be pinned during signalling'
+            sent.append((pid, sig))
+            state['alive'] = False
+    
+        def sleep(_seconds):
+            state['sleeps'] += 1
+            assert state['sleeps'] <= 3, 'wrapper stuck: descendant received no interrupt'
+            assert child.returncode is None  # exited, deliberately NOT reaped
+            handlers[signum](signum, None)
+    
+        slot = slots._try_slot(tmp_path, 1, {})
+        slot.additional = []  # _try_slot at 78945a3c predates Slot's default list
+        try:
+            with mock.patch.object(slots.subprocess, 'Popen', return_value=child), \
+                 mock.patch.object(slots.signal, 'signal', side_effect=handler), \
+                 mock.patch.object(slots.signal, 'getsignal', return_value=signal.SIG_DFL), \
+                 mock.patch.object(slots, 'process_identity', return_value='leader-start'), \
+                 mock.patch.object(slots, '_group_alive', side_effect=lambda _: state['alive']), \
+                 mock.patch.object(slots, '_group_members', side_effect=members, create=True), \
+                 mock.patch.object(slots, '_process_membership', return_value=descendant, create=True), \
+                 mock.patch.object(slots, '_child_exited', return_value=True), \
+                 mock.patch.object(slots.os, 'kill', side_effect=AssertionError('individual PID signal')), \
+                 mock.patch.object(slots.os, 'killpg', side_effect=send), \
+                 mock.patch.object(slots.time, 'sleep', side_effect=sleep):
+>               assert slots.run_reserved(slot, ['fixture']) == 128 + signum
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_sim_speed_review5.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/sim_slots.py:800: in run_reserved
+    child.poll()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_sim_speed_review5.test_interrupt_owned_descendant_after_leader_exited.<locals>.Child object at 0x1070f1520>
+
+    def poll(self):
+>       assert not state['alive'], 'must keep leader pinned until descendants stop'
+E       AssertionError: must keep leader pinned until descendants stop
+E       assert not True
+
+tests/test_sim_speed_review5.py:29: AssertionError
+----------------------------- Captured stderr call -----------------------------
+sim_slots: detached descendants (setsid/setpgid) are outside the managed group; they are not signalled and must retain a slot FD or reserve their own slot. Detachment before observation cannot be detected.
+___________ test_interrupt_owned_descendant_after_leader_exited[15] ____________
+
+slot = <scripts.sim_slots.Slot object at 0x1075f4c80>, cmd = ['fixture']
+
+    def run_reserved(slot: Slot, cmd: list[str]) -> int:
+        """Pin our PGID with an unreaped direct child until all signalling is over.
+    
+        Requires exclusive wait ownership and default SIGCHLD (no external reaper
+        or SA_NOCLDWAIT). Descendants outside this session/group are unsupported.
+        """
+        child = None
+        interrupted = 0
+        previous = {}
+        leader_start = None
+        can_signal = False
+        pending_signal = 0
+        descendants = {}
+        ownership_error = None
+        exited = False
+    
+        def deliver_pending():
+            nonlocal pending_signal
+            # The handler only queues signals. This direct child remains unreaped
+            # throughout delivery, so its PID/PGID cannot be reused between checking
+            # membership and killpg. Never fall back to per-descendant os.kill.
+            if pending_signal and child is not None and can_signal and child.returncode is None:
+                signum, pending_signal = pending_signal, 0
+                try:
+                    if process_identity(child.pid) == leader_start and os.getpgid(child.pid) == child.pid:
+                        os.killpg(child.pid, signum)
+                except (OSError, RuntimeError):
+                    pass  # ownership unavailable: do not signal a possibly unrelated group
+    
+        def forward(signum, _frame):
+            nonlocal interrupted, pending_signal
+            interrupted = pending_signal = signum
+            # Do not interrupt a membership snapshot, waitpid or a signal delivery
+            # with another delivery. The loop consumes this after verifying ownership.
+    
+        # KeyboardInterrupt/SIGTERM must not unwind past a live child and release.
+        for sig in (signal.SIGINT, signal.SIGTERM):
+            previous[sig] = signal.signal(sig, forward)
+        try:
+            if signal.getsignal(signal.SIGCHLD) != signal.SIG_DFL:
+                raise RuntimeError('run_reserved requires default SIGCHLD ownership (no external reaper)')
+            print('sim_slots: detached descendants (setsid/setpgid) are outside the managed group; '
+                  'they are not signalled and must retain a slot FD or reserve their own slot. '
+                  'Detachment before observation cannot be detected.', file=sys.stderr, flush=True)
+            child = subprocess.Popen(cmd, pass_fds=slot.fds, start_new_session=True)
+            setup_error = None
+            try:
+                identity = {'pid': child.pid, 'start_id': process_identity(child.pid)}
+                leader_start = identity['start_id']
+                can_signal = True  # our unreaped child pins this PID/PGID lifetime
+                for member in [slot, *slot.additional]:
+                    member.record['children'] = [identity]
+                    _write_record(member.fd, member.record)
+            except (FileNotFoundError, ProcessLookupError):
+                pass  # short command; still wait for its work group below
+            except Exception as exc:
+                setup_error = exc  # even failed bookkeeping cannot release live work
+            while True:
+                can_signal = False
+                if not exited:
+                    try:
+                        # The leader pins its PID/PGID/session, including as a zombie.
+                        members = _group_members(child.pid)
+                        leader = members.get(child.pid)
+                        # macOS libproc omits zombies, but without poll/waitpid the
+                        # Popen child still pins its PID even when absent here.
+                        if leader_start is None or (leader is not None and leader[:3] != (
+                                leader_start, child.pid, child.pid)):
+                            raise RuntimeError(f'cannot verify unreaped leader PID {child.pid}')
+                        descendants.update({pid: member for pid, member in members.items()
+                                            if pid != child.pid and member[1:3] == (child.pid, child.pid)})
+                        ownership_error = None
+                    except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                        descendants, ownership_error = {}, exc
+                try:
+                    exited = _child_exited(child.pid)
+                except (OSError, RuntimeError) as exc:
+                    raise RuntimeError(f'cannot verify unreaped leader PID {child.pid}: {exc}; '
+                                       'no signal sent; releasing wrapper reservation') from exc
+                if not exited:
+                    can_signal = leader_start is not None
+                    deliver_pending()
+                if exited:
+                    try:
+                        alive = _group_alive(child.pid)
+                    except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                        raise RuntimeError(f'cannot verify descendant ownership for group {child.pid}: {exc}; '
+                                           'no signal sent; releasing wrapper reservation') from exc
+                    try:
+                        if ownership_error is not None and alive:
+                            raise ownership_error
+>                       live = _owned_descendants(child.pid, descendants)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+scripts/sim_slots.py:766: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+pgid = 222, known = {333: ('descendant-start', 222, 222, 'live')}
+
+    def _owned_descendants(pgid: int, known: dict) -> dict:
+        """Audit descendants while the exited, UNREAPED leader still pins PGID.
+    
+        This is diagnostic, never authorization for signalling an individual PID.
+        A descendant can exit/reuse its PID or leave the group after any lookup.
+        """
+        current = _group_members(pgid)
+        live = {pid: member for pid, member in current.items() if member[3] != 'Z'}
+        for pid, member in live.items():
+            if pid not in known or member[:3] != known[pid][:3] or member[1:3] != (pgid, pgid):
+>               raise RuntimeError(f'unverified descendant PID {pid} in process group {pgid}')
+E               RuntimeError: unverified descendant PID 222 in process group 222
+
+scripts/sim_slots.py:622: RuntimeError
+
+The above exception was the direct cause of the following exception:
+
+slot = <scripts.sim_slots.Slot object at 0x1075f4c80>, cmd = ['fixture']
+
+    def run_reserved(slot: Slot, cmd: list[str]) -> int:
+        """Pin our PGID with an unreaped direct child until all signalling is over.
+    
+        Requires exclusive wait ownership and default SIGCHLD (no external reaper
+        or SA_NOCLDWAIT). Descendants outside this session/group are unsupported.
+        """
+        child = None
+        interrupted = 0
+        previous = {}
+        leader_start = None
+        can_signal = False
+        pending_signal = 0
+        descendants = {}
+        ownership_error = None
+        exited = False
+    
+        def deliver_pending():
+            nonlocal pending_signal
+            # The handler only queues signals. This direct child remains unreaped
+            # throughout delivery, so its PID/PGID cannot be reused between checking
+            # membership and killpg. Never fall back to per-descendant os.kill.
+            if pending_signal and child is not None and can_signal and child.returncode is None:
+                signum, pending_signal = pending_signal, 0
+                try:
+                    if process_identity(child.pid) == leader_start and os.getpgid(child.pid) == child.pid:
+                        os.killpg(child.pid, signum)
+                except (OSError, RuntimeError):
+                    pass  # ownership unavailable: do not signal a possibly unrelated group
+    
+        def forward(signum, _frame):
+            nonlocal interrupted, pending_signal
+            interrupted = pending_signal = signum
+            # Do not interrupt a membership snapshot, waitpid or a signal delivery
+            # with another delivery. The loop consumes this after verifying ownership.
+    
+        # KeyboardInterrupt/SIGTERM must not unwind past a live child and release.
+        for sig in (signal.SIGINT, signal.SIGTERM):
+            previous[sig] = signal.signal(sig, forward)
+        try:
+            if signal.getsignal(signal.SIGCHLD) != signal.SIG_DFL:
+                raise RuntimeError('run_reserved requires default SIGCHLD ownership (no external reaper)')
+            print('sim_slots: detached descendants (setsid/setpgid) are outside the managed group; '
+                  'they are not signalled and must retain a slot FD or reserve their own slot. '
+                  'Detachment before observation cannot be detected.', file=sys.stderr, flush=True)
+            child = subprocess.Popen(cmd, pass_fds=slot.fds, start_new_session=True)
+            setup_error = None
+            try:
+                identity = {'pid': child.pid, 'start_id': process_identity(child.pid)}
+                leader_start = identity['start_id']
+                can_signal = True  # our unreaped child pins this PID/PGID lifetime
+                for member in [slot, *slot.additional]:
+                    member.record['children'] = [identity]
+                    _write_record(member.fd, member.record)
+            except (FileNotFoundError, ProcessLookupError):
+                pass  # short command; still wait for its work group below
+            except Exception as exc:
+                setup_error = exc  # even failed bookkeeping cannot release live work
+            while True:
+                can_signal = False
+                if not exited:
+                    try:
+                        # The leader pins its PID/PGID/session, including as a zombie.
+                        members = _group_members(child.pid)
+                        leader = members.get(child.pid)
+                        # macOS libproc omits zombies, but without poll/waitpid the
+                        # Popen child still pins its PID even when absent here.
+                        if leader_start is None or (leader is not None and leader[:3] != (
+                                leader_start, child.pid, child.pid)):
+                            raise RuntimeError(f'cannot verify unreaped leader PID {child.pid}')
+                        descendants.update({pid: member for pid, member in members.items()
+                                            if pid != child.pid and member[1:3] == (child.pid, child.pid)})
+                        ownership_error = None
+                    except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                        descendants, ownership_error = {}, exc
+                try:
+                    exited = _child_exited(child.pid)
+                except (OSError, RuntimeError) as exc:
+                    raise RuntimeError(f'cannot verify unreaped leader PID {child.pid}: {exc}; '
+                                       'no signal sent; releasing wrapper reservation') from exc
+                if not exited:
+                    can_signal = leader_start is not None
+                    deliver_pending()
+                if exited:
+                    try:
+                        alive = _group_alive(child.pid)
+                    except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                        raise RuntimeError(f'cannot verify descendant ownership for group {child.pid}: {exc}; '
+                                           'no signal sent; releasing wrapper reservation') from exc
+                    try:
+                        if ownership_error is not None and alive:
+                            raise ownership_error
+                        live = _owned_descendants(child.pid, descendants)
+                        if pending_signal and alive:
+                            signum, pending_signal = pending_signal, 0
+                            for pid, member in live.items():
+                                try:
+                                    # Audit only: even this last check can race with
+                                    # PID reuse. The signal below targets the pinned
+                                    # GROUP, never any PID returned by the snapshot.
+                                    latest = _process_membership(pid)
+                                    if latest[:3] != member[:3]:
+                                        raise RuntimeError(f'descendant identity changed before signal: {pid}')
+                                except (FileNotFoundError, ProcessLookupError):
+                                    pass  # exited before delivery
+                            try:
+                                os.killpg(child.pid, signum)
+                            except ProcessLookupError:
+                                pass  # last live member exited; leader is still pinned
+                    except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+>                       raise RuntimeError(f'cannot verify/signal owned descendants for group {child.pid}: {exc}; '
+                                           'refusing further signals; releasing wrapper reservation') from exc
+E                                          RuntimeError: cannot verify/signal owned descendants for group 222: unverified descendant PID 222 in process group 222; refusing further signals; releasing wrapper reservation
+
+scripts/sim_slots.py:784: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_interrupt_owned_descendan1')
+signum = <Signals.SIGTERM: 15>
+
+    @pytest.mark.parametrize('signum', [signal.SIGINT, signal.SIGTERM])
+    def test_interrupt_owned_descendant_after_leader_exited(tmp_path, signum):
+        """Same orphan interrupt regression; round 6 now forbids early reaping."""
+        handlers, sent = {}, []
+        state = {'alive': True, 'sleeps': 0}
+        leader = ('leader-start', 222, 222, 'live')
+        descendant = ('descendant-start', 222, 222, 'live')
+    
+        class Child:
+            pid = 222
+            returncode = None
+    
+            def poll(self):
+                assert not state['alive'], 'must keep leader pinned until descendants stop'
+                self.returncode = 0
+                return 0
+            wait = poll
+    
+        child = Child()
+    
+        def handler(sig, value):
+            old = handlers.get(sig, signal.SIG_DFL)
+            handlers[sig] = value
+            return old
+    
+        def members(pgid):
+            assert pgid == child.pid
+            return ({222: leader} if not state['sleeps'] else {}) | (
+                {333: descendant} if state['alive'] else {})
+    
+        def send(pid, sig):
+            assert pid == 222 and sig == signum
+            assert child.returncode is None, 'PGID must be pinned during signalling'
+            sent.append((pid, sig))
+            state['alive'] = False
+    
+        def sleep(_seconds):
+            state['sleeps'] += 1
+            assert state['sleeps'] <= 3, 'wrapper stuck: descendant received no interrupt'
+            assert child.returncode is None  # exited, deliberately NOT reaped
+            handlers[signum](signum, None)
+    
+        slot = slots._try_slot(tmp_path, 1, {})
+        slot.additional = []  # _try_slot at 78945a3c predates Slot's default list
+        try:
+            with mock.patch.object(slots.subprocess, 'Popen', return_value=child), \
+                 mock.patch.object(slots.signal, 'signal', side_effect=handler), \
+                 mock.patch.object(slots.signal, 'getsignal', return_value=signal.SIG_DFL), \
+                 mock.patch.object(slots, 'process_identity', return_value='leader-start'), \
+                 mock.patch.object(slots, '_group_alive', side_effect=lambda _: state['alive']), \
+                 mock.patch.object(slots, '_group_members', side_effect=members, create=True), \
+                 mock.patch.object(slots, '_process_membership', return_value=descendant, create=True), \
+                 mock.patch.object(slots, '_child_exited', return_value=True), \
+                 mock.patch.object(slots.os, 'kill', side_effect=AssertionError('individual PID signal')), \
+                 mock.patch.object(slots.os, 'killpg', side_effect=send), \
+                 mock.patch.object(slots.time, 'sleep', side_effect=sleep):
+>               assert slots.run_reserved(slot, ['fixture']) == 128 + signum
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_sim_speed_review5.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/sim_slots.py:800: in run_reserved
+    child.poll()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_sim_speed_review5.test_interrupt_owned_descendant_after_leader_exited.<locals>.Child object at 0x1075f5ac0>
+
+    def poll(self):
+>       assert not state['alive'], 'must keep leader pinned until descendants stop'
+E       AssertionError: must keep leader pinned until descendants stop
+E       assert not True
+
+tests/test_sim_speed_review5.py:29: AssertionError
+----------------------------- Captured stderr call -----------------------------
+sim_slots: detached descendants (setsid/setpgid) are outside the managed group; they are not signalled and must retain a slot FD or reserve their own slot. Detachment before observation cannot be detected.
+=========================== short test summary info ============================
+FAILED tests/test_sim_speed_review6.py::test_real_detached_descendant_is_not_signalled_and_wrapper_releases[setsid]
+FAILED tests/test_sim_speed_review6.py::test_real_detached_descendant_is_not_signalled_and_wrapper_releases[setpgid]
+FAILED tests/test_sim_speed_review5.py::test_interrupt_owned_descendant_after_leader_exited[2]
+FAILED tests/test_sim_speed_review5.py::test_interrupt_owned_descendant_after_leader_exited[15]
+4 failed, 89 passed, 21 subtests passed in 23.50s
