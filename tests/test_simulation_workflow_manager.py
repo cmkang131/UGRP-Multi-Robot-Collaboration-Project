@@ -232,6 +232,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-rgb-outcome-eval": ["track", "--split", "dev_v2"],
             "zone-owncam-loc-record": ["--episodes", str(source)],
             "zone-owncam-loop-run": ["--prereg", str(source)],
+            "zone-m1-owncam-run": ["--prereg", str(source)],
         }
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):

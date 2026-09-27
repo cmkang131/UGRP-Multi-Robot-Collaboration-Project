@@ -1,0 +1,118 @@
+{
+  "schema": "ugrp.sim_speed_default_check.draft.v1",
+  "status": "DRAFT_NOT_REGISTERED_NOT_EXECUTED",
+  "execution_authorized": false,
+  "created": "2026-09-27",
+  "question": "Does none -> exact-v1 preserve full M1 state, control inputs, commands and outcomes through grasp/lift and mission completion while reducing retired instructions?",
+  "adoption_status": "HOLD; none remains the default. This draft is not approval or evidence.",
+  "source_freeze": {
+    "candidate_sha": null,
+    "required_before_execution": [
+      "Coordinator commits the final reviewed validator, reservation and recording implementation; freeze a clean candidate SHA before the first run.",
+      "Both conditions and all eight runs use the same SHA; only speedups differs.",
+      "Record execution bundle ID and hashes for runner, injected source bytes, scene, map, camera calibration, effective prereg and all amendments.",
+      "Implement and test every-step cumulative state recording and its continuity validator before registration. Current periodic single-state checkpoints do not meet this gate.",
+      "Register profiling through the standard sim_cli workflow management adapter and preserve the common execution/provenance record; select a new workflow version only after checking main and open PRs.",
+      "Commit the completed registration with candidate/environment/input hashes and the accepted execution budget. Do not mutate it during the cohort."
+    ]
+  },
+  "conditions": {
+    "runner": "scripts/run_m1_owncam.py",
+    "profile_recorder": "scripts/sim_profile.py",
+    "base_prereg": "experiments/2026-09-26-zone-m1-owncam/prereg.json",
+    "effective_student_skill": "v9",
+    "contact_profile": "cargo_noslip_v1",
+    "weld": false,
+    "map": "zone_wide_door_tags_v2",
+    "A": "none",
+    "B": "exact-v1",
+    "B_installation_gate": "manifest speedups must confirm actual exact_drive_kernel plus contact_prefilter; fallback is not an acceleration-kernel test",
+    "preserve": ["camera placement/FOV/appearance", "rendering settings", "physics/timestep/solver", "control/observation cadence", "initialization and seeds", "command order and stabilization"],
+    "approval_scope": "Existing dev conditions retain their original approval status; this draft creates no new research-condition approval.",
+    "environment": {
+      "host_scope": "same Mac, M1 runner; freeze actual host/CPU/OS before execution",
+      "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+      "freeze_versions": ["Python", "MuJoCo", "NumPy", "BLAS", "OpenCV", "Pillow", "renderer/driver"],
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "opencv_threads": "Freeze the existing baseline value identically in A and B; record actual cv2.getNumThreads()."
+    }
+  },
+  "cohort": [
+    {"episode": "m1dev-s93", "seed": 93, "split": "dev", "order": ["A1", "B1", "B2", "A2"]},
+    {"episode": "m1devdiag-s95", "seed": 95, "split": "dev", "order": ["B1", "A1", "A2", "B2"]}
+  ],
+  "execution": {
+    "runs": 8,
+    "parallelism": 1,
+    "stop_at_phase": null,
+    "until_sim_s": null,
+    "sim_limit_s": 720,
+    "termination": "Normal mission terminal condition or the unchanged runner SIM limit; never a 120-second or grasp/lift prefix stop.",
+    "locks": "Acquire the project exclusive agent_lock for the entire measurement cohort, plus shared sim_slots reservations; never stop other owners. All work runs from the frozen worktree.",
+    "raw_root": "/Users/changmin/projects/ugrp/outputs/sim-speed-default-check-NEW-COHORT",
+    "budget_proposal_requires_registration": {
+      "wall_minutes_per_attempt": 30,
+      "maximum_attempts_including_replacement": 9,
+      "maximum_execution_wall_minutes": 270,
+      "maximum_lock_queue_wait_minutes": 30,
+      "raw_gib_per_attempt": 3,
+      "raw_gib_total": 27,
+      "minimum_free_gib_after_budget_reservation": 10,
+      "external_model_calls": 0,
+      "paid_resources": 0,
+      "on_budget_exhaustion": "Stop and report insufficient_evidence/HOST_ERROR, retain all originals; no automatic budget extension or deletion."
+    }
+  },
+  "state_evidence": {
+    "format_status": "REQUIRED_EXTENSION_NOT_IMPLEMENTED_BY_THIS_DRAFT",
+    "fields_in_canonical_order": ["qpos", "qvel", "act", "ctrl", "qacc_warmstart", "xfrc_applied", "motor_state by stable robot ID"],
+    "canonical_encoding": "Record dtype, shape, byte order and robot ordering; hash exact contiguous bytes, step index and SIM time. No tolerances or float rounding in state bytes.",
+    "initial_state": "Hash before the first physics step and record step 0 / exact SIM time.",
+    "every_step": "Update a chained SHA-256 after EVERY actual mj_step, including warmup/initialization; count physical steps, not batched API invocations. No skipped intervals, state resets, untracked worlds or sampled-only substitutes.",
+    "checkpoint_every_steps": 2000,
+    "terminal_state": "Always flush the cumulative hash and exact final state/time/total step count at termination, including a partial final block.",
+    "validation": ["step/t/sha256 schemas", "checkpoint interval and strict order", "initial-state presence", "all physical steps included in the cumulative chain", "total steps and final state/time match recorder and result", "required phase coverage on both sides"],
+    "control_boundary": "State recording and phase reach checks are evaluator-only; no privileged state is fed back to controller/model input or success notification."
+  },
+  "equivalence_gate": {
+    "per_seed_comparisons": ["A1 vs A2", "A1 vs B1", "A1 vs B2", "B1 vs B2"],
+    "exactly_equal": ["initial and cumulative/final state hashes", "original issued-command log bytes", "original control-input frame log bytes", "JPEG bytes", "original controller/skill/macro log bytes", "original evaluation log bytes", "original result.json bytes including every field"],
+    "byte_policy": "SHA-256 of original file bytes; do not normalize whitespace, key order, numeric encoding or missing versus null fields. Hashes do not substitute for completeness validation.",
+    "required_full_logs": ["inputs/commands.jsonl", "inputs/frames.jsonl", "controller_events.jsonl", "skill_events.jsonl", "macros.jsonl", "eval_only/frames_eval.jsonl", "eval_only/gt_trajectory.jsonl", "eval_only/contacts.jsonl", "eval_only/retention.jsonl"],
+    "current_completeness_gate": "M1 v3 file hashes match manifest; command/frame/contact/retention counts match result; frame indices, input/eval alignment and frame/GT cadence cover the episode; terminal command is hold followed by 0.5 SIM s settling. Last-step and termination state checkpoints must both be present and equal.",
+    "required_reached_phases": ["grasp", "lift/to_carry_posture", "carry/door transit", "release/placement", "final own-camera confirmation"],
+    "phase_validation": "Current M1 log gate binds ordered result.phase_times skill:grasp, skill:to_carry_posture, skill:nav_preplace, skill:release, skill:look_back to control/eval frames, grasp/lift macros and skill events plus retention. Before registration bind each phase and actual door transit/placement outcome to the new cumulative state evidence; current phase labels alone do not establish physical success.",
+    "manifest_differences_allowed": ["explicit speedups setting and installation record", "timing/load/counters", "output path/provenance fields explicitly frozen in the registered comparison policy"],
+    "missing_or_unreached": "insufficient_evidence even when the same phase/window is missing on BOTH sides; never count as equivalent",
+    "baseline_repeat_mismatch": "Hold adoption; no post-hoc tolerance, dropped JPEG, selective interval or successful-run-only analysis."
+  },
+  "compute_gate": {
+    "metric": "full-episode process retired instructions, same instrumentation and measurement boundaries",
+    "aggregation": "median of A1/A2 and median of B1/B2 separately for each seed",
+    "required_reduction_fraction_each_seed": 0.05,
+    "unavailable_or_invalid_counter": "insufficient_evidence; do not substitute wall time",
+    "also_report": ["CPU seconds by thread", "wall seconds", "load start/end", "P-core share", "success denominator", "SIM runtime", "command/frame counts", "model calls and cost"],
+    "interpretation": "Instruction reduction alone is not a demonstrated wall-time improvement."
+  },
+  "failure_policy": {
+    "behavior_failure_or_mismatch": "Retain and report; no exclusion and no retry-until-success. Missing later phases block adoption.",
+    "host_error_examples": ["ENOSPC", "documented process/host infrastructure interruption"],
+    "maximum_infrastructure_replacements_whole_cohort": 1,
+    "replacement_order": "Append the same condition/seed after the scheduled eight attempts; preserve the failed attempt and evidence for the infrastructure classification.",
+    "code_fix_after_mismatch": "Register a new cohort with a new frozen SHA; never combine across fixes."
+  },
+  "delivery": {
+    "preserve": ["all original runs including failures/interruption", "model request text/images", "logs and videos", "source/input/environment manifests", "complete file SHA-256 inventory", "comparison reports and denominators"],
+    "tensorboard": "After actual completion/retrieval, create a NEW native TensorBoard snapshot under primary outputs/tensorboard, verify EventAccumulator values and video registration, show configured baselines/pinned metrics/HParams and the dashboard link. Preserve old snapshots.",
+    "google_drive": "Not used by UGRP.",
+    "this_draft_has_results": false
+  },
+  "adoption_scope": {
+    "if_all_gates_pass": "Evidence only for this Mac/M1/frozen execution bundle; default change still requires explicit review/approval.",
+    "excluded": ["M2/pair", "Linux/other BLAS", "other research runners", "physical robot success", "communication efficacy"],
+    "separate_AB_required_for_excluded_runners": true
+  }
+}

@@ -1,0 +1,129 @@
+FFFFFFFFFFFF..FFF                                                        [100%]
+=================================== FAILURES ===================================
+_____ test_p1_backoff_gate_wait_ends_within_reobserve_budget[look_around] ______
+tests/test_zone_own_executor_review4.py:36: in test_p1_backoff_gate_wait_ends_within_reobserve_budget
+    assert len(ends) == 1, 'gate wait must not consume the 720 s job deadline'
+E   AssertionError: gate wait must not consume the 720 s job deadline
+E   assert 0 == 1
+E    +  where 0 = len([])
+_______ test_p1_backoff_gate_wait_ends_within_reobserve_budget[deliver] ________
+tests/test_zone_own_executor_review4.py:36: in test_p1_backoff_gate_wait_ends_within_reobserve_budget
+    assert len(ends) == 1, 'gate wait must not consume the 720 s job deadline'
+E   AssertionError: gate wait must not consume the 720 s job deadline
+E   assert 0 == 1
+E    +  where 0 = len([])
+___________ test_p1_backoff_gate_and_later_arm_wait_share_one_budget ___________
+tests/test_zone_own_executor_review4.py:56: in test_p1_backoff_gate_and_later_arm_wait_share_one_budget
+    assert ex.job is None, 'backoff gate wait must not grant another 10 s to the arm'
+E   AssertionError: backoff gate wait must not grant another 10 s to the arm
+E   assert <harness.zone_own_executor._Job object at 0x11096eab0> is None
+E    +  where <harness.zone_own_executor._Job object at 0x11096eab0> = <harness.zone_own_executor.ZoneOwnExecutor object at 0x11096c0e0>.job
+________ test_p1_gate_reentry_keeps_prior_wait_but_excludes_motion_time ________
+tests/test_zone_own_executor_review4.py:77: in test_p1_gate_reentry_keeps_prior_wait_but_excludes_motion_time
+    assert ex.job is None
+E   assert <harness.zone_own_executor._Job object at 0x11096d1c0> is None
+E    +  where <harness.zone_own_executor._Job object at 0x11096d1c0> = <harness.zone_own_executor.ZoneOwnExecutor object at 0x11096caa0>.job
+__ test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[False-aborted] __
+tests/test_zone_own_executor_review4.py:116: in test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto
+    assert kinds['r1'] == {'wall', 'cargo_wall'}
+E   AssertionError: assert set() == {'cargo_wall', 'wall'}
+E     
+E     Extra items in the right set:
+E     'wall'
+E     'cargo_wall'
+E     Use -v to get more diff
+_ test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[False-goto_pending] _
+tests/test_zone_own_executor_review4.py:116: in test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto
+    assert kinds['r1'] == {'wall', 'cargo_wall'}
+E   AssertionError: assert set() == {'cargo_wall', 'wall'}
+E     
+E     Extra items in the right set:
+E     'wall'
+E     'cargo_wall'
+E     Use -v to get more diff
+_ test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[False-goto_loaded] _
+tests/test_zone_own_executor_review4.py:116: in test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto
+    assert kinds['r1'] == {'wall', 'cargo_wall'}
+E   AssertionError: assert set() == {'cargo_wall', 'wall'}
+E     
+E     Extra items in the right set:
+E     'wall'
+E     'cargo_wall'
+E     Use -v to get more diff
+_ test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[False-goto_ended] _
+tests/test_zone_own_executor_review4.py:116: in test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto
+    assert kinds['r1'] == {'wall', 'cargo_wall'}
+E   AssertionError: assert set() == {'cargo_wall', 'wall'}
+E     
+E     Extra items in the right set:
+E     'wall'
+E     'cargo_wall'
+E     Use -v to get more diff
+__ test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[True-aborted] ___
+tests/test_zone_own_executor_review4.py:116: in test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto
+    assert kinds['r1'] == {'wall', 'cargo_wall'}
+E   AssertionError: assert set() == {'cargo_wall', 'wall'}
+E     
+E     Extra items in the right set:
+E     'wall'
+E     'cargo_wall'
+E     Use -v to get more diff
+_ test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[True-goto_pending] _
+tests/test_zone_own_executor_review4.py:116: in test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto
+    assert kinds['r1'] == {'wall', 'cargo_wall'}
+E   AssertionError: assert set() == {'cargo_wall', 'wall'}
+E     
+E     Extra items in the right set:
+E     'wall'
+E     'cargo_wall'
+E     Use -v to get more diff
+_ test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[True-goto_loaded] _
+tests/test_zone_own_executor_review4.py:116: in test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto
+    assert kinds['r1'] == {'wall', 'cargo_wall'}
+E   AssertionError: assert set() == {'cargo_wall', 'wall'}
+E     
+E     Extra items in the right set:
+E     'wall'
+E     'cargo_wall'
+E     Use -v to get more diff
+_ test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[True-goto_ended] _
+tests/test_zone_own_executor_review4.py:116: in test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto
+    assert kinds['r1'] == {'wall', 'cargo_wall'}
+E   AssertionError: assert set() == {'cargo_wall', 'wall'}
+E     
+E     Extra items in the right set:
+E     'wall'
+E     'cargo_wall'
+E     Use -v to get more diff
+_____________ test_p2_2_carry_leg_guard_survives_removal[archive] ______________
+tests/test_zone_own_executor_review4.py:169: in test_p2_2_carry_leg_guard_survives_removal
+    assert evidence == leg.sweep_failure
+E   AssertionError: assert None == {'source': 'own_estimate_and_issued_pwm_static_map', 'loaded': True, 'current_pwm': {1: 2000, 3: 740, 4: 2320, 5: 1320, ...}, 'target_pwm': {1: 2000, 3: 1072, 4: 2400, 5: 1482, ...}, ...}
+E    +  where {'source': 'own_estimate_and_issued_pwm_static_map', 'loaded': True, 'current_pwm': {1: 2000, 3: 740, 4: 2320, 5: 1320, ...}, 'target_pwm': {1: 2000, 3: 1072, 4: 2400, 5: 1482, ...}, ...} = <harness.zone_own_driver.GuardedDriver object at 0x1068fd250>.sweep_failure
+______________ test_p2_2_carry_leg_guard_survives_removal[event] _______________
+tests/test_zone_own_executor_review4.py:169: in test_p2_2_carry_leg_guard_survives_removal
+    assert evidence == leg.sweep_failure
+E   AssertionError: assert None == {'source': 'own_estimate_and_issued_pwm_static_map', 'loaded': True, 'current_pwm': {1: 2000, 3: 740, 4: 2320, 5: 1320, ...}, 'target_pwm': {1: 2000, 3: 1072, 4: 2400, 5: 1482, ...}, ...}
+E    +  where {'source': 'own_estimate_and_issued_pwm_static_map', 'loaded': True, 'current_pwm': {1: 2000, 3: 740, 4: 2320, 5: 1320, ...}, 'target_pwm': {1: 2000, 3: 1072, 4: 2400, 5: 1482, ...}, ...} = <harness.zone_own_driver.GuardedDriver object at 0x1109908f0>.sweep_failure
+____________ test_p2_2_carry_leg_guard_survives_removal[job_record] ____________
+tests/test_zone_own_executor_review4.py:169: in test_p2_2_carry_leg_guard_survives_removal
+    assert evidence == leg.sweep_failure
+E   AssertionError: assert None == {'source': 'own_estimate_and_issued_pwm_static_map', 'loaded': True, 'current_pwm': {1: 2000, 3: 740, 4: 2320, 5: 1320, ...}, 'target_pwm': {1: 2000, 3: 1072, 4: 2400, 5: 1482, ...}, ...}
+E    +  where {'source': 'own_estimate_and_issued_pwm_static_map', 'loaded': True, 'current_pwm': {1: 2000, 3: 740, 4: 2320, 5: 1320, ...}, 'target_pwm': {1: 2000, 3: 1072, 4: 2400, 5: 1482, ...}, ...} = <harness.zone_own_driver.GuardedDriver object at 0x110e19100>.sweep_failure
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_review4.py::test_p1_backoff_gate_wait_ends_within_reobserve_budget[look_around]
+FAILED tests/test_zone_own_executor_review4.py::test_p1_backoff_gate_wait_ends_within_reobserve_budget[deliver]
+FAILED tests/test_zone_own_executor_review4.py::test_p1_backoff_gate_and_later_arm_wait_share_one_budget
+FAILED tests/test_zone_own_executor_review4.py::test_p1_gate_reentry_keeps_prior_wait_but_excludes_motion_time
+FAILED tests/test_zone_own_executor_review4.py::test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[False-aborted]
+FAILED tests/test_zone_own_executor_review4.py::test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[False-goto_pending]
+FAILED tests/test_zone_own_executor_review4.py::test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[False-goto_loaded]
+FAILED tests/test_zone_own_executor_review4.py::test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[False-goto_ended]
+FAILED tests/test_zone_own_executor_review4.py::test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[True-aborted]
+FAILED tests/test_zone_own_executor_review4.py::test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[True-goto_pending]
+FAILED tests/test_zone_own_executor_review4.py::test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[True-goto_loaded]
+FAILED tests/test_zone_own_executor_review4.py::test_p2_1_cargo_wall_contact_survives_abort_and_loaded_goto[True-goto_ended]
+FAILED tests/test_zone_own_executor_review4.py::test_p2_2_carry_leg_guard_survives_removal[archive]
+FAILED tests/test_zone_own_executor_review4.py::test_p2_2_carry_leg_guard_survives_removal[event]
+FAILED tests/test_zone_own_executor_review4.py::test_p2_2_carry_leg_guard_survives_removal[job_record]
+15 failed, 2 passed in 0.90s
