@@ -281,8 +281,6 @@ class PendingCall:
     token: object = None
     merged: tuple = ()
     retry_of: str = ''
-    #: Isolated eligibility lane; empty = the original v64 common schedule.
-    scheduling_lane: str = ''
     #: ``reserve(count=1) -> bool``: optional pre-reservation of further HTTP
     #: attempts (second review, finding 15). Advisory since the seventh review:
     #: the send ledger authorises every request against the budget anyway, and
@@ -996,41 +994,25 @@ class EventScheduler:
                 break
         if self.on_hold:
             self.on_hold(actor, False, self.now())
-        self._resume_deferred(call)
+        held = self._deferred.pop(actor, None)
+        if held:
+            self._push('call_start', self.clock, (0., self._rank[actor], 0, 0),
+                       {'actor': actor, 'trigger': held['trigger'], 'merged': held['merged'], 'retry_of': ''})
 
     # -- dispatch ----------------------------------------------------------
 
     def _dispatch(self, event):
         getattr(self, f'_on_{event.kind}')(event.payload)
 
-    @staticmethod
-    def _schedule_key(actor, lane=''):
-        return (actor, lane) if lane else actor
-
-    def _outstanding(self, actor, lane=''):
-        return (sum(c.actor == actor and c.scheduling_lane == lane for c in self._pending.values())
-                + sum(a == actor and self.ledger[cid].get('scheduling_lane', '') == lane
-                      for cid, a in self._thinking.items()))
-
-    def _resume_deferred(self, call):
-        actor = call.actor
-        held = self._deferred.pop(self._schedule_key(actor, call.scheduling_lane), None)
-        if held:
-            self._push('call_start', self.clock, (0., self._rank[actor], 0, 0),
-                       {'actor': actor, 'trigger': held['trigger'], 'merged': held['merged'],
-                        'retry_of': '', **({'scheduling_lane': call.scheduling_lane}
-                                         if call.scheduling_lane else {})})
-
     def _on_call_start(self, payload):
         actor, trigger = payload['actor'], payload['trigger']
-        lane = payload.get('scheduling_lane', '')
-        key = self._schedule_key(actor, lane)
         merged = tuple(payload.get('merged', ()))
-        outstanding = self._outstanding(actor, lane)
+        outstanding = (sum(1 for c in self._pending.values() if c.actor == actor)
+                       + sum(1 for a in self._thinking.values() if a == actor))
         if outstanding >= self.policy.max_outstanding_per_actor:
-            self._defer(actor, trigger, merged, 'outstanding', scheduling_lane=lane)
+            self._defer(actor, trigger, merged, 'outstanding')
             return
-        earliest = self._last_start.get(key)
+        earliest = self._last_start.get(actor)
         if earliest is not None:
             earliest = quantize(earliest + self.policy.min_interval_s, self.params.quantum_s)
             if earliest > self.clock + 1e-9:
@@ -1038,9 +1020,8 @@ class EventScheduler:
                 self._log(f'call_deferred {actor} {trigger} until={earliest:.3f}',
                           kind='call_deferred', actor=actor)
                 self._push('call_start', earliest, (0., self._rank[actor], 0, 0),
-                           {**payload, 'actor': actor, 'trigger': trigger, 'merged': merged,
-                            'retry_of': payload.get('retry_of', ''),
-                            **({'scheduling_lane': lane} if lane else {})})
+                           {'actor': actor, 'trigger': trigger, 'merged': merged,
+                            'retry_of': payload.get('retry_of', '')})
                 return
         if self.metrics[actor]['calls'] >= self.policy.max_calls_per_actor:
             self.metrics[actor]['budget_refused'] += 1
@@ -1054,15 +1035,12 @@ class EventScheduler:
             return
         self._calls_started += 1
         call = PendingCall(call_id=f'call-{self._calls_started:04d}-{actor}', actor=actor, trigger=trigger,
-                           started_sim_s=self.clock, merged=merged, retry_of=payload.get('retry_of', ''),
-                           scheduling_lane=lane)
+                           started_sim_s=self.clock, merged=merged, retry_of=payload.get('retry_of', ''))
         # finding 16: the ledger row exists from the START of the call.
         self.ledger[call.call_id] = {'call_id': call.call_id, 'actor': actor, 'trigger': trigger,
                                      'started_sim_s': self.clock, 'reserved_attempts': 1,
                                      'authorized': 0, 'status': 'outstanding', 'finished_sim_s': None,
                                      'retry_of': call.retry_of, 'merged_triggers': tuple(merged)}
-        if lane:
-            self.ledger[call.call_id]['scheduling_lane'] = lane
         call.reserve = lambda count=1, _call=call: self._reserve_more(_call, count)
         # seventh review: every request of this call reaches the wire through its
         # ledger opener, which asks ``_authorize_send`` first
@@ -1070,7 +1048,7 @@ class EventScheduler:
         if not self._submit(call):
             return                      # the ledger shows no send: refunded, never pending
         self._pending[call.call_id] = call
-        self._last_start[key] = self.clock
+        self._last_start[actor] = self.clock
         self.metrics[actor]['calls'] += 1
         self.metrics[actor]['merged_triggers'] += len(merged)
         self.holds.append({'actor': actor, 'call_id': call.call_id, 'from_sim_s': self.clock, 'to_sim_s': None})
@@ -1169,14 +1147,13 @@ class EventScheduler:
         entry['reserved_attempts'] += count
         return True
 
-    def _defer(self, actor, trigger, merged, reason, *, scheduling_lane=''):
-        key = self._schedule_key(actor, scheduling_lane)
-        held = self._deferred.get(key)
+    def _defer(self, actor, trigger, merged, reason):
+        held = self._deferred.get(actor)
         labels = set(merged) | {trigger} | set(held['merged'] if held else ())
         if held:
             labels.add(held['trigger'])
         best = max(labels, key=lambda t: (TRIGGERS[t], t))
-        self._deferred[key] = {'trigger': best, 'merged': tuple(sorted(labels - {best}))}
+        self._deferred[actor] = {'trigger': best, 'merged': tuple(sorted(labels - {best}))}
         self.metrics[actor]['deferred'] += 1
         self._log(f'call_merged {actor} {best} ({reason})', kind='call_merged', actor=actor)
 
@@ -1246,7 +1223,10 @@ class EventScheduler:
                 if self.on_action:
                     self.on_action(actor, reply.action, self.now())
             self._emit(call, reply)
-        self._resume_deferred(call)
+        held = self._deferred.pop(actor, None)
+        if held:
+            self._push('call_start', self.clock, (0., self._rank[actor], 0, 0),
+                       {'actor': actor, 'trigger': held['trigger'], 'merged': held['merged'], 'retry_of': ''})
 
     def _emit(self, call, reply):
         """Schedule deliveries of one reply's utterances, in a fixed order.
@@ -1299,8 +1279,7 @@ class EventScheduler:
         self.metrics[call.actor]['retries'] += 1
         trigger = 'timeout' if cost.outcome == 'timeout' else 'retry'
         self._push('call_start', self.clock, (0., self._rank[call.actor], 0, 0),
-                   {'actor': call.actor, 'trigger': trigger, 'merged': (), 'retry_of': root,
-                    **({'scheduling_lane': call.scheduling_lane} if call.scheduling_lane else {})})
+                   {'actor': call.actor, 'trigger': trigger, 'merged': (), 'retry_of': root})
 
     def _on_message(self, payload):
         recipient = payload['recipient']

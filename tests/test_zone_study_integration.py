@@ -506,7 +506,10 @@ def test_at_most_one_pending_own_reask_timer_per_robot(condition):
         timers = [row['sim_s'] for row in trial.scheduler.events if row.get('kind') == 'timer' and row['actor'] == rid]
         assert all(b - a >= trial.policy.idle_reask_s - 1e-9 for a, b in zip(timers, timers[1:])), (rid, timers)
     assert trial.study_config()['reask_policy'] == zi.REASK_POLICY
-    assert any(counts['skipped'] for counts in trial.scheduler.reask_counts.values()) == (condition != 'no_comm')
+    # Additive message responses never call arm_reask, even as a skipped arm.
+    # Only the unchanged common chain owns these timers in all four conditions.
+    assert not any(counts['skipped'] for counts in trial.scheduler.reask_counts.values())
+    assert any(row['cause'] == 'message' for row in trial.scheduler.call_causes.values()) == (condition != 'no_comm')
 
 
 @pytest.mark.parametrize('condition', CONDITIONS)

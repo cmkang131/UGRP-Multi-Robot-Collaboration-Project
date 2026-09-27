@@ -38,7 +38,7 @@ class TimingTrial(zi.IntegratedTrial):
 
 
 def make_trial(condition, *, first='claim', policy=None, limits=None, send=True, repeat=False,
-               budget=None, tmp_path=None, follow_claim=True, horizon=90.):
+               budget=None, tmp_path=None, follow_claim=True, horizon=90., trial_cls=None, wire_fault=None):
     clock = [0.]
     links = links_for(clock)
     requests, turns = [], Counter()
@@ -50,6 +50,8 @@ def make_trial(condition, *, first='claim', policy=None, limits=None, send=True,
         rid = payload['robot_id']
         turns[rid] += 1
         requests.append(payload)
+        if wire_fault:
+            wire_fault(payload, turns[rid])
         own_messages = [m for m in payload.get('inbox', []) if m['sender'] == 'r3']
         order_id = ('order-2' if rid == 'r1' else 'order-3') if own_messages else 'order-1'
         order = next(o for o in SCENARIO['orders'] if o['order_id'] == order_id)
@@ -87,7 +89,7 @@ def make_trial(condition, *, first='claim', policy=None, limits=None, send=True,
                                   profile={'source_sha256': PROXY_SHA256, 'url': settings['url']},
                                   context={'condition': condition, 'trial_id': 'offline-multiturn'})
     adapter = zi.ModelAdapter(gemini_client_factory(**settings, study_json=True), ledger)
-    trial = TimingTrial(SCENARIO, condition=condition, seed=11, links=links, horizon_s=horizon,
+    trial = (trial_cls or TimingTrial)(SCENARIO, condition=condition, seed=11, links=links, horizon_s=horizon,
                          map_bundle=BUNDLE, actor='gemini_proxy', model_adapter=adapter,
                          cost_params=CostParams(input_token_s=0., output_token_s=.1, utterance_s=.1),
                          policy=policy, decision_limits=limits)
@@ -159,7 +161,8 @@ def test_deferred_report_never_suppresses_common_timer_or_rearming(condition, bo
     trial, clock, links, requests = make_trial(condition, horizon=150.)
     advance(trial, clock, links, 150., boundary=boundary)
     r1 = [p for p in requests if p['robot_id'] == 'r1']
-    expected = [0., 8., 65.3, 130.6] if boundary == 8. else [0., 65.3, 130.6]
+    expected = ({8.: [0., 8., 65.3, 130.6], 65.3: [0., 65.3, 70.6, 130.6]}
+                .get(boundary, [0., 65.3, 130.6]))
     assert [p['sim_time_s'] for p in r1] == expected
     if condition != 'no_comm':
         # By the FIRST own boundary or timer, every delivered message has
@@ -167,7 +170,8 @@ def test_deferred_report_never_suppresses_common_timer_or_rearming(condition, bo
         delivered = {m.message_id for m in trial.scheduler.messages if m.recipient == 'r1'}
         assert {m['message_id'] for m in r1[1]['inbox']} == delivered
         assert delivered
-    timer_call = next(c for c in trial.scheduler.calls if c.actor == 'r1' and c.started_sim_s == 65.3)
+    timer_call = next(c for c in trial.scheduler.calls if c.actor == 'r1'
+                      and c.started_sim_s == (70.6 if boundary == 65.3 else 65.3))
     assert 'timer' in {timer_call.trigger, *timer_call.merged_triggers}
     assert zi.zo.cost_checks(trial, trial.finish(150.))['ok']
 
@@ -385,7 +389,7 @@ def test_idle_message_still_obeys_common_minimum_call_interval():
     trial, clock, links, requests = make_trial('leader_ko', first='continue',
                                               policy=CallPolicy(min_interval_s=10.))
     advance(trial, clock, links, 16.)
-    assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [0., 10.]
+    assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [0., 10., 15.3]
     assert links['r1'].job()['order_id'] == 'order-2'
 
 
