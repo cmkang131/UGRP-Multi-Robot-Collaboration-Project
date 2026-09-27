@@ -9,7 +9,7 @@ One trial = one condition x scenario x seed. The pieces are reused, not re-imple
 * each robot's executor is ``harness.zone_own_executor.ZoneOwnExecutor`` (PR #206),
   reached through a :class:`RobotLink` that exposes that ONE robot's own frames,
   own executor state and own job API;
-* the pair status channel is ``harness.team_carry_status`` (PR #200, main).
+* the pair status channel is ``harness.zone_pair_status`` (PR #235).
 
 Clock. The physics owner advances in ``QUANTUM_S`` chunks (the SIM cost quantum
 of ``harness.zone_sim_cost``), so every scheduler event (call start, charged
@@ -51,10 +51,12 @@ from pathlib import Path
 from typing import Protocol
 
 from harness import m1_contract, m1_owncam_contract
-from harness import team_carry_status as tcs
+from harness import zone_pair_status as pair_status
+from harness import zone_pair_executor as pair_executor
+from harness.zone_study_pose_delay import DelayedPoseSource, PERCEPTION_DELAY_S
 from harness import zone_study_offline as zo
 from harness import zone_study_prompts_ko as pk
-from harness.zone_event_scheduler import REASK_POLICY
+from harness.zone_event_scheduler import REASK_POLICY, EventScheduler
 from harness.zone_own_executor import API_TO_ACTION_KIND, EVENTS as EXECUTOR_EVENTS
 from harness.zone_sim_cost import params as cost_params_for
 from harness.zone_study_contract import (COMMAND_ARGUMENT_KEYS, MAIN_CONDITIONS, ROBOTS, ContractViolation,
@@ -65,7 +67,7 @@ from harness.zone_study_llm_transport import ModelCallTransport
 
 ROOT = Path(__file__).resolve().parents[1]
 INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
-EXECUTION_BUNDLE_ID = 'zone-study-integration-v1'
+EXECUTION_BUNDLE_ID = 'zone-study-integration-v2-pair-delay'
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',
@@ -78,12 +80,12 @@ QUANTUM_S = cost_params_for().quantum_s
 #: a hold), a running executor job continues (coordinator decision, issue #223).
 #: The thinking/talking cost reaches physics through the delayed action release.
 THINK_HOLD_POLICY = 'idle_robot_holds_busy_job_continues'
-ACTION_MAP_VERSION = 'zone_study_action_map.v1'
+ACTION_MAP_VERSION = 'zone_study_action_map.v2_pair'
 #: ``wait`` on an idle executor = hold this long (then job_done -> idle wake).
 WAIT_HOLD_S = 10.0
 FIXTURE_ACTOR = 'fixture_v1'
-#: Planned real-LLM settings (coordinator decision on #222). Not callable here:
-#: this runner makes no model call (see ``check_actor``).
+#: Planned defaults only. CLI remains fixture-only; an embedding runner may
+#: inject a budgeted ModelAdapter without changing any robot input source.
 PLANNED_MODEL = {'completer': 'harness.gemini_proxy.GeminiProxyCompleter', 'model': 'gemini-3.8-flash',
                  'temperature': 0.2, 'reasoning_effort': 'none', 'enabled': False}
 
@@ -93,11 +95,16 @@ def file_sha256(path) -> str:
 
 
 def check_actor(actor: str) -> str:
-    """Only the #194 no-LLM fixture actor may drive this runner (no live model call)."""
+    """Without an explicit model adapter, permit only the #194 fixture actor."""
     if actor != FIXTURE_ACTOR:
         raise ContractViolation(f'actor {actor!r} is not enabled: this runner makes no model call; only '
                                 f'{FIXTURE_ACTOR!r} (harness.zone_study_offline.FixtureActor) is allowed')
     return actor
+
+
+def model_config(actor, client_factory):
+    return {'actor': actor, 'model': client_factory.settings['model'],
+            'model_settings_sha256': digest(client_factory.settings)}
 
 
 # ---------------------------------------------------------------------------
@@ -143,7 +150,7 @@ def build_pose_provider(spec, static_map, params, seed):
     module, _, name = spec['factory'].partition(':')
     provider = getattr(importlib.import_module(module), name)(static_map, params, seed=int(seed))
     check_pose_provider(provider, spec)
-    return provider
+    return DelayedPoseSource(provider)
 
 
 def check_pose_provider(provider, spec) -> str:
@@ -169,48 +176,33 @@ def check_pose_provider(provider, spec) -> str:
 # Pair status channel (all conditions)
 
 class PairStatusBus:
-    """``harness.team_carry_status`` channels, one per order that needs 2+ robots.
+    """Read-only audit of #235's actual channels, never a second unused bus.
 
-    Built the same way in every condition from the order sheet alone. A message is
-    exactly ``robot_id, task_id, seq, state, sent_at_s`` with ``state`` in the
-    fixed enum (``StatusMessage.parse``); it never reaches a model input.
+    The host supplies records; model inputs and wakeups never read these rows.
+    PairTeam creates a wire only when a robot submits its own pair_carry job.
     """
 
-    def __init__(self, order_sheet):
-        tasks = sorted(o['order_id'] for o in order_sheet['orders'] if int(o['required_robots']) >= 2)
-        self.channels = {t: tcs.StatusChannel(t, ROBOTS) for t in tasks}
-        self._publishers: dict[tuple[str, str], tcs.StatusPublisher] = {}
+    def __init__(self, order_sheet, records=None):
+        self.tasks = sorted(o['order_id'] for o in order_sheet['orders'] if o['required_robots'] == 2)
+        self._records = records or (lambda: [])
 
-    def config(self) -> dict:
-        return {'profile': tcs.PROFILE, 'states': list(tcs.STATES), 'fields': sorted(tcs.FIELDS),
-                'heartbeat_s': tcs.HEARTBEAT_S, 'stale_s': tcs.STALE_S,
-                'max_partner_align_wait_s': tcs.MAX_PARTNER_ALIGN_WAIT_S, 'tasks': sorted(self.channels),
-                'participants': list(ROBOTS)}
+    def config(self):
+        return {'profile': pair_status.PROFILE, 'executor_profile': pair_executor.PROFILE,
+                'states': sorted(pair_status.STATES), 'fields': sorted(pair_status.FIELDS),
+                'heartbeat_s': pair_status.HEARTBEAT_S, 'heartbeat_timeout_s': pair_status.HEARTBEAT_TIMEOUT_S,
+                'readiness_ttl_s': pair_status.READINESS_TTL_S, 'rendezvous_timeout_s': 5.,
+                'control_s': pair_status.CONTROL_S, 'arm_s': pair_status.ARM_S,
+                'tasks': self.tasks, 'participants': list(pair_executor.PAIR),
+                'roles': {'r1': 'end_neg', 'r2': 'end_pos'},
+                'scope': 'long_beam only; independent matching submissions; no peer-state arbitration'}
 
-    def config_sha256(self) -> str:
+    def config_sha256(self):
         return digest(self.config())
 
-    def publish(self, robot_id, task_id, state, now) -> bool:
-        """Own executor state of ``robot_id`` on pair task ``task_id`` (enum only)."""
-        if task_id not in self.channels or robot_id not in ROBOTS or state not in tcs.STATES:
-            return False
-        key = (robot_id, task_id)
-        pub = self._publishers.setdefault(key, tcs.StatusPublisher(self.channels[task_id], robot_id))
-        before = len(self.channels[task_id].log)
-        pub.tick(state, float(now))
-        return len(self.channels[task_id].log) > before
-
-    def partner_view(self, robot_id, task_id, now):
-        """Partners' latest enum state; only for a robot that is on the task itself."""
-        if (robot_id, task_id) not in self._publishers:
-            return None
-        return self.channels[task_id].partner_view(robot_id, float(now))
-
-    def record(self) -> dict:
-        return {'config': self.config(), 'config_sha256': self.config_sha256(),
-                'channels': {t: {'log': list(c.log), 'rejected': list(c.rejected)}
-                             for t, c in self.channels.items()},
-                'messages': sum(len(c.log) for c in self.channels.values())}
+    def record(self):
+        sessions = copy.deepcopy(self._records())
+        return {'config': self.config(), 'config_sha256': self.config_sha256(), 'sessions': sessions,
+                'messages': sum(len(s['status_messages']) for s in sessions)}
 
 
 # ---------------------------------------------------------------------------
@@ -223,7 +215,7 @@ class Plan:
     rejected_reason: str | None = None
 
 
-def executor_plan(action, job) -> Plan:
+def executor_plan(action, job, *, actor=None, orders=()) -> Plan:
     """The executor call for one validated model action (at most one call).
 
     ``job`` is the robot's OWN running job (``{'kind', 'order_id'}``) or None.
@@ -236,6 +228,15 @@ def executor_plan(action, job) -> Plan:
         order, zone = action.get('order_id'), action.get('destination_zone')
         if not isinstance(order, str) or not isinstance(zone, str):
             return Plan(None, rejected_reason='BAD_CLAIM')
+        row = next((o for o in orders if o['order_id'] == order), None)
+        if row and row['required_robots'] > 1:
+            if row['kind'] != 'long_beam' or row['required_robots'] != 2 or row['count'] != 1:
+                return Plan(None, rejected_reason='UNSUPPORTED_TEAM_ORDER')
+            roles = {'r1': 'end_neg', 'r2': 'end_pos'}
+            if actor not in roles or action.get('role') != roles[actor]:
+                return Plan(None, rejected_reason='UNSUPPORTED_PAIR_ROLE')
+            partner = next(r for r in roles if r != actor)
+            return Plan('pair_carry', (order, zone, partner))
         return Plan('deliver', (order, zone))
     if kind == 'continue':
         return Plan(None)
@@ -243,7 +244,7 @@ def executor_plan(action, job) -> Plan:
         return Plan('abort', ('wait_requested',)) if job else Plan('hold', (WAIT_HOLD_S,))
     if kind == 'release':
         order = action.get('order_id')
-        if job and job.get('kind') == 'deliver' and job.get('order_id') == order:
+        if job and job.get('kind') in ('deliver', 'pair_carry') and job.get('order_id') == order:
             return Plan('abort', ('release_requested',))
         return Plan(None, rejected_reason='NO_ACTIVE_JOB_FOR_ORDER')
     return Plan(None, rejected_reason='UNSUPPORTED_ACTION')
@@ -282,6 +283,17 @@ class _NoStoredFrames:
         return {'frame_dir': None, 'note': 'live own robot_cam frames (RobotLink.frame_at)'}
 
 
+@dataclass(frozen=True)
+class ModelAdapter:
+    """Injected #194 client + ledger. Live I/O still requires PilotSendLedger.
+
+    Construct one per trial with the existing persistent budget/proxy profile;
+    tests substitute only the wire, never the client or the request builder.
+    """
+    client_factory: object
+    send_ledger: object
+
+
 class _LiveTransport(ModelCallTransport):
     """Snapshot own inputs at call start; use the core's ledgered offline wire."""
 
@@ -294,8 +306,12 @@ class IntegratedTrial(zo.OfflineTrial):
     """OfflineTrial whose inputs come from live robots and whose actions reach executors."""
 
     def __init__(self, scenario, *, condition, seed, links, horizon_s, code_sha='unknown', map_bundle=None,
-                 cost_params=None, policy=None, actor=FIXTURE_ACTOR, pose_label=None):
-        check_actor(actor)
+                 cost_params=None, policy=None, actor=FIXTURE_ACTOR, pose_label=None,
+                 model_adapter=None, pair_records=None):
+        if model_adapter is None:
+            check_actor(actor)
+        elif actor != 'gemini_proxy':
+            raise ContractViolation('a model_adapter requires actor=gemini_proxy')
         if condition not in MAIN_CONDITIONS:
             raise ContractViolation(f'{condition!r} is not a main condition {MAIN_CONDITIONS}; the reference '
                                     'commander R is not wired into this runner')
@@ -304,22 +320,35 @@ class IntegratedTrial(zo.OfflineTrial):
         super().__init__(scenario, condition=condition, seed=seed, map_bundle=map_bundle,
                          cost_params=cost_params, policy=policy, library=_NoStoredFrames(),
                          horizon_s=horizon_s, run_id=None, code_sha=code_sha)
+        self.actor = actor
+        if model_adapter is not None:
+            self.client_factory = model_adapter.client_factory
+            self.send_ledger = model_adapter.send_ledger
         self.provenance = provenance(source=self.source, code_sha=code_sha,
-                                     execution_bundle_id=EXECUTION_BUNDLE_ID, model=zo.FIXTURE_MODEL,
-                                     provider=None, model_settings_sha256=digest(self.client_factory.settings),
+                                     execution_bundle_id=EXECUTION_BUNDLE_ID,
+                                     model=self.client_factory.settings['model'],
+                                     provider='gemini_subscription_proxy' if model_adapter else None,
+                                     model_settings_sha256=digest(self.client_factory.settings),
                                      prompt_template_sha256=digest(pk.PROMPT_VERSION),
                                      cost_profile_id=self.params.version)
-        # Reuse the ledger already owned by this scheduler; never replace its
-        # gate or create an unledgered fixture path when adapting live inputs.
-        self.transport = self.scheduler.transport = _LiveTransport(
-            self, send_ledger=self.send_ledger, client_factory=self.client_factory)
+        self.transport = _LiveTransport(self, send_ledger=self.send_ledger, client_factory=self.client_factory)
+        if model_adapter is None:
+            self.scheduler.transport = self.transport  # retain the existing ledger owner
+        else:
+            self.scheduler = EventScheduler(self.transport, cost_params=self.params, policy=self.policy,
+                                            actors=self.actors, on_action=self._on_action,
+                                            bus=self.channel, bus_owner=zo.BUS_OWNER)
         self.links = dict(links)
         self.pose_label = dict(pose_label or {})
-        self.pair_status = PairStatusBus(self.sheet)
+        self.pair_status = PairStatusBus(self.sheet, pair_records)
         self._snapshots, self._jobs = {}, {}
         self.request_images: dict[str, bytes] = {}
         self.input_log, self.dispatch_log, self.executor_events = [], [], []
         self.clock_drift_s = 0.0
+
+    def sim_output_tokens(self, raw, utterances):
+        return (super().sim_output_tokens(raw, utterances) if self.actor == FIXTURE_ACTOR
+                else pk.count_tokens(raw))
 
     # -- clock --------------------------------------------------------------
     def begin(self, t0_s):
@@ -406,7 +435,7 @@ class IntegratedTrial(zo.OfflineTrial):
         if extra is None or self.scheduler.calls[-1].actor != actor:
             raise AssertionError(f'released action of {actor} has no recorded call')
         link = self.links[actor]
-        plan = executor_plan(action, link.job())
+        plan = executor_plan(action, link.job(), actor=actor, orders=self.sheet['orders'])
         kind, arguments, order_id, role = zo._action_row(action)
         ack = link.call(plan.api, *plan.args) if plan.api else None
         self.dispatch_log.append({'call_id': call_id, 'actor': actor, 'sim_s': sim_s, 'action': action,
@@ -459,10 +488,12 @@ class IntegratedTrial(zo.OfflineTrial):
         policy = {k: getattr(self.policy, k) for k in self.policy.__dataclass_fields__}
         return {'schema': INTEGRATION_SCHEMA, 'execution_bundle_id': EXECUTION_BUNDLE_ID,
                 'condition': self.condition, 'topology': self.spec.topology, 'encoding': self.spec.encoding,
-                'leader_id': self.leader_id, 'seed': self.seed, 'actor': FIXTURE_ACTOR,
+                'leader_id': self.leader_id, 'seed': self.seed,
+                **model_config(self.actor, self.client_factory),
                 'planned_model': dict(PLANNED_MODEL), 'prompt_version': pk.PROMPT_VERSION,
                 'cost_params': {'version': self.params.version, 'digest': self.params.digest()},
-                'call_policy': policy, 'quantum_s': QUANTUM_S, 'think_hold_policy': THINK_HOLD_POLICY,
+                'call_policy': policy, 'quantum_s': QUANTUM_S,
+                'perception_delay_s': PERCEPTION_DELAY_S, 'think_hold_policy': THINK_HOLD_POLICY,
                 'action_map': {'version': ACTION_MAP_VERSION, 'wait_hold_s': WAIT_HOLD_S},
                 'reask_policy': REASK_POLICY,
                 'pair_status': self.pair_status.config(), 'pair_status_sha256': self.pair_status.config_sha256(),

@@ -1,6 +1,6 @@
 {
   "schema": "ugrp.zone_study_pose_providers.v1",
-  "note_ko": "실행기(#206)가 자세를 받는 PoseReport 제공자 목록. 러너는 설정의 provider_id로만 고르고, 선택한 항목·소스·보정 해시를 실행 번들에 넣는다. 표식 0개 비전 제공자(#216, kiro/zone-vision-loc)는 여기에 항목을 추가해 러너 수정 없이 끼운다.",
+  "note_ko": "실행기(#206)가 자세를 받는 PoseReport 제공자 목록. 러너는 설정의 provider_id로만 고르고, 선택한 항목·소스·보정 해시를 실행 번들에 넣는다. 현재 tags_temporary 유지. #237 vision_zero_tag_v1 교체에는 등록 외에 태그 없는 Scene, 사전 등록 자기 도크 prior, provider close, 보정 검증이 필요하다. docs/zone_study_integration.md 참고. 모든 제공자에 고정 0.16 SIM s 지연을 적용한다.",
   "interface": {
     "constructor": "factory(static_map, params, seed=int)",
     "methods": ["on_command(row)", "on_frame(now, rgb) -> PoseReport", "report(now) -> PoseReport", "set_motion_profile(now, name)"],

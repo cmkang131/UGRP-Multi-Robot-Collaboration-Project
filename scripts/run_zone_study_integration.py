@@ -16,7 +16,9 @@ Pose provider: chosen by ``--prereg``'s ``pose_provider`` from
 ``configs/zone_study_integration/pose_providers.json``; ``tags_temporary`` is the
 own-camera wall-tag PF, a TEMPORARY provider: "임시, 표식 사용, 연구 결과 아님".
 
-This is plumbing, not a study result: no model call, fixture decisions only.
+CLI defaults to plumbing with fixture decisions. An embedding runner can inject
+the budgeted #194 ModelAdapter; it uses the same live own-camera inputs. Tests
+exercise that adapter over a fake wire, without a model call or physical run.
 
     python scripts/run_zone_study_integration.py --prereg experiments/2026-09-26-zone-study-integration/prereg.json \
         --episode smoke-i700 --condition no_comm --output /Users/changmin/projects/ugrp/outputs/zone-study-integration
@@ -27,6 +29,7 @@ from __future__ import annotations
 import argparse
 import base64
 import collections
+import copy
 import json
 import math
 import os
@@ -66,7 +69,17 @@ RUNTIME_FILES = (
     'harness/wrist_zone_skill_v6.py', 'sim/zone_cargo_contact.py', 'sim/zone_landmarks.py', 'sim/zone_scene.py',
     'sim/camera_robot_port.py', 'sim/multi_masterpi_production.py',
     'sim/zone_eval_top.py', 'sim/research_dispatch_arena.py',
-    'configs/zone_study_integration/pose_providers.json')
+    'configs/zone_study_integration/pose_providers.json',
+    'harness/zone_study_pose_delay.py', 'harness/zone_own_team_host.py',
+    'harness/zone_pair_executor.py', 'harness/zone_pair_status.py', 'harness/zone_pair_guards.py',
+    'harness/zone_pair_geometry.py', 'harness/zone_pair_vision.py', 'scripts/run_m2_pair.py',
+    'harness/zone_own_contract.py', 'harness/zone_own_guards.py', 'harness/zone_own_driver.py',
+    'harness/zone_own_deliver.py', 'harness/zone_own_sweep.py', 'harness/zone_own_status.py',
+    'harness/owncam_pair_beam.py', 'harness/owncam_pair_beam_v2.py', 'harness/owncam_pair_hold_v3.py',
+    'harness/owncam_pair_lift_v3.py', 'harness/pair_owncam_approach.py', 'harness/pair_carry_sync.py',
+    'scripts/study_owncam_pair_beam.py', 'scripts/zone_teacher.py',
+    'scripts/zone_pair_dev_contract.py', 'scripts/zone_pair_dev_runtime.py', 'sim/zone_tagged_cargo_scene.py', 'sim/zone_cargo.py',
+    'sim/dispatch_contact_profile.py')
 
 
 def git(*args):
@@ -120,40 +133,53 @@ class HostRobotLink:
     def call(self, api, *args):
         """The executor job API of THIS robot. An accepted abort also drops the host's
         scheduled macro commands of this robot and holds at once (#221 P1 at the host layer)."""
-        slot, now = self._slot, self.clock()
-        slot.executor.now = now
-        ack = getattr(slot.executor, api)(*args)
-        self._host.api_calls.append(ack)
+        before = len(self._slot.cancellations)
+        ack = self._host.call(self.robot_id, api, *args)
         if api == 'abort' and ack['accepted']:
-            dropped = sum(len(cmds) for _, cmds in slot.timeline)
-            slot.timeline, slot.capture_after = [], False
-            self._host._hold(self.robot_id, now)
-            slot.next_decide = now
-            self.aborts.append({'t': round(now, 4), 'job_id': ack['job_id'], 'dropped_macro_commands': dropped})
+            self.aborts.extend(copy.deepcopy(self._slot.cancellations[before:]))
         return ack
+
 
 
 class StudyTeamHost(OwnCamTeamHost):
     """#206's 3-robot host, stepped in chunks by the study clock, pose provider from config."""
 
-    def __init__(self, spec, student, *, root, provider_spec):
-        super().__init__(spec, student, root=root, study_layer=self._no_layer, frames_dir=None)
+    def __init__(self, spec, student, *, root, provider_spec, frames_dir=None):
+        scene = None
+        if spec.get('pair_order_sheets'):
+            # Reuse #235's standard Scene setup (drops its colour placeholder
+            # before XML generation, never based on runtime state).
+            from scripts.zone_pair_dev_runtime import make_scene
+            scene = make_scene(spec)
+        super().__init__(spec, student, root=root, study_layer=self._no_layer, frames_dir=frames_dir, scene=scene)
         # scene.setup has finished. Overlay only the evaluation cameras in the
         # world; keep self.static and every executor's own static map untouched.
         profile = evaluation_top_config(self.static)['profile']['id']
         self.eval_static = zone_eval_top.eval_static_map(self.static, profile)
         self.eval_only['top_camera'] = zone_eval_top.apply_to_world(self.world, self.static, profile)
+        try:
+            self._install_providers(spec, provider_spec)
+        except Exception:
+            self.close()
+            raise
+        self.links = {rid: HostRobotLink(self, rid) for rid in ROBOTS}
+
+    def _install_providers(self, spec, provider_spec):
         self.provider_sources = {}
         for rid, slot in self.robots.items():
             ex = slot.executor
             provider = zi.build_pose_provider(provider_spec, ex.map, ex.params, ex.seed)
+            ex.pose = provider                 # owned before any initialization can fail
             for row in slot.commands:                # the own command log so far (initial servo command)
                 provider.on_command(row)
             if ex.mode == 'm1':
                 ex._require_owncam(provider.source, 'pose provider')
-            ex.pose = provider
+            if callable(getattr(getattr(provider, 'provider', provider), 'init_prior', None)):
+                prior = spec.get('pose_priors', {}).get(rid)
+                if prior is None:
+                    raise zi.ContractViolation(f'{rid}: provider requires a preregistered own dock prior')
+                provider.init_prior(**prior)
             self.provider_sources[rid] = provider.source
-        self.links = {rid: HostRobotLink(self, rid) for rid in ROBOTS}
 
     @staticmethod
     def _no_layer(*_args):
@@ -183,6 +209,9 @@ class StudyTeamHost(OwnCamTeamHost):
                 slot = self.robots[rid]
                 if slot.dead:
                     continue
+                deadline = slot.executor.deadline()
+                if deadline is not None and now > deadline:
+                    self._expire(rid, now)
                 if slot.timeline or slot.capture_after:
                     self._run_timeline(rid, now)
                 if not slot.timeline and not slot.capture_after and now + 1e-9 >= slot.next_decide:
@@ -192,9 +221,25 @@ class StudyTeamHost(OwnCamTeamHost):
             if now >= t_end - 1e-9:
                 self.event_log.extend(events)
                 return events
-            live = [s for s in self.robots.values() if not s.dead]
-            nxt = min((s.timeline[0][0] if s.timeline else s.next_decide) for s in live) if live else t_end
-            self._physics_until(min(max(nxt, now + float(self.world.model.opt.timestep)), t_end))
+            # Visit the host's physics ticks: independent pair heartbeat/arm
+            # clocks and macro deadlines must not depend on a peer's wakeups.
+            self._physics_until(min(now + float(self.world.model.opt.timestep), t_end))
+
+    def close(self):
+        errors = []
+        for slot in self.robots.values():
+            close = getattr(slot.executor.pose, 'close', None)
+            if close is not None:
+                try:
+                    close()
+                except Exception as exc:
+                    errors.append(exc)
+        try:
+            super().close()
+        finally:
+            if errors:
+                raise errors[0]
+
 
 
 # ---------------------------------------------------------------------------
@@ -225,7 +270,38 @@ class _StubLink:
         raise AssertionError(f'bundle construction must not touch a robot ({name})')
 
 
-def run_bundle(prereg, episode):
+def host_spec(scenario, episode, map_bundle):
+    """Only setup/static declarations; no runtime truth enters a pair order."""
+    from harness.zone_study_inputs import OrderSheetSource
+    from harness.zone_pair_executor import make_plan
+    setup = scenario['eval']['setup']
+    if (setup['contact_profile'] != 'cargo_noslip_v1' or episode['contact_profile'] != 'cargo_noslip_v1'
+            or setup['weld'] != 'off'):
+        raise zi.ContractViolation('study requires cargo_noslip_v1 and weld OFF in scenario and episode')
+    spec = {k: copy.deepcopy(episode[k]) for k in
+            ('map', 'goal', 'extra_boxes', 'contact_profile', 'job_sim_limit_s')}
+    spec['seed'] = episode['layout_seed']
+    spec['order_sheet'] = OrderSheetSource(scenario, map_bundle).sheet()
+    team_orders = [o for o in spec['order_sheet']['orders'] if o['required_robots'] > 1]
+    sheets = copy.deepcopy(episode.get('pair_order_sheets', {}))
+    cargo = copy.deepcopy(episode.get('team_cargo', []))
+    if team_orders:
+        if (len(spec['order_sheet']['orders']) != 1 or len(team_orders) != 1 or team_orders[0]['kind'] != 'long_beam'
+                or team_orders[0]['required_robots'] != 2 or team_orders[0]['count'] != 1
+                or set(sheets) != {team_orders[0]['order_id']}
+                or len(cargo) != 1 or cargo[0]['item_id'] != team_orders[0]['order_id']
+                or cargo[0]['kind'] != 'long_beam'):
+            raise zi.ContractViolation('M2 dev supports a pair-only order with explicit static sheet and matching order/item id')
+        static = json.loads((ROOT / map_bundle['map_file']).read_text())
+        make_plan(static, sheets[team_orders[0]['order_id']], team_orders[0]['destination_zone'])
+    elif sheets or cargo:
+        raise zi.ContractViolation('pair setup without a team order')
+    spec.update(pair_order_sheets=sheets, team_cargo=cargo,
+                pose_priors=copy.deepcopy(episode.get('pose_priors', {})))
+    return spec
+
+
+def run_bundle(prereg, episode, *, model_adapter=None):
     """Everything that identifies this execution, hashed (docs/execution_versioning.md)."""
     from harness.zone_study_scenarios import bundle_for, validate
     from sim.zone_landmarks import tagged_map
@@ -237,10 +313,19 @@ def run_bundle(prereg, episode):
     static = json.loads(Path(map_bundle['map_file']).read_text())
     if static != tagged_map(episode['map']):
         raise SystemExit('the map file the robots read differs from the tagged map the scene builds')
+    spec = host_spec(scenario, episode, map_bundle)
+    from scripts.zone_pair_dev_contract import profile_contract
     provider = zi.pose_provider_spec(prereg['pose_provider'], map_id=episode['map'])
+    # Record the calibration actually passed to the executor/provider, including
+    # the M2 loop-v2 calibration. Never label it with the registry's M1 default.
+    provider['calibration'] = prereg['student']['calibration']
     stub = {r: _StubLink(r) for r in ROBOTS}
     trial = zi.IntegratedTrial(scenario, condition=MAIN_CONDITIONS[0], seed=episode['trial_seed'], links=stub,
-                               horizon_s=prereg['horizon_s'], map_bundle=map_bundle)
+                               horizon_s=prereg['horizon_s'], map_bundle=map_bundle,
+                               pose_label=zi.provider_record(provider)['label'])
+    invariant = zi.condition_invariant_config(trial.study_config())
+    if model_adapter is not None:
+        invariant.update(zi.model_config('gemini_proxy', model_adapter.client_factory))
     bundle = {'execution_bundle_id': zi.EXECUTION_BUNDLE_ID, 'schema': SCHEMA,
               'runtime_files_sha256': {f: zi.file_sha256(ROOT / f) for f in RUNTIME_FILES},
               'scenario': episode['scenario'], 'scenario_sha256': zi.file_sha256(ROOT / episode['scenario']),
@@ -248,12 +333,16 @@ def run_bundle(prereg, episode):
               'public_map_sha256': map_bundle['public_map_sha256'], 'tagged_map_sha256': digest(tagged_map(episode['map'])),
               'physical': {k: episode[k] for k in ('base_map', 'layout_seed', 'goal', 'extra_boxes',
                                                     'contact_profile', 'job_sim_limit_s')},
+              'actor': 'gemini_proxy' if model_adapter else zi.FIXTURE_ACTOR,
+              'model_settings_sha256': digest(model_adapter.client_factory.settings) if model_adapter else None,
+              'host_spec': spec, 'contact_profile_expected': profile_contract(),
+              'perception_delay_s': zi.PERCEPTION_DELAY_S,
               'weld': 'off', 'sync_sim': True, 'frame_period_s': OwnCamTeamHost.FRAME_S,
               'executor_tick_s': zi.QUANTUM_S, 'student': dict(prereg['student']),
               'student_calibration_sha256': zi.file_sha256(ROOT / prereg['student']['calibration']),
               'pose_provider': zi.provider_record(provider),
               'eval_top_camera': evaluation_top_config(static),
-              'study_invariant': zi.condition_invariant_config(trial.study_config()),
+              'study_invariant': invariant,
               'conditions': list(MAIN_CONDITIONS), 'horizon_s': prereg['horizon_s']}
     return bundle, scenario, map_bundle, provider
 
@@ -261,7 +350,9 @@ def run_bundle(prereg, episode):
 def placements_match(scenario, host):
     """The scenario's declared setup placements are the physical episode's."""
     want = {p['item_id']: [round(v, 4) for v in p['pose_m'][:2]] for p in scenario['eval']['setup']['placements']}
-    got = {oid: [round(v, 4) for v in o['position_m'][:2]] for oid, o in host.objects.items()}
+    got = {oid: [round(v, 4) for v in o['position_m'][:2]] for oid, o in host.objects.items()
+           if 'position_m' in o}
+    got.update({c['item_id']: [round(v, 4) for v in c['pose'][:2]] for c in host.spec.get('team_cargo', [])})
     if want != got:
         raise SystemExit(f'scenario placements {want} != physical episode {got}')
 
@@ -269,7 +360,7 @@ def placements_match(scenario, host):
 # ---------------------------------------------------------------------------
 # Evaluation only (after the run, from simulator truth)
 
-def referee_from_gt(gt_rows, static_map, end_s):
+def referee_from_gt(gt_rows, static_map, end_s, *, cargo_kinds=None):
     """Eval-only delivery rows: a cyan box resting on the floor inside a zone for SETTLE_S."""
     zones = {z: static_map['regions'][f'zone_{z}'] for z in ('A', 'B', 'C')}
 
@@ -283,7 +374,7 @@ def referee_from_gt(gt_rows, static_map, end_s):
         return None
     rows, state = [], {}
     for row in gt_rows:
-        for box, xyz in row['boxes'].items():
+        for box, xyz in {**row['boxes'], **row.get('team_cargo', {})}.items():
             z = zone_of(xyz)
             cur = state.get(box)
             if cur is None or cur['zone'] != z:
@@ -291,7 +382,7 @@ def referee_from_gt(gt_rows, static_map, end_s):
                 continue
             if z is not None and not cur['emitted'] and row['t'] - cur['since'] >= SETTLE_S - 1e-9:
                 cur['emitted'] = True
-                rows.append({'item_id': box, 'kind': 'cyan', 'zone': z, 'sim_s': round(cur['since'], 3)})
+                rows.append({'item_id': box, 'kind': (cargo_kinds or {}).get(box, 'cyan'), 'zone': z, 'sim_s': round(cur['since'], 3)})
     final = {b: s['zone'] for b, s in state.items()}
     return {'deliveries': rows, 'final_zone': final, 'settle_s': SETTLE_S, 'source': 'eval_only simulator truth',
             'end_sim_s': end_s}
@@ -324,11 +415,11 @@ def robot_eval(host, rid, boxes_final):
 # ---------------------------------------------------------------------------
 # One trial
 
-def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False):
+def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_adapter=None):
     import cv2
     import mujoco
     import numpy as np
-    bundle, scenario, map_bundle, provider = run_bundle(prereg, episode)
+    bundle, scenario, map_bundle, provider = run_bundle(prereg, episode, model_adapter=model_adapter)
     bundle_sha = digest(bundle)
     if not dev and prereg.get('bundle_sha256') != bundle_sha:
         raise SystemExit(f'run bundle {bundle_sha[:12]} differs from the pre-registered '
@@ -344,20 +435,22 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False):
         {'run_id': run_id, 'condition': condition, 'episode': episode['episode_id'], 'code': code, 'dev': dev,
          'bundle_sha256': bundle_sha, 'horizon_s': horizon_s, 'pose_provider': label,
          'started_unix': round(started, 3), 'load_average_start': load0}, indent=2, ensure_ascii=False) + '\n')
-    spec = {'map': episode['map'], 'seed': episode['layout_seed'], 'goal': episode['goal'],
-            'extra_boxes': episode['extra_boxes'], 'contact_profile': episode['contact_profile'],
-            'job_sim_limit_s': episode['job_sim_limit_s'], 'order_sheet': None}
-    from harness.zone_study_inputs import OrderSheetSource
-    spec['order_sheet'] = OrderSheetSource(scenario, map_bundle).sheet()   # the SAME sheet the models get
+    spec = host_spec(scenario, episode, map_bundle)
     host = trial = result = None
     failure, t = None, 0.0
     try:
-        host = StudyTeamHost(spec, prereg['student'], root=ROOT, provider_spec=provider)
+        host = StudyTeamHost(spec, prereg['student'], root=ROOT, provider_spec=provider,
+                             frames_dir=out / 'own_frames')
+        expected = bundle['contact_profile_expected']
+        if any(host.contact_record[k] != expected[k] for k in ('profile', 'base_profile', 'noslip_iterations', 'timestep_s')):
+            raise zi.ContractViolation('applied contact profile differs from the pinned bundle')
         placements_match(scenario, host)
         host.assigned_box = {}
         trial = zi.IntegratedTrial(scenario, condition=condition, seed=episode['trial_seed'], links=host.links,
                                    horizon_s=horizon_s, code_sha=code['sha'], map_bundle=map_bundle,
-                                   pose_label=label)
+                                   pose_label=label, actor='gemini_proxy' if model_adapter else zi.FIXTURE_ACTOR,
+                                   model_adapter=model_adapter,
+                                   pair_records=lambda: host.pairs.records() if host.pairs else [])
         t = host.settle(float(prereg['t0_s']))
         trial.begin(t)
         stop, next_report = 'horizon', t + PROGRESS_EVERY_S
@@ -415,20 +508,24 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
     """Everything that exists, also after an exception; returns the result summary."""
     summary = {'schema': SCHEMA, 'run_id': out.name, 'condition': condition, 'episode': episode['episode_id'],
                'dev': dev, 'stop': stop, 'failure': failure, 'bundle_sha256': bundle_sha,
-               'pose_provider': bundle['pose_provider']['label'], 'plumbing_only': True,
-               'note_ko': '배선 스모크(no-LLM fixture). 통신 효과·연구 결과가 아니다. ' + zi.TEMPORARY_NOTE_KO}
+               'pose_provider': bundle['pose_provider']['label'],
+               'actor': trial.actor if trial else prereg.get('actor', zi.FIXTURE_ACTOR),
+               'plumbing_only': trial is None or trial.actor == zi.FIXTURE_ACTOR,
+               'note_ko': '통합 dev 경로. 통신 효과·연구 결과가 아니다. ' + zi.TEMPORARY_NOTE_KO}
     if host is not None:
         summary['sim_s'] = round(float(host.world.data.time), 3)
         ev = host.eval_only
         boxes = {b: [float(v) for v in host.world.data.body(o['body_name']).xpos] for b, o in host.objects.items()
-                 if o['kind'] == 'cyan'}
-        referee = referee_from_gt(ev['gt'], host.static, summary['sim_s'])
+                 if o['kind'] in ('cyan', 'long_beam')}
+        referee = referee_from_gt(ev['gt'], host.static, summary['sim_s'],
+                                  cargo_kinds={b: o['kind'] for b, o in host.objects.items()})
         summary['robots'] = {rid: robot_eval(host, rid, boxes) for rid in ROBOTS}
         summary['eval_only'] = {'referee': referee, 'box_final_xyz': {b: [round(v, 4) for v in p] for b, p in boxes.items()},
                                 'weld_max_eq_active': ev['max_eq_active'], 'contact_profile': host.contact_record}
         for rid, slot in host.robots.items():
             base = out / 'robots' / rid
             jsonl(base / 'inputs' / 'commands.jsonl', slot.commands)
+            jsonl(base / 'inputs' / 'pose_timing.jsonl', getattr(slot.executor.pose, 'timing', []))
             jsonl(base / 'inputs' / 'frames.jsonl', slot.frames)
             jsonl(base / 'executor' / 'events.jsonl', slot.executor.events)
             jsonl(base / 'executor' / 'api.jsonl', slot.executor.api_log)
@@ -447,6 +544,9 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
     if trial is not None:
         write_study(out, trial, result, summary)
     manifest = {'schema': SCHEMA, 'run_id': out.name, 'bundle': bundle, 'bundle_sha256': bundle_sha, 'code': code,
+                'applied_contact_profile': copy.deepcopy(host.contact_record) if host else None,
+                'perception_delay_s': zi.PERCEPTION_DELAY_S,
+                'actor': summary['actor'],
                 'prereg_sha256': zi.file_sha256(ROOT / prereg['_path']) if prereg.get('_path') else None,
                 'env': {'python': platform.python_version(), 'platform': platform.platform(),
                         'threads': {k: os.environ.get(k) for k in ('OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS',
@@ -479,7 +579,7 @@ def write_study(out, trial, result, summary):
     referee = summary.get('eval_only', {}).get('referee', {'deliveries': []})
     record = trial_record_for(trial, result, referee)
     record['pose_provider'] = dict(summary['pose_provider'])   # A's provenance keys are closed: top level
-    record['plumbing_only'] = True
+    record['plumbing_only'] = trial.actor == zi.FIXTURE_ACTOR
     (study / 'trial_record.json').write_text(json.dumps(record, indent=1, ensure_ascii=False) + '\n')
     summary['study'] = {'calls': len(result.calls), 'messages': len(result.messages), 'actions': len(result.actions),
                         'end_reason': record['end_reason'], 'end_sim_s': record['end_sim_s'],

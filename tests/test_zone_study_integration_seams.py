@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from harness.zone_own_team_host import _RobotSlot
 from harness import zone_own_executor as zox  # noqa: E402
 from harness import zone_study_contract as A  # noqa: E402
 from harness import zone_study_integration as zi  # noqa: E402
@@ -195,9 +196,10 @@ def test_host_link_abort_drops_scheduled_macros_and_holds_now():
             raise AssertionError('not captured in this test')
 
     ex = executor()
-    slot = zox._RobotSlot('r1', Port(), ex)
+    slot = _RobotSlot('r1', Port(), ex)
     holds = []
-    host = type('Host', (), {})()
+    host = zox.OwnCamTeamHost.__new__(zox.OwnCamTeamHost)
+    host.closed, host.pairs = False, None
     host.robots, host.api_calls = {'r1': slot}, []
     host.world = type('W', (), {'data': type('D', (), {'time': 12.3})()})()
     host._hold = lambda rid, now: holds.append((rid, now))
@@ -253,7 +255,7 @@ def test_eval_top_profile_applies_after_setup_without_changing_robot_maps_or_cam
         for rid in zox.ROBOTS:
             ex = executor(rid)
             ex.map = copy.deepcopy(static)
-            host.robots[rid] = zox._RobotSlot(rid, SimpleNamespace(capture=lambda camera: None), ex)
+            host.robots[rid] = _RobotSlot(rid, SimpleNamespace(capture=lambda camera: None), ex)
     monkeypatch.setattr(zox.OwnCamTeamHost, '__init__', init_host)
     monkeypatch.setattr(zi, 'build_pose_provider', lambda *args: SimpleNamespace(source='owncam_pf_v2:test'))
     host = runner.StudyTeamHost({}, {}, root=ROOT, provider_spec={})
@@ -309,7 +311,7 @@ def test_host_link_refuses_top_camera_requests_and_mislabeled_frames():
         captured.append(camera)
         return {'camera': 'cctv_top_north_east', 'robot_id': 'r1', 'image': base64.b64encode(FRAME).decode(),
                 'sha256': hashlib.sha256(FRAME).hexdigest(), 'sim_time': 0.}
-    slot = zox._RobotSlot('r1', SimpleNamespace(capture=capture), executor())
+    slot = _RobotSlot('r1', SimpleNamespace(capture=capture), executor())
     link = HostRobotLink(SimpleNamespace(robots={'r1': slot}), 'r1')
     with pytest.raises(A.ContractViolation, match='own robot_cam'):
         slot.port.capture('cctv_top_north_east')

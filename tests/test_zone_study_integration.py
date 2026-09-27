@@ -22,6 +22,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from harness import team_carry_status as tcs  # noqa: E402
+from harness.zone_own_team_host import _RobotSlot
 from harness import zone_own_executor as zox  # noqa: E402
 from harness import zone_study_contract as A  # noqa: E402
 from harness import zone_study_integration as zi  # noqa: E402
@@ -237,7 +238,7 @@ def test_busy_job_keeps_executing_while_thinking_and_talking_only_idle_robots_wa
     host = StudyTeamHost.__new__(StudyTeamHost)
     host.world = SimpleNamespace(data=SimpleNamespace(time=clock[0]),
                                  model=SimpleNamespace(opt=SimpleNamespace(timestep=.01)))
-    host.robots = {r: zox._RobotSlot(r, None, links[r].ex) for r in zox.ROBOTS}
+    host.robots = {r: _RobotSlot(r, None, links[r].ex) for r in zox.ROBOTS}
     host.event_log = []
     # A current job already has a macro to execute. No physics or controller
     # stub decides whether it may proceed: advance_to/_run_timeline do that.
@@ -456,25 +457,22 @@ def test_pair_status_channel_is_present_and_identical_in_all_four_conditions():
         assert len(set(configs.values())) == 1, configs
     s1 = zi.IntegratedTrial(load_scenario('s1_normal_mixed'), condition='no_comm', seed=SEED, links=_stub_links(),
                             horizon_s=10.)
-    assert sorted(s1.pair_status.channels) == ['order-5']                     # the 2-robot long_beam order
+    assert s1.pair_status.tasks == ['order-5']                     # the 2-robot long_beam order
 
 
-def test_pair_status_carries_only_the_fixed_enum_and_only_to_participants():
-    bus = zi.PairStatusBus({'orders': [{'order_id': 'order-5', 'required_robots': 2}]})
-    assert bus.publish('r1', 'order-5', 'aligning', 1.0)
-    for bad in ('r1가 빔 동쪽 끝에 있음', 'done', '', None, 0, float('nan')):
-        assert not bus.publish('r1', 'order-5', bad, 1.1)
-    assert not bus.publish('r9', 'order-5', 'ready', 1.2) and not bus.publish('r1', 'order-9', 'ready', 1.2)
-    channel = bus.channels['order-5']
-    assert not channel.publish({'robot_id': 'r2', 'task_id': 'order-5', 'seq': 1, 'state': 'ready',
-                                'sent_at_s': 1.0, 'text': '좌표 1.2, 0.4'}, 1.0)
-    assert not channel.publish({'robot_id': 'r2', 'task_id': 'order-5', 'seq': 1, 'state': 'ready',
-                                'sent_at_s': float('inf')}, 1.0)
-    assert bus.partner_view('r3', 'order-5', 1.5) is None                     # not on the task: sees nothing
-    assert bus.publish('r2', 'order-5', 'ready', 1.3)
-    view = bus.partner_view('r1', 'order-5', 1.5)
-    assert view['r2']['state'] == 'ready' and set(view['r2']) == {'state', 'age_s', 'alive'}
-    assert all(set(row) == set(tcs.FIELDS) | {'received_at_s'} for row in channel.log)
+def test_pair_status_records_the_executor_wire_without_creating_a_second_bus():
+    from harness.zone_pair_status import PairStatusChannel, PairStatusEndpoint, FIELDS
+    channel = PairStatusChannel('task')
+    endpoint = PairStatusEndpoint(channel, 'r1')
+    endpoint.tick('aligning', 1.)
+    assert not channel.publish({'robot_id': 'r2', 'task_id': 'task', 'seq': 1, 'state': 'ready',
+                                'sent_at_s': 1., 'text': '좌표 1.2, 0.4'}, 1.)
+    records = lambda: [{'status_messages': channel.log}]
+    bus = zi.PairStatusBus({'orders': [{'order_id': 'order-5', 'required_robots': 2}]}, records)
+    assert bus.record()['messages'] == len(channel.log) > 0
+    assert all(set(row) == set(FIELDS) for row in channel.log)
+    assert bus.config()['participants'] == ['r1', 'r2']
+    assert not hasattr(bus, 'publish')  # only real executor endpoints can send
 
 
 def test_study_config_is_condition_invariant_apart_from_the_channel():
