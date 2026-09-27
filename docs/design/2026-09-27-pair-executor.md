@@ -1,8 +1,8 @@
 # M2 공동 운반 executor 연결 — 2026-09-27
 
-이슈 #221 / PR #235의 `zone_pair_executor_v3_dev` 설계다. 기준 커밋
-`6bda018b`의 1차 리뷰와 `9fd4cf14`의 2차 리뷰(NEW P1 2건, P2 2건),
-코디네이터의 독립 랑데부·통신 경계 결정을 반영했다.
+이슈 #221 / PR #235의 `zone_pair_executor_v4_dev` 설계다. 1·2차 리뷰,
+`69dd0f0b`의 3차 리뷰와 Kiro 실행기 병합 `8f4fb676`을 반영했다.
+코디네이터가 정한 독립 랑데부·통신 경계는 유지한다.
 M2 물리 성공을 새 executor에 승계하지 않는다.
 
 ## API와 독립 제출
@@ -48,6 +48,19 @@ hold하며, 기본 5 SIM초 안에 같은 화물·상대·목적지를 제출해
 
 - 동결된 `M2DoorStudent(version='v3')`, `PairApproachDriverV2`, `fullframe_v3`,
   `ArmSequence`를 import한다. 원본 CLI와 동결 import 파일은 편집하지 않았다.
+- 접근은 `GuardedPairApproach(GuardedDriver, PairApproachDriverV2)`로 연결했다.
+  Kiro의 불확실도 히스테리시스·dwell, 3-D sweep, 명령 거리 기반 정체 확인과
+  최대 2회 후진/재계획 복구를 재사용하며 M2의 최종 heading·재위치추정 정책을
+  유지한다. 해당 로봇의 pose source 하나가 영상·명령을 한 번씩 처리한다.
+  M2가 localizer를 재생성해도 같은 자기 source에 연결하며, 실행기와 pair 보정이
+  다르면 `PAIR_CALIBRATION_MISMATCH`로 거절한다.
+- 접근 이후 readiness·단계 전환 전에 자기 gate와 추정 freshness를 검사한다.
+  controller 직접 명령과 arm queue 모두 발행 전에 같은 `SweepGuard`로 팔·집게의
+  3-D 전이와 차체 이동 여유를 검사한다. 공동 파지 이후에는 한 대만 후진하지 않는다.
+  정체가 확인되면 `PAIR_blocked`, 추정 확인이 안 되면 `POSE_UNCERTAIN_PROGRESS`로
+  STATUS abort를 보내 양쪽 queue를 지우고 hold한다. 재개에는 새 독립 제출이 필요하다.
+  접근 정체·추정 실패도 공통 `blockage_seen`/`pose_uncertain`·`job_failed` 이벤트로 끝낸다.
+  이 검사는 전체 빔의 동적 변형·기울기까지 검증한 충돌 모델이 아니다.
 - 입력은 자기 wrist RGB·발행 명령, 정적 지도·보정·개략 주문서와 STATUS뿐이다.
   endpoint 객체 그래프에 host/world/상대 executor·controller가 없다.
 - `zone_pair_vision.valid_frame`이 수락·STATUS readiness·운반 유지 판정보다 먼저
@@ -133,11 +146,39 @@ loader에서만 대체했다. checkout/index 변경은 없다.
 | NEW P2-3 abort 우선 | t=0.6 readiness 만료와 abort 동시 입력: not_ready·상대 이동 가능 → abort 패킷·양쪽 queue 제거·즉시 hold |
 | NEW P2-4 arm 시계 | 2 ms를 반올림 없이 누적하고 t=3.0에 같은 1.2초 queue: 첫 명령 3.050/3.092 차이 → 양쪽 24개 명령의 전체 시각 `float.hex()`, 순서·payload 일치(첫 3.092, 끝 4.236 근방) |
 
-관련 회귀 최종 실행은 **307 passed / 3 deselected**다. 새 테스트는 CI 목록에
+2차 수정 당시 회귀는 **307 passed / 3 deselected**였다. 새 테스트는 CI 목록에
 등록했고 기존 M2 lift/approach/tagged-cargo 3개 등록도 유지했다. 미제출 알림을
 기대하던 기존 검사는 새 명세로 바꾸고, 기존 반올림 시계 arm 검사에도 원본 outer
 loop 조건을 적용했다. 동결 import 32개 SHA-256 일치, M2 원본 3개 바이트
 동일성, 수정 Python 8개 구문 검사와 `git diff --check`를 확인했다.
+
+## 3차 리뷰와 병합 실행기 검증
+
+공용 최소 wake에서 모든 로봇의 이벤트를 배달하던 경로를 제거했다. host는
+모든 고정 physics 시각을 방문하되 로봇의 제어·macro·deadline은 자기 timer가
+도래할 때만 처리하고, 이벤트는 해당 로봇의 outbox에 자기 사건이 있을 때 배달한다.
+상대의 제출·polling으로 자기 시계의 부동소수 반올림이나 배달 시각이 달라지지 않는다.
+arm은 기존 epsilon 없는 전역 시계를 유지하고, dead slot의 API도 즉시 거절한다.
+
+`test_zone_pair_review3.py` 20개를 같은 fixture로 비교했다. 병합 직후 `8f4fb676`은
+**19 failed / 1 passed**, 수정 후 **20 passed**다. 통과하던 1개는 main #201에서
+이미 README 경로로 수정된 workflow 문서 검사다. 기준 소스는 `git show`와 import
+loader로만 읽었으며 checkout/index를 쓰지 않았다.
+
+- 네 조건 × 2 ms/10 ms 누적 시계 8개: r1만 t=2.412에 제출하는 경우와 제출하지
+  않는 경우의 r2 전체 입력·poll·이벤트 배달·API·명령 목록을 내용·시각·순서까지 비교했다.
+  2 ms 수정 전 반례는 같은 2.602초 `pose_uncertain`이 2.622/2.614초에 배달됐다.
+  수정 후 두 경우의 전체 trace가 같고 Transport 전달은 0건이다.
+- 공통 guarded driver 연결, 자기 관측·명령 1회 처리, 보정 불일치 거절,
+  불확실·stale 추정·충돌 시 양쪽 중단, 접근 복구 2회 뒤 실패, 운반 중 정체,
+  arm queue의 3-D 검사, dead robot 거절을 검사했다.
+- 동결 `run_m2_pair.py` SHA-256은
+  `3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783`이다.
+  인자 파싱 전 MuJoCo import를 변경하지 않고 help 검사에 명시적 `importorskip`을
+  넣었다. MuJoCo import를 차단한 별도 실행은 **27 passed / 1 skipped**이며
+  skip 사유는 `frozen M2 CLI imports MuJoCo before parsing --help`다.
+- 관련 최종 회귀는 **364 passed / 3 deselected**다. 동결 import 32개 해시와 M2
+  원본 3개 바이트, Python 8개 구문, workflow 문서 실재성과 항목 33개를 확인했다.
 
 최종 명령은 스레드 1개, worktree 임시 경로를 사용한다. 코디네이터가 확인한
 MuJoCo 없는 계약·단위 검사 범위이므로 agent_lock과 공용 잠금 파일은 건드리지 않았다.
@@ -147,12 +188,13 @@ mkdir -p .pytest_tmp_env
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 \
 NUMEXPR_NUM_THREADS=1 GIT_OPTIONAL_LOCKS=0 PYTHONDONTWRITEBYTECODE=1 TMPDIR="$PWD/.pytest_tmp_env" \
 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
-  tests/test_zone_pair_review2.py tests/test_zone_pair_review.py \
+  tests/test_zone_pair_review3.py tests/test_zone_pair_review2.py tests/test_zone_pair_review.py \
   tests/test_zone_pair_executor.py tests/test_zone_pair_status.py \
   tests/test_zone_own_executor.py tests/test_zone_own_executor_host.py \
   tests/test_zone_own_executor_guards.py tests/test_zone_own_executor_boundaries.py \
   tests/test_pair_owncam_approach.py tests/test_m2_pair_door_v3.py \
-  tests/test_simulation_workflow_manager.py tests/test_zone_study_protocol.py --basetemp=./.pytest_tmp \
+  tests/test_simulation_workflow_manager.py tests/test_zone_study_protocol.py \
+  tests/test_simulation_scenes.py --basetemp=./.pytest_tmp \
   -k 'not test_team_host_isolation_abort_and_horizon_on_the_real_world and not test_source_fingerprint_includes_calibration_requirements_and_sparse_absence and not test_parent_exit_cleans_background_child'
 ```
 
@@ -163,10 +205,36 @@ NUMEXPR_NUM_THREADS=1 GIT_OPTIONAL_LOCKS=0 PYTHONDONTWRITEBYTECODE=1 TMPDIR="$PW
 workflow 양쪽 항목을 보존한 33개와 동결 import 32개 해시·M2 원본 3개는 유지한다.
 코디네이터는 변경 파일을 commit하고 전체 CI 및 별도 dev 물리 검증을 수행해야 한다.
 
+## dev PHYSICAL 점검 게이트 — 3차 리뷰에서 이관
+
+아래는 실행 전 충족할 조건이며 이번 작업에서 물리 실행을 완료했다는 뜻이 아니다.
+
+1. **코드:** 네 조건에서 미제출 상대의 입력·이벤트·API·명령 내용·시각·순서 전체가
+   동일한 회귀와 두 CI 차단 사항을 해결한다. 로컬 검사는 위 결과이고 전체 CI는 별도다.
+2. **실행 경로:** 새 `PairTeam`/`OwnCamTeamHost`를 실제 사용하는 dev 드라이버를
+   커밋하고 표준 workflow에 연결한다. 기존 `run_m2_pair.py` 단독 실행은 새 adapter의
+   검증으로 인정하지 않는다.
+3. **환경:** r1/r2, long_beam 1개, `zone_wide_door_tags_v2`, weld OFF,
+   `cargo_noslip_v1`, 실제 `noslip_iterations=10`, timestep 2 ms를 확인한다.
+   현재 host는 세 로봇을 생성한다. 실제 장면이 두 대여야 하면 이를 먼저 지원하고,
+   참여자만 두 대라면 r3의 존재와 비간섭을 명시한다.
+4. **입력:** tagged 위치추정 provider를 임시 dev 조건으로 표시하고 지도·보정·정적
+   주문서 해시를 고정한다. 제어에는 자기 wrist RGB·자기 명령·허용 정적 입력·STATUS만
+   제공하며 GT는 평가에만 기록한다.
+5. **운영·종료:** 자기 worktree에서 실행 소스를 고정하고 실행 수·seed·SIM/wall
+   상한을 사전 기록한다. 잠금 규칙과 부하 기록을 준수한다. 정상/중단 경로의 GO 동시
+   소비, abort·영상 이상·상대 소실 뒤 양쪽 queue 제거와 추가 동작 명령 0건을 확인한다.
+6. **판정·증거:** 접근→공동 파지→들기→문 통과→목적 구역 배치·방출을 영상과 별도
+   평가로 확인한다. `PAIR_SEQUENCE_DONE / unconfirmed`만으로 성공 처리하지 않는다.
+   새 B 구역 경로의 도착·낙하·접촉 기준을 실행 전에 고정하고, 실패 포함 원본 입력·
+   명령·STATUS·평가·영상·해시를 보존한 뒤 TensorBoard 실제 로딩까지 확인한다.
+
 ## 참고 자료
 
 - 코디네이터 제공 독립 리뷰: `codex-235-review.md` (기준 `6bda018b`, P1 4건/P2 1건)
 - 코디네이터 제공 2차 리뷰: `codex-235-review2.md` (기준 `9fd4cf14`, NEW P1 2건/P2 2건)
+- 코디네이터 제공 3차 리뷰: `codex-235-review3.md` (기준 `69dd0f0b`, P1 1건/P2 2건)
+- [공통 guarded driver](../../harness/zone_own_driver.py), [공동 운반 가드](../../harness/zone_pair_guards.py), [3차 회귀](../../tests/test_zone_pair_review3.py)
 - [M2 경로·검증 범위](../zone_m2_pair.md), [동결 제어기](../../scripts/run_m2_pair.py)
 - [M2 동결 import](../../experiments/2026-09-26-zone-m2-pair/imports.json)
 - [executor](../../harness/zone_own_executor.py), [STATUS](../../harness/zone_pair_status.py)

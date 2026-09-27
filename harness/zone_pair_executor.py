@@ -16,7 +16,7 @@ from collections.abc import Mapping
 from harness.zone_own_contract import finite_number
 from harness.zone_pair_status import MAX_SEGMENTS, ARM_S, CONTROL_S, EPS, PROFILE as STATUS_PROFILE, PairStatusChannel, PairStatusEndpoint
 
-PROFILE = 'zone_pair_executor_v3_dev'
+PROFILE = 'zone_pair_executor_v4_dev'
 PAIR = ('r1', 'r2')                 # frozen M2 roles: end_neg / end_pos
 CONTACT_PROFILE = 'cargo_noslip_v1'
 
@@ -116,9 +116,15 @@ def m2_controller(execution, plan, params):
     """Instantiate the REAL frozen controller, with only route and I/O adapters."""
     from scripts import run_m2_pair as m2
     from scripts.zone_teacher import ArmSequence
+    from harness.zone_pair_guards import GuardedPairApproach
 
     class RoutedM2(m2.M2DoorStudent):
         requires_fresh_frame = True
+
+        def fail(self, reason, now):
+            if reason in ('APPROACH_BLOCKED', 'APPROACH_POSE_UNCERTAIN', 'APPROACH_LOST', 'APPROACH_ARRIVAL_UNCONFIRMED'):
+                reason = 'PAIR_APPROACH_' + reason.removeprefix('APPROACH_').lower()
+            return super().fail(reason, now)
 
         def _wait_carry(self, now, arm_idle):
             # Both schedules must contain the same alignment interval. Refuse
@@ -148,7 +154,7 @@ def m2_controller(execution, plan, params):
             return schedule
 
     own, rid = execution.own, execution.own.robot_id
-    driver = m2.pa.PairApproachDriverV2(copy.deepcopy(own.map), copy.deepcopy(params),
+    driver = GuardedPairApproach(own, copy.deepcopy(params),
                                        goal_xyyaw=plan['prestations'][rid], door_xy=None,
                                        keepouts=plan['keepouts'][rid], initial_servo=dict(own.servo), seed=own.seed)
     driver.on_command({'t': own.now, 'kind': 'initial_servo_command', 'pulses': dict(own.servo)})
@@ -179,6 +185,8 @@ class PairExecution:
         self.next_control = own.now
         self.control_started = False
         self.controller = factory(self, copy.deepcopy(plan), copy.deepcopy(params))
+        from harness.zone_pair_guards import PairCommandGuard
+        self.command_guard = PairCommandGuard(self)
 
     def log(self, rid, kind, now, **detail):
         self.events.append({'robot_id': rid, 'event': kind, 'sim_s': now, **detail})
@@ -192,6 +200,7 @@ class PairExecution:
     def on_command(self, row):
         if not self.terminal:
             self.controller.driver.on_command(row)
+            self.command_guard.on_command(row)
 
     def abort(self, now, reason):
         if self.terminal:
@@ -262,6 +271,8 @@ class PairExecution:
             # Capture before calling the monolithic tick: unwinding halfway
             # through its look() would advance timers without an observation.
             return {'mode': 'capture'}
+        if not self.command_guard.before_control(now):
+            return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
         # Heartbeat cadence is separate from the controller and image TTL.
         self.status.tick(self.status.state or 'start_ready', now)
         # A done controller must not republish the frozen coarse put_down state.
@@ -293,7 +304,7 @@ class PairExecution:
                 self.own._finish(now, 'unconfirmed', 'PAIR_SEQUENCE_DONE', profile=PROFILE)
                 return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
         commands, self.port.commands = self.port.commands, []
-        return {'mode': 'tick', 'commands': commands}
+        return {'mode': 'tick', 'commands': self.command_guard.check(now, commands)}
 
     def next_wake(self, now):
         """Heartbeats may be off grid; controller/GO consumption must be on it."""
@@ -310,7 +321,7 @@ class PairExecution:
             return []
         self.controller.arm.tick(now)
         commands, self.port.commands = self.port.commands, []
-        return commands
+        return self.command_guard.check(now, commands)
 
 
 class PairTeam:
@@ -372,6 +383,8 @@ class PairTeam:
             return refuse('UNSUPPORTED_PAIR')
         if self.contact_profile != CONTACT_PROFILE or self.weld is not False:
             return refuse('PAIR_REQUIRES_NOSLIP_WELD_OFF')
+        if _digest(ex.params) != _digest(self.params):
+            return refuse('PAIR_CALIBRATION_MISMATCH')
         order = ex.orders.get(item_ref)
         if order is None:
             return refuse('UNKNOWN_ORDER')

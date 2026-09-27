@@ -44,6 +44,11 @@ class PairFakeHost(FakeHost):
         slot = self.robots[rid]
         slot.port.fid += 1
         frame = pair_obs(rid, slot.port.fid, now, slot.port.servo)
+        # A deterministic own-pose fixture for scheduling tests, not localisation
+        # evidence from this recorded JPEG or a simulated ground-truth pose.
+        slot.executor.pose.on_frame = lambda t, rgb: PoseReport(
+            t, True, x_m=0., y_m=0., yaw_rad=0., std_xy_m=.01, std_yaw_rad=.01,
+            since_tag_s=0., source=slot.executor.pose.source)
         slot.executor.on_frame(now, frame, rgb_of(frame))
         slot.next_frame = now + self.FRAME_S
 

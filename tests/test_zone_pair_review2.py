@@ -93,6 +93,8 @@ def test_p1_submission_at_point03_wakes_on_the_common_go_grid(factory):
         h.world.data.time = now
         for r in ('r1', 'r2'):
             set_image(exs[r], valid_image(), now, fid=3 + round(now * 1000))
+            from dataclasses import replace
+            exs[r].last_report = replace(exs[r].last_report, t_est=now)  # healthy own-pose fixture as well as RGB
             if now + 1e-9 >= h.robots[r].next_decide:
                 h._decide(r, now)
         now = min(s.next_decide for r, s in h.robots.items() if r in ('r1', 'r2'))

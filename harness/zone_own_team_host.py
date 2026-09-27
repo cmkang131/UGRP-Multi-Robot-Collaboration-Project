@@ -467,6 +467,8 @@ class OwnCamTeamHost:
         ex.now = now
         if self.closed:
             ack = ex.refuse(api, 'EPISODE_ENDED')
+        elif slot.dead:
+            ack = ex.refuse(api, 'ROBOT_STOPPED')
         elif api == 'pair_carry':
             if getattr(self, 'pairs', None) is None:
                 ack = ex.refuse(api, 'PAIR_NOT_CONFIGURED')
@@ -482,19 +484,8 @@ class OwnCamTeamHost:
         self.api_calls.append(ack)
         return ack
 
-    def _next_wake(self, live):
-        times = []
-        if getattr(self, 'pairs', None) is not None:
-            times.append(self._next_pair_arm)
-        for s in live:
-            times.append(s.timeline[0][0] if s.timeline else s.next_decide)
-            deadline = s.executor.deadline()
-            if deadline is not None:
-                times.append(deadline + 1e-6)
-        return min(times)
-
-    def _deliver_events(self, now):
-        for rid in ROBOTS:
+    def _deliver_events(self, now, robot_id=None):
+        for rid in (ROBOTS if robot_id is None else (robot_id,)):
             for ev in self.robots[rid].executor.drain_events():
                 self.event_log.append(ev)
                 self.study_layer(self, 'event', ev, now)
@@ -514,14 +505,17 @@ class OwnCamTeamHost:
             for rid in ROBOTS:
                 slot = self.robots[rid]
                 if slot.dead:
+                    self._deliver_events(now, rid)
                     continue
-                self._expire(rid, now)
-                if slot.timeline or slot.capture_after:
+                deadline = slot.executor.deadline()
+                if deadline is not None and now > deadline:
+                    self._expire(rid, now)
+                if (slot.timeline and slot.timeline[0][0] <= now + 1e-9) or (not slot.timeline and slot.capture_after):
                     self._run_timeline(rid, now)
                 if not slot.dead and not slot.timeline and not slot.capture_after and now + 1e-9 >= slot.next_decide:
                     self._decide(rid, now)
+                self._deliver_events(now, rid)
             self._pair_arm_tick(now)
-            self._deliver_events(now)
             if done is not None and done():
                 outcome = 'STUDY_LAYER_DONE'
                 break
@@ -529,7 +523,10 @@ class OwnCamTeamHost:
             if not live:
                 outcome = 'ALL_ROBOTS_STOPPED'
                 break
-            self._physics_until(max(self._next_wake(live), now + float(self.world.model.opt.timestep)))
+            # Visit every clock sample. A peer's extra wake must not change the
+            # rounding of my deadlines or the delivery of my camera events.
+            # Only my due timers / my queued events above invoke my callbacks.
+            self._physics_until(now + float(self.world.model.opt.timestep))
         self.close_episode(outcome)
         self._physics_until(float(data.time) + .5)
         return {'outcome': outcome, 'sim_s': round(float(data.time), 3)}
