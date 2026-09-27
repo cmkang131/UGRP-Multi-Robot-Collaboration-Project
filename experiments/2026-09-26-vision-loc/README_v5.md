@@ -143,8 +143,11 @@ std_xy는 trace 제곱근이므로 방향별 최대 σ의 상한으로 썼고, �
   강화한 VIS5 suite **31 passed (0.78 s)**. 서로 합산하지 않는다. skip은 torch 없는 선택적
   검사 1개와 이 worktree에 없는 VIS4 로컬 artifact 검사 3개다. 후자 3개는 원 VIS4 worktree에서
   올바른 file/hash 쌍을 별도로 대조해 모두 일치했다(`legacy_artifact_hashes_corrected.json`).
-- OFF는 시작 HEAD의 이전 PF 소스를 직접 로딩하여 입자·가중치·난수 상태·관측 적용 후 보고값까지
-  동일함을 확인했다. 활성 runtime과 shadow head도 합성 입력에서 동일하며 입자/RNG는 불변이다.
+- 최초 OFF 검사는 `HEAD` 소스를 읽어 커밋 후 자기 비교가 되는 결함이 있었다(PR #243 P2).
+  후속 수정은 VIS4 `137ba742` PF와 그 M1 의존성을 [고정 fixture](../../tests/fixtures/vision_loc_v5_off/README.md)로
+  보존하여 입자·가중치·난수 상태·관측 적용 후 보고값을 대조한다. 기본값 생략/명시적 OFF 모두
+  현재 구현의 x 보고에 +1 m를 주입하면 같은 검사가 실패해야 한다. Git 이력에 의존하지 않고
+  fixture 누락·변조는 skip 없이 실패한다. 활성 runtime과 shadow head도 합성 입력에서 동일하며 입자/RNG는 불변이다.
   무관측 분산·상태 변경·반복 보고·동일 시각 프레임·PSD·격자/선택·연속 경로를 검사했다.
 - `OMP_NUM_THREADS=1`, `--basetemp=./.pytest_tmp` 사용, 종료 후 `.pytest_tmp` 삭제 완료.
   로컬 테스트이며 CI·실물 검증이 아니다. 테스트 로그는 `outputs/vision-loc-v5-checks/`.
@@ -178,3 +181,31 @@ OMP_NUM_THREADS=1 "$PY" "$VIS/compare_v5.py" --compare --output outputs/vision-l
    pin/HParams 화면 확인을 마쳐야 한다. 새로운 test·물리/폐루프 실행은 이번 작업에 포함되지 않는다.
 
 결과·raw는 로컬 보관이다. 원격 백업으로 표현하지 않으며 Google Drive는 사용하지 않았다.
+
+## 다음 방향(검토 제안, 미결정)
+
+PR #243의 `5cc83adbcbaab80191a84f592a88139d89ebe7a9` 검토는 **정상 추적 정확도에는
+접근했지만 공동 운반에 필요한 실패 감지·복구 신뢰도는 아직 부족하다**고 판단했다.
+VIS2에는 test 오염이 있고, [VIS3 독립 test](README_v3.md#test-결과-독립-test-6회-10374-프레임-한-번-채점-619c0123)도
+문 근처·운반 위치 p90 6.3 cm로 5 cm 게이트에 실패했다. VIS2–5는 코호트가 달라
+연속적인 성능 향상으로 해석할 수 없다. 아래는 검토 제안이며 채택·실행 결정이 아니다.
+
+1. **관측의 식별력 강화와 능동 재관측.** [VIS4 진단](README_v4.md)에서 45/96장의
+   전진 방향 우도가 거의 평평했고, 위 VIS5 반례는 1.00035 m 오류에서도 낮은 잔차로
+   경보를 놓쳤다. 자연 문틀·모서리 정보, 여러 위치 가설 유지, 기존 카메라의 관측 방향
+   선택을 비교할 가치가 있다. 관측 방향을 선택하는 방법의 참고문헌은 Fox, Burgard,
+   Thrun (1998), [Active Markov Localization for Mobile Robots](https://publications.ri.cmu.edu/active-markov-localization-for-mobile-robots)다.
+2. **연속 RGB로 명령과 실제 움직임의 불일치 추정.** 영상 변화로 정지·슬립 가설을
+   구분하는 방향이다. [VIS3 dev](README_v3.md)에서 정지 모드는 끼임을 개선했지만
+   s945 문 통과 횡 오차를 3.5→18.9 cm로 악화시켰다. 요소 간 상호작용과 PF seed 반복을
+   사전 고정해 비교해야 한다. 시간축 시각 추정의 참고 구현은 Campos 등 (2021),
+   [ORB-SLAM3](https://arxiv.org/abs/2007.11898)이며, 이 환경의 성능 검증이나 도입 결정은 아니다.
+3. **임무 기하와 신뢰도 연결.** 두 로봇·빔 외형을 포함한 실제 계획 경로의 여유를
+   계산하고, 정보 부족 시 정지·재관측을 선택하는 방향이다. 근거는 위
+   [연속 경로와 σ 여유](#연속-경로와-σ-여유)의 744/5,691구간 여유 하한 부족과
+   기각된 calibration이다. σ 조정만으로 안전성을 확보하기 어렵다는 진단이며,
+   744는 실제 충돌 횟수가 아니다. 현재 감사는 단일 loaded 외형의 추정 경로여서
+   공동 운반의 계획 경로·실제 통과 검증으로 확장해 주장할 수 없다.
+
+새 비교는 별도 dev 사전 계획으로 정하고, 자기 RGB·자기 명령·정적 지도·고정 보정의
+학생 입력 경계를 유지한다. 이번 문서화로 b0/u0·기본 OFF나 기존 기각 판정을 바꾸지 않는다.

@@ -1,5 +1,6 @@
 """Synthetic VIS5 regressions only: no model calls, renderer or physics steps."""
 import copy
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -12,6 +13,12 @@ import pytest
 
 ROOT=Path(__file__).resolve().parents[1]
 HERE=ROOT/'experiments/2026-09-26-vision-loc'
+OFF_FIXTURES=ROOT/'tests/fixtures/vision_loc_v5_off'
+# Byte-for-byte historical sources; never regenerate from HEAD at test time.
+OFF_SOURCE_HASHES={
+    'vision_pf_vis4.py.txt':'97a207dbda2fe31df32809b48baa4db1859ef0e1f30a196f5810b338c955b8f7',
+    'owncam_localizer_m1.py.txt':'0304d7c491dfe6ae68cea6550f7a13e3c99e8e1d3f8e8b6c4b7b1d06893b1d63',
+}
 sys.path.insert(0,str(HERE))
 import compare_v5 as comp
 import route_audit_v5 as route
@@ -44,18 +51,33 @@ def test_off_is_exact_identity_and_no_state():
         assert h.t is None and h._last_output is None
 
 
+def frozen_module(name):
+    path=OFF_FIXTURES/name
+    if not path.is_file():
+        pytest.fail(f'Missing required VIS4 regression fixture: {path}; restore tests/fixtures/vision_loc_v5_off')
+    source=path.read_bytes()
+    assert hashlib.sha256(source).hexdigest()==OFF_SOURCE_HASHES[name], f'VIS4 fixture hash mismatch: {name}'
+    module=ModuleType(name.removesuffix('.py.txt'))
+    module.__file__=str(path)
+    exec(compile(source,str(path),'exec'),module.__dict__)
+    return module
+
+
 def make_pf(module,option=None):
-    m1=vl.mp.load_m1_localizer(); p=copy.deepcopy(m1.DEFAULT_PARAMS); p['particles']=32
+    # The historical M1 loader also used git show. Freeze that dependency so
+    # these tests work in shallow/sparse checkouts and source-only exports.
+    m1=frozen_module('owncam_localizer_m1.py.txt')
+    for rel,want in vl.mp.SHARED_RUNTIME_SHA256.items():
+        assert hashlib.sha256((ROOT/rel).read_bytes()).hexdigest()==want, f'M1 runtime hash mismatch: {rel}'
+    p=copy.deepcopy(m1.DEFAULT_PARAMS); p['particles']=32
     cal=json.loads((HERE/'calibration_train.json').read_text())
     return module.make_robust_pf(m1,json.loads((HERE/'maps/zone_wide_door_walls_v3_notags.json').read_text()),
         p,{}, {},cal['sag'],seed=42,**({} if option is None else {'report_v5':option}))
 
 
-def test_disabled_matches_pre_vis5_source_rng_particles_and_every_report():
-    source=subprocess.check_output(['git','show','HEAD:experiments/2026-09-26-vision-loc/vision_pf.py'],cwd=ROOT,text=True)
-    old=ModuleType('pre_vis5_pf'); exec(compile(source,'pre_vis5_pf','exec'),old.__dict__)
-    baseline=make_pf(old); absent=make_pf(pf); explicit=make_pf(pf,{'enabled':False})
-    locs=[baseline,absent,explicit]
+def assert_matches_vis4(candidate):
+    baseline=make_pf(frozen_module('vision_pf_vis4.py.txt'))
+    locs=[baseline,candidate]
     for loc in locs:
         loc.init_gaussian([0.,0.,0.],[.05,.03,.02])
         loc.command({'t':0.,'kind':'initial_servo_command','pulses':{1:2000,3:740,4:2320,5:1320,6:1500}})
@@ -64,11 +86,47 @@ def test_disabled_matches_pre_vis5_source_rng_particles_and_every_report():
         np.full(n,vl.NONE),np.full(n,np.nan),np.full(n,np.nan))
     for t in (.1,.4,1.):
         reports=[loc.update_obs(t,None if t<.2 else scan,loc.servo) for loc in locs]
-        assert reports[0]==reports[1]==reports[2]
+        assert reports[0]==reports[1], f'VIS4 report mismatch at t={t}'
         for loc in locs[1:]:
             assert np.array_equal(baseline.px,loc.px)
             assert np.array_equal(baseline.logw,loc.logw)
             assert baseline.rng.bit_generator.state==loc.rng.bit_generator.state
+
+
+@pytest.mark.parametrize('option',[None,{'enabled':False}],ids=['default','explicit-off'])
+def test_disabled_matches_pre_vis5_source_rng_particles_and_every_report(option,monkeypatch):
+    def no_subprocess(*args,**kwargs):
+        pytest.fail('VIS4 regression must run without Git or subprocesses')
+    monkeypatch.setattr(subprocess,'Popen',no_subprocess)
+    assert_matches_vis4(make_pf(pf,option))
+
+
+@pytest.mark.parametrize('option',[None,{'enabled':False}],ids=['default','explicit-off'])
+def test_disabled_regression_rejects_one_metre_report_error(option,monkeypatch):
+    candidate=make_pf(pf,option)
+    estimate=candidate.estimate
+
+    def shifted_estimate():
+        report=estimate()
+        return {**report,'x':report['x']+1.}
+
+    # Mutate only the current implementation; the VIS4 reference is immutable.
+    monkeypatch.setattr(candidate,'estimate',shifted_estimate)
+    with pytest.raises(AssertionError,match='VIS4 report mismatch'):
+        assert_matches_vis4(candidate)
+
+
+@pytest.mark.parametrize('name',OFF_SOURCE_HASHES)
+@pytest.mark.parametrize('corrupt',[False,True],ids=['missing','corrupt'])
+def test_required_off_fixture_fails_closed(name,corrupt,tmp_path,monkeypatch):
+    monkeypatch.setattr(sys.modules[__name__],'OFF_FIXTURES',tmp_path)
+    if corrupt:
+        (tmp_path/name).write_text('# not the frozen source\n')
+        with pytest.raises(AssertionError,match='VIS4 fixture hash mismatch'):
+            frozen_module(name)
+    else:
+        with pytest.raises(pytest.fail.Exception,match='Missing required VIS4 regression fixture'):
+            frozen_module(name)
 
 
 def test_scan_refiner_is_own_input_only_and_flat_scan_does_not_change_yaw():
