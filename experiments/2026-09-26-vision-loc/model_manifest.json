@@ -1,7 +1,7 @@
 {
  "schema": "ugrp.vision_loc.model_manifest.v1",
  "model_id": "vision-loc-seg-lraspp-mbv3-20260926-v2",
- "status": "local only; GitHub Release asset pending (docs/model_artifacts.md). Not registered in configs/model_artifacts.json in this PR.",
+ "status": "released: GitHub Release models-20260927-vision-loc-v1, registered in configs/model_artifacts.json; download, file hashes and loading verified (results/model_release_verification.json)",
  "files": {
   "seg_lraspp_mbv3.pt": {
    "local_path": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/model/seg-v2/seg_lraspp_mbv3.pt",
@@ -38,5 +38,11 @@
    360
   ]
  },
- "verification": "loaded by seg_model.Segmenter in the dev/test segmentation runs (hash recorded in every obs npz meta)"
+ "verification": "loaded by seg_model.Segmenter in the dev/test segmentation runs (hash recorded in every obs npz meta)",
+ "release": {
+  "tag": "models-20260927-vision-loc-v1",
+  "asset": "vision-loc-seg-lraspp-mbv3-20260926-v2.zip",
+  "archive_sha256": "165679736e426748bcdaa1c4c341781482198c2135bd8974494ab4f41f27a936",
+  "archive_bytes": 12111169
+ }
 }
