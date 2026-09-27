@@ -72,22 +72,25 @@ class PoseGuardV3:
 
     def observe_evidence(self, now, frame_id, *, nis, log_likelihood, settled):
         """One own image's evidence. Duplicate frames cannot build confidence."""
-        if not math.isfinite(now) or frame_id <= self.last_frame or (
-                self.last_evidence_t is not None and now <= self.last_evidence_t):
+        key = (float(now), int(frame_id))
+        previous = None if self.last_evidence_t is None else (self.last_evidence_t, self.last_frame)
+        if not math.isfinite(now) or frame_id <= self.last_frame or (previous is not None and key <= previous):
             raise ValueError('non-monotonic pose evidence')
+        same_time = self.last_evidence_t == now
         self.last_frame = int(frame_id)
         self.last_evidence_t = float(now)
         good = (settled and nis is not None and log_likelihood is not None
                 and math.isfinite(nis) and math.isfinite(log_likelihood)
                 and 0 <= nis <= MAX_NIS and MIN_LOG_LIKELIHOOD <= log_likelihood <= 0)
-        if good:
+        if good and not same_time:
             if self.good_times and now - self.good_times[-1] > EVIDENCE_MAX_AGE_S:
                 self.good_times = []
             self.good_times = (self.good_times + [float(now)])[-MIN_GOOD_FRAMES:]
-        elif settled and (nis is not None or log_likelihood is not None):
+        elif not good and settled and (nis is not None or log_likelihood is not None):
             self.good_times = []  # arm motion / no feature is not contradiction
         self.evidence = {'t': float(now), 'frame_id': int(frame_id), 'nis': nis,
-                         'log_likelihood': log_likelihood, 'settled': bool(settled), 'good': bool(good)}
+                         'log_likelihood': log_likelihood, 'settled': bool(settled), 'good': bool(good),
+                         'independent_time': not same_time}
 
     def consistent(self, now, since=None):
         return (len(self.good_times) >= MIN_GOOD_FRAMES
@@ -149,6 +152,12 @@ class OwnCamPoseSourceV3(OwnCamPoseSource):
 
     def on_frame(self, now, rgb):
         self.guard.advance(now)
+        if self.guard.last_evidence_t == now:
+            # Normal capture after reanchor need not advance physics. Deliver the
+            # image to the skill, but never reweight the PF with simultaneous data.
+            self.frames += 1
+            self.guard.observe_evidence(now, self.frames, nis=None, log_likelihood=None, settled=False)
+            return self.report(now)
         self.loc.predict_to(now)
         prior = self.loc.estimate()
         # Use the inherited detector/update path, but get the raw report below.

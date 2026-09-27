@@ -45,10 +45,13 @@
       "P_CONFIRMED",
       "MIN_HIT_INTERVAL_S",
       "KEEPOUT_SIGMAS",
-      "BLIND_SPOT_RETREAT_M"
+      "BLIND_SPOT_RETREAT_M",
+      "SLOT_CLEAR_MAX_AGE_S",
+      "SLOT_VIEW_STANDOFFS_M",
+      "SLOT_INSPECTION_TIMEOUT_S"
     ],
     "budget": "제안: dev 4 seeds x 최대 3 후보 x 조건별 1회, 각 720 SIM s. 모든 실패와 변경 이유 보존. coordinator 승인 전 실행하지 않는다.",
-    "data_boundary": "dev의 자기 RGB/명령/측정 진단으로 조정. GT는 별도 오프라인 채점만. test 결과로 임계값 재조정 금지."
+    "data_boundary": "dev의 자기 RGB/명령/측정 진단으로 조정. GT는 별도 오프라인 채점만. test 결과로 임계값 재조정 금지. v2 test s162/s164/s165는 이미 v3 개발·회귀에 사용해 노출된 자료다. 앞으로의 test는 새 미개봉 seed만 사용하고 새 dev에서만 조정한다."
   },
   "gates": {
     "before_test": [
@@ -56,8 +59,12 @@
       "전체 회귀 테스트 통과, v2 해시 불변",
       "dev 4/4 목표 달성, false success=0, false confirmed tracks=0",
       "부재/가림/모호 대응/과신/먼 상자/도착/파지/배치 경계 실패 재현 통과",
-      "dev의 하중 시야에서 목적 슬롯 관측 가능성 확인; unknown 배치 차단에 따른 교착 없어야 함",
-      "실행 소스 커밋, calibration/map/input/controller 해시와 최종 seed 예약, prereg REGISTERED"
+      "새 dev에서 하중 유지 SEARCH 관측점의 실제 슬롯 가시성·화물 가림·detector recall을 확인. unknown은 최대 2개 관측점 또는 120 SIM s 뒤 SLOT_UNVERIFIED/handoff, occupied는 차단. 최대 60 SIM s 바닥 근거와 새 pose fix를 복귀 후 재검사.",
+      "실행 소스 커밋, calibration/map/input/controller 해시와 최종 seed 예약, prereg REGISTERED",
+      "점유 차단은 관측 전용 존재 확률/가시 miss로만 해제; 시간 감쇠로 배치 허가하지 않음.",
+      "같은 SIM 시각 새 frame ID를 정상 처리하되 독립 관측/PF/free 누적은 금지.",
+      "free 바닥에도 xy/yaw 전체 지지영역·자기 팔·현재 화물 가림 검사 적용; 불확실하면 free로 기록하지 않음.",
+      "노출된 v2 test fixture는 회귀용만 사용. 미래 test는 모든 노출/dev seed와 분리된 새 seed만 동결."
     ],
     "claim": [
       "v3 성공 수 >= matched OFF 성공 수",
@@ -75,7 +82,10 @@
     "evaluation-only pose error at grasp/place/arrival gates",
     "non-target contact steps; keep-out geometry",
     "full/short escalation, search blind-spot retries, verification refusals",
-    "model calls/tokens/cost (zero for no-LLM M1), load average (not performance claim)"
+    "model calls/tokens/cost (zero for no-LLM M1), load average (not performance claim)",
+    "slot inspection attempts/time; SLOT_UNVERIFIED and handoff reasons",
+    "time-decayed vs observation-only existence probability; slot blocking",
+    "same-time captures skipped for evidence; visibility-rejected free cells"
   ],
   "stop_rules": {
     "test": "동결 후 새 seeds 조건당 1회; 제어기 실패 재시도 금지. 인프라 중단은 원본 보존 뒤 coordinator 판정.",
@@ -84,5 +94,22 @@
   },
   "records": "로컬 실험 폴더에 소스/환경/입력/모든 결과/실패/해시. 실제 실험 뒤 TensorBoard 새 snapshot과 원본 대비 값·영상 검증. 이번 작업에는 실험/평가 결과 및 TensorBoard 변환 없음.",
   "student": {},
-  "episodes": []
+  "episodes": [],
+  "revision": "PR #234 review2 after ac743938; DRAFT, no cohort authorized",
+  "exposed_fixture_policy": {
+    "origin": "memory_v2 preregistered test split: s162, s164, s165 (RGB 6 frames, issued servo and own pose reports)",
+    "used_for": "memory_v3 implementation development, geometry/attachment debugging and regression tests",
+    "exposed_seeds": [
+      161,
+      162,
+      163,
+      164,
+      165,
+      166
+    ],
+    "not_future_test": true,
+    "not_v3_success_samples": true,
+    "injected_assumptions": "v3 likelihood/innovation consistency and precise inspection pose / empty floor evidence are explicitly synthetic in unit fixtures, not recovered v3 execution evidence",
+    "future_test": "Only new never-opened seeds/episodes after new-dev tuning. Freeze code, vision source, conditions, thresholds and scoring before opening test. Never reuse exposed v2 seeds or fixture episodes as v3 test/performance evidence."
+  }
 }

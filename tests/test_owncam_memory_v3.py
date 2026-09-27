@@ -494,11 +494,14 @@ class ControllerAndBoundaryTests(unittest.TestCase):
     def test_unknown_slot_cannot_release_and_retry_is_bounded(self):
         ctl = controller()
         ctl.last_obs = {'sim_time': 1.}
-        with mock.patch.object(ctl, '_gate_look', return_value=ctl._hold()) as look:
-            for _ in range(3):
+        from harness.owncam_slot_inspection_v3 import MAX_SLOT_VIEWS
+        with mock.patch.object(ctl, '_start_leg') as start:
+            for _ in range(MAX_SLOT_VIEWS):
                 self.assertEqual(ctl._boundary_gate(1., 'place')['mode'], 'tick')
-            self.assertEqual(ctl._boundary_gate(1., 'place'), {'mode': 'done', 'outcome': 'PLACE_UNVERIFIED'})
-            self.assertEqual(look.call_count, 3)
+            result = ctl._boundary_gate(1., 'place')
+            self.assertEqual(result['outcome'], 'SLOT_UNVERIFIED')
+            self.assertTrue(result['handoff']['requires_upper_level_decision'])
+            self.assertEqual(start.call_count, MAX_SLOT_VIEWS)
         self.assertEqual(ctl.skill_factory.call_count, 0)
 
     def test_reverify_failure_never_falls_through_to_skill_after_second_abandon(self):

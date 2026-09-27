@@ -1,5 +1,15 @@
 # memory_v3 개발 기록 — 코호트 미실행
 
+## 2차 리뷰 이후 사용 범위
+
+아래 본문은 최초 구현 시점의 기록이다. 최신 변경은 [2차 리뷰 수정 기록](review2-fixes/README.md)을 따른다. 1차 수정의 `unknown` 배치 허용은 폐기했으며, 관측점에서 빈 슬롯을 확인하지 못하면 유한하게 실패하고 상위 실행기에 판단을 요청한다.
+
+`tests/fixtures/owncam_memory_v3_place/`의 s162/s164/s165는 **원래 memory_v2의 test split**이다. RGB 6장·자기 발행 servo·자기 PF 보고서를 **memory_v3 개발·디버깅·회귀**에 사용해 이미 노출했다. v3 일관성·새 관측점의 정밀 pose·빈 바닥 근거는 단위 fixture의 명시적인 합성 전제다. 저장 입력 검사 3/3은 실제 v3 에피소드 성공이 아니며, 이 자료를 v3 미개봉 test 또는 성능 표본으로 재사용하지 않는다.
+
+[prereg_DRAFT.json](prereg_DRAFT.json)의 `exposed_fixture_policy`에 같은 사실을 명시했다. 미래 test는 노출된 161–166 및 dev와 겹치지 않는 **새 미개봉 seed/episode만** 사용한다. PR #227 준비 후 새 dev에서 조정하고 test 개봉 전에 소스·조건·문턱·판정 기준을 동결한다. 상태는 계속 DRAFT/실행 불허다.
+
+## 최초 구현 기록
+
 2026-09-27, issue #217 / branch `codex/zone-owncam-memory-v3`, 작업 시작 HEAD `367b40da`.
 사용자 지시에 따라 `.git` 변경·커밋·push·PR 작성·코호트 실행을 하지 않았다. coordinator가 커밋한다.
 [설계](../../docs/design/2026-09-27-owncam-memory-v3.md), [DRAFT 사전등록](prereg_DRAFT.json).

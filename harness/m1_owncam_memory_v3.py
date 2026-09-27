@@ -16,6 +16,7 @@ from harness.owncam_landmark_tags import TagLandmarkProvider
 from harness.owncam_memory_v3 import OwnCamMemoryV3
 from harness.owncam_pose_guard_v3 import OwnCamPoseSourceV3, PoseGuardV3
 from harness.owncam_pose_source import PoseLimits, check_limits
+from harness.owncam_slot_inspection_v3 import SlotInspectionV3
 
 SCHEMA = 'ugrp.m1_owncam_memory.v3'
 BLIND_SPOT_RETREAT_M = .45
@@ -24,7 +25,7 @@ RELEASE_POSITION_TOL_M = .03
 RELEASE_YAW_TOL_RAD = .04
 
 
-class M1OwnCamDeliveryMemV3(M1OwnCamDeliveryMem):
+class M1OwnCamDeliveryMemV3(SlotInspectionV3, M1OwnCamDeliveryMem):
     def __init__(self, static_map, params, **kwargs):
         super().__init__(static_map, params, **kwargs)
         guard = PoseGuardV3()
@@ -34,6 +35,8 @@ class M1OwnCamDeliveryMemV3(M1OwnCamDeliveryMem):
         self.pose.detector = _RecordingDetector(self.pose.detector)
         self.verification = {}
         self.blind_spot_retry = False
+        self.slot_inspection = None
+        self.slot_handoff = None
 
     def on_frame(self, now, obs, rgb):
         report = super().on_frame(now, obs, rgb)
@@ -156,15 +159,13 @@ class M1OwnCamDeliveryMemV3(M1OwnCamDeliveryMem):
             rv = self.memory.reverify(self.target_track_id, now, since=gate['since'])
             observation_ok = rv['status'] == 'fresh'
         else:
-            self.slot_record = self.memory.slot_state(now, self.slot_xy, self._slot_half(),
-                                                      exclude=[self.target_track_id], since=gate['since'])
-            if self.slot_record['state'] == 'occupied':
-                self.outcome = 'SLOT_OCCUPIED_IN_MEMORY'
-                return {'mode': 'done', 'outcome': self.outcome}
-            # Loaded LOOK cannot see the slot floor. Verify release readiness
-            # using evidence available at the restored lift-top posture. This
-            # does NOT certify an empty slot or successful placement; the frozen
-            # skill still requires its post-release own-RGB look-back.
+            state = self._slot_state(now)
+            if state == 'occupied':
+                return self._slot_fail(now, 'occupied')
+            if state != 'free':
+                return self._begin_slot_inspection(now)
+            # Empty-slot observation AND release readiness are required. A
+            # held-cargo image alone can never replace observed free floor.
             evidence = self._release_evidence(now, obs, rep)
             gate['release_evidence'] = evidence
             observation_ok = evidence['ready'] and evidence['observed_at'] >= gate['since']
@@ -230,4 +231,5 @@ class M1OwnCamDeliveryMemV3(M1OwnCamDeliveryMem):
 
     def summary(self):
         return {**super().summary(), 'schema': SCHEMA, 'verification_v3': self.verification,
-                'blind_spot_retry_v3': self.blind_spot_retry}
+                'blind_spot_retry_v3': self.blind_spot_retry, 'slot_handoff_v3': self.slot_handoff,
+                'slot_inspection_v3': self.slot_inspection}

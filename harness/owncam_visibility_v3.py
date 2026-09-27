@@ -44,17 +44,34 @@ def _raw_projection_contracts(view, camera_points):
     return bool(np.min(values) > 0. and np.max(values) <= 1. + 1e-12)
 
 
-def self_arm_clear(pose, servo, points_w):
-    """Accept only the open SEARCH posture's conservative clear ray cone.
+def _raw_max_row(view, camera_points):
+    """Conservative raw row bound for the entire convex camera support."""
+    zmin = float(camera_points[:, 2].min())
+    rmax = float(np.linalg.norm(np.abs(camera_points[:, :2]).max(axis=0))/zmin)
+    theta = math.atan(rmax)
+    # Lower bound for the radial polynomial; dropping positive terms can only
+    # lower it. The contraction certificate above supplies the upper bound 1.
+    pmin = 1. + sum(min(0., float(d))*theta**(2*(i+1)) for i, d in enumerate(view.D.ravel()))
+    scale_min = max(0., pmin)*(theta/rmax if rmax else 1.)
+    ys = camera_points[:, 1]/camera_points[:, 2]
+    return float(view.K[1, 2] + view.K[1, 1]*max(ys.max(), scale_min*ys.max()))
+
+
+def self_arm_clear(pose, servo, points_w, *, loaded=False):
+    """Accept only SEARCH's conservative clear ray cone.
 
     Static arm geometry (visual_arm / masterpi_scene_v2.xml): in SEARCH the
     shoulder/elbow/wrist stay behind the camera plane. The forward jaws lie
     below tool z=.0056 m; the lens surround starts at z=.016, ending at x=.070.
     Rays from (.067, 0, .0136) with tool slope in [0, .5] clear both. Reject the
     whole lower cone, including space between the fingers, and every other
-    posture. This deliberately over-rejects; no encoder or live body pose used.
+    posture. Loaded floor inspection may close the jaws (lateral translation
+    only); its caller must additionally bound current cargo occlusion. This
+    deliberately over-rejects; no encoder or live body pose used.
     """
-    if any(servo.get(k, servo.get(str(k))) != SEARCH_POSE[k] for k in (1, 3, 4, 5)):
+    expected_grip = 1500 if loaded else SEARCH_POSE[1]
+    if servo.get(1, servo.get('1')) != expected_grip or any(
+            servo.get(k, servo.get(str(k))) != SEARCH_POSE[k] for k in (3, 4, 5)):
         return False
     if servo.get(6, servo.get('6')) is None:
         return False
@@ -75,7 +92,16 @@ def self_arm_clear(pose, servo, points_w):
                        & (up <= SELF_CLEAR_MAX_TOOL_SLOPE*forward + 1e-12)))
 
 
-def absence_visible(view, tr, pose, cov, servo, rows, *, box_half, box_z, max_range):
+def support_visible(view, xy, sigma, pose, cov, servo, rows, *, box_half, box_z, max_range,
+                    loaded=False, cargo_row_limit=None):
+    """Same complete uncertainty/self-arm criteria for track misses and free cells.
+
+    Loaded SEARCH also requires a current-image cargo occlusion bound. Closing
+    the jaws changes lateral position only; the same clear tool cone applies.
+    """
+    if loaded and (cargo_row_limit is None or not math.isfinite(cargo_row_limit)):
+        return False
+    xy = np.asarray(xy, float)
     cov = np.asarray(cov, float)
     if cov.shape != (3, 3) or not np.isfinite(cov).all() or not np.isfinite(pose).all():
         return False
@@ -85,29 +111,43 @@ def absence_visible(view, tr, pose, cov, servo, rows, *, box_half, box_z, max_ra
     yaw_half = VISIBILITY_SIGMAS*math.sqrt(max(0., float(cov[2, 2])))
     # Independent worst-case bounds (sum, not RSS): every translation and yaw
     # in the stated marginal k-sigma support is covered, including correlation.
-    target_radius = math.sqrt(2.)*box_half + VISIBILITY_SIGMAS*tr.sigma_m()
+    target_radius = math.sqrt(2.)*box_half + VISIBILITY_SIGMAS*sigma
     translation_radius = VISIBILITY_SIGMAS*xy_sigma
-    yaw_radius = yaw_enclosure_radius(float(np.linalg.norm(tr.x-np.asarray(pose[:2]))), yaw_half)
+    yaw_radius = yaw_enclosure_radius(float(np.linalg.norm(xy-np.asarray(pose[:2]))), yaw_half)
     radius = target_radius + translation_radius + yaw_radius
     offsets = np.array([(0, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)])*radius
-    pts = np.column_stack((tr.x + offsets, np.full(len(offsets), box_z)))
+    pts = np.column_stack((xy + offsets, np.full(len(offsets), box_z)))
     cam = view.camera_world(pose, servo)
     cam_radius = translation_radius + yaw_enclosure_radius(float(np.linalg.norm(cam[:2]-pose[:2])), yaw_half)
-    if np.linalg.norm(tr.x-cam[:2]) + target_radius + cam_radius > max_range:
+    if np.linalg.norm(xy-cam[:2]) + target_radius + cam_radius > max_range:
         return False
     # Express uncertain headings as rotated target points at the mean heading;
     # the radius encloses the complete rotation arc, including interior extrema.
-    if not all(view.point_in_view(pose, servo, False, p) for p in pts):
+    if not loaded and not all(view.point_in_view(pose, servo, False, p) for p in pts):
         return False
-    camera_points = view.to_camera(pts, np.asarray(pose), servo, False)[0]
-    if not _raw_projection_contracts(view, camera_points) or not self_arm_clear(pose, servo, pts):
+    camera_points = view.to_camera(pts, np.asarray(pose), servo, loaded)[0]
+    if loaded:
+        raw, ideal, valid = view.project(camera_points)
+        # Retain the frozen upper-band ceiling AND require the current own
+        # cargo silhouette bound supplied by the floor observer.
+        if not (np.all(valid & view.in_view(raw, ideal, False, 30.))
+                and not view.occluded(cam, pts).any()):
+            return False
+    if not _raw_projection_contracts(view, camera_points) or not self_arm_clear(pose, servo, pts, loaded=loaded):
+        return False
+    if loaded and _raw_max_row(view, camera_points) >= cargo_row_limit:
         return False
     # The world-space AABB contains ALL rays from the uncertain camera origin
     # to the box support. Any intersecting wall/foreground envelope defers the
     # miss (even low walls). This also catches occluders between sample rays.
-    lo = np.minimum(cam[:2]-cam_radius, tr.x-target_radius)
-    hi = np.maximum(cam[:2]+cam_radius, tr.x+target_radius)
+    lo = np.minimum(cam[:2]-cam_radius, xy-target_radius)
+    hi = np.maximum(cam[:2]+cam_radius, xy+target_radius)
     obstacles = [(c, h) for c, h, _ in view.occluders]
     obstacles += [(np.asarray(r['map_xy']), .03 + VISIBILITY_SIGMAS*r['sigma_m']) for r in rows]
     return not any(np.all(np.asarray(c)+h >= lo) and np.all(np.asarray(c)-h <= hi)
                    for c, h in obstacles)
+
+
+def absence_visible(view, tr, pose, cov, servo, rows, *, box_half, box_z, max_range):
+    return support_visible(view, tr.x, tr.sigma_m(), pose, cov, servo, rows,
+                           box_half=box_half, box_z=box_z, max_range=max_range)

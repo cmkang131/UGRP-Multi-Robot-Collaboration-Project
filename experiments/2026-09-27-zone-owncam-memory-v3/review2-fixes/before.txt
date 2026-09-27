@@ -1,0 +1,123 @@
+Numerical thread caps: 1; OpenCV threads: 1; pytest worker: main process
+FFFFFF                                                                   [100%]
+=================================== FAILURES ===================================
+________________ test_p1_unknown_slot_never_authorizes_release _________________
+
+    def test_p1_unknown_slot_never_authorizes_release():
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        with mock.patch.object(ctl, '_start_leg'):
+>           assert ctl._boundary_gate(now, 'place') is not None
+E           AssertionError: assert None is not None
+E            +  where None = _boundary_gate(237.912, 'place')
+E            +    where _boundary_gate = <harness.m1_owncam_memory_v3.M1OwnCamDeliveryMemV3 object at 0x112eaca40>._boundary_gate
+
+tests/test_owncam_memory_v3_review2.py:21: AssertionError
+_____________ test_p1_time_decay_cannot_remove_slot_occupancy_veto _____________
+
+    def test_p1_time_decay_cannot_remove_slot_occupancy_veto():
+        ctl, now, _, _, _ = saved_place(SAVED[0])
+        tr = BoxTrackV3('old-obstacle', 'red', np.array(ctl.slot_xy), np.eye(2)*.01,
+                        now-225., 1, 'far_coarse', .001)
+        tr.evidence(now-225., detected=True, range_class='far_coarse', pose_sigma=.02)
+        ctl.memory.tracks.append(tr)
+        ctl.memory.log_odds[:] = -2.
+        ctl.memory.free_observed_at[:] = now
+        state = ctl.memory.slot_state(now, ctl.slot_xy, ctl._slot_half())
+        assert tr.existence_p < P_KEEPOUT  # The probabilistic survival prior may decay.
+>       assert state['state'] != 'free'    # It cannot itself authorize manipulation.
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert 'free' != 'free'
+
+tests/test_owncam_memory_v3_review2.py:35: AssertionError
+____ test_p1_new_frame_at_same_time_is_accepted_without_extra_pose_evidence ____
+
+    def test_p1_new_frame_at_same_time_is_accepted_without_extra_pose_evidence():
+        guard = PoseGuardV3()
+        guard.observe_evidence(1., 1, nis=0., log_likelihood=-1., settled=True)
+>       guard.observe_evidence(1., 2, nis=0., log_likelihood=-1., settled=True)
+
+tests/test_owncam_memory_v3_review2.py:43: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.owncam_pose_guard_v3.PoseGuardV3 object at 0x1136cc260>
+now = 1.0, frame_id = 2, nis = 0.0, log_likelihood = -1.0, settled = True
+
+    def observe_evidence(self, now, frame_id, *, nis, log_likelihood, settled):
+        """One own image's evidence. Duplicate frames cannot build confidence."""
+        if not math.isfinite(now) or frame_id <= self.last_frame or (
+                self.last_evidence_t is not None and now <= self.last_evidence_t):
+>           raise ValueError('non-monotonic pose evidence')
+E           ValueError: non-monotonic pose evidence
+
+harness/owncam_pose_guard_v3.py:77: ValueError
+__________ test_p1_controller_normal_same_time_capture_does_not_raise __________
+
+    def test_p1_controller_normal_same_time_capture_does_not_raise():
+        ctl = controller()
+        ctl.on_command({'t': 0., 'kind': 'initial_servo_command', 'pulses': SEARCH_POSE})
+        rgb = np.zeros((480, 640, 3), np.uint8)
+        obs = {'sim_time': 1., 'frame_id': 1, 'image': None,
+               'actuator_state': {'servo_pulses': {str(k): v for k, v in SEARCH_POSE.items()}}}
+>       ctl.on_frame(1., obs, rgb)
+
+tests/test_owncam_memory_v3_review2.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+harness/m1_owncam_memory_v3.py:39: in on_frame
+    report = super().on_frame(now, obs, rgb)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/m1_owncam_memory.py:101: in on_frame
+    report = super().on_frame(now, obs, rgb)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/m1_owncam_delivery.py:164: in on_frame
+    m1_owncam_contract.validate_observation(obs, robot_id=self.robot_id, previous_frame_id=self.last_frame_id, now=now)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obs = {'sim_time': 1.0, 'frame_id': 1, 'image': None, 'actuator_state': {'servo_pulses': {'1': 2000, '3': 740, '4': 2320, '5': 1320, ...}}}
+robot_id = 'r1', previous_frame_id = None, now = 1.0, max_age_s = 0.25
+
+    def validate_observation(obs: Mapping, *, robot_id: str, previous_frame_id: int | None,
+                             now: float, max_age_s: float = .25) -> None:
+        """Own wrist camera, own robot, a new frame, recent, and the hash matches the bytes."""
+        if obs.get('camera') != 'robot_cam':
+>           raise M1ContractError(f"M1 observation camera {obs.get('camera')!r} is not robot_cam")
+E           harness.m1_owncam_contract.M1ContractError: M1 observation camera None is not robot_cam
+
+harness/m1_owncam_contract.py:37: M1ContractError
+____________ test_p2_floor_free_requires_whole_yaw_interval_visible ____________
+
+    def test_p2_floor_free_requires_whole_yaw_interval_visible():
+        mem = memory()
+        for t in (1., 1.4, 1.8):
+            rep = replace(report(t, x=0., y=0.), std_yaw_rad=.5,
+                          cov=tuple(map(tuple, np.diag([.0001, .0001, .25]))))
+            feed(mem, t, rep=rep)
+        free = mem.log_odds <= -.6
+        assert free.any()  # Baseline reproducer establishes there was an update.
+        invisible = [i for i in np.flatnonzero(free)
+                     if not mem.view.point_in_view((0., 0., 1.), SEARCH_POSE, False, (*mem.view.cells[i], 0.))]
+>       assert not invisible
+E       assert not [np.int64(6749), np.int64(6877), np.int64(6878), np.int64(7004), np.int64(7005), np.int64(7006), ...]
+
+tests/test_owncam_memory_v3_review2.py:71: AssertionError
+_______________ test_p2_floor_free_requires_self_arm_visibility ________________
+
+    def test_p2_floor_free_requires_self_arm_visibility():
+        mem = memory()
+        for t in (1., 1.4, 1.8):
+            feed(mem, t, rep=report(t, x=0., y=0.))
+        free = mem.log_odds <= -.6
+        assert free.any()
+        hidden = [i for i in np.flatnonzero(free)
+                  if not self_arm_clear((0., 0., 0.), SEARCH_POSE, np.array([[*mem.view.cells[i], 0.]]))]
+>       assert not hidden
+E       assert not [np.int64(7639), np.int64(7640), np.int64(7767), np.int64(7768), np.int64(7769), np.int64(7896), ...]
+
+tests/test_owncam_memory_v3_review2.py:82: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_owncam_memory_v3_review2.py::test_p1_unknown_slot_never_authorizes_release
+FAILED tests/test_owncam_memory_v3_review2.py::test_p1_time_decay_cannot_remove_slot_occupancy_veto
+FAILED tests/test_owncam_memory_v3_review2.py::test_p1_new_frame_at_same_time_is_accepted_without_extra_pose_evidence
+FAILED tests/test_owncam_memory_v3_review2.py::test_p1_controller_normal_same_time_capture_does_not_raise
+FAILED tests/test_owncam_memory_v3_review2.py::test_p2_floor_free_requires_whole_yaw_interval_visible
+FAILED tests/test_owncam_memory_v3_review2.py::test_p2_floor_free_requires_self_arm_visibility
+6 failed in 0.64s

@@ -55,8 +55,16 @@ def saved_place(item):
     return ctl, now, xy, before, after
 
 
+def explicit_empty_slot_evidence(ctl, now):
+    """Synthetic, separate floor evidence; the saved v2 RGB alone cannot give it."""
+    mask = ctl.memory.slot_cells(ctl.slot_xy, ctl._slot_half())
+    ctl.memory.log_odds[mask] = -2.
+    ctl.memory.free_observed_at[mask] = now
+    ctl.memory.free_frame_ids[mask] = 5000
+
+
 @pytest.mark.parametrize('item', SAVED, ids=lambda i: f"s{i['seed']}")
-def test_p1_place_gate_accepts_attainable_saved_release_evidence(item):
+def test_saved_release_evidence_plus_separate_empty_slot_observation_passes(item):
     ctl, now, xy, before, after = saved_place(item)
     # Actual saved pose + fixed camera model: no possible loaded floor proof.
     slot = np.all(np.abs(ctl.memory.view.cells - ctl.slot_xy) <= ctl._slot_half(), axis=1)
@@ -65,9 +73,10 @@ def test_p1_place_gate_accepts_attainable_saved_release_evidence(item):
             idx, _ = ctl.memory.view.floor_footprint(xy, {**posture, 6: pan}, True, max_range=1.1)
             assert not slot[idx].any()
     assert compare_box_comotion(before, after, min_saturation=150)['attached']
+    explicit_empty_slot_evidence(ctl, now)
     with mock.patch.object(ctl, '_gate_look', return_value={'mode': 'capture'}):
         assert ctl._boundary_gate(now, 'place') is None
-    assert ctl.slot_record['state'] == 'unknown'  # Never manufacture free floor evidence.
+    assert ctl.slot_record['state'] == 'free'
 
 
 def leg_fixture(loaded, yaw=.08, mode='full'):
@@ -127,6 +136,7 @@ def test_p2_self_gripper_possible_occlusion_defers_miss():
                                    'uninitialized', 'large_sigma'])
 def test_place_gate_rejects_missing_or_contradictory_release_evidence(failure):
     ctl, now, _, _, _ = saved_place(SAVED[0])
+    explicit_empty_slot_evidence(ctl, now)
     rep = ctl.pose.report(now)
     if failure == 'occupied':
         _, tr = track_at(*ctl.slot_xy)
@@ -177,12 +187,13 @@ def test_release_reanchor_runs_before_gate_without_consuming_release_action():
 def test_saved_release_pose_reaches_skill_dispatch(item):
     from harness.wrist_zone_skill import PoseEstimate
     ctl, now, _, _, _ = saved_place(item)
+    explicit_empty_slot_evidence(ctl, now)
     ctl.last_look_t = now
     ctl.pose_estimate_cls = PoseEstimate
     ctl.skill.decide = mock.Mock(return_value={'kind': 'wait', 'duration': .05})
     assert ctl._skill(now) == {'mode': 'macro', 'action': {'kind': 'wait', 'duration': .05}}
     ctl.skill.decide.assert_called_once()
-    assert ctl.slot_record['state'] == 'unknown'
+    assert ctl.slot_record['state'] == 'free'
     assert ctl.outcome is None
 
 

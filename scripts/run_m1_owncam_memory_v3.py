@@ -30,6 +30,7 @@ MEMORY_FILES = ('harness/owncam_memory.py', 'harness/owncam_memory_kf.py', 'harn
                 'harness/m1_owncam_memory.py', 'scripts/run_m1_owncam_memory.py',
                 'harness/owncam_pose_guard_v3.py', 'harness/owncam_memory_v3.py',
                 'harness/owncam_visibility_v3.py',
+                'harness/owncam_slot_inspection_v3.py',
                 'harness/owncam_drive_mem_v3.py', 'harness/m1_owncam_memory_v3.py',
                 'scripts/run_m1_owncam_memory_v3.py')
 THREAD_VARS = ('OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'VECLIB_MAXIMUM_THREADS', 'MKL_NUM_THREADS')
