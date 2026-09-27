@@ -17,8 +17,11 @@ class GuardedPoseProviderV3:
         return getattr(self.provider, name)
 
     def on_command(self, row):
-        self.guard.on_command(row, self.provider.loc._motion_params())
+        self.guard.on_command(row, self.get_motion_params())
         self.provider.on_command(row)
+
+    def get_motion_params(self):
+        return self.provider.get_motion_params()
 
     def on_frame(self, now, rgb):
         self.guard.advance(now)

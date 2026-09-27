@@ -1,7 +1,8 @@
 # Pair executor dev PHYSICAL 게이트 준비 — 2026-09-27
 
-최신 미실행 후보는 [제공자 주입 생성자·prepare 검증 v5e](landmark_v5e.md)와 [prereg_v5e.json](prereg_v5e.json)이다.
-#221 결정에 따라 dev11·dev12는 prepare-only로 보류한다. 아래 과거 기록과 사전등록은 그대로 보존한다.
+최신 미실행 후보는 [검토 8 반영 v5g](review8_v5g.md)와 [prereg_v5g.json](prereg_v5g.json)이다.
+dev11·dev12는 승인 null이며 prepare-only다. [실행 승인](../../docs/zone_pair_execution_authorization.md)은
+실행 직전 GitHub 소유자 댓글·소스 SHA·등록 해시·run_id 대조를 요구한다. 아래 과거 기록과 사전등록은 그대로 보존한다.
 
 ## dev07/dev08 결과 진단 — 소스 8effc2ce, prereg_v4
 

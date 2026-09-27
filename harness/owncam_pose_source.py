@@ -139,6 +139,10 @@ class OwnCamPoseSource:
     def expected_observability(self, pose, pan, static_map):
         return expected_tag_observability(pose, pan, static_map)
 
+    def get_motion_params(self) -> dict:
+        import copy
+        return copy.deepcopy(self.loc._motion_params())
+
     def on_command(self, row: Mapping) -> None:
         """One own issued command (time ordered, as logged at the robot's port)."""
         self.loc.command(row)

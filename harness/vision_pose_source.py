@@ -159,6 +159,9 @@ class VisionPoseSource:
         self.loc._pf.init_gaussian(tuple(float(v) for v in mean), tuple(float(v) for v in std))
         self.prior = {'mean': [float(v) for v in mean], 'std': [float(v) for v in std], 'source': source}
 
+    def get_motion_params(self) -> dict:
+        return copy.deepcopy(self.loc._pf._motion_params())
+
     def on_command(self, row: Mapping) -> None:
         """One own issued command (time ordered, as logged at the robot's port)."""
         self.loc._pf.command(row)

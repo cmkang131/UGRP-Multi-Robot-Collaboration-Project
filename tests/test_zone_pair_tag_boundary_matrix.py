@@ -54,17 +54,25 @@ def own(p, static, rid='r1'):
 
 
 def host_fixture(monkeypatch, static):
+    import sys
+    from types import ModuleType
     from harness.zone_own_team_host import OwnCamTeamHost
     from scripts import run_zone_study_integration as runner
-    from sim import camera_robot_port, multi_masterpi_production, zone_own_scene_provider
+    from sim import zone_own_scene_provider
     scene = NS(engine_layout='fixture', config={'static_map': static, 'setup_only': {'objects': {}, 'spawns': {}}},
                setup=lambda w: None, transform=lambda x: x)
     world = NS(model=NS(opt=NS(noslip_iterations=10, timestep=.00025)), data=NS(time=0.),
                robot=lambda rid: NS(servo_command_pulses=SEARCH_POSE), close=lambda: None)
     monkeypatch.setattr(zone_own_scene_provider, 'own_scene', lambda *a: scene)
-    monkeypatch.setattr(multi_masterpi_production, 'MultiMasterPiProductionV2', lambda **kw: world)
-    monkeypatch.setattr(camera_robot_port, 'CameraRobotPort',
-                        lambda w, r, **kw: NS(capture=lambda *a: None))
+    # Install fake physical dependencies before the host's lazy imports. This
+    # fixture must work with MuJoCo poisoned and an otherwise empty import cache.
+    for name, attr, factory in (
+        ('sim.multi_masterpi_production', 'MultiMasterPiProductionV2', lambda **kw: world),
+        ('sim.camera_robot_port', 'CameraRobotPort', lambda w, r, **kw: NS(capture=lambda *a: None)),
+    ):
+        module = ModuleType(name)
+        setattr(module, attr, factory)
+        monkeypatch.setitem(sys.modules, name, module)
     monkeypatch.setattr(OwnCamTeamHost, '_geoms', lambda self: None)
     monkeypatch.setattr(runner.zone_eval_top, 'apply_to_world', lambda *a: {})
     spec = dict(map=static['map_id'], seed=3, goal={'A': {'cyan': 1}}, order_sheet=SHEET,

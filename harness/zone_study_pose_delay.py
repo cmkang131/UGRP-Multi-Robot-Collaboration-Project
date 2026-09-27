@@ -72,6 +72,10 @@ class DelayedPoseSource:
     def set_motion_profile(self, now, name):
         self._queue(float(now), 'set_motion_profile', float(now), name)
 
+    def get_motion_params(self):
+        # Do not drain pending inputs or expose a future profile to the guard.
+        return self.provider.get_motion_params()
+
     def on_frame(self, now, rgb):
         self._queue(float(now), 'on_frame', float(now), rgb.copy())
         return self.report(now)

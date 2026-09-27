@@ -95,13 +95,15 @@ class BoundaryTests(unittest.TestCase):
         out = subprocess.run([sys.executable, '-c', code], cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(out.returncode, 0, out.stderr[-2000:])
 
-    # Reviewed post-freeze revisions that reached main after the M1 freeze. The recorded results stay tied to
+    # Explicit post-freeze revisions (including PR #240 candidates). The recorded results stay tied to
     # frozen_source.json's source_sha, and test launches still refuse a tree that differs from the frozen hashes;
     # any further change to these files still fails this test.
     POST_FREEZE_REVISIONS = {
         'harness/owncam_pose_source.py': {
             '7c41c40db0c502af8522f263971ebfb0ae370543952da2a31960e3044e5388da':
-                'PR #240 HEAD 8b0ddd27 existing neutral fix receipt adapter; unchanged in this revision',
+                'PR #240 HEAD 8b0ddd27 neutral fix receipt adapter',
+            '7e45cc820f3c0b96b0144c2a3318bf7b18a97f61d88aec2a62130e96ed29b155':
+                'PR #240 v5g: add detached public get_motion_params; frozen PF and old records unchanged',
         },
         'scripts/run_m1_owncam.py': {
             '95b6b76cd381e78d71868a938c241aac39c58c4e534ab1608c6d0cb9ce7e256f':

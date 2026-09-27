@@ -7,6 +7,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PATHS = (
     'harness/owncam_delivery_shared.py', 'harness/owncam_memory_delivery.py',
     'harness/owncam_memory_inputs.py', 'harness/owncam_pose_guard_provider.py',
+    'harness/owncam_pose_guard_v3.py', 'configs/zone_pair_authorization.json',
     'harness/owncam_drive_mem_v3.py', 'harness/m1_owncam_memory_v3.py',
     'harness/vision_motion_init.py', 'harness/m2_provider_adapter.py',
     'harness/zone_own_deliver.py', 'harness/zone_own_team_host.py',

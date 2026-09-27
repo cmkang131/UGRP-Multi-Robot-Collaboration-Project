@@ -1,0 +1,564 @@
+{
+  "schema": "ugrp.zone_pair_dev.v1",
+  "status": "REGISTERED",
+  "labels": [
+    "tags_temporary",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "research_result": false,
+  "execution_status": "not_run",
+  "source_review_base": "1d756c5f2706bc662d50f334d0db9e7b8a75d479",
+  "execution_source_sha": null,
+  "source_rule": "Prepare by default. After committing reviewed source and registration, bind authorization to HEAD, registration hash and run_id. Execute requires live gh lookup of an allowed owner comment containing the exact approval_digest line.",
+  "environment": {
+    "map": "zone_wide_door_tags_v2_dock_v3",
+    "participants": [
+      "r1",
+      "r2"
+    ],
+    "world_robots": [
+      "r1",
+      "r2",
+      "r3"
+    ],
+    "cargo": [
+      {
+        "item_id": "cargoX",
+        "kind": "long_beam"
+      }
+    ],
+    "other_objects": 0,
+    "weld": false,
+    "contact_profile": "cargo_noslip_v1",
+    "noslip_iterations": 10,
+    "timestep_s": 0.00025
+  },
+  "inputs": {
+    "map": {
+      "path": "maps/zones/zone_wide_door_tags_v2_dock_v3.json",
+      "sha256": "ff85120be345f8c264c0a6158bce8b5102ac10aaff4d77e0820cb8cde7a3b4e8"
+    },
+    "calibration": {
+      "path": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+    },
+    "order_sheet_sha256": "aceebb84a755a5f4532ea14957018cee26c537a78416305d3f6fc4324c4c53c8"
+  },
+  "runs": [
+    {
+      "id": "dev11",
+      "seed": 907,
+      "setup_beam_xyyaw": [
+        1.0,
+        0.05,
+        0.0
+      ],
+      "coarse_order_sheet": {
+        "beam_xyyaw": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "grid": {
+          "xy_m": 0.1,
+          "yaw_rad": 0.174533
+        },
+        "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+      },
+      "intervention": "none",
+      "purpose": "Full approach, grasp, lift, doorway, B placement/release attempt"
+    },
+    {
+      "id": "dev12",
+      "seed": 908,
+      "setup_beam_xyyaw": [
+        0.93,
+        -0.02,
+        -0.07
+      ],
+      "coarse_order_sheet": {
+        "beam_xyyaw": [
+          0.9,
+          0.0,
+          0.0
+        ],
+        "grid": {
+          "xy_m": 0.1,
+          "yaw_rad": 0.174533
+        },
+        "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+      },
+      "intervention": "abort_after_carry_go",
+      "purpose": "r2 abort 0.1 SIM s after own first carry GO; paired GO and queue/command audit, never a success-rate trial"
+    }
+  ],
+  "planned_run_count": 2,
+  "denominator": "1 nominal development attempt + 1 carry-GO abort diagnostic; fresh dev11/dev12 seeds 907/908; not held-out research trials; all refusals retained; no retries or pooling with dev01-dev10",
+  "limits": {
+    "sim_s": 900.0,
+    "wall_s": 57600.0,
+    "submit_at_s": 60.0,
+    "post_terminal_s": 2.0,
+    "outer_wall_timeout_s": 57660.0,
+    "model_calls": 0
+  },
+  "criteria": {
+    "max_sample_gap_s": 0.05035,
+    "approach_xy_m": 0.12,
+    "approach_yaw_deg": 15.0,
+    "grasp_finger_n": 1.0,
+    "grasp_dwell_s": 0.2,
+    "lift_bottom_m": 0.04,
+    "lift_dwell_s": 0.2,
+    "door_west_x_m": 2.175,
+    "door_east_x_m": 2.225,
+    "door_y_min_m": -0.18,
+    "door_y_max_m": 0.28,
+    "destination_center_m": [
+      4.6,
+      -2.1
+    ],
+    "destination_half_extents_m": [
+      0.3,
+      0.7
+    ],
+    "footprint_tolerance_m": 0.02,
+    "floor_penetration_tolerance_m": 0.005,
+    "release_bottom_m": 0.01,
+    "release_tilt_deg": 10.0,
+    "release_finger_n": 0.2,
+    "release_dwell_s": 1.0,
+    "release_speed_m_s": 0.02,
+    "drop_bottom_m": 0.01,
+    "max_transport_tilt_deg": 15.0,
+    "contact_force_epsilon_n": 1e-06,
+    "r3_max_displacement_m": 0.02,
+    "post_abort_s": 0.5,
+    "coverage_time_tolerance_s": 1e-07,
+    "planned_setdown_xy_m": 0.12,
+    "door_clear_dwell_s": 0.2,
+    "gt_sample_period_s": 0.05
+  },
+  "stage_rules": {
+    "approach": "Each consumed approach GO needs own base GT within 0.12 m / 15 deg of static prestation; nearest subsequent trace <=50.35 ms.",
+    "joint_grasp": "Both fingers of BOTH robots >=1 N continuously 0.2 SIM s.",
+    "lift": "All eight beam box corners >=0.04 m above floor AND joint grasp continuously 0.2 SIM s.",
+    "door": "Whole beam previously west of slab x[2.175,2.225]; every slab-overlap sample stays in y[-0.18,0.28] and has lift/grip unless an authorized planned set-down. Then ALL corners must be east of x=2.225 with both controllers carrying, every finger >=1 N and bottom >=0.04 m continuously 0.2 SIM s. Center x=2.40 alone is not passage.",
+    "placement_release": "After door passage, final 1 s: full projected beam footprint inside B + 0.02 m tolerance; bottom [-0.005,0.01], tilt<=10 deg, every finger<0.2 N, speed<=0.02 m/s; both controllers done. B width equals 0.60 m beam length: 2 cm tolerance is explicit dev only.",
+    "drop": "After first lift, loss of joint grasp fails unless the beam is currently floor-supported within an authorized planned set-down. Bottom<0.01 m outside that set-down fails. Confirmed re-lift closes that segment's exemption even before the next carry GO; later landing/recontact cannot reopen it or erase earlier failures. Tilt>15 deg or penetration>0.005 m always fails, including during planned set-down. No blanket exemption by state name; failed/abort never exempts.",
+    "contacts": "Every 0.25 ms physics step: penetrating contact with normal force>1e-6 N; robot-robot, robot-wall, beam-wall, pre-align robot-beam and r3-to-participant/cargo must all be zero. Normal finger grip and floor support permitted.",
+    "go": "First consumption of every seen phase/segment GO by r1/r2 at same SIM timestamp (1e-8 tolerance); nominal requires approach@0 plus lift/carry/lower/open for every planned segment.",
+    "abort": "Inspect retained endpoint arm/carry/port queues, host macro/capture queue and actual port interpolation/motors after STATUS abort. All empty/stopped; zero arm/look/drive/mecanum commands even later in same SIM instant. Observe >=0.5 SIM s after abort.",
+    "video": "Manual named reviewer must approve all stages, tied to run_id and exact trace/video SHA256; absent review cannot pass.",
+    "completion": "PAIR_SEQUENCE_DONE/unconfirmed is only executor sequence evidence. No GT-derived result is sent back to actors.",
+    "coverage": "Trace first and final samples match manifest.simulator_start_s and sim_end_s within 1e-7 s; strictly increasing, <=50.35 ms gaps, all on the applied 0.25 ms grid. Contact observation covers the same endpoints, counts exactly round((end-start)/dt) physics intervals (initial observation is not a step), max step gap matches dt and invalid intervals=0. Missing metadata/prefix/tail/step is EVIDENCE_INCOMPLETE; includes abort diagnostics.",
+    "prereg_integrity": "Before any scoring, SHA256 of the exact saved prereg.json bytes must equal original manifest.prereg.sha256. Missing/mismatched hash is EVIDENCE_INCOMPLETE. Prepare copies bytes unchanged; no post-run reformatting or rebinding.",
+    "host_error": "An explicit manifest host_error or state=host_error is HOST_ERROR with its original cause, even without pair route/trace/video. No physical scoring; prereg integrity and absent evidence are reported separately. ENOSPC remains HOST_ERROR.",
+    "admission_diagnostics": "Before scoring, every refused pair_carry API action_id must have exactly one eval_only/pair_admission.jsonl receipt. Missing receipt is DIAGNOSTIC_EVIDENCE_INCOMPLETE, never proof of a different cause. Keep the 60 s one-shot submission unless a coordinator-approved fresh prereg explicitly changes it."
+  },
+  "r3_policy": {
+    "world_has_three_robots": true,
+    "mode": "Seeded original row/z/yaw, x=-0.65 m in the new static dock; no task API or arm/drive commands; normal geometry/collision/mass/camera preserved.",
+    "reason": "All three dock slots and static keepouts use one versioned map definition. Static clearance only; runtime r3 displacement/contact audit remains mandatory.",
+    "required_checks": [
+      "r3 task API calls=0",
+      "r3 motion commands=0",
+      "r3 participant/cargo contacts=0",
+      "r3 displacement<=0.02 m"
+    ]
+  },
+  "safety_coverage": {
+    "physical_planned": [
+      "nominal GO/sequence",
+      "explicit abort after carry GO"
+    ],
+    "nonphysical_regressions": [
+      "image corruption/occlusion -> both queues empty, no motion",
+      "peer silence/missed GO -> both queues empty, no motion"
+    ],
+    "unclaimed": "Image/peer-loss physical injections are not part of these two runs; only existing/new nonphysical regressions cover them. Add separately preregistered dev runs if required."
+  },
+  "failure_classification": {
+    "ENOSPC": "HOST_ERROR; retain partial artifacts and managed console log, do not count as controller failure or silently retry",
+    "wall_limit": "bounded interruption, never completed",
+    "sim_limit": "bounded non-completion",
+    "missing_evidence": "EVIDENCE_INCOMPLETE / DEV_NOT_CONFIRMED",
+    "host_error": "HOST_ERROR with original manifest cause; no physical scoring; prereg integrity and missing evidence reported separately",
+    "SELF_UNCERTAIN": "Inspect failed_checks and gate state/thresholds/dwell in the private receipt; tag age explains estimator behavior but is not an admission predicate.",
+    "SWEEP_TRANSITION_BLOCKED": "Preserve exact own estimate/PWM/static-map guard diagnostics; distinguish positive raw clearance from negative uncertainty-inflated clearance. No automatic retreat through an uncertified starting footprint."
+  },
+  "evidence": {
+    "raw_root": "absolute primary checkout outputs/zone-pair-dev-v5e-<frozen-sha>/<run-id>",
+    "required": [
+      "manifest.json",
+      "prereg.json",
+      "inputs/static.json",
+      "inputs/r*/",
+      "frames/r*/",
+      "commands.jsonl",
+      "status.jsonl",
+      "shutdown.jsonl",
+      "events.jsonl",
+      "pair_records.json",
+      "api_calls.json",
+      "eval_only/trace.jsonl",
+      "eval_only/contacts.json",
+      "eval_only/scene.json",
+      "eval_only/overview.mp4",
+      "eval_only/video_frames.jsonl",
+      "eval_only/result.json",
+      "artifacts.sha256.json",
+      "eval_only/pair_admission.jsonl"
+    ],
+    "tensorboard": "After coordinator execution: convert each completed/retrieved success/failure into a NEW native TensorBoard snapshot per docs/tensorboard.md, including video hash/registration/loading. No physical result or new snapshot exists for this registration."
+  },
+  "planned_setdown": {
+    "decision": "Keep the frozen M2 checkpoints including beam center x=2.40 m. Classify authorized checkpoint set-down separately from unplanned drops; it is not door passage.",
+    "basis": "run_m2_pair.py M2DoorStudent: dev 801/802 open-loop yaw drift 0.06-0.1 rad/m over 2.2 m, held view shows only beam. Lower/open/relocalize/regrasp preserves the short carry cadence; v3 uses stored grip. docs/zone_m2_pair.md defines own-camera M2 reuse. No physical validation is inherited.",
+    "route_endpoints_m": [
+      [
+        1.55,
+        0.05
+      ],
+      [
+        2.4,
+        0.05
+      ],
+      [
+        3.2,
+        0.05
+      ],
+      [
+        3.2,
+        -0.6666666666666666
+      ],
+      [
+        3.2,
+        -1.3833333333333333
+      ],
+      [
+        3.2,
+        -2.1
+      ],
+      [
+        3.9,
+        -2.1
+      ],
+      [
+        4.6,
+        -2.1
+      ]
+    ],
+    "authorization": "Both robots consume the same lower GO for segment i. Until both consume carry GO for i+1: lower/wait_open/cp_open in i, or pregrasp_look/grasp/wait_lift/lift/wait_carry in i+1. Last segment instead permits lower/wait_open/released/done through the end. Segments and states are evaluation-only controller metadata.",
+    "geometry": "Beam center must remain within 0.12 m of the preregistered static endpoint. This is an explicit dev tolerance, not a measured accuracy claim. Tilt >15 deg, floor penetration >5 mm and forbidden contacts are never exempt. Door y bounds always apply in the slab.",
+    "floor_support": "All eight box corners must be within the existing floor_penetration_tolerance_m/release_bottom_m bands around their floor-rest heights (lower face zero, upper face one beam thickness). Thickness is the length of a local vertical box edge in the ordered trace, not the world-Z extent. Each corner's absolute vertical displacement divided by the preceding trace interval must be <=release_speed_m_s; a missing, nonpositive or over-max_sample_gap_s interval cannot establish support. Joint grasp is required at every unsupported sample, including lowering and re-lifting.",
+    "relift": "After floor support has been observed in a segment's authorized window, joint grasp with all corners >=lift_bottom_m continuously for lift_dwell_s closes that window's exemption permanently. Use the existing lift and sample-gap criteria, independent of next carry GO or controller claims.",
+    "scope": "Low height is allowed during authorized lowering with joint grasp; released fingers require current floor support. After confirmed re-lift, neither grip loss nor low height is exempt, even if the beam settles again before carry GO. Missing authorization, wrong segment, one robot carrying, off-target lowering, failed/abort and post-carry-GO drops are not planned set-down."
+  },
+  "registration_version": 5,
+  "supersedes": {
+    "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5f.json",
+    "sha256": "a9764dded0588fb871200354ff590b976c7bdd2c4524c7f1d4482c5c1f6870df"
+  },
+  "revision_reason": "PR #240 review6: injected own-pose constructors bypass frozen provider initialization; preserve controller state and all physical thresholds. Latest scene/source receipts and MuJoCo-free prepare are checked; execution hold remains.",
+  "contact_profile_contract": {
+    "profile": "cargo_noslip_v1",
+    "base_profile": "local_contact_fine",
+    "cargo_profile": {
+      "name": "cargo_noslip_v1",
+      "version": 1,
+      "base": "local_contact_fine",
+      "option": {
+        "noslip_iterations": "10"
+      },
+      "scope": "global solver option (all contacts)",
+      "evidence": "experiments/2026-09-25-zone-cargo-catalogue (section: slip removal)",
+      "sha256": "2e003d85011354676866f0d73b32604c9b5105e919ba3d979687714d62e90ff4"
+    },
+    "method": "dispatch contact_profile then cargo apply on static XML option probe; no physics",
+    "timestep_s": 0.00025,
+    "noslip_iterations": 10,
+    "source_sha256": {
+      "sim/dispatch_contact_profile.py": "472a19b72bdc3b85819d3c7a22ad1c7f0a741b13feba5ac65ce9d5d15e1792d0",
+      "sim/zone_cargo_contact.py": "2ce68eafc285ff86261559f612a71c5178d2cf87ee7777cb71c0b9a9a3c28541"
+    },
+    "sha256": "17bf3e04918aa9c4a940df2cb0d2be975075714e906d8503fc92e1f29a9ca9b6"
+  },
+  "timing": {
+    "gt_sample_steps": 200,
+    "gt_sample_period_s": 0.05,
+    "sample_gap_slack_s": 0.0001,
+    "max_sample_gap_s": 0.05035,
+    "contact_observation_every_steps": 1,
+    "max_physics_steps": 3600000,
+    "previous_timestep_s": 0.002,
+    "previous_max_physics_steps": 450000,
+    "physics_step_multiplier": 8.0,
+    "outer_cleanup_s": 60.0,
+    "coverage_rule": "round((sim_end_s - simulator_start_s) / applied timestep_s); initial observation is not a step",
+    "wall_basis": "previous wall_s * (new max_physics_steps / previous max_physics_steps); conservative step-count budget, not measured throughput or completion prediction; SIM horizon and GT/video rates unchanged; outer cleanup allowance unchanged"
+  },
+  "execution_readiness": {
+    "status": "AWAITING_EXECUTION_AUTHORIZATION",
+    "coordinator_decision": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5856308924",
+    "startup_policy": "relocate_static_dock_x_minus_0_65",
+    "spawn_change_applied": true,
+    "reason": "Nonphysical regression and prepare only. Coordinator reviews, commits and freezes a clean source before dev11/dev12; no execution in this task."
+  },
+  "diagnostic_logging": {
+    "path": "eval_only/pair_admission.jsonl",
+    "schema": "ugrp.zone_pair_admission.v1",
+    "required": "Every rejected pair API call links action_id/reason to checked predicates, full-precision sigma, gate profile/state/candidate dwell, report/frame ages and missing servo IDs. No actor ACK/event/STATUS propagation."
+  },
+  "scene_contract": {
+    "id": "zone_wide_door_tags_v2_dock_v3",
+    "version": 3,
+    "map": {
+      "path": "maps/zones/zone_wide_door_tags_v2_dock_v3.json",
+      "sha256": "ff85120be345f8c264c0a6158bce8b5102ac10aaff4d77e0820cb8cde7a3b4e8"
+    },
+    "parent_map": {
+      "path": "maps/zones/zone_wide_door_tags_v2.json",
+      "sha256": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b"
+    },
+    "start_dock": {
+      "id": "zone_start_dock_v3",
+      "version": 3,
+      "spawn_x_m": -0.65,
+      "spawn_rows_y_m": [
+        -2.25,
+        -0.85,
+        0.55
+      ],
+      "spawn_yaw_rad": 0.0,
+      "idle_keepout_radius_m": 0.17,
+      "source": "authored static layout; no live robot positions or robot-to-row assignment",
+      "sha256": "96bcf08a25220d825f67070bae64ba18c9292935c06ccb5fae95edebc97c2d0a"
+    },
+    "changed": "all three spawn x coordinates: -0.85 -> -0.65 m; matching static keepouts/text",
+    "preserved": "seeded row assignment, z/yaw, walls 0.10 m, tags_v2, cameras, cargo, commands and guards",
+    "walls_v3": "walls_v3(PR #208) 적용은 후속 작업",
+    "source_sha256": {
+      "sim/zone_start_dock.py": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+      "sim/zone_dock_scene.py": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+      "sim/zone_arena.py": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+      "sim/zone_landmarks.py": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1",
+      "sim/zone_scene.py": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714",
+      "sim/zone_tagged_cargo_scene.py": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7",
+      "harness/zone_own_team_host.py": "8d64d20f8e21e00f7ca4baef275ef1dbcd9eafd04fb9c7bdb32ae204cea16e4e",
+      "harness/zone_own_guards.py": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+      "sim/zone_own_scene_provider.py": "cc8cfb03ae05df37caf4f2e77194be5d799bda9a2c119f9e91ca2b1ef1b1f659",
+      "scripts/run_zone_pair_dev.py": "cd5ece0f574eb4a091666467b8940b706350726d304e392b295857d16cc21b80",
+      "scripts/zone_pair_dev_runtime.py": "3c1cd30e105a1159ae2757e85e318281e299e916a6f93ed7139c185b76fa9a45",
+      "scripts/zone_pair_dev_contract.py": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e"
+    },
+    "sha256": "ff9a984dcb2ff823e12de2fb8b46f3631cecb1bcad1cf8f75a552f81660a0233"
+  },
+  "scene_instances": {
+    "dev11": {
+      "seed": 907,
+      "selection": "zones/zone_wide_door_tags_v2_dock_v3",
+      "resolved_sha256": "71a06ae6256fdf4330cf609540e82c84ab92330255ef355f1a9875dd5381e26d",
+      "scope": "setup-only configuration hash; not applied model/XML or runtime truth"
+    },
+    "dev12": {
+      "seed": 908,
+      "selection": "zones/zone_wide_door_tags_v2_dock_v3",
+      "resolved_sha256": "0ed4345f2bad3cf70e5a4cbd2afbdeec87396e124257b2627ace8f1ca6587ae3",
+      "scope": "setup-only configuration hash; not applied model/XML or runtime truth"
+    }
+  },
+  "commands": {
+    "interpreter": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+    "prepare": [
+      "OMP_NUM_THREADS=2 PYTHONDONTWRITEBYTECODE=1 \"$PAIR_PY\" scripts/run_zone_pair_dev.py --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5g.json --run-id dev11 --output /tmp/zone-pair-dev11-v5g-prepare-NEW",
+      "OMP_NUM_THREADS=2 PYTHONDONTWRITEBYTECODE=1 \"$PAIR_PY\" scripts/run_zone_pair_dev.py --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5g.json --run-id dev12 --output /tmp/zone-pair-dev12-v5g-prepare-NEW"
+    ],
+    "run_ids": [
+      "dev11",
+      "dev12"
+    ],
+    "raw_root_template": "/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5g-$PAIR_SHA",
+    "prerequisites": "Coordinator owner=claude only; follow grasp_v5.md and the existing lock/cleanup procedure. Check disk and lock; commit reviewed code; verify clean branch and freeze full SHA; acquire exclusive lock owned by live driver PID; never reuse output paths. Then add execution_authorization tied to the committed SHA and registration_sha256; see docs/zone_pair_execution_authorization.md. Approval must bind run_id; gh must retrieve the matching owner comment at execute time (offline refuses).",
+    "owner": "claude"
+  },
+  "grasp_contract": {
+    "profile": "zone_pair_grasp_relook_v3",
+    "executor_profile": "zone_pair_executor_v7_dev",
+    "status_profile": "zone_pair_status_v5",
+    "workflow": {
+      "id": "zone-pair-dev",
+      "version": "0.5.0"
+    },
+    "pose_time": {
+      "rounding_s": 0.0001,
+      "accepted_fix": "raw accepted capture; strict after align start; report bounds tolerant in both directions; failed conjuncts logged"
+    },
+    "pose_contract": "raw last_fix_t; fix_age_s; fix_source; std_xy_m/std_yaw_rad; observation_quality; provider-owned expected_observability and relocalization",
+    "target_obstruction": "active own pair job only; coarse order at initial pickup or fresh segment own RGB anchor; full band + colour/geometry/component support; merged/unknown/other objects retained; no collision guard changes",
+    "align_relook": {
+      "reset": "hold -> wait for fresh initialized post-stop own report and bounded stationary guard cache -> PF reset; wait counts in existing per-look and cumulative limits",
+      "fix_gap_s": 6.0,
+      "early_xy_m": 0.055,
+      "early_yaw_deg": 2.5,
+      "max_looks_per_job": 8,
+      "max_s_per_look": 8.0,
+      "max_total_s": 40.0,
+      "max_directions_per_look": 3,
+      "selection": "safe LOOK_P20 pans ranked by provider expected_observability score; own pose and issued PWM only; actual new accepted own RGB observation required",
+      "resume": "same shared pose, fresh report, new accepted observation after stop, unchanged 5 cm/3 deg readiness and scheduling reserve; restore beam view; original align deadline retained",
+      "status": "aligning/abort only; existing close readiness barrier holds partner open",
+      "basis": "dev08 own report at 166.3: tag age 6 s, XY sigma .05486 m; 9.3 s before 175.6 HIGH .07004 m. Scheduling reserve is a dev bound, not calibrated safety/completion proof"
+    },
+    "relook": "mandatory at each grasp; shared own.pose/last_report; new observation fix in this sweep; no VO bypass",
+    "max_std_xy_m": 0.05,
+    "max_std_yaw_deg": 3.0,
+    "base_margin_plus_residual_m": 0.035,
+    "sweeps_max": 2,
+    "close_wait_s": 20.0,
+    "attachment": "own RGB grip-view after issued CLOSED, segment bound; cleared on issued OPEN; post-lift co-motion still required",
+    "close": "own open grip-view, pose readiness and fresh stationary RGB beam clearance -> close_ready_i -> same-grid close_go_i; recheck beam before every close PWM; evidence TTL 0.6 s",
+    "stationary_beam": "full own RGB standoff band centre + paired-edge axis; segment-local issued-command prediction including stall/slip uncertainty; clipped visible patch only checks consistency, never resets pose/age/sigma; no planned/stored-grip or wrist-attachment fallback; unchanged whole-beam distance and 35 mm + own pose + beam uncertainty inflation",
+    "beam_track": {
+      "max_age_s": 30.0,
+      "std_xy_floor_m": 0.015,
+      "std_yaw_floor_deg": 1.0,
+      "drift_xy_m_s": 0.0005,
+      "drift_yaw_rad_s": 0.0005,
+      "arm_xy_m_pwm": 1e-06,
+      "arm_yaw_rad_pwm": 2e-06,
+      "motion_gain_bound": 1.6,
+      "partial_min_support": 0.95,
+      "partial_reasons": [
+        "BAND_CLIPPED",
+        "END_CLIPPED"
+      ],
+      "qualification": "dev bounds, not measured motion success or calibrated accuracy"
+    },
+    "evaluation_state_equivalence": {
+      "pregrasp_standoff": "grasp",
+      "pregrasp_descend": "grasp",
+      "wait_close": "grasp"
+    },
+    "contact_profile": "cargo_noslip_v1",
+    "weld": false,
+    "qualification": "not physically executed; no inherited result",
+    "source_sha256": {
+      "harness/owncam_delivery_shared.py": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba",
+      "harness/owncam_memory_delivery.py": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50",
+      "harness/owncam_memory_inputs.py": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83",
+      "harness/owncam_pose_guard_provider.py": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1",
+      "harness/owncam_pose_guard_v3.py": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6",
+      "configs/zone_pair_authorization.json": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e",
+      "harness/owncam_drive_mem_v3.py": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425",
+      "harness/m1_owncam_memory_v3.py": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2",
+      "harness/vision_motion_init.py": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316",
+      "harness/m2_provider_adapter.py": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624",
+      "harness/zone_own_deliver.py": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab",
+      "harness/zone_own_team_host.py": "8d64d20f8e21e00f7ca4baef275ef1dbcd9eafd04fb9c7bdb32ae204cea16e4e",
+      "scripts/zone_pair_authorization.py": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649",
+      "scripts/run_zone_study_integration.py": "3334066ea9749af453d4047bc2d9adae06292217712293b39330debb9052ff69",
+      "scripts/run_m1_owncam_memory_v3.py": "6c90f0df5ba43bb4003c1c982a3069bce95680c5b0ac6257bdb763038d80aa5c",
+      "sim/zone_geometry_scene.py": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+      "configs/zone_study_integration/pose_providers.json": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d",
+      "maps/zones/zone_wide_door_geometry_v2.json": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+      "harness/pose_provider.py": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2",
+      "harness/vision_pose_source.py": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+      "harness/zone_study_pose_delay.py": "a7f1da036ebc0ed627ba4c5c257c74ad7ef3b30625cc3011db8b685307525dd4",
+      "harness/zone_own_driver.py": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d",
+      "harness/owncam_drive_shared.py": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792",
+      "sim/zone_own_scene_provider.py": "cc8cfb03ae05df37caf4f2e77194be5d799bda9a2c119f9e91ca2b1ef1b1f659",
+      "harness/owncam_time.py": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+      "harness/zone_own_contract.py": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
+      "harness/zone_own_executor.py": "51d509ef51f6dabedc7b6f87ca92581672ddf2420f753771ae80bb5965fba973",
+      "harness/zone_own_status.py": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
+      "harness/zone_own_perception.py": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
+      "harness/zone_pair_obstruction.py": "f824c0b9d1e66d526a6b1a2d669c3cc53214b6921ac5431dcd7a8d97b061ca8d",
+      "harness/zone_pair_grasp.py": "d6612a8a747463a194d8cd866e73b8005dc49a1d1c326d56beb2c3471fa0aab1",
+      "harness/zone_pair_executor.py": "7ecdbf11c95c40f1ae989965e2a530c51fab51c68becc7cf28aedd4207c0710e",
+      "harness/zone_pair_beam_track.py": "c36e9ea7179307f45787d89ddf9ba1ac07598dd309137933780834c0ec83ffc0",
+      "harness/zone_pair_align.py": "005106e93d96eb871457cea3350c76874c3f55c14428e572f095997e066e31ac",
+      "harness/zone_pair_guards.py": "7dcf0b0151129fb54c1741966ad5575738ab6f923bb1780b05f4480e83e734e9",
+      "harness/zone_pair_geometry.py": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+      "harness/zone_pair_status.py": "bdacc2369212bdd8810d2f91498e971af572e1ef037a34baf76828a2702b1926",
+      "harness/zone_pair_vision.py": "8552c044d498a6c3e02efdc7f53ca72c9b11c4b17b87abfa159e780673d8c7d4",
+      "harness/owncam_pose_source.py": "7e45cc820f3c0b96b0144c2a3318bf7b18a97f61d88aec2a62130e96ed29b155",
+      "harness/owncam_localizer.py": "0304d7c491dfe6ae68cea6550f7a13e3c99e8e1d3f8e8b6c4b7b1d06893b1d63",
+      "harness/owncam_pair_beam.py": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+      "harness/owncam_pair_beam_v2.py": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+      "harness/owncam_view.py": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+      "harness/zone_own_guards.py": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+      "scripts/run_zone_pair_dev.py": "cd5ece0f574eb4a091666467b8940b706350726d304e392b295857d16cc21b80",
+      "scripts/zone_pair_dev_runtime.py": "3c1cd30e105a1159ae2757e85e318281e299e916a6f93ed7139c185b76fa9a45",
+      "scripts/zone_pair_grasp_contract.py": "39e32671b0cbd2d377eff1bc6a47ae5858e481ce4bcdd76767fc7c1641e1d853",
+      "scripts/evaluate_zone_pair_dev.py": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+      "configs/simulation_workflows.json": "6bae79139c75ef12f642980b155b94cb032995d320c920f53e6d25fb55d9c999"
+    },
+    "sha256": "ebe84f43b9161c6a22888c484cc7824755e3a3e13e3c091ec9d7b1f0df79cbad"
+  },
+  "changes_from_v4": {
+    "controller": "Before each align entry and during align, stop at accepted-tag gap 6 s or scheduling reserve XY .055 m / yaw 2.5 deg. Rank safe existing LOOK_P20 pans using projected mapped tags, then require a new own accepted RGB tag on the shared pose before resuming beam view. 8 looks/job, 3 directions/look, 8 s/look and 40 s cumulative, original align deadline unchanged. No base motion during relook.",
+    "preclose": "END_CLIPPED and BAND_CLIPPED with end_visible=false may only validate the visible patch of a fresh full-band anchor. No anchor position/age/sigma reset; same PWM/frame, propagated uncertainty, >=.95 support and whole-beam wall clearance remain mandatory.",
+    "thresholds": "Unchanged loaded HIGH XY .07 m, preclose XY .05 m, yaw 3 deg, margin .035 m; early relook reserves are scheduling triggers, not safety gate relaxation.",
+    "cohort": "dev09/905 nominal and dev10/906 carry-GO abort; fresh spawn/PF seeds, unchanged setup cargo poses/order/intervention.",
+    "judgement": "criteria/stage_rules/planned_setdown/limits/timing/safety_coverage/environment/inputs identical to v3/v4; v4 grasp subphase equivalence retained. No historical result inherited.",
+    "versions": "executor v6_dev; grasp relook v2; STATUS v5 unchanged; existing zone-pair-dev workflow 0.4.0. No RGB dispatch bundle ID allocated.",
+    "scope": "tags_temporary dev only; tag-free location validation is separate. No physics/model calls in implementation task."
+  },
+  "registration_revision": "v5g",
+  "changes_from_v5": {
+    "reason": "PR #240 review4: main merge invalidated source receipts; align PF reset must wait for a valid post-stop own report including the 0.16 s delayed provider.",
+    "versioning": "New prereg_v5b under docs/execution_versioning.md change/verification steps 2-4. Preserve v3/v4/v5 bytes; no v5 physical execution exists, so reuse the still-unexecuted dev09/dev10 cohort only. No result inheritance.",
+    "preserved": [
+      "runs",
+      "criteria",
+      "stage_rules",
+      "planned_setdown",
+      "limits",
+      "timing",
+      "safety_coverage",
+      "environment",
+      "inputs"
+    ],
+    "qualification": "prepare-only and nonphysical regressions; execution_source_sha remains null until coordinator commit and clean source freeze"
+  },
+  "changes_from_v5b": {
+    "P1": "Use authoritative accepted-tag capture time; 1e-4 s tolerance on both bounds of quantized report comparisons including tag <= report; raw sweep boundary strict; failed conjuncts logged. Audit extends post-stop guards, admission freshness, own look sweep, pose limits and memory-v3 gates.",
+    "P2": "Only active pair target components associated by full own RGB grip band with initial coarse order or fresh segment own anchor are expected_target_occupancy; retain other/unknown/merged components and all beam collision checks. Decode the own JPEG for the BGR perception contract.",
+    "cohort": "dev11/907 nominal; dev12/908 carry-GO abort; cargo setup/order/intervention, criteria, limits and timing unchanged.",
+    "thresholds": "unchanged fix 5 cm / 3 deg, loaded HIGH 7 cm, clearance 35 mm; no GT/eval_only/peer pose in control; weld OFF, cargo_noslip_v1",
+    "qualification": "nonphysical saved-input tests + prepare only; zero physics/model calls; coordinator must review, commit and freeze clean source before execution"
+  },
+  "qualification": "tags_temporary: manipulation scaffolding only; no research result; zero-marker pair validation is separate",
+  "changes_from_v5c": {
+    "contract": "raw last_fix_t, fix_age_s, fix_source, sigma and observation_quality; expected_observability and relocalization belong to providers",
+    "temporary_provider": "unchanged PF algorithm and projected area ranking; manipulation scaffolding only",
+    "vision_provider": "frozen VIS3 static geometry ray-cast visible boundary columns; fake observations only, no inference",
+    "versions": "executor v7_dev; grasp relook v3; STATUS v5; pair dev 0.5.0; integration 2.1.0; zone-study-integration-v67-landmark-agnostic",
+    "cohort": "same unexecuted dev11/907 and dev12/908; v5c bytes preserved",
+    "qualification": "prepare-only; raw source remains uncommitted; no physical result inherited"
+  },
+  "changes_from_v5d": {
+    "constructor": "SharedPoseDriver initializes controller state using the injected localizer before the frozen OwnCamDriver constructor; pair heading constructors still run. No extra PF or detector.",
+    "sources": "grasp contract adds harness/owncam_drive_shared.py; scene contract retains sim/zone_own_scene_provider.py; historical registrations are unchanged and rejected on source drift.",
+    "cohort": "same still-unexecuted dev11/907 and dev12/908; v5d preserved byte-for-byte; prepare-only hold retained",
+    "qualification": "nonphysical tests and prepare only; execution_source_sha remains null; no source commit or physical result"
+  },
+  "execution_authorization": null,
+  "changes_from_v5e": {
+    "boundary": "All active injected constructors and lazy legs/reset bypass frozen measurement initialization; provider/geometry scene v2 is separately registered.",
+    "authorization": "Coordinator envelope binds issue comment, full source SHA and immutable registration hash; full-file/envelope/source tampering checks retained.",
+    "cohort": "Same unexecuted dev11/907, dev12/908; previous bytes preserved.",
+    "scope": "No physics, models, commit or execution approval; thresholds, weld OFF and cargo_noslip_v1 unchanged."
+  },
+  "registration_sha256": "1d50f5b7708698dc4b8b5d8fca94ee0f1f2f67425bec8891722c303847eccd2b",
+  "changes_from_v5f": {
+    "authorization": "Live GitHub issue comment via gh at execution admission; pinned repository aliases/owner allowlist; exact source SHA + registration SHA256 + run_id approval digest; comment id/author/updated_at/body SHA256 receipt in manifest; fail closed offline.",
+    "motion_interface": "Public get_motion_params for tags, vision and delayed providers; memory-v3 ON/OFF no longer calls a private localizer method through the delayed facade.",
+    "test_isolation": "Host fixture installs fake physical dependencies before lazy imports; standalone test works with MuJoCo blocked.",
+    "geometry": "Pure issued-PWM camera_in_base helper retained; frozen markerless/VIS3 sources unchanged.",
+    "cohort": "Same unexecuted dev11/907 and dev12/908; v5f preserved byte-for-byte; authorization and execution_source_sha null.",
+    "scope": "Uncommitted nonphysical regression/prepare only; thresholds unchanged; no GT/eval_only control inputs; weld OFF, cargo_noslip_v1. No bundle/workflow ID allocated."
+  }
+}

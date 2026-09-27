@@ -37,6 +37,7 @@ PREREG_V5C = PREREG.with_name('prereg_v5c.json')
 PREREG_V5D = PREREG.with_name('prereg_v5d.json')
 PREREG_V5E = PREREG.with_name('prereg_v5e.json')
 PREREG_V5F = PREREG.with_name('prereg_v5f.json')
+PREREG_V5G = PREREG.with_name('prereg_v5g.json')
 MAP = ROOT / 'maps/zones/zone_wide_door_tags_v2.json'
 CALIBRATION = ROOT / 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'
 PARTICIPANTS = ('r1', 'r2')
@@ -113,7 +114,7 @@ def load_config(args):
         raise ValueError('this driver is for preregistered dev only')
     version = prereg.get('registration_version')
     revision = prereg.get('registration_revision')
-    if revision is not None and (version != 5 or revision not in ('v5b', 'v5c', 'v5d', 'v5e', 'v5f')):
+    if revision is not None and (version != 5 or revision not in ('v5b', 'v5c', 'v5d', 'v5e', 'v5f', 'v5g')):
         raise ValueError('unsupported prereg revision')
     from scripts.zone_pair_authorization import validate_authorization
     validate_authorization(prereg)
@@ -133,7 +134,7 @@ def load_config(args):
         if {k: v for k, v in prereg['stage_rules'].items() if k != 'admission_diagnostics'} != v2['stage_rules']:
             raise ValueError('v3 must preserve v2 stage rules')
         readiness = prereg.get('execution_readiness', {})
-        readiness_status = ('AWAITING_EXECUTION_AUTHORIZATION' if revision == 'v5f' else
+        readiness_status = ('AWAITING_EXECUTION_AUTHORIZATION' if revision in ('v5f', 'v5g') else
                             'PREPARE_ONLY_REVIEW_HOLD' if revision in ('v5d', 'v5e') else 'READY_AFTER_SOURCE_FREEZE')
         if (readiness.get('status') != readiness_status
                 or readiness.get('spawn_change_applied') is not True
@@ -164,6 +165,8 @@ def load_config(args):
         previous_path = PREREG_V5D  # constructor fix; same still-unexecuted dev11/12
     elif revision == 'v5f':
         previous_path = PREREG_V5E
+    elif revision == 'v5g':
+        previous_path = PREREG_V5F
     previous = {'path': str(previous_path.relative_to(ROOT)), 'sha256': sha_file(previous_path)}
     if prereg.get('supersedes') != previous:
         raise ValueError('previous prereg hash mismatch')
@@ -181,7 +184,7 @@ def load_config(args):
         raise ValueError('seed must be a uint32 integer')
     expected_runs = {2: [('dev03', 901), ('dev04', 902)], 3: [('dev05', 901), ('dev06', 902)],
                      4: [('dev07', 903), ('dev08', 904)], 5: [('dev09', 905), ('dev10', 906)]}[version]
-    if revision in ('v5c', 'v5d', 'v5e', 'v5f'):
+    if revision in ('v5c', 'v5d', 'v5e', 'v5f', 'v5g'):
         expected_runs = [('dev11', 907), ('dev12', 908)]
     if [(r['id'], r['seed']) for r in rows] != expected_runs:
         raise ValueError(f'v{version} fixes {expected_runs}; do not reuse prior IDs')
@@ -221,7 +224,8 @@ def load_config(args):
             raise ValueError('--execute requires --lock-owner')
         if not args.output.is_absolute() or not args.output.resolve().is_relative_to(primary_root() / 'outputs'):
             raise ValueError('physical raw output must be absolute under primary checkout outputs/')
-        validate_authorization(prereg, execute=True, expected_source_sha=args.expected_source_sha)
+        validate_authorization(prereg, execute=True, expected_source_sha=args.expected_source_sha,
+                               run_id=args.run_id)
     return prereg, copy.deepcopy(case)
 
 
@@ -244,6 +248,7 @@ def build_manifest(prereg, case, *, source, environment, prereg_path, applied=No
             'r3_policy': {'mode': 'idle_at_standard_seeded_spawn', 'task_api_calls': 0,
                           'normal_physics_preserved': True, 'noninterference': 'pending eval_only checks'},
             'execution_authorization': copy.deepcopy(prereg.get('execution_authorization')),
+            'github_authorization': None,
             'registration_sha256': prereg.get('registration_sha256'),
             'model_calls': 0, 'physical_success': None,
             'common_record': 'parent sim_cli workflow manifest links source/config/input/environment/result receipts'}
@@ -357,6 +362,14 @@ def main(argv=None):
         if args.prereg.read_bytes() != prereg_bytes:
             raise ValueError('prereg changed after preparation')
         verify_source(ROOT, args.prereg, prereg, args.expected_source_sha)
+        from scripts.zone_pair_authorization import verify_github_authorization
+        verified = verify_github_authorization(prereg, args.expected_source_sha, args.run_id)
+        # The network round trip must not open a source/envelope mutation window.
+        if args.prereg.read_bytes() != prereg_bytes:
+            raise ValueError('prereg changed during GitHub approval lookup')
+        verify_source(ROOT, args.prereg, prereg, args.expected_source_sha)
+        manifest['github_authorization'] = verified
+        write_json(args.output / 'manifest.json', manifest)
         return execute(args, prereg, case, manifest)
     except (ValueError, OSError, subprocess.CalledProcessError) as exc:
         p.exit(2, f'{type(exc).__name__}: {exc}\n')

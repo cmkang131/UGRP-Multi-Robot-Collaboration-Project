@@ -2,7 +2,9 @@
 import copy
 import json
 import subprocess
+import hashlib
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -12,14 +14,24 @@ from scripts import zone_pair_authorization as auth
 SHA = 'a' * 40
 
 
+@pytest.fixture(autouse=True)
+def no_real_gh(monkeypatch):
+    original = subprocess.run
+    def run(cmd, *args, **kwargs):
+        if cmd[0] == 'gh':
+            pytest.fail('tests must inject gh; network forbidden')
+        return original(cmd, *args, **kwargs)
+    monkeypatch.setattr(subprocess, 'run', run)
+
+
 def registered():
-    return json.loads(dev.PREREG_V5F.read_text())
+    return json.loads(dev.PREREG_V5G.read_text())
 
 
 def authorize(p):
     # Synthetic integrity fixture only; not an execution authorization artifact.
     receipt = {'by': 'coordinator', 'ref': 'https://github.com/kcm0127-dotcom/ugrp/issues/221#issuecomment-123',
-               'source_sha': SHA, 'registration_sha256': p['registration_sha256']}
+               'source_sha': SHA, 'registration_sha256': p['registration_sha256'], 'run_id': 'dev11'}
     p['execution_authorization'] = {**receipt, 'sha256': auth.digest(receipt)}
     return p
 
@@ -77,9 +89,9 @@ def test_altered_authorization_or_registration_is_rejected(tmp_path, fault):
     assert not args.output.exists()
 
 
-def test_existing_v5e_is_preserved_and_refuses_new_source(tmp_path):
-    p = json.loads(dev.PREREG_V5E.read_text())
-    assert dev.sha_file(dev.PREREG_V5E) == registered()['supersedes']['sha256']
+def test_existing_v5f_is_preserved_and_refuses_new_source(tmp_path):
+    p = json.loads(dev.PREREG_V5F.read_text())
+    assert dev.sha_file(dev.PREREG_V5F) == registered()['supersedes']['sha256']
     with pytest.raises(ValueError, match='scene contract/hash mismatch'):
         dev.load_config(args_for(tmp_path, p, execute=False))
 
@@ -156,3 +168,131 @@ def test_only_project_issue_comment_aliases_are_accepted(repo, ok):
     else:
         with pytest.raises(ValueError, match='issue-comment'):
             auth.validate_authorization(p, execute=True, expected_source_sha=SHA)
+
+
+def github_comment(p):
+    repository = 'cmkang131/UGRP-Multi-Robot-Collaboration-Project'
+    return dict(id=123, user=dict(login='kcm0127-dotcom', type='User'),
+                url=f'https://api.github.com/repos/{repository}/issues/comments/123',
+                issue_url=f'https://api.github.com/repos/{repository}/issues/221',
+                html_url=f'https://github.com/{repository}/issues/221#issuecomment-123',
+                updated_at='2026-09-28T01:02:03Z',
+                body=auth.approval_digest(SHA, p['registration_sha256'], 'dev11'))
+
+
+def gh_result(comment, calls):
+    def fake(cmd, **kwargs):
+        calls.append(cmd)
+        assert cmd == ['gh', 'api', '--hostname', 'github.com',
+                       'repos/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/comments/123']
+        assert kwargs == dict(check=True, capture_output=True, text=True, timeout=30)
+        return SimpleNamespace(returncode=0, stdout=json.dumps(comment))
+    return fake
+
+
+@pytest.mark.parametrize('author', ['changmin__', 'kcm0127-dotcom', 'cmkang131'])
+def test_live_owner_approval_receipt_binds_exact_run(author):
+    p = authorize(registered()); c = github_comment(p); c['user']['login'] = author
+    c['body'] = '이 조건으로 실행 승인합니다.\n' + c['body'] + '\n'
+    calls = []
+    receipt = auth.verify_github_authorization(p, SHA, 'dev11', gh_runner=gh_result(c, calls))
+    assert len(calls) == 1
+    assert receipt['comment_id'] == 123 and receipt['author'] == author
+    assert receipt['updated_at'] == c['updated_at']
+    assert receipt['body_sha256'] == hashlib.sha256(c['body'].encode()).hexdigest()
+    assert receipt['approval_digest'] == c['body'].splitlines()[1]
+
+
+@pytest.mark.parametrize('fault', ['forged', 'other_author', 'bot', 'digest', 'source', 'registration',
+                                  'run_id', 'substring', 'missing_body', 'repository', 'web_repository',
+                                  'api_repository', 'issue', 'comment_id', 'updated_at', 'resealed_ref'])
+def test_self_resealed_envelope_cannot_replace_live_approval(fault):
+    p = authorize(registered()); c = github_comment(p)
+    if fault == 'forged': c['body'] = 'No authorization has been given.'
+    elif fault == 'other_author': c['user']['login'] = 'attacker'
+    elif fault == 'bot': c['user']['type'] = 'Bot'
+    elif fault == 'digest': c['body'] = c['body'][:-1] + ('0' if c['body'][-1] != '0' else '1')
+    elif fault == 'source': c['body'] = auth.approval_digest('b'*40, p['registration_sha256'], 'dev11')
+    elif fault == 'registration': c['body'] = auth.approval_digest(SHA, '0'*64, 'dev11')
+    elif fault == 'run_id': c['body'] = auth.approval_digest(SHA, p['registration_sha256'], 'dev12')
+    elif fault == 'substring': c['body'] = 'not approved: ' + c['body']
+    elif fault == 'missing_body': c['body'] = None
+    elif fault == 'repository': c['issue_url'] = 'https://api.github.com/repos/attacker/repo/issues/221'
+    elif fault == 'web_repository': c['html_url'] = 'https://github.com/attacker/repo/issues/221#issuecomment-123'
+    elif fault == 'api_repository': c['url'] = 'https://api.github.com/repos/attacker/repo/issues/comments/123'
+    elif fault == 'issue': c['issue_url'] = c['issue_url'].replace('/221', '/222')
+    elif fault == 'comment_id': c['id'] = 999
+    elif fault == 'updated_at': c.pop('updated_at')
+    elif fault == 'resealed_ref':
+        a = p['execution_authorization']
+        a['ref'] = a['ref'].replace('/221#', '/222#')
+        a['sha256'] = auth.digest({k: v for k, v in a.items() if k != 'sha256'})
+    # Local hashes all pass, including the forged/resealed comment reference.
+    assert auth.validate_authorization(p, execute=True, expected_source_sha=SHA, run_id='dev11')
+    calls = []
+    with pytest.raises(ValueError):
+        auth.verify_github_authorization(p, SHA, 'dev11', gh_runner=gh_result(c, calls))
+    assert len(calls) == 1
+
+
+@pytest.mark.parametrize('fault', ['deleted', 'offline', 'timeout', 'no_gh', 'malformed', 'nonzero', 'null'])
+def test_lookup_errors_are_fail_closed(fault):
+    def fake(cmd, **kwargs):
+        if fault == 'deleted': raise subprocess.CalledProcessError(1, cmd, stderr='HTTP 404')
+        if fault == 'offline': raise subprocess.CalledProcessError(1, cmd, stderr='offline')
+        if fault == 'timeout': raise subprocess.TimeoutExpired(cmd, 30)
+        if fault == 'no_gh': raise FileNotFoundError('gh')
+        return SimpleNamespace(returncode=1 if fault == 'nonzero' else 0,
+                               stdout='null' if fault == 'null' else 'not JSON')
+    with pytest.raises(ValueError, match='GitHub approval'):
+        auth.verify_github_authorization(authorize(registered()), SHA, 'dev11', gh_runner=fake)
+
+
+def test_approval_for_one_run_does_not_authorize_the_other(tmp_path):
+    p = authorize(registered()); args = args_for(tmp_path, p)
+    args.run_id = 'dev12'
+    with pytest.raises(ValueError, match='run_id differs'):
+        dev.load_config(args)
+
+
+@pytest.mark.parametrize('fault', [None, 'forged', 'deleted', 'offline', 'tamper_during_lookup'])
+def test_execute_fetches_live_comment_and_persists_receipt_before_admission(monkeypatch, tmp_path, fault):
+    from sim.workflow_manager import MANAGED_CHILD
+    from scripts import agent_lock
+    p = authorize(registered()); c = github_comment(p)
+    path = tmp_path / 'registration.json'; path.write_text(json.dumps(p))
+    out = tmp_path / 'prepared'
+    monkeypatch.setattr(dev, 'load_config', lambda args: (copy.deepcopy(p), p['runs'][0]))
+    monkeypatch.setenv(MANAGED_CHILD, '1')
+    monkeypatch.setattr(dev, 'git', lambda *a: 'codex/test')
+    monkeypatch.setattr(dev, 'primary_root', lambda: tmp_path)
+    monkeypatch.setattr(agent_lock, 'status', lambda *a: dict(pid_alive=True, owner='codex', branch='codex/test'))
+    checks = []
+    monkeypatch.setattr(auth, 'verify_source', lambda *a: checks.append('source'))
+    calls, admitted = [], []
+    original = subprocess.run
+    fake = gh_result(c, calls)
+    def run(cmd, *args, **kwargs):
+        if cmd[0] != 'gh': return original(cmd, *args, **kwargs)
+        if fault in ('deleted', 'offline'): raise subprocess.CalledProcessError(1, cmd)
+        if fault == 'forged': c['body'] = 'not approved'
+        if fault == 'tamper_during_lookup': path.write_text(json.dumps({**p, 'execution_authorization': None}))
+        return fake(cmd, **kwargs)
+    monkeypatch.setattr(subprocess, 'run', run)
+    def execute(args, prereg, case, manifest):
+        saved = json.loads((out / 'manifest.json').read_text())
+        assert saved['github_authorization'] == manifest['github_authorization']
+        assert saved['github_authorization']['body_sha256'] == hashlib.sha256(c['body'].encode()).hexdigest()
+        assert saved['github_authorization']['comment_id'] == 123
+        assert len(checks) == 3 and len(calls) == 1
+        admitted.append(True)
+        return 0
+    monkeypatch.setattr(dev, 'execute', execute)
+    argv = ['--prereg', str(path), '--run-id', 'dev11', '--output', str(out),
+            '--execute', '--expected-source-sha', SHA, '--lock-owner', 'codex']
+    if fault:
+        with pytest.raises(SystemExit) as error: dev.main(argv)
+        assert error.value.code == 2 and not admitted
+        assert json.loads((out / 'manifest.json').read_text())['github_authorization'] is None
+    else:
+        assert dev.main(argv) == 0 and admitted == [True]

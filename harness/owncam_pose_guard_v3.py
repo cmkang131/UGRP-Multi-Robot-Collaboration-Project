@@ -147,7 +147,7 @@ class OwnCamPoseSourceV3(OwnCamPoseSource):
         super().__init__(*args, **kwargs)
 
     def on_command(self, row):
-        self.guard.on_command(row, self.loc._motion_params())
+        self.guard.on_command(row, self.get_motion_params())
         super().on_command(row)
 
     def on_frame(self, now, rgb):

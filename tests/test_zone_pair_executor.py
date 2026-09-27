@@ -468,8 +468,12 @@ def test_frozen_m2_sources_or_explicit_followup_hashes():
     # Reviewed revisions that reached main after the freeze (records stay on their pinned SHA).
     post_freeze = {'sim/zone_landmarks.py': {
         '2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1'}}  # PR #208 env v3 registries
-    # PR #240 v5d provider-contract followup; frozen PF and old records stay unchanged.
-    post_freeze['harness/owncam_pose_source.py'] = {'7c41c40db0c502af8522f263971ebfb0ae370543952da2a31960e3044e5388da'}
+    # PR #240 v5d and v5g candidates; frozen PF and old records stay unchanged.
+    post_freeze['harness/owncam_pose_source.py'] = {
+        '7c41c40db0c502af8522f263971ebfb0ae370543952da2a31960e3044e5388da',
+        # v5g adds only the detached public motion query; no measurement/control change.
+        '7e45cc820f3c0b96b0144c2a3318bf7b18a97f61d88aec2a62130e96ed29b155',
+    }
     for row in files:
         got = hashlib.sha256((ROOT / row['path']).read_bytes()).hexdigest()
         assert got in {row['sha256'], *post_freeze.get(row['path'], ())}, row['path']
