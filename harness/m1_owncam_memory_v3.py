@@ -1,4 +1,4 @@
-"""M1 memory_v3 controller. Frozen v2 and OFF controllers remain selectable.
+"""M1 v3 shared controller with a memory-look ON/OFF ablation.
 
 Interim tag source only until PR #227 supplies vision measurement diagnostics.
 Grasp and place require new own-camera evidence after entering their gates;
@@ -8,8 +8,9 @@ from __future__ import annotations
 
 import math
 
-from harness.m1_owncam_delivery import CLOSER_VIEW_STANDOFF_M, MAX_GATE_LOOKS, M1OwnCamDelivery
-from harness.m1_owncam_memory import FULL_GATE_REASONS, GATE_TARGETS, M1OwnCamDeliveryMem, _RecordingDetector
+from harness.m1_owncam_delivery import CLOSER_VIEW_STANDOFF_M, MAX_GATE_LOOKS, M1OwnCamDelivery, SEARCH_PANS
+from harness.m1_owncam_memory import (FULL_GATE_REASONS, GATE_TARGETS, M1OwnCamDeliveryMem,
+                                      SEARCH_CANDIDATE_PANS, _RecordingDetector)
 from harness.owncam_drive import CARRY_POSTURE, LOOK_P20, SEARCH_POSE, WIDE_LOOK_PANS
 from harness.owncam_drive_mem_v3 import LegDriverMemV3
 from harness.owncam_landmark_tags import TagLandmarkProvider
@@ -17,7 +18,7 @@ from harness.owncam_memory_v3 import OwnCamMemoryV3
 from harness.owncam_pose_guard_v3 import OwnCamPoseSourceV3, PoseGuardV3
 from harness.owncam_pose_source import PoseLimits, check_limits
 from harness.owncam_slot_inspection_v3 import SlotInspectionV3
-from harness.owncam_sweep_collision import OwnPose, commands_clear, plan_safe_sweep
+from harness.owncam_safety_v3 import ControllerSafetyV3, SCHEMA as SAFETY_SCHEMA
 from harness.owncam_search_projection_v3 import project_reachable_viewpoint
 from harness.map_goto import UNLOADED_ENVELOPE
 
@@ -28,7 +29,9 @@ RELEASE_POSITION_TOL_M = .03
 RELEASE_YAW_TOL_RAD = .04
 
 
-class M1OwnCamDeliveryMemV3(SlotInspectionV3, M1OwnCamDeliveryMem):
+class M1OwnCamDeliveryMemV3(ControllerSafetyV3, SlotInspectionV3, M1OwnCamDeliveryMem):
+    memory_look_enabled = True
+
     def __init__(self, static_map, params, **kwargs):
         super().__init__(static_map, params, **kwargs)
         guard = PoseGuardV3()
@@ -36,6 +39,7 @@ class M1OwnCamDeliveryMemV3(SlotInspectionV3, M1OwnCamDeliveryMem):
                                      provider=TagLandmarkProvider(static_map, params), on_event=self._memory_event)
         self.pose = OwnCamPoseSourceV3(static_map, params, seed=self.seed, guard=guard)
         self.pose.detector = _RecordingDetector(self.pose.detector)
+        self._init_controller_safety()
         self.verification = {}
         self.blind_spot_retry = False
         self.slot_inspection = None
@@ -51,44 +55,44 @@ class M1OwnCamDeliveryMemV3(SlotInspectionV3, M1OwnCamDeliveryMem):
         self._slot_carry_frame(now, obs)
         return report
 
-    def _sweep_collision_failure(self, now, reason):
-        if self.slot_inspection is not None:
-            self._slot_fail(now, 'look_collision_' + reason)
-        else:
-            self.outcome = 'LOOK_COLLISION_UNVERIFIED'
-            self._event(now, 'look_collision_unverified', reason=reason)
-
-    def _start_sweep(self, now, purpose, pose, pans, restore, reason):
-        loaded = bool(self.skill is not None and self.skill.box.held)
-        plan = plan_safe_sweep(self.map, self.servo, pose, pans,
-                               OwnPose.from_report(self.pose.report(now)), loaded=loaded, restore=restore)
-        self._event(now, 'sweep_collision_check', purpose=purpose, **plan)
-        if not plan['pans']:
-            self.sweep = None
-            self._sweep_collision_failure(now, plan['reason'])
-            return
-        # Pan belongs to the pan stage; interpolate other servos first.
-        super()._start_sweep(now, purpose, {k: v for k, v in pose.items() if int(k) != 6},
-                             plan['pans'], restore, reason)
-
-    def _arm_steps(self, target):
-        commands = super()._arm_steps(dict(sorted(target.items())))
-        now = self.pose.loc.t if self.pose.loc.t is not None else 0.
-        if not commands_clear(self.map, self.servo, commands,
-                              OwnPose.from_report(self.pose.report(now)),
-                              loaded=bool(self.skill is not None and self.skill.box.held)):
-            self._sweep_collision_failure(now, 'command_transition')
-            return [{'kind': 'hold'}]
-        return commands
-
     def _start_leg(self, goal, *, loaded):
         self.leg = LegDriverMemV3(self.memory, self.pose.loc, self.map, self.params, loaded=loaded,
                                   goal_xy=goal, door_xy=self.door_xy, keepouts=self._keepouts(),
-                                  initial_servo=dict(self.servo), seed=self.seed)
+                                  initial_servo=dict(self.servo), seed=self.seed,
+                                  memory_look_enabled=self.memory_look_enabled)
         self.leg.exclude_tracks = (self.target_track_id,) if self.target_track_id else ()
         if loaded:
             self.leg.drive_pose = dict(CARRY_POSTURE)
         self.leg_goal = tuple(goal)
+
+    def _viewpoint_useful(self, vp):
+        if not self.memory_look_enabled:
+            return {'useful': True}  # no coverage-based skipped reobservation in OFF
+        return super()._viewpoint_useful(vp)
+
+    def _search_leg(self, now):
+        # Same targets and navigation; only reobservation pan selection differs.
+        if self.leg is not None and self.leg.state == 'drive':
+            decision = self._target_from_memory(now, 'seen_while_driving')
+            if decision is not None:
+                return decision
+        cmds, outcome = self._drive_leg(now)
+        if outcome is None:
+            return {'mode': 'tick', 'commands': cmds}
+        if outcome != 'arrived':
+            self.outcome = 'SEARCH_LEG_' + outcome
+            return {'mode': 'done', 'outcome': self.outcome}
+        self.phase = 'search_sweep'
+        rep = self.pose.report(now)
+        if not self.memory_look_enabled or self.revisit or not rep.initialized:
+            pans, why, coverage = list(SEARCH_PANS), 'full_search', None
+        else:
+            plan = self.memory.plan_search_pans((rep.x_m, rep.y_m, rep.yaw_rad), SEARCH_CANDIDATE_PANS)
+            pans, why, coverage = (plan['pans'] or [1500]), 'memory_coverage', plan['coverage']
+        self._event(now, 'search_pans', pans=pans, why=why,
+                    skipped=[p for p in SEARCH_CANDIDATE_PANS if p not in pans], coverage=coverage)
+        self._start_sweep(now, 'search', SEARCH_POSE, pans, SEARCH_POSE, 'viewpoint')
+        return self._hold()
 
     def _search_decide(self, now):
         target = self.memory.best_target(self.box_kind, now)
@@ -196,7 +200,7 @@ class M1OwnCamDeliveryMemV3(SlotInspectionV3, M1OwnCamDeliveryMem):
         full = (reason in FULL_GATE_REASONS + ('preplace', 'verify_grasp_v3', 'verify_place_v3')
                 or (reason.startswith('gate:') and self.gate_looks >= 2))
         plan = None
-        if not full:
+        if self.memory_look_enabled and not full:
             rep = self.pose.report(now)
             plan = self.memory.plan_look(self.pose.loc.estimate(),
                                          loaded=bool(loaded or rep.load_state == 'loaded'), now=now,
@@ -299,6 +303,17 @@ class M1OwnCamDeliveryMemV3(SlotInspectionV3, M1OwnCamDeliveryMem):
         return super()._skill(now)
 
     def summary(self):
-        return {**super().summary(), 'schema': SCHEMA, 'verification_v3': self.verification,
+        return {**super().summary(), 'schema': SCHEMA,
+                'memory_look_enabled': self.memory_look_enabled,
+                'safety_contract': SAFETY_SCHEMA, 'verification_v3': self.verification,
                 'blind_spot_retry_v3': self.blind_spot_retry, 'slot_handoff_v3': self.slot_handoff,
                 'slot_inspection_v3': self.slot_inspection, 'slot_pending_handoff_v3': self.pending_slot_handoff()}
+
+
+class M1OwnCamDeliveryOffV3(M1OwnCamDeliveryMemV3):
+    """Matched OFF: disable memory look decisions only, retain all v3 safety.
+
+    Tracking, search, slot verification, input/pose source and skill are shared.
+    The historical all-memory-OFF controller is runner condition off_legacy.
+    """
+    memory_look_enabled = False

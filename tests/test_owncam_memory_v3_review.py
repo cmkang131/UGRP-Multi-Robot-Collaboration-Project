@@ -221,13 +221,13 @@ def test_yaw_retries_stop_in_actual_driver_tick(loaded):
 
 @pytest.mark.parametrize('loaded', [False, True])
 def test_yaw_threshold_and_recovery_reset_budget_only_when_drive_ready(loaded):
-    from harness.owncam_drive import LOOK_IF_STD_YAW_RAD
+    from harness.owncam_safety_v3 import FIX_ACCEPT_YAW_RAD
     leg, loc, est = leg_fixture(loaded)
     fix(leg.memory, loc.t)
     assert leg._should_refix(True)
     assert leg.unverified_looks == 1
-    est['std_yaw_rad'] = LOOK_IF_STD_YAW_RAD
-    est['cov'][2, 2] = LOOK_IF_STD_YAW_RAD**2
+    est['std_yaw_rad'] = FIX_ACCEPT_YAW_RAD
+    est['cov'][2, 2] = FIX_ACCEPT_YAW_RAD**2
     assert not leg._should_refix(True)
     assert leg.unverified_looks == 0
     est['std_yaw_rad'] += 1e-6

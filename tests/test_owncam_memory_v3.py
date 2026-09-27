@@ -590,7 +590,7 @@ class ControllerAndBoundaryTests(unittest.TestCase):
             for cmd in result.get('commands', []):
                 ctl.on_command({'t': now, **cmd})
             now += .1
-        self.assertEqual(ctl.outcome, 'LOOK_COLLISION_UNVERIFIED')
+        self.assertEqual(ctl.outcome, 'NOT_INITIALIZED')
         ctl.skill_factory.assert_not_called()
 
     def test_no_mujoco_needed_even_to_import_controller(self):
@@ -613,9 +613,10 @@ class ControllerAndBoundaryTests(unittest.TestCase):
     def test_runner_selects_all_versions_and_draft_is_refused_before_launch(self):
         from scripts import run_m1_owncam_memory_v3 as runner
         from harness.m1_owncam_memory import M1OwnCamDeliveryMem
-        from harness.m1_owncam_memory_v3 import M1OwnCamDeliveryMemV3
+        from harness.m1_owncam_memory_v3 import M1OwnCamDeliveryMemV3, M1OwnCamDeliveryOffV3
         from harness.m1_owncam_delivery import M1OwnCamDelivery
-        self.assertIs(runner.controller_class('off'), M1OwnCamDelivery)
+        self.assertIs(runner.controller_class('off'), M1OwnCamDeliveryOffV3)
+        self.assertIs(runner.controller_class('off_legacy'), M1OwnCamDelivery)
         self.assertIs(runner.controller_class('memory_v2'), M1OwnCamDeliveryMem)
         self.assertIs(runner.controller_class('memory_v3'), M1OwnCamDeliveryMemV3)
         draft = ROOT/'experiments/2026-09-27-zone-owncam-memory-v3/prereg_DRAFT.json'

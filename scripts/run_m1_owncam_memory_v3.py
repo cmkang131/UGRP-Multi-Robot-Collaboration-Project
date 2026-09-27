@@ -1,4 +1,4 @@
-"""Versioned memory_v3 runner; frozen off and memory_v2 remain selectable.
+"""Matched v3 look-memory ON/OFF runner; off_legacy and memory_v2 are references.
 
 DRAFT pre-registration is deliberately non-executable. The coordinator must
 freeze a fresh comparison after PR #227 is ready. No automatic cohorts.
@@ -20,18 +20,23 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from harness.owncam_safety_v3 import SCHEMA as SAFETY_SCHEMA
+
 SCHEMA = 'ugrp.m1_owncam_memory_run.v3'
-CONDITIONS = {'off': ('harness.m1_owncam_delivery', 'M1OwnCamDelivery'),
+CONDITIONS = {'off': ('harness.m1_owncam_memory_v3', 'M1OwnCamDeliveryOffV3'),
+              'off_legacy': ('harness.m1_owncam_delivery', 'M1OwnCamDelivery'),
               'memory_v2': ('harness.m1_owncam_memory', 'M1OwnCamDeliveryMem'),
               'memory_v3': ('harness.m1_owncam_memory_v3', 'M1OwnCamDeliveryMemV3')}
-RESULT_LABELS = {'off': None, 'memory_v2': 'interim, tag provider', 'memory_v3': 'interim, tag provider; unvalidated v3'}
+MATCHED_CONDITIONS = ('off', 'memory_v3')
+RESULT_LABELS = {'off': 'interim, tag provider; v3 safety, memory look OFF',
+                 'off_legacy': 'historical OFF; unmatched safety; reference only', 'memory_v2': 'interim, tag provider', 'memory_v3': 'interim, tag provider; unvalidated v3'}
 MEMORY_FILES = ('harness/owncam_memory.py', 'harness/owncam_memory_kf.py', 'harness/owncam_drive_mem.py',
                 'harness/owncam_landmarks.py', 'harness/owncam_landmark_tags.py',
                 'harness/m1_owncam_memory.py', 'scripts/run_m1_owncam_memory.py',
                 'harness/owncam_pose_guard_v3.py', 'harness/owncam_memory_v3.py',
                 'harness/owncam_visibility_v3.py',
                 'harness/owncam_slot_inspection_v3.py',
-                'harness/owncam_sweep_collision.py',
+                'harness/owncam_sweep_collision.py', 'harness/owncam_safety_v3.py',
                 'harness/owncam_search_projection_v3.py',
                 'harness/owncam_drive_mem_v3.py', 'harness/m1_owncam_memory_v3.py',
                 'scripts/run_m1_owncam_memory_v3.py')
@@ -95,12 +100,15 @@ def run_episode(spec: dict, out: Path, student: dict, condition: str, *, prereg_
     # Frozen M1 runner may hit SIM_LIMIT/exception before ctl.decide() gets a
     # chance to terminate a pending slot inspection. Preserve the upper-level
     # handoff in its result, without changing that runner or OFF/v2 outcomes.
-    if condition == 'memory_v3' and finalize_slot_handoff(result):
+    if condition in MATCHED_CONDITIONS and finalize_slot_handoff(result):
         (out/'result.json').write_text(json.dumps(result, indent=2, ensure_ascii=False, default=str) + '\n')
     record = {'schema': SCHEMA, 'episode': spec['episode_id'], 'condition': condition,
               'result_label': RESULT_LABELS.get(condition),
               'controller_class': f'{cls.__module__}.{cls.__name__}',
               'controller_schema': result.get('controller', {}).get('schema'),
+              'comparison_role': 'matched_look_ablation' if condition in MATCHED_CONDITIONS else 'historical_reference',
+              'memory_look_enabled': condition == 'memory_v3' if condition in MATCHED_CONDITIONS else None,
+              'safety_contract': SAFETY_SCHEMA if condition in MATCHED_CONDITIONS else None,
               'memory_files_sha256': {f: sha_file(ROOT/f) for f in MEMORY_FILES},
               'code_sha': git('rev-parse', 'HEAD'), 'dirty': bool(git('status', '--porcelain', '--', *FROZEN_PATHS)),
               'prereg_sha256': prereg_sha256, 'amendments_sha256': amendments_sha256, 'freeze': freeze,
@@ -156,6 +164,8 @@ def main(argv=None):
     prereg = json.loads(prereg_path.read_text())
     if prereg.get('status') != 'REGISTERED':
         raise SystemExit('refused: memory_v3 prereg is DRAFT or not REGISTERED; coordinator freeze required')
+    if args.condition in MATCHED_CONDITIONS and prereg.get('safety_contract') != SAFETY_SCHEMA:
+        raise SystemExit('refused: matched ON/OFF requires the v3 shared safety contract')
     freeze = None
     if args.split == 'test':
         if not args.frozen:

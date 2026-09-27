@@ -70,3 +70,7 @@ MuJoCo 없이 `unittest`로 검사했고, 새 제어기 import에 MuJoCo를 차�
 3. DRAFT의 dev seed 27101–27104 / test seed 27201–27208은 제안이다. 원격 중복·미개봉 여부를 확인하고, 모든 조건의 관측원·물리·지도·예산을 일치시켜 최종 동결한다.
 4. 보수적인 회피 영역 때문에 생길 수 있는 no-path, 하중 시야에서 슬롯의 실제 관측 가능성, 확인 거부에 따른 성공률을 dev에서 확인한다. 슬롯 unknown은 배치 금지로 남는다.
 5. 실제 새 실험 후 원본·실패·해시와 TensorBoard snapshot/영상 검증을 수행한다. 이번에는 단위 검사만 했으므로 실험 결과·영상·TensorBoard snapshot을 만들지 않았다. UGRP 예외에 따라 Google Drive 작업도 없다.
+
+## PR #234 5차 리뷰와 비교 조건
+
+[5차 수정 기록](review5-fixes/README.md)에 2fadd08a의 재관측 루프·초기화 실패 재현, 수정 후 검사, ON/OFF 공통 안전 계약을 보존했다. 최신 비교 DRAFT는 `off`(v3 안전 + 기억 기반 재관측 OFF)와 `memory_v3`만 사용하며, 과거 OFF는 `off_legacy`, `memory_v2`는 참고 조건으로 분리한다. 소스 커밋·실험·성공률 검증은 아직 없다.
