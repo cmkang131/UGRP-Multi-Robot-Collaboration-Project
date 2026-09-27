@@ -9,8 +9,8 @@ from __future__ import annotations
 import math
 
 from harness.m1_owncam_delivery import CLOSER_VIEW_STANDOFF_M, MAX_GATE_LOOKS, M1OwnCamDelivery
-from harness.m1_owncam_memory import M1OwnCamDeliveryMem, _RecordingDetector
-from harness.owncam_drive import CARRY_POSTURE, SEARCH_POSE, WIDE_LOOK_PANS
+from harness.m1_owncam_memory import FULL_GATE_REASONS, GATE_TARGETS, M1OwnCamDeliveryMem, _RecordingDetector
+from harness.owncam_drive import CARRY_POSTURE, LOOK_P20, SEARCH_POSE, WIDE_LOOK_PANS
 from harness.owncam_drive_mem_v3 import LegDriverMemV3
 from harness.owncam_landmark_tags import TagLandmarkProvider
 from harness.owncam_memory_v3 import OwnCamMemoryV3
@@ -186,11 +186,33 @@ class M1OwnCamDeliveryMemV3(SlotInspectionV3, M1OwnCamDeliveryMem):
         return super()._after_sweep(now)
 
     def _gate_look(self, now, reason, obs, *, loaded):
-        # Manipulation-boundary verification always performs a full own look.
-        if reason in ('preplace', 'verify_grasp_v3', 'verify_place_v3'):
-            self.gate_modes.append({'t': now, 'reason': reason, 'mode': 'full'})
-            return M1OwnCamDelivery._gate_look(self, now, reason, obs, loaded=loaded)
-        return super()._gate_look(now, reason, obs, loaded=loaded)
+        # Keep the frozen v2 implementation unchanged. Its caller assumes sweep
+        # creation always succeeds; v3 must handle collision refusal first.
+        pose = {int(k): int(v) for k, v in obs['actuator_state']['servo_pulses'].items()}
+        restore = {k: v for k, v in pose.items() if k in (1, 3, 4, 5, 6)}
+        look_pose = dict(LOOK_P20)
+        if loaded:
+            look_pose[1] = restore.get(1, 1500)
+        full = (reason in FULL_GATE_REASONS + ('preplace', 'verify_grasp_v3', 'verify_place_v3')
+                or (reason.startswith('gate:') and self.gate_looks >= 2))
+        plan = None
+        if not full:
+            rep = self.pose.report(now)
+            plan = self.memory.plan_look(self.pose.loc.estimate(),
+                                         loaded=bool(loaded or rep.load_state == 'loaded'), now=now,
+                                         reason=reason, start_pan=int(restore.get(6, 1500)))
+        pans = list(plan['pans']) if plan and plan['pans'] else list(WIDE_LOOK_PANS)
+        mode = 'short' if plan and plan['pans'] else 'full'
+        self.gate_modes.append({'t': round(now, 3), 'reason': reason, 'mode': mode, 'pans': pans})
+        self._start_sweep(now, 'look', look_pose, pans, restore, reason)
+        if self.sweep is None:
+            return self.decide(now)  # preserve the terminal outcome and any slot handoff
+        gate = reason.split(':')[1] if reason.startswith('gate:') else reason
+        self.sweep['mode'] = mode
+        self.sweep['short_target'] = GATE_TARGETS.get(gate, GATE_TARGETS['nav_loaded' if loaded else 'nav_unloaded'])
+        self.memory.reset_view_checks()
+        self.reanchor_needed = bool(loaded and self.skill is not None and self.skill.box.held)
+        return self._hold()
 
     def _boundary_gate(self, now, kind):
         gate = self.verification.setdefault(kind, {'since': float(now), 'looks': 0})

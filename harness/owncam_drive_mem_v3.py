@@ -4,8 +4,9 @@ from __future__ import annotations
 import math
 
 from harness.m1_owncam_delivery import _LegDriver
-from harness.owncam_drive import LOOK_IF_STD_YAW_RAD
-from harness.owncam_drive_mem import MemoryLookPolicy, SHORT_ACCEPT_YAW_RAD
+from harness.owncam_drive import LOOK_IF_STD_XY_M, LOOK_IF_STD_YAW_RAD
+from harness.owncam_drive_mem import ARRIVAL_OK_YAW_RAD, MemoryLookPolicy, SHORT_ACCEPT_YAW_RAD
+from harness.owncam_drive_v2 import LOADED_UNCERTAIN_STD_XY_M, LOADED_UNCERTAIN_STD_YAW_RAD
 from harness.owncam_pose_guard_v3 import GuardedLocalizerV3
 from harness.owncam_sweep_collision import OwnPose, commands_clear, plan_safe_sweep
 
@@ -22,9 +23,23 @@ class LegDriverMemV3(MemoryLookPolicy, _LegDriver):
         self.arrival_verifications = 0
         self.exclude_tracks = ()
 
+    def _current_uncertainty_ok(self, est, *, arrival=False):
+        # A remembered fix or the v2 minimum-travel hysteresis cannot grant
+        # permission to move/arrive when the current estimate exceeds limits.
+        if not est.get('initialized'):
+            return False
+        xy_limit = self._fix_std_xy_m() if arrival else (
+            LOADED_UNCERTAIN_STD_XY_M if self.loaded else LOOK_IF_STD_XY_M)
+        yaw_limit = ARRIVAL_OK_YAW_RAD if arrival else (
+            LOADED_UNCERTAIN_STD_YAW_RAD if self.loaded else LOOK_IF_STD_YAW_RAD)
+        return (math.isfinite(est['std_xy_m']) and 0 <= est['std_xy_m'] <= xy_limit
+                and math.isfinite(est['std_yaw_rad']) and 0 <= est['std_yaw_rad'] <= yaw_limit)
+
     def _needs_look(self, est, now):
         if est.get('initialized') and not self.memory.guard.consistent(now):
             return 'pose_inconsistent'
+        if est.get('initialized') and not self._current_uncertainty_ok(est):
+            return 'uncertain'
         return super()._needs_look(est, now)
 
     def _start_look(self, now, reason):
@@ -93,8 +108,10 @@ class LegDriverMemV3(MemoryLookPolicy, _LegDriver):
         return super().tick(now)
 
     def _arrive(self, now):
+        self.loc.predict_to(now)
         est = self.loc.estimate()
-        if (self.verification_since is None or not self.memory.look_fix_since(self.verification_since)
+        if (not self._current_uncertainty_ok(est, arrival=True)
+                or self.verification_since is None or not self.memory.look_fix_since(self.verification_since)
                 or not self.memory.look_fix_fresh(now, (est['x'], est['y']))):
             if self.unverified_looks >= MAX_UNVERIFIED_LOOKS:
                 return self._finish(now, 'arrival_unverified')
