@@ -203,9 +203,14 @@ ENOSPC는 HOST_ERROR다. 디스크가 이미 가득 찼다면 최종 파일 저�
   --video-review "$PAIR_OUT/eval_only/video-review-01.json" \
   --output "$PAIR_OUT/eval_only/review-01/result.json"
 # 성공이 아니면 exit 1; 결과 파일은 보존된다. 중단 진단을 정상 성공으로 표시하지 않는다.
-ln -s ../overview.mp4 "$PAIR_OUT/eval_only/review-01/overview.mp4"
+# 검토 result와 영상을 새 파생 뷰에 연결한다. 기존 raw/검토 파일은 수정하지 않는다.
+# 같은 파일시스템의 hardlink라 영상 바이트 복제가 없다. ../ symlink는 변환기가 거부한다.
+PAIR_VIEW=/Users/changmin/projects/ugrp/outputs/tb-view/pair-dev-NEW
+mkdir "$PAIR_VIEW"
+cp "$PAIR_OUT/eval_only/review-01/result.json" "$PAIR_VIEW/result.json"
+ln "$PAIR_OUT/eval_only/overview.mp4" "$PAIR_VIEW/overview.mp4"
 "$PAIR_PY" scripts/export_tensorboard.py \
-  --source "$PAIR_OUT/eval_only/review-01" \
+  --source "$PAIR_VIEW" \
   --output /Users/changmin/projects/ugrp/outputs/tensorboard/pair-dev-NEW --max-images 0
 ```
 
@@ -214,7 +219,26 @@ ln -s ../overview.mp4 "$PAIR_OUT/eval_only/review-01/overview.mp4"
 `outputs/tensorboard-view.json`은 쓰기 직전에 읽어 자기 항목만 갱신한다.
 기존 viewer 소유 PID/명령/logdir 확인 후 자기 viewer만 갱신한다. 실제 native TensorBoard에서
 새 run·영상 등록·HParams 열·성공/SIM·wall 시간/명령 수/모델 호출 0·응답 시간 해당 없음과
-관련 기준선을 확인한 뒤 대시보드 링크를 보고한다. **v2 dev03/dev04의 raw 실행·영상·snapshot·화면 검증은 없다.** v1 기록은 [결과](results.md)를 따른다.
+관련 기준선을 확인한 뒤 대시보드 링크를 보고한다. v1·v2 실제 실행 및 기존 snapshot 검증은
+[결과](results.md), v3 오프라인 원인 재구성과 영상 변환 확인은 [진단](diagnosis_v3.md)을 따른다.
+
+## v3 준비 초안 — dev05/dev06, 실행 금지
+
+[prereg_v3_DRAFT.json](prereg_v3_DRAFT.json)은 dev03/dev04 뒤의 **준비 전용** 초안이다.
+seed 901/902·빔 설정·60 s 1회 제출·평가 기준·물리 프로필·예산은 v2와 같다.
+거부 하위 조건은 `eval_only/pair_admission.jsonl`에 action_id로 연결하여 저장한다.
+기존 raw·v1/v2 사전 기록을 바꾸거나 코호트를 합산하지 않는다.
+
+서쪽 dock에서 기존 전신 guard가 출발 자세조차 보증하지 못한다. 시작 위치·관측 부트스트랩은
+코디네이터가 [근거와 선택지](diagnosis_v3.md)를 보고 정한다. 장면/위치 변경은 아직 적용하지 않았다.
+드라이버는 v3의 `--execute`를 거부한다. 결정 뒤 구현·정적 검증·장면/지도 해시·새 소스 커밋을
+완료하고 사전 기록과 실행 허용 경로를 함께 검토해야 한다. 아래는 물리 실행 없는 prepare다.
+
+```sh
+OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev.py \
+  --prereg experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json \
+  --run-id dev05 --output /tmp/zone-pair-dev05-prepare-NEW
+```
 
 ## 비물리 검증
 

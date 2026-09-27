@@ -39,6 +39,21 @@ def test_prereg_admission(tmp_path, run_id, seed):
     assert p['limits']['model_calls'] == 0
 
 
+@pytest.mark.parametrize('run_id', ['dev05', 'dev06'])
+def test_v3_draft_prepares_but_cannot_execute_before_startup_decision(tmp_path, run_id):
+    draft = dev.PREREG.with_name('prereg_v3_DRAFT.json')
+    args = arguments(tmp_path, '--prereg', str(draft), '--run-id', run_id)
+    p, case = dev.load_config(args)
+    assert p['supersedes']['sha256'] == dev.sha_file(dev.PREREG)
+    assert case['id'] == run_id and p['execution_readiness']['coordinator_decision'] is None
+    assert p['criteria'] == config()['criteria'] and p['limits'] == config()['limits']
+    assert p['execution_readiness']['spawn_change_applied'] is False
+    args.execute = True
+    with pytest.raises(ValueError, match='prepare-only'):
+        dev.load_config(args)
+    assert not args.output.exists()
+
+
 def test_v2_freezes_profile_hashes_and_recalculates_budgets():
     p = config()
     old = json.loads(dev.PREVIOUS_PREREG.read_text())

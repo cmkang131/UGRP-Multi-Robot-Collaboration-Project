@@ -1023,7 +1023,7 @@ def convert(source, output, *, max_images=8, media_port=6007, allow_synthetic=Fa
         elif kind == 'termination-audit': meta, metrics = export_termination_audit(src, w, data)
         else: meta, metrics = export_execution(src, w, data, max_images, coverage)
         videos = []
-        video_names = () if kind == 'teacher-infrastructure-abort' else ('motion.mp4', 'execution.mp4')
+        video_names = () if kind == 'teacher-infrastructure-abort' else ('motion.mp4', 'execution.mp4', 'overview.mp4')
         if isinstance(result, dict) and result.get('schema_version') == RUN_SCHEMA:
             video_names += ('backend/execution.mp4',)
         for name in video_names:

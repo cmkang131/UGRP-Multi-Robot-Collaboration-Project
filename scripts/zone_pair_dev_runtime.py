@@ -52,6 +52,15 @@ def queue_snapshot(host):
     return out
 
 
+def flush_admission_audit(host, stream, cursors):
+    """Write private receipts immediately after API calls, outside actor/STATUS logs."""
+    for rid, slot in host.robots.items():
+        rows = slot.executor.pair_admission_log
+        for row in rows[cursors.get(rid, 0):]:
+            stream.append(copy.deepcopy(row))
+        cursors[rid] = len(rows)
+
+
 class RecordedPort:
     """Host-only decorator: preserve each original own observation before validation."""
     def __init__(self, port, out):
@@ -226,6 +235,7 @@ def run_physical(args, prereg, case, manifest):
 
     out = args.output
     streams = {name: Jsonl(out / f'{name}.jsonl') for name in ('commands', 'status', 'shutdown', 'events')}
+    streams['admission'] = Jsonl(out / 'eval_only/pair_admission.jsonl')
     start = time.monotonic()
     host = observer = None
     wall = prereg['limits']['wall_s']
@@ -243,6 +253,7 @@ def run_physical(args, prereg, case, manifest):
         """Observer hooks preserve the production host's profile-defined step loop."""
         def __init__(self, *a, **kw):
             self.audit_index = {}
+            self.admission_index = {}
             self.abort_index = {}
             self.abort_seen = False
             self.shutdown_at = None
@@ -253,6 +264,12 @@ def run_physical(args, prereg, case, manifest):
             super().__init__(*a, **kw)
             for slot in self.robots.values():
                 slot.port = RecordedPort(slot.port, out)
+
+        def call(self, rid, api, *args):
+            try:
+                return super().call(rid, api, *args)
+            finally:
+                flush_admission_audit(self, streams['admission'], self.admission_index)
 
         def aborted(self):
             if not self.abort_seen and getattr(self, 'pairs', None):

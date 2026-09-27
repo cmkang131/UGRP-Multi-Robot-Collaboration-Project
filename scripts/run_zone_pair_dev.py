@@ -86,11 +86,15 @@ def load_config(args):
         raise ValueError('unsupported or altered dev environment/labels')
     if prereg.get('status') != 'DRAFT' or prereg.get('research_result') is not False:
         raise ValueError('this driver is for DRAFT dev only')
-    if prereg.get('registration_version') != 2:
-        raise ValueError('use prereg v2 with new dev03/dev04 run IDs; preserve v1')
+    version = prereg.get('registration_version')
+    if version not in (2, 3):
+        raise ValueError('use prereg v2 or prepare-only v3 with new run IDs; preserve v1')
+    if version == 3 and args.execute:
+        raise ValueError('v3 is prepare-only: coordinator startup/dock decision and implementation are pending')
     if prereg.get('contact_profile_contract') != profile_contract():
         raise ValueError('contact profile contract/hash mismatch; freeze a new prereg before execution')
-    previous = {'path': str(PREVIOUS_PREREG.relative_to(ROOT)), 'sha256': sha_file(PREVIOUS_PREREG)}
+    previous_path = PREVIOUS_PREREG if version == 2 else PREREG
+    previous = {'path': str(previous_path.relative_to(ROOT)), 'sha256': sha_file(previous_path)}
     if prereg.get('supersedes') != previous:
         raise ValueError('previous prereg hash mismatch')
     timing, frozen_limits = timing_contract(json.loads(PREVIOUS_PREREG.read_text()), EXPECTED['timestep_s'])
@@ -105,8 +109,9 @@ def load_config(args):
         raise ValueError('run-id is not preregistered')
     if type(case['seed']) is not int or not 0 <= case['seed'] < 2**32:
         raise ValueError('seed must be a uint32 integer')
-    if [(r['id'], r['seed']) for r in rows] != [('dev03', 901), ('dev04', 902)]:
-        raise ValueError('v2 fixes dev03 seed 901 / dev04 seed 902; do not reuse prior IDs')
+    expected_runs = [('dev03', 901), ('dev04', 902)] if version == 2 else [('dev05', 901), ('dev06', 902)]
+    if [(r['id'], r['seed']) for r in rows] != expected_runs:
+        raise ValueError(f'v{version} fixes {expected_runs}; do not reuse prior IDs')
     limits = prereg['limits']
     for k in ('sim_s', 'wall_s', 'submit_at_s', 'post_terminal_s', 'outer_wall_timeout_s'):
         v = limits[k]

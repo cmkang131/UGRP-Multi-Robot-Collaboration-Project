@@ -144,6 +144,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
         self.events: list[dict] = []
         self._outbox: list[dict] = []
         self.api_log: list[dict] = []
+        self.pair_admission_log: list[dict] = []  # private evaluation audit, not part of ACK/status/events
         self.judgment_log: list[dict] = []
         self.pose_sources_seen: set[str] = set()
         self.cameras_seen: set[str] = set()
@@ -248,6 +249,11 @@ class ZoneOwnExecutor(OwnStatusMixin):
                'arguments': arguments, 'accepted': bool(accepted), 'rejected_reason': reason,
                'job_id': job.job_id if job else None, 'local_state': self._local_state}
         self.api_log.append(ack)
+        if api == 'pair_carry' and not accepted:
+            from harness.zone_pair_admission import readiness_snapshot
+            self.pair_admission_log.append({
+                **readiness_snapshot(self, self.now, arguments.get('order_id'), arguments.get('target_ref')),
+                'action_id': ack['action_id'], 'accepted': False, 'rejected_reason': reason})
         return ack
 
     def _start(self, api, kind, arguments, **job_args):
@@ -296,27 +302,8 @@ class ZoneOwnExecutor(OwnStatusMixin):
 
     def pair_readiness(self, now, item_ref=None, target_zone=None):
         """Own admission -> fixed status enum; no private state is sent to a peer."""
-        if self.stopped is not None:
-            return 'stopped'
-        if self.job is not None:
-            return 'busy'
-        if item_ref is not None:
-            order = self.orders.get(item_ref)
-            if (order is None or order.get('kind') != 'long_beam' or order.get('count') != 1
-                    or order.get('required_robots') != 2 or order.get('destination_zone') != target_zone):
-                return 'incompatible'
-        if (self.mode != 'm1' or not self.gate.ok or self.last_report is None
-                or not self.last_report.initialized or not pose_report_fresh(self.last_report, now)
-                or not finite_number(self.last_report.std_xy_m) or not finite_number(self.last_report.std_yaw_rad)
-                or self.last_obs is None or not 0 <= now - self.last_obs['sim_time'] <= .3
-                or not {1, 3, 4, 5, 6} <= set(self.servo)):
-            return 'uncertain'
-        from harness.zone_pair_vision import valid_frame
-        if not valid_frame(self.last_obs, self.robot_id, now):
-            return 'invalid_image'
-        if self.holding()['answer'] != 'no':
-            return 'occupied'
-        return 'available'
+        from harness.zone_pair_admission import readiness_snapshot
+        return readiness_snapshot(self, now, item_ref, target_zone)['state']
 
     def pair_carry(self, item_ref=None, target_zone=None, partner_id=None):
         """Submit this robot only; the partner must independently submit the identical task."""
