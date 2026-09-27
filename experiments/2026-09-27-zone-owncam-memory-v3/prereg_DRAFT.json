@@ -48,7 +48,9 @@
       "BLIND_SPOT_RETREAT_M",
       "SLOT_CLEAR_MAX_AGE_S",
       "SLOT_VIEW_STANDOFFS_M",
-      "SLOT_INSPECTION_TIMEOUT_S"
+      "SLOT_INSPECTION_TIMEOUT_S",
+      "MAX_PROJECTION_M",
+      "MIN_RETREAT_M"
     ],
     "budget": "제안: dev 4 seeds x 최대 3 후보 x 조건별 1회, 각 720 SIM s. 모든 실패와 변경 이유 보존. coordinator 승인 전 실행하지 않는다.",
     "data_boundary": "dev의 자기 RGB/명령/측정 진단으로 조정. GT는 별도 오프라인 채점만. test 결과로 임계값 재조정 금지. v2 test s162/s164/s165는 이미 v3 개발·회귀에 사용해 노출된 자료다. 앞으로의 test는 새 미개봉 seed만 사용하고 새 dev에서만 조정한다."
@@ -64,7 +66,12 @@
       "점유 차단은 관측 전용 존재 확률/가시 miss로만 해제; 시간 감쇠로 배치 허가하지 않음.",
       "같은 SIM 시각 새 frame ID를 정상 처리하되 독립 관측/PF/free 누적은 금지.",
       "free 바닥에도 xy/yaw 전체 지지영역·자기 팔·현재 화물 가림 검사 적용; 불확실하면 free로 기록하지 않음.",
-      "노출된 v2 test fixture는 회귀용만 사용. 미래 test는 모든 노출/dev seed와 분리된 새 seed만 동결."
+      "노출된 v2 test fixture는 회귀용만 사용. 미래 test는 모든 노출/dev seed와 분리된 새 seed만 동결.",
+      "499e4fd6 몸체 구 기하를 재사용한 공용 충돌 함수로 look/refix/슬롯 sweep의 자세 전환·모든 pan 경로·복귀를 확인. 안전한 pan이 없으면 명시적 종료. 실제 새 dev의 문기둥/벽 접촉률·거부율 확인.",
+      "slot_blocking은 주행 keep-out과 슬롯 게이트에 같은 기준으로 반영. 시간 감쇠나 placed 상태만으로 주행 회피에서 제거하지 않음.",
+      "왕복의 모든 새 자기 RGB 프레임에 기존 external_navigation 화물 검사 적용. 낙하·가림·추가 검사 요구 시 이동 중단/handoff. 움직이는 팔에서의 거부율은 새 dev에서 별도 확인.",
+      "사각지대 후퇴 목표는 정적 지도·자기 관측 장애물·차체 여유를 만족하는 연결된 grid cell로 투영하고 실제 planner로 검증. 후보가 없으면 SEARCH_BLIND_SPOT_UNREACHABLE.",
+      "외부 SIM_LIMIT/예외 종료가 슬롯 deadline보다 빨라도 result.json에 pending 슬롯의 단계·시도·이유·해제 미시작 handoff를 보존. 기존 SIM_LIMIT 판정은 그대로 유지."
     ],
     "claim": [
       "v3 성공 수 >= matched OFF 성공 수",
@@ -85,7 +92,9 @@
     "model calls/tokens/cost (zero for no-LLM M1), load average (not performance claim)",
     "slot inspection attempts/time; SLOT_UNVERIFIED and handoff reasons",
     "time-decayed vs observation-only existence probability; slot blocking",
-    "same-time captures skipped for evidence; visibility-rejected free cells"
+    "same-time captures skipped for evidence; visibility-rejected free cells",
+    "collision guard requested/retained/dropped pans; transition/restore rejections",
+    "per-frame slot carry failures, reachable retreat projection distance, external-stop handoff coverage"
   ],
   "stop_rules": {
     "test": "동결 후 새 seeds 조건당 1회; 제어기 실패 재시도 금지. 인프라 중단은 원본 보존 뒤 coordinator 판정.",
@@ -95,7 +104,7 @@
   "records": "로컬 실험 폴더에 소스/환경/입력/모든 결과/실패/해시. 실제 실험 뒤 TensorBoard 새 snapshot과 원본 대비 값·영상 검증. 이번 작업에는 실험/평가 결과 및 TensorBoard 변환 없음.",
   "student": {},
   "episodes": [],
-  "revision": "PR #234 review2 after ac743938; DRAFT, no cohort authorized",
+  "revision": "PR #234 review3 after b1eebc0e; DRAFT, no cohort authorized",
   "exposed_fixture_policy": {
     "origin": "memory_v2 preregistered test split: s162, s164, s165 (RGB 6 frames, issued servo and own pose reports)",
     "used_for": "memory_v3 implementation development, geometry/attachment debugging and regression tests",

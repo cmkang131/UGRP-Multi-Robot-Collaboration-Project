@@ -9,6 +9,46 @@ SLOT_INSPECTION_TIMEOUT_S = 120.
 
 
 class SlotInspectionV3:
+    def pending_slot_handoff(self):
+        """Snapshot for a runner that stops before another controller decision."""
+        if self.slot_inspection is None:
+            return None
+        gate = self.verification['place']
+        return {'requires_upper_level_decision': True, 'reason': 'slot_inspection_pending',
+                'slot_id': self.slot_id, 'slot_state': self.slot_record,
+                'stage': self.slot_inspection['stage'], 'goal': self.slot_inspection.get('goal'),
+                'attempts': gate.get('slot_attempts', 0), 'deadline_sim_s': gate.get('slot_deadline'),
+                'cargo_held': bool(self.skill is not None and self.skill.box.held),
+                'release_started': False}
+
+    def _slot_carry_frame(self, now, obs):
+        """Run the existing external-navigation cargo guard on EVERY new own frame.
+
+        Call the box guard, never the enclosing pre_release skill. Any requested
+        intervention/failure stops this inspection; it cannot start a release.
+        This includes look/posture frames: ambiguity fails closed.
+        """
+        if self.slot_inspection is None or self.slot_inspection['stage'] not in ('outbound', 'return'):
+            return
+        if obs['frame_id'] == getattr(self, '_slot_carry_frame_id', None):
+            return
+        self._slot_carry_frame_id = obs['frame_id']
+        box = self.skill.box
+        if not box.held or box.phase != 'carry' or box.task != 'external_navigation':
+            self._slot_fail(now, 'cargo_not_in_carry')
+            return
+        if box._attachment_image is None or box._carry_previous_image is None:
+            self._slot_fail(now, 'cargo_missing_attachment_reference')
+            return
+        # A just-consumed carry/reanchor frame is not consumed a second time.
+        if obs['frame_id'] <= box._last_frame_id:
+            return
+        action = box.decide(obs)
+        self._event(now, 'slot_carry_check', frame_id=obs['frame_id'], stage=self.slot_inspection['stage'],
+                    action=action, attachment=box.last_attachment)
+        if action['kind'] != 'wait' or box.phase != 'carry':
+            self._slot_fail(now, 'cargo_' + action.get('reason', 'inspection_required'))
+
     def _slot_state(self, now):
         gate = self.verification['place']
         self.slot_record = self.memory.slot_state(now, self.slot_xy, self._slot_half(),
@@ -17,7 +57,8 @@ class SlotInspectionV3:
 
     def _slot_fail(self, now, reason):
         self.outcome = 'SLOT_OCCUPIED_IN_MEMORY' if reason == 'occupied' else 'SLOT_UNVERIFIED'
-        self.slot_handoff = {'requires_upper_level_decision': True, 'reason': reason,
+        self.slot_handoff = {**(self.pending_slot_handoff() or {}),
+                             'requires_upper_level_decision': True, 'reason': reason,
                              'slot_id': self.slot_id, 'slot_state': self.slot_record,
                              'attempts': self.verification['place'].get('slot_attempts', 0),
                              'cargo_held': bool(self.skill is not None and self.skill.box.held),
@@ -61,6 +102,12 @@ class SlotInspectionV3:
             return self._slot_fail(now, 'inspection_timeout')
         stage = inspection['stage']
         if stage in ('outbound', 'return'):
+            obs = self.last_obs
+            if obs is None or not -1e-8 <= now-float(obs['sim_time']) <= .25+1e-8:
+                return self._hold()
+            self._slot_carry_frame(now, obs)
+            if self.slot_handoff is not None:
+                return {'mode': 'done', 'outcome': self.outcome, 'handoff': self.slot_handoff}
             cmds, outcome = self._drive_leg(now)
             if outcome is None:
                 return {'mode': 'tick', 'commands': cmds}

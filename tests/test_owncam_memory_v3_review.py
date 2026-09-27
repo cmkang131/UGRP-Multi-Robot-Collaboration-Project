@@ -49,6 +49,7 @@ def saved_place(item):
     box = WristOnlyBoxSkillV9(robot_id='r1', **BOX_SKILL_OPTIONS)
     box.phase, box.held = 'carry', True
     box._attachment_image = before
+    box._carry_previous_image = before
     box._hover = {int(k): v for k, v in item['release_posture_command']['action']['pulses'].items()}
     box._grasp = dict(box._hover)
     ctl.skill = SimpleNamespace(box=box, phase='pre_release', _preplace_goal=lambda: item['preplace_goal'])

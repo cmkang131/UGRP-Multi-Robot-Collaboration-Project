@@ -17,6 +17,9 @@ from harness.owncam_memory_v3 import OwnCamMemoryV3
 from harness.owncam_pose_guard_v3 import OwnCamPoseSourceV3, PoseGuardV3
 from harness.owncam_pose_source import PoseLimits, check_limits
 from harness.owncam_slot_inspection_v3 import SlotInspectionV3
+from harness.owncam_sweep_collision import OwnPose, commands_clear, plan_safe_sweep
+from harness.owncam_search_projection_v3 import project_reachable_viewpoint
+from harness.map_goto import UNLOADED_ENVELOPE
 
 SCHEMA = 'ugrp.m1_owncam_memory.v3'
 BLIND_SPOT_RETREAT_M = .45
@@ -45,7 +48,38 @@ class M1OwnCamDeliveryMemV3(SlotInspectionV3, M1OwnCamDeliveryMem):
         self.memory.event(now, 'pose_consistency',
                           evidence=dict(evidence), raw_std_xy_m=raw.std_xy_m if raw.initialized else None,
                           effective_std_xy_m=report.std_xy_m if report.initialized else None)
+        self._slot_carry_frame(now, obs)
         return report
+
+    def _sweep_collision_failure(self, now, reason):
+        if self.slot_inspection is not None:
+            self._slot_fail(now, 'look_collision_' + reason)
+        else:
+            self.outcome = 'LOOK_COLLISION_UNVERIFIED'
+            self._event(now, 'look_collision_unverified', reason=reason)
+
+    def _start_sweep(self, now, purpose, pose, pans, restore, reason):
+        loaded = bool(self.skill is not None and self.skill.box.held)
+        plan = plan_safe_sweep(self.map, self.servo, pose, pans,
+                               OwnPose.from_report(self.pose.report(now)), loaded=loaded, restore=restore)
+        self._event(now, 'sweep_collision_check', purpose=purpose, **plan)
+        if not plan['pans']:
+            self.sweep = None
+            self._sweep_collision_failure(now, plan['reason'])
+            return
+        # Pan belongs to the pan stage; interpolate other servos first.
+        super()._start_sweep(now, purpose, {k: v for k, v in pose.items() if int(k) != 6},
+                             plan['pans'], restore, reason)
+
+    def _arm_steps(self, target):
+        commands = super()._arm_steps(dict(sorted(target.items())))
+        now = self.pose.loc.t if self.pose.loc.t is not None else 0.
+        if not commands_clear(self.map, self.servo, commands,
+                              OwnPose.from_report(self.pose.report(now)),
+                              loaded=bool(self.skill is not None and self.skill.box.held)):
+            self._sweep_collision_failure(now, 'command_transition')
+            return [{'kind': 'hold'}]
+        return commands
 
     def _start_leg(self, goal, *, loaded):
         self.leg = LegDriverMemV3(self.memory, self.pose.loc, self.map, self.params, loaded=loaded,
@@ -76,11 +110,24 @@ class M1OwnCamDeliveryMemV3(SlotInspectionV3, M1OwnCamDeliveryMem):
             # A second pass moves the near blind floor strip into the camera FOV.
             # It is bounded, uses the same static planner, and never edits the map.
             self.blind_spot_retry = True
+            rep = self.pose.report(now)
+            projected = []
+            if rep.initialized:
+                for x, y in self.viewpoints:
+                    candidate = project_reachable_viewpoint(self.map, (rep.x_m, rep.y_m),
+                                   (x-BLIND_SPOT_RETREAT_M, y), (x, y), UNLOADED_ENVELOPE,
+                                   obstacles=self._keepouts())
+                    if candidate is not None:
+                        projected.append(candidate)
+            if not projected:
+                self.outcome = 'SEARCH_BLIND_SPOT_UNREACHABLE'
+                self._event(now, 'blind_spot_unreachable')
+                return {'mode': 'done', 'outcome': self.outcome}
             self.outcome = None
-            self.viewpoints = [(x - BLIND_SPOT_RETREAT_M, y) for x, y in self.viewpoints]
+            self.viewpoints = [tuple(c['point']) for c in projected]
             self.view_index = -1
             self.revisit = True  # force full sweeps; stale coverage cannot suppress this pass
-            self._event(now, 'blind_spot_search', viewpoints=self.viewpoints)
+            self._event(now, 'blind_spot_search', viewpoints=self.viewpoints, projections=projected)
             return super()._search_decide(now)
         return result
 
@@ -232,4 +279,4 @@ class M1OwnCamDeliveryMemV3(SlotInspectionV3, M1OwnCamDeliveryMem):
     def summary(self):
         return {**super().summary(), 'schema': SCHEMA, 'verification_v3': self.verification,
                 'blind_spot_retry_v3': self.blind_spot_retry, 'slot_handoff_v3': self.slot_handoff,
-                'slot_inspection_v3': self.slot_inspection}
+                'slot_inspection_v3': self.slot_inspection, 'slot_pending_handoff_v3': self.pending_slot_handoff()}

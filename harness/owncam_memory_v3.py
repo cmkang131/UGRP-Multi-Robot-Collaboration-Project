@@ -374,16 +374,19 @@ class OwnCamMemoryV3(v2.OwnCamMemory):
         # No upper radius cap: coarse detections are NOT precise obstacles.
         return [{'id': t.track_id, 'center_m': t.x.tolist(),
                  'half_extents_m': [v2.KEEPOUT_BASE_HALF_M + KEEPOUT_SIGMAS*t.sigma_m()]*2,
-                 'source': 'own RGB memory_v3', 'existence_p': t.existence_p}
-                for t in self.tracks if t.track_id not in exclude and t.state not in ('held', 'placed')
-                and t.existence_p >= P_KEEPOUT]
+                 'source': 'own RGB memory_v3', 'existence_p': t.existence_p,
+                 'slot_blocking': t.slot_blocking}
+                for t in self.blocking_tracks(exclude)]
+
+    def blocking_tracks(self, exclude=()):
+        """One observation-only occupancy rule for driving AND manipulation."""
+        return [t for t in self.tracks if t.track_id not in exclude and t.state != 'held' and t.slot_blocking]
 
     def slot_state(self, now, centre_xy, half_xy, exclude=(), *, since=None, max_age_s=TARGET_MAX_AGE_S):
         self._decay_to(now)
         c, h = np.asarray(centre_xy), np.asarray(half_xy)
-        occupants = [tr.record(now) for tr in self.tracks if tr.track_id not in exclude
-                     and tr.state != 'held' and tr.slot_blocking
-                     and np.all(np.abs(tr.x-c) <= h + v2.KEEPOUT_BASE_HALF_M + 2*tr.sigma_m())]
+        occupants = [tr.record(now) for tr in self.blocking_tracks(exclude)
+                     if np.all(np.abs(tr.x-c) <= h + v2.KEEPOUT_BASE_HALF_M + 2*tr.sigma_m())]
         cells = self.slot_cells(c, h)
         recent = max(now - max_age_s, since if since is not None else -math.inf)
         free = cells & (self.log_odds <= -v2.L_KNOWN) & (self.free_observed_at >= recent)

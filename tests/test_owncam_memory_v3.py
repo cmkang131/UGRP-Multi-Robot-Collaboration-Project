@@ -540,6 +540,7 @@ class ControllerAndBoundaryTests(unittest.TestCase):
         for cls in (M1OwnCamDeliveryMem, None):
             ctl = controller(cls)
             ctl.viewpoints, ctl.view_index = [(-.47, .75)], 0
+            ctl.pose.report = lambda t: report(t, x=-.47, y=.75)
             with mock.patch.object(ctl, '_start_leg') as start:
                 ctl._search_decide(1.)
             if cls is not None:
@@ -548,7 +549,8 @@ class ControllerAndBoundaryTests(unittest.TestCase):
             else:
                 self.assertTrue(ctl.blind_spot_retry)
                 self.assertTrue(ctl.revisit)
-                self.assertAlmostEqual(start.call_args.args[0][0], -.92)
+                self.assertLess(start.call_args.args[0][0], -.47)
+                self.assertGreater(start.call_args.args[0][0], -.92)
                 ctl._search_decide(2.)
                 self.assertEqual(ctl.outcome, 'SEARCH_NOT_FOUND')
 
@@ -588,7 +590,7 @@ class ControllerAndBoundaryTests(unittest.TestCase):
             for cmd in result.get('commands', []):
                 ctl.on_command({'t': now, **cmd})
             now += .1
-        self.assertEqual(ctl.outcome, 'NOT_INITIALIZED')
+        self.assertEqual(ctl.outcome, 'LOOK_COLLISION_UNVERIFIED')
         ctl.skill_factory.assert_not_called()
 
     def test_no_mujoco_needed_even_to_import_controller(self):

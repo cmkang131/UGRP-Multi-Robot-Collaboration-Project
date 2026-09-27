@@ -7,6 +7,7 @@ from harness.m1_owncam_delivery import _LegDriver
 from harness.owncam_drive import LOOK_IF_STD_YAW_RAD
 from harness.owncam_drive_mem import MemoryLookPolicy, SHORT_ACCEPT_YAW_RAD
 from harness.owncam_pose_guard_v3 import GuardedLocalizerV3
+from harness.owncam_sweep_collision import OwnPose, commands_clear, plan_safe_sweep
 
 SCHEMA = 'ugrp.owncam_drive_mem.v3'
 MAX_UNVERIFIED_LOOKS = 2
@@ -36,7 +37,25 @@ class LegDriverMemV3(MemoryLookPolicy, _LegDriver):
             reason = 'arrival_reverify'
         if reason != 'refix':
             self.current_look_since = float(now)
-        return super()._start_look(now, reason)
+        commands = super()._start_look(now, reason)
+        if self.outcome:
+            return commands
+        plan = plan_safe_sweep(self.map, self.servo, self.arm_target, self.look_queue,
+                               OwnPose.from_estimate(self.loc.estimate()), loaded=self.loaded,
+                               restore=self.drive_pose)
+        self.look_queue = plan['pans']
+        self._mem_event(now, 'sweep_collision_check', **plan)
+        if not self.look_queue:
+            self.arm_target = {}
+            return self._finish(now, 'look_collision_unverified')
+        return commands
+
+    def _arm_step(self):
+        commands = super()._arm_step()
+        if not commands_clear(self.map, self.servo, commands,
+                              OwnPose.from_estimate(self.loc.estimate()), loaded=self.loaded):
+            return self._finish(self.loc.t, 'look_collision_unverified')
+        return commands
 
     def _should_refix(self, fixed):
         est = self.loc.estimate()

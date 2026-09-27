@@ -31,6 +31,8 @@ MEMORY_FILES = ('harness/owncam_memory.py', 'harness/owncam_memory_kf.py', 'harn
                 'harness/owncam_pose_guard_v3.py', 'harness/owncam_memory_v3.py',
                 'harness/owncam_visibility_v3.py',
                 'harness/owncam_slot_inspection_v3.py',
+                'harness/owncam_sweep_collision.py',
+                'harness/owncam_search_projection_v3.py',
                 'harness/owncam_drive_mem_v3.py', 'harness/m1_owncam_memory_v3.py',
                 'scripts/run_m1_owncam_memory_v3.py')
 THREAD_VARS = ('OMP_NUM_THREADS', 'OPENBLAS_NUM_THREADS', 'VECLIB_MAXIMUM_THREADS', 'MKL_NUM_THREADS')
@@ -90,6 +92,11 @@ def run_episode(spec: dict, out: Path, student: dict, condition: str, *, prereg_
         result, manifest = runner.run(spec, out, {**student, 'condition': condition})
     finally:
         base.M1OwnCamDelivery = original
+    # Frozen M1 runner may hit SIM_LIMIT/exception before ctl.decide() gets a
+    # chance to terminate a pending slot inspection. Preserve the upper-level
+    # handoff in its result, without changing that runner or OFF/v2 outcomes.
+    if condition == 'memory_v3' and finalize_slot_handoff(result):
+        (out/'result.json').write_text(json.dumps(result, indent=2, ensure_ascii=False, default=str) + '\n')
     record = {'schema': SCHEMA, 'episode': spec['episode_id'], 'condition': condition,
               'result_label': RESULT_LABELS.get(condition),
               'controller_class': f'{cls.__module__}.{cls.__name__}',
@@ -104,6 +111,16 @@ def run_episode(spec: dict, out: Path, student: dict, condition: str, *, prereg_
               'runner_files_sha256': {name: sha_file(out/name) for name in ('result.json', 'manifest.json')}}
     (out/'memory_runner.json').write_text(json.dumps(record, indent=2) + '\n')
     return result, manifest, record
+
+
+def finalize_slot_handoff(result):
+    summary = result.get('controller', {})
+    pending = summary.get('slot_pending_handoff_v3')
+    if not pending or summary.get('slot_handoff_v3') is not None:
+        return False
+    summary['slot_handoff_v3'] = {**pending, 'reason': 'external_stop:' + str(result.get('outcome')),
+                                  'stopped_at_sim_s': result.get('sim_s')}
+    return True
 
 
 def check_frozen(frozen_path: Path) -> dict:

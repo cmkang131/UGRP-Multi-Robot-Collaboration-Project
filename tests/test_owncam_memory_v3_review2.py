@@ -9,7 +9,7 @@ import cv2
 import numpy as np
 import pytest
 
-from tests.test_owncam_memory_v3 import controller, feed, memory, report
+from tests.test_owncam_memory_v3 import controller, feed, fix, memory, report
 from tests.test_owncam_memory_v3_review import SAVED, saved_place, track_at, explicit_empty_slot_evidence
 from harness.owncam_drive import SEARCH_POSE
 from harness.owncam_memory_v3 import BoxTrackV3, P_KEEPOUT
@@ -145,7 +145,7 @@ def test_slot_inspection_moves_looks_returns_and_only_then_dispatches():
         ctl._boundary_gate(now, 'place')
         with mock.patch.object(ctl, '_drive_leg', return_value=([], 'arrived')):
             ctl.decide(now+.1)
-        assert ctl.sweep['pose'] == {**SEARCH_POSE, 1: 1500}
+        assert ctl.sweep['pose'] == {k: (1500 if k == 1 else v) for k, v in SEARCH_POSE.items() if k != 6}
         assert len(ctl.sweep['queue']) == 4  # multiple distinct-time frames
         assert ctl.skill.box.phase == 'carry'
         ctl.sweep = None
@@ -157,6 +157,7 @@ def test_slot_inspection_moves_looks_returns_and_only_then_dispatches():
         assert start.call_args.args[0] == ctl.skill._preplace_goal()
         assert start.call_args.kwargs['loaded']
         assert 'empty_slot_evidence' in ctl.verification['place']
+        ctl.last_obs = {**ctl.last_obs, 'sim_time': now+.3, 'frame_id': ctl.last_obs['frame_id']+1}
         with mock.patch.object(ctl, '_drive_leg', return_value=([], 'arrived')):
             ctl.decide(now+.3)
         assert ctl.slot_inspection['stage'] == 'restore'
@@ -165,7 +166,11 @@ def test_slot_inspection_moves_looks_returns_and_only_then_dispatches():
         assert ctl.reanchor_needed
         assert ctl.skill.box.phase == 'carry'
     # Final boundary still independently checks current pose/attachment/floor.
-    assert ctl._boundary_gate(now, 'place') is None
+    ctl.last_obs = {**ctl.last_obs, 'sim_time': now+1., 'frame_id': ctl.last_obs['frame_id']+1}
+    rep = replace(ctl.pose.report(now), t_est=now+1.)
+    ctl.pose.report = lambda t: rep
+    fix(ctl.memory, now+1., (rep.x_m, rep.y_m))
+    assert ctl._boundary_gate(now+1., 'place') is None
 
 
 def test_observation_only_occupancy_veto_survives_decay_and_needs_visible_misses():
