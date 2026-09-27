@@ -93,8 +93,12 @@ class VarianceCalibrator:
 
     def report(self, estimate, *, t, last_scan_t, loaded, settled):
         """Return a new calibrated report; never alter the caller's raw estimate."""
-        if not self.config['enabled'] or not estimate.get('initialized'):
+        if not estimate.get('initialized'):
             return estimate
+        if not self.config['enabled']:
+            # OFF still records the raw fields, without recomputing covariance
+            # or advancing the calibration clock/state.
+            return {**estimate, 'raw_cov': estimate['cov'], 'raw_std_xy_m': estimate['std_xy_m']}
         raw_cov = np.asarray(estimate['cov'], float)
         if (raw_cov.shape != (3, 3) or not np.isfinite(raw_cov).all()
                 or not np.allclose(raw_cov, raw_cov.T, atol=1e-8, rtol=0.)

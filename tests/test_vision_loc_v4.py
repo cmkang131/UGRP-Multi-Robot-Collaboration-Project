@@ -1,5 +1,6 @@
 """VIS4 command-only motion regression and dev/test isolation (no MuJoCo)."""
 import copy
+import hashlib
 import importlib.util
 import json
 import math
@@ -17,6 +18,74 @@ import vision_loc as vl
 import vision_motion as vm
 import vision_pf
 import diagnose_v4 as diag
+
+
+# Every file/digest pair declared by the draft, including local-only records.
+PREREG_FILE_HASHES = (
+    ('dev_selection', 'plan', 'sha256'),
+    ('dev_selection', 'comparison', 'selection_sha256'),
+    ('student.calibration', 'file', 'sha256'),
+    ('student.config', 'file', 'sha256'),
+    ('student.map', 'file', 'sha256'),
+    ('student.runtime_manifest', 'file', 'sha256'),
+    ('episodes', 'file', 'sha256'),
+    ('gate', 'derivation', 'sha256'),
+    ('uncertainty_calibration', 'dev_plan', 'plan_sha256'),
+    ('uncertainty_calibration', 'selection_file', 'selection_sha256'),
+)
+
+
+def draft_prereg():
+    return json.loads((HERE/'prereg_v4_DRAFT.json').read_text())
+
+
+def test_draft_hash_checks_cover_every_declared_digest():
+    def digest_keys(obj, prefix=''):
+        if isinstance(obj, dict):
+            for key, value in obj.items():
+                name = f'{prefix}.{key}' if prefix else key
+                if key.endswith('sha256'):
+                    yield name
+                else:
+                    yield from digest_keys(value, name)
+        elif isinstance(obj, list):
+            for i, value in enumerate(obj):
+                yield from digest_keys(value, f'{prefix}[{i}]')
+
+    covered = {f'{section}.{digest}' for section, _, digest in PREREG_FILE_HASHES}
+    covered.update({'student.motion.file_sha256', 'student.segmentation_sha256'})
+    assert set(digest_keys(draft_prereg())) == covered
+
+
+@pytest.mark.parametrize('section,path_key,hash_key', PREREG_FILE_HASHES,
+                         ids=[f'{s}.{p}' for s, p, _ in PREREG_FILE_HASHES])
+def test_draft_referenced_file_hash_integrity(section, path_key, hash_key):
+    block = draft_prereg()
+    for key in section.split('.'):
+        block = block[key]
+    relative = Path(block[path_key])
+    local_artifact = relative.parts[0] == 'outputs'
+    path = (ROOT if local_artifact else HERE)/relative
+    if local_artifact and not path.exists():
+        pytest.skip(f'local-only artifact unavailable: {path}; hash NOT verified')
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == block[hash_key], str(path)
+
+
+def test_draft_frozen_motion_file_hash_integrity():
+    motion = draft_prereg()['student']['motion']
+    commit, path = motion['source'].split(':', 1)
+    assert hashlib.sha256(vl.mp.git_blob(commit, path)).hexdigest() == motion['file_sha256']
+
+
+def test_draft_segmentation_file_hash_integrity():
+    expected = draft_prereg()['student']['segmentation_sha256']
+    model = json.loads((HERE/'model_manifest.json').read_text())['files']['seg_lraspp_mbv3.pt']
+    assert model['sha256'] == expected
+    path = Path(model['local_path'])
+    if not path.exists():
+        pytest.skip(f'local-only checkpoint unavailable: {path}; file hash NOT verified')
+    # Hash bytes only: do not load the model or run inference.
+    assert hashlib.sha256(path.read_bytes()).hexdigest() == expected
 
 
 def pf(options=None):

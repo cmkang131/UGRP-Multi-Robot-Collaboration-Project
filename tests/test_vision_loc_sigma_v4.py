@@ -83,6 +83,27 @@ def test_covariance_remains_psd_and_mean_yaw_untouched():
     assert got['radius95_xy_m'] == pytest.approx(math.sqrt(-2*math.log(.05)*np.linalg.eigvalsh(c[:2,:2]).max()))
 
 
+@pytest.mark.parametrize('sigma', [None, {'enabled': False}], ids=['default', 'u0'])
+def test_disabled_report_adds_raw_fields_without_changing_estimate(sigma):
+    # Keep even rounding-level negative eigenvalues byte-for-byte when OFF.
+    e = dict(initialized=True, x=1., y=2., yaw=.3,
+             cov=[[.04, 0., 0.], [0., .01, 0.], [0., 0., -1e-9]],
+             std_xy_m=math.sqrt(.05), std_yaw_rad=0.)
+    before = copy.deepcopy(e)
+    head = vs.VarianceCalibrator(sigma)
+    got = head.report(e, t=1., last_scan_t=None, loaded=False, settled=True)
+    assert e == before and got is not e
+    assert got == {**before, 'raw_cov': before['cov'], 'raw_std_xy_m': before['std_xy_m']}
+    assert head.t is None and head.last_scan_t is None and head.variance is None
+
+
+@pytest.mark.parametrize('sigma', [None, {'enabled': False}, config()])
+def test_uninitialized_report_does_not_invent_covariance(sigma):
+    e = {'initialized': False}
+    assert vs.VarianceCalibrator(sigma).report(
+        e, t=0., last_scan_t=None, loaded=False, settled=True) == e
+
+
 def test_exact_nees_uses_cross_covariance_and_refuses_singular_matrix():
     assert vs.xy_nees([.2, .1], [[.04, 0], [0, .01]]) == pytest.approx(2.)
     assert vs.xy_nees([1, 1], [[1, .5], [.5, 1]]) == pytest.approx(4./3.)
@@ -113,12 +134,45 @@ def test_report_head_never_changes_particle_rng_weights_or_position():
             assert a.rng.bit_generator.state == p.rng.bit_generator.state
 
 
-def test_serialized_frames_preserve_full_covariance_and_measurement_clock():
-    pf = make_pf(config()); pf.last_scan_t = 0.
+@pytest.mark.parametrize('sigma', [None, {'enabled': False}], ids=['default', 'u0'])
+def test_disabled_reporting_matches_legacy_particles_weights_rng_mean_and_covariance(sigma, monkeypatch):
+    current, legacy = make_pf(sigma), make_pf(sigma)
+    # The pre-fix OFF path returned the raw estimate immediately.
+    monkeypatch.setattr(legacy.sigma_head, 'report', lambda estimate, **kwargs: estimate)
+    for i in range(20):
+        t = i * .2
+        for pf in (current, legacy):
+            pf.command({'t': t, 'kind': 'mecanum', 'forward': .1,
+                        'left': .02*(-1)**i, 'turn': .02, 'duration_s': .13})
+            pf.predict_to(t + .2)
+            pf.logw += np.linspace(-2., 0., pf.n)
+            pf._normalize_and_resample()
+        particles, weights = current.px.copy(), current.logw.copy()
+        rng = copy.deepcopy(current.rng.bit_generator.state)
+        got, before = current.estimate(), legacy.estimate()
+        assert {k: got[k] for k in before} == before  # includes mean and full covariance
+        assert got['raw_cov'] == before['cov']
+        assert got['raw_std_xy_m'] == before['std_xy_m']
+        assert np.array_equal(current.px, particles) and np.array_equal(current.px, legacy.px)
+        assert np.array_equal(current.logw, weights) and np.array_equal(current.logw, legacy.logw)
+        assert current.rng.bit_generator.state == rng == legacy.rng.bit_generator.state
+    assert current.stats['resamples'] == legacy.stats['resamples'] > 0
+
+
+@pytest.mark.parametrize('sigma', [None, {'enabled': False}, config()], ids=['default', 'u0', 'enabled'])
+def test_serialized_frames_preserve_full_covariance_and_measurement_clock(sigma, tmp_path):
+    pf = make_pf(sigma); pf.last_scan_t = 0.
     est = pf.estimate()
     row = dict(frame=0, t=0., phase='init', skill_phase=None, commanded_servo={'3':740,'6':1500})
-    saved = cli._frame_record(row, {'vision': SimpleNamespace(loc=pf, last=est)})['vision']
+    record = cli._frame_record(row, {'vision': SimpleNamespace(loc=pf, last=est)})
+    path = tmp_path/'estimates.jsonl'
+    cli._write_estimates(path, [record])
+    saved = json.loads(path.read_text())['vision']
     assert saved['cov'] == est['cov'] and saved['raw_cov'] == est['raw_cov']
+    assert saved['raw_std_xy_m'] == est['raw_std_xy_m']
+    if not pf.sigma_head.config['enabled']:
+        assert saved['raw_cov'] == saved['cov']
+        assert saved['raw_std_xy_m'] == est['std_xy_m']
     assert saved['last_scan_t'] == 0.
 
 

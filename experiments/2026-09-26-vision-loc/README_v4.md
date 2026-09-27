@@ -30,6 +30,8 @@ validation 3회(s945/946/947)이며 새 적합·선택에는 기존 train/test�
 ## 원인 분해 (dev만)
 
 `diagnose_v4.py`, `analyze_motion_v4.py`는 교사 정답을 읽는 **오프라인 분석기**다.
+이번 VIS4에서 GT는 **오프라인 dev 운동·σ 적합과 진단·채점에만** 쓰고,
+**학생 런타임 입력에는 없다**.
 `vision_motion.py`와 PF의 런타임에는 정답·접촉·측정 관절을 전달하지 않는다.
 
 1. **편향 재현:** door_loaded 비전 dx 평균 **+2.119 cm**, body-forward **+2.121 cm**,
@@ -138,6 +140,7 @@ b0 **+1.419 cm**, x1 **+1.615 cm**, m1 **+2.307 cm**로 개선되지 않았다.
 - u1 전역 배율과 u2 상태/관측 나이 보정은 **둘 다 기각, u0 유지**다.
   validation 95% 포함률은 61.55%→100%/80.17%, σ 중앙값 3.56→65.97/8.53 cm.
   u2의 VISW fit 포함률 95.07%·무관측 분산 감소 0건은 독립 성공 근거가 아니다.
+  **VISW fit 95.07%와 validation 80.17%는 다른 코호트이며, 둘 다 등방 근사 기준**이다.
 - 기존 full covariance가 없으므로 XY NEES는 등방 근사로만 보고했다. 새 기록에는
   정확한 NEES 계산을 위한 covariance를 남긴다. yaw 보정과 VISW worker 통합은 남았다.
 - 새 native TensorBoard snapshot `0927-vis4-sigma`: **21 runs·50,295 scalar·21 HParams**
