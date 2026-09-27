@@ -2,7 +2,8 @@
 
 이슈 #221 / PR #235의 `zone_pair_executor_v4_dev` 설계다. 1·2차 리뷰,
 `69dd0f0b`의 3차 리뷰와 Kiro 실행기 병합 `8f4fb676`, `50794498`의
-4차 리뷰 중 pair 전용 P1-1·2·3·5와 `1628a03f`의 5차 리뷰 P1 2건을 반영했다.
+4차 리뷰 중 pair 전용 P1-1·2·3·5와 `1628a03f`의 5차 리뷰 P1 2건,
+`1a3556cd`의 6차 리뷰 P1 1건을 반영했다.
 코디네이터가 정한 독립 랑데부·통신 경계는 유지한다.
 M2 물리 성공을 새 executor에 승계하지 않는다.
 
@@ -296,6 +297,49 @@ OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python 
 Git fetch는 공용 `.git` 쓰기 제한, GitHub 조회는 네트워크 오류로 실패했다.
 원격 최신 상태·전체 CI·물리 성공은 검증 범위 밖이다. 커밋·push·병합·Drive 작업은
 하지 않았다. 비물리 소프트웨어 회귀이므로 TensorBoard 실험 스냅샷은 만들지 않았다.
+
+## 6차 리뷰 — 주행에서 재관측으로 들어가는 hold 허용
+
+기준 HEAD는 `1a3556cd3e125d6a79beb883cc4bbfdc0c0bd2d2`다. 리뷰의
+`t=0` 주행(유효기간 0.15초) → `t=0.1`, `σxy=0.055 m`의 `look_arm` 전환을
+실제 M2 드라이버와 fake host의 `_decide()`로 재현했다. 수정 전에는 정상 hold가
+`now < motion_until` 검사에 걸려 r1 `POSE_UNCERTAIN`, r2 `PARTNER_ABORT`로 끝났다.
+
+`PairCommandGuard.check()`에서 hold 전용 명령의 조기 반환을 정지 조건 검사보다
+먼저 수행한다. hold가 적용되면 자기 명령 이력의 `motion_until`이 0.1초가 되고
+후속 팔 재관측이 이어진다. 팔·look·drive·mecanum이 포함된 명령 묶음은 hold가
+섞여 있어도 기존 정지 조건·충돌 검사를 통과해야 한다.
+
+hold 경로에서는 HIGH 재관측의 시계만 기록하며 정지를 거절하지 않는다.
+단순히 반환 순서만 옮긴 중간 후보는 5차의 예산·동기 정지 테스트 2개가 실패했다.
+시계 기록을 보존한 최종 후보에서는 5차 테스트를 수정하지 않고 모두 통과했다.
+시각 허용치(미래 방향 `1e-4`초, TTL 0.3초), 누적 10 SIM초 예산과
+`before_control()`의 예산 소진 판정·공동 파지 이후 동기 정지는 유지한다.
+
+새 [6차 회귀](../../tests/test_zone_pair_review6.py)는 반례·정지 후 팔 재개,
+hold의 무조건 허용, 혼합 명령의 우회 차단, `1628a03f` guard와의 A/B를 검사한다.
+기준 guard는 [출처·해시와 함께](../../tests/fixtures/zone_pair_review6/README.md)
+원문 9,061 bytes를 그대로 저장했다. 현재 드라이버·호스트·입력은 양쪽에서 고정하고
+guard만 교체해 명령 이력·종료 여부·실패 사유·드라이버 상태·`motion_until`을 비교한다.
+원본 Git blob과 fixture의 바이트 일치 및 CI 테스트 목록 등록도 확인했다.
+
+- 수정 전 신규 테스트: **5 failed / 8 passed**. 반례와 A/B 불일치 재현.
+- 최종 관련 회귀: **482 passed / 1 deselected / 85 subtests passed (22.80 s)**.
+- 제외 1개: 실제 MuJoCo world 테스트. 물리 실행·모델 호출·잠금 획득 없음.
+
+```sh
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+  tests/test_zone_pair*.py tests/test_zone_own_executor*.py \
+  tests/test_pair_owncam_approach.py tests/test_m2_pair_door_v3.py \
+  tests/test_m1_owncam.py tests/test_zone_study_protocol.py \
+  --basetemp=./.pytest_tmp \
+  -k 'not test_team_host_isolation_abort_and_horizon_on_the_real_world' --tb=short
+```
+
+검증 뒤 `.pytest_tmp` 삭제, `git diff --check` 통과, 기준 HEAD 유지를 확인했다.
+Git fetch는 공용 `.git` 쓰기 제한, GitHub 조회는 네트워크 제한으로 실패했다.
+원격 최신 상태·전체 CI·물리 성공은 미검증이며, 커밋·push·병합은 하지 않았다.
+비물리 소프트웨어 회귀 기록으로 보존하며 TensorBoard 실험 스냅샷은 만들지 않았다.
 
 ## dev PHYSICAL 점검 게이트 — 3차 리뷰에서 이관
 
