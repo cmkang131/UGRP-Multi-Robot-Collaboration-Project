@@ -79,6 +79,7 @@ TEST_PATTERNS = (
     "tests/test_zone_study_integration.py", "tests/test_zone_study_integration_seams.py",
     "tests/test_zone_study_integration_pair.py", "tests/test_zone_study_source_pinning.py",
     "tests/test_zone_study_pair_delay.py",
+    "tests/test_zone_study_multiturn.py",
     "tests/test_zone_study_review_r8*.py", "tests/test_zone_study_review_r9*.py",
     "tests/test_zone_study_review_r10*.py",
     "tests/test_zone_study_fenced_reply.py", "tests/test_zone_pilot_source_migration.py",

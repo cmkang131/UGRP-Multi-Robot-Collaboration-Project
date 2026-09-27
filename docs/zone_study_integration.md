@@ -1,5 +1,138 @@
 # 통합 러너의 PairTeam·자기 영상·인식 지연 연결
 
+## #223 다회 결정 감사와 v66 후보 (2026-09-27)
+
+감사 기준은 main `97f91cb040bf382973ce84b24b1ca8399e64a6fb`다. 지정한 네 파일은
+GitHub main의 blob과 대조했다. **main에도 메시지 수신 재호출은 있었지만, 실행 중인
+자기 작업의 경계를 기다리지는 않았다.** #238의 첫 호출 파일럿은 별도
+`run_zone_study_pilot.pilot_call_policy()`가 `trigger_on_message=False`, 재질문 999초를
+사용했으므로 통합 러너의 다회 동작과 다르다.
+
+| main v64 경로 | 실제 동작과 한계 |
+|---|---|
+| `zone_study_protocol.Transport` → `EventScheduler._on_message` | 허용 채널에서 받아 실제 inbox에 commit한 뒤 `report`를 예약한다. `no_comm`은 채널이 닫혀 이 경로가 없다. leader는 hub-and-spoke이며 follower끼리 직접 전달하지 않는다. |
+| `_on_call_start` | 로봇당 outstanding 1개, 시작 간격 2초. 사고 중 트리거는 하나로 합쳐 완료 뒤 재호출한다. **실행기 job의 BUSY 여부는 보지 않는다.** |
+| `IntegratedTrial.snapshot/build_inputs` | 호출 시작 시 자기 RGB·자기 이력·이미 받은 inbox를 고정한다. 나중에 도착한 메시지가 진행 중 호출의 입력에 소급 삽입되지는 않는다. |
+| `IntegratedTrial._on_action` → `executor_plan` | 비용 해제 후 그 로봇 API에 claim을 낸다. 진행 중 작업이 있으면 실행기의 `BUSY` 거절이 가능하다. idle `wait`도 10초 hold job을 만들므로 메시지에 대한 새 claim이 거절될 수 있다. |
+| 상한 | 논리 호출 30/로봇, HTTP 시도 30/로봇·90/시행, outstanding 1, scheduler retry 1. `w1` 창 하나만 열며 수락 발화 2/로봇·6/창. 기존 `cap_total`은 미설정이지만 창을 재개하지 않아 사실상 시행 6발화다. horizon은 사전등록 값이다. |
+| 공통 깨우기 | 시작·자기 작업 완료/실패·자기 장애 사건·자기 타이머(idle 10초, busy 60초, pending 1개). 관측 1초 tick 자체는 호출하지 않는다. 동료 작업 완료/평가 GT는 트리거가 아니다. |
+
+#229 병합 검사의 `test_pair_and_multiple_real_adapter_calls_use_each_own_camera`는
+실제 입력 builder·Gemini client·send ledger와 가짜 wire를 연결해 로봇별 여러 호출,
+후속 inbox, `report`, 개별 자기 카메라 JPEG, PairTeam 연결을 검사했다.
+5.3/5.4초 follower 결정 → 6.1초 leader 전달이라는 순서와 **수신 후 다른 claim의
+실행기 수락**을 검증한 것은 아니다. `FixtureActor`의 선택도 받은 분배문을 이해해
+주문을 바꾸는 모델이 아니다.
+
+### v66 결정 기회와 종료
+
+새 후보는 `zone-study-integration-v66-multiturn`이다. 원격 main/열린 PR 6개에서
+RGB 최대 v63, integration 최대 v64를 확인했다. #240의 로컬 미push 작업에
+`v65-pair-close`가 있어 v65를 건너뛰었다. 확인 SHA·blob·경로는
+[번호 감사](../experiments/2026-09-27-zone-study-multiturn/remote-audit.json)에 있다.
+v1/v2/v64 기록과 번들 JSON은 그대로 두며, #240의 v65 변경을 이 후보에 합치지 않았다.
+동시 작업이므로 push/병합 전 번호와 소스의 재확인이 필요하다.
+
+`DecisionScheduler`는 기존 SIM queue·ledger·비용 계산을 그대로 사용한다.
+
+- 실제 수신된 `report`는 진행 중인 자기 작업이 있으면 보류한다. 자기 `job_done` 또는
+  `job_failed` 경계에서 공통 트리거와 합쳐 한 번만 호출하며 최신 자기 RGB와 inbox를 넣는다.
+  시작·자기 failure/blockage/timeout은 네 조건에 동일한 기존 안전 사건으로 유지한다.
+- 메시지 없이 발생한 기존 busy/idle 타이머는 유지한다. 수신 report를 보류 중이면
+  타이머도 같은 보류 집합에 합쳐 작업 경계까지 기다린다. 보류 큐는 로봇당 하나다.
+- idle `wait`는 실행기 기본 hold 상태와 공통 10초 타이머를 쓴다. 별도 BUSY hold job을
+  만들지 않아 메시지 수신 즉시 호출 자격을 얻는다. 실제 시작은 공통 2초 간격·outstanding
+  1개·예산을 지킨다. 진행 중 작업에 대한 모델의 명시적 wait/release는 기존 abort 규칙이다.
+- 같은 시각의 메시지·작업 종료·타이머는 호출 하나로 합친다. 사고 도중 도착한 메시지는
+  다음 호출에서 읽으며 이미 시작한 호출을 수정하지 않는다. 대화가 작업을 강제 중단하지 않는다.
+- 기본 호출 상한은 **30/로봇, 90/시행**, HTTP 상한은 **30/로봇, 90/시행**이다.
+  논리 시행 상한은 전송 전 실패까지 포함한 호출 시도로 센다. 수락 발화는 **2/로봇,
+  6/시행**이고 창은 갱신하지 않는다. 거절된 생성 발화도 SIM 비용에는 포함한다.
+  사전등록의 `call_policy`, `decision_limits`를 bundle과 실제 trial 양쪽에 고정한다.
+- 실제 모델은 기존 `PilotSendLedger`의 같은 영속 예산을 쓴다. 잔여 attempts/tokens로
+  요청 전체 예약을 할 수 없으면 wire 전에 차단하고 이 시행의 추가 결정을 중단한다.
+  이미 시작된 호출은 정산하고 작업은 계속한다. 모든 실행기가 idle이 되면 quiescent로
+  종료하고, 그 전에는 horizon까지 허용한다. 모델 사고 중 host 동작 정책은 네 조건 동일하다.
+
+### SIM 비용과 기록
+
+기본 정상/invalid 시도 비용은 `1 + 0.0002×입력토큰 + 0.02×출력토큰 + 0.3×생성발화수`
+초다. error의 기본항은 0.5초, timeout은 20초이며 시도별 비용을 합한 뒤 0.1초 단위로
+올림한다. 입력은 기존 고정 토큰 규칙, 실제 adapter의 출력은 응답 원문 tokenizer다.
+모델 wall 지연을 SIM 비용으로 대체하지 않는다. 행동·발화 해제는 `시작 + 비용`,
+메시지 inbox 도착은 `해제 + 0.1초`다. 동시 호출 비용은 서로 겹치며 로봇별 합산 비용을
+에피소드 경과 시간이라고 부르지 않는다. 파라미터는 잠정 모델이며 실측 속도 보정이 아니다.
+
+`study/decision_events.jsonl`에 작업 보류·호출 시작·시행/파일럿 예산 거절과 합친 트리거를
+추가한다. `scheduler_events.jsonl`, `inputs.jsonl`의 inbox ID, `dispatch.jsonl`, 기존
+call/message cost 기록을 call ID로 연결하면 **수신 → 경계 → 결정 시작 → 비용 해제 →
+새 claim 수락** 순서를 복원할 수 있다. 모델 adapter의 `wire_requests`는 독립 대사 전
+`null`로 기록한다(쓰지 않은 fixture wire의 0을 실제 전송 0으로 표시하던 진단 오류 수정).
+send ledger 수와 제공자 upstream 시도/과금 대조는 계속 구분한다.
+
+가짜 전송 회귀는 4조건의 첫 결정 5.3/5.4/6.0초와 전달 6.1초를 고정한다. busy follower는
+8.0초 합성 자기 작업 경계 뒤 재호출하고 13.3/13.4초 새 주문이 수락된다. idle follower는
+6.1초에 시작한다. `no_comm`은 메시지·inbox·report가 없고 같은 자기 종료/실패 사건으로만
+재결정한다. **응답은 규칙으로 작성한 fixture이고 작업 경계도 합성했다. 모델 이해·통신 효과·
+배송 성공을 측정한 결과가 아니다.** 테스트와 제한은 [작업 기록](../experiments/2026-09-27-zone-study-multiturn/README.md)을 따른다.
+
+### 실제 LLM 파일럿 계획 — 이번 작업에서는 명령만 기록
+
+2026-09-27 23:27 KST에 기존 `zone-study-adapter-pilot-r10/budget.sqlite`를 `mode=ro`로
+읽었다. 17 send 중 정상 16건 정산 후 **18 attempts / 409,793 tokens 차감**, 잔여는
+**582 attempts / 4,590,207 tokens**다. 600/5M 상한·실패 1건의 전액 예약은 유지된다.
+실제 provider total 185,007과 차감량은 다른 수치다. [DB 해시와 상태](../experiments/2026-09-27-zone-study-multiturn/budget-readonly.json)를
+보존했다. 이후 다른 작업의 사용량을 포함해 실행 직전에 다시 확인한다.
+
+현재 DB identity의 `source_root`는 `/Users/changmin/projects/ugrp-wt/kiro-study-core`,
+`pipeline`은 `AdapterTrial`이다. 기존 migration은 root/pipeline 변경을 허용하지 않는다.
+아래 명령은 기존 어댑터의 소스 검토·preflight 단계에 한정하며, 현재 작업 경로에서 그대로
+실행하거나 DB identity를 임의 수정하면 안 된다. 다회 driver 연결 시 이 호환성도 검토한다.
+
+소스를 검토·커밋하고 동결한 뒤 기존 같은 DB에 소스를 이관하고 전체 대사와 새 4조건
+preflight를 수행한다. 새 예산 생성, 자동 정산, 설치 프록시 수정은 하지 않는다.
+요청/실효 설정은 현재 DB 계약(`REQUESTED`/`EFFECTIVE`, temperature 0.0)을 따른다.
+초기 #222의 temperature 0.2 제안으로 기존 예약 계약을 바꾸지 않는다.
+
+```sh
+PYTHON=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+PILOT_ROOT=/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10
+# 아래 명령은 이 작업에서 실행하지 않는다. 모든 출력 이름은 미사용 경로여야 한다.
+# 기존 DB의 source_root에서 검토된 소스를 준비한 뒤 수행하는 어댑터 점검 명령이다.
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --reconcile-only \
+  --budget-file "$PILOT_ROOT/budget.sqlite" --output "$PILOT_ROOT/multiturn-budget-review-01"
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --migrate-source \
+  --budget-file "$PILOT_ROOT/budget.sqlite" --output "$PILOT_ROOT/multiturn-source-migration-01" \
+  --migration-reason '#223 reviewed multiturn integration source' \
+  --from-identity-sha256 "$REVIEWED_IDENTITY_SHA" --expected-state-sha256 "$REVIEWED_STATE_SHA"
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.build_proxy_log_telemetry \
+  --budget-file "$PILOT_ROOT/budget.sqlite" --proxy-log "$REVIEWED_PROXY_LOG" \
+  --log-timezone Asia/Seoul --output "$PILOT_ROOT/multiturn-telemetry-01"
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --reconcile-only \
+  --budget-file "$PILOT_ROOT/budget.sqlite" \
+  --upstream-telemetry "$PILOT_ROOT/multiturn-telemetry-01/telemetry.jsonl" \
+  --output "$PILOT_ROOT/multiturn-reconcile-01"
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.sim_cli workflow run zone-study-pilot -- \
+  --execute --stage preflight --budget-file "$PILOT_ROOT/budget.sqlite" --proxy-pid "$PROXY_PID" \
+  --proxy-log "$REVIEWED_PROXY_LOG" --acknowledge-upstream-finish-limitation \
+  --upstream-telemetry "$PILOT_ROOT/multiturn-telemetry-01/telemetry.jsonl" \
+  --output "$PILOT_ROOT/multiturn-preflight-01"
+```
+
+위 preflight는 **기존 첫 호출 어댑터 점검**이다. 현재 `run_zone_study_pilot --stage cohort`도
+`trigger_on_message=False`여서 v66 다회 검증 명령으로 쓸 수 없다. 통합 CLI는 여전히
+fixture 전용이다. 실제 다회 코호트는 기존 `ModelAdapter` + `run_trial(..., model_adapter=...)`
+연결점에 preflight/대사/영속 예산 driver를 연결한 뒤 별도 실행 명령을 고정해야 한다.
+이 작업에서는 실제 호출 진입점을 새로 열지 않았다. 로봇별 다른 실제 자기 RGB 입력,
+3회/로봇·9회/조건(4조건 최대 36 proxy POST, 재시도 포함 별도 상한), seed 11,
+SIM 120초를 초기 계획으로 하고, 같은 DB의 요청별 예약 가능량을 우선한다.
+통합 물리 경로를 선택한다면 별도 물리 승인·잠금과 고정 source/bundle이 필요하다.
+새 모델/물리 결과가 생긴 뒤에만 기존 TensorBoard 절차로 새 snapshot을 등록한다.
+
+---
+
+아래는 v64까지의 통합 배경이다. 현재 결정 정책은 위 v66 절이 대체한다.
+
 2026-09-27, PR #229의 #194 + #235 통합. `tags_temporary`는 **임시, 표식 사용, 연구 결과 아님**이다. 이 변경은 비물리 테스트로 검증하며 새 물리 성공이나 실제 LLM 코호트를 뜻하지 않는다.
 
 ## 결정과 공동 운반

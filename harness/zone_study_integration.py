@@ -46,7 +46,8 @@ import hashlib
 import importlib
 import json
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+from functools import partial
 from pathlib import Path
 from typing import Protocol
 
@@ -56,7 +57,8 @@ from harness import zone_pair_executor as pair_executor
 from harness.zone_study_pose_delay import DelayedPoseSource, PERCEPTION_DELAY_S
 from harness import zone_study_offline as zo
 from harness import zone_study_prompts_ko as pk
-from harness.zone_event_scheduler import REASK_POLICY, EventScheduler
+from harness.zone_event_scheduler import REASK_POLICY
+from harness.zone_study_decisions import DECISION_POLICY, DecisionLimits, DecisionScheduler
 from harness.zone_own_executor import API_TO_ACTION_KIND, EVENTS as EXECUTOR_EVENTS
 from harness.zone_sim_cost import params as cost_params_for
 from harness.zone_study_contract import (COMMAND_ARGUMENT_KEYS, MAIN_CONDITIONS, ROBOTS, ContractViolation,
@@ -67,7 +69,9 @@ from harness.zone_study_llm_transport import ModelCallTransport
 
 ROOT = Path(__file__).resolve().parents[1]
 INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
-EXECUTION_BUNDLE_ID = 'zone-study-integration-v64-source-closure'
+EXECUTION_BUNDLE_ID = 'zone-study-integration-v66-multiturn'
+RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
+                      'zone-study-integration-v64-source-closure')
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',
@@ -80,8 +84,8 @@ QUANTUM_S = cost_params_for().quantum_s
 #: a hold), a running executor job continues (coordinator decision, issue #223).
 #: The thinking/talking cost reaches physics through the delayed action release.
 THINK_HOLD_POLICY = 'idle_robot_holds_busy_job_continues'
-ACTION_MAP_VERSION = 'zone_study_action_map.v2_pair'
-#: ``wait`` on an idle executor = hold this long (then job_done -> idle wake).
+ACTION_MAP_VERSION = 'zone_study_action_map.v3_interruptible_idle'
+#: Legacy v64 hold duration; v66 idle wait uses the common idle re-ask timer.
 WAIT_HOLD_S = 10.0
 FIXTURE_ACTOR = 'fixture_v1'
 #: Planned defaults only. CLI remains fixture-only; an embedding runner may
@@ -220,7 +224,7 @@ def executor_plan(action, job, *, actor=None, orders=()) -> Plan:
 
     ``job`` is the robot's OWN running job (``{'kind', 'order_id'}``) or None.
     claim -> deliver(order_id, destination_zone); continue -> no call;
-    wait -> abort the own job, or hold ``WAIT_HOLD_S`` when idle;
+    wait -> abort the own job, or remain idle (native executor holds) when idle;
     release -> abort the own deliver job of that order. Anything else is refused.
     """
     kind = action.get('kind') if isinstance(action, Mapping) else None
@@ -241,7 +245,7 @@ def executor_plan(action, job, *, actor=None, orders=()) -> Plan:
     if kind == 'continue':
         return Plan(None)
     if kind == 'wait':
-        return Plan('abort', ('wait_requested',)) if job else Plan('hold', (WAIT_HOLD_S,))
+        return Plan('abort', ('wait_requested',)) if job else Plan(None)
     if kind == 'release':
         order = action.get('order_id')
         if job and job.get('kind') in ('deliver', 'pair_carry') and job.get('order_id') == order:
@@ -307,7 +311,7 @@ class IntegratedTrial(zo.OfflineTrial):
 
     def __init__(self, scenario, *, condition, seed, links, horizon_s, code_sha='unknown', map_bundle=None,
                  cost_params=None, policy=None, actor=FIXTURE_ACTOR, pose_label=None,
-                 model_adapter=None, pair_records=None):
+                 model_adapter=None, pair_records=None, decision_limits=None):
         if model_adapter is None:
             check_actor(actor)
         elif actor != 'gemini_proxy':
@@ -317,9 +321,25 @@ class IntegratedTrial(zo.OfflineTrial):
                                     'commander R is not wired into this runner')
         if sorted(links) != sorted(ROBOTS) or any(links[r].robot_id != r for r in links):
             raise ContractViolation(f'links must be exactly one own RobotLink per robot {ROBOTS}')
+        self.links = dict(links)
+        self.decision_limits = decision_limits or DecisionLimits()
+        policy = policy or zo.CallPolicy()
+        for name in ('max_calls_per_actor', 'max_http_attempts_per_actor', 'max_attempts_total'):
+            value = getattr(policy, name)
+            if type(value) is not int or value < 1:
+                raise ContractViolation(f'integrated {name} must be a positive integer')
+        if policy.max_outstanding_per_actor != 1:
+            raise ContractViolation('integrated decisions require one outstanding call per robot')
+        scheduler_factory = partial(DecisionScheduler, own_job=lambda actor: self.links[actor].job(),
+                                    decision_limits=self.decision_limits,
+                                    external_budget_spent=lambda: self.transport.budget_exhausted)
         super().__init__(scenario, condition=condition, seed=seed, map_bundle=map_bundle,
                          cost_params=cost_params, policy=policy, library=_NoStoredFrames(),
-                         horizon_s=horizon_s, run_id=None, code_sha=code_sha)
+                         horizon_s=horizon_s, run_id=None, code_sha=code_sha,
+                         scheduler_factory=scheduler_factory)
+        # One window for this episode. These limits cannot be renewed by a call.
+        self.channel.cap_robot = min(self.channel.cap_robot, self.decision_limits.max_utterances_per_actor)
+        self.channel.cap_total = self.decision_limits.max_utterances_total
         self.actor = actor
         if model_adapter is not None:
             self.client_factory = model_adapter.client_factory
@@ -335,10 +355,9 @@ class IntegratedTrial(zo.OfflineTrial):
         if model_adapter is None:
             self.scheduler.transport = self.transport  # retain the existing ledger owner
         else:
-            self.scheduler = EventScheduler(self.transport, cost_params=self.params, policy=self.policy,
+            self.scheduler = scheduler_factory(self.transport, cost_params=self.params, policy=self.policy,
                                             actors=self.actors, on_action=self._on_action,
                                             bus=self.channel, bus_owner=zo.BUS_OWNER)
-        self.links = dict(links)
         self.pose_label = dict(pose_label or {})
         self.pair_status = PairStatusBus(self.sheet, pair_records)
         self._snapshots, self._jobs = {}, {}
@@ -349,6 +368,14 @@ class IntegratedTrial(zo.OfflineTrial):
     def sim_output_tokens(self, raw, utterances):
         return (super().sim_output_tokens(raw, utterances) if self.actor == FIXTURE_ACTOR
                 else pk.count_tokens(raw))
+
+    def cost_summary(self):
+        row = super().cost_summary()
+        if self.actor != FIXTURE_ACTOR:
+            # The inherited fixture wire was never used by this adapter. Its
+            # zero is not an independent measurement of real proxy traffic.
+            row.update(wire_requests=None, wire_requests_basis='requires_provider_reconciliation')
+        return row
 
     # -- clock --------------------------------------------------------------
     def begin(self, t0_s):
@@ -377,11 +404,16 @@ class IntegratedTrial(zo.OfflineTrial):
         if trigger is not None and at_s <= self.horizon_s + 1e-9:
             self.scheduler.trigger(rid, trigger, at=at_s)
 
+    def decision_budget_spent(self) -> bool:
+        return self.transport.budget_exhausted \
+            or all(self.scheduler.metrics[a]['calls'] >= self.policy.max_calls_per_actor for a in self.actors) \
+            or self.scheduler.budget.remaining() == 0 or self.scheduler.calls_spent() \
+            or all(self.scheduler.budget.remaining(a) == 0 for a in self.actors)
+
     def quiescent(self) -> bool:
         """No further decision can happen: every budget spent, nobody thinking, every executor idle."""
-        spent = all(self.scheduler.metrics[a]['calls'] >= self.policy.max_calls_per_actor for a in self.actors) \
-            or self.scheduler.budget.remaining() == 0
-        return spent and not self.scheduler.holding() and all(self.links[a].job() is None for a in self.actors)
+        return (self.decision_budget_spent() and not self.scheduler.holding()
+                and all(self.links[a].job() is None for a in self.actors))
 
     def finish(self, t_end_s) -> zo.TrialResult:
         report = self.scheduler.run(until_s=t_end_s)
@@ -391,7 +423,7 @@ class IntegratedTrial(zo.OfflineTrial):
                               actions=self.actions, requests=self.requests, trace=self.scheduler.trace(),
                               report=report.to_dict(), channel=self.channel_summary(), cost=self.cost_summary(),
                               send_ledger=self.send_ledger_record(),
-                              end_reason='budget_exhausted' if any(self.scheduler.metrics[a]['budget_refused']
+                              end_reason='budget_exhausted' if self.decision_budget_spent() or any(self.scheduler.metrics[a]['budget_refused']
                                                                    for a in self.actors) else 'sim_horizon')
 
     # -- inputs ---------------------------------------------------------------
@@ -450,7 +482,7 @@ class IntegratedTrial(zo.OfflineTrial):
             action_id=extra['action_id'], request_id=extra['request_id'], submitted_at_sim_s=sim_s, kind=kind,
             arguments=arguments, accepted=accepted, order_id=order_id, role=role, rejected_reason=reason,
             local_state=local))
-        if ack or reason:
+        if ack or reason or action.get('kind') == 'wait':
             self._remember_command(actor, call_id, sim_s, plan, ack, kind, arguments, local)
         self._arm_reask(actor, sim_s)
 
@@ -470,7 +502,8 @@ class IntegratedTrial(zo.OfflineTrial):
         The core's ``arm_reask`` owns the cap (``REASK_POLICY``); the integration
         supplies only the own-job-dependent delay and the budget/horizon checks.
         """
-        if self.scheduler.metrics[actor]['calls'] >= self.policy.max_calls_per_actor:
+        if (self.scheduler.metrics[actor]['calls'] >= self.policy.max_calls_per_actor
+                or self.decision_budget_spent() or self.scheduler.budget.remaining(actor) == 0):
             return
         busy = self.links[actor].job() is not None
         at = sim_s + (self.policy.busy_reask_s if busy else self.policy.idle_reask_s)
@@ -494,7 +527,10 @@ class IntegratedTrial(zo.OfflineTrial):
                 'cost_params': {'version': self.params.version, 'digest': self.params.digest()},
                 'call_policy': policy, 'quantum_s': QUANTUM_S,
                 'perception_delay_s': PERCEPTION_DELAY_S, 'think_hold_policy': THINK_HOLD_POLICY,
-                'action_map': {'version': ACTION_MAP_VERSION, 'wait_hold_s': WAIT_HOLD_S},
+                'action_map': {'version': ACTION_MAP_VERSION, 'idle_wait': 'native_idle_hold'},
+                'decision_policy': DECISION_POLICY, 'decision_limits': asdict(self.decision_limits),
+                'dialogue_caps': {'window': self.channel.cap_window, 'actor': self.channel.cap_robot,
+                                  'episode': self.channel.cap_total, 'windows_per_episode': 1},
                 'reask_policy': REASK_POLICY,
                 'pair_status': self.pair_status.config(), 'pair_status_sha256': self.pair_status.config_sha256(),
                 'order_sheet_sha256': self.source.sha256, 'pose_provider': dict(self.pose_label),
@@ -504,4 +540,4 @@ class IntegratedTrial(zo.OfflineTrial):
 def condition_invariant_config(config) -> dict:
     """The part of ``study_config`` that must be identical in all four conditions."""
     return {k: v for k, v in config.items()
-            if k not in ('condition', 'topology', 'encoding', 'leader_id', 'inter_robot_channels')}
+            if k not in ('condition', 'topology', 'encoding', 'leader_id', 'inter_robot_channels', 'dialogue_caps')}

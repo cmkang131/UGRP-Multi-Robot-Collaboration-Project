@@ -284,7 +284,8 @@ class OfflineTrial:
     """One condition x scenario x seed trial of the offline smoke."""
 
     def __init__(self, scenario, *, condition, seed, map_bundle=None, cost_params=None, policy=None,
-                 library=None, horizon_s=DEFAULT_HORIZON_S, run_id=None, code_sha='unknown'):
+                 library=None, horizon_s=DEFAULT_HORIZON_S, run_id=None, code_sha='unknown',
+                 scheduler_factory=EventScheduler):
         self.spec = zp.spec(condition)
         self.condition = condition
         self.seed = int(seed)
@@ -324,7 +325,7 @@ class OfflineTrial:
         self.transport = ModelCallTransport(self, send_ledger=self.send_ledger,
                                             client_factory=self.client_factory)
         self.policy = policy or CallPolicy()
-        self.scheduler = EventScheduler(self.transport, cost_params=self.params,
+        self.scheduler = scheduler_factory(self.transport, cost_params=self.params,
                                         policy=self.policy, actors=self.actors,
                                         on_action=self._on_action,
                                         bus=self.channel, bus_owner=BUS_OWNER)
@@ -856,7 +857,7 @@ def _send_ledger_problems(trial: 'OfflineTrial', result: TrialResult, used: int)
     ledger, problems = result.cost['send_ledger'], []
     if ledger['sent'] != used:
         problems.append(f'send ledger counted {ledger["sent"]} request(s) but the call log {used} attempt(s)')
-    if result.cost['wire_requests'] != ledger['sent']:
+    if result.cost['wire_requests'] is not None and result.cost['wire_requests'] != ledger['sent']:
         problems.append(f'the wire received {result.cost["wire_requests"]} request(s), the ledger '
                         f'{ledger["sent"]}')
     for call in result.calls:

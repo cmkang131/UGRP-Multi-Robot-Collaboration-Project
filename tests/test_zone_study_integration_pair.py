@@ -141,7 +141,8 @@ def test_pair_and_multiple_real_adapter_calls_use_each_own_camera(condition, tmp
         for rid in zi.ROBOTS:
             calls = [p for p, _ in raw_requests if p['robot_id'] == rid]
             assert any(p.get('inbox') for p in calls[1:])
-            assert any(trigger == 'report' for _, trigger in trial.wakeups(rid))
+            assert any(c.actor == rid and 'report' in {c.trigger, *c.merged_triggers}
+                       for c in trial.scheduler.calls)
     assert trial.sim_output_tokens(outputs[0], 0) == zi.pk.count_tokens(outputs[0])
     runner.write_study(tmp_path, trial, result, {'pose_provider': bundle['pose_provider']['label']})
     for sha, jpeg in trial.request_images.items():

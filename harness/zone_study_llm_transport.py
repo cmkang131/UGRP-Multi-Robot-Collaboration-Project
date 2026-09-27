@@ -101,6 +101,7 @@ class ModelCallTransport:
                 raise TypeError(f'the pipeline needs {name}()')
         self.pipeline, self.send_ledger, self.client_factory = pipeline, send_ledger, client_factory
         self.submitted, self.resolved = [], []
+        self.budget_exhausted = False
         self._thread = threading.get_ident()
         self.guard = getattr(send_ledger, 'guard', None) or NetworkFence()
         if getattr(send_ledger, 'live', False) and not hasattr(send_ledger, 'budget'):
@@ -151,7 +152,9 @@ class ModelCallTransport:
 
     def _failure(self, call, request, client, exc):
         from harness.zone_study_prompts_ko import count_tokens
-        from harness.zone_pilot_budget import usage_total
+        from harness.zone_pilot_budget import BudgetExceeded, usage_total
+        if isinstance(exc, BudgetExceeded):
+            self.budget_exhausted = True
         kind = getattr(exc, 'error_kind', 'transport_error')
         outcome = 'timeout' if kind == 'timeout' else 'error'
         text = client.last_text or ''

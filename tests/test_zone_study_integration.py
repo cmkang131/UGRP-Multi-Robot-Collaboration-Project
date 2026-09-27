@@ -160,7 +160,9 @@ def test_peer_private_state_reaches_a_robot_only_through_the_condition_channel(c
     for belief in (None, holding):
         clock = [0.]
         links = links_for(clock, r2={'belief': belief} if belief else {})
-        runs.append(run(condition, links=links, clock=clock, actors={'r2': Scripted(_r2_talks_if_holding)})[0])
+        # Keep r1 idle: busy-receiver deferral has its own multiturn regression.
+        runs.append(run(condition, links=links, clock=clock,
+                        actors={'r1': Scripted(lambda p: reply(p)), 'r2': Scripted(_r2_talks_if_holding)})[0])
     a, b = runs
     user = [[json.loads(r['user']) for r in requests_of(t, 'r1')] for t in (a, b)]
     if condition == 'no_comm':
@@ -292,7 +294,9 @@ def test_claim_reaches_own_executor_and_rejections_are_recorded_not_arbitrated()
             return reply(payload, {'kind': 'claim', 'order_id': 'order-1', 'role': 'west', 'destination_zone': 'C'})
         return reply(payload)
     actors = {'r1': Scripted(claim_order_1), 'r2': Scripted(claim_order_1)}
-    trial, result, links = run('peer_ko', actors=actors)
+    trial, result, links = run('peer_ko', actors=actors,
+                               events=[(20., rid, lambda link: link.ex._emit(20., 'blockage_seen'))
+                                       for rid in ('r1', 'r2')])
     firsts = [d for d in trial.dispatch_log if d['api'] == 'deliver' and d['args'] == ['order-1', 'C']]
     assert {d['actor'] for d in firsts} >= {'r1', 'r2'} and all(d['ack']['accepted'] for d in firsts[:2])
     assert links['r1'].ex.job.args['order_id'] == links['r2'].ex.job.args['order_id'] == 'order-1'
@@ -326,7 +330,7 @@ def test_wait_aborts_the_own_running_job_and_release_needs_the_matching_order():
     ({'kind': 'claim', 'order_id': 'order-1', 'role': 'west', 'destination_zone': 'C'}, None,
      zi.Plan('deliver', ('order-1', 'C'))),
     ({'kind': 'continue'}, None, zi.Plan(None)),
-    ({'kind': 'wait'}, None, zi.Plan('hold', (zi.WAIT_HOLD_S,))),
+    ({'kind': 'wait'}, None, zi.Plan(None)),
     ({'kind': 'wait'}, {'kind': 'deliver', 'order_id': 'order-1'}, zi.Plan('abort', ('wait_requested',))),
     ({'kind': 'release', 'order_id': 'order-1'}, {'kind': 'deliver', 'order_id': 'order-1'},
      zi.Plan('abort', ('release_requested',))),
@@ -431,7 +435,7 @@ def test_study_layer_touches_only_the_calling_robot():
     trial = zi.IntegratedTrial(SCENARIO, condition='peer_ko', seed=SEED, links=links, horizon_s=30.,
                                map_bundle=BUNDLE)
     trial.begin(1.3)
-    assert links['r1'].accessed and all(a in ('frame_at', 'belief') for a in links['r1'].accessed)
+    assert links['r1'].accessed and all(a in ('job', 'frame_at', 'belief') for a in links['r1'].accessed)
     for link in links.values():
         link.accessed.clear()
     trial.scheduler.trigger('r1', 'idle', at=1.3)
@@ -488,7 +492,14 @@ def test_study_config_is_condition_invariant_apart_from_the_channel():
 @pytest.mark.parametrize('condition', CONDITIONS)
 def test_at_most_one_pending_own_reask_timer_per_robot(condition):
     """Close calls (start + message wakes) must not start several perpetual re-ask chains."""
-    trial, result, _ = run(condition, horizon=200.)
+    def idle_actor(rid):
+        fixture = zo.FixtureActor(rid, condition, SEED)
+        def script(payload):
+            value = json.loads(fixture.respond({'messages': [{}, {'content': json.dumps(payload)}]}))
+            value['action'] = {'kind': 'wait'}
+            return value
+        return Scripted(script)
+    trial, result, _ = run(condition, horizon=200., actors={rid: idle_actor(rid) for rid in zox.ROBOTS})
     for rid in zox.ROBOTS:
         timers = [row['sim_s'] for row in trial.scheduler.events if row.get('kind') == 'timer' and row['actor'] == rid]
         assert all(b - a >= trial.policy.idle_reask_s - 1e-9 for a, b in zip(timers, timers[1:])), (rid, timers)
