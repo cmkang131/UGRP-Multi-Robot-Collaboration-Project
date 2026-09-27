@@ -73,6 +73,7 @@ TEST_PATTERNS = (
     "tests/test_zone_pair_review7.py",
     "tests/test_zone_pair_dev.py",
     "tests/test_zone_pair_grasp.py", "tests/test_zone_pair_preclose.py", "tests/test_zone_pair_standoff.py",
+    "tests/test_zone_pair_v5.py",
     "tests/test_zone_start_dock.py",
     "tests/test_zone_pair_admission.py",
     "tests/test_m2_pair_door_v3.py", "tests/test_pair_owncam_approach.py", "tests/test_zone_tagged_cargo_scene.py",

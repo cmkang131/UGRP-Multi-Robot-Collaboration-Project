@@ -120,7 +120,8 @@ class PairCommandGuard:
     @property
     def reobserving(self):
         ctl = self.ep.controller
-        return (ctl.state == 'pregrasp_look'
+        from harness.zone_pair_align import RELOOK_STATES
+        return (ctl.state in ('pregrasp_look', *RELOOK_STATES)
                 or (ctl.state in ('approach', 'reapproach')
                     and getattr(ctl.driver, 'state', None) in ('look_arm', 'look_pan')))
 
@@ -213,6 +214,10 @@ class PairCommandGuard:
 
     def before_control(self, now):
         own = self.ep.own
+        expired = getattr(self.ep.controller, 'align_relook_expired', lambda t: False)
+        if expired(now):
+            self.ep.abort(now, 'ALIGN_RELOOK_TIMEOUT')
+            return False
         own.gate.set_profile(GATE_UNLOADED if self.approach else GATE_LOADED)
         pose = self._pose(now)
         if self.reobserving:
@@ -226,6 +231,9 @@ class PairCommandGuard:
         return True
 
     def _stationary_reobserve(self, now, pose):
+        if getattr(self.ep.controller, 'align_relook_expired', lambda t: False)(now):
+            self.ep.abort(now, 'ALIGN_RELOOK_TIMEOUT')
+            return False
         if self.carrying_beam:
             self.ep.abort(now, 'PAIR_RELOOK_WHILE_GRIPPED')
             return False

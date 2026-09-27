@@ -31,6 +31,7 @@ LABELS = ['tags_temporary', 'dev', '연구 결과 아님']
 PREREG = ROOT / 'experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json'
 PREREG_V3 = PREREG.with_name('prereg_v3.json')
 PREREG_V4 = PREREG.with_name('prereg_v4.json')
+PREREG_V5 = PREREG.with_name('prereg_v5.json')
 MAP = ROOT / 'maps/zones/zone_wide_door_tags_v2.json'
 CALIBRATION = ROOT / 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'
 PARTICIPANTS = ('r1', 'r2')
@@ -46,7 +47,7 @@ ORDER = {'orders': [{'order_id': 'cargoX', 'kind': 'long_beam', 'count': 1, 'req
 
 def registered_v3(prereg):
     # Registered successors retain the dock-v3 scene (not the old v3 DRAFT).
-    return prereg.get('registration_version') in (3, 4) and prereg.get('status') == 'REGISTERED'
+    return prereg.get('registration_version') in (3, 4, 5) and prereg.get('status') == 'REGISTERED'
 
 
 def map_path(prereg):
@@ -106,10 +107,10 @@ def load_config(args):
     if (prereg.get('status') != 'DRAFT' and not registered_v3(prereg)) or prereg.get('research_result') is not False:
         raise ValueError('this driver is for preregistered dev only')
     version = prereg.get('registration_version')
-    if version not in (2, 3, 4):
-        raise ValueError('use prereg v2 or registered v3/v4; preserve earlier versions')
-    if version == 4 and not registered_v3(prereg):
-        raise ValueError('v4 requires a registered grasp contract')
+    if version not in (2, 3, 4, 5):
+        raise ValueError('use prereg v2 or registered v3/v4/v5; preserve earlier versions')
+    if version in (4, 5) and not registered_v3(prereg):
+        raise ValueError('v4/v5 requires a registered grasp contract')
     if version == 3 and args.execute and not registered_v3(prereg):
         raise ValueError('v3 is prepare-only: coordinator startup/dock decision and implementation are pending')
     if registered_v3(prereg):
@@ -127,22 +128,20 @@ def load_config(args):
                 or readiness.get('startup_policy') != 'relocate_static_dock_x_minus_0_65'):
             raise ValueError('v3 dock decision/readiness missing')
         for old, new in zip(v2['runs'], prereg['runs'], strict=True):
-            excluded = ('id', 'seed') if version == 4 else ('id',)
+            excluded = ('id', 'seed') if version in (4, 5) else ('id',)
             if {k: v for k, v in new.items() if k not in excluded} != {k: v for k, v in old.items() if k not in excluded}:
                 raise ValueError('v3 must preserve v2 seeded cargo/order/intervention')
-    if version == 4:
+    if version in (4, 5):
         from scripts.zone_pair_grasp_contract import grasp_contract
         v3 = json.loads(PREREG_V3.read_text())
         for key in ('criteria', 'stage_rules', 'planned_setdown', 'limits', 'safety_coverage', 'timing', 'environment', 'inputs'):
             if prereg.get(key) != v3[key]:
                 raise ValueError(f'v4 must preserve v3 {key}')
-        if [(r['id'], r['seed']) for r in prereg['runs']] != [('dev07', 903), ('dev08', 904)]:
-            raise ValueError('v4 requires fresh dev07/903 and dev08/904 cohort')
         if prereg.get('grasp_contract') != grasp_contract():
             raise ValueError('grasp contract/hash mismatch')
     if prereg.get('contact_profile_contract') != profile_contract():
         raise ValueError('contact profile contract/hash mismatch; freeze a new prereg before execution')
-    previous_path = {2: PREVIOUS_PREREG, 3: PREREG, 4: PREREG_V3}[version]
+    previous_path = {2: PREVIOUS_PREREG, 3: PREREG, 4: PREREG_V3, 5: PREREG_V4}[version]
     previous = {'path': str(previous_path.relative_to(ROOT)), 'sha256': sha_file(previous_path)}
     if prereg.get('supersedes') != previous:
         raise ValueError('previous prereg hash mismatch')
@@ -159,7 +158,7 @@ def load_config(args):
     if type(case['seed']) is not int or not 0 <= case['seed'] < 2**32:
         raise ValueError('seed must be a uint32 integer')
     expected_runs = {2: [('dev03', 901), ('dev04', 902)], 3: [('dev05', 901), ('dev06', 902)],
-                     4: [('dev07', 903), ('dev08', 904)]}[version]
+                     4: [('dev07', 903), ('dev08', 904)], 5: [('dev09', 905), ('dev10', 906)]}[version]
     if [(r['id'], r['seed']) for r in rows] != expected_runs:
         raise ValueError(f'v{version} fixes {expected_runs}; do not reuse prior IDs')
     limits = prereg['limits']

@@ -10,8 +10,9 @@ import math
 
 from harness.zone_own_contract import finite_number, pose_report_fresh
 from harness.zone_pair_vision import valid_frame
+from harness.zone_pair_align import PairAlignRelook
 
-PROFILE = 'zone_pair_grasp_relook_v1'
+PROFILE = 'zone_pair_grasp_relook_v2'
 FIX_STD_XY_M = .05
 FIX_STD_YAW_RAD = math.radians(3.)
 CLOSE_WAIT_S = 20.
@@ -41,7 +42,7 @@ def stationary_beam_estimate(obs, servo):
     return {**beam, 'std_xy_m': spread, 'std_yaw_rad': syaw}
 
 
-class PairGraspRelook:
+class PairGraspRelook(PairAlignRelook):
     """Mixin before M2DoorStudent. All live inputs come from the own port."""
 
     def look(self, now):

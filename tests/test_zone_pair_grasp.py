@@ -210,17 +210,20 @@ def test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort(tmp_path):
     from scripts import run_zone_pair_dev as dev
     from scripts.zone_pair_grasp_contract import grasp_contract
     old = json.loads(dev.PREREG_V3.read_text())
-    p = json.loads(dev.PREREG_V4.read_text())
+    p = json.loads(dev.PREREG_V5.read_text())
     for key in ('criteria', 'stage_rules', 'planned_setdown', 'limits', 'timing', 'safety_coverage', 'environment', 'inputs'):
         assert p[key] == old[key], key
     assert p['grasp_contract'] == grasp_contract()
     assert p['commands']['owner'] == 'claude'
-    for rid, seed in [('dev07', 903), ('dev08', 904)]:
-        args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V4), '--run-id', rid, '--output', str(tmp_path / rid)])
+    for rid, seed in [('dev09', 905), ('dev10', 906)]:
+        args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V5), '--run-id', rid, '--output', str(tmp_path / rid)])
         assert dev.load_config(args)[1]['seed'] == seed
     # Historical v3 bytes remain bound to their old source, never silently
     # accepted with a changed controller under the old registration.
     args.prereg, args.run_id = dev.PREREG_V3, 'dev05'
+    with pytest.raises(ValueError, match='scene contract'):
+        dev.load_config(args)
+    args.prereg, args.run_id = dev.PREREG_V4, 'dev07'
     with pytest.raises(ValueError, match='scene contract'):
         dev.load_config(args)
 
@@ -247,11 +250,12 @@ def test_confirmed_beam_cannot_sweep_and_old_segment_receipt_is_not_reused():
 
 @pytest.mark.parametrize('phase', ['pregrasp_standoff', 'pregrasp_descend', 'wait_close'])
 @pytest.mark.parametrize('fault', [None, 'drop', 'wrong_segment', 'off_target', 'no_go'])
-def test_v4_checkpoint_subphases_keep_v3_physical_criteria(phase, fault):
+@pytest.mark.parametrize('version', [4, 5])
+def test_v4_checkpoint_subphases_keep_v3_physical_criteria(phase, fault, version):
     from tests.test_zone_pair_dev import checkpoint_evidence
     from scripts import evaluate_zone_pair_dev as ev
     m, p, rows, contacts, protocol = checkpoint_evidence()
-    p['registration_version'] = 4
+    p['registration_version'] = version
     target = next(r for r in rows if r['states']['r1'] == 'grasp' and r['segments']['r1'] == 2)
     for r in rows:
         if r['states']['r1'] == 'grasp':

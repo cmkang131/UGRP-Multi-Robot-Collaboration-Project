@@ -158,7 +158,8 @@ class RestingBeamTrack:
                 or not 0 <= b['std_yaw_rad'] <= FIX_STD_YAW_RAD):
             return None
         partial = observe_beam(obs['image'], servo)
-        if partial.get('reason') != 'BAND_CLIPPED':
+        if (partial.get('reason') not in ('BAND_CLIPPED', 'END_CLIPPED')
+                or partial.get('end_visible') is not False):
             return None  # missing/unrecognized evidence cannot renew a track
         pts = plane_points(obs['image'], servo)
         if len(pts) < v1.MIN_POINTS:
@@ -174,5 +175,5 @@ class RestingBeamTrack:
         if inside.mean() < .95:
             return None
         return {**b, 'partial_frame_id': obs['frame_id'], 'partial_sha256': obs['sha256'],
-                'partial_support_fraction': float(inside.mean()),
+                'partial_support_fraction': float(inside.mean()), 'partial_reason': partial['reason'],
                 'partial_use': 'visible patch consistency only; no pose/age/sigma reset'}
