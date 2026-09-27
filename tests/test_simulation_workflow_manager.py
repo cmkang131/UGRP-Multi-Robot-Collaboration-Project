@@ -185,7 +185,7 @@ raise SystemExit(3 if a.fail else 0)
 
     def test_catalog_has_thirty_selectable_workflows_and_distinct_adapters(self):
         data, digest = wm.catalog(PROJECT)
-        self.assertEqual(len(data["workflows"]), 37)
+        self.assertEqual(len(data["workflows"]), 38)
         self.assertEqual(len(digest), 64)
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "dispatch-skills")["runner"], "scripts.run_dispatch_e2e")
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "communication")["output_kind"]["prepare"], "file")
@@ -234,6 +234,8 @@ raise SystemExit(3 if a.fail else 0)
             "zone-owncam-loop-run": ["--prereg", str(source)],
             "zone-m2-pair": ["--seed", "701", "--status-channel", "off"],
             "zone-m1-owncam-run": ["--prereg", str(source)],
+            "zone-study-integration-run": ["--prereg", str(source), "--episode", "smoke-i700",
+                                           "--condition", "no_comm"],
             "zone-m1-owncam-memory-run": ["--prereg", str(source), "--condition", "memory_v2"],
             "zone-m1-owncam-memory-v3-run": ["--prereg", str(source), "--condition", "memory_v3"],
             "zone-pair-dev": ["--prereg", str(PROJECT / "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json"), "--run-id", "dev03"],

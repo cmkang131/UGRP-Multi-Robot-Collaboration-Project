@@ -1,0 +1,516 @@
+"""Integrated zone study runner (issue #223): study core (#194) x own-camera executor (#206).
+
+Everything here runs without a simulator. Robots are ``FakeLink`` objects around a
+REAL ``ZoneOwnExecutor`` (no physics) with stored real wrist JPEGs, so the
+decision -> executor boundary is the real API. The physics owner
+(``scripts/run_zone_study_integration.py``) is covered by the plumbing smoke.
+"""
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import math
+import sys
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from harness import team_carry_status as tcs  # noqa: E402
+from harness.zone_own_team_host import _RobotSlot
+from harness import zone_own_executor as zox  # noqa: E402
+from harness import zone_study_contract as A  # noqa: E402
+from harness import zone_study_integration as zi  # noqa: E402
+from harness import zone_study_offline as zo  # noqa: E402
+from harness.zone_study_inputs import OrderSheetSource  # noqa: E402
+from harness.zone_study_scenarios import bundle_for, load as load_scenario  # noqa: E402
+
+SCENARIO = json.loads((ROOT / 'configs/zone_study_integration/i1_cyan_three_slots.json').read_text())
+MAP_ID = 'zone_wide_door_tags_v2'
+MAP = json.loads((ROOT / 'maps/zones' / f'{MAP_ID}.json').read_text())
+CALIB = json.loads((ROOT / 'experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json').read_text())
+FRAMES = [p.read_bytes() for p in sorted((ROOT / 'tests/fixtures/markerless_box/blue_floor_release')
+                                         .glob('*-wrist.jpg'))]
+BUNDLE = bundle_for(SCENARIO)
+SHEET = OrderSheetSource(SCENARIO, BUNDLE).sheet()
+ROWS_Y = (-2.45, -1.65, -.85, -.05, .75)
+CONDITIONS = A.MAIN_CONDITIONS
+SEED = 700
+
+
+class FakeLink:
+    """One robot: a real executor (no physics), stored real JPEGs, a shared test clock."""
+
+    def __init__(self, rid, clock, *, frame_offset=0, belief=None):
+        self.robot_id, self._clock = rid, clock
+        self.frame_offset, self._belief = frame_offset, belief
+        self.ex = zox.ZoneOwnExecutor(rid, MAP, CALIB['params'], SHEET, skill_factory=lambda o, robot_id: None,
+                                      pose_estimate_cls=tuple, search_rows_y=ROWS_Y)
+        self.accessed = []
+
+    def clock(self):
+        return self._clock[0]
+
+    def frame_at(self, t):
+        self.accessed.append('frame_at')
+        index = int(math.floor(t * 5 + 1e-9))                   # the latest own frame at or before t
+        data = FRAMES[(index + zox.ROBOTS.index(self.robot_id) + self.frame_offset) % len(FRAMES)]
+        return zi.OwnFrame(index, round(index / 5, 4), data, hashlib.sha256(data).hexdigest())
+
+    def belief(self):
+        self.accessed.append('belief')
+        return copy.deepcopy(self._belief) if self._belief is not None else self.ex.belief_projection()
+
+    def job(self):
+        self.accessed.append('job')
+        job = self.ex.job
+        return None if job is None else {'kind': job.kind, 'order_id': job.args.get('order_id'), 'job_id': job.job_id}
+
+    def call(self, api, *args):
+        self.accessed.append(f'call:{api}')
+        self.ex.now = self._clock[0]
+        return getattr(self.ex, api)(*args)
+
+
+def links_for(clock, **per_robot):
+    return {r: FakeLink(r, clock, **per_robot.get(r, {})) for r in zox.ROBOTS}
+
+
+def run(condition, *, horizon=30., links=None, clock=None, events=(), actors=None, seed=SEED, scenario=SCENARIO):
+    """Drive a trial on the QUANTUM_S grid; ``events`` = [(t, robot, fn(link) -> None)] own-executor actions."""
+    clock = clock or [0.]
+    links = links or links_for(clock)
+    trial = zi.IntegratedTrial(scenario, condition=condition, seed=seed, links=links, horizon_s=horizon,
+                               map_bundle=BUNDLE if scenario is SCENARIO else None)
+    for rid, actor in (actors or {}).items():
+        trial.fixtures[rid] = actor
+    t = clock[0] = 1.3
+    trial.begin(t)
+    pending = sorted(events, key=lambda e: e[0])
+    while t < horizon - 1e-9:
+        t = clock[0] = round(t + zi.QUANTUM_S, 6)
+        while pending and pending[0][0] <= t + 1e-9:
+            _, rid, fn = pending.pop(0)
+            fn(links[rid])
+        for link in links.values():
+            for ev in link.ex.drain_events():
+                trial.on_executor_event(ev, at_s=t)
+        trial.step_to(t)
+    return trial, trial.finish(t), links
+
+
+def requests_of(trial, rid):
+    return [r for r in trial.requests if r['robot'] == rid]
+
+
+class Scripted:
+    """A test actor: ``respond(request)`` only, like the #194 fixture (own request is the whole input)."""
+
+    def __init__(self, fn):
+        self.fn, self.calls = fn, 0
+
+    def respond(self, request):
+        self.calls += 1
+        payload = json.loads(request['messages'][1]['content'])
+        return json.dumps(self.fn(payload), ensure_ascii=False)
+
+
+def reply(payload, action=None, messages=()):
+    return {'request_id': payload['request_id'], 'action': action or {'kind': 'continue'},
+            'decision_sources': ['static_map', 'order_sheet', 'own_rgb', 'own_commands'], 'messages': list(messages)}
+
+
+# ---------------------------------------------------------------- isolation (the #169 confound)
+@pytest.mark.parametrize('condition', CONDITIONS)
+def test_peer_private_state_does_not_reach_a_robot_inputs_or_wakeups(condition):
+    """Change ONLY r2's private state (its frames, belief, executor failure): r1 and r3 are identical."""
+    base, _, _ = run(condition)
+    clock = [0.]
+    links = links_for(clock, r2={'frame_offset': 3, 'belief': {**zi.zo.belief_skeleton(), 'region': 'zone_B',
+                                                                'held_item_guess': 'yes', 'notes_ko': '다름'}})
+    changed, _, _ = run(condition, links=links, clock=clock,
+                        events=[(9.0, 'r2', lambda link: link.call('abort', 'test_private_failure'))])
+    assert [r['request_sha256'] for r in requests_of(changed, 'r2')] != \
+        [r['request_sha256'] for r in requests_of(base, 'r2')]                  # the perturbation is real
+    for rid in ('r1', 'r3'):
+        assert [r['request_sha256'] for r in requests_of(base, rid)] == \
+            [r['request_sha256'] for r in requests_of(changed, rid)], rid
+        assert base.wakeups(rid) == changed.wakeups(rid), rid
+        assert [(d['sim_s'], d['api'], d['args']) for d in base.dispatch_log if d['actor'] == rid] == \
+            [(d['sim_s'], d['api'], d['args']) for d in changed.dispatch_log if d['actor'] == rid]
+
+
+def _r2_talks_if_holding(payload):
+    """r2 speaks (to r1) only when ITS OWN belief says it holds something: private state -> channel."""
+    msgs = []
+    if payload['self_belief'].get('held_item_guess') == 'yes' and payload.get('channel', {}).get('can_send_to'):
+        msgs = [{'recipients': ['r1'], 'reply_to': None, 'text': 'r2가 물건을 들고 있습니다.'}]
+    return reply(payload, messages=msgs)
+
+
+@pytest.mark.parametrize('condition', ('peer_ko', 'leader_ko', 'no_comm'))
+def test_peer_private_state_reaches_a_robot_only_through_the_condition_channel(condition):
+    holding = {**zi.zo.belief_skeleton(), 'held_item_guess': 'yes'}
+    runs = []
+    for belief in (None, holding):
+        clock = [0.]
+        links = links_for(clock, r2={'belief': belief} if belief else {})
+        runs.append(run(condition, links=links, clock=clock, actors={'r2': Scripted(_r2_talks_if_holding)})[0])
+    a, b = runs
+    user = [[json.loads(r['user']) for r in requests_of(t, 'r1')] for t in (a, b)]
+    if condition == 'no_comm':
+        assert user[0] == user[1] and a.wakeups('r1') == b.wakeups('r1')
+        assert not b.messages and all('inbox' not in u for u in user[1])
+        return
+    from_r2 = [m for m in b.messages if m['sender'] == 'r2']
+    assert from_r2 and not [m for m in a.messages if m['sender'] == 'r2']
+    assert all(m['recipients'] == ['r1'] for m in from_r2)
+    others = lambda t: [(m['sender'], m['recipients'], m['body']) for m in t.messages if m['sender'] != 'r2']  # noqa: E731
+    assert others(a) == others(b)                                          # nobody else changed
+    t_d = min(d['delivered_at_sim_s'] for m in from_r2 for d in m['deliveries'])
+    before = lambda t: [r['request_sha256'] for r in requests_of(t, 'r1') if r['sim_s'] < t_d]  # noqa: E731
+    assert before(a) and before(a) == before(b)                            # identical until the delivery
+    assert [w for w in a.wakeups('r1') if w[0] < t_d] == [w for w in b.wakeups('r1') if w[0] < t_d]
+    first_new = next(w for w in b.wakeups('r1') if w[0] >= t_d)
+    assert first_new == (t_d, 'report')                                     # woken by the delivered message
+    later = [json.loads(r['user']) for r in requests_of(b, 'r1') if r['sim_s'] >= t_d]
+    assert later and any(m['sender'] == 'r2' for m in later[0]['inbox'])
+
+
+# ---------------------------------------------------------------- channel routing
+def test_no_comm_has_no_inbox_no_recipients_and_no_messages():
+    trial, result, _ = run('no_comm')
+    for row in trial.requests:
+        user = json.loads(row['user'])
+        assert 'inbox' not in user and user['channel']['can_send_to'] == [] and user['channel']['encoding'] == 'none'
+    assert not result.messages and result.channel['sent'] == 0 and result.cost['talk_sim_s'] == 0
+
+
+def _follower_tries_everyone(payload):
+    if payload['robot_id'] == 'r1' and not payload['own_command_history'] and payload['channel']['can_send_to']:
+        return reply(payload, messages=[{'recipients': ['r3'], 'reply_to': None, 'text': 'r3에게 직접 말합니다.'},
+                                        {'recipients': ['r2'], 'reply_to': None, 'text': '리더에게 보고합니다.'}])
+    return reply(payload)
+
+
+@pytest.mark.parametrize('seed, leader', [(700, 'r2'), (701, 'r3'), (702, 'r1')])
+def test_leader_rotation_and_hub_and_spoke_routing(seed, leader):
+    trial, result, _ = run('leader_ko', seed=seed)
+    assert trial.leader_id == leader and result.leader_id == leader
+    for m in result.messages:
+        assert leader in (m['sender'], *m['recipients'])
+        assert m['sender'] == leader or m['recipients'] == [leader]            # follower -> leader only
+    assert result.channel['follower_to_follower'] == 0
+
+
+def test_leader_ko_rejects_follower_to_follower_and_delivers_follower_report():
+    trial, result, _ = run('leader_ko', actors={'r1': Scripted(_follower_tries_everyone)})
+    assert trial.leader_id == 'r2'
+    delivered = [(m['sender'], tuple(m['recipients'])) for m in result.messages]
+    assert ('r1', ('r3',)) not in delivered and ('r1', ('r2',)) in delivered
+    assert any(r['sender'] == 'r1' for r in trial.scheduler.rejected_messages)
+    assert result.channel['follower_to_follower'] == 0
+
+
+def test_structured_carries_no_free_text():
+    trial, result, _ = run('structured')
+    assert result.messages and result.channel['free_text_messages'] == 0
+    assert all('text' not in m['body'] for m in result.messages)
+
+
+# ---------------------------------------------------------------- SIM cost and decision -> executor
+@pytest.mark.parametrize('condition', CONDITIONS)
+def test_busy_job_keeps_executing_while_thinking_and_talking_only_idle_robots_wait(condition):
+    """Exercise the real host macro loop while all three scheduler calls are pending."""
+    from scripts.run_zone_study_integration import StudyTeamHost
+
+    clock = [1.3]
+    links = links_for(clock)
+    assert links['r1'].call('deliver', 'order-1', 'C')['accepted']
+    job = links['r1'].ex.job
+    trial = zi.IntegratedTrial(SCENARIO, condition=condition, seed=SEED, links=links,
+                               horizon_s=10., map_bundle=BUNDLE)
+    host = StudyTeamHost.__new__(StudyTeamHost)
+    host.world = SimpleNamespace(data=SimpleNamespace(time=clock[0]),
+                                 model=SimpleNamespace(opt=SimpleNamespace(timestep=.01)))
+    host.robots = {r: _RobotSlot(r, None, links[r].ex) for r in zox.ROBOTS}
+    host.event_log = []
+    # A current job already has a macro to execute. No physics or controller
+    # stub decides whether it may proceed: advance_to/_run_timeline do that.
+    host.robots['r1'].timeline = [(t, [{'kind': 'drive', 'forward': .1, 'turn': 0.}])
+                                  for t in (1.4, 1.6, 1.8, 9.)]
+    commands = []
+    host._apply = lambda rid, cmd, now: commands.append((rid, cmd['kind'], round(now, 3)))
+    host._hold = lambda rid, now: commands.append((rid, 'hold', round(now, 3)))
+
+    def advance_clock(t):
+        host.world.data.time = clock[0] = t
+    host._physics_until = advance_clock
+    trial.begin(clock[0])
+    for t in (1.4, 1.5, 1.6, 1.7, 1.8, 1.9):
+        assert trial.scheduler.holding() == zox.ROBOTS
+        for event in host.advance_to(t):
+            trial.on_executor_event(event, at_s=t)
+        trial.step_to(t)
+        assert links['r1'].ex.job is job
+        assert links['r2'].ex.job is links['r3'].ex.job is None
+        assert not trial.dispatch_log                # no action released ahead of its cost
+    assert commands == [('r1', 'drive', t) for t in (1.4, 1.6, 1.8)]
+    result = trial.finish(1.9)                       # pending calls are censored, still charged
+    assert result.cost['censored_elapsed_sim_s'] > 0
+    assert (result.cost['censored_utterances'] > 0) == (condition != 'no_comm')
+    assert trial.study_config()['think_hold_policy'] == 'idle_robot_holds_busy_job_continues'
+
+
+@pytest.mark.parametrize('condition', CONDITIONS)
+def test_talk_and_think_cost_sim_time_and_actions_land_at_the_charged_time(condition):
+    trial, result, _ = run(condition)
+    checks = zo.cost_checks(trial, result)
+    assert checks['ok'], checks['problems']
+    done = {c.call_id: c for c in trial.scheduler.calls}
+    assert trial.dispatch_log
+    for d in trial.dispatch_log:
+        call = done[d['call_id']]
+        assert call.finished_sim_s > call.started_sim_s                        # thinking costs SIM time
+        assert abs(d['sim_s'] - call.finished_sim_s) < 1e-9                    # released at the charged time
+        if d['ack']:
+            assert abs(d['ack']['sim_s'] - d['sim_s']) < 1e-9 and d['ack']['robot_id'] == d['actor']
+    assert trial.clock_drift_s < 1e-9
+    talk = result.cost['talk_sim_s']
+    assert (talk > 0) == (condition != 'no_comm')
+
+
+def test_claim_reaches_own_executor_and_rejections_are_recorded_not_arbitrated():
+    """Two robots claim the SAME order: both reach their own executor; the host arbitrates nothing."""
+    def claim_order_1(payload):
+        if not payload['own_command_history']:
+            return reply(payload, {'kind': 'claim', 'order_id': 'order-1', 'role': 'west', 'destination_zone': 'C'})
+        return reply(payload)
+    actors = {'r1': Scripted(claim_order_1), 'r2': Scripted(claim_order_1)}
+    trial, result, links = run('peer_ko', actors=actors)
+    firsts = [d for d in trial.dispatch_log if d['api'] == 'deliver' and d['args'] == ['order-1', 'C']]
+    assert {d['actor'] for d in firsts} >= {'r1', 'r2'} and all(d['ack']['accepted'] for d in firsts[:2])
+    assert links['r1'].ex.job.args['order_id'] == links['r2'].ex.job.args['order_id'] == 'order-1'
+    rejected = [a for a in result.actions if not a['accepted']]
+    assert all(a['rejected_reason'] for a in rejected)
+    for rid in ('r1', 'r2'):
+        history = json.loads(requests_of(trial, rid)[-1]['user'])['own_command_history']
+        assert history[0]['kind'] == 'claim_order' and history[0]['arguments']['order_id'] == 'order-1'
+
+
+def test_wait_aborts_the_own_running_job_and_release_needs_the_matching_order():
+    def script(payload):
+        n = len(payload['own_command_history'])
+        if n == 0:
+            return reply(payload, {'kind': 'claim', 'order_id': 'order-1', 'role': 'west', 'destination_zone': 'C'})
+        if n == 1:
+            return reply(payload, {'kind': 'release', 'order_id': 'order-2'})
+        if n == 2:
+            return reply(payload, {'kind': 'wait'})
+        return reply(payload)
+    trial, result, links = run('no_comm', actors={'r1': Scripted(script)}, horizon=150.)   # busy re-ask 60 s
+    rows = [(d['api'], d['rejected_reason'], (d['ack'] or {}).get('accepted')) for d in trial.dispatch_log
+            if d['actor'] == 'r1']
+    assert rows[:3] == [('deliver', None, True), (None, 'NO_ACTIVE_JOB_FOR_ORDER', None), ('abort', None, True)]
+    ex = links['r1'].ex
+    assert ex.job is None and ex.jobs_done[-1]['outcome'] == 'ABORTED:wait_requested'
+    assert ex.step(links['r1'].clock()) == {'mode': 'tick', 'commands': [{'kind': 'hold'}]}   # an actual hold
+
+
+@pytest.mark.parametrize('action, job, expected', [
+    ({'kind': 'claim', 'order_id': 'order-1', 'role': 'west', 'destination_zone': 'C'}, None,
+     zi.Plan('deliver', ('order-1', 'C'))),
+    ({'kind': 'continue'}, None, zi.Plan(None)),
+    ({'kind': 'wait'}, None, zi.Plan('hold', (zi.WAIT_HOLD_S,))),
+    ({'kind': 'wait'}, {'kind': 'deliver', 'order_id': 'order-1'}, zi.Plan('abort', ('wait_requested',))),
+    ({'kind': 'release', 'order_id': 'order-1'}, {'kind': 'deliver', 'order_id': 'order-1'},
+     zi.Plan('abort', ('release_requested',))),
+    ({'kind': 'release', 'order_id': 'order-1'}, None, zi.Plan(None, rejected_reason='NO_ACTIVE_JOB_FOR_ORDER')),
+    ({'kind': 'release', 'order_id': None}, {'kind': 'goto', 'order_id': None},
+     zi.Plan(None, rejected_reason='NO_ACTIVE_JOB_FOR_ORDER')),
+    ({'kind': 'claim', 'order_id': 0, 'destination_zone': 'C'}, None, zi.Plan(None, rejected_reason='BAD_CLAIM')),
+    ({'kind': 'claim', 'order_id': 'order-1', 'destination_zone': None}, None,
+     zi.Plan(None, rejected_reason='BAD_CLAIM')),
+    ({'kind': 'order', 'assignments': {}}, None, zi.Plan(None, rejected_reason='UNSUPPORTED_ACTION')),
+    ({'kind': None}, None, zi.Plan(None, rejected_reason='UNSUPPORTED_ACTION')),
+    ({}, None, zi.Plan(None, rejected_reason='UNSUPPORTED_ACTION')),
+    (None, None, zi.Plan(None, rejected_reason='UNSUPPORTED_ACTION')),
+    ([], None, zi.Plan(None, rejected_reason='UNSUPPORTED_ACTION')),
+    ('claim', None, zi.Plan(None, rejected_reason='UNSUPPORTED_ACTION')),
+    (float('nan'), None, zi.Plan(None, rejected_reason='UNSUPPORTED_ACTION')),
+])
+def test_executor_plan_maps_actions_and_refuses_bad_input_without_raising(action, job, expected):
+    assert zi.executor_plan(action, job) == expected
+
+
+@pytest.mark.parametrize('event', [None, {}, [], 'job_done', {'robot_id': 'r9', 'event': 'job_done'},
+                                   {'robot_id': 'r1'}, {'robot_id': 'r1', 'event': 'peer_done'},
+                                   {'robot_id': None, 'event': 'job_done'}])
+def test_malformed_or_foreign_executor_events_are_refused(event):
+    clock = [0.]
+    trial = zi.IntegratedTrial(SCENARIO, condition='no_comm', seed=SEED, links=links_for(clock), horizon_s=10.,
+                               map_bundle=BUNDLE)
+    with pytest.raises(A.ContractViolation):
+        trial.on_executor_event(event, at_s=1.)
+
+
+def test_an_executor_event_wakes_only_its_own_robot():
+    trial, _, _ = run('no_comm', events=[(9.0, 'r2', lambda link: link.call('abort', 'probe'))])
+    assert ('%.1f' % 9.0, 'failure') in [('%.1f' % t, trig) for t, trig in trial.wakeups('r2')]
+    assert all(trig != 'failure' for _, trig in trial.wakeups('r1') + trial.wakeups('r3'))
+
+
+# ---------------------------------------------------------------- inputs: own RGB only, no GT
+@pytest.mark.parametrize('condition', CONDITIONS)
+def test_inputs_are_own_wrist_rgb_map_sheet_own_history_and_delivered_messages_only(condition):
+    clock = [0.]
+    links = links_for(clock)
+    trial, result, _ = run(condition, links=links, clock=clock)
+    assert zo.request_checks(result)['ok']
+    allow = A.condition(condition).input_allowlist
+    own = {rid: {hashlib.sha256(f).hexdigest() for f in FRAMES} for rid in zox.ROBOTS}
+    for row in trial.requests:
+        user = json.loads(row['user'])
+        assert set(user) - {zi.pk.WINDOW_KEY} <= allow and A.forbidden_key_hits(user) == []
+        assert not any(s in row['user'] for s in A.FORBIDDEN_VALUE_SUBSTRINGS)
+        assert [i['label'] for i in row['image_refs']] == ['CURRENT OWN WRIST RGB']
+        assert all(i['sha256'] in own[row['robot']] for i in row['image_refs'])
+        assert all(r['ref'].startswith(f'own-{row["robot"]}-') for r in user['own_rgb_refs'])
+        assert user['order_sheet'] == SHEET and user['static_map']['map_id'] == MAP_ID
+    for d in trial.input_log:
+        assert d['frame_t'] <= d['sim_s'] + 1e-9                               # captured at or before the call
+
+
+def test_a_call_needs_an_own_frame():
+    class Blind(FakeLink):
+        def frame_at(self, t):
+            return None
+    clock = [0.]
+    links = {r: (Blind if r == 'r1' else FakeLink)(r, clock) for r in zox.ROBOTS}
+    trial = zi.IntegratedTrial(SCENARIO, condition='no_comm', seed=SEED, links=links, horizon_s=10.,
+                               map_bundle=BUNDLE)
+    clock[0] = 1.3
+    trial.begin(1.3)
+    # Core r7 records/refunds a submit failure with zero ledgered sends.
+    # It must never fabricate a frame, a fixture response or an executor action.
+    unsent = [row for row in trial.scheduler.unsent_calls if row['actor'] == 'r1']
+    assert len(unsent) == 1 and 'no own robot_cam frame' in unsent[0]['error']
+    assert trial.send_ledger.sends(unsent[0]['call_id']) == 0
+    assert not requests_of(trial, 'r1')
+    assert not [row for row in trial.dispatch_log if row['actor'] == 'r1']
+
+
+def test_only_the_fixture_actor_and_main_conditions_are_accepted():
+    clock = [0.]
+    with pytest.raises(A.ContractViolation):
+        zi.check_actor('gemini-3.8-flash')
+    for bad in ('reference_R', 'dynamic', '', None, 0):
+        with pytest.raises((A.ContractViolation, KeyError, TypeError)):
+            zi.IntegratedTrial(SCENARIO, condition=bad, seed=SEED, links=links_for(clock), horizon_s=10.,
+                               map_bundle=BUNDLE)
+    with pytest.raises(A.ContractViolation):
+        zi.IntegratedTrial(SCENARIO, condition='no_comm', seed=SEED, links=links_for(clock), horizon_s=10.,
+                           map_bundle=BUNDLE, actor='gemini')
+    two = dict(list(links_for(clock).items())[:2])
+    with pytest.raises(A.ContractViolation):
+        zi.IntegratedTrial(SCENARIO, condition='no_comm', seed=SEED, links=two, horizon_s=10., map_bundle=BUNDLE)
+    swapped = links_for(clock)
+    swapped['r1'], swapped['r2'] = swapped['r2'], swapped['r1']
+    with pytest.raises(A.ContractViolation):
+        zi.IntegratedTrial(SCENARIO, condition='no_comm', seed=SEED, links=swapped, horizon_s=10., map_bundle=BUNDLE)
+
+
+def test_study_layer_touches_only_the_calling_robot():
+    clock = [1.3]
+    links = links_for(clock)
+    trial = zi.IntegratedTrial(SCENARIO, condition='peer_ko', seed=SEED, links=links, horizon_s=30.,
+                               map_bundle=BUNDLE)
+    trial.begin(1.3)
+    assert links['r1'].accessed and all(a in ('frame_at', 'belief') for a in links['r1'].accessed)
+    for link in links.values():
+        link.accessed.clear()
+    trial.scheduler.trigger('r1', 'idle', at=1.3)
+    trial.snapshot(type('C', (), {'actor': 'r1', 'started_sim_s': 1.3})())
+    assert links['r1'].accessed and not links['r2'].accessed and not links['r3'].accessed
+
+
+# ---------------------------------------------------------------- pair status channel (all conditions)
+def _stub_links():
+    return {r: type('Stub', (), {'robot_id': r})() for r in zox.ROBOTS}
+
+
+def test_pair_status_channel_is_present_and_identical_in_all_four_conditions():
+    for scenario in (SCENARIO, load_scenario('s1_normal_mixed')):
+        configs = {}
+        for condition in CONDITIONS:
+            trial = zi.IntegratedTrial(scenario, condition=condition, seed=SEED, links=_stub_links(), horizon_s=10.)
+            configs[condition] = trial.pair_status.config_sha256()
+            cfg = trial.study_config()
+            assert 'pair_status' in cfg['inter_robot_channels']
+            assert cfg['inter_robot_channels'] == (['pair_status'] if condition == 'no_comm'
+                                                   else ['dialogue', 'pair_status'])
+        assert len(set(configs.values())) == 1, configs
+    s1 = zi.IntegratedTrial(load_scenario('s1_normal_mixed'), condition='no_comm', seed=SEED, links=_stub_links(),
+                            horizon_s=10.)
+    assert s1.pair_status.tasks == ['order-5']                     # the 2-robot long_beam order
+
+
+def test_pair_status_records_the_executor_wire_without_creating_a_second_bus():
+    from harness.zone_pair_status import PairStatusChannel, PairStatusEndpoint, FIELDS
+    channel = PairStatusChannel('task')
+    endpoint = PairStatusEndpoint(channel, 'r1')
+    endpoint.tick('aligning', 1.)
+    assert not channel.publish({'robot_id': 'r2', 'task_id': 'task', 'seq': 1, 'state': 'ready',
+                                'sent_at_s': 1., 'text': '좌표 1.2, 0.4'}, 1.)
+    records = lambda: [{'status_messages': channel.log}]
+    bus = zi.PairStatusBus({'orders': [{'order_id': 'order-5', 'required_robots': 2}]}, records)
+    assert bus.record()['messages'] == len(channel.log) > 0
+    assert all(set(row) == set(FIELDS) for row in channel.log)
+    assert bus.config()['participants'] == ['r1', 'r2']
+    assert not hasattr(bus, 'publish')  # only real executor endpoints can send
+
+
+def test_study_config_is_condition_invariant_apart_from_the_channel():
+    configs = {c: zi.IntegratedTrial(SCENARIO, condition=c, seed=SEED, links=_stub_links(), horizon_s=10.)
+               .study_config() for c in CONDITIONS}
+    invariant = {c: zi.condition_invariant_config(v) for c, v in configs.items()}
+    assert all(v == invariant['no_comm'] for v in invariant.values())
+    assert configs['leader_ko']['leader_id'] == 'r2' and all(configs[c]['leader_id'] is None
+                                                             for c in CONDITIONS if c != 'leader_ko')
+    assert configs['no_comm']['actor'] == zi.FIXTURE_ACTOR and configs['no_comm']['planned_model']['enabled'] is False
+
+
+@pytest.mark.parametrize('condition', CONDITIONS)
+def test_at_most_one_pending_own_reask_timer_per_robot(condition):
+    """Close calls (start + message wakes) must not start several perpetual re-ask chains."""
+    trial, result, _ = run(condition, horizon=200.)
+    for rid in zox.ROBOTS:
+        timers = [row['sim_s'] for row in trial.scheduler.events if row.get('kind') == 'timer' and row['actor'] == rid]
+        assert all(b - a >= trial.policy.idle_reask_s - 1e-9 for a, b in zip(timers, timers[1:])), (rid, timers)
+    assert trial.study_config()['reask_policy'] == zi.REASK_POLICY
+    assert any(counts['skipped'] for counts in trial.scheduler.reask_counts.values()) == (condition != 'no_comm')
+
+
+@pytest.mark.parametrize('condition', CONDITIONS)
+def test_fixture_uses_the_core_transport_ledger_and_roundtrips_its_accounting(condition, tmp_path):
+    from harness.zone_study_llm_transport import ModelCallTransport
+    from scripts.run_zone_study_integration import write_study
+
+    trial, result, _ = run(condition)
+    assert isinstance(trial.transport, ModelCallTransport)
+    assert trial.transport.send_ledger is trial.scheduler.send_ledger is trial.send_ledger
+    sent = sum(c['http_attempts'] for c in result.calls)
+    assert sent > 0 and sent == trial.wire.requests == trial.send_ledger.sends() == result.send_ledger['sent']
+    assert sum(result.send_ledger['calls'].values()) == sent
+    assert result.send_ledger['violations'] == 0
+    assert trial.scheduler.unsent_calls == []
+    summary = {'pose_provider': {'pose_provider': 'tags_temporary', 'note_ko': zi.TEMPORARY_NOTE_KO}}
+    write_study(tmp_path, trial, result, summary)
+    assert json.loads((tmp_path / 'study/send_ledger.json').read_text()) == trial.send_ledger.to_dict()
+    assert json.loads((tmp_path / 'study/trial_record.json').read_text())['send_ledger'] == result.send_ledger
+    assert summary['study']['reopen']['ok']

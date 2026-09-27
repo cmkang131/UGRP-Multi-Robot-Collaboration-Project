@@ -181,7 +181,25 @@ class RobotInputBoundaryTests(unittest.TestCase):
                 text = path.read_text(errors='ignore')
                 if any(n in text for n in needles):
                     hits.append(str(path.relative_to(ROOT)))
-        self.assertEqual(hits, [])
+        # The study integration runner orchestrates the world and the evaluator; it may name the profiles only
+        # to apply the evaluation camera and to write eval_only/ records (checked below).
+        orchestrators = {'scripts/run_zone_study_integration.py'}
+        self.assertEqual(sorted(set(hits) - orchestrators), [])
+        for rel in set(hits) & orchestrators:
+            self.assert_eval_only_uses(ROOT/rel)
+
+    def assert_eval_only_uses(self, path):
+        lines = path.read_text().splitlines()
+        in_eval_config = False
+        for line in lines:
+            if line.startswith('def '):
+                in_eval_config = line.startswith('def evaluation_top_config(')
+            if 'zone_eval_top' not in line:
+                continue
+            code = line.strip()
+            ok = (code.startswith('from sim import zone_eval_top') or in_eval_config
+                  or code.startswith(('self.eval_static = zone_eval_top.', "self.eval_only['top_camera'] = zone_eval_top.")))
+            self.assertTrue(ok, f'{path.name}: non-evaluation use of the TOP profiles: {code}')
 
     def test_module_itself_reads_no_robot_camera(self):
         text = (ROOT/'sim'/'zone_eval_top.py').read_text()
