@@ -1,0 +1,56 @@
+{
+ "tool": "fclones 0.35.0 (Homebrew bottle, MIT) group --min 4KiB --hash-fn sha256; dedupe --modified-before",
+ "plan": {
+  "groups_in": 10378,
+  "groups_planned": 9310,
+  "files_planned": 54386,
+  "redundant_bytes_planned": 1058782742,
+  "dropped": {
+   "hard_link": 3978,
+   "group_too_small": 1068,
+   "recent_file": 2635
+  },
+  "active_folders": [
+   "agent-locks",
+   "disk-cleanup-20260927",
+   "retired-worktrees/claude0927-claude-todo-dr-sim2real",
+   "retired-worktrees/claude0927-kiro-disk-rules",
+   "retired-worktrees/claude0927-kiro-eval-topcam",
+   "retired-worktrees/claude0927-kiro-m2-pair",
+   "retired-worktrees/claude0927-kiro-memory-literature",
+   "retired-worktrees/claude0927-kiro-pilot-records",
+   "retired-worktrees/claude0927-kiro-references-0926",
+   "retired-worktrees/claude0927-kiro-vision-loc-v3",
+   "retired-worktrees/claude0927-kiro-vision-loc-v3src",
+   "retired-worktrees/claude0927-zone-m1-owncam",
+   "zone-pair-dev-v3-4a17e7d47616056db85f35933327c6b63581853d"
+  ],
+  "open_files_under_outputs": 0,
+  "modified_before": "2026-09-27T15:14:34.228983+09:00"
+ },
+ "fclones_log_tail": "[2026-09-27 16:15:46.155] fclones:  info: Processed 45076 files and reclaimed up to 1058.8 MB space",
+ "fclones_log_errors": 0,
+ "df_before": {
+  "at": "2026-09-27 16:15:32",
+  "avail_gib": 109.03
+ },
+ "df_after": {
+  "at": "2026-09-27 16:15:46",
+  "avail_gib": 109.85
+ },
+ "df_gain_gib": 0.82,
+ "planned_redundant_gib": 0.99,
+ "verify": {
+  "files_checked": 54386,
+  "problems": 0,
+  "examples": [],
+  "seconds": 9.6,
+  "checked": "bytes, sha256 (hashlib), mode, mtime_ns"
+ },
+ "raw_sha256": {
+  "fclones-group.json": "5fbf685dfcbf2db9dfecd053f163f3334a7bd99452d779b97a089c5015a14677",
+  "dedupe-plan.json": "d21183bbf3f8791ec8959f68fb5c0f92a91b41d07f9c235906dc1d272c99190a",
+  "dedupe-manifest-before.tsv": "b3b1d2488f5584d9e192544561162d404fbd9bab729720836c998cbfc8325cad",
+  "fclones-dedupe.log": "a3c58c9a2a584fd78da2e3f295799338f62c0d587b1a129959576a4556a3f488"
+ }
+}
