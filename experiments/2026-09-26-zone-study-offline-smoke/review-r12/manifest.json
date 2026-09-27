@@ -1,0 +1,55 @@
+{
+  "schema": "ugrp.offline_review_fix.v1",
+  "base_head": "8544893ee6c5ce88e2c95d7d8e4ed90f127805e4",
+  "uncommitted": true,
+  "tests": {
+    "before_regressions_failed": 7,
+    "first_targeted_passed": 70,
+    "final_regression_passed": 241,
+    "completion_passed": 45,
+    "final_unique_passed": 286
+  },
+  "pytest_env": {
+    "OMP_NUM_THREADS": "1",
+    "basetemp": "./.pytest_tmp"
+  },
+  "pytest_temp_removed": true,
+  "network_model_calls": 0,
+  "physical_runs": 0,
+  "actual_budget_migrations": 0,
+  "production_paths": [
+    "harness/zone_pilot_budget.py",
+    "harness/zone_pilot_ledger.py",
+    "harness/zone_pilot_proxy_log.py",
+    "scripts/build_proxy_log_telemetry.py"
+  ],
+  "rgb_closure_intersection": [],
+  "pilot_identity_contains_all_changed_production_paths": true,
+  "changed_tracked_files_sha256": {
+    "docs/zone_study_pilot.md": "153562c7d7a89475ecbb3c3933629e0bf5a0f3c05fc843228d7eb8201a2cfd95",
+    "experiments/README.md": "f89d78454040044ad14a2c6474e3744afdea02ac9756d65f7c0d6337280d5a7e",
+    "harness/zone_pilot_budget.py": "9265bf452adda87dce890486df27983f149383a1c364dcdac9255517b07f6cd0",
+    "harness/zone_pilot_ledger.py": "721fec0d1edf3ae5f4ebbb745ad0e6841c53e7571d9939b7c7efe648e1377527",
+    "harness/zone_pilot_proxy_log.py": "f4ecf4560b5f5d8d817381d5b64233e20447511fa9e595d08b1d6502768d967f",
+    "scripts/build_proxy_log_telemetry.py": "74474bb6afce5778dc1b1f28084f4ede1aa3dd2ff75ee3f90e9e74f4511ef8f0",
+    "tests/test_zone_pilot_proxy_log.py": "884f2c954bd5d57ae4e7f5194003aa0388267b067519121ca7dcecb1be9102d7",
+    "tests/test_zone_pilot_source_migration.py": "3180c41ce9f79e0255e657d4af252f52512a1346aab4cb6d6771dbb108d0c7cc"
+  },
+  "artifacts_sha256": {
+    "README.md": "b5dea4d0c422e15f40a4a3a0c7d08a642f618b280cb522cc5aac534871f53e08",
+    "after-completion.txt": "7d13af1a0c101cc220ae0e33d75d37f281bad1b523f48683029d42202b1f1bf0",
+    "after-regression.txt": "b7e48fd162ad5eacb0da9fe6b94bf10ac3747220362723409277c8e53d6e3567",
+    "after-targeted.txt": "07b91c6cdb386760dcc52478cdc9cd5c0fc155f5160b0e8f4470e6d7461edc21",
+    "before.txt": "edce7a31d3a9d624994f252a428741c5abf09e0cf4f4d9b338a05403b7609779",
+    "preflight-01-readonly/000001-proxy-window.log": "c2accf6e5bea9f7e506ede0ffab2a76af24ac000095e15ec2e6b6567d26d16c3",
+    "preflight-01-readonly/manifest.json": "c152c85c373d44f6eeccdf78ea55baa1bb329a6aef511db7f91408bcd62d17e8",
+    "preflight-01-readonly/reconciliation.json": "aa9c7de2977db47f609902b4c7c52d834167d77169edb512074173853140c6bd",
+    "preflight-01-readonly/telemetry.jsonl": "e030a625d32b8b84be8cbc13ec68701a514701c0bc8b75f2d8f0e28778674937",
+    "verification.json": "7bbc94011b9a69b8548a4192a885ca94d5fdb826348c86e86285c2161bd7b5bd"
+  },
+  "checks": {
+    "git_diff_check": true,
+    "rgb_verify_current": true,
+    "rgb_registry_immutable_against_HEAD": true
+  }
+}

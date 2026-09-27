@@ -3,6 +3,20 @@
   "scope": "entry points; sim_cli does not silently launch models, hardware or training",
   "workflows": [
     {
+      "id": "zone-study-pilot",
+      "purpose": "구역 연구 실어댑터 파일럿: 기본 dry-run, 4조건 pre-flight와 공유 영속 예산",
+      "entry": "scripts/run_zone_study_pilot.py",
+      "docs": "docs/zone_study_pilot.md",
+      "requires": "real calls require --execute, existing --budget-file and verified proxy PID; rgb-standard-dispatch-v63 source pins; same-file source migration preserves all spending; cohort requires reconciled preflight and explicit upstream finish limitation acknowledgement",
+      "version": "1.2.0",
+      "runner": "scripts.run_zone_study_pilot",
+      "output_flag": "--output",
+      "side_effect": "model_calls",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [],
+      "output_kind": "directory"
+    },
+    {
       "id": "local",
       "purpose": "기본 창·설정·raw action·사용자 제어기",
       "entry": "scripts/sim_cli.py",
@@ -30,7 +44,7 @@
       "local_cli": "bash scripts/open_simulation.command dispatch --task 'beam과 box를 같은 dock으로 옮겨'",
       "docs": "docs/research_dispatch_arena.md",
       "requires": "model endpoint, full grasp model and stage policies; costs depend on planner",
-      "version": "1.61.0",
+      "version": "1.63.0",
       "runner": "scripts.sim_cli",
       "output_flag": "--output",
       "side_effect": "model_calls",
@@ -44,7 +58,7 @@
       "entry": "scripts/run_dispatch_skills.py",
       "docs": "docs/research_dispatch_arena.md",
       "requires": "saved agreement and complete grasp/stage policy artifacts",
-      "version": "1.61.0",
+      "version": "1.63.0",
       "runner": "scripts.run_dispatch_e2e",
       "output_flag": "--output",
       "side_effect": "local_simulation",

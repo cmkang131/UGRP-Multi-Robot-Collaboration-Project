@@ -1,0 +1,466 @@
+FFFFFF                                                                   [100%]
+=================================== FAILURES ===================================
+____________ test_cli_starts_after_settlement[synthetic-preflight] _____________
+
+cli_history = (<harness.zone_pilot_budget.PilotBudget object at 0x10bcc7ef0>, PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study...', 'finish_reason_source': 'proxy_response', 'json_fence_removed': False, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10bced160>
+stage = 'preflight'
+
+    @pytest.mark.parametrize('stage', ['preflight', 'cohort', 'migrated_preflight'])
+    def test_cli_starts_after_settlement(cli_history, tmp_path, monkeypatch, stage):
+        budget, telemetry, preflight = cli_history
+        before = budget.snapshot()
+        receipt = budget.settle_reconciled(**review(tmp_path, budget, telemetry))
+        settled = budget.snapshot()
+        assert receipt['eligible'] and receipt['audits']
+        assert settled['sends'] == before['sends'] and settled['runs'] == before['runs']
+        assert settled['meta'] == before['meta'] and settled['source_migrations'] == before['source_migrations']
+        assert state_sha256(settled) != state_sha256(before)
+        assert receipt['after_state_sha256'] == state_sha256(settled)
+    
+        if stage == 'migrated_preflight':
+            identity = {**budget.meta['identity'], 'source_head': 'offline-r14-reviewed-source',
+                        'rgb_execution_bundle': budget.meta['identity'].get(
+                            'rgb_execution_bundle', {'id': 'offline-fixture', 'sha256': 'fixture'})}
+            budget.migrate_source(identity, reason='offline R14 continuation test',
+                                  expected_identity_sha256=sha(canonical(budget.meta['identity']).encode()),
+                                  expected_state_sha256=state_sha256(settled))
+            budget = type(budget)(budget.path, identity=identity)
+            with pytest.raises(ValueError, match='new four-condition preflight'):
+                require_preflight(budget.snapshot(), {'complete': True}, preflight)
+            stage = 'preflight'
+    
+        monkeypatch.setattr(runner, 'proxy_profile', lambda *a: PROFILE)
+        monkeypatch.setattr(runner, 'source_identity', lambda *a: budget.meta['identity'])
+        monkeypatch.setattr(runner, 'require_committed_source', lambda *a: None)
+        monkeypatch.setattr(runner, 'runtime_identity', lambda *a: {'pid': 0, 'offline_injection': True})
+    
+        def ledger(**kwargs):
+            kwargs['wire'] = fixture_wire(kwargs['context']['condition'], 'stop')
+            return PilotSendLedger(**kwargs)
+    
+        monkeypatch.setattr(runner, 'PilotSendLedger', ledger)
+        out = tmp_path / ('after-settlement-' + stage)
+        cli = ['--execute', '--acknowledge-upstream-finish-limitation', '--stage', stage,
+               '--budget-file', str(budget.path), '--upstream-telemetry', str(telemetry), '--output', str(out)]
+        if stage == 'cohort':
+            path = tmp_path / 'preflight-manifest.json'
+            runner.write_new(path, preflight)
+            cli += ['--preflight-manifest', str(path)]
+        # All calls use a fixture wire. New synthetic sends intentionally lack
+        # upstream evidence, so the existing reconciliation gate still returns 2.
+>       assert runner.main(cli) == 2
+               ^^^^^^^^^^^^^^^^
+
+tests/test_zone_pilot_settlement.py:441: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/run_zone_study_pilot.py:405: in main
+    budget.start_run(run_id, args.stage, {'output': str(out)},
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.zone_pilot_budget.PilotBudget object at 0x10c06b8f0>
+run_id = 'after-settlement-preflight', stage = 'preflight'
+record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme0/after-settlement-preflight'}
+expected_state = '48a0f836014e1712e7d1b41213b01d3e7d59cd2f2e20e495565fed693f7fa3e1'
+
+    def start_run(self, run_id, stage, record, *, expected_state=None):
+        with self._connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
+            runs = [json.loads(r[0]) for r in db.execute('SELECT record FROM runs ORDER BY rowid')]
+            if expected_state is not None and expected_state != state_sha256(self._snapshot(db)):
+>               raise RuntimeError('pilot state changed since reconciliation; retry preflight checks')
+E               RuntimeError: pilot state changed since reconciliation; retry preflight checks
+
+harness/zone_pilot_budget.py:303: RuntimeError
+---------------------------- Captured stdout setup -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+______________ test_cli_starts_after_settlement[synthetic-cohort] ______________
+
+cli_history = (<harness.zone_pilot_budget.PilotBudget object at 0x10c065ee0>, PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study...', 'finish_reason_source': 'proxy_response', 'json_fence_removed': False, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10bced310>
+stage = 'cohort'
+
+    @pytest.mark.parametrize('stage', ['preflight', 'cohort', 'migrated_preflight'])
+    def test_cli_starts_after_settlement(cli_history, tmp_path, monkeypatch, stage):
+        budget, telemetry, preflight = cli_history
+        before = budget.snapshot()
+        receipt = budget.settle_reconciled(**review(tmp_path, budget, telemetry))
+        settled = budget.snapshot()
+        assert receipt['eligible'] and receipt['audits']
+        assert settled['sends'] == before['sends'] and settled['runs'] == before['runs']
+        assert settled['meta'] == before['meta'] and settled['source_migrations'] == before['source_migrations']
+        assert state_sha256(settled) != state_sha256(before)
+        assert receipt['after_state_sha256'] == state_sha256(settled)
+    
+        if stage == 'migrated_preflight':
+            identity = {**budget.meta['identity'], 'source_head': 'offline-r14-reviewed-source',
+                        'rgb_execution_bundle': budget.meta['identity'].get(
+                            'rgb_execution_bundle', {'id': 'offline-fixture', 'sha256': 'fixture'})}
+            budget.migrate_source(identity, reason='offline R14 continuation test',
+                                  expected_identity_sha256=sha(canonical(budget.meta['identity']).encode()),
+                                  expected_state_sha256=state_sha256(settled))
+            budget = type(budget)(budget.path, identity=identity)
+            with pytest.raises(ValueError, match='new four-condition preflight'):
+                require_preflight(budget.snapshot(), {'complete': True}, preflight)
+            stage = 'preflight'
+    
+        monkeypatch.setattr(runner, 'proxy_profile', lambda *a: PROFILE)
+        monkeypatch.setattr(runner, 'source_identity', lambda *a: budget.meta['identity'])
+        monkeypatch.setattr(runner, 'require_committed_source', lambda *a: None)
+        monkeypatch.setattr(runner, 'runtime_identity', lambda *a: {'pid': 0, 'offline_injection': True})
+    
+        def ledger(**kwargs):
+            kwargs['wire'] = fixture_wire(kwargs['context']['condition'], 'stop')
+            return PilotSendLedger(**kwargs)
+    
+        monkeypatch.setattr(runner, 'PilotSendLedger', ledger)
+        out = tmp_path / ('after-settlement-' + stage)
+        cli = ['--execute', '--acknowledge-upstream-finish-limitation', '--stage', stage,
+               '--budget-file', str(budget.path), '--upstream-telemetry', str(telemetry), '--output', str(out)]
+        if stage == 'cohort':
+            path = tmp_path / 'preflight-manifest.json'
+            runner.write_new(path, preflight)
+            cli += ['--preflight-manifest', str(path)]
+        # All calls use a fixture wire. New synthetic sends intentionally lack
+        # upstream evidence, so the existing reconciliation gate still returns 2.
+>       assert runner.main(cli) == 2
+               ^^^^^^^^^^^^^^^^
+
+tests/test_zone_pilot_settlement.py:441: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/run_zone_study_pilot.py:405: in main
+    budget.start_run(run_id, args.stage, {'output': str(out)},
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.zone_pilot_budget.PilotBudget object at 0x10c16c4d0>
+run_id = 'after-settlement-cohort', stage = 'cohort'
+record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme1/after-settlement-cohort'}
+expected_state = '63e4b4dfc7ccc2acaeed5c6d60c884ed68927cd5f593942d1d6ff412675dbcb5'
+
+    def start_run(self, run_id, stage, record, *, expected_state=None):
+        with self._connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
+            runs = [json.loads(r[0]) for r in db.execute('SELECT record FROM runs ORDER BY rowid')]
+            if expected_state is not None and expected_state != state_sha256(self._snapshot(db)):
+>               raise RuntimeError('pilot state changed since reconciliation; retry preflight checks')
+E               RuntimeError: pilot state changed since reconciliation; retry preflight checks
+
+harness/zone_pilot_budget.py:303: RuntimeError
+---------------------------- Captured stdout setup -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme1/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+________ test_cli_starts_after_settlement[synthetic-migrated_preflight] ________
+
+cli_history = (<harness.zone_pilot_budget.PilotBudget object at 0x10c1b9ac0>, PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study...', 'finish_reason_source': 'proxy_response', 'json_fence_removed': False, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10c1b9a00>
+stage = 'preflight'
+
+    @pytest.mark.parametrize('stage', ['preflight', 'cohort', 'migrated_preflight'])
+    def test_cli_starts_after_settlement(cli_history, tmp_path, monkeypatch, stage):
+        budget, telemetry, preflight = cli_history
+        before = budget.snapshot()
+        receipt = budget.settle_reconciled(**review(tmp_path, budget, telemetry))
+        settled = budget.snapshot()
+        assert receipt['eligible'] and receipt['audits']
+        assert settled['sends'] == before['sends'] and settled['runs'] == before['runs']
+        assert settled['meta'] == before['meta'] and settled['source_migrations'] == before['source_migrations']
+        assert state_sha256(settled) != state_sha256(before)
+        assert receipt['after_state_sha256'] == state_sha256(settled)
+    
+        if stage == 'migrated_preflight':
+            identity = {**budget.meta['identity'], 'source_head': 'offline-r14-reviewed-source',
+                        'rgb_execution_bundle': budget.meta['identity'].get(
+                            'rgb_execution_bundle', {'id': 'offline-fixture', 'sha256': 'fixture'})}
+            budget.migrate_source(identity, reason='offline R14 continuation test',
+                                  expected_identity_sha256=sha(canonical(budget.meta['identity']).encode()),
+                                  expected_state_sha256=state_sha256(settled))
+            budget = type(budget)(budget.path, identity=identity)
+            with pytest.raises(ValueError, match='new four-condition preflight'):
+                require_preflight(budget.snapshot(), {'complete': True}, preflight)
+            stage = 'preflight'
+    
+        monkeypatch.setattr(runner, 'proxy_profile', lambda *a: PROFILE)
+        monkeypatch.setattr(runner, 'source_identity', lambda *a: budget.meta['identity'])
+        monkeypatch.setattr(runner, 'require_committed_source', lambda *a: None)
+        monkeypatch.setattr(runner, 'runtime_identity', lambda *a: {'pid': 0, 'offline_injection': True})
+    
+        def ledger(**kwargs):
+            kwargs['wire'] = fixture_wire(kwargs['context']['condition'], 'stop')
+            return PilotSendLedger(**kwargs)
+    
+        monkeypatch.setattr(runner, 'PilotSendLedger', ledger)
+        out = tmp_path / ('after-settlement-' + stage)
+        cli = ['--execute', '--acknowledge-upstream-finish-limitation', '--stage', stage,
+               '--budget-file', str(budget.path), '--upstream-telemetry', str(telemetry), '--output', str(out)]
+        if stage == 'cohort':
+            path = tmp_path / 'preflight-manifest.json'
+            runner.write_new(path, preflight)
+            cli += ['--preflight-manifest', str(path)]
+        # All calls use a fixture wire. New synthetic sends intentionally lack
+        # upstream evidence, so the existing reconciliation gate still returns 2.
+>       assert runner.main(cli) == 2
+               ^^^^^^^^^^^^^^^^
+
+tests/test_zone_pilot_settlement.py:441: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/run_zone_study_pilot.py:405: in main
+    budget.start_run(run_id, args.stage, {'output': str(out)},
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.zone_pilot_budget.PilotBudget object at 0x10c268c20>
+run_id = 'after-settlement-preflight', stage = 'preflight'
+record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme2/after-settlement-preflight'}
+expected_state = 'e78392520b06039190a38cf4bcf51f922191dcc6aa2b1702487dfab76bc68c32'
+
+    def start_run(self, run_id, stage, record, *, expected_state=None):
+        with self._connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
+            runs = [json.loads(r[0]) for r in db.execute('SELECT record FROM runs ORDER BY rowid')]
+            if expected_state is not None and expected_state != state_sha256(self._snapshot(db)):
+>               raise RuntimeError('pilot state changed since reconciliation; retry preflight checks')
+E               RuntimeError: pilot state changed since reconciliation; retry preflight checks
+
+harness/zone_pilot_budget.py:303: RuntimeError
+---------------------------- Captured stdout setup -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme2/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+___________ test_cli_starts_after_settlement[real_memory-preflight] ____________
+
+cli_history = (<test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c154bf0>, PosixPath('/Users/changmin/proj...p', 'finish_reason_source': 'proxy_response', 'json_fence_removed': True, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10c154da0>
+stage = 'preflight'
+
+    @pytest.mark.parametrize('stage', ['preflight', 'cohort', 'migrated_preflight'])
+    def test_cli_starts_after_settlement(cli_history, tmp_path, monkeypatch, stage):
+        budget, telemetry, preflight = cli_history
+        before = budget.snapshot()
+        receipt = budget.settle_reconciled(**review(tmp_path, budget, telemetry))
+        settled = budget.snapshot()
+        assert receipt['eligible'] and receipt['audits']
+        assert settled['sends'] == before['sends'] and settled['runs'] == before['runs']
+        assert settled['meta'] == before['meta'] and settled['source_migrations'] == before['source_migrations']
+        assert state_sha256(settled) != state_sha256(before)
+        assert receipt['after_state_sha256'] == state_sha256(settled)
+    
+        if stage == 'migrated_preflight':
+            identity = {**budget.meta['identity'], 'source_head': 'offline-r14-reviewed-source',
+                        'rgb_execution_bundle': budget.meta['identity'].get(
+                            'rgb_execution_bundle', {'id': 'offline-fixture', 'sha256': 'fixture'})}
+            budget.migrate_source(identity, reason='offline R14 continuation test',
+                                  expected_identity_sha256=sha(canonical(budget.meta['identity']).encode()),
+                                  expected_state_sha256=state_sha256(settled))
+            budget = type(budget)(budget.path, identity=identity)
+            with pytest.raises(ValueError, match='new four-condition preflight'):
+                require_preflight(budget.snapshot(), {'complete': True}, preflight)
+            stage = 'preflight'
+    
+        monkeypatch.setattr(runner, 'proxy_profile', lambda *a: PROFILE)
+        monkeypatch.setattr(runner, 'source_identity', lambda *a: budget.meta['identity'])
+        monkeypatch.setattr(runner, 'require_committed_source', lambda *a: None)
+        monkeypatch.setattr(runner, 'runtime_identity', lambda *a: {'pid': 0, 'offline_injection': True})
+    
+        def ledger(**kwargs):
+            kwargs['wire'] = fixture_wire(kwargs['context']['condition'], 'stop')
+            return PilotSendLedger(**kwargs)
+    
+        monkeypatch.setattr(runner, 'PilotSendLedger', ledger)
+        out = tmp_path / ('after-settlement-' + stage)
+        cli = ['--execute', '--acknowledge-upstream-finish-limitation', '--stage', stage,
+               '--budget-file', str(budget.path), '--upstream-telemetry', str(telemetry), '--output', str(out)]
+        if stage == 'cohort':
+            path = tmp_path / 'preflight-manifest.json'
+            runner.write_new(path, preflight)
+            cli += ['--preflight-manifest', str(path)]
+        # All calls use a fixture wire. New synthetic sends intentionally lack
+        # upstream evidence, so the existing reconciliation gate still returns 2.
+>       assert runner.main(cli) == 2
+               ^^^^^^^^^^^^^^^^
+
+tests/test_zone_pilot_settlement.py:441: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/run_zone_study_pilot.py:405: in main
+    budget.start_run(run_id, args.stage, {'output': str(out)},
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c41bd40>
+run_id = 'after-settlement-preflight', stage = 'preflight'
+record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme3/after-settlement-preflight'}
+expected_state = '64a05562984e6891c9b1d8aca3e5ebba52fee0ffe89cf291f3c81deb1ccfc2c7'
+
+    def start_run(self, run_id, stage, record, *, expected_state=None):
+        with self._connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
+            runs = [json.loads(r[0]) for r in db.execute('SELECT record FROM runs ORDER BY rowid')]
+            if expected_state is not None and expected_state != state_sha256(self._snapshot(db)):
+>               raise RuntimeError('pilot state changed since reconciliation; retry preflight checks')
+E               RuntimeError: pilot state changed since reconciliation; retry preflight checks
+
+harness/zone_pilot_budget.py:303: RuntimeError
+--------------------------- Captured stdout teardown ---------------------------
+{"original_files_verified":65,"real_database_unchanged":{"bytes":229376,"mtime_ns":1790483471841786931,"sha256":"cc23aa281f44b7989627dd2059ea00b868b43bfec2d59c12cda0cf9042145158"}}
+_____________ test_cli_starts_after_settlement[real_memory-cohort] _____________
+
+cli_history = (<test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c1c86e0>, PosixPath('/Users/changmin/proj...p', 'finish_reason_source': 'proxy_response', 'json_fence_removed': True, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10c16fda0>
+stage = 'cohort'
+
+    @pytest.mark.parametrize('stage', ['preflight', 'cohort', 'migrated_preflight'])
+    def test_cli_starts_after_settlement(cli_history, tmp_path, monkeypatch, stage):
+        budget, telemetry, preflight = cli_history
+        before = budget.snapshot()
+        receipt = budget.settle_reconciled(**review(tmp_path, budget, telemetry))
+        settled = budget.snapshot()
+        assert receipt['eligible'] and receipt['audits']
+        assert settled['sends'] == before['sends'] and settled['runs'] == before['runs']
+        assert settled['meta'] == before['meta'] and settled['source_migrations'] == before['source_migrations']
+        assert state_sha256(settled) != state_sha256(before)
+        assert receipt['after_state_sha256'] == state_sha256(settled)
+    
+        if stage == 'migrated_preflight':
+            identity = {**budget.meta['identity'], 'source_head': 'offline-r14-reviewed-source',
+                        'rgb_execution_bundle': budget.meta['identity'].get(
+                            'rgb_execution_bundle', {'id': 'offline-fixture', 'sha256': 'fixture'})}
+            budget.migrate_source(identity, reason='offline R14 continuation test',
+                                  expected_identity_sha256=sha(canonical(budget.meta['identity']).encode()),
+                                  expected_state_sha256=state_sha256(settled))
+            budget = type(budget)(budget.path, identity=identity)
+            with pytest.raises(ValueError, match='new four-condition preflight'):
+                require_preflight(budget.snapshot(), {'complete': True}, preflight)
+            stage = 'preflight'
+    
+        monkeypatch.setattr(runner, 'proxy_profile', lambda *a: PROFILE)
+        monkeypatch.setattr(runner, 'source_identity', lambda *a: budget.meta['identity'])
+        monkeypatch.setattr(runner, 'require_committed_source', lambda *a: None)
+        monkeypatch.setattr(runner, 'runtime_identity', lambda *a: {'pid': 0, 'offline_injection': True})
+    
+        def ledger(**kwargs):
+            kwargs['wire'] = fixture_wire(kwargs['context']['condition'], 'stop')
+            return PilotSendLedger(**kwargs)
+    
+        monkeypatch.setattr(runner, 'PilotSendLedger', ledger)
+        out = tmp_path / ('after-settlement-' + stage)
+        cli = ['--execute', '--acknowledge-upstream-finish-limitation', '--stage', stage,
+               '--budget-file', str(budget.path), '--upstream-telemetry', str(telemetry), '--output', str(out)]
+        if stage == 'cohort':
+            path = tmp_path / 'preflight-manifest.json'
+            runner.write_new(path, preflight)
+            cli += ['--preflight-manifest', str(path)]
+        # All calls use a fixture wire. New synthetic sends intentionally lack
+        # upstream evidence, so the existing reconciliation gate still returns 2.
+>       assert runner.main(cli) == 2
+               ^^^^^^^^^^^^^^^^
+
+tests/test_zone_pilot_settlement.py:441: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/run_zone_study_pilot.py:405: in main
+    budget.start_run(run_id, args.stage, {'output': str(out)},
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10cc018e0>
+run_id = 'after-settlement-cohort', stage = 'cohort'
+record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme4/after-settlement-cohort'}
+expected_state = '64a05562984e6891c9b1d8aca3e5ebba52fee0ffe89cf291f3c81deb1ccfc2c7'
+
+    def start_run(self, run_id, stage, record, *, expected_state=None):
+        with self._connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
+            runs = [json.loads(r[0]) for r in db.execute('SELECT record FROM runs ORDER BY rowid')]
+            if expected_state is not None and expected_state != state_sha256(self._snapshot(db)):
+>               raise RuntimeError('pilot state changed since reconciliation; retry preflight checks')
+E               RuntimeError: pilot state changed since reconciliation; retry preflight checks
+
+harness/zone_pilot_budget.py:303: RuntimeError
+--------------------------- Captured stdout teardown ---------------------------
+{"original_files_verified":65,"real_database_unchanged":{"bytes":229376,"mtime_ns":1790483471841786931,"sha256":"cc23aa281f44b7989627dd2059ea00b868b43bfec2d59c12cda0cf9042145158"}}
+_______ test_cli_starts_after_settlement[real_memory-migrated_preflight] _______
+
+cli_history = (<test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c2e3ad0>, PosixPath('/Users/changmin/proj...p', 'finish_reason_source': 'proxy_response', 'json_fence_removed': True, 'normal_completion': True, ...}, ...}], ...})
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10c2e3bf0>
+stage = 'preflight'
+
+    @pytest.mark.parametrize('stage', ['preflight', 'cohort', 'migrated_preflight'])
+    def test_cli_starts_after_settlement(cli_history, tmp_path, monkeypatch, stage):
+        budget, telemetry, preflight = cli_history
+        before = budget.snapshot()
+        receipt = budget.settle_reconciled(**review(tmp_path, budget, telemetry))
+        settled = budget.snapshot()
+        assert receipt['eligible'] and receipt['audits']
+        assert settled['sends'] == before['sends'] and settled['runs'] == before['runs']
+        assert settled['meta'] == before['meta'] and settled['source_migrations'] == before['source_migrations']
+        assert state_sha256(settled) != state_sha256(before)
+        assert receipt['after_state_sha256'] == state_sha256(settled)
+    
+        if stage == 'migrated_preflight':
+            identity = {**budget.meta['identity'], 'source_head': 'offline-r14-reviewed-source',
+                        'rgb_execution_bundle': budget.meta['identity'].get(
+                            'rgb_execution_bundle', {'id': 'offline-fixture', 'sha256': 'fixture'})}
+            budget.migrate_source(identity, reason='offline R14 continuation test',
+                                  expected_identity_sha256=sha(canonical(budget.meta['identity']).encode()),
+                                  expected_state_sha256=state_sha256(settled))
+            budget = type(budget)(budget.path, identity=identity)
+            with pytest.raises(ValueError, match='new four-condition preflight'):
+                require_preflight(budget.snapshot(), {'complete': True}, preflight)
+            stage = 'preflight'
+    
+        monkeypatch.setattr(runner, 'proxy_profile', lambda *a: PROFILE)
+        monkeypatch.setattr(runner, 'source_identity', lambda *a: budget.meta['identity'])
+        monkeypatch.setattr(runner, 'require_committed_source', lambda *a: None)
+        monkeypatch.setattr(runner, 'runtime_identity', lambda *a: {'pid': 0, 'offline_injection': True})
+    
+        def ledger(**kwargs):
+            kwargs['wire'] = fixture_wire(kwargs['context']['condition'], 'stop')
+            return PilotSendLedger(**kwargs)
+    
+        monkeypatch.setattr(runner, 'PilotSendLedger', ledger)
+        out = tmp_path / ('after-settlement-' + stage)
+        cli = ['--execute', '--acknowledge-upstream-finish-limitation', '--stage', stage,
+               '--budget-file', str(budget.path), '--upstream-telemetry', str(telemetry), '--output', str(out)]
+        if stage == 'cohort':
+            path = tmp_path / 'preflight-manifest.json'
+            runner.write_new(path, preflight)
+            cli += ['--preflight-manifest', str(path)]
+        # All calls use a fixture wire. New synthetic sends intentionally lack
+        # upstream evidence, so the existing reconciliation gate still returns 2.
+>       assert runner.main(cli) == 2
+               ^^^^^^^^^^^^^^^^
+
+tests/test_zone_pilot_settlement.py:441: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/run_zone_study_pilot.py:405: in main
+    budget.start_run(run_id, args.stage, {'output': str(out)},
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <test_zone_pilot_settlement.cli_history.<locals>.MemoryBudget object at 0x10c154ce0>
+run_id = 'after-settlement-preflight', stage = 'preflight'
+record = {'output': '/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme5/after-settlement-preflight'}
+expected_state = '64a05562984e6891c9b1d8aca3e5ebba52fee0ffe89cf291f3c81deb1ccfc2c7'
+
+    def start_run(self, run_id, stage, record, *, expected_state=None):
+        with self._connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
+            runs = [json.loads(r[0]) for r in db.execute('SELECT record FROM runs ORDER BY rowid')]
+            if expected_state is not None and expected_state != state_sha256(self._snapshot(db)):
+>               raise RuntimeError('pilot state changed since reconciliation; retry preflight checks')
+E               RuntimeError: pilot state changed since reconciliation; retry preflight checks
+
+harness/zone_pilot_budget.py:303: RuntimeError
+--------------------------- Captured stdout teardown ---------------------------
+{"original_files_verified":65,"real_database_unchanged":{"bytes":229376,"mtime_ns":1790483471841786931,"sha256":"cc23aa281f44b7989627dd2059ea00b868b43bfec2d59c12cda0cf9042145158"}}
+=========================== short test summary info ============================
+FAILED tests/test_zone_pilot_settlement.py::test_cli_starts_after_settlement[synthetic-preflight]
+FAILED tests/test_zone_pilot_settlement.py::test_cli_starts_after_settlement[synthetic-cohort]
+FAILED tests/test_zone_pilot_settlement.py::test_cli_starts_after_settlement[synthetic-migrated_preflight]
+FAILED tests/test_zone_pilot_settlement.py::test_cli_starts_after_settlement[real_memory-preflight]
+FAILED tests/test_zone_pilot_settlement.py::test_cli_starts_after_settlement[real_memory-cohort]
+FAILED tests/test_zone_pilot_settlement.py::test_cli_starts_after_settlement[real_memory-migrated_preflight]
+6 failed, 35 deselected in 159.25s (0:02:39)
