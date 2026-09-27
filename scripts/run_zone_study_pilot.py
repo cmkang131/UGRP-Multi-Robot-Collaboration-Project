@@ -254,7 +254,12 @@ def main(argv=None):
     parser.add_argument('--migrate-source', action='store_true', help='audit and reseal the SAME budget; no calls/refunds')
     parser.add_argument('--migration-reason')
     parser.add_argument('--from-identity-sha256', help='reviewed old source hash from --reconcile-only')
-    parser.add_argument('--expected-state-sha256', help='reviewed sends/runs hash from --reconcile-only')
+    parser.add_argument('--expected-state-sha256', help='reviewed state hash from --reconcile-only')
+    parser.add_argument('--settle-reconciled', action='store_true', help='explicit audited budget settlement; no calls')
+    parser.add_argument('--dry-run', action='store_true', help='with --settle-reconciled: plan only, no DB writes')
+    parser.add_argument('--reconciliation-report', type=Path)
+    parser.add_argument('--expected-report-sha256')
+    parser.add_argument('--reservation-id', action='append', help='settle only these sends; ineligible IDs are errors')
     parser.add_argument('--stage', choices=('preflight', 'cohort'), default='preflight')
     parser.add_argument('--scenario', default=scenario_ids()[0], choices=scenario_ids())
     parser.add_argument('--seed', type=int, default=11)
@@ -269,20 +274,47 @@ def main(argv=None):
     parser.add_argument('--reconcile-only', action='store_true')
     parser.add_argument('--recover-run', help='with --reconcile-only: close an interrupted driver after terminal evidence')
     args = parser.parse_args(argv)
-    if sum((args.execute, args.init_budget, args.reconcile_only, args.migrate_source)) > 1:
-        parser.error('--execute, --init-budget, --reconcile-only and --migrate-source are mutually exclusive')
+    if sum((args.execute, args.init_budget, args.reconcile_only, args.migrate_source, args.settle_reconciled)) > 1:
+        parser.error('execute/init/reconcile/migrate/settle modes are mutually exclusive')
     migration_options = (args.migration_reason, args.from_identity_sha256, args.expected_state_sha256)
     if args.migrate_source and (not all(migration_options) or args.stage != 'preflight'):
         parser.error('--migrate-source requires reason, both reviewed hashes and stage preflight')
-    if any(migration_options) and not args.migrate_source:
+    if (args.migration_reason or args.from_identity_sha256) and not args.migrate_source:
         parser.error('migration options require --migrate-source')
+    if args.expected_state_sha256 and not (args.migrate_source or args.settle_reconciled):
+        parser.error('--expected-state-sha256 requires migration or settlement')
+    if args.settle_reconciled and not all((args.reconciliation_report, args.expected_report_sha256,
+                                         args.expected_state_sha256, args.upstream_telemetry)):
+        parser.error('--settle-reconciled requires report, telemetry and both reviewed hashes')
+    if any((args.dry_run, args.reconciliation_report, args.expected_report_sha256, args.reservation_id)) and not args.settle_reconciled:
+        parser.error('settlement options require --settle-reconciled')
     if args.recover_run and not args.reconcile_only:
         parser.error('--recover-run requires --reconcile-only')
-    if (args.execute or args.init_budget or args.reconcile_only or args.migrate_source) and args.budget_file is None:
+    if (args.execute or args.init_budget or args.reconcile_only or args.migrate_source or args.settle_reconciled) and args.budget_file is None:
         parser.error('an explicit persistent --budget-file is required')
     out = args.output.resolve()
     if out.exists():
         parser.error('--output must be a new directory (frozen records are never overwritten)')
+    if args.settle_reconciled:
+        budget = PilotBudget(args.budget_file)
+        proposal = {'budget_file': str(budget.path), 'report_path': str(args.reconciliation_report),
+                    'telemetry_path': str(args.upstream_telemetry),
+                    'expected_report_sha256': args.expected_report_sha256,
+                    'expected_state_sha256': args.expected_state_sha256,
+                    'dry_run': args.dry_run, 'reservation_ids': args.reservation_id}
+        write_new(out / 'settlement-proposal.json', proposal)
+        receipt = budget.settle_reconciled(**{k: v for k, v in proposal.items() if k != 'budget_file'})
+        # A receipt write failure cannot undo the transaction: audits remain
+        # recoverable through --reconcile-only, with their hashes and debits.
+        after = budget.snapshot()
+        if any(row not in after['budget_settlements'] for row in receipt['audits']):
+            raise RuntimeError('committed budget settlement read-back mismatch')
+        write_new(out / 'budget-settlement.json', receipt)
+        print(json.dumps({'dry_run': args.dry_run, 'eligible': len(receipt['eligible']),
+                          'skipped': len(receipt['skipped']), 'before': receipt['before'],
+                          'after': receipt['after'], 'network_calls': 0,
+                          'audit': str(out / 'budget-settlement.json')}))
+        return 0
     telemetry = [] if args.upstream_telemetry is None else [
         json.loads(line) for line in args.upstream_telemetry.read_text().splitlines() if line.strip()]
     if args.reconcile_only:
@@ -403,7 +435,10 @@ def main(argv=None):
     finally:
         after = budget.snapshot()
         run['global_budget'] = {'reserved_attempts': after['reserved_attempts'],
-                                'reserved_tokens': after['reserved_tokens'], 'refunds': 0}
+                                'reserved_tokens': after['reserved_tokens'],
+                                'charged_attempts': after['charged_attempts'],
+                                'charged_tokens': after['charged_tokens'],
+                                'budget_settlement_count': len(after['budget_settlements']), 'refunds': 0}
         run['call_links'] = [s for s in after['sends'] if s['run_id'] == run_id]
         run['accepted_upstream_unverified_calls'] = sum(
             t['accepted_upstream_unverified_calls'] for t in run['trials'])

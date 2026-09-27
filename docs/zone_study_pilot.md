@@ -1,4 +1,4 @@
-# 구역 연구 실어댑터 파일럿 (PR 194, R8–R10)
+# 구역 연구 실어댑터 파일럿 (PR 194, R8–R12 및 #222 예산 정산)
 
 이 경로는 저장된 자기 wrist RGB·정적 지도·자기 발행 명령 이력으로 실제
 `GeminiProxyCompleter`/프로토콜/SIM 스케줄러의 연결을 검사한다. 물리를 실행하지
@@ -20,7 +20,8 @@
   한 POST 직전에 `BEGIN IMMEDIATE`로 **최대 upstream 2 attempts**와
   **2 × (입력 바이트 상한 + 이미지 상한 + 실효 출력/추론 8192)**를 영속 예약한다.
   파일 전체 상한은 **600 attempts / 5,000,000 tokens**다.
-  연결 실패·timeout·사용량 미상·알려진 사용량 모두 **환불하지 않는다**.
+  연결 실패·timeout·사용량 미상·실패 호출은 **환불하지 않는다**. 정상 호출도 자동으로
+  환불하지 않으며, 아래 명시적 `--settle-reconciled` 명령만 검증된 차액을 반환한다.
   따라서 600번의 proxy POST를 허용한다는 뜻이 아니며, 토큰 상한이 먼저 걸릴 수 있다.
 - 텍스트 상한은 실제 전송 JSON의 UTF-8 바이트 수 + 1024다(base64까지 포함하는 과대 예약).
   이미지는 JPEG 1–2장, 각각 1024×1024 이하만 허용하고 장당 65,536토큰
@@ -33,6 +34,81 @@
 - SIM 비교용 입력은 기존 고정 프롬프트 보정, 출력은 **실제 응답 문자열의 고정 로컬 tokenizer**다.
   fixture 전용 `40 + 30 × 발화 수`는 실응답에 사용하지 않는다.
   제공자 usage·upstream 상한·SIM 비용은 서로 다른 필드다.
+
+## 명시적 예산 정산 (#222, 2026-09-27)
+
+[코디네이터 결정](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/222#issuecomment-5852643473)에
+따라 **send별 대조 완료 + exact usage + 정상 호출**만 실제 사용량으로 정산한다.
+`--reconcile-only`, telemetry 추출, 응답 저장, 실행/재개는 자동으로 예약을 반환하지 않는다.
+예약 상한은 **600 attempts / 5,000,000 tokens** 그대로다.
+
+- 정상 여부는 SQLite의 `response_received`와 completion뿐 아니라 원래 run manifest의
+  해시에 연결된 trial의 `status=ok`, `usage_known=true`, `usage_bound=exact`까지 확인한다.
+  wire가 정상이어도 이후 프로토콜 파싱에 실패했으면 정산하지 않는다. 실패·late·unknown·
+  usage 누락·해시 불일치·미대조는 전액 유지한다. 새 파서로 과거 실패를 재분류하지 않는다.
+- tokens는 제공자의 **`total_tokens`**다. 숨은 reasoning을 빼는 prompt+completion 합산은
+  쓰지 않는다. `proxy_upstream_ids`는 terminal인 모든 시도의 total을 합산하고, 명시적인
+  provider nonbillable 근거가 있는 시도만 0을 허용한다. attempts는 검증된 실제 시도 수다.
+- `proxy_log_exclusive_window`는 최종 응답 usage만 확인하므로 **실제 시도 1회**인 정상
+  호출을 정산한다. 재시도/오류가 있는 2회 호출의 앞 시도 usage는 unknown이므로 전액
+  유지한다. 근거에 남는 기존 `no_refunds` 표지는 추출/대조 자체가 예약을 반환하지
+  않는다는 뜻이며, 이 별도 정산 명령의 감사 이력을 대체하지 않는다.
+- 보고서 전체 `complete=false`여도 전역 `problems`가 없고 개별 send의 `reconciled=true`인
+  행은 위 조건을 모두 통과하면 정산할 수 있다. 미완료 행은 `skipped`에 이유를 남긴다.
+  코호트 진입은 계속 전체 `complete=true`를 요구하므로 정산이 진입 허가를 만들지 않는다.
+- `BEGIN IMMEDIATE` 안에서 보고서 **파일 SHA-256**, 현재 state 해시, source identity를
+  확인하고 telemetry와 원문 해시를 재대조해 보고서를 다시 계산한다. running run이 있으면
+  거절한다. 검토 뒤 변경·위조된 보고서는 거절하며, 실패 시 감사 행과 차감 변경을 함께 롤백한다.
+- `budget_settlements`에 send별 이전·이후 attempts/tokens, report/state/telemetry SHA-256,
+  원문 evidence·응답·trial·manifest 해시, 시각, 이전 감사 행 해시를 남긴다. send ID UNIQUE로
+  중복 정산을 막고, 감사 행은 state 해시에 포함한다. 기존 sends/runs JSON·소스 이관 이력은
+  보존한다. `reserved_*`는 원래 예약 합계, **`charged_*`는 현재 한도에 차감되는 합계**다.
+  신규 예약은 감사 행과 SQL 차감 칼럼의 일치를 검증한 뒤 `charged_*`에 상한을 적용한다.
+
+명령은 모델·물리를 실행하지 않는다. 기존 report에는 새 정산 필드가 없으므로 현재 소스의
+`--reconcile-only`로 새 보고서를 만들고 해시와 `state_sha256`을 검토한다. 아래 경로와 해시는
+운영자가 검토한 대상의 값이어야 한다. **이 수정 작업에서는 실제 DB에 실행하지 않았다.**
+
+```sh
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --reconcile-only \
+  --budget-file "$BUDGET_FILE" --upstream-telemetry "$TELEMETRY" \
+  --output "$REVIEW_DIR"
+# REPORT_SHA = $REVIEW_DIR/reconciliation.json 파일의 SHA-256
+# STATE_SHA = 해당 보고서의 state_sha256
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --settle-reconciled --dry-run \
+  --budget-file "$BUDGET_FILE" --upstream-telemetry "$TELEMETRY" \
+  --reconciliation-report "$REVIEW_DIR/reconciliation.json" \
+  --expected-report-sha256 "$REPORT_SHA" --expected-state-sha256 "$STATE_SHA" \
+  --output "$DRY_RUN_DIR"
+```
+
+실제 적용은 같은 인자에서 `--dry-run`을 제거하고 **새 output 경로**를 사용한다.
+`--reservation-id ID`를 반복해 일부만 지정할 수 있으며, 지정한 행이 미대조/실패/이미
+정산됐으면 전체 명령을 거절한다. 생략하면 자격 있는 행만 적용하고 나머지는 건너뛴다.
+재실행 시 과거 state 해시는 거절되며, 새 검토에서도 이미 정산된 행을 다시 차감하지 않는다.
+
+DB 커밋 후 receipt 저장에 실패했으면 다시 초기화하지 않는다. `--reconcile-only`의
+`budget_settlements`에서 감사 행을 회수하고 현재 `charged_*`를 확인한다. 정산은 source
+migration이나 새 preflight를 대신하지 않는다. 수정된 소스로 새 모델 호출을 하려면 기존
+소스 이관·커밋·preflight 규칙을 계속 따른다.
+
+### 실제 17 send 복사본 검증
+
+[검증 기록](../experiments/2026-09-26-zone-study-offline-smoke/budget-settlement-20260927/README.md).
+처음 확인할 때 없던 `log-evidence-v63-05`가 검증 전에 생성되어 **v63-05**를 사용했다.
+전체 17건 대조 완료, 정상 16건 정산 가능, 실패한 `preflight-01` 1건은 전액 유지다.
+
+| 항목 | 정산 전 | 복사본 정산 후 |
+|---|---:|---:|
+| 차감 attempts | 34 | 18 |
+| 차감 tokens | 4,085,674 | 409,793 |
+| 남은 attempts | 566 | 582 |
+| 남은 tokens | 914,326 | 4,590,207 |
+
+17건의 provider total 합계는 **185,007**이다. 배경의 172,839는 마지막 send의 12,168을
+제외한 16건 합계였다. 정산 대상 16건은 174,385이며, 실패 호출은 usage 10,622 대신
+예약 235,408을 유지하므로 정산 후 차감은 409,793이다. 실제 DB·원본 65개 파일의
+SHA-256/크기/mtime은 전후 동일했다. 실 DB 적용·모델 호출·물리 실행·Git 커밋은 하지 않았다.
 
 ## 설치 프록시의 실효 설정
 
@@ -386,7 +462,8 @@ OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --reconcile-only \
 - `proxy_request_id`와 `upstream_attempts`는 `null`이다. ID나 retry의 0 usage를 만들지 않는다.
   `actual_upstream_attempts`는 이 약한 로그 등급의 계수이고 usage는 **마지막 응답만**의
   exact 값이다. 재시도별 토큰·upstream STOP·완전한 동시 요청 추적을 입증하지 않는다.
-  예약한 2회분은 그대로 차감하며 환불하지 않는다. timeout·late·응답 원문/usage 누락도
+  대조만으로는 예약을 반환하지 않는다. 별도 정산에서는 실제 시도 1회인 정상 호출만
+  이 등급으로 정산한다. 시도 2회는 재시도 usage가 미상이므로 전액 유지한다. timeout·late·응답 원문/usage 누락도
   이 경로에서는 완료하지 않는다. 더 강한 ID 근거로 별도 대조할 수 있다.
 - reconcile은 저장 로그 원문과 hash, 당시 cursor, 시간 경계, usage를 다시 검사한다.
   telemetry의 `complete=true`나 계수를 그대로 믿지 않는다. 미충족 조건이 하나라도
@@ -408,7 +485,7 @@ OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --reconcile-only \
 
 ### 이번 소스와 v63
 
-이번에 바뀐 `zone_pilot_budget/ledger/reconcile`, 새 `zone_pilot_proxy_log`와 두 CLI는
+파일럿의 `zone_pilot_budget/ledger/reconcile/settlement`, `zone_pilot_proxy_log`와 두 CLI는
 RGB 번들의 `source_closure()` 174개에 포함되지 않는다. 따라서 v63 JSON·ID·hash는
 변경하지 않는다. 파일럿의 `source_identity.files`는 harness 전체와 두 CLI를 봉인하므로
 새 소스 이관과 재preflight는 필요하다. R12에서도 변경 파일이 closure 밖임과 v63의

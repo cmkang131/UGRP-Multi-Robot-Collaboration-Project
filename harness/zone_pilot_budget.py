@@ -1,8 +1,8 @@
 """Durable, conservative provider budget; independent of the frozen SIM cost.
 
 One proxy POST reserves TWO upstream attempts and two complete token envelopes.
-No refund, even for known usage: a proxy response only describes the last
-upstream attempt. SQLite commits the reservation before the wire can run.
+No automatic refund: only explicit, audited reconciliation can reduce a debit.
+SQLite commits the reservation before the wire can run.
 Interrupted/unknown entries survive a restart. No implicit creation/reset.
 """
 from __future__ import annotations
@@ -37,6 +37,14 @@ def sha(data):
 
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
+
+
+def state_sha256(snapshot):
+    state = [snapshot['sends'], snapshot['runs']]
+    # Preserve old review hashes until the first explicit budget settlement.
+    if snapshot.get('budget_settlements'):
+        state.append(snapshot['budget_settlements'])
+    return sha(canonical(state).encode())
 
 
 def usage_total(usage):
@@ -103,7 +111,8 @@ class PilotBudget:
     Every operation reopens the DB (safe across processes). BEGIN IMMEDIATE
     serializes check+reservation. Caps/pilot ID are immutable. Source changes
     require an explicit append-only migration in this SAME file. Reserved rows
-    are never deleted or refunded. Corrupt/missing files fail closed.
+    are never deleted; explicit reconciliation may reduce charged SQL columns.
+    Original reservation records stay immutable. Corrupt/missing files fail closed.
     """
     @classmethod
     def create(cls, path, *, identity):
@@ -148,7 +157,8 @@ class PilotBudget:
     @staticmethod
     def _snapshot(db):
         meta = json.loads(db.execute('SELECT value FROM meta').fetchone()[0])
-        rows = [json.loads(r[0]) for r in db.execute('SELECT record FROM sends ORDER BY rowid')]
+        sql_sends = list(db.execute('SELECT id, tokens, attempts, record FROM sends ORDER BY rowid'))
+        rows = [json.loads(r[3]) for r in sql_sends]
         runs = [json.loads(r[0]) for r in db.execute('SELECT record FROM runs ORDER BY rowid')]
         migrations = []
         if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='source_migrations'").fetchone():
@@ -167,7 +177,9 @@ class PilotBudget:
                 raise ValueError('active source does not match migration audit chain')
         if meta.get('source_revision', 0) != len(migrations):
             raise ValueError('source migration audit missing')
-        return {'meta': meta, 'reserved_attempts': sum(r['reserved_attempts'] for r in rows),
+        from harness.zone_pilot_settlement import accounting_snapshot
+        accounting = accounting_snapshot(db, sql_sends)
+        return {**accounting, 'meta': meta, 'reserved_attempts': sum(r['reserved_attempts'] for r in rows),
                 'reserved_tokens': sum(r['reserved_tokens'] for r in rows), 'sends': rows, 'runs': runs,
                 'source_migrations': migrations}
 
@@ -205,7 +217,7 @@ class PilotBudget:
             db.execute('BEGIN IMMEDIATE')
             self._require_current_source(db)
             before = self._snapshot(db)
-            if expected_state_sha256 != sha(canonical([before['sends'], before['runs']]).encode()):
+            if expected_state_sha256 != state_sha256(before):
                 raise ValueError('pilot state changed since migration review')
             if any(r['status'] == 'running' for r in before['runs']):
                 raise ValueError('stop/reconcile unfinished runs before source migration')
@@ -245,6 +257,7 @@ class PilotBudget:
         with self._connect() as db:
             db.execute('BEGIN IMMEDIATE')
             self._require_current_source(db)
+            self._snapshot(db)  # validate debit/audit consistency before spending capacity
             if any(json.loads(r[0])['status'] == 'usage_exceeds_reservation'
                    for r in db.execute('SELECT record FROM sends')):
                 raise BudgetExceeded('prior provider usage exceeded reservation; pilot halted')
@@ -286,14 +299,18 @@ class PilotBudget:
             db.execute('BEGIN IMMEDIATE')
             self._require_current_source(db)
             runs = [json.loads(r[0]) for r in db.execute('SELECT record FROM runs ORDER BY rowid')]
-            sends = [json.loads(r[0]) for r in db.execute('SELECT record FROM sends ORDER BY rowid')]
-            if expected_state is not None and expected_state != sha(canonical([sends, runs]).encode()):
+            if expected_state is not None and expected_state != state_sha256(self._snapshot(db)):
                 raise RuntimeError('pilot state changed since reconciliation; retry preflight checks')
             if any(r['status'] == 'running' for r in runs):
                 raise RuntimeError('unfinished run: reconcile outstanding upstream work before restart')
             value = {**record, 'run_id': run_id, 'stage': stage, 'status': 'running',
                      'source_revision': self.meta.get('source_revision', 0)}
             db.execute('INSERT INTO runs VALUES (?,?,?)', (run_id, stage, canonical(value)))
+
+    def settle_reconciled(self, **kwargs):
+        """Explicit operator command only; never called by send/reconcile/run."""
+        from harness.zone_pilot_settlement import settle_reconciled
+        return settle_reconciled(self, **kwargs)
 
     def finish_run(self, run_id, *, status, manifest_sha256):
         with self._connect() as db:

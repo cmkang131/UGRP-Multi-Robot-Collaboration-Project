@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from harness.zone_pilot_budget import canonical, sha, usage_total
+from harness.zone_pilot_budget import canonical, sha, state_sha256, usage_total
 from harness.zone_pilot_proxy_log import (ACCEPTED_EVIDENCE_LEVELS, EVIDENCE_LEVEL,
                                         ID_EVIDENCE_LEVEL, LIMITATION, verify_telemetry)
 from harness.llm_completion import (COMPLETION_POLICY, PROXY_COMPLETION_LIMITATION,
@@ -125,7 +125,10 @@ def reconcile(snapshot, telemetry=()):
             'source_identity_sha256': sha(canonical(snapshot['meta']['identity']).encode()),
             'source_revision': snapshot['meta'].get('source_revision', 0),
             'source_migrations': snapshot.get('source_migrations', []),
-            'state_sha256': sha(canonical([snapshot['sends'], snapshot['runs']]).encode()),
+            'state_sha256': state_sha256(snapshot),
+            'budget_settlements': snapshot.get('budget_settlements', []),
+            'charged_attempts': snapshot.get('charged_attempts', snapshot['reserved_attempts']),
+            'charged_tokens': snapshot.get('charged_tokens', snapshot['reserved_tokens']),
             'completion_policy': COMPLETION_POLICY,
             'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
             'evidence_levels': sorted({r['evidence_level'] for r in rows}),
