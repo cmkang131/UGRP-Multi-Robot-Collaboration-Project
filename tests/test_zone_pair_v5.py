@@ -11,7 +11,7 @@ from pathlib import Path
 import pytest
 
 from harness.owncam_pair_beam_v2 import observe_beam
-from harness.zone_pair_align import (MAX_TAG_GAP_S, MAX_LOOKS, MAX_LOOK_S, MAX_TOTAL_LOOK_S,
+from harness.zone_pair_align import (MAX_FIX_GAP_S, MAX_LOOKS, MAX_LOOK_S, MAX_TOTAL_LOOK_S,
                                      relook_reason, ranked_look_pans)
 from harness.zone_pair_beam_track import MAX_AGE_S, RestingBeamTrack
 from harness.zone_pair_geometry import PairSweepGuard
@@ -36,7 +36,8 @@ def frame(label):
 def report(ep, r):
     return replace(ep.own.last_report, t_est=r['t_est'], initialized=r['initialized'],
                    x_m=r['xyyaw'][0], y_m=r['xyyaw'][1], yaw_rad=r['xyyaw'][2],
-                   std_xy_m=r['std_xy_m'], std_yaw_rad=r['std_yaw_rad'], since_tag_s=r['since_tag_s'],
+                   std_xy_m=r['std_xy_m'], std_yaw_rad=r['std_yaw_rad'], since_tag_s=r['since_tag_s'], fix_age_s=r['since_tag_s'],
+                   last_fix_t=r['t_est']-r['since_tag_s'] if r['since_tag_s'] is not None else None,
                    last_valid_obs=r['last_valid_obs'], load_state=r['load_state'])
 
 
@@ -48,6 +49,7 @@ def install(ep, label):
     ep.own.servo = servo(obs)
     ep.controller.arm.commanded = dict(ep.own.servo)
     ep.own.pose.loc.last_tag_t = ep.own.now - ep.own.last_report.since_tag_s
+    ep.own.last_report = replace(ep.own.last_report, last_fix_t=ep.own.now - ep.own.last_report.since_tag_s)
     return ep.own.now
 
 
@@ -153,9 +155,9 @@ def test_dev08_saved_153_frame_gap_triggers_9_seconds_before_high_in_real_step()
     ep = eps['r2']
     reasons = [(row, relook_reason(report(ep, row['report']), row['t'])) for row in RECORD['dev08_reports']]
     row, why = next((row, why) for row, why in reasons if why)
-    assert (row['t'], why) == (166.3, 'tag_gap')
+    assert (row['t'], why) == (166.3, 'fix_gap')
     assert row['report']['std_xy_m'] == .05486 < .07
-    assert row['report']['since_tag_s'] == MAX_TAG_GAP_S
+    assert row['report']['since_tag_s'] == MAX_FIX_GAP_S
     assert RECORD['dev08_reports'][-1]['t'] - row['t'] == pytest.approx(9.3)
     assert RECORD['dev08_reports'][-1]['report']['std_xy_m'] > .07
     now = install(ep, 'dev08_trigger')
@@ -192,18 +194,20 @@ def test_align_entry_chooses_safe_map_view_and_requires_new_shared_pose_before_r
     old_loc = ep.own.pose.loc
     assert ctl.state == 'align_relook_stop'
     choices = ctl.align_look_choices()
-    assert choices and all(c['score_px2'] > 0 and c['predicted_tag_ids'] for c in choices)
-    assert choices == sorted(choices, key=lambda c: (-c['score_px2'], abs(c['pan'] - ep.own.servo[6]), c['pan']))
+    assert choices and all(c['observability_score'] > 0 for c in choices)
+    assert choices == sorted(choices, key=lambda c: (-c['observability_score'], abs(c['pan'] - ep.own.servo[6]), c['pan']))
     ctl._align_relook_stop(1.1, True)
     assert ctl.state == 'align_relook' and ctl.driver.loc is ep.own.pose.loc
     assert ep.own.pose.loc is not old_loc
     assert ctl.arm.commanded[6] == choices[0]['pan']
     ctl.arm.events.clear(); ctl.arm.until = 2.5
     fresh(ep, 2.5)
-    ep.own.pose.loc.last_tag_t = 1.  # old low-sigma evidence / VO cannot resume
+    ep.own.pose.loc.last_tag_t = 1.
+    ep.own.last_report = replace(ep.own.last_report, last_fix_t=1.) # old low-sigma evidence / VO cannot resume
     ctl.vo_pose = [0., 0., 0.]
     assert not ctl._align_fix_ready(2.5)
     ep.own.pose.loc.last_tag_t = 2.5
+    ep.own.last_report = replace(ep.own.last_report, last_fix_t=2.5)
     ctl._align_relook(2.5, True)
     assert ctl.state == 'align_relook_return'
     ctl.arm.events.clear(); ctl.arm.until = 3.4
@@ -231,7 +235,7 @@ def test_align_relook_bounds_and_unsafe_states_abort_both(fault, monkeypatch):
         ctl._align_relook_stop(1.1, True)
         if fault == 'no_fix':
             ctl.arm.events.clear(); ctl.arm.until = 2.5; ctl.align_pans.clear()
-            fresh(ep, 2.5); ep.own.pose.loc.last_tag_t = None
+            fresh(ep, 2.5); ep.own.pose.loc.last_tag_t = None; ep.own.last_report = replace(ep.own.last_report, last_fix_t=None)
             ctl._align_relook(2.5, True)
         now = 2.5
     else: now = 1.
@@ -244,7 +248,7 @@ def test_align_relook_bounds_and_unsafe_states_abort_both(fault, monkeypatch):
 def test_static_view_failure_does_not_invent_landmarks():
     _, _, eps = real_pair();ep=eps['r1']
     guard = PairSweepGuard(ep.own.guard, ep.plan['beam_geometry'], ep.arguments['role'])
-    assert ranked_look_pans({'landmarks': {'tags': []}}, ep.own.last_report, ep.own.servo, guard) == []
+    assert ranked_look_pans({'landmarks': {'tags': []}}, ep.own.last_report, ep.own.servo, guard, ep.own.pose) == []
 
 
 def test_real_host_arm_dispatch_stops_relooks_and_returns_before_align_motion():
@@ -316,7 +320,7 @@ def test_align_reset_requires_valid_post_stop_report_and_keeps_deadline(fault):
 @pytest.mark.parametrize('sigma,yaw', [(.055, .01), (.01, math.radians(2.5))])
 def test_sigma_reserve_can_trigger_before_time_budget(sigma, yaw):
     _, _, eps = real_pair();ep=eps['r1']
-    r=replace(ep.own.last_report, t_est=1., since_tag_s=.1, std_xy_m=sigma, std_yaw_rad=yaw)
+    r=replace(ep.own.last_report, t_est=1., since_tag_s=.1, fix_age_s=.1, last_fix_t=.9, std_xy_m=sigma, std_yaw_rad=yaw)
     assert relook_reason(r, 1.) == 'sigma_reserve'
 
 

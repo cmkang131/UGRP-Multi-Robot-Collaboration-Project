@@ -17,6 +17,9 @@ def baseline_guard():
     source = path.read_bytes()
     assert hashlib.sha256(source).hexdigest() == 'fcd2aef1b7e40b591f02814d340de910bc50eed46cc3f60ff780c1b9b88292cf'
     module = types.ModuleType('pair_guards_1628a03f')
+    # Preserve historical bytes/threshold; only adapt its renamed import at the test boundary.
+    source = source.replace(b'TRUSTED_TAG_AGE_S, OwnPose',
+                            b'TRUSTED_FIX_AGE_S as TRUSTED_TAG_AGE_S, OwnPose')
     exec(compile(source, str(path), 'exec'), module.__dict__)
     return module.PairCommandGuard
 

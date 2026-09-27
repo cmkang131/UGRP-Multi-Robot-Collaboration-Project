@@ -64,7 +64,7 @@ class PairFakeHost(FakeHost):
         # evidence from this recorded JPEG or a simulated ground-truth pose.
         slot.executor.pose.on_frame = lambda t, rgb: PoseReport(
             t, True, x_m=0., y_m=0., yaw_rad=0., std_xy_m=.01, std_yaw_rad=.01,
-            since_tag_s=0., source=slot.executor.pose.source)
+            since_tag_s=0., fix_age_s=0., last_fix_t=now, source=slot.executor.pose.source)
         slot.executor.on_frame(now, frame, rgb_of(frame))
         slot.next_frame = now + self.FRAME_S
 
@@ -468,8 +468,8 @@ def test_frozen_m2_sources_or_explicit_followup_hashes():
     # Reviewed revisions that reached main after the freeze (records stay on their pinned SHA).
     post_freeze = {'sim/zone_landmarks.py': {
         '2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1'}}  # PR #208 env v3 registries
-    # PR #240 requested time-contract followup; old runs keep their frozen source.
-    post_freeze['harness/owncam_pose_source.py'] = {'215821c84c58ff1e939b7c0fa2c0a6956d82f9f4f9f2ad63db95c1a1b7bfb6ae'}
+    # PR #240 v5d provider-contract followup; frozen PF and old records stay unchanged.
+    post_freeze['harness/owncam_pose_source.py'] = {'7c41c40db0c502af8522f263971ebfb0ae370543952da2a31960e3044e5388da'}
     for row in files:
         got = hashlib.sha256((ROOT / row['path']).read_bytes()).hexdigest()
         assert got in {row['sha256'], *post_freeze.get(row['path'], ())}, row['path']

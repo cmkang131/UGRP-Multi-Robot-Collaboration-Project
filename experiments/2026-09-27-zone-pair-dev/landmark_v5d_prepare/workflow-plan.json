@@ -1,0 +1,81 @@
+{
+  "workflow_id": "zone-pair-dev",
+  "workflow_version": "0.5.0",
+  "catalog_sha256": "6bae79139c75ef12f642980b155b94cb032995d320c920f53e6d25fb55d9c999",
+  "runner": "scripts.run_zone_pair_dev",
+  "adapter": "managed_legacy_cli",
+  "side_effect": "local_simulation",
+  "argv": [
+    "--prereg",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5d.json",
+    "--run-id",
+    "dev11",
+    "--output",
+    "/private/tmp/zone-pair-v5d-prepare-6n6t9o21/plan-not-run"
+  ],
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "scripts.run_zone_pair_dev",
+    "--prereg",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5d.json",
+    "--run-id",
+    "dev11",
+    "--output",
+    "/private/tmp/zone-pair-v5d-prepare-6n6t9o21/plan-not-run"
+  ],
+  "output": "/private/tmp/zone-pair-v5d-prepare-6n6t9o21/plan-not-run",
+  "output_flag": "--output",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/codex-pair-grasp/maps/zones/zone_wide_door_tags_v2_dock_v3.json",
+      "kind": "file",
+      "sha256": "57c0ae0c0f8506f87d8c9da45ce1af730cf9d55cb765bc1c1add180ef8b0ea95",
+      "files": [
+        {
+          "path": "zone_wide_door_tags_v2_dock_v3.json",
+          "sha256": "ff85120be345f8c264c0a6158bce8b5102ac10aaff4d77e0820cb8cde7a3b4e8",
+          "bytes": 28917
+        }
+      ]
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/codex-pair-grasp/experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "kind": "file",
+      "sha256": "328159e9b2db99b32fd9cf49bf1810936615e2931b0490726d6f747a50babef6",
+      "files": [
+        {
+          "path": "calibration_loop_v2.json",
+          "sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558",
+          "bytes": 4958
+        }
+      ]
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/codex-pair-grasp/maps/zones/zone_wide_door_tags_v2.json",
+      "kind": "file",
+      "sha256": "9608f4b007ebc7f06058f81c43908113bad1c94dd282c12b2446c15e14075f0a",
+      "files": [
+        {
+          "path": "zone_wide_door_tags_v2.json",
+          "sha256": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b",
+          "bytes": 28355
+        }
+      ]
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp-wt/codex-pair-grasp/experiments/2026-09-27-zone-pair-dev/prereg_v5d.json",
+      "kind": "file",
+      "sha256": "aa02effb2f70c146b72a183c15487c41aec1f02d84f6e447b666b53f7b409934",
+      "files": [
+        {
+          "path": "prereg_v5d.json",
+          "sha256": "93ff696a2b73100c9307824bed12c6a4a1c65665f4573dbf1783f522cd589cd0",
+          "bytes": 31580
+        }
+      ]
+    }
+  ],
+  "readiness": "required_inputs_present; legacy_parser_and_runtime_not_executed",
+  "execution_started": false
+}

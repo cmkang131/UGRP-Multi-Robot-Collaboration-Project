@@ -19,21 +19,20 @@ def report_at_or_after(report, raw_time):
                 and raw_time <= report.t_est + POSE_TIME_ROUNDING_S)
 
 
-def accepted_fix_checks(report, now, start, *, strict_start=True):
+def accepted_tag_checks(report, now, last_tag_t, start, *, strict_start=True):
     """Never reconstruct capture time by subtracting separately rounded age.
 
-    The localizer's accepted-observation timestamp and start are raw times: keep that
-    boundary exact, so even a fix just before the sweep cannot qualify.
+    The localizer's accepted-tag timestamp and start are raw times: keep that
+    boundary exact, so even a tag just before the sweep cannot qualify.
     Only comparisons against the quantized report get rounding tolerance.
     """
-    last_fix_t = None if report is None else report.last_fix_t
-    fix_ok = finite_time(last_fix_t)
+    tag_ok = finite_time(last_tag_t)
     start_ok = finite_time(start)
     return {
         'report_fresh': pose_report_fresh(report, now),
-        'fix_age_valid': report is not None and finite_time(report.fix_age_s) and report.fix_age_s >= 0,
-        'accepted_fix_present': fix_ok,
-        'fix_in_sweep': fix_ok and start_ok and (last_fix_t > start if strict_start else last_fix_t >= start),
-        'fix_not_future': fix_ok and finite_time(now) and last_fix_t <= now,
-        'fix_in_report': fix_ok and report_at_or_after(report, last_fix_t),
+        'tag_age_valid': report is not None and finite_time(report.since_tag_s) and report.since_tag_s >= 0,
+        'accepted_tag_present': tag_ok,
+        'tag_in_sweep': tag_ok and start_ok and (last_tag_t > start if strict_start else last_tag_t >= start),
+        'tag_not_future': tag_ok and finite_time(now) and last_tag_t <= now,
+        'tag_in_report': tag_ok and report_at_or_after(report, last_tag_t),
     }

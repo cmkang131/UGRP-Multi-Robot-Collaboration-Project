@@ -37,8 +37,9 @@ def fresh(ep, now, *, grip=False):
     if grip:
         jpeg = (ROOT / 'tests/fixtures/m2_pair_door_v3/grasp_824_r2_00757.jpg').read_bytes()
         own.last_obs.update(image=base64.b64encode(jpeg).decode(), sha256=hashlib.sha256(jpeg).hexdigest())
-    own.last_report = replace(own.last_report, t_est=now, since_tag_s=0.)
+    own.last_report = replace(own.last_report, t_est=now, since_tag_s=0., fix_age_s=0., last_fix_t=now)
     own.pose.loc.last_tag_t = now
+    own.last_report = replace(own.last_report, last_fix_t=now)
 
 
 def ready_to_close(ep, now):
@@ -130,8 +131,9 @@ def test_dev06_yaw_relook_then_progress_or_safe_abort(after_yaw, tag):
     ctl.arm.until = 1.
     fresh(ep, 1.)
     own.last_report = replace(own.last_report, std_xy_m=.04, std_yaw_rad=after_yaw,
-                              since_tag_s=0. if tag else None)
+                              since_tag_s=0. if tag else None, fix_age_s=0. if tag else None)
     own.pose.loc.last_tag_t = 1. if tag else None
+    own.last_report = replace(own.last_report, last_fix_t=1. if tag else None)
     ctl._pregrasp_look(1., True)
     if tag and after_yaw <= FIX_STD_YAW_RAD:
         assert ctl.state == 'pregrasp_standoff'
@@ -148,7 +150,7 @@ def test_close_requires_current_own_readiness(fault):
     ready_to_close(ep, 1.)
     if fault == 'xy': own.last_report = replace(own.last_report, std_xy_m=.05001)
     elif fault == 'yaw': own.last_report = replace(own.last_report, std_yaw_rad=math.radians(3.001))
-    elif fault == 'old_tag': own.pose.loc.last_tag_t = 0.
+    elif fault == 'old_tag': own.pose.loc.last_tag_t = 0.; own.last_report = replace(own.last_report, last_fix_t=0.)
     elif fault == 'different_loc': ep.controller.driver._shared_pose = type('Pose', (), {'loc': object()})()
     elif fault == 'stale_pose': own.last_report = replace(own.last_report, t_est=0.)
     elif fault == 'closed': own.servo[1] = 1500
@@ -210,21 +212,21 @@ def test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort(tmp_path):
     from scripts import run_zone_pair_dev as dev
     from scripts.zone_pair_grasp_contract import grasp_contract
     old = json.loads(dev.PREREG_V3.read_text())
-    p = json.loads(dev.PREREG_V5C.read_text())
+    p = json.loads(dev.PREREG_V5D.read_text())
     for key in ('criteria', 'stage_rules', 'planned_setdown', 'limits', 'timing', 'safety_coverage', 'environment', 'inputs'):
         assert p[key] == old[key], key
     current_grasp = grasp_contract()
     assert p['grasp_contract'] == current_grasp
     assert p['scene_contract'] == dev.scene_contract()
-    assert p['registration_revision'] == 'v5c'
-    assert p['supersedes'] == {'path': str(dev.PREREG_V5B.relative_to(dev.ROOT)),
-                               'sha256': dev.sha_file(dev.PREREG_V5B)}
+    assert p['registration_revision'] == 'v5d'
+    assert p['supersedes'] == {'path': str(dev.PREREG_V5C.relative_to(dev.ROOT)),
+                               'sha256': dev.sha_file(dev.PREREG_V5C)}
     workflow = next(w for w in json.loads((dev.ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
                     if w['id'] == 'zone-pair-dev')
     assert workflow['version'] == p['grasp_contract']['workflow']['version']
     assert p['commands']['owner'] == 'claude'
     for rid, seed in [('dev11', 907), ('dev12', 908)]:
-        args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V5C), '--run-id', rid, '--output', str(tmp_path / rid)])
+        args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V5D), '--run-id', rid, '--output', str(tmp_path / rid)])
         assert dev.load_config(args)[1]['seed'] == seed
     # Historical v3 bytes remain bound to their old source, never silently
     # accepted with a changed controller under the old registration.

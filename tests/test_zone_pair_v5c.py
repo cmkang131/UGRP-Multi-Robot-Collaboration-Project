@@ -12,7 +12,7 @@ from types import SimpleNamespace
 import cv2
 import pytest
 
-from harness.owncam_time import POSE_TIME_ROUNDING_S, accepted_tag_checks, pose_report_fresh
+from harness.owncam_time import POSE_TIME_ROUNDING_S, accepted_fix_checks, pose_report_fresh
 from harness.zone_pair_obstruction import target_context
 from harness.zone_own_perception import judge_route_blockage
 from tests.test_zone_pair_grasp import real_pair, fresh
@@ -28,6 +28,7 @@ def install(row):
     ep.own.last_report = report(ep, row['report'])
     ep.own.gate.state = 'ok' if row['gate_ok'] else 'uncertain'
     ep.own.pose.loc.last_tag_t = row['accepted_tag_t']
+    ep.own.last_report = replace(ep.own.last_report, last_fix_t=row['accepted_tag_t'])
     ep.controller.align_look_started_at = row['start']
     ep.controller.pregrasp_started_at = row['start']
     return ep
@@ -68,6 +69,7 @@ def test_raw_capture_boundary_never_accepts_prelook_or_future_tags(tag):
     _, _, eps = real_pair(); ep = eps['r1']; fresh(ep, 2.)
     ep.controller.align_look_started_at = 1.
     ep.own.pose.loc.last_tag_t = tag
+    ep.own.last_report = replace(ep.own.last_report, last_fix_t=tag)
     assert not ep.controller._align_fix_ready(2.)
 
 
@@ -99,10 +101,12 @@ def test_separately_rounded_age_is_not_used_as_capture_timestamp():
     _, _, eps = real_pair(); ep = eps['r1']; fresh(ep, 1.10004)
     ep.controller.align_look_started_at = 1.
     # Rounded subtraction gives a pre-start tag, authoritative capture is new.
-    ep.own.last_report = replace(ep.own.last_report, t_est=1.1, since_tag_s=.1)
+    ep.own.last_report = replace(ep.own.last_report, t_est=1.1, since_tag_s=.1, fix_age_s=.1)
     ep.own.pose.loc.last_tag_t = 1.00004
+    ep.own.last_report = replace(ep.own.last_report, last_fix_t=1.00004)
     assert ep.controller._align_fix_ready(1.10004)
     ep.own.pose.loc.last_tag_t = .99999
+    ep.own.last_report = replace(ep.own.last_report, last_fix_t=.99999)
     assert not ep.controller._align_fix_ready(1.10004)
 
 
@@ -110,10 +114,11 @@ def test_rejection_event_names_every_failed_conjunct():
     _, _, eps=real_pair();ep=eps['r1'];fresh(ep, 2.)
     ctl=ep.controller;ctl.align_look_started_at=1.;ctl.align_pans=[];ctl.arm.until=2.
     ep.own.pose.loc.last_tag_t=0.
+    ep.own.last_report = replace(ep.own.last_report, last_fix_t=0.)
     ep.own.last_report=replace(ep.own.last_report,std_xy_m=.05601)
     ctl._align_relook(2.,True)
     row=next(x for x in ep.events if x['event']=='align_relook_fix_rejected')
-    assert {'tag_in_sweep','std_xy','sigma_reserve'} <= set(row['failed_checks'])
+    assert {'fix_in_sweep','std_xy','sigma_reserve'} <= set(row['failed_checks'])
     assert ctl.failure == 'ALIGN_RELOOK_NO_FIX'
 
 
@@ -178,15 +183,15 @@ def test_v5c_prepare_is_source_bound_and_has_no_physics_or_model_calls(tmp_path,
     from scripts import run_zone_pair_dev as dev
     out=tmp_path/run
     result=subprocess.run([sys.executable,str(dev.ROOT/'scripts/run_zone_pair_dev.py'),
-                           '--prereg',str(dev.PREREG_V5C),'--run-id',run,'--output',str(out)],
+                           '--prereg',str(dev.PREREG_V5D),'--run-id',run,'--output',str(out)],
                           capture_output=True,text=True)
     assert result.returncode==0,result.stderr
     manifest=json.loads((out/'manifest.json').read_text())
     assert manifest['state']=='prepared_not_executed'
     assert manifest['model_calls']==0 and manifest['physical_success'] is None and manifest['applied'] is None
-    assert (out/'prereg.json').read_bytes()==dev.PREREG_V5C.read_bytes()
+    assert (out/'prereg.json').read_bytes()==dev.PREREG_V5D.read_bytes()
     assert not (out/'eval_only/trace.jsonl').exists()
-    p=json.loads(dev.PREREG_V5C.read_text());case=next(r for r in p['runs'] if r['id']==run)
+    p=json.loads(dev.PREREG_V5D.read_text());case=next(r for r in p['runs'] if r['id']==run)
     from scripts.zone_pair_dev_runtime import make_scene
     scene=make_scene({'map':p['environment']['map'],'seed':case['seed'],'goal':{'B':{'cyan':1}},
                       'team_cargo':[{'item_id':'cargoX','kind':'long_beam','pose':case['setup_beam_xyyaw']}]})
@@ -197,7 +202,7 @@ def test_v5c_prepare_is_source_bound_and_has_no_physics_or_model_calls(tmp_path,
     ('source','grasp contract/hash'),('supersedes','previous prereg hash'),('scene','scene contract/hash')])
 def test_v5c_rejects_changed_registration(tmp_path,fault,reason):
     from scripts import run_zone_pair_dev as dev
-    p=json.loads(dev.PREREG_V5C.read_text())
+    p=json.loads(dev.PREREG_V5D.read_text())
     if fault=='seed':p['runs'][0]['seed']=905
     elif fault=='criteria':p['criteria']['lift_bottom_m']=.01
     elif fault=='source':p['grasp_contract']['source_sha256']['harness/owncam_time.py']='0'*64

@@ -1,3 +1,7 @@
+현재 미실행 후보는 `zone-study-integration-v67-landmark-agnostic`(workflow `2.1.0`, pair executor v7)이다.
+[표식 무관 자세 계약·검증 범위](../experiments/2026-09-27-zone-pair-dev/landmark_v5d.md)를 따른다.
+이전 v65의 설명과 기록은 아래에 보존한다. 임계값·STATUS v5는 같으며 물리 완주 결과를 승계하지 않는다.
+
 # 통합 러너의 PairTeam·자기 영상·인식 지연 연결
 
 2026-09-27, PR #229의 #194 + #235 통합. `tags_temporary`는 **임시, 표식 사용, 연구 결과 아님**이다. 이 변경은 비물리 테스트로 검증하며 새 물리 성공이나 실제 LLM 코호트를 뜻하지 않는다.

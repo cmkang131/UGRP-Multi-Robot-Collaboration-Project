@@ -11,9 +11,9 @@ import math
 from harness.zone_own_contract import finite_number
 from harness.zone_pair_vision import valid_frame
 from harness.zone_pair_align import PairAlignRelook
-from harness.owncam_time import accepted_fix_checks
+from harness.owncam_time import accepted_tag_checks
 
-PROFILE = 'zone_pair_grasp_relook_v3'
+PROFILE = 'zone_pair_grasp_relook_v2'
 FIX_STD_XY_M = .05
 FIX_STD_YAW_RAD = math.radians(3.)
 CLOSE_WAIT_S = 20.
@@ -71,7 +71,7 @@ class PairGraspRelook(PairAlignRelook):
         report = own.last_report
         start = getattr(self, 'pregrasp_started_at', None)
         # No VO-only bypass, old low-sigma report, or a different localizer.
-        return {**accepted_fix_checks(report, now, start, strict_start=False),
+        return {**accepted_tag_checks(report, now, own.pose.loc.last_tag_t, start, strict_start=False),
                 'shared_localizer': self.driver.loc is own.pose.loc,
                 'initialized': report is not None and report.initialized,
                 'pose_finite': report is not None and all(finite_number(v) for v in (report.x_m, report.y_m, report.yaw_rad)),
@@ -84,6 +84,7 @@ class PairGraspRelook(PairAlignRelook):
 
     def _queue_grasp(self, now):
         from harness.owncam_drive import LOOK_P20
+        from harness.owncam_localizer import OwnCamLocalizer
         from scripts import run_m2_pair as m2
 
         peer_holding = any(v['state'] in ('ready', 'lift', 'carry')
@@ -96,7 +97,8 @@ class PairGraspRelook(PairAlignRelook):
         self.pregrasp_started_at = now
         self.beam_grasp_receipt = None
         drv = self.driver
-        self.port.own.pose.begin_relocalization(now, drv.servo)
+        drv.loc = OwnCamLocalizer(drv.map, drv.loc.params, seed=int(drv.loc.rng.integers(1 << 30)))
+        drv.loc.command({'t': float(now), 'kind': 'initial_servo_command', 'pulses': dict(drv.servo)})
         self.pregrasp_sweeps += 1
         self.pg_pans = list(m2.PREGRASP_PANS_V2)
         self.arm.queue({**LOOK_P20, 6: self.pg_pans.pop(0)}, now, duration=.8, settle=.6)
@@ -197,7 +199,7 @@ class PairGraspRelook(PairAlignRelook):
             checks = self._grasp_pose_checks(now)
             self.log(self.rid, 'pregrasp_fix_rejected', now, checks=checks,
                      failed_checks=[k for k, v in checks.items() if not v],
-                     last_fix_t=own.last_report.last_fix_t, report_t=own.last_report.t_est)
+                     accepted_tag_t=own.pose.loc.last_tag_t, report_t=own.last_report.t_est)
             return self.fail('PREGRASP_NOT_READY', now)
         if now - self.state_t > CLOSE_WAIT_S:
             return self.fail('BARRIER_CLOSE_TIMEOUT', now)

@@ -13,7 +13,7 @@ from harness.owncam_drive_v2 import OwnCamDriverV2
 from harness.zone_own_sweep import SweepRecheck, reachable_pan
 from harness.zone_own_guards import (GATE_LOADED, GATE_UNLOADED, MAX_LOOK_BACKOFFS, MAX_RECOVERIES,
                                      RECOVERY_BACKOFF_M, STALL_KEEPOUT_AHEAD_M, STALL_KEEPOUT_HALF_M,
-                                     STALL_KEEPOUT_MIN_DOOR_M, STALL_KEEPOUT_MIN_GOAL_M, TRUSTED_FIX_AGE_S, OwnPose,
+                                     STALL_KEEPOUT_MIN_DOOR_M, STALL_KEEPOUT_MIN_GOAL_M, TRUSTED_TAG_AGE_S, OwnPose,
                                      ProgressMonitor, SweepGuard, UncertaintyGate, backoff_commands, commanded_step_m)
 
 SCHEMA = 'ugrp.zone_own_driver.v1'
@@ -21,7 +21,6 @@ SCHEMA = 'ugrp.zone_own_driver.v1'
 GATE_MAX_LOOKS = 3                  # consecutive looks without the gate reaching ok -> 'pose_uncertain'
 ARRIVAL_FIX_MAX_AGE_S = 5.
 ARRIVAL_MAX_RECHECKS = 2
-LOOK_IF_NO_FIX_S = 3.             # unchanged frozen unloaded recency trigger
 
 
 class GuardedDriver(OwnCamDriverV2):
@@ -70,29 +69,6 @@ class GuardedDriver(OwnCamDriverV2):
             elif self.look_reason == 'progress_check':
                 xy = (est['x'], est['y']) if est.get('initialized') else None
                 self.monitor.inconclusive(xy, self._goal_dist(est) if xy is not None else None)
-
-    def _needs_look(self, est, now):
-        # Neutral version of the frozen loop policy; thresholds/order unchanged.
-        from harness.owncam_drive import DOOR_CHECKPOINTS_M
-
-        if not est.get('initialized'):
-            return 'not_initialized'
-        if self._uncertain(est):
-            return 'uncertain'
-        if self.loaded:
-            if self.last_look_xy is None:
-                self.last_look_xy = (est['x'], est['y'])
-            elif self._since_look_m(est) > self._travel_look_m():
-                return 'travel'
-        elif est.get('fix_age_s') is not None and est['fix_age_s'] > LOOK_IF_NO_FIX_S:
-            return 'no_fix'
-        if est['x'] < self.door[0]:
-            d = math.hypot(self.door[0] - est['x'], self.door[1] - est['y'])
-            for cp in DOOR_CHECKPOINTS_M:
-                if cp not in self.checkpoints_done and d <= cp:
-                    self.checkpoints_done.add(cp)
-                    return f'door_checkpoint_{cp}'
-        return None
 
     def _goal_dist(self, est):
         return math.hypot(self.goal[0] - est['x'], self.goal[1] - est['y'])
@@ -229,7 +205,7 @@ class GuardedDriver(OwnCamDriverV2):
             self.gate_looks += 1
             return self._start_look(now, 'gate_uncertain')
         self.gate_looks = 0
-        if est.get('initialized') and est.get('fix_age_s') is not None and est['fix_age_s'] <= TRUSTED_FIX_AGE_S \
+        if est.get('initialized') and est.get('since_tag_s') is not None and est['since_tag_s'] <= TRUSTED_TAG_AGE_S \
                 and est['std_xy_m'] <= self.gate.profile.low_xy_m:
             self.monitor.trusted((est['x'], est['y']), self._goal_dist(est))
         if self.monitor.needs_check():

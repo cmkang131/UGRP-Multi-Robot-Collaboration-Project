@@ -61,7 +61,7 @@ def setup():
         slot.port.capture = capture
         slot.executor.pose.on_frame = lambda t, rgb, ex=slot.executor: PoseReport(
             t, True, x_m=0., y_m=0., yaw_rad=0., std_xy_m=.01, std_yaw_rad=.01,
-            since_tag_s=0., source=ex.pose.source)
+            since_tag_s=0., fix_age_s=0., last_fix_t=t, source=ex.pose.source)
     host.links = {r: runner.HostRobotLink(host, r) for r in zi.ROBOTS}
 
     def capture_raw(host, rid, now):
@@ -112,7 +112,7 @@ def test_pair_and_multiple_real_adapter_calls_use_each_own_camera(condition, tmp
     records = trial.pair_status.record()
     assert records['messages'] > 0 and records['sessions'] == host.pairs.records()
     assert records['config']['profile'] == 'zone_pair_status_v5'
-    assert records['config']['executor_profile'] == 'zone_pair_executor_v6_dev'
+    assert records['config']['executor_profile'] == 'zone_pair_executor_v7_dev'
     assert {'close_ready_0', 'close_go_0'} <= set(records['config']['states'])
     assert all(set(m) == set(FIELDS) for s in records['sessions'] for m in s['status_messages'])
     assert any(m['state'] == 'start_ready' for s in records['sessions'] for m in s['status_messages'])
@@ -171,10 +171,10 @@ def test_research_scenarios_and_bundle_use_study_wide_profile():
     assert bundle['contact_profile_expected']['noslip_iterations'] == 10
     assert bundle['contact_profile_expected']['timestep_s'] == .00025
     assert bundle['perception_delay_s'] == .16
-    assert bundle['execution_bundle_id'] == 'zone-study-integration-v65-pair-close'
+    assert bundle['execution_bundle_id'] == 'zone-study-integration-v67-landmark-agnostic'
     workflow = next(w for w in json.loads((ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
                     if w['id'] == 'zone-study-integration-run')
-    assert workflow['version'] == '2.0.0'
+    assert workflow['version'] == '2.1.0'
     assert bundle['pose_provider']['label']['research_result'] is False
     assert bundle['pose_provider']['spec']['calibration'] == pre['student']['calibration']
     from scripts.zone_pair_dev_runtime import make_scene

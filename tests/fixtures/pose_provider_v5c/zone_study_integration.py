@@ -68,7 +68,7 @@ from harness.zone_study_llm_transport import ModelCallTransport
 ROOT = Path(__file__).resolve().parents[1]
 INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
 # v64 and its source receipts remain historical; v65 binds the v5 close barrier.
-EXECUTION_BUNDLE_ID = 'zone-study-integration-v67-landmark-agnostic'
+EXECUTION_BUNDLE_ID = 'zone-study-integration-v65-pair-close'
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',

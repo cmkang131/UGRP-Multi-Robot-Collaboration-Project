@@ -157,7 +157,7 @@ class OwnStatusMixin:
         loc = {'level': self._level, 'gate': self.gate.state, 'initialized': bool(rep is not None and rep.initialized)}
         if rep is not None and rep.initialized:
             loc.update(std_xy_m=round(rep.std_xy_m, 4), std_yaw_rad=round(rep.std_yaw_rad, 4),
-                       since_tag_s=None if rep.since_tag_s is None else round(rep.since_tag_s, 2),
+                       fix_age_s=None if rep.fix_age_s is None else round(rep.fix_age_s, 2),
                        own_estimate_xy_yaw=[round(rep.x_m, 3), round(rep.y_m, 3), round(rep.yaw_rad, 4)])
         return {'schema': STATUS_SCHEMA, 'robot_id': self.robot_id, 'mode': self.mode, 'sim_s': round(self.now, 3),
                 'local_state': self._local_state, 'stopped': self.stopped is not None,

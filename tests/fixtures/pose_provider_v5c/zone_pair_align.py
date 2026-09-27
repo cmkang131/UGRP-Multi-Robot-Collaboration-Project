@@ -3,13 +3,15 @@ from __future__ import annotations
 
 import math
 
+import numpy as np
+
 from harness.zone_own_contract import finite_number, pose_report_fresh
 from harness.zone_own_guards import OwnPose
-from harness.owncam_time import accepted_fix_checks
+from harness.owncam_time import accepted_tag_checks
 
 # Scheduling reserves, NOT changes to the 70/50 mm, 3 degree safety gates.
 # dev08 own reports: age=6 at 166.3, sigma_xy=.05486; HIGH at 175.6.
-MAX_FIX_GAP_S = 6.
+MAX_TAG_GAP_S = 6.
 RELOOK_XY_M = .055
 RELOOK_YAW_RAD = math.radians(2.5)
 MAX_LOOKS = 8                 # cumulative across the job, including entry looks
@@ -19,40 +21,62 @@ MAX_DIRECTIONS = 3
 RELOOK_STATES = ('align_relook_stop', 'align_relook', 'align_relook_return')
 
 
-def relook_reason(report, now):
+def relook_reason(report, now, *, last_tag_t=...):
     if not pose_report_fresh(report, now) or not report.initialized:
         return 'pose_missing'
-    age = report.fix_age_s
-    fix_age = now - report.last_fix_t if finite_number(report.last_fix_t) else math.inf
-    if not finite_number(age) or age < 0 or fix_age < 0 or fix_age >= MAX_FIX_GAP_S - 1e-8:
-        return 'fix_gap'
+    age = report.since_tag_s
+    tag_age = (now - report.t_est + age if finite_number(age) else math.inf) if last_tag_t is ... else (
+        now - last_tag_t if finite_number(last_tag_t) else math.inf)
+    if not finite_number(age) or age < 0 or tag_age < 0 or tag_age >= MAX_TAG_GAP_S - 1e-8:
+        return 'tag_gap'
     if report.std_xy_m >= RELOOK_XY_M or report.std_yaw_rad >= RELOOK_YAW_RAD:
         return 'sigma_reserve'
     return None
 
 
-def ranked_look_pans(static_map, report, servo, guard, provider):
-    """Rank collision-safe LOOK_P20 directions by the provider's proposal score.
+def ranked_look_pans(static_map, report, servo, guard):
+    """Rank collision-safe LOOK_P20 directions by projected mapped tag area.
 
-    A prediction never qualifies as a fix. Only a subsequent accepted own
-    observation can permit resumption, through the common report contract.
+    Projection is a proposal, not a visibility/fix claim: occlusion and pose
+    bias can invalidate it. Only a subsequent accepted own RGB tag permits
+    resumption. The existing calibrated camera and PWM FK are reused.
     """
     from harness.owncam_drive import LOOK_P20
+    from harness.owncam_view import project_base_points, valid_pixel_mask
+    from harness.wall_tags import tag_world_frame
     from scripts.run_m2_pair import PREGRASP_PANS_V2
 
     pose = OwnPose.from_report(report)
     if pose is None:
         return []
+    c, s = math.cos(pose.yaw), math.sin(pose.yaw)
+    rot = np.array([[c, -s, 0.], [s, c, 0.], [0., 0., 1.]])
+    valid = valid_pixel_mask()
     candidates = []
     for pan in dict.fromkeys(PREGRASP_PANS_V2):
         target = {**LOOK_P20, 1: servo[1], 6: pan}
         plan = guard.plan(servo, target, [pan], pose, loaded=False, allow_backoff=False)
         if plan['reason'] != 'clear' or not plan.get('transition_clear'):
             continue
-        score = provider.expected_observability(pose, pan, static_map)
-        if finite_number(score) and score > 0:
-            candidates.append({'pan': pan, 'observability_score': score})
-    return sorted(candidates, key=lambda x: (-x['observability_score'], abs(x['pan'] - servo[6]), x['pan']))
+        score, ids = 0., []
+        for tag in static_map.get('landmarks', {}).get('tags', []):
+            center, axes = tag_world_frame(tag)
+            if np.dot(np.array([pose.x, pose.y]) - center[:2], tag['normal_xy']) <= 0:
+                continue
+            h = tag['size_m'] / 2
+            corners = np.array([[-h, h, 0.], [h, h, 0.], [h, -h, 0.], [-h, -h, 0.]]) @ axes.T + center
+            points = (corners - np.array([pose.x, pose.y, 0.])) @ rot
+            px = project_base_points(target, points)
+            if not np.isfinite(px).all() or not ((px >= 1).all() and (px < [639, 479]).all()):
+                continue
+            uv = px.astype(int)
+            side = float(np.mean(np.linalg.norm(px - np.roll(px, 1, axis=0), axis=1)))
+            if side >= 8. and valid[uv[:, 1], uv[:, 0]].all():
+                score += side * side
+                ids.append(int(tag['id']))
+        if ids:
+            candidates.append({'pan': pan, 'score_px2': score, 'predicted_tag_ids': ids})
+    return sorted(candidates, key=lambda x: (-x['score_px2'], abs(x['pan'] - servo[6]), x['pan']))
 
 
 class PairAlignRelook:
@@ -88,7 +112,7 @@ class PairAlignRelook:
         self.vo_pose = None
         report = self.port.own.last_report
         self.log(self.rid, 'align_relook_trigger', now, reason=reason,
-                 count=self.align_look_count, fix_age_s=report.fix_age_s,
+                 count=self.align_look_count, since_tag_s=report.since_tag_s,
                  std_xy_m=report.std_xy_m, std_yaw_rad=report.std_yaw_rad)
         super().set('align_relook_stop', now)
         self.status[1].tick('aligning', now)
@@ -104,14 +128,14 @@ class PairAlignRelook:
 
         own, start = self.port.own, self.align_look_started_at
         r = own.last_report
-        fix = None if r is None else r.last_fix_t
-        return {**accepted_fix_checks(r, now, start),
+        tag = own.pose.loc.last_tag_t
+        return {**accepted_tag_checks(r, now, tag, start),
                 'shared_localizer': self.driver.loc is own.pose.loc,
                 'initialized': r is not None and r.initialized, 'gate_ok': own.gate.ok,
                 'pose_finite': r is not None and all(finite_number(v) for v in (r.x_m, r.y_m, r.yaw_rad)),
                 'std_xy': r is not None and 0 <= r.std_xy_m <= FIX_STD_XY_M,
                 'std_yaw': r is not None and 0 <= r.std_yaw_rad <= FIX_STD_YAW_RAD,
-                'fix_gap': finite_number(fix) and 0 <= now - fix < MAX_FIX_GAP_S - 1e-8,
+                'tag_gap': finite_number(tag) and 0 <= now - tag < MAX_TAG_GAP_S - 1e-8,
                 'sigma_reserve': r is not None and r.std_xy_m < RELOOK_XY_M and r.std_yaw_rad < RELOOK_YAW_RAD}
 
     def _align_fix_ready(self, now):
@@ -121,10 +145,11 @@ class PairAlignRelook:
         r = self.port.own.last_report
         self.log(self.rid, 'align_relook_fix_rejected', now, checks=checks,
                  failed_checks=[k for k, v in checks.items() if not v],
-                 last_fix_t=None if r is None else r.last_fix_t,
+                 accepted_tag_t=self.port.own.pose.loc.last_tag_t,
                  report_t=None if r is None else r.t_est, started_at_s=self.align_look_started_at, **extra)
 
     def _align_relook_stop(self, now, arm_idle):
+        from harness.owncam_localizer import OwnCamLocalizer
         from harness.owncam_drive import LOOK_P20
 
         # Wait for the hold to reach the pose provider and for a valid bounded
@@ -141,7 +166,8 @@ class PairAlignRelook:
         self.log(self.rid, 'align_relook_stopped_pose', now,
                  stopped_at_s=self.align_look_started_at, report_t=self.port.own.last_report.t_est)
         drv = self.driver
-        self.port.own.pose.begin_relocalization(now, self.port.own.servo)
+        drv.loc = OwnCamLocalizer(drv.map, drv.loc.params, seed=int(drv.loc.rng.integers(1 << 30)))
+        drv.loc.command({'t': now, 'kind': 'initial_servo_command', 'pulses': dict(self.port.own.servo)})
         self.arm.queue({**LOOK_P20, 1: self.port.own.servo[1], 6: self.align_pans.pop(0)},
                        now, duration=.8, settle=.6)
         super().set('align_relook', now)
@@ -179,7 +205,7 @@ class PairAlignRelook:
 
     def tick(self, now):
         if self.state == 'align':
-            reason = relook_reason(self.port.own.last_report, now)
+            reason = relook_reason(self.port.own.last_report, now, last_tag_t=self.port.own.pose.loc.last_tag_t)
             if reason:
                 return self._begin_align_relook(now, reason)
         if self.state not in RELOOK_STATES:

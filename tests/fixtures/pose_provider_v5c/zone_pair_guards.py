@@ -14,7 +14,7 @@ from harness.zone_own_contract import pose_report_fresh
 from harness.owncam_time import report_at_or_after
 from harness.zone_own_driver import GuardedDriver
 from harness.zone_own_guards import (GATE_LOADED, GATE_UNLOADED,
-                                     TRUSTED_FIX_AGE_S, OwnPose, ProgressMonitor, commanded_step_m)
+                                     TRUSTED_TAG_AGE_S, OwnPose, ProgressMonitor, commanded_step_m)
 from harness.zone_pair_geometry import PairSweepGuard
 from harness.zone_own_sweep import SweepRecheck
 
@@ -73,11 +73,9 @@ class GuardedPairApproach(GuardedDriver, PairApproachDriverV2):
 
     def _look_step(self, now):
         # OwnCamDriver resets the counter before emitting look_done. Preserve
-        # the prior value before requiring an accepted observation fix.
+        # the prior value for M2's no-tag correction, before trusting the event.
         self._looks_before_step = self.looks_without_fix
-        # Bypass the frozen V2 post-hook: its receipt is provider-specific.
-        # _event below applies the same rule using the common report contract.
-        return super(PairApproachDriverV2, self).tick(now)
+        return super()._look_step(now)
 
     def _start_look(self, now, reason, **kwargs):
         budget = self.sweep_recheck
@@ -87,29 +85,17 @@ class GuardedPairApproach(GuardedDriver, PairApproachDriverV2):
         return commands
 
     def _event(self, now, kind, **detail):
-        # A low sigma alone is not a new observation fix.
-        report = (self._shared_pose.report(now)
-                  if kind == 'look_done' and detail.get('fixed') and self._shared_pose is not None else None)
-        fixed_at = None if report is None else report.last_fix_t
-        missing_fix = (kind == 'look_done' and detail.get('fixed')
-                       and not (fixed_at is not None and self.look_t0 is not None
-                                and fixed_at >= self.look_t0))
-        if missing_fix:
+        # Pair v2 rejects low-sigma looks without an actual tag. Apply that rule
+        # before GuardedDriver lets the progress monitor trust the look.
+        tagless = (kind == 'look_done' and detail.get('fixed')
+                   and not (self.loc.last_tag_t is not None and self.look_t0 is not None
+                            and self.loc.last_tag_t >= self.look_t0))
+        if tagless:
             detail['fixed'] = False
             self.looks_without_fix = self._looks_before_step + 1
         super()._event(now, kind, **detail)
-        if missing_fix:
-            super()._event(now, 'look_no_fix', looks_without_fix=self.looks_without_fix)
-
-    def _relocalize(self, now):
-        self.relocalizations += 1
-        self._shared_pose.begin_relocalization(now, self.servo)
-        self.looks_without_fix = 0
-        self.turn_ref = None
-        self.path = None
-        self._event(now, 'relocalize', count=self.relocalizations)
-        return self._start_look(now, 'relocalize')
-
+        if tagless:
+            super()._event(now, 'look_no_tags', looks_without_fix=self.looks_without_fix)
 
 
 class PairCommandGuard:
@@ -307,8 +293,8 @@ class PairCommandGuard:
                 self.monitor.reset()
                 self.segment, self.last_evidence = ep.controller.seg, None
             evidence = (own.last_obs['frame_id'], report.t_est)
-            if (evidence != self.last_evidence and report.fix_age_s is not None
-                    and report.fix_age_s <= TRUSTED_FIX_AGE_S and report.std_xy_m <= own.gate.profile.low_xy_m):
+            if (evidence != self.last_evidence and report.since_tag_s is not None
+                    and report.since_tag_s <= TRUSTED_TAG_AGE_S and report.std_xy_m <= own.gate.profile.low_xy_m):
                 target = ep.plan['route'][min(ep.controller.seg + 1, len(ep.plan['route']) - 1)]
                 self.monitor.trusted((pose.x, pose.y), math.dist((pose.x, pose.y), target))
                 self.last_evidence = evidence

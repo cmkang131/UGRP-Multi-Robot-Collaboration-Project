@@ -5,6 +5,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PATHS = (
+    'harness/pose_provider.py', 'harness/vision_pose_source.py', 'harness/zone_study_pose_delay.py',
+    'harness/zone_own_driver.py', 'sim/zone_own_scene_provider.py',
     'harness/owncam_time.py', 'harness/zone_own_contract.py',
     'harness/zone_own_executor.py', 'harness/zone_own_status.py',
     'harness/zone_own_perception.py', 'harness/zone_pair_obstruction.py',
@@ -23,21 +25,22 @@ SOURCE_PATHS = (
 
 def grasp_contract():
     value = {
-        'profile': 'zone_pair_grasp_relook_v2',
-        'executor_profile': 'zone_pair_executor_v6_dev', 'status_profile': 'zone_pair_status_v5',
-        'workflow': {'id': 'zone-pair-dev', 'version': '0.4.0'},
-        'pose_time': {'rounding_s': .0001, 'accepted_tag': 'raw accepted capture; strict after align start; report bounds tolerant in both directions; failed conjuncts logged'},
+        'profile': 'zone_pair_grasp_relook_v3',
+        'executor_profile': 'zone_pair_executor_v7_dev', 'status_profile': 'zone_pair_status_v5',
+        'workflow': {'id': 'zone-pair-dev', 'version': '0.5.0'},
+        'pose_time': {'rounding_s': .0001, 'accepted_fix': 'raw accepted capture; strict after align start; report bounds tolerant in both directions; failed conjuncts logged'},
+        'pose_contract': 'raw last_fix_t; fix_age_s; fix_source; std_xy_m/std_yaw_rad; observation_quality; provider-owned expected_observability and relocalization',
         'target_obstruction': 'active own pair job only; coarse order at initial pickup or fresh segment own RGB anchor; full band + colour/geometry/component support; merged/unknown/other objects retained; no collision guard changes',
         'align_relook': {
             'reset': 'hold -> wait for fresh initialized post-stop own report and bounded stationary guard cache -> PF reset; wait counts in existing per-look and cumulative limits',
-            'tag_gap_s': 6., 'early_xy_m': .055, 'early_yaw_deg': 2.5,
+            'fix_gap_s': 6., 'early_xy_m': .055, 'early_yaw_deg': 2.5,
             'max_looks_per_job': 8, 'max_s_per_look': 8., 'max_total_s': 40., 'max_directions_per_look': 3,
-            'selection': 'safe LOOK_P20 pans ranked by static tag projected pixel area; own pose and issued PWM only; actual new accepted own RGB tag required',
-            'resume': 'same shared pose, fresh report, new accepted tag after stop, unchanged 5 cm/3 deg readiness and scheduling reserve; restore beam view; original align deadline retained',
+            'selection': 'safe LOOK_P20 pans ranked by provider expected_observability score; own pose and issued PWM only; actual new accepted own RGB observation required',
+            'resume': 'same shared pose, fresh report, new accepted observation after stop, unchanged 5 cm/3 deg readiness and scheduling reserve; restore beam view; original align deadline retained',
             'status': 'aligning/abort only; existing close readiness barrier holds partner open',
             'basis': 'dev08 own report at 166.3: tag age 6 s, XY sigma .05486 m; 9.3 s before 175.6 HIGH .07004 m. Scheduling reserve is a dev bound, not calibrated safety/completion proof',
         },
-        'relook': 'mandatory at each grasp; shared own.pose/last_report; new tag in this sweep; no VO bypass',
+        'relook': 'mandatory at each grasp; shared own.pose/last_report; new observation fix in this sweep; no VO bypass',
         'max_std_xy_m': .05, 'max_std_yaw_deg': 3., 'base_margin_plus_residual_m': .035,
         'sweeps_max': 2, 'close_wait_s': 20.,
         'attachment': 'own RGB grip-view after issued CLOSED, segment bound; cleared on issued OPEN; post-lift co-motion still required',

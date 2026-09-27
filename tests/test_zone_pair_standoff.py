@@ -42,8 +42,9 @@ def install(ep, obs, *, collision=False):
     own.now, own.last_obs = now, copy.deepcopy(obs)
     own.last_report = replace(own.last_report, t_est=now, x_m=1.5 if collision else 0.,
                               y_m=.4 if collision else 0., yaw_rad=0.,
-                              std_xy_m=.001, std_yaw_rad=.001, since_tag_s=0.)
+                              std_xy_m=.001, std_yaw_rad=.001, since_tag_s=0., fix_age_s=0., last_fix_t=now)
     own.pose.loc.last_tag_t = now
+    own.last_report = replace(own.last_report, last_fix_t=now)
     own.servo = servo(obs)
     ctl.arm.commanded = dict(own.servo)
     return now

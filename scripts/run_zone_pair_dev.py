@@ -34,6 +34,7 @@ PREREG_V4 = PREREG.with_name('prereg_v4.json')
 PREREG_V5 = PREREG.with_name('prereg_v5.json')
 PREREG_V5B = PREREG.with_name('prereg_v5b.json')
 PREREG_V5C = PREREG.with_name('prereg_v5c.json')
+PREREG_V5D = PREREG.with_name('prereg_v5d.json')
 MAP = ROOT / 'maps/zones/zone_wide_door_tags_v2.json'
 CALIBRATION = ROOT / 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'
 PARTICIPANTS = ('r1', 'r2')
@@ -110,8 +111,10 @@ def load_config(args):
         raise ValueError('this driver is for preregistered dev only')
     version = prereg.get('registration_version')
     revision = prereg.get('registration_revision')
-    if revision is not None and (version != 5 or revision not in ('v5b', 'v5c')):
+    if revision is not None and (version != 5 or revision not in ('v5b', 'v5c', 'v5d')):
         raise ValueError('unsupported prereg revision')
+    if revision == 'v5d' and args.execute:
+        raise ValueError('v5d is prepare-only: issue #221 holds dev11/dev12 pending review')
     if version not in (2, 3, 4, 5):
         raise ValueError('use prereg v2 or registered v3/v4/v5; preserve earlier versions')
     if version in (4, 5) and not registered_v3(prereg):
@@ -128,7 +131,8 @@ def load_config(args):
         if {k: v for k, v in prereg['stage_rules'].items() if k != 'admission_diagnostics'} != v2['stage_rules']:
             raise ValueError('v3 must preserve v2 stage rules')
         readiness = prereg.get('execution_readiness', {})
-        if (readiness.get('status') != 'READY_AFTER_SOURCE_FREEZE'
+        readiness_status = 'PREPARE_ONLY_REVIEW_HOLD' if revision == 'v5d' else 'READY_AFTER_SOURCE_FREEZE'
+        if (readiness.get('status') != readiness_status
                 or readiness.get('spawn_change_applied') is not True
                 or readiness.get('startup_policy') != 'relocate_static_dock_x_minus_0_65'):
             raise ValueError('v3 dock decision/readiness missing')
@@ -151,6 +155,8 @@ def load_config(args):
         previous_path = PREREG_V5  # unexecuted v5 remains byte-identical history
     elif revision == 'v5c':
         previous_path = PREREG_V5B  # executed dev09/10 remain immutable
+    elif revision == 'v5d':
+        previous_path = PREREG_V5C  # unexecuted registration preserved byte-for-byte
     previous = {'path': str(previous_path.relative_to(ROOT)), 'sha256': sha_file(previous_path)}
     if prereg.get('supersedes') != previous:
         raise ValueError('previous prereg hash mismatch')
@@ -168,7 +174,7 @@ def load_config(args):
         raise ValueError('seed must be a uint32 integer')
     expected_runs = {2: [('dev03', 901), ('dev04', 902)], 3: [('dev05', 901), ('dev06', 902)],
                      4: [('dev07', 903), ('dev08', 904)], 5: [('dev09', 905), ('dev10', 906)]}[version]
-    if revision == 'v5c':
+    if revision in ('v5c', 'v5d'):
         expected_runs = [('dev11', 907), ('dev12', 908)]
     if [(r['id'], r['seed']) for r in rows] != expected_runs:
         raise ValueError(f'v{version} fixes {expected_runs}; do not reuse prior IDs')

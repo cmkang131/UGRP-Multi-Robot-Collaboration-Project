@@ -96,6 +96,18 @@ class DelayedPoseSource:
         """Future #237 hook: only a preregistered own dock, never a live pose."""
         return self.provider.init_prior(*args, **kwargs)
 
+    def expected_observability(self, pose, pan, static_map):
+        return self.provider.expected_observability(pose, pan, static_map)
+
+    def begin_relocalization(self, now, servo):
+        # Reset on the already released clock. Commands/new frames still wait
+        # the full perception delay; pending pre-reset captures cannot be fixes.
+        self.report(now)
+        self.pending.clear()
+        cutoff = max(0., float(now) - PERCEPTION_DELAY_S)
+        self.provider.begin_relocalization(cutoff, servo)
+        self.on_command({'t': float(now), 'kind': 'initial_servo_command', 'pulses': dict(servo)})
+
     def close(self):
         close = getattr(self.provider, 'close', None)
         if close is not None:

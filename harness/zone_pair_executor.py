@@ -16,7 +16,7 @@ from collections.abc import Mapping
 from harness.zone_own_contract import finite_number
 from harness.zone_pair_status import MAX_SEGMENTS, ARM_S, CONTROL_S, EPS, PROFILE as STATUS_PROFILE, PairStatusChannel, PairStatusEndpoint
 
-PROFILE = 'zone_pair_executor_v6_dev'
+PROFILE = 'zone_pair_executor_v7_dev'
 PAIR = ('r1', 'r2')                 # frozen M2 roles: end_neg / end_pos
 CONTACT_PROFILE = 'cargo_noslip_v1'
 
@@ -133,7 +133,7 @@ def m2_controller(execution, plan, params):
             from harness.zone_pair_geometry import PairSweepGuard
             own = execution.own
             guard = PairSweepGuard(own.guard, plan['beam_geometry'], execution.arguments['role'])
-            return ranked_look_pans(own.map, own.last_report, own.servo, guard)
+            return ranked_look_pans(own.map, own.last_report, own.servo, guard, own.pose)
 
         def preclose_check(self, now, obs):
             return execution.command_guard.preclose_check(now, obs)

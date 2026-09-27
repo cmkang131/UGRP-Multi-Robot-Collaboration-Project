@@ -1,5 +1,8 @@
 # Pair executor dev PHYSICAL 게이트 준비 — 2026-09-27
 
+최신 미실행 후보는 [표식 무관 자세 계약 v5d](landmark_v5d.md)와 [prereg_v5d.json](prereg_v5d.json)이다.
+#221 결정에 따라 dev11·dev12는 prepare-only로 보류한다. 아래 과거 기록과 사전등록은 그대로 보존한다.
+
 ## dev07/dev08 결과 진단 — 소스 8effc2ce, prereg_v4
 
 **tags_temporary · dev · 연구 결과 아님.** 원본을 읽기만 했으며 코드 수정·신규 물리 step·모델 호출·git 커밋 없음.

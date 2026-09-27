@@ -63,6 +63,7 @@ class FailClosedLoc:
             last = self._pf.last_scan_t
             est['since_tag_s'] = None if last is None else round(float(self._pf.t) - float(last), 3)
             est['since_scan_s'] = est['since_tag_s']
+            est.update(last_fix_t=last, fix_age_s=est['since_scan_s'], fix_source=vp.PROVIDER_ID)
         return est
 
 
@@ -110,6 +111,34 @@ class VisionPoseSource:
         self.timing: list[dict] = []
 
     # ------------------------------------------------------------ inputs
+    def begin_relocalization(self, now, servo):
+        """Require a new scan without replacing vision with a different filter.
+
+        A moving robot cannot reuse its episode-start dock as a current prior.
+        Preserve the predicted belief and its uncertainty; invalidate only the
+        previous fix receipt. A new accepted scan and the usual gates are needed.
+        """
+        self.loc.predict_to(now)
+        self.loc._pf.last_scan_t = None
+        self.last_obs = None
+        self.on_command({'t': float(now), 'kind': 'initial_servo_command', 'pulses': dict(servo)})
+
+    def expected_observability(self, pose, pan, static_map):
+        """Visible static wall/door edge columns, using the frozen camera model.
+
+        Ray casting accounts for static occlusion and the door gap. This is a
+        heuristic proposal score, not calibrated information gain or a fix;
+        no image inference, observation update or random draw is performed.
+        """
+        from harness.owncam_drive import LOOK_P20
+
+        vl, _ = vp.load_vis3()
+        geometry = vl.mp.MapGeometry(static_map, include_posts=False)
+        camera = self.loc._pf.column_model_for({**LOOK_P20, 6: pan})
+        rows = vl.expected_rows(geometry, np.array([[pose.x, pose.y, pose.yaw]]), camera)
+        visible = [np.isfinite(r) & (r >= 1.) & (r < 479.) for r in rows]
+        return float(sum(np.count_nonzero(v) for v in visible))
+
     def init_prior(self, mean: Sequence[float], std: Sequence[float] = PRIOR_STD, *, source: str) -> None:
         """Gaussian start prior from setup-only scenario facts (own dock); once, before the first frame."""
         if self.prior is not None or self.counts['frames']:
@@ -193,12 +222,17 @@ class VisionPoseSource:
         est = self.loc.estimate()
         if not est.get('initialized'):
             return PoseReport(t_est=float(now), initialized=False, load_state=load, source=self.source,
-                              last_valid_obs=self.last_obs)
+                              last_valid_obs=self.last_obs, fix_source=vp.PROVIDER_ID,
+                              observation_quality={'accepted': False, 'failure': self.failure})
         return PoseReport(t_est=float(est['t']), initialized=True, x_m=est['x'], y_m=est['y'], yaw_rad=est['yaw'],
                           cov=tuple(tuple(r) for r in est['cov']), std_xy_m=est['std_xy_m'],
                           std_yaw_rad=est['std_yaw_rad'], since_tag_s=est.get('since_tag_s'),
                           last_valid_obs=self.last_obs, n_eff=round(float(est['n_eff']), 1), load_state=load,
-                          source=self.source)
+                          source=self.source, last_fix_t=est['last_fix_t'], fix_age_s=est['fix_age_s'],
+                          fix_source=vp.PROVIDER_ID,
+                          observation_quality={'accepted': est['last_fix_t'] == now,
+                                               'informative_columns': 0 if self.last_obs is None else self.last_obs['n_cols'],
+                                               'diagnostics': copy.deepcopy(pf.diag)})
 
     def record(self) -> dict:
         ms = sorted(r['worker_ms'] for r in self.timing)
