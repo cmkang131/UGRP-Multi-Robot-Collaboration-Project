@@ -1,0 +1,207 @@
+FFFFF......FFFFFFFFFFFFFFFFFFFFFFFFF.FF                                  [100%]
+=================================== FAILURES ===================================
+_______ test_post_setup_start_is_equivalent_and_explained[first_samples] _______
+tests/test_sim_speed_review4.py:33: in test_post_setup_start_is_equivalent_and_explained
+    assert report['verdict'] == 'equivalent', report['evidence_errors']
+E   AssertionError: ['A: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap', 'A: full M1 evidence: eval_only/g... sample or sampling gap', 'B: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap']
+E   assert 'insufficient_evidence' == 'equivalent'
+E     
+E     - equivalent
+E     + insufficient_evidence
+_________ test_post_setup_start_is_equivalent_and_explained[manifest] __________
+tests/test_sim_speed_review4.py:33: in test_post_setup_start_is_equivalent_and_explained
+    assert report['verdict'] == 'equivalent', report['evidence_errors']
+E   AssertionError: ['A: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap', 'A: full M1 evidence: eval_only/g... sample or sampling gap', 'B: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap']
+E   assert 'insufficient_evidence' == 'equivalent'
+E     
+E     - equivalent
+E     + insufficient_evidence
+____________ test_post_setup_start_is_equivalent_and_explained[log] ____________
+tests/test_sim_speed_review4.py:33: in test_post_setup_start_is_equivalent_and_explained
+    assert report['verdict'] == 'equivalent', report['evidence_errors']
+E   AssertionError: ['A: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap', 'A: full M1 evidence: eval_only/g... sample or sampling gap', 'B: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap']
+E   assert 'insufficient_evidence' == 'equivalent'
+E     
+E     - equivalent
+E     + insufficient_evidence
+___________ test_post_setup_start_is_equivalent_and_explained[both] ____________
+tests/test_sim_speed_review4.py:33: in test_post_setup_start_is_equivalent_and_explained
+    assert report['verdict'] == 'equivalent', report['evidence_errors']
+E   AssertionError: ['A: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap', 'A: full M1 evidence: eval_only/g... sample or sampling gap', 'B: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap']
+E   assert 'insufficient_evidence' == 'equivalent'
+E     
+E     - equivalent
+E     + insufficient_evidence
+___________ test_manifest_start_does_not_replace_legacy_log_evidence ___________
+tests/test_sim_speed_review4.py:46: in test_manifest_start_does_not_replace_legacy_log_evidence
+    assert report['equivalent'], report
+E   AssertionError: {'a': '/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_manifest_start_does_not_r0/a', 'b': '/Use...len_a': 2, 'len_b': 2, 'sha256_a': '667c186d4a2e29d2a1b031767a8039d96e1d8bd9fc2b43ee5c60b5bc0623e135', ...}, ...}, ...}
+E   assert False
+__________ test_first_sample_one_step_after_explicit_start_is_allowed __________
+tests/test_sim_speed_review4.py:70: in test_first_sample_one_step_after_explicit_start_is_allowed
+    assert report['equivalent'], report['evidence_errors']
+E   AssertionError: ['A: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap', 'A: full M1 evidence: eval_only/g... sample or sampling gap', 'B: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap']
+E   assert False
+____ test_invalid_explicit_start_cannot_fall_back_to_samples[None-manifest] ____
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1069760c0>)
+______ test_invalid_explicit_start_cannot_fall_back_to_samples[None-log] _______
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x106977030>)
+____ test_invalid_explicit_start_cannot_fall_back_to_samples[True-manifest] ____
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1068bec20>)
+______ test_invalid_explicit_start_cannot_fall_back_to_samples[True-log] _______
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1068bf6b0>)
+___ test_invalid_explicit_start_cannot_fall_back_to_samples[1.3003-manifest] ___
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1068bc2b0>)
+_____ test_invalid_explicit_start_cannot_fall_back_to_samples[1.3003-log] ______
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x106904a00>)
+____ test_invalid_explicit_start_cannot_fall_back_to_samples[-1.0-manifest] ____
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1069a41e0>)
+______ test_invalid_explicit_start_cannot_fall_back_to_samples[-1.0-log] _______
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x106906740>)
+____ test_invalid_explicit_start_cannot_fall_back_to_samples[nan-manifest] _____
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1069072a0>)
+_______ test_invalid_explicit_start_cannot_fall_back_to_samples[nan-log] _______
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1069060c0>)
+____ test_invalid_explicit_start_cannot_fall_back_to_samples[inf-manifest] _____
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1066cf9f0>)
+_______ test_invalid_explicit_start_cannot_fall_back_to_samples[inf-log] _______
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1069042b0>)
+___ test_invalid_explicit_start_cannot_fall_back_to_samples[value6-manifest] ___
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x106906a80>)
+_____ test_invalid_explicit_start_cannot_fall_back_to_samples[value6-log] ______
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1069a5f20>)
+___ test_invalid_explicit_start_cannot_fall_back_to_samples[value7-manifest] ___
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1069a7100>)
+_____ test_invalid_explicit_start_cannot_fall_back_to_samples[value7-log] ______
+tests/test_sim_speed_review4.py:85: in test_invalid_explicit_start_cannot_fall_back_to_samples
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x1069a4e10>)
+_ test_fallback_requires_agreeing_first_frame_and_gt[missing_time-inputs/frames.jsonl] _
+tests/test_sim_speed_review4.py:112: in test_fallback_requires_agreeing_first_frame_and_gt
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x1069a7510>)
+_ test_fallback_requires_agreeing_first_frame_and_gt[missing_time-eval_only/gt_trajectory.jsonl] _
+tests/test_sim_speed_review4.py:112: in test_fallback_requires_agreeing_first_frame_and_gt
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x1068bd2f0>)
+_ test_fallback_requires_agreeing_first_frame_and_gt[invalid_time-inputs/frames.jsonl] _
+tests/test_sim_speed_review4.py:112: in test_fallback_requires_agreeing_first_frame_and_gt
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x1068bc040>)
+_ test_fallback_requires_agreeing_first_frame_and_gt[invalid_time-eval_only/gt_trajectory.jsonl] _
+tests/test_sim_speed_review4.py:112: in test_fallback_requires_agreeing_first_frame_and_gt
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x1066cf9f0>)
+_ test_fallback_requires_agreeing_first_frame_and_gt[missing_first_sample-inputs/frames.jsonl] _
+tests/test_sim_speed_review4.py:112: in test_fallback_requires_agreeing_first_frame_and_gt
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x1068bc860>)
+_ test_fallback_requires_agreeing_first_frame_and_gt[missing_first_sample-eval_only/gt_trajectory.jsonl] _
+tests/test_sim_speed_review4.py:112: in test_fallback_requires_agreeing_first_frame_and_gt
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x1069771d0>)
+___________ test_conflicting_manifest_and_log_start_is_insufficient ____________
+tests/test_sim_speed_review4.py:123: in test_conflicting_manifest_and_log_start_is_insufficient
+    assert any('recording start' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_conflicting_manifest_and_log_start_is_insufficient.<locals>.<genexpr> at 0x106977b90>)
+________________ test_duplicate_start_markers_are_insufficient _________________
+tests/test_sim_speed_review4.py:134: in test_duplicate_start_markers_are_insufficient
+    assert any('duplicate' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_duplicate_start_markers_are_insufficient.<locals>.<genexpr> at 0x1069742b0>)
+______ test_runs_with_different_recording_starts_are_insufficient[False] _______
+tests/test_sim_speed_review4.py:174: in test_runs_with_different_recording_starts_are_insufficient
+    assert eq.compare(b, b)['equivalent']
+E   assert False
+_______ test_runs_with_different_recording_starts_are_insufficient[True] _______
+tests/test_sim_speed_review4.py:177: in test_runs_with_different_recording_starts_are_insufficient
+    assert any('recording start' in e and 'A/B' in e for e in report['evidence_errors'])
+E   assert False
+E    +  where False = any(<generator object test_runs_with_different_recording_starts_are_insufficient.<locals>.<genexpr> at 0x106977030>)
+=========================== short test summary info ============================
+FAILED tests/test_sim_speed_review4.py::test_post_setup_start_is_equivalent_and_explained[first_samples]
+FAILED tests/test_sim_speed_review4.py::test_post_setup_start_is_equivalent_and_explained[manifest]
+FAILED tests/test_sim_speed_review4.py::test_post_setup_start_is_equivalent_and_explained[log]
+FAILED tests/test_sim_speed_review4.py::test_post_setup_start_is_equivalent_and_explained[both]
+FAILED tests/test_sim_speed_review4.py::test_manifest_start_does_not_replace_legacy_log_evidence
+FAILED tests/test_sim_speed_review4.py::test_first_sample_one_step_after_explicit_start_is_allowed
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[None-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[None-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[True-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[True-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[1.3003-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[1.3003-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[-1.0-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[-1.0-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[nan-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[nan-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[inf-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[inf-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[value6-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[value6-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[value7-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[value7-log]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[missing_time-inputs/frames.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[missing_time-eval_only/gt_trajectory.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[invalid_time-inputs/frames.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[invalid_time-eval_only/gt_trajectory.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[missing_first_sample-inputs/frames.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[missing_first_sample-eval_only/gt_trajectory.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_conflicting_manifest_and_log_start_is_insufficient
+FAILED tests/test_sim_speed_review4.py::test_duplicate_start_markers_are_insufficient
+FAILED tests/test_sim_speed_review4.py::test_runs_with_different_recording_starts_are_insufficient[False]
+FAILED tests/test_sim_speed_review4.py::test_runs_with_different_recording_starts_are_insufficient[True]
+32 failed, 7 passed in 1.16s

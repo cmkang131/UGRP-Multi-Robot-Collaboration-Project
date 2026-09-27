@@ -1,0 +1,15 @@
+{
+ "schema": "ugrp.vision_loc.dev_plan_amendment.v3",
+ "amends": "dev_plan_v3.json + dev_plan_v3_amendment1.json",
+ "registered": "2026-09-27, Kiro, after a3 on vl-dev-s909/s910/s911 and a3b on s910/s911; before a3c/a3d ran",
+ "observed_on_dev": "stuck mode rescues the wedged dev s909 (a3: lost frames 2870 -> 10, all p90 2.18 -> 0.10 m) but costs normal tracking (s910 lost 45 (a3) / 18 (a3b) frames, s911 p50 4.7 -> 8.6 / 7.1 cm). The weighted mean of all particles mixes a trailing stuck minority into the pose.",
+ "variants": {
+  "a3c_open_scale_stuck_low_dom": "a3b + reported pose from the dominant motion mode (robust.estimate = dominant)",
+  "a3d_open_scale_stuck_dom": "a3 + dominant-mode pose"
+ },
+ "rule_changes": [
+  "Stuck step: the candidate is the best of a3, a3b, a3c, a3d by (lost, then L, then A; ties within 1 % of frames / 0.2 cm go to the variant listed later, i.e. the dominant-mode estimate and the lower share).",
+  "AMCL step: the two AMCL variants are the adopted stuck variant (or the base, if none) + {Nav2 alphas 0.001/0.1 uniform injection; 10 % cap, 20 % uniform / 80 % local std 0.3 m, 0.3 m, 0.35 rad}. Configs are created with those exact blocks when the stuck step is decided, before they run."
+ ],
+ "compute_note": "The machine is saturated (load average 40-100 from other work). The grid session running a4/a5 on the round-2 dev episodes was stopped (kiro-vl3-grid1, 2026-09-26T23:44Z) because a4/a5 build on a3, which amendment 1 only evaluates if a3 is adopted; their partial logs are kept."
+}
