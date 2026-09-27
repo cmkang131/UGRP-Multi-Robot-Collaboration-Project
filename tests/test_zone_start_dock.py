@@ -39,6 +39,28 @@ def prereg():
     return json.loads(dev.PREREG_V3.read_text())
 
 
+# Reviewed source revisions that reached main after prereg_v3 was registered. The registration keeps its
+# pinned hashes, so the runner correctly refuses to prepare/execute v3 from a tree that carries them.
+POST_REGISTRATION_SOURCES = {  # PR #208 environment v3 (additive walls_v3/tags_v3 registries, cargo profile name)
+    'sim/zone_arena.py': {'191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8'},
+    'sim/zone_landmarks.py': {'2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1'},
+    'sim/zone_scene.py': {'ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714'},
+}
+
+
+def registered_tree():
+    """True when this tree equals the registered scene contract; otherwise only reviewed source revisions differ."""
+    current, registered = dev.scene_contract(), prereg()['scene_contract']
+    if current == registered:
+        return True
+    moved = {k for k, v in registered['source_sha256'].items() if current['source_sha256'].get(k) != v}
+    assert set(current['source_sha256']) == set(registered['source_sha256'])
+    assert all(current['source_sha256'][k] in POST_REGISTRATION_SOURCES.get(k, ()) for k in moved), moved
+    strip = lambda c: {k: v for k, v in c.items() if k not in ('source_sha256', 'sha256')}
+    assert strip(current) == strip(registered)
+    return False
+
+
 def scene_for(case, map_id=MAP_ID):
     return make_scene({'map': map_id, 'seed': case['seed'], 'goal': {'B': {'cyan': 1}},
                        'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam',
@@ -137,7 +159,7 @@ def test_registered_v3_keeps_all_v2_scoring_and_single_variable():
     p, v2 = prereg(), json.loads(dev.PREREG.read_text())
     assert p['status'] == 'REGISTERED' and p['execution_source_sha'] is None
     assert p['execution_status'] == 'not_run'
-    assert p['scene_contract'] == dev.scene_contract()
+    registered_tree()
     for k in ('criteria', 'planned_setdown', 'limits', 'timing', 'contact_profile_contract', 'safety_coverage'):
         assert p[k] == v2[k], k
     assert {k: v for k, v in p['stage_rules'].items() if k != 'admission_diagnostics'} == v2['stage_rules']
@@ -197,6 +219,11 @@ raise SystemExit(main(sys.argv[1:]))
     argv = ['--prereg', str(dev.PREREG_V3), '--run-id', run_id, '--output', str(out)]
     result = subprocess.run([sys.executable, '-c', code, *argv], cwd=dev.ROOT, text=True, capture_output=True,
                             env={**os.environ, 'OMP_NUM_THREADS': '1', 'PYTHONDONTWRITEBYTECODE': '1'})
+    if not registered_tree():
+        # Sources moved after registration: v3 must be prepared/executed from its pinned source only.
+        assert result.returncode != 0 and 'scene contract/hash mismatch' in result.stderr, result.stderr
+        assert not out.exists()
+        return
     assert result.returncode == 0, result.stderr
     manifest = json.loads((out / 'manifest.json').read_text())
     assert manifest['state'] == 'prepared_not_executed' and manifest['applied'] is None
