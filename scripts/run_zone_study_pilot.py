@@ -8,6 +8,7 @@ explicit, existing SQLite budget. Expansion requires complete reconciliation.
 from __future__ import annotations
 
 import argparse
+from dataclasses import asdict
 from importlib.metadata import version as package_version
 import json
 import os
@@ -21,22 +22,24 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from harness.gemini_proxy import _to_gemini_multi_image_messages
-from harness.llm_completion import COMPLETION_POLICY, PROXY_COMPLETION_LIMITATION, completion_aggregate
+from harness.llm_completion import (ACCEPTED_UNVERIFIED_LABEL, COMPLETION_POLICY,
+                                    PROXY_COMPLETION_LIMITATION, completion_aggregate)
 from harness.zone_study_eval import model_aggregate
 from harness.zone_event_scheduler import CallPolicy, EventScheduler, PendingCall, TransportFailure
-from harness.zone_pilot_budget import (EFFECTIVE, REQUESTED, PilotBudget, canonical, sha, token_envelope,
-                                       usage_total)
+from harness.zone_pilot_budget import (ATTEMPT_CAP, TOKEN_CAP, UPSTREAM_BOUND, EFFECTIVE, REQUESTED,
+                                       PilotBudget, canonical, sha, token_envelope, usage_total)
+from harness.rgb_execution_bundle import RUNNABLE_ID, REGISTRY, load_bundle, source_closure
 from harness.zone_pilot_ledger import PilotSendLedger, proxy_profile, runtime_identity
 from harness.zone_pilot_reconcile import reconcile, require_preflight
 from harness.zone_sim_cost import Attempt
-from harness.zone_study_contract import MAIN_CONDITIONS, digest
+from harness.zone_study_contract import MAIN_CONDITIONS, condition_manifest, digest, registry_sha256
 from harness.zone_study_inputs import provenance
 from harness.zone_study_llm_transport import ModelCallTransport, gemini_client_factory
 from harness import zone_study_offline as off
 from harness import zone_study_prompts_ko as pk
 from harness.zone_study_scenarios import load as load_scenario, scenario_ids
 
-VERSION = 'ugrp.zone_study_adapter_pilot.v1'
+VERSION = 'ugrp.zone_study_adapter_pilot.v2'
 
 
 def write_new(path, value):
@@ -56,6 +59,9 @@ def source_identity(profile):
     # Content as well as git SHA: uncommitted source cannot impersonate the
     # committed version, and fixture/image changes invalidate the budget seal.
     paths = {ROOT / 'scripts/run_zone_study_pilot.py', ROOT / 'configs/simulation_workflows.json'}
+    bundle, bundle_sha = load_bundle(RUNNABLE_ID)
+    paths.update(ROOT / name for name in source_closure())
+    paths.add(ROOT / REGISTRY / (RUNNABLE_ID + '.json'))
     for pattern in ('harness/*.py', 'sim/*.py', 'configs/zone_study_scenarios/*.json', 'maps/**/*.json',
                     'tests/fixtures/markerless_box/blue_floor_release/*'):
         paths.update(p for p in ROOT.glob(pattern) if p.is_file())
@@ -64,6 +70,10 @@ def source_identity(profile):
                           text=True, capture_output=True).stdout.strip()
     return {'runner': VERSION, 'pipeline': 'AdapterTrial', 'client_factory': 'gemini_client_factory',
             'source_head': head, 'source_root': str(ROOT), 'files': files, 'proxy': profile,
+            'rgb_execution_bundle': {'id': RUNNABLE_ID, 'sha256': bundle_sha,
+                                     'status': bundle['status'],
+                                     'effective': bundle['effective'],
+                                     'physical_validation': 'unverified; pilot does not execute physics'},
             'python': sys.version, 'pillow': package_version('Pillow'),
             'effective_settings': EFFECTIVE, 'requested_settings': REQUESTED,
             'completion_policy': COMPLETION_POLICY,
@@ -73,15 +83,54 @@ def source_identity(profile):
             'input_mode': 'stored_wrist_rgb_and_static_map_no_physics'}
 
 
+def pilot_call_policy(stage):
+    return CallPolicy(max_calls_per_actor=1 if stage == 'preflight' else 2,
+                      max_http_attempts_per_actor=1 if stage == 'preflight' else 3,
+                      max_attempts_total=1 if stage == 'preflight' else 12,
+                      max_retries=0 if stage == 'preflight' else 1,
+                      idle_reask_s=999., busy_reask_s=999., trigger_on_message=False)
+
+
+def pilot_contract(scenario, seed, stage):
+    """Freeze the review checklist from actual input builders; never sends."""
+    conditions = []
+    for condition in MAIN_CONDITIONS:
+        trial = off.OfflineTrial(scenario, condition=condition, seed=seed)
+        requests = []
+        for actor in (trial.actors[:1] if stage == 'preflight' else trial.actors):
+            prepared = trial.prepare_call(PendingCall(call_id='contract-' + actor, actor=actor,
+                                                      trigger='start', started_sim_s=0.))
+            requests.append({'actor': actor, **pk.archive_request(prepared.request)})
+        conditions.append({'condition': condition_manifest(condition, seed),
+                           'scenario': trial.source.manifest(), 'leader_id': trial.leader_id,
+                           'wrist_originals': trial.library.manifest(), 'initial_inputs': requests})
+    return {'execution_bundle_id': RUNNABLE_ID, 'stage': stage, 'seed': seed,
+            'conditions': conditions, 'registry_sha256': registry_sha256(),
+            'leader_rule': 'r1/r2/r3 indexed by seed % 3; hub-and-spoke, one robot also leads',
+            'prompt_version': pk.PROMPT_VERSION,
+            'protocol_version': off.zp.PROTOCOL_VERSION,
+            'preprocessing_files_sha256': {name: sha((ROOT / name).read_bytes()) for name in (
+                'harness/zone_study_prompts_ko.py', 'harness/zone_study_inputs.py',
+                'harness/zone_study_protocol.py', 'harness/gemini_proxy.py')},
+            'calls': {'preflight_posts_per_condition': 1, 'client_retries': 0,
+                      'scheduler_policy': asdict(pilot_call_policy(stage)),
+                      'cohort_initial_posts': 12, 'cohort_max_posts': 24,
+                      'client_timeout_s': REQUESTED['timeout'],
+                      'upstream_attempts_reserved_per_post': UPSTREAM_BOUND,
+                      'global_attempt_cap': ATTEMPT_CAP, 'global_token_cap': TOKEN_CAP,
+                      'refunds': 0, 'existing_send_budget': 'preserved across all runs and stages'},
+            'sim_cost': {'parameters': trial.params.to_dict(), 'sha256': trial.params.digest(),
+                         'input_policy': pk.FIXED_PROMPT_POLICY, 'tokenizer': pk.TOKENIZER_VERSION,
+                         'output_policy': 'actual_reply_text_including_rejected_generations'},
+            'validation_scope': 'stored wrist RGB adapter only; no physics or verified upstream STOP',
+            'physical_success': None}
+
+
 class AdapterTrial(off.OfflineTrial):
     """Reuse validated A/C/D input/channel pipeline; never fixture output costs."""
     def __init__(self, scenario, *, condition, seed, stage, run_id, budget, profile,
                  runtime, output, proxy_log=None, wire=None):
-        policy = CallPolicy(max_calls_per_actor=1 if stage == 'preflight' else 2,
-                            max_http_attempts_per_actor=1 if stage == 'preflight' else 3,
-                            max_attempts_total=1 if stage == 'preflight' else 12,
-                            max_retries=0 if stage == 'preflight' else 1,
-                            idle_reask_s=999., busy_reask_s=999., trigger_on_message=False)
+        policy = pilot_call_policy(stage)
         super().__init__(scenario, condition=condition, seed=seed, run_id=run_id,
                          policy=policy, horizon_s=120., code_sha=budget.meta['identity']['source_head'])
         self.stage = stage
@@ -145,7 +194,7 @@ class AdapterTrial(off.OfflineTrial):
                 'sim_cost': self.cost_summary()}
 
 
-def dry_run(out, stage, scenario, seed, profile):
+def dry_run(out, stage, scenario, seed, profile, *, limitation_acknowledged=False):
     plans = []
     for condition in MAIN_CONDITIONS:
         trial = off.OfflineTrial(scenario, condition=condition, seed=seed)
@@ -166,11 +215,16 @@ def dry_run(out, stage, scenario, seed, profile):
     value = {'schema': VERSION, 'mode': 'dry_run', 'stage': stage, 'model_calls': 0,
              'completion_policy': COMPLETION_POLICY,
              'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
+             'upstream_finish_limitation_acknowledged': limitation_acknowledged,
+             'accepted_upstream_unverified_calls': 0,
+             'source_identity': source_identity(profile),
+             'pilot_contract': pilot_contract(scenario, seed, stage),
+             'proxy_runtime': None,
              'network_calls': 0, 'effective_settings': EFFECTIVE, 'proxy': profile,
              'preflight_calls': 4, 'cohort_initial_calls': 12, 'cohort_max_proxy_posts': 24,
              'preflight_reserved_attempts_bound': 8,
              'preflight_reserved_tokens_bound': sum(p['reservation']['reserved_tokens'] for p in plans),
-             'plans': plans, 'cohort_gate': 'four_successes_and_full_upstream_reconciliation_required'}
+             'plans': plans, 'cohort_gate': 'four_stop_schema_valid_calls_plus_explicit_limitation_acknowledgement_and_full_billing_reconciliation'}
     write_new(out / 'manifest.json', value)
     return value
 
@@ -189,6 +243,8 @@ def main(argv=None):
     parser.add_argument('--proxy-pid', type=int)
     parser.add_argument('--proxy-log', type=Path, default=Path.home() / '.hermes/logs/gemini-subscription-proxy.log')
     parser.add_argument('--preflight-manifest', type=Path)
+    parser.add_argument('--acknowledge-upstream-finish-limitation', action='store_true',
+                        help='accept proxy stop + valid schema without claiming verified upstream STOP')
     parser.add_argument('--upstream-telemetry', type=Path)
     parser.add_argument('--reconcile-only', action='store_true')
     parser.add_argument('--recover-run', help='with --reconcile-only: close an interrupted driver after terminal evidence')
@@ -221,7 +277,8 @@ def main(argv=None):
         return 0
     scenario = load_scenario(args.scenario)
     if not args.execute:
-        value = dry_run(out, args.stage, scenario, args.seed, profile)
+        value = dry_run(out, args.stage, scenario, args.seed, profile,
+                        limitation_acknowledged=args.acknowledge_upstream_finish_limitation)
         print(json.dumps({'mode': 'dry_run', 'network_calls': 0, 'manifest': str(out / 'manifest.json'),
                           'reserved_tokens_bound': value['preflight_reserved_tokens_bound']}))
         return 0
@@ -249,6 +306,10 @@ def main(argv=None):
     run = {'schema': VERSION, 'run_id': run_id, 'mode': 'real_adapter', 'stage': args.stage,
            'completion_policy': COMPLETION_POLICY,
            'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
+           'upstream_finish_limitation_acknowledged': (args.acknowledge_upstream_finish_limitation
+                                                      or args.stage == 'cohort'),
+           'accepted_upstream_unverified_calls': 0,
+           'pilot_contract': pilot_contract(scenario, args.seed, args.stage),
            'pilot_id': budget.meta['pilot_id'], 'budget_file': str(budget.path),
            'source_identity': identity, 'proxy_runtime': runtime, 'proxy': profile,
            'effective_settings': EFFECTIVE, 'requested_settings': REQUESTED,
@@ -270,6 +331,7 @@ def main(argv=None):
             completion = completion_aggregate(result['calls'])
             successes = completion['successful_calls']
             row = {'trial_id': trial_id, 'condition': condition, 'successful_calls': successes,
+                   'accepted_upstream_unverified_calls': completion['accepted_upstream_unverified_calls'],
                    'completion': completion,
                    'sent': trial.send_ledger.sends(), 'trial_path': str(out / condition / 'trial.json'),
                    'trial_sha256': digest_file}
@@ -289,6 +351,8 @@ def main(argv=None):
         run['global_budget'] = {'reserved_attempts': after['reserved_attempts'],
                                 'reserved_tokens': after['reserved_tokens'], 'refunds': 0}
         run['call_links'] = [s for s in after['sends'] if s['run_id'] == run_id]
+        run['accepted_upstream_unverified_calls'] = sum(
+            t['accepted_upstream_unverified_calls'] for t in run['trials'])
         run['status'] = 'failed' if failed else 'recorded'
         report = reconcile(after, telemetry)
         run['reconciliation_complete'] = report['complete']
@@ -296,6 +360,8 @@ def main(argv=None):
         digest_file = write_new(out / 'manifest.json', run)
         budget.finish_run(run_id, status=run['status'], manifest_sha256=digest_file)
     print(json.dumps({'manifest': str(out / 'manifest.json'), 'status': run['status'],
+                      'accepted_upstream_unverified_calls': run['accepted_upstream_unverified_calls'],
+                      'accepted_upstream_unverified_label': ACCEPTED_UNVERIFIED_LABEL,
                       'reconciliation_complete': report['complete']}))
     return 0 if not failed and report['complete'] else 2
 

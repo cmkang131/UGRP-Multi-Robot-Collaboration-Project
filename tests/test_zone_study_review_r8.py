@@ -406,7 +406,7 @@ def test_offline_cli_preflight_records_chain_and_blocks_cohort_without_telemetry
     budget = pb.PilotBudget.create(path, identity=IDENTITY)
     preflight = tmp_path / 'preflight'
     # Four successes still return 2 until per-upstream evidence exists.
-    assert runner.main(['--execute', '--budget-file', str(path), '--output', str(preflight)]) == 2
+    assert runner.main(['--execute', '--acknowledge-upstream-finish-limitation', '--budget-file', str(path), '--output', str(preflight)]) == 2
     manifest = json.loads((preflight / 'manifest.json').read_text())
     assert len(manifest['trials']) == 4
     assert [t['sent'] for t in manifest['trials']] == [1] * 4

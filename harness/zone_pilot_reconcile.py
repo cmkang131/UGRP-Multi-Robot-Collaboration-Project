@@ -11,7 +11,7 @@ from pathlib import Path
 
 from harness.zone_pilot_budget import sha, usage_total
 from harness.llm_completion import (COMPLETION_POLICY, PROXY_COMPLETION_LIMITATION,
-                                     normal_completion, successful_call)
+                                     completion_aggregate, normal_completion, successful_call)
 
 
 def reconcile(snapshot, telemetry=()):
@@ -121,10 +121,15 @@ def require_preflight(snapshot, report, manifest):
     if (manifest.get('completion_policy') != COMPLETION_POLICY
             or manifest.get('completion_limitation') != PROXY_COMPLETION_LIMITATION):
         raise ValueError('preflight requires current completion policy and proxy limitation')
+    if manifest.get('upstream_finish_limitation_acknowledged') is not True:
+        raise ValueError('preflight requires explicit upstream finish limitation acknowledgement')
     trials = manifest.get('trials', [])
     if (len(trials) != 4 or {t['condition'] for t in trials} != set(MAIN_CONDITIONS)
-            or any(t['successful_calls'] != 1 or t['sent'] != 1 for t in trials)):
+            or any(t['successful_calls'] != 1 or t['sent'] != 1
+                   or t.get('accepted_upstream_unverified_calls') != 1 for t in trials)):
         raise ValueError('preflight requires exactly one successful call in each of four conditions')
+    if manifest.get('accepted_upstream_unverified_calls') != 4:
+        raise ValueError('preflight requires four upstream-unverified accepted calls')
     run = next((r for r in snapshot['runs'] if r['run_id'] == manifest['run_id']), None)
     raw = json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2).encode() + b'\n'
     if not run or run.get('manifest_sha256') != sha(raw) or run['status'] != 'recorded':
@@ -145,6 +150,7 @@ def require_preflight(snapshot, report, manifest):
             valid = (sha(raw) == trial['trial_sha256']
                      and stored['trial_id'] == trial['trial_id'] and stored['condition'] == trial['condition']
                      and len(calls) == len(sends) == 1 and successful_call(calls[0])
+                     and trial.get('completion') == completion_aggregate(calls)
                      and normal_completion(sends[0].get('completion'))
                      and sends[0]['status'] == 'response_received' and not sends[0].get('late')
                      and calls[0]['cost_terms']['completion'] == sends[0]['completion'])

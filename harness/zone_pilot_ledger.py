@@ -26,7 +26,7 @@ def proxy_profile(source, url):
         raise ValueError('proxy source version is not audited; review settings/retry bound before running')
     return {'source_path': str(source), 'source_sha256': digest, 'version': 'sha256:' + digest,
             'url': url, 'requested_settings': REQUESTED, 'effective_settings': EFFECTIVE,
-            'internal_429_retry': True, 'upstream_attempts_per_post_bound': 2,
+            'internal_429_retry': True, 'upstream_timeout_s': 300, 'upstream_attempts_per_post_bound': 2,
             'completion_policy': COMPLETION_POLICY,
             'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
             'accounting': 'option_b_full_two_attempt_reservation_no_refunds'}

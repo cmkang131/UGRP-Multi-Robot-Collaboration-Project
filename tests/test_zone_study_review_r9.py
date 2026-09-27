@@ -312,7 +312,7 @@ def run_mock_cli(tmp_path, monkeypatch, *, failing_condition=None):
     monkeypatch.setattr(runner, 'PilotSendLedger', ledger)
     budget = PilotBudget.create(tmp_path / 'budget.sqlite', identity=identity)
     out = tmp_path / 'preflight'
-    assert runner.main(['--execute', '--budget-file', str(budget.path), '--output', str(out)]) == 2
+    assert runner.main(['--execute', '--acknowledge-upstream-finish-limitation', '--budget-file', str(budget.path), '--output', str(out)]) == 2
     return budget, json.loads((out / 'manifest.json').read_text())
 
 

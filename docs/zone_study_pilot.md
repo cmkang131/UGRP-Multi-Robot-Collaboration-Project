@@ -1,4 +1,4 @@
-# 구역 연구 실어댑터 파일럿 (PR 194, R8–R9)
+# 구역 연구 실어댑터 파일럿 (PR 194, R8–R10)
 
 이 경로는 저장된 자기 wrist RGB·정적 지도·자기 발행 명령 이력으로 실제
 `GeminiProxyCompleter`/프로토콜/SIM 스케줄러의 연결을 검사한다. 물리를 실행하지
@@ -58,7 +58,13 @@ R8 대응은 사용자 지정 **선택 (b)**다. 프록시의 짧은 429 재시�
 끄거나 설치 파일에 계측 코드를 추가하지 않고, proxy POST마다 최대 2회분을 선차감한다.
 장부 1건이 upstream 1건 또는 과금 1건이라는 주장을 하지 않는다.
 
-## 응답 종료 판정 (R9)
+## 응답 종료 판정 (R10, 이슈 #222 코디네이터 정책)
+
+설치 프록시는 수정하지 않으며 사본 프록시도 만들지 않는다. 코디네이터가 정한
+정책에 따라 **proxy `stop` + 완전한 조건별 스키마**를 통과한 응답만 채택한다.
+모든 채택은 `upstream_finish_verified=false`다(기존 호환 필드
+`upstream_finish_reason_verified=false`도 유지). 가려진 upstream `SAFETY`,
+`RECITATION`, 종료 이유 누락을 정상 `STOP`과 구별할 수 없다는 한계를 인정한 정책이다.
 
 연구 transport는 **proxy 응답의 `finish_reason=stop`**만 프로토콜 파서에 넘긴다.
 `length`, `content_filter`, `tool_calls`, 알 수 없는 값·누락은 유효한 행동 JSON과
@@ -69,7 +75,7 @@ usage가 있어도 실패 호출이다. 행동·메시지 relay 전에 거절하
 `promptFeedback.blockReason`, `safetyRatings[].blocked`를 발견하면 거절한다.
 통과한 본문은 기존 조건별 프로토콜 검증까지 성공해야 행동·메시지로 채택한다.
 
-원래 종료 이유와 거절 사유는 client → transport → scheduler →
+관측된 proxy 종료 이유와 남아 있는 거절 사유는 client → transport → scheduler →
 `calls[].cost_terms.completion` → `model_evaluation.completion`으로 보존한다.
 wire ledger·SQLite 정산·request archive·manifest `call_links`·reconciliation에도
 같은 `completion`을 남긴다. 늦게 도착하거나 SIM horizon에서 검열된 응답도
@@ -78,6 +84,12 @@ wire ledger·SQLite 정산·request archive·manifest `call_links`·reconciliati
 검열되지 않은 호출 수로 실패도 포함하며 성공 수가 아니다. 과거 종료 이유 미기록은
 `unknown`으로 남기며 성공으로 추정하지 않는다. 코호트 진입 시 hashed trial 원문과
 영속 ledger의 정상 종료도 다시 대조한다. 과금 대조 `complete=true` 자체는 응답 성공이 아니다.
+
+파일럿 manifest의 전체/조건별 `accepted_upstream_unverified_calls`와 평가의
+`completion.accepted_upstream_unverified_calls`는 **정상 채택(상류 미검증)**을 따로 센다.
+CLI 보고에도 이 필드와 한국어 라벨을 출력한다. `successful_calls`는 같은 채택 수의
+호환 필드다. `failed_or_unadmitted_calls`에는 스키마 위반·검열·기록 미상도 포함한다.
+완료 메타데이터만 정상이어도 최종 호출 상태가 `ok`가 아니면 채택 수는 0이다.
 
 **설치 프록시의 남는 한계:** 감사한 `handle_complete`는 upstream `MAX_TOKENS`만
 `length`로 보존하고 `SAFETY` 등 다른 이유는 기본 `stop`으로 덮어쓴다.
@@ -88,6 +100,38 @@ wire ledger·SQLite 정산·request archive·manifest `call_links`·reconciliati
 유효한 응답의 수**이며 upstream STOP 확인이나 물리 성공의 수가 아니다.
 9/25 파일럿도 같은 프록시의 종료 이유 손실 가능성이 있으며 기존 frozen 기록을
 수정하거나 소급하여 upstream 정상 완료라고 판정하지 않는다.
+
+코호트 진입에는 preflight manifest의
+**`upstream_finish_limitation_acknowledged`가 JSON boolean `true`**여야 한다.
+실행자가 preflight에 `--acknowledge-upstream-finish-limitation`을 명시하면 기록된다.
+누락·`false`·문자열·숫자는 거절한다. 기본 dry-run/미인정 preflight는 `false`이며,
+이미 저장된 manifest를 편집해서 인정할 수 없다(공유 예산에 원본 manifest hash가 봉인됨).
+코호트 manifest는 진입 검사에서 확인한 preflight의 인정을 계승한다.
+인정 필드는 과금 대조나 4조건 각각의 성공 호출·장부 검사를 생략하지 않는다.
+
+## v62와 파일럿 manifest의 고정 목록
+
+`rgb-standard-dispatch-v62`는 v61을 부모로 등록했다. v61 JSON은 바이트 그대로
+은퇴 목록에 남는다. RGB 번들의 물리·카메라·명령 설정은 v61과 같으며,
+새 공통 `llm_completion.py`를 포함한 전체 Python closure 174개와 파일 hash를 고정한다.
+`RUNNABLE_ID`, CI `verify-current`, dispatch/dispatch-skills workflow는 v62/1.62.0이다.
+파일럿 workflow는 1.1.0, manifest schema는 `ugrp.zone_study_adapter_pilot.v2`다.
+
+| 고정 대상 | 저장 위치 |
+|---|---|
+| 최종 실행 SHA·전체 소스/입력 파일 hash | `source_identity.source_head`, `source_identity.files`; RGB closure의 scripts도 포함하고 실제 실행 전 커밋·깨끗한 tracked 소스를 강제 |
+| 실행 번들 ID·JSON hash·물리/카메라/명령·미검증 상태 | `source_identity.rgb_execution_bundle`; bundle의 `effective`, `status`, `zone_study_pilot` |
+| 완료 정책·가려진 upstream 종료 이유·인정 | `completion_policy`, `completion_limitation`, `upstream_finish_limitation_acknowledged` |
+| 요청/실효 모델·프록시 hash·실행 PID | `requested_settings`, `effective_settings`, `proxy`, `proxy_runtime`; client timeout 180초, upstream timeout 300초, POST당 내부 attempts 최대 2회 |
+| 네 조건·시나리오·seed·지휘자 | `pilot_contract.conditions`, `seed`, `leader_rule`; seed % 3으로 r1/r2/r3 순환, 허브-스포크 |
+| wrist 원본·지도·주문서·프롬프트·프로토콜·전처리 | `pilot_contract.conditions[].wrist_originals`, `scenario`, `initial_inputs`, `registry_sha256`, `preprocessing_files_sha256`; 프로토콜 소스도 포함 |
+| 실제 모델 입력 | 조건별 `trial.json.request_archive`와 wire 원문/hash; `initial_inputs`는 고정 `contract-*` 요청 ID의 최초 입력 템플릿이며 실요청을 대체하지 않음 |
+| 호출·비용 | `pilot_contract.calls`, `sim_cost`; 조건당 1 POST, client retry 0, 실제 scheduler 정책, 고정 tokenizer/SIM 비용, 2 attempts 예약, 공통 600 attempts/5M tokens, 환불 0 |
+| 검증 범위 | `pilot_contract.validation_scope`, `physical_success=null`; 저장 영상 어댑터만 검증, 물리·실모델·상류 STOP·과금 검증은 별도 |
+
+등록 시점의 미커밋 작업 HEAD는 최종 실행 SHA가 아니다. 이 수정 작업은 커밋하지 않으며,
+코디네이터의 검토·커밋 뒤 생성하는 manifest가 그 최종 SHA를 기록한다.
+dry-run은 네트워크 호출/실행 PID 검증 없이 `proxy_runtime=null`을 기록한다.
 
 ## 필수 pre-flight 7항목
 
@@ -105,7 +149,8 @@ wire ledger·SQLite 정산·request archive·manifest `call_links`·reconciliati
    R9의 네 조건별 `length`·종료 이유 누락·본문 차단 신호·불완전 JSON 검사와
    성공 집계/코호트 진입 회귀도 통과해야 한다.
 6. **4회 실호출 대조:** `preflight`는 `no_comm/peer_ko/leader_ko/structured` 각 1회,
-   자동 재시도 0회다. 실패 시 중단한다. 4회 모두 성공하고 아래 연결이 모두 확인된 후
+   자동 재시도 0회다. 실패 시 중단한다. 4회 모두 정상 채택(상류 미검증)이고 한계를
+   명시적으로 인정했으며 아래 연결이 모두 확인된 후
    별도 `--stage cohort`를 허용한다. 코호트는 조건당 3 actor, actor당 최초 1회
    (총 12회), 실패 retry 최대 1회다. idle/message 재질문을 끈 동일 정책을 모든 조건에
    적용하고 각 시도는 동일 전체 예산을 사용한다.
@@ -119,7 +164,7 @@ wire ledger·SQLite 정산·request archive·manifest `call_links`·reconciliati
 이 변경을 검토·커밋한 뒤 실행한다. 아래 실호출 명령은 이 수정 작업에서 실행하지 않았다.
 `PYTHON`과 `PILOT_ROOT`는 예시이며 결과 raw는 primary checkout `outputs/`에 둔다.
 새 budget은 파일럿 시작 때 **한 번만** 만들고 이후 같은 파일을 재사용한다.
-R8 소스로 이미 봉인한 budget은 R9 소스와 맞지 않아 실행을 거절한다.
+R8/R9 소스로 이미 봉인한 budget은 R10 소스와 맞지 않아 실행을 거절한다.
 송신 이력이 있는 예산 파일을 새 파일로 바꿔 잔액을 초기화하면 안 된다.
 그 경우 기존 비용을 보존하는 별도 검토·이관 전까지 실호출을 중단한다.
 
@@ -127,13 +172,14 @@ R8 소스로 이미 봉인한 budget은 R9 소스와 맞지 않아 실행을 거
 
 ```sh
 OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
-  tests/test_zone_study_review_r9.py tests/test_zone_study_review_r8.py \
-  --basetemp=.tmp/r9-coordinator -q
+  tests/test_zone_study_review_r10.py tests/test_zone_study_review_r9.py tests/test_zone_study_review_r8.py \
+  --basetemp=./.pytest_tmp -q
+rm -rf ./.pytest_tmp
 ```
 
 ```sh
 PYTHON=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
-PILOT_ROOT=/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r9
+PILOT_ROOT=/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10
 OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --output "$PILOT_ROOT/dry-01"
 OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --init-budget \
   --budget-file "$PILOT_ROOT/budget.sqlite" --output "$PILOT_ROOT/init-01"
@@ -147,6 +193,7 @@ OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --init-budget \
 ```sh
 OMP_NUM_THREADS=1 "$PYTHON" -m scripts.sim_cli workflow run zone-study-pilot -- \
   --execute --budget-file "$PILOT_ROOT/budget.sqlite" --proxy-pid "$PROXY_PID" \
+  --acknowledge-upstream-finish-limitation \
   --output "$PILOT_ROOT/preflight-01"
 ```
 

@@ -10,10 +10,13 @@ import copy
 import json
 from types import MappingProxyType
 
-# Keep the recorded R9 policy ID: moving code does not change its semantics.
+# R10 coordinator decision (#222): retain proxy-stop admission, explicitly
+# acknowledged as upstream-unverified. The installed proxy is not modified.
 COMPLETION_POLICY = 'ugrp.zone_completion.proxy_stop_and_valid_reply.v1'
+ACCEPTED_UNVERIFIED_LABEL = '정상 채택(상류 미검증)'
 PROXY_COMPLETION_LIMITATION = {
     'finish_reason_source': 'proxy_response',
+    'upstream_finish_verified': False,
     'upstream_finish_reason_verified': False,
     'proxy_mapping': 'MAX_TOKENS -> length; other reasons including SAFETY -> stop',
     'undetectable_case': 'masked upstream failure with complete valid JSON and no remaining failure signal',
@@ -111,6 +114,7 @@ def assess_completion(body, *, study_json=False):
         except (ValueError, TypeError):
             reasons.append('study_reply_incomplete_or_non_json')
     return {'policy': COMPLETION_POLICY, 'finish_reason': reason,
+            'upstream_finish_verified': False,
             'finish_reason_source': 'proxy_response', 'upstream_finish_reason_verified': False,
             'reported_upstream_finish_reasons': upstream,
             'normal_completion': not reasons, 'rejection_reasons': sorted(set(reasons))}
@@ -122,6 +126,7 @@ def normal_completion(completion):
             and completion.get('policy') == COMPLETION_POLICY
             and completion.get('finish_reason') == 'stop'
             and completion.get('normal_completion') is True
+            and completion.get('upstream_finish_verified') is False
             and completion.get('rejection_reasons') in ([], ()))
 
 
@@ -139,8 +144,12 @@ def completion_aggregate(calls):
         reasons[label] = reasons.get(label, 0) + 1
         unknown += completion is None
         rejected += completion is not None and not normal_completion(completion)
+    accepted = sum(successful_call(c) for c in calls)
     return {'policy': COMPLETION_POLICY, 'finish_reasons': reasons,
-            'successful_calls': sum(successful_call(c) for c in calls),
+            'successful_calls': accepted,
+            'accepted_upstream_unverified_calls': accepted,
+            'accepted_upstream_unverified_label': ACCEPTED_UNVERIFIED_LABEL,
+            'failed_or_unadmitted_calls': len(calls) - accepted,
             'rejected_completions': rejected, 'completion_unknown_calls': unknown,
             'upstream_finish_reason_verified_calls': 0,
             'limitation': dict(PROXY_COMPLETION_LIMITATION)}
