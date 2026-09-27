@@ -9,6 +9,7 @@ re-look when a cyan region is clipped at the bottom edge of a search frame (too 
 from __future__ import annotations
 
 import base64
+import copy
 import math
 from collections.abc import Mapping, Sequence
 
@@ -17,6 +18,7 @@ import numpy as np
 from harness import visual_arm as va
 from harness import zone_own_guards as guards
 from harness.zone_own_driver import GuardedDriver
+from harness.zone_own_sweep import SweepRecheck, reachable_pan
 from harness.m1_owncam_delivery import NEAR_MIN_DETECTIONS, M1OwnCamDelivery
 from harness.owncam_drive import CARRY_POSTURE
 from harness.owncam_pose_source import OwnCamPoseSource
@@ -113,7 +115,9 @@ class _DeliverController(M1OwnCamDelivery):
             leg._archived = True
             self.__dict__.setdefault('legs', []).append({'goal': list(leg.goal), 'loaded': leg.loaded, 'outcome': leg.outcome, 'looks': leg.looks,
                               'guard_log': leg.guard_log, 'stall_keepouts': leg.stall_keepouts,
-                              'gate_looks': leg.gate_looks, 'recoveries': leg.recoveries})
+                              'gate_looks': leg.gate_looks, 'recoveries': leg.recoveries,
+                              'sweep_failure': copy.deepcopy(leg.sweep_failure),
+                              'progress_look_failures': leg.monitor.look_failures})
 
     def _start_leg(self, goal, *, loaded):
         """Every M1 leg on the guarded driver (uncertainty gate, sweep guard, progress monitor)."""
@@ -135,7 +139,40 @@ class _DeliverController(M1OwnCamDelivery):
                         guard_reason=plan['reason'])
         if purpose == 'search':
             self.near_clipped = []
-        super()._start_sweep(now, purpose, pose, kept, restore, reason)
+        super()._start_sweep(now, purpose, {**pose, 6: int(self.servo.get(6, 1500))}, kept, restore, reason)
+        self.sweep['recheck'] = SweepRecheck()
+        self.sweep['requested_pans'] = list(pans)
+
+    def _tick_sweep(self, now):
+        s = self.sweep
+        target = s['pose'] if s['stage'] == 'arm' else {6: s['target']} if s['stage'] == 'pan' else s['restore']
+        loaded = bool(getattr(getattr(self.skill, 'box', None), 'held', False))
+        pose = guards.OwnPose.from_report(self.pose.report(now))
+        retry = s.setdefault('recheck', SweepRecheck())
+        was_waiting = retry.last_wait is not None
+        result = retry.check(now, self.guard, self.servo, target, pose, loaded=loaded)
+        if result == 'clear' and was_waiting and s['stage'] == 'arm':
+            plan = self.guard.plan(self.servo, target, s['requested_pans'], pose, loaded=loaded)
+            s['queue'] = list(plan['pans']) or [int(self.servo[6])]
+        if result != 'clear' and s['stage'] == 'pan':
+            pan = reachable_pan(self.guard, self.servo, s['queue'], pose, loaded=loaded)
+            if pan is not None:
+                self._event(now, 'sweep_pan_replanned', dropped_target=target[6], selected_pan=pan)
+                s['queue'] = [p for p in s['queue'] if p != pan and self.guard.transition_clear(
+                    {**self.servo, 6: pan}, {6: p}, pose, loaded=loaded)]
+                s['target'], s['since'], s['settled'], target = pan, now, False, {6: pan}
+                result = retry.check(now, self.guard, self.servo, target, pose, loaded=loaded)
+        if result != 'clear':
+            evidence = self.guard.transition_diagnostic(self.servo, target, pose, loaded=loaded)
+            evidence.update(stage=s['stage'], waited_s=retry.waited_s)
+            if result == 'blocked':
+                self.sweep_failure = evidence
+                self._event(now, 'sweep_transition_blocked', guard=evidence)
+                self.outcome = 'SWEEP_TRANSITION_BLOCKED'
+            elif retry.waited_s == 0.:
+                self._event(now, 'sweep_stationary_reobserve', guard=evidence)
+            return [{'kind': 'hold'}]
+        return super()._tick_sweep(now)
 
     def _keepouts(self):
         """M1 keep-outs; on the approach leg the target box itself is an obstacle too (smoke v2 s701 r3 drove

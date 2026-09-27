@@ -202,7 +202,9 @@ def test_body_model_matches_the_calibration_record():
 
 def test_sweep_guard_restricts_pans_near_a_tall_wall_and_backs_off():
     guard = guards.SweepGuard(v3_like(MAP))
-    pose = guards.OwnPose(2.08, 0.18, 0., .01, .01)        # validation pose: v1 sweep hit the 0.40 m wall at 1890-2030
+    # The original y=.18 fixture starts inside the inflated chassis margin. Review 3 must refuse
+    # its backoff; y=.14 retains the blocked pans while starting with the whole body clear.
+    pose = guards.OwnPose(2.08, 0.14, 0., .01, .01)
     plan = guard.plan({**SEARCH_POSE, 6: 1500}, LOOK_P20, WIDE_LOOK_PANS, pose, loaded=False, allow_backoff=True)
     assert plan['reason'] == 'restricted' and 2030 in plan['dropped'] and 1770 in plan['dropped']
     assert plan['backoff'] is not None and len(plan['backoff']['pans_after']) > len(plan['pans'])
@@ -223,13 +225,13 @@ def test_p1_look_around_near_a_tall_wall_never_commands_a_colliding_pan():
     """Codex P1-2: the +-48 deg look inside a 0.40 m-wall door hit the jamb. Pre-fix: every WIDE pan."""
     ex = zox.ZoneOwnExecutor('r1', v3_like(MAP), make().params, {'orders': []}, skill_factory=lambda o, robot_id: None,
                              pose_estimate_cls=tuple, search_rows_y=(), mode='diagnostic', judgments=False,
-                             pose_source=ScriptedPose(lambda t: (2.08, 0.18, 0., .01, .01, .1)))
+                             pose_source=ScriptedPose(lambda t: (2.08, 0.14, 0., .01, .01, .1)))
     d = Driver(ex)
     assert ex.look_around()['accepted']
     d.run(40., stop=lambda: ex.job is None)
     assert max(pans_commanded(d)) < 1890                # the v1 sweep's physical contact pans (validation record)
     strict = guards.SweepGuard(v3_like(MAP), residual_m=0.)
-    pose = guards.OwnPose(2.08, 0.18, 0., 0., 0.)
+    pose = guards.OwnPose(2.08, 0.14, 0., 0., 0.)
     for pan in pans_commanded(d):                       # no commanded pan intersects the wall (zero margin)
         assert strict.arm_clearance({**SEARCH_POSE, **LOOK_P20, 6: pan}, pose, loaded=False)[0] + guards.BASE_MARGIN_M >= 0, pan
     moves = motion_commands(d)

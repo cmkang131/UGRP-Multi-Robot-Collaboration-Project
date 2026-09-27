@@ -4,8 +4,8 @@ Every guard reads only the robot's own inputs: its own ``PoseReport`` / localize
 wrist RGB + own issued commands), its own issued servo PWM, the static map and a fixed body
 calibration. Nothing here imports the simulator, reads a peer or a ground-truth value.
 
-1. :class:`UncertaintyGate` - two thresholds + dwell (Schmitt trigger) on the own pose sigma. While
-   the gate is ``uncertain`` the robot does not drive and makes no ``own_camera_confirmed`` claim;
+1. :class:`UncertaintyGate` - two thresholds + dwell (Schmitt trigger) on the own pose sigma. Motion
+   and ``own_camera_confirmed`` require BOTH an ok gate and current sigma at or below HIGH;
    ``pose_uncertain`` fires once per entry and re-arms only after a dwelled exit below the LOW
    threshold (Codex P1-1, P1-3: sigma oscillating 0.079/0.081 m fired an event per frame).
 2. :class:`SweepGuard` - 3-D look-sweep collision check of the own arm, fingers and held box
@@ -18,7 +18,8 @@ calibration. Nothing here imports the simulator, reads a peer or a ground-truth 
    own trusted estimate must move ``REQUIRED_MOVEMENT_M`` within ``STALL_COMMANDED_M`` of own
    commanded travel, confirmed by a fresh own look; on a stall the guarded driver backs off (Nav2
    ``BackUp``), marks a keep-out ahead (never at the goal or a door) and replans, at most
-   ``MAX_RECOVERIES`` times (Nav2 ``RecoveryNode`` retries), then finishes ``blocked`` (Codex P1-3:
+   ``MAX_RECOVERIES`` times (Nav2 ``RecoveryNode`` retries), then finishes ``blocked``. Inconclusive
+   progress looks have a separate cumulative bound ending in ``progress_unconfirmed`` (Codex P1-3:
    660 SIM s pushing an unseen box until the 720 s job limit).
 4. :class:`BlockageStreak` - route-blockage commits counted per location (passage, map cell,
    heading sector) with a maximum gap (Codex P2-7: two looks at different places made one streak).
@@ -85,6 +86,13 @@ class UncertaintyGate:
     @property
     def ok(self) -> bool:
         return self.state == 'ok'
+
+    def allows(self, initialized, std_xy, std_yaw) -> bool:
+        """Immediate motion/confirmation interlock; event-entry dwell is NOT a grace period."""
+        return self.ok and self.classify(initialized, std_xy, std_yaw) != 'high'
+
+    def allows_estimate(self, est: Mapping) -> bool:
+        return self.allows(est.get('initialized'), est.get('std_xy_m'), est.get('std_yaw_rad'))
 
     def set_profile(self, profile: GateProfile) -> None:
         if profile is not self.profile:
@@ -243,7 +251,7 @@ class OwnPose:
 
 
 class SweepGuard:
-    """Static-map collision check for own arm/finger/box sweeps and chassis back-offs."""
+    """Static-map collision check for own arm/finger/box sweeps and whole-body back-offs."""
 
     def __init__(self, static_map: Mapping, *, mount_xyz_m=BODY_MOUNT_XYZ_M, residual_m=BODY_COVERAGE_RESIDUAL_M):
         self.boxes = static_boxes(static_map)
@@ -287,6 +295,77 @@ class SweepGuard:
     def _clear(self, servo, pose, loaded):
         return self.arm_clearance(servo, pose, loaded=loaded)[0] >= 0.
 
+    def transition_samples(self, current, target):
+        """Issued path, including its start; shared by the check and diagnostic only."""
+        cur, target = _servo(current), _servo(target)
+        yield cur
+        while any(cur.get(k, v) != v for k, v in target.items()):
+            nxt = {**cur, **{k: cur.get(k, v) + max(-60, min(60, v - cur.get(k, v)))
+                             for k, v in target.items()}}
+            for u in (1 / 3, 2 / 3, 1.):
+                yield {k: round(cur.get(k, v) + u * (v - cur.get(k, v))) for k, v in nxt.items()}
+            cur = nxt
+
+    def transition_clear(self, current, target, pose: OwnPose | None, *, loaded: bool) -> bool:
+        """Check the issued 60-PWM-per-tick path, including simultaneous pan/arm restoration.
+
+        Check intermediate PWM every <=20 units, with the same per-joint clipping as the callers.
+        An uninitialized pose retains the existing stationary bootstrap look policy.
+        """
+        if pose is None:
+            return True
+        return all(self._clear(sample, pose, loaded) for sample in self.transition_samples(current, target))
+
+    def transition_diagnostic(self, current, target, pose: OwnPose | None, *, loaded: bool) -> dict:
+        """Own-input evidence only. Never consumed by the motion/clearance decision."""
+        out = {'source': 'own_estimate_and_issued_pwm_static_map', 'loaded': bool(loaded),
+               'current_pwm': _servo(current), 'target_pwm': {**_servo(current), **_servo(target)},
+               'own_estimate': None if pose is None else dict(x_m=pose.x, y_m=pose.y, yaw_rad=pose.yaw,
+                                                            std_xy_m=pose.std_xy, std_yaw_rad=pose.std_yaw),
+               'limiting': None}
+        if pose is None:
+            return out
+        c, s = math.cos(pose.yaw), math.sin(pose.yaw)
+        best = math.inf
+        for sample in self.transition_samples(current, target):
+            for i, (bx, by, bz, radius) in enumerate(body_spheres(sample, loaded=loaded, mount_xyz_m=self.mount)):
+                mx, my = pose.x + c * bx - s * by, pose.y + s * bx + c * by
+                margin = self.margin(pose, math.hypot(bx, by))
+                for box in self.boxes:
+                    if bz - radius >= box['height'] + margin:
+                        continue
+                    raw = _rect_distance(box, mx, my) - radius
+                    clearance = raw - margin
+                    if clearance < best:
+                        best = clearance
+                        part = ('yaw_bearing' if i == 0 else 'upper_arm' if i < 4 else 'forearm' if i < 6
+                                else 'gripper_camera_fingers' if i < 6 + len(TOOL_SAMPLES_CM) else 'held_box')
+                        out['limiting'] = {'sample_pwm': sample, 'sphere_index': i, 'sphere_part': part,
+                                           'sphere_center_base_m': [bx, by, bz], 'sphere_radius_m': radius,
+                                           'wall_id': box['id'], 'raw_clearance_mm': raw * 1000,
+                                           'margin_mm': margin * 1000, 'clearance_mm': clearance * 1000,
+                                           'overlap_mm': max(0., -clearance) * 1000}
+        return out
+
+    def translation_clear(self, current, pose: OwnPose | None, dx: float, dy: float, *, loaded: bool) -> bool:
+        """Check the unchanged issued arm/fingers/cargo AND chassis over gain [0, 1.6].
+
+        At <=5 mm spacing, reserve half a sample interval as extra clearance. Distance to a
+        static rectangle is 1-Lipschitz under translation, so the gaps between samples are covered.
+        No measured joints, contact feedback or live object positions enter this check.
+        """
+        if pose is None or not _finite(dx, dy):
+            return False
+        dx, dy = dx * BACKOFF_GAIN_MAX, dy * BACKOFF_GAIN_MAX
+        distance = math.hypot(dx, dy)
+        steps = max(1, math.ceil(distance / .005))
+        reserve = distance / (2 * steps)
+        for i in range(steps + 1):
+            at = pose.moved(dx * i / steps, dy * i / steps)
+            if min(self.chassis_clearance(at)[0], self.arm_clearance(current, at, loaded=loaded)[0]) < reserve:
+                return False
+        return True
+
     def plan(self, current: Mapping, look_pose: Mapping, pans: Sequence[int], pose: OwnPose | None, *,
              loaded: bool, allow_backoff: bool = False) -> dict:
         """Which of ``pans`` a look from ``current`` (issued PWM) may visit, or a back-off to take first.
@@ -299,10 +378,8 @@ class SweepGuard:
         pans = [int(p) for p in pans]
         if pose is None:
             return {'pans': pans, 'dropped': [], 'backoff': None, 'reason': 'no_own_estimate', 'interval': None}
-        look = {**cur, **_servo(look_pose)}
-        trans_ok = all(self._clear({**cur, **{k: round(cur.get(k, v) + u * (v - cur.get(k, v))) for k, v in look.items()
-                                              if k in (1, 3, 4, 5)}, 6: pan0}, pose, loaded)
-                       for u in (.2, .4, .6, .8, 1.))
+        look = {**cur, **_servo(look_pose), 6: pan0}
+        trans_ok = self.transition_clear(cur, look, pose, loaded=loaded)
         lo, hi = min(pans + [pan0]), max(pans + [pan0])
         interval = None
         if trans_ok and self._clear({**look, 6: pan0}, pose, loaded):
@@ -327,13 +404,13 @@ class SweepGuard:
         return result
 
     def backoff(self, current, look_pose, pans, pose: OwnPose, *, loaded: bool, have: int) -> dict | None:
-        """The chassis move (base frame, commanded) after which the most requested pans are clear."""
+        """A whole-body-clear move (base frame, commanded) improving the available look pans."""
         best = None
         for deg in range(0, 360, 45):
             ux, uy = math.cos(math.radians(deg)), math.sin(math.radians(deg))
             for dist in BACKOFF_DISTANCES_M:
-                if not all(self.chassis_clearance(pose.moved(ux * dist * g, uy * dist * g))[0] >= 0.
-                           for g in (.5, 1., BACKOFF_GAIN_MAX)):
+                dx, dy = round(ux * dist, 4), round(uy * dist, 4)
+                if not self.translation_clear(current, pose, dx, dy, loaded=loaded):
                     continue
                 plan = self.plan(current, look_pose, pans, pose.moved(ux * dist, uy * dist), loaded=loaded)
                 end_ok = all(self._clear({**_servo(current), **_servo(look_pose), 6: p},
@@ -365,6 +442,7 @@ REQUIRED_MOVEMENT_M = .10           # Nav2 required_movement_radius (default 0.5
 STALL_COMMANDED_M = .40             # 4x REQUIRED_MOVEMENT_M; ~0.56 m actual (gain ~1.4) > the 0.5 m loaded travel look
 TRUSTED_TAG_AGE_S = .3
 MAX_RECOVERIES = 2                  # Nav2 RecoveryNode number_of_retries style bound
+MAX_PROGRESS_LOOK_FAILURES = 3      # cumulative per leg; neither refix nor recovery resets this budget
 RECOVERY_BACKOFF_M = .08
 STALL_KEEPOUT_AHEAD_M = .20
 STALL_KEEPOUT_HALF_M = .08
@@ -385,6 +463,7 @@ class ProgressMonitor:
         self.commanded_m = 0.
         self.last_trusted_cmd_m: float | None = None
         self.checks = 0
+        self.look_failures = 0
 
     def drove(self, commanded_m: float) -> None:
         if math.isfinite(commanded_m) and commanded_m > 0:
@@ -415,9 +494,14 @@ class ProgressMonitor:
         return self._over() and not self.stalled()
 
     def inconclusive(self, xy, goal_dist) -> None:
-        """A confirming look gave no trusted estimate: start again from the current estimate (no false stall)."""
+        """Allow a fresh motion window, but charge every failed check to a finite per-leg budget."""
         self.checks += 1
-        self.baseline = (float(xy[0]), float(xy[1]), float(goal_dist), self.commanded_m)
+        self.look_failures += 1
+        if xy is not None and _finite(*xy, goal_dist):
+            self.baseline = (float(xy[0]), float(xy[1]), float(goal_dist), self.commanded_m)
+
+    def exhausted(self) -> bool:
+        return self.look_failures >= MAX_PROGRESS_LOOK_FAILURES
 
 
 def commanded_step_m(cmd: Mapping) -> float:
