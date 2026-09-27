@@ -1,0 +1,30 @@
+{
+  "source": "/Users/changmin/projects/ugrp-wt/kiro-own-executor",
+  "test_copy": "/private/tmp/ugrp-206-review4-cu0fn2gd",
+  "base_head": "6fde26071b602f56770047a4838820b93b876559",
+  "files": 4276,
+  "bytes": 134420918,
+  "final_identical_files": 4276,
+  "final_changed_file_sha256": {
+    "harness/zone_own_deliver.py": "50eaee2c9c5c7734f3795533821a642c1ba001f334a2adc5f160511db2f4dad7",
+    "harness/zone_own_executor.py": "a51e73d866b8619364c2a6c1227444e04f8cbca1c06d72bb92e43997d0bfbd2b",
+    "harness/zone_own_status.py": "7bd347e9d12182f1e47b07f36f87af167a3739ab096aa46c89e3df5bd77b6828",
+    "harness/zone_own_sweep.py": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
+    "harness/zone_own_team_host.py": "a3d3646d98969b29ec2a4e22d36ca30efac03c165dfedab96b8004eb15569b38",
+    "tests/test_zone_own_executor_review3.py": "c7d3d57c10e08dac2dd90b7e7155e1fe7770d8673906bb9134732c85419d7ed0",
+    "tests/test_zone_own_executor_review4.py": "70a1a1a68efa231dce29362ccea962d853a43982d9bab0aa546b8f5f516156e3"
+  },
+  "evidence_sha256": {
+    "after.txt": "dcfe5816e6f1f380acaceaedf1d3337f4206d03ff3be6757e385163a4e1a9990",
+    "baseline.txt": "2b7e9a38753311af8d3d3a5ed1115889f73c506a22542de8984edb814c68e03f",
+    "before.txt": "5f290c44d702573fd2896b2206e44e08028524baddecb748238a71f3f42ce952",
+    "regression.txt": "2e3a4b16240a89dedb165a0ab6f29172cd8cef79cd475570c6cc3ec1a01d64f2"
+  },
+  "pytest_env": {
+    "OMP_NUM_THREADS": "1",
+    "basetemp": "./.pytest_tmp"
+  },
+  "excluded_physics_test": "tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world",
+  "pytest_tmp_removed": true,
+  "test_copy_removed": true
+}
