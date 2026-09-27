@@ -1,0 +1,340 @@
+{
+  "ci_collection": {
+    "modules_matched": 221,
+    "pattern_added": "tests/test_zone_study_review_r7*.py",
+    "r7_modules": [
+      "tests/test_zone_study_review_r7.py",
+      "tests/test_zone_study_review_r7_contract.py",
+      "tests/test_zone_study_review_r7_transport.py"
+    ],
+    "self_check": "test_r7_all_files_of_this_round_are_collected_by_the_ci_patterns"
+  },
+  "codex_counterexamples": {
+    "note_ko": "/tmp/kiro-r7-counterexamples.py가 테스트 파일의 두 어댑터로 같은 시나리오를 수정 전·후 코드에서 돌린 값. 수정 전 값은 Codex 보고(상한 1: 전송 3·장부 0·예약 0·SIM 0; 상한 2: 전송 3·장부 2·위반 0)와 같다.",
+    "post_fix_94841738": {
+      "counterexample_1_cap1_notsent": {
+        "blocked_sends": 0,
+        "budget_used": 1,
+        "charged_attempts": 1,
+        "charged_sim_s": 0.5,
+        "real_sends": 1,
+        "refunded_calls": 0,
+        "reserved_outstanding": 0,
+        "violations": [
+          "not_sent_contradicted"
+        ]
+      },
+      "counterexample_2_cap2_sent_attempts": {
+        "blocked_sends": 0,
+        "budget_used": 2,
+        "calls": 1,
+        "charged_attempts": 2,
+        "real_sends": 2,
+        "violations": [
+          "declared_sent_mismatch"
+        ]
+      }
+    },
+    "pre_fix_840fd1ce": {
+      "counterexample_1_cap1_notsent": {
+        "blocked_sends": 0,
+        "budget_used": 0,
+        "charged_attempts": 0,
+        "charged_sim_s": 0,
+        "real_sends": 3,
+        "refunded_calls": 3,
+        "reserved_outstanding": 0,
+        "violations": []
+      },
+      "counterexample_2_cap2_sent_attempts": {
+        "blocked_sends": 0,
+        "budget_used": 2,
+        "calls": 2,
+        "charged_attempts": 2,
+        "real_sends": 3,
+        "violations": []
+      }
+    }
+  },
+  "collected": 86,
+  "final_tests_note_ko": "수정 커밋 뒤 테스트만 3건 보강했다(설정 창 사이 전송 차단, 참 NotSent 재던짐, cost_checks 장부 대조). 하네스 코드는 94841738 그대로다. 아래 결과는 모두 최종 테스트 파일로 돌린 것이다.",
+  "fix_commit": "9484173871ea9971784561e5ed759d5fbddc7e3a",
+  "junit_note_ko": "JUnit 원본(/tmp/kiro-r7-*.xml)은 임시 파일이다. 해시만 남긴다.",
+  "migrated_tests_ko": "기존 r1~r6·스케줄러 테스트의 전송 계층 13개를 장부를 지나도록 옮겼다. 규칙이 바뀐 5개는 기대값을 새 규칙으로 바꿨다: 예약 초과 보고(finding 15·r5 경계·r6 sent 선언 초과)는 장부 수 청구 + 위반, r6 선언 없는 예약 재시도는 2회→장부 1회, reply()의 NotSent는 not_sent_contradicted 위반.",
+  "post_fix": {
+    "r7_without_tensorboard": {
+      "failures": 0,
+      "how_ko": "sys.modules[\"tensorboard\"]=None로 CI offline 작업(requirements-test.txt)을 흉내 냄",
+      "junit_sha256": "e8338f0b7eee9c9f91e2e8509c5d9d31f3420294dd21e844ed0628700d958abd",
+      "skipped": 0,
+      "tests": 86
+    },
+    "related_modules": {
+      "errors": 0,
+      "failures": 0,
+      "junit_sha256": "9f24725f868b544fb67acb12f32c9cf736669007ce6ae45c8eb9f5480e31d5f5",
+      "load_average_at_start": [
+        81.1,
+        85.04,
+        76.0
+      ],
+      "modules": [
+        "tests/test_zone_study_contract.py",
+        "tests/test_zone_study_inputs.py",
+        "tests/test_zone_study_scenarios.py",
+        "tests/test_zone_study_protocol.py",
+        "tests/test_zone_sim_cost.py",
+        "tests/test_zone_event_scheduler.py",
+        "tests/test_zone_study_eval.py",
+        "tests/test_zone_study_offline.py",
+        "tests/test_zone_study_review_fixes.py",
+        "tests/test_zone_study_review_r5.py",
+        "tests/test_zone_study_review_r6.py",
+        "tests/test_zone_study_review_r6_paths_contract.py",
+        "tests/test_zone_study_review_r7.py",
+        "tests/test_zone_study_review_r7_transport.py",
+        "tests/test_zone_study_review_r7_contract.py",
+        "tests/test_gemini_reasoning_effort.py",
+        "tests/test_simulation_workflow_manager.py"
+      ],
+      "skipped": 0,
+      "tests": 801
+    }
+  },
+  "pre_fix": {
+    "files": {
+      "test_zone_study_review_r7": {
+        "cases": {
+          "test_zone_study_review_r7::test_r7_a_known_usage_reply_that_under_reports_the_ledger_is_padded_and_discarded": {
+            "message": "AssertionError: assert (['ok'] == ['error', 'ok']\n  \n  At index 0 diff: 'ok' != 'error'\n  Right contains one more item: 'ok'\n  Use -v to get more diff)",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_a_local_failure_before_any_send_is_refunded_without_a_violation[reply]": {
+            "message": "AssertionError: assert ([CallCostReco...essages': 0})] == []\n  \n  Left contains 2 more items, first extra item: CallCostRecord(call_id='call-0001-r1', actor='r1', trigger='start', started_sim_s=0.0, finished_sim_s=0.5, cost=CallCo...ailed': True, 'attempts_over_budget': 0, 'unreserved_attempts': 0, ",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_a_local_failure_before_any_send_is_refunded_without_a_violation[submit]": {
+            "message": "AssertionError: assert ([CallCostReco...essages': 0})] == []\n  \n  Left contains 2 more items, first extra item: CallCostRecord(call_id='call-0001-r1', actor='r1', trigger='start', started_sim_s=0.0, finished_sim_s=0.5, cost=CallCo...ailed': True, 'attempts_over_budget': 0, 'unreserved_attempts': 0, ",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_a_reply_without_any_send_is_refunded_and_executes_nothing": {
+            "message": "AssertionError: assert (['go'] == []\n  \n  Left contains one more item: 'go'\n  Use -v to get more diff)",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_a_send_after_the_reply_is_blocked_and_recorded": {
+            "message": "AssertionError: assert (True is False)\n +  where True = send(PendingCall(call_id='call-0001-r1', actor='r1', trigger='start', started_sim_s=0.0, token=..., merged=(), retry_of='', reserve=<function EventScheduler._on_call_start.<locals>.<lambda> at 0x108ad7c40>))\n +    where send = <test_zone_study_",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_a_send_between_the_reply_and_the_charged_release_is_blocked": {
+            "message": "assert (True is False)\n +  where True = <test_zone_study_review_r7.test_r7_a_send_between_the_reply_and_the_charged_release_is_blocked.<locals>.Cross object at 0x1088e5070>.late",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_a_submit_claim_without_a_send_is_a_violation_and_refunded[<lambda>-expected0]": {
+            "message": "AssertionError: assert ([] == ['attempts_without_send']\n  \n  Right contains one more item: 'attempts_without_send'\n  Use -v to get more diff)",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_a_submit_claim_without_a_send_is_a_violation_and_refunded[<lambda>-expected1]": {
+            "message": "AssertionError: assert ([] == ['declared_sent_mismatch']\n  \n  Right contains one more item: 'declared_sent_mismatch'\n  Use -v to get more diff)",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_a_true_not_sent_is_refunded_and_re_raised_to_the_caller": {
+            "message": null,
+            "outcome": "passed"
+          },
+          "test_zone_study_review_r7::test_r7_an_agreeing_report_is_taken_as_is": {
+            "message": "AssertionError: assert ([] == ['go']\n  \n  Right contains one more item: 'go'\n  Use -v to get more diff)",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_boundary_a_transport_without_a_real_ledger_is_refused[0]": {
+            "message": "Failed: DID NOT RAISE TypeError",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_boundary_a_transport_without_a_real_ledger_is_refused[None]": {
+            "message": "Failed: DID NOT RAISE TypeError",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_boundary_a_transport_without_a_real_ledger_is_refused[ledger1]": {
+            "message": "Failed: DID NOT RAISE TypeError",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_boundary_a_transport_without_a_real_ledger_is_refused[ledger]": {
+            "message": "Failed: DID NOT RAISE TypeError",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_boundary_an_interrupt_keeps_the_reservation_and_records_the_sends": {
+            "message": "KeyError: 'ledger_sends'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_boundary_commit_refuses_more_attempts_than_reserved": {
+            "message": "Failed: DID NOT RAISE AssertionError",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_boundary_one_ledger_cannot_serve_two_schedulers": {
+            "message": "Failed: DID NOT RAISE ValueError",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_codex_1_cap_1_a_contradicted_not_sent_is_charged_and_the_reruns_are_refused": {
+            "message": "assert (3, 0, 0) == (1, 1, 1)\n  \n  At index 0 diff: 3 != 1\n  Use -v to get more diff",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_codex_1_cap_1_extra_sends_inside_one_submit_are_blocked_before_the_wire": {
+            "message": "AttributeError: 'EventScheduler' object has no attribute 'send_ledger'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_codex_1_uncapped_all_three_sends_are_charged_with_three_violations": {
+            "message": "AttributeError: 'EventScheduler' object has no attribute 'send_ledger'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_codex_2_cap_2_the_ledger_is_charged_and_the_freed_slot_never_exists": {
+            "message": "assert (3, 2, 2) == (2, 2, 2)\n  \n  At index 0 diff: 3 != 2\n  Use -v to get more diff",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_codex_2_cap_3_three_sends_are_charged_and_a_forced_fourth_is_blocked": {
+            "message": "assert 6 == 3\n +  where 6 = <test_zone_study_review_r7._DeclaresOneSend object at 0x108a62a20>.sends",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_nothing_sent_by_the_horizon_is_refunded_not_censored": {
+            "message": "AssertionError: assert ([{'call_id': ...s': 0.0, ...}] == []\n  \n  Left contains one more item: {'call_id': 'call-0001-r1', 'actor': 'r1', 'trigger': 'start', 'started_sim_s': 0.0, ...}\n  Use -v to get more diff)",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_replay_transport_sends_every_scripted_attempt_through_the_ledger": {
+            "message": "AttributeError: 'EventScheduler' object has no attribute 'send_ledger'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_the_send_ledger_is_required": {
+            "message": "AssertionError: harness.zone_send_ledger is missing\nassert None is not None",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7::test_r7_the_team_cap_holds_at_the_wire_when_three_actors_send_twice": {
+            "message": "assert 6 == 4\n +  where 6 = <test_zone_study_review_r7._Scripted object at 0x1088c2f30>.sends",
+            "outcome": "failed"
+          }
+        },
+        "errors": 0,
+        "failures": 25,
+        "junit_sha256": "2ee31e2a09c2d86116beb8a04171bf343d31863a67e47cedec060e311c017bf9",
+        "passed": [
+          "test_zone_study_review_r7::test_r7_a_true_not_sent_is_refunded_and_re_raised_to_the_caller"
+        ],
+        "tests_in_junit": 26
+      },
+      "test_zone_study_review_r7_contract": {
+        "cases": {
+          "test_zone_study_review_r7_contract::test_r7_p2_a_request_whose_body_was_edited_consistently_is_still_caught": {
+            "message": "KeyError: 'payload_contract_violations'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_a_stored_body_must_match_the_provenance_it_is_filed_under": {
+            "message": "AssertionError: assert 'clean' == 'violation'\n  \n  - violation\n  + clean",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_an_unregistered_hash_in_the_record_is_refused": {
+            "message": "Failed: DID NOT RAISE ContractViolation",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_boundary_an_unknown_registry_hash_is_refused[1.5]": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'contract_version_for_registry'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_boundary_an_unknown_registry_hash_is_refused[5]": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'contract_version_for_registry'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_boundary_an_unknown_registry_hash_is_refused[C9BB55567A82EEF535E7B296AE69F35D5A08E8372479A56EF14C1AC76F08037C]": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'contract_version_for_registry'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_boundary_an_unknown_registry_hash_is_refused[None]": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'contract_version_for_registry'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_boundary_an_unknown_registry_hash_is_refused[True]": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'contract_version_for_registry'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_boundary_an_unknown_registry_hash_is_refused[]": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'contract_version_for_registry'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_boundary_an_unknown_registry_hash_is_refused[aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa]": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'contract_version_for_registry'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_boundary_an_unknown_registry_hash_is_refused[c9bb55567a82eef535e7b296ae69f35d5a08e8372479a56ef14c1ac76f08037]": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'contract_version_for_registry'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_boundary_an_unknown_registry_hash_is_refused[nan]": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'contract_version_for_registry'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_boundary_an_unknown_registry_hash_is_refused[value8]": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'contract_version_for_registry'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_boundary_an_unknown_registry_hash_is_refused[value9]": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'contract_version_for_registry'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_codex_counterexample_a_tags_v2_record_labelled_v1_fails_the_audit": {
+            "message": "KeyError: 'contract_version'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_control_a_tags_v1_record_is_clean_under_either_version": {
+            "message": null,
+            "outcome": "passed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_every_registry_hash_names_one_contract_version": {
+            "message": "AttributeError: module 'harness.zone_study_contract' has no attribute 'registry_versions'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v3-example_trial_record.json.gz-ugrp.zone_study_contract.v1-clean]": {
+            "message": "KeyError: 'contract_version'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v4-example_trial_record.json.gz-ugrp.zone_study_contract.v1-clean]": {
+            "message": "KeyError: 'contract_version'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v5-example_trial_record.json.gz-ugrp.zone_study_contract.v2-clean]": {
+            "message": "KeyError: 'contract_version'",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_one_record_is_one_contract_version": {
+            "message": "Failed: DID NOT RAISE TrialError",
+            "outcome": "failed"
+          },
+          "test_zone_study_review_r7_contract::test_r7_p2_the_violation_reaches_the_cohort_summary_and_the_report": {
+            "message": "AssertionError: assert ('계약 버전 위반' in '# 한국어 로봇 대화 효율 연구 — 평가 요약\\n\\n- 생성: 1970-01-01T09:00:00+0900 (평가 전용 사후 분석)\\n- 시행 수: 1, 시나리오: s1_normal_mixed\\n- 실패 가중치...grp.zone_study_trial.v1`는 A의 호출·메시지·행동 기록을 담고 A가 검증한다. 과거 파일럿 로그를 위해 `ugrp.zone_study_trial.provisional.v1`도 계속 읽는다.\\n')",
+            "outcome": "failed"
+          }
+        },
+        "errors": 0,
+        "failures": 21,
+        "junit_sha256": "74ff3c2475e17d35cd649ec086b71cf44d9a5bdfb95e551a5a08c5968cca94f4",
+        "passed": [
+          "test_zone_study_review_r7_contract::test_r7_p2_control_a_tags_v1_record_is_clean_under_either_version"
+        ],
+        "tests_in_junit": 22
+      },
+      "test_zone_study_review_r7_transport": {
+        "cases": {
+          "::tests.test_zone_study_review_r7_transport": {
+            "message": "collection failure",
+            "outcome": "error"
+          }
+        },
+        "errors": 1,
+        "failures": 0,
+        "junit_sha256": "0b02a8d63ffce0add54cb71d4f695ae4a239f1069cdea68d7df32c3e7f93a93a",
+        "passed": [],
+        "tests_in_junit": 1
+      }
+    },
+    "method_ko": "840fd1ce의 harness·scripts·tests·configs·maps·sim·오프라인 스모크 기록을 git archive로 /tmp에 풀고 최종 r7 테스트 파일 3개만 올려 파일별로 돌렸다.",
+    "summary_ko": "r7 26개 중 25개 실패(통과 1 = 대조군 test_r7_a_true_not_sent_is_refunded_and_re_raised_to_the_caller: 장부 0회인 참 NotSent는 옛 규칙에서도 환불·재던짐). r7_contract 22개 중 21개 실패(통과 1 = 대조군 test_r7_p2_control_a_tags_v1_record_is_clean_under_either_version). r7_transport 38개는 harness.zone_send_ledger가 없어 수집 단계에서 ImportError(38개 모두 실행 불가)."
+  },
+  "pre_fix_base": "840fd1cef2362afe3bbbd6116a95f852ad0d68ba",
+  "review": "codex-194-r7",
+  "schema": "ugrp.zone_study_review_test_results.v1"
+}

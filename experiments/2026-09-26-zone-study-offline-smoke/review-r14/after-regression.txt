@@ -1,0 +1,120 @@
+........................................................................ [ 17%]
+........................................................................ [ 35%]
+........................................................................ [ 53%]
+........................................................................ [ 71%]
+........................................................................ [ 89%]
+..........................................                               [100%]
+==================================== PASSES ====================================
+____________ test_cli_dry_run_settlement_and_receipt_write_recovery ____________
+----------------------------- Captured stdout call -----------------------------
+{"dry_run": true, "eligible": 1, "skipped": 0, "before": {"attempts": 2, "tokens": 2000}, "after": {"attempts": 1, "tokens": 140}, "network_calls": 0, "audit": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_dry_run_settlement_an0/dry/budget-settlement.json"}
+{"complete": true, "evidence_levels": ["proxy_log_exclusive_window"], "report": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_dry_run_settlement_an0/recover/reconciliation.json"}
+____________ test_cli_starts_after_settlement[synthetic-preflight] _____________
+---------------------------- Captured stdout setup -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+----------------------------- Captured stdout call -----------------------------
+{"charged_after":{"attempts":4,"tokens":960},"charged_before":{"attempts":8,"tokens":949276},"settled_calls":4,"skipped_calls":0,"stage":"preflight"}
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme0/after-settlement-preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["proxy_upstream_ids", "unresolved"], "reconciliation_complete": false}
+______________ test_cli_starts_after_settlement[synthetic-cohort] ______________
+---------------------------- Captured stdout setup -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme1/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+----------------------------- Captured stdout call -----------------------------
+{"charged_after":{"attempts":4,"tokens":960},"charged_before":{"attempts":8,"tokens":949276},"settled_calls":4,"skipped_calls":0,"stage":"cohort"}
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme1/after-settlement-cohort/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 12, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["proxy_upstream_ids", "unresolved"], "reconciliation_complete": false}
+________ test_cli_starts_after_settlement[synthetic-migrated_preflight] ________
+---------------------------- Captured stdout setup -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme2/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+----------------------------- Captured stdout call -----------------------------
+{"charged_after":{"attempts":4,"tokens":960},"charged_before":{"attempts":8,"tokens":949276},"settled_calls":4,"skipped_calls":0,"stage":"migrated_preflight"}
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme2/after-settlement-preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["proxy_upstream_ids", "unresolved"], "reconciliation_complete": false}
+___________ test_cli_starts_after_settlement[real_memory-preflight] ____________
+----------------------------- Captured stdout call -----------------------------
+{"charged_after":{"attempts":18,"tokens":409793},"charged_before":{"attempts":34,"tokens":4085674},"settled_calls":16,"skipped_calls":1,"stage":"preflight"}
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme3/after-settlement-preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["proxy_log_exclusive_window", "unresolved"], "reconciliation_complete": false}
+--------------------------- Captured stdout teardown ---------------------------
+{"original_files_verified":65,"real_database_unchanged":{"bytes":229376,"mtime_ns":1790483471841786931,"sha256":"cc23aa281f44b7989627dd2059ea00b868b43bfec2d59c12cda0cf9042145158"}}
+_____________ test_cli_starts_after_settlement[real_memory-cohort] _____________
+----------------------------- Captured stdout call -----------------------------
+{"charged_after":{"attempts":18,"tokens":409793},"charged_before":{"attempts":34,"tokens":4085674},"settled_calls":16,"skipped_calls":1,"stage":"cohort"}
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme4/after-settlement-cohort/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 12, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["proxy_log_exclusive_window", "unresolved"], "reconciliation_complete": false}
+--------------------------- Captured stdout teardown ---------------------------
+{"original_files_verified":65,"real_database_unchanged":{"bytes":229376,"mtime_ns":1790483471841786931,"sha256":"cc23aa281f44b7989627dd2059ea00b868b43bfec2d59c12cda0cf9042145158"}}
+_______ test_cli_starts_after_settlement[real_memory-migrated_preflight] _______
+----------------------------- Captured stdout call -----------------------------
+{"charged_after":{"attempts":18,"tokens":409793},"charged_before":{"attempts":34,"tokens":4085674},"settled_calls":16,"skipped_calls":1,"stage":"migrated_preflight"}
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cli_starts_after_settleme5/after-settlement-preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["proxy_log_exclusive_window", "unresolved"], "reconciliation_complete": false}
+--------------------------- Captured stdout teardown ---------------------------
+{"original_files_verified":65,"real_database_unchanged":{"bytes":229376,"mtime_ns":1790483471841786931,"sha256":"cc23aa281f44b7989627dd2059ea00b868b43bfec2d59c12cda0cf9042145158"}}
+_____________ test_four_condition_window_gate_and_cohort_manifest ______________
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_four_condition_window_gat0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_four_condition_window_gat0/cohort/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 12, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["proxy_log_exclusive_window", "unresolved"], "reconciliation_complete": false}
+_________ test_old_successful_preflight_cannot_authorize_a_new_source __________
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_old_successful_preflight_0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+____________ test_committed_db_audit_survives_receipt_write_failure ____________
+----------------------------- Captured stdout call -----------------------------
+{"complete": false, "evidence_levels": ["unresolved"], "report": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_committed_db_audit_surviv0/recovered-audit/reconciliation.json"}
+___ test_failed_run_migrate_then_new_four_call_preflight_keeps_original_cost ___
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_failed_run_migrate_then_n0/failed/manifest.json", "status": "failed", "accepted_upstream_unverified_calls": 0, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_failed_run_migrate_then_n0/new-preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["proxy_upstream_ids", "unresolved"], "reconciliation_complete": false}
+_ test_real_execution_requires_explicit_existing_budget_before_any_other_work __
+----------------------------- Captured stderr call -----------------------------
+usage: __main__.py [-h] --output OUTPUT [--execute]
+                   [--budget-file BUDGET_FILE] [--init-budget]
+                   [--migrate-source] [--migration-reason MIGRATION_REASON]
+                   [--from-identity-sha256 FROM_IDENTITY_SHA256]
+                   [--expected-state-sha256 EXPECTED_STATE_SHA256]
+                   [--settle-reconciled] [--dry-run]
+                   [--reconciliation-report RECONCILIATION_REPORT]
+                   [--expected-report-sha256 EXPECTED_REPORT_SHA256]
+                   [--reservation-id RESERVATION_ID]
+                   [--stage {preflight,cohort}]
+                   [--scenario {s1_normal_mixed,s2_unmapped_blockage,s3_late_rendezvous,s4_narrow_door_standoff,s5_moved_dropped_item,s6_novel_relation}]
+                   [--seed SEED] [--proxy-url PROXY_URL]
+                   [--proxy-source PROXY_SOURCE] [--proxy-pid PROXY_PID]
+                   [--proxy-log PROXY_LOG]
+                   [--preflight-manifest PREFLIGHT_MANIFEST]
+                   [--acknowledge-upstream-finish-limitation]
+                   [--upstream-telemetry UPSTREAM_TELEMETRY]
+                   [--reconcile-only] [--recover-run RECOVER_RUN]
+__main__.py: error: an explicit persistent --budget-file is required
+_ test_offline_cli_preflight_records_chain_and_blocks_cohort_without_telemetry _
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_offline_cli_preflight_rec0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_offline_cli_preflight_rec0/cohort/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 12, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["proxy_upstream_ids", "unresolved"], "reconciliation_complete": false}
+____ test_actual_cli_aggregation_stops_on_length_in_each_condition[no_comm] ____
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_actual_cli_aggregation_st0/preflight/manifest.json", "status": "failed", "accepted_upstream_unverified_calls": 0, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+____ test_actual_cli_aggregation_stops_on_length_in_each_condition[peer_ko] ____
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_actual_cli_aggregation_st1/preflight/manifest.json", "status": "failed", "accepted_upstream_unverified_calls": 1, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+___ test_actual_cli_aggregation_stops_on_length_in_each_condition[leader_ko] ___
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_actual_cli_aggregation_st2/preflight/manifest.json", "status": "failed", "accepted_upstream_unverified_calls": 2, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+__ test_actual_cli_aggregation_stops_on_length_in_each_condition[structured] ___
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_actual_cli_aggregation_st3/preflight/manifest.json", "status": "failed", "accepted_upstream_unverified_calls": 3, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+_ test_preflight_gate_recomputes_completion_instead_of_trusting_success_count __
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_preflight_gate_recomputes0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+_____ test_cohort_gate_requires_explicit_boolean_acknowledgement[missing] ______
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cohort_gate_requires_expl0/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+______ test_cohort_gate_requires_explicit_boolean_acknowledgement[False] _______
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cohort_gate_requires_expl1/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+_______ test_cohort_gate_requires_explicit_boolean_acknowledgement[None] _______
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cohort_gate_requires_expl2/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+_______ test_cohort_gate_requires_explicit_boolean_acknowledgement[true] _______
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cohort_gate_requires_expl3/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+________ test_cohort_gate_requires_explicit_boolean_acknowledgement[1] _________
+----------------------------- Captured stdout call -----------------------------
+{"manifest": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.pytest_tmp/test_cohort_gate_requires_expl4/preflight/manifest.json", "status": "recorded", "accepted_upstream_unverified_calls": 4, "json_fence_removed_calls": 0, "accepted_upstream_unverified_label": "\uc815\uc0c1 \ucc44\ud0dd(\uc0c1\ub958 \ubbf8\uac80\uc99d)", "reconciliation_evidence_levels": ["unresolved"], "reconciliation_complete": false}
+___________ test_existing_registry_bytes_cannot_change_or_disappear ____________
+----------------------------- Captured stderr call -----------------------------
+fatal: Needed a single revision
+402 passed in 402.40s (0:06:42)

@@ -1,0 +1,129 @@
+{
+  "base_commit": "ac743938d1b42172dc2d634b6558091d71fc858e",
+  "review_source": "/private/tmp/claude-501/-Users-changmin-projects-ugrp/ecd247bf-a1a7-45d6-9190-dad34be56468/scratchpad/codex-234-review2.md",
+  "review_sha256": "488298a6f6cd11e3667bcb9c1a329b48da0d0e2b57f15d60e96ff26f7d380d75",
+  "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "threads": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "opencv": 1,
+    "opencv_method": "setNumThreads(0), GCD backend: parallel regions disabled, getNumThreads()==1",
+    "pytest_workers": "main process only"
+  },
+  "basetemp": "./.pytest_tmp",
+  "tests": {
+    "initial_before_corrected_fixture": "6 failed before runtime edits",
+    "final_baseline": "6 failed, 20 deselected against ac743938, expected exit 1",
+    "review2_boundaries": "26 passed",
+    "final_all": "229 passed, 382 subtests passed in 68.11s",
+    "composition": {
+      "review2": 26,
+      "review1": 45,
+      "existing_v3": 45,
+      "related_existing": 113
+    },
+    "before_log": "before-confirmed.txt",
+    "after_log": "final-single-thread.txt",
+    "remote_or_full_project_ci_run": false,
+    "excluded_before_log": "before.txt includes one invalid fixture input; corrected before log is used"
+  },
+  "v2_hashes_checked": 23,
+  "v2_hash_mismatches": [],
+  "tracked_experiment_changes_explicitly_requested": [
+    "experiments/2026-09-27-zone-owncam-memory-v3/README.md",
+    "experiments/2026-09-27-zone-owncam-memory-v3/prereg_DRAFT.json"
+  ],
+  "previous_review_records_unchanged": true,
+  "saved_fixtures_unchanged": true,
+  "fixture_origins": [
+    {
+      "seed": 162,
+      "original_split": "test",
+      "source": "/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926/test-a1/memory_v2/m1mem-s162",
+      "frames_index_sha256": "4f3664c845c0b55c08f4839db4d8f71cf59a0d5a928608ff63572190e74d6c21",
+      "frame_hashes_match_originals": true
+    },
+    {
+      "seed": 164,
+      "original_split": "test",
+      "source": "/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926/test-a1/memory_v2/m1mem-s164",
+      "frames_index_sha256": "7250069439449e82f14ad3fda5a66bcd4b016823a0c9e8054c8fdfe5955af0bb",
+      "frame_hashes_match_originals": true
+    },
+    {
+      "seed": 165,
+      "original_split": "test",
+      "source": "/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926/test-a1/memory_v2/m1mem-s165",
+      "frames_index_sha256": "9179ca60ca63f5cebda3cac9d1b17ed7ae42ac1e3fb0a37a8e84b915e7dc930a",
+      "frame_hashes_match_originals": true
+    }
+  ],
+  "fixture_sha256": {
+    "tests/fixtures/owncam_memory_v3_place/provenance.json": "a3f86b4a1627c9371324cb0797d0a05450940af1f350bef8adc8117c40adf838",
+    "tests/fixtures/owncam_memory_v3_place/s162-current.jpg": "7f3f7985f4606fc1aebe1fff390e48db3aaf3d28618691ac5f9d0205dea93b67",
+    "tests/fixtures/owncam_memory_v3_place/s162-reference.jpg": "4b9519a769aecddad0b6ed32878c6b624a80de2a50382f40ca6e3ccb7052e20b",
+    "tests/fixtures/owncam_memory_v3_place/s164-current.jpg": "d0f5d9d9d28225087d9b634277d15811a964189955dd5c36a9625b2c6a1e66d4",
+    "tests/fixtures/owncam_memory_v3_place/s164-reference.jpg": "2c67dbd2f0d31a38eb5ca34dd33a0d328392c943ef39ffecf6ce40aa959fca43",
+    "tests/fixtures/owncam_memory_v3_place/s165-current.jpg": "d5d8056fbb7e1718ba775bc9cd331810d846f8c132f73c8bb0ba7031a5c27e48",
+    "tests/fixtures/owncam_memory_v3_place/s165-reference.jpg": "ccaf389ce7566eb6a290d774f9e4cc1beb25a78d224c3ad18658ee00357679da"
+  },
+  "new_ci_pattern_matches": 1,
+  "diff_check": "pass",
+  "source_and_document_sha256": {
+    "docs/design/2026-09-27-owncam-memory-v3.md": "6818283c7adc1e67b197f828ab5f9ec200d62165899bbd9a469a692e66892f78",
+    "experiments/2026-09-27-zone-owncam-memory-v3/README.md": "972817b6a30b92fede8e7ce2e4af8a05e3b9b12e0f4e173359d7f47c27cf4db3",
+    "experiments/2026-09-27-zone-owncam-memory-v3/prereg_DRAFT.json": "8aaffcc0dec4d6e7466d65f922a525d43ed408c550b98c61fd9aff4385993259",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review2-fixes/README.md": "ad382d337d2453321fe9f3017ab462e0352d6418cdd6362098d9fa4563c5de2e",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review2-fixes/reproduce_baseline.py": "fb092cd828c0c8ccf5695bef81789235dc3e22b0c7351085be96abda939180be",
+    "harness/m1_owncam_memory_v3.py": "bd0425e2db324d3f3fb7e4766d557f43cce4edd1de52de53c30247ff195a2555",
+    "harness/owncam_memory_v3.py": "f4914bc1af7a528dceeccd544f267e2deab3f06cebd5859c1cfce369c31f7423",
+    "harness/owncam_pose_guard_v3.py": "72fbb17290e7585f3fb8e11b5b643684b0b91024a922dcb3eb3716f3cb299d2b",
+    "harness/owncam_slot_inspection_v3.py": "736832a0ebe87f50f6fc332b1019ca394d860597f564447b2d02d5a9e67b769d",
+    "harness/owncam_visibility_v3.py": "2d0e41ab69782049f2d56b4b26e19847a1830cc841ee033959edd96476ecea81",
+    "scripts/run_ci_tests.py": "d07dd5d3a65c5d84496da9f30c5bd40738087237e053bb401550815cbc1ff7c5",
+    "scripts/run_m1_owncam_memory_v3.py": "e27091d28dfd7187afd7fa8cc55b5ab9cee0c5bfd2573ca0dd6559c0872c678f",
+    "tests/test_owncam_memory_v3.py": "373bb0943df0f5b44064ece7f9b0d24c1282662fe70325494e5575dd747b64ec",
+    "tests/test_owncam_memory_v3_review.py": "0ff99cf1975de7a0ea8826270c474925b544b4a3cbcca5507cf2dc75b8bf24cd",
+    "tests/test_owncam_memory_v3_review2.py": "bf80a56bfad0054e1af0e90cca53e378f937fd50a12cdec7a22892f8467d79c5"
+  },
+  "log_sha256": {
+    "after-expanded.txt": "19182c607f8033ac4658326c475f4f34e8ede8b22ec8d37ac82ec307f55b3d93",
+    "after-initial.txt": "9004b6ac492fbcd36726340118dba63a2f001b5acc0da6cbc14edd18268f8fa4",
+    "before-confirmed.txt": "a46214bea861a020dbbcddb377c6acb9368be7d811a776a8d8fe586fd0f4e667",
+    "before-corrected-fixture.txt": "d264e43fc893f2fa871cc1153b14ceddae15b10ae123fcf3028c9cc6d11d75e5",
+    "before.txt": "4dfba7a0bb6be01c6f56c558fc23135200ea63143cc5f218c5660f674ae990ac",
+    "boundaries-after.txt": "68f2d693dd3c5b08160b87e7bd3cce946b14055939e84605fcb60503c3cf38b4",
+    "core-after.txt": "ad52b7f35e6e36c0bfa0235c0175112da090e1cb0b5a776bbc48881657fb3ad4",
+    "final-single-thread.txt": "4b406e1e4d7986481a4575ba742a087c4bf72208bc1b28ee09cf7a09387ce52e"
+  },
+  "cohort_run": false,
+  "physics_run": false,
+  "commit_created": false,
+  "git_metadata_written": false,
+  "prereg_status": "DRAFT",
+  "execution_authorized": false,
+  "scope": "Unit scenarios, saved own-input attachment checks, and synthetic precise inspection pose / detection absence. Not physical slot-inspection replay or v3 success/performance evidence.",
+  "exposed_fixture_policy": {
+    "origin": "memory_v2 preregistered test split: s162, s164, s165 (RGB 6 frames, issued servo and own pose reports)",
+    "used_for": "memory_v3 implementation development, geometry/attachment debugging and regression tests",
+    "exposed_seeds": [
+      161,
+      162,
+      163,
+      164,
+      165,
+      166
+    ],
+    "not_future_test": true,
+    "not_v3_success_samples": true,
+    "injected_assumptions": "v3 likelihood/innovation consistency and precise inspection pose / empty floor evidence are explicitly synthetic in unit fixtures, not recovered v3 execution evidence",
+    "future_test": "Only new never-opened seeds/episodes after new-dev tuning. Freeze code, vision source, conditions, thresholds and scoring before opening test. Never reuse exposed v2 seeds or fixture episodes as v3 test/performance evidence."
+  },
+  "remaining": [
+    "Coordinator review/commit/remote CI",
+    "PR 227 integration and new-dev physical inspection/cargo/return validation",
+    "New unopened test seeds only after registration and freeze"
+  ]
+}
