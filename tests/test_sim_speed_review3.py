@@ -149,7 +149,7 @@ def test_complete_m1_evidence_is_equivalent(tmp_path):
     assert report['equivalent'], report['evidence_errors']
     for name in (*LOGS, 'result.json'):
         assert len(report['checks'][name]['sha256_a']) == 64
-    assert eq.compare(a, b, until=.8)['equivalent']
+    assert eq.compare(a, b, until=2.1)['equivalent']
 
 
 @pytest.mark.parametrize('steps', [4, 5])

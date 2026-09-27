@@ -5,6 +5,10 @@ from ``scripts/sim_profile.py``), issued commands, control-input frame rows and
 the saved JPEG bytes, original command/event/evaluation log bytes and
 ``result.json`` bytes. Full comparison validates the complete M1 v3 log
 inventory, counts, sampling coverage and grasp-through-final-look phases.
+Sampling coverage starts at ``manifest.recording_start_sim_s`` or a logged
+``recording_started`` event, not at simulation zero (scene setup advances SIM
+time). Legacy runs use agreeing first frame/GT timestamps, with that limitation
+reported explicitly. Invalid, conflicting or unequal A/B starts fail closed.
 ``--until-sim-s T`` compares only rows before SIM time T
 (a truncated run against a full one; result.json is then skipped because the
 truncated run ends with SIM_LIMIT). manifest.json differences are listed but not
@@ -42,7 +46,8 @@ REQUIRED_FULL = ('result.json', 'manifest.json')
 M1_SCHEMA = 'ugrp.m1_owncam_run.v3'
 FULL_PHASES = ('grasp', 'to_carry_posture', 'nav_preplace', 'release', 'look_back')
 CHECKPOINTS = 'qpos_checkpoints.jsonl'
-MANIFEST_EXPECTED = ('code', 'wall_s', 'load_average', 'speedups', 'env', 'files')
+# Recording-start presence can differ for legacy runs; its value is checked separately.
+MANIFEST_EXPECTED = ('code', 'wall_s', 'load_average', 'speedups', 'env', 'files', 'recording_start_sim_s')
 EXIT_EQUIVALENT, EXIT_DIFFERENT, EXIT_INSUFFICIENT = 0, 1, 2
 
 
@@ -241,7 +246,54 @@ def log_bytes(raw: bytes | None, selected_rows: int, until: float | None) -> byt
     return b''.join(kept)
 
 
-def validate_full_run(side: str, run: Path, logs: dict, result: dict, manifest: dict, ev: Evidence) -> None:
+def recording_start(side: str, logs: dict, manifest: dict, ev: Evidence) -> dict:
+    """Resolve the sampling origin without mistaking setup/command time for it.
+
+    Explicit evidence is authoritative: malformed/conflicting markers must not
+    silently fall back. Old M1 v3 logs have no marker, so both independently
+    sampled streams must agree on a finite first time. That fallback cannot
+    establish what happened before the surviving first samples.
+    """
+    def fail(message):
+        ev.errors.append(f'{side}: recording start: {message}')
+
+    def valid(value):
+        return type(value) in (int, float) and math.isfinite(value) and value >= 0
+
+    first = {name: row_time(logs[name][0]) if logs[name] else None
+             for name in ('inputs/frames.jsonl', 'eval_only/gt_trajectory.jsonl')}
+    explicit = {}
+    field = 'recording_start_sim_s'
+    if field in manifest:
+        explicit['manifest.json:' + field] = manifest[field]
+    markers = [row for row in logs['controller_events.jsonl'] if row.get('event') == 'recording_started']
+    for index, row in enumerate(markers):
+        explicit[f'controller_events.jsonl:recording_started[{index}]'] = row_time(row)
+    evidence = {'sim_s': None, 'inferred': not explicit, 'sources': list(explicit) or list(first),
+                'first_samples_sim_s': first}
+    if explicit:
+        values = list(explicit.values())
+        if not all(valid(t) for t in values):
+            fail('invalid explicit SIM timestamp; cannot fall back to first samples')
+        elif len(markers) > 1 or any(t != values[0] for t in values[1:]):
+            fail('conflicting/duplicate explicit markers')
+        else:
+            evidence['sim_s'] = float(values[0])
+    else:
+        evidence['limitation'] = ('Inferred from first frame/GT samples; coverage before the first samples '
+                                  'cannot be established without an explicit recording-start marker.')
+        values = list(first.values())
+        if not all(valid(t) for t in values):
+            fail('unknown: missing/invalid first frame or GT SIM timestamp')
+        elif values[0] != values[1]:
+            fail('first frame and GT SIM timestamps disagree; cannot infer a common origin')
+        else:
+            evidence['sim_s'] = values[0]
+    return evidence
+
+
+def validate_full_run(side: str, run: Path, logs: dict, result: dict, manifest: dict, ev: Evidence,
+                      recording_start_sim_s: float | None) -> None:
     """The fixed M1 v3 evidence contract, independent of A/B equality.
 
     Hashes bind irregular/untimed event logs to the completed runner's manifest.
@@ -287,9 +339,14 @@ def validate_full_run(side: str, run: Path, logs: dict, result: dict, manifest: 
             return None
         if any(b < a for a, b in zip(ts, ts[1:])):
             fail(f'{name}: timestamps are not in emission order')
-        if cadence is not None and (ts[0] > dt + .00011
-                                   or any(b - a > cadence + dt + .0002 for a, b in zip(ts, ts[1:]))):
-            fail(f'{name}: missing initial sample or sampling gap')
+        if cadence is not None:
+            # Logged SIM times are rounded to four decimals; the first sample
+            # may be one physics step after the explicit recording origin.
+            if (recording_start_sim_s is None or ts[0] < recording_start_sim_s - .00011
+                    or ts[0] > recording_start_sim_s + dt + .00011):
+                fail(f'{name}: missing initial sample or sample before recording start')
+            if any(b - a > cadence + dt + .0002 for a, b in zip(ts, ts[1:])):
+                fail(f'{name}: sampling gap')
         if tail is not None and end - ts[-1] > tail + dt + .0052:
             fail(f'{name}: does not cover the final SIM interval')
         return ts
@@ -426,8 +483,15 @@ def compare(a_path: Path, b_path: Path, until: float | None = None) -> dict:
         checks['result.json'] = {**compare_bytes(ev.raw.get(a_run/'result.json'), ev.raw.get(b_run/'result.json')),
                                  'fields': len(ra), 'differing_fields': diff}
         ma, mb = (ev.document(side, run/'manifest.json') for side, run in (('A', a_run), ('B', b_run)))
+        starts = report['recording_start'] = {}
         for i, (side, run, result, manifest) in enumerate((('A', a_run, ra, ma), ('B', b_run, rb, mb))):
-            validate_full_run(side, run, {name: rows[i] for name, rows in logs.items()}, result, manifest, ev)
+            side_logs = {name: rows[i] for name, rows in logs.items()}
+            starts[side] = recording_start(side, side_logs, manifest, ev)
+            validate_full_run(side, run, side_logs, result, manifest, ev, starts[side]['sim_s'])
+        same_start = starts['A']['sim_s'] is not None and starts['A']['sim_s'] == starts['B']['sim_s']
+        checks['recording_start'] = {'identical': same_start}
+        if not same_start:
+            ev.errors.append('recording start: A/B origins are unknown or disagree')
         mdiff = sorted(k for k in set(ma) | set(mb) if k not in ma or k not in mb or ma[k] != mb[k])
         report['manifest_differences'] = {'expected': [k for k in mdiff if k in MANIFEST_EXPECTED],
                                           'unexpected': [k for k in mdiff if k not in MANIFEST_EXPECTED]}

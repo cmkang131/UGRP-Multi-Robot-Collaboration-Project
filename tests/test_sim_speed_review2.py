@@ -13,20 +13,16 @@ import pytest
 
 from scripts import sim_equivalence as eq, sim_slots as slots
 from test_sim_speed_tools import write_profile
-from sim_speed_fixtures import full_run, write_rows
+from sim_speed_fixtures import full_profile, write_rows
 
 
 def profiles(tmp_path, mutate=lambda rows, meta: None):
-    rows = [{'step': i, 't': i * .00025, 'sha256': str(i // 2000) * 64} for i in (2000, 4000)]
-    meta = {'qpos_every': 2000, 'mj_steps': 4000, 'checkpoints': 2,
-            'initial_sim_s': 0., 'timestep': .00025, 'final_checkpoint': rows[-1].copy(),
-            'last_step_checkpoint': rows[-1].copy()}
-    mutate(rows, meta)
     paths = []
     for side in ('a', 'b'):
-        p = tmp_path/side
-        full_run(p/'run')
-        (p/'run/attempt_started.json').write_text('{}')
+        p = full_profile(tmp_path/side)
+        rows = [json.loads(line) for line in (p/'qpos_checkpoints.jsonl').read_text().splitlines()]
+        meta = json.loads((p/'profile.json').read_text())
+        mutate(rows, meta)
         write_rows(p/'qpos_checkpoints.jsonl', rows)
         (p/'profile.json').write_text(json.dumps(meta))
         paths.append(p)
@@ -56,7 +52,7 @@ def test_qpos_completeness(tmp_path, case):
         if case == 'no_final': meta.pop('final_checkpoint')
         if case == 'interval': meta['qpos_every'] = 0
     a, b = profiles(tmp_path, change)
-    assert eq.compare(a, b, 1. if case == 'both_missing_window' else None)['verdict'] == 'insufficient_evidence'
+    assert eq.compare(a, b, 2.1 if case == 'both_missing_window' else None)['verdict'] == 'insufficient_evidence'
 
 
 def test_release_keeps_inherited_child_reservation(tmp_path):
@@ -176,12 +172,12 @@ def test_valid_full_profile_and_terminal_remainder(tmp_path):
     assert eq.compare(a, b)['equivalent']
     for p in (a, b):
         meta = json.loads((p/'profile.json').read_text())
-        end = {'step': 4001, 't': 1.00025, 'sha256': '5'*64}
-        meta.update(mj_steps=4001, checkpoints=3, final_checkpoint=end, last_step_checkpoint=end)
+        end = {'step': 9201, 't': 2.30025, 'sha256': '5'*64}
+        meta.update(mj_steps=9201, checkpoints=3, final_checkpoint=end, last_step_checkpoint=end)
         (p/'profile.json').write_text(json.dumps(meta))
         with (p/'qpos_checkpoints.jsonl').open('a') as f: f.write(json.dumps(end)+'\n')
     assert eq.compare(a, b)['equivalent']
-    assert eq.compare(a, b, until=1.)['equivalent']
+    assert eq.compare(a, b, until=2.1)['equivalent']
 
 
 def test_recorder_preserves_final_noninterval_state(monkeypatch):
