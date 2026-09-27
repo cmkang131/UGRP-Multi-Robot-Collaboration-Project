@@ -44,6 +44,12 @@ def stationary_beam_estimate(obs, servo):
 class PairGraspRelook:
     """Mixin before M2DoorStudent. All live inputs come from the own port."""
 
+    def look(self, now):
+        obs = super().look(now)
+        if self.state == 'align':
+            self.record_standoff(now, obs)
+        return obs
+
     @property
     def beam_grasp_confirmed(self):
         receipt = getattr(self, 'beam_grasp_receipt', None)
@@ -122,6 +128,16 @@ class PairGraspRelook:
         self.claims['grasp_pose_estimate'] = {'xyyaw': list(self.grasp_estimate),
                                             'source': 'shared own.pose/last_report', 'sim_time': now}
         self.arm.queue(m2.ob2.pose_of(self.look_name), now, duration=.8, settle=.3)
+        # Capture again after the look sweep, before lowering the open wrist.
+        # This also supplies a NEW segment anchor at stored-grip checkpoints.
+        self.set('pregrasp_standoff', now)
+
+    def _pregrasp_standoff(self, now, arm_idle):
+        if not arm_idle:
+            return
+        obs = self.look(now)
+        if not self.record_standoff(now, obs):
+            return self.fail('PREGRASP_BEAM_UNCERTAIN', now)
         self._queue_open_descent(now)
 
     def _queue_open_descent(self, now):
@@ -147,7 +163,7 @@ class PairGraspRelook:
         self.set('pregrasp_descend', now)
 
     def tick(self, now):
-        if self.state not in ('pregrasp_descend', 'wait_close'):
+        if self.state not in ('pregrasp_standoff', 'pregrasp_descend', 'wait_close'):
             return super().tick(now)
         channel, publisher = self.status
         publisher.tick('aligning', now)

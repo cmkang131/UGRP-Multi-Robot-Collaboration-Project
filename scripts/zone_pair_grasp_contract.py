@@ -6,6 +6,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PATHS = (
     'harness/zone_pair_grasp.py', 'harness/zone_pair_executor.py',
+    'harness/zone_pair_beam_track.py',
     'harness/zone_pair_guards.py', 'harness/zone_pair_geometry.py',
     'harness/zone_pair_status.py', 'harness/zone_pair_vision.py',
     'harness/owncam_pose_source.py', 'harness/owncam_localizer.py',
@@ -26,8 +27,13 @@ def grasp_contract():
         'sweeps_max': 2, 'close_wait_s': 20.,
         'attachment': 'own RGB grip-view after issued CLOSED, segment bound; cleared on issued OPEN; post-lift co-motion still required',
         'close': 'own open grip-view, pose readiness and fresh stationary RGB beam clearance -> close_ready_i -> same-grid close_go_i; recheck beam before every close PWM; evidence TTL 0.6 s',
-        'stationary_beam': 'unclipped own RGB band-centre/axis fit + static floor-supported catalogue geometry; no wrist attachment or stored-grip fallback; 35 mm + own pose inflation + 2*(fit scatter + atan2(scatter, visible length)*lever); missing/uncertain/unsafe fit aborts',
-        'evaluation_state_equivalence': {'pregrasp_descend': 'grasp', 'wait_close': 'grasp'},
+        'stationary_beam': 'full own RGB standoff band centre + paired-edge axis; segment-local issued-command prediction including stall/slip uncertainty; clipped visible patch only checks consistency, never resets pose/age/sigma; no planned/stored-grip or wrist-attachment fallback; unchanged whole-beam distance and 35 mm + own pose + beam uncertainty inflation',
+        'beam_track': {'max_age_s': 30., 'std_xy_floor_m': .015, 'std_yaw_floor_deg': 1.,
+                       'drift_xy_m_s': .0005, 'drift_yaw_rad_s': .0005,
+                       'arm_xy_m_pwm': .000001, 'arm_yaw_rad_pwm': .000002,
+                       'motion_gain_bound': 1.6, 'partial_min_support': .95,
+                       'qualification': 'dev bounds, not measured motion success or calibrated accuracy'},
+        'evaluation_state_equivalence': {'pregrasp_standoff': 'grasp', 'pregrasp_descend': 'grasp', 'wait_close': 'grasp'},
         'contact_profile': 'cargo_noslip_v1', 'weld': False,
         'qualification': 'not physically executed; no inherited result',
         'source_sha256': {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in SOURCE_PATHS},

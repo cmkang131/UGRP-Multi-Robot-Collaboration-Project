@@ -112,7 +112,7 @@ def test_vo_never_skips_look_and_own_frame_updates_guard_shared_pose(monkeypatch
     ctl.arm.events.clear()
     ctl.arm.until = 1.
     ctl._pregrasp_look(1., True)
-    assert ctl.state == 'pregrasp_descend' and ctl.pregrasp_done
+    assert ctl.state == 'pregrasp_standoff' and ctl.pregrasp_done
     assert ctl.grasp_estimate == pytest.approx([.56, .045, .01])
     assert not any(s == 1 and p < 2000 for _, s, p in ctl.arm.events)
 
@@ -134,7 +134,7 @@ def test_dev06_yaw_relook_then_progress_or_safe_abort(after_yaw, tag):
     own.pose.loc.last_tag_t = 1. if tag else None
     ctl._pregrasp_look(1., True)
     if tag and after_yaw <= FIX_STD_YAW_RAD:
-        assert ctl.state == 'pregrasp_descend'
+        assert ctl.state == 'pregrasp_standoff'
     else:
         assert ctl.state == 'failed' and ctl.failure == 'DOOR_POSE_NOT_LOCALIZED'
     assert not any(s == 1 and p < 2000 for _, s, p in ctl.arm.events)
@@ -245,7 +245,7 @@ def test_confirmed_beam_cannot_sweep_and_old_segment_receipt_is_not_reused():
     assert not ep.command_guard.carrying_beam
 
 
-@pytest.mark.parametrize('phase', ['pregrasp_descend', 'wait_close'])
+@pytest.mark.parametrize('phase', ['pregrasp_standoff', 'pregrasp_descend', 'wait_close'])
 @pytest.mark.parametrize('fault', [None, 'drop', 'wrong_segment', 'off_target', 'no_go'])
 def test_v4_checkpoint_subphases_keep_v3_physical_criteria(phase, fault):
     from tests.test_zone_pair_dev import checkpoint_evidence

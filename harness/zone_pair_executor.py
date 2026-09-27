@@ -128,6 +128,9 @@ def m2_controller(execution, plan, params):
         def preclose_check(self, now, obs):
             return execution.command_guard.preclose_check(now, obs)
 
+        def record_standoff(self, now, obs):
+            return execution.command_guard.observe_standoff(now, obs)
+
         def fail(self, reason, now):
             if reason in ('APPROACH_BLOCKED', 'APPROACH_POSE_UNCERTAIN', 'APPROACH_LOST', 'APPROACH_ARRIVAL_UNCONFIRMED'):
                 reason = 'PAIR_APPROACH_' + reason.removeprefix('APPROACH_').lower()

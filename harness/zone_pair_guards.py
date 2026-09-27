@@ -6,6 +6,7 @@ it must not drag its peer into a unilateral navigation recovery.
 """
 from __future__ import annotations
 
+import copy
 import math
 
 from harness.pair_owncam_approach import PairApproachDriverV2
@@ -98,7 +99,10 @@ class GuardedPairApproach(GuardedDriver, PairApproachDriverV2):
 
 class PairCommandGuard:
     def __init__(self, execution):
+        from harness.zone_pair_beam_track import RestingBeamTrack
+
         self.ep = execution
+        self.beam_track = RestingBeamTrack()
         self.monitor = ProgressMonitor()
         self.segment = None
         self.last_evidence = None
@@ -128,8 +132,8 @@ class PairCommandGuard:
     def preclose_check(self, now, obs):
         """Unattached stationary beam gate, shared by READY and each close PWM.
 
-        No cached beam, order-sheet pose or wrist attachment fallback. Losing
-        the own RGB estimate while closing safely aborts the remaining queue.
+        A clipped band can constrain a segment-local standoff hypothesis.
+        Commands/time grow its uncertainty; absent evidence still fails closed.
         """
         from harness.zone_pair_grasp import FIX_STD_XY_M, FIX_STD_YAW_RAD, stationary_beam_estimate
         from harness.zone_pair_vision import valid_frame
@@ -138,9 +142,12 @@ class PairCommandGuard:
         pose = OwnPose.from_report(own.last_report)
         if (not pose_report_fresh(own.last_report, now) or pose is None or not own.gate.ok
                 or not 0 <= pose.std_xy <= FIX_STD_XY_M or not 0 <= pose.std_yaw <= FIX_STD_YAW_RAD
-                or now < self.motion_until or not valid_frame(obs, own.robot_id, now)):
+                or now < self.motion_until or not valid_frame(obs, own.robot_id, now)
+                or not self._same_camera_commands(obs)):
             return False
         beam = stationary_beam_estimate(obs, own.servo)
+        if beam is None:
+            beam = self.beam_track.estimate(now, obs, own.servo, self.ep.controller.seg)
         if beam is None:
             self.ep.log(own.robot_id, 'preclose_beam_guard', now, clear=False, reason='BEAM_UNCERTAIN')
             return False
@@ -151,6 +158,28 @@ class PairCommandGuard:
                     clearance_after_margin_m=clearance, wall_id=wall,
                     frame_id=obs['frame_id'], sha256=obs['sha256'], beam=beam)
         return clear
+
+    def _same_camera_commands(self, obs):
+        # A recent frame can still precede an arm command. Do not project it
+        # with a different commanded camera FK. Finger PWM does not move it.
+        try:
+            image_servo = {int(k): v for k, v in obs['actuator_state']['servo_pulses'].items()}
+            return all(image_servo[k] == self.ep.own.servo[k] for k in (3, 4, 5, 6))
+        except (KeyError, TypeError, ValueError):
+            return False
+
+    def observe_standoff(self, now, obs):
+        from harness.zone_pair_vision import valid_frame
+
+        own = self.ep.own
+        if (now < self.motion_until or own.servo.get(1) != 2000
+                or not valid_frame(obs, own.robot_id, now) or not self._same_camera_commands(obs)):
+            return False
+        ok = self.beam_track.observe_standoff(obs, own.servo, self.ep.controller.seg)
+        self.ep.log(own.robot_id, 'beam_standoff', now, accepted=ok,
+                    frame_id=obs['frame_id'], sha256=obs['sha256'],
+                    beam=copy.deepcopy(self.beam_track.beam) if ok else None)
+        return ok
 
     def _pose(self, now):
         report = self.ep.own.last_report
@@ -173,6 +202,7 @@ class PairCommandGuard:
         return pose.std_xy > p.high_xy_m or pose.std_yaw > p.high_yaw_rad
 
     def on_command(self, row):
+        self.beam_track.command(row, self.ep.own.servo)
         if row['kind'] in ('drive', 'mecanum') and any(row.get(k, 0.) for k in ('forward', 'left', 'turn')):
             self.stationary_pose = None
             self.motion_until = row['t'] + row['duration_s']
