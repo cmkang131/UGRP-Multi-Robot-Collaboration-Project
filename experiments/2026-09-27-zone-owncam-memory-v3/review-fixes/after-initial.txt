@@ -1,0 +1,178 @@
+...FFFF...................................F...........                   [100%]
+=================================== FAILURES ===================================
+__________ test_p1_yaw_only_no_progress_look_loop_stops[short-False] ___________
+
+loaded = False, mode = 'short'
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    @pytest.mark.parametrize('mode', ['short', 'full'])
+    def test_p1_yaw_only_no_progress_look_loop_stops(loaded, mode):
+        leg, loc, _ = leg_fixture(loaded, mode=mode)
+        for attempt in range(6):
+            loc.t = 2. + attempt
+            fix(leg.memory, loc.t)
+            if leg._should_refix(True):
+>               leg._start_look(loc.t, 'refix')
+
+tests/test_owncam_memory_v3_review.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+harness/owncam_drive_mem_v3.py:39: in _start_look
+    return super()._start_look(now, reason)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/owncam_drive_mem.py:80: in _start_look
+    self.loc.predict_to(now)
+    ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.owncam_pose_guard_v3.GuardedLocalizerV3 object at 0x10611e810>
+name = 'predict_to'
+
+    def __getattr__(self, name):
+>       return getattr(self.inner, name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'predict_to'
+
+harness/owncam_pose_guard_v3.py:135: AttributeError
+___________ test_p1_yaw_only_no_progress_look_loop_stops[short-True] ___________
+
+loaded = True, mode = 'short'
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    @pytest.mark.parametrize('mode', ['short', 'full'])
+    def test_p1_yaw_only_no_progress_look_loop_stops(loaded, mode):
+        leg, loc, _ = leg_fixture(loaded, mode=mode)
+        for attempt in range(6):
+            loc.t = 2. + attempt
+            fix(leg.memory, loc.t)
+            if leg._should_refix(True):
+>               leg._start_look(loc.t, 'refix')
+
+tests/test_owncam_memory_v3_review.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+harness/owncam_drive_mem_v3.py:39: in _start_look
+    return super()._start_look(now, reason)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/owncam_drive_mem.py:80: in _start_look
+    self.loc.predict_to(now)
+    ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.owncam_pose_guard_v3.GuardedLocalizerV3 object at 0x10614a240>
+name = 'predict_to'
+
+    def __getattr__(self, name):
+>       return getattr(self.inner, name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'predict_to'
+
+harness/owncam_pose_guard_v3.py:135: AttributeError
+___________ test_p1_yaw_only_no_progress_look_loop_stops[full-False] ___________
+
+loaded = False, mode = 'full'
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    @pytest.mark.parametrize('mode', ['short', 'full'])
+    def test_p1_yaw_only_no_progress_look_loop_stops(loaded, mode):
+        leg, loc, _ = leg_fixture(loaded, mode=mode)
+        for attempt in range(6):
+            loc.t = 2. + attempt
+            fix(leg.memory, loc.t)
+            if leg._should_refix(True):
+>               leg._start_look(loc.t, 'refix')
+
+tests/test_owncam_memory_v3_review.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+harness/owncam_drive_mem_v3.py:39: in _start_look
+    return super()._start_look(now, reason)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/owncam_drive_mem.py:80: in _start_look
+    self.loc.predict_to(now)
+    ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.owncam_pose_guard_v3.GuardedLocalizerV3 object at 0x1060fbf80>
+name = 'predict_to'
+
+    def __getattr__(self, name):
+>       return getattr(self.inner, name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'predict_to'
+
+harness/owncam_pose_guard_v3.py:135: AttributeError
+___________ test_p1_yaw_only_no_progress_look_loop_stops[full-True] ____________
+
+loaded = True, mode = 'full'
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    @pytest.mark.parametrize('mode', ['short', 'full'])
+    def test_p1_yaw_only_no_progress_look_loop_stops(loaded, mode):
+        leg, loc, _ = leg_fixture(loaded, mode=mode)
+        for attempt in range(6):
+            loc.t = 2. + attempt
+            fix(leg.memory, loc.t)
+            if leg._should_refix(True):
+>               leg._start_look(loc.t, 'refix')
+
+tests/test_owncam_memory_v3_review.py:91: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+harness/owncam_drive_mem_v3.py:39: in _start_look
+    return super()._start_look(now, reason)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/owncam_drive_mem.py:80: in _start_look
+    self.loc.predict_to(now)
+    ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.owncam_pose_guard_v3.GuardedLocalizerV3 object at 0x1060c6720>
+name = 'predict_to'
+
+    def __getattr__(self, name):
+>       return getattr(self.inner, name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'types.SimpleNamespace' object has no attribute 'predict_to'
+
+harness/owncam_pose_guard_v3.py:135: AttributeError
+_ ControllerAndBoundaryTests.test_boundary_requires_sigma_limit_and_accepts_recent_own_free_slot _
+
+self = <test_owncam_memory_v3.ControllerAndBoundaryTests testMethod=test_boundary_requires_sigma_limit_and_accepts_recent_own_free_slot>
+
+    def test_boundary_requires_sigma_limit_and_accepts_recent_own_free_slot(self):
+        ctl = controller()
+        ctl.verification['place'] = {'since': 1., 'looks': 0}
+        ctl.last_obs = {'sim_time': 2.}
+        fix(ctl.memory, 2.)
+        ctl.memory.log_odds[:] = -2.
+        ctl.memory.free_observed_at[:] = 2.
+        ctl.pose.report = lambda t: report(t, sigma=.2)
+        with mock.patch.object(ctl, '_gate_look', return_value=ctl._hold()):
+            self.assertIsNotNone(ctl._boundary_gate(2., 'place'))
+        ctl.pose.report = lambda t: report(t)
+>       self.assertIsNone(ctl._boundary_gate(2., 'place'))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_owncam_memory_v3.py:476: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+harness/m1_owncam_memory_v3.py:180: in _boundary_gate
+    return self._gate_look(now, 'verify_' + kind + '_v3', obs, loaded=kind == 'place')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+harness/m1_owncam_memory_v3.py:142: in _gate_look
+    return M1OwnCamDelivery._gate_look(self, now, reason, obs, loaded=loaded)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.m1_owncam_memory_v3.M1OwnCamDeliveryMemV3 object at 0x110498470>
+now = 2.0, reason = 'verify_place_v3', obs = {'sim_time': 2.0}, loaded = True
+
+    def _gate_look(self, now, reason, obs, *, loaded):
+>       pose = {int(k): int(v) for k, v in obs['actuator_state']['servo_pulses'].items()}
+                                           ^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'actuator_state'
+
+harness/m1_owncam_delivery.py:575: KeyError
+=========================== short test summary info ============================
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_yaw_only_no_progress_look_loop_stops[short-False]
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_yaw_only_no_progress_look_loop_stops[short-True]
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_yaw_only_no_progress_look_loop_stops[full-False]
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_yaw_only_no_progress_look_loop_stops[full-True]
+FAILED tests/test_owncam_memory_v3.py::ControllerAndBoundaryTests::test_boundary_requires_sigma_limit_and_accepts_recent_own_free_slot
+5 failed, 49 passed in 5.79s
