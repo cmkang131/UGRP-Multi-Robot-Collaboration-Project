@@ -118,7 +118,8 @@ def actual(spec, *, messages=True, frozen=None):
                   inputs=[(e.tags[0], e.active, number(e.claimed_by), number(e.retry_of),
                            stamp(e.available_at) if e.available_at != float('inf') else float('inf'))
                           for e in s.event_inputs],
-                  end_reason=zi.IntegratedTrial.decision_end_reason(trial))
+                  end_reason=zi.IntegratedTrial.decision_end_reason(trial),
+                  end_state=zi.IntegratedTrial.end_state(trial, spec.horizon))
     assert not s.send_violations
     assert s.budget.outstanding() == 0
     assert s.budget.used_total() == s.send_ledger.sends() <= spec.total
@@ -164,19 +165,19 @@ def test_generated_no_comm_bytes_and_additive_common_schedule(v64, seed):
         r for r in common_rows(baseline) if r[1] < cutoff], seed
 
 
-def test_reporting_counters_cannot_change_account_or_end_reason():
+def test_v64_label_uses_refusal_history_but_cannot_change_account():
     _, s = actual(replace(generated_case(0), events=(), horizon=.1, total=90))
-    trial = SimpleNamespace(scheduler=s, transport=SimpleNamespace(budget_exhausted=False))
+    trial = SimpleNamespace(scheduler=s, transport=SimpleNamespace(budget_exhausted=False), actors=ACTORS)
     trial.decision_budget_spent = lambda: zi.IntegratedTrial.decision_budget_spent(trial)
     for row in s.metrics.values():
         row['budget_refused'] = row['calls'] = 10000
     assert not s.budget.exhausted()
-    assert zi.IntegratedTrial.decision_end_reason(trial) == 'sim_horizon'
+    assert zi.IntegratedTrial.decision_end_reason(trial) == 'budget_exhausted'
 
 
 @pytest.mark.parametrize('fault,seed', [('lineage', 30), ('timer', 1235), ('termination', 1), ('merged', 479)])
 def test_reference_detects_review6_mutations(monkeypatch, fault, seed):
-    """The independent oracle must reject the three old defects, not bless them."""
+    """Reject lineage/timer defects and the review6 non-v64 termination rule."""
     if fault == 'lineage':
         original = core.EventScheduler._restore_inputs
         def mutate(self, call):
@@ -200,11 +201,9 @@ def test_reference_detects_review6_mutations(monkeypatch, fault, seed):
             original(self, actor, at)
         monkeypatch.setattr(zi.IntegratedTrial, '_arm_reask', mutate)
     else:
-        original = zi.IntegratedTrial.decision_end_reason
         def mutate(self):
-            if any(m['budget_refused'] for m in self.scheduler.metrics.values()):
-                return 'budget_exhausted'
-            return original(self)
+            return ('budget_exhausted' if self.decision_budget_spent()
+                    and not self.scheduler.holding() and not self.scheduler.censored else 'sim_horizon')
         monkeypatch.setattr(zi.IntegratedTrial, 'decision_end_reason', mutate)
     spec = generated_case(seed)
     try:

@@ -65,6 +65,7 @@ def reference(spec, *, messages=True):
     last, waits, retry_counts, reasks = {}, {}, Counter(), {}
     inbox = {a: [] for a in ACTORS}
     busy = dict.fromkeys(ACTORS, False)
+    refused = []
 
     def put(at, kind, actor, data=None, lane=''):
         nonlocal seq
@@ -228,6 +229,10 @@ def reference(spec, *, messages=True):
                 request(earliest, actor, lane, root, inputs, trigger, merged)
                 continue
             if balance(actor) < 1 or logical(actor) >= spec.calls:
+                # v64 labels a trial from the existence of an admission denial,
+                # even if a later refund restores capacity. Record that event
+                # independently; do not infer the label from final balances.
+                refused.append((now, actor))
                 if inputs:
                     if exhausted(actor):
                         for i in inputs:
@@ -266,5 +271,19 @@ def reference(spec, *, messages=True):
     return dict(calls=[tuple(c[k] for k in fields) for c in calls], sends=sends, refunds=refunds,
                 snapshots=snapshots, retries=sorted((a, r, n) for (a, r), n in retry_counts.items()),
                 inputs=[(e['tag'], e['active'], e['claimed'], e['root'], e['available']) for e in sources],
-                end_reason='budget_exhausted' if all(exhausted(a) for a in ACTORS)
-                and not any(c['status'] == 'censored' for c in calls) else 'sim_horizon')
+                end_reason='budget_exhausted' if refused else 'sim_horizon',
+                end_state={
+                    'quiescent': all(exhausted(a) for a in ACTORS) and not any(busy.values())
+                                 and not any(c['status'] == 'censored' for c in calls),
+                    'pending_work_count': sum(busy.values()),
+                    'in_flight_calls': sum(c['status'] == 'censored' for c in calls),
+                    'censored_calls': sum(c['status'] == 'censored' for c in calls),
+                    'committed_sends': len(sends), 'reserved': 0,
+                    'remaining_budget': {
+                        'http_total': balance(),
+                        'http_per_actor': {a: balance(a) for a in ACTORS},
+                        'calls_per_actor': {a: max(0, spec.calls - logical(a, True)) for a in ACTORS},
+                        'calls_total': max(0, spec.total - sum(logical(a, True) for a in ACTORS)),
+                    },
+                    'horizon_hit': True,
+                })

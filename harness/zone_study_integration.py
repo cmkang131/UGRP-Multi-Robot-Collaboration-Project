@@ -415,10 +415,41 @@ class IntegratedTrial(zo.OfflineTrial):
                 and all(self.links[a].job() is None for a in self.actors))
 
     def decision_end_reason(self):
-        """Classify the terminal state, never a previous admission refusal."""
-        return ('budget_exhausted' if self.decision_budget_spent()
-                and not self.scheduler.holding() and not self.scheduler.censored
+        """Frozen v64 compatibility label; actual terminal facts are in end_state."""
+        return ('budget_exhausted' if any(self.scheduler.metrics[a]['budget_refused']
+                                          for a in self.actors)
                 else 'sim_horizon')
+
+    def end_state(self, t_end_s):
+        """Post-settlement facts, identical for every communication condition.
+
+        Censored calls remain unfinished SIM decisions even after shutdown has
+        removed them from holding(). Reservations/remaining budgets are the
+        reconciled scheduler balances, not upstream provider or pilot balances.
+        This record never feeds a model input or changes scheduling.
+        """
+        s, budget = self.scheduler, self.scheduler.budget
+        pending = sum(self.links[a].job() is not None for a in self.actors)
+        unfinished = sum(r['status'] in ('outstanding', 'interrupted', 'censored')
+                         for r in s.ledger.values())
+        logical = {a: budget.call_count(a, confirmed_only=True) for a in self.actors}
+        return {
+            'quiescent': self.decision_budget_spent() and not pending and not unfinished,
+            'pending_work_count': pending,
+            'in_flight_calls': unfinished,
+            'censored_calls': len(s.censored),
+            'committed_sends': s.send_ledger.sends(),
+            'reserved': budget.outstanding(),
+            'remaining_budget': {
+                'http_total': budget.remaining(),
+                'http_per_actor': {a: budget.remaining(a) for a in self.actors},
+                'calls_per_actor': {a: max(0, self.policy.max_calls_per_actor - logical[a])
+                                    for a in self.actors},
+                'calls_total': (None if s.max_calls_total is None else
+                                max(0, s.max_calls_total - sum(logical.values()))),
+            },
+            'horizon_hit': float(t_end_s) >= self.horizon_s,
+        }
 
     def finish(self, t_end_s) -> zo.TrialResult:
         report = self.scheduler.run(until_s=t_end_s)
@@ -428,7 +459,7 @@ class IntegratedTrial(zo.OfflineTrial):
                               actions=self.actions, requests=self.requests, trace=self.scheduler.trace(),
                               report=report.to_dict(), channel=self.channel_summary(), cost=self.cost_summary(),
                               send_ledger=self.send_ledger_record(),
-                              end_reason=self.decision_end_reason())
+                              end_reason=self.decision_end_reason(), end_state=self.end_state(t_end_s))
 
     # -- inputs ---------------------------------------------------------------
     def snapshot(self, call):

@@ -7,7 +7,8 @@ from harness import zone_event_scheduler as core
 from harness import zone_study_integration as zi
 from tests import test_zone_study_multiturn as fixture
 from tests.test_zone_study_multiturn import offline_only  # noqa: F401
-from tests.test_zone_study_multiturn_properties import v64, signature, common_schedule  # noqa: F401
+from tests.test_zone_study_multiturn_properties import (  # noqa: F401
+    v64, signature, common_schedule, finish_for_comparison)
 
 
 def run_review6(case, condition, *, trial_cls=None, at=5.5):
@@ -44,7 +45,7 @@ def run_review6(case, condition, *, trial_cls=None, at=5.5):
             at=6. if case == 'refund_horizon' else at)
     end = {'separate_roots': 14., 'timer_reservation': 30., 'refund_horizon': 6.7}[case]
     fixture.advance(trial, clock, links, end)
-    result = trial.finish(end)
+    result = finish_for_comparison(trial, end)
     if case == 'separate_roots' and condition != 'no_comm':
         assert [p['sim_time_s'] for p in requests if p['robot_id'] == 'r1'] == [
             0., at, round(at + 4., 6), round(at + 6., 6)]
@@ -60,7 +61,11 @@ def run_review6(case, condition, *, trial_cls=None, at=5.5):
         assert sum(m['budget_refused'] for m in s.metrics.values()) > 0
         assert s.budget.used_total() == 3 and s.budget.remaining() == 1
         assert not s.holding() and not trial.decision_budget_spent()
-        assert result.end_reason == 'sim_horizon'
+        # Coordinator review7: preserve v64's historical-refusal label, while
+        # the factual record exposes the restored budget after the refund.
+        assert result.end_reason == 'budget_exhausted'
+        assert result.end_state['remaining_budget']['http_total'] == 1
+        assert not result.end_state['quiescent']
     assert not s.send_violations
     return trial, requests, {
         'path': case, 'message_state': condition, 'handling': 'review6_chain', 'exception': None,
@@ -96,7 +101,7 @@ def test_refundable_reservation_cannot_cancel_v64_reask(v64, condition, at):
 
 
 @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
-def test_past_refusal_is_not_a_terminal_budget_state(condition):
+def test_past_refusal_label_preserves_refunded_terminal_facts(condition):
     run_review6('refund_horizon', condition)
 
 

@@ -529,4 +529,7 @@ def test_fixture_uses_the_core_transport_ledger_and_roundtrips_its_accounting(co
     write_study(tmp_path, trial, result, summary)
     assert json.loads((tmp_path / 'study/send_ledger.json').read_text()) == trial.send_ledger.to_dict()
     assert json.loads((tmp_path / 'study/trial_record.json').read_text())['send_ledger'] == result.send_ledger
+    assert json.loads((tmp_path / 'study/trial_record.json').read_text())['end_state'] == result.end_state
+    assert summary['study']['end_state'] == result.end_state
+    assert result.end_state['committed_sends'] == sent
     assert summary['study']['reopen']['ok']

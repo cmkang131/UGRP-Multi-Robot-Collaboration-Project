@@ -5,7 +5,7 @@ Only transport DTO identities are shared, so a current fake wire's exception
 is recognised by both versions. No git/network access is needed by these tests.
 """
 import builtins
-from dataclasses import replace
+from dataclasses import asdict, replace
 import hashlib
 import json
 from pathlib import Path
@@ -159,7 +159,7 @@ def run_stream(seed, condition='no_comm', trial_cls=None, *, communication=False
                         outcome='job_failed' if seed % 2 else 'job_done')
         if communication and not trial_cls and not trial.decision_budget_spent():
             assert_message_liveness(trial)
-    trial.finish(90.)
+    finish_for_comparison(trial, 90.)
     assert not trial.scheduler.send_violations
     assert trial.scheduler.unsent_calls  # forced r1 failure really reached settlement
     assert trial.scheduler.budget.used_total() <= policy.max_attempts_total
@@ -182,8 +182,41 @@ def assert_message_liveness(trial):
         assert s.now() < max(available, last + s.policy.min_interval_s) - 1e-9, (actor, s.now(), last)
 
 
+def finish_for_comparison(trial, at):
+    # _collect appends records: preserve the first finish instead of finishing
+    # a second time merely to inspect its end_reason/cost/result fields.
+    trial.comparison_result = trial.finish(at)
+    return trial.comparison_result
+
+
 def signature(trial, requests):
+    result = getattr(trial, 'comparison_result', None)
+    if result is None:
+        result = finish_for_comparison(trial, trial.scheduler.now())
+    summary, record = asdict(result), trial.trial_record(result)
+    # v64 predates this additive factual record. It has its own independent
+    # oracle/regressions; every v64 result and exported record field is compared.
+    summary.pop('end_state', None)
+    record.pop('end_state', None)
+    # Source identity must differ between the frozen and candidate bundles.
+    # Validate those identities before removing this one provenance leaf.
+    for row in summary['calls'] + record['calls'] + [record]:
+        bundle = row['provenance'].pop('execution_bundle_id')
+        assert bundle == ('zone-study-integration-v66-multiturn' if hasattr(trial, 'end_state')
+                          else 'zone-study-integration-v64-source-closure')
+    # v64's unused fixture-wire counter falsely reported zero for adapters.
+    # The candidate explicitly marks it unmeasured; ledger counts/hashes, all
+    # billed usage and every other cost field remain exact comparisons.
+    cost = summary['cost']
+    if hasattr(trial, 'end_state'):
+        assert cost.pop('wire_requests') is None
+        assert cost.pop('wire_requests_basis') == 'requires_provider_reconciliation'
+    else:
+        assert cost.pop('wire_requests') == 0
     return {
+        'result': summary,
+        'trial_record': record,
+        'end_reason': result.end_reason,
         'calls': [c.to_dict() for c in trial.scheduler.calls],
         'input_hashes': [zi.digest(p) for p in requests],
         'request_hashes': [r['request_sha256'] for r in trial.requests],
@@ -489,7 +522,7 @@ def test_review4_refunded_start_reaches_all_90_sends_at_default_caps(v64):
             prepare_fault=prepare, trial_cls=cls, horizon=600.)
         trial.scheduler.trigger('r1', 'idle', at=2.)
         fixture.advance(trial, clock, links, 600.)
-        trial.finish(600.)
+        finish_for_comparison(trial, 600.)
         assert trial.send_ledger.sends() == 90
         assert trial.scheduler.budget.used == dict.fromkeys(zi.ROBOTS, 30)
         return signature(trial, requests)

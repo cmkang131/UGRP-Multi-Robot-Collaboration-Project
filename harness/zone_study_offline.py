@@ -227,6 +227,8 @@ class TrialResult:
     end_reason: str = 'sim_horizon'
     #: Seventh review: sends per call as the send ledger counted them.
     send_ledger: dict = field(default_factory=dict)
+    #: Integration-only terminal facts; end_reason retains the v64 label.
+    end_state: dict = field(default_factory=dict)
 
     def trial_record(self, *, horizon_s=DEFAULT_HORIZON_S, provenance_row=None, literals=()) -> dict:
         """The package I trial record (``ugrp.zone_study_trial.v1``).
@@ -268,6 +270,8 @@ class TrialResult:
                  'send_ledger': copy.deepcopy(self.send_ledger)}
         if self.leader_id:
             value['leader_id'] = self.leader_id
+        if self.end_state:
+            value['end_state'] = copy.deepcopy(self.end_state)
         return value
 
 

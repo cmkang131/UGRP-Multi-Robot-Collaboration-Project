@@ -599,6 +599,7 @@ def write_study(out, trial, result, summary):
     (study / 'trial_record.json').write_text(json.dumps(record, indent=1, ensure_ascii=False) + '\n')
     summary['study'] = {'calls': len(result.calls), 'messages': len(result.messages), 'actions': len(result.actions),
                         'end_reason': record['end_reason'], 'end_sim_s': record['end_sim_s'],
+                        'end_state': record['end_state'],
                         'channel': zo.channel_checks(trial, result), 'cost': zo.cost_checks(trial, result),
                         'requests': zo.request_checks(result),
                         'reopen': zo.reopen_trial_record(study / 'trial_record.json'),
@@ -636,7 +637,8 @@ def main(argv=None):
                     expected_source_sha=args.expected_source_sha)
     study = rec.get('study', {})
     print(json.dumps({'run_id': rec['run_id'], 'stop': rec['stop'], 'sim_s': rec.get('sim_s'),
-                      'end_reason': study.get('end_reason'), 'calls': study.get('calls'),
+                      'end_reason': study.get('end_reason'), 'end_state': study.get('end_state'),
+                      'calls': study.get('calls'),
                       'messages': study.get('messages'), 'dispatch': study.get('dispatch'),
                       'deliveries': len(rec.get('eval_only', {}).get('referee', {}).get('deliveries', [])),
                       'pose_provider': rec['pose_provider']}, ensure_ascii=False, default=str), flush=True)

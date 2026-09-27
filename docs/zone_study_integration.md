@@ -71,6 +71,27 @@ v1/v2/v64 기록과 번들 JSON은 그대로 두며, #240의 v65 변경을 이 �
   사건·공통 응답 비용과 예산이 충분한 구간에서 한다. 메시지가 바꾼 실제 행동·작업 종료
   시각이나 소진 이후까지 조건별 전체 실행 시간이 같다는 주장은 아니다.
 
+### 종료 라벨과 종료 상태 (검토 7, 2026-09-28)
+
+코디네이터 결정으로 `no_comm`의 동결 v64 호환을 우선한다.
+**end_reason은 v64 호환 라벨이며 과거 거절 이력 기반, 실제 종료 상태는 end_state로 판단한다.**
+통합층은 한 번이라도 결정 입장이 예산으로 거절됐으면 `budget_exhausted`, 아니면
+`sim_horizon`을 기록한다. 현재 잔여 예산이나 작업 완료를 이 라벨로 추정하지 않는다.
+평가 전용 referee가 `orders_complete`로 판정하는 기존 별도 경로는 유지한다.
+
+네 조건 모두 `TrialResult`, 저장 `trial_record.json`, `result.json`의 study 요약과 CLI 출력에
+`end_state`를 기록한다. 정산 후 작업 보유 로봇 수, 미완료/censored 호출 수, 확정 HTTP
+send 수, 예약 수, 팀/로봇별 HTTP·논리 호출 잔여량, 설정 horizon 도달 여부를 포함한다.
+`quiescent`는 확정 예산 소진 상태에서 작업과 미완료 호출이 모두 없는지를 뜻한다.
+censored 호출은 shutdown 뒤에도 미완료 결정으로 센다. 잔여량은 스케줄러 장부 기준이며
+영속 pilot/upstream provider의 별도 예산·과금 잔액이 아니다. 이 사후 기록을 모델 입력이나
+제어/단계 전환에 사용하지 않는다.
+
+예를 들어 HTTP 3회 뒤 작업 3개가 남은 8초 종료와 무작업 8초 종료는 `no_comm`에서
+모두 `sim_horizon`이지만, `pending_work_count`는 3과 0, `quiescent`는 false와 true다.
+90초 동안 거절을 기록한 뒤에는 작업이 남아도 라벨은 `budget_exhausted`다.
+[검토 7 결정·비교 필드 감사·검증 기록](../experiments/2026-09-27-zone-study-multiturn/review7-fix.md)을 따른다.
+
 ### SIM 비용과 기록
 
 기본 정상/invalid 시도 비용은 `1 + 0.0002×입력토큰 + 0.02×출력토큰 + 0.3×생성발화수`
