@@ -79,3 +79,90 @@ commands 6, model_calls 0)을 EventAccumulator·서버 API·브라우저 화면�
 
 - 확인: 소스 고정·clean, 잠금 획득/반환, 관리 workflow 기록, 적용값 가드의 fail-closed 동작, 원본 해시.
 - 미확인: 모든 물리 단계, GO 동시 소비, abort 경로(dev02), r3 비간섭, 영상 검토, 설계 게이트 3~6.
+
+---
+
+# v2 코호트 dev03/dev04 — 2026-09-27
+
+**tags_temporary, dev, 연구 결과 아님.** 코디네이터 결정(#221): `cargo_noslip_v1`과 0.25 ms timestep 유지, 새 사전 기록.
+소스 `9f28cbf030442a701a666899c02ebb4374e3e3e2`(clean, origin 동일), `prereg_v2_DRAFT.json` 그대로 사용
+(README대로 별도 승격 없음, SHA256 `896091d17022d569dfb34123587712395bf9870d065ce2b438d38acedee9108b`).
+위 v1 dev01 기록은 그대로 보존한다. v1과 v2 결과는 합산하지 않는다.
+
+## 요약
+
+| 실행 | seed | 종료 | SIM s (시작→끝) | wall s | 동작 명령* | API / 모델 | 판정 |
+|---|---:|---|---:|---:|---:|---:|---|
+| dev03 (정상 시도) | 901 | completed / STUDY_LAYER_DONE | 1.30→67.50 | 170.4 | 22 | 4 / 0 | DEV_NOT_CONFIRMED, 성공 아님 |
+| dev04 (abort 진단) | 902 | completed / STUDY_LAYER_DONE, `intervention_not_reached` | 1.30→67.50 | 167.4 | 63 | 4 / 0 | DEV_NOT_CONFIRMED, abort 진단 미통과 |
+
+\* 평가기 기준 drive/mecanum/arm/look 행. 전체 command 행은 dev03 551, dev04 492(대부분 hold).
+두 실행 모두 SIM/wall 한도(900 s / 57,600 s)보다 훨씬 일찍 정상 종료했다. 멈춤·수동 중단 없음.
+
+## 단계별 결과와 원인
+
+두 실행 모두 **접근 이전 단계(공동 제출/랑데부)에서 종료**했다. GO 0건, 접근·공동 파지·들기·문·B 배치 모두 미시도.
+
+- dev03: `look_around`가 두 로봇 모두 12.0 s에 `SWEEP_TRANSITION_BLOCKED`(서쪽 벽 여유 guard) 실패.
+  60.0 s에 r1 `pair_carry` 거부 **`SELF_UNCERTAIN`**, r2는 수락 후 `start_ready`만 보내다
+  65.0 s `PAIR_RENDEZVOUS_TIMEOUT` → STATUS abort. abort 뒤 양쪽 queue 비움·추가 동작 0건·0.5 s 관찰 충족.
+  정상 실행에 필요한 GO 33종이 모두 없어 protocol 실패.
+- dev04: r2 `look_around` 11.4 s `SWEEP_TRANSITION_BLOCKED`, r1은 11.5 s 완료. 60.0 s에 r2 `pair_carry`
+  거부 **`SELF_UNCERTAIN`**, r1 수락 후 65.0 s `PAIR_RENDEZVOUS_TIMEOUT`. r2의 `carry_go_0`에 도달하지 않아
+  사전 등록 abort 주입이 실행되지 않았다(`intervention.json` 없음) → `intervention_not_reached`, abort 진단 통과로 세지 않음.
+- `SELF_UNCERTAIN`은 `pair_readiness()`의 `uncertain` 분기(gate/보고 신선도/std 유한성/관측 나이/servo 집합)다.
+  어느 하위 조건인지는 raw에 기록되지 않아 **원인 하위 조건은 미확인**이다. 60 s 당시 거부 로봇의 자기 추정
+  std는 dev03 r1 약 5.0 cm / 0.015 rad였다(수락한 쪽과 비슷함). 평가 GT로 제어를 보정하지 않았다.
+- 적용값 일치(timestep 0.00025, noslip 10, weld OFF), trace·접촉 coverage 완전(dev03 접촉 264,801 step 일치),
+  금지 접촉 0, r3 검사 통과, source/input 변경 없음.
+
+## 영상 검토
+
+`eval_only/video-review-01.json`(검토자: Claude Opus 5.5, 코디네이터 위임 에이전트, 사람 아님).
+332프레임 5 Hz overview에서 SIM 1.3/7.3/11.9/31.3/59.9/61.3/64.9/67.5 s 프레임을 확인했다.
+세 로봇이 서쪽 벽 depot 출발 위치에 계속 있고 빔도 초기 위치 그대로다. 모든 단계는 **미도달로 false**,
+낙하·충돌은 보이지 않았다. 검토 기록은 trace/영상 SHA와 연결되어 있고 `review-01/result.json`에 반영됐다(verified=false).
+
+## 운영
+
+- 잠금 `claude`, driver PID 1222, 예상 1925분(README 계산식), 05:12:51Z 획득 → 05:18:32Z 반환, 이후 status null.
+- 부하 평균: 획득 5.58/8.82/10.95, dev03 끝 9.47/7.78/10.05, dev04 끝 8.47/9.02/10.21 (8코어, 다른 MuJoCo 없음).
+- 세션 `pair-dev03-9f28cbf0`(pgid 1235), `pair-dev04-9f28cbf0`(pgid 2953) 종료 확인, 잔여 프로세스 없음.
+- 관리 기록 `process_completed`, exit 0 (runtime 171.6 s / 168.5 s). 재시도·추가 실행 없음.
+
+## 원본 (로컬 전용, 원격 백업 아님)
+
+루트 `/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v2-9f28cbf030442a701a666899c02ebb4374e3e3e2/`
+(dev03 26 MB, dev04 25 MB; 각 `artifacts.sha256.json` 2,012개 파일 재계산 불일치 0).
+
+| 파일 | SHA256 |
+|---|---|
+| dev03/manifest.json | `c82f53ea6ff59e30414bb925414eb89ee6d9fa5ee8e9f07a689ec1fc2f3d8f8e` |
+| dev03/artifacts.sha256.json | `876cbc79b0d66fe354f8f83b871a83d92c9827445b82d47e90ec65e7519c2f93` |
+| dev03/eval_only/trace.jsonl | `8ce94e3e584c4b6ed207e51b89cf681569080385469da947f627375edb9e927a` |
+| dev03/eval_only/overview.mp4 | `b4e0ee85d577c03931630b7b72799583da9a813dd8a58bb3aa5b998a775db74d` |
+| dev03/eval_only/video-review-01.json | `cadae6ad76e9e2ea819cf09dba3c2c4e73460c843a54da03cd24935981e3c992` |
+| dev03/eval_only/review-01/result.json | `398f26bfc4c4b6b6259d1ef00448e2a4c9c2fa185bcbeefcec3a9e8a073ade2b` |
+| dev03-managed/manifest.json | `85e03078219e3843762259366a37e33b21c506716618f1e200942bcbff3a7a76` |
+| dev04/manifest.json | `01685d3ff59fb09c23cf1e0c3df225373f876a8dd77a07205ed8e32074ca518e` |
+| dev04/artifacts.sha256.json | `b891b3f09080f2e0974195b03035fa0584b21d81831f4f3273dfb0e069dd6bf3` |
+| dev04/eval_only/trace.jsonl | `9bd15ccb90e1746ceace4aafa36b44bf18caa88f5177425c056f1192c1efd11a` |
+| dev04/eval_only/overview.mp4 | `61dacc54ec2315eb4cd916a0aeef398fb371487e21edaf87260d6af3a30df1f4` |
+| dev04/eval_only/video-review-01.json | `24c2fde8c70f2992f6e0ed03d87e682e28af04712190ae2697f241de371c1f42` |
+| dev04/eval_only/review-01/result.json | `96c66809ec0e68e2acfbd6c518d64db5d672ecfcd28efcc314bafcd4c98bfadb` |
+| dev04-managed/manifest.json | `fa1114173334b971edec8cc6384082e527eac5654b6f8b407a282b19fe51f06b` |
+
+## TensorBoard
+
+기존 snapshot을 덮어쓰지 않고 새 collection `0927-zone-pair-dev/v2`에 run 2개
+(`v2/eval_only__review-01__5416d0a5`=dev03, `v2/eval_only__review-01__56a9288b`=dev04)를 추가했다.
+view 키 `zone_pair_dev_v2_20260927`만 추가(기존 키 byte 동일). 기존 서버(PID 9293)를 재시작하지 않고
+서버 API·브라우저 pinned 카드에서 success 0, SIM 67.5, wall 170.4/167.4, 명령 22/63, 모델 0을 확인했다.
+**영상은 TensorBoard media로 등록되지 않았다**: 변환기는 `motion.mp4`/`execution.mp4`만 링크하며 README의
+`overview.mp4` symlink를 인식하지 않는다(코드 미변경, 후속 과제).
+
+## 검증 범위 (v2)
+
+- 확인: 적용값·coverage·금지 접촉·r3·abort 뒤 queue 정리(dev03, 랑데부 실패 abort 경로), 영상과 기록 일치.
+- 미확인: 접근·공동 파지·들기·문 통과·B 배치, GO 동시 소비, 사전 등록 carry-GO abort(dev04 미도달),
+  `SELF_UNCERTAIN` 하위 원인, look_around sweep guard 실패의 정당성. 추가 실행은 새 사전 기록이 필요하다.
