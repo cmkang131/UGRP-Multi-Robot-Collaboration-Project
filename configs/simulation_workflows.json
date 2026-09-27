@@ -138,6 +138,20 @@
       "output_kind": "directory"
     },
     {
+      "id": "zone-teacher-fix",
+      "purpose": "구역 교사 막힘 수정 진단(PR #169 B2·B3·B4·B5·B8): 물리 실행 전 팀 경로 게이트와 수정 교사 실행기로 교사 실현 가능성만 확인",
+      "entry": "scripts/run_zone_teacher_fix.py",
+      "docs": "experiments/2026-09-26-zone-teacher-fix/README.md",
+      "requires": "protocol v2 zone dispatch arguments with an explicit --contact-profile; privileged ground-truth TEACHER executor (poses, IK, contact forces, weld OFF), never the study executor and never a robot, RGB-skill or student success",
+      "version": "1.0.0",
+      "runner": "scripts.run_zone_teacher_fix",
+      "output_flag": "--output",
+      "side_effect": "model_calls",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [],
+      "output_kind": "directory"
+    },
+    {
       "id": "zone-cargo-probe",
       "purpose": "구역 화물 목록의 물리 가능성 검사(정답 교사, weld OFF)",
       "entry": "scripts/probe_zone_cargo.py",
@@ -668,6 +682,58 @@
       "adapter": "managed_legacy_cli",
       "required_inputs": [
         "--prereg",
+        "--condition"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-m2-pair",
+      "purpose": "M2: 실행 중 GT 없는 2인 long_beam 운반(자기 손목 RGB·정적 태그 지도·개략 주문서·자기 명령; 자기 카메라 위치 추정 접근 → 자기 RGB 정렬·파지·운반)",
+      "entry": "scripts/run_m2_pair.py",
+      "docs": "docs/zone_m2_pair.md",
+      "requires": "local Mac/Linux offscreen rendering; no ground truth at runtime (truth only in evaluation-only outputs); weld OFF; status channel is a CANDIDATE behind --status-channel (pending user decision); synchronous SIM only",
+      "version": "1.0.0",
+      "runner": "scripts.run_m2_pair",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--seed",
+        "--status-channel"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-pair-dev",
+      "purpose": "PairTeam + OwnCamTeamHost dev PHYSICAL gate; tags_temporary, dev, 연구 결과 아님",
+      "entry": "scripts/run_zone_pair_dev.py",
+      "docs": "experiments/2026-09-27-zone-pair-dev/README.md",
+      "requires": "No model calls; prepare-only by default. Physical execution requires --execute, clean pinned SHA, matching agent_lock and absolute primary outputs path. GT stays in eval_only/.",
+      "version": "0.2.0",
+      "runner": "scripts.run_zone_pair_dev",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--prereg",
+        "--run-id"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-study-integration-run",
+      "purpose": "구역 대화 연구 통합 러너: 연구 뼈대(#194 조건·프롬프트·프로토콜·SIM 비용·스케줄러)가 자기 카메라 실행기(#206) 3대와 공동 운반 PairTeam(#235)을 구동(no-LLM fixture, 자세 제공자는 설정으로 선택; tags_temporary = 임시, 표식 사용, 연구 결과 아님)",
+      "entry": "scripts/run_zone_study_integration.py",
+      "docs": "experiments/2026-09-26-zone-study-integration/README.md",
+      "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; run bundle must match the prereg bundle_sha256; robot inputs = own robot_cam + own commands + static map + order sheet + delivered messages; GT only in eval_only/; weld OFF; no model call",
+      "version": "1.0.0",
+      "runner": "scripts.run_zone_study_integration",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--prereg",
+        "--episode",
         "--condition"
       ],
       "output_kind": "directory"
