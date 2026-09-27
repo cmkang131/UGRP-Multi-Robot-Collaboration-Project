@@ -104,7 +104,7 @@ def test_migration_does_not_restore_exhausted_capacity(tmp_path, cap):
 
 
 @pytest.mark.parametrize('problem', ['running', 'stale_state', 'wrong_identity', 'settings',
-                                     'bundle_reuse', 'effective', 'no_reason'])
+                                     'bundle_reuse', 'effective', 'no_reason', 'no_op', 'path_only'])
 def test_migration_refusals_are_atomic(tmp_path, problem):
     budget = PilotBudget.create(tmp_path / 'budget.sqlite', identity=identity(62))
     target, options = identity(63), review(budget)
@@ -123,6 +123,10 @@ def test_migration_refusals_are_atomic(tmp_path, problem):
         target['rgb_execution_bundle']['effective'] = {}
     elif problem == 'no_reason':
         options['reason'] = ' '
+    elif problem in ('no_op', 'path_only'):
+        target = identity(62)
+        if problem == 'path_only':
+            target['source_root'] = '/other-worktree'
     before = budget.snapshot()
     with pytest.raises(ValueError):
         budget.migrate_source(target, **options)
@@ -140,6 +144,36 @@ def test_second_migration_chains_and_detects_missing_or_corrupt_audit(tmp_path):
     assert second['from_meta']['source_migration_sha256'] == prior['sha256']
     with sqlite3.connect(budget.path) as db:
         db.execute("UPDATE source_migrations SET record='{}' WHERE revision=1")
+    with pytest.raises(ValueError, match='audit chain'):
+        PilotBudget(budget.path)
+
+
+def test_r12_same_bundle_source_remigration_preserves_hash_chain_and_spend(tmp_path):
+    budget = PilotBudget.create(tmp_path / 'budget.sqlite', identity=identity(62))
+    reserve(budget)
+    first = budget.migrate_source(identity(63), **review(budget))
+    budget = PilotBudget(budget.path, identity=identity(63))
+    before, history = budget.snapshot(), raw_history(budget.path)
+    target = {**identity(63), 'source_head': 'review-r12',
+              'files': {**identity(63)['files'], 'harness/zone_pilot_budget.py': 'r12'}}
+    second = budget.migrate_source(target, **review(budget))
+    after = PilotBudget(budget.path, identity=target).snapshot()
+    assert after['source_migrations'] == [first, second]
+    assert second['from_meta']['source_migration_sha256'] == first['sha256']
+    assert second['from_meta'] == before['meta']
+    assert after['meta']['source_migration_sha256'] == second['sha256']
+    assert sha(canonical({k: v for k, v in second.items() if k != 'sha256'}).encode()) == second['sha256']
+    assert after['meta']['identity']['rgb_execution_bundle'] == before['meta']['identity']['rgb_execution_bundle']
+    assert raw_history(budget.path) == history
+    assert after['sends'] == before['sends'] and after['runs'] == before['runs']
+    assert (after['reserved_attempts'], after['reserved_tokens']) == (2, 235408)
+    assert after['meta']['pilot_id'] == before['meta']['pilot_id']
+    assert after['meta']['attempt_cap'] == 600 and after['meta']['token_cap'] == 5_000_000
+    with pytest.raises(ValueError, match='budget source changed'):
+        reserve(budget)
+    assert not reconcile(after)['complete']
+    with sqlite3.connect(budget.path) as db:
+        db.execute("DELETE FROM source_migrations WHERE revision=1")
     with pytest.raises(ValueError, match='audit chain'):
         PilotBudget(budget.path)
 

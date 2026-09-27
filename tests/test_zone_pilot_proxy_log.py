@@ -241,6 +241,123 @@ def test_missing_half_of_wall_clock_pair_is_not_mtime_fallback(tmp_path):
         window_spec(sent, 'Asia/Seoul')
 
 
+def test_r12_post_after_right_bracket_cannot_hide_time_regression(tmp_path):
+    budget, log = case(tmp_path)
+    with log.open('a') as stream:
+        stream.write(POST)  # :00 -> :06 -> :08 -> :06, beyond the old early exit
+    report, rows, _ = build(tmp_path, budget, log)
+    assert not report['complete']
+    assert 'proxy_log_time_regression' in rows[0]['issues']
+
+
+@pytest.mark.parametrize('event', [RETRY, ERROR])
+@pytest.mark.parametrize('side', ['before', 'after'])
+def test_r12_sealed_retry_or_error_outside_time_bounds_is_incomplete(tmp_path, event, side):
+    if side == 'before':
+        # Monotonic timestamps: order checking alone cannot catch this.
+        event = event.replace('12:00:03', '12:00:00').replace('12:00:04', '12:00:00')
+        budget, log = case(tmp_path, extra=event)
+    else:
+        event = event.replace('12:00:03', '12:00:09').replace('12:00:04', '12:00:09')
+        budget, log = case(tmp_path, post=POST + event)
+        log.write_text(log.read_text().replace('12:00:08', '12:00:10'))
+    report, rows, _ = build(tmp_path, budget, log)
+    assert not report['complete']
+    assert 'sealed_proxy_log_event_outside_time_window' in rows[0]['issues']
+
+
+@pytest.mark.parametrize('damage', ['backwards_tail', 'earlier_prefix', 'rotated', 'truncated', 'missing_hash'])
+def test_r12_reconcile_rechecks_full_captured_prefix(tmp_path, damage):
+    budget, log = case(tmp_path)
+    if damage == 'earlier_prefix':
+        # Include a line before the excerpt so tampering is invisible to its hash.
+        prefix = PREFIX.replace('12:00:00', '11:59:59')
+        log.write_text(prefix + log.read_text())
+        with budget._connect() as db:
+            sent = budget.snapshot()['sends'][0]
+            cursor = sent['proxy_log_window']
+            cursor['offset'] += len(prefix)
+            cursor['end_offset'] += len(prefix)
+            db.execute('UPDATE sends SET record=? WHERE id=?', (canonical(sent), sent['reservation_id']))
+    report, rows, _ = build(tmp_path, budget, log)
+    assert report['complete']
+    evidence = rows[0]['evidence']
+    if damage == 'backwards_tail':
+        log.write_text(log.read_text() + POST)
+        # Even a refreshed size/hash claim cannot conceal the timestamp regression.
+        evidence['source_size_at_capture'] = log.stat().st_size
+        evidence['source_prefix_sha256'] = sha(log.read_bytes())
+    elif damage == 'earlier_prefix':
+        log.write_text(log.read_text().replace('11:59:59', '11:59:58'))
+    elif damage == 'rotated':
+        log.rename(tmp_path / 'rotated.log')
+        log.write_bytes((tmp_path / 'rotated.log').read_bytes())
+    elif damage == 'truncated':
+        log.write_text(PREFIX)
+    else:
+        evidence.pop('source_prefix_sha256', None)
+    assert not reconcile(budget.snapshot(), rows)['complete']
+
+
+def test_r12_append_only_growth_preserves_fixed_prefix_evidence(tmp_path):
+    budget, log = case(tmp_path)
+    _, rows, _ = build(tmp_path, budget, log)
+    with log.open('a') as stream:
+        stream.write(SUFFIX.replace('12:00:08', '12:00:09'))
+    assert reconcile(budget.snapshot(), rows)['complete']
+
+
+def test_r12_wall_wait_changes_neither_sim_trace_nor_call_costs(tmp_path, monkeypatch):
+    from harness import zone_pilot_ledger as pl
+    from tests.test_zone_study_review_r8 import make_trial
+    results, waits = [], []
+    for fraction in (200_000_000, 900_000_000):
+        current = [1_800_000_000 * 10**9 + fraction]
+        monkeypatch.setattr(pl.time, 'time_ns', lambda: current[0])
+        monkeypatch.setattr(pl.time, 'monotonic_ns', lambda: current[0])
+        monkeypatch.setattr(pl.time, 'monotonic', lambda: current[0] / 10**9)
+        def sleep(seconds):
+            current[0] += round(seconds * 10**9)
+        monkeypatch.setattr(pl.time, 'sleep', sleep)
+        trial, budget = make_trial(tmp_path / str(fraction), stage='cohort')
+        result = trial.run_adapter()
+        results.append({k: result[k] for k in ('calls', 'actions', 'messages', 'scheduler', 'scheduler_ledger')})
+        sends = budget.snapshot()['sends']
+        assert len(sends) == 3
+        waits.append(sum(s['ledger']['log_boundary_wait']['elapsed_ns'] for s in sends))
+    assert waits[0] > waits[1] > 0
+    assert results[0] == results[1]
+
+
+def test_r12_boundary_wait_is_outside_wire_timeout_and_persisted_before_wire(tmp_path, monkeypatch):
+    from harness import zone_pilot_ledger as pl
+    from harness.zone_send_ledger import send
+    from tests.test_zone_study_review_r8 import make_trial, PROFILE
+    current = [1_800_000_000 * 10**9 + 300_000_000]
+    monkeypatch.setattr(pl.time, 'time_ns', lambda: current[0])
+    monkeypatch.setattr(pl.time, 'monotonic_ns', lambda: current[0])
+    monkeypatch.setattr(pl.time, 'monotonic', lambda: current[0] / 10**9)
+    def sleep(seconds):
+        current[0] += round(seconds * 10**9)
+    monkeypatch.setattr(pl.time, 'sleep', sleep)
+    trial, budget = make_trial(tmp_path)
+    trial.run_adapter()
+    prior = budget.snapshot()['sends'][0]
+    current[0] += 200_000_000
+    def wire(request, *, timeout):
+        pending = budget.snapshot()['sends'][-1]
+        assert pending['status'] == 'reserved_unknown'
+        assert pending['log_boundary_wait']['elapsed_ns'] == 1_500_000_000
+        return trial.send_ledger._wire(request, timeout=timeout)
+    # Fresh ledger and reopened DB model a condition change or driver restart.
+    ledger = pl.PilotSendLedger(store_dir=tmp_path / 'next-wire', budget=PilotBudget(budget.path),
+                                profile=PROFILE, context={'trial_id': 'next'}, wire=wire)
+    ledger.attach(lambda _: None, owner='offline-test')
+    send(ledger.opener_for('next-call', 'r1'), Path(prior['request_path']).read_bytes(),
+         url=PROFILE['url'], timeout=.01)
+    assert not budget.snapshot()['sends'][-1]['late']
+
+
 def test_proxy_evidence_sources_are_pinned_in_pilot_not_rgb_bundle(tmp_path):
     from harness.rgb_execution_bundle import source_closure, load_bundle, RUNNABLE_ID
     from tests.test_zone_study_review_r8 import PROFILE
@@ -283,8 +400,12 @@ def test_four_condition_window_gate_and_cohort_manifest(tmp_path, monkeypatch):
     log = tmp_path / 'proxy.log'
     log.write_text(PREFIX)
     epoch = int(datetime(2026, 9, 27, 12, tzinfo=ZoneInfo('Asia/Seoul')).timestamp())
-    current = [epoch]
-    monkeypatch.setattr(pl.time, 'time_ns', lambda: current[0] * 10**9 + 200_000_000)
+    current = [(epoch + 2) * 10**9]
+    monkeypatch.setattr(pl.time, 'time_ns', lambda: current[0])
+    monkeypatch.setattr(pl.time, 'monotonic_ns', lambda: current[0])
+    def sleep(seconds):
+        current[0] += round(seconds * 10**9)
+    monkeypatch.setattr(pl.time, 'sleep', sleep)
 
     def log_at(second, method):
         stamp = datetime.fromtimestamp(second, ZoneInfo('Asia/Seoul')).strftime('%Y-%m-%d %H:%M:%S')
@@ -293,7 +414,7 @@ def test_four_condition_window_gate_and_cohort_manifest(tmp_path, monkeypatch):
 
     actual = pl.PilotSendLedger
     def ledger(**kwargs):
-        current[0] += 10  # non-overlapping padded send windows
+        current[0] += 200_000_000  # :06.3 response -> :06.5 next call, no artificial 10s gap
         condition = kwargs['context']['condition']
         def wire(request, *, timeout=None):
             messages = json.loads(request.data)['messages']
@@ -303,8 +424,8 @@ def test_four_condition_window_gate_and_cohort_manifest(tmp_path, monkeypatch):
                 'messages': [messages[0], {'role': 'user', 'content': user}]})
             response = json.loads(completion_body(reply, usage=USAGE))
             response['id'] = 'actual-fixture-' + request.get_header('X-ugrp-call-id')
-            current[0] += 3
-            log_at(current[0], 'POST /v1/chat/completions')
+            current[0] += 4_100_000_000
+            log_at(current[0] // 10**9, 'POST /v1/chat/completions')
             return io.BytesIO(json.dumps(response).encode())
         kwargs.update(wire=wire, proxy_log=log)
         return actual(**kwargs)
@@ -313,10 +434,18 @@ def test_four_condition_window_gate_and_cohort_manifest(tmp_path, monkeypatch):
     preflight = tmp_path / 'preflight'
     args = ['--execute', '--budget-file', str(budget.path)]
     assert runner.main(args + ['--acknowledge-upstream-finish-limitation', '--output', str(preflight)]) == 2
-    log_at(current[0] + 3, 'GET /v1/usage')  # prove coverage after the last padded window
+    current[0] += 3 * 10**9
+    log_at(current[0] // 10**9, 'GET /v1/usage')  # prove coverage after the last padded window
     manifest = json.loads((preflight / 'manifest.json').read_text())
     report, rows, evidence = build(tmp_path, budget, log)
     assert report['complete'] and len(rows) == 4
+    sends = budget.snapshot()['sends']
+    assert sends[1]['ledger']['send_started_at_ns'] == (epoch + 8) * 10**9
+    assert sends[1]['ledger']['log_boundary_wait']['requested_ns'] == 1_500_000_000
+    assert sends[1]['ledger']['log_boundary_wait']['elapsed_ns'] == 1_500_000_000
+    for previous, sent in zip(sends, sends[1:]):
+        assert (sent['ledger']['send_started_at_ns'] // 10**9 - 1
+                > previous['ledger']['response_received_at_ns'] // 10**9)
     gate = require_preflight(budget.snapshot(), report, manifest)
     assert gate['admitted'] and gate['billing_evidence_levels'] == [EVIDENCE_LEVEL]
     with pytest.raises(ValueError, match='unsupported reconciliation evidence level'):

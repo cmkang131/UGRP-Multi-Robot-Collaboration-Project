@@ -193,10 +193,14 @@ class PilotBudget:
                 != {k: v for k, v in identity.items() if k not in mutable}):
             raise ValueError('source migration cannot change provider/settings/cost/input policy')
         previous_bundle, next_bundle = old.get('rgb_execution_bundle', {}), identity.get('rgb_execution_bundle', {})
-        if (not next_bundle.get('id') or next_bundle['id'] == previous_bundle.get('id')
+        if (not next_bundle.get('id') or not next_bundle.get('sha256')
                 or {k: v for k, v in next_bundle.items() if k not in {'id', 'sha256'}}
                 != {k: v for k, v in previous_bundle.items() if k not in {'id', 'sha256'}}):
-            raise ValueError('source migration requires a new bundle with identical effective settings')
+            raise ValueError('source migration requires a bundle with identical effective settings')
+        if next_bundle['id'] == previous_bundle.get('id') and next_bundle != previous_bundle:
+            raise ValueError('same bundle ID requires identical bundle bytes/hash/settings')
+        if all(old.get(k) == identity.get(k) for k in ('source_head', 'files', 'rgb_execution_bundle')):
+            raise ValueError('source migration requires changed source or bundle, not just a new path')
         with self._connect() as db:
             db.execute('BEGIN IMMEDIATE')
             self._require_current_source(db)

@@ -266,7 +266,12 @@ wire 원문은 바꾸지 않고 SIM 출력 토큰은 펜스를 포함한 실제 
 `running`인 시행이 없을 때만 `source_migrations` 행 추가와 meta 봉인 변경을 함께 커밋한다.
 감사 행은 이전 meta 전체, 새 identity, 사유·UTC 시각, 예약 차감량, 원본 SQL 행 개수·해시,
 이전 이관으로 이어지는 해시를 보존한다. provider·요청/실효 설정·SIM 비용/입력 정책 변경은
-이 절차로 허용하지 않는다. RGB effective 설정이 같은 **새 번들 ID**가 필요하다.
+이 절차로 허용하지 않는다. RGB effective 설정이 같은 새 번들로 이관하거나,
+**RGB 번들 ID·hash·설정 전체를 유지한 파일럿 소스 수정**을 재이관할 수 있다.
+같은 ID의 번들 hash 교체, 소스/번들 변화 없는 재이관과 경로만 바꾸는 이관은 거절한다.
+재이관도 이전 `source_migration_sha256`을 포함한 meta 전체를 새 감사 행에 넣고
+해시 체인을 검증한다. 현재 실제 R10 DB는 아직 v62·이관 0회이므로 최종 수정 소스를
+검토·커밋한 뒤 v63으로 한 번만 이관한다. 이 문서의 수정 작업에서는 실제 DB를 이관하지 않는다.
 오래된 객체의 추가 예약·정산·시행 시작은 거절한다. 기존 소스/기존 preflight로 코호트에
 진입할 수 없으며, 새 소스에서 4조건 preflight를 다시 해야 한다.
 
@@ -355,6 +360,21 @@ OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --reconcile-only \
   `Asia/Seoul`은 명시적 기본값이며 다른 호스트는 `--log-timezone`으로 맞춘다.
   여유 구간 바깥의 직전·직후 timestamp 줄까지 원문으로 보존해 범위를 확인한다.
   경계 줄·POST·파일 누락, 잘린 줄, 해석 불가 이벤트, 역순 시각은 미완료다.
+- 송신 장부는 같은 budget의 앞 응답 시각을 읽고 다음 송신 전에
+  `floor(앞 응답 초) + 여유 1초 + 해상도 1초` 경계까지 벽시계로 기다린다.
+  `06.3초` 응답 뒤 `06.5초`에 다음 호출이 준비되면 `08.0초`까지 1.5초 기다린다.
+  조건 전환·재시도·재개에도 적용한다. 구형 행은 원본 응답 mtime을 쓰며 종료 시각을
+  확보할 수 없거나 벽시계가 뒤로 가면 송신을 거절한다. `log_boundary_wait`에 목표·시작·
+  종료 wall 시각과 요청/실측 대기 ns를 저장하고 wire 전에 SQLite에 봉인한다.
+  SIM 시각·비용은 증가시키지 않으며 wire timeout도 대기 후 시작한다.
+- 추출은 읽기 시작 때의 파일 크기로 고정한 **로그 prefix 전체**를 끝까지 검사한 뒤
+  시간 구간을 자른다. 오른쪽 경계 뒤의 늦은 POST 등 시각 역행도 미완료다.
+  전체 prefix의 크기·inode·SHA-256을 근거에 기록하고 reconcile에서 원본의 같은
+  prefix를 다시 읽어 순서·hash와 추출 결과를 검증한다. 정상 append는 허용하고
+  회전·삭제·prefix 변경은 거절한다. 관련 없는 민감한 로그를 복제하지 않으므로
+  재대조에는 원본 로그가 필요하다. 호출별 원문은 계속 별도 파일에 보존한다.
+- 추출 범위는 당시 봉인된 byte 구간 전체를 포함한다. 그 안의 retry·오류를 비롯한
+  이벤트가 시간 경계 밖에 있으면 시간 필터로 버려 완료하지 않고 미완료로 처리한다.
 - 구간의 **모든 경로 POST**를 세어 `/v1/chat/completions` POST 200이 정확히 1개여야 한다.
   그 줄은 send 당시에 봉인한 byte 구간 안에도 있어야 한다. `/v1/usage` 등의 GET은
   `other_http_request_count`로 별도 집계한다. 다른 POST가 여유 구간에 있어도 거절하며,
@@ -391,7 +411,9 @@ OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --reconcile-only \
 이번에 바뀐 `zone_pilot_budget/ledger/reconcile`, 새 `zone_pilot_proxy_log`와 두 CLI는
 RGB 번들의 `source_closure()` 174개에 포함되지 않는다. 따라서 v63 JSON·ID·hash는
 변경하지 않는다. 파일럿의 `source_identity.files`는 harness 전체와 두 CLI를 봉인하므로
-새 소스 이관과 재preflight는 필요하다. 실제 R10 예산의 v62→기존 v63 이관 규칙을 따른다.
+새 소스 이관과 재preflight는 필요하다. R12에서도 변경 파일이 closure 밖임과 v63의
+전체 source hash를 다시 검증했다. 실제 R10 예산은 최종 소스에서 v62→기존 v63으로
+한 번 이관하며, 이후 파일럿만 수정되면 같은 v63의 감사 체인을 이어 재이관할 수 있다.
 `docs/execution_versioning.md`의 실행 소스·조건 고정 규칙을 검토했으나 이번에는
 RGB 번들 갱신 대상이 아니므로 “미실행 v63 덮어쓰기” 예외를 적용할 필요가 없다.
 

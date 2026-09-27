@@ -11,6 +11,7 @@ import time
 from harness.zone_pilot_budget import (EFFECTIVE, PROXY_SHA256, REQUESTED, sha, token_envelope,
                                        usage_total)
 from harness.zone_pilot_network import NetworkFence, proxy_address
+from harness.zone_pilot_proxy_log import PADDING_SECONDS
 from harness.zone_send_ledger import SendLedger
 from harness.zone_study_llm_transport import no_redirect_opener
 from harness.llm_completion import (COMPLETION_POLICY, PROXY_COMPLETION_LIMITATION,
@@ -111,6 +112,41 @@ class PilotSendLedger(SendLedger):
 
         super().__init__(wire or guarded_wire, store_dir=store_dir)
 
+    def _wait_for_log_boundary(self):
+        """Separate padded, second-resolution log windows without advancing SIM.
+
+        Read the shared budget, not this per-condition ledger's entries, so
+        retries, condition changes and driver restarts obey the same boundary.
+        The wire timeout starts AFTER this wait. Unknown prior terminal times
+        cannot be made safe by inventing a timestamp.
+        """
+        terminal_times = []
+        for sent in self.budget.snapshot()['sends']:
+            ledger = sent.get('ledger', {})
+            end = ledger.get('response_received_at_ns') or ledger.get('send_finished_at_ns')
+            if end is None and ledger.get('response_path'):
+                end = (Path(sent['request_path']).parent / ledger['response_path']).stat().st_mtime_ns
+            if type(end) is not int or end <= 0:
+                raise RuntimeError('prior send terminal time unknown; cannot secure proxy log boundary')
+            terminal_times.append(end)
+        previous = max(terminal_times, default=None)
+        target = None if previous is None else (previous // 10**9 + PADDING_SECONDS + 1) * 10**9
+        started, tick = time.time_ns(), time.monotonic_ns()
+        if previous is not None and started < previous:
+            raise RuntimeError('wall clock regressed since prior send')
+        requested = max(0, target - started) if target is not None else 0
+        now = started
+        while target is not None and now < target:
+            time.sleep((target - now) / 10**9)
+            now = time.time_ns()
+            if now < started:
+                raise RuntimeError('wall clock regressed during proxy log boundary wait')
+        return {'policy': 'next_send_floor_gt_previous_response_floor_plus_padding.v1',
+                'previous_terminal_at_ns': previous, 'not_before_ns': target,
+                'started_at_ns': started, 'finished_at_ns': now,
+                'requested_ns': requested, 'elapsed_ns': time.monotonic_ns() - tick,
+                'sim_seconds': 0}
+
     def _store(self, row, kind, data):
         if kind == 'response':
             row['response_received_at_ns'] = time.time_ns()
@@ -134,6 +170,7 @@ class PilotSendLedger(SendLedger):
                                         'utterances': generated_utterances(text)}
         super()._store(row, kind, data)
         if kind == 'request':
+            row['log_boundary_wait'] = self._log_boundary_wait
             if row['url'] != self.profile['url'] or row['method'] != 'POST':
                 raise ValueError('pilot only authorises POST to the recorded proxy URL')
             envelope = token_envelope(data)
@@ -144,12 +181,16 @@ class PilotSendLedger(SendLedger):
             record = {**self.context, 'call_id': row['call_id'], 'ledger_seq': row['seq'],
                       'body_sha256': row['body_sha256'], 'request_path': str(self.store_dir / row['request_path']),
                       'proxy_url': row['url'], 'proxy_source_sha256': self.profile['source_sha256'],
+                      'log_boundary_wait': row['log_boundary_wait'],
                       'proxy_correlation_id': row['proxy_correlation_id']}
             reserved = self.budget.reserve(record, envelope)
             row['reservation_id'] = reserved['reservation_id']
             row['reserved_attempts'] = reserved['reserved_attempts']
             row['reserved_tokens'] = reserved['reserved_tokens']
             row['send_started_at_ns'] = time.time_ns()
+            target = self._log_boundary_wait['not_before_ns']
+            if target is not None and row['send_started_at_ns'] < target:
+                raise RuntimeError('wall clock regressed before send')
 
     def _send(self, call_id, actor, request, timeout):
         if threading.get_ident() != self._thread:
@@ -170,6 +211,7 @@ class PilotSendLedger(SendLedger):
         correlation_id = 'ugrp-' + sha(f'{self.context["trial_id"]}:{call_id}:{len(self.entries) + 1}'.encode())[:32]
         request.add_header('X-UGRP-Call-ID', correlation_id)
         before = len(self.entries)
+        self._log_boundary_wait = self._wait_for_log_boundary()
         cursor = log_cursor(self.proxy_log)
         started = time.monotonic()
         failed = True
@@ -183,6 +225,7 @@ class PilotSendLedger(SendLedger):
         finally:
             if len(self.entries) > before:
                 row = self.entries[-1]
+                row['send_finished_at_ns'] = time.time_ns()
                 if 'reservation_id' in row:
                     # If settlement storage fails this raises; the durable
                     # reserved_unknown row remains spent and no action escapes.

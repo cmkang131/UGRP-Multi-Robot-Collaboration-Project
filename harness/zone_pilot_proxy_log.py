@@ -57,28 +57,35 @@ def window_spec(sent, timezone):
             'bounds': 'inclusive_floor_seconds_plus_padding'}
 
 
-def extract_window(raw, window):
+def extract_window(raw, window, *, cursor=None):
     """Keep exact contiguous bytes, including one bracketing line on each side.
 
-    An absent bracket cannot demonstrate coverage, including at EOF. Unknown
-    lines inside the bracket are preserved so validation fails closed on them.
+    Validate the ENTIRE fixed prefix before slicing: a delayed append after the
+    right bracket must not hide a competing POST or a backwards clock. Include
+    the entire contemporaneous byte seal even when its timestamps lie outside
+    the requested time window; inspect_window must reject those events.
     """
     zone = ZoneInfo(window['log_timezone'])
     lower, upper = window['lower_epoch_second'], window['upper_epoch_second']
-    before, after, offset = None, None, 0
+    before, after, offset, previous = None, None, 0, None
     for line in raw.splitlines(keepends=True):
-        try:
-            stamp, _ = _line(line, zone)
-        except ValueError:
-            stamp = None
-        if stamp is not None and stamp < lower:
+        stamp, _ = _line(line, zone)
+        if previous is not None and stamp < previous:
+            raise ValueError('proxy_log_time_regression')
+        previous = stamp
+        if stamp < lower:
             before = offset
-        if stamp is not None and stamp > upper and before is not None:
+        if stamp > upper and before is not None and after is None:
             after = offset + len(line)
-            break
         offset += len(line)
-    if before is None or after is None:
+    if before is None or after is None or not raw.endswith(b'\n'):
         raise ValueError('proxy_log_window_coverage_missing')
+    if cursor is not None:
+        start, end = cursor.get('offset'), cursor.get('end_offset')
+        if (type(start) is not int or type(end) is not int
+                or not 0 <= start < end <= len(raw)):
+            raise ValueError('sealed_proxy_log_window_mismatch')
+        before, after = min(before, start), max(after, end)
     return before, after, raw[before:after]
 
 
@@ -132,6 +139,7 @@ def inspect_window(sent, raw, evidence, window):
     zone = ZoneInfo(window['log_timezone'])
     lower, upper = window['lower_epoch_second'], window['upper_epoch_second']
     parsed = []
+    cursor = sent.get('proxy_log_window', {})
     offset = evidence['offset']
     for line in raw.splitlines(keepends=True):
         try:
@@ -146,6 +154,11 @@ def inspect_window(sent, raw, evidence, window):
         issues.append('proxy_log_window_coverage_missing')
     for stamp, message, start_offset, end_offset in parsed:
         if not lower <= stamp <= upper:
+            # Do not silently drop a retry/error (or any other event) that was
+            # actually sealed during the send merely because its clock drifted.
+            if (type(cursor.get('offset')) is int and type(cursor.get('end_offset')) is int
+                    and start_offset < cursor['end_offset'] and end_offset > cursor['offset']):
+                issues.append('sealed_proxy_log_event_outside_time_window')
             continue
         http = HTTP.fullmatch(message)
         if http:
@@ -169,7 +182,6 @@ def inspect_window(sent, raw, evidence, window):
         issues.append('upstream_attempt_count_exceeds_reservation')
     # The original ledger cursor binds the central bytes even if the current
     # log has grown. Padding/boundary lines are also frozen and rehashed.
-    cursor = sent.get('proxy_log_window', {})
     try:
         start = cursor['offset'] - evidence['offset']
         end = cursor['end_offset'] - evidence['offset']
@@ -210,6 +222,21 @@ def verify_telemetry(sent, observed):
         window = window_spec(sent, observed['window']['log_timezone'])
         if observed['window'] != window:
             issues.append('proxy_log_window_bounds_mismatch')
+        # The original append-only prefix is hash-sealed, not copied wholesale
+        # (unrelated log messages can contain private data). Re-read that exact
+        # prefix so reconciliation independently verifies order beyond the cut.
+        with Path(evidence['source_path']).open('rb') as stream:
+            import os
+            stat = os.fstat(stream.fileno())
+            size = evidence['source_size_at_capture']
+            if type(size) is not int or size <= 0 or size > stat.st_size:
+                raise ValueError('proxy_log_source_prefix_size_mismatch')
+            source = stream.read(size)
+        if stat.st_ino != evidence['source_inode'] or sha(source) != evidence['source_prefix_sha256']:
+            issues.append('proxy_log_source_prefix_mismatch')
+        start, end, excerpt = extract_window(source, window, cursor=sent.get('proxy_log_window', {}))
+        if (start, end, excerpt) != (evidence['offset'], evidence['end_offset'], raw):
+            issues.append('proxy_log_evidence_slice_mismatch')
         actual = inspect_window(sent, raw, evidence, window)
         issues.extend(actual['issues'])
         if any(observed.get(k) != v for k, v in actual.items()):
@@ -220,6 +247,6 @@ def verify_telemetry(sent, observed):
             issues.append('proxy_response_id_mismatch')
         if observed.get('proxy_request_id') is not None or observed.get('upstream_attempts') is not None:
             issues.append('ids_forbidden_for_proxy_log_evidence')
-    except (OSError, KeyError, ValueError, TypeError, AttributeError):
-        issues.append('proxy_log_evidence_missing_or_invalid')
+    except (OSError, KeyError, ValueError, TypeError, AttributeError) as exc:
+        issues.append(str(exc) if isinstance(exc, ValueError) else 'proxy_log_evidence_missing_or_invalid')
     return sorted(set(issues))

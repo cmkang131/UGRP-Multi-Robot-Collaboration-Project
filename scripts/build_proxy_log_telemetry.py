@@ -54,13 +54,14 @@ def build(snapshot, proxy_log, output, *, log_timezone='Asia/Seoul'):
                 raise ValueError(log_error)
             window = window_spec(sent, log_timezone)
             row['window'] = window
-            start, end, excerpt = extract_window(raw, window)
+            start, end, excerpt = extract_window(raw, window, cursor=sent.get('proxy_log_window', {}))
             path = output / f'{index:06d}-proxy-window.log'
             digest = save(path, excerpt)
             files[path.name] = digest
             evidence = {'path': str(path), 'sha256': digest, 'source_path': str(proxy_log),
                         'source_inode': stat.st_ino, 'offset': start, 'end_offset': end,
                         'source_size_at_capture': stat.st_size,
+                        'source_prefix_sha256': sha(raw),
                         'includes_boundary_context': True}
             row['evidence'] = evidence
             row.update(inspect_window(sent, excerpt, evidence, window))
