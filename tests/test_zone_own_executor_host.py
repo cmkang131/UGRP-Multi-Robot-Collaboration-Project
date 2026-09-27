@@ -21,6 +21,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from harness import zone_own_executor as zox  # noqa: E402
+from sim.camera_robot_port import validate_raw_action  # noqa: E402
 from tests.test_zone_own_executor import CALIB, MAP, ROWS_Y, SEARCH_POSE, SHEET, _reachable, obs, rgb_of  # noqa: E402
 
 OwnCamTeamHost = zox.OwnCamTeamHost
@@ -28,12 +29,13 @@ _RobotSlot = sys.modules[OwnCamTeamHost.__module__]._RobotSlot
 
 
 class FakePort:
-    """Own-port stand-in: records every issued command and hold with its SIM time."""
+    """Own-port stand-in with the real raw action contract and command recording."""
 
     def __init__(self, rid):
         self.rid, self.log, self.servo, self.fid = rid, [], dict(SEARCH_POSE), 0
 
     def apply(self, action, now):
+        validate_raw_action(action, allow_reverse=True, allow_mecanum=True)
         self.log.append((round(now, 4), action['kind'], dict(action)))
         if action['kind'] == 'arm':
             self.servo[int(action['servo_id'])] = int(action['pulse'])
@@ -90,6 +92,7 @@ class FakeHost(OwnCamTeamHost):
     def _physics_until(self, t_end):
         d = self.world.data
         while d.time < t_end - 1e-9:
+            self._pair_arm_tick(d.time)
             d.time = round(d.time + .05, 6)
             while self.hooks and d.time + 1e-9 >= self.hooks[0][0]:
                 self.hooks.pop(0)[1](self)
