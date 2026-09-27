@@ -402,8 +402,12 @@ class ZoneOwnExecutor(OwnStatusMixin):
         if 'transition_blocked' in reason.lower() and 'guard' not in detail:
             ctl = self.job.ctl or self.job.driver
             evidence = getattr(ctl, 'sweep_failure', None) or getattr(getattr(ctl, 'leg', None), 'sweep_failure', None)
+            if evidence is None and reason.startswith('CARRY_LEG_'):
+                legs = getattr(ctl, 'legs', ())
+                if legs and reason == 'CARRY_LEG_' + str(legs[-1]['outcome']):
+                    evidence = legs[-1].get('sweep_failure')
             if evidence is not None:
-                detail['guard'] = evidence
+                detail['guard'] = copy.deepcopy(evidence)
         self._record(now, reason, 'failed', detail)
         if reason.startswith(UNCERTAIN_REASONS) or reason.endswith(UNCERTAIN_SUFFIXES):
             self._emit(now, 'pose_uncertain', level=self._level, gate_profile=self.gate.profile.name, ends_job=True,
@@ -527,7 +531,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
 
     def _step_goto(self, now, job):
         if job.driver is None:
-            loaded = self.holding()['answer'] == 'yes' or self._holding_after.get('answer') == 'unknown'
+            loaded = self.loaded
             job.driver = GuardedDriver(self.pose.loc, self.map, self.params, loaded=loaded,
                                               goal_xy=job.args['goal_xy'], door_xy=self.door_xy,
                                               initial_servo=dict(self.servo), seed=self.seed, gate=self.gate,
@@ -585,8 +589,14 @@ class ZoneOwnExecutor(OwnStatusMixin):
             if self.gate.classify(rep.initialized, rep.std_xy_m, rep.std_yaw_rad) == 'high':
                 self._fail(now, 'SWEEP_POSE_UNCERTAIN')
                 return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
-            if not self.gate.ok:
-                s['until'] += TICK_S                 # bootstrap gate dwell uses no backoff motion budget
+            retry = s.setdefault('recheck', SweepRecheck())
+            result = retry.check_gate(now, ready=self.gate.ok)
+            if result != 'clear':
+                if result == 'blocked':
+                    self._fail(now, 'SWEEP_GATE_TIMEOUT', guard={'stage': 'backoff_gate',
+                               'waited_s': retry.waited_s, 'gate': self.gate.as_dict()})
+                else:
+                    s['until'] += TICK_S             # preserve motion duration, charge stationary observation
                 return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
             if now + 1e-9 < s['until']:
                 return {'mode': 'tick', 'commands': [dict(s['cmd'])]}

@@ -18,20 +18,32 @@ class SweepRecheck:
         self.waited_s = 0.
         self.last_wait = None
 
-    def check(self, now, guard, current, target, pose, *, loaded):
+    def _account_wait(self, now):
         if self.last_wait is not None:
             self.waited_s += max(0., now - self.last_wait)
             self.last_wait = None
+
+    def _wait(self, now):
+        if self.waited_s >= SWEEP_REOBSERVE_S - 1e-9:
+            return 'blocked'
+        self.last_wait = now
+        return 'wait'
+
+    def check_gate(self, now, *, ready):
+        """Gate dwell spends the same stationary-observation budget as arm/pan/restore."""
+        self._account_wait(now)
+        return 'clear' if ready else self._wait(now)
+
+    def check(self, now, guard, current, target, pose, *, loaded):
+        self._account_wait(now)
         if guard.transition_clear(current, target, pose, loaded=loaded):
             return 'clear'
         profile = GATE_LOADED if loaded else GATE_UNLOADED
         # The zero-sigma query ONLY decides whether to wait, never whether to issue motion.
         nominal = OwnPose(pose.x, pose.y, pose.yaw, 0., 0.)
         uncertain = pose.std_xy > profile.low_xy_m or pose.std_yaw > profile.low_yaw_rad
-        if self.waited_s < SWEEP_REOBSERVE_S - 1e-9 and (uncertain or
-                guard.transition_clear(current, target, nominal, loaded=loaded)):
-            self.last_wait = now
-            return 'wait'
+        if uncertain or guard.transition_clear(current, target, nominal, loaded=loaded):
+            return self._wait(now)
         return 'blocked'
 
 

@@ -235,11 +235,17 @@ class OwnCamTeamHost:
         fingers = {r: {} for r in ROBOTS}
         carried = {}
         for r in ROBOTS:
-            job = self.robots[r].executor.job
-            sk = job.ctl.skill if job is not None and job.ctl is not None else None
-            # Evaluation attribution only: the assigned cargo during the controller's carry phase.
+            # Evaluation attribution only: keep counting across abort, hold and loaded goto.
+            ex = self.robots[r].executor
+            sk = ex.job.ctl.skill if ex.job is not None and ex.job.ctl is not None else None
+            # A conflicting camera check can make holding unknown and control-side loaded
+            # false. Keep the wrist skill's unreleased carry for contact accounting only.
+            unreleased_carry = (sk is not None and sk.phase in CARRY_PHASES
+                                and getattr(sk, 'box', None) is not None and sk.box.held
+                                and not any(e.get('event') == 'release_confirmed'
+                                            for e in getattr(sk, 'events', ())))
             carried[r] = (self._box_geom.get(self.assigned_box.get(r), set())
-                          if sk is not None and sk.phase in CARRY_PHASES else set())
+                          if ex.loaded or unreleased_carry else set())
         for i in range(data.ncon):
             c = data.contact[i]
             pair = {int(c.geom1), int(c.geom2)}

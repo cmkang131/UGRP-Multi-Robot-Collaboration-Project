@@ -9,6 +9,7 @@ re-look when a cyan region is clipped at the bottom edge of a search frame (too 
 from __future__ import annotations
 
 import base64
+import copy
 import math
 from collections.abc import Mapping, Sequence
 
@@ -115,6 +116,7 @@ class _DeliverController(M1OwnCamDelivery):
             self.__dict__.setdefault('legs', []).append({'goal': list(leg.goal), 'loaded': leg.loaded, 'outcome': leg.outcome, 'looks': leg.looks,
                               'guard_log': leg.guard_log, 'stall_keepouts': leg.stall_keepouts,
                               'gate_looks': leg.gate_looks, 'recoveries': leg.recoveries,
+                              'sweep_failure': copy.deepcopy(leg.sweep_failure),
                               'progress_look_failures': leg.monitor.look_failures})
 
     def _start_leg(self, goal, *, loaded):
