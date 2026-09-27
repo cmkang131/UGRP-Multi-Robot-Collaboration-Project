@@ -239,9 +239,10 @@ def test_r7_adapter_boundary_the_completer_must_use_the_call_opener():
         lt.ModelCallTransport(object(), send_ledger=sl.SendLedger(sl.ScriptedWire()), client_factory=factory)
 
 
-def test_r7_adapter_the_live_ledger_wraps_urlopen_and_stores_on_disk(tmp_path):
+def test_r7_adapter_the_live_ledger_has_private_no_redirect_opener_and_stores_on_disk(tmp_path):
     ledger = lt.live_send_ledger(store_dir=tmp_path / 'raw-wire')
-    assert ledger._wire is urllib.request.urlopen and (tmp_path / 'raw-wire').is_dir()
+    assert ledger._wire is not urllib.request.urlopen and (tmp_path / 'raw-wire').is_dir()
+    assert any(isinstance(h, lt.RefuseRedirects) for h in ledger._wire.__self__.handlers)
     assert ledger.entries == []                                   # nothing was sent
 
 

@@ -43,6 +43,7 @@ import statistics
 from pathlib import Path
 
 from harness import zone_dialogue_metrics as zm
+from harness.llm_completion import completion_aggregate, completion_record
 from harness.zone_study_contract import (ACTION_LOG_SCHEMA, CALL_LOG_SCHEMA, CONDITIONS as A_CONDITIONS,
                                          MAIN_CONDITIONS as A_MAIN_CONDITIONS, MESSAGE_LOG_SCHEMA,
                                          ContractViolation, allowed_edges as A_allowed_edges,
@@ -367,7 +368,8 @@ def _request_view(call):
             'decision_sources': list(call['decision_sources']),
             'message_ids': list(call['message_ids']),
             'http_attempts': call['http_attempts'], 'output_tokens': call['output_tokens'],
-            'input_tokens': dict(call['input_tokens'])}
+            'input_tokens': dict(call['input_tokens']),
+            'completion': completion_record((call.get('cost_terms') or {}).get('completion'))}
 
 
 def _utterance_view(message):
@@ -465,6 +467,10 @@ def model_aggregate(trial):
       the request was made even though its action was never released.
     * a missing number stays ``None`` (no cost source at all returns ``None``,
       and a summary without a term does not turn it into 0).
+
+    R9: ``completed_calls`` is non-censored calls, INCLUDING failures. Only
+    ``completion.successful_calls`` applies the recorded proxy-stop admission
+    policy plus successful protocol validation. Legacy reasons remain unknown.
     """
     calls = _rows(trial, 'calls')
     summary = trial.get('model') if isinstance(trial.get('model'), dict) else None
@@ -516,6 +522,7 @@ def model_aggregate(trial):
             for key, value in report.items():
                 provider[key] = provider.get(key, 0) + int(value)
     out = {'source': 'calls', 'logical_calls': len(calls),
+           'completion': completion_aggregate(calls),
            'usage_unknown_calls': len(unknown), 'tokens_complete': not unknown,
            'provider_usage': provider,
            'provider_usage_calls': sum(1 for r in reports if isinstance(r, dict)),

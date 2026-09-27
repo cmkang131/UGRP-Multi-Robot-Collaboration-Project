@@ -44,6 +44,7 @@ from harness.zone_send_ledger import LEDGER_SCHEMA, FixtureWire, SendLedger
 from harness.zone_sim_cost import (Attempt, call_cost, censored_call_record, contract_call_record,
                                    delivery_delay_s, params)
 from harness.zone_study_llm_transport import ModelCallTransport, gemini_client_factory
+from harness.llm_completion import generated_utterances
 from harness.zone_study_contract import (COMMANDER, ROBOTS, ZONE_IDS, ContractViolation,
                                          condition as contract_condition, digest, leader_for_seed)
 from harness.zone_study_eval import TRIAL_SCHEMA
@@ -415,8 +416,7 @@ class OfflineTrial:
         # (review finding 6).
         utterances = len(value['messages'])
         attempts = (Attempt(outcome='ok', input_tokens=input_tokens,
-                            output_tokens=FIXTURE_OUTPUT_TOKENS_BASE
-                            + FIXTURE_OUTPUT_TOKENS_PER_MESSAGE * utterances,
+                            output_tokens=self.sim_output_tokens(raw, utterances),
                             utterances=utterances),)
         cost = call_cost(attempts, self.params)
         release = round(call.started_sim_s + cost.sim_s, 6)
@@ -441,6 +441,10 @@ class OfflineTrial:
         self._record(call, bundled, value, release, request, provider_usage=provider_usage)
         return CallReply(attempts=attempts, action=value['action'], messages=tuple(messages),
                          provider_usage=provider_usage)
+
+    def sim_output_tokens(self, raw, utterances):
+        """Frozen fixture cost. The real adapter overrides this with a text count."""
+        return FIXTURE_OUTPUT_TOKENS_BASE + FIXTURE_OUTPUT_TOKENS_PER_MESSAGE * utterances
 
     def _archive(self, call, bundled, request, *, status, messages_out, unparsed_utterances=0, error=None,
                  provider_usage=None):
@@ -678,26 +682,6 @@ class OfflineTrial:
     def trial_record(self, result: TrialResult) -> dict:
         return result.trial_record(horizon_s=self.horizon_s, provenance_row=self.provenance,
                                   literals=self.literals())
-
-
-def generated_utterances(raw) -> int:
-    """How many utterances a (possibly malformed) reply GENERATED.
-
-    A reply that parses as JSON counts the entries of its ``messages`` list,
-    valid or not. Text that is not JSON counts its ``"recipients"`` keys, one per
-    attempted utterance; that is a frozen, deterministic rule, not a guess about
-    intent. Used so a malformed reply keeps its utterance cost (second review,
-    finding 6).
-    """
-    value = raw
-    if isinstance(raw, str):
-        try:
-            value = json.loads(raw)
-        except ValueError:
-            return raw.count('"recipients"')
-    if isinstance(value, dict) and isinstance(value.get('messages'), list):
-        return len(value['messages'])
-    return 0
 
 
 def _vocabulary(sheet, map_bundle):

@@ -1,0 +1,63 @@
+{
+  "base_head_and_final_head": "1e8c5dda23430248b345755538508a39c364d35a",
+  "before": "6 failed, 35 deselected",
+  "after": "402 passed in 402.40s (0:06:42)",
+  "new_regressions_passed": 6,
+  "real_memory_cases": [
+    {
+      "charged_after": {
+        "attempts": 18,
+        "tokens": 409793
+      },
+      "charged_before": {
+        "attempts": 34,
+        "tokens": 4085674
+      },
+      "settled_calls": 16,
+      "skipped_calls": 1,
+      "stage": "preflight"
+    },
+    {
+      "charged_after": {
+        "attempts": 18,
+        "tokens": 409793
+      },
+      "charged_before": {
+        "attempts": 34,
+        "tokens": 4085674
+      },
+      "settled_calls": 16,
+      "skipped_calls": 1,
+      "stage": "cohort"
+    },
+    {
+      "charged_after": {
+        "attempts": 18,
+        "tokens": 409793
+      },
+      "charged_before": {
+        "attempts": 34,
+        "tokens": 4085674
+      },
+      "settled_calls": 16,
+      "skipped_calls": 1,
+      "stage": "migrated_preflight"
+    }
+  ],
+  "original_database": "/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r10/budget.sqlite",
+  "original_database_fingerprint": {
+    "sha256": "cc23aa281f44b7989627dd2059ea00b868b43bfec2d59c12cda0cf9042145158",
+    "bytes": 229376,
+    "mtime_ns": 1790483471841786931
+  },
+  "original_files_verified_per_real_case": 65,
+  "originals_unchanged_in_all_real_cases": true,
+  "pytest_tmp_removed": true,
+  "model_calls": 0,
+  "physical_runs": 0,
+  "project_commits": 0,
+  "test_logs_sha256": {
+    "before.txt": "23291def12d1aa431894c00c0ea088f0ccb4caa14db5dd02b2d271d3a2897176",
+    "after-regression.txt": "57e4096317bb49d853f8c9a16df8a782e617bea90e1bb762c743dde0bc900b9d"
+  }
+}

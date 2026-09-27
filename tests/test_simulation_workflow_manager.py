@@ -199,6 +199,7 @@ raise SystemExit(3 if a.fail else 0)
         model.mkdir()
         (model / "weights.bin").write_bytes(b"fixture")
         samples = {
+            "zone-study-pilot": [],
             "local": ["run", str(PROJECT / "configs/simulation/drive.json"), "--headless"], "dispatch": ["--headless"],
             "dispatch-skills": ["--plan-replay", str(source), "--grasp-model-dir", str(model), "--stage-model-dir", str(model)],
             "communication": ["prepare", "--protocol", str(source)],
