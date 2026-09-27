@@ -17,7 +17,7 @@ def media_registry(logdir):
         source = Path(manifest['source']).resolve()
         for entry in manifest.get('videos', []):
             p = Path(entry.get('path', ''))
-            if (p.name not in ('motion.mp4', 'execution.mp4') or p.is_symlink()
+            if (p.name not in ('motion.mp4', 'execution.mp4', 'overview.mp4') or p.is_symlink()
                     or not p.resolve().is_relative_to(source)): continue
             if re.fullmatch(r'[0-9a-f]{20}', entry.get('id', '')):
                 registry[entry['id']] = entry

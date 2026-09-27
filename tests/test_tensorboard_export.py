@@ -719,6 +719,32 @@ def test_unfinished_manifest_and_external_media_ignored(tmp_path):
     assert media_registry(tmp_path)=={}
 
 
+def test_overview_video_exports_loads_and_registers_without_allowing_symlink_escape(tmp_path, export_api):
+    convert, EA = export_api
+    src = tmp_path / 'eval_only'
+    put(src, 'result.json', {'physical_success': False, 'model_calls': 0})
+    video = src / 'overview.mp4'
+    video.write_bytes(b'recorded overview fixture')
+    manifest = convert(src, tmp_path / 'export', max_images=0)
+    entry, = manifest['videos']
+    assert entry['path'] == str(video.resolve())
+    assert media_registry(tmp_path / 'export') == {entry['id']: entry}
+    ea = EA(str(tmp_path / 'export')).Reload()
+    assert 'media/overview.mp4' in ea.Tags()['tensors']
+    assert ea.Scalars('evaluation/reported_success')[0].value == 0
+    # A derived reviewed result can use a same-filesystem hardlink, never ../ symlinks.
+    reviewed = src / 'review-01'
+    put(reviewed, 'result.json', {'physical_success': False})
+    (reviewed / 'overview.mp4').symlink_to('../overview.mp4')
+    assert convert(reviewed, tmp_path / 'linked-export', max_images=0)['videos'] == []
+    derived = tmp_path / 'derived'
+    put(derived, 'result.json', {'physical_success': False})
+    (derived / 'overview.mp4').hardlink_to(video)
+    manifest = convert(derived, tmp_path / 'hardlinked-export', max_images=0)
+    assert len(manifest['videos']) == 1
+    assert len(media_registry(tmp_path / 'hardlinked-export')) == 1
+
+
 def test_console_latency_and_session_completion_are_not_physical_success(tmp_path, export_api):
     convert, EA = export_api
     src = tmp_path / 'source'; src.mkdir()
