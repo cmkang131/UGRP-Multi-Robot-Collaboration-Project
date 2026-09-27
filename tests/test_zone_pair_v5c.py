@@ -185,17 +185,10 @@ def test_v5c_prepare_is_source_bound_and_has_no_physics_or_model_calls(tmp_path,
     result=subprocess.run([sys.executable,str(dev.ROOT/'scripts/run_zone_pair_dev.py'),
                            '--prereg',str(dev.PREREG_V5H),'--run-id',run,'--output',str(out)],
                           capture_output=True,text=True)
-    assert result.returncode==0,result.stderr
-    manifest=json.loads((out/'manifest.json').read_text())
-    assert manifest['state']=='prepared_not_executed'
-    assert manifest['model_calls']==0 and manifest['physical_success'] is None and manifest['applied'] is None
-    assert (out/'prereg.json').read_bytes()==dev.PREREG_V5H.read_bytes()
-    assert not (out/'eval_only/trace.jsonl').exists()
-    p=json.loads(dev.PREREG_V5H.read_text());case=next(r for r in p['runs'] if r['id']==run)
-    from scripts.zone_pair_dev_runtime import make_scene
-    scene=make_scene({'map':p['environment']['map'],'seed':case['seed'],'goal':{'B':{'cyan':1}},
-                      'team_cargo':[{'item_id':'cargoX','kind':'long_beam','pose':case['setup_beam_xyyaw']}]})
-    dev.validate_scene(p,scene)
+    # The old registration is preserved, so this changed v6 source must reject
+    # it before constructing a world or creating an output directory.
+    assert result.returncode!=0 and 'scene contract' in result.stderr
+    assert not out.exists()
 
 
 @pytest.mark.parametrize('fault,reason', [('seed','fixes'),('criteria','preserve v2 criteria'),
@@ -203,6 +196,11 @@ def test_v5c_prepare_is_source_bound_and_has_no_physics_or_model_calls(tmp_path,
 def test_v5c_rejects_changed_registration(tmp_path,fault,reason):
     from scripts import run_zone_pair_dev as dev
     p=json.loads(dev.PREREG_V5H.read_text())
+    # Bind the test copy to this source to isolate each structural mutation;
+    # the actual archived file remains byte-identical and non-executable.
+    from scripts.zone_pair_grasp_contract import grasp_contract
+    p['scene_contract']=dev.scene_contract()
+    p['grasp_contract']=grasp_contract()
     if fault=='seed':p['runs'][0]['seed']=905
     elif fault=='criteria':p['criteria']['lift_bottom_m']=.01
     elif fault=='source':p['grasp_contract']['source_sha256']['harness/owncam_time.py']='0'*64

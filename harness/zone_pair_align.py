@@ -31,7 +31,7 @@ def relook_reason(report, now):
     return None
 
 
-def ranked_look_pans(static_map, report, servo, guard, provider):
+def ranked_look_pans(static_map, report, servo, guard, provider, *, recovery_v6=False, excluded=(), safety_pose=None):
     """Rank collision-safe LOOK_P20 directions by the provider's proposal score.
 
     A prediction never qualifies as a fix. Only a subsequent accepted own
@@ -40,16 +40,23 @@ def ranked_look_pans(static_map, report, servo, guard, provider):
     from harness.owncam_drive import LOOK_P20
     from scripts.run_m2_pair import PREGRASP_PANS_V2
 
-    pose = OwnPose.from_report(report)
+    pose = safety_pose if safety_pose is not None else OwnPose.from_report(report)
     if pose is None:
         return []
     candidates = []
     for pan in dict.fromkeys(PREGRASP_PANS_V2):
+        if pan in excluded:
+            continue
         target = {**LOOK_P20, 1: servo[1], 6: pan}
         plan = guard.plan(servo, target, [pan], pose, loaded=False, allow_backoff=False)
         if plan['reason'] != 'clear' or not plan.get('transition_clear'):
             continue
         score = provider.expected_observability(pose, pan, static_map)
+        if recovery_v6:
+            gap = min(guard.arm_clearance(target,pose,loaded=False)[0], guard.chassis_clearance(pose)[0])
+            clearance_weight = max(0.,min(1.,gap/.2))
+            move_cost = 1.+abs(pan-servo[6])/500.
+            score = score*clearance_weight/move_cost
         if finite_number(score) and score > 0:
             candidates.append({'pan': pan, 'observability_score': score})
     return sorted(candidates, key=lambda x: (-x['observability_score'], abs(x['pan'] - servo[6]), x['pan']))
@@ -61,6 +68,8 @@ class PairAlignRelook:
     def set(self, state, now, **detail):
         if state == 'align':
             self.align_started_at = now
+            if getattr(getattr(self,'policy',None),'beam_relative',False):
+                return super().set(state, now, **detail)
             return self._begin_align_relook(now, 'align_entry')
         return super().set(state, now, **detail)
 
@@ -84,6 +93,8 @@ class PairAlignRelook:
         self.align_look_started_at = now
         self.align_started_at = getattr(self, 'align_started_at', self.state_t)
         self.align_resume_name = self.look_name
+        self.relook_excluded = set()
+        self.relook_cancelled = False
         self.aligned_streak = 0
         self.vo_pose = None
         report = self.port.own.last_report
@@ -105,7 +116,7 @@ class PairAlignRelook:
         own, start = self.port.own, self.align_look_started_at
         r = own.last_report
         fix = None if r is None else r.last_fix_t
-        return {**accepted_fix_checks(r, now, start),
+        checks = {**accepted_fix_checks(r, now, start),
                 'shared_localizer': self.driver.loc is own.pose.loc,
                 'initialized': r is not None and r.initialized, 'gate_ok': own.gate.ok,
                 'pose_finite': r is not None and all(finite_number(v) for v in (r.x_m, r.y_m, r.yaw_rad)),
@@ -113,6 +124,27 @@ class PairAlignRelook:
                 'std_yaw': r is not None and 0 <= r.std_yaw_rad <= FIX_STD_YAW_RAD,
                 'fix_gap': finite_number(fix) and 0 <= now - fix < MAX_FIX_GAP_S - 1e-8,
                 'sigma_reserve': r is not None and r.std_xy_m < RELOOK_XY_M and r.std_yaw_rad < RELOOK_YAW_RAD}
+        if getattr(getattr(self,'policy',None),'posterior_relook',False):
+            from harness.zone_pair_v6_policy import informative_fix
+            checks['informative_fix'] = informative_fix(r)
+        return checks
+
+    def cancel_relook_pan(self, now):
+        if self.state == 'align_relook_return':
+            return self.fail('ALIGN_RETURN_VIEW_BLOCKED',now)
+        self.relook_excluded = getattr(self,'relook_excluded',set())
+        self.relook_excluded.add(getattr(self,'active_relook_pan',self.port.own.servo[6]))
+        self.relook_cancelled = True
+        self.log(self.rid,'relook_pan_cancelled',now,excluded=sorted(self.relook_excluded),
+                 reason='blocked sweep; queue discarded; replan from issued PWM')
+
+    def _begin_provider_look(self, now):
+        if getattr(getattr(self,'policy',None),'posterior_relook',False):
+            from harness.owncam_recovery_v6 import begin_observation
+            quality = self.port.own.last_report.observation_quality or {}
+            begin_observation(self.port.own.pose,now,self.port.own.servo,lost=quality.get('lost') is True)
+        else:
+            self.port.own.pose.begin_relocalization(now,self.port.own.servo)
 
     def _align_fix_ready(self, now):
         return all(self._align_fix_checks(now).values())
@@ -141,8 +173,10 @@ class PairAlignRelook:
         self.log(self.rid, 'align_relook_stopped_pose', now,
                  stopped_at_s=self.align_look_started_at, report_t=self.port.own.last_report.t_est)
         drv = self.driver
-        self.port.own.pose.begin_relocalization(now, self.port.own.servo)
-        self.arm.queue({**LOOK_P20, 1: self.port.own.servo[1], 6: self.align_pans.pop(0)},
+        self._begin_provider_look(now)
+        self.active_relook_pan = self.align_pans.pop(0)
+        self.relook_directions_used = 1
+        self.arm.queue({**LOOK_P20, 1: self.port.own.servo[1], 6: self.active_relook_pan},
                        now, duration=.8, settle=.6)
         super().set('align_relook', now)
 
@@ -160,9 +194,21 @@ class PairAlignRelook:
             self.arm.queue(pose_of(self.align_resume_name), now, duration=.6, settle=.3)
             return super().set('align_relook_return', now)
         self._log_align_fix_rejection(now, checks, frame_id=obs['frame_id'])
+        if getattr(getattr(self,'policy',None),'posterior_relook',False):
+            if [k for k,v in checks.items() if not v] == ['gate_ok']:
+                return  # dev14: let the unchanged dwell finish; no new pan
+            self.relook_excluded = getattr(self,'relook_excluded',set())
+            self.relook_excluded.add(getattr(self,'active_relook_pan',self.port.own.servo[6]))
+            if getattr(self,'relook_directions_used',0)>=MAX_DIRECTIONS:
+                return self.fail('ALIGN_RELOOK_NO_FIX',now)
+            if getattr(self,'relook_cancelled',False):
+                self.align_pans = [r['pan'] for r in self.align_look_choices()[:MAX_DIRECTIONS]]
+                self.relook_cancelled = False
         if not self.align_pans:
             return self.fail('ALIGN_RELOOK_NO_FIX', now)
-        self.arm.queue({6: self.align_pans.pop(0)}, now, duration=.4, settle=.6)
+        self.active_relook_pan = self.align_pans.pop(0)
+        self.relook_directions_used = getattr(self,'relook_directions_used',0)+1
+        self.arm.queue({6: self.active_relook_pan}, now, duration=.4, settle=.6)
 
     def _align_relook_return(self, now, arm_idle):
         if not arm_idle:
@@ -180,6 +226,12 @@ class PairAlignRelook:
     def tick(self, now):
         if self.state == 'align':
             reason = relook_reason(self.port.own.last_report, now)
+            if getattr(getattr(self,'policy',None),'beam_relative',False):
+                # A stale absolute fix does not redefine local alignment. Its
+                # independently growing safety envelope decides when to stop.
+                safety = self.global_certificate(now)
+                reason = ('global_safety' if not safety['clear'] else
+                          'global_safety_reserve' if safety.get('relook_reserve_low') else None)
             if reason:
                 return self._begin_align_relook(now, reason)
         if self.state not in RELOOK_STATES:

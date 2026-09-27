@@ -25,7 +25,14 @@ def no_real_gh(monkeypatch):
 
 
 def registered():
-    return json.loads(dev.PREREG_V5H.read_text())
+    p = json.loads(dev.PREREG_V5H.read_text())
+    # Synthetic source-bound copy for authorization mechanics. Historical
+    # registration bytes remain unchanged and reject the new v6 source.
+    from scripts.zone_pair_grasp_contract import grasp_contract
+    p['scene_contract'] = dev.scene_contract()
+    p['grasp_contract'] = grasp_contract()
+    p['registration_sha256'] = auth.digest(auth.registration_payload(p))
+    return p
 
 
 def authorize(p):

@@ -1,0 +1,206 @@
+"""Own-wrist beam shape report, extending v5's segment-local resting track.
+
+Uses the unchanged beam body colour to select silhouette/paired edges. Dark
+grip bands are neither detected nor assigned a position. Complete catalogue
+length and both end boundaries are required for a new metric anchor. Partial
+views may support an existing bounded anchor, but cannot refill its age or
+shrink its uncertainty. Loaded images never use the resting-plane model.
+"""
+from __future__ import annotations
+
+from dataclasses import asdict, dataclass
+import math
+import numpy as np
+
+from harness import owncam_pair_beam as beam_v1
+from harness.owncam_pair_beam_v2 import beam_colour_mask
+from harness.owncam_view import base_rays
+from harness.zone_pair_beam_track import RestingBeamTrack, MAX_AGE_S
+
+PROFILE = 'beam_relative_shape_v6'
+
+
+@dataclass(frozen=True)
+class BeamRelativeReport:
+    frame_id: int
+    sha256: str
+    captured_at_s: float
+    segment: int
+    camera_pwm: tuple
+    mode: str = 'resting_hypothesis'
+    grip_base_m: tuple | None = None
+    axis_heading_rad: float | None = None
+    std_xy_m: float | None = None
+    std_yaw_rad: float | None = None
+    bias_bound_m: float | None = None
+    observable_axes: tuple = ()
+    reasons: tuple = ()
+    endpoint_hypotheses: tuple = ('near', 'far')
+    anchor_time_s: float | None = None
+    anchor_sha256: str | None = None
+    calibrated: bool = False
+    marker_dependency: bool = False
+
+    def ready(self, now):
+        return (self.mode == 'resting_hypothesis' and self.grip_base_m is not None
+                and self.observable_axes == ('forward', 'left', 'yaw')
+                and self.endpoint_hypotheses == ('nearest_end',)
+                and self.anchor_time_s is not None and 0 <= now-self.anchor_time_s <= MAX_AGE_S
+                and 0 <= now-self.captured_at_s <= .3 + 1e-4
+                and all(v is not None and math.isfinite(v) for v in
+                        (*self.grip_base_m, self.axis_heading_rad, self.std_xy_m,
+                         self.std_yaw_rad, self.bias_bound_m))
+                and 0 <= self.std_xy_m + self.bias_bound_m <= .05
+                and 0 <= self.std_yaw_rad <= math.radians(3))
+
+    def beam(self):
+        if self.grip_base_m is None:
+            return None
+        return {'visible': True, 'end_visible': True, 'grip_base_m': list(self.grip_base_m),
+                'axis_heading_rad': self.axis_heading_rad,
+                'std_xy_m': self.std_xy_m + self.bias_bound_m,
+                'std_yaw_rad': self.std_yaw_rad, 'grip_source': 'shape_end_plus_catalogue_inset'}
+
+    def as_dict(self):
+        return asdict(self)
+
+
+def shape_points(image, servo):
+    frame = beam_v1.decode(image)
+    origin, rays, xs, ys, valid = base_rays(servo, beam_v1.RAY_STEP)
+    hit = valid & beam_colour_mask(frame)[ys.astype(int), xs.astype(int)] & (rays[:,2] < -1e-6)
+    selected = rays[hit]
+    distance = (beam_v1.BEAM_TOP_Z_M-origin[2]) / selected[:,2]
+    pts = (origin + distance[:,None]*selected)[:,:2]
+    keep = (distance > 0) & (np.linalg.norm(pts, axis=1) < 2.5)
+    # A 16 mm top/side/height ambiguity projected through the actual rays.
+    depth = np.linalg.norm(selected[keep,:2]/selected[keep,2,None], axis=1)*.016
+    return pts[keep], xs[hit][keep].astype(int), ys[hit][keep].astype(int), depth
+
+
+def shape_fit(image, servo):
+    pts, x, y, depth = shape_points(image, servo)
+    if len(pts) < beam_v1.MIN_POINTS:
+        return None, ('BEAM_NOT_VISIBLE',)
+    centre = np.median(pts, axis=0)
+    _, vectors = np.linalg.eigh(np.cov((pts-centre).T))
+    u = vectors[:,-1]
+    if u @ centre < 0:
+        u = -u
+    n = np.array([-u[1],u[0]])
+    a, b = pts @ u, pts @ n
+    lo, hi = np.percentile(a, [1,99])
+    width = float(np.percentile(b,98)-np.percentile(b,2))
+    inner = beam_v1._inner_valid()
+    boundary = (a <= lo+.01) | (a >= hi-.01)
+    clipped = bool(np.any(~inner[y[boundary],x[boundary]]))
+    if clipped or hi-lo < .54:
+        # Colour breaks/occlusions are not new ends. The historical label
+        # BAND_CLIPPED is handled as the same unobserved-axis case downstream.
+        return None, ('END_CLIPPED', 'AXIAL_POSITION_UNKNOWN', 'END_ID_AMBIGUOUS')
+    if not (.54 <= hi-lo <= .66 and .025 <= width <= .070):
+        return None, ('SHAPE_AMBIGUOUS', 'MONOCULAR_DEPTH_AMBIGUOUS')
+    strips = []
+    for start in np.arange(lo, hi, .01):
+        v = b[(a >= start) & (a < start+.01)]
+        if len(v) < 4:
+            continue
+        left, right = np.percentile(v,[2,98])
+        if .025 <= right-left <= .055:
+            strips.append((start+.005,(left+right)/2))
+    if len(strips) < 4 or np.ptp(np.asarray(strips)[:,0]) < .06:
+        return None, ('PAIRED_EDGES_UNOBSERVABLE',)
+    along, across = np.asarray(strips).T
+    if len(along)*.01 < .55*(hi-lo) or np.max(np.diff(along))>.08:
+        return None, ('DISCONNECTED_SHAPE_OR_OCCLUSION',)
+    slope, intercept = np.polyfit(along, across, 1)
+    residual = float(np.max(np.abs(across-slope*along-intercept)))
+    heading = math.atan2(u[1],u[0])+math.atan(slope)
+    near = lo*u+(slope*lo+intercept)*n
+    far = hi*u+(slope*hi+intercept)*n
+    bias = float(np.percentile(depth[a <= lo+.01],95))+.005  # bound at the observed grip end
+    if abs(np.linalg.norm(far)-np.linalg.norm(near)) <= 2*(bias+.015):
+        return None, ('END_ID_AMBIGUOUS',)
+    syaw = max(math.radians(1), math.atan2(2*residual+.001,float(np.ptp(along))))
+    grip = near + .03*np.array([math.cos(heading),math.sin(heading)])
+    return {'grip_base_m': grip.tolist(), 'axis_heading_rad': heading,
+            'std_xy_m': max(.015,residual), 'std_yaw_rad': syaw,
+            'bias_bound_m': bias, 'visible_length_m': float(hi-lo),
+            'edge_residual_m': residual}, ('MONOCULAR_RESTING_PLANE_HYPOTHESIS',)
+
+
+class RelativeBeamTrack(RestingBeamTrack):
+    """Reuse issued-command propagation; separate relative state from world PF."""
+    def __init__(self):
+        super().__init__()
+        self.last_report = None
+        self.last_capture = -math.inf
+        self.command_epoch = 0
+        self.report_command_epoch = None
+
+    def command(self, row, servo):
+        super().command(row,servo)
+        if row['kind'] in ('drive','mecanum','look') or (row['kind']=='arm' and int(row['servo_id'])!=1):
+            self.command_epoch += 1
+
+    def observe(self, obs, servo, segment, *, now, mode='resting_hypothesis'):
+        self.advance(now)
+        pwm = tuple(sorted((int(k),int(v)) for k,v in servo.items() if int(k) in (3,4,5,6)))
+        common = dict(frame_id=obs['frame_id'],sha256=obs['sha256'],captured_at_s=obs['sim_time'],
+                      segment=segment,camera_pwm=pwm,mode=mode)
+        def unknown(*reasons):
+            self.last_report = BeamRelativeReport(**common,reasons=tuple(reasons))
+            return self.last_report
+        image_pwm = obs.get('actuator_state',{}).get('servo_pulses',{})
+        try:
+            observed = tuple(sorted((int(k),int(v)) for k,v in image_pwm.items() if int(k) in (3,4,5,6)))
+        except (TypeError,ValueError):
+            return unknown('CAMERA_COMMAND_MISMATCH')
+        if observed != pwm or not 0 <= now-obs['sim_time'] <= .3+1e-4:
+            return unknown('STALE_OR_CAMERA_MISMATCH')
+        if mode != 'resting_hypothesis':
+            self.beam = None
+            return unknown('LOADED_DEPTH_UNKNOWN')
+        key = (segment,obs['frame_id'],obs['sha256'])
+        if key == self.last_frame:
+            if self.report_command_epoch == self.command_epoch:
+                return self.last_report  # idempotent read, not a new measurement
+            return unknown('IMAGE_PRECEDES_ISSUED_COMMAND')
+        if self.last_report and self.last_report.sha256 == obs['sha256']:
+            return unknown('DUPLICATE_IMAGE')
+        if obs['sim_time'] <= self.last_capture:
+            return unknown('OUT_OF_ORDER')
+        self.last_frame, self.last_capture = key, obs['sim_time']
+        self.report_command_epoch = self.command_epoch
+        fitted, reasons = shape_fit(obs['image'],servo)
+        old = self.beam if self.segment == segment else None
+        if fitted is not None:
+            if old is not None:
+                delta = math.dist(fitted['grip_base_m'],old['grip_base_m'])
+                angle = abs(float((fitted['axis_heading_rad']-old['axis_heading_rad']+math.pi)%(2*math.pi)-math.pi))
+                if (delta > 2*(old['std_xy_m']+fitted['std_xy_m']+old['bias_bound_m']+fitted['bias_bound_m'])
+                        or angle > 2*(old['std_yaw_rad']+fitted['std_yaw_rad'])):
+                    self.beam = None
+                    return unknown('BEAM_MOVED_OR_ASSOCIATION_LOST')
+            self.segment = segment
+            self.beam = {**fitted,'anchor_time_s':obs['sim_time'],'anchor_sha256':obs['sha256']}
+        elif (old is not None and any(r in reasons for r in ('END_CLIPPED','BAND_CLIPPED'))
+              and 0 <= now-old['anchor_time_s'] <= MAX_AGE_S):
+            pts,_,_,_ = shape_points(obs['image'],servo)
+            u = np.array([math.cos(old['axis_heading_rad']),math.sin(old['axis_heading_rad'])])
+            delta = pts-np.asarray(old['grip_base_m'])
+            a, b = delta@u,delta@np.array([-u[1],u[0]])
+            pad = 2*(old['std_xy_m']+old['bias_bound_m']+.6*old['std_yaw_rad'])
+            inside = (a>=-.03-pad)&(a<=.57+pad)&(abs(b)<=.02+pad)
+            if not len(inside) or inside.mean()<.95:
+                self.beam = None
+                return unknown('PARTIAL_INCONSISTENT_OR_BEAM_MOVED')
+            reasons = (*reasons,'PARTIAL_SUPPORT_ONLY','MONOCULAR_RESTING_PLANE_HYPOTHESIS')
+        else:
+            return unknown(*reasons)
+        b = self.beam
+        self.last_report = BeamRelativeReport(**common,grip_base_m=tuple(b['grip_base_m']),
+            axis_heading_rad=b['axis_heading_rad'],std_xy_m=b['std_xy_m'],std_yaw_rad=b['std_yaw_rad'],
+            bias_bound_m=b['bias_bound_m'],observable_axes=('forward','left','yaw'),reasons=reasons,
+            endpoint_hypotheses=('nearest_end',),anchor_time_s=b['anchor_time_s'],anchor_sha256=b['anchor_sha256'])
+        return self.last_report

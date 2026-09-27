@@ -171,7 +171,7 @@ def test_research_scenarios_and_bundle_use_study_wide_profile():
     assert bundle['contact_profile_expected']['noslip_iterations'] == 10
     assert bundle['contact_profile_expected']['timestep_s'] == .00025
     assert bundle['perception_delay_s'] == .16
-    assert bundle['execution_bundle_id'] == 'zone-study-integration-v67-landmark-agnostic'
+    assert bundle['execution_bundle_id'] == 'zone-pair-v68-beam-relative-recovery'
     workflow = next(w for w in json.loads((ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
                     if w['id'] == 'zone-study-integration-run')
     assert workflow['version'] == '2.1.0'

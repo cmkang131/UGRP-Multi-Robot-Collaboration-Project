@@ -1,0 +1,32 @@
+{
+  "schema": "ugrp.offline_audit_view.v1",
+  "derived_view_only": true,
+  "offline_source": {
+    "path": "/Users/changmin/projects/ugrp-wt/codex-pair-beamrel/experiments/2026-09-28-zone-pair-v6/replay_summary.json",
+    "sha256": "599bf1c32c37c06b8108a2d5b268dce765d98ebeefc1d1b841ef7b5365a93b4e"
+  },
+  "offline_scalar_scope": "Saved own-input component replay coverage; all completions unknown. No physical execution or success-rate estimate.",
+  "offline_scalars": {
+    "offline/dev_runs": 10,
+    "offline/dev_endpoints": 20,
+    "offline/m2_runs": 49,
+    "offline/m2_endpoints": 98,
+    "offline/source_files_hashed": 228,
+    "offline/unknown_completions": 118,
+    "offline/physics_steps": 0,
+    "offline/model_calls": 0
+  },
+  "hparam_metrics": [
+    "offline/dev_endpoints",
+    "offline/m2_endpoints",
+    "offline/unknown_completions"
+  ],
+  "family": "zone_pair_v6",
+  "condition": "saved_component_replay",
+  "split": "exposed_dev_and_M2_selected",
+  "outcome": "unknown_after_new_branch",
+  "source_sha": "uncommitted-on-f87921dc",
+  "texts": {
+    "scope/limitations": "Global informative-fix evidence absent from saved checkpoint. No new video. New commands/views terminate replay."
+  }
+}

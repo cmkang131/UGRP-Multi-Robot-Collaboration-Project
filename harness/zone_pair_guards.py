@@ -118,6 +118,10 @@ class PairCommandGuard:
 
         self.ep = execution
         self.beam_track = RestingBeamTrack()
+        from harness.zone_pair_global import GlobalEnvelope
+        from harness.zone_pair_relative import RelativeBeamTrack
+        self.relative_track = RelativeBeamTrack()
+        self.global_envelope = GlobalEnvelope()
         self.monitor = ProgressMonitor()
         self.segment = None
         self.last_evidence = None
@@ -131,6 +135,33 @@ class PairCommandGuard:
     @property
     def approach(self):
         return self.ep.controller.state in ('approach', 'reapproach', 'wait_approach')
+
+    @property
+    def relative_enabled(self):
+        return bool(getattr(getattr(self.ep, 'policy', None), 'beam_relative', False))
+
+    @property
+    def relative_manipulation(self):
+        return self.relative_enabled and self.ep.controller.state in (
+            'align', 'pregrasp_standoff', 'pregrasp_descend', 'wait_close', 'grasp')
+
+    def sweep_guard(self):
+        from harness.zone_pair_global import GlobalPairSweepGuard
+        cls = GlobalPairSweepGuard if self.relative_enabled else PairSweepGuard
+        return cls(self.ep.own.guard, self.ep.plan['beam_geometry'], self.ep.arguments['role'])
+
+    def relative_report(self, now, obs):
+        mode = 'attached_hypothesis' if self.carrying_beam else 'resting_hypothesis'
+        result = self.relative_track.observe(obs, self.ep.own.servo, self.ep.controller.seg, now=now, mode=mode)
+        self.ep.log(self.ep.own.robot_id, 'beam_relative', now, report=result.as_dict())
+        return result
+
+    def global_certificate(self, now, beam=None):
+        pose = self.global_envelope.pose(self.ep.own.last_report, now)
+        certificate = self.sweep_guard().certificate(self.ep.own.servo, pose, beam, loaded=self.carrying_beam)
+        self.ep.log(self.ep.own.robot_id, 'global_safety', now, certificate=certificate,
+                    absolute_fix_t=self.global_envelope.fix_t)
+        return certificate
 
     @property
     def reobserving(self):
@@ -155,6 +186,12 @@ class PairCommandGuard:
         from harness.zone_pair_vision import valid_frame
 
         own = self.ep.own
+        if self.relative_enabled:
+            if (now < self.motion_until or not valid_frame(obs, own.robot_id, now)
+                    or not self._same_camera_commands(obs)):
+                return False
+            relative = self.relative_report(now, obs)
+            return relative.ready(now) and self.global_certificate(now, relative.beam())['clear']
         pose = OwnPose.from_report(own.last_report)
         if (not pose_report_fresh(own.last_report, now) or pose is None or not own.gate.ok
                 or not 0 <= pose.std_xy <= FIX_STD_XY_M or not 0 <= pose.std_yaw <= FIX_STD_YAW_RAD
@@ -191,6 +228,8 @@ class PairCommandGuard:
         if (now < self.motion_until or own.servo.get(1) != 2000
                 or not valid_frame(obs, own.robot_id, now) or not self._same_camera_commands(obs)):
             return False
+        if self.relative_enabled:
+            return self.relative_report(now, obs).ready(now)
         ok = self.beam_track.observe_standoff(obs, own.servo, self.ep.controller.seg)
         self.ep.log(own.robot_id, 'beam_standoff', now, accepted=ok,
                     frame_id=obs['frame_id'], sha256=obs['sha256'],
@@ -201,11 +240,15 @@ class PairCommandGuard:
         report = self.ep.own.last_report
         pose = OwnPose.from_report(report)
         fresh = pose_report_fresh(report, now)
+        if self.relative_enabled:
+            envelope = self.global_envelope.pose(report, now)
+            if not self.approach:
+                pose = envelope
         # Cache only a bounded own estimate AFTER the last base command ended.
         # A reset localizer has no pose yet, but cannot move a stationary base.
         if fresh and pose is not None:
             if (now >= self.motion_until and (self.motion_until == -math.inf or report_at_or_after(report, self.motion_until))
-                    and not self._high(pose)):
+                    and (not self._high(pose) or self.relative_enabled)):
                 self.stationary_pose = pose
             return pose
         if (fresh and not report.initialized and self.reobserving
@@ -240,6 +283,9 @@ class PairCommandGuard:
             'pose_bounded': pose is not None and not self._high(pose),
             'stationary_pose_current': pose is not None and self.stationary_pose is pose,
         }
+        if self.relative_enabled:
+            checks.update(gate_ok=True, pose_bounded=pose is not None,
+                          global_stationary_clear=self.global_certificate(now)['clear'])
         ready = all(checks.values())
         if not ready:
             self.ep.log(own.robot_id, 'align_relook_stop_wait', now, checks=checks,
@@ -251,6 +297,9 @@ class PairCommandGuard:
 
     def on_command(self, row):
         self.beam_track.command(row, self.ep.own.servo)
+        if self.relative_enabled:
+            self.relative_track.command(row, self.ep.own.servo)
+            self.global_envelope.command(row)
         if row['kind'] in ('drive', 'mecanum') and any(row.get(k, 0.) for k in ('forward', 'left', 'turn')):
             self.stationary_pose = None
             self.motion_until = row['t'] + row['duration_s']
@@ -269,6 +318,11 @@ class PairCommandGuard:
         pose = self._pose(now)
         if self.reobserving:
             return self._stationary_reobserve(now, pose)
+        if self.relative_manipulation:
+            if not self.global_certificate(now)['clear']:
+                self.ep.abort(now, 'GLOBAL_ENVELOPE_BLOCKED')
+                return False
+            return True
         self.recheck.sweep_waiting = False
         self.recheck.check_gate(now, ready=True)  # account prior wait; never refill
         if self.ep.controller.state not in ('approach', 'reapproach'):
@@ -312,12 +366,14 @@ class PairCommandGuard:
         reason = None
         if pose is None:
             reason = 'POSE_UNCERTAIN'
-        elif not self.reobserving and (self._high(pose) or (loaded and not own.gate.ok)):
+        elif not self.reobserving and not self.relative_manipulation and (self._high(pose) or (loaded and not own.gate.ok)):
             reason = 'POSE_UNCERTAIN'
+        if reason is None and self.relative_enabled and not self.global_certificate(now)['clear']:
+            reason = 'GLOBAL_ENVELOPE_BLOCKED'
         if reason is None and self.reobserving and (now < self.motion_until or any(
                 c['kind'] not in ('hold', 'arm', 'look') for c in commands)):
             reason = 'POSE_UNCERTAIN'
-        if reason is None and loaded and not self.reobserving:
+        if reason is None and loaded and not self.reobserving and not self.relative_manipulation:
             # A new segment has its own movement baseline. Heartbeats and
             # repeated reads of one frame never count as a fresh stall check.
             if self.segment != ep.controller.seg:
@@ -336,7 +392,7 @@ class PairCommandGuard:
                 # recovery safely. Stop both; a new independent rendezvous is required.
                 reason = 'POSE_UNCERTAIN_PROGRESS'
         servo = dict(own.servo)
-        guard = PairSweepGuard(own.guard, ep.plan['beam_geometry'], ep.arguments['role'])
+        guard = self.sweep_guard()
         for cmd in commands if reason is None else ():
             if cmd['kind'] in ('arm', 'look'):
                 sid = 6 if cmd['kind'] == 'look' else int(cmd['servo_id'])
@@ -360,7 +416,8 @@ class PairCommandGuard:
             elif cmd['kind'] in ('mecanum', 'drive'):
                 # Bounded guarded approach back-offs are the only motion
                 # permitted while the gate is uncertain (same as GuardedDriver).
-                if not own.gate.ok and getattr(ep.controller.driver, 'state', None) != 'guard_backoff':
+                if (not own.gate.ok and not self.relative_manipulation
+                        and getattr(ep.controller.driver, 'state', None) != 'guard_backoff'):
                     reason = 'POSE_UNCERTAIN'
                     break
                 if not guard.motion_clear(servo, pose, cmd, loaded=self.carrying_beam):
