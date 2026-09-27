@@ -213,11 +213,27 @@ def test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort(tmp_path):
     p = json.loads(dev.PREREG_V5.read_text())
     for key in ('criteria', 'stage_rules', 'planned_setdown', 'limits', 'timing', 'safety_coverage', 'environment', 'inputs'):
         assert p[key] == old[key], key
-    assert p['grasp_contract'] == grasp_contract()
+    current_grasp = grasp_contract()
+    # The merged workflow catalogue (including integration v65) changes its
+    # file receipt. Preserve the historical registration and every behavior.
+    strip = lambda c: {k: v for k, v in c.items() if k not in ('source_sha256', 'sha256')}
+    assert strip(p['grasp_contract']) == strip(current_grasp)
+    expected_sources = p['grasp_contract']['source_sha256']
+    assert set(expected_sources) == set(current_grasp['source_sha256'])
+    assert {k for k, v in expected_sources.items() if v != current_grasp['source_sha256'][k]} <= {
+        'configs/simulation_workflows.json'}
+    workflow = next(w for w in json.loads((dev.ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
+                    if w['id'] == 'zone-pair-dev')
+    assert workflow['version'] == p['grasp_contract']['workflow']['version']
     assert p['commands']['owner'] == 'claude'
     for rid, seed in [('dev09', 905), ('dev10', 906)]:
         args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V5), '--run-id', rid, '--output', str(tmp_path / rid)])
-        assert dev.load_config(args)[1]['seed'] == seed
+        from tests.test_zone_start_dock import registered_tree
+        if registered_tree(dev.PREREG_V5) and p['grasp_contract'] == current_grasp:
+            assert dev.load_config(args)[1]['seed'] == seed
+        else:
+            with pytest.raises(ValueError, match='scene contract/hash mismatch|grasp contract/hash mismatch'):
+                dev.load_config(args)
     # Historical v3 bytes remain bound to their old source, never silently
     # accepted with a changed controller under the old registration.
     args.prereg, args.run_id = dev.PREREG_V3, 'dev05'

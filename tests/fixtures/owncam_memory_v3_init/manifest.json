@@ -1,0 +1,73 @@
+{
+  "schema": "ugrp.review5.init_fixture.v1",
+  "source_root": "/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926/dev-a1/off/m1mem-dev-s151",
+  "source_code_sha": "ad78ef2bafdcd3f1669aa0d8c2eb80f5cb01f151",
+  "source_index_sha256": "87360e0c7885035a57450ed1c9194f6290b31030cb6bdf453f918526ad9939e7",
+  "source_sha256": {
+    "manifest.json": "b60871a124c15a9e67f71d61c121895eb559b7cf5a50ac4c8aa62c74e0ea2917",
+    "inputs/commands.jsonl": "c65bfa140b2f9bdf7777d688172948e2394965ad9d17ff7c7d691328c0f78403",
+    "inputs/frames.jsonl": "047987a51acd64933fd6407c409b346182a1d96861d720dd713cb761569e7668"
+  },
+  "seed": 151,
+  "split": "dev",
+  "purpose": "Only first three saved RGB frames and issued commands; no saved PF report or evaluation truth consumed. Later recaptures are not a recorded rollout.",
+  "commands": [
+    {
+      "t": 0.0,
+      "kind": "initial_servo_command",
+      "pulses": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      }
+    },
+    {
+      "t": 1.8,
+      "kind": "hold"
+    }
+  ],
+  "frames": [
+    {
+      "t": 1.3003,
+      "frame_id": 1,
+      "sha256": "84c9dc55c7990ea62e456a5cc892067d659f2a77d5ec22fdb693ca55ce792f0a",
+      "camera": "robot_cam",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      }
+    },
+    {
+      "t": 1.5003,
+      "frame_id": 2,
+      "sha256": "84c9dc55c7990ea62e456a5cc892067d659f2a77d5ec22fdb693ca55ce792f0a",
+      "camera": "robot_cam",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      }
+    },
+    {
+      "t": 1.7003,
+      "frame_id": 3,
+      "sha256": "84c9dc55c7990ea62e456a5cc892067d659f2a77d5ec22fdb693ca55ce792f0a",
+      "camera": "robot_cam",
+      "commanded_servo": {
+        "1": 2000,
+        "3": 740,
+        "4": 2320,
+        "5": 1320,
+        "6": 1500
+      }
+    }
+  ],
+  "image": "stationary.jpg"
+}

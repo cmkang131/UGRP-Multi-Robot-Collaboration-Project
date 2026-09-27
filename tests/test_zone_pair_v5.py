@@ -289,7 +289,8 @@ def test_sigma_reserve_can_trigger_before_time_budget(sigma, yaw):
 
 
 @pytest.mark.parametrize('run', ['dev09', 'dev10'])
-def test_v5_prepare_copies_frozen_registration_without_physics_or_models(tmp_path, run):
+@pytest.mark.parametrize('current_source_fixture', [False, True])
+def test_v5_prepare_copies_frozen_registration_without_physics_or_models(tmp_path, run, current_source_fixture):
     import subprocess
     import sys
     from scripts import run_zone_pair_dev as dev
@@ -304,13 +305,27 @@ from scripts.run_zone_pair_dev import main
 raise SystemExit(main(sys.argv[1:]))
 '''
     out = tmp_path / run
-    result = subprocess.run([sys.executable, '-c', code, '--prereg', str(dev.PREREG_V5),
+    registration = dev.PREREG_V5
+    if current_source_fixture:
+        # Synthetic prepare-only receipt tests the success branch on this
+        # tree. The historical v5 file and physical authorization stay intact.
+        from scripts.zone_pair_grasp_contract import grasp_contract
+        p = json.loads(dev.PREREG_V5.read_text())
+        p.update(scene_contract=dev.scene_contract(), grasp_contract=grasp_contract())
+        registration = tmp_path / 'synthetic-current-prereg.json'
+        registration.write_text(json.dumps(p))
+    result = subprocess.run([sys.executable, '-c', code, '--prereg', str(registration),
                              '--run-id', run, '--output', str(out)], cwd=dev.ROOT, capture_output=True, text=True)
+    from tests.test_zone_start_dock import registered_tree
+    if not current_source_fixture and not registered_tree(dev.PREREG_V5):
+        assert result.returncode != 0 and 'scene contract/hash mismatch' in result.stderr, result.stderr
+        assert not out.exists()
+        return
     assert result.returncode == 0, result.stderr
     m = json.loads((out / 'manifest.json').read_text())
     assert m['state'] == 'prepared_not_executed' and m['applied'] is None and m['model_calls'] == 0
     assert m['physical_success'] is None
-    assert (out / 'prereg.json').read_bytes() == dev.PREREG_V5.read_bytes()
+    assert (out / 'prereg.json').read_bytes() == registration.read_bytes()
     assert not (out / 'eval_only/trace.jsonl').exists()
     p = json.loads(dev.PREREG_V5.read_text())
     case = next(r for r in p['runs'] if r['id'] == run)

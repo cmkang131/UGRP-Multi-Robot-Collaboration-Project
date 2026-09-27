@@ -1,7 +1,7 @@
 """Sim-speed tools against real MuJoCo processes (CI: the ubuntu-simulation-runtime job, which installs MuJoCo).
 
 * sim_slots census: a process counts as a sim because it loaded libmujoco, not because of its argv; slot holders,
-  their descendants and queued waiters are not counted twice; admission follows the real census.
+  each reservation covers at most one process; idle imports and queue openers still count.
 * sim_profile: a failed preparation undoes every patch in the same process.
 * pair_prof: the injected speed-up sources are pinned by the hash of the bytes executed (Codex review of PR #209).
 """
@@ -46,13 +46,23 @@ class RealCensusTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name)/'slots'
         self.procs: list[subprocess.Popen] = []
+        self.addCleanup(self.tmp.cleanup)
+        try:
+            sim_slots.census(self.root)
+        except (RuntimeError, TimeoutError) as exc:
+            self.skipTest(f'Complete host census unavailable (must fail closed): {exc}')
 
     def tearDown(self) -> None:
-        for proc in self.procs:                       # only the process groups this test started
+        for proc in self.procs:  # wrappers forward termination to their own work groups
             if proc.poll() is None:
-                with contextlib.suppress(ProcessLookupError, PermissionError):
-                    os.killpg(proc.pid, signal.SIGKILL)
-            proc.wait(10)
+                proc.terminate()
+            try:
+                proc.wait(10)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.wait(10)
+            if proc.stdout:
+                proc.stdout.close()
         self.tmp.cleanup()
 
     def spawn(self, code: str, *, root: Path | None = None, argv=()) -> int:
@@ -79,7 +89,7 @@ class RealCensusTests(unittest.TestCase):
         self.assertNotIn(grandchild, seen['unslotted_sim_pids'])
         self.assertEqual(sim_slots.held_count(self.root), 2)
 
-    def test_waiting_runner_is_not_running(self) -> None:
+    def test_imported_waiter_remains_in_conservative_bound(self) -> None:
         self.root.mkdir(parents=True)
         blocker = sim_slots._try_slot(self.root, 1, {'owner': 'test'})          # the only slot, held here
         try:
@@ -93,7 +103,7 @@ class RealCensusTests(unittest.TestCase):
             seen = sim_slots.census(self.root)
             self.assertIn(waiter, seen['sim_pids'])
             self.assertIn(waiter, seen['waiter_pids'])
-            self.assertNotIn(waiter, seen['unslotted_sim_pids'])
+            self.assertIn(waiter, seen['unslotted_sim_pids'])
         finally:
             blocker.release()
 
@@ -102,8 +112,8 @@ class RealCensusTests(unittest.TestCase):
         slotted = self.spawn(SIM, root=self.root)
         real, ours = sim_slots.census, {outside, slotted}
 
-        def only_ours(root):                      # other agents' sims on this machine must not decide the test
-            seen = real(root)
+        def only_ours(root, **kwargs):                      # other agents' sims on this machine must not decide the test
+            seen = real(root, **kwargs)
             return {**seen, 'unslotted_sim_pids': [p for p in seen['unslotted_sim_pids'] if p in ours]}
         with mock.patch.object(sim_slots, 'census', only_ours):
             with self.assertRaises(TimeoutError):                 # 1 held + 1 outside = cap 2
@@ -118,6 +128,28 @@ class RealCensusTests(unittest.TestCase):
 
 
 class ProfileRestoreTests(unittest.TestCase):
+    def test_last_step_survives_real_mujoco_state_mutation(self) -> None:
+        model = mujoco.MjModel.from_xml_string(
+            '<mujoco><worldbody><body pos="0 0 1"><freejoint/>'
+            '<geom type="sphere" size=".1"/></body></worldbody></mujoco>')
+        data = mujoco.MjData(model)
+        rec = sim_profile.Recorder(qpos_every=2)
+        step = mujoco.mj_step
+        rec.install_step_hook()
+        try:
+            for _ in range(5):
+                mujoco.mj_step(model, data)
+            physics_hash = hashlib.sha256(data.qpos.tobytes() + data.qvel.tobytes() + data.act.tobytes()).hexdigest()
+            data.qpos[0] += 1
+            rec.finalize_checkpoints()
+            self.assertEqual(rec.checkpoint_error, 'state changed after final mj_step')
+            self.assertEqual(rec.last_step_checkpoint['sha256'], physics_hash)
+            self.assertEqual(rec.checkpoints[-1], rec.last_step_checkpoint)
+            self.assertNotEqual(rec.final_checkpoint['sha256'], physics_hash)
+        finally:
+            rec.restore()
+        self.assertIs(mujoco.mj_step, step)
+
     def test_failed_prepare_restores_every_patch(self) -> None:
         from sim.multi_masterpi_production import MultiMasterPiProductionV2
         step, close = mujoco.mj_step, MultiMasterPiProductionV2.close

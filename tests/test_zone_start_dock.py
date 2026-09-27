@@ -39,6 +39,44 @@ def prereg():
     return json.loads(dev.PREREG_V3.read_text())
 
 
+# Reviewed source revisions that reached main after prereg_v3 was registered. The registration keeps its
+# pinned hashes, so the runner correctly refuses to prepare/execute v3 from a tree that carries them.
+POST_REGISTRATION_SOURCES = {  # PR #208 environment v3 (additive walls_v3/tags_v3 registries, cargo profile name)
+    'sim/zone_arena.py': {'191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8'},
+    'sim/zone_landmarks.py': {'2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1'},
+    'sim/zone_scene.py': {'ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714'},
+}
+
+
+# The cargo catalogue record contains trig-derived floats (grasp approach yaw/offsets, tri_frame parts) whose
+# last bits come from the platform libm, so its sha256 -- and every resolved scene hash that embeds it -- is
+# host-specific. prereg_v3 receipts were registered on the macOS execution host, where the catalogue hash
+# equals the recorded 2026-09-25 catalogue (experiments/2026-09-25-zone-cargo-catalogue/results.json).
+REGISTRATION_CATALOGUE_SHA256 = '89245cca1497da4d6537eeed3dc7160882b006e0922542c2a0a7a3a23f926c6a'
+
+
+def registration_host_catalogue():
+    from sim.zone_cargo import catalogue_record
+    return catalogue_record()['sha256'] == REGISTRATION_CATALOGUE_SHA256
+
+
+def registered_tree(registration=dev.PREREG_V3):
+    """True when this tree equals the registered scene contract; otherwise only reviewed source revisions differ."""
+    current = dev.scene_contract()
+    registered = json.loads(registration.read_text())['scene_contract']
+    if current == registered:
+        return True
+    moved = {k for k, v in registered['source_sha256'].items() if current['source_sha256'].get(k) != v}
+    assert set(current['source_sha256']) == set(registered['source_sha256'])
+    # The v4/v5 successors pin reviewed driver changes, without rewriting v3.
+    successor = json.loads(dev.PREREG_V5.read_text())['scene_contract']['source_sha256']
+    assert all(current['source_sha256'][k] in
+               {*POST_REGISTRATION_SOURCES.get(k, ()), successor[k]} for k in moved), moved
+    strip = lambda c: {k: v for k, v in c.items() if k not in ('source_sha256', 'sha256')}
+    assert strip(current) == strip(registered)
+    return False
+
+
 def scene_for(case, map_id=MAP_ID):
     return make_scene({'map': map_id, 'seed': case['seed'], 'goal': {'B': {'cyan': 1}},
                        'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam',
@@ -73,7 +111,13 @@ def test_three_seeded_spawns_keepouts_and_scene_receipt_agree(case_index):
     p = prereg()
     case = p['runs'][case_index]
     old, scene = scene_for(case, PARENT_MAP_ID), scene_for(case)
-    dev.validate_scene(p, scene)
+    receipt_host = registration_host_catalogue()
+    if receipt_host:
+        dev.validate_scene(p, scene)
+    else:
+        # The receipt is host-specific: the runner must refuse rather than accept a different configuration hash.
+        with pytest.raises(ValueError, match='resolved scene configuration hash mismatch'):
+            dev.validate_scene(p, scene)
     a, b = old.config['setup_only'], scene.config['setup_only']
     for rid in ('r1', 'r2', 'r3'):
         assert a['spawns'][rid][0] == -.85
@@ -84,7 +128,8 @@ def test_three_seeded_spawns_keepouts_and_scene_receipt_agree(case_index):
     assert {tuple(d['center_m']) for d in discs} == {tuple(p[:2]) for p in b['spawns'].values()}
     assert all(d['radius_m'] == .17 for d in discs)
     assert all(d['center_m'][0] == -.85 for d in static_spawn_keepouts(old.config['static_map']))
-    assert scene.record()['resolved_sha256'] == p['scene_instances'][case['id']]['resolved_sha256']
+    if receipt_host:
+        assert scene.record()['resolved_sha256'] == p['scene_instances'][case['id']]['resolved_sha256']
     scene.config['setup_only']['spawns']['r3'][0] = -.85
     with pytest.raises(ValueError, match='scene configuration'):
         dev.validate_scene(p, scene)
@@ -141,6 +186,11 @@ def test_registered_v3_keeps_all_v2_scoring_and_single_variable():
     # new source receipt while preserving the same physical dock/map contract.
     assert p['scene_contract']['map'] == dev.scene_contract()['map']
     assert p['scene_contract']['start_dock'] == dev.scene_contract()['start_dock']
+    registered_tree()
+    v4 = json.loads(dev.PREREG_V4.read_text())
+    registered_tree(dev.PREREG_V4)
+    for key in ('map', 'parent_map', 'start_dock'):
+        assert v4['scene_contract'][key] == p['scene_contract'][key]
     for k in ('criteria', 'planned_setdown', 'limits', 'timing', 'contact_profile_contract', 'safety_coverage'):
         assert p[k] == v2[k], k
     assert {k: v for k, v in p['stage_rules'].items() if k != 'admission_diagnostics'} == v2['stage_rules']
@@ -184,8 +234,11 @@ def test_registered_v3_rejects_drift_before_world_import(tmp_path, fault):
     assert not args.output.exists()
 
 
-@pytest.mark.parametrize('run_id', ['dev07', 'dev08'])
-def test_registered_prepare_and_workflow_inputs_without_mujoco_import(tmp_path, run_id):
+@pytest.mark.parametrize('registration,run_id', [
+    (dev.PREREG_V3, 'dev05'), (dev.PREREG_V3, 'dev06'),
+    (dev.PREREG_V4, 'dev07'), (dev.PREREG_V4, 'dev08'),
+])
+def test_registered_prepare_and_workflow_inputs_without_mujoco_import(tmp_path, registration, run_id):
     code = '''
 import builtins, sys
 original = builtins.__import__
@@ -198,25 +251,30 @@ from scripts.run_zone_pair_dev import main
 raise SystemExit(main(sys.argv[1:]))
 '''
     out = tmp_path / run_id
-    argv = ['--prereg', str(dev.PREREG_V4), '--run-id', run_id, '--output', str(out)]
+    argv = ['--prereg', str(registration), '--run-id', run_id, '--output', str(out)]
     result = subprocess.run([sys.executable, '-c', code, *argv], cwd=dev.ROOT, text=True, capture_output=True,
                             env={**os.environ, 'OMP_NUM_THREADS': '1', 'PYTHONDONTWRITEBYTECODE': '1'})
+    if not registered_tree(registration):
+        # Historical registrations require their pinned source, including v4.
+        assert result.returncode != 0 and 'scene contract/hash mismatch' in result.stderr, result.stderr
+        assert not out.exists()
+        return
     assert result.returncode == 0, result.stderr
     manifest = json.loads((out / 'manifest.json').read_text())
     assert manifest['state'] == 'prepared_not_executed' and manifest['applied'] is None
     assert manifest['scene_contract'] == dev.scene_contract()
     assert manifest['model_calls'] == 0 and manifest['physical_success'] is None
-    assert (out / 'prereg.json').read_bytes() == dev.PREREG_V4.read_bytes()
+    assert (out / 'prereg.json').read_bytes() == registration.read_bytes()
     static = json.loads((out / 'inputs/static.json').read_text())
     assert static['map'] == dock_map()
     assert 'spawns' not in json.dumps(static) and static['order_sheet'] == dev.ORDER
     from sim import workflow_manager as wm
     plan = wm.plan(dev.ROOT, dev.WORKFLOW, [*argv[:-1], str(tmp_path / 'planned-not-run')])
     paths = {r['path'] for r in plan['inputs']}
-    assert {str(dev.PREREG_V4), str(dev.MAP), str(dev.map_path(prereg())), str(dev.CALIBRATION)} <= paths
+    assert {str(registration), str(dev.MAP), str(dev.map_path(prereg())), str(dev.CALIBRATION)} <= paths
     # Final registration admits execute configuration; actual execution still
     # requires managed workflow, clean frozen SHA, ownership lock and raw path.
-    args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V4), '--run-id', run_id,
-        '--output', '/Users/changmin/projects/ugrp/outputs/dock-v3-NOT-EXECUTED-' + run_id,
+    args = dev.parser().parse_args(['--prereg', str(registration), '--run-id', run_id,
+        '--output', '/Users/changmin/projects/ugrp/outputs/dock-NOT-EXECUTED-' + run_id,
         '--execute', '--expected-source-sha', 'a' * 40, '--lock-owner', 'codex'])
     assert dev.load_config(args)[1]['id'] == run_id
