@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from scripts import sim_equivalence, sim_profile  # noqa: E402
+from sim_speed_fixtures import full_run, full_profile, refresh_manifest, write_rows
 
 
 class FakeSkill:
@@ -156,22 +157,28 @@ class EquivalenceTests(unittest.TestCase):
         self.assertTrue(any(needle in e for e in report['evidence_errors']), report['evidence_errors'])
 
     def test_identical_runs(self) -> None:
-        a = write_run(self.root/'a', [b'x', b'y'], self.cmds, {'outcome': 'OK', 'sim_s': 1})
-        b = write_run(self.root/'b', [b'x', b'y'], self.cmds, {'outcome': 'OK', 'sim_s': 1})
+        a, b = (full_run(self.root/side) for side in ('a', 'b'))
         report = sim_equivalence.compare(a, b)
         self.assertTrue(report['equivalent'], report)
         self.assertEqual(report['verdict'], 'equivalent')
-        self.assertEqual(report['checks']['frame_jpeg_bytes']['compared'], 2)
+        self.assertEqual(report['checks']['frame_jpeg_bytes']['compared'], 6)
         self.assertEqual(report['not_compared'], ['qpos_checkpoints: neither side is a sim_profile directory'])
 
     def test_frame_bytes_and_result_field_differences(self) -> None:
-        a = write_run(self.root/'a', [b'x', b'y'], self.cmds, {'outcome': 'OK', 'sim_s': 1})
-        b = write_run(self.root/'b', [b'x', b'z'], self.cmds, {'outcome': 'OK', 'sim_s': 2})
+        a, b = (full_run(self.root/side) for side in ('a', 'b'))
+        (b/'frames/00001.jpg').write_bytes(b'z')
+        frames = [json.loads(line) for line in (b/'inputs/frames.jsonl').read_text().splitlines()]
+        frames[1]['sha256'] = hashlib.sha256(b'z').hexdigest()
+        write_rows(b/'inputs/frames.jsonl', frames)
+        result = json.loads((b/'result.json').read_text())
+        result['outcome'] = 'OUTSIDE_SLOT'
+        (b/'result.json').write_text(json.dumps(result))
+        refresh_manifest(b)
         report = sim_equivalence.compare(a, b)
         self.assertFalse(report['equivalent'])
         self.assertEqual(report['verdict'], 'different')
         self.assertEqual(report['checks']['frame_jpeg_bytes']['mismatched'], [1])
-        self.assertEqual(report['checks']['result.json']['differing_fields'], ['sim_s'])
+        self.assertEqual(report['checks']['result.json']['differing_fields'], ['outcome'])
 
     def test_truncated_prefix_and_untimed_rows(self) -> None:
         a = write_run(self.root/'a', [b'x', b'y', b'q'], self.cmds, {'outcome': 'OK'}, skill_events=[{'k': 1}])
@@ -238,8 +245,7 @@ class EquivalenceTests(unittest.TestCase):
         self.assertInsufficient(sim_equivalence.compare(a, b), 'result.json is not JSON')
 
     def test_missing_or_corrupted_jpeg(self) -> None:
-        a = write_run(self.root/'a', [b'x', b'y'], self.cmds, {'outcome': 'OK'})
-        b = write_run(self.root/'b', [b'x', b'y'], self.cmds, {'outcome': 'OK'})
+        a, b = (full_run(self.root/side) for side in ('a', 'b'))
         (b/'frames'/'00001.jpg').unlink()
         self.assertInsufficient(sim_equivalence.compare(a, b), 'missing frame file')
         (b/'frames'/'00001.jpg').write_bytes(b'')             # truncated frame: disagrees with its own log row
@@ -271,12 +277,7 @@ class EquivalenceTests(unittest.TestCase):
         self.assertInsufficient(sim_equivalence.compare(a, b, until=.1), 'rows without SIM time')
 
     def test_profile_checkpoints_required_and_nonempty(self) -> None:
-        cps = [{'step': 2000, 't': .25, 'sha256': '1'*64}, {'step': 4000, 't': .5, 'sha256': '2'*64}]
-        a = write_profile(self.root/'a', cps, [b'x', b'y'], self.cmds, {'outcome': 'OK', 'sim_s': .5})
-        b = write_profile(self.root/'b', cps, [b'x', b'y'], self.cmds, {'outcome': 'OK', 'sim_s': .5})
-        for p in (a, b):
-            (p/'profile.json').write_text(json.dumps({'qpos_every': 2000, 'mj_steps': 4000,
-                'checkpoints': 2, 'initial_sim_s': 0., 'timestep': .000125, 'final_checkpoint': cps[-1]}))
+        a, b = (full_profile(self.root/side) for side in ('a', 'b'))
         report = sim_equivalence.compare(a, b)
         self.assertTrue(report['equivalent'], report)
         self.assertEqual(report['checks']['qpos_checkpoints']['len_a'], 2)
@@ -284,14 +285,14 @@ class EquivalenceTests(unittest.TestCase):
         self.assertInsufficient(sim_equivalence.compare(a, b), 'qpos checkpoints')
         (b/'qpos_checkpoints.jsonl').unlink()
         self.assertInsufficient(sim_equivalence.compare(a, b), 'missing')
-        c = write_run(self.root/'c', [b'x', b'y'], self.cmds, {'outcome': 'OK'})     # a plain run directory
+        c = full_run(self.root/'c')     # a plain run directory
         report = sim_equivalence.compare(a, c)
         self.assertEqual(report['not_compared'], ['qpos_checkpoints: only A is a sim_profile directory'])
         self.assertEqual(report['verdict'], 'insufficient_evidence')
 
     def test_exit_codes(self) -> None:
-        a = write_run(self.root/'a', [b'x'], self.cmds, {'outcome': 'OK'})
-        b = write_run(self.root/'b', [b'z'], self.cmds, {'outcome': 'OK'})
+        a, b = (full_run(self.root/side) for side in ('a', 'b'))
+        (b/'frames/00000.jpg').write_bytes(b'z')
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(sim_equivalence.main([str(a), str(a)]), sim_equivalence.EXIT_EQUIVALENT)
             self.assertEqual(sim_equivalence.main([str(a), str(b)]), sim_equivalence.EXIT_DIFFERENT)

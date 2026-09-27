@@ -13,17 +13,21 @@ import pytest
 
 from scripts import sim_equivalence as eq, sim_slots as slots
 from test_sim_speed_tools import write_profile
+from sim_speed_fixtures import full_run, write_rows
 
 
 def profiles(tmp_path, mutate=lambda rows, meta: None):
-    rows = [{'step': i, 't': i / 4, 'sha256': str(i) * 64} for i in (2, 4)]
-    meta = {'qpos_every': 2, 'mj_steps': 4, 'checkpoints': 2,
-            'initial_sim_s': 0., 'timestep': .25, 'final_checkpoint': rows[-1].copy()}
+    rows = [{'step': i, 't': i * .00025, 'sha256': str(i // 2000) * 64} for i in (2000, 4000)]
+    meta = {'qpos_every': 2000, 'mj_steps': 4000, 'checkpoints': 2,
+            'initial_sim_s': 0., 'timestep': .00025, 'final_checkpoint': rows[-1].copy(),
+            'last_step_checkpoint': rows[-1].copy()}
     mutate(rows, meta)
     paths = []
     for side in ('a', 'b'):
-        p = write_profile(tmp_path/side, rows, [b'a', b'b'], [{'t': 0., 'kind': 'hold'}],
-                          {'sim_s': 1., 'outcome': 'DONE'}, frame_dt=1.)
+        p = tmp_path/side
+        full_run(p/'run')
+        (p/'run/attempt_started.json').write_text('{}')
+        write_rows(p/'qpos_checkpoints.jsonl', rows)
         (p/'profile.json').write_text(json.dumps(meta))
         paths.append(p)
     return paths
@@ -112,7 +116,8 @@ def test_live_proc_permission_error_fails_closed(tmp_path):
     def read(p, *a, **kw):
         if p == d/'maps': raise PermissionError('hidden live maps')
         return real(p, *a, **kw)
-    with mock.patch.object(Path, 'read_text', read):
+    with mock.patch.object(Path, 'read_text', read), \
+         mock.patch.object(slots, 'verify_linux_visibility', return_value=None):
         with pytest.raises((RuntimeError, PermissionError)):
             slots.scan_proc(tmp_path/'slots', proc)
 
@@ -171,11 +176,10 @@ def test_valid_full_profile_and_terminal_remainder(tmp_path):
     assert eq.compare(a, b)['equivalent']
     for p in (a, b):
         meta = json.loads((p/'profile.json').read_text())
-        end = {'step': 5, 't': 1.25, 'sha256': '5'*64}
-        meta.update(mj_steps=5, checkpoints=3, final_checkpoint=end)
+        end = {'step': 4001, 't': 1.00025, 'sha256': '5'*64}
+        meta.update(mj_steps=4001, checkpoints=3, final_checkpoint=end, last_step_checkpoint=end)
         (p/'profile.json').write_text(json.dumps(meta))
         with (p/'qpos_checkpoints.jsonl').open('a') as f: f.write(json.dumps(end)+'\n')
-        (p/'run'/'result.json').write_text(json.dumps({'sim_s': 1.25, 'outcome': 'DONE'}))
     assert eq.compare(a, b)['equivalent']
     assert eq.compare(a, b, until=1.)['equivalent']
 
@@ -296,7 +300,8 @@ def test_linux_pid_reuse_during_maps_read_fails_closed(tmp_path):
         if p == d/'maps':
             (d/'stat').write_text(read(d/'stat').replace('123 0', '456 0'))
         return result
-    with mock.patch.object(Path, 'read_text', changed):
+    with mock.patch.object(Path, 'read_text', changed), \
+         mock.patch.object(slots, 'verify_linux_visibility', return_value=None):
         with pytest.raises(RuntimeError, match='changed'):
             slots.scan_proc(tmp_path/'slots', proc)
 

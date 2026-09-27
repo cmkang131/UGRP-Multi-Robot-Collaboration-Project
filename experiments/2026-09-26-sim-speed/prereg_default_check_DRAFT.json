@@ -79,9 +79,12 @@
   },
   "equivalence_gate": {
     "per_seed_comparisons": ["A1 vs A2", "A1 vs B1", "A1 vs B2", "B1 vs B2"],
-    "exactly_equal": ["initial and cumulative/final state hashes", "issued commands", "control-input frame rows", "JPEG bytes", "controller/skill/macro logs", "evaluation logs", "every result.json field"],
+    "exactly_equal": ["initial and cumulative/final state hashes", "original issued-command log bytes", "original control-input frame log bytes", "JPEG bytes", "original controller/skill/macro log bytes", "original evaluation log bytes", "original result.json bytes including every field"],
+    "byte_policy": "SHA-256 of original file bytes; do not normalize whitespace, key order, numeric encoding or missing versus null fields. Hashes do not substitute for completeness validation.",
+    "required_full_logs": ["inputs/commands.jsonl", "inputs/frames.jsonl", "controller_events.jsonl", "skill_events.jsonl", "macros.jsonl", "eval_only/frames_eval.jsonl", "eval_only/gt_trajectory.jsonl", "eval_only/contacts.jsonl", "eval_only/retention.jsonl"],
+    "current_completeness_gate": "M1 v3 file hashes match manifest; command/frame/contact/retention counts match result; frame indices, input/eval alignment and frame/GT cadence cover the episode; terminal command is hold followed by 0.5 SIM s settling. Last-step and termination state checkpoints must both be present and equal.",
     "required_reached_phases": ["grasp", "lift/to_carry_posture", "carry/door transit", "release/placement", "final own-camera confirmation"],
-    "phase_validation": "Before registration bind these semantic phases to the frozen runner's actual event/result fields; require corresponding state evidence and outcome evidence on every run, not just a reported phase label.",
+    "phase_validation": "Current M1 log gate binds ordered result.phase_times skill:grasp, skill:to_carry_posture, skill:nav_preplace, skill:release, skill:look_back to control/eval frames, grasp/lift macros and skill events plus retention. Before registration bind each phase and actual door transit/placement outcome to the new cumulative state evidence; current phase labels alone do not establish physical success.",
     "manifest_differences_allowed": ["explicit speedups setting and installation record", "timing/load/counters", "output path/provenance fields explicitly frozen in the registered comparison policy"],
     "missing_or_unreached": "insufficient_evidence even when the same phase/window is missing on BOTH sides; never count as equivalent",
     "baseline_repeat_mismatch": "Hold adoption; no post-hoc tolerance, dropped JPEG, selective interval or successful-run-only analysis."

@@ -34,6 +34,9 @@ def isolated_cli(*args):
             f'spec = importlib.util.spec_from_file_location("isolated_slots", {sim_slots.__file__!r}); '
             's = importlib.util.module_from_spec(spec); spec.loader.exec_module(s); '
             's._scan = lambda root, **kw: (set(), set(), set(), {}); '
+            # These tests isolate lifecycle/flock; Linux host visibility is
+            # covered by dedicated proc fixtures, not administrator setup.
+            's.verify_linux_visibility = lambda proc: None; '
             'raise SystemExit(s.main())')
     return [sys.executable, '-c', code, *args]
 
@@ -206,7 +209,9 @@ class SimSlotsTests(unittest.TestCase):
         pid(103, 1, maps=lib, stat=False)              # vanished / unreadable: skipped
         pid(104, 1, maps=lib, fds=[os.path.realpath(self.root) + '/queue.lock'])
         (proc/'self').mkdir()
-        sims, holders, waiters, parents = sim_slots.scan_proc(self.root, proc)
+        # Proc decoding is independent of the separately tested host visibility gate.
+        with mock.patch.object(sim_slots, 'verify_linux_visibility', return_value=None):
+            sims, holders, waiters, parents = sim_slots.scan_proc(self.root, proc)
         self.assertEqual((sims, holders, waiters), ({100, 102, 104}, {101}, {104}))
         self.assertEqual(parents, {100: 1, 101: 1, 102: 101, 104: 1})
 

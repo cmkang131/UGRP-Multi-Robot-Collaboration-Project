@@ -91,6 +91,8 @@ PR #205 `6990a6e`(`kiro/zone-m2-pair-v3`)의 `scripts/run_m2_pair.py`를 이 PR�
 
 ## Codex 검토 반영 (2026-09-26)
 
+2026-09-27 PR #236의 3차 리뷰(P1 3건·P2 3건)는 [별도 수정·검증 기록](review3_fixes.md)에 반영했다. 회수된 자식의 PGID 신호 차단, Linux 숨겨진 PID fail-closed, 전체 로그 완전성·원본 바이트 비교, 마지막 물리 스텝/종료 상태 분리, 이미 로딩된 호출자의 자기 예약을 보강했다. 최종 관련 테스트 127개와 37 subtest가 통과했다. exact-v1 동작은 그대로이며 전체 A/B 초안은 미실행, 기본값 채택은 계속 보류다. 아래 2026-09-26 측정/판정은 당시 기록이며 새 검사 결과로 소급하지 않는다.
+
 Codex가 `origin/kiro/sim-speed@eecd2d6`을 읽기 전용으로 검토했다(P0 없음). 각 항목에 수정 전 실패·수정 후 통과 테스트를 붙였다. 수정 전후 재현: `outputs/sim-speed-20260926/review-fixes-codex/scenarios_before_after.txt`(같은 스크립트 `scenarios.py`를 `eecd2d6` 소스와 수정 소스에 실행), 새 테스트를 옛 소스에 돌린 결과 `new_tests_on_old_source.txt`(도구 테스트 31 실패, 슬롯 테스트 수집 오류, 커널 2 실패, 실행 테스트 6 실패).
 
 | # | 결함 | 수정 전 → 후 (재현) | 수정·테스트 |

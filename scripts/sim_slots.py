@@ -28,6 +28,7 @@ import functools
 import json
 import math
 import os
+import re
 import subprocess
 import sys
 import time
@@ -49,6 +50,7 @@ ADMISSION = 'admission.lock'
 QUEUE = 'queue.lock'
 CENSUS_TIMEOUT_S = 5.0
 COUNTING_CONTRACT = 'loaded_mujoco_process_upper_bound'
+LINUX_HOST_VISIBILITY = Path('/etc/ugrp/sim-slots-host.json')
 
 
 def positive_int(value, name: str) -> int:
@@ -191,8 +193,66 @@ def _mac_table(deadline=None, *, pgid=None) -> ProcessTable:
     return table
 
 
+def _host_visibility_reference() -> dict:
+    """Administrator pin recorded in the HOST PID namespace for this boot.
+
+    A container's /proc/1 is not proof of host visibility. Never auto-enrol the
+    namespace we happen to be in, or treat a missing pin as an empty host.
+    """
+    path = LINUX_HOST_VISIBILITY
+    for parent in path.parents:
+        st = parent.stat()
+        if st.st_uid != 0 or st.st_mode & 0o022:
+            raise RuntimeError('host visibility reference directory is not administrator-owned')
+    fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    with os.fdopen(fd) as fh:
+        st = os.fstat(fh.fileno())
+        if st.st_uid != 0 or st.st_mode & 0o022:
+            raise RuntimeError('host visibility reference is not administrator-owned')
+        return json.load(fh)
+
+
+def verify_linux_visibility(proc: Path) -> None:
+    """Refuse hidden PIDs, filtered proc mounts and unproven PID namespaces."""
+    try:
+        proc = proc.resolve()
+        mounts = []
+        for line in (proc/'self/mountinfo').read_text().splitlines():
+            left, right = line.split(' - ', 1)
+            fields, fs = left.split(), right.split()
+            unescape = lambda value: re.sub(r'\\([0-7]{3})', lambda m: chr(int(m[1], 8)), value)
+            point = Path(unescape(fields[4]))
+            mounts.append((point, unescape(fields[3]), fs[0], fields[5].split(',') + fs[2].split(',')))
+        relevant = [m for m in mounts if proc == m[0] or m[0] in proc.parents]
+        if not relevant:
+            raise RuntimeError('cannot establish the proc mount visibility')
+        point, mount_root, kind, options = max(relevant, key=lambda m: len(m[0].parts))
+        if point != proc or mount_root != '/' or kind != 'proc':
+            raise RuntimeError('filtered or non-root proc mount is not a host census')
+        for option in options:
+            if option.startswith('hidepid=') and option not in ('hidepid=0', 'hidepid=off'):
+                raise RuntimeError(f'incomplete host census: {option}')
+        for point, _, _, _ in mounts:
+            if proc in point.parents:
+                part = point.relative_to(proc).parts[0]
+                if part.isdigit() or part in ('self', 'thread-self'):
+                    raise RuntimeError('overlaid process directories prevent a complete host census')
+        reference = _host_visibility_reference()
+        if (reference.get('schema') != 'ugrp.host_proc_visibility.v1'
+                or reference.get('boot_id') != (proc/'sys/kernel/random/boot_id').read_text().strip()):
+            raise RuntimeError('missing/stale host visibility reference for this boot')
+        expected = reference.get('pid_namespace')
+        for name in ('self', '1'):
+            st = (proc/name/'ns/pid').stat()
+            if expected != {'device': st.st_dev, 'inode': st.st_ino}:
+                raise RuntimeError('PID namespace is not the pinned host namespace')
+    except (OSError, ValueError, IndexError, AttributeError) as exc:
+        raise RuntimeError(f'cannot verify complete Linux host census: {exc}') from exc
+
+
 def scan_proc(root: Path, proc: Path = Path('/proc'), *, deadline=None):
     """Linux mappings census. Only disappeared processes/FDs may be skipped."""
+    verify_linux_visibility(proc)
     prefix = os.path.realpath(root) + os.sep
     sims, roles, parents = set(), {'holder': set(), 'waiter': set()}, ProcessTable()
     for entry in proc.iterdir():
@@ -237,6 +297,7 @@ def scan_proc(root: Path, proc: Path = Path('/proc'), *, deadline=None):
             continue  # counting a departed process is conservative
         if after[:2] != (parents[pid], parents.starts[pid]):
             raise RuntimeError(f'process identity changed during census: {pid}')
+    verify_linux_visibility(proc)  # do not accept a visibility change during enumeration
     return sims, roles['holder'], roles['waiter'], parents
 
 
@@ -332,6 +393,7 @@ def census(root: Path, *, deadline=None) -> dict:
 class Slot:
     def __init__(self, path: Path, fd: int, index: int, record: dict):
         self.path, self.fd, self.index, self.record = path, fd, index, record
+        self.additional: list[Slot] = []
 
     def release(self) -> None:
         if self.fd >= 0:
@@ -414,7 +476,8 @@ def _admission(root: Path, *, deadline=None):
         os.close(fd)
 
 
-def try_admit(root: Path, slots: int, record: dict, *, workers: int = 1, deadline=None):
+def try_admit(root: Path, slots: int, record: dict, *, workers: int = 1, deadline=None,
+              include_current: bool = False):
     """Atomically reserve the declared peak number of loaded work processes."""
     slots, workers = positive_int(slots, 'slots'), positive_int(workers, 'workers')
     if workers > slots:
@@ -426,10 +489,15 @@ def try_admit(root: Path, slots: int, record: dict, *, workers: int = 1, deadlin
         seen = {'held_slots': held, 'unslotted_sims': len(info['unslotted_sim_pids']),
                 'unslotted_sim_pids': info['unslotted_sim_pids'][:20]}
         seen['running'] = held + seen['unslotted_sims']
+        # Python's context manager reserves its already-loaded caller. The CLI
+        # reserves NEW children instead; it must never receive this credit.
+        credit = int(include_current and os.getpid() in info['unslotted_sim_pids'])
+        if include_current:
+            seen['current_process_credit'] = credit
         _remaining(deadline)
         reserved = []
         try:
-            if seen['running'] + workers <= slots:
+            if seen['running'] + workers - credit <= slots:
                 for _ in range(workers):
                     slot = _try_slot(root, slots, record)
                     if slot is None:
@@ -446,7 +514,7 @@ def try_admit(root: Path, slots: int, record: dict, *, workers: int = 1, deadlin
 
 
 def acquire(root: Path, slots: int, record: dict, *, workers: int = 1, timeout_s: float = 0.,
-            poll_s: float = POLL_S, log=None) -> Slot:
+            poll_s: float = POLL_S, log=None, include_current: bool = False) -> Slot:
     """Wait for reservations; monotonic timeout includes lock and census time."""
     if isinstance(timeout_s, bool) or not math.isfinite(timeout_s) or timeout_s < 0:
         raise ValueError(f'timeout_s must be a finite number >= 0, got {timeout_s!r}')
@@ -461,7 +529,8 @@ def acquire(root: Path, slots: int, record: dict, *, workers: int = 1, timeout_s
     queue_fd = os.open(root/QUEUE, os.O_RDWR | os.O_CREAT, 0o664)
     try:
         while True:
-            slot, seen = try_admit(root, slots, record, workers=workers, deadline=deadline)
+            slot, seen = try_admit(root, slots, record, workers=workers, deadline=deadline,
+                                   include_current=include_current)
             if slot is not None:
                 try:
                     _remaining(deadline)
@@ -483,7 +552,9 @@ def acquire(root: Path, slots: int, record: dict, *, workers: int = 1, timeout_s
 
 def _group_alive(pgid: int) -> bool:
     if sys.platform.startswith('linux'):
-        for entry in Path('/proc').iterdir():
+        proc = Path('/proc')
+        verify_linux_visibility(proc)
+        for entry in proc.iterdir():
             if entry.name.isdigit():
                 try:
                     _, _, group, state = _proc_stat(entry/'stat')
@@ -491,6 +562,7 @@ def _group_alive(pgid: int) -> bool:
                     continue
                 if group == pgid and state != 'Z':
                     return True
+        verify_linux_visibility(proc)
         return False
     table = _mac_table(time.monotonic() + CENSUS_TIMEOUT_S, pgid=pgid)
     return any(table.groups[p] == pgid and table.states[p] != 'Z' for p in table)
@@ -501,24 +573,40 @@ def run_reserved(slot: Slot, cmd: list[str]) -> int:
     child = None
     interrupted = 0
     previous = {}
+    leader_start = None
+    can_signal = False
+    pending_signal = 0
+
+    def deliver_pending():
+        nonlocal pending_signal
+        # poll()/waitpid can reap the leader before returning to Python. Clear
+        # can_signal BEFORE calling it, not after checking child.returncode.
+        # No forwarding after reaping: a numeric PGID is no longer our handle.
+        if pending_signal and child is not None and can_signal and child.returncode is None:
+            signum, pending_signal = pending_signal, 0
+            try:
+                if process_identity(child.pid) == leader_start and os.getpgid(child.pid) == child.pid:
+                    os.killpg(child.pid, signum)
+            except (OSError, RuntimeError):
+                pass  # ownership unavailable: do not signal a possibly unrelated group
 
     def forward(signum, _frame):
-        nonlocal interrupted
-        interrupted = signum
-        if child is not None:
-            with contextlib.suppress(ProcessLookupError):
-                os.killpg(child.pid, signum)
+        nonlocal interrupted, pending_signal
+        interrupted = pending_signal = signum
+        deliver_pending()
 
     # KeyboardInterrupt/SIGTERM must not unwind past a live child and release.
     for sig in (signal.SIGINT, signal.SIGTERM):
         previous[sig] = signal.signal(sig, forward)
     try:
+        if signal.getsignal(signal.SIGCHLD) != signal.SIG_DFL:
+            raise RuntimeError('run_reserved requires default SIGCHLD ownership (no external reaper)')
         child = subprocess.Popen(cmd, pass_fds=slot.fds, start_new_session=True)
-        if interrupted:
-            forward(interrupted, None)
         setup_error = None
         try:
             identity = {'pid': child.pid, 'start_id': process_identity(child.pid)}
+            leader_start = identity['start_id']
+            can_signal = True  # our unreaped child pins this PID/PGID lifetime
             for member in [slot, *slot.additional]:
                 member.record['children'] = [identity]
                 _write_record(member.fd, member.record)
@@ -526,8 +614,14 @@ def run_reserved(slot: Slot, cmd: list[str]) -> int:
             pass  # short command; still wait for its work group below
         except Exception as exc:
             setup_error = exc  # even failed bookkeeping cannot release live work
+        if interrupted:
+            deliver_pending()
         while True:
+            can_signal = False
             code = child.poll()
+            if code is None:
+                can_signal = leader_start is not None
+                deliver_pending()
             if code is not None:
                 try:
                     alive = _group_alive(child.pid)
@@ -563,7 +657,8 @@ def sim_slot(*, owner: str, label: str = '', root: Path = DEFAULT_ROOT, slots: i
              timeout_s: float = 0., workers: int = 1):
     slot = acquire(root, default_slots() if slots is None else slots,
                    {'owner': owner, 'label': label, 'pid': os.getpid(), 'command': ' '.join(sys.argv)[:500]},
-                   workers=workers, timeout_s=timeout_s, log=lambda m: print(m, file=sys.stderr, flush=True))
+                   workers=workers, timeout_s=timeout_s, include_current=True,
+                   log=lambda m: print(m, file=sys.stderr, flush=True))
     try:
         yield slot
     finally:

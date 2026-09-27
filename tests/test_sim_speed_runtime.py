@@ -128,6 +128,28 @@ class RealCensusTests(unittest.TestCase):
 
 
 class ProfileRestoreTests(unittest.TestCase):
+    def test_last_step_survives_real_mujoco_state_mutation(self) -> None:
+        model = mujoco.MjModel.from_xml_string(
+            '<mujoco><worldbody><body pos="0 0 1"><freejoint/>'
+            '<geom type="sphere" size=".1"/></body></worldbody></mujoco>')
+        data = mujoco.MjData(model)
+        rec = sim_profile.Recorder(qpos_every=2)
+        step = mujoco.mj_step
+        rec.install_step_hook()
+        try:
+            for _ in range(5):
+                mujoco.mj_step(model, data)
+            physics_hash = hashlib.sha256(data.qpos.tobytes() + data.qvel.tobytes() + data.act.tobytes()).hexdigest()
+            data.qpos[0] += 1
+            rec.finalize_checkpoints()
+            self.assertEqual(rec.checkpoint_error, 'state changed after final mj_step')
+            self.assertEqual(rec.last_step_checkpoint['sha256'], physics_hash)
+            self.assertEqual(rec.checkpoints[-1], rec.last_step_checkpoint)
+            self.assertNotEqual(rec.final_checkpoint['sha256'], physics_hash)
+        finally:
+            rec.restore()
+        self.assertIs(mujoco.mj_step, step)
+
     def test_failed_prepare_restores_every_patch(self) -> None:
         from sim.multi_masterpi_production import MultiMasterPiProductionV2
         step, close = mujoco.mj_step, MultiMasterPiProductionV2.close
