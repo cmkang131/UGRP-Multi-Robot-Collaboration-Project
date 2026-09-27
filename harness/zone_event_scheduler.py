@@ -310,6 +310,7 @@ class EventInput:
     trigger: str = 'report'
     active: bool = True
     claimed_by: str = ''
+    retry_of: str = ''
 
 
 @dataclass(frozen=True)
@@ -617,7 +618,10 @@ class EventScheduler:
     def available(self, actor, *, at):
         """The producer supplies an event's previously unknown boundary time."""
         for source in self.event_inputs:
-            if source.actor == actor and source.active and math.isinf(source.available_at):
+            if (source.actor == actor and math.isinf(source.available_at)
+                    and (source.active or source.claimed_by in self._pending)):
+                # A pending snapshot has only provisionally consumed its inputs.
+                # If it sends nothing, refund must retain this own-job boundary.
                 source.available_at = float(at)
         self._resume_deferred(actor=actor, at=at)
 
@@ -1079,28 +1083,59 @@ class EventScheduler:
                     quantize(call.started_sim_s + max(self.policy.min_interval_s, self.params.quantum_s),
                              self.params.quantum_s))
                 self._defer(source.actor, source.trigger, (), 'not_sent',
-                            scheduling_lane=source.cause, event_inputs=(source,))
+                            scheduling_lane=source.cause, event_inputs=(source,),
+                            retry_of=source.retry_of or call.retry_of)
 
     def _resume_deferred(self, call=None, *, actor=None, at=None):
         actor = call.actor if call is not None else actor
         when = self.clock if at is None else float(at)
         for key, held in list(self._deferred.items()):
-            if held['actor'] != actor:
+            if held['actor'] != actor and held.get('budget_wait') is not True:
                 continue
+            waiting_actor = held['actor']
             lane = held.get('scheduling_lane', '')
             sources = tuple(e for e in held.get('event_inputs', ()) if e.active)
             if lane and not sources:
                 del self._deferred[key]
                 continue
-            if (self._outstanding(actor, lane) >= self.policy.max_outstanding_per_actor
-                    or (lane and self._outstanding(actor))):
+            if (self._outstanding(waiting_actor, lane) >= self.policy.max_outstanding_per_actor
+                    or (lane and self._outstanding(waiting_actor))):
                 continue
             available = max((e.available_at for e in sources), default=when)
             if not math.isfinite(available):
                 continue
             del self._deferred[key]
-            self._push('call_start', max(when, available), (0., self._rank[actor], 0, 0),
-                       {**held, 'retry_of': '', 'event_inputs': sources})
+            self._push('call_start', max(when, available), (0., self._rank[waiting_actor], 0, 0),
+                       {**held, 'event_inputs': sources})
+
+    def _refuse_event_inputs(self, actor, trigger, merged, sources, *, lane, retry_of):
+        """Retain tagged inputs when a reservation, rather than spend, blocks them.
+
+        In-flight ledgered sends are already irreversible even before SIM cost
+        settlement. Unsent pending calls can still refund their logical slots.
+        Ordinary common events retain v64's refusal behavior.
+        """
+        if not sources:
+            return
+        committed = self.budget.used.copy()
+        refundable_calls = 0
+        for cid, entry in self.ledger.items():
+            if entry['status'] == 'outstanding':
+                sends = self.send_ledger.sends(cid)
+                committed[entry['actor']] += sends
+                refundable_calls += (entry['actor'] == actor and cid in self._pending and not sends)
+        total = sum(committed.values())
+        permanent = (self.external_budget_spent()
+            or (self.max_calls_total is not None and total >= self.max_calls_total)
+            or (self.budget.total is not None and total >= self.budget.total)
+            or (self.budget.per_actor is not None and committed[actor] >= self.budget.per_actor)
+            or self.metrics[actor]['calls'] - refundable_calls >= self.policy.max_calls_per_actor)
+        if permanent:
+            for source in sources:
+                source.active = False
+        else:
+            self._defer(actor, trigger, merged, 'budget', scheduling_lane=lane,
+                        event_inputs=sources, retry_of=retry_of)
 
     def _on_call_start(self, payload):
         actor, trigger = payload['actor'], payload['trigger']
@@ -1113,6 +1148,10 @@ class EventScheduler:
         if sources:
             sources = tuple(e for e in self.event_inputs
                             if e.active and e.actor == actor and e.cause == lane)
+            # A common snapshot may claim and then refund a message retry.
+            # Keep the original root on the durable input as well as the wait.
+            payload = {**payload, 'retry_of': payload.get('retry_of') or
+                       next((e.retry_of for e in sources if e.retry_of), '')}
             available = max(self.event_available_at(actor, lane),
                             *(e.available_at for e in sources))
             for source in sources:
@@ -1122,13 +1161,13 @@ class EventScheduler:
                     self._push('call_start', available, (1., self._rank[actor], 0, 0), payload)
                 else:
                     self._defer(actor, trigger, merged, 'availability', scheduling_lane=lane,
-                                event_inputs=sources)
+                                event_inputs=sources, retry_of=payload.get('retry_of', ''))
                 return
         outstanding = self._outstanding(actor, lane)
         if (outstanding >= self.policy.max_outstanding_per_actor
                 or (lane and self._outstanding(actor))):
             self._defer(actor, trigger, merged, 'outstanding', scheduling_lane=lane,
-                        event_inputs=sources)
+                        event_inputs=sources, retry_of=payload.get('retry_of', '') if lane else '')
             return
         earliest = self._last_start.get(key)
         if lane:
@@ -1151,22 +1190,22 @@ class EventScheduler:
             self._log(f'call_refused {actor} {trigger} {reason}', kind='call_refused', actor=actor)
             self.decision_events.append({'sim_s': self.now(), 'actor': actor,
                                          'event': reason, 'triggers': [trigger]})
-            for source in sources:
-                source.active = False  # terminal refusal, inbox/provenance retained
+            self._refuse_event_inputs(actor, trigger, merged, sources, lane=lane,
+                                      retry_of=payload.get('retry_of', ''))
             return
         if self.metrics[actor]['calls'] >= self.policy.max_calls_per_actor:
             self.metrics[actor]['budget_refused'] += 1
             self._log(f'call_refused {actor} {trigger} budget', kind='call_refused', actor=actor)
-            for source in sources:
-                source.active = False
+            self._refuse_event_inputs(actor, trigger, merged, sources, lane=lane,
+                                      retry_of=payload.get('retry_of', ''))
             return
         # finding 15: reserve the first HTTP attempt BEFORE the request leaves, so
         # three simultaneous actors cannot each consume the last attempt.
         if not self.budget.reserve(actor, 1):
             self.metrics[actor]['budget_refused'] += 1
             self._log(f'call_refused {actor} {trigger} http_budget', kind='call_refused', actor=actor)
-            for source in sources:
-                source.active = False
+            self._refuse_event_inputs(actor, trigger, merged, sources, lane=lane,
+                                      retry_of=payload.get('retry_of', ''))
             return
         sources = tuple(e for e in self.event_inputs if e.actor == actor and e.active
                         and (not lane or e.cause == lane))
@@ -1296,7 +1335,7 @@ class EventScheduler:
         entry['reserved_attempts'] += count
         return True
 
-    def _defer(self, actor, trigger, merged, reason, *, scheduling_lane='', event_inputs=()):
+    def _defer(self, actor, trigger, merged, reason, *, scheduling_lane='', event_inputs=(), retry_of=''):
         key = self._schedule_key(actor, scheduling_lane)
         held = self._deferred.get(key)
         labels = set(merged) | {trigger} | set(held['merged'] if held else ())
@@ -1305,6 +1344,8 @@ class EventScheduler:
         best = max(labels, key=lambda t: (TRIGGERS[t], t))
         self._deferred[key] = {'actor': actor, 'trigger': best, 'merged': tuple(sorted(labels - {best})),
             **({'scheduling_lane': scheduling_lane} if scheduling_lane else {}),
+            **({'retry_of': retry_of or (held or {}).get('retry_of', '')} if scheduling_lane else {}),
+            **({'budget_wait': True} if reason == 'budget' or (held or {}).get('budget_wait') else {}),
             'event_inputs': tuple(dict.fromkeys((*((held or {}).get('event_inputs', ())), *event_inputs)))}
         self.decision_events.append({'sim_s': self.now(), 'actor': actor,
                                      'event': 'deferred_' + reason, 'triggers': [best]})
@@ -1429,6 +1470,7 @@ class EventScheduler:
         for source in call.event_inputs:
             if call.scheduling_lane and source.claimed_by == call.call_id:
                 source.active = True
+                source.retry_of = root
         self._retries[root] = self._retries.get(root, 0) + 1
         self.metrics[call.actor]['retries'] += 1
         trigger = 'timeout' if cost.outcome == 'timeout' else 'retry'
