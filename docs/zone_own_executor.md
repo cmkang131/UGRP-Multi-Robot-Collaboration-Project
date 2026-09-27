@@ -5,7 +5,8 @@
 | 파일 | 역할 |
 |---|---|
 | `harness/zone_own_executor.py` | 작업 API·사건·작업 수명 (`ZoneOwnExecutor`) |
-| `harness/zone_own_guards.py` | 자기 입력 안전장치: 위치 불확실도 게이트, 둘러보기 충돌 검사, 진행 감시·제한된 복구, 위치별 막힘 누적, `GuardedDriver` |
+| `harness/zone_own_guards.py` | 자기 입력 안전장치: 위치 불확실도 게이트, 둘러보기 충돌 검사, 진행 감시, 위치별 막힘 누적 |
+| `harness/zone_own_driver.py` | `GuardedDriver`: loop driver v2 + 안전장치, 제한된 복구 |
 | `harness/zone_own_deliver.py` | M1 배송 사슬 어댑터 (`_DeliverController`) |
 | `harness/zone_own_status.py` | 자기 카메라 판단·`status()`·`belief_projection()` |
 | `harness/zone_own_contract.py` | 지도 어휘와 패키지 A/D 어댑터(main의 계약 모듈을 import) |
@@ -61,10 +62,14 @@
   - 정적 지도의 벽과 문설주를 높이와 함께 비교한다. 여유는 0.02 m + 몸체 모델 잔차 0.015 m + 2σxy + 2σyaw·팔 길이다.
   - 현재 pan에서 이어지는 충돌 없는 pan 구간만 방문한다. 줄어들면 섀시가 벽에 닿지 않는 뒤·옆 이동(0.08/0.15 m)을 한 번 먼저 해 본다.
   - M1 사슬 안의 둘러보기는 pan만 줄인다(물러나기 없음).
-- **진행 감시와 제한된 복구.** Nav2 `SimpleProgressChecker`를 옮긴 것이다.
-  - 믿을 만한 자기 추정(고정된 둘러보기 직후, 또는 0.3 s 안의 태그와 LOW 이하 σ)이 명령 주행 6 s 동안 0.10 m(목표 근처는 남은 거리의 절반) 움직이지 않으면 정체로 본다.
-  - 정체하면 Nav2 `BackUp`처럼 0.08 m 물러나고, 진행 방향 0.20 m 앞에 keep-out을 두고, 다시 둘러보고 재계획한다.
-  - 최대 2회 뒤 `<leg>_blocked`로 실패하고 `blockage_seen(source=own_progress_stall)`을 1회 낸다.
+- **진행 감시와 제한된 복구.** Nav2 `SimpleProgressChecker`를 옮긴 것이다(`zone_own_guards.ProgressMonitor`, 주행기는 `zone_own_driver.GuardedDriver`).
+  - 기준점 이후 자기 **명령 이동량**(명령 속도 × 제어 주기의 합)이 0.40 m를 넘었는데, 그 뒤에 얻은 믿을 만한 자기 추정(고정된 둘러보기, 또는 0.3 s 안의 태그와 LOW 이하 σ)이 0.10 m(목표 근처는 남은 거리의 절반)도 움직이지 않았으면 정체로 본다.
+  - 명령 이동량은 넘었지만 그 뒤의 믿을 만한 추정이 없으면, 먼저 확인용 둘러보기를 한 번 한다. 그 둘러보기가 고정되지 않으면 기준점을 새로 잡는다(거짓 정체 방지).
+  - 정체하면 Nav2 `BackUp`처럼 0.08 m 물러나고 다시 둘러보고 재계획한다. 진행 방향 0.20 m 앞에 keep-out을 두되, 구간 목표에서 0.45 m, 문 중심에서 0.60 m 안에는 두지 않는다.
+  - 정체 keep-out 때문에 계획이 실패하면 그 keep-out을 지우고 한 번 더 계획한다.
+  - 복구는 최대 2회다. 그 뒤, 또는 복구 뒤에도 계획이 없으면 `<leg>_blocked`로 실패하고 `blockage_seen(source=own_progress_stall)`을 1회 낸다.
+  - smoke v2(`a5b3687e`)의 규칙은 "명령 주행 6 s"였다. 느린 접근과 긴 둘러보기 뒤에 거짓 정체가 났고(5건 중 3건), keep-out이 목표·문을 덮어 4/6이 `no_path`로 끝났다(`experiments/2026-09-26-zone-own-executor/diagnosis_v2.json`).
+- **M1 접근 구간의 목표 상자.** 접근점까지 가는 구간에서는 자기 RGB로 찾은 목표 상자도 계획 장애물로 둔다(파지는 스킬이 그대로 한다).
 - **막힘 누적.** `judge_route_blockage`의 확신 yes를 위치 키(통로, 0.5 m 칸, 90° 방위)별로 센다. 같은 키에서 2.5 s 안에 2회면 `blockage_seen`이다. 그 키에서 `no`가 나와야 다시 무장한다.
 
 ## 사건과 패키지 A/D 연결
