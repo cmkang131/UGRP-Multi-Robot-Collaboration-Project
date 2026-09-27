@@ -16,10 +16,36 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
-from scripts.run_zone_pair_dev import EXPECTED, LABELS, sha_file, write_json
+from scripts.run_zone_pair_dev import LABELS, sha_file, write_json
 
 PAIR = ('r1', 'r2')
 MOTION = {'drive', 'mecanum', 'arm', 'look'}
+
+
+def host_error_result(manifest):
+    """Report an explicit host failure without requiring physical evidence."""
+    cause = manifest.get('host_error')
+    if not cause and manifest.get('state') != 'host_error':
+        return None
+    cause = cause or {'classification': 'HOST_ERROR',
+                      'message': manifest.get('termination') or 'host_error state; original cause not recorded'}
+    reason = cause.get('message', str(cause)) if isinstance(cause, dict) else str(cause)
+    return {'schema': 'ugrp.zone_pair_dev_evaluation.v1', 'labels': LABELS, 'research_result': False,
+            'physical_success': False, 'dev_physical_success': False, 'verdict': 'HOST_ERROR',
+            'host_error': cause, 'error': reason, 'errors': [reason], 'physical_scoring': 'not_performed_host_error',
+            'checks': {}, 'evidence': {}, 'sequence_done_is_success': False,
+            'run_id': manifest.get('run_id'), 'seed': manifest.get('seed'),
+            'source_sha': manifest.get('source', {}).get('source_sha'), 'wall_s': manifest.get('wall_s'),
+            'sim_s': manifest.get('sim_end_s'), 'model_calls': manifest.get('model_calls'),
+            'video_review': {'verified': False, 'reason': 'host error; physical scoring not performed'}}
+
+
+def evaluation_failure(manifest, exc):
+    result = host_error_result(manifest)
+    if result is not None:
+        result['evidence_errors'] = [f'{type(exc).__name__}: {exc}']
+        return result
+    return {'physical_success': False, 'verdict': 'EVIDENCE_INCOMPLETE', 'error': str(exc), 'labels': LABELS}
 
 
 def sustained(rows, predicate, duration, max_gap):
@@ -126,11 +152,14 @@ def floor_supported(row, previous, criteria):
 
 def score(manifest, prereg, rows, contacts, protocol, *, video_review=None):
     """Pure evaluator; missing/NaN/partial evidence cannot become success."""
+    host_failure = host_error_result(manifest)
+    if host_failure is not None:
+        return host_failure
     c = prereg['criteria']
     checks = {k: False for k in ('applied', 'trace_complete', 'contacts_complete', 'approach', 'joint_grasp', 'lift',
                                 'door', 'placement_release', 'no_drop', 'contacts', 'r3', 'weld_off',
                                 'protocol', 'video')}
-    checks['applied'] = manifest.get('applied') == EXPECTED
+    checks['applied'] = manifest.get('applied') == prereg['environment']
     checks['protocol'] = protocol.get('ok') is True and protocol.get('go_seen') is True
     evidence = {}
     errors = []
@@ -283,6 +312,21 @@ def evaluate_run(run, review_path=None):
     run = Path(run)
     ev = run / 'eval_only'
     manifest = json.loads((run / 'manifest.json').read_text())
+    host_failure = host_error_result(manifest)
+    if host_failure is not None:
+        # This classifies infrastructure failure; it does not score the run.
+        # Preserve the original cause even if prereg or physical artifacts are absent.
+        paths = [run / p for p in ('manifest.json', 'prereg.json', 'pair_records.json', 'status.jsonl',
+                                  'commands.jsonl', 'shutdown.jsonl', 'eval_only/trace.jsonl',
+                                  'eval_only/contacts.json', 'eval_only/overview.mp4')]
+        host_failure['input_sha256'] = {str(p.relative_to(run)): sha_file(p) for p in paths if p.is_file()}
+        host_failure['missing_evidence'] = [str(p.relative_to(run)) for p in paths if not p.is_file()]
+        registration = manifest.get('prereg')
+        expected_hash = registration.get('sha256') if isinstance(registration, dict) else None
+        actual_hash = host_failure['input_sha256'].get('prereg.json')
+        host_failure['prereg_integrity'] = {'verified': bool(expected_hash and actual_hash == expected_hash),
+                                            'expected_sha256': expected_hash, 'actual_sha256': actual_hash}
+        return host_failure
     prereg_bytes = (run / 'prereg.json').read_bytes()
     registration = manifest.get('prereg')
     expected_hash = registration.get('sha256') if isinstance(registration, dict) else None
@@ -349,7 +393,11 @@ def main(argv=None):
     try:
         result = evaluate_run(a.run, a.video_review)
     except (OSError, ValueError, KeyError) as exc:
-        result = {'physical_success': False, 'verdict': 'EVIDENCE_INCOMPLETE', 'error': str(exc), 'labels': LABELS}
+        try:
+            manifest = json.loads((a.run / 'manifest.json').read_text())
+        except (OSError, ValueError):
+            manifest = {}
+        result = evaluation_failure(manifest, exc)
     write_json(a.output, result)
     print(json.dumps({'evaluation': str(a.output), 'physical_success': result['physical_success']}))
     return 0 if result['physical_success'] else 1

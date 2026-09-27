@@ -155,7 +155,7 @@ class EvalObserver:
             self.stats['max_eq_active'] = max(self.stats['max_eq_active'], int(any(d.eq_active)))
             self.stats['r3_max_displacement_m'] = max(self.stats['r3_max_displacement_m'], math.dist(h._truth('r3')[:2], self.r3_start))
         if force_sample or now + 1e-9 >= self.next_sample:
-            self.next_sample = now + .05
+            self.next_sample = now + self.criteria['gt_sample_period_s']
             self.last_sample_t = now
             mat = self.body.xmat.reshape(3, 3)
             corners = [(self.body.xpos + mat @ (np.array(self.bar.center) + np.array(signs) * self.bar.size)).tolist()
@@ -221,7 +221,7 @@ def make_scene(spec):
 
 def run_physical(args, prereg, case, manifest):
     from harness.zone_own_team_host import OwnCamTeamHost
-    from scripts.evaluate_zone_pair_dev import evaluate_run
+    from scripts.evaluate_zone_pair_dev import evaluate_run, evaluation_failure
     from sim.workflow_manager import source_fingerprint
 
     out = args.output
@@ -240,7 +240,7 @@ def run_physical(args, prereg, case, manifest):
     signal.setitimer(signal.ITIMER_REAL, wall)
 
     class DevHost(OwnCamTeamHost):
-        """Observer hooks preserve the production host's 2 ms scheduling loop."""
+        """Observer hooks preserve the production host's profile-defined step loop."""
         def __init__(self, *a, **kw):
             self.audit_index = {}
             self.abort_index = {}
@@ -331,7 +331,7 @@ def run_physical(args, prereg, case, manifest):
         DevHost.__init__(host, spec, student, root=ROOT, study_layer=layer, frames_dir=out / 'frames', scene=make_scene(spec))
         manifest['applied'] = applied_settings(host, validate=False)
         write_json(out / 'manifest.json', manifest)
-        applied_settings(host)
+        applied_settings(host, expected=prereg['environment'])
         import mujoco
         mujoco.mj_saveLastXML(str(out / 'eval_only/applied_model.xml'), host.world.model)
         manifest.update(state='running', simulator_start_s=float(host.world.data.time),
@@ -392,7 +392,7 @@ def run_physical(args, prereg, case, manifest):
         try:
             evaluation = evaluate_run(out)
         except (OSError, ValueError, KeyError) as exc:
-            evaluation = {'physical_success': False, 'verdict': 'EVIDENCE_INCOMPLETE', 'error': str(exc)}
+            evaluation = evaluation_failure(manifest, exc)
         write_json(out / 'eval_only/result.json', evaluation)
         write_json(out / 'result.json', {'run_id': case['id'], 'labels': manifest['labels'], 'research_result': False,
                    'protocol_complete': manifest['state'] == 'completed', 'model_calls': 0,

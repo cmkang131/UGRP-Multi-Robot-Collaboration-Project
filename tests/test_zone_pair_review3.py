@@ -56,7 +56,7 @@ class IsolatedClockHost(TwoMsHost):
 
 
 @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
-@pytest.mark.parametrize('step_s', [.002, .01])
+@pytest.mark.parametrize('step_s', [.00025, .002, .01])
 def test_peer_submission_cannot_change_own_input_event_api_command_times_or_order(condition, step_s):
     traces = []
     for submit in (False, True):

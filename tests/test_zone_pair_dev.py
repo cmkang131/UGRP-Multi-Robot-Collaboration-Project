@@ -27,16 +27,129 @@ def config():
 
 
 def arguments(tmp_path, *extra):
-    return dev.parser().parse_args(['--run-id', 'dev01', '--output', str(tmp_path / 'new'), *extra])
+    return dev.parser().parse_args(['--run-id', 'dev03', '--output', str(tmp_path / 'new'), *extra])
 
 
-@pytest.mark.parametrize('run_id,seed', [('dev01', 901), ('dev02', 902)])
+@pytest.mark.parametrize('run_id,seed', [('dev03', 901), ('dev04', 902)])
 def test_prereg_admission(tmp_path, run_id, seed):
     args = arguments(tmp_path, '--run-id', run_id)
     p, case = dev.load_config(args)
     assert case['seed'] == seed
     assert p['planned_run_count'] == 2
     assert p['limits']['model_calls'] == 0
+
+
+def test_v2_freezes_profile_hashes_and_recalculates_budgets():
+    p = config()
+    old = json.loads(dev.PREVIOUS_PREREG.read_text())
+    assert dev.sha_file(dev.PREVIOUS_PREREG) == '85334a68bae0d35c197c612cd610c84307c0eba268a34247e71f4e233a0fe0f3'
+    assert [r['id'] for r in old['runs']] == ['dev01', 'dev02']
+    receipt = dev.profile_contract()
+    assert receipt == p['contact_profile_contract']
+    assert receipt['sha256'] == dev.digest({k: v for k, v in receipt.items() if k != 'sha256'})
+    assert receipt['timestep_s'] == .00025
+    assert receipt['noslip_iterations'] == 10
+    assert receipt['base_profile'] == 'local_contact_fine'
+    assert p['timing']['gt_sample_steps'] == 200
+    assert p['criteria']['gt_sample_period_s'] == .05
+    assert p['criteria']['max_sample_gap_s'] == .05035
+    assert p['timing']['max_physics_steps'] == 3_600_000
+    assert p['timing']['physics_step_multiplier'] == 8
+    assert p['limits']['sim_s'] == 900
+    assert p['limits']['wall_s'] == 57_600
+    assert p['limits']['outer_wall_timeout_s'] == 57_660
+
+
+def test_profile_probe_derives_options_instead_of_repeating_a_timestep(monkeypatch):
+    from sim import dispatch_contact_profile as base
+    from sim import zone_cargo_contact as cargo
+    original = base.contact_profile
+    def changed_profile(xml, profile):
+        return original(xml, profile).replace('timestep=".00025"', 'timestep=".000125"')
+    monkeypatch.setattr(base, 'contact_profile', changed_profile)
+    monkeypatch.setitem(cargo.CARGO_PROFILES['cargo_noslip_v1']['option'], 'noslip_iterations', '11')
+    receipt = dev.profile_contract()
+    assert receipt['timestep_s'] == .000125 and receipt['noslip_iterations'] == 11
+    assert receipt['sha256'] != config()['contact_profile_contract']['sha256']
+    timing, limits = dev.timing_contract(json.loads(dev.PREVIOUS_PREREG.read_text()), receipt['timestep_s'])
+    assert timing['gt_sample_steps'] == 400 and timing['max_physics_steps'] == 7_200_000
+    assert limits['wall_s'] == 115_200
+
+
+@pytest.mark.parametrize('fault', ['old_prereg', 'profile_hash', 'profile_source_hash', 'timestep', 'sampling',
+                                   'contact_steps', 'wall', 'outer_wall', 'old_run_ids', 'profile_drift'])
+def test_v2_refuses_stale_or_altered_contract_before_prepare(tmp_path, monkeypatch, fault):
+    p = config()
+    args = arguments(tmp_path)
+    if fault == 'old_prereg':
+        p = json.loads(dev.PREVIOUS_PREREG.read_text())
+    elif fault == 'profile_hash':
+        p['contact_profile_contract']['sha256'] = '0' * 64
+    elif fault == 'profile_source_hash':
+        p['contact_profile_contract']['source_sha256']['sim/dispatch_contact_profile.py'] = '0' * 64
+    elif fault == 'timestep':
+        p['environment']['timestep_s'] = .002
+    elif fault == 'sampling':
+        p['criteria']['max_sample_gap_s'] = .0521
+    elif fault == 'contact_steps':
+        p['timing']['max_physics_steps'] = 450_000
+    elif fault == 'wall':
+        p['limits']['wall_s'] = 7200
+    elif fault == 'outer_wall':
+        p['limits']['outer_wall_timeout_s'] = 7260
+    elif fault == 'old_run_ids':
+        p['runs'][0]['id'] = args.run_id = 'dev01'
+    else:
+        changed = copy.deepcopy(p['contact_profile_contract'])
+        changed['timestep_s'] /= 2
+        monkeypatch.setattr(dev, 'profile_contract', lambda: changed)
+    args.prereg = tmp_path / 'altered.json'
+    dev.write_json(args.prereg, p)
+    with pytest.raises(ValueError):
+        dev.load_config(args)
+    assert not args.output.exists()
+
+
+@pytest.mark.parametrize('fault', ['before_start', 'enospc', 'missing_prereg', 'bad_prereg_hash', 'state_only', 'late_failure'])
+def test_host_error_keeps_original_cause_without_route_trace_or_video(tmp_path, fault):
+    run = tmp_path / 'host-error'
+    run.mkdir()
+    p = config()
+    m = dev.build_manifest(p, p['runs'][0], source={}, environment={}, prereg_path=dev.PREREG)
+    message = 'ENOSPC: no space left on device' if fault == 'enospc' else 'actual model settings differ: timestep_s=0.00025'
+    cause = {'classification': 'HOST_ERROR', 'type': 'OSError' if fault == 'enospc' else 'ValueError',
+             'message': message, 'enospc': fault == 'enospc'}
+    m.update(state='host_error', host_error=cause)
+    if fault == 'state_only':
+        del m['host_error']
+    if fault == 'late_failure':
+        m.update(state='completed', simulator_start_s=1.3, sim_end_s=10.)
+    if fault == 'bad_prereg_hash':
+        m['prereg']['sha256'] = '0' * 64
+    if fault != 'missing_prereg':
+        (run / 'prereg.json').write_bytes(dev.PREREG.read_bytes())
+    dev.write_json(run / 'manifest.json', m)
+    dev.write_json(run / 'pair_records.json', [])  # dev01's exact route-failure trigger
+    result = ev.evaluate_run(run)
+    assert result['verdict'] == 'HOST_ERROR' and not result['physical_success']
+    assert result['physical_scoring'] == 'not_performed_host_error'
+    assert 'eval_only/trace.jsonl' in result['missing_evidence']
+    assert result['prereg_integrity']['verified'] is (fault not in ('missing_prereg', 'bad_prereg_hash'))
+    if fault != 'state_only':
+        assert result['host_error'] == cause and result['error'] == message
+    output = run / 'eval_only/review.json'
+    assert ev.main([str(run), '--output', str(output)]) == 1
+    assert json.loads(output.read_text())['verdict'] == 'HOST_ERROR'
+    assert ev.evaluation_failure(m, OSError('missing trace'))['verdict'] == 'HOST_ERROR'
+    assert ev.score(m, {}, [], {}, {})['verdict'] == 'HOST_ERROR'
+
+
+def test_missing_evidence_without_explicit_host_error_stays_incomplete(tmp_path):
+    run = tmp_path / 'incomplete'
+    dev.write_json(run / 'manifest.json', {'state': 'interrupted'})
+    out = run / 'eval_only/result.json'
+    assert ev.main([str(run), '--output', str(out)]) == 1
+    assert json.loads(out.read_text())['verdict'] == 'EVIDENCE_INCOMPLETE'
 
 
 @pytest.mark.parametrize('change', ['unknown_run', 'negative_seed', 'nan_budget', 'infinite_budget', 'wrong_map',
@@ -97,7 +210,7 @@ from scripts.run_zone_pair_dev import main
 raise SystemExit(main(sys.argv[1:]))
 '''
     out = tmp_path / 'prepared'
-    result = subprocess.run([sys.executable, '-c', code, '--run-id', 'dev01', '--output', str(out)],
+    result = subprocess.run([sys.executable, '-c', code, '--run-id', 'dev03', '--output', str(out)],
                             cwd=dev.ROOT, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     m = json.loads((out / 'manifest.json').read_text())
@@ -112,7 +225,7 @@ raise SystemExit(main(sys.argv[1:]))
 def test_applied_manifest_reads_actual_model_and_rejects_mismatch():
     from harness.zone_pair_executor import PairTeam
     host = NS(world=NS(robot_ids=('r1', 'r2', 'r3'), data=NS(eq_active=[False]),
-                       model=NS(opt=NS(timestep=.002, noslip_iterations=10))),
+                       model=NS(opt=NS(timestep=dev.EXPECTED['timestep_s'], noslip_iterations=10))),
               scene=NS(cargo=[NS(item_id='cargoX', kind='long_beam')], config={'setup_only': {'objects': {}}}),
               static={'map_id': dev.EXPECTED['map']}, contact_record={'profile': 'cargo_noslip_v1'},
               pairs=PairTeam.__new__(PairTeam))
@@ -216,8 +329,9 @@ def good_evidence():
                      'finger_n': {r: [2., 2.] if 1 <= t < 9 else [0., 0.] for r in ev.PAIR},
                      'robots': {**targets, 'r3': [-.7, -2., 0.]}, 'prestations': targets,
                      'approach_go_s': {r: .5 if t >= .5 else None for r in ev.PAIR}})
-    contacts = {'physics_steps': 6000, 'observation_start_s': 0., 'observation_end_s': 12., 'timestep_s': .002,
-                'max_step_gap_s': .002, 'invalid_step_intervals': 0,
+    dt = dev.EXPECTED['timestep_s']
+    contacts = {'physics_steps': round(12. / dt), 'observation_start_s': 0., 'observation_end_s': 12., 'timestep_s': dt,
+                'max_step_gap_s': dt, 'invalid_step_intervals': 0,
                 'counts': {k: 0 for k in ('robot_robot', 'robot_wall', 'beam_wall', 'robot_beam_approach', 'r3_interference')},
                 'max_eq_active': 0, 'r3_max_displacement_m': 0., 'r3_motion_commands': 0, 'r3_api_calls': 0}
     return m, p, rows, contacts, {'ok': True, 'go_seen': True, 'go_times': {'lower_go_7': 8.}}
@@ -256,7 +370,7 @@ def checkpoint_evidence():
             row['segments'] = {r: 2 for r in ev.PAIR}
     rows[68:68] = pause
     m['sim_end_s'] += 1.5
-    contacts.update(physics_steps=6750, observation_end_s=13.5)
+    contacts.update(physics_steps=round(13.5 / contacts['timestep_s']), observation_end_s=13.5)
     protocol['go_times'] = {'lower_go_1': 3.4, 'open_go_1': 3.8, 'lift_go_2': 4.5,
                             'carry_go_2': 4.9, 'lower_go_7': 9.5}
     return m, p, rows, contacts, protocol
@@ -315,7 +429,7 @@ def test_review2_p1_relift_closes_setdown_before_next_carry_go(fault):
         row['t'] = round(row['t'] + .3, 8)
     rows[98:98] = extra
     m['sim_end_s'] += .3
-    contacts.update(physics_steps=6900, observation_end_s=13.8)
+    contacts.update(physics_steps=round(13.8 / contacts['timestep_s']), observation_end_s=13.8)
     protocol['go_times'].update(carry_go_2=5.2, lower_go_7=9.8)
     result = ev.score(m, p, rows, contacts, protocol, video_review={'verified': True})
     assert result['checks']['no_drop'] is (fault == 'none'), result
@@ -417,9 +531,9 @@ def test_review_p2_observation_coverage_is_required(fault):
     elif fault == 'one_contact_step':
         contacts['physics_steps'] = 1
     elif fault == 'missing_first_step':
-        contacts.update(physics_steps=5999, observation_start_s=.002)
+        contacts.update(physics_steps=contacts['physics_steps'] - 1, observation_start_s=contacts['timestep_s'])
     elif fault == 'missing_last_step':
-        contacts.update(physics_steps=5999, observation_end_s=11.998)
+        contacts.update(physics_steps=contacts['physics_steps'] - 1, observation_end_s=12. - contacts['timestep_s'])
     elif fault == 'extra_contact_step':
         contacts['physics_steps'] += 1
     elif fault == 'interior_contact_gap':
@@ -427,7 +541,7 @@ def test_review_p2_observation_coverage_is_required(fault):
     elif fault == 'wrong_timestep':
         contacts['timestep_s'] = .004
     elif fault == 'off_grid_sample':
-        rows[10]['t'] += .001
+        rows[10]['t'] += contacts['timestep_s'] / 2
     elif fault == 'missing_start':
         del m['simulator_start_s']
     else:
@@ -498,7 +612,7 @@ def test_review_p2_prepare_preserves_exact_prereg_bytes(tmp_path):
     prereg = tmp_path / 'compact-prereg.json'
     prereg.write_text(json.dumps(config(), separators=(',', ':')))
     out = tmp_path / 'prepared'
-    assert dev.main(['--prereg', str(prereg), '--run-id', 'dev01', '--output', str(out)]) == 0
+    assert dev.main(['--prereg', str(prereg), '--run-id', 'dev03', '--output', str(out)]) == 0
     m = json.loads((out / 'manifest.json').read_text())
     assert dev.sha_file(out / 'prereg.json') == m['prereg']['sha256']
     assert (out / 'prereg.json').read_bytes() == prereg.read_bytes()
@@ -543,7 +657,8 @@ def test_review_p1_preregistered_setdown_targets_match_actual_static_plan(case_i
 
 
 @pytest.mark.parametrize('missing_tick', [False, True])
-def test_review_p2_observer_counts_initial_steps_and_exact_final_trace_without_physics(tmp_path, monkeypatch, missing_tick):
+@pytest.mark.parametrize('steps', [2, 203])
+def test_review_p2_observer_counts_initial_steps_and_exact_final_trace_without_physics(tmp_path, monkeypatch, missing_tick, steps):
     import numpy as np
     from scripts import zone_pair_dev_runtime as runtime
     # All MuJoCo access is a stub; no model, renderer, stepping or model call.
@@ -552,27 +667,29 @@ def test_review_p2_observer_counts_initial_steps_and_exact_final_trace_without_p
     cargo = NS(body='beam', spec=lambda: NS(parts=[bar]))
     body = NS(xmat=np.eye(3), xpos=np.array([1., .05, .016]))
     data = NS(time=1., ncon=0, eq_active=[False], body=lambda name: body)
-    host = NS(world=NS(data=data, model=NS(opt=NS(timestep=.002))), scene=NS(cargo=[cargo]),
+    dt = dev.EXPECTED['timestep_s']
+    host = NS(world=NS(data=data, model=NS(opt=NS(timestep=dt))), scene=NS(cargo=[cargo]),
               pairs=NS(sessions=[]), robots={r: NS(commands=[]) for r in ('r1', 'r2', 'r3')},
               _truth=lambda rid: (0., 0., 0.), api_calls=[])
     observer = runtime.EvalObserver(host, tmp_path, config()['criteria'])
     monkeypatch.setattr(observer, 'video', lambda now: None)
     observer.tick()  # initial observation, no physics interval
     observer.tick()  # same instant: no duplicate
-    data.time = 1.002
-    if not missing_tick:
+    for step in range(1, steps + 1):
+        data.time = 1. + step * dt
+        if missing_tick and step == 1:
+            continue
         observer.tick()
-    data.time = 1.004
-    observer.tick()
     observer.close()  # tail is less than 50 ms, but must be sampled exactly
     contacts = json.loads((tmp_path / 'eval_only/contacts.json').read_text())
-    assert contacts['physics_steps'] == (1 if missing_tick else 2)
+    assert contacts['physics_steps'] == steps - int(missing_tick)
     assert contacts['invalid_step_intervals'] == (1 if missing_tick else 0)
-    assert contacts['max_step_gap_s'] == pytest.approx(.004 if missing_tick else .002)
+    assert contacts['max_step_gap_s'] == pytest.approx(2 * dt if missing_tick else dt)
     assert contacts['observation_start_s'] == 1.
-    assert contacts['observation_end_s'] == 1.004
+    assert contacts['observation_end_s'] == 1. + steps * dt
     rows = ev.load_lines(tmp_path / 'eval_only/trace.jsonl')
-    assert [r['t'] for r in rows] == [1., 1.004]
+    expected_times = [1., 1.05, 1. + steps * dt] if steps > 200 else [1., 1. + steps * dt]
+    assert [r['t'] for r in rows] == expected_times
     assert rows[0]['segments'] == {r: None for r in ev.PAIR}
 
 
@@ -639,7 +756,7 @@ def test_ci_and_common_workflow_collect_driver_and_static_input_receipts(tmp_pat
     from scripts.run_ci_tests import TEST_PATTERNS
     from sim import workflow_manager as wm
     assert any(Path('tests/test_zone_pair_dev.py').match(pattern) for pattern in TEST_PATTERNS)
-    args = ['--prereg', str(dev.PREREG), '--run-id', 'dev01', '--output', str(tmp_path / 'new')]
+    args = ['--prereg', str(dev.PREREG), '--run-id', 'dev03', '--output', str(tmp_path / 'new')]
     plan = wm.plan(dev.ROOT, dev.WORKFLOW, args)
     assert not plan['execution_started']
     paths = {p['path'] for p in plan['inputs']}
@@ -659,7 +776,8 @@ def test_real_pairteam_fake_host_abort_is_auditable_without_physics():
 
 
 @pytest.mark.parametrize('case_index', [0, 1])
-def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_path, monkeypatch, case_index):
+@pytest.mark.parametrize('mismatched_timestep', [False, True])
+def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_path, monkeypatch, case_index, mismatched_timestep):
     pytest.importorskip('mujoco', reason='frozen M2 import required; physical world/observer replaced with fakes')
     import mujoco
     from harness.zone_own_team_host import OwnCamTeamHost
@@ -681,7 +799,7 @@ def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_pat
         self.__dict__.update(fake.__dict__)
         self.world.robot_ids = ('r1', 'r2', 'r3')
         self.world.model.opt.noslip_iterations = 10
-        self.world.model.opt.timestep = .002
+        self.world.model.opt.timestep = .002 if mismatched_timestep else dev.EXPECTED['timestep_s']
         self.world.data.eq_active = [False]
         self.scene = NS(cargo=[NS(item_id='cargoX', kind='long_beam')], config={'setup_only': {'objects': {}}},
                         manifest={'scene_xml_sha256': 'fixture-only'}, record=lambda: {'fixture': True})
@@ -709,8 +827,17 @@ def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_pat
     monkeypatch.setattr(runtime, 'EvalObserver', NoPhysicsObserver)
     monkeypatch.setattr(mujoco, 'mj_saveLastXML', lambda path, model: Path(path).write_text('<fake/>'))
     args = NS(output=out)
-    assert runtime.run_physical(args, p, case, m) == 0
+    assert runtime.run_physical(args, p, case, m) == (2 if mismatched_timestep else 0)
     final = json.loads((out / 'manifest.json').read_text())
+    if mismatched_timestep:
+        assert final['state'] == 'host_error'
+        assert 'actual model settings differ' in final['host_error']['message']
+        result = json.loads((out / 'eval_only/result.json').read_text())
+        assert result['verdict'] == 'HOST_ERROR' and result['host_error'] == final['host_error']
+        assert 'eval_only/trace.jsonl' in result['missing_evidence']
+        assert not result['physical_success']
+        assert (out / 'artifacts.sha256.json').is_file()
+        return
     assert final['state'] == 'completed', final
     assert final['applied'] == dev.EXPECTED
     records = json.loads((out / 'pair_records.json').read_text())

@@ -23,17 +23,21 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from scripts.zone_pair_dev_contract import PREVIOUS_PREREG, profile_contract, timing_contract
+
 WORKFLOW = 'zone-pair-dev'
 SCHEMA = 'ugrp.zone_pair_dev.v1'
 LABELS = ['tags_temporary', 'dev', '연구 결과 아님']
-PREREG = ROOT / 'experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json'
+PREREG = ROOT / 'experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json'
 MAP = ROOT / 'maps/zones/zone_wide_door_tags_v2.json'
 CALIBRATION = ROOT / 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'
 PARTICIPANTS = ('r1', 'r2')
+PROFILE_CONTRACT = profile_contract()
 EXPECTED = {'map': 'zone_wide_door_tags_v2', 'participants': list(PARTICIPANTS),
             'world_robots': ['r1', 'r2', 'r3'], 'cargo': [{'item_id': 'cargoX', 'kind': 'long_beam'}],
             'other_objects': 0, 'weld': False, 'contact_profile': 'cargo_noslip_v1',
-            'noslip_iterations': 10, 'timestep_s': .002}
+            'noslip_iterations': PROFILE_CONTRACT['noslip_iterations'],
+            'timestep_s': PROFILE_CONTRACT['timestep_s']}
 ORDER = {'orders': [{'order_id': 'cargoX', 'kind': 'long_beam', 'count': 1, 'required_robots': 2,
                      'destination_zone': 'B', 'initial_location': {'pickup_bay': 'P2', 'slot': 'P2-3'}}]}
 
@@ -82,6 +86,17 @@ def load_config(args):
         raise ValueError('unsupported or altered dev environment/labels')
     if prereg.get('status') != 'DRAFT' or prereg.get('research_result') is not False:
         raise ValueError('this driver is for DRAFT dev only')
+    if prereg.get('registration_version') != 2:
+        raise ValueError('use prereg v2 with new dev03/dev04 run IDs; preserve v1')
+    if prereg.get('contact_profile_contract') != profile_contract():
+        raise ValueError('contact profile contract/hash mismatch; freeze a new prereg before execution')
+    previous = {'path': str(PREVIOUS_PREREG.relative_to(ROOT)), 'sha256': sha_file(PREVIOUS_PREREG)}
+    if prereg.get('supersedes') != previous:
+        raise ValueError('previous prereg hash mismatch')
+    timing, frozen_limits = timing_contract(json.loads(PREVIOUS_PREREG.read_text()), EXPECTED['timestep_s'])
+    if (prereg.get('timing') != timing or prereg['criteria'].get('gt_sample_period_s') != timing['gt_sample_period_s']
+            or prereg['criteria']['max_sample_gap_s'] != timing['max_sample_gap_s']):
+        raise ValueError('profile-derived sampling/step contract mismatch')
     rows = prereg['runs']
     if len({r['id'] for r in rows}) != len(rows):
         raise ValueError('duplicate run ids')
@@ -90,13 +105,15 @@ def load_config(args):
         raise ValueError('run-id is not preregistered')
     if type(case['seed']) is not int or not 0 <= case['seed'] < 2**32:
         raise ValueError('seed must be a uint32 integer')
+    if [(r['id'], r['seed']) for r in rows] != [('dev03', 901), ('dev04', 902)]:
+        raise ValueError('v2 fixes dev03 seed 901 / dev04 seed 902; do not reuse prior IDs')
     limits = prereg['limits']
-    for k in ('sim_s', 'wall_s', 'submit_at_s', 'post_terminal_s'):
+    for k in ('sim_s', 'wall_s', 'submit_at_s', 'post_terminal_s', 'outer_wall_timeout_s'):
         v = limits[k]
         if type(v) not in (int, float) or not math.isfinite(v) or v <= 0:
             raise ValueError(f'{k} must be positive and finite')
-    if not (limits['submit_at_s'] + limits['post_terminal_s'] < limits['sim_s'] <= 1200 and limits['wall_s'] <= 7200):
-        raise ValueError('dev budgets must fit the hard 1200 SIM / 7200 wall bounds')
+    if limits != frozen_limits:
+        raise ValueError('dev budgets must match the profile-derived frozen v2 limits')
     if case.get('intervention') not in ('none', 'abort_after_carry_go'):
         raise ValueError('unsupported intervention')
     pose = case['setup_beam_xyyaw']
@@ -132,7 +149,9 @@ def build_manifest(prereg, case, *, source, environment, prereg_path, applied=No
     """No requested value is passed off as an actual model setting before construction."""
     return {'schema': SCHEMA, 'labels': LABELS, 'research_result': False, 'run_id': case['id'],
             'seed': case['seed'], 'intervention': case['intervention'], 'source': source,
-            'environment': environment, 'requested': copy.deepcopy(EXPECTED), 'applied': applied,
+            'environment': environment, 'requested': copy.deepcopy(prereg['environment']), 'applied': applied,
+            'contact_profile_contract': copy.deepcopy(prereg.get('contact_profile_contract')),
+            'timing': copy.deepcopy(prereg.get('timing')),
             'state': 'prepared_not_executed' if applied is None else 'running',
             'limits': prereg['limits'], 'prereg': {'path': str(prereg_path), 'sha256': sha_file(prereg_path)},
             'inputs': {**prereg['inputs'], 'coarse_order_sheet_sha256': digest(case['coarse_order_sheet'])},
@@ -146,7 +165,8 @@ def build_manifest(prereg, case, *, source, environment, prereg_path, applied=No
             'common_record': 'parent sim_cli workflow manifest links source/config/input/environment/result receipts'}
 
 
-def applied_settings(host, *, validate=True):
+def applied_settings(host, *, validate=True, expected=None):
+    expected = EXPECTED if expected is None else expected
     actual = {**EXPECTED, 'world_robots': list(host.world.robot_ids),
               'cargo': [{'item_id': c.item_id, 'kind': c.kind} for c in host.scene.cargo],
               'other_objects': len(host.scene.config['setup_only']['objects']),
@@ -154,8 +174,8 @@ def applied_settings(host, *, validate=True):
               'map': host.static['map_id'], 'contact_profile': host.contact_record['profile'],
               'noslip_iterations': int(host.world.model.opt.noslip_iterations),
               'timestep_s': float(host.world.model.opt.timestep)}
-    if validate and actual != EXPECTED:
-        raise ValueError(f'actual model settings differ: {actual}')
+    if validate and actual != expected:
+        raise ValueError(f'actual model settings differ: {actual}; expected: {expected}')
     from harness.zone_pair_executor import PairTeam
     if validate and not isinstance(host.pairs, PairTeam):
         raise ValueError('host is not using PairTeam')

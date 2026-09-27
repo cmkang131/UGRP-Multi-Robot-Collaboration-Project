@@ -233,7 +233,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-owncam-loop-run": ["--prereg", str(source)],
             "zone-m1-owncam-run": ["--prereg", str(source)],
             "zone-m2-pair": ["--seed", "701", "--status-channel", "off"],
-            "zone-pair-dev": ["--prereg", str(PROJECT / "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json"), "--run-id", "dev01"],
+            "zone-pair-dev": ["--prereg", str(PROJECT / "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json"), "--run-id", "dev03"],
         }
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
