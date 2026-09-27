@@ -1,0 +1,47 @@
+{
+ "schema": "ugrp.vision_loc.posthoc_door_axes.v1",
+ "post_hoc": true,
+ "episodes": [
+  "vl3-test-s951",
+  "vl3-test-s955",
+  "vl3-test-s956",
+  "vl3-test-s959",
+  "vl3-test-s961",
+  "vl3-test-s964"
+ ],
+ "group": "door_loaded (|x - 2.2| < 0.6, -0.45 < y < 0.55, own load state loaded)",
+ "filters": {
+  "vision": {
+   "n": 1424,
+   "along_abs_p50_m": 0.0259,
+   "along_abs_p90_m": 0.0572,
+   "along_mean_m": 0.0243,
+   "lateral_abs_p90_m": 0.0204,
+   "lateral_mean_m": 0.0041
+  },
+  "oracle": {
+   "n": 1424,
+   "along_abs_p50_m": 0.0109,
+   "along_abs_p90_m": 0.0241,
+   "along_mean_m": 0.0116,
+   "lateral_abs_p90_m": 0.0262,
+   "lateral_mean_m": 0.009
+  },
+  "boundary": {
+   "n": 1424,
+   "along_abs_p50_m": 0.1539,
+   "along_abs_p90_m": 0.4724,
+   "along_mean_m": -0.1973,
+   "lateral_abs_p90_m": 1.1525,
+   "lateral_mean_m": -0.3111
+  },
+  "deadreck": {
+   "n": 1424,
+   "along_abs_p50_m": 0.461,
+   "along_abs_p90_m": 0.731,
+   "along_mean_m": -0.4683,
+   "lateral_abs_p90_m": 0.4875,
+   "lateral_mean_m": -0.0292
+  }
+ }
+}

@@ -384,6 +384,81 @@
       "source_sha": "12f8e6dda76e39b3ec612f247deb4835a2ff50bc",
       "status": "available",
       "training_source_sha": "12f8e6dda76e39b3ec612f247deb4835a2ff50bc"
+    },
+    {
+      "archive": {
+        "bytes": 12111169,
+        "sha256": "165679736e426748bcdaa1c4c341781482198c2135bd8974494ab4f41f27a936"
+      },
+      "id": "vision-loc-seg-lraspp-mbv3-20260926-v2",
+      "status": "available",
+      "description": "Tag-free vision localization segmentation model (LR-ASPP MobileNetV3, 5 classes) with its round-2/round-3 localization configs and train-split camera calibration; experimental, offline-evaluated only",
+      "source_sha": "0b1cffa0d8225b85b39014c35ae847952b9c468f",
+      "training_source_sha": "0c889f0c1df365ddaac8de34e97e7f73372e2772",
+      "release": {
+        "tag": "models-20260927-vision-loc-v1",
+        "asset": "vision-loc-seg-lraspp-mbv3-20260926-v2.zip",
+        "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/releases/download/models-20260927-vision-loc-v1/vision-loc-seg-lraspp-mbv3-20260926-v2.zip"
+      },
+      "entrypoints": {
+        "segmentation": "seg/seg_lraspp_mbv3.pt",
+        "student_config_round3": "config/selected_config_v3.json",
+        "calibration": "calibration/calibration_train.json"
+      },
+      "files": [
+        {
+          "path": "calibration/calibration_train.json",
+          "bytes": 4155,
+          "sha256": "60177d6b4e116f4d63aea0b5c0bd200cd5eaebe66a63080612c7949491f085dd"
+        },
+        {
+          "path": "config/secondary_config_v3.json",
+          "bytes": 239,
+          "sha256": "19e5f5b306c11a41d68b537fc943575e3dae7649e7f8b61c2930c231a9ce87be"
+        },
+        {
+          "path": "config/selected_config.json",
+          "bytes": 148,
+          "sha256": "57665a36e72cc186cffacdb87eabd36ff8f653e04c25b97c61cf2c048e396412"
+        },
+        {
+          "path": "config/selected_config_v3.json",
+          "bytes": 161,
+          "sha256": "87f94b342b260715b1c556da3dea3832cc11daeaf88ef0aa97f14b3c9a970707"
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 1822,
+          "sha256": "796f4166b6b09dd3ce471e0f7569f563b335695c3cb8521278e55dceceacf3c2"
+        },
+        {
+          "path": "requirements-vision-loc.txt",
+          "bytes": 174,
+          "sha256": "29d201729b8b42c867e2eb08b93789685f43e3a30df76147ee16a5bda7265a59"
+        },
+        {
+          "path": "seg/seg_lraspp_mbv3.pt",
+          "bytes": 13071401,
+          "sha256": "348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9"
+        },
+        {
+          "path": "seg/train_info.json",
+          "bytes": 7097,
+          "sha256": "a9453aab30d5af6e0f1b6214049cf0bc538128fc1faca77be32400f54ee47caa"
+        },
+        {
+          "path": "seg/train_log.jsonl",
+          "bytes": 3338,
+          "sha256": "d3c630bbc3410d20881a4626ad8595d7d3bceedcf418038ac5feb88b741fea08"
+        }
+      ],
+      "limitations": [
+        "Simulator renders only; no real-camera validation.",
+        "Offline replay of teacher-driven renders; no closed-loop localization result.",
+        "Round-2 test was not independent of train (s917 replays train s903); see experiments/2026-09-26-vision-loc/README.md.",
+        "Model loading is not a localization or navigation success.",
+        "Training data and raw renders are excluded."
+      ]
     }
   ]
 }
