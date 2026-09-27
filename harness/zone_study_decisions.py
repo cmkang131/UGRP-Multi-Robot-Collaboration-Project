@@ -147,6 +147,10 @@ class DecisionScheduler(EventScheduler):
                 **self.call_causes[call.call_id]})
         return sent
 
-    def _on_call_done(self, payload):
-        super()._on_call_done(payload)
-        self.own_job_boundary(payload['call'].actor, at=self.clock)
+    def _resume_deferred(self, call):
+        # The core settles both charged call_done and pending 0-send refunds
+        # here. Hooking only call_done strands messages after pre-wire failures.
+        # Keep the v64 common wake first; the additive lane still checks its
+        # own-job boundary, outstanding calls, interval and shared budgets.
+        super()._resume_deferred(call)
+        self.own_job_boundary(call.actor, at=self.clock)

@@ -5,6 +5,7 @@ Only transport DTO identities are shared, so a current fake wire's exception
 is recognised by both versions. No git/network access is needed by these tests.
 """
 import builtins
+from dataclasses import replace
 import hashlib
 import json
 from pathlib import Path
@@ -61,9 +62,13 @@ def v64():
         del sys.modules[module.__name__]
 
 
-def fault_for(seed):
+def fault_for(seed, *, zero_send_gap=False):
     def fault(payload, turn):
         tick = round(payload['sim_time_s'] * 10)
+        if zero_send_gap and tick < 100:
+            if payload['robot_id'] == 'r1' and tick < 60:
+                raise OSError('generated initial call and retry failure')
+            return
         # Depends only on exogenous time and actor, not condition/turn/call ID.
         value = (seed * 17 + tick * 7 + int(payload['robot_id'][1:]) * 13) % 29
         if value == 0:
@@ -73,7 +78,31 @@ def fault_for(seed):
     return fault
 
 
-def event_stream(seed):
+def prewire_faults(seed, *, zero_send_gap=False):
+    # Fixed by external time/actor, never condition, turn or call ID. Force
+    # both 0-send entry points across seeds, then scatter more over the stream.
+    def selected(actor, at):
+        tick = round(at * 10)
+        if zero_send_gap and tick < 100:
+            return actor == 'r1' and tick == 60
+        return (actor == 'r1' and tick == 0) or (seed * 11 + tick * 3 + int(actor[1:])) % 41 == 0
+
+    def prepare(call):
+        if seed % 2 == 0 and selected(call.actor, call.started_sim_s):
+            raise ValueError('generated pre-wire input failure')
+
+    def store(row, kind, data):
+        if seed % 2 == 0 or kind != 'request':
+            return
+        payload = json.loads(next(p['text'] for p in json.loads(data)['messages'][-1]['content']
+                                  if p['type'] == 'text'))
+        if selected(payload['robot_id'], payload['sim_time_s']):
+            raise OSError('generated pre-wire request storage failure')
+
+    return prepare, store
+
+
+def event_stream(seed, *, zero_send_gap=False):
     rng = random.Random(245000 + seed)
     events = []
     triggers = ('idle', 'failure', 'blockage', 'timeout', 'retry', 'timer')
@@ -82,20 +111,35 @@ def event_stream(seed):
         events.append((tick, rng.choice(zi.ROBOTS), rng.choice(triggers)))
     # Force own terminal + timer ties, including the reported second counterexample.
     events.extend([(653, 'r1', 'idle'), (653, 'r1', 'timer')])
+    if zero_send_gap:
+        # A pending common event could mask a missing message wake. Reserve a
+        # gap around the 6.0 call / 6.1 delivery; keep the later random stream.
+        events = [e for e in events if e[1] != 'r1' or e[0] >= 100]
+        events.append((60, 'r1', 'timer'))
     return sorted(events, key=lambda e: e[0])
 
 
-def run_stream(seed, condition='no_comm', trial_cls=None, *, communication=False):
+def run_stream(seed, condition='no_comm', trial_cls=None, *, communication=False, binding_budget=False,
+               zero_send_gap=False):
     policy = core.CallPolicy(min_interval_s=(.5, 2., 8.)[seed % 3],
                              max_retries=seed % 3,
                              max_calls_per_actor=300, max_http_attempts_per_actor=300,
                              max_attempts_total=900)
-    # Nonbinding shared limits isolate scheduling from the finite send budget.
+    if zero_send_gap:
+        policy = replace(policy, min_interval_s=2., max_retries=1)
+    if binding_budget:
+        policy = replace(policy, **({'max_calls_per_actor': 1},
+                                    {'max_http_attempts_per_actor': 1},
+                                    {'max_attempts_total': 2})[seed % 3])
+    prepare_fault, store_fault = prewire_faults(seed, zero_send_gap=zero_send_gap)
+    # The original 600 cases retain nonbinding limits for full schedule parity.
     trial, clock, links, requests = fixture.make_trial(
-        condition, first=('continue', 'claim', 'wait')[seed % 3],
+        condition, first='continue' if zero_send_gap else ('continue', 'claim', 'wait')[seed % 3],
         follow_claim=False, send=communication, trial_cls=trial_cls,
-        policy=policy, limits=zi.DecisionLimits(max_calls_total=900), wire_fault=fault_for(seed))
-    events = iter(event_stream(seed))
+        policy=policy, limits=zi.DecisionLimits(max_calls_total=900),
+        wire_fault=fault_for(seed, zero_send_gap=zero_send_gap),
+        prepare_fault=prepare_fault, store_fault=store_fault, additive_noop=True)
+    events = iter(event_stream(seed, zero_send_gap=zero_send_gap))
     pending = next(events, None)
     for tick in range(1, 901):
         # Enqueue own events before advancing the scheduler, as the runner does.
@@ -106,9 +150,28 @@ def run_stream(seed, condition='no_comm', trial_cls=None, *, communication=False
         fixture.advance(trial, clock, links, tick / 10,
                         boundary=65.3 if seed % 3 == 1 else None,
                         outcome='job_failed' if seed % 2 else 'job_done')
+        if communication and not trial_cls and not trial.decision_budget_spent():
+            assert_message_liveness(trial)
     trial.finish(90.)
     assert not trial.scheduler.send_violations
+    assert trial.scheduler.unsent_calls  # forced r1 failure really reached settlement
+    assert trial.scheduler.budget.used_total() <= policy.max_attempts_total
+    assert all(n <= policy.max_http_attempts_per_actor for n in trial.scheduler.budget.used.values())
+    if binding_budget:
+        assert sum(m['budget_refused'] for m in trial.scheduler.metrics.values()) > 0
     return trial, requests
+
+
+def assert_message_liveness(trial):
+    s = trial.scheduler
+    for actor in s._message_waiting:
+        if (trial.links[actor].job() is not None or s._outstanding(actor)
+                or s._outstanding(actor, 'message') or s.budget.remaining(actor) == 0
+                or s.metrics[actor]['calls'] >= s.policy.max_calls_per_actor):
+            continue
+        last = max(s._last_start.get(actor, float('-inf')),
+                   s._last_start.get((actor, 'message'), float('-inf')))
+        assert s.now() < last + s.policy.min_interval_s - 1e-9, (actor, s.now(), last)
 
 
 def signature(trial, requests):
@@ -118,6 +181,12 @@ def signature(trial, requests):
         'request_hashes': [r['request_sha256'] for r in trial.requests],
         'dispatch': json.dumps(trial.dispatch_log, sort_keys=True, ensure_ascii=False).encode(),
         'censored': trial.scheduler.censored,
+        'unsent': trial.scheduler.unsent_calls,
+        # v66 stops arming reasks once HTTP budget is spent; frozen v64 can
+        # enqueue more timers that are refused without creating a call. Those
+        # diagnostic refusal counts are not calls, inputs, commands or spend.
+        'budget': {k: v for k, v in trial.scheduler.budget.to_dict().items() if k != 'refusals'},
+        'ledger': trial.scheduler.ledger,
     }
 
 
@@ -127,6 +196,33 @@ def test_no_comm_bitwise_equivalent_to_frozen_v64(v64, seed):
     new, new_requests = run_stream(seed)
     assert signature(new, new_requests) == signature(old, old_requests), seed
     assert all(row['cause'] == 'common' for row in new.scheduler.call_causes.values())
+
+
+@pytest.mark.parametrize('seed', range(100))
+def test_generated_binding_budgets_keep_no_comm_v64_parity(v64, seed):
+    old, old_requests = run_stream(seed, trial_cls=v64, binding_budget=True)
+    new, new_requests = run_stream(seed, binding_budget=True)
+    assert signature(new, new_requests) == signature(old, old_requests), seed
+    for condition in zi.MAIN_CONDITIONS[1:]:
+        trial, _ = run_stream(seed, condition, communication=True, binding_budget=True)
+        # Additional calls may consume a shared finite budget earlier. Compare
+        # all common events strictly before the first refusal in either run.
+        cutoff = min(e['sim_s'] for tr in (new, trial) for e in tr.scheduler.events
+                     if e.get('kind') == 'call_refused')
+        assert [r for r in common_schedule(trial) if r[1] < cutoff] == [
+            r for r in common_schedule(new) if r[1] < cutoff]
+
+
+@pytest.mark.parametrize('seed', range(12))
+def test_generated_zero_send_gap_cannot_strand_messages(v64, seed):
+    old, old_requests = run_stream(seed, trial_cls=v64, zero_send_gap=True)
+    baseline, requests = run_stream(seed, zero_send_gap=True)
+    assert signature(baseline, requests) == signature(old, old_requests)
+    for condition in zi.MAIN_CONDITIONS[1:]:
+        trial, requests = run_stream(seed, condition, communication=True, zero_send_gap=True)
+        assert common_schedule(trial) == common_schedule(baseline)
+        received = next(p for p in requests if p['robot_id'] == 'r1' and p['sim_time_s'] == 8.)
+        assert received['inbox']
 
 
 def common_schedule(trial):
@@ -206,6 +302,60 @@ def test_review_65_3s_terminal_timer_tie(condition, v64):
     assert all(c['cause'] == 'common' for c in new.scheduler.call_causes.values())
     if condition == 'no_comm':
         assert signature(new, new_requests) == signature(old, old_requests)
+
+
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+@pytest.mark.parametrize('failure', ['prepare', 'request_store'])
+def test_review3_zero_send_wakes_message_at_8s(condition, failure, v64):
+    def run(cls):
+        faults = []
+
+        def wire_fault(payload, turn):
+            if payload['robot_id'] == 'r1' and payload['sim_time_s'] < 6.:
+                raise OSError('initial call and its retry fail')
+
+        def prepare_fault(call):
+            if failure == 'prepare' and call.actor == 'r1' and call.started_sim_s == 6.:
+                faults.append(call.call_id)
+                raise ValueError('request construction failed before wire')
+
+        def store_fault(row, kind, data):
+            if failure != 'request_store' or kind != 'request':
+                return
+            payload = json.loads(next(p['text'] for p in json.loads(data)['messages'][-1]['content']
+                                      if p['type'] == 'text'))
+            if payload['robot_id'] == 'r1' and payload['sim_time_s'] == 6.:
+                faults.append(row['call_id'])
+                raise OSError('request storage failed once before wire')
+
+        trial, clock, links, requests = fixture.make_trial(
+            condition, trial_cls=cls, first='continue', follow_claim=False,
+            wire_fault=wire_fault, prepare_fault=prepare_fault, store_fault=store_fault)
+        trial.scheduler.timer('r1', at=6.)
+        fixture.advance(trial, clock, links, 90.)
+        assert len(faults) == 1
+        assert trial.scheduler.ledger[faults[0]]['status'] == 'not_sent'
+        assert trial.send_ledger.sends(faults[0]) == 0
+        assert links['r1'].job() is None
+        assert trial.scheduler.budget.remaining('r1') > 0
+        return trial, requests
+
+    old, old_requests = run(v64)
+    new, new_requests = run(None)
+    r1 = lambda requests: [p for p in requests if p['robot_id'] == 'r1']
+    if condition == 'no_comm':
+        assert signature(new, new_requests) == signature(old, old_requests)
+        assert [p['sim_time_s'] for p in r1(new_requests)] == [0., 2.]
+    else:
+        assert [p['sim_time_s'] for p in r1(old_requests)[:3]] == [0., 2., 8.]
+        assert [p['sim_time_s'] for p in r1(new_requests)[:3]] == [0., 2., 8.]
+        assert {m.delivered_sim_s for m in new.scheduler.messages} == {6.1}
+        assert r1(new_requests)[2]['inbox'] == r1(old_requests)[2]['inbox']
+        assert r1(new_requests)[2]['inbox']
+        assert not new.scheduler._message_waiting
+        cid = next(cid for cid, row in new.scheduler.ledger.items()
+                   if row['actor'] == 'r1' and row['started_sim_s'] == 8.)
+        assert new.scheduler.call_causes[cid]['cause'] == 'message'
 
 
 @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])

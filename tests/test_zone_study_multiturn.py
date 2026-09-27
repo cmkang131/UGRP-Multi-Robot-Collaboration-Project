@@ -38,7 +38,8 @@ class TimingTrial(zi.IntegratedTrial):
 
 
 def make_trial(condition, *, first='claim', policy=None, limits=None, send=True, repeat=False,
-               budget=None, tmp_path=None, follow_claim=True, horizon=90., trial_cls=None, wire_fault=None):
+               budget=None, tmp_path=None, follow_claim=True, horizon=90., trial_cls=None, wire_fault=None,
+               prepare_fault=None, store_fault=None, additive_noop=False):
     clock = [0.]
     links = links_for(clock)
     requests, turns = [], Counter()
@@ -58,6 +59,14 @@ def make_trial(condition, *, first='claim', policy=None, limits=None, send=True,
         action = ({'kind': 'claim', 'order_id': order_id, 'role': 'west',
                    'destination_zone': order['destination_zone']}
                   if first == 'claim' or (own_messages and follow_claim) else {'kind': first})
+        if additive_noop:
+            cid = payload['request_id'].removeprefix('req_').replace('_', '-')
+            cause = getattr(trial.scheduler, 'call_causes', {}).get(cid, {}).get('cause')
+            if cause == 'message':
+                # Schedule properties hold own-job events fixed. Extra fixture
+                # replies must not create a hold/claim and a new terminal event.
+                # TimingTrial still charges exactly the same response cost.
+                action = {'kind': 'continue'}
         messages = []
         if send and rid == 'r3' and (turns[rid] == 1 or repeat) and condition != 'no_comm':
             for peer, target in [('r1', 'order-2'), ('r2', 'order-3')]:
@@ -88,11 +97,27 @@ def make_trial(condition, *, first='claim', policy=None, limits=None, send=True,
         ledger = PilotSendLedger(store_dir=tmp_path / 'wire', budget=budget, wire=wire,
                                   profile={'source_sha256': PROXY_SHA256, 'url': settings['url']},
                                   context={'condition': condition, 'trial_id': 'offline-multiturn'})
+    if store_fault:
+        store = ledger._store
+
+        def faulted_store(row, kind, data):
+            store_fault(row, kind, data)
+            return store(row, kind, data)
+
+        ledger._store = faulted_store
     adapter = zi.ModelAdapter(gemini_client_factory(**settings, study_json=True), ledger)
     trial = (trial_cls or TimingTrial)(SCENARIO, condition=condition, seed=11, links=links, horizon_s=horizon,
                          map_bundle=BUNDLE, actor='gemini_proxy', model_adapter=adapter,
                          cost_params=CostParams(input_token_s=0., output_token_s=.1, utterance_s=.1),
                          policy=policy, decision_limits=limits)
+    if prepare_fault:
+        prepare = trial.prepare_call
+
+        def faulted_prepare(call):
+            prepare_fault(call)
+            return prepare(call)
+
+        trial.prepare_call = faulted_prepare
     trial.begin(0.)
     return trial, clock, links, requests
 

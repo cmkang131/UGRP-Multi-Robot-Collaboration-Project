@@ -135,3 +135,10 @@ DB identity는 `source_root=/Users/changmin/projects/ugrp-wt/kiro-study-core`,
 [PR #238](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/238),
 [예산 #222](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/222),
 [#229 검증 기록](../2026-09-27-pr229-source-delay/README.md).
+
+## PR #245 검토 3 후속 — 2026-09-28
+
+0-send 환불도 공통 완료 경로에서 보류 메시지를 깨우도록 수정했다.
+생성 property 712건, 종료 경로 24종의 표 기반 검사 101건을 포함해 관련 회귀
+1,751건을 확인했다. 실제 모델 호출·물리 step·커밋은 0회다.
+반례·검증 범위·초기 실패와 수정·원본 해시는 [검토 3 수정 기록](review3-fix.md)을 따른다.
