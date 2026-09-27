@@ -396,7 +396,8 @@ def _make_sinks(args, ep, ctx) -> dict:
         return vision_pf.make_robust_pf(ctx['m1'], ctx['static'], ctx['params'], cfg.get('measurement', {}),
                                         cfg.get('obs', {}), ctx['cal']['sag'], seed,
                                         ctx['cal'].get('pan_base_yaw') if cfg.get('pan_coupling', True) else None,
-                                        cfg.get('robust', {}), cfg.get('motion_v4'), cfg.get('sigma_v4'))
+                                        cfg.get('robust', {}), cfg.get('motion_v4'), cfg.get('sigma_v4'),
+                                        cfg.get('report_v5'))
     sinks = {}
     for name in args.filters.split(','):
         if name == 'vision':
@@ -442,6 +443,9 @@ def _frame_record(row, sinks) -> dict:
             'last_scan_t': e.get('last_scan_t'), 'since_scan_s': e.get('since_scan_s'),
             'sigma_calibration_state': e.get('sigma_calibration_state'),
             'radius95_xy_m': e.get('radius95_xy_m')}
+        if rec[name] is not None and 'vis5' in e:
+            rec[name]['vis5'] = e['vis5']
+            rec[name]['raw_std_yaw_rad'] = e['raw_std_yaw_rad']
     return rec
 
 
@@ -506,6 +510,8 @@ def localize(args):
                     'module_sha256': {f: sha_file(HERE/f) for f in ('vision_loc.py', 'vision_pf.py', 'vision_motion.py', 'vision_sigma.py',
                                                                   'vision_loc_cli.py')},
                     'pr210_probe_sha256': sha_file(vl._PROBE)}
+            if ctx['cfg'].get('report_v5', {}).get('enabled'):
+                meta['module_sha256']['vision_report_v5.py'] = sha_file(HERE/'vision_report_v5.py')
             (out/f'{ep}.meta.json').write_text(json.dumps(meta, indent=1))
         print(f'{ep}: {n} frames, {meta["wall_s"]} s', flush=True)
 

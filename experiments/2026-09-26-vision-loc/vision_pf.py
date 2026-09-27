@@ -49,6 +49,7 @@ import numpy as np
 import vision_loc as vl
 import vision_motion as vm
 import vision_sigma as vs
+import vision_report_v5 as vr5
 
 
 def _num(v, name, lo=0., hi=math.inf, lo_open=False):
@@ -101,11 +102,15 @@ def validate_robust(robust: Mapping | None) -> dict:
 
 def make_robust_pf(m1_module, static_map: Mapping, params: Mapping, measurement: Mapping, obs_params: Mapping,
                    sag_table: Mapping, seed: int, pan_table: Mapping | None = None, robust: Mapping | None = None,
-                   motion_v4: Mapping | None = None, sigma_v4: Mapping | None = None):
+                   motion_v4: Mapping | None = None, sigma_v4: Mapping | None = None,
+                   report_v5: Mapping | None = None):
     base = vl.vision_pf_class(m1_module)
     cfg = validate_robust(robust)
     motion = vm.validate_motion(motion_v4)
     sigma = vs.validate_sigma(sigma_v4)
+    report = vr5.validate(report_v5)
+    if report['enabled'] and sigma['enabled']:
+        raise ValueError('VIS4/VIS5 report calibrations cannot be stacked')
 
     class RobustVisionLocalizer(base):
         def __init__(self):
@@ -113,6 +118,8 @@ def make_robust_pf(m1_module, static_map: Mapping, params: Mapping, measurement:
             self.robust = cfg
             self.motion_v4 = motion
             self.sigma_head = vs.VarianceCalibrator(sigma)
+            self.report_v5_head = vr5.ReportHead(report)
+            self._report_v5_scan = None
             self.pending_wheels = []
             self._last_effective_wheel_t = -math.inf
             self.stuck = np.zeros(self.n, bool)
@@ -186,6 +193,8 @@ def make_robust_pf(m1_module, static_map: Mapping, params: Mapping, measurement:
         # ------------------------------------------------------------ measurement
         def update_obs(self, t, obs, pose):
             self.diag = {}
+            if self.report_v5_head.config['enabled']:
+                self._report_v5_scan = (float(t), obs, dict(pose))
             return super().update_obs(t, obs, pose)
 
         def apply_scan(self, t, obs, pose):
@@ -323,6 +332,14 @@ def make_robust_pf(m1_module, static_map: Mapping, params: Mapping, measurement:
                 est['last_scan_t'] = self.last_scan_t
                 est = self.sigma_head.report(est, t=self.t, last_scan_t=self.last_scan_t,
                                              loaded=bool(self.load.loaded), settled=bool(self.settled(self.t)))
+                if self.report_v5_head.config['enabled']:
+                    scan = self._report_v5_scan
+                    current = (scan is not None and abs(scan[0] - self.t) <= 1e-8
+                               and self.last_scan_t is not None and abs(self.last_scan_t - self.t) <= 1e-8)
+                    obs = vr5.features(self, est, scan[1] if current else None, scan[2] if current else {},
+                                       measured=current, ess_pre=self.diag.get('ess_pre'))
+                    est = self.report_v5_head.report(est, t=self.t, last_scan=self.last_scan_t,
+                        loaded=bool(self.load.loaded), settled=bool(self.settled(self.t)), observation=obs)
             return est
 
         def _dominant_estimate(self):
