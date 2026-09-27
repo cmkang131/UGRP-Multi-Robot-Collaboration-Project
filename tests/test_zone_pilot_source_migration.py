@@ -6,7 +6,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from harness.zone_pilot_budget import PilotBudget, BudgetExceeded, canonical, sha
+from harness.zone_pilot_budget import PilotBudget, BudgetExceeded, canonical, sha, state_sha256
 from harness.zone_pilot_reconcile import reconcile, require_preflight
 from scripts import run_zone_study_pilot as runner
 from test_zone_study_review_r9 import PROFILE, fixture_wire, run_mock_cli
@@ -33,7 +33,7 @@ def review(budget):
     snapshot = budget.snapshot()
     return {'reason': 'PR #194: strict single JSON fence; v62 -> v63',
             'expected_identity_sha256': sha(canonical(snapshot['meta']['identity']).encode()),
-            'expected_state_sha256': sha(canonical([snapshot['sends'], snapshot['runs']]).encode())}
+            'expected_state_sha256': state_sha256(snapshot)}
 
 
 def reserve(budget, tokens=235408):

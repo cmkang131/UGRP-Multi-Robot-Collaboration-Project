@@ -27,7 +27,7 @@ from harness.llm_completion import (ACCEPTED_UNVERIFIED_LABEL, COMPLETION_POLICY
 from harness.zone_study_eval import model_aggregate
 from harness.zone_event_scheduler import CallPolicy, EventScheduler, PendingCall, TransportFailure
 from harness.zone_pilot_budget import (ATTEMPT_CAP, TOKEN_CAP, UPSTREAM_BOUND, EFFECTIVE, REQUESTED,
-                                       PilotBudget, canonical, sha, token_envelope, usage_total)
+                                       PilotBudget, sha, state_sha256, token_envelope, usage_total)
 from harness.rgb_execution_bundle import RUNNABLE_ID, REGISTRY, load_bundle, source_closure
 from harness.zone_pilot_ledger import PilotSendLedger, proxy_profile, runtime_identity
 from harness.zone_pilot_reconcile import reconcile, require_preflight
@@ -403,7 +403,7 @@ def main(argv=None):
     out.mkdir(parents=True)
     write_new(out / 'started.json', run)
     budget.start_run(run_id, args.stage, {'output': str(out)},
-                     expected_state=sha(canonical([before['sends'], before['runs']]).encode()))
+                     expected_state=state_sha256(before))
     failed = False
     try:
         for condition in MAIN_CONDITIONS:

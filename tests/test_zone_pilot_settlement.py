@@ -1,5 +1,7 @@
 """Explicit budget settlement counterexamples; no physical/model execution."""
+from contextlib import closing
 import json
+import os
 from pathlib import Path
 import socket
 import sqlite3
@@ -8,9 +10,11 @@ import pytest
 
 from harness.llm_completion import assess_completion
 from harness.zone_pilot_budget import BudgetExceeded, PilotBudget, canonical, sha, state_sha256
-from harness.zone_pilot_reconcile import reconcile
+from harness.zone_pilot_reconcile import reconcile, require_preflight
+from harness.zone_pilot_ledger import PilotSendLedger
 from scripts import run_zone_study_pilot as runner
 from test_zone_pilot_proxy_log import case, build, RETRY, USAGE
+from test_zone_study_review_r9 import PROFILE, fixture_wire, run_mock_cli
 
 
 @pytest.fixture(autouse=True)
@@ -312,3 +316,145 @@ def test_attempt_cap_uses_settled_count_and_stays_at_600(tmp_path):
     assert budget.snapshot()['charged_attempts'] == 599
     with pytest.raises(BudgetExceeded):
         budget.reserve({}, {'reserved_tokens': 2, 'per_upstream_tokens': 1})
+
+
+def synthetic_telemetry(tmp_path, snapshot):
+    rows = [{'reservation_id': sent['reservation_id'], 'body_sha256': sent['body_sha256'],
+             'proxy_request_id': f'offline-proxy-{i}', 'proxy_response_id': sent['proxy_response_id'],
+             'upstream_attempts': [{'id': f'offline-upstream-{i}', 'terminal': True,
+                                    'usage': sent['provider_usage']}]}
+            for i, sent in enumerate(snapshot['sends'])]
+    raw = tmp_path / 'synthetic-upstream.jsonl'
+    raw.write_text(''.join(canonical(row) + '\n' for row in rows))
+    evidence = {'path': str(raw), 'sha256': sha(raw.read_bytes())}
+    telemetry = tmp_path / 'synthetic-telemetry.jsonl'
+    telemetry.write_text(''.join(canonical({**row, 'evidence': evidence}) + '\n' for row in rows))
+    return telemetry
+
+
+def fingerprint(path):
+    stat = path.stat()
+    return {'sha256': sha(path.read_bytes()), 'bytes': stat.st_size, 'mtime_ns': stat.st_mtime_ns}
+
+
+@pytest.fixture(params=['synthetic', 'real_memory'])
+def cli_history(request, tmp_path, monkeypatch):
+    """The optional real-data regression writes ONLY to an in-memory clone."""
+    if request.param == 'synthetic':
+        budget, manifest = run_mock_cli(tmp_path, monkeypatch)
+        telemetry = synthetic_telemetry(tmp_path, budget.snapshot())
+        yield budget, telemetry, manifest
+        return
+
+    root = os.environ.get('UGRP_ZONE_PILOT_REGRESSION_ROOT')
+    if root is None:
+        pytest.skip('set UGRP_ZONE_PILOT_REGRESSION_ROOT for the read-only real DB regression')
+    source = Path(root).resolve() / 'budget.sqlite'
+    telemetry = source.parent / 'log-evidence-v63-05/telemetry.jsonl'
+    sidecars = [Path(str(source) + suffix) for suffix in ('-wal', '-shm', '-journal')]
+    assert not any(path.exists() for path in sidecars), 'immutable backup requires a quiescent DB'
+    original = fingerprint(source)
+    originals = {source: original, telemetry: fingerprint(telemetry)}
+    with closing(sqlite3.connect(':memory:')) as memory:
+        try:
+            # immutable+ro prevents even journal/SHM creation on the original.
+            with closing(sqlite3.connect(source.as_uri() + '?mode=ro&immutable=1', uri=True)) as db:
+                db.backup(memory)
+                before = PilotBudget._snapshot(db)
+            assert memory.execute('PRAGMA integrity_check').fetchone()[0] == 'ok'
+
+            class MemoryBudget(PilotBudget):
+                def _connect(self):
+                    return memory
+
+            # Keep the original meta/path/source chain; only the test's connection
+            # is replaced. The production copy/path guard remains unchanged.
+            monkeypatch.setattr(runner, 'PilotBudget', MemoryBudget)
+            budget = MemoryBudget(source)
+            assert budget.snapshot() == before
+            rows = [json.loads(line) for line in telemetry.read_text().splitlines() if line.strip()]
+            evidence = set(originals)
+            for sent in before['sends']:
+                wire = Path(sent['request_path']).parent
+                evidence.update((Path(sent['request_path']), wire / sent['ledger']['response_path'],
+                                 wire.parent / 'trial.json'))
+            evidence.update(Path(run['output']) / 'manifest.json' for run in before['runs'])
+            evidence.update(Path(row['evidence']['path']) for row in rows)
+            originals.update({path: fingerprint(path) for path in evidence if path not in originals})
+            report = reconcile(before, rows)
+            assert report['complete']
+            run = next(run for run in reversed(before['runs'])
+                       if run['stage'] == 'preflight' and run['status'] == 'recorded'
+                       and run.get('source_revision', 0) == before['meta'].get('source_revision', 0))
+            manifest = json.loads((Path(run['output']) / 'manifest.json').read_text())
+            assert require_preflight(before, report, manifest)['admitted']
+            yield budget, telemetry, manifest
+        finally:
+            assert {path: fingerprint(path) for path in originals} == originals
+            assert not any(path.exists() for path in sidecars)
+            print(canonical({'real_database_unchanged': original, 'original_files_verified': len(originals)}))
+
+
+@pytest.mark.parametrize('stage', ['preflight', 'cohort', 'migrated_preflight'])
+def test_cli_starts_after_settlement(cli_history, tmp_path, monkeypatch, stage):
+    budget, telemetry, preflight = cli_history
+    before = budget.snapshot()
+    receipt = budget.settle_reconciled(**review(tmp_path, budget, telemetry))
+    settled = budget.snapshot()
+    assert receipt['eligible'] and receipt['audits']
+    assert settled['sends'] == before['sends'] and settled['runs'] == before['runs']
+    assert settled['meta'] == before['meta'] and settled['source_migrations'] == before['source_migrations']
+    assert state_sha256(settled) != state_sha256(before)
+    assert receipt['after_state_sha256'] == state_sha256(settled)
+    print(canonical({'stage': stage, 'settled_calls': len(receipt['eligible']),
+                     'skipped_calls': len(receipt['skipped']),
+                     'charged_before': receipt['before'], 'charged_after': receipt['after']}))
+
+    if stage == 'migrated_preflight':
+        identity = {**budget.meta['identity'], 'source_head': 'offline-r14-reviewed-source',
+                    'rgb_execution_bundle': budget.meta['identity'].get(
+                        'rgb_execution_bundle', {'id': 'offline-fixture', 'sha256': 'fixture'})}
+        budget.migrate_source(identity, reason='offline R14 continuation test',
+                              expected_identity_sha256=sha(canonical(budget.meta['identity']).encode()),
+                              expected_state_sha256=state_sha256(settled))
+        budget = type(budget)(budget.path, identity=identity)
+        with pytest.raises(ValueError, match='new four-condition preflight'):
+            require_preflight(budget.snapshot(), {'complete': True}, preflight)
+        stage = 'preflight'
+
+    monkeypatch.setattr(runner, 'proxy_profile', lambda *a: PROFILE)
+    monkeypatch.setattr(runner, 'source_identity', lambda *a: budget.meta['identity'])
+    monkeypatch.setattr(runner, 'require_committed_source', lambda *a: None)
+    monkeypatch.setattr(runner, 'runtime_identity', lambda *a: {'pid': 0, 'offline_injection': True})
+
+    def ledger(**kwargs):
+        kwargs['wire'] = fixture_wire(kwargs['context']['condition'], 'stop')
+        return PilotSendLedger(**kwargs)
+
+    monkeypatch.setattr(runner, 'PilotSendLedger', ledger)
+    out = tmp_path / ('after-settlement-' + stage)
+    cli = ['--execute', '--acknowledge-upstream-finish-limitation', '--stage', stage,
+           '--budget-file', str(budget.path), '--upstream-telemetry', str(telemetry), '--output', str(out)]
+    if stage == 'cohort':
+        path = tmp_path / 'preflight-manifest.json'
+        runner.write_new(path, preflight)
+        cli += ['--preflight-manifest', str(path)]
+    # All calls use a fixture wire. New synthetic sends intentionally lack
+    # upstream evidence, so the existing reconciliation gate still returns 2.
+    assert runner.main(cli) == 2
+    manifest = json.loads((out / 'manifest.json').read_text())
+    after = budget.snapshot()
+    count = 4 if stage == 'preflight' else 12
+    assert manifest['status'] == after['runs'][-1]['status'] == 'recorded'
+    assert manifest['stage'] == after['runs'][-1]['stage'] == stage
+    assert manifest['source_revision'] == budget.meta.get('source_revision', 0)
+    assert manifest['accepted_upstream_unverified_calls'] == len(manifest['call_links']) == count
+    assert not manifest['reconciliation_complete']
+    if stage == 'cohort':
+        assert manifest['cohort_gate']['admitted']
+    assert after['sends'][:len(before['sends'])] == before['sends']
+    assert after['runs'][:-1] == before['runs']
+    assert after['budget_settlements'] == settled['budget_settlements']
+    assert after['charged_attempts'] == settled['charged_attempts'] + 2 * count
+    assert after['charged_tokens'] == settled['charged_tokens'] + sum(
+        sent['reserved_tokens'] for sent in after['sends'][len(before['sends']):])

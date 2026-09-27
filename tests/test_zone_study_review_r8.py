@@ -502,7 +502,7 @@ def test_state_change_after_reconciliation_refuses_new_run(tmp_path):
     reserve(budget)
     with pytest.raises(RuntimeError, match='state changed'):
         budget.start_run('raced', 'preflight', {},
-                         expected_state=pb.sha(pb.canonical([before['sends'], before['runs']]).encode()))
+                         expected_state=pb.state_sha256(before))
 
 
 def test_unbudgeted_live_model_transport_is_refused(tmp_path):
