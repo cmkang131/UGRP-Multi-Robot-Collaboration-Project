@@ -1,0 +1,98 @@
+.................................................................................... [  4%]
+........................................................................ [  8%]
+........................................................................ [ 13%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................................................ [ 25%]
+........................................................................ [ 29%]
+........................................................................ [ 33%]
+.F...................................................................... [ 37%]
+........................................................................ [ 41%]
+........................................................................ [ 46%]
+........................................................................ [ 50%]
+........................................................................ [ 54%]
+........................................................................ [ 58%]
+........................................................................ [ 62%]
+....................................... [ 64%]
+.....................s.................................................. [ 68%]
+.............................s.......................................... [ 72%]
+........................................................................ [ 77%]
+........................................................................ [ 81%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 93%]
+........................................................................ [ 97%]
+........................................                                 [100%]
+=================================== FAILURES ===================================
+_ BoundaryTests.test_frozen_m1_files_are_unchanged (file='scripts/run_m1_owncam.py') _
+
+self = <test_owncam_memory.BoundaryTests testMethod=test_frozen_m1_files_are_unchanged>
+
+    def test_frozen_m1_files_are_unchanged(self):
+        frozen = json.loads((ROOT/'experiments'/'2026-09-26-zone-m1-owncam'/'frozen_source.json').read_text())
+        import hashlib
+        for f, want in frozen['sha256'].items():
+            with self.subTest(file=f):
+                got = hashlib.sha256((ROOT/f).read_bytes()).hexdigest()
+>               self.assertIn(got, {want, *self.POST_FREEZE_REVISIONS.get(f, {})})
+E               AssertionError: '04be35ed0e960a7683321b24e8218af293637879962d83871de71243a9f28c72' not found in {'95b6b76cd381e78d71868a938c241aac39c58c4e534ab1608c6d0cb9ce7e256f', 'b98d3986a68674bdd236b879d4adb83438d9e74a77528532dbb0735f5aca3f23'}
+
+tests/test_owncam_memory.py:128: AssertionError
+_ BoundaryTests.test_imports_are_allowed (path='owncam_memory.py', module='harness.owncam_memory_time') _
+
+self = <test_owncam_memory.BoundaryTests testMethod=test_imports_are_allowed>
+
+    def test_imports_are_allowed(self):
+        for path in RUNTIME:
+            for node in ast.walk(ast.parse(path.read_text())):
+                names = ([a.name for a in node.names] if isinstance(node, ast.Import) else
+                         [node.module] if isinstance(node, ast.ImportFrom) else [])
+                for n in names:
+                    with self.subTest(path=path.name, module=n):
+>                       self.assertIn(n, ALLOWED)
+E                       AssertionError: 'harness.owncam_memory_time' not found in {'harness.owncam_memory_kf', 'copy', 'harness.wall_tags', 'dataclasses', 'math', 'json', 'harness.m1_owncam_delivery', 'collections.abc', 'cv2', 'harness.owncam_drive', 'harness.owncam_landmarks', 'harness.owncam_landmark_tags', '__future__', 'harness.owncam_memory', 'harness.zone_color_boxes', 'numpy', 'harness.owncam_drive_mem', 'sim.masterpi_camera_profile', 'harness.visual_arm', 'harness.owncam_pose_source', 'hashlib'}
+
+tests/test_owncam_memory.py:61: AssertionError
+______________ test_frozen_m2_sources_or_explicit_followup_hashes ______________
+
+    def test_frozen_m2_sources_or_explicit_followup_hashes():
+        manifest = json.loads((ROOT / 'experiments/2026-09-26-zone-m2-pair/imports.json').read_text())
+        files = manifest['imports']
+        # Reviewed revisions that reached main after the freeze (records stay on their pinned SHA).
+        post_freeze = {'sim/zone_landmarks.py': {
+            '2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1'}}  # PR #208 env v3 registries
+        # PR #240 v5d and v5g candidates; frozen PF and old records stay unchanged.
+        post_freeze['harness/owncam_pose_source.py'] = {
+            '7c41c40db0c502af8522f263971ebfb0ae370543952da2a31960e3044e5388da',
+            # v5g adds only the detached public motion query; no measurement/control change.
+            '7e45cc820f3c0b96b0144c2a3318bf7b18a97f61d88aec2a62130e96ed29b155',
+        }
+        for row in files:
+            got = hashlib.sha256((ROOT / row['path']).read_bytes()).hexdigest()
+>           assert got in {row['sha256'], *post_freeze.get(row['path'], ())}, row['path']
+E           AssertionError: scripts/run_owncam_closed_loop.py
+E           assert '18af9bcea74cbd509f2eafe9a21a138f517ced17350f034964adec4babf6399e' in {'925c43d38d7cd3ef1eae9c9ab611cafe62a9a127d8946e88db58af12bf4e93eb'}
+
+tests/test_zone_pair_executor.py:479: AssertionError
+_ BoundaryTests.test_imports_are_allowed (path='owncam_pose_source.py', module='copy') _
+
+self = <test_m1_owncam.BoundaryTests testMethod=test_imports_are_allowed>
+
+    def test_imports_are_allowed(self):
+        for path in RUNTIME:
+            for node in ast.walk(ast.parse(path.read_text())):
+                names = ([a.name for a in node.names] if isinstance(node, ast.Import) else
+                         [node.module] if isinstance(node, ast.ImportFrom) else [])
+                for n in names:
+                    with self.subTest(path=path.name, module=n):
+>                       self.assertIn(n, ALLOWED)
+E                       AssertionError: 'copy' not found in {'harness.wall_tags', 'dataclasses', 'math', 'json', 'harness.m1_owncam_contract', 'collections.abc', 'harness.owncam_drive', 'base64', 'harness.owncam_localizer', 'harness.wrist_zone_skill_v6', 'harness.owncam_time', 'harness.wrist_zone_skill_v5', 'harness', '__future__', 'harness.wrist_zone_skill', 'numpy', 'harness.zone_color_boxes', 'harness.owncam_drive_v2', 'harness.owncam_pose_source', 'hashlib', 'harness.owncam_view'}
+
+tests/test_m1_owncam.py:42: AssertionError
+Nonphysical suite guard: {'physical_step_attempts': 0, 'real_vision_worker_attempts': 0, 'network_attempts': 0}
+=========================== short test summary info ============================
+SUBFAILED(file='scripts/run_m1_owncam.py') tests/test_owncam_memory.py::BoundaryTests::test_frozen_m1_files_are_unchanged
+SUBFAILED(path='owncam_memory.py', module='harness.owncam_memory_time') tests/test_owncam_memory.py::BoundaryTests::test_imports_are_allowed
+FAILED tests/test_zone_pair_executor.py::test_frozen_m2_sources_or_explicit_followup_hashes
+SUBFAILED(path='owncam_pose_source.py', module='copy') tests/test_m1_owncam.py::BoundaryTests::test_imports_are_allowed
+4 failed, 1744 passed, 2 skipped, 378 subtests passed in 150.20s (0:02:30)

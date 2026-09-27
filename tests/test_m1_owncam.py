@@ -17,7 +17,7 @@ if str(ROOT) not in sys.path:
 
 RUNTIME = (ROOT/'harness'/'m1_owncam_delivery.py', ROOT/'harness'/'m1_owncam_contract.py',
            ROOT/'harness'/'owncam_pose_source.py', ROOT/'harness'/'owncam_time.py')
-ALLOWED = {'__future__', 'math', 'hashlib', 'json', 'base64', 'collections.abc', 'dataclasses', 'numpy',
+ALLOWED = {'__future__', 'math', 'hashlib', 'json', 'base64', 'collections.abc', 'dataclasses', 'numpy', 'copy',
            'harness', 'harness.owncam_view', 'harness.owncam_time', 'harness.m1_owncam_contract', 'harness.owncam_pose_source', 'harness.owncam_localizer',
            'harness.wall_tags', 'harness.owncam_drive', 'harness.owncam_drive_v2', 'harness.zone_color_boxes',
            'harness.wrist_zone_skill', 'harness.wrist_zone_skill_v5', 'harness.wrist_zone_skill_v6'}

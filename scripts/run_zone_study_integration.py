@@ -317,7 +317,9 @@ def run_bundle(prereg, episode, *, model_adapter=None):
     invariant = zi.condition_invariant_config(trial.study_config())
     if model_adapter is not None:
         invariant.update(zi.model_config('gemini_proxy', model_adapter.client_factory))
+    from harness.owncam_memory_time import TIME_CONTRACT
     bundle = {'execution_bundle_id': zi.EXECUTION_BUNDLE_ID, 'schema': SCHEMA,
+              'memory_time_contract': TIME_CONTRACT,
               'runtime_files_sha256': {f: zi.file_sha256(ROOT / f) for f in runtime_files(prereg, provider)},
               'scenario': episode['scenario'], 'scenario_sha256': zi.file_sha256(ROOT / episode['scenario']),
               'map_id': episode['map'], 'map_file_sha256': map_bundle['map_file_sha256'],

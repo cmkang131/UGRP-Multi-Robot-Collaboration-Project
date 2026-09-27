@@ -474,6 +474,11 @@ def test_frozen_m2_sources_or_explicit_followup_hashes():
         # v5g adds only the detached public motion query; no measurement/control change.
         '7e45cc820f3c0b96b0144c2a3318bf7b18a97f61d88aec2a62130e96ed29b155',
     }
+    # v5h review10: replay-input frame timestamps now use raw SIM time.
+    # The frozen M2 imports manifest and original result identity stay unchanged.
+    post_freeze['scripts/run_owncam_closed_loop.py'] = {
+        '18af9bcea74cbd509f2eafe9a21a138f517ced17350f034964adec4babf6399e',
+    }
     for row in files:
         got = hashlib.sha256((ROOT / row['path']).read_bytes()).hexdigest()
         assert got in {row['sha256'], *post_freeze.get(row['path'], ())}, row['path']

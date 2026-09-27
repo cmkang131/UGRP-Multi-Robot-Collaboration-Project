@@ -37,6 +37,8 @@ What it remembers
 """
 from __future__ import annotations
 
+from harness.owncam_memory_time import TIME_CONTRACT
+
 import copy
 import math
 from collections.abc import Callable, Mapping, Sequence
@@ -486,7 +488,7 @@ class OwnCamMemory:
 
     # ------------------------------------------------------------ bookkeeping
     def event(self, now: float, kind: str, **detail) -> None:
-        row = {'t': round(float(now), 3), 'memory_event': kind, **detail}
+        row = {'t': round(float(now), 3), 'memory_event': kind, **detail, 'time_contract': TIME_CONTRACT}
         self.events.append(row)
         if self.on_event is not None:
             self.on_event(kind, row)
@@ -536,7 +538,8 @@ class OwnCamMemory:
                 self.obs_by_type[o.landmark_type] = self.obs_by_type.get(o.landmark_type, 0) + 1
             # Used by look_fix_since/fresh in v2/v3: preserve raw capture time,
             # just like LandmarkObservation.t, instead of rounding a control input.
-            self.last_fix = {'t': float(now), 'frame_id': int(frame_id), 'posture': posture,
+            self.last_fix = {'t': float(now), 'time_contract': TIME_CONTRACT,
+                             'frame_id': int(frame_id), 'posture': posture,
                              'landmarks': sorted({o.landmark_id for o in obs}), 'provider': self.provider.name,
                              'interim': bool(self.provider.interim), 'xyyaw': [round(float(v), 4) for v in pose],
                              'std_xy_m': round(report.std_xy_m, 4), 'std_yaw_rad': round(report.std_yaw_rad, 5)}
@@ -897,7 +900,8 @@ class OwnCamMemory:
         free = int(np.sum(self.log_odds <= -L_KNOWN))
         occ = int(np.sum(self.log_odds >= L_KNOWN))
         pm = self.view.pickup_mask
-        return {'schema': SCHEMA, 'robot_id': self.robot_id, 't': round(float(now), 3),
+        return {'schema': SCHEMA, 'time_contract': TIME_CONTRACT,
+                'robot_id': self.robot_id, 't': round(float(now), 3),
                 'catalogue': self.catalogue.describe(), 'provider': self.provider.describe(),
                 'tracks': [t.record(now) for t in self.tracks],
                 'last_fix': copy.deepcopy(self.last_fix), 'last_look_fix': copy.deepcopy(self.last_look_fix),

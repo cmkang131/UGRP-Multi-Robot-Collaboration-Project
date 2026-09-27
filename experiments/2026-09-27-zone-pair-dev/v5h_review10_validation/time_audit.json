@@ -1,0 +1,1070 @@
+{
+  "scope_files": 39,
+  "round_calls": 198,
+  "method": "All scoped round/array.round calls enumerated by AST; time values and consumers traced with source search. No physics/model invocation.",
+  "findings": [
+    {
+      "producer": "scripts.record_owncam_localization.LoggingPort.apply/hold",
+      "consumers": [
+        "Recorder._issued",
+        "OwnCamDriver.on_command (run_owncam_closed_loop)",
+        "M1 controller.on_command (run_m1_owncam + both memory runners)",
+        "PairApproachDriver.on_command (run_m2_pair)"
+      ],
+      "change": "raw float SIM time, authoritative over action.t; port and sink same clock"
+    },
+    {
+      "producer": "Recorder.capture; run_owncam_closed_loop.capture; run_m1_owncam.capture",
+      "consumers": [
+        "inputs/frames.jsonl",
+        "scripts.eval_owncam_localization.replay -> loc.update(frame.t)"
+      ],
+      "change": "raw capture timestamp in input records; eval_only frame timestamps still presentation-only"
+    },
+    {
+      "producer": "owncam_memory last_fix/last_look_fix",
+      "consumers": [
+        "v2/v3 look_fix_since/look_fix_fresh"
+      ],
+      "change": "existing raw fix behavior explicitly identified as raw_sim_v1; predicates/tolerances unchanged"
+    },
+    {
+      "producer": "owncam_localizer.estimate; PoseReport",
+      "consumers": [
+        "owncam_time report comparisons",
+        "pose limits",
+        "legacy since_tag_s consumers"
+      ],
+      "change": "unchanged frozen quantized PF report contract; 1e-4 s report comparison tolerance preserved. Never reconstruct raw fix capture from rounded report or age."
+    },
+    {
+      "producer": "drive/memory/M1 event lists, gate_modes, cyan.t, memory snapshots/BoxTrack.record",
+      "consumers": [
+        "diagnostic outputs; cyan clustering reads map_xy/range_class only"
+      ],
+      "change": "remaining timestamp rounding is output-only; live clocks/tracks/deadlines remain raw"
+    },
+    {
+      "producer": "record/run eval_only, phase_times, final result, wall/load metadata",
+      "consumers": [
+        "evaluation/reporting only"
+      ],
+      "change": "unchanged; no robot control input"
+    },
+    {
+      "producer": "round(seconds/dt), servo PWM interpolation, geometry/projections/covariance",
+      "consumers": [
+        "step-count grid, actuator pulses, geometric values"
+      ],
+      "change": "not SIM clock timestamp quantization; unchanged"
+    }
+  ],
+  "files": [
+    {
+      "path": "harness/m1_contract.py",
+      "sha256": "9fe6d855e0b2d74d64ed2e7f144a360e32447fe6e81ae4b8c50cc25efa189075",
+      "round_calls": []
+    },
+    {
+      "path": "harness/m1_owncam_contract.py",
+      "sha256": "0e261ab85311f7127b6f09d5c16a37837873b70adb5140091b1f85d374846f5d",
+      "round_calls": []
+    },
+    {
+      "path": "harness/m1_owncam_delivery.py",
+      "sha256": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+      "round_calls": [
+        {
+          "line": 174,
+          "expression": "round(now, 3)"
+        },
+        {
+          "line": 345,
+          "expression": "round(float(v), 4)"
+        },
+        {
+          "line": 403,
+          "expression": "round(v, 4)"
+        },
+        {
+          "line": 452,
+          "expression": "round(now, 3)"
+        },
+        {
+          "line": 453,
+          "expression": "round(since_look, 3)"
+        }
+      ]
+    },
+    {
+      "path": "harness/m1_owncam_memory.py",
+      "sha256": "75aaae7dd61a5bf66ea3623f7622f25d7ea4dd83eea6610bd6bd14836fd10fec",
+      "round_calls": [
+        {
+          "line": 114,
+          "expression": "round(now, 3)"
+        },
+        {
+          "line": 285,
+          "expression": "round(v, 4)"
+        },
+        {
+          "line": 320,
+          "expression": "round(now, 3)"
+        },
+        {
+          "line": 330,
+          "expression": "round(now, 3)"
+        }
+      ]
+    },
+    {
+      "path": "harness/m1_owncam_memory_v3.py",
+      "sha256": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2",
+      "round_calls": [
+        {
+          "line": 220,
+          "expression": "round(now, 3)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_delivery_shared.py",
+      "sha256": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_drive.py",
+      "sha256": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+      "round_calls": [
+        {
+          "line": 119,
+          "expression": "round(now, 3)"
+        },
+        {
+          "line": 190,
+          "expression": "round(v, 3)"
+        },
+        {
+          "line": 194,
+          "expression": "round(result['length_m'], 3)"
+        },
+        {
+          "line": 295,
+          "expression": "round(est['x'], 4)"
+        },
+        {
+          "line": 295,
+          "expression": "round(est['y'], 4)"
+        },
+        {
+          "line": 295,
+          "expression": "round(est['yaw'], 4)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_drive_mem.py",
+      "sha256": "5bbae0fe6134131e0edc2b938399ddddffdec768ae2d50666e6ddaaf0b234b85",
+      "round_calls": [
+        {
+          "line": 58,
+          "expression": "round(est['std_xy_m'], 4)"
+        },
+        {
+          "line": 59,
+          "expression": "round(est['std_yaw_rad'], 5)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_drive_mem_v3.py",
+      "sha256": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_drive_shared.py",
+      "sha256": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_drive_v2.py",
+      "sha256": "217423249775b024504b56b59203a1eab50b667bf273387ba23c0974c0ad4462",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_landmark_tags.py",
+      "sha256": "5613ac56f530b34b82ab1738a95802139e510ec5cf7ad019032acc9179b19bc3",
+      "round_calls": [
+        {
+          "line": 169,
+          "expression": "round(float(side[i]), 1)"
+        },
+        {
+          "line": 170,
+          "expression": "round(float(rng[i]), 3)"
+        },
+        {
+          "line": 170,
+          "expression": "round(obl, 1)"
+        },
+        {
+          "line": 171,
+          "expression": "round(tag_detect_prob(float(side[i]), obl), 3)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_landmarks.py",
+      "sha256": "85e5f9aedd2eae74884f3f8839cf9e198d4d6650954e5479fddcb55e228390ed",
+      "round_calls": [
+        {
+          "line": 99,
+          "expression": "round(float(d[k]), 5)"
+        },
+        {
+          "line": 100,
+          "expression": "round(float(d['range_m']), 4)"
+        },
+        {
+          "line": 101,
+          "expression": "round(float(v), 4)"
+        },
+        {
+          "line": 163,
+          "expression": "round(cx + s*hx, 6)"
+        },
+        {
+          "line": 164,
+          "expression": "round(cy + s*hy, 6)"
+        },
+        {
+          "line": 233,
+          "expression": "round(mid[0], 6)"
+        },
+        {
+          "line": 233,
+          "expression": "round(mid[1], 6)"
+        },
+        {
+          "line": 235,
+          "expression": "round(p0[0], 6)"
+        },
+        {
+          "line": 235,
+          "expression": "round(p0[1], 6)"
+        },
+        {
+          "line": 235,
+          "expression": "round(p1[0], 6)"
+        },
+        {
+          "line": 235,
+          "expression": "round(p1[1], 6)"
+        },
+        {
+          "line": 246,
+          "expression": "round(length/FACE_SAMPLE_M)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_localizer.py",
+      "sha256": "0304d7c491dfe6ae68cea6550f7a13e3c99e8e1d3f8e8b6c4b7b1d06893b1d63",
+      "round_calls": [
+        {
+          "line": 381,
+          "expression": "round(self.t, 4)"
+        },
+        {
+          "line": 389,
+          "expression": "round(self.t, 4)"
+        },
+        {
+          "line": 390,
+          "expression": "cov.round(8)"
+        },
+        {
+          "line": 393,
+          "expression": "round(self.t - self.last_tag_t, 3)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_memory.py",
+      "sha256": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
+      "round_calls": [
+        {
+          "line": 333,
+          "expression": "round(float(f*plan['height'][i]), 4)"
+        },
+        {
+          "line": 333,
+          "expression": "round(float(v), 4)"
+        },
+        {
+          "line": 334,
+          "expression": "round(float(rng[k]), 3)"
+        },
+        {
+          "line": 334,
+          "expression": "round(float(v), 1)"
+        },
+        {
+          "line": 446,
+          "expression": "round(float(v), 4)"
+        },
+        {
+          "line": 447,
+          "expression": "round(self.sigma_m(), 4)"
+        },
+        {
+          "line": 448,
+          "expression": "round(self.first_seen_t, 3)"
+        },
+        {
+          "line": 449,
+          "expression": "round(self.last_seen_t, 3)"
+        },
+        {
+          "line": 449,
+          "expression": "round(float(now) - self.last_seen_t, 3)"
+        },
+        {
+          "line": 450,
+          "expression": "round(self.confirmed_t, 3)"
+        },
+        {
+          "line": 451,
+          "expression": "round(self.last_absent_t, 3)"
+        },
+        {
+          "line": 452,
+          "expression": "round(math.sqrt(self.floor_var), 4)"
+        },
+        {
+          "line": 491,
+          "expression": "round(float(now), 3)"
+        },
+        {
+          "line": 544,
+          "expression": "round(float(v), 4)"
+        },
+        {
+          "line": 545,
+          "expression": "round(report.std_xy_m, 4)"
+        },
+        {
+          "line": 545,
+          "expression": "round(report.std_yaw_rad, 5)"
+        },
+        {
+          "line": 605,
+          "expression": "round(float(v), 4)"
+        },
+        {
+          "line": 606,
+          "expression": "round(float(bx), 4)"
+        },
+        {
+          "line": 606,
+          "expression": "round(float(by), 4)"
+        },
+        {
+          "line": 607,
+          "expression": "round(rng, 3)"
+        },
+        {
+          "line": 607,
+          "expression": "round(float(rx), 4)"
+        },
+        {
+          "line": 607,
+          "expression": "round(float(ry), 4)"
+        },
+        {
+          "line": 608,
+          "expression": "round(float(math.sqrt(max(np.linalg.eigvalsh(R).max(), 0.))), 4)"
+        },
+        {
+          "line": 749,
+          "expression": "round(p, 3)"
+        },
+        {
+          "line": 776,
+          "expression": "round(float(math.sqrt(max(post[0, 0] + post[1, 1], 0.))), 5)"
+        },
+        {
+          "line": 777,
+          "expression": "round(float(math.sqrt(max(post[2, 2], 0.))), 6)"
+        },
+        {
+          "line": 778,
+          "expression": "round(float(math.sqrt(max(P0[0, 0] + P0[1, 1], 0.))), 5)"
+        },
+        {
+          "line": 779,
+          "expression": "round(float(math.sqrt(max(P0[2, 2], 0.))), 6)"
+        },
+        {
+          "line": 796,
+          "expression": "round(near_unknown/len(near), 3)"
+        },
+        {
+          "line": 797,
+          "expression": "round(far_unknown/len(far), 3)"
+        },
+        {
+          "line": 904,
+          "expression": "round(float(now), 3)"
+        },
+        {
+          "line": 922,
+          "expression": "np.round(self.log_odds[nz], 3)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_memory_delivery.py",
+      "sha256": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50",
+      "round_calls": [
+        {
+          "line": 49,
+          "expression": "round(now, 3)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_memory_inputs.py",
+      "sha256": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_memory_kf.py",
+      "sha256": "da2bbcca52133b6b3824ce0a102154e3387427e78c6628a29b91a5c1bc8bb01a",
+      "round_calls": [
+        {
+          "line": 143,
+          "expression": "round(v, 3)"
+        },
+        {
+          "line": 150,
+          "expression": "round(value, 3)"
+        },
+        {
+          "line": 158,
+          "expression": "round(best, 3)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_memory_time.py",
+      "sha256": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_memory_v3.py",
+      "sha256": "cf31368ee45dc209b8998e4434dcf3c23e018dd8e370b742d23dea128246491b",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_pair_beam.py",
+      "sha256": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_pair_beam_v2.py",
+      "sha256": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+      "round_calls": [
+        {
+          "line": 115,
+          "expression": "round(lo, 4)"
+        },
+        {
+          "line": 115,
+          "expression": "round(hi, 4)"
+        },
+        {
+          "line": 115,
+          "expression": "round(length, 4)"
+        },
+        {
+          "line": 171,
+          "expression": "round(dark_frac, 4)"
+        },
+        {
+          "line": 171,
+          "expression": "round(bottom, 4)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_pair_hold_v3.py",
+      "sha256": "1af3eeb8351ebefcfd2eca0a24f6e3d1876b288f40ef857f708eca1e78cc5bd2",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_pair_lift_v3.py",
+      "sha256": "faf725e3b1b1ee1e387c0f8c593b7508b6e170387d010debb551df7bd05d087d",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_pose_guard_provider.py",
+      "sha256": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_pose_guard_v3.py",
+      "sha256": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_pose_source.py",
+      "sha256": "7e45cc820f3c0b96b0144c2a3318bf7b18a97f61d88aec2a62130e96ed29b155",
+      "round_calls": [
+        {
+          "line": 54,
+          "expression": "round(self.t_est, 4)"
+        },
+        {
+          "line": 55,
+          "expression": "round(self.x_m, 5)"
+        },
+        {
+          "line": 55,
+          "expression": "round(self.y_m, 5)"
+        },
+        {
+          "line": 55,
+          "expression": "round(self.yaw_rad, 6)"
+        },
+        {
+          "line": 56,
+          "expression": "round(self.std_xy_m, 5)"
+        },
+        {
+          "line": 57,
+          "expression": "round(self.std_yaw_rad, 5)"
+        },
+        {
+          "line": 58,
+          "expression": "round(self.since_tag_s, 3)"
+        },
+        {
+          "line": 168,
+          "expression": "round(now, 4)"
+        },
+        {
+          "line": 183,
+          "expression": "round(n_eff, 1)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_safety_v3.py",
+      "sha256": "158134a9ace112dbc035e58c536a9ed6c0acec0e6aeb1965af62ae17a8aab86e",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_search_projection_v3.py",
+      "sha256": "9a1ba7aafa6cf898de78385bd8476e9855167953f8a0ff991d564567f726be28",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_slot_inspection_v3.py",
+      "sha256": "eb1fa9993654dd6cceab503ad2b9dc217e4fbe09094ebcb160582c1b7dd30bfe",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_sweep_collision.py",
+      "sha256": "5d458f00c9f16c931c4356a62ab4e201f762fbe30d74563fe3c071dae5bf76c6",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_time.py",
+      "sha256": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+      "round_calls": []
+    },
+    {
+      "path": "harness/owncam_view.py",
+      "sha256": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+      "round_calls": [
+        {
+          "line": 97,
+          "expression": "round(float(origin[2]), 4)"
+        },
+        {
+          "line": 98,
+          "expression": "round(float(origin[0]), 4)"
+        },
+        {
+          "line": 99,
+          "expression": "round(math.degrees(math.asin(max(-1., min(1., axis[2])))), 2)"
+        },
+        {
+          "line": 100,
+          "expression": "round(tool_pose(pose).pitch_deg, 2)"
+        },
+        {
+          "line": 101,
+          "expression": "round(float(valid.mean()), 4)"
+        },
+        {
+          "line": 102,
+          "expression": "round(float(keep.sum() / max(valid.sum(), 1)), 4)"
+        },
+        {
+          "line": 106,
+          "expression": "round(float(elev.min()), 2)"
+        },
+        {
+          "line": 106,
+          "expression": "round(float(elev.max()), 2)"
+        },
+        {
+          "line": 107,
+          "expression": "round(float(azim.min()), 2)"
+        },
+        {
+          "line": 107,
+          "expression": "round(float(azim.max()), 2)"
+        },
+        {
+          "line": 115,
+          "expression": "round(float(ahead[:, 0].min()), 3)"
+        },
+        {
+          "line": 115,
+          "expression": "round(float(min(ahead[:, 0].max(), 9.99)), 3)"
+        },
+        {
+          "line": 119,
+          "expression": "round(float(band[:, 1].min()), 3)"
+        },
+        {
+          "line": 119,
+          "expression": "round(float(band[:, 1].max()), 3)"
+        },
+        {
+          "line": 131,
+          "expression": "round(float(centre[:, 2].min()), 3)"
+        },
+        {
+          "line": 131,
+          "expression": "round(float(centre[:, 2].max()), 3)"
+        },
+        {
+          "line": 133,
+          "expression": "round(float(low[:, 1].min()), 3)"
+        },
+        {
+          "line": 133,
+          "expression": "round(float(low[:, 1].max()), 3)"
+        },
+        {
+          "line": 179,
+          "expression": "round(side, 1)"
+        },
+        {
+          "line": 179,
+          "expression": "px.round(1)"
+        }
+      ]
+    },
+    {
+      "path": "harness/owncam_visibility_v3.py",
+      "sha256": "2d0e41ab69782049f2d56b4b26e19847a1830cc841ee033959edd96476ecea81",
+      "round_calls": []
+    },
+    {
+      "path": "scripts/record_owncam_localization.py",
+      "sha256": "d5e94ed4b7ac6d3e11d82dc90dd476e551be3cc7c6a8950985cdbb3b92d85450",
+      "round_calls": [
+        {
+          "line": 145,
+          "expression": "round(now, 3)"
+        },
+        {
+          "line": 157,
+          "expression": "round(seconds/self.dt)"
+        },
+        {
+          "line": 169,
+          "expression": "round(now, 4)"
+        },
+        {
+          "line": 169,
+          "expression": "round(x, 5)"
+        },
+        {
+          "line": 169,
+          "expression": "round(y, 5)"
+        },
+        {
+          "line": 169,
+          "expression": "round(yaw, 6)"
+        },
+        {
+          "line": 190,
+          "expression": "round(now, 4)"
+        },
+        {
+          "line": 190,
+          "expression": "round(x, 5)"
+        },
+        {
+          "line": 190,
+          "expression": "round(y, 5)"
+        },
+        {
+          "line": 191,
+          "expression": "round(yaw, 6)"
+        },
+        {
+          "line": 191,
+          "expression": "round(float(v), 5)"
+        },
+        {
+          "line": 192,
+          "expression": "round(float(v), 6)"
+        },
+        {
+          "line": 193,
+          "expression": "round(float(self.world.data.body(self.box_body).xpos[2]), 4)"
+        },
+        {
+          "line": 251,
+          "expression": "round(v, 3)"
+        },
+        {
+          "line": 301,
+          "expression": "round(deg*2000/180)"
+        },
+        {
+          "line": 317,
+          "expression": "round(float(self.world.data.body(self.box_body).xpos[2]), 4)"
+        },
+        {
+          "line": 345,
+          "expression": "round(rec.now(), 3)"
+        },
+        {
+          "line": 359,
+          "expression": "round(v, 2)"
+        },
+        {
+          "line": 360,
+          "expression": "round(v, 2)"
+        },
+        {
+          "line": 361,
+          "expression": "round(time.time() - started, 1)"
+        }
+      ]
+    },
+    {
+      "path": "scripts/run_m1_owncam.py",
+      "sha256": "04be35ed0e960a7683321b24e8218af293637879962d83871de71243a9f28c72",
+      "round_calls": [
+        {
+          "line": 110,
+          "expression": "round(started, 3)"
+        },
+        {
+          "line": 230,
+          "expression": "round(now, 4)"
+        },
+        {
+          "line": 230,
+          "expression": "round(x, 5)"
+        },
+        {
+          "line": 230,
+          "expression": "round(y, 5)"
+        },
+        {
+          "line": 230,
+          "expression": "round(yaw, 6)"
+        },
+        {
+          "line": 231,
+          "expression": "round(float(v), 4)"
+        },
+        {
+          "line": 234,
+          "expression": "round(math.hypot(report.x_m - x, report.y_m - y), 5)"
+        },
+        {
+          "line": 235,
+          "expression": "round(abs(math.degrees((report.yaw_rad - yaw + math.pi) % (2*math.pi) - math.pi)), 4)"
+        },
+        {
+          "line": 236,
+          "expression": "round(report.std_xy_m, 5)"
+        },
+        {
+          "line": 242,
+          "expression": "round(seconds/float(model.opt.timestep))"
+        },
+        {
+          "line": 252,
+          "expression": "round(now, 4)"
+        },
+        {
+          "line": 271,
+          "expression": "round(now, 4)"
+        },
+        {
+          "line": 271,
+          "expression": "round(float(c.dist), 5)"
+        },
+        {
+          "line": 285,
+          "expression": "round(w['t0'], 4)"
+        },
+        {
+          "line": 286,
+          "expression": "round(w['zmin'], 5)"
+        },
+        {
+          "line": 292,
+          "expression": "round(now, 4)"
+        },
+        {
+          "line": 292,
+          "expression": "round(x, 5)"
+        },
+        {
+          "line": 292,
+          "expression": "round(y, 5)"
+        },
+        {
+          "line": 292,
+          "expression": "round(yaw, 6)"
+        },
+        {
+          "line": 293,
+          "expression": "round(float(v), 4)"
+        },
+        {
+          "line": 323,
+          "expression": "round(start[str(servo)] + ease*(end - start[str(servo)]))"
+        },
+        {
+          "line": 342,
+          "expression": "round(now, 2)"
+        },
+        {
+          "line": 359,
+          "expression": "round(now, 3)"
+        },
+        {
+          "line": 402,
+          "expression": "round(bx, 4)"
+        },
+        {
+          "line": 402,
+          "expression": "round(by, 4)"
+        },
+        {
+          "line": 402,
+          "expression": "round(bz, 4)"
+        },
+        {
+          "line": 405,
+          "expression": "round(math.hypot(target[0] - box0[0], target[1] - box0[1]), 4)"
+        },
+        {
+          "line": 415,
+          "expression": "round(float(data.time), 2)"
+        },
+        {
+          "line": 443,
+          "expression": "round(v, 2)"
+        },
+        {
+          "line": 443,
+          "expression": "round(v, 2)"
+        },
+        {
+          "line": 444,
+          "expression": "round(time.time() - started, 1)"
+        }
+      ]
+    },
+    {
+      "path": "scripts/run_m1_owncam_memory.py",
+      "sha256": "674d250d073bb990341826be604f95dcaefd19c8d56707d1039662af257960e5",
+      "round_calls": [
+        {
+          "line": 118,
+          "expression": "round(gib, 2)"
+        },
+        {
+          "line": 118,
+          "expression": "round(free_gib(out), 2)"
+        },
+        {
+          "line": 119,
+          "expression": "round(v, 2)"
+        },
+        {
+          "line": 119,
+          "expression": "round(v, 2)"
+        },
+        {
+          "line": 120,
+          "expression": "round(time.time() - started, 1)"
+        }
+      ]
+    },
+    {
+      "path": "scripts/run_m1_owncam_memory_v3.py",
+      "sha256": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8",
+      "round_calls": [
+        {
+          "line": 128,
+          "expression": "round(gib, 2)"
+        },
+        {
+          "line": 128,
+          "expression": "round(free_gib(out), 2)"
+        },
+        {
+          "line": 129,
+          "expression": "round(v, 2)"
+        },
+        {
+          "line": 129,
+          "expression": "round(v, 2)"
+        },
+        {
+          "line": 130,
+          "expression": "round(time.time() - started, 1)"
+        }
+      ]
+    },
+    {
+      "path": "scripts/run_owncam_closed_loop.py",
+      "sha256": "18af9bcea74cbd509f2eafe9a21a138f517ced17350f034964adec4babf6399e",
+      "round_calls": [
+        {
+          "line": 120,
+          "expression": "round(t, 3)"
+        },
+        {
+          "line": 156,
+          "expression": "round(now, 4)"
+        },
+        {
+          "line": 156,
+          "expression": "round(x, 5)"
+        },
+        {
+          "line": 156,
+          "expression": "round(y, 5)"
+        },
+        {
+          "line": 156,
+          "expression": "round(yaw, 6)"
+        },
+        {
+          "line": 160,
+          "expression": "round(float(data.body(box_body).xpos[2]), 4)"
+        },
+        {
+          "line": 162,
+          "expression": "round(est['x'], 5)"
+        },
+        {
+          "line": 162,
+          "expression": "round(est['y'], 5)"
+        },
+        {
+          "line": 162,
+          "expression": "round(est['yaw'], 6)"
+        },
+        {
+          "line": 163,
+          "expression": "round(math.hypot(est['x'] - x, est['y'] - y), 5)"
+        },
+        {
+          "line": 164,
+          "expression": "round(abs(math.degrees((est['yaw'] - yaw + math.pi) % (2*math.pi) - math.pi)), 4)"
+        },
+        {
+          "line": 165,
+          "expression": "round(est['std_xy_m'], 5)"
+        },
+        {
+          "line": 179,
+          "expression": "round(now, 4)"
+        },
+        {
+          "line": 225,
+          "expression": "round(now, 4)"
+        },
+        {
+          "line": 225,
+          "expression": "round(x, 5)"
+        },
+        {
+          "line": 225,
+          "expression": "round(y, 5)"
+        },
+        {
+          "line": 225,
+          "expression": "round(yaw, 6)"
+        },
+        {
+          "line": 240,
+          "expression": "round(exit_err, 4)"
+        },
+        {
+          "line": 249,
+          "expression": "round(end_box_z, 4)"
+        },
+        {
+          "line": 249,
+          "expression": "round(mz, 4)"
+        },
+        {
+          "line": 254,
+          "expression": "round(float(data.time) - state['student_start'], 3)"
+        },
+        {
+          "line": 255,
+          "expression": "round(state['student_start'], 3)"
+        },
+        {
+          "line": 259,
+          "expression": "round(vis, 3)"
+        },
+        {
+          "line": 262,
+          "expression": "round(x, 4)"
+        },
+        {
+          "line": 262,
+          "expression": "round(y, 4)"
+        },
+        {
+          "line": 262,
+          "expression": "round(yaw, 5)"
+        },
+        {
+          "line": 284,
+          "expression": "round(v, 2)"
+        },
+        {
+          "line": 285,
+          "expression": "round(v, 2)"
+        },
+        {
+          "line": 286,
+          "expression": "round(time.time() - started, 1)"
+        }
+      ]
+    }
+  ]
+}

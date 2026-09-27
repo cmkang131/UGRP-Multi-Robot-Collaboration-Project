@@ -98,3 +98,108 @@ v5h 등록 해시: `65229f3ea40bf4fccba508214f83fc84574fcd65a469047b985a88563902
 - `tests/test_zone_pair_v5c.py`
 - `tests/test_zone_pair_v5h.py`
 - `tests/test_zone_start_dock.py`
+
+## review10 후속 — standalone raw 시각과 memory 시간 계약 (2026-09-28)
+
+기준 HEAD는 `dde83c3d2501e3b5edf92f52fc1a12195f2d781a`다. 위의 v5h 최초 검증과
+prepare 기록은 당시 기록으로 보존했다. 이 절의 변경은 후속 미커밋 후보이며,
+과거 결과를 새 시간 계약의 결과로 재해석하지 않는다.
+
+- **P1:** `scripts/record_owncam_localization.py::LoggingPort.apply/hold`의 시각
+  반올림을 제거했다. sink는 기록기뿐 아니라 실제 standalone M1/memory 제어기의
+  입력이므로 port와 같은 raw SIM 시간을 전달한다. action의 `t`도 port 시각을
+  덮어쓸 수 없다. 실제 역행 거부와 PoseGuard 적분·만료·정착 조건은 유지한다.
+- 같은 LoggingPort를 쓰는 localization Recorder, closed-loop, M1, memory v2/v3,
+  M2 pair 경로를 확인했다. Recorder/closed-loop/M1의 `inputs/frames.jsonl` 시각은
+  offline localizer replay에 재입력될 수 있어 raw로 통일했다. M1 runtime 영수증에는
+  공유 LoggingPort 소스도 추가했다. 평가 전용·화면 표시 기록의 반올림은 유지한다.
+- **P2:** `harness/owncam_memory_time.py`에 `raw_sim_v1`을 정의하고 메모리
+  snapshot·fix·event, standalone `memory_runner.json`과 manifest의 student,
+  CLI `condition_label`, pair grasp contract 및 통합 실행 bundle의
+  `memory_time_contract`에 기록한다. memory algorithm의 v2/v3 schema와 시간 계약을
+  별도로 식별한다. 계약이 없는 과거 기록의 표시에는 새 계약을 추정해 붙이지 않는다.
+  matched OFF도 memory를 사용하므로 같은 계약을 기록한다.
+- `last_fix/last_look_fix`의 raw 저장은 이전 v5h 동작 그대로이며 이번에는 버전
+  표기를 추가했다. v2/v3의 since/freshness 조건·허용 오차, frozen PF의 quantized
+  report 및 기존 `1e-4 s` 보고 비교 계약은 변경하지 않았다. raw fix 시각을
+  반올림된 report나 age에서 역산하지 않는다.
+
+### 후속 전수 조사와 보존
+
+`harness/owncam_*`, M1 harness, `scripts/record_owncam_*`, M1 runner와
+closed-loop의 **39개 파일·198개 round 호출**을 AST로 열거하고 시각 소비자를
+추적했다. [time_audit.json](v5h_review10_validation/time_audit.json)에 소스 해시와
+분류를 남겼다. 남은 시간 반올림은 diagnostic event/snapshot·평가·wall/load 출력과
+기존 PF 보고 계약이다. `cyan.t`는 시간 판단에 쓰이지 않고 cluster는 좌표만 읽는다.
+step 개수/PWM/기하 값의 정수화는 명령·관측 시계 반올림과 구분했다.
+
+[보존 검사](v5h_review10_validation/preservation.json)는 **348개 모두 일치**한다.
+원본 주요 파일 12개와 입력 frame JSON 158개, 과거 사전등록 12개,
+유지 runtime/보존 manifest 7개, 기존 fixture 3개, 과거 RGB bundle 및 memory v2/v3
+기록 156개를 확인했다. 과거 bundle·freeze·결과 파일을 수정하지 않았다.
+기존 보존 테스트는 변경된 현재 소스의 정확한 successor SHA만 명시하며,
+임의 변경은 계속 실패한다. 새 테스트 파일은 CI 목록에도 등록했다.
+
+### 사전등록과 비물리 검증
+
+- `prereg_v5h.json`에 후속 계약과 현재 source 영수증을 반영하고 registration hash를
+  다시 계산했다: `f1425ccff7494c60c53279fa3a2a13aadb1f6710728017e05f5a7f5afc73b45d`.
+- **dev13/909, dev14/910 유지**. `execution_source_sha=null`,
+  `execution_authorization=null`, `execution_status=not_run`을 유지한다.
+  두 run은 새 등록으로 prepare-only 검증했으며 새 manifest를 이 후속 기록에 보존했다.
+  `applied=null`, 물리 성공 없음. 기존 prepare manifest를 덮어쓰지 않았다.
+- 실제 `M1OwnCamDeliveryMemV3`와 가짜 port·자기 이미지로 수정 전 **7 failed**를
+  재현했다. `2.000049` 관측 후 hold에서 하향 반올림 역행, `2.000051` 명령 후
+  raw 관측에서 상향 반올림 역행을 확인했다. hold·arm·mecanum, 실제 역행 거부,
+  입력 frame timestamp, `look_fix_since`와 freshness 만료 경계·미래 fix,
+  기록/표시/번들 시간 계약을 검사했다. 수정 후 최초 집중 검사는 **30 passed**였다.
+- 첫 전체 검사는 **1,744 passed / 4 failed / 2 skipped / 378 subtests passed**였다.
+  실패는 새 raw frame 소스의 M1/M2 보존 hash 2건, 새 시간 계약 모듈의 import 허용
+  목록 1건, 이전 v5g `copy` import의 허용 목록 누락 1건이었다. 과거 manifest를
+  변경하지 않고 exact successor/명시적 허용 목록으로 정리했다. 후속 집중 검사는
+  **59 passed / 0 failed / 269 subtests passed**다.
+- 모든 pytest는 `OMP_NUM_THREADS=1`, `--basetemp=./.pytest_tmp`,
+  `tests.pose_provider_no_physics` 가드로 실행했다. 실제 MuJoCo step이 필요한
+  기존 host 테스트 2개는 명시적으로 skip한다. 최종 수치는 아래 완료 기록과
+  [pytest_final.txt](v5h_review10_validation/pytest_final.txt)에 있다.
+
+코드/prepare 검증만 수행했으므로 TensorBoard 실험 snapshot은 추가하지 않았다.
+신규 물리 실행·실제 모델 호출·잠금 획득·Git 커밋·push·병합은 없다.
+원격 최신 상태 조회는 공용 Git 메타데이터 쓰기 제한과 GitHub 연결 실패로
+미완료다. 로컬 브랜치/HEAD와 사용자 지정 리뷰 대상은 일치한다.
+
+### review10 최종 완료 기록
+
+**1,765 passed / 0 failed / 2 skipped / 381 subtests passed**, 149.97초.
+가드의 physical_step_attempts, real_vision_worker_attempts, network_attempts는 모두 0이다.
+`.pytest_tmp` 삭제와 `git diff --check` 통과를 확인했다.
+전체 명령·검증 기록: [result.json](v5h_review10_validation/result.json).
+
+### review10 변경 파일
+
+- `experiments/2026-09-27-zone-pair-dev/changes_v5h.md`
+- `experiments/2026-09-27-zone-pair-dev/prereg_v5h.json`
+- `experiments/2026-09-27-zone-pair-dev/v5h_review10_validation/dev13_prepare_manifest.json`
+- `experiments/2026-09-27-zone-pair-dev/v5h_review10_validation/dev14_prepare_manifest.json`
+- `experiments/2026-09-27-zone-pair-dev/v5h_review10_validation/preservation.json`
+- `experiments/2026-09-27-zone-pair-dev/v5h_review10_validation/pytest_final.txt`
+- `experiments/2026-09-27-zone-pair-dev/v5h_review10_validation/pytest_focused.txt`
+- `experiments/2026-09-27-zone-pair-dev/v5h_review10_validation/pytest_full.txt`
+- `experiments/2026-09-27-zone-pair-dev/v5h_review10_validation/result.json`
+- `experiments/2026-09-27-zone-pair-dev/v5h_review10_validation/time_audit.json`
+- `harness/owncam_memory.py`
+- `harness/owncam_memory_time.py`
+- `scripts/record_owncam_localization.py`
+- `scripts/run_ci_tests.py`
+- `scripts/run_m1_owncam.py`
+- `scripts/run_m1_owncam_memory.py`
+- `scripts/run_m1_owncam_memory_v3.py`
+- `scripts/run_owncam_closed_loop.py`
+- `scripts/run_zone_study_integration.py`
+- `scripts/zone_pair_grasp_contract.py`
+- `tests/test_m1_owncam.py`
+- `tests/test_owncam_memory.py`
+- `tests/test_owncam_memory_time.py`
+- `tests/test_owncam_memory_v3.py`
+- `tests/test_record_owncam_time.py`
+- `tests/test_zone_pair_executor.py`

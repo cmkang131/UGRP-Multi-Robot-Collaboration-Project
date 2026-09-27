@@ -609,9 +609,12 @@ class ControllerAndBoundaryTests(unittest.TestCase):
         record = json.loads((ROOT/'experiments/2026-09-27-zone-owncam-memory-v3/v2_preservation.json').read_text())
         # PR #240 v5h audit: last_fix/last_look_fix are control inputs, so keep
         # raw capture time. Historical v2 hashes/results remain untouched;
-        # this exact successor does not inherit their experiment qualification.
-        successors = {'harness/owncam_memory.py':
-                      'c33ac377c6eb5a4b9b6917520914b2009cfcfe75fa380b042dde6c9c0938b67b'}
+        # These exact successors add raw_sim_v1 identity/standalone labels,
+        # without inheriting historical experiment qualification.
+        successors = {
+            'harness/owncam_memory.py': '7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a',
+            'scripts/run_m1_owncam_memory.py': '674d250d073bb990341826be604f95dcaefd19c8d56707d1039662af257960e5',
+        }
         for name, sha in record['sha256'].items():
             self.assertIn(hashlib.sha256((ROOT/name).read_bytes()).hexdigest(),
                           {sha, successors.get(name)}, name)

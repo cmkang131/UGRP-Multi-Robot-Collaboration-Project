@@ -19,6 +19,8 @@ from scripts import agent_lock
 
 TEST_PATTERNS = (
     "tests/test_owncam_memory_v3.py",
+    "tests/test_owncam_memory_time.py",
+    "tests/test_record_owncam_time.py",
     "tests/test_owncam_memory_v3_review.py",
     "tests/test_owncam_memory_v3_review2.py",
     "tests/test_owncam_memory_v3_review3.py",

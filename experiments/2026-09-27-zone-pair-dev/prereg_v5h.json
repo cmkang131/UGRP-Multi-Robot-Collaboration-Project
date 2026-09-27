@@ -391,11 +391,12 @@
       "id": "zone-pair-dev",
       "version": "0.5.0"
     },
+    "memory_time_contract": "raw_sim_v1",
     "pose_time": {
       "rounding_s": 0.0001,
       "accepted_fix": "raw accepted capture; strict after align start; report bounds tolerant in both directions; failed conjuncts logged"
     },
-    "command_time": "raw SIM time in host _apply/_hold, identical to port/capture/relook clock; no command rounding; stop-wait failed conjuncts logged; memory look-fix capture time raw",
+    "command_time": "raw SIM time in host _apply/_hold and standalone LoggingPort apply/hold, identical to port/capture/relook clock; no command rounding; stop-wait failed conjuncts logged; memory look-fix capture time raw",
     "pose_contract": "raw last_fix_t; fix_age_s; fix_source; std_xy_m/std_yaw_rad; observation_quality; provider-owned expected_observability and relocalization",
     "target_obstruction": "active own pair job only; coarse order at initial pickup or fresh segment own RGB anchor; full band + colour/geometry/component support; merged/unknown/other objects retained; no collision guard changes",
     "align_relook": {
@@ -446,7 +447,8 @@
     "weld": false,
     "qualification": "not physically executed; no inherited result",
     "source_sha256": {
-      "harness/owncam_memory.py": "c33ac377c6eb5a4b9b6917520914b2009cfcfe75fa380b042dde6c9c0938b67b",
+      "harness/owncam_memory.py": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
+      "harness/owncam_memory_time.py": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0",
       "harness/owncam_delivery_shared.py": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba",
       "harness/owncam_memory_delivery.py": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50",
       "harness/owncam_memory_inputs.py": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83",
@@ -460,8 +462,8 @@
       "harness/zone_own_deliver.py": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab",
       "harness/zone_own_team_host.py": "352197e8522a33eb07443b125d9fb14bbe4c484d68df2abdb292565540ad6618",
       "scripts/zone_pair_authorization.py": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649",
-      "scripts/run_zone_study_integration.py": "3334066ea9749af453d4047bc2d9adae06292217712293b39330debb9052ff69",
-      "scripts/run_m1_owncam_memory_v3.py": "6c90f0df5ba43bb4003c1c982a3069bce95680c5b0ac6257bdb763038d80aa5c",
+      "scripts/run_zone_study_integration.py": "50b1586b3d67acba8eb68dc754ccc82d56117d529cca9a1a9d7e560ee055fa9f",
+      "scripts/run_m1_owncam_memory_v3.py": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8",
       "sim/zone_geometry_scene.py": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
       "configs/zone_study_integration/pose_providers.json": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d",
       "maps/zones/zone_wide_door_geometry_v2.json": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
@@ -493,11 +495,11 @@
       "harness/zone_own_guards.py": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
       "scripts/run_zone_pair_dev.py": "c77784ff627c2a491826fd01d990517d2fd4499bbac362acb90c95961d6ff09d",
       "scripts/zone_pair_dev_runtime.py": "3c1cd30e105a1159ae2757e85e318281e299e916a6f93ed7139c185b76fa9a45",
-      "scripts/zone_pair_grasp_contract.py": "69cc15601ac265f7a3f0fb1c40f798a8f5e2245fc0049cdf68424e99f9af0efa",
+      "scripts/zone_pair_grasp_contract.py": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85",
       "scripts/evaluate_zone_pair_dev.py": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
       "configs/simulation_workflows.json": "6bae79139c75ef12f642980b155b94cb032995d320c920f53e6d25fb55d9c999"
     },
-    "sha256": "68cd8cfa1cc5b7258726430846ba853ce4eb6da85d93e4bd0fc8e684a7ea0674"
+    "sha256": "1d1c4f2b9bcdae77913b059fd6aa36e81052bea9d666f41e79d81ddff637aa2d"
   },
   "changes_from_v4": {
     "controller": "Before each align entry and during align, stop at accepted-tag gap 6 s or scheduling reserve XY .055 m / yaw 2.5 deg. Rank safe existing LOOK_P20 pans using projected mapped tags, then require a new own accepted RGB tag on the shared pose before resuming beam view. 8 looks/job, 3 directions/look, 8 s/look and 40 s cumulative, original align deadline unchanged. No base motion during relook.",
@@ -554,7 +556,7 @@
     "cohort": "Same unexecuted dev11/907, dev12/908; previous bytes preserved.",
     "scope": "No physics, models, commit or execution approval; thresholds, weld OFF and cargo_noslip_v1 unchanged."
   },
-  "registration_sha256": "65229f3ea40bf4fccba508214f83fc84574fcd65a469047b985a88563902e79f",
+  "registration_sha256": "f1425ccff7494c60c53279fa3a2a13aadb1f6710728017e05f5a7f5afc73b45d",
   "changes_from_v5f": {
     "authorization": "Live GitHub issue comment via gh at execution admission; pinned repository aliases/owner allowlist; exact source SHA + registration SHA256 + run_id approval digest; comment id/author/updated_at/body SHA256 receipt in manifest; fail closed offline.",
     "motion_interface": "Public get_motion_params for tags, vision and delayed providers; memory-v3 ON/OFF no longer calls a private localizer method through the delayed facade.",
@@ -569,6 +571,12 @@
     "logging": "align_relook_stop_wait: named checks, failed_checks, raw stopped_at_s, motion_until_s, report_t.",
     "preserved": "raw last_fix_t bounds; report 1e-4 s contract; gates, dwell, relook limits, blockage, physics, weld OFF, criteria and intervention unchanged.",
     "cohort": "dev13 nominal seed 909; dev14 abort seed 910; no result inheritance from failed dev11/dev12.",
-    "qualification": "Saved 158-report reproduction and nonphysical regressions only; no MuJoCo step, real model call, Git commit or execution approval. Fill execution_source_sha after coordinator commit and reseal registration using registration_payload/digest."
+    "qualification": "Saved 158-report reproduction and nonphysical regressions only; no MuJoCo step, real model call, Git commit or execution approval. Fill execution_source_sha after coordinator commit and reseal registration using registration_payload/digest.",
+    "review10_followup": {
+      "standalone_clock": "LoggingPort apply/hold and replay input frames use raw SIM time across recorder, closed-loop, M1 and memory runners; action payload cannot override port clock.",
+      "memory_time_contract": "raw_sim_v1",
+      "identity": "Explicit memory snapshot/fix/event time_contract, standalone condition_label and run/manifest student metadata, pair grasp contract and integration bundle metadata. Historical v2/v3 labels and artifacts remain unchanged; missing time_contract never means raw_sim_v1.",
+      "preserved": "Existing memory predicates/tolerances and quantized PF report 1e-4 s contract; dev13/909 and dev14/910; execution_source_sha and authorization null; not_run."
+    }
   }
 }

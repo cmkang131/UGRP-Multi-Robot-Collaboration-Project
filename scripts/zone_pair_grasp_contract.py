@@ -3,9 +3,11 @@ import hashlib
 import json
 from pathlib import Path
 
+from harness.owncam_memory_time import TIME_CONTRACT
+
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PATHS = (
-    'harness/owncam_memory.py',
+    'harness/owncam_memory.py', 'harness/owncam_memory_time.py',
     'harness/owncam_delivery_shared.py', 'harness/owncam_memory_delivery.py',
     'harness/owncam_memory_inputs.py', 'harness/owncam_pose_guard_provider.py',
     'harness/owncam_pose_guard_v3.py', 'configs/zone_pair_authorization.json',
@@ -39,8 +41,9 @@ def grasp_contract():
         'profile': 'zone_pair_grasp_relook_v3',
         'executor_profile': 'zone_pair_executor_v7_dev', 'status_profile': 'zone_pair_status_v5',
         'workflow': {'id': 'zone-pair-dev', 'version': '0.5.0'},
+        'memory_time_contract': TIME_CONTRACT,
         'pose_time': {'rounding_s': .0001, 'accepted_fix': 'raw accepted capture; strict after align start; report bounds tolerant in both directions; failed conjuncts logged'},
-        'command_time': 'raw SIM time in host _apply/_hold, identical to port/capture/relook clock; no command rounding; stop-wait failed conjuncts logged; memory look-fix capture time raw',
+        'command_time': 'raw SIM time in host _apply/_hold and standalone LoggingPort apply/hold, identical to port/capture/relook clock; no command rounding; stop-wait failed conjuncts logged; memory look-fix capture time raw',
         'pose_contract': 'raw last_fix_t; fix_age_s; fix_source; std_xy_m/std_yaw_rad; observation_quality; provider-owned expected_observability and relocalization',
         'target_obstruction': 'active own pair job only; coarse order at initial pickup or fresh segment own RGB anchor; full band + colour/geometry/component support; merged/unknown/other objects retained; no collision guard changes',
         'align_relook': {
