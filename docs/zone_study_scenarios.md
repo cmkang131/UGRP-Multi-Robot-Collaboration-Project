@@ -7,6 +7,8 @@
 - 테스트: `tests/test_zone_study_scenarios.py`
 - 의존 계약: [연구 계약 A](zone_study_contract.md) (`harness/zone_study_contract.py`, `harness/zone_study_inputs.py`)
 
+2026-09-27부터 연구 6종의 접촉 프로필은 모두 `cargo_noslip_v1`이다(#222/#223). 과거 실행 기록의 프로필은 소급 변경하지 않는다. 통합 러너는 실제 적용값을 manifest에 별도로 기록한다.
+
 이 패키지는 설정과 검증만 담당한다. 장면 생성·러너·지도 파일은 바꾸지 않으며 `sim/zone_cargo.py`와 `maps/zones/*.json`은 읽기만 한다.
 
 ## 공개부와 비공개부
