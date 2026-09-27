@@ -39,3 +39,29 @@
 - MuJoCo Python 렌더링(분할 렌더): https://mujoco.readthedocs.io/en/stable/python.html
 - Ultralytics 라이선스: https://www.ultralytics.com/license
 - 저장소 `docs/model_artifacts.md`(모델 배포 절차), `docs/tensorboard.md`.
+
+## 3차 추가 (2026-09-27, `kiro/zone-vision-loc-v3`, PR #233)
+
+### 논문·책 (직접 확인한 것만)
+
+- S. Thrun, W. Burgard, D. Fox, *Probabilistic Robotics*, MIT Press, 2005 — 표 8.3 Augmented_MCL(`w_slow`/`w_fast`, 임의 입자 주입). Nav2 `pf.c` 주석이 같은 쪽(p258)을 인용한다. 증강 MCL 구조의 출처.
+- D. Fox, W. Burgard, S. Thrun, "Active Markov Localization for Mobile Robots", Robotics and Autonomous Systems, 1998. https://publications.ri.cmu.edu/active-markov-localization-for-mobile-robots — 정보가 있는 방향 보기(이번 범위 밖, 폐루프 과제).
+- D. Fox, "KLD-Sampling: Adaptive Particle Filters", NIPS 2001. https://papers.nips.cc/paper_files/paper/2001/hash/c5b2cebf15b205503560c4e8e6d1ea78-Abstract.html — 필요 근거가 없어 넣지 않음.
+- M. Laskey, J. Lee, R. Fox, A. Dragan, K. Goldberg, "DART: Noise Injection for Robust Imitation Learning", CoRL 2017. https://arxiv.org/abs/1703.09327 — 교사 자세 편향(시연 잡음 주입)으로 train과 다른 궤적을 만든 발상.
+
+### OSS
+
+| 이름 | 버전 | 라이선스 | 사용 |
+|---|---|---|---|
+| Nav2 `nav2_amcl` ([github.com/ros-navigation/navigation2](https://github.com/ros-navigation/navigation2), `nav2_amcl/src/pf/pf.c`) | main `7b9bcb4c`(2026-09-27 확인), package 1.5.0 | LGPL-2.1-or-later | 증강 MCL 구조(`pf_update_sensor`의 `w_slow`/`w_fast` 갱신, `pf_update_resample`의 `w_diff` 주입과 주입 뒤 평균 초기화)와 권장값 0.001/0.1을 참고해 다시 구현. 코드 복사 없음 |
+
+### 내부 모듈·PR
+
+- `kiro/sim-speed`(PR #209) `scripts/sim_slots.py`: 렌더 기계 전체 sim 대기열.
+- `scripts/model_artifacts.py`(`sim_cli models pack/fetch/verify`): 모델 Release 패키징·재다운로드 검증.
+- 폐루프 자세 제공자 틀: PR #229 `configs/zone_study_integration/pose_providers.json`(이번에는 연결하지 않음).
+
+### 문서·웹 페이지
+
+- Nav2 AMCL 설정(`recovery_alpha_slow` 0.001, `recovery_alpha_fast` 0.1 권장): https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/
+- 검토 메모(내부): Codex PR #227 리뷰, Codex 필터 원인 분석(2026-09-26).

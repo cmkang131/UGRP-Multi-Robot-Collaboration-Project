@@ -7,6 +7,8 @@
 
 ## 0. 결론
 
+> **3차(2026-09-27, 8절):** train과 독립인 새 test 6회에서 문 근처·운반 횡 p99 5.6 cm(통과), p90 6.3 cm(실패), yaw p90 2.1°(통과) → FAIL. 채택한 수정은 우도의 열린 구간 끝 처리(P0) 하나다. 끼임 복구(정지 모드)·증강 MCL은 dev 규칙에서 기각됐다.
+
 > **검토 후 정정(2026-09-26, Codex PR #227 검토; test 채점 뒤 추가).** test s917은 train s903의 재주행이었다(GT 위치 차이 최대 0.01 mm, 같은 JPEG 213장·문 근처 42장). s912·s914의 문 통과 일부도 train과 1 mm 안이었다(`results/overlap_round2_vs_train.json`). 이 test는 오염된 기록으로 남긴다. dev 선택은 기록한 규칙(횡 p99 최소 → w1)과 달리 w6였다(실험 README dev 절). "병목은 인식이 아니라 필터"는 과한 결론이라 고쳤다. "0.4코어"는 근거가 없어 지웠다. 최종 환경은 태그 0개다(사용자 결정). 아래 FAIL은 태그를 다시 넣자는 뜻이 아니다.
 
 1. **태그 없는 비전 추정은 아직 게이트를 넘지 못한다.** 태그 없는 환경의 test 6회를 한 번 채점했다(위 정정: 일부는 train 재주행). 짐을 들고 문 근처를 지날 때 비전 추정은 p90 **7.0 cm**, 횡 p99 **15.3 cm**, yaw p90 2.9°였다. 사전 등록 게이트(door_1 운반 여유에서 유도: 횡 p99 ≤ 6 cm, p90 ≤ 5 cm, yaw p90 ≤ 3°)는 **FAIL**이다.
@@ -123,7 +125,56 @@
 - **교사 실패:** 교사가 문을 지나지 못한 회차는 문 근처 표본을 주지 않는다.
 - **대칭:** 두 방이 거의 같아 전역 초기화는 여전히 어렵다(도크 초기값을 썼다).
 
-## 8. 참고 자료
+## 8. 3차(2026-09-27): 독립 test와 필터 수정
+
+실험 기록은 [experiments/2026-09-26-vision-loc/README_v3.md](../../experiments/2026-09-26-vision-loc/README_v3.md). 브랜치 `kiro/zone-vision-loc-v3`(PR #233).
+
+### 8.1 독립 평가
+
+- 2차 test 오염의 원인은 결정론적 교사다. 같은 (출발 줄, 배치 칸, 상자 칸)이면 궤적이 같다. 3차는 seed, (출발 줄, 상자 칸)·(상자 칸, 배치 칸) 쌍, 출발 자세(설정 전용 오프셋), 교사 자세 편향(DART식 시연 잡음)을 모두 바꿨다.
+- `overlap_check.py`로 JPEG 바이트·재주행 자세(1 mm·0.1°, 같은 명령 팔 자세)·정렬 궤적을 감사하고, 하나라도 겹치면 제외한다(렌더 전 등록).
+
+### 8.2 필터 수정 (Codex 필터 분석의 우선순위)
+
+| 우선순위 | 문제 | 수정 | 재사용 |
+|---|---|---|---|
+| P0 | 화면 밖 경계 표식(±10000 px)을 유한한 행으로 계산해 일치하는 관측이 0.5점 | 열린 구간 끝·화면 밖 기대 행을 무한으로 처리(`interval_prob(open_ends=True)`) | — (버그 수정) |
+| P0 | 열 수를 정보량으로 셈 | 프레임마다 전방·횡·yaw 분산 감소율(정보 이득)과 프레임 적합도를 기록, `since_lateral_info_s` | — (진단) |
+| P1 | 재위치 추정 없음(`resets=0`) | 증강 MCL: `w_slow`/`w_fast` 이동 평균, `1 − w_fast/w_slow` 비율로 임의 자세 주입, 주입 뒤 평균 초기화 | Probabilistic Robotics 표 8.3, Nav2 AMCL `pf.c` 구조(코드 복사 없음, LGPL-2.1-or-later) |
+| P1 | 끼인 로봇(명령은 나가는데 안 움직임) | 입자별 "거의 정지" 운동 모드(진입·이탈 비율), 우세 모드 자세 보고 | 혼합 운동 가설(자체 구현) |
+| P1 | 짐을 들어도 미끄러짐 배율 유지 | 자기 짐 상태가 바뀔 때 새 운동 모델의 `scale_std`로 다시 뽑음 | M1 운동 모델 값 그대로 |
+| P1 | 긴 벽에서 정보 있는 방향 보기 | 오프라인 재생에서는 제어기 시선을 바꿀 수 없어 이번 범위 밖(폐루프 과제) | Active Markov Localization(향후) |
+| P2 | 가짜 바닥 조각 | 이번 라운드에서 관측 설정은 2차 w6 그대로(모델·관측 동결) | — |
+| P3 | KLD 표본 수 | 필요 근거가 없어 넣지 않음 | — |
+
+- 모든 확장은 설정 `robust` 블록으로만 켠다. `robust = {}`와 `open_ends = false`는 2차 필터와 비트 단위로 같다(dev s910·s911 추정 전 프레임 일치 확인, 난수 소비도 같게 테스트).
+
+### 8.3 dev 선택
+
+- dev = 2차 dev 3회 + 3차 dev 6회. 2차 test는 조정에 쓰지 않는다.
+- 규칙(`dev_plan_v3.json`, 실행 전 등록): 우선순위 순서로 하나씩 켜고, 문 근처·운반 횡 p99(L)와 p90(P)이 각각 0.3 cm 넘게 나빠지지 않으면서 전체 p90(A)이나 길 잃은 프레임(lost)이 줄거나 L/P가 0.3 cm 이상 좋아지면 채택. 수정 1·2(`dev_plan_v3_amendment*.json`)는 dev 관찰 뒤, 해당 변형 실행 전에 등록했다.
+
+### 8.4 dev 결과와 선택
+
+- 채택: a1(열린 구간 끝)만. dev 문 근처·운반 횡 p99 5.5 → 4.8 cm, p90 7.2 → 6.5 cm, yaw p90 3.4° → 2.4°.
+- 기각: 짐 상태 변화 때 배율 재추출(dev s945 소실, 횡 p99 106 cm), 정지 모드(끼인 s909·s941은 되살렸지만 s945 문 통과 횡 오차 3.5 → 18.9 cm), 증강 MCL(두 방이 거의 같아 주입 자세가 다른 곳에 들어맞음, 끼인 회차 오차 2 m → 4–5 m, 정상 추적 중 오탐 주입 30–33 프레임).
+- 배율 재추출 + 정지 모드 조합(a3b)이 dev 전체로는 가장 나았지만 순차 규칙이 요소를 하나씩 기각했다. 탐색용 보조 설정으로만 test에 함께 등록했다.
+
+### 8.5 test 결과 (독립 test 6회, `prereg_v3.json` `0b1cffa0` 뒤 한 번 채점)
+
+| 필터 | 문 근처·운반 p90 | 횡 p99 | yaw p90 | 전체 p90 |
+|---|---:|---:|---:|---:|
+| **비전(학생, a1)** | **6.3 cm** | **5.6 cm** | **2.07°** | 11.7 cm |
+| 보조 a3b(탐색용) | 6.1 | 6.3 | 1.91° | 13.5 |
+| 경계(PR #210) | 124.9 | 137.5 | 22.4° | 116.4 |
+| 명령 적분 | 76.6 | 54.2 | 17.6° | 103.0 |
+| 오라클(진단) | 3.5 | 5.9 | 1.21° | 7.6 |
+
+- 게이트 **FAIL**: 횡 p99(G1)와 yaw(G3)는 처음으로 통과했고 p90(G2) 6.3 > 5 cm에서 실패했다.
+- 사후(사전 등록 아님): 실패는 진행 방향(x) 편향에서 온다. 비전 |dx| p90 5.7 cm·평균 +2.4 cm, 횡 |dy| p90 2.0 cm.
+- 한계: 개루프 재생, test 6회, 폐루프 확인 안 함(분할 모델용 torch가 sim 환경에 없음; ACT worker 방식 재사용 필요), 게이트 p90은 문 폭에서 유도한 값이 아님.
+
+## 9. 참고 자료
 
 ### 논문 (직접 확인한 것만)
 
@@ -159,6 +210,15 @@
 - 운동 모델 재적합 변형(기각): `scripts/eval_owncam_localization.py` `fit_motion`.
 - TensorBoard: `scripts/tensorboard_tools/export.py` `Writer`; 빌더 구조는 PR #210 `build_tensorboard.py`.
 - 태그 참조: PR #210 `results/metrics_test.json`(M1 test, tags_v2), `kiro/zone-map-v3` 환경 v3 루프 test 원본(`outputs/zone-env-v3-20260926/loop/test`, 기록 커밋 `007949bf`).
+
+### 3차 추가
+
+- S. Thrun, W. Burgard, D. Fox, *Probabilistic Robotics*, MIT Press, 2005 — 표 8.3 Augmented_MCL.
+- D. Fox, W. Burgard, S. Thrun, "Active Markov Localization for Mobile Robots", Robotics and Autonomous Systems, 1998. https://publications.ri.cmu.edu/active-markov-localization-for-mobile-robots
+- D. Fox, "KLD-Sampling: Adaptive Particle Filters", NIPS 2001. https://papers.nips.cc/paper_files/paper/2001/hash/c5b2cebf15b205503560c4e8e6d1ea78-Abstract.html (넣지 않음)
+- M. Laskey, J. Lee, R. Fox, A. Dragan, K. Goldberg, "DART: Noise Injection for Robust Imitation Learning", CoRL 2017. https://arxiv.org/abs/1703.09327
+- Nav2 `nav2_amcl` `pf.c`(https://github.com/ros-navigation/navigation2, main `7b9bcb4c`, 1.5.0, LGPL-2.1-or-later): 구조·권장값만 참고해 다시 구현. 문서 https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/
+- 내부: PR #209 `scripts/sim_slots.py`, `scripts/model_artifacts.py`, PR #229 `pose_providers.json`(미연결).
 
 ### 문서·웹 페이지
 

@@ -9,7 +9,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
 from pathlib import Path
 
 import numpy as np
@@ -96,18 +95,23 @@ def main(argv=None):
     ap.add_argument('--train-info', type=Path, required=True)
     ap.add_argument('--bench', type=Path)
     ap.add_argument('--renders', type=Path, default=Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/render'))
+    ap.add_argument('--render-glob', default='vl-*', help='render folders to list (round 3: vl3-*)')
     ap.add_argument('--output', type=Path, default=HERE/'results'/'results.json')
+    ap.add_argument('--secondary-metrics', type=Path, help='round 3: exploratory secondary scoring')
+    ap.add_argument('--dev-variants', type=Path, help='round 3: dev_variants_v3.json (pooled dev summaries)')
     args = ap.parse_args(argv)
     prereg = json.loads(args.prereg.read_text())
     metrics = json.loads(args.metrics.read_text())
     train = json.loads(args.train_info.read_text())
     renders = {}
-    for d in sorted(args.renders.glob('vl-*')):
+    if args.output.exists():
+        raise SystemExit(f'refusing to overwrite {args.output}')
+    for d in sorted(args.renders.glob(args.render_glob)):
         m = d/'teacher_manifest.json'
         if m.exists():
             t = json.loads(m.read_text())
-            renders[d.name] = {k: t[k] for k in ('split', 'role', 'outcome', 'diagnostic_success', 'sim_s', 'frames',
-                                                 'wall_s', 'load_average')}
+            renders[d.name] = {k: t.get(k) for k in ('split', 'role', 'outcome', 'diagnostic_success', 'sim_s', 'frames',
+                                                     'wall_s', 'load_average', 'spawn_offset', 'teacher_pose_bias')}
             renders[d.name]['teacher_manifest_sha256'] = sha_file(m)
     refs = {'tag_m1_v2': reference_tags_m1()}
     v3 = reference_tags_v3()
@@ -121,6 +125,18 @@ def main(argv=None):
                      'train_info': train, 'train_info_sha256': sha_file(args.train_info)},
            'inference_cost': json.loads(args.bench.read_text()) if args.bench and args.bench.exists() else None,
            'renders': renders}
+    if args.secondary_metrics:
+        sec = prereg['secondary']
+        out['secondary'] = {'label': sec['label'], 'config': sec['config']['file'], 'config_sha256': sec['config']['sha256'],
+                            'metrics': json.loads(args.secondary_metrics.read_text()),
+                            'metrics_sha256': sha_file(args.secondary_metrics)}
+    if args.dev_variants:
+        dv = json.loads(args.dev_variants.read_text())
+        out['dev_variants'] = {n: {'pooled': v['pooled'], 'recovery': v['recovery'], 'config': v['config'],
+                                   'config_sha256': v['config_sha256'], 'metrics_sha256': v['metrics_sha256']}
+                               for n, v in dv['variants'].items()}
+        out['dev_selection'] = {'selected': dv['selected'], 'rule_steps': dv['rule_steps'],
+                                'file_sha256': sha_file(args.dev_variants)}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(out, indent=1, ensure_ascii=False) + '\n')
     print(json.dumps(out['gate'], indent=1))
