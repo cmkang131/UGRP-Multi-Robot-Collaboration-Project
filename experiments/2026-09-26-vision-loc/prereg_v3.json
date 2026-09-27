@@ -1,0 +1,161 @@
+{
+ "schema": "ugrp.vision_loc.prereg.v3",
+ "registered": "2026-09-26, Kiro, round 3: after the dev selection and the independence audit of the round-3 test renders; before any round-3 test segmentation, localization or scoring",
+ "source_sha_at_registration": "2a5b79da5c337d39bb73490cffc54c813036257d",
+ "student": {
+  "model": {
+   "checkpoint": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/model/seg-v2/seg_lraspp_mbv3.pt",
+   "sha256": "348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9",
+   "bytes": 13071401,
+   "note": "seg-v2, unchanged from round 2"
+  },
+  "calibration": {
+   "file": "calibration_train.json",
+   "sha256": "60177d6b4e116f4d63aea0b5c0bd200cd5eaebe66a63080612c7949491f085dd"
+  },
+  "config": {
+   "file": "selected_config_v3.json",
+   "sha256": "87f94b342b260715b1c556da3dea3832cc11daeaf88ef0aa97f14b3c9a970707",
+   "value": {
+    "infer_size": [
+     480,
+     360
+    ],
+    "obs": {
+     "refine_px": 6,
+     "consistency_px": 4
+    },
+    "measurement": {
+     "settle_s": 0.2,
+     "effective_columns": 8,
+     "sigma_px": 2.5
+    },
+    "robust": {}
+   }
+  },
+  "m1_motion_model": "M1 calibration (markerless_probe.load_m1_calibration, hash-checked), unchanged",
+  "filters": {
+   "vision": "student",
+   "boundary": "PR #210 detector baseline",
+   "deadreck": "baseline",
+   "oracle": "EVAL-ONLY diagnostic (teacher labels), never a student result"
+  },
+  "frozen_files_sha256": {
+   "vision_loc.py": "d320d8d63c0551d254fe654efadaa12abf6365fc78dd151ba7c254d5a326cc2e",
+   "vision_pf.py": "ac9d42706a3a933a95e3170b7ff71c40b255b40851663c00be13946d5c980a64",
+   "vision_loc_cli.py": "290cdbab1bef92ef4b6bf41dfee8f97a35eff2927febd2c5081b16ef0214c687",
+   "vision_loc_io.py": "074e3d9f8d0c19e6f83707af26ffe16f23d247fc862e8c4305313b78d9d0b328",
+   "vision_loc_score.py": "0e1d4e9827be45763908b317e24732adb5cafe5e808de878f8aa670b3af1185f",
+   "seg_model.py": "c837bce7d369d730a41161bd72280c710e6af3a72d6866ddfd694898240ac229",
+   "episodes.json": "75a9512e57b6416b232eb8b52b9b3f64d4641e34c9be50c5befb9402049e1015",
+   "episodes_v3.json": "82a83210b34dd3ba145a884f94568fc190d7b7c8a28a3804e35eeb3374d0515d",
+   "calibration_train.json": "60177d6b4e116f4d63aea0b5c0bd200cd5eaebe66a63080612c7949491f085dd",
+   "maps/zone_wide_door_walls_v3_notags.json": "61d35247e9a3f487c888ac4c6762e89962a4a33cb4853a671f02f0b12973f63e",
+   "../2026-09-26-markerless-probe/markerless_probe.py": "015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15"
+  }
+ },
+ "dev_selection": {
+  "file": "dev_variants_v3.json",
+  "sha256": "c0c10410e397eefcbd12ba9f97849c3e9a4a471f71211591b5e82d9a81a03ae0",
+  "plan": "dev_plan_v3.json",
+  "plan_sha256": "7fffa24d68148943990e55b6bf88426004e8bf0acf82438662ddeea1562fcf2f"
+ },
+ "independence": {
+  "file": "results/overlap_v3_test.json",
+  "sha256": "53f2c4742713975eab7e01f59ca3c1f3347444a66760043d95317084e35e644b",
+  "references": [
+   "vl-train-s901",
+   "vl-train-s902",
+   "vl-train-s903",
+   "vl-train-s904",
+   "vl-train-s905",
+   "vl-train-s906",
+   "vl-train-s907",
+   "vl-train-s908",
+   "vl-dev-s909",
+   "vl-dev-s910",
+   "vl-dev-s911",
+   "vl-test-s912",
+   "vl-test-s913",
+   "vl-test-s914",
+   "vl-test-s915",
+   "vl-test-s916",
+   "vl-test-s917",
+   "vl3-dev-s941",
+   "vl3-dev-s942",
+   "vl3-dev-s943",
+   "vl3-dev-s945",
+   "vl3-dev-s946",
+   "vl3-dev-s947"
+  ],
+  "excluded": [
+   "vl3-test-s954",
+   "vl3-test-s962"
+  ]
+ },
+ "test_episodes": [
+  "vl3-test-s951",
+  "vl3-test-s955",
+  "vl3-test-s956",
+  "vl3-test-s959",
+  "vl3-test-s961",
+  "vl3-test-s964"
+ ],
+ "scoring": {
+  "once": true,
+  "output": "results/metrics_test_v3.json",
+  "metrics": "vision_loc_cli.py score over exactly the registered test episodes, all at once",
+  "groups": {
+   "door_zone": "|x - 2.2| < 0.6 and -0.45 < y < 0.55 (GT), as PR #210",
+   "door_loaded": "door_zone and own-command load state loaded (carrying through door_1)",
+   "lateral": "|y_est - y_gt| (door_1 is crossed along x)"
+  },
+  "recovery": "lost (> 0.30 m), recoveries (back below 0.10 m), injections, injections while < 0.10 m",
+  "false_detections": "learned column edges outside the teacher-label interval by > 5 px"
+ },
+ "gate": {
+  "name": "door_1 carrying clearance (unchanged from round 2, prereg.json)",
+  "lateral_p99_max_m": 0.06,
+  "position_p90_max_m": 0.05,
+  "yaw_p90_max_deg": 3.0,
+  "min_episodes": 3,
+  "min_door_loaded_frames_per_episode": 20,
+  "rule": "PASS iff, over the pooled test door_loaded frames of the vision filter: lateral p99 <= 0.06 m AND position p90 <= 0.05 m AND yaw p90 <= 3.0 deg, with door_loaded frames (>= 20) in >= 3 test episodes (else INSUFFICIENT_DATA)",
+  "not_rederived": "the gate is not re-derived in round 3; the round-2 FAIL stands as recorded"
+ },
+ "report": "per filter: door_zone / door_loaded p50 / p90 / p99, lateral p99, yaw p90; all-frame p50 / p90; recovery events; the oracle next to the student (diagnostic); offline replay of teacher-driven renders, not closed loop",
+ "secondary": {
+  "label": "EXPLORATORY secondary configuration: scored on the same registered test, reported next to the student, never used for the gate verdict or the student selection",
+  "reason": "a3b (slip scales redrawn on load changes + stuck mode 0.01/0.5 per s) gave the best overall dev trade-off (L 5.58 cm, P 6.12 cm, all-frame p90 0.123 m vs 1.512 m, lost 842 vs 5279 frames: the wedged dev s909/s941 recovered), but the registered sequential rule rejected its two components one at a time (interaction). Reported next to the student to show whether the combination generalises; no gate claim.",
+  "config": {
+   "file": "secondary_config_v3.json",
+   "sha256": "19e5f5b306c11a41d68b537fc943575e3dae7649e7f8b61c2930c231a9ce87be",
+   "value": {
+    "infer_size": [
+     480,
+     360
+    ],
+    "obs": {
+     "refine_px": 6,
+     "consistency_px": 4
+    },
+    "measurement": {
+     "settle_s": 0.2,
+     "effective_columns": 8,
+     "sigma_px": 2.5
+    },
+    "robust": {
+     "loaded_scale_reinit": true,
+     "stuck": {
+      "enter_per_s": 0.01,
+      "exit_per_s": 0.5
+     }
+    }
+   }
+  },
+  "filters": [
+   "vision"
+  ],
+  "output": "results/metrics_test_v3_secondary.json"
+ }
+}
