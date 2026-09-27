@@ -85,6 +85,7 @@ TEST_PATTERNS = (
     "tests/test_zone_pilot_proxy_log.py",
     "tests/test_zone_pilot_settlement.py",
     "tests/test_zone_own_perception.py", "tests/test_zone_own_perception_v2.py",
+    "tests/test_zone_own_perception_v3.py", "tests/test_zone_own_perception_v3_1.py",
     "tests/test_zone_own_executor*.py",
     "tests/test_zone_pair_executor.py", "tests/test_zone_pair_status.py", "tests/test_zone_pair_review.py",
     "tests/test_zone_pair_review2.py",
