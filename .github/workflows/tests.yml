@@ -17,7 +17,7 @@ concurrency:
 jobs:
   zone-multiturn-properties:
     runs-on: ubuntu-latest
-    # 712 generated cases (including budget/0-send gaps) and the exit matrix stay separate
+    # Fixed-seed model/v64 differential cases and the exit matrix stay separate
     # from the existing 20-minute offline suite; no model or physics is used.
     timeout-minutes: 30
     env:
@@ -31,7 +31,7 @@ jobs:
           cache-dependency-path: requirements-test.txt
       - run: python -m pip install --requirement requirements-test.txt
       - name: Compare additive scheduling against frozen v64
-        run: python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py --basetemp=./.pytest_tmp -q
+        run: python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_model.py --basetemp=./.pytest_tmp -q
       - name: Remove test temporary directory
         if: always()
         run: python -c 'import shutil; shutil.rmtree(".pytest_tmp", ignore_errors=True)'

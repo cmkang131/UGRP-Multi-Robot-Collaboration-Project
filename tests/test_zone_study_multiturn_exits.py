@@ -55,10 +55,10 @@ EXIT_CASES = (
 )
 
 
-def deliver(scheduler, at):
+def deliver(scheduler, at, *, message_id='peer-message'):
     """An exogenous peer delivery, via the real inbox/event handler."""
     scheduler._push('message', at, (0., 0, 0, 0), {
-        'message_id': 'peer-message', 'call_id': 'peer-call', 'sender': 'r3',
+        'message_id': message_id, 'call_id': 'peer-call', 'sender': 'r3',
         'recipient': 'r1', 'recipients': ('r1',), 'encoding': 'free_ko',
         'body': {'text': '다음 작업을 확인해 주세요.'}, 'broadcast': False,
         'reply_to': None, 'sent_sim_s': 0., 'slot': 0,
@@ -185,7 +185,7 @@ def test_budget_refusals_treat_both_lanes_as_ineligible(case, waits):
     s, transport, holds, actions = scheduler_for(case)
     path = case.path
     if path == 'actor_call_budget':
-        s.metrics['r1']['calls'] = s.policy.max_calls_per_actor
+        s.budget.calls_per_actor = 0  # inject exhausted account, not reporting metrics
     elif path == 'actor_http_budget':
         s.budget.used['r1'] = s.policy.max_http_attempts_per_actor
     elif path == 'team_http_budget':
@@ -319,7 +319,7 @@ def run_exit_cell(case, message_state):
             raise ValueError('action callback failed')
         s.on_action = fail
     if path == 'actor_call_budget':
-        s.metrics['r1']['calls'] = s.policy.max_calls_per_actor
+        s.budget.calls_per_actor = 0  # inject exhausted account, not reporting metrics
     elif path == 'actor_http_budget':
         s.budget.used['r1'] = s.policy.max_http_attempts_per_actor
     elif path in ('team_http_budget', 'episode_call_budget'):

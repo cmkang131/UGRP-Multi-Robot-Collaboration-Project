@@ -407,15 +407,18 @@ class IntegratedTrial(zo.OfflineTrial):
             self.scheduler.available(rid, at=at_s)
 
     def decision_budget_spent(self) -> bool:
-        return self.transport.budget_exhausted \
-            or all(self.scheduler.metrics[a]['calls'] >= self.policy.max_calls_per_actor for a in self.actors) \
-            or self.scheduler.budget.remaining() == 0 or self.scheduler.calls_spent() \
-            or all(self.scheduler.budget.remaining(a) == 0 for a in self.actors)
+        return self.transport.budget_exhausted or self.scheduler.budget.exhausted()
 
     def quiescent(self) -> bool:
         """No further decision can happen: every budget spent, nobody thinking, every executor idle."""
         return (self.decision_budget_spent() and not self.scheduler.holding()
                 and all(self.links[a].job() is None for a in self.actors))
+
+    def decision_end_reason(self):
+        """Classify the terminal state, never a previous admission refusal."""
+        return ('budget_exhausted' if self.decision_budget_spent()
+                and not self.scheduler.holding() and not self.scheduler.censored
+                else 'sim_horizon')
 
     def finish(self, t_end_s) -> zo.TrialResult:
         report = self.scheduler.run(until_s=t_end_s)
@@ -425,8 +428,7 @@ class IntegratedTrial(zo.OfflineTrial):
                               actions=self.actions, requests=self.requests, trace=self.scheduler.trace(),
                               report=report.to_dict(), channel=self.channel_summary(), cost=self.cost_summary(),
                               send_ledger=self.send_ledger_record(),
-                              end_reason='budget_exhausted' if self.decision_budget_spent() or any(self.scheduler.metrics[a]['budget_refused']
-                                                                   for a in self.actors) else 'sim_horizon')
+                              end_reason=self.decision_end_reason())
 
     # -- inputs ---------------------------------------------------------------
     def snapshot(self, call):
@@ -505,8 +507,10 @@ class IntegratedTrial(zo.OfflineTrial):
         The core's ``arm_reask`` owns the cap (``REASK_POLICY``); the integration
         supplies only the own-job-dependent delay and the budget/horizon checks.
         """
-        if (self.scheduler.metrics[actor]['calls'] >= self.policy.max_calls_per_actor
-                or self.decision_budget_spent() or self.scheduler.budget.remaining(actor) == 0):
+        # v64 creates common timers independently of the HTTP balance. Admission
+        # checks the balance when the timer fires. Temporary reservations must
+        # neither remove that future opportunity nor affect a common re-ask.
+        if self.scheduler.budget.call_limit_reached(actor, confirmed_only=True):
             return
         busy = self.links[actor].job() is not None
         at = sim_s + (self.policy.busy_reask_s if busy else self.policy.idle_reask_s)

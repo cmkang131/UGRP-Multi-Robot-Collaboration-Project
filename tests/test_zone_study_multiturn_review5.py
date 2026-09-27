@@ -75,7 +75,7 @@ def run_chain(case, condition, *, trial_cls=None):
             assert [r['started_sim_s'] for r in rows] == [6.1, retry_at, resent_at]
             root = rows[0]['call_id']
             assert [r['retry_of'] for r in rows] == ['', root, root]
-            assert s._retries[root] == 1
+            assert s._retries[core.RetryRoot('message', root)] == 1
             assert sum(trial.send_ledger.sends(r['call_id']) for r in rows) == 2
         elif case == 'boundary_refund':
             assert times == [0., 11.], times
@@ -209,6 +209,6 @@ def test_common_snapshot_refund_keeps_the_consumed_message_retry_root():
     assert [c.started_sim_s for c in snapshots] == [0., 1., 3.]
     root = snapshots[0].call_id
     assert [c.retry_of for c in snapshots] == ['', '', root]
-    assert s._retries == {root: 1}
+    assert s._retries == {core.RetryRoot('message', root): 1}
     assert s.send_ledger.sends() == 2
     assert not any(e.active for e in s.event_inputs)

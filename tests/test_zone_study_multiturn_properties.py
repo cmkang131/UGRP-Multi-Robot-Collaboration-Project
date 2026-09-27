@@ -190,10 +190,9 @@ def signature(trial, requests):
         'dispatch': json.dumps(trial.dispatch_log, sort_keys=True, ensure_ascii=False).encode(),
         'censored': trial.scheduler.censored,
         'unsent': trial.scheduler.unsent_calls,
-        # v66 stops arming reasks once HTTP budget is spent; frozen v64 can
-        # enqueue more timers that are refused without creating a call. Those
-        # diagnostic refusal counts are not calls, inputs, commands or spend.
-        'budget': {k: v for k, v in trial.scheduler.budget.to_dict().items() if k != 'refusals'},
+        'budget': trial.scheduler.budget.to_dict(),
+        'trace': trial.scheduler.trace(),
+        'metrics': trial.scheduler.metrics,
         'ledger': trial.scheduler.ledger,
     }
 
