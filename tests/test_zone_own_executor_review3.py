@@ -243,7 +243,8 @@ def test_p2_3_cargo_wall_contacts_are_evaluation_only(phase, expected):
     host._box_geom, host.assigned_box = {'cyan0': {10}}, {'r1': 'cyan0'}
     ex = host.robots['r1'].executor
     ex.hold(1.)
-    ex.job.ctl = types.SimpleNamespace(skill=types.SimpleNamespace(phase=phase))
+    ex.job.ctl = types.SimpleNamespace(skill=types.SimpleNamespace(
+        phase=phase, box=types.SimpleNamespace(held=phase == 'nav_preplace')))
     before = list(ex.events)
     kinds, fingers = host._contact_kinds(types.SimpleNamespace(ncon=1, contact=[types.SimpleNamespace(geom1=99, geom2=10)]))
     assert kinds['r1'] == expected

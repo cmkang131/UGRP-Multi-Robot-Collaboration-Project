@@ -91,6 +91,19 @@ class OwnStatusMixin:
             return self.orders[job.args['order_id']]['kind']
         return 'cyan'
 
+    @property
+    def loaded(self) -> bool:
+        """Issued driver load state, or the conservative load assumption used to start a goto.
+
+        Survives an aborted delivery with an uncertain closed grip; this is not a GT holding claim.
+        """
+        job = self.job
+        if job is not None:
+            driver = job.driver or getattr(job.ctl, 'leg', None)
+            if driver is not None:
+                return bool(driver.loaded)
+        return self.holding()['answer'] == 'yes' or self._holding_after.get('answer') == 'unknown'
+
     def holding(self) -> dict:
         job = self.job
         sk = job.ctl.skill if job is not None and job.ctl is not None else None

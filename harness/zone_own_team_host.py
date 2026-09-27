@@ -235,11 +235,9 @@ class OwnCamTeamHost:
         fingers = {r: {} for r in ROBOTS}
         carried = {}
         for r in ROBOTS:
-            job = self.robots[r].executor.job
-            sk = job.ctl.skill if job is not None and job.ctl is not None else None
-            # Evaluation attribution only: the assigned cargo during the controller's carry phase.
+            # Evaluation attribution only: keep counting across abort, hold and loaded goto.
             carried[r] = (self._box_geom.get(self.assigned_box.get(r), set())
-                          if sk is not None and sk.phase in CARRY_PHASES else set())
+                          if self.robots[r].executor.loaded else set())
         for i in range(data.ncon):
             c = data.contact[i]
             pair = {int(c.geom1), int(c.geom2)}
