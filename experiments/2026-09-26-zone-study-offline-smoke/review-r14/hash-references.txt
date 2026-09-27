@@ -1,0 +1,46 @@
+tests/test_zone_study_review_r8.py:505:                         expected_state=pb.state_sha256(before))
+tests/test_zone_pilot_source_migration.py:9:from harness.zone_pilot_budget import PilotBudget, BudgetExceeded, canonical, sha, state_sha256
+tests/test_zone_pilot_source_migration.py:36:            'expected_state_sha256': state_sha256(snapshot)}
+tests/test_zone_pilot_source_migration.py:49:                for table in ('sends', 'runs')}
+tests/test_zone_pilot_source_migration.py:67:    assert after['sends'] == before['sends'] and after['runs'] == before['runs']
+tests/test_zone_pilot_source_migration.py:168:    assert after['sends'] == before['sends'] and after['runs'] == before['runs']
+tests/test_zone_pilot_source_migration.py:216:            '--expected-state-sha256', options['expected_state_sha256']]
+tests/test_zone_pilot_source_migration.py:277:    assert len(before['sends']) == 1 and before['runs'][0]['status'] == 'failed'
+tests/test_zone_pilot_source_migration.py:297:    assert current['sends'][0] == before['sends'][0] and current['runs'][0] == before['runs'][0]
+harness/zone_pilot_reconcile.py:13:from harness.zone_pilot_budget import canonical, sha, state_sha256, usage_total
+harness/zone_pilot_reconcile.py:128:            'state_sha256': state_sha256(snapshot),
+harness/zone_pilot_settlement.py:9:from harness.zone_pilot_budget import canonical, sha, state_sha256, usage_total
+harness/zone_pilot_settlement.py:150:                      expected_state_sha256, dry_run=False, reservation_ids=None):
+harness/zone_pilot_settlement.py:164:        if state_sha256(before) != expected_state_sha256:
+harness/zone_pilot_settlement.py:171:        if (report.get('state_sha256') != expected_state_sha256
+harness/zone_pilot_settlement.py:177:                  'report_sha256': expected_report_sha256, 'before_state_sha256': expected_state_sha256,
+harness/zone_pilot_settlement.py:200:                'after_state_sha256': state_sha256(after), 'network_calls': 0}
+harness/zone_pilot_budget.py:42:def state_sha256(snapshot):
+harness/zone_pilot_budget.py:43:    state = [snapshot['sends'], snapshot['runs']]
+harness/zone_pilot_budget.py:183:                'reserved_tokens': sum(r['reserved_tokens'] for r in rows), 'sends': rows, 'runs': runs,
+harness/zone_pilot_budget.py:190:    def migrate_source(self, identity, *, reason, expected_identity_sha256, expected_state_sha256):
+harness/zone_pilot_budget.py:220:            if expected_state_sha256 != state_sha256(before):
+harness/zone_pilot_budget.py:227:                       for table in ('sends', 'runs')}
+harness/zone_pilot_budget.py:234:                   'before_state_sha256': expected_state_sha256,
+harness/zone_pilot_budget.py:297:    def start_run(self, run_id, stage, record, *, expected_state=None):
+harness/zone_pilot_budget.py:302:            if expected_state is not None and expected_state != state_sha256(self._snapshot(db)):
+tests/test_zone_pilot_settlement.py:12:from harness.zone_pilot_budget import BudgetExceeded, PilotBudget, canonical, sha, state_sha256
+tests/test_zone_pilot_settlement.py:64:            'expected_state_sha256': report['state_sha256']}
+tests/test_zone_pilot_settlement.py:78:    assert after['sends'] == before['sends'] and after['runs'] == before['runs']
+tests/test_zone_pilot_settlement.py:81:    assert state_sha256(after) != state_sha256(before)
+tests/test_zone_pilot_settlement.py:114:        args['expected_state_sha256'] = '0' * 64
+tests/test_zone_pilot_settlement.py:247:           '--expected-state-sha256', args['expected_state_sha256']]
+tests/test_zone_pilot_settlement.py:299:        budget.start_run('stale-review', 'cohort', {}, expected_state=args['expected_state_sha256'])
+tests/test_zone_pilot_settlement.py:305:                          expected_state_sha256=state_sha256(before))
+tests/test_zone_pilot_settlement.py:405:    assert settled['sends'] == before['sends'] and settled['runs'] == before['runs']
+tests/test_zone_pilot_settlement.py:407:    assert state_sha256(settled) != state_sha256(before)
+tests/test_zone_pilot_settlement.py:408:    assert receipt['after_state_sha256'] == state_sha256(settled)
+tests/test_zone_pilot_settlement.py:416:                              expected_state_sha256=state_sha256(settled))
+scripts/run_zone_study_pilot.py:30:                                       PilotBudget, canonical, sha, state_sha256, token_envelope, usage_total)
+scripts/run_zone_study_pilot.py:279:    migration_options = (args.migration_reason, args.from_identity_sha256, args.expected_state_sha256)
+scripts/run_zone_study_pilot.py:284:    if args.expected_state_sha256 and not (args.migrate_source or args.settle_reconciled):
+scripts/run_zone_study_pilot.py:287:                                         args.expected_state_sha256, args.upstream_telemetry)):
+scripts/run_zone_study_pilot.py:303:                    'expected_state_sha256': args.expected_state_sha256,
+scripts/run_zone_study_pilot.py:339:            'expected_state_sha256': args.expected_state_sha256,
+scripts/run_zone_study_pilot.py:343:                                         expected_state_sha256=args.expected_state_sha256)
+scripts/run_zone_study_pilot.py:406:                     expected_state=state_sha256(before))

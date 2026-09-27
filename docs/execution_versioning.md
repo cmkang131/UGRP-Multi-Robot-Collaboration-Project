@@ -29,6 +29,29 @@
 
 ## 공통 RGB 실행기에 적용된 검사
 
+- `rgb-standard-dispatch-v63` (PR #194, 실제 R10 PREFLIGHT 펜스 회귀 수정):
+  코디네이터가 main·열린 PR 최댓값 v62를 확인해 지정한 번호다. 실행된 v62 JSON은
+  SHA-256 `6601192a6da7ac018dd3a7104364065bb9afb9dce0d61e79021f824648b07f69` 그대로 은퇴 보존한다.
+  기존 `three_robot_plan.parse`를 completion 검사에도 사용한다. 공백 외에는 정확히
+  하나인 `json`/무표시 펜스만 허용하고 네 조건의 스키마 검사는 그대로 적용한다.
+  호출별 제거 여부와 집계를 기록하고 원문·출력 토큰 비용은 보존한다.
+  같은 budget의 소스 이관은 원자적 감사 기록을 추가하며 기존 지출·한도를 유지한다.
+  새 소스의 4조건 preflight와 기존 청구 대사를 요구한다. 물리·카메라·명령 설정은
+  v62와 같으며 과거 성공을 승계하지 않는다. 실모델·물리 실행 없는 검증 범위다.
+  [이관 절차와 원문 재현](zone_study_pilot.md#v63-단일-json-펜스와-예산-소스-이관)을 따른다.
+
+- `rgb-standard-dispatch-v62` (PR #194 R10): 코디네이터가 main과 열린 PR의 최댓값
+  v61을 확인해 예약한 번호다. v61 JSON은 바이트 그대로 은퇴 보존한다.
+  공통 `gemini_proxy.py`의 완료 정책 의존성 `harness/llm_completion.py`를 포함한
+  소스 closure 174개와 최종 파일 hash를 새로 고정했다. RGB 물리·카메라·명령 설정은
+  v61과 같고 `experimental_unqualified`이며 이전 성공을 승계하지 않는다.
+  파일럿은 proxy `stop` + 완전한 스키마만 채택하며 `upstream_finish_verified=false`로
+  기록한다. 정상 채택(상류 미검증)의 별도 집계와 manifest의 명시적 한계 인정이
+  코호트 진입 조건이다. 설치/사본 프록시 변경은 없다.
+  [파일럿 문서](zone_study_pilot.md)의 고정 목록에 따라 최종 커밋 SHA·전체 소스 hash,
+  프록시 PID/실효 설정, 입력·조건·비용·검증 범위를 실행 manifest에 연결한다.
+  정적 번들 검사는 물리 완주·실모델 응답·상류 과금 대조를 검증하지 않는다.
+
 `config/rgb_execution_bundles/`에 버전별 JSON을 보존한다.
 
 - `dispatch-f1-local-contact-fine-v1`: 기존 `e099a4a` F1 성공의 참조 기록이다. 원래 실행기·접촉 설정과 원본 결과 해시에만 성공 근거가 적용되며 공통 adapter에서 선택하면 거절한다.
