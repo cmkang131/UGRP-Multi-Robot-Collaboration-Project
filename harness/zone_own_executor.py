@@ -4,6 +4,7 @@ The study layer (LLM actors, scheduler, scripted no-LLM fixtures) talks to one
 ``ZoneOwnExecutor`` per robot through a small job API::
 
     deliver(item_ref, zone_slot)   # one order line -> a zone slot (M1 delivery chain)
+    pair_carry(item_ref, zone, partner_id)  # independent M2 submission; host matches the two requests
     goto(target)                   # map waypoint [x, y], zone 'A', zone slot 'A2', pickup slot 'P1-2', door 'door_1'
     look_around()                  # wide own-camera look sweep (re-localise, look for blockages)
     hold(sim_s) / wait(sim_s)      # stop and hold the last safe command for sim_s SIM seconds
@@ -52,7 +53,7 @@ from harness.owncam_drive import CARRY_POSTURE, LOOK_P20, SETTLE_S, WIDE_LOOK_PA
 from harness.owncam_pose_source import OwnCamPoseSource, PoseReport
 from harness.zone_own_contract import (API_TO_ACTION_KIND, EVENT_TO_TRIGGER, EVENTS, PICKUP_VIEW_X_M,  # noqa: F401
                                        ExecutorContractError, action_record, finite_number, lane_viewpoints,
-                                       pickup_slot_of, pickup_slots, scheduler_trigger, validate_order_sheet,
+                                       pickup_slot_of, pickup_slots, pose_report_fresh, scheduler_trigger, validate_order_sheet,
                                        zone_slot)
 from harness.zone_own_deliver import _DeliverController
 from harness.zone_own_driver import GuardedDriver
@@ -64,7 +65,7 @@ from harness.zone_study_contract import ROBOTS
 SCHEMA = 'ugrp.zone_own_executor.v2'
 EVENT_SCHEMA = 'ugrp.zone_own_executor_event.v1'
 MODES = ('m1', 'diagnostic')
-JOB_KINDS = ('deliver', 'goto', 'look_around', 'hold')
+JOB_KINDS = ('deliver', 'goto', 'look_around', 'hold', 'pair_carry')
 CONFIRMATIONS = ('own_camera_confirmed', 'unconfirmed')
 TICK_S = .1
 ZONE_APPROACH_M = .25           # goto('A'): stop this far west of the zone paint
@@ -143,6 +144,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
         self.events: list[dict] = []
         self._outbox: list[dict] = []
         self.api_log: list[dict] = []
+        self.pair_admission_log: list[dict] = []  # private evaluation audit, not part of ACK/status/events
         self.judgment_log: list[dict] = []
         self.pose_sources_seen: set[str] = set()
         self.cameras_seen: set[str] = set()
@@ -158,6 +160,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
         self._rejected_frames = 0
         self._summaries: list[dict] = []
         self._pending_hold = False
+        self._pair = None                    # own M2 endpoint only; never the pair dispatcher/peer
 
     # ---------------------------------------------------------------- contract helpers
     def _require_owncam(self, label, where):
@@ -175,9 +178,10 @@ class ZoneOwnExecutor(OwnStatusMixin):
     def _emit(self, now, event, **detail):
         if event not in EVENTS:
             raise ValueError(event)
+        job = self.job if event != 'pair_refused' else None
         row = {'schema': EVENT_SCHEMA, 'robot_id': self.robot_id, 'event': event, 'sim_s': round(float(now), 3),
-               'job_id': self.job.job_id if self.job else detail.pop('job_id', None),
-               'job_kind': self.job.kind if self.job else detail.pop('job_kind', None), 'detail': detail}
+               'job_id': job.job_id if job else detail.pop('job_id', None),
+               'job_kind': job.kind if job else detail.pop('job_kind', None), 'detail': detail}
         row['scheduler_trigger'] = scheduler_trigger(row)
         self.events.append(row)
         self._outbox.append(row)
@@ -190,6 +194,8 @@ class ZoneOwnExecutor(OwnStatusMixin):
     def on_command(self, row: Mapping) -> None:
         """One own issued command (time ordered, as logged at this robot's port)."""
         job = self.job
+        if self._pair is not None:
+            self._pair.on_command(row)
         if job is not None and job.ctl is not None:
             job.ctl.on_command(row)            # forwards to the shared pose source exactly once
         else:
@@ -243,6 +249,11 @@ class ZoneOwnExecutor(OwnStatusMixin):
                'arguments': arguments, 'accepted': bool(accepted), 'rejected_reason': reason,
                'job_id': job.job_id if job else None, 'local_state': self._local_state}
         self.api_log.append(ack)
+        if api == 'pair_carry' and not accepted:
+            from harness.zone_pair_admission import readiness_snapshot
+            self.pair_admission_log.append({
+                **readiness_snapshot(self, self.now, arguments.get('order_id'), arguments.get('target_ref')),
+                'action_id': ack['action_id'], 'accepted': False, 'rejected_reason': reason})
         return ack
 
     def _start(self, api, kind, arguments, **job_args):
@@ -288,6 +299,32 @@ class ZoneOwnExecutor(OwnStatusMixin):
             return self._ack('deliver', arguments, False, 'NOT_EMPTY_HANDED')
         return self._start('deliver', 'deliver', arguments, slot_id=slot_id, slot_xy=list(slot['center_m']),
                            pickup_slot=pickup)
+
+    def pair_readiness(self, now, item_ref=None, target_zone=None):
+        """Own admission -> fixed status enum; no private state is sent to a peer."""
+        from harness.zone_pair_admission import readiness_snapshot
+        return readiness_snapshot(self, now, item_ref, target_zone)['state']
+
+    def pair_carry(self, item_ref=None, target_zone=None, partner_id=None):
+        """Submit this robot only; the partner must independently submit the identical task."""
+        args = {'order_id': self._token(item_ref), 'target_ref': self._token(target_zone),
+                'role': 'end_neg' if self.robot_id == 'r1' else 'end_pos'}
+        if not all(isinstance(v, str) and v for v in (item_ref, target_zone, partner_id)):
+            return self._ack('pair_carry', args, False, 'BAD_PAIR_ARGUMENTS')
+        if self.stopped is not None:
+            return self._ack('pair_carry', args, False, TERMINAL_STOP)
+        if self._pair is None or self._pair.arguments != args or self._pair.partner_id != partner_id:
+            return self._ack('pair_carry', args, False, 'PAIR_REQUIRES_TEAM_DISPATCH')
+        state = self.pair_readiness(self.now, item_ref, target_zone)
+        if state != 'available':
+            return self._ack('pair_carry', args, False, 'SELF_' + state.upper())
+        ack = self._start('pair_carry', 'pair_carry', args)
+        if ack['accepted']:
+            self._pending_hold = False
+            self._pair.job_id = ack['job_id']
+            self._pair.status.tick('start_ready', self.now)
+            self.job.phase = 'waiting_partner'
+        return ack
 
     def goto(self, target) -> dict:
         """Drive (own estimate + map A*) to a waypoint [x, y], a zone, a zone slot, a pickup slot or a door."""
@@ -348,7 +385,10 @@ class ZoneOwnExecutor(OwnStatusMixin):
             return self._ack('abort', arguments, False, 'NO_ACTIVE_JOB')
         job = self.job
         ack = self._ack('abort', arguments, True, job=job)
-        self._fail(self.now, 'ABORTED:' + reason_code)
+        if self._pair is not None:
+            self._pair.abort(self.now, 'ABORTED')  # caller text stays in its own API audit only
+        else:
+            self._fail(self.now, 'ABORTED:' + reason_code)
         self._local_state = 'hold_requested'
         return ack
 
@@ -361,7 +401,10 @@ class ZoneOwnExecutor(OwnStatusMixin):
         if self.job is None or now <= self.job.deadline:
             return False
         self.now = float(now)
-        self._fail(now, 'LOCAL_TIMEOUT', limit_s=self.job_sim_limit_s)
+        if self._pair is not None:
+            self._pair.abort(now, 'LOCAL_TIMEOUT')
+        else:
+            self._fail(now, 'LOCAL_TIMEOUT', limit_s=self.job_sim_limit_s)
         self._local_state = 'local_timeout'
         return True
 
@@ -370,7 +413,10 @@ class ZoneOwnExecutor(OwnStatusMixin):
         if self.job is None:
             return False
         self.now = float(now)
-        self._fail(now, reason)
+        if self._pair is not None:
+            self._pair.abort(now, reason)
+        else:
+            self._fail(now, reason)
         return True
 
     def refuse(self, api: str, reason: str) -> dict:
@@ -420,6 +466,13 @@ class ZoneOwnExecutor(OwnStatusMixin):
 
     def _end_job(self, now):
         job = self.job
+        if self._pair is not None:
+            self._summaries.append({'job_id': job.job_id, 'pair_events': self._pair.events,
+                                    'pair_inputs': self._pair.inputs,
+                                    'pair_plan': self._pair.plan,
+                                    'pair_calibration_sha256': self._pair.calibration_sha256,
+                                    'pair_status': self._pair.status.channel.log})
+        self._pair = None
         if job.ctl is not None:
             job.ctl.archive_leg()
             try:
@@ -473,6 +526,9 @@ class ZoneOwnExecutor(OwnStatusMixin):
         if job is None:
             return {'mode': 'tick', 'commands': []}
         return getattr(self, '_step_' + job.kind)(now, job)
+
+    def _step_pair_carry(self, now, job):
+        return self._pair.step(now)
 
     def _step_hold(self, now, job):
         if job.hold_until is None:

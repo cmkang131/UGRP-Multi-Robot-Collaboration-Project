@@ -688,6 +688,23 @@
         "--status-channel"
       ],
       "output_kind": "directory"
+    },
+    {
+      "id": "zone-pair-dev",
+      "purpose": "PairTeam + OwnCamTeamHost dev PHYSICAL gate; tags_temporary, dev, 연구 결과 아님",
+      "entry": "scripts/run_zone_pair_dev.py",
+      "docs": "experiments/2026-09-27-zone-pair-dev/README.md",
+      "requires": "No model calls; prepare-only by default. Physical execution requires --execute, clean pinned SHA, matching agent_lock and absolute primary outputs path. GT stays in eval_only/.",
+      "version": "0.2.0",
+      "runner": "scripts.run_zone_pair_dev",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--prereg",
+        "--run-id"
+      ],
+      "output_kind": "directory"
     }
   ]
 }
