@@ -90,6 +90,9 @@ def make_plan(static_map, sheet, target_zone):
                                 'half_extents_m': [m2.PARTNER_KEEPOUT_HALF_M] * 2,
                                 'source': 'static order sheet'})
     return {'sheet': copy.deepcopy(sheet), 'route': route, 'prestations': pre, 'keepouts': keepouts,
+            'beam_geometry': {'center_m': list(bar.center), 'half_extents_m': list(bar.size),
+                              'grasps': {g.role: {'xyz_m': list(g.grip_xyz), 'yaw_rad': g.approach_yaw}
+                                         for g in item.spec().grasps}},
             'target_zone': target_zone, 'door_plan': copy.deepcopy(m2.DOOR_PLAN),
             'map_sha256': _digest(static_map), 'sheet_sha256': _digest(sheet)}
 
