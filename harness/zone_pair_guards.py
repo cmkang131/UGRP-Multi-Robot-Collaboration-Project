@@ -122,8 +122,8 @@ class PairCommandGuard:
 
     @property
     def carrying_beam(self):
-        return self.ep.controller.state in ('grasp', 'wait_lift', 'lift', 'wait_carry',
-                                           'carry', 'wait_lower', 'lower', 'wait_open')
+        # Phase names and a closed PWM are not evidence of a held object.
+        return bool(getattr(self.ep.controller, 'beam_grasp_confirmed', False))
 
     def _pose(self, now):
         report = self.ep.own.last_report
@@ -169,6 +169,9 @@ class PairCommandGuard:
         return True
 
     def _stationary_reobserve(self, now, pose):
+        if self.carrying_beam:
+            self.ep.abort(now, 'PAIR_RELOOK_WHILE_GRIPPED')
+            return False
         if pose is None or now < self.motion_until:
             self.ep.abort(now, 'POSE_UNCERTAIN')
             return False

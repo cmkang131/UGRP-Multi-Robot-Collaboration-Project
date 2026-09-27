@@ -15,17 +15,19 @@ def ready(ep, key, now, yes=True):
                                    frame_id=f"{ep.robot_id}-{round(now * 1000)}-0123456789ab", reason='비공개 영상 판단')
 
 
-def test_joint_go_requires_both_status_readiness_and_survives_first_consumer():
+@pytest.mark.parametrize('phase', ['lift', 'close'])
+def test_joint_go_requires_both_status_readiness_and_survives_first_consumer(phase):
     bus, e = endpoints()
     for ep in e.values():
         ep.tick('aligning', 0.)
-    a, b = (ep.sync_for('lift@0') for ep in e.values())
-    ready(e['r1'], 'lift@0', 0.)
+    key = phase + '@0'
+    a, b = (ep.sync_for(key) for ep in e.values())
+    ready(e['r1'], key, 0.)
     assert a.authorize(0.)['phase'] == 'WAIT'
     # Coarse legacy publication must not erase latched readiness.
     e['r1'].tick('ready', .4)
-    ready(e['r1'], 'lift@0', .4)
-    ready(e['r2'], 'lift@0', .4)
+    ready(e['r1'], key, .4)
+    ready(e['r2'], key, .4)
     for ep in e.values():
         ep.tick('ready', .5)
     assert a.authorize(.5)['phase'] == 'WAIT'

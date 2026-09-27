@@ -792,7 +792,7 @@ def test_real_pairteam_fake_host_abort_is_auditable_without_physics():
 
 @pytest.mark.parametrize('case_index', [0, 1])
 @pytest.mark.parametrize('mismatched_timestep', [False, True])
-@pytest.mark.parametrize('registration', [2, 3])
+@pytest.mark.parametrize('registration', [2, 3, 4])
 def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_path, monkeypatch, case_index, mismatched_timestep, registration):
     pytest.importorskip('mujoco', reason='frozen M2 import required; physical world/observer replaced with fakes')
     import mujoco
@@ -801,7 +801,7 @@ def test_physical_entry_finalizes_real_host_pair_scheduler_on_fake_world(tmp_pat
     from tests.test_zone_pair_executor import setup, PhasedM2, PairFakeHost
     from sim.workflow_manager import source_fingerprint
 
-    p = config() if registration == 2 else json.loads(dev.PREREG_V3.read_text())
+    p = config() if registration == 2 else json.loads((dev.PREREG_V3 if registration == 3 else dev.PREREG_V4).read_text())
     p['limits'].update(sim_s=8., submit_at_s=.03, post_terminal_s=.6, wall_s=30.)
     case = p['runs'][case_index]
     out = tmp_path / 'physical-entry-fake-world'

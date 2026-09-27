@@ -137,7 +137,10 @@ def test_registered_v3_keeps_all_v2_scoring_and_single_variable():
     p, v2 = prereg(), json.loads(dev.PREREG.read_text())
     assert p['status'] == 'REGISTERED' and p['execution_source_sha'] is None
     assert p['execution_status'] == 'not_run'
-    assert p['scene_contract'] == dev.scene_contract()
+    # Historical v3 pins the original driver source. The v4 successor has a
+    # new source receipt while preserving the same physical dock/map contract.
+    assert p['scene_contract']['map'] == dev.scene_contract()['map']
+    assert p['scene_contract']['start_dock'] == dev.scene_contract()['start_dock']
     for k in ('criteria', 'planned_setdown', 'limits', 'timing', 'contact_profile_contract', 'safety_coverage'):
         assert p[k] == v2[k], k
     assert {k: v for k, v in p['stage_rules'].items() if k != 'admission_diagnostics'} == v2['stage_rules']
@@ -166,6 +169,7 @@ def test_applied_settings_reject_old_spawn_keepouts_even_when_map_id_matches():
 @pytest.mark.parametrize('fault', ['map_path', 'scene_hash', 'criteria', 'stage_rules', 'cargo', 'readiness'])
 def test_registered_v3_rejects_drift_before_world_import(tmp_path, fault):
     p = prereg()
+    p['scene_contract'] = dev.scene_contract()  # synthetic current-source fixture to isolate each predicate
     if fault == 'map_path': p['inputs']['map']['path'] = p['scene_contract']['parent_map']['path']
     elif fault == 'scene_hash': p['scene_contract']['sha256'] = '0' * 64
     elif fault == 'criteria': p['criteria']['lift_bottom_m'] /= 2
@@ -180,7 +184,7 @@ def test_registered_v3_rejects_drift_before_world_import(tmp_path, fault):
     assert not args.output.exists()
 
 
-@pytest.mark.parametrize('run_id', ['dev05', 'dev06'])
+@pytest.mark.parametrize('run_id', ['dev07', 'dev08'])
 def test_registered_prepare_and_workflow_inputs_without_mujoco_import(tmp_path, run_id):
     code = '''
 import builtins, sys
@@ -194,7 +198,7 @@ from scripts.run_zone_pair_dev import main
 raise SystemExit(main(sys.argv[1:]))
 '''
     out = tmp_path / run_id
-    argv = ['--prereg', str(dev.PREREG_V3), '--run-id', run_id, '--output', str(out)]
+    argv = ['--prereg', str(dev.PREREG_V4), '--run-id', run_id, '--output', str(out)]
     result = subprocess.run([sys.executable, '-c', code, *argv], cwd=dev.ROOT, text=True, capture_output=True,
                             env={**os.environ, 'OMP_NUM_THREADS': '1', 'PYTHONDONTWRITEBYTECODE': '1'})
     assert result.returncode == 0, result.stderr
@@ -202,17 +206,17 @@ raise SystemExit(main(sys.argv[1:]))
     assert manifest['state'] == 'prepared_not_executed' and manifest['applied'] is None
     assert manifest['scene_contract'] == dev.scene_contract()
     assert manifest['model_calls'] == 0 and manifest['physical_success'] is None
-    assert (out / 'prereg.json').read_bytes() == dev.PREREG_V3.read_bytes()
+    assert (out / 'prereg.json').read_bytes() == dev.PREREG_V4.read_bytes()
     static = json.loads((out / 'inputs/static.json').read_text())
     assert static['map'] == dock_map()
     assert 'spawns' not in json.dumps(static) and static['order_sheet'] == dev.ORDER
     from sim import workflow_manager as wm
     plan = wm.plan(dev.ROOT, dev.WORKFLOW, [*argv[:-1], str(tmp_path / 'planned-not-run')])
     paths = {r['path'] for r in plan['inputs']}
-    assert {str(dev.PREREG_V3), str(dev.MAP), str(dev.map_path(prereg())), str(dev.CALIBRATION)} <= paths
+    assert {str(dev.PREREG_V4), str(dev.MAP), str(dev.map_path(prereg())), str(dev.CALIBRATION)} <= paths
     # Final registration admits execute configuration; actual execution still
     # requires managed workflow, clean frozen SHA, ownership lock and raw path.
-    args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V3), '--run-id', run_id,
+    args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V4), '--run-id', run_id,
         '--output', '/Users/changmin/projects/ugrp/outputs/dock-v3-NOT-EXECUTED-' + run_id,
         '--execute', '--expected-source-sha', 'a' * 40, '--lock-owner', 'codex'])
     assert dev.load_config(args)[1]['id'] == run_id
