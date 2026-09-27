@@ -139,8 +139,10 @@ class PairAlignRelook:
         from harness.owncam_localizer import OwnCamLocalizer
         from harness.owncam_drive import LOOK_P20
 
-        # The hold must have crossed the command boundary before moving wrist.
-        if now <= self.align_look_started_at:
+        # Wait for the hold to reach the pose provider and for a valid bounded
+        # post-stop report to populate the guard's stationary cache. A next
+        # control tick alone is too early for the 0.16 s delayed provider.
+        if not self.align_stop_ready(now):
             return
         choices = self.align_look_choices()
         if not choices:
@@ -148,6 +150,8 @@ class PairAlignRelook:
         self.align_pans = [row['pan'] for row in choices[:MAX_DIRECTIONS]]
         self.log(self.rid, 'align_view_selection', now, candidates=choices,
                  source='static map + own pose + issued PWM; predicted visibility only')
+        self.log(self.rid, 'align_relook_stopped_pose', now,
+                 stopped_at_s=self.align_look_started_at, report_t=self.port.own.last_report.t_est)
         drv = self.driver
         drv.loc = OwnCamLocalizer(drv.map, drv.loc.params, seed=int(drv.loc.rng.integers(1 << 30)))
         drv.loc.command({'t': now, 'kind': 'initial_servo_command', 'pulses': dict(self.port.own.servo)})

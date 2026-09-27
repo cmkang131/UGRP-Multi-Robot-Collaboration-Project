@@ -202,6 +202,21 @@ class PairCommandGuard:
         p = self.ep.own.gate.profile
         return pose.std_xy > p.high_xy_m or pose.std_yaw > p.high_yaw_rad
 
+    def align_stop_ready(self, now, stopped_at):
+        """Retain a valid post-hold own estimate before replacing its PF.
+
+        A delayed report can be fresh yet still precede the hold. In that case
+        leave the PF running; an old stationary cache alone is insufficient.
+        The controller's existing per-look/total deadlines bound this wait.
+        """
+        own = self.ep.own
+        pose = self._pose(now)
+        return bool(now > stopped_at and own.last_report.initialized
+                    and pose_report_fresh(own.last_report, now)
+                    and own.last_report.t_est >= stopped_at >= self.motion_until
+                    and own.gate.ok and pose is not None and not self._high(pose)
+                    and self.stationary_pose is pose)
+
     def on_command(self, row):
         self.beam_track.command(row, self.ep.own.servo)
         if row['kind'] in ('drive', 'mecanum') and any(row.get(k, 0.) for k in ('forward', 'left', 'turn')):

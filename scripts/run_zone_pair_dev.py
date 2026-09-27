@@ -32,6 +32,7 @@ PREREG = ROOT / 'experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json'
 PREREG_V3 = PREREG.with_name('prereg_v3.json')
 PREREG_V4 = PREREG.with_name('prereg_v4.json')
 PREREG_V5 = PREREG.with_name('prereg_v5.json')
+PREREG_V5B = PREREG.with_name('prereg_v5b.json')
 MAP = ROOT / 'maps/zones/zone_wide_door_tags_v2.json'
 CALIBRATION = ROOT / 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'
 PARTICIPANTS = ('r1', 'r2')
@@ -107,6 +108,9 @@ def load_config(args):
     if (prereg.get('status') != 'DRAFT' and not registered_v3(prereg)) or prereg.get('research_result') is not False:
         raise ValueError('this driver is for preregistered dev only')
     version = prereg.get('registration_version')
+    revision = prereg.get('registration_revision')
+    if revision is not None and (version != 5 or revision != 'v5b'):
+        raise ValueError('unsupported prereg revision')
     if version not in (2, 3, 4, 5):
         raise ValueError('use prereg v2 or registered v3/v4/v5; preserve earlier versions')
     if version in (4, 5) and not registered_v3(prereg):
@@ -142,6 +146,8 @@ def load_config(args):
     if prereg.get('contact_profile_contract') != profile_contract():
         raise ValueError('contact profile contract/hash mismatch; freeze a new prereg before execution')
     previous_path = {2: PREVIOUS_PREREG, 3: PREREG, 4: PREREG_V3, 5: PREREG_V4}[version]
+    if revision == 'v5b':
+        previous_path = PREREG_V5  # unexecuted v5 remains byte-identical history
     previous = {'path': str(previous_path.relative_to(ROOT)), 'sha256': sha_file(previous_path)}
     if prereg.get('supersedes') != previous:
         raise ValueError('previous prereg hash mismatch')

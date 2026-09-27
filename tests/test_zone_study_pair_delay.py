@@ -1,7 +1,7 @@
 """Real PairTeam/M2 + real 0.16 SIM-s pose provider on stored own RGB.
 
-Start at an opened checkpoint (the preceding navigation/carry is outside this
-test). The fake world advances only a number; the real host runs arm commands,
+Cover the allowed movement -> align stop before any checkpoint, plus the
+opened-checkpoint replay. The fake world advances only a number; the real host runs arm commands,
 M2's PF replacement/sweep, RGB grip check and status readiness/GO. No inference
 result, readiness, guard, controller method or delay is replaced by a stub.
 The standoff supplement combines each robot's earlier own look with its saved
@@ -95,10 +95,10 @@ class SavedRGBHost(FakeHost):
         slot.frames.append({'robot_id': rid, 't': now, 'sha256': frame['sha256']})
         slot.next_frame = now + self.FRAME_S
 
-    def admit_from_saved_sweep(self):
+    def admit_from_saved_sweep(self, samples=12):
         # Replay only issued servo commands and own images to initialize the
         # filters/admission gates; never seed them from an evaluated pose.
-        for i in range(12):
+        for i in range(samples):
             now = round(i * .2, 6)
             self.world.data.time = now
             for rid in ('r1', 'r2'):
@@ -114,6 +114,70 @@ class SavedRGBHost(FakeHost):
         assert isinstance(self.pairs, PairTeam)
         assert self.pairs.contact_profile == 'cargo_noslip_v1' and not self.pairs.weld
         assert start(self)['accepted']
+
+
+def saved_align_host(move):
+    host = SavedRGBHost()
+    host.FRAME_S = .05  # review reproduction: own RGB delivery on each 20 Hz host tick
+    host.admit_from_saved_sweep(samples=11)  # t=2.0, before motion; no cp_open shortcut
+    eps = active(host)
+    host.world.data.time = 2.1
+    for rid, ep in eps.items():
+        host._capture(rid, 2.1)
+        ep.started = ep.control_started = True
+        ep.controller.arm.events.clear()
+        ep.controller.arm.until = 2.1
+        ep.status.tick('aligning', 2.1)
+        if move:
+            command = {'kind': 'mecanum', 'forward': .01, 'left': 0., 'turn': 0., 'duration_s': .25}
+            assert ep.command_guard.check(2.1, [command]) == [command]
+            host._apply(rid, command, 2.1)  # real own-command and cache invalidation path
+            assert ep.command_guard.stationary_pose is None
+            assert ep.command_guard.motion_until == pytest.approx(2.35)
+        ep.controller.state = 'align_start'
+        ep.next_control = host.robots[rid].next_decide = 2.2
+    return host, eps
+
+
+@pytest.mark.parametrize('move', [True, False], ids=['preceding-motion', 'stationary-control'])
+def test_align_stop_waits_for_delayed_post_stop_pose_before_reset(move):
+    host, eps = saved_align_host(move)
+    original = {rid: ep.own.pose.provider.loc for rid, ep in eps.items()}
+
+    for now in (2.2, 2.3, 2.35, 2.4, 2.45, 2.5, 2.6):
+        runner.StudyTeamHost.advance_to(host, now)
+        for rid, ep in eps.items():
+            assert not ep.terminal, (now, rid, ep.own.events[-3:])
+            provider, guard = ep.own.pose, ep.command_guard
+            assert isinstance(provider, DelayedPoseSource)
+            assert provider.loc is ep.controller.driver.loc
+            if now <= 2.35:
+                # Old code resets at 2.30 with t_est=2.14 and no motion cache,
+                # then aborts at 2.35. Even the stationary control must wait
+                # for a post-stop report, not just an old stationary cache.
+                assert provider.provider.loc is original[rid], (now, rid, ep.own.last_report)
+                assert ep.controller.state == 'align_relook_stop'
+                assert not ep.controller.arm.events
+                assert ep.own.last_report.t_est < 2.2
+                if move:
+                    assert guard.stationary_pose is None
+            else:
+                assert provider.provider.loc is not original[rid]
+                assert guard.stationary_pose is not None
+                assert ep.controller.state == 'align_relook'
+
+    for rid, ep in eps.items():
+        commands = host.robots[rid].commands
+        stopped = [c for c in commands if c['kind'] == 'hold' and c['t'] >= 2.2]
+        assert stopped[0]['t'] == 2.2
+        assert all(c['kind'] in ('hold', 'arm', 'look') for c in commands if c['t'] >= 2.2)
+        assert any(c['kind'] == 'arm' and c['t'] > 2.4 for c in commands)
+        receipt = next(e for e in ep.events if e['event'] == 'align_relook_stopped_pose')
+        assert receipt['sim_s'] == 2.4
+        assert receipt['report_t'] == pytest.approx(2.24)
+        assert receipt['report_t'] >= receipt['stopped_at_s'] == 2.2
+        assert all(t['consumed_sim_s'] + 1e-9 >= t['captured_sim_s'] + .16
+                   for t in ep.own.pose.timing)
 
 
 @pytest.mark.parametrize('arm_settle_s,missing_standoff,expected_go', [

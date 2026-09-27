@@ -68,8 +68,11 @@ def registered_tree(registration=dev.PREREG_V3):
         return True
     moved = {k for k, v in registered['source_sha256'].items() if current['source_sha256'].get(k) != v}
     assert set(current['source_sha256']) == set(registered['source_sha256'])
-    # The v4/v5 successors pin reviewed driver changes, without rewriting v3.
-    successor = json.loads(dev.PREREG_V5.read_text())['scene_contract']['source_sha256']
+    # v5b pins the current source after the merge/review fix; v3/v4/v5 stay
+    # historical and must still be refused by load_config on this tree.
+    successor_contract = json.loads(dev.PREREG_V5B.read_text())['scene_contract']
+    assert current == successor_contract
+    successor = successor_contract['source_sha256']
     assert all(current['source_sha256'][k] in
                {*POST_REGISTRATION_SOURCES.get(k, ()), successor[k]} for k in moved), moved
     strip = lambda c: {k: v for k, v in c.items() if k not in ('source_sha256', 'sha256')}

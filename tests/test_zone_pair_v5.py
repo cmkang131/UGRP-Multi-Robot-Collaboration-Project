@@ -5,6 +5,7 @@ from dataclasses import replace
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 
 import pytest
@@ -281,6 +282,37 @@ def test_new_align_states_reject_base_motion_even_with_low_sigma(kind):
     assert ep.terminal
 
 
+@pytest.mark.parametrize('fault', ['pre_stop', 'uninitialized', 'high_xy', 'high_yaw', 'nan', 'stale', 'future', 'gate', 'moving'])
+def test_align_reset_requires_valid_post_stop_report_and_keeps_deadline(fault):
+    from harness.zone_own_guards import GATE_LOADED
+    _, _, eps = real_pair()
+    ep = eps['r1']
+    ctl = begin(ep)
+    ep.own.gate.set_profile(GATE_LOADED)  # production before_control's align profile
+    fresh(ep, 1.2)
+    original = ep.own.pose.loc
+    changes = {
+        'pre_stop': {'t_est': .99}, 'uninitialized': {'initialized': False},
+        'high_xy': {'std_xy_m': .07001}, 'high_yaw': {'std_yaw_rad': math.radians(3.001)},
+        'nan': {'x_m': float('nan')}, 'stale': {'t_est': .8}, 'future': {'t_est': 1.21},
+    }
+    ep.own.last_report = replace(ep.own.last_report, **changes.get(fault, {}))
+    if fault == 'gate':
+        ep.own.gate.state = 'uncertain'
+    if fault == 'moving':
+        ep.command_guard.on_command({'t': 1.1, 'kind': 'drive', 'forward': .01, 'duration_s': .25})
+    ctl._align_relook_stop(1.2, True)
+    assert ctl.state == 'align_relook_stop' and ep.own.pose.loc is original
+    assert not ctl.arm.events
+    assert ctl.align_look_started_at == 1.
+    # No reset or wait can refill the original per-look/total clock. The
+    # production guard may abort sooner on invalid data; at the cap both stop.
+    assert not ep.command_guard.before_control(1. + MAX_LOOK_S)
+    for endpoint in eps.values():
+        endpoint.check(1. + MAX_LOOK_S)
+    assert all(e.terminal and not e.controller.arm.events and not e.port.commands for e in eps.values())
+
+
 @pytest.mark.parametrize('sigma,yaw', [(.055, .01), (.01, math.radians(2.5))])
 def test_sigma_reserve_can_trigger_before_time_budget(sigma, yaw):
     _, _, eps = real_pair();ep=eps['r1']
@@ -289,8 +321,8 @@ def test_sigma_reserve_can_trigger_before_time_budget(sigma, yaw):
 
 
 @pytest.mark.parametrize('run', ['dev09', 'dev10'])
-@pytest.mark.parametrize('current_source_fixture', [False, True])
-def test_v5_prepare_copies_frozen_registration_without_physics_or_models(tmp_path, run, current_source_fixture):
+@pytest.mark.parametrize('registration_kind', ['historical_v5', 'registered_v5b', 'current_source_fixture'])
+def test_v5_prepare_copies_frozen_registration_without_physics_or_models(tmp_path, run, registration_kind):
     import subprocess
     import sys
     from scripts import run_zone_pair_dev as dev
@@ -305,19 +337,14 @@ from scripts.run_zone_pair_dev import main
 raise SystemExit(main(sys.argv[1:]))
 '''
     out = tmp_path / run
-    registration = dev.PREREG_V5
-    if current_source_fixture:
-        # Synthetic prepare-only receipt tests the success branch on this
-        # tree. The historical v5 file and physical authorization stay intact.
-        from scripts.zone_pair_grasp_contract import grasp_contract
-        p = json.loads(dev.PREREG_V5.read_text())
-        p.update(scene_contract=dev.scene_contract(), grasp_contract=grasp_contract())
+    registration = dev.PREREG_V5 if registration_kind == 'historical_v5' else dev.PREREG_V5B
+    if registration_kind == 'current_source_fixture':
+        p = current_registration()
         registration = tmp_path / 'synthetic-current-prereg.json'
         registration.write_text(json.dumps(p))
     result = subprocess.run([sys.executable, '-c', code, '--prereg', str(registration),
                              '--run-id', run, '--output', str(out)], cwd=dev.ROOT, capture_output=True, text=True)
-    from tests.test_zone_start_dock import registered_tree
-    if not current_source_fixture and not registered_tree(dev.PREREG_V5):
+    if registration_kind == 'historical_v5':
         assert result.returncode != 0 and 'scene contract/hash mismatch' in result.stderr, result.stderr
         assert not out.exists()
         return
@@ -327,7 +354,7 @@ raise SystemExit(main(sys.argv[1:]))
     assert m['physical_success'] is None
     assert (out / 'prereg.json').read_bytes() == registration.read_bytes()
     assert not (out / 'eval_only/trace.jsonl').exists()
-    p = json.loads(dev.PREREG_V5.read_text())
+    p = json.loads(registration.read_text())
     case = next(r for r in p['runs'] if r['id'] == run)
     from scripts.zone_pair_dev_runtime import make_scene
     scene = make_scene({'map': p['environment']['map'], 'seed': case['seed'], 'goal': {'B': {'cyan': 1}},
@@ -335,16 +362,36 @@ raise SystemExit(main(sys.argv[1:]))
     dev.validate_scene(p, scene)
 
 
-@pytest.mark.parametrize('fault', ['criteria', 'seed', 'hash', 'stage_rules', 'old_prereg_hash'])
-def test_v5_refuses_modified_registration(tmp_path, fault):
+def current_registration():
     from scripts import run_zone_pair_dev as dev
-    p = json.loads(dev.PREREG_V5.read_text())
+    from scripts.zone_pair_grasp_contract import grasp_contract
+    p = json.loads(dev.PREREG_V5B.read_text())
+    p.update(scene_contract=dev.scene_contract(), grasp_contract=grasp_contract())
+    return p
+
+
+@pytest.mark.parametrize('run', ['dev09', 'dev10'])
+@pytest.mark.parametrize('fault,reason', [
+    ('criteria', 'v3 must preserve v2 criteria'),
+    ('seed', "v5 fixes [('dev09', 905), ('dev10', 906)]; do not reuse prior IDs"),
+    ('hash', 'grasp contract/hash mismatch'),
+    ('stage_rules', 'v3 must preserve v2 stage rules'),
+    ('supersedes', 'previous prereg hash mismatch'),
+])
+def test_v5_refuses_modified_registration_for_exact_reason(tmp_path, run, fault, reason):
+    from scripts import run_zone_pair_dev as dev
+    p = current_registration()
+    path = tmp_path / 'registration.json'
+    path.write_text(json.dumps(p))
+    args = dev.parser().parse_args(['--prereg', str(path), '--run-id', run, '--output', str(tmp_path / 'out')])
+    valid, case = dev.load_config(args)  # every mutation starts from a proven valid current fixture
+    assert valid == p and case['id'] == run
     if fault == 'criteria': p['criteria']['lift_bottom_m'] /= 2
     elif fault == 'seed': p['runs'][0]['seed'] = 903
     elif fault == 'hash': p['grasp_contract']['sha256'] = '0' * 64
-    elif fault == 'old_prereg_hash': p['supersedes']['sha256'] = '0' * 64
+    elif fault == 'supersedes': p['supersedes']['sha256'] = '0' * 64
     else: p['stage_rules']['contacts'] = 'allow'
-    path = tmp_path / 'invalid.json'; path.write_text(json.dumps(p))
-    args = dev.parser().parse_args(['--prereg', str(path), '--run-id', 'dev09', '--output', str(tmp_path / 'out')])
-    with pytest.raises(ValueError): dev.load_config(args)
+    path.write_text(json.dumps(p))
+    with pytest.raises(ValueError, match='^' + re.escape(reason) + '$'):
+        dev.load_config(args)
     assert not args.output.exists()

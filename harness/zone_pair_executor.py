@@ -125,6 +125,9 @@ def m2_controller(execution, plan, params):
     class RoutedM2(PairGraspRelook, m2.M2DoorStudent):
         requires_fresh_frame = True
 
+        def align_stop_ready(self, now):
+            return execution.command_guard.align_stop_ready(now, self.align_look_started_at)
+
         def align_look_choices(self):
             from harness.zone_pair_align import ranked_look_pans
             from harness.zone_pair_geometry import PairSweepGuard

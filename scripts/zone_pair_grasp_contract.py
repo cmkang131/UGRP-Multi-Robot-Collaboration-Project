@@ -24,6 +24,7 @@ def grasp_contract():
         'executor_profile': 'zone_pair_executor_v6_dev', 'status_profile': 'zone_pair_status_v5',
         'workflow': {'id': 'zone-pair-dev', 'version': '0.4.0'},
         'align_relook': {
+            'reset': 'hold -> wait for fresh initialized post-stop own report and bounded stationary guard cache -> PF reset; wait counts in existing per-look and cumulative limits',
             'tag_gap_s': 6., 'early_xy_m': .055, 'early_yaw_deg': 2.5,
             'max_looks_per_job': 8, 'max_s_per_look': 8., 'max_total_s': 40., 'max_directions_per_look': 3,
             'selection': 'safe LOOK_P20 pans ranked by static tag projected pixel area; own pose and issued PWM only; actual new accepted own RGB tag required',

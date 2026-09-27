@@ -6,9 +6,25 @@
 작업 기준 HEAD는 `3790372dfdd8e9de894bad7414657461bc8ba91d`, 기존 PR #240의
 `codex/zone-pair-grasp-relook`이다. 과거 prereg·결과·진단·M2 원본은 덮어쓰지 않는다.
 
+## PR #240 review4 반영 — 2026-09-27
+
+현재 준비 등록은 [prereg_v5b.json](prereg_v5b.json)이다. main 병합 후 소스 계약이
+맞지 않는 v5는 바이트 그대로 보존하고, 아직 실행하지 않은 dev09/dev10을 현재
+scene/grasp 계약으로 다시 등록했다. `docs/execution_versioning.md`의 변경·검증 2–4단계에
+따라 새 revision으로 구분하며 이전 결과를 승계하지 않는다. v3/v4/v5와 비교해 seed,
+화물/입력, 판정 기준과 한도는 같다. v5b의 `supersedes`는 기존 v5의 정확한 해시다.
+workflow 0.4.0·실행기 profile은 유지하고 수정 소스를 계약 해시와 revision으로 식별한다.
+`execution_source_sha=null`이며 물리 실행 전 코디네이터의 별도 커밋·소스 고정이 필요하다.
+
+초기화 순서는 **hold → 정지 이후 시각의 유효한 공통 자세 보고·정지 캐시 확보 → PF 초기화**다.
+0.16초 지연 제공자의 2.30초 보고(`t_est=2.14`)로는 초기화하지 않고,
+2.40초의 보고(`t_est=2.24`)를 확보한 뒤 초기화한다. 기다림도 기존 8초/누적 40초에 포함된다.
+자세 유효성·안전 임계값·GT 경계·weld OFF·cargo_noslip_v1은 유지한다.
+검증 범위와 준비 영수증은 [review4 반영 기록](review4_fixes.md)을 따른다.
+
 ## 버전과 변경 범위
 
-- [prereg_v5.json](prereg_v5.json): **dev09/seed905** 정상 시도, **dev10/seed906** carry-GO 후 abort 진단.
+- [prereg_v5b.json](prereg_v5b.json) (이전 [v5](prereg_v5.json) 보존): **dev09/seed905** 정상 시도, **dev10/seed906** carry-GO 후 abort 진단.
   v3/v4 화물 배치·주문서·개입을 유지하고 spawn/PF seed만 새로 고정한다. 실행 전 검토·소스 고정은 owner=claude다.
 - 실행기 `zone_pair_executor_v6_dev`, 파지 계약 `zone_pair_grasp_relook_v2`, 기존 workflow `zone-pair-dev` **0.4.0**.
   STATUS는 **zone_pair_status_v5 그대로**이며 enum·필드·readiness TTL·GO 격자는 바뀌지 않는다.
@@ -24,13 +40,13 @@
 ## align 전·중 능동 재관측
 
 align 진입마다 먼저 hold하고, 아직 발행되지 않은 beam-view 팔 명령을 버린 뒤 **발행한 PWM**에서 시작한다.
-다음 제어 tick에서 기존 `LOOK_P20`와 고정 pan 후보를 검사한다. 자기 자세 추정과 정적 태그의 4개 꼭짓점을
+정지 이후 시각의 유효한 자세 보고와 guard의 정지 캐시를 확보한 뒤 기존 `LOOK_P20`와 고정 pan 후보를 검사한다. 자기 자세 추정과 정적 태그의 4개 꼭짓점을
 기존 어안 카메라 보정/FK로 투영해, 정상 영상 영역의 8 px 이상 태그 면적 합이 큰 방향부터 선택한다.
 기존 `PairSweepGuard`의 전체 전환 충돌 검사를 통과한 후보만 쓰며 backoff는 허용하지 않는다.
 이 순위는 예상 가시성일 뿐이다. 가림·자기 추정 bias가 있을 수 있으므로 실제 새 태그 수용을 대신하지 못한다.
 표식 없는 지도에 가짜 특징을 만들거나 태그 없는 VO로 우회하지 않는다. 이 후보는 tags_temporary 전용이다.
 
-정지 명령이 발행된 뒤 shared `own.pose.loc`를 새로 초기화하고 자기 RGB로 갱신한다.
+정지 명령이 발행되고 제공자 지연을 지난 유효 보고를 확보한 뒤에만 shared `own.pose.loc`를 새로 초기화하고 자기 RGB로 갱신한다.
 guard와 다른 추정기나 `vo_pose`를 사용하지 않는다. 이번 look 시작 **이후** 수용된 태그,
 신선한 공통 report·gate OK·기존 5 cm/3° 준비조건·조기 재관측 여유가 모두 충족돼야
 원래 beam-view 자세로 돌아간다. 돌아온 뒤에도 조건을 재확인하고 align을 재개한다.
@@ -90,30 +106,30 @@ manifest의 `source_input`, `source_input_sha256`, 영상 sha256, `sources`가 �
 ```sh
 PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev.py \
-  --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5.json \
-  --run-id dev09 --output /tmp/zone-pair-dev09-prepare-NEW
+  --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5b.json \
+  --run-id dev09 --output /tmp/zone-pair-dev09-v5b-prepare-NEW
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev.py \
-  --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5.json \
-  --run-id dev10 --output /tmp/zone-pair-dev10-prepare-NEW
+  --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5b.json \
+  --run-id dev10 --output /tmp/zone-pair-dev10-v5b-prepare-NEW
 ```
 
 검토·소스 고정 후 코디네이터만 실행:
 
 ```sh
-bash <<'PAIR_DEV_V5'
+bash <<'PAIR_DEV_V5B'
 set -euo pipefail
 PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 PAIR_OWNER=claude
 PAIR_BRANCH=$(git branch --show-current)
 PAIR_SHA=$(git rev-parse HEAD)
-PAIR_PREREG=experiments/2026-09-27-zone-pair-dev/prereg_v5.json
-PAIR_ROOT="/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5-$PAIR_SHA"
+PAIR_PREREG=experiments/2026-09-27-zone-pair-dev/prereg_v5b.json
+PAIR_ROOT="/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5b-$PAIR_SHA"
 test "$PAIR_BRANCH" != main
 test -z "$(git status --porcelain)"
 "$PAIR_PY" scripts/disk_report.py
 "$PAIR_PY" scripts/agent_lock.py status
 "$PAIR_PY" scripts/agent_lock.py acquire --owner "$PAIR_OWNER" --branch "$PAIR_BRANCH" \
-  --purpose "pair-v5-dev09-dev10 $PAIR_SHA; no model calls" --pid "$$" --expected-minutes 1925
+  --purpose "pair-v5b-dev09-dev10 $PAIR_SHA; no model calls" --pid "$$" --expected-minutes 1925
 trap '"$PAIR_PY" scripts/agent_lock.py release --owner "$PAIR_OWNER"' EXIT
 export OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1
 for PAIR_RUN in dev09 dev10; do
@@ -123,14 +139,17 @@ for PAIR_RUN in dev09 dev10; do
     --prereg "$PAIR_PREREG" --run-id "$PAIR_RUN" --output "$PAIR_ROOT/$PAIR_RUN" \
     --execute --expected-source-sha "$PAIR_SHA" --lock-owner "$PAIR_OWNER"
 done
-PAIR_DEV_V5
+PAIR_DEV_V5B
 ```
 
 실제 물리 실행은 이번 작업에서 하지 않았다. 잠금 실패·host 오류 시 시작/후속 실행을 중단하고,
 기존 출력 덮어쓰기와 자동 재실행을 하지 않는다. 두 실행의 총 SIM/wall 한도·submit 시각·
 abort 개입 시점·종료 관찰은 v3와 같다. 이 wall 예산은 완료 예상 시간이 아니다.
 
-## 검증과 남은 확인
+## 최초 v5 작성 당시 검증과 남은 확인
+
+아래 수치와 준비 성공은 최초 v5 작성 당시 기록이며 현재 소스 검증으로 승계하지 않는다.
+현재 v5b 검증은 위 review4 반영 기록을 따른다.
 
 [검증 기록](grasp_v5_validation.json): **480 passed, 13 skipped, 1 deselected / 21.44 s**.
 새 v5 회귀 **35개**가 포함된다. MuJoCo import를 요구하는 13개 fake-world 검사는 import 차단으로
