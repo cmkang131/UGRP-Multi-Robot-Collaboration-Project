@@ -105,7 +105,7 @@ def test_r7_codex_1_cap_1_a_contradicted_not_sent_is_charged_and_the_reruns_are_
     sched = ds.EventScheduler(adapter, policy=ds.CallPolicy(max_http_attempts_per_actor=1,
                                                             max_calls_per_actor=5))
     _run_caller_loop(sched)
-    assert adapter.sends == 1 == _charged(sched) == sched.budget.used['r1']
+    assert (adapter.sends, _charged(sched), sched.budget.used['r1']) == (1, 1, 1)   # pre-fix: (3, 0, 0)
     assert sched.send_ledger.sends() == 1 and sched.unsent_calls == []
     assert _violations(sched) == ['not_sent_contradicted']
     assert sched.calls[0].cost.sim_s > 0 and sched.calls[0].notes['send_violation'] is True
@@ -168,8 +168,8 @@ def test_r7_codex_2_cap_2_the_ledger_is_charged_and_the_freed_slot_never_exists(
     sched.run(until_s=60.0)
     sched.trigger('r1', 'retry')                    # the caller asks again as well
     sched.run(until_s=120.0)
-    assert adapter.sends == 2 == _charged(sched) == sched.budget.used['r1'] == sched.send_ledger.sends()
-    assert _violations(sched) == ['declared_sent_mismatch']
+    assert (adapter.sends, _charged(sched), sched.budget.used['r1']) == (2, 2, 2)   # pre-fix: (3, 2, 2)
+    assert _violations(sched) == ['declared_sent_mismatch'] and sched.send_ledger.sends() == 2
     first = sched.calls[0]
     assert len(first.cost.attempts) == 2 and first.notes['usage_known'] is False
     assert sched.discarded[0]['reason'] == 'send_ledger_violation' and len(sched.calls) == 1
@@ -246,6 +246,18 @@ def test_r7_a_reply_without_any_send_is_refunded_and_executes_nothing():
     assert actions == ['go'] and sched.budget.used['r1'] == 1
 
 
+def test_r7_a_true_not_sent_is_refunded_and_re_raised_to_the_caller():
+    """0 sends on the ledger: the claim agrees, so it is the one refund, and the
+    caller still learns the call never went out."""
+    sched = ds.EventScheduler(_Scripted(None, raise_in_submit=ds.NotSent('limiter refused')),
+                              policy=ds.CallPolicy(max_http_attempts_per_actor=1))
+    sched.trigger('r1', 'start')
+    with pytest.raises(ds.NotSent, match='limiter'):
+        sched.run(until_s=60.0)
+    assert sched.budget.used['r1'] == 0 and sched.budget.remaining('r1') == 1 and _violations(sched) == []
+    assert sched.unsent_calls[0]['error'].startswith('NotSent') and sched.calls == []
+
+
 @pytest.mark.parametrize('stage', ['submit', 'reply'])
 def test_r7_a_local_failure_before_any_send_is_refunded_without_a_violation(stage):
     error = ValueError('payload failed validation before the wire')
@@ -298,6 +310,35 @@ def test_r7_a_send_after_the_reply_is_blocked_and_recorded():
     assert _violations(sched) == ['send_after_settlement']
     with pytest.raises(ValueError, match='not outstanding'):
         transport.stale.reserve(1)
+
+
+def test_r7_a_send_between_the_reply_and_the_charged_release_is_blocked():
+    """r1's reply was taken (its count is final) but its SIM release is later; a
+    request of r1 sent meanwhile, here from inside r2's reply, never leaves."""
+    class Cross(_Wire):
+        def __init__(self):
+            super().__init__()
+            self.tokens, self.late = {}, None
+
+        def submit(self, call):
+            self.send(call)
+            self.tokens[call.actor] = call
+            return call
+
+        def reply(self, token):
+            if token.actor == 'r2':
+                self.late = self.send(self.tokens['r1'])
+            return ds.CallReply(attempts=(zc.Attempt(),), action=token.actor)
+
+    transport = Cross()
+    sched = ds.EventScheduler(transport, policy=ds.CallPolicy(max_calls_per_actor=1))
+    sched.trigger('r1', 'start')
+    sched.trigger('r2', 'start')
+    sched.run(until_s=60.0)
+    assert transport.late is False and transport.sends == 2 == sched.send_ledger.sends()
+    assert sched.blocked_sends[0]['reason'] == 'call_settled'
+    assert _violations(sched) == ['send_after_settlement']
+    assert [len(c.cost.attempts) for c in sched.calls] == [1, 1]
 
 
 def test_r7_nothing_sent_by_the_horizon_is_refunded_not_censored():

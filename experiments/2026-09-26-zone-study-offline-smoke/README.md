@@ -7,6 +7,7 @@
 > Codex 4차 재검토 #16(사용량 미상 끝단 보존)의 남은 반례 3건을 고친 뒤의 재실행과 첫 보고서·TensorBoard 변환은 [`v4/`](v4/README.md)(코드 `c21a6fe9`)에 있다. v1~v3는 그대로 둔다.
 > Codex 5차 검토(P1 1건·P2 2건) 수정 기록은 [`review-r5/`](review-r5/README.md)(코드 `f44ea845`)에 있다. 스모크 출력이 바뀌지 않아 재실행하지 않았고 v5는 없다.
 > Codex 6차 검토(P1 1건·P2 1건)와 통합 PR #229가 찾은 2건(재질문 타이머 누적, 계약의 tags_v2 지도 거부) 수정 기록은 [`review-r6/`](review-r6/README.md)(코드 `8ab8f7ed`)에 있다. 재질문 규칙이 채널 조건의 SIM trace를 바꾸므로 새 버전 [`v5/`](v5/README.md)로 재실행했다. v1~v4는 그대로 둔다.
+> Codex 7차 검토(P1 전송 장부, P2 기록 해시 기반 계약 버전 감사) 수정 기록은 [`review-r7/`](review-r7/README.md)(코드 `94841738`)에 있다. SIM trace는 v5와 30/30 같지만 번들 ID·provenance·`send_ledger` 절이 달라 새 버전 [`v6/`](v6/README.md)으로 재실행했다. v1~v5는 그대로 둔다.
 
 - **상태:** 완료. 30회 전부 통과(`results.json` `ok: true`).
 - **실행 소스:** `d87e0f2bc179d00ad4c8de48e0559408d46d6a0c` (브랜치 `kiro/zone-study-core`, worktree `ugrp-wt/kiro-study-core`)

@@ -15,6 +15,7 @@ scripted adapters; this file pins the pieces around them:
 from __future__ import annotations
 
 import base64
+import copy
 import hashlib
 import json
 import math
@@ -314,6 +315,23 @@ def test_r7_offline_the_record_send_ledger_must_match_the_call_log():
         mutate(bad)
         with pytest.raises(ev.TrialError, match=match):
             ev.parse_trial(bad)
+
+
+def test_r7_offline_cost_checks_fail_when_the_charges_differ_from_the_ledger():
+    trial, result = off.run_trial('s1_normal_mixed', 'no_comm', 601, horizon_s=30.0)
+    assert off.cost_checks(trial, result)['ok']
+    first = trial.request_call_ids[result.calls[0]['request_id']]
+    for mutate, match in [
+            (lambda cost: cost['send_ledger'].update(sent=cost['send_ledger']['sent'] + 1), 'send ledger counted'),
+            (lambda cost: cost.update(wire_requests=cost['wire_requests'] + 1), 'the wire received'),
+            (lambda cost: cost['send_ledger']['by_call'][first].update(sent=2), 'charged, 2 sent'),
+            (lambda cost: cost.update(send_violations=[{'call_id': first}]), 'send_violations'),
+            (lambda cost: cost.update(blocked_sends=[{'call_id': first}]), 'blocked_sends'),
+            (lambda cost: cost.update(unsent_calls=[{'call_id': first}]), 'unsent_calls')]:
+        bad = copy.deepcopy(result)
+        mutate(bad.cost)
+        checks = off.cost_checks(trial, bad)
+        assert not checks['ok'] and any(match in p for p in checks['problems']), (match, checks['problems'])
 
 
 @pytest.mark.parametrize('value', [True, -1, 1.5, '1', None, math.nan, math.inf])

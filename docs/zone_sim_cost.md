@@ -2,7 +2,7 @@
 
 - **날짜:** 2026-09-26
 - **상태:** 구현·자동 테스트 완료, **러너 미통합**. 물리 실행·모델 호출로 검증하지 않았다.
-- **파일:** `harness/zone_sim_cost.py`, `harness/zone_event_scheduler.py`, `tests/test_zone_sim_cost.py`, `tests/test_zone_event_scheduler.py`
+- **파일:** `harness/zone_sim_cost.py`, `harness/zone_event_scheduler.py`, `harness/zone_send_ledger.py`(전송 장부, 2026-09-27), `harness/zone_study_llm_transport.py`(모델 호출 어댑터, 2026-09-27), `tests/test_zone_sim_cost.py`, `tests/test_zone_event_scheduler.py`, `tests/test_zone_study_review_r7*.py`
 - **설계 근거:** [2026-09-25 통합 연구 설계(Codex) 5절](design/2026-09-25-zone-dialogue-study-design-codex.md). 지휘자 형태·자기 카메라 전용 등 이후 사용자 결정이 그 문서를 대체하는 부분은 결정을 따른다.
 
 ## 1. 왜 필요한가
@@ -89,7 +89,7 @@ d_q   = quantum * ceil(raw_q / quantum)
 
 - **이유(통합 PR #229, 이슈 #222):** 전에는 행동마다 타이머를 하나씩 더 걸었다. 그래서 호출마다 끝나지 않는 사슬이 하나씩 생겼고, 채널 조건에서 메시지로 시작된 호출이 사슬을 늘려 모든 조건이 445–478 SIM s에 호출 예산 90회를 다 썼다. 오프라인 스모크 v4의 채널 조건 18회도 모두 `budget_exhausted`였다.
 - 통합 러너의 임시 우회(`harness/zone_study_integration.py` `_arm_reask`)와 같은 규칙·같은 식별자다. 통합 쪽은 이 API를 쓰면 지역 우회를 지울 수 있다.
-- 오프라인 루프(`harness/zone_study_offline.py`)는 이 규칙을 쓰며, 실행 번들 ID를 `zone_study_offline_v2`로 올렸다. v1~v4 기록은 옛 규칙(`zone_study_offline_v1`)으로 실행됐다.
+- 오프라인 루프(`harness/zone_study_offline.py`)는 이 규칙을 쓰며, 실행 번들 ID를 `zone_study_offline_v2`로 올렸다. v1~v4 기록은 옛 규칙(`zone_study_offline_v1`)으로 실행됐다. 7차 수정에서 오프라인 루프가 전송 장부를 지나게 되어 번들 ID는 `zone_study_offline_v3`이다(스모크 v6부터).
 
 ## 3. 실행 의미 (스케줄러 계약)
 

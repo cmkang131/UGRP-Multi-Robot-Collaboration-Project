@@ -1,0 +1,59 @@
+{
+  "baseline": "v5 스냅샷 0926-zone-study-offline-smoke-v5를 같은 필터로 함께 표시(값이 같아 선이 겹친다)",
+  "collection_sha256": "7396dbefa3d67d30d411471caad3145a64937e0ae068f2fb04f4a64351c596e8",
+  "converter": "scripts/zone_study_report.py --tb-events (94841738, TensorBoard 2.21.0 protobuf)",
+  "hparams_limit": "Same as v4/v5: the merged HParams experiment of the shared logdir lists 9 columns from another snapshot, so the configured columns are not selectable there. The 35 v6 sessions are returned by the session_groups API. Use Time Series.",
+  "hparams_visible_columns": [
+    "condition",
+    "scenario",
+    "seed",
+    "leader_id",
+    "end_reason",
+    "tokens_complete"
+  ],
+  "pinned_tags": [
+    "evaluation/success",
+    "result/makespan_sim_s",
+    "result/model_calls",
+    "result/think_sim_cost_s",
+    "result/talk_sim_cost_s",
+    "result/tokens_total",
+    "result/usage_unknown_calls",
+    "dialogue/utterances"
+  ],
+  "run_filter": "^(0926-zone-study-offline-smoke-v5|0927-zone-study-offline-smoke-v6)/",
+  "runs": 35,
+  "scalars_written": 789,
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/0927-zone-study-offline-smoke-v6",
+  "url": "http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22evaluation%2Fsuccess%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmakespan_sim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fthink_sim_cost_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Ftalk_sim_cost_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Ftokens_total%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fusage_unknown_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22dialogue%2Futterances%22%7D%5D&smoothing=0&runFilter=%5E%280926-zone-study-offline-smoke-v5%7C0927-zone-study-offline-smoke-v6%29%2F#timeseries",
+  "verification": {
+    "server": {
+      "endpoint": "http://127.0.0.1:6006",
+      "hparams_sessions_v6": 35,
+      "mismatches": 0,
+      "missing_tags": 0,
+      "owner_ko": "다른 작업의 기존 서버(재시작·수정 안 함), --logdir outputs/tensorboard",
+      "pid": 9291,
+      "pinned_tags_on_trial_runs": "8/8 tags on 30/30 runs",
+      "raw_check_ko": "result/model_calls == len(trial_record.calls)",
+      "raw_mismatches": 0,
+      "raw_trial_record_checks": 30,
+      "scalars_compared": 789,
+      "snapshot_runs_listed": 35,
+      "total_runs_listed": 1201
+    },
+    "ui": {
+      "checked_ko": "v6만 필터한 캡처에서 v6 run 35개가 선택되고 고정 카드 8개가 보였다. leader_ko-s1 첫 행: model_calls 72, think 243.6, talk 1.6, tokens 601,917, utterances 4, makespan 300, success 0 = scalars.json 값과 같다.",
+      "method_ko": "저장 url을 임시 프로필 headless Chrome(CDP)으로 열고 필터된 run을 모두 선택해 캡처했다. 도구는 PR #229의 experiments/2026-09-26-zone-study-integration/tb_capture.py를 /tmp에 복사해 썼다.",
+      "screenshot_sha256": {
+        "v5_and_v6": "7d03fa02fd6de5385ba58f937f64348eb25a7f063692169bb62e0b98cafdbfdf",
+        "v6_only": "6a6f8afaaf83a48d74013c352033e387477e1ae98dbcb3b3b7bb7c9dd9d4a33d"
+      },
+      "screenshots": {
+        "v5_and_v6": "/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6-report/tensorboard-pinned-v6.png",
+        "v6_only": "/Users/changmin/projects/ugrp/outputs/zone-study-offline-smoke-v6-report/tensorboard-pinned-v6-only.png"
+      }
+    }
+  },
+  "view_key": "zone_study_offline_smoke_v6_20260927 (outputs/tensorboard-view.json, 이 키만 추가)"
+}
