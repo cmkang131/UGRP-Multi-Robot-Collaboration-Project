@@ -11,6 +11,7 @@ import math
 
 from harness.pair_owncam_approach import PairApproachDriverV2
 from harness.zone_own_contract import pose_report_fresh
+from harness.owncam_time import report_at_or_after
 from harness.zone_own_driver import GuardedDriver
 from harness.zone_own_guards import (GATE_LOADED, GATE_UNLOADED,
                                      TRUSTED_TAG_AGE_S, OwnPose, ProgressMonitor, commanded_step_m)
@@ -189,7 +190,7 @@ class PairCommandGuard:
         # Cache only a bounded own estimate AFTER the last base command ended.
         # A reset localizer has no pose yet, but cannot move a stationary base.
         if fresh and pose is not None:
-            if (now >= self.motion_until and report.t_est >= self.motion_until
+            if (now >= self.motion_until and (self.motion_until == -math.inf or report_at_or_after(report, self.motion_until))
                     and not self._high(pose)):
                 self.stationary_pose = pose
             return pose
@@ -213,7 +214,7 @@ class PairCommandGuard:
         pose = self._pose(now)
         return bool(now > stopped_at and own.last_report.initialized
                     and pose_report_fresh(own.last_report, now)
-                    and own.last_report.t_est >= stopped_at >= self.motion_until
+                    and report_at_or_after(own.last_report, stopped_at) and stopped_at >= self.motion_until
                     and own.gate.ok and pose is not None and not self._high(pose)
                     and self.stationary_pose is pose)
 

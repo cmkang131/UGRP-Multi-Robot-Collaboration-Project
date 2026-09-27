@@ -5,6 +5,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PATHS = (
+    'harness/owncam_time.py', 'harness/zone_own_contract.py',
+    'harness/zone_own_executor.py', 'harness/zone_own_status.py',
+    'harness/zone_own_perception.py', 'harness/zone_pair_obstruction.py',
     'harness/zone_pair_grasp.py', 'harness/zone_pair_executor.py',
     'harness/zone_pair_beam_track.py',
     'harness/zone_pair_align.py',
@@ -23,6 +26,8 @@ def grasp_contract():
         'profile': 'zone_pair_grasp_relook_v2',
         'executor_profile': 'zone_pair_executor_v6_dev', 'status_profile': 'zone_pair_status_v5',
         'workflow': {'id': 'zone-pair-dev', 'version': '0.4.0'},
+        'pose_time': {'rounding_s': .0001, 'accepted_tag': 'raw accepted capture; strict after align start; report bounds tolerant in both directions; failed conjuncts logged'},
+        'target_obstruction': 'active own pair job only; coarse order at initial pickup or fresh segment own RGB anchor; full band + colour/geometry/component support; merged/unknown/other objects retained; no collision guard changes',
         'align_relook': {
             'reset': 'hold -> wait for fresh initialized post-stop own report and bounded stationary guard cache -> PF reset; wait counts in existing per-look and cumulative limits',
             'tag_gap_s': 6., 'early_xy_m': .055, 'early_yaw_deg': 2.5,

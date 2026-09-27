@@ -6,6 +6,15 @@
 작업 기준 HEAD는 `3790372dfdd8e9de894bad7414657461bc8ba91d`, 기존 PR #240의
 `codex/zone-pair-grasp-relook`이다. 과거 prereg·결과·진단·M2 원본은 덮어쓰지 않는다.
 
+## PR #240 dev09/dev10 후속 수정 v5c — 2026-09-28
+
+현재 준비 등록은 [prereg_v5c.json](prereg_v5c.json), **dev11/seed907** 정상 시도와
+**dev12/seed908** carry-GO 후 abort 진단이다. v5b/dev09/dev10은 실행된 실패 기록으로 보존한다.
+[후속 검증·시각 비교 감사](followup_v5c.md)와 [기계 검증 기록](followup_v5c_validation.json)을 따른다.
+accepted-tag 원시 capture 시각과 공통 100 µs 보고 반올림 계약을 사용하며,
+활성 pair 작업의 자기 목표 빔 성분만 주문서/자기 앵커와 RGB로 식별해 차선 장애물에서 제외한다.
+실제 운반 성공은 재검증하지 않았다. 아래 review4 및 최초 v5 절은 당시 기록이다.
+
 ## PR #240 review4 반영 — 2026-09-27
 
 현재 준비 등록은 [prereg_v5b.json](prereg_v5b.json)이다. main 병합 후 소스 계약이
@@ -106,40 +115,40 @@ manifest의 `source_input`, `source_input_sha256`, 영상 sha256, `sources`가 �
 ```sh
 PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev.py \
-  --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5b.json \
-  --run-id dev09 --output /tmp/zone-pair-dev09-v5b-prepare-NEW
+  --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5c.json \
+  --run-id dev11 --output /tmp/zone-pair-dev11-v5c-prepare-NEW
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 "$PAIR_PY" scripts/run_zone_pair_dev.py \
-  --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5b.json \
-  --run-id dev10 --output /tmp/zone-pair-dev10-v5b-prepare-NEW
+  --prereg experiments/2026-09-27-zone-pair-dev/prereg_v5c.json \
+  --run-id dev12 --output /tmp/zone-pair-dev12-v5c-prepare-NEW
 ```
 
 검토·소스 고정 후 코디네이터만 실행:
 
 ```sh
-bash <<'PAIR_DEV_V5B'
+bash <<'PAIR_DEV_V5C'
 set -euo pipefail
 PAIR_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 PAIR_OWNER=claude
 PAIR_BRANCH=$(git branch --show-current)
 PAIR_SHA=$(git rev-parse HEAD)
-PAIR_PREREG=experiments/2026-09-27-zone-pair-dev/prereg_v5b.json
-PAIR_ROOT="/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5b-$PAIR_SHA"
+PAIR_PREREG=experiments/2026-09-27-zone-pair-dev/prereg_v5c.json
+PAIR_ROOT="/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5c-$PAIR_SHA"
 test "$PAIR_BRANCH" != main
 test -z "$(git status --porcelain)"
 "$PAIR_PY" scripts/disk_report.py
 "$PAIR_PY" scripts/agent_lock.py status
 "$PAIR_PY" scripts/agent_lock.py acquire --owner "$PAIR_OWNER" --branch "$PAIR_BRANCH" \
-  --purpose "pair-v5b-dev09-dev10 $PAIR_SHA; no model calls" --pid "$$" --expected-minutes 1925
+  --purpose "pair-v5c-dev11-dev12 $PAIR_SHA; no model calls" --pid "$$" --expected-minutes 1925
 trap '"$PAIR_PY" scripts/agent_lock.py release --owner "$PAIR_OWNER"' EXIT
 export OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1
-for PAIR_RUN in dev09 dev10; do
+for PAIR_RUN in dev11 dev12; do
   "$PAIR_PY" scripts/ugrp_session.py run "pair-$PAIR_RUN-${PAIR_SHA:0:8}" -- \
     "$PAIR_PY" -m scripts.sim_cli workflow run zone-pair-dev \
     --record "$PAIR_ROOT/$PAIR_RUN-managed" --timeout 57660 -- \
     --prereg "$PAIR_PREREG" --run-id "$PAIR_RUN" --output "$PAIR_ROOT/$PAIR_RUN" \
     --execute --expected-source-sha "$PAIR_SHA" --lock-owner "$PAIR_OWNER"
 done
-PAIR_DEV_V5B
+PAIR_DEV_V5C
 ```
 
 실제 물리 실행은 이번 작업에서 하지 않았다. 잠금 실패·host 오류 시 시작/후속 실행을 중단하고,

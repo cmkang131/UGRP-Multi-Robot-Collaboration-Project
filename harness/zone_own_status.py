@@ -66,12 +66,16 @@ class OwnStatusMixin:
         near_door = (math.hypot(self.door_xy[0] - report.x_m, self.door_xy[1] - report.y_m) < DOOR_LANE_RANGE_M
                      and abs(math.cos(report.yaw_rad)) > .8)
         passage = self.door_id if near_door else None
-        block = perception.judge_route_blockage(rgb, pose, static_map=self.map, pose_belief=belief, passage_id=passage)
+        from harness.zone_pair_obstruction import target_context
+        target = target_context(self, report, now)
+        block = perception.judge_route_blockage(obs['image'], pose, static_map=self.map, pose_belief=belief,
+                                                passage_id=passage, expected_target=target)
         committed = block['answer'] == 'yes' and block['confidence'] >= COMMIT_CONFIDENCE
         key = guards.BlockageStreak.key_of(passage, guards.OwnPose.from_report(report))
         row = {'t': round(now, 3), 'judgment': 'route_blockage', 'posture': name, 'frame_id': int(obs['frame_id']),
                'answer': block['answer'], 'confidence': block['confidence'], 'reason': block['reason'],
-               'passage_id': passage, 'belief_confidence': belief['confidence'], 'location_key': key}
+               'passage_id': passage, 'belief_confidence': belief['confidence'], 'location_key': key,
+               'expected_target_occupancy': block.get('expected_target_occupancy', [])}
         self.judgment_log.append(row)
         self._last_blockage = row
         if self.streak.observe(now, block['answer'], committed, key):

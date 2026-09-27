@@ -462,12 +462,14 @@ def test_real_v3_rejects_lost_lift_from_own_image_and_stops_both():
     assert ends(exs['r1'])[0]['detail']['reason'] == 'LOAD_NOT_HELD_AFTER_LIFT'
 
 
-def test_frozen_m2_import_manifest_is_unchanged():
+def test_frozen_m2_sources_or_explicit_followup_hashes():
     manifest = json.loads((ROOT / 'experiments/2026-09-26-zone-m2-pair/imports.json').read_text())
     files = manifest['imports']
     # Reviewed revisions that reached main after the freeze (records stay on their pinned SHA).
     post_freeze = {'sim/zone_landmarks.py': {
         '2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1'}}  # PR #208 env v3 registries
+    # PR #240 requested time-contract followup; old runs keep their frozen source.
+    post_freeze['harness/owncam_pose_source.py'] = {'215821c84c58ff1e939b7c0fa2c0a6956d82f9f4f9f2ad63db95c1a1b7bfb6ae'}
     for row in files:
         got = hashlib.sha256((ROOT / row['path']).read_bytes()).hexdigest()
         assert got in {row['sha256'], *post_freeze.get(row['path'], ())}, row['path']

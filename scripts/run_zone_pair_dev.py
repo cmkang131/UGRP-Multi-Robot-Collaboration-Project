@@ -33,6 +33,7 @@ PREREG_V3 = PREREG.with_name('prereg_v3.json')
 PREREG_V4 = PREREG.with_name('prereg_v4.json')
 PREREG_V5 = PREREG.with_name('prereg_v5.json')
 PREREG_V5B = PREREG.with_name('prereg_v5b.json')
+PREREG_V5C = PREREG.with_name('prereg_v5c.json')
 MAP = ROOT / 'maps/zones/zone_wide_door_tags_v2.json'
 CALIBRATION = ROOT / 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'
 PARTICIPANTS = ('r1', 'r2')
@@ -109,7 +110,7 @@ def load_config(args):
         raise ValueError('this driver is for preregistered dev only')
     version = prereg.get('registration_version')
     revision = prereg.get('registration_revision')
-    if revision is not None and (version != 5 or revision != 'v5b'):
+    if revision is not None and (version != 5 or revision not in ('v5b', 'v5c')):
         raise ValueError('unsupported prereg revision')
     if version not in (2, 3, 4, 5):
         raise ValueError('use prereg v2 or registered v3/v4/v5; preserve earlier versions')
@@ -148,6 +149,8 @@ def load_config(args):
     previous_path = {2: PREVIOUS_PREREG, 3: PREREG, 4: PREREG_V3, 5: PREREG_V4}[version]
     if revision == 'v5b':
         previous_path = PREREG_V5  # unexecuted v5 remains byte-identical history
+    elif revision == 'v5c':
+        previous_path = PREREG_V5B  # executed dev09/10 remain immutable
     previous = {'path': str(previous_path.relative_to(ROOT)), 'sha256': sha_file(previous_path)}
     if prereg.get('supersedes') != previous:
         raise ValueError('previous prereg hash mismatch')
@@ -165,6 +168,8 @@ def load_config(args):
         raise ValueError('seed must be a uint32 integer')
     expected_runs = {2: [('dev03', 901), ('dev04', 902)], 3: [('dev05', 901), ('dev06', 902)],
                      4: [('dev07', 903), ('dev08', 904)], 5: [('dev09', 905), ('dev10', 906)]}[version]
+    if revision == 'v5c':
+        expected_runs = [('dev11', 907), ('dev12', 908)]
     if [(r['id'], r['seed']) for r in rows] != expected_runs:
         raise ValueError(f'v{version} fixes {expected_runs}; do not reuse prior IDs')
     limits = prereg['limits']

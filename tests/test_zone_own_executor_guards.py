@@ -47,6 +47,7 @@ class ScriptedLoc:
 
     def __init__(self, fn):
         self.fn, self.t, self.commands, self.stats = fn, 0., [], {}
+        self.last_tag_t = None
 
     def command(self, row):
         self.commands.append(row)
@@ -56,6 +57,8 @@ class ScriptedLoc:
 
     def estimate(self):
         e = self.fn(self.t)
+        # Explicit synthetic accepted-tag capture for this scripted fixture.
+        self.last_tag_t = None if e[5] is None else self.t - e[5]
         return {'t': self.t, 'initialized': True, 'x': e[0], 'y': e[1], 'yaw': e[2], 'std_xy_m': e[3],
                 'std_yaw_rad': e[4], 'since_tag_s': e[5], 'n_eff': 100., 'cov': []}
 

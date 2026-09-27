@@ -6,6 +6,8 @@ failed verification stops instead of falling through to the skill.
 """
 from __future__ import annotations
 
+from harness.owncam_time import pose_report_fresh
+
 import math
 
 from harness.m1_owncam_delivery import CLOSER_VIEW_STANDOFF_M, MAX_GATE_LOOKS, M1OwnCamDelivery, SEARCH_PANS
@@ -225,7 +227,7 @@ class M1OwnCamDeliveryMemV3(ControllerSafetyV3, SlotInspectionV3, M1OwnCamDelive
             return {'mode': 'capture'}
         rep = self.pose.report(now)
         pose_ok = (not check_limits(rep, now, BOUNDARY_LIMITS)
-                   and -1e-8 <= now - rep.t_est <= .25 + 1e-8
+                   and pose_report_fresh(rep, now, max_age_s=.25)
                    and self.memory.look_fix_since(gate['since'])
                    and self.memory.look_fix_fresh(now, (rep.x_m, rep.y_m)))
         if kind == 'grasp':

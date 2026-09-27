@@ -344,7 +344,7 @@ raise SystemExit(main(sys.argv[1:]))
         registration.write_text(json.dumps(p))
     result = subprocess.run([sys.executable, '-c', code, '--prereg', str(registration),
                              '--run-id', run, '--output', str(out)], cwd=dev.ROOT, capture_output=True, text=True)
-    if registration_kind == 'historical_v5':
+    if registration_kind in ('historical_v5', 'registered_v5b'):
         assert result.returncode != 0 and 'scene contract/hash mismatch' in result.stderr, result.stderr
         assert not out.exists()
         return

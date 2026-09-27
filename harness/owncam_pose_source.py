@@ -22,6 +22,7 @@ import numpy as np
 
 from harness.owncam_localizer import OwnCamLocalizer
 from harness.wall_tags import TagDetector
+from harness.owncam_time import POSE_TIME_ROUNDING_S, finite_time
 
 SOURCE_PREFIX = 'owncam_pf_v2'
 
@@ -68,7 +69,11 @@ def check_limits(report: PoseReport, now: float, limits: PoseLimits, *, since_lo
     bad = []
     if not report.initialized:
         return ['not_initialized']
-    if now - report.t_est > limits.max_age_s + 1e-9:
+    if not finite_time(now) or not finite_time(report.t_est):
+        bad.append('invalid_time')
+    elif now - report.t_est < -POSE_TIME_ROUNDING_S:
+        bad.append('future')
+    elif now - report.t_est > limits.max_age_s + POSE_TIME_ROUNDING_S:
         bad.append('stale')
     if not math.isfinite(report.std_xy_m) or report.std_xy_m > limits.max_std_xy_m:
         bad.append('std_xy')

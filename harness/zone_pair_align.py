@@ -7,6 +7,7 @@ import numpy as np
 
 from harness.zone_own_contract import finite_number, pose_report_fresh
 from harness.zone_own_guards import OwnPose
+from harness.owncam_time import accepted_tag_checks
 
 # Scheduling reserves, NOT changes to the 70/50 mm, 3 degree safety gates.
 # dev08 own reports: age=6 at 166.3, sigma_xy=.05486; HIGH at 175.6.
@@ -20,11 +21,13 @@ MAX_DIRECTIONS = 3
 RELOOK_STATES = ('align_relook_stop', 'align_relook', 'align_relook_return')
 
 
-def relook_reason(report, now):
+def relook_reason(report, now, *, last_tag_t=...):
     if not pose_report_fresh(report, now) or not report.initialized:
         return 'pose_missing'
     age = report.since_tag_s
-    if not finite_number(age) or age < 0 or now - report.t_est + age >= MAX_TAG_GAP_S - 1e-8:
+    tag_age = (now - report.t_est + age if finite_number(age) else math.inf) if last_tag_t is ... else (
+        now - last_tag_t if finite_number(last_tag_t) else math.inf)
+    if not finite_number(age) or age < 0 or tag_age < 0 or tag_age >= MAX_TAG_GAP_S - 1e-8:
         return 'tag_gap'
     if report.std_xy_m >= RELOOK_XY_M or report.std_yaw_rad >= RELOOK_YAW_RAD:
         return 'sigma_reserve'
@@ -120,20 +123,30 @@ class PairAlignRelook:
         elapsed = now - self.align_look_started_at
         return elapsed >= MAX_LOOK_S - 1e-8 or self.align_look_total_s + elapsed >= MAX_TOTAL_LOOK_S - 1e-8
 
-    def _align_fix_ready(self, now):
+    def _align_fix_checks(self, now):
         from harness.zone_pair_grasp import FIX_STD_XY_M, FIX_STD_YAW_RAD
 
         own, start = self.port.own, self.align_look_started_at
         r = own.last_report
-        return bool(self.driver.loc is own.pose.loc and pose_report_fresh(r, now)
-                    and r.initialized and own.gate.ok
-                    and all(finite_number(v) for v in (r.x_m, r.y_m, r.yaw_rad))
-                    and 0 <= r.std_xy_m <= FIX_STD_XY_M and 0 <= r.std_yaw_rad <= FIX_STD_YAW_RAD
-                    and relook_reason(r, now) is None
-                    and finite_number(r.since_tag_s) and r.since_tag_s >= 0
-                    and start < r.t_est - r.since_tag_s <= now
-                    and own.pose.loc.last_tag_t is not None
-                    and start < own.pose.loc.last_tag_t <= r.t_est)
+        tag = own.pose.loc.last_tag_t
+        return {**accepted_tag_checks(r, now, tag, start),
+                'shared_localizer': self.driver.loc is own.pose.loc,
+                'initialized': r is not None and r.initialized, 'gate_ok': own.gate.ok,
+                'pose_finite': r is not None and all(finite_number(v) for v in (r.x_m, r.y_m, r.yaw_rad)),
+                'std_xy': r is not None and 0 <= r.std_xy_m <= FIX_STD_XY_M,
+                'std_yaw': r is not None and 0 <= r.std_yaw_rad <= FIX_STD_YAW_RAD,
+                'tag_gap': finite_number(tag) and 0 <= now - tag < MAX_TAG_GAP_S - 1e-8,
+                'sigma_reserve': r is not None and r.std_xy_m < RELOOK_XY_M and r.std_yaw_rad < RELOOK_YAW_RAD}
+
+    def _align_fix_ready(self, now):
+        return all(self._align_fix_checks(now).values())
+
+    def _log_align_fix_rejection(self, now, checks, **extra):
+        r = self.port.own.last_report
+        self.log(self.rid, 'align_relook_fix_rejected', now, checks=checks,
+                 failed_checks=[k for k, v in checks.items() if not v],
+                 accepted_tag_t=self.port.own.pose.loc.last_tag_t,
+                 report_t=None if r is None else r.t_est, started_at_s=self.align_look_started_at, **extra)
 
     def _align_relook_stop(self, now, arm_idle):
         from harness.owncam_localizer import OwnCamLocalizer
@@ -165,11 +178,14 @@ class PairAlignRelook:
         if not arm_idle:
             return
         obs = self.look(now)
-        if self._align_fix_ready(now) and obs['sim_time'] >= self.arm.until - 1e-8:
+        checks = self._align_fix_checks(now)
+        checks['frame_after_arm'] = obs['sim_time'] >= self.arm.until - 1e-8
+        if all(checks.values()):
             self.log(self.rid, 'align_relook_fix', now, report_t=self.port.own.last_report.t_est,
                      frame_id=obs['frame_id'], sha256=obs['sha256'], source='shared own.pose/last_report')
             self.arm.queue(pose_of(self.align_resume_name), now, duration=.6, settle=.3)
             return super().set('align_relook_return', now)
+        self._log_align_fix_rejection(now, checks, frame_id=obs['frame_id'])
         if not self.align_pans:
             return self.fail('ALIGN_RELOOK_NO_FIX', now)
         self.arm.queue({6: self.align_pans.pop(0)}, now, duration=.4, settle=.6)
@@ -177,7 +193,9 @@ class PairAlignRelook:
     def _align_relook_return(self, now, arm_idle):
         if not arm_idle:
             return
-        if not self._align_fix_ready(now):
+        checks = self._align_fix_checks(now)
+        if not all(checks.values()):
+            self._log_align_fix_rejection(now, checks)
             return self.fail('ALIGN_RELOOK_FIX_EXPIRED', now)
         self.align_look_total_s += now - self.align_look_started_at
         self.next_look = now
@@ -187,7 +205,7 @@ class PairAlignRelook:
 
     def tick(self, now):
         if self.state == 'align':
-            reason = relook_reason(self.port.own.last_report, now)
+            reason = relook_reason(self.port.own.last_report, now, last_tag_t=self.port.own.pose.loc.last_tag_t)
             if reason:
                 return self._begin_align_relook(now, reason)
         if self.state not in RELOOK_STATES:

@@ -210,21 +210,21 @@ def test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort(tmp_path):
     from scripts import run_zone_pair_dev as dev
     from scripts.zone_pair_grasp_contract import grasp_contract
     old = json.loads(dev.PREREG_V3.read_text())
-    p = json.loads(dev.PREREG_V5B.read_text())
+    p = json.loads(dev.PREREG_V5C.read_text())
     for key in ('criteria', 'stage_rules', 'planned_setdown', 'limits', 'timing', 'safety_coverage', 'environment', 'inputs'):
         assert p[key] == old[key], key
     current_grasp = grasp_contract()
     assert p['grasp_contract'] == current_grasp
     assert p['scene_contract'] == dev.scene_contract()
-    assert p['registration_revision'] == 'v5b'
-    assert p['supersedes'] == {'path': str(dev.PREREG_V5.relative_to(dev.ROOT)),
-                               'sha256': dev.sha_file(dev.PREREG_V5)}
+    assert p['registration_revision'] == 'v5c'
+    assert p['supersedes'] == {'path': str(dev.PREREG_V5B.relative_to(dev.ROOT)),
+                               'sha256': dev.sha_file(dev.PREREG_V5B)}
     workflow = next(w for w in json.loads((dev.ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
                     if w['id'] == 'zone-pair-dev')
     assert workflow['version'] == p['grasp_contract']['workflow']['version']
     assert p['commands']['owner'] == 'claude'
-    for rid, seed in [('dev09', 905), ('dev10', 906)]:
-        args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V5B), '--run-id', rid, '--output', str(tmp_path / rid)])
+    for rid, seed in [('dev11', 907), ('dev12', 908)]:
+        args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V5C), '--run-id', rid, '--output', str(tmp_path / rid)])
         assert dev.load_config(args)[1]['seed'] == seed
     # Historical v3 bytes remain bound to their old source, never silently
     # accepted with a changed controller under the old registration.

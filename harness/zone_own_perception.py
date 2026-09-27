@@ -700,6 +700,7 @@ def _contrast_test(stats, kind):
 def judge_route_blockage(image, servo_pose: Mapping[int | str, int | float], *,
                          static_map: Mapping[str, Any], pose_belief: Mapping[str, Any],
                          passage_id: str | None = None,
+                         expected_target: Mapping[str, Any] | None = None,
                          lane_half_width_m: float = LANE_HALF_WIDTH_M) -> dict[str, Any]:
     """Is something the static map does not declare blocking the lane ahead?
 
@@ -731,6 +732,7 @@ def judge_route_blockage(image, servo_pose: Mapping[int | str, int | float], *,
     nonfloor = cv2.morphologyEx(nonfloor, cv2.MORPH_OPEN, np.ones((5, 5), np.uint8))
     count, labels, stats_cc, _ = cv2.connectedComponentsWithStats(nonfloor)
     obstructions, mapped, flat, unknown_reasons, border = [], [], [], [], 0
+    expected, expected_candidates = [], []
     for index in range(1, count):
         x, y, w, h, area = (int(v) for v in stats_cc[index])
         if area < MIN_BLOCK_AREA_PX:
@@ -770,11 +772,21 @@ def judge_route_blockage(image, servo_pose: Mapping[int | str, int | float], *,
             continue
         if lateral > lane['half_width_m'] + slack:
             continue
-        near_wall = _nearest_mapped(static_map, world, MAP_MATCH_M)
-        row['near_mapped_obstacle'] = near_wall
+        row['near_mapped_obstacle'] = _nearest_mapped(static_map, world, MAP_MATCH_M)
+        from harness.zone_pair_obstruction import target_component
+        association = target_component(frame, model, labels, index, pose, expected_target)
+        if association is not None:
+            expected.append({**row, **association})
+            expected_candidates.append(row)
+            continue
         obstructions.append(row)
+    if len(expected) > 1:
+        # One ordered beam cannot authorize multiple disconnected objects.
+        obstructions.extend(expected_candidates)
+        expected = []
     mapped_in_lane = [row for row in mapped if row['lateral_m'] <= lane['half_width_m']+slack]
     common.update(mapped_obstacles=mapped[:6], candidates=obstructions[:6], flat_features=len(flat),
+                  expected_target_occupancy=expected,
                   border_components=border,
                   mapped_in_lane=[row['mapped_obstacle'] for row in mapped_in_lane])
     confident = [row for row in obstructions if row['near_mapped_obstacle'] is None]

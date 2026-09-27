@@ -8,9 +8,10 @@ from __future__ import annotations
 
 import math
 
-from harness.zone_own_contract import finite_number, pose_report_fresh
+from harness.zone_own_contract import finite_number
 from harness.zone_pair_vision import valid_frame
 from harness.zone_pair_align import PairAlignRelook
+from harness.owncam_time import accepted_tag_checks
 
 PROFILE = 'zone_pair_grasp_relook_v2'
 FIX_STD_XY_M = .05
@@ -65,21 +66,21 @@ class PairGraspRelook(PairAlignRelook):
             elif row['pulse'] == 1500:
                 self.close_issued_at = row['t']
 
-    def _grasp_pose_ready(self, now):
+    def _grasp_pose_checks(self, now):
         own = self.port.own
         report = own.last_report
         start = getattr(self, 'pregrasp_started_at', None)
         # No VO-only bypass, old low-sigma report, or a different localizer.
-        return bool(start is not None and self.driver.loc is own.pose.loc
-                    and pose_report_fresh(report, now) and report.initialized
-                    and all(finite_number(v) for v in (report.x_m, report.y_m, report.yaw_rad))
-                    and own.gate.ok
-                    and 0 <= report.std_xy_m <= FIX_STD_XY_M
-                    and 0 <= report.std_yaw_rad <= FIX_STD_YAW_RAD
-                    and report.since_tag_s is not None and report.since_tag_s >= 0
-                    and report.t_est - report.since_tag_s >= start
-                    and own.pose.loc.last_tag_t is not None
-                    and start <= own.pose.loc.last_tag_t <= report.t_est)
+        return {**accepted_tag_checks(report, now, own.pose.loc.last_tag_t, start, strict_start=False),
+                'shared_localizer': self.driver.loc is own.pose.loc,
+                'initialized': report is not None and report.initialized,
+                'pose_finite': report is not None and all(finite_number(v) for v in (report.x_m, report.y_m, report.yaw_rad)),
+                'gate_ok': own.gate.ok,
+                'std_xy': report is not None and 0 <= report.std_xy_m <= FIX_STD_XY_M,
+                'std_yaw': report is not None and 0 <= report.std_yaw_rad <= FIX_STD_YAW_RAD}
+
+    def _grasp_pose_ready(self, now):
+        return all(self._grasp_pose_checks(now).values())
 
     def _queue_grasp(self, now):
         from harness.owncam_drive import LOOK_P20
@@ -117,6 +118,8 @@ class PairGraspRelook(PairAlignRelook):
         ok = self._grasp_pose_ready(now)
         report = self.port.own.last_report
         self.log(self.rid, 'pregrasp_fix', now, ok=ok, sweep=self.pregrasp_sweeps,
+                 checks=self._grasp_pose_checks(now),
+                 failed_checks=[k for k, v in self._grasp_pose_checks(now).items() if not v],
                  std_xy_m=report.std_xy_m if report.initialized else None,
                  std_yaw_rad=report.std_yaw_rad if report.initialized else None,
                  report_t=report.t_est, source='shared own.pose/last_report')
@@ -193,6 +196,10 @@ class PairGraspRelook(PairAlignRelook):
                  and self.preclose_check(now, obs))
         self.report('close', obs, now, ready=ready, reason='own relook + open grip view + stationary beam clearance')
         if not ready:
+            checks = self._grasp_pose_checks(now)
+            self.log(self.rid, 'pregrasp_fix_rejected', now, checks=checks,
+                     failed_checks=[k for k, v in checks.items() if not v],
+                     accepted_tag_t=own.pose.loc.last_tag_t, report_t=own.last_report.t_est)
             return self.fail('PREGRASP_NOT_READY', now)
         if now - self.state_t > CLOSE_WAIT_S:
             return self.fail('BARRIER_CLOSE_TIMEOUT', now)

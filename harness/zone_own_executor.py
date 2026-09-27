@@ -40,6 +40,8 @@ source that is not own-camera is refused. ``mode='diagnostic'`` never counts as 
 """
 from __future__ import annotations
 
+from harness.owncam_time import accepted_tag_checks
+
 import copy
 import math
 from collections.abc import Callable, Mapping, Sequence
@@ -612,11 +614,14 @@ class ZoneOwnExecutor(OwnStatusMixin):
             return decision
         rep = self.pose.report(now)
         level = uncertainty_level(rep)
-        tag_in_sweep = rep.since_tag_s is not None and rep.since_tag_s <= now - job.started_at
+        tag_checks = accepted_tag_checks(rep, now, getattr(self.pose.loc, 'last_tag_t', None),
+                                         job.started_at, strict_start=False)
+        tag_in_sweep = all(tag_checks.values())
         if self.gate.allows(rep.initialized, rep.std_xy_m, rep.std_yaw_rad) and tag_in_sweep:
             self._finish(now, 'own_camera_confirmed', 'LOOKED', level=level, std_xy_m=round(rep.std_xy_m, 4))
         else:
-            self._finish(now, 'unconfirmed', 'LOOKED_POSE_UNCERTAIN', level=level, gate=self.gate.state)
+            self._finish(now, 'unconfirmed', 'LOOKED_POSE_UNCERTAIN', level=level, gate=self.gate.state,
+                         failed_checks=[k for k, v in tag_checks.items() if not v])
         return {'mode': 'tick', 'commands': []}
 
     def _tick_sweep(self, now, job):
