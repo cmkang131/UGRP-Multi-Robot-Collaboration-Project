@@ -113,6 +113,31 @@ def build(args):
                                                               'injection_frames_while_ok') if k in rec}
             counts = write_run(Writer, out, run, hp, summary, series, prov, extra)
             exported.append({'name': run, 'kind': 'episode', 'episode': ep, 'filter': f, 'counts': counts})
+    for kind, block in (('secondary', results.get('secondary')),):
+        if not block:
+            continue
+        for ep, per in block['metrics']['episodes'].items():
+            for f, summary in per.items():
+                run = f"{args.prefix}-sec-{ep.split('-s')[-1]}-{f}"
+                hp = {**common, 'filter': f'{f}_secondary', 'filter_label': block['label'], 'episode': ep,
+                      'split': 'test', 'config_sha8': block['config_sha256'][:8]}
+                counts = write_run(Writer, out, run, hp, summary, None, {'metrics_sha256': block['metrics_sha256']})
+                exported.append({'name': run, 'kind': 'secondary_episode', 'episode': ep, 'filter': f, 'counts': counts})
+        for f, summary in block['metrics']['pooled'].items():
+            run = f'{args.prefix}-sec-pooled-{f}'
+            hp = {**common, 'filter': f'{f}_secondary', 'filter_label': block['label'], 'episode': 'test pooled',
+                  'split': 'test', 'config_sha8': block['config_sha256'][:8]}
+            counts = write_run(Writer, out, run, hp, summary, None, {'metrics_sha256': block['metrics_sha256']})
+            exported.append({'name': run, 'kind': 'secondary_pooled', 'filter': f, 'counts': counts})
+    for name, v in (results.get('dev_variants') or {}).items():
+        run = f'{args.prefix}-dev-{name}'
+        hp = {**common, 'filter': f"dev:{name}", 'filter_label': v.get('label', name), 'episode': 'dev pooled',
+              'split': 'dev', 'config_sha8': v['config_sha256'][:8]}
+        rec = v.get('recovery', {})
+        extra = {f'recovery/{k}': float(rec[k]) for k in ('lost_frames', 'injection_frames', 'injection_frames_while_ok')
+                 if k in rec}
+        counts = write_run(Writer, out, run, hp, v['pooled'], None, {'metrics_sha256': v['metrics_sha256']}, extra)
+        exported.append({'name': run, 'kind': 'dev', 'filter': name, 'counts': counts})
     gate = results.get('gate', {})
     for f, summary in test['metrics']['pooled'].items():
         run = f'{args.prefix}-pooled-{f}'
@@ -161,6 +186,12 @@ def verify(args):
             summary = results['test']['metrics']['pooled'][item['filter']]
         elif item['kind'] == 'reference':
             summary = results['references'][item['filter']]['summary']
+        elif item['kind'] == 'secondary_episode':
+            summary = results['secondary']['metrics']['episodes'][item['episode']][item['filter']]
+        elif item['kind'] == 'secondary_pooled':
+            summary = results['secondary']['metrics']['pooled'][item['filter']]
+        elif item['kind'] == 'dev':
+            summary = results['dev_variants'][item['filter']]['pooled']
         else:
             summary = {}
         for g in GROUPS:
