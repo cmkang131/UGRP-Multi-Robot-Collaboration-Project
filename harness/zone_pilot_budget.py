@@ -161,7 +161,7 @@ class PilotBudget:
             row = {**record, 'reservation_id': uuid.uuid4().hex, 'status': 'reserved_unknown',
                    'reserved_attempts': UPSTREAM_BOUND, 'reserved_tokens': need,
                    'envelope': envelope, 'effective_settings': EFFECTIVE,
-                   'provider_usage': None, 'actual_upstream_attempts': None,
+                   'provider_usage': None, 'completion': None, 'actual_upstream_attempts': None,
                    'proxy_request_id': None, 'upstream_complete': False}
             db.execute('INSERT INTO sends VALUES (?,?,?,?)',
                        (row['reservation_id'], need, UPSTREAM_BOUND, canonical(row)))
@@ -169,7 +169,7 @@ class PilotBudget:
 
     def settle(self, reservation_id, **updates):
         allowed = {'status', 'provider_usage', 'proxy_response_id', 'response_sha256',
-                   'wire_error', 'ledger', 'proxy_log_window', 'late'}
+                   'wire_error', 'ledger', 'proxy_log_window', 'late', 'completion'}
         if set(updates) - allowed:
             raise ValueError('settlement cannot alter reservations or claim upstream reconciliation')
         with self._connect() as db:

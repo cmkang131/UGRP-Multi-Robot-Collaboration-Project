@@ -53,6 +53,7 @@ from dataclasses import dataclass, field, replace
 from types import MappingProxyType
 
 from harness.zone_send_ledger import ScriptedWire, SendBlocked, SendLedger, send
+from harness.llm_completion import completion_record, freeze_completion
 from harness.zone_sim_cost import (Attempt, CallCostRecord, FAILED_OUTCOMES, MessageCostRecord,
                                    TRIGGER_TO_CONTRACT, call_cost, censored_call_record,
                                    contract_call_record, contract_message_records, delivery_delay_s,
@@ -162,8 +163,10 @@ class CallReply:
     #: believes; None = it cannot tell. ADVISORY since the seventh review: the
     #: scheduler counts the send ledger and records a mismatch as a violation.
     sent_attempts: object = None
+    completion: object = None
 
     def __post_init__(self):
+        object.__setattr__(self, 'completion', freeze_completion(self.completion))
         if not self.attempts:
             raise ValueError('a reply needs at least one attempt')
         if not isinstance(self.usage_known, bool):
@@ -211,13 +214,14 @@ class TransportFailure(Exception):
     """
 
     def __init__(self, message, *, attempts, unparsed_utterances=0, provider_usage=None,
-                 usage_known=True, sent_attempts=None):
+                 usage_known=True, sent_attempts=None, completion=None):
         super().__init__(message)
         if not isinstance(usage_known, bool):
             raise ValueError('usage_known must be a bool')
         self.attempts = tuple(attempts)
         self.unparsed_utterances = int(unparsed_utterances)
         self.provider_usage = provider_usage
+        self.completion = freeze_completion(completion)
         self.usage_known = usage_known
         #: Sixth review: how many HTTP requests of this call the transport
         #: believes LEFT (None = it cannot tell). Advisory: see ``_sent_count``.
@@ -766,6 +770,8 @@ class EventScheduler:
             elapsed = _round(max(at - call.started_sim_s, 0.))
             entry.update({'status': 'censored', 'finished_sim_s': _round(at), 'reason': why,
                           'elapsed_sim_s': elapsed, 'attempts': actual})
+            if reply.completion is not None:
+                entry['completion'] = completion_record(reply.completion)
             self.censored.append({'call_id': call.call_id, 'actor': call.actor, 'trigger': call.trigger,
                                   'started_sim_s': call.started_sim_s, 'horizon_sim_s': _round(at),
                                   'elapsed_sim_s': elapsed, 'reason': why,
@@ -781,6 +787,8 @@ class EventScheduler:
                                   'unparsed_utterances': reply.unparsed_utterances,
                                   'provider_usage': _usage_dict(reply.provider_usage),
                                   'cost': cost.to_dict()})
+            if reply.completion is not None:
+                self.censored[-1]['completion'] = completion_record(reply.completion)
             self._log(f'call_censored {call.actor} {call.call_id} elapsed={elapsed:.3f}',
                       kind='call_censored', actor=call.actor, call_id=call.call_id)
         self._pending.clear()
@@ -951,7 +959,8 @@ class EventScheduler:
                                                     output_tokens=attempts[-1].output_tokens,
                                                     utterances=attempts[-1].utterances),)
             return dict(base, reply=CallReply(attempts=attempts, unparsed_utterances=attempts[-1].utterances,
-                                              provider_usage=exc.provider_usage, usage_known=usage_known),
+                                              provider_usage=exc.provider_usage, usage_known=usage_known,
+                                              completion=exc.completion),
                         reported=len(exc.attempts), declared=exc.sent_attempts)
         self.transport_errors.append({'call_id': call.call_id, 'actor': call.actor, 'stage': stage,
                                      'error': error, 'usage_known': False})
@@ -1180,6 +1189,9 @@ class EventScheduler:
         notes = {'messages': len(reply.messages), 'unparsed_utterances': reply.unparsed_utterances,
                  'usage_known': reply.usage_known, 'provider_usage': _usage_dict(reply.provider_usage),
                  'failed': failed, 'send_violation': breach}
+        if reply.completion is not None:
+            notes['completion'] = completion_record(reply.completion)
+            entry['completion'] = completion_record(reply.completion)
         if failed or breach:
             # finding 5: a failed call PAYS but executes nothing. Its action and
             # its utterances are recorded as discarded, and only then is it

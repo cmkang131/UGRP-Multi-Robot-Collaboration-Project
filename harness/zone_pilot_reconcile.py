@@ -10,6 +10,8 @@ import json
 from pathlib import Path
 
 from harness.zone_pilot_budget import sha, usage_total
+from harness.llm_completion import (COMPLETION_POLICY, PROXY_COMPLETION_LIMITATION,
+                                     normal_completion, successful_call)
 
 
 def reconcile(snapshot, telemetry=()):
@@ -93,12 +95,16 @@ def reconcile(snapshot, telemetry=()):
                      'proxy_request_id': observed.get('proxy_request_id') if observed else None,
                      'upstream_attempts': observed.get('upstream_attempts') if observed else None,
                      'provider_usage': sent.get('provider_usage'),
+                     'completion': sent.get('completion'),
                      'local_status': sent['status'], 'late': sent.get('late', False),
                      'reserved_attempts': sent['reserved_attempts'], 'reserved_tokens': sent['reserved_tokens'],
                      'issues': issues, 'reconciled': not issues})
     if indexed:
         problems.append('telemetry_without_ledger_reservation')
     return {'schema': 'ugrp.zone_pilot_reconciliation.v1', 'pilot_id': snapshot['meta']['pilot_id'],
+            'completion_policy': COMPLETION_POLICY,
+            'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
+            'complete_scope': 'upstream_attempts_and_billing_only_not_completion_or_physical_success',
             'complete': not problems and all(r['reconciled'] for r in rows),
             'reserved_attempts': snapshot['reserved_attempts'], 'reserved_tokens': snapshot['reserved_tokens'],
             'refunds': 0, 'problems': problems, 'calls': rows}
@@ -112,6 +118,9 @@ def require_preflight(snapshot, report, manifest):
         raise ValueError('real four-condition preflight manifest required')
     if manifest.get('pilot_id') != snapshot['meta']['pilot_id']:
         raise ValueError('preflight belongs to a different global pilot budget')
+    if (manifest.get('completion_policy') != COMPLETION_POLICY
+            or manifest.get('completion_limitation') != PROXY_COMPLETION_LIMITATION):
+        raise ValueError('preflight requires current completion policy and proxy limitation')
     trials = manifest.get('trials', [])
     if (len(trials) != 4 or {t['condition'] for t in trials} != set(MAIN_CONDITIONS)
             or any(t['successful_calls'] != 1 or t['sent'] != 1 for t in trials)):
@@ -123,3 +132,23 @@ def require_preflight(snapshot, report, manifest):
     preflight_ids = {s['trial_id'] for s in snapshot['sends'] if s['run_id'] == manifest['run_id']}
     if preflight_ids != {t['trial_id'] for t in trials}:
         raise ValueError('preflight trials missing from global budget')
+    # Recompute admission from saved call records, never a scheduler done count
+    # or an old summary that ignored finish_reason. Billing may reconcile a
+    # failed generation; that does not admit it to the four successful calls.
+    for trial in trials:
+        try:
+            raw = Path(trial['trial_path']).read_bytes()
+            stored = json.loads(raw)
+            calls = stored['calls']
+            sends = [s for s in snapshot['sends']
+                     if s['run_id'] == manifest['run_id'] and s['trial_id'] == trial['trial_id']]
+            valid = (sha(raw) == trial['trial_sha256']
+                     and stored['trial_id'] == trial['trial_id'] and stored['condition'] == trial['condition']
+                     and len(calls) == len(sends) == 1 and successful_call(calls[0])
+                     and normal_completion(sends[0].get('completion'))
+                     and sends[0]['status'] == 'response_received' and not sends[0].get('late')
+                     and calls[0]['cost_terms']['completion'] == sends[0]['completion'])
+        except (OSError, ValueError, KeyError, TypeError):
+            valid = False
+        if not valid:
+            raise ValueError('preflight needs hashed successful stop call records and matching ledger completions')

@@ -1,4 +1,4 @@
-# 구역 연구 실어댑터 파일럿 (PR 194, R8)
+# 구역 연구 실어댑터 파일럿 (PR 194, R8–R9)
 
 이 경로는 저장된 자기 wrist RGB·정적 지도·자기 발행 명령 이력으로 실제
 `GeminiProxyCompleter`/프로토콜/SIM 스케줄러의 연결을 검사한다. 물리를 실행하지
@@ -58,6 +58,37 @@ R8 대응은 사용자 지정 **선택 (b)**다. 프록시의 짧은 429 재시�
 끄거나 설치 파일에 계측 코드를 추가하지 않고, proxy POST마다 최대 2회분을 선차감한다.
 장부 1건이 upstream 1건 또는 과금 1건이라는 주장을 하지 않는다.
 
+## 응답 종료 판정 (R9)
+
+연구 transport는 **proxy 응답의 `finish_reason=stop`**만 프로토콜 파서에 넘긴다.
+`length`, `content_filter`, `tool_calls`, 알 수 없는 값·누락은 유효한 행동 JSON과
+usage가 있어도 실패 호출이다. 행동·메시지 relay 전에 거절하고 입력·생성 텍스트·
+생성 발화의 SIM 비용, 제공자 usage와 최대 2회 예약을 보존한다. 예약 환불은 없다.
+`stop`도 빈 본문, 불완전하거나 fenced JSON, 필수 필드 누락/추가, refusal/tool call,
+본문에 남은 `finishReason`/`upstream_finish_reason` 비정상 값,
+`promptFeedback.blockReason`, `safetyRatings[].blocked`를 발견하면 거절한다.
+통과한 본문은 기존 조건별 프로토콜 검증까지 성공해야 행동·메시지로 채택한다.
+
+원래 종료 이유와 거절 사유는 client → transport → scheduler →
+`calls[].cost_terms.completion` → `model_evaluation.completion`으로 보존한다.
+wire ledger·SQLite 정산·request archive·manifest `call_links`·reconciliation에도
+같은 `completion`을 남긴다. 늦게 도착하거나 SIM horizon에서 검열된 응답도
+관측한 종료 이유를 잃지 않는다. 파일럿 `successful_calls`는 **call status `ok` +
+현재 completion 정책의 정상 판정**을 함께 검사한다. 평가의 기존 `completed_calls`는
+검열되지 않은 호출 수로 실패도 포함하며 성공 수가 아니다. 과거 종료 이유 미기록은
+`unknown`으로 남기며 성공으로 추정하지 않는다. 코호트 진입 시 hashed trial 원문과
+영속 ledger의 정상 종료도 다시 대조한다. 과금 대조 `complete=true` 자체는 응답 성공이 아니다.
+
+**설치 프록시의 남는 한계:** 감사한 `handle_complete`는 upstream `MAX_TOKENS`만
+`length`로 보존하고 `SAFETY` 등 다른 이유는 기본 `stop`으로 덮어쓴다.
+추가 실패 신호도 사라진 채 완전하고 프로토콜에 맞는 JSON이 오면 이 클라이언트는
+원래 비정상 종료를 알아낼 수 없다. 이 수정은 설치 프록시를 변경하지 않는다.
+모든 dry-run/실행 manifest와 proxy profile에 `completion_limitation`을 남기며
+`upstream_finish_reason_verified=false`로 기록한다. 성공 집계는 **관측된 proxy stop과
+유효한 응답의 수**이며 upstream STOP 확인이나 물리 성공의 수가 아니다.
+9/25 파일럿도 같은 프록시의 종료 이유 손실 가능성이 있으며 기존 frozen 기록을
+수정하거나 소급하여 upstream 정상 완료라고 판정하지 않는다.
+
 ## 필수 pre-flight 7항목
 
 1. **실행 경로 고정:** 검토한 소스를 coordinator가 커밋한다. init 시 Git SHA와 연구
@@ -71,6 +102,8 @@ R8 대응은 사용자 지정 **선택 (b)**다. 프록시의 짧은 429 재시�
    명시한다. 파일이 없으면 실호출을 거절하고 자동 생성/리셋하지 않는다.
 5. **실패 주입:** R8 테스트의 429·5xx·전송 후 timeout·깨진 응답·저장 실패·늦은 응답·
    cap 직전 경합을 모두 통과시킨다. 실패가 행동/메시지를 실행하지 않는지도 검사한다.
+   R9의 네 조건별 `length`·종료 이유 누락·본문 차단 신호·불완전 JSON 검사와
+   성공 집계/코호트 진입 회귀도 통과해야 한다.
 6. **4회 실호출 대조:** `preflight`는 `no_comm/peer_ko/leader_ko/structured` 각 1회,
    자동 재시도 0회다. 실패 시 중단한다. 4회 모두 성공하고 아래 연결이 모두 확인된 후
    별도 `--stage cohort`를 허용한다. 코호트는 조건당 3 actor, actor당 최초 1회
@@ -86,10 +119,21 @@ R8 대응은 사용자 지정 **선택 (b)**다. 프록시의 짧은 429 재시�
 이 변경을 검토·커밋한 뒤 실행한다. 아래 실호출 명령은 이 수정 작업에서 실행하지 않았다.
 `PYTHON`과 `PILOT_ROOT`는 예시이며 결과 raw는 primary checkout `outputs/`에 둔다.
 새 budget은 파일럿 시작 때 **한 번만** 만들고 이후 같은 파일을 재사용한다.
+R8 소스로 이미 봉인한 budget은 R9 소스와 맞지 않아 실행을 거절한다.
+송신 이력이 있는 예산 파일을 새 파일로 바꿔 잔액을 초기화하면 안 된다.
+그 경우 기존 비용을 보존하는 별도 검토·이관 전까지 실호출을 중단한다.
+
+먼저 오프라인 회귀를 실행한다(`--basetemp`는 이 worktree 내부 경로).
+
+```sh
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest \
+  tests/test_zone_study_review_r9.py tests/test_zone_study_review_r8.py \
+  --basetemp=.tmp/r9-coordinator -q
+```
 
 ```sh
 PYTHON=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
-PILOT_ROOT=/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r8
+PILOT_ROOT=/Users/changmin/projects/ugrp/outputs/zone-study-adapter-pilot-r9
 OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --output "$PILOT_ROOT/dry-01"
 OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --init-budget \
   --budget-file "$PILOT_ROOT/budget.sqlite" --output "$PILOT_ROOT/init-01"
@@ -149,5 +193,5 @@ proxy request ID와 실제 upstream 목록은 증거가 없으면 `null`이다.
 이 포맷은 coordinator가 수집한 원본을 검증하는 입력이지 제공자 서명을 인증하는 장치는 아니다.
 
 실호출 결과가 새로 생기면 `docs/tensorboard.md`에 따라 원본을 보존하고 새 snapshot으로
-등록·재열람한다. 이번 R8 수정의 unit test/dry-run은 새 학습·물리 실험 결과가 아니므로
+등록·재열람한다. 이번 R8–R9 수정의 unit test/dry-run은 새 학습·물리 실험 결과가 아니므로
 기존 TensorBoard snapshot을 변환하거나 성공 수치를 추가하지 않는다.

@@ -13,6 +13,9 @@ from harness.zone_pilot_budget import (EFFECTIVE, PROXY_SHA256, REQUESTED, sha, 
 from harness.zone_pilot_network import NetworkFence, proxy_address
 from harness.zone_send_ledger import SendLedger
 from harness.zone_study_llm_transport import no_redirect_opener
+from harness.llm_completion import (COMPLETION_POLICY, PROXY_COMPLETION_LIMITATION,
+                                     assess_completion, normal_completion, generated_utterances)
+from harness.zone_study_prompts_ko import count_tokens
 
 
 def proxy_profile(source, url):
@@ -24,6 +27,8 @@ def proxy_profile(source, url):
     return {'source_path': str(source), 'source_sha256': digest, 'version': 'sha256:' + digest,
             'url': url, 'requested_settings': REQUESTED, 'effective_settings': EFFECTIVE,
             'internal_429_retry': True, 'upstream_attempts_per_post_bound': 2,
+            'completion_policy': COMPLETION_POLICY,
+            'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
             'accounting': 'option_b_full_two_attempt_reservation_no_refunds'}
 
 
@@ -109,12 +114,23 @@ class PilotSendLedger(SendLedger):
     def _store(self, row, kind, data):
         if kind == 'response':
             # Keep known usage even when response-file storage fails.
+            response = None
             try:
                 response = json.loads(data)
                 row['provider_usage'] = response.get('usage')
                 row['proxy_response_id'] = response.get('id')
             except (ValueError, AttributeError):
                 pass
+            row['completion'] = assess_completion(response, study_json=True)
+            # Preserve the actual generated SIM costs even if storage/timeout
+            # prevents the response bytes from reaching the client.
+            try:
+                text = response['choices'][0]['message']['content']
+            except (KeyError, IndexError, TypeError):
+                text = None
+            if isinstance(text, str):
+                row['sim_generated'] = {'output_tokens': count_tokens(text),
+                                        'utterances': generated_utterances(text)}
         super()._store(row, kind, data)
         if kind == 'request':
             if row['url'] != self.profile['url'] or row['method'] != 'POST':
@@ -169,7 +185,9 @@ class PilotSendLedger(SendLedger):
                     # If settlement storage fails this raises; the durable
                     # reserved_unknown row remains spent and no action escapes.
                     self.budget.settle(row['reservation_id'],
-                                       status='failed' if failed else 'response_received',
+                                       status=('failed' if failed else 'response_received'
+                                               if normal_completion(row.get('completion')) else 'completion_rejected'),
+                                       completion=row.get('completion'),
                                        provider_usage=row.get('provider_usage'),
                                        proxy_response_id=row.get('proxy_response_id'),
                                        response_sha256=row.get('response_sha256'),

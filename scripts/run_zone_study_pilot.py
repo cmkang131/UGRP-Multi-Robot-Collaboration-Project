@@ -21,6 +21,8 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from harness.gemini_proxy import _to_gemini_multi_image_messages
+from harness.llm_completion import COMPLETION_POLICY, PROXY_COMPLETION_LIMITATION, completion_aggregate
+from harness.zone_study_eval import model_aggregate
 from harness.zone_event_scheduler import CallPolicy, EventScheduler, PendingCall, TransportFailure
 from harness.zone_pilot_budget import (EFFECTIVE, REQUESTED, PilotBudget, canonical, sha, token_envelope,
                                        usage_total)
@@ -64,6 +66,8 @@ def source_identity(profile):
             'source_head': head, 'source_root': str(ROOT), 'files': files, 'proxy': profile,
             'python': sys.version, 'pillow': package_version('Pillow'),
             'effective_settings': EFFECTIVE, 'requested_settings': REQUESTED,
+            'completion_policy': COMPLETION_POLICY,
+            'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
             'sim_input_cost': pk.FIXED_PROMPT_POLICY,
             'sim_output_cost': 'frozen_local_tokenizer_on_actual_reply_text',
             'input_mode': 'stored_wrist_rgb_and_static_map_no_physics'}
@@ -82,7 +86,7 @@ class AdapterTrial(off.OfflineTrial):
                          policy=policy, horizon_s=120., code_sha=budget.meta['identity']['source_head'])
         self.stage = stage
         self.input_records = []
-        self.client_factory = gemini_client_factory(url=profile['url'], **REQUESTED)
+        self.client_factory = gemini_client_factory(url=profile['url'], study_json=True, **REQUESTED)
         self.send_ledger = PilotSendLedger(store_dir=output / 'wire', budget=budget, profile=profile,
                                            runtime=runtime, proxy_log=proxy_log, wire=wire,
                                            context={'run_id': output.parent.name, 'trial_id': run_id,
@@ -125,7 +129,12 @@ class AdapterTrial(off.OfflineTrial):
         for call in self.calls:
             call['effective_settings'] = dict(EFFECTIVE)
             call['requested_settings'] = dict(REQUESTED)
+        for record in self.input_records:
+            record['completion'] = self.scheduler.ledger[record['call_id']].get('completion')
         return {'schema': VERSION, 'trial_id': self.run_id, 'condition': self.condition,
+                'model_evaluation': model_aggregate({'calls': self.calls, 'messages': self.messages}),
+                'completion_policy': COMPLETION_POLICY,
+                'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
                 'stage': self.stage, 'physical_success': None, 'input_mode': 'stored_wrist_rgb',
                 'actions_are': 'accepted_high_level_adapter_outputs_no_physical_execution',
                 'calls': self.calls, 'messages': self.messages, 'actions': self.actions,
@@ -155,6 +164,8 @@ def dry_run(out, stage, scenario, seed, profile):
                       'request_path': str(path), 'saved_sha256': sha(saved), 'wire_body_sha256': sha(body),
                       'archive': pk.archive_request(request), 'reservation': envelope})
     value = {'schema': VERSION, 'mode': 'dry_run', 'stage': stage, 'model_calls': 0,
+             'completion_policy': COMPLETION_POLICY,
+             'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
              'network_calls': 0, 'effective_settings': EFFECTIVE, 'proxy': profile,
              'preflight_calls': 4, 'cohort_initial_calls': 12, 'cohort_max_proxy_posts': 24,
              'preflight_reserved_attempts_bound': 8,
@@ -236,6 +247,8 @@ def main(argv=None):
     runtime = runtime_identity(profile, args.proxy_pid)
     run_id = out.name
     run = {'schema': VERSION, 'run_id': run_id, 'mode': 'real_adapter', 'stage': args.stage,
+           'completion_policy': COMPLETION_POLICY,
+           'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
            'pilot_id': budget.meta['pilot_id'], 'budget_file': str(budget.path),
            'source_identity': identity, 'proxy_runtime': runtime, 'proxy': profile,
            'effective_settings': EFFECTIVE, 'requested_settings': REQUESTED,
@@ -254,14 +267,17 @@ def main(argv=None):
                                  output=out / condition, proxy_log=args.proxy_log)
             result = trial.run_adapter()
             digest_file = write_new(out / condition / 'trial.json', result)
-            successes = sum(r['status'] == 'done' for r in trial.scheduler.ledger.values())
+            completion = completion_aggregate(result['calls'])
+            successes = completion['successful_calls']
             row = {'trial_id': trial_id, 'condition': condition, 'successful_calls': successes,
+                   'completion': completion,
                    'sent': trial.send_ledger.sends(), 'trial_path': str(out / condition / 'trial.json'),
                    'trial_sha256': digest_file}
             run['trials'].append(row)
             # Stop at the first failed/unknown/censored call; no silent retry of
             # a failed four-call preflight. Cohort scheduler retries are bounded.
-            if any(r['status'] != 'done' for r in trial.scheduler.ledger.values()) or successes == 0:
+            if (any(r['status'] != 'done' for r in trial.scheduler.ledger.values())
+                    or successes != len(result['calls']) or successes == 0):
                 failed = True
                 break
     except BaseException as exc:

@@ -187,9 +187,10 @@ class SendLedger:
 # ---------------------------------------------------------------------------
 # Offline wires (no network) and a helper to send one scripted request
 
-def completion_body(text, *, usage=None, model=None) -> bytes:
+def completion_body(text, *, usage=None, model=None, finish_reason='stop') -> bytes:
     """An OpenAI-compatible completion response, as the Gemini proxy returns it."""
-    value = {'choices': [{'message': {'role': 'assistant', 'content': text}}]}
+    value = {'choices': [{'message': {'role': 'assistant', 'content': text},
+                          'finish_reason': finish_reason}]}
     if usage is not None:
         value['usage'] = dict(usage)
     if model is not None:

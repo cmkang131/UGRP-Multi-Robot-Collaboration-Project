@@ -402,6 +402,8 @@ def contract_call_record(record, *, run_id, condition_name, seed, request_id, ca
     # fourth review: the counts of an unknown-usage call are its known LOWER bound
     terms['usage_bound'] = 'exact' if terms['usage_known'] else 'lower_bound'
     terms['provider_usage'] = copy.deepcopy(notes.get('provider_usage'))
+    if 'completion' in notes:
+        terms['completion'] = copy.deepcopy(notes['completion'])
     return call_log_record(
         run_id=run_id, condition_name=condition_name, seed=seed, actor=record.actor,
         request_id=request_id, call_index=call_index,
@@ -458,6 +460,8 @@ def censored_call_record(row, *, run_id, condition_name, seed, request_id, call_
                       'is the recorded API usage' if known else
                       'SIM time elapsed until the horizon; the action was never released. The API usage '
                       'is unknown: the counts are the known lower bound, not a total')}
+    if 'completion' in row:
+        terms['completion'] = copy.deepcopy(row['completion'])
     return call_log_record(
         run_id=run_id, condition_name=condition_name, seed=seed, actor=row['actor'],
         request_id=request_id, call_index=call_index,
