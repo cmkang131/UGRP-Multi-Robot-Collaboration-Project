@@ -193,7 +193,10 @@ class OwnCamTeamHost:
         self._pair_safety(now)
         if not ep.terminal:
             for cmd in commands:
-                self._apply(rid, cmd, now)
+                if cmd['kind'] == 'hold':
+                    self._hold(rid, now)
+                else:
+                    self._apply(rid, cmd, now)
 
     # ------------------------------------------------------------ eval-only geometry
     def _geoms(self):

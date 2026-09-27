@@ -3,7 +3,7 @@
 이슈 #221 / PR #235의 `zone_pair_executor_v4_dev` 설계다. 1·2차 리뷰,
 `69dd0f0b`의 3차 리뷰와 Kiro 실행기 병합 `8f4fb676`, `50794498`의
 4차 리뷰 중 pair 전용 P1-1·2·3·5와 `1628a03f`의 5차 리뷰 P1 2건,
-`1a3556cd`의 6차 리뷰 P1 1건을 반영했다.
+`1a3556cd`의 6차 리뷰 P1 1건과 `f6f941e1`의 7차 리뷰 P1 1건을 반영했다.
 코디네이터가 정한 독립 랑데부·통신 경계는 유지한다.
 M2 물리 성공을 새 executor에 승계하지 않는다.
 
@@ -340,6 +340,47 @@ OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python 
 Git fetch는 공용 `.git` 쓰기 제한, GitHub 조회는 네트워크 제한으로 실패했다.
 원격 최신 상태·전체 CI·물리 성공은 미검증이며, 커밋·push·병합은 하지 않았다.
 비물리 소프트웨어 회귀 기록으로 보존하며 TensorBoard 실험 스냅샷은 만들지 않았다.
+
+## 7차 리뷰 — 팔 재관측 hold의 실제 포트 계약
+
+기준 HEAD는 `f6f941e1fff59793c1818e4cbb4126309e8ae74b`이며 커밋하지 않은
+로컬 수정이다. `OwnCamTeamHost._pair_arm_raw()`에서도 `_decide_raw()`와 같이
+`hold`를 `_hold()`로 분기한다. 실제 `CameraRobotPort.apply()`가 받는 raw 명령에는
+hold가 없으므로, 명령 이력 기록 뒤 `port.hold()`를 호출해야 한다.
+
+`FakePort.apply()`는 실제 포트의 `validate_raw_action()`을 먼저 호출한다.
+호스트와 같은 reverse/mecanum 옵션을 사용하며 명령 종류뿐 아니라 필드·범위도
+검증한다. 거절된 명령을 FakePort 로그나 servo 상태에 적용하지 않는다.
+
+새 [7차 회귀](../../tests/test_zone_pair_review7.py)는 실제 M2의
+`cp_open → pregrasp_look`과 자기 추정 `(x, y, σxy)=(1.975, 0.05, 0.12) m`을
+호스트의 `_pair_arm_tick()`에 연결한다. 강화된 FakePort와 actuator spy 위의
+실제 CameraRobotPort 양쪽에서 검증하며 MuJoCo world를 만들지 않는다.
+
+- 수정 전: **2 failed / 354 passed / 1 deselected**. 두 포트 모두 0.05초의
+  `ValueError: unknown action type`으로 로봇이 영구 정지하는 반례를 재현했다.
+- 수정 후: 충돌 여유가 부족한 두 tick에는 hold만 발행하고 팔 큐 64개와
+  상대 큐·작업을 보존한다. 첫 tick의 재관측 예산은 0초, 다음은 0.05초다.
+  σxy가 0.01 m로 줄면 4개 명령을 재개하고 나머지 60개를 보존한다.
+  arm 종료 시각도 대기한 0.1초만큼 밀려 밀린 명령을 한꺼번에 발행하지 않는다.
+- 최종 관련 회귀: **493 passed / 1 deselected / 112 subtests passed (19.72 s)**.
+  강화된 FakePort로 기존 호스트·pair·단독 실행기 경로를 검사했으며 추가 실패는
+  없었다. 새 회귀를 `run_ci_tests.py`에 등록했다.
+
+```sh
+OMP_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q \
+  tests/test_zone_pair*.py tests/test_zone_own_executor*.py \
+  tests/test_pair_owncam_approach.py tests/test_m2_pair_door_v3.py \
+  tests/test_m1_owncam.py tests/test_zone_study_protocol.py tests/test_camera_robot_port.py \
+  --basetemp=./.pytest_tmp \
+  -k 'not test_team_host_isolation_abort_and_horizon_on_the_real_world' --tb=short
+```
+
+제외한 1개는 실제 MuJoCo world 테스트다. 물리 실행·모델 호출·잠금 획득은 없고,
+소프트웨어 회귀 검증이므로 TensorBoard 실험 스냅샷을 만들지 않았다.
+검증 뒤 `.pytest_tmp` 삭제, `git diff --check` 통과와 HEAD 유지를 확인했다.
+공용 `.git` 쓰기 제한으로 fetch, 네트워크 제한으로 GitHub 조회가 실패했다.
+원격 상태·전체 CI·물리 성공은 미검증이며 커밋·push·병합·Drive 작업은 하지 않았다.
 
 ## dev PHYSICAL 점검 게이트 — 3차 리뷰에서 이관
 
