@@ -7,6 +7,8 @@
 
 ## 0. 결론
 
+> **3차(2026-09-27, 8절):** train과 독립인 새 test 6회에서 문 근처·운반 횡 p99 5.6 cm(통과), p90 6.3 cm(실패), yaw p90 2.1°(통과) → FAIL. 채택한 수정은 우도의 열린 구간 끝 처리(P0) 하나다. 끼임 복구(정지 모드)·증강 MCL은 dev 규칙에서 기각됐다.
+
 > **검토 후 정정(2026-09-26, Codex PR #227 검토; test 채점 뒤 추가).** test s917은 train s903의 재주행이었다(GT 위치 차이 최대 0.01 mm, 같은 JPEG 213장·문 근처 42장). s912·s914의 문 통과 일부도 train과 1 mm 안이었다(`results/overlap_round2_vs_train.json`). 이 test는 오염된 기록으로 남긴다. dev 선택은 기록한 규칙(횡 p99 최소 → w1)과 달리 w6였다(실험 README dev 절). "병목은 인식이 아니라 필터"는 과한 결론이라 고쳤다. "0.4코어"는 근거가 없어 지웠다. 최종 환경은 태그 0개다(사용자 결정). 아래 FAIL은 태그를 다시 넣자는 뜻이 아니다.
 
 1. **태그 없는 비전 추정은 아직 게이트를 넘지 못한다.** 태그 없는 환경의 test 6회를 한 번 채점했다(위 정정: 일부는 train 재주행). 짐을 들고 문 근처를 지날 때 비전 추정은 p90 **7.0 cm**, 횡 p99 **15.3 cm**, yaw p90 2.9°였다. 사전 등록 게이트(door_1 운반 여유에서 유도: 횡 p99 ≤ 6 cm, p90 ≤ 5 cm, yaw p90 ≤ 3°)는 **FAIL**이다.
@@ -152,6 +154,26 @@
 - dev = 2차 dev 3회 + 3차 dev 6회. 2차 test는 조정에 쓰지 않는다.
 - 규칙(`dev_plan_v3.json`, 실행 전 등록): 우선순위 순서로 하나씩 켜고, 문 근처·운반 횡 p99(L)와 p90(P)이 각각 0.3 cm 넘게 나빠지지 않으면서 전체 p90(A)이나 길 잃은 프레임(lost)이 줄거나 L/P가 0.3 cm 이상 좋아지면 채택. 수정 1·2(`dev_plan_v3_amendment*.json`)는 dev 관찰 뒤, 해당 변형 실행 전에 등록했다.
 
+### 8.4 dev 결과와 선택
+
+- 채택: a1(열린 구간 끝)만. dev 문 근처·운반 횡 p99 5.5 → 4.8 cm, p90 7.2 → 6.5 cm, yaw p90 3.4° → 2.4°.
+- 기각: 짐 상태 변화 때 배율 재추출(dev s945 소실, 횡 p99 106 cm), 정지 모드(끼인 s909·s941은 되살렸지만 s945 문 통과 횡 오차 3.5 → 18.9 cm), 증강 MCL(두 방이 거의 같아 주입 자세가 다른 곳에 들어맞음, 끼인 회차 오차 2 m → 4–5 m, 정상 추적 중 오탐 주입 30–33 프레임).
+- 배율 재추출 + 정지 모드 조합(a3b)이 dev 전체로는 가장 나았지만 순차 규칙이 요소를 하나씩 기각했다. 탐색용 보조 설정으로만 test에 함께 등록했다.
+
+### 8.5 test 결과 (독립 test 6회, `prereg_v3.json` `0b1cffa0` 뒤 한 번 채점)
+
+| 필터 | 문 근처·운반 p90 | 횡 p99 | yaw p90 | 전체 p90 |
+|---|---:|---:|---:|---:|
+| **비전(학생, a1)** | **6.3 cm** | **5.6 cm** | **2.07°** | 11.7 cm |
+| 보조 a3b(탐색용) | 6.1 | 6.3 | 1.91° | 13.5 |
+| 경계(PR #210) | 124.9 | 137.5 | 22.4° | 116.4 |
+| 명령 적분 | 76.6 | 54.2 | 17.6° | 103.0 |
+| 오라클(진단) | 3.5 | 5.9 | 1.21° | 7.6 |
+
+- 게이트 **FAIL**: 횡 p99(G1)와 yaw(G3)는 처음으로 통과했고 p90(G2) 6.3 > 5 cm에서 실패했다.
+- 사후(사전 등록 아님): 실패는 진행 방향(x) 편향에서 온다. 비전 |dx| p90 5.7 cm·평균 +2.4 cm, 횡 |dy| p90 2.0 cm.
+- 한계: 개루프 재생, test 6회, 폐루프 확인 안 함(분할 모델용 torch가 sim 환경에 없음; ACT worker 방식 재사용 필요), 게이트 p90은 문 폭에서 유도한 값이 아님.
+
 ## 9. 참고 자료
 
 ### 논문 (직접 확인한 것만)
@@ -188,6 +210,15 @@
 - 운동 모델 재적합 변형(기각): `scripts/eval_owncam_localization.py` `fit_motion`.
 - TensorBoard: `scripts/tensorboard_tools/export.py` `Writer`; 빌더 구조는 PR #210 `build_tensorboard.py`.
 - 태그 참조: PR #210 `results/metrics_test.json`(M1 test, tags_v2), `kiro/zone-map-v3` 환경 v3 루프 test 원본(`outputs/zone-env-v3-20260926/loop/test`, 기록 커밋 `007949bf`).
+
+### 3차 추가
+
+- S. Thrun, W. Burgard, D. Fox, *Probabilistic Robotics*, MIT Press, 2005 — 표 8.3 Augmented_MCL.
+- D. Fox, W. Burgard, S. Thrun, "Active Markov Localization for Mobile Robots", Robotics and Autonomous Systems, 1998. https://publications.ri.cmu.edu/active-markov-localization-for-mobile-robots
+- D. Fox, "KLD-Sampling: Adaptive Particle Filters", NIPS 2001. https://papers.nips.cc/paper_files/paper/2001/hash/c5b2cebf15b205503560c4e8e6d1ea78-Abstract.html (넣지 않음)
+- M. Laskey, J. Lee, R. Fox, A. Dragan, K. Goldberg, "DART: Noise Injection for Robust Imitation Learning", CoRL 2017. https://arxiv.org/abs/1703.09327
+- Nav2 `nav2_amcl` `pf.c`(https://github.com/ros-navigation/navigation2, main `7b9bcb4c`, 1.5.0, LGPL-2.1-or-later): 구조·권장값만 참고해 다시 구현. 문서 https://docs.nav2.org/rolling/configuration_and_development/configuration_guide/others/configuring_amcl/
+- 내부: PR #209 `scripts/sim_slots.py`, `scripts/model_artifacts.py`, PR #229 `pose_providers.json`(미연결).
 
 ### 문서·웹 페이지
 
