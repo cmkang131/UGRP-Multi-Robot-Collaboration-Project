@@ -35,11 +35,14 @@ def main(argv=None):
     ap.add_argument('--config', required=True, help='selected round-3 dev config (in the experiment folder)')
     ap.add_argument('--dev-selection', required=True, help='dev_variants_v3.json')
     ap.add_argument('--overlap', required=True, help='results/overlap_v3_test.json (independence audit of test)')
+    ap.add_argument('--secondary', help='exploratory second configuration scored on the same test (not the student)')
+    ap.add_argument('--secondary-reason', default='')
     args = ap.parse_args(argv)
     out = HERE/'prereg_v3.json'
     if out.exists():
         raise SystemExit(f'refusing to overwrite {out}')
-    dirty = git('status', '--porcelain', '--', *FROZEN_FILES, str(Path(args.config).resolve().relative_to(HERE)))
+    extra = [str(Path(p).resolve().relative_to(HERE)) for p in (args.config, args.secondary) if p]
+    dirty = git('status', '--porcelain', '--', *FROZEN_FILES, *extra)
     if dirty:
         raise SystemExit(f'commit the frozen files first:\n{dirty}')
     tab = json.loads((HERE/'episodes_v3.json').read_text())
@@ -90,6 +93,14 @@ def main(argv=None):
                    'recovery events; the oracle next to the student (diagnostic); offline replay of teacher-driven '
                    'renders, not closed loop'),
     }
+    if args.secondary:
+        sec = Path(args.secondary).resolve()
+        prereg['secondary'] = {
+            'label': 'EXPLORATORY secondary configuration: scored on the same registered test, reported next to the '
+                     'student, never used for the gate verdict or the student selection',
+            'reason': args.secondary_reason,
+            'config': {'file': str(sec.relative_to(HERE)), 'sha256': sha_file(sec), 'value': json.loads(sec.read_text())},
+            'filters': ['vision'], 'output': 'results/metrics_test_v3_secondary.json'}
     out.write_text(json.dumps(prereg, indent=1) + '\n')
     print(json.dumps({'test_episodes': test_eps, 'excluded': excluded, 'config': prereg['student']['config']},
                      indent=1))

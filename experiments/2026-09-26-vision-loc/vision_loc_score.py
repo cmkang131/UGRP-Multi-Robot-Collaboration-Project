@@ -113,17 +113,20 @@ def _score_guard(args) -> None:
     if out_path.exists():
         raise SystemExit(f'refusing to overwrite {out_path}')
     rnd = test_round(args.episodes)
+    role = getattr(args, 'role', 'primary')
     if rnd is not None:
-        metrics = HERE/ROUNDS[rnd]['metrics']
+        pre = json.loads((HERE/ROUNDS[rnd]['prereg']).read_text()) if (HERE/ROUNDS[rnd]['prereg']).exists() else {}
+        metrics = HERE/(ROUNDS[rnd]['metrics'] if role == 'primary' else pre.get('secondary', {}).get('output', ''))
+        if role == 'secondary' and 'secondary' not in pre:
+            raise SystemExit('test refused: no secondary scoring is registered')
         if metrics.exists():
             raise SystemExit(f'test refused: the registered test set was already scored ({metrics.name})')
         if out_path.resolve() != metrics.resolve():
             raise SystemExit(f'test refused: the registered test scoring writes only {metrics.relative_to(HERE)}')
-        pre = json.loads((HERE/ROUNDS[rnd]['prereg']).read_text()) if (HERE/ROUNDS[rnd]['prereg']).exists() else {}
         if sorted(args.episodes) != sorted(pre.get('test_episodes', [])):
             raise SystemExit('test refused: score exactly the registered test episodes, all at once')
         require_frozen(args.episodes, config=args.config, checkpoint=args.checkpoint,
-                       needs=('config', 'checkpoint') if args.obs else ())
+                       needs=('config', 'checkpoint') if args.obs else (), role=role)
     if bool(args.obs) != bool(args.oracle_obs):
         raise SystemExit('false-detection scoring needs both --obs and --oracle-obs (or neither)')
     if args.obs and not (args.config and args.checkpoint):

@@ -85,13 +85,28 @@ def test_round(episodes) -> str | None:
     return next(iter(rounds), None)
 
 
-def require_frozen(episodes, *, checkpoint=None, config=None, calibration=None, needs=()):
+ROLES = ('primary', 'secondary')
+
+
+def registered_config(pre: dict, role: str) -> dict:
+    """The registered config block of ``role``: 'primary' (the student) or 'secondary' (round 3, exploratory)."""
+    if role not in ROLES:
+        raise SystemExit(f'unknown role {role!r}')
+    if role == 'primary':
+        return pre['student']['config']
+    if 'secondary' not in pre:
+        raise SystemExit('test refused: no secondary configuration is registered')
+    return pre['secondary']['config']
+
+
+def require_frozen(episodes, *, checkpoint=None, config=None, calibration=None, needs=(), role='primary'):
     """Test episodes only with the pre-registered student: the round's prereg present and every frozen hash unchanged.
 
     ``needs`` names the inputs this subcommand uses ('checkpoint', 'config',
     'calibration'); each must be given for a test run (an omitted file would
     silently fall back to code defaults that differ from the frozen values).
-    Round 3: only the registered test episodes (independence audit passed) run.
+    Round 3: only the registered test episodes (independence audit passed) run;
+    ``role`` 'secondary' checks the config against the registered exploratory one.
     """
     rnd = test_round(episodes)
     if rnd is None:
@@ -111,13 +126,13 @@ def require_frozen(episodes, *, checkpoint=None, config=None, calibration=None, 
     bad = [f for f, h in st['frozen_files_sha256'].items() if not (HERE/f).exists() or sha_file(HERE/f) != h]
     if checkpoint is not None and sha_file(checkpoint) != st['model']['sha256']:
         bad.append('checkpoint')
-    if config is not None and sha_file(config) != st['config']['sha256']:
-        bad.append('config')
+    if config is not None and sha_file(config) != registered_config(pre, role)['sha256']:
+        bad.append(f'config ({role})')
     if calibration is not None and sha_file(calibration) != st['calibration']['sha256']:
         bad.append('calibration')
     if bad:
         raise SystemExit(f'test refused: differs from {path.name}: {bad}')
-    return {'round': rnd, 'prereg': path.name, 'prereg_sha256': sha_file(path)}
+    return {'round': rnd, 'prereg': path.name, 'prereg_sha256': sha_file(path), 'role': role}
 
 
 OBS_SCHEMA = 'ugrp.vision_loc.obs.v2'

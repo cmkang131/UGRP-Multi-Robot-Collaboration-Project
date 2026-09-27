@@ -444,6 +444,12 @@ def test_score_refuses_overwrite_and_a_second_test_scoring(tmp_path):
         with pytest.raises(SystemExit, match='writes only|registered'):
             cli.main(['score', '--episodes', 'vl3-test-s951', '--estimates', str(tmp_path),
                       '--output', str(tmp_path/'t3.json')])
+    with pytest.raises(SystemExit, match='unknown role'):
+        vio.registered_config({'student': {'config': {}}}, 'tertiary')
+    with pytest.raises(SystemExit, match='no secondary'):
+        vio.registered_config({'student': {'config': {}}}, 'secondary')
+    assert vio.registered_config({'student': {'config': {'sha256': 'a'}}, 'secondary': {'config': {'sha256': 'b'}}},
+                                 'secondary') == {'sha256': 'b'}
     with pytest.raises(SystemExit, match='unknown episode'):
         vio.split_of('vl3-test-s999')
     with pytest.raises(SystemExit, match='no round'):

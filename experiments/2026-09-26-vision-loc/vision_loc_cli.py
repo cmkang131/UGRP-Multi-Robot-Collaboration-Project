@@ -459,7 +459,8 @@ def localize(args):
         raise SystemExit('the vision filter needs --checkpoint (its hash must match the observation cache)')
     frozen = require_frozen(args.episodes, config=args.config, calibration=args.calibration,
                             checkpoint=args.checkpoint if 'vision' in wanted else None,
-                            needs=('config', 'calibration') + (('checkpoint',) if 'vision' in wanted else ()))
+                            needs=('config', 'calibration') + (('checkpoint',) if 'vision' in wanted else ()),
+                            role=args.role)
     if frozen and args.motion:
         raise SystemExit('test refused: the registered student uses the M1 motion model')
     m1_cal, m1_prov = mp.load_m1_calibration()
@@ -573,6 +574,8 @@ def main(argv=None):
     lz.add_argument('--motion', help='motion refit JSON (fit-motion); default: the M1 calibration')
     lz.add_argument('--obs')
     lz.add_argument('--oracle-obs')
+    lz.add_argument('--role', default='primary', choices=('primary', 'secondary'),
+                    help='test only: which registered configuration this run is (round 3)')
     lz.add_argument('--output', required=True)
     sc = sub.add_parser('score')
     sc.add_argument('--episodes', nargs='+', required=True)
@@ -581,6 +584,8 @@ def main(argv=None):
     sc.add_argument('--oracle-obs')
     sc.add_argument('--config', help='config of the observation caches (with --obs)')
     sc.add_argument('--checkpoint', help='segmentation checkpoint of the vision observations (with --obs)')
+    sc.add_argument('--role', default='primary', choices=('primary', 'secondary'),
+                    help='test only: which registered scoring this is (round 3)')
     sc.add_argument('--tol-px', type=float, default=5.)
     sc.add_argument('--output', required=True)
     b = sub.add_parser('bench')
