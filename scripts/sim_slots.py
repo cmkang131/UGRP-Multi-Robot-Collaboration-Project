@@ -9,7 +9,9 @@ this is an admission queue, not a sandbox capable of preventing arbitrary forks.
 
 Reservations are closed, never explicitly unlocked, so inherited descriptors keep
 them alive. The CLI also waits for its entire work process group (including children
-that close inherited FDs). Detached work must retain a reservation FD or acquire its
+that close inherited FDs). If ownership cannot be verified, it reports an error and
+closes only its own reservation FDs, without signalling unverified processes.
+Detached work must retain a reservation FD or acquire its
 own slot. No unrelated process is signalled. All participants on a host must use the
 same root and cap. --root is for isolated tests/admin configuration, not agent roots.
 
@@ -568,20 +570,71 @@ def _group_alive(pgid: int) -> bool:
     return any(table.groups[p] == pgid and table.states[p] != 'Z' for p in table)
 
 
+def _process_membership(pid: int) -> tuple[str, int, int, str]:
+    """Start identity, process group, session and state (never a bare PID)."""
+    if sys.platform.startswith('linux'):
+        fields = (Path('/proc')/str(pid)/'stat').read_text().rsplit(')', 1)[1].split()
+        return fields[19], int(fields[2]), int(fields[3]), fields[0]
+    before = _mac_info(pid)
+    session = os.getsid(pid)
+    after = _mac_info(pid)
+    if (before.start_sec, before.start_usec, before.pgid) != (
+            after.start_sec, after.start_usec, after.pgid):
+        raise RuntimeError(f'process identity changed during membership check: {pid}')
+    return (f'{after.start_sec}:{after.start_usec}', after.pgid, session,
+            'Z' if after.status == 5 else 'live')
+
+
+def _group_members(pgid: int) -> dict[int, tuple[str, int, int, str]]:
+    """Bounded membership snapshot, including zombies when the OS exposes them."""
+    deadline = time.monotonic() + CENSUS_TIMEOUT_S
+    proc = Path('/proc')
+    if sys.platform.startswith('linux'):
+        verify_linux_visibility(proc)
+        pids = [int(p.name) for p in proc.iterdir() if p.name.isdigit()]
+    else:
+        pids = _mac_table(deadline, pgid=pgid)
+    members = {}
+    for pid in pids:
+        _remaining(deadline)
+        try:
+            member = _process_membership(pid)
+        except (FileNotFoundError, ProcessLookupError):
+            continue
+        if member[1] == pgid:
+            members[pid] = member
+    if sys.platform.startswith('linux'):
+        verify_linux_visibility(proc)
+    _remaining(deadline)
+    return members
+
+
+def _owned_descendants(pgid: int, known: dict) -> dict:
+    """After reaping, only identities observed while our leader pinned PGID count."""
+    current = _group_members(pgid)
+    live = {pid: member for pid, member in current.items() if member[3] != 'Z'}
+    for pid, member in live.items():
+        if pid not in known or member[:3] != known[pid][:3] or member[1:3] != (pgid, pgid):
+            raise RuntimeError(f'unverified descendant PID {pid} in process group {pgid}')
+    return live
+
+
 def run_reserved(slot: Slot, cmd: list[str]) -> int:
-    """Keep the reservation until all live members of OUR work group exit."""
+    """Wait for our work group, or raise on unverifiable descendant ownership."""
     child = None
     interrupted = 0
     previous = {}
     leader_start = None
     can_signal = False
     pending_signal = 0
+    descendants = {}
+    ownership_error = None
 
     def deliver_pending():
         nonlocal pending_signal
         # poll()/waitpid can reap the leader before returning to Python. Clear
         # can_signal BEFORE calling it, not after checking child.returncode.
-        # No forwarding after reaping: a numeric PGID is no longer our handle.
+        # No group forwarding after reaping: a numeric PGID is no longer our handle.
         if pending_signal and child is not None and can_signal and child.returncode is None:
             signum, pending_signal = pending_signal, 0
             try:
@@ -593,7 +646,8 @@ def run_reserved(slot: Slot, cmd: list[str]) -> int:
     def forward(signum, _frame):
         nonlocal interrupted, pending_signal
         interrupted = pending_signal = signum
-        deliver_pending()
+        # Do not interrupt a membership snapshot, waitpid or a signal delivery
+        # with another delivery. The loop consumes this after verifying ownership.
 
     # KeyboardInterrupt/SIGTERM must not unwind past a live child and release.
     for sig in (signal.SIGINT, signal.SIGTERM):
@@ -618,6 +672,22 @@ def run_reserved(slot: Slot, cmd: list[str]) -> int:
             deliver_pending()
         while True:
             can_signal = False
+            if child.returncode is None:
+                try:
+                    # Before poll can reap, our child pins its PID/PGID/session.
+                    # Record descendants now; a later matching PGID alone is unsafe.
+                    members = _group_members(child.pid)
+                    leader = members.get(child.pid)
+                    # macOS libproc omits zombies, but without poll/waitpid the
+                    # Popen child still pins its PID even when absent here.
+                    if leader_start is None or (leader is not None and leader[:3] != (
+                            leader_start, child.pid, child.pid)):
+                        raise RuntimeError(f'cannot verify unreaped leader PID {child.pid}')
+                    descendants = {pid: member for pid, member in members.items()
+                                   if pid != child.pid and member[1:3] == (child.pid, child.pid)}
+                    ownership_error = None
+                except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                    descendants, ownership_error = {}, exc
             code = child.poll()
             if code is None:
                 can_signal = leader_start is not None
@@ -625,12 +695,33 @@ def run_reserved(slot: Slot, cmd: list[str]) -> int:
             if code is not None:
                 try:
                     alive = _group_alive(child.pid)
-                except (OSError, RuntimeError, subprocess.SubprocessError):
-                    alive = True  # fail closed: keep reservation if liveness is unknown
+                except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                    raise RuntimeError(f'cannot verify descendant ownership for group {child.pid}: {exc}; '
+                                       'no signal sent; releasing wrapper reservation') from exc
                 if not alive:
                     if setup_error is not None:
                         raise setup_error
                     return 128 + interrupted if interrupted else code
+                try:
+                    if ownership_error is not None:
+                        raise ownership_error
+                    live = _owned_descendants(child.pid, descendants)
+                    if pending_signal:
+                        signum, pending_signal = pending_signal, 0
+                        for pid, member in live.items():
+                            try:
+                                # Revalidate immediately before each PID delivery;
+                                # never killpg using a reaped leader's number.
+                                latest = _process_membership(pid)
+                                if latest[:3] != member[:3]:
+                                    raise RuntimeError(f'descendant identity changed before signal: {pid}')
+                                if latest[3] != 'Z':
+                                    os.kill(pid, signum)
+                            except (FileNotFoundError, ProcessLookupError):
+                                pass  # exited before delivery
+                except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                    raise RuntimeError(f'cannot verify/signal owned descendants for group {child.pid}: {exc}; '
+                                       'refusing further signals; releasing wrapper reservation') from exc
             time.sleep(.05)
     finally:
         for sig, handler in previous.items():
@@ -724,6 +815,9 @@ def main(argv=None) -> int:
     try:
         # the child inherits the locked descriptor: the slot is held while either process lives
         return run_reserved(slot, cmd)
+    except (OSError, RuntimeError) as exc:
+        print(f'sim_slots: {exc}', file=sys.stderr)
+        return 70
     except KeyboardInterrupt:
         return 130
     finally:

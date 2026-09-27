@@ -162,6 +162,7 @@ TEST_PATTERNS = (
     "tests/test_sim_speed_review2.py",
     "tests/test_sim_speed_review3.py",
     "tests/test_sim_speed_review4.py",
+    "tests/test_sim_speed_review5.py",
     "tests/test_sim_slots.py",
     "tests/test_agent_worktree.py", "tests/test_disk_report.py", "tests/test_check_media_size.py",
     "tests/test_tree_manifest.py",
