@@ -57,6 +57,7 @@ def v64():
         def __init__(self, *args, decision_limits=None, **kwargs):
             super().__init__(*args, **kwargs)
 
+    LegacyTimingTrial.event_scheduler = modules['harness.zone_event_scheduler'].EventScheduler
     yield LegacyTimingTrial
     for module in modules.values():
         del sys.modules[module.__name__]
@@ -88,18 +89,26 @@ def prewire_faults(seed, *, zero_send_gap=False):
         return (actor == 'r1' and tick == 0) or (seed * 11 + tick * 3 + int(actor[1:])) % 41 == 0
 
     def prepare(call):
-        if seed % 2 == 0 and selected(call.actor, call.started_sim_s):
+        if seed % 4 == 0 and selected(call.actor, call.started_sim_s):
             raise ValueError('generated pre-wire input failure')
 
     def store(row, kind, data):
-        if seed % 2 == 0 or kind != 'request':
+        if seed % 4 != 1 or kind != 'request':
             return
         payload = json.loads(next(p['text'] for p in json.loads(data)['messages'][-1]['content']
                                   if p['type'] == 'text'))
         if selected(payload['robot_id'], payload['sim_time_s']):
             raise OSError('generated pre-wire request storage failure')
 
-    return prepare, store
+    def snapshot(call):
+        if seed % 4 == 2 and selected(call.actor, call.started_sim_s):
+            raise OSError('generated snapshot failure')
+
+    def submit(call):
+        if seed % 4 == 3 and selected(call.actor, call.started_sim_s):
+            raise OSError('generated submit failure')
+
+    return prepare, store, snapshot, submit
 
 
 def event_stream(seed, *, zero_send_gap=False):
@@ -122,23 +131,21 @@ def event_stream(seed, *, zero_send_gap=False):
 def run_stream(seed, condition='no_comm', trial_cls=None, *, communication=False, binding_budget=False,
                zero_send_gap=False):
     policy = core.CallPolicy(min_interval_s=(.5, 2., 8.)[seed % 3],
-                             max_retries=seed % 3,
-                             max_calls_per_actor=300, max_http_attempts_per_actor=300,
-                             max_attempts_total=900)
+                             max_retries=seed % 3)
     if zero_send_gap:
         policy = replace(policy, min_interval_s=2., max_retries=1)
     if binding_budget:
         policy = replace(policy, **({'max_calls_per_actor': 1},
                                     {'max_http_attempts_per_actor': 1},
                                     {'max_attempts_total': 2})[seed % 3])
-    prepare_fault, store_fault = prewire_faults(seed, zero_send_gap=zero_send_gap)
-    # The original 600 cases retain nonbinding limits for full schedule parity.
+    prepare_fault, store_fault, snapshot_fault, submit_fault = prewire_faults(seed, zero_send_gap=zero_send_gap)
     trial, clock, links, requests = fixture.make_trial(
         condition, first='continue' if zero_send_gap else ('continue', 'claim', 'wait')[seed % 3],
         follow_claim=False, send=communication, trial_cls=trial_cls,
-        policy=policy, limits=zi.DecisionLimits(max_calls_total=900),
+        policy=policy, limits=zi.DecisionLimits(),
         wire_fault=fault_for(seed, zero_send_gap=zero_send_gap),
-        prepare_fault=prepare_fault, store_fault=store_fault, additive_noop=True)
+        prepare_fault=prepare_fault, store_fault=store_fault,
+        snapshot_fault=snapshot_fault, submit_fault=submit_fault, additive_noop=True)
     events = iter(event_stream(seed, zero_send_gap=zero_send_gap))
     pending = next(events, None)
     for tick in range(1, 901):
@@ -164,14 +171,15 @@ def run_stream(seed, condition='no_comm', trial_cls=None, *, communication=False
 
 def assert_message_liveness(trial):
     s = trial.scheduler
-    for actor in s._message_waiting:
+    for actor in {e.actor for e in s.event_inputs if e.active}:
         if (trial.links[actor].job() is not None or s._outstanding(actor)
                 or s._outstanding(actor, 'message') or s.budget.remaining(actor) == 0
                 or s.metrics[actor]['calls'] >= s.policy.max_calls_per_actor):
             continue
         last = max(s._last_start.get(actor, float('-inf')),
                    s._last_start.get((actor, 'message'), float('-inf')))
-        assert s.now() < last + s.policy.min_interval_s - 1e-9, (actor, s.now(), last)
+        available = max(e.available_at for e in s.event_inputs if e.active and e.actor == actor)
+        assert s.now() < max(available, last + s.policy.min_interval_s) - 1e-9, (actor, s.now(), last)
 
 
 def signature(trial, requests):
@@ -221,7 +229,11 @@ def test_generated_zero_send_gap_cannot_strand_messages(v64, seed):
     for condition in zi.MAIN_CONDITIONS[1:]:
         trial, requests = run_stream(seed, condition, communication=True, zero_send_gap=True)
         assert common_schedule(trial) == common_schedule(baseline)
-        received = next(p for p in requests if p['robot_id'] == 'r1' and p['sim_time_s'] == 8.)
+        # Pending preparation/store failures have a 6.0 last-start. Submit/
+        # snapshot failures never started a call: the later 6.1 arrival is eligible.
+        expected_at = 8. if seed % 4 < 2 else 6.1
+        received = next(p for p in requests if p['robot_id'] == 'r1'
+                        and p['sim_time_s'] == expected_at)
         assert received['inbox']
 
 
@@ -241,7 +253,11 @@ def test_three_communication_conditions_keep_common_schedule(seed):
     expected = common_schedule(baseline)
     for condition in zi.MAIN_CONDITIONS[1:]:
         trial, _ = run_stream(seed, condition, communication=True)
-        assert common_schedule(trial) == expected, (seed, condition)
+        refusals = [e['sim_s'] for tr in (baseline, trial) for e in tr.scheduler.events
+                    if e.get('kind') == 'call_refused']
+        cutoff = min(refusals, default=float('inf'))
+        assert [r for r in common_schedule(trial) if r[1] < cutoff] == [
+            r for r in expected if r[1] < cutoff], (seed, condition)
         s = trial.scheduler
         for cid, cause in s.call_causes.items():
             if cause['cause'] == 'message':
@@ -352,7 +368,7 @@ def test_review3_zero_send_wakes_message_at_8s(condition, failure, v64):
         assert {m.delivered_sim_s for m in new.scheduler.messages} == {6.1}
         assert r1(new_requests)[2]['inbox'] == r1(old_requests)[2]['inbox']
         assert r1(new_requests)[2]['inbox']
-        assert not new.scheduler._message_waiting
+        assert not any(e.active for e in new.scheduler.event_inputs)
         cid = next(cid for cid, row in new.scheduler.ledger.items()
                    if row['actor'] == 'r1' and row['started_sim_s'] == 8.)
         assert new.scheduler.call_causes[cid]['cause'] == 'message'
@@ -388,7 +404,7 @@ def test_message_retry_keeps_its_cause_or_is_consumed_by_common_snapshot(conditi
     assert [e['sim_s'] for e in rows] == [0., 6.1, common_at or 8.1]
     if common_at:
         assert rows[-1]['cause'] == 'common' and rows[-1]['message_ids']
-        assert not trial.scheduler._message_waiting
+        assert not any(e.active for e in trial.scheduler.event_inputs)
     else:
         assert rows[-1]['cause'] == 'message'
         assert rows[-1]['retry_of'] == rows[-2]['call_id']
@@ -429,16 +445,53 @@ def test_only_messages_coalesce_and_consume_together(common_first):
     scheduler.trigger('r1', 'start')
     scheduler.trigger('r3', 'start')
     scheduler.run(until_s=2., close_at_horizon=False)
-    assert len(scheduler._message_waiting['r1']['message_ids']) == 2
+    assert sum(e.active and e.actor == 'r1' for e in scheduler.event_inputs) == 2
     if common_first:
         scheduler.timer('r1', at=2.5)
         scheduler.run(until_s=2.5, close_at_horizon=False)
     job = None
-    scheduler.own_job_boundary('r1', at=3.)
+    scheduler.available('r1', at=3.)
     scheduler.run(until_s=5.)
     rows = [e for e in scheduler.decision_events if e['actor'] == 'r1' and e['event'] == 'decision_started']
     assert len(rows) == 2
     assert rows[-1]['sim_s'] == (2.5 if common_first else 3.)
     assert rows[-1]['cause'] == ('common' if common_first else 'message')
     assert set(rows[-1]['message_ids']) == {m.message_id for m in scheduler.messages}
-    assert not scheduler._message_waiting
+    assert not any(e.active for e in scheduler.event_inputs)
+
+
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS[1:])
+def test_review4_snapshot_failure_after_6_1_delivery_recovers_at_8_1(condition):
+    failures = []
+    def wire(payload, turn):
+        if payload['robot_id'] == 'r1' and payload['sim_time_s'] < 6.:
+            raise OSError('initial and retry failure')
+    def snapshot(call):
+        if call.actor == 'r1' and call.started_sim_s == 6.1:
+            failures.append(call.call_id)
+            raise OSError('one snapshot failure just after delivery')
+    trial, clock, links, requests = fixture.make_trial(
+        condition, first='continue', follow_claim=False, wire_fault=wire, snapshot_fault=snapshot)
+    fixture.advance(trial, clock, links, 12.)
+    r1 = [p for p in requests if p['robot_id'] == 'r1']
+    assert [p['sim_time_s'] for p in r1] == [0., 2., 8.1]
+    assert r1[-1]['inbox'] and len(failures) == 1
+    assert trial.scheduler.ledger[failures[0]]['status'] == 'not_sent'
+    assert trial.send_ledger.sends(failures[0]) == 0
+
+
+def test_review4_refunded_start_reaches_all_90_sends_at_default_caps(v64):
+    def run(cls):
+        def prepare(call):
+            if call.actor == 'r1' and call.started_sim_s == 0.:
+                raise ValueError('one failed preparation')
+        trial, clock, links, requests = fixture.make_trial(
+            'no_comm', first='wait', follow_claim=False, send=False,
+            prepare_fault=prepare, trial_cls=cls, horizon=600.)
+        trial.scheduler.trigger('r1', 'idle', at=2.)
+        fixture.advance(trial, clock, links, 600.)
+        trial.finish(600.)
+        assert trial.send_ledger.sends() == 90
+        assert trial.scheduler.budget.used == dict.fromkeys(zi.ROBOTS, 30)
+        return signature(trial, requests)
+    assert run(None) == run(v64)

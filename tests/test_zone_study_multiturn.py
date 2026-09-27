@@ -39,7 +39,7 @@ class TimingTrial(zi.IntegratedTrial):
 
 def make_trial(condition, *, first='claim', policy=None, limits=None, send=True, repeat=False,
                budget=None, tmp_path=None, follow_claim=True, horizon=90., trial_cls=None, wire_fault=None,
-               prepare_fault=None, store_fault=None, additive_noop=False):
+               prepare_fault=None, store_fault=None, additive_noop=False, snapshot_fault=None, submit_fault=None):
     clock = [0.]
     links = links_for(clock)
     requests, turns = [], Counter()
@@ -118,6 +118,18 @@ def make_trial(condition, *, first='claim', policy=None, limits=None, send=True,
             return prepare(call)
 
         trial.prepare_call = faulted_prepare
+    if snapshot_fault:
+        snapshot = trial.snapshot
+        def faulted_snapshot(call):
+            snapshot_fault(call)
+            return snapshot(call)
+        trial.snapshot = faulted_snapshot
+    if submit_fault:
+        submit = trial.transport.submit
+        def faulted_submit(call):
+            submit_fault(call)
+            return submit(call)
+        trial.transport.submit = faulted_submit
     trial.begin(0.)
     return trial, clock, links, requests
 

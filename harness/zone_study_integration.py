@@ -404,7 +404,7 @@ class IntegratedTrial(zo.OfflineTrial):
         if trigger is not None and at_s <= self.horizon_s + 1e-9:
             self.scheduler.trigger(rid, trigger, at=at_s)
         if event['event'] in ('job_done', 'job_failed') and at_s <= self.horizon_s + 1e-9:
-            self.scheduler.own_job_boundary(rid, at=at_s)
+            self.scheduler.available(rid, at=at_s)
 
     def decision_budget_spent(self) -> bool:
         return self.transport.budget_exhausted \
