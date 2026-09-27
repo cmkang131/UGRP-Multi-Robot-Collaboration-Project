@@ -51,7 +51,8 @@ class OwnCamTeamHost:
     FRAME_S = .2
     GT_S = .05
 
-    def __init__(self, spec: Mapping, student: Mapping, *, root, study_layer: Callable, frames_dir=None, scene=None):
+    def __init__(self, spec: Mapping, student: Mapping, *, root, study_layer: Callable, frames_dir=None, scene=None,
+                 pose_factory=None):
         import importlib
         import json
         from pathlib import Path
@@ -122,10 +123,13 @@ class OwnCamTeamHost:
                 return skill_cls(order, planner=_planner, robot_id=robot_id, mode='m1', static_keepouts=_keepouts,
                                  static_bounds_m=list(_bounds))
 
+            pose = None if pose_factory is None else pose_factory(rid, own_static, calibration['params'], spec['seed'])
+            if pose_factory is not None and pose is None:
+                raise ValueError('pose_factory must return the selected provider')
             ex = ZoneOwnExecutor(rid, own_static, calibration['params'], self.order_sheet, skill_factory=factory,
                                  pose_estimate_cls=PoseEstimate, search_rows_y=rows_y, mode=student.get('mode', 'm1'),
                                  seed=spec['seed'], job_sim_limit_s=spec.get('job_sim_limit_s', DEFAULT_JOB_SIM_LIMIT_S),
-                                 static_keepouts=copy.deepcopy(discs))
+                                 static_keepouts=copy.deepcopy(discs), pose_source=pose)
             ex_ref['ex'] = ex
             self.robots[rid] = _RobotSlot(rid, port, ex)
         self.study_layer = study_layer

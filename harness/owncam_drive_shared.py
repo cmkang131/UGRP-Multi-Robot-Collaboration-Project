@@ -5,10 +5,11 @@ still initialize their heading/pursuit fields, but the frozen base constructor
 never runs. GuardedDriver binds ``self.loc`` before entering this chain.
 The controller fields/defaults mirror the frozen base; no provider is created.
 """
+import math
 from collections.abc import Mapping, Sequence
 
 from harness.map_goto import UNLOADED_ENVELOPE
-from harness.owncam_drive import CARRY_POSTURE, LOADED_ENVELOPE, SEARCH_POSE, OwnCamDriver
+from harness.owncam_drive import CARRY_POSTURE, DOOR_CHECKPOINTS_M, LOADED_ENVELOPE, SEARCH_POSE, OwnCamDriver
 
 
 class SharedPoseDriver(OwnCamDriver):
@@ -36,3 +37,23 @@ class SharedPoseDriver(OwnCamDriver):
         self.frames_seen = 0
         self.arrival_checked = False
         self.last_look_xy = None
+
+    def _needs_look(self, est, now):
+        if not est.get('initialized'):
+            return 'not_initialized'
+        if self._uncertain(est):
+            return 'uncertain'
+        if self.loaded:
+            if self.last_look_xy is None:
+                self.last_look_xy = (est['x'], est['y'])
+            elif self._since_look_m(est) > self._travel_look_m():
+                return 'travel'
+        elif est.get('fix_age_s') is not None and est.get('fix_age_s') > 3.:
+            return 'no_fix'
+        if est['x'] < self.door[0]:
+            d = math.hypot(self.door[0] - est['x'], self.door[1] - est['y'])
+            for cp in DOOR_CHECKPOINTS_M:
+                if cp not in self.checkpoints_done and d <= cp:
+                    self.checkpoints_done.add(cp)
+                    return f'door_checkpoint_{cp}'
+        return None

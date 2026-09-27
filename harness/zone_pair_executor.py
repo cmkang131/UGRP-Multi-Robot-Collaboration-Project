@@ -121,8 +121,9 @@ def m2_controller(execution, plan, params):
     from scripts.zone_teacher import ArmSequence
     from harness.zone_pair_guards import GuardedPairApproach
     from harness.zone_pair_grasp import PairGraspRelook
+    from harness.m2_provider_adapter import ProviderM2DoorStudent
 
-    class RoutedM2(PairGraspRelook, m2.M2DoorStudent):
+    class RoutedM2(PairGraspRelook, ProviderM2DoorStudent):
         requires_fresh_frame = True
 
         def align_stop_ready(self, now):

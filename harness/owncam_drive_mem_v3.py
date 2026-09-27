@@ -1,10 +1,10 @@
 """Memory v3 leg policy: mandatory arrival verification and guarded uncertainty."""
 from __future__ import annotations
 
-from harness.m1_owncam_delivery import _LegDriver
+from harness.owncam_delivery_shared import SharedLegDriver as _LegDriver
 from harness.owncam_drive import OwnCamDriver
 from harness.owncam_drive_mem import MemoryLookPolicy
-from harness.owncam_drive_v2 import OwnCamDriverV2
+from harness.owncam_drive_shared import SharedPoseDriver
 from harness.owncam_pose_guard_v3 import GuardedLocalizerV3
 from harness.owncam_safety_v3 import LegSafetyV3, MAX_UNVERIFIED_LOOKS
 
@@ -16,7 +16,7 @@ class LookPolicyV3(MemoryLookPolicy):
     def _needs_look(self, est, now):
         if self.memory_look_enabled:
             return super()._needs_look(est, now)
-        return OwnCamDriverV2._needs_look(self, est, now)
+        return SharedPoseDriver._needs_look(self, est, now)
 
     def _start_look(self, now, reason):
         if self.memory_look_enabled:

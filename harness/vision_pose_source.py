@@ -41,8 +41,9 @@ PRIOR_STD = (.15, .15, math.radians(10.))          # VIS3 dock prior (vision_loc
 class FailClosedLoc:
     """The shared localizer seen by the executor's drivers; uninitialised once the provider failed."""
 
-    def __init__(self, pf):
+    def __init__(self, pf, provider_id=vp.PROVIDER_ID):
         self._pf = pf
+        self.provider_id = provider_id
         self.failure: str | None = None
 
     def __getattr__(self, name):
@@ -63,7 +64,7 @@ class FailClosedLoc:
             last = self._pf.last_scan_t
             est['since_tag_s'] = None if last is None else round(float(self._pf.t) - float(last), 3)
             est['since_scan_s'] = est['since_tag_s']
-            est.update(last_fix_t=last, fix_age_s=est['since_scan_s'], fix_source=vp.PROVIDER_ID)
+            est.update(last_fix_t=last, fix_age_s=est['since_scan_s'], fix_source=self.provider_id)
         return est
 
 
@@ -75,6 +76,11 @@ def _finite_seq(values, n) -> bool:
 class VisionPoseSource:
     """One robot's tag-free vision localizer (own frames + own commands -> ``PoseReport``)."""
 
+    map_ids = MAPS
+    map_file = vp.VIS3_DIR / 'maps' / 'zone_wide_door_walls_v3_notags.json'
+    provider_id = vp.PROVIDER_ID
+    source_prefix = vp.SOURCE_LABEL_PREFIX
+
     def __init__(self, static_map: Mapping, params: Mapping, seed: int = 0, *, worker=None, cfg=None):
         if not isinstance(seed, int) or isinstance(seed, bool):
             raise TypeError('seed must be an int')
@@ -84,23 +90,26 @@ class VisionPoseSource:
         m1_cal, self.m1_calibration = mp.load_m1_calibration()
         if vp.canonical(dict(params)) != vp.canonical(m1_cal['params']):
             raise ValueError('params differ from the M1 motion calibration the VIS3 student was scored with')
-        vis3_map = vp.load_json(vp.VIS3_DIR / 'maps' / 'zone_wide_door_walls_v3_notags.json')
-        if static_map.get('map_id') not in MAPS or vp.canonical(dict(static_map)) != vp.canonical(vis3_map):
-            raise ValueError(f'vision_zero_tag_v1 is registered for {MAPS} (the VIS3 map file) only, '
+        vis3_map = vp.load_json(self.map_file)
+        if static_map.get('map_id') not in self.map_ids or vp.canonical(dict(static_map)) != vp.canonical(vis3_map):
+            raise ValueError(f'{self.provider_id} is registered for {self.map_ids} (the exact registered map) only, '
                              f'got {static_map.get("map_id")!r}')
         self.cfg = vp.load_config() if cfg is None else cfg
         sel = vp.selected_config()
         cal = vp.load_json(vp.VIS3_DIR / 'calibration_train.json')
-        pf = vpf.make_robust_pf(mp.load_m1_localizer(), copy.deepcopy(dict(static_map)), copy.deepcopy(dict(params)),
+        from harness.vision_motion_init import motion_module
+        pf = vpf.make_robust_pf(motion_module(mp.load_m1_localizer()), copy.deepcopy(dict(static_map)), copy.deepcopy(dict(params)),
                                 sel.get('measurement', {}), sel.get('obs', {}), cal['sag'], seed,
                                 cal.get('pan_base_yaw') if sel.get('pan_coupling', True) else None,
                                 sel.get('robust', {}))
-        self.loc = FailClosedLoc(pf)
+        self.loc = FailClosedLoc(pf, self.provider_id)
         self.seed = seed
-        identity = {'provider': vp.PROVIDER_ID, 'frozen': self.frozen, 'checkpoint_sha256': self.cfg['model']['sha256'],
-                    'm1_calibration_sha256': self.m1_calibration['file_sha256']}
+        identity = {'provider': self.provider_id, 'initialization_version': 2,
+                    'motion_init_sha256': vp.file_sha256(vp.ROOT / 'harness/vision_motion_init.py'), 'frozen': self.frozen, 'checkpoint_sha256': self.cfg['model']['sha256'],
+                    'm1_calibration_sha256': self.m1_calibration['file_sha256'],
+                    'map_sha256': vp.sha256_bytes(vp.canonical(dict(static_map)))}
         self.identity_sha256 = vp.sha256_bytes(vp.canonical(identity))
-        self.source = f'{vp.SOURCE_LABEL_PREFIX}:{self.identity_sha256[:8]}'
+        self.source = f'{self.source_prefix}:{self.identity_sha256[:8]}'
         self.worker = worker if worker is not None else VisionWorkerClient(self.cfg)
         self.servo: dict[int, int] = {}
         self.prior: dict | None = None
@@ -222,14 +231,14 @@ class VisionPoseSource:
         est = self.loc.estimate()
         if not est.get('initialized'):
             return PoseReport(t_est=float(now), initialized=False, load_state=load, source=self.source,
-                              last_valid_obs=self.last_obs, fix_source=vp.PROVIDER_ID,
+                              last_valid_obs=self.last_obs, fix_source=self.provider_id,
                               observation_quality={'accepted': False, 'failure': self.failure})
         return PoseReport(t_est=float(est['t']), initialized=True, x_m=est['x'], y_m=est['y'], yaw_rad=est['yaw'],
                           cov=tuple(tuple(r) for r in est['cov']), std_xy_m=est['std_xy_m'],
                           std_yaw_rad=est['std_yaw_rad'], since_tag_s=est.get('since_tag_s'),
                           last_valid_obs=self.last_obs, n_eff=round(float(est['n_eff']), 1), load_state=load,
                           source=self.source, last_fix_t=est['last_fix_t'], fix_age_s=est['fix_age_s'],
-                          fix_source=vp.PROVIDER_ID,
+                          fix_source=self.provider_id,
                           observation_quality={'accepted': est['last_fix_t'] == now,
                                                'informative_columns': 0 if self.last_obs is None else self.last_obs['n_cols'],
                                                'diagnostics': copy.deepcopy(pf.diag)})
@@ -237,7 +246,7 @@ class VisionPoseSource:
     def record(self) -> dict:
         ms = sorted(r['worker_ms'] for r in self.timing)
         pct = (lambda q: None if not ms else ms[min(len(ms) - 1, int(q * len(ms)))])
-        return {'provider': vp.PROVIDER_ID, 'source': self.source, 'identity_sha256': self.identity_sha256,
+        return {'provider': self.provider_id, 'source': self.source, 'identity_sha256': self.identity_sha256,
                 'frozen_files_sha256': self.frozen, 'm1_calibration': self.m1_calibration, 'prior': self.prior,
                 'seed': self.seed, 'counts': dict(self.counts), 'failure': self.failure,
                 'worker': self.worker.record(), 'localizer_stats': dict(self.loc._pf.stats),
@@ -249,3 +258,11 @@ class VisionPoseSource:
 
 
 __all__ = ['VisionPoseSource', 'FailClosedLoc', 'InProcessWorker', 'MAPS', 'PRIOR_STD']
+
+
+class VisionPoseSourceV2(VisionPoseSource):
+    """Registered geometry-only map + measurement-free PF initialization, unscored."""
+    map_ids = ('zone_wide_door_geometry_v2',)
+    map_file = vp.ROOT / 'maps/zones/zone_wide_door_geometry_v2.json'
+    provider_id = 'vision_zero_tag_v2'
+    source_prefix = 'owncam_pf_vision_zero_tag_v2'

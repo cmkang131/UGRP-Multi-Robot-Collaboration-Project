@@ -183,15 +183,15 @@ def test_v5c_prepare_is_source_bound_and_has_no_physics_or_model_calls(tmp_path,
     from scripts import run_zone_pair_dev as dev
     out=tmp_path/run
     result=subprocess.run([sys.executable,str(dev.ROOT/'scripts/run_zone_pair_dev.py'),
-                           '--prereg',str(dev.PREREG_V5E),'--run-id',run,'--output',str(out)],
+                           '--prereg',str(dev.PREREG_V5F),'--run-id',run,'--output',str(out)],
                           capture_output=True,text=True)
     assert result.returncode==0,result.stderr
     manifest=json.loads((out/'manifest.json').read_text())
     assert manifest['state']=='prepared_not_executed'
     assert manifest['model_calls']==0 and manifest['physical_success'] is None and manifest['applied'] is None
-    assert (out/'prereg.json').read_bytes()==dev.PREREG_V5E.read_bytes()
+    assert (out/'prereg.json').read_bytes()==dev.PREREG_V5F.read_bytes()
     assert not (out/'eval_only/trace.jsonl').exists()
-    p=json.loads(dev.PREREG_V5E.read_text());case=next(r for r in p['runs'] if r['id']==run)
+    p=json.loads(dev.PREREG_V5F.read_text());case=next(r for r in p['runs'] if r['id']==run)
     from scripts.zone_pair_dev_runtime import make_scene
     scene=make_scene({'map':p['environment']['map'],'seed':case['seed'],'goal':{'B':{'cyan':1}},
                       'team_cargo':[{'item_id':'cargoX','kind':'long_beam','pose':case['setup_beam_xyyaw']}]})
@@ -202,12 +202,15 @@ def test_v5c_prepare_is_source_bound_and_has_no_physics_or_model_calls(tmp_path,
     ('source','grasp contract/hash'),('supersedes','previous prereg hash'),('scene','scene contract/hash')])
 def test_v5c_rejects_changed_registration(tmp_path,fault,reason):
     from scripts import run_zone_pair_dev as dev
-    p=json.loads(dev.PREREG_V5E.read_text())
+    p=json.loads(dev.PREREG_V5F.read_text())
     if fault=='seed':p['runs'][0]['seed']=905
     elif fault=='criteria':p['criteria']['lift_bottom_m']=.01
     elif fault=='source':p['grasp_contract']['source_sha256']['harness/owncam_time.py']='0'*64
     elif fault=='scene':p['scene_contract']['sha256']='0'*64
     else:p['supersedes']['sha256']='0'*64
+    # Reseal only to isolate structural/source checks; separate tests cover seal tampering.
+    from scripts.zone_pair_authorization import registration_payload
+    p['registration_sha256'] = dev.digest(registration_payload(p))
     path=tmp_path/'bad.json';path.write_text(json.dumps(p))
     args=dev.parser().parse_args(['--prereg',str(path),'--run-id','dev11','--output',str(tmp_path/'out')])
     with pytest.raises(ValueError,match=reason):dev.load_config(args)

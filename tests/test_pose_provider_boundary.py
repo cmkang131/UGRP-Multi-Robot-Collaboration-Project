@@ -82,7 +82,10 @@ def test_active_constructor_chain_stops_before_frozen_provider_initialization():
 
 def test_new_interface_modules_have_no_truth_or_model_inference_dependencies():
     files = ['harness/pose_provider.py', 'harness/owncam_time.py', 'harness/owncam_drive_shared.py', 'harness/zone_pair_align.py',
-             'harness/zone_pair_grasp.py', 'harness/zone_pair_guards.py', 'harness/zone_own_driver.py']
+             'harness/zone_pair_grasp.py', 'harness/zone_pair_guards.py', 'harness/zone_own_driver.py',
+             'harness/owncam_delivery_shared.py', 'harness/owncam_memory_delivery.py',
+             'harness/owncam_memory_inputs.py', 'harness/owncam_pose_guard_provider.py',
+             'harness/m2_provider_adapter.py', 'harness/vision_motion_init.py']
     forbidden = {'mujoco', 'MjData', 'xpos', 'xquat', 'qpos', 'qvel', 'eval_only', 'GtStubPoseSource',
                  'cctv_top', 'nav_cam', 'torch'}
     for file in files:
@@ -93,3 +96,50 @@ def test_new_interface_modules_have_no_truth_or_model_inference_dependencies():
         imports |= {n.name for n in ast.walk(tree) if isinstance(n, ast.alias)}
         assert not names & forbidden, file
         assert not any(i and i.split('.')[0] in forbidden for i in imports), file
+
+
+def test_all_active_executor_constructor_and_lazy_hook_owners_are_audited():
+    from harness.owncam_delivery_shared import SharedPoseDelivery, SharedLegDriver
+    from harness.owncam_memory_delivery import M1OwnCamDeliveryMem, SharedMemoryLeg
+    from harness.m1_owncam_memory_v3 import M1OwnCamDeliveryMemV3, M1OwnCamDeliveryOffV3
+    from harness.owncam_drive_mem_v3 import LegDriverMemV3
+    from harness.zone_own_deliver import _DeliverController
+    from harness.zone_own_executor import ZoneOwnExecutor
+    from harness.zone_own_team_host import OwnCamTeamHost
+    from harness.zone_pair_executor import PairExecution, PairTeam
+    from harness.zone_own_driver import GuardedDriver
+    from harness.zone_pair_guards import GuardedPairApproach
+    from harness.m2_provider_adapter import ProviderM2DoorStudent
+    from scripts.run_zone_study_integration import StudyTeamHost
+    from harness.owncam_drive_shared import SharedPoseDriver
+    from harness.owncam_drive import OwnCamDriver
+    controllers = (SharedPoseDelivery, M1OwnCamDeliveryMem, M1OwnCamDeliveryMemV3, M1OwnCamDeliveryOffV3,
+                   _DeliverController, ZoneOwnExecutor, OwnCamTeamHost, StudyTeamHost, PairExecution, PairTeam,
+                   ProviderM2DoorStudent)
+    drivers = (SharedLegDriver, SharedMemoryLeg, LegDriverMemV3, GuardedDriver, GuardedPairApproach)
+    forbidden_owners = {'harness.m1_owncam_delivery', 'harness.m1_owncam_memory', 'harness.owncam_drive'}
+    for cls in (*controllers, *drivers):
+        assert cls.__init__.__module__ not in forbidden_owners, cls
+        tree = ast.parse(textwrap.dedent(inspect.getsource(cls.__init__)))
+        # Default selection is allowed; eagerly constructing raw measurement machinery is not.
+        names = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name)}
+        assert not names & {'OwnCamLocalizer', 'TagDetector', 'TagLandmarkProvider', 'tags_by_id'}, cls
+    for cls in drivers:
+        chain = cls.__mro__
+        stop = chain.index(SharedPoseDriver)
+        assert stop < chain.index(OwnCamDriver)
+        for base in chain[:stop+1]:
+            if '__init__' in base.__dict__:
+                assert not marker_refs(textwrap.dedent(inspect.getsource(base.__init__))), base
+    for cls in (SharedPoseDelivery, M1OwnCamDeliveryMem, M1OwnCamDeliveryMemV3, M1OwnCamDeliveryOffV3,
+                _DeliverController):
+        assert cls._start_leg.__module__ not in forbidden_owners
+    assert ProviderM2DoorStudent._queue_grasp.__module__ == 'harness.m2_provider_adapter'
+    # Local classes are also executable entry points: their cooperative initialization
+    # must go through the audited public host/controller, never a legacy provider.
+    runtime = ast.parse((ROOT / 'scripts/zone_pair_dev_runtime.py').read_text())
+    devhost = next(n for n in ast.walk(runtime) if isinstance(n, ast.ClassDef) and n.name == 'DevHost')
+    assert [b.id for b in devhost.bases] == ['OwnCamTeamHost']
+    factory = ast.parse((ROOT / 'harness/zone_pair_executor.py').read_text())
+    routed = next(n for n in ast.walk(factory) if isinstance(n, ast.ClassDef) and n.name == 'RoutedM2')
+    assert [b.id for b in routed.bases] == ['PairGraspRelook', 'ProviderM2DoorStudent']

@@ -133,41 +133,42 @@ class StudyTeamHost(OwnCamTeamHost):
     """#206's 3-robot host, stepped in chunks by the study clock, pose provider from config."""
 
     def __init__(self, spec, student, *, root, provider_spec, frames_dir=None):
-        scene = None
-        if spec.get('pair_order_sheets'):
-            # Reuse #235's standard Scene setup (drops its colour placeholder
-            # before XML generation, never based on runtime state).
-            from scripts.zone_pair_dev_runtime import make_scene
-            scene = make_scene(spec)
-        super().__init__(spec, student, root=root, study_layer=self._no_layer, frames_dir=frames_dir, scene=scene)
-        # scene.setup has finished. Overlay only the evaluation cameras in the
-        # world; keep self.static and every executor's own static map untouched.
-        profile = evaluation_top_config(self.static)['profile']['id']
-        self.eval_static = zone_eval_top.eval_static_map(self.static, profile)
-        self.eval_only['top_camera'] = zone_eval_top.apply_to_world(self.world, self.static, profile)
-        try:
-            self._install_providers(spec, provider_spec)
-        except Exception:
-            self.close()
-            raise
-        self.links = {rid: HostRobotLink(self, rid) for rid in ROBOTS}
-
-    def _install_providers(self, spec, provider_spec):
         self.provider_sources = {}
-        for rid, slot in self.robots.items():
-            ex = slot.executor
-            provider = zi.build_pose_provider(provider_spec, ex.map, ex.params, ex.seed)
-            ex.pose = provider                 # owned before any initialization can fail
-            for row in slot.commands:                # the own command log so far (initial servo command)
-                provider.on_command(row)
-            if ex.mode == 'm1':
-                ex._require_owncam(provider.source, 'pose provider')
+        providers = []
+
+        def pose_factory(rid, static, params, seed):
+            provider = zi.build_pose_provider(provider_spec, static, params, seed)
+            providers.append(provider)
             if callable(getattr(getattr(provider, 'provider', provider), 'init_prior', None)):
                 prior = spec.get('pose_priors', {}).get(rid)
                 if prior is None:
                     raise zi.ContractViolation(f'{rid}: provider requires a preregistered own dock prior')
                 provider.init_prior(**prior)
             self.provider_sources[rid] = provider.source
+            return provider
+
+        scene = None
+        if spec.get('pair_order_sheets') and provider_spec['uses_landmark_tags']:
+            # Reuse #235's standard Scene setup (drops its colour placeholder
+            # before XML generation, never based on runtime state).
+            from scripts.zone_pair_dev_runtime import make_scene
+            scene = make_scene(spec)
+        try:
+            super().__init__(spec, student, root=root, study_layer=self._no_layer, frames_dir=frames_dir,
+                             scene=scene, pose_factory=pose_factory)
+        except Exception:
+            for provider in providers:
+                if callable(getattr(provider, 'close', None)):
+                    provider.close()
+            if hasattr(self, 'world'):
+                self.world.close()
+            raise
+        # scene.setup has finished. Overlay only the evaluation cameras in the
+        # world; keep self.static and every executor's own static map untouched.
+        profile = evaluation_top_config(self.static)['profile']['id']
+        self.eval_static = zone_eval_top.eval_static_map(self.static, profile)
+        self.eval_only['top_camera'] = zone_eval_top.apply_to_world(self.world, self.static, profile)
+        self.links = {rid: HostRobotLink(self, rid) for rid in ROBOTS}
 
     @staticmethod
     def _no_layer(*_args):
@@ -292,18 +293,20 @@ def host_spec(scenario, episode, map_bundle):
 def run_bundle(prereg, episode, *, model_adapter=None):
     """Everything that identifies this execution, hashed (docs/execution_versioning.md)."""
     from harness.zone_study_scenarios import bundle_for, validate
-    from sim.zone_landmarks import tagged_map
+    from sim.zone_own_scene_provider import scene_static_map
+    provider = zi.pose_provider_spec(prereg['pose_provider'], map_id=episode['map'])
     scenario = json.loads((ROOT / episode['scenario']).read_text())
+    if not provider['uses_landmark_tags'] and scenario.get('landmark_detail') != 'none':
+        raise SystemExit('geometry provider requires explicit landmark_detail=none')
     report = validate(scenario)
     if not report.ok:
         raise SystemExit(f'scenario {episode["scenario"]} fails validation: {report.checks}')
     map_bundle = bundle_for(scenario)
     static = json.loads(Path(map_bundle['map_file']).read_text())
-    if static != tagged_map(episode['map']):
-        raise SystemExit('the map file the robots read differs from the tagged map the scene builds')
+    if static != scene_static_map(episode['map']):
+        raise SystemExit('the map file the robots read differs from the static map the scene builds')
     spec = host_spec(scenario, episode, map_bundle)
     from scripts.zone_pair_dev_contract import profile_contract
-    provider = zi.pose_provider_spec(prereg['pose_provider'], map_id=episode['map'])
     # Record the calibration actually passed to the executor/provider, including
     # the M2 loop-v2 calibration. Never label it with the registry's M1 default.
     provider['calibration'] = prereg['student']['calibration']
@@ -318,7 +321,7 @@ def run_bundle(prereg, episode, *, model_adapter=None):
               'runtime_files_sha256': {f: zi.file_sha256(ROOT / f) for f in runtime_files(prereg, provider)},
               'scenario': episode['scenario'], 'scenario_sha256': zi.file_sha256(ROOT / episode['scenario']),
               'map_id': episode['map'], 'map_file_sha256': map_bundle['map_file_sha256'],
-              'public_map_sha256': map_bundle['public_map_sha256'], 'tagged_map_sha256': digest(tagged_map(episode['map'])),
+              'public_map_sha256': map_bundle['public_map_sha256'], 'scene_static_map_sha256': digest(scene_static_map(episode['map'])),
               'physical': {k: episode[k] for k in ('base_map', 'layout_seed', 'goal', 'extra_boxes',
                                                     'contact_profile', 'job_sim_limit_s')},
               'actor': 'gemini_proxy' if model_adapter else zi.FIXTURE_ACTOR,

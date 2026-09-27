@@ -217,7 +217,7 @@ def test_prepare_hold_and_old_registration_are_fail_closed(tmp_path, revision):
     from scripts import run_zone_pair_dev as d
     args = d.parser().parse_args(['--prereg', str(getattr(d, revision)), '--run-id', 'dev11',
                                   '--output', str(tmp_path / 'unused'), '--execute'])
-    with pytest.raises(ValueError, match='prepare-only'):
+    with pytest.raises(ValueError, match='scene contract/hash mismatch'):
         d.load_config(args)
     args.execute = False; args.prereg = d.PREREG_V5C
     with pytest.raises(ValueError, match='scene contract/hash mismatch'):

@@ -99,6 +99,10 @@ class BoundaryTests(unittest.TestCase):
     # frozen_source.json's source_sha, and test launches still refuse a tree that differs from the frozen hashes;
     # any further change to these files still fails this test.
     POST_FREEZE_REVISIONS = {
+        'harness/owncam_pose_source.py': {
+            '7c41c40db0c502af8522f263971ebfb0ae370543952da2a31960e3044e5388da':
+                'PR #240 HEAD 8b0ddd27 existing neutral fix receipt adapter; unchanged in this revision',
+        },
         'scripts/run_m1_owncam.py': {
             '95b6b76cd381e78d71868a938c241aac39c58c4e534ab1608c6d0cb9ce7e256f':
                 'PR #236 sim-speed: opt-in --speedups; default none keeps the unchanged run() call',

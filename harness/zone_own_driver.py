@@ -59,6 +59,9 @@ class GuardedDriver(OwnCamDriverV2, SharedPoseDriver):
         elif kind == 'look':
             self.servo[6] = int(row['pan_pulse'])
 
+    def observe(self, now, rgb):
+        raise RuntimeError("feed frames through the owning pose provider exactly once")
+
     # -------------------------------------------------- hooks
     def _event(self, now, kind, **detail):
         super()._event(now, kind, **detail)

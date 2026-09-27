@@ -23,14 +23,19 @@ if str(ROOT) not in sys.path:
 from harness.owncam_safety_v3 import SCHEMA as SAFETY_SCHEMA
 
 SCHEMA = 'ugrp.m1_owncam_memory_run.v3'
-CONDITIONS = {'off': ('harness.m1_owncam_memory_v3', 'M1OwnCamDeliveryOffV3'),
+CONDITIONS = {'m1_provider': ('harness.owncam_delivery_shared', 'SharedPoseDelivery'),
+              'memory_provider': ('harness.owncam_memory_delivery', 'M1OwnCamDeliveryMem'),
+              'off': ('harness.m1_owncam_memory_v3', 'M1OwnCamDeliveryOffV3'),
               'off_legacy': ('harness.m1_owncam_delivery', 'M1OwnCamDelivery'),
               'memory_v2': ('harness.m1_owncam_memory', 'M1OwnCamDeliveryMem'),
               'memory_v3': ('harness.m1_owncam_memory_v3', 'M1OwnCamDeliveryMemV3')}
 MATCHED_CONDITIONS = ('off', 'memory_v3')
-RESULT_LABELS = {'off': 'interim, tag provider; v3 safety, memory look OFF',
+RESULT_LABELS = {'m1_provider': 'provider adapter; unvalidated',
+                 'memory_provider': 'provider adapter; unvalidated', 'off': 'interim, tag provider; v3 safety, memory look OFF',
                  'off_legacy': 'historical OFF; unmatched safety; reference only', 'memory_v2': 'interim, tag provider', 'memory_v3': 'interim, tag provider; unvalidated v3'}
-MEMORY_FILES = ('harness/owncam_memory.py', 'harness/owncam_memory_kf.py', 'harness/owncam_drive_mem.py',
+MEMORY_FILES = ('harness/owncam_delivery_shared.py', 'harness/owncam_memory_delivery.py',
+                'harness/owncam_drive_shared.py', 'harness/owncam_memory_inputs.py',
+                'harness/owncam_pose_guard_provider.py', 'harness/owncam_memory.py', 'harness/owncam_memory_kf.py', 'harness/owncam_drive_mem.py',
                 'harness/owncam_landmarks.py', 'harness/owncam_landmark_tags.py',
                 'harness/m1_owncam_memory.py', 'scripts/run_m1_owncam_memory.py',
                 'harness/owncam_pose_guard_v3.py', 'harness/owncam_memory_v3.py',

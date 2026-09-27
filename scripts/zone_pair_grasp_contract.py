@@ -5,6 +5,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_PATHS = (
+    'harness/owncam_delivery_shared.py', 'harness/owncam_memory_delivery.py',
+    'harness/owncam_memory_inputs.py', 'harness/owncam_pose_guard_provider.py',
+    'harness/owncam_drive_mem_v3.py', 'harness/m1_owncam_memory_v3.py',
+    'harness/vision_motion_init.py', 'harness/m2_provider_adapter.py',
+    'harness/zone_own_deliver.py', 'harness/zone_own_team_host.py',
+    'scripts/zone_pair_authorization.py', 'scripts/run_zone_study_integration.py',
+    'scripts/run_m1_owncam_memory_v3.py', 'sim/zone_geometry_scene.py',
+    'configs/zone_study_integration/pose_providers.json',
+    'maps/zones/zone_wide_door_geometry_v2.json',
     'harness/pose_provider.py', 'harness/vision_pose_source.py', 'harness/zone_study_pose_delay.py',
     'harness/zone_own_driver.py', 'harness/owncam_drive_shared.py', 'sim/zone_own_scene_provider.py',
     'harness/owncam_time.py', 'harness/zone_own_contract.py',

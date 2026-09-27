@@ -217,7 +217,9 @@ def test_contact_log_dedupes_per_robot_and_kind():
 
 
 # ---------------------------------------------------------------- MuJoCo host (not in CI: no simulator there)
-def test_team_host_isolation_abort_and_horizon_on_the_real_world():
+def test_team_host_isolation_abort_and_horizon_on_the_real_world(request):
+    if request.config.pluginmanager.hasplugin('tests.pose_provider_no_physics'):
+        pytest.skip('real-world physical steps are outside the explicitly nonphysical suite')
     pytest.importorskip('mujoco')
     spec = {'map': 'zone_wide_door_tags_v2', 'seed': 703, 'goal': {'A': {'cyan': 1}, 'B': {'cyan': 1}, 'C': {'cyan': 1}},
             'extra_boxes': {'red': 2, 'green': 1}, 'contact_profile': 'cargo_noslip_v1', 'order_sheet': SHEET}

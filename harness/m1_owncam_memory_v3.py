@@ -1,6 +1,6 @@
 """M1 v3 shared controller with a memory-look ON/OFF ablation.
 
-Interim tag source only until PR #227 supplies vision measurement diagnostics.
+Defaults to the interim source; injected providers require explicit measurement diagnostics.
 Grasp and place require new own-camera evidence after entering their gates;
 failed verification stops instead of falling through to the skill.
 """
@@ -11,11 +11,11 @@ from harness.owncam_time import pose_report_fresh
 import math
 
 from harness.m1_owncam_delivery import CLOSER_VIEW_STANDOFF_M, MAX_GATE_LOOKS, M1OwnCamDelivery, SEARCH_PANS
-from harness.m1_owncam_memory import (FULL_GATE_REASONS, GATE_TARGETS, M1OwnCamDeliveryMem,
-                                      SEARCH_CANDIDATE_PANS, _RecordingDetector)
+from harness.m1_owncam_memory import (FULL_GATE_REASONS, GATE_TARGETS,
+                                      SEARCH_CANDIDATE_PANS)
+from harness.owncam_memory_delivery import M1OwnCamDeliveryMem
 from harness.owncam_drive import CARRY_POSTURE, LOOK_P20, SEARCH_POSE, WIDE_LOOK_PANS
 from harness.owncam_drive_mem_v3 import LegDriverMemV3
-from harness.owncam_landmark_tags import TagLandmarkProvider
 from harness.owncam_memory_v3 import OwnCamMemoryV3
 from harness.owncam_pose_guard_v3 import OwnCamPoseSourceV3, PoseGuardV3
 from harness.owncam_pose_source import PoseLimits, check_limits
@@ -34,13 +34,21 @@ RELEASE_YAW_TOL_RAD = .04
 class M1OwnCamDeliveryMemV3(ControllerSafetyV3, SlotInspectionV3, M1OwnCamDeliveryMem):
     memory_look_enabled = True
 
-    def __init__(self, static_map, params, **kwargs):
-        super().__init__(static_map, params, **kwargs)
+    def __init__(self, static_map, params, *, pose_source=None, landmark_provider=None, **kwargs):
+        from functools import partial
+        from harness.owncam_memory_inputs import memory_inputs
+        from harness.owncam_pose_guard_provider import GuardedPoseProviderV3
         guard = PoseGuardV3()
-        self.memory = OwnCamMemoryV3(static_map, params, robot_id=self.robot_id, guard=guard,
-                                     provider=TagLandmarkProvider(static_map, params), on_event=self._memory_event)
-        self.pose = OwnCamPoseSourceV3(static_map, params, seed=self.seed, guard=guard)
-        self.pose.detector = _RecordingDetector(self.pose.detector)
+        if pose_source is None:
+            pose_source, landmark_provider, inputs = memory_inputs(
+                static_map, params, kwargs.get('seed', 0), None, landmark_provider,
+                pose_factory=partial(OwnCamPoseSourceV3, guard=guard))
+        else:
+            pose_source = GuardedPoseProviderV3(pose_source, guard)
+            inputs = lambda: {}
+        super().__init__(static_map, params, pose_source=pose_source, landmark_provider=landmark_provider,
+                         memory_factory=partial(OwnCamMemoryV3, guard=guard), **kwargs)
+        self._provider_inputs = inputs
         self._init_controller_safety()
         self.verification = {}
         self.blind_spot_retry = False

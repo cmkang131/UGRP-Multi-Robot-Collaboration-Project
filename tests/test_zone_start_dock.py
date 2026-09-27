@@ -60,7 +60,7 @@ def registered_tree(registration=dev.PREREG_V3):
     """Latest receipt must match; historical source differences never become executable."""
     current = dev.scene_contract()
     registered = json.loads(registration.read_text())['scene_contract']
-    assert current == json.loads(dev.PREREG_V5E.read_text())['scene_contract']
+    assert current == json.loads(dev.PREREG_V5F.read_text())['scene_contract']
     if current == registered:
         return True
     old_sources = set(registered['source_sha256'])
@@ -231,7 +231,7 @@ def test_registered_v3_rejects_drift_before_world_import(tmp_path, fault):
     (dev.PREREG_V3, 'dev05'), (dev.PREREG_V3, 'dev06'),
     (dev.PREREG_V4, 'dev07'), (dev.PREREG_V4, 'dev08'),
     (dev.PREREG_V5D, 'dev11'), (dev.PREREG_V5D, 'dev12'),
-    (dev.PREREG_V5E, 'dev11'), (dev.PREREG_V5E, 'dev12'),
+    (dev.PREREG_V5F, 'dev11'), (dev.PREREG_V5F, 'dev12'),
 ])
 def test_registered_prepare_and_workflow_inputs_without_mujoco_import(tmp_path, registration, run_id):
     code = '''

@@ -38,7 +38,8 @@ def is_own_pose_provider(value):
     from harness.owncam_pose_source import OwnCamPoseSource
     from harness.vision_pose_source import VisionPoseSource
     from harness.zone_study_pose_delay import DelayedPoseSource
+    from harness.owncam_pose_guard_provider import GuardedPoseProviderV3
 
-    if isinstance(value, DelayedPoseSource):
+    if isinstance(value, (DelayedPoseSource, GuardedPoseProviderV3)):
         return is_own_pose_provider(value.provider)
     return isinstance(value, (OwnCamPoseSource, VisionPoseSource))
