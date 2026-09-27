@@ -10,6 +10,8 @@ import copy
 import json
 from types import MappingProxyType
 
+from harness.three_robot_plan import parse, unwrap_json_fence
+
 # R10 coordinator decision (#222): retain proxy-stop admission, explicitly
 # acknowledged as upstream-unverified. The installed proxy is not modified.
 COMPLETION_POLICY = 'ugrp.zone_completion.proxy_stop_and_valid_reply.v1'
@@ -58,6 +60,7 @@ def freeze_completion(value):
 
 def assess_completion(body, *, study_json=False):
     reasons = []
+    json_fence_removed = False
     choice = {}
     choices = body.get('choices') if isinstance(body, dict) else None
     if not isinstance(choices, list) or len(choices) != 1 or not isinstance(choices[0], dict):
@@ -108,12 +111,14 @@ def assess_completion(body, *, study_json=False):
                 signals(candidate)
     if study_json and isinstance(text, str) and text.strip():
         try:
-            value = json.loads(text)  # complete JSON only; no fenced/truncated salvage
+            _, json_fence_removed = unwrap_json_fence(text)
+            value = parse(text)  # same strict parser as condition schema validation
             if not isinstance(value, dict) or set(value) != REPLY_FIELDS:
                 reasons.append('study_reply_fields_missing_or_extra')
         except (ValueError, TypeError):
             reasons.append('study_reply_incomplete_or_non_json')
     return {'policy': COMPLETION_POLICY, 'finish_reason': reason,
+            'json_fence_removed': json_fence_removed,
             'upstream_finish_verified': False,
             'finish_reason_source': 'proxy_response', 'upstream_finish_reason_verified': False,
             'reported_upstream_finish_reasons': upstream,
@@ -136,7 +141,7 @@ def successful_call(call):
 
 def completion_aggregate(calls):
     reasons = {}
-    unknown = rejected = 0
+    unknown = rejected = fenced = fence_unknown = 0
     for call in calls:
         completion = (call.get('cost_terms') or {}).get('completion')
         reason = completion.get('finish_reason') if isinstance(completion, dict) else None
@@ -144,6 +149,9 @@ def completion_aggregate(calls):
         reasons[label] = reasons.get(label, 0) + 1
         unknown += completion is None
         rejected += completion is not None and not normal_completion(completion)
+        fence = completion.get('json_fence_removed') if isinstance(completion, dict) else None
+        fenced += fence is True
+        fence_unknown += type(fence) is not bool
     accepted = sum(successful_call(c) for c in calls)
     return {'policy': COMPLETION_POLICY, 'finish_reasons': reasons,
             'successful_calls': accepted,
@@ -151,5 +159,6 @@ def completion_aggregate(calls):
             'accepted_upstream_unverified_label': ACCEPTED_UNVERIFIED_LABEL,
             'failed_or_unadmitted_calls': len(calls) - accepted,
             'rejected_completions': rejected, 'completion_unknown_calls': unknown,
+            'json_fence_removed_calls': fenced, 'json_fence_unknown_calls': fence_unknown,
             'upstream_finish_reason_verified_calls': 0,
             'limitation': dict(PROXY_COMPLETION_LIMITATION)}

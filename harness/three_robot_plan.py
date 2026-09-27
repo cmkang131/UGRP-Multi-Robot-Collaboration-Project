@@ -49,10 +49,22 @@ def digest(plan):
     return hashlib.sha256(json.dumps(plan, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
 
 
-def parse(raw):
+def unwrap_json_fence(raw):
+    """Unwrap exactly one complete json/unlabelled fence, never extract prose.
+
+    Shared by zone coordination, study protocol and completion admission.
+    JSON/schema validation remains the caller's responsibility. The bool is
+    formatting provenance, not evidence of a valid or accepted model reply.
+    """
     text = raw.strip()
-    fenced = re.fullmatch(r'```(?:json)?\s*\n([\s\S]*?)\n```', text, re.IGNORECASE)
-    return json.loads(fenced.group(1) if fenced else text)
+    fenced = re.fullmatch(r'```(?:json)?[ \t]*\r?\n([\s\S]*?)\r?\n```', text)
+    if fenced and not re.search(r'(?m)^[ \t]*`{3,}', fenced.group(1)):
+        return fenced.group(1), True
+    return text, False
+
+
+def parse(raw):
+    return json.loads(unwrap_json_fence(raw)[0])
 
 
 def text_fields(value):

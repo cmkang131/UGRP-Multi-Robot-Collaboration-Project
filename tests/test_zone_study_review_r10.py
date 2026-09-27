@@ -118,7 +118,7 @@ def test_dry_manifest_binds_full_source_bundle_inputs_without_implicit_ack(tmp_p
     assert manifest['proxy_runtime'] is None and manifest['network_calls'] == 0
     source = manifest['source_identity']
     bundle, bundle_sha = bundles.load_bundle(bundles.RUNNABLE_ID)
-    assert source['rgb_execution_bundle']['id'] == 'rgb-standard-dispatch-v62'
+    assert source['rgb_execution_bundle']['id'] == 'rgb-standard-dispatch-v63'
     assert source['rgb_execution_bundle']['sha256'] == bundle_sha
     assert source['rgb_execution_bundle']['effective'] == bundle['effective']
     assert set(bundles.source_closure()) <= set(source['files'])
@@ -130,7 +130,7 @@ def test_dry_manifest_binds_full_source_bundle_inputs_without_implicit_ack(tmp_p
 
 
 def test_v62_retires_v61_with_identical_physics_and_immutable_bytes():
-    current, _ = bundles.load_bundle(bundles.RUNNABLE_ID)
+    current, _ = bundles.load_bundle('rgb-standard-dispatch-v62', require_runnable=False)
     old, old_sha = bundles.load_bundle('rgb-standard-dispatch-v61', require_runnable=False)
     assert 'rgb-standard-dispatch-v61' in bundles.RETIRED_IDS
     assert old_sha == '98b77ad6878548f21d97f4575f37fe5c0dfdbdcdf8b68087ca1f5ea2e829790b'
@@ -138,5 +138,20 @@ def test_v62_retires_v61_with_identical_physics_and_immutable_bytes():
     assert current['effective'] == old['effective']
     assert 'harness/llm_completion.py' in current['source_files_sha256']
     assert current['status'] == 'experimental_unqualified'
+    with pytest.raises(ValueError, match='original source checkout'):
+        bundles.load_bundle(old['id'])
+
+
+def test_v63_preserves_executed_v62_bytes_and_effective_contract():
+    current, _ = bundles.load_bundle(bundles.RUNNABLE_ID)
+    old, old_sha = bundles.load_bundle('rgb-standard-dispatch-v62', require_runnable=False)
+    assert old_sha == '6601192a6da7ac018dd3a7104364065bb9afb9dce0d61e79021f824648b07f69'
+    assert 'rgb-standard-dispatch-v62' in bundles.RETIRED_IDS
+    assert current['id'] == 'rgb-standard-dispatch-v63'
+    assert current['parent_bundle'] == current['parent_bundle_id'] == old['id']
+    assert current['effective'] == old['effective']
+    assert current['status'] == 'experimental_unqualified'
+    for source in ('harness/llm_completion.py', 'harness/three_robot_plan.py'):
+        assert current['source_files_sha256'][source] == sha((bundles.ROOT / source).read_bytes())
     with pytest.raises(ValueError, match='original source checkout'):
         bundles.load_bundle(old['id'])

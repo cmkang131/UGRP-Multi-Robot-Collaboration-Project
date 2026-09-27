@@ -70,6 +70,7 @@ TEST_PATTERNS = (
     "tests/test_zone_study_review_r6*.py", "tests/test_zone_study_review_r7*.py",
     "tests/test_zone_study_review_r8*.py", "tests/test_zone_study_review_r9*.py",
     "tests/test_zone_study_review_r10*.py",
+    "tests/test_zone_study_fenced_reply.py", "tests/test_zone_pilot_source_migration.py",
     "tests/test_owncam_localizer.py", "tests/test_zone_landmarks_sim.py",
     "tests/test_m1_owncam.py",
     "tests/test_rgb_execution*.py",

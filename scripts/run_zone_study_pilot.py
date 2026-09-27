@@ -83,6 +83,17 @@ def source_identity(profile):
             'input_mode': 'stored_wrist_rgb_and_static_map_no_physics'}
 
 
+def require_committed_source(identity):
+    """Shared real-run/migration gate; this command never commits for the user."""
+    dirty = subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT,
+                           check=True, capture_output=True, text=True).stdout
+    if dirty:
+        raise ValueError('commit reviewed source before real pilot or migration (tracked worktree is dirty)')
+    if identity.get('files'):
+        subprocess.run(['git', 'ls-files', '--error-unmatch', '--', *identity['files']],
+                       cwd=ROOT, check=True, capture_output=True)
+
+
 def pilot_call_policy(stage):
     return CallPolicy(max_calls_per_actor=1 if stage == 'preflight' else 2,
                       max_http_attempts_per_actor=1 if stage == 'preflight' else 3,
@@ -217,6 +228,7 @@ def dry_run(out, stage, scenario, seed, profile, *, limitation_acknowledged=Fals
              'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
              'upstream_finish_limitation_acknowledged': limitation_acknowledged,
              'accepted_upstream_unverified_calls': 0,
+             'json_fence_removed_calls': 0,
              'source_identity': source_identity(profile),
              'pilot_contract': pilot_contract(scenario, seed, stage),
              'proxy_runtime': None,
@@ -235,6 +247,10 @@ def main(argv=None):
     parser.add_argument('--execute', action='store_true', help='EXPLICIT real LLM authorization')
     parser.add_argument('--budget-file', type=Path)
     parser.add_argument('--init-budget', action='store_true', help='local-only create, never reset')
+    parser.add_argument('--migrate-source', action='store_true', help='audit and reseal the SAME budget; no calls/refunds')
+    parser.add_argument('--migration-reason')
+    parser.add_argument('--from-identity-sha256', help='reviewed old source hash from --reconcile-only')
+    parser.add_argument('--expected-state-sha256', help='reviewed sends/runs hash from --reconcile-only')
     parser.add_argument('--stage', choices=('preflight', 'cohort'), default='preflight')
     parser.add_argument('--scenario', default=scenario_ids()[0], choices=scenario_ids())
     parser.add_argument('--seed', type=int, default=11)
@@ -249,11 +265,16 @@ def main(argv=None):
     parser.add_argument('--reconcile-only', action='store_true')
     parser.add_argument('--recover-run', help='with --reconcile-only: close an interrupted driver after terminal evidence')
     args = parser.parse_args(argv)
-    if sum((args.execute, args.init_budget, args.reconcile_only)) > 1:
-        parser.error('--execute, --init-budget and --reconcile-only are mutually exclusive')
+    if sum((args.execute, args.init_budget, args.reconcile_only, args.migrate_source)) > 1:
+        parser.error('--execute, --init-budget, --reconcile-only and --migrate-source are mutually exclusive')
+    migration_options = (args.migration_reason, args.from_identity_sha256, args.expected_state_sha256)
+    if args.migrate_source and (not all(migration_options) or args.stage != 'preflight'):
+        parser.error('--migrate-source requires reason, both reviewed hashes and stage preflight')
+    if any(migration_options) and not args.migrate_source:
+        parser.error('migration options require --migrate-source')
     if args.recover_run and not args.reconcile_only:
         parser.error('--recover-run requires --reconcile-only')
-    if (args.execute or args.init_budget or args.reconcile_only) and args.budget_file is None:
+    if (args.execute or args.init_budget or args.reconcile_only or args.migrate_source) and args.budget_file is None:
         parser.error('an explicit persistent --budget-file is required')
     out = args.output.resolve()
     if out.exists():
@@ -269,6 +290,30 @@ def main(argv=None):
         print(json.dumps({'complete': report['complete'], 'report': str(out / 'reconciliation.json')}))
         return 0 if report['complete'] else 2
     profile = proxy_profile(args.proxy_source, args.proxy_url)
+    if args.migrate_source:
+        identity = source_identity(profile)
+        require_committed_source(identity)
+        budget = PilotBudget(args.budget_file)
+        # Save the proposal first. A crash after the DB commit is recoverable
+        # from snapshot.source_migrations; never reinitialize or repeat blindly.
+        write_new(out / 'migration-proposal.json', {
+            'budget_file': str(budget.path), 'pilot_id': budget.meta['pilot_id'],
+            'from_identity_sha256': args.from_identity_sha256,
+            'expected_state_sha256': args.expected_state_sha256,
+            'to_identity': identity, 'reason': args.migration_reason})
+        migration = budget.migrate_source(identity, reason=args.migration_reason,
+                                         expected_identity_sha256=args.from_identity_sha256,
+                                         expected_state_sha256=args.expected_state_sha256)
+        # Reopen and verify the committed record before exporting the receipt.
+        after = PilotBudget(args.budget_file, identity=identity).snapshot()
+        if after['source_migrations'][-1] != migration:
+            raise RuntimeError('committed migration read-back mismatch')
+        write_new(out / 'source-migration.json', migration)
+        print(json.dumps({'source_revision': after['meta']['source_revision'],
+                          'reserved_attempts': after['reserved_attempts'],
+                          'reserved_tokens': after['reserved_tokens'], 'refunds': 0,
+                          'network_calls': 0, 'audit': str(out / 'source-migration.json')}))
+        return 0
     if args.init_budget:
         identity = source_identity(profile)
         budget = PilotBudget.create(args.budget_file, identity=identity)
@@ -283,14 +328,7 @@ def main(argv=None):
                           'reserved_tokens_bound': value['preflight_reserved_tokens_bound']}))
         return 0
     identity = source_identity(profile)
-    # A real run requires committed, frozen source; this agent never commits.
-    dirty = subprocess.run(['git', 'status', '--porcelain', '--untracked-files=no'], cwd=ROOT,
-                           check=True, capture_output=True, text=True).stdout
-    if dirty:
-        raise ValueError('commit reviewed source before real pilot (tracked worktree is dirty)')
-    if identity.get('files'):
-        subprocess.run(['git', 'ls-files', '--error-unmatch', '--', *identity['files']],
-                       cwd=ROOT, check=True, capture_output=True)
+    require_committed_source(identity)
     budget = PilotBudget(args.budget_file, identity=identity)
     before = budget.snapshot()
     if args.stage == 'cohort':
@@ -309,6 +347,9 @@ def main(argv=None):
            'upstream_finish_limitation_acknowledged': (args.acknowledge_upstream_finish_limitation
                                                       or args.stage == 'cohort'),
            'accepted_upstream_unverified_calls': 0,
+           'json_fence_removed_calls': 0,
+           'source_revision': budget.meta.get('source_revision', 0),
+           'source_migration_sha256': budget.meta.get('source_migration_sha256'),
            'pilot_contract': pilot_contract(scenario, args.seed, args.stage),
            'pilot_id': budget.meta['pilot_id'], 'budget_file': str(budget.path),
            'source_identity': identity, 'proxy_runtime': runtime, 'proxy': profile,
@@ -332,6 +373,7 @@ def main(argv=None):
             successes = completion['successful_calls']
             row = {'trial_id': trial_id, 'condition': condition, 'successful_calls': successes,
                    'accepted_upstream_unverified_calls': completion['accepted_upstream_unverified_calls'],
+                   'json_fence_removed_calls': completion['json_fence_removed_calls'],
                    'completion': completion,
                    'sent': trial.send_ledger.sends(), 'trial_path': str(out / condition / 'trial.json'),
                    'trial_sha256': digest_file}
@@ -353,6 +395,7 @@ def main(argv=None):
         run['call_links'] = [s for s in after['sends'] if s['run_id'] == run_id]
         run['accepted_upstream_unverified_calls'] = sum(
             t['accepted_upstream_unverified_calls'] for t in run['trials'])
+        run['json_fence_removed_calls'] = sum(t['json_fence_removed_calls'] for t in run['trials'])
         run['status'] = 'failed' if failed else 'recorded'
         report = reconcile(after, telemetry)
         run['reconciliation_complete'] = report['complete']
@@ -361,6 +404,7 @@ def main(argv=None):
         budget.finish_run(run_id, status=run['status'], manifest_sha256=digest_file)
     print(json.dumps({'manifest': str(out / 'manifest.json'), 'status': run['status'],
                       'accepted_upstream_unverified_calls': run['accepted_upstream_unverified_calls'],
+                      'json_fence_removed_calls': run['json_fence_removed_calls'],
                       'accepted_upstream_unverified_label': ACCEPTED_UNVERIFIED_LABEL,
                       'reconciliation_complete': report['complete']}))
     return 0 if not failed and report['complete'] else 2

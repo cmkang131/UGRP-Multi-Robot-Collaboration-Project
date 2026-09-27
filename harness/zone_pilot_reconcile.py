@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from harness.zone_pilot_budget import sha, usage_total
+from harness.zone_pilot_budget import canonical, sha, usage_total
 from harness.llm_completion import (COMPLETION_POLICY, PROXY_COMPLETION_LIMITATION,
                                      completion_aggregate, normal_completion, successful_call)
 
@@ -102,6 +102,10 @@ def reconcile(snapshot, telemetry=()):
     if indexed:
         problems.append('telemetry_without_ledger_reservation')
     return {'schema': 'ugrp.zone_pilot_reconciliation.v1', 'pilot_id': snapshot['meta']['pilot_id'],
+            'source_identity_sha256': sha(canonical(snapshot['meta']['identity']).encode()),
+            'source_revision': snapshot['meta'].get('source_revision', 0),
+            'source_migrations': snapshot.get('source_migrations', []),
+            'state_sha256': sha(canonical([snapshot['sends'], snapshot['runs']]).encode()),
             'completion_policy': COMPLETION_POLICY,
             'completion_limitation': dict(PROXY_COMPLETION_LIMITATION),
             'complete_scope': 'upstream_attempts_and_billing_only_not_completion_or_physical_success',
@@ -118,6 +122,9 @@ def require_preflight(snapshot, report, manifest):
         raise ValueError('real four-condition preflight manifest required')
     if manifest.get('pilot_id') != snapshot['meta']['pilot_id']:
         raise ValueError('preflight belongs to a different global pilot budget')
+    if (manifest.get('source_identity') != snapshot['meta']['identity']
+            or manifest.get('source_revision', 0) != snapshot['meta'].get('source_revision', 0)):
+        raise ValueError('new source requires a new four-condition preflight')
     if (manifest.get('completion_policy') != COMPLETION_POLICY
             or manifest.get('completion_limitation') != PROXY_COMPLETION_LIMITATION):
         raise ValueError('preflight requires current completion policy and proxy limitation')
@@ -132,7 +139,8 @@ def require_preflight(snapshot, report, manifest):
         raise ValueError('preflight requires four upstream-unverified accepted calls')
     run = next((r for r in snapshot['runs'] if r['run_id'] == manifest['run_id']), None)
     raw = json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2).encode() + b'\n'
-    if not run or run.get('manifest_sha256') != sha(raw) or run['status'] != 'recorded':
+    if (not run or run.get('manifest_sha256') != sha(raw) or run['status'] != 'recorded'
+            or run.get('source_revision', 0) != snapshot['meta'].get('source_revision', 0)):
         raise ValueError('preflight manifest not bound to this budget (or interrupted)')
     preflight_ids = {s['trial_id'] for s in snapshot['sends'] if s['run_id'] == manifest['run_id']}
     if preflight_ids != {t['trial_id'] for t in trials}:

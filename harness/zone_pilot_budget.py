@@ -8,6 +8,7 @@ Interrupted/unknown entries survive a restart. No implicit creation/reset.
 from __future__ import annotations
 
 import base64
+from datetime import datetime, timezone
 import hashlib
 import io
 import json
@@ -100,8 +101,9 @@ class PilotBudget:
     """All conditions/trials/retries share this file, including after restart.
 
     Every operation reopens the DB (safe across processes). BEGIN IMMEDIATE
-    serializes check+reservation. Caps/source/pilot ID are immutable. Reserved
-    rows are never deleted or refunded. Corrupt/missing files fail closed.
+    serializes check+reservation. Caps/pilot ID are immutable. Source changes
+    require an explicit append-only migration in this SAME file. Reserved rows
+    are never deleted or refunded. Corrupt/missing files fail closed.
     """
     @classmethod
     def create(cls, path, *, identity):
@@ -138,11 +140,95 @@ class PilotBudget:
     def snapshot(self):
         with self._connect() as db:
             db.execute('BEGIN')
-            meta = json.loads(db.execute('SELECT value FROM meta').fetchone()[0])
-            rows = [json.loads(r[0]) for r in db.execute('SELECT record FROM sends ORDER BY rowid')]
-            runs = [json.loads(r[0]) for r in db.execute('SELECT record FROM runs ORDER BY rowid')]
+            return self._snapshot(db)
+
+    @staticmethod
+    def _snapshot(db):
+        meta = json.loads(db.execute('SELECT value FROM meta').fetchone()[0])
+        rows = [json.loads(r[0]) for r in db.execute('SELECT record FROM sends ORDER BY rowid')]
+        runs = [json.loads(r[0]) for r in db.execute('SELECT record FROM runs ORDER BY rowid')]
+        migrations = []
+        if db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='source_migrations'").fetchone():
+            expected_meta = None
+            for revision, raw, checksum in db.execute('SELECT revision, record, sha256 FROM source_migrations ORDER BY revision'):
+                row = json.loads(raw)
+                if (sha(raw.encode()) != checksum or revision != len(migrations) + 1
+                        or row['revision'] != revision
+                        or row['from_meta'].get('source_revision', 0) != revision - 1
+                        or (expected_meta is not None and row['from_meta'] != expected_meta)):
+                    raise ValueError('source migration audit chain mismatch')
+                expected_meta = {**row['from_meta'], 'identity': row['to_identity'],
+                                 'source_revision': revision, 'source_migration_sha256': checksum}
+                migrations.append({**row, 'sha256': checksum})
+            if migrations and expected_meta != meta:
+                raise ValueError('active source does not match migration audit chain')
+        if meta.get('source_revision', 0) != len(migrations):
+            raise ValueError('source migration audit missing')
         return {'meta': meta, 'reserved_attempts': sum(r['reserved_attempts'] for r in rows),
-                'reserved_tokens': sum(r['reserved_tokens'] for r in rows), 'sends': rows, 'runs': runs}
+                'reserved_tokens': sum(r['reserved_tokens'] for r in rows), 'sends': rows, 'runs': runs,
+                'source_migrations': migrations}
+
+    def _require_current_source(self, db):
+        if json.loads(db.execute('SELECT value FROM meta').fetchone()[0]) != self.meta:
+            raise ValueError('budget source changed; reopen with the reviewed source identity')
+
+    def migrate_source(self, identity, *, reason, expected_identity_sha256, expected_state_sha256):
+        """Atomically append source provenance and reseal this file, never refund.
+
+        Does not reconcile unknown billing or authorize a run. The existing
+        reconciliation gate still applies; a new preflight is mandatory.
+        The caller must stop drivers and pass the reviewed committed identity.
+        This object becomes stale on success and cannot send/settle/start runs.
+        """
+        if not isinstance(reason, str) or not reason.strip():
+            raise ValueError('source migration requires a nonempty review reason')
+        old = self.meta['identity']
+        if expected_identity_sha256 != sha(canonical(old).encode()):
+            raise ValueError('reviewed source identity hash mismatch')
+        mutable = {'source_head', 'source_root', 'files', 'rgb_execution_bundle'}
+        if ({k: v for k, v in old.items() if k not in mutable}
+                != {k: v for k, v in identity.items() if k not in mutable}):
+            raise ValueError('source migration cannot change provider/settings/cost/input policy')
+        previous_bundle, next_bundle = old.get('rgb_execution_bundle', {}), identity.get('rgb_execution_bundle', {})
+        if (not next_bundle.get('id') or next_bundle['id'] == previous_bundle.get('id')
+                or {k: v for k, v in next_bundle.items() if k not in {'id', 'sha256'}}
+                != {k: v for k, v in previous_bundle.items() if k not in {'id', 'sha256'}}):
+            raise ValueError('source migration requires a new bundle with identical effective settings')
+        with self._connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
+            before = self._snapshot(db)
+            if expected_state_sha256 != sha(canonical([before['sends'], before['runs']]).encode()):
+                raise ValueError('pilot state changed since migration review')
+            if any(r['status'] == 'running' for r in before['runs']):
+                raise ValueError('stop/reconcile unfinished runs before source migration')
+            # Hash exact SQL column values/JSON strings without duplicating raw
+            # history. The original rows stay in this same DB, untouched.
+            history = {table: [list(r) for r in db.execute(f'SELECT * FROM {table} ORDER BY rowid')]
+                       for table in ('sends', 'runs')}
+            revision = self.meta.get('source_revision', 0) + 1
+            row = {'schema': 'ugrp.zone_pilot_source_migration.v1', 'revision': revision,
+                   'created_at_utc': datetime.now(timezone.utc).isoformat(), 'reason': reason.strip(),
+                   'from_meta': before['meta'], 'to_identity': identity,
+                   'from_identity_sha256': expected_identity_sha256,
+                   'to_identity_sha256': sha(canonical(identity).encode()),
+                   'before_state_sha256': expected_state_sha256,
+                   'preserved_sql_row_counts': {k: len(v) for k, v in history.items()},
+                   'preserved_sql_history_sha256': sha(canonical(history).encode()),
+                   'reserved_attempts': before['reserved_attempts'],
+                   'reserved_tokens': before['reserved_tokens'], 'refunds': 0,
+                   'billing_reconciliation': 'unchanged; migration does not resolve unknown sends',
+                   'next_stage': 'new_four_condition_preflight_required'}
+            raw = canonical(row)
+            checksum = sha(raw.encode())
+            db.execute('CREATE TABLE IF NOT EXISTS source_migrations '
+                       '(revision INTEGER PRIMARY KEY, record TEXT NOT NULL, sha256 TEXT NOT NULL)')
+            db.execute('INSERT INTO source_migrations VALUES (?,?,?)', (revision, raw, checksum))
+            meta = {**before['meta'], 'identity': identity, 'source_revision': revision,
+                    'source_migration_sha256': checksum}
+            db.execute('UPDATE meta SET value=?', (canonical(meta),))
+            self._snapshot(db)  # verify the durable audit chain before commit
+        return {**row, 'sha256': checksum}
 
     def reserve(self, record, envelope):
         need = envelope.get('reserved_tokens')
@@ -151,6 +237,7 @@ class PilotBudget:
             raise ValueError('reservation must cover two positive complete upstream token envelopes')
         with self._connect() as db:
             db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
             if any(json.loads(r[0])['status'] == 'usage_exceeds_reservation'
                    for r in db.execute('SELECT record FROM sends')):
                 raise BudgetExceeded('prior provider usage exceeded reservation; pilot halted')
@@ -174,6 +261,7 @@ class PilotBudget:
             raise ValueError('settlement cannot alter reservations or claim upstream reconciliation')
         with self._connect() as db:
             db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
             row = json.loads(db.execute('SELECT record FROM sends WHERE id=?', (reservation_id,)).fetchone()[0])
             if row['status'] != 'reserved_unknown':
                 raise ValueError('reservation already settled; evidence is immutable')
@@ -189,17 +277,21 @@ class PilotBudget:
     def start_run(self, run_id, stage, record, *, expected_state=None):
         with self._connect() as db:
             db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
             runs = [json.loads(r[0]) for r in db.execute('SELECT record FROM runs ORDER BY rowid')]
             sends = [json.loads(r[0]) for r in db.execute('SELECT record FROM sends ORDER BY rowid')]
             if expected_state is not None and expected_state != sha(canonical([sends, runs]).encode()):
                 raise RuntimeError('pilot state changed since reconciliation; retry preflight checks')
             if any(r['status'] == 'running' for r in runs):
                 raise RuntimeError('unfinished run: reconcile outstanding upstream work before restart')
-            value = {**record, 'run_id': run_id, 'stage': stage, 'status': 'running'}
+            value = {**record, 'run_id': run_id, 'stage': stage, 'status': 'running',
+                     'source_revision': self.meta.get('source_revision', 0)}
             db.execute('INSERT INTO runs VALUES (?,?,?)', (run_id, stage, canonical(value)))
 
     def finish_run(self, run_id, *, status, manifest_sha256):
         with self._connect() as db:
+            db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
             row = json.loads(db.execute('SELECT record FROM runs WHERE id=?', (run_id,)).fetchone()[0])
             row.update(status=status, manifest_sha256=manifest_sha256)
             db.execute('UPDATE runs SET record=? WHERE id=?', (canonical(row), run_id))
@@ -214,6 +306,7 @@ class PilotBudget:
             raise ValueError('terminal upstream reconciliation required for crash recovery')
         with self._connect() as db:
             db.execute('BEGIN IMMEDIATE')
+            self._require_current_source(db)
             row = json.loads(db.execute('SELECT record FROM runs WHERE id=?', (run_id,)).fetchone()[0])
             if row['status'] != 'running':
                 raise ValueError('only an interrupted running record can be recovered')

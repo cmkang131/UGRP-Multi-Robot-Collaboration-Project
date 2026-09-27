@@ -114,8 +114,9 @@ CLI 보고에도 이 필드와 한국어 라벨을 출력한다. `successful_cal
 `rgb-standard-dispatch-v62`는 v61을 부모로 등록했다. v61 JSON은 바이트 그대로
 은퇴 목록에 남는다. RGB 번들의 물리·카메라·명령 설정은 v61과 같으며,
 새 공통 `llm_completion.py`를 포함한 전체 Python closure 174개와 파일 hash를 고정한다.
-`RUNNABLE_ID`, CI `verify-current`, dispatch/dispatch-skills workflow는 v62/1.62.0이다.
-파일럿 workflow는 1.1.0, manifest schema는 `ugrp.zone_study_adapter_pilot.v2`다.
+v62 등록 당시 `RUNNABLE_ID`, CI `verify-current`, dispatch/dispatch-skills workflow는
+v62/1.62.0, 파일럿 workflow는 1.1.0이었다. 아래 펜스 수정 후에는 v63/1.63.0,
+파일럿 workflow 1.2.0을 사용한다. manifest schema는 `ugrp.zone_study_adapter_pilot.v2`다.
 
 | 고정 대상 | 저장 위치 |
 |---|---|
@@ -166,7 +167,8 @@ dry-run은 네트워크 호출/실행 PID 검증 없이 `proxy_runtime=null`을 
 새 budget은 파일럿 시작 때 **한 번만** 만들고 이후 같은 파일을 재사용한다.
 R8/R9 소스로 이미 봉인한 budget은 R10 소스와 맞지 않아 실행을 거절한다.
 송신 이력이 있는 예산 파일을 새 파일로 바꿔 잔액을 초기화하면 안 된다.
-그 경우 기존 비용을 보존하는 별도 검토·이관 전까지 실호출을 중단한다.
+그 경우 아래 `--migrate-source` 절차로 같은 파일의 비용을 보존해 이관한다.
+기존 청구 대사가 미완료라면 소스 이관 뒤에도 실호출은 차단된다.
 
 먼저 오프라인 회귀를 실행한다(`--basetemp`는 이 worktree 내부 경로).
 
@@ -215,6 +217,87 @@ OMP_NUM_THREADS=1 "$PYTHON" -m scripts.sim_cli workflow run zone-study-pilot -- 
 모든 기존 시도의 terminal evidence가 확인된 경우에만 중단된 driver를 닫으며,
 예약 차감과 원래 send row를 보존하고 응답의 행동을 재실행하지 않는다.
 기존 출력 디렉터리/manifest는 덮어쓰지 않는다.
+
+## v63 단일 JSON 펜스와 예산 소스 이관
+
+### 원문 재현과 파서 경계
+
+실제 R10 `preflight-01`(HEAD `1adfeff01884b308352918a4488c31258adaf478`)은
+첫 `no_comm` 응답이 `stop`이고 request_id도 일치했지만 JSON을 ` ```json `
+블록으로 감싸 `study_reply_incomplete_or_non_json`으로 중단됐다.
+`tests/fixtures/zone_study_preflight_r10/response.json`은 해당 wire 응답 568바이트의
+동일 복사본이다. 출처와 SHA-256은 옆 `provenance.json`에 있다. 원본은 수정하지 않는다.
+
+ZC2/zone coordination과 study 프로토콜이 이미 사용하던 `three_robot_plan.parse`를
+completion 검사에서도 재사용한다. `unwrap_json_fence`는 앞뒤 공백 외에 정확히 하나의
+완전한 펜스 블록만 벗긴다. 시작 줄은 소문자 `json` 또는 언어 표시 없음이고, 닫는 줄은
+백틱 3개다. LF/CRLF를 지원한다. 펜스 밖 설명·복수/중첩 블록·미완성 펜스·잘린 JSON·
+객체가 아닌 JSON·잘못된 조건별 스키마는 거절한다. `length`/차단 신호·request_id·메시지
+채널 검사를 우회하지 않는다. 네 조건에 동일하게 적용한다.
+
+`calls[].cost_terms.completion.json_fence_removed`에 bool을 기록한다. 같은 completion은
+scheduler·request archive·send ledger·SQLite 정산에도 남는다. 완전한 펜스를 벗겼어도
+내용이나 종료 이유가 잘못되면 채택하지 않는다. 이 bool 자체는 성공 판정이 아니다.
+`model_evaluation.completion`, manifest의 조건별 행과 전체 `json_fence_removed_calls`로
+집계한다. 구형 completion의 미기록 값은 `json_fence_unknown_calls`로 구별한다.
+wire 원문은 바꾸지 않고 SIM 출력 토큰은 펜스를 포함한 실제 원문으로 계산한다.
+
+### 같은 파일에 이관하는 계약
+
+기존 `PilotBudget(..., identity=...)`는 소스가 달라지면 그대로 재개를 거절한다.
+새 `--migrate-source`만 명시적으로 봉인을 갱신한다. **원래 budget.sqlite 경로·pilot_id·
+600 attempts/5,000,000 tokens 한도·모든 sends/runs 행을 그대로 유지**한다.
+실패·미확인 예약에도 환불은 없다. 실제 R10 파일은 2 attempts/235,408 tokens를 예약
+차감했고 provider가 보고한 total은 10,622 tokens였다. 두 숫자는 다른 회계 값이다.
+
+`BEGIN IMMEDIATE` 안에서 기존 identity 해시와 sends/runs 상태 해시를 다시 비교하고,
+`running`인 시행이 없을 때만 `source_migrations` 행 추가와 meta 봉인 변경을 함께 커밋한다.
+감사 행은 이전 meta 전체, 새 identity, 사유·UTC 시각, 예약 차감량, 원본 SQL 행 개수·해시,
+이전 이관으로 이어지는 해시를 보존한다. provider·요청/실효 설정·SIM 비용/입력 정책 변경은
+이 절차로 허용하지 않는다. RGB effective 설정이 같은 **새 번들 ID**가 필요하다.
+오래된 객체의 추가 예약·정산·시행 시작은 거절한다. 기존 소스/기존 preflight로 코호트에
+진입할 수 없으며, 새 소스에서 4조건 preflight를 다시 해야 한다.
+
+소스 이관은 과금 대사가 아니다. `reserved_unknown`·실패 응답과 미해결 근거는 보존되고,
+새 전송 직전 기존 `reconcile` 게이트를 그대로 통과해야 한다. R10 원본은 현재
+`reconciliation_complete=false`이므로 원본에 대한 terminal upstream 근거 없이 재전송할 수 없다.
+추정 ID·0 usage로 대체하거나 새 budget을 생성해 우회하지 않는다.
+
+### 코디네이터 실행 절차 (이 수정 작업에서는 미실행)
+
+1. 모든 파일럿 드라이버가 종료됐는지 확인한다. `running` 기록이 남았다면 기존
+   `--reconcile-only --recover-run` 절차를 먼저 따른다. 실제 upstream 작업도 terminal
+   근거로 확인한다. 수정된 소스와 v63을 검토·커밋하고 소스 worktree를 고정한다.
+2. 같은 budget을 `--reconcile-only`로 읽어 새 디렉터리에 보고서를 만든다.
+   보고서의 `source_identity_sha256`과 `state_sha256`을 검토한 뒤 아래 인자로 넘긴다.
+   이 명령은 미대사 상태에서는 exit 2여도 보고서를 저장한다.
+3. 원래 budget 파일에 `--migrate-source`를 한 번 실행한다. 이 명령은 모델을 호출하지
+   않으며 tracked dirty/미추적 실행 소스는 거절한다. 새 출력 경로를 사용한다.
+
+```sh
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --reconcile-only \
+  --budget-file "$PILOT_ROOT/budget.sqlite" --output "$PILOT_ROOT/review-v63-01"
+# REVIEWED_IDENTITY_SHA와 REVIEWED_STATE_SHA는 위 보고서에서 검토한 값이다.
+OMP_NUM_THREADS=1 "$PYTHON" -m scripts.run_zone_study_pilot --migrate-source \
+  --budget-file "$PILOT_ROOT/budget.sqlite" --output "$PILOT_ROOT/migrate-v63-01" \
+  --migration-reason 'PR #194 실제 펜스 응답 회귀 수정, v62에서 v63으로 이관' \
+  --from-identity-sha256 "$REVIEWED_IDENTITY_SHA" \
+  --expected-state-sha256 "$REVIEWED_STATE_SHA"
+```
+
+4. `source-migration.json`과 DB의 `source_migrations` 마지막 행이 같고, 이관 전후 예약
+   차감·pilot_id·기존 sends/runs가 같은지 확인한다. DB 커밋 뒤 receipt 저장이 실패해도
+   이관 행은 DB에 남는다. **다시 초기화/이관하지 말고** 새 `--reconcile-only` 보고서의
+   `source_migrations`로 커밋 여부와 원본 감사 행을 회수한다. 상태/identity 해시가
+   바뀌어 거절됐다면 새 보고서를 검토한다. 기존 proposal/receipt를 덮어쓰지 않는다.
+5. 이전 요청들의 실제 upstream 근거를 마련해 대사를 완료한 뒤 `preflight-02-v63` 같은
+   새 출력 경로로 같은 budget의 `--execute --stage preflight --upstream-telemetry ...`를
+   실행한다. 한계 인정 인자를 다시 명시한다. 기존 첫 실패에서 중단 정책은 유지한다.
+   새 호출들도 대사하고 4조건 모두 정상 채택된 뒤에만 새 manifest로 코호트에 진입한다.
+
+오프라인 검사는 실제 원문 회귀, 네 조건 반례/기록/집계, 원자적 이관·실패 복구,
+한도 유지, 기존 preflight 차단과 새 소스의 재개 경로를 다룬다. 주입 wire·합성 대사
+근거의 테스트 결과를 실제 provider 대사 완료나 물리 성공으로 해석하지 않는다.
 
 ## 대조 자료와 남는 실제 실행 게이트
 

@@ -177,7 +177,7 @@ def corrupt(kind):
 
 @pytest.mark.parametrize('condition', MAIN_CONDITIONS)
 @pytest.mark.parametrize('kind', ['missing_reason', 'blank', 'truncated_json', 'missing_field',
-                                'fenced_json', 'missing_content', 'refusal', 'tool_call',
+                                'missing_content', 'refusal', 'tool_call',
                                 'blocked_prompt', 'blocked_candidate', 'upstream_reason', 'candidate_reason'])
 def test_proxy_stop_cannot_hide_visible_failure_signals(tmp_path, condition, kind):
     trial, budget = trial_for(tmp_path, condition, 'stop', corrupt(kind))
