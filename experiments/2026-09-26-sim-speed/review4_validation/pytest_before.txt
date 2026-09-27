@@ -1,0 +1,792 @@
+FFFFF......FFFFFFFFFFFFFFFFFFFFFFFFFF                                    [100%]
+=================================== FAILURES ===================================
+_______ test_post_setup_start_is_equivalent_and_explained[first_samples] _______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv0')
+source = 'first_samples'
+
+    @pytest.mark.parametrize('source', ['first_samples', 'manifest', 'log', 'both'])
+    def test_post_setup_start_is_equivalent_and_explained(tmp_path, source):
+        a, b = (full_run(tmp_path/s) for s in ('a', 'b'))
+        for run in (a, b):
+            if source in ('manifest', 'both'):
+                set_manifest_start(run, START)
+            if source in ('log', 'both'):
+                name = 'controller_events.jsonl'
+                write_rows(run/name, [{'event': 'recording_started', 't': START}] + rows(run, name))
+                refresh_manifest(run)
+        report = eq.compare(a, b)
+>       assert report['verdict'] == 'equivalent', report['evidence_errors']
+E       AssertionError: ['A: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap', 'A: full M1 evidence: eval_only/g... sample or sampling gap', 'B: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap']
+E       assert 'insufficient_evidence' == 'equivalent'
+E         
+E         - equivalent
+E         + insufficient_evidence
+
+tests/test_sim_speed_review4.py:33: AssertionError
+_________ test_post_setup_start_is_equivalent_and_explained[manifest] __________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv1')
+source = 'manifest'
+
+    @pytest.mark.parametrize('source', ['first_samples', 'manifest', 'log', 'both'])
+    def test_post_setup_start_is_equivalent_and_explained(tmp_path, source):
+        a, b = (full_run(tmp_path/s) for s in ('a', 'b'))
+        for run in (a, b):
+            if source in ('manifest', 'both'):
+                set_manifest_start(run, START)
+            if source in ('log', 'both'):
+                name = 'controller_events.jsonl'
+                write_rows(run/name, [{'event': 'recording_started', 't': START}] + rows(run, name))
+                refresh_manifest(run)
+        report = eq.compare(a, b)
+>       assert report['verdict'] == 'equivalent', report['evidence_errors']
+E       AssertionError: ['A: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap', 'A: full M1 evidence: eval_only/g... sample or sampling gap', 'B: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap']
+E       assert 'insufficient_evidence' == 'equivalent'
+E         
+E         - equivalent
+E         + insufficient_evidence
+
+tests/test_sim_speed_review4.py:33: AssertionError
+____________ test_post_setup_start_is_equivalent_and_explained[log] ____________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv2')
+source = 'log'
+
+    @pytest.mark.parametrize('source', ['first_samples', 'manifest', 'log', 'both'])
+    def test_post_setup_start_is_equivalent_and_explained(tmp_path, source):
+        a, b = (full_run(tmp_path/s) for s in ('a', 'b'))
+        for run in (a, b):
+            if source in ('manifest', 'both'):
+                set_manifest_start(run, START)
+            if source in ('log', 'both'):
+                name = 'controller_events.jsonl'
+                write_rows(run/name, [{'event': 'recording_started', 't': START}] + rows(run, name))
+                refresh_manifest(run)
+        report = eq.compare(a, b)
+>       assert report['verdict'] == 'equivalent', report['evidence_errors']
+E       AssertionError: ['A: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap', 'A: full M1 evidence: eval_only/g... sample or sampling gap', 'B: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap']
+E       assert 'insufficient_evidence' == 'equivalent'
+E         
+E         - equivalent
+E         + insufficient_evidence
+
+tests/test_sim_speed_review4.py:33: AssertionError
+___________ test_post_setup_start_is_equivalent_and_explained[both] ____________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_post_setup_start_is_equiv3')
+source = 'both'
+
+    @pytest.mark.parametrize('source', ['first_samples', 'manifest', 'log', 'both'])
+    def test_post_setup_start_is_equivalent_and_explained(tmp_path, source):
+        a, b = (full_run(tmp_path/s) for s in ('a', 'b'))
+        for run in (a, b):
+            if source in ('manifest', 'both'):
+                set_manifest_start(run, START)
+            if source in ('log', 'both'):
+                name = 'controller_events.jsonl'
+                write_rows(run/name, [{'event': 'recording_started', 't': START}] + rows(run, name))
+                refresh_manifest(run)
+        report = eq.compare(a, b)
+>       assert report['verdict'] == 'equivalent', report['evidence_errors']
+E       AssertionError: ['A: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap', 'A: full M1 evidence: eval_only/g... sample or sampling gap', 'B: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap']
+E       assert 'insufficient_evidence' == 'equivalent'
+E         
+E         - equivalent
+E         + insufficient_evidence
+
+tests/test_sim_speed_review4.py:33: AssertionError
+___________ test_manifest_start_does_not_replace_legacy_log_evidence ___________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_manifest_start_does_not_r0')
+
+    def test_manifest_start_does_not_replace_legacy_log_evidence(tmp_path):
+        a, b = (full_run(tmp_path/s) for s in ('a', 'b'))
+        set_manifest_start(b, START)
+        report = eq.compare(a, b)
+>       assert report['equivalent'], report
+E       AssertionError: {'a': '/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_manifest_start_does_not_r0/a', 'b': '/Use...len_a': 2, 'len_b': 2, 'sha256_a': '667c186d4a2e29d2a1b031767a8039d96e1d8bd9fc2b43ee5c60b5bc0623e135', ...}, ...}, ...}
+E       assert False
+
+tests/test_sim_speed_review4.py:46: AssertionError
+__________ test_first_sample_one_step_after_explicit_start_is_allowed __________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_first_sample_one_step_aft0')
+
+    def test_first_sample_one_step_after_explicit_start_is_allowed(tmp_path):
+        run = full_run(tmp_path/'run')
+        set_manifest_start(run, 1.3)  # one .00025 step, rounded to four decimals
+        report = eq.compare(run, run)
+>       assert report['equivalent'], report['evidence_errors']
+E       AssertionError: ['A: full M1 evidence: inputs/frames.jsonl: missing initial sample or sampling gap', 'A: full M1 evidence: eval_only/g... sample or sampling gap', 'B: full M1 evidence: eval_only/gt_trajectory.jsonl: missing initial sample or sampling gap']
+E       assert False
+
+tests/test_sim_speed_review4.py:70: AssertionError
+____ test_invalid_explicit_start_cannot_fall_back_to_samples[None-manifest] ____
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca0')
+source = 'manifest', value = None
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a7df030>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+______ test_invalid_explicit_start_cannot_fall_back_to_samples[None-log] _______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca1')
+source = 'log', value = None
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a89cba0>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+____ test_invalid_explicit_start_cannot_fall_back_to_samples[True-manifest] ____
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca2')
+source = 'manifest', value = True
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a89f2a0>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+______ test_invalid_explicit_start_cannot_fall_back_to_samples[True-log] _______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca3')
+source = 'log', value = True
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a89fd30>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+___ test_invalid_explicit_start_cannot_fall_back_to_samples[1.3003-manifest] ___
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca4')
+source = 'manifest', value = '1.3003'
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a89e190>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+_____ test_invalid_explicit_start_cannot_fall_back_to_samples[1.3003-log] ______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca5')
+source = 'log', value = '1.3003'
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a89edc0>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+____ test_invalid_explicit_start_cannot_fall_back_to_samples[-1.0-manifest] ____
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca6')
+source = 'manifest', value = -1.0
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a8b41e0>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+______ test_invalid_explicit_start_cannot_fall_back_to_samples[-1.0-log] _______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca7')
+source = 'log', value = -1.0
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a653c60>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+____ test_invalid_explicit_start_cannot_fall_back_to_samples[nan-manifest] _____
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca8')
+source = 'manifest', value = nan
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a89d220>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+_______ test_invalid_explicit_start_cannot_fall_back_to_samples[nan-log] _______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca9')
+source = 'log', value = nan
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a89d630>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+____ test_invalid_explicit_start_cannot_fall_back_to_samples[inf-manifest] _____
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca10')
+source = 'manifest', value = inf
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a89d8a0>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+_______ test_invalid_explicit_start_cannot_fall_back_to_samples[inf-log] _______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca11')
+source = 'log', value = inf
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a89f780>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+___ test_invalid_explicit_start_cannot_fall_back_to_samples[value6-manifest] ___
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca12')
+source = 'manifest', value = {}
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a7dd3c0>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+_____ test_invalid_explicit_start_cannot_fall_back_to_samples[value6-log] ______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca13')
+source = 'log', value = {}
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a7de190>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+___ test_invalid_explicit_start_cannot_fall_back_to_samples[value7-manifest] ___
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca14')
+source = 'manifest', value = []
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a7dc520>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+_____ test_invalid_explicit_start_cannot_fall_back_to_samples[value7-log] ______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_invalid_explicit_start_ca15')
+source = 'log', value = []
+
+    @pytest.mark.parametrize('source', ['manifest', 'log'])
+    @pytest.mark.parametrize('value', [None, True, '1.3003', -1., float('nan'), float('inf'), {}, []])
+    def test_invalid_explicit_start_cannot_fall_back_to_samples(tmp_path, source, value):
+        run = full_run(tmp_path/'run')
+        if source == 'manifest':
+            set_manifest_start(run, value)
+        else:
+            name = 'controller_events.jsonl'
+            write_rows(run/name, [{'event': 'recording_started', 't': value}] + rows(run, name))
+            refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_invalid_explicit_start_cannot_fall_back_to_samples.<locals>.<genexpr> at 0x10a7dc790>)
+
+tests/test_sim_speed_review4.py:85: AssertionError
+_ test_fallback_requires_agreeing_first_frame_and_gt[missing_time-inputs/frames.jsonl] _
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein0')
+name = 'inputs/frames.jsonl', case = 'missing_time'
+
+    @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
+    @pytest.mark.parametrize('case', ['missing_time', 'invalid_time', 'missing_first_sample'])
+    def test_fallback_requires_agreeing_first_frame_and_gt(tmp_path, name, case):
+        run = full_run(tmp_path/'run')
+        data = rows(run, name)
+        if case == 'missing_time':
+            data[0].pop('t')
+        elif case == 'invalid_time':
+            data[0]['t'] = float('nan')
+        else:
+            data.pop(0)
+            if name == LOGS[1]:
+                # Repair counts, indices and hashes so they cannot mask the start check.
+                for i, row in enumerate(data): row['frame'] = i
+                eval_rows = rows(run, 'eval_only/frames_eval.jsonl')[1:]
+                for i, row in enumerate(eval_rows): row['frame'] = i
+                write_rows(run/'eval_only/frames_eval.jsonl', eval_rows)
+                result = json.loads((run/'result.json').read_text())
+                result['frames'] = len(data)
+                (run/'result.json').write_text(json.dumps(result))
+        write_rows(run/name, data)
+        refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x10a8b7370>)
+
+tests/test_sim_speed_review4.py:112: AssertionError
+_ test_fallback_requires_agreeing_first_frame_and_gt[missing_time-eval_only/gt_trajectory.jsonl] _
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein1')
+name = 'eval_only/gt_trajectory.jsonl', case = 'missing_time'
+
+    @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
+    @pytest.mark.parametrize('case', ['missing_time', 'invalid_time', 'missing_first_sample'])
+    def test_fallback_requires_agreeing_first_frame_and_gt(tmp_path, name, case):
+        run = full_run(tmp_path/'run')
+        data = rows(run, name)
+        if case == 'missing_time':
+            data[0].pop('t')
+        elif case == 'invalid_time':
+            data[0]['t'] = float('nan')
+        else:
+            data.pop(0)
+            if name == LOGS[1]:
+                # Repair counts, indices and hashes so they cannot mask the start check.
+                for i, row in enumerate(data): row['frame'] = i
+                eval_rows = rows(run, 'eval_only/frames_eval.jsonl')[1:]
+                for i, row in enumerate(eval_rows): row['frame'] = i
+                write_rows(run/'eval_only/frames_eval.jsonl', eval_rows)
+                result = json.loads((run/'result.json').read_text())
+                result['frames'] = len(data)
+                (run/'result.json').write_text(json.dumps(result))
+        write_rows(run/name, data)
+        refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x10a8b57d0>)
+
+tests/test_sim_speed_review4.py:112: AssertionError
+_ test_fallback_requires_agreeing_first_frame_and_gt[invalid_time-inputs/frames.jsonl] _
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein2')
+name = 'inputs/frames.jsonl', case = 'invalid_time'
+
+    @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
+    @pytest.mark.parametrize('case', ['missing_time', 'invalid_time', 'missing_first_sample'])
+    def test_fallback_requires_agreeing_first_frame_and_gt(tmp_path, name, case):
+        run = full_run(tmp_path/'run')
+        data = rows(run, name)
+        if case == 'missing_time':
+            data[0].pop('t')
+        elif case == 'invalid_time':
+            data[0]['t'] = float('nan')
+        else:
+            data.pop(0)
+            if name == LOGS[1]:
+                # Repair counts, indices and hashes so they cannot mask the start check.
+                for i, row in enumerate(data): row['frame'] = i
+                eval_rows = rows(run, 'eval_only/frames_eval.jsonl')[1:]
+                for i, row in enumerate(eval_rows): row['frame'] = i
+                write_rows(run/'eval_only/frames_eval.jsonl', eval_rows)
+                result = json.loads((run/'result.json').read_text())
+                result['frames'] = len(data)
+                (run/'result.json').write_text(json.dumps(result))
+        write_rows(run/name, data)
+        refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x10a653c60>)
+
+tests/test_sim_speed_review4.py:112: AssertionError
+_ test_fallback_requires_agreeing_first_frame_and_gt[invalid_time-eval_only/gt_trajectory.jsonl] _
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein3')
+name = 'eval_only/gt_trajectory.jsonl', case = 'invalid_time'
+
+    @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
+    @pytest.mark.parametrize('case', ['missing_time', 'invalid_time', 'missing_first_sample'])
+    def test_fallback_requires_agreeing_first_frame_and_gt(tmp_path, name, case):
+        run = full_run(tmp_path/'run')
+        data = rows(run, name)
+        if case == 'missing_time':
+            data[0].pop('t')
+        elif case == 'invalid_time':
+            data[0]['t'] = float('nan')
+        else:
+            data.pop(0)
+            if name == LOGS[1]:
+                # Repair counts, indices and hashes so they cannot mask the start check.
+                for i, row in enumerate(data): row['frame'] = i
+                eval_rows = rows(run, 'eval_only/frames_eval.jsonl')[1:]
+                for i, row in enumerate(eval_rows): row['frame'] = i
+                write_rows(run/'eval_only/frames_eval.jsonl', eval_rows)
+                result = json.loads((run/'result.json').read_text())
+                result['frames'] = len(data)
+                (run/'result.json').write_text(json.dumps(result))
+        write_rows(run/name, data)
+        refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x10a8b4ba0>)
+
+tests/test_sim_speed_review4.py:112: AssertionError
+_ test_fallback_requires_agreeing_first_frame_and_gt[missing_first_sample-inputs/frames.jsonl] _
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein4')
+name = 'inputs/frames.jsonl', case = 'missing_first_sample'
+
+    @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
+    @pytest.mark.parametrize('case', ['missing_time', 'invalid_time', 'missing_first_sample'])
+    def test_fallback_requires_agreeing_first_frame_and_gt(tmp_path, name, case):
+        run = full_run(tmp_path/'run')
+        data = rows(run, name)
+        if case == 'missing_time':
+            data[0].pop('t')
+        elif case == 'invalid_time':
+            data[0]['t'] = float('nan')
+        else:
+            data.pop(0)
+            if name == LOGS[1]:
+                # Repair counts, indices and hashes so they cannot mask the start check.
+                for i, row in enumerate(data): row['frame'] = i
+                eval_rows = rows(run, 'eval_only/frames_eval.jsonl')[1:]
+                for i, row in enumerate(eval_rows): row['frame'] = i
+                write_rows(run/'eval_only/frames_eval.jsonl', eval_rows)
+                result = json.loads((run/'result.json').read_text())
+                result['frames'] = len(data)
+                (run/'result.json').write_text(json.dumps(result))
+        write_rows(run/name, data)
+        refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x10a8b64d0>)
+
+tests/test_sim_speed_review4.py:112: AssertionError
+_ test_fallback_requires_agreeing_first_frame_and_gt[missing_first_sample-eval_only/gt_trajectory.jsonl] _
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_fallback_requires_agreein5')
+name = 'eval_only/gt_trajectory.jsonl', case = 'missing_first_sample'
+
+    @pytest.mark.parametrize('name', [LOGS[1], 'eval_only/gt_trajectory.jsonl'])
+    @pytest.mark.parametrize('case', ['missing_time', 'invalid_time', 'missing_first_sample'])
+    def test_fallback_requires_agreeing_first_frame_and_gt(tmp_path, name, case):
+        run = full_run(tmp_path/'run')
+        data = rows(run, name)
+        if case == 'missing_time':
+            data[0].pop('t')
+        elif case == 'invalid_time':
+            data[0]['t'] = float('nan')
+        else:
+            data.pop(0)
+            if name == LOGS[1]:
+                # Repair counts, indices and hashes so they cannot mask the start check.
+                for i, row in enumerate(data): row['frame'] = i
+                eval_rows = rows(run, 'eval_only/frames_eval.jsonl')[1:]
+                for i, row in enumerate(eval_rows): row['frame'] = i
+                write_rows(run/'eval_only/frames_eval.jsonl', eval_rows)
+                result = json.loads((run/'result.json').read_text())
+                result['frames'] = len(data)
+                (run/'result.json').write_text(json.dumps(result))
+        write_rows(run/name, data)
+        refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_fallback_requires_agreeing_first_frame_and_gt.<locals>.<genexpr> at 0x10a8b5220>)
+
+tests/test_sim_speed_review4.py:112: AssertionError
+___________ test_conflicting_manifest_and_log_start_is_insufficient ____________
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_conflicting_manifest_and_0')
+
+    def test_conflicting_manifest_and_log_start_is_insufficient(tmp_path):
+        run = full_run(tmp_path/'run')
+        set_manifest_start(run, START)
+        name = 'controller_events.jsonl'
+        write_rows(run/name, [{'event': 'recording_started', 't': START + .0001}] + rows(run, name))
+        refresh_manifest(run)
+        report = eq.compare(run, run)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_conflicting_manifest_and_log_start_is_insufficient.<locals>.<genexpr> at 0x10a89cee0>)
+
+tests/test_sim_speed_review4.py:123: AssertionError
+______ test_runs_with_different_recording_starts_are_insufficient[False] _______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_runs_with_different_recor0')
+explicit = False
+
+    @pytest.mark.parametrize('explicit', [False, True])
+    def test_runs_with_different_recording_starts_are_insufficient(tmp_path, explicit):
+        a, b = (full_run(tmp_path/s) for s in ('a', 'b'))
+        if explicit:
+            # Both starts are individually within the first-step tolerance.
+            set_manifest_start(a, START)
+            set_manifest_start(b, START - .0001)
+        else:
+            # Each run is independently valid; only their start references differ.
+            for name in LOGS:
+                data = rows(b, name)
+                for row in data:
+                    if 't' in row and row.get('kind') != 'initial_servo_command':
+                        row['t'] = round(row['t'] + .4, 4)
+                write_rows(b/name, data)
+            result = json.loads((b/'result.json').read_text())
+            result['sim_s'] += .4
+            result['phase_times'] = {k: v + .4 for k, v in result['phase_times'].items()}
+            (b/'result.json').write_text(json.dumps(result))
+            refresh_manifest(b)
+>           assert eq.compare(b, b)['equivalent']
+E           assert False
+
+tests/test_sim_speed_review4.py:146: AssertionError
+_______ test_runs_with_different_recording_starts_are_insufficient[True] _______
+
+tmp_path = PosixPath('/Users/changmin/projects/ugrp-wt/codex-sim-speed-fix/.pytest_tmp/test_runs_with_different_recor1')
+explicit = True
+
+    @pytest.mark.parametrize('explicit', [False, True])
+    def test_runs_with_different_recording_starts_are_insufficient(tmp_path, explicit):
+        a, b = (full_run(tmp_path/s) for s in ('a', 'b'))
+        if explicit:
+            # Both starts are individually within the first-step tolerance.
+            set_manifest_start(a, START)
+            set_manifest_start(b, START - .0001)
+        else:
+            # Each run is independently valid; only their start references differ.
+            for name in LOGS:
+                data = rows(b, name)
+                for row in data:
+                    if 't' in row and row.get('kind') != 'initial_servo_command':
+                        row['t'] = round(row['t'] + .4, 4)
+                write_rows(b/name, data)
+            result = json.loads((b/'result.json').read_text())
+            result['sim_s'] += .4
+            result['phase_times'] = {k: v + .4 for k, v in result['phase_times'].items()}
+            (b/'result.json').write_text(json.dumps(result))
+            refresh_manifest(b)
+            assert eq.compare(b, b)['equivalent']
+        report = eq.compare(a, b)
+        assert report['verdict'] == 'insufficient_evidence'
+>       assert any('recording start' in e and 'A/B' in e for e in report['evidence_errors'])
+E       assert False
+E        +  where False = any(<generator object test_runs_with_different_recording_starts_are_insufficient.<locals>.<genexpr> at 0x10a89d560>)
+
+tests/test_sim_speed_review4.py:149: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_sim_speed_review4.py::test_post_setup_start_is_equivalent_and_explained[first_samples]
+FAILED tests/test_sim_speed_review4.py::test_post_setup_start_is_equivalent_and_explained[manifest]
+FAILED tests/test_sim_speed_review4.py::test_post_setup_start_is_equivalent_and_explained[log]
+FAILED tests/test_sim_speed_review4.py::test_post_setup_start_is_equivalent_and_explained[both]
+FAILED tests/test_sim_speed_review4.py::test_manifest_start_does_not_replace_legacy_log_evidence
+FAILED tests/test_sim_speed_review4.py::test_first_sample_one_step_after_explicit_start_is_allowed
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[None-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[None-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[True-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[True-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[1.3003-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[1.3003-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[-1.0-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[-1.0-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[nan-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[nan-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[inf-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[inf-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[value6-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[value6-log]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[value7-manifest]
+FAILED tests/test_sim_speed_review4.py::test_invalid_explicit_start_cannot_fall_back_to_samples[value7-log]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[missing_time-inputs/frames.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[missing_time-eval_only/gt_trajectory.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[invalid_time-inputs/frames.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[invalid_time-eval_only/gt_trajectory.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[missing_first_sample-inputs/frames.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_fallback_requires_agreeing_first_frame_and_gt[missing_first_sample-eval_only/gt_trajectory.jsonl]
+FAILED tests/test_sim_speed_review4.py::test_conflicting_manifest_and_log_start_is_insufficient
+FAILED tests/test_sim_speed_review4.py::test_runs_with_different_recording_starts_are_insufficient[False]
+FAILED tests/test_sim_speed_review4.py::test_runs_with_different_recording_starts_are_insufficient[True]
+31 failed, 6 passed in 0.78s
