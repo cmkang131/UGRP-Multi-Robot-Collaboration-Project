@@ -1,0 +1,186 @@
+{
+  "schema": "ugrp.m1_owncam_memory_prereg.v3",
+  "status": "DRAFT",
+  "execution_authorized": false,
+  "question": "동일한 v3 안전 게이트에서 기억 기반 재관측 결정 ON이 OFF보다 SIM 재관측 시간을 줄이는가? 전체 기억 제거 효과가 아닌 재관측 정책 ablation이다.",
+  "dependency_gate": "PR #227 준비 후 coordinator가 vision pose source/provider와 일관성 진단 어댑터를 연결하고 공통 소스/지도/교정을 동결한다. 현재 v3는 interim tag provider이므로 본 비교 실행 금지.",
+  "conditions": [
+    "off",
+    "memory_v3"
+  ],
+  "baseline_contract": "off는 M1OwnCamDeliveryOffV3: v3의 동일 pose source/guard, 트랙/keep-out, 목표 선택, 스킬, 도착·파지·빈 슬롯 검증, 충돌 sweep, 재시도·정체·초기화 상한을 공유한다. 차이는 기억 기반 재관측 결정뿐이다(주행 trigger, short/full pans·early stop, gate pans, 탐색 coverage에 따른 관측점/pan 생략). OFF는 고정 travel/no-tag/door trigger와 full sweep을 사용한다. 추적 메모리 자체는 양쪽에 유지한다. 옛 off는 off_legacy로만 선택하며 memory_v2와 함께 재현 참고용이다. 두 참고 조건은 paired memory 효과 추정에 포함하지 않는다.",
+  "proposed_seeds": {
+    "dev": [
+      27101,
+      27102,
+      27103,
+      27104
+    ],
+    "test": [
+      27201,
+      27202,
+      27203,
+      27204,
+      27205,
+      27206,
+      27207,
+      27208
+    ]
+  },
+  "seed_status": "로컬 v2 seed와 불일치 확인. 원격 열린 PR 전체와 미실행 여부는 coordinator가 최종 예약한다. 배치/슬롯은 사전등록 시 짝지어 고정.",
+  "dev_only_tuning": {
+    "parameters": [
+      "FIX_MAX_AGE_S",
+      "FIX_MAX_TRAVEL_M",
+      "MAX_NIS",
+      "MIN_LOG_LIKELIHOOD",
+      "EVIDENCE_MAX_AGE_S",
+      "SURVIVAL_HAZARD_S",
+      "P_MISS_NEAR",
+      "P_FALSE_NEAR",
+      "P_MISS_FAR",
+      "P_FALSE_FAR",
+      "P_ABSENT",
+      "P_CONFIRMED",
+      "MIN_HIT_INTERVAL_S",
+      "KEEPOUT_SIGMAS",
+      "BLIND_SPOT_RETREAT_M",
+      "SLOT_CLEAR_MAX_AGE_S",
+      "SLOT_VIEW_STANDOFFS_M",
+      "SLOT_INSPECTION_TIMEOUT_S",
+      "MAX_PROJECTION_M",
+      "MIN_RETREAT_M",
+      "FIX_ACCEPT_XY_M",
+      "FIX_ACCEPT_YAW_RAD",
+      "ARRIVAL_FIX_ACCEPT_YAW_RAD",
+      "MAX_LOOKS_WITHOUT_PROGRESS",
+      "MAX_LOOK_STAGNATION_S",
+      "MIN_GOAL_PROGRESS_M",
+      "INIT_RECOVERY_S",
+      "INIT_MAX_CAPTURES",
+      "INIT_TIMEOUT_S"
+    ],
+    "budget": "제안: dev 4 seeds x 최대 3 후보 x 조건별 1회, 각 720 SIM s. 모든 실패와 변경 이유 보존. coordinator 승인 전 실행하지 않는다.",
+    "data_boundary": "dev의 자기 RGB/명령/측정 진단으로 조정. GT는 별도 오프라인 채점만. test 결과로 임계값 재조정 금지. v2 test s162/s164/s165는 이미 v3 개발·회귀에 사용해 노출된 자료다. 앞으로의 test는 새 미개봉 seed만 사용하고 새 dev에서만 조정한다."
+  },
+  "gates": {
+    "before_test": [
+      "vision localization gate 통과 및 진단 scalar 의미/단위 확인",
+      "전체 회귀 테스트 통과, v2 해시 불변",
+      "dev 4/4 목표 달성, false success=0, false confirmed tracks=0",
+      "부재/가림/모호 대응/과신/먼 상자/도착/파지/배치 경계 실패 재현 통과",
+      "새 dev에서 하중 유지 SEARCH 관측점의 실제 슬롯 가시성·화물 가림·detector recall을 확인. unknown은 최대 2개 관측점 또는 120 SIM s 뒤 SLOT_UNVERIFIED/handoff, occupied는 차단. 최대 60 SIM s 바닥 근거와 새 pose fix를 복귀 후 재검사.",
+      "실행 소스 커밋, calibration/map/input/controller 해시와 최종 seed 예약, prereg REGISTERED",
+      "점유 차단은 관측 전용 존재 확률/가시 miss로만 해제; 시간 감쇠로 배치 허가하지 않음.",
+      "같은 SIM 시각 새 frame ID를 정상 처리하되 독립 관측/PF/free 누적은 금지.",
+      "free 바닥에도 xy/yaw 전체 지지영역·자기 팔·현재 화물 가림 검사 적용; 불확실하면 free로 기록하지 않음.",
+      "노출된 v2 test fixture는 회귀용만 사용. 미래 test는 모든 노출/dev seed와 분리된 새 seed만 동결.",
+      "499e4fd6 몸체 구 기하를 재사용한 공용 충돌 함수로 look/refix/슬롯 sweep의 자세 전환·모든 pan 경로·복귀를 확인. 안전한 pan이 없으면 명시적 종료. 실제 새 dev의 문기둥/벽 접촉률·거부율 확인.",
+      "slot_blocking은 주행 keep-out과 슬롯 게이트에 같은 기준으로 반영. 시간 감쇠나 placed 상태만으로 주행 회피에서 제거하지 않음.",
+      "왕복의 모든 새 자기 RGB 프레임에 기존 external_navigation 화물 검사 적용. 낙하·가림·추가 검사 요구 시 이동 중단/handoff. 움직이는 팔에서의 거부율은 새 dev에서 별도 확인.",
+      "사각지대 후퇴 목표는 정적 지도·자기 관측 장애물·차체 여유를 만족하는 연결된 grid cell로 투영하고 실제 planner로 검증. 후보가 없으면 SEARCH_BLIND_SPOT_UNREACHABLE.",
+      "외부 SIM_LIMIT/예외 종료가 슬롯 deadline보다 빨라도 result.json에 pending 슬롯의 단계·시도·이유·해제 미시작 handoff를 보존. 기존 SIM_LIMIT 판정은 그대로 유지.",
+      "ON/OFF 공통 안전 메서드·σ/충돌/재시도/정체/초기화 동일성 회귀 통과; off_legacy/memory_v2는 성능 비교에서 제외.",
+      "loaded PF의 carry 복귀 예측 후 이동/도착 상한을 다시 확인. fix=2°(도착 1.3°), 무진전 4 looks/60 SIM s와 초기화 8 SIM s/20 captures는 새 dev에서 거부율과 진전을 평가하고 test 전에 양쪽 동일하게 동결."
+    ],
+    "claim": [
+      "v3 성공 수 >= matched OFF 성공 수",
+      "false_success=0, false confirmed tracks=0, false absent=0",
+      "비목표 상자 접촉 step 총합 <= matched OFF; 개별 실패도 모두 보고",
+      "짝 성공 >= 4 seeds; 짝 성공 전체에서 SIM 시간 감소, median look time 감소",
+      "실패/timeout 포함 성공 분모와 예산 소진 비용을 함께 보고; 성공쌍 속도로 전체 효과 주장 금지"
+    ]
+  },
+  "metrics": [
+    "success k/N",
+    "SIM makespan with failures/censoring at 720 s",
+    "look time, pans, commands",
+    "false confirmed and false absent tracks; existence calibration bins",
+    "evaluation-only pose error at grasp/place/arrival gates",
+    "non-target contact steps; keep-out geometry",
+    "full/short escalation, search blind-spot retries, verification refusals",
+    "model calls/tokens/cost (zero for no-LLM M1), load average (not performance claim)",
+    "slot inspection attempts/time; SLOT_UNVERIFIED and handoff reasons",
+    "time-decayed vs observation-only existence probability; slot blocking",
+    "same-time captures skipped for evidence; visibility-rejected free cells",
+    "collision guard requested/retained/dropped pans; transition/restore rejections",
+    "per-frame slot carry failures, reachable retreat projection distance, external-stop handoff coverage",
+    "look_stagnation counts/time, fix accepted sigma and first post-restore sigma",
+    "initialization collision deferrals, stationary captures, NOT_INITIALIZED reason"
+  ],
+  "stop_rules": {
+    "test": "동결 후 새 seeds 조건당 1회; 제어기 실패 재시도 금지. 인프라 중단은 원본 보존 뒤 coordinator 판정.",
+    "episode": "최대 720 SIM s 또는 기존 M1 종료/새 검증 거부 종료",
+    "tuning": "test 개봉 뒤 tuning 금지; 수정 시 새로운 버전과 seed로 다시 등록"
+  },
+  "records": "로컬 실험 폴더에 소스/환경/입력/모든 결과/실패/해시. 실제 실험 뒤 TensorBoard 새 snapshot과 원본 대비 값·영상 검증. 이번 작업에는 실험/평가 결과 및 TensorBoard 변환 없음.",
+  "student": {},
+  "episodes": [],
+  "revision": "PR #234 review6 after 7400c426; separate stationary recovery and sweep execution budgets; matched safety; DRAFT, no cohort authorized",
+  "exposed_fixture_policy": {
+    "origin": "memory_v2 preregistered test split: s162, s164, s165 (RGB 6 frames, issued servo and own pose reports); dev s151 first 3 saved RGB frames + initial issued commands (review5 initialization replay)",
+    "used_for": "memory_v3 implementation development, geometry/attachment debugging and regression tests",
+    "exposed_seeds": [
+      151,
+      161,
+      162,
+      163,
+      164,
+      165,
+      166
+    ],
+    "not_future_test": true,
+    "not_v3_success_samples": true,
+    "injected_assumptions": "v3 likelihood/innovation consistency and precise inspection pose / empty floor evidence are explicitly synthetic in unit fixtures, not recovered v3 execution evidence",
+    "future_test": "Only new never-opened seeds/episodes after new-dev tuning. Freeze code, vision source, conditions, thresholds and scoring before opening test. Never reuse exposed v2 seeds or fixture episodes as v3 test/performance evidence."
+  },
+  "reference_only_conditions": [
+    "off_legacy",
+    "memory_v2"
+  ],
+  "safety_contract": "ugrp.owncam_safety.v3",
+  "shared_safety": {
+    "module": "harness/owncam_safety_v3.py",
+    "drive_max": {
+      "unloaded_std_xy_m": 0.05,
+      "loaded_std_xy_m": 0.07,
+      "std_yaw_deg": 3.0
+    },
+    "fix_accept_max": {
+      "unloaded_std_xy_m": 0.04,
+      "loaded_std_xy_m": 0.05,
+      "std_yaw_deg": 2.0,
+      "arrival_std_yaw_deg": 1.3,
+      "short_and_full_identical": true
+    },
+    "arrival_max": {
+      "unloaded_std_xy_m": 0.05,
+      "loaded_std_xy_m": 0.06,
+      "std_yaw_deg": 2.0
+    },
+    "max_unverified_looks": 2,
+    "max_arrival_verifications": 2,
+    "max_looks_without_progress": 4,
+    "max_look_stagnation_sim_s": 60.0,
+    "estimated_goal_progress_m": 0.1,
+    "progress_definition": "주행 상태에서 자기 추정의 목표까지 거리 감소 >=0.10 m + 발행된 비영 이동 명령. hold/stop은 이동 명령 증거를 지운다. 정상 look/σ 감소만으로 정체 예산을 초기화하지 않는다. 추정 진전은 물리 이동 성공이 아니다.",
+    "initialization": {
+      "stationary_recovery_sim_s": 8.0,
+      "stationary_budget_policy": "Cumulative stopped recovery time; pause on an admitted sweep, resume only the remainder after completion or command rejection. Rejections, new frames and sweeps never refill time or capture counts.",
+      "capture_interval_sim_s": 0.2,
+      "max_capture_requests": 20,
+      "total_init_sim_s": 30.0,
+      "sweep_execution_budget": "Uses remaining total_init_sim_s, independently of the stationary budget. Total clock starts at first initialization decide and never pauses/resets; it bounds stalled sweeps too. Design rationale: 8 s stopped recovery + two 9 s default synthetic sweeps + 4 s transition/decision allowance; not a physical runtime guarantee.",
+      "commands": "hold + capture; no unchecked arm/pan/base motion; every resumed sweep still passes common collision checks",
+      "exhausted": "NOT_INITIALIZED"
+    },
+    "collision": "동일 plan_safe_sweep + commands_clear: 자세 전환·모든 pan·복귀. 초기화 거부만 유한한 정지·재촬영 허용. 다른 거부는 LOOK_COLLISION_UNVERIFIED 또는 슬롯 handoff.",
+    "outcomes": [
+      "pose_unverified",
+      "arrival_unverified",
+      "look_stagnation",
+      "NOT_INITIALIZED",
+      "LOOK_COLLISION_UNVERIFIED"
+    ]
+  }
+}
