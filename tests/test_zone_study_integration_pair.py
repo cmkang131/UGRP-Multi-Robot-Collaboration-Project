@@ -175,8 +175,8 @@ def test_research_scenarios_and_bundle_use_study_wide_profile():
     assert bundle['execution_bundle_id'] == 'zone-pair-v76-fixclock-grasp-entry'
     workflow = next(w for w in json.loads((ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
                     if w['id'] == 'zone-study-integration-run')
-    # v76's workflow bump (2.6.0) waits for the v6-historical PR: the REGISTERED v6
-    # prereg hashes the whole catalog (experiments/2026-09-29-pair-v6c/README.md).
+    # v76's workflow number (2.12.0, reserved) lands when #263 is rebased on main after
+    # #256/#257/#249 (experiments/2026-09-29-pair-v6c/README.md); the catalog is unchanged here.
     assert workflow['version'] == '2.3.0'
     assert bundle['pose_provider']['label']['research_result'] is False
     assert bundle['pose_provider']['spec']['calibration'] == pre['student']['calibration']

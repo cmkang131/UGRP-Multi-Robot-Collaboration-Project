@@ -231,6 +231,24 @@ def test_cross_section_needs_one_contiguous_in_footprint_band():
     span = cross_section(np.r_[narrow, outliers], beam)
     assert span is not None and span < MIN_WIDTH_FRACTION * BEAM_WIDTH_M
     assert cross_section(solid[:40], beam) is None                     # < MIN_POINTS
+    tail = np.c_[rng.uniform(.005, .035, 2), [.026, .0265]]            # 2 noise points beyond a 4 mm gap
+    assert cross_section(np.r_[solid, tail], beam) == pytest.approx(cross_section(solid, beam), abs=1e-3)
+    thin = np.c_[along, np.where(rng.random(4000) < .9, rng.uniform(-.019, .005, 4000), rng.uniform(.012, .019, 4000))]
+    assert cross_section(thin, beam) is None                           # a 10 % strip beyond a 7 mm gap still vetoes
+
+
+def test_isolated_colour_noise_does_not_veto_a_real_beam():
+    """Third review: a 3x3 yellow speck (2 of ~23k projected points) must not reject the real beam."""
+    import cv2
+    from harness import owncam_pair_beam as v1
+    grasp, servo = frame('grasp_pose_ex+8mm_r1')
+    img = v1.decode(grasp['image']).copy()
+    img[32:35, 587:590] = (40, 190, 200)
+    data = cv2.imencode('.jpg', img, [cv2.IMWRITE_JPEG_QUALITY, 95])[1].tobytes()
+    obs = {**grasp, 'image': base64.b64encode(data).decode(), 'sha256': hashlib.sha256(data).hexdigest()}
+    track, _ = anchored(GraspRangeBeamTrack)
+    got = track.estimate(obs['sim_time'], obs, servo, 3)
+    assert got is not None and got['partial_cross_section_m'] >= MIN_WIDTH_FRACTION * BEAM_WIDTH_M
 
 
 def test_reused_v6c_provider_is_refused_for_baseline_policies():

@@ -38,10 +38,12 @@ v6c keeps every gate and threshold (3 degrees, 50 mm, >= 4 strips over
    CROSS-SECTION on the tracked axis: beyond the band centre, the 2-98 %
    across-axis span of the beam-colour points is at least
    ``MIN_WIDTH_FRACTION`` of ``BEAM_WIDTH_M`` (the footprint test above
-   already bounds it from above). Only in-footprint points count, and they
-   must form ONE contiguous band across the axis (largest across-axis gap
-   <= ``MAX_LATERAL_GAP_M``), so separate strips or outliers cannot add up
-   to a width (follow-up review). Recorded grasp-pose views: span
+   already bounds it from above). Only in-footprint points count, and the
+   points between the 2nd and 98th across-axis percentiles (the measured
+   span) must form ONE contiguous band (largest gap <= ``MAX_LATERAL_GAP_M``),
+   so separate strips or outliers cannot add up to a width, while a detached
+   tail of < 2 % of the points (JPEG/colour noise) neither widens nor vetoes
+   the band (second and third review). Recorded grasp-pose views: span
    0.032-0.051 m, largest gap 0.58 mm, on all 155 boundary frames.
 
    Residual (stated, not hidden): one monocular view cannot tell a planar
@@ -85,8 +87,9 @@ def grasp_range_points(image, servo):
 def cross_section(points, beam):
     """2-98 % across-axis span of the in-footprint patch beyond the tracked grip.
 
-    None when fewer than MIN_POINTS such points exist or when they are not one
-    contiguous band across the axis (largest gap > MAX_LATERAL_GAP_M).
+    None when fewer than MIN_POINTS such points exist or when the points inside
+    the measured 2-98 % span are not one contiguous band across the axis
+    (largest gap > MAX_LATERAL_GAP_M). Tails outside that span are ignored.
     """
     u = np.array([np.cos(beam['axis_heading_rad']), np.sin(beam['axis_heading_rad'])])
     rel = np.asarray(points) - np.asarray(beam['grip_base_m'])
@@ -96,9 +99,10 @@ def cross_section(points, beam):
     if inside.sum() < v1.MIN_POINTS:
         return None
     across = np.sort(n[inside])
-    if float(np.max(np.diff(across))) > MAX_LATERAL_GAP_M:
-        return None
     lo, hi = np.percentile(across, [2, 98])
+    core = across[(across >= lo) & (across <= hi)]
+    if len(core) < 2 or float(np.max(np.diff(core))) > MAX_LATERAL_GAP_M:
+        return None
     return float(hi - lo)
 
 
