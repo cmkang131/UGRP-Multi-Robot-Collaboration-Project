@@ -185,7 +185,7 @@ raise SystemExit(3 if a.fail else 0)
 
     def test_catalog_has_thirty_selectable_workflows_and_distinct_adapters(self):
         data, digest = wm.catalog(PROJECT)
-        self.assertEqual(len(data["workflows"]), 32)
+        self.assertEqual(len(data["workflows"]), 39)
         self.assertEqual(len(digest), 64)
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "dispatch-skills")["runner"], "scripts.run_dispatch_e2e")
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "communication")["output_kind"]["prepare"], "file")
@@ -199,6 +199,7 @@ raise SystemExit(3 if a.fail else 0)
         model.mkdir()
         (model / "weights.bin").write_bytes(b"fixture")
         samples = {
+            "zone-study-pilot": [],
             "local": ["run", str(PROJECT / "configs/simulation/drive.json"), "--headless"], "dispatch": ["--headless"],
             "dispatch-skills": ["--plan-replay", str(source), "--grasp-model-dir", str(model), "--stage-model-dir", str(model)],
             "communication": ["prepare", "--protocol", str(source)],
@@ -224,6 +225,7 @@ raise SystemExit(3 if a.fail else 0)
             "communication-study": ["prepare", "--config", str(source)],
             "communication-cloud-submit": ["--evidence-root", str(model), "--inventory", str(source)],
             "zone-dispatch": ["--mode", "fixture", "--coordination", "dynamic"],
+            "zone-teacher-fix": ["--mode", "fixture", "--coordination", "dynamic"],
             "zone-cargo-probe": ["--probe", "pair_crate"], "zone-cargo-catalogue": [],
             "zone-team-jobs-smoke": ["--probe", "pair_beam"],
             "zone-color-eval": ["render", "--split", "dev"],
@@ -231,7 +233,13 @@ raise SystemExit(3 if a.fail else 0)
             "zone-rgb-outcome-eval": ["track", "--split", "dev_v2"],
             "zone-owncam-loc-record": ["--episodes", str(source)],
             "zone-owncam-loop-run": ["--prereg", str(source)],
+            "zone-m2-pair": ["--seed", "701", "--status-channel", "off"],
             "zone-m1-owncam-run": ["--prereg", str(source)],
+            "zone-study-integration-run": ["--prereg", str(source), "--episode", "smoke-i700",
+                                           "--condition", "no_comm"],
+            "zone-m1-owncam-memory-run": ["--prereg", str(source), "--condition", "memory_v2"],
+            "zone-m1-owncam-memory-v3-run": ["--prereg", str(source), "--condition", "memory_v3"],
+            "zone-pair-dev": ["--prereg", str(PROJECT / "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json"), "--run-id", "dev03"],
         }
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):

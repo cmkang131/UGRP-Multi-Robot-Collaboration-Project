@@ -1,0 +1,51 @@
+{
+  "schema": "ugrp.beam_frame_validation.v1",
+  "analysis_checkout": "6d1125a531377726ddc2a47d2e616ba937a15b89",
+  "run_source_sha": "3ea2edc08e5addafaf3cedc934c463ad8e1635c8",
+  "test_command": "OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --basetemp=./.pytest_tmp experiments/2026-09-27-zone-pair-parity/test_beam_frame_analysis.py experiments/2026-09-27-zone-pair-parity/test_replay.py",
+  "pytest": {
+    "exit_code": 0,
+    "passed": 18,
+    "duration_s": 0.46,
+    "scope": "offline frozen predicate / analysis math / saved replay assertions; not candidate implementation or full CI"
+  },
+  "pytest_tmp_existed_before_cleanup": false,
+  "pytest_tmp_removed": true,
+  "source_hashes_rechecked": 721,
+  "mismatches": [],
+  "unique_new_jpegs_verified": 351,
+  "image_reads": 352,
+  "blocked_imports": true,
+  "eval_only_files_opened": false,
+  "physics_steps": 0,
+  "model_calls": 0,
+  "tracked_production_changes": 0,
+  "git_commits": 0,
+  "HEAD_unchanged": true,
+  "new_artifacts_only_under": "experiments/2026-09-27-zone-pair-parity",
+  "tensorboard": {
+    "exported": 3,
+    "failed": 0,
+    "scalar_and_hparams_actual_reload": true,
+    "shared_root_published": false,
+    "gui_verified": false,
+    "receipt": "beam_frame_tensorboard.json"
+  },
+  "remaining": [
+    "Production time predicate remains unmodified",
+    "Candidate not implemented or physically tested",
+    "Relative/global bias and coverage uncalibrated",
+    "Shared TensorBoard publication/UI blocked"
+  ],
+  "artifact_sha256": {
+    "beam_frame_design.json": "32852fc8eca70e6e4fe077d01628a957c9c33de018b69766604a3995b2516039",
+    "dev09_10_diagnosis.json": "8f3c3c4cc47064cbd9884c47079d121a7a90cb451fe946a919422e63167893c1",
+    "beam_frame_analysis.py": "cc815ca0b6a29e99e3b1f15684ef279977a634fcf0ec61a92823eca5201f1778",
+    "test_beam_frame_analysis.py": "222dc6da355875b57bdbddc5f4481a3a5b2452abcbda303bc7b486723491cdda",
+    "beam_frame_tensorboard.py": "d9d1e284efdfc6cd4e4fee8bb68ca89d7e9b9b5d502e91de1cdd09fd398aca7f",
+    "beam_frame_design.md": "6b3158cb5908fd5317c2dbf712e4d034d87b4f824aa152a77acf53c5a3513413",
+    "dev09_10_diagnosis.md": "dc3ec9c073d4ad507de2c24f42d25a1ff842cead725c2e4864e383b20717cdc9",
+    "dev09_10_relook.jpg": "8e6cc742d577024c42d4d04a22ae9325ac03a9c8d79dada54ca27850fbccacdf",
+    "dev09_10_blockage.jpg": "e86e5f20a6f7b3c13a27e0560552cad8b67bfbc11a718af51873daab64e519a7"
+  }
+}

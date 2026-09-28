@@ -1,0 +1,59 @@
+{
+  "snapshot": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/zone-pair-loaded-design-tb-7p54ckp4/snapshot",
+  "source": "/Users/changmin/projects/ugrp-wt/codex-pair-parity/experiments/2026-09-27-zone-pair-parity/loaded_stage_metrics.json",
+  "source_sha256": "b76e275766ca7b21d131b88e46d8b1088d9a1f4dd8a519d702bdb55eac497f85",
+  "verified_events": [
+    {
+      "run": "dev-pf",
+      "event": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/zone-pair-loaded-design-tb-7p54ckp4/snapshot/dev-pf/events.out.tfevents.1790520647.gangchangmin-ui-MacBookAir.local.68411.0",
+      "sha256": "b0f928b133d733b0a79c510e620b87cd0c2f8aaf954a7cbc3583059f72be8913",
+      "scalars": {
+        "offline/traces": 6.0,
+        "offline/xy_error_min_m": 0.6830155849456787,
+        "offline/xy_error_max_m": 0.948957622051239,
+        "offline/error_sigma_ratio_max": 16.495004653930664
+      },
+      "hparams_loaded": true
+    },
+    {
+      "run": "m2-shadow",
+      "event": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/zone-pair-loaded-design-tb-7p54ckp4/snapshot/m2-shadow/events.out.tfevents.1790520647.gangchangmin-ui-MacBookAir.local.68411.1",
+      "sha256": "c9b18dbff0435b81ee1b41ca898b253fc2865194a6dcca0aa2bee1dc04cb49db",
+      "scalars": {
+        "offline/success_selected_runs": 49.0,
+        "offline/conditional_gate_rejects": 98.0,
+        "offline/loaded_to_gate_p50_s": 5.176300048828125,
+        "offline/door_carry_p50_s": 23.859500885009766
+      },
+      "hparams_loaded": true
+    },
+    {
+      "run": "pf-clock",
+      "event": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/zone-pair-loaded-design-tb-7p54ckp4/snapshot/pf-clock/events.out.tfevents.1790520647.gangchangmin-ui-MacBookAir.local.68411.2",
+      "sha256": "20ee34a1b668732f5c4e709bfdadfcea6422d39d52f7eb7ea1a127040b53a22d",
+      "scalars": {
+        "offline/loaded_yaw_var_ratio": 48.20664978027344,
+        "offline/seconds_from_2p5_to_3deg": 1.758084774017334,
+        "offline/loaded_sigma_at_50ms_deg": 4.058457851409912,
+        "offline/loaded_sigma_at_25ms_deg": 2.8212969303131104,
+        "offline/loaded_sigma_at_10ms_deg": 1.7826868295669556
+      },
+      "hparams_loaded": true
+    }
+  ],
+  "shared_root_published": false,
+  "gui_verified": false,
+  "dashboard_url": "http://127.0.0.1:6006",
+  "new_video": null,
+  "server_started": false,
+  "blockers": [
+    "primary outputs/tensorboard outside writable roots",
+    "Chrome CUA cgWindowNotFound; browser inventory empty"
+  ],
+  "suggested_hparams_columns": [
+    "condition",
+    "split",
+    "case"
+  ],
+  "source_unchanged": true
+}

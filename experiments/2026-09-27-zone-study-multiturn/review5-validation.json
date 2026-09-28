@@ -1,0 +1,159 @@
+{
+  "schema": "ugrp.pr245.review5.validation.v1",
+  "base_head": "8d25d30aabe2c759e86c79d6089b37508f658ade",
+  "git_commits": 0,
+  "model_calls": 0,
+  "physics_steps": 0,
+  "passed": 3293,
+  "failed": 0,
+  "skipped": 0,
+  "new_regressions": 29,
+  "test_modules": [
+    "tests.test_zone_event_scheduler",
+    "tests.test_zone_sim_cost",
+    "tests.test_zone_study_contract",
+    "tests.test_zone_study_eval.BoundaryTest",
+    "tests.test_zone_study_eval.ChannelTest",
+    "tests.test_zone_study_eval.ComparisonTest",
+    "tests.test_zone_study_eval.DialogueTest",
+    "tests.test_zone_study_eval.EfficiencyTest",
+    "tests.test_zone_study_eval.ParseTest",
+    "tests.test_zone_study_eval.ReportTest",
+    "tests.test_zone_study_eval.SummaryTest",
+    "tests.test_zone_study_fenced_reply",
+    "tests.test_zone_study_inputs",
+    "tests.test_zone_study_integration",
+    "tests.test_zone_study_integration_pair",
+    "tests.test_zone_study_integration_seams",
+    "tests.test_zone_study_multiturn",
+    "tests.test_zone_study_multiturn_exits",
+    "tests.test_zone_study_multiturn_generated",
+    "tests.test_zone_study_multiturn_properties",
+    "tests.test_zone_study_multiturn_review5",
+    "tests.test_zone_study_offline",
+    "tests.test_zone_study_pair_delay",
+    "tests.test_zone_study_protocol",
+    "tests.test_zone_study_review_fixes",
+    "tests.test_zone_study_review_r10",
+    "tests.test_zone_study_review_r5",
+    "tests.test_zone_study_review_r6",
+    "tests.test_zone_study_review_r6_paths_contract",
+    "tests.test_zone_study_review_r7",
+    "tests.test_zone_study_review_r7_contract",
+    "tests.test_zone_study_review_r7_transport",
+    "tests.test_zone_study_review_r8",
+    "tests.test_zone_study_review_r9",
+    "tests.test_zone_study_scenarios",
+    "tests.test_zone_study_source_pinning"
+  ],
+  "pytest_options": [
+    "OMP_NUM_THREADS=1",
+    "--basetemp=./.pytest_tmp",
+    "-q"
+  ],
+  "offline_guards": [
+    "socket.socket.connect and connect_ex blocked",
+    "sys.modules[mujoco] = None"
+  ],
+  "audit": {
+    "rows": 179,
+    "executed_sites": 90,
+    "sites": 90,
+    "mutations_detected": 5
+  },
+  "sources": {
+    "harness/zone_event_scheduler.py": {
+      "bytes": 86555,
+      "sha256": "d351c6e6456dd14fd72a3e9e513509ef3225673a447b647310b677191600dc62"
+    },
+    "harness/zone_study_decisions.py": {
+      "bytes": 1268,
+      "sha256": "c4d9b05a77f19aeaa3ca1a2f517449a1d67a17fc721d9a903494f391edca6406"
+    },
+    "tests/test_zone_study_multiturn_review5.py": {
+      "bytes": 10420,
+      "sha256": "8ac3a3f537e055b2691e21f94e33c820193617824e3ded62b4f7ffd4e2ee18d8"
+    },
+    ".github/workflows/tests.yml": {
+      "bytes": 16905,
+      "sha256": "9fc17cec8e9388ede63f2e604a1e02d367d7f14eb0038b5564b739243bcef8c6"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/audit_review5.py": {
+      "bytes": 10117,
+      "sha256": "10126946dfc6d3f2e52e08e8a8acb2f882a7d6f366d9a7ad74f817940ee2b2fd"
+    }
+  },
+  "artifacts": {
+    "experiments/2026-09-27-zone-study-multiturn/review5-audit.txt": {
+      "bytes": 362,
+      "sha256": "0ec1fe8e4af97cdb6b818f65d5a89f645966adf778fa934c0946ec1733b3c027"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review5-before.txt": {
+      "bytes": 47954,
+      "sha256": "7df933c74a445f553f552ed2587d5c3c49aeb306b633ffdf15d87998dcf2cc91"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review5-core-initial.txt": {
+      "bytes": 2890,
+      "sha256": "59674ef963ce064a59139ad36af8f67ed7bb339be2f68be28f9c1f9508544cb6"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review5-counterexamples-before.json": {
+      "bytes": 1942,
+      "sha256": "8d5dadee0cd51d77da2898cbe1adad162be8dc2a3a54c5329e25e7c17010b613"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review5-exit-table.md": {
+      "bytes": 20511,
+      "sha256": "573ca7cafa027a134f21c74b817e8b8d6fc2a2575867cb4c1dc24ae083e0e5ba"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review5-exit-traces.json": {
+      "bytes": 1227781,
+      "sha256": "6024baa5a0ace0fb32c104dc3c5cca5c8aecb750ee092191d63ef4eee1da116e"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review5-fix.md": {
+      "bytes": 6764,
+      "sha256": "8f03df1852c6376198085c45e81e3f9687f2474577e9da438e345a84209cef1c"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review5-regression.txt": {
+      "bytes": 3714,
+      "sha256": "e57bcd5b58843ee9e3596c1f7a7f3a41c297eeba773efd15ec0c31971c87931e"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review5-regression.xml": {
+      "bytes": 499417,
+      "sha256": "ce65acbfc49bc7826e22a23f4802df76be1dde1e83dd35b194df5c7221532269"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review5-remote.json": {
+      "bytes": 3482,
+      "sha256": "7e5f878299b4988ed9885fdee203426bb4954d398d3be9a776444e286daa319c"
+    },
+    "experiments/2026-09-27-zone-study-multiturn/review5-targeted.txt": {
+      "bytes": 99,
+      "sha256": "0136e4bccbb38f3fd6f91b83cadf2418563622bf7d989e4886088e6d9ac32537"
+    }
+  },
+  "restored_fixtures": [
+    {
+      "path": "experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz",
+      "sha256": "72e2ccec45cb1bff6ad74fb5ce359cac847616e9c02059c839aec725f1bb31ad",
+      "bytes": 55494
+    },
+    {
+      "path": "experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz",
+      "sha256": "0406d1338503f57f3116068100ca8f1490965edf8882aa89ffe19cb912adf6d0",
+      "bytes": 55474
+    },
+    {
+      "path": "experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz",
+      "sha256": "a5ae31a1d8cb1f2af255bd2f38521a877e83d99a5e1fc25e7a75a8246a9d3201",
+      "bytes": 47708
+    }
+  ],
+  "cleanup": {
+    "pytest_tmp_absent": true,
+    "only_new_fixture_copies_removed_after_hash_check": true
+  },
+  "static_checks": {
+    "ast": "passed",
+    "ci_yaml": "passed",
+    "git_diff_check": "passed",
+    "historical_exit_table_and_v64_unchanged": true
+  }
+}

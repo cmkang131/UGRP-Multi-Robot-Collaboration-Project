@@ -346,3 +346,37 @@ def test_action_record_adapter_is_validated_by_package_a():
     # the v1 smoke label is not a package A condition (Codex review 2 of PR #206, P2-8)
     with pytest.raises(A.ContractViolation):
         zox.action_record(acks[0], run_id='t', condition='no_llm_scripted', seed=1, request_id='q')
+
+
+# ---------------------------------------------------------------- 3-robot host (simulator)
+def test_team_host_feeds_each_executor_only_its_own_camera():
+    pytest.importorskip('mujoco')                   # lazy: importing this file must stay simulator-free
+    spec = {'map': 'zone_wide_door_tags_v2', 'seed': 703, 'goal': {'A': {'cyan': 1}, 'B': {'cyan': 1}, 'C': {'cyan': 1}},
+            'extra_boxes': {'red': 2, 'green': 1}, 'contact_profile': 'cargo_noslip_v1', 'order_sheet': SHEET}
+    student = {'mode': 'm1', 'calibration': 'experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json',
+               'skill_module': 'harness.wrist_zone_skill_v9', 'skill_class': 'WristZoneDeliveryV9'}
+    seen = []
+
+    def layer(host, kind, event, now):
+        if kind == 'start':
+            for rid in zox.ROBOTS:
+                host.call(rid, 'look_around')
+        else:
+            seen.append(event)
+
+    host = zox.OwnCamTeamHost(spec, student, root=ROOT, study_layer=layer)
+    try:
+        host.run(3.)
+        assert host.eval_only['max_eq_active'] == 0 and host.contact_record['noslip_iterations'] > 0
+        for rid, slot in host.robots.items():
+            ex = slot.executor
+            assert slot.frames and all(f['robot_id'] == rid and f['camera'] == 'robot_cam' for f in slot.frames)
+            assert ex.cameras_seen == {'robot_cam'} and all(s.startswith('owncam_pf_v2:') for s in ex.pose_sources_seen)
+            reach = _reachable(ex, limit=200_000)
+            assert id(host) not in reach and id(host.world) not in reach
+            assert not any(id(s.port) in reach or id(s.executor) in reach for r, s in host.robots.items() if r != rid)
+            assert all(c['t'] >= 0 for c in slot.commands) and slot.commands[0]['kind'] == 'initial_servo_command'
+        assert {e['robot_id'] for e in seen if e['event'] == 'job_started'} == set(zox.ROBOTS)
+        assert host.eval_only['gt'] and 'robots' in host.eval_only['gt'][0]
+    finally:
+        host.close()

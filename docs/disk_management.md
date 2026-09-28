@@ -138,6 +138,36 @@ AGENTS.md는 **실제 모델 요청의 이미지·텍스트 보존**을 요구�
 - 추정 효과: M1형 dev 에피소드는 36 → 약 8–10 MiB, 3대 dispatch형 dev 실행은 224 → 약 40–60 MiB다.
 - 러너는 각 주인의 파일이므로 이 문서는 기준만 정한다. 적용 여부는 사용자와 러너 주인이 정한다.
 
+### 5.1 2026-09-27 결정과 공용 프로필
+
+코디네이터가 전달한 2026-09-27 사용자 결정은 "dev만 1초 1장, test는 5장 유지, 결정 시점 프레임은 항상 저장"이다. 이를 `harness/frame_storage.py`의 버전 고정 프로필로 만들었다(테스트 `tests/test_frame_storage.py`).
+
+| 프로필 | 쓰는 파일 | 허용 split |
+|---|---|---|
+| `all_v1` (기본값) | 모든 프레임. 09-27 이전 모든 러너와 test 코호트, 과거 사전 등록의 동작이다 | 모두 |
+| `dev_1hz_decisions_v1` | 스트림(로봇 카메라·TOP)마다 1.0 SIM s에 주기 프레임 1장, 그리고 모든 결정 프레임 | `dev`, `diag`만. 그 밖의 split은 생성 시 `ValueError`로 거부 |
+
+- 결정 프레임은 세 가지다: 제어기가 요청한 capture, macro 뒤의 capture, 제어기가 이벤트를 내거나 단계를 바꾼 프레임. 결정 프레임은 주기 시계를 움직이지 않는다.
+- 파일을 쓰지 않은 프레임도 러너의 프레임 로그에 SIM 시간·sha256을 남긴다.
+- 모델 요청 이미지(LLM·ACT·학습 학생)는 이 정책 대상이 아니며, 항상 바이트 그대로 보존한다.
+- 러너는 실행 기록(manifest)에 `FrameStoragePolicy.record()`를 넣는다. 프로필 이름이 실행 번들 조건의 일부가 된다([실행 버전 관리](execution_versioning.md)).
+- 예: `policy = FrameStoragePolicy('dev_1hz_decisions_v1', split='dev')`로 만든 뒤 프레임마다 `policy.decide(rid, now, decision=..., reason=...)['saved']`가 참일 때만 JPEG를 쓴다.
+
+**공용 기록 계층 조사 결과:** 모든 러너가 거치는 공용 프레임 기록 계층은 main에 없다. 러너마다 JPEG를 직접 쓴다. 이번 변경은 정책 모듈과 테스트만 넣었고, 어느 러너의 기본 동작도 바꾸지 않았다. 러너별 연결은 아래 순서로 주인이 한다.
+
+| 러너 (프레임을 쓰는 곳) | 쓰임 | 연결 방법 | 상태 |
+|---|---|---|---|
+| `harness/zone_own_team_host.py` `_capture_raw` (`frames_dir/<rid>/NNNNN.jpg`, 5 Hz) | 자기 카메라 실행기 3대 host: own-executor 스모크, vision-worker, 통합 러너(#229), 공동 운반(#235) | `OwnCamTeamHost(..., frame_profile=, split=)` 인자 추가. 주기 capture(`_physics_until`)는 `decision=False`로 넘긴다. `_decide_raw`의 capture와 macro 뒤 capture는 `decision=True`로 넘긴다. `on_frame` 중 `executor.events`가 늘어도 `decision=True`로 처리한다 | **보류**: 열린 PR #235(Codex)·#229(Kiro)가 이 파일을 고치는 중이라 병합 뒤 연결한다 |
+| `scripts/run_m1_owncam.py` (`frames/NNNNN.jpg`) | M1 1대 배달 dev·test | `--frame-profile`(기본 `all_v1`)과 `--split`. test 사전 등록 명령은 바꾸지 않는다 | 미연결 |
+| `scripts/run_zone_pair_dev.py`, `zone_pair_dev_runtime.py` (Codex 브랜치) | M2 공동 운반 dev | 위 host와 같은 방식 | **이번에 수정 금지**(Codex가 `ugrp-wt/codex-pair-grasp`에서 수정 중). 목록에만 남긴다 |
+| `harness/rgb_skill_execution.py` (`rgb/<oid>-<label>.jpg`) | 3대 dispatch RGB 스킬(`plan-guidance` 등) | 관측 id를 스트림으로 쓴다. 스킬 단계 전환·LLM 결정 직전 관측은 결정 프레임 | 미연결 |
+| `harness/task_stage_execution.py` (`rgb/<request>-<label>.jpg`) | 단계 요청 실행 | 요청마다 쓰는 이미지는 모델 요청 입력이라 **전부 유지**(정책 대상 아님) | 해당 없음 |
+| `harness/rgb_communication_runtime.py`, `harness/camera_runtime.py` | RGB 대화·카메라 런타임(모델 요청) | 모델 요청 이미지라 **전부 유지** | 해당 없음 |
+| `scripts/record_owncam_localization.py`, `experiments/2026-09-26-vision-loc/run_vl_teacher_render.py` | 위치 추정 학습·평가 데이터 | 학습 표본이라 **전부 유지** | 해당 없음 |
+| `scripts/eval_zone_*`, `probe_*` | 인식 평가 렌더·진단 | 평가 표본은 전부 유지. 진단 probe는 러너 주인이 판단한다 | 미연결 |
+
+- 효과(추정, 5 Hz 기준): 결정 프레임이 적은 구간에서 dev 프레임 파일은 약 1/5가 된다. M1형 dev 에피소드는 36 → 약 8–12 MiB다. 실제 비율은 연결 뒤 `record()`의 `saved/frames`로 확인한다.
+
 ## 6. 예산 (제안, 사용자 확정 필요)
 
 - 프로젝트 합계 ≤ 60 GiB: `outputs/` ≤ 40, worktree ≤ 10, 기본 체크아웃 나머지 ≤ 6, 가상환경 ≤ 2, 여유 2.
