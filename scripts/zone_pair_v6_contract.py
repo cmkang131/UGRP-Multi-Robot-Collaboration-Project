@@ -54,12 +54,16 @@ def contract(revision=CURRENT_REVISION):
             'stationary_bootstrap':('v6b: equal-weight AMCL-default Gaussian prior on the static start_dock rows; '
                                     'no own arm/wheel command before an informative settled fix whose first arm '
                                     'transition the unchanged guard clears (or gate LOW); only camera pans in between, '
-                                    'each checked by the unchanged guard at the covariance sigma points; dual '
-                                    'samples + resample-move on the stationary belief; 10 s stationary budget, '
-                                    'then STATIONARY_BOOTSTRAP_NO_FIX')},
+                                    'each checked by the unchanged guard at 64 posterior samples + mean (particle chance '
+                                    'constraint); completion '
+                                    'only at the home pan after settle, with sigma within the guard cap; '
+                                    'resample-move on the stationary belief after an accepted view (no dual samples); '
+                                    'a rejected view '
+                                    'never mutates the PF; 10 s stationary budget per motion job, then '
+                                    'STATIONARY_BOOTSTRAP_NO_FIX, and a failed bootstrap never unlocks motion')},
         'bootstrap_constants':{'amcl_initial_std_xy_m':boot.AMCL_INITIAL_STD_XY_M,
                                'amcl_initial_std_yaw_rad':boot.AMCL_INITIAL_STD_YAW_RAD,
-                               'dual_fraction':boot.BootstrapLocalizer.DUAL_FRACTION,
+                               'belief_samples':boot.BELIEF_SAMPLES,
                                'max_boot_frames':boot.BootstrapLocalizer.MAX_BOOT_FRAMES,
                                'move_steps':[list(s) for s in boot.BootstrapLocalizer.MOVE_STEPS],
                                'move_iters':boot.BootstrapLocalizer.MOVE_ITERS,

@@ -12,7 +12,9 @@ actor requests, and stops as soon as each participant either
 - the SIM limit (default 25 s) elapses.
 
 Control inputs are the robots' own RGB, own commands and the static map.
-GT (``_truth``) is read only after the loop for the ``eval_*`` columns.
+No GT reaches control. This script reads GT (``_truth``) only after the loop
+for its ``eval_*`` columns; the inherited host still logs GT during the run
+into its in-memory ``eval_only`` evaluation record (never a control input).
 No model calls, weld OFF, no pair_carry submission, no retries. This is a
 diagnostic, not a registered cohort: dock assignment and pose perturbations
 are setup-only changes of the spawn, recorded per case.

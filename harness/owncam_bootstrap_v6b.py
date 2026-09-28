@@ -25,22 +25,31 @@ Opt-in layer over the v6 recovery PF (``owncam_recovery_v6``), selected by the
    with the base holding and the arm at its issued posture. Frames taken
    while the camera moves stay excluded (unchanged 0.3 s settle rule).
 
-3. Belief check for that pan only (RRBT: Bry & Roy 2011 check the belief's
-   k-sigma uncertainty ellipse against obstacles). The unchanged SweepGuard
-   is evaluated at the mean and at the 2k sigma points of the reported
-   3x3 (x, y, yaw) covariance, each with zero extra sigma inflation. This
-   replaces the isotropic sqrt(var_x+var_y) inflation, which refuses even
-   the current folded posture at every dock once sigma reaches its cap,
-   for the pan-only bootstrap scan. The arm raise afterwards uses the
-   unchanged guard and gate.
+3. Belief check for that pan only (particle chance constraint: Blackmore,
+   Ono, Bektassov, Williams 2010 approximate a collision chance constraint
+   by the fraction of belief particles in collision; RRBT, Bry & Roy 2011,
+   checks the belief rather than the mean). The unchanged SweepGuard is
+   evaluated with zero extra sigma at each of 64 systematic samples of the
+   provider's posterior plus the mean; all must be clear. After one folded
+   view the posterior is still multimodal across the three dock rows
+   (offline replay), which a Gaussian sigma-point check misrepresents.
+   A provider without ``belief_hypotheses`` falls back to the mean and the
+   2x3 covariance sigma points. The arm raise uses the unchanged guard.
 
 4. PF sampling for the stationary views (the robot does not move, so the
-   exact belief is prior x prod_j p(z_j|x) up to the stationary diffusion):
-   Mixture-MCL dual samples (Thrun, Fox, Burgard, Dellaert 2001) from the
-   existing sensor-resetting proposal ``_reset_from``, weighted by that
-   predicted belief, then resample-move MCMC (Gilks & Berzuini 2001) with
-   the same belief as the invariant target. Neither re-uses a frame as new
-   evidence; byte-identical frames are still dropped by the provider.
+   exact belief is b = prior x prod_j p(z_j|x) up to the stationary diffusion
+   and the per-step map penalty): after each ACCEPTED view, resample-move
+   MCMC (Gilks & Berzuini 2001) with target b restores sample diversity
+   without re-using the view as new evidence. A rejected view mutates
+   nothing. (Review #261: the first draft's Mixture-MCL dual samples were
+   weighted by b alone, ignoring the proposal density q, and injected
+   before the quality decision. A corrected b*L/q version did not change the
+   offline first-view result, and prior + pan views reach completion in the
+   synthetic tests, so dual samples were removed.)
+
+5. Tag-only today: ``_usable`` and the parent likelihood read temporary
+   wall tags. Zero-tag behaviour is unverified and needs a markerless
+   provider implementing ``initialize_from_prior`` (VIS6, PR #253).
 
 Provider-agnostic: the executor reads only ``PoseReport`` (``last_fix_t``,
 ``observation_quality`` receipt, mean and ``cov``). A markerless provider must
@@ -108,7 +117,6 @@ def prior_logdensity(px, prior) -> np.ndarray:
 
 class BootstrapLocalizer(RecoveryLocalizer):
     """RecoveryLocalizer whose initial belief may come from a static prior."""
-    DUAL_FRACTION = .2          # same share as the v6 recovery proposals
     MAX_BOOT_FRAMES = 6         # one per WIDE_LOOK_PANS view
     MOVE_STEPS = ((.05, .05, .03), (.02, .02, .01), (.005, .005, .003))
     MOVE_ITERS = 10
@@ -144,18 +152,24 @@ class BootstrapLocalizer(RecoveryLocalizer):
 
     # ------------------------------------------------------------ update
     def update(self, t, detections, commanded_pose=None):
+        """Parent update unchanged; an ACCEPTED stationary view joins the exact
+        stationary belief and is followed by resample-move.
+
+        No particle or weight is touched before the parent's quality decision:
+        a rejected (unsettled, saturated or incompatible) view leaves the PF as
+        the parent left it, i.e. prediction only (review #261 finding 5).
+        """
         boot = None
         if self.bootstrap_active() and (self.last_update_t is None or t > self.last_update_t):
-            self.predict_to(t)
-            if t - self.last_servo_cmd_t >= .3:
-                boot = self._inject_dual(t, detections, commanded_pose)
+            dets = self._usable(detections)
+            if dets:
+                boot = (dets, {int(k): int(v) for k, v in (commanded_pose or self.servo).items()})
         est = super().update(t, detections, commanded_pose)
         q = self.quality
         if (boot is not None and q.get('settled') and not q.get('saturated', True)
                 and q.get('inlier_fraction', 0.) >= MIN_INLIER_FRACTION):
-            # The parent applied this frame's likelihood; add it to the exact
-            # stationary belief and restore diversity by resample-move.
             self.boot_obs.append(boot)
+            self.boot_log.append({'t': float(t), 'views': len(self.boot_obs)})
             self._resample_move()
             est = self.estimate()
         return est
@@ -166,39 +180,11 @@ class BootstrapLocalizer(RecoveryLocalizer):
         return [d for d in detections if int(d['id']) in self.tags and d.get('solutions')
                 and (not maximum or np.linalg.norm(observed_tag_in_camera(d)[0]) <= maximum)]
 
-    def _belief(self, px, extra=()):
+    def _belief(self, px):
         total = prior_logdensity(px, self.prior_receipt) + self._map_logprior(px)
-        for dets, pose in (*self.boot_obs, *extra):
+        for dets, pose in self.boot_obs:
             total = total + self._loglik(px, dets, pose)
         return total
-
-    def _inject_dual(self, t, detections, commanded_pose):
-        dets = self._usable(detections)
-        if not dets:
-            return None
-        pose = {int(k): int(v) for k, v in (commanded_pose or self.servo).items()}
-        k = max(1, int(self.n * self.DUAL_FRACTION))
-        idx = self.rng.choice(self.n, k, replace=False)
-        dual = self._reset_from(dets, pose, k)
-        # Dual importance weight = predicted belief (prior x earlier stationary views).
-        dens = self._belief(dual)
-        record = {'t': float(t), 'k': int(k), 'views_before': len(self.boot_obs),
-                  'max_logdensity': float(np.max(dens))}
-        self.boot_log.append(record)
-        if not np.isfinite(dens).any() or dens.max() < math.log(1e-12):
-            record['skipped'] = 'observation_outside_prior_support'
-            return (dets, pose)
-        keep = np.ones(self.n, bool)
-        keep[idx] = False
-        reg = self.logw[keep] - self.logw[keep].max()
-        reg -= math.log(np.exp(reg).sum())
-        dual_w = dens - dens.max()
-        dual_w -= math.log(np.exp(dual_w).sum())
-        self.px[idx], self.scale[idx] = dual, 1.
-        self.logw[keep] = reg + math.log(1 - self.DUAL_FRACTION)
-        self.logw[idx] = dual_w + math.log(self.DUAL_FRACTION)
-        self.stats['dual_samples'] = self.stats.get('dual_samples', 0) + int(k)
-        return (dets, pose)
 
     def _resample_move(self):
         w = np.exp(self.logw - self.logw.max()); w /= w.sum()
@@ -282,13 +268,18 @@ def bootstrap_fix(report) -> bool:
 
 
 def bootstrap_complete(report, *, guard=None, servo=None, first_motion=None) -> bool:
-    """Informative fix AND the first motion is certifiable by the UNCHANGED guard.
+    """Informative fix AND the first motion is certifiable WITHOUT sigma clamping.
 
-    An informative frame can arrive while one view still leaves a ridge
-    (offline: sigma_xy 0.18-0.39 m at the first fix). The stop-and-look ends
-    only when the unchanged SweepGuard (isotropic, capped sigma) clears the
-    job's first arm transition from the home pan, or, without a known first
-    motion, at the existing gate LOW level (0.05 m / 0.06 rad, unloaded).
+    An informative frame can arrive while the posterior is still wide
+    (offline: sigma_xy 0.18-0.39 m at the first fix). Completion requires either
+    the existing gate LOW level (0.05 m / 0.06 rad, unloaded), or
+
+    - reported sigma within the guard's own cap (0.15 m / 0.20 rad), so the
+      guard's ``min(sigma, cap)`` clamp is inactive (review #261 finding 2), and
+    - the unchanged SweepGuard clears the job's first arm transition from home.
+
+    The old policies' guard is not modified; only this completion rule refuses
+    a clearance that exists only because of the clamp.
     """
     from harness import zone_own_guards as guards
     if not bootstrap_fix(report):
@@ -296,6 +287,8 @@ def bootstrap_complete(report, *, guard=None, servo=None, first_motion=None) -> 
     if report.std_xy_m <= guards.GATE_UNLOADED.low_xy_m and report.std_yaw_rad <= guards.GATE_UNLOADED.low_yaw_rad:
         return True
     if guard is None or servo is None or first_motion is None:
+        return False
+    if report.std_xy_m > guards.SIGMA_CAP_XY_M or report.std_yaw_rad > guards.SIGMA_CAP_YAW_RAD:
         return False
     return bool(guard.transition_clear(servo, first_motion, guards.OwnPose.from_report(report), loaded=False))
 
@@ -314,17 +307,39 @@ def sigma_points(report, k):
     return points
 
 
-def belief_pan_clear(guard, current, pan, report, *, k=None) -> bool:
-    """RRBT-style: the unchanged guard at every sigma point, no extra inflation.
+BELIEF_SAMPLES = 64
 
-    Pan-only (servo 6), base holding, arm at its issued posture. Nothing else.
+
+def belief_hypotheses(provider, n=BELIEF_SAMPLES):
+    """Systematic samples of the provider's posterior, or None if it exposes none."""
+    inner = _unwrap(provider)
+    method = getattr(inner, 'belief_hypotheses', None)
+    if callable(method):
+        return np.asarray(method(n), float)
+    loc = getattr(inner, 'loc', None)
+    if loc is None or not getattr(loc, 'initialized', False):
+        return None
+    w = np.exp(loc.logw - loc.logw.max())
+    w /= w.sum()
+    idx = np.minimum(np.searchsorted(np.cumsum(w), (np.arange(n) + .5) / n), len(w) - 1)
+    return np.asarray(loc.px[idx], float)
+
+
+def belief_pan_clear(guard, current, pan, report, *, hypotheses=None, k=None) -> bool:
+    """Pan-only (servo 6), base holding, arm at its issued posture. Nothing else.
+
+    With ``hypotheses``: the unchanged guard at the mean and at every belief
+    sample, zero extra inflation (particle chance constraint). Without:
+    the mean and the covariance sigma points (fallback for other providers).
     """
     from harness import zone_own_guards as guards
-    k = guards.K_SIGMA if k is None else k
     if report is None or not report.initialized:
         return False
-    points = sigma_points(report, k)
-    if points is None:
+    if hypotheses is not None:
+        points = [np.array([report.x_m, report.y_m, report.yaw_rad], float), *np.asarray(hypotheses, float)]
+    else:
+        points = sigma_points(report, guards.K_SIGMA if k is None else k)
+    if points is None or not all(np.isfinite(p).all() for p in points):
         return False
     return all(guard.transition_clear(current, {6: int(pan)},
                                       guards.OwnPose(float(p[0]), float(p[1]), float(p[2]), 0., 0.),
@@ -332,11 +347,16 @@ def belief_pan_clear(guard, current, pan, report, *, k=None) -> bool:
 
 
 class StationaryBootstrap:
-    """Executor-side stop-and-look: hold, observe, belief-checked pan scan, restore.
+    """Executor-side stop-and-look: hold, observe, belief-checked pan scan, home, verify.
 
     ``step`` returns commands to issue now, or None when the bootstrap is done.
     It never issues an arm (servo 1/3/4/5) or wheel command. The cumulative
     stationary time is bounded by ``zone_own_sweep.SWEEP_REOBSERVE_S``.
+
+    Completion is decided only at the home pan, after the settle time and on
+    the report current at that moment (review #261 finding 4). A pan view is
+    visited once: revisiting could feed a byte-different copy of an earlier
+    view as new evidence, so after the queue the scan only holds and observes.
     """
 
     def __init__(self, guard, pans, start_servo, now, *, first_motion=None):
@@ -345,7 +365,7 @@ class StationaryBootstrap:
         self.home = int(start_servo.get(6, 1500))
         # The job's first arm posture, checked from the home pan (e.g. LOOK_P20).
         self.first_motion = None if first_motion is None else {**dict(first_motion), 6: self.home}
-        self.queue = [int(p) for p in pans if int(p) != self.home]
+        self.queue = [int(p) for p in dict.fromkeys(pans) if int(p) != self.home]
         self.target, self.since, self.stage = None, float(now), 'observe'
         self.log = [{'t': round(float(now), 3), 'event': 'start', 'home_pan': self.home}]
         self.outcome = None
@@ -354,43 +374,58 @@ class StationaryBootstrap:
         cur = int(servo.get(6, self.home))
         return {'kind': 'look', 'pan_pulse': cur + int(np.clip(self.target - cur, -60, 60))}
 
+    def _complete(self, rep, servo):
+        return bootstrap_complete(rep, guard=self.guard, servo={**dict(servo), 6: self.home},
+                                  first_motion=self.first_motion)
+
+    def _event(self, now, event, rep=None, **detail):
+        row = {'t': round(float(now), 3), 'event': event, **detail}
+        if rep is not None and rep.initialized:
+            row.update(std_xy_m=round(rep.std_xy_m, 4), std_yaw_rad=round(rep.std_yaw_rad, 4),
+                       fix_t=rep.last_fix_t)
+        self.log.append(row)
+
     def step(self, now, provider, servo):
         rep = provider.report(now)
-        fixed = bootstrap_complete(rep, guard=self.guard, servo={**dict(servo), 6: self.home},
-                                   first_motion=self.first_motion)
-        if fixed and self.stage in ('observe', 'settle'):
-            self.stage, self.target = 'restore', self.home
-            self.log.append({'t': round(now, 3), 'event': 'fix', 'fix_t': rep.last_fix_t,
-                             'std_xy_m': round(rep.std_xy_m, 4), 'std_yaw_rad': round(rep.std_yaw_rad, 4)})
-        if self.stage == 'restore' and int(servo.get(6, self.home)) == self.home:
-            self.outcome = 'fix'
-            self.wait.check_gate(now, ready=True)
-            return None
+        hyps = belief_hypotheses(provider)
+        settled = now - self.since + 1e-9 >= SETTLE_AFTER_PAN_S
+        if self.stage == 'verify' and settled:
+            if self._complete(rep, servo) and int(servo.get(6, self.home)) == self.home:
+                self.outcome = 'fix'
+                self.wait.check_gate(now, ready=True)
+                self._event(now, 'complete', rep)
+                return None
+            self._event(now, 'verify_failed', rep)
+            self.stage = 'observe'
         if self.wait.check_gate(now, ready=False) == 'blocked':
             self.outcome = 'blocked'
-            self.log.append({'t': round(now, 3), 'event': 'budget_exhausted', 'waited_s': self.wait.waited_s})
+            self._event(now, 'budget_exhausted', rep, waited_s=self.wait.waited_s)
             return [{'kind': 'hold'}]
         if self.stage in ('pan', 'restore'):
             if int(servo.get(6, self.home)) != self.target:
-                if not belief_pan_clear(self.guard, servo, self._pan_step(servo)['pan_pulse'], rep):
-                    self.log.append({'t': round(now, 3), 'event': 'pan_step_refused', 'target': self.target})
+                step = self._pan_step(servo)
+                if not belief_pan_clear(self.guard, servo, step['pan_pulse'], rep, hypotheses=hyps):
+                    self._event(now, 'pan_step_refused', rep, target=self.target)
                     if self.stage == 'pan':
-                        self.stage, self.since = 'settle', now   # observe where we are, then next pan
+                        self.stage = 'observe'          # observe where we are, then the next pan
                     return [{'kind': 'hold'}]
                 self.since = now
-                return [{'kind': 'hold'}, self._pan_step(servo)]
-            if self.stage == 'restore':
-                return [{'kind': 'hold'}]
-            self.stage = 'settle'
-        if self.stage == 'settle' and now - self.since + 1e-9 >= SETTLE_AFTER_PAN_S:
-            self.stage = 'observe'
-        if self.stage == 'observe' and now - self.since + 1e-9 >= SETTLE_AFTER_PAN_S:
+                return [{'kind': 'hold'}, step]
+            self.stage = 'verify' if self.stage == 'restore' else 'observe'
+            return [{'kind': 'hold'}]
+        if self.stage == 'observe' and settled:
+            if self._complete(rep, servo):
+                if int(servo.get(6, self.home)) == self.home:
+                    self.stage = 'verify'               # already settled at home: verify now
+                    return self.step(now, provider, servo)
+                self.stage, self.target = 'restore', self.home
+                self._event(now, 'restore', rep)
+                return self.step(now, provider, servo)
             while self.queue:
                 pan = self.queue.pop(0)
-                if belief_pan_clear(self.guard, servo, pan, rep):
+                if belief_pan_clear(self.guard, servo, pan, rep, hypotheses=hyps):
                     self.target, self.stage = pan, 'pan'
-                    self.log.append({'t': round(now, 3), 'event': 'pan', 'target': pan,
-                                     'std_xy_m': round(rep.std_xy_m, 4) if rep.initialized else None})
-                    return [{'kind': 'hold'}, self._pan_step(servo)]
-                self.log.append({'t': round(now, 3), 'event': 'pan_refused', 'target': pan})
+                    self._event(now, 'pan', rep, target=pan)
+                    return self.step(now, provider, servo)
+                self._event(now, 'pan_refused', rep, target=pan)
         return [{'kind': 'hold'}]

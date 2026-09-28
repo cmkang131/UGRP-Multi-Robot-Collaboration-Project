@@ -9,7 +9,8 @@ import pytest
 
 from harness import zone_own_guards as guards
 from harness.owncam_bootstrap_v6b import (AMCL_INITIAL_STD_XY_M, AMCL_INITIAL_STD_YAW_RAD, FAIL_REASON,
-                                          BootstrapLocalizer, StationaryBootstrap, belief_pan_clear,
+                                          BootstrapLocalizer, StationaryBootstrap, belief_hypotheses,
+                                          belief_pan_clear,
                                           bootstrap_complete, bootstrap_state, dock_prior, enable_bootstrap,
                                           prior_logdensity, sigma_points)
 from harness.owncam_drive import WIDE_LOOK_PANS
@@ -131,16 +132,22 @@ def test_moving_frames_are_never_used_by_the_bootstrap():
     p.on_command({'t': 1.3, 'kind': 'arm', 'servo_id': 3, 'pulse': 800})
     before = p.loc.px.copy()
     p.loc.update(1.30025, dets, dict(p.servo))
-    assert p.loc.boot_obs == [] and p.loc.stats.get('dual_samples', 0) == 0
+    assert p.loc.boot_obs == [] and 'moves' not in p.loc.stats
     assert p.loc.last_informative_t is None
     assert np.abs(p.loc.px - before).max() < .05        # only stationary diffusion
 
 
-def test_stationary_views_select_the_row_and_reach_a_fix():
+@pytest.mark.parametrize('truth', [(-.65, .55, 0.), (-.65, -.85, 0.), (-.65, -2.25, 0.), (-.6, .6, .05),
+                                   (-.7, -.8, -.08)])
+def test_prior_and_pan_scan_alone_reach_completion_without_dual_samples(truth):
+    """Review #261 finding 3: dual injection removed; prior + stationary pan views suffice (synthetic)."""
+    from harness.owncam_drive import LOOK_P20
+    assert not hasattr(BootstrapLocalizer, '_inject_dual') and not hasattr(BootstrapLocalizer, 'DUAL_FRACTION')
+    guard = guards.SweepGuard(DOCK_MAP)
+    first = {**LOOK_P20, 1: 2000, 6: 1500}
     rng = np.random.default_rng(3)
-    p = provider(particles=800); enable_provider(p); enable_bootstrap(p, 0.)
-    truth = (-.65, .55, 0.)
-    t, sigmas = 1.3, []
+    p = provider(particles=2000); enable_provider(p); enable_bootstrap(p, 0.)
+    t, sigmas, done = 1.3, [], False
     for pan in (1500, 1230, 970, 1770, 2030):
         servo = {**FOLDED, 6: pan}
         if pan != 1500:
@@ -149,12 +156,28 @@ def test_stationary_views_select_the_row_and_reach_a_fix():
         p.loc.update(t, detections(DOCK_MAP, truth, servo, rng), servo)
         rep = p.report(t)
         sigmas.append(rep.std_xy_m)
-        if bootstrap_complete(rep):
+        if bootstrap_complete(rep, guard=guard, servo=FOLDED, first_motion=first):
+            done = True
             break
         t += .2
-    assert abs(rep.y_m - truth[1]) < .1 and abs(rep.x_m - truth[0]) < .1
-    assert sigmas[0] < .8 and sigmas[-1] < sigmas[0]
-    assert rep.last_fix_t is not None and p.loc.stats['dual_samples'] > 0 and p.loc.stats['moves'] >= 1
+    assert done and rep.std_xy_m <= guards.SIGMA_CAP_XY_M and rep.std_yaw_rad <= guards.SIGMA_CAP_YAW_RAD
+    assert math.hypot(rep.x_m - truth[0], rep.y_m - truth[1]) < .15
+    assert sigmas[-1] < sigmas[0] and rep.last_fix_t is not None and p.loc.stats['moves'] >= 1
+    assert 'dual_samples' not in p.loc.stats
+
+
+def test_rejected_observation_leaves_particles_and_weights_untouched():
+    """Review #261 finding 5: a saturated/incompatible view must not mutate the PF."""
+    p = provider(particles=800); enable_provider(p); enable_bootstrap(p, 0.)
+    far = detections(DOCK_MAP, (3.5, -2.0, math.pi), {**FOLDED, 6: 1500}, np.random.default_rng(2))
+    assert far
+    p.loc.predict_to(1.5)
+    px, logw, scale = p.loc.px.copy(), p.loc.logw.copy(), p.loc.scale.copy()
+    p.loc.update(1.5, far, dict(p.servo))
+    q = p.loc.quality
+    assert not q.get('informative') and (q.get('saturated') or q.get('inlier_fraction', 0) < .66)
+    assert np.array_equal(p.loc.px, px) and np.array_equal(p.loc.logw, logw) and np.array_equal(p.loc.scale, scale)
+    assert p.loc.boot_obs == [] and 'moves' not in p.loc.stats
 
 
 def test_wheel_motion_ends_the_stationary_belief():
@@ -183,6 +206,22 @@ def test_belief_pan_check_uses_the_covariance_not_an_isotropic_cap():
     toward_wall = report(cov=((.09, 0, 0), (0, .001, 0), (0, 0, .001)))   # 0.6 m 2-sigma toward x=-1.05
     assert not belief_pan_clear(guard, FOLDED, 1230, toward_wall)
     assert len(sigma_points(ridge, 2.)) == 7
+
+
+def test_particle_pan_check_handles_a_multimodal_row_belief():
+    """Three-row posterior after one view: sigma points land outside the arena; particles do not."""
+    guard = guards.SweepGuard(DOCK_MAP)
+    rows = np.array([[-.65, y, 0.] for y in (-2.25, -.85, .55) for _ in range(20)])
+    mean = rows.mean(axis=0)
+    cov = np.cov(rows.T) + np.eye(3) * 1e-6
+    rep = report(x=mean[0], y=mean[1], yaw=mean[2], cov=tuple(map(tuple, cov)))
+    assert not belief_pan_clear(guard, FOLDED, 1230, rep)                       # Gaussian fallback refuses
+    assert belief_pan_clear(guard, FOLDED, 1230, rep, hypotheses=rows)
+    bad = np.vstack([rows, [[-1.0, -.85, 0.]]])                                 # one hypothesis at the west wall
+    assert not belief_pan_clear(guard, FOLDED, 1230, rep, hypotheses=bad)
+    p = provider(particles=300); enable_provider(p); enable_bootstrap(p, 0.)
+    hyps = belief_hypotheses(p)
+    assert hyps.shape == (64, 3) and np.all(np.isin(hyps, p.loc.px).all(axis=1))
 
 
 class FakeProvider:
@@ -235,6 +274,54 @@ def test_scan_fails_closed_on_budget_without_arm_or_wheel_commands():
     assert {c['kind'] for _, c in issued} <= {'hold', 'look'}
 
 
+def test_restore_rechecks_after_settle_and_reobserves_when_the_fix_is_lost():
+    """Review #261 finding 4: homing alone is not completion."""
+    state = {'lost_after_restore': True, 'restore_t': None, 'servo': None}
+    def reports(now):
+        if now < 4.:
+            return report(cov=((.004, 0, 0), (0, .12, .01), (0, .01, .01)), t=now)
+        homed = state['restore_t'] is not None and state['servo'][6] == 1500
+        if homed and state['lost_after_restore']:
+            return report(cov=((.004, 0, 0), (0, .12, .01), (0, .01, .01)), t=now)   # fix lost once home
+        return report(fix=4., t=now)
+    guard = guards.SweepGuard(DOCK_MAP)
+    servo = dict(FOLDED)
+    state['servo'] = servo
+    scan = StationaryBootstrap(guard, WIDE_LOOK_PANS, servo, 1.3)
+    t, last_home_step = 1.3, None
+    while t < 30. and scan.outcome is None:
+        out = scan.step(t, FakeProvider(reports), servo)
+        if out is None:
+            break
+        if scan.stage == 'restore' and state['restore_t'] is None:
+            state['restore_t'] = t
+        for c in out:
+            if c['kind'] == 'look':
+                servo[6] = c['pan_pulse']
+                if servo[6] == 1500:
+                    last_home_step = t
+        t = round(t + .1, 6)
+    assert state['restore_t'] is not None and servo[6] == 1500
+    assert scan.outcome == 'blocked'                                   # never 'fix' without a current fix
+    assert any(e['event'] == 'verify_failed' for e in scan.log)
+    # With the fix kept, completion happens only after the settle time at home.
+    state.update(lost_after_restore=False, restore_t=None)
+    servo = dict(FOLDED)
+    state['servo'] = servo
+    scan = StationaryBootstrap(guard, WIDE_LOOK_PANS, servo, 1.3)
+    t, last_home_step = 1.3, None
+    while t < 30.:
+        out = scan.step(t, FakeProvider(reports), servo)
+        if out is None:
+            break
+        for c in out:
+            if c['kind'] == 'look':
+                servo[6] = c['pan_pulse']
+                last_home_step = t if servo[6] == 1500 else last_home_step
+        t = round(t + .1, 6)
+    assert scan.outcome == 'fix' and last_home_step is not None and t - last_home_step >= .6 - 1e-9
+
+
 def test_informative_fix_alone_does_not_complete_a_wide_posterior():
     from harness.owncam_drive import LOOK_P20
     guard = guards.SweepGuard(DOCK_MAP)
@@ -246,6 +333,21 @@ def test_informative_fix_alone_does_not_complete_a_wide_posterior():
     assert not bootstrap_complete(mid)
     assert bootstrap_complete(mid, guard=guard, servo=FOLDED, first_motion=first)
     assert not bootstrap_complete(report(cov=mid.cov), guard=guard, servo=FOLDED, first_motion=first)  # no fix
+
+
+def test_completion_rejects_clearance_that_exists_only_by_sigma_clamping():
+    """Review #261 finding 2 (reviewer's case): sigma above the guard cap never completes."""
+    from harness.owncam_drive import LOOK_P20
+    guard = guards.SweepGuard(DOCK_MAP)
+    first = {**LOOK_P20, 1: 2000, 6: 1500}
+    wide = report(x=-.50, y=.55, cov=((.04, 0, 0), (0, .09, 0), (0, 0, .09)), fix=1.9)
+    assert wide.std_xy_m > guards.SIGMA_CAP_XY_M and wide.std_yaw_rad > guards.SIGMA_CAP_YAW_RAD
+    clamped = guards.OwnPose.from_report(wide)
+    assert guard.transition_clear(FOLDED, first, clamped, loaded=False)      # the old guard (unchanged) clears it
+    assert not bootstrap_complete(wide, guard=guard, servo=FOLDED, first_motion=first)
+    just_over = report(x=-.50, y=.55, cov=((.0115, 0, 0), (0, .0115, 0), (0, 0, .001)), fix=1.9)
+    assert just_over.std_xy_m > guards.SIGMA_CAP_XY_M
+    assert not bootstrap_complete(just_over, guard=guard, servo=FOLDED, first_motion=first)
 
 
 def test_executor_is_inert_without_state_and_fails_closed_with_it():
@@ -273,6 +375,33 @@ def test_executor_is_inert_without_state_and_fails_closed_with_it():
     assert not any(c['kind'] in ('arm', 'mecanum', 'drive') for c in cmds)
     assert ex.jobs_done[-1]['outcome'] == FAIL_REASON
     assert ex.summary()['stationary_bootstrap']['exhausted_at'] is not None
+
+
+def test_exhausted_bootstrap_keeps_refusing_motion_for_later_jobs():
+    """Review #261 finding 1 (reviewer's repro): no dock prior, no fix, then a second look_around."""
+    from harness.zone_own_executor import ZoneOwnExecutor
+    from tests.test_zone_own_executor_host import FakeHost
+    from tests.test_zone_pair_executor import ORDER, CALIB
+    from tests.test_zone_own_executor import ROWS_Y
+    nodock = {k: v for k, v in DOCK_MAP.items() if k != 'start_dock'}
+    exs = {r: ZoneOwnExecutor(r, nodock, CALIB['params'], ORDER, skill_factory=lambda *a, **kw: None,
+                              pose_estimate_cls=tuple, search_rows_y=ROWS_Y, judgments=False, job_sim_limit_s=60)
+           for r in ('r1', 'r2', 'r3')}
+    seen = {}
+    def again(h):
+        seen['first'] = [j['outcome'] for j in h.robots['r1'].executor.jobs_done]
+        h.call('r1', 'look_around')
+    host = FakeHost(exs, lambda *a: None, hooks=[(14., again)])
+    ex = exs['r1']
+    enable_provider(ex.pose)
+    assert enable_bootstrap(ex.pose, 0.)['prior_skip_reason'] == 'no_static_dock_prior'
+    host.call('r1', 'look_around')
+    host.run(28.)
+    assert seen['first'] == [FAIL_REASON]
+    motion = [c for c in host.robots['r1'].commands if c['kind'] in ('arm', 'mecanum', 'drive')]
+    assert motion == [] and not ex.pose.loc.initialized
+    assert [j['outcome'] for j in ex.jobs_done] == [FAIL_REASON, FAIL_REASON]
+    assert ex.summary()['stationary_bootstrap']['attempts'] == 2
 
 
 def test_policies_bundle_and_pair_team_opt_in():

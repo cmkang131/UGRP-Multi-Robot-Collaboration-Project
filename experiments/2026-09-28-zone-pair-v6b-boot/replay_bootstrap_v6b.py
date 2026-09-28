@@ -23,8 +23,8 @@ other pans) do not exist in any saved run; the sim probe covers them.
 
 Part B (PF machinery only, not the v6b schedule): the two v5h runs kept the
 base at the dock until 60.7 s and raised the arm/panned there. Feeding those
-own frames/commands through the v6b localizer checks that dual sampling +
-resample-move combine several stationary views into an informative fix and
+own frames/commands through the v6b localizer checks that resample-move on the
+stationary belief combines several stationary views into an informative fix and
 agree with the frozen v5h PF. The settle rule excludes frames < 0.3 s after
 each own servo command, exactly as in the executor.
 
@@ -43,8 +43,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from harness import zone_own_guards as guards                       # noqa: E402
-from harness.owncam_bootstrap_v6b import (belief_pan_clear, bootstrap_fix,  # noqa: E402
-                                          enable_bootstrap)
+from harness.owncam_bootstrap_v6b import (belief_hypotheses, belief_pan_clear,  # noqa: E402
+                                          bootstrap_fix, enable_bootstrap)
 from harness.owncam_drive import LOOK_P20, WIDE_LOOK_PANS             # noqa: E402
 from harness.owncam_pose_source import OwnCamPoseSource              # noqa: E402
 from harness.owncam_recovery_v6 import enable_provider               # noqa: E402
@@ -113,7 +113,11 @@ def assess(src, static, gt, now, schedule):
                    sigma_within_cap=bool(rep.std_xy_m <= guards.SIGMA_CAP_XY_M
                                          and rep.std_yaw_rad <= guards.SIGMA_CAP_YAW_RAD),
                    arm_raise_decision=decision,
-                   belief_pan_1230_clear=belief_pan_clear(guard, servo, 1230, rep),
+                   belief_pan_1230_clear=belief_pan_clear(guard, servo, 1230, rep,
+                                                          hypotheses=belief_hypotheses(src)),
+                   belief_pans_clear=[p for p in (1230, 970, 1770, 2030) if belief_pan_clear(
+                       guard, servo, p, rep, hypotheses=belief_hypotheses(src))],
+                   sigma_point_pan_1230_clear=belief_pan_clear(guard, servo, 1230, rep),
                    eval_err_xy_m=round(err, 4), eval_err_yaw_rad=round(yerr, 4))
     out.update(v6_informative_fix=bool(schedule != 'v5h_logged' and bootstrap_fix(rep)),
                fix_t=rep.last_fix_t, inlier_fraction=q.get('inlier_fraction'),

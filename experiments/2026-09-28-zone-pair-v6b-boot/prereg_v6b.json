@@ -232,12 +232,12 @@
     "flag_definitions": {
       "posterior_relook": "B: posterior-preserving relook, observation quality receipts, blocked-pan cancel",
       "beam_relative": "A: own-view beam-relative align/close-in and pre-close shape report; separate global safety envelope with planned safety looks; during align/pre-close the PF is a reference only (no HIGH/convergence stop) while an object-anchored bound (entry fix + ready relative view of the static beam) certifies wall/arm clearance",
-      "stationary_bootstrap": "v6b: equal-weight AMCL-default Gaussian prior on the static start_dock rows; no own arm/wheel command before an informative settled fix whose first arm transition the unchanged guard clears (or gate LOW); only camera pans in between, each checked by the unchanged guard at the covariance sigma points; dual samples + resample-move on the stationary belief; 10 s stationary budget, then STATIONARY_BOOTSTRAP_NO_FIX"
+      "stationary_bootstrap": "v6b: equal-weight AMCL-default Gaussian prior on the static start_dock rows; no own arm/wheel command before an informative settled fix whose first arm transition the unchanged guard clears (or gate LOW); only camera pans in between, each checked by the unchanged guard at 64 posterior samples + mean (particle chance constraint); completion only at the home pan after settle, with sigma within the guard cap; resample-move on the stationary belief after an accepted view (no dual samples); a rejected view never mutates the PF; 10 s stationary budget per motion job, then STATIONARY_BOOTSTRAP_NO_FIX, and a failed bootstrap never unlocks motion"
     },
     "bootstrap_constants": {
       "amcl_initial_std_xy_m": 0.5,
       "amcl_initial_std_yaw_rad": 0.2617993877991494,
-      "dual_fraction": 0.2,
+      "belief_samples": 64,
       "max_boot_frames": 6,
       "move_steps": [
         [
@@ -307,7 +307,7 @@
       "sim/zone_own_scene_provider.py": "cc8cfb03ae05df37caf4f2e77194be5d799bda9a2c119f9e91ca2b1ef1b1f659",
       "harness/owncam_time.py": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
       "harness/zone_own_contract.py": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
-      "harness/zone_own_executor.py": "238cc136dd3f07c645f4b4732ac1c7363f88e4293318a2d503353866d87813d3",
+      "harness/zone_own_executor.py": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
       "harness/zone_own_status.py": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
       "harness/zone_own_perception.py": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
       "harness/zone_pair_obstruction.py": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
@@ -329,7 +329,7 @@
       "scripts/zone_pair_dev_runtime.py": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877",
       "scripts/zone_pair_grasp_contract.py": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85",
       "scripts/evaluate_zone_pair_dev.py": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
-      "configs/simulation_workflows.json": "66bdd83acd960104db4dc0a295776698ba02e3cdd2a9ff37aa93b0eec5031f35",
+      "configs/simulation_workflows.json": "a120f8c2166a315ef8501680a37b0b3a71d5c981e5822276856aa32cdf9222d8",
       "sim/zone_start_dock.py": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
       "sim/zone_dock_scene.py": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
       "sim/zone_arena.py": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
@@ -343,7 +343,7 @@
       "harness/zone_pair_global.py": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
       "harness/owncam_recovery_v6.py": "74d90f36dd3f170091ed7c3e8b73432d81cb9ee0ca36d8472b063c9af92b5b46",
       "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
-      "scripts/zone_pair_v6_contract.py": "37c356ca0e57812219ae60de3c6ef32fc426e14806ab471b432437dd9bbf85d0",
+      "scripts/zone_pair_v6_contract.py": "090309c3953cc4b297f84bf727a03b772d837845f435b738252c38d550916d05",
       "harness/zone_own_sweep.py": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
       "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
       "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
@@ -351,7 +351,7 @@
       "scripts/study_owncam_pair_beam.py": "3e4c77e279cde780e19b1a1eb2643c626c46dac15e4671001607c5fa6b9c3cff",
       "harness/visual_arm.py": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
       "harness/m1_owncam_delivery.py": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
-      "harness/owncam_bootstrap_v6b.py": "51e49b35f8a492dceeb2f99ded0e26086b07a03d4c0a8105a8c8485f180aa3ea"
+      "harness/owncam_bootstrap_v6b.py": "0c128d4e2a1346dd1d67c7e52992a73f862e349ea754b2ef507ae913d150164e"
     }
   },
   "planned_run_count": 6,
@@ -569,5 +569,5 @@
   "scene_contract_changed_sources": [
     "scripts/run_zone_pair_dev.py"
   ],
-  "registration_sha256": "89ce4fb0ba92c7dae64a6e065a3a4ca0078302b6ec1a9297df81309a001f5071"
+  "registration_sha256": "abfa6752821a813798259c6f999b048d9712c2d83d68ed203e7010dc6646e872"
 }

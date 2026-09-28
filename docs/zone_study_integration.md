@@ -1,4 +1,4 @@
-현재 미실행 후보는 `zone-pair-v75-dock-prior-bootstrap`(workflow `2.4.0`)이다. 2026-09-28 v6 dev 코호트(PR #259)에서 b-only·a+b가 출발 위치 부트스트랩에서 막힌 뒤, v70에 opt-in 정책 `b-boot`·`a+b-boot`(정적 지도 dock 행 AMCL식 사전분포 + 첫 움직임 전 정지 관측·belief 검사 팬 스캔)를 더했다. v5h·b-only·a+b의 동작은 바뀌지 않는다. main v70과 열린 PR 최댓값 v74(#249) 다음 번호다. v70은 v6 dev 코호트 기록 소스로 `RETIRED_BUNDLE_IDS`에 보존한다. [v6b 기록](../experiments/2026-09-28-zone-pair-v6b-boot/README.md)
+현재 미실행 후보는 `zone-pair-v75-dock-prior-bootstrap`(workflow `2.5.0`, #249의 2.4.0 다음)이다. 2026-09-28 v6 dev 코호트(PR #259)에서 b-only·a+b가 출발 위치 부트스트랩에서 막힌 뒤, v70에 opt-in 정책 `b-boot`·`a+b-boot`(정적 지도 dock 행 AMCL식 사전분포 + 첫 움직임 전 정지 관측·belief 검사 팬 스캔)를 더했다. v5h·b-only·a+b의 동작은 바뀌지 않는다. main v70과 열린 PR 최댓값 v74(#249) 다음 번호다. v70은 v6 dev 코호트 기록 소스로 `RETIRED_BUNDLE_IDS`에 보존한다. [v6b 기록](../experiments/2026-09-28-zone-pair-v6b-boot/README.md)
 
 이전 후보 v70의 설명:
 

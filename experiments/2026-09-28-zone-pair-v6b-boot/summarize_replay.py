@@ -25,7 +25,9 @@ for group, runs in (('part_A_failed_runs', ('v6-s911-b', 'v6-s911-ab', 'v6-s912-
             'sigma_within_guard_cap_rows': sum(bool(r.get('sigma_within_cap')) for r in rs),
             'arm_raise_decision_counts': {d: sum(r.get('arm_raise_decision') == d for r in rs)
                                           for d in ('clear', 'wait', 'blocked')},
-            'belief_pan_1230_clear_rows': sum(bool(r.get('belief_pan_1230_clear')) for r in rs)}
+            'belief_pan_1230_clear_rows': sum(bool(r.get('belief_pan_1230_clear')) for r in rs),
+            'any_belief_pan_clear_rows': sum(bool(r.get('belief_pans_clear')) for r in rs),
+            'sigma_point_pan_1230_clear_rows': sum(bool(r.get('sigma_point_pan_1230_clear')) for r in rs)}
 for r in rows:
     if r['part'] == 'B':
         out['part_B'].append({k: r.get(k) for k in ('run', 'robot', 'schedule', 'until_s', 'first_informative_fix',

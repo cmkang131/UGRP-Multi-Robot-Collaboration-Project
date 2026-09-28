@@ -538,8 +538,9 @@ class ZoneOwnExecutor(OwnStatusMixin):
         """v6b opt-in stop-and-look before the first own motion; inert without provider state."""
         from harness.owncam_bootstrap_v6b import FAIL_REASON, StationaryBootstrap, bootstrap_state
         state = bootstrap_state(self.pose)
-        if (state is None or job.kind == 'hold' or state['completed_at'] is not None
-                or state['exhausted_at'] is not None):
+        # A failed bootstrap never unlocks motion: every later motion job must
+        # pass its own stationary re-observation first (review #261 finding 1).
+        if state is None or job.kind == 'hold' or state['completed_at'] is not None:
             return None
         if self._boot is None:
             self._boot = StationaryBootstrap(self.guard, WIDE_LOOK_PANS, self.servo, now,
@@ -552,8 +553,11 @@ class ZoneOwnExecutor(OwnStatusMixin):
                          std_yaw_rad=rep.std_yaw_rad)
             return None
         if self._boot.outcome == 'blocked':
-            state.update(exhausted_at=float(now), log=list(self._boot.log))
-            self._fail(now, FAIL_REASON, bootstrap=copy.deepcopy(self._boot.log))
+            log = copy.deepcopy(self._boot.log)
+            state.update(exhausted_at=float(now), attempts=state.get('attempts', 0) + 1,
+                         log=log)
+            self._boot = None                 # the next motion job re-observes from scratch
+            self._fail(now, FAIL_REASON, bootstrap=log)
             return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
         return {'mode': 'tick', 'commands': commands}
 
