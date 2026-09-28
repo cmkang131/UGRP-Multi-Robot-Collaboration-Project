@@ -284,7 +284,8 @@ def save_checkpoint(host, out, label):
             'servo': {str(k): int(v) for k, v in loc.servo.items()}, 'loaded': bool(loc.load.loaded),
             'motion_profile': loc.motion_profile, 'stats': dict(loc.stats),
             'rng_state': loc.rng.bit_generator.state, 'provider_servo': {str(k): int(v) for k, v in pose.servo.items()},
-            'recovery_v6': bool(getattr(pose, 'recovery_v6', False))}
+            'recovery_v6': bool(getattr(pose, 'recovery_v6', False)),
+            'exact_fix_clock_v6c': bool(getattr(pose, 'exact_fix_clock_v6c', False))}
     path = Path(out) / 'checkpoints' / f'{label}.npz'
     path.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(path, **arrays)

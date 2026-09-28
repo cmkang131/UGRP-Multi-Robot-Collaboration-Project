@@ -74,12 +74,15 @@ INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
 # main's v69 (v66 multi-turn scheduler + v67 landmark-agnostic pair path). The
 # composed source equals none of them, so it takes the next free number; v68
 # stays reserved as the pre-merge v6 draft recorded by its offline replay.
+# v76 = v70 + the opt-in v6c flags (b-v6c); v70 is retired with the source
+# recorded by the 2026-09-28 v6 dev cohort (PR #259).
 from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID
 RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
                       'zone-study-integration-v64-source-closure', 'zone-study-integration-v65-pair-close',
                       'zone-study-integration-v66-multiturn', 'zone-study-integration-v67-landmark-agnostic',
                       'zone-pair-v68-beam-relative-recovery',
-                      'zone-study-integration-v69-multiturn-landmark-agnostic')
+                      'zone-study-integration-v69-multiturn-landmark-agnostic',
+                      'zone-pair-v70-beam-relative-multiturn')
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',

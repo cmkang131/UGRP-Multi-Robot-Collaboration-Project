@@ -415,7 +415,10 @@ class PairTeam:
             raise ValueError('invalid rendezvous timeout')
         self.executors = dict(executors)
         if self.policy.posterior_relook:
-            from harness.owncam_recovery_v6 import enable_provider
+            if self.policy.exact_fix_clock:
+                from harness.owncam_recovery_v6c import enable_provider
+            else:
+                from harness.owncam_recovery_v6 import enable_provider
             for executor in self.executors.values():
                 enable_provider(executor.pose)
         self.sheets, self.params = copy.deepcopy(sheets), copy.deepcopy(params)

@@ -172,9 +172,11 @@ def test_research_scenarios_and_bundle_use_study_wide_profile():
     assert bundle['contact_profile_expected']['noslip_iterations'] == 10
     assert bundle['contact_profile_expected']['timestep_s'] == .00025
     assert bundle['perception_delay_s'] == .16
-    assert bundle['execution_bundle_id'] == 'zone-pair-v70-beam-relative-multiturn'
+    assert bundle['execution_bundle_id'] == 'zone-pair-v76-fixclock-grasp-entry'
     workflow = next(w for w in json.loads((ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
                     if w['id'] == 'zone-study-integration-run')
+    # v76's workflow bump (2.6.0) waits for the v6-historical PR: the REGISTERED v6
+    # prereg hashes the whole catalog (experiments/2026-09-29-pair-v6c/README.md).
     assert workflow['version'] == '2.3.0'
     assert bundle['pose_provider']['label']['research_result'] is False
     assert bundle['pose_provider']['spec']['calibration'] == pre['student']['calibration']

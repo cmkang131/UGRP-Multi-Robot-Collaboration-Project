@@ -1,3 +1,7 @@
+현재 미실행 후보는 `zone-pair-v76-fixclock-grasp-entry`(workflow 번호 `2.6.0` 예약: #249의 2.4.0·#261의 2.5.0 다음. REGISTERED v6 prereg가 `configs/simulation_workflows.json` 전체를 해시하므로 카탈로그 반영은 v6-historical PR 병합 뒤로 보류)이다. 2026-09-28–29 단계 probe(PR #260)에서 v6 b-only 정렬은 RecoveryLocalizer의 PF 시계와 프레임 시각이 1e-9 s 안에서 어긋나 fix 나이가 음수가 되어 막혔고, 파지 입장은 정렬 허용오차(ex ±12 mm) 중 −8…−4 mm에서만 통과했다. v70에 opt-in 정책 `b-v6c`(PF 시계를 예측한 관측 시각에 맞춤 + 파지 거리의 빔 색 모델로 standoff fit·pre-close 부분 관측 + 마지막 하강 자세 정착)를 더했다. v5h·b-only·a+b의 동작은 바뀌지 않는다. main v70과 열린 PR 최댓값 v75(#261) 다음 번호다. v70은 v6 dev 코호트 기록 소스로 `RETIRED_BUNDLE_IDS`에 보존한다. [v6c 기록](../experiments/2026-09-29-pair-v6c/README.md)
+
+이전 후보 v70의 설명:
+
 현재 미실행 후보는 `zone-pair-v70-beam-relative-multiturn`(workflow `2.3.0`)이다. 2026-09-28 PR #246 main 병합에서 main의 v69(v66 다중 턴 스케줄러 + v67 표식 무관 pair 경로)와 #246의 v6 pair 경로(v68 빔 상대 정렬 + 검토 3)를 합쳤다. 합성 소스는 v68·v69 어느 쪽과도 달라 main과 열린 PR(#248·#249) 최댓값 v69 다음 번호를 썼다. v68은 병합 전 v6 초안으로 오프라인 재생 기록에만 남으며 v69와 함께 `RETIRED_BUNDLE_IDS`에 보존한다. 세 pair 조건(v5h/b-only/a+b)은 이 번들 안에서 `pair_policy` 하나로만 다르다. [v6 기록](../experiments/2026-09-28-zone-pair-v6/README.md)
 
 이전 후보 v69의 설명:
