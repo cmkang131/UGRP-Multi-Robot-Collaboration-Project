@@ -322,6 +322,27 @@ def boundary_cases(stage='grasp_lift', *, policy='v5h', seed=911, setup=None, su
     return out
 
 
+# Probe-only DIAGNOSTIC patches of the controller under test. A case that uses one is NOT the
+# registered v6 controller; its result answers "what does the next failure look like once this
+# defect is removed", never "does v6 work". The controller source on main is not changed.
+DIAG_PATCHES = {
+    'fix_age_round': ('harness.owncam_recovery_v6.RecoveryLocalizer.estimate reports fix_age_s = self.t - t '
+                      'unrounded; predict_to stops within 1e-9 s of t, so a fix made at this frame has '
+                      'fix_age_s ~ -1e-13 and owncam_time.accepted_fix_checks rejects it (fix_age_valid). '
+                      'Patch: round(self.t - t, 3), exactly as harness.owncam_localizer.OwnCamLocalizer.estimate '
+                      'computes since_tag_s for v5h.'),
+}
+
+
+def apply_diag_patch(cases, name):
+    if name is None:
+        return cases
+    if name not in DIAG_PATCHES:
+        raise ValueError(f'unknown diagnostic patch {name!r}')
+    return [{**c, 'case_id': c['case_id'] + ':diag-' + name, 'diag_patch': name,
+             'diag_patch_note': DIAG_PATCHES[name]} for c in cases]
+
+
 GLOBAL_ANCHOR_MAX_AGE_S = 30.   # harness.zone_pair_global.GlobalEnvelope.pose: anchor usable for 30 s
 
 

@@ -301,3 +301,28 @@ def test_prior_std_variant_is_tagged_and_default_unchanged():
     assert e2e['prior']['r1']['mean_xyyaw'] == base['prior']['r1']['mean_xyyaw']
     bd = sp.boundary_cases(prior_std='e2e')[0]
     assert bd['case_id'].endswith(':pE2E') and bd['prior']['r2']['std_xy_m'] == .03
+
+
+def test_diag_patch_is_labelled_and_off_by_default():
+    base = sp.teacher_cases('align', subset={'nominal'}, nominal_seeds=(911,), policy='b-only')
+    assert 'diag_patch' not in base[0] and sp.apply_diag_patch(base, None) == base
+    d = sp.apply_diag_patch(base, 'fix_age_round')[0]
+    assert d['case_id'] == 'align@b-only:teacher:nominal:s911:diag-fix_age_round' and d['diag_patch'] == 'fix_age_round'
+    with pytest.raises(ValueError):
+        sp.apply_diag_patch(base, 'nope')
+
+
+def test_diag_fix_age_round_matches_base_rounding_in_a_subprocess():
+    program = ('import types, numpy as np\n'
+               'from scripts import run_pair_stage_probes as r\n'
+               'from harness.owncam_recovery_v6 import RecoveryLocalizer\n'
+               'from harness.owncam_localizer import OwnCamLocalizer\n'
+               'OwnCamLocalizer.estimate = lambda self: {}\n'
+               'loc = RecoveryLocalizer.__new__(RecoveryLocalizer)\n'
+               'loc.t, loc.last_informative_t = 4.4 - 5e-13, 4.4\n'
+               'assert RecoveryLocalizer.estimate(loc)["fix_age_s"] < 0\n'
+               'r.install_diag_patch("fix_age_round")\n'
+               'e = RecoveryLocalizer.estimate(loc)\n'
+               'assert e["fix_age_s"] >= 0 and e["since_tag_s"] == e["fix_age_s"] and e["last_fix_t"] == 4.4, e\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr

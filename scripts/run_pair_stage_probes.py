@@ -420,6 +420,8 @@ def run_case(case, out):
               'controller': {'pair_policy': case.get('pair_policy', 'v5h'), 'execution_bundle_id_on_main': EXECUTION_BUNDLE_ID,
                              'factory': 'harness.zone_pair_executor.m2_controller (unchanged) + probe entry/exit wrapper'},
               'weld': False, 'contact_profile': 'cargo_noslip_v1', 'model_calls': 0, 'ultrasonic': 'off (not connected)'}
+    result['diag_patch'] = case.get('diag_patch')
+    install_diag_patch(case.get('diag_patch'))
     result['staged_global_anchor'] = (sp.staged_global_anchor(case) if case.get('pair_policy') == 'a+b' else None)
     if result['staged_global_anchor']:
         stage_global_anchor(result['staged_global_anchor'], loc_log)
@@ -590,6 +592,7 @@ def finish_result(case, result, out):
                              for r, cmds in (_load(out / 'commands.json') or {}).items() if r in sp.PARTICIPANTS},
            'host_error': result.get('host_error', {}).get('type'),
            'pair_policy': case.get('pair_policy', 'v5h'),
+           'diag_patch': case.get('diag_patch'),
            'stop_sim_s': (result.get('gt_at_stop') or {}).get('t'),
            'remaining_at_stop': {r: {k: round(v, 5) for k, v in e.items() if k != 'grip_base_m'}
                                  for r, e in ((result.get('gt_at_stop') or {}).get('grip_errors_all') or {}).items()},
@@ -635,9 +638,27 @@ def build_cases(args):
                         args.unavailable.append({**got, 'pair_policy': policy})
                     else:
                         cases += got
+    cases = sp.apply_diag_patch(cases, args.diag_patch)
     if args.limit:
         cases = cases[:args.limit]
     return cases
+
+
+def install_diag_patch(name):
+    """Probe-process-only diagnostic patch (sp.DIAG_PATCHES). Never used by a non-diag case."""
+    if name == 'fix_age_round':
+        from harness.owncam_recovery_v6 import RecoveryLocalizer
+        from harness.owncam_localizer import OwnCamLocalizer
+
+        def estimate(self):
+            est = OwnCamLocalizer.estimate(self)
+            t = getattr(self, 'last_informative_t', None)
+            age = None if t is None else round(self.t - t, 3)
+            est.update(last_fix_t=t, fix_age_s=age, fix_source='tags_temporary', since_tag_s=age)
+            return est
+        RecoveryLocalizer.estimate = estimate
+    elif name is not None:
+        raise ValueError(f'unknown diagnostic patch {name!r}')
 
 
 def git(*a):
@@ -676,6 +697,8 @@ def parser():
     p.add_argument('--stage', nargs='+', choices=[s for s, v in sp.STAGES.items() if v['implemented']])
     p.add_argument('--output', type=Path)
     p.add_argument('--sources', nargs='+', default=['teacher', 'e2e'], choices=['teacher', 'e2e', 'boundary'])
+    p.add_argument('--diag-patch', choices=sorted(sp.DIAG_PATCHES),
+                   help='probe-only DIAGNOSTIC controller patch (case ids get :diag-<name>; not the registered v6)')
     p.add_argument('--prior-std', choices=['grid', 'e2e'], default='grid',
                    help="teacher/boundary prior std: 'grid' (0.06 m, 0.05 rad; grid1) or 'e2e' (sp.E2E_MATCHED_PRIOR)")
     p.add_argument('--policies', nargs='+', default=['v5h'], choices=list(sp.POLICIES),
