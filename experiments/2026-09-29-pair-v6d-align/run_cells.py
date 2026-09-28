@@ -10,7 +10,10 @@ Same grid, cases, workers and result layout as ``scripts/run_pair_stage_probes.p
   claim, so the lock is neither taken nor imitated (``manifest['lock']`` is ``null``); ``loadavg`` and
   ``uptime`` are recorded at start and end instead, and at most 2 workers run in parallel;
 * ``--only-failed-of <cases.jsonl>`` keeps only the cases that failed in an earlier grid (same case id
-  with the baseline policy name), which is the pilot on the 12 failed b-v6c cells.
+  with the baseline policy name), which is the pilot on the 12 failed b-v6c cells;
+* ``--skip-done <dir>`` (repeatable) drops cases whose ``cases/<name>/result.json`` already exists in an earlier
+  output of this driver (used to finish an interrupted grid); ``--omp-threads`` sets the BLAS/OMP threads of
+  each worker (the runner hardcodes 2; the value used is written to ``manifest.json``).
 
   plan only:  python3 experiments/2026-09-29-pair-v6d-align/run_cells.py --stage align ... --output <dir>
   physical:   ... --execute --output /Users/changmin/projects/ugrp/outputs/<name>
@@ -47,8 +50,32 @@ def only_failed(cases, baseline_jsonl, baseline_policy, policy):
     return [c for c in cases if c['case_id'] in failed], sorted(failed)
 
 
+def skip_done(cases, dirs):
+    done = set()
+    for d in dirs:
+        for f in sorted(Path(d, 'cases').glob('*/result.json')):
+            row = json.loads(f.read_text()).get('row')
+            if row:
+                done.add(row['case_id'])
+    return [c for c in cases if c['case_id'] not in done], sorted(done)
+
+
+def _patch_worker_threads(omp):
+    """The runner's ``run_worker`` hardcodes OMP_NUM_THREADS=2; override it for worker processes only."""
+    real_run = subprocess.run
+
+    def run(cmd, *a, **kw):
+        if '--worker-case' in list(cmd) and kw.get('env') is not None:
+            kw['env'] = {**kw['env'], **{k: str(omp) for k in ('OMP_NUM_THREADS', 'MKL_NUM_THREADS', 'OPENBLAS_NUM_THREADS')}}
+        return real_run(cmd, *a, **kw)
+    subprocess.run = run
+
+
 def main(argv=None):
     p = rp.parser()
+    p.add_argument('--skip-done', type=Path, action='append', default=[],
+                   help='earlier output dir of this driver; cases with a result.json there are not re-run')
+    p.add_argument('--omp-threads', type=int, default=2)
     p.add_argument('--only-failed-of', type=Path, help='cases.jsonl of an earlier grid; keep its failed cells only')
     p.add_argument('--baseline-policy', default=BASELINE_POLICY)
     p.set_defaults(workers=MAX_WORKERS)
@@ -73,6 +100,9 @@ def main(argv=None):
         missing = sorted(set(wanted) - {c['case_id'] for c in cases})
         if missing:
             p.error(f'baseline failures without a matching case: {missing}')
+    skipped = []
+    if args.skip_done:
+        cases, skipped = skip_done(cases, args.skip_done)
     if len({c['case_id'] for c in cases}) != len(cases):
         p.error('duplicate case ids')
     from sim.workflow_manager import environment_identity, git_identity, source_fingerprint
@@ -85,10 +115,11 @@ def main(argv=None):
                            'argv': sys.argv[1:]},
                 'environment': {**environment_identity(), 'loadavg_at_start': list(os.getloadavg()),
                                 'uptime_at_start': subprocess.check_output(['uptime'], text=True).strip()},
-                'workers': args.workers, 'omp_num_threads_per_worker': 2, 'lock': None,
+                'workers': args.workers, 'omp_num_threads_per_worker': args.omp_threads, 'lock': None,
                 'lock_note': 'synchronous SIM-time probe, no wall-time claim; agent_lock held by another task and '
                              'neither taken nor imitated; host load recorded',
-                'baseline': baseline, 'cases': len(cases), 'cases_sha256': sp.digest(cases),
+                'baseline': baseline, 'skip_done': [str(d) for d in args.skip_done], 'skipped_case_ids': skipped,
+                'cases': len(cases), 'cases_sha256': sp.digest(cases),
                 'unavailable_e2e': args.unavailable, 'state': 'planned'}
     if not args.execute:
         print(json.dumps({'state': 'planned', 'cases': len(cases), 'case_ids': [c['case_id'] for c in cases],
@@ -98,6 +129,7 @@ def main(argv=None):
         p.error('physical raw output must be absolute under the primary checkout outputs/')
     if rp.git('status', '--porcelain', '--untracked-files=no'):
         p.error('tracked source must be clean (commit the probe source first)')
+    _patch_worker_threads(args.omp_threads)
     args.output.mkdir(parents=True)
     (args.output / 'cases').mkdir()
     rp.write_json(args.output / 'plan.json', {'labels': sp.LABELS, 'cases': cases})
