@@ -550,8 +550,9 @@ def test_new_driver_tests_are_collected_by_ci():
     assert any(fnmatch.fnmatch('tests/test_zone_study_llm_driver.py', p) for p in TEST_PATTERNS)
 
 
-@pytest.mark.parametrize('fault_kind', ['cap', 'zero_reply', 'settlement'])
-def test_runner_aborts_before_next_host_step_and_records_infra(tmp_path, monkeypatch, fault_kind):
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+@pytest.mark.parametrize('fault_kind', ['cap', 'zero_reply', 'prewire_input', 'settlement'])
+def test_runner_aborts_before_next_host_step_and_records_infra(tmp_path, monkeypatch, fault_kind, condition):
     """Production runner + real scheduler/ledger, with NO MuJoCo or physics host."""
     for module in ('mujoco', 'cv2', 'numpy'):
         monkeypatch.setitem(sys.modules, module, SimpleNamespace(__version__='fake-no-physics'))
@@ -559,8 +560,12 @@ def test_runner_aborts_before_next_host_step_and_records_infra(tmp_path, monkeyp
     def fault(payload, n):
         if fault_kind == 'zero_reply':
             raise HTTPError('http://127.0.0.1:8391/v1/chat/completions', 503, 'down', {}, None)
-    wire = FakeModel('no_comm', fault=fault)
+    wire = FakeModel(condition, fault=fault)
     driver = llm.LiveDriver(PROFILE, budget=budget, cohort_id='pilot-A', wire=wire)
+    if fault_kind == 'prewire_input':
+        def prepare(call):
+            raise ValueError('generated pre-wire input failure')
+        monkeypatch.setattr(zi.IntegratedTrial, 'prepare_call', staticmethod(prepare))
     if fault_kind == 'settlement':
         def settle(*a, **k):
             raise sqlite3.OperationalError('database is locked')
@@ -592,13 +597,17 @@ def test_runner_aborts_before_next_host_step_and_records_infra(tmp_path, monkeyp
     prereg = {'student': {}, 't0_s': 0., 'speech_cap_profile': 'main_pilot_10_30'}
     out = tmp_path / 'results'
     with pytest.raises(SystemExit):
-        runner.run_llm_trial(prereg, {'episode_id': 'e1', 'trial_seed': 11}, 'no_comm', out,
+        runner.run_llm_trial(prereg, {'episode_id': 'e1', 'trial_seed': 11}, condition, out,
                              horizon_s=30., dev=True, expected_source_sha=None, driver=driver)
-    result = json.loads((out / 'no_comm-e1/result.json').read_text())
+    run_id = f'{condition}-e1'
+    result = json.loads((out / run_id / 'result.json').read_text())
     expected = llm.HOST_ERROR if fault_kind == 'settlement' else llm.API_ERROR
     assert result['failure_class'] == expected and result['stop'] == 'exception'
     assert state == {'advanced': 0, 'closed': True}
-    attempts = json.loads((out / 'no_comm-e1.attempts.json').read_text())['attempts']
+    attempts = json.loads((out / f'{run_id}.attempts.json').read_text())['attempts']
     assert len(attempts) == 1 and not attempts[0]['retried']
-    assert budget.run('no_comm-e1#a1')['failure_class'] == expected
-    assert not (out / 'no_comm-e1-attempt2').exists()
+    assert budget.run(f'{run_id}#a1')['failure_class'] == expected
+    assert not (out / f'{run_id}-attempt2').exists()
+    if fault_kind == 'prewire_input':
+        assert wire.bodies == [] and budget.requests() == []
+        assert attempts[0]['model_requests'] == 0
