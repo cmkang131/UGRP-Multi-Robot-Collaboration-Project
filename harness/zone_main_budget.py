@@ -142,13 +142,25 @@ class MainStudyBudget:
         with self._connect() as db:
             return self._usage(db, cohort)
 
+    @staticmethod
+    def _check_cap(cohort_id, usage):
+        cap = usage['token_cap']
+        if cap is not None and usage['charged_tokens'] >= cap:
+            raise BudgetExceeded(f'cohort {cohort_id} reached its registered cap '
+                                 f'{cap} tokens (charged {usage["charged_tokens"]})')
+
+    def check_available(self, cohort_id):
+        """Refuse a new trial at the cap; request reservation checks again atomically."""
+        self._check_cap(cohort_id, self.usage(cohort_id))
+
     # -- runs --------------------------------------------------------------------
     def start_run(self, run_key, *, cohort_id, bundle_id, bundle_sha256, record):
-        self.cohort(cohort_id)
+        cohort = self.cohort(cohort_id)
         value = {**record, 'run_key': run_key, 'cohort_id': cohort_id, 'bundle_id': bundle_id,
                  'bundle_sha256': bundle_sha256, 'status': 'running', 'started_at_utc': now_utc()}
         with self._connect() as db:
             db.execute('BEGIN IMMEDIATE')
+            self._check_cap(cohort_id, self._usage(db, cohort))
             db.execute('INSERT INTO runs VALUES (?,?,?,?)', (run_key, cohort_id, bundle_id, canonical(value)))
         return value
 
@@ -188,9 +200,7 @@ class MainStudyBudget:
             cohort = json.loads(db.execute('SELECT record FROM cohorts WHERE cohort_id=?',
                                            (cohort_id,)).fetchone()[0])
             usage = self._usage(db, cohort)
-            if cohort['token_cap'] is not None and usage['charged_tokens'] >= cohort['token_cap']:
-                raise BudgetExceeded(f'cohort {cohort_id} reached its registered cap '
-                                     f'{cohort["token_cap"]} tokens (charged {usage["charged_tokens"]})')
+            self._check_cap(cohort_id, usage)
             rid = uuid.uuid4().hex
             row = {**record, 'id': rid, 'run_key': run_key, 'cohort_id': cohort_id, 'bundle_id': bundle_id,
                    'status': 'sent_unknown', 'recorded_at_utc': now_utc(), 'provider_usage': None,

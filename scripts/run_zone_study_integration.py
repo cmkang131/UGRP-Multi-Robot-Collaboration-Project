@@ -497,6 +497,7 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
                                    pair_records=lambda: host.pairs.records() if host.pairs else [])
         t = host.settle(float(prereg['t0_s']))
         trial.begin(t)
+        llm.check_trial_health(trial)
         stop, next_report = 'horizon', t + PROGRESS_EVERY_S
         while t < horizon_s - 1e-9:
             t = round(t + zi.QUANTUM_S, 6)
@@ -508,15 +509,14 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
             for event in host.advance_to(t):
                 trial.on_executor_event(event, at_s=t)
             trial.step_to(t)
-            fatal = getattr(trial.send_ledger, 'fatal', None)
-            if fatal is not None:                              # e.g. ENOSPC while storing a request
-                raise fatal
+            llm.check_trial_health(trial)
             if all(s.dead for s in host.robots.values()):
                 stop = 'all_robots_stopped'
                 break
             if trial.quiescent():
                 stop = 'quiescent_budget_spent'
                 break
+        llm.check_trial_health(trial, final=True)
         for rid in ROBOTS:
             host._hold(rid, float(host.world.data.time))
         result = trial.finish(t)
@@ -561,7 +561,8 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
     summary = {'schema': SCHEMA, 'run_id': out.name, 'condition': condition, 'episode': episode['episode_id'],
                'dev': dev, 'stop': stop, 'failure': failure, 'bundle_sha256': bundle_sha,
                'failure_class': (failure or {}).get('failure_class') or (
-                   llm.trial_failure_class(None, ledger) if isinstance(ledger, llm.MainStudySendLedger) else None),
+                   llm.trial_failure_class(None, ledger, transport=trial.transport)
+                   if isinstance(ledger, llm.MainStudySendLedger) else None),
                'pose_provider': bundle['pose_provider']['label'],
                'actor': trial.actor if trial else prereg.get('actor', zi.FIXTURE_ACTOR),
                'plumbing_only': trial is None or trial.actor == zi.FIXTURE_ACTOR,
@@ -641,6 +642,11 @@ def write_study(out, trial, result, summary):
         return
     referee = summary.get('eval_only', {}).get('referee', {'deliveries': []})
     record = trial_record_for(trial, result, referee)
+    if isinstance(trial.send_ledger, llm.MainStudySendLedger):
+        record['failure_class'] = summary.get('failure_class')
+        record['model_usage'] = summary['model_usage']
+        if record['failure_class'] == llm.API_ERROR:
+            record['end_reason'] = 'api_failure'
     record['pose_provider'] = dict(summary['pose_provider'])   # A's provenance keys are closed: top level
     record['plumbing_only'] = trial.actor == zi.FIXTURE_ACTOR
     (study / 'trial_record.json').write_text(json.dumps(record, indent=1, ensure_ascii=False) + '\n')
@@ -669,6 +675,10 @@ def llm_driver(prereg, args, *, wire=None):
 def run_llm_trial(prereg, episode, condition, out, *, horizon_s, dev, expected_source_sha, driver):
     """All attempts of one (episode, condition); only a pre-request HOST_ERROR is retried, once."""
     run_id = f'{condition}-{episode["episode_id"]}'
+    paths = [Path(out) / run_id, Path(out) / f'{run_id}-attempt2', Path(out) / f'{run_id}.attempts.json']
+    if any(path.exists() or path.is_symlink() for path in paths):
+        raise SystemExit(f'{run_id}: existing result/attempt path; refusing overwrite or rerun')
+    driver.budget.check_available(driver.cohort_id)
     bundle_sha = digest(run_bundle(prereg, episode, driver=driver)[0])
 
     def start(attempt, run_key):
@@ -683,7 +693,8 @@ def run_llm_trial(prereg, episode, condition, out, *, horizon_s, dev, expected_s
 
     record, exc, attempts = llm.run_attempts(attempt_fn, budget=driver.budget, run_id=run_id, start=start)
     path = Path(out) / f'{run_id}.attempts.json'
-    path.write_text(json.dumps({'run_id': run_id, 'bundle_sha256': bundle_sha, 'attempts': attempts,
+    with path.open('x') as handle:
+        handle.write(json.dumps({'run_id': run_id, 'bundle_sha256': bundle_sha, 'attempts': attempts,
                                 'ledger': driver.ledger_record(),
                                 'cohort_usage': driver.budget.usage(driver.cohort_id)},
                                indent=1, ensure_ascii=False) + '\n')

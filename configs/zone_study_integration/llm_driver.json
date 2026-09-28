@@ -6,13 +6,19 @@
       "max_calls_total": 90,
       "max_utterances_per_actor": 2,
       "max_utterances_total": 6,
-      "note_ko": "v66 다중 턴 스케줄러 기본값(DecisionLimits 기본). 배관·과거 비교용"
+      "note_ko": "v66 다중 턴 스케줄러 기본값(DecisionLimits 기본). 배관·과거 비교용",
+      "prompt_versions": [
+        "ugrp.zone_study_prompts_ko.v2"
+      ]
     },
     "main_pilot_10_30": {
       "max_calls_total": 90,
       "max_utterances_per_actor": 10,
       "max_utterances_total": 30,
-      "note_ko": "본연구 사전 등록 초안 §2.3 파일럿 값(PR #254 D9). 1800 SIM초 대화 연구에서 2/6은 채널을 거의 닫는다"
+      "note_ko": "본연구 사전 등록 초안 §2.3 파일럿 값(PR #254 D9). 1800 SIM초 대화 연구에서 2/6은 채널을 거의 닫는다",
+      "prompt_versions": [
+        "ugrp.zone_study_prompts_ko.v3"
+      ]
     }
   },
   "driver_profiles": {
@@ -28,18 +34,26 @@
       "proxy_source": "~/.local/bin/gemini_subscription_proxy.py",
       "min_free_disk_gib": 10,
       "retry_policy": "once_in_place_only_if_host_error_before_first_model_request",
-      "api_failure_trial_rule": "aborted_by_api_error_or_no_successful_model_reply",
-      "note_ko": "모델 설정은 통합 번들의 PLANNED_MODEL(model·temperature·reasoning_effort)과 같아야 한다. max_tokens·timeout은 #222 파일럿 요청값. 프록시 소스는 읽기(해시)만 하고 수정·기동하지 않는다"
+      "api_failure_trial_rule": "any_api_error_or_budget_cap_or_no_successful_model_reply",
+      "note_ko": "모델 설정은 통합 번들의 PLANNED_MODEL(model·temperature·reasoning_effort)과 같아야 한다. max_tokens·timeout은 #222 파일럿 요청값. 프록시 소스는 읽기(해시)만 하고 수정·기동하지 않는다. 모든 조건에서 API 오류 1건 이상인 시행은 infra:API로 분류하고 실제 POST 간격은 최소 2 wall초로 고정한다. wall 간격은 SIM 비용에 넣지 않는다",
+      "min_request_interval_s": 2.0
     }
   },
   "bundles": {
     "zone-study-integration-v69-multiturn-landmark-agnostic": {
-      "speech_cap_profiles": ["v66_default"],
+      "speech_cap_profiles": [
+        "v66_default"
+      ],
       "driver_profiles": []
     },
     "zone-study-integration-v72-llm-driver": {
-      "speech_cap_profiles": ["v66_default", "main_pilot_10_30"],
-      "driver_profiles": ["main_study_gemini_v1"]
+      "speech_cap_profiles": [
+        "v66_default",
+        "main_pilot_10_30"
+      ],
+      "driver_profiles": [
+        "main_study_gemini_v1"
+      ]
     }
   }
 }

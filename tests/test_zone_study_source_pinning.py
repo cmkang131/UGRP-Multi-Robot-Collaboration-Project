@@ -119,8 +119,11 @@ def test_registered_speech_caps_and_llm_driver_are_pinned_in_the_run_bundle(tmp_
     episode = pre['episodes'][0]
     default = runner.run_bundle(pre, episode)[0]
     assert default['speech_caps']['profile'] == 'v66_default' and default['llm_driver'] is None
+    assert default['speech_caps']['prompt_version'] == 'ugrp.zone_study_prompts_ko.v2'
     pilot = runner.run_bundle({**pre, 'speech_cap_profile': 'main_pilot_10_30'}, episode)[0]
     assert pilot['speech_caps']['values']['max_utterances_per_actor'] == 10
+    assert pilot['speech_caps']['prompt_version'] == 'ugrp.zone_study_prompts_ko.v3'
+    assert pilot['study_invariant']['prompt_version'] == pilot['speech_caps']['prompt_version']
     assert pilot['study_invariant']['decision_limits']['max_utterances_total'] == 30
     assert runner.digest(pilot) != runner.digest(default)
     with pytest.raises(runner.zi.ContractViolation, match='ad hoc'):
@@ -132,5 +135,7 @@ def test_registered_speech_caps_and_llm_driver_are_pinned_in_the_run_bundle(tmp_
                             wire=lambda request, *, timeout=None: None)
     live = runner.run_bundle({**pre, 'speech_cap_profile': 'main_pilot_10_30'}, episode, driver=driver)[0]
     assert live['actor'] == 'gemini_proxy' and live['llm_driver']['profile_id'] == 'main_study_gemini_v1'
+    assert live['llm_driver']['api_failure_trial_rule'] == llm.API_FAILURE_TRIAL_RULE
+    assert live['llm_driver']['min_request_interval_s'] == 2.0
     assert live['study_invariant']['model'] == 'gemini-3.8-flash'
     assert 'configs/zone_study_integration/llm_driver.json' in live['runtime_files_sha256']

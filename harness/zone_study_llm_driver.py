@@ -35,6 +35,7 @@ from pathlib import Path
 from urllib.error import HTTPError
 
 from harness import zone_study_integration as zi
+from harness import zone_study_prompts_ko as pk
 from harness.gemini_proxy import GeminiProxyError
 from harness.llm_completion import assess_completion, normal_completion
 from harness.zone_main_budget import BudgetExceeded, known_total
@@ -53,6 +54,8 @@ LIMIT_KEYS = ('max_calls_total', 'max_utterances_per_actor', 'max_utterances_tot
 MODEL_KEYS = ('model', 'temperature', 'reasoning_effort', 'max_tokens', 'timeout')
 HOST_ERROR, API_ERROR, OTHER = 'infra:HOST_ERROR', 'infra:API', 'other'
 MAX_ATTEMPTS = 2
+HOST_ERRNOS = frozenset((errno.ENOSPC, errno.EDQUOT, errno.EIO, errno.ENOMEM, errno.EMFILE, errno.ENFILE))
+API_FAILURE_TRIAL_RULE = 'any_api_error_or_budget_cap_or_no_successful_model_reply'
 
 
 class HostError(RuntimeError):
@@ -72,7 +75,7 @@ def load_registry(path=REGISTRY) -> dict:
     if data.get('schema') != REGISTRY_SCHEMA:
         raise ContractViolation(f'{path}: not a {REGISTRY_SCHEMA} file')
     for name, caps in data['speech_cap_profiles'].items():
-        if set(caps) - {'note_ko'} != set(LIMIT_KEYS):
+        if set(caps) - {'note_ko', 'prompt_versions'} != set(LIMIT_KEYS):
             raise ContractViolation(f'speech cap profile {name}: keys must be {LIMIT_KEYS}')
         DecisionLimits(**{k: caps[k] for k in LIMIT_KEYS})
     return data
@@ -93,7 +96,11 @@ def speech_caps(profile_id, *, bundle_id=None, registry=None):
         raise ContractViolation(f'speech cap profile {profile_id!r} is not registered for bundle {bundle_id}')
     caps = registry['speech_cap_profiles'][profile_id]
     values = {k: caps[k] for k in LIMIT_KEYS}
-    return DecisionLimits(**values), {'profile': profile_id, 'values': values, 'sha256': digest(values)}
+    version = pk.prompt_version(values['max_utterances_total'], values['max_utterances_per_actor'])
+    if version not in caps.get('prompt_versions', ()):
+        raise ContractViolation(f'speech cap profile {profile_id}: unsupported prompt version {version}')
+    return DecisionLimits(**values), {'profile': profile_id, 'values': values, 'sha256': digest(values),
+                                     'prompt_version': version}
 
 
 def speech_caps_for(prereg, *, bundle_id=None, registry=None):
@@ -117,6 +124,10 @@ def driver_profile(profile_id, *, bundle_id=None, registry=None) -> dict:
     if {k: model[k] for k in planned} != planned:
         raise ContractViolation(f'driver profile {profile_id} drifts from the bundle PLANNED_MODEL {planned}')
     proxy_address(profile['proxy_url'])
+    if profile['api_failure_trial_rule'] != API_FAILURE_TRIAL_RULE:
+        raise ContractViolation('unsupported api_failure_trial_rule')
+    if type(profile.get('min_request_interval_s')) not in (int, float) or profile['min_request_interval_s'] < 0:
+        raise ContractViolation('min_request_interval_s must be non-negative')
     return {**profile, 'profile_id': profile_id, 'sha256': digest(profile)}
 
 
@@ -140,7 +151,7 @@ def classify_exception(exc) -> str:
     """``infra:HOST_ERROR`` for host/process/disk (ENOSPC), ``infra:API`` for the model path, else ``other``."""
     chain = _chain(exc)
     for item in chain:
-        if isinstance(item, HostError) or (isinstance(item, OSError) and item.errno == errno.ENOSPC):
+        if isinstance(item, HostError) or (isinstance(item, OSError) and item.errno in HOST_ERRNOS):
             return HOST_ERROR
         if type(item).__name__ == 'FatalError' and type(item).__module__.startswith('mujoco'):
             return HOST_ERROR
@@ -151,10 +162,6 @@ def classify_exception(exc) -> str:
             return API_ERROR
         if type(item).__name__ == 'TransportFailure':
             return API_ERROR
-    for item in chain:
-        # Remaining OS-level errors (disk, permissions, process) outside the model path.
-        if isinstance(item, OSError):
-            return HOST_ERROR
     return OTHER
 
 
@@ -162,6 +169,8 @@ def call_failure_class(row) -> str | None:
     """Per-request class from a settled send row: None = normal reply."""
     if row.get('host_error'):
         return HOST_ERROR
+    if row.get('storage_error'):
+        return OTHER
     if row.get('status') == 'blocked':
         return 'budget_cap' if row.get('budget_cap') else 'blocked'
     if row.get('wire_error') or row.get('http_status'):
@@ -186,6 +195,20 @@ def check_disk(path, *, min_free_gib):
 
 # ---------------------------------------------------------------------------
 # Send ledger
+
+class RequestPacer:
+    """Common wall-clock POST spacing; never fed back into the SIM cost model."""
+
+    def __init__(self, interval_s, *, clock=time.monotonic, sleep=time.sleep):
+        self.interval_s, self.clock, self.sleep = interval_s, clock, sleep
+        self.last_start = None
+
+    def wait(self):
+        if self.last_start is not None:
+            delay = self.interval_s - (self.clock() - self.last_start)
+            if delay > 0:
+                self.sleep(delay)
+        self.last_start = self.clock()
 
 def _request_summary(body: bytes) -> dict:
     """Image hashes/bytes and text size of one proxy request (raw bytes are stored separately)."""
@@ -219,7 +242,7 @@ class MainStudySendLedger(SendLedger):
     proxy, after checking the proxy process/source identity (read only).
     """
 
-    def __init__(self, *, store_dir, budget, run_key, profile, runtime=None, proxy=None, wire=None):
+    def __init__(self, *, store_dir, budget, run_key, profile, runtime=None, proxy=None, wire=None, pacer=None):
         if store_dir is None:
             raise ValueError('the main study keeps raw request/response bytes: store_dir is required')
         self.budget, self.run_key, self.profile = budget, run_key, profile
@@ -228,9 +251,11 @@ class MainStudySendLedger(SendLedger):
         self.guard = NetworkFence(profile['proxy_url'] if self.live else None)
         self.fatal = None
         self.host_errors = []
+        self.pacer = pacer or RequestPacer(profile['min_request_interval_s'])
         opener = no_redirect_opener()
 
         def guarded_wire(request, *, timeout):
+            self.pacer.wait()
             with self.guard.wire():
                 return opener.open(request, timeout=timeout)
 
@@ -243,11 +268,18 @@ class MainStudySendLedger(SendLedger):
         self.fatal = self.fatal or err
         return err
 
+    def _storage_error(self, row, exc, what):
+        if isinstance(exc, sqlite3.Error) or classify_exception(exc) == HOST_ERROR:
+            return self._host_error(row, exc, what)
+        row['storage_error'] = {'what': what, 'type': type(exc).__name__, 'errno': getattr(exc, 'errno', None)}
+        self.fatal = self.fatal or exc
+        return exc
+
     def _store(self, row, kind, data):
         try:
             super()._store(row, kind, data)
         except OSError as exc:
-            raise self._host_error(row, exc, f'store {kind}') from exc
+            raise self._storage_error(row, exc, f'store {kind}') from exc
         if kind == 'request':
             summary = _request_summary(data)
             record = {'call_id': row['call_id'], 'actor': row['actor'], 'ledger_seq': row['seq'],
@@ -256,11 +288,12 @@ class MainStudySendLedger(SendLedger):
                       **summary}
             try:
                 reserved = self.budget.record_request(self.run_key, record)
-            except BudgetExceeded:
+            except BudgetExceeded as exc:
                 row['budget_cap'] = True
+                self.fatal = self.fatal or exc
                 raise
             except (OSError, sqlite3.Error) as exc:  # ledger storage (disk full, locked file) = host
-                raise self._host_error(row, exc, 'ledger') from exc
+                raise self._storage_error(row, exc, 'ledger') from exc
             row['budget_request_id'] = reserved['id']
             row['images'] = summary.get('images', [])
         else:
@@ -302,6 +335,8 @@ class MainStudySendLedger(SendLedger):
         finally:
             if len(self.entries) > before:
                 row = self.entries[-1]
+                if row.get('budget_cap'):
+                    row['reason'] = 'budget_cap'
                 row['sent_at_ns'], row['latency_ms'] = wall0, round((time.monotonic_ns() - tick) / 1e6, 3)
                 if isinstance(error, HTTPError):
                     row['http_status'] = error.code
@@ -309,16 +344,21 @@ class MainStudySendLedger(SendLedger):
                     row['wire_error'] = type(error).__name__
                 row['failure_class'] = call_failure_class(row)
                 if row.get('budget_request_id'):
-                    self.budget.settle_request(
-                        row['budget_request_id'],
-                        status='response_received' if 'response_sha256' in row else 'wire_error',
-                        provider_usage=row.get('provider_usage'), response_model=row.get('response_model'),
-                        response_sha256=row.get('response_sha256'), response_bytes=row.get('response_bytes'),
-                        response_path=(str(self.store_dir / row['response_path'])
-                                       if row.get('response_path') else None),
-                        completion=row.get('completion'), wire_error=row.get('wire_error'),
-                        http_status=row.get('http_status'), latency_ms=row['latency_ms'],
-                        sent_at_ns=wall0, failure_class=row['failure_class'])
+                    try:
+                        self.budget.settle_request(
+                            row['budget_request_id'],
+                            status='response_received' if 'response_sha256' in row else 'wire_error',
+                            provider_usage=row.get('provider_usage'), response_model=row.get('response_model'),
+                            response_sha256=row.get('response_sha256'), response_bytes=row.get('response_bytes'),
+                            response_path=(str(self.store_dir / row['response_path'])
+                                           if row.get('response_path') else None),
+                            completion=row.get('completion'), wire_error=row.get('wire_error'),
+                            http_status=row.get('http_status'), latency_ms=row['latency_ms'],
+                            sent_at_ns=wall0, failure_class=row['failure_class'])
+                    except (OSError, sqlite3.Error) as exc:
+                        failure = self._storage_error(row, exc, 'ledger settle')
+                        row['failure_class'] = call_failure_class(row)
+                        raise failure from exc
 
 
 def live_proxy(profile, pid):
@@ -353,6 +393,7 @@ class LiveDriver:
     def __init__(self, profile, *, budget, cohort_id, proxy_pid=None, wire=None):
         self.profile, self.budget, self.cohort_id = profile, budget, cohort_id
         self.proxy_pid, self.wire = proxy_pid, wire
+        self.pacer = RequestPacer(profile['min_request_interval_s'])
         self.client_factory = client_factory(profile)
         budget.cohort(cohort_id)  # registered, or KeyError
 
@@ -367,6 +408,7 @@ class LiveDriver:
             raise ContractViolation(f'prereg llm_driver must have exactly {sorted(keys)} (cap may be null)')
         if 'speech_cap_profile' not in prereg:
             raise ContractViolation('a model run needs an explicit registered speech_cap_profile in the prereg')
+        speech_caps_for(prereg, bundle_id=bundle_id)
         profile = driver_profile(spec['profile'], bundle_id=bundle_id)
         path = Path(spec['budget_db']).expanduser()
         if not path.is_absolute():
@@ -386,6 +428,7 @@ class LiveDriver:
         return {'driver_version': DRIVER_VERSION, 'profile_id': self.profile['profile_id'],
                 'profile_sha256': self.profile['sha256'], 'model': dict(self.profile['model']),
                 'proxy_url': self.profile['proxy_url'], 'retry_policy': self.profile['retry_policy'],
+                'min_request_interval_s': self.profile['min_request_interval_s'],
                 'api_failure_trial_rule': self.profile['api_failure_trial_rule']}
 
     def ledger_record(self) -> dict:
@@ -405,7 +448,8 @@ class LiveDriver:
                 raise HostError('live model run needs the running proxy PID (--proxy-pid)')
             proxy, runtime = live_proxy(self.profile, self.proxy_pid)
         ledger = MainStudySendLedger(store_dir=store_dir, budget=self.budget, run_key=run_key,
-                                     profile=self.profile, runtime=runtime, proxy=proxy, wire=self.wire)
+                                     profile=self.profile, runtime=runtime, proxy=proxy, wire=self.wire,
+                                     pacer=self.pacer)
         ledger.proxy_identity = {'profile': proxy, 'runtime': runtime}
         return zi.ModelAdapter(self.client_factory, ledger)
 
@@ -425,6 +469,7 @@ def call_rows(ledger) -> list:
                      'provider_usage': usage, 'usage_known': known_total(usage) is not None,
                      'response_model': e.get('response_model'), 'latency_ms': e.get('latency_ms'),
                      'http_status': e.get('http_status'), 'wire_error': e.get('wire_error'),
+                     'completion': e.get('completion'),
                      'failure_class': e.get('failure_class', call_failure_class(e)),
                      'budget_request_id': e.get('budget_request_id')})
     return rows
@@ -439,7 +484,11 @@ def usage_summary(rows) -> dict:
             'tokens_prompt': field('prompt_tokens'), 'tokens_completion': field('completion_tokens'),
             'tokens_total_known': sum(t for t in known if t is not None),
             'usage_unknown_requests': sum(t is None for t in known),
-            'tokens_complete': all(t is not None for t in known),
+            'tokens_complete': bool(sent) and all(t is not None for t in known),
+            'api_error_requests': sum(r['failure_class'] == API_ERROR for r in sent),
+            'api_error_fraction': (sum(r['failure_class'] == API_ERROR for r in sent) / len(sent)
+                                   if sent else None),
+            'api_clean': not any(r['failure_class'] == API_ERROR for r in rows),
             'latency_ms': {'n': len(latencies), 'sum': round(sum(latencies), 3),
                            'max': latencies[-1] if latencies else None,
                            'median': latencies[len(latencies) // 2] if latencies else None},
@@ -447,19 +496,47 @@ def usage_summary(rows) -> dict:
             'response_models': sorted({r['response_model'] for r in sent if r['response_model']})}
 
 
-def trial_failure_class(exception, ledger) -> str | None:
-    """Trial class: exception class, else HOST_ERROR from the ledger, else API when no reply succeeded."""
+def trial_failure_class(exception, ledger, *, transport=None) -> str | None:
+    """All conditions: any API error/cap or zero normal model replies is infrastructure."""
     if exception is not None:
         return classify_exception(exception)
     if ledger is None:
         return None
     if getattr(ledger, 'host_errors', None):
         return HOST_ERROR
+    if getattr(ledger, 'fatal', None) is not None:
+        return classify_exception(ledger.fatal)
+    if getattr(transport, 'budget_exhausted', False):
+        return API_ERROR
     rows = call_rows(ledger)
     sent = [r for r in rows if r['status'] == 'sent']
-    if sent and all(r['failure_class'] == API_ERROR for r in sent):
+    if any(r['failure_class'] in (API_ERROR, 'budget_cap') for r in rows):
+        return API_ERROR
+    if not any(r.get('completion') and normal_completion(r['completion'])
+               and r['failure_class'] is None for r in sent):
         return API_ERROR
     return None
+
+
+def check_trial_health(trial, *, final=False):
+    """Runner boundary: abort before another physics step after a fatal or zero-reply attempt."""
+    ledger = trial.send_ledger
+    if not isinstance(ledger, MainStudySendLedger):
+        return
+    if ledger.fatal is not None:
+        raise ledger.fatal
+    if trial.transport.budget_exhausted:
+        raise BudgetExceeded('cohort budget exhausted')
+    if not final and getattr(ledger, '_health_checked_entries', -1) == len(ledger.entries):
+        return
+    ledger._health_checked_entries = len(ledger.entries)
+    cohort = ledger.budget.run(ledger.run_key)['cohort_id']
+    ledger.budget.check_available(cohort)
+    if final or trial.transport.resolved:
+        rows = call_rows(ledger)
+        if not any(r['status'] == 'sent' and r['failure_class'] is None
+                   and r.get('completion') and normal_completion(r['completion']) for r in rows):
+            raise GeminiProxyError('no successful model response', error_kind='budget', retryable=False)
 
 
 # ---------------------------------------------------------------------------
@@ -489,7 +566,7 @@ def run_attempts(attempt_fn, *, budget, run_id, start):
         failure = (classify_exception(exc) if exc is not None
                    else record.get('failure_class') if isinstance(record, Mapping) else None)
         requests = budget.run_requests(run_key)
-        budget.finish_run(run_key, status='failed' if exc is not None else 'finished', failure_class=failure,
+        budget.finish_run(run_key, status='failed' if exc is not None or failure is not None else 'finished', failure_class=failure,
                           summary={'exception': None if exc is None else f'{type(exc).__name__}: {exc}'[:500]})
         retry = may_retry(attempt=attempt, failure_class=failure, model_requests=requests)
         attempts.append({'attempt': attempt, 'run_key': run_key, 'failure_class': failure,

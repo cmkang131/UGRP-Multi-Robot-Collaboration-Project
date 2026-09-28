@@ -366,7 +366,9 @@ class IntegratedTrial(zo.OfflineTrial):
                                      model=self.client_factory.settings['model'],
                                      provider='gemini_subscription_proxy' if model_adapter else None,
                                      model_settings_sha256=digest(self.client_factory.settings),
-                                     prompt_template_sha256=digest(pk.PROMPT_VERSION),
+                                     prompt_template_sha256=digest(pk.prompt_version(
+                                         self.decision_limits.max_utterances_total,
+                                         self.decision_limits.max_utterances_per_actor)),
                                      cost_profile_id=self.params.version)
         self.transport = _LiveTransport(self, send_ledger=self.send_ledger, client_factory=self.client_factory)
         if model_adapter is None:
@@ -578,7 +580,9 @@ class IntegratedTrial(zo.OfflineTrial):
                 'condition': self.condition, 'topology': self.spec.topology, 'encoding': self.spec.encoding,
                 'leader_id': self.leader_id, 'seed': self.seed,
                 **model_config(self.actor, self.client_factory),
-                'planned_model': dict(PLANNED_MODEL), 'prompt_version': pk.PROMPT_VERSION,
+                'planned_model': dict(PLANNED_MODEL),
+                'prompt_version': pk.prompt_version(self.decision_limits.max_utterances_total,
+                                                     self.decision_limits.max_utterances_per_actor),
                 'cost_params': {'version': self.params.version, 'digest': self.params.digest()},
                 'call_policy': policy, 'quantum_s': QUANTUM_S,
                 'perception_delay_s': PERCEPTION_DELAY_S, 'think_hold_policy': THINK_HOLD_POLICY,
