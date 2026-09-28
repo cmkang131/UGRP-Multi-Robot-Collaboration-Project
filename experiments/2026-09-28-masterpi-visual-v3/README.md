@@ -10,18 +10,22 @@
   - (`switch_wip.patch`는 전환 1/n 커밋에서 적용하고 지웠다)
 - v2는 바이트 그대로다. `sim/masterpi_dynamics_v2.py`, `sim/masterpi_geometry.py`, `sim/masterpi_scene*.xml`을 고치지 않았다.
 
-## 할 일 (진행 상황, 2026-09-28)
-완료(`9596de1f`, 1/n, 2/n):
-- v3 물리 모델, 제어기 장착 위치(`visual_arm`: `CONTROLLER_GEOMETRY_ID`, `ARM_MOUNT_X_CM = 4.82`, `arm_tool_pose`, `chassis_x_for_arm_radius`, `chassis_xy_for_arm_target`, v2 기록 재생용 `use_arm_mount(V2_ARM_MOUNT_X_CM)`)
-- 다중 로봇 장면 `robot_model`(기본 v3), 파지 범위 게이트는 팔 좌표, 스윕 가드 장착 위치는 호출 시점에 해석
-- 테스트 분류: 팔 반경 fixture는 헬퍼로 v3를 따른다. v2에서 기록·작성된 인식·pair fixture는 `use_arm_mount(V2)`로 v2를 명시한다. 물리 실행에서 나온 수치는 다시 맞추지 않았다.
-- 파일별 통과: visual_arm, visual_box_surface/skill, markerless 3개, zone_pair preclose/review4/review5/v5c/admission, owncam_pair_beam, owncam_pair_beam_v2
+## 할 일 (2026-09-28, 관리자 결정 반영: robot_model은 장면 버전의 일부)
+완료:
+- v3 물리 모델(`sim/masterpi_model_v3.py`, `PHYSICAL_V3`)
+- 기존 장면이 쓰는 코드와 테스트는 main 바이트로 복원했다(3/n). 기존 등록 장면은 robot_model v2, 0.155 m 스테이션 규약, 해시와 동작이 main과 같다. 동결 소스(`owncam_pair_beam` 등)도 바뀌지 않는다.
+- 새 코드 `sim/masterpi_robot_models.py`:
+  - `station_grasp_convention(robot_model)`: 팔 반경 0.155 m(보정 범위 안) + 모델의 팔 장착 위치. v3의 스테이션 거리는 0.2032 m다.
+  - `v3_robot_xml_transform(...)`: `MultiMasterPiProductionV2(xml_transform=...)`로 각 `<rid>__robot`을 v3로 바꾼다. 로봇 자세, nav_cam, 동료 충돌 규칙, actuator·weld 이름은 유지한다.
+  - `tests/test_masterpi_robot_models.py` 4개 통과
+- 1/n·2/n에서 만든 제어기 장착 구현(`visual_arm` 헬퍼, 가드 장착 위치 호출 시점 해석)은 이력 `4031baa5`, `99ac4ba1`에 있다. 새 코드로 옮길 때 참고한다.
 
-남은 일:
-1. **장면 버전 분리(핵심)**: `sim/zone_cargo.GRASP_RADIUS_M`(스테이션·도킹·발자국)은 등록 장면 해시를 지키려고 main 값(.155, v2 규약)으로 두었다. v3 로봇에는 `.155 + 0.0482`가 필요하다. robot model별 파지 규약을 가진 새 장면 버전을 만들고, 그 버전에만 새 해시를 등록한다.
-2. 남은 실패 목록(가드 아래, 파일별로 확인 예정): `test_zone_pair_grasp` 장면 계약 1건, `test_zone_start_dock` r1–r3 간격 2건, `test_zone_pair_dev`(장면 해시), `test_zone_pair_executor`(동결 소스 해시: owncam_pair_beam 후속 해시 명시), `test_zone_color_boxes`, `test_zone_team_jobs`, `test_zone_scenario_feasibility`, `test_zone_own_perception*`, `test_zone_own_executor_*`, `test_zone_cargo_perception`, `test_wrist_zone_skill_v3~v9`, `test_rgb_execution_skills`, `test_zone_team_a2`, `test_zone_hard_routes`, `test_zone_teacher_fix`, `test_owncam_memory_v3_review3`
-3. 번들: #246이 v70(`zone-pair-v70-beam-relative-multiturn`)을 쓰고 v68/v69를 은퇴시켰다. #250도 번호가 필요하다. 이 PR은 push 직전에 main과 열린 PR 전체의 최댓값을 다시 확인한 뒤 다음 번호(최소 v71/v72)를 쓴다.
-4. 다중 로봇 자기충돌·nav_cam 가림 감사(`mj_forward`), 비교 렌더 재생성
+남은 일(순서대로):
+1. v3 장면 버전: 다음 빈 버전 이름으로 새 zone 장면 버전을 만들고 `robot_model: masterpi_v3`를 싣는다(`sim.session_scenes.Scene`의 명시적 version/profile 재사용). 그 버전에만 새 해시를 등록한다.
+2. v3 소비자는 새 코드로 만든다. 스테이션(teacher), 시작 도킹, 발자국은 장면의 robot_model에서 `station_grasp_convention`을 읽는다. 기존 `scripts/zone_teacher.py`, `sim/zone_start_dock.py`, `harness/zone_team_footprint.py`의 바이트는 바꾸지 않는다.
+3. v3 제어기 층: 팔 장착 48.2 mm를 반영한 FK/IK와 카메라 외부 파라미터를 새 모듈로 만든다(예: `harness/visual_arm_v3.py`, `CONTROLLER_GEOMETRY_ID`). v3 장면의 실행기만 그 모듈을 쓴다. 가드도 같다.
+4. 번들: 등록은 push 직전에 한다. main과 열린 PR(#246 v70, #250, #253)의 최댓값을 다시 확인하고 v71 이상을 쓴다.
+5. 다중 로봇 자기충돌·nav_cam 가림 감사(`mj_forward`), 비교 렌더 재생성, 전원 연결 후 물리 검증(아래)
 
 ## SDK와 치수도 판정 (레퍼런스 우선)
 

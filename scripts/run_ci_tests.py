@@ -221,6 +221,7 @@ TEST_PATTERNS = (
     "tests/test_pick_match*.py",
     "tests/test_replay_pick_match.py",
     "tests/test_masterpi_model_v3.py",
+    "tests/test_masterpi_robot_models.py",
 )
 
 
