@@ -1,55 +1,12 @@
-# pytest (OMP_NUM_THREADS=2, -p no:cacheprovider), 2026-09-28, worktree claude-v6-boot, load avg ~55-78
-## dependent test files (      50 files):
-tests/test_pose_provider_contract.py
-tests/test_pose_provider_boundary.py
-tests/test_vision_pose_source.py
-tests/test_simulation_scenes.py
-tests/test_ultrasonic_range.py
-tests/test_zone_own_executor_boundaries.py
-tests/test_zone_own_executor_host.py
-tests/test_zone_own_executor_review4.py
-tests/test_zone_own_executor_sweep_start.py
-tests/test_zone_pair_executor.py
-tests/test_zone_pair_authorization.py
-tests/test_zone_pair_review2.py
-tests/test_zone_pair_review6.py
-tests/test_zone_pair_registered_source.py
-tests/test_zone_own_executor.py
-tests/test_zone_own_executor_review3.py
-tests/test_zone_eval_top.py
-tests/test_zone_pair_review4.py
-tests/test_zone_pair_admission.py
-tests/test_zone_own_executor_guards.py
-tests/test_zone_pair_v5c.py
-tests/test_zone_pair_tag_boundary_matrix.py
-tests/test_zone_own_executor_review5.py
-tests/test_zone_pair_grasp.py
-tests/test_zone_pair_v6.py
-tests/test_zone_pair_review.py
-tests/test_zone_pair_v6_review1.py
-tests/test_zone_pair_v6_review3.py
-tests/test_zone_pair_dev.py
-tests/test_zone_start_dock.py
-tests/test_zone_pair_review5.py
-tests/test_zone_pair_provider_init.py
-tests/test_zone_study_multiturn.py
-tests/test_zone_pair_v5h.py
-tests/test_zone_study_integration_pair.py
-tests/test_zone_pair_review3.py
-tests/test_zone_study_multiturn_properties.py
-tests/test_zone_pair_review7.py
-tests/test_zone_pair_v5.py
-tests/test_zone_pair_v6_review2.py
-tests/test_zone_pair_v6_final_review.py
-tests/test_zone_pair_v6_verification.py
-tests/test_zone_study_multiturn_review6.py
-tests/test_zone_study_integration_seams.py
-tests/test_zone_study_multiturn_model.py
-tests/test_zone_study_source_pinning.py
-tests/test_zone_study_multiturn_review7.py
-tests/test_zone_study_integration.py
-tests/test_zone_study_multiturn_review5.py
-tests/test_zone_study_pair_delay.py
-5622 passed in 3229.17s (0:53:49)
-## tests/test_owncam*.py
-366 passed, 276 subtests passed in 141.74s (0:02:21)
+# 2026-09-29 검토 #261 반영 + origin/main(#259, #253) 병합 뒤 회귀 (소스 HEAD 003eee06)
+# OMP_NUM_THREADS=2 ../../ugrp/.venv-sim/bin/python -m pytest -q -rf -p no:cacheprovider --basetemp=./.pytest_tmp_sN <shard N>
+# 파일 51개(tests/test_owncam_bootstrap_v6b.py + 변경 모듈 의존 테스트 50개)를 4개 샤드로 나눠 병렬 실행
+## shard 0: tests/test_owncam_bootstrap_v6b.py tests/test_simulation_scenes.py tests/test_zone_own_executor_review4.py tests/test_zone_pair_review2.py tests/test_zone_own_executor_review3.py tests/test_zone_own_executor_guards.py tests/test_zone_pair_grasp.py tests/test_zone_pair_v6_review3.py tests/test_zone_pair_provider_init.py tests/test_zone_pair_review3.py tests/test_zone_pair_v6_review2.py tests/test_zone_study_integration_seams.py tests/test_zone_study_integration.py 
+371 passed in 361.30s (0:06:01)
+## shard 1: tests/test_pose_provider_contract.py tests/test_ultrasonic_range.py tests/test_zone_own_executor_sweep_start.py tests/test_zone_pair_review6.py tests/test_zone_eval_top.py tests/test_zone_pair_v5c.py tests/test_zone_pair_v6.py tests/test_zone_pair_dev.py tests/test_zone_study_multiturn.py tests/test_zone_study_multiturn_properties.py tests/test_zone_pair_v6_final_review.py tests/test_zone_study_multiturn_model.py tests/test_zone_study_multiturn_review5.py 
+4414 passed in 1474.30s (0:24:34)
+## shard 2: tests/test_pose_provider_boundary.py tests/test_zone_own_executor_boundaries.py tests/test_zone_pair_executor.py tests/test_zone_pair_registered_source.py tests/test_zone_pair_review4.py tests/test_zone_pair_tag_boundary_matrix.py tests/test_zone_pair_review.py tests/test_zone_start_dock.py tests/test_zone_pair_v5h.py tests/test_zone_pair_review7.py tests/test_zone_pair_v6_verification.py tests/test_zone_study_source_pinning.py tests/test_zone_study_pair_delay.py 
+454 passed in 231.85s (0:03:51)
+## shard 3: tests/test_vision_pose_source.py tests/test_zone_own_executor_host.py tests/test_zone_pair_authorization.py tests/test_zone_own_executor.py tests/test_zone_pair_admission.py tests/test_zone_own_executor_review5.py tests/test_zone_pair_v6_review1.py tests/test_zone_pair_review5.py tests/test_zone_study_integration_pair.py tests/test_zone_pair_v5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py 
+408 passed in 161.73s (0:02:41)
+## 합계: 5647 passed, 0 failed
