@@ -1,0 +1,29 @@
+{
+ "pass": false,
+ "diagnostic": {
+  "pairs": 10696,
+  "positives": 960,
+  "stall_decisions": 0,
+  "moving_decisions": 0,
+  "unknown": 10696,
+  "precision": null,
+  "recall": 0.0,
+  "abstain_share_of_positives": 1.0,
+  "definition": {
+   "still_mps": 0.01,
+   "cmd_mps": 0.05,
+   "correct_ratio": 0.5,
+   "still_rps": 0.02,
+   "cmd_rps": 0.05
+  }
+ },
+ "gate": {
+  "correct_stall": "both XY/yaw <= max(0.5 x predicted, still threshold x dt), with active translation or yaw prediction",
+  "min_positives": 20,
+  "min_precision": 0.8,
+  "min_recall": 0.3,
+  "positive": "GT < 0.01 m/s AND < 0.02 rad/s; predicted > 0.05 m/s OR > 0.05 rad/s; seed0 only"
+ },
+ "stage": "detector",
+ "metrics_sha256": "3a6d6ae1747dbd8b67604176778eb71c3bb19f1483844d7470ecd44106c58afa"
+}
