@@ -10,16 +10,21 @@ import argparse
 import hashlib
 import json
 import math
+import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE.parent/'2026-09-26-vision-loc'))
+import replay_v6
+import vision_stall_v6
+import vis6_metrics
 BASE = {'infer_size': [480, 360], 'obs': {'refine_px': 6, 'consistency_px': 4},
         'measurement': {'settle_s': 0.2, 'effective_columns': 8, 'sigma_px': 2.5}, 'robust': {}}
 ETAS = {'eta050': .5, 'eta025': .25, 'eta0125': .125}
 GATING = {f'd{d:02d}a{a}': {'min_d_m': d/100., 'min_yaw_rad': round(math.radians(a), 6), 'min_servo_pulse': 10,
-                            'mode': 'skip'}
+                            'mode': 'skip', 'max_interval_s': 2.}
           for d in (2, 5, 10) for a in (3, 6)}
-STALL = {}          # vision_stall_v6.DEFAULT_STALL, fixed before any replay
+STALL = vision_stall_v6.validate_stall({})          # vision_stall_v6.DEFAULT_STALL, fixed before any replay
 FIT = ['vl-dev-s909', 'vl-dev-s910', 'vl-dev-s911', 'vl3-dev-s941', 'vl3-dev-s942', 'vl3-dev-s943']
 VALIDATION = ['vl3-dev-s945', 'vl3-dev-s946', 'vl3-dev-s947']
 
@@ -28,6 +33,8 @@ def configs() -> dict:
     out = {'T0': {**BASE, 'vis6': {}}}
     for n, eta in ETAS.items():
         out[f'T1b_{n}'] = {**BASE, 'vis6': {'eta': eta}}
+    out['T1c_inert'] = {**BASE, 'vis6': {'eta': 1., 'stall': {**STALL, 'min_pred_px': 100.,
+                                                                          'min_points': 1000000, 'max_points': 1000000}}}
     out['T1c'] = {**BASE, 'vis6': {'stall': STALL}}
     for g, gc in GATING.items():
         out[f'T1ac_{g}'] = {**BASE, 'vis6': {'stall': STALL, 'gating': gc}}
@@ -42,7 +49,11 @@ def dump(obj) -> str:
 
 def plan(cfg_hashes: dict) -> dict:
     return {
-        'schema': 'ugrp.vision_loc.vis6.plan.v1',
+        'schema': 'ugrp.vision_loc.vis6.plan.v2',
+        'revision': 2,
+        'amendment': '재생 전 PR #253 적대적 검토 반영. 거짓 stall 탈출, 잡음 보존, 사건 분할 내성, 해시 대조를 수정해 재동결. 이전 계획과 설정은 pre_review_0687c620/에 보존.',
+        'supersedes_plan_sha256': 'c339db6787324d1ec8bae2e2a9d6a7db9fa247ad3616ca04b3ed0db96ae96b04',
+        'module_sha256': replay_v6.source_hashes(),
         'status': 'FROZEN_BEFORE_ANY_VIS6_REPLAY',
         'issue': 'https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/216',
         'source': 'outputs/lit-review-tagfree-localization-20260928.md section 6.1 (recipe #1: 1a gating, 1b eta, 1c stall)',
@@ -58,10 +69,10 @@ def plan(cfg_hashes: dict) -> dict:
         'particles': 2000,
         'configs_sha256': cfg_hashes,
         'stages': [
-            {'id': 'P0', 'what': 'T0 fit seeds 0-2; reproduce: T0 seed 0 == stored VIS3 a1 xyyaw on every fit frame'},
+            {'id': 'P0', 'what': '먼저 T0/T1c_inert fit 첫 회차 seed0: a1 및 서로의 xyyaw/std_xy_m/std_yaw_rad/measured 대조. 통과 뒤 나머지 T0 fit seed0-2'},
             {'id': 'S1', 'what': '1b eta on fit: select calibration over [T0, T1b_eta050, T1b_eta025, T1b_eta0125]'},
-            {'id': 'S2', 'what': '1c detector gate on T1c fit (seeds 0-2 pooled)'},
-            {'id': 'S3', 'what': '1a gating grid on fit at eta 1: lowest fit NLL over T1ac_* in order '
+            {'id': 'S2', 'what': 'T1c fit 검출기 관문은 seed0 고유 프레임 쌍으로만 집계'},
+            {'id': 'S3', 'what': '1a gating grid on fit at eta 1: door accuracy constraints, then lowest fit NLL over T1ac_* in order '
                                  'd02a3, d02a6, d05a3, d05a6, d10a3, d10a6 (ties to the earlier)'},
             {'id': 'S4', 'what': '1a+1b+1c: select calibration over [T1ac_<S3>, T1abc_<S3>_eta050, _eta025, _eta0125]'},
             {'id': 'F', 'what': 'validation seeds 0-4: T0 baseline vs T1b_<S1>, T1c, T1ac_<S3>, T1abc_<S4>; '
@@ -72,18 +83,17 @@ def plan(cfg_hashes: dict) -> dict:
             'calibration_selection': 'eligible: fit seed-mean XY 95% ellipse coverage in band; choose lowest fit '
                                      'episode-equal XY NLL; ties to the earlier (larger eta) name; accuracy is not a '
                                      'selection criterion; none eligible -> the component is dropped',
+            'gating_accuracy_worse_max': {'door_pos_p90_m': .003, 'door_lat_p99_m': .003, 'door_yaw_p90_deg': .2},
+            'events': {'min_bad_frames': 5, 'merge_gap_s': 1., 'primary': 'event_frames (all bad frames, including short events)'},
             'detector_gate': {'min_positives': 20, 'min_precision': .80, 'min_recall': .30,
-                              'positive': 'GT speed < 0.01 m/s and predicted speed > 0.05 m/s over the frame pair',
-                              'correct_stall': 'GT displacement <= 0.5 x predicted displacement'},
-            'validation': {'coverage95_band': [.90, .99], 'exceed3_xy_max': .02, 'door_pos_p90_worse_max_m': .003,
-                           'door_lat_p99_worse_max_m': .003, 'door_yaw_p90_worse_max_deg': .2,
-                           'sigma_xy_p90_loaded_max_m': .07, 'episode_nll_no_worse': True,
-                           'events_must_decrease': True},
+                              'positive': 'GT < 0.01 m/s AND < 0.02 rad/s; predicted > 0.05 m/s OR > 0.05 rad/s; seed0 only',
+                              'correct_stall': 'both XY/yaw <= max(0.5 x predicted, still threshold x dt), with active translation or yaw prediction'},
+            'validation': dict(vis6_metrics.DEFAULT_VALIDATION_RULE),
         },
         'stop_rules': [
             'P0 reproduce fails -> STOP before any comparison (code or data drift); record, no selection',
             'S2 detector gate fails -> 1c dropped; 1a is dropped with it (gating needs 1c); F compares T1b only',
-            'S1 or S4 with no eligible candidate -> that stage contributes no candidate',
+            'S1, S3 or S4 with no eligible candidate -> that stage contributes no candidate',
             'no candidate passes F -> keep b0 (VIS3 a1 = T0); no re-tuning of grids, thresholds or rules in this '
             'cohort; a new idea needs a new plan',
             'host: AC power only; ENOSPC or a killed run -> HOST_ERROR, rerun the whole unit into a new root; '

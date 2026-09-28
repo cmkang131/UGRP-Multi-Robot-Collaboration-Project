@@ -10,7 +10,7 @@ Subcommands
   run        PF replay of one candidate config for PF seed indices x episodes ->
              <root>/<candidate>/seed<k>/<episode>.estimates.jsonl + .meta.json (full covariance,
              VIS6 diagnostics). Refuses to overwrite.
-  reproduce  T0 seed 0 must equal the stored VIS3 a1 estimates (xyyaw) frame by frame (preflight).
+  reproduce  T0 seed 0 must equal stored VIS3 a1 (xyyaw, both std reports, measured) frame by frame (preflight).
   evaluate   GT scoring (eval_only/frames_eval.jsonl): per candidate, seed and split: 95 % XY ellipse
              coverage, >3 sigma, ANEES (XY full covariance, yaw), NLL, door p90, door lateral p99, door
              yaw p90, sigma p90, over-confident loss events, lost frames, and the 1c detector diagnostic.
@@ -48,7 +48,8 @@ DEFAULTS = {'calibration': HERE/'calibration_train.json',
             'baseline_a1': vio.PRIMARY_OUT/'r3'/'dev-grid'/'a1_open'}
 SOURCES = ('vision_loc.py', 'vision_pf_v5.py', 'vision_pf_v6.py', 'vision_stall_v6.py', 'vision_motion.py',
            'vision_sigma.py', 'vision_report_v5.py', 'vision_loc_cli_v5.py', 'vision_loc_io.py', 'vis6_metrics.py',
-           'replay_v6.py')
+           'replay_v6.py', 'vision_loc_score.py', 'episodes.json', 'episodes_v3.json',
+           '../2026-09-26-markerless-probe/markerless_probe.py')
 
 
 def pf_seed(ep: str, k: int) -> int:
@@ -74,6 +75,45 @@ def git_head() -> str | None:
                               check=True).stdout.strip()
     except (OSError, subprocess.CalledProcessError):
         return None
+
+
+def source_hashes() -> dict:
+    files = [HERE/f for f in SOURCES] + [vl.ROOT/f for f in mp.SHARED_RUNTIME_SHA256]
+    return {str(p.resolve().relative_to(vl.ROOT)): vio.sha_file(p) for p in files}
+
+
+def clean_source_head() -> str:
+    head = git_head()
+    status = subprocess.run(['git', '-C', str(HERE), 'status', '--porcelain', '--untracked-files=normal'],
+                            capture_output=True, text=True, check=True).stdout
+    if not head or status.strip():
+        raise SystemExit('VIS6 run requires a clean committed worktree')
+    return head
+
+
+def verify_config(plan: dict, name: str, path: Path) -> None:
+    if plan['configs_sha256'].get(name) != vio.sha_file(path):
+        raise SystemExit(f'{name}: config hash does not match the frozen plan')
+
+
+def verify_unit(meta_path: Path, est_path: Path, plan: dict, plan_sha: str,
+                name: str, ep: str, k: int) -> dict:
+    """Fail closed before GT access; return the source identity shared by the entire cohort."""
+    if not meta_path.exists():
+        raise SystemExit(f'{meta_path}: missing run metadata')
+    meta = vio.load_json(meta_path)
+    expected = {'candidate': name, 'episode': ep, 'seed_index': k, 'pf_seed': pf_seed(ep, k),
+                'plan_sha256': plan_sha, 'failure': None, 'git_dirty': False,
+                'module_sha256': plan['module_sha256'], 'estimates_sha256': vio.sha_file(est_path)}
+    for key, value in expected.items():
+        if key not in meta or meta[key] != value:
+            raise SystemExit(f'{meta_path}: {key} mismatch')
+    if (meta.get('config', {}).get('sha256') != plan['configs_sha256'].get(name)
+            or name not in plan['configs_sha256']):
+        raise SystemExit(f'{meta_path}: config hash mismatch')
+    if not meta.get('git_head') or meta.get('frames', 0) <= 0 or meta['frames'] != meta.get('frames_written'):
+        raise SystemExit(f'{meta_path}: incomplete run or missing source HEAD')
+    return {'git_head': meta['git_head'], 'module_sha256': meta['module_sha256']}
 
 
 # ----------------------------------------------------------------------------- run
@@ -106,6 +146,13 @@ def run(args):
     import signal
     signal.signal(signal.SIGTERM, cli5._term_as_exit)
     require_dev(args.episodes)
+    plan = vio.load_json(args.plan)
+    name = args.candidate or Path(args.config).stem
+    verify_config(plan, name, Path(args.config))
+    modules, plan_sha = source_hashes(), vio.sha_file(args.plan)
+    if modules != plan['module_sha256']:
+        raise SystemExit('runtime module hashes do not match the frozen plan')
+    head = clean_source_head()
     cfg = vio.load_json(args.config)
     unknown = set(cfg) - {'infer_size', 'obs', 'measurement', 'robust', 'pan_coupling', 'vis6'}
     if unknown:
@@ -115,12 +162,14 @@ def run(args):
     ctx = {'m1': mp.load_m1_localizer(), 'params': m1_cal['params'], 'static': vio.load_map(),
            'cal': vio.load_json(args.calibration), 'ckpt_sha': vio.sha_file(args.checkpoint)}
     obs_params = vio.config_obs_params(cfg)
-    name = args.candidate or Path(args.config).stem
-    head = git_head()
     for k in args.seeds:
         out = Path(args.output)/name/f'seed{k}'
         out.mkdir(parents=True, exist_ok=True)
         for ep in args.episodes:
+            if (clean_source_head() != head or source_hashes() != modules
+                    or vio.sha_file(args.plan) != plan_sha):
+                raise SystemExit('source/plan changed during the cohort')
+            verify_config(plan, name, Path(args.config))
             if (out/f'{ep}.estimates.jsonl').exists() or (out/f'{ep}.meta.json').exists():
                 raise SystemExit(f'refusing to overwrite {out}/{ep}')
             obs, _ = vio.load_obs(Path(args.obs)/f'{ep}.obs.npz', kind='vision', episode=ep, obs_params=obs_params,
@@ -136,6 +185,10 @@ def run(args):
             load0 = list(os.getloadavg())
             try:
                 n = vl.replay(vio.RENDER_ROOT/ep, [sink], on_frame=lambda i, row: rows.append(frame_record(row, sink)))
+                if (clean_source_head() != head or source_hashes() != modules
+                        or vio.sha_file(args.plan) != plan_sha):
+                    raise RuntimeError('source/plan changed during the run unit')
+                verify_config(plan, name, Path(args.config))
             except BaseException as exc:
                 failure = f'{type(exc).__name__}: {exc}'
                 raise
@@ -145,7 +198,9 @@ def run(args):
                 meta = {'schema': vision_pf_v6.SCHEMA, 'candidate': name, 'episode': ep, 'seed_index': k,
                         'pf_seed': seed, 'frames': n, 'frames_written': len(rows), 'failure': failure,
                         'wall_s': round(time.time() - t0, 1), 'load_average_start': load0,
-                        'load_average_end': list(os.getloadavg()), 'git_head': head,
+                        'load_average_end': list(os.getloadavg()), 'git_head': head, 'git_dirty': False,
+                        'estimates_sha256': vio.sha_file(out/(f'{ep}.estimates.jsonl' if failure is None
+                                                           else f'{ep}.estimates.partial.jsonl')),
                         'stats': dict(loc.stats), 'vis6_active': hasattr(loc, 'vis6'),
                         'dock': [cli5.DOCK_X, vio.spawn_y(ep), cli5.DOCK_YAW], 'dock_std': list(cli5.DOCK_STD),
                         'config': {'path': str(args.config), 'sha256': vio.sha_file(args.config), 'value': cfg},
@@ -154,20 +209,30 @@ def run(args):
                         'map': {'file': str(vio.MAP_FILE.relative_to(mp.ROOT)), 'sha256': vio.sha_file(vio.MAP_FILE)},
                         'm1_calibration': m1_prov,
                         'm1_localizer': {'source': f'{mp.M1_SHA}:{mp.M1_LOCALIZER}', 'sha256': mp.M1_LOCALIZER_SHA256},
-                        'module_sha256': {f: vio.sha_file(HERE/f) for f in SOURCES},
-                        'plan_sha256': vio.sha_file(args.plan) if Path(args.plan).exists() else None}
+                        'module_sha256': modules, 'plan_sha256': plan_sha}
                 (out/f'{ep}.meta.json').write_text(json.dumps(meta, indent=1))
             print(f'{name} seed{k} {ep}: {n} frames, {meta["wall_s"]} s, stats {meta["stats"]}', flush=True)
 
 
 # ----------------------------------------------------------------------------- reproduce
+def same_estimate(a, b) -> bool:
+    if a['frame'] != b['frame'] or a['t'] != b['t']:
+        return False
+    av, bv = a['vision'], b['vision']
+    if av is None or bv is None:
+        return av == bv
+    keys = ('xyyaw', 'std_xy_m', 'std_yaw_rad', 'measured')
+    return all(k in av and k in bv and av[k] == bv[k] for k in keys)
+
+
 def reproduce(args):
-    """T0 seed 0 vs the stored VIS3 a1 estimates: every frame's xyyaw must be equal."""
+    """Framewise reproduction of xyyaw, both std reports and the measured flag."""
+    require_dev(args.episodes)
     report, bad = {}, 0
     for ep in args.episodes:
         a = vl.read_jsonl(Path(args.baseline)/f'{ep}.estimates.jsonl')
         b = vl.read_jsonl(Path(args.root)/args.candidate/'seed0'/f'{ep}.estimates.jsonl')
-        diff = sum(1 for x, y in zip(a, b) if x['frame'] != y['frame'] or x['vision']['xyyaw'] != y['vision']['xyyaw'])
+        diff = sum(1 for x, y in zip(a, b) if not same_estimate(x, y))
         diff += abs(len(a) - len(b))
         report[ep] = {'frames': len(a), 'mismatches': diff}
         bad += diff
@@ -203,7 +268,8 @@ def episode_rows(est_path: Path, gt: dict) -> tuple[list, list]:
             if abs(float(st['prev_t']) - float(prev[0])) > 1e-6:
                 raise SystemExit(f'{est_path}: stall pair at frame {rec["frame"]} is not the previous frame')
             pairs.append({'decision': st['decision'], 'dt': float(rec['t']) - float(prev[0]),
-                          'pred_m': float(st['pred_m']), 'gt_m': math.hypot(g[0] - prev[1][0], g[1] - prev[1][1])})
+                          'pred_m': float(st['pred_m']), 'pred_yaw_rad': float(st['pred_yaw_rad']),
+                          'gt_yaw_rad': vm6.wrap(g[2] - prev[1][2]), 'gt_m': math.hypot(g[0] - prev[1][0], g[1] - prev[1][1])})
         prev = (float(rec['t']), g)
     return rows, pairs
 
@@ -214,6 +280,7 @@ def evaluate(args):
     wanted = set(args.episodes) if args.episodes else None
     require_dev([e for s in splits.values() for e in s])
     gt_cache: dict = {}
+    provenance = None
     out = {'schema': 'ugrp.vision_loc.vis6.metrics.v1', 'plan_sha256': vio.sha_file(args.plan),
            'root': str(args.root), 'candidates': {}}
     for name in args.candidates:
@@ -232,6 +299,11 @@ def evaluate(args):
                     raise SystemExit(f'{d}: missing complete estimates for {missing} (partial sets are not scored)')
                 episodes = {}
                 for ep in eps:
+                    signature = verify_unit(d/f'{ep}.meta.json', d/f'{ep}.estimates.jsonl', plan,
+                                            out['plan_sha256'], name, ep, k)
+                    if provenance is not None and signature != provenance:
+                        raise SystemExit('mixed git_head/module_sha256 across run units')
+                    provenance = signature
                     if ep not in gt_cache:
                         gt_cache[ep] = {r['frame']: r['gt']
                                         for r in vl.read_jsonl(vio.RENDER_ROOT/ep/'eval_only'/'frames_eval.jsonl')}
@@ -239,13 +311,15 @@ def evaluate(args):
                     if len(rows) != len(gt_cache[ep]):
                         raise SystemExit(f'{d}/{ep}: {len(rows)} rows for {len(gt_cache[ep])} frames')
                     episodes[ep] = rows
-                    pairs_all += pairs
+                    if k == 0:     # unique frame pairs, not three copies across PF seeds
+                        pairs_all += pairs
                 per_seed[f'seed{k}'] = vm6.summarize(episodes)
             if not per_seed:
                 continue
             cand[split] = {'episodes': eps, 'per_seed': per_seed, 'seed_mean': vm6.seed_mean(per_seed),
                            'stall_diagnostic': vm6.stall_diagnostic(pairs_all) if pairs_all else None}
         out['candidates'][name] = cand
+    out['provenance'] = provenance
     _write_new(args.output, out)
     for name, c in out['candidates'].items():
         for split, s in c.items():
@@ -262,13 +336,23 @@ def select(args):
     if met.get('plan_sha256') != vio.sha_file(args.plan):
         raise SystemExit('metrics were computed under a different plan file')
     c = met['candidates']
+    split = 'validation' if args.stage == 'final' else 'fit'
+    seeds = plan['seeds']['final_validation' if args.stage == 'final' else 'selection_fit']
+    names = list(args.candidates)
+    if args.stage in ('lowest-nll', 'final') and args.baseline not in names:
+        names.append(args.baseline)
+    for name in names:
+        block = c.get(name, {}).get(split, {})
+        if (block.get('episodes') != plan['split'][split]
+                or set(block.get('per_seed', {})) != {f'seed{k}' for k in seeds}):
+            raise SystemExit(f'{name}: incomplete {split} episodes/seeds for selection')
     if args.stage == 'calibration':
         stats = {n: c[n]['fit']['seed_mean']['mean'] for n in args.candidates}
         res = vm6.select_calibrated(stats, args.candidates, tuple(plan['rules']['coverage95_band']))
     elif args.stage == 'lowest-nll':
-        stats = {n: c[n]['fit']['seed_mean']['mean']['nll_xy'] for n in args.candidates}
-        res = {'chosen': min(args.candidates, key=lambda n: (round(stats[n], 9), args.candidates.index(n))),
-               'table': stats}
+        stats = {n: c[n]['fit']['seed_mean']['mean'] for n in args.candidates}
+        res = vm6.select_gating(stats, args.candidates, c[args.baseline]['fit']['seed_mean']['mean'],
+                                 plan['rules']['gating_accuracy_worse_max'])
     elif args.stage == 'detector':
         d = c[args.candidates[0]]['fit']['stall_diagnostic'] or {}
         r = plan['rules']['detector_gate']

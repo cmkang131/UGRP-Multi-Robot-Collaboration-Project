@@ -11,7 +11,7 @@ simulator state, ``eval_only/`` or teacher file is read here.
 Test. The floor is a plane (z = 0). For a sample of textured floor pixels of the
 later frame, the base displacement ``s * delta`` (``delta`` = predicted, s a
 fraction on a fixed grid) moves their floor points to a pixel of the earlier
-frame; the photometric residual ``r(s)`` = mean |I1 - I0(warp_s)| is computed on
+frame; the photometric residual ``r(s)`` = trimmed mean |I1 - I0(warp_s)| is computed on
 the same point set for every ``s``. ``s* = argmin r``.
 
 * ``stall``: s* <= ``stall_max_scale`` and r(1) - r(s*) clears both the absolute
@@ -76,8 +76,11 @@ DEFAULT_STALL = {
     'obs_floor_mask': True,     # keep only rows below the observed wall-bottom edge of the later frame
     'obs_margin_px': 4.,
     'max_dt_s': .45,            # frame pair gap (5 Hz frames: 0.2 s)
-    'gain': 1.,                 # share of the predicted displacement removed on 'stall' (1: back to the old pose)
-    'velocity_gain': 1.,        # share of the PF velocity state removed on 'stall'
+    'gain': 1.,                 # share of the predicted displacement removed on 'stall' (1: remove mean motion, retain process spread)
+    'max_consecutive_stall': 5, # further stalls retain raw prediction until a non-stall verdict
+    'trim_fraction': .1,        # trim each tail of per-point absolute residuals
+    'mixed_min_share': .25,    # both confident stationary and moving points -> unknown
+    'velocity_gain': .5,        # share of the PF velocity state removed on 'stall'
 }
 
 
@@ -112,7 +115,7 @@ def validate_stall(cfg: Mapping | None) -> dict | None:
     if c['moving_min_scale'] <= c['stall_max_scale']:
         raise ValueError('stall.moving_min_scale must exceed stall_max_scale')
     _num(c['min_pred_px'], 'stall.min_pred_px', 0., 100., lo_open=True)
-    for k in ('min_points', 'max_points', 'stride_px', 'blur_ksize'):
+    for k in ('min_points', 'max_points', 'stride_px', 'blur_ksize', 'max_consecutive_stall'):
         if isinstance(c[k], bool) or not isinstance(c[k], int) or c[k] < 1:
             raise ValueError(f'stall.{k} must be a positive integer')
     if c['blur_ksize'] % 2 == 0:
@@ -135,14 +138,31 @@ def validate_stall(cfg: Mapping | None) -> dict | None:
     _num(c['max_dt_s'], 'stall.max_dt_s', 0., 5., lo_open=True)
     _num(c['gain'], 'stall.gain', 0., 1., lo_open=True)
     _num(c['velocity_gain'], 'stall.velocity_gain', 0., 1.)
+    _num(c['trim_fraction'], 'stall.trim_fraction', 0., .4)
+    _num(c['mixed_min_share'], 'stall.mixed_min_share', 0., .5, lo_open=True)
     return c
 
 
+def floor_color_mask(bgr: np.ndarray) -> np.ndarray:
+    """Conservative checker palette, with lighting tolerance; coloured cargo/paint excluded.
+
+    The source checker is low-saturation blue-gray (CHECKER['rgb']). This is a
+    candidate floor mask, not a semantic guarantee: gray objects can still pass.
+    """
+    rgb = np.asarray(bgr, float)[..., ::-1]
+    hi, lo = rgb.max(axis=2), rgb.min(axis=2)
+    return (lo >= 15.) & (hi <= 190.) & (hi - lo <= .28*hi) & (rgb[..., 2] >= rgb[..., 0] - 8.)
+
+
 def prepare(bgr: np.ndarray, blur_ksize: int = 5) -> np.ndarray:
-    """Raw fisheye BGR frame -> undistorted, blurred float32 gray image (invalid pinhole pixels NaN)."""
-    gray = cv2.cvtColor(mp.undistort(bgr), cv2.COLOR_BGR2GRAY).astype(np.float32)
+    """Raw BGR -> undistorted gray; non-floor/invalid pixels and blur neighbourhoods NaN."""
+    undistorted = mp.undistort(bgr)
+    valid = floor_color_mask(undistorted) & vl.VALID
+    size = blur_ksize + 2
+    valid = cv2.erode(valid.astype(np.uint8), np.ones((size, size), np.uint8)).astype(bool)
+    gray = cv2.cvtColor(undistorted, cv2.COLOR_BGR2GRAY).astype(np.float32)
     gray = cv2.GaussianBlur(gray, (blur_ksize, blur_ksize), 0)
-    gray[~vl.VALID] = np.nan
+    gray[~valid] = np.nan
     return gray
 
 
@@ -176,7 +196,8 @@ def sample_points(img1: np.ndarray, origin: np.ndarray, rot: np.ndarray, cfg: Ma
     u, v = uu.ravel(), vv.ravel()
     g = np.nan_to_num(img1, nan=0.)
     mag = np.hypot(cv2.Sobel(g, cv2.CV_32F, 1, 0, ksize=3), cv2.Sobel(g, cv2.CV_32F, 0, 1, ksize=3))/8.
-    keep = vl.VALID[v, u] & np.isfinite(img1[v, u]) & (mag[v, u] >= float(cfg['grad_min']))
+    interior = cv2.erode((vl.VALID & np.isfinite(img1)).astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)
+    keep = interior[v, u] & (mag[v, u] >= float(cfg['grad_min']))
     if min_rows is not None:
         keep &= v >= min_rows[u]
     u, v = u[keep], v[keep]
@@ -252,8 +273,25 @@ def stall_test(img0: np.ndarray, img1: np.ndarray, origin: np.ndarray, rot: np.n
     if pred_px < float(cfg['min_pred_px']):
         out['reason'] = 'small_predicted_motion'
         return out
-    r = np.array([float(np.mean(np.abs(i1[common] - smp[common]))) for smp in samples])
+    errors = np.abs(np.stack(samples)[:, common] - i1[common])
+    trim = int(errors.shape[1]*float(cfg['trim_fraction']))
+    ordered = np.sort(errors, axis=1)
+    r = np.mean(ordered[:, trim:errors.shape[1] - trim], axis=1)
     scales = np.asarray(cfg['scales'], float)
+    point_best = np.argmin(errors, axis=0)
+    best_error = errors[point_best, np.arange(errors.shape[1])]
+    contrast0 = errors[0] - best_error
+    contrast1 = errors[list(scales).index(1.)] - best_error
+    floor = float(cfg['min_contrast_gray'])
+    rel = float(cfg['min_contrast_rel'])
+    still = ((scales[point_best] <= cfg['stall_max_scale']) & (contrast1 >= floor)
+             & (contrast1 >= rel*np.maximum(errors[list(scales).index(1.)], 1e-9)))
+    moving = ((scales[point_best] >= cfg['moving_min_scale']) & (contrast0 >= floor)
+              & (contrast0 >= rel*np.maximum(errors[0], 1e-9)))
+    out['point_stall_share'], out['point_moving_share'] = float(still.mean()), float(moving.mean())
+    if min(still.mean(), moving.mean()) >= cfg['mixed_min_share']:
+        out['reason'] = 'mixed_point_motion'
+        return out
     k = int(np.argmin(r))
     s_star = float(scales[k])
     out['residuals'] = [round(float(x), 4) for x in r]

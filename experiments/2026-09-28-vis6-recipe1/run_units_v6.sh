@@ -16,18 +16,28 @@ fi
 mkdir -p "$out/logs" "$out/runs"
 free_gib=$(df -g "$out" | awk 'NR==2 {print $4}')
 if [ "${free_gib:-0}" -lt 10 ]; then echo "HOST_ERROR: less than 10 GiB free on $out" >&2; exit 4; fi
-fails=0
+# Status belongs to this invocation; old FAILED lines remain an audit trail only.
+status_dir=$(mktemp -d "$out/logs/status.XXXXXX")
 for c in $cands; do
   [ -f "$HERE/configs/$c.json" ] || { echo "unknown candidate $c" >&2; exit 2; }
 done
 for c in $cands; do for k in $seeds; do for ep in $eps; do
   while [ "$(jobs -rp | wc -l)" -ge "$MAXJ" ]; do sleep 5; done
   echo "$(date -u +%FT%TZ) start $c seed$k $ep $(uptime)" >> "$out/load.txt"
-  ( "$PY" "$VIS/replay_v6.py" run --config "$HERE/configs/$c.json" --seeds "$k" --episodes "$ep" \
-      --output "$out/runs" > "$out/logs/$c.seed$k.$ep.log" 2>&1 \
-    && echo "$(date -u +%FT%TZ) end $c seed$k $ep $(uptime)" >> "$out/load.txt" \
-    || echo "$(date -u +%FT%TZ) FAILED $c seed$k $ep $(uptime)" >> "$out/load.txt" ) &
+  ( if "$PY" "$VIS/replay_v6.py" run --config "$HERE/configs/$c.json" --seeds "$k" --episodes "$ep" \
+      --output "$out/runs" > "$out/logs/$c.seed$k.$ep.log" 2>&1; then
+      echo 0 > "$status_dir/$c.seed$k.$ep"
+      echo "$(date -u +%FT%TZ) end $c seed$k $ep $(uptime)" >> "$out/load.txt"
+    else
+      code=$?
+      echo "$code" > "$status_dir/$c.seed$k.$ep"
+      echo "$(date -u +%FT%TZ) FAILED $c seed$k $ep $(uptime)" >> "$out/load.txt"
+    fi ) &
 done; done; done
 wait
-if grep -q "FAILED" "$out/load.txt"; then echo "some units FAILED (see $out/load.txt): HOST_ERROR or bug, rerun into a new root" >&2; exit 1; fi
+for c in $cands; do for k in $seeds; do for ep in $eps; do
+  if [ ! -f "$status_dir/$c.seed$k.$ep" ] || [ "$(cat "$status_dir/$c.seed$k.$ep")" != 0 ]; then
+    echo "unit FAILED: $c seed$k $ep (see $status_dir); rerun into a new root" >&2; exit 1
+  fi
+done; done; done
 echo "$(date -u +%FT%TZ) units done $(uptime)" >> "$out/load.txt"
