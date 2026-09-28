@@ -1,0 +1,437 @@
+{
+ "note": "Review P1 (PR #248): the SIM rays skip only the own chassis side (chassis with sensor housing, wheels); arm, gripper, jaws, camera and held loads are included, as the physical sensor sees them.",
+ "pair_r1": [
+  {
+   "beam": "on_floor",
+   "echo_geom": "r1__gripper_crossbar_visual",
+   "echo_is_own_arm": true,
+   "echo_is_own_load": false,
+   "first_echo_m": 0.0427,
+   "own_arm_geoms_hit": [
+    "r1__gripper_crossbar_visual"
+   ],
+   "pitch_deg": -72.09,
+   "pose": "grasp",
+   "status": "ok",
+   "tool_z_m": 0.0238
+  },
+  {
+   "beam": "on_floor (arm descending/ascending empty or before closing)",
+   "echo_geom": "r1__gripper_crossbar_visual",
+   "echo_is_own_arm": true,
+   "echo_is_own_load": false,
+   "first_echo_m": 0.0476,
+   "own_arm_geoms_hit": [
+    "r1__gripper_crossbar_visual"
+   ],
+   "pitch_deg": -72.09,
+   "pose": "lower_0.040",
+   "status": "ok",
+   "tool_z_m": 0.0398
+  },
+  {
+   "beam": "on_floor (arm descending/ascending empty or before closing)",
+   "echo_geom": "r2__camera_body",
+   "echo_is_own_arm": false,
+   "echo_is_own_load": false,
+   "first_echo_m": 0.5876,
+   "own_arm_geoms_hit": [],
+   "pitch_deg": -71.01,
+   "pose": "lower_0.060",
+   "status": "ok",
+   "tool_z_m": 0.0599
+  },
+  {
+   "beam": "on_floor (arm descending/ascending empty or before closing)",
+   "echo_geom": "r2__left_finger_pad_visual",
+   "echo_is_own_arm": false,
+   "echo_is_own_load": false,
+   "first_echo_m": 0.6159,
+   "own_arm_geoms_hit": [],
+   "pitch_deg": -68.04,
+   "pose": "lower_0.080",
+   "status": "ok",
+   "tool_z_m": 0.08
+  },
+  {
+   "beam": "on_floor (arm descending/ascending empty or before closing)",
+   "echo_geom": "r2__ultrasonic_bracket",
+   "echo_is_own_arm": false,
+   "echo_is_own_load": false,
+   "first_echo_m": 0.688,
+   "own_arm_geoms_hit": [],
+   "pitch_deg": -64.08,
+   "pose": "hover_0.095",
+   "status": "ok",
+   "tool_z_m": 0.0949
+  },
+  {
+   "beam": "on_floor",
+   "echo_geom": "r2__ultrasonic_bracket",
+   "echo_is_own_arm": false,
+   "echo_is_own_load": false,
+   "first_echo_m": 0.688,
+   "own_arm_geoms_hit": [],
+   "pitch_deg": -60.03,
+   "pose": "lift_0.110",
+   "status": "ok",
+   "tool_z_m": 0.11
+  },
+  {
+   "beam": "held",
+   "echo_geom": "r2__ultrasonic_bracket",
+   "echo_is_own_arm": false,
+   "echo_is_own_load": false,
+   "first_echo_m": 0.688,
+   "own_arm_geoms_hit": [],
+   "pitch_deg": -60.03,
+   "pose": "lift_0.110",
+   "status": "ok",
+   "tool_z_m": 0.11
+  },
+  {
+   "beam": "on_floor",
+   "echo_geom": "r2__ultrasonic_bracket",
+   "echo_is_own_arm": false,
+   "echo_is_own_load": false,
+   "first_echo_m": 0.688,
+   "own_arm_geoms_hit": [],
+   "pitch_deg": -55.98,
+   "pose": "lift_0.120",
+   "status": "ok",
+   "tool_z_m": 0.12
+  },
+  {
+   "beam": "held",
+   "echo_geom": "r2__ultrasonic_bracket",
+   "echo_is_own_arm": false,
+   "echo_is_own_load": false,
+   "first_echo_m": 0.688,
+   "own_arm_geoms_hit": [],
+   "pitch_deg": -55.98,
+   "pose": "lift_0.120",
+   "status": "ok",
+   "tool_z_m": 0.12
+  }
+ ],
+ "pair_scene_xml_sha256": "3486ce92842e113ed10ae37cbfb9badcedfeb4df222b84801cf287a7ee97329b",
+ "schema": "ugrp.ultrasonic_own_arm_pose_sweep.v1",
+ "solo_r1": {
+  "box": [
+   {
+    "echo_geom": "r1__gripper_crossbar_visual",
+    "echo_is_own_arm": true,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.0427,
+    "held": false,
+    "own_arm_geoms_hit": [
+     "r1__gripper_crossbar_visual"
+    ],
+    "pose": "grasp",
+    "status": "ok",
+    "tool_z_m": 0.0238
+   },
+   {
+    "echo_geom": "r1__gripper_crossbar_visual",
+    "echo_is_own_arm": true,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.0427,
+    "held": true,
+    "own_arm_geoms_hit": [
+     "r1__gripper_crossbar_visual"
+    ],
+    "pose": "grasp",
+    "status": "ok",
+    "tool_z_m": 0.0238
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": false,
+    "own_arm_geoms_hit": [],
+    "pose": "lower_0.060",
+    "status": "ok",
+    "tool_z_m": 0.0599
+   },
+   {
+    "echo_geom": "cargo_box_00_geom",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": true,
+    "first_echo_m": 0.054,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "lower_0.060",
+    "status": "ok",
+    "tool_z_m": 0.0599
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": false,
+    "own_arm_geoms_hit": [],
+    "pose": "hover_0.095",
+    "status": "ok",
+    "tool_z_m": 0.0949
+   },
+   {
+    "echo_geom": "cargo_box_00_geom",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": true,
+    "first_echo_m": 0.0544,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "hover_0.095",
+    "status": "ok",
+    "tool_z_m": 0.0949
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "straight_0.12",
+    "status": "ok",
+    "tool_z_m": 0.12
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": false,
+    "own_arm_geoms_hit": [],
+    "pose": "carry_p30",
+    "status": "ok",
+    "tool_z_m": 0.1799
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "carry_p30",
+    "status": "ok",
+    "tool_z_m": 0.1799
+   }
+  ],
+  "can": [
+   {
+    "echo_geom": "r1__gripper_crossbar_visual",
+    "echo_is_own_arm": true,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.0427,
+    "held": false,
+    "own_arm_geoms_hit": [
+     "r1__gripper_crossbar_visual"
+    ],
+    "pose": "grasp",
+    "status": "ok",
+    "tool_z_m": 0.0238
+   },
+   {
+    "echo_geom": "r1__gripper_crossbar_visual",
+    "echo_is_own_arm": true,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.0427,
+    "held": true,
+    "own_arm_geoms_hit": [
+     "r1__gripper_crossbar_visual"
+    ],
+    "pose": "grasp",
+    "status": "ok",
+    "tool_z_m": 0.0238
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": false,
+    "own_arm_geoms_hit": [],
+    "pose": "lower_0.060",
+    "status": "ok",
+    "tool_z_m": 0.0599
+   },
+   {
+    "echo_geom": "cargo_can__shell",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": true,
+    "first_echo_m": 0.052,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "lower_0.060",
+    "status": "ok",
+    "tool_z_m": 0.0599
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": false,
+    "own_arm_geoms_hit": [],
+    "pose": "hover_0.095",
+    "status": "ok",
+    "tool_z_m": 0.0949
+   },
+   {
+    "echo_geom": "cargo_can__shell",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": true,
+    "first_echo_m": 0.0527,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "hover_0.095",
+    "status": "ok",
+    "tool_z_m": 0.0949
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "straight_0.12",
+    "status": "ok",
+    "tool_z_m": 0.12
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": false,
+    "own_arm_geoms_hit": [],
+    "pose": "carry_p30",
+    "status": "ok",
+    "tool_z_m": 0.1799
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "carry_p30",
+    "status": "ok",
+    "tool_z_m": 0.1799
+   }
+  ],
+  "tile": [
+   {
+    "echo_geom": "r1__gripper_crossbar_visual",
+    "echo_is_own_arm": true,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.0305,
+    "held": false,
+    "own_arm_geoms_hit": [
+     "r1__gripper_crossbar_visual"
+    ],
+    "pose": "grasp",
+    "status": "ok",
+    "tool_z_m": 0.0069
+   },
+   {
+    "echo_geom": "r1__gripper_crossbar_visual",
+    "echo_is_own_arm": true,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.0305,
+    "held": true,
+    "own_arm_geoms_hit": [
+     "r1__gripper_crossbar_visual"
+    ],
+    "pose": "grasp",
+    "status": "ok",
+    "tool_z_m": 0.0069
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": false,
+    "own_arm_geoms_hit": [],
+    "pose": "lower_0.060",
+    "status": "ok",
+    "tool_z_m": 0.0601
+   },
+   {
+    "echo_geom": "cargo_tile__slab",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": true,
+    "first_echo_m": 0.0411,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "lower_0.060",
+    "status": "ok",
+    "tool_z_m": 0.0601
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": false,
+    "own_arm_geoms_hit": [],
+    "pose": "hover_0.095",
+    "status": "ok",
+    "tool_z_m": 0.0949
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "hover_0.095",
+    "status": "ok",
+    "tool_z_m": 0.0949
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "straight_0.11",
+    "status": "ok",
+    "tool_z_m": 0.11
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": false,
+    "own_arm_geoms_hit": [],
+    "pose": "carry_p30",
+    "status": "ok",
+    "tool_z_m": 0.1799
+   },
+   {
+    "echo_geom": "tag_049_r3c6",
+    "echo_is_own_arm": false,
+    "echo_is_own_load": false,
+    "first_echo_m": 0.489,
+    "held": true,
+    "own_arm_geoms_hit": [],
+    "pose": "carry_p30",
+    "status": "ok",
+    "tool_z_m": 0.1799
+   }
+  ]
+ },
+ "solo_scene_xml_sha256": "8e438aeb53e61d75723794d2fedd4fae5f7bd2bbbb5009a47a1c47699020b2b7"
+}
