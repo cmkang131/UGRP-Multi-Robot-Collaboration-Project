@@ -15,6 +15,27 @@
 - **검증:** `tests/test_zone_study_referee.py`가 네 조건에서 완료 유무·숨은 사건 유무만 바꾼 두 실행의 로봇 요청·깨움·실행 호출·메시지가 정지 시각까지 같음과, 연구 층 소스 폐포에 심판이 없음을 확인한다. `tests/test_zone_hidden_events.py`는 실제 `CameraRobotPort`와 명시 `<pair>` 파지가 있는 toy MuJoCo 모델을 실제로 스텝해 낙하·정지와 로봇이 보는 명령 상태의 불변을 확인하고, 실제 world XML이 숨은 장애물 몸체 외에는 같음을 확인한다. 두 파일 모두 `scripts/run_ci_tests.py` TEST_PATTERNS에 있다. 실제 로봇 world의 짧은 물리 프로브는 `scripts/probe_zone_hidden_events.py`(진단 전용, 아래 결과)다.
 - **아직 확인하지 않은 것:** 실제 연구 에피소드에서 심판이 i1/i2 배송을 확인하고 멈추는지, s2·s3·s5 장면 전체 실행. 현재 러너의 `host_spec`은 i1(청록 상자)·i2(긴 막대) 장면만 받으므로 s1–s6 장면 실행은 별도 작업이다.
 
+### 숨은 사건 물리 프로브 (2026-09-28, 진단 전용)
+
+`scripts/probe_zone_hidden_events.py`, 코드 `3db43850`(작업 트리 깨끗), MuJoCo 3.12.0, `OMP_NUM_THREADS=1`, `ugrp_session.py run fix257-probe`, 부하 평균 시작 16.94/15.04/16.04 → 끝 13.91/14.77/15.92, wall 40.5 s. 모델 호출·연구 층·로봇 판단은 없다. 연구 결과가 아니다.
+
+- 조건: 통합 prereg 첫 에피소드(`smoke-i700`, `zone_wide_door_tags_v2`, seed 700, `cargo_noslip_v1`, weld OFF)의 실제 `StudyTeamHost` 두 개를 같은 순서로 스텝했다. 두 world 모두에서 교사(정답, 평가 쪽)가 `box_00`을 r1 앞에 놓고 `scripts/zone_teacher`의 팔 순서·파지 IK로 잡아 들었다. r2에는 같은 주행 명령을 보냈다. 사건 world에만 6.6 s에 `item_dropped`(`box_00`)·`robot_hold`(r2, 2 s)·`passage_blocked`를 넣었다.
+- 결과(11개 검사 모두 통과):
+  - 6.2 s 두 world 모두 상자 z 0.0857 m, 손가락 접촉 r1(정상 접촉만으로 들린 상태).
+  - `item_dropped`: 9.8 s 사건 world 상자 z 0.0159 m(바닥), 손가락 접촉 없음. 대조 world는 z 0.0857 m, r1 파지 유지. 그리퍼 열림은 6.6–7.6 s(4000 스텝)만.
+  - `robot_hold`: r2 이동 거리는 6.9–8.6 s 사이 사건 world 0.00001 m, 대조 world 0.217 m. 해제 뒤 8.7–9.8 s에는 0.078 m 다시 움직였다.
+  - 세 로봇의 명령 행, 자기 카메라 캡처마다 보이는 `actuator_state`, `servo_command_pulses`가 두 world에서 같다.
+  - 장면 XML은 숨은 장애물 몸체를 빼면 같다. 장애물은 (2.2, 0.05, 0.06)으로 올라왔다.
+- 원본: `/Users/changmin/projects/ugrp/outputs/fix257-hidden-events-probe-20260928-152803/`(로컬 보관, 원격 백업 아님). `probe.json` sha256 `43d7269cec42ba92c4fad826e65974a3c62f95a5b008e8293aebf7a08ff6f8ac`, `eval_only/hidden_events.jsonl` `623f21ebd2bedb30554b4b2bc51a7a31e001ae0016880a53b7eb31c99fe2638f`, `control_samples.json` `58ee47eb94150577d3abdfea5f882c36065337e1622f89db7f76ba978190e7c7`, `fault_samples.json` `64b53b6f63c8818d3175f34ac82646af6a3a82d74529348aefdd84470a986cbb`, 자기 카메라 프레임 258장.
+- 범위: 교사가 잡은 상자 하나와 주행 명령 하나다. 학생 실행기의 파지·재탐색, 긴 막대 공동 운반 중 낙하, s2·s3·s5 장면 전체는 확인하지 않았다.
+
+### 참고 자료 (검토 수정분)
+
+- 내부 모듈 재사용: `sim/zone_own_scene_provider.own_scene`(주입 장면 검사), `sim/zone_tagged_cargo_scene.TaggedCargoZoneScene`(화물 없으면 `TaggedZoneScene`과 같은 XML), `sim/masterpi_dynamics_v2.MasterPiDynamicsV2.pulse_to_joint_targets`(PWM → 집게 닫힘), `sim/multi_masterpi_production._physics_step_for`(모터 필터·구동 힘; 감싸기만, 수정 없음), `sim/camera_robot_port.CameraRobotPort`(수정 없음), `scripts/zone_teacher`(`OPEN`/`CLOSED`, `ArmSequence`, 파지 IK 순서), `harness/visual_arm.solve_grip_ik`, `harness/zone_study_eval.delivery_state/efficiency_metrics`, `harness/zone_scenario_feasibility.landing_fits`.
+- 버린 대안: 손가락 `contype/conaffinity` 0(명시 `<pair>`는 필터를 거치지 않아 효과 없음, 검토 프로브 2; 정상 물리 원칙과 충돌), 물건에 `xfrc_applied` 외란(파지가 남은 채 힘만 가해 "떨어뜨림"이 아니라 실험자 힘이 되고 힘 크기를 따로 정해야 함), `port.stop()`/주행 명령 게이트(로봇 자기 명령 상태가 바뀜, 검토 P1-I), host 파일에 XML 훅 추가(동결 장면 계약 변경, 검토 P1-G).
+- 외부 라이브러리: MuJoCo 3.12.0(Apache-2.0, 기존 환경 그대로). 새 의존성 없음. 논문은 인용하지 않았다.
+- 검토: `outputs/review-256-257-20260928.md`(Kiro RV256)와 PR #257 코멘트.
+
 이전 후보 `zone-study-integration-v69-multiturn-landmark-agnostic`(workflow `2.2.0`)의 설명은 아래에 보존한다.
 
 현재 미실행 후보는 `zone-study-integration-v69-multiturn-landmark-agnostic`(workflow `2.2.0`, pair executor v7)이다. 2026-09-28 PR #240 main 병합 충돌 해결에서 main의 v66 다중 턴 스케줄러와 #240의 v67 표식 무관 pair 경로(v5h)를 합쳤다. 합성 소스는 v66·v67 어느 쪽과도 달라 main과 열린 PR 최댓값(v68, #246) 다음 번호를 썼다. v64·v65·v66·v67은 `RETIRED_BUNDLE_IDS`에 보존하며 dev13·dev14 기록의 v67 문자열은 바꾸지 않는다. [병합 기록](../experiments/2026-09-27-zone-pair-dev/merge-main-v69/README.md)
