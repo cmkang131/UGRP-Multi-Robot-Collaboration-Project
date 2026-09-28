@@ -34,6 +34,8 @@ def remaining(row, rid):
 def first_entry_check(result, rid, category, failing_rid):
     """Controller order: standoff fit -> own pose checks -> open grip view/servo -> preclose beam guard
     -> global safety (a+b) -> close/grip -> lift. Returns (check, detail)."""
+    if str(category).startswith('ENTRY:'):
+        return 'entry_refused', category + ' (pair_carry admission; stage never started)'
     ev = (result.get('controller_events') or {}).get(rid, [])
     for e in ev:
         if e['event'] == 'beam_standoff' and not e.get('accepted'):
@@ -63,6 +65,10 @@ def first_entry_check(result, rid, category, failing_rid):
             if guard and not guard[-1].get('clear', True):
                 return 'preclose_beam_guard', str(guard[-1].get('reason'))
             return 'wait_close_other', 'all pose checks true; see stage_probe_close_view'
+    if category == 'PREGRASP_NOT_READY' and rid == failing_rid:
+        guard = [g for g in ev if g['event'] == 'preclose_beam_guard']
+        if guard and not guard[-1].get('clear', True):
+            return 'preclose_beam_guard', str(guard[-1].get('reason'))
     if category == 'PASS':
         return 'pass', ''
     if rid != failing_rid:
