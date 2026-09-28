@@ -192,6 +192,10 @@ OMP_NUM_THREADS=2 python3 scripts/ugrp_session.py run v6b-boot-probe -- \
 - JSON 사본은 `probe-smoke-dce25ce5/`에 커밋했다. 원본 위치는 `/Users/changmin/projects/ugrp/outputs/zone-pair-v6b-boot-probe-dce25ce5/smoke/`(로컬 보관만, 원격 백업 아님)이다. 자기 카메라 프레임 78장, 1.2 MiB다.
   - `summary.json`: sha256 `341bd6e27dc0905b6c96b07bf021e8811ab8d9e28aef3041a9521a7302dab3f6`
   - `case000-s911-seeded/result.json`: sha256 `5d4fb60ee2ea7686b69f7073180352bd9f77e51f609310c9e74c0362b49169b0`
+- **재검토 수정 뒤 재실행 (소스 a1fe7dac, 2026-09-29):** 전체 입자 충돌 질량 검사·비유한 보고 거부·거부 팬 재검사를 넣은 소스로 같은 사례를 다시 돌렸다. 같은 방식으로 잠금을 잡고 해제했다(부하 평균 33.2→32.5, wall 14.0 s).
+  결과는 같았다. r1은 팬 없이 1.3 s(σ 0.129 m), r2는 팬 1230·970 뒤 4.7 s(σ 0.080 m)에 통과했고, 평가 오차는 0.006 m와 0.049 m였다. 새 팬 검사가 r2의 두 팬을 모두 허용했다.
+  - JSON 사본: `probe-smoke-a1fe7dac/`. 원본: `/Users/changmin/projects/ugrp/outputs/zone-pair-v6b-boot-probe-a1fe7dac/smoke/`(로컬만)
+  - `summary.json` sha256 `0a382c88183d61cc7a1277a0e15b3a51fdc1ef4edcf9d4e04d903f02c91bd801`, `result.json` sha256 `c71449cc9c3f3917a5de8b3b25e3ed6e7516505613d9f5e68b2d85dc7c2a2f84`
 - **범위:** 사례 1건이다. seed × dock × 섭동 grid, 태그 없는 환경, 첫 팔 올림 뒤 단계(정렬·파지·운반)는 검증하지 않았다. 부트스트랩 통과는 운반 성공이 아니다.
 
 ## 검증 범위와 남은 위험
