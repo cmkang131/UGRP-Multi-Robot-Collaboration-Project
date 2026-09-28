@@ -73,10 +73,10 @@ INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
 # merge of main's v66 multi-turn scheduler with PR #240's v67 landmark-agnostic
 # pair path (v5h); its source equals neither, so it takes the next free number
 # (v68 is reserved by PR #246). dev13/dev14 recorded v67 byte-for-byte.
-# v72 adds the eval-only referee (orders_complete stop, PAR-2/delivery_rate) and
+# v73 adds the eval-only referee (orders_complete stop, PAR-2/delivery_rate) and
 # the scenario hidden-event hooks in the physics owner (B6, #224). The study
-# layer below is unchanged; v70 (#246) and v71 (#249) are reserved by open PRs.
-EXECUTION_BUNDLE_ID = 'zone-study-integration-v72-referee-hidden-events'
+# layer below is unchanged; v70 (#246), v71 (#249) and v72 (#256) are reserved by open PRs.
+EXECUTION_BUNDLE_ID = 'zone-study-integration-v73-referee-hidden-events'
 RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
                       'zone-study-integration-v64-source-closure', 'zone-study-integration-v65-pair-close',
                       'zone-study-integration-v66-multiturn', 'zone-study-integration-v67-landmark-agnostic',

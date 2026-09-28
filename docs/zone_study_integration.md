@@ -1,6 +1,6 @@
-현재 미실행 후보는 `zone-study-integration-v72-referee-hidden-events`(workflow `2.3.0`)이다. 2026-09-28 B6(#224, PR #254 사전 등록 초안): 물리 소유자(`scripts/run_zone_study_integration.py`)에 평가 전용 심판 `harness/zone_study_referee.py`와 시나리오 숨은 사건 훅을 붙였다. 연구 층(`harness/zone_study_integration.py`의 `IntegratedTrial`)은 번호 외에 바뀌지 않았다. v70(#246)·v71(#249)은 열린 PR이 예약해 다음 번호 v72를 썼고 v69는 `RETIRED_BUNDLE_IDS`에 보존한다.
+현재 미실행 후보는 `zone-study-integration-v73-referee-hidden-events`(workflow `2.3.0`)이다. 2026-09-28 B6(#224, PR #254 사전 등록 초안): 물리 소유자(`scripts/run_zone_study_integration.py`)에 평가 전용 심판 `harness/zone_study_referee.py`와 시나리오 숨은 사건 훅을 붙였다. 연구 층(`harness/zone_study_integration.py`의 `IntegratedTrial`)은 번호 외에 바뀌지 않았다. v70(#246)·v71(#249)·v72(#256)는 열린 PR이 예약해 다음 번호 v73을 썼고 v69는 `RETIRED_BUNDLE_IDS`에 보존한다.
 
-## 평가 전용 심판과 숨은 사건 (v72)
+## 평가 전용 심판과 숨은 사건 (v73)
 
 - **배송 판정(물건별, 물리 청크마다 시뮬레이터 정답):** 물건의 착지 직사각형(`sim/zone_cargo.py` `landing_half_extents_m`, 색 상자는 `sim.zone_arena.BOX_HALF`)이 목적 구역 안(`zone_scenario_feasibility.landing_fits` 재사용), 바닥 위(몸체 높이 < 0.05 m), 어떤 로봇 손가락도 닿지 않음, 선속도 < 0.01 m/s가 `SETTLE_S`=2 SIM초 연속이면 확인한다. 배송 시각은 창의 시작, 확인 시각은 `confirmed_sim_s`다. 확인 뒤 같은 구역·바닥·비파지이면 유지되고, 구역을 벗어나거나 다시 잡히면 `departed` 행을 남긴다.
 - **주문 판정:** 서 있는 확인 행에 `zone_study_eval.delivery_state`를 그대로 적용한다. 모든 주문이 채워지면 러너가 그 청크에서 에피소드를 멈춘다(`stop = orders_complete`). 로봇에게는 horizon 종료와 같은 일반 종료만 보이고 이유는 전달되지 않는다.
