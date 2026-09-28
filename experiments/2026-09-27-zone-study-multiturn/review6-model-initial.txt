@@ -1,0 +1,25 @@
+................................F
+=================================== FAILURES ===================================
+___________ test_generated_stream_matches_independent_reference[32] ____________
+
+seed = 32
+
+    @pytest.mark.parametrize('seed', range(3000))
+    def test_generated_stream_matches_independent_reference(seed):
+        spec = generated_case(seed)
+        expected = reference(spec)
+        observed, _ = actual(spec)
+>       assert observed == expected, (seed, spec)
+E       AssertionError: (32, Scenario(seed=32, events=((0.0, 'common', 'r1'), (0.0, 'common', 'r2'), (0.0, 'common', 'r3'), (3.0, 'message', '...01, 'message', 'r3')), horizon=3.000000001, interval=500000, total=5, per_actor=30, calls=2, retries=2, reask=2000000))
+E       assert {'calls': [(1...m11',))], ...} == {'calls': [(1...m11',))], ...}
+E         
+E         Omitting 6 identical items, use -vv to show
+E         Differing items:
+E         {'calls': [(1, 'r1', 0, '', 0, 'timer', ...), (2, 'r2', 0, '', 0, 'timer', ...), (3, 'r3', 0, '', 0, 'timer', ...), (4, 'r1', 500000, '', 1, 'timeout', ...), (5, 'r3', 3000000, '', 0, 'timer', ...)]} != {'calls': [(1, 'r1', 0, '', 0, 'timer', ...), (2, 'r2', 0, '', 0, 'timer', ...), (3, 'r3', 0, '', 0, 'timer', ...), (4, 'r1', 500000, '', 1, 'timeout', ...), (5, 'r3', 3000000, '', 0, 'idle', ...)]}
+E         Use -v to get more diff
+
+tests/test_zone_study_multiturn_model.py:139: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_multiturn_model.py::test_generated_stream_matches_independent_reference[32]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 32 passed in 0.38s

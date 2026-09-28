@@ -210,3 +210,23 @@ reserve는 **1024,1025,1037,1038**이다. 이전 31회 metadata와 seed·두 경
   바꾸지 않았다. 새 영상 0개이며 기존 영상도 수정하지 않았다.
 - 오프라인 정확도 비교이며 wall 시간 속도 비교가 아니다. 새 모델/API 호출·실제 명령 발행 0.
   원본과 새 결과는 로컬 보관이며 원격 백업·독립 test·폐루프/실물 검증을 뜻하지 않는다.
+
+## 2026-09-28 main 병합 정리: VIS3 고정 파일 복원
+
+main의 vision 자세 제공자(`harness/vision_loc_protocol.py::check_frozen`)는 VIS3 학생
+파일 해시를 `prereg_v3.json` 등록값으로 고정한다. VIS4가 `vision_pf.py`·`vision_loc_cli.py`를
+직접 고쳐 병합하면 그 검사가 깨졌다(해결본 34 failed). 그래서 다음과 같이 옮겼다. 실행 결과는
+다시 만들지 않았다.
+
+- `vision_pf.py`, `vision_loc_cli.py`: main·VIS3 등록 바이트로 복원(`ac9d4270…`, `290cdbab…`).
+- `vision_pf_v4.py`: `137ba742:experiments/2026-09-26-vision-loc/vision_pf.py`와 **바이트 동일**
+  (`97a207db…`). 위 본문에서 VIS4 PF의 `vision_pf.make_robust_pf(...)`는 이 파일을 뜻한다.
+- `vision_loc_cli_v4.py`: `137ba742`의 CLI에서 PF import(`vision_pf_v4`), 기록 모듈 이름, 머리말만 바꿨다.
+  이후 VIS4 CLI 실행의 `module_sha256` 키는 `vision_pf_v4.py`·`vision_loc_cli_v4.py`가 된다.
+- `compare_v4.py`·`calibrate_sigma_v4.py`·`analyze_camera_v4.py`와 VIS4 테스트가 새 파일을 쓴다.
+- 과거 기록 검증: `record_verify.py`가 기록된 **소스** 해시를 기록 당시 커밋의 Git blob과 대조한다.
+  `report_sigma_v4.py`는 `outputs/vision-loc-v4/sigma/source_freeze.json`의 소스 11개를
+  `3e9bdf7a` blob과 대조하며, 11개 모두 일치한다. 입력 자료(`input_hashes.json`)는 여전히 디스크 파일과 대조한다.
+  `comparison/source_freeze.json`은 상대 경로로 기록됐다. 그 PF·CLI·`compare_v4.py` 해시는
+  이 정리 전부터 어느 커밋과도 일치하지 않았다(커밋 전 실행). 이 문제는 이번 이동과 무관하다.
+- 회귀: `tests/test_vision_loc_frozen_split.py`(VIS3 등록 해시, VIS4 blob 바이트 동일, 모듈 분리, blob 검증).

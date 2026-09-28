@@ -209,3 +209,17 @@ VIS2에는 test 오염이 있고, [VIS3 독립 test](README_v3.md#test-결과-�
 
 새 비교는 별도 dev 사전 계획으로 정하고, 자기 RGB·자기 명령·정적 지도·고정 보정의
 학생 입력 경계를 유지한다. 이번 문서화로 b0/u0·기본 OFF나 기존 기각 판정을 바꾸지 않는다.
+
+## 2026-09-28 main 병합 정리: VIS3 고정 파일 복원
+
+VIS4 정리(README_v4 같은 절)와 같은 이유로 VIS5의 PF·CLI 변경을 새 파일로 옮겼다. 실행 결과는 다시 만들지 않았다.
+
+- `vision_pf.py`, `vision_loc_cli.py`: main·VIS3 등록 바이트(`ac9d4270…`, `290cdbab…`)를 유지한다.
+- `vision_pf_v5.py`: `5b1aa1b1:experiments/2026-09-26-vision-loc/vision_pf.py`와 **바이트 동일**하다
+  (`0cf03790…`, `5cc83adb`의 blob도 같다). 위 본문의 `vision_pf.make_robust_pf(..., report_v5=...)`는 이 파일을 뜻한다.
+- `vision_loc_cli_v5.py`: `5b1aa1b1` CLI에서 PF import(`vision_pf_v5`), 기록 모듈 이름, 머리말만 바꿨다.
+  VIS4 CLI는 `vision_loc_cli_v4.py`로 따로 남는다.
+- `compare_v5.py`의 `SOURCE_NAMES`는 새 파일 이름을 쓴다. `test_vision_loc_v5.py`의 OFF 회귀는
+  `vision_pf_v5`를 VIS4 fixture와 비교한다.
+- 과거 기록 검증: `report_v5.py`는 `outputs/vision-loc-v5/final/source_freeze.json`의 소스 20개를
+  `record_verify.py`로 `5cc83adb` blob과 대조한다. 20개 모두 일치한다. 입력·평가 입력 해시는 여전히 디스크 파일과 대조한다.

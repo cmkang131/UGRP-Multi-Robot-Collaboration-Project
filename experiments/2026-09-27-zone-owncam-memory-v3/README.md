@@ -1,0 +1,80 @@
+# memory_v3 개발 기록 — 코호트 미실행
+
+## PR #234 6차 리뷰 수정 — 7400c426 이후
+
+[6차 수정·검증 기록](review6-fixes/README.md): 정지 재촬영의 누적 8초와 재개된 sweep 실행 시간을 분리했다. 재거부 시 남은 시간/촬영 횟수만 이어 쓰고, 전체 초기화 30초는 유지한다. 양 조건에서 수정 전 9.8초 실패와 수정 후 11.0초 sweep 완료·11.1초 탐색 진입을 같은 합성 입력으로 확인했다. 새 회귀 13개를 포함한 관련 305개·하위 검사 360개 통과. 물리·모델 호출·코호트 실행과 커밋은 없다.
+
+## PR #234 4차 리뷰 수정 — c02db4d5 이후
+
+[4차 수정·검증 기록](review4-fixes/README.md): 현재 불확실도에 따른 주행·도착 독립 차단과 sweep 거부 후 정상 종료. 수정 전 실패/수정 후 통과 및 기존 회귀를 단위 검사로 확인한다. v2 해시·기존 기록·DRAFT를 보존하며 새 물리 실행은 없다.
+
+## PR #234 3차 리뷰 수정 — b1eebc0e 이후
+
+[3차 수정·검증 기록](review3-fixes/README.md): 공용 정적 몸체 충돌 검사, 점유/주행 keep-out 기준 통일, 왕복의 매 프레임 화물 검사, 도달 가능한 사각지대 후퇴점 투영, 외부 SIM 한도 handoff 보존. 단위 회귀이며 새 물리 실행은 없다. DRAFT와 v2 test fixture 노출 정책을 유지한다. 아래 1·2차 기록은 당시 결과다.
+
+## 2차 리뷰 이후 사용 범위
+
+아래 본문은 최초 구현 시점의 기록이다. 최신 변경은 [2차 리뷰 수정 기록](review2-fixes/README.md)을 따른다. 1차 수정의 `unknown` 배치 허용은 폐기했으며, 관측점에서 빈 슬롯을 확인하지 못하면 유한하게 실패하고 상위 실행기에 판단을 요청한다.
+
+`tests/fixtures/owncam_memory_v3_place/`의 s162/s164/s165는 **원래 memory_v2의 test split**이다. RGB 6장·자기 발행 servo·자기 PF 보고서를 **memory_v3 개발·디버깅·회귀**에 사용해 이미 노출했다. v3 일관성·새 관측점의 정밀 pose·빈 바닥 근거는 단위 fixture의 명시적인 합성 전제다. 저장 입력 검사 3/3은 실제 v3 에피소드 성공이 아니며, 이 자료를 v3 미개봉 test 또는 성능 표본으로 재사용하지 않는다.
+
+[prereg_DRAFT.json](prereg_DRAFT.json)의 `exposed_fixture_policy`에 같은 사실을 명시했다. 미래 test는 노출된 161–166 및 dev와 겹치지 않는 **새 미개봉 seed/episode만** 사용한다. PR #227 준비 후 새 dev에서 조정하고 test 개봉 전에 소스·조건·문턱·판정 기준을 동결한다. 상태는 계속 DRAFT/실행 불허다.
+
+## 최초 구현 기록
+
+2026-09-27, issue #217 / branch `codex/zone-owncam-memory-v3`, 작업 시작 HEAD `367b40da`.
+사용자 지시에 따라 `.git` 변경·커밋·push·PR 작성·코호트 실행을 하지 않았다. coordinator가 커밋한다.
+[설계](../../docs/design/2026-09-27-owncam-memory-v3.md), [DRAFT 사전등록](prereg_DRAFT.json).
+
+## 구현 파일
+
+- `harness/owncam_pose_guard_v3.py`: 누적 거리·시간 신선도, 과신 진단과 공분산 하한, 기존 PF 어댑터.
+- `harness/owncam_memory_v3.py`: 존재 확률, far 회피 영역, 가시성 기반 miss·빈 바닥 증거, 동료 주장 별도 저장.
+- `harness/owncam_drive_mem_v3.py`: 도착 재확인, 주행 중 새 회피 영역, 유한 재시도.
+- `harness/m1_owncam_memory_v3.py`: 파지 진입·배치 게이트, 목표 재확인, 사각지대 두 번째 순회.
+- `scripts/run_m1_owncam_memory_v3.py`: 버전 선택 및 DRAFT 거부. 기존 runner의 물리 실행 방식·기록 계약 재사용.
+- `configs/simulation_workflows.json`: `zone-m1-owncam-memory-v3-run` 추가.
+- `tests/test_owncam_memory_v3.py`, `scripts/run_ci_tests.py`, `tests/test_simulation_workflow_manager.py`: 회귀·CI 등록·카탈로그 fixture.
+
+v2 핵심/runner 및 과거 실험 기록의 SHA-256은 `v2_preservation.json`에 있으며 단위 검사로 불변을 확인한다.
+기존 off/v2는 새 runner에서도 선택할 수 있고, 예전 runner 파일도 그대로다.
+
+## 검증
+
+Python: `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`.
+`OMP_NUM_THREADS=1`, `OPENBLAS_NUM_THREADS=1`, `VECLIB_MAXIMUM_THREADS=1`, `MKL_NUM_THREADS=1`, `PYTHONDONTWRITEBYTECODE=1`.
+MuJoCo 없이 `unittest`로 검사했고, 새 제어기 import에 MuJoCo를 차단한 검사도 포함한다.
+전체 `scripts/run_ci_tests.py`/원격 CI를 실행했다는 뜻은 아니다.
+
+| 범위 | 결과 |
+|---|---|
+| 새 memory_v3 단위·통합 fixture | 최종 45/45 통과 (`unit_tests.txt`) |
+| 기존 memory_v2, M1, localizer, workflow 4개 모듈 | 107개 실행 중 최초 104 통과, 새 카탈로그 fixture 2개 수정 후 재실행 통과, 환경 차단 1개 |
+| 새 workflow 카탈로그 목록·모든 workflow read-only plan | 수정 후 2/2 통과 (`catalog_fix_tests.txt` 마지막 두 검사) |
+| 보존·형식 | v2 파일/기록 해시 불변, DRAFT JSON 파싱, `git diff --check` |
+
+기존 검사 미완료 1개: `test_parent_exit_cleans_background_child`가 자식 종료 뒤 `ps -o stat= -p <pid>`를 호출할 때 `PermissionError: [Errno 1] Operation not permitted: 'ps'`. 샌드박스 밖 재확인은 coordinator에게 남긴다. 테스트를 숨기거나 skip하도록 수정하지 않았다. 최초 오류 원문은 `related_tests_initial.txt`에 보존한다. 카탈로그 수 33→34와 새 workflow 인자 fixture의 최초 오류도 같은 로그에 있으며 수정 후 두 검사 통과를 별도 기록했다.
+
+새 시나리오에는 다음이 있다.
+
+- s161 기제: 0.43 m 뒤 고정/오래된 고정을 v2가 허용하고 v3가 거부. 왕복 누적 거리, 시간·거리 문턱, 미래 시각, 반올림 시각.
+- s166 기제: far-only 상자를 v2가 keep-out에서 빼고 v3가 첫 관측부터 포함. 불확실성 하한, far→near 갱신, 새 장애물에 따른 경로 무효화.
+- 과신: 작은 PF σ라도 나쁜 likelihood/innovation이면 조기 look 종료·트랙 확정을 거부. 기존 PF 어댑터에 합성 카메라 검출을 직접 공급해 보고 공분산 보강을 확인.
+- 존재·부재: 3회 miss 즉시 삭제와 확률 모형 대조, 시야·벽·전경·먼 거리·짐·모호 대응·중복 관측 경계.
+- 조작: 과거 상자/슬롯 기억만으로 파지·배치하지 않음, 새 자기 증거가 있으면 게이트 통과, 재확인 실패 우회 차단.
+- 사각지대: 정적 카메라 기하에서 0.27 m 앞 물체는 안 보이고 0.72 m 앞에서는 보임, 추가 순회 1회로 제한.
+- 동료 주장: 양 표현의 동일 참조 필드·TTL·중복 방지·자기 트랙과 격리.
+
+과거 s161/s166 원본 궤적을 재생한 결과는 아니다. frozen v2를 같은 합성 입력에 적용해 실패 기제를 대조한 검사다.
+
+## 남은 작업
+
+1. coordinator가 소스 검토·커밋·원격 CI를 수행한다. GitHub CLI는 네트워크 접근 실패, 연결 도구는 저장소 조회 권한 오류여서 열린 PR/이슈의 최신 상태를 이 세션에서 확인하지 못했다. 문헌은 로컬 `origin/kiro/memory-literature`의 `3174c2f8`로 읽었다. 사용자가 제공한 #217 결정은 구현에 반영했다.
+2. PR #227의 비전 관측원과 일관성 진단 어댑터를 연결한다. 지금 연결은 **interim tag provider**이며 태그 없는 실행 성공이 아니다.
+3. DRAFT의 dev seed 27101–27104 / test seed 27201–27208은 제안이다. 원격 중복·미개봉 여부를 확인하고, 모든 조건의 관측원·물리·지도·예산을 일치시켜 최종 동결한다.
+4. 보수적인 회피 영역 때문에 생길 수 있는 no-path, 하중 시야에서 슬롯의 실제 관측 가능성, 확인 거부에 따른 성공률을 dev에서 확인한다. 슬롯 unknown은 배치 금지로 남는다.
+5. 실제 새 실험 후 원본·실패·해시와 TensorBoard snapshot/영상 검증을 수행한다. 이번에는 단위 검사만 했으므로 실험 결과·영상·TensorBoard snapshot을 만들지 않았다. UGRP 예외에 따라 Google Drive 작업도 없다.
+
+## PR #234 5차 리뷰와 비교 조건
+
+[5차 수정 기록](review5-fixes/README.md)에 2fadd08a의 재관측 루프·초기화 실패 재현, 수정 후 검사, ON/OFF 공통 안전 계약을 보존했다. 최신 비교 DRAFT는 `off`(v3 안전 + 기억 기반 재관측 OFF)와 `memory_v3`만 사용하며, 과거 OFF는 `off_legacy`, `memory_v2`는 참고 조건으로 분리한다. 소스 커밋·실험·성공률 검증은 아직 없다.

@@ -1,0 +1,1035 @@
+{
+  "schema": "ugrp.zone_pair_dev_diagnosis.v1",
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v2-9f28cbf030442a701a666899c02ebb4374e3e3e2",
+  "scope": "post-hoc rounded-report gate replay and exact saved guard inputs; not physics/PF replay",
+  "runs": {
+    "dev03": {
+      "verified_artifact_count": 2012,
+      "hash_mismatches": [],
+      "source_sha256": {
+        "artifacts.sha256.json": "876cbc79b0d66fe354f8f83b871a83d92c9827445b82d47e90ec65e7519c2f93",
+        "robots.json": "346cbe060e9fe6440ae301245acad2568e716306c65cf26691998b9692bb6f37",
+        "commands.jsonl": "3131f766b5da552fe4c93723d68148c815389d72f62479899a75896e2d856355",
+        "events.jsonl": "c40f5f97ab17c757831e9df531fe069879832ead92612ce6fb51ab4863f9b6d9",
+        "api_calls.json": "b3f3c8307c85dc9336ca6691bf898124033443162c610468e202e110085ad267",
+        "inputs/static.json": "994375a98f5029f3b7b2720323f99a478234970a84370672e92a545028693e02",
+        "eval_only/trace.jsonl": "8ce94e3e584c4b6ed207e51b89cf681569080385469da947f627375edb9e927a"
+      },
+      "robots": {
+        "r1": {
+          "actual_ack": {
+            "robot_id": "r1",
+            "api": "pair_carry",
+            "action_id": "r1-act-003",
+            "sim_s": 60.0,
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_neg"
+            },
+            "accepted": false,
+            "rejected_reason": "SELF_UNCERTAIN",
+            "job_id": null,
+            "local_state": "command_rejected"
+          },
+          "reconstructed_readiness": {
+            "schema": "ugrp.zone_pair_admission.v1",
+            "source": "own_inputs_only",
+            "sim_s": 60.0,
+            "robot_id": "r1",
+            "checks": {
+              "not_stopped": true,
+              "idle": true,
+              "mode_m1": true,
+              "gate_ok": false,
+              "report_present": true,
+              "report_initialized": true,
+              "report_fresh": true,
+              "std_xy_finite": true,
+              "std_yaw_finite": true,
+              "observation_present": true,
+              "observation_fresh": true,
+              "servo_complete": true
+            },
+            "gate": {
+              "state": "uncertain",
+              "profile": "unloaded",
+              "since_sim_s": null,
+              "transitions": 0,
+              "thresholds": {
+                "name": "unloaded",
+                "high_xy_m": 0.08,
+                "high_yaw_rad": 0.1,
+                "low_xy_m": 0.05,
+                "low_yaw_rad": 0.06,
+                "enter_dwell_s": 0.6,
+                "exit_dwell_s": 0.4
+              },
+              "candidate_since_sim_s": null,
+              "last_update_sim_s": 59.9003
+            },
+            "report": {
+              "initialized": true,
+              "t_est": 59.9002,
+              "age_s": 0.09980000000000189,
+              "std_xy_m": 0.05033,
+              "std_yaw_rad": 0.01533,
+              "since_tag_s": -0.0,
+              "source": "owncam_pf_v2:04f56834",
+              "classification": "band"
+            },
+            "observation": {
+              "sim_time": 59.900250000195,
+              "age_s": 0.09974999980499888,
+              "frame_id": 294,
+              "sha256": "c8a82d1bdaa4b120b23c77a695a806cf3722e966a9aacdcf3f4c0f0d991aef31",
+              "camera": "robot_cam"
+            },
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5,
+              6
+            ],
+            "missing_servo_ids": [],
+            "state": "uncertain",
+            "failed_checks": [
+              "gate_ok"
+            ]
+          },
+          "assumptions_checked_in_raw": "no active job at submit; commanded gripper open; mode m1",
+          "frame_gate_independent_check": true,
+          "gate_transitions_through_submit": [],
+          "gate_transitions_through_end": [
+            {
+              "t": 60.5,
+              "change": "exited",
+              "profile": "unloaded",
+              "std_xy_m": 0.0492
+            }
+          ],
+          "minimum_sigma_before_submit_m": 0.05015,
+          "submission_frame": {
+            "frame": 293,
+            "t": 59.9003,
+            "frame_id": 294,
+            "sha256": "c8a82d1bdaa4b120b23c77a695a806cf3722e966a9aacdcf3f4c0f0d991aef31",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 1072,
+              "4": 2400,
+              "5": 1482,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 59.9002,
+              "initialized": true,
+              "xyyaw": [
+                -0.88517,
+                -2.11276,
+                -0.047047
+              ],
+              "std_xy_m": 0.05033,
+              "std_yaw_rad": 0.01533,
+              "since_tag_s": -0.0,
+              "last_valid_obs": {
+                "t": 59.9003,
+                "tag_ids": [
+                  50,
+                  51,
+                  52
+                ],
+                "n_tags": 3
+              },
+              "n_eff": 1601.8,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "blocked_sweeps": [
+            {
+              "recorded": {
+                "source": "own_estimate_and_issued_pwm_static_map",
+                "loaded": false,
+                "current_pwm": {
+                  "1": 2000,
+                  "3": 1072,
+                  "4": 2400,
+                  "5": 1482,
+                  "6": 1500
+                },
+                "target_pwm": {
+                  "1": 2000,
+                  "3": 1072,
+                  "4": 2400,
+                  "5": 1482,
+                  "6": 1500
+                },
+                "own_estimate": {
+                  "x_m": -0.8942648121617371,
+                  "y_m": -2.0650572307987405,
+                  "yaw_rad": -0.062368153597490705,
+                  "std_xy_m": 0.1052347674784163,
+                  "std_yaw_rad": 0.033133417328905235
+                },
+                "limiting": {
+                  "sample_pwm": {
+                    "1": 2000,
+                    "3": 1072,
+                    "4": 2400,
+                    "5": 1482,
+                    "6": 1500
+                  },
+                  "sphere_index": 0,
+                  "sphere_part": "yaw_bearing",
+                  "sphere_center_base_m": [
+                    0.0,
+                    0.0,
+                    0.085
+                  ],
+                  "sphere_radius_m": 0.045,
+                  "wall_id": "wall_west",
+                  "raw_clearance_mm": 85.7351878382629,
+                  "margin_mm": 245.4695349568326,
+                  "clearance_mm": -159.7343471185697,
+                  "overlap_mm": 159.7343471185697
+                },
+                "stage": "pan",
+                "waited_s": 9.999999999994458
+              },
+              "recomputed": {
+                "source": "own_estimate_and_issued_pwm_static_map",
+                "loaded": false,
+                "current_pwm": {
+                  "1": 2000,
+                  "3": 1072,
+                  "4": 2400,
+                  "5": 1482,
+                  "6": 1500
+                },
+                "target_pwm": {
+                  "1": 2000,
+                  "3": 1072,
+                  "4": 2400,
+                  "5": 1482,
+                  "6": 1500
+                },
+                "own_estimate": {
+                  "x_m": -0.8942648121617371,
+                  "y_m": -2.0650572307987405,
+                  "yaw_rad": -0.062368153597490705,
+                  "std_xy_m": 0.1052347674784163,
+                  "std_yaw_rad": 0.033133417328905235
+                },
+                "limiting": {
+                  "sample_pwm": {
+                    "1": 2000,
+                    "3": 1072,
+                    "4": 2400,
+                    "5": 1482,
+                    "6": 1500
+                  },
+                  "sphere_index": 0,
+                  "sphere_part": "yaw_bearing",
+                  "sphere_center_base_m": [
+                    0.0,
+                    0.0,
+                    0.085
+                  ],
+                  "sphere_radius_m": 0.045,
+                  "wall_id": "wall_west",
+                  "raw_clearance_mm": 85.7351878382629,
+                  "margin_mm": 245.4695349568326,
+                  "clearance_mm": -159.7343471185697,
+                  "overlap_mm": 159.7343471185697
+                }
+              },
+              "transition_clear": false,
+              "zero_sigma_transition_clear": true,
+              "current_arm_clearance_mm": -159.7343471185697,
+              "chassis_clearance_mm": -257.0614967102334,
+              "safe_alternative_pans": [],
+              "east_8cm_translation_clear": false
+            }
+          ]
+        },
+        "r2": {
+          "actual_ack": {
+            "robot_id": "r2",
+            "api": "pair_carry",
+            "action_id": "r2-act-004",
+            "sim_s": 60.0,
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_pos"
+            },
+            "accepted": true,
+            "rejected_reason": null,
+            "job_id": "r2-job-003",
+            "local_state": "command_issued"
+          },
+          "reconstructed_readiness": {
+            "schema": "ugrp.zone_pair_admission.v1",
+            "source": "own_inputs_only",
+            "sim_s": 60.0,
+            "robot_id": "r2",
+            "checks": {
+              "not_stopped": true,
+              "idle": true,
+              "mode_m1": true,
+              "gate_ok": true,
+              "report_present": true,
+              "report_initialized": true,
+              "report_fresh": true,
+              "std_xy_finite": true,
+              "std_yaw_finite": true,
+              "observation_present": true,
+              "observation_fresh": true,
+              "servo_complete": true,
+              "image_valid": true,
+              "empty_handed": true
+            },
+            "gate": {
+              "state": "ok",
+              "profile": "unloaded",
+              "since_sim_s": 15.1002,
+              "transitions": 1,
+              "thresholds": {
+                "name": "unloaded",
+                "high_xy_m": 0.08,
+                "high_yaw_rad": 0.1,
+                "low_xy_m": 0.05,
+                "low_yaw_rad": 0.06,
+                "enter_dwell_s": 0.6,
+                "exit_dwell_s": 0.4
+              },
+              "candidate_since_sim_s": null,
+              "last_update_sim_s": 59.9003
+            },
+            "report": {
+              "initialized": true,
+              "t_est": 59.9002,
+              "age_s": 0.09980000000000189,
+              "std_xy_m": 0.04086,
+              "std_yaw_rad": 0.01233,
+              "since_tag_s": -0.0,
+              "source": "owncam_pf_v2:04f56834",
+              "classification": "low"
+            },
+            "observation": {
+              "sim_time": 59.900250000195,
+              "age_s": 0.09974999980499888,
+              "frame_id": 294,
+              "sha256": "7b516c54c1f940c0391d6708fbbc92b8b7ef0f698643c10ceafca0377dd0823c",
+              "camera": "robot_cam"
+            },
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5,
+              6
+            ],
+            "missing_servo_ids": [],
+            "holding_answer": "no",
+            "state": "available",
+            "failed_checks": []
+          },
+          "assumptions_checked_in_raw": "no active job at submit; commanded gripper open; mode m1",
+          "frame_gate_independent_check": true,
+          "gate_transitions_through_submit": [
+            {
+              "t": 15.1,
+              "change": "exited",
+              "profile": "unloaded",
+              "std_xy_m": 0.0447
+            }
+          ],
+          "gate_transitions_through_end": [
+            {
+              "t": 15.1,
+              "change": "exited",
+              "profile": "unloaded",
+              "std_xy_m": 0.0447
+            }
+          ],
+          "minimum_sigma_before_submit_m": 0.03312,
+          "submission_frame": {
+            "frame": 293,
+            "t": 59.9003,
+            "frame_id": 294,
+            "sha256": "7b516c54c1f940c0391d6708fbbc92b8b7ef0f698643c10ceafca0377dd0823c",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 1072,
+              "4": 2400,
+              "5": 1482,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 59.9002,
+              "initialized": true,
+              "xyyaw": [
+                -0.8346,
+                0.51598,
+                0.010102
+              ],
+              "std_xy_m": 0.04086,
+              "std_yaw_rad": 0.01233,
+              "since_tag_s": -0.0,
+              "last_valid_obs": {
+                "t": 59.9003,
+                "tag_ids": [
+                  54,
+                  55,
+                  65,
+                  66,
+                  67,
+                  72,
+                  73,
+                  76,
+                  77
+                ],
+                "n_tags": 9
+              },
+              "n_eff": 1180.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "blocked_sweeps": [
+            {
+              "recorded": {
+                "source": "own_estimate_and_issued_pwm_static_map",
+                "loaded": false,
+                "current_pwm": {
+                  "1": 2000,
+                  "3": 1072,
+                  "4": 2400,
+                  "5": 1482,
+                  "6": 1500
+                },
+                "target_pwm": {
+                  "1": 2000,
+                  "3": 1072,
+                  "4": 2400,
+                  "5": 1482,
+                  "6": 1500
+                },
+                "own_estimate": {
+                  "x_m": -0.8410239238516434,
+                  "y_m": 0.5446878912171655,
+                  "yaw_rad": 0.0009704664257745488,
+                  "std_xy_m": 0.09117703074561304,
+                  "std_yaw_rad": 0.028478891973765855
+                },
+                "limiting": {
+                  "sample_pwm": {
+                    "1": 2000,
+                    "3": 1072,
+                    "4": 2400,
+                    "5": 1482,
+                    "6": 1500
+                  },
+                  "sphere_index": 0,
+                  "sphere_part": "yaw_bearing",
+                  "sphere_center_base_m": [
+                    0.0,
+                    0.0,
+                    0.085
+                  ],
+                  "sphere_radius_m": 0.045,
+                  "wall_id": "wall_west",
+                  "raw_clearance_mm": 138.97607614835667,
+                  "margin_mm": 217.35406149122608,
+                  "clearance_mm": -78.37798534286941,
+                  "overlap_mm": 78.37798534286941
+                },
+                "stage": "pan",
+                "waited_s": 9.999999999994458
+              },
+              "recomputed": {
+                "source": "own_estimate_and_issued_pwm_static_map",
+                "loaded": false,
+                "current_pwm": {
+                  "1": 2000,
+                  "3": 1072,
+                  "4": 2400,
+                  "5": 1482,
+                  "6": 1500
+                },
+                "target_pwm": {
+                  "1": 2000,
+                  "3": 1072,
+                  "4": 2400,
+                  "5": 1482,
+                  "6": 1500
+                },
+                "own_estimate": {
+                  "x_m": -0.8410239238516434,
+                  "y_m": 0.5446878912171655,
+                  "yaw_rad": 0.0009704664257745488,
+                  "std_xy_m": 0.09117703074561304,
+                  "std_yaw_rad": 0.028478891973765855
+                },
+                "limiting": {
+                  "sample_pwm": {
+                    "1": 2000,
+                    "3": 1072,
+                    "4": 2400,
+                    "5": 1482,
+                    "6": 1500
+                  },
+                  "sphere_index": 0,
+                  "sphere_part": "yaw_bearing",
+                  "sphere_center_base_m": [
+                    0.0,
+                    0.0,
+                    0.085
+                  ],
+                  "sphere_radius_m": 0.045,
+                  "wall_id": "wall_west",
+                  "raw_clearance_mm": 138.97607614835667,
+                  "margin_mm": 217.35406149122608,
+                  "clearance_mm": -78.37798534286941,
+                  "overlap_mm": 78.37798534286941
+                }
+              },
+              "transition_clear": false,
+              "zero_sigma_transition_clear": true,
+              "current_arm_clearance_mm": -78.37798534286941,
+              "chassis_clearance_mm": -193.42879961915506,
+              "safe_alternative_pans": [],
+              "east_8cm_translation_clear": false
+            }
+          ]
+        }
+      },
+      "eval_only_initial_robot_poses": {
+        "r1": [
+          -0.8499971456297316,
+          -2.249999993507677,
+          1.2179524722066765e-09
+        ],
+        "r2": [
+          -0.8499971456297313,
+          0.5500000064923258,
+          1.217952460442171e-09
+        ],
+        "r3": [
+          -0.8499971456297317,
+          -0.8499999935076741,
+          1.217952489208612e-09
+        ]
+      },
+      "static_dock_options_not_selected": [
+        {
+          "pose": {
+            "x": -0.85,
+            "y": -0.85,
+            "yaw": 0.0,
+            "std_xy": 0.0,
+            "std_yaw": 0.0
+          },
+          "chassis_clearance_mm": -9.999999999999961,
+          "east_8cm_translation_clear": false
+        },
+        {
+          "pose": {
+            "x": -0.85,
+            "y": -0.85,
+            "yaw": 0.0,
+            "std_xy": 0.05,
+            "std_yaw": 0.06
+          },
+          "chassis_clearance_mm": -130.99142682144304,
+          "east_8cm_translation_clear": false
+        },
+        {
+          "pose": {
+            "x": -0.7,
+            "y": -0.85,
+            "yaw": 0.0,
+            "std_xy": 0.05,
+            "std_yaw": 0.06
+          },
+          "chassis_clearance_mm": 19.008573178556976,
+          "east_8cm_translation_clear": true
+        },
+        {
+          "pose": {
+            "x": -0.65,
+            "y": -0.85,
+            "yaw": 0.0,
+            "std_xy": 0.05,
+            "std_yaw": 0.06
+          },
+          "chassis_clearance_mm": 69.00857317855692,
+          "east_8cm_translation_clear": true
+        }
+      ]
+    },
+    "dev04": {
+      "verified_artifact_count": 2012,
+      "hash_mismatches": [],
+      "source_sha256": {
+        "artifacts.sha256.json": "b891b3f09080f2e0974195b03035fa0584b21d81831f4f3273dfb0e069dd6bf3",
+        "robots.json": "689733ad095afb848bc8cfbf9b14a79f57f2b338f051aa0b0a91eb0988b8ebef",
+        "commands.jsonl": "9806d1da8962661522b49e66128c96bf37ce300388b4e0bfdc454638a7213c54",
+        "events.jsonl": "bb3a23fd013daf9e82bd3772500e6afc63747d10697dc30d237e15fe26d2c83f",
+        "api_calls.json": "c54ec04c042cc887aafceba4ced7d9156d3e9f545c5cf20df9ff25515537e4e0",
+        "inputs/static.json": "1417a5e244ca83071c12c095cc85e39ffebeb253626d2a19a5383b2acbc1e33c",
+        "eval_only/trace.jsonl": "9bd15ccb90e1746ceace4aafa36b44bf18caa88f5177425c056f1192c1efd11a"
+      },
+      "robots": {
+        "r1": {
+          "actual_ack": {
+            "robot_id": "r1",
+            "api": "pair_carry",
+            "action_id": "r1-act-004",
+            "sim_s": 60.0,
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_neg"
+            },
+            "accepted": true,
+            "rejected_reason": null,
+            "job_id": "r1-job-003",
+            "local_state": "command_issued"
+          },
+          "reconstructed_readiness": {
+            "schema": "ugrp.zone_pair_admission.v1",
+            "source": "own_inputs_only",
+            "sim_s": 60.0,
+            "robot_id": "r1",
+            "checks": {
+              "not_stopped": true,
+              "idle": true,
+              "mode_m1": true,
+              "gate_ok": true,
+              "report_present": true,
+              "report_initialized": true,
+              "report_fresh": true,
+              "std_xy_finite": true,
+              "std_yaw_finite": true,
+              "observation_present": true,
+              "observation_fresh": true,
+              "servo_complete": true,
+              "image_valid": true,
+              "empty_handed": true
+            },
+            "gate": {
+              "state": "ok",
+              "profile": "unloaded",
+              "since_sim_s": 3.9002,
+              "transitions": 1,
+              "thresholds": {
+                "name": "unloaded",
+                "high_xy_m": 0.08,
+                "high_yaw_rad": 0.1,
+                "low_xy_m": 0.05,
+                "low_yaw_rad": 0.06,
+                "enter_dwell_s": 0.6,
+                "exit_dwell_s": 0.4
+              },
+              "candidate_since_sim_s": null,
+              "last_update_sim_s": 59.9003
+            },
+            "report": {
+              "initialized": true,
+              "t_est": 59.9002,
+              "age_s": 0.09980000000000189,
+              "std_xy_m": 0.03808,
+              "std_yaw_rad": 0.01082,
+              "since_tag_s": -0.0,
+              "source": "owncam_pf_v2:04f56834",
+              "classification": "low"
+            },
+            "observation": {
+              "sim_time": 59.900250000195,
+              "age_s": 0.09974999980499888,
+              "frame_id": 294,
+              "sha256": "4572d7e9ca3a616f689ac0fb7079638f04b7ee591009d49fbd27c0d1d82494a6",
+              "camera": "robot_cam"
+            },
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5,
+              6
+            ],
+            "missing_servo_ids": [],
+            "holding_answer": "no",
+            "state": "available",
+            "failed_checks": []
+          },
+          "assumptions_checked_in_raw": "no active job at submit; commanded gripper open; mode m1",
+          "frame_gate_independent_check": true,
+          "gate_transitions_through_submit": [
+            {
+              "t": 3.9,
+              "change": "exited",
+              "profile": "unloaded",
+              "std_xy_m": 0.0458
+            }
+          ],
+          "gate_transitions_through_end": [
+            {
+              "t": 3.9,
+              "change": "exited",
+              "profile": "unloaded",
+              "std_xy_m": 0.0458
+            }
+          ],
+          "minimum_sigma_before_submit_m": 0.02246,
+          "submission_frame": {
+            "frame": 293,
+            "t": 59.9003,
+            "frame_id": 294,
+            "sha256": "4572d7e9ca3a616f689ac0fb7079638f04b7ee591009d49fbd27c0d1d82494a6",
+            "robot_id": "r1",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 740,
+              "4": 2320,
+              "5": 1320,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 59.9002,
+              "initialized": true,
+              "xyyaw": [
+                -0.85011,
+                0.60263,
+                -0.015668
+              ],
+              "std_xy_m": 0.03808,
+              "std_yaw_rad": 0.01082,
+              "since_tag_s": -0.0,
+              "last_valid_obs": {
+                "t": 59.9003,
+                "tag_ids": [
+                  53,
+                  54,
+                  55,
+                  65,
+                  66
+                ],
+                "n_tags": 5
+              },
+              "n_eff": 1615.3,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "blocked_sweeps": []
+        },
+        "r2": {
+          "actual_ack": {
+            "robot_id": "r2",
+            "api": "pair_carry",
+            "action_id": "r2-act-003",
+            "sim_s": 60.0,
+            "arguments": {
+              "order_id": "cargoX",
+              "target_ref": "B",
+              "role": "end_pos"
+            },
+            "accepted": false,
+            "rejected_reason": "SELF_UNCERTAIN",
+            "job_id": null,
+            "local_state": "command_rejected"
+          },
+          "reconstructed_readiness": {
+            "schema": "ugrp.zone_pair_admission.v1",
+            "source": "own_inputs_only",
+            "sim_s": 60.0,
+            "robot_id": "r2",
+            "checks": {
+              "not_stopped": true,
+              "idle": true,
+              "mode_m1": true,
+              "gate_ok": false,
+              "report_present": true,
+              "report_initialized": true,
+              "report_fresh": true,
+              "std_xy_finite": true,
+              "std_yaw_finite": true,
+              "observation_present": true,
+              "observation_fresh": true,
+              "servo_complete": true
+            },
+            "gate": {
+              "state": "uncertain",
+              "profile": "unloaded",
+              "since_sim_s": null,
+              "transitions": 0,
+              "thresholds": {
+                "name": "unloaded",
+                "high_xy_m": 0.08,
+                "high_yaw_rad": 0.1,
+                "low_xy_m": 0.05,
+                "low_yaw_rad": 0.06,
+                "enter_dwell_s": 0.6,
+                "exit_dwell_s": 0.4
+              },
+              "candidate_since_sim_s": null,
+              "last_update_sim_s": 59.9003
+            },
+            "report": {
+              "initialized": true,
+              "t_est": 59.9002,
+              "age_s": 0.09980000000000189,
+              "std_xy_m": 0.95959,
+              "std_yaw_rad": 0.31633,
+              "since_tag_s": 58.6,
+              "source": "owncam_pf_v2:04f56834",
+              "classification": "high"
+            },
+            "observation": {
+              "sim_time": 59.900250000195,
+              "age_s": 0.09974999980499888,
+              "frame_id": 294,
+              "sha256": "0959d10b10b9341f97844b337c2126ebe56685490d17bac33cc076cbd2f1e1b5",
+              "camera": "robot_cam"
+            },
+            "servo_ids": [
+              1,
+              3,
+              4,
+              5,
+              6
+            ],
+            "missing_servo_ids": [],
+            "state": "uncertain",
+            "failed_checks": [
+              "gate_ok"
+            ]
+          },
+          "assumptions_checked_in_raw": "no active job at submit; commanded gripper open; mode m1",
+          "frame_gate_independent_check": true,
+          "gate_transitions_through_submit": [],
+          "gate_transitions_through_end": [],
+          "minimum_sigma_before_submit_m": 0.95245,
+          "submission_frame": {
+            "frame": 293,
+            "t": 59.9003,
+            "frame_id": 294,
+            "sha256": "0959d10b10b9341f97844b337c2126ebe56685490d17bac33cc076cbd2f1e1b5",
+            "robot_id": "r2",
+            "camera": "robot_cam",
+            "commanded_servo": {
+              "1": 2000,
+              "3": 800,
+              "4": 2380,
+              "5": 1380,
+              "6": 1500
+            },
+            "report": {
+              "t_est": 59.9002,
+              "initialized": true,
+              "xyyaw": [
+                -0.71533,
+                -0.71705,
+                -0.045907
+              ],
+              "std_xy_m": 0.95959,
+              "std_yaw_rad": 0.31633,
+              "since_tag_s": 58.6,
+              "last_valid_obs": {
+                "t": 1.3003,
+                "tag_ids": [
+                  51,
+                  53,
+                  55
+                ],
+                "n_tags": 3
+              },
+              "n_eff": 1889.0,
+              "load_state": "unloaded",
+              "source": "owncam_pf_v2:04f56834"
+            }
+          },
+          "blocked_sweeps": [
+            {
+              "recorded": {
+                "source": "own_estimate_and_issued_pwm_static_map",
+                "loaded": false,
+                "current_pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2380,
+                  "5": 1380,
+                  "6": 1500
+                },
+                "target_pwm": {
+                  "1": 2000,
+                  "3": 1072,
+                  "4": 2400,
+                  "5": 1482,
+                  "6": 1500
+                },
+                "own_estimate": {
+                  "x_m": -0.7218872849423987,
+                  "y_m": -0.7229139706516442,
+                  "yaw_rad": -0.043936276370251055,
+                  "std_xy_m": 0.9552986866886405,
+                  "std_yaw_rad": 0.3131739335121151
+                },
+                "limiting": {
+                  "sample_pwm": {
+                    "1": 2000,
+                    "3": 800,
+                    "4": 2380,
+                    "5": 1380,
+                    "6": 1500
+                  },
+                  "sphere_index": 3,
+                  "sphere_part": "upper_arm",
+                  "sphere_center_base_m": [
+                    -0.020958009266076404,
+                    0.0,
+                    0.1870285449820086
+                  ],
+                  "sphere_radius_m": 0.022,
+                  "wall_id": "wall_west",
+                  "raw_clearance_mm": 260.1749311702507,
+                  "margin_mm": 343.38320370643055,
+                  "clearance_mm": -83.20827253617985,
+                  "overlap_mm": 83.20827253617985
+                },
+                "stage": "arm",
+                "waited_s": 9.999999999996056
+              },
+              "recomputed": {
+                "source": "own_estimate_and_issued_pwm_static_map",
+                "loaded": false,
+                "current_pwm": {
+                  "1": 2000,
+                  "3": 800,
+                  "4": 2380,
+                  "5": 1380,
+                  "6": 1500
+                },
+                "target_pwm": {
+                  "1": 2000,
+                  "3": 1072,
+                  "4": 2400,
+                  "5": 1482,
+                  "6": 1500
+                },
+                "own_estimate": {
+                  "x_m": -0.7218872849423987,
+                  "y_m": -0.7229139706516442,
+                  "yaw_rad": -0.043936276370251055,
+                  "std_xy_m": 0.9552986866886405,
+                  "std_yaw_rad": 0.3131739335121151
+                },
+                "limiting": {
+                  "sample_pwm": {
+                    "1": 2000,
+                    "3": 800,
+                    "4": 2380,
+                    "5": 1380,
+                    "6": 1500
+                  },
+                  "sphere_index": 3,
+                  "sphere_part": "upper_arm",
+                  "sphere_center_base_m": [
+                    -0.020958009266076404,
+                    0.0,
+                    0.1870285449820086
+                  ],
+                  "sphere_radius_m": 0.022,
+                  "wall_id": "wall_west",
+                  "raw_clearance_mm": 260.1749311702507,
+                  "margin_mm": 343.38320370643055,
+                  "clearance_mm": -83.20827253617985,
+                  "overlap_mm": 83.20827253617985
+                }
+              },
+              "transition_clear": false,
+              "zero_sigma_transition_clear": true,
+              "current_arm_clearance_mm": -83.20827253617985,
+              "chassis_clearance_mm": -255.66694402031354,
+              "safe_alternative_pans": [],
+              "east_8cm_translation_clear": false
+            }
+          ]
+        }
+      },
+      "eval_only_initial_robot_poses": {
+        "r1": [
+          -0.8499971456297316,
+          0.5500000064923257,
+          1.2179524824685255e-09
+        ],
+        "r2": [
+          -0.8499971456297314,
+          -0.8499999935076741,
+          1.2179524609243116e-09
+        ],
+        "r3": [
+          -0.8499971456297316,
+          -2.249999993507677,
+          1.2179524781718026e-09
+        ]
+      },
+      "static_dock_options_not_selected": [
+        {
+          "pose": {
+            "x": -0.85,
+            "y": -0.85,
+            "yaw": 0.0,
+            "std_xy": 0.0,
+            "std_yaw": 0.0
+          },
+          "chassis_clearance_mm": -9.999999999999961,
+          "east_8cm_translation_clear": false
+        },
+        {
+          "pose": {
+            "x": -0.85,
+            "y": -0.85,
+            "yaw": 0.0,
+            "std_xy": 0.05,
+            "std_yaw": 0.06
+          },
+          "chassis_clearance_mm": -130.99142682144304,
+          "east_8cm_translation_clear": false
+        },
+        {
+          "pose": {
+            "x": -0.7,
+            "y": -0.85,
+            "yaw": 0.0,
+            "std_xy": 0.05,
+            "std_yaw": 0.06
+          },
+          "chassis_clearance_mm": 19.008573178556976,
+          "east_8cm_translation_clear": true
+        },
+        {
+          "pose": {
+            "x": -0.65,
+            "y": -0.85,
+            "yaw": 0.0,
+            "std_xy": 0.05,
+            "std_yaw": 0.06
+          },
+          "chassis_clearance_mm": 69.00857317855692,
+          "east_8cm_translation_clear": true
+        }
+      ]
+    }
+  }
+}

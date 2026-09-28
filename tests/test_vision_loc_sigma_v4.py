@@ -17,8 +17,8 @@ sys.path.insert(0, str(HERE))
 
 import calibrate_sigma_v4 as cs
 import vision_loc as vl
-import vision_loc_cli as cli
-import vision_pf
+import vision_loc_cli_v4 as cli
+import vision_pf_v4 as vision_pf
 import vision_sigma as vs
 
 

@@ -1,0 +1,131 @@
+Numerical thread caps: 1; OpenCV threads: 1; pytest worker: main process
+......................F.......................F......................... [ 63%]
+..........................................                               [100%]
+=================================== FAILURES ===================================
+__________ test_loaded_floor_without_current_cargo_mask_is_never_free __________
+
+    def test_loaded_floor_without_current_cargo_mask_is_never_free():
+        mem = memory()
+        mem._frame_loaded = mem._frame_pose_good = True
+        for t in (1., 1.4, 1.8):
+>           mem._observe_floor(t, (0., 0., 0.), {**SEARCH_POSE, 1: 1500}, [], cov=np.eye(3)*.00001)
+
+tests/test_owncam_memory_v3_review2.py:243: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.owncam_memory_v3.OwnCamMemoryV3 object at 0x111111f70>
+now = 1.0, pose = (0.0, 0.0, 0.0)
+servo = {1: 1500, 3: 740, 4: 2320, 5: 1320, ...}, rows = []
+cov = array([[1.e-05, 0.e+00, 0.e+00],
+       [0.e+00, 1.e-05, 0.e+00],
+       [0.e+00, 0.e+00, 1.e-05]])
+cargo_row_limit = None, frame_id = None
+
+    def _observe_floor(self, now, pose, servo, rows, *, cov=None, cargo_row_limit=None, frame_id=None):
+        cov = self._frame_cov if cov is None else cov
+        if not self._frame_pose_good or cov is None:
+            return  # uncertain pose cannot certify free cells
+        cam = self.view.camera_world(pose, servo)[:2]
+        near = np.flatnonzero(np.linalg.norm(self.view.cells-cam, axis=1) <= v2.FREE_RANGE_M)
+        # Cheap necessary mean-view test before the complete support test.
+        # It never authorizes a cell; it only removes impossible candidates.
+        if len(near):
+            pts = np.column_stack((self.view.cells[near], np.zeros(len(near))))
+            raw, ideal, valid = self.view.project(self.view.to_camera(pts, np.asarray(pose), servo,
+                                                                     self._frame_loaded)[0])
+            valid &= self.view.in_view(raw, ideal, False, 30.)
+            if self._frame_loaded:
+                valid &= raw[:, 1] < (cargo_row_limit if cargo_row_limit is not None else -1.)
+            near = near[valid]
+        # Clear only rays not possibly blocked by a remembered or detected box.
+        clear = np.array([self.floor_cell_visible(self.view.cells[i], pose, cov, servo, rows,
+                         loaded=self._frame_loaded, cargo_row_limit=cargo_row_limit) for i in near])
+        rays = self.view.cells[near] - cam
+        lengths2 = np.maximum(np.sum(rays*rays, axis=1), 1e-12)
+        obstacles = [(t.x, .03 + 2*t.sigma_m()) for t in self.tracks
+                     if t.state != 'held' and t.slot_blocking]
+        obstacles += [(np.asarray(r['map_xy']), .03 + 2*r['sigma_m']) for r in rows]
+        for xy, radius in obstacles:
+            rel = xy - cam
+            f = (rays @ rel)/lengths2
+            perp = np.linalg.norm(rel - np.clip(f, 0., 1.)[:, None]*rays, axis=1)
+            clear &= ~((f > 0) & (perp <= radius))
+        independent = self._floor_evidence_t is None or now-self._floor_evidence_t >= MIN_HIT_INTERVAL_S-1e-9
+>       free = near[clear] if independent else np.array([], dtype=int)
+               ^^^^^^^^^^^
+E       IndexError: arrays used as indices must be of integer (or boolean) type
+
+harness/owncam_memory_v3.py:325: IndexError
+__ BoxFailureTests.test_hidden_far_or_uncertain_box_gets_only_survival_decay ___
+
+self = <test_owncam_memory_v3.BoxFailureTests testMethod=test_hidden_far_or_uncertain_box_gets_only_survival_decay>
+
+    def test_hidden_far_or_uncertain_box_gets_only_survival_decay(self):
+        for why in ('offscreen', 'far', 'uncertain', 'pose_bad', 'loaded'):
+            mem = memory(rows=[('red', 'near', .6, 0.)])
+            for t in (1., 1.4):
+                feed(mem, t)
+            tr = mem.tracks[0]
+            mem._detect.rows = []
+            if why == 'far':
+                tr.x += [2., 0.]
+            if why == 'uncertain':
+                tr.P = np.eye(2)*.2**2
+            before, misses = tr.existence_p, tr.misses
+            with mock.patch.object(mem.view, 'point_in_view', return_value=why != 'offscreen'):
+>               feed(mem, 1.8, good=why != 'pose_bad', loaded=why == 'loaded')
+
+tests/test_owncam_memory_v3.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_owncam_memory_v3.py:75: in feed
+    return mem.observe_frame(now, frame_id=int(now*100), image=None, servo=servo,
+harness/owncam_memory_v3.py:165: in observe_frame
+    out['boxes'] = self._observe_boxes(now, frame_id, kwargs['image'],
+harness/owncam_memory_v3.py:270: in _observe_boxes
+    self._observe_floor(now, pose, servo, rows, cov=cov, cargo_row_limit=cargo_limit, frame_id=frame_id)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <harness.owncam_memory_v3.OwnCamMemoryV3 object at 0x1109397f0>
+now = 1.8, pose = (-0.47, -0.85, 0.0)
+servo = {1: 2000, 3: 740, 4: 2320, 5: 1320, ...}, rows = []
+cov = array([[2.0e-04, 0.0e+00, 0.0e+00],
+       [0.0e+00, 2.0e-04, 0.0e+00],
+       [0.0e+00, 0.0e+00, 2.5e-05]])
+cargo_row_limit = None, frame_id = 180
+
+    def _observe_floor(self, now, pose, servo, rows, *, cov=None, cargo_row_limit=None, frame_id=None):
+        cov = self._frame_cov if cov is None else cov
+        if not self._frame_pose_good or cov is None:
+            return  # uncertain pose cannot certify free cells
+        cam = self.view.camera_world(pose, servo)[:2]
+        near = np.flatnonzero(np.linalg.norm(self.view.cells-cam, axis=1) <= v2.FREE_RANGE_M)
+        # Cheap necessary mean-view test before the complete support test.
+        # It never authorizes a cell; it only removes impossible candidates.
+        if len(near):
+            pts = np.column_stack((self.view.cells[near], np.zeros(len(near))))
+            raw, ideal, valid = self.view.project(self.view.to_camera(pts, np.asarray(pose), servo,
+                                                                     self._frame_loaded)[0])
+            valid &= self.view.in_view(raw, ideal, False, 30.)
+            if self._frame_loaded:
+                valid &= raw[:, 1] < (cargo_row_limit if cargo_row_limit is not None else -1.)
+            near = near[valid]
+        # Clear only rays not possibly blocked by a remembered or detected box.
+        clear = np.array([self.floor_cell_visible(self.view.cells[i], pose, cov, servo, rows,
+                         loaded=self._frame_loaded, cargo_row_limit=cargo_row_limit) for i in near])
+        rays = self.view.cells[near] - cam
+        lengths2 = np.maximum(np.sum(rays*rays, axis=1), 1e-12)
+        obstacles = [(t.x, .03 + 2*t.sigma_m()) for t in self.tracks
+                     if t.state != 'held' and t.slot_blocking]
+        obstacles += [(np.asarray(r['map_xy']), .03 + 2*r['sigma_m']) for r in rows]
+        for xy, radius in obstacles:
+            rel = xy - cam
+            f = (rays @ rel)/lengths2
+            perp = np.linalg.norm(rel - np.clip(f, 0., 1.)[:, None]*rays, axis=1)
+>           clear &= ~((f > 0) & (perp <= radius))
+E           TypeError: ufunc 'bitwise_and' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''
+
+harness/owncam_memory_v3.py:323: TypeError
+=========================== short test summary info ============================
+FAILED tests/test_owncam_memory_v3_review2.py::test_loaded_floor_without_current_cargo_mask_is_never_free
+FAILED tests/test_owncam_memory_v3.py::BoxFailureTests::test_hidden_far_or_uncertain_box_gets_only_survival_decay
+2 failed, 112 passed in 59.63s

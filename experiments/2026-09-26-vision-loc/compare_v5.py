@@ -27,8 +27,8 @@ import vision_report_v5 as head
 HERE = Path(__file__).resolve().parent
 PLAN = HERE/'dev_plan_v5.json'
 OUT = HERE.parents[1]/'outputs/vision-loc-v5'
-SOURCE_NAMES = ('compare_v5.py','vision_report_v5.py','route_audit_v5.py','vision_pf.py','vision_loc.py',
-                'vision_loc_io.py','vision_loc_cli.py','vision_sigma.py','vision_motion.py','calibrate_sigma_v4.py',
+SOURCE_NAMES = ('compare_v5.py','vision_report_v5.py','route_audit_v5.py','vision_pf_v5.py','vision_loc.py',
+                'vision_loc_io.py','vision_loc_cli_v5.py','vision_sigma.py','vision_motion.py','calibrate_sigma_v4.py',
                 'diagnose_v4.py','dev_plan_v5.json','selected_config_v3.json','calibration_train.json',
                 'episodes.json','episodes_v3.json','maps/zone_wide_door_walls_v3_notags.json',
                 '../2026-09-26-markerless-probe/markerless_probe.py',

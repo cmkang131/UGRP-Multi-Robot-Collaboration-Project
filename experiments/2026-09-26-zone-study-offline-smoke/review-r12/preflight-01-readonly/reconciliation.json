@@ -1,0 +1,79 @@
+{
+  "accepted_evidence_levels": [
+    "proxy_upstream_ids",
+    "proxy_log_exclusive_window"
+  ],
+  "calls": [
+    {
+      "actual_upstream_attempts": 1,
+      "body_sha256": "e7217253fa6b45bf6880e03de751ba1c0ae886b7d24b44f66a09bca01c76ae67",
+      "call_id": "call-0001-r1",
+      "completion": {
+        "finish_reason": "stop",
+        "finish_reason_source": "proxy_response",
+        "normal_completion": false,
+        "policy": "ugrp.zone_completion.proxy_stop_and_valid_reply.v1",
+        "rejection_reasons": [
+          "study_reply_incomplete_or_non_json"
+        ],
+        "reported_upstream_finish_reasons": [],
+        "upstream_finish_reason_verified": false,
+        "upstream_finish_verified": false
+      },
+      "evidence": {
+        "end_offset": 10751667,
+        "includes_boundary_context": true,
+        "offset": 10751463,
+        "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/experiments/2026-09-26-zone-study-offline-smoke/review-r12/preflight-01-readonly/000001-proxy-window.log",
+        "sha256": "c2accf6e5bea9f7e506ede0ffab2a76af24ac000095e15ec2e6b6567d26d16c3",
+        "source_inode": 236344656,
+        "source_path": "/Users/changmin/.hermes/logs/gemini-subscription-proxy.log",
+        "source_prefix_sha256": "20278766173738cf726ea3ad14d7dbb177cf4fc6d6d31f8e3995ee3992b536d0",
+        "source_size_at_capture": 10755407
+      },
+      "evidence_level": "proxy_log_exclusive_window",
+      "evidence_limitation": "quota_accounting_only; weaker_than_request_ids; final_response_usage_only; no_upstream_ids_or_finish_reason_verification; no_refunds",
+      "issues": [],
+      "late": false,
+      "ledger_seq": 1,
+      "local_status": "completion_rejected",
+      "provider_usage": {
+        "completion_tokens": 98,
+        "prompt_tokens": 10285,
+        "total_tokens": 10622
+      },
+      "proxy_request_id": null,
+      "proxy_response_id": "chatcmpl-4e9c7365c45740008c64aacc70b6d98e",
+      "reconciled": true,
+      "reservation_id": "dfc436c81d584db6b9526f4f79b15b1e",
+      "reserved_attempts": 2,
+      "reserved_tokens": 235408,
+      "trial_id": "preflight-01-no_comm-s11",
+      "upstream_attempts": null
+    }
+  ],
+  "complete": true,
+  "complete_scope": "exclusive_window_quota_accounting_not_provider_billing_or_completion_or_physical_success",
+  "completion_limitation": {
+    "finish_reason_source": "proxy_response",
+    "proxy_mapping": "MAX_TOKENS -> length; other reasons including SAFETY -> stop",
+    "success_scope": "proxy stop + valid study reply, not verified upstream STOP or physical success",
+    "undetectable_case": "masked upstream failure with complete valid JSON and no remaining failure signal",
+    "upstream_finish_reason_verified": false,
+    "upstream_finish_verified": false
+  },
+  "completion_policy": "ugrp.zone_completion.proxy_stop_and_valid_reply.v1",
+  "evidence_levels": [
+    "proxy_log_exclusive_window"
+  ],
+  "pilot_id": "cbb840c2c94f41adbf3114df8432f3fe",
+  "problems": [],
+  "refunds": 0,
+  "reserved_attempts": 2,
+  "reserved_tokens": 235408,
+  "schema": "ugrp.zone_pilot_reconciliation.v1",
+  "source_identity_sha256": "0927ccba1cc2943205227a297227cb524845ede1dfc7688d18e7817ad294d45d",
+  "source_migrations": [],
+  "source_revision": 0,
+  "state_sha256": "1bcec7e01de3464ff164a49b235f5ac819219b5b15dd6b9d2061798201d5cc3f"
+}

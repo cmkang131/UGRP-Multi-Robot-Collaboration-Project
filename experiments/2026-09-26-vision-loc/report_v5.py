@@ -9,6 +9,7 @@ from pathlib import Path
 import numpy as np
 
 import compare_v5 as c
+import record_verify as rv
 import vision_loc_io as vio
 
 sys.path.insert(0,str(c.HERE.parents[1]))
@@ -24,8 +25,11 @@ def main():
     if verification['mismatches']:
         raise ValueError('incomplete/inconsistent comparison')
     freeze=vio.load_json(out/'source_freeze.json')
-    if c.verify({**freeze['sources'],**freeze['inputs'],**vio.load_json(out/'evaluation_input_hashes.json')}):
+    if c.verify({**freeze['inputs'],**vio.load_json(out/'evaluation_input_hashes.json')}):
         raise ValueError('frozen evidence changed')
+    # Sources moved to vision_pf_v5.py / vision_loc_cli_v5.py (2026-09-28): check the recording commit's blobs.
+    if rv.blob_mismatches(freeze['sources'],rv.VIS5_FINAL_RECORD_COMMIT):
+        raise ValueError('frozen sources changed')
     results=vio.load_json(out/'metrics.json'); decision=vio.load_json(out/'selection.json')
     detector=vio.load_json(out/'detector.json'); route=vio.load_json(out/'route_audit.json')
     snapshot=out/'tensorboard/0927-vis5-dev'; snapshot.mkdir(parents=True,exist_ok=False)

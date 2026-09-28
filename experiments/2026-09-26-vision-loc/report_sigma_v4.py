@@ -14,6 +14,7 @@ import numpy as np
 
 import calibrate_sigma_v4 as cs
 import diagnose_v4 as d
+import record_verify as rv
 import vision_loc_io as vio
 
 sys.path.insert(0, str(d.HERE.parents[1]))
@@ -27,10 +28,11 @@ def main():
     out = d.OUT/'sigma'; results = vio.load_json(out/'metrics.json')
     verification = vio.load_json(out/'verification.json')
     if verification['mismatches']: raise ValueError('source/input integrity failure')
-    for filename in ('input_hashes.json', 'source_freeze.json'):
-        hashes = vio.load_json(out/filename)
-        if filename == 'source_freeze.json': hashes = hashes['source_sha256']
-        if any(vio.sha_file(Path(p)) != sha for p, sha in hashes.items()): raise ValueError('frozen inputs changed')
+    hashes = vio.load_json(out/'input_hashes.json')
+    if any(vio.sha_file(Path(p)) != sha for p, sha in hashes.items()): raise ValueError('frozen inputs changed')
+    # Sources moved to vision_pf_v4.py / vision_loc_cli_v4.py (2026-09-28): check the recording commit's blobs.
+    sources = vio.load_json(out/'source_freeze.json')['source_sha256']
+    if rv.blob_mismatches(sources, rv.VIS4_SIGMA_RECORD_COMMIT): raise ValueError('frozen sources changed')
     data, inputs = cs.load_data(vio.load_json(cs.PLAN))
     visw = next(s for s in data if s['cohort'] == 'fit_VISW')
     a = visw['a']; variance = {}

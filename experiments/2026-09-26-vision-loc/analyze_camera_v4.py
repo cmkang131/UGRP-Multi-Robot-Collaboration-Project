@@ -7,7 +7,7 @@ import numpy as np
 
 import diagnose_v4 as d
 import vision_loc as vl
-import vision_loc_cli as cli
+import vision_loc_cli_v4 as cli
 import vision_loc_io as vio
 
 
