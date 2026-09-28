@@ -125,7 +125,7 @@ def observe_beam(image, pose: Mapping[int | str, int | float]) -> dict[str, Any]
 
 def align_errors(obs: Mapping[str, Any]) -> tuple[float, float, float]:
     gx, gy = obs['grip_base_m']
-    return gx - GRASP_RADIUS_M, gy, obs['axis_heading_rad']
+    return gx - chassis_x_for_arm_radius(GRASP_ARM_RADIUS_M), gy, obs['axis_heading_rad']
 
 
 def _floor(value: float, tol: float) -> float:

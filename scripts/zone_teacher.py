@@ -18,7 +18,7 @@ from harness.visual_arm import solve_grip_ik, tool_pose
 from harness.zone_team_jobs import RendezvousRule, RoleClaim
 
 FOLDED = {1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500}
-from sim.zone_cargo import GRASP_RADIUS_M  # arm radius .155 + physical arm mount
+GRASP_RADIUS_M = .155
 GRASP_Z_M, HOVER_Z_M = .024, .095
 OPEN, CLOSED = 2000, 1500
 CONTROL_S = .1

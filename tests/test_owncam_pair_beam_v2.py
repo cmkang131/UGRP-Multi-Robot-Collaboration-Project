@@ -9,6 +9,16 @@ import pytest
 
 from harness import owncam_pair_beam_v2 as ob2
 from harness import team_carry_status as tcs
+import pytest
+from harness import visual_arm as va
+
+@pytest.fixture(autouse=True)
+def _v2_arm_mount():
+    """Fixtures here were recorded or authored under the v2 model (arm yaw axis at
+    the chassis origin): replay them with that mount; v3 re-verify is on power."""
+    with va.use_arm_mount(va.V2_ARM_MOUNT_X_CM):
+        yield
+
 
 ROOT = Path(__file__).resolve().parents[1]
 FIX = ROOT / 'tests/fixtures/owncam_pair_v2'

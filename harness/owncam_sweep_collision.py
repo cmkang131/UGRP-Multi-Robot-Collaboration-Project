@@ -26,6 +26,11 @@ def _finite(*values):
 # sphere radii/residual are the v2 fit (re-verify on power, v3 body).
 V2_BODY_MOUNT_XYZ_M = (0.0, 0.0, 0.0)
 BODY_MOUNT_XYZ_M = (va.ARM_MOUNT_X_M, 0.0, 0.0)
+
+
+def current_body_mount() -> tuple[float, float, float]:
+    """Arm yaw axis from harness.visual_arm at call time (follows use_arm_mount)."""
+    return (va.ARM_MOUNT_X_M, 0.0, 0.0)
 BODY_COVERAGE_RESIDUAL_M = .015            # measured 0.0144 m (camera body AABB corner, carry)
 R_LINK_M = .022                     # arm links (servo brackets)
 BEARING_Z_M, BEARING_R_M = .085, .045   # arm yaw bearing (r1__base_yaw_bearing_visual, z 0.07-0.10 m)
@@ -43,7 +48,7 @@ def _servo(pose: Mapping) -> dict[int, int]:
     return {int(k): int(v) for k, v in pose.items()}
 
 
-def body_spheres(servo: Mapping, *, loaded: bool, mount_xyz_m=BODY_MOUNT_XYZ_M) -> list[tuple[float, float, float, float]]:
+def body_spheres(servo: Mapping, *, loaded: bool, mount_xyz_m=None) -> list[tuple[float, float, float, float]]:
     """(x, y, z_above_floor, radius) of the arm, gripper/fingers and held box in the base frame.
 
     Forward kinematics: ``harness.visual_arm`` (tool points via ``arm_tool_pose``; the elbow from the same
@@ -57,7 +62,7 @@ def body_spheres(servo: Mapping, *, loaded: bool, mount_xyz_m=BODY_MOUNT_XYZ_M) 
     elbow_r, elbow_z = va.LINK_2_CM * math.cos(theta5) / 100., z0 + va.LINK_2_CM * math.sin(theta5) / 100.
     wrist = va.arm_tool_pose(pose, tool_length_cm=0.)
     wrist_r, wrist_z = math.hypot(wrist.x_m, wrist.y_m) * (1 if wrist.x_m * cy + wrist.y_m * sy >= 0 else -1), wrist.z_m
-    mx, my, mz = (float(v) for v in mount_xyz_m)
+    mx, my, mz = (float(v) for v in (current_body_mount() if mount_xyz_m is None else mount_xyz_m))
     out = []
 
     def add(r, z, radius):
@@ -131,9 +136,9 @@ class OwnPose:
 class SweepGuard:
     """Static-map collision check for own arm/finger/box sweeps and chassis back-offs."""
 
-    def __init__(self, static_map: Mapping, *, mount_xyz_m=BODY_MOUNT_XYZ_M, residual_m=BODY_COVERAGE_RESIDUAL_M):
+    def __init__(self, static_map: Mapping, *, mount_xyz_m=None, residual_m=BODY_COVERAGE_RESIDUAL_M):
         self.boxes = static_boxes(static_map)
-        self.mount = tuple(float(v) for v in mount_xyz_m)
+        self.mount = tuple(float(v) for v in (current_body_mount() if mount_xyz_m is None else mount_xyz_m))
         self.residual = float(residual_m)
 
     def margin(self, pose: OwnPose, lever_m: float) -> float:
