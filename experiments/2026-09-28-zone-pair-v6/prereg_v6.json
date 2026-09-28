@@ -193,10 +193,10 @@
     },
     "sha256": "17bf3e04918aa9c4a940df2cb0d2be975075714e906d8503fc92e1f29a9ca9b6"
   },
-  "status": "DRAFT",
+  "status": "REGISTERED",
   "registration_version": 6,
   "registration_revision": "v6",
-  "runnable": false,
+  "runnable": true,
   "execution_status": "not_run",
   "execution_source_sha": null,
   "execution_authorization": null,
@@ -313,7 +313,7 @@
       "harness/zone_pair_global.py": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
       "harness/owncam_recovery_v6.py": "74d90f36dd3f170091ed7c3e8b73432d81cb9ee0ca36d8472b063c9af92b5b46",
       "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
-      "scripts/zone_pair_v6_contract.py": "0415dcc5d8d8d9ad1f7c7856433d461f73513bfcced2bb8fab4e224c1bb6b180",
+      "scripts/zone_pair_v6_contract.py": "6c2436ac7a80eb8b35617e510090f8c2f253cf8c0e17894262c43a38efdc1dc9",
       "harness/zone_own_sweep.py": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
       "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
       "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
@@ -329,7 +329,7 @@
   "disk_error_classification": "ENOSPC=HOST_ERROR",
   "model_calls": 0,
   "readiness": {
-    "status": "NOT_READY_FOR_PHYSICAL",
+    "status": "DEV_EXECUTION_AUTHORIZED_OPEN_REQUIREMENTS",
     "requires": [
       "source review and commit",
       "explicit execution authorization",
@@ -337,7 +337,13 @@
       "markerless provider and shape coverage",
       "exclusive physical lock at future execution"
     ],
-    "legacy_marker_dependency": "a+b relative alignment/close-ready use body edges only; inherited post-close M2 grip/hold receipts still include black band. Alternative: separately calibrate colour-edge co-motion/hold receipts before markerless cohort."
+    "legacy_marker_dependency": "a+b relative alignment/close-ready use body edges only; inherited post-close M2 grip/hold receipts still include black band. Alternative: separately calibrate colour-edge co-motion/hold receipts before markerless cohort.",
+    "draft_status": "NOT_READY_FOR_PHYSICAL",
+    "open_at_execution": [
+      "relative/global bound calibration",
+      "markerless provider and shape coverage"
+    ],
+    "decision": "2026-09-28 manager session authorized the six dev runs on the user delegation (merges approved; run decisions delegated). Open requirements are disclosed, not waived as evidence: results stay tags_temporary dev diagnostics."
   },
   "runs": [
     {
@@ -533,5 +539,11 @@
     "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5h.json",
     "sha256": "7b9c13b0ed829b7cb9b22cf58b47fd1862b247fe7bc8d0a4a4704686ca6994e9"
   },
-  "registration_sha256": "2453df542e8c7ac7d40af7d7d66593be8cfb4bfda342a13f56a2bdd93f6b5d74"
+  "registration_sha256": "379ffe42baddab81554a007bd4cef5d3668c255e33d0342286dede49d77368fa",
+  "draft_registration": {
+    "path": "experiments/2026-09-28-zone-pair-v6/prereg_v6.json",
+    "commit": "e8ff18822050c957993eb3d4c569d574186c1526",
+    "sha256": "4ce32a6a1247d5ea4150681e1622c1b435df9434aa6d13215706cd3f50efe9bf",
+    "registration_sha256": "2453df542e8c7ac7d40af7d7d66593be8cfb4bfda342a13f56a2bdd93f6b5d74"
+  }
 }
