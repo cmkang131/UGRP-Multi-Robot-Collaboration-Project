@@ -193,3 +193,21 @@ def test_workflow_registered():
     row = next(r for r in rows if r['id'] == 'pair-stage-probes')
     assert row['entry'] == 'scripts/run_pair_stage_probes.py' and (ROOT / row['docs']).is_file()
     assert row['runner'] == 'scripts.run_pair_stage_probes' and row['output_flag'] == '--output'
+
+
+def test_finish_result_root_cause_tie_break_and_out_of_stage_events(tmp_path):
+    from scripts import run_pair_stage_probes as r
+    case = sp.teacher_cases('align', subset={'nominal'}, nominal_seeds=(911,))[0]
+    ev = lambda rid, t, reason: {'event': 'job_failed', 'robot_id': rid, 'sim_s': t, 'detail': {'reason': reason}}
+    result = {'wall_s': 1., 'exits': {}, 'entry': {'r1': {'sim_s': 2.}},
+              'event_log': [ev('r1', 5., 'PARTNER_ABORT'), ev('r2', 5., 'PAIR_COLLISION_GUARD'),
+                            ev('r1', 9., 'EPISODE_END:STUDY_LAYER_DONE')]}
+    row = r.finish_result(case, result, tmp_path)
+    assert row['category'] == 'PAIR_COLLISION_GUARD' and row['first_failure']['robot_id'] == 'r2'
+    # a robot's failure AFTER its own stage exit is outside the stage
+    exits = {q: {'sim_s': 4., 'gt': {'grip_errors': {'grip_x_err_m': 0., 'grip_y_err_m': 0., 'yaw_err_rad': 0.}}}
+             for q in sp.PARTICIPANTS}
+    after = {'wall_s': 1., 'exits': exits, 'entry': {}, 'event_log': [ev('r1', 5., 'PARTNER_ABORT_AFTER_OWN_EXIT')]}
+    row = r.finish_result(case, after, tmp_path)
+    assert row['passed'] and row['category'] == 'PASS'
+    assert json.loads((tmp_path / 'result.json').read_text())['row']['labels'] == sp.LABELS

@@ -422,7 +422,9 @@ def finish_result(case, result, out):
         return (not reason.startswith('EPISODE_END')
                 and (rid not in exits or e['sim_s'] < exits[rid]['sim_s'] - 1e-9))
     fails = sorted((e for e in result.get('event_log', []) if e.get('event') == 'job_failed'
-                    and e.get('robot_id') in sp.PARTICIPANTS and in_stage(e)), key=lambda e: e['sim_s'])
+                    and e.get('robot_id') in sp.PARTICIPANTS and in_stage(e)),
+                   key=lambda e: (e['sim_s'], str((e.get('detail') or {}).get('reason', '')).startswith('PARTNER')))
+    # Same-instant tie: the partner's PARTNER_ABORT is a consequence, not the root cause (grid1 had 2 such rows).
     first = fails[0] if fails else None
     if result.get('host_error'):
         first = {'robot_id': None, 'sim_s': None, 'reason': 'HOST_ERROR'}
