@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HAS_MUJOCO = importlib.util.find_spec('mujoco') is not None
 EXACT = replace(usm.DEFAULT_SPEC, dropout_prob=0., outlier_prob=0., noise_sigma0_m=0., noise_rel=0.)
 NEW_FILES = ('harness/ultrasonic_model.py', 'harness/ultrasonic_map.py', 'harness/range_provider.py',
-             'sim/ultrasonic_range.py')
+             'sim/ultrasonic_range.py', 'harness/ultrasonic_carry.py', 'scripts/analyze_ultrasonic_carry_height.py')
 BEAM_POSE = (1.0, -1.2)
 # Recorded M2 carry: beam body z at the door crossing 0.0607-0.061 m (experiments/2026-09-26-zone-m2-pair).
 LIFTED_BEAM_BODY_Z_M = .061
@@ -208,7 +208,8 @@ def test_same_provider_config_in_all_four_conditions():
 
 
 def test_controller_side_modules_never_import_the_simulator():
-    for name in ('harness/ultrasonic_model.py', 'harness/ultrasonic_map.py', 'harness/range_provider.py'):
+    for name in ('harness/ultrasonic_model.py', 'harness/ultrasonic_map.py', 'harness/range_provider.py',
+                 'harness/ultrasonic_carry.py'):
         tree = ast.parse((ROOT / name).read_text())
         mods = {a.name for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names}
         mods |= {n.module or '' for n in ast.walk(tree) if isinstance(n, ast.ImportFrom)}
@@ -318,7 +319,7 @@ def test_beam_on_floor_is_below_the_sensor_but_inside_the_cone(beam_scene):
     assert seen == {.05: False, .07: False, .10: True, .20: True, .50: True, 1.0: True, 1.5: False}
 
 
-def test_grasp_pose_sees_partner_not_floor_beam_and_lifted_beam_depends_on_exclusion(beam_scene):
+def test_grasp_pose_sees_partner_and_the_held_load_is_never_excluded(beam_scene):
     """Carry formation: r1 at end_neg facing +x, r2 at end_pos facing -x (beam grasp geometry)."""
     import mujoco
     from sim.ultrasonic_range import MujocoUltrasonic
@@ -340,10 +341,12 @@ def test_grasp_pose_sees_partner_not_floor_beam_and_lifted_beam_depends_on_exclu
     _beam(model, data, inst, z=LIFTED_BEAM_BODY_Z_M)
     mujoco.mj_forward(model, data)
     end_face = BEAM_POSE[0] - .30 - (x1 + .078)
-    held = r1.true_first_echo()
-    assert held is not None and abs(held - end_face) < .005                 # a real sensor sees its load
-    _, diag = r1.measure_diagnostic(0., exclude_bodies=[inst.body])
-    assert diag['echo_geom'].startswith('r2__') and .4 < diag['true_first_echo_m'] < partner_front + .01
+    _, diag = r1.measure_diagnostic(0.)
+    # the held load is a separate body and is seen exactly like the physical sensor would see it
+    assert diag['echo_geom'] == inst.body + '__bar' and abs(diag['true_first_echo_m'] - end_face) < .005
+    import inspect
+    assert 'exclude' not in inspect.signature(r1.measure).parameters          # no API to hide the load
+    assert 'exclude' not in inspect.signature(r1.cast).parameters
 
 
 def test_peer_robot_is_detected_and_crosstalk_is_optional(beam_scene):

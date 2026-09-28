@@ -1,0 +1,668 @@
+{
+ "geometry": {
+  "beam_length_m": 0.6,
+  "grasp_radius_m": 0.155,
+  "grip_above_bottom_m": 0.024,
+  "grip_from_end_m": 0.03,
+  "m2_beam_body_z_m": [
+   0.0602,
+   0.061
+  ],
+  "m2_lift_tool_z_m": 0.095
+ },
+ "grasp_pose": {
+  "bar_pixels": 306984,
+  "camera": {
+   "camera_height_m": 0.0594,
+   "optical_axis_elevation_deg": -64.63
+  },
+  "pulses": {
+   "3": 922,
+   "4": 1818,
+   "5": 2493,
+   "6": 1500
+  }
+ },
+ "heights": [
+  {
+   "bar_clearance": {
+    "r1": {
+     "min_distance_m": 0.0323,
+     "nearest_geom": "r1__wrist_collision"
+    },
+    "r2": {
+     "min_distance_m": 0.0323,
+     "nearest_geom": "r2__wrist_collision"
+    }
+   },
+   "commanded_tool_z_m": 0.095,
+   "expected_bar_bottom_m": 0.0609,
+   "fk_tool_z_m": 0.0949,
+   "ik_feasible": true,
+   "pitch_change_from_grasp_deg": 8.01,
+   "pitch_deg": -64.08,
+   "pulses": {
+    "3": 611,
+    "4": 1711,
+    "5": 2200,
+    "6": 1500
+   },
+   "sim_grip_site_m": {
+    "forward": 0.1549,
+    "z": 0.0949
+   },
+   "sim_joint_ranges_ok": true,
+   "sim_joint_targets_r1": {
+    "arm_yaw": {
+     "range_rad": [
+      -1.75,
+      1.75
+     ],
+     "target_rad": 0.0,
+     "within_range": true
+    },
+    "elbow": {
+     "range_rad": [
+      -1.8,
+      1.8
+     ],
+     "target_rad": -0.2482,
+     "within_range": true
+    },
+    "shoulder": {
+     "range_rad": [
+      -0.15,
+      2.8
+     ],
+     "target_rad": 0.611,
+     "within_range": true
+    },
+    "wrist_pitch": {
+     "range_rad": [
+      -1.8,
+      1.8
+     ],
+     "target_rad": -1.4813,
+     "within_range": true
+    }
+   },
+   "sonar": {
+    "echo_geom": "cargo_beam__bar",
+    "first_echo_m": 0.0477,
+    "sees_own_load": true,
+    "with_own_arm_echo_geom": "cargo_beam__bar",
+    "with_own_arm_first_echo_m": 0.0477
+   },
+   "tip_over_r1": {
+    "com_height_m": 0.0791,
+    "com_x_m": 0.0271,
+    "load_share_kg": 0.15,
+    "robot_mass_kg": 1.1,
+    "static_forward_restoring_ratio": 3.89,
+    "tip_accel_forward_mps2": 4.08,
+    "tip_accel_lateral_mps2": 8.12
+   },
+   "wrist_camera_proxy": {
+    "bar_pixels": 263275,
+    "camera_height_m": 0.1305,
+    "iou_vs_grasp_view": 0.858,
+    "iou_vs_grasp_view_lower60": 0.929,
+    "optical_axis_elevation_deg": -56.62
+   }
+  },
+  {
+   "bar_clearance": {
+    "r1": {
+     "min_distance_m": 0.031,
+     "nearest_geom": "r1__wrist_collision"
+    },
+    "r2": {
+     "min_distance_m": 0.031,
+     "nearest_geom": "r2__wrist_collision"
+    }
+   },
+   "commanded_tool_z_m": 0.11,
+   "expected_bar_bottom_m": 0.076,
+   "fk_tool_z_m": 0.11,
+   "ik_feasible": true,
+   "pitch_change_from_grasp_deg": 12.06,
+   "pitch_deg": -60.03,
+   "pulses": {
+    "3": 544,
+    "4": 1623,
+    "5": 2176,
+    "6": 1500
+   },
+   "sim_grip_site_m": {
+    "forward": 0.155,
+    "z": 0.11
+   },
+   "sim_joint_ranges_ok": true,
+   "sim_joint_targets_r1": {
+    "arm_yaw": {
+     "range_rad": [
+      -1.75,
+      1.75
+     ],
+     "target_rad": 0.0,
+     "within_range": true
+    },
+    "elbow": {
+     "range_rad": [
+      -1.8,
+      1.8
+     ],
+     "target_rad": -0.11,
+     "within_range": true
+    },
+    "shoulder": {
+     "range_rad": [
+      -0.15,
+      2.8
+     ],
+     "target_rad": 0.6487,
+     "within_range": true
+    },
+    "wrist_pitch": {
+     "range_rad": [
+      -1.8,
+      1.8
+     ],
+     "target_rad": -1.5865,
+     "within_range": true
+    }
+   },
+   "sonar": {
+    "echo_geom": "r2__ultrasonic_bracket",
+    "first_echo_m": 0.694,
+    "sees_own_load": false,
+    "with_own_arm_echo_geom": "r2__ultrasonic_bracket",
+    "with_own_arm_first_echo_m": 0.694
+   },
+   "tip_over_r1": {
+    "com_height_m": 0.0817,
+    "com_x_m": 0.0268,
+    "load_share_kg": 0.15,
+    "robot_mass_kg": 1.1,
+    "static_forward_restoring_ratio": 3.91,
+    "tip_accel_forward_mps2": 3.98,
+    "tip_accel_lateral_mps2": 7.87
+   },
+   "wrist_camera_proxy": {
+    "bar_pixels": 254093,
+    "camera_height_m": 0.1453,
+    "iou_vs_grasp_view": 0.828,
+    "iou_vs_grasp_view_lower60": 0.912,
+    "optical_axis_elevation_deg": -52.57
+   }
+  },
+  {
+   "bar_clearance": {
+    "r1": {
+     "min_distance_m": 0.0298,
+     "nearest_geom": "r1__wrist_collision"
+    },
+    "r2": {
+     "min_distance_m": 0.0298,
+     "nearest_geom": "r2__wrist_collision"
+    }
+   },
+   "commanded_tool_z_m": 0.12,
+   "expected_bar_bottom_m": 0.086,
+   "fk_tool_z_m": 0.12,
+   "ik_feasible": true,
+   "pitch_change_from_grasp_deg": 16.11,
+   "pitch_deg": -55.98,
+   "pulses": {
+    "3": 602,
+    "4": 1733,
+    "5": 2079,
+    "6": 1500
+   },
+   "sim_grip_site_m": {
+    "forward": 0.155,
+    "z": 0.12
+   },
+   "sim_joint_ranges_ok": true,
+   "sim_joint_targets_r1": {
+    "arm_yaw": {
+     "range_rad": [
+      -1.75,
+      1.75
+     ],
+     "target_rad": 0.0,
+     "within_range": true
+    },
+    "elbow": {
+     "range_rad": [
+      -1.8,
+      1.8
+     ],
+     "target_rad": -0.2827,
+     "within_range": true
+    },
+    "shoulder": {
+     "range_rad": [
+      -0.15,
+      2.8
+     ],
+     "target_rad": 0.8011,
+     "within_range": true
+    },
+    "wrist_pitch": {
+     "range_rad": [
+      -1.8,
+      1.8
+     ],
+     "target_rad": -1.4954,
+     "within_range": true
+    }
+   },
+   "sonar": {
+    "echo_geom": "r2__ultrasonic_bracket",
+    "first_echo_m": 0.694,
+    "sees_own_load": false,
+    "with_own_arm_echo_geom": "r2__ultrasonic_bracket",
+    "with_own_arm_first_echo_m": 0.694
+   },
+   "tip_over_r1": {
+    "com_height_m": 0.0835,
+    "com_x_m": 0.0264,
+    "load_share_kg": 0.15,
+    "robot_mass_kg": 1.1,
+    "static_forward_restoring_ratio": 3.94,
+    "tip_accel_forward_mps2": 3.94,
+    "tip_accel_lateral_mps2": 7.69
+   },
+   "wrist_camera_proxy": {
+    "bar_pixels": 244275,
+    "camera_height_m": 0.155,
+    "iou_vs_grasp_view": 0.796,
+    "iou_vs_grasp_view_lower60": 0.893,
+    "optical_axis_elevation_deg": -48.52
+   }
+  },
+  {
+   "commanded_tool_z_m": 0.199,
+   "ik_error": "target has no safe physical arm IK solution",
+   "ik_feasible": false
+  },
+  {
+   "commanded_tool_z_m": 0.287,
+   "ik_error": "target has no safe physical arm IK solution",
+   "ik_feasible": false
+  }
+ ],
+ "ik_max_tool_z_any_pitch_le_0": {
+  "pitch_deg": 0,
+  "tool_z_m": 0.239
+ },
+ "ik_max_tool_z_calibrated": {
+  "pitch_deg": -40,
+  "tool_z_m": 0.161
+ },
+ "margins": {
+  "beam_pitch_deg": 2.0,
+  "height_m": 0.005,
+  "load_sag_m": 0.01,
+  "mount_pitch_up_deg": 0.0
+ },
+ "mount_table": [
+  {
+   "bar_bottom_min_m": 0.0653,
+   "criterion": "near_face",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.0993
+  },
+  {
+   "bar_bottom_min_m": 0.0626,
+   "criterion": "near_face",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.0966
+  },
+  {
+   "bar_bottom_min_m": 0.06,
+   "criterion": "near_face",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.094
+  },
+  {
+   "bar_bottom_min_m": 0.0753,
+   "criterion": "near_face",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.1093
+  },
+  {
+   "bar_bottom_min_m": 0.0726,
+   "criterion": "near_face",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.1066
+  },
+  {
+   "bar_bottom_min_m": 0.07,
+   "criterion": "near_face",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.104
+  },
+  {
+   "bar_bottom_min_m": 0.0853,
+   "criterion": "near_face",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.1193
+  },
+  {
+   "bar_bottom_min_m": 0.0826,
+   "criterion": "near_face",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.1166
+  },
+  {
+   "bar_bottom_min_m": 0.08,
+   "criterion": "near_face",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.114
+  },
+  {
+   "bar_bottom_min_m": 0.0576,
+   "criterion": "near_face",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.0916
+  },
+  {
+   "bar_bottom_min_m": 0.0562,
+   "criterion": "near_face",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.0902
+  },
+  {
+   "bar_bottom_min_m": 0.0549,
+   "criterion": "near_face",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.0889
+  },
+  {
+   "bar_bottom_min_m": 0.0676,
+   "criterion": "near_face",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.1016
+  },
+  {
+   "bar_bottom_min_m": 0.0662,
+   "criterion": "near_face",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.1002
+  },
+  {
+   "bar_bottom_min_m": 0.0649,
+   "criterion": "near_face",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.0989
+  },
+  {
+   "bar_bottom_min_m": 0.0776,
+   "criterion": "near_face",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.1116
+  },
+  {
+   "bar_bottom_min_m": 0.0762,
+   "criterion": "near_face",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.1102
+  },
+  {
+   "bar_bottom_min_m": 0.0749,
+   "criterion": "near_face",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.1089
+  },
+  {
+   "bar_bottom_min_m": 0.246,
+   "criterion": "whole_beam",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.28
+  },
+  {
+   "bar_bottom_min_m": 0.2433,
+   "criterion": "whole_beam",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.2773
+  },
+  {
+   "bar_bottom_min_m": 0.2406,
+   "criterion": "whole_beam",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.2746
+  },
+  {
+   "bar_bottom_min_m": 0.256,
+   "criterion": "whole_beam",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.29
+  },
+  {
+   "bar_bottom_min_m": 0.2533,
+   "criterion": "whole_beam",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.2873
+  },
+  {
+   "bar_bottom_min_m": 0.2506,
+   "criterion": "whole_beam",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.2846
+  },
+  {
+   "bar_bottom_min_m": 0.266,
+   "criterion": "whole_beam",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.3
+  },
+  {
+   "bar_bottom_min_m": 0.2633,
+   "criterion": "whole_beam",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.2973
+  },
+  {
+   "bar_bottom_min_m": 0.2606,
+   "criterion": "whole_beam",
+   "half_angle_deg": 15.0,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.2946
+  },
+  {
+   "bar_bottom_min_m": 0.1564,
+   "criterion": "whole_beam",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.1904
+  },
+  {
+   "bar_bottom_min_m": 0.1551,
+   "criterion": "whole_beam",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.1891
+  },
+  {
+   "bar_bottom_min_m": 0.1538,
+   "criterion": "whole_beam",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.044,
+   "tool_z_min_m": 0.1878
+  },
+  {
+   "bar_bottom_min_m": 0.1664,
+   "criterion": "whole_beam",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.2004
+  },
+  {
+   "bar_bottom_min_m": 0.1651,
+   "criterion": "whole_beam",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.1991
+  },
+  {
+   "bar_bottom_min_m": 0.1638,
+   "criterion": "whole_beam",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.054,
+   "tool_z_min_m": 0.1978
+  },
+  {
+   "bar_bottom_min_m": 0.1764,
+   "criterion": "whole_beam",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.068,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.2104
+  },
+  {
+   "bar_bottom_min_m": 0.1751,
+   "criterion": "whole_beam",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.078,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.2091
+  },
+  {
+   "bar_bottom_min_m": 0.1738,
+   "criterion": "whole_beam",
+   "half_angle_deg": 7.5,
+   "mount_x_m": 0.088,
+   "mount_z_m": 0.064,
+   "tool_z_min_m": 0.2078
+  }
+ ],
+ "recommended_tool_z_m": 0.11,
+ "required": {
+  "near_face": {
+   "15.0": {
+    "bar_bottom_min_m": 0.0726,
+    "cone_edge_deg": 15.0,
+    "criterion": "near_face",
+    "far_end_from_sensor_m": 0.647,
+    "near_face_from_sensor_m": 0.047,
+    "tool_z_min_m": 0.1066
+   },
+   "7.5": {
+    "bar_bottom_min_m": 0.0662,
+    "cone_edge_deg": 7.5,
+    "criterion": "near_face",
+    "far_end_from_sensor_m": 0.647,
+    "near_face_from_sensor_m": 0.047,
+    "tool_z_min_m": 0.1002
+   }
+  },
+  "whole_beam": {
+   "15.0": {
+    "bar_bottom_min_m": 0.2533,
+    "cone_edge_deg": 15.0,
+    "criterion": "whole_beam",
+    "far_end_from_sensor_m": 0.647,
+    "near_face_from_sensor_m": 0.047,
+    "tool_z_min_m": 0.2873
+   },
+   "7.5": {
+    "bar_bottom_min_m": 0.1651,
+    "cone_edge_deg": 7.5,
+    "criterion": "whole_beam",
+    "far_end_from_sensor_m": 0.647,
+    "near_face_from_sensor_m": 0.047,
+    "tool_z_min_m": 0.1991
+   }
+  }
+ },
+ "scene_xml_sha256": "3486ce92842e113ed10ae37cbfb9badcedfeb4df222b84801cf287a7ee97329b",
+ "schema": "ugrp.ultrasonic_carry_height_analysis.v1",
+ "spec": {
+  "crosstalk": false,
+  "directivity_edge_gain": 0.5,
+  "dropout_prob": 0.02,
+  "echo_threshold": 0.2,
+  "half_angle_deg": 15.0,
+  "incidence_sigma_deg": 15.0,
+  "max_range_m": 4.0,
+  "min_range_m": 0.02,
+  "mount_pitch_deg": 0.0,
+  "mount_x_m": 0.078,
+  "mount_y_m": 0.0,
+  "mount_z_floor_m": 0.054,
+  "noise_rel": 0.01,
+  "noise_sigma0_m": 0.003,
+  "outlier_prob": 0.01,
+  "period_s": 0.06,
+  "quantum_m": 0.001,
+  "ring_base_count": 4,
+  "ring_step_deg": 2.5,
+  "sdk_clamp_m": 5.0,
+  "sound_speed_mps": 343.0
+ },
+ "whole_beam_tool_z_vs_tilt": {
+  "1.76deg": 0.2848,
+  "6.16deg": 0.3307
+ }
+}
