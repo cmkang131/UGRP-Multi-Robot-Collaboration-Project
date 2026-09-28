@@ -333,3 +333,153 @@ def test_diag_fix_age_round_matches_base_rounding_in_a_subprocess():
                'assert e["fix_age_s"] >= 0 and e["since_tag_s"] == e["fix_age_s"] and e["last_fix_t"] == 4.4, e\n')
     out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
     assert out.returncode == 0, out.stderr
+
+
+# ------------------------------------------------------------------ 0.4.0: route legs, cause codes, diag patches
+def _carry(**kw):
+    return sp.teacher_cases('carry', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c', prior_std='e2e', **kw)[0]
+
+
+def test_route_legs_leg0_is_the_030_case_and_other_legs_translate_beam_and_prior():
+    legacy, leg0, leg3 = _carry(), _carry(leg=0), _carry(leg=3)
+    assert legacy['case_id'] == leg0['case_id'] == 'carry@b-v6c:teacher:nominal:s911:pE2E'   # ids of 0.3.0 unchanged
+    same = lambda c: {k: v for k, v in c.items() if k not in ('leg', 'route', 'route_note')}
+    assert same(leg0) == same(legacy)
+    assert leg3['case_id'] == leg0['case_id'] + ':L3' and leg3['leg'] == 3
+    dx, dy = (leg3['route'][3][i] - leg3['route'][0][i] for i in (0, 1))
+    for rid in sp.PARTICIPANTS:
+        assert leg3['placement_xyyaw'][rid][:2] == pytest.approx([leg0['placement_xyyaw'][rid][0] + dx,
+                                                                  leg0['placement_xyyaw'][rid][1] + dy])
+        assert leg3['prior'][rid]['mean_xyyaw'][:2] == pytest.approx([leg0['prior'][rid]['mean_xyyaw'][0] + dx,
+                                                                      leg0['prior'][rid]['mean_xyyaw'][1] + dy])
+        assert leg3['prior'][rid]['std_xy_m'] == leg0['prior'][rid]['std_xy_m']
+    # the true-beam vs static-sheet offset of BASE_SETUP is kept on every leg (prior is the plan, not the placement)
+    assert (leg3['beam_xyyaw'][1] - leg3['coarse_order_sheet']['beam_xyyaw'][1]
+            == pytest.approx(leg0['beam_xyyaw'][1] - leg0['coarse_order_sheet']['beam_xyyaw'][1]))
+
+
+def test_route_is_the_controller_static_plan_and_matches_the_runner_map():
+    from harness.zone_pair_executor import make_plan
+    from scripts import run_pair_stage_probes as r
+    assert r.MAP_ID == sp.MAP_ID
+    route = _carry()['route']
+    assert route == sp.plan_route(sp.BASE_SETUP['coarse_order_sheet'])
+    assert len(route) == 9 and route[0] == [1.0, .05] and route[-1] == [4.6, -2.1]
+    static_map = json.loads((ROOT / 'maps/zones' / f'{sp.MAP_ID}.json').read_text())
+    assert make_plan(static_map, sp.BASE_SETUP['coarse_order_sheet'], 'B')['route'] == route
+
+
+def test_leg_index_and_setdown_end_case():
+    assert sp.leg_index('carry', None, 9) == 0 and sp.leg_index('carry', 7, 9) == 7
+    for bad in (8, -1):
+        with pytest.raises(ValueError):
+            sp.leg_index('carry', bad, 9)
+    assert sp.leg_index('setdown', None, 9) is None and sp.leg_index('setdown', 'end', 9) == 8
+    with pytest.raises(ValueError):
+        sp.leg_index('setdown', 3, 9)
+    end = sp.teacher_cases('setdown', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c', prior_std='e2e', leg='end')[0]
+    legacy = sp.teacher_cases('setdown', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c', prior_std='e2e')[0]
+    assert end['case_id'] == legacy['case_id'] + ':Lend' and end['beam_xyyaw'][:2] == [4.6, -2.1]
+    assert 'leg' not in legacy or legacy['leg'] is None
+    assert len(sp.teacher_cases('carry', policy='b-v6c', prior_std='e2e', leg=6)) == 19
+
+
+def test_carry_end_error_check_only_when_the_runner_measured_it():
+    def exit_(gt):
+        return {'sim_s': 9., 'gt': gt}
+    gt = {'lift_m': .06, 'tilt_deg': 0., 'jaws': {'r1': [True, True], 'r2': [True, True]}}
+    rec = {'exits': {r: exit_(gt) for r in sp.PARTICIPANTS}, 'gt_at_exit': gt, 'beam_travel_m': .55, 'planned_leg_m': .55,
+           'min_lift_after_first_lift_m': .058, 'max_tilt_deg': 1.}
+    base = sp.evaluate('carry', dict(rec))
+    assert 'end_error' not in base['checks']                               # 0.3.0 records are judged as before
+    good = sp.evaluate('carry', {**rec, 'end_error_m': .03, 'cross_track_m': .01, 'yaw_drift_deg': 1.})
+    assert good['checks']['end_error'] and good['metrics']['end_error_m'] == .03
+    bad = sp.evaluate('carry', {**rec, 'end_error_m': .12})
+    assert not bad['checks']['end_error'] and not bad['passed']
+
+
+def _ev(**checks):
+    ok = all(checks.values()) if checks else True
+    return {'passed': ok, 'category': 'PASS' if ok else 'GT_CRITERIA', 'checks': checks}
+
+
+def test_classify_cause_codes_and_pose_uncertainty_sub():
+    own = {'r1': {'std_xy_m': .03, 'std_yaw_rad': .0728}}
+    fail = {'first_failure': {'robot_id': 'r1', 'sim_s': 8.7, 'reason': 'POSE_UNCERTAIN_PROGRESS'}}
+    c = sp.classify_cause('carry', {'passed': False, 'category': 'POSE_UNCERTAIN_PROGRESS', 'checks': {}}, fail,
+                          {'own_at_failure': own, 'contacts': {'box': 2}})
+    assert c['code'] == 'SELF_POSE_UNCERTAIN' and c['sub'] == 'yaw' and c['contacts_in_stage'] == {}
+    assert sp.pose_uncertainty_sub({'std_xy_m': .09, 'std_yaw_rad': .09}) == 'yaw+xy'
+    assert sp.pose_uncertainty_sub({'std_xy_m': .03, 'std_yaw_rad': .02}) == 'gate_not_ok_dwell_or_hysteresis'
+    assert sp.pose_uncertainty_sub(None) == 'no_report'
+    assert sp.classify_cause('carry', {'passed': True, 'category': 'PASS', 'checks': {}}, {})['code'] == 'PASS'
+    # no controller failure: the first GT check that failed names the cause; contacts are reported, not assumed
+    lift = sp.classify_cause('carry', _ev(controller_exit_both=True, lift=False, end_error=False), {},
+                             {'contacts': {'wall': 3, 'box': 9}})
+    assert lift['code'] == 'LOAD_DROP' and lift['contacts_in_stage'] == {'wall': 3}
+    assert sp.classify_cause('carry', _ev(controller_exit_both=True, end_error=False), {})['code'] == 'MOTION_ERROR'
+    assert sp.classify_cause('setdown', _ev(controller_exit_both=True, released=False), {})['code'] == 'NOT_RELEASED'
+    assert sp.classify_cause('carry', _ev(controller_exit_both=False), {})['code'] == 'STAGE_TIMEOUT_NO_EXIT'
+    partner = {'first_failure': {'robot_id': 'r2', 'sim_s': 4., 'reason': 'PARTNER_ABORT_X'}}
+    assert sp.classify_cause('carry', {'passed': False, 'category': 'PARTNER_ABORT_X', 'checks': {}}, partner)['code'] \
+        == 'PARTNER_ABORT'
+    assert sp.classify_cause('carry', {'passed': False, 'category': 'HOST_ERROR:x', 'checks': {}}, {})['code'] == 'HOST_ERROR'
+    assert set(sp.FAILURE_TO_CAUSE.values()) <= set(sp.CAUSES) and set(sp.CHECK_TO_CAUSE.values()) <= set(sp.CAUSES)
+
+
+def test_diag_patches_040_are_labelled_and_components_exist():
+    for name in ('loaded_yaw_gate_wide', 'pf_rest_no_abs_noise', 'rest_noise_off_and_gate_wide'):
+        assert name in sp.DIAG_PATCHES
+        d = sp.apply_diag_patch([_carry()], name)[0]
+        assert d['case_id'].endswith(':diag-' + name) and d['diag_patch'] == name
+    assert set(sp.DIAG_COMPONENTS['rest_noise_off_and_gate_wide']) <= set(sp.DIAG_PATCHES)
+    assert sp.LOADED_YAW_GATE_DIAG_DEG == (12., 10.)
+
+
+def test_diag_loaded_yaw_gate_and_rest_noise_patches_in_a_subprocess():
+    program = ('import math, numpy as np\n'
+               'from scripts import run_pair_stage_probes as r\n'
+               'from harness import zone_own_guards as g, zone_own_driver as d, zone_own_sweep as s, zone_pair_guards as p\n'
+               'from harness.owncam_localizer import OwnCamLocalizer\n'
+               'assert g.GATE_LOADED.high_yaw_rad == math.radians(3.)\n'
+               'reg = OwnCamLocalizer._motion_params\n'
+               'loc = OwnCamLocalizer.__new__(OwnCamLocalizer)\n'
+               'loc.motion_profile, loc.params = None, {"motion_loaded": {"noise_abs": [.01, .004, .098]}, "motion": {"noise_abs": [1, 1, 1]}}\n'
+               'loc.load = type("L", (), {"loaded": True})()\n'
+               'loc.vel, loc.t, loc.cmd_expires = np.zeros(3), 5., -1.\n'
+               'assert reg(loc)["noise_abs"] == [.01, .004, .098]\n'
+               'r.install_diag_patch("rest_noise_off_and_gate_wide")\n'
+               'assert loc._motion_params()["noise_abs"] == [0., 0., 0.]                    # at rest\n'
+               'loc.cmd_expires = 6.\n'
+               'assert loc._motion_params()["noise_abs"] == [.01, .004, .098]               # live command\n'
+               'loc.cmd_expires, loc.vel = -1., np.array([.1, 0., 0.])\n'
+               'assert loc._motion_params()["noise_abs"] == [.01, .004, .098]               # still moving\n'
+               'for m in (g, d, s, p):\n'
+               '    assert m.GATE_LOADED.high_yaw_rad == math.radians(12.) and m.GATE_LOADED.low_yaw_rad == math.radians(10.)\n'
+               '    assert m.GATE_LOADED.high_xy_m == .07 and m.GATE_LOADED.enter_dwell_s == .6\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+
+
+def test_finish_result_carry_leg_metrics_cause_and_command_counts(tmp_path):
+    from scripts import run_pair_stage_probes as r
+    case = _carry(leg=3)
+    p1 = case['route'][4]                                                     # leg 3 ends at route[4]
+    gt0 = {'beam_xyz': [3.2, .05, .06], 'beam_yaw': 0., 'lift_m': .06}
+    gt1 = {'beam_xyz': [p1[0] + .02, p1[1] - .03, .06], 'beam_yaw': math.radians(2.), 'lift_m': .059, 'tilt_deg': 0.,
+           'jaws': {q: [True, True] for q in sp.PARTICIPANTS}}
+    exits = {q: {'sim_s': 30., 'gt': gt1} for q in sp.PARTICIPANTS}
+    (tmp_path / 'commands.json').write_text(json.dumps({'r1': [{'kind': 'mecanum', 't': 12.}, {'kind': 'mecanum', 't': 13.},
+                                                                 {'kind': 'look', 't': 13.}, {'kind': 'mecanum', 't': 1.}],
+                                                        'r2': []}))
+    result = {'wall_s': 1., 'exits': exits, 'entry': {'r1': {'sim_s': 10., 'own_report': {'std_yaw_rad': .03}}},
+              'event_log': [], 'gt_at_entry': gt0, 'submit_t': 10., 'termination': {'sim_s': 30.},
+              'loadavg_case_start': [20., 20., 20.], 'loadavg_case_end': [21., 21., 21.],
+              'max_tilt_deg': 1., 'min_lift_after_first_lift_m': .058}
+    row = r.finish_result(case, result, tmp_path)
+    m = row['metrics']
+    assert row['leg'] == 3 and m['end_error_m'] == pytest.approx(math.hypot(.02, .03))
+    assert m['cross_track_m'] == pytest.approx(.02) and m['yaw_drift_deg'] == pytest.approx(2.)   # leg 3 is along -y
+    assert row['commands_after_submit']['r1'] == {'mecanum': 2, 'look': 1} and row['base_motion_commands']['r1'] == 2
+    assert row['loadavg_case'] == [[20., 20., 20.], [21., 21., 21.]] and row['cause'] in sp.CAUSES
+    assert row['passed'] and row['cause'] == 'PASS'

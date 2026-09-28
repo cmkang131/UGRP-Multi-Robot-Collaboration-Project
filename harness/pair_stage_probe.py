@@ -28,8 +28,11 @@ import math
 from collections import Counter
 from pathlib import Path
 
+ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.3.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c
+PROBE_VERSION = '0.4.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+#                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
+#                                 cause codes, loaded-yaw diagnostic patches
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
 POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
@@ -82,11 +85,14 @@ CRITERIA = {
     'grasp_lift': {'min_lift_m': .03, 'max_tilt_deg': 10., 'both_jaws_contact': True,
                    'note': 'both jaws of both robots touch the beam, beam centre >= 3 cm above rest'},
     'carry': {'min_lift_m': .03, 'max_tilt_deg': 10., 'both_jaws_contact': True, 'max_leg_error_m': .10,
-              'note': 'held throughout (min height), tilt bounded, beam travel within 10 cm of the leg'},
+              'max_end_error_m': .10,
+              'note': 'held throughout (min height), tilt bounded, beam travel within 10 cm of the leg, '
+                      'beam end point within 10 cm of the planned route point (0.4.0; includes cross-track)'},
     'setdown': {'max_rest_height_m': .005, 'max_tilt_deg': 3., 'no_jaw_contact': True, 'max_shift_m': .05,
                 'note': 'beam back on the floor, level, released, and not dragged'},
 }
 
+MAP_ID = 'zone_wide_door_tags_v2_dock_v3'   # the dev map every probe runs on (scripts/run_pair_stage_probes.py MAP_ID)
 GRASP_RADIUS_M = .162        # harness.owncam_pair_beam.GRASP_RADIUS_M (controller align target)
 PRIOR_STD_XY_M = .06         # stated grid prior (report convention: sqrt(var_x + var_y))
 PRIOR_STD_YAW_RAD = .05
@@ -238,20 +244,72 @@ def _prior_std(prior_std):
     raise ValueError(f'unknown prior std {prior_std!r}')
 
 
+def plan_route(sheet, *, map_id=MAP_ID, target='B'):
+    """The controller's own static route for a coarse order sheet (harness.zone_pair_executor.make_plan).
+
+    Pure static geometry: the map JSON and the sheet, no world. 9 points / 8 legs for the dev map:
+    legs 0-2 axial (leg 1 crosses the 0.5 m door at x=2.2), legs 3-5 lateral, legs 6-7 axial into the zone.
+    """
+    from harness.zone_pair_executor import make_plan
+    static = json.loads((ROOT / 'maps' / 'zones' / f'{map_id}.json').read_text())
+    return [[float(v) for v in p] for p in make_plan(static, sheet, target)['route']]
+
+
+def leg_index(stage, leg, n_points):
+    """Route-point index a carry/setdown case starts at. carry: leg k starts at route[k] (default 0);
+    setdown: None = legacy (staged at the pickup), 'end'/last index = the final segment at the destination."""
+    if stage == 'carry':
+        k = 0 if leg is None else int(leg)
+        if not 0 <= k <= n_points - 2:
+            raise ValueError(f'carry leg {k} outside 0..{n_points - 2}')
+        return k
+    if stage == 'setdown':
+        if leg is None:
+            return None
+        k = n_points - 1 if leg == 'end' else int(leg)
+        if k != n_points - 1:
+            raise ValueError('setdown is defined for the final segment (leg end) only')
+        return k
+    if leg is not None:
+        raise ValueError(f'stage {stage!r} has no route legs')
+    return None
+
+
+def shifted_pose(pose, route, k):
+    """A pose translated by the route displacement route[0] -> route[k] (yaw unchanged)."""
+    return [float(pose[0]) + route[k][0] - route[0][0], float(pose[1]) + route[k][1] - route[0][1], float(pose[2])]
+
+
 def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=None, subset=None, policy='v5h',
-                  prior_std=None):
-    """Teacher-placed cases with a perturbation grid (placement = GT, prior = static plan)."""
+                  prior_std=None, leg=None):
+    """Teacher-placed cases with a perturbation grid (placement = GT, prior = static plan).
+
+    ``leg`` (carry/setdown only, 0.4.0): carry leg k starts with the beam lifted at route point k and the
+    controller segment set to k; setdown 'end' starts at the last route point with the final segment. The
+    true beam and the static-sheet prior are both translated by route[0] -> route[k], so leg 0 is exactly
+    the 0.3.0 case and the 5 cm true-beam-vs-sheet offset of BASE_SETUP is kept on every leg.
+    """
     spec = STAGES[stage]
     if not spec['implemented']:
         raise ValueError(f'stage {stage!r} is not implemented here: {spec["owner"]}')
     setup = copy.deepcopy(setup or BASE_SETUP)
-    true_geo = stations(setup['beam_xyyaw'])
-    plan_geo = stations(setup['coarse_order_sheet']['beam_xyyaw'])
+    route, k = None, None
+    if stage in ('carry', 'setdown'):
+        route = plan_route(setup['coarse_order_sheet'])
+        k = leg_index(stage, leg, len(route))
+    else:
+        leg_index(stage, leg, 0)
+    true_beam, plan_beam = list(setup['beam_xyyaw']), list(setup['coarse_order_sheet']['beam_xyyaw'])
+    if k:
+        true_beam, plan_beam = shifted_pose(true_beam, route, k), shifted_pose(plan_beam, route, k)
+    true_geo = stations(true_beam)
+    plan_geo = stations(plan_beam)
     key = spec['plan_pose']
     sxy, syaw, ptag, pnote = _prior_std(prior_std)
     # align starts where the approach ended: the planned pre-station (static
     # sheet). Later stages start at the station aligned to the TRUE beam.
     base = plan_geo[key] if stage == 'align' else true_geo[key]
+    ltag = '' if not k else (':Lend' if stage == 'setdown' else f':L{k}')
     out = []
     for name, off1, off2 in _grid_offsets(stage):
         if subset is not None and name not in subset:
@@ -261,13 +319,18 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
             priors = {r: gaussian_prior(plan_geo[key][r], sxy, syaw,
                                         f'static plan {key} from the coarse order sheet (not GT){pnote}')
                       for r in PARTICIPANTS}
-            out.append({'case_id': f'{stage}{_pid(policy)}:teacher:{name}:s{seed}{ptag}', 'stage': stage,
-                        'source': 'teacher_grid', 'pair_policy': policy, 'prior_std': prior_std or 'grid',
-                        'cell': name, 'seed': seed, 'beam_xyyaw': list(setup['beam_xyyaw']),
-                        'coarse_order_sheet': copy.deepcopy(setup['coarse_order_sheet']),
-                        'placement_xyyaw': placement, 'r3_xyyaw': None, 'offsets': {'r1': list(off1), 'r2': list(off2)},
-                        'prior': priors, 'teacher_held': bool(spec.get('teacher_held')),
-                        'staging': 'teacher placement from GT beam geometry (setup only)'})
+            case = {'case_id': f'{stage}{_pid(policy)}:teacher:{name}:s{seed}{ptag}{ltag}', 'stage': stage,
+                    'source': 'teacher_grid', 'pair_policy': policy, 'prior_std': prior_std or 'grid',
+                    'cell': name, 'seed': seed, 'beam_xyyaw': list(true_beam),
+                    'coarse_order_sheet': copy.deepcopy(setup['coarse_order_sheet']),
+                    'placement_xyyaw': placement, 'r3_xyyaw': None, 'offsets': {'r1': list(off1), 'r2': list(off2)},
+                    'prior': priors, 'teacher_held': bool(spec.get('teacher_held')),
+                    'staging': 'teacher placement from GT beam geometry (setup only)'}
+            if route is not None:
+                case.update(leg=k, route=[list(p) for p in route],
+                            route_note='controller static route (make_plan) for the coarse sheet; staged at route point '
+                                       + ('0 (legacy setdown at the pickup)' if k is None else str(k)))
+            out.append(case)
     return out
 
 
@@ -325,13 +388,25 @@ def boundary_cases(stage='grasp_lift', *, policy='v5h', seed=911, setup=None, su
 # Probe-only DIAGNOSTIC patches of the controller under test. A case that uses one is NOT the
 # registered v6 controller; its result answers "what does the next failure look like once this
 # defect is removed", never "does v6 work". The controller source on main is not changed.
+LOADED_YAW_GATE_DIAG_DEG = (12., 10.)   # (high, low) for loaded_yaw_gate_wide; the registered loaded gate is (3.0, 2.5)
 DIAG_PATCHES = {
     'fix_age_round': ('harness.owncam_recovery_v6.RecoveryLocalizer.estimate reports fix_age_s = self.t - t '
                       'unrounded; predict_to stops within 1e-9 s of t, so a fix made at this frame has '
                       'fix_age_s ~ -1e-13 and owncam_time.accepted_fix_checks rejects it (fix_age_valid). '
                       'Patch: round(self.t - t, 3), exactly as harness.owncam_localizer.OwnCamLocalizer.estimate '
                       'computes since_tag_s for v5h.'),
+    'loaded_yaw_gate_wide': ('0.4.0. harness.zone_own_guards.GATE_LOADED (and every module that imported the name) '
+                             'uses high_yaw/low_yaw = 12/10 deg instead of 3.0/2.5 deg. Everything else, including '
+                             'the xy gate and the dwell times, is unchanged. Answers "what fails next once the '
+                             'loaded yaw gate is not the first blocker", never "does v6c carry".'),
+    'pf_rest_no_abs_noise': ('0.4.0. harness.owncam_localizer.OwnCamLocalizer._motion_params returns noise_abs = 0 '
+                             'while the robot is at rest (no live command and |vel| < 1 mm/s or rad/s). The registered '
+                             'model adds noise_abs = [0.0149, 0.0038, 0.0976] (yaw in rad/s) on EVERY 0.05 s step, so a '
+                             'stationary robot without a fix diffuses (yaw sigma ~ 0.0218 rad/sqrt(s)). Motion-time '
+                             'noise is unchanged. Confirms the rest-diffusion cause; not a proposed model.'),
+    'rest_noise_off_and_gate_wide': '0.4.0. both patches above (pf_rest_no_abs_noise + loaded_yaw_gate_wide).',
 }
+DIAG_COMPONENTS = {'rest_noise_off_and_gate_wide': ('pf_rest_no_abs_noise', 'loaded_yaw_gate_wide')}
 
 
 def apply_diag_patch(cases, name):
@@ -467,6 +542,10 @@ def evaluate(stage, record):
                 checks['held_throughout'] = (record.get('min_lift_after_first_lift_m') or 0) >= crit['min_lift_m']
                 checks['leg_error'] = (travel is not None and planned is not None
                                        and abs(travel - planned) <= crit['max_leg_error_m'])
+                if record.get('end_error_m') is not None:   # 0.4.0: distance to the planned route point
+                    metrics.update(end_error_m=record['end_error_m'], cross_track_m=record.get('cross_track_m'),
+                                   yaw_drift_deg=record.get('yaw_drift_deg'))
+                    checks['end_error'] = record['end_error_m'] <= crit['max_end_error_m']
     elif stage == 'setdown':
         gt = record.get('gt_at_exit')
         if gt is not None:
@@ -491,6 +570,86 @@ def evaluate(stage, record):
             'criteria': crit, 'labels': LABELS}
 
 
+# ------------------------------------------------------------------ failure cause codes (0.4.0)
+GATE_LOADED_HIGH = {'std_xy_m': .07, 'std_yaw_rad': math.radians(3.)}   # harness.zone_own_guards.GATE_LOADED (registered)
+CAUSES = {
+    'PASS': 'stage passed',
+    'SELF_POSE_UNCERTAIN': 'own pose std above the loaded gate (or no usable estimate) -> controller abort; see sub',
+    'ENVELOPE_BLOCKED': 'global/sweep envelope certificate not clear for the (uncertain) own pose',
+    'MOTION_STALL': 'PAIR_blocked: no progress toward the route point although the pose is trusted',
+    'COLLISION_GUARD': 'command guard refused an arm/base command (swept volume vs map/partner keepout)',
+    'BEAM_PARTNER_RECOGNITION': 'own-RGB beam/partner check failed (grip not seen, beam inconsistent, unsafe pregrasp)',
+    'PARTNER_ABORT': 'the partner aborted first (a consequence; the partner\'s own reason is the root cause)',
+    'LOAD_DROP': 'the beam was lost from the jaws or lift below the criterion without a controller failure',
+    'MOTION_ERROR': 'controller finished but the beam ended off the planned route point (dead-reckoning error)',
+    'TILT': 'beam tilt above the criterion',
+    'NOT_LOWERED': 'setdown: beam not back on the floor', 'NOT_RELEASED': 'setdown: jaws still touch the beam',
+    'DRAGGED': 'setdown: beam moved more than the criterion while set down',
+    'STAGE_TIMEOUT_NO_EXIT': 'no controller failure and no stage exit within the stage budget',
+    'ENTRY_ERROR': 'staged entry rejected (admission / entry check)', 'HOST_ERROR': 'simulator/host exception',
+    'UNCLASSIFIED': 'reason not in the map (see category)'}
+FAILURE_TO_CAUSE = {
+    'POSE_UNCERTAIN': 'SELF_POSE_UNCERTAIN', 'POSE_UNCERTAIN_PROGRESS': 'SELF_POSE_UNCERTAIN',
+    'DOOR_POSE_NOT_LOCALIZED': 'SELF_POSE_UNCERTAIN',
+    'GLOBAL_ENVELOPE_BLOCKED': 'ENVELOPE_BLOCKED', 'PAIR_blocked': 'MOTION_STALL',
+    'PAIR_COLLISION_GUARD': 'COLLISION_GUARD',
+    'GRIP_NOT_SEEN': 'BEAM_PARTNER_RECOGNITION', 'APPROACH_INCONSISTENT_WITH_BEAM': 'BEAM_PARTNER_RECOGNITION',
+    'PREGRASP_BEAM_UNSAFE': 'BEAM_PARTNER_RECOGNITION', 'PAIR_RELOOK_WHILE_GRIPPED': 'BEAM_PARTNER_RECOGNITION',
+    'LOAD_NOT_HELD_AFTER_LIFT': 'LOAD_DROP', 'PARTNER_ABORT': 'PARTNER_ABORT',
+    'PARTNER_ABORT_AFTER_OWN_EXIT': 'PARTNER_ABORT'}
+CHECK_TO_CAUSE = {'lift': 'LOAD_DROP', 'held_throughout': 'LOAD_DROP', 'both_jaws_both_robots': 'LOAD_DROP',
+                  'tilt': 'TILT', 'leg_error': 'MOTION_ERROR', 'end_error': 'MOTION_ERROR',
+                  'rest': 'NOT_LOWERED', 'released': 'NOT_RELEASED', 'shift': 'DRAGGED'}
+CONTACT_KINDS = ('wall', 'cargo_wall', 'peer_robot')   # eval-only host contact kinds that count as a collision
+
+
+def pose_uncertainty_sub(own):
+    """Which quantity crossed the loaded gate, from the failing robot's OWN report (a PoseReport dict)."""
+    if not own:
+        return 'no_report'
+    std_xy, std_yaw = own.get('std_xy_m'), own.get('std_yaw_rad')
+    parts = []
+    if std_yaw is not None and std_yaw > GATE_LOADED_HIGH['std_yaw_rad']:
+        parts.append('yaw')
+    if std_xy is not None and std_xy > GATE_LOADED_HIGH['std_xy_m']:
+        parts.append('xy')
+    if not parts:
+        return 'gate_not_ok_dwell_or_hysteresis'
+    return '+'.join(parts)
+
+
+def classify_cause(stage, ev, record, diag=None):
+    """One cause code per row. ``ev`` = evaluate(); ``record`` = its input; ``diag`` (optional) = the
+    runner's own-report / eval-only contact summary. Pure and deterministic; labelled, not a proof of cause."""
+    diag = diag or {}
+    contacts = {k: v for k, v in (diag.get('contacts') or {}).items() if k in CONTACT_KINDS and v}
+    out = {'code': None, 'sub': None, 'contacts_in_stage': contacts, 'reason': record.get('first_failure')}
+    if ev['passed']:
+        out['code'] = 'PASS'
+        return out
+    cat = ev['category']
+    failure = record.get('first_failure')
+    if cat.startswith('HOST_ERROR'):
+        out['code'] = 'HOST_ERROR'
+    elif cat.startswith('ENTRY:'):
+        out['code'] = 'ENTRY_ERROR'
+    elif failure is not None:
+        reason = failure['reason']
+        out['code'] = FAILURE_TO_CAUSE.get(reason) or ('PARTNER_ABORT' if str(reason).startswith('PARTNER') else 'UNCLASSIFIED')
+        if out['code'] == 'SELF_POSE_UNCERTAIN':
+            rid = failure.get('robot_id')
+            out['sub'] = pose_uncertainty_sub((diag.get('own_at_failure') or {}).get(rid))
+    elif not ev['checks'].get('controller_exit_both', True):
+        out['code'] = 'STAGE_TIMEOUT_NO_EXIT'
+    else:
+        bad = [k for k, v in ev['checks'].items() if not v]
+        order = ['lift', 'held_throughout', 'both_jaws_both_robots', 'rest', 'released', 'end_error', 'leg_error', 'shift', 'tilt']
+        bad.sort(key=lambda k: order.index(k) if k in order else len(order))
+        out['code'] = CHECK_TO_CAUSE.get(bad[0], 'UNCLASSIFIED') if bad else 'UNCLASSIFIED'
+        out['sub'] = ','.join(bad)
+    return out
+
+
 def summarize(rows):
     """Per-stage and per-source pass rates plus the failure histogram."""
     out = {'schema': SCHEMA, 'labels': LABELS, 'stages': {}}
@@ -507,6 +666,10 @@ def summarize(rows):
             'pass_rate': round(sum(r['passed'] for r in rs) / len(rs), 4) if rs else None,
             'by_source': by_source,
             'failures': dict(Counter(r['category'] for r in rs if not r['passed']).most_common()),
+            'causes': dict(Counter(r['cause'] for r in rs if not r['passed'] and r.get('cause')).most_common()),
+            'by_leg': {str(leg): {'cases': len(q), 'passed': sum(r['passed'] for r in q)}
+                       for leg in sorted({r.get('leg') for r in rs if r.get('leg') is not None})
+                       for q in [[r for r in rs if r.get('leg') == leg]]},
             'wall_s_median': walls[len(walls) // 2] if walls else None,
             'wall_s_max': walls[-1] if walls else None,
             'stage_sim_s_median': sims[len(sims) // 2] if sims else None,
