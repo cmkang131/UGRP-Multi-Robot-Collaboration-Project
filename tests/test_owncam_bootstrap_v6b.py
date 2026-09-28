@@ -487,9 +487,10 @@ def test_exhausted_bootstrap_keeps_refusing_motion_for_later_jobs():
 
 def test_policies_bundle_and_pair_team_opt_in():
     from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES, REVISION_POLICIES, pair_policy
-    # v75 (v6b) is retired with the historical v6b DRAFT; v77 (PR #256) and v78 (PR #257) keep these policies unchanged.
+    # v75 (v6b) is retired with the historical v6b DRAFT; v77 (PR #256), v78 (PR #257) and v79 (PR #249) keep these policies unchanged.
     from harness.zone_study_integration import RETIRED_BUNDLE_IDS
-    assert EXECUTION_BUNDLE_ID == 'zone-study-integration-v78-referee-hidden-events'
+    assert EXECUTION_BUNDLE_ID == 'zone-study-integration-v79-masterpi-v3'
+    assert 'zone-study-integration-v78-referee-hidden-events' in RETIRED_BUNDLE_IDS
     assert 'zone-pair-v75-dock-prior-bootstrap' in RETIRED_BUNDLE_IDS
     assert [vars(POLICIES[k]) for k in ('v5h', 'b-only', 'a+b')] == [
         {'name': 'v5h', 'posterior_relook': False, 'beam_relative': False, 'stationary_bootstrap': False},

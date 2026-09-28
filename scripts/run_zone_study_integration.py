@@ -70,7 +70,10 @@ PROGRESS_EVERY_S = 60.
 RUNTIME_ENTRY_POINTS = ('scripts/run_zone_study_integration.py',
                         'harness/zone_study_llm_transport.py')
 RUNTIME_ASSETS = ('configs/zone_study_integration/pose_providers.json',
-                  'configs/zone_study_integration/llm_driver.json')
+                  'configs/zone_study_integration/llm_driver.json',
+                  'configs/masterpi_v3_scenes.json',
+                  'maps/zones/zone_wide_door_geometry_v3.json',
+                  'maps/zones/zone_wide_door_geometry_v3_dock_v1.json')
 
 
 def runtime_files(prereg, provider):

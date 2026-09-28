@@ -10,7 +10,9 @@ from dataclasses import dataclass
 # The pair policies are unchanged. v76 is claimed by open PR #263 (v6c).
 # v78 = v77 plus the B6 eval-only referee and scenario hidden events (PR #257;
 # pre-merge candidate v73 never ran). Pair policies unchanged; v77 retired.
-EXECUTION_BUNDLE_ID = 'zone-study-integration-v78-referee-hidden-events'
+# v79 = v78 plus explicitly versioned MasterPi v3 scenes and command geometry
+# (PR #249; pre-merge candidate v74 never ran). Pair policies unchanged; v78 retired.
+EXECUTION_BUNDLE_ID = 'zone-study-integration-v79-masterpi-v3'
 
 
 @dataclass(frozen=True)

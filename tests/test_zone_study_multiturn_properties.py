@@ -216,7 +216,7 @@ def signature(trial, requests):
     # Validate those identities before removing this one provenance leaf.
     for row in summary['calls'] + record['calls'] + [record]:
         bundle = row['provenance'].pop('execution_bundle_id')
-        assert bundle == ('zone-study-integration-v78-referee-hidden-events' if hasattr(trial, 'end_state')
+        assert bundle == ('zone-study-integration-v79-masterpi-v3' if hasattr(trial, 'end_state')
                           else 'zone-study-integration-v64-source-closure')
         assert row['provenance']['prompt_template_sha256'] == zi.digest(V64_PROMPT_VERSION)
     # v64's unused fixture-wire counter falsely reported zero for adapters.

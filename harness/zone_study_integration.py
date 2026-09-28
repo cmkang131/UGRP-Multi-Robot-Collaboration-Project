@@ -85,6 +85,10 @@ INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
 # PAR-2/delivery_rate) and the scenario hidden-event hooks in the physics
 # owner on top of main's v77; the study layer is unchanged. v77 is retired.
 # The pre-merge candidate v73 never ran and was never on main.
+# v79 (PR #249) adds explicitly versioned MasterPi v3 scenes and command
+# geometry on top of main's v78; v2 scenes and the study layer are
+# unchanged. v78 is retired. The pre-merge candidate v74 never ran and was
+# never on main.
 from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID
 RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
                       'zone-study-integration-v64-source-closure', 'zone-study-integration-v65-pair-close',
@@ -93,7 +97,8 @@ RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pa
                       'zone-study-integration-v69-multiturn-landmark-agnostic',
                       'zone-pair-v70-beam-relative-multiturn',
                       'zone-pair-v75-dock-prior-bootstrap',
-                      'zone-study-integration-v77-llm-driver')
+                      'zone-study-integration-v77-llm-driver',
+                      'zone-study-integration-v78-referee-hidden-events')
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',
