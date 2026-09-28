@@ -33,7 +33,10 @@ def summarise(d):
     d = Path(d)
     m = json.loads((d / 'manifest.json').read_text())
     ev = json.loads((d / 'eval_only/result.json').read_text())
-    pr = json.loads((d / 'pair_records.json').read_text())[0]
+    records = json.loads((d / 'pair_records.json').read_text())
+    # No pair session exists when both pair_carry submissions were refused.
+    pr = records[0] if records else {'robots': {}}
+    api = json.loads((d / 'api_calls.json').read_text())
     fails = [json.loads(l) for l in open(d / 'events.jsonl') if '"job_failed"' in l]
     cmds = collections.Counter()
     for l in open(d / 'commands.jsonl'):
@@ -57,6 +60,15 @@ def summarise(d):
                        'last_rejection': ({k: v for k, v in failed_checks[-1].items() if k != 'robot_id'}
                                           if failed_checks else None),
                        'frames': len(list((d / 'frames' / rid).glob('*.jpg')))}
+    for f in fails:
+        rid = f['robot_id']
+        robots.setdefault(rid, {'states': [], 'state_changes': 0, 'furthest_controller_stage': 'startup_look',
+                                'event_counts': {}, 'look_commands': cmds[(rid, 'look')], 'relook_triggers': 0,
+                                'scheduled_or_safety_looks': 0, 'last_events': [], 'last_rejection': None,
+                                'frames': len(list((d / 'frames' / rid).glob('*.jpg')))})
+        robots[rid].setdefault('job_failures', []).append(
+            {'sim_s': f['sim_s'], 'job_kind': f.get('job_kind'), 'reason': f['detail'].get('reason'),
+             'guard': f['detail'].get('guard')})
     video = d / 'eval_only/overview.mp4'
     checks = ev.get('checks', {})
     return {'run_id': m['run_id'], 'seed': m['seed'], 'pair_policy': m.get('pair_policy'),
@@ -64,7 +76,9 @@ def summarise(d):
             'sim_start_s': m.get('simulator_start_s'), 'sim_end_s': m.get('sim_end_s'), 'wall_s': m.get('wall_s'),
             'loadavg_start': m['environment'].get('loadavg_at_start'), 'loadavg_end': m['environment'].get('loadavg_at_end'),
             'source_sha': m['source'].get('source_sha'), 'github_authorization': (m.get('github_authorization') or {}).get('ref'),
-            'job_failed': [{'robot_id': f['robot_id'], 'reason': f['detail'].get('reason'), 'sim_s': f['sim_s']} for f in fails],
+            'job_failed': [{'robot_id': f['robot_id'], 'job_kind': f.get('job_kind'), 'reason': f['detail'].get('reason'),
+                            'sim_s': f['sim_s']} for f in fails],
+            'api_calls': [{k: a.get(k) for k in ('robot_id', 'api', 'sim_s', 'accepted', 'rejected_reason')} for a in api],
             'verdict': ev.get('verdict'), 'checks': {k: checks.get(k) for k in
                 ('approach', 'joint_grasp', 'lift', 'door', 'placement_release', 'no_drop', 'contacts', 'weld_off')},
             'grasp_at_s': ev.get('evidence', {}).get('grasp_at_s'), 'lifted_at_s': ev.get('evidence', {}).get('lifted_at_s'),
