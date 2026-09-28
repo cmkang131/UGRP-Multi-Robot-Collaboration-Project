@@ -33,6 +33,8 @@ Git fetch는 공유 FETCH_HEAD 쓰기 제한, gh는 네트워크 제한으로 �
 main/열린 PR 7개 SHA와 로컬 origin 참조를 모두 대조했다. PR 코멘트는 도구 승인 정책 때문에
 게시되지 않았다. **현재 번호 예약은 로컬 기록이며 원격 예약 게시가 아니다.**
 
+아래 명령은 **이력용**이다. 2026-09-29 이력 전환 뒤 현재 트리에서는 거부된다(`historical`).
+
 ```sh
 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 \
 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python scripts/run_zone_pair_dev.py \

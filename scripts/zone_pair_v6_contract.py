@@ -12,6 +12,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 
 from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES
 
@@ -72,9 +73,13 @@ def verify_v6_historical(path=PREREG, *, root=ROOT, commit=V6_REGISTRATION_COMMI
     """
     from scripts.zone_pair_registered_source import committed_blob
     relative = Path(path).resolve().relative_to(Path(root).resolve()).as_posix()
-    p = json.loads(committed_blob(str(root), commit, relative))
-    if p != json.loads(Path(path).read_text()):
+    if subprocess.run(['git', 'merge-base', '--is-ancestor', commit, 'HEAD'], cwd=root,
+                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode != 0:
+        raise ValueError(f'historical v6 registration commit {commit} is not in this history')
+    blob = committed_blob(str(root), commit, relative)
+    if Path(path).read_bytes() != blob:
         raise ValueError('historical v6 registration bytes differ from their registration commit')
+    p = json.loads(blob)
     if p.get('registration_revision') != 'v6' or p.get('status') != 'REGISTERED':
         raise ValueError('historical v6 registration is not the REGISTERED v6 record')
     for source, expected in p['v6_contract']['source_sha256'].items():

@@ -89,6 +89,8 @@ def test_v6_rejects_stale_or_inherited_source_contracts(tmp_path, monkeypatch, f
     altered = tmp_path/'altered.json'; altered.write_text(json.dumps(p))
     args = dev.parser().parse_args(['--prereg', str(altered), '--run-id', 'v6-s911-ab',
                                     '--output', str(tmp_path/'never-prepared')])
-    with pytest.raises(ValueError):
+    expected = {'source': 'source contract/hash mismatch', 'scene': 'scene contract/hash mismatch',
+                'inherited_grasp': 'frozen v5h baseline', 'baseline': 'frozen v5h baseline'}[fault]
+    with pytest.raises(ValueError, match=expected):
         dev.load_config(args)
     assert not args.output.exists()

@@ -376,15 +376,21 @@ def test_v6_registration_is_historical_and_never_loaded_from_the_current_tree(tm
 
 def test_v6_historical_audit_uses_registration_commit_blobs(monkeypatch):
     from scripts import zone_pair_v6_contract as c
+    # Literal pins (not the module constant): PR #259 REGISTERED conversion and its registration hash.
+    assert c.V6_REGISTRATION_COMMIT == '3c26acddec066adcd9164e6d2a6f51c1261c5f66'
+    assert json.loads(c.PREREG.read_text())['registration_sha256'] == \
+        '379ffe42baddab81554a007bd4cef5d3668c255e33d0342286dede49d77368fa'
     receipt = c.verify_v6_historical()
-    assert receipt['commit'] == c.V6_REGISTRATION_COMMIT and receipt['status'] == 'REGISTERED'
+    assert receipt['commit'] == '3c26acddec066adcd9164e6d2a6f51c1261c5f66' and receipt['status'] == 'REGISTERED'
     assert receipt['execution_bundle_id'] == 'zone-pair-v70-beam-relative-multiturn' and receipt['sources'] == 72
-    with pytest.raises(ValueError):                                     # wrong commit: bytes or blobs differ
+    with pytest.raises(ValueError, match='differ from their registration commit'):   # an earlier commit
         c.verify_v6_historical(commit='c6feb21dcc4b8213ced1cde9419de5aa5e5efd18')
-    read = Path.read_text
-    monkeypatch.setattr(Path, 'read_text',
-                        lambda self, *a, **k: read(self, *a, **k).replace('"REGISTERED"', '"DRAFT"', 1)
-                        if self == c.PREREG else read(self, *a, **k))
+    with pytest.raises(ValueError, match='not in this history'):
+        c.verify_v6_historical(commit='f'*40)
+    read = Path.read_bytes
+    monkeypatch.setattr(Path, 'read_bytes',                            # reformatting alone is a byte change
+                        lambda self: json.dumps(json.loads(read(self)), indent=1, sort_keys=True).encode()
+                        if self == c.PREREG else read(self))
     with pytest.raises(ValueError, match='differ from their registration commit'):
         c.verify_v6_historical()
 
@@ -433,5 +439,5 @@ def test_v6_registered_execution_needs_bound_envelope(tmp_path, monkeypatch):
         dev.load_config(other)
     p.pop('draft_registration')
     path.write_text(json.dumps(p))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='registered contract changed'):
         dev.load_config(ok)
