@@ -16,7 +16,10 @@ from dataclasses import dataclass
 # v6c flags (exact PF fix clock, grasp-range beam colour at the pre-grasp
 # entry). The v6c stage probes (2026-09-29) ran the pre-merge v76 on main v70;
 # v79 is retired.
-EXECUTION_BUNDLE_ID = 'zone-pair-v76-fixclock-grasp-entry'
+# v80 (PR stage probe b-v6d, workflow zone-study-integration-run 2.13.0, coordinator-assigned) = v76 plus
+# the opt-in b-v6d flags (wide-hue beam heading in the close p45/inspect views, M1 ``fine`` motion profile
+# for align pulses); v76 is retired. The other pair policies are unchanged.
+EXECUTION_BUNDLE_ID = 'zone-pair-v80-align-widehue-finemotion'
 
 
 @dataclass(frozen=True)
@@ -32,6 +35,12 @@ class PairPolicy:
     # v6c: standoff fit and pre-close partial evidence use the grasp-range beam
     # colour (hue 25-54, as grip_view/co-motion) and a settled final descent frame.
     grasp_range_entry: bool = False
+    # v6d (2026-09-29 stage-2 replay of the b-v6c probe, see harness/owncam_align_motion_v6d.py and
+    # experiments/2026-09-29-pair-v6d-align): (1) beam heading in the close p45/inspect views uses the
+    # hue range 25-54, because the beam top renders yellow there (hue 25-36) and the lime-only mask kept
+    # just the end faces; (2) the PF predicts align pulses with the M1 ``fine`` motion profile.
+    beam_wide_hue: bool = False
+    align_fine_motion: bool = False
 
 
 POLICIES = {
@@ -41,11 +50,18 @@ POLICIES = {
     'b-boot': PairPolicy('b-boot', posterior_relook=True, stationary_bootstrap=True),
     'a+b-boot': PairPolicy('a+b-boot', posterior_relook=True, beam_relative=True, stationary_bootstrap=True),
     'b-v6c': PairPolicy('b-v6c', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True),
+    'b-v6d': PairPolicy('b-v6d', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                        beam_wide_hue=True, align_fine_motion=True),
 }
 # Registered ablation sets. v6 (historical, PR #246/#259), v6b (historical DRAFT,
-# PR #261, bundle v75) and v6c (current DRAFT, PR #263, bundle v76).
+# PR #261, bundle v75), v6c (PR #263, bundle v76; sealed, now historical) and
+# v6d (current stage-probe DRAFT, bundle v80).
 REVISION_POLICIES = {'v6': ('v5h', 'b-only', 'a+b'), 'v6b': ('v5h', 'b-boot', 'a+b-boot'),
-                     'v6c': ('v5h', 'b-only', 'b-v6c')}
+                     'v6c': ('v5h', 'b-only', 'b-v6c'), 'v6d': ('v5h', 'b-only', 'b-v6d')}
+# Beam postures in which the b-v6d wide hue range applies (search keeps the v1 lime range: the far
+# view of the beam is lime, and the partner robot's yellow parts enter it; replay, README).
+WIDE_HUE_LO = 25
+WIDE_HUE_POSTURES = ('p45', 'inspect')
 
 
 def pair_policy(name='v5h'):

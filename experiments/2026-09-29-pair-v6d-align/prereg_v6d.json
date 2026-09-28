@@ -1,0 +1,636 @@
+{
+  "schema": "ugrp.zone_pair_dev.v1",
+  "labels": [
+    "tags_temporary",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "research_result": false,
+  "environment": {
+    "map": "zone_wide_door_tags_v2_dock_v3",
+    "participants": [
+      "r1",
+      "r2"
+    ],
+    "world_robots": [
+      "r1",
+      "r2",
+      "r3"
+    ],
+    "cargo": [
+      {
+        "item_id": "cargoX",
+        "kind": "long_beam"
+      }
+    ],
+    "other_objects": 0,
+    "weld": false,
+    "contact_profile": "cargo_noslip_v1",
+    "noslip_iterations": 10,
+    "timestep_s": 0.00025
+  },
+  "inputs": {
+    "map": {
+      "path": "maps/zones/zone_wide_door_tags_v2_dock_v3.json",
+      "sha256": "ff85120be345f8c264c0a6158bce8b5102ac10aaff4d77e0820cb8cde7a3b4e8"
+    },
+    "calibration": {
+      "path": "experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json",
+      "sha256": "ca54d946dd76fc333d1bf4e443c416cc8d75a7d84429daab8bd8fff5ae484558"
+    },
+    "order_sheet_sha256": "aceebb84a755a5f4532ea14957018cee26c537a78416305d3f6fc4324c4c53c8"
+  },
+  "criteria": {
+    "max_sample_gap_s": 0.05035,
+    "approach_xy_m": 0.12,
+    "approach_yaw_deg": 15.0,
+    "grasp_finger_n": 1.0,
+    "grasp_dwell_s": 0.2,
+    "lift_bottom_m": 0.04,
+    "lift_dwell_s": 0.2,
+    "door_west_x_m": 2.175,
+    "door_east_x_m": 2.225,
+    "door_y_min_m": -0.18,
+    "door_y_max_m": 0.28,
+    "destination_center_m": [
+      4.6,
+      -2.1
+    ],
+    "destination_half_extents_m": [
+      0.3,
+      0.7
+    ],
+    "footprint_tolerance_m": 0.02,
+    "floor_penetration_tolerance_m": 0.005,
+    "release_bottom_m": 0.01,
+    "release_tilt_deg": 10.0,
+    "release_finger_n": 0.2,
+    "release_dwell_s": 1.0,
+    "release_speed_m_s": 0.02,
+    "drop_bottom_m": 0.01,
+    "max_transport_tilt_deg": 15.0,
+    "contact_force_epsilon_n": 1e-06,
+    "r3_max_displacement_m": 0.02,
+    "post_abort_s": 0.5,
+    "coverage_time_tolerance_s": 1e-07,
+    "planned_setdown_xy_m": 0.12,
+    "door_clear_dwell_s": 0.2,
+    "gt_sample_period_s": 0.05
+  },
+  "planned_setdown": {
+    "decision": "Keep the frozen M2 checkpoints including beam center x=2.40 m. Classify authorized checkpoint set-down separately from unplanned drops; it is not door passage.",
+    "basis": "run_m2_pair.py M2DoorStudent: dev 801/802 open-loop yaw drift 0.06-0.1 rad/m over 2.2 m, held view shows only beam. Lower/open/relocalize/regrasp preserves the short carry cadence; v3 uses stored grip. docs/zone_m2_pair.md defines own-camera M2 reuse. No physical validation is inherited.",
+    "route_endpoints_m": [
+      [
+        1.55,
+        0.05
+      ],
+      [
+        2.4,
+        0.05
+      ],
+      [
+        3.2,
+        0.05
+      ],
+      [
+        3.2,
+        -0.6666666666666666
+      ],
+      [
+        3.2,
+        -1.3833333333333333
+      ],
+      [
+        3.2,
+        -2.1
+      ],
+      [
+        3.9,
+        -2.1
+      ],
+      [
+        4.6,
+        -2.1
+      ]
+    ],
+    "authorization": "Both robots consume the same lower GO for segment i. Until both consume carry GO for i+1: lower/wait_open/cp_open in i, or pregrasp_look/grasp/wait_lift/lift/wait_carry in i+1. Last segment instead permits lower/wait_open/released/done through the end. Segments and states are evaluation-only controller metadata.",
+    "geometry": "Beam center must remain within 0.12 m of the preregistered static endpoint. This is an explicit dev tolerance, not a measured accuracy claim. Tilt >15 deg, floor penetration >5 mm and forbidden contacts are never exempt. Door y bounds always apply in the slab.",
+    "floor_support": "All eight box corners must be within the existing floor_penetration_tolerance_m/release_bottom_m bands around their floor-rest heights (lower face zero, upper face one beam thickness). Thickness is the length of a local vertical box edge in the ordered trace, not the world-Z extent. Each corner's absolute vertical displacement divided by the preceding trace interval must be <=release_speed_m_s; a missing, nonpositive or over-max_sample_gap_s interval cannot establish support. Joint grasp is required at every unsupported sample, including lowering and re-lifting.",
+    "relift": "After floor support has been observed in a segment's authorized window, joint grasp with all corners >=lift_bottom_m continuously for lift_dwell_s closes that window's exemption permanently. Use the existing lift and sample-gap criteria, independent of next carry GO or controller claims.",
+    "scope": "Low height is allowed during authorized lowering with joint grasp; released fingers require current floor support. After confirmed re-lift, neither grip loss nor low height is exempt, even if the beam settles again before carry GO. Missing authorization, wrong segment, one robot carrying, off-target lowering, failed/abort and post-carry-GO drops are not planned set-down."
+  },
+  "limits": {
+    "sim_s": 900.0,
+    "wall_s": 57600.0,
+    "submit_at_s": 60.0,
+    "post_terminal_s": 2.0,
+    "outer_wall_timeout_s": 57660.0,
+    "model_calls": 0
+  },
+  "safety_coverage": {
+    "physical_planned": [
+      "nominal GO/sequence",
+      "explicit abort after carry GO"
+    ],
+    "nonphysical_regressions": [
+      "image corruption/occlusion -> both queues empty, no motion",
+      "peer silence/missed GO -> both queues empty, no motion"
+    ],
+    "unclaimed": "Image/peer-loss physical injections are not part of these two runs; only existing/new nonphysical regressions cover them. Add separately preregistered dev runs if required."
+  },
+  "timing": {
+    "gt_sample_steps": 200,
+    "gt_sample_period_s": 0.05,
+    "sample_gap_slack_s": 0.0001,
+    "max_sample_gap_s": 0.05035,
+    "contact_observation_every_steps": 1,
+    "max_physics_steps": 3600000,
+    "previous_timestep_s": 0.002,
+    "previous_max_physics_steps": 450000,
+    "physics_step_multiplier": 8.0,
+    "outer_cleanup_s": 60.0,
+    "coverage_rule": "round((sim_end_s - simulator_start_s) / applied timestep_s); initial observation is not a step",
+    "wall_basis": "previous wall_s * (new max_physics_steps / previous max_physics_steps); conservative step-count budget, not measured throughput or completion prediction; SIM horizon and GT/video rates unchanged; outer cleanup allowance unchanged"
+  },
+  "stage_rules": {
+    "approach": "Each consumed approach GO needs own base GT within 0.12 m / 15 deg of static prestation; nearest subsequent trace <=50.35 ms.",
+    "joint_grasp": "Both fingers of BOTH robots >=1 N continuously 0.2 SIM s.",
+    "lift": "All eight beam box corners >=0.04 m above floor AND joint grasp continuously 0.2 SIM s.",
+    "door": "Whole beam previously west of slab x[2.175,2.225]; every slab-overlap sample stays in y[-0.18,0.28] and has lift/grip unless an authorized planned set-down. Then ALL corners must be east of x=2.225 with both controllers carrying, every finger >=1 N and bottom >=0.04 m continuously 0.2 SIM s. Center x=2.40 alone is not passage.",
+    "placement_release": "After door passage, final 1 s: full projected beam footprint inside B + 0.02 m tolerance; bottom [-0.005,0.01], tilt<=10 deg, every finger<0.2 N, speed<=0.02 m/s; both controllers done. B width equals 0.60 m beam length: 2 cm tolerance is explicit dev only.",
+    "drop": "After first lift, loss of joint grasp fails unless the beam is currently floor-supported within an authorized planned set-down. Bottom<0.01 m outside that set-down fails. Confirmed re-lift closes that segment's exemption even before the next carry GO; later landing/recontact cannot reopen it or erase earlier failures. Tilt>15 deg or penetration>0.005 m always fails, including during planned set-down. No blanket exemption by state name; failed/abort never exempts.",
+    "contacts": "Every 0.25 ms physics step: penetrating contact with normal force>1e-6 N; robot-robot, robot-wall, beam-wall, pre-align robot-beam and r3-to-participant/cargo must all be zero. Normal finger grip and floor support permitted.",
+    "go": "First consumption of every seen phase/segment GO by r1/r2 at same SIM timestamp (1e-8 tolerance); nominal requires approach@0 plus lift/carry/lower/open for every planned segment.",
+    "abort": "Inspect retained endpoint arm/carry/port queues, host macro/capture queue and actual port interpolation/motors after STATUS abort. All empty/stopped; zero arm/look/drive/mecanum commands even later in same SIM instant. Observe >=0.5 SIM s after abort.",
+    "video": "Manual named reviewer must approve all stages, tied to run_id and exact trace/video SHA256; absent review cannot pass.",
+    "completion": "PAIR_SEQUENCE_DONE/unconfirmed is only executor sequence evidence. No GT-derived result is sent back to actors.",
+    "coverage": "Trace first and final samples match manifest.simulator_start_s and sim_end_s within 1e-7 s; strictly increasing, <=50.35 ms gaps, all on the applied 0.25 ms grid. Contact observation covers the same endpoints, counts exactly round((end-start)/dt) physics intervals (initial observation is not a step), max step gap matches dt and invalid intervals=0. Missing metadata/prefix/tail/step is EVIDENCE_INCOMPLETE; includes abort diagnostics.",
+    "prereg_integrity": "Before any scoring, SHA256 of the exact saved prereg.json bytes must equal original manifest.prereg.sha256. Missing/mismatched hash is EVIDENCE_INCOMPLETE. Prepare copies bytes unchanged; no post-run reformatting or rebinding.",
+    "host_error": "An explicit manifest host_error or state=host_error is HOST_ERROR with its original cause, even without pair route/trace/video. No physical scoring; prereg integrity and absent evidence are reported separately. ENOSPC remains HOST_ERROR.",
+    "admission_diagnostics": "Before scoring, every refused pair_carry API action_id must have exactly one eval_only/pair_admission.jsonl receipt. Missing receipt is DIAGNOSTIC_EVIDENCE_INCOMPLETE, never proof of a different cause. Keep the 60 s one-shot submission unless a coordinator-approved fresh prereg explicitly changes it."
+  },
+  "contact_profile_contract": {
+    "profile": "cargo_noslip_v1",
+    "base_profile": "local_contact_fine",
+    "cargo_profile": {
+      "name": "cargo_noslip_v1",
+      "version": 1,
+      "base": "local_contact_fine",
+      "option": {
+        "noslip_iterations": "10"
+      },
+      "scope": "global solver option (all contacts)",
+      "evidence": "experiments/2026-09-25-zone-cargo-catalogue (section: slip removal)",
+      "sha256": "2e003d85011354676866f0d73b32604c9b5105e919ba3d979687714d62e90ff4"
+    },
+    "method": "dispatch contact_profile then cargo apply on static XML option probe; no physics",
+    "timestep_s": 0.00025,
+    "noslip_iterations": 10,
+    "source_sha256": {
+      "sim/dispatch_contact_profile.py": "472a19b72bdc3b85819d3c7a22ad1c7f0a741b13feba5ac65ce9d5d15e1792d0",
+      "sim/zone_cargo_contact.py": "2ce68eafc285ff86261559f612a71c5178d2cf87ee7777cb71c0b9a9a3c28541"
+    },
+    "sha256": "17bf3e04918aa9c4a940df2cb0d2be975075714e906d8503fc92e1f29a9ca9b6"
+  },
+  "status": "DRAFT",
+  "registration_version": 6,
+  "registration_revision": "v6d",
+  "runnable": false,
+  "execution_status": "not_run",
+  "execution_source_sha": null,
+  "execution_authorization": null,
+  "approval": null,
+  "source_review_base": "f87921dc52f7a3f12d41b4bc6ab5c30227890e8e",
+  "execution_bundle_id": "zone-pair-v80-align-widehue-finemotion",
+  "predecessor": {
+    "path": "experiments/2026-09-29-pair-v6c/prereg_v6c.json",
+    "sha256": "64acc04a8c08af61b0fa488440c70a8bec4338881c7a32b4895d4b07970ca95e",
+    "sealing_commit": "be95f8b018bb110e2fc97ec5a3c90e357a949449"
+  },
+  "v6_contract": {
+    "execution_bundle_id": "zone-pair-v80-align-widehue-finemotion",
+    "policy_flags": {
+      "v5h": {
+        "name": "v5h",
+        "posterior_relook": false,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": false,
+        "grasp_range_entry": false,
+        "beam_wide_hue": false,
+        "align_fine_motion": false
+      },
+      "b-only": {
+        "name": "b-only",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": false,
+        "grasp_range_entry": false,
+        "beam_wide_hue": false,
+        "align_fine_motion": false
+      },
+      "b-v6d": {
+        "name": "b-v6d",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": true,
+        "align_fine_motion": true
+      }
+    },
+    "flag_definitions": {
+      "posterior_relook": "B: posterior-preserving relook, observation quality receipts, blocked-pan cancel",
+      "beam_relative": "A: own-view beam-relative align/close-in and pre-close shape report; separate global safety envelope with planned safety looks; during align/pre-close the PF is a reference only (no HIGH/convergence stop) while an object-anchored bound (entry fix + ready relative view of the static beam) certifies wall/arm clearance",
+      "stationary_bootstrap": "v6b: equal-weight AMCL-default Gaussian prior on the static start_dock rows; no own arm/wheel command before an informative settled fix whose first arm transition the unchanged guard clears (or gate LOW); only camera pans in between, each checked by the unchanged guard at the mean plus a conservative collision-mass bound over all weighted particles (cell-inflated, <= 1 %; particle chance constraint); refused pans stay queued and are rechecked; non-finite reports never complete; completion only at the home pan after settle, with sigma within the guard cap; resample-move on the stationary belief after an accepted view (no dual samples); a rejected view never mutates the PF; 10 s stationary budget per motion job, then STATIONARY_BOOTSTRAP_NO_FIX, and a failed bootstrap never unlocks motion",
+      "exact_fix_clock": "v6c: after predict_to(t) the posterior-preserving PF is stamped with t when its step sum stopped within the unchanged 1e-9 s loop tolerance before t, so a fix at this frame has age 0 (never < 0); an older frame is never moved forward; a provider bound to it is refused by policies without the flag",
+      "grasp_range_entry": "v6c: standoff edge-pair fit and pre-close partial patch use the grasp-range beam colour (owncam_pair_beam_v2.beam_colour_mask) instead of v1 lime; strips below MIN_STRIP_SUPPORT x median support are dropped before the line fit; the final descent pose settles FINAL_DESCENT_SETTLE_S before READY frames; the partial patch must show one contiguous in-footprint band across the tracked axis (2-98 % span, largest gap <= MAX_LATERAL_GAP_M) at least MIN_WIDTH_FRACTION x BEAM_WIDTH_M wide. All gates, thresholds and the footprint support test are unchanged",
+      "beam_wide_hue": "v6d: in the r1 p45 and inspect views the beam heading (PCA axis) reads the hue range 25-54 instead of the v1 lime range 36-54, because the beam top renders yellow (hue 25-36) there and the lime-only mask kept just the end faces (heading error up to 1.5 rad, aligned reported at a true yaw of 0.07-0.115 rad). The frozen v1/v2 beam modules are unchanged: the added non-band pixels are recoloured lime on a copy of the frame and v2 runs on it; dark grip-band pixels are never recoloured. The search posture keeps the v1 range (the wide range doubles r2 search yaw noise in replay)",
+      "align_fine_motion": "v6d: while the controller is in an align state (align, align_relook_stop, align_relook, align_relook_return) the tag PF predicts motion with the M1 ``fine`` profile of calibration_m1_dev.json (gain 1.95/0.95, tau 1.28 s) instead of the navigation default (gain 1.47, tau 0.3 s), which over-integrated the 0.2-0.3 s <=0.05 m/s align pulses about 4-5 times; other states keep the default profile. No filter code, noise or gate changes; a provider bound to the profile is refused by policies without the flag"
+    },
+    "v6d_constants": {
+      "wide_hue_lo": 25,
+      "wide_hue_postures": [
+        "p45",
+        "inspect"
+      ],
+      "wide_lime_bgr": [
+        0,
+        255,
+        128
+      ],
+      "motion_profile": "fine",
+      "motion_calibration": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+      "motion_profile_sha256": "8651d76ef3f411dab03a6561d52766bcb6dc3b33428725445425c86391d2e97e",
+      "align_states": [
+        "align",
+        "align_relook_stop",
+        "align_relook",
+        "align_relook_return"
+      ]
+    },
+    "v6c_constants": {
+      "clock_tolerance_s": 1e-09,
+      "min_strip_support": 0.25,
+      "final_descent_settle_s": 0.3,
+      "beam_width_m": 0.04,
+      "min_width_fraction": 0.7,
+      "max_lateral_gap_m": 0.003
+    },
+    "bootstrap_constants": {
+      "amcl_initial_std_xy_m": 0.5,
+      "amcl_initial_std_yaw_rad": 0.2617993877991494,
+      "pan_risk_bound": 0.01,
+      "risk_cell_xy_m": 0.04,
+      "risk_cell_yaw_rad": 0.04,
+      "max_boot_frames": 6,
+      "move_steps": [
+        [
+          0.05,
+          0.05,
+          0.03
+        ],
+        [
+          0.02,
+          0.02,
+          0.01
+        ],
+        [
+          0.005,
+          0.005,
+          0.003
+        ]
+      ],
+      "move_iters": 10,
+      "settle_after_pan_s": 0.6,
+      "fail_reason": "STATIONARY_BOOTSTRAP_NO_FIX"
+    },
+    "reobserve_budgets": {
+      "high_recovery_s": 10.0,
+      "scheduled_safety_look": {
+        "per_look_s": 6.0,
+        "total_s": 240.0,
+        "max_count": 80,
+        "reserve_gap_m": 0.04,
+        "reducible_sigma_m": 0.005,
+        "reducible_sigma_rad": 0.005
+      },
+      "scope": "HIGH 복구와 align MAX_LOOKS/MAX_TOTAL_LOOK_S는 approach/reapproach/align 진입 및 stored 재파지 시작 전에 초기화한다. v5h/b-only/a+b에 동일하게 적용하며 같은 단계의 재시도·relook 복귀는 초기화하지 않는다. 예정 look은 회당·job 전체 예산이다.",
+      "align_max_looks": 8,
+      "align_max_total_look_s": 40.0,
+      "approach_look_fix_confirm_s": 6.0
+    },
+    "object_anchor_checks": "전역 envelope와 앵커 상한이 K_SIGMA에서 겹치지 않거나, 빔이 앵커 이후 발행 명령의 도달 범위를 벗어나거나, 상대가 상태 채널 규격의 BEAM_MOTION_STATES (aligning/하강 포함)를 알리면 앵커를 버린다.",
+    "relative_freshness": "동일 픽셀은 최초 관측 시각을 유지하고 현재 명령·시간 전파 track 상한을 사용한다. 거절된 입력은 유효 관측 캐시에 넣지 않는다.",
+    "qualification": "offline development; uncalibrated bounds; no physical inheritance",
+    "source_sha256": {
+      "harness/owncam_memory.py": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
+      "harness/owncam_memory_time.py": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0",
+      "harness/owncam_delivery_shared.py": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba",
+      "harness/owncam_memory_delivery.py": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50",
+      "harness/owncam_memory_inputs.py": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83",
+      "harness/owncam_pose_guard_provider.py": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1",
+      "harness/owncam_pose_guard_v3.py": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6",
+      "configs/zone_pair_authorization.json": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e",
+      "harness/owncam_drive_mem_v3.py": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425",
+      "harness/m1_owncam_memory_v3.py": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2",
+      "harness/vision_motion_init.py": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316",
+      "harness/m2_provider_adapter.py": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624",
+      "harness/zone_own_deliver.py": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab",
+      "harness/zone_own_team_host.py": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64",
+      "scripts/zone_pair_authorization.py": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649",
+      "scripts/run_zone_study_integration.py": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+      "scripts/run_m1_owncam_memory_v3.py": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8",
+      "sim/zone_geometry_scene.py": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+      "configs/zone_study_integration/pose_providers.json": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d",
+      "maps/zones/zone_wide_door_geometry_v2.json": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+      "harness/pose_provider.py": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2",
+      "harness/vision_pose_source.py": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+      "harness/zone_study_pose_delay.py": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894",
+      "harness/zone_own_driver.py": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d",
+      "harness/owncam_drive_shared.py": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792",
+      "sim/zone_own_scene_provider.py": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+      "harness/owncam_time.py": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+      "harness/zone_own_contract.py": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
+      "harness/zone_own_executor.py": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+      "harness/zone_own_status.py": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
+      "harness/zone_own_perception.py": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
+      "harness/zone_pair_obstruction.py": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
+      "harness/zone_pair_grasp.py": "f170daf565fa2ecd185d4a6d8f72c14c535d7fbba92cf8b8d9ebe8970eedb125",
+      "harness/zone_pair_executor.py": "473af089a61ac0ab66c05a754f1994abcbc997770889fd7b8b4fd78bf5e6b787",
+      "harness/zone_pair_beam_track.py": "7b0870a80a200ee6eaa99d6ca86653094d420dd527bf7b8fcf385b2ff030ce9e",
+      "harness/zone_pair_align.py": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e",
+      "harness/zone_pair_guards.py": "7933ca78fdf833c0efc1d0bba04318172625c5c3df4630c0af08430d7b0a9a18",
+      "harness/zone_pair_geometry.py": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+      "harness/zone_pair_status.py": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+      "harness/zone_pair_vision.py": "8552c044d498a6c3e02efdc7f53ca72c9b11c4b17b87abfa159e780673d8c7d4",
+      "harness/owncam_pose_source.py": "46809a556ecb7915f8dd49b03d7eb0f57181261599173b439477466f1940a538",
+      "harness/owncam_localizer.py": "0304d7c491dfe6ae68cea6550f7a13e3c99e8e1d3f8e8b6c4b7b1d06893b1d63",
+      "harness/owncam_pair_beam.py": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+      "harness/owncam_pair_beam_v2.py": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+      "harness/owncam_view.py": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+      "harness/zone_own_guards.py": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+      "scripts/run_zone_pair_dev.py": "3ec5e87251fd7ae2328a8330f6db8e120772854e8c5f087b21ec90e773e4f3d2",
+      "scripts/zone_pair_dev_runtime.py": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877",
+      "scripts/zone_pair_grasp_contract.py": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85",
+      "scripts/evaluate_zone_pair_dev.py": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+      "configs/simulation_workflows.json": "e1c6865d444946ed54de77a7f454fce1308d1fd05fa249e501e4ee07ff794155",
+      "sim/zone_start_dock.py": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+      "sim/zone_dock_scene.py": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+      "sim/zone_arena.py": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+      "sim/zone_landmarks.py": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1",
+      "sim/zone_scene.py": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714",
+      "sim/zone_tagged_cargo_scene.py": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7",
+      "scripts/zone_pair_dev_contract.py": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e",
+      "harness/zone_study_integration.py": "7ebdcb1db72dbbf3085b31a3d2c84f6a6e8009b6611b0d71c2985dee83938210",
+      "harness/zone_pair_v6_policy.py": "a4b9bfbc50e7a766ab31d5f2b3529a39d7f6b4f527638cc29c1fe2bccd3c0a52",
+      "harness/zone_pair_relative.py": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af",
+      "harness/zone_pair_global.py": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
+      "harness/owncam_recovery_v6.py": "74d90f36dd3f170091ed7c3e8b73432d81cb9ee0ca36d8472b063c9af92b5b46",
+      "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
+      "scripts/zone_pair_v6_contract.py": "4bb2eeeddbdc27f5833e225e8378617f0d62d7c75d104b583d9208e282b13d92",
+      "harness/zone_own_sweep.py": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
+      "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+      "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+      "scripts/run_m2_pair.py": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+      "scripts/study_owncam_pair_beam.py": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00",
+      "harness/visual_arm.py": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+      "harness/m1_owncam_delivery.py": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+      "harness/owncam_bootstrap_v6b.py": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90",
+      "harness/owncam_recovery_v6c.py": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd",
+      "harness/zone_pair_grasp_entry_v6c.py": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e",
+      "harness/owncam_pair_beam_v6d.py": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12",
+      "harness/owncam_align_motion_v6d.py": "a271e828ba25845a5302032c41cad95b55847000e0d1c09415515ed6607d41eb",
+      "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+      "sim/zone_masterpi_v3_scene.py": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca",
+      "sim/zone_model_conventions.py": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff"
+    }
+  },
+  "planned_run_count": 6,
+  "denominator": "Same two development seeds (911/912) x v5h / b-only / b-v6d, matched with the v6 and v6c cohorts. Six nominal attempts; no pooling with v6, v6c, dev05-14 or M2. The v6d fixes were designed from the 2026-09-29 stage-2 replay of the b-v6c stage probe (12 of 25 align cells failed) on cells that include these seeds, so this is a paired development check, not a held-out result. tags_temporary manipulation diagnostic, not research results. The stage probes (experiments/2026-09-29-pair-v6d-align) are not part of this denominator.",
+  "retries": 0,
+  "disk_error_classification": "ENOSPC=HOST_ERROR",
+  "model_calls": 0,
+  "readiness": {
+    "status": "DEV_EXECUTION_AUTHORIZED_OPEN_REQUIREMENTS",
+    "requires": [
+      "source review and commit",
+      "explicit execution authorization",
+      "relative/global bound calibration",
+      "markerless provider and shape coverage",
+      "exclusive physical lock at future execution",
+      "align and grasp_lift stage-probe grids with b-v6c (scripts/run_pair_stage_probes.py) before any full v6c cohort",
+      "v6c REGISTERED conversion through the PR #259 admission path (draft_registration + coordinator envelope)",
+      "stage-2 align and stage-3 grasp+lift probe grids with b-v6d (scripts/run_pair_stage_probes.py, experiments/2026-09-29-pair-v6d-align) before any full v6d cohort",
+      "v6d REGISTERED conversion through the PR #259 admission path (draft_registration + coordinator envelope)"
+    ],
+    "legacy_marker_dependency": "a+b relative alignment/close-ready use body edges only; inherited post-close M2 grip/hold receipts still include black band. Alternative: separately calibrate colour-edge co-motion/hold receipts before markerless cohort.",
+    "draft_status": "NOT_READY_FOR_PHYSICAL",
+    "open_at_execution": [
+      "relative/global bound calibration",
+      "markerless provider and shape coverage"
+    ],
+    "decision": "2026-09-28 manager session authorized the six dev runs on the user delegation (merges approved; run decisions delegated). Open requirements are disclosed, not waived as evidence: results stay tags_temporary dev diagnostics."
+  },
+  "runs": [
+    {
+      "id": "v6d-s911-v5h",
+      "seed": 911,
+      "setup_beam_xyyaw": [
+        1.0,
+        0.05,
+        0.0
+      ],
+      "coarse_order_sheet": {
+        "beam_xyyaw": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "grid": {
+          "xy_m": 0.1,
+          "yaw_rad": 0.174533
+        },
+        "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+      },
+      "intervention": "none",
+      "purpose": "Matched development comparison; complete attempt or recorded refusal, no retry",
+      "pair_policy": "v5h"
+    },
+    {
+      "id": "v6d-s911-b",
+      "seed": 911,
+      "setup_beam_xyyaw": [
+        1.0,
+        0.05,
+        0.0
+      ],
+      "coarse_order_sheet": {
+        "beam_xyyaw": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "grid": {
+          "xy_m": 0.1,
+          "yaw_rad": 0.174533
+        },
+        "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+      },
+      "intervention": "none",
+      "purpose": "Matched development comparison; complete attempt or recorded refusal, no retry",
+      "pair_policy": "b-only"
+    },
+    {
+      "id": "v6d-s911-bv6d",
+      "seed": 911,
+      "setup_beam_xyyaw": [
+        1.0,
+        0.05,
+        0.0
+      ],
+      "coarse_order_sheet": {
+        "beam_xyyaw": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "grid": {
+          "xy_m": 0.1,
+          "yaw_rad": 0.174533
+        },
+        "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+      },
+      "intervention": "none",
+      "purpose": "Matched development comparison; complete attempt or recorded refusal, no retry",
+      "pair_policy": "b-v6d"
+    },
+    {
+      "id": "v6d-s912-v5h",
+      "seed": 912,
+      "setup_beam_xyyaw": [
+        0.93,
+        -0.02,
+        -0.07
+      ],
+      "coarse_order_sheet": {
+        "beam_xyyaw": [
+          0.9,
+          0.0,
+          0.0
+        ],
+        "grid": {
+          "xy_m": 0.1,
+          "yaw_rad": 0.174533
+        },
+        "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+      },
+      "intervention": "none",
+      "purpose": "Matched development comparison; complete attempt or recorded refusal, no retry",
+      "pair_policy": "v5h"
+    },
+    {
+      "id": "v6d-s912-b",
+      "seed": 912,
+      "setup_beam_xyyaw": [
+        0.93,
+        -0.02,
+        -0.07
+      ],
+      "coarse_order_sheet": {
+        "beam_xyyaw": [
+          0.9,
+          0.0,
+          0.0
+        ],
+        "grid": {
+          "xy_m": 0.1,
+          "yaw_rad": 0.174533
+        },
+        "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+      },
+      "intervention": "none",
+      "purpose": "Matched development comparison; complete attempt or recorded refusal, no retry",
+      "pair_policy": "b-only"
+    },
+    {
+      "id": "v6d-s912-bv6d",
+      "seed": 912,
+      "setup_beam_xyyaw": [
+        0.93,
+        -0.02,
+        -0.07
+      ],
+      "coarse_order_sheet": {
+        "beam_xyyaw": [
+          0.9,
+          0.0,
+          0.0
+        ],
+        "grid": {
+          "xy_m": 0.1,
+          "yaw_rad": 0.174533
+        },
+        "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+      },
+      "intervention": "none",
+      "purpose": "Matched development comparison; complete attempt or recorded refusal, no retry",
+      "pair_policy": "b-v6d"
+    }
+  ],
+  "scene_contract": {
+    "id": "zone_wide_door_tags_v2_dock_v3",
+    "version": 3,
+    "map": {
+      "path": "maps/zones/zone_wide_door_tags_v2_dock_v3.json",
+      "sha256": "ff85120be345f8c264c0a6158bce8b5102ac10aaff4d77e0820cb8cde7a3b4e8"
+    },
+    "parent_map": {
+      "path": "maps/zones/zone_wide_door_tags_v2.json",
+      "sha256": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b"
+    },
+    "start_dock": {
+      "id": "zone_start_dock_v3",
+      "version": 3,
+      "spawn_x_m": -0.65,
+      "spawn_rows_y_m": [
+        -2.25,
+        -0.85,
+        0.55
+      ],
+      "spawn_yaw_rad": 0.0,
+      "idle_keepout_radius_m": 0.17,
+      "source": "authored static layout; no live robot positions or robot-to-row assignment",
+      "sha256": "96bcf08a25220d825f67070bae64ba18c9292935c06ccb5fae95edebc97c2d0a"
+    },
+    "changed": "all three spawn x coordinates: -0.85 -> -0.65 m; matching static keepouts/text",
+    "preserved": "seeded row assignment, z/yaw, walls 0.10 m, tags_v2, cameras, cargo, commands and guards",
+    "walls_v3": "walls_v3(PR #208) 적용은 후속 작업",
+    "source_sha256": {
+      "sim/zone_start_dock.py": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+      "sim/zone_dock_scene.py": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+      "sim/zone_arena.py": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+      "sim/zone_landmarks.py": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1",
+      "sim/zone_scene.py": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714",
+      "sim/zone_tagged_cargo_scene.py": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7",
+      "harness/zone_own_team_host.py": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64",
+      "harness/zone_own_guards.py": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+      "sim/zone_own_scene_provider.py": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+      "scripts/run_zone_pair_dev.py": "3ec5e87251fd7ae2328a8330f6db8e120772854e8c5f087b21ec90e773e4f3d2",
+      "scripts/zone_pair_dev_runtime.py": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877",
+      "scripts/zone_pair_dev_contract.py": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e"
+    },
+    "sha256": "dccd7288250fcf18926f28123a3f1044b322d31f939abf08bd7eadaebb076c85"
+  },
+  "baseline_registration": {
+    "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5h.json",
+    "sha256": "7b9c13b0ed829b7cb9b22cf58b47fd1862b247fe7bc8d0a4a4704686ca6994e9"
+  },
+  "scene_contract_changed_sources": [
+    "scripts/run_zone_pair_dev.py"
+  ],
+  "registration_sha256": "f4bcd84ec4fc1088a2fbcbd560c44cf338ae9dcd02b75fdd86491bc4820acfb6"
+}

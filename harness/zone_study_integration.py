@@ -93,6 +93,9 @@ INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
 # flags (b-v6c: exact PF fix clock, grasp-range pre-grasp entry) on top of
 # main's v79; the study layer and the other pair policies are unchanged. v79
 # is retired. The v6c stage probes ran the pre-merge v76 on main v70.
+# v80 (b-v6d stage probe, workflow 2.13.0, coordinator-assigned) adds the opt-in b-v6d pair flags
+# (wide-hue beam heading in the close views, M1 ``fine`` motion profile for align pulses) on top of
+# v76; the study layer and the other pair policies are unchanged. v76 is retired.
 from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID
 RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
                       'zone-study-integration-v64-source-closure', 'zone-study-integration-v65-pair-close',
@@ -103,7 +106,8 @@ RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pa
                       'zone-pair-v75-dock-prior-bootstrap',
                       'zone-study-integration-v77-llm-driver',
                       'zone-study-integration-v78-referee-hidden-events',
-                      'zone-study-integration-v79-masterpi-v3')
+                      'zone-study-integration-v79-masterpi-v3',
+                      'zone-pair-v76-fixclock-grasp-entry')
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',

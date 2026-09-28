@@ -249,6 +249,14 @@ class PairStudent:
         self._set_look(name, now, grip_distance_m=round(distance, 3))
         return True
 
+    def _beam_hue_lo(self):
+        """b-v6d: lower hue bound for the close views, where the beam top renders yellow (None: v1)."""
+        policy = getattr(self, 'policy', None)
+        if not getattr(policy, 'beam_wide_hue', False):
+            return None
+        from harness.zone_pair_v6_policy import WIDE_HUE_LO, WIDE_HUE_POSTURES
+        return WIDE_HUE_LO if self.look_name in WIDE_HUE_POSTURES else None
+
     def _align(self, now, arm_idle):
         if not arm_idle or now < self.next_look:
             return
@@ -256,8 +264,14 @@ class PairStudent:
         if now - self.state_t > STATE_LIMIT_S['align']:
             return self.fail('ALIGN_TIMEOUT', now)
         obs = self.look(now)
-        beam = ob2.observe_beam(obs['image'], self.pose_of(obs))
+        hue_lo = self._beam_hue_lo()
+        if hue_lo is None:
+            beam = ob2.observe_beam(obs['image'], self.pose_of(obs))
+        else:
+            from harness import owncam_pair_beam_v6d as ob6d       # frozen v1/v2 read a recoloured copy of the frame
+            beam = ob6d.observe_beam(obs['image'], self.pose_of(obs), hue_lo=hue_lo)
         self.log(self.rid, 'beam_obs', now, posture=self.look_name,
+                 **({} if hue_lo is None else {'hue_lo': hue_lo}),
                  **{k: v for k, v in beam.items() if k != 'provenance'})
         order = ob2.order()
         k = order.index(self.look_name)

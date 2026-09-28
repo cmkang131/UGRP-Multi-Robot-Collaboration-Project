@@ -21,7 +21,8 @@ DEFINITION = ('stage probe verdict, NOT E2E success: both robots reached the sta
 SHORT = {'align': 'al', 'grasp_lift': 'gl', 'carry': 'ca', 'setdown': 'sd',
          'teacher_grid': 't', 'e2e_checkpoint': 'e2e', 'tolerance_boundary': 'bd'}
 POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C',   # C = v6c (exact clock + grasp-range entry)
-                'b-boot': 'BB', 'a+b-boot': 'ABB'}                    # v6b start bootstrap (PR #261)
+                'b-boot': 'BB', 'a+b-boot': 'ABB',                    # v6b start bootstrap (PR #261)
+                'b-v6d': 'D'}                                          # D = v6d (wide hue, fine align motion)
 
 
 def _run_tag(raw):
@@ -50,7 +51,7 @@ def write(out, name, view):
 
 
 def case_view(raw, row, manifest):
-    d = raw / 'cases' / re.sub(r'[^A-Za-z0-9_.+-]+', '_', row['case_id'])
+    d = Path(row.get('raw_dir') or raw) / 'cases' / re.sub(r'[^A-Za-z0-9_.+-]+', '_', row['case_id'])   # raw_dir: combined grids (experiments/2026-09-29-pair-v6d-align/combine_grid.py)
     src = d / 'result.json'
     result = json.loads(src.read_text())
     cmds = json.loads((d / 'commands.json').read_text()) if (d / 'commands.json').exists() else {}
