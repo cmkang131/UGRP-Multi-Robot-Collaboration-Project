@@ -1,0 +1,339 @@
+{
+  "schema": "ugrp.zone_pair_grasp_validation.v5",
+  "date": "2026-09-27",
+  "labels": [
+    "tags_temporary",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "source_review_base": "3790372dfdd8e9de894bad7414657461bc8ba91d",
+  "scope": "Uncommitted implementation and saved-own-input regressions. No physical success claim.",
+  "decision": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5856308924",
+  "constraints": {
+    "physics_steps": 0,
+    "model_calls": 0,
+    "weld": false,
+    "contact_profile": "cargo_noslip_v1",
+    "commit": false,
+    "push": false,
+    "pr_write": false,
+    "merge": false,
+    "drive_used": false
+  },
+  "tests": {
+    "result": "480 passed, 13 skipped, 1 deselected in 21.44s",
+    "v5_cases": 35,
+    "command": [
+      "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=./.pytest_tmp",
+      "tests/test_zone_pair_v5.py",
+      "tests/test_zone_pair_grasp.py",
+      "tests/test_zone_pair_preclose.py",
+      "tests/test_zone_pair_standoff.py",
+      "tests/test_zone_pair_review7.py",
+      "tests/test_zone_pair_executor.py",
+      "tests/test_zone_pair_status.py",
+      "tests/test_zone_pair_review.py",
+      "tests/test_zone_pair_review2.py",
+      "tests/test_zone_pair_review3.py",
+      "tests/test_zone_pair_review4.py",
+      "tests/test_zone_pair_review5.py",
+      "tests/test_zone_pair_review6.py",
+      "tests/test_zone_pair_dev.py",
+      "tests/test_zone_pair_admission.py",
+      "tests/test_simulation_workflow_manager.py",
+      "-k",
+      "not test_parent_exit_cleans_background_child"
+    ],
+    "exit": 0,
+    "wall_s": 21.685119041998405,
+    "output": "........................................................................ [ 14%]\n........................................................................ [ 29%]\n........................................................................ [ 43%]\n........................................................................ [ 58%]\n........................................................................ [ 73%]\n........................................................................ [ 87%]\n.........sssssssssssss.......................................            [100%]\n480 passed, 13 skipped, 1 deselected in 21.44s\n",
+    "skipped": "13 fake-world cases explicitly importorskip(mujoco); MuJoCo imports blocked for this validation",
+    "deselected": "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_parent_exit_cleans_background_child; sandbox ps denied",
+    "environment": {
+      "OMP_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+      "PYTHONPATH": "/tmp/pair-v5-no-physics:<worktree>"
+    },
+    "import_guard_source": "import sys, importlib.abc\nclass NoPhysicsOrModel(importlib.abc.MetaPathFinder):\n    def find_spec(self, fullname, path=None, target=None):\n        if fullname.split('.')[0] in {'mujoco','torch','tensorflow','openai','anthropic'}:\n            raise ModuleNotFoundError('v5 validation forbids physics/model import: ' + fullname, name=fullname)\nsys.meta_path.insert(0, NoPhysicsOrModel())\n",
+    "pytest_tmp_removed": true,
+    "intermediate_checks": "New fixture tests corrected to use outer stale-image interlock, pre-abort queue injection, and fresh fake frames for both host endpoints. First expanded check ran before v5 docs existed; 13 import refusals and sandbox ps check failed. Final scope above passes; no MuJoCo import/step executed."
+  },
+  "regressions": {
+    "dev07": "Exact original standoff/open JPEG plus 212 issued commands: END_CLIPPED -> close_ready_0; no unilateral close, no anchor pose/age/sigma reset.",
+    "dev08": {
+      "saved_reports": 154,
+      "gap_s": 15.3,
+      "trigger_s": 166.3,
+      "reason": "tag_gap",
+      "tag_gap_s": 6.0,
+      "xy_sigma_m": 0.05486,
+      "historical_high_s": 175.6,
+      "lead_s": 9.3,
+      "scope": "saved report decision replay, not counterfactual physical/localizer success"
+    },
+    "negative_cases": [
+      "doorpost",
+      "anchor missing/expired/wrong segment",
+      "beam XY/yaw over limit",
+      "patch displaced",
+      "different camera PWM",
+      "stale frame",
+      "black/wrong hue",
+      "no fresh accepted own tag",
+      "no safe view",
+      "closed/peer holding",
+      "relook count/per-look/cumulative time limits",
+      "base motion during relook"
+    ],
+    "host_round_trip": "real adapter/host dispatch on fake ports: hold -> selected look -> new shared own fix -> restore beam view -> align; no base/close command during look"
+  },
+  "registration": {
+    "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5.json",
+    "sha256": "bcf02558167a9140a97b961bdc612b45679b3ff1e91fe496e9863ac8e9f3568e",
+    "runs": [
+      [
+        "dev09",
+        905
+      ],
+      [
+        "dev10",
+        906
+      ]
+    ],
+    "owner": "claude",
+    "preserved_v3_v4_fields": [
+      "criteria",
+      "stage_rules",
+      "planned_setdown",
+      "limits",
+      "timing",
+      "safety_coverage",
+      "environment",
+      "inputs"
+    ],
+    "prepare": "Both subprocess CLI tests passed: prepared_not_executed, applied=null, physical_success=null, model_calls=0, prereg copied byte-for-byte, setup scene hash matches"
+  },
+  "fixture": {
+    "manifest": "tests/fixtures/zone_pair_v5/manifest.json",
+    "sha256": "c8ea7c47e3bf0de8c8613981414fd043d149af99ca7b8a5967acee8c9b19f97f",
+    "jpeg_count": 6,
+    "bytes_total": 249171,
+    "raw_read_only": true,
+    "original_input_image_and_source_hashes_reverified": true,
+    "eval_only_copied": false
+  },
+  "preservation": {
+    "unchanged_file_count": 33,
+    "sha256": {
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4_standoff_validation.json": "62679c5ef363343d1c9bf9a8e2c968ebaaea42d2229da5a5c0ad4a25d4e43182",
+      "experiments/2026-09-27-zone-pair-dev/dock_v3_validation.json": "66430ac29bf1ffd5c0cb930e4f7b2158d87bd245d48ec4a3f1b694dd30ee561e",
+      "experiments/2026-09-27-zone-pair-dev/dock_v3_ref_inventory.json": "2884a3f07546d09f0b2b461022584f5492a24bb422cbdb733aa14cca0bf963e4",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4_standoff_fix.md": "1dc5314004c0de1ff73ad2a972b9d7bbbb6bfb9be3e01ac3f4363a5aed0aa085",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v4.md": "fef3250c42273fbbeff22c14e947ffc1126a4727bf114f355d5053e56b954126",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v3.json": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v4.json": "48ab4218641b535633ab31e4aeefd92f3eef3b09c8d12655728b082bd5ab6b78",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v5.json": "015cfe328ad098114b1415c8d82b7976dbaa2fe5966a170810feeeb7bec5d399",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json": "34ab87dc51467226221ca8c991e960bc0715a9bad9c67764b98b99049e9683c4",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v5.md": "524616af95ac67d4aeaef1f1b7a254d64728c818ddfec7921457c6a00891d304",
+      "experiments/2026-09-27-zone-pair-dev/tensorboard_overview_check.json": "a94831c041529cbf0ba888998cbea919ce57902a489132f544b97755feb8b229",
+      "experiments/2026-09-27-zone-pair-dev/implementation_record.md": "061cca1a22557d885aa6931f0a3b36169f190cb6b2b656c494d3ffd167ff0b42",
+      "experiments/2026-09-27-zone-pair-dev/implementation_validation.json": "6e4c93874473c53c23a1b04e297ae80e7676de90e567e6cedbea04b191e7ea4f",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v2_fixes.md": "06d06cf47a608b18a78b9cb44ed7ab578e0159de5ba7c77b1bbde4561b41d6f5",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v3.json": "db565a1c76008c7dbade041a69167d9ea1e178e5f70c897f18f7c2efddea8514",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v4.json": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json": "896091d17022d569dfb34123587712395bf9870d065ce2b438d38acedee9108b",
+      "experiments/2026-09-27-zone-pair-dev/README.md": "8131637f923feaebff39abd5a90e1da6cacc5ca69a254d29555d6f547bd4d106",
+      "experiments/2026-09-27-zone-pair-dev/dev_review_fixes.md": "2bac91614aef796c22d66aa435ee76445866e329024fdf1e082d424103478be7",
+      "experiments/2026-09-27-zone-pair-dev/dock_v3.md": "2e826d77704ff0b2fafff155cdf7b2b5b7cf803929454c7695a197f8703207d8",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4_ref_inventory.json": "0d3299b377368b830d311bcc5fca1239159172f9e293e1fc7f4e0cb5d23b9707",
+      "experiments/2026-09-27-zone-pair-dev/results.md": "e04acc55c118a5e18b182dae95c73b1543b85e544ba989a8821b002c199ba7b6",
+      "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json": "85334a68bae0d35c197c612cd610c84307c0eba268a34247e71f4e233a0fe0f3",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4.md": "4a14a1ea9d8aead3745f919fd2efc69ca34d47daefee1c5b84b97f0eff20c49b",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v3.md": "64fb15e7bf6c5d2da342381fb2b31a84bddb60273a2cdbd98084ed537c28ba7e",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4_p1_validation.json": "ed8000d413e3d1ef31b2abf918e1793d473d056cb5e11a67866c3ab4a1213e6a",
+      "experiments/2026-09-27-zone-pair-dev/grasp_v4_validation.json": "912bddc797f52bf127826f6823c7f3bda016da16f8bc0d15e306868ea0164dfa",
+      "experiments/2026-09-27-zone-pair-dev/dev_review2_fixes.md": "4152fe36297eae2e99ea5ac982beaf5e74fb5e2e326d85a965a0527d345045c6",
+      "scripts/run_m2_pair.py": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+      "scripts/study_owncam_pair_beam.py": "3e4c77e279cde780e19b1a1eb2643c626c46dac15e4671001607c5fa6b9c3cff",
+      "harness/zone_own_guards.py": "eec5b4942e4fa186fd7a40c3d47b087614055d35dad900d8126adb97d381f617",
+      "harness/zone_pair_status.py": "bdacc2369212bdd8810d2f91498e971af572e1ef037a34baf76828a2702b1926",
+      "harness/owncam_localizer.py": "0304d7c491dfe6ae68cea6550f7a13e3c99e8e1d3f8e8b6c4b7b1d06893b1d63"
+    },
+    "frozen_M2_changed": false,
+    "safety_gate_and_STATUS_changed": false
+  },
+  "changed_files_sha256": {
+    "configs/simulation_workflows.json": "d5fa1443544e37632eeb7da7f6b60f7b2d11e38bd8dfe369599ca316caf7d5e8",
+    "harness/zone_pair_beam_track.py": "c36e9ea7179307f45787d89ddf9ba1ac07598dd309137933780834c0ec83ffc0",
+    "harness/zone_pair_executor.py": "c87c1425eebb1f3619cf2ed65eda01490d871e35fb09da8654241c78ed855ed5",
+    "harness/zone_pair_grasp.py": "2a823d06775c3eebd90e120aed211d2922c10981d144ad47ad087964faaa840f",
+    "harness/zone_pair_guards.py": "67bcab39085750ce0a2bec99fdb4210308a8690f35c310e770b241cd0af2a2da",
+    "scripts/evaluate_zone_pair_dev.py": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+    "scripts/run_ci_tests.py": "829995c8a85691fa798780add3e7773cd7ec2d16c248bb4a3c69d665fb3cadee",
+    "scripts/run_zone_pair_dev.py": "8ac4b636d226437f8048ca0ec0cf80d42b1ab063504193da6e0033f40f31c7ea",
+    "scripts/zone_pair_grasp_contract.py": "1a2fc12b076aa0a3836e592d0a6b622b852fb1a54a12d62a4f94601d70bbb5ec",
+    "tests/test_zone_pair_grasp.py": "4a5059e073ad21b1d92f801984de4b719ca650480044eb9d7a9ff136daaf8e2b",
+    "experiments/2026-09-27-zone-pair-dev/grasp_v5.md": "4f02145f8b5c62034149a5fd75f2b6194609d74a935f7d7456ce72b8cbf0c0a6",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5.json": "bcf02558167a9140a97b961bdc612b45679b3ff1e91fe496e9863ac8e9f3568e",
+    "harness/zone_pair_align.py": "b51f4ec2082df6913b867a6620115c257b0b5d440f148bdf9a7d64afe2fc8294",
+    "tests/fixtures/zone_pair_v5/dev07_r1_open_grasp.jpg": "2b613b886920cff5486227063b33cac4a86349dc422c3a10e4e7a1c9c4369afd",
+    "tests/fixtures/zone_pair_v5/dev07_r1_standoff.jpg": "89f06bb8b0bb6af56996896aa500218290eeead3ab7c4b9123eb598cf7e82455",
+    "tests/fixtures/zone_pair_v5/dev08_r2_abort.jpg": "93c0228dda3e2d7d1906337214433c39ae2bfe12b9457191bcedd063934cead9",
+    "tests/fixtures/zone_pair_v5/dev08_r2_before_trigger.jpg": "a38839f26a89da3c1d641f290213733c4ee5ae95d8b0c9fbce5c0c8aea69317b",
+    "tests/fixtures/zone_pair_v5/dev08_r2_last_tag.jpg": "466b636a420dfd3c72fe53cf26c167083e3249b40e8381ed2517b950925fa7b9",
+    "tests/fixtures/zone_pair_v5/dev08_r2_trigger.jpg": "6c6fdf750f83120b7ac402dbfe0341d78803934a92d8b9a7e735e5f59b25a22f",
+    "tests/fixtures/zone_pair_v5/manifest.json": "c8ea7c47e3bf0de8c8613981414fd043d149af99ca7b8a5967acee8c9b19f97f",
+    "tests/test_zone_pair_v5.py": "c5801f93eb9785d3ca3b57b720b8f0efde014068ebe54ca5acf038ceeaa23d64"
+  },
+  "git": {
+    "fetch": "failed: shared FETCH_HEAD Operation not permitted",
+    "gh": "failed: network access",
+    "connector": "Issue #221 latest comment, PR #240 and 12 open PR head refs verified",
+    "open_pr_heads": [
+      {
+        "number": 243,
+        "head": "codex/vision-loc-v5",
+        "sha": "5b1aa1b15fb27a35a199fd9f07367cfc346b20db"
+      },
+      {
+        "number": 242,
+        "head": "codex/vision-loc-v4",
+        "sha": "137ba742493b1f09c68238525cfc44a57054ae48"
+      },
+      {
+        "number": 241,
+        "head": "claude/dev-frame-capture-1hz",
+        "sha": "a87b57f2fa2f1a967d0ade0ddcd22621f2641345"
+      },
+      {
+        "number": 240,
+        "head": "codex/zone-pair-grasp-relook",
+        "sha": "3790372dfdd8e9de894bad7414657461bc8ba91d"
+      },
+      {
+        "number": 239,
+        "head": "claude/disk-cleanup-0927",
+        "sha": "b1e2d109751df7e065511915db6ac67e0ee9fe6e"
+      },
+      {
+        "number": 207,
+        "head": "kiro/zone-teacher-fix",
+        "sha": "2bada98e9d16cb433e20db8c48823abce10c8519"
+      },
+      {
+        "number": 199,
+        "head": "kiro/tb-perception-noslip",
+        "sha": "f6d57383865e306463cac4a4cfc83b108e736c70"
+      },
+      {
+        "number": 195,
+        "head": "kiro/tb-owncam-loop",
+        "sha": "d2bf3fa141398897413d537bddb6be1449581045"
+      },
+      {
+        "number": 193,
+        "head": "kiro/zone-own-perception",
+        "sha": "a019d55747a95d863d865d0ce9d74b7f4b97694a"
+      },
+      {
+        "number": 192,
+        "head": "kiro/records-0926b",
+        "sha": "71eb25532b8dedd0637062cb622f691b622839f4"
+      },
+      {
+        "number": 191,
+        "head": "kiro/report-draft",
+        "sha": "1453a96dad5815d300a108343cf235893f910b0b"
+      },
+      {
+        "number": 188,
+        "head": "kiro/zone-ko-pilot-fixes",
+        "sha": "b8b1a853784a9330f3b6fd10e43c9e30f55d2d08"
+      }
+    ],
+    "workflow_inventory": [
+      {
+        "ref": "origin",
+        "version": "0.2.0",
+        "sha": "414f8d8f1873e3309e4dc29b4c1c8930ab5c3a53"
+      },
+      {
+        "ref": "origin/codex/zone-pair-executor",
+        "version": "0.2.0",
+        "sha": "8120aa47a94d157a60753f314335a092794cf82d"
+      },
+      {
+        "ref": "origin/codex/zone-pair-grasp-relook",
+        "version": "0.3.0",
+        "sha": "3790372dfdd8e9de894bad7414657461bc8ba91d"
+      },
+      {
+        "ref": "origin/kiro/records-0926b",
+        "version": "0.2.0",
+        "sha": "71eb25532b8dedd0637062cb622f691b622839f4"
+      },
+      {
+        "ref": "origin/kiro/report-draft",
+        "version": "0.2.0",
+        "sha": "1453a96dad5815d300a108343cf235893f910b0b"
+      },
+      {
+        "ref": "origin/kiro/tb-owncam-loop",
+        "version": "0.2.0",
+        "sha": "d2bf3fa141398897413d537bddb6be1449581045"
+      },
+      {
+        "ref": "origin/kiro/tb-perception-noslip",
+        "version": "0.2.0",
+        "sha": "f6d57383865e306463cac4a4cfc83b108e736c70"
+      },
+      {
+        "ref": "origin/kiro/zone-ko-pilot-fixes",
+        "version": "0.2.0",
+        "sha": "b8b1a853784a9330f3b6fd10e43c9e30f55d2d08"
+      },
+      {
+        "ref": "origin/kiro/zone-own-perception",
+        "version": "0.2.0",
+        "sha": "a019d55747a95d863d865d0ce9d74b7f4b97694a"
+      },
+      {
+        "ref": "origin/kiro/zone-study-integration",
+        "version": "0.2.0",
+        "sha": "6a9b680b56458d6ec8075a904ef495cb93405915"
+      },
+      {
+        "ref": "origin/kiro/zone-teacher-fix",
+        "version": "0.2.0",
+        "sha": "2bada98e9d16cb433e20db8c48823abce10c8519"
+      },
+      {
+        "ref": "origin/main",
+        "version": "0.2.0",
+        "sha": "414f8d8f1873e3309e4dc29b4c1c8930ab5c3a53"
+      }
+    ],
+    "new_workflow_version": "0.4.0",
+    "rgb_bundle_allocated": false,
+    "primary_updated": false
+  },
+  "remaining": [
+    "Coordinator review and clean committed source freeze for dev09/dev10",
+    "Physical relook/grasp/carry/abort effectiveness unverified",
+    "TensorBoard new snapshot/media/loading/UI verification after actual coordinator execution"
+  ],
+  "tensorboard": {
+    "new_experiment_result": false,
+    "conversion_or_viewer_started": false,
+    "reason": "implementation/nonphysical regression only; no new physical/training/evaluation result",
+    "existing_dashboard": "http://127.0.0.1:6006",
+    "new_results_displayed_claim": false
+  }
+}

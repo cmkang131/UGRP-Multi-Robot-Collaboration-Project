@@ -61,7 +61,7 @@ def setup():
         slot.port.capture = capture
         slot.executor.pose.on_frame = lambda t, rgb, ex=slot.executor: PoseReport(
             t, True, x_m=0., y_m=0., yaw_rad=0., std_xy_m=.01, std_yaw_rad=.01,
-            since_tag_s=0., source=ex.pose.source)
+            since_tag_s=0., fix_age_s=0., last_fix_t=t, source=ex.pose.source)
     host.links = {r: runner.HostRobotLink(host, r) for r in zi.ROBOTS}
 
     def capture_raw(host, rid, now):
@@ -111,7 +111,9 @@ def test_pair_and_multiple_real_adapter_calls_use_each_own_camera(condition, tmp
     assert not [d for d in trial.dispatch_log if d['api'] == 'deliver']
     records = trial.pair_status.record()
     assert records['messages'] > 0 and records['sessions'] == host.pairs.records()
-    assert records['config']['profile'] == 'zone_pair_status_v4'
+    assert records['config']['profile'] == 'zone_pair_status_v5'
+    assert records['config']['executor_profile'] == 'zone_pair_executor_v7_dev'
+    assert {'close_ready_0', 'close_go_0'} <= set(records['config']['states'])
     assert all(set(m) == set(FIELDS) for s in records['sessions'] for m in s['status_messages'])
     assert any(m['state'] == 'start_ready' for s in records['sessions'] for m in s['status_messages'])
     assert any(m['state'] == 'lift_go_0' for s in records['sessions'] for m in s['status_messages'])
@@ -170,6 +172,10 @@ def test_research_scenarios_and_bundle_use_study_wide_profile():
     assert bundle['contact_profile_expected']['noslip_iterations'] == 10
     assert bundle['contact_profile_expected']['timestep_s'] == .00025
     assert bundle['perception_delay_s'] == .16
+    assert bundle['execution_bundle_id'] == 'zone-study-integration-v69-multiturn-landmark-agnostic'
+    workflow = next(w for w in json.loads((ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
+                    if w['id'] == 'zone-study-integration-run')
+    assert workflow['version'] == '2.2.0'
     assert bundle['pose_provider']['label']['research_result'] is False
     assert bundle['pose_provider']['spec']['calibration'] == pre['student']['calibration']
     from scripts.zone_pair_dev_runtime import make_scene
@@ -252,28 +258,28 @@ def test_output_manifest_preserves_actual_profile_separately_from_expected(tmp_p
 
 
 def test_provider_prior_and_close_hooks_use_only_preregistered_own_docks(monkeypatch):
-    fake, _, _, _ = setup()
-    host = runner.StudyTeamHost.__new__(runner.StudyTeamHost)
-    host.robots, host.world = fake.robots, fake.world
+    from tests.test_zone_pair_tag_boundary_matrix import host_fixture, damaged_map, block_measurements
+    from tests.test_vision_pose_source import provider
+    static = damaged_map('no_landmarks')
+    spec, student = host_fixture(monkeypatch, static)
+    block_measurements(monkeypatch)
     created, closed, priors = [], [], []
-    class FutureProvider:
-        source = 'owncam_pf_v2:stub'
-        def on_command(self, row): pass
-        def init_prior(self, **prior): priors.append(prior)
-        def close(self): closed.append(self)
     def build(*args):
-        provider = FutureProvider(); created.append(provider)
-        return provider
+        p = provider(prior=False)
+        original_prior, original_close = p.init_prior, p.close
+        def prior(**kw):
+            priors.append(kw); original_prior(**kw)
+        def close():
+            closed.append(p); original_close()
+        p.init_prior, p.close = prior, close
+        created.append(p)
+        return p
     monkeypatch.setattr(zi, 'build_pose_provider', build)
-    dock = {'mean': [0., 0., 0.], 'std': [.15, .15, .17], 'source': 'scenario_own_dock'}
-    runner.StudyTeamHost._install_providers(host, {'pose_priors': {r: dock for r in zi.ROBOTS}}, {})
-    assert priors == [dock] * 3
-    runner.StudyTeamHost.close(host)
+    host = runner.StudyTeamHost(spec, student, root=ROOT, provider_spec={'uses_landmark_tags': False})
+    assert priors == list(spec['pose_priors'].values())
+    host.close()
     assert closed == created
-    fake, _, _, _ = setup()
-    host = runner.StudyTeamHost.__new__(runner.StudyTeamHost)
-    host.robots, host.world = fake.robots, fake.world
+    spec.pop('pose_priors')
     with pytest.raises(zi.ContractViolation, match='preregistered own dock'):
-        runner.StudyTeamHost._install_providers(host, {}, {})
-    runner.StudyTeamHost.close(host)
+        runner.StudyTeamHost(spec, student, root=ROOT, provider_spec={'uses_landmark_tags': False})
     assert created[-1] in closed

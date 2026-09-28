@@ -16,7 +16,7 @@ from collections.abc import Mapping
 from harness.zone_own_contract import finite_number
 from harness.zone_pair_status import MAX_SEGMENTS, ARM_S, CONTROL_S, EPS, PROFILE as STATUS_PROFILE, PairStatusChannel, PairStatusEndpoint
 
-PROFILE = 'zone_pair_executor_v4_dev'
+PROFILE = 'zone_pair_executor_v7_dev'
 PAIR = ('r1', 'r2')                 # frozen M2 roles: end_neg / end_pos
 CONTACT_PROFILE = 'cargo_noslip_v1'
 
@@ -120,9 +120,27 @@ def m2_controller(execution, plan, params):
     from scripts import run_m2_pair as m2
     from scripts.zone_teacher import ArmSequence
     from harness.zone_pair_guards import GuardedPairApproach
+    from harness.zone_pair_grasp import PairGraspRelook
+    from harness.m2_provider_adapter import ProviderM2DoorStudent
 
-    class RoutedM2(m2.M2DoorStudent):
+    class RoutedM2(PairGraspRelook, ProviderM2DoorStudent):
         requires_fresh_frame = True
+
+        def align_stop_ready(self, now):
+            return execution.command_guard.align_stop_ready(now, self.align_look_started_at)
+
+        def align_look_choices(self):
+            from harness.zone_pair_align import ranked_look_pans
+            from harness.zone_pair_geometry import PairSweepGuard
+            own = execution.own
+            guard = PairSweepGuard(own.guard, plan['beam_geometry'], execution.arguments['role'])
+            return ranked_look_pans(own.map, own.last_report, own.servo, guard, own.pose)
+
+        def preclose_check(self, now, obs):
+            return execution.command_guard.preclose_check(now, obs)
+
+        def record_standoff(self, now, obs):
+            return execution.command_guard.observe_standoff(now, obs)
 
         def fail(self, reason, now):
             if reason in ('APPROACH_BLOCKED', 'APPROACH_POSE_UNCERTAIN', 'APPROACH_LOST', 'APPROACH_ARRIVAL_UNCONFIRMED'):
@@ -205,6 +223,8 @@ class PairExecution:
         if not self.terminal:
             self.controller.driver.on_command(row)
             self.command_guard.on_command(row)
+            if hasattr(self.controller, 'on_issued_command'):
+                self.controller.on_issued_command(row)
 
     def abort(self, now, reason):
         if self.terminal:

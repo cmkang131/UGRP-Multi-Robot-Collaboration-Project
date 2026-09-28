@@ -6,6 +6,8 @@ evidence. Unknown visibility is never a negative detection.
 """
 from __future__ import annotations
 
+from harness.owncam_time import pose_report_fresh
+
 import copy
 import math
 
@@ -143,7 +145,7 @@ class OwnCamMemoryV3(v2.OwnCamMemory):
         if report.initialized and (not np.isfinite([report.t_est, report.x_m, report.y_m, report.yaw_rad,
                                                     report.std_xy_m, report.std_yaw_rad]).all()
                                    or not np.isfinite(report.cov).all()
-                                   or not -1e-8 <= now - report.t_est <= .25 + 1e-8):
+                                   or not pose_report_fresh(report, now, max_age_s=.25)):
             self.event(now, 'invalid_pose_frame', frame_id=frame_id)
             return {'posture': v2.posture_name(servo=kwargs['servo']), 'settled': False, 'observed': []}
         self.guard.observe_pose(report)

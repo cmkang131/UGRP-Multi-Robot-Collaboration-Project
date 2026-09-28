@@ -9,7 +9,7 @@ def readiness_snapshot(ex, now, item_ref=None, target_zone=None):
 
     Values retain full precision. Non-finite numbers are null with a separate
     failed predicate so the receipt can be written with allow_nan=False.
-    Tag age is explanatory only; it is NOT an additional admission threshold.
+    Fix age is explanatory only; it is NOT an additional admission threshold.
     """
     number = lambda v: float(v) if finite_number(v) else None
     rep, obs, gate = ex.last_report, ex.last_obs, ex.gate
@@ -26,8 +26,8 @@ def readiness_snapshot(ex, now, item_ref=None, target_zone=None):
            'report': None if rep is None else {
                'initialized': bool(rep.initialized), 't_est': number(rep.t_est),
                'age_s': number(report_age), 'std_xy_m': number(rep.std_xy_m),
-               'std_yaw_rad': number(rep.std_yaw_rad), 'since_tag_s': number(rep.since_tag_s),
-               'source': rep.source,
+               'std_yaw_rad': number(rep.std_yaw_rad), 'fix_age_s': number(rep.fix_age_s),
+               'source': rep.source, 'last_fix_t': number(rep.last_fix_t), 'fix_source': rep.fix_source,
                'classification': gate.classify(rep.initialized, rep.std_xy_m, rep.std_yaw_rad)},
            'observation': None if obs is None else {
                'sim_time': number(obs_time), 'age_s': number(obs_age),

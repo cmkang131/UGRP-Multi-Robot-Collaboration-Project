@@ -1,0 +1,115 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+______ test_real_m2_checkpoint_relocalization_readiness_and_go[6.0-True] _______
+
+arm_settle_s = 6.0, expected_go = True
+
+    @pytest.mark.parametrize('arm_settle_s,expected_go', [(6., True), (0., False)])
+    def test_real_m2_checkpoint_relocalization_readiness_and_go(arm_settle_s, expected_go):
+        host = SavedRGBHost()
+        host.admit_from_saved_sweep()
+        eps = active(host)
+        before = {}
+        for rid, ep in eps.items():
+            ctl, provider = ep.controller, ep.own.pose
+            assert isinstance(ctl, m2.M2DoorStudent) and ctl.version == 'v3'
+            assert isinstance(provider, DelayedPoseSource)
+            assert ctl.driver.loc is provider.loc
+            before[rid] = provider.loc, provider.provider.loc, len(provider.timing)
+            # Checkpoint entry state from own M2 state/previous RGB grasp estimate.
+            # No navigation, preceding physical carry or success is claimed.
+            ctl.grip_base = REPLAY['checkpoint_grip_base_from_own_rgb'][rid]
+            ctl.look_name = 'p45'
+            ctl.set('cp_open', host.world.data.time)
+            # Fixture checkpoint with r1's preceding arm settle still pending.
+            ctl.arm.until = host.world.data.time + (arm_settle_s if rid == 'r1' else 0.)
+    
+        unreleased = set()
+        for i in range(1, 601):
+            runner.StudyTeamHost.advance_to(host, round(2.2 + i * .05, 6))
+            for rid, ep in eps.items():
+                provider = ep.own.pose
+                resets = [e for e in ep.events if e['event'] == 'state' and e['state'] == 'pregrasp_look']
+                if resets and host.world.data.time < resets[-1]['sim_s'] + .16 - 1e-9:
+                    # Actual M2 replaced the PF. Neither loc nor report may retain
+                    # the admission estimate or see an image before release.
+                    assert provider.loc is before[rid][0]
+                    assert provider.provider.loc is not before[rid][1]
+                    assert not provider.loc.estimate()['initialized']
+                    assert not provider.report(host.world.data.time).initialized
+                    assert not any(m['robot_id'] == rid and m['state'] == 'lift_ready_1'
+                                   for m in ep.status.channel.log)
+                    unreleased.add(rid)
+            if all(ep.controller.state == 'lift' for ep in eps.values()):
+                break
+            if any(ep.terminal for ep in eps.values()):
+>               assert not expected_go, [ep.own.events[-3:] for ep in eps.values()]
+E               AssertionError: [[{'schema': 'ugrp.zone_own_executor_event.v1', 'robot_id': 'r1', 'event': 'pair_progress', 'sim_s': 8.2, ...}, {'sche...7.3, ...}, {'schema': 'ugrp.zone_own_executor_event.v1', 'robot_id': 'r2', 'event': 'job_failed', 'sim_s': 17.8, ...}]]
+E               assert not True
+
+tests/test_zone_study_pair_delay.py:145: AssertionError
+______ test_real_m2_checkpoint_relocalization_readiness_and_go[0.0-False] ______
+
+arm_settle_s = 0.0, expected_go = False
+
+    @pytest.mark.parametrize('arm_settle_s,expected_go', [(6., True), (0., False)])
+    def test_real_m2_checkpoint_relocalization_readiness_and_go(arm_settle_s, expected_go):
+        host = SavedRGBHost()
+        host.admit_from_saved_sweep()
+        eps = active(host)
+        before = {}
+        for rid, ep in eps.items():
+            ctl, provider = ep.controller, ep.own.pose
+            assert isinstance(ctl, m2.M2DoorStudent) and ctl.version == 'v3'
+            assert isinstance(provider, DelayedPoseSource)
+            assert ctl.driver.loc is provider.loc
+            before[rid] = provider.loc, provider.provider.loc, len(provider.timing)
+            # Checkpoint entry state from own M2 state/previous RGB grasp estimate.
+            # No navigation, preceding physical carry or success is claimed.
+            ctl.grip_base = REPLAY['checkpoint_grip_base_from_own_rgb'][rid]
+            ctl.look_name = 'p45'
+            ctl.set('cp_open', host.world.data.time)
+            # Fixture checkpoint with r1's preceding arm settle still pending.
+            ctl.arm.until = host.world.data.time + (arm_settle_s if rid == 'r1' else 0.)
+    
+        unreleased = set()
+        for i in range(1, 601):
+            runner.StudyTeamHost.advance_to(host, round(2.2 + i * .05, 6))
+            for rid, ep in eps.items():
+                provider = ep.own.pose
+                resets = [e for e in ep.events if e['event'] == 'state' and e['state'] == 'pregrasp_look']
+                if resets and host.world.data.time < resets[-1]['sim_s'] + .16 - 1e-9:
+                    # Actual M2 replaced the PF. Neither loc nor report may retain
+                    # the admission estimate or see an image before release.
+                    assert provider.loc is before[rid][0]
+                    assert provider.provider.loc is not before[rid][1]
+                    assert not provider.loc.estimate()['initialized']
+                    assert not provider.report(host.world.data.time).initialized
+                    assert not any(m['robot_id'] == rid and m['state'] == 'lift_ready_1'
+                                   for m in ep.status.channel.log)
+                    unreleased.add(rid)
+            if all(ep.controller.state == 'lift' for ep in eps.values()):
+                break
+            if any(ep.terminal for ep in eps.values()):
+                assert not expected_go, [ep.own.events[-3:] for ep in eps.values()]
+                break
+        else:
+            pytest.fail(str([(r, ep.controller.state, ep.events[-5:]) for r, ep in eps.items()]))
+    
+        assert unreleased == {'r1', 'r2'}
+        messages = host.pairs.records()[0]['status_messages']
+        go = [m for m in messages if m['state'] == 'lift_go_1']
+        if not expected_go:
+            # Unsynchronised checkpoint settling in this RGB replay: r1 finishes
+            # first, waits for r2, then its own loaded pose crosses the guard limit.
+            # The real guard aborts; a past readiness must never become joint GO.
+            assert not go
+>           assert any(m['state'] == 'lift_ready_1' for m in messages)
+E           assert False
+E            +  where False = any(<generator object test_real_m2_checkpoint_relocalization_readiness_and_go.<locals>.<genexpr> at 0x1120c7510>)
+
+tests/test_zone_study_pair_delay.py:158: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_study_pair_delay.py::test_real_m2_checkpoint_relocalization_readiness_and_go[6.0-True]
+FAILED tests/test_zone_study_pair_delay.py::test_real_m2_checkpoint_relocalization_readiness_and_go[0.0-False]
+2 failed in 9.95s

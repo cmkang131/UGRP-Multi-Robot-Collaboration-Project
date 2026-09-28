@@ -16,9 +16,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 RUNTIME = (ROOT/'harness'/'m1_owncam_delivery.py', ROOT/'harness'/'m1_owncam_contract.py',
-           ROOT/'harness'/'owncam_pose_source.py')
-ALLOWED = {'__future__', 'math', 'hashlib', 'json', 'base64', 'collections.abc', 'dataclasses', 'numpy',
-           'harness', 'harness.m1_owncam_contract', 'harness.owncam_pose_source', 'harness.owncam_localizer',
+           ROOT/'harness'/'owncam_pose_source.py', ROOT/'harness'/'owncam_time.py')
+ALLOWED = {'__future__', 'math', 'hashlib', 'json', 'base64', 'collections.abc', 'dataclasses', 'numpy', 'copy',
+           'harness', 'harness.owncam_view', 'harness.owncam_time', 'harness.m1_owncam_contract', 'harness.owncam_pose_source', 'harness.owncam_localizer',
            'harness.wall_tags', 'harness.owncam_drive', 'harness.owncam_drive_v2', 'harness.zone_color_boxes',
            'harness.wrist_zone_skill', 'harness.wrist_zone_skill_v5', 'harness.wrist_zone_skill_v6'}
 FORBIDDEN = ('mujoco', 'xpos', 'xquat', 'qpos', 'qvel', 'base_xyz', 'base_rpy', 'eval_only', 'gt_trajectory',

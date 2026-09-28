@@ -1,9 +1,11 @@
 """Real PairTeam/M2 + real 0.16 SIM-s pose provider on stored own RGB.
 
-Start at an opened checkpoint (the preceding navigation/carry is outside this
-test). The fake world advances only a number; the real host runs arm commands,
+Cover the allowed movement -> align stop before any checkpoint, plus the
+opened-checkpoint replay. The fake world advances only a number; the real host runs arm commands,
 M2's PF replacement/sweep, RGB grip check and status readiness/GO. No inference
 result, readiness, guard, controller method or delay is replaced by a stub.
+The standoff supplement combines each robot's earlier own look with its saved
+checkpoint sweep/grip stream; this is a protocol replay, not a physical trajectory.
 """
 from __future__ import annotations
 
@@ -28,6 +30,7 @@ from tests.test_zone_study_integration import FRAMES
 
 FIX = Path(__file__).parent / 'fixtures/zone_study_pair_delay'
 REPLAY = json.loads((FIX / 'frames.json').read_text())
+STANDOFF = json.loads((FIX / 'standoff_v5.json').read_text())
 PREREG = runner.load_prereg(runner.ROOT / 'configs/zone_study_integration/pair_dev_DRAFT.json')
 CALIB = json.loads((runner.ROOT / PREREG['student']['calibration']).read_text())
 
@@ -40,7 +43,8 @@ def no_physics_or_network(monkeypatch):
 
 
 class SavedRGBHost(FakeHost):
-    def __init__(self):
+    def __init__(self, *, missing_standoff=False):
+        self.missing_standoff = missing_standoff
         spec = runner.zi.pose_provider_spec('tags_temporary', map_id='zone_wide_door_tags_v2')
         executors = {r: ZoneOwnExecutor(r, MAP, CALIB['params'], ORDER, judgments=False,
                                       skill_factory=lambda *a, **k: None, pose_estimate_cls=tuple,
@@ -50,6 +54,11 @@ class SavedRGBHost(FakeHost):
         super().__init__(executors, lambda *a: None)
         self.contact_record = {'profile': 'cargo_noslip_v1'}
         self.enable_pair_carry(SHEETS, CALIB['params'])  # production m2_controller
+        self.standoff = {}
+        for row in STANDOFF['frames']:
+            data = (FIX / row['file']).read_bytes()
+            assert hashlib.sha256(data).hexdigest() == row['sha256']
+            self.standoff[row['robot']] = row, data
         self.saved = {}
         for rid in ('r1', 'r2'):
             self.saved[rid] = []
@@ -75,6 +84,10 @@ class SavedRGBHost(FakeHost):
                 if row['state'] == 'pregrasp_look' and slot.port.servo == commanded:
                     jpeg = data
                     break
+            row, data = self.standoff[rid]
+            if (not (self.missing_standoff and rid == 'r2')
+                    and slot.port.servo == {int(k): v for k, v in row['own_pose_commands'].items()}):
+                jpeg = data
         slot.port.fid += 1
         frame = {**obs(rid, slot.port.fid, now, slot.port.servo),
                  'image': base64.b64encode(jpeg).decode(), 'sha256': hashlib.sha256(jpeg).hexdigest()}
@@ -82,10 +95,10 @@ class SavedRGBHost(FakeHost):
         slot.frames.append({'robot_id': rid, 't': now, 'sha256': frame['sha256']})
         slot.next_frame = now + self.FRAME_S
 
-    def admit_from_saved_sweep(self):
+    def admit_from_saved_sweep(self, samples=12):
         # Replay only issued servo commands and own images to initialize the
         # filters/admission gates; never seed them from an evaluated pose.
-        for i in range(12):
+        for i in range(samples):
             now = round(i * .2, 6)
             self.world.data.time = now
             for rid in ('r1', 'r2'):
@@ -103,9 +116,75 @@ class SavedRGBHost(FakeHost):
         assert start(self)['accepted']
 
 
-@pytest.mark.parametrize('arm_settle_s,expected_go', [(6., True), (0., False)])
-def test_real_m2_checkpoint_relocalization_readiness_and_go(arm_settle_s, expected_go):
+def saved_align_host(move):
     host = SavedRGBHost()
+    host.FRAME_S = .05  # review reproduction: own RGB delivery on each 20 Hz host tick
+    host.admit_from_saved_sweep(samples=11)  # t=2.0, before motion; no cp_open shortcut
+    eps = active(host)
+    host.world.data.time = 2.1
+    for rid, ep in eps.items():
+        host._capture(rid, 2.1)
+        ep.started = ep.control_started = True
+        ep.controller.arm.events.clear()
+        ep.controller.arm.until = 2.1
+        ep.status.tick('aligning', 2.1)
+        if move:
+            command = {'kind': 'mecanum', 'forward': .01, 'left': 0., 'turn': 0., 'duration_s': .25}
+            assert ep.command_guard.check(2.1, [command]) == [command]
+            host._apply(rid, command, 2.1)  # real own-command and cache invalidation path
+            assert ep.command_guard.stationary_pose is None
+            assert ep.command_guard.motion_until == pytest.approx(2.35)
+        ep.controller.state = 'align_start'
+        ep.next_control = host.robots[rid].next_decide = 2.2
+    return host, eps
+
+
+@pytest.mark.parametrize('move', [True, False], ids=['preceding-motion', 'stationary-control'])
+def test_align_stop_waits_for_delayed_post_stop_pose_before_reset(move):
+    host, eps = saved_align_host(move)
+    original = {rid: ep.own.pose.provider.loc for rid, ep in eps.items()}
+
+    for now in (2.2, 2.3, 2.35, 2.4, 2.45, 2.5, 2.6):
+        runner.StudyTeamHost.advance_to(host, now)
+        for rid, ep in eps.items():
+            assert not ep.terminal, (now, rid, ep.own.events[-3:])
+            provider, guard = ep.own.pose, ep.command_guard
+            assert isinstance(provider, DelayedPoseSource)
+            assert provider.loc is ep.controller.driver.loc
+            if now <= 2.35:
+                # Old code resets at 2.30 with t_est=2.14 and no motion cache,
+                # then aborts at 2.35. Even the stationary control must wait
+                # for a post-stop report, not just an old stationary cache.
+                assert provider.provider.loc is original[rid], (now, rid, ep.own.last_report)
+                assert ep.controller.state == 'align_relook_stop'
+                assert not ep.controller.arm.events
+                assert ep.own.last_report.t_est < 2.2
+                if move:
+                    assert guard.stationary_pose is None
+            else:
+                assert provider.provider.loc is not original[rid]
+                assert guard.stationary_pose is not None
+                assert ep.controller.state == 'align_relook'
+
+    for rid, ep in eps.items():
+        commands = host.robots[rid].commands
+        stopped = [c for c in commands if c['kind'] == 'hold' and c['t'] >= 2.2]
+        assert stopped[0]['t'] == 2.2
+        assert all(c['kind'] in ('hold', 'arm', 'look') for c in commands if c['t'] >= 2.2)
+        assert any(c['kind'] == 'arm' and c['t'] > 2.4 for c in commands)
+        receipt = next(e for e in ep.events if e['event'] == 'align_relook_stopped_pose')
+        assert receipt['sim_s'] == 2.4
+        assert receipt['report_t'] == pytest.approx(2.24)
+        assert receipt['report_t'] >= receipt['stopped_at_s'] == 2.2
+        assert all(t['consumed_sim_s'] + 1e-9 >= t['captured_sim_s'] + .16
+                   for t in ep.own.pose.timing)
+
+
+@pytest.mark.parametrize('arm_settle_s,missing_standoff,expected_go', [
+    (6., False, True), (0., False, True), (0., True, False),
+])
+def test_real_m2_checkpoint_relocalization_readiness_and_go(arm_settle_s, missing_standoff, expected_go):
+    host = SavedRGBHost(missing_standoff=missing_standoff)
     host.admit_from_saved_sweep()
     eps = active(host)
     before = {}
@@ -118,7 +197,8 @@ def test_real_m2_checkpoint_relocalization_readiness_and_go(arm_settle_s, expect
         # Checkpoint entry state from own M2 state/previous RGB grasp estimate.
         # No navigation, preceding physical carry or success is claimed.
         ctl.grip_base = REPLAY['checkpoint_grip_base_from_own_rgb'][rid]
-        ctl.look_name = 'p45'
+        camera = {int(k): v for k, v in host.standoff[rid][0]['own_pose_commands'].items() if k != '1'}
+        ctl.look_name = next(name for name, _, pose in m2.ob2.LOOK_POSTURES if {k: v for k, v in pose.items() if k != 1} == camera)
         ctl.set('cp_open', host.world.data.time)
         # Fixture checkpoint with r1's preceding arm settle still pending.
         ctl.arm.until = host.world.data.time + (arm_settle_s if rid == 'r1' else 0.)
@@ -136,7 +216,7 @@ def test_real_m2_checkpoint_relocalization_readiness_and_go(arm_settle_s, expect
                 assert provider.provider.loc is not before[rid][1]
                 assert not provider.loc.estimate()['initialized']
                 assert not provider.report(host.world.data.time).initialized
-                assert not any(m['robot_id'] == rid and m['state'] == 'lift_ready_1'
+                assert not any(m['robot_id'] == rid and m['state'] in ('close_ready_1', 'lift_ready_1')
                                for m in ep.status.channel.log)
                 unreleased.add(rid)
         if all(ep.controller.state == 'lift' for ep in eps.values()):
@@ -149,18 +229,29 @@ def test_real_m2_checkpoint_relocalization_readiness_and_go(arm_settle_s, expect
 
     assert unreleased == {'r1', 'r2'}
     messages = host.pairs.records()[0]['status_messages']
+    assert host.pairs.records()[0]['status_profile'] == 'zone_pair_status_v5'
+    close_go = [m for m in messages if m['state'] == 'close_go_1']
     go = [m for m in messages if m['state'] == 'lift_go_1']
     if not expected_go:
-        # Unsynchronised checkpoint settling in this RGB replay: r1 finishes
-        # first, waits for r2, then its own loaded pose crosses the guard limit.
-        # The real guard aborts; a past readiness must never become joint GO.
-        assert not go
-        assert any(m['state'] == 'lift_ready_1' for m in messages)
-        assert any(e['event'] == 'job_failed' and e['detail']['reason'] == 'POSE_UNCERTAIN'
+        # r1 is already ready; r2 lacks its own standoff RGB. An actual
+        # perception refusal must cancel both sides without a close command.
+        assert not close_go and not go
+        assert any(m['state'] == 'close_ready_1' for m in messages)
+        assert not any(c['kind'] == 'arm' and c['servo_id'] == 1 and c['pulse'] < 2000
+                       for slot in host.robots.values() for c in slot.commands)
+        assert any(e['event'] == 'job_failed' and e['detail']['reason'] == 'PREGRASP_BEAM_UNCERTAIN'
                    for ep in eps.values() for e in ep.own.events)
         assert all(ep.terminal for ep in eps.values())
         assert all(ep.port.commands == [] and ep.controller.arm.events == [] for ep in eps.values())
         return
+    # v5 keeps the early robot OPEN while the partner relocalizes. Both
+    # staggered schedules now close together, before either begins lifting.
+    assert {m['robot_id'] for m in close_go} == {'r1', 'r2'}
+    # Subsequent heartbeats may repeat the GO enum; compare its FIRST
+    # consumption per endpoint, then check the actual issued close commands.
+    close_at = {rid: min(m['sent_at_s'] for m in close_go if m['robot_id'] == rid) for rid in eps}
+    assert len(set(close_at.values())) == 1
+    assert close_at['r1'] < go[0]['sent_at_s']
     assert {m['robot_id'] for m in go} == {'r1', 'r2'}
     assert len({m['sent_at_s'] for m in go}) == 1
     for rid, ep in eps.items():
@@ -170,6 +261,15 @@ def test_real_m2_checkpoint_relocalization_readiness_and_go(arm_settle_s, expect
         assert ep.controller.driver.loc is facade
         fixes = [e for e in ep.events if e['event'] == 'pregrasp_fix' and e['ok']]
         assert fixes
+        close_ready = next(m for m in reversed(messages)
+                           if m['robot_id'] == rid and m['state'] == 'close_ready_1')
+        assert fixes[0]['sim_s'] < close_ready['sent_at_s'] <= close_at[rid]
+        assert close_at[rid] < close_ready['ready_until_s']
+        closes = [c for c in host.robots[rid].commands
+                  if c['kind'] == 'arm' and c['servo_id'] == 1 and c['pulse'] < 2000]
+        assert closes and min(c['t'] for c in closes) >= close_at[rid]
+        anchors = [e for e in ep.events if e['event'] == 'beam_standoff' and e['accepted']]
+        assert anchors and anchors[0]['sha256'] == host.standoff[rid][0]['sha256']
         ready = next(m for m in messages if m['robot_id'] == rid and m['state'] == 'lift_ready_1')
         assert fixes[0]['sim_s'] < ready['sent_at_s'] < go[0]['sent_at_s']
         latest_ready = next(m for m in reversed(messages) if m['robot_id'] == rid and m['state'] == 'lift_ready_1')
@@ -181,3 +281,8 @@ def test_real_m2_checkpoint_relocalization_readiness_and_go(arm_settle_s, expect
                               and t['consumed_sim_s'] + 1e-9 >= t['available_sim_s'] for t in timing)
         assert ep.own.last_report.t_est <= host.world.data.time - .16 + 1e-9
         assert any(kind == 'arm' for _, kind, _ in host.robots[rid].port.log)
+
+    close_ramps = {rid: [(c['t'], c['pulse']) for c in host.robots[rid].commands
+                         if c['kind'] == 'arm' and c['servo_id'] == 1 and c['pulse'] < 2000]
+                   for rid in eps}
+    assert close_ramps['r1'] == close_ramps['r2']

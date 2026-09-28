@@ -41,8 +41,9 @@ PRIOR_STD = (.15, .15, math.radians(10.))          # VIS3 dock prior (vision_loc
 class FailClosedLoc:
     """The shared localizer seen by the executor's drivers; uninitialised once the provider failed."""
 
-    def __init__(self, pf):
+    def __init__(self, pf, provider_id=vp.PROVIDER_ID):
         self._pf = pf
+        self.provider_id = provider_id
         self.failure: str | None = None
 
     def __getattr__(self, name):
@@ -63,6 +64,7 @@ class FailClosedLoc:
             last = self._pf.last_scan_t
             est['since_tag_s'] = None if last is None else round(float(self._pf.t) - float(last), 3)
             est['since_scan_s'] = est['since_tag_s']
+            est.update(last_fix_t=last, fix_age_s=est['since_scan_s'], fix_source=self.provider_id)
         return est
 
 
@@ -74,6 +76,11 @@ def _finite_seq(values, n) -> bool:
 class VisionPoseSource:
     """One robot's tag-free vision localizer (own frames + own commands -> ``PoseReport``)."""
 
+    map_ids = MAPS
+    map_file = vp.VIS3_DIR / 'maps' / 'zone_wide_door_walls_v3_notags.json'
+    provider_id = vp.PROVIDER_ID
+    source_prefix = vp.SOURCE_LABEL_PREFIX
+
     def __init__(self, static_map: Mapping, params: Mapping, seed: int = 0, *, worker=None, cfg=None):
         if not isinstance(seed, int) or isinstance(seed, bool):
             raise TypeError('seed must be an int')
@@ -83,23 +90,26 @@ class VisionPoseSource:
         m1_cal, self.m1_calibration = mp.load_m1_calibration()
         if vp.canonical(dict(params)) != vp.canonical(m1_cal['params']):
             raise ValueError('params differ from the M1 motion calibration the VIS3 student was scored with')
-        vis3_map = vp.load_json(vp.VIS3_DIR / 'maps' / 'zone_wide_door_walls_v3_notags.json')
-        if static_map.get('map_id') not in MAPS or vp.canonical(dict(static_map)) != vp.canonical(vis3_map):
-            raise ValueError(f'vision_zero_tag_v1 is registered for {MAPS} (the VIS3 map file) only, '
+        vis3_map = vp.load_json(self.map_file)
+        if static_map.get('map_id') not in self.map_ids or vp.canonical(dict(static_map)) != vp.canonical(vis3_map):
+            raise ValueError(f'{self.provider_id} is registered for {self.map_ids} (the exact registered map) only, '
                              f'got {static_map.get("map_id")!r}')
         self.cfg = vp.load_config() if cfg is None else cfg
         sel = vp.selected_config()
         cal = vp.load_json(vp.VIS3_DIR / 'calibration_train.json')
-        pf = vpf.make_robust_pf(mp.load_m1_localizer(), copy.deepcopy(dict(static_map)), copy.deepcopy(dict(params)),
+        from harness.vision_motion_init import motion_module
+        pf = vpf.make_robust_pf(motion_module(mp.load_m1_localizer()), copy.deepcopy(dict(static_map)), copy.deepcopy(dict(params)),
                                 sel.get('measurement', {}), sel.get('obs', {}), cal['sag'], seed,
                                 cal.get('pan_base_yaw') if sel.get('pan_coupling', True) else None,
                                 sel.get('robust', {}))
-        self.loc = FailClosedLoc(pf)
+        self.loc = FailClosedLoc(pf, self.provider_id)
         self.seed = seed
-        identity = {'provider': vp.PROVIDER_ID, 'frozen': self.frozen, 'checkpoint_sha256': self.cfg['model']['sha256'],
-                    'm1_calibration_sha256': self.m1_calibration['file_sha256']}
+        identity = {'provider': self.provider_id, 'initialization_version': 2,
+                    'motion_init_sha256': vp.file_sha256(vp.ROOT / 'harness/vision_motion_init.py'), 'frozen': self.frozen, 'checkpoint_sha256': self.cfg['model']['sha256'],
+                    'm1_calibration_sha256': self.m1_calibration['file_sha256'],
+                    'map_sha256': vp.sha256_bytes(vp.canonical(dict(static_map)))}
         self.identity_sha256 = vp.sha256_bytes(vp.canonical(identity))
-        self.source = f'{vp.SOURCE_LABEL_PREFIX}:{self.identity_sha256[:8]}'
+        self.source = f'{self.source_prefix}:{self.identity_sha256[:8]}'
         self.worker = worker if worker is not None else VisionWorkerClient(self.cfg)
         self.servo: dict[int, int] = {}
         self.prior: dict | None = None
@@ -110,6 +120,34 @@ class VisionPoseSource:
         self.timing: list[dict] = []
 
     # ------------------------------------------------------------ inputs
+    def begin_relocalization(self, now, servo):
+        """Require a new scan without replacing vision with a different filter.
+
+        A moving robot cannot reuse its episode-start dock as a current prior.
+        Preserve the predicted belief and its uncertainty; invalidate only the
+        previous fix receipt. A new accepted scan and the usual gates are needed.
+        """
+        self.loc.predict_to(now)
+        self.loc._pf.last_scan_t = None
+        self.last_obs = None
+        self.on_command({'t': float(now), 'kind': 'initial_servo_command', 'pulses': dict(servo)})
+
+    def expected_observability(self, pose, pan, static_map):
+        """Visible static wall/door edge columns, using the frozen camera model.
+
+        Ray casting accounts for static occlusion and the door gap. This is a
+        heuristic proposal score, not calibrated information gain or a fix;
+        no image inference, observation update or random draw is performed.
+        """
+        from harness.owncam_drive import LOOK_P20
+
+        vl, _ = vp.load_vis3()
+        geometry = vl.mp.MapGeometry(static_map, include_posts=False)
+        camera = self.loc._pf.column_model_for({**LOOK_P20, 6: pan})
+        rows = vl.expected_rows(geometry, np.array([[pose.x, pose.y, pose.yaw]]), camera)
+        visible = [np.isfinite(r) & (r >= 1.) & (r < 479.) for r in rows]
+        return float(sum(np.count_nonzero(v) for v in visible))
+
     def init_prior(self, mean: Sequence[float], std: Sequence[float] = PRIOR_STD, *, source: str) -> None:
         """Gaussian start prior from setup-only scenario facts (own dock); once, before the first frame."""
         if self.prior is not None or self.counts['frames']:
@@ -120,6 +158,9 @@ class VisionPoseSource:
             raise ValueError('prior needs a source description')
         self.loc._pf.init_gaussian(tuple(float(v) for v in mean), tuple(float(v) for v in std))
         self.prior = {'mean': [float(v) for v in mean], 'std': [float(v) for v in std], 'source': source}
+
+    def get_motion_params(self) -> dict:
+        return copy.deepcopy(self.loc._pf._motion_params())
 
     def on_command(self, row: Mapping) -> None:
         """One own issued command (time ordered, as logged at the robot's port)."""
@@ -193,17 +234,22 @@ class VisionPoseSource:
         est = self.loc.estimate()
         if not est.get('initialized'):
             return PoseReport(t_est=float(now), initialized=False, load_state=load, source=self.source,
-                              last_valid_obs=self.last_obs)
+                              last_valid_obs=self.last_obs, fix_source=self.provider_id,
+                              observation_quality={'accepted': False, 'failure': self.failure})
         return PoseReport(t_est=float(est['t']), initialized=True, x_m=est['x'], y_m=est['y'], yaw_rad=est['yaw'],
                           cov=tuple(tuple(r) for r in est['cov']), std_xy_m=est['std_xy_m'],
                           std_yaw_rad=est['std_yaw_rad'], since_tag_s=est.get('since_tag_s'),
                           last_valid_obs=self.last_obs, n_eff=round(float(est['n_eff']), 1), load_state=load,
-                          source=self.source)
+                          source=self.source, last_fix_t=est['last_fix_t'], fix_age_s=est['fix_age_s'],
+                          fix_source=self.provider_id,
+                          observation_quality={'accepted': est['last_fix_t'] == now,
+                                               'informative_columns': 0 if self.last_obs is None else self.last_obs['n_cols'],
+                                               'diagnostics': copy.deepcopy(pf.diag)})
 
     def record(self) -> dict:
         ms = sorted(r['worker_ms'] for r in self.timing)
         pct = (lambda q: None if not ms else ms[min(len(ms) - 1, int(q * len(ms)))])
-        return {'provider': vp.PROVIDER_ID, 'source': self.source, 'identity_sha256': self.identity_sha256,
+        return {'provider': self.provider_id, 'source': self.source, 'identity_sha256': self.identity_sha256,
                 'frozen_files_sha256': self.frozen, 'm1_calibration': self.m1_calibration, 'prior': self.prior,
                 'seed': self.seed, 'counts': dict(self.counts), 'failure': self.failure,
                 'worker': self.worker.record(), 'localizer_stats': dict(self.loc._pf.stats),
@@ -215,3 +261,11 @@ class VisionPoseSource:
 
 
 __all__ = ['VisionPoseSource', 'FailClosedLoc', 'InProcessWorker', 'MAPS', 'PRIOR_STD']
+
+
+class VisionPoseSourceV2(VisionPoseSource):
+    """Registered geometry-only map + measurement-free PF initialization, unscored."""
+    map_ids = ('zone_wide_door_geometry_v2',)
+    map_file = vp.ROOT / 'maps/zones/zone_wide_door_geometry_v2.json'
+    provider_id = 'vision_zero_tag_v2'
+    source_prefix = 'owncam_pf_vision_zero_tag_v2'

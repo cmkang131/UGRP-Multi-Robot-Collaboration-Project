@@ -68,17 +68,22 @@ def jsonl(path, rows):
 
 
 class LoggingPort:
-    """Pass-through port that records every command the robot issues."""
+    """Record/forward the same raw SIM clock to the controller sink and port.
+
+    The sink is also live control input in standalone owncam/M1 runners.
+    Rounding here can put a hold before the preceding own frame, or a command
+    after the next frame. An action payload cannot override the port clock.
+    """
 
     def __init__(self, port, sink):
         self._port, self._sink = port, sink
 
     def apply(self, action, sim_time):
-        self._sink({'t': round(float(sim_time), 4), **{k: v for k, v in action.items()}})
+        self._sink({**action, 't': float(sim_time)})
         return self._port.apply(action, sim_time)
 
     def hold(self, sim_time):
-        self._sink({'t': round(float(sim_time), 4), 'kind': 'hold'})
+        self._sink({'t': float(sim_time), 'kind': 'hold'})
         return self._port.hold(sim_time)
 
     def __getattr__(self, name):
@@ -175,7 +180,8 @@ class Recorder:
         name = f'frames/{index:05d}.jpg'
         (self.out/name).parent.mkdir(exist_ok=True)
         (self.out/name).write_bytes(data)
-        self.frames.append({'frame': index, 't': round(now, 4), 'file': name, 'sha256': sha256(data),
+        # inputs/frames is replayed into the localizer, not just displayed.
+        self.frames.append({'frame': index, 't': float(now), 'file': name, 'sha256': sha256(data),
                             'commanded_servo': {str(k): v for k, v in sorted(self.servo.items())},
                             'posture': label})
         x, y, yaw = self._truth()

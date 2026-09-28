@@ -1,0 +1,256 @@
+{
+  "base_sha": "4059fce06199e22269cdb885a5120dfb004974d5",
+  "source_dirty": true,
+  "no_commit": true,
+  "baseline": {
+    "requested_nonphysical": {
+      "passed": 935,
+      "failed": 5,
+      "deselected": 2,
+      "seconds": 73.31
+    },
+    "constructor_regression": {
+      "passed": 3,
+      "failed": 15
+    },
+    "failures": [
+      "dock source set missing allowance for sim/zone_own_scene_provider.py",
+      "constructor KeyError landmarks/id, forbidden detector/localizer/frozen constructor"
+    ]
+  },
+  "tests": [
+    {
+      "command": "OMP_NUM_THREADS=2 ../../ugrp/.venv-sim/bin/python -m pytest -q -p no:cacheprovider -p tests.pose_provider_no_physics --basetemp=./.pytest_tmp tests/test_zone_pair_*.py tests/test_zone_start_dock.py tests/test_zone_study_pair_delay.py tests/test_zone_own_*.py -k 'not test_team_host_feeds_each_executor_only_its_own_camera and not test_team_host_isolation_abort_and_horizon_on_the_real_world'",
+      "passed": 962,
+      "deselected": 2,
+      "seconds": 72.65
+    },
+    {
+      "command": "OMP_NUM_THREADS=2 ../../ugrp/.venv-sim/bin/python -m pytest -q -p no:cacheprovider -p tests.pose_provider_no_physics --basetemp=./.pytest_tmp tests/test_pose_provider_boundary.py tests/test_pose_provider_contract.py tests/test_vision_pose_source.py",
+      "passed": 118,
+      "seconds": 15.03
+    }
+  ],
+  "guard_counts": {
+    "physical_step_attempts": 0,
+    "real_vision_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "excluded": {
+    "nodeids": [
+      "tests/test_zone_own_executor.py::test_team_host_feeds_each_executor_only_its_own_camera",
+      "tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world"
+    ],
+    "reason": "These two construct/run real physical worlds; excluded because the user forbids MuJoCo steps. No nonphysical test was excluded due to sandbox restrictions."
+  },
+  "mujoco_import_report": {
+    "reproduced_on_base": false,
+    "before_fix_v5d_prepare_succeeded_with_import_blocked": true,
+    "latest_prepare_import_blocked": true,
+    "historical_and_latest_subprocess_tests_passed": true,
+    "scope": "No simulator import was observed in fresh-process prepare at 4059fce0. The five reproduced dock failures were source-set assertions; no speculative production import change was made."
+  },
+  "prereg": {
+    "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5e.json",
+    "bytes": 32454,
+    "sha256": "babe4cac26a4aa4e3312f0e8e68e25df76e6466786a939699ab7ae1d6bd3d934"
+  },
+  "unchanged_v5d_sections": [
+    "criteria",
+    "stage_rules",
+    "planned_setdown",
+    "limits",
+    "timing",
+    "safety_coverage",
+    "environment",
+    "inputs",
+    "runs",
+    "contact_profile_contract",
+    "scene_instances"
+  ],
+  "historical_preregs": [
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json",
+      "bytes": 12046,
+      "sha256": "85334a68bae0d35c197c612cd610c84307c0eba268a34247e71f4e233a0fe0f3"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json",
+      "bytes": 14677,
+      "sha256": "896091d17022d569dfb34123587712395bf9870d065ce2b438d38acedee9108b"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v3.json",
+      "bytes": 21533,
+      "sha256": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json",
+      "bytes": 17291,
+      "sha256": "34ab87dc51467226221ca8c991e960bc0715a9bad9c67764b98b99049e9683c4"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v4.json",
+      "bytes": 25943,
+      "sha256": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5.json",
+      "bytes": 27119,
+      "sha256": "bcf02558167a9140a97b961bdc612b45679b3ff1e91fe496e9863ac8e9f3568e"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5b.json",
+      "bytes": 28141,
+      "sha256": "c1f35505ed4983537c89b3c0b901c1d9920aadf2229ae44561e5d5074d9f7977"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5c.json",
+      "bytes": 30243,
+      "sha256": "be6a7a0f4779e713e3c78921176688c765190dfafd4d49f339bd6ee9ca4568ec"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5d.json",
+      "bytes": 31580,
+      "sha256": "93ff696a2b73100c9307824bed12c6a4a1c65665f4573dbf1783f522cd589cd0"
+    }
+  ],
+  "frozen_sources": {
+    "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+    "harness/owncam_drive_v2.py": "217423249775b024504b56b59203a1eab50b667bf273387ba23c0974c0ad4462",
+    "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+    "scripts/run_m2_pair.py": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783"
+  },
+  "grasp_contract_sha256": "f5df0ac885a80dcaedd4986cb926c896bb2dcbcf5e1dca490e11a16aa8ef158a",
+  "scene_contract_sha256": "db22128a7fbaedda342f4ab6ea0e2fd9c978e44d275259e1d08dd074f0ec9240",
+  "source_sha256": {
+    "harness/pose_provider.py": "924a055d40cf1a035cde57ff51629e5af5ed0846a933ac5661b45200903d8b03",
+    "harness/vision_pose_source.py": "eaab02ccaaed5b96143b4deb80ff7e8cba01383b6638ebddd558d032a8117ac5",
+    "harness/zone_study_pose_delay.py": "43297931e226e2100ca2bdb8990b12c2045c79936f27bab9088349af874ebcc7",
+    "harness/zone_own_driver.py": "9cc1dcd59ea0598d3a1484737d89cbadf154e76fa1cacc13288fe5296511da84",
+    "harness/owncam_drive_shared.py": "ce32caec649b505921c3bfbc3f9896de12201945fd04bee19d8fbab622d91bcb",
+    "sim/zone_own_scene_provider.py": "fa72a5233b2220f4ff5676bcb5521a2c47ba62b5ed28777f9ca383f2bf01db93",
+    "harness/owncam_time.py": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+    "harness/zone_own_contract.py": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
+    "harness/zone_own_executor.py": "51d509ef51f6dabedc7b6f87ca92581672ddf2420f753771ae80bb5965fba973",
+    "harness/zone_own_status.py": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
+    "harness/zone_own_perception.py": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
+    "harness/zone_pair_obstruction.py": "f824c0b9d1e66d526a6b1a2d669c3cc53214b6921ac5431dcd7a8d97b061ca8d",
+    "harness/zone_pair_grasp.py": "d6612a8a747463a194d8cd866e73b8005dc49a1d1c326d56beb2c3471fa0aab1",
+    "harness/zone_pair_executor.py": "9c0d02b6c0402a88807235c793e5377a11ed6f921de7fee802c1670f6dd3d97e",
+    "harness/zone_pair_beam_track.py": "c36e9ea7179307f45787d89ddf9ba1ac07598dd309137933780834c0ec83ffc0",
+    "harness/zone_pair_align.py": "005106e93d96eb871457cea3350c76874c3f55c14428e572f095997e066e31ac",
+    "harness/zone_pair_guards.py": "7dcf0b0151129fb54c1741966ad5575738ab6f923bb1780b05f4480e83e734e9",
+    "harness/zone_pair_geometry.py": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+    "harness/zone_pair_status.py": "bdacc2369212bdd8810d2f91498e971af572e1ef037a34baf76828a2702b1926",
+    "harness/zone_pair_vision.py": "8552c044d498a6c3e02efdc7f53ca72c9b11c4b17b87abfa159e780673d8c7d4",
+    "harness/owncam_pose_source.py": "7c41c40db0c502af8522f263971ebfb0ae370543952da2a31960e3044e5388da",
+    "harness/owncam_localizer.py": "0304d7c491dfe6ae68cea6550f7a13e3c99e8e1d3f8e8b6c4b7b1d06893b1d63",
+    "harness/owncam_pair_beam.py": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+    "harness/owncam_pair_beam_v2.py": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+    "harness/owncam_view.py": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+    "harness/zone_own_guards.py": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+    "scripts/run_zone_pair_dev.py": "f9bab390dcf36920bdc7757ef75aafef99559fb14396f4c8cd5da62974d5ae4c",
+    "scripts/zone_pair_dev_runtime.py": "3c1cd30e105a1159ae2757e85e318281e299e916a6f93ed7139c185b76fa9a45",
+    "scripts/zone_pair_grasp_contract.py": "c220b4aa70d4d8663230f72a98129cffaf2ec78abce78103752804bb6a6aa7f8",
+    "scripts/evaluate_zone_pair_dev.py": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+    "configs/simulation_workflows.json": "6bae79139c75ef12f642980b155b94cb032995d320c920f53e6d25fb55d9c999"
+  },
+  "test_source_sha256": {
+    "tests/test_zone_pair_provider_init.py": "5f7f2f5322a392af26b8bc10e2d1444136e433c1a73b52ec60e1092121f55a95",
+    "tests/test_pose_provider_boundary.py": "2bfab0aaeb1cecb3221ca8ecc06d6feb5e1442269e80107d4620fdeeba70aaff",
+    "tests/test_zone_start_dock.py": "36115e6e39fc7d526d69ea3c241f5f0d5c5769f3bfcce04a698413fe11e923c9"
+  },
+  "prepare": {
+    "prepare_root": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/zone240-v5e-prepare-9_tthnqi",
+    "prereg_sha256": "babe4cac26a4aa4e3312f0e8e68e25df76e6466786a939699ab7ae1d6bd3d934",
+    "runs": [
+      {
+        "run_id": "dev11",
+        "path": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/zone240-v5e-prepare-9_tthnqi/dev11",
+        "state": "prepared_not_executed",
+        "model_calls": 0,
+        "applied": null,
+        "physical_success": null,
+        "mujoco_imported": false,
+        "manifest": "experiments/2026-09-27-zone-pair-dev/landmark_v5e_prepare/dev11_manifest.json"
+      },
+      {
+        "run_id": "dev12",
+        "path": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/zone240-v5e-prepare-9_tthnqi/dev12",
+        "state": "prepared_not_executed",
+        "model_calls": 0,
+        "applied": null,
+        "physical_success": null,
+        "mujoco_imported": false,
+        "manifest": "experiments/2026-09-27-zone-pair-dev/landmark_v5e_prepare/dev12_manifest.json"
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5e_validation/baseline.log",
+      "bytes": 14020,
+      "sha256": "0047e01161e8085f2b2acc8bce41e9f4149e02bc769584571804a823d393c445"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5e_validation/constructor_before.log",
+      "bytes": 45459,
+      "sha256": "b7aaf724184dfdfeb2db68594df9db5711522829cf2e30845f502e8b8a5a1660"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5e_validation/provider_suite.log",
+      "bytes": 293,
+      "sha256": "62321a4edefd828225db910384389565dffe4a420c316b33ada39769d7c1e5a0"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5e_validation/requested_suite.log",
+      "bytes": 1277,
+      "sha256": "a54120684b7c3b95a2dad851a5a953b98d7f2b7946c9d879aedc247ac4b1e7fc"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5e_prepare/dev11_manifest.json",
+      "bytes": 162289,
+      "sha256": "4543da834953d4ec0cbb9b499f8a61beeacc607843adeba53caf19579187920d"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5e_prepare/dev11_workflow-plan.json",
+      "bytes": 3015,
+      "sha256": "3e47b8cde12546f4bb586999a83ec60222517cbf3ef6c00c6b90804cb6a1ac35"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5e_prepare/dev12_manifest.json",
+      "bytes": 162305,
+      "sha256": "1317e671194f8536a69788135025233dc637f5746158ccded778a152c1c2aa31"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5e_prepare/dev12_workflow-plan.json",
+      "bytes": 3015,
+      "sha256": "3556b5e47f35fd7c3f2bfc2502241e66654d05f074a95d0e43d893ebc30a8b20"
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5e_prepare/receipt.json",
+      "bytes": 981,
+      "sha256": "992e1b05cbd572930f5e474d1d2a57071a9a2945537786dfb848a08fb5fd79ed"
+    }
+  ],
+  "cleanup": {
+    "pytest_tmp_absent": true,
+    "owned_running_processes": 0
+  },
+  "boundaries": {
+    "physics_steps": 0,
+    "real_model_calls": 0,
+    "git_commits": 0,
+    "gt_eval_only_added_to_control": false,
+    "weld": false,
+    "contact_profile": "cargo_noslip_v1",
+    "google_drive_used": false,
+    "new_tensorboard_experiment_snapshot": false
+  },
+  "limitations": [
+    "Nonphysical regression and prepare only; no localization accuracy, carrying success or physical readiness claim.",
+    "dev11/dev12 remain not_run and prepare-only; execution_source_sha remains null.",
+    "git fetch denied at shared FETCH_HEAD; gh PR lookup could not reach api.github.com. Local base HEAD was verified; current remote not verified."
+  ]
+}

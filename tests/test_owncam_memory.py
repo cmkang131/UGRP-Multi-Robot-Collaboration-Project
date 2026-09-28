@@ -20,7 +20,7 @@ if str(ROOT) not in sys.path:
 RUNTIME = (ROOT/'harness'/'owncam_memory.py', ROOT/'harness'/'owncam_memory_kf.py',
            ROOT/'harness'/'owncam_drive_mem.py', ROOT/'harness'/'m1_owncam_memory.py',
            ROOT/'harness'/'owncam_landmarks.py', ROOT/'harness'/'owncam_landmark_tags.py')
-ALLOWED = {'__future__', 'math', 'copy', 'collections.abc', 'numpy', 'cv2', 'harness.owncam_drive',
+ALLOWED = {'harness.owncam_memory_time', '__future__', 'math', 'copy', 'collections.abc', 'numpy', 'cv2', 'harness.owncam_drive',
            'harness.owncam_memory_kf', 'harness.visual_arm', 'sim.masterpi_camera_profile', 'harness.zone_color_boxes',
            'harness.owncam_memory', 'harness.owncam_drive_mem', 'harness.m1_owncam_delivery',
            'harness.owncam_pose_source', 'harness.owncam_landmarks', 'harness.owncam_landmark_tags', 'hashlib', 'json',
@@ -95,11 +95,19 @@ class BoundaryTests(unittest.TestCase):
         out = subprocess.run([sys.executable, '-c', code], cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(out.returncode, 0, out.stderr[-2000:])
 
-    # Reviewed post-freeze revisions that reached main after the M1 freeze. The recorded results stay tied to
+    # Explicit post-freeze revisions (including PR #240 candidates). The recorded results stay tied to
     # frozen_source.json's source_sha, and test launches still refuse a tree that differs from the frozen hashes;
     # any further change to these files still fails this test.
     POST_FREEZE_REVISIONS = {
+        'harness/owncam_pose_source.py': {
+            '7c41c40db0c502af8522f263971ebfb0ae370543952da2a31960e3044e5388da':
+                'PR #240 HEAD 8b0ddd27 neutral fix receipt adapter',
+            '7e45cc820f3c0b96b0144c2a3318bf7b18a97f61d88aec2a62130e96ed29b155':
+                'PR #240 v5g: add detached public get_motion_params; frozen PF and old records unchanged',
+        },
         'scripts/run_m1_owncam.py': {
+            '04be35ed0e960a7683321b24e8218af293637879962d83871de71243a9f28c72':
+                'PR #240 v5h review10: raw input frame time and LoggingPort source receipt; old freeze unchanged',
             '95b6b76cd381e78d71868a938c241aac39c58c4e534ab1608c6d0cb9ce7e256f':
                 'PR #236 sim-speed: opt-in --speedups; default none keeps the unchanged run() call',
         },

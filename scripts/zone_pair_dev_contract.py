@@ -25,7 +25,7 @@ def scene_contract():
              'source_sha256': {p: sha(p) for p in (
                  'sim/zone_start_dock.py', 'sim/zone_dock_scene.py', 'sim/zone_arena.py', 'sim/zone_landmarks.py',
                  'sim/zone_scene.py', 'sim/zone_tagged_cargo_scene.py', 'harness/zone_own_team_host.py',
-                 'harness/zone_own_guards.py', 'scripts/run_zone_pair_dev.py',
+                 'harness/zone_own_guards.py', 'sim/zone_own_scene_provider.py', 'scripts/run_zone_pair_dev.py',
                  'scripts/zone_pair_dev_runtime.py', 'scripts/zone_pair_dev_contract.py')}}
     value['sha256'] = hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'),
                                                allow_nan=False).encode()).hexdigest()

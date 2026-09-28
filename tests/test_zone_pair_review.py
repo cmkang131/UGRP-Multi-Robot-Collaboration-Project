@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 
 from tests.test_zone_pair_executor import (ROOT, FakeM2, PhasedM2, setup, active, ends,
-                                          m2_controller, PoseReport)
+                                          m2_controller, PoseReport, beam_fit)
 from harness.zone_pair_status import PairStatusChannel, PairStatusEndpoint
 
 
@@ -228,7 +228,7 @@ def test_original_arm_command_emission_times_are_preserved_by_host():
         assert actual == [(t, a) for t, k, a in reference.log if k == 'arm']
 
 
-def test_real_condition_protocols_feed_only_independent_submissions_then_identical_status():
+def test_real_condition_protocols_feed_only_independent_submissions_then_identical_status(beam_fit):
     """Real prompts -> reply validator -> condition transport -> own host API -> completion.
 
     Scripted model replies, not live LLM evidence. Communication must not mutate

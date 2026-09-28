@@ -1,0 +1,240 @@
+{
+  "schema": "ugrp.landmark_agnostic_validation.v1",
+  "date": "2026-09-28",
+  "source_head": "f510901719afc419863344385514304f3d3a905a",
+  "committed": false,
+  "versions": {
+    "bundle": "zone-study-integration-v67-landmark-agnostic",
+    "pair_executor": "zone_pair_executor_v7_dev",
+    "grasp": "zone_pair_grasp_relook_v3",
+    "status": "zone_pair_status_v5",
+    "pair_dev_workflow": "0.5.0",
+    "integration_workflow": "2.1.0"
+  },
+  "coordinator": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5857460817",
+  "version_allocation": {
+    "open_prs": [
+      239,
+      240,
+      241,
+      242,
+      243,
+      244,
+      245
+    ],
+    "previous_max_bundle": 66,
+    "previous_max_dispatch": 63,
+    "final_pr245_head": "0acdaf0d543e6535d61ff80f2c49d031beee04d7",
+    "final_pr245_bundle": 66,
+    "verification": "GitHub connector at exact heads; local refs matched; git fetch denied by sandbox"
+  },
+  "pytest": {
+    "baseline_passed": 184,
+    "passed": 893,
+    "subtests_passed": 104,
+    "deselected": 2,
+    "seconds": 122.33,
+    "command": "OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_pose_provider_contract.py tests/test_pose_provider_boundary.py tests/test_zone_pair*.py tests/test_zone_own_executor*.py tests/test_zone_study_pair_delay.py tests/test_zone_study_integration_pair.py tests/test_zone_study_source_pinning.py tests/test_vision_pose_source.py tests/test_m1_owncam.py --deselect=tests/test_zone_own_executor.py::test_team_host_feeds_each_executor_only_its_own_camera --deselect=tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world --basetemp=./.pytest_tmp",
+    "basetemp_removed": true,
+    "log": {
+      "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5d_prepare/pytest.log",
+      "sha256": "70cf84b3302c593c31910b0c7fac805f2ef361058a78cc9865034cebee5d4fe7",
+      "bytes": 1187
+    },
+    "guard": {
+      "physical_step_attempts": 0,
+      "real_vision_worker_attempts": 0,
+      "network_attempts": 0
+    },
+    "excluded_reason": "Two existing integration tests require MuJoCo stepping. Initial collection ran into the guard and was blocked before stepping; final run deselects them."
+  },
+  "replay": {
+    "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5d_replay.json",
+    "sha256": "dedd731b545ac8245c169453a31c7a8d3703fe57e9286ec42deb1848b346774a",
+    "bytes": 17560,
+    "decisions": 10,
+    "identical_decisions": 10,
+    "fix_ready": 9,
+    "ranked_candidates": 70,
+    "scope": "stored own inputs, conditional decisions only; no physical/model execution"
+  },
+  "static_scan": {
+    "files": [
+      "harness/owncam_time.py",
+      "harness/zone_own_contract.py",
+      "harness/zone_own_deliver.py",
+      "harness/zone_own_driver.py",
+      "harness/zone_own_executor.py",
+      "harness/zone_own_guards.py",
+      "harness/zone_own_outcome.py",
+      "harness/zone_own_outcome_v2.py",
+      "harness/zone_own_outcome_v3.py",
+      "harness/zone_own_perception.py",
+      "harness/zone_own_perception_v2.py",
+      "harness/zone_own_perception_v3.py",
+      "harness/zone_own_perception_v3_1.py",
+      "harness/zone_own_status.py",
+      "harness/zone_own_sweep.py",
+      "harness/zone_own_team_host.py",
+      "harness/zone_pair_admission.py",
+      "harness/zone_pair_align.py",
+      "harness/zone_pair_beam_track.py",
+      "harness/zone_pair_executor.py",
+      "harness/zone_pair_geometry.py",
+      "harness/zone_pair_grasp.py",
+      "harness/zone_pair_guards.py",
+      "harness/zone_pair_obstruction.py",
+      "harness/zone_pair_status.py",
+      "harness/zone_pair_vision.py"
+    ],
+    "count": 26,
+    "direct_marker_references": 0,
+    "allowlist": {
+      "path": "tests/fixtures/pose_provider_v5c/allowlist.json",
+      "sha256": "1e0d3e127d08919d13c147f92d5f19a4ccad6a663bc2b39a63ccc676d33eb49d",
+      "bytes": 782
+    }
+  },
+  "prereg": {
+    "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5d.json",
+    "sha256": "93ff696a2b73100c9307824bed12c6a4a1c65665f4573dbf1783f522cd589cd0",
+    "bytes": 31580,
+    "prepare_only": true,
+    "unchanged_v5c_sections": [
+      "runs",
+      "criteria",
+      "stage_rules",
+      "planned_setdown",
+      "limits",
+      "timing",
+      "safety_coverage",
+      "environment",
+      "inputs"
+    ],
+    "execution_source_sha": null
+  },
+  "preserved_historical_preregs": [
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json",
+      "sha256": "85334a68bae0d35c197c612cd610c84307c0eba268a34247e71f4e233a0fe0f3",
+      "bytes": 12046
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json",
+      "sha256": "896091d17022d569dfb34123587712395bf9870d065ce2b438d38acedee9108b",
+      "bytes": 14677
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v3.json",
+      "sha256": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e",
+      "bytes": 21533
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json",
+      "sha256": "34ab87dc51467226221ca8c991e960bc0715a9bad9c67764b98b99049e9683c4",
+      "bytes": 17291
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v4.json",
+      "sha256": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8",
+      "bytes": 25943
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5.json",
+      "sha256": "bcf02558167a9140a97b961bdc612b45679b3ff1e91fe496e9863ac8e9f3568e",
+      "bytes": 27119
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5b.json",
+      "sha256": "c1f35505ed4983537c89b3c0b901c1d9920aadf2229ae44561e5d5074d9f7977",
+      "bytes": 28141
+    },
+    {
+      "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5c.json",
+      "sha256": "be6a7a0f4779e713e3c78921176688c765190dfafd4d49f339bd6ee9ca4568ec",
+      "bytes": 30243
+    }
+  ],
+  "grasp_contract_sha256": "1c2f9335584432485927b16bb4269b66189863add1a4cc32ba9cbf876f209c79",
+  "source_sha256": {
+    "harness/pose_provider.py": "924a055d40cf1a035cde57ff51629e5af5ed0846a933ac5661b45200903d8b03",
+    "harness/vision_pose_source.py": "eaab02ccaaed5b96143b4deb80ff7e8cba01383b6638ebddd558d032a8117ac5",
+    "harness/zone_study_pose_delay.py": "43297931e226e2100ca2bdb8990b12c2045c79936f27bab9088349af874ebcc7",
+    "harness/zone_own_driver.py": "141c2a7da5f3c7eb4ef0036c00d2c823a87f10a4350cf00ecde17dab59949e4e",
+    "sim/zone_own_scene_provider.py": "fa72a5233b2220f4ff5676bcb5521a2c47ba62b5ed28777f9ca383f2bf01db93",
+    "harness/owncam_time.py": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+    "harness/zone_own_contract.py": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
+    "harness/zone_own_executor.py": "51d509ef51f6dabedc7b6f87ca92581672ddf2420f753771ae80bb5965fba973",
+    "harness/zone_own_status.py": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
+    "harness/zone_own_perception.py": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
+    "harness/zone_pair_obstruction.py": "f824c0b9d1e66d526a6b1a2d669c3cc53214b6921ac5431dcd7a8d97b061ca8d",
+    "harness/zone_pair_grasp.py": "d6612a8a747463a194d8cd866e73b8005dc49a1d1c326d56beb2c3471fa0aab1",
+    "harness/zone_pair_executor.py": "9c0d02b6c0402a88807235c793e5377a11ed6f921de7fee802c1670f6dd3d97e",
+    "harness/zone_pair_beam_track.py": "c36e9ea7179307f45787d89ddf9ba1ac07598dd309137933780834c0ec83ffc0",
+    "harness/zone_pair_align.py": "005106e93d96eb871457cea3350c76874c3f55c14428e572f095997e066e31ac",
+    "harness/zone_pair_guards.py": "7dcf0b0151129fb54c1741966ad5575738ab6f923bb1780b05f4480e83e734e9",
+    "harness/zone_pair_geometry.py": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+    "harness/zone_pair_status.py": "bdacc2369212bdd8810d2f91498e971af572e1ef037a34baf76828a2702b1926",
+    "harness/zone_pair_vision.py": "8552c044d498a6c3e02efdc7f53ca72c9b11c4b17b87abfa159e780673d8c7d4",
+    "harness/owncam_pose_source.py": "7c41c40db0c502af8522f263971ebfb0ae370543952da2a31960e3044e5388da",
+    "harness/owncam_localizer.py": "0304d7c491dfe6ae68cea6550f7a13e3c99e8e1d3f8e8b6c4b7b1d06893b1d63",
+    "harness/owncam_pair_beam.py": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+    "harness/owncam_pair_beam_v2.py": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+    "harness/owncam_view.py": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+    "harness/zone_own_guards.py": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+    "scripts/run_zone_pair_dev.py": "ac48e5b32b16fb1cdccd0ae96720027c0fbbfa19be435bca4da16e3c82f4df67",
+    "scripts/zone_pair_dev_runtime.py": "3c1cd30e105a1159ae2757e85e318281e299e916a6f93ed7139c185b76fa9a45",
+    "scripts/zone_pair_grasp_contract.py": "ccdb6b4655a0f87e3326e029b576756f9e984717d6ee2e49ef19479a65b7169f",
+    "scripts/evaluate_zone_pair_dev.py": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+    "configs/simulation_workflows.json": "6bae79139c75ef12f642980b155b94cb032995d320c920f53e6d25fb55d9c999"
+  },
+  "prepare": {
+    "root": "/private/tmp/zone-pair-v5d-prepare-6n6t9o21",
+    "prepares": [
+      {
+        "run_id": "dev11",
+        "path": "/private/tmp/zone-pair-v5d-prepare-6n6t9o21/dev11",
+        "state": "prepared_not_executed",
+        "model_calls": 0,
+        "applied": null,
+        "physical_success": null,
+        "manifest": {
+          "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5d_prepare/dev11_manifest.json",
+          "sha256": "66ba6bacdad2ca7a52622e5a9707972b30c2e3cc7122d855058228a65084ed00",
+          "bytes": 161973
+        }
+      },
+      {
+        "run_id": "dev12",
+        "path": "/private/tmp/zone-pair-v5d-prepare-6n6t9o21/dev12",
+        "state": "prepared_not_executed",
+        "model_calls": 0,
+        "applied": null,
+        "physical_success": null,
+        "manifest": {
+          "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5d_prepare/dev12_manifest.json",
+          "sha256": "6b6ee359e8982503bd7d1f0a36ceedad87be140525b78f5e5e6797892710ecaa",
+          "bytes": 161989
+        }
+      }
+    ],
+    "plan": {
+      "path": "experiments/2026-09-27-zone-pair-dev/landmark_v5d_prepare/workflow-plan.json",
+      "sha256": "c5a6bd02eccd59ee86530ff725e769e71e2af7b2a77c2a6c46c3dd937e1733c1",
+      "bytes": 2796
+    }
+  },
+  "boundaries": {
+    "physical_steps": 0,
+    "real_model_calls": 0,
+    "git_commits": 0,
+    "google_drive_used": false,
+    "tensorboard_new_experiment_snapshot": false
+  },
+  "limitations": [
+    "Regression and conditional stored-input replay only; no new physical result or success rate.",
+    "Vision observability is a static geometry heuristic, not measured information gain or zero-tag localization/completion evidence.",
+    "dev11/dev12 remain prepare-only under issue #221 hold; source is uncommitted.",
+    "No new training/physical/evaluation cohort; existing raw evidence and TensorBoard snapshots preserved."
+  ]
+}

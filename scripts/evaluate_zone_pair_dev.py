@@ -121,6 +121,11 @@ def planned_setdown(row, prereg, protocol):
             continue
         same_segment = {'lower', 'wait_open', 'released', 'done'} if final else {'lower', 'wait_open', 'cp_open'}
         regrasp = {'pregrasp_look', 'grasp', 'wait_lift', 'lift', 'wait_carry'}
+        if prereg.get('registration_version') in (4, 5):
+            # v4 splits the old open descent / pre-close part of grasp into
+            # explicit states. Keep the same authorized window and all floor,
+            # grip, re-lift, geometry and contact criteria. Raw names survive.
+            regrasp |= {'pregrasp_standoff', 'pregrasp_descend', 'wait_close'}
         if not all((row['segments'][r] == i and row['states'][r] in same_segment) or
                    (not final and row['segments'][r] == i + 1 and row['states'][r] in regrasp) for r in PAIR):
             continue

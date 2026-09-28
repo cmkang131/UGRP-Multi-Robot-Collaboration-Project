@@ -10,7 +10,7 @@ import math
 from dataclasses import replace
 
 from harness import visual_arm as va
-from harness.zone_own_guards import BACKOFF_GAIN_MAX, SweepGuard, _rect_distance, body_spheres
+from harness.zone_own_guards import BACKOFF_GAIN_MAX, K_SIGMA, SweepGuard, _rect_distance, body_spheres
 
 BEAM_SAMPLE_M = .02
 MOTION_SAMPLE_S = .05
@@ -30,7 +30,10 @@ class PairSweepGuard(SweepGuard):
         gaps, including at the bar ends. Beam height is relative to that grip.
         """
         tool = va.tool_pose(servo)
-        yaw = math.radians(tool.yaw_left_deg) - self.grasp['yaw_rad']
+        return self._beam_spheres((tool.x_m, tool.y_m, tool.z_m), math.radians(tool.yaw_left_deg))
+
+    def _beam_spheres(self, grip_xyz, heading):
+        yaw = heading - self.grasp['yaw_rad']
         c, s = math.cos(yaw), math.sin(yaw)
         gx, gy, gz = self.grasp['xyz_m']
         cx, cy, cz = self.geometry['center_m']
@@ -38,9 +41,32 @@ class PairSweepGuard(SweepGuard):
         count = max(1, math.ceil(2 * hx / BEAM_SAMPLE_M))
         radius = math.sqrt(hy * hy + hz * hz + (hx / count) ** 2)
         mx, my, mz = self.mount
-        return [(mx + tool.x_m + c * (cx - hx + 2 * hx * i / count - gx) - s * (cy - gy),
-                 my + tool.y_m + s * (cx - hx + 2 * hx * i / count - gx) + c * (cy - gy),
-                 mz + tool.z_m + cz - gz, radius) for i in range(count + 1)]
+        return [(mx + grip_xyz[0] + c * (cx - hx + 2 * hx * i / count - gx) - s * (cy - gy),
+                 my + grip_xyz[1] + s * (cx - hx + 2 * hx * i / count - gx) + c * (cy - gy),
+                 mz + grip_xyz[2] + cz - gz, radius) for i in range(count + 1)]
+
+    def stationary_beam_clearance(self, beam, pose):
+        """Floor-supported beam from own RGB, independent of commanded tool attachment.
+
+        Return clearance AFTER the unchanged 35 mm reserve and own-pose
+        inflation, plus the beam fit's positional/angular uncertainty. The
+        local RGB fit uses the same fixed floor/top plane as observe_beam.
+        """
+        grip = (*beam['grip_base_m'], self.grasp['xyz_m'][2])
+        best, hit = math.inf, None
+        c, s = math.cos(pose.yaw), math.sin(pose.yaw)
+        for bx, by, bz, radius in self._beam_spheres(grip, beam['axis_heading_rad']):
+            x, y = pose.x + c * bx - s * by, pose.y + s * bx + c * by
+            lever = math.hypot(bx - self.mount[0] - grip[0], by - self.mount[1] - grip[1]) + radius
+            margin = (self.margin(pose, math.hypot(bx, by) + radius)
+                      + K_SIGMA * (beam['std_xy_m'] + beam['std_yaw_rad'] * lever))
+            for box in self.boxes:
+                if bz - radius >= box['height'] + margin:
+                    continue
+                clearance = _rect_distance(box, x, y) - radius - margin
+                if clearance < best:
+                    best, hit = clearance, box['id']
+        return best, hit
 
     def arm_clearance(self, servo, pose, *, loaded):
         # The pair cargo is the full bar; the shared guard's small held box is

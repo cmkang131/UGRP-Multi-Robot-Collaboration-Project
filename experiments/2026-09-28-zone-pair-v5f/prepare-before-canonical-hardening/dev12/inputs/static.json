@@ -1,0 +1,1848 @@
+{
+  "map": {
+    "schema": "ugrp.zone_arena.v1",
+    "map_id": "zone_wide_door_tags_v2_dock_v3",
+    "version": 3,
+    "frame": "world metres; x east, y north",
+    "bounds_m": [
+      -1.05,
+      5.4,
+      -3.15,
+      1.45
+    ],
+    "top_cameras": [
+      {
+        "name": "cctv_top",
+        "position_m": [
+          0.55,
+          -2.0,
+          2.5
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "fov_y_deg": 55.0
+      },
+      {
+        "name": "cctv_top_east",
+        "position_m": [
+          3.8499999999999996,
+          -2.0,
+          2.5
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "fov_y_deg": 55.0
+      },
+      {
+        "name": "cctv_top_north",
+        "position_m": [
+          0.55,
+          0.2999999999999998,
+          2.5
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "fov_y_deg": 55.0
+      },
+      {
+        "name": "cctv_top_north_east",
+        "position_m": [
+          3.8499999999999996,
+          0.2999999999999998,
+          2.5
+        ],
+        "quaternion_wxyz": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "fov_y_deg": 55.0
+      }
+    ],
+    "obstacles": [
+      {
+        "id": "wall_north",
+        "center_m": [
+          2.1750000000000003,
+          1.45
+        ],
+        "half_extents_m": [
+          3.25,
+          0.025
+        ],
+        "height_m": 0.1,
+        "kind": "wall"
+      },
+      {
+        "id": "wall_south",
+        "center_m": [
+          2.1750000000000003,
+          -3.15
+        ],
+        "half_extents_m": [
+          3.25,
+          0.025
+        ],
+        "height_m": 0.1,
+        "kind": "wall"
+      },
+      {
+        "id": "wall_west",
+        "center_m": [
+          -1.05,
+          -0.85
+        ],
+        "half_extents_m": [
+          0.025,
+          2.3
+        ],
+        "height_m": 0.1,
+        "kind": "wall"
+      },
+      {
+        "id": "wall_east",
+        "center_m": [
+          5.4,
+          -0.85
+        ],
+        "half_extents_m": [
+          0.025,
+          2.3
+        ],
+        "height_m": 0.1,
+        "kind": "wall"
+      },
+      {
+        "id": "wall_divider_1",
+        "center_m": [
+          2.2,
+          -1.675
+        ],
+        "half_extents_m": [
+          0.025,
+          1.475
+        ],
+        "height_m": 0.1,
+        "kind": "wall"
+      },
+      {
+        "id": "wall_divider_2",
+        "center_m": [
+          2.2,
+          0.875
+        ],
+        "half_extents_m": [
+          0.025,
+          0.575
+        ],
+        "height_m": 0.1,
+        "kind": "wall"
+      }
+    ],
+    "terrain": [],
+    "regions": {
+      "pickup": {
+        "center_m": [
+          0.7,
+          -0.85
+        ],
+        "half_extents_m": [
+          1.15,
+          1.95
+        ],
+        "rgba": ".12 .36 .70 .14"
+      },
+      "zone_A": {
+        "center_m": [
+          4.6,
+          0.4
+        ],
+        "half_extents_m": [
+          0.3,
+          0.7
+        ],
+        "rgba": ".95 .45 .10 .30"
+      },
+      "zone_B": {
+        "center_m": [
+          4.6,
+          -2.1
+        ],
+        "half_extents_m": [
+          0.3,
+          0.7
+        ],
+        "rgba": ".20 .40 .95 .30"
+      },
+      "zone_C": {
+        "center_m": [
+          3.0,
+          -0.85
+        ],
+        "half_extents_m": [
+          0.3,
+          0.7
+        ],
+        "rgba": ".70 .20 .85 .30"
+      }
+    },
+    "zone_slots": {
+      "A": [
+        {
+          "slot_id": "A1",
+          "center_m": [
+            4.6,
+            0.0
+          ],
+          "half_extents_m": [
+            0.06,
+            0.06
+          ]
+        },
+        {
+          "slot_id": "A2",
+          "center_m": [
+            4.6,
+            0.4
+          ],
+          "half_extents_m": [
+            0.06,
+            0.06
+          ]
+        },
+        {
+          "slot_id": "A3",
+          "center_m": [
+            4.6,
+            0.8
+          ],
+          "half_extents_m": [
+            0.06,
+            0.06
+          ]
+        }
+      ],
+      "B": [
+        {
+          "slot_id": "B1",
+          "center_m": [
+            4.6,
+            -2.5
+          ],
+          "half_extents_m": [
+            0.06,
+            0.06
+          ]
+        },
+        {
+          "slot_id": "B2",
+          "center_m": [
+            4.6,
+            -2.1
+          ],
+          "half_extents_m": [
+            0.06,
+            0.06
+          ]
+        },
+        {
+          "slot_id": "B3",
+          "center_m": [
+            4.6,
+            -1.7000000000000002
+          ],
+          "half_extents_m": [
+            0.06,
+            0.06
+          ]
+        }
+      ],
+      "C": [
+        {
+          "slot_id": "C1",
+          "center_m": [
+            3.0,
+            -1.25
+          ],
+          "half_extents_m": [
+            0.06,
+            0.06
+          ]
+        },
+        {
+          "slot_id": "C2",
+          "center_m": [
+            3.0,
+            -0.85
+          ],
+          "half_extents_m": [
+            0.06,
+            0.06
+          ]
+        },
+        {
+          "slot_id": "C3",
+          "center_m": [
+            3.0,
+            -0.44999999999999996
+          ],
+          "half_extents_m": [
+            0.06,
+            0.06
+          ]
+        }
+      ]
+    },
+    "box_kinds": [
+      "cyan",
+      "green",
+      "red",
+      "yellow"
+    ],
+    "approach_convention": "boxes are grasped and placed with the robot facing east (+x)",
+    "passages": [
+      {
+        "id": "door_1",
+        "kind": "door",
+        "center_m": [
+          2.2,
+          0.05
+        ],
+        "half_extents_m": [
+          0.025,
+          0.25
+        ],
+        "width_m": 0.5,
+        "lanes": 1,
+        "axis": "x",
+        "connects": [
+          "pickup side (west)",
+          "zone side (east)"
+        ]
+      }
+    ],
+    "base_map": {
+      "map_id": "zone_wide_door",
+      "version": 1,
+      "static_map_sha256": "9be3ad7ca21040f11afd89479e20b23a8406adeb9830e37bad3de286f4478faf"
+    },
+    "landmarks": {
+      "schema": "ugrp.zone_landmarks.v1",
+      "family": "tag36h11",
+      "opencv_dictionary": "DICT_APRILTAG_36h11",
+      "dictionary_bits_sha256": "8cf3ad4e83fb9d930565219b2d3c397338146220099960ee428918bea6e9aae5",
+      "placement": {
+        "size_m": 0.072,
+        "plate_m": 0.09,
+        "center_height_m": 0.05,
+        "spacing_m": 0.5,
+        "end_margin_m": 0.03,
+        "plate_thickness_m": 0.001,
+        "cell_thickness_m": 0.001,
+        "faces": "interior walls: both faces; perimeter walls: inner face",
+        "near_door_spacing_m": 0.3,
+        "near_door_radius_m": 1.0,
+        "door_posts": {
+          "offset_from_edge_m": 0.05,
+          "width_m": 0.09,
+          "height_m": 0.3,
+          "tag_center_heights_m": [
+            0.15,
+            0.25
+          ]
+        }
+      },
+      "tag_frame": "tag centre on the wall face; normal_xy points out of the wall into the room (the side a camera sees it from); tag x = image right seen from the front, tag y = up; size_m = outer black square",
+      "tags": [
+        {
+          "id": 0,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            -0.95,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 1,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            -0.4,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 2,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            0.1,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 3,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            0.6,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 4,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            1.1,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 5,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            1.6,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 6,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            2.1,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 7,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            2.3,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 8,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            2.8,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 9,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            3.3,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 10,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            3.8,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 11,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            4.3,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 12,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            4.8,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 13,
+          "wall": "wall_north",
+          "normal_xy": [
+            0,
+            -1
+          ],
+          "center_m": [
+            5.3,
+            1.425,
+            0.05
+          ],
+          "yaw_rad": -1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 14,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            -0.95,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 15,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            -0.4,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 16,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            0.1,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 17,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            0.6,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 18,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            1.1,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 19,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            1.6,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 20,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            2.1,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 21,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            2.3,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 22,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            2.8,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 23,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            3.3,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 24,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            3.8,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 25,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            4.3,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 26,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            4.8,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 27,
+          "wall": "wall_south",
+          "normal_xy": [
+            0,
+            1
+          ],
+          "center_m": [
+            5.3,
+            -3.125,
+            0.05
+          ],
+          "yaw_rad": 1.570796,
+          "size_m": 0.072
+        },
+        {
+          "id": 28,
+          "wall": "wall_west",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            -1.025,
+            -3.05,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 29,
+          "wall": "wall_west",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            -1.025,
+            -2.65,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 30,
+          "wall": "wall_west",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            -1.025,
+            -2.15,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 31,
+          "wall": "wall_west",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            -1.025,
+            -1.65,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 32,
+          "wall": "wall_west",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            -1.025,
+            -1.15,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 33,
+          "wall": "wall_west",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            -1.025,
+            -0.65,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 34,
+          "wall": "wall_west",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            -1.025,
+            -0.15,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 35,
+          "wall": "wall_west",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            -1.025,
+            0.35,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 36,
+          "wall": "wall_west",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            -1.025,
+            0.85,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 37,
+          "wall": "wall_west",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            -1.025,
+            1.35,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 38,
+          "wall": "wall_east",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            5.375,
+            -3.05,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 39,
+          "wall": "wall_east",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            5.375,
+            -2.65,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 40,
+          "wall": "wall_east",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            5.375,
+            -2.15,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 41,
+          "wall": "wall_east",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            5.375,
+            -1.65,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 42,
+          "wall": "wall_east",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            5.375,
+            -1.15,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 43,
+          "wall": "wall_east",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            5.375,
+            -0.65,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 44,
+          "wall": "wall_east",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            5.375,
+            -0.15,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 45,
+          "wall": "wall_east",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            5.375,
+            0.35,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 46,
+          "wall": "wall_east",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            5.375,
+            0.85,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 47,
+          "wall": "wall_east",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            5.375,
+            1.35,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 48,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            -3.05,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 49,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            -2.475,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 50,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            -1.975,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 51,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            -1.475,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 52,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            -1.175,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 53,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            -0.875,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 54,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            -0.575,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 55,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            -0.275,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 56,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            -3.05,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 57,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            -2.475,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 58,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            -1.975,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 59,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            -1.475,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 60,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            -1.175,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 61,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            -0.875,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 62,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            -0.575,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 63,
+          "wall": "wall_divider_1",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            -0.275,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 64,
+          "wall": "wall_divider_2",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            0.375,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 65,
+          "wall": "wall_divider_2",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            0.675,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 66,
+          "wall": "wall_divider_2",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            0.975,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 67,
+          "wall": "wall_divider_2",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            1.35,
+            0.05
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 68,
+          "wall": "wall_divider_2",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            0.375,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 69,
+          "wall": "wall_divider_2",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            0.675,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 70,
+          "wall": "wall_divider_2",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            0.975,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 71,
+          "wall": "wall_divider_2",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            1.35,
+            0.05
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 72,
+          "wall": "wall_divider_1",
+          "mount": "door_post",
+          "post": "post_door_1_lo",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            -0.25,
+            0.15
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 73,
+          "wall": "wall_divider_1",
+          "mount": "door_post",
+          "post": "post_door_1_lo",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            -0.25,
+            0.25
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 74,
+          "wall": "wall_divider_1",
+          "mount": "door_post",
+          "post": "post_door_1_lo",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            -0.25,
+            0.15
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 75,
+          "wall": "wall_divider_1",
+          "mount": "door_post",
+          "post": "post_door_1_lo",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            -0.25,
+            0.25
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 76,
+          "wall": "wall_divider_2",
+          "mount": "door_post",
+          "post": "post_door_1_hi",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            0.35,
+            0.15
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 77,
+          "wall": "wall_divider_2",
+          "mount": "door_post",
+          "post": "post_door_1_hi",
+          "normal_xy": [
+            -1,
+            0
+          ],
+          "center_m": [
+            2.175,
+            0.35,
+            0.25
+          ],
+          "yaw_rad": 3.141593,
+          "size_m": 0.072
+        },
+        {
+          "id": 78,
+          "wall": "wall_divider_2",
+          "mount": "door_post",
+          "post": "post_door_1_hi",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            0.35,
+            0.15
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        },
+        {
+          "id": 79,
+          "wall": "wall_divider_2",
+          "mount": "door_post",
+          "post": "post_door_1_hi",
+          "normal_xy": [
+            1,
+            0
+          ],
+          "center_m": [
+            2.225,
+            0.35,
+            0.25
+          ],
+          "yaw_rad": 0.0,
+          "size_m": 0.072
+        }
+      ],
+      "door_posts": [
+        {
+          "id": "post_door_1_lo",
+          "door": "door_1",
+          "wall": "wall_divider_1",
+          "axis": "x",
+          "center_m": [
+            2.2,
+            -0.25
+          ],
+          "half_extents_m": [
+            0.025,
+            0.045
+          ],
+          "height_m": 0.3
+        },
+        {
+          "id": "post_door_1_hi",
+          "door": "door_1",
+          "wall": "wall_divider_2",
+          "axis": "x",
+          "center_m": [
+            2.2,
+            0.35
+          ],
+          "half_extents_m": [
+            0.025,
+            0.045
+          ],
+          "height_m": 0.3
+        }
+      ]
+    },
+    "start_dock": {
+      "id": "zone_start_dock_v3",
+      "version": 3,
+      "spawn_x_m": -0.65,
+      "spawn_rows_y_m": [
+        -2.25,
+        -0.85,
+        0.55
+      ],
+      "spawn_yaw_rad": 0.0,
+      "idle_keepout_radius_m": 0.17,
+      "source": "authored static layout; no live robot positions or robot-to-row assignment",
+      "sha256": "96bcf08a25220d825f67070bae64ba18c9292935c06ccb5fae95edebc97c2d0a"
+    },
+    "parent_map": {
+      "map_id": "zone_wide_door_tags_v2",
+      "static_map_sha256": "fc20c915ac5d3a2c5085c79c07deb2718ca977e3eec2cf9688ab242b2617a083"
+    }
+  },
+  "calibration": {
+    "schema": "ugrp.owncam_loc_calibration.v1",
+    "params": {
+      "particles": 2000,
+      "motion": {
+        "gain": [
+          [
+            1.4655,
+            -0.0904,
+            -0.0058
+          ],
+          [
+            0.0047,
+            0.9271,
+            -0.0421
+          ],
+          [
+            -0.0045,
+            0.1279,
+            1.4885
+          ]
+        ],
+        "tau_s": 0.3,
+        "noise_rel": [
+          0.3176,
+          0.4438,
+          0.1116
+        ],
+        "noise_abs": [
+          0.01538,
+          0.00504,
+          0.01406
+        ],
+        "scale_std": 0.2148,
+        "scale_walk": 0.01
+      },
+      "measurement": {
+        "azimuth_std_rad": 0.00179,
+        "elevation_std_rad": 0.01899,
+        "range_log_std": 0.019,
+        "normal_std_rad": 0.52,
+        "outlier_prob": 0.05,
+        "outlier_margin": 6.0,
+        "invisible_log_penalty": -20.0,
+        "min_side_px": 8.0,
+        "max_range_m": null,
+        "range_log_bias": [
+          -0.01588,
+          0.01812
+        ],
+        "azimuth_floor_rad": 0.0087,
+        "range_floor": 0.03,
+        "elevation_floor_rad": 0.035,
+        "tag_temper": 1.0,
+        "elevation_bias_rad": -0.01868
+      },
+      "map": {
+        "robot_clearance_m": 0.07,
+        "wall_log_penalty": -8.0
+      },
+      "resample_ratio": 0.5,
+      "roughen": [
+        0.01,
+        0.01,
+        0.005
+      ],
+      "reset": {
+        "min_best_loglik": -12.0,
+        "fraction": 0.2,
+        "init_pos_std_m": 0.03,
+        "init_yaw_bins": 1
+      },
+      "motion_loaded": {
+        "gain": [
+          [
+            1.4004,
+            -0.0009,
+            -0.0003
+          ],
+          [
+            0.0054,
+            1.0159,
+            0.0769
+          ],
+          [
+            0.0023,
+            -0.0512,
+            0.7411
+          ]
+        ],
+        "tau_s": 0.8,
+        "noise_rel": [
+          0.133,
+          0.2796,
+          0.0
+        ],
+        "noise_abs": [
+          0.01494,
+          0.00382,
+          0.09762
+        ],
+        "scale_std": 0.1457,
+        "scale_walk": 0.01,
+        "tau_stop_s": 0.05
+      },
+      "measurement_loaded": {
+        "elevation_bias_rad": 0.0,
+        "elevation_floor_rad": 0.02618,
+        "elevation_std_rad": 0.02618,
+        "camera_correction": {
+          "delta_m": [
+            0.0012,
+            0.0047,
+            -0.0016
+          ],
+          "omega_rad": [
+            0.04579,
+            -9e-05,
+            5e-05
+          ],
+          "source": "experiments/2026-09-26-zone-owncam-loop-v2/fit_loaded_extrinsic.py -> loaded_extrinsic_dev.json (dev-a3/a4 dev-box look_pan frames, GT offline)"
+        },
+        "azimuth_scale": 1.00284
+      }
+    },
+    "derived_from": {
+      "file": "experiments/2026-09-25-zone-owncam-loop/calibration_loop.json",
+      "sha256": "479bb315b79dabcbdbc2302ec40140cae53ca9c204462226f0675b57dc2990bb",
+      "note": "identical except params.motion_loaded (gain fwd/lat rows, tau_s, new tau_stop_s) and params.measurement_loaded (camera_correction replaces elevation_bias_rad; azimuth_scale)"
+    },
+    "loop_v2_motion_fit": {
+      "script": "experiments/2026-09-26-zone-owncam-loop-v2/fit_stop_dynamics.py",
+      "result": "experiments/2026-09-26-zone-owncam-loop-v2/stop_fit_dev.json",
+      "data": "dev closed-loop runs of cohort 1 (outputs/owncam-loop-20260925/dev-a1..a4, dev-box-s31..33), student phase; GT offline only; cohort-1 test runs and cohort-2 seeds never read",
+      "motion_loaded_before": {
+        "gain": [
+          [
+            1.4765,
+            0.0728,
+            -0.0121
+          ],
+          [
+            -0.0045,
+            1.065,
+            -0.0487
+          ],
+          [
+            0.0023,
+            -0.0512,
+            0.7411
+          ]
+        ],
+        "tau_s": 1.0
+      },
+      "tau_drive_s": 0.8,
+      "tau_stop_s": 0.05,
+      "window_end_fwd_err_m": {
+        "mean": 0.002,
+        "p90_abs": 0.0088
+      },
+      "loro_window_end_fwd_abs_p90_m": 0.0094,
+      "unloaded": "unchanged (nobox passed cohort 1; the unloaded fit was noisier, rms 2.3 cm)"
+    },
+    "selection": "dev only; cohort-2 test never used",
+    "loop_v2_measurement_fit": {
+      "script": "experiments/2026-09-26-zone-owncam-loop-v2/fit_loaded_extrinsic.py",
+      "result": "experiments/2026-09-26-zone-owncam-loop-v2/loaded_extrinsic_dev.json",
+      "why": "a -0.24 deg residual elevation bias of far tags (3.4 m) moves the whole-look likelihood maximum ~+6 cm in x (elevation encodes range with d(el)/dr = -h/r^2); the camera-frame correction leaves 0.00 +- 0.02 deg",
+      "elevation_bias_before_rad": -0.04363,
+      "azimuth_scale": {
+        "loaded": 1.00284,
+        "unloaded_observed_not_applied": 1.00433,
+        "data": "settled look_pan frames (pan 970/1230/1500/1770/2030) of dev-a4 dev-box/dev-nobox s31-33, GT offline; linear fit az_obs = s*az_pred + b (offset -0.006 deg loaded)",
+        "why": "observed bearings are ~0.3% wider than the camera model predicts (image-angle dependent az residual -0.06..+0.05 deg); wider bearings read as closer to the tags ahead (+x). Applied to the loaded model only in this carrying cohort; the unloaded value is recorded, not applied (nobox not re-tested here)"
+      }
+    }
+  },
+  "order_sheet": {
+    "orders": [
+      {
+        "order_id": "cargoX",
+        "kind": "long_beam",
+        "count": 1,
+        "required_robots": 2,
+        "destination_zone": "B",
+        "initial_location": {
+          "pickup_bay": "P2",
+          "slot": "P2-3"
+        }
+      }
+    ]
+  },
+  "coarse_order_sheet": {
+    "beam_xyyaw": [
+      0.9,
+      0.0,
+      0.0
+    ],
+    "grid": {
+      "xy_m": 0.1,
+      "yaw_rad": 0.174533
+    },
+    "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+  },
+  "labels": [
+    "tags_temporary",
+    "dev",
+    "연구 결과 아님"
+  ]
+}

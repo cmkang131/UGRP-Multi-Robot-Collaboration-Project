@@ -65,7 +65,7 @@ def test_peer_submission_cannot_change_own_input_event_api_command_times_or_orde
             # Identical OWN observations/pose evidence in both worlds; no simulator poses.
             ex.pose.on_frame = lambda now, rgb, rid=r, source=ex.pose.source: PoseReport(
                 now, True, x_m=0., y_m=0., yaw_rad=0., std_xy_m=.2 if rid == 'r2' and now >= 2. else .01,
-                std_yaw_rad=.01, since_tag_s=0., source=source)
+                std_yaw_rad=.01, since_tag_s=0., fix_age_s=0., last_fix_t=now, source=source)
         transport = protocol.Transport(condition, seed=0, order_ids=['cargoX'], roles=['end_neg', 'end_pos'])
         transport.open_window('clock', at_sim_s=0.)
         assert system_prompt(condition, 'r1', seed=0)
@@ -197,7 +197,7 @@ def test_loaded_pair_stall_stops_both_without_unilateral_backoff():
     start(h)
     ep = active(h)['r1']
     ep.controller.state = 'carry'
-    exs['r1'].last_report = replace(exs['r1'].last_report, since_tag_s=0.)
+    exs['r1'].last_report = replace(exs['r1'].last_report, since_tag_s=0., fix_age_s=0., last_fix_t=0.)
     h._decide('r1', 0.)  # baseline own estimate, followed by an own motion command
     for i in range(1, 45):
         now = i / 10.

@@ -30,6 +30,15 @@ SCHEMA = 'ugrp.zone_pair_dev.v1'
 LABELS = ['tags_temporary', 'dev', '연구 결과 아님']
 PREREG = ROOT / 'experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json'
 PREREG_V3 = PREREG.with_name('prereg_v3.json')
+PREREG_V4 = PREREG.with_name('prereg_v4.json')
+PREREG_V5 = PREREG.with_name('prereg_v5.json')
+PREREG_V5B = PREREG.with_name('prereg_v5b.json')
+PREREG_V5C = PREREG.with_name('prereg_v5c.json')
+PREREG_V5D = PREREG.with_name('prereg_v5d.json')
+PREREG_V5E = PREREG.with_name('prereg_v5e.json')
+PREREG_V5F = PREREG.with_name('prereg_v5f.json')
+PREREG_V5G = PREREG.with_name('prereg_v5g.json')
+PREREG_V5H = PREREG.with_name('prereg_v5h.json')
 MAP = ROOT / 'maps/zones/zone_wide_door_tags_v2.json'
 CALIBRATION = ROOT / 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'
 PARTICIPANTS = ('r1', 'r2')
@@ -44,7 +53,8 @@ ORDER = {'orders': [{'order_id': 'cargoX', 'kind': 'long_beam', 'count': 1, 'req
 
 
 def registered_v3(prereg):
-    return prereg.get('registration_version') == 3 and prereg.get('status') == 'REGISTERED'
+    # Registered successors retain the dock-v3 scene (not the old v3 DRAFT).
+    return prereg.get('registration_version') in (3, 4, 5) and prereg.get('status') == 'REGISTERED'
 
 
 def map_path(prereg):
@@ -104,8 +114,15 @@ def load_config(args):
     if (prereg.get('status') != 'DRAFT' and not registered_v3(prereg)) or prereg.get('research_result') is not False:
         raise ValueError('this driver is for preregistered dev only')
     version = prereg.get('registration_version')
-    if version not in (2, 3):
-        raise ValueError('use prereg v2 or registered v3; old v3 draft is prepare-only; preserve v1')
+    revision = prereg.get('registration_revision')
+    if revision is not None and (version != 5 or revision not in ('v5b', 'v5c', 'v5d', 'v5e', 'v5f', 'v5g', 'v5h')):
+        raise ValueError('unsupported prereg revision')
+    from scripts.zone_pair_authorization import validate_authorization
+    validate_authorization(prereg)
+    if version not in (2, 3, 4, 5):
+        raise ValueError('use prereg v2 or registered v3/v4/v5; preserve earlier versions')
+    if version in (4, 5) and not registered_v3(prereg):
+        raise ValueError('v4/v5 requires a registered grasp contract')
     if version == 3 and args.execute and not registered_v3(prereg):
         raise ValueError('v3 is prepare-only: coordinator startup/dock decision and implementation are pending')
     if registered_v3(prereg):
@@ -118,16 +135,41 @@ def load_config(args):
         if {k: v for k, v in prereg['stage_rules'].items() if k != 'admission_diagnostics'} != v2['stage_rules']:
             raise ValueError('v3 must preserve v2 stage rules')
         readiness = prereg.get('execution_readiness', {})
-        if (readiness.get('status') != 'READY_AFTER_SOURCE_FREEZE'
+        readiness_status = ('AWAITING_EXECUTION_AUTHORIZATION' if revision in ('v5f', 'v5g', 'v5h') else
+                            'PREPARE_ONLY_REVIEW_HOLD' if revision in ('v5d', 'v5e') else 'READY_AFTER_SOURCE_FREEZE')
+        if (readiness.get('status') != readiness_status
                 or readiness.get('spawn_change_applied') is not True
                 or readiness.get('startup_policy') != 'relocate_static_dock_x_minus_0_65'):
             raise ValueError('v3 dock decision/readiness missing')
         for old, new in zip(v2['runs'], prereg['runs'], strict=True):
-            if {k: v for k, v in new.items() if k != 'id'} != {k: v for k, v in old.items() if k != 'id'}:
+            excluded = ('id', 'seed') if version in (4, 5) else ('id',)
+            if {k: v for k, v in new.items() if k not in excluded} != {k: v for k, v in old.items() if k not in excluded}:
                 raise ValueError('v3 must preserve v2 seeded cargo/order/intervention')
+    if version in (4, 5):
+        from scripts.zone_pair_grasp_contract import grasp_contract
+        v3 = json.loads(PREREG_V3.read_text())
+        for key in ('criteria', 'stage_rules', 'planned_setdown', 'limits', 'safety_coverage', 'timing', 'environment', 'inputs'):
+            if prereg.get(key) != v3[key]:
+                raise ValueError(f'v4 must preserve v3 {key}')
+        if prereg.get('grasp_contract') != grasp_contract():
+            raise ValueError('grasp contract/hash mismatch')
     if prereg.get('contact_profile_contract') != profile_contract():
         raise ValueError('contact profile contract/hash mismatch; freeze a new prereg before execution')
-    previous_path = PREVIOUS_PREREG if version == 2 else PREREG
+    previous_path = {2: PREVIOUS_PREREG, 3: PREREG, 4: PREREG_V3, 5: PREREG_V4}[version]
+    if revision == 'v5b':
+        previous_path = PREREG_V5  # unexecuted v5 remains byte-identical history
+    elif revision == 'v5c':
+        previous_path = PREREG_V5B  # executed dev09/10 remain immutable
+    elif revision == 'v5d':
+        previous_path = PREREG_V5C  # unexecuted registration preserved byte-for-byte
+    elif revision == 'v5e':
+        previous_path = PREREG_V5D  # constructor fix; same still-unexecuted dev11/12
+    elif revision == 'v5f':
+        previous_path = PREREG_V5E
+    elif revision == 'v5g':
+        previous_path = PREREG_V5F
+    elif revision == 'v5h':
+        previous_path = PREREG_V5G  # executed dev11/12 remain immutable
     previous = {'path': str(previous_path.relative_to(ROOT)), 'sha256': sha_file(previous_path)}
     if prereg.get('supersedes') != previous:
         raise ValueError('previous prereg hash mismatch')
@@ -143,7 +185,12 @@ def load_config(args):
         raise ValueError('run-id is not preregistered')
     if type(case['seed']) is not int or not 0 <= case['seed'] < 2**32:
         raise ValueError('seed must be a uint32 integer')
-    expected_runs = [('dev03', 901), ('dev04', 902)] if version == 2 else [('dev05', 901), ('dev06', 902)]
+    expected_runs = {2: [('dev03', 901), ('dev04', 902)], 3: [('dev05', 901), ('dev06', 902)],
+                     4: [('dev07', 903), ('dev08', 904)], 5: [('dev09', 905), ('dev10', 906)]}[version]
+    if revision in ('v5c', 'v5d', 'v5e', 'v5f', 'v5g'):
+        expected_runs = [('dev11', 907), ('dev12', 908)]
+    elif revision == 'v5h':
+        expected_runs = [('dev13', 909), ('dev14', 910)]
     if [(r['id'], r['seed']) for r in rows] != expected_runs:
         raise ValueError(f'v{version} fixes {expected_runs}; do not reuse prior IDs')
     limits = prereg['limits']
@@ -182,6 +229,8 @@ def load_config(args):
             raise ValueError('--execute requires --lock-owner')
         if not args.output.is_absolute() or not args.output.resolve().is_relative_to(primary_root() / 'outputs'):
             raise ValueError('physical raw output must be absolute under primary checkout outputs/')
+        validate_authorization(prereg, execute=True, expected_source_sha=args.expected_source_sha,
+                               run_id=args.run_id)
     return prereg, copy.deepcopy(case)
 
 
@@ -192,6 +241,7 @@ def build_manifest(prereg, case, *, source, environment, prereg_path, applied=No
             'environment': environment, 'requested': copy.deepcopy(prereg['environment']), 'applied': applied,
             'contact_profile_contract': copy.deepcopy(prereg.get('contact_profile_contract')),
             'scene_contract': copy.deepcopy(prereg.get('scene_contract')),
+            'grasp_contract': copy.deepcopy(prereg.get('grasp_contract')),
             'timing': copy.deepcopy(prereg.get('timing')),
             'state': 'prepared_not_executed' if applied is None else 'running',
             'limits': prereg['limits'], 'prereg': {'path': str(prereg_path), 'sha256': sha_file(prereg_path)},
@@ -202,6 +252,9 @@ def build_manifest(prereg, case, *, source, environment, prereg_path, applied=No
                               'labels': LABELS, 'live_gt': False},
             'r3_policy': {'mode': 'idle_at_standard_seeded_spawn', 'task_api_calls': 0,
                           'normal_physics_preserved': True, 'noninterference': 'pending eval_only checks'},
+            'execution_authorization': copy.deepcopy(prereg.get('execution_authorization')),
+            'github_authorization': None,
+            'registration_sha256': prereg.get('registration_sha256'),
             'model_calls': 0, 'physical_success': None,
             'common_record': 'parent sim_cli workflow manifest links source/config/input/environment/result receipts'}
 
@@ -287,8 +340,8 @@ def main(argv=None):
             from scripts import agent_lock
             if os.environ.get(MANAGED_CHILD) != '1':
                 raise ValueError('execute via sim_cli workflow run zone-pair-dev for the common record')
-            if git('rev-parse', 'HEAD') != args.expected_source_sha or git('status', '--porcelain'):
-                raise ValueError('execution source must be clean and match pinned HEAD; coordinator must commit first')
+            from scripts.zone_pair_authorization import verify_source
+            verify_source(ROOT, args.prereg, prereg, args.expected_source_sha)
             held = agent_lock.status(primary_root() / 'outputs/agent-locks')
             if not held or not held['pid_alive'] or held['owner'] != args.lock_owner or held['branch'] != git('branch', '--show-current'):
                 raise ValueError('live agent_lock matching owner and branch required')
@@ -310,6 +363,18 @@ def main(argv=None):
         if not args.execute:
             print(json.dumps({'state': manifest['state'], 'manifest': str(args.output / 'manifest.json')}))
             return 0
+        # Recheck the exact authorization bytes and source immediately before admission.
+        if args.prereg.read_bytes() != prereg_bytes:
+            raise ValueError('prereg changed after preparation')
+        verify_source(ROOT, args.prereg, prereg, args.expected_source_sha)
+        from scripts.zone_pair_authorization import verify_github_authorization
+        verified = verify_github_authorization(prereg, args.expected_source_sha, args.run_id)
+        # The network round trip must not open a source/envelope mutation window.
+        if args.prereg.read_bytes() != prereg_bytes:
+            raise ValueError('prereg changed during GitHub approval lookup')
+        verify_source(ROOT, args.prereg, prereg, args.expected_source_sha)
+        manifest['github_authorization'] = verified
+        write_json(args.output / 'manifest.json', manifest)
         return execute(args, prereg, case, manifest)
     except (ValueError, OSError, subprocess.CalledProcessError) as exc:
         p.exit(2, f'{type(exc).__name__}: {exc}\n')

@@ -49,7 +49,7 @@ def test_p1_1_real_rounded_report_on_accumulated_clock_is_fresh(entry):
 
 @pytest.mark.parametrize('entry', ['submission', 'before_control', 'command'])
 @pytest.mark.parametrize('offset,accepted', [(.000099, True), (.0001, True), (.000101, False),
-                                            (-.3, True), (-.30001, False),
+                                            (-.3, True), (-.300099, True), (-.300101, False),
                                             (float('nan'), False), (float('inf'), False)])
 def test_p1_1_timestamp_tolerance_is_bounded(entry, offset, accepted):
     host, exs = setup()
