@@ -130,6 +130,8 @@ class OwnCamPoseSource:
         self.frames = 0
 
     def begin_relocalization(self, now, servo):
+        if getattr(self, 'recovery_v6', False):
+            return self.begin_observation(now, servo)
         # Preserve the old PF reset and RNG consumption exactly.
         self.loc = FixReportingLocalizer(self.static_map, self.loc.params,
                                   seed=int(self.loc.rng.integers(1 << 30)))
@@ -137,7 +139,18 @@ class OwnCamPoseSource:
         self.servo = dict(servo)
 
     def expected_observability(self, pose, pan, static_map):
+        if getattr(self, 'recovery_v6', False):
+            from harness.owncam_observability_v6 import expected_observability
+            return expected_observability(self.loc, pose, pan, static_map)
         return expected_tag_observability(pose, pan, static_map)
+
+    def begin_observation(self, now, servo, *, lost=False):
+        if not getattr(self, 'recovery_v6', False):
+            raise ValueError('posterior recovery v6 is not enabled')
+        self.loc.predict_to(now)
+        # Issued PWM bookkeeping already arrived through on_command. A look
+        # request is neither a motor command nor a new absolute observation.
+        return self.loc.request_recovery() if lost else True
 
     def get_motion_params(self) -> dict:
         import copy
@@ -161,6 +174,11 @@ class OwnCamPoseSource:
 
     def on_frame(self, now: float, rgb: np.ndarray) -> PoseReport:
         """One own ``robot_cam`` frame (RGB array decoded from the JPEG the robot saw)."""
+        if getattr(self, 'recovery_v6', False):
+            key = hashlib.sha256(rgb.tobytes()).hexdigest()
+            if key == getattr(self, '_last_image_digest', None):
+                return self.report(now)  # same pixels cannot create a new fix
+            self._last_image_digest = key
         dets = self.detector.detect(rgb)
         self.frames += 1
         self.loc.update(now, dets, dict(self.servo))
@@ -177,14 +195,25 @@ class OwnCamPoseSource:
                               last_valid_obs=self.last_obs, fix_source='tags_temporary')
         w = np.exp(self.loc.logw - self.loc.logw.max())
         n_eff = float(w.sum()**2/np.sum(w*w))
+        quality = (dict(self.loc.quality) if getattr(self, 'recovery_v6', False) else
+                   {'accepted': self.loc.last_tag_t == now,
+                    'observed_features': 0 if self.last_obs is None else self.last_obs['n_tags']})
+        if getattr(self, 'recovery_v6', False):
+            quality.update(last_fix_quality=self.loc.last_fix_quality, lost=self.loc.inconsistent_frames >= 3)
+            offsets = self.loc.px - [est['x'],est['y'],est['yaw']]
+            angles = (offsets[:,2]+math.pi)%(2*math.pi)-math.pi
+            quality['posterior_envelope'] = {
+                'xy_radius_m':float(np.linalg.norm(offsets[:,:2],axis=1).max()),
+                'yaw_radius_rad':float(np.abs(angles).max()),
+                'scope':'all current PF hypotheses; not calibrated physical coverage'}
+        fix_t = (self.loc.last_informative_t if getattr(self, 'recovery_v6', False) else self.loc.last_tag_t)
         return PoseReport(t_est=float(est['t']), initialized=True, x_m=est['x'], y_m=est['y'], yaw_rad=est['yaw'],
                           cov=tuple(tuple(r) for r in est['cov']), std_xy_m=est['std_xy_m'],
                           std_yaw_rad=est['std_yaw_rad'], since_tag_s=est.get('since_tag_s'),
                           last_valid_obs=self.last_obs, n_eff=round(n_eff, 1), load_state=load, source=self.source,
-                          last_fix_t=self.loc.last_tag_t, fix_age_s=est.get('since_tag_s'),
+                          last_fix_t=fix_t, fix_age_s=est.get('since_tag_s'),
                           fix_source='tags_temporary',
-                          observation_quality={'accepted': self.loc.last_tag_t == now,
-                                               'observed_features': 0 if self.last_obs is None else self.last_obs['n_tags']})
+                          observation_quality=quality)
 
 
 def to_skill_estimate(report: PoseReport, pose_estimate_cls):

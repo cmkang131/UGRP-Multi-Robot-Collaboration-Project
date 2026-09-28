@@ -126,15 +126,40 @@ def m2_controller(execution, plan, params):
     class RoutedM2(PairGraspRelook, ProviderM2DoorStudent):
         requires_fresh_frame = True
 
+        @property
+        def policy(self):
+            return execution.policy
+
+        def relative_report(self, now, obs):
+            return execution.command_guard.relative_report(now, obs)
+
+        def global_certificate(self, now, beam=None):
+            return execution.command_guard.global_certificate(now, beam)
+
+        def begin_scheduled_reobserve(self, now):
+            return execution.command_guard.begin_scheduled_reobserve(now)
+
+        def reset_object_anchor(self):
+            execution.command_guard.object_anchor = None
+
+        def reset_phase_budget(self, now, phase):
+            execution.command_guard.reset_phase_budget(now, phase)
+
         def align_stop_ready(self, now):
             return execution.command_guard.align_stop_ready(now, self.align_look_started_at)
 
         def align_look_choices(self):
             from harness.zone_pair_align import ranked_look_pans
-            from harness.zone_pair_geometry import PairSweepGuard
             own = execution.own
-            guard = PairSweepGuard(own.guard, plan['beam_geometry'], execution.arguments['role'])
-            return ranked_look_pans(own.map, own.last_report, own.servo, guard, own.pose)
+            guard = execution.command_guard.sweep_guard()
+            safety_pose = None
+            if self.policy.beam_relative:
+                safety_pose = execution.command_guard._pose(own.now)
+                if safety_pose is None:
+                    return []
+            return ranked_look_pans(own.map, own.last_report, own.servo, guard, own.pose,
+                                    recovery_v6=self.policy.posterior_relook,
+                                    excluded=getattr(self,'relook_excluded',()), safety_pose=safety_pose)
 
         def preclose_check(self, now, obs):
             return execution.command_guard.preclose_check(now, obs)
@@ -192,7 +217,9 @@ def m2_controller(execution, plan, params):
 
 class PairExecution:
     """One robot's local job. Peers are observable only through status records."""
-    def __init__(self, own, status, arguments, plan, params, factory=m2_controller):
+    def __init__(self, own, status, arguments, plan, params, factory=m2_controller, *, policy='v5h'):
+        from harness.zone_pair_v6_policy import pair_policy
+        self.policy = pair_policy(policy)
         self.own, self.status = own, status
         self.partner_id = next(r for r in PAIR if r != own.robot_id)
         self.poll_s = ARM_S
@@ -354,9 +381,19 @@ class PairExecution:
         arm.tick(now)
         commands, self.port.commands = self.port.commands, []
         checked = self.command_guard.check(now, commands)
-        if commands and checked == [{'kind': 'hold'}] and not self.terminal:
-            arm.events = pending
-            self.arm_wait_at = now
+        if (any(c['kind'] in ('arm','look') for c in commands)
+                and checked == [{'kind': 'hold'}] and not self.terminal):
+            if self.policy.posterior_relook and self.command_guard.reobserving:
+                # A blocked sweep is cancelled, never shifted forever behind
+                # newer fixes (dev14). Replan from actually issued PWM only.
+                arm.events.clear()
+                arm.until = now
+                arm.commanded = dict(self.own.servo)
+                self.arm_wait_at = None
+                self.controller.cancel_relook_pan(now)
+            else:
+                arm.events = pending
+                self.arm_wait_at = now
         else:
             self.arm_wait_at = None
         return checked
@@ -370,10 +407,21 @@ class PairTeam:
     Each endpoint computes its own plan and deterministic geometry/ID role.
     """
     def __init__(self, executors, sheets, params, *, cancel_scheduled, contact_profile, weld=False,
-                 controller_factory=m2_controller, rendezvous_timeout_s=5., heartbeat_timeout_s=.15):
+                 controller_factory=m2_controller, rendezvous_timeout_s=5., heartbeat_timeout_s=.15,
+                 policy='v5h'):
+        from harness.zone_pair_v6_policy import pair_policy
+        self.policy = pair_policy(policy)
         if not finite_number(rendezvous_timeout_s) or not .2 <= rendezvous_timeout_s <= 30.:
             raise ValueError('invalid rendezvous timeout')
         self.executors = dict(executors)
+        if self.policy.posterior_relook:
+            from harness.owncam_recovery_v6 import enable_provider
+            for executor in self.executors.values():
+                enable_provider(executor.pose)
+        if self.policy.stationary_bootstrap:
+            from harness.owncam_bootstrap_v6b import enable_bootstrap
+            for executor in self.executors.values():
+                enable_bootstrap(executor.pose, float(getattr(executor, 'now', 0.) or 0.))
         self.sheets, self.params = copy.deepcopy(sheets), copy.deepcopy(params)
         self.cancel_scheduled = cancel_scheduled
         self.contact_profile, self.weld = contact_profile, weld
@@ -450,7 +498,8 @@ class PairTeam:
                            'closed': False}
             else:
                 session, channel = pending, pending['channel']
-            ep = PairExecution(ex, PairStatusEndpoint(channel, rid), args, plan, self.params, self.factory)
+            ep = PairExecution(ex, PairStatusEndpoint(channel, rid), args, plan, self.params, self.factory,
+                               policy=self.policy.name)
         except (ValueError, KeyError, TypeError):
             return refuse('INVALID_PAIR_PLAN')
         ep.rendezvous_deadline = now + self.rendezvous_timeout_s
@@ -482,7 +531,7 @@ class PairTeam:
                         session['closed'] = True
 
     def records(self):
-        return [{'profile': PROFILE, 'status_profile': STATUS_PROFILE,
+        return [{'profile': PROFILE, 'status_profile': STATUS_PROFILE, 'pair_policy': self.policy.name,
                  'timing': {'control_s': CONTROL_S, 'arm_s': ARM_S,
                             'heartbeat_timeout_s': s['channel'].heartbeat_timeout_s,
                             'readiness_ttl_s': s['channel'].readiness_ttl_s,

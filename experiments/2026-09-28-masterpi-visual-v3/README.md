@@ -22,6 +22,7 @@ Claude가 시작한 PR #249를 Codex가 `961271a44ad34cf17e94f36217589af7cde2fa2
 4. `visual_arm_v3`는 기존 `visual_arm` FK·삼각형 IK를 import해 재사용한다. yaw 장착 48.2 mm, 어깨 높이 차이 2.2 mm, 실제 패드 중심 86.85 mm를 반영한다. 카메라 로컬 자세/FOV는 바꾸지 않았다. 스윕 가드는 기존 표본화 수학에 장착 변환과 보수적 잔차를 적용하며, 자기 자세가 없으면 v3 팔 스윕을 거부한다.
 5. v3 장면의 model runtime은 새 팔·가드·발자국 모듈을 선택한다. 기존 v2 손목 스킬/표식 제공자는 **물리 world 생성 전에 거부**한다. 실제 v3 손목 스킬·표식 없는 자세 제공자·짝 운반 소비자 이관은 남아 있으므로 통합 러너의 v3 실행 완료로 보고하지 않는다.
 6. 정적 감사 뒤 main과 열린 PR 11개의 head를 커넥터로 읽어 로컬 origin 참조와 모두 대조했다. 전체 origin/*의 등록 bundle 최대가 v73이므로 `zone-study-integration-v74-masterpi-v3`를 선택했고, v69는 은퇴 ID에 보존했다. workflow는 열린 브랜치 최대 2.3.0 다음인 2.4.0이다. **로컬 등록일 뿐, 원격 번호 예약/코드 push는 완료되지 않았다.** SHA 목록은 `codex-bundle-heads.json`에 있다.
+   - 2026-09-29 main 병합(main v78·workflow 2.10.0, PR #257 뒤): main과 열린 PR 전체를 다시 확인해 최종 번호를 `zone-study-integration-v79-masterpi-v3`, workflow **2.11.0**으로 정했다. 병합 전 후보 v74는 실행 기록이 없고 main에 없었으므로 은퇴 목록에 넣지 않았다. v78은 은퇴 목록으로 옮겼다. `llm_driver.json`에는 v79를 v78과 같은 프로필로 등록했다.
 
 ### 정적 감사와 검증 범위
 

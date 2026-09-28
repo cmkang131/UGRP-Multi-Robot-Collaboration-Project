@@ -221,14 +221,16 @@ def test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort(tmp_path):
     for key in ('criteria', 'stage_rules', 'planned_setdown', 'limits', 'timing', 'safety_coverage', 'environment', 'inputs'):
         assert p[key] == old[key] == committed[key], key
     current_grasp = grasp_contract()
+    # The fixture rebinds v5h to the current source. The committed v5h stays
+    # historical: v6 also changed its scene sources (team host, dev runner).
     assert p['grasp_contract'] == current_grasp
-    assert p['scene_contract'] == dev.scene_contract() == committed['scene_contract']
+    assert p['scene_contract'] == dev.scene_contract() != committed['scene_contract']
     assert p['registration_revision'] == 'v5h'
     assert p['supersedes'] == {'path': str(dev.PREREG_V5G.relative_to(dev.ROOT)),
                                'sha256': dev.sha_file(dev.PREREG_V5G)}
     workflow = next(w for w in json.loads((dev.ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
                     if w['id'] == 'zone-pair-dev')
-    assert workflow['version'] == p['grasp_contract']['workflow']['version']
+    assert workflow['version'] == '0.6.0'
     assert p['commands']['owner'] == 'claude'
     for rid, seed in [('dev13', 909), ('dev14', 910)]:
         args = dev.parser().parse_args(['--prereg', str(fixture), '--run-id', rid, '--output', str(tmp_path / rid)])

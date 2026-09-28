@@ -1,0 +1,171 @@
+{
+ "amendment": "\uc7ac\uc0dd \uc804 PR #253 \uc801\ub300\uc801 \uac80\ud1a0 \ubc18\uc601. \uac70\uc9d3 stall \ud0c8\ucd9c, \uc7a1\uc74c \ubcf4\uc874, \uc0ac\uac74 \ubd84\ud560 \ub0b4\uc131, \ud574\uc2dc \ub300\uc870\ub97c \uc218\uc815\ud574 \uc7ac\ub3d9\uacb0. \uc774\uc804 \uacc4\ud68d\uacfc \uc124\uc815\uc740 pre_review_0687c620/\uc5d0 \ubcf4\uc874.",
+ "configs_sha256": {
+  "T0": "aa23adec5dfbf82016b4f84ef45b05f6404fc9057d4b4959bb76994eed9ced7e",
+  "T1abc_d02a3_eta0125": "aa245f83e8a00e14a2b2575b517f5b40095bd03b2d828fbec28b7b9449a9e9f4",
+  "T1abc_d02a3_eta025": "d843c2f0d004594d5c4467ae7ebaaca63bced254f5608b5b7883165872a04d0f",
+  "T1abc_d02a3_eta050": "4429fdcd15240b6f6492efd82d465879e667bcf6350d43fe7ab7d19c6a5aa4e3",
+  "T1abc_d02a6_eta0125": "1af8db0a146d4001805a0e1c4c6f01349808c4bf4cdd9d516dac134976e6751e",
+  "T1abc_d02a6_eta025": "2da625f4095c037762c4d5b92ba3d9758d8b2eea44d55ca8a25d1d2cbe74322b",
+  "T1abc_d02a6_eta050": "77e515a3a7d79561ea4ba8f9945548b33e519c22352c2ae2ec93c07ed27ae6d5",
+  "T1abc_d05a3_eta0125": "9b6fcc0eaabeb5d5131262b78898f7c5b13c7e0e18fb95eea15266da3dea54fe",
+  "T1abc_d05a3_eta025": "0d36e3a9d719036750268ab57b774c6c7df5aa9c9fec0ae07114463a0d696a53",
+  "T1abc_d05a3_eta050": "a885fbee3558b6682f60f0a4b3dfa4563c280017f40ef151a3457b7cf4c70d79",
+  "T1abc_d05a6_eta0125": "7fe273f1e20aa1b215ec03b3d62f83405c4d31ba0ae77f74960b4de47af4007b",
+  "T1abc_d05a6_eta025": "8d21003d61ce51f8fbbc3899ec8abd6895d96d505e6c4626a8341b793e49f18b",
+  "T1abc_d05a6_eta050": "958b52d1d0bfe1aa081cf00a4a7b998b55e2ab061030d6271767811599761996",
+  "T1abc_d10a3_eta0125": "42a1ed24f9910a07f164cf4342f3c832992d7c2e56782b12f8a39063458312ca",
+  "T1abc_d10a3_eta025": "0dafdd05e1ee8255c52f2d712bbf86ec799ed16bf64c1a388fa48ab545e695ac",
+  "T1abc_d10a3_eta050": "c88149568e84820d5c63c369eb3d6e18ed9e8f518cbd8b962f22629febb000c0",
+  "T1abc_d10a6_eta0125": "01d0df2b9dd4d33ffddbc5f1dfece93d21d5898d18f762c6b39d49e8ce0de92d",
+  "T1abc_d10a6_eta025": "c92b460e70de50ae3655aa33767582605d59437815b200ab2c936f236ab7c98f",
+  "T1abc_d10a6_eta050": "e104c63d7c4f611117516d4112c1234bbeca6c98021705ed8a624a9cb2fba597",
+  "T1ac_d02a3": "0bd549921057ff93df471ebe132f053c5d7c7fe6aefca6ae9542641198265b64",
+  "T1ac_d02a6": "47f0973b71b386c6fbe68df7a9f3a7bfab320821ce61562f7872347b716e69ec",
+  "T1ac_d05a3": "267ff64d656afba77466ee8ba244afc9f7727b243c712ec45d9d5233bca8cb5a",
+  "T1ac_d05a6": "6d7c9708e835ebded73bb2d377491ce4a867b9d4d4337b260891b0fc6002611a",
+  "T1ac_d10a3": "3f6bc50d3e2dc949c3d7abb1ce165bdf537c0498ea4e2f93e26a85dc81bdd6b7",
+  "T1ac_d10a6": "d43cbebdb55f2d20c76f33e23a32a8505ab96ee730155e3dccd90eee6399d911",
+  "T1b_eta0125": "3e9d2e1383ec8a2514a0a09ee84a8a96925a75ed990238d1d96b3272d7768d39",
+  "T1b_eta025": "c55ff698d1b179f74ab88c71ff55e7177466eaa007bdef78c95253e69d59bae1",
+  "T1b_eta050": "c42880fb6f1e8237343ad3bfd59706f2e14603b57efe40e2773e1cfc391ec3ec",
+  "T1c": "2ec3f102317113f219124d2ec034c86179c9308f4196c4f94fea08462362d4a7",
+  "T1c_inert": "12f03eb90514c2264ec99f4550dc26c2a4f26eddcd77cc8c86c59d26cfdd3d08"
+ },
+ "inputs": {
+  "calibration": "experiments/2026-09-26-vision-loc/calibration_train.json",
+  "frames": "render/<ep>/inputs/frames.jsonl + frames/*.jpg (1c classical image processing only)",
+  "gt": "render/<ep>/eval_only/frames_eval.jsonl, scoring only",
+  "nn_inference_frames": 0,
+  "obs": "outputs/vision-loc-20260926/r3/obs-w6 (vision, checkpoint sha256 3485390...)",
+  "test_episodes": "none (refused by replay_v6.py)"
+ },
+ "issue": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/216",
+ "module_sha256": {
+  "experiments/2026-09-26-markerless-probe/markerless_probe.py": "015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+  "experiments/2026-09-26-vision-loc/episodes.json": "75a9512e57b6416b232eb8b52b9b3f64d4641e34c9be50c5befb9402049e1015",
+  "experiments/2026-09-26-vision-loc/episodes_v3.json": "82a83210b34dd3ba145a884f94568fc190d7b7c8a28a3804e35eeb3374d0515d",
+  "experiments/2026-09-26-vision-loc/replay_v6.py": "994ee67a24748299e3641231f9d7fe3edc04a9961439bca678ecfc8b172ea9c9",
+  "experiments/2026-09-26-vision-loc/vis6_metrics.py": "139af512fa65181bf07c76bd265994492aae258ea4ba0e01e3e7925386d72b84",
+  "experiments/2026-09-26-vision-loc/vision_loc.py": "d320d8d63c0551d254fe654efadaa12abf6365fc78dd151ba7c254d5a326cc2e",
+  "experiments/2026-09-26-vision-loc/vision_loc_cli_v5.py": "1c4668aad0dbb460f0a8d04e851ab4bfa50a3e5c7a8496dc1bb7f46eb06da167",
+  "experiments/2026-09-26-vision-loc/vision_loc_io.py": "074e3d9f8d0c19e6f83707af26ffe16f23d247fc862e8c4305313b78d9d0b328",
+  "experiments/2026-09-26-vision-loc/vision_loc_score.py": "0e1d4e9827be45763908b317e24732adb5cafe5e808de878f8aa670b3af1185f",
+  "experiments/2026-09-26-vision-loc/vision_motion.py": "512a2900507dae73d9ca56b8ce532bfccb3f21a0930502714219d5bed1a06880",
+  "experiments/2026-09-26-vision-loc/vision_pf_v5.py": "0cf03790356f0f1ead1c32ab2f8002a5cc52fb6e9e755253f88fbfb55b0727ea",
+  "experiments/2026-09-26-vision-loc/vision_pf_v6.py": "45f5a7d979df7a528ba2b8d2cd425682ef4b76c4c4bfb764d6d8a6a9b5cbbf2b",
+  "experiments/2026-09-26-vision-loc/vision_report_v5.py": "121c6334b23a5631c75ed3558fa772763ec4e32d0f1fe61e18934c2bea61cb5d",
+  "experiments/2026-09-26-vision-loc/vision_sigma.py": "ea89eeb1e908dd74ced53cec590640514d1c69ce633d85050c0b73142f07a027",
+  "experiments/2026-09-26-vision-loc/vision_stall_v6.py": "80550d28f8c1fba73557d1b923745c483c27ebf08373cc1eb651c94548c16fff",
+  "harness/wall_tags.py": "eb0327012047cc413b7bb930fb7884cdfe4c18239058d954b1cce56593e0336e"
+ },
+ "particles": 2000,
+ "revision": 2,
+ "rules": {
+  "calibration_selection": "eligible: fit seed-mean XY 95% ellipse coverage in band; choose lowest fit episode-equal XY NLL; ties to the earlier (larger eta) name; accuracy is not a selection criterion; none eligible -> the component is dropped",
+  "coverage95_band": [
+   0.9,
+   0.99
+  ],
+  "detector_gate": {
+   "correct_stall": "both XY/yaw <= max(0.5 x predicted, still threshold x dt), with active translation or yaw prediction",
+   "min_positives": 20,
+   "min_precision": 0.8,
+   "min_recall": 0.3,
+   "positive": "GT < 0.01 m/s AND < 0.02 rad/s; predicted > 0.05 m/s OR > 0.05 rad/s; seed0 only"
+  },
+  "events": {
+   "merge_gap_s": 1.0,
+   "min_bad_frames": 5,
+   "primary": "event_frames (all bad frames, including short events)"
+  },
+  "gating_accuracy_worse_max": {
+   "door_lat_p99_m": 0.003,
+   "door_pos_p90_m": 0.003,
+   "door_yaw_p90_deg": 0.2
+  },
+  "validation": {
+   "coverage95_band": [
+    0.9,
+    0.99
+   ],
+   "door_lat_p99_worse_max_m": 0.003,
+   "door_pos_p90_worse_max_m": 0.003,
+   "door_yaw_p90_worse_max_deg": 0.2,
+   "episode_nll_no_worse": true,
+   "event_frames_reduction_min": 0.3,
+   "exceed3_xy_max": 0.02,
+   "sigma_xy_p90_loaded_max_m": 0.07,
+   "sigma_xy_p90_unloaded_max_m": 0.07
+  }
+ },
+ "schema": "ugrp.vision_loc.vis6.plan.v2",
+ "seeds": {
+  "final_validation": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "rule": "index 0 = episode seed (VIS3/VIS4), k >= 1 = episode_seed*1000 + k",
+  "selection_fit": [
+   0,
+   1,
+   2
+  ]
+ },
+ "source": "outputs/lit-review-tagfree-localization-20260928.md section 6.1 (recipe #1: 1a gating, 1b eta, 1c stall)",
+ "split": {
+  "fit": [
+   "vl-dev-s909",
+   "vl-dev-s910",
+   "vl-dev-s911",
+   "vl3-dev-s941",
+   "vl3-dev-s942",
+   "vl3-dev-s943"
+  ],
+  "note": "same fit/validation split as VIS4/VIS5; validation was seen before (not an independent test)",
+  "validation": [
+   "vl3-dev-s945",
+   "vl3-dev-s946",
+   "vl3-dev-s947"
+  ]
+ },
+ "stages": [
+  {
+   "id": "P0",
+   "what": "\uba3c\uc800 T0/T1c_inert fit \uccab \ud68c\ucc28 seed0: a1 \ubc0f \uc11c\ub85c\uc758 xyyaw/std_xy_m/std_yaw_rad/measured \ub300\uc870. \ud1b5\uacfc \ub4a4 \ub098\uba38\uc9c0 T0 fit seed0-2"
+  },
+  {
+   "id": "S1",
+   "what": "1b eta on fit: select calibration over [T0, T1b_eta050, T1b_eta025, T1b_eta0125]"
+  },
+  {
+   "id": "S2",
+   "what": "T1c fit \uac80\ucd9c\uae30 \uad00\ubb38\uc740 seed0 \uace0\uc720 \ud504\ub808\uc784 \uc30d\uc73c\ub85c\ub9cc \uc9d1\uacc4"
+  },
+  {
+   "id": "S3",
+   "what": "1a gating grid on fit at eta 1: door accuracy constraints, then lowest fit NLL over T1ac_* in order d02a3, d02a6, d05a3, d05a6, d10a3, d10a6 (ties to the earlier)"
+  },
+  {
+   "id": "S4",
+   "what": "1a+1b+1c: select calibration over [T1ac_<S3>, T1abc_<S3>_eta050, _eta025, _eta0125]"
+  },
+  {
+   "id": "F",
+   "what": "validation seeds 0-4: T0 baseline vs T1b_<S1>, T1c, T1ac_<S3>, T1abc_<S4>; validation_gate each; adopt the passing one with the lowest validation NLL"
+  }
+ ],
+ "status": "FROZEN_BEFORE_ANY_VIS6_REPLAY",
+ "stop_rules": [
+  "P0 reproduce fails -> STOP before any comparison (code or data drift); record, no selection",
+  "S2 detector gate fails -> 1c dropped; 1a is dropped with it (gating needs 1c); F compares T1b only",
+  "S1, S3 or S4 with no eligible candidate -> that stage contributes no candidate",
+  "no candidate passes F -> keep b0 (VIS3 a1 = T0); no re-tuning of grids, thresholds or rules in this cohort; a new idea needs a new plan",
+  "host: AC power only; ENOSPC or a killed run -> HOST_ERROR, rerun the whole unit into a new root; evaluate refuses partial sets",
+  "budget: stop after the running stage when the cohort passes 40 CPU-hours; report what finished"
+ ],
+ "supersedes_plan_sha256": "c339db6787324d1ec8bae2e2a9d6a7db9fa247ad3616ca04b3ed0db96ae96b04"
+}
