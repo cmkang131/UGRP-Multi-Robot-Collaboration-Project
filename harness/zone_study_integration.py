@@ -74,18 +74,21 @@ INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
 # main's v69 (v66 multi-turn scheduler + v67 landmark-agnostic pair path). The
 # composed source equals none of them, so it takes the next free number; v68
 # stays reserved as the pre-merge v6 draft recorded by its offline replay.
-# v72 (B7, PR #256) adds the real model driver to the runner
+# v75 = v70 + the opt-in v6b start bootstrap (b-boot/a+b-boot); v70 is retired
+# with the source recorded by the 2026-09-28 v6 dev cohort (PR #259).
+# v77 (B7, PR #256) adds the real model driver to the runner
 # (harness.zone_study_llm_driver) and registry-selected speech caps on top of
-# main's v70; the study core and scheduler are unchanged. v70 is retired with
-# the source recorded by the 2026-09-28 v6 dev cohort (PR #259). v71 unused;
-# v73 (#257), v74 (#249), v75 (#261) are claimed by open PRs.
+# main's v75; the study core, scheduler and pair policies are unchanged. v75
+# (recorded by the v6b offline replay, PR #261) is retired. The pre-merge
+# candidate v72 never ran and was never on main. v76 is claimed by PR #263.
 from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID
 RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
                       'zone-study-integration-v64-source-closure', 'zone-study-integration-v65-pair-close',
                       'zone-study-integration-v66-multiturn', 'zone-study-integration-v67-landmark-agnostic',
                       'zone-pair-v68-beam-relative-recovery',
                       'zone-study-integration-v69-multiturn-landmark-agnostic',
-                      'zone-pair-v70-beam-relative-multiturn')
+                      'zone-pair-v70-beam-relative-multiturn',
+                      'zone-pair-v75-dock-prior-bootstrap')
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',
@@ -352,7 +355,7 @@ class IntegratedTrial(zo.OfflineTrial):
                          horizon_s=horizon_s, run_id=None, code_sha=code_sha,
                          scheduler_factory=scheduler_factory)
         # One window for this episode. These limits cannot be renewed by a call.
-        # v72: an open channel takes its window/robot caps from the registered
+        # B7 (v72 candidate, merged as v77): an open channel takes its window/robot caps from the registered
         # speech-cap profile (harness.zone_study_llm_driver). The v66 default
         # 2/6 equals the old min(spec 2, 2) / spec 6, so default runs are
         # unchanged; no_comm keeps its closed 0/0 channel (frozen v64 bytes).

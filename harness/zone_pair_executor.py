@@ -418,6 +418,10 @@ class PairTeam:
             from harness.owncam_recovery_v6 import enable_provider
             for executor in self.executors.values():
                 enable_provider(executor.pose)
+        if self.policy.stationary_bootstrap:
+            from harness.owncam_bootstrap_v6b import enable_bootstrap
+            for executor in self.executors.values():
+                enable_bootstrap(executor.pose, float(getattr(executor, 'now', 0.) or 0.))
         self.sheets, self.params = copy.deepcopy(sheets), copy.deepcopy(params)
         self.cancel_scheduled = cancel_scheduled
         self.contact_profile, self.weld = contact_profile, weld
