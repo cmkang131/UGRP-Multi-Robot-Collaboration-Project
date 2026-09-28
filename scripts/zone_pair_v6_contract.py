@@ -1,10 +1,14 @@
-"""Prepare-only v6/v6b registration, separate from immutable v5h execution records.
+"""v6-family registration contract, separate from immutable v5h execution records.
 
-v6 (PR #246, run by the 2026-09-28 dev cohort in PR #259) is historical once
-the v6b bootstrap source exists: its receipt is audited against the committed
-blobs of its own commit (``verify_v6_historical``), never against the current
-checkout, and it can no longer be prepared from current source. v6b adds the
-opt-in ``stationary_bootstrap`` policies in bundle v75.
+2026-09-29 (manager decision): the v6 registration (PR #259, REGISTERED at
+3c26acdd, six dev runs done) is a HISTORICAL record. It pins 72 source hashes
+of that commit, so checking it against the current tree broke every later PR
+that touched a pinned source. It is now audited only against the blobs of its
+registration commit (``verify_v6_historical``), and ``load_config`` refuses
+to prepare or run it from the current tree. New v6-family runs register their
+own revision and bundle (v6b, v6c) and set ``CURRENT_REVISION``. On this
+branch the current revision is v6b: the opt-in ``stationary_bootstrap``
+policies in bundle v75 (PR #261).
 """
 import copy
 import hashlib
@@ -18,7 +22,9 @@ ROOT = Path(__file__).resolve().parents[1]
 PREREG = ROOT/'experiments/2026-09-28-zone-pair-v6/prereg_v6.json'
 PREREG_V6B = ROOT/'experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json'
 V5H = ROOT/'experiments/2026-09-27-zone-pair-dev/prereg_v5h.json'
-CURRENT_REVISION = 'v6b'
+V6_REGISTRATION_COMMIT = '3c26acddec066adcd9164e6d2a6f51c1261c5f66'   # PR #259 REGISTERED conversion
+HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT)}
+CURRENT_REVISION = 'v6b'      # PR #261; v6c registers its own
 
 
 def contract(revision=CURRENT_REVISION):
@@ -89,20 +95,27 @@ def contract(revision=CURRENT_REVISION):
         'source_sha256':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths}}
 
 
-def verify_v6_historical(path=PREREG, *, root=ROOT):
-    """Audit a historical v6 receipt at its own last registration commit (read-only)."""
+def verify_v6_historical(path=PREREG, *, root=ROOT, commit=V6_REGISTRATION_COMMIT):
+    """Audit the historical v6 receipt at its registration commit (read-only).
+
+    The registration bytes must equal the committed blob, and every pinned
+    source hash must match that commit's blob, not the current tree.
+    """
     from scripts.zone_pair_registered_source import committed_blob
     relative = Path(path).resolve().relative_to(Path(root).resolve()).as_posix()
-    commit = subprocess.check_output(['git', 'log', '-1', '--format=%H', '--', relative], cwd=root, text=True).strip()
-    if not commit:
-        raise ValueError('historical v6 registration has no commit')
-    p = json.loads(committed_blob(str(root), commit, relative))
-    if p != json.loads(Path(path).read_text()):
-        raise ValueError('historical v6 registration bytes differ from their commit')
+    if subprocess.run(['git', 'merge-base', '--is-ancestor', commit, 'HEAD'], cwd=root,
+                      stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode != 0:
+        raise ValueError(f'historical v6 registration commit {commit} is not in this history')
+    blob = committed_blob(str(root), commit, relative)
+    if Path(path).read_bytes() != blob:
+        raise ValueError('historical v6 registration bytes differ from their registration commit')
+    p = json.loads(blob)
+    if p.get('registration_revision') != 'v6' or p.get('status') != 'REGISTERED':
+        raise ValueError('historical v6 registration is not the REGISTERED v6 record')
     for source, expected in p['v6_contract']['source_sha256'].items():
         if hashlib.sha256(committed_blob(str(root), commit, source)).hexdigest() != expected:
             raise ValueError(f'historical v6 source hash mismatch at {commit}: {source}')
-    return {'commit': commit, 'revision': p.get('registration_revision'),
+    return {'commit': commit, 'revision': p['registration_revision'], 'status': p['status'],
             'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),
             'qualification': 'historical provenance audit; not current-source execution admission'}
 
@@ -110,9 +123,12 @@ def verify_v6_historical(path=PREREG, *, root=ROOT):
 def load_config(args):
     p=json.loads(args.prereg.read_text());old=json.loads(V5H.read_text())
     revision=p.get('registration_revision')
-    if revision!=CURRENT_REVISION:
-        raise ValueError(f'v6 revision {revision!r} is historical (superseded by {CURRENT_REVISION}); '
-                         'prepare/execute only the current revision')
+    if revision is None or revision!=CURRENT_REVISION:
+        if revision in HISTORICAL_REVISIONS:
+            raise ValueError(f'v6 revision {revision!r} is historical: audit it with verify_v6_historical(); '
+                             'it is never prepared or run from the current tree')
+        raise ValueError(f'v6-family revision {revision!r} is not the current registration '
+                         f'({CURRENT_REVISION!r})')
     # PR #259 DRAFT/REGISTERED admission path, applied to the current revision.
     if p.get('registration_version')!=6 or p.get('execution_source_sha') is not None or p.get('approval') is not None:
         raise ValueError('v6 registration contract changed')

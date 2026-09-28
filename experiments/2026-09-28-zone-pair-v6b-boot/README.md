@@ -16,7 +16,7 @@ weld OFF, 모델 호출 0. 제어 입력은 자기 손목 RGB·자기 발행 명
 | 3 High: dual 표본 가중치가 제안 밀도 q를 무시, 우도 중복 | dual 표본을 **제거**했다. 올바른 b·L/q 버전도 구현해 재생했지만 첫 시야 결과가 달라지지 않았고(팬 시작 가능 13/20 vs 제거 12/20, σ점 검사 기준), 사전분포+팬 시야만으로 합성 테스트가 완료된다 | `test_prior_and_pan_scan_alone_reach_completion_without_dual_samples` (5개 자세) |
 | 4 High: 원래 팬 복귀만으로 완료 | 완료는 원래 팬에서 정착 0.6 s 뒤 **현재** 보고로만 판정한다. 실패하면 `verify_failed`를 남기고 예산 안에서 계속 관측한다 | `test_restore_rechecks_after_settle_and_reobserves_when_the_fix_is_lost` |
 | 5 Medium: 거부된 관측이 입자·가중치를 변경 | 부모의 품질 판정 뒤, 승인된 시야에만 믿음 추가와 resample-move를 한다. 거부된 시야는 아무것도 바꾸지 않는다 | `test_rejected_observation_leaves_particles_and_weights_untouched` |
-| 6 Medium: workflow 2.4.0이 #249와 충돌 | main·열린 PR 최댓값 2.4.0(#249) 다음인 **2.5.0** | `tests/test_zone_study_integration_pair.py` |
+| 6 Medium: workflow 2.4.0이 #249와 충돌 | 처음 2.5.0으로 옮겼다. 2026-09-29 병합 순서 배정(#256 2.5.0, #257 2.6.0, #249 2.7.0)에 따라 **2.8.0** | `tests/test_zone_study_integration_pair.py` |
 | 7 문서 모순, "GT는 루프 뒤에만" 표현 | 이 README와 probe docstring을 고쳤다 | – |
 
 검토 뒤 추가 변경이 하나 있다. 팬 전이 검사를 가우시안 σ점에서 **입자 기회 제약**으로 바꿨다.
@@ -51,7 +51,7 @@ weld OFF, 모델 호출 0. 제어 입력은 자기 손목 RGB·자기 발행 명
 | 번호 근거 | main v70, 열린 PR v72(#256)·v73(#257)·v74(#249)를 `git grep`으로 확인했다. v75는 어느 브랜치에도 없다. |
 | 새 정책 | `b-boot`, `a+b-boot` (`stationary_bootstrap=True`) |
 | 불변 | `v5h`, `b-only`, `a+b`의 플래그와 동작. 부트스트랩 상태가 없는 제공자는 실행기 훅을 그대로 지나간다(단위 테스트로 확인). |
-| workflow | `zone-study-integration-run` 2.3.0 → **2.5.0** (#249가 2.4.0 사용). 새 `zone-pair-bootstrap-probe` 0.1.0 |
+| workflow | `zone-study-integration-run` 2.3.0 → **2.8.0** (병합 순서 배정: #256 2.5.0, #257 2.6.0, #249 2.7.0). 새 `zone-pair-bootstrap-probe` 0.1.0 |
 | 사전등록 | `prereg_v6b.json` **DRAFT** (prepare-only, 승인·실행 소스 없음). 실행된 v6(REGISTERED, #259)는 이력으로 남긴다. 자기 커밋의 blob으로만 감사한다(`verify_v6_historical`). |
 
 코드: `harness/owncam_bootstrap_v6b.py`(새 파일), `harness/zone_own_executor.py`(opt-in 훅), `harness/zone_pair_executor.py`(PairTeam opt-in),

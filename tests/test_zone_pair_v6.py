@@ -337,16 +337,37 @@ def test_v6_draft_prepare_and_execution_refusal(tmp_path,policy,run):
     with pytest.raises(ValueError,match='prepare-only'):dev.load_config(args)
 
 
-def test_v6_is_historical_after_v6b(tmp_path):
+@pytest.mark.parametrize('execute', [False, True])
+def test_v6_registration_is_historical_and_never_loaded_from_the_current_tree(tmp_path, execute):
     from scripts import run_zone_pair_dev as dev
-    from scripts.zone_pair_v6_contract import PREREG, verify_v6_historical
-    args = dev.parser().parse_args(['--prereg', str(PREREG), '--run-id', 'v6-s911-b', '--pair-policy', 'b-only',
-                                    '--output', str(tmp_path/'never')])
+    from scripts.zone_pair_v6_contract import PREREG
+    argv = ['--prereg', str(PREREG), '--run-id', 'v6-s912-b', '--output', str(tmp_path/'never')]
+    if execute:
+        argv += ['--execute', '--lock-owner', 'claude', '--expected-source-sha', 'a'*40]
     with pytest.raises(ValueError, match='historical'):
-        dev.load_config(args)
-    receipt = verify_v6_historical(PREREG)
-    assert receipt['revision'] == 'v6' and receipt['execution_bundle_id'] == 'zone-pair-v70-beam-relative-multiturn'
-    assert len(receipt['commit']) == 40 and not args.output.exists()
+        dev.load_config(dev.parser().parse_args(argv))
+    assert not (tmp_path/'never').exists()
+
+
+def test_v6_historical_audit_uses_registration_commit_blobs(monkeypatch):
+    from scripts import zone_pair_v6_contract as c
+    # Literal pins (not the module constant): PR #259 REGISTERED conversion and its registration hash.
+    assert c.V6_REGISTRATION_COMMIT == '3c26acddec066adcd9164e6d2a6f51c1261c5f66'
+    assert json.loads(c.PREREG.read_text())['registration_sha256'] == \
+        '379ffe42baddab81554a007bd4cef5d3668c255e33d0342286dede49d77368fa'
+    receipt = c.verify_v6_historical()
+    assert receipt['commit'] == '3c26acddec066adcd9164e6d2a6f51c1261c5f66' and receipt['status'] == 'REGISTERED'
+    assert receipt['execution_bundle_id'] == 'zone-pair-v70-beam-relative-multiturn' and receipt['sources'] == 72
+    with pytest.raises(ValueError, match='differ from their registration commit'):   # an earlier commit
+        c.verify_v6_historical(commit='c6feb21dcc4b8213ced1cde9419de5aa5e5efd18')
+    with pytest.raises(ValueError, match='not in this history'):
+        c.verify_v6_historical(commit='f'*40)
+    read = Path.read_bytes
+    monkeypatch.setattr(Path, 'read_bytes',                            # reformatting alone is a byte change
+                        lambda self: json.dumps(json.loads(read(self)), indent=1, sort_keys=True).encode()
+                        if self == c.PREREG else read(self))
+    with pytest.raises(ValueError, match='differ from their registration commit'):
+        c.verify_v6_historical()
 
 
 def _v6_variant(tmp_path, name, mutate):
@@ -408,5 +429,5 @@ def test_v6b_registered_execution_needs_bound_envelope(tmp_path):
         dev.load_config(other)
     p.pop('draft_registration')
     path.write_text(json.dumps(p))
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='registered contract changed'):
         dev.load_config(ok)
