@@ -326,6 +326,13 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
                     'placement_xyyaw': placement, 'r3_xyyaw': None, 'offsets': {'r1': list(off1), 'r2': list(off2)},
                     'prior': priors, 'teacher_held': bool(spec.get('teacher_held')),
                     'staging': 'teacher placement from GT beam geometry (setup only)'}
+            if route is not None and stage == 'setdown' and k is not None:
+                # Staging only: the destination view can fail the submit-time image admission (dark floor), and a
+                # real setdown never re-submits there. The real verdict is recorded; the endpoint's own per-step
+                # image check (INVALID_OWN_IMAGE) stays active and is judged.
+                case.update(staging_bypass=['admission_image_valid'],
+                            staging_bypass_note='submit-time admission image_valid forced true for the stage-entry '
+                                                'submit only; real verdict recorded in result.admission_image_valid_real')
             if route is not None:
                 case.update(leg=k, route=[list(p) for p in route],
                             route_note='controller static route (make_plan) for the coarse sheet; staged at route point '
@@ -586,13 +593,14 @@ CAUSES = {
     'NOT_LOWERED': 'setdown: beam not back on the floor', 'NOT_RELEASED': 'setdown: jaws still touch the beam',
     'DRAGGED': 'setdown: beam moved more than the criterion while set down',
     'STAGE_TIMEOUT_NO_EXIT': 'no controller failure and no stage exit within the stage budget',
+    'OWN_IMAGE_INVALID': 'the endpoint\'s per-step own-image check failed (dark-pixel share >= 25 % / low contrast)',
     'ENTRY_ERROR': 'staged entry rejected (admission / entry check)', 'HOST_ERROR': 'simulator/host exception',
     'UNCLASSIFIED': 'reason not in the map (see category)'}
 FAILURE_TO_CAUSE = {
     'POSE_UNCERTAIN': 'SELF_POSE_UNCERTAIN', 'POSE_UNCERTAIN_PROGRESS': 'SELF_POSE_UNCERTAIN',
     'DOOR_POSE_NOT_LOCALIZED': 'SELF_POSE_UNCERTAIN',
     'GLOBAL_ENVELOPE_BLOCKED': 'ENVELOPE_BLOCKED', 'PAIR_blocked': 'MOTION_STALL',
-    'PAIR_COLLISION_GUARD': 'COLLISION_GUARD',
+    'PAIR_COLLISION_GUARD': 'COLLISION_GUARD', 'INVALID_OWN_IMAGE': 'OWN_IMAGE_INVALID',
     'GRIP_NOT_SEEN': 'BEAM_PARTNER_RECOGNITION', 'APPROACH_INCONSISTENT_WITH_BEAM': 'BEAM_PARTNER_RECOGNITION',
     'PREGRASP_BEAM_UNSAFE': 'BEAM_PARTNER_RECOGNITION', 'PAIR_RELOOK_WHILE_GRIPPED': 'BEAM_PARTNER_RECOGNITION',
     'LOAD_NOT_HELD_AFTER_LIFT': 'LOAD_DROP', 'PARTNER_ABORT': 'PARTNER_ABORT',
@@ -633,6 +641,7 @@ def classify_cause(stage, ev, record, diag=None):
         out['code'] = 'HOST_ERROR'
     elif cat.startswith('ENTRY:'):
         out['code'] = 'ENTRY_ERROR'
+        out['sub'] = cat[len('ENTRY:'):]
     elif failure is not None:
         reason = failure['reason']
         out['code'] = FAILURE_TO_CAUSE.get(reason) or ('PARTNER_ABORT' if str(reason).startswith('PARTNER') else 'UNCLASSIFIED')

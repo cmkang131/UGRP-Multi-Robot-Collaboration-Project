@@ -20,6 +20,7 @@ DEFINITION = ('stage probe verdict, NOT E2E success: both robots reached the sta
               'state, no in-stage failure, and the eval-only GT stage criteria held (harness/pair_stage_probe.py CRITERIA)')
 SHORT = {'align': 'al', 'grasp_lift': 'gl', 'carry': 'ca', 'setdown': 'sd',
          'teacher_grid': 't', 'e2e_checkpoint': 'e2e', 'tolerance_boundary': 'bd'}
+DIAG_SHORT = {'fix_age_round': '', 'loaded_yaw_gate_wide': 'G', 'pf_rest_no_abs_noise': 'N', 'rest_noise_off_and_gate_wide': 'NG'}
 POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C'}   # C = v6c (exact clock + grasp-range entry)
 
 
@@ -62,9 +63,18 @@ def case_view(raw, row, manifest):
         for k in ('grip_x_err_m', 'grip_y_err_m', 'yaw_err_rad'):
             if isinstance(m.get(rid), dict) and m[rid].get(k) is not None:
                 scalars[f'gate/{k}/{rid}'] = m[rid][k]
-    for k in ('lift_m', 'tilt_deg', 'shift_m', 'beam_travel_m'):
+    for k in ('lift_m', 'tilt_deg', 'shift_m', 'beam_travel_m', 'end_error_m', 'cross_track_m', 'along_error_m',
+              'yaw_drift_deg'):
         if isinstance(m.get(k), (int, float)):
             scalars[f'gate/{k}'] = m[k]
+    for rid, v in (row.get('sigma_yaw_max') or {}).items():          # own-report yaw sigma over the stage (0.4.0 rows)
+        if v is not None:
+            scalars[f'own/sigma_yaw_max/{rid}'] = v
+    for rid, v in ((row.get('own_at_entry') or {}).items()):
+        if v and v.get('std_yaw_rad') is not None:
+            scalars[f'own/sigma_yaw_entry/{rid}'] = v['std_yaw_rad']
+    for rid, n in (row.get('base_motion_commands') or {}).items():
+        scalars[f'offline/base_motion_commands/{rid}'] = n
     for rid, rem in (row.get('remaining_at_stop') or {}).items():
         for k in ('grip_x_err_m', 'grip_y_err_m', 'yaw_err_rad'):
             if rem.get(k) is not None:
@@ -94,9 +104,16 @@ def case_view(raw, row, manifest):
     if row.get('wall_s') is not None:
         view['wall_s'] = row['wall_s']
     diag = ('-pE' if row['case_id'].endswith(':pE2E') or ':pE2E:' in row['case_id'] else '') + \
-        ('-dx' if row.get('diag_patch') else '')
+        ('-dx' + DIAG_SHORT.get(row['diag_patch'], '') if row.get('diag_patch') else '')
     if row.get('diag_patch'):
         view['condition'] += f" diag:{row['diag_patch']}"
+    if row.get('leg') is not None:                                  # 0.4.0: route leg (carry k / setdown 'end')
+        leg = row['leg']
+        view['condition'] += f' leg{leg}'
+        diag += f'-L{leg}' if row['stage'] == 'carry' else '-Lend'
+    if row.get('cause'):
+        view['cause'] = row['cause'] + (f"/{row['cause_sub']}" if row.get('cause_sub') else '')
+        view['outcome'] = f"{row['category']} [{view['cause']}]"
     name = (f"{_pol(policy)}{SHORT[row['stage']]}-{SHORT[row['source']]}-{slug(row['cell'].replace('v6-', ''))}"
             f"-s{row['seed']}{diag}")
     return name, view

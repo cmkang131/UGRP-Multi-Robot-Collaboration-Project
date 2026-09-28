@@ -426,6 +426,9 @@ def run_case(case, out):
     result['diag_patch'] = case.get('diag_patch')
     result['loadavg_case_start'] = list(os.getloadavg())
     install_diag_patch(case.get('diag_patch'))
+    result['staging_bypass'] = case.get('staging_bypass')
+    result['admission_image_valid_real'] = {}
+    install_staging_bypass(case.get('staging_bypass'), result['admission_image_valid_real'])
     result['staged_global_anchor'] = (sp.staged_global_anchor(case) if case.get('pair_policy') == 'a+b' else None)
     if result['staged_global_anchor']:
         stage_global_anchor(result['staged_global_anchor'], loc_log)
@@ -791,6 +794,30 @@ def install_diag_patch(name):
         RecoveryLocalizer.estimate = estimate
     elif name is not None:
         raise ValueError(f'unknown diagnostic patch {name!r}')
+
+
+def install_staging_bypass(names, verdicts):
+    """Staging aid, not a controller change: force ONLY the submit-time admission ``image_valid`` predicate true.
+
+    The real ``valid_frame`` verdict at every admission is written to ``verdicts`` (rid -> [bool...]). The
+    endpoint's own per-step ``valid_frame`` check (PairEndpoint.step/arm_step -> INVALID_OWN_IMAGE) is left intact.
+    """
+    if not names:
+        return
+    if list(names) != ['admission_image_valid']:
+        raise ValueError(f'unknown staging bypass {names!r}')
+    import harness.zone_pair_admission as admission
+    import harness.zone_pair_vision as vision
+    registered_snapshot, real = admission.readiness_snapshot, vision.valid_frame
+
+    def snapshot(ex, now, *a, **k):
+        verdicts.setdefault(ex.robot_id, []).append(bool(real(ex.last_obs, ex.robot_id, now)))
+        vision.valid_frame = lambda obs, rid, t: True
+        try:
+            return registered_snapshot(ex, now, *a, **k)
+        finally:
+            vision.valid_frame = real
+    admission.readiness_snapshot = snapshot
 
 
 def git(*a):

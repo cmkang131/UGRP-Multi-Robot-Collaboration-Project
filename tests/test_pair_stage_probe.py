@@ -483,3 +483,40 @@ def test_finish_result_carry_leg_metrics_cause_and_command_counts(tmp_path):
     assert row['commands_after_submit']['r1'] == {'mecanum': 2, 'look': 1} and row['base_motion_commands']['r1'] == 2
     assert row['loadavg_case'] == [[20., 20., 20.], [21., 21., 21.]] and row['cause'] in sp.CAUSES
     assert row['passed'] and row['cause'] == 'PASS'
+
+
+def test_staging_bypass_only_on_setdown_at_the_destination_and_new_image_cause():
+    end = sp.teacher_cases('setdown', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c', prior_std='e2e', leg='end')[0]
+    assert end['staging_bypass'] == ['admission_image_valid'] and 'image_valid' in end['staging_bypass_note']
+    legacy = sp.teacher_cases('setdown', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c', prior_std='e2e')[0]
+    assert 'staging_bypass' not in legacy
+    for leg in (0, 3):
+        assert 'staging_bypass' not in sp.teacher_cases('carry', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c',
+                                                        prior_std='e2e', leg=leg)[0]
+    fail = {'first_failure': {'robot_id': 'r1', 'sim_s': 3., 'reason': 'INVALID_OWN_IMAGE'}}
+    c = sp.classify_cause('setdown', {'passed': False, 'category': 'INVALID_OWN_IMAGE', 'checks': {}}, fail)
+    assert c['code'] == 'OWN_IMAGE_INVALID' and 'OWN_IMAGE_INVALID' in sp.CAUSES
+    e = sp.classify_cause('setdown', {'passed': False, 'category': 'ENTRY:ADMISSION_SELF_INVALID_IMAGE', 'checks': {}}, {})
+    assert e['code'] == 'ENTRY_ERROR' and e['sub'] == 'ADMISSION_SELF_INVALID_IMAGE'
+
+
+def test_staging_bypass_forces_only_the_admission_predicate_and_records_the_real_verdict():
+    program = ('from scripts import run_pair_stage_probes as r\n'
+               'import harness.zone_pair_admission as adm, harness.zone_pair_vision as vis\n'
+               'real = vis.valid_frame\n'
+               'seen = []\n'
+               'adm.readiness_snapshot = lambda ex, now, *a, **k: seen.append(vis.valid_frame(None, "r1", now)) or {"state": "READY"}\n'
+               'ex = type("E", (), {"robot_id": "r1", "last_obs": None})()\n'
+               'vis.valid_frame = lambda obs, rid, now: False                                 # the real verdict: invalid\n'
+               'verdicts = {}\n'
+               'r.install_staging_bypass(["admission_image_valid"], verdicts)\n'
+               'assert adm.readiness_snapshot(ex, 1.)["state"] == "READY" and seen == [True]  # forced during the call\n'
+               'assert verdicts == {"r1": [False]} and vis.valid_frame(None, "r1", 2.) is False  # restored afterwards\n'
+               'try:\n'
+               '    r.install_staging_bypass(["nope"], {})\n'
+               '    raise SystemExit(1)\n'
+               'except ValueError:\n'
+               '    pass\n'
+               'r.install_staging_bypass(None, {})\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
