@@ -35,7 +35,9 @@ def test_closure_follows_nested_relative_imports_initializers_and_config_roots(t
                                      'sim/session_scenes.py', 'harness/wrist_zone_skill_v9.py',
                                      'harness/owncam_pose_source.py', 'harness/zone_pair_grasp.py',
                                      'harness/zone_pair_status.py', 'harness/zone_pair_beam_track.py',
-                                     'harness/zone_pair_align.py', 'harness/zone_study_decisions.py'])
+                                     'harness/zone_pair_align.py', 'harness/zone_study_decisions.py',
+                                     'harness/zone_study_llm_driver.py', 'harness/zone_main_budget.py',
+                                     'configs/zone_study_integration/llm_driver.json'])
 def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed):
     pre = runner.load_prereg(PREREG)
     original = runner.run_bundle(pre, pre['episodes'][0])[0]
@@ -45,7 +47,7 @@ def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed)
     mutated = runner.run_bundle(pre, pre['episodes'][0])[0]
     assert mutated['runtime_files_sha256'][changed] == 'f' * 64
     assert runner.digest(original) != runner.digest(mutated)
-    assert original['execution_bundle_id'] == 'zone-study-integration-v69-multiturn-landmark-agnostic'
+    assert original['execution_bundle_id'] == 'zone-study-integration-v72-llm-driver'
 
 
 HEAD = '1' * 40
@@ -108,3 +110,27 @@ def test_source_mismatch_stops_before_physics_import_host_or_output(monkeypatch,
     with pytest.raises(SystemExit, match='differs from expected source SHA'):
         runner.run_trial(pre, pre['episodes'][0], 'no_comm', output, horizon_s=1.)
     assert not output.exists()
+
+
+def test_registered_speech_caps_and_llm_driver_are_pinned_in_the_run_bundle(tmp_path):
+    """B7: caps come from the bundle registry, not the prereg; the driver profile is hashed in."""
+    from harness import zone_study_llm_driver as llm
+    pre = runner.load_prereg(PREREG)
+    episode = pre['episodes'][0]
+    default = runner.run_bundle(pre, episode)[0]
+    assert default['speech_caps']['profile'] == 'v66_default' and default['llm_driver'] is None
+    pilot = runner.run_bundle({**pre, 'speech_cap_profile': 'main_pilot_10_30'}, episode)[0]
+    assert pilot['speech_caps']['values']['max_utterances_per_actor'] == 10
+    assert pilot['study_invariant']['decision_limits']['max_utterances_total'] == 30
+    assert runner.digest(pilot) != runner.digest(default)
+    with pytest.raises(runner.zi.ContractViolation, match='ad hoc'):
+        runner.run_bundle({**pre, 'decision_limits': {'max_utterances_per_actor': 10}}, episode)
+    from harness.zone_main_budget import MainStudyBudget
+    budget = MainStudyBudget.create(tmp_path / 'b.sqlite')
+    budget.register_cohort('c', token_cap=None, unknown_usage_charge_tokens=0, prereg_sha256=None, source={})
+    driver = llm.LiveDriver(llm.driver_profile('main_study_gemini_v1'), budget=budget, cohort_id='c',
+                            wire=lambda request, *, timeout=None: None)
+    live = runner.run_bundle({**pre, 'speech_cap_profile': 'main_pilot_10_30'}, episode, driver=driver)[0]
+    assert live['actor'] == 'gemini_proxy' and live['llm_driver']['profile_id'] == 'main_study_gemini_v1'
+    assert live['study_invariant']['model'] == 'gemini-3.8-flash'
+    assert 'configs/zone_study_integration/llm_driver.json' in live['runtime_files_sha256']

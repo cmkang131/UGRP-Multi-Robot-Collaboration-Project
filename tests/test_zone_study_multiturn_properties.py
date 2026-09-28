@@ -202,7 +202,7 @@ def signature(trial, requests):
     # Validate those identities before removing this one provenance leaf.
     for row in summary['calls'] + record['calls'] + [record]:
         bundle = row['provenance'].pop('execution_bundle_id')
-        assert bundle == ('zone-study-integration-v69-multiturn-landmark-agnostic' if hasattr(trial, 'end_state')
+        assert bundle == ('zone-study-integration-v72-llm-driver' if hasattr(trial, 'end_state')
                           else 'zone-study-integration-v64-source-closure')
     # v64's unused fixture-wire counter falsely reported zero for adapters.
     # The candidate explicitly marks it unmeasured; ledger counts/hashes, all

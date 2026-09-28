@@ -73,10 +73,14 @@ INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
 # merge of main's v66 multi-turn scheduler with PR #240's v67 landmark-agnostic
 # pair path (v5h); its source equals neither, so it takes the next free number
 # (v68 is reserved by PR #246). dev13/dev14 recorded v67 byte-for-byte.
-EXECUTION_BUNDLE_ID = 'zone-study-integration-v69-multiturn-landmark-agnostic'
+# v72 (B7, PR #254) adds the real model driver to the runner
+# (harness.zone_study_llm_driver) and registry-selected speech caps; the study
+# core and scheduler are unchanged. v70/v71 are used by PRs #246/#249/#250.
+EXECUTION_BUNDLE_ID = 'zone-study-integration-v72-llm-driver'
 RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
                       'zone-study-integration-v64-source-closure', 'zone-study-integration-v65-pair-close',
-                      'zone-study-integration-v66-multiturn', 'zone-study-integration-v67-landmark-agnostic')
+                      'zone-study-integration-v66-multiturn', 'zone-study-integration-v67-landmark-agnostic',
+                      'zone-study-integration-v69-multiturn-landmark-agnostic')
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',
@@ -343,7 +347,15 @@ class IntegratedTrial(zo.OfflineTrial):
                          horizon_s=horizon_s, run_id=None, code_sha=code_sha,
                          scheduler_factory=scheduler_factory)
         # One window for this episode. These limits cannot be renewed by a call.
-        self.channel.cap_robot = min(self.channel.cap_robot, self.decision_limits.max_utterances_per_actor)
+        # v72: an open channel takes its window/robot caps from the registered
+        # speech-cap profile (harness.zone_study_llm_driver). The v66 default
+        # 2/6 equals the old min(spec 2, 2) / spec 6, so default runs are
+        # unchanged; no_comm keeps its closed 0/0 channel (frozen v64 bytes).
+        if self.spec.channel_open:
+            self.channel.cap_robot = self.decision_limits.max_utterances_per_actor
+            self.channel.cap_window = self.decision_limits.max_utterances_total
+        else:
+            self.channel.cap_robot = min(self.channel.cap_robot, self.decision_limits.max_utterances_per_actor)
         self.channel.cap_total = self.decision_limits.max_utterances_total
         self.actor = actor
         if model_adapter is not None:
