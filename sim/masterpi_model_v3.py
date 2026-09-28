@@ -1,29 +1,31 @@
-"""MasterPi visual model v3 (appearance remodel from Hiwonder sources).
+"""MasterPi physical model v3 (Hiwonder dimension drawing + SDK arm).
 
-``build_v3_xml`` starts from :func:`sim.masterpi_dynamics_v2.build_v2_xml` and
-changes only what the chosen profile declares:
+``build_v3_xml`` is the v3 robot model for new scenes and new execution
+bundles.  It starts from :func:`sim.masterpi_dynamics_v2.build_v2_xml` (so the
+actuators, joint ranges, damping, masses, inertias, the REAL-fitted
+``robot_cam`` pose/intrinsics and every calibration hook stay identical) and
+replaces the *geometry* from one parameter set,
+:data:`sim.masterpi_geometry_v3.PHYSICAL_V3`:
 
-``appearance_only``
-    Physics identical to v2.  Every body, joint, inertial, actuator, camera,
-    site and every colliding geom keeps its v2 value; colliding geoms that v2
-    also used as visible panels are made transparent.  All v2 visual-only geoms
-    (``contype=0`` and ``conaffinity=0``) are replaced by source-traced v3
-    visual geoms.  The arm therefore stays on the v2 kinematic mount (yaw axis
-    at the axle midpoint), which the official drawing places 48 mm further
-    forward; renders of this profile show that conflict honestly.
+* arm yaw (ID6) axis 48.2 mm forward of the axle midpoint, yaw joint 93.0 mm and
+  shoulder (ID5) axis 127.7 mm above the floor (official drawing);
+* upper arm 65.0 mm and forearm 62.0 mm (Hiwonder SDK, render-corroborated);
+* finger contact proxies and ``grip_site`` at the physical pad centre
+  86.85 mm from the wrist axis (closed tip 94.0 mm, pad 14.3 mm; drawing);
+* wheel track 129.9 mm, wheelbase 118.8 mm, width 30 mm (drawing) unless the
+  caller passes calibrated/explicit ``track_m``/``wheelbase_m``;
+* chassis (185 mm), cover, arm-base box, yaw-servo, pedestal and ultrasonic
+  collision proxies from the drawing, plus the ultrasonic site;
+* all v2 visual-only geoms replaced by source-traced ``v3_`` visuals.
 
-``drawing_layout_proposal``
-    Opt-in structural *proposal* for review only.  Same visuals, plus the arm
-    yaw mount moved to the drawing position and the chassis/cover/arm-box
-    collision proxies resized to the drawing.  Inertials, masses, actuators,
-    link lengths, wheel geometry and every calibration parameter stay v2.
-    Nothing selects this profile; switching scenes needs a separate PR.
+The controller layer (``harness.visual_arm``) keeps the SDK IK constants
+(l1 9.30, l2 6.50, l3 6.20, l4 10.00 cm) and adds only the physical arm mount;
+the remaining mismatch is listed in
+:data:`sim.masterpi_geometry_v3.CONTROLLER_VS_PHYSICAL_V3`.
 
-v2 sources (``sim/masterpi_dynamics_v2.py``, ``sim/masterpi_geometry.py``,
-``sim/masterpi_scene*.xml``) are not modified, so registered execution bundles
-keep resolving to the same bytes.
-
-Provenance of every dimension lives in :mod:`sim.masterpi_geometry_v3`.
+:func:`build_v2_appearance_xml` is a diagnostic: v2 physics bit-identical with
+the v3 visuals.  v2 sources are not modified, so registered bundles keep
+resolving to the same bytes.
 """
 from __future__ import annotations
 
@@ -35,38 +37,37 @@ import numpy as np
 
 from sim import masterpi_geometry_v3 as G
 from sim.masterpi_camera_profile import CAMERA_LOCAL_POS_M, CAMERA_LOCAL_QUAT_WXYZ
-from sim.masterpi_dynamics_v2 import (
-    GRIPPER_MAX_CLOSE_M,
-    TRACK_M,
-    WHEEL_RADIUS_M,
-    build_v2_xml,
-)
-from sim.masterpi_geometry import NOMINAL_YAW_AXIS_FROM_BASE_M, NOMINAL_YAW_TO_SHOULDER_M
-from harness.real_geometry import LINK_2_CM, LINK_3_CM
+from sim.masterpi_dynamics_v2 import WHEEL_RADIUS_M, build_v2_xml
+from sim.masterpi_geometry_v3 import PHYSICAL_V3, MasterPiPhysicalGeometry
 
-VISUAL_MODEL_VERSION = "masterpi-visual-v3"
-PROFILE_APPEARANCE_ONLY = "appearance_only"
-PROFILE_DRAWING_LAYOUT = "drawing_layout_proposal"
-PROFILES = (PROFILE_APPEARANCE_ONLY, PROFILE_DRAWING_LAYOUT)
+ROBOT_MODEL_V2 = "masterpi_v2"
+ROBOT_MODEL_V3 = "masterpi_v3"
+MODEL_VERSION = "masterpi-model-v3-20260928"
 V3_PREFIX = "v3_"
 SONAR_SITE = "v3_ultrasonic_site"
+# Camera hardware visuals never appear in robot_cam (same rule as v2's runtime
+# group-5 loop); they are written with group 5 directly.
+CAMERA_HARDWARE_GROUP = 5
 
-_L2 = LINK_2_CM / 100.0
-_L3 = LINK_3_CM / 100.0
 
-# Chassis-fixed ultrasonic mount in the v2 ``robot`` body frame (origin at the
-# axle midpoint, z at axle height).  The mount is on the chassis-fixed arm-base
-# box, so it does not depend on the profile.  ``pos_floor_m`` is floor-referenced.
-SONAR_MOUNT_V3 = {
-    "version": G.GEOMETRY_VERSION,
-    "pos_body_m": (G.SONAR_FACE_X_M, G.SONAR_CENTER_Y_M, G.SONAR_CENTER_Z_FLOOR_M - WHEEL_RADIUS_M),
-    "pos_floor_m": (G.SONAR_FACE_X_M, G.SONAR_CENTER_Y_M, G.SONAR_CENTER_Z_FLOOR_M),
-    "axis_body": (1.0, 0.0, 0.0),
-    "pitch_deg": G.SONAR_PITCH_DEG,
-    "transducer_spacing_m": G.SONAR_TRANSDUCER_SPACING_M,
-    "transducer_diameter_m": G.SONAR_TRANSDUCER_DIAMETER_M,
-    "source": "public_measured: Hiwonder MasterPi dimension drawing + glowing ultrasonic module drawing",
-}
+def sonar_mount(geometry: MasterPiPhysicalGeometry = PHYSICAL_V3) -> dict:
+    """Chassis-fixed ultrasonic mount in the ``robot`` body frame."""
+    return {
+        "version": geometry.version,
+        "pos_body_m": (geometry.sonar_face_x_m, G.SONAR_CENTER_Y_M,
+                       geometry.sonar_center_z_floor_m - geometry.wheel_radius_m),
+        "pos_floor_m": (geometry.sonar_face_x_m, G.SONAR_CENTER_Y_M, geometry.sonar_center_z_floor_m),
+        "axis_body": (math.cos(math.radians(geometry.sonar_pitch_deg)), 0.0,
+                      -math.sin(math.radians(geometry.sonar_pitch_deg))),
+        "pitch_deg": geometry.sonar_pitch_deg,
+        "transducer_spacing_m": G.SONAR_TRANSDUCER_SPACING_M,
+        "transducer_diameter_m": G.SONAR_TRANSDUCER_DIAMETER_M,
+        "beam_angle_deg": G.OFFICIAL_SONAR_BEAM_ANGLE_DEG,
+        "source": "official_drawing: Hiwonder MasterPi dimension drawing + glowing ultrasonic module drawing",
+    }
+
+
+SONAR_MOUNT_V3 = sonar_mount(PHYSICAL_V3)
 
 _MATERIALS = {
     "gunmetal": ("0.35", "0.45"),
@@ -323,8 +324,8 @@ def _add_chassis(b: _Builder, robot: ET.Element, radius: float, yaw_axis_x: floa
 
 
 # ------------------------------------------------------------------ wheels
-def _add_wheel(b: _Builder, body: ET.Element, prefix: str, handedness: int, radius: float) -> None:
-    half_w = G.OFFICIAL_WHEEL_WIDTH_M / 2.0
+def _add_wheel(b: _Builder, body: ET.Element, prefix: str, handedness: int, radius: float, width: float) -> None:
+    half_w = width / 2.0
     hub_r = G.WHEEL_HUB_DIAMETER_M / 2.0
     b.cyl(body, f"{prefix}_hub", "hub_grey", (0, -half_w + .0015, 0), (0, half_w - .0015, 0), hub_r)
     n = G.WHEEL_ROLLER_COUNT
@@ -357,13 +358,20 @@ def _add_wheel(b: _Builder, body: ET.Element, prefix: str, handedness: int, radi
 
 
 # -------------------------------------------------------------------- arm
-def _add_arm(b: _Builder, bodies: Mapping[str, ET.Element], radius: float) -> None:
+def _pos(el: ET.Element) -> np.ndarray:
+    return np.array([float(v) for v in el.get("pos", "0 0 0").split()], float)
+
+
+def _add_arm(b: _Builder, bodies: Mapping[str, ET.Element], radius: float, grip_x: float) -> None:
+    """Arm visuals placed on the kinematic frames actually present in the XML."""
     arm_base = bodies["arm_base"]
-    zs = NOMINAL_YAW_TO_SHOULDER_M                      # shoulder above arm_base origin
+    zs = float(_pos(bodies["shoulder_link"])[2])        # shoulder above arm_base origin
+    _L2 = float(_pos(bodies["elbow_link"])[0])
+    _L3 = float(_pos(bodies["wrist_link"])[0])
     drop = G.SHOULDER_AXIS_Z_FLOOR_M - G.TURNTABLE_TOP_Z_FLOOR_M   # 28.4 mm
     zb = zs - drop                                       # U-bracket floor
     # horn + turntable between the chassis-fixed yaw servo and the U-bracket
-    yaw_top_local = (G.YAW_SERVO_TOP_Z_FLOOR_M - radius) - NOMINAL_YAW_AXIS_FROM_BASE_M
+    yaw_top_local = (G.YAW_SERVO_TOP_Z_FLOOR_M - radius) - float(_pos(arm_base)[2])
     b.cyl(arm_base, "yaw_horn", "silver", (0, 0, yaw_top_local + .0015), (0, 0, zb - .0020), .0095)
     ow = G.SHOULDER_BRACKET_OUTER_WIDTH_M / 2.0
     hb = G.SHOULDER_BRACKET_BOTTOM_LEN_M / 2.0
@@ -437,42 +445,47 @@ def _add_arm(b: _Builder, bodies: Mapping[str, ET.Element], radius: float) -> No
     for i, y in enumerate((-.0090, .0090)):
         b.cyl(gr, f"gripper_pivot_{i}", "silver", (.0520, y, u0 + .0015), (.0520, y, u1 - .0015), .0022)
 
-    # ---- camera: lens exactly at the REAL-fitted robot_cam pose (not moved)
+    # ---- camera: lens exactly at the REAL-fitted robot_cam pose (not moved).
+    # Group 5: the robot never photographs its own camera hardware.
+    def _cam(geom: ET.Element) -> ET.Element:
+        geom.set("group", str(CAMERA_HARDWARE_GROUP))
+        return geom
+
     cam_p = np.asarray(CAMERA_LOCAL_POS_M, float)
     R = _quat_to_mat(CAMERA_LOCAL_QUAT_WXYZ)
     fwd = R @ np.array([0.0, 0.0, -1.0])
     lens_len = G.CAMERA_LENS_LENGTH_M
     lens_r = G.CAMERA_LENS_DIAMETER_M / 2.0
-    b.cyl(gr, "camera_lens", "servo_black", cam_p - fwd * lens_len, cam_p - fwd * .0020, lens_r)
-    b.cyl(gr, "camera_lens_ring", "gunmetal_edge", cam_p - fwd * .0035, cam_p, lens_r * 1.12)
-    b.cyl(gr, "camera_lens_glass", "lens", cam_p - fwd * .0004, cam_p + fwd * .0002, lens_r * .72)
+    _cam(b.cyl(gr, "camera_lens", "servo_black", cam_p - fwd * lens_len, cam_p - fwd * .0020, lens_r))
+    _cam(b.cyl(gr, "camera_lens_ring", "gunmetal_edge", cam_p - fwd * .0035, cam_p, lens_r * 1.12))
+    _cam(b.cyl(gr, "camera_lens_glass", "lens", cam_p - fwd * .0004, cam_p + fwd * .0002, lens_r * .72))
     mx, my, _ = G.CAMERA_MODULE_M
     pcb_c = cam_p - fwd * (lens_len + .0010)
-    b.box(gr, "camera_pcb", "pcb_black", pcb_c, (mx / 2, my / 2, .0008), quat=CAMERA_LOCAL_QUAT_WXYZ)
+    _cam(b.box(gr, "camera_pcb", "pcb_black", pcb_c, (mx / 2, my / 2, .0008), quat=CAMERA_LOCAL_QUAT_WXYZ))
     plate_c = cam_p - fwd * (lens_len + .0055)
-    b.box(gr, "camera_mount_plate", "servo_black", plate_c, (mx / 2 + .002, my / 2 + .002, .0008), quat=CAMERA_LOCAL_QUAT_WXYZ)
+    _cam(b.box(gr, "camera_mount_plate", "servo_black", plate_c, (mx / 2 + .002, my / 2 + .002, .0008), quat=CAMERA_LOCAL_QUAT_WXYZ))
     right, up = R @ np.array([1.0, 0, 0]), R @ np.array([0, 1.0, 0])
     for i, (a, c) in enumerate(((-1, -1), (-1, 1), (1, -1), (1, 1))):
         p = a * (mx / 2 - .0022) * right + c * (my / 2 - .0022) * up
-        b.cyl(gr, f"camera_standoff_{i}", "copper", plate_c + p, pcb_c + p, .0012)
+        _cam(b.cyl(gr, f"camera_standoff_{i}", "copper", plate_c + p, pcb_c + p, .0012))
     # bracket from the gripper top plate up to the camera mount plate
     low = plate_c - up * (my / 2 + .002)
-    b.box_span(gr, "camera_bracket", "silver", (min(low[0], top_end) - .006, -.010, u1 - .0015), (max(low[0], top_end) + .0005, .010, max(u1, low[2]) + .0005))
+    _cam(b.box_span(gr, "camera_bracket", "silver", (min(low[0], top_end) - .006, -.010, u1 - .0015), (max(low[0], top_end) + .0005, .010, max(u1, low[2]) + .0005)))
 
-    # ---- fingers: visible bars follow the v2 slide jaws; pads sit on the
-    # physical contact proxies (x = 0.100 m in the jaw frame).
+    # ---- fingers: visible bars follow the slide jaws; pads sit on the
+    # contact proxies (x = grip_x in the jaw frame).
     for jaw, s in (("left_jaw", 1.0), ("right_jaw", -1.0)):
         body = bodies[jaw]
         y_open = s * 0.035  # v2 jaw origin in the gripper frame
         piv = np.array([.0520, s * .0090 - y_open, -.0019])
         mid = np.array([.0700, s * (G.FINGER_OPEN_SPAN_M / 2.0) - y_open, -.0019])
-        tip = np.array([.0930, 0.0, -.0019])
+        pl = G.FINGER_PAD_LENGTH_M
+        tip = np.array([grip_x + pl / 2 - .0010, 0.0, -.0019])
         b.bar(body, f"{jaw}_finger_a", "silver", piv, mid, .0050, G.FINGER_PLATE_THICKNESS_M)
         b.bar(body, f"{jaw}_finger_b", "silver", mid, tip, .0050, G.FINGER_PLATE_THICKNESS_M)
         b.cyl(body, f"{jaw}_finger_joint", "silver", mid + (0, 0, -.0020), mid + (0, 0, .0020), .0027)
-        pl = G.FINGER_PAD_LENGTH_M
-        b.box(body, f"{jaw}_pad", "rubber_orange", (.1000, 0, -.0019), (pl / 2, .0030, .0048))
-        b.cyl(body, f"{jaw}_pad_tip", "rubber_orange", (.1000 + pl / 2, 0, -.0067), (.1000 + pl / 2, 0, .0029), .0030)
+        b.box(body, f"{jaw}_pad", "rubber_orange", (grip_x, 0, -.0019), (pl / 2, .0030, .0048))
+        b.cyl(body, f"{jaw}_pad_tip", "rubber_orange", (grip_x + pl / 2, 0, -.0067), (grip_x + pl / 2, 0, .0029), .0030)
 
 
 def _link_frame(b, body, name, x0, x1, half_span, pw, near_round=False, far_round=False):
@@ -516,49 +529,103 @@ def _add_materials(asset: ET.Element) -> None:
         })
 
 
-def _apply_drawing_layout(robot: ET.Element, bodies: Mapping[str, ET.Element], radius: float) -> None:
-    """Structural proposal: arm mount + collision proxies from the drawing."""
-    bodies["arm_base"].set("pos", _f((G.YAW_AXIS_X_M, 0.0, NOMINAL_YAW_AXIS_FROM_BASE_M)))
-    zf = lambda h: h - radius
-    geoms = {g.get("name"): g for g in robot.findall("geom")}
+def _collider(name: str, gtype: str, pos, size, **extra: str) -> ET.Element:
+    attrs = {"name": name, "type": gtype, "pos": _f(pos), "size": _f(size),
+             "rgba": "0 0 0 0", "contype": "2", "conaffinity": "1"}
+    attrs.update(extra)
+    return ET.Element("geom", attrs)
+
+
+def _set_box(geom: ET.Element, lo, hi) -> None:
+    lo = np.asarray(lo, float)
+    hi = np.asarray(hi, float)
+    geom.set("pos", _f((lo + hi) / 2.0))
+    geom.set("size", _f(np.abs(hi - lo) / 2.0))
+
+
+def _apply_physical_geometry(robot: ET.Element, bodies: Mapping[str, ET.Element],
+                             g: MasterPiPhysicalGeometry, radius: float) -> float:
+    """Move frames/colliders to the physical set; return the grip-site x."""
+    zf = lambda h: h - radius  # floor height -> robot body z
+    geoms = {el.get("name"): el for el in robot.iter("geom")}
+
+    # ---- wheels: collider width (positions come from build_v2_xml hardware)
+    for w in ("fl", "fr", "rl", "rr"):
+        size = [float(v) for v in geoms[f"wheel_{w}"].get("size").split()]
+        size[1] = g.wheel_width_m / 2.0
+        geoms[f"wheel_{w}"].set("size", _f(size))
+
+    # ---- chassis / cover / arm-base box proxies (robot body)
     L = G.CHASSIS_LENGTH_M / 2.0
     W = G.CHASSIS_OUTER_WIDTH_M / 2.0
     zb, zt = zf(G.CHASSIS_BOTTOM_Z_FLOOR_M), zf(G.CHASSIS_TOP_Z_FLOOR_M)
-    geoms["base_lower_collision"].set("pos", _f((0, 0, (zb + zt - .004) / 2)))
-    geoms["base_lower_collision"].set("size", _f((L - .002, W - .003, (zt - .004 - zb) / 2)))
-    geoms["base_top"].set("pos", _f((0, 0, zt - .002)))
-    geoms["base_top"].set("size", _f((L - G.CHASSIS_END_CHAMFER_M, W, .002)))
-    geoms["front_plate"].set("pos", _f((L - .0015, 0, (zb + zt) / 2)))
-    geoms["front_plate"].set("size", _f((.0015, W - .003, (zt - zb) / 2 - .002)))
-    cz0, cz1 = zf(G.CHASSIS_TOP_Z_FLOOR_M), zf(G.OFFICIAL_COVER_TOP_Z_FLOOR_M)
-    geoms["rear_cage_collision"].set("pos", _f(((G.COVER_FRONT_X_M + G.COVER_REAR_X_M) / 2, 0, (cz0 + cz1) / 2)))
-    geoms["rear_cage_collision"].set("size", _f(((G.COVER_FRONT_X_M - G.COVER_REAR_X_M) / 2, G.COVER_SIDE_BOTTOM_HALF_WIDTH_M, (cz1 - cz0) / 2)))
-    box = ET.Element("geom", {
-        "name": "arm_box_collision", "type": "box",
-        "pos": _f(((G.ARM_BOX_REAR_X_M + G.ARM_BOX_FRONT_X_M) / 2, 0, (zf(G.ARM_BOX_BOTTOM_Z_FLOOR_M) + zf(G.ARM_BOX_TOP_Z_FLOOR_M)) / 2)),
-        "size": _f(((G.ARM_BOX_FRONT_X_M - G.ARM_BOX_REAR_X_M) / 2, G.ARM_BOX_WIDTH_M / 2, (G.ARM_BOX_TOP_Z_FLOOR_M - G.ARM_BOX_BOTTOM_Z_FLOOR_M) / 2)),
-        "rgba": "0 0 0 0", "contype": "2", "conaffinity": "1",
-    })
-    robot.insert(list(robot).index(geoms["rear_cage_collision"]) + 1, box)
+    _set_box(geoms["base_lower_collision"], (-L + .002, -W + .003, zb), (L - .002, W - .003, zt - .004))
+    _set_box(geoms["base_top"], (-L + G.CHASSIS_END_CHAMFER_M, -W, zt - .004), (L - G.CHASSIS_END_CHAMFER_M, W, zt))
+    _set_box(geoms["front_plate"], (L - .003, -W + .003, zb + .002), (L, W - .003, zt - .002))
+    cz0, cz1 = zt, zf(G.OFFICIAL_COVER_TOP_Z_FLOOR_M)
+    _set_box(geoms["rear_cage_collision"], (G.COVER_REAR_X_M, -G.COVER_SIDE_BOTTOM_HALF_WIDTH_M, cz0),
+             (G.COVER_FRONT_X_M, G.COVER_SIDE_BOTTOM_HALF_WIDTH_M, cz1))
+    bw = G.ARM_BOX_WIDTH_M / 2.0
+    lx, wy, hz = G.LD1501_BODY_M
+    servo_front = g.yaw_axis_x_m + G.YAW_SERVO_FRONT_FROM_AXIS_M
+    r = G.SONAR_TRANSDUCER_DIAMETER_M / 2.0
+    sy = G.SONAR_TRANSDUCER_SPACING_M / 2.0 + r
+    sz = zf(g.sonar_center_z_floor_m)
+    extra = [
+        _collider("arm_box_collision", "box",
+                  ((G.ARM_BOX_REAR_X_M + G.ARM_BOX_FRONT_X_M) / 2, 0, (zt + zf(G.ARM_BOX_TOP_Z_FLOOR_M)) / 2),
+                  ((G.ARM_BOX_FRONT_X_M - G.ARM_BOX_REAR_X_M) / 2, bw, (G.ARM_BOX_TOP_Z_FLOOR_M - G.CHASSIS_TOP_Z_FLOOR_M) / 2)),
+        _collider("yaw_servo_collision", "box",
+                  (servo_front - lx / 2, 0, (zf(G.ARM_BOX_TOP_Z_FLOOR_M) + zf(g.yaw_joint_z_floor_m)) / 2),
+                  (lx / 2, wy / 2, (g.yaw_joint_z_floor_m - G.ARM_BOX_TOP_Z_FLOOR_M) / 2)),
+        _collider("ultrasonic_collision", "box",
+                  ((G.ARM_BOX_FRONT_X_M + g.sonar_face_x_m) / 2, 0, sz),
+                  ((g.sonar_face_x_m - G.ARM_BOX_FRONT_X_M) / 2, sy, r)),
+    ]
+    at = list(robot).index(geoms["rear_cage_collision"]) + 1
+    for k, el in enumerate(extra):
+        robot.insert(at + k, el)
+
+    # ---- arm mount: yaw joint on the chassis-fixed ID6 axis
+    arm_base = bodies["arm_base"]
+    arm_base.set("pos", _f((g.yaw_axis_x_m, 0.0, zf(g.yaw_joint_z_floor_m))))
+    zs = g.shoulder_axis_z_floor_m - g.yaw_joint_z_floor_m
+    hb = G.SHOULDER_BRACKET_BOTTOM_LEN_M / 2.0 + .002
+    ped = geoms["arm_pedestal_collision"]
+    ped.set("type", "box")
+    _set_box(ped, (-hb, -G.SHOULDER_BRACKET_OUTER_WIDTH_M / 2, 0.0), (hb, G.SHOULDER_BRACKET_OUTER_WIDTH_M / 2, zs - .004))
+    bodies["shoulder_link"].set("pos", _f((0.0, 0.0, zs)))
+
+    # ---- links (inertial masses/inertias unchanged; COM stays mid-link)
+    sh, el, wr = bodies["shoulder_link"], bodies["elbow_link"], bodies["wrist_link"]
+    el.set("pos", _f((g.upper_arm_m, 0.0, 0.0)))
+    sh.find("inertial").set("pos", _f((g.upper_arm_m / 2.0, 0.0, 0.0)))
+    geoms["upper_arm_collision"].set("fromto", _f((0, 0, 0, g.upper_arm_m, 0, 0)))
+    wr.set("pos", _f((g.forearm_m, 0.0, 0.0)))
+    el.find("inertial").set("pos", _f((g.forearm_m / 2.0, 0.0, 0.0)))
+    geoms["forearm_collision"].set("fromto", _f((0, 0, 0, g.forearm_m, 0, 0)))
+
+    # ---- gripper: contact proxies and grip_site on the physical pad centre
+    grip_x = g.pad_center_from_wrist_m
+    v2_x = float(geoms["left_finger"].get("pos").split()[0])
+    for side in ("left", "right"):
+        finger = geoms[f"{side}_finger"]
+        size = [float(v) for v in finger.get("size").split()]
+        size[0] = g.finger_pad_length_m / 2.0
+        finger.set("size", _f(size))
+        finger.set("pos", _f((grip_x, 0.0, 0.0)))
+        inertial = bodies[f"{side}_jaw"].find("inertial")
+        ipos = [float(v) for v in inertial.get("pos").split()]
+        ipos[0] += grip_x - v2_x
+        inertial.set("pos", _f(ipos))
+    gripper = bodies["gripper"]
+    site = next(el_ for el_ in gripper.findall("site") if el_.get("name") == "grip_site")
+    site.set("pos", _f((grip_x, 0.0, 0.0)))
+    return grip_x
 
 
-def build_v3_xml(hardware: Mapping[str, float] | None = None, *, profile: str) -> str:
-    """Return the v3 single-robot MJCF.  ``profile`` must be named explicitly."""
-    if profile not in PROFILES:
-        raise ValueError(f"unknown MasterPi v3 profile {profile!r}; expected one of {PROFILES}")
-    hardware = dict(hardware or {})
-    root = ET.fromstring(build_v2_xml(hardware))
-    root.set("model", f"ugrp_masterpi_visual_v3_{profile}")
-    asset = root.find("asset")
-    if asset is None:
-        asset = ET.SubElement(root, "asset")
-    world = root.find("worldbody")
-    robot = next((c for c in list(world) if c.tag == "body" and c.get("name") == "robot"), None)
-    if robot is None:
-        raise RuntimeError("v2 XML has no robot body")
-    radius = float(hardware.get("wheel_radius_m", WHEEL_RADIUS_M))
-
-    # 1) drop v2 visual-only geoms; hide colliding geoms v2 also used as panels
+def _strip_and_hide(robot: ET.Element) -> None:
+    """Drop v2 visual-only geoms; make colliders (some doubled as panels) invisible."""
     for body in robot.iter("body"):
         for geom in list(body.findall("geom")):
             if _is_visual_only(geom):
@@ -566,24 +633,79 @@ def build_v3_xml(hardware: Mapping[str, float] | None = None, *, profile: str) -
             else:
                 geom.attrib.pop("material", None)
                 geom.set("rgba", "0 0 0 0")
-    bodies = {b.get("name"): b for b in robot.iter("body")}
-    bodies["robot"] = robot
 
-    if profile == PROFILE_DRAWING_LAYOUT:
-        _apply_drawing_layout(robot, bodies, radius)
 
+def _decorate(root: ET.Element, robot: ET.Element, bodies: Mapping[str, ET.Element],
+              radius: float, wheel_width: float, grip_x: float) -> None:
+    asset = root.find("asset")
+    if asset is None:
+        asset = ET.SubElement(root, "asset")
     _add_materials(asset)
     builder = _Builder(asset)
-    yaw_x = float(bodies["arm_base"].get("pos").split()[0])
+    yaw_x = float(_pos(bodies["arm_base"])[0])
     _add_chassis(builder, robot, radius, yaw_x)
     for name, hand in (("fl", 1), ("fr", -1), ("rl", -1), ("rr", 1)):
-        _add_wheel(builder, bodies[f"wheel_{name}_body"], f"wheel_{name}", hand, radius)
-    _add_arm(builder, bodies, radius)
-    site = ET.SubElement(robot, "site", {
-        "name": SONAR_SITE, "pos": _f(SONAR_MOUNT_V3["pos_body_m"]),
-        "zaxis": "1 0 0", "size": ".002", "rgba": "0 0 0 0",
+        _add_wheel(builder, bodies[f"wheel_{name}_body"], f"wheel_{name}", hand, radius, wheel_width)
+    _add_arm(builder, bodies, radius, grip_x)
+
+
+def _robot(root: ET.Element) -> tuple[ET.Element, dict[str, ET.Element]]:
+    world = root.find("worldbody")
+    robot = next((c for c in list(world) if c.tag == "body" and c.get("name") == "robot"), None)
+    if robot is None:
+        raise RuntimeError("v2 XML has no robot body")
+    bodies = {b.get("name"): b for b in robot.iter("body")}
+    bodies["robot"] = robot
+    return robot, bodies
+
+
+def v3_hardware(hardware: Mapping[str, float] | None = None,
+                geometry: MasterPiPhysicalGeometry = PHYSICAL_V3) -> dict[str, float]:
+    """Hardware mapping for v3: drawing wheel geometry unless the caller overrides it."""
+    out = {"wheel_radius_m": geometry.wheel_radius_m, "wheelbase_m": geometry.wheelbase_m,
+           "track_m": geometry.track_m}
+    out.update(dict(hardware or {}))
+    return out
+
+
+def build_v3_xml(hardware: Mapping[str, float] | None = None, *,
+                 geometry: MasterPiPhysicalGeometry = PHYSICAL_V3) -> str:
+    """Return the physical v3 single-robot MJCF.
+
+    ``hardware`` keys win over the geometry set for ``wheel_radius_m``,
+    ``wheelbase_m`` and ``track_m`` (calibrated or explicit values); every
+    other hardware key is passed to ``build_v2_xml`` unchanged.
+    """
+    if not isinstance(geometry, MasterPiPhysicalGeometry):
+        raise TypeError("geometry must be a MasterPiPhysicalGeometry")
+    hw = v3_hardware(hardware, geometry)
+    root = ET.fromstring(build_v2_xml(hw))
+    root.set("model", "ugrp_masterpi_model_v3")
+    robot, bodies = _robot(root)
+    radius = float(hw["wheel_radius_m"])
+    _strip_and_hide(robot)
+    grip_x = _apply_physical_geometry(robot, bodies, geometry, radius)
+    _decorate(root, robot, bodies, radius, geometry.wheel_width_m, grip_x)
+    mount = sonar_mount(geometry)
+    ET.SubElement(robot, "site", {
+        "name": SONAR_SITE, "pos": _f(mount["pos_body_m"]),
+        "zaxis": _f(mount["axis_body"]), "size": ".002", "rgba": "0 0 0 0",
     })
-    del site
+    return ET.tostring(root, encoding="unicode")
+
+
+def build_v2_appearance_xml(hardware: Mapping[str, float] | None = None) -> str:
+    """Diagnostic only: v2 physics bit-identical, v3 visuals on the v2 frames."""
+    hw = dict(hardware or {})
+    root = ET.fromstring(build_v2_xml(hw))
+    root.set("model", "ugrp_masterpi_v2_with_v3_appearance")
+    robot, bodies = _robot(root)
+    radius = float(hw.get("wheel_radius_m", WHEEL_RADIUS_M))
+    _strip_and_hide(robot)
+    grip = next(el for el in bodies["gripper"].findall("site") if el.get("name") == "grip_site")
+    wheel_width = 2.0 * float(next(g for g in bodies["wheel_fl_body"].findall("geom")
+                                   if g.get("name") == "wheel_fl").get("size").split()[1])
+    _decorate(root, robot, bodies, radius, wheel_width, float(_pos(grip)[0]))
     return ET.tostring(root, encoding="unicode")
 
 
@@ -600,12 +722,15 @@ def v3_visual_geom_names(model) -> list[str]:
 
 
 __all__ = [
-    "PROFILES",
-    "PROFILE_APPEARANCE_ONLY",
-    "PROFILE_DRAWING_LAYOUT",
+    "CAMERA_HARDWARE_GROUP",
+    "MODEL_VERSION",
+    "ROBOT_MODEL_V2",
+    "ROBOT_MODEL_V3",
     "SONAR_MOUNT_V3",
     "SONAR_SITE",
-    "VISUAL_MODEL_VERSION",
+    "build_v2_appearance_xml",
     "build_v3_xml",
+    "sonar_mount",
+    "v3_hardware",
     "v3_visual_geom_names",
 ]

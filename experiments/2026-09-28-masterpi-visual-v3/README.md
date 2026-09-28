@@ -1,35 +1,72 @@
-# 2026-09-28 MasterPi 외관 모델 v3 (공식 자료 기반 재모델링)
+# 2026-09-28 MasterPi 모델 v3 (공식 치수도 + SDK 팔, 물리 포함)
 
-- 작업: Claude, 브랜치 `claude/masterpi-visual-v3`, 기준 `origin/main` `b8583f17`
-- 성격: 모델 버전 추가. 실험 결과가 아니고 성공률도 없다. 물리 step 0회, 시뮬레이션 실행 0회, 모델 호출 0회다. 정지 자세는 `mj_forward`로만 계산했고 오프스크린 정지 렌더만 만들었다.
-- 새 파일:
-  - `sim/masterpi_geometry_v3.py`: 치수, 출처 등급, 실측 목록
-  - `sim/masterpi_visual_v3.py`: `build_v3_xml(profile=...)`
-  - `scripts/render_masterpi_visual_v3.py`: 비교 렌더 스크립트
-  - `tests/test_masterpi_visual_v3.py`
-- v2는 바이트 그대로다. `sim/masterpi_dynamics_v2.py`, `sim/masterpi_geometry.py`, `sim/masterpi_scene*.xml`을 고치지 않았다. 새 모듈은 등록 실행 번들의 source closure 밖에 있다(테스트로 확인).
-- 전환하지 않았다. 최종 연구 장면, 기본값, 번들은 계속 v2를 쓴다. 전환은 사용자 검토 뒤 별도 PR로 한다.
+- 작업: Claude, 브랜치 `claude/masterpi-visual-v3`, 기준 `origin/main` `d5bd208e`(#240 병합 포함)
+- 성격: 모델 버전 추가. 실험 결과가 아니고 성공률도 없다. 물리 step 0회, 시뮬레이션 실행 0회, 모델 호출 0회다. 정지 자세는 `mj_forward`로만 계산했다.
+- 1단계(외관 v3)에 이어 2단계에서 사용자 결정(치수도를 물리까지 채택, 다음은 sim2real)에 따라 `build_v3_xml`을 물리 모델로 바꿨다.
+- 파일:
+  - `sim/masterpi_geometry_v3.py`: 치수, 출처 등급, 실측 목록, 물리 파라미터 한 벌 `PHYSICAL_V3`, 제어기와의 차이 표 `CONTROLLER_VS_PHYSICAL_V3`
+  - `sim/masterpi_model_v3.py`(구 `masterpi_visual_v3.py`): `build_v3_xml(hardware, geometry=PHYSICAL_V3)`, 진단용 `build_v2_appearance_xml`
+  - `scripts/render_masterpi_model_v3.py`, `tests/test_masterpi_model_v3.py`
+  - `switch_wip.patch`: 연구 장면 기본 모델 전환과 제어기 장착 보정의 미완성 패치(아래 할 일)
+- v2는 바이트 그대로다. `sim/masterpi_dynamics_v2.py`, `sim/masterpi_geometry.py`, `sim/masterpi_scene*.xml`을 고치지 않았다.
 
-## 왜 이상해 보였나 (공식 치수도와 v2의 차이)
+## 할 일 (배터리 부족으로 중단, 이어서 할 순서)
 
-| 항목 | v2 | 공식 자료 | 등급 |
-|---|---|---|---|
-| 하부 차체 | 축 사이 120 mm 판 | 앞판이 185 mm 전장선에 닿는 짙은 회색 역U 차체, 높이 16.8–50.0 mm | public_measured |
-| 팔 받침 | 팔 yaw 축이 차축 중앙(x=0), 전자부 덮개 앞끝과 겹침 | 짙은 회색 **팔 받침 상자**(x 9.8–76.9 mm, 폭 54.9, 높이 50–80.2)가 ID6 서보를 품고, yaw 축은 **x=48.2 mm** | public_measured |
-| 초음파 | 차체 앞 낮은 위치. 중심 x 78, 높이 54 mm, 간격 34, 지름 20 | 팔 받침 상자 **앞면**에 달린 모듈. 송수신면 x **88.0**, 중심 높이 **61.7**, 간격 26.7, 지름 16, 수평 | public_measured / official |
-| 팔 서보 | ID4·ID3에도 LD-1501MG 외형을 쓰고, 축 방향 폭 20 mm로 회전돼 있음 | ID6·ID5는 LD-1501MG(40×20×40.5), ID4·ID3·ID1은 LFD-01M(32.5×12×29.85). ID5는 축 방향 폭이 40.5 | official + public_measured |
-| 팔 링크 | 평평한 막대 | 주황 개방형 측판(폭 19.8, 좌우 외폭 41.4, 삼각 구멍, 둥근 관절 끝) | public_measured / photo_estimate |
-| 전자부 | Pi를 옆으로 눕힘, 은색 상자 | Pi 긴 변이 전후 방향이고 포트가 뒤쪽. 짙은 회색 덮개(윗판 101 mm, 옆판이 아래로 벌어짐, 삼각 창), 구리 M4×50 기둥 | official / public_measured |
-| 바퀴 | 노란 캡슐 8개 | 회색 허브(살 10개)와 주황 롤러 9개, 폭 30 mm | official / photo_estimate |
+이 커밋까지는 테스트가 통과한다. v3 모델은 완성했고, 연구 장면 전환은 아직 하지 않았다.
 
-## 두 프로필
+1. `git apply experiments/2026-09-28-masterpi-visual-v3/switch_wip.patch`. 내용은 다음과 같다.
+   - `sim/multi_masterpi_production.py`: `robot_model`(기본 `masterpi_v3`), 보정되지 않은 wheelbase/track은 치수도 값으로 바꾼다. 상태에 `robot_model`과 `robot_geometry_version`을 넣는다.
+   - `harness/visual_arm.py`: `CONTROLLER_GEOMETRY_ID`, `ARM_MOUNT_X_CM = 4.82`, `arm_tool_pose`, `arm_frame_xy`, `chassis_x_for_arm_radius`. `tool_pose`/카메라 외부 파라미터는 차대 좌표로 낸다(장착 위치 더함). `solve_grip_site_ik`는 장착 위치를 빼고 팔 좌표에서 반경·yaw·보정 범위를 검사한다. SDK 링크 상수는 그대로다.
+   - 팔 좌표 기준 상수: `sim/zone_cargo.py` `GRASP_RADIUS_M = .155 + 장착`(카탈로그 기록에 `arm_radius_m` 추가), `scripts/zone_teacher.py`, `harness/owncam_pair_beam.py`, `harness/wrist_zone_skill_v7.py`
+   - 파지 범위 게이트를 팔 좌표로 바꾼다: `harness/visual_box_skill.py`, `harness/wrist_zone_skill_v2.py`
+   - 스윕 가드(`harness/zone_own_guards.py`, `harness/owncam_sweep_collision.py`, `harness/zone_pair_geometry.py`): `arm_tool_pose`를 쓰고 `BODY_MOUNT_XYZ_M`를 v3 장착 위치로 바꾼다. v2 보정 기록은 `V2_BODY_MOUNT_XYZ_M`로 따로 둔다.
+2. 패치를 적용하면 영향 테스트 109개 파일에서 기준(main) 대비 새 실패가 134개 생긴다(`mj_step` 가드 아래에서 측정). 주요 원인은 다음과 같다.
+   - 47개: 팔 반경을 차대 x로 넘기는 호출(`solve_grip_ik(.155, 0, ...)` 등)이 보정 범위 밖으로 판정된다. 호출부를 `chassis_x_for_arm_radius`로 바꾸거나 테스트 고정값을 갱신한다.
+   - 11개 `test_zone_start_dock.py`, 8개 `test_zone_pair_dev.py`: 장면 설정 해시가 바뀐다. 새 번들 ID로 다시 등록해야 한다.
+   - 나머지: v2 기하로 고정된 회귀값(가드 여유, 인식 범위, 도킹 판정 등). 값을 새로 맞추지 말고 "v3에서 전원 연결 후 재검증"으로 분리한다.
+3. 번들: 등록 직전에 main과 열린 PR 전체에서 최댓값을 다시 확인한다. 2026-09-28 확인값은 main RGB v63, zone study v69, #246 v68이다. `rgb-standard-dispatch-v70-masterpi-v3`(부모 v63), `zone-study-integration-v71-masterpi-v3`(v69 은퇴)를 쓴다. `configs/simulation_workflows.json`, `docs/execution_versioning.md`, 관련 테스트(`test_rgb_execution_bundle`, `test_zone_study_source_pinning`, `test_zone_study_review_r10`, `test_zone_pilot_settlement`)도 함께 갱신한다. #246과 #248에 코멘트로 알린다.
+4. 다중 로봇 자기충돌 감사(`mj_forward`): 다중 로봇 장면에서는 로봇 geom끼리 충돌한다(conaffinity |= 2). `CARRY_POSE`, `SEARCH_POSE`, 파지 자세에서 v2와 v3의 자기 접촉 수를 비교한다. nav_cam(0.32 m, 25° 아래) 시야에 팔이 들어오는 비율도 비교한다.
+5. 비교 렌더를 다시 만든다(`scripts/render_masterpi_model_v3.py`, 출력 `outputs/masterpi-model-v3`).
 
-| 프로필 | 물리 | 용도 |
-|---|---|---|
-| `appearance_only` | **v2와 같다.** body, joint, inertial, actuator, camera, site와 모든 충돌 geom의 값이 같다. `mj_forward` xpos와 카메라 자세가 비트 단위로 같다(테스트). v2 시각 전용 geom만 v3 시각 geom으로 바꾼다. | 물리를 건드리지 않는 외관 교체. 팔은 v2 위치(x=0)라서 덮개 앞끝과 겹쳐 보인다. 이것이 v2 기구학 위치의 문제를 그대로 드러낸다. |
-| `drawing_layout_proposal` | **제안(opt-in).** `arm_base` x를 0 → 0.0482 m로 옮기고, 충돌 proxy 4개를 치수도에 맞추고, `arm_box_collision`을 추가한다. 질량, 관성, 링크 길이, 바퀴, 보정값은 그대로다. | 실물처럼 보이는 모델. 물리 변경이므로 사용자가 검토하고 실측한 뒤에만 채택한다. |
+## SDK와 치수도 판정 (레퍼런스 우선)
 
-`build_v3_xml()`은 profile을 반드시 이름으로 받는다(기본값 없음).
+| 항목 | 치수도 | 공식 렌더(185 mm 기준 축척) | SDK | v3 물리값 | 판정 |
+|---|---|---|---|---|---|
+| 상완(ID5→ID4) | 57.7 | 63.5 | 65.0 | **65.0** | SDK. 렌더가 뒷받침한다. 치수도의 상완 구간만 벗어난다(인쇄된 215/343 mm에도 같은 오차가 있다). |
+| 전완(ID4→ID3) | 62.4 | 62.6 | 62.0 | **62.0** | 세 자료가 1 % 안에서 일치한다. |
+| 손목→닫힌 끝 | 94.0 | 95.0 | 100.0 | **94.0** | 치수도. SDK l4 = 10.00 cm는 IK 목표 상수다. |
+| 손가락 접촉 중심 | 94.0 − 14.3/2 | | | **86.85** | 패드 길이 14.3 mm(치수도) |
+| 어깨 축 높이 | 127.7 | 127.0 | 3.25 + 9.30 = 125.5 | **127.7** | 치수도 |
+| yaw 축 전방 | 48.2 | 48.8 | (팔 좌표) | **48.2** | 치수도 |
+| 바퀴 트랙 / 축간 / 폭 | 129.9 / 118.8 / 30 | | | **같음** | 치수도(v2는 131 / 120 / 31) |
+| 초음파 전방 / 높이 | 88.0 / 61.7 | | | **같음** | 치수도 |
+
+(단위 mm.) 실제 로봇은 SDK IK를 쓴다. 시뮬레이터는 물리 팔을 모델링하고, SDK 상수는 제어기 층(`harness/visual_arm.py`)에 따로 둔다. 차이는 `CONTROLLER_VS_PHYSICAL_V3`에 남긴다. 근거: Hiwonder MasterPi SDK `ArmIK`(l1 = 8.00 + 1.30, l2 6.50, l3 6.20, l4 10.00 cm), 공식 문서 렌더 `1.getting_ready/1.6/image4.png`, 제품 치수도. 링크 길이는 `PHYSICAL_V3.with_measurements(...)`로 줄자 실측값으로 바꿀 수 있다.
+
+유지한 우리 보정값: robot_cam 자세·FOV 적합(렌즈 67 mm 전방, 13.6 mm 위, 집게 기준)과 `sim/masterpi_dynamics_calibration.json` 적용 경로를 다시 맞추지 않았다.
+
+## 전원 연결 후 검증 계획
+
+v2 기하에서 적합한 값은 v3에서 모두 다시 확인한다. 명령은 모두 `OMP_NUM_THREADS=2`로 worktree에서 실행한다.
+
+```bash
+# 1) v2 기하 테스트(물리 step 사용, v2 파일은 바뀌지 않았으므로 그대로 통과해야 함)
+.venv-sim/bin/python -m pytest -q tests/test_masterpi_physical_geometry.py tests/test_masterpi_visual_geometry.py
+# 2) v3 모델 테스트 + v3 기하 테스트(물리 step 사용분은 전원 연결 후 추가)
+.venv-sim/bin/python -m pytest -q tests/test_masterpi_model_v3.py
+# 3) 전환 패치 적용 뒤 영향 테스트 전체(기준 main과 실패 목록 비교)
+.venv-sim/bin/python scripts/run_ci_tests.py
+```
+
+재검증 목록:
+
+- 주행: 새 트랙·축간 거리에서 전진·측면·회전 이득, 정지 감쇠(`sim/masterpi_dynamics_calibration.json`은 모두 null이고 v2 기본값을 쓴다)
+- 파지: SDK 도구점 100 mm와 물리 패드 중심 86.85 mm의 차이(수직 파지 때 패드가 목표보다 13 mm 위), 24 mm 파지 높이, 30 mm 큐브 파지 성공
+- 공동 운반: 팔 장착 48.2 mm 전방 이동에 따른 스테이션 자세, 빔 파지, 운반 중 자세
+- 카메라: robot_cam 적합은 집게 기준이라 유지된다. 어깨 높이 2.2 mm 차이가 거리 추정에 미치는 영향, 실물 재적합
+- 대기·접근 거리와 인식 범위: `harness/wrist_zone_skill_v6.py` `APPROACH_GRASP_STANDOFF_M`, `harness/zone_own_executor.py` `SLOT_STANDOFF_M`, `harness/zone_own_perception_v2.py` `HANDLE_REACH_BAND_M`, `sim/multi_masterpi_production.py` `TEAM_APPROACH_STANDOFF_M`, 팬 목표 방위(차대 기준인지 팔 기준인지)
+- 스윕 가드 구 모델 반경과 잔차(v2 몸체로 보정됨)
+- 차대 COM(질량·관성은 v2 그대로), 렌더 비용(시각 geom 증가)
 
 ## 초음파 장착 (PR #248에 전달)
 
@@ -80,7 +117,7 @@
 | 롤러 수, 모따기, 색 | 9, 10 mm, RGBA | photo_estimate |
 | robot_cam 자세 | 바꾸지 않음(67 mm 앞, 13.6 mm 위, −7.95°) | real_fit |
 
-## 물리 쪽 제안 (이 PR에서는 적용하지 않음, `drawing_layout_proposal`로만 확인 가능)
+## 물리 쪽 제안 (1단계 기록, 2단계에서 `build_v3_xml`에 적용)
 
 1. **팔 yaw 축을 +48.2 mm 앞으로 옮긴다.**
    - 근거: 치수도 옆면에서 yaw 혼 767.75 px와 어깨 허브 765 px가 차축 중앙 880 px에서 떨어진 거리.
@@ -103,7 +140,7 @@
    - ugrp1 적합값은 67 / 13.6 mm, −7.95°다. 적합값대로면 기본 브래킷에서는 카메라 기판이 집게 윗판과 겹친다.
    - v3는 AGENTS.md에 따라 적합 자세를 유지한다. 렌즈 시각 geom은 robot_cam 위치에 정확히 둔다(테스트). ugrp1 실측이 필요하다.
 
-## 영향 목록 (전환 PR에서 처리)
+## 영향 목록 (1단계 기록, 전환은 할 일 목록 참조)
 
 - **렌더로 학습한 시각 모델**
   - 손목 카메라 영상: `appearance_only`에서는 자기 로봇이 화면에 거의 안 들어온다. `look_down` 자세 비교는 바닥과 그림자 모양만 다르다(`compare_robot_cam.png`).
@@ -156,10 +193,15 @@
 - 참조 이미지(Hiwonder 원본 사본)는 `reference/`에 두었고, 해시는 `reference/SHA256SUMS`에 있다. 저작권 때문에 커밋하지 않는다.
 - 로컬 보관일 뿐이며 원격 백업이 아니다.
 
-## 검증
+## 검증 (1단계 기록)
 
-- 신규 `tests/test_masterpi_visual_v3.py` 12개: v2 물리 동일성(카운트, body, joint, actuator, camera, 충돌 geom, FK 비트 동일), 추가 geom이 모두 질량 0이고 비충돌인지, 초음파 사이트 값, 제안 프로필 변경 범위, 다중 로봇 prefix 복제 컴파일, 출처 등급, 치수도 축척, 번들 closure 밖 위치.
+- 당시 `tests/test_masterpi_visual_v3.py` 12개(2단계에서 `tests/test_masterpi_model_v3.py` 11개로 교체): v2 물리 동일성(카운트, body, joint, actuator, camera, 충돌 geom, FK 비트 동일), 추가 geom이 모두 질량 0이고 비충돌인지, 초음파 사이트 값, 제안 프로필 변경 범위, 다중 로봇 prefix 복제 컴파일, 출처 등급, 치수도 축척, 번들 closure 밖 위치.
 - 함께 돌린 기존 테스트: `tests/test_rgb_execution_bundle.py`, `tests/test_zone_study_source_pinning.py`.
 - 위 테스트는 `mj_step`을 막는 가드 아래에서 돌렸다. 결과는 PR 본문에 있다.
 - `test_masterpi_physical_geometry.py`, `test_masterpi_visual_geometry.py`는 `MasterPiDynamicsV2()` 생성 때 물리 step을 쓴다. 배터리 사용 중이라는 지시에 따라 실행하지 않았다(가드에 막힌 것 외의 실패는 없었다). v2 파일을 바꾸지 않았으므로 결과는 바뀌지 않아야 한다. 전원이 연결되면 확인해야 한다.
 - TensorBoard: 지표가 있는 실험·학습·평가 결과가 아니어서 새 스냅샷을 만들지 않았다.
+
+## 검증 (2단계)
+
+- `tests/test_masterpi_model_v3.py` 11개를 `mj_step` 가드 아래에서 실행했다. 프레임 위치(yaw 48.2 mm, 어깨 127.7 mm, 링크 65/62 mm, 패드 86.85 mm), 바퀴, 충돌 proxy, 초음파 사이트, v2 동역학·카메라 유지, 보정값 우선, 실측값 교체, PWM→관절 대응에서의 FK, 차이 표, v2 외관 진단 모델의 물리 동일성을 확인한다.
+- 전환 패치는 적용하지 않은 상태로 커밋했다. 위 134개 새 실패 목록은 패치를 적용해서 측정한 값이다.

@@ -37,9 +37,11 @@ the front view.
 """
 from __future__ import annotations
 
-from typing import Final
+from dataclasses import dataclass, field, fields, replace
+from types import MappingProxyType
+from typing import Final, Mapping
 
-GEOMETRY_VERSION: Final = "masterpi-geometry-v3-20260928"
+GEOMETRY_VERSION: Final = "masterpi-geometry-v3-20260928"  # drawing/source constants
 
 DRAWING_URL: Final = "https://www.hiwonder.com/products/masterpi"
 DRAWING_IMAGE: Final = (
@@ -302,4 +304,128 @@ MEASURE_ON_ROBOT: Final = (
     ("wheel_width_mm", "mecanum wheel width", "drawing 30, v2 31"),
     ("chassis_length_mm", "front plate to rear plate of the dark chassis", "drawing 185, v2 tray 120"),
     ("shoulder_servo_model", "label on ID5 (LD-1501MG or LDX-218)", "spec table LD-1501MG, newer photos LDX-218"),
+)
+
+
+# ======================================================== physical v3 set
+# The physical v3 robot is built from ONE parameter set so that tape
+# measurements on ugrp1 can replace drawing/SDK values later without touching
+# the builder.  Source classes used here (coordinator wording):
+#   ``official_drawing``  printed Hiwonder number or a value scaled from the
+#                         official dimension drawing with its own labels
+#   ``sdk``               Hiwonder MasterPi SDK ArmIK / our controller layer
+#   ``real_measured``     measured or fitted on our ugrp1 robot
+#   ``photo_estimate``    official photos/renders without a ruler
+PHYSICAL_SOURCE_CLASSES: Final = ("official_drawing", "sdk", "real_measured", "photo_estimate")
+
+@dataclass(frozen=True)
+class MasterPiPhysicalGeometry:
+    """Physical link/mount/wheel geometry of the v3 MasterPi model (metres).
+
+    Frames: ``*_x_m`` forward of the axle midpoint, ``*_z_floor_m`` above the
+    floor, link lengths joint axis to joint axis.  ``sources`` maps every field
+    to ``(source_class, note)``; :meth:`with_measurements` is the only way to
+    replace values and it re-tags them ``real_measured``.
+    """
+
+    version: str
+    # arm mount (chassis-fixed ID6 yaw axis and ID5 shoulder axis)
+    yaw_axis_x_m: float
+    yaw_joint_z_floor_m: float
+    shoulder_axis_z_floor_m: float
+    # arm links
+    upper_arm_m: float
+    forearm_m: float
+    wrist_to_closed_tip_m: float
+    finger_pad_length_m: float
+    # wheels
+    wheel_radius_m: float
+    wheel_width_m: float
+    track_m: float
+    wheelbase_m: float
+    # ultrasonic
+    sonar_face_x_m: float
+    sonar_center_z_floor_m: float
+    sonar_pitch_deg: float
+    sources: Mapping[str, tuple[str, str]] = field(default_factory=dict, compare=False)
+
+    def __post_init__(self) -> None:
+        names = [f.name for f in fields(self) if f.name not in ("version", "sources")]
+        missing = [n for n in names if n not in self.sources]
+        if missing:
+            raise ValueError(f"physical geometry fields without a source tag: {missing}")
+        bad = {n: c for n, (c, _) in self.sources.items() if c not in PHYSICAL_SOURCE_CLASSES}
+        if bad:
+            raise ValueError(f"unknown source classes: {bad}")
+        for n in names:
+            v = getattr(self, n)
+            if not isinstance(v, (int, float)) or v != v:
+                raise ValueError(f"{n} must be a finite number")
+        object.__setattr__(self, "sources", MappingProxyType(dict(self.sources)))
+
+    @property
+    def pad_center_from_wrist_m(self) -> float:
+        """Finger contact centre along the tool axis (closed tip minus half pad)."""
+        return self.wrist_to_closed_tip_m - self.finger_pad_length_m / 2.0
+
+    def values(self) -> dict[str, float]:
+        return {f.name: getattr(self, f.name) for f in fields(self) if f.name not in ("version", "sources")}
+
+    def with_measurements(self, *, version: str, note: str, **measured: float) -> "MasterPiPhysicalGeometry":
+        """New set with tape-measured values (tagged ``real_measured``)."""
+        unknown = set(measured) - set(self.values())
+        if unknown:
+            raise ValueError(f"unknown geometry fields: {sorted(unknown)}")
+        if not version or version == self.version:
+            raise ValueError("a measured geometry needs a new version string")
+        sources = dict(self.sources)
+        for key in measured:
+            sources[key] = ("real_measured", note)
+        return replace(self, version=version, sources=sources, **{k: float(v) for k, v in measured.items()})
+
+
+PHYSICAL_V3: Final = MasterPiPhysicalGeometry(
+    version="masterpi-physical-v3-20260928",
+    yaw_axis_x_m=YAW_AXIS_X_M,
+    yaw_joint_z_floor_m=YAW_SERVO_TOP_Z_FLOOR_M,
+    shoulder_axis_z_floor_m=SHOULDER_AXIS_Z_FLOOR_M,
+    upper_arm_m=CONTROLLER_UPPER_ARM_M,
+    forearm_m=CONTROLLER_FOREARM_M,
+    wrist_to_closed_tip_m=DRAWING_WRIST_TO_TIP_M,
+    finger_pad_length_m=FINGER_PAD_LENGTH_M,
+    wheel_radius_m=OFFICIAL_WHEEL_DIAMETER_M / 2.0,
+    wheel_width_m=OFFICIAL_WHEEL_WIDTH_M,
+    track_m=DRAWING_TRACK_M,
+    wheelbase_m=DRAWING_WHEELBASE_M,
+    sonar_face_x_m=SONAR_FACE_X_M,
+    sonar_center_z_floor_m=SONAR_CENTER_Z_FLOOR_M,
+    sonar_pitch_deg=SONAR_PITCH_DEG,
+    sources={
+        "yaw_axis_x_m": ("official_drawing", "side view yaw horn / shoulder hub 48.2 mm (render 48.8 mm)"),
+        "yaw_joint_z_floor_m": ("official_drawing", "ID6 servo top / horn plane 93.0 mm"),
+        "shoulder_axis_z_floor_m": ("official_drawing", "215 mm datum line 127.7 mm (render 127.0; SDK 3.25+9.30=125.5)"),
+        "upper_arm_m": ("sdk", "SDK l2=6.50 cm; render 63.5 mm corroborates; drawing segment 57.7 mm is the outlier"),
+        "forearm_m": ("sdk", "SDK l3=6.20 cm; drawing 62.4 / render 62.6 mm agree within 1 %"),
+        "wrist_to_closed_tip_m": ("official_drawing", "drawing 94.0 mm, render 95.0 mm; SDK l4=10.00 cm is an IK target constant"),
+        "finger_pad_length_m": ("official_drawing", "orange rubber tip 14.3 mm (side view)"),
+        "wheel_radius_m": ("official_drawing", "drawing label 65 mm diameter"),
+        "wheel_width_m": ("official_drawing", "drawing label 30 mm"),
+        "track_m": ("official_drawing", "front view wheel centres 129.9 mm (v2 derived 131)"),
+        "wheelbase_m": ("official_drawing", "side view wheel centres 118.8 mm (v2 derived 120)"),
+        "sonar_face_x_m": ("official_drawing", "side view transducer face 88.0 mm"),
+        "sonar_center_z_floor_m": ("official_drawing", "front view transducer centres 61.7 mm"),
+        "sonar_pitch_deg": ("official_drawing", "transducer axes drawn horizontal"),
+    },
+)
+
+# Controller (SDK) constants that differ from the physical set.  The simulator
+# models the physical arm; the controller keeps the SDK values in its own
+# versioned layer (harness.visual_arm.CONTROLLER_GEOMETRY_ID).  Keep this table
+# visible: it is what sim2real has to explain.
+CONTROLLER_VS_PHYSICAL_V3: Final = (
+    # name, controller value, physical v3 value, note
+    ("shoulder_axis_z_floor_m", 0.0325 + 0.0930, SHOULDER_AXIS_Z_FLOOR_M, "SDK l1=9.30 cm above the 3.25 cm axle"),
+    ("tool_point_from_wrist_m", CONTROLLER_TOOL_M, DRAWING_WRIST_TO_TIP_M - FINGER_PAD_LENGTH_M / 2.0,
+     "SDK l4=10.00 cm vs physical pad centre (closed tip 94.0 mm)"),
+    ("closed_tip_from_wrist_m", CONTROLLER_TOOL_M, DRAWING_WRIST_TO_TIP_M, "SDK l4 vs drawing"),
 )

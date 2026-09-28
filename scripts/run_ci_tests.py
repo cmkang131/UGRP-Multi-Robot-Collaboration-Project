@@ -220,7 +220,7 @@ TEST_PATTERNS = (
     "tests/test_semantic_pick_policy.py",
     "tests/test_pick_match*.py",
     "tests/test_replay_pick_match.py",
-    "tests/test_masterpi_visual_v3.py",
+    "tests/test_masterpi_model_v3.py",
 )
 
 

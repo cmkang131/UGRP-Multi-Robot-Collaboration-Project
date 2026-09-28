@@ -7,7 +7,7 @@ simulated and no model is called.
 
 Usage::
 
-    python scripts/render_masterpi_visual_v3.py --out outputs/masterpi-visual-v3 \
+    python scripts/render_masterpi_model_v3.py --out outputs/masterpi-model-v3 \
         [--reference-dir DIR]
 
 ``--reference-dir`` may hold the official Hiwonder images (not committed; see
@@ -32,10 +32,10 @@ sys.path.insert(0, str(ROOT))
 
 from sim import masterpi_geometry_v3 as G  # noqa: E402
 from sim.masterpi_dynamics_v2 import WHEEL_RADIUS_M, build_v2_xml  # noqa: E402
-from sim.masterpi_visual_v3 import (  # noqa: E402
-    PROFILE_APPEARANCE_ONLY,
-    PROFILE_DRAWING_LAYOUT,
+from sim.masterpi_model_v3 import (  # noqa: E402
+    CAMERA_HARDWARE_GROUP,
     SONAR_MOUNT_V3,
+    build_v2_appearance_xml,
     build_v3_xml,
 )
 
@@ -106,7 +106,9 @@ def render(model, data, *, lookat, distance, azimuth, elevation, width, height, 
     cam.elevation = elevation
     model.vis.global_.orthographic = 1 if ortho else 0
     model.vis.global_.fovy = fovy
-    renderer.update_scene(data, cam)
+    opt = mujoco.MjvOption()
+    opt.geomgroup[CAMERA_HARDWARE_GROUP] = 1  # observer views show the camera hardware
+    renderer.update_scene(data, cam, scene_option=opt)
     if ruler is not None:  # vertical cm ruler: (x, y) world, 0..top_cm
         x, y, top_cm = ruler
         _line(renderer.scene, (x, y, 0), (x, y, top_cm / 100.0), (0, 0, 0, 1), 3)
@@ -166,8 +168,8 @@ def main() -> int:
     W, H = 1200, 900
     variants = {
         "v2": build_v2_xml(),
-        "v3_appearance_only": build_v3_xml(profile=PROFILE_APPEARANCE_ONLY),
-        "v3_drawing_layout": build_v3_xml(profile=PROFILE_DRAWING_LAYOUT),
+        "v2_physics_v3_look": build_v2_appearance_xml(),
+        "v3_physical": build_v3_xml(),
     }
     files: dict[str, str] = {}
     sonar_report = {}
@@ -267,7 +269,7 @@ def main() -> int:
     files[path.name] = sha256(path)
 
     manifest = {
-        "schema": "ugrp.masterpi_visual_v3.renders.v1",
+        "schema": "ugrp.masterpi_model_v3.renders.v1",
         "physics_steps": 0,
         "model_calls": 0,
         "sonar_mount_v3": SONAR_MOUNT_V3,
