@@ -29,10 +29,10 @@ from collections import Counter
 from pathlib import Path
 
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.3.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c
+PROBE_VERSION = '0.4.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c; 0.4.0: b-v6d
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
-POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
 ROLE = {'r1': 'end_neg', 'r2': 'end_pos'}
 
 # Stage registry. ``entry`` is the controller state injected at stage start;

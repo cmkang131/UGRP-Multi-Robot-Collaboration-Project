@@ -18,7 +18,7 @@ import json
 from pathlib import Path
 import subprocess
 
-from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES, REVISION_POLICIES
+from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES, REVISION_POLICIES, V6D_PROBE_FLAGS
 
 ROOT = Path(__file__).resolve().parents[1]
 PREREG = ROOT/'experiments/2026-09-28-zone-pair-v6/prereg_v6.json'
@@ -53,7 +53,10 @@ def contract(revision=None):
     from harness.zone_pair_align import MAX_LOOKS, MAX_TOTAL_LOOK_S
     from harness import owncam_recovery_v6c as clock, zone_pair_grasp_entry_v6c as entry
     return {'execution_bundle_id':EXECUTION_BUNDLE_ID,'policy_flags':{
-        k:vars(POLICIES[k]) for k in REVISION_POLICIES[revision]},
+        # b-v6d probe flags (opt-in, not part of any registered revision) are recorded only when set, so the
+        # registered v5h / b-only / b-v6c flag records stay exactly as registered.
+        k:{f:v for f,v in vars(POLICIES[k]).items() if f not in V6D_PROBE_FLAGS or v}
+        for k in REVISION_POLICIES[revision]},
         # Review 3: flag semantics are part of the registration. beam_relative
         # (A) now also removes PF convergence from the align stop conditions.
         'flag_definitions':{

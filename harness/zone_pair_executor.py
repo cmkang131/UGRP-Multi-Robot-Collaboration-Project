@@ -421,6 +421,16 @@ class PairTeam:
             if any(exact_clock_bound(getattr(executor, 'pose', None)) for executor in self.executors.values()):
                 raise ValueError(f'pose provider is bound to exact_fix_clock (b-v6c); {self.policy.name} '
                                  'needs a fresh provider')
+        from harness import owncam_align_motion_v6d as v6d_motion
+        self.align_motion = {}
+        if self.policy.align_fine_motion:
+            if not self.policy.posterior_relook:
+                raise ValueError('align_fine_motion is defined for the posterior-relook policies only')
+            for rid, executor in self.executors.items():
+                self.align_motion[rid] = v6d_motion.enable_provider(executor.pose)
+        elif any(v6d_motion.bound(getattr(executor, 'pose', None)) for executor in self.executors.values()):
+            raise ValueError(f'pose provider is bound to align_fine_motion (b-v6d); {self.policy.name} '
+                             'needs a fresh provider')
         if self.policy.posterior_relook:
             if self.policy.exact_fix_clock:
                 from harness.owncam_recovery_v6c import enable_provider
@@ -538,6 +548,7 @@ class PairTeam:
 
     def records(self):
         return [{'profile': PROFILE, 'status_profile': STATUS_PROFILE, 'pair_policy': self.policy.name,
+                 **({'align_motion_v6d': copy.deepcopy(self.align_motion)} if self.align_motion else {}),
                  'timing': {'control_s': CONTROL_S, 'arm_s': ARM_S,
                             'heartbeat_timeout_s': s['channel'].heartbeat_timeout_s,
                             'readiness_ttl_s': s['channel'].readiness_ttl_s,

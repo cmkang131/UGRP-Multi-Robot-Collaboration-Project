@@ -80,7 +80,19 @@ class PairAlignRelook:
             self._enter_budget_phase(now, 'stored_regrasp')
         return super()._cp_open(now, arm_idle)
 
+    def _set_align_motion(self, state, now):
+        """b-v6d: the PF predicts align pulses with the M1 ``fine`` profile, all else with the default."""
+        from harness.owncam_align_motion_v6d import profile_for
+        name = profile_for(state)
+        if name != getattr(self, 'align_motion_profile', None):
+            self.port.own.pose.set_motion_profile(now, name)
+            self.align_motion_profile = name
+            self.log(self.rid, 'motion_profile', now, profile=name or 'default', state=state,
+                     source='own state (controller phase), not a measurement')
+
     def set(self, state, now, **detail):
+        if getattr(getattr(self, 'policy', None), 'align_fine_motion', False):
+            self._set_align_motion(state, now)
         if state in ('approach', 'reapproach', 'align'):
             # Final review P2-2: look/HIGH budgets are per phase entry (each
             # approach and each alignment attempt, incl. regrasp), identical
