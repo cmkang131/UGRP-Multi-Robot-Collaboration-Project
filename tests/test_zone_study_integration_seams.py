@@ -215,15 +215,18 @@ def test_host_link_abort_drops_scheduled_macros_and_holds_now():
 
 
 def test_referee_counts_a_box_only_after_it_rests_in_a_zone():
-    from scripts.run_zone_study_integration import SETTLE_S, referee_from_gt
+    from harness import zone_study_referee as zr
     zone_a = MAP['regions']['zone_A']['center_m']
-    rows = [{'t': round(i * .05, 3), 'boxes': {'b0': [zone_a[0], zone_a[1], .016 if i > 10 else .09],
-                                                'b1': [0., 0., .016]}} for i in range(int((SETTLE_S + 1) / .05))]
-    ref = referee_from_gt(rows, MAP, 3.0)
-    assert ref['deliveries'] == [{'item_id': 'b0', 'kind': 'cyan', 'zone': 'A', 'sim_s': .55}]
-    assert referee_from_gt([], MAP, 0.)['deliveries'] == []
-    short = [r for r in rows if r['t'] < .55 + SETTLE_S - .1]
-    assert referee_from_gt(short, MAP, 2.)['deliveries'] == []
+    ref = zr.Referee([{'order_id': 'o1', 'kind': 'cyan', 'count': 1, 'identity': 'kind_fungible',
+                       'destination_zone': 'A'}], MAP)
+    for i in range(int((zr.SETTLE_S + 1) / .05)):
+        t = round(i * .05, 3)
+        ref.observe(t, {'b0': {'kind': 'cyan', 'x': zone_a[0], 'y': zone_a[1], 'yaw': 0., 'z': .016 if i > 10 else .09,
+                               'held': False, 'speed': 0.},
+                        'b1': {'kind': 'cyan', 'x': 0., 'y': 0., 'yaw': 0., 'z': .016, 'held': False, 'speed': 0.}})
+        if t < .55 + zr.SETTLE_S - .1:
+            assert not ref.history
+    assert [(r['item_id'], r['zone'], r['sim_s']) for r in ref.record()['deliveries']] == [('b0', 'A', .55)]
 
 
 # ---------------------------------------------------------------- registration

@@ -84,6 +84,7 @@ TEST_PATTERNS = (
     "tests/test_zone_study_integration_pair.py", "tests/test_zone_study_source_pinning.py",
     "tests/test_zone_study_llm_driver.py",
     "tests/test_zone_study_pair_delay.py",
+    "tests/test_zone_study_referee.py", "tests/test_zone_hidden_events.py",
     "tests/test_zone_study_multiturn.py",
     "tests/test_zone_study_review_r8*.py", "tests/test_zone_study_review_r9*.py",
     "tests/test_zone_study_review_r10*.py",

@@ -54,14 +54,15 @@ if str(ROOT) not in sys.path:
 from harness import zone_study_integration as zi  # noqa: E402
 from harness import zone_study_offline as zo  # noqa: E402
 from harness import zone_study_llm_driver as llm  # noqa: E402
+from harness import zone_study_referee as zr  # noqa: E402  (eval only: physics owner side, never the study layer)
 from harness.zone_own_executor import OwnCamTeamHost, ROBOTS  # noqa: E402
 from harness.zone_study_contract import MAIN_CONDITIONS, digest  # noqa: E402
 from sim import zone_eval_top  # noqa: E402
+from sim import zone_hidden_events as zhe  # noqa: E402  (eval only: experimenter-injected physics)
 
 SCHEMA = 'ugrp.zone_study_integration_run.v1'
-ON_FLOOR_MAX_Z_M = .05
+ON_FLOOR_MAX_Z_M = zr.ON_FLOOR_MAX_Z_M
 SLOT_HALF_M = .06
-SETTLE_S = 2.0
 TAP_FRAMES = 64
 PROGRESS_EVERY_S = 60.
 # Module names selected by config (importlib) are roots too. External adapter
@@ -141,8 +142,9 @@ class HostRobotLink:
 class StudyTeamHost(OwnCamTeamHost):
     """#206's 3-robot host, stepped in chunks by the study clock, pose provider from config."""
 
-    def __init__(self, spec, student, *, root, provider_spec, frames_dir=None):
+    def __init__(self, spec, student, *, root, provider_spec, frames_dir=None, hidden=None):
         self.provider_sources = {}
+        self.hidden = hidden or zr.HiddenEventSchedule({'eval': {'hidden_events': []}})
         providers = []
 
         def pose_factory(rid, static, params, seed):
@@ -162,6 +164,10 @@ class StudyTeamHost(OwnCamTeamHost):
             # before XML generation, never based on runtime state).
             from scripts.zone_pair_dev_runtime import make_scene
             scene = make_scene(spec)
+        if self.hidden.obstacles():
+            # Parked obstacles through the host's scene= argument (the host and
+            # the frozen scene sources stay unchanged); none -> the same scene.
+            scene = zhe.hidden_event_scene(spec, spec['contact_profile'], self.hidden.obstacles(), scene)
         try:
             super().__init__(spec, student, root=root, study_layer=self._no_layer, frames_dir=frames_dir,
                              scene=scene, pose_factory=pose_factory)
@@ -178,6 +184,44 @@ class StudyTeamHost(OwnCamTeamHost):
         self.eval_static = zone_eval_top.eval_static_map(self.static, profile)
         self.eval_only['top_camera'] = zone_eval_top.apply_to_world(self.world, self.static, profile)
         self.links = {rid: HostRobotLink(self, rid) for rid in ROBOTS}
+        # Hidden events act on physics only (sim.zone_hidden_events): never a robot
+        # input, command row or wake. No events -> nothing is built or wrapped.
+        self.hidden_physics = (zhe.HiddenEventPhysics(self.world, self.hidden, objects=self.objects,
+                                                      item_geoms=self._box_geom, finger_geoms=self._fingers)
+                               if self.hidden.events else None)
+
+    @property
+    def hidden_log(self):
+        return self.hidden_physics.log if self.hidden_physics is not None else []
+
+    def hidden_tick(self, now):
+        """Fire the due hidden events (before physics advances past ``now``)."""
+        if self.hidden_physics is not None:
+            self.hidden_physics.tick(now)
+
+    # -- referee truth (eval only) -----------------------------------------------
+    def referee_truth(self):
+        """Per item: pose, height, finger contact and speed from simulator truth. Evaluation only."""
+        import mujoco
+        import numpy as np
+        m, d = self.world.model, self.world.data
+        held = set()
+        fingers = {r: self._fingers[r][0] | self._fingers[r][1] for r in ROBOTS}
+        every = set().union(*fingers.values())
+        for i in range(d.ncon):
+            pair = {int(d.contact[i].geom1), int(d.contact[i].geom2)}
+            if pair & every:
+                held.update(b for b, gs in self._box_geom.items() if pair & gs)
+        out, vel = {}, np.zeros(6)
+        for item, o in self.objects.items():
+            if 'body_name' not in o:
+                continue
+            b = d.body(o['body_name'])
+            mujoco.mj_objectVelocity(m, d, mujoco.mjtObj.mjOBJ_BODY, int(b.id), vel, 0)
+            out[item] = {'kind': o['kind'], 'x': float(b.xpos[0]), 'y': float(b.xpos[1]),
+                         'yaw': zr.item_yaw(b.xquat), 'z': float(b.xpos[2]), 'held': item in held,
+                         'speed': float(np.linalg.norm(vel[3:6]))}
+        return out
 
     @staticmethod
     def _no_layer(*_args):
@@ -349,6 +393,7 @@ def run_bundle(prereg, episode, *, model_adapter=None, driver=None):
               'student_calibration_sha256': zi.file_sha256(ROOT / prereg['student']['calibration']),
               'pose_provider': zi.provider_record(provider),
               'eval_top_camera': evaluation_top_config(static),
+              'referee': zr.profile(), 'hidden_events': zr.HiddenEventSchedule(scenario).config(),
               'study_invariant': invariant,
               'conditions': list(MAIN_CONDITIONS), 'horizon_s': prereg['horizon_s'],
               'speech_caps': caps, 'llm_driver': driver.bundle_record() if driver is not None else None}
@@ -367,34 +412,6 @@ def placements_match(scenario, host):
 
 # ---------------------------------------------------------------------------
 # Evaluation only (after the run, from simulator truth)
-
-def referee_from_gt(gt_rows, static_map, end_s, *, cargo_kinds=None):
-    """Eval-only delivery rows: a cyan box resting on the floor inside a zone for SETTLE_S."""
-    zones = {z: static_map['regions'][f'zone_{z}'] for z in ('A', 'B', 'C')}
-
-    def zone_of(xyz):
-        if xyz[2] >= ON_FLOOR_MAX_Z_M:
-            return None
-        for z, r in zones.items():
-            (cx, cy), (hx, hy) = r['center_m'], r['half_extents_m']
-            if abs(xyz[0] - cx) <= hx and abs(xyz[1] - cy) <= hy:
-                return z
-        return None
-    rows, state = [], {}
-    for row in gt_rows:
-        for box, xyz in {**row['boxes'], **row.get('team_cargo', {})}.items():
-            z = zone_of(xyz)
-            cur = state.get(box)
-            if cur is None or cur['zone'] != z:
-                state[box] = {'zone': z, 'since': row['t'], 'emitted': False}
-                continue
-            if z is not None and not cur['emitted'] and row['t'] - cur['since'] >= SETTLE_S - 1e-9:
-                cur['emitted'] = True
-                rows.append({'item_id': box, 'kind': (cargo_kinds or {}).get(box, 'cyan'), 'zone': z, 'sim_s': round(cur['since'], 3)})
-    final = {b: s['zone'] for b, s in state.items()}
-    return {'deliveries': rows, 'final_zone': final, 'settle_s': SETTLE_S, 'source': 'eval_only simulator truth',
-            'end_sim_s': end_s}
-
 
 def robot_eval(host, rid, boxes_final):
     """Eval-only per-robot audit (#206 E3/E6 style) against simulator truth."""
@@ -449,6 +466,42 @@ def check_run_source(prereg, bundle_sha, *, dev=False, expected_source_sha=None)
     return code
 
 
+def run_loop(host, trial, referee, t, horizon_s, *, progress=None, health=None):
+    """The chunked episode loop. Returns (stop, t).
+
+    Per chunk: due hidden events act on physics only -> physics + own executor
+    events -> study scheduler -> (``health``: the B7 runner boundary, which
+    raises on a fatal ledger/budget state before another physics step) ->
+    eval-only referee sample. The referee's result reaches nothing but this
+    loop's stop decision: robots see the episode end, exactly as at the
+    horizon, and never why.
+    """
+    stop, next_report = 'horizon', t + PROGRESS_EVERY_S
+    host.hidden_tick(t)
+    while t < horizon_s - 1e-9:
+        t = round(t + zi.QUANTUM_S, 6)
+        if progress is not None and t >= next_report:
+            next_report += PROGRESS_EVERY_S
+            progress(t)
+        for event in host.advance_to(t):
+            trial.on_executor_event(event, at_s=t)
+        trial.step_to(t)
+        if health is not None:
+            health(trial)
+        host.hidden_tick(t)
+        referee.observe(t, host.referee_truth())
+        if referee.orders_complete():
+            stop = zr.ev.SUCCESS_END_REASON
+            break
+        if all(s.dead for s in host.robots.values()):
+            stop = 'all_robots_stopped'
+            break
+        if trial.quiescent():
+            stop = 'quiescent_budget_spent'
+            break
+    return stop, t
+
+
 def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_adapter=None,
               expected_source_sha=None, driver=None, run_key=None, attempt=1, raise_on_failure=True):
     """One trial attempt. With ``driver`` (``llm.LiveDriver``) the model adapter is built per attempt.
@@ -476,13 +529,13 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
          'attempt': attempt, 'ledger_run_key': run_key,
          'started_unix': round(started, 3), 'load_average_start': load0}, indent=2, ensure_ascii=False) + '\n')
     spec = host_spec(scenario, episode, map_bundle)
-    host = trial = result = error = None
+    host = trial = result = referee = error = None
     failure, t = None, 0.0
     try:
         if driver is not None:
             model_adapter = driver.adapter(run_key=run_key, store_dir=out / 'study' / 'wire')
         host = StudyTeamHost(spec, prereg['student'], root=ROOT, provider_spec=provider,
-                             frames_dir=out / 'own_frames')
+                             frames_dir=out / 'own_frames', hidden=zr.HiddenEventSchedule(scenario))
         expected = bundle['contact_profile_expected']
         if any(host.contact_record[k] != expected[k] for k in ('profile', 'base_profile', 'noslip_iterations', 'timestep_s')):
             raise zi.ContractViolation('applied contact profile differs from the pinned bundle')
@@ -495,27 +548,14 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
                                    policy=zo.CallPolicy(**prereg.get('call_policy', {})),
                                    decision_limits=llm.speech_caps_for(prereg)[0],
                                    pair_records=lambda: host.pairs.records() if host.pairs else [])
+        referee = zr.Referee(spec['order_sheet']['orders'], host.static)
         t = host.settle(float(prereg['t0_s']))
         trial.begin(t)
         llm.check_trial_health(trial)
-        stop, next_report = 'horizon', t + PROGRESS_EVERY_S
-        while t < horizon_s - 1e-9:
-            t = round(t + zi.QUANTUM_S, 6)
-            if t >= next_report:
-                next_report += PROGRESS_EVERY_S
-                print(json.dumps({'run_id': run_id, 'sim_s': t, 'wall_s': round(time.time() - started, 1),
-                                  'calls': len(trial.scheduler.calls), 'load': [round(v, 1) for v in os.getloadavg()]}),
-                      file=sys.stderr, flush=True)
-            for event in host.advance_to(t):
-                trial.on_executor_event(event, at_s=t)
-            trial.step_to(t)
-            llm.check_trial_health(trial)
-            if all(s.dead for s in host.robots.values()):
-                stop = 'all_robots_stopped'
-                break
-            if trial.quiescent():
-                stop = 'quiescent_budget_spent'
-                break
+        stop, t = run_loop(host, trial, referee, t, horizon_s, progress=lambda t: print(json.dumps(
+            {'run_id': run_id, 'sim_s': t, 'wall_s': round(time.time() - started, 1),
+             'calls': len(trial.scheduler.calls), 'load': [round(v, 1) for v in os.getloadavg()]}),
+            file=sys.stderr, flush=True), health=llm.check_trial_health)
         llm.check_trial_health(trial, final=True)
         for rid in ROBOTS:
             host._hold(rid, float(host.world.data.time))
@@ -528,7 +568,7 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
         stop = 'exception'
     finally:
         record = write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, trial, result, stop,
-                               failure, code, started, load0, dev)
+                               failure, code, started, load0, dev, referee=referee)
         if host is not None:
             host.close()
     env = {'mujoco': mujoco.__version__, 'opencv': cv2.__version__, 'numpy': np.__version__}
@@ -542,20 +582,8 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
     return record
 
 
-def trial_record_for(trial, result, referee):
-    """The package I trial record, with the eval-only referee filled from simulator truth."""
-    from harness import zone_study_eval as ev
-    record = trial.trial_record(result)
-    record['referee'] = {'deliveries': referee['deliveries']}
-    state = ev.delivery_state(record)
-    if state['orders_complete']:
-        done_at = max(d['sim_s'] for d in state['delivered'].values())
-        record['end_reason'], record['end_sim_s'] = ev.SUCCESS_END_REASON, done_at
-    return record
-
-
 def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, trial, result, stop, failure, code,
-                  started, load0, dev):
+                  started, load0, dev, *, referee=None):
     """Everything that exists, also after an exception; returns the result summary."""
     ledger = getattr(trial, 'send_ledger', None) if trial is not None else None
     summary = {'schema': SCHEMA, 'run_id': out.name, 'condition': condition, 'episode': episode['episode_id'],
@@ -572,10 +600,12 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
         ev = host.eval_only
         boxes = {b: [float(v) for v in host.world.data.body(o['body_name']).xpos] for b, o in host.objects.items()
                  if o['kind'] in ('cyan', 'long_beam')}
-        referee = referee_from_gt(ev['gt'], host.static, summary['sim_s'],
-                                  cargo_kinds={b: o['kind'] for b, o in host.objects.items()})
+        ref_row = referee.record() if referee is not None else None
         summary['robots'] = {rid: robot_eval(host, rid, boxes) for rid in ROBOTS}
-        summary['eval_only'] = {'referee': referee, 'box_final_xyz': {b: [round(v, 4) for v in p] for b, p in boxes.items()},
+        hidden = list(getattr(host, 'hidden_log', []))    # the full rows go to eval_only/hidden_events.jsonl only
+        summary['eval_only'] = {'referee': ref_row, 'hidden_events': {'file': 'eval_only/hidden_events.jsonl',
+                                                                       'rows': len(hidden)},
+                                'box_final_xyz': {b: [round(v, 4) for v in p] for b, p in boxes.items()},
                                 'weld_max_eq_active': ev['max_eq_active'], 'contact_profile': host.contact_record}
         for rid, slot in host.robots.items():
             base = out / 'robots' / rid
@@ -591,13 +621,14 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
         jsonl(out / 'eval_only' / 'gt.jsonl', ev['gt'])
         jsonl(out / 'eval_only' / 'frames_eval.jsonl', ev['frames_eval'])
         jsonl(out / 'eval_only' / 'contacts.jsonl', ev['contacts'])
-        (out / 'eval_only' / 'referee.json').write_text(json.dumps(referee, indent=1) + '\n')
+        (out / 'eval_only' / 'referee.json').write_text(json.dumps(ref_row, indent=1) + '\n')
+        jsonl(out / 'eval_only' / 'hidden_events.jsonl', hidden)
         (out / 'eval_only' / 'top_camera.json').write_text(json.dumps(ev['top_camera'], indent=1) + '\n')
         (out / 'eval_only' / 'static_map.json').write_text(json.dumps(host.eval_static, indent=1) + '\n')
         (out / 'scene.xml').write_text(host.world.scene_xml)
         summary['provider_sources'] = dict(host.provider_sources)
     if trial is not None:
-        write_study(out, trial, result, summary)
+        write_study(out, trial, result, summary, referee)
     manifest = {'schema': SCHEMA, 'run_id': out.name, 'bundle': bundle, 'bundle_sha256': bundle_sha, 'code': code,
                 'applied_contact_profile': copy.deepcopy(host.contact_record) if host else None,
                 'perception_delay_s': zi.PERCEPTION_DELAY_S,
@@ -615,7 +646,7 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
     return summary
 
 
-def write_study(out, trial, result, summary):
+def write_study(out, trial, result, summary, referee=None):
     """Study-side logs: requests (text + image bytes), calls, messages, actions, dispatch, checks."""
     study = out / 'study'
     images = study / 'request_images'
@@ -640,8 +671,11 @@ def write_study(out, trial, result, summary):
     (study / 'send_ledger.json').write_text(json.dumps(trial.send_ledger.to_dict(), indent=1) + '\n')
     if result is None:
         return
-    referee = summary.get('eval_only', {}).get('referee', {'deliveries': []})
-    record = trial_record_for(trial, result, referee)
+    # Always write the trial record (PR #257 review P1-G b). Without a referee
+    # (the run failed before it existed) the block says not_evaluated and the
+    # record is never a success.
+    record = (zr.apply_to_record(trial.trial_record(result), referee) if referee is not None
+              else zr.not_evaluated(trial.trial_record(result)))
     if isinstance(trial.send_ledger, llm.MainStudySendLedger):
         record['failure_class'] = summary.get('failure_class')
         record['model_usage'] = summary['model_usage']
@@ -650,6 +684,12 @@ def write_study(out, trial, result, summary):
     record['pose_provider'] = dict(summary['pose_provider'])   # A's provenance keys are closed: top level
     record['plumbing_only'] = trial.actor == zi.FIXTURE_ACTOR
     (study / 'trial_record.json').write_text(json.dumps(record, indent=1, ensure_ascii=False) + '\n')
+    evaluation = (zr.evaluation_block(record, referee) if referee is not None
+                  else {'schema': 'ugrp.zone_study_referee_evaluation.v2', 'status': 'not_evaluated',
+                        'success': False, 'note': 'no referee: the run failed before the referee existed'})
+    summary.setdefault('eval_only', {})['evaluation'] = evaluation
+    (out / 'eval_only').mkdir(parents=True, exist_ok=True)
+    (out / 'eval_only' / 'evaluation.json').write_text(json.dumps(evaluation, indent=1, ensure_ascii=False) + '\n')
     summary['study'] = {'calls': len(result.calls), 'messages': len(result.messages), 'actions': len(result.actions),
                         'end_reason': record['end_reason'], 'end_sim_s': record['end_sim_s'],
                         'end_state': record['end_state'],
@@ -742,7 +782,9 @@ def main(argv=None):
                       'end_reason': study.get('end_reason'), 'end_state': study.get('end_state'),
                       'calls': study.get('calls'),
                       'messages': study.get('messages'), 'dispatch': study.get('dispatch'),
-                      'deliveries': len(rec.get('eval_only', {}).get('referee', {}).get('deliveries', [])),
+                      'deliveries': len((rec.get('eval_only', {}).get('referee') or {}).get('deliveries', [])),
+                      'par_makespan_sim_s': rec.get('eval_only', {}).get('evaluation', {}).get('par_makespan_sim_s'),
+                      'delivery_rate': rec.get('eval_only', {}).get('evaluation', {}).get('delivery_rate'),
                       'pose_provider': rec['pose_provider']}, ensure_ascii=False, default=str), flush=True)
     return 0
 

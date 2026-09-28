@@ -81,6 +81,10 @@ INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
 # main's v75; the study core, scheduler and pair policies are unchanged. v75
 # (recorded by the v6b offline replay, PR #261) is retired. The pre-merge
 # candidate v72 never ran and was never on main. v76 is claimed by PR #263.
+# v78 (B6, PR #257) adds the eval-only referee (orders_complete stop,
+# PAR-2/delivery_rate) and the scenario hidden-event hooks in the physics
+# owner on top of main's v77; the study layer is unchanged. v77 is retired.
+# The pre-merge candidate v73 never ran and was never on main.
 from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID
 RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
                       'zone-study-integration-v64-source-closure', 'zone-study-integration-v65-pair-close',
@@ -88,7 +92,8 @@ RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pa
                       'zone-pair-v68-beam-relative-recovery',
                       'zone-study-integration-v69-multiturn-landmark-agnostic',
                       'zone-pair-v70-beam-relative-multiturn',
-                      'zone-pair-v75-dock-prior-bootstrap')
+                      'zone-pair-v75-dock-prior-bootstrap',
+                      'zone-study-integration-v77-llm-driver')
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',

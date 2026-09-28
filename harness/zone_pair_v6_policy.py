@@ -8,7 +8,9 @@ from dataclasses import dataclass
 # v77 = v75 plus the B7 real model driver and registered speech caps
 # (PR #256; the pre-merge candidate v72 never ran and was never on main).
 # The pair policies are unchanged. v76 is claimed by open PR #263 (v6c).
-EXECUTION_BUNDLE_ID = 'zone-study-integration-v77-llm-driver'
+# v78 = v77 plus the B6 eval-only referee and scenario hidden events (PR #257;
+# pre-merge candidate v73 never ran). Pair policies unchanged; v77 retired.
+EXECUTION_BUNDLE_ID = 'zone-study-integration-v78-referee-hidden-events'
 
 
 @dataclass(frozen=True)

@@ -117,7 +117,7 @@ def test_speech_caps_are_registered_per_bundle_and_ad_hoc_limits_are_refused():
         llm.speech_caps('main_pilot_10_30', bundle_id='zone-study-integration-v69-multiturn-landmark-agnostic')
     with pytest.raises(ContractViolation, match='not registered in'):
         llm.speech_caps('v66_default', bundle_id='zone-study-integration-v99-unknown')
-    assert zi.EXECUTION_BUNDLE_ID == 'zone-study-integration-v77-llm-driver'
+    assert zi.EXECUTION_BUNDLE_ID == 'zone-study-integration-v78-referee-hidden-events'
     assert 'zone-study-integration-v69-multiturn-landmark-agnostic' in zi.RETIRED_BUNDLE_IDS
 
 
@@ -574,7 +574,10 @@ def test_runner_aborts_before_next_host_step_and_records_infra(tmp_path, monkeyp
     bundle = {'pose_provider': {'label': {}}, 'contact_profile_expected': contact}
     monkeypatch.setattr(runner, 'run_bundle', lambda *a, **k: (bundle, SCENARIO, BUNDLE, {}))
     monkeypatch.setattr(runner, 'check_run_source', lambda *a, **k: {'sha': 'fake'})
-    monkeypatch.setattr(runner, 'host_spec', lambda *a: {})
+    # PR #257 (B6): the runner builds the eval-only referee from the order sheet and the
+    # host's static map before the first model boundary, so the stub spec carries one order.
+    order = {'order_id': 'o1', 'kind': 'cyan', 'count': 1, 'identity': 'kind_fungible', 'destination_zone': 'A'}
+    monkeypatch.setattr(runner, 'host_spec', lambda *a: {'order_sheet': {'orders': [order]}})
     monkeypatch.setattr(runner, 'placements_match', lambda *a: None)
     state = {'advanced': 0, 'closed': False}
     class NoPhysicsHost:
@@ -582,6 +585,7 @@ def test_runner_aborts_before_next_host_step_and_records_infra(tmp_path, monkeyp
             self.links = links_for([0.])
             self.contact_record, self.pairs = contact, None
             self.world = SimpleNamespace(data=SimpleNamespace(time=0.))
+            self.static = {'regions': {}}
         def settle(self, t):
             return t
         def advance_to(self, t):
@@ -591,8 +595,8 @@ def test_runner_aborts_before_next_host_step_and_records_infra(tmp_path, monkeyp
             state['closed'] = True
     monkeypatch.setattr(runner, 'StudyTeamHost', NoPhysicsHost)
     write_outputs = runner.write_outputs
-    def write_without_physics(out, prereg, episode, condition, bundle, bundle_sha, host, *args):
-        return write_outputs(out, prereg, episode, condition, bundle, bundle_sha, None, *args)
+    def write_without_physics(out, prereg, episode, condition, bundle, bundle_sha, host, *args, **kwargs):
+        return write_outputs(out, prereg, episode, condition, bundle, bundle_sha, None, *args, **kwargs)
     monkeypatch.setattr(runner, 'write_outputs', write_without_physics)
     prereg = {'student': {}, 't0_s': 0., 'speech_cap_profile': 'main_pilot_10_30'}
     out = tmp_path / 'results'
