@@ -3,6 +3,11 @@
 The nominal PF is retained. A separate command reachability envelope prevents
 small PF covariance after dead reckoning from erasing anchor uncertainty.
 Coefficients are conservative development bounds, not calibrated coverage.
+
+Review 3: the reachable set is centred on the anchor plus the half-gain
+integrated command (actual gain in [0, BACKOFF_GAIN_MAX]); each increment's
+heading error is bounded by the anchor yaw and turn-gain uncertainty. The PF
+discrepancy is measured from that centre, so a displacement is counted once.
 """
 from dataclasses import replace
 import math
@@ -26,6 +31,28 @@ def reported_pose(report, now):
     return p
 
 
+# Planned safety re-observations are separate from the HIGH recovery budget.
+# Registered in prereg_v6 v6_contract; development scheduling bounds only.
+SCHEDULED_REOBSERVE = {
+    'per_look_s': 6.,    # wait charged to the planned look; the rest spills to HIGH recovery
+    'total_s': 240.,     # cumulative planned-look wait per job (of the 900 s SIM limit)
+    'max_count': 80,     # planned safety looks per job (approach + align)
+    'reserve_gap_m': .04,
+    'reducible_sigma_m': .005,
+    'reducible_sigma_rad': .005,
+}
+
+
+def heading_spread(delta):
+    """Radius factor of {s*e(d): s in [0,1], |d|<=delta} around e(0)/2."""
+    delta = min(abs(delta), math.pi)
+    return math.sqrt(max(.25, 1.25-math.cos(delta)))
+
+
+def _wrap(angle):
+    return (angle+math.pi)%(2*math.pi)-math.pi
+
+
 class GlobalEnvelope:
     def __init__(self):
         self.anchor = None
@@ -34,8 +61,14 @@ class GlobalEnvelope:
         self.motion = (0.,0.,0.)
         self.until = -math.inf
         self.travel_bound = self.turn_bound = 0.
+        self.centre_offset = (0.,0.)   # half-gain command displacement since anchor (world)
+        self.centre_turn = 0.          # half-gain command rotation since anchor
         self.reacquisition = None
         self.last_candidate_fix_t = -math.inf
+
+    def _reset_motion(self):
+        self.travel_bound = self.turn_bound = 0.
+        self.centre_offset, self.centre_turn = (0.,0.), 0.
 
     def advance(self, now):
         if self.t is None:
@@ -47,7 +80,24 @@ class GlobalEnvelope:
         f,l,w = self.motion
         self.travel_bound += BACKOFF_GAIN_MAX*math.hypot(f,l)*dt
         self.turn_bound += BACKOFF_GAIN_MAX*abs(w)*dt
+        half = BACKOFF_GAIN_MAX/2
+        steps = max(1,math.ceil(dt/.02))
+        x,y = self.centre_offset
+        base = 0. if self.anchor is None else self.anchor.yaw
+        for _ in range(steps if dt > 0 else 0):
+            h = dt/steps
+            yaw = base+self.centre_turn+half*w*h/2
+            x += half*h*(math.cos(yaw)*f-math.sin(yaw)*l)
+            y += half*h*(math.sin(yaw)*f+math.cos(yaw)*l)
+            self.centre_turn += half*w*h
+        self.centre_offset = (x,y)
         self.t = now
+
+    def inflation(self, pose):
+        """Envelope growth over a fresh fix at this anchor (0 when unknown)."""
+        if pose is None or self.anchor is None:
+            return (0.,0.)
+        return (pose.std_xy-(self.anchor.std_xy+.005), pose.std_yaw-self.anchor.std_yaw)
 
     def command(self, row):
         self.advance(row['t'])
@@ -113,16 +163,21 @@ class GlobalEnvelope:
                     if current_rejected or not self._verified_reacquisition(p,report.last_fix_t):
                         return None
             self.anchor,self.fix_t = p,report.last_fix_t
-            self.travel_bound = self.turn_bound = 0.
+            self._reset_motion()
             self.reacquisition = None
         if self.anchor is None or not 0 <= now-self.fix_t <= 30.:
             return None
-        # Enclose both nominal PF and every position reachable from the anchor.
+        # Enclose both nominal PF and every position reachable from the anchor:
+        # centre = anchor + half-gain command, radius = gain/heading spread.
         age = now-self.fix_t
-        discrepancy = math.dist((p.x,p.y),(self.anchor.x,self.anchor.y))
-        dyaw = abs((p.yaw-self.anchor.yaw+math.pi)%(2*math.pi)-math.pi)
-        xy = max(p.std_xy,self.anchor.std_xy+(discrepancy+self.travel_bound+.002*age+.01)/2)
-        yaw = max(p.std_yaw,self.anchor.std_yaw+(dyaw+self.turn_bound+.001*age)/2)
+        a = self.anchor
+        centre = (a.x+self.centre_offset[0],a.y+self.centre_offset[1])
+        discrepancy = math.dist((p.x,p.y),centre)
+        heading = 2*a.std_yaw+self.turn_bound/2+.001*age
+        reach = self.travel_bound*heading_spread(heading)
+        dyaw = abs(_wrap(p.yaw-a.yaw-self.centre_turn))
+        xy = max(p.std_xy,a.std_xy+(discrepancy+reach+.002*age+.01)/2)
+        yaw = max(p.std_yaw,a.std_yaw+(dyaw+self.turn_bound/2+.001*age)/2)
         return replace(p,std_xy=xy,std_yaw=yaw)
 
     def recovery_pose(self, report, now):
@@ -153,7 +208,11 @@ class GlobalPairSweepGuard(PairSweepGuard):
             return math.inf
         return BASE_MARGIN_M+self.residual+K_SIGMA*(pose.std_xy+pose.std_yaw*lever_m)
 
-    def certificate(self, servo, pose, beam=None, *, loaded=False):
+    def certificate(self, servo, pose, beam=None, *, loaded=False, reducible=True):
+        """reducible: a new fix could shrink this envelope (motion since anchor).
+
+        A thin gap alone never re-triggers a look that cannot improve it (review 3).
+        """
         if pose is None:
             return {'clear':False,'reason':'GLOBAL_ANCHOR_UNKNOWN','clearance_m':None}
         if not math.isfinite(self.margin(pose,1.)):
@@ -164,5 +223,7 @@ class GlobalPairSweepGuard(PairSweepGuard):
         gap,wall = min(candidates,key=lambda row:row[0])
         return {'clear':bool(gap>=0),'reason':'clear' if gap>=0 else 'GLOBAL_ENVELOPE_BLOCKED',
                 'clearance_m':gap if math.isfinite(gap) else None,'wall_id':wall,
-                'relook_reserve_low':bool(gap < .04 or pose.std_xy >= .10 or pose.std_yaw >= .15),
+                'relook_reserve_low':bool((gap < SCHEDULED_REOBSERVE['reserve_gap_m'] and reducible)
+                                          or pose.std_xy >= .10 or pose.std_yaw >= .15),
+                'reserve_gap_low':bool(gap < SCHEDULED_REOBSERVE['reserve_gap_m']),
                 'std_xy_m':pose.std_xy,'std_yaw_rad':pose.std_yaw}

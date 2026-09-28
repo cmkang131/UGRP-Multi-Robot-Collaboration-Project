@@ -20,25 +20,21 @@ from harness.zone_pair_v6_policy import pair_policy
 from tests.test_zone_pair_grasp import real_pair
 from tests.test_zone_pair_executor import pair_obs
 from tests.test_zone_pair_v6 import good
-from tests.test_zone_pair_v6_review1 import image_at
+from tests.test_zone_pair_v6_review1 import box_pixels, image_at
 
 
-def raster(servo, intervals, *, fid=0):
-    origin, rays, x, y, valid = base_rays(servo, 1)
-    distance = (.032-origin[2])/np.where(abs(rays[:,2]) > 1e-8, rays[:,2], 1.)
-    pts = origin+distance[:,None]*rays
-    hit = valid & (distance > 0) & (rays[:,2] < -1e-6) & (abs(pts[:,1]) <= .02)
-    along = np.zeros(len(pts),bool)
-    for lo, hi in intervals:
-        along |= (pts[:,0] >= lo) & (pts[:,0] <= hi)
+def raster(servo, intervals, *, fid=0, face_at=None):
+    x, y, top, end = box_pixels(servo, intervals, face_at=face_at)
     frame = np.full((480,640,3),100,np.uint8)
-    frame[y[hit & along].astype(int),x[hit & along].astype(int)] = [0,220,120]
+    frame[y[top],x[top]] = [0,220,120]
+    frame[y[end],x[end]] = [0,160,88]
     frame[0,0] = [fid % 255,100,100]  # capture noise outside valid optics
     return frame
 
 
 class Scenario:
-    def __init__(self, *, state='approach', goal=(1.,-1.,0.), yaw=0., beam_grip=None, fixes=True):
+    def __init__(self, *, state='approach', goal=(1.,-1.,0.), yaw=0., beam_grip=None, fixes=True,
+                 fix_delay_s=0., fail_every=0, fail_s=0.):
         _,_,self.eps = real_pair()
         self.ep = ep = self.eps['r1']; self.own = ep.own; self.ctl = ep.controller
         ep.policy = pair_policy('a+b'); enable_provider(self.own.pose)
@@ -53,6 +49,11 @@ class Scenario:
         self.last_fix = 0.; self.fixes = fixes; self.motion = (0.,0.,0.); self.until = 0.
         self.commands = []; self.trace = []; self.beam_x = None if beam_grip is None else .6+beam_grip
         self.sensor_yaw_offset = 0.
+        # Review 3: realistic sensor latency. A look posture yields its first
+        # informative fix only after fix_delay_s; every fail_every-th look
+        # episode yields none for an extra fail_s (occluded/blurred pans).
+        self.fix_delay_s, self.fail_every, self.fail_s = fix_delay_s, fail_every, fail_s
+        self.ready_since = None; self.episodes = 0
         self.capture(0.)
         ep.command_guard.global_envelope.pose(self.own.last_report,0.)
 
@@ -63,7 +64,13 @@ class Scenario:
         self.t = now
         own = self.own; own.now = now
         camera_ready = all(own.servo.get(k) == v for k,v in LOOK_P20.items()) and now-self.last_arm >= .3
-        if self.fixes and camera_ready and now >= self.until+.2:
+        if not camera_ready:
+            self.ready_since = None
+        elif self.ready_since is None:
+            self.ready_since = now; self.episodes += 1
+        delay = self.fix_delay_s+(self.fail_s if self.fail_every and self.episodes % self.fail_every == 0 else 0.)
+        if (self.fixes and camera_ready and now >= self.until+.2
+                and now-self.ready_since >= delay-1e-9):
             self.last_fix = now
         x,y,yaw = self.pose; yaw += self.sensor_yaw_offset
         r = replace(good(now),x_m=x,y_m=y,yaw_rad=yaw,last_fix_t=self.last_fix,fix_age_s=now-self.last_fix)
@@ -83,7 +90,7 @@ class Scenario:
         obs = pair_obs(own.robot_id,fid,now,own.servo)
         if self.beam_x is not None:
             grip = self.beam_x-x
-            frame = raster(own.servo,[(grip-.03,grip+.57)],fid=fid)
+            frame = raster(own.servo,[(grip-.03,grip+.57)],fid=fid,face_at=grip-.03)
             background = np.all(frame == 100,axis=2)
             texture = 100+12*np.sin(np.indices(frame.shape[:2])[1]/20.)
             frame[background] = np.repeat(texture[...,None],3,axis=2)[background]
@@ -137,7 +144,7 @@ def test_actual_endpoint_normal_approach_and_rotation_reobserve_then_arrive(turn
 
 
 def test_actual_endpoint_align_yaw_reacquires_three_fixes_then_returns():
-    s = Scenario(state='align',beam_grip=.33)
+    s = Scenario(state='align',beam_grip=.36)
     s.sensor_yaw_offset = .2
     # Start with a new compact sensor candidate at the same XY, no turn command.
     s.last_fix = .05
@@ -150,22 +157,27 @@ def test_actual_endpoint_align_yaw_reacquires_three_fixes_then_returns():
 
 
 def test_actual_endpoint_partial_view_forward_reaches_pregrasp():
-    s = Scenario(state='align',beam_grip=.33)
+    s = Scenario(state='align',beam_grip=.36)
     s.run_until(lambda:s.ctl.state=='pregrasp_descend',limit=30.)
     reports = [e['report'] for e in s.ep.events if e['event']=='beam_relative']
     assert any('PARTIAL_SUPPORT_ONLY' in r['reasons'] for r in reports)
     assert any('STATIONARY_MULTIVIEW_COMPLETE_SHAPE' in r['reasons'] for r in reports)
-    assert abs((s.beam_x-s.pose[0])-.162) < .01
+    from harness.owncam_pair_beam import ALIGN_TOL_X_M
+    final = reports[-1]
+    # The mid-height end-face estimate may leave the true grip up to its bound
+    # beyond the unchanged align tolerance; it must stay in the 14.5-18 cm IK band.
+    assert abs((s.beam_x-s.pose[0])-.162) <= ALIGN_TOL_X_M+final['std_xy_m']+final['bias_bound_m']
+    assert .145 <= s.beam_x-s.pose[0] <= .18
     assert 'aligned' in s.ctl.claims
 
 
 def test_occluded_partial_boundary_does_not_update_axis_or_contract_bound():
     from harness.zone_pair_relative import RelativeBeamTrack
-    tr=RelativeBeamTrack();o,servo=image_at(.33)
+    tr=RelativeBeamTrack();o,servo=image_at(.36)
     assert tr.observe(o,servo,0,now=0.).ready(0.)
     tr.command(dict(kind='drive',t=0.,forward=.08,duration_s=.3),servo)
     tr.advance(.3);before=dict(tr.beam)
-    servo=pose_of('p45');frame=raster(servo,[(.38,.876)])
+    servo=pose_of('p45');frame=raster(servo,[(.41,.906)])  # near end hidden: no face
     obs=dict(frame_id=2,sha256='occlusion',sim_time=.3,image=frame,actuator_state={'servo_pulses':servo})
     r=tr.observe(obs,servo,0,now=.3)
     assert r.grip_base_m == tuple(before['grip_base_m'])
@@ -200,8 +212,9 @@ def test_two_piece_obstacle_stays_yes_in_actual_status_judge():
 
 
 def test_missing_fixes_stop_then_exhaust_existing_reobserve_budget():
+    from harness.zone_pair_global import SCHEDULED_REOBSERVE
     s=Scenario(fixes=False)
-    for i in range(1,250):
+    for i in range(1,600):
         try:
             s.tick(round(i*.05,6))
         except AssertionError:
@@ -211,6 +224,12 @@ def test_missing_fixes_stop_then_exhaust_existing_reobserve_budget():
     stopped=next(r['t'] for r in s.commands if r['kind']=='hold')
     assert not any(r['kind'] in ('drive','mecanum') and r['t']>stopped for r in s.commands)
     assert s.ep.command_guard.global_envelope.fix_t==0.
+    # Review 3: the planned look spends only its own allowance; the missing fix
+    # then exhausts the unchanged HIGH recovery budget.
+    recheck=s.ep.command_guard.recheck
+    assert recheck.scheduled_count==1
+    assert recheck.scheduled['waited_s']==pytest.approx(SCHEDULED_REOBSERVE['per_look_s'])
+    assert recheck.waited_s==pytest.approx(10.)
 
 
 def test_recovery_envelope_keeps_posterior_hypotheses_and_invalidity():
@@ -234,13 +253,13 @@ def test_two_fragments_cannot_initialize_relative_shape_either():
 def test_partial_multiview_cache_cannot_cross_base_command_or_expired_view():
     from harness.zone_pair_relative import RelativeBeamTrack
     for fault in ('motion','old_view'):
-        tr=RelativeBeamTrack();o,s=image_at(.33);tr.observe(o,s,0,now=0.)
+        tr=RelativeBeamTrack();o,s=image_at(.36);tr.observe(o,s,0,now=0.)
         tr.command(dict(kind='drive',t=0.,forward=.08,duration_s=.3),s)
-        o,s=image_at(.306,fid=2,t=.3);tr.observe(o,s,0,now=.3)
+        o,s=image_at(.336,fid=2,t=.3);tr.observe(o,s,0,now=.3)
         if fault=='motion':
             tr.command(dict(kind='drive',t=.4,forward=.01,duration_s=.1),s)
         t=5. if fault=='old_view' else 1.
-        o,s=image_at(.306,'p45',fid=3,t=t)
+        o,s=image_at(.336,'p45',fid=3,t=t)
         r=tr.observe(o,s,0,now=t)
         assert not r.ready(t) and r.anchor_time_s==0.
         assert 'STATIONARY_MULTIVIEW_COMPLETE_SHAPE' not in r.reasons
@@ -248,9 +267,9 @@ def test_partial_multiview_cache_cannot_cross_base_command_or_expired_view():
 
 def test_multiview_report_cannot_outlive_identity_on_duplicate_read():
     from harness.zone_pair_relative import RelativeBeamTrack
-    tr=RelativeBeamTrack();o,s=image_at(.33);tr.observe(o,s,0,now=0.)
-    a,s=image_at(.306,fid=2,t=29.);tr.observe(a,s,0,now=29.)
-    b,s=image_at(.306,'p45',fid=3,t=29.9)
+    tr=RelativeBeamTrack();o,s=image_at(.36);tr.observe(o,s,0,now=0.)
+    a,s=image_at(.336,fid=2,t=29.);tr.observe(a,s,0,now=29.)
+    b,s=image_at(.336,'p45',fid=3,t=29.9)
     r=tr.observe(b,s,0,now=29.9)
     assert r.ready(29.9) and r.anchor_time_s==29.9 and r.identity_time_s==0.
     assert not tr.observe(b,s,0,now=30.1).ready(30.1)

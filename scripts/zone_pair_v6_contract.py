@@ -18,8 +18,20 @@ def contract():
              'harness/zone_study_integration.py','harness/zone_pair_v6_policy.py','harness/zone_pair_relative.py',
              'harness/zone_pair_global.py','harness/owncam_recovery_v6.py',
              'harness/owncam_observability_v6.py','scripts/zone_pair_v6_contract.py')
+    from harness.zone_pair_global import SCHEDULED_REOBSERVE
+    from harness.zone_own_sweep import SWEEP_REOBSERVE_S
     return {'execution_bundle_id':EXECUTION_BUNDLE_ID,'policy_flags':{
         k:vars(v) for k,v in POLICIES.items()},
+        # Review 3: flag semantics are part of the registration. beam_relative
+        # (A) now also removes PF convergence from the align stop conditions.
+        'flag_definitions':{
+            'posterior_relook':'B: posterior-preserving relook, observation quality receipts, blocked-pan cancel',
+            'beam_relative':('A: own-view beam-relative align/close-in and pre-close shape report; separate '
+                             'global safety envelope with planned safety looks; during align/pre-close the PF is '
+                             'a reference only (no HIGH/convergence stop) while an object-anchored bound '
+                             '(entry fix + ready relative view of the static beam) certifies wall/arm clearance')},
+        'reobserve_budgets':{'high_recovery_s':SWEEP_REOBSERVE_S,
+                             'scheduled_safety_look':dict(SCHEDULED_REOBSERVE)},
         'qualification':'offline development; uncalibrated bounds; no physical inheritance',
         'source_sha256':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths}}
 

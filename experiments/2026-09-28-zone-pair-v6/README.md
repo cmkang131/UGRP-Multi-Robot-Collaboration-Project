@@ -82,9 +82,10 @@ receipt는 아직 band를 포함한다.** 전체 운반이 markerless라는 주�
   범위 밖 fix는 정지 상태의 서로 다른 informative fix 3회가 0.3초 이상에 걸쳐 3 cm/3° 이내로
   일치해야 수용한다. 정보 소실·명령·불일치·1초 초과 간격은 이 검증을 다시 시작한다.
   미검증 재획득은 `fix_t`와 anchor를 갱신하거나 전역 bound를 줄이지 않는다.
-- 상대 형상의 전체 길이 관측은 초기 끝 식별에 계속 필요하다. 이후 가까운 끝이 완전히 보이고
-  양쪽 edge가 충분하며 먼 쪽만 FOV 경계에 닿은 부분뷰는 같은 빔의 자세를 갱신할 수 있다.
-  33 cm→30.6 cm 반례는 기존 `search→p45` 경로로 회복한다. 5 cm/3° 임계값과 고정 카메라는 유지한다.
+- 상대 형상의 전체 길이 관측은 초기 끝 식별에 계속 필요하다. (검토 3 정정) 검토 1의 **단일 부분뷰 갱신은
+  검토 2에서 삭제했다.** 가림 경계를 끝으로 오인했기 때문이다. 현재는 base 명령 없이 4초 안에 찍은 서로 다른
+  고정 자세의 부분뷰를 합쳐 전체 형상 조건을 다시 만족할 때만 갱신한다(`STATIONARY_MULTIVIEW_COMPLETE_SHAPE`).
+  33 cm→30.6 cm 반례는 이 다중 뷰로 회복한다. 5 cm/3° 임계값과 고정 카메라는 유지한다.
   부분뷰는 원래 전체 형상 식별의 30초 수명을 연장하지 않는다. 단순 지지 픽셀은 bound를 줄이지 않는다.
 
 ### tags_temporary 전용 의존성
@@ -92,7 +93,7 @@ receipt는 아직 band를 포함한다.** 전체 운반이 markerless라는 주�
 | 위치 | 잔존 의존성 및 이번 처리 |
 |---|---|
 | `harness/owncam_recovery_v6.py:RecoveryLocalizer.update` | tag ID→정적 tag 지도·PnP·tag likelihood·곡률·proposal을 쓰는 실제 복구 provider다. 형상 상대 보고로 전역 위치를 대체할 수 없다. provider-neutral `begin_observation` 계약과 가짜 markerless provider 회귀만 있으며 실제 markerless 전역 provider는 별도 #216 트랙이다. |
-| `harness/zone_pair_obstruction.py:target_component` | 기존 band 기반 목표 association을 보존한다. `a+b`에는 **전체 길이·두 끝·양쪽 edge**의 형상 대체 경로를 추가했다. 목표 일치·색·전체 성분 지지 검사는 유지하며 부분뷰만으로 장애물을 제외하지 않는다. 전체 형상이 안 보이는 경우의 band 대체는 여전히 tags_temporary 전용이다. |
+| `harness/zone_pair_obstruction.py:target_component` | 기존 band 기반 목표 association을 보존한다. `a+b`에는 **전체 길이·두 끝·양쪽 edge**의 형상 대체 경로를 추가했다. 목표 일치·색·전체 성분 지지 검사는 유지하며 부분뷰만으로 장애물을 제외하지 않는다. 전체 형상이 안 보이는 경우의 band 대체는 여전히 tags_temporary 전용이다. (검토 3) 형상 대체는 bound ≤ 5 cm가 필요해 **grip 약 .43 m 이상(검토 3 이전 모델), 현재 모델에서도 약 .47 m 이상에서는 band 대체에 의존한다.** |
 | `scripts/run_m2_pair.py:grip_view_m2` | post-close 검은 band 비율 및 빔 색을 요구한다. frozen M2와 v5h/b-only 비교 기준은 수정하지 않았다. 닫힌 집게의 부분·가림 영상에서 resting-plane 형상으로 실제 grip/hold를 증명할 수 없으므로 형상으로 성공 receipt를 대체하지 않았다. |
 | `harness/zone_pair_grasp.py:stationary_beam_estimate`, `harness/zone_pair_beam_track.py:standoff_estimate`, `harness/owncam_pair_beam_v2.py` 및 기존 held signature/hold 경로 | v5h/b-only의 band 기반 standoff·정렬·파지/유지 검사는 비교 기준에 남는다. `a+b`의 상대 align/close 준비는 형상 경로이나 post-close co-motion/hold는 기존 appearance receipt를 포함한다. |
 
@@ -106,3 +107,14 @@ receipt는 아직 band를 포함한다.** 전체 운반이 markerless라는 주�
 382 subtests passed**. 요청한 모든 glob을 수집했다. 물리 step·실제 모델·네트워크 호출은 0,
 `.pytest_tmp` 삭제·현재 등록 소스 65개 일치·6회 DRAFT 실행 차단·기반 HEAD 유지 확인.
 [최종 로그](review1-fixes/pytest.log) · [무결성 검증](review1-fixes/validation.json).
+
+## PR #246 검토 3 후속 수정 (2026-09-28)
+
+기준 HEAD `a5b486eb`. 상세는 [검토 3 수정 기록](review3-fixes/README.md), 문헌 요약은 [lit_review.md](lit_review.md).
+물리 step·모델 호출은 없다.
+
+- 전역 envelope의 이동 거리 이중 합산을 없앴다. 예정 안전 재관측은 HIGH 복구 예산과 분리해 회당 6초·총 240초·80회로 `v6_contract`에 등록했다.
+- a+b 정렬은 원거리에서 전진 전용 close-in을 한다. view 시도 기록은 다중 뷰 창 만료와 relook 뒤에 초기화한다.
+- 형상 fit은 연관 성분만 쓴다. 가까운 끝면을 중간 높이 가설로 모델링했다. 실제 렌더 7,537장 표본에서 4,465장이 fit했고 GT 평가 오차는 모두 보고 bound 안이었다.
+- 문헌 레시피에 따라 a+b 정렬 중에는 PF HIGH를 중단 조건에서 뺐다. 정적 빔 기준 bound로 벽·팔 여유는 계속 검사한다. 이 정의를 `v6_contract.flag_definitions`에 등록했다.
+- **v5h 조건은 과거 frozen v5h와 동일하지 않다.** 공용 경로 변경 2건(`zone_pair_executor.py`의 차단 명령 처리, `zone_pair_obstruction.py`의 성분 마스킹)이 v5h와 b-only에도 적용된다. 세 조건 사이의 한 플래그 공정성은 유지된다.

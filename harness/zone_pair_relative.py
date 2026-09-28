@@ -9,7 +9,7 @@ the complete catalogue shape. Loaded images never use this plane.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 import math
 import cv2
 import numpy as np
@@ -20,6 +20,8 @@ from harness.owncam_view import base_rays
 from harness.zone_pair_beam_track import RestingBeamTrack, MAX_AGE_S
 
 PROFILE = 'beam_relative_shape_v6'
+MULTIVIEW_KEEP_S = 4.       # stationary complementary views retained for fusion
+CLOSE_IN_MAX_BOUND_M = .10  # identified shape whose range-driven bound exceeds the 5 cm gate
 
 
 @dataclass(frozen=True)
@@ -58,6 +60,34 @@ class BeamRelativeReport:
                 and 0 <= self.std_xy_m + self.bias_bound_m <= .05
                 and 0 <= self.std_yaw_rad <= math.radians(3))
 
+    def closing_ready(self, now):
+        """Fresh complete shape; every ready() check holds except the 5 cm bound.
+
+        Monocular depth bias grows with range, so an identified far beam is
+        approached (never aligned or closed on) until the unchanged gate passes.
+        """
+        if self.grip_base_m is None or self.ready(now) or self.anchor_time_s != self.captured_at_s:
+            return False
+        if not all(v is not None and math.isfinite(v) for v in (self.std_xy_m, self.bias_bound_m)):
+            return False
+        probe = replace(self, bias_bound_m=max(0., .05-self.std_xy_m))
+        return probe.ready(now) and self.std_xy_m+self.bias_bound_m <= CLOSE_IN_MAX_BOUND_M
+
+    def closing_command(self, forward_range_m=None):
+        """Forward-only step; worst-case travel keeps the true grip beyond standoff.
+
+        forward_range_m is a reserved slot for the own ultrasonic range (separate
+        PR claude/ultrasonic-range). It is ignored: no decision depends on it yet.
+        """
+        from harness.owncam_pair_beam import GRASP_RADIUS_M, MIN_COMMAND
+        from harness.zone_own_guards import BACKOFF_GAIN_MAX
+        room = self.grip_base_m[0]-(self.std_xy_m+self.bias_bound_m)-GRASP_RADIUS_M
+        duration = .3
+        speed = min(.08, room/BACKOFF_GAIN_MAX/duration)
+        if speed < MIN_COMMAND:
+            return None
+        return {'kind': 'mecanum', 'forward': float(speed), 'left': 0., 'turn': 0., 'duration': duration}
+
     def beam(self):
         if self.grip_base_m is None:
             return None
@@ -83,27 +113,109 @@ def shape_points(image, servo):
     return pts[keep], xs[hit][keep].astype(int), ys[hit][keep].astype(int), depth
 
 
-def shape_fit(image, servo, prior=None):
-    pts, x, y, depth = shape_points(image, servo)
-    if len(pts) >= beam_v1.MIN_POINTS:
-        # Use foreground connectivity, not colour alone: an intact dark stripe
-        # may belong to the same silhouette, while a floor gap separates two
-        # objects. If the stripe blends into the floor, identity is ambiguous.
-        from harness import zone_own_perception as perception
-        frame = beam_v1.decode(image)
-        origin, axes, k, d, size = perception._optics(frame,servo)
-        model, rows = perception._floor_row_model(frame,origin,axes,k,d,size)
-        foreground = ((np.max(np.abs(frame.astype(float)-model),axis=2) > perception.BLOCK_LIKE_DIST)
-                      & rows[:,None])
-        _, labels = cv2.connectedComponents(foreground.astype(np.uint8))
-        ids, counts = np.unique(labels[y,x],return_counts=True)
-        if sum((ids != 0) & (counts >= beam_v1.MIN_POINTS)) > 1:
+def camera_xy(servo):
+    from harness.visual_arm import camera_extrinsics
+    return np.asarray(camera_extrinsics(servo)[0], float)[:2]
+
+
+def _prior_inside(pts, prior):
+    u = np.array([math.cos(prior['axis_heading_rad']), math.sin(prior['axis_heading_rad'])])
+    delta = pts-np.asarray(prior['grip_base_m'])
+    a, b = delta@u, delta@np.array([-u[1],u[0]])
+    pad = 2*(prior['std_xy_m']+prior['bias_bound_m']+.6*prior['std_yaw_rad'])
+    return (a >= -.03-pad) & (a <= .57+pad) & (abs(b) <= .02+pad)
+
+
+def associate_component(pts, depth, comp, labels, big, prior=None):
+    """Choose the beam's own foreground component; separate far/other objects.
+
+    Review 3: a peer robot's yellow parts are a second colour component in real
+    renders. It may be ignored only when (1) the prior track (or, without one,
+    size) selects the beam component, (2) floor pixels separate it in the image,
+    so it cannot be hiding any silhouette boundary, and (3) it cannot belong to
+    one catalogue beam with the chosen component (joint axial extent > .66 m
+    plus the near-face ambiguity, or laterally outside the beam corridor).
+    Otherwise it is an occluder candidate and identity stays unknown.
+    """
+    ids = [i for i, _ in big]
+    if prior is not None:
+        inside = {i: float(_prior_inside(pts[comp == i], prior).mean()) for i in ids}
+        chosen = [i for i in ids if inside[i] >= .95]
+        if len(chosen) != 1:
+            return None, ('DISCONNECTED_SHAPE_OR_OCCLUSION', 'PRIOR_ASSOCIATION_AMBIGUOUS')
+        keep = chosen[0]
+    else:
+        keep = max(big, key=lambda row: row[1])[0]
+    main = pts[comp == keep]
+    centre = np.median(main, axis=0)
+    _, vectors = np.linalg.eigh(np.cov((main-centre).T))
+    u = vectors[:,-1]
+    n = np.array([-u[1],u[0]])
+    lo, hi = np.percentile((main-centre)@u, [1,99])
+    slack = 2*float(np.max(depth[comp == keep]))
+    near = cv2.dilate((labels == keep).astype(np.uint8), np.ones((7,7),np.uint8)) > 0
+    for other in ids:
+        if other == keep:
+            continue
+        o = pts[comp == other]
+        if np.any(near[labels == other]):
+            return None, ('DISCONNECTED_SHAPE_OR_OCCLUSION', 'ADJACENT_OCCLUDER_CANDIDATE')
+        a, b = (o-centre)@u, (o-centre)@n
+        joint = max(hi, float(np.max(a)))-min(lo, float(np.min(a)))
+        lateral = float(np.min(np.abs(b-np.median((main-centre)@n))))
+        if joint <= .66+slack and lateral <= .10:
             return None, ('DISCONNECTED_SHAPE_OR_OCCLUSION',)
+    return keep, ('SEPARATE_COMPONENT_EXCLUDED',)
+
+
+def component_points(image, servo, prior=None):
+    """Beam-colour points of the associated foreground component only."""
+    pts, x, y, depth = shape_points(image, servo)
+    if len(pts) < beam_v1.MIN_POINTS:
+        return (pts, x, y, depth), ()
+    # Use foreground connectivity, not colour alone: an intact dark stripe
+    # may belong to the same silhouette, while a floor gap separates two
+    # objects. If the stripe blends into the floor, identity is ambiguous.
+    from harness import zone_own_perception as perception
+    frame = beam_v1.decode(image)
+    origin, axes, k, d, size = perception._optics(frame,servo)
+    model, rows = perception._floor_row_model(frame,origin,axes,k,d,size)
+    foreground = ((np.max(np.abs(frame.astype(float)-model),axis=2) > perception.BLOCK_LIKE_DIST)
+                  & rows[:,None])
+    _, labels = cv2.connectedComponents(foreground.astype(np.uint8))
+    comp = labels[y,x]
+    ids, counts = np.unique(comp,return_counts=True)
+    big = [(int(i),int(c)) for i,c in zip(ids,counts) if i != 0 and c >= beam_v1.MIN_POINTS]
+    if len(big) <= 1:
+        return (pts, x, y, depth), ()
+    keep, why = associate_component(pts, depth, comp, labels, big, prior)
+    if keep is None:
+        return None, why
+    sel = (comp == keep) | (comp == 0)
+    return (pts[sel], x[sel], y[sel], depth[sel]), why
+
+
+def shape_fit(image, servo, prior=None):
+    got, extra = component_points(image, servo, prior)
+    if got is None:
+        return None, extra
+    pts, x, y, depth = got
     inner = beam_v1._inner_valid()[y,x]
-    return fit_shape_points(pts, depth, inner)
+    fitted, reasons = fit_shape_points(pts, depth, inner, camera_xy(servo))
+    return fitted, (*reasons, *extra)
 
 
-def fit_shape_points(pts, depth, inner):
+def fit_shape_points(pts, depth, inner, origin_xy=None):
+    """Top-plane silhouette fit with the near end-face ambiguity.
+
+    The near silhouette boundary is the end face somewhere between its top
+    edge (z=.032) and floor edge (z=0). Its projection onto the top plane lies
+    up to 2*depth (depth = 16 mm half height through that ray) toward the
+    camera. The near end is placed at the mid-height hypothesis with the
+    unchanged depth bias bound, and the catalogue length gate is applied to
+    the interval of lengths consistent with that face. The far end face is not
+    visible from the near side, so the far boundary is the top edge.
+    """
     if len(pts) < beam_v1.MIN_POINTS:
         return None, ('BEAM_NOT_VISIBLE',)
     centre = np.median(pts, axis=0)
@@ -124,7 +236,15 @@ def fit_shape_points(pts, depth, inner):
         # Colour breaks/occlusions are not new ends. The historical label
         # BAND_CLIPPED is handled as the same unobserved-axis case downstream.
         return None, ('END_CLIPPED', 'AXIAL_POSITION_UNKNOWN', 'END_ID_AMBIGUOUS')
-    if not (.54 <= hi-lo <= .66 and .025 <= width <= .070):
+    near_depth = float(np.percentile(depth[near_boundary],95))
+    near_top = lo*u
+    if origin_xy is None:
+        ray = u
+    else:
+        ray = near_top-np.asarray(origin_xy,float)[:2]
+        ray = ray/max(float(np.linalg.norm(ray)),1e-9)
+    face = 2*near_depth*max(0.,float(ray@u))  # axial extent of the visible end face
+    if not (hi-lo-face <= .66 and hi-lo >= .54 and .025 <= width <= .070):
         return None, ('SHAPE_AMBIGUOUS', 'MONOCULAR_DEPTH_AMBIGUOUS')
     strips = []
     for start in np.arange(lo, hi, .01):
@@ -137,14 +257,15 @@ def fit_shape_points(pts, depth, inner):
     if len(strips) < 4 or np.ptp(np.asarray(strips)[:,0]) < .06:
         return None, ('PAIRED_EDGES_UNOBSERVABLE',)
     along, across = np.asarray(strips).T
-    if len(along)*.01 < .55*(hi-lo) or np.max(np.diff(along))>.08:
+    if len(along)*.01 < .55*(hi-lo-face) or np.max(np.diff(along))>.08:
         return None, ('DISCONNECTED_SHAPE_OR_OCCLUSION',)
     slope, intercept = np.polyfit(along, across, 1)
     residual = float(np.max(np.abs(across-slope*along-intercept)))
     heading = math.atan2(u[1],u[0])+math.atan(slope)
-    near = lo*u+(slope*lo+intercept)*n
+    # Mid-height end-face hypothesis; the +/- near_depth bias covers top..floor.
+    near = lo*u+(slope*lo+intercept)*n+near_depth*ray
     far = hi*u+(slope*hi+intercept)*n
-    bias = float(np.percentile(depth[a <= lo+.01],95))+.005  # bound at the observed grip end
+    bias = near_depth+.005  # bound at the observed grip end
     if abs(np.linalg.norm(far)-np.linalg.norm(near)) <= 2*(bias+.015):
         return None, ('END_ID_AMBIGUOUS',)
     syaw = max(math.radians(1), math.atan2(2*residual+.001,float(np.ptp(along))))
@@ -153,7 +274,7 @@ def fit_shape_points(pts, depth, inner):
     return {'grip_base_m': grip.tolist(), 'axis_heading_rad': heading,
             'std_xy_m': max(.015,residual), 'std_yaw_rad': syaw,
             'bias_bound_m': bias, 'visible_length_m': float(hi-lo),
-            'edge_residual_m': residual}, reasons
+            'near_face_extent_m': face, 'edge_residual_m': residual}, reasons
 
 
 class RelativeBeamTrack(RestingBeamTrack):
@@ -203,8 +324,8 @@ class RelativeBeamTrack(RestingBeamTrack):
             return unknown('OUT_OF_ORDER')
         self.last_frame, self.last_capture = key, obs['sim_time']
         self.report_command_epoch = self.command_epoch
-        fitted, reasons = shape_fit(obs['image'],servo)
         old = self.beam if self.segment == segment else None
+        fitted, reasons = shape_fit(obs['image'],servo,old)
         if old is None:
             self.views.clear()
         identity_t = None if old is None else old.get('identity_time_s',old['anchor_time_s'])
@@ -222,7 +343,12 @@ class RelativeBeamTrack(RestingBeamTrack):
             self.views.clear()
         elif (old is not None and any(r in reasons for r in ('END_CLIPPED','BAND_CLIPPED'))
               and 0 <= now-identity_t <= MAX_AGE_S):
-            pts,x,y,depth = shape_points(obs['image'],servo)
+            got, why = component_points(obs['image'],servo,old)
+            if got is None:
+                # An adjacent occluder candidate or ambiguous association:
+                # no support, no update; the propagated bound keeps growing.
+                return unknown(*reasons,*why)
+            pts,x,y,depth = got
             u = np.array([math.cos(old['axis_heading_rad']),math.sin(old['axis_heading_rad'])])
             delta = pts-np.asarray(old['grip_base_m'])
             a, b = delta@u,delta@np.array([-u[1],u[0]])
@@ -237,8 +363,8 @@ class RelativeBeamTrack(RestingBeamTrack):
             # Retain distinct camera views only while base motion has ended.
             if x is not None and now >= self.until:
                 inner = beam_v1._inner_valid()[y,x]
-                self.views[pwm] = (now,pts,depth,inner,obs['sha256'])
-                self.views = {k:v for k,v in self.views.items() if now-v[0] <= 4.}
+                self.views[pwm] = (now,pts,depth,inner,obs['sha256'],camera_xy(servo))
+                self.views = {k:v for k,v in self.views.items() if now-v[0] <= MULTIVIEW_KEEP_S}
                 if len(self.views) >= 2:
                     # Use only interior pixels; a clipped edge cannot vote as
                     # an end. Both extremes must be supplied by complete views
@@ -249,12 +375,14 @@ class RelativeBeamTrack(RestingBeamTrack):
                     # Uniform metric support prevents the near view's pixel
                     # density from hiding the far end in pooled percentiles.
                     _, indices = np.unique(np.floor(points/.003),axis=0,return_index=True)
-                    merged, why = fit_shape_points(points[indices],depths[indices],np.ones(len(indices),bool))
+                    origin = np.mean([v[5] for v in clouds],axis=0)
+                    merged, why = fit_shape_points(points[indices],depths[indices],np.ones(len(indices),bool),origin)
                     if merged is not None:
                         # The full-shape gate already reserves projection bias;
                         # missing catalogue extent is additional axial ambiguity.
-                        direction = np.array([math.cos(merged['axis_heading_rad']),math.sin(merged['axis_heading_rad'])])
-                        merged['bias_bound_m'] += max(0., .60-float(np.ptp(points@direction)))
+                        # Same robust 1-99 % extent as the fit (review 3), not ptp:
+                        # a complete bar on the uniform 3 mm grid spans .98 of .60 m.
+                        merged['bias_bound_m'] += max(0., .98*.60-merged['visible_length_m'])
                         merged['bias_bound_m'] += .0005*(now-min(v[0] for v in clouds))
                         angle = abs((merged['axis_heading_rad']-old['axis_heading_rad']+math.pi)%(2*math.pi)-math.pi)
                         associated = (math.dist(merged['grip_base_m'],old['grip_base_m']) <= 2*(

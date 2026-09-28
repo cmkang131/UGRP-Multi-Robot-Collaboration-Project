@@ -71,22 +71,43 @@ class PairGraspRelook(PairAlignRelook):
         self.aligned_frame = key
         if not relative.ready(now):
             self.aligned_streak = 0
+            if relative.closing_ready(now):
+                # Review 3: identified complete shape, bound too large only
+                # from range. Approach under the global envelope, then re-fit.
+                command = relative.closing_command()
+                if command is not None:
+                    if not self.global_certificate(now,relative.beam())['clear']:
+                        return self._begin_align_relook(now,'global_safety')
+                    self.relative_views_tried = {}
+                    self.log(self.rid,'relative_close_in',now,bound_m=relative.std_xy_m+relative.bias_bound_m,
+                             grip_base_m=list(relative.grip_base_m),command=command)
+                    return self.drive(command,now)
             # Missing longitudinal/depth/identity information is not zero
             # alignment error. A new camera branch will require new images.
+            # A view counts as tried only while its image can still be fused
+            # (MULTIVIEW_KEEP_S); an interrupted/expired window is retried.
+            from harness.zone_pair_relative import MULTIVIEW_KEEP_S
             order = postures.order()
-            tried = getattr(self,'relative_views_tried',set())
-            tried.add(self.look_name)
+            tried = getattr(self,'relative_views_tried',{})
+            if not isinstance(tried, dict):
+                tried = {}
+            tried = {k:t for k,t in tried.items() if now-t <= MULTIVIEW_KEEP_S}
+            tried[self.look_name] = now
             self.relative_views_tried = tried
             choices = [name for name in order if name not in tried]
             if 'END_CLIPPED' in relative.reasons and choices:
                 return self._set_look(choices[0],now,reason='relative_end_clipped')
+            if 'DISCONNECTED_SHAPE_OR_OCCLUSION' in relative.reasons and choices:
+                # Review 3: an adjacent/ambiguous second component is an
+                # occluder candidate; another fixed view may separate it.
+                return self._set_look(choices[0],now,reason='relative_occluder_candidate')
             return self.fail('BEAM_RELATIVE_UNCERTAIN',now)
         if not self.global_certificate(now,relative.beam())['clear']:
             return self._begin_align_relook(now,'global_safety')
         command = ob.align_command(relative.beam())
         if command is not None:
             self.aligned_streak = 0
-            self.relative_views_tried = set()
+            self.relative_views_tried = {}
             return self.drive(command,now)
         self.aligned_streak += 1
         self.grip_base = list(relative.grip_base_m)

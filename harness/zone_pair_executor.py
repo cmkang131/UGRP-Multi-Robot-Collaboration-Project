@@ -136,6 +136,12 @@ def m2_controller(execution, plan, params):
         def global_certificate(self, now, beam=None):
             return execution.command_guard.global_certificate(now, beam)
 
+        def begin_scheduled_reobserve(self, now):
+            return execution.command_guard.begin_scheduled_reobserve(now)
+
+        def reset_object_anchor(self):
+            execution.command_guard.object_anchor = None
+
         def align_stop_ready(self, now):
             return execution.command_guard.align_stop_ready(now, self.align_look_started_at)
 

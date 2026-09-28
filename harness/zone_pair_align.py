@@ -220,6 +220,10 @@ class PairAlignRelook:
             self._log_align_fix_rejection(now, checks)
             return self.fail('ALIGN_RELOOK_FIX_EXPIRED', now)
         self.align_look_total_s += now - self.align_look_started_at
+        self.relative_views_tried = {}  # the relook interrupted any multiview window
+        reset = getattr(self, 'reset_object_anchor', None)
+        if reset is not None:
+            reset()  # re-anchor from the refreshed global fix and the next ready view
         self.next_look = now
         super().set('align', now, resumed=True)
         # Keep the original align deadline; looks cannot refill it.
@@ -234,6 +238,9 @@ class PairAlignRelook:
                 safety = self.global_certificate(now)
                 reason = ('global_safety' if not safety['clear'] else
                           'global_safety_reserve' if safety.get('relook_reserve_low') else None)
+                begin = getattr(self, 'begin_scheduled_reobserve', None)
+                if reason == 'global_safety_reserve' and begin is not None and not begin(now):
+                    return self.fail('PAIR_SCHEDULED_REOBSERVE_LIMIT', now)
             if reason:
                 return self._begin_align_relook(now, reason)
         if self.state not in RELOOK_STATES:

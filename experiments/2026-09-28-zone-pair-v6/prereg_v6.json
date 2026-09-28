@@ -226,6 +226,21 @@
         "beam_relative": true
       }
     },
+    "flag_definitions": {
+      "posterior_relook": "B: posterior-preserving relook, observation quality receipts, blocked-pan cancel",
+      "beam_relative": "A: own-view beam-relative align/close-in and pre-close shape report; separate global safety envelope with planned safety looks; during align/pre-close the PF is a reference only (no HIGH/convergence stop) while an object-anchored bound (entry fix + ready relative view of the static beam) certifies wall/arm clearance"
+    },
+    "reobserve_budgets": {
+      "high_recovery_s": 10.0,
+      "scheduled_safety_look": {
+        "per_look_s": 6.0,
+        "total_s": 240.0,
+        "max_count": 80,
+        "reserve_gap_m": 0.04,
+        "reducible_sigma_m": 0.005,
+        "reducible_sigma_rad": 0.005
+      }
+    },
     "qualification": "offline development; uncalibrated bounds; no physical inheritance",
     "source_sha256": {
       "harness/owncam_memory.py": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
@@ -260,11 +275,11 @@
       "harness/zone_own_status.py": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
       "harness/zone_own_perception.py": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
       "harness/zone_pair_obstruction.py": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
-      "harness/zone_pair_grasp.py": "58c72b08c28fb66b27aff25fb179af9bcd3cba53cc76bfb7e5980d2706579830",
-      "harness/zone_pair_executor.py": "bca43cbf23cce9fd0370768eda1ff993789300168a68b15ae20e7c40ad3855ea",
+      "harness/zone_pair_grasp.py": "ac013b6e15a4256866d74c074331b176f30a18e80609d6d99e76c103b96be339",
+      "harness/zone_pair_executor.py": "4f96ef665a04bf7867554b9c8ea119183e39d5eac03e4c77fb47b08510b079cb",
       "harness/zone_pair_beam_track.py": "c36e9ea7179307f45787d89ddf9ba1ac07598dd309137933780834c0ec83ffc0",
-      "harness/zone_pair_align.py": "7476e41f72416ad25c2f937a15a3a9b90982b09091cba486c6c1abc53f01e579",
-      "harness/zone_pair_guards.py": "7b49091d24c6d837f3409fa7a6023d27af8b31aa9c7f53067b3e91fd009550eb",
+      "harness/zone_pair_align.py": "0e8dbe8986155e4419640924f87de4cb8e837ee8bd155e4dafe64537bc834550",
+      "harness/zone_pair_guards.py": "dac779a805074df395b2eae03f5060cbaf9fbba0e737a2075279b0f507b47c6f",
       "harness/zone_pair_geometry.py": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
       "harness/zone_pair_status.py": "bdacc2369212bdd8810d2f91498e971af572e1ef037a34baf76828a2702b1926",
       "harness/zone_pair_vision.py": "8552c044d498a6c3e02efdc7f53ca72c9b11c4b17b87abfa159e780673d8c7d4",
@@ -288,11 +303,11 @@
       "scripts/zone_pair_dev_contract.py": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e",
       "harness/zone_study_integration.py": "1ba0ced7d9e06c5a98bd2cccd3459a9fc0ccaa4865d6dfc19ee0f83285e62789",
       "harness/zone_pair_v6_policy.py": "3b7da7ef0bb89edafd7e9dcbe08c7b6d938aa83fdfb5d010515472a37ee20d63",
-      "harness/zone_pair_relative.py": "6b9cbc22b0b09240c4385102b308995a0be56362210288281e6bee6e7d2d27da",
-      "harness/zone_pair_global.py": "4e8ad38576d6d07cb57ca27a760b0805cee9796ed0da3af8b11a071ee8c6cbc2",
+      "harness/zone_pair_relative.py": "d457d985f0947a7662ec4586a319a8f33d338d53ea96319e5594781658bf1d20",
+      "harness/zone_pair_global.py": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
       "harness/owncam_recovery_v6.py": "74d90f36dd3f170091ed7c3e8b73432d81cb9ee0ca36d8472b063c9af92b5b46",
       "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
-      "scripts/zone_pair_v6_contract.py": "7c944a40a0c4b551fc30033ff813491dc01ddf3028308648e651ac2ac89459d3"
+      "scripts/zone_pair_v6_contract.py": "e64b9600a1a595de7bfa91337f5785b1f8b2fdc3be3ee0f9870ffe13d4e7b82e"
     }
   },
   "planned_run_count": 6,
@@ -504,5 +519,6 @@
   "baseline_registration": {
     "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5h.json",
     "sha256": "7b9c13b0ed829b7cb9b22cf58b47fd1862b247fe7bc8d0a4a4704686ca6994e9"
-  }
+  },
+  "registration_sha256": "0fb27e9a70e76695370845377967542ae72c3d250740d08d36f34e8e893a0a34"
 }

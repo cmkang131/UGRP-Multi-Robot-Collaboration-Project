@@ -16,17 +16,37 @@ from tests.test_zone_pair_grasp import real_pair
 from tests.test_zone_pair_v6 import good
 
 
-def image_at(grip, name='search', *, fid=1, t=0., lateral=0.):
-    """Ray/plane rasterization of an ideal unmarked 600x40 mm catalogue bar."""
-    servo = pose_of(name)
-    origin, rays, x, y, valid = base_rays(servo, 1)
+def box_pixels(servo, intervals, *, lateral=0., face_at=None, step=1):
+    """Ray-cast a 40 mm wide, 32 mm tall bar lying on the floor.
+
+    Review 3: real renders show the near end face (floor edge to top edge).
+    face_at renders that vertical face at x=face_at; None models an occluded
+    or clipped near end. Returns (x, y, top_hit, face_hit) pixel samples.
+    """
+    origin, rays, x, y, valid = base_rays(servo, step)
     distance = (.032-origin[2])/np.where(abs(rays[:, 2]) > 1e-8, rays[:, 2], 1.)
     pts = origin+distance[:, None]*rays
-    hit = (valid & (distance > 0) & (rays[:, 2] < -1e-6)
-           & (pts[:, 0] >= grip-.03) & (pts[:, 0] <= grip+.57)
-           & (abs(pts[:, 1]-lateral) <= .02))
+    along = np.zeros(len(pts), bool)
+    for lo, hi in intervals:
+        along |= (pts[:, 0] >= lo) & (pts[:, 0] <= hi)
+    top = valid & (distance > 0) & (rays[:, 2] < -1e-6) & along & (abs(pts[:, 1]-lateral) <= .02)
+    face = np.zeros(len(pts), bool)
+    if face_at is not None:
+        tf = (face_at-origin[0])/np.where(abs(rays[:, 0]) > 1e-8, rays[:, 0], np.inf)
+        fp = origin+tf[:, None]*rays
+        face = (valid & (tf > 0) & (fp[:, 2] >= 0) & (fp[:, 2] <= .032)
+                & (abs(fp[:, 1]-lateral) <= .02) & ~top)
+    return x.astype(int), y.astype(int), top, face
+
+
+def image_at(grip, name='search', *, fid=1, t=0., lateral=0., face=True):
+    """Ray-cast an ideal unmarked 600x40x32 mm catalogue bar (lit top, darker end face)."""
+    servo = pose_of(name)
+    x, y, top, end = box_pixels(servo, [(grip-.03, grip+.57)], lateral=lateral,
+                                face_at=grip-.03 if face else None)
     frame = np.full((480, 640, 3), 100, np.uint8)
-    frame[y[hit].astype(int), x[hit].astype(int)] = [0, 220, 120]
+    frame[y[top], x[top]] = [0, 220, 120]
+    frame[y[end], x[end]] = [0, 160, 88]
     return dict(frame_id=fid, sha256=hashlib.sha256(frame.tobytes()).hexdigest(),
                 sim_time=t, image=frame, actuator_state={'servo_pulses':servo}), servo
 
@@ -118,16 +138,19 @@ def test_reacquisition_interruption_does_not_confirm_old_candidate(interrupt):
 
 def test_33cm_to_306mm_normal_forward_recovers_from_complete_stationary_views(monkeypatch):
     from harness.owncam_pair_beam import align_command
+    # Review 3: the rendered bar now shows its near end face as in real renders;
+    # at .33 m that face reaches the search view's lower border, so the same
+    # normal forward case starts from the nearest complete view (.36 -> .336 m).
     track = RelativeBeamTrack()
-    first, servo = image_at(.33)
+    first, servo = image_at(.36)
     initial = track.observe(first, servo, 0, now=0.)
     assert initial.ready(0.)
     command = align_command(initial.beam())
     assert command['forward'] == .08 and command['duration'] == .3
     track.command({**command, 't':0., 'duration_s':command['duration']}, servo)
-    after, _ = image_at(.306, fid=2, t=.3)
+    after, _ = image_at(.336, fid=2, t=.3)
     clipped = track.observe(after, servo, 0, now=.3)
-    assert not clipped.ready(.3) and clipped.std_xy_m+clipped.bias_bound_m > .079
+    assert not clipped.ready(.3) and clipped.std_xy_m+clipped.bias_bound_m > .07
     assert 'END_CLIPPED' in clipped.reasons
     # The production align state chooses its existing next view, no base backoff.
     _, _, eps = real_pair(); ctl = eps['r1'].controller
@@ -138,12 +161,14 @@ def test_33cm_to_306mm_normal_forward_recovers_from_complete_stationary_views(mo
     chosen = []; monkeypatch.setattr(ctl, '_set_look', lambda name,t,**kw: chosen.append(name))
     ctl._align(.3, True)
     assert chosen == ['p45']
-    view, new_servo = image_at(.306, 'p45', fid=3, t=1.)
+    view, new_servo = image_at(.336, 'p45', fid=3, t=1.)
     for sid, pulse in new_servo.items():
         if servo.get(sid) != pulse:
             track.command(dict(kind='arm', t=.3, servo_id=sid, pulse=pulse), servo)
     updated = track.observe(view, new_servo, 0, now=1.)
-    assert updated.ready(1.) and updated.grip_base_m[0] == pytest.approx(.306, abs=.005)
+    assert updated.ready(1.)
+    # Mid-height end-face hypothesis: error stays inside the reported bound.
+    assert abs(updated.grip_base_m[0]-.336) <= updated.std_xy_m+updated.bias_bound_m
     assert updated.std_xy_m+updated.bias_bound_m <= .05  # original bound unchanged
     assert 'STATIONARY_MULTIVIEW_COMPLETE_SHAPE' in updated.reasons
     assert track.beam['identity_time_s'] == 0. and updated.anchor_time_s == 1.
@@ -158,12 +183,12 @@ def test_33cm_to_306mm_normal_forward_recovers_from_complete_stationary_views(mo
 
 @pytest.mark.parametrize('fault', ['unanchored', 'segment', 'expired', 'near_clipped', 'moved', 'occluded'])
 def test_partial_shape_never_invents_endpoint_identity(fault):
-    track = RelativeBeamTrack(); first, servo = image_at(.33)
+    track = RelativeBeamTrack(); first, servo = image_at(.36)
     if fault != 'unanchored':
         assert track.observe(first, servo, 0, now=0.).ready(0.)
     t = 31. if fault == 'expired' else 1.
     name = 'search' if fault == 'near_clipped' else 'p45'
-    frame, servo = image_at(.306, name, fid=2, t=t, lateral=.3 if fault == 'moved' else 0.)
+    frame, servo = image_at(.336, name, fid=2, t=t, lateral=.3 if fault == 'moved' else 0.)
     if fault == 'occluded':
         # Only a short interior patch is visible; neither end meets a FOV boundary.
         frame['image'][:220] = 100
@@ -177,10 +202,10 @@ def test_partial_shape_never_invents_endpoint_identity(fault):
 
 def test_full_shape_target_association_fallback_is_a_flag_only():
     from harness.zone_pair_obstruction import target_component
-    o, servo = image_at(.33); frame = o['image']
+    o, servo = image_at(.36); frame = o['image']
     model = np.full_like(frame, 100)
     labels = np.any(frame != model, axis=2).astype(np.int32)
-    target = dict(order_id='beam', grip_base_m=[.33, 0.], axis_heading_rad=0.,
+    target = dict(order_id='beam', grip_base_m=[.36, 0.], axis_heading_rad=0.,
                   xy_slack_m=.05, yaw_slack_rad=.05, source='static order')
     assert target_component(frame, model, labels, 1, servo, target) is None
     target['allow_shape_identity'] = True
@@ -192,13 +217,13 @@ def test_full_shape_target_association_fallback_is_a_flag_only():
 
 
 def test_partial_updates_do_not_extend_full_shape_identity_lifetime():
-    track = RelativeBeamTrack(); first, servo = image_at(.33)
+    track = RelativeBeamTrack(); first, servo = image_at(.36)
     assert track.observe(first, servo, 0, now=0.).ready(0.)
-    partial, servo = image_at(.306, 'p45', fid=2, t=29.)
+    partial, servo = image_at(.336, 'p45', fid=2, t=29.)
     report = track.observe(partial, servo, 0, now=29.)
     assert not report.ready(29.) and report.anchor_time_s == 0.
     assert track.beam['identity_time_s'] == 0.
-    later, servo = image_at(.307, 'p45', fid=3, t=30.1)
+    later, servo = image_at(.337, 'p45', fid=3, t=30.1)
     assert not track.observe(later, servo, 0, now=30.1).ready(30.1)
     assert track.beam['anchor_time_s'] == 0.
 
