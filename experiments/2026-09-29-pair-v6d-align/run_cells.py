@@ -13,7 +13,9 @@ Same grid, cases, workers and result layout as ``scripts/run_pair_stage_probes.p
   with the baseline policy name), which is the pilot on the 12 failed b-v6c cells;
 * ``--skip-done <dir>`` (repeatable) drops cases whose ``cases/<name>/result.json`` already exists in an earlier
   output of this driver (used to finish an interrupted grid); ``--omp-threads`` sets the BLAS/OMP threads of
-  each worker (the runner hardcodes 2; the value used is written to ``manifest.json``).
+  each worker (the runner hardcodes 2; the value used is written to ``manifest.json``);
+* ``--shard K/N`` keeps every N-th remaining case (index K), so one grid can be run as N single-worker
+  drivers whose outputs are combined afterwards (``combine_grid.py``).
 
   plan only:  python3 experiments/2026-09-29-pair-v6d-align/run_cells.py --stage align ... --output <dir>
   physical:   ... --execute --output /Users/changmin/projects/ugrp/outputs/<name>
@@ -76,6 +78,7 @@ def main(argv=None):
     p.add_argument('--skip-done', type=Path, action='append', default=[],
                    help='earlier output dir of this driver; cases with a result.json there are not re-run')
     p.add_argument('--omp-threads', type=int, default=2)
+    p.add_argument('--shard', default='0/1', help='K/N: keep cases[K::N] (after --skip-done)')
     p.add_argument('--only-failed-of', type=Path, help='cases.jsonl of an earlier grid; keep its failed cells only')
     p.add_argument('--baseline-policy', default=BASELINE_POLICY)
     p.set_defaults(workers=MAX_WORKERS)
@@ -103,6 +106,10 @@ def main(argv=None):
     skipped = []
     if args.skip_done:
         cases, skipped = skip_done(cases, args.skip_done)
+    shard_k, shard_n = (int(x) for x in args.shard.split('/'))
+    if not 0 <= shard_k < shard_n:
+        p.error('--shard must be K/N with 0 <= K < N')
+    cases = cases[shard_k::shard_n]
     if len({c['case_id'] for c in cases}) != len(cases):
         p.error('duplicate case ids')
     from sim.workflow_manager import environment_identity, git_identity, source_fingerprint
@@ -118,7 +125,7 @@ def main(argv=None):
                 'workers': args.workers, 'omp_num_threads_per_worker': args.omp_threads, 'lock': None,
                 'lock_note': 'synchronous SIM-time probe, no wall-time claim; agent_lock held by another task and '
                              'neither taken nor imitated; host load recorded',
-                'baseline': baseline, 'skip_done': [str(d) for d in args.skip_done], 'skipped_case_ids': skipped,
+                'baseline': baseline, 'skip_done': [str(d) for d in args.skip_done], 'skipped_case_ids': skipped, 'shard': args.shard,
                 'cases': len(cases), 'cases_sha256': sp.digest(cases),
                 'unavailable_e2e': args.unavailable, 'state': 'planned'}
     if not args.execute:
