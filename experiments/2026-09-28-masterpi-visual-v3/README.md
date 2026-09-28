@@ -21,7 +21,7 @@
 - 1/n·2/n에서 만든 제어기 장착 구현(`visual_arm` 헬퍼, 가드 장착 위치 호출 시점 해석)은 이력 `4031baa5`, `99ac4ba1`에 있다. 새 코드로 옮길 때 참고한다.
 
 남은 일(순서대로):
-1. v3 장면 버전: 다음 빈 버전 이름으로 새 zone 장면 버전을 만들고 `robot_model: masterpi_v3`를 싣는다(`sim.session_scenes.Scene`의 명시적 version/profile 재사용). 그 버전에만 새 해시를 등록한다.
+1. v3 장면 버전: 다음 빈 버전 이름으로 새 zone 장면 버전을 만들고 `robot_model: masterpi_v3`를 싣는다(`sim.session_scenes.Scene`의 명시적 version/profile 재사용). 그 버전에만 새 해시를 등록한다. 연결 지점은 zone study 장면 구성(`harness/zone_own_team_host.py` 74–80행)이다. `sim/zone_own_scene_provider.own_scene`의 transform 뒤에 `v3_robot_xml_transform(world 템플릿 physical_params, calibrated_keys=calibration_parameters)`을 잇는다. 이 파일들은 zone study closure에 속하므로 새 번들 ID와 함께 바꾼다. 기존 버전 경로의 바이트와 동작은 그대로 둔다.
 2. v3 소비자는 새 코드로 만든다. 스테이션(teacher), 시작 도킹, 발자국은 장면의 robot_model에서 `station_grasp_convention`을 읽는다. 기존 `scripts/zone_teacher.py`, `sim/zone_start_dock.py`, `harness/zone_team_footprint.py`의 바이트는 바꾸지 않는다.
 3. v3 제어기 층: 팔 장착 48.2 mm를 반영한 FK/IK와 카메라 외부 파라미터를 새 모듈로 만든다(예: `harness/visual_arm_v3.py`, `CONTROLLER_GEOMETRY_ID`). v3 장면의 실행기만 그 모듈을 쓴다. 가드도 같다.
 4. 번들: 등록은 push 직전에 한다. main과 열린 PR(#246 v70, #250, #253)의 최댓값을 다시 확인하고 v71 이상을 쓴다.
