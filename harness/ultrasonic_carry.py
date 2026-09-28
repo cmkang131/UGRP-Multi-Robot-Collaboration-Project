@@ -30,7 +30,6 @@ from __future__ import annotations
 
 import math
 from collections import deque
-from contextlib import contextmanager
 from functools import lru_cache
 from dataclasses import dataclass, field, replace
 
@@ -55,39 +54,32 @@ class RobotGeometry:
     mount_x_m: float
     mount_z_m: float
     arm_axis_x_m: float = 0.            # arm yaw axis ahead of the chassis centre
+    face_forward_m: float = DEFAULT_SPEC.face_forward_m   # transducer face ahead of mount_x_m
     link2_cm: float = va.LINK_2_CM       # upper arm (SDK 6.5 cm)
     gripper_cm: float = va.GRIPPER_LINK_CM
     source: str = ''
 
     def spec(self, base: UltrasonicSpec = DEFAULT_SPEC) -> UltrasonicSpec:
-        return replace(base, mount_x_m=self.mount_x_m, mount_z_floor_m=self.mount_z_m)
+        return replace(base, mount_x_m=self.mount_x_m, mount_z_floor_m=self.mount_z_m,
+                       face_forward_m=self.face_forward_m)
 
 
 GEOMETRY_V2 = RobotGeometry('v2', DEFAULT_SPEC.mount_x_m, DEFAULT_SPEC.mount_z_floor_m, 0.,
                             source='current SIM model (photo nominal mount, arm axis at the chassis centre)')
 # Draft PR #249 remodel: drawing-scaled, not measured. Sonar on the arm-base box front face, level.
 GEOMETRY_V3 = RobotGeometry('v3', .0880, .0617, .0482,
-                            source='PR #249 drawing layout (not measured): sonar 88.0/61.7 mm, arm axis +48.2 mm')
+                            source=('PR #249 drawing layout (not measured): sonar site 88.0/61.7 mm, arm axis +48.2 mm; '
+                                    'face assumed 6 mm ahead of the site as on v2 (#249 measurement list item 2)'))
+# Facing robots (pair carry): the peer's direct pulse is the dominant interference -> crosstalk ON
+# in every evaluation of a facing formation (review P2-4).
+FACING_PAIR_SPEC = replace(DEFAULT_SPEC, crosstalk=True)
 GEOMETRIES = {'v2': GEOMETRY_V2, 'v3': GEOMETRY_V3}
 # Proposed (not applied) drawing link lengths, for reach sensitivity only.
 DRAWING_LINK2_CM, DRAWING_GRIPPER_CM = 5.77, 9.40
 
 
-@contextmanager
-def arm_links(link2_cm: float | None = None, gripper_cm: float | None = None):
-    """Temporarily evaluate the controller IK/FK with other link lengths (sensitivity only)."""
-    saved = (va.LINK_2_CM, va.GRIPPER_LINK_CM, dict(va.tool_pose.__kwdefaults__))
-    try:
-        if link2_cm is not None:
-            va.LINK_2_CM = float(link2_cm)
-        if gripper_cm is not None:
-            va.GRIPPER_LINK_CM = float(gripper_cm)
-            va.tool_pose.__kwdefaults__['tool_length_cm'] = float(gripper_cm)
-        yield
-    finally:
-        va.LINK_2_CM, va.GRIPPER_LINK_CM = saved[0], saved[1]
-        va.tool_pose.__kwdefaults__.clear()
-        va.tool_pose.__kwdefaults__.update(saved[2])
+# Link-length sensitivity (``arm_links``) lives in scripts/analyze_ultrasonic_carry_height.py so this
+# module never mutates the controller IK (review P3-9).
 
 
 @dataclass(frozen=True)
@@ -109,7 +101,7 @@ def required_heights(criterion: str, spec: UltrasonicSpec = DEFAULT_SPEC, margin
                      beam_length_m: float = BEAM_LENGTH_M, arm_axis_x_m: float = 0.) -> dict:
     """Minimum bar underside and commanded tool z for the chosen criterion."""
     t = math.tan(math.radians(cone_edge_deg(spec, margins, half_angle_deg=half_angle_deg)))
-    near = arm_axis_x_m + grip_radius_m - GRIP_FROM_END_M - spec.mount_x_m   # sensor -> near end face
+    near = arm_axis_x_m + grip_radius_m - GRIP_FROM_END_M - spec.face_x_m   # sensor -> near end face
     far = near + beam_length_m
     tilt = math.sin(math.radians(margins.beam_pitch_deg))
     if criterion == 'near_face':
@@ -182,20 +174,35 @@ LOAD_IN_CONE = 'load_in_cone'           # high mode: something within the near f
 INTRUSION = 'intrusion'                 # shorter than the baseline but beyond the near field
 BEYOND_BASELINE = 'beyond_baseline'     # longer than the baseline, or no echo
 LOAD_LOST = 'load_lost'                 # low mode: load reading jumped longer
+BLIND_ZONE = 'blind_zone'               # something closer than the sensor minimum
 CALIBRATING = 'calibrating'
+CALIBRATION_FAILED = 'calibration_failed'   # baseline implausible (e.g. own load end face) or timed out
+STALE = 'stale'                         # no fresh own reading
+RELOOK = 'relook'                       # verdicts disagree for a whole window: stop and look again
 UNKNOWN = 'unknown'
-STOP_STATES = (LOAD_IN_CONE, INTRUSION, BEYOND_BASELINE, LOAD_LOST)
+STOP_STATES = (LOAD_IN_CONE, INTRUSION, BEYOND_BASELINE, LOAD_LOST, BLIND_ZONE, CALIBRATION_FAILED, STALE, RELOOK)
 
 
 @dataclass
 class CarrySonarMonitor:
     """Own-reading rule for the lifted carry. Baseline = median of the first own readings after the lift.
 
+    CANDIDATE rule until the bench interference/grazing checks (docs 6): facing sensors
+    interfere in bursts (``FACING_PAIR_SPEC``), which a k-of-n vote does not remove.
+
     ``mode='above_cone'`` (lift >= ``required_heights('near_face')``): the baseline is
-    whatever the rays reach under the bar (normally the partner's chassis).
-    ``mode='load_in_cone'`` (the current M2 lift): the baseline is the own load's
-    end face (~0.05 m); a jump longer means the load left the cone (slip/drop).
-    A state is reported only after ``k`` consecutive agreeing readings (60 ms each).
+    whatever the rays reach under the bar (normally the partner's chassis). It is
+    accepted only beyond ``near_field_m``, inside ``expected_baseline_m +- baseline_window_m``
+    when given, and when the calibration readings agree; otherwise ``calibration_failed``
+    (a stop state) -- a baseline at the own load's end face would hide a slip forever.
+    ``mode='load_in_cone'`` (the M2 lift): the baseline is the own load's end face
+    (must be inside ``near_field_m``); a jump longer means this end left the cone. It
+    cannot see the PARTNER's end dropping.
+
+    Decision: over the last ``n`` classified readings, ``k`` stop verdicts -> that stop
+    state (most frequent); ``k`` OK verdicts -> OK; a full window with neither ->
+    ``relook``. ``state(now)`` returns ``stale`` when the latest reading is older than
+    ``max_age_s``; calibration longer than ``calib_timeout_s`` -> ``calibration_failed``.
     """
     mode: str = 'above_cone'
     spec: UltrasonicSpec = DEFAULT_SPEC
@@ -203,21 +210,40 @@ class CarrySonarMonitor:
     band_k_sigma: float = 4.
     band_min_m: float = .02
     k: int = 3
+    n: int = 5
     n_baseline: int = 5
+    expected_baseline_m: float | None = None
+    baseline_window_m: float = .10
+    calib_timeout_s: float = 1.0
+    max_age_s: float = .2
     baseline_m: float | None = field(default=None, init=False)
+    failed: bool = field(default=False, init=False)
     _cal: list = field(default_factory=list, init=False)
+    _t0: float | None = field(default=None, init=False)
     _recent: deque = field(default_factory=lambda: deque(maxlen=16), init=False)
     _last_t: float | None = field(default=None, init=False)
 
     def __post_init__(self):
         if self.mode not in ('above_cone', 'load_in_cone'):
             raise ValueError('mode must be above_cone or load_in_cone')
+        if not 0 < self.k <= self.n:
+            raise ValueError('need 0 < k <= n')
 
     def band(self) -> float:
         return max(self.band_min_m, self.band_k_sigma * self.spec.sigma_m(self.baseline_m or 0.))
 
+    def _baseline_ok(self, values: list[float]) -> bool:
+        b = sorted(values)[len(values) // 2]
+        agree = max(values) - min(values) <= 2. * max(self.band_min_m, self.band_k_sigma * self.spec.sigma_m(b))
+        if self.mode == 'load_in_cone':
+            return agree and b <= self.near_field_m
+        window = self.expected_baseline_m is None or abs(b - self.expected_baseline_m) <= self.baseline_window_m
+        return agree and b > self.near_field_m and window
+
     def _classify(self, report: RangeReport) -> str:
         b = self.baseline_m
+        if report.status == 'blind':
+            return BLIND_ZONE
         if not report.valid:
             return BEYOND_BASELINE if self.mode == 'above_cone' else LOAD_LOST
         r = report.range_m
@@ -230,27 +256,45 @@ class CarrySonarMonitor:
         return LOAD_IN_CONE if r <= self.near_field_m else INTRUSION
 
     def update(self, report: RangeReport) -> str:
-        """Feed each NEW own report (time ordered); returns the debounced state."""
+        """Feed each NEW own report (time ordered); returns the decided state at the report time."""
         if report.t_meas is None or (self._last_t is not None and report.t_meas <= self._last_t):
             return self.state()
         self._last_t = report.t_meas
+        if self.failed:
+            return CALIBRATION_FAILED
         if self.baseline_m is None:
+            self._t0 = report.t_meas if self._t0 is None else self._t0
             if report.valid:
                 self._cal.append(report.range_m)
             if len(self._cal) >= self.n_baseline:
-                ordered = sorted(self._cal)
-                self.baseline_m = ordered[len(ordered) // 2]
-            return CALIBRATING if self.baseline_m is None else self.state()
+                vals = self._cal[-self.n_baseline:]
+                if self._baseline_ok(vals):
+                    self.baseline_m = sorted(vals)[len(vals) // 2]
+                else:
+                    self.failed = True
+            elif report.t_meas - self._t0 > self.calib_timeout_s:
+                self.failed = True
+            return self.state()
         self._recent.append(self._classify(report))
         return self.state()
 
-    def state(self) -> str:
+    def state(self, now: float | None = None) -> str:
+        if self.failed:
+            return CALIBRATION_FAILED
+        if now is not None and (self._last_t is None or now - self._last_t > self.max_age_s + 1e-9):
+            return STALE
         if self.baseline_m is None:
+            if now is not None and self._t0 is not None and now - self._t0 > self.calib_timeout_s:
+                return CALIBRATION_FAILED
             return CALIBRATING
-        tail = list(self._recent)[-self.k:]
-        if len(tail) == self.k and len(set(tail)) == 1:
-            return tail[0]
-        return UNKNOWN
+        window = list(self._recent)[-self.n:]
+        stops = [v for v in window if v in STOP_STATES]
+        if len(stops) >= self.k:
+            return max(set(stops), key=lambda v: (stops.count(v), -window[::-1].index(v)))
+        oks = [v for v in window if v in (FORMATION_OK, LOAD_PRESENT)]
+        if len(oks) >= self.k:
+            return oks[-1]
+        return RELOOK if len(window) >= self.n else UNKNOWN
 
 
 # --- solo carry (one robot, one small item) --------------------------------------------------------
@@ -318,7 +362,7 @@ def cone_margin(points, spec: UltrasonicSpec = DEFAULT_SPEC, *, half_angle_deg: 
     """
     edge = (spec.half_angle_deg if half_angle_deg is None else half_angle_deg) + spec.mount_pitch_deg + mount_pitch_up_deg
     t = math.tan(math.radians(edge))
-    return float(min(p[2] - spec.mount_z_floor_m - max(0., p[0] - spec.mount_x_m) * t for p in points))
+    return float(min(p[2] - spec.mount_z_floor_m - max(0., p[0] - spec.face_x_m) * t for p in points))
 
 
 def solo_lift(item: SoloItem, tool_z_m: float, radius_m: float = GRASP_RADIUS_M) -> dict:
@@ -344,7 +388,7 @@ def solo_posture_margins(item: SoloItem, pulses: dict, grasp_pitch_deg: float, s
         cases[name] = {'tilt_deg': round(tilt, 2), 'margin_m': round(worst - margins.height_m, 4)}
     front = max(float(item_points(item, gx, tp.z_m, t)[:, 0].max()) for t in (0., rigid))
     return {'tool_x_m': round(tp.x_m, 4), 'tool_z_m': round(tp.z_m, 4), 'pitch_deg': round(tp.pitch_deg, 2),
-            'item_front_beyond_sensor_m': round(max(0., front - spec.mount_x_m), 4),
+            'item_front_beyond_sensor_m': round(max(0., front - spec.face_x_m), 4),
             'cases': cases, 'clear': all(c['margin_m'] >= 0. for c in cases.values())}
 
 
@@ -380,6 +424,9 @@ def turn_in_place_grip_shift_m(turn_deg: float, geometry: RobotGeometry = GEOMET
 # --- solo forward rule -----------------------------------------------------------------------------
 
 CLEAR, SLOW, STOP, STOP_NEAR_FIELD, NO_READING = 'clear', 'slow', 'stop', 'stop_near_field', 'no_reading'
+NO_ECHO_AHEAD = 'no_echo'       # nothing detected: NOT clear; proceed only under the existing guard, slow
+HOLD = 'hold'                   # echo lost right after a near reading: keep stopped until it returns
+SOLO_STOP_STATES = (STOP, STOP_NEAR_FIELD, NO_READING, HOLD)
 
 
 def solo_stop_distance(front_extent_from_sensor_m: float, *, speed_mps: float = .19, reaction_s: float = .30,
@@ -393,20 +440,27 @@ def solo_stop_distance(front_extent_from_sensor_m: float, *, speed_mps: float = 
 
 
 def solo_forward_state(report: RangeReport, now: float, expected, *, front_extent_from_sensor_m: float,
-                       stop_m: float, slow_m: float, max_age_s: float = .2,
+                       stop_m: float, slow_m: float, max_age_s: float = .2, hold_s: float = 1.0,
                        spec: UltrasonicSpec = DEFAULT_SPEC, pose_sigma_m: float = 0.) -> dict:
     """One own reading vs the static-map prediction during a solo carry (forward drive).
 
     ``state`` is an extra stop/slow input next to the existing sweep/collision guard,
-    never a replacement. ``consistency`` feeds the PF / overconfidence check.
+    never a replacement, and never ``clear`` without a valid echo beyond ``slow_m``:
+    blind zone -> ``stop_near_field``; missing sensor / stale -> ``no_reading``; no echo
+    within ``hold_s`` of a valid reading inside ``slow_m`` -> ``hold`` (e.g. a small turn
+    made the wall specular); other no-echo -> ``no_echo``. ``consistency`` feeds the PF.
     """
     from harness.ultrasonic_map import range_consistency
-    if report.t_meas is None or now - report.t_meas > max_age_s + 1e-9:
+    if report.t_meas is None or now - report.t_meas > max_age_s + 1e-9 or report.status == 'sensor_absent':
         return {'state': NO_READING, 'consistency': None}
     consistency = range_consistency(report.range_m if report.valid else None, report.valid, expected, spec,
-                                    pose_sigma_m=pose_sigma_m)
+                                    pose_sigma_m=pose_sigma_m, status=report.status)
+    if report.status == 'blind':
+        return {'state': STOP_NEAR_FIELD, 'consistency': consistency}
     if not report.valid:
-        return {'state': CLEAR, 'consistency': consistency}
+        recent_near = (report.last_valid_t is not None and report.last_valid_range_m is not None
+                       and now - report.last_valid_t <= hold_s and report.last_valid_range_m <= slow_m)
+        return {'state': HOLD if recent_near else NO_ECHO_AHEAD, 'consistency': consistency}
     r = report.range_m
     if r <= front_extent_from_sensor_m + .02:
         state = STOP_NEAR_FIELD        # own load sagged into the cone, or contact-range obstacle

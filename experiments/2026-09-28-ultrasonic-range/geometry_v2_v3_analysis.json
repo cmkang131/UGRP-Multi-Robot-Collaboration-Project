@@ -3,6 +3,7 @@
   "v2": {
    "geometry": {
     "arm_axis_x_m": 0.0,
+    "face_forward_m": 0.006,
     "gripper_cm": 10.0,
     "link2_cm": 6.5,
     "mount_x_m": 0.078,
@@ -19,34 +20,34 @@
     "pair_straight_lift": {
      "geom": "r1__left_finger_pad_visual",
      "in_15deg_cone": false,
-     "min_off_axis_deg": 31.95
+     "min_off_axis_deg": 33.84
     },
     "solo_carry_p30": {
      "geom": "r1__left_finger_pad_visual",
      "in_15deg_cone": false,
-     "min_off_axis_deg": 58.51
+     "min_off_axis_deg": 60.59
     },
     "solo_straight_box_0.12": {
      "geom": "r1__left_finger_pad_visual",
      "in_15deg_cone": false,
-     "min_off_axis_deg": 35.82
+     "min_off_axis_deg": 37.78
     },
     "solo_straight_can_0.12": {
      "geom": "r1__left_finger_pad_visual",
      "in_15deg_cone": false,
-     "min_off_axis_deg": 35.82
+     "min_off_axis_deg": 37.78
     },
     "solo_straight_tile_0.11": {
      "geom": "r1__left_finger_pad_visual",
      "in_15deg_cone": false,
-     "min_off_axis_deg": 31.95
+     "min_off_axis_deg": 33.84
     }
    },
    "pair_side": {
-    "beam_behind_sensor_plane_by_m": 0.058,
+    "beam_behind_sensor_plane_by_m": 0.064,
     "beam_front_x_m": 0.02,
     "robot_centre_offset_from_beam_axis_m": 0.0,
-    "sensor_x_m": 0.078,
+    "sensor_face_x_m": 0.084,
     "straight_formation_length_change_m": 0.0,
     "turn_90_about_centre_grip_shift_m": 0.0
    },
@@ -59,18 +60,18 @@
      "pitch_deg": -40,
      "tool_z_m": 0.161
     },
-    "near_face_from_sensor_m": 0.047,
+    "near_face_from_sensor_m": 0.041,
     "pitch_change_from_grasp_deg": 12.06,
     "pitch_deg": -60.03,
     "recommended_tool_z_m": 0.11,
     "required_tool_z_m": {
      "near_face": {
-      "15": 0.1066,
-      "7.5": 0.1002
+      "15": 0.105,
+      "7.5": 0.0994
      },
      "whole_beam": {
-      "15": 0.2873,
-      "7.5": 0.1991
+      "15": 0.2857,
+      "7.5": 0.1983
      }
     }
    },
@@ -78,42 +79,42 @@
     "box": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.0906,
-      "min_margin_m": 0.0639,
+      "item_front_beyond_sensor_m": 0.0846,
+      "min_margin_m": 0.0655,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.1676,
+      "stop_distance_m": 0.1616,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
      },
-     "hover_0.095_min_margin_m": -0.0241,
+     "hover_0.095_min_margin_m": -0.0225,
      "straight_min_tool_z_15": 0.12,
      "straight_min_tool_z_7.5": 0.11
     },
     "can": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.0921,
-      "min_margin_m": 0.0628,
+      "item_front_beyond_sensor_m": 0.0861,
+      "min_margin_m": 0.0644,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.1691,
+      "stop_distance_m": 0.1631,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
      },
-     "hover_0.095_min_margin_m": -0.0248,
+     "hover_0.095_min_margin_m": -0.0232,
      "straight_min_tool_z_15": 0.12,
      "straight_min_tool_z_7.5": 0.11
     },
     "tile": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.0919,
-      "min_margin_m": 0.0742,
+      "item_front_beyond_sensor_m": 0.0859,
+      "min_margin_m": 0.0758,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.1689,
+      "stop_distance_m": 0.1629,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
      },
-     "hover_0.095_min_margin_m": -0.0122,
+     "hover_0.095_min_margin_m": -0.0106,
      "straight_min_tool_z_15": 0.11,
      "straight_min_tool_z_7.5": 0.095
     }
@@ -122,12 +123,13 @@
   "v3": {
    "geometry": {
     "arm_axis_x_m": 0.0482,
+    "face_forward_m": 0.006,
     "gripper_cm": 10.0,
     "link2_cm": 6.5,
     "mount_x_m": 0.088,
     "mount_z_m": 0.0617,
     "name": "v3",
-    "source": "PR #249 drawing layout (not measured): sonar 88.0/61.7 mm, arm axis +48.2 mm"
+    "source": "PR #249 drawing layout (not measured): sonar site 88.0/61.7 mm, arm axis +48.2 mm; face assumed 6 mm ahead of the site as on v2 (#249 measurement list item 2)"
    },
    "own_arm_in_cone": {
     "pair_side_lift_yaw-90": {
@@ -138,34 +140,34 @@
     "pair_straight_lift": {
      "geom": "r1__left_finger_pad_visual",
      "in_15deg_cone": false,
-     "min_off_axis_deg": 25.64
+     "min_off_axis_deg": 26.79
     },
     "solo_carry_p30": {
      "geom": "r1__left_finger_pad_visual",
      "in_15deg_cone": false,
-     "min_off_axis_deg": 45.27
+     "min_off_axis_deg": 46.85
     },
     "solo_straight_box_0.14": {
      "geom": "r1__left_finger_pad_visual",
      "in_15deg_cone": false,
-     "min_off_axis_deg": 30.41
+     "min_off_axis_deg": 31.68
     },
     "solo_straight_can_0.14": {
      "geom": "r1__left_finger_pad_visual",
      "in_15deg_cone": false,
-     "min_off_axis_deg": 30.41
+     "min_off_axis_deg": 31.68
     },
     "solo_straight_tile_0.125": {
      "geom": "r1__left_finger_pad_visual",
      "in_15deg_cone": false,
-     "min_off_axis_deg": 25.64
+     "min_off_axis_deg": 26.79
     }
    },
    "pair_side": {
-    "beam_behind_sensor_plane_by_m": 0.0198,
+    "beam_behind_sensor_plane_by_m": 0.0258,
     "beam_front_x_m": 0.0682,
     "robot_centre_offset_from_beam_axis_m": 0.0482,
-    "sensor_x_m": 0.088,
+    "sensor_face_x_m": 0.094,
     "straight_formation_length_change_m": 0.0964,
     "turn_90_about_centre_grip_shift_m": 0.0682
    },
@@ -178,18 +180,18 @@
      "pitch_deg": -40,
      "tool_z_m": 0.161
     },
-    "near_face_from_sensor_m": 0.0852,
+    "near_face_from_sensor_m": 0.0792,
     "pitch_change_from_grasp_deg": 18.09,
     "pitch_deg": -54.0,
     "recommended_tool_z_m": 0.125,
     "required_tool_z_m": {
      "near_face": {
-      "15": 0.1246,
-      "7.5": 0.113
+      "15": 0.123,
+      "7.5": 0.1122
      },
      "whole_beam": {
-      "15": 0.3052,
-      "7.5": 0.2118
+      "15": 0.3036,
+      "7.5": 0.2111
      }
     }
    },
@@ -197,44 +199,44 @@
     "box": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1288,
-      "min_margin_m": 0.046,
+      "item_front_beyond_sensor_m": 0.1228,
+      "min_margin_m": 0.0476,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2058,
+      "stop_distance_m": 0.1998,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
      },
-     "hover_0.095_min_margin_m": -0.0421,
+     "hover_0.095_min_margin_m": -0.0404,
      "straight_min_tool_z_15": 0.14,
      "straight_min_tool_z_7.5": 0.12
     },
     "can": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1303,
-      "min_margin_m": 0.0449,
+      "item_front_beyond_sensor_m": 0.1243,
+      "min_margin_m": 0.0465,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2073,
+      "stop_distance_m": 0.2013,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
      },
-     "hover_0.095_min_margin_m": -0.0428,
+     "hover_0.095_min_margin_m": -0.0412,
      "straight_min_tool_z_15": 0.14,
      "straight_min_tool_z_7.5": 0.12
     },
     "tile": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1301,
-      "min_margin_m": 0.0562,
+      "item_front_beyond_sensor_m": 0.1241,
+      "min_margin_m": 0.0578,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2071,
+      "stop_distance_m": 0.2011,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
      },
-     "hover_0.095_min_margin_m": -0.0301,
+     "hover_0.095_min_margin_m": -0.0285,
      "straight_min_tool_z_15": 0.125,
-     "straight_min_tool_z_7.5": 0.11
+     "straight_min_tool_z_7.5": 0.105
     }
    }
   }
@@ -267,18 +269,18 @@
      "pitch_deg": -40,
      "tool_z_m": 0.151
     },
-    "near_face_from_sensor_m": 0.0852,
+    "near_face_from_sensor_m": 0.0792,
     "pitch_change_from_grasp_deg": 14.04,
     "pitch_deg": -49.95,
     "recommended_tool_z_m": 0.125,
     "required_tool_z_m": {
      "near_face": {
-      "15": 0.1246,
-      "7.5": 0.113
+      "15": 0.123,
+      "7.5": 0.1122
      },
      "whole_beam": {
-      "15": 0.3052,
-      "7.5": 0.2118
+      "15": 0.3036,
+      "7.5": 0.2111
      }
     }
    },
@@ -286,28 +288,28 @@
     "box": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1218,
-      "min_margin_m": 0.0438,
+      "item_front_beyond_sensor_m": 0.1158,
+      "min_margin_m": 0.0454,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.1988,
+      "stop_distance_m": 0.1928,
       "tool_x_m": 0.1341,
       "tool_z_m": 0.1756
      },
-     "hover_0.095_min_margin_m": -0.0421,
+     "hover_0.095_min_margin_m": -0.0404,
      "straight_min_tool_z_15": 0.14,
      "straight_min_tool_z_7.5": 0.12
     },
     "can": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1235,
-      "min_margin_m": 0.043,
+      "item_front_beyond_sensor_m": 0.1175,
+      "min_margin_m": 0.0446,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2005,
+      "stop_distance_m": 0.1945,
       "tool_x_m": 0.1341,
       "tool_z_m": 0.1756
      },
-     "hover_0.095_min_margin_m": -0.0428,
+     "hover_0.095_min_margin_m": -0.0412,
      "straight_min_tool_z_15": 0.14,
      "straight_min_tool_z_7.5": 0.12
     },
@@ -341,18 +343,18 @@
      "pitch_deg": -40,
      "tool_z_m": 0.161
     },
-    "near_face_from_sensor_m": 0.0852,
+    "near_face_from_sensor_m": 0.0792,
     "pitch_change_from_grasp_deg": 13.95,
     "pitch_deg": -54.99,
     "recommended_tool_z_m": 0.125,
     "required_tool_z_m": {
      "near_face": {
-      "15": 0.1246,
-      "7.5": 0.113
+      "15": 0.123,
+      "7.5": 0.1122
      },
      "whole_beam": {
-      "15": 0.3052,
-      "7.5": 0.2118
+      "15": 0.3036,
+      "7.5": 0.2111
      }
     }
    },
@@ -360,28 +362,28 @@
     "box": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1233,
-      "min_margin_m": 0.0505,
+      "item_front_beyond_sensor_m": 0.1173,
+      "min_margin_m": 0.0521,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2003,
+      "stop_distance_m": 0.1943,
       "tool_x_m": 0.1348,
       "tool_z_m": 0.1829
      },
-     "hover_0.095_min_margin_m": -0.0419,
+     "hover_0.095_min_margin_m": -0.0403,
      "straight_min_tool_z_15": 0.14,
      "straight_min_tool_z_7.5": 0.12
     },
     "can": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1248,
-      "min_margin_m": 0.0495,
+      "item_front_beyond_sensor_m": 0.1188,
+      "min_margin_m": 0.0511,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2018,
+      "stop_distance_m": 0.1958,
       "tool_x_m": 0.1348,
       "tool_z_m": 0.1829
      },
-     "hover_0.095_min_margin_m": -0.0427,
+     "hover_0.095_min_margin_m": -0.041,
      "straight_min_tool_z_15": 0.14,
      "straight_min_tool_z_7.5": 0.12
     },
@@ -415,18 +417,18 @@
      "pitch_deg": -40,
      "tool_z_m": 0.161
     },
-    "near_face_from_sensor_m": 0.0852,
+    "near_face_from_sensor_m": 0.0792,
     "pitch_change_from_grasp_deg": 18.09,
     "pitch_deg": -54.0,
     "recommended_tool_z_m": 0.125,
     "required_tool_z_m": {
      "near_face": {
-      "15": 0.1246,
-      "7.5": 0.113
+      "15": 0.123,
+      "7.5": 0.1122
      },
      "whole_beam": {
-      "15": 0.3052,
-      "7.5": 0.2118
+      "15": 0.3036,
+      "7.5": 0.2111
      }
     }
    },
@@ -434,44 +436,44 @@
     "box": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1288,
-      "min_margin_m": 0.046,
+      "item_front_beyond_sensor_m": 0.1228,
+      "min_margin_m": 0.0476,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2058,
+      "stop_distance_m": 0.1998,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
      },
-     "hover_0.095_min_margin_m": -0.0421,
+     "hover_0.095_min_margin_m": -0.0404,
      "straight_min_tool_z_15": 0.14,
      "straight_min_tool_z_7.5": 0.12
     },
     "can": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1303,
-      "min_margin_m": 0.0449,
+      "item_front_beyond_sensor_m": 0.1243,
+      "min_margin_m": 0.0465,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2073,
+      "stop_distance_m": 0.2013,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
      },
-     "hover_0.095_min_margin_m": -0.0428,
+     "hover_0.095_min_margin_m": -0.0412,
      "straight_min_tool_z_15": 0.14,
      "straight_min_tool_z_7.5": 0.12
     },
     "tile": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1301,
-      "min_margin_m": 0.0562,
+      "item_front_beyond_sensor_m": 0.1241,
+      "min_margin_m": 0.0578,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2071,
+      "stop_distance_m": 0.2011,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
      },
-     "hover_0.095_min_margin_m": -0.0301,
+     "hover_0.095_min_margin_m": -0.0285,
      "straight_min_tool_z_15": 0.125,
-     "straight_min_tool_z_7.5": 0.11
+     "straight_min_tool_z_7.5": 0.105
     }
    }
   },
@@ -500,18 +502,18 @@
      "pitch_deg": -40,
      "tool_z_m": 0.151
     },
-    "near_face_from_sensor_m": 0.0852,
+    "near_face_from_sensor_m": 0.0792,
     "pitch_change_from_grasp_deg": 16.92,
     "pitch_deg": -50.04,
     "recommended_tool_z_m": 0.125,
     "required_tool_z_m": {
      "near_face": {
-      "15": 0.1246,
-      "7.5": 0.113
+      "15": 0.123,
+      "7.5": 0.1122
      },
      "whole_beam": {
-      "15": 0.3052,
-      "7.5": 0.2118
+      "15": 0.3036,
+      "7.5": 0.2111
      }
     }
    },
@@ -519,44 +521,44 @@
     "box": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1275,
-      "min_margin_m": 0.0391,
+      "item_front_beyond_sensor_m": 0.1215,
+      "min_margin_m": 0.0408,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2045,
+      "stop_distance_m": 0.1985,
       "tool_x_m": 0.1393,
       "tool_z_m": 0.1726
      },
-     "hover_0.095_min_margin_m": -0.042,
+     "hover_0.095_min_margin_m": -0.0404,
      "straight_min_tool_z_15": 0.14,
      "straight_min_tool_z_7.5": 0.12
     },
     "can": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1291,
-      "min_margin_m": 0.0382,
+      "item_front_beyond_sensor_m": 0.1231,
+      "min_margin_m": 0.0398,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2061,
+      "stop_distance_m": 0.2001,
       "tool_x_m": 0.1393,
       "tool_z_m": 0.1726
      },
-     "hover_0.095_min_margin_m": -0.0427,
+     "hover_0.095_min_margin_m": -0.0411,
      "straight_min_tool_z_15": 0.14,
      "straight_min_tool_z_7.5": 0.12
     },
     "tile": {
      "carry_p30": {
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1295,
-      "min_margin_m": 0.0509,
+      "item_front_beyond_sensor_m": 0.1235,
+      "min_margin_m": 0.0525,
       "pitch_deg": -30.06,
-      "stop_distance_m": 0.2065,
+      "stop_distance_m": 0.2005,
       "tool_x_m": 0.1393,
       "tool_z_m": 0.1726
      },
-     "hover_0.095_min_margin_m": -0.03,
-     "straight_min_tool_z_15": 0.13,
-     "straight_min_tool_z_7.5": 0.11
+     "hover_0.095_min_margin_m": -0.0284,
+     "straight_min_tool_z_15": 0.125,
+     "straight_min_tool_z_7.5": 0.105
     }
    }
   }

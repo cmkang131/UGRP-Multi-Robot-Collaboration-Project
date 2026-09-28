@@ -13,8 +13,13 @@ valid). No simulator import (checked by ``tests/test_ultrasonic_range.py``).
 
 The same provider configuration is used in every communication condition:
 ``provider_config_for_condition`` ignores the condition by construction and
-refuses unknown names. It is OFF in every existing registered bundle; a run
-opts in by constructing a provider and recording its history.
+refuses unknown names. It is OFF in every existing registered bundle and no
+executor is wired to it yet; a run opts in by constructing a provider and
+recording its history (with the noise seed in the header).
+
+Reading status (``ok``/``blind``/``no_echo``/``sensor_absent``) is kept in the
+report so a consumer never mistakes the blind zone or a missing sensor for a
+clear path. ``reading_from_sdk`` maps raw Hiwonder SDK values to readings.
 """
 from __future__ import annotations
 
@@ -25,12 +30,15 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Protocol
 
-from harness.ultrasonic_model import (DEFAULT_SPEC, READING_SCHEMA, SENSOR_MODEL_ID, RangeReading,
-                                      UltrasonicSpec, spec_record)
+from harness.ultrasonic_model import (BLIND, DEFAULT_SPEC, NO_ECHO, OK, READING_SCHEMA, SENSOR_ABSENT, SENSOR_MODEL_ID,
+                                      RangeReading, UltrasonicSpec, invalid, spec_record)
 
-SOURCE_PREFIX = 'own_ultrasonic_v1'
-HISTORY_SCHEMA = 'ugrp.own_ultrasonic_history.v1'
-PROFILE_ID = 'own_ultrasonic_input.v1'
+SOURCE_PREFIX = 'own_ultrasonic_v2'
+HISTORY_SCHEMA = 'ugrp.own_ultrasonic_history.v2'
+PROFILE_ID = 'own_ultrasonic_input.v2'
+NOISE_SEED_RULE = 'harness.ultrasonic_model.sensor_seed(episode_seed, robot_id): sha256, condition-independent'
+NOISE_INDEX_RULE = 'tick = round(t_meas / period_s); separate crosstalk stream'
+SDK_FAILURE_VALUE = 99999
 
 
 @dataclass(frozen=True)
@@ -44,6 +52,8 @@ class RangeReport:
     max_range_m: float = DEFAULT_SPEC.max_range_m
     last_valid_t: float | None = None
     source: str = SOURCE_PREFIX
+    status: str | None = None       # latest reading status (None: no reading yet)
+    last_valid_range_m: float | None = None
 
     def as_dict(self) -> dict:
         return {'t_meas': None if self.t_meas is None else round(self.t_meas, 6),
@@ -51,7 +61,8 @@ class RangeReport:
                 'valid': self.valid, 'range_m': round(self.range_m, 4) if self.valid else None,
                 'sigma_m': round(self.sigma_m, 5) if self.valid else None,
                 'min_range_m': self.min_range_m, 'max_range_m': self.max_range_m,
-                'last_valid_t': self.last_valid_t, 'source': self.source}
+                'last_valid_t': self.last_valid_t, 'source': self.source, 'status': self.status,
+                'last_valid_range_m': self.last_valid_range_m}
 
 
 @dataclass(frozen=True)
@@ -69,8 +80,25 @@ def check_range_limits(report: RangeReport, now: float, limits: RangeLimits) -> 
     if now - report.t_meas > limits.max_age_s + 1e-9:
         bad.append('stale')
     if limits.require_valid and not report.valid:
-        bad.append('invalid')
+        bad.append('invalid' if report.status in (None, NO_ECHO) else report.status)
     return bad
+
+
+def reading_from_sdk(t: float, value_mm: int, spec: UltrasonicSpec = DEFAULT_SPEC) -> RangeReading:
+    """Map a raw Hiwonder ``Sonar.getDistance()`` value (integer mm) to a reading.
+
+    99999 -> sensor_absent (I2C failure); below ``min_range_m`` -> blind;
+    above ``max_range_m`` (incl. the 5000 clamp) -> no_echo; else ok.
+    """
+    v = int(value_mm)
+    if v == SDK_FAILURE_VALUE or v < 0:
+        return invalid(t, SENSOR_ABSENT)
+    r = v / 1000.
+    if r < spec.min_range_m:
+        return invalid(t, BLIND)
+    if r > spec.max_range_m:
+        return invalid(t, NO_ECHO)
+    return RangeReading(t, r, True, OK)
 
 
 class RangeProvider(Protocol):
@@ -95,7 +123,6 @@ class OwnUltrasonicRangeProvider:
     def __post_init__(self):
         self.source = source_label(self.spec)
         self._buf: deque[RangeReading] = deque()
-        self._last_valid_t: float | None = None
 
     def on_reading(self, reading: RangeReading) -> None:
         if self._buf and reading.t < self._buf[-1].t - 1e-12:
@@ -103,22 +130,22 @@ class OwnUltrasonicRangeProvider:
         if reading.valid and not (self.spec.min_range_m <= reading.range_m <= self.spec.sdk_clamp_m):
             raise ValueError('valid reading outside the sensor range')
         self._buf.append(reading)
-        if reading.valid:
-            self._last_valid_t = reading.t
         while self._buf and self._buf[0].t < reading.t - self.keep_s:
             self._buf.popleft()
 
     def report(self, now: float) -> RangeReport:
         latest = next((r for r in reversed(self._buf) if r.t <= now + 1e-12), None)
+        last = next((r for r in reversed(self._buf) if r.valid and r.t <= now + 1e-12), None)
         common = dict(min_range_m=self.spec.min_range_m, max_range_m=self.spec.max_range_m, source=self.source,
-                      last_valid_t=self._last_valid_t)
+                      last_valid_t=None if last is None else last.t,
+                      last_valid_range_m=None if last is None else last.range_m)
         if latest is None:
             return RangeReport(t_meas=None, age_s=None, valid=False, **common)
         age = float(now) - latest.t
         if not latest.valid:
-            return RangeReport(t_meas=latest.t, age_s=age, valid=False, **common)
+            return RangeReport(t_meas=latest.t, age_s=age, valid=False, status=latest.status, **common)
         return RangeReport(t_meas=latest.t, age_s=age, valid=True, range_m=latest.range_m,
-                           sigma_m=self.spec.sigma_m(latest.range_m), **common)
+                           sigma_m=self.spec.sigma_m(latest.range_m), status=OK, **common)
 
     def history(self, now: float, window_s: float) -> list[RangeReading]:
         return [r for r in self._buf if now - window_s - 1e-12 <= r.t <= now + 1e-12]
@@ -132,25 +159,28 @@ def provider_config_for_condition(condition_name: str, spec: UltrasonicSpec = DE
     record = spec_record(spec)
     return {'profile_id': PROFILE_ID, 'sensor_model_id': SENSOR_MODEL_ID, 'spec_sha256': record['sha256'],
             'source': source_label(spec), 'consumer': 'own executor (controller), not the LLM payload',
-            'default_in_existing_bundles': 'off'}
+            'default_in_existing_bundles': 'off', 'noise_seed_rule': NOISE_SEED_RULE,
+            'noise_index_rule': NOISE_INDEX_RULE}
 
 
 class RangeHistoryWriter:
     """Own-reading history as JSONL in the run output (hashed by the common run record).
 
-    Header row: schema, robot, sensor model, spec hash and source. Rows: the
-    ``RangeReading`` fields only (t, range_m, valid).
+    Header row: schema, robot, sensor model, spec hash, source and the noise
+    seed (required). Rows: the ``RangeReading`` fields only (t, range_m, valid, status).
     """
 
     def __init__(self, path: str | Path, robot_id: str, spec: UltrasonicSpec = DEFAULT_SPEC, *,
-                 run_meta: Mapping | None = None):
+                 noise_seed: int, run_meta: Mapping | None = None):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self._fh = self.path.open('x', encoding='utf-8')
         record = spec_record(spec)
         header = {'schema': HISTORY_SCHEMA, 'reading_schema': READING_SCHEMA, 'robot_id': robot_id,
                   'sensor_model_id': SENSOR_MODEL_ID, 'spec_sha256': record['sha256'], 'spec': record['spec'],
-                  'source': source_label(spec), 'run_meta': dict(run_meta or {})}
+                  'source': source_label(spec), 'noise_seed': str(int(noise_seed)),
+                  'noise_seed_rule': NOISE_SEED_RULE, 'noise_index_rule': NOISE_INDEX_RULE,
+                  'run_meta': dict(run_meta or {})}
         self._write(header)
         self.rows = 0
 
@@ -181,9 +211,9 @@ def read_history(path: str | Path) -> tuple[dict, list[RangeReading]]:
     rows = []
     for line in lines[1:]:
         row = json.loads(line)
-        if set(row) != {'t', 'range_m', 'valid'}:
-            raise ValueError('history row carries fields other than t, range_m, valid')
+        if set(row) != {'t', 'range_m', 'valid', 'status'}:
+            raise ValueError('history row carries fields other than t, range_m, valid, status')
         rows.append(RangeReading(row['t'], float('nan') if row['range_m'] is None else row['range_m'],
-                                 bool(row['valid'])))
+                                 bool(row['valid']), row['status']))
     return header, rows
 

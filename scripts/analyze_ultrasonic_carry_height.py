@@ -20,6 +20,7 @@ import hashlib
 import json
 import math
 import sys
+from contextlib import contextmanager
 from dataclasses import asdict, replace
 from pathlib import Path
 
@@ -40,7 +41,29 @@ def _forbid_physics() -> None:
 
 from harness import ultrasonic_carry as uc  # noqa: E402
 from harness import visual_arm as va  # noqa: E402
-from harness.ultrasonic_model import DEFAULT_SPEC  # noqa: E402
+from harness.ultrasonic_model import DEFAULT_SPEC, sensor_seed  # noqa: E402
+
+SEED = sensor_seed(11, 'r1')      # exact spec below: no noise is drawn, the seed only satisfies the contract
+
+
+@contextmanager
+def arm_links(link2_cm: float | None = None, gripper_cm: float | None = None):
+    """Temporarily evaluate the controller IK/FK with other link lengths (analysis-only sensitivity).
+
+    Mutates ``harness.visual_arm`` globals, so it lives here and never in an importable runtime module.
+    """
+    saved = (va.LINK_2_CM, va.GRIPPER_LINK_CM, dict(va.tool_pose.__kwdefaults__))
+    try:
+        if link2_cm is not None:
+            va.LINK_2_CM = float(link2_cm)
+        if gripper_cm is not None:
+            va.GRIPPER_LINK_CM = float(gripper_cm)
+            va.tool_pose.__kwdefaults__['tool_length_cm'] = float(gripper_cm)
+        yield
+    finally:
+        va.LINK_2_CM, va.GRIPPER_LINK_CM = saved[0], saved[1]
+        va.tool_pose.__kwdefaults__.clear()
+        va.tool_pose.__kwdefaults__.update(saved[2])
 
 BEAM_CENTER = (1.0, -1.2)
 LOAD_SHARE_KG = .300 / 2          # long_beam 0.300 kg, symmetric two-end carry
@@ -204,17 +227,11 @@ def evaluate_height(model, data, beam, tool_z, *, grasp_mask) -> dict:
     base = data.xpos[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, 'r1__robot')]
     row['sim_grip_site_m'] = {'forward': round(float(site.xpos[0] - base[0]), 4), 'z': round(float(site.xpos[2]), 4)}
     exact = replace(DEFAULT_SPEC, dropout_prob=0., outlier_prob=0., noise_sigma0_m=0., noise_rel=0.)
-    sonar = MujocoUltrasonic(model, data, 'r1', seed=0, spec=exact)
-    _, diag = sonar.measure_diagnostic(0.)
-    own = sonar.cast(include_own=True)
-    from harness.ultrasonic_model import first_echo_index
-    i = first_echo_index(own['dist'], sonar.alpha, own['beta'], exact)
+    sonar = MujocoUltrasonic(model, data, 'r1', seed=SEED, spec=exact)
+    _, diag = sonar.measure_diagnostic(0.)          # own arm and held load included (review P1)
     row['sonar'] = {'first_echo_m': None if diag['true_first_echo_m'] is None else round(diag['true_first_echo_m'], 4),
-                    'echo_geom': diag['echo_geom'],
-                    'sees_own_load': bool(diag['echo_geom'] and diag['echo_geom'].startswith(beam.body)),
-                    'with_own_arm_first_echo_m': None if i is None else round(float(own['dist'][i]), 4),
-                    'with_own_arm_echo_geom': None if i is None else mujoco.mj_id2name(
-                        model, mujoco.mjtObj.mjOBJ_GEOM, int(own['geom'][i]))}
+                    'echo_geom': diag['echo_geom'], 'echo_is_own_arm': diag['echo_is_own_arm'],
+                    'sees_own_load': bool(diag['echo_geom'] and diag['echo_geom'].startswith(beam.body))}
     row['bar_clearance'] = {rid: clearance(model, data, beam, rid) for rid in ('r1', 'r2')}
     row['tip_over_r1'] = tip_margins(model, data, 'r1', site.xpos.copy())
     mask, cam = camera_bar_mask(lift['pulses'], bottom)
@@ -367,15 +384,15 @@ def evaluate_solo(scene, model, data, kind, label, pulses, grasp_pitch):
         ranges = set_arm(model, data, 'r1', pulses)
         row['sim_joint_ranges_ok'] = all(v['within_range'] for v in ranges.values())
         site = place_solo(model, data, kind, pulses, tilt, uc.SoloMargins().load_sag_m)
-        sonar = MujocoUltrasonic(model, data, 'r1', seed=0, spec=exact)
-        own = sonar.cast(include_own=True)
+        sonar = MujocoUltrasonic(model, data, 'r1', seed=SEED, spec=exact)
+        own = sonar.cast()
         i = first_echo_index(own['dist'], sonar.alpha, own['beta'], exact)
         name = lambda g: mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, int(g))
         body = SOLO_BODIES[kind][0]
         hit = sorted({name(g) for g in own['geom'] if g >= 0})
         row['cases'][case] = {
             'tilt_deg': round(tilt, 2), 'grip_site_z_m': round(float(site[2]), 4),
-            'first_echo_with_own_arm_m': None if i is None else round(float(own['dist'][i]), 4),
+            'first_echo_m': None if i is None else round(float(own['dist'][i]), 4),
             'echo_geom': None if i is None else name(own['geom'][i]),
             'matches_map': i is not None and abs(float(own['dist'][i]) - expected) < .005,
             'own_arm_geoms_in_cone': [h for h in hit if h.startswith('r1__')],
@@ -419,7 +436,7 @@ def analyse_solo() -> dict:
                                    for label, pose in postures]}
         tp = va.tool_pose(uc.CARRY_P30)
         front = max(float(uc.item_points(item, tp.x_m, tp.z_m, t)[:, 0].max()) for t in (0., tp.pitch_deg - g_pitch))
-        ext = max(0., front - DEFAULT_SPEC.mount_x_m)
+        ext = max(0., front - DEFAULT_SPEC.face_x_m)
         rows[kind]['carry_p30_forward_rule'] = {
             'item_front_beyond_sensor_m': round(ext, 4),
             'stop_distance_m': round(uc.solo_stop_distance(ext), 4),
@@ -506,8 +523,8 @@ def sonar_view(scene, model, data, rid, beam) -> dict:
     from harness.ultrasonic_model import first_echo_index
     from sim.ultrasonic_range import MujocoUltrasonic
     exact = replace(DEFAULT_SPEC, dropout_prob=0., outlier_prob=0., noise_sigma0_m=0., noise_rel=0.)
-    sonar = MujocoUltrasonic(model, data, rid, seed=0, spec=exact)
-    own = sonar.cast(include_own=True)
+    sonar = MujocoUltrasonic(model, data, rid, seed=SEED, spec=exact)
+    own = sonar.cast()
     i = first_echo_index(own['dist'], sonar.alpha, own['beta'], exact)
     name = lambda g: mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, int(g)) or ''
     hit = sorted({name(g) for g in own['geom'] if g >= 0})
@@ -697,7 +714,7 @@ def own_arm_cone_angles(model, data, pulses, geom, n=5) -> dict:
     root = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, 'r1__robot')
     arm_root = int(model.jnt_bodyid[mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_JOINT, 'r1__arm_yaw')])
     R, base = data.xmat[root].reshape(3, 3), data.xpos[root]
-    sensor = np.array([geom.mount_x_m, 0., geom.mount_z_m])
+    sensor = np.array([geom.mount_x_m + geom.face_forward_m, 0., geom.mount_z_m])
     grid = np.array([(a, b, c) for a in np.linspace(-1, 1, n) for b in np.linspace(-1, 1, n) for c in np.linspace(-1, 1, n)])
     best = (180., None)
     for g in _robot_geoms(model, 'r1'):
@@ -751,8 +768,10 @@ def analyse_geometries() -> dict:
         out['geometries'][name] = {
             'geometry': asdict(geom), 'pair_straight': _pair_block(geom, spec), 'solo': _solo_block(geom, spec),
             'own_arm_in_cone': arm_cone,
-            'pair_side': {'beam_front_x_m': round(geom.arm_axis_x_m + .02, 4), 'sensor_x_m': geom.mount_x_m,
-                          'beam_behind_sensor_plane_by_m': round(geom.mount_x_m - geom.arm_axis_x_m - .02, 4),
+            'pair_side': {'beam_front_x_m': round(geom.arm_axis_x_m + .02, 4),
+                          'sensor_face_x_m': round(geom.mount_x_m + geom.face_forward_m, 4),
+                          'beam_behind_sensor_plane_by_m': round(geom.mount_x_m + geom.face_forward_m
+                                                                 - geom.arm_axis_x_m - .02, 4),
                           'robot_centre_offset_from_beam_axis_m': geom.arm_axis_x_m,
                           'turn_90_about_centre_grip_shift_m': round(uc.turn_in_place_grip_shift_m(90., geom), 4),
                           'straight_formation_length_change_m': round(2 * geom.arm_axis_x_m, 4)}}
@@ -761,7 +780,7 @@ def analyse_geometries() -> dict:
     for label, l2, gr in (('sdk_6.5_10.0', None, None), ('upper_5.77', uc.DRAWING_LINK2_CM, None),
                           ('gripper_9.4', None, uc.DRAWING_GRIPPER_CM),
                           ('both', uc.DRAWING_LINK2_CM, uc.DRAWING_GRIPPER_CM)):
-        with uc.arm_links(l2, gr):
+        with arm_links(l2, gr):
             row = {'link2_cm': va.LINK_2_CM, 'gripper_cm': va.GRIPPER_LINK_CM,
                    'min_tool_z_calibrated_m': min_tool_z(),
                    'max_tool_z_calibrated': uc.max_tool_z(),
@@ -778,18 +797,100 @@ def analyse_geometries() -> dict:
     return out
 
 
+# --- review P1: every arm pose with the own arm and load included ------------------------------
+
+def _echo_row(model, data, rid, beam_body=None, item_body=None):
+    from sim.ultrasonic_range import MujocoUltrasonic
+    exact = replace(DEFAULT_SPEC, dropout_prob=0., outlier_prob=0., noise_sigma0_m=0., noise_rel=0.)
+    sonar = MujocoUltrasonic(model, data, rid, seed=SEED, spec=exact)
+    reading, diag = sonar.measure_diagnostic(0.)
+    geom = diag['echo_geom'] or ''
+    load = beam_body or item_body
+    return {'first_echo_m': None if diag['true_first_echo_m'] is None else round(diag['true_first_echo_m'], 4),
+            'status': reading.status, 'echo_geom': diag['echo_geom'], 'echo_is_own_arm': diag['echo_is_own_arm'],
+            'echo_is_own_load': bool(load and geom.startswith(load)),
+            'own_arm_geoms_hit': sorted(h for h in diag['hit_geoms'] if h.startswith(rid + '__'))}
+
+
+def pose_sweep() -> dict:
+    """Grasp, lowering, hover and carry poses (pair beam and solo items), own arm + load included."""
+    out = {'schema': 'ugrp.ultrasonic_own_arm_pose_sweep.v1', 'note': (
+        'Review P1 (PR #248): the SIM rays skip only the own chassis side (chassis with sensor housing, '
+        'wheels); arm, gripper, jaws, camera and held loads are included, as the physical sensor sees them.')}
+    model, data, beam, xml_sha = build_scene()
+    out['pair_scene_xml_sha256'] = xml_sha
+    g_pitch = va.tool_pose(uc.grasp_pose()).pitch_deg
+    rows = []
+    for label, z in (('grasp', uc.GRIP_ABOVE_BOTTOM_M), ('lower_0.040', .040), ('lower_0.060', .060),
+                     ('lower_0.080', .080), ('hover_0.095', .095), ('lift_0.110', .110), ('lift_0.120', .120)):
+        pulses = va.solve_grip_ik(uc.GRASP_RADIUS_M, 0., z, g_pitch) if label.startswith(('grasp', 'lower', 'hover')) \
+            else uc.lift_ik(z)['pulses']
+        on_floor = label.startswith(('grasp', 'lower', 'hover'))
+        for held in ((False, True) if not on_floor else (False,)):
+            bottom = 0. if on_floor else uc.expected_bar_bottom(va.tool_pose(pulses).z_m)
+            place(model, data, beam, pulses, bottom if (held or on_floor) else 0.)
+            row = {'pose': label, 'tool_z_m': round(va.tool_pose(pulses).z_m, 4),
+                   'pitch_deg': round(va.tool_pose(pulses).pitch_deg, 2),
+                   'beam': 'on_floor' if on_floor or not held else 'held', **_echo_row(model, data, 'r1', beam.body)}
+            if on_floor and label != 'grasp':
+                row['beam'] = 'on_floor (arm descending/ascending empty or before closing)'
+            rows.append(row)
+    out['pair_r1'] = rows
+    scene, model, data, xml_sha = build_solo_scene()
+    out['solo_scene_xml_sha256'] = xml_sha
+    solo = {}
+    for kind, item in uc.SOLO_ITEMS.items():
+        body = SOLO_BODIES[kind][0]
+        gp = uc.solo_lift(item, .095)['grasp_pitch_deg']
+        krows = []
+        heights = [('grasp', item.grip_above_bottom_m), ('lower_0.060', .060), ('hover_0.095', .095)]
+        rec = uc.recommended_solo_tool_z(kind)
+        for label, z in heights + [(f'straight_{rec:g}', rec)]:
+            pulses = va.solve_grip_ik(uc.GRASP_RADIUS_M, 0., z, gp)
+            for held in ((True,) if label.startswith('straight') else (False, True)):
+                if held:
+                    place_solo(model, data, kind, pulses, 0., 0. if label == 'grasp' else uc.SoloMargins().load_sag_m)
+                else:
+                    _park_all(model, data)
+                    x, y, yaw = SOLO_POSE
+                    _free(model, data, 'r1__base_free', x, y, .0325, yaw)
+                    set_arm(model, data, 'r1', pulses)
+                    mujoco.mj_forward(model, data)
+                krows.append({'pose': label, 'held': held, 'tool_z_m': round(va.tool_pose(pulses).z_m, 4),
+                              **_echo_row(model, data, 'r1', item_body=body)})
+        tp = va.tool_pose(uc.CARRY_P30)
+        for held in (False, True):
+            if held:
+                place_solo(model, data, kind, dict(uc.CARRY_P30), tp.pitch_deg - gp, uc.SoloMargins().load_sag_m)
+            else:
+                _park_all(model, data)
+                _free(model, data, 'r1__base_free', *SOLO_POSE[:2], .0325, SOLO_POSE[2])
+                set_arm(model, data, 'r1', dict(uc.CARRY_P30))
+                mujoco.mj_forward(model, data)
+            krows.append({'pose': 'carry_p30', 'held': held, 'tool_z_m': round(tp.z_m, 4),
+                          **_echo_row(model, data, 'r1', item_body=body)})
+        solo[kind] = krows
+    out['solo_r1'] = solo
+    return out
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument('--out', type=Path, required=True)
     p.add_argument('--solo-out', type=Path, default=None, help='also write the solo-carry analysis here')
     p.add_argument('--side-out', type=Path, default=None, help='also write the side-grasp pair analysis here')
     p.add_argument('--geometry-out', type=Path, default=None, help='also write the v2/v3 geometry comparison here')
+    p.add_argument('--pose-sweep-out', type=Path, default=None, help='also write the own-arm pose sweep here')
     a = p.parse_args(argv)
     _forbid_physics()
     if a.solo_out is not None:
         solo = analyse_solo()
         a.solo_out.parent.mkdir(parents=True, exist_ok=True)
         a.solo_out.write_text(json.dumps(solo, indent=1, sort_keys=True, ensure_ascii=False) + '\n')
+    if a.pose_sweep_out is not None:
+        sweep = pose_sweep()
+        a.pose_sweep_out.parent.mkdir(parents=True, exist_ok=True)
+        a.pose_sweep_out.write_text(json.dumps(sweep, indent=1, sort_keys=True, ensure_ascii=False) + '\n')
     if a.geometry_out is not None:
         geo = analyse_geometries()
         a.geometry_out.parent.mkdir(parents=True, exist_ok=True)

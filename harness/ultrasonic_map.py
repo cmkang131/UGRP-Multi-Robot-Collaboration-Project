@@ -4,10 +4,18 @@ Controller-side and simulator-free: inputs are the robot's own pose hypothesis
 (x, y, yaw), the pre-built static map (walls, door posts, floor) and the fixed
 sensor specification. Live objects (peer robots, cargo) are not in the static
 map, so a reading SHORTER than the map prediction is weak evidence (an unmapped
-object may be in front), while a reading clearly LONGER than the prediction, or
-no echo where the map predicts a wall well inside the range, is evidence
-against the pose. ``range_consistency`` and ``range_log_likelihood`` encode
-exactly that asymmetry for PF measurement models and overconfidence checks.
+object may be in front). A reading LONGER than the prediction, or no echo where
+the map predicts one, is also only moderate evidence against the pose:
+specular reflection and multipath produce long readings, unmapped surfaces met
+at grazing incidence can shadow a mapped wall, and the map itself has
+placement error (review of PR #248, P2-1).
+
+``range_log_likelihood`` is the standard beam-model mixture (Thrun, Burgard,
+Fox, *Probabilistic Robotics* 6.3: hit / short / max / rand) plus a specular
+(long) term, with a map-error sigma in the hit width, a SMOOTH detection
+probability instead of a hard incidence threshold, and a per-reading cap on
+the log-likelihood ratio (uncalibrated until the bench step in the doc).
+Weights are hypotheses, not fitted values.
 
 The same ``ray_pattern`` / ``first_echo`` as the SIM sensor are used, so the
 prediction differs from the SIM reading only by what the static map omits and
@@ -21,18 +29,34 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from harness.ultrasonic_model import (DEFAULT_SPEC, UltrasonicSpec, first_echo, incidence_angle,
-                                      ray_pattern, sensor_pose, sensor_rotation)
+from harness.ultrasonic_model import (DEFAULT_SPEC, UltrasonicSpec, directivity, first_echo, incidence_angle,
+                                      incidence_gain, ray_pattern, sensor_pose, sensor_rotation)
+
+MAP_SIGMA_M = .02          # assumption: static map placement error (walls, posts), per reading
+DETECT_WIDTH = .05         # assumption: soft width of the echo threshold in amplitude units
 
 
 @dataclass(frozen=True)
 class ExpectedRange:
-    range_m: float | None          # noise-free first echo, None = no echo expected
+    range_m: float | None          # noise-free first echo (hard threshold, = the SIM sensor), None = none
     sigma_m: float | None          # reading noise at that range
+    p_detect: float | None = None  # smooth detection probability of the strongest mapped echo
+    weak_range_m: float | None = None   # range of the strongest mapped echo even when below threshold
 
     @property
     def echo(self) -> bool:
         return self.range_m is not None
+
+    def detection(self, spec: UltrasonicSpec = DEFAULT_SPEC) -> tuple[float, float | None]:
+        """(p_detect, range used for the hit term); falls back to the hard prediction."""
+        if self.p_detect is not None:
+            return self.p_detect, self.range_m if self.range_m is not None else self.weak_range_m
+        return (1. if self.echo else 0.), self.range_m
+
+
+def detection_probability(amplitude: float, spec: UltrasonicSpec = DEFAULT_SPEC, width: float = DETECT_WIDTH) -> float:
+    """Logistic detection probability around ``echo_threshold`` (no knife-edge at the visibility boundary)."""
+    return 1. / (1. + math.exp(-(float(amplitude) - spec.echo_threshold) / width))
 
 
 def static_boxes(static_map: Mapping) -> list[dict]:
@@ -93,61 +117,112 @@ def expected_range(static_map: Mapping, pose_xyyaw: Sequence[float], spec: Ultra
         best = np.where(closer, t, best)
         normal[closer] = n[closer]
     dist = np.where(np.isfinite(best), best, -1.)
-    r = first_echo(dist, alpha, incidence_angle(dirs, normal), spec)
-    return ExpectedRange(r, None if r is None else spec.sigma_m(r))
+    beta = incidence_angle(dirs, normal)
+    r = first_echo(dist, alpha, beta, spec)
+    amp = directivity(alpha, spec) * incidence_gain(beta, spec)
+    ok = (dist >= 0.) & (dist <= spec.max_range_m)
+    if ok.any():
+        k = int(np.flatnonzero(ok)[np.argmax(amp[ok])])
+        p_det, weak = detection_probability(float(amp[k]), spec), float(dist[k])
+    else:
+        p_det, weak = 0., None
+    if r is not None:
+        p_det = max(p_det, .5)          # a hard-threshold echo is at least an even bet
+    return ExpectedRange(r, None if r is None else spec.sigma_m(r), p_det, weak)
 
 
 # --- measurement model -------------------------------------------------------------------------
 
 CONSISTENT = 'consistent'
 SHORTER = 'shorter_than_map'            # unmapped object in front: not evidence against the pose
-LONGER = 'longer_than_map'              # map wall should have echoed first: evidence against the pose
+LONGER = 'longer_than_map'              # moderate evidence against the pose (specular/multipath/map error possible)
 MISSING_ECHO = 'no_echo_where_map_predicts'
+AMBIGUOUS_NO_ECHO = 'no_echo_near_visibility_edge'   # map echo exists but detection is uncertain
 UNEXPECTED_ECHO = 'echo_where_map_predicts_none'
 BOTH_NONE = 'no_echo_consistent'
+BLIND_READING = 'blind_zone'            # something closer than min range: never "consistent"
+NO_SENSOR = 'sensor_absent'
+
+
+def _total_sigma(r: float, spec: UltrasonicSpec, pose_sigma_m: float, map_sigma_m: float) -> float:
+    return math.sqrt(spec.sigma_m(r) ** 2 + pose_sigma_m ** 2 + map_sigma_m ** 2)
 
 
 def range_consistency(range_m: float | None, valid: bool, expected: ExpectedRange,
                       spec: UltrasonicSpec = DEFAULT_SPEC, *, k_sigma: float = 3.,
-                      pose_sigma_m: float = 0.) -> str:
+                      pose_sigma_m: float = 0., map_sigma_m: float = MAP_SIGMA_M, status: str | None = None,
+                      p_certain: float = .9) -> str:
     """Classify one reading against the static-map prediction.
 
     ``pose_sigma_m`` widens the band by the pose uncertainty projected on the
-    beam axis (a caller-supplied scalar, e.g. the PF's std along the heading).
+    beam axis (a caller-supplied scalar, e.g. the PF's std along the heading);
+    ``map_sigma_m`` by the map placement error. ``status`` (reading status)
+    separates the blind zone and a missing sensor from a real no-echo.
     """
+    if status == 'blind':
+        return BLIND_READING
+    if status == 'sensor_absent':
+        return NO_SENSOR
+    p_det, r_exp = expected.detection(spec)
     if not valid:
-        return MISSING_ECHO if expected.echo else BOTH_NONE
-    if not expected.echo:
-        return UNEXPECTED_ECHO
-    band = k_sigma * math.hypot(spec.sigma_m(expected.range_m), pose_sigma_m)
-    if range_m > expected.range_m + band:
+        if r_exp is None or p_det < 1. - p_certain:
+            return BOTH_NONE
+        return MISSING_ECHO if p_det >= p_certain else AMBIGUOUS_NO_ECHO
+    if r_exp is None or not expected.echo:
+        return UNEXPECTED_ECHO if r_exp is None or abs(range_m - r_exp) > k_sigma * _total_sigma(
+            r_exp, spec, pose_sigma_m, map_sigma_m) else CONSISTENT
+    band = k_sigma * _total_sigma(r_exp, spec, pose_sigma_m, map_sigma_m)
+    if range_m > r_exp + band:
         return LONGER
-    if range_m < expected.range_m - band:
+    if range_m < r_exp - band:
         return SHORTER
     return CONSISTENT
 
 
-def range_log_likelihood(range_m: float | None, valid: bool, expected: ExpectedRange,
-                         spec: UltrasonicSpec = DEFAULT_SPEC, *, w_hit: float = .80, w_short: float = .15,
-                         short_rate_per_m: float = 1.5, pose_sigma_m: float = 0.) -> float:
-    """Beam-model log likelihood (hit + unmapped-short + uniform spurious), bounded below.
+@dataclass(frozen=True)
+class BeamWeights:
+    """Mixture weights of the detected branch (sum 1) and the undetected branch (short/rand, rest = no echo)."""
+    hit: float = .70
+    short: float = .12
+    specular: float = .08          # long reading: specular / multipath / map error beyond the wall
+    rand: float = .03
+    max: float = .07               # no echo although the map echo is detectable (dropout, absorption)
+    short_rate_per_m: float = 1.5
 
-    Invalid readings: likely when no echo is predicted, ``dropout_prob`` when an
-    echo is predicted. Weights are starting values for the v6 integration, not
-    fitted parameters.
+
+def range_log_likelihood(range_m: float | None, valid: bool, expected: ExpectedRange,
+                         spec: UltrasonicSpec = DEFAULT_SPEC, *, weights: BeamWeights = BeamWeights(),
+                         pose_sigma_m: float = 0., map_sigma_m: float = MAP_SIGMA_M,
+                         max_abs_llr_nats: float | None = 2., status: str | None = None) -> float:
+    """Beam-model log likelihood with soft detection, bounded to +-``max_abs_llr_nats`` around a flat reference.
+
+    ``p(z) = p_det * [hit N(z; r, s) + short Exp + specular U(r, max) + rand U + max 1{no echo}]
+           + (1 - p_det) * [short Exp + rand U + (1 - short - rand) 1{no echo}]``
+    with ``s^2 = sensor^2 + pose^2 + map^2``. Blind-zone and sensor-absent
+    readings carry no pose information (return the reference, 0 LLR).
     """
+    w = weights
     span = spec.max_range_m - spec.min_range_m
-    w_rand = max(spec.outlier_prob, 1e-3)
+    ref_valid, ref_invalid = math.log(1. / span), math.log(.5)
+    if status in ('blind', 'sensor_absent'):
+        return ref_invalid
+    p_det, r_exp = expected.detection(spec)
+    lam = w.short_rate_per_m
     if not valid:
-        p = (1. - w_rand) if not expected.echo else max(spec.dropout_prob, 1e-3)
-        return math.log(p)
-    if not expected.echo:
-        # Unmapped object (short) or spurious; no hit term.
-        return math.log(w_short * short_rate_per_m * math.exp(-short_rate_per_m * range_m) + w_rand / span)
-    sigma = math.hypot(spec.sigma_m(expected.range_m), pose_sigma_m)
-    hit = w_hit * math.exp(-.5 * ((range_m - expected.range_m) / sigma) ** 2) / (sigma * math.sqrt(2 * math.pi))
-    short = 0.
-    if range_m < expected.range_m:
-        norm = 1. - math.exp(-short_rate_per_m * expected.range_m)
-        short = w_short * short_rate_per_m * math.exp(-short_rate_per_m * range_m) / max(norm, 1e-9)
-    return math.log(hit + short + w_rand / span)
+        p = p_det * w.max + (1. - p_det) * (1. - w.short - w.rand)
+        ll, ref = math.log(max(p, 1e-9)), ref_invalid
+    else:
+        z = float(range_m)
+        e_all = lam * math.exp(-lam * z) / (1. - math.exp(-lam * spec.max_range_m))
+        undetected = w.short * e_all + w.rand / span
+        detected = 0.
+        if r_exp is not None:
+            s = _total_sigma(r_exp, spec, pose_sigma_m, map_sigma_m)
+            hit = w.hit * math.exp(-.5 * ((z - r_exp) / s) ** 2) / (s * math.sqrt(2 * math.pi))
+            short = (w.short * lam * math.exp(-lam * z) / max(1. - math.exp(-lam * r_exp), 1e-9)) if z < r_exp else 0.
+            spec_long = w.specular / max(spec.max_range_m - r_exp, 1e-3) if z > r_exp else 0.
+            detected = hit + short + spec_long + w.rand / span
+        ll, ref = math.log(max(p_det * detected + (1. - p_det) * undetected, 1e-12)), ref_valid
+    if max_abs_llr_nats is not None:
+        ll = min(max(ll, ref - max_abs_llr_nats), ref + max_abs_llr_nats)
+    return ll

@@ -2,9 +2,9 @@
  "kinds": {
   "box": {
    "carry_p30_forward_rule": {
-    "item_front_beyond_sensor_m": 0.0906,
-    "slow_distance_m": 0.3006,
-    "stop_distance_m": 0.1676
+    "item_front_beyond_sensor_m": 0.0846,
+    "slow_distance_m": 0.2946,
+    "stop_distance_m": 0.1616
    },
    "grasp_camera": {
     "camera_height_m": 0.0594,
@@ -34,16 +34,16 @@
      "analytic": {
       "cases": {
        "level": {
-        "margin_m": -0.0241,
+        "margin_m": -0.0225,
         "tilt_deg": 0.0
        },
        "rigid": {
-        "margin_m": -0.0227,
+        "margin_m": -0.0211,
         "tilt_deg": 8.01
        }
       },
       "clear": false,
-      "item_front_beyond_sensor_m": 0.0971,
+      "item_front_beyond_sensor_m": 0.0911,
       "pitch_deg": -64.08,
       "tool_x_m": 0.1549,
       "tool_z_m": 0.0949
@@ -51,7 +51,7 @@
      "cases": {
       "level": {
        "echo_geom": "cargo_box_00_geom",
-       "first_echo_with_own_arm_m": 0.0604,
+       "first_echo_m": 0.0544,
        "grip_site_z_m": 0.0949,
        "item_in_cone": true,
        "matches_map": false,
@@ -60,7 +60,7 @@
       },
       "rigid": {
        "echo_geom": "cargo_box_00_geom",
-       "first_echo_with_own_arm_m": 0.0635,
+       "first_echo_m": 0.0575,
        "grip_site_z_m": 0.0949,
        "item_in_cone": true,
        "matches_map": false,
@@ -68,7 +68,7 @@
        "tilt_deg": 8.01
       }
      },
-     "map_expected_m": 0.497,
+     "map_expected_m": 0.491,
      "pitch_change_from_grasp_deg": 8.01,
      "pitch_deg": -64.08,
      "posture": "hover_0.095",
@@ -107,16 +107,16 @@
      "analytic": {
       "cases": {
        "level": {
-        "margin_m": 0.001,
+        "margin_m": 0.0026,
         "tilt_deg": 0.0
        },
        "rigid": {
-        "margin_m": 0.0038,
+        "margin_m": 0.0054,
         "tilt_deg": 16.11
        }
       },
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1,
+      "item_front_beyond_sensor_m": 0.094,
       "pitch_deg": -55.98,
       "tool_x_m": 0.155,
       "tool_z_m": 0.12
@@ -124,7 +124,7 @@
      "cases": {
       "level": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.12,
        "item_in_cone": false,
        "matches_map": true,
@@ -133,7 +133,7 @@
       },
       "rigid": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.12,
        "item_in_cone": false,
        "matches_map": true,
@@ -141,7 +141,7 @@
        "tilt_deg": 16.11
       }
      },
-     "map_expected_m": 0.497,
+     "map_expected_m": 0.491,
      "pitch_change_from_grasp_deg": 16.11,
      "pitch_deg": -55.98,
      "posture": "straight_0.120",
@@ -180,20 +180,20 @@
      "analytic": {
       "cases": {
        "level": {
-        "margin_m": 0.0649,
+        "margin_m": 0.0665,
         "tilt_deg": 0.0
        },
        "rigid": {
-        "margin_m": 0.0639,
+        "margin_m": 0.0655,
         "tilt_deg": 42.03
        },
        "tilt_32": {
-        "margin_m": 0.0647,
+        "margin_m": 0.0663,
         "tilt_deg": 32.0
        }
       },
       "clear": true,
-      "item_front_beyond_sensor_m": 0.0906,
+      "item_front_beyond_sensor_m": 0.0846,
       "pitch_deg": -30.06,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
@@ -201,7 +201,7 @@
      "cases": {
       "level": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.1799,
        "item_in_cone": false,
        "matches_map": true,
@@ -210,7 +210,7 @@
       },
       "rigid": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.1799,
        "item_in_cone": false,
        "matches_map": true,
@@ -218,7 +218,7 @@
        "tilt_deg": 42.03
       }
      },
-     "map_expected_m": 0.497,
+     "map_expected_m": 0.491,
      "pitch_change_from_grasp_deg": 42.03,
      "pitch_deg": -30.06,
      "posture": "carry_p30",
@@ -262,9 +262,9 @@
   },
   "can": {
    "carry_p30_forward_rule": {
-    "item_front_beyond_sensor_m": 0.0921,
-    "slow_distance_m": 0.3021,
-    "stop_distance_m": 0.1691
+    "item_front_beyond_sensor_m": 0.0861,
+    "slow_distance_m": 0.2961,
+    "stop_distance_m": 0.1631
    },
    "grasp_camera": {
     "camera_height_m": 0.0594,
@@ -294,16 +294,16 @@
      "analytic": {
       "cases": {
        "level": {
-        "margin_m": -0.0248,
+        "margin_m": -0.0232,
         "tilt_deg": 0.0
        },
        "rigid": {
-        "margin_m": -0.0231,
+        "margin_m": -0.0215,
         "tilt_deg": 8.01
        }
       },
       "clear": false,
-      "item_front_beyond_sensor_m": 0.0991,
+      "item_front_beyond_sensor_m": 0.0931,
       "pitch_deg": -64.08,
       "tool_x_m": 0.1549,
       "tool_z_m": 0.0949
@@ -311,7 +311,7 @@
      "cases": {
       "level": {
        "echo_geom": "cargo_can__shell",
-       "first_echo_with_own_arm_m": 0.0584,
+       "first_echo_m": 0.0527,
        "grip_site_z_m": 0.0949,
        "item_in_cone": true,
        "matches_map": false,
@@ -320,7 +320,7 @@
       },
       "rigid": {
        "echo_geom": "cargo_can__shell",
-       "first_echo_with_own_arm_m": 0.0615,
+       "first_echo_m": 0.0555,
        "grip_site_z_m": 0.0949,
        "item_in_cone": true,
        "matches_map": false,
@@ -328,7 +328,7 @@
        "tilt_deg": 8.01
       }
      },
-     "map_expected_m": 0.497,
+     "map_expected_m": 0.491,
      "pitch_change_from_grasp_deg": 8.01,
      "pitch_deg": -64.08,
      "posture": "hover_0.095",
@@ -367,16 +367,16 @@
      "analytic": {
       "cases": {
        "level": {
-        "margin_m": 0.0003,
+        "margin_m": 0.0019,
         "tilt_deg": 0.0
        },
        "rigid": {
-        "margin_m": 0.0036,
+        "margin_m": 0.0052,
         "tilt_deg": 16.11
        }
       },
       "clear": true,
-      "item_front_beyond_sensor_m": 0.102,
+      "item_front_beyond_sensor_m": 0.096,
       "pitch_deg": -55.98,
       "tool_x_m": 0.155,
       "tool_z_m": 0.12
@@ -384,7 +384,7 @@
      "cases": {
       "level": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.12,
        "item_in_cone": false,
        "matches_map": true,
@@ -393,7 +393,7 @@
       },
       "rigid": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.12,
        "item_in_cone": false,
        "matches_map": true,
@@ -401,7 +401,7 @@
        "tilt_deg": 16.11
       }
      },
-     "map_expected_m": 0.497,
+     "map_expected_m": 0.491,
      "pitch_change_from_grasp_deg": 16.11,
      "pitch_deg": -55.98,
      "posture": "straight_0.120",
@@ -440,20 +440,20 @@
      "analytic": {
       "cases": {
        "level": {
-        "margin_m": 0.0642,
+        "margin_m": 0.0658,
         "tilt_deg": 0.0
        },
        "rigid": {
-        "margin_m": 0.0628,
+        "margin_m": 0.0644,
         "tilt_deg": 42.03
        },
        "tilt_32": {
-        "margin_m": 0.0639,
+        "margin_m": 0.0655,
         "tilt_deg": 32.0
        }
       },
       "clear": true,
-      "item_front_beyond_sensor_m": 0.0921,
+      "item_front_beyond_sensor_m": 0.0861,
       "pitch_deg": -30.06,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
@@ -461,7 +461,7 @@
      "cases": {
       "level": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.1799,
        "item_in_cone": false,
        "matches_map": true,
@@ -470,7 +470,7 @@
       },
       "rigid": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.1799,
        "item_in_cone": false,
        "matches_map": true,
@@ -478,7 +478,7 @@
        "tilt_deg": 42.03
       }
      },
-     "map_expected_m": 0.497,
+     "map_expected_m": 0.491,
      "pitch_change_from_grasp_deg": 42.03,
      "pitch_deg": -30.06,
      "posture": "carry_p30",
@@ -522,9 +522,9 @@
   },
   "tile": {
    "carry_p30_forward_rule": {
-    "item_front_beyond_sensor_m": 0.0919,
-    "slow_distance_m": 0.3019,
-    "stop_distance_m": 0.1689
+    "item_front_beyond_sensor_m": 0.0859,
+    "slow_distance_m": 0.2959,
+    "stop_distance_m": 0.1629
    },
    "grasp_camera": {
     "camera_height_m": 0.0426,
@@ -554,16 +554,16 @@
      "analytic": {
       "cases": {
        "level": {
-        "margin_m": -0.0122,
+        "margin_m": -0.0106,
         "tilt_deg": 0.0
        },
        "rigid": {
-        "margin_m": -0.0113,
+        "margin_m": -0.0096,
         "tilt_deg": 1.98
        }
       },
       "clear": false,
-      "item_front_beyond_sensor_m": 0.1071,
+      "item_front_beyond_sensor_m": 0.1011,
       "pitch_deg": -64.08,
       "tool_x_m": 0.1549,
       "tool_z_m": 0.0949
@@ -571,7 +571,7 @@
      "cases": {
       "level": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.0949,
        "item_in_cone": true,
        "matches_map": true,
@@ -580,7 +580,7 @@
       },
       "rigid": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.0949,
        "item_in_cone": true,
        "matches_map": true,
@@ -588,7 +588,7 @@
        "tilt_deg": 1.98
       }
      },
-     "map_expected_m": 0.497,
+     "map_expected_m": 0.491,
      "pitch_change_from_grasp_deg": 1.98,
      "pitch_deg": -64.08,
      "posture": "hover_0.095",
@@ -627,16 +627,16 @@
      "analytic": {
       "cases": {
        "level": {
-        "margin_m": 0.0029,
+        "margin_m": 0.0045,
         "tilt_deg": 0.0
        },
        "rigid": {
-        "margin_m": 0.0058,
+        "margin_m": 0.0074,
         "tilt_deg": 6.03
        }
       },
       "clear": true,
-      "item_front_beyond_sensor_m": 0.1075,
+      "item_front_beyond_sensor_m": 0.1015,
       "pitch_deg": -60.03,
       "tool_x_m": 0.155,
       "tool_z_m": 0.11
@@ -644,7 +644,7 @@
      "cases": {
       "level": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.11,
        "item_in_cone": false,
        "matches_map": true,
@@ -653,7 +653,7 @@
       },
       "rigid": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.11,
        "item_in_cone": false,
        "matches_map": true,
@@ -661,7 +661,7 @@
        "tilt_deg": 6.03
       }
      },
-     "map_expected_m": 0.497,
+     "map_expected_m": 0.491,
      "pitch_change_from_grasp_deg": 6.03,
      "pitch_deg": -60.03,
      "posture": "straight_0.110",
@@ -700,20 +700,20 @@
      "analytic": {
       "cases": {
        "level": {
-        "margin_m": 0.0769,
+        "margin_m": 0.0785,
         "tilt_deg": 0.0
        },
        "rigid": {
-        "margin_m": 0.0742,
+        "margin_m": 0.0758,
         "tilt_deg": 36.0
        },
        "tilt_32": {
-        "margin_m": 0.0759,
+        "margin_m": 0.0775,
         "tilt_deg": 32.0
        }
       },
       "clear": true,
-      "item_front_beyond_sensor_m": 0.0919,
+      "item_front_beyond_sensor_m": 0.0859,
       "pitch_deg": -30.06,
       "tool_x_m": 0.1399,
       "tool_z_m": 0.1799
@@ -721,7 +721,7 @@
      "cases": {
       "level": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.1799,
        "item_in_cone": false,
        "matches_map": true,
@@ -730,7 +730,7 @@
       },
       "rigid": {
        "echo_geom": "tag_049_r3c6",
-       "first_echo_with_own_arm_m": 0.495,
+       "first_echo_m": 0.489,
        "grip_site_z_m": 0.1799,
        "item_in_cone": false,
        "matches_map": true,
@@ -738,7 +738,7 @@
        "tilt_deg": 36.0
       }
      },
-     "map_expected_m": 0.497,
+     "map_expected_m": 0.491,
      "pitch_change_from_grasp_deg": 36.0,
      "pitch_deg": -30.06,
      "posture": "carry_p30",
@@ -795,9 +795,12 @@
  "schema": "ugrp.ultrasonic_solo_carry_analysis.v1",
  "spec": {
   "crosstalk": false,
+  "crosstalk_clock_tol": 0.005,
+  "crosstalk_jitter_s": 2e-05,
   "directivity_edge_gain": 0.5,
   "dropout_prob": 0.02,
   "echo_threshold": 0.2,
+  "face_forward_m": 0.006,
   "half_angle_deg": 15.0,
   "incidence_sigma_deg": 15.0,
   "max_range_m": 4.0,

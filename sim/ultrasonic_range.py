@@ -1,24 +1,31 @@
 """MuJoCo side of the MasterPi front ultrasonic sensor (``harness.ultrasonic_model``).
 
-Cone approximation: ``ray_pattern`` rays from the sensor origin on the chassis
-body, one ``mj_multiRay`` per reading plus a re-cast for rays that hit an
-excluded body. Minimum-return model: the nearest ray whose directivity x
+Cone approximation: ``ray_pattern`` rays from the transducer FACE on the
+chassis body, one ``mj_multiRay`` per reading plus re-casts for rays that hit
+an excluded body. Minimum-return model: the nearest ray whose directivity x
 incidence amplitude clears the threshold sets the range (first echo).
 
-Excluded from the rays (the sensor must not see itself):
-* every body in the own robot's kinematic tree (chassis, wheels, arm,
-  gripper) via ``model.body_rootid``;
-* geom groups 4 (mission-only floor overlays) and 5 (own camera hardware and
-  hidden prototypes), the same groups the robot camera hides;
-* transparent geoms (``mj_ray`` semantics: rgba alpha 0 is not a surface).
+Excluded from the rays (2026-09-28 review fix, PR #248 P1): ONLY the own
+chassis side of the robot tree (chassis body with the sensor housing, wheels):
+the physical sensor cannot see behind its own face or its housing. The own ARM
+(``<rid>__arm_base`` subtree: shoulder, elbow, wrist, camera, gripper, jaws)
+is NOT excluded: the real sensor sees its own gripper whenever it is in the
+cone (grasp, lowering). A HELD object is a separate free body and is not
+excluded either. There is deliberately no API to exclude the arm or the load.
 
-A HELD object is NOT excluded (2026-09-28 correction on #248): it is a separate
-free body, and the physical sensor sees its own load whenever the load is in
-the cone. There is deliberately no API to exclude it.
+Also skipped: geom group 4 (mission-only floor overlays) and transparent geoms
+(``mj_ray`` semantics: rgba alpha 0 is not a surface; the hidden prototypes in
+group 5 are alpha 0).
 
-The output is ``RangeReading(t, range_m, valid)`` only. ``measure_diagnostic``
-additionally returns what the rays hit and is for evaluation/tests only; it
-must never be passed to a controller, a provider or a model request.
+The output is ``RangeReading(t, range_m, valid, status)`` only.
+``measure_diagnostic`` additionally returns what the rays hit and is for
+evaluation/tests only; it must never be passed to a controller, a provider or
+a model request (``tests/test_ultrasonic_range.py`` checks that no executor
+module references it).
+
+Noise is indexed by the reading tick ``round(now / period_s)`` with a seed that
+the caller must give (``harness.ultrasonic_model.sensor_seed(episode_seed,
+robot_id)``), so matched times get matched noise in every condition.
 
 Stateless with respect to physics: reading the sensor calls no ``mj_step`` and
 no ``mj_forward`` (the caller's ``data`` must already be forwarded).
@@ -32,11 +39,12 @@ from dataclasses import dataclass, field
 import mujoco
 import numpy as np
 
-from harness.ultrasonic_model import (DEFAULT_SPEC, RangeReading, UltrasonicSpec, crosstalk_range,
-                                      first_echo, first_echo_index, incidence_angle, noisy_reading, ray_pattern, reading_rng)
-from sim.masterpi_geometry import NOMINAL_WHEEL_RADIUS_M
+from harness.ultrasonic_model import (DEFAULT_SPEC, NOISE_STREAM, RangeReading, UltrasonicSpec,
+                                      crosstalk_phase, crosstalk_range, first_echo, first_echo_index,
+                                      incidence_angle, noisy_reading_with_cause, ray_pattern, reading_rng,
+                                      reading_tick)
 
-SENSOR_GEOM_GROUPS = np.array([1, 1, 1, 1, 0, 0], dtype=np.uint8)
+SENSOR_GEOM_GROUPS = np.array([1, 1, 1, 1, 0, 1], dtype=np.uint8)
 MAX_RECASTS = 16
 
 
@@ -45,10 +53,11 @@ class MujocoUltrasonic:
     model: mujoco.MjModel
     data: mujoco.MjData
     robot_id: str
-    seed: int = 0
+    seed: int                            # required: harness.ultrasonic_model.sensor_seed(episode_seed, robot_id)
     spec: UltrasonicSpec = DEFAULT_SPEC
     chassis_body: str | None = None      # default: '<robot_id>__robot', or 'robot' for a single twin
-    seq: int = field(init=False, default=0)
+    site: str | None = None              # optional sensor site (e.g. a remodel's ultrasonic site)
+    truncated_rays: int = field(init=False, default=0)
 
     def __post_init__(self):
         name = self.chassis_body or f'{self.robot_id}__robot'
@@ -60,28 +69,51 @@ class MujocoUltrasonic:
         self.chassis_id = int(bid)
         root = int(self.model.body_rootid[bid])
         self.own_bodies = frozenset(int(b) for b in range(self.model.nbody) if int(self.model.body_rootid[b]) == root)
-        # Chassis frame origin is at wheel-axle height; the spec height is from the floor.
-        self.local_origin = np.array([self.spec.mount_x_m, self.spec.mount_y_m,
-                                      self.spec.mount_z_floor_m - NOMINAL_WHEEL_RADIUS_M])
+        self.arm_bodies = frozenset(b for b in self.own_bodies if self._in_arm(b))
+        self.chassis_side = frozenset(self.own_bodies - self.arm_bodies)      # the only bodies the rays skip
+        self.site_id = None
+        if self.site is not None:
+            sid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, self.site)
+            if sid < 0:
+                raise ValueError(f'missing sensor site {self.site!r}')
+            self.site_id = int(sid)
+        # Chassis frame height above the floor from the model (spawn pose), not a v2 constant.
+        chassis_z = float(self.model.body_pos[self.chassis_id][2]) if int(self.model.body_parentid[self.chassis_id]) == 0 else 0.
+        self.local_origin = np.array([self.spec.face_x_m, self.spec.mount_y_m, self.spec.mount_z_floor_m - chassis_z])
         dirs, self.alpha = ray_pattern(self.spec)
         p = math.radians(self.spec.mount_pitch_deg)
         pitch = np.array([[math.cos(p), 0., -math.sin(p)], [0., 1., 0.], [math.sin(p), 0., math.cos(p)]])
         self.local_dirs = dirs @ pitch.T
         self.next_due = -math.inf
 
+    def _in_arm(self, body: int) -> bool:
+        """Body is the arm base (the chassis child carrying the ``arm_yaw`` joint) or below it."""
+        while body > 0 and body != self.chassis_id:
+            parent = int(self.model.body_parentid[body])
+            if parent == self.chassis_id:
+                j0, nj = int(self.model.body_jntadr[body]), int(self.model.body_jntnum[body])
+                return any((mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_JOINT, j) or '').endswith('arm_yaw')
+                           for j in range(j0, j0 + nj))
+            body = parent
+        return False
+
     # --- geometry -------------------------------------------------------------------------------
     def pose(self) -> tuple[np.ndarray, np.ndarray]:
-        """World origin and 3x3 sensor rotation (forward, left, up) from the forwarded chassis."""
+        """World origin (transducer face) and 3x3 sensor rotation (forward, left, up)."""
+        if self.site_id is not None:
+            R = self.data.site_xmat[self.site_id].reshape(3, 3)
+            return self.data.site_xpos[self.site_id] + R[:, 0] * self.spec.face_forward_m, R
         R = self.data.xmat[self.chassis_id].reshape(3, 3)
         return self.data.xpos[self.chassis_id] + R @ self.local_origin, R
 
-    def cast(self, *, include_own: bool = False) -> dict:
-        """Per-ray first surface (distance, normal, geom); own robot tree excluded.
+    def cast(self, *, include_chassis: bool = False) -> dict:
+        """Per-ray first surface (distance, normal, geom). Only the own chassis side is skipped.
 
-        ``include_own=True`` is an evaluation-only diagnostic (what the physical
-        sensor would additionally see of its own arm); never a reading.
+        The own arm/gripper and any held load are always included (the real
+        sensor sees them). ``include_chassis=True`` is an evaluation-only
+        diagnostic; never a reading.
         """
-        excluded = set() if include_own else set(self.own_bodies)
+        excluded = set() if include_chassis else set(self.chassis_side)
         origin, R = self.pose()
         dirs = np.ascontiguousarray(self.local_dirs @ R.T)
         n = len(dirs)
@@ -89,7 +121,7 @@ class MujocoUltrasonic:
         dist = np.full(n, -1.)
         normal = np.zeros(3 * n)
         mujoco.mj_multiRay(self.model, self.data, origin, dirs.ravel(), SENSOR_GEOM_GROUPS, 1,
-                           -1 if include_own else self.chassis_id, geom, dist, normal, n, self.spec.max_range_m + .5)
+                           -1 if include_chassis else self.chassis_id, geom, dist, normal, n, self.spec.max_range_m + .5)
         normal = normal.reshape(n, 3)
         one_geom, one_normal = np.array([-1], np.int32), np.zeros(3)
         for i in range(n):
@@ -105,6 +137,7 @@ class MujocoUltrasonic:
                 dist[i] = d
             else:
                 geom[i], dist[i] = -1, -1.
+                self.truncated_rays += 1          # diagnostic: too many excluded surfaces on one ray
             if geom[i] >= 0:
                 dist[i] += travelled
             else:
@@ -129,25 +162,29 @@ class MujocoUltrasonic:
                            peers: Sequence['MujocoUltrasonic'] = ()) -> tuple[RangeReading, dict]:
         """EVALUATION ONLY: the reading plus what the rays hit (never give the dict to a controller)."""
         c = self.cast()
-        true = first_echo(c['dist'], self.alpha, c['beta'], self.spec)
-        rng = reading_rng(self.seed, self.robot_id, self.seq)
+        echo = first_echo(c['dist'], self.alpha, c['beta'], self.spec)
+        true = echo
+        tick = reading_tick(now, self.spec)
         crosstalk = None
         if self.spec.crosstalk and peers:
-            crosstalk = self._crosstalk(c['origin'], peers, rng)
+            crosstalk = self._crosstalk(c['origin'], peers, tick)
             if crosstalk is not None and (true is None or crosstalk < true):
                 true = crosstalk
-        reading = noisy_reading(float(now), true, rng, self.spec)
-        self.seq += 1
+        rng = reading_rng(self.seed, self.robot_id, tick, NOISE_STREAM)
+        reading, cause = noisy_reading_with_cause(float(now), true, rng, self.spec)
         self.next_due = float(now) + self.spec.period_s
         name = lambda g: mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_GEOM, int(g)) or str(int(g))
         hit_geoms = sorted({name(g) for g in c['geom'] if g >= 0})
         i = first_echo_index(c['dist'], self.alpha, c['beta'], self.spec)
-        return reading, {'true_first_echo_m': true, 'crosstalk_m': crosstalk, 'hit_geoms': hit_geoms,
-                         'echo_geom': None if i is None else name(c['geom'][i]),
-                         'n_rays': len(c['dist']), 'seq': self.seq - 1}
+        echo_geom = None if i is None else name(c['geom'][i])
+        return reading, {'true_first_echo_m': echo, 'crosstalk_m': crosstalk, 'hit_geoms': hit_geoms,
+                         'echo_geom': echo_geom, 'echo_is_own_arm': bool(i is not None and int(
+                             self.model.geom_bodyid[c['geom'][i]]) in self.arm_bodies),
+                         'cause': cause, 'tick': tick, 'n_rays': len(c['dist']),
+                         'truncated_rays_total': self.truncated_rays}
 
-    def _crosstalk(self, origin, peers, rng) -> float | None:
-        """Nearest apparent range from a peer pulse; peers fire at independent phases."""
+    def _crosstalk(self, origin, peers, tick) -> float | None:
+        """Nearest apparent range from a peer pulse (phase-correlated drift, ``crosstalk_phase``)."""
         best = None
         R_self = self.pose()[1]
         edge = math.cos(math.radians(self.spec.half_angle_deg))
@@ -160,17 +197,18 @@ class MujocoUltrasonic:
             u = v / d
             if R_self[:, 0] @ u < edge or R_peer[:, 0] @ -u < edge:
                 continue            # outside our receive cone or the peer's transmit cone
-            blocked = self._line_blocked(origin, u, d, set(peer.own_bodies))
+            blocked = self._line_blocked(origin, u, d, set(peer.chassis_side))
             if blocked:
                 continue
-            phase = (rng.random() - .5) * self.spec.period_s
+            pair_seed = min((self.robot_id, self.seed), (peer.robot_id, peer.seed))[1]   # shared by both ends
+            phase = crosstalk_phase(pair_seed, (self.robot_id, peer.robot_id), tick, self.spec)
             r = crosstalk_range(d, phase, self.spec)
             if r is not None and (best is None or r < best):
                 best = r
         return best
 
     def _line_blocked(self, origin, u, d, peer_bodies) -> bool:
-        excluded = set(self.own_bodies) | peer_bodies
+        excluded = set(self.chassis_side) | peer_bodies
         gid = np.array([-1], np.int32)
         start, travelled = origin.copy(), 0.
         for _ in range(MAX_RECASTS):
