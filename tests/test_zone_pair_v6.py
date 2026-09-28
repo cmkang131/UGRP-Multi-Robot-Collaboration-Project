@@ -320,41 +320,16 @@ def test_replay_stops_consuming_at_first_new_branch():
     with pytest.raises(ValueError):Reader().bytes(Path('/forbidden/eval_only/trace.jsonl'))
 
 
-CURRENT_TEST_REVISION = 'v6-current-tree-test'
-
-
-def _current_v6(tmp_path, monkeypatch, name='current.json', mutate=None):
-    """A v6-family DRAFT with the historical v6 science fields and the CURRENT tree's hashes.
-
-    v6 itself is historical (registration commit 3c26acdd); the admission path is
-    exercised on this synthetic current revision so that later source changes do
-    not break it.
-    """
-    from scripts import zone_pair_v6_contract as c
-    from scripts.zone_pair_authorization import digest, registration_payload
-    from scripts.zone_pair_dev_contract import scene_contract
-    p = json.loads(c.PREREG.read_text())
-    p.update(registration_revision=CURRENT_TEST_REVISION, status='DRAFT', runnable=False,
-             execution_authorization=None, v6_contract=c.contract(), scene_contract=scene_contract())
-    p.pop('draft_registration', None)
-    if mutate:
-        mutate(p)
-    p['registration_sha256'] = digest(registration_payload(p))
-    monkeypatch.setattr(c, 'CURRENT_REVISION', CURRENT_TEST_REVISION)
-    path = tmp_path/name
-    path.write_text(json.dumps(p))
-    return path, p
-
-
-@pytest.mark.parametrize('policy,run',[('v5h','v6-s911-v5h'),('b-only','v6-s911-b'),('a+b','v6-s911-ab')])
-def test_v6_family_draft_prepare_and_execution_refusal(tmp_path,monkeypatch,policy,run):
+@pytest.mark.parametrize('policy,run',[('v5h','v6b-s911-v5h'),('b-boot','v6b-s911-bboot'),('a+b-boot','v6b-s911-abboot')])
+def test_v6_draft_prepare_and_execution_refusal(tmp_path,policy,run):
+    # v6b is the current v6-family revision; v6 is historical (PR #259 cohort).
     from scripts import run_zone_pair_dev as dev
-    path,_=_current_v6(tmp_path,monkeypatch)
-    args=dev.parser().parse_args(['--prereg',str(path),'--run-id',run,'--pair-policy',policy,
+    from scripts.zone_pair_v6_contract import PREREG_V6B as PREREG
+    args=dev.parser().parse_args(['--prereg',str(PREREG),'--run-id',run,'--pair-policy',policy,
                                   '--output',str(tmp_path/'draft')])
     p,case=dev.load_config(args)
     assert case['pair_policy']==policy and p['execution_source_sha'] is None and p['approval'] is None
-    assert dev.main(['--prereg',str(path),'--run-id',run,'--pair-policy',policy,
+    assert dev.main(['--prereg',str(PREREG),'--run-id',run,'--pair-policy',policy,
                      '--output',str(tmp_path/'prepared')])==0
     manifest=json.loads((tmp_path/'prepared/manifest.json').read_text())
     assert manifest['pair_policy']==policy and manifest['applied'] is None and manifest['physical_success'] is None
@@ -395,27 +370,42 @@ def test_v6_historical_audit_uses_registration_commit_blobs(monkeypatch):
         c.verify_v6_historical()
 
 
-def test_v6_draft_status_still_refuses_execution(tmp_path, monkeypatch):
+def _v6_variant(tmp_path, name, mutate):
+    from scripts.zone_pair_authorization import digest, registration_payload
+    from scripts.zone_pair_v6_contract import PREREG_V6B
+    p = json.loads(PREREG_V6B.read_text())
+    mutate(p)
+    p['registration_sha256'] = digest(registration_payload(p))
+    path = tmp_path/name
+    path.write_text(json.dumps(p))
+    return path, p
+
+
+def test_v6_draft_status_still_refuses_execution(tmp_path):
     from scripts import run_zone_pair_dev as dev
-    path, _ = _current_v6(tmp_path, monkeypatch, 'draft.json')
-    args = dev.parser().parse_args(['--prereg', str(path), '--run-id', 'v6-s911-ab', '--output',
+    def to_draft(p):
+        assert p['status'] == 'DRAFT' and 'draft_registration' not in p
+    path, _ = _v6_variant(tmp_path, 'draft.json', to_draft)
+    args = dev.parser().parse_args(['--prereg', str(path), '--run-id', 'v6b-s911-abboot', '--output',
                                     str(tmp_path/'never'), '--execute'])
     with pytest.raises(ValueError, match='v6 DRAFT is prepare-only'):
         dev.load_config(args)
     assert not args.output.exists()
 
 
-def test_v6_registered_execution_needs_bound_envelope(tmp_path, monkeypatch):
-    """PR #259's REGISTERED admission path, on a current-revision registration."""
+def test_v6b_registered_execution_needs_bound_envelope(tmp_path):
+    """PR #259's REGISTERED admission path, kept for the current revision (v6b)."""
     from scripts import run_zone_pair_dev as dev
     from scripts.zone_pair_authorization import digest
+    from scripts.zone_pair_v6_contract import PREREG
+    assert json.loads(PREREG.read_text())['status'] == 'REGISTERED'         # v6 ran; now historical
     sha = 'a'*40
     def register(p):
         p.update(status='REGISTERED', runnable=True, draft_registration={
-            'path': 'experiments/2026-09-28-zone-pair-v6/prereg_v6.json',
+            'path': 'experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json',
             'commit': 'c'*40, 'sha256': 'd'*64, 'registration_sha256': 'e'*64})
-    path, p = _current_v6(tmp_path, monkeypatch, 'registered.json', register)
-    def envelope(p, run='v6-s912-b'):
+    path, p = _v6_variant(tmp_path, 'registered.json', register)
+    def envelope(p, run='v6b-s912-bboot'):
         auth = {'by': 'coordinator', 'source_sha': sha, 'registration_sha256': p['registration_sha256'],
                 'run_id': run,
                 'ref': 'https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-1'}
@@ -423,17 +413,17 @@ def test_v6_registered_execution_needs_bound_envelope(tmp_path, monkeypatch):
         p['execution_authorization'] = auth
     envelope(p)
     path.write_text(json.dumps(p))
-    out = dev.primary_root()/'outputs/never-created-v6-registration-test'
-    base = ['--prereg', str(path), '--run-id', 'v6-s912-b', '--execute', '--lock-owner', 'claude']
+    out = dev.primary_root()/'outputs/never-created-v6b-registration-test'
+    base = ['--prereg', str(path), '--run-id', 'v6b-s912-bboot', '--execute', '--lock-owner', 'claude']
     ok = dev.parser().parse_args([*base, '--output', str(out), '--expected-source-sha', sha])
     _, case = dev.load_config(ok)
-    assert case['pair_policy'] == 'b-only' and not out.exists()
+    assert case['pair_policy'] == 'b-boot' and not out.exists()
     for bad, match in ((['--output', str(out), '--expected-source-sha', 'b'*40], 'source_sha differs'),
                        (['--output', 'rel/out', '--expected-source-sha', sha], 'absolute under primary'),
                        (['--output', str(tmp_path/'x'), '--expected-source-sha', sha], 'absolute under primary')):
         with pytest.raises(ValueError, match=match):
             dev.load_config(dev.parser().parse_args([*base, *bad]))
-    other = dev.parser().parse_args(['--prereg', str(path), '--run-id', 'v6-s912-ab', '--execute',
+    other = dev.parser().parse_args(['--prereg', str(path), '--run-id', 'v6b-s912-abboot', '--execute',
                                      '--lock-owner', 'claude', '--output', str(out), '--expected-source-sha', sha])
     with pytest.raises(ValueError, match='run_id differs'):
         dev.load_config(other)

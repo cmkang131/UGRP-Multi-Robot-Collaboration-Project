@@ -6,7 +6,9 @@ of that commit, so checking it against the current tree broke every later PR
 that touched a pinned source. It is now audited only against the blobs of its
 registration commit (``verify_v6_historical``), and ``load_config`` refuses
 to prepare or run it from the current tree. New v6-family runs register their
-own revision and bundle (v6b, v6c) and set ``CURRENT_REVISION``.
+own revision and bundle (v6b, v6c) and set ``CURRENT_REVISION``. On this
+branch the current revision is v6b: the opt-in ``stationary_bootstrap``
+policies in bundle v75 (PR #261).
 """
 import copy
 import hashlib
@@ -14,17 +16,20 @@ import json
 from pathlib import Path
 import subprocess
 
-from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES
+from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES, REVISION_POLICIES
 
 ROOT = Path(__file__).resolve().parents[1]
 PREREG = ROOT/'experiments/2026-09-28-zone-pair-v6/prereg_v6.json'
+PREREG_V6B = ROOT/'experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json'
 V5H = ROOT/'experiments/2026-09-27-zone-pair-dev/prereg_v5h.json'
 V6_REGISTRATION_COMMIT = '3c26acddec066adcd9164e6d2a6f51c1261c5f66'   # PR #259 REGISTERED conversion
 HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT)}
-CURRENT_REVISION = None       # no current v6-family registration on main; v6b/v6c set their own
+CURRENT_REVISION = 'v6b'      # PR #261; v6c registers its own
 
 
-def contract():
+def contract(revision=CURRENT_REVISION):
+    if revision != CURRENT_REVISION:
+        raise ValueError(f'{revision} is historical; audit it with verify_v6_historical')
     from scripts.zone_pair_grasp_contract import SOURCE_PATHS
     from scripts.zone_pair_dev_contract import scene_contract
     paths = (*SOURCE_PATHS,*scene_contract()['source_sha256'],
@@ -34,12 +39,16 @@ def contract():
              # Final review P3-4: control-path modules outside the v5h receipts.
              'harness/zone_own_sweep.py','harness/pair_owncam_approach.py','harness/owncam_drive.py',
              'scripts/run_m2_pair.py','scripts/study_owncam_pair_beam.py','harness/visual_arm.py',
-             'harness/m1_owncam_delivery.py')
+             'harness/m1_owncam_delivery.py',
+             # v6b start bootstrap and its executor hook.
+             'harness/owncam_bootstrap_v6b.py','harness/zone_own_executor.py','harness/zone_pair_executor.py')
+    paths = tuple(dict.fromkeys(paths))
     from harness.zone_pair_global import SCHEDULED_REOBSERVE
     from harness.zone_own_sweep import SWEEP_REOBSERVE_S
     from harness.zone_pair_align import MAX_LOOKS, MAX_TOTAL_LOOK_S
+    from harness import owncam_bootstrap_v6b as boot
     return {'execution_bundle_id':EXECUTION_BUNDLE_ID,'policy_flags':{
-        k:vars(v) for k,v in POLICIES.items()},
+        k:vars(POLICIES[k]) for k in REVISION_POLICIES[revision]},
         # Review 3: flag semantics are part of the registration. beam_relative
         # (A) now also removes PF convergence from the align stop conditions.
         'flag_definitions':{
@@ -47,7 +56,28 @@ def contract():
             'beam_relative':('A: own-view beam-relative align/close-in and pre-close shape report; separate '
                              'global safety envelope with planned safety looks; during align/pre-close the PF is '
                              'a reference only (no HIGH/convergence stop) while an object-anchored bound '
-                             '(entry fix + ready relative view of the static beam) certifies wall/arm clearance')},
+                             '(entry fix + ready relative view of the static beam) certifies wall/arm clearance'),
+            'stationary_bootstrap':('v6b: equal-weight AMCL-default Gaussian prior on the static start_dock rows; '
+                                    'no own arm/wheel command before an informative settled fix whose first arm '
+                                    'transition the unchanged guard clears (or gate LOW); only camera pans in between, '
+                                    'each checked by the unchanged guard at the mean plus a conservative collision-mass bound '
+                                    'over all weighted particles (cell-inflated, <= 1 %; particle chance constraint); '
+                                    'refused pans stay queued and are rechecked; non-finite reports never complete; '
+                                    'completion '
+                                    'only at the home pan after settle, with sigma within the guard cap; '
+                                    'resample-move on the stationary belief after an accepted view (no dual samples); '
+                                    'a rejected view '
+                                    'never mutates the PF; 10 s stationary budget per motion job, then '
+                                    'STATIONARY_BOOTSTRAP_NO_FIX, and a failed bootstrap never unlocks motion')},
+        'bootstrap_constants':{'amcl_initial_std_xy_m':boot.AMCL_INITIAL_STD_XY_M,
+                               'amcl_initial_std_yaw_rad':boot.AMCL_INITIAL_STD_YAW_RAD,
+                               'pan_risk_bound':boot.PAN_RISK_BOUND,
+                               'risk_cell_xy_m':boot.CELL_XY_M,'risk_cell_yaw_rad':boot.CELL_YAW_RAD,
+                               'max_boot_frames':boot.BootstrapLocalizer.MAX_BOOT_FRAMES,
+                               'move_steps':[list(s) for s in boot.BootstrapLocalizer.MOVE_STEPS],
+                               'move_iters':boot.BootstrapLocalizer.MOVE_ITERS,
+                               'settle_after_pan_s':boot.SETTLE_AFTER_PAN_S,
+                               'fail_reason':boot.FAIL_REASON},
         'reobserve_budgets':{'high_recovery_s':SWEEP_REOBSERVE_S,
                              'scheduled_safety_look':dict(SCHEDULED_REOBSERVE),
                              # Final review: scopes are part of the registration.
@@ -99,6 +129,7 @@ def load_config(args):
                              'it is never prepared or run from the current tree')
         raise ValueError(f'v6-family revision {revision!r} is not the current registration '
                          f'({CURRENT_REVISION!r})')
+    # PR #259 DRAFT/REGISTERED admission path, applied to the current revision.
     if p.get('registration_version')!=6 or p.get('execution_source_sha') is not None or p.get('approval') is not None:
         raise ValueError('v6 registration contract changed')
     if p.get('status')=='DRAFT':
@@ -121,7 +152,7 @@ def load_config(args):
                 'limits','safety_coverage','timing','stage_rules','contact_profile_contract'):
         if p.get(key)!=old[key]:
             raise ValueError(f'v6 comparison must preserve v5h {key}')
-    if p.get('v6_contract')!=contract():
+    if p.get('v6_contract')!=contract(revision):
         raise ValueError('v6 source contract/hash mismatch')
     from scripts.zone_pair_dev_contract import scene_contract
     if p.get('scene_contract')!=scene_contract():
@@ -134,7 +165,7 @@ def load_config(args):
         raise ValueError('v6 requires two matched seeds times three conditions')
     for seed in {r['seed'] for r in rows}:
         group=[r for r in rows if r['seed']==seed]
-        if {r['pair_policy'] for r in group}!=set(POLICIES):
+        if {r['pair_policy'] for r in group}!=set(REVISION_POLICIES[revision]):
             raise ValueError('v6 ablation missing')
         for key in ('setup_beam_xyyaw','coarse_order_sheet','intervention'):
             if any(r[key]!=group[0][key] for r in group):
