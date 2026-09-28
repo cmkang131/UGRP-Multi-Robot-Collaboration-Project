@@ -12,16 +12,6 @@ from harness.zone_pair_admission import readiness_snapshot
 from scripts.diagnose_zone_pair_dev import guard_receipt, reconstruct_gate
 from scripts.zone_pair_dev_runtime import Jsonl, flush_admission_audit
 from tests.test_zone_pair_executor import MAP, robot, setup
-import pytest
-from harness import visual_arm as va
-
-@pytest.fixture(autouse=True)
-def _v2_arm_mount():
-    """Fixtures here were recorded or authored under the v2 model (arm yaw axis at
-    the chassis origin): replay them with that mount; v3 re-verify is on power."""
-    with va.use_arm_mount(va.V2_ARM_MOUNT_X_CM):
-        yield
-
 
 ROOT = Path(__file__).resolve().parents[1]
 DIAG = ROOT / 'experiments/2026-09-27-zone-pair-dev/diagnosis_v3.json'

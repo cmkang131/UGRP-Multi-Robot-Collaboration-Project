@@ -10,16 +10,6 @@ import pytest
 
 from harness import owncam_pair_beam as ob
 from harness.owncam_view import project_base_points
-import pytest
-from harness import visual_arm as va
-
-@pytest.fixture(autouse=True)
-def _v2_arm_mount():
-    """Fixtures here were recorded or authored under the v2 model (arm yaw axis at
-    the chassis origin): replay them with that mount; v3 re-verify is on power."""
-    with va.use_arm_mount(va.V2_ARM_MOUNT_X_CM):
-        yield
-
 
 ROOT = Path(__file__).resolve().parents[1]
 LIME_BGR = (40, 230, 190)          # hue ~45 (OpenCV), inside the lime band
@@ -63,11 +53,11 @@ def test_look_posture_switches_nearer_with_distance():
 
 
 def test_align_command_signs_and_stop():
-    at = {'grip_base_m': [va.chassis_x_for_arm_radius(ob.GRASP_ARM_RADIUS_M), 0.], 'axis_heading_rad': 0.}
+    at = {'grip_base_m': [ob.GRASP_RADIUS_M, 0.], 'axis_heading_rad': 0.}
     assert ob.align_command(at) is None
-    far = ob.align_command({'grip_base_m': [va.chassis_x_for_arm_radius(ob.GRASP_ARM_RADIUS_M) + .10, .03], 'axis_heading_rad': .10})
+    far = ob.align_command({'grip_base_m': [ob.GRASP_RADIUS_M + .10, .03], 'axis_heading_rad': .10})
     assert far['forward'] > 0 and far['left'] > 0 and far['turn'] > 0
-    near = ob.align_command({'grip_base_m': [va.chassis_x_for_arm_radius(ob.GRASP_ARM_RADIUS_M) - .03, -.02], 'axis_heading_rad': -.08})
+    near = ob.align_command({'grip_base_m': [ob.GRASP_RADIUS_M - .03, -.02], 'axis_heading_rad': -.08})
     assert near['forward'] < 0 and near['left'] < 0 and near['turn'] < 0
 
 

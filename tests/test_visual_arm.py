@@ -7,11 +7,6 @@ from harness.visual_arm import (
     camera_extrinsics,
     camera_to_base,
     camera_optical_to_robot_base,
-    ARM_MOUNT_X_M,
-    CONTROLLER_GEOMETRY_ID,
-    arm_tool_pose,
-    chassis_x_for_arm_radius,
-    chassis_xy_for_arm_target,
     forward_grip,
     solve_grip_ik,
     solve_grip_site_ik,
@@ -23,14 +18,6 @@ POSE = {3: 672, 4: 2181, 5: 1746, 6: 1500}
 
 
 class VisualArmTests(unittest.TestCase):
-    def test_controller_layer_is_versioned_and_mount_matches_v3_geometry(self):
-        from sim.masterpi_geometry_v3 import PHYSICAL_V3
-        self.assertIn("mount48p2-v3", CONTROLLER_GEOMETRY_ID)
-        self.assertAlmostEqual(ARM_MOUNT_X_M, PHYSICAL_V3.yaw_axis_x_m)
-        chassis, arm = tool_pose(POSE), arm_tool_pose(POSE)
-        self.assertAlmostEqual(chassis.x_m - arm.x_m, ARM_MOUNT_X_M)
-        self.assertEqual((chassis.y_m, chassis.z_m), (arm.y_m, arm.z_m))
-
     def test_camera_origin_uses_static_mount_and_owned_servo_fk(self):
         wrist = tool_pose(POSE, tool_length_cm=0.0)
         camera = camera_optical_to_robot_base(POSE, (0.0, 0.0, 0.0))
@@ -52,7 +39,7 @@ class VisualArmTests(unittest.TestCase):
         self.assertAlmostEqual(sum(value * value for value in axes[2]), 1.0)
 
     def test_grip_ik_round_trips_floor_frame_target(self):
-        target = (chassis_x_for_arm_radius(0.165), 0.0, 0.0525)
+        target = (0.165, 0.0, 0.0525)
         solved = solve_grip_site_ik(target, preferred_pitch_deg=-66.0)
         actual = tool_pose(solved)
         self.assertAlmostEqual(actual.x_m, target[0], delta=0.0015)
@@ -63,19 +50,19 @@ class VisualArmTests(unittest.TestCase):
         self.assertEqual(forward_grip(solved), (actual.x_m, actual.y_m, actual.z_m))
 
     def test_runner_grip_interface_supports_floor_cube_center(self):
-        solved = solve_grip_ik(chassis_x_for_arm_radius(0.165), 0.0, 0.016, -90.0)
+        solved = solve_grip_ik(0.165, 0.0, 0.016, -90.0)
         actual = forward_grip(solved)
-        self.assertAlmostEqual(actual[0], chassis_x_for_arm_radius(0.165), delta=0.0015)
+        self.assertAlmostEqual(actual[0], 0.165, delta=0.0015)
         self.assertAlmostEqual(actual[2], 0.016, delta=0.0015)
 
     def test_grip_ik_yaw_is_radial_and_bounded(self):
         angle = math.radians(10.0)
-        solved = solve_grip_site_ik((*chassis_xy_for_arm_target(0.165, angle), 0.0525))
+        solved = solve_grip_site_ik((0.165 * math.cos(angle), 0.165 * math.sin(angle), 0.0525))
         self.assertAlmostEqual(solved[6], 1500 + 10.0 * (2000.0 / 180.0), delta=1.0)
         with self.assertRaisesRegex(ValueError, "grasp envelope"):
-            solve_grip_site_ik((chassis_x_for_arm_radius(0.25), 0.0, 0.05))
+            solve_grip_site_ik((0.25, 0.0, 0.05))
         with self.assertRaisesRegex(ValueError, "grasp sector"):
-            solve_grip_site_ik((chassis_x_for_arm_radius(0.14), 0.10, 0.05))
+            solve_grip_site_ik((0.14, 0.10, 0.05))
 
     def test_rejects_missing_nonfinite_and_unsupported_inputs(self):
         with self.assertRaises(ValueError):

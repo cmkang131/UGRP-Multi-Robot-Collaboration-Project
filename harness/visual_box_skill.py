@@ -16,7 +16,7 @@ from harness.monocular_box import CameraBoxTracker
 from harness.markerless_box import observe_ground_box, _PROVENANCE as GROUND_BOX_PROVENANCE
 from harness.markerless_face import MarkerlessFaceAligner
 from harness.approach_geometry import assess_face_standoff
-from harness.visual_arm import arm_frame_xy, camera_extrinsics, camera_to_base, forward_grip, solve_grip_ik, tool_pose
+from harness.visual_arm import camera_extrinsics, camera_to_base, forward_grip, solve_grip_ik, tool_pose
 from harness.visual_floor import observe_zone
 from harness.visual_box_surface import observe_known_box_top
 from harness.visual_attachment import compare_box_comotion
@@ -453,8 +453,7 @@ class VisualBoxSkill:
             # usual 35 cm face standoff lies behind the chassis.  Keep the
             # normal route for every ordinary acquisition and for oblique,
             # off-axis, or out-of-range reacquisitions.
-            # Grasp-envelope radius is measured from the arm yaw axis.
-            radial = float(math.hypot(*arm_frame_xy(target[0], target[1])))
+            radial = float(np.linalg.norm(target[:2]))
             toward_chassis = -target[:2] / max(radial, 1e-9)
             face_alignment = float(np.dot(normal[:2] / norm, toward_chassis))
             if (self.near_field_reacquisition and 0.145 <= radial <= 0.20
@@ -480,10 +479,9 @@ class VisualBoxSkill:
             return _drive(0.12, 0.0, 0.6 if np.linalg.norm(waypoint) > 0.2 else 0.3)
         if abs(bearing) > (0.10 if x < 0.32 else 0.05):
             return _drive(0.0, float(np.clip(bearing * 0.6, -0.18, 0.18)), 0.4)
-        arm_x, arm_y = arm_frame_xy(x, y)   # calibrated grasp envelope is arm-frame
-        if math.hypot(arm_x, arm_y) > 0.168:
+        if float(np.linalg.norm(target[:2])) > 0.168:
             return _drive(0.15 if x > 0.3 else 0.08, 0.0, 1.0 if x > 0.35 else 0.3)
-        if arm_x < 0.145:
+        if x < 0.145:
             return self._finish("APPROACH_OVERSHOT")
         try:
             self._inspection_pose = {int(key): value for key, value in pose.items()}

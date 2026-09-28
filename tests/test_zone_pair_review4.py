@@ -10,16 +10,6 @@ from tests.test_zone_pair_executor import (
     active, m2_controller, pair_obs, setup, start,
 )
 from tests.test_zone_own_executor import rgb_of
-import pytest
-from harness import visual_arm as va
-
-@pytest.fixture(autouse=True)
-def _v2_arm_mount():
-    """Fixtures here were recorded or authored under the v2 model (arm yaw axis at
-    the chassis origin): replay them with that mount; v3 re-verify is on power."""
-    with va.use_arm_mount(va.V2_ARM_MOUNT_X_CM):
-        yield
-
 
 
 def checkpoint():
@@ -128,9 +118,8 @@ def test_p1_2_full_backoff_duration_rejects_collision_after_first_control_tick(d
 def beam_pair(y=.35, sigma=.001, yaw=0.):
     host, exs = setup()
     assert start(host)['accepted']
-    x = va.chassis_x_for_arm_radius(.155)
-    grasp = va.solve_grip_ik(x, 0., .024, -90.)
-    hover = {**va.solve_grip_ik(x, 0., .095, va.tool_pose(grasp).pitch_deg), 1: 1500}
+    grasp = va.solve_grip_ik(.155, 0., .024, -90.)
+    hover = {**va.solve_grip_ik(.155, 0., .095, va.tool_pose(grasp).pitch_deg), 1: 1500}
     for rid, sign in (('r1', -1.), ('r2', 1.)):
         ep, own = active(host)[rid], exs[rid]
         ep.controller.state = 'carry'

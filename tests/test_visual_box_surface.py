@@ -6,7 +6,7 @@ import unittest
 import cv2
 import numpy as np
 
-from harness.visual_arm import ARM_MOUNT_X_M, camera_extrinsics
+from harness.visual_arm import camera_extrinsics
 from harness.visual_box_surface import observe_known_box_top
 from sim.masterpi_camera_profile import CAMERA_FISHEYE_D, scaled_camera_matrix
 
@@ -20,11 +20,7 @@ def encode(frame):
     return base64.b64encode(data.tobytes()).decode()
 
 
-# Box placed relative to the arm (the synthetic scene follows the arm mount).
-TOP_CENTER = (.22 + ARM_MOUNT_X_M, -.014, .060)
-
-
-def synthetic_top(center=TOP_CENTER, dims=(.034, .040), pose=POSE):
+def synthetic_top(center=(.22, -.014, .060), dims=(.034, .040), pose=POSE):
     a, b = dims
     points = np.asarray([(center[0]-a/2, center[1]-b/2, center[2]),
                          (center[0]+a/2, center[1]-b/2, center[2]),
@@ -45,7 +41,7 @@ class VisualBoxSurfaceTests(unittest.TestCase):
     def test_synthetic_top_recovers_surface_patch_and_center_height(self):
         result = observe_known_box_top(encode(synthetic_top()), POSE)
         self.assertTrue(result["visible"])
-        np.testing.assert_allclose(result["estimated_surface_patch_base_m"], TOP_CENTER, atol=.008)
+        np.testing.assert_allclose(result["estimated_surface_patch_base_m"], [.22, -.014, .060], atol=.008)
         self.assertAlmostEqual(result["estimated_box_center_height_m"], .044, delta=.008)
         self.assertNotIn("estimated_base_center_m", result)
         self.assertLess(result["edge_fit_rmse_m"], .004)

@@ -6,7 +6,6 @@ from unittest import mock
 import cv2
 import numpy as np
 
-from harness.visual_arm import chassis_x_for_arm_radius
 from harness.visual_box_skill import VisualBoxSkill
 
 
@@ -50,7 +49,7 @@ class VisualBoxSkillTests(unittest.TestCase):
         skill = VisualBoxSkill(perception_mode="fiducial", near_field_reacquisition=True)
         box = {"pixel_centroid": [320, 218.7],
                "marker_pose_camera": {"rotation_rvec_rad": [0.0, 0.0, 0.0]}}
-        target = np.asarray([chassis_x_for_arm_radius(.1675), 0.0, .0195])  # inside the arm envelope
+        target = np.asarray([.1675, 0.0, .0195])
         pose = {"1": 2000, "3": 500, "4": 2392, "5": 1320, "6": 1500}
         # Optical marker +Z maps to robot -X: a front-facing box whose normal
         # standoff would be 18 cm behind the chassis.

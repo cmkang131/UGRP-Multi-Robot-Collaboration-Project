@@ -8,51 +8,16 @@ contact, inverse-dynamics, or weld state is accepted or read here.
 from __future__ import annotations
 
 import math
-from collections.abc import Iterator, Mapping, Sequence
-from contextlib import contextmanager
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
 
-# Controller geometry layer.  The IK link constants are the Hiwonder MasterPi
-# SDK ArmIK values that the physical robot runs (l1 = 8.00 + 1.30, l2, l3, l4);
-# they are NOT all physical lengths.  The simulator's physical arm lives in
-# sim.masterpi_geometry_v3.PHYSICAL_V3 and the remaining mismatch is listed in
-# sim.masterpi_geometry_v3.CONTROLLER_VS_PHYSICAL_V3 (shoulder 125.5 vs 127.7
-# mm above the floor; tool point 100 vs physical pad centre 86.85 mm).
-CONTROLLER_GEOMETRY_ID = "masterpi-controller-sdk-ik-mount48p2-v3-20260928"
+# Physical geometry and the centered provisional mount used by production SIM.
 LINK_1_CM = 9.30
 LINK_2_CM = 6.50
 LINK_3_CM = 6.20
 GRIPPER_LINK_CM = 10.00
 ROBOT_BASE_FLOOR_HEIGHT_CM = 3.25
-# Physical arm mount: the ID6 yaw axis sits 48.2 mm forward of the chassis
-# origin (axle midpoint; official drawing, = PHYSICAL_V3.yaw_axis_x_m).  The
-# SDK works in the arm frame; every robot-frame input/output of this module is
-# in the chassis frame, so the mount is applied here and only here.  Before
-# CONTROLLER_GEOMETRY_ID above, the mount was implicitly 0 (v2 model).
-ARM_MOUNT_X_CM = 4.82
-ARM_MOUNT_X_M = ARM_MOUNT_X_CM / 100.0
-V2_ARM_MOUNT_X_CM = 0.0
-
-
-@contextmanager
-def use_arm_mount(mount_x_cm: float) -> Iterator[None]:
-    """Temporarily evaluate this module with another arm mount.
-
-    For replaying frames/fixtures recorded under the v2 model
-    (``V2_ARM_MOUNT_X_CM``: arm yaw axis at the chassis origin).  Only this
-    module's functions follow it; constants other modules derived at import
-    time (e.g. ``sim.zone_cargo.GRASP_RADIUS_M``) do not.  Not thread-safe.
-    """
-    global ARM_MOUNT_X_CM, ARM_MOUNT_X_M
-    old = ARM_MOUNT_X_CM
-    ARM_MOUNT_X_CM = _finite("mount_x_cm", mount_x_cm)
-    ARM_MOUNT_X_M = ARM_MOUNT_X_CM / 100.0
-    try:
-        yield
-    finally:
-        ARM_MOUNT_X_CM = old
-        ARM_MOUNT_X_M = old / 100.0
 CAMERA_LOCAL_X_CM = 6.70
 CAMERA_LOCAL_Z_CM = 1.36
 CAMERA_OPTICAL_PITCH_FROM_TOOL_DEG = 7.459176530462297
@@ -68,11 +33,7 @@ CALIBRATED_GRASP_RADIUS_CM = (14.5, 18.0)
 
 @dataclass(frozen=True)
 class ToolPose:
-    """Tool point in the robot floor frame (+x forward, +y left, +z up).
-
-    The origin is on the floor below the chassis origin (axle midpoint), unless
-    produced by :func:`arm_tool_pose` (origin below the arm yaw axis).
-    """
+    """Tool point in the robot floor frame (+x forward, +y left, +z up)."""
 
     x_m: float
     y_m: float
@@ -85,15 +46,9 @@ def tool_pose(
     servo_pose: Mapping[int | str, int | float],
     *,
     tool_length_cm: float = GRIPPER_LINK_CM,
-    mount_x_cm: float | None = None,
 ) -> ToolPose:
-    """Forward kinematics for the gripper/tool axis from owned servo PWM.
-
-    Returns the chassis floor frame; ``mount_x_cm`` is the arm yaw axis
-    forward of the chassis origin (default :data:`ARM_MOUNT_X_CM`).
-    """
+    """Forward kinematics for the gripper/tool axis from owned servo PWM."""
     pose = _required_pose(servo_pose)
-    mount = ARM_MOUNT_X_CM if mount_x_cm is None else _finite("mount_x_cm", mount_x_cm)
     length = _finite("tool_length_cm", tool_length_cm)
     if length < 0.0:
         raise ValueError("tool_length_cm must be non-negative")
@@ -119,21 +74,12 @@ def tool_pose(
     yaw_deg = (pose[6] - BASE_CENTER) / PULSE_PER_DEGREE
     yaw = math.radians(yaw_deg)
     return ToolPose(
-        (mount + radius * math.cos(yaw)) / 100.0,
+        radius * math.cos(yaw) / 100.0,
         radius * math.sin(yaw) / 100.0,
         height / 100.0,
         yaw_deg,
         pitch,
     )
-
-
-def arm_tool_pose(
-    servo_pose: Mapping[int | str, int | float],
-    *,
-    tool_length_cm: float = GRIPPER_LINK_CM,
-) -> ToolPose:
-    """:func:`tool_pose` in the arm frame (origin below the ID6 yaw axis)."""
-    return tool_pose(servo_pose, tool_length_cm=tool_length_cm, mount_x_cm=0.0)
 
 
 def camera_optical_to_robot_base(
@@ -205,16 +151,13 @@ def solve_grip_site_ik(
 ) -> dict[int, int]:
     """Solve servo 3/4/5 and yaw servo 6 for a floor-frame grip-site target.
 
-    ``target_xyz_m`` is in the chassis floor frame.  The supported grasp
-    orientation is radial: the tool yaw points from the arm yaw axis toward the
-    target and pitch is searched from -90 through -40 degrees.  The calibrated
-    radius envelope is measured from the arm yaw axis.  Cube face orientation
-    cannot be inferred from target XYZ alone.
+    The supported grasp orientation is radial: the tool yaw points from the
+    arm axis toward the target and pitch is searched from -90 through -40
+    degrees.  Cube face orientation cannot be inferred from target XYZ alone.
     """
     if len(target_xyz_m) != 3:
         raise ValueError("target_xyz_m must contain x, y, z")
     x, y, z = (_finite("target coordinate", value) for value in target_xyz_m)
-    x -= ARM_MOUNT_X_M
     preferred = _finite("preferred_pitch_deg", preferred_pitch_deg)
     radius_cm = math.hypot(x, y) * 100.0
     if calibrated_grasp_only and not CALIBRATED_GRASP_RADIUS_CM[0] <= radius_cm <= CALIBRATED_GRASP_RADIUS_CM[1]:
@@ -252,22 +195,6 @@ def forward_grip(pose: Mapping[int | str, int | float]) -> tuple[float, float, f
     """Return the grip-site XYZ in the robot floor frame."""
     result = tool_pose(pose, tool_length_cm=GRIPPER_LINK_CM)
     return result.x_m, result.y_m, result.z_m
-
-
-def arm_frame_xy(x_m: float, y_m: float) -> tuple[float, float]:
-    """Chassis-frame XY -> arm-frame XY (origin on the ID6 yaw axis)."""
-    return float(x_m) - ARM_MOUNT_X_M, float(y_m)
-
-
-def chassis_x_for_arm_radius(radius_m: float) -> float:
-    """Chassis-frame forward distance of a straight-ahead arm radius."""
-    return float(radius_m) + ARM_MOUNT_X_M
-
-
-def chassis_xy_for_arm_target(radius_m: float, yaw_left_rad: float = 0.0) -> tuple[float, float]:
-    """Chassis-frame XY of a point at ``radius_m`` from the arm yaw axis."""
-    return (ARM_MOUNT_X_M + float(radius_m) * math.cos(yaw_left_rad),
-            float(radius_m) * math.sin(yaw_left_rad))
 
 
 def _ik_at_pitch(radius_cm: float, height_cm: float, pitch_deg: float) -> dict[int, int] | None:
