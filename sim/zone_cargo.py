@@ -26,11 +26,16 @@ import math
 import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass, field
 
+from harness.visual_arm import ARM_MOUNT_X_M
+
 SCHEMA = 'ugrp.zone_cargo.v1'
 CATALOGUE_VERSION = 1
 # Calibrated box grasp (scripts/zone_teacher.py): grip point this far ahead of
-# the robot base, gripper facing it, at this height above the floor.
-GRASP_RADIUS_M = .155
+# the arm yaw axis, gripper facing it, at this height above the floor.  The
+# chassis-frame distance adds the physical arm mount (MasterPi v3: the yaw axis
+# is 48.2 mm ahead of the chassis origin; v2 had it at the origin).
+GRASP_ARM_RADIUS_M = .155
+GRASP_RADIUS_M = round(GRASP_ARM_RADIUS_M + ARM_MOUNT_X_M, 6)
 GRASP_Z_M = .024
 # Production box material; all cargo geoms reuse it so the local_contact_fine
 # finger/box pairs can be mirrored unchanged (same friction, solref, solimp).
@@ -319,7 +324,8 @@ def visual_spec(spec):
 
 def catalogue_record():
     value = {'schema': SCHEMA, 'version': CATALOGUE_VERSION,
-             'grasp_convention': {'radius_m': GRASP_RADIUS_M, 'grasp_z_m': GRASP_Z_M,
+             'grasp_convention': {'radius_m': GRASP_RADIUS_M, 'arm_radius_m': GRASP_ARM_RADIUS_M,
+                                  'arm_mount_x_m': ARM_MOUNT_X_M, 'grasp_z_m': GRASP_Z_M,
                                   'handle_width_m': HANDLE_WIDTH_M, 'handle_height_m': HANDLE_HEIGHT_M},
              'kinds': {k: spec_record(v) for k, v in CATALOGUE.items()},
              'existing_solo': EXISTING_SOLO}

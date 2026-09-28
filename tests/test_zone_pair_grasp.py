@@ -43,11 +43,11 @@ def fresh(ep, now, *, grip=False):
 
 
 def ready_to_close(ep, now):
-    from harness.visual_arm import solve_grip_ik
+    from harness.visual_arm import chassis_x_for_arm_radius, solve_grip_ik
     ctl, own = ep.controller, ep.own
     ctl.pregrasp_started_at = now - .1
     ctl.pregrasp_done = True
-    ctl.grasp_pose = solve_grip_ik(.162, 0., .024, -90)
+    ctl.grasp_pose = solve_grip_ik(chassis_x_for_arm_radius(.162), 0., .024, -90)
     own.servo.update(ctl.grasp_pose)
     own.servo[1] = 2000
     ctl.arm.commanded = dict(own.servo)

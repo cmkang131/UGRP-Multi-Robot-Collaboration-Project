@@ -11,6 +11,16 @@ from harness.markerless_box import (
 )
 from harness.visual_arm import camera_extrinsics
 from sim.masterpi_camera_profile import CAMERA_FISHEYE_D, scaled_camera_matrix
+import pytest
+from harness import visual_arm as va
+
+@pytest.fixture(autouse=True)
+def _v2_arm_mount():
+    """These synthetic scenes / recorded frames were authored under the v2
+    model (arm yaw axis at the chassis origin); replay them with that mount."""
+    with va.use_arm_mount(va.V2_ARM_MOUNT_X_CM):
+        yield
+
 
 
 POSE = {3: 740, 4: 2320, 5: 1320, 6: 1500}

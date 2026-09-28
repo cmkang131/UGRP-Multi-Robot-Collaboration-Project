@@ -6,6 +6,16 @@ import numpy as np
 import cv2
 import pytest
 from harness import visual_box_skill as mod
+import pytest
+from harness import visual_arm as va
+
+@pytest.fixture(autouse=True)
+def _v2_arm_mount():
+    """These synthetic scenes / recorded frames were authored under the v2
+    model (arm yaw axis at the chassis origin); replay them with that mount."""
+    with va.use_arm_mount(va.V2_ARM_MOUNT_X_CM):
+        yield
+
 
 
 def obs(n=1, pan=1500):

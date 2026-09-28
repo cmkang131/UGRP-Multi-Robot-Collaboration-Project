@@ -36,13 +36,17 @@ import math
 from typing import Any, Mapping
 
 from harness import wrist_zone_skill as v1
+from harness.visual_arm import ARM_MOUNT_X_M
 from harness import wrist_zone_skill_v5 as v5
 from harness import wrist_zone_skill_v6 as v6
 from harness.wrist_zone_skill_v6 import (KEEPOUT_MARGIN_M, ROBOT_RADIUS_M, StaticKeepout,  # noqa: F401 (re-export)
                                          _segment_point_distance)
 
 PROFILE = 'wrist_zone_skill_v7'
-GRASP_BASE_STANDOFF_M = .165        # base centre to box centre at the grasp (v6 cohort 551/556/559: 0.162-0.167 m)
+# Base centre to box centre at the grasp: v6 cohort 551/556/559 measured
+# 0.162-0.167 m with the v2 arm at the chassis origin; the physical arm mount
+# (visual_arm.ARM_MOUNT_X_M) moves it forward.  Re-verify on power under v3.
+GRASP_BASE_STANDOFF_M = .165 + ARM_MOUNT_X_M
 REPLAN_APPROACH_STANDOFF_M = .45
 REPLAN_BACKOFF_M = .12
 REPLAN_BACKOFF_STEP_LIMIT = 6

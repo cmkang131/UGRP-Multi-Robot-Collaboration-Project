@@ -118,8 +118,9 @@ def test_p1_2_full_backoff_duration_rejects_collision_after_first_control_tick(d
 def beam_pair(y=.35, sigma=.001, yaw=0.):
     host, exs = setup()
     assert start(host)['accepted']
-    grasp = va.solve_grip_ik(.155, 0., .024, -90.)
-    hover = {**va.solve_grip_ik(.155, 0., .095, va.tool_pose(grasp).pitch_deg), 1: 1500}
+    x = va.chassis_x_for_arm_radius(.155)
+    grasp = va.solve_grip_ik(x, 0., .024, -90.)
+    hover = {**va.solve_grip_ik(x, 0., .095, va.tool_pose(grasp).pitch_deg), 1: 1500}
     for rid, sign in (('r1', -1.), ('r2', 1.)):
         ep, own = active(host)[rid], exs[rid]
         ep.controller.state = 'carry'

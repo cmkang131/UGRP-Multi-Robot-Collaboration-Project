@@ -40,7 +40,7 @@ import numpy as np
 
 from harness.visual_box_skill import SEARCH, _clip_int, _drive, _pose, _wait
 from harness.approach_geometry import assess_face_standoff
-from harness.visual_arm import solve_grip_ik, tool_pose
+from harness.visual_arm import arm_frame_xy, solve_grip_ik, tool_pose
 from harness import wrist_zone_skill as v1
 
 PROFILE = 'wrist_zone_skill_v2'
@@ -194,9 +194,10 @@ class WristOnlyBoxSkillV2(v1.WristOnlyBoxSkill):
             return self._drive_macro(0.12, 0.0, 0.6 if np.linalg.norm(waypoint) > 0.2 else 0.3)
         if abs(bearing) > (0.10 if fx < 0.32 else 0.05):
             return self._drive_macro(0.0, float(np.clip(bearing * 0.6, -0.18, 0.18)), 0.4)
-        if radial > 0.168:
+        arm_x, arm_y = arm_frame_xy(fx, fy)   # calibrated grasp envelope is arm-frame
+        if math.hypot(arm_x, arm_y) > 0.168:
             return self._drive_macro(0.15 if fx > 0.3 else 0.08, 0.0, 1.0 if fx > 0.35 else 0.3)
-        if fx < 0.145:
+        if arm_x < 0.145:
             return self._finish('APPROACH_OVERSHOT')
         try:
             self._inspection_pose = {int(key): value for key, value in pose.items()}

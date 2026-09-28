@@ -29,7 +29,7 @@ class PairSweepGuard(SweepGuard):
         sphere radius includes half the sample interval: there are no spatial
         gaps, including at the bar ends. Beam height is relative to that grip.
         """
-        tool = va.tool_pose(servo)
+        tool = va.arm_tool_pose(servo)          # arm frame; _beam_spheres adds the mount
         return self._beam_spheres((tool.x_m, tool.y_m, tool.z_m), math.radians(tool.yaw_left_deg))
 
     def _beam_spheres(self, grip_xyz, heading):
@@ -52,7 +52,9 @@ class PairSweepGuard(SweepGuard):
         inflation, plus the beam fit's positional/angular uncertainty. The
         local RGB fit uses the same fixed floor/top plane as observe_beam.
         """
-        grip = (*beam['grip_base_m'], self.grasp['xyz_m'][2])
+        # grip_base_m is chassis-frame (own RGB); _beam_spheres expects arm frame.
+        grip = (beam['grip_base_m'][0] - self.mount[0], beam['grip_base_m'][1] - self.mount[1],
+                self.grasp['xyz_m'][2])
         best, hit = math.inf, None
         c, s = math.cos(pose.yaw), math.sin(pose.yaw)
         for bx, by, bz, radius in self._beam_spheres(grip, beam['axis_heading_rad']):

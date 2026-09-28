@@ -29,7 +29,10 @@ _D = np.asarray(CAMERA_FISHEYE_D, np.float64).reshape(4, 1)
 
 def posture(radius_m: float, height_m: float, pitch_deg: float, *, pan: int = 1500,
             grip: int = 1500) -> dict[int, int]:
-    """Issued PWM for a grip-site radius/height (robot floor frame) and tool pitch.
+    """Issued PWM for a grip-site radius/height and tool pitch.
+
+    ``radius_m`` is measured from the arm yaw axis (``pan`` sets the direction);
+    ``height_m`` is above the floor.
 
     Unlike ``solve_grip_site_ik`` this is not restricted to the calibrated
     floor-grasp envelope: carry/look postures keep the box in the air.

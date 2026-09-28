@@ -69,6 +69,25 @@ from sim.masterpi_dynamics_v2 import (
     YAW_LEFT_PATTERN,
     build_v2_xml,
 )
+from sim.masterpi_geometry_v3 import PHYSICAL_V3
+from sim.masterpi_model_v3 import ROBOT_MODEL_V2, ROBOT_MODEL_V3, build_v3_xml
+
+# Robot model used by new scenes/bundles.  v3 = Hiwonder drawing geometry with
+# the SDK arm (sim.masterpi_model_v3); v2 stays selectable for replay/audit.
+DEFAULT_ROBOT_MODEL = ROBOT_MODEL_V3
+ROBOT_MODELS = (ROBOT_MODEL_V2, ROBOT_MODEL_V3)
+# Wheel geometry that v3 takes from the drawing unless a calibrated/explicit
+# value exists (sim/masterpi_dynamics_calibration.json or hardware=...).
+V3_DRAWING_HARDWARE_KEYS = ("wheelbase_m", "track_m")
+
+
+def robot_model_xml(hardware=None, robot_model: str = DEFAULT_ROBOT_MODEL) -> str:
+    """Single-robot XML for the selected robot model."""
+    if robot_model == ROBOT_MODEL_V3:
+        return build_v3_xml(hardware)
+    if robot_model == ROBOT_MODEL_V2:
+        return build_v2_xml(hardware)
+    raise ValueError(f"unknown robot_model {robot_model!r}; expected one of {ROBOT_MODELS}")
 from sim.masterpi_production_v2 import (
     ActionResult,
     CARRY_POSE,
@@ -167,13 +186,14 @@ def build_multi_robot_xml(
     warehouse_zones=None,
     navigation_camera: bool = False,
     scene_objects=(),
+    robot_model: str = DEFAULT_ROBOT_MODEL,
 ) -> str:
-    """Clone the validated single-robot XML with deterministic name prefixes."""
+    """Clone the single-robot XML of ``robot_model`` with deterministic name prefixes."""
     ids = tuple(str(x).strip().lower() for x in robot_ids)
     if not ids or len(set(ids)) != len(ids):
         raise ValueError("robot_ids must be unique")
-    root = ET.fromstring(build_v2_xml(hardware))
-    root.set("model", "ugrp_masterpi_multi_v2")
+    root = ET.fromstring(robot_model_xml(hardware, robot_model))
+    root.set("model", "ugrp_masterpi_multi_v2" if robot_model == ROBOT_MODEL_V2 else "ugrp_masterpi_multi_v3")
     world = root.find("worldbody")
     actuator = root.find("actuator")
     if world is None or actuator is None:
@@ -559,6 +579,8 @@ class NamespacedMasterPi(MasterPiProductionV2):
             # noise; world_seed is the replay key for the shared block layout.
             "world_seed": int(self._owner.seed),
             "model": "masterpi_multi_v2_shared_world",
+            "robot_model": getattr(self._owner, "robot_model", ROBOT_MODEL_V2),
+            "robot_geometry_version": getattr(self._owner, "robot_geometry_version", "masterpi-v2"),
             "physics_fidelity": (
                 "V2_REAL_CALIBRATED_VALIDATED" if self.calibration_status == "REAL_CALIBRATED_VALIDATED"
                 else "V2_REAL_FITTED_UNVALIDATED" if self.calibration_status == "REAL_FITTED_UNVALIDATED"
@@ -626,7 +648,12 @@ class MultiMasterPiProductionV2:
         warehouse_cargo_ids: Sequence[str] | None = None,
         scene_objects=(),
         xml_transform=None,
+        robot_model: str = DEFAULT_ROBOT_MODEL,
     ):
+        if robot_model not in ROBOT_MODELS:
+            raise ValueError(f"unknown robot_model {robot_model!r}; expected one of {ROBOT_MODELS}")
+        self.robot_model = robot_model
+        self.robot_geometry_version = PHYSICAL_V3.version if robot_model == ROBOT_MODEL_V3 else "masterpi-v2"
         selected_cargo_ids = None
         if warehouse_cargo_ids is not None:
             if isinstance(warehouse_cargo_ids, (str, bytes)):
@@ -710,6 +737,12 @@ class MultiMasterPiProductionV2:
         self.calibration_status = template.calibration_status
         self.calibration_parameters = dict(template.calibration_parameters)
         template.close()
+        if robot_model == ROBOT_MODEL_V3:
+            # The v2 template fills wheelbase/track with v2 nominal values; v3
+            # uses the drawing unless a calibrated/explicit value exists.
+            for key in V3_DRAWING_HARDWARE_KEYS:
+                if key not in self.calibration_parameters:
+                    self.physical_params[key] = float(getattr(PHYSICAL_V3, key))
 
         xml = build_multi_robot_xml(
             self.physical_params,
@@ -719,6 +752,7 @@ class MultiMasterPiProductionV2:
             spawns=self.warehouse_spawns,
             navigation_camera=warehouse_layout == "camera_team",
             scene_objects=(),
+            robot_model=robot_model,
         )
         if xml_transform is not None:
             xml = xml_transform(xml)
@@ -4491,6 +4525,8 @@ class MultiMasterPiProductionV2:
         return {
             "seed": int(self.seed),
             "model": "masterpi_multi_v2_shared_world",
+            "robot_model": self.robot_model,
+            "robot_geometry_version": self.robot_geometry_version,
             "robot_ids": list(self.robot_ids),
             "robots": {rid: c.state() for rid, c in self.controllers.items()},
             "sim_speed": self.speed_multiplier,

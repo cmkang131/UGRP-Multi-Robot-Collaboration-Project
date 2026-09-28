@@ -26,12 +26,14 @@ import cv2
 import numpy as np
 
 from harness.owncam_view import base_rays, posture, valid_pixel_mask
+from harness.visual_arm import chassis_x_for_arm_radius
 
 LIME_LO, LIME_HI = (36, 60, 40), (54, 255, 255)
 BAND_V_MAX = 60                    # black grip band
 BEAM_TOP_Z_M = .032
 GRIP_INSET_M = .03                 # band centre from the beam end
-GRASP_RADIUS_M = .162              # alignment target inside the 14.5-18.0 cm IK envelope (with tol)
+GRASP_ARM_RADIUS_M = .162          # alignment target inside the 14.5-18.0 cm IK envelope (with tol)
+GRASP_RADIUS_M = chassis_x_for_arm_radius(GRASP_ARM_RADIUS_M)   # chassis frame (arm mount added)
 MIN_POINTS = 60
 RAY_STEP = 2
 ALIGN_TOL_M, ALIGN_TOL_RAD = .008, .035
