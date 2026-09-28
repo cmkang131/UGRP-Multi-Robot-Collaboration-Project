@@ -30,13 +30,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.4.3'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+PROBE_VERSION = '0.4.4'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
 #                          0.4.2: STAGING_IK_ENVELOPE cause (excluded from the staged denominator), image_valid_off
 #                                 diagnostic patch
 #                          0.4.3: sigma_held_at_prior diagnostic patch
+#                          0.4.4: carry_lateral_scale_measured + carry_all_three diagnostic patches
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
 POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
@@ -400,6 +401,9 @@ def boundary_cases(stage='grasp_lift', *, policy='v5h', seed=911, setup=None, su
 # registered v6 controller; its result answers "what does the next failure look like once this
 # defect is removed", never "does v6 work". The controller source on main is not changed.
 LOADED_YAW_GATE_DIAG_DEG = (12., 10.)   # (high, low) for loaded_yaw_gate_wide; the registered loaded gate is (3.0, 2.5)
+# carry_lateral_scale_measured: 0.697 (static calibration, dev 601 run 7d97bab) x measured/planned lateral beam travel
+# 0.829084 m / 0.716667 m (b-v6c, cargo_noslip_v1, carry legs 3/4/5, eval-only GT travel, 8 of 8 runs) = 0.806.
+CARRY_LATERAL_SCALE_DIAG = 0.806
 DIAG_PATCHES = {
     'fix_age_round': ('harness.owncam_recovery_v6.RecoveryLocalizer.estimate reports fix_age_s = self.t - t '
                       'unrounded; predict_to stops within 1e-9 s of t, so a fix made at this frame has '
@@ -423,6 +427,14 @@ DIAG_PATCHES = {
                             'carries without an absolute fix. Answers "does the carry work once the declared sigma is '
                             'bounded" (the effect of a motion-scaled process noise or an absolute aid), never "does v6c '
                             'carry" and never a proposed estimator.'),
+    'carry_lateral_scale_measured': ('0.4.4. scripts.study_owncam_pair_beam.CARRY_ODOM_SCALE["lateral"] = 0.806 in this '
+                                     'process (registered 0.697). Only the duration of the open-loop lateral carry legs '
+                                     'changes (dist / (SPEED_M_S x scale)); 0.806 is the registered scale times the '
+                                     'measured / planned lateral beam travel of the sigma-held runs (eval-only GT). Answers '
+                                     '"is the lateral overshoot a calibration constant", never a proposed calibration.'),
+    'carry_all_three': ('0.4.4. sigma_held_at_prior + carry_lateral_scale_measured + image_valid_off in one process: the '
+                        'three carry / set-down blockers found by the 0.4.0 to 0.4.3 diagnostics removed together. Answers '
+                        '"what fails next once those three are not the first blocker", never "does v6c carry / set down".'),
     'image_valid_off': ('0.4.2. harness.zone_pair_vision.valid_frame (admission image_valid, the endpoint per-step '
                         'INVALID_OWN_IMAGE abort, the guard/grasp checks) always returns True; the real verdict is counted '
                         'per robot in result.json image_valid_real_stats. Everything else, including the localizer that '
@@ -430,7 +442,8 @@ DIAG_PATCHES = {
                         'dev-map destination once the dark-floor image check is not the first blocker", never "does v6c '
                         'set down".'),
 }
-DIAG_COMPONENTS = {'rest_noise_off_and_gate_wide': ('pf_rest_no_abs_noise', 'loaded_yaw_gate_wide')}
+DIAG_COMPONENTS = {'rest_noise_off_and_gate_wide': ('pf_rest_no_abs_noise', 'loaded_yaw_gate_wide'),
+                   'carry_all_three': ('sigma_held_at_prior', 'carry_lateral_scale_measured', 'image_valid_off')}
 
 
 def clamp_estimate_sigma(est, std_xy_m, std_yaw_rad):

@@ -789,6 +789,9 @@ def install_diag_patch(name):
             still = float(np.max(np.abs(self.vel))) < 1e-3 and not (self.t < self.cmd_expires - 1e-9)
             return {**mp, 'noise_abs': [0., 0., 0.]} if still else mp
         OwnCamLocalizer._motion_params = motion_params
+    elif name == 'carry_lateral_scale_measured':
+        from scripts import study_owncam_pair_beam as study
+        study.CARRY_ODOM_SCALE['lateral'] = sp.CARRY_LATERAL_SCALE_DIAG   # in place: run_m2_pair / the executor share this dict
     elif name == 'sigma_held_at_prior':
         from harness.owncam_localizer import OwnCamLocalizer
         registered = OwnCamLocalizer.estimate

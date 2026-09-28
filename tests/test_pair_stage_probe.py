@@ -592,3 +592,21 @@ def test_diag_sigma_held_at_prior_caps_the_reported_sigma_in_a_subprocess():
                'assert issubclass(R, L) and R.estimate is not L.estimate      # subclass keeps super().estimate()\n')
     out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
     assert out.returncode == 0, out.stderr
+
+
+def test_diag_carry_all_three_is_the_composite_of_the_three_single_patches():
+    assert sp.DIAG_COMPONENTS['carry_all_three'] == ('sigma_held_at_prior', 'carry_lateral_scale_measured', 'image_valid_off')
+    assert all(part in sp.DIAG_PATCHES for part in sp.DIAG_COMPONENTS['carry_all_three']) and 'carry_all_three' in sp.DIAG_PATCHES
+    d = sp.apply_diag_patch([_carry()], 'carry_all_three')[0]
+    assert d['case_id'].endswith(':diag-carry_all_three') and d['diag_patch'] == 'carry_all_three'
+    assert sp.CARRY_LATERAL_SCALE_DIAG == 0.806 and abs(0.697 * 0.829084 / 0.716667 - 0.806) < 1e-3
+
+
+def test_diag_carry_lateral_scale_measured_changes_only_the_lateral_scale_in_a_subprocess():
+    program = ('from scripts import run_pair_stage_probes as r\n'
+               'from scripts import study_owncam_pair_beam as s\n'
+               'before = dict(s.CARRY_ODOM_SCALE)\n'
+               'r.install_diag_patch("carry_lateral_scale_measured")\n'
+               'assert s.CARRY_ODOM_SCALE == {"axial": before["axial"], "lateral": .806}, s.CARRY_ODOM_SCALE\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
