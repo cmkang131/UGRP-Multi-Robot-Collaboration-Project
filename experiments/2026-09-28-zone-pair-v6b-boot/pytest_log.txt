@@ -1,12 +1,25 @@
-# 2026-09-29 검토 #261 반영 + origin/main(#259, #253) 병합 뒤 회귀 (소스 HEAD 003eee06)
-# OMP_NUM_THREADS=2 ../../ugrp/.venv-sim/bin/python -m pytest -q -rf -p no:cacheprovider --basetemp=./.pytest_tmp_sN <shard N>
-# 파일 51개(tests/test_owncam_bootstrap_v6b.py + 변경 모듈 의존 테스트 50개)를 4개 샤드로 나눠 병렬 실행
-## shard 0: tests/test_owncam_bootstrap_v6b.py tests/test_simulation_scenes.py tests/test_zone_own_executor_review4.py tests/test_zone_pair_review2.py tests/test_zone_own_executor_review3.py tests/test_zone_own_executor_guards.py tests/test_zone_pair_grasp.py tests/test_zone_pair_v6_review3.py tests/test_zone_pair_provider_init.py tests/test_zone_pair_review3.py tests/test_zone_pair_v6_review2.py tests/test_zone_study_integration_seams.py tests/test_zone_study_integration.py 
-371 passed in 361.30s (0:06:01)
-## shard 1: tests/test_pose_provider_contract.py tests/test_ultrasonic_range.py tests/test_zone_own_executor_sweep_start.py tests/test_zone_pair_review6.py tests/test_zone_eval_top.py tests/test_zone_pair_v5c.py tests/test_zone_pair_v6.py tests/test_zone_pair_dev.py tests/test_zone_study_multiturn.py tests/test_zone_study_multiturn_properties.py tests/test_zone_pair_v6_final_review.py tests/test_zone_study_multiturn_model.py tests/test_zone_study_multiturn_review5.py 
-4414 passed in 1474.30s (0:24:34)
-## shard 2: tests/test_pose_provider_boundary.py tests/test_zone_own_executor_boundaries.py tests/test_zone_pair_executor.py tests/test_zone_pair_registered_source.py tests/test_zone_pair_review4.py tests/test_zone_pair_tag_boundary_matrix.py tests/test_zone_pair_review.py tests/test_zone_start_dock.py tests/test_zone_pair_v5h.py tests/test_zone_pair_review7.py tests/test_zone_pair_v6_verification.py tests/test_zone_study_source_pinning.py tests/test_zone_study_pair_delay.py 
-454 passed in 231.85s (0:03:51)
-## shard 3: tests/test_vision_pose_source.py tests/test_zone_own_executor_host.py tests/test_zone_pair_authorization.py tests/test_zone_own_executor.py tests/test_zone_pair_admission.py tests/test_zone_own_executor_review5.py tests/test_zone_pair_v6_review1.py tests/test_zone_pair_review5.py tests/test_zone_study_integration_pair.py tests/test_zone_pair_v5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py 
-408 passed in 161.73s (0:02:41)
-## 합계: 5647 passed, 0 failed
+# 2026-09-29 재검토 반영(b764196e) + #262 병합(15793691) 뒤 회귀
+# 대상: scripts/run_ci_tests.py TEST_PATTERNS 302개 파일 + 변경 모듈 의존 테스트 = 318개 파일, 4 샤드
+# OMP_NUM_THREADS=2 ../../ugrp/.venv-sim/bin/python -m pytest -q -rf -p no:cacheprovider --basetemp=./.pytest_v6boot_ciN <shard N>
+## shard 0: 3 failed, 1786 passed, 5 skipped, 1 warning, 178 subtests passed in 226.35s (0:03:46)
+FAILED tests/test_zone_study_review_r7_contract.py::test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v3-example_trial_record.json.gz-ugrp.zone_study_contract.v1-clean]
+FAILED tests/test_zone_study_review_r7_contract.py::test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v4-example_trial_record.json.gz-ugrp.zone_study_contract.v1-clean]
+FAILED tests/test_zone_study_review_r7_contract.py::test_r7_p2_frozen_records_keep_their_hashes_and_audit_under_their_own_version[v5-example_trial_record.json.gz-ugrp.zone_study_contract.v2-clean]
+## shard 1: 1596 passed, 4 skipped, 132 subtests passed in 276.14s (0:04:36)
+## shard 2: 4 failed, 4829 passed, 4 skipped, 70 subtests passed in 389.82s (0:06:29)
+FAILED tests/test_act_route_teacher_process_guard.py::test_teacher_data_records_verified_stock_pytest_but_strict_still_blocks
+FAILED tests/test_act_route_teacher_process_guard.py::test_teacher_data_mixed_snapshot_keeps_foreign_physics_blocker
+FAILED tests/test_act_route_teacher_process_guard.py::test_teacher_data_owned_job_continues_and_records_every_observed_test
+FAILED tests/test_act_route_teacher_process_guard.py::test_teacher_data_cli_records_policy_and_preflight_event
+## shard 3: 5 failed, 2309 passed, 3 skipped, 60 subtests passed in 1324.13s (0:22:04)
+FAILED tests/test_rgb_communication_tensorboard.py::test_original_evaluator_and_hashes_override_summary_success
+FAILED tests/test_rgb_communication_tensorboard.py::test_tampered_runtime_never_publishes_event_file
+FAILED tests/test_rgb_communication_tensorboard.py::test_clock_invalid_failure_is_visible_without_fabricating_final_sim_time
+FAILED tests/test_rgb_communication_tensorboard.py::test_unknown_new_terminal_clock_exports_only_diagnostics[4.0]
+FAILED tests/test_rgb_communication_tensorboard.py::test_unknown_new_terminal_clock_exports_only_diagnostics[None]
+## 합계: 10520 passed, 12 failed
+## 12 failed는 모두 이 PR과 무관한 로컬 환경 실패다. main 기준 worktree(claude-v6-historical, origin/main + #262)에서도 같은 12개가 같은 이유로 실패했다:
+##  - test_zone_study_review_r7_contract (3): sparse checkout에 experiments/.../example_trial_record.json.gz 없음
+##  - test_rgb_communication_tensorboard (5): 'Synthetic communication evidence requires explicit temporary-logdir opt-in' 환경 변수
+##  - test_act_route_teacher_process_guard (4): 같은 Mac의 다른 작업 프로세스(물리·pytest)를 감지
+## CI(full checkout)가 이 파일들의 기준이다.
