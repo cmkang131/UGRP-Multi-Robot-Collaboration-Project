@@ -73,8 +73,8 @@ def group(rows):
             'passed': sum(r['passed'] for r in staged),
             'causes': dict(collections.Counter(r['cause_final'] for r in fail)),
             'sub': dict(collections.Counter(f"{r['cause_final']}/{r.get('cause_sub')}" for r in fail if r.get('cause_sub'))),
-            'first_failure_robot': dict(collections.Counter((r.get('first_failure') or {}).get('robot_id') for r in fail)),
-            'first_failure_reason': dict(collections.Counter((r.get('first_failure') or {}).get('reason') for r in fail)),
+            'first_failure_robot': dict(collections.Counter(str((r.get('first_failure') or {}).get('robot_id')) for r in fail)),
+            'first_failure_reason': dict(collections.Counter(str((r.get('first_failure') or {}).get('reason')) for r in fail)),
             'stage_sim_s': {'min': min((s for s in sims if s is not None), default=None),
                             'median': med(sims), 'max': max((s for s in sims if s is not None), default=None)},
             'run_sim_s_after_submit': {'min': min((s for s in runs if s is not None), default=None),
@@ -114,7 +114,7 @@ def main(argv):
                   f"fail after submit (median) {g['fail_after_submit_s_median']} s  base cmds med {g['base_motion_commands_median']}  "
                   f"all cmds med {g['commands_total_median']}  ends {g['termination']}  wall med {g['wall_s_median']} s")
     if out_json:
-        Path(out_json).write_text(json.dumps(result, indent=1, sort_keys=True))
+        Path(out_json).write_text(json.dumps(result, indent=1, default=str))
 
 
 if __name__ == '__main__':
