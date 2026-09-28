@@ -474,6 +474,9 @@ def test_frozen_m2_sources_or_explicit_followup_hashes():
         # v5g adds only the detached public motion query; no measurement/control change.
         '7e45cc820f3c0b96b0144c2a3318bf7b18a97f61d88aec2a62130e96ed29b155',
     }
+    # v6 opt-in provider extension; frozen default algorithm is unchanged.
+    post_freeze['harness/owncam_pose_source.py'].add(
+        '46809a556ecb7915f8dd49b03d7eb0f57181261599173b439477466f1940a538')
     # v5h review10: replay-input frame timestamps now use raw SIM time.
     # The frozen M2 imports manifest and original result identity stay unchanged.
     post_freeze['scripts/run_owncam_closed_loop.py'] = {

@@ -54,7 +54,9 @@ def assert_executed_v5h_is_historical(tmp_path, run_id='dev13'):
     before = copy.deepcopy(p)
     args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V5H), '--run-id', run_id,
                                     '--output', str(tmp_path / f'refused-{run_id}')])
-    with pytest.raises(ValueError, match='^grasp contract/hash mismatch$'):
+    # PR #246 (v6) also changed scene-contract sources, which load_config
+    # checks first; either refusal keeps the executed receipt historical.
+    with pytest.raises(ValueError, match='^(scene|grasp) contract/hash mismatch$'):
         dev.load_config(args)
     assert not args.output.exists() and committed_v5h() == before
     return drift
