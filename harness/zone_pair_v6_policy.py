@@ -3,9 +3,12 @@ from dataclasses import dataclass
 
 # v68 = pre-merge v6 draft (retired, offline replay only); v70 = v6 on main v69
 # (retired: recorded by the 2026-09-28 v6 dev cohort, PR #259). v75 = v70 plus
-# the opt-in v6b start bootstrap (dock prior + stationary look); next free
-# number after main v70 and open PRs v72 (#256), v73 (#257), v74 (#249).
-EXECUTION_BUNDLE_ID = 'zone-pair-v75-dock-prior-bootstrap'
+# the opt-in v6b start bootstrap (dock prior + stationary look), PR #261;
+# retired with the v6b DRAFT (historical, recorded by the v6b offline replay).
+# v77 = v75 plus the B7 real model driver and registered speech caps
+# (PR #256; the pre-merge candidate v72 never ran and was never on main).
+# The pair policies are unchanged. v76 is claimed by open PR #263 (v6c).
+EXECUTION_BUNDLE_ID = 'zone-study-integration-v77-llm-driver'
 
 
 @dataclass(frozen=True)
@@ -24,7 +27,7 @@ POLICIES = {
     'b-boot': PairPolicy('b-boot', posterior_relook=True, stationary_bootstrap=True),
     'a+b-boot': PairPolicy('a+b-boot', posterior_relook=True, beam_relative=True, stationary_bootstrap=True),
 }
-# Registered ablation sets. v6 (historical, PR #246/#259) and v6b (this bundle).
+# Registered ablation sets. v6 (historical, PR #246/#259) and v6b (historical DRAFT, PR #261, bundle v75).
 REVISION_POLICIES = {'v6': ('v5h', 'b-only', 'a+b'), 'v6b': ('v5h', 'b-boot', 'a+b-boot')}
 
 

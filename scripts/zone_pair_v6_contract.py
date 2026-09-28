@@ -6,9 +6,17 @@ of that commit, so checking it against the current tree broke every later PR
 that touched a pinned source. It is now audited only against the blobs of its
 registration commit (``verify_v6_historical``), and ``load_config`` refuses
 to prepare or run it from the current tree. New v6-family runs register their
-own revision and bundle (v6b, v6c) and set ``CURRENT_REVISION``. On this
-branch the current revision is v6b: the opt-in ``stationary_bootstrap``
-policies in bundle v75 (PR #261).
+own revision and bundle (v6b, v6c) and set ``CURRENT_REVISION``.
+
+2026-09-29 (manager decision A, PR #256): the v6b DRAFT (PR #261, bundle v75,
+opt-in ``stationary_bootstrap`` policies) is historical in the same way. It
+pinned 73 source hashes of the tree, including the study runner and the
+workflow catalog, so the B7 runner merge (bundle v77) could not land without
+re-sealing it. Its bytes and the v75 offline replay records stay unchanged;
+it is audited only against the blobs of its sealing commit 15793691. There is
+no current v6-family draft on main (``CURRENT_REVISION = None``): ``contract``
+and ``load_config`` refuse until the next draft (v6c, PR #263) sets its own
+revision. A draft should be sealed last, right before registration.
 """
 import copy
 import hashlib
@@ -23,11 +31,17 @@ PREREG = ROOT/'experiments/2026-09-28-zone-pair-v6/prereg_v6.json'
 PREREG_V6B = ROOT/'experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json'
 V5H = ROOT/'experiments/2026-09-27-zone-pair-dev/prereg_v5h.json'
 V6_REGISTRATION_COMMIT = '3c26acddec066adcd9164e6d2a6f51c1261c5f66'   # PR #259 REGISTERED conversion
-HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT)}
-CURRENT_REVISION = 'v6b'      # PR #261; v6c registers its own
+V6B_DRAFT_COMMIT = '15793691b3af136769cdf0b090e722daddf80ab4'         # PR #261 last v6b DRAFT sealing
+HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT), 'v6b': (PREREG_V6B, V6B_DRAFT_COMMIT)}
+HISTORICAL_STATUS = {'v6': 'REGISTERED', 'v6b': 'DRAFT'}
+CURRENT_REVISION = None       # no current v6-family draft on main; v6c (PR #263) sets its own
 
 
-def contract(revision=CURRENT_REVISION):
+def contract(revision=None):
+    revision = CURRENT_REVISION if revision is None else revision
+    if revision is None:
+        raise ValueError('no current v6-family draft on main (v6 and v6b are historical; '
+                         'the next draft sets CURRENT_REVISION)')
     if revision != CURRENT_REVISION:
         raise ValueError(f'{revision} is historical; audit it with verify_v6_historical')
     from scripts.zone_pair_grasp_contract import SOURCE_PATHS
@@ -95,13 +109,18 @@ def contract(revision=CURRENT_REVISION):
         'source_sha256':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths}}
 
 
-def verify_v6_historical(path=PREREG, *, root=ROOT, commit=V6_REGISTRATION_COMMIT):
-    """Audit the historical v6 receipt at its registration commit (read-only).
+def verify_v6_historical(path=None, *, root=ROOT, commit=None, revision='v6'):
+    """Audit a historical v6-family receipt at its registration commit (read-only).
 
-    The registration bytes must equal the committed blob, and every pinned
-    source hash must match that commit's blob, not the current tree.
+    ``revision`` selects v6 (REGISTERED at 3c26acdd) or v6b (DRAFT sealed at
+    15793691). The registration bytes must equal the committed blob, and every
+    pinned source hash must match that commit's blob, not the current tree.
     """
     from scripts.zone_pair_registered_source import committed_blob
+    if revision not in HISTORICAL_REVISIONS:
+        raise ValueError(f'{revision!r} is not a historical v6-family revision')
+    path = HISTORICAL_REVISIONS[revision][0] if path is None else path
+    commit = HISTORICAL_REVISIONS[revision][1] if commit is None else commit
     relative = Path(path).resolve().relative_to(Path(root).resolve()).as_posix()
     if subprocess.run(['git', 'merge-base', '--is-ancestor', commit, 'HEAD'], cwd=root,
                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode != 0:
@@ -110,8 +129,8 @@ def verify_v6_historical(path=PREREG, *, root=ROOT, commit=V6_REGISTRATION_COMMI
     if Path(path).read_bytes() != blob:
         raise ValueError('historical v6 registration bytes differ from their registration commit')
     p = json.loads(blob)
-    if p.get('registration_revision') != 'v6' or p.get('status') != 'REGISTERED':
-        raise ValueError('historical v6 registration is not the REGISTERED v6 record')
+    if p.get('registration_revision') != revision or p.get('status') != HISTORICAL_STATUS[revision]:
+        raise ValueError(f'historical v6 registration is not the {HISTORICAL_STATUS[revision]} {revision} record')
     for source, expected in p['v6_contract']['source_sha256'].items():
         if hashlib.sha256(committed_blob(str(root), commit, source)).hexdigest() != expected:
             raise ValueError(f'historical v6 source hash mismatch at {commit}: {source}')

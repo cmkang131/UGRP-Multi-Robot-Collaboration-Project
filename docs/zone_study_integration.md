@@ -1,3 +1,11 @@
+현재 미실행 후보는 `zone-study-integration-v77-llm-driver`(workflow `2.9.0`)이다. 2026-09-28 B7(PR #254): 러너에 실제 다회 모델 드라이버(`--llm`, `harness/zone_study_llm_driver.py`)와 본연구 사용량 원장(`harness/zone_main_budget.py`, #222 DB와 별개)을 연결하고, 발화 상한을 번들별 등록 프로필(`configs/zone_study_integration/llm_driver.json`: v66 기본 2/6, 파일럿 10/30)로 고르게 했다. v69는 `RETIRED_BUNDLE_IDS`에 보존한다.
+
+2026-09-28 PR #256 검토 수정: [실패·분석 규칙 보완](zone_study_llm_failure_rules.md)에 코호트 상한/응답 0 중단, API 오류 1건 이상 시행의 infra 분류, 조건 공통 pacing, 정산 실패와 덮어쓰기 거부를 고정했다. 10/30 열린 채널은 실제 상한을 반영한 프롬프트 v3, 기본 2/6·no_comm은 기존 바이트를 유지한다. v72 실행 기록이 없다는 사용자 확인에 따라 새 번들 번호를 등록하지 않았다.
+
+2026-09-29 main 병합(PR #256): main의 v75(#261 v6b 출발 부트스트랩, v70 위)에 B7 드라이버를 합쳤다. 합성 소스가 v75와 병합 전 후보 v72 어느 쪽과도 달라 번호 규칙대로 새 번호 v77을 썼다(main v75, 열린 PR 최댓값 v76 #263 다음; v72는 실행 기록이 없고 main에 없었다). `EXECUTION_BUNDLE_ID`는 main 구조대로 `harness/zone_pair_v6_policy.py`에 두고, v75는 v6b 오프라인 재생 기록 소스로 `RETIRED_BUNDLE_IDS`에 보존한다. workflow는 main 2.8.0 다음 2.9.0이다. v6b DRAFT(`prereg_v6b.json`)는 v6와 같은 방식(#262)으로 봉인 커밋 `15793691` blob 기준 이력 기록으로 돌렸다(관리자 결정 A). main에는 현재 v6 계열 초안이 없으며 다음 초안은 v6c(#263)다.
+
+이전 후보 v75의 설명:
+
 현재 미실행 후보는 `zone-pair-v75-dock-prior-bootstrap`(workflow `2.8.0`, 병합 순서 #256 2.5.0 · #257 2.6.0 · #249 2.7.0 다음)이다. 2026-09-28 v6 dev 코호트(PR #259)에서 b-only·a+b가 출발 위치 부트스트랩에서 막힌 뒤, v70에 opt-in 정책 `b-boot`·`a+b-boot`(정적 지도 dock 행 AMCL식 사전분포 + 첫 움직임 전 정지 관측·belief 검사 팬 스캔)를 더했다. v5h·b-only·a+b의 동작은 바뀌지 않는다. main v70과 열린 PR 최댓값 v74(#249) 다음 번호다. v70은 v6 dev 코호트 기록 소스로 `RETIRED_BUNDLE_IDS`에 보존한다. [v6b 기록](../experiments/2026-09-28-zone-pair-v6b-boot/README.md)
 
 이전 후보 v70의 설명:

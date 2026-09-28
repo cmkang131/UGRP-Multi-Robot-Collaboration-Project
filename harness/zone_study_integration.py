@@ -76,13 +76,19 @@ INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
 # stays reserved as the pre-merge v6 draft recorded by its offline replay.
 # v75 = v70 + the opt-in v6b start bootstrap (b-boot/a+b-boot); v70 is retired
 # with the source recorded by the 2026-09-28 v6 dev cohort (PR #259).
+# v77 (B7, PR #256) adds the real model driver to the runner
+# (harness.zone_study_llm_driver) and registry-selected speech caps on top of
+# main's v75; the study core, scheduler and pair policies are unchanged. v75
+# (recorded by the v6b offline replay, PR #261) is retired. The pre-merge
+# candidate v72 never ran and was never on main. v76 is claimed by PR #263.
 from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID
 RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
                       'zone-study-integration-v64-source-closure', 'zone-study-integration-v65-pair-close',
                       'zone-study-integration-v66-multiturn', 'zone-study-integration-v67-landmark-agnostic',
                       'zone-pair-v68-beam-relative-recovery',
                       'zone-study-integration-v69-multiturn-landmark-agnostic',
-                      'zone-pair-v70-beam-relative-multiturn')
+                      'zone-pair-v70-beam-relative-multiturn',
+                      'zone-pair-v75-dock-prior-bootstrap')
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',
@@ -349,7 +355,15 @@ class IntegratedTrial(zo.OfflineTrial):
                          horizon_s=horizon_s, run_id=None, code_sha=code_sha,
                          scheduler_factory=scheduler_factory)
         # One window for this episode. These limits cannot be renewed by a call.
-        self.channel.cap_robot = min(self.channel.cap_robot, self.decision_limits.max_utterances_per_actor)
+        # B7 (v72 candidate, merged as v77): an open channel takes its window/robot caps from the registered
+        # speech-cap profile (harness.zone_study_llm_driver). The v66 default
+        # 2/6 equals the old min(spec 2, 2) / spec 6, so default runs are
+        # unchanged; no_comm keeps its closed 0/0 channel (frozen v64 bytes).
+        if self.spec.channel_open:
+            self.channel.cap_robot = self.decision_limits.max_utterances_per_actor
+            self.channel.cap_window = self.decision_limits.max_utterances_total
+        else:
+            self.channel.cap_robot = min(self.channel.cap_robot, self.decision_limits.max_utterances_per_actor)
         self.channel.cap_total = self.decision_limits.max_utterances_total
         self.actor = actor
         if model_adapter is not None:
@@ -360,7 +374,9 @@ class IntegratedTrial(zo.OfflineTrial):
                                      model=self.client_factory.settings['model'],
                                      provider='gemini_subscription_proxy' if model_adapter else None,
                                      model_settings_sha256=digest(self.client_factory.settings),
-                                     prompt_template_sha256=digest(pk.PROMPT_VERSION),
+                                     prompt_template_sha256=digest(pk.prompt_version(
+                                         self.decision_limits.max_utterances_total,
+                                         self.decision_limits.max_utterances_per_actor)),
                                      cost_profile_id=self.params.version)
         self.transport = _LiveTransport(self, send_ledger=self.send_ledger, client_factory=self.client_factory)
         if model_adapter is None:
@@ -572,7 +588,9 @@ class IntegratedTrial(zo.OfflineTrial):
                 'condition': self.condition, 'topology': self.spec.topology, 'encoding': self.spec.encoding,
                 'leader_id': self.leader_id, 'seed': self.seed,
                 **model_config(self.actor, self.client_factory),
-                'planned_model': dict(PLANNED_MODEL), 'prompt_version': pk.PROMPT_VERSION,
+                'planned_model': dict(PLANNED_MODEL),
+                'prompt_version': pk.prompt_version(self.decision_limits.max_utterances_total,
+                                                     self.decision_limits.max_utterances_per_actor),
                 'cost_params': {'version': self.params.version, 'digest': self.params.digest()},
                 'call_policy': policy, 'quantum_s': QUANTUM_S,
                 'perception_delay_s': PERCEPTION_DELAY_S, 'think_hold_policy': THINK_HOLD_POLICY,
