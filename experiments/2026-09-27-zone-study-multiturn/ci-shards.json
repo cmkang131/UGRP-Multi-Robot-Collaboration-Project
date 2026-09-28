@@ -1,0 +1,1139 @@
+{
+  "head": "597ac6e6504b78126891c7805b6e577bb4a2f69d",
+  "source_sha256": {
+    ".github/workflows/tests.yml": "59e04770b48a62cb6499ad88c5ef98c32fa57be72f0546456fe5018b3ee84fde",
+    "tests/test_zone_study_multiturn_properties.py": "d5ca39a86b414192d4edd58738df2dd79dab712e80006e0c6d718098ae3dc907",
+    "tests/zone_multiturn_ci.py": "d66f1d618b909545daa4eb37a6865decca6bd674307755fb1cd03ed57c08abda",
+    "tests/test_zone_multiturn_ci.py": "b0240f7c74138787b9ae50a8ccd5c9b1e35da006b56912a1f608e2dd41ad03e5"
+  },
+  "platform": "macOS-27.2-arm64-arm-64bit",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "coverage": {
+    "before_count": 5335,
+    "after_count": 5341,
+    "new_checks": 6,
+    "original_ids_exactly_once": true,
+    "before_ids_sha256": "bd4e42cdefbac6bbaf375d637b0982447016e48b94686c1cfccc558f0c5e291f",
+    "original_selected_ids_sha256": "bd4e42cdefbac6bbaf375d637b0982447016e48b94686c1cfccc558f0c5e291f"
+  },
+  "runs": [
+    {
+      "shard": 0,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=0/16 --multiturn-report=outputs/ci-multiturn/shard-0.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 57.544744041981176,
+      "exit_code": 0,
+      "load_start": [
+        10.9931640625,
+        16.04345703125,
+        15.0185546875
+      ],
+      "load_end": [
+        11.9580078125,
+        15.583984375,
+        14.91552734375
+      ],
+      "temporary_directory_removed": true,
+      "passed": 338,
+      "pytest_elapsed_s": 57.3492940410506
+    },
+    {
+      "shard": 1,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=1/16 --multiturn-report=outputs/ci-multiturn/shard-1.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 54.88726824999321,
+      "exit_code": 0,
+      "load_start": [
+        11.9580078125,
+        15.583984375,
+        14.91552734375
+      ],
+      "load_end": [
+        17.10595703125,
+        15.896484375,
+        15.0458984375
+      ],
+      "temporary_directory_removed": true,
+      "passed": 333,
+      "pytest_elapsed_s": 54.677923916024156
+    },
+    {
+      "shard": 2,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=2/16 --multiturn-report=outputs/ci-multiturn/shard-2.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 55.96030879201135,
+      "exit_code": 0,
+      "load_start": [
+        17.10595703125,
+        15.896484375,
+        15.0458984375
+      ],
+      "load_end": [
+        13.60693359375,
+        15.05029296875,
+        14.77587890625
+      ],
+      "temporary_directory_removed": true,
+      "passed": 336,
+      "pytest_elapsed_s": 55.71169974998338
+    },
+    {
+      "shard": 3,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=3/16 --multiturn-report=outputs/ci-multiturn/shard-3.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 48.9633389589726,
+      "exit_code": 0,
+      "load_start": [
+        13.60693359375,
+        15.05029296875,
+        14.77587890625
+      ],
+      "load_end": [
+        7.326171875,
+        13.12548828125,
+        14.07861328125
+      ],
+      "temporary_directory_removed": true,
+      "passed": 330,
+      "pytest_elapsed_s": 48.7341227500001
+    },
+    {
+      "shard": 4,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=4/16 --multiturn-report=outputs/ci-multiturn/shard-4.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 56.47789012501016,
+      "exit_code": 0,
+      "load_start": [
+        7.326171875,
+        13.12548828125,
+        14.07861328125
+      ],
+      "load_end": [
+        15.953125,
+        14.2294921875,
+        14.4111328125
+      ],
+      "temporary_directory_removed": true,
+      "passed": 338,
+      "pytest_elapsed_s": 56.23721499997191
+    },
+    {
+      "shard": 5,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=5/16 --multiturn-report=outputs/ci-multiturn/shard-5.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 55.92340612504631,
+      "exit_code": 0,
+      "load_start": [
+        15.953125,
+        14.2294921875,
+        14.4111328125
+      ],
+      "load_end": [
+        9.984375,
+        12.6845703125,
+        13.81103515625
+      ],
+      "temporary_directory_removed": true,
+      "passed": 333,
+      "pytest_elapsed_s": 55.63886733399704
+    },
+    {
+      "shard": 6,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=6/16 --multiturn-report=outputs/ci-multiturn/shard-6.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 56.781166500004474,
+      "exit_code": 0,
+      "load_start": [
+        9.984375,
+        12.6845703125,
+        13.81103515625
+      ],
+      "load_end": [
+        6.27197265625,
+        11.17822265625,
+        13.177734375
+      ],
+      "temporary_directory_removed": true,
+      "passed": 336,
+      "pytest_elapsed_s": 56.581360334006604
+    },
+    {
+      "shard": 7,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=7/16 --multiturn-report=outputs/ci-multiturn/shard-7.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 51.66274624998914,
+      "exit_code": 0,
+      "load_start": [
+        6.27197265625,
+        11.17822265625,
+        13.177734375
+      ],
+      "load_end": [
+        16.0830078125,
+        12.4501953125,
+        13.4970703125
+      ],
+      "temporary_directory_removed": true,
+      "passed": 330,
+      "pytest_elapsed_s": 51.435935457993764
+    },
+    {
+      "shard": 8,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=8/16 --multiturn-report=outputs/ci-multiturn/shard-8.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 53.822468459024094,
+      "exit_code": 0,
+      "load_start": [
+        16.0830078125,
+        12.4501953125,
+        13.4970703125
+      ],
+      "load_end": [
+        7.724609375,
+        10.70703125,
+        12.78076171875
+      ],
+      "temporary_directory_removed": true,
+      "passed": 338,
+      "pytest_elapsed_s": 53.55766954203136
+    },
+    {
+      "shard": 9,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=9/16 --multiturn-report=outputs/ci-multiturn/shard-9.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 54.71937224996509,
+      "exit_code": 0,
+      "load_start": [
+        7.724609375,
+        10.70703125,
+        12.78076171875
+      ],
+      "load_end": [
+        4.54345703125,
+        9.3037109375,
+        12.12646484375
+      ],
+      "temporary_directory_removed": true,
+      "passed": 332,
+      "pytest_elapsed_s": 54.46884520899039
+    },
+    {
+      "shard": 10,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=10/16 --multiturn-report=outputs/ci-multiturn/shard-10.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 53.15110200003255,
+      "exit_code": 0,
+      "load_start": [
+        4.54345703125,
+        9.3037109375,
+        12.12646484375
+      ],
+      "load_end": [
+        15.56982421875,
+        11.22998046875,
+        12.65478515625
+      ],
+      "temporary_directory_removed": true,
+      "passed": 335,
+      "pytest_elapsed_s": 52.85964674997376
+    },
+    {
+      "shard": 11,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=11/16 --multiturn-report=outputs/ci-multiturn/shard-11.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 51.84640245803166,
+      "exit_code": 0,
+      "load_start": [
+        15.56982421875,
+        11.22998046875,
+        12.65478515625
+      ],
+      "load_end": [
+        12.63671875,
+        11.22216796875,
+        12.56396484375
+      ],
+      "temporary_directory_removed": true,
+      "passed": 329,
+      "pytest_elapsed_s": 51.64523733401438
+    },
+    {
+      "shard": 12,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=12/16 --multiturn-report=outputs/ci-multiturn/shard-12.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 58.13045129197417,
+      "exit_code": 0,
+      "load_start": [
+        12.63671875,
+        11.22216796875,
+        12.56396484375
+      ],
+      "load_end": [
+        10.1669921875,
+        10.6748046875,
+        12.2685546875
+      ],
+      "temporary_directory_removed": true,
+      "passed": 337,
+      "pytest_elapsed_s": 57.90484108298551
+    },
+    {
+      "shard": 13,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=13/16 --multiturn-report=outputs/ci-multiturn/shard-13.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 55.28793587500695,
+      "exit_code": 0,
+      "load_start": [
+        10.1669921875,
+        10.6748046875,
+        12.2685546875
+      ],
+      "load_end": [
+        19.95068359375,
+        12.80908203125,
+        12.92822265625
+      ],
+      "temporary_directory_removed": true,
+      "passed": 332,
+      "pytest_elapsed_s": 55.03851624997333
+    },
+    {
+      "shard": 14,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=14/16 --multiturn-report=outputs/ci-multiturn/shard-14.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 55.45468929200433,
+      "exit_code": 0,
+      "load_start": [
+        19.95068359375,
+        12.80908203125,
+        12.92822265625
+      ],
+      "load_end": [
+        9.34716796875,
+        11.07080078125,
+        12.2744140625
+      ],
+      "temporary_directory_removed": true,
+      "passed": 335,
+      "pytest_elapsed_s": 55.17691783403279
+    },
+    {
+      "shard": 15,
+      "command": "python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=15/16 --multiturn-report=outputs/ci-multiturn/shard-15.json --durations=20 --basetemp=./.pytest_tmp -q",
+      "elapsed_s": 51.52786395797739,
+      "exit_code": 0,
+      "load_start": [
+        9.34716796875,
+        11.07080078125,
+        12.2744140625
+      ],
+      "load_end": [
+        9.8525390625,
+        10.7255859375,
+        12.056640625
+      ],
+      "temporary_directory_removed": true,
+      "passed": 329,
+      "pytest_elapsed_s": 51.26366908301134
+    }
+  ],
+  "family_costs": [
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_three_communication_conditions_keep_common_schedule",
+      "count": 300,
+      "total_s": 442.2762882518,
+      "setup_s": 0.0413069975329563,
+      "call_s": 442.21170666784747,
+      "max_s": 2.0279036251013167
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_no_comm_bitwise_equivalent_to_frozen_v64",
+      "count": 300,
+      "total_s": 287.45390631695045,
+      "setup_s": 141.8060493330122,
+      "call_s": 145.6231586150825,
+      "max_s": 1.3295276259887032
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_generated_zero_send_gap_cannot_strand_messages",
+      "count": 12,
+      "total_s": 33.91035704308888,
+      "setup_s": 0.0025412480463273823,
+      "call_s": 33.906794874870684,
+      "max_s": 3.180975916038733
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_generated_binding_budgets_keep_no_comm_v64_parity",
+      "count": 100,
+      "total_s": 33.17330758360913,
+      "setup_s": 0.014784380153287202,
+      "call_s": 33.14928320160834,
+      "max_s": 0.5153571250266396
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_generated.py::test_generated_default_caps_and_all_prewire_failures",
+      "count": 1000,
+      "total_s": 26.383324975904543,
+      "setup_s": 0.49338512355461717,
+      "call_s": 25.820638785720803,
+      "max_s": 0.08486395794898272
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review6.py::test_refundable_reservation_cannot_cancel_v64_reask",
+      "count": 32,
+      "total_s": 5.866520042065531,
+      "setup_s": 0.3157266658381559,
+      "call_s": 5.548245336103719,
+      "max_s": 0.2353183330851607
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_review3_zero_send_wakes_message_at_8s",
+      "count": 8,
+      "total_s": 5.288371792121325,
+      "setup_s": 0.0012507500359788537,
+      "call_s": 5.285797708085738,
+      "max_s": 0.7564221660140902
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_model.py::test_generated_stream_matches_independent_reference",
+      "count": 3000,
+      "total_s": 4.086126996087842,
+      "setup_s": 0.29316709376871586,
+      "call_s": 3.645991562923882,
+      "max_s": 0.025724582956172526
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_review4_refunded_start_reaches_all_90_sends_at_default_caps",
+      "count": 1,
+      "total_s": 3.608824292081408,
+      "setup_s": 9.308301378041506e-05,
+      "call_s": 3.6086197920376435,
+      "max_s": 3.608824292081408
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review6.py::test_new_message_never_inherits_common_retry_allowance",
+      "count": 18,
+      "total_s": 2.357352129125502,
+      "setup_s": 0.0025415419950149953,
+      "call_s": 2.353315543034114,
+      "max_s": 0.14763791696168482
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review5.py::test_review5_chains_preserve_v64_and_add_only_message_calls",
+      "count": 4,
+      "total_s": 1.9023921668995172,
+      "setup_s": 0.07910566602367908,
+      "call_s": 1.822981082892511,
+      "max_s": 0.4919147089822218
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review7.py::test_review7_http_cap_with_running_jobs_is_horizon",
+      "count": 12,
+      "total_s": 1.625957834185101,
+      "setup_s": 0.24103725102031603,
+      "call_s": 1.3840475830365904,
+      "max_s": 0.13993283198215067
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review7.py::test_v64_refusal_label_is_independent_of_terminal_jobs",
+      "count": 12,
+      "total_s": 1.5370639531174675,
+      "setup_s": 0.08484887302620336,
+      "call_s": 1.4512134970282204,
+      "max_s": 0.14339837507577613
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_review_65_3s_terminal_timer_tie",
+      "count": 4,
+      "total_s": 1.3762595400912687,
+      "setup_s": 0.0005336240865290165,
+      "call_s": 1.3754392909468152,
+      "max_s": 0.36253012396628037
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review5.py::test_review5_chained_counterexamples",
+      "count": 12,
+      "total_s": 1.2865810006624088,
+      "setup_s": 0.0012478330172598362,
+      "call_s": 1.2843340007821098,
+      "max_s": 0.13496208301512524
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_review_6s_error_retry_message_timer_tie",
+      "count": 4,
+      "total_s": 0.9261007080203854,
+      "setup_s": 0.0005214580451138318,
+      "call_s": 0.9252945419866592,
+      "max_s": 0.25208862498402596
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_model.py::test_generated_no_comm_bytes_and_additive_common_schedule",
+      "count": 200,
+      "total_s": 0.8072060589911416,
+      "setup_s": 0.3352795040118508,
+      "call_s": 0.46112646989058703,
+      "max_s": 0.0253275009454228
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review7.py::test_end_state_keeps_censored_calls_and_actual_horizon",
+      "count": 12,
+      "total_s": 0.7149637108668685,
+      "setup_s": 0.001924500975292176,
+      "call_s": 0.7120554589782842,
+      "max_s": 0.08403604093473405
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_message_retry_keeps_its_cause_or_is_consumed_by_common_snapshot",
+      "count": 6,
+      "total_s": 0.6899887508479878,
+      "setup_s": 0.0008713330025784671,
+      "call_s": 0.6884041259181686,
+      "max_s": 0.14138850098242983
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_additive_inflight_call_cannot_delay_a_later_common_event",
+      "count": 3,
+      "total_s": 0.3332650000229478,
+      "setup_s": 0.00037016597343608737,
+      "call_s": 0.3325553750619292,
+      "max_s": 0.11205254105152562
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_review4_snapshot_failure_after_6_1_delivery_recovers_at_8_1",
+      "count": 3,
+      "total_s": 0.3256808760925196,
+      "setup_s": 0.00037758302642032504,
+      "call_s": 0.3249294999986887,
+      "max_s": 0.10929541697259992
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review6.py::test_past_refusal_label_preserves_refunded_terminal_facts",
+      "count": 3,
+      "total_s": 0.1758525840123184,
+      "setup_s": 0.000572583987377584,
+      "call_s": 0.1750468750251457,
+      "max_s": 0.05941337603144348
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_own_boundary_without_common_trigger_releases_only_pending_messages",
+      "count": 1,
+      "total_s": 0.07988087501144037,
+      "setup_s": 9.658298222348094e-05,
+      "call_s": 0.07967429200652987,
+      "max_s": 0.07988087501144037
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_exits.py::test_every_exit_crossed_with_message_state",
+      "count": 132,
+      "total_s": 0.07666445517679676,
+      "setup_s": 0.015482328948564827,
+      "call_s": 0.05514083447633311,
+      "max_s": 0.001550709013827145
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_exits.py::test_settlement_exit_wakes_both_lanes",
+      "count": 66,
+      "total_s": 0.03744433383690193,
+      "setup_s": 0.00946179690072313,
+      "call_s": 0.024681918905116618,
+      "max_s": 0.0012174999574199319
+    },
+    {
+      "family": "tests/test_zone_multiturn_ci.py::test_seed_ranges_cover_every_case_once_without_splitting_a_seed",
+      "count": 3,
+      "total_s": 0.021022209024522454,
+      "setup_s": 0.00019816705025732517,
+      "call_s": 0.02064466697629541,
+      "max_s": 0.007962166971992701
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review5.py::test_only_confirmed_budget_spend_discards_inputs",
+      "count": 12,
+      "total_s": 0.008187251805793494,
+      "setup_s": 0.0017069178284145892,
+      "call_s": 0.005831667047459632,
+      "max_s": 0.0009132509585469961
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_exits.py::test_pending_event_survives_every_api_return_and_rejected_input",
+      "count": 23,
+      "total_s": 0.007550541951786727,
+      "setup_s": 0.0019202089169993997,
+      "call_s": 0.004623123968485743,
+      "max_s": 0.0004951670416630805
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_model.py::test_reference_detects_review6_mutations",
+      "count": 4,
+      "total_s": 0.006512166000902653,
+      "setup_s": 0.0004387489752843976,
+      "call_s": 0.005794833006802946,
+      "max_s": 0.0021887090406380594
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_exits.py::test_stop_and_horizon_do_not_restart_either_lane",
+      "count": 18,
+      "total_s": 0.006314335914794356,
+      "setup_s": 0.0024882089346647263,
+      "call_s": 0.002838292974047363,
+      "max_s": 0.0007973749889060855
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_exits.py::test_budget_refusals_treat_both_lanes_as_ineligible",
+      "count": 15,
+      "total_s": 0.003808621142525226,
+      "setup_s": 0.0018332059844397008,
+      "call_s": 0.0013156240456737578,
+      "max_s": 0.0004917090409435332
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review7.py::test_only_last_job_boundary_can_make_trial_quiescent",
+      "count": 4,
+      "total_s": 0.0034214170882478356,
+      "setup_s": 0.00047666800674051046,
+      "call_s": 0.0027199580217711627,
+      "max_s": 0.0008653330733068287
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review7.py::test_reference_accounts_for_unfinished_executor_jobs",
+      "count": 3,
+      "total_s": 0.003137709165457636,
+      "setup_s": 0.00036379205994307995,
+      "call_s": 0.0025952920550480485,
+      "max_s": 0.0012273750035092235
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review5.py::test_common_snapshot_refund_keeps_the_consumed_message_retry_root",
+      "count": 1,
+      "total_s": 0.001281708013266325,
+      "setup_s": 8.745800005272031e-05,
+      "call_s": 0.0011407500132918358,
+      "max_s": 0.001281708013266325
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_properties.py::test_only_messages_coalesce_and_consume_together",
+      "count": 2,
+      "total_s": 0.0011707930243574083,
+      "setup_s": 0.00024383398704230785,
+      "call_s": 0.0007529170252382755,
+      "max_s": 0.0006334999925456941
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_review6.py::test_coalesced_fresh_message_has_its_own_retry_allowance",
+      "count": 1,
+      "total_s": 0.0008956250385381281,
+      "setup_s": 0.00018666702089831233,
+      "call_s": 0.0006539160385727882,
+      "max_s": 0.0008956250385381281
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_exits.py::test_submit_zero_send_has_no_hold_or_deferred_wait_to_release",
+      "count": 2,
+      "total_s": 0.0007634999346919358,
+      "setup_s": 0.00020245800260454416,
+      "call_s": 0.00046720897080376744,
+      "max_s": 0.00043824996100738645
+    },
+    {
+      "family": "tests/test_zone_multiturn_ci.py::test_invalid_shard_inputs_fail",
+      "count": 3,
+      "total_s": 0.0005582099547609687,
+      "setup_s": 0.0002662499900907278,
+      "call_s": 0.00015887600602582097,
+      "max_s": 0.00018625101074576378
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_generated.py::test_nondefault_outstanding_capacity_preserves_v64_resume_time",
+      "count": 1,
+      "total_s": 0.0005282509373500943,
+      "setup_s": 8.695898577570915e-05,
+      "call_s": 0.00038645899621769786,
+      "max_s": 0.0005282509373500943
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_exits.py::test_persistent_zero_send_with_zero_interval_cannot_spin_at_one_time",
+      "count": 1,
+      "total_s": 0.0004429988912306726,
+      "setup_s": 6.0207967180758715e-05,
+      "call_s": 0.0003384159645065665,
+      "max_s": 0.0004429988912306726
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_model.py::test_v64_label_uses_refusal_history_but_cannot_change_account",
+      "count": 1,
+      "total_s": 0.0003501659957692027,
+      "setup_s": 8.20829882286489e-05,
+      "call_s": 0.00021120801102370024,
+      "max_s": 0.0003501659957692027
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_exits.py::test_tagged_event_lifecycle_is_generic_and_subclass_has_no_exit_overrides",
+      "count": 1,
+      "total_s": 0.00026712496764957905,
+      "setup_s": 5.704199429601431e-05,
+      "call_s": 0.00017129199113696814,
+      "max_s": 0.00026712496764957905
+    },
+    {
+      "family": "tests/test_zone_study_multiturn_exits.py::test_actual_send_cap_includes_multiple_http_attempts_in_one_call",
+      "count": 1,
+      "total_s": 0.00022958399495109916,
+      "setup_s": 5.704199429601431e-05,
+      "call_s": 0.00013400003081187606,
+      "max_s": 0.00022958399495109916
+    }
+  ],
+  "seed_ranges": {
+    "0": {
+      "300": [
+        0,
+        18
+      ],
+      "100": [
+        0,
+        6
+      ],
+      "12": [
+        0,
+        0
+      ],
+      "1000": [
+        0,
+        62
+      ],
+      "3000": [
+        0,
+        187
+      ],
+      "200": [
+        0,
+        12
+      ]
+    },
+    "1": {
+      "300": [
+        19,
+        37
+      ],
+      "100": [
+        7,
+        12
+      ],
+      "12": [
+        1,
+        1
+      ],
+      "1000": [
+        63,
+        124
+      ],
+      "3000": [
+        188,
+        374
+      ],
+      "200": [
+        13,
+        24
+      ]
+    },
+    "2": {
+      "300": [
+        38,
+        56
+      ],
+      "100": [
+        13,
+        18
+      ],
+      "12": [
+        2,
+        2
+      ],
+      "1000": [
+        125,
+        187
+      ],
+      "3000": [
+        375,
+        562
+      ],
+      "200": [
+        25,
+        37
+      ]
+    },
+    "3": {
+      "300": [
+        57,
+        74
+      ],
+      "100": [
+        19,
+        24
+      ],
+      "12": null,
+      "1000": [
+        188,
+        249
+      ],
+      "3000": [
+        563,
+        749
+      ],
+      "200": [
+        38,
+        49
+      ]
+    },
+    "4": {
+      "300": [
+        75,
+        93
+      ],
+      "100": [
+        25,
+        31
+      ],
+      "12": [
+        3,
+        3
+      ],
+      "1000": [
+        250,
+        312
+      ],
+      "3000": [
+        750,
+        937
+      ],
+      "200": [
+        50,
+        62
+      ]
+    },
+    "5": {
+      "300": [
+        94,
+        112
+      ],
+      "100": [
+        32,
+        37
+      ],
+      "12": [
+        4,
+        4
+      ],
+      "1000": [
+        313,
+        374
+      ],
+      "3000": [
+        938,
+        1124
+      ],
+      "200": [
+        63,
+        74
+      ]
+    },
+    "6": {
+      "300": [
+        113,
+        131
+      ],
+      "100": [
+        38,
+        43
+      ],
+      "12": [
+        5,
+        5
+      ],
+      "1000": [
+        375,
+        437
+      ],
+      "3000": [
+        1125,
+        1312
+      ],
+      "200": [
+        75,
+        87
+      ]
+    },
+    "7": {
+      "300": [
+        132,
+        149
+      ],
+      "100": [
+        44,
+        49
+      ],
+      "12": null,
+      "1000": [
+        438,
+        499
+      ],
+      "3000": [
+        1313,
+        1499
+      ],
+      "200": [
+        88,
+        99
+      ]
+    },
+    "8": {
+      "300": [
+        150,
+        168
+      ],
+      "100": [
+        50,
+        56
+      ],
+      "12": [
+        6,
+        6
+      ],
+      "1000": [
+        500,
+        562
+      ],
+      "3000": [
+        1500,
+        1687
+      ],
+      "200": [
+        100,
+        112
+      ]
+    },
+    "9": {
+      "300": [
+        169,
+        187
+      ],
+      "100": [
+        57,
+        62
+      ],
+      "12": [
+        7,
+        7
+      ],
+      "1000": [
+        563,
+        624
+      ],
+      "3000": [
+        1688,
+        1874
+      ],
+      "200": [
+        113,
+        124
+      ]
+    },
+    "10": {
+      "300": [
+        188,
+        206
+      ],
+      "100": [
+        63,
+        68
+      ],
+      "12": [
+        8,
+        8
+      ],
+      "1000": [
+        625,
+        687
+      ],
+      "3000": [
+        1875,
+        2062
+      ],
+      "200": [
+        125,
+        137
+      ]
+    },
+    "11": {
+      "300": [
+        207,
+        224
+      ],
+      "100": [
+        69,
+        74
+      ],
+      "12": null,
+      "1000": [
+        688,
+        749
+      ],
+      "3000": [
+        2063,
+        2249
+      ],
+      "200": [
+        138,
+        149
+      ]
+    },
+    "12": {
+      "300": [
+        225,
+        243
+      ],
+      "100": [
+        75,
+        81
+      ],
+      "12": [
+        9,
+        9
+      ],
+      "1000": [
+        750,
+        812
+      ],
+      "3000": [
+        2250,
+        2437
+      ],
+      "200": [
+        150,
+        162
+      ]
+    },
+    "13": {
+      "300": [
+        244,
+        262
+      ],
+      "100": [
+        82,
+        87
+      ],
+      "12": [
+        10,
+        10
+      ],
+      "1000": [
+        813,
+        874
+      ],
+      "3000": [
+        2438,
+        2624
+      ],
+      "200": [
+        163,
+        174
+      ]
+    },
+    "14": {
+      "300": [
+        263,
+        281
+      ],
+      "100": [
+        88,
+        93
+      ],
+      "12": [
+        11,
+        11
+      ],
+      "1000": [
+        875,
+        937
+      ],
+      "3000": [
+        2625,
+        2812
+      ],
+      "200": [
+        175,
+        187
+      ]
+    },
+    "15": {
+      "300": [
+        282,
+        299
+      ],
+      "100": [
+        94,
+        99
+      ],
+      "12": null,
+      "1000": [
+        938,
+        999
+      ],
+      "3000": [
+        2813,
+        2999
+      ],
+      "200": [
+        188,
+        199
+      ]
+    }
+  },
+  "raw_files": {
+    "outputs/ci-multiturn/before-collection.txt": "1859e22194925dd4af95df432ed4c462f1afdbfa507ef56df1c7797581614e4e",
+    "outputs/ci-multiturn/coverage.json": "2df2c992802eff21955157bd1fb571429c4be5cf0233493ce917c569ddf1976d",
+    "outputs/ci-multiturn/measure_shards.py": "c1bf24e238eaf403928a05073390a49b859dd6314f970cb786be4bce299eb953",
+    "outputs/ci-multiturn/profile-after-costs.txt": "4bad63e10134fbd4239d8e33adbd029f2a863e6e2f84e3189f5145ece083c1e9",
+    "outputs/ci-multiturn/profile-after.prof": "f28b3d069abdf7d47ba375a1fa6fd7716909062e17b09dd954f0d1e760842185",
+    "outputs/ci-multiturn/profile-after.txt": "118e5d3066c4e3745a51b71af46b449ea29c509c098c8321f1f9ac2c79796193",
+    "outputs/ci-multiturn/profile-before-costs.txt": "d3fa7454582ce9b35cc898b702a6fb1192658c6b73f14bb47e0943a764f371b6",
+    "outputs/ci-multiturn/profile-before.prof": "db266df296fa580412958df7f697ce7dc521bd2dc118cc240262277e5bfc9839",
+    "outputs/ci-multiturn/profile-before.txt": "5dc31e07dea1df88f9d11e22be23943f33a80a65835cbb0ea4decfdb5399712a",
+    "outputs/ci-multiturn/shard-0.json": "c9cb8b333e07552d4f577df9dce07a408565aa432720f657afb3c2c12207c305",
+    "outputs/ci-multiturn/shard-0.txt": "ff2fd59bf887e71f4c6048560f3aa9307f7b241738b0b8b37031f34c570e7ae2",
+    "outputs/ci-multiturn/shard-1.json": "f1507f65bec946796a4454912369861eb791f2343f5da480f2e011d9ce2532e2",
+    "outputs/ci-multiturn/shard-1.txt": "ece5f2f230c90eb642460feb6e65593e56f9e98a6536cb6c77836f8bef88c609",
+    "outputs/ci-multiturn/shard-10.json": "f9223663dd58a6cae1db06400278b08ae700805d82c14bffcb4e3ec312332bda",
+    "outputs/ci-multiturn/shard-10.txt": "8d2f304569b516a864ed4439f1266848978612e1b8bfef2ad3ddfe841ae0bae9",
+    "outputs/ci-multiturn/shard-11.json": "5bb2d351a6b832e2340833f2d5c2c8aab15f39959b9402ad2442adbc545388a7",
+    "outputs/ci-multiturn/shard-11.txt": "5aa250c212249f4c6106c1d0eb1a3ca00127085ee6f72f157aca39b4aa513590",
+    "outputs/ci-multiturn/shard-12.json": "763f7a513bd3d947b9f6ec5b3e9d918a509df538a72c5ba7098dcb72b7c98484",
+    "outputs/ci-multiturn/shard-12.txt": "105aec27040b385656065fbb2b9c23f8186acfbb2beed6a7686403eac17c7d6c",
+    "outputs/ci-multiturn/shard-13.json": "1ffe1ebfa9928f9f4881afefb34e613e1d50f03b2eb1117e0ab6889677866e9c",
+    "outputs/ci-multiturn/shard-13.txt": "82969909777d2089fe2f7c4205ba065f158bd23adfcc6d5e7f50c7e479bcf14e",
+    "outputs/ci-multiturn/shard-14.json": "e15b70fcaaa4c6fd7fd5251c35ae99bf918b8ec71867b06ffc4cfb2385a4b07e",
+    "outputs/ci-multiturn/shard-14.txt": "a104e1e6c01dd4de25ebb8b78c7ced7e92794548084395a39fe9860da677de39",
+    "outputs/ci-multiturn/shard-15.json": "72989d1a82b1a4a6bbd2acca56dee364a65e67dea4b838288edf43311f32629e",
+    "outputs/ci-multiturn/shard-15.txt": "f1e9717918cc437c21982ebe2dd75d9360a1ac616685e650458f5b488d1bbe5b",
+    "outputs/ci-multiturn/shard-2.json": "2adb65a88a5aecaf5b043a71a7c9f948ca17a6b49de3aee167d98e69b75caa2b",
+    "outputs/ci-multiturn/shard-2.txt": "f62fd0e227b78e31b8f6ef39ff2a458f8f88a0984f00f2a7e22289ffbdc7e222",
+    "outputs/ci-multiturn/shard-3.json": "aa680f0aa01a4aad11a5354d648d2374c872a137c9d5ec7f77846164d69f0f94",
+    "outputs/ci-multiturn/shard-3.txt": "426d261768d9e2fa492cf5c0929465c48c8964b6bf5c9d9a1ac4b07cbc35ca7f",
+    "outputs/ci-multiturn/shard-4.json": "f64f1fed31e5123c4eb602ba8900715d4d87f90220f0b92c8a8018258077ead2",
+    "outputs/ci-multiturn/shard-4.txt": "2d539dbf58231382df97eb70b894a73513297fc12310df0507fab0343808ac58",
+    "outputs/ci-multiturn/shard-5.json": "aecbdcb4c020025e76c2d1f9c344e851f47467876d14f9fad1dc717ea33edf68",
+    "outputs/ci-multiturn/shard-5.txt": "b21081decc355a03b5b7123ffa01d5d6736866bb6a17ab824893052df1c9cc28",
+    "outputs/ci-multiturn/shard-6.json": "cf32f806fd3831759dd06e84d11f740dfe4ff56d07d2ae84e62558fe1682fc08",
+    "outputs/ci-multiturn/shard-6.txt": "edc0992f26c177ccb847eb6c241065c1478ec8b47e2ece1c77af6a052963e7df",
+    "outputs/ci-multiturn/shard-7.json": "8f415a678270133eff665335f12ba8b81e22e2ae0e811e67baebe34b5b83b051",
+    "outputs/ci-multiturn/shard-7.txt": "1653b53dd0395acc051f6da2a620345e01076131f3a91929e7d35e6502d46dd4",
+    "outputs/ci-multiturn/shard-8.json": "4da9c9c7c1509a1241d5733985bd7f3592235e82e3fd844efb3e16f7e2f417d7",
+    "outputs/ci-multiturn/shard-8.txt": "7a9b66786316120002df7e6fa865a3d72368f1bca55beef601e68da58cdb7312",
+    "outputs/ci-multiturn/shard-9.json": "1d7257877f283b552dcc0a64c3078f37816973021ed7f10d84648080d91c8be2",
+    "outputs/ci-multiturn/shard-9.txt": "0fbf349f8735bf268daf066616a457b77ce438618bc21b63304c5d2adbc6abaa",
+    "outputs/ci-multiturn/timings.json": "b935dc1b1fa5da265513c8c081b2db1ec9159c935ce8de9527067334e107a177"
+  },
+  "model_calls": 0,
+  "mujoco_steps": 0,
+  "commits": 0,
+  "new_ubuntu_ci_verified": false,
+  "temporary_directory_removed": true,
+  "offline_regressions": {
+    "job_unchanged": true,
+    "runner_unchanged": true,
+    "local_selected_modules": 282,
+    "changed_selected_modules": 0,
+    "existing_ubuntu_pytest_s": 1056.93,
+    "existing_ubuntu_passed": 5179,
+    "existing_ubuntu_skipped": 132,
+    "existing_ubuntu_subtests_passed": 417,
+    "existing_ubuntu_conclusion": "success",
+    "existing_ubuntu_merge_sha": "952f1b3281a88bc12e2cdf805d00cd482618bf54",
+    "existing_ubuntu_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36355728616/job/108722955606"
+  }
+}

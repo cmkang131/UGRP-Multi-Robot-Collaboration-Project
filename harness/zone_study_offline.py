@@ -227,6 +227,8 @@ class TrialResult:
     end_reason: str = 'sim_horizon'
     #: Seventh review: sends per call as the send ledger counted them.
     send_ledger: dict = field(default_factory=dict)
+    #: Integration-only terminal facts; end_reason retains the v64 label.
+    end_state: dict = field(default_factory=dict)
 
     def trial_record(self, *, horizon_s=DEFAULT_HORIZON_S, provenance_row=None, literals=()) -> dict:
         """The package I trial record (``ugrp.zone_study_trial.v1``).
@@ -268,6 +270,8 @@ class TrialResult:
                  'send_ledger': copy.deepcopy(self.send_ledger)}
         if self.leader_id:
             value['leader_id'] = self.leader_id
+        if self.end_state:
+            value['end_state'] = copy.deepcopy(self.end_state)
         return value
 
 
@@ -284,7 +288,8 @@ class OfflineTrial:
     """One condition x scenario x seed trial of the offline smoke."""
 
     def __init__(self, scenario, *, condition, seed, map_bundle=None, cost_params=None, policy=None,
-                 library=None, horizon_s=DEFAULT_HORIZON_S, run_id=None, code_sha='unknown'):
+                 library=None, horizon_s=DEFAULT_HORIZON_S, run_id=None, code_sha='unknown',
+                 scheduler_factory=EventScheduler):
         self.spec = zp.spec(condition)
         self.condition = condition
         self.seed = int(seed)
@@ -324,7 +329,7 @@ class OfflineTrial:
         self.transport = ModelCallTransport(self, send_ledger=self.send_ledger,
                                             client_factory=self.client_factory)
         self.policy = policy or CallPolicy()
-        self.scheduler = EventScheduler(self.transport, cost_params=self.params,
+        self.scheduler = scheduler_factory(self.transport, cost_params=self.params,
                                         policy=self.policy, actors=self.actors,
                                         on_action=self._on_action,
                                         bus=self.channel, bus_owner=BUS_OWNER)
@@ -856,7 +861,7 @@ def _send_ledger_problems(trial: 'OfflineTrial', result: TrialResult, used: int)
     ledger, problems = result.cost['send_ledger'], []
     if ledger['sent'] != used:
         problems.append(f'send ledger counted {ledger["sent"]} request(s) but the call log {used} attempt(s)')
-    if result.cost['wire_requests'] != ledger['sent']:
+    if result.cost['wire_requests'] is not None and result.cost['wire_requests'] != ledger['sent']:
         problems.append(f'the wire received {result.cost["wire_requests"]} request(s), the ledger '
                         f'{ledger["sent"]}')
     for call in result.calls:

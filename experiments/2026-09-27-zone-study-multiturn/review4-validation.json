@@ -1,0 +1,110 @@
+{
+  "base_head": "6386472702a32d6758c920865469a5d4d77cb9b5",
+  "branch": "codex/zone-study-multiturn",
+  "remote_pr_at_start": {
+    "number": 245,
+    "draft": true,
+    "merged": false,
+    "head_sha": "6386472702a32d6758c920865469a5d4d77cb9b5"
+  },
+  "python": "3.12.13",
+  "pytest": "9.1.1",
+  "OMP_NUM_THREADS": "1",
+  "unique_passed": 3012,
+  "suites": [
+    {
+      "name": "related",
+      "passed": 2167
+    },
+    {
+      "name": "final-core",
+      "passed": 1295
+    },
+    {
+      "name": "legacy",
+      "passed": 98
+    },
+    {
+      "name": "nocomm-1",
+      "passed": 200
+    },
+    {
+      "name": "nocomm-2",
+      "passed": 200
+    },
+    {
+      "name": "remaining-properties",
+      "passed": 344,
+      "deselected": 400
+    }
+  ],
+  "generated_cases": 1712,
+  "audit": {
+    "cells": 155,
+    "explicit_sites": 64,
+    "implicit_sites": 24,
+    "executed_sites": 88,
+    "mutations": [
+      {
+        "mutation": "remove generic input refund",
+        "detected": true
+      },
+      {
+        "mutation": "restore nonrefundable call-ID cap",
+        "detected": true
+      }
+    ]
+  },
+  "final_source_sha256": {
+    ".github/workflows/tests.yml": "0b6aab998c17d5d950e1bb7200ba0120f70f678d4c550a4556f9369ae145eb47",
+    "harness/zone_event_scheduler.py": "f5d743fb85796749ad986abb383f6ac4164838bc8926350db2f5c66b45f6f270",
+    "harness/zone_study_decisions.py": "c4d9b05a77f19aeaa3ca1a2f517449a1d67a17fc721d9a903494f391edca6406",
+    "harness/zone_study_integration.py": "f1d1e849819c34d04a7b0efd3ceb8e659e8bfdeb8b7608e317e7ff1ad69ffc6f",
+    "tests/test_zone_study_multiturn.py": "b2afb57c9b6c94c6f0fc7d82ab4a8e2b15f73dbfe86fabfa4d5fdd2f4a961f36",
+    "tests/test_zone_study_multiturn_properties.py": "b10f91e3c809f2b554404806944cab0fee490d249e015b6b18e87f3a6b62f3e1",
+    "tests/test_zone_study_multiturn_exits.py": "27eafbd4cb5aecf5e7e0da669c9bd788353143c675f6b757fda50d2105c536f9",
+    "tests/test_zone_study_multiturn_generated.py": "f11673980167db6a3758c9d8f0753680004559c041025cc58a06f0c315c355da",
+    "experiments/2026-09-27-zone-study-multiturn/audit_review4.py": "2dba7c1ff3504d01ab091d1b4deeeb9a1d4e096890f3d0260482a145f679bb8e"
+  },
+  "validation_phases": {
+    "related_and_integrated_properties_core_sha256": "24a942c774f0c5beeb5c6d5aae99bd6952b454dd6f8c1fe7f61c423ae674b356",
+    "final_core_suite_source_sha256": "f5d743fb85796749ad986abb383f6ac4164838bc8926350db2f5c66b45f6f270",
+    "difference": "Only resume capacity predicate: bool(outstanding) -> outstanding >= max_outstanding. Equivalent for all default-1 cases. Final 1295 tests cover default 1 and new nondefault 2 v64 comparison."
+  },
+  "model_calls": 0,
+  "physics_steps": 0,
+  "git_commits": 0,
+  "pushes": 0,
+  "merges": 0,
+  "pytest_tmp_removed": true,
+  "remaining": [
+    "P2 #240/v65 composition deferred",
+    "No physical/model validation or remote CI run"
+  ],
+  "artifact_sha256": {
+    "review4-exit-table.md": "6db1da8751176333dcaf6488b8f6f58b74de4aa050ec19aac98f5f55eb52b97a",
+    "review4-exit-traces.json": "9e70488cea285a78cded721891ee008e8d0c0fde02fe69f14c0e363a885ad6b7",
+    "review4-exits-command.json": "53e3d3b6de8b6eb8101b8de8828331f062a195606add84479f8b3f1edf983357",
+    "review4-exits.txt": "150397636cc2a7f678f1dba3ab98524aefffdab30ea97f218320f824cf1d66b5",
+    "review4-exits.xml": "b8a3251a0cd6a2355679c92ec863541322353befaf803f74f5e9da6f05d25318",
+    "review4-final-core-command.json": "aca6ed915fba16d6299630215e5602cf3393ad7407203fc7684c23ce4c2e1d00",
+    "review4-final-core.txt": "56223711cd4bfd7c113abb619c0e852fc8d6e6ed371f8d9d2bb091c69af9c65c",
+    "review4-final-core.xml": "ac6f9121cba32536314a11ff429a021e84568fb41b8a69ca2814c31b313e1d41",
+    "review4-fix.md": "bb5cfe1bbd31792e036aeb0a08018c0cd8e2f496ce08f02bc3a511cd39529244",
+    "review4-legacy.txt": "c6eb1c1c0689e144ba785b060b2752caabedb6fe8347781cc354443e95139b22",
+    "review4-legacy.xml": "ccf8d41f2e60d4b6958c4142276a10ce22f21dadf7f29a782e21f38f89294d8e",
+    "review4-nocomm-1.txt": "79448a5d6bbaa59da7bd2686d270c30a6ef0d6ec04b9ee5d282734c229c1e50d",
+    "review4-nocomm-1.xml": "d08d19c3580fde7b86d6b7fa0b1be7b94c81a581f01484a197128c751d6cf064",
+    "review4-nocomm-2.txt": "270a1e361a6f9b81fb0b70cd25beb9830310d4d6b63eac0c7283f7b28af5ce43",
+    "review4-nocomm-2.xml": "10f54396a9a1b90143829df8c56d4bb05f2c88e3cfac66561c7dd56937188b3f",
+    "review4-nocomm-commands.json": "e8b7f837d2a740b0de7f0d6ce31553e74b128e8afdb48a448ba8a9b8b0c23def",
+    "review4-properties-initial.txt": "66e743ac8fec77eeb8edac53cea8707bc73c4e60604979e129901a89060ada29",
+    "review4-related-command.json": "0d69f18fe5d2da1e7116d131ff6965337b07280887679e4f68c2c207cb8e4ca1",
+    "review4-related-cwd-diagnostic.txt": "208c5ae8472031722907b7e760398c1faf91b44523e5b2c3499030f42152d3c2",
+    "review4-related.txt": "0a6c451d190cdd534dd3a1f28917cb3f4abc6d14b1d8b7dac9211a27f5fc09f6",
+    "review4-related.xml": "9c2b138ea9e3ad8fefc986db107ddca6188072eda15bc2dc441f167f8609c59d",
+    "review4-remaining-collected.txt": "3de42b980941217faa3df199fa2346ee09072a150ee5b46050a82a99b80b8cf2",
+    "review4-remaining-command.json": "8c5500a9f5156dcdfb2adb2652dba66156ddddbd7ebb942a7cc8ec68c6d18676",
+    "review4-remaining-properties.txt": "3c670810edb802da90e5d4eb6b33c330e44bc03768c16c7e426b403f62ef099a"
+  }
+}

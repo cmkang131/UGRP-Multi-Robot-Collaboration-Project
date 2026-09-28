@@ -1,0 +1,182 @@
+{
+  "scope": "read-only GitHub connector; local git fetch and gh blocked",
+  "local_base_sha": "97f91cb040bf382973ce84b24b1ca8399e64a6fb",
+  "remote_repository": "cmkang131/UGRP-Multi-Robot-Collaboration-Project",
+  "refs": [
+    {
+      "name": "main",
+      "ref": "main",
+      "files": [
+        {
+          "path": "harness/rgb_execution_bundle.py",
+          "blob_sha": "a6e13225ef2228d88d0c598729ceffe564bf8c3e",
+          "ids": [
+            "RUNNABLE_ID = \"rgb-standard-dispatch-v63\""
+          ],
+          "missing": false
+        },
+        {
+          "path": "harness/zone_study_integration.py",
+          "blob_sha": "c58152202a0013a7a74015a078eb9d051c4cb244",
+          "ids": [
+            "EXECUTION_BUNDLE_ID = 'zone-study-integration-v64-source-closure'"
+          ],
+          "missing": false
+        }
+      ]
+    },
+    {
+      "name": "#188",
+      "ref": "3c9323f0878c9856aa94e798b99413baae07cfdd",
+      "branch": "kiro/zone-ko-pilot-fixes",
+      "files": [
+        {
+          "path": "harness/rgb_execution_bundle.py",
+          "blob_sha": "a6e13225ef2228d88d0c598729ceffe564bf8c3e",
+          "ids": [
+            "RUNNABLE_ID = \"rgb-standard-dispatch-v63\""
+          ],
+          "missing": false
+        },
+        {
+          "path": "harness/zone_study_integration.py",
+          "blob_sha": "c58152202a0013a7a74015a078eb9d051c4cb244",
+          "ids": [
+            "EXECUTION_BUNDLE_ID = 'zone-study-integration-v64-source-closure'"
+          ],
+          "missing": false
+        }
+      ]
+    },
+    {
+      "name": "#239",
+      "ref": "b1e2d109751df7e065511915db6ac67e0ee9fe6e",
+      "branch": "claude/disk-cleanup-0927",
+      "files": [
+        {
+          "path": "harness/rgb_execution_bundle.py",
+          "blob_sha": "9e03044b3b49fd9a092e1ff06f2f12048782b7b7",
+          "ids": [
+            "RUNNABLE_ID = \"rgb-standard-dispatch-v61\""
+          ],
+          "missing": false
+        },
+        {
+          "path": "harness/zone_study_integration.py",
+          "blob_sha": null,
+          "ids": [],
+          "missing": true
+        }
+      ]
+    },
+    {
+      "name": "#240",
+      "ref": "3790372dfdd8e9de894bad7414657461bc8ba91d",
+      "branch": "codex/zone-pair-grasp-relook",
+      "files": [
+        {
+          "path": "harness/rgb_execution_bundle.py",
+          "blob_sha": "9e03044b3b49fd9a092e1ff06f2f12048782b7b7",
+          "ids": [
+            "RUNNABLE_ID = \"rgb-standard-dispatch-v61\""
+          ],
+          "missing": false
+        },
+        {
+          "path": "harness/zone_study_integration.py",
+          "blob_sha": null,
+          "ids": [],
+          "missing": true
+        }
+      ]
+    },
+    {
+      "name": "#241",
+      "ref": "56c7f6c93ee48af22ba0508871a6aeba133e6874",
+      "branch": "claude/dev-frame-capture-1hz",
+      "files": [
+        {
+          "path": "harness/rgb_execution_bundle.py",
+          "blob_sha": "a6e13225ef2228d88d0c598729ceffe564bf8c3e",
+          "ids": [
+            "RUNNABLE_ID = \"rgb-standard-dispatch-v63\""
+          ],
+          "missing": false
+        },
+        {
+          "path": "harness/zone_study_integration.py",
+          "blob_sha": "c58152202a0013a7a74015a078eb9d051c4cb244",
+          "ids": [
+            "EXECUTION_BUNDLE_ID = 'zone-study-integration-v64-source-closure'"
+          ],
+          "missing": false
+        }
+      ]
+    },
+    {
+      "name": "#242",
+      "ref": "137ba742493b1f09c68238525cfc44a57054ae48",
+      "branch": "codex/vision-loc-v4",
+      "files": [
+        {
+          "path": "harness/rgb_execution_bundle.py",
+          "blob_sha": "9e03044b3b49fd9a092e1ff06f2f12048782b7b7",
+          "ids": [
+            "RUNNABLE_ID = \"rgb-standard-dispatch-v61\""
+          ],
+          "missing": false
+        },
+        {
+          "path": "harness/zone_study_integration.py",
+          "blob_sha": null,
+          "ids": [],
+          "missing": true
+        }
+      ]
+    },
+    {
+      "name": "#243",
+      "ref": "5b1aa1b15fb27a35a199fd9f07367cfc346b20db",
+      "branch": "codex/vision-loc-v5",
+      "files": [
+        {
+          "path": "harness/rgb_execution_bundle.py",
+          "blob_sha": "9e03044b3b49fd9a092e1ff06f2f12048782b7b7",
+          "ids": [
+            "RUNNABLE_ID = \"rgb-standard-dispatch-v61\""
+          ],
+          "missing": false
+        },
+        {
+          "path": "harness/zone_study_integration.py",
+          "blob_sha": null,
+          "ids": [],
+          "missing": true
+        }
+      ]
+    }
+  ],
+  "local_unpushed_reservation": {
+    "path": "/Users/changmin/projects/ugrp-wt/codex-pair-grasp/harness/zone_study_integration.py",
+    "id": "zone-study-integration-v65-pair-close"
+  },
+  "chosen": "zone-study-integration-v66-multiturn",
+  "comments": [
+    {
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/222#issuecomment-5844401834",
+      "body": "2026-09-26 결정 (사용자가 코디네이터에게 위임): **실제 LLM 파일럿 모델은 `gemini-3.8-flash`로 한다.** 기존 `harness.gemini_proxy.GeminiProxyCompleter`(로컬 프록시)를 쓰고, temperature 0.2, reasoning none으로 9/25 한국어 파일럿과 같은 설정이다.\n- **이유:** 과거 파일럿·실험(ZC2, 한국어 파일럿 #172 등)과 같은 모델이라 비교가 가능하다. 호출당 약 7k 토큰으로 가볍다.\n- **파일럿 예산:** HTTP 시도 최대 600회, total 토큰 최대 5M. 상한에 닿으면 중단하고, 중단 사실을 결과로 기록한다. 재시도도 시도 수에 포함한다.\n- **본 실험:** 모델을 하나로 고정한다(TODO S2). 규모와 예산은 파일럿에서 측정한 호출·토큰·지연을 보고 정해 본 실험 사전 등록에 적는다.\n- 모델 비교는 본 실험 뒤 별도 후속 비교로 한다."
+    },
+    {
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/222#issuecomment-5852766220",
+      "body": "**실제 LLM 어댑터 파일럿 기록 (Kiro, draft PR #238, base `kiro/zone-study-core`)** — https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/238\n\n- 호출 17회: v63(`c684e6aa`) 16/16 정상 채택(상류 미검증), v62 preflight-01 1회는 JSON 펜스로 거절. 과금 대조 17/17 complete(`proxy_log_exclusive_window`), 물리 0회.\n- 예약 34 attempts / 4,085,674 tokens, 실제 provider total 185,007(raw 합산). 172,839는 raw에서 재현하지 못했다(v63만 합하면 174,385). 기록 시점의 `budget.sqlite`는 정산 전 상태다(sha `cc23aa28…`).\n- 첫 호출 12/12가 모두 order-1을 claim했다. leader r3의 분배(r1→order-2, r2→order-3)는 follower가 결정한 뒤에 도착했다(6.1 s > 5.3/5.4 s). 따라서 본 실험에는 메시지를 받은 뒤 다시 결정하는 다회 루프가 필요하다. 세 로봇의 저장 손목 RGB fixture가 모두 cyan 상자라는 점도 교란 요인일 수 있다.\n- TensorBoard `0927-zone-study-pilot`(run 9개): EventAccumulator와 공유 서버에서 115/115 scalar가 일치했고 HParams 세션 9개를 확인했다. `tensorboard-view.json`에는 자기 키만 추가했다. 브라우저 화면은 눈으로 확인하지 않았다.\n- 남은 일: 정산 적용 후 재대조, 다회 결정 루프, 실제 장면 RGB 입력, 물리 실행.\n"
+    },
+    {
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/223#issuecomment-5846038332",
+      "body": "2026-09-26 코디네이터 결정(사용자 위임 \"알아서 좀 해\"): **LLM이 생각·대화하는 동안 로봇은 진행 중인 작업을 계속한다. 할 일이 없는 로봇만 대기한다.** 실제 로봇의 외부 LLM과 같은 비동기 방식이고, 조건 4개에 동일하게 적용한다. 대화 비용은 다음 결정과 조율이 늦어지는 형태로 SIM 시간에 반영된다. 통합 러너의 현재 동작을 그대로 확정한다."
+    },
+    {
+      "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/223#issuecomment-5852769695",
+      "body": "**파일럿에서 나온 본 실험 전 수정 항목 (2026-09-27, PR #238 기록)**\n1. 파일럿 fixture 문제: 세 로봇의 저장된 손목 영상이 모두 같은 cyan 상자를 보여 준다. 첫 호출 12/12가 order-1을 claim한 결과에 영향을 줬을 수 있다. 본 실험·통합에서는 로봇마다 실제 자기 시야의 손목 영상을 써야 한다(#229 통합 경로).\n2. 다회 결정 루프가 필요하다. leader의 분배 메시지(6.1 s)는 follower가 결정한 뒤(5.3~5.4 s)에 도착했다. 메시지를 받은 뒤 다시 결정하는 호출이 있어야 대화 효과를 측정할 수 있다.\n3. 예산 정산(#194, 1e8c5dda)을 리뷰한 뒤 적용한다."
+    }
+  ]
+}
