@@ -179,6 +179,21 @@ def install_stage(ctl, execution, probe):
                 return  # next control tick captures a fresh frame for the standoff check
             return orig_standoff(now, arm_idle)
         ctl._pregrasp_standoff = standoff
+        orig_close = ctl._wait_close
+
+        def wait_close(now, arm_idle):
+            if arm_idle and ctl.state == 'wait_close' and execution.own.last_obs is not None:
+                # Read-only diagnostics of the controller's own pre-close inputs (pure functions of
+                # its own frame and issued PWM); the decision is still made by the original method.
+                from scripts import run_m2_pair as m2
+                own = execution.own
+                view = m2.grip_view_m2(own.last_obs['image'])
+                servo_match = {str(k): own.servo.get(k) == v for k, v in getattr(ctl, 'grasp_pose', {}).items() if k != 1}
+                ctl.log(ctl.rid, 'stage_probe_close_view', now, grip_view_m2=view,
+                        servo_open=own.servo.get(1) == study.OPEN, servo_match_all=all(servo_match.values()),
+                        pregrasp_done=bool(ctl.pregrasp_done), source='own RGB + issued PWM (diagnostic only)')
+            return orig_close(now, arm_idle)
+        ctl._wait_close = wait_close
 
     hook = spec.get('exit_hook')
     if hook:
@@ -192,6 +207,62 @@ def install_stage(ctl, execution, probe):
             ctl.set(spec['exit_state'], now, stage_probe_exit=True)
         setattr(ctl, hook, exit_now)
     return ctl
+
+
+def instrument_pose(pose, rid, log, clock):
+    """Count the controller's own relook calls on its pose provider (pass-through, bookkeeping only)."""
+    for name in ('begin_relocalization', 'begin_observation'):
+        original = getattr(pose, name, None)
+        if original is None:
+            continue
+
+        def wrapped(*a, _original=original, _name=name, **k):
+            before = id(pose.loc)
+            out = _original(*a, **k)
+            log.append({'t': clock(), 'robot_id': rid, 'event': _name,
+                        'localizer_object_replaced': id(pose.loc) != before,
+                        'class': type(pose.loc).__name__})
+            return out
+        setattr(pose, name, wrapped)
+
+
+def save_checkpoint(host, out, label):
+    """mj_getState(mjSTATE_INTEGRATION) + each participant's PF state, with a bitwise restore check.
+
+    Prototype of the E2E checkpoint design (README); probe bookkeeping only, never read by control.
+    """
+    import mujoco
+    import numpy as np
+    m, d = host.world.model, host.world.data
+    spec = mujoco.mjtState.mjSTATE_INTEGRATION
+    state = np.empty(mujoco.mj_stateSize(m, spec))
+    mujoco.mj_getState(m, d, state, spec)
+    probe_d = mujoco.MjData(m)
+    mujoco.mj_setState(m, probe_d, state, spec)
+    roundtrip = bool(np.array_equal(probe_d.qpos, d.qpos) and np.array_equal(probe_d.qvel, d.qvel)
+                     and probe_d.time == d.time and np.array_equal(probe_d.ctrl, d.ctrl))
+    arrays = {'mj_state_integration': state}
+    meta = {'label': label, 'sim_s': float(d.time), 'mj_state_spec': 'mjSTATE_INTEGRATION', 'mujoco': mujoco.__version__,
+            'state_size': int(state.size), 'roundtrip_bitwise': roundtrip, 'localizer': {}}
+    for rid in sp.PARTICIPANTS:
+        pose = host.robots[rid].executor.pose
+        loc = pose.loc
+        for key in ('px', 'logw', 'scale', 'vel', 'cmd'):
+            arrays[f'{rid}_{key}'] = np.asarray(getattr(loc, key))
+        meta['localizer'][rid] = {
+            'class': type(loc).__name__, 'initialized': bool(loc.initialized), 't': float(loc.t),
+            'cmd_expires': float(loc.cmd_expires), 'last_tag_t': loc.last_tag_t,
+            'last_informative_t': getattr(loc, 'last_informative_t', None),
+            'servo': {str(k): int(v) for k, v in loc.servo.items()}, 'loaded': bool(loc.load.loaded),
+            'motion_profile': loc.motion_profile, 'stats': dict(loc.stats),
+            'rng_state': loc.rng.bit_generator.state, 'provider_servo': {str(k): int(v) for k, v in pose.servo.items()},
+            'recovery_v6': bool(getattr(pose, 'recovery_v6', False))}
+    path = Path(out) / 'checkpoints' / f'{label}.npz'
+    path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(path, **arrays)
+    write_json(path.with_suffix('.json'), meta)
+    return {'label': label, 'sim_s': meta['sim_s'], 'npz': str(path.relative_to(out)), 'npz_sha256': sp.sha_file(path),
+            'roundtrip_bitwise': roundtrip}
 
 
 def run_case(case, out):
@@ -214,7 +285,7 @@ def run_case(case, out):
     spec_stage = sp.STAGES[stage]
     write_json(out / 'case.json', {**case, 'labels': sp.LABELS})
     sheet = case['coarse_order_sheet']
-    spec = {'map': MAP_ID, 'seed': case['seed'], 'goal': {'B': {'cyan': 1}}, 'pair_policy': 'v5h',
+    spec = {'map': MAP_ID, 'seed': case['seed'], 'goal': {'B': {'cyan': 1}}, 'pair_policy': case.get('pair_policy', 'v5h'),
             'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam', 'pose': list(case['beam_xyyaw'])}],
             'pair_order_sheets': {'cargoX': sheet}, 'order_sheet': copy.deepcopy(ORDER),
             'contact_profile': 'cargo_noslip_v1', 'job_sim_limit_s': 900.}
@@ -229,7 +300,7 @@ def run_case(case, out):
     if case.get('r3_xyyaw'):
         x, y, yaw = case['r3_xyyaw']
         spawns['r3'] = [float(x), float(y), z, float(yaw)]
-    trace, events_out = [], []
+    trace, loc_log, checkpoints = [], [], []
 
     class ProbeHost(OwnCamTeamHost):
         def enable_pair_carry(self, sheets, params, **kw):
@@ -259,9 +330,11 @@ def run_case(case, out):
             robots = {r: list(self._truth(r)) for r in self.robots}
             snap = {'t': float(self.world.data.time), 'beam_xyz': xyz, 'beam_yaw': yaw, 'tilt_deg': tilt,
                     'lift_m': xyz[2] - self.rest_z, 'robots': robots, 'jaws': self.jaws(self._contact_kinds_raw()[1])}
+            geo = sp.stations([xyz[0], xyz[1], yaw])
+            snap['grip_errors_all'] = {r: sp.grip_errors(robots[r], geo['grip_xyz'][r][:2], geo['station'][r][2])
+                                       for r in sp.PARTICIPANTS}
             if rid is not None:
-                geo = sp.stations([xyz[0], xyz[1], yaw])
-                snap['grip_errors'] = sp.grip_errors(robots[rid], geo['grip_xyz'][rid][:2], geo['station'][rid][2])
+                snap['grip_errors'] = snap['grip_errors_all'][rid]
             return snap
 
         def _contact_kinds_raw(self):
@@ -281,6 +354,13 @@ def run_case(case, out):
                 row = {'t': now, 'states': states, 'beam_xyz': xyz, 'beam_yaw': yaw, 'tilt_deg': tilt,
                        'lift_m': lift, 'jaws': self.jaws(fingers),
                        'robots': {r: list(self._truth(r)) for r in sp.PARTICIPANTS}}
+                for r in sp.PARTICIPANTS:
+                    loc = self.robots[r].executor.pose.loc
+                    if id(loc) != self.loc_ids.get(r):
+                        if r in self.loc_ids:
+                            loc_log.append({'t': now, 'robot_id': r, 'event': 'localizer_object_replaced',
+                                            'class': type(loc).__name__})
+                        self.loc_ids[r] = id(loc)
                 trace.append(row)
                 self.max_tilt = max(self.max_tilt, tilt)
                 if lift >= sp.CRITERIA.get('grasp_lift', {}).get('min_lift_m', .03):
@@ -298,20 +378,26 @@ def run_case(case, out):
             if set(eps) != set(sp.PARTICIPANTS):
                 return False
             finished = [r in probe.exits or eps[r].terminal for r in sp.PARTICIPANTS]
+            if all(finished) and self.gt_at_stop is None:
+                self.gt_at_stop = self.gt_snapshot()          # eval only, at the stage stop instant
+                checkpoints.append(save_checkpoint(self, out, 'stage_stop'))
             return all(finished)
 
     host = ProbeHost.__new__(ProbeHost)
     host.next_sample, host.max_tilt, host.lifted_once, host.min_lift_after = 0., 0., False, None
     host.rest_z = 0.
+    host.loc_ids, host.gt_at_stop = {}, None
     result = {'case_id': case['case_id'], 'stage': stage, 'source': case['source'], 'cell': case['cell'],
               'seed': case['seed'], 'labels': sp.LABELS, 'probe_version': sp.PROBE_VERSION,
-              'controller': {'pair_policy': 'v5h', 'execution_bundle_id_on_main': EXECUTION_BUNDLE_ID,
+              'controller': {'pair_policy': case.get('pair_policy', 'v5h'), 'execution_bundle_id_on_main': EXECUTION_BUNDLE_ID,
                              'factory': 'harness.zone_pair_executor.m2_controller (unchanged) + probe entry/exit wrapper'},
               'weld': False, 'contact_profile': 'cargo_noslip_v1', 'model_calls': 0, 'ultrasonic': 'off (not connected)'}
     try:
         OwnCamTeamHost.__init__(host, spec, student, root=ROOT, study_layer=lambda *a: None,
                                 frames_dir=out / 'frames', scene=scene)
         probe.host = host
+        for rid in sp.PARTICIPANTS:
+            instrument_pose(host.robots[rid].executor.pose, rid, loc_log, lambda: float(host.world.data.time))
         if any(host.world.data.eq_active):
             raise RuntimeError('weld/equality active at start')
         result['applied'] = {'timestep_s': float(host.world.model.opt.timestep),
@@ -373,6 +459,7 @@ def run_case(case, out):
             probe.submit_t = max(float(host.world.data.time), sp.SUBMIT_AFTER_S) + sp.STAGING_S
         sim_end = probe.submit_t + spec_stage['budget_s']
         result['gt_at_entry'] = host.gt_snapshot()
+        checkpoints.append(save_checkpoint(host, out, 'staged_before_submit'))
         run = host.run(sim_end, done=host.done)
         result['termination'] = run
     except Exception as exc:  # noqa: BLE001 - HOST_ERROR is a recorded outcome, never a pass
@@ -398,6 +485,11 @@ def run_case(case, out):
                                                  for r, s in host.robots.items()})
                 write_json(out / 'eval_only/host.json', host.eval_only)
                 result['gt_at_end'] = host.gt_snapshot()
+                result['gt_at_stop'] = host.gt_at_stop
+                result['localizer_log'] = loc_log
+                result['localizer_stats'] = {r: dict(host.robots[r].executor.pose.loc.stats) for r in sp.PARTICIPANTS}
+                result['localizer_class'] = {r: type(host.robots[r].executor.pose.loc).__name__ for r in sp.PARTICIPANTS}
+                result['checkpoints'] = checkpoints
                 result['max_tilt_deg'] = host.max_tilt
                 result['min_lift_after_first_lift_m'] = host.min_lift_after
                 with (out / 'eval_only/trace.jsonl').open('w') as f:
@@ -465,7 +557,17 @@ def finish_result(case, result, out):
            'final_states': result.get('final_states'), 'wall_s': round(result['wall_s'], 2),
            'look_commands': {r: sum(c['kind'] == 'look' for c in cmds)
                              for r, cmds in (_load(out / 'commands.json') or {}).items() if r in sp.PARTICIPANTS},
-           'host_error': result.get('host_error', {}).get('type')}
+           'host_error': result.get('host_error', {}).get('type'),
+           'pair_policy': case.get('pair_policy', 'v5h'),
+           'stop_sim_s': (result.get('gt_at_stop') or {}).get('t'),
+           'remaining_at_stop': {r: {k: round(v, 5) for k, v in e.items() if k != 'grip_base_m'}
+                                 for r, e in ((result.get('gt_at_stop') or {}).get('grip_errors_all') or {}).items()},
+           'relook_calls': {r: [x['event'] for x in result.get('localizer_log', []) if x['robot_id'] == r
+                                and x['event'] in ('begin_relocalization', 'begin_observation')] for r in sp.PARTICIPANTS},
+           'localizer_replaced': {r: sum(1 for x in result.get('localizer_log', []) if x['robot_id'] == r
+                                         and x['event'] == 'localizer_object_replaced') for r in sp.PARTICIPANTS},
+           'localizer_resets_stat': {r: (result.get('localizer_stats') or {}).get(r, {}).get('resets') for r in sp.PARTICIPANTS},
+           'checkpoints_roundtrip': [c['roundtrip_bitwise'] for c in result.get('checkpoints', [])]}
     result['evaluation'] = ev
     result['row'] = row
     write_json(out / 'result.json', result)
@@ -486,16 +588,21 @@ def build_cases(args):
         spec = sp.STAGES[stage]
         if not spec['implemented']:
             raise ValueError(f'stage {stage} is not implemented here ({spec["owner"]})')
-        if 'teacher' in args.sources:
-            cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
-                                      subset=set(args.cells) if args.cells else None)
-        if 'e2e' in args.sources:
-            for run in E2E_RUNS:
-                got = sp.e2e_checkpoint(args.e2e_root / run, stage, seeds=tuple(args.e2e_seeds) if args.e2e_seeds else None)
-                if isinstance(got, dict):
-                    args.unavailable.append(got)
-                else:
-                    cases += got
+        for policy in args.policies:
+            if 'teacher' in args.sources:
+                cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
+                                          subset=set(args.cells) if args.cells else None, policy=policy)
+            if 'boundary' in args.sources and stage == 'grasp_lift':
+                cases += sp.boundary_cases(stage, policy=policy, seed=args.seeds[0],
+                                           subset=set(args.cells) if args.cells else None)
+            if 'e2e' in args.sources:
+                for run in E2E_RUNS:
+                    got = sp.e2e_checkpoint(args.e2e_root / run, stage, seeds=tuple(args.e2e_seeds) if args.e2e_seeds else None,
+                                            policy=policy)
+                    if isinstance(got, dict):
+                        args.unavailable.append({**got, 'pair_policy': policy})
+                    else:
+                        cases += got
     if args.limit:
         cases = cases[:args.limit]
     return cases
@@ -536,7 +643,9 @@ def parser():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--stage', nargs='+', choices=[s for s, v in sp.STAGES.items() if v['implemented']])
     p.add_argument('--output', type=Path)
-    p.add_argument('--sources', nargs='+', default=['teacher', 'e2e'], choices=['teacher', 'e2e'])
+    p.add_argument('--sources', nargs='+', default=['teacher', 'e2e'], choices=['teacher', 'e2e', 'boundary'])
+    p.add_argument('--policies', nargs='+', default=['v5h'], choices=list(sp.POLICIES),
+                   help='harness.zone_pair_v6_policy policies; there is no A-only policy on main')
     p.add_argument('--seeds', nargs='+', type=int, default=[911])
     p.add_argument('--nominal-seeds', nargs='+', type=int, default=[911, 912, 913])
     p.add_argument('--e2e-seeds', nargs='+', type=int)

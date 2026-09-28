@@ -25,6 +25,47 @@ def test_module_and_plan_mode_import_no_simulator():
     assert plan['state'] == 'planned' and plan['cases'] == 38
 
 
+def test_plan_mode_policies_and_boundary_source(tmp_path):
+    program = ('from scripts import run_pair_stage_probes as r; '
+               'r.main(["--stage","align","grasp_lift","--output","/nonexistent/never","--sources","teacher","boundary",'
+               '"--policies","v5h","b-only","a+b"])')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+    # 3 policies x (19 align + 19 grasp_lift teacher + 23 grasp_lift boundary)
+    assert json.loads(out.stdout)['cases'] == 3 * (19 + 19 + 23)
+
+
+def test_policy_case_ids_are_distinct_and_v5h_ids_unchanged():
+    v5h = sp.teacher_cases('align', subset={'nominal'}, nominal_seeds=(911,))[0]
+    ab = sp.teacher_cases('align', subset={'nominal'}, nominal_seeds=(911,), policy='a+b')[0]
+    assert v5h['case_id'] == 'align:teacher:nominal:s911' and v5h['pair_policy'] == 'v5h'
+    assert ab['case_id'] == 'align@a+b:teacher:nominal:s911' and ab['pair_policy'] == 'a+b'
+    assert ab['placement_xyyaw'] == v5h['placement_xyyaw'] and ab['prior'] == v5h['prior']
+    with pytest.raises(ValueError, match='unknown pair policy'):
+        sp.teacher_cases('align', policy='a-only')
+
+
+def test_boundary_cases_place_true_grip_exactly_at_the_align_tolerance():
+    cases = sp.boundary_cases(policy='a+b')
+    assert len(cases) == 23 and len({c['case_id'] for c in cases}) == 23
+    assert {c['source'] for c in cases} == {'tolerance_boundary'}
+    geo = sp.stations(sp.BASE_SETUP['beam_xyyaw'])
+    plan = sp.stations(sp.BASE_SETUP['coarse_order_sheet']['beam_xyyaw'])
+    extremes = {tuple(round(abs(v), 6) for v in c['offsets']['r1']) for c in cases if c['cell'].startswith('corner')}
+    assert extremes == {(sp.ALIGN_TOL['x_m'], sp.ALIGN_TOL['y_m'], sp.ALIGN_TOL['yaw_rad'])}
+    for c in cases:
+        for rid in sp.PARTICIPANTS:
+            ex, ey, ea = c['offsets'][rid]
+            e = sp.grip_errors(c['placement_xyyaw'][rid], geo['grip_xyz'][rid][:2], geo['station'][rid][2])
+            assert e['grip_x_err_m'] == pytest.approx(ex, abs=1e-9)
+            assert e['grip_y_err_m'] == pytest.approx(ey, abs=1e-9)
+            assert e['yaw_err_rad'] == pytest.approx(-ea, abs=1e-9)
+            # prior is the static sheet station, never the GT placement
+            assert c['prior'][rid]['mean_xyyaw'] == pytest.approx(plan['station'][rid])
+    with pytest.raises(ValueError):
+        sp.boundary_cases('align')
+
+
 def test_registry_labels_and_bootstrap_delegated():
     assert 'not_e2e_success' in sp.LABELS and 'stage_probe' in sp.LABELS
     assert sp.STAGES['bootstrap']['implemented'] is False
@@ -211,3 +252,30 @@ def test_finish_result_root_cause_tie_break_and_out_of_stage_events(tmp_path):
     row = r.finish_result(case, after, tmp_path)
     assert row['passed'] and row['category'] == 'PASS'
     assert json.loads((tmp_path / 'result.json').read_text())['row']['labels'] == sp.LABELS
+
+
+def test_finish_result_records_policy_relooks_and_remaining_distance(tmp_path):
+    from scripts import run_pair_stage_probes as r
+    case = sp.teacher_cases('align', subset={'nominal'}, nominal_seeds=(911,), policy='b-only')[0]
+    err = {'grip_x_err_m': .05, 'grip_y_err_m': -.01, 'yaw_err_rad': .02, 'grip_base_m': [.212, -.01]}
+    log = [{'t': 3., 'robot_id': 'r1', 'event': 'begin_observation', 'localizer_object_replaced': False},
+           {'t': 4., 'robot_id': 'r2', 'event': 'begin_relocalization', 'localizer_object_replaced': True},
+           {'t': 4., 'robot_id': 'r2', 'event': 'localizer_object_replaced'}]
+    result = {'wall_s': 1., 'exits': {}, 'entry': {}, 'event_log': [], 'localizer_log': log,
+              'localizer_stats': {'r1': {'resets': 0}, 'r2': {'resets': 1}},
+              'gt_at_stop': {'t': 9.5, 'grip_errors_all': {'r1': err, 'r2': err}}}
+    row = r.finish_result(case, result, tmp_path)
+    assert row['pair_policy'] == 'b-only' and row['stop_sim_s'] == 9.5
+    assert row['relook_calls'] == {'r1': ['begin_observation'], 'r2': ['begin_relocalization']}
+    assert row['localizer_replaced'] == {'r1': 0, 'r2': 1}
+    assert row['localizer_resets_stat'] == {'r1': 0, 'r2': 1}
+    assert row['remaining_at_stop']['r1'] == {'grip_x_err_m': .05, 'grip_y_err_m': -.01, 'yaw_err_rad': .02}
+
+
+def test_summary_splits_by_policy():
+    rows = [{'stage': 'align', 'source': 'teacher_grid', 'pair_policy': p, 'passed': ok, 'category': c}
+            for p, ok, c in (('v5h', False, 'X'), ('a+b', True, 'PASS'), ('a+b', False, 'Y'))]
+    s = sp.summarize(rows)['stages']['align']
+    assert s['by_policy']['a+b'] == {'cases': 2, 'passed': 1, 'by_source': {'teacher_grid': {'cases': 2, 'passed': 1}},
+                                     'failures': {'Y': 1}}
+    assert s['by_policy']['v5h']['failures'] == {'X': 1}

@@ -29,9 +29,10 @@ from collections import Counter
 from pathlib import Path
 
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.1.0'
+PROBE_VERSION = '0.2.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
+POLICIES = ('v5h', 'b-only', 'a+b')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
 ROLE = {'r1': 'end_neg', 'r2': 'end_pos'}
 
 # Stage registry. ``entry`` is the controller state injected at stage start;
@@ -217,7 +218,13 @@ def _grid_offsets(stage):
     return rows
 
 
-def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=None, subset=None):
+def _pid(policy):
+    if policy not in POLICIES:
+        raise ValueError(f'unknown pair policy {policy!r}')
+    return '' if policy == 'v5h' else '@' + policy
+
+
+def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=None, subset=None, policy='v5h'):
     """Teacher-placed cases with a perturbation grid (placement = GT, prior = static plan)."""
     spec = STAGES[stage]
     if not spec['implemented']:
@@ -238,7 +245,8 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
             priors = {r: gaussian_prior(plan_geo[key][r], PRIOR_STD_XY_M, PRIOR_STD_YAW_RAD,
                                         f'static plan {key} from the coarse order sheet (not GT)')
                       for r in PARTICIPANTS}
-            out.append({'case_id': f'{stage}:teacher:{name}:s{seed}', 'stage': stage, 'source': 'teacher_grid',
+            out.append({'case_id': f'{stage}{_pid(policy)}:teacher:{name}:s{seed}', 'stage': stage, 'source': 'teacher_grid',
+                        'pair_policy': policy,
                         'cell': name, 'seed': seed, 'beam_xyyaw': list(setup['beam_xyyaw']),
                         'coarse_order_sheet': copy.deepcopy(setup['coarse_order_sheet']),
                         'placement_xyyaw': placement, 'r3_xyyaw': None, 'offsets': {'r1': list(off1), 'r2': list(off2)},
@@ -247,11 +255,60 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     return out
 
 
+ALIGN_TOL = {'x_m': .012, 'y_m': .008, 'yaw_rad': .035}   # harness.owncam_pair_beam ALIGN_TOL_X_M / ALIGN_TOL_M / ALIGN_TOL_RAD
+
+
+def boundary_offsets():
+    """(name, (ex, ey, eyaw)) in the controller's own align-error convention (grip x - 0.162, grip y, axis heading)."""
+    tx, ty, ta = ALIGN_TOL['x_m'], ALIGN_TOL['y_m'], ALIGN_TOL['yaw_rad']
+    rows = [('ex%+.0fmm' % (v * 1000), (v, 0., 0.)) for v in (-tx, -2 * tx / 3, -tx / 3, 0., tx / 3, 2 * tx / 3, tx)]
+    rows += [('ey%+.0fmm' % (v * 1000), (0., v, 0.)) for v in (-ty, -ty / 2, ty / 2, ty)]
+    rows += [('eyaw%+.4frad' % v, (0., 0., v)) for v in (-ta, -ta / 2, ta / 2, ta)]
+    rows += [('corner%s%s%s' % ('+' if sx > 0 else '-', '+' if sy > 0 else '-', '+' if sa > 0 else '-'),
+              (sx * tx, sy * ty, sa * ta)) for sx in (-1, 1) for sy in (-1, 1) for sa in (-1, 1)]
+    return rows
+
+
+def pose_for_align_error(grip_xy, station_yaw, ex, ey, eyaw):
+    """GT base pose whose TRUE grip lies at (0.162+ex, ey) in its base frame and whose beam axis
+    heading error is eyaw (controller convention: axis heading = station yaw - robot yaw)."""
+    yaw = wrap(station_yaw - eyaw)
+    gx, gy = GRASP_RADIUS_M + ex, ey
+    c, s = math.cos(yaw), math.sin(yaw)
+    return [grip_xy[0] - (c * gx - s * gy), grip_xy[1] - (s * gx + c * gy), yaw]
+
+
+def boundary_cases(stage='grasp_lift', *, policy='v5h', seed=911, setup=None, subset=None):
+    """Stage 3 entries exactly at the controller's align-done tolerance boundary (both robots same
+    offset in their own frames). Placement = GT/teacher (setup only); prior = static sheet station."""
+    if stage != 'grasp_lift':
+        raise ValueError('boundary set is defined for grasp_lift')
+    setup = copy.deepcopy(setup or BASE_SETUP)
+    true_geo = stations(setup['beam_xyyaw'])
+    plan_geo = stations(setup['coarse_order_sheet']['beam_xyyaw'])
+    out = []
+    for name, (ex, ey, ea) in boundary_offsets():
+        if subset is not None and name not in subset:
+            continue
+        placement = {r: pose_for_align_error(true_geo['grip_xyz'][r][:2], true_geo['station'][r][2], ex, ey, ea)
+                     for r in PARTICIPANTS}
+        priors = {r: gaussian_prior(plan_geo['station'][r], PRIOR_STD_XY_M, PRIOR_STD_YAW_RAD,
+                                    'static plan station from the coarse order sheet (not GT)') for r in PARTICIPANTS}
+        out.append({'case_id': f'{stage}{_pid(policy)}:boundary:{name}:s{seed}', 'stage': stage,
+                    'source': 'tolerance_boundary', 'pair_policy': policy, 'cell': name, 'seed': seed,
+                    'beam_xyyaw': list(setup['beam_xyyaw']), 'coarse_order_sheet': copy.deepcopy(setup['coarse_order_sheet']),
+                    'placement_xyyaw': placement, 'r3_xyyaw': None,
+                    'offsets': {r: [ex, ey, ea] for r in PARTICIPANTS}, 'offset_frame': 'controller align error (ex, ey, eyaw)',
+                    'prior': priors, 'teacher_held': False,
+                    'staging': 'GT placement at the controller align-done tolerance boundary (setup only)'})
+    return out
+
+
 def _read_jsonl(path):
     return [json.loads(line) for line in Path(path).read_text().splitlines() if line]
 
 
-def e2e_checkpoint(run_dir, stage, *, seeds=None):
+def e2e_checkpoint(run_dir, stage, *, seeds=None, policy='v5h'):
     """Stage entry reconstructed from a real E2E run at the moment the stage began.
 
     Physical placement uses the run's eval-only GT trace (setup only). The
@@ -290,7 +347,8 @@ def e2e_checkpoint(run_dir, stage, *, seeds=None):
         servo[rid] = f['commanded_servo']
     out = []
     for seed in (seeds or (manifest['seed'],)):
-        out.append({'case_id': f'{stage}:e2e:{run_dir.name}:s{seed}', 'stage': stage, 'source': 'e2e_checkpoint',
+        out.append({'case_id': f'{stage}{_pid(policy)}:e2e:{run_dir.name}:s{seed}', 'stage': stage, 'source': 'e2e_checkpoint',
+                    'pair_policy': policy,
                     'cell': run_dir.name, 'seed': seed,
                     'beam_xyyaw': [row['beam_xyz'][0], row['beam_xyz'][1], beam_yaw],
                     'coarse_order_sheet': run['coarse_order_sheet'],
@@ -385,4 +443,14 @@ def summarize(rows):
             'wall_s_max': walls[-1] if walls else None,
             'stage_sim_s_median': sims[len(sims) // 2] if sims else None,
         }
+        by_policy = {}
+        for pol in sorted({r.get('pair_policy', 'v5h') for r in rs}):
+            sub = [r for r in rs if r.get('pair_policy', 'v5h') == pol]
+            by_policy[pol] = {
+                'cases': len(sub), 'passed': sum(r['passed'] for r in sub),
+                'by_source': {src: {'cases': len(q), 'passed': sum(r['passed'] for r in q)}
+                              for src in sorted({r['source'] for r in sub})
+                              for q in [[r for r in sub if r['source'] == src]]},
+                'failures': dict(Counter(r['category'] for r in sub if not r['passed']).most_common())}
+        out['stages'][stage]['by_policy'] = by_policy
     return out
