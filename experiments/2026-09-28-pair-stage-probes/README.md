@@ -277,7 +277,7 @@ v6 E2E 코호트(#259)가 파지 전에 끝나 닿지 못한 v6 정책(b-only, a
 
 - **실행기를 고치지 않은 이유**
   - `scripts/zone_pair_dev_runtime.py`와 제어 harness 파일은 v5h 동결 prereg와 v6 DRAFT prereg의 `source_sha256` 계약에 들어 있다. 한 줄을 바꿔도 등록 해시가 바뀌어 새 번들 ID·새 prereg가 필요하다. "작고 따로 버전된 변경"이 아니다.
-  - 이번 PR에서 `configs/simulation_workflows.json`에 workflow 1개를 등록한 것만으로도 v6 DRAFT prereg 해시가 깨졌다(아래 "v6 계약 해시" 참고). 실행기 수정은 그보다 큰 계약 변경이다.
+  - workflow 1개를 `configs/simulation_workflows.json`에 등록하는 것만으로도 v6 prereg 해시가 깨진다(아래 "v6 계약 해시" 참고). 실행기 수정은 그보다 큰 계약 변경이다.
 - **mj 상태 + PF만으로는 v6를 이어서 실행할 수 없다 (probe로 확인)**
   - a+b를 3단계(grasp_lift)에서 바로 시작하면 r2의 상대 빔 추적이 `END_ID_AMBIGUOUS`로 끝났다. 끝 식별(identity)과 객체 앵커는 정렬 단계의 여러 영상에서 쌓이는 제어기 내부 상태다.
   - a+b는 전역 envelope 앵커(마지막 정보성 fix)도 필요하다. 없으면 제출 즉시 `GLOBAL_ANCHOR_UNKNOWN`이다.
@@ -298,12 +298,17 @@ v6 E2E 코호트(#259)가 파지 전에 끝나 닿지 못한 v6 정책(b-only, a
   - 새 `MjData` 왕복 비트 비교를 한다. v6 probe 4개 실행의 체크포인트 325개 모두 `roundtrip_bitwise=true`였다.
   - 제어기 객체 저장은 원형에 없다.
 
-### v6 계약 해시와 workflow 등록
+### v6 계약 해시와 workflow 등록 (등록 보류)
 
-- v6 DRAFT prereg(`experiments/2026-09-28-zone-pair-v6/prereg_v6.json`)의 `v6_contract.source_sha256`는 `configs/simulation_workflows.json` 전체를 해시한다.
-- 이 PR의 첫 커밋(`2aa03454`)이 workflow 1개를 등록하면서 해시가 바뀌었다. `tests/test_zone_pair_v6.py`와 `tests/test_zone_pair_registered_source.py` 4건이 실패했지만 그때 돌리지 않아 놓쳤다. 워크플로 카탈로그 개수 테스트 2건도 같은 이유로 실패했다.
-- `8985db82`에서 수리했다. prereg는 DRAFT(실행 승인 없음)이고 `c6feb21d`에서도 같은 방식으로 등록 해시를 갱신했다. 그래서 해당 해시 한 줄만 새 값으로 바꿨다. 카탈로그 테스트는 40개와 새 plan 표본으로 맞췄다.
-- 앞으로 workflow를 등록하는 다른 PR도 같은 해시를 바꾼다. v6 쪽에서 계약을 자기 항목만 해시하도록 좁힐지 판단이 필요하다.
+- v6 prereg(`experiments/2026-09-28-zone-pair-v6/prereg_v6.json`)의 `v6_contract.source_sha256`는 `configs/simulation_workflows.json` **전체**를 해시한다.
+- 이 PR의 첫 커밋(`2aa03454`)이 workflow `pair-stage-probes`를 등록하면서 이 해시가 바뀌었다. `tests/test_zone_pair_v6.py`·`tests/test_zone_pair_registered_source.py`가 실패했는데, 그때 돌리지 않아 놓쳤다.
+- `8985db82`에서는 prereg가 DRAFT였으므로 해시 한 줄을 갱신했다(`c6feb21d`와 같은 방식).
+- 그 뒤 #259가 v6 prereg를 **REGISTERED**로 전환해 병합했다. 등록된 prereg는 파일 해시까지 승인 기록에 묶인다(`registration hash mismatch`). 동결된 등록은 고치지 않는다.
+- 그래서 origin/main 병합(`a25386e9` 이후)에서 두 파일을 main 그대로 되돌렸다. **`pair-stage-probes` workflow 등록은 보류**했다.
+  - 등록할 행은 [workflow_registration_pending.json](workflow_registration_pending.json)에 그대로 보관한다(0.2.0).
+  - 이 PR의 물리 실행은 모두 등록 상태의 `sim_cli workflow run pair-stage-probes`로 돌았다. 공통 실행 기록은 각 raw의 `*-managed/manifest.json`에 있다.
+  - 보류 중에는 `scripts.run_pair_stage_probes`를 직접 실행한다. `--execute`의 잠금·clean 소스·주 checkout 출력 검사는 러너 자체에 있다.
+- v6 쪽에서 계약을 자기 workflow 항목만 해시하도록 좁히거나 새 등록 버전을 내면, 그때 이 행을 등록한다. 다른 PR의 workflow 추가도 같은 문제를 겪는다.
 
 ## 남은 위험·한계
 
@@ -374,7 +379,8 @@ v6 정책 probe raw (모두 `/Users/changmin/projects/ugrp/outputs/` 아래, 로
 .venv-sim/bin/python -m scripts.sim_cli workflow run pair-stage-probes --record <abs>/outputs/<id>-managed -- \
   --stage align grasp_lift --seeds 911 912 --e2e-seeds 911 912 913 --workers 4 --execute --lock-owner claude \
   --output <abs primary>/outputs/<id>
-# v6 정책 (각 실행은 agent_lock 보유)
+# v6 정책 (각 실행은 agent_lock 보유). workflow 등록 보류 중이면 sim_cli 대신
+# `.venv-sim/bin/python -m scripts.run_pair_stage_probes <같은 인자>`로 직접 실행한다.
 .venv-sim/bin/python -m scripts.sim_cli workflow run pair-stage-probes --record <abs>-managed -- \
   --stage align --sources teacher e2e --prior-std e2e --policies a+b b-only --seeds 911 \
   --nominal-seeds 911 912 913 --e2e-seeds 911 912 913 [--diag-patch fix_age_round] \
