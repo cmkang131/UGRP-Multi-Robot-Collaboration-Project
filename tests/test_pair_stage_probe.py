@@ -290,3 +290,14 @@ def test_staged_global_anchor_is_the_stated_prior_or_own_recorded_fix(tmp_path):
     e = {**c, 'source': 'e2e_checkpoint', 'e2e_source': {'own_fix_age_s': {'r1': 2.5, 'r2': 31.}}}
     a = sp.staged_global_anchor(e)
     assert a['r1']['age_s'] == 2.5 and a['r2'] is None
+
+
+def test_prior_std_variant_is_tagged_and_default_unchanged():
+    base = sp.teacher_cases('align', subset={'nominal'}, nominal_seeds=(911,))[0]
+    e2e = sp.teacher_cases('align', subset={'nominal'}, nominal_seeds=(911,), prior_std='e2e')[0]
+    assert base['case_id'] == 'align:teacher:nominal:s911' and base['prior']['r1']['std_xy_m'] == sp.PRIOR_STD_XY_M
+    assert e2e['case_id'] == 'align:teacher:nominal:s911:pE2E'
+    assert e2e['prior']['r1']['std_xy_m'] == .03 and e2e['prior']['r1']['std_yaw_rad'] == .012
+    assert e2e['prior']['r1']['mean_xyyaw'] == base['prior']['r1']['mean_xyyaw']
+    bd = sp.boundary_cases(prior_std='e2e')[0]
+    assert bd['case_id'].endswith(':pE2E') and bd['prior']['r2']['std_xy_m'] == .03

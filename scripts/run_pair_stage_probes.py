@@ -622,10 +622,11 @@ def build_cases(args):
         for policy in args.policies:
             if 'teacher' in args.sources:
                 cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
-                                          subset=set(args.cells) if args.cells else None, policy=policy)
+                                          subset=set(args.cells) if args.cells else None, policy=policy,
+                                          prior_std=args.prior_std)
             if 'boundary' in args.sources and stage == 'grasp_lift':
                 cases += sp.boundary_cases(stage, policy=policy, seed=args.seeds[0],
-                                           subset=set(args.cells) if args.cells else None)
+                                           subset=set(args.cells) if args.cells else None, prior_std=args.prior_std)
             if 'e2e' in args.sources:
                 for run in E2E_RUNS:
                     got = sp.e2e_checkpoint(args.e2e_root / run, stage, seeds=tuple(args.e2e_seeds) if args.e2e_seeds else None,
@@ -675,6 +676,8 @@ def parser():
     p.add_argument('--stage', nargs='+', choices=[s for s, v in sp.STAGES.items() if v['implemented']])
     p.add_argument('--output', type=Path)
     p.add_argument('--sources', nargs='+', default=['teacher', 'e2e'], choices=['teacher', 'e2e', 'boundary'])
+    p.add_argument('--prior-std', choices=['grid', 'e2e'], default='grid',
+                   help="teacher/boundary prior std: 'grid' (0.06 m, 0.05 rad; grid1) or 'e2e' (sp.E2E_MATCHED_PRIOR)")
     p.add_argument('--policies', nargs='+', default=['v5h'], choices=list(sp.POLICIES),
                    help='harness.zone_pair_v6_policy policies; there is no A-only policy on main')
     p.add_argument('--seeds', nargs='+', type=int, default=[911])

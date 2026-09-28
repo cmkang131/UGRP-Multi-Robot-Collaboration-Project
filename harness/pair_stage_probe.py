@@ -29,7 +29,7 @@ from collections import Counter
 from pathlib import Path
 
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.2.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints
+PROBE_VERSION = '0.2.1'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
 POLICIES = ('v5h', 'b-only', 'a+b')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
@@ -224,7 +224,22 @@ def _pid(policy):
     return '' if policy == 'v5h' else '@' + policy
 
 
-def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=None, subset=None, policy='v5h'):
+E2E_MATCHED_PRIOR = {'std_xy_m': .03, 'std_yaw_rad': .012,
+                     'why': ('std of the robots\' own PoseReports at align entry in the v5h E2E runs '
+                             '(v6-s911-v5h, v6-s912-v5h: 0.026-0.033 m, 0.009-0.012 rad, fix age 0 s)')}
+
+
+def _prior_std(prior_std):
+    """(std_xy, std_yaw, case-id tag, source note). Default = the grid1 prior."""
+    if prior_std in (None, 'grid'):
+        return PRIOR_STD_XY_M, PRIOR_STD_YAW_RAD, '', ''
+    if prior_std == 'e2e':
+        return E2E_MATCHED_PRIOR['std_xy_m'], E2E_MATCHED_PRIOR['std_yaw_rad'], ':pE2E', '; std ' + E2E_MATCHED_PRIOR['why']
+    raise ValueError(f'unknown prior std {prior_std!r}')
+
+
+def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=None, subset=None, policy='v5h',
+                  prior_std=None):
     """Teacher-placed cases with a perturbation grid (placement = GT, prior = static plan)."""
     spec = STAGES[stage]
     if not spec['implemented']:
@@ -233,6 +248,7 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     true_geo = stations(setup['beam_xyyaw'])
     plan_geo = stations(setup['coarse_order_sheet']['beam_xyyaw'])
     key = spec['plan_pose']
+    sxy, syaw, ptag, pnote = _prior_std(prior_std)
     # align starts where the approach ended: the planned pre-station (static
     # sheet). Later stages start at the station aligned to the TRUE beam.
     base = plan_geo[key] if stage == 'align' else true_geo[key]
@@ -242,11 +258,11 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
             continue
         for seed in (nominal_seeds if name == 'nominal' else seeds):
             placement = {'r1': offset_pose(base['r1'], *off1), 'r2': offset_pose(base['r2'], *off2)}
-            priors = {r: gaussian_prior(plan_geo[key][r], PRIOR_STD_XY_M, PRIOR_STD_YAW_RAD,
-                                        f'static plan {key} from the coarse order sheet (not GT)')
+            priors = {r: gaussian_prior(plan_geo[key][r], sxy, syaw,
+                                        f'static plan {key} from the coarse order sheet (not GT){pnote}')
                       for r in PARTICIPANTS}
-            out.append({'case_id': f'{stage}{_pid(policy)}:teacher:{name}:s{seed}', 'stage': stage, 'source': 'teacher_grid',
-                        'pair_policy': policy,
+            out.append({'case_id': f'{stage}{_pid(policy)}:teacher:{name}:s{seed}{ptag}', 'stage': stage,
+                        'source': 'teacher_grid', 'pair_policy': policy, 'prior_std': prior_std or 'grid',
                         'cell': name, 'seed': seed, 'beam_xyyaw': list(setup['beam_xyyaw']),
                         'coarse_order_sheet': copy.deepcopy(setup['coarse_order_sheet']),
                         'placement_xyyaw': placement, 'r3_xyyaw': None, 'offsets': {'r1': list(off1), 'r2': list(off2)},
@@ -278,7 +294,7 @@ def pose_for_align_error(grip_xy, station_yaw, ex, ey, eyaw):
     return [grip_xy[0] - (c * gx - s * gy), grip_xy[1] - (s * gx + c * gy), yaw]
 
 
-def boundary_cases(stage='grasp_lift', *, policy='v5h', seed=911, setup=None, subset=None):
+def boundary_cases(stage='grasp_lift', *, policy='v5h', seed=911, setup=None, subset=None, prior_std=None):
     """Stage 3 entries exactly at the controller's align-done tolerance boundary (both robots same
     offset in their own frames). Placement = GT/teacher (setup only); prior = static sheet station."""
     if stage != 'grasp_lift':
@@ -292,10 +308,12 @@ def boundary_cases(stage='grasp_lift', *, policy='v5h', seed=911, setup=None, su
             continue
         placement = {r: pose_for_align_error(true_geo['grip_xyz'][r][:2], true_geo['station'][r][2], ex, ey, ea)
                      for r in PARTICIPANTS}
-        priors = {r: gaussian_prior(plan_geo['station'][r], PRIOR_STD_XY_M, PRIOR_STD_YAW_RAD,
-                                    'static plan station from the coarse order sheet (not GT)') for r in PARTICIPANTS}
-        out.append({'case_id': f'{stage}{_pid(policy)}:boundary:{name}:s{seed}', 'stage': stage,
+        sxy, syaw, ptag, pnote = _prior_std(prior_std)
+        priors = {r: gaussian_prior(plan_geo['station'][r], sxy, syaw,
+                                    f'static plan station from the coarse order sheet (not GT){pnote}') for r in PARTICIPANTS}
+        out.append({'case_id': f'{stage}{_pid(policy)}:boundary:{name}:s{seed}{ptag}', 'stage': stage,
                     'source': 'tolerance_boundary', 'pair_policy': policy, 'cell': name, 'seed': seed,
+                    'prior_std': prior_std or 'grid',
                     'beam_xyyaw': list(setup['beam_xyyaw']), 'coarse_order_sheet': copy.deepcopy(setup['coarse_order_sheet']),
                     'placement_xyyaw': placement, 'r3_xyyaw': None,
                     'offsets': {r: [ex, ey, ea] for r in PARTICIPANTS}, 'offset_frame': 'controller align error (ex, ey, eyaw)',
