@@ -246,7 +246,7 @@ def test_actual_shape_detector_works_without_black_grip_bands():
     distance=(.032-o[2])/np.where(abs(r[:,2])>1e-8,r[:,2],1.)
     pts=o+distance[:,None]*r
     hit=valid&(distance>0)&(r[:,2]<-1e-6)&(pts[:,0]>=.3)&(pts[:,0]<=.9)&(abs(pts[:,1])<=.02)
-    im=np.zeros((480,640,3),np.uint8)
+    im=np.full((480,640,3),100,np.uint8)
     im[y[hit].astype(int),x[hit].astype(int)]=[0,220,120]
     no_marker,_=shape_fit(im,servo)
     assert no_marker is not None and no_marker['grip_base_m'][0]==pytest.approx(.33,abs=.005)
@@ -255,6 +255,9 @@ def test_actual_shape_detector_works_without_black_grip_bands():
     with_marker,_=shape_fit(im,servo)
     assert with_marker is not None
     assert with_marker['grip_base_m']==pytest.approx(no_marker['grip_base_m'],abs=.005)
+    im[np.all(im==100,axis=2)]=0  # band indistinguishable from a floor gap
+    ambiguous,reasons=shape_fit(im,servo)
+    assert ambiguous is None and 'DISCONNECTED_SHAPE_OR_OCCLUSION' in reasons
 
 
 def test_command_invalidates_cached_relative_image_but_finger_does_not(monkeypatch):

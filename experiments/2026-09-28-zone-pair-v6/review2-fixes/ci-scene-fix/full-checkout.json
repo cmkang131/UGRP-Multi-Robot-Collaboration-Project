@@ -1,0 +1,36 @@
+{
+  "method": "read-only git archive HEAD for initially absent tracked files only",
+  "git_checkout_attempt": "index.lock Operation not permitted; no index change",
+  "head": "19b3a7b242ccecf63ac5087ba122b1cb559d0991",
+  "restored_files": 1555,
+  "restored_bytes": 984923280,
+  "all_tracked_files_present": true,
+  "tracked_count": 6743,
+  "manifest_local": "hydration-files.json",
+  "cleanup_verified": true,
+  "pytest_exit_code": 0,
+  "pytest_args": [
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "tests.pose_provider_no_physics",
+    "--basetemp=./.pytest_tmp",
+    "--junitxml=experiments/2026-09-28-zone-pair-v6/review2-fixes/ci-scene-fix/full-checkout.xml",
+    "tests/test_zone_pair_v5.py",
+    "tests/test_zone_pair_registered_source.py",
+    "tests/test_zone_start_dock.py",
+    "experiments/2026-09-28-zone-pair-v6/review2-fixes/ci-scene-fix/full_checkout_test.py"
+  ],
+  "suite_guards": {
+    "physical_step_attempts": 0,
+    "real_vision_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "temporary_directory_removed": true,
+  "restored_copies_sha256_verified": 1555,
+  "restored_copies_removed": 1555,
+  "returned_to_original_sparse_file_set": true,
+  "passed": 104,
+  "failed": 0
+}

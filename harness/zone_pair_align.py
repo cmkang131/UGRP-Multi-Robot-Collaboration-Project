@@ -127,6 +127,8 @@ class PairAlignRelook:
         if getattr(getattr(self,'policy',None),'posterior_relook',False):
             from harness.zone_pair_v6_policy import informative_fix
             checks['informative_fix'] = informative_fix(r)
+        if getattr(getattr(self,'policy',None),'beam_relative',False):
+            checks['global_anchor_verified'] = self.global_certificate(now)['clear']
         return checks
 
     def cancel_relook_pan(self, now):
@@ -195,7 +197,7 @@ class PairAlignRelook:
             return super().set('align_relook_return', now)
         self._log_align_fix_rejection(now, checks, frame_id=obs['frame_id'])
         if getattr(getattr(self,'policy',None),'posterior_relook',False):
-            if [k for k,v in checks.items() if not v] == ['gate_ok']:
+            if set(k for k,v in checks.items() if not v) <= {'gate_ok', 'global_anchor_verified'}:
                 return  # dev14: let the unchanged dwell finish; no new pan
             self.relook_excluded = getattr(self,'relook_excluded',set())
             self.relook_excluded.add(getattr(self,'active_relook_pan',self.port.own.servo[6]))

@@ -74,15 +74,19 @@ class PairGraspRelook(PairAlignRelook):
             # Missing longitudinal/depth/identity information is not zero
             # alignment error. A new camera branch will require new images.
             order = postures.order()
-            index = order.index(self.look_name)
-            if 'END_CLIPPED' in relative.reasons and index+1<len(order):
-                return self._set_look(order[index+1],now,reason='relative_end_clipped')
+            tried = getattr(self,'relative_views_tried',set())
+            tried.add(self.look_name)
+            self.relative_views_tried = tried
+            choices = [name for name in order if name not in tried]
+            if 'END_CLIPPED' in relative.reasons and choices:
+                return self._set_look(choices[0],now,reason='relative_end_clipped')
             return self.fail('BEAM_RELATIVE_UNCERTAIN',now)
         if not self.global_certificate(now,relative.beam())['clear']:
             return self._begin_align_relook(now,'global_safety')
         command = ob.align_command(relative.beam())
         if command is not None:
             self.aligned_streak = 0
+            self.relative_views_tried = set()
             return self.drive(command,now)
         self.aligned_streak += 1
         self.grip_base = list(relative.grip_base_m)

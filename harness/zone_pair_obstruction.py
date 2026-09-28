@@ -86,7 +86,11 @@ def target_component(frame, model, labels, index, pose, target):
     if (not area or (colour & mask).sum() / area < .75
             or ((colour | dark | shadow) & mask).sum() / area < .98):
         return None
-    beam = observe_beam(frame, pose)
+    # Both band and shape fits must use ONLY the component being classified.
+    # Neutral grey outside the mask cannot supply another object's edges/band.
+    component_frame = np.full_like(frame, 100)
+    component_frame[mask] = frame[mask]
+    beam = observe_beam(component_frame, pose)
     if not beam.get('end_visible') or beam.get('grip_source') != 'band_centre':
         if not target.get('allow_shape_identity',False):
             return None
@@ -94,7 +98,7 @@ def target_component(frame, model, labels, index, pose, target):
         # Partial endpoint updates cannot establish semantic object identity.
         from harness.zone_pair_relative import shape_fit
         from harness.zone_pair_grasp import FIX_STD_XY_M, FIX_STD_YAW_RAD
-        beam, _ = shape_fit(frame,pose)
+        beam, _ = shape_fit(component_frame,pose)
         if (beam is None or beam['std_xy_m']+beam['bias_bound_m'] > FIX_STD_XY_M
                 or beam['std_yaw_rad'] > FIX_STD_YAW_RAD):
             return None

@@ -3,14 +3,15 @@
 Uses the unchanged beam body colour to select silhouette/paired edges. Dark
 grip bands are neither detected nor assigned a position. Complete catalogue
 length and both end boundaries are required to establish endpoint identity.
-A visible near end plus paired edges may update an existing identified beam
-when only the far end leaves the FOV. Support-only views cannot shrink bounds;
-partial updates cannot renew identity age. Loaded images never use this plane.
+An interior colour boundary alone never identifies an end. Partial views only
+support the propagated track. Complementary stationary views may jointly show
+the complete catalogue shape. Loaded images never use this plane.
 """
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 import math
+import cv2
 import numpy as np
 
 from harness import owncam_pair_beam as beam_v1
@@ -39,6 +40,8 @@ class BeamRelativeReport:
     endpoint_hypotheses: tuple = ('near', 'far')
     anchor_time_s: float | None = None
     anchor_sha256: str | None = None
+    identity_time_s: float | None = None
+    view_sha256: tuple = ()
     calibrated: bool = False
     marker_dependency: bool = False
 
@@ -47,6 +50,7 @@ class BeamRelativeReport:
                 and self.observable_axes == ('forward', 'left', 'yaw')
                 and self.endpoint_hypotheses == ('nearest_end',)
                 and self.anchor_time_s is not None and 0 <= now-self.anchor_time_s <= MAX_AGE_S
+                and (self.identity_time_s is None or 0 <= now-self.identity_time_s <= MAX_AGE_S)
                 and 0 <= now-self.captured_at_s <= .3 + 1e-4
                 and all(v is not None and math.isfinite(v) for v in
                         (*self.grip_base_m, self.axis_heading_rad, self.std_xy_m,
@@ -81,6 +85,25 @@ def shape_points(image, servo):
 
 def shape_fit(image, servo, prior=None):
     pts, x, y, depth = shape_points(image, servo)
+    if len(pts) >= beam_v1.MIN_POINTS:
+        # Use foreground connectivity, not colour alone: an intact dark stripe
+        # may belong to the same silhouette, while a floor gap separates two
+        # objects. If the stripe blends into the floor, identity is ambiguous.
+        from harness import zone_own_perception as perception
+        frame = beam_v1.decode(image)
+        origin, axes, k, d, size = perception._optics(frame,servo)
+        model, rows = perception._floor_row_model(frame,origin,axes,k,d,size)
+        foreground = ((np.max(np.abs(frame.astype(float)-model),axis=2) > perception.BLOCK_LIKE_DIST)
+                      & rows[:,None])
+        _, labels = cv2.connectedComponents(foreground.astype(np.uint8))
+        ids, counts = np.unique(labels[y,x],return_counts=True)
+        if sum((ids != 0) & (counts >= beam_v1.MIN_POINTS)) > 1:
+            return None, ('DISCONNECTED_SHAPE_OR_OCCLUSION',)
+    inner = beam_v1._inner_valid()[y,x]
+    return fit_shape_points(pts, depth, inner)
+
+
+def fit_shape_points(pts, depth, inner):
     if len(pts) < beam_v1.MIN_POINTS:
         return None, ('BEAM_NOT_VISIBLE',)
     centre = np.median(pts, axis=0)
@@ -92,20 +115,16 @@ def shape_fit(image, servo, prior=None):
     a, b = pts @ u, pts @ n
     lo, hi = np.percentile(a, [1,99])
     width = float(np.percentile(b,98)-np.percentile(b,2))
-    inner = beam_v1._inner_valid()
     near_boundary, far_boundary = a <= lo+.01, a >= hi-.01
-    near_clipped = bool(np.any(~inner[y[near_boundary],x[near_boundary]]))
-    far_clipped = bool(np.any(~inner[y[far_boundary],x[far_boundary]]))
+    near_clipped = bool(np.any(~inner[near_boundary]))
+    far_clipped = bool(np.any(~inner[far_boundary]))
     partial = near_clipped or far_clipped or hi-lo < .54
-    # An unobserved far end is allowed ONLY for an already identified bar.
-    # A short isolated colour patch/occlusion is not a newly observed end.
-    near_update = (prior is not None and not near_clipped and far_clipped
-                   and .06 <= hi-lo <= .66)
-    if partial and not near_update:
+    # Incomplete catalogue support cannot identify a new end.
+    if partial:
         # Colour breaks/occlusions are not new ends. The historical label
         # BAND_CLIPPED is handled as the same unobserved-axis case downstream.
         return None, ('END_CLIPPED', 'AXIAL_POSITION_UNKNOWN', 'END_ID_AMBIGUOUS')
-    if not ((near_update or .54 <= hi-lo <= .66) and .025 <= width <= .070):
+    if not (.54 <= hi-lo <= .66 and .025 <= width <= .070):
         return None, ('SHAPE_AMBIGUOUS', 'MONOCULAR_DEPTH_AMBIGUOUS')
     strips = []
     for start in np.arange(lo, hi, .01):
@@ -130,17 +149,7 @@ def shape_fit(image, servo, prior=None):
         return None, ('END_ID_AMBIGUOUS',)
     syaw = max(math.radians(1), math.atan2(2*residual+.001,float(np.ptp(along))))
     grip = near + .03*np.array([math.cos(heading),math.sin(heading)])
-    if near_update:
-        # Preserve the full-view endpoint association; do not initialize from
-        # a partial view or revive an unrelated end after a large jump.
-        delta = math.dist(grip,prior['grip_base_m'])
-        angle = abs((heading-prior['axis_heading_rad']+math.pi)%(2*math.pi)-math.pi)
-        if (delta > 2*(prior['std_xy_m']+prior['bias_bound_m']+max(.015,residual)+bias)
-                or angle > 2*(prior['std_yaw_rad']+syaw)):
-            return None, ('BEAM_MOVED_OR_ASSOCIATION_LOST',)
     reasons = ('MONOCULAR_RESTING_PLANE_HYPOTHESIS',)
-    if near_update:
-        reasons += ('NEAR_END_AND_PAIRED_EDGES_UPDATE',)
     return {'grip_base_m': grip.tolist(), 'axis_heading_rad': heading,
             'std_xy_m': max(.015,residual), 'std_yaw_rad': syaw,
             'bias_bound_m': bias, 'visible_length_m': float(hi-lo),
@@ -155,9 +164,12 @@ class RelativeBeamTrack(RestingBeamTrack):
         self.last_capture = -math.inf
         self.command_epoch = 0
         self.report_command_epoch = None
+        self.views = {}
 
     def command(self, row, servo):
         super().command(row,servo)
+        if row['kind'] in ('drive','mecanum'):
+            self.views.clear()  # no image stitching across base commands
         if row['kind'] in ('drive','mecanum','look') or (row['kind']=='arm' and int(row['servo_id'])!=1):
             self.command_epoch += 1
 
@@ -178,6 +190,7 @@ class RelativeBeamTrack(RestingBeamTrack):
             return unknown('STALE_OR_CAMERA_MISMATCH')
         if mode != 'resting_hypothesis':
             self.beam = None
+            self.views.clear()
             return unknown('LOADED_DEPTH_UNKNOWN')
         key = (segment,obs['frame_id'],obs['sha256'])
         if key == self.last_frame:
@@ -192,10 +205,9 @@ class RelativeBeamTrack(RestingBeamTrack):
         self.report_command_epoch = self.command_epoch
         fitted, reasons = shape_fit(obs['image'],servo)
         old = self.beam if self.segment == segment else None
+        if old is None:
+            self.views.clear()
         identity_t = None if old is None else old.get('identity_time_s',old['anchor_time_s'])
-        if (fitted is None and 'END_CLIPPED' in reasons and old is not None
-                and 0 <= now-identity_t <= MAX_AGE_S):
-            fitted, reasons = shape_fit(obs['image'],servo,old)
         if fitted is not None:
             if old is not None:
                 delta = math.dist(fitted['grip_base_m'],old['grip_base_m'])
@@ -205,12 +217,12 @@ class RelativeBeamTrack(RestingBeamTrack):
                     self.beam = None
                     return unknown('BEAM_MOVED_OR_ASSOCIATION_LOST')
             self.segment = segment
-            partial_update = 'NEAR_END_AND_PAIRED_EDGES_UPDATE' in reasons
             self.beam = {**fitted,'anchor_time_s':obs['sim_time'],'anchor_sha256':obs['sha256'],
-                         'identity_time_s':identity_t if partial_update else obs['sim_time']}
+                         'identity_time_s':obs['sim_time']}
+            self.views.clear()
         elif (old is not None and any(r in reasons for r in ('END_CLIPPED','BAND_CLIPPED'))
               and 0 <= now-identity_t <= MAX_AGE_S):
-            pts,_,_,_ = shape_points(obs['image'],servo)
+            pts,x,y,depth = shape_points(obs['image'],servo)
             u = np.array([math.cos(old['axis_heading_rad']),math.sin(old['axis_heading_rad'])])
             delta = pts-np.asarray(old['grip_base_m'])
             a, b = delta@u,delta@np.array([-u[1],u[0]])
@@ -218,13 +230,47 @@ class RelativeBeamTrack(RestingBeamTrack):
             inside = (a>=-.03-pad)&(a<=.57+pad)&(abs(b)<=.02+pad)
             if not len(inside) or inside.mean()<.95:
                 self.beam = None
+                self.views.clear()
                 return unknown('PARTIAL_INCONSISTENT_OR_BEAM_MOVED')
             reasons = (*reasons,'PARTIAL_SUPPORT_ONLY','MONOCULAR_RESTING_PLANE_HYPOTHESIS')
+            # Unknown boundaries do not update any axis or shrink its bound.
+            # Retain distinct camera views only while base motion has ended.
+            if x is not None and now >= self.until:
+                inner = beam_v1._inner_valid()[y,x]
+                self.views[pwm] = (now,pts,depth,inner,obs['sha256'])
+                self.views = {k:v for k,v in self.views.items() if now-v[0] <= 4.}
+                if len(self.views) >= 2:
+                    # Use only interior pixels; a clipped edge cannot vote as
+                    # an end. Both extremes must be supplied by complete views
+                    # of those ends, jointly spanning the catalogue length.
+                    clouds = [v for v in self.views.values()]
+                    points = np.concatenate([v[1][v[3]] for v in clouds])
+                    depths = np.concatenate([v[2][v[3]] for v in clouds])
+                    # Uniform metric support prevents the near view's pixel
+                    # density from hiding the far end in pooled percentiles.
+                    _, indices = np.unique(np.floor(points/.003),axis=0,return_index=True)
+                    merged, why = fit_shape_points(points[indices],depths[indices],np.ones(len(indices),bool))
+                    if merged is not None:
+                        # The full-shape gate already reserves projection bias;
+                        # missing catalogue extent is additional axial ambiguity.
+                        direction = np.array([math.cos(merged['axis_heading_rad']),math.sin(merged['axis_heading_rad'])])
+                        merged['bias_bound_m'] += max(0., .60-float(np.ptp(points@direction)))
+                        merged['bias_bound_m'] += .0005*(now-min(v[0] for v in clouds))
+                        angle = abs((merged['axis_heading_rad']-old['axis_heading_rad']+math.pi)%(2*math.pi)-math.pi)
+                        associated = (math.dist(merged['grip_base_m'],old['grip_base_m']) <= 2*(
+                            old['std_xy_m']+old['bias_bound_m']+merged['std_xy_m']+merged['bias_bound_m'])
+                            and angle <= 2*(old['std_yaw_rad']+merged['std_yaw_rad']))
+                        if associated and merged['std_xy_m']+merged['bias_bound_m'] <= .05:
+                            self.beam = {**merged,'anchor_time_s':now,'anchor_sha256':obs['sha256'],
+                                         'identity_time_s':identity_t,
+                                         'view_sha256':[v[4] for v in clouds]}
+                            reasons = ('STATIONARY_MULTIVIEW_COMPLETE_SHAPE', *why)
         else:
             return unknown(*reasons)
         b = self.beam
         self.last_report = BeamRelativeReport(**common,grip_base_m=tuple(b['grip_base_m']),
             axis_heading_rad=b['axis_heading_rad'],std_xy_m=b['std_xy_m'],std_yaw_rad=b['std_yaw_rad'],
             bias_bound_m=b['bias_bound_m'],observable_axes=('forward','left','yaw'),reasons=reasons,
-            endpoint_hypotheses=('nearest_end',),anchor_time_s=b['anchor_time_s'],anchor_sha256=b['anchor_sha256'])
+            endpoint_hypotheses=('nearest_end',),anchor_time_s=b['anchor_time_s'],anchor_sha256=b['anchor_sha256'],
+            identity_time_s=b.get('identity_time_s',b['anchor_time_s']),view_sha256=tuple(b.get('view_sha256',())))
         return self.last_report

@@ -116,7 +116,7 @@ def test_reacquisition_interruption_does_not_confirm_old_candidate(interrupt):
     assert env.pose(jump(end), end) is None and env.fix_t == 0.
 
 
-def test_33cm_to_306mm_normal_forward_recovers_from_visible_near_end(monkeypatch):
+def test_33cm_to_306mm_normal_forward_recovers_from_complete_stationary_views(monkeypatch):
     from harness.owncam_pair_beam import align_command
     track = RelativeBeamTrack()
     first, servo = image_at(.33)
@@ -145,7 +145,7 @@ def test_33cm_to_306mm_normal_forward_recovers_from_visible_near_end(monkeypatch
     updated = track.observe(view, new_servo, 0, now=1.)
     assert updated.ready(1.) and updated.grip_base_m[0] == pytest.approx(.306, abs=.005)
     assert updated.std_xy_m+updated.bias_bound_m <= .05  # original bound unchanged
-    assert 'NEAR_END_AND_PAIRED_EDGES_UPDATE' in updated.reasons
+    assert 'STATIONARY_MULTIVIEW_COMPLETE_SHAPE' in updated.reasons
     assert track.beam['identity_time_s'] == 0. and updated.anchor_time_s == 1.
     ctl.look_name = 'p45'; ctl.next_look = 0.
     monkeypatch.setattr(ctl, 'look', lambda t: view)
@@ -195,11 +195,12 @@ def test_partial_updates_do_not_extend_full_shape_identity_lifetime():
     track = RelativeBeamTrack(); first, servo = image_at(.33)
     assert track.observe(first, servo, 0, now=0.).ready(0.)
     partial, servo = image_at(.306, 'p45', fid=2, t=29.)
-    assert track.observe(partial, servo, 0, now=29.).ready(29.)
+    report = track.observe(partial, servo, 0, now=29.)
+    assert not report.ready(29.) and report.anchor_time_s == 0.
     assert track.beam['identity_time_s'] == 0.
     later, servo = image_at(.307, 'p45', fid=3, t=30.1)
     assert not track.observe(later, servo, 0, now=30.1).ready(30.1)
-    assert track.beam['anchor_time_s'] == 29.
+    assert track.beam['anchor_time_s'] == 0.
 
 
 def test_ablation_adjacent_conditions_differ_in_exactly_one_behavior_flag():

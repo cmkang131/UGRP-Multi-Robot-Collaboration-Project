@@ -145,7 +145,7 @@ def m2_controller(execution, plan, params):
             guard = execution.command_guard.sweep_guard()
             safety_pose = None
             if self.policy.beam_relative:
-                safety_pose = execution.command_guard.global_envelope.pose(own.last_report, own.now)
+                safety_pose = execution.command_guard._pose(own.now)
                 if safety_pose is None:
                     return []
             return ranked_look_pans(own.map, own.last_report, own.servo, guard, own.pose,
@@ -372,7 +372,8 @@ class PairExecution:
         arm.tick(now)
         commands, self.port.commands = self.port.commands, []
         checked = self.command_guard.check(now, commands)
-        if commands and checked == [{'kind': 'hold'}] and not self.terminal:
+        if (any(c['kind'] in ('arm','look') for c in commands)
+                and checked == [{'kind': 'hold'}] and not self.terminal):
             if self.policy.posterior_relook and self.command_guard.reobserving:
                 # A blocked sweep is cancelled, never shifted forever behind
                 # newer fixes (dev14). Replan from actually issued PWM only.

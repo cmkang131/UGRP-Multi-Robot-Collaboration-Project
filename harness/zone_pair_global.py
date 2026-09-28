@@ -13,6 +13,19 @@ from harness.zone_pair_geometry import PairSweepGuard
 from harness.zone_pair_v6_policy import informative_fix
 
 
+def reported_pose(report, now):
+    p = OwnPose.from_report(report)
+    if (p is None or not pose_report_fresh(report,now) or min(p.std_xy,p.std_yaw)<0):
+        return None
+    hypotheses = (report.observation_quality or {}).get('posterior_envelope')
+    if hypotheses is not None:
+        xy, yaw = hypotheses.get('xy_radius_m'),hypotheses.get('yaw_radius_rad')
+        if not all(isinstance(v,(int,float)) and math.isfinite(v) and v>=0 for v in (xy,yaw)):
+            return None
+        p = replace(p,std_xy=max(p.std_xy,xy/2),std_yaw=max(p.std_yaw,yaw/2))
+    return p
+
+
 class GlobalEnvelope:
     def __init__(self):
         self.anchor = None
@@ -73,18 +86,10 @@ class GlobalEnvelope:
 
     def pose(self, report, now):
         self.advance(now)
-        p = OwnPose.from_report(report)
-        if (p is None or not pose_report_fresh(report,now)
-                or min(p.std_xy,p.std_yaw)<0):
+        p = reported_pose(report,now)
+        if p is None:
             self.reacquisition = None
             return None
-        hypotheses = (report.observation_quality or {}).get('posterior_envelope')
-        if hypotheses is not None:
-            xy, yaw = hypotheses.get('xy_radius_m'),hypotheses.get('yaw_radius_rad')
-            if not all(isinstance(v,(int,float)) and math.isfinite(v) and v>=0 for v in (xy,yaw)):
-                self.reacquisition = None
-                return None
-            p = replace(p,std_xy=max(p.std_xy,xy/2),std_yaw=max(p.std_yaw,yaw/2))
         quality = report.observation_quality or {}
         current_rejected = (any(quality.get(k) is False for k in ('accepted','informative','settled'))
                             or quality.get('ambiguous') is True)
@@ -119,6 +124,25 @@ class GlobalEnvelope:
         xy = max(p.std_xy,self.anchor.std_xy+(discrepancy+self.travel_bound+.002*age+.01)/2)
         yaw = max(p.std_yaw,self.anchor.std_yaw+(dyaw+self.turn_bound+.001*age)/2)
         return replace(p,std_xy=xy,std_yaw=yaw)
+
+    def recovery_pose(self, report, now):
+        """Enclose the old reachable anchor AND the unverified candidate.
+
+        This is only a stationary camera-sweep budget, never a navigation fix.
+        The caller must stop the base and retain the ordinary recovery deadline.
+        """
+        self.advance(now)
+        p = reported_pose(report,now)
+        a = self.anchor
+        if (a is None or p is None or not pose_report_fresh(report, now)
+                or not 0 <= now-self.fix_t <= 30.):
+            return None
+        age = now-self.fix_t
+        angle = abs((p.yaw-a.yaw+math.pi)%(2*math.pi)-math.pi)
+        return replace(a,
+            std_xy=max(a.std_xy+(self.travel_bound+.002*age+.01)/2,
+                       p.std_xy+math.dist((p.x,p.y),(a.x,a.y))/2),
+            std_yaw=max(a.std_yaw+(self.turn_bound+.001*age)/2, p.std_yaw+angle/2))
 
 
 class GlobalPairSweepGuard(PairSweepGuard):

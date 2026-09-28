@@ -75,6 +75,14 @@ class GuardedPairApproach(GuardedDriver, PairApproachDriverV2):
         # OwnCamDriver resets the counter before emitting look_done. Preserve
         # the prior value before requiring an accepted observation fix.
         self._looks_before_step = self.looks_without_fix
+        verify = getattr(self, 'verified_global_fix', None)
+        if verify is not None:
+            ready = verify(now, self.look_t0)
+            if ready:
+                self.look_queue.clear()  # the requested new fix is complete
+            elif (ready is False and not self.look_queue
+                  and all(self.servo.get(k)==v for k,v in self.arm_target.items())):
+                return [{'kind':'hold'}]  # allow the three-receipt check to finish
         # Bypass the frozen V2 post-hook: its receipt is provider-specific.
         # _event below applies the same rule using the common report contract.
         return super(PairApproachDriverV2, self).tick(now)
@@ -130,11 +138,22 @@ class PairCommandGuard:
         self.recheck = _PairRecheck()
         if isinstance(execution.controller.driver, GuardedPairApproach):
             execution.controller.driver.sweep_recheck = self.recheck
+            execution.controller.driver.verified_global_fix = self.approach_fix_ready
         self._pose(execution.own.now)
 
     @property
     def approach(self):
         return self.ep.controller.state in ('approach', 'reapproach', 'wait_approach')
+
+    def approach_fix_ready(self, now, started):
+        if not self.relative_enabled:
+            return None
+        from harness.owncam_time import accepted_fix_checks
+        from harness.zone_pair_v6_policy import informative_fix
+        report = self.ep.own.last_report
+        return (started is not None and all(accepted_fix_checks(report,now,started).values())
+                and informative_fix(report) and self.ep.own.gate.ok
+                and self.global_certificate(now)['clear'])
 
     @property
     def relative_enabled(self):
@@ -159,6 +178,8 @@ class PairCommandGuard:
     def global_certificate(self, now, beam=None):
         pose = self.global_envelope.pose(self.ep.own.last_report, now)
         certificate = self.sweep_guard().certificate(self.ep.own.servo, pose, beam, loaded=self.carrying_beam)
+        candidate = self.global_envelope.reacquisition
+        certificate['reacquisition_count'] = 0 if candidate is None else candidate[3]
         self.ep.log(self.ep.own.robot_id, 'global_safety', now, certificate=certificate,
                     absolute_fix_t=self.global_envelope.fix_t)
         return certificate
@@ -244,6 +265,8 @@ class PairCommandGuard:
             # The driver may plan toward a PF-mean goal, but EVERY command
             # (including approach/back-off and arm sweeps) uses this envelope.
             pose = self.global_envelope.pose(report, now)
+            if pose is None and self.reobserving:
+                pose = self.global_envelope.recovery_pose(report, now)
         # Cache only a bounded own estimate AFTER the last base command ended.
         # A reset localizer has no pose yet, but cannot move a stationary base.
         if fresh and pose is not None:
@@ -251,7 +274,7 @@ class PairCommandGuard:
                     and (not self._high(pose) or self.relative_enabled)):
                 self.stationary_pose = pose
             return pose
-        if (fresh and not report.initialized and self.reobserving
+        if (not self.relative_enabled and fresh and not report.initialized and self.reobserving
                 and now >= self.motion_until):
             return self.stationary_pose
         return None
@@ -259,6 +282,10 @@ class PairCommandGuard:
     def _high(self, pose):
         p = self.ep.own.gate.profile
         return pose.std_xy > p.high_xy_m or pose.std_yaw > p.high_yaw_rad
+
+    def _reobserve_ready(self, now, pose):
+        return (pose is not None and not self._high(pose) and (not self.relative_enabled
+                or self.global_envelope.pose(self.ep.own.last_report,now) is not None))
 
     def align_stop_ready(self, now, stopped_at):
         """Retain a valid post-hold own estimate before replacing its PF.
@@ -285,7 +312,7 @@ class PairCommandGuard:
         }
         if self.relative_enabled:
             checks.update(gate_ok=True, pose_bounded=pose is not None,
-                          global_stationary_clear=self.global_certificate(now)['clear'])
+                          global_stationary_clear=self.sweep_guard().certificate(own.servo, pose)['clear'])
         ready = all(checks.values())
         if not ready:
             self.ep.log(own.robot_id, 'align_relook_stop_wait', now, checks=checks,
@@ -318,6 +345,22 @@ class PairCommandGuard:
         pose = self._pose(now)
         if self.reobserving:
             return self._stationary_reobserve(now, pose)
+        if self.relative_enabled and self.ep.controller.state in ('approach', 'reapproach', 'align'):
+            # HIGH is a scheduling trigger, not a collision. Never let the
+            # nominal PF's small sigma bypass the independent envelope.
+            safety = pose or self.global_envelope.recovery_pose(own.last_report, now)
+            cert = self.sweep_guard().certificate(own.servo, safety)
+            if not cert['clear']:
+                self.ep.abort(now, cert['reason'])
+                return False
+            if pose is None or self._high(pose) or cert.get('relook_reserve_low'):
+                ctl = self.ep.controller
+                if ctl.state == 'align':
+                    ctl._begin_align_relook(now, 'global_safety_reserve')
+                else:
+                    commands = ctl.driver._start_look(now, 'global_safety_reserve', allow_backoff=False)
+                    self.ep.port.commands.extend(commands)
+                return False  # endpoint issues the stop before any look commands
         if self.relative_manipulation:
             if not self.global_certificate(now)['clear']:
                 self.ep.abort(now, 'GLOBAL_ENVELOPE_BLOCKED')
@@ -341,7 +384,10 @@ class PairCommandGuard:
         if pose is None or now < self.motion_until:
             self.ep.abort(now, 'POSE_UNCERTAIN')
             return False
-        if self.recheck.check_gate(now, ready=not self._high(pose)) == 'blocked':
+        if self.relative_enabled and not self.sweep_guard().certificate(self.ep.own.servo, pose)['clear']:
+            self.ep.abort(now, 'GLOBAL_ENVELOPE_BLOCKED')
+            return False
+        if self.recheck.check_gate(now, ready=self._reobserve_ready(now,pose)) == 'blocked':
             self.ep.log(self.ep.own.robot_id, 'reobserve_timeout', now, waited_s=self.recheck.waited_s)
             self.ep.abort(now, 'PAIR_REOBSERVE_TIMEOUT')
             return False
@@ -358,7 +404,7 @@ class PairCommandGuard:
                 # Keep the HIGH budget's start time, but never veto a stop.
                 # before_control() and arm/motion checks enforce exhaustion.
                 pose = self._pose(now)
-                self.recheck.check_gate(now, ready=pose is not None and not self._high(pose))
+                self.recheck.check_gate(now, ready=self._reobserve_ready(now,pose))
             return commands
         pose, report = self._pose(now), own.last_report
         if self.reobserving and not self._stationary_reobserve(now, pose):
@@ -367,8 +413,11 @@ class PairCommandGuard:
         if pose is None:
             reason = 'POSE_UNCERTAIN'
         elif not self.reobserving and not self.relative_manipulation and (self._high(pose) or (loaded and not own.gate.ok)):
+            if self.relative_enabled and self.approach and self.before_control(now) is False:
+                return [{'kind': 'hold'}]
             reason = 'POSE_UNCERTAIN'
-        if reason is None and self.relative_enabled and not self.global_certificate(now)['clear']:
+        if reason is None and self.relative_enabled and not self.sweep_guard().certificate(
+                own.servo, pose, loaded=self.carrying_beam)['clear']:
             reason = 'GLOBAL_ENVELOPE_BLOCKED'
         if reason is None and self.reobserving and (now < self.motion_until or any(
                 c['kind'] not in ('hold', 'arm', 'look') for c in commands)):
