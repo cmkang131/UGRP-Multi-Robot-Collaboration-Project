@@ -488,14 +488,19 @@ def test_exhausted_bootstrap_keeps_refusing_motion_for_later_jobs():
 def test_policies_bundle_and_pair_team_opt_in():
     from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES, REVISION_POLICIES, pair_policy
     # v75 (v6b) is retired with the historical v6b DRAFT; v77 (PR #256), v78 (PR #257) and v79 (PR #249) keep these policies unchanged.
+    # v76 (PR #263) adds only the opt-in v6c flags, which are False for every policy below.
     from harness.zone_study_integration import RETIRED_BUNDLE_IDS
-    assert EXECUTION_BUNDLE_ID == 'zone-study-integration-v79-masterpi-v3'
-    assert 'zone-study-integration-v78-referee-hidden-events' in RETIRED_BUNDLE_IDS
+    assert EXECUTION_BUNDLE_ID == 'zone-pair-v76-fixclock-grasp-entry'
+    assert {'zone-study-integration-v78-referee-hidden-events',
+            'zone-study-integration-v79-masterpi-v3'} <= set(RETIRED_BUNDLE_IDS)
     assert 'zone-pair-v75-dock-prior-bootstrap' in RETIRED_BUNDLE_IDS
-    assert [vars(POLICIES[k]) for k in ('v5h', 'b-only', 'a+b')] == [
-        {'name': 'v5h', 'posterior_relook': False, 'beam_relative': False, 'stationary_bootstrap': False},
-        {'name': 'b-only', 'posterior_relook': True, 'beam_relative': False, 'stationary_bootstrap': False},
-        {'name': 'a+b', 'posterior_relook': True, 'beam_relative': True, 'stationary_bootstrap': False}]
+    v6c_off = {'exact_fix_clock': False, 'grasp_range_entry': False}
+    assert [vars(POLICIES[k]) for k in ('v5h', 'b-only', 'a+b', 'b-boot', 'a+b-boot')] == [
+        {'name': 'v5h', 'posterior_relook': False, 'beam_relative': False, 'stationary_bootstrap': False, **v6c_off},
+        {'name': 'b-only', 'posterior_relook': True, 'beam_relative': False, 'stationary_bootstrap': False, **v6c_off},
+        {'name': 'a+b', 'posterior_relook': True, 'beam_relative': True, 'stationary_bootstrap': False, **v6c_off},
+        {'name': 'b-boot', 'posterior_relook': True, 'beam_relative': False, 'stationary_bootstrap': True, **v6c_off},
+        {'name': 'a+b-boot', 'posterior_relook': True, 'beam_relative': True, 'stationary_bootstrap': True, **v6c_off}]
     assert pair_policy('b-boot').stationary_bootstrap and pair_policy('a+b-boot').beam_relative
     assert REVISION_POLICIES['v6b'] == ('v5h', 'b-boot', 'a+b-boot')
     from harness.zone_own_executor import ZoneOwnExecutor

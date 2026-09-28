@@ -172,10 +172,11 @@ def test_research_scenarios_and_bundle_use_study_wide_profile():
     assert bundle['contact_profile_expected']['noslip_iterations'] == 10
     assert bundle['contact_profile_expected']['timestep_s'] == .00025
     assert bundle['perception_delay_s'] == .16
-    assert bundle['execution_bundle_id'] == 'zone-study-integration-v79-masterpi-v3'
+    assert bundle['execution_bundle_id'] == 'zone-pair-v76-fixclock-grasp-entry'
     workflow = next(w for w in json.loads((ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
                     if w['id'] == 'zone-study-integration-run')
-    assert workflow['version'] == '2.11.0'
+    # v76 (PR #263, number reserved by the coordinator) = main v79 + opt-in b-v6c; workflow 2.12.0.
+    assert workflow['version'] == '2.12.0'
     assert bundle['pose_provider']['label']['research_result'] is False
     assert bundle['pose_provider']['spec']['calibration'] == pre['student']['calibration']
     from scripts.zone_pair_dev_runtime import make_scene

@@ -109,6 +109,7 @@ TEST_PATTERNS = (
     # 2026-09-29: v6 is audited as history; these guard its receipt and the current v6-family path.
     "tests/test_zone_pair_v6.py", "tests/test_zone_pair_registered_source.py",
     "tests/test_owncam_bootstrap_v6b.py",
+    "tests/test_zone_pair_v6c.py",  # v6c (bundle v76): exact PF fix clock + grasp-range entry
     "tests/test_m2_pair_door_v3.py", "tests/test_pair_owncam_approach.py", "tests/test_zone_tagged_cargo_scene.py",
     "tests/test_owncam_localizer.py", "tests/test_zone_landmarks_sim.py",
     "tests/test_zone_eval_top.py",

@@ -302,7 +302,7 @@ def test_scenario_hidden_events_are_scheduled_in_sim_order():
 def test_bundle_pins_the_referee_and_hidden_event_profiles():
     pre = runner.load_prereg(ROOT / 'experiments/2026-09-26-zone-study-integration/prereg.json')
     bundle = runner.run_bundle(pre, pre['episodes'][0])[0]
-    assert bundle['execution_bundle_id'] == 'zone-study-integration-v79-masterpi-v3'
+    assert bundle['execution_bundle_id'] == 'zone-pair-v76-fixclock-grasp-entry'   # PR #263 (main v79 + opt-in b-v6c)
     assert bundle['referee'] == zr.profile() and bundle['hidden_events']['events'] == []
     assert 'harness/zone_study_referee.py' in bundle['runtime_files_sha256']
     assert 'zone-study-integration-v69-multiturn-landmark-agnostic' in zi.RETIRED_BUNDLE_IDS

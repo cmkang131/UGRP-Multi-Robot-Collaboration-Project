@@ -1,3 +1,7 @@
+현재 미실행 후보는 `zone-pair-v76-fixclock-grasp-entry`(workflow `2.12.0`)이다. v76(PR #263)은 main의 v79에 opt-in 공동 운반 정책 `b-v6c`를 더한 것이다. 번호 v76과 workflow 2.12.0은 2026-09-29 조정자가 배정했다(#256 v77/2.9.0, #257 v78/2.10.0, #249 v79/2.11.0 다음 병합). v79는 `RETIRED_BUNDLE_IDS`로 옮겼다. 2026-09-28–29 단계 probe(PR #260)에서 v6 b-only 정렬은 RecoveryLocalizer의 PF 시계와 프레임 시각이 1e-9 s 안에서 어긋나 fix 나이가 음수가 되어 막혔고, 파지 입장은 정렬 허용오차(ex ±12 mm) 중 −8…−4 mm에서만 통과했다. `b-v6c`는 PF 시계를 예측한 관측 시각에 맞추고, 파지 거리의 빔 색 모델로 standoff fit과 pre-close 부분 관측을 하며(빔 폭의 연속 단면 요구), 마지막 하강 자세를 정착시킨다. v5h·b-only·a+b·b-boot·a+b-boot의 동작은 바뀌지 않는다. v6c 단계 probe는 병합 전 v76(main v70 위)으로 돌렸다. 등록 초안 `prereg_v6c.json`은 이 병합 뒤 한 번 다시 봉인했다. [v6c 기록](../experiments/2026-09-29-pair-v6c/README.md)
+
+이전 후보 v79의 설명:
+
 현재 미실행 후보는 `zone-study-integration-v79-masterpi-v3`(workflow `2.11.0`)이다. v79(PR #249)는 v78에 명시적으로 버전을 붙인 MasterPi v3 장면 2종(`zone_wide_door_geometry_v3`, `zone_wide_door_geometry_v3_dock_v1`)과 v3 명령 기하를 더한 것이고, v2 장면과 연구 층은 바뀌지 않았다. v78은 `RETIRED_BUNDLE_IDS`로 옮겼다. 아래 B6 설명의 v73은 병합 전 후보 번호이고, B6가 main에 들어간 번호는 v78이다. 2026-09-28 B6(#224, PR #254 사전 등록 초안): 물리 소유자(`scripts/run_zone_study_integration.py`)에 평가 전용 심판 `harness/zone_study_referee.py`와 시나리오 숨은 사건 훅을 붙였다. 연구 층(`harness/zone_study_integration.py`의 `IntegratedTrial`)은 번호 외에 바뀌지 않았다. v70(#246)·v71(#249)·v72(#256)는 열린 PR이 예약해 다음 번호 v73을 썼고 v69는 `RETIRED_BUNDLE_IDS`에 보존한다. 2026-09-28 Kiro가 이 PR(#257, Claude)의 검토 지적 P1-G·P1-H·P1-I·P2-K·P2-M을 같은 번호 안에서 고쳤다(v73으로 기록된 실행은 없다; main과 열린 PR 전체에 v73 이후 번호 사용 없음을 확인).
 
 ## 평가 전용 심판과 숨은 사건 (v73)

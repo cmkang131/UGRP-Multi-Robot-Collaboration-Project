@@ -76,43 +76,41 @@ def test_v6b_records_sealed_scene_and_full_source_closure_at_its_commit():
         assert hashlib.sha256(committed_blob(str(dev.ROOT), V6B_DRAFT_COMMIT, path)).hexdigest() == expected
 
 
-CURRENT_TEST_REVISION = 'v6-current-tree-test'
+def test_v6c_records_current_scene_and_full_source_closure():
+    """v6c is the current v6-family revision (bundle v76): its DRAFT pins the current tree."""
+    from scripts.zone_pair_v6_contract import CURRENT_REVISION, PREREG_V6C, contract
+    p = json.loads(PREREG_V6C.read_text())
+    assert CURRENT_REVISION == p['registration_revision'] == 'v6c' and p['status'] == 'DRAFT'
+    assert {'harness/owncam_recovery_v6c.py', 'harness/zone_pair_grasp_entry_v6c.py'} <= set(p['v6_contract']['source_sha256'])
+    assert p['scene_contract'] == dev.scene_contract() and p['v6_contract'] == contract()
 
 
-def _current_revision(monkeypatch):
-    """No v6-family draft is current on main; exercise the path on a synthetic current revision."""
-    from scripts import zone_pair_v6_contract as c
-    monkeypatch.setattr(c, 'CURRENT_REVISION', CURRENT_TEST_REVISION)
-    monkeypatch.setitem(c.REVISION_POLICIES, CURRENT_TEST_REVISION, c.REVISION_POLICIES['v6b'])
-    return c
-
-
-def test_current_tree_v6_family_contract_closes_over_the_scene_sources(monkeypatch):
+def test_current_tree_v6_family_contract_closes_over_the_scene_sources():
     from scripts.zone_pair_v6_contract import contract
-    with pytest.raises(ValueError, match='no current v6-family draft'):
-        contract()
-    current = _current_revision(monkeypatch).contract()
+    for historical in ('v6', 'v6b'):
+        with pytest.raises(ValueError, match='historical'):
+            contract(historical)
+    current = contract()
     assert dev.scene_contract()['source_sha256'].items() <= current['source_sha256'].items()
     for path, expected in current['source_sha256'].items():
         assert hashlib.sha256((dev.ROOT/path).read_bytes()).hexdigest() == expected
 
 
 @pytest.mark.parametrize('fault', ['source', 'scene', 'inherited_grasp', 'baseline'])
-def test_v6_rejects_stale_or_inherited_source_contracts(tmp_path, monkeypatch, fault):
-    """On a current-revision v6-family registration, each fault alone is rejected."""
-    from scripts.zone_pair_v6_contract import PREREG_V6B as PREREG, V5H
-    c = _current_revision(monkeypatch)
-    p = json.loads(PREREG.read_text()); old = json.loads(V5H.read_text())
-    p.update(registration_revision=CURRENT_TEST_REVISION, v6_contract=c.contract(), scene_contract=dev.scene_contract())
+def test_v6_rejects_stale_or_inherited_source_contracts(tmp_path, fault):
+    """On the current v6-family registration (v6c DRAFT, as committed), each fault alone is rejected."""
+    from scripts.zone_pair_v6_contract import PREREG_V6C, V5H
+    p = json.loads(PREREG_V6C.read_text()); old = json.loads(V5H.read_text())
+    assert p['registration_revision'] == 'v6c' and p['status'] == 'DRAFT'
     clean = tmp_path/'clean.json'; clean.write_text(json.dumps(p))
-    dev.load_config(dev.parser().parse_args(['--prereg', str(clean), '--run-id', 'v6b-s911-abboot',
+    dev.load_config(dev.parser().parse_args(['--prereg', str(clean), '--run-id', 'v6c-s911-bv6c',
                                              '--output', str(tmp_path/'clean-never')]))
     if fault == 'source': p['v6_contract']['source_sha256']['harness/zone_own_team_host.py'] = '0'*64
     elif fault == 'scene': p['scene_contract'] = old['scene_contract']
     elif fault == 'inherited_grasp': p['grasp_contract'] = old['grasp_contract']
     else: p['baseline_registration']['sha256'] = '0'*64
     altered = tmp_path/'altered.json'; altered.write_text(json.dumps(p))
-    args = dev.parser().parse_args(['--prereg', str(altered), '--run-id', 'v6b-s911-abboot',
+    args = dev.parser().parse_args(['--prereg', str(altered), '--run-id', 'v6c-s911-bv6c',
                                     '--output', str(tmp_path/'never-prepared')])
     expected = {'source': 'source contract/hash mismatch', 'scene': 'scene contract/hash mismatch',
                 'inherited_grasp': 'frozen v5h baseline', 'baseline': 'frozen v5h baseline'}[fault]

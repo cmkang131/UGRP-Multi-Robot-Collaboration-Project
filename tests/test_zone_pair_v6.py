@@ -320,25 +320,26 @@ def test_replay_stops_consuming_at_first_new_branch():
     with pytest.raises(ValueError):Reader().bytes(Path('/forbidden/eval_only/trace.jsonl'))
 
 
-CURRENT_TEST_REVISION = 'v6-current-tree-test'
+CURRENT_TEST_REVISION = 'v6c'   # the current v6-family DRAFT (PR #263, bundle v76, experiments/2026-09-29-pair-v6c)
 
 
 def _current_v6(tmp_path, monkeypatch, name='current.json', mutate=None):
-    """A v6-family DRAFT with the historical v6b science fields and the CURRENT tree's hashes.
+    """The current v6-family DRAFT (v6c) re-derived from the CURRENT tree.
 
-    v6 (3c26acdd) and v6b (15793691) are historical and there is no current
-    v6-family draft on main (PR #256, decision A); the admission path is
-    exercised on this synthetic current revision so that later source changes
-    do not break it. Never written into the repository.
+    v6 (3c26acdd) and v6b (15793691) are historical. The admission path is
+    exercised on the real current revision: its registration fields are read
+    from prereg_v6c.json and its source contract and scene hashes are
+    recomputed, so later source changes do not break these tests. The
+    committed prereg itself is checked in test_zone_pair_registered_source.
+    Never written into the repository.
     """
     from scripts import zone_pair_v6_contract as c
     from scripts.zone_pair_authorization import digest, registration_payload
     from scripts.zone_pair_dev_contract import scene_contract
-    monkeypatch.setattr(c, 'CURRENT_REVISION', CURRENT_TEST_REVISION)
-    monkeypatch.setitem(c.REVISION_POLICIES, CURRENT_TEST_REVISION, c.REVISION_POLICIES['v6b'])
-    p = json.loads(c.PREREG_V6B.read_text())
-    p.update(registration_revision=CURRENT_TEST_REVISION, status='DRAFT', runnable=False,
-             execution_authorization=None, v6_contract=c.contract(), scene_contract=scene_contract())
+    p = json.loads(c.PREREG_V6C.read_text())
+    assert p['registration_revision'] == c.CURRENT_REVISION == CURRENT_TEST_REVISION
+    p.update(status='DRAFT', runnable=False, execution_authorization=None, v6_contract=c.contract(),
+             scene_contract=scene_contract())
     p.pop('draft_registration', None)
     if mutate:
         mutate(p)
@@ -348,9 +349,9 @@ def _current_v6(tmp_path, monkeypatch, name='current.json', mutate=None):
     return path, p
 
 
-@pytest.mark.parametrize('policy,run',[('v5h','v6b-s911-v5h'),('b-boot','v6b-s911-bboot'),('a+b-boot','v6b-s911-abboot')])
+@pytest.mark.parametrize('policy,run',[('v5h','v6c-s911-v5h'),('b-only','v6c-s911-b'),('b-v6c','v6c-s911-bv6c')])
 def test_v6_draft_prepare_and_execution_refusal(tmp_path,monkeypatch,policy,run):
-    # No current v6-family draft on main; v6 and v6b are historical.
+    # v6 and v6b are historical; v6c is the current DRAFT.
     from scripts import run_zone_pair_dev as dev
     PREREG,_=_current_v6(tmp_path,monkeypatch)
     args=dev.parser().parse_args(['--prereg',str(PREREG),'--run-id',run,'--pair-policy',policy,
@@ -414,7 +415,7 @@ def test_v6b_historical_audit_uses_sealing_commit_blobs(monkeypatch):
     from scripts import zone_pair_v6_contract as c
     # Literal pins (not the module constants): PR #261 last v6b DRAFT sealing and its registration hash.
     assert c.V6B_DRAFT_COMMIT == '15793691b3af136769cdf0b090e722daddf80ab4'
-    assert c.CURRENT_REVISION is None
+    assert c.CURRENT_REVISION == 'v6c'
     p = json.loads(c.PREREG_V6B.read_text())
     assert p['registration_sha256'] == '5c687740f43e77f2531d16edc0a2bec88cb0e0544b88110b06e6c7c052c071e9'
     receipt = c.verify_v6_historical(revision='v6b')
@@ -439,15 +440,15 @@ def test_v6_draft_status_still_refuses_execution(tmp_path, monkeypatch):
     def to_draft(p):
         assert p['status'] == 'DRAFT' and 'draft_registration' not in p
     path, _ = _current_v6(tmp_path, monkeypatch, 'draft.json', to_draft)
-    args = dev.parser().parse_args(['--prereg', str(path), '--run-id', 'v6b-s911-abboot', '--output',
+    args = dev.parser().parse_args(['--prereg', str(path), '--run-id', 'v6c-s911-bv6c', '--output',
                                     str(tmp_path/'never'), '--execute'])
     with pytest.raises(ValueError, match='v6 DRAFT is prepare-only'):
         dev.load_config(args)
     assert not args.output.exists()
 
 
-def test_v6b_registered_execution_needs_bound_envelope(tmp_path, monkeypatch):
-    """PR #259's REGISTERED admission path, on a current-revision registration (v6b science fields)."""
+def test_v6_registered_execution_needs_bound_envelope(tmp_path, monkeypatch):
+    """PR #259's REGISTERED admission path, on the current revision (v6c)."""
     from scripts import run_zone_pair_dev as dev
     from scripts.zone_pair_authorization import digest
     from scripts.zone_pair_v6_contract import PREREG
@@ -455,10 +456,10 @@ def test_v6b_registered_execution_needs_bound_envelope(tmp_path, monkeypatch):
     sha = 'a'*40
     def register(p):
         p.update(status='REGISTERED', runnable=True, draft_registration={
-            'path': 'experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json',
+            'path': 'experiments/2026-09-29-pair-v6c/prereg_v6c.json',
             'commit': 'c'*40, 'sha256': 'd'*64, 'registration_sha256': 'e'*64})
     path, p = _current_v6(tmp_path, monkeypatch, 'registered.json', register)
-    def envelope(p, run='v6b-s912-bboot'):
+    def envelope(p, run='v6c-s912-b'):
         auth = {'by': 'coordinator', 'source_sha': sha, 'registration_sha256': p['registration_sha256'],
                 'run_id': run,
                 'ref': 'https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-1'}
@@ -466,17 +467,17 @@ def test_v6b_registered_execution_needs_bound_envelope(tmp_path, monkeypatch):
         p['execution_authorization'] = auth
     envelope(p)
     path.write_text(json.dumps(p))
-    out = dev.primary_root()/'outputs/never-created-v6b-registration-test'
-    base = ['--prereg', str(path), '--run-id', 'v6b-s912-bboot', '--execute', '--lock-owner', 'claude']
+    out = dev.primary_root()/'outputs/never-created-v6c-registration-test'
+    base = ['--prereg', str(path), '--run-id', 'v6c-s912-b', '--execute', '--lock-owner', 'claude']
     ok = dev.parser().parse_args([*base, '--output', str(out), '--expected-source-sha', sha])
     _, case = dev.load_config(ok)
-    assert case['pair_policy'] == 'b-boot' and not out.exists()
+    assert case['pair_policy'] == 'b-only' and not out.exists()
     for bad, match in ((['--output', str(out), '--expected-source-sha', 'b'*40], 'source_sha differs'),
                        (['--output', 'rel/out', '--expected-source-sha', sha], 'absolute under primary'),
                        (['--output', str(tmp_path/'x'), '--expected-source-sha', sha], 'absolute under primary')):
         with pytest.raises(ValueError, match=match):
             dev.load_config(dev.parser().parse_args([*base, *bad]))
-    other = dev.parser().parse_args(['--prereg', str(path), '--run-id', 'v6b-s912-abboot', '--execute',
+    other = dev.parser().parse_args(['--prereg', str(path), '--run-id', 'v6c-s912-bv6c', '--execute',
                                      '--lock-owner', 'claude', '--output', str(out), '--expected-source-sha', sha])
     with pytest.raises(ValueError, match='run_id differs'):
         dev.load_config(other)

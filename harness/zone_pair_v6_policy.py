@@ -12,7 +12,11 @@ from dataclasses import dataclass
 # pre-merge candidate v73 never ran). Pair policies unchanged; v77 retired.
 # v79 = v78 plus explicitly versioned MasterPi v3 scenes and command geometry
 # (PR #249; pre-merge candidate v74 never ran). Pair policies unchanged; v78 retired.
-EXECUTION_BUNDLE_ID = 'zone-study-integration-v79-masterpi-v3'
+# v76 (PR #263, number reserved by the coordinator) = main v79 plus the opt-in
+# v6c flags (exact PF fix clock, grasp-range beam colour at the pre-grasp
+# entry). The v6c stage probes (2026-09-29) ran the pre-merge v76 on main v70;
+# v79 is retired.
+EXECUTION_BUNDLE_ID = 'zone-pair-v76-fixclock-grasp-entry'
 
 
 @dataclass(frozen=True)
@@ -22,6 +26,12 @@ class PairPolicy:
     beam_relative: bool = False
     # v6b: static dock prior + stop-and-look before the first own motion.
     stationary_bootstrap: bool = False
+    # v6c (2026-09-29 stage probes, PR #260): the PF clock ends exactly at the
+    # capture time it was predicted to, so a fresh fix has age 0, never < 0.
+    exact_fix_clock: bool = False
+    # v6c: standoff fit and pre-close partial evidence use the grasp-range beam
+    # colour (hue 25-54, as grip_view/co-motion) and a settled final descent frame.
+    grasp_range_entry: bool = False
 
 
 POLICIES = {
@@ -30,9 +40,12 @@ POLICIES = {
     'a+b': PairPolicy('a+b', posterior_relook=True, beam_relative=True),
     'b-boot': PairPolicy('b-boot', posterior_relook=True, stationary_bootstrap=True),
     'a+b-boot': PairPolicy('a+b-boot', posterior_relook=True, beam_relative=True, stationary_bootstrap=True),
+    'b-v6c': PairPolicy('b-v6c', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True),
 }
-# Registered ablation sets. v6 (historical, PR #246/#259) and v6b (historical DRAFT, PR #261, bundle v75).
-REVISION_POLICIES = {'v6': ('v5h', 'b-only', 'a+b'), 'v6b': ('v5h', 'b-boot', 'a+b-boot')}
+# Registered ablation sets. v6 (historical, PR #246/#259), v6b (historical DRAFT,
+# PR #261, bundle v75) and v6c (current DRAFT, PR #263, bundle v76).
+REVISION_POLICIES = {'v6': ('v5h', 'b-only', 'a+b'), 'v6b': ('v5h', 'b-boot', 'a+b-boot'),
+                     'v6c': ('v5h', 'b-only', 'b-v6c')}
 
 
 def pair_policy(name='v5h'):
