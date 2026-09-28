@@ -19,6 +19,8 @@ REPO_TOP_DIRS = ('experiments', 'harness', 'sim', 'scripts', 'tests', 'maps', 'c
 
 # Commit whose blobs equal every source digest in outputs/vision-loc-v4/sigma/source_freeze.json (VIS4 sigma run).
 VIS4_SIGMA_RECORD_COMMIT = '3e9bdf7a17893079cc1ebecc0e2af00d6317052b'
+# Commit whose blobs equal every source digest in outputs/vision-loc-v5/final/source_freeze.json (VIS5 dev run).
+VIS5_FINAL_RECORD_COMMIT = '5cc83adbcbaab80191a84f592a88139d89ebe7a9'
 
 
 def repo_relative(path: str) -> str:

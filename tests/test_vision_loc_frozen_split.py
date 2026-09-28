@@ -1,4 +1,4 @@
-"""VIS3 pinned files stay byte-identical; VIS4 PF/CLI live in versioned files (2026-09-28, #216).
+"""VIS3 pinned files stay byte-identical; VIS4/VIS5 PF/CLI live in versioned files (2026-09-28, #216).
 
 No model, renderer or physics: hashes, Git blobs and imports only.
 """
@@ -16,6 +16,8 @@ import record_verify as rv  # noqa: E402
 
 VIS4_COMMIT = '137ba742493b1f09c68238525cfc44a57054ae48'
 VIS4_PF_SHA256 = '97a207dbda2fe31df32809b48baa4db1859ef0e1f30a196f5810b338c955b8f7'
+VIS5_COMMIT = '5b1aa1b15fb27a35a199fd9f07367cfc346b20db'
+VIS5_PF_SHA256 = '0cf03790356f'  # prefix; full digest checked against the Git blob below
 
 
 def sha(path):
@@ -55,3 +57,21 @@ def test_recorded_sources_are_checked_against_the_recording_commit(tmp_path):
     assert rv.blob_mismatches({str(tmp_path/'x.py'): VIS4_PF_SHA256}, VIS4_COMMIT) == [str(tmp_path/'x.py')]
     missing = '/w/experiments/2026-09-26-vision-loc/no_such_file.py'
     assert rv.blob_mismatches({missing: VIS4_PF_SHA256}, VIS4_COMMIT) == [missing]
+
+
+def test_vis5_pf_is_the_5b1aa1b1_blob_byte_for_byte():
+    blob = rv.git_blob(VIS5_COMMIT, 'experiments/2026-09-26-vision-loc/vision_pf.py')
+    assert hashlib.sha256(blob).hexdigest().startswith(VIS5_PF_SHA256)
+    assert (HERE/'vision_pf_v5.py').read_bytes() == blob
+    # The recorded VIS5 dev run used exactly these bytes (commit 5cc83adb holds the same blob).
+    assert rv.git_blob(rv.VIS5_FINAL_RECORD_COMMIT, 'experiments/2026-09-26-vision-loc/vision_pf.py') == blob
+
+
+def test_vis5_cli_uses_vis5_pf():
+    import compare_v5
+    import vision_loc_cli_v5
+    import vision_pf_v5
+    assert vision_loc_cli_v5.vision_pf is vision_pf_v5
+    assert 'report_v5' in inspect.signature(vision_pf_v5.make_robust_pf).parameters
+    assert {'vision_pf_v5.py', 'vision_loc_cli_v5.py'} <= set(compare_v5.SOURCE_NAMES)
+    assert not {'vision_pf.py', 'vision_loc_cli.py'} & set(compare_v5.SOURCE_NAMES)
