@@ -304,6 +304,32 @@ def boundary_cases(stage='grasp_lift', *, policy='v5h', seed=911, setup=None, su
     return out
 
 
+GLOBAL_ANCHOR_MAX_AGE_S = 30.   # harness.zone_pair_global.GlobalEnvelope.pose: anchor usable for 30 s
+
+
+def staged_global_anchor(case):
+    """Staged v6 global-safety anchor (a+b only; b-only/v5h do not use the global envelope).
+
+    In an E2E run the approach supplies it: the last informative absolute fix
+    (v5h E2E align entries: fix age 0.0 s, std 0.026-0.033 m / 0.009-0.012 rad).
+    A staged stage entry has no approach, so the anchor is STATED like the PF
+    prior: teacher/boundary cases use the stated prior (mean, std) as a fix of
+    age 0; E2E checkpoints use the robot's own recorded report and fix age.
+    Never GT. None when the recorded fix is older than the anchor lifetime.
+    """
+    ages = (case.get('e2e_source') or {}).get('own_fix_age_s') or {}
+    out = {}
+    for rid in PARTICIPANTS:
+        p = case['prior'][rid]
+        age = ages.get(rid, 0.) if case['source'] == 'e2e_checkpoint' else 0.
+        if age is None or age > GLOBAL_ANCHOR_MAX_AGE_S:
+            out[rid] = None
+            continue
+        out[rid] = {'xyyaw': list(p['mean_xyyaw']), 'std_xy_m': p['std_xy_m'], 'std_yaw_rad': p['std_yaw_rad'],
+                    'age_s': float(age), 'source': 'stated anchor = ' + p['source'] + ' (not GT)'}
+    return out
+
+
 def _read_jsonl(path):
     return [json.loads(line) for line in Path(path).read_text().splitlines() if line]
 
@@ -338,13 +364,15 @@ def e2e_checkpoint(run_dir, stage, *, seeds=None, policy='v5h'):
     prereg = json.loads((run_dir / 'prereg.json').read_text())
     manifest = json.loads((run_dir / 'manifest.json').read_text())
     run = next(r for r in prereg['runs'] if r['id'] == manifest['run_id'])
-    priors, servo = {}, {}
+    priors, servo, fix_age = {}, {}, {}
     for rid in PARTICIPANTS:
         f = [x for x in frames[rid]['frames'] if x['t'] <= t0 + 1e-6][-1]
         rep = f['report']
         priors[rid] = gaussian_prior(rep['xyyaw'], rep['std_xy_m'], rep['std_yaw_rad'],
                                      f'own recorded PoseReport at t={f["t"]} frame {f["frame_id"]} (not GT)')
         servo[rid] = f['commanded_servo']
+        lf = rep.get('last_fix_t')
+        fix_age[rid] = None if lf is None else max(0., float(f['t']) - float(lf))
     out = []
     for seed in (seeds or (manifest['seed'],)):
         out.append({'case_id': f'{stage}{_pid(policy)}:e2e:{run_dir.name}:s{seed}', 'stage': stage, 'source': 'e2e_checkpoint',
@@ -357,6 +385,7 @@ def e2e_checkpoint(run_dir, stage, *, seeds=None, policy='v5h'):
                     'teacher_held': False, 'e2e_commanded_servo': servo,
                     'e2e_source': {'run_dir': str(run_dir), 'entry_state': spec['entry'], 'entry_sim_s': t0,
                                    'trace_row_t': row['t'], 'states_at_entry': row['states'],
+                                   'own_fix_age_s': fix_age,
                                    'manifest_sha256': sha_file(run_dir / 'manifest.json'),
                                    'trace_sha256': sha_file(run_dir / 'eval_only/trace.jsonl'),
                                    'robots_sha256': sha_file(run_dir / 'robots.json'),

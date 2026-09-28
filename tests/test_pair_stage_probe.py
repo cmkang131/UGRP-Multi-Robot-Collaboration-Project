@@ -279,3 +279,14 @@ def test_summary_splits_by_policy():
     assert s['by_policy']['a+b'] == {'cases': 2, 'passed': 1, 'by_source': {'teacher_grid': {'cases': 2, 'passed': 1}},
                                      'failures': {'Y': 1}}
     assert s['by_policy']['v5h']['failures'] == {'X': 1}
+
+
+def test_staged_global_anchor_is_the_stated_prior_or_own_recorded_fix(tmp_path):
+    c = sp.teacher_cases('align', subset={'nominal'}, nominal_seeds=(911,), policy='a+b')[0]
+    a = sp.staged_global_anchor(c)
+    for rid in sp.PARTICIPANTS:
+        assert a[rid]['xyyaw'] == c['prior'][rid]['mean_xyyaw'] and a[rid]['age_s'] == 0.
+        assert a[rid]['std_xy_m'] == sp.PRIOR_STD_XY_M and 'not GT' in a[rid]['source']
+    e = {**c, 'source': 'e2e_checkpoint', 'e2e_source': {'own_fix_age_s': {'r1': 2.5, 'r2': 31.}}}
+    a = sp.staged_global_anchor(e)
+    assert a['r1']['age_s'] == 2.5 and a['r2'] is None

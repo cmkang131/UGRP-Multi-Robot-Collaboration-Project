@@ -226,6 +226,34 @@ def instrument_pose(pose, rid, log, clock):
         setattr(pose, name, wrapped)
 
 
+def stage_global_anchor(anchors, log):
+    """Probe-process-only: give each new PairCommandGuard the STATED global anchor (sp.staged_global_anchor).
+
+    The v6 a+b global envelope otherwise starts empty and aborts at submission
+    (GLOBAL_ANCHOR_UNKNOWN) because a staged entry has no approach fix. Only the
+    envelope's starting anchor is set; its update/growth/expiry code is unchanged.
+    """
+    from harness import zone_pair_guards as guards
+    from harness.zone_own_guards import OwnPose
+
+    original = guards.PairCommandGuard.__init__
+
+    def init(self, execution):
+        original(self, execution)
+        rid = execution.own.robot_id
+        a = anchors.get(rid)
+        if a is None or not self.relative_enabled:
+            return
+        now = float(execution.own.now)
+        env = self.global_envelope
+        env.anchor = OwnPose(*[float(v) for v in a['xyyaw']], float(a['std_xy_m']), float(a['std_yaw_rad']))
+        env.fix_t, env.t = now - a['age_s'], now
+        env._reset_motion()
+        log.append({'t': now, 'robot_id': rid, 'event': 'staged_global_anchor', 'anchor': a})
+    guards.PairCommandGuard.__init__ = init
+    return original
+
+
 def save_checkpoint(host, out, label):
     """mj_getState(mjSTATE_INTEGRATION) + each participant's PF state, with a bitwise restore check.
 
@@ -392,6 +420,9 @@ def run_case(case, out):
               'controller': {'pair_policy': case.get('pair_policy', 'v5h'), 'execution_bundle_id_on_main': EXECUTION_BUNDLE_ID,
                              'factory': 'harness.zone_pair_executor.m2_controller (unchanged) + probe entry/exit wrapper'},
               'weld': False, 'contact_profile': 'cargo_noslip_v1', 'model_calls': 0, 'ultrasonic': 'off (not connected)'}
+    result['staged_global_anchor'] = (sp.staged_global_anchor(case) if case.get('pair_policy') == 'a+b' else None)
+    if result['staged_global_anchor']:
+        stage_global_anchor(result['staged_global_anchor'], loc_log)
     try:
         OwnCamTeamHost.__init__(host, spec, student, root=ROOT, study_layer=lambda *a: None,
                                 frames_dir=out / 'frames', scene=scene)
