@@ -1,3 +1,16 @@
+현재 미실행 후보는 `zone-study-integration-v72-referee-hidden-events`(workflow `2.3.0`)이다. 2026-09-28 B6(#224, PR #254 사전 등록 초안): 물리 소유자(`scripts/run_zone_study_integration.py`)에 평가 전용 심판 `harness/zone_study_referee.py`와 시나리오 숨은 사건 훅을 붙였다. 연구 층(`harness/zone_study_integration.py`의 `IntegratedTrial`)은 번호 외에 바뀌지 않았다. v70(#246)·v71(#249)은 열린 PR이 예약해 다음 번호 v72를 썼고 v69는 `RETIRED_BUNDLE_IDS`에 보존한다.
+
+## 평가 전용 심판과 숨은 사건 (v72)
+
+- **배송 판정(물건별, 물리 청크마다 시뮬레이터 정답):** 물건의 착지 직사각형(`sim/zone_cargo.py` `landing_half_extents_m`, 색 상자는 `sim.zone_arena.BOX_HALF`)이 목적 구역 안(`zone_scenario_feasibility.landing_fits` 재사용), 바닥 위(몸체 높이 < 0.05 m), 어떤 로봇 손가락도 닿지 않음, 선속도 < 0.01 m/s가 `SETTLE_S`=2 SIM초 연속이면 확인한다. 배송 시각은 창의 시작, 확인 시각은 `confirmed_sim_s`다. 확인 뒤 같은 구역·바닥·비파지이면 유지되고, 구역을 벗어나거나 다시 잡히면 `departed` 행을 남긴다.
+- **주문 판정:** 서 있는 확인 행에 `zone_study_eval.delivery_state`를 그대로 적용한다. 모든 주문이 채워지면 러너가 그 청크에서 에피소드를 멈춘다(`stop = orders_complete`). 로봇에게는 horizon 종료와 같은 일반 종료만 보이고 이유는 전달되지 않는다.
+- **지표:** 저장한 trial record에 `zone_study_eval.efficiency_metrics`를 적용해 `par_makespan_sim_s`(PAR-2)·`delivery_rate`·성공과 주문별 완료 시각을 `result.json`의 `eval_only.evaluation`과 `eval_only/evaluation.json`에 쓴다. trial record의 `end_reason`은 심판이 완료를 확인했을 때만 `orders_complete`이고 `end_sim_s`는 마지막 필요 물건의 배송 시각이다. 별도 공식을 만들지 않았다.
+- **숨은 사건:** 시나리오 `eval.hidden_events`를 SIM 시각에 한 번씩 물리에만 적용하고 `eval_only/hidden_events.jsonl`에 기록한다. `passage_blocked`·`obstruction_added`는 장면 XML에 미리 넣어 바닥 아래에 둔 정적(mocap) 상자를 개구부로 옮긴다(사건이 있는 시나리오만 XML이 바뀐다). `passage_cleared`는 되돌린다. `item_moved`는 자유 관절을 `to_pose_m`으로 옮기고(잡혀 있으면 효과 없음), `item_dropped`는 잡고 있는 로봇의 손가락 접촉을 1 SIM초 끈다(잡혀 있지 않으면 효과 없음). `robot_hold`는 그 로봇의 주행 명령을 `duration_s` 동안 바퀴 정지로 바꾸며 명령 행은 발행한 그대로 남는다. 어느 것도 로봇 입력·메시지·명령 행·깨움을 만들지 않는다.
+- **분리 검증(물리 없이):** `tests/test_zone_study_referee.py`가 네 조건에서 완료 유무·숨은 사건 유무만 바꾼 두 실행의 로봇 요청·깨움·실행 호출·메시지가 정지 시각까지 같음을 확인하고, 연구 층 소스 폐포에 심판 모듈이 없음을 확인한다.
+- **전원 연결 뒤 확인(미실행):** 실제 MuJoCo 에피소드에서 심판이 i1/i2 배송을 확인하고 멈추는지, s2·s3·s5 사건이 물리에서 실제로 일어나는지(막힘 통과 불가·r3 정지·물건 이동/낙하). 현재 러너의 `host_spec`은 i1(청록 상자)·i2(긴 막대) 장면만 받으므로 s1–s6 장면 실행은 별도 작업이다.
+
+이전 후보 `zone-study-integration-v69-multiturn-landmark-agnostic`(workflow `2.2.0`)의 설명은 아래에 보존한다.
+
 현재 미실행 후보는 `zone-study-integration-v69-multiturn-landmark-agnostic`(workflow `2.2.0`, pair executor v7)이다. 2026-09-28 PR #240 main 병합 충돌 해결에서 main의 v66 다중 턴 스케줄러와 #240의 v67 표식 무관 pair 경로(v5h)를 합쳤다. 합성 소스는 v66·v67 어느 쪽과도 달라 main과 열린 PR 최댓값(v68, #246) 다음 번호를 썼다. v64·v65·v66·v67은 `RETIRED_BUNDLE_IDS`에 보존하며 dev13·dev14 기록의 v67 문자열은 바꾸지 않는다. [병합 기록](../experiments/2026-09-27-zone-pair-dev/merge-main-v69/README.md)
 
 이전 후보 `zone-study-integration-v67-landmark-agnostic`(workflow `2.1.0`, pair executor v7)의 설명은 아래에 보존한다.
