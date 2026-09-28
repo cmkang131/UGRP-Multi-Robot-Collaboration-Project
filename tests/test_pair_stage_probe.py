@@ -229,11 +229,18 @@ def test_runner_refuses_physical_without_lock_or_outside_outputs(tmp_path):
     assert not (tmp_path / 'out').exists()
 
 
-def test_workflow_registered():
-    rows = json.loads((ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
-    row = next(r for r in rows if r['id'] == 'pair-stage-probes')
-    assert row['entry'] == 'scripts/run_pair_stage_probes.py' and (ROOT / row['docs']).is_file()
+def test_workflow_registration_row_is_pending_until_v6_contract_allows_it():
+    """The catalog row is kept ready but NOT in configs/simulation_workflows.json: the REGISTERED v6
+    prereg hashes that whole file (see workflow_registration_pending.json)."""
+    pending = json.loads((ROOT / 'experiments/2026-09-28-pair-stage-probes/workflow_registration_pending.json').read_text())
+    row = pending['catalog_row']
+    assert pending['status'] == 'pending_registration' and row['id'] == 'pair-stage-probes'
+    assert row['entry'] == 'scripts/run_pair_stage_probes.py' and (ROOT / row['entry']).is_file() and (ROOT / row['docs']).is_file()
     assert row['runner'] == 'scripts.run_pair_stage_probes' and row['output_flag'] == '--output'
+    for key in ('id', 'version', 'runner', 'entry', 'output_flag', 'output_kind', 'required_inputs', 'side_effect'):
+        assert key in row
+    rows = json.loads((ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
+    assert 'pair-stage-probes' not in {r['id'] for r in rows}
 
 
 def test_finish_result_root_cause_tie_break_and_out_of_stage_events(tmp_path):

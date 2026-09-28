@@ -23,6 +23,12 @@ SHORT = {'align': 'al', 'grasp_lift': 'gl', 'carry': 'ca', 'setdown': 'sd',
 POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB'}
 
 
+def _run_tag(raw):
+    """Distinguish several raw runs from one source sha (e.g. -diagC, -bound2); '' for the first grids."""
+    tail = raw.name.rsplit('-', 1)[-1]
+    return '' if tail in ('grid1', 's45') else '-' + tail
+
+
 def _pol(policy):
     return POLICY_SHORT[policy] + '-' if POLICY_SHORT[policy] else ''
 
@@ -62,7 +68,7 @@ def case_view(raw, row, manifest):
     for rid, rem in (row.get('remaining_at_stop') or {}).items():
         for k in ('grip_x_err_m', 'grip_y_err_m', 'yaw_err_rad'):
             if rem.get(k) is not None:
-                scalars[f'stop/{k}/{rid}'] = rem[k]
+                scalars[f'gate/stop_{k}/{rid}'] = rem[k]
     for rid, calls in (row.get('relook_calls') or {}).items():
         scalars[f'offline/relook_calls/{rid}'] = len(calls)
     for rid, n in (row.get('localizer_replaced') or {}).items():
@@ -87,7 +93,12 @@ def case_view(raw, row, manifest):
         view['sim_s'] = row['stage_sim_s']
     if row.get('wall_s') is not None:
         view['wall_s'] = row['wall_s']
-    name = f"{_pol(policy)}{SHORT[row['stage']]}-{SHORT[row['source']]}-{slug(row['cell'].replace('v6-', ''))}-s{row['seed']}"
+    diag = ('-pE' if row['case_id'].endswith(':pE2E') or ':pE2E:' in row['case_id'] else '') + \
+        ('-dx' if row.get('diag_patch') else '')
+    if row.get('diag_patch'):
+        view['condition'] += f" diag:{row['diag_patch']}"
+    name = (f"{_pol(policy)}{SHORT[row['stage']]}-{SHORT[row['source']]}-{slug(row['cell'].replace('v6-', ''))}"
+            f"-s{row['seed']}{diag}")
     return name, view
 
 
@@ -117,11 +128,11 @@ def main(argv=None):
                                                 'offline/pass_rate': bs['passed'] / bs['cases']},
                             'success': bs['passed'] == bs['cases'], 'success_definition': 'all cases of this group passed; ' + DEFINITION,
                             'model_calls': 0, 'family': 'pair_stage_probe_aggregate', 'policy': policy,
-                            'case': 'all', 'condition': f'{stage}/{source}', 'outcome': json.dumps(st['failures']),
+                            'case': 'all', 'condition': f'{stage}/{source}{_run_tag(raw)}', 'outcome': json.dumps(st['failures']),
                             'source_sha': manifest['source']['source_sha'], 'run_id': raw.name,
                             'scope': 'stage_probe_not_e2e', 'texts': {'evaluation/summary': st},
                             'hparam_metrics': ['offline/pass_rate', 'offline/cases']}
-                    names.append(write(a.output, f'ALL-{_pol(policy)}{SHORT[stage]}-{SHORT[source]}-{manifest["source"]["source_sha"][:8]}', view))
+                    names.append(write(a.output, f'ALL-{_pol(policy)}{SHORT[stage]}-{SHORT[source]}-{manifest["source"]["source_sha"][:8]}{_run_tag(raw)}', view))
     index = {'views': names, 'raw': [str(r) for r in a.raw],
              'raw_summary_sha256': {str(r): sha(r / 'summary.json') for r in a.raw}}
     (a.output / 'index.json').write_text(json.dumps(index, indent=1) + '\n')

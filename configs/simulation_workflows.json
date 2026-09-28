@@ -737,22 +737,6 @@
         "--condition"
       ],
       "output_kind": "directory"
-    },
-    {
-      "id": "pair-stage-probes",
-      "purpose": "Stage-scoped pair-carry physics probes (align, grasp+lift, carry leg, set-down) from staged states; stage probe, not E2E success",
-      "entry": "scripts/run_pair_stage_probes.py",
-      "docs": "experiments/2026-09-28-pair-stage-probes/README.md",
-      "requires": "No model calls; plan-only by default. --execute needs a live agent_lock of --lock-owner, clean tracked source and an absolute primary outputs/ path. Staging may use GT (teacher exception); the controller gets own RGB/static map/own commands/STATUS and a stated localizer prior. GT only in eval_only/.",
-      "version": "0.2.0",
-      "runner": "scripts.run_pair_stage_probes",
-      "output_flag": "--output",
-      "side_effect": "local_simulation",
-      "adapter": "managed_legacy_cli",
-      "required_inputs": [
-        "--stage"
-      ],
-      "output_kind": "directory"
     }
   ]
 }
