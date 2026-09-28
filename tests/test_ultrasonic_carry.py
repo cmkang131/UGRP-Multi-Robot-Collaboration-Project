@@ -135,3 +135,102 @@ def test_kinematic_scene_confirms_load_seen_at_m2_height_and_partner_seen_at_rec
         assert row['wrist_camera_proxy']['iou_vs_grasp_view'] > .7
     infeasible = an.evaluate_height(model, data, beam, .199, grasp_mask=grasp_mask)
     assert infeasible['ik_feasible'] is False
+
+
+# --- solo carry --------------------------------------------------------------------------------
+
+def test_solo_straight_lift_minimums_and_carry_p30_clear_every_kind():
+    expect = {'box': (.120, .110), 'can': (.120, .110), 'tile': (.110, .095)}
+    for kind, (z15, z75) in expect.items():
+        assert uc.recommended_solo_tool_z(kind) == pytest.approx(z15)
+        assert uc.recommended_solo_tool_z(kind, half_angle_deg=7.5) == pytest.approx(z75)
+        item = uc.SOLO_ITEMS[kind]
+        grasp = uc.solo_lift(item, .095)['grasp_pitch_deg']
+        hover = uc.solo_posture_margins(item, uc.solo_lift(item, .095)['pulses'], grasp)
+        assert not hover['clear']                                   # existing 0.095 hover: item in the cone
+        p30 = uc.solo_posture_margins(item, uc.CARRY_P30, grasp, extra_tilts_deg=(uc.CARRY_P30_RECORDED_TILT_DEG,))
+        assert p30['clear'] and min(c['margin_m'] for c in p30['cases'].values()) > .05
+
+
+def test_solo_forward_rule_states():
+    from harness import ultrasonic_map as um
+    from harness.ultrasonic_map import ExpectedRange
+    stop = uc.solo_stop_distance(.092)
+    assert stop == pytest.approx(.092 + .19 * .30 + .02)
+    exp = ExpectedRange(.50, .008)
+    kw = dict(front_extent_from_sensor_m=.092, stop_m=stop, slow_m=uc.solo_stop_distance(.092, reaction_s=1.))
+    state = lambda r, v=True, t=1.: uc.solo_forward_state(_report(t, r) if v else RangeReport(t, 0., False), 1., exp, **kw)
+    assert state(.50) == {'state': uc.CLEAR, 'consistency': um.CONSISTENT}
+    assert state(.25)['state'] == uc.SLOW and state(.25)['consistency'] == um.SHORTER
+    assert state(.15)['state'] == uc.STOP
+    assert state(.10)['state'] == uc.STOP_NEAR_FIELD
+    assert state(None, v=False)['state'] == uc.CLEAR and state(None, v=False)['consistency'] == um.MISSING_ECHO
+    assert state(.50, t=.5)['state'] == uc.NO_READING
+
+
+def test_kinematic_solo_carry_p30_sees_the_wall_not_its_arm_or_item():
+    if not HAS_MUJOCO:
+        pytest.skip('mujoco is not installed')
+    from scripts import analyze_ultrasonic_carry_height as an
+    scene, model, data, _ = an.build_solo_scene()
+    for kind in ('box', 'tile'):
+        item = uc.SOLO_ITEMS[kind]
+        g = uc.solo_lift(item, .095)['grasp_pitch_deg']
+        p30 = an.evaluate_solo(scene, model, data, kind, 'carry_p30', dict(uc.CARRY_P30), g)
+        hover = an.evaluate_solo(scene, model, data, kind, 'hover', uc.solo_lift(item, .095)['pulses'], g)
+        for case in p30['cases'].values():
+            assert case['matches_map'] and not case['own_arm_geoms_in_cone'] and not case['item_in_cone']
+        assert all(c['item_in_cone'] for c in hover['cases'].values())
+        assert p30['put_down']['descent_ik_feasible'] and p30['put_down']['transition_to_hover_lowest_item_point_m'] > .05
+    assert hover['cases']['level']['matches_map']                  # the 12 mm tile's echo stays under threshold
+
+
+def test_kinematic_side_grasp_pair_sees_ahead_and_door_posts():
+    if not HAS_MUJOCO:
+        pytest.skip('mujoco is not installed')
+    from scripts import analyze_ultrasonic_carry_height as an
+    d = an.analyse_side()
+    side, straight = d['modes']['side'], d['modes']['straight']
+    assert side['sim_joint_ranges_ok'] and max(side['grip_site_error_m'].values()) < .002
+    for v in side['sonar_open_floor'].values():
+        assert v['matches_map'] and not (v['own_geoms_in_cone'] or v['load_in_cone'] or v['partner_in_cone'])
+    for v in straight['sonar_open_floor'].values():
+        assert v['echo_geom'].endswith('ultrasonic_bracket') and v['first_echo_m'] == pytest.approx(.694, abs=.003)
+    door = side['door_crossing_axial']
+    assert door['sonar']['r2_in_door']['r2']['first_echo_m'] == pytest.approx(.172, abs=.003)
+    assert door['sonar']['r2_in_door']['r2']['matches_map']
+    assert .15 < door['clearance_per_side_0.5m'] < straight['door_crossing_axial']['clearance_per_side_0.5m']
+    assert side['wrist_camera_iou_vs_straight'] == pytest.approx(1.)
+    assert side['tip_over']['r1']['tip_accel_lateral_mps2'] > straight['tip_over']['r1']['tip_accel_forward_mps2']
+    assert d['axial_leg_leader_facing']['best_heading_off_travel_deg'] > 60
+    assert d['arm_yaw_axis']['yaw_axis_offset_from_chassis_origin_m'] == [0., 0.]
+
+
+# --- v2 vs v3 (PR #249 drawing layout) -----------------------------------------------------------
+
+def test_v3_drawing_geometry_raises_the_lifts_and_keeps_carry_p30_clear():
+    v3 = uc.GEOMETRY_V3
+    spec = v3.spec()
+    assert (spec.mount_x_m, spec.mount_z_floor_m) == (.088, .0617)
+    assert uc.required_heights('near_face', spec, arm_axis_x_m=v3.arm_axis_x_m)['near_face_from_sensor_m'] == pytest.approx(.0852)
+    assert uc.recommended_carry_tool_z(spec, arm_axis_x_m=v3.arm_axis_x_m) == pytest.approx(.125)
+    assert uc.required_heights('whole_beam', spec, arm_axis_x_m=v3.arm_axis_x_m)['tool_z_min_m'] > uc.max_tool_z()['tool_z_m']
+    for kind, z in (('box', .140), ('can', .140), ('tile', .125)):
+        assert uc.recommended_solo_tool_z(kind, spec, arm_axis_x_m=v3.arm_axis_x_m) == pytest.approx(z)
+        item = uc.SOLO_ITEMS[kind]
+        g = uc.solo_lift(item, .095)['grasp_pitch_deg']
+        p30 = uc.solo_posture_margins(item, uc.CARRY_P30, g, spec, arm_axis_x_m=v3.arm_axis_x_m)
+        assert p30['clear'] and p30['item_front_beyond_sensor_m'] == pytest.approx(.13, abs=.002)
+    assert uc.turn_in_place_grip_shift_m(90., uc.GEOMETRY_V2) == 0.
+    assert uc.turn_in_place_grip_shift_m(90., v3) == pytest.approx(.0682, abs=1e-4)
+
+
+def test_link_length_sensitivity_is_scoped_and_restored():
+    from harness import visual_arm as va
+    before = (va.LINK_2_CM, va.GRIPPER_LINK_CM, dict(va.tool_pose.__kwdefaults__), uc.max_tool_z())
+    with uc.arm_links(uc.DRAWING_LINK2_CM, None):
+        assert uc.max_tool_z()['tool_z_m'] == pytest.approx(.151)
+    with uc.arm_links(None, uc.DRAWING_GRIPPER_CM):
+        with pytest.raises(ValueError):
+            uc.solo_lift(uc.SOLO_ITEMS['tile'], .095)           # 7 mm tile grip below the reachable minimum
+    assert (va.LINK_2_CM, va.GRIPPER_LINK_CM, dict(va.tool_pose.__kwdefaults__), uc.max_tool_z()) == before

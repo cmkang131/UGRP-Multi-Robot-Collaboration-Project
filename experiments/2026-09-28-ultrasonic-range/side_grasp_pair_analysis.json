@@ -1,0 +1,306 @@
+{
+ "arm_yaw_axis": {
+  "yaw_axis_offset_from_chassis_origin_m": [
+   0.0,
+   0.0
+  ]
+ },
+ "axial_leg_leader_facing": {
+  "best_heading_off_travel_deg": 79.7,
+  "cone_half_angle_deg": 15.0,
+  "joint_limit_deg": 100.3,
+  "needed_arm_yaw_deg": 180.0
+ },
+ "calibrated_pan_sector_pwm": [
+  1300,
+  1700
+ ],
+ "expected_bar_bottom_m": 0.076,
+ "lift_pulses": {
+  "3": 544,
+  "4": 1623,
+  "5": 2176,
+  "6": 1500
+ },
+ "modes": {
+  "side": {
+   "arm_yaw_rad": {
+    "r1": -1.5708,
+    "r2": 1.5708
+   },
+   "bar_clearance": {
+    "r1": {
+     "min_distance_m": 0.031,
+     "nearest_geom": "r1__wrist_collision"
+    },
+    "r2": {
+     "min_distance_m": 0.031,
+     "nearest_geom": "r2__wrist_collision"
+    }
+   },
+   "door_crossing_axial": {
+    "clearance_per_side_0.5m": 0.1557,
+    "clearance_per_side_1.0m": 0.4057,
+    "sonar": {
+     "r1_in_door": {
+      "r1": {
+       "echo_geom": "zone_wall_divider_2",
+       "first_echo_m": 0.172,
+       "heading_deg": 90.0,
+       "load_in_cone": false,
+       "map_expected_m": 0.172,
+       "matches_map": true,
+       "own_geoms_in_cone": [],
+       "partner_in_cone": false
+      },
+      "r2": {
+       "echo_geom": "zone_wall_north",
+       "first_echo_m": 1.297,
+       "heading_deg": 90.0,
+       "load_in_cone": false,
+       "map_expected_m": 1.297,
+       "matches_map": true,
+       "own_geoms_in_cone": [],
+       "partner_in_cone": false
+      }
+     },
+     "r2_in_door": {
+      "r1": {
+       "echo_geom": "zone_wall_north",
+       "first_echo_m": 1.297,
+       "heading_deg": 90.0,
+       "load_in_cone": false,
+       "map_expected_m": 1.297,
+       "matches_map": true,
+       "own_geoms_in_cone": [],
+       "partner_in_cone": false
+      },
+      "r2": {
+       "echo_geom": "zone_wall_divider_2",
+       "first_echo_m": 0.172,
+       "heading_deg": 90.0,
+       "load_in_cone": false,
+       "map_expected_m": 0.172,
+       "matches_map": true,
+       "own_geoms_in_cone": [],
+       "partner_in_cone": false
+      }
+     }
+    },
+    "width_across_m": 0.1885
+   },
+   "footprint": {
+    "across_beam_m": 0.1885,
+    "along_beam_m": 1.0119
+   },
+   "grip_site_error_m": {
+    "r1": 0.0,
+    "r2": 0.0
+   },
+   "heading_deg": {
+    "r1": 90.0,
+    "r2": 90.0
+   },
+   "sim_joint_ranges_ok": true,
+   "sonar_open_floor": {
+    "r1": {
+     "echo_geom": "tag_003_plate",
+     "first_echo_m": 2.546,
+     "heading_deg": 90.0,
+     "load_in_cone": false,
+     "map_expected_m": 2.547,
+     "matches_map": true,
+     "own_geoms_in_cone": [],
+     "partner_in_cone": false
+    },
+    "r2": {
+     "echo_geom": "zone_wall_north",
+     "first_echo_m": 2.547,
+     "heading_deg": 90.0,
+     "load_in_cone": false,
+     "map_expected_m": 2.547,
+     "matches_map": true,
+     "own_geoms_in_cone": [],
+     "partner_in_cone": false
+    }
+   },
+   "tip_over": {
+    "r1": {
+     "com_height_m": 0.0817,
+     "com_x_m": 0.0,
+     "load_share_kg": 0.15,
+     "robot_mass_kg": 1.1,
+     "static_forward_restoring_ratio_signed": null,
+     "static_lateral_restoring_ratio_signed": 4.6,
+     "tip_accel_forward_mps2": 7.21,
+     "tip_accel_lateral_mps2": 4.65
+    },
+    "r2": {
+     "com_height_m": 0.0817,
+     "com_x_m": 0.0,
+     "load_share_kg": 0.15,
+     "robot_mass_kg": 1.1,
+     "static_forward_restoring_ratio_signed": null,
+     "static_lateral_restoring_ratio_signed": 4.6,
+     "tip_accel_forward_mps2": 7.21,
+     "tip_accel_lateral_mps2": 4.65
+    }
+   },
+   "wrist_camera_bar_pixels_r1": 254093,
+   "wrist_camera_iou_vs_straight": 1.0,
+   "yaw_pwm": {
+    "r1": 500,
+    "r2": 2500
+   }
+  },
+  "straight": {
+   "arm_yaw_rad": {
+    "r1": 0.0,
+    "r2": 0.0
+   },
+   "bar_clearance": {
+    "r1": {
+     "min_distance_m": 0.031,
+     "nearest_geom": "r1__wrist_collision"
+    },
+    "r2": {
+     "min_distance_m": 0.031,
+     "nearest_geom": "r2__wrist_collision"
+    }
+   },
+   "door_crossing_axial": {
+    "clearance_per_side_0.5m": 0.169,
+    "clearance_per_side_1.0m": 0.419,
+    "sonar": {
+     "r1_in_door": {
+      "r1": {
+       "echo_geom": "r2__ultrasonic_bracket",
+       "first_echo_m": 0.6939,
+       "heading_deg": 0.0,
+       "load_in_cone": true,
+       "map_expected_m": 3.097,
+       "matches_map": false,
+       "own_geoms_in_cone": [],
+       "partner_in_cone": true
+      },
+      "r2": {
+       "echo_geom": "r1__ultrasonic_bracket",
+       "first_echo_m": 0.6939,
+       "heading_deg": 180.0,
+       "load_in_cone": true,
+       "map_expected_m": 3.997,
+       "matches_map": false,
+       "own_geoms_in_cone": [],
+       "partner_in_cone": true
+      }
+     },
+     "r2_in_door": {
+      "r1": {
+       "echo_geom": "r2__ultrasonic_bracket",
+       "first_echo_m": 0.6939,
+       "heading_deg": 0.0,
+       "load_in_cone": true,
+       "map_expected_m": 3.947,
+       "matches_map": false,
+       "own_geoms_in_cone": [],
+       "partner_in_cone": true
+      },
+      "r2": {
+       "echo_geom": "r1__ultrasonic_bracket",
+       "first_echo_m": 0.6939,
+       "heading_deg": 180.0,
+       "load_in_cone": true,
+       "map_expected_m": 3.147,
+       "matches_map": false,
+       "own_geoms_in_cone": [],
+       "partner_in_cone": true
+      }
+     }
+    },
+    "width_across_m": 0.162
+   },
+   "footprint": {
+    "across_beam_m": 0.162,
+    "along_beam_m": 1.0384
+   },
+   "grip_site_error_m": {
+    "r1": 0.0,
+    "r2": 0.0
+   },
+   "heading_deg": {
+    "r1": 0.0,
+    "r2": 180.0
+   },
+   "sim_joint_ranges_ok": true,
+   "sonar_open_floor": {
+    "r1": {
+     "echo_geom": "r2__ultrasonic_bracket",
+     "first_echo_m": 0.6939,
+     "heading_deg": 0.0,
+     "load_in_cone": true,
+     "map_expected_m": 1.522,
+     "matches_map": false,
+     "own_geoms_in_cone": [],
+     "partner_in_cone": true
+    },
+    "r2": {
+     "echo_geom": "r1__ultrasonic_bracket",
+     "first_echo_m": 0.6939,
+     "heading_deg": 180.0,
+     "load_in_cone": true,
+     "map_expected_m": 2.372,
+     "matches_map": false,
+     "own_geoms_in_cone": [],
+     "partner_in_cone": true
+    }
+   },
+   "tip_over": {
+    "r1": {
+     "com_height_m": 0.0817,
+     "com_x_m": 0.0268,
+     "load_share_kg": 0.15,
+     "robot_mass_kg": 1.1,
+     "static_forward_restoring_ratio_signed": 3.91,
+     "static_lateral_restoring_ratio_signed": null,
+     "tip_accel_forward_mps2": 3.98,
+     "tip_accel_lateral_mps2": 7.87
+    },
+    "r2": {
+     "com_height_m": 0.0817,
+     "com_x_m": 0.0268,
+     "load_share_kg": 0.15,
+     "robot_mass_kg": 1.1,
+     "static_forward_restoring_ratio_signed": 3.91,
+     "static_lateral_restoring_ratio_signed": null,
+     "tip_accel_forward_mps2": 3.98,
+     "tip_accel_lateral_mps2": 7.87
+    }
+   },
+   "wrist_camera_bar_pixels_r1": 254093,
+   "yaw_pwm": {
+    "r1": 1500,
+    "r2": 1500
+   }
+  }
+ },
+ "pitch_deg": -60.03,
+ "scene_xml_sha256": "3486ce92842e113ed10ae37cbfb9badcedfeb4df222b84801cf287a7ee97329b",
+ "schema": "ugrp.ultrasonic_side_grasp_analysis.v1",
+ "tool_z_m": 0.11,
+ "yaw_servo_load": {
+  "gravity_about_vertical_yaw_axis_Nm": 0.0,
+  "half_beam_inertia_torque_at_1mps2_Nm": 0.0232,
+  "lever_m": 0.155,
+  "note": "the arm lies along the beam in both modes, so the yaw servo load is mode-independent: forces across the beam (lateral leg, formation error across the beam) load yaw; forces along the beam (axial leg) load the arm along its length",
+  "one_robot_traction_torque_mu0.5_Nm": 0.836,
+  "real_force_at_grip_stall_N": 10.76,
+  "real_servo_assumed": "LD-1501MG (standard-servo family per docs/decision_log.md; 17 kg·cm vendor listing, voltage unconfirmed)",
+  "real_stall_Nm_assumed": 1.668,
+  "sim_force_at_grip_limit_N": 7.74,
+  "sim_forcerange_Nm": 1.2,
+  "sim_joint_range_rad": [
+   -1.75,
+   1.75
+  ]
+ }
+}

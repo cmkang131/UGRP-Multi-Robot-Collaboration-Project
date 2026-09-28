@@ -143,6 +143,96 @@ kinematics 장면(`zone_wide_door_tags_v2` + `long_beam`, 두 로봇 IK 자세, 
 - **짐 확인만 원할 때(대안, 현재 M2 높이 0.095):** `CarrySonarMonitor('load_in_cone')`를 쓴다. 기준값은 자기 짐 끝면(≈0.048 m)이다. 판독이 이보다 길게 뛰면 `load_lost`(짐 이탈)다. 이 모드에서는 전방을 볼 수 없다. 한 센서가 첫 에코만 주므로 두 용도를 동시에 쓸 수 없다.
 - 이 판정은 초음파 판독만의 결론이다. 손목 카메라 hold 검사를 대체하지 않고 보조한다. 실제 운반 성공은 따로 검증한다.
 
+## 9. 혼자 운반하는 작은 짐 (2026-09-28, #221)
+
+표의 값은 v2(현재 SIM) 기하다. v3 값은 11절에 있다. 질문: 한 로봇이 혼자 드는 작은 짐(막대 아님)을 원뿔 밖으로 들어, 운반 중에도 앞을 볼 수 있는가. 방법은 8절과 같다(운동학·ray cast만, 물리 step 0회). 결과는 [`solo_carry_height_analysis.json`](../experiments/2026-09-28-ultrasonic-range/solo_carry_height_analysis.json)이다. 로봇은 벽을 0.497 m 앞에 두고 선다(정적 지도 예상값). 짐은 grip site에 강체로 둔다. 기울기는 수평과 강체(자세 pitch 변화만큼) 두 경우이고, 처짐은 10 mm로 둔다. ray cast는 자기 몸·팔을 **포함**한다(실물 센서와 같은 조건).
+
+**최종 연구 카탈로그의 solo 종류(`configs/zone_study_scenarios`, `sim/zone_cargo.py`):**
+- box: 34×40×32 mm, 30 g, 바닥에서 24 mm 높이를 잡는다. cyan·green·red 색상 복제품이다.
+- can: Ø38×50 mm, 80 g, 24 mm 높이를 잡는다.
+- tile: 60×40×12 mm, 25 g, 7 mm 높이를 잡는다.
+
+**자세별 결과(반각 15°, 여유: 처짐 10 mm, 흔들림 ±5°, 높이 5 mm):**
+
+| 자세 | 명령 grip z / pitch | box·can 원뿔 여유 | tile 원뿔 여유 | 첫 에코(자기 팔 포함) | 손목 카메라 높이 / 광축 / 보이는 바닥 |
+|---|---|---|---|---|---|
+| 기존 lift hover 0.095 | 0.095 / −64.1° | −24 / −25 mm | −12 mm | box 0.060 m, can 0.058 m = **자기 짐**. tile은 원뿔 안이지만 에코가 문턱 아래라 벽 0.495 m | 0.13 m / −56.6° / 0.18–0.32 m |
+| 직선 lift 최소값 | box·can 0.120 / −56.0°, tile 0.110 / −60.0° | +1.0 / +0.3 mm | +2.9 mm | 벽 0.495 m(지도 0.497과 일치) | 0.155 m / −48.5° / 0.20–0.43 m |
+| **기존 운반 자세 `carry_p30`** | 0.180 / −30.1° | **+65 / +64 mm** | **+77 mm** | 벽 0.495 m(지도 일치) | 0.208 m / −22.6° / 0.32–3.80 m |
+
+- 직선 lift 최소값은 `recommended_solo_tool_z(kind)`다. 반각 15°에서 box·can 0.120 m, tile 0.110 m이고, 7.5°에서는 0.110 / 0.110 / 0.095 m다. 여유를 이미 포함한 값이지만 남는 여유는 1–3 mm로 얇다.
+- `carry_p30`(`harness/owncam_drive.py`의 `CARRY_POSTURE`)는 `zone_own_executor`가 짐을 든 채 주행할 때 이미 쓰는 자세다. 강체 기울기 42°(box·can)·36°(tile)와 물리 기록의 32°([`2026-09-25-zone-owncam-skill`](../experiments/2026-09-25-zone-owncam-skill/)) 모두 여유 63–77 mm로 원뿔 밖이다.
+- **자기 집게·손목·팔:** 세 자세 모두 자기 geom이 원뿔 ray에 하나도 맞지 않았다(box·can·tile 전부). 팔은 센서 위·뒤에 있고, 집게는 grip 점 주변이라 짐보다 높다.
+- **전복:** 짐이 가벼워(25–80 g) `carry_p30`에서도 전방 복원/전복 모멘트 비는 9.4(can)–30(tile)이고 전방 tip 가속도는 5.1 m/s² 이상이다.
+- **grip·IK:** 직선 lift는 grasp 대비 pitch가 +16.1°(box·can)·+6.0°(tile) 바뀐다. `carry_p30`는 +42°/+36°이며, 기존 실행기가 이미 이 변화를 겪는다(기록 32°). SIM 관절 범위는 모두 안이다.
+- **내려놓기:** 기존 순서는 운반 자세 → hover 0.095(grasp pitch) → 16단계 직선 하강이다. `carry_p30`에서 hover로 가는 servo 이동(최대 554 pulse) 동안 짐의 가장 낮은 점은 68 mm(box·can)·87 mm(tile)로, 바닥에 닿지 않는다. 하강 IK는 모든 단계에서 가능하다. 직선 lift 0.120을 쓰면 기존 lift 경로(0.095에서 끝남)를 늘려야 한다.
+
+**권장:** 혼자 운반할 때는 **기존 `carry_p30`를 그대로 쓴다.** 모든 solo 종류가 원뿔 밖이고 카메라도 멀리 본다. 코드 변경은 필요 없다. 직선 lift 최소값(0.120/0.120/0.110)은 자세를 바꿔야 할 때의 하한으로만 둔다.
+
+**전진 규칙(`solo_forward_state`, 자기 판독 + 정적 지도):**
+- `carry_p30`에서 짐 앞끝은 센서보다 0.091–0.092 m 앞에 있다. 정지 거리는 `solo_stop_distance` = 앞끝 + 0.19 m/s × 0.30 s + 0.02 m(`BASE_MARGIN_M`) ≈ 0.169 m다. 감속 거리는 반응 1 s로 ≈ 0.30 m다.
+- 판정: `stop_near_field`(앞끝 + 2 cm 이내, 짐 처짐 또는 접촉 거리) / `stop` / `slow` / `clear` / `no_reading`(0.2 s 넘게 판독 없음). 지도 예상 거리와의 일치(`range_consistency`)도 같이 돌려준다. 지도보다 짧으면 지도에 없는 물체다.
+- 이 판정은 기존 sweep·충돌 guard를 **대체하지 않고 더하는** 입력이다. 무반사(`valid=False`)는 `clear`로 두되 지도 일치 결과(`no_echo_where_map_predicts`)로 표시한다.
+
+## 10. 공동 운반: ㄱ자 측면 파지로 앞 보기 (2026-09-28, #221·#246)
+
+질문: 두 로봇이 진행 방향을 보고, 팔을 옆으로 돌려 막대를 쥐면 초음파로 앞을 볼 수 있는가. 이 자세는 **9/9 사용자 요청으로 이미 있었다.** `scripts/probe_dual_grasp_sync.py --side-grasp`(commit `9bb41317`), [`2026-09-09-side-grasp`](../experiments/2026-09-09-side-grasp/README.md)과 [`2026-09-09-loaded-transport`](../experiments/2026-09-09-loaded-transport/README.md)에서 몸체 +X, 팔 yaw PWM 2500/500(±90°)으로 비보조 파지·유지 2/2와 50 cm 전진 운반 2/2를 했다. 9/25 zone 카탈로그(commit `87eaac86`, `long_beam` grasp `approach_yaw` 0/π)가 몸체를 막대 축 방향으로 바꿨고, 이 전환의 사용자 결정 기록은 찾지 못했다. M2·v5·v6은 이것을 이어받았다. 막대의 grasp 점은 두 방식이 같고 몸체 방향과 팔 yaw만 다르다. 옛 warehouse teacher(`sim/multi_masterpi_production.py` `_warehouse_inward_formation`)도 같은 방식이다.
+
+v3 값은 11절에 있다. 이번 분석은 9/9 방식을 v6 장면(`zone_wide_door_tags_v2` + `long_beam`, lift 0.110 m)에 다시 놓은 것이다. 결과는 [`side_grasp_pair_analysis.json`](../experiments/2026-09-28-ultrasonic-range/side_grasp_pair_analysis.json)이고, 운동학만 썼다.
+
+| 구간 | 몸체 방향 | 팔 yaw | 초음파 용도 |
+|---|---|---|---|
+| 횡 이동(막대에 수직, M2 0.30 m) | 두 로봇 모두 진행 방향 | ∓90°(PWM 500/2500) | **전방 장애물 거리 vs 정적 지도** + 기존 충돌 여유. 두 로봇이 각자 본다. 시험 위치에서 2.546/2.547 m로 지도와 일치하고, 자기 팔·짐·상대는 원뿔 밖이다 |
+| 축 이동·문 통과(막대 방향, M2 0.60 m) | 그대로(옆으로 strafe) | ∓90° | 앞은 못 본다. 옆 벽·문기둥까지의 거리를 지도와 비교해 **문 중앙 정렬**을 확인한다. 문 안에서 0.172 m로 지도와 일치한다 |
+| (비교) 현재 M2·v6 | 서로 마주 봄 | 0° | 서로를 본다(0.694 m). 대형 감시(8절)만 가능하다 |
+
+- **축 이동에서 앞을 볼 수 있는가:** 앞 로봇이 진행 방향을 보려면 팔 yaw 180°가 필요하다. 관절 한계는 ±100.3°(±1.75 rad)라 최선도 진행 방향에서 79.7° 벗어난다. 원뿔 반각 15°로는 앞을 못 본다. 뒤 로봇은 팔 0°로 앞을 볼 수 있지만 그 앞에는 막대와 상대가 있다. 축 이동의 진행 방향 장애물은 **어느 방식이든 초음파로 못 본다.** top RGB와 정적 지도로 판단한다.
+- **문 폭:** 막대에 수직인 대형 폭은 측면 파지 0.1885 m, 현재 방식 0.162 m다(로봇·막대 geom AABB). 0.5 m 문의 한쪽 여유는 0.156 m / 0.169 m, 1.0 m 문은 0.406 m / 0.419 m다. 막대 방향 길이는 1.01–1.04 m라 옆으로는 1.0 m 문도 못 지난다. 문은 두 방식 모두 축 방향으로 지난다.
+- **yaw servo 토크:** yaw 축이 수직이므로 짐 무게의 정적 토크는 0이다. 팔은 두 방식 모두 막대 축을 따라 놓이므로 yaw 부하는 **방식과 무관하다.** 막대에 수직인 힘 F가 0.155 m 팔에 τ = 0.155·F를 만든다(횡 이동, 대형 어긋남). SIM `forcerange`는 1.2 N·m(grip 7.7 N)다. 실물은 LD-1501MG 계열 17 kg·cm ≈ 1.67 N·m(grip 10.8 N)로 **가정**한다. 전압 조건과 yaw 관절 servo 모델은 미확인이다. 반쪽 막대를 1 m/s²로 가속하는 데는 0.023 N·m(SIM 한계의 2%)면 되지만, 한 로봇이 마찰 0.5로 밀면 0.84 N·m(SIM 70%, 실물 가정 50%)다. 위험은 대형 어긋남이다. 측면 방식은 막대에 수직인 이동을 전진으로 하므로 strafe보다 어긋남이 작을 것으로 보지만 측정하지 않았다.
+- **전복:** 짐 몫 0.15 kg이 측면 바퀴선 밖 0.155 m에 걸린다. 측방 복원/전복 모멘트 비는 4.6이고 tip 가속도는 4.65 m/s²다. 현재 방식의 전방 3.9 / 3.98 m/s²보다 조금 낫다(track 0.131 m > wheelbase 0.12 m).
+- **손목 카메라:** 카메라는 팔과 함께 돌므로 막대 이미지는 현재 방식과 같다(대리 IoU 1.0). 다만 ±90°는 보정된 pan 범위(PWM 1300–1700) 밖이다. 이 자세의 카메라 외부 파라미터와 `SERVO_DEVIATION[6]` 64 pulse(≈5.8°)는 실물에서 확인하지 않았다.
+- **방향 전환:** SIM에서 팔 yaw 축은 차체 원점과 일치한다(0, 0). 제자리 회전과 팔 yaw 역회전을 같이 하면 grip 점이 운동학적으로 고정된다. 실물 mecanum 회전 중심의 흔들림은 측정하지 않았다. 짐을 든 채 두 로봇이 함께 방향을 바꾸는 것은 물리 검증이 없다. 9/9처럼 **처음부터 측면으로 접근해 파지**하는 편이 안전하다.
+- **odometry:** `CARRY_ODOM_SCALE`(`scripts/study_owncam_pair_beam.py`)은 현재 방식에서 axial 0.772(전진), lateral 0.697(strafe)로 보정되었다. 측면 방식에서는 0.60 m 축 이동과 문 통과가 strafe가 되어 나쁜 쪽 보정을 쓴다. 새 보정이 필요하고 값은 미확인이다. 초음파 문기둥 거리는 로봇 전방 축(문을 가로지르는 방향)만 잡으므로 strafe 방향(진행 방향) 오차는 보정하지 못한다.
+- **9/9 근거의 범위:** 다른 물체(5×45×4 cm, 0.196 kg), 정답 좌표 바퀴 제어, 50 cm 전진뿐이었다. `long_beam`(0.60 m, 0.300 kg), strafe, 자기 카메라 실행, 문 통과는 검증되지 않았다.
+
+**권장:** 측면 파지를 v6의 **비교 조건 후보**로 둔다. 횡 이동에서는 전방 초음파를 쓰고, 축 이동·문 통과에서는 옆 거리로 중앙 정렬을 확인한다. 채택 전에 확인할 것은 세 가지다. (1) 물리로 `long_beam` 측면 파지·유지와 strafe 운반, (2) 측면 방식의 odometry 보정, (3) ±90° pan에서의 실물 카메라 보정이다. 현재 방식(8절)은 그대로 두고 비교한다.
+
+## 11. 리모델 v3(초안 PR #249) 기하에서 다시 계산 (2026-09-28)
+
+PR #249는 도면 비율로 로봇을 다시 모델링한다(측정값 아님). 이 절은 8–10절의 해석식을 v2와 v3 값으로 다시 계산한 것이다. 결과는 [`geometry_v2_v3_analysis.json`](../experiments/2026-09-28-ultrasonic-range/geometry_v2_v3_analysis.json)이고, 코드는 `RobotGeometry`, `GEOMETRY_V2`, `GEOMETRY_V3`, `arm_links()`다. 이 브랜치에는 v3 MuJoCo 모델이 없다. 그래서 v3는 **해석식만** 썼다. 자기 팔 검사는 v2 SIM 팔 사슬로 자세를 잡은 뒤 v3 팔 축 오프셋만큼 옮겨 계산했다.
+
+| 항목 | v2(현재 SIM) | v3(#249 도면 배치) |
+|---|---|---|
+| 초음파 위치(전방/높이) | 78 / 54 mm | 88.0 / 61.7 mm, 수평, 팔 base 상자 앞면(차체 고정) |
+| 팔 yaw 축(차체 중심 기준) | 0 | 전방 48.2 mm |
+| 센서 → 막대 가까운 끝면 | 0.047 m | 0.085 m |
+| 공동 운반 `near_face` 권장 grip z | 0.110 m (pitch +12.1°) | **0.125 m** (pitch −54.0°, grasp 대비 +18.1°) |
+| 막대 전체(`whole_beam`) 필요 z | 0.287 / 0.199 m | 0.305 / 0.212 m (여전히 도달 불가) |
+| solo 직선 lift 최소(15°) box·can / tile | 0.120 / 0.110 m | **0.140 / 0.125 m** |
+| solo 직선 lift 최소(7.5°) | 0.110 / 0.095 m | 0.120 / 0.110 m |
+| solo `carry_p30` 원뿔 여유 | 63–74 mm, 모두 밖 | **45–56 mm, 모두 밖** |
+| `carry_p30` 짐 앞끝(센서 기준) / 정지 거리 | 0.091–0.092 / 0.168–0.169 m | 0.129–0.130 / 0.206–0.207 m |
+| 자기 팔·집게의 원뿔 축 최소각(15° 미만이면 원뿔 안) | 32.0°(공동) / 58.5°(`carry_p30`) / 측면 파지 0개 | 25.6° / 45.3° / 측면 파지 0개 |
+| 측면 파지: 막대 앞면과 센서 면 사이 | 58 mm 뒤 | 20 mm 뒤 |
+| 제자리 90° 회전 시 grip 이동(몸체 중심 회전 + 팔 역회전) | 0 | **68 mm** |
+| 현재 방식 대형 길이 변화 | 0 | +96 mm |
+
+- **결론은 v3에서도 같다.** 공동 운반은 `near_face`만 가능하고 높이만 0.125 m로 오른다. solo는 `carry_p30`로 원뿔 밖이다. 측면 파지에서는 자기 팔과 막대가 센서 면 뒤에 있다.
+- **v3에서 새로 생기는 비용:**
+  - 공동 운반 lift의 pitch 변화가 +18°로 커진다(M2 물리 확인은 +8°까지다). 턱 안에서 막대가 도는 마찰 여유는 확인하지 않았다.
+  - 팔 축이 앞으로 나와 있다. 짐을 든 채 방향을 바꾸려면 몸체가 **팔 축을 중심으로** 돌아야 grip이 고정된다. mecanum은 회전과 병진을 합쳐 원리상 할 수 있지만 구현·검증은 없다.
+  - 측면 파지에서는 로봇 중심이 막대 축에서 48 mm 뒤로 물러난다. 대형 폭은 그대로다.
+- **링크 길이 민감도(도면 값, #249에서 물리 미적용):** 위팔 57.7 mm(SDK 65), 집게 끝 94 mm(SDK 100)이다. controller IK를 그 길이로 계산하면 다음과 같다(반경 0.155 m).
+
+  | 링크 | 최대 grip z(보정 pitch −90…−40°) | pitch ≤ 0 최대 | 최소 grip z | grasp pitch |
+  |---|---|---|---|---|
+  | SDK 65 / 100 | 0.161 m | 0.239 m | 0.001 m | −72.1° |
+  | 위팔 57.7 | 0.151 m | 0.231 m | 0.005 m | −67.0° |
+  | 집게 94 | 0.161 m | 0.236 m | 0.008 m | −68.9° |
+  | 둘 다 | 0.151 m | 0.228 m | 0.013 m | −64.0° |
+
+  권장 높이(공동 0.125, solo 0.140)는 모두 도달 범위 안이다. `carry_p30` FK는 z 0.173–0.183 m로 바뀌지만 원뿔 여유는 38–51 mm로 유지된다. 다만 집게가 94 mm이면 tile의 7 mm grip 높이가 보정 pitch 범위의 최소 grip z(8–13 mm)보다 낮아 **IK가 풀리지 않는다.** 링크를 바꾸면 tile 파지 자세를 다시 보정해야 한다.
+
 ## 참고 자료
 
 - Hiwonder Glowing Ultrasonic Sensor 제품 페이지: <https://www.hiwonder.com/products/glowing-ultrasonic-sensor>
@@ -156,3 +246,6 @@ kinematics 장면(`zone_wide_door_tags_v2` + `long_beam`, 두 로봇 IK 자세, 
 - MuJoCo `mj_geomDistance`: <https://mujoco.readthedocs.io/en/stable/APIreference/APIfunctions.html#mj-geomdistance>
 - M2 운반 기록(lift 높이·기울기): [`experiments/2026-09-26-zone-m2-pair`](../experiments/2026-09-26-zone-m2-pair/), lift 자세 `scripts/study_owncam_pair_beam.py` `HOVER_Z_M`
 - 초음파 특성(원뿔 반사, 경면 반사로 인한 가시 각도 한계): Siegwart, Nourbakhsh, Scaramuzza, *Introduction to Autonomous Mobile Robots*, 2nd ed., 4.1.6 (MIT Press, 2011)
+- 혼자 운반 자세: `harness/owncam_drive.py` `CARRY_POSTURE`, 내려놓기 경로 `harness/wrist_zone_skill_v2.py`, 기울기 기록 [`experiments/2026-09-25-zone-owncam-skill`](../experiments/2026-09-25-zone-owncam-skill/)
+- 9/9 측면 파지 기록: [`2026-09-09-side-grasp`](../experiments/2026-09-09-side-grasp/README.md), [`2026-09-09-loaded-transport`](../experiments/2026-09-09-loaded-transport/README.md), `scripts/probe_dual_grasp_sync.py --side-grasp`(commit `9bb41317`); 막대 축 방향 전환 commit `87eaac86`
+- Hiwonder LD-1501MG(17 kg·cm 판매 목록, 전압 미확인): <https://www.gie.com.my/shop.php?action=robotics%2Fmotors%2FLD_1501MG>; LFD-01M(집게 servo, 6 V 1.8 kgf·cm): <https://www.hiwonder.com/products/lfd-01m>
