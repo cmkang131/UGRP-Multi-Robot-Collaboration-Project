@@ -54,12 +54,24 @@ def contract():
 
 def load_config(args):
     p=json.loads(args.prereg.read_text());old=json.loads(V5H.read_text())
-    if args.execute:
-        raise ValueError('v6 DRAFT is prepare-only: execution source and approval are null')
-    if (p.get('registration_version')!=6 or p.get('status')!='DRAFT'
-            or p.get('execution_source_sha') is not None or p.get('execution_authorization') is not None
-            or p.get('approval') is not None or p.get('runnable') is not False):
-        raise ValueError('v6 draft contract changed')
+    if p.get('registration_version')!=6 or p.get('execution_source_sha') is not None or p.get('approval') is not None:
+        raise ValueError('v6 registration contract changed')
+    if p.get('status')=='DRAFT':
+        if args.execute:
+            raise ValueError('v6 DRAFT is prepare-only: execution source and approval are null')
+        if p.get('execution_authorization') is not None or p.get('runnable') is not False:
+            raise ValueError('v6 draft contract changed')
+    elif p.get('status')=='REGISTERED':
+        # 2026-09-28 dev registration: the same v5h admission path (late
+        # coordinator envelope + live GitHub comment, verified by the driver).
+        draft=p.get('draft_registration')
+        if (p.get('runnable') is not True or not isinstance(draft,dict)
+                or set(draft)!={'path','commit','sha256','registration_sha256'}):
+            raise ValueError('v6 registered contract changed')
+        from scripts.zone_pair_authorization import validate_authorization
+        validate_authorization(p)
+    else:
+        raise ValueError('v6 registration status must be DRAFT or REGISTERED')
     for key in ('schema','labels','research_result','environment','inputs','criteria','planned_setdown',
                 'limits','safety_coverage','timing','stage_rules','contact_profile_contract'):
         if p.get(key)!=old[key]:
@@ -89,4 +101,16 @@ def load_config(args):
         raise ValueError('pair policy does not match registered case')
     if args.output.exists():
         raise ValueError('output must be new')
+    if args.execute:
+        import re
+        from scripts.zone_pair_authorization import validate_authorization
+        from scripts.run_zone_pair_dev import primary_root
+        validate_authorization(p, execute=True, expected_source_sha=args.expected_source_sha,
+                               run_id=args.run_id)
+        if not args.expected_source_sha or not re.fullmatch('[0-9a-f]{40}', args.expected_source_sha):
+            raise ValueError('--execute requires full --expected-source-sha')
+        if args.lock_owner is None:
+            raise ValueError('--execute requires --lock-owner')
+        if not args.output.is_absolute() or not args.output.resolve().is_relative_to(primary_root() / 'outputs'):
+            raise ValueError('physical raw output must be absolute under primary checkout outputs/')
     return p,copy.deepcopy(case)
