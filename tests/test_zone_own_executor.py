@@ -349,7 +349,9 @@ def test_action_record_adapter_is_validated_by_package_a():
 
 
 # ---------------------------------------------------------------- 3-robot host (simulator)
-def test_team_host_feeds_each_executor_only_its_own_camera():
+def test_team_host_feeds_each_executor_only_its_own_camera(request):
+    if request.config.pluginmanager.hasplugin('tests.pose_provider_no_physics'):
+        pytest.skip('real-world physical steps are outside the explicitly nonphysical suite')
     pytest.importorskip('mujoco')                   # lazy: importing this file must stay simulator-free
     spec = {'map': 'zone_wide_door_tags_v2', 'seed': 703, 'goal': {'A': {'cyan': 1}, 'B': {'cyan': 1}, 'C': {'cyan': 1}},
             'extra_boxes': {'red': 2, 'green': 1}, 'contact_profile': 'cargo_noslip_v1', 'order_sheet': SHEET}

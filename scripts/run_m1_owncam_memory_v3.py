@@ -22,15 +22,23 @@ if str(ROOT) not in sys.path:
 
 from harness.owncam_safety_v3 import SCHEMA as SAFETY_SCHEMA
 
+from harness.owncam_memory_time import TIME_CONTRACT, condition_label
+
+
 SCHEMA = 'ugrp.m1_owncam_memory_run.v3'
-CONDITIONS = {'off': ('harness.m1_owncam_memory_v3', 'M1OwnCamDeliveryOffV3'),
+CONDITIONS = {'m1_provider': ('harness.owncam_delivery_shared', 'SharedPoseDelivery'),
+              'memory_provider': ('harness.owncam_memory_delivery', 'M1OwnCamDeliveryMem'),
+              'off': ('harness.m1_owncam_memory_v3', 'M1OwnCamDeliveryOffV3'),
               'off_legacy': ('harness.m1_owncam_delivery', 'M1OwnCamDelivery'),
               'memory_v2': ('harness.m1_owncam_memory', 'M1OwnCamDeliveryMem'),
               'memory_v3': ('harness.m1_owncam_memory_v3', 'M1OwnCamDeliveryMemV3')}
 MATCHED_CONDITIONS = ('off', 'memory_v3')
-RESULT_LABELS = {'off': 'interim, tag provider; v3 safety, memory look OFF',
+RESULT_LABELS = {'m1_provider': 'provider adapter; unvalidated',
+                 'memory_provider': 'provider adapter; unvalidated', 'off': 'interim, tag provider; v3 safety, memory look OFF',
                  'off_legacy': 'historical OFF; unmatched safety; reference only', 'memory_v2': 'interim, tag provider', 'memory_v3': 'interim, tag provider; unvalidated v3'}
-MEMORY_FILES = ('harness/owncam_memory.py', 'harness/owncam_memory_kf.py', 'harness/owncam_drive_mem.py',
+MEMORY_FILES = ('harness/owncam_memory_time.py', 'harness/owncam_delivery_shared.py', 'harness/owncam_memory_delivery.py',
+                'harness/owncam_drive_shared.py', 'harness/owncam_memory_inputs.py',
+                'harness/owncam_pose_guard_provider.py', 'harness/owncam_memory.py', 'harness/owncam_memory_kf.py', 'harness/owncam_drive_mem.py',
                 'harness/owncam_landmarks.py', 'harness/owncam_landmark_tags.py',
                 'harness/m1_owncam_memory.py', 'scripts/run_m1_owncam_memory.py',
                 'harness/owncam_pose_guard_v3.py', 'harness/owncam_memory_v3.py',
@@ -90,11 +98,14 @@ def run_episode(spec: dict, out: Path, student: dict, condition: str, *, prereg_
         raise SystemExit(f'refused: {gib:.1f} GiB free on the output disk (< {MIN_FREE_GIB} GiB)')
     threads = check_threads()
     cls = controller_class(condition)
+    time_contract = TIME_CONTRACT if condition in ('memory_provider', 'memory_v2', 'memory_v3', 'off') else None
     started, load0 = time.time(), os.getloadavg()
     original = base.M1OwnCamDelivery
     base.M1OwnCamDelivery = cls              # the runner imports the class name at call time
     try:
-        result, manifest = runner.run(spec, out, {**student, 'condition': condition})
+        result, manifest = runner.run(spec, out, {**student, 'condition': condition,
+                                               'time_contract': time_contract,
+                                               'condition_label': condition_label(condition, time_contract)})
     finally:
         base.M1OwnCamDelivery = original
     # Frozen M1 runner may hit SIM_LIMIT/exception before ctl.decide() gets a
@@ -104,6 +115,7 @@ def run_episode(spec: dict, out: Path, student: dict, condition: str, *, prereg_
         (out/'result.json').write_text(json.dumps(result, indent=2, ensure_ascii=False, default=str) + '\n')
     record = {'schema': SCHEMA, 'episode': spec['episode_id'], 'condition': condition,
               'result_label': RESULT_LABELS.get(condition),
+              'time_contract': time_contract, 'condition_label': condition_label(condition, time_contract),
               'controller_class': f'{cls.__module__}.{cls.__name__}',
               'controller_schema': result.get('controller', {}).get('schema'),
               'comparison_role': 'matched_look_ablation' if condition in MATCHED_CONDITIONS else 'historical_reference',
@@ -185,7 +197,8 @@ def main(argv=None):
                                                prereg_sha256=sha_file(prereg_path), freeze=freeze,
                                                amendments_sha256=sha_file(amend) if amend.is_file() else None)
         print(json.dumps({'episode': spec['episode_id'], 'condition': args.condition,
-                          'result_label': RESULT_LABELS.get(args.condition), 'outcome': result['outcome'],
+                          'result_label': RESULT_LABELS.get(args.condition),
+                          'time_contract': record['time_contract'], 'condition_label': record['condition_label'], 'outcome': result['outcome'],
                           'm1_success': result['m1_success'], 'false_success': result['false_success'],
                           'sim_s': result['sim_s'], 'looks': result['looks'], 'commands': result['commands'],
                           'wall_s': manifest['wall_s'], 'load': record['load_average'],

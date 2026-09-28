@@ -148,7 +148,7 @@ def run(spec, out, student_block=None):
         (out/name).write_bytes(jpeg)
         seen = cv2.cvtColor(cv2.imdecode(np.frombuffer(jpeg, np.uint8), cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
         est = student.observe(now, seen)          # the student sees exactly the saved JPEG
-        frames.append({'frame': index, 't': round(now, 4), 'file': name,
+        frames.append({'frame': index, 't': float(now), 'file': name,
                        'sha256': hashlib.sha256(jpeg).hexdigest(), 'phase': state['phase'],
                        'student_state': student.state,
                        'commanded_servo': {str(k): v for k, v in sorted(student.servo.items())}})

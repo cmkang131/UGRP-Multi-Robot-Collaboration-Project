@@ -88,7 +88,7 @@ def test_other_refusals_keep_reason_and_failed_predicate(case, reason, failed):
 def test_dwell_is_not_relaxed_and_tag_age_is_informational():
     ex = robot('r1')
     ex.gate.state = 'uncertain'
-    ex.last_report = replace(ex.last_report, std_xy_m=.05033, std_yaw_rad=.01533, since_tag_s=58.6)
+    ex.last_report = replace(ex.last_report, std_xy_m=.05033, std_yaw_rad=.01533, fix_age_s=58.6)
     for t in (0., .2, .4):
         ex.gate.update(t, True, .05033, .01533)
     assert ex.pair_readiness(0.) == 'uncertain'
@@ -97,7 +97,7 @@ def test_dwell_is_not_relaxed_and_tag_age_is_informational():
     ex.gate.update(1., True, .049, .015)
     ex.last_report = replace(ex.last_report, std_xy_m=.049)
     assert ex.pair_readiness(0.) == 'available'
-    assert readiness_snapshot(ex, 0.)['report']['since_tag_s'] == 58.6
+    assert readiness_snapshot(ex, 0.)['report']['fix_age_s'] == 58.6
 
 
 def test_multiple_faults_and_full_precision_survive_receipt():

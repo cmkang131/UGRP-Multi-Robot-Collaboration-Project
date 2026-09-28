@@ -1,0 +1,60 @@
+{
+  "base_head": "8b0ddd27a931bfcecee1e3725ad4a6ed739c5c37",
+  "branch": "codex/zone-pair-grasp-relook",
+  "registration_sha256": "0420d034003845d7037f6f56c6cab50a6797efda5b7adc6a3f997b461a085f5a",
+  "source_tree_sha256": "72067154318f4a43efe8ae7a535f5acfc2feb2fdfcb23f80ab376c6881f3c045",
+  "execution_authorization": null,
+  "scope": "nonphysical code audit and preparation only",
+  "logs": {
+    "pytest-final.log": {
+      "summary": "1583 passed, 2 skipped, 287 subtests passed in 151.56s (0:02:31)",
+      "guard": {
+        "physical_step_attempts": 0,
+        "real_vision_worker_attempts": 0,
+        "network_attempts": 0
+      },
+      "sha256": "c6d24780dd77d3f83e67aba5f2fbd030979487844da183dc52e8918f548afd71"
+    },
+    "pytest-dependencies.log": {
+      "summary": "479 passed in 32.61s",
+      "guard": {
+        "physical_step_attempts": 0,
+        "real_vision_worker_attempts": 0,
+        "network_attempts": 0
+      },
+      "sha256": "4381d1d5cfee576e797be407ecd8aec2c6c75dd66b54aec02eb8ba708cd8e339"
+    }
+  },
+  "actual_physical_steps": 0,
+  "actual_model_calls": 0,
+  "commits_created": 0,
+  "initial_guard_blocked_physical_attempts": 2,
+  "skipped_physical_tests": [
+    "tests/test_zone_own_executor.py::test_team_host_feeds_each_executor_only_its_own_camera",
+    "tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world"
+  ],
+  "pytest_tmp_absent": true,
+  "git_diff_check": "passed",
+  "head_unchanged": true,
+  "prepare_runs": [
+    {
+      "run_id": "dev11",
+      "seed": 907,
+      "state": "prepared_not_executed",
+      "manifest": "experiments/2026-09-28-zone-pair-v5f/prepare/dev11/manifest.json",
+      "manifest_sha256": "1b38920bdaa15858905f07cd748e8666eac3737ffbab58e180b143d3ec10a258",
+      "registration_sha256": "0420d034003845d7037f6f56c6cab50a6797efda5b7adc6a3f997b461a085f5a",
+      "source_tree_sha256": "72067154318f4a43efe8ae7a535f5acfc2feb2fdfcb23f80ab376c6881f3c045"
+    },
+    {
+      "run_id": "dev12",
+      "seed": 908,
+      "state": "prepared_not_executed",
+      "manifest": "experiments/2026-09-28-zone-pair-v5f/prepare/dev12/manifest.json",
+      "manifest_sha256": "27160cf6f5388839c5e4c2ea45d8005d61c2b570c350008237e2bc8380a68521",
+      "registration_sha256": "0420d034003845d7037f6f56c6cab50a6797efda5b7adc6a3f997b461a085f5a",
+      "source_tree_sha256": "72067154318f4a43efe8ae7a535f5acfc2feb2fdfcb23f80ab376c6881f3c045"
+    }
+  ],
+  "remote_status": "unverified: FETCH_HEAD write denied and GitHub network unavailable"
+}

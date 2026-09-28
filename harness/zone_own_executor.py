@@ -18,7 +18,7 @@ one terminal event, whatever ends it (done, failure, abort, local timeout, episo
 controller exception); a stopped robot refuses every new job.
 
 Inputs (and nothing else): the robot's own ``robot_cam`` observations (JPEG + own issued
-PWM), its own issued commands, the static tagged map, fixed calibrations (camera, motion,
+PWM), its own issued commands, the static map, fixed calibrations (camera, motion,
 own body), static layout keep-outs and the scenario order sheet (kind, count, destination
 zone, coarse pickup-bay slot; never a coordinate). No simulator import, no world handle,
 no peer handle: the physics owner (``harness.zone_own_team_host.OwnCamTeamHost``) feeds
@@ -40,6 +40,8 @@ source that is not own-camera is refused. ``mode='diagnostic'`` never counts as 
 """
 from __future__ import annotations
 
+from harness.owncam_time import accepted_fix_checks
+
 import copy
 import math
 from collections.abc import Callable, Mapping, Sequence
@@ -51,6 +53,7 @@ from harness import m1_contract, m1_owncam_contract
 from harness import zone_own_guards as guards
 from harness.owncam_drive import CARRY_POSTURE, LOOK_P20, SETTLE_S, WIDE_LOOK_PANS
 from harness.owncam_pose_source import OwnCamPoseSource, PoseReport
+from harness.pose_provider import PoseProvider, is_own_pose_provider
 from harness.zone_own_contract import (API_TO_ACTION_KIND, EVENT_TO_TRIGGER, EVENTS, PICKUP_VIEW_X_M,  # noqa: F401
                                        ExecutorContractError, action_record, finite_number, lane_viewpoints,
                                        pickup_slot_of, pickup_slots, pose_report_fresh, scheduler_trigger, validate_order_sheet,
@@ -95,7 +98,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
 
     def __init__(self, robot_id: str, static_map: Mapping, params: Mapping, order_sheet: Mapping, *,
                  skill_factory: Callable[..., Any], pose_estimate_cls, search_rows_y: Sequence[float],
-                 mode: str = 'm1', seed: int = 0, pose_source: OwnCamPoseSource | None = None,
+                 mode: str = 'm1', seed: int = 0, pose_source: PoseProvider | None = None,
                  job_sim_limit_s: float = DEFAULT_JOB_SIM_LIMIT_S, judgments: bool = True,
                  static_keepouts: Sequence[Mapping] = ()):
         m1_contract.check_mode(mode)
@@ -123,8 +126,8 @@ class ZoneOwnExecutor(OwnStatusMixin):
             pose_source = OwnCamPoseSource(self.map, self.params, seed=self.seed)
         elif mode == 'm1':
             self._require_owncam(getattr(pose_source, 'source', None), 'injected pose source')
-            if not isinstance(pose_source, OwnCamPoseSource):
-                raise ExecutorContractError('M1 mode takes only the own-camera OwnCamPoseSource')
+            if not is_own_pose_provider(pose_source):
+                raise ExecutorContractError('M1 mode takes only a registered own-camera pose provider')
         if mode == 'm1':
             self._require_owncam(pose_source.source, 'pose source')
         self.pose = pose_source
@@ -612,11 +615,14 @@ class ZoneOwnExecutor(OwnStatusMixin):
             return decision
         rep = self.pose.report(now)
         level = uncertainty_level(rep)
-        tag_in_sweep = rep.since_tag_s is not None and rep.since_tag_s <= now - job.started_at
-        if self.gate.allows(rep.initialized, rep.std_xy_m, rep.std_yaw_rad) and tag_in_sweep:
+        fix_checks = accepted_fix_checks(rep, now,
+                                         job.started_at, strict_start=False)
+        fix_in_sweep = all(fix_checks.values())
+        if self.gate.allows(rep.initialized, rep.std_xy_m, rep.std_yaw_rad) and fix_in_sweep:
             self._finish(now, 'own_camera_confirmed', 'LOOKED', level=level, std_xy_m=round(rep.std_xy_m, 4))
         else:
-            self._finish(now, 'unconfirmed', 'LOOKED_POSE_UNCERTAIN', level=level, gate=self.gate.state)
+            self._finish(now, 'unconfirmed', 'LOOKED_POSE_UNCERTAIN', level=level, gate=self.gate.state,
+                         failed_checks=[k for k, v in fix_checks.items() if not v])
         return {'mode': 'tick', 'commands': []}
 
     def _tick_sweep(self, now, job):

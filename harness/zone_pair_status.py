@@ -9,7 +9,7 @@ from collections.abc import Mapping
 import math
 import re
 
-PROFILE = 'zone_pair_status_v4'
+PROFILE = 'zone_pair_status_v5'
 MAX_SEGMENTS = 8
 CONTROL_S = .1
 ARM_S = .05
@@ -20,7 +20,7 @@ EPS = 1e-8
 FIELDS = frozenset(('robot_id', 'task_id', 'seq', 'state', 'sent_at_s',
                     'observed_at_s', 'frame_id', 'ready_until_s'))
 EVIDENCE = ('observed_at_s', 'frame_id', 'ready_until_s')
-BARRIERS = ('approach', 'lift', 'carry', 'lower', 'open')
+BARRIERS = ('approach', 'close', 'lift', 'carry', 'lower', 'open')
 STATES = frozenset(('available', 'busy', 'uncertain', 'stopped', 'occupied', 'incompatible', 'invalid_image',
                     'start_ready', 'aligning', 'not_ready', 'ready', 'lift', 'carry',
                     'put_down', 'done', 'abort') + tuple(
@@ -84,7 +84,7 @@ class PairStatusChannel:
             if state == 'not_ready':
                 state = 'aligning'
             if state and ('_ready_' in state or '_go_' in state):
-                state = {'approach': 'aligning', 'lift': 'ready', 'carry': 'lift',
+                state = {'approach': 'aligning', 'close': 'aligning', 'lift': 'ready', 'carry': 'lift',
                          'lower': 'carry', 'open': 'put_down'}[state.split('_')[0]]
             age = None if msg is None else now - msg['sent_at_s']
             out[rid] = {'state': state, 'age_s': age,

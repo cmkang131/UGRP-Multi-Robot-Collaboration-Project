@@ -51,7 +51,8 @@ class OwnCamTeamHost:
     FRAME_S = .2
     GT_S = .05
 
-    def __init__(self, spec: Mapping, student: Mapping, *, root, study_layer: Callable, frames_dir=None, scene=None):
+    def __init__(self, spec: Mapping, student: Mapping, *, root, study_layer: Callable, frames_dir=None, scene=None,
+                 pose_factory=None):
         import importlib
         import json
         from pathlib import Path
@@ -60,7 +61,6 @@ class OwnCamTeamHost:
         from sim.multi_masterpi_production import MultiMasterPiProductionV2
         from sim.zone_arena import LAYOUTS
         from sim.zone_cargo_contact import CARGO_PROFILES, apply as apply_cargo_profile, base_profile, profile_record
-        from sim.zone_landmarks import TaggedZoneScene
 
         self.spec, self.student, self.root = dict(spec), dict(student), Path(root)
         if spec.get('pair_order_sheets'):
@@ -71,28 +71,8 @@ class OwnCamTeamHost:
             if frames_dir is None:
                 raise ValueError('M2 requires frames_dir to preserve every own-camera input')
         profile = spec['contact_profile']
-        if scene is not None:
-            from sim.zone_tagged_cargo_scene import TaggedCargoZoneScene
-            if (not isinstance(scene, TaggedCargoZoneScene)
-                    or scene.selection != 'zones/' + spec['map']
-                    or scene.scene['seed'] != spec['seed']
-                    or scene.scene['contact_profile'] != base_profile(profile)
-                    or scene.config['cargo_set']['items'] != list(spec.get('team_cargo', []))):
-                raise ValueError('injected standard cargo scene differs from host spec')
-            self.scene = scene
-        elif spec.get('team_cargo'):
-            from sim.zone_tagged_cargo_scene import TaggedCargoZoneScene
-            from sim.zone_start_dock import MAP_ID
-            scene_cls = TaggedCargoZoneScene
-            if spec['map'] == MAP_ID:
-                from sim.zone_dock_scene import DockTaggedCargoZoneScene
-                scene_cls = DockTaggedCargoZoneScene
-            self.scene = scene_cls.from_tagged_cargo(
-                spec['map'], spec['seed'], cargo=spec['team_cargo'], goal=spec['goal'],
-                contact_profile=base_profile(profile))
-        else:
-            self.scene = TaggedZoneScene.from_tagged(spec['map'], spec['seed'], spec['goal'], spec.get('extra_boxes'),
-                                                     contact_profile=base_profile(profile))
+        from sim.zone_own_scene_provider import own_scene
+        self.scene = own_scene(spec, profile, scene)
         xml_transform = ((lambda xml: apply_cargo_profile(self.scene.transform(xml), profile))
                          if profile in CARGO_PROFILES else self.scene.transform)
         self.world = MultiMasterPiProductionV2(seed=spec['seed'], width=640, height=480, render=True,
@@ -143,10 +123,13 @@ class OwnCamTeamHost:
                 return skill_cls(order, planner=_planner, robot_id=robot_id, mode='m1', static_keepouts=_keepouts,
                                  static_bounds_m=list(_bounds))
 
+            pose = None if pose_factory is None else pose_factory(rid, own_static, calibration['params'], spec['seed'])
+            if pose_factory is not None and pose is None:
+                raise ValueError('pose_factory must return the selected provider')
             ex = ZoneOwnExecutor(rid, own_static, calibration['params'], self.order_sheet, skill_factory=factory,
                                  pose_estimate_cls=PoseEstimate, search_rows_y=rows_y, mode=student.get('mode', 'm1'),
                                  seed=spec['seed'], job_sim_limit_s=spec.get('job_sim_limit_s', DEFAULT_JOB_SIM_LIMIT_S),
-                                 static_keepouts=copy.deepcopy(discs))
+                                 static_keepouts=copy.deepcopy(discs), pose_source=pose)
             ex_ref['ex'] = ex
             self.robots[rid] = _RobotSlot(rid, port, ex)
         self.study_layer = study_layer
@@ -234,12 +217,15 @@ class OwnCamTeamHost:
         slot.executor.on_command(row)
 
     def _apply(self, rid, action, now):
-        row = {'t': round(float(now), 4), **action}
+        # This row is a control input, not just a display log. Use the same raw
+        # SIM clock as captures, holds and relook starts (including downstream
+        # motion/settling deadlines and monotonic command integrators).
+        row = {**action, 't': float(now)}
         self._sink(rid, row)
         self.robots[rid].port.apply(action, now)
 
     def _hold(self, rid, now):
-        self._sink(rid, {'t': round(float(now), 4), 'kind': 'hold'})
+        self._sink(rid, {'t': float(now), 'kind': 'hold'})
         self.robots[rid].port.hold(now)
 
     def _drop_scheduled(self, rid, now, why):

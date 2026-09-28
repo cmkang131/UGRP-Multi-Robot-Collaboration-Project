@@ -67,9 +67,17 @@ def test_p1_1_entry_dwell_interrupts_backoff():
 
 
 def deliver_at(values, *, servo=SEARCH_POSE):
+    # Keep the behavioral counterexample inside a registered own-camera provider;
+    # its estimate alone is scripted test data, never an allowed runtime source.
+    from harness.owncam_pose_source import OwnCamPoseSource
+    fixture = ScriptedPose(lambda t: values)
+    pose = OwnCamPoseSource(MAP, CALIB['params'])
+    pose.loc = fixture.loc
+    pose.report, pose.on_frame = fixture.report, fixture.on_frame
+    pose.set_motion_profile = fixture.set_motion_profile
     return _DeliverController(v3_like(MAP), CALIB['params'], box_kind='cyan', slot_id='A1', slot_xy=(3., 0.),
                               skill_factory=lambda order: None, pose_estimate_cls=tuple, search_rows_y=(),
-                              shared_pose=ScriptedPose(lambda t: values), servo=servo,
+                              shared_pose=pose, servo=servo,
                               slot_rect=((-1., 2.), (-2., 1.)), gate=ready_gate(False),
                               guard=guards.SweepGuard(v3_like(MAP)))
 

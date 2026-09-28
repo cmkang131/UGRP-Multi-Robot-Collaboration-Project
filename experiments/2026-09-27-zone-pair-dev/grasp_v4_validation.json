@@ -1,0 +1,187 @@
+{
+  "schema": "ugrp.zone_pair_grasp_implementation.v1",
+  "date": "2026-09-27",
+  "labels": [
+    "tags_temporary",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "scope": "Implementation and fake-world/saved-RGB regression only; no new physical experiment",
+  "source_head": "07953a2fbc329284c2a10d1fb98b67275bfffcfa",
+  "branch": "codex/zone-pair-grasp-relook",
+  "committed": false,
+  "coordinator_decision": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5853660231",
+  "changed_files_sha256": {
+    "configs/simulation_workflows.json": "55f67d968f0ad889dd9dd380a09d0eca5e4c285b6ad67e7e099ef78dd1839842",
+    "experiments/2026-09-27-zone-pair-dev/grasp_v4.md": "bf143a889ce68364588cf0321b9cf6477617d6f8be419cdbb8b905a214af4dfc",
+    "experiments/2026-09-27-zone-pair-dev/grasp_v4_ref_inventory.json": "0d3299b377368b830d311bcc5fca1239159172f9e293e1fc7f4e0cb5d23b9707",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v4.json": "c4c0f167cda9ffd488a93fdf568616b91b6c06452571b0961ea14765436d4f60",
+    "harness/zone_pair_executor.py": "4d8d12705066af106b9f1c5221164e44b6106383e73f5b4c8b284273f33e9e6e",
+    "harness/zone_pair_grasp.py": "a4fe0847b1d8fef3a09fc51dffb4e46929ce124e41fc189251b7073e32f7390d",
+    "harness/zone_pair_guards.py": "f996661d5fc6e9c4ec5915d43edc5ac8524d11d367f52dec835d76297d4994ee",
+    "harness/zone_pair_status.py": "bdacc2369212bdd8810d2f91498e971af572e1ef037a34baf76828a2702b1926",
+    "scripts/evaluate_zone_pair_dev.py": "679bf4c48fbb57317d1df697694738ae4393bf7cecfa080192593379cdc9b03d",
+    "scripts/run_zone_pair_dev.py": "2c40aaf99149ef250abb1bec879453576f70e0da09e5ca825e320cc8041afc18",
+    "scripts/zone_pair_grasp_contract.py": "2dfc0756ad642744dfa1b1f97e5a01105e3624533f4d588dbad17c3501642cea",
+    "tests/test_zone_pair_dev.py": "7ddface56504c97dceca79455e08e31c76963e8dba58f12e095b238a72891e82",
+    "tests/test_zone_pair_grasp.py": "7cc8b663fe1cef5c70b88f152acbcf06e5e90e51c48c884fc48b468ff4e190f1",
+    "tests/test_zone_pair_review4.py": "1a64e24309d42812e49fec23da941cb3a18762179b86aeff59be213953f3e52c",
+    "tests/test_zone_pair_status.py": "6e39c94da07b30bff6f3289943f5267752ba1e37ffbde33a692d6678542722ca",
+    "tests/test_zone_start_dock.py": "b153f9f115c1f507308316dab9ef41e05ecd82205b7bb2004d9e0d33ea511851"
+  },
+  "receipt_self_hash_excluded": true,
+  "versions": {
+    "executor": "zone_pair_executor_v5_dev",
+    "status": "zone_pair_status_v5",
+    "grasp": "zone_pair_grasp_relook_v1",
+    "workflow": "zone-pair-dev@0.3.0",
+    "rgb_bundle_id": null,
+    "grasp_contract_sha256": "1b7cec431b60bf9f701d3e38ab20ba486c2ad1d25c236b68a3e0454726fd2d7f"
+  },
+  "rgb_bundle_decision": {
+    "closure_count": 173,
+    "changed_intersection": [],
+    "new_bundle_needed": false,
+    "reserved_by_user": "PR #229 v64; never reuse",
+    "refs_file": "grasp_v4_ref_inventory.json"
+  },
+  "prereg": {
+    "path": "prereg_v4.json",
+    "sha256": "c4c0f167cda9ffd488a93fdf568616b91b6c06452571b0961ea14765436d4f60",
+    "runs": [
+      [
+        "dev07",
+        903
+      ],
+      [
+        "dev08",
+        904
+      ]
+    ],
+    "unchanged_v3_fields": [
+      "criteria",
+      "stage_rules",
+      "planned_setdown",
+      "limits",
+      "timing",
+      "safety_coverage",
+      "environment",
+      "inputs"
+    ],
+    "owner": "claude",
+    "state": "not_run"
+  },
+  "final_tests": {
+    "pytest_args": [
+      "-q",
+      "tests/test_zone_own_executor.py",
+      "tests/test_zone_own_executor_boundaries.py",
+      "tests/test_zone_own_executor_guards.py",
+      "tests/test_zone_own_executor_host.py",
+      "tests/test_zone_own_executor_review3.py",
+      "tests/test_zone_own_executor_review4.py",
+      "tests/test_zone_own_executor_review5.py",
+      "tests/test_zone_own_executor_sweep_start.py",
+      "tests/test_zone_pair_admission.py",
+      "tests/test_zone_pair_dev.py",
+      "tests/test_zone_pair_executor.py",
+      "tests/test_zone_pair_grasp.py",
+      "tests/test_zone_pair_review.py",
+      "tests/test_zone_pair_review2.py",
+      "tests/test_zone_pair_review3.py",
+      "tests/test_zone_pair_review4.py",
+      "tests/test_zone_pair_review5.py",
+      "tests/test_zone_pair_review6.py",
+      "tests/test_zone_pair_review7.py",
+      "tests/test_zone_pair_status.py",
+      "tests/test_zone_start_dock.py",
+      "tests/test_simulation_workflow_manager.py",
+      "-k",
+      "not test_team_host_isolation_abort_and_horizon_on_the_real_world and not test_parent_exit_cleans_background_child",
+      "--basetemp=./.pytest_tmp",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "results": {
+      "deselected": 2,
+      "passed": 581
+    },
+    "elapsed_s": 27.34414712502621,
+    "exit_code": 0,
+    "physical_step_attempts": 0,
+    "physical_steps_executed": 0,
+    "model_calls": 0,
+    "pytest_tmp_removed": true,
+    "env": {
+      "OMP_NUM_THREADS": "1",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    }
+  },
+  "earlier_test_runs": [
+    {
+      "result": "18 passed",
+      "scope": "initial grasp regressions; MuJoCo/torch/tensorflow imports blocked"
+    },
+    {
+      "result": "380 passed",
+      "scope": "pair and dock regressions; physical step attempts 0"
+    },
+    {
+      "result": "304 passed, 1 blocked failure, interrupted",
+      "scope": "broad selection accidentally included real-world test; mj_step tripwire raised before stepping; then selection corrected",
+      "physical_step_attempts_blocked": 1,
+      "physical_steps_executed": 0
+    },
+    {
+      "result": "569 passed, 10 failed, 2 deselected",
+      "scope": "new checkpoint test chose initial segment instead of checkpoint segment; corrected test fixture selection",
+      "physical_step_attempts": 0
+    },
+    {
+      "result": "36 passed",
+      "scope": "final grasp-only regressions including host close dispatch; MuJoCo/torch/tensorflow imports blocked"
+    }
+  ],
+  "checks": {
+    "git_diff_check": "passed",
+    "python_ast": "passed",
+    "old_experiment_files": 19,
+    "original_hashes": {
+      "experiments/2026-09-27-zone-pair-dev/README.md": "fe2b662df72939b60775e32838ae40cac9632c529bdd68534adc96b17e35bf08",
+      "experiments/2026-09-27-zone-pair-dev/dev_review2_fixes.md": "4152fe36297eae2e99ea5ac982beaf5e74fb5e2e326d85a965a0527d345045c6",
+      "experiments/2026-09-27-zone-pair-dev/dev_review_fixes.md": "2bac91614aef796c22d66aa435ee76445866e329024fdf1e082d424103478be7",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v3.json": "db565a1c76008c7dbade041a69167d9ea1e178e5f70c897f18f7c2efddea8514",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v3.md": "64fb15e7bf6c5d2da342381fb2b31a84bddb60273a2cdbd98084ed537c28ba7e",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v4.json": "48ab4218641b535633ab31e4aeefd92f3eef3b09c8d12655728b082bd5ab6b78",
+      "experiments/2026-09-27-zone-pair-dev/diagnosis_v4.md": "fef3250c42273fbbeff22c14e947ffc1126a4727bf114f355d5053e56b954126",
+      "experiments/2026-09-27-zone-pair-dev/dock_v3.md": "2e826d77704ff0b2fafff155cdf7b2b5b7cf803929454c7695a197f8703207d8",
+      "experiments/2026-09-27-zone-pair-dev/dock_v3_ref_inventory.json": "2884a3f07546d09f0b2b461022584f5492a24bb422cbdb733aa14cca0bf963e4",
+      "experiments/2026-09-27-zone-pair-dev/dock_v3_validation.json": "66430ac29bf1ffd5c0cb930e4f7b2158d87bd245d48ec4a3f1b694dd30ee561e",
+      "experiments/2026-09-27-zone-pair-dev/implementation_record.md": "061cca1a22557d885aa6931f0a3b36169f190cb6b2b656c494d3ffd167ff0b42",
+      "experiments/2026-09-27-zone-pair-dev/implementation_validation.json": "6e4c93874473c53c23a1b04e297ae80e7676de90e567e6cedbea04b191e7ea4f",
+      "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json": "85334a68bae0d35c197c612cd610c84307c0eba268a34247e71f4e233a0fe0f3",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json": "896091d17022d569dfb34123587712395bf9870d065ce2b438d38acedee9108b",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v2_fixes.md": "06d06cf47a608b18a78b9cb44ed7ab578e0159de5ba7c77b1bbde4561b41d6f5",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v3.json": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e",
+      "experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json": "34ab87dc51467226221ca8c991e960bc0715a9bad9c67764b98b99049e9683c4",
+      "experiments/2026-09-27-zone-pair-dev/results.md": "e04acc55c118a5e18b182dae95c73b1543b85e544ba989a8821b002c199ba7b6",
+      "experiments/2026-09-27-zone-pair-dev/tensorboard_overview_check.json": "a94831c041529cbf0ba888998cbea919ce57902a489132f544b97755feb8b229"
+    },
+    "frozen_import_files": 32,
+    "frozen_import_hashes_match": true,
+    "required_sparse_files_missing": [],
+    "pytest_tmp_exists": false,
+    "physical_steps_executed": 0,
+    "model_calls": 0,
+    "post_test_prereg_metadata_validation": "denominator and command-doc reference clarified; both final v4 configs revalidated without execution"
+  },
+  "limits": [
+    "Fresh cohort dev07/dev08 not executed",
+    "No physical grasp/transport success claimed",
+    "Saved RGB and synthetic pose/tag fixtures do not establish localization accuracy or grip-view specificity",
+    "No new TensorBoard snapshot: code regression only",
+    "git fetch denied shared Git-directory write; gh network failed; connector issue/PR read succeeded",
+    "No commit, push, PR mutation or merge performed"
+  ],
+  "changed_file_count_including_this_receipt": 17
+}
