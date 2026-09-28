@@ -126,3 +126,10 @@ RGB로 지속 미끄러짐이 보이면 내려놓고 한 번 재파지하며, �
 - base 지도 파일은 바꾸지 않는다. 태그 지도는 base의 `static_map_sha256`을 기록한다.
 - 태그는 벽면에 붙인 시각 전용 geom이며 물리는 같다. 화물과 로봇에는 태그를 붙이지 않는다.
 - 배치 파라미터와 새 버전을 만드는 방법은 [자기 카메라 위치 추정](../docs/zone_owncam_localization.md)을 따른다.
+
+## 최종 환경 지도: walls_v3, 표식 0개 (2026-09-28, #218)
+
+본연구 최종 환경의 지도다. 모든 벽이 0.40 m(`walls_v3`)이고 표식 필드가 없다. 시나리오 v2(`configs/zone_study_scenarios_v2/`)가 이 지도를 고정한다.
+- 문 1개: 기존 `zones/zone_wide_door_geometry_v2.json`을 그대로 재사용한다.
+- 문 2개·복도: 같은 규칙으로 만든 `zones_final/zone_wide_two_doors_final_v1.json`, `zones_final/zone_wide_corridor_final_v1.json`.
+- 해시와 v1→v2 변경 경로는 [catalog.json](zones_final/catalog.json)에 있다. 생성·검사는 `python -m harness.zone_final_env [--write]`로 하며 기존 파일은 덮어쓰지 않는다. 재고와 검증 범위는 [실험 기록](../experiments/2026-09-28-final-map-scenario-v2/README.md)을 따른다.
