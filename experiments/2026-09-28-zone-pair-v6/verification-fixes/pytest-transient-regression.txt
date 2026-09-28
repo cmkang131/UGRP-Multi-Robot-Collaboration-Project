@@ -1,0 +1,287 @@
+.............................F.....FFFFFFF.............................. [ 19%]
+...
+=================================== FAILURES ===================================
+_______ test_three_scheduled_align_relooks_each_get_their_own_allowance ________
+
+    def test_three_scheduled_align_relooks_each_get_their_own_allowance():
+        s = Scenario(state='align', beam_grip=.40, **REALISTIC)
+        guard = s.ep.command_guard
+        original = guard.global_certificate
+        triggers = []
+    
+        def forced(now, beam=None):
+            cert = original(now, beam)
+            # Force the reserve on the first align tick after each (re)entry.
+            if s.ctl.state == 'align' and beam is None and (now in triggers or len(triggers) < 3):
+                if now not in triggers:
+                    triggers.append(now)
+                cert = {**cert, 'clear': True, 'relook_reserve_low': True}
+            return cert
+        guard.global_certificate = forced
+>       s.run_until(lambda: s.ctl.state == 'pregrasp_descend', limit=90.)
+
+tests/test_zone_pair_v6_final_review.py:30: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_zone_pair_v6_review2.py:127: in run_until
+    self.tick(round(i*.05,6))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.test_zone_pair_v6_review2.Scenario object at 0x108660d10>
+now = 56.7
+
+    def tick(self, now):
+        self.capture(now)
+        result = self.ep.step(now)
+        assert result['mode'] == 'tick'
+        self.issue(result['commands'],now)
+        self.issue(self.ep.arm_step(now),now)
+        self.trace.append((now,self.ctl.state,self.ctl.driver.state,self.ep.command_guard.global_envelope.fix_t))
+>       assert not self.ep.terminal, (self.trace[-8:],self.own.jobs_done[-1:],self.ep.events[-8:])
+E       AssertionError: ([(56.35, 'align', 'drive', 26.65), (56.4, 'align', 'drive', 26.65), (56.45, 'align', 'drive', 26.65), (56.5, 'align',...': {'clear': True, 'reason': 'clear', 'clearance_m': 1.2040377545831498, 'wall_id': 'wall_divider_1', ...}, ...}, ...])
+E       assert not True
+E        +  where True = <harness.zone_pair_executor.PairExecution object at 0x1086131a0>.terminal
+E        +    where <harness.zone_pair_executor.PairExecution object at 0x1086131a0> = <tests.test_zone_pair_v6_review2.Scenario object at 0x108660d10>.ep
+
+tests/test_zone_pair_v6_review2.py:123: AssertionError
+___________ test_anchor_dropped_when_beam_moves_beyond_command_reach ___________
+
+    def test_anchor_dropped_when_beam_moves_beyond_command_reach():
+>       s, guard = _anchored()
+                   ^^^^^^^^^^^
+
+tests/test_zone_pair_v6_final_review.py:115: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_zone_pair_v6_final_review.py:98: in _anchored
+    s.run_until(lambda: s.ctl.state == 'pregrasp_descend', limit=60.)
+tests/test_zone_pair_v6_review2.py:127: in run_until
+    self.tick(round(i*.05,6))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.test_zone_pair_v6_review2.Scenario object at 0x108660b30>
+now = 30.1
+
+    def tick(self, now):
+        self.capture(now)
+        result = self.ep.step(now)
+        assert result['mode'] == 'tick'
+        self.issue(result['commands'],now)
+        self.issue(self.ep.arm_step(now),now)
+        self.trace.append((now,self.ctl.state,self.ctl.driver.state,self.ep.command_guard.global_envelope.fix_t))
+>       assert not self.ep.terminal, (self.trace[-8:],self.own.jobs_done[-1:],self.ep.events[-8:])
+E       AssertionError: ([(29.75, 'align', 'drive', 0.0), (29.8, 'align', 'drive', 0.0), (29.85, 'align', 'drive', 0.0), (29.9, 'align', 'driv...wall_divider_1', ...}, ...}, {'robot_id': 'r1', 'event': 'scheduled_reobserve', 'sim_s': 30.05, 'index': 1, ...}, ...])
+E       assert not True
+E        +  where True = <harness.zone_pair_executor.PairExecution object at 0x1086c6e70>.terminal
+E        +    where <harness.zone_pair_executor.PairExecution object at 0x1086c6e70> = <tests.test_zone_pair_v6_review2.Scenario object at 0x108660b30>.ep
+
+tests/test_zone_pair_v6_review2.py:123: AssertionError
+____________ test_anchor_accepts_beam_consistent_with_own_commands _____________
+
+    def test_anchor_accepts_beam_consistent_with_own_commands():
+>       s, guard = _anchored()
+                   ^^^^^^^^^^^
+
+tests/test_zone_pair_v6_final_review.py:127: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_zone_pair_v6_final_review.py:98: in _anchored
+    s.run_until(lambda: s.ctl.state == 'pregrasp_descend', limit=60.)
+tests/test_zone_pair_v6_review2.py:127: in run_until
+    self.tick(round(i*.05,6))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.test_zone_pair_v6_review2.Scenario object at 0x113a25d30>
+now = 30.1
+
+    def tick(self, now):
+        self.capture(now)
+        result = self.ep.step(now)
+        assert result['mode'] == 'tick'
+        self.issue(result['commands'],now)
+        self.issue(self.ep.arm_step(now),now)
+        self.trace.append((now,self.ctl.state,self.ctl.driver.state,self.ep.command_guard.global_envelope.fix_t))
+>       assert not self.ep.terminal, (self.trace[-8:],self.own.jobs_done[-1:],self.ep.events[-8:])
+E       AssertionError: ([(29.75, 'align', 'drive', 0.0), (29.8, 'align', 'drive', 0.0), (29.85, 'align', 'drive', 0.0), (29.9, 'align', 'driv...wall_divider_1', ...}, ...}, {'robot_id': 'r1', 'event': 'scheduled_reobserve', 'sim_s': 30.05, 'index': 1, ...}, ...])
+E       assert not True
+E        +  where True = <harness.zone_pair_executor.PairExecution object at 0x11394f7d0>.terminal
+E        +    where <harness.zone_pair_executor.PairExecution object at 0x11394f7d0> = <tests.test_zone_pair_v6_review2.Scenario object at 0x113a25d30>.ep
+
+tests/test_zone_pair_v6_review2.py:123: AssertionError
+_________ test_anchor_dropped_when_global_and_anchored_bounds_disagree _________
+
+    def test_anchor_dropped_when_global_and_anchored_bounds_disagree():
+>       s, guard = _anchored()
+                   ^^^^^^^^^^^
+
+tests/test_zone_pair_v6_final_review.py:132: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_zone_pair_v6_final_review.py:98: in _anchored
+    s.run_until(lambda: s.ctl.state == 'pregrasp_descend', limit=60.)
+tests/test_zone_pair_v6_review2.py:127: in run_until
+    self.tick(round(i*.05,6))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.test_zone_pair_v6_review2.Scenario object at 0x113f277a0>
+now = 30.1
+
+    def tick(self, now):
+        self.capture(now)
+        result = self.ep.step(now)
+        assert result['mode'] == 'tick'
+        self.issue(result['commands'],now)
+        self.issue(self.ep.arm_step(now),now)
+        self.trace.append((now,self.ctl.state,self.ctl.driver.state,self.ep.command_guard.global_envelope.fix_t))
+>       assert not self.ep.terminal, (self.trace[-8:],self.own.jobs_done[-1:],self.ep.events[-8:])
+E       AssertionError: ([(29.75, 'align', 'drive', 0.0), (29.8, 'align', 'drive', 0.0), (29.85, 'align', 'drive', 0.0), (29.9, 'align', 'driv...wall_divider_1', ...}, ...}, {'robot_id': 'r1', 'event': 'scheduled_reobserve', 'sim_s': 30.05, 'index': 1, ...}, ...])
+E       assert not True
+E        +  where True = <harness.zone_pair_executor.PairExecution object at 0x113e42960>.terminal
+E        +    where <harness.zone_pair_executor.PairExecution object at 0x113e42960> = <tests.test_zone_pair_v6_review2.Scenario object at 0x113f277a0>.ep
+
+tests/test_zone_pair_v6_review2.py:123: AssertionError
+__ test_anchor_dropped_and_not_recreated_while_partner_grasps[close_ready_0] ___
+
+state = 'close_ready_0'
+
+    @pytest.mark.parametrize('state', ['close_ready_0', 'close_go_0', 'ready', 'lift'])
+    def test_anchor_dropped_and_not_recreated_while_partner_grasps(state):
+>       s, guard = _anchored()
+                   ^^^^^^^^^^^
+
+tests/test_zone_pair_v6_final_review.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_zone_pair_v6_final_review.py:98: in _anchored
+    s.run_until(lambda: s.ctl.state == 'pregrasp_descend', limit=60.)
+tests/test_zone_pair_v6_review2.py:127: in run_until
+    self.tick(round(i*.05,6))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.test_zone_pair_v6_review2.Scenario object at 0x1139adee0>
+now = 30.1
+
+    def tick(self, now):
+        self.capture(now)
+        result = self.ep.step(now)
+        assert result['mode'] == 'tick'
+        self.issue(result['commands'],now)
+        self.issue(self.ep.arm_step(now),now)
+        self.trace.append((now,self.ctl.state,self.ctl.driver.state,self.ep.command_guard.global_envelope.fix_t))
+>       assert not self.ep.terminal, (self.trace[-8:],self.own.jobs_done[-1:],self.ep.events[-8:])
+E       AssertionError: ([(29.75, 'align', 'drive', 0.0), (29.8, 'align', 'drive', 0.0), (29.85, 'align', 'drive', 0.0), (29.9, 'align', 'driv...wall_divider_1', ...}, ...}, {'robot_id': 'r1', 'event': 'scheduled_reobserve', 'sim_s': 30.05, 'index': 1, ...}, ...])
+E       assert not True
+E        +  where True = <harness.zone_pair_executor.PairExecution object at 0x113a14a10>.terminal
+E        +    where <harness.zone_pair_executor.PairExecution object at 0x113a14a10> = <tests.test_zone_pair_v6_review2.Scenario object at 0x1139adee0>.ep
+
+tests/test_zone_pair_v6_review2.py:123: AssertionError
+____ test_anchor_dropped_and_not_recreated_while_partner_grasps[close_go_0] ____
+
+state = 'close_go_0'
+
+    @pytest.mark.parametrize('state', ['close_ready_0', 'close_go_0', 'ready', 'lift'])
+    def test_anchor_dropped_and_not_recreated_while_partner_grasps(state):
+>       s, guard = _anchored()
+                   ^^^^^^^^^^^
+
+tests/test_zone_pair_v6_final_review.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_zone_pair_v6_final_review.py:98: in _anchored
+    s.run_until(lambda: s.ctl.state == 'pregrasp_descend', limit=60.)
+tests/test_zone_pair_v6_review2.py:127: in run_until
+    self.tick(round(i*.05,6))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.test_zone_pair_v6_review2.Scenario object at 0x113a24f80>
+now = 30.1
+
+    def tick(self, now):
+        self.capture(now)
+        result = self.ep.step(now)
+        assert result['mode'] == 'tick'
+        self.issue(result['commands'],now)
+        self.issue(self.ep.arm_step(now),now)
+        self.trace.append((now,self.ctl.state,self.ctl.driver.state,self.ep.command_guard.global_envelope.fix_t))
+>       assert not self.ep.terminal, (self.trace[-8:],self.own.jobs_done[-1:],self.ep.events[-8:])
+E       AssertionError: ([(29.75, 'align', 'drive', 0.0), (29.8, 'align', 'drive', 0.0), (29.85, 'align', 'drive', 0.0), (29.9, 'align', 'driv...wall_divider_1', ...}, ...}, {'robot_id': 'r1', 'event': 'scheduled_reobserve', 'sim_s': 30.05, 'index': 1, ...}, ...])
+E       assert not True
+E        +  where True = <harness.zone_pair_executor.PairExecution object at 0x113a25220>.terminal
+E        +    where <harness.zone_pair_executor.PairExecution object at 0x113a25220> = <tests.test_zone_pair_v6_review2.Scenario object at 0x113a24f80>.ep
+
+tests/test_zone_pair_v6_review2.py:123: AssertionError
+______ test_anchor_dropped_and_not_recreated_while_partner_grasps[ready] _______
+
+state = 'ready'
+
+    @pytest.mark.parametrize('state', ['close_ready_0', 'close_go_0', 'ready', 'lift'])
+    def test_anchor_dropped_and_not_recreated_while_partner_grasps(state):
+>       s, guard = _anchored()
+                   ^^^^^^^^^^^
+
+tests/test_zone_pair_v6_final_review.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_zone_pair_v6_final_review.py:98: in _anchored
+    s.run_until(lambda: s.ctl.state == 'pregrasp_descend', limit=60.)
+tests/test_zone_pair_v6_review2.py:127: in run_until
+    self.tick(round(i*.05,6))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.test_zone_pair_v6_review2.Scenario object at 0x113ac0ad0>
+now = 30.1
+
+    def tick(self, now):
+        self.capture(now)
+        result = self.ep.step(now)
+        assert result['mode'] == 'tick'
+        self.issue(result['commands'],now)
+        self.issue(self.ep.arm_step(now),now)
+        self.trace.append((now,self.ctl.state,self.ctl.driver.state,self.ep.command_guard.global_envelope.fix_t))
+>       assert not self.ep.terminal, (self.trace[-8:],self.own.jobs_done[-1:],self.ep.events[-8:])
+E       AssertionError: ([(29.75, 'align', 'drive', 0.0), (29.8, 'align', 'drive', 0.0), (29.85, 'align', 'drive', 0.0), (29.9, 'align', 'driv...wall_divider_1', ...}, ...}, {'robot_id': 'r1', 'event': 'scheduled_reobserve', 'sim_s': 30.05, 'index': 1, ...}, ...])
+E       assert not True
+E        +  where True = <harness.zone_pair_executor.PairExecution object at 0x1139aea80>.terminal
+E        +    where <harness.zone_pair_executor.PairExecution object at 0x1139aea80> = <tests.test_zone_pair_v6_review2.Scenario object at 0x113ac0ad0>.ep
+
+tests/test_zone_pair_v6_review2.py:123: AssertionError
+_______ test_anchor_dropped_and_not_recreated_while_partner_grasps[lift] _______
+
+state = 'lift'
+
+    @pytest.mark.parametrize('state', ['close_ready_0', 'close_go_0', 'ready', 'lift'])
+    def test_anchor_dropped_and_not_recreated_while_partner_grasps(state):
+>       s, guard = _anchored()
+                   ^^^^^^^^^^^
+
+tests/test_zone_pair_v6_final_review.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_zone_pair_v6_final_review.py:98: in _anchored
+    s.run_until(lambda: s.ctl.state == 'pregrasp_descend', limit=60.)
+tests/test_zone_pair_v6_review2.py:127: in run_until
+    self.tick(round(i*.05,6))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tests.test_zone_pair_v6_review2.Scenario object at 0x113a25fa0>
+now = 30.1
+
+    def tick(self, now):
+        self.capture(now)
+        result = self.ep.step(now)
+        assert result['mode'] == 'tick'
+        self.issue(result['commands'],now)
+        self.issue(self.ep.arm_step(now),now)
+        self.trace.append((now,self.ctl.state,self.ctl.driver.state,self.ep.command_guard.global_envelope.fix_t))
+>       assert not self.ep.terminal, (self.trace[-8:],self.own.jobs_done[-1:],self.ep.events[-8:])
+E       AssertionError: ([(29.75, 'align', 'drive', 0.0), (29.8, 'align', 'drive', 0.0), (29.85, 'align', 'drive', 0.0), (29.9, 'align', 'driv...wall_divider_1', ...}, ...}, {'robot_id': 'r1', 'event': 'scheduled_reobserve', 'sim_s': 30.05, 'index': 1, ...}, ...])
+E       assert not True
+E        +  where True = <harness.zone_pair_executor.PairExecution object at 0x108612d80>.terminal
+E        +    where <harness.zone_pair_executor.PairExecution object at 0x108612d80> = <tests.test_zone_pair_v6_review2.Scenario object at 0x113a25fa0>.ep
+
+tests/test_zone_pair_v6_review2.py:123: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_pair_v6_final_review.py::test_three_scheduled_align_relooks_each_get_their_own_allowance
+FAILED tests/test_zone_pair_v6_final_review.py::test_anchor_dropped_when_beam_moves_beyond_command_reach
+FAILED tests/test_zone_pair_v6_final_review.py::test_anchor_accepts_beam_consistent_with_own_commands
+FAILED tests/test_zone_pair_v6_final_review.py::test_anchor_dropped_when_global_and_anchored_bounds_disagree
+FAILED tests/test_zone_pair_v6_final_review.py::test_anchor_dropped_and_not_recreated_while_partner_grasps[close_ready_0]
+FAILED tests/test_zone_pair_v6_final_review.py::test_anchor_dropped_and_not_recreated_while_partner_grasps[close_go_0]
+FAILED tests/test_zone_pair_v6_final_review.py::test_anchor_dropped_and_not_recreated_while_partner_grasps[ready]
+FAILED tests/test_zone_pair_v6_final_review.py::test_anchor_dropped_and_not_recreated_while_partner_grasps[lift]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/numpy/lib/_function_base_impl.py:4798: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+8 failed, 67 passed in 230.79s (0:03:50)

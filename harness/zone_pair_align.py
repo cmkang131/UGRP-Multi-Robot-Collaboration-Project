@@ -65,17 +65,29 @@ def ranked_look_pans(static_map, report, servo, guard, provider, *, recovery_v6=
 class PairAlignRelook:
     """Adapter mixin; frozen M2 beam alignment itself is unchanged."""
 
+    def _enter_budget_phase(self, now, phase):
+        reset = getattr(self, 'reset_phase_budget', None)
+        if reset is not None:
+            reset(now, phase)
+        self.align_look_count, self.align_look_total_s = 0, 0.
+        self.pregrasp_look_started_at = None
+
+    def _cp_open(self, now, arm_idle):
+        # Stored regrasp calls _queue_grasp directly in the frozen controller;
+        # it never enters set('align'). Reset before that call in all policies,
+        # exactly once on checkpoint completion, never on its subsequent looks.
+        if arm_idle and self.regrasp == 'stored':
+            self._enter_budget_phase(now, 'stored_regrasp')
+        return super()._cp_open(now, arm_idle)
+
     def set(self, state, now, **detail):
         if state in ('approach', 'reapproach', 'align'):
             # Final review P2-2: look/HIGH budgets are per phase entry (each
             # approach and each alignment attempt, incl. regrasp), identical
             # for v5h / b-only / a+b; a resumed align (relook return) does not
             # come through here and never refills them.
-            reset = getattr(self, 'reset_phase_budget', None)
-            if reset is not None:
-                reset(now, state)
+            self._enter_budget_phase(now, state)
         if state == 'align':
-            self.align_look_count, self.align_look_total_s = 0, 0.
             self.align_started_at = now
             if getattr(getattr(self,'policy',None),'beam_relative',False):
                 return super().set(state, now, **detail)

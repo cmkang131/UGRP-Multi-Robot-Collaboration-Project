@@ -46,6 +46,7 @@ def stationary_beam_estimate(obs, servo):
 
 # Final review P2-3. Input-validity outcomes that carry no alignment verdict:
 TRANSIENT_INPUT_REASONS = frozenset(('DUPLICATE_IMAGE', 'OUT_OF_ORDER', 'STALE_OR_CAMERA_MISMATCH',
+                                     'IDENTICAL_PIXELS_NO_NEW_COMMAND',
                                      'IMAGE_PRECEDES_ISSUED_COMMAND', 'CAMERA_COMMAND_MISMATCH',
                                      'BEAM_MOVED_OR_ASSOCIATION_LOST', 'PARTIAL_INCONSISTENT_OR_BEAM_MOVED'))
 # Identity outcomes another fixed view can resolve (bounded by the posture list):

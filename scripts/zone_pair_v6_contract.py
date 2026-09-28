@@ -38,14 +38,16 @@ def contract():
         'reobserve_budgets':{'high_recovery_s':SWEEP_REOBSERVE_S,
                              'scheduled_safety_look':dict(SCHEDULED_REOBSERVE),
                              # Final review: scopes are part of the registration.
-                             'scope':('HIGH recovery and align MAX_LOOKS/MAX_TOTAL_LOOK_S reset at each '
-                                      'approach/reapproach/align entry (incl. regrasp), identical for '
-                                      'v5h/b-only/a+b; scheduled looks: per look, job total'),
+                             'scope':('HIGH 복구와 align MAX_LOOKS/MAX_TOTAL_LOOK_S는 approach/reapproach/align '
+                                      '진입 및 stored 재파지 시작 전에 초기화한다. v5h/b-only/a+b에 동일하게 적용하며 '
+                                      '같은 단계의 재시도·relook 복귀는 초기화하지 않는다. 예정 look은 회당·job 전체 예산이다.'),
                              'align_max_looks':MAX_LOOKS,'align_max_total_look_s':MAX_TOTAL_LOOK_S,
                              'approach_look_fix_confirm_s':SCHEDULED_REOBSERVE['per_look_s']},
-        'object_anchor_checks':('dropped when the global envelope and anchored bounds do not overlap '
-                                '(K_SIGMA), when the beam leaves the command-propagated reach since the '
-                                'anchor, or while the partner messages a close/hold phase'),
+        'object_anchor_checks':('전역 envelope와 앵커 상한이 K_SIGMA에서 겹치지 않거나, 빔이 앵커 이후 발행 '
+                                '명령의 도달 범위를 벗어나거나, 상대가 상태 채널 규격의 BEAM_MOTION_STATES '
+                                '(aligning/하강 포함)를 알리면 앵커를 버린다.'),
+        'relative_freshness':('동일 픽셀은 최초 관측 시각을 유지하고 현재 명령·시간 전파 track 상한을 사용한다. '
+                              '거절된 입력은 유효 관측 캐시에 넣지 않는다.'),
         'qualification':'offline development; uncalibrated bounds; no physical inheritance',
         'source_sha256':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths}}
 

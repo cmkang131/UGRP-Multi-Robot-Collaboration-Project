@@ -232,7 +232,7 @@ class PairCommandGuard:
         if a is not None and a['segment'] == self.ep.controller.seg and self.relative_track.beam is not None:
             return
         self.object_anchor = None
-        if not report.ready(now) or self._partner_grasping():
+        if not report.ready(now) or self._partner_may_move_beam():
             return  # a loose far-range bound would make a loose world anchor
         entry = self.global_envelope.pose(self.ep.own.last_report, now)
         if entry is None or self._high(entry):
@@ -291,26 +291,21 @@ class PairCommandGuard:
         std_xy = a['std_xy']+b['std_xy_m']+b['bias_bound_m']+std_yaw*math.hypot(*g)
         return OwnPose(x, y, (yaw+math.pi) % (2*math.pi)-math.pi, std_xy, std_yaw)
 
-    PARTNER_GRASP_STATES = ('ready', 'lift', 'carry', 'put_down')
-
-    def _partner_grasping(self):
-        # Messaged peer phase only (no peer pose): its closing/holding fingers
-        # may move the beam, so the static-beam premise no longer holds.
+    def _partner_may_move_beam(self):
+        # Use the channel's complete phase vocabulary, including descent's
+        # aligning wire state. No peer pose or physical contact oracle.
+        from harness.zone_pair_status import BEAM_MOTION_STATES
         channel = self.ep.controller.status[0]
         me = self.ep.own.robot_id
-        for rid, msg in channel.latest.items():
-            state = msg.get('state') or ''
-            if rid != me and (state in self.PARTNER_GRASP_STATES
-                              or any(state.startswith(f'{p}_') for p in ('close', 'lift', 'carry', 'lower', 'open'))):
-                return True
-        return False
+        return any(rid != me and msg.get('state') in BEAM_MOTION_STATES
+                   for rid, msg in channel.latest.items())
 
     def _anchor_invalid(self, now, a, b):
         """Final review P1-3: verify the static-beam premise of the object anchor."""
         from harness.zone_own_guards import K_SIGMA
         from harness.zone_pair_global import heading_spread, _wrap
-        if self._partner_grasping():
-            return 'PARTNER_HOLDING_PHASE'
+        if self._partner_may_move_beam():
+            return 'PARTNER_BEAM_MOTION_PHASE'
         m = getattr(self, 'anchor_motion', None)
         if m is None:
             return 'ANCHOR_MOTION_UNKNOWN'

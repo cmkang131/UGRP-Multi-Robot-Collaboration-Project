@@ -282,6 +282,9 @@ class RelativeBeamTrack(RestingBeamTrack):
     def __init__(self):
         super().__init__()
         self.last_report = None
+        # Only camera/time-valid observations enter the duplicate cache.
+        # A rejected receipt must not poison a later genuinely fresh capture.
+        self.observation_report = None
         self.last_capture = -math.inf
         self.command_epoch = 0
         self.report_command_epoch = None
@@ -299,8 +302,11 @@ class RelativeBeamTrack(RestingBeamTrack):
         pwm = tuple(sorted((int(k),int(v)) for k,v in servo.items() if int(k) in (3,4,5,6)))
         common = dict(frame_id=obs['frame_id'],sha256=obs['sha256'],captured_at_s=obs['sim_time'],
                       segment=segment,camera_pwm=pwm,mode=mode)
+        processed = False
         def unknown(*reasons):
             self.last_report = BeamRelativeReport(**common,reasons=tuple(reasons))
+            if processed:
+                self.observation_report = self.last_report
             return self.last_report
         image_pwm = obs.get('actuator_state',{}).get('servo_pulses',{})
         try:
@@ -314,29 +320,42 @@ class RelativeBeamTrack(RestingBeamTrack):
             self.views.clear()
             return unknown('LOADED_DEPTH_UNKNOWN')
         key = (segment,obs['frame_id'],obs['sha256'])
-        if key == self.last_frame:
-            if self.report_command_epoch == self.command_epoch:
-                return self.last_report  # idempotent read, not a new measurement
+        if key == self.last_frame and self.report_command_epoch != self.command_epoch:
             return unknown('IMAGE_PRECEDES_ISSUED_COMMAND')
-        if self.last_report and self.last_report.sha256 == obs['sha256']:
-            last = self.last_report
+        if self.observation_report and self.observation_report.sha256 == obs['sha256']:
+            last = self.observation_report
             if (self.report_command_epoch == self.command_epoch and last.segment == segment
-                    and last.mode == mode and last.camera_pwm == pwm and obs['sim_time'] > self.last_capture):
-                # Final review P1-2: both robots stopped and no own command since
-                # the previous image -> byte-identical render. No new
-                # information: keep the previous verdict (same fit, same
-                # anchor/identity times, which keep ageing) for this new frame.
+                    and last.mode == mode and last.camera_pwm == pwm
+                    and (key == self.last_frame or obs['sim_time'] > self.last_capture)):
+                # Repeated pixels carry no new measurement freshness. Keep the
+                # original capture time and use the NOW-propagated geometry /
+                # bound for every consumer, including same-frame reads. Thus
+                # neither pre-close nor clearance receives the frozen bound.
+                reasons = last.reasons
+                # The controller may read a NEW observation twice in one
+                # tick (record_standoff, then align). Preserve that fit's
+                # classification; only a repeated capture / expired read is
+                # transient input. Otherwise a far fresh fit cannot close in.
+                if (key != self.last_frame or now-last.captured_at_s > .3+1e-4
+                        or obs['sim_time'] > last.captured_at_s):
+                    reasons = (*reasons, 'IDENTICAL_PIXELS_NO_NEW_COMMAND')
                 self.last_frame, self.last_capture = key, obs['sim_time']
-                reasons = last.reasons if 'IDENTICAL_PIXELS_NO_NEW_COMMAND' in last.reasons else (
-                    *last.reasons, 'IDENTICAL_PIXELS_NO_NEW_COMMAND')
-                self.last_report = replace(last, frame_id=obs['frame_id'], captured_at_s=obs['sim_time'],
-                                           reasons=reasons)
+                grown = {}
+                if last.grip_base_m is not None:
+                    b = self.beam
+                    if b is None or self.segment != segment:
+                        return unknown('BEAM_MOVED_OR_ASSOCIATION_LOST')
+                    grown = dict(grip_base_m=tuple(b['grip_base_m']), axis_heading_rad=b['axis_heading_rad'],
+                                 std_xy_m=b['std_xy_m'], std_yaw_rad=b['std_yaw_rad'],
+                                 bias_bound_m=b['bias_bound_m'])
+                self.last_report = replace(last, frame_id=obs['frame_id'], reasons=reasons, **grown)
                 return self.last_report
             return unknown('DUPLICATE_IMAGE')  # identical pixels after an issued command: stale
         if obs['sim_time'] <= self.last_capture:
             return unknown('OUT_OF_ORDER')
         self.last_frame, self.last_capture = key, obs['sim_time']
         self.report_command_epoch = self.command_epoch
+        processed = True
         old = self.beam if self.segment == segment else None
         fitted, reasons = shape_fit(obs['image'],servo,old)
         if old is None:
@@ -414,4 +433,5 @@ class RelativeBeamTrack(RestingBeamTrack):
             bias_bound_m=b['bias_bound_m'],observable_axes=('forward','left','yaw'),reasons=reasons,
             endpoint_hypotheses=('nearest_end',),anchor_time_s=b['anchor_time_s'],anchor_sha256=b['anchor_sha256'],
             identity_time_s=b.get('identity_time_s',b['anchor_time_s']),view_sha256=tuple(b.get('view_sha256',())))
+        self.observation_report = self.last_report
         return self.last_report

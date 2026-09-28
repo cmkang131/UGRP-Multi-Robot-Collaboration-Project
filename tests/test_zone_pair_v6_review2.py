@@ -34,7 +34,7 @@ def raster(servo, intervals, *, fid=0, face_at=None):
 
 class Scenario:
     def __init__(self, *, state='approach', goal=(1.,-1.,0.), yaw=0., beam_grip=None, fixes=True,
-                 fix_delay_s=0., fail_every=0, fail_s=0.):
+                 fix_delay_s=0., fail_every=0, fail_s=0., partner_state='aligning'):
         _,_,self.eps = real_pair()
         self.ep = ep = self.eps['r1']; self.own = ep.own; self.ctl = ep.controller
         ep.policy = pair_policy('a+b'); enable_provider(self.own.pose)
@@ -49,6 +49,7 @@ class Scenario:
         self.last_fix = 0.; self.fixes = fixes; self.motion = (0.,0.,0.); self.until = 0.
         self.commands = []; self.trace = []; self.beam_x = None if beam_grip is None else .6+beam_grip
         self.sensor_yaw_offset = 0.
+        self.partner_state = partner_state
         # Review 3: realistic sensor latency. A look posture yields its first
         # informative fix only after fix_delay_s; every fail_every-th look
         # episode yields none for an extra fail_s (occluded/blurred pans).
@@ -98,7 +99,7 @@ class Scenario:
             obs.update(image=base64.b64encode(data).decode(),sha256=hashlib.sha256(data).hexdigest())
         own.last_obs = obs
         for ep in self.eps.values():
-            ep.status.tick('aligning',now)
+            ep.status.tick('aligning' if ep is self.ep else self.partner_state, now)
 
     def issue(self, commands, now):
         for command in commands:

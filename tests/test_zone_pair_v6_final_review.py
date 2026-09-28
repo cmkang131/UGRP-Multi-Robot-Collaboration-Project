@@ -49,10 +49,12 @@ def test_real_identical_frame_without_command_keeps_the_verdict():
     track = RelativeBeamTrack()
     first = track.observe(_obs(data, servo, 1491, 1., sha), servo, 0, now=1.)
     second = track.observe(_obs(data, servo, 1492, 1.4, sha), servo, 0, now=1.4)
-    assert first.ready(1.) and second.ready(1.4)
+    assert first.ready(1.) and not second.ready(1.4)
     assert second.frame_id == 1492 and second.grip_base_m == first.grip_base_m
     assert 'IDENTICAL_PIXELS_NO_NEW_COMMAND' in second.reasons and 'DUPLICATE_IMAGE' not in second.reasons
     assert second.anchor_time_s == first.anchor_time_s  # no new anchor from repeated pixels
+    assert second.captured_at_s == first.captured_at_s  # no new safety freshness either
+    assert second.std_xy_m == pytest.approx(track.beam['std_xy_m'])
     assert not second.closing_ready(1.4)
     # After an own issued command the same bytes are stale evidence.
     track.command({'t': 1.5, 'kind': 'mecanum', 'forward': .05, 'left': 0., 'turn': 0., 'duration_s': .3}, servo)
@@ -63,7 +65,8 @@ def test_real_identical_frame_without_command_keeps_the_verdict():
 def test_align_skips_transient_input_instead_of_failing():
     from harness.zone_pair_relative import BeamRelativeReport
     s = Scenario(state='align', beam_grip=.36); ctl = s.ctl
-    for reason in ('DUPLICATE_IMAGE', 'OUT_OF_ORDER', 'BEAM_MOVED_OR_ASSOCIATION_LOST'):
+    for reason in ('DUPLICATE_IMAGE', 'OUT_OF_ORDER', 'BEAM_MOVED_OR_ASSOCIATION_LOST',
+                   'IDENTICAL_PIXELS_NO_NEW_COMMAND'):
         unknown = BeamRelativeReport(frame_id=1, sha256=reason, captured_at_s=0., segment=0, camera_pwm=(),
                                      reasons=(reason,))
         ctl.look = lambda t: None
@@ -91,7 +94,7 @@ def test_align_tries_remaining_views_for_view_dependent_identity(reason):
 # ------------------------------------------------------------ P1-3 static-beam premise
 
 def _anchored():
-    s = Scenario(state='align', beam_grip=.40)
+    s = Scenario(state='align', beam_grip=.40, partner_state='stopped')
     s.run_until(lambda: s.ctl.state == 'pregrasp_descend', limit=60.)
     guard = s.ep.command_guard
     assert guard.object_anchor is not None and guard.object_pose(s.t) is not None

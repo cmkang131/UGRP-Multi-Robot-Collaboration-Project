@@ -151,7 +151,10 @@ def test_relative_report_gauge_independence_partial_duplicate_movement_and_loade
     track=RelativeBeamTrack();o=shape_observation();servo=o['actuator_state']['servo_pulses']
     r=track.observe(o,servo,0,now=0.)
     assert r.ready(0.) and not r.marker_dependency
-    assert track.observe(o,servo,0,now=.1) is r
+    repeated=track.observe(o,servo,0,now=.1)
+    assert repeated.ready(.1) and repeated.captured_at_s==r.captured_at_s
+    assert repeated.grip_base_m==r.grip_base_m and repeated.std_xy_m>r.std_xy_m
+    assert repeated.std_xy_m==track.beam['std_xy_m']
     monkeypatch.setattr(rel,'shape_fit',lambda *a:(None,('END_CLIPPED',)))
     monkeypatch.setattr(rel,'shape_points',lambda *a:(np.array([[.2,0.],[.21,0.]]),None,None,None))
     r2=track.observe(shape_observation(2,.2,'partial'),servo,0,now=.2)

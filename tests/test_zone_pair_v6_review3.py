@@ -135,8 +135,8 @@ def test_thin_static_gap_does_not_retrigger_looks_without_envelope_growth():
 
 # ------------------------------------------------------------ P1-2 align entry distance
 
-def _align(grip, limit=90.):
-    s = Scenario(state='align', beam_grip=grip, **REALISTIC)
+def _align(grip, limit=90., **kwargs):
+    s = Scenario(state='align', beam_grip=grip, **REALISTIC, **kwargs)
     s.run_until(lambda: s.ctl.state == 'pregrasp_descend', limit=limit)
     return s
 
@@ -275,7 +275,7 @@ def test_multiview_missing_extent_uses_robust_fit_extent_not_outlier_ptp():
 # ------------------------------------------------------------ literature recipe: PF isolated in align
 
 def test_align_pf_is_reference_only_while_object_anchored():
-    s = _align(.40)
+    s = _align(.40, partner_state='stopped')
     anchors = [e for e in s.ep.events if e['event'] == 'object_anchor']
     assert anchors and anchors[0]['anchor']['std_xy'] < .10
     safety = [e for e in s.ep.events if e['event'] == 'global_safety'
@@ -287,11 +287,11 @@ def test_align_pf_is_reference_only_while_object_anchored():
 
 
 def test_object_anchor_keeps_clearance_certified_after_global_fix_ages_out():
-    s = Scenario(state='align', beam_grip=.40)
+    s = Scenario(state='align', beam_grip=.40, partner_state='stopped')
     s.run_until(lambda: s.ctl.state == 'pregrasp_descend', limit=60.)
     guard = s.ep.command_guard
     assert guard.object_anchor is not None
-    later = s.t+31.  # stationary wait (e.g. peer READY); the global anchor is now older than 30 s
+    later = s.t+31.  # peer remains stopped; READY would invalidate the resting-beam premise
     assert guard.global_envelope.pose(s.own.last_report, later) is None
     cert = guard.global_certificate(later)
     assert cert['clear'] and cert['pose_source'] == 'object_anchored'
