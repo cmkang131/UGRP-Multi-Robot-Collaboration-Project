@@ -1,0 +1,645 @@
+[
+ {
+  "run_id": "dev13",
+  "seed": 909,
+  "pair_policy": null,
+  "state": "completed",
+  "termination": "STUDY_LAYER_DONE",
+  "sim_start_s": 1.3000000000000178,
+  "sim_end_s": 178.70024999750228,
+  "wall_s": 659.2006759999786,
+  "loadavg_start": [
+   12.06982421875,
+   10.494140625,
+   10.50146484375
+  ],
+  "loadavg_end": [
+   10.173828125,
+   12.20751953125,
+   11.60595703125
+  ],
+  "source_sha": "f87921dc52f7a3f12d41b4bc6ab5c30227890e8e",
+  "github_authorization": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5859482627",
+  "job_failed": [
+   {
+    "robot_id": "r2",
+    "job_kind": "pair_carry",
+    "reason": "ALIGN_RELOOK_NO_FIX",
+    "sim_s": 176.2
+   },
+   {
+    "robot_id": "r1",
+    "job_kind": "pair_carry",
+    "reason": "PARTNER_ABORT",
+    "sim_s": 176.2
+   }
+  ],
+  "api_calls": [
+   {
+    "robot_id": "r1",
+    "api": "look_around",
+    "sim_s": 1.3,
+    "accepted": true,
+    "rejected_reason": null
+   },
+   {
+    "robot_id": "r2",
+    "api": "look_around",
+    "sim_s": 1.3,
+    "accepted": true,
+    "rejected_reason": null
+   },
+   {
+    "robot_id": "r1",
+    "api": "pair_carry",
+    "sim_s": 60.0,
+    "accepted": true,
+    "rejected_reason": null
+   },
+   {
+    "robot_id": "r2",
+    "api": "pair_carry",
+    "sim_s": 60.0,
+    "accepted": true,
+    "rejected_reason": null
+   }
+  ],
+  "verdict": "DEV_NOT_CONFIRMED",
+  "checks": {
+   "approach": true,
+   "joint_grasp": false,
+   "lift": false,
+   "door": false,
+   "placement_release": false,
+   "no_drop": false,
+   "contacts": true,
+   "weld_off": true
+  },
+  "grasp_at_s": null,
+  "lifted_at_s": null,
+  "go_times": {
+   "approach_go_0": 153.39999999810055
+  },
+  "commands_motion": 1974,
+  "model_calls": 0,
+  "contact_counts": {
+   "robot_robot": 0,
+   "robot_wall": 0,
+   "beam_wall": 0,
+   "robot_beam_approach": 0,
+   "r3_interference": 0
+  },
+  "robots": {
+   "r1": {
+    "states": [
+     "wait_approach",
+     "align_start",
+     "align_relook_stop",
+     "align_relook",
+     "align_relook_return",
+     "align"
+    ],
+    "state_changes": 10,
+    "furthest_controller_stage": "align",
+    "event_counts": {
+     "state": 10,
+     "barrier_report": 100,
+     "barrier_go": 1,
+     "align_relook_trigger": 2,
+     "align_view_selection": 2,
+     "align_relook_stopped_pose": 2,
+     "align_relook_fix": 2,
+     "beam_standoff": 33,
+     "beam_obs": 33,
+     "look_posture": 1,
+     "align_relook_fix_rejected": 1
+    },
+    "look_commands": 152,
+    "relook_triggers": 2,
+    "scheduled_or_safety_looks": 0,
+    "last_events": [
+     {
+      "event": "state",
+      "sim_s": 172.39999999765126,
+      "state": "align_relook_stop"
+     },
+     {
+      "event": "align_view_selection",
+      "sim_s": 172.4999999976489
+     },
+     {
+      "event": "align_relook_stopped_pose",
+      "sim_s": 172.4999999976489
+     },
+     {
+      "event": "state",
+      "sim_s": 172.4999999976489,
+      "state": "align_relook"
+     },
+     {
+      "event": "align_relook_fix_rejected",
+      "sim_s": 173.99999999761343,
+      "frame_id": 1434
+     },
+     {
+      "event": "align_relook_fix",
+      "sim_s": 175.09999999758742,
+      "frame_id": 1445
+     },
+     {
+      "event": "state",
+      "sim_s": 175.09999999758742,
+      "state": "align_relook_return"
+     },
+     {
+      "event": "state",
+      "sim_s": 176.09999999756377,
+      "state": "align"
+     },
+     {
+      "event": "beam_standoff",
+      "sim_s": 176.1999999975614,
+      "frame_id": 1456,
+      "accepted": true
+     },
+     {
+      "event": "beam_obs",
+      "sim_s": 176.1999999975614,
+      "reason": "BAND_VISIBLE"
+     }
+    ],
+    "last_rejection": {
+     "event": "align_relook_fix_rejected",
+     "sim_s": 173.99999999761343,
+     "checks": {
+      "report_fresh": true,
+      "fix_age_valid": true,
+      "accepted_fix_present": true,
+      "fix_in_sweep": true,
+      "fix_not_future": true,
+      "fix_in_report": true,
+      "shared_localizer": true,
+      "initialized": true,
+      "gate_ok": false,
+      "pose_finite": true,
+      "std_xy": false,
+      "std_yaw": true,
+      "fix_gap": true,
+      "sigma_reserve": false,
+      "frame_after_arm": true
+     },
+     "failed_checks": [
+      "gate_ok",
+      "std_xy",
+      "sigma_reserve"
+     ],
+     "last_fix_t": 173.99999999761343,
+     "report_t": 174.0,
+     "started_at_s": 172.39999999765126,
+     "frame_id": 1434
+    },
+    "frames": 1468,
+    "job_failures": [
+     {
+      "sim_s": 176.2,
+      "job_kind": "pair_carry",
+      "reason": "PARTNER_ABORT",
+      "guard": null
+     }
+    ]
+   },
+   "r2": {
+    "states": [
+     "wait_approach",
+     "align_start",
+     "align_relook_stop",
+     "align_relook",
+     "align_relook_return",
+     "align",
+     "failed"
+    ],
+    "state_changes": 9,
+    "furthest_controller_stage": "align",
+    "event_counts": {
+     "state": 9,
+     "barrier_report": 1,
+     "barrier_go": 1,
+     "align_relook_trigger": 2,
+     "align_view_selection": 2,
+     "align_relook_stopped_pose": 2,
+     "align_relook_fix_rejected": 4,
+     "align_relook_fix": 1,
+     "beam_standoff": 30,
+     "beam_obs": 30,
+     "look_posture": 1
+    },
+    "look_commands": 308,
+    "relook_triggers": 2,
+    "scheduled_or_safety_looks": 0,
+    "last_events": [
+     {
+      "event": "beam_obs",
+      "sim_s": 172.09999999765836,
+      "reason": "BAND_VISIBLE"
+     },
+     {
+      "event": "align_relook_trigger",
+      "sim_s": 172.39999999765126,
+      "reason": "fix_gap"
+     },
+     {
+      "event": "state",
+      "sim_s": 172.39999999765126,
+      "state": "align_relook_stop"
+     },
+     {
+      "event": "align_view_selection",
+      "sim_s": 172.4999999976489
+     },
+     {
+      "event": "align_relook_stopped_pose",
+      "sim_s": 172.4999999976489
+     },
+     {
+      "event": "state",
+      "sim_s": 172.4999999976489,
+      "state": "align_relook"
+     },
+     {
+      "event": "align_relook_fix_rejected",
+      "sim_s": 173.99999999761343,
+      "frame_id": 1435
+     },
+     {
+      "event": "align_relook_fix_rejected",
+      "sim_s": 175.09999999758742,
+      "frame_id": 1446
+     },
+     {
+      "event": "align_relook_fix_rejected",
+      "sim_s": 176.1999999975614,
+      "frame_id": 1457
+     },
+     {
+      "event": "state",
+      "sim_s": 176.1999999975614,
+      "state": "failed",
+      "reason": "ALIGN_RELOOK_NO_FIX"
+     }
+    ],
+    "last_rejection": {
+     "event": "align_relook_fix_rejected",
+     "sim_s": 176.1999999975614,
+     "checks": {
+      "report_fresh": true,
+      "fix_age_valid": true,
+      "accepted_fix_present": true,
+      "fix_in_sweep": true,
+      "fix_not_future": true,
+      "fix_in_report": true,
+      "shared_localizer": true,
+      "initialized": true,
+      "gate_ok": true,
+      "pose_finite": true,
+      "std_xy": false,
+      "std_yaw": true,
+      "fix_gap": true,
+      "sigma_reserve": false,
+      "frame_after_arm": true
+     },
+     "failed_checks": [
+      "std_xy",
+      "sigma_reserve"
+     ],
+     "last_fix_t": 176.1999999975614,
+     "report_t": 176.2,
+     "started_at_s": 172.39999999765126,
+     "frame_id": 1457
+    },
+    "frames": 1469,
+    "job_failures": [
+     {
+      "sim_s": 176.2,
+      "job_kind": "pair_carry",
+      "reason": "ALIGN_RELOOK_NO_FIX",
+      "guard": null
+     }
+    ]
+   }
+  },
+  "overview_mp4": {
+   "path": "outputs/zone-pair-dev-v5h-f87921dc52f7a3f12d41b4bc6ab5c30227890e8e/dev13/eval_only/overview.mp4",
+   "bytes": 1351536,
+   "sha256": "3b5b8aa926c271dd0041800905886d6e99bccaf76a931e8def1031fc0f918e18"
+  },
+  "artifacts_sha256_json": "1cbc1f25eeeef7f33775e3b03ff055bdce176d8c7426374efbba926f105979f3"
+ },
+ {
+  "run_id": "dev14",
+  "seed": 910,
+  "pair_policy": null,
+  "state": "completed",
+  "termination": "STUDY_LAYER_DONE",
+  "sim_start_s": 1.3000000000000178,
+  "sim_end_s": 171.4002499976749,
+  "wall_s": 771.5484150420525,
+  "loadavg_start": [
+   9.59912109375,
+   12.05419921875,
+   11.55517578125
+  ],
+  "loadavg_end": [
+   9.25390625,
+   11.6875,
+   11.4716796875
+  ],
+  "source_sha": "f87921dc52f7a3f12d41b4bc6ab5c30227890e8e",
+  "github_authorization": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5859482627",
+  "job_failed": [
+   {
+    "robot_id": "r2",
+    "job_kind": "pair_carry",
+    "reason": "ALIGN_RELOOK_TIMEOUT",
+    "sim_s": 168.9
+   },
+   {
+    "robot_id": "r1",
+    "job_kind": "pair_carry",
+    "reason": "PARTNER_ABORT",
+    "sim_s": 168.9
+   }
+  ],
+  "api_calls": [
+   {
+    "robot_id": "r1",
+    "api": "look_around",
+    "sim_s": 1.3,
+    "accepted": true,
+    "rejected_reason": null
+   },
+   {
+    "robot_id": "r2",
+    "api": "look_around",
+    "sim_s": 1.3,
+    "accepted": true,
+    "rejected_reason": null
+   },
+   {
+    "robot_id": "r1",
+    "api": "pair_carry",
+    "sim_s": 60.0,
+    "accepted": true,
+    "rejected_reason": null
+   },
+   {
+    "robot_id": "r2",
+    "api": "pair_carry",
+    "sim_s": 60.0,
+    "accepted": true,
+    "rejected_reason": null
+   }
+  ],
+  "verdict": "DEV_NOT_CONFIRMED",
+  "checks": {
+   "approach": true,
+   "joint_grasp": false,
+   "lift": false,
+   "door": false,
+   "placement_release": false,
+   "no_drop": false,
+   "contacts": true,
+   "weld_off": true
+  },
+  "grasp_at_s": null,
+  "lifted_at_s": null,
+  "go_times": {
+   "approach_go_0": 152.0999999981313
+  },
+  "commands_motion": 1574,
+  "model_calls": 0,
+  "contact_counts": {
+   "robot_robot": 0,
+   "robot_wall": 0,
+   "beam_wall": 0,
+   "robot_beam_approach": 0,
+   "r3_interference": 0
+  },
+  "robots": {
+   "r1": {
+    "states": [
+     "wait_approach",
+     "align_start",
+     "align_relook_stop",
+     "align_relook",
+     "align_relook_return",
+     "align"
+    ],
+    "state_changes": 6,
+    "furthest_controller_stage": "align",
+    "event_counts": {
+     "state": 6,
+     "barrier_report": 136,
+     "barrier_go": 1,
+     "align_relook_trigger": 1,
+     "align_view_selection": 1,
+     "align_relook_stopped_pose": 1,
+     "align_relook_fix": 1,
+     "beam_standoff": 28,
+     "beam_obs": 28,
+     "look_posture": 1
+    },
+    "look_commands": 116,
+    "relook_triggers": 1,
+    "scheduled_or_safety_looks": 0,
+    "last_events": [
+     {
+      "event": "beam_obs",
+      "sim_s": 166.39999999779315,
+      "reason": "BAND_VISIBLE"
+     },
+     {
+      "event": "look_posture",
+      "sim_s": 166.39999999779315
+     },
+     {
+      "event": "beam_standoff",
+      "sim_s": 167.19999999777423,
+      "frame_id": 1366,
+      "accepted": true
+     },
+     {
+      "event": "beam_obs",
+      "sim_s": 167.19999999777423,
+      "reason": "BAND_VISIBLE"
+     },
+     {
+      "event": "beam_standoff",
+      "sim_s": 167.6999999977624,
+      "frame_id": 1371,
+      "accepted": false
+     },
+     {
+      "event": "beam_obs",
+      "sim_s": 167.6999999977624,
+      "reason": "BAND_VISIBLE"
+     },
+     {
+      "event": "beam_standoff",
+      "sim_s": 168.19999999775058,
+      "frame_id": 1376,
+      "accepted": true
+     },
+     {
+      "event": "beam_obs",
+      "sim_s": 168.19999999775058,
+      "reason": "BAND_VISIBLE"
+     },
+     {
+      "event": "beam_standoff",
+      "sim_s": 168.69999999773876,
+      "frame_id": 1381,
+      "accepted": false
+     },
+     {
+      "event": "beam_obs",
+      "sim_s": 168.69999999773876,
+      "reason": "BAND_VISIBLE"
+     }
+    ],
+    "last_rejection": null,
+    "frames": 1395,
+    "job_failures": [
+     {
+      "sim_s": 168.9,
+      "job_kind": "pair_carry",
+      "reason": "PARTNER_ABORT",
+      "guard": null
+     }
+    ]
+   },
+   "r2": {
+    "states": [
+     "wait_approach",
+     "align_start",
+     "align_relook_stop",
+     "align_relook",
+     "align_relook_return",
+     "align"
+    ],
+    "state_changes": 8,
+    "furthest_controller_stage": "align",
+    "event_counts": {
+     "state": 8,
+     "barrier_report": 1,
+     "barrier_go": 1,
+     "align_relook_trigger": 2,
+     "align_view_selection": 2,
+     "align_relook_stopped_pose": 2,
+     "align_relook_fix": 1,
+     "beam_obs": 12,
+     "look_posture": 1,
+     "beam_standoff": 11,
+     "align_relook_fix_rejected": 1
+    },
+    "look_commands": 284,
+    "relook_triggers": 2,
+    "scheduled_or_safety_looks": 0,
+    "last_events": [
+     {
+      "event": "beam_standoff",
+      "sim_s": 160.19999999793976,
+      "frame_id": 1297,
+      "accepted": false
+     },
+     {
+      "event": "beam_obs",
+      "sim_s": 160.19999999793976,
+      "reason": "BAND_VISIBLE"
+     },
+     {
+      "event": "beam_standoff",
+      "sim_s": 160.69999999792793,
+      "frame_id": 1302,
+      "accepted": true
+     },
+     {
+      "event": "beam_obs",
+      "sim_s": 160.69999999792793,
+      "reason": "BAND_VISIBLE"
+     },
+     {
+      "event": "align_relook_trigger",
+      "sim_s": 160.8999999979232,
+      "reason": "fix_gap"
+     },
+     {
+      "event": "state",
+      "sim_s": 160.8999999979232,
+      "state": "align_relook_stop"
+     },
+     {
+      "event": "align_view_selection",
+      "sim_s": 160.99999999792084
+     },
+     {
+      "event": "align_relook_stopped_pose",
+      "sim_s": 160.99999999792084
+     },
+     {
+      "event": "state",
+      "sim_s": 160.99999999792084,
+      "state": "align_relook"
+     },
+     {
+      "event": "align_relook_fix_rejected",
+      "sim_s": 162.49999999788537,
+      "frame_id": 1320
+     }
+    ],
+    "last_rejection": {
+     "event": "align_relook_fix_rejected",
+     "sim_s": 162.49999999788537,
+     "checks": {
+      "report_fresh": true,
+      "fix_age_valid": true,
+      "accepted_fix_present": true,
+      "fix_in_sweep": true,
+      "fix_not_future": true,
+      "fix_in_report": true,
+      "shared_localizer": true,
+      "initialized": true,
+      "gate_ok": false,
+      "pose_finite": true,
+      "std_xy": true,
+      "std_yaw": true,
+      "fix_gap": true,
+      "sigma_reserve": true,
+      "frame_after_arm": true
+     },
+     "failed_checks": [
+      "gate_ok"
+     ],
+     "last_fix_t": 162.49999999788537,
+     "report_t": 162.5,
+     "started_at_s": 160.8999999979232,
+     "frame_id": 1320
+    },
+    "frames": 1396,
+    "job_failures": [
+     {
+      "sim_s": 168.9,
+      "job_kind": "pair_carry",
+      "reason": "ALIGN_RELOOK_TIMEOUT",
+      "guard": null
+     }
+    ]
+   }
+  },
+  "overview_mp4": {
+   "path": "outputs/zone-pair-dev-v5h-f87921dc52f7a3f12d41b4bc6ab5c30227890e8e/dev14/eval_only/overview.mp4",
+   "bytes": 1269544,
+   "sha256": "10a4c2b166d4745a734e91755e91cc1cdb9c94e6e183df143daad7275941cebe"
+  },
+  "artifacts_sha256_json": "e78e45c799d2a98cab75db2257c6ee798f36660502799ebbae715189f096b4d0"
+ }
+]
