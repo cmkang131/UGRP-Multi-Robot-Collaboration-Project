@@ -259,6 +259,8 @@ def test_v3_drawing_geometry_raises_the_lifts_and_keeps_carry_p30_clear():
 
 
 def test_link_length_sensitivity_is_scoped_and_restored():
+    if not HAS_MUJOCO:
+        pytest.skip('mujoco is not installed (the analysis script builds MuJoCo scenes)')
     from harness import visual_arm as va
     from scripts.analyze_ultrasonic_carry_height import arm_links
     assert not hasattr(uc, 'arm_links')                         # runtime module never mutates the IK
