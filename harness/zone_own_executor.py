@@ -164,6 +164,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
         self._summaries: list[dict] = []
         self._pending_hold = False
         self._pair = None                    # own M2 endpoint only; never the pair dispatcher/peer
+        self._boot = None                    # v6b stationary bootstrap (opt-in provider state only)
 
     # ---------------------------------------------------------------- contract helpers
     def _require_owncam(self, label, where):
@@ -528,7 +529,33 @@ class ZoneOwnExecutor(OwnStatusMixin):
         job = self.job
         if job is None:
             return {'mode': 'tick', 'commands': []}
+        boot = self._stationary_bootstrap(now, job)
+        if boot is not None:
+            return boot
         return getattr(self, '_step_' + job.kind)(now, job)
+
+    def _stationary_bootstrap(self, now, job):
+        """v6b opt-in stop-and-look before the first own motion; inert without provider state."""
+        from harness.owncam_bootstrap_v6b import FAIL_REASON, StationaryBootstrap, bootstrap_state
+        state = bootstrap_state(self.pose)
+        if (state is None or job.kind == 'hold' or state['completed_at'] is not None
+                or state['exhausted_at'] is not None):
+            return None
+        if self._boot is None:
+            self._boot = StationaryBootstrap(self.guard, WIDE_LOOK_PANS, self.servo, now,
+                                             first_motion={**LOOK_P20, 1: self.servo.get(1, 1500)})
+        commands = self._boot.step(now, self.pose, self.servo)
+        if commands is None:
+            rep = self.pose.report(now)
+            state.update(completed_at=float(now), fix_t=rep.last_fix_t, log=list(self._boot.log),
+                         waited_s=round(self._boot.wait.waited_s, 4), std_xy_m=rep.std_xy_m,
+                         std_yaw_rad=rep.std_yaw_rad)
+            return None
+        if self._boot.outcome == 'blocked':
+            state.update(exhausted_at=float(now), log=list(self._boot.log))
+            self._fail(now, FAIL_REASON, bootstrap=copy.deepcopy(self._boot.log))
+            return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
+        return {'mode': 'tick', 'commands': commands}
 
     def _step_pair_carry(self, now, job):
         return self._pair.step(now)
@@ -744,7 +771,13 @@ class ZoneOwnExecutor(OwnStatusMixin):
                 'stopped': self.stopped, 'gate_transitions': list(self.gate.transitions),
                 'counts_as_m1_inputs': bool(self.mode == 'm1' and sources and
                                             all(m1_contract.is_m1_pose_source(s) for s in sources)
-                                            and sorted(self.cameras_seen) == ['robot_cam'])}
+                                            and sorted(self.cameras_seen) == ['robot_cam']),
+                **self._bootstrap_summary()}
+
+    def _bootstrap_summary(self) -> dict:
+        from harness.owncam_bootstrap_v6b import bootstrap_state
+        state = bootstrap_state(self.pose)
+        return {} if state is None else {'stationary_bootstrap': copy.deepcopy(state)}
 
 
 def __getattr__(name):

@@ -726,7 +726,7 @@
       "entry": "scripts/run_zone_study_integration.py",
       "docs": "experiments/2026-09-26-zone-study-integration/README.md",
       "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; run bundle must match the prereg bundle_sha256; robot inputs = own robot_cam + own commands + static map + order sheet + delivered messages; GT only in eval_only/; weld OFF; no model call",
-      "version": "2.3.0",
+      "version": "2.4.0",
       "runner": "scripts.run_zone_study_integration",
       "output_flag": "--output",
       "side_effect": "local_simulation",
@@ -735,6 +735,23 @@
         "--prereg",
         "--episode",
         "--condition"
+      ],
+      "output_kind": "directory"
+    },
+    {
+      "id": "zone-pair-bootstrap-probe",
+      "purpose": "v6b 출발 자세 부트스트랩만 짧게 확인: pair 장면 → 정지 관측·팬 스캔 → 팔 올림 guard 통과/실패에서 즉시 종료 (seed × 출발 dock × 작은 자세 섭동 grid; tags_temporary, dev 진단, 연구 결과 아님)",
+      "entry": "scripts/probe_zone_pair_bootstrap.py",
+      "docs": "experiments/2026-09-28-zone-pair-v6b-boot/README.md",
+      "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; no model call; weld OFF; no pair_carry submission; GT read only after the loop for eval columns; check agent_lock status before a grid",
+      "version": "0.1.0",
+      "runner": "scripts.probe_zone_pair_bootstrap",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--seeds",
+        "--policy"
       ],
       "output_kind": "directory"
     }

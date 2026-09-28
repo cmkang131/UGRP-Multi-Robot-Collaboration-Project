@@ -320,10 +320,11 @@ def test_replay_stops_consuming_at_first_new_branch():
     with pytest.raises(ValueError):Reader().bytes(Path('/forbidden/eval_only/trace.jsonl'))
 
 
-@pytest.mark.parametrize('policy,run',[('v5h','v6-s911-v5h'),('b-only','v6-s911-b'),('a+b','v6-s911-ab')])
+@pytest.mark.parametrize('policy,run',[('v5h','v6b-s911-v5h'),('b-boot','v6b-s911-bboot'),('a+b-boot','v6b-s911-abboot')])
 def test_v6_draft_prepare_and_execution_refusal(tmp_path,policy,run):
+    # v6b is the current v6-family revision; v6 is historical (PR #259 cohort).
     from scripts import run_zone_pair_dev as dev
-    from scripts.zone_pair_v6_contract import PREREG
+    from scripts.zone_pair_v6_contract import PREREG_V6B as PREREG
     args=dev.parser().parse_args(['--prereg',str(PREREG),'--run-id',run,'--pair-policy',policy,
                                   '--output',str(tmp_path/'draft')])
     p,case=dev.load_config(args)
@@ -334,3 +335,15 @@ def test_v6_draft_prepare_and_execution_refusal(tmp_path,policy,run):
     assert manifest['pair_policy']==policy and manifest['applied'] is None and manifest['physical_success'] is None
     args.execute=True
     with pytest.raises(ValueError,match='prepare-only'):dev.load_config(args)
+
+
+def test_v6_is_historical_after_v6b(tmp_path):
+    from scripts import run_zone_pair_dev as dev
+    from scripts.zone_pair_v6_contract import PREREG, verify_v6_historical
+    args = dev.parser().parse_args(['--prereg', str(PREREG), '--run-id', 'v6-s911-b', '--pair-policy', 'b-only',
+                                    '--output', str(tmp_path/'never')])
+    with pytest.raises(ValueError, match='historical'):
+        dev.load_config(args)
+    receipt = verify_v6_historical(PREREG)
+    assert receipt['revision'] == 'v6' and receipt['execution_bundle_id'] == 'zone-pair-v70-beam-relative-multiturn'
+    assert len(receipt['commit']) == 40 and not args.output.exists()

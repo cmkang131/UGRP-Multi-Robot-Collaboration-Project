@@ -48,8 +48,10 @@ def test_modified_registration_bytes_are_rejected(monkeypatch):
 
 
 def test_v6_records_current_scene_and_full_source_closure():
-    from scripts.zone_pair_v6_contract import PREREG, V5H, contract
+    # The current v6-family revision is v6b; v6 is audited historically (test_zone_pair_v6).
+    from scripts.zone_pair_v6_contract import PREREG_V6B as PREREG, V5H, contract
     p = json.loads(PREREG.read_text())
+    assert p['registration_revision'] == 'v6b' and 'harness/owncam_bootstrap_v6b.py' in p['v6_contract']['source_sha256']
     assert p['scene_contract'] == dev.scene_contract()
     assert p['v6_contract'] == contract()
     assert 'grasp_contract' not in p  # old behavior/source receipt belongs to the baseline
@@ -62,14 +64,14 @@ def test_v6_records_current_scene_and_full_source_closure():
 
 @pytest.mark.parametrize('fault', ['source', 'scene', 'inherited_grasp', 'baseline'])
 def test_v6_rejects_stale_or_inherited_source_contracts(tmp_path, fault):
-    from scripts.zone_pair_v6_contract import PREREG, V5H
+    from scripts.zone_pair_v6_contract import PREREG_V6B as PREREG, V5H
     p = json.loads(PREREG.read_text()); old = json.loads(V5H.read_text())
     if fault == 'source': p['v6_contract']['source_sha256']['harness/zone_own_team_host.py'] = '0'*64
     elif fault == 'scene': p['scene_contract'] = old['scene_contract']
     elif fault == 'inherited_grasp': p['grasp_contract'] = old['grasp_contract']
     else: p['baseline_registration']['sha256'] = '0'*64
     altered = tmp_path/'altered.json'; altered.write_text(json.dumps(p))
-    args = dev.parser().parse_args(['--prereg', str(altered), '--run-id', 'v6-s911-ab',
+    args = dev.parser().parse_args(['--prereg', str(altered), '--run-id', 'v6b-s911-abboot',
                                     '--output', str(tmp_path/'never-prepared')])
     with pytest.raises(ValueError):
         dev.load_config(args)

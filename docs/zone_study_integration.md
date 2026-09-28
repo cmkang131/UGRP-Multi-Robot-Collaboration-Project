@@ -1,3 +1,7 @@
+현재 미실행 후보는 `zone-pair-v75-dock-prior-bootstrap`(workflow `2.4.0`)이다. 2026-09-28 v6 dev 코호트(PR #259)에서 b-only·a+b가 출발 위치 부트스트랩에서 막힌 뒤, v70에 opt-in 정책 `b-boot`·`a+b-boot`(정적 지도 dock 행 AMCL식 사전분포 + 첫 움직임 전 정지 관측·belief 검사 팬 스캔)를 더했다. v5h·b-only·a+b의 동작은 바뀌지 않는다. main v70과 열린 PR 최댓값 v74(#249) 다음 번호다. v70은 v6 dev 코호트 기록 소스로 `RETIRED_BUNDLE_IDS`에 보존한다. [v6b 기록](../experiments/2026-09-28-zone-pair-v6b-boot/README.md)
+
+이전 후보 v70의 설명:
+
 현재 미실행 후보는 `zone-pair-v70-beam-relative-multiturn`(workflow `2.3.0`)이다. 2026-09-28 PR #246 main 병합에서 main의 v69(v66 다중 턴 스케줄러 + v67 표식 무관 pair 경로)와 #246의 v6 pair 경로(v68 빔 상대 정렬 + 검토 3)를 합쳤다. 합성 소스는 v68·v69 어느 쪽과도 달라 main과 열린 PR(#248·#249) 최댓값 v69 다음 번호를 썼다. v68은 병합 전 v6 초안으로 오프라인 재생 기록에만 남으며 v69와 함께 `RETIRED_BUNDLE_IDS`에 보존한다. 세 pair 조건(v5h/b-only/a+b)은 이 번들 안에서 `pair_policy` 하나로만 다르다. [v6 기록](../experiments/2026-09-28-zone-pair-v6/README.md)
 
 이전 후보 v69의 설명:

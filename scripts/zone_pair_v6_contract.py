@@ -1,17 +1,29 @@
-"""Prepare-only v6 registration, separate from immutable v5h execution records."""
+"""Prepare-only v6/v6b registration, separate from immutable v5h execution records.
+
+v6 (PR #246, run by the 2026-09-28 dev cohort in PR #259) is historical once
+the v6b bootstrap source exists: its receipt is audited against the committed
+blobs of its own commit (``verify_v6_historical``), never against the current
+checkout, and it can no longer be prepared from current source. v6b adds the
+opt-in ``stationary_bootstrap`` policies in bundle v75.
+"""
 import copy
 import hashlib
 import json
 from pathlib import Path
+import subprocess
 
-from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES
+from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES, REVISION_POLICIES
 
 ROOT = Path(__file__).resolve().parents[1]
 PREREG = ROOT/'experiments/2026-09-28-zone-pair-v6/prereg_v6.json'
+PREREG_V6B = ROOT/'experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json'
 V5H = ROOT/'experiments/2026-09-27-zone-pair-dev/prereg_v5h.json'
+CURRENT_REVISION = 'v6b'
 
 
-def contract():
+def contract(revision=CURRENT_REVISION):
+    if revision != CURRENT_REVISION:
+        raise ValueError(f'{revision} is historical; audit it with verify_v6_historical')
     from scripts.zone_pair_grasp_contract import SOURCE_PATHS
     from scripts.zone_pair_dev_contract import scene_contract
     paths = (*SOURCE_PATHS,*scene_contract()['source_sha256'],
@@ -21,12 +33,16 @@ def contract():
              # Final review P3-4: control-path modules outside the v5h receipts.
              'harness/zone_own_sweep.py','harness/pair_owncam_approach.py','harness/owncam_drive.py',
              'scripts/run_m2_pair.py','scripts/study_owncam_pair_beam.py','harness/visual_arm.py',
-             'harness/m1_owncam_delivery.py')
+             'harness/m1_owncam_delivery.py',
+             # v6b start bootstrap and its executor hook.
+             'harness/owncam_bootstrap_v6b.py','harness/zone_own_executor.py','harness/zone_pair_executor.py')
+    paths = tuple(dict.fromkeys(paths))
     from harness.zone_pair_global import SCHEDULED_REOBSERVE
     from harness.zone_own_sweep import SWEEP_REOBSERVE_S
     from harness.zone_pair_align import MAX_LOOKS, MAX_TOTAL_LOOK_S
+    from harness import owncam_bootstrap_v6b as boot
     return {'execution_bundle_id':EXECUTION_BUNDLE_ID,'policy_flags':{
-        k:vars(v) for k,v in POLICIES.items()},
+        k:vars(POLICIES[k]) for k in REVISION_POLICIES[revision]},
         # Review 3: flag semantics are part of the registration. beam_relative
         # (A) now also removes PF convergence from the align stop conditions.
         'flag_definitions':{
@@ -34,7 +50,21 @@ def contract():
             'beam_relative':('A: own-view beam-relative align/close-in and pre-close shape report; separate '
                              'global safety envelope with planned safety looks; during align/pre-close the PF is '
                              'a reference only (no HIGH/convergence stop) while an object-anchored bound '
-                             '(entry fix + ready relative view of the static beam) certifies wall/arm clearance')},
+                             '(entry fix + ready relative view of the static beam) certifies wall/arm clearance'),
+            'stationary_bootstrap':('v6b: equal-weight AMCL-default Gaussian prior on the static start_dock rows; '
+                                    'no own arm/wheel command before an informative settled fix whose first arm '
+                                    'transition the unchanged guard clears (or gate LOW); only camera pans in between, '
+                                    'each checked by the unchanged guard at the covariance sigma points; dual '
+                                    'samples + resample-move on the stationary belief; 10 s stationary budget, '
+                                    'then STATIONARY_BOOTSTRAP_NO_FIX')},
+        'bootstrap_constants':{'amcl_initial_std_xy_m':boot.AMCL_INITIAL_STD_XY_M,
+                               'amcl_initial_std_yaw_rad':boot.AMCL_INITIAL_STD_YAW_RAD,
+                               'dual_fraction':boot.BootstrapLocalizer.DUAL_FRACTION,
+                               'max_boot_frames':boot.BootstrapLocalizer.MAX_BOOT_FRAMES,
+                               'move_steps':[list(s) for s in boot.BootstrapLocalizer.MOVE_STEPS],
+                               'move_iters':boot.BootstrapLocalizer.MOVE_ITERS,
+                               'settle_after_pan_s':boot.SETTLE_AFTER_PAN_S,
+                               'fail_reason':boot.FAIL_REASON},
         'reobserve_budgets':{'high_recovery_s':SWEEP_REOBSERVE_S,
                              'scheduled_safety_look':dict(SCHEDULED_REOBSERVE),
                              # Final review: scopes are part of the registration.
@@ -52,8 +82,30 @@ def contract():
         'source_sha256':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths}}
 
 
+def verify_v6_historical(path=PREREG, *, root=ROOT):
+    """Audit a historical v6 receipt at its own last registration commit (read-only)."""
+    from scripts.zone_pair_registered_source import committed_blob
+    relative = Path(path).resolve().relative_to(Path(root).resolve()).as_posix()
+    commit = subprocess.check_output(['git', 'log', '-1', '--format=%H', '--', relative], cwd=root, text=True).strip()
+    if not commit:
+        raise ValueError('historical v6 registration has no commit')
+    p = json.loads(committed_blob(str(root), commit, relative))
+    if p != json.loads(Path(path).read_text()):
+        raise ValueError('historical v6 registration bytes differ from their commit')
+    for source, expected in p['v6_contract']['source_sha256'].items():
+        if hashlib.sha256(committed_blob(str(root), commit, source)).hexdigest() != expected:
+            raise ValueError(f'historical v6 source hash mismatch at {commit}: {source}')
+    return {'commit': commit, 'revision': p.get('registration_revision'),
+            'execution_bundle_id': p['execution_bundle_id'], 'sources': len(p['v6_contract']['source_sha256']),
+            'qualification': 'historical provenance audit; not current-source execution admission'}
+
+
 def load_config(args):
     p=json.loads(args.prereg.read_text());old=json.loads(V5H.read_text())
+    revision=p.get('registration_revision')
+    if revision!=CURRENT_REVISION:
+        raise ValueError(f'v6 revision {revision!r} is historical (superseded by {CURRENT_REVISION}); '
+                         'prepare/execute only the current revision')
     if args.execute:
         raise ValueError('v6 DRAFT is prepare-only: execution source and approval are null')
     if (p.get('registration_version')!=6 or p.get('status')!='DRAFT'
@@ -64,7 +116,7 @@ def load_config(args):
                 'limits','safety_coverage','timing','stage_rules','contact_profile_contract'):
         if p.get(key)!=old[key]:
             raise ValueError(f'v6 comparison must preserve v5h {key}')
-    if p.get('v6_contract')!=contract():
+    if p.get('v6_contract')!=contract(revision):
         raise ValueError('v6 source contract/hash mismatch')
     from scripts.zone_pair_dev_contract import scene_contract
     if p.get('scene_contract')!=scene_contract():
@@ -77,7 +129,7 @@ def load_config(args):
         raise ValueError('v6 requires two matched seeds times three conditions')
     for seed in {r['seed'] for r in rows}:
         group=[r for r in rows if r['seed']==seed]
-        if {r['pair_policy'] for r in group}!=set(POLICIES):
+        if {r['pair_policy'] for r in group}!=set(REVISION_POLICIES[revision]):
             raise ValueError('v6 ablation missing')
         for key in ('setup_beam_xyyaw','coarse_order_sheet','intervention'):
             if any(r[key]!=group[0][key] for r in group):
