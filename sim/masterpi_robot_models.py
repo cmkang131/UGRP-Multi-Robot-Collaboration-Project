@@ -16,7 +16,8 @@ from dataclasses import dataclass
 from typing import Callable, Mapping
 
 from sim.masterpi_geometry_v3 import PHYSICAL_V3
-from sim.masterpi_model_v3 import ROBOT_MODEL_V2, ROBOT_MODEL_V3, build_v3_xml, v3_hardware
+ROBOT_MODEL_V2 = 'masterpi_v2'
+ROBOT_MODEL_V3 = 'masterpi_v3'
 
 # Hardware keys that v3 takes from the drawing unless the calibration manifest
 # (sim/masterpi_dynamics_calibration.json) or the caller supplies them.
@@ -73,6 +74,7 @@ def station_grasp_convention(model_id: str) -> dict:
 
 
 def _v3_robot_body(hardware: Mapping[str, float] | None) -> tuple[ET.Element, list[ET.Element]]:
+    from sim.masterpi_model_v3 import build_v3_xml
     root = ET.fromstring(build_v3_xml(hardware))
     world = root.find("worldbody")
     robot = next(c for c in list(world) if c.tag == "body" and c.get("name") == "robot")
@@ -90,6 +92,7 @@ def v3_robot_xml_transform(hardware: Mapping[str, float] | None = None,
     added (navigation camera, peer band) are kept.  Actuators, equality welds
     and all body/joint names are unchanged, so controllers bind as before.
     """
+    from sim.masterpi_model_v3 import v3_hardware
     hw = dict(hardware or {})
     for key in V3_DRAWING_HARDWARE_KEYS:
         if key not in set(calibrated_keys):

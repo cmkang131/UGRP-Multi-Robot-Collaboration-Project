@@ -10,7 +10,38 @@
   - (`switch_wip.patch`는 전환 1/n 커밋에서 적용하고 지웠다)
 - v2는 바이트 그대로다. `sim/masterpi_dynamics_v2.py`, `sim/masterpi_geometry.py`, `sim/masterpi_scene*.xml`을 고치지 않았다.
 
-## 할 일 (2026-09-28, 관리자 결정 반영: robot_model은 장면 버전의 일부)
+## Codex 후속 구현 — 2026-09-28 (로컬 변경, 전환 미완료)
+
+Claude가 시작한 PR #249를 Codex가 `961271a44ad34cf17e94f36217589af7cde2fa2a`에서 이어 작업했다. 아래 인계 TODO·착수 차단 기록은 이전 시점의 기록이며 보존한다. 이번 실행 규칙은 `OMP_NUM_THREADS=2`, 지정된 공용 Python, pytest cache OFF다.
+
+### 변경
+
+1. `zone_wide_door_geometry_v3`, `zone_wide_door_geometry_v3_dock_v1`을 새로 등록했다. 기존 표식 없는 `geometry_v2`에서 파생하고 robot_model은 `masterpi_v3`다. 기존 map 파일과 v2/동결 소스의 해시는 `configs/masterpi_v3_scenes.json`에 보존했다. 새 장면만 새 map/robot XML/scene XML 해시를 기록한다.
+2. `MasterPiV3ZoneScene`은 기존 표준 `Scene` 계층을 상속한다. zone host의 인스턴스 XML hook에서 환경·접촉 변환 뒤 v3 로봇 변환을 적용하며, 실제 템플릿의 physical_params와 calibration_parameters를 사용한다. 보정된 트랙·축간은 우선하고 나머지는 v3 치수값을 쓴다. 실제 world 생성은 이번에 실행하지 않았고, hook의 정적 컴파일·가짜 world 배선을 테스트했다.
+3. 새 `zone_model_conventions`·`zone_team_footprint_v3`·`TeacherStationsV3`가 장면의 robot_model을 읽는다. 스테이션은 팔축 반경 155 mm + 장착 48.2 mm = 차대 기준 203.2 mm다. 시작 도킹의 차대 열도 48.2 mm 뒤로 옮겨 기존 팔축 열을 유지하며 keepout과 같은 값을 쓴다. 교사 모듈은 **스테이션 계산 어댑터**까지이며 전체 교사 상태기계 이관은 아니다.
+4. `visual_arm_v3`는 기존 `visual_arm` FK·삼각형 IK를 import해 재사용한다. yaw 장착 48.2 mm, 어깨 높이 차이 2.2 mm, 실제 패드 중심 86.85 mm를 반영한다. 카메라 로컬 자세/FOV는 바꾸지 않았다. 스윕 가드는 기존 표본화 수학에 장착 변환과 보수적 잔차를 적용하며, 자기 자세가 없으면 v3 팔 스윕을 거부한다.
+5. v3 장면의 model runtime은 새 팔·가드·발자국 모듈을 선택한다. 기존 v2 손목 스킬/표식 제공자는 **물리 world 생성 전에 거부**한다. 실제 v3 손목 스킬·표식 없는 자세 제공자·짝 운반 소비자 이관은 남아 있으므로 통합 러너의 v3 실행 완료로 보고하지 않는다.
+6. 정적 감사 뒤 main과 열린 PR 11개의 head를 커넥터로 읽어 로컬 origin 참조와 모두 대조했다. 전체 origin/*의 등록 bundle 최대가 v73이므로 `zone-study-integration-v74-masterpi-v3`를 선택했고, v69는 은퇴 ID에 보존했다. workflow는 열린 브랜치 최대 2.3.0 다음인 2.4.0이다. **로컬 등록일 뿐, 원격 번호 예약/코드 push는 완료되지 않았다.** SHA 목록은 `codex-bundle-heads.json`에 있다.
+
+### 정적 감사와 검증 범위
+
+- `codex-static-audit-v1.json`과 설명을 보강한 v2를 보존했고, 최종본은 `codex-static-audit-v3.json`이다. v1/v2에서 빠졌던 host의 추가 cargo contact profile을 v3에 적용해 `cargo_noslip_v1`, noslip 10회를 확인했다. 충돌/가림 값은 같으며 이전 원본을 덮어쓰지 않았다. 각 장면 seed 700, 3대, 동일한 시작 PWM에 `mj_forward`만 적용했다. world 초기화/settling/에피소드는 실행하지 않았다.
+- 자기충돌·로봇 간 침투 0건. 각 장면 바퀴–바닥 접촉 표본 24건, 최대 약 0.145 mm 침투를 별도로 기록했다. 접촉 없는 완벽한 모델이라는 뜻은 아니다.
+- 카메라당 17×13 = 221개 원시 pinhole 광선 표본: 각 robot_cam 자기 형상 가림 0/221, 각 nav_cam 손가락 가림 2/221. nav_cam은 standard host에 없으므로 builder의 `navigation_camera=True`로 추가한 진단 카메라다. fisheye 렌더 전체나 작업 물체 가시성 검증은 아니다.
+- 새 정적 테스트는 `mj_step`을 실패 처리한다. v2 기하 두 파일에만 사용자가 허용한 짧은 물리 step이 있었다. 모델/LLM 호출 0, 물리 에피소드 0, weld OFF다. 새 학습/운반 실험·TensorBoard 실험 스냅샷은 없다.
+- 최초 v3 IK 테스트는 6개 실패했다. 145 mm 경계는 부동소수점 비교 오차여서 1e-10 cm 비교 여유로 수정했다. 180 mm/높이 24 mm 목표는 실제 패드/서보 제한으로 도달 불가능하여 거부 테스트로 분리했다. 통과한 목표는 반경 145/155/160 mm × yaw -10/0/10도 9점이며, 전 범위/물리 파지 성공 주장이 아니다.
+- v2 기하: `tests/test_masterpi_physical_geometry.py tests/test_masterpi_visual_geometry.py` **23 passed in 0.87s**.
+- v3/번들/소스 고정 중간 회귀: **80 passed in 57.56s**. 기존 통합 pair/seams 및 입력 경계: **125 passed in 25.60s**. 이후 v64 생성 비교까지 **826 passed in 924.17s**, 감사 접촉 프로필/수집 보완 뒤 관련 **31 passed in 3.73s**를 확인했다. MuJoCo import 금지 상태의 순수 모듈 검사도 통과했다. 명령·통과 결과·최종 파일 해시는 `codex-validation.json`에 기록했고 `.pytest_tmp` 삭제를 확인했다.
+
+### 남은 문제와 게시 상태
+
+- **커밋 0, push 0, 병합 0.** `git fetch origin`은 공용 `.git/.../FETCH_HEAD`, `git add --sparse -A`는 `index.lock` 쓰기에서 `Operation not permitted`로 실패했다. 우회 checkout·강제 변경은 하지 않았다.
+- origin의 옛 이름 `kcm0127-dotcom/ugrp`와 요청 저장소 `cmkang131/UGRP-Multi-Robot-Collaboration-Project`는 GitHub 커넥터상 동일 저장소 ID `1359726870`이다. origin 설정은 바꾸지 않았다.
+- PR 댓글·본문 쓰기는 모두 `MCP tool call requires approval, but approval policy is never`로 거부됐다. 실제 본문은 갱신되지 않았고 한국어 갱신안을 `PR_BODY_KO.md`에 저장했다. 원격 HEAD는 여전히 `961271a4`이며 여기의 로컬 기능 변경을 포함하지 않는다.
+- 남은 구현: 실제 v3 손목 스킬/표식 없는 위치 추정/짝 운반/전체 교사 소비자 이관. 남은 검증: 실제 host 초기화·settling·주행·파지·운반·실물 보정. 현재 스윕/발자국은 보수적 정적 모델이며 v3 실물 보정 완료가 아니다.
+- 이후 허용된 세션에서 원격 번호 충돌을 다시 확인하고, 지정 테스트의 최종 통과를 본 뒤 `git add --sparse -A` → 한국어 커밋(마지막에 `Co-Authored-By: Codex <noreply@openai.com>`) → push → PR 본문 갱신을 해야 한다. 병합하지 않는다.
+
+## 할 일 (2026-09-28 인계 당시, 관리자 결정 반영: robot_model은 장면 버전의 일부)
 완료:
 - v3 물리 모델(`sim/masterpi_model_v3.py`, `PHYSICAL_V3`)
 - 기존 장면이 쓰는 코드와 테스트는 main 바이트로 복원했다(3/n). 기존 등록 장면은 robot_model v2, 0.155 m 스테이션 규약, 해시와 동작이 main과 같다. 동결 소스(`owncam_pair_beam` 등)도 바뀌지 않는다.
@@ -24,8 +55,29 @@
 1. v3 장면 버전: 다음 빈 버전 이름으로 새 zone 장면 버전을 만들고 `robot_model: masterpi_v3`를 싣는다(`sim.session_scenes.Scene`의 명시적 version/profile 재사용). 그 버전에만 새 해시를 등록한다. 연결 지점은 zone study 장면 구성(`harness/zone_own_team_host.py` 74–80행)이다. `sim/zone_own_scene_provider.own_scene`의 transform 뒤에 `v3_robot_xml_transform(world 템플릿 physical_params, calibrated_keys=calibration_parameters)`을 잇는다. 이 파일들은 zone study closure에 속하므로 새 번들 ID와 함께 바꾼다. 기존 버전 경로의 바이트와 동작은 그대로 둔다.
 2. v3 소비자는 새 코드로 만든다. 스테이션(teacher), 시작 도킹, 발자국은 장면의 robot_model에서 `station_grasp_convention`을 읽는다. 기존 `scripts/zone_teacher.py`, `sim/zone_start_dock.py`, `harness/zone_team_footprint.py`의 바이트는 바꾸지 않는다.
 3. v3 제어기 층: 팔 장착 48.2 mm를 반영한 FK/IK와 카메라 외부 파라미터를 새 모듈로 만든다(예: `harness/visual_arm_v3.py`, `CONTROLLER_GEOMETRY_ID`). v3 장면의 실행기만 그 모듈을 쓴다. 가드도 같다.
-4. 번들: 등록은 push 직전에 한다. main과 열린 PR(#246 v70, #250, #253)의 최댓값을 다시 확인하고 v71 이상을 쓴다.
-5. 다중 로봇 자기충돌·nav_cam 가림 감사(`mj_forward`), 비교 렌더 재생성, 전원 연결 후 물리 검증(아래)
+4. 다중 로봇 시작 자세 자기충돌·nav_cam/robot_cam 가림 정적 감사(`mj_forward`만 허용). 이번 세션에서 물리 stepping은 금지한다.
+5. 번들은 마지막에 등록한다. main과 열린 PR 전체(#246, #250, #253, #254 포함)의 RUNNABLE_ID를 다시 확인한 뒤 다음 빈 ID를 쓴다. 확인 브랜치와 선택 ID는 PR #249 댓글에 남긴다. 비교 렌더·전원 연결 후 물리 검증은 별도 후속 작업이다.
+
+## Codex 인계 점검 — 2026-09-28 (착수 차단)
+
+- 기준: `claude/masterpi-visual-v3`, 로컬 HEAD와 PR #249 head 모두 `961271a44ad34cf17e94f36217589af7cde2fa2a`. 시작 작업 트리는 깨끗했다.
+- 차단: `git fetch origin`이 `/Users/changmin/projects/ugrp/.git/worktrees/claude-masterpi-v3/FETCH_HEAD: Operation not permitted`로 실패했다. 공용 Git 메타데이터가 세션 쓰기 허용 범위 밖이므로 필수 fetch·단계별 커밋·push 절차를 진행할 수 없다. 권한 우회나 다른 checkout 사용은 하지 않았다.
+- 추가 확인 필요: 로컬 origin은 `https://github.com/kcm0127-dotcom/ugrp.git`, 요청 저장소는 `cmkang131/UGRP-Multi-Robot-Collaboration-Project`다. 리다이렉트/동일 저장소 여부는 확인하지 못했고 origin은 바꾸지 않았다.
+- `gh pr list`와 `gh pr view`는 api.github.com 연결 실패. GitHub 커넥터로 요청 저장소의 PR #249 본문·head는 읽었다.
+- 이번 세션 커밋 목록: 없음. 기능 전환·신규 장면/해시·bundle ID 등록: 없음. 동결 소스와 기존 등록 장면은 수정하지 않았다.
+- bundle 번호 확인 브랜치: 없음(원격 갱신 차단). #246, #250, #253, #254 및 당시 열린 PR 전체와 main의 `RUNNABLE_ID` 조사는 재개 후 수행해야 한다. 번호를 추정하거나 예약하지 않았다.
+- 테스트: 미실행(구현 전 차단). 이번 세션의 pytest 통과 결과는 없다. 기존 통과 기록은 이전 작업의 결과다.
+- 시뮬레이션·물리 stepping·mj_forward·모델/LLM API 호출: 모두 0회. 새 실험 결과나 TensorBoard 스냅샷은 없다.
+- 저장 범위: 이 점검 기록은 로컬 실험 README에만 저장했다. PR 본문 갱신은 GitHub 커넥터가 `MCP tool call requires approval, but approval policy is never`로 거부하여 반영되지 않았다. README는 미커밋·미push 상태이며 PR TODO 갱신도 남아 있다.
+
+남은 TODO — 이번 사용자 요청 순서, 모두 미완료:
+1. [ ] 다음 빈 이름의 v3 zone 장면과 `robot_model: masterpi_v3`, XML transform 연결, 신규 버전에만 해시 등록 및 단일 파일 pytest 통과.
+2. [ ] 장면 robot_model 기반 station·dock·footprint 새 소비 경로. `scripts/zone_teacher.py`, `sim/zone_start_dock.py`, `harness/zone_team_footprint.py` 바이트 보존 및 관련 pytest 통과.
+3. [ ] 기존 수학을 import/매개변수화해 v3 FK/IK·카메라 자세·collision sweep guard 구현, v3 실행기에만 연결 및 관련 pytest 통과.
+4. [ ] mj_forward만 사용하는 시작 자세 다중 로봇 자기충돌·nav_cam/robot_cam 가림 정적 감사와 관련 pytest 통과. mj_step·시뮬레이션 루프 금지.
+5. [ ] 마지막에 main과 열린 PR 전체(#246/#250/#253/#254 포함)에서 git grep으로 다음 bundle ID 확인·등록·검증하고 확인 브랜치와 ID를 PR #249 댓글에 기록.
+
+재개 조건: 지정 worktree의 공용 Git 메타데이터에 정상적으로 쓸 수 있고 원격 fetch/push가 가능한 세션에서 origin 대상부터 확인한다. 각 단계는 지정된 OMP_NUM_THREADS=1 단일 파일 pytest의 passing 결과를 확인한 뒤 별도 명령으로 커밋하고 즉시 push한다. main push와 PR 병합은 계속 금지한다.
 
 ## SDK와 치수도 판정 (레퍼런스 우선)
 

@@ -75,9 +75,20 @@ class OwnCamTeamHost:
         self.scene = own_scene(spec, profile, scene)
         xml_transform = ((lambda xml: apply_cargo_profile(self.scene.transform(xml), profile))
                          if profile in CARGO_PROFILES else self.scene.transform)
-        self.world = MultiMasterPiProductionV2(seed=spec['seed'], width=640, height=480, render=True,
-                                               warehouse_layout=self.scene.engine_layout, warehouse_cargo_ids=None,
-                                               xml_transform=xml_transform)
+        from sim.zone_masterpi_v3_scene import scene_robot_model, build_world
+        self.model_runtime = None
+        if scene_robot_model(self.scene) == 'masterpi_v3':
+            from harness.zone_robot_model_runtime import for_scene, require_v3_consumers
+            require_v3_consumers(student, pose_factory)
+            if spec.get('pair_order_sheets'):
+                raise ValueError('v3 pair executor requires a separately migrated controller')
+            self.model_runtime = for_scene(self.scene)
+            self.world = build_world(self.scene, profile, seed=spec['seed'], width=640, height=480, render=True,
+                                     warehouse_layout=self.scene.engine_layout, warehouse_cargo_ids=None)
+        else:
+            self.world = MultiMasterPiProductionV2(seed=spec['seed'], width=640, height=480, render=True,
+                                                   warehouse_layout=self.scene.engine_layout, warehouse_cargo_ids=None,
+                                                   xml_transform=xml_transform)
         self.scene.setup(self.world)
         self.pairs = None
         self.contact_record = {'profile': profile, 'base_profile': base_profile(profile),
@@ -94,7 +105,7 @@ class OwnCamTeamHost:
         self.spawns = self.scene.config['setup_only']['spawns']
         calibration = json.loads((self.root / student['calibration']).read_text())
         skill_cls = getattr(importlib.import_module(student['skill_module']), student['skill_class'])
-        from sim.zone_start_dock import static_spawn_keepouts
+        from sim.zone_model_conventions import static_spawn_keepouts
         # Static layout only (idle-spawn discs, #181 v6 contract; v9 inherits v6's class), never a live pose.
         from harness.wrist_zone_skill_v6 import StaticKeepout
         discs = static_spawn_keepouts(self.static)
@@ -110,6 +121,7 @@ class OwnCamTeamHost:
             port = CameraRobotPort(self.world, rid, allow_reverse=True, allow_mecanum=True)
             ex_ref: dict = {}
             own_static = copy.deepcopy(self.static)          # per-robot copies: no shared mutable state
+            runtime = None if self.model_runtime is None else for_scene(self.scene)
 
             def planner(start, goal, carrying, _ref=ex_ref, _static=own_static):
                 job = _ref['ex'].job
@@ -119,11 +131,16 @@ class OwnCamTeamHost:
                 return None if result is None else [tuple(p) for p in result['waypoints_m'][1:]]
 
             def factory(order, *, robot_id, _planner=planner, _keepouts=keepouts,
-                        _bounds=tuple(own_static['bounds_m'])):
+                        _bounds=tuple(own_static['bounds_m']), _runtime=runtime):
+                if _runtime is not None:
+                    return skill_cls(order, planner=_planner, robot_id=robot_id, mode='m1', static_keepouts=_keepouts,
+                                     static_bounds_m=list(_bounds), model_runtime=_runtime)
                 return skill_cls(order, planner=_planner, robot_id=robot_id, mode='m1', static_keepouts=_keepouts,
                                  static_bounds_m=list(_bounds))
 
-            pose = None if pose_factory is None else pose_factory(rid, own_static, calibration['params'], spec['seed'])
+            pose_kwargs = {} if runtime is None else {'model_runtime': runtime}
+            pose = None if pose_factory is None else pose_factory(rid, own_static, calibration['params'], spec['seed'],
+                                                                **pose_kwargs)
             if pose_factory is not None and pose is None:
                 raise ValueError('pose_factory must return the selected provider')
             ex = ZoneOwnExecutor(rid, own_static, calibration['params'], self.order_sheet, skill_factory=factory,
@@ -131,6 +148,9 @@ class OwnCamTeamHost:
                                  seed=spec['seed'], job_sim_limit_s=spec.get('job_sim_limit_s', DEFAULT_JOB_SIM_LIMIT_S),
                                  static_keepouts=copy.deepcopy(discs), pose_source=pose)
             ex_ref['ex'] = ex
+            if runtime is not None:
+                # A guard belongs to one robot. No estimates or commands are shared.
+                ex.guard = runtime.guard
             self.robots[rid] = _RobotSlot(rid, port, ex)
         self.study_layer = study_layer
         self.frames_dir = Path(frames_dir) if frames_dir else None

@@ -40,8 +40,7 @@ from sim.masterpi_camera_profile import CAMERA_LOCAL_POS_M, CAMERA_LOCAL_QUAT_WX
 from sim.masterpi_dynamics_v2 import WHEEL_RADIUS_M, build_v2_xml
 from sim.masterpi_geometry_v3 import PHYSICAL_V3, MasterPiPhysicalGeometry
 
-ROBOT_MODEL_V2 = "masterpi_v2"
-ROBOT_MODEL_V3 = "masterpi_v3"
+from sim.masterpi_robot_models import ROBOT_MODEL_V2, ROBOT_MODEL_V3
 MODEL_VERSION = "masterpi-model-v3-20260928"
 V3_PREFIX = "v3_"
 SONAR_SITE = "v3_ultrasonic_site"

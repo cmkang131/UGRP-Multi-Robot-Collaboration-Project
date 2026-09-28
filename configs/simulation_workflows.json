@@ -721,12 +721,26 @@
       "output_kind": "directory"
     },
     {
+      "id": "masterpi-v3-static-audit",
+      "purpose": "MasterPi v3 새 장면의 시작 자세 접촉과 카메라 가림 정적 감사(mj_forward만)",
+      "entry": "scripts/audit_masterpi_v3_static.py",
+      "docs": "experiments/2026-09-28-masterpi-visual-v3/README.md",
+      "requires": "MuJoCo 컴파일·mj_forward·광선 검사만 사용. 물리 step·모델 호출 없음. 평가 전용 출력.",
+      "version": "1.0.0",
+      "runner": "scripts.audit_masterpi_v3_static",
+      "output_flag": "--output",
+      "side_effect": "local_diagnostic",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [],
+      "output_kind": "file"
+    },
+    {
       "id": "zone-study-integration-run",
       "purpose": "구역 대화 연구 통합 러너: 연구 뼈대(#194 조건·프롬프트·프로토콜·SIM 비용·스케줄러)가 자기 카메라 실행기(#206) 3대와 공동 운반 PairTeam(#235)을 구동(no-LLM fixture, 자세 제공자는 설정으로 선택; tags_temporary = 임시, 표식 사용, 연구 결과 아님)",
       "entry": "scripts/run_zone_study_integration.py",
       "docs": "experiments/2026-09-26-zone-study-integration/README.md",
       "requires": "local Mac/Linux offscreen rendering; synchronous SIM only; run bundle must match the prereg bundle_sha256; robot inputs = own robot_cam + own commands + static map + order sheet + delivered messages; GT only in eval_only/; weld OFF; no model call",
-      "version": "2.2.0",
+      "version": "2.4.0",
       "runner": "scripts.run_zone_study_integration",
       "output_flag": "--output",
       "side_effect": "local_simulation",
