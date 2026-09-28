@@ -23,11 +23,21 @@ Refs #221. #260(단계 probe 첫 격자, v6 정책 probe)의 후속이다.
 
 | 항목 | 값 | 이유 |
 |---|---|---|
-| 실행 번들 | `zone-pair-v76-fixclock-grasp-entry` | main v70, 열린 PR 최댓값 v75(#261) 다음. v70은 v6 dev 코호트(#259) 기록 소스로 `RETIRED_BUNDLE_IDS`에 보존 |
-| 정책 | `b-v6c` = `posterior_relook` + `exact_fix_clock` + `grasp_range_entry` | 새 플래그 2개는 opt-in. v5h·b-only·a+b 동작은 바뀌지 않음 |
-| 등록 revision | `v6c` ([prereg_v6c.json](prereg_v6c.json), DRAFT) | v6(#259, REGISTERED)는 #262 방식으로 등록 커밋 3c26acdd 기준 historical 감사만 한다 |
-| workflow `zone-study-integration-run` | `2.12.0` **예약, 카탈로그 반영 안 함** | 2026-09-29 조정자 배정. main 2.8.0, #256 2.9.0, #257 2.10.0, #249 2.11.0 다음. 그 PR들이 병합된 뒤 main 위로 다시 맞추면서 반영하고, prereg_v6c도 그때 다시 봉인한다 |
+| 실행 번들 | `zone-pair-v76-fixclock-grasp-entry` | 조정자 배정 번호. 2026-09-29 main 재동기화(a1307b73, #256 v77 · #257 v78 · #249 v79 병합 뒤) 이후 v76 = main v79 + opt-in `b-v6c`. v79는 `RETIRED_BUNDLE_IDS`로 옮겼고 `llm_driver.json`에 v79와 같은 프로필로 v76을 등록했다 |
+| 정책 | `b-v6c` = `posterior_relook` + `exact_fix_clock` + `grasp_range_entry` | 새 플래그 2개는 opt-in. v5h·b-only·a+b·b-boot·a+b-boot 동작은 바뀌지 않음 |
+| 등록 revision | `v6c` ([prereg_v6c.json](prereg_v6c.json), DRAFT, `CURRENT_REVISION`) | v6(#259, REGISTERED, 3c26acdd)와 v6b(#261 DRAFT, 15793691)는 봉인 커밋 기준 historical 감사만 한다. 재동기화 뒤 한 번 다시 봉인했다(아래) |
+| workflow `zone-study-integration-run` | `2.12.0` | main 2.11.0(#249) 다음. 재동기화 커밋에서 카탈로그에 반영 |
 | probe | `PROBE_VERSION 0.3.0` (`b-v6c` 추가) | workflow 행 등록은 #260처럼 보류 (`workflow_registration_pending.json`) |
+
+### 재동기화와 재봉인 (2026-09-29, main a1307b73)
+
+- **테스트 헬퍼.** main은 current draft가 없을 때(`CURRENT_REVISION = None`) 합성 revision(`v6-current-tree-test`, v6b 과학 필드)으로 입장 경로를 시험했다. 이제 `CURRENT_REVISION = 'v6c'`이고 `REVISION_POLICIES['v6c'] = (v5h, b-only, b-v6c)`다. 그래서 `tests/test_zone_pair_v6.py`와 `tests/test_zone_pair_registered_source.py`는 합성 revision 대신 실제 v6c 등록을 쓴다.
+- **소스 폐포.**
+  - #249 뒤 팀 host는 모든 지도에서 `sim/zone_masterpi_v3_scene.scene_robot_model`로 로봇 모델을 고르고, `sim/zone_model_conventions.static_spawn_keepouts`로 출발 keepout을 만든다(v2 지도는 기존 경로에 위임).
+  - 그래서 두 파일을 v6c 계약 폐포에 넣었다(75 → 77 파일).
+  - 장면 계약 소스 중 v6와 해시가 달라진 것은 `harness/zone_own_team_host.py`, `sim/zone_own_scene_provider.py`, `scripts/run_zone_pair_dev.py`다. v3 분기 추가만 있고 v2 경로는 같다([build_prereg_v6c.py](build_prereg_v6c.py) 허용 목록).
+- **재봉인 값.** `registration_sha256` `96e8ec6897233d5beb3b8581801d9a70e786db3b0f5d3aa0aa42b40402b4d3cb`, 파일 sha256 `64acc04a8c08af61b0fa488440c70a8bec4338881c7a32b4895d4b07970ca95e`.
+- **단계 probe 결과의 범위.** 위 결과는 병합 전 v76(main v70 위, b5234b7a·b534a9b5)의 것이다. 재동기화로 바뀐 것은 v6b·B7·B6·MasterPi v3 쪽 경로와 번호다. b-v6c 제어 경로 파일(`owncam_recovery_v6c.py`, `zone_pair_grasp_entry_v6c.py`, beam track·guard·grasp 훅, `owncam_recovery_v6.py`, align·global)은 바이트 그대로다. main 쪽 공동 경로 변경은 v6b 부트스트랩 훅뿐이다(`zone_own_executor.py`, `zone_pair_executor.py`). 이 훅은 `stationary_bootstrap` 정책의 제공자 상태가 없으면 아무 일도 하지 않는다. 그래도 재동기화한 소스로 물리 probe를 다시 돌리지는 않았다(조정자 지시: 이 작업에 물리 불필요).
 
 ## 문제 1: v6 b-only 정렬 relook의 음수 fix 나이
 

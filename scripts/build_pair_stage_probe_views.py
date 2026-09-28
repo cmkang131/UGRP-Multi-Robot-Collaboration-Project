@@ -20,7 +20,8 @@ DEFINITION = ('stage probe verdict, NOT E2E success: both robots reached the sta
               'state, no in-stage failure, and the eval-only GT stage criteria held (harness/pair_stage_probe.py CRITERIA)')
 SHORT = {'align': 'al', 'grasp_lift': 'gl', 'carry': 'ca', 'setdown': 'sd',
          'teacher_grid': 't', 'e2e_checkpoint': 'e2e', 'tolerance_boundary': 'bd'}
-POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C'}   # C = v6c (exact clock + grasp-range entry)
+POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C',   # C = v6c (exact clock + grasp-range entry)
+                'b-boot': 'BB', 'a+b-boot': 'ABB'}                    # v6b start bootstrap (PR #261)
 
 
 def _run_tag(raw):
