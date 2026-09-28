@@ -27,14 +27,22 @@ Opt-in layer over the v6 recovery PF (``owncam_recovery_v6``), selected by the
 
 3. Belief check for that pan only (particle chance constraint: Blackmore,
    Ono, Bektassov, Williams 2010 approximate a collision chance constraint
-   by the fraction of belief particles in collision; RRBT, Bry & Roy 2011,
-   checks the belief rather than the mean). The unchanged SweepGuard is
-   evaluated with zero extra sigma at each of 64 systematic samples of the
-   provider's posterior plus the mean; all must be clear. After one folded
-   view the posterior is still multimodal across the three dock rows
-   (offline replay), which a Gaussian sigma-point check misrepresents.
-   A provider without ``belief_hypotheses`` falls back to the mean and the
-   2x3 covariance sigma points. The arm raise uses the unchanged guard.
+   by the weighted fraction of belief particles in collision; RRBT, Bry &
+   Roy 2011, checks the belief rather than the mean). The mean must be
+   clear, and a conservative upper bound of the collision probability mass
+   over ALL weighted particles must stay <= PAN_RISK_BOUND (1 %). The bound
+   bins particles into cells (CELL_XY_M x CELL_XY_M x CELL_YAW_RAD) and
+   checks each cell centre with the unchanged SweepGuard inflated by the
+   cell half-extent (K_SIGMA*std_xy = half-diagonal, K_SIGMA*std_yaw = half
+   yaw width; the guard's clearance is 1-Lipschitz in position and its lever
+   term bounds the rotation), so a clear cell is clear for every particle in
+   it. The first draft checked 64 systematic samples only, which could miss
+   a 10 % collision mass spread between sample indices (re-review #261).
+   After one folded view the posterior is still multimodal across the three
+   dock rows (offline replay), which a Gaussian sigma-point check
+   misrepresents. A provider without ``belief_particles`` falls back to the
+   mean and the 3x3 covariance sigma points. The arm raise uses the
+   unchanged guard.
 
 4. PF sampling for the stationary views (the robot does not move, so the
    exact belief is b = prior x prod_j p(z_j|x) up to the stationary diffusion
@@ -282,15 +290,31 @@ def bootstrap_complete(report, *, guard=None, servo=None, first_motion=None) -> 
     a clearance that exists only because of the clamp.
     """
     from harness import zone_own_guards as guards
-    if not bootstrap_fix(report):
-        return False
+    if not bootstrap_fix(report) or not report_finite(report):
+        return False              # NaN/inf/negative sigma never completes (re-review #261)
     if report.std_xy_m <= guards.GATE_UNLOADED.low_xy_m and report.std_yaw_rad <= guards.GATE_UNLOADED.low_yaw_rad:
         return True
     if guard is None or servo is None or first_motion is None:
         return False
     if report.std_xy_m > guards.SIGMA_CAP_XY_M or report.std_yaw_rad > guards.SIGMA_CAP_YAW_RAD:
         return False
-    return bool(guard.transition_clear(servo, first_motion, guards.OwnPose.from_report(report), loaded=False))
+    pose = guards.OwnPose.from_report(report)
+    if pose is None:              # the guard treats None as the uninitialized look policy: refuse here
+        return False
+    return bool(guard.transition_clear(servo, first_motion, pose, loaded=False))
+
+
+def report_finite(report) -> bool:
+    """Pose and sigma finite, sigma non-negative, covariance (if any) finite."""
+    try:
+        vals = [float(report.x_m), float(report.y_m), float(report.yaw_rad),
+                float(report.std_xy_m), float(report.std_yaw_rad)]
+    except (TypeError, ValueError):
+        return False
+    if not all(math.isfinite(v) for v in vals) or vals[3] < 0. or vals[4] < 0.:
+        return False
+    cov = getattr(report, 'cov', None)
+    return cov is None or bool(np.isfinite(np.asarray(cov, float)).all())
 
 
 def sigma_points(report, k):
@@ -307,41 +331,89 @@ def sigma_points(report, k):
     return points
 
 
-BELIEF_SAMPLES = 64
+PAN_RISK_BOUND = .01        # max collision probability mass of a pan step (upper bound)
+CELL_XY_M = .04
+CELL_YAW_RAD = .04
 
 
-def belief_hypotheses(provider, n=BELIEF_SAMPLES):
-    """Systematic samples of the provider's posterior, or None if it exposes none."""
+def belief_particles(provider):
+    """(points Nx3, normalized weights N) of the provider's posterior, or None if it exposes none."""
     inner = _unwrap(provider)
-    method = getattr(inner, 'belief_hypotheses', None)
+    method = getattr(inner, 'belief_particles', None)
     if callable(method):
-        return np.asarray(method(n), float)
-    loc = getattr(inner, 'loc', None)
-    if loc is None or not getattr(loc, 'initialized', False):
+        out = method()
+        if out is None:
+            return None
+        pts, w = out
+    else:
+        loc = getattr(inner, 'loc', None)
+        if loc is None or not getattr(loc, 'initialized', False):
+            return None
+        pts, w = loc.px, np.exp(loc.logw - loc.logw.max())
+    pts, w = np.asarray(pts, float), np.asarray(w, float)
+    if (pts.ndim != 2 or pts.shape[1] != 3 or len(w) != len(pts) or not len(w)
+            or not np.isfinite(pts).all() or not np.isfinite(w).all() or (w < 0).any() or w.sum() <= 0):
         return None
-    w = np.exp(loc.logw - loc.logw.max())
-    w /= w.sum()
-    idx = np.minimum(np.searchsorted(np.cumsum(w), (np.arange(n) + .5) / n), len(w) - 1)
-    return np.asarray(loc.px[idx], float)
+    return pts, w / w.sum()
 
 
-def belief_pan_clear(guard, current, pan, report, *, hypotheses=None, k=None) -> bool:
-    """Pan-only (servo 6), base holding, arm at its issued posture. Nothing else.
+def belief_cells(particles):
+    """Occupied (centre, mass) cells of the particle set; yaw wrapped to [-pi, pi)."""
+    pts, w = particles
+    yaw = (pts[:, 2] + math.pi) % (2 * math.pi) - math.pi
+    key = np.stack([np.floor(pts[:, 0] / CELL_XY_M), np.floor(pts[:, 1] / CELL_XY_M),
+                    np.floor(yaw / CELL_YAW_RAD)], axis=1).astype(np.int64)
+    cells, inv = np.unique(key, axis=0, return_inverse=True)
+    mass = np.bincount(inv.reshape(-1), weights=w, minlength=len(cells))
+    centres = (cells + .5) * np.array([CELL_XY_M, CELL_XY_M, CELL_YAW_RAD])
+    order = np.argsort(-mass, kind='stable')
+    return centres[order], mass[order]
 
-    With ``hypotheses``: the unchanged guard at the mean and at every belief
-    sample, zero extra inflation (particle chance constraint). Without:
-    the mean and the covariance sigma points (fallback for other providers).
+
+def pan_risk_upper(guard, current, target, particles, *, bound=PAN_RISK_BOUND):
+    """Conservative collision mass of the move over all particles, with early exit.
+
+    Returns (clear, risk_upper, cells_checked). ``clear`` means risk_upper <= bound.
+    Cells are checked by decreasing mass; the loop stops once the failing mass
+    exceeds the bound or the unchecked mass cannot push it over.
     """
     from harness import zone_own_guards as guards
-    if report is None or not report.initialized:
+    centres, mass = belief_cells(particles)
+    half_xy = math.hypot(CELL_XY_M, CELL_XY_M) / 2
+    sxy, syaw = half_xy / guards.K_SIGMA, (CELL_YAW_RAD / 2) / guards.K_SIGMA
+    failing, remaining = 0., float(mass.sum())
+    for i, (c, m) in enumerate(zip(centres, mass)):
+        remaining -= float(m)
+        pose = guards.OwnPose(float(c[0]), float(c[1]), float(c[2]), sxy, syaw)
+        if not guard.transition_clear(current, target, pose, loaded=False):
+            failing += float(m)
+            if failing > bound:
+                return False, failing, i + 1
+        if failing + max(remaining, 0.) <= bound:
+            return True, failing + max(remaining, 0.), i + 1
+    return failing <= bound, failing, len(mass)
+
+
+def belief_pan_clear(guard, current, pan, report, *, particles=None, k=None) -> bool:
+    """Pan-only (servo 6), base holding, arm at its issued posture. Nothing else.
+
+    With ``particles``: the unchanged guard at the mean (zero inflation) AND the
+    conservative collision mass over all weighted particles <= PAN_RISK_BOUND.
+    Without: the mean and the covariance sigma points (fallback for other providers).
+    """
+    from harness import zone_own_guards as guards
+    if report is None or not report.initialized or not report_finite(report):
         return False
-    if hypotheses is not None:
-        points = [np.array([report.x_m, report.y_m, report.yaw_rad], float), *np.asarray(hypotheses, float)]
-    else:
-        points = sigma_points(report, guards.K_SIGMA if k is None else k)
+    target = {6: int(pan)}
+    mean = guards.OwnPose(float(report.x_m), float(report.y_m), float(report.yaw_rad), 0., 0.)
+    if particles is not None:
+        if not guard.transition_clear(current, target, mean, loaded=False):
+            return False
+        return bool(pan_risk_upper(guard, current, target, particles)[0])
+    points = sigma_points(report, guards.K_SIGMA if k is None else k)
     if points is None or not all(np.isfinite(p).all() for p in points):
         return False
-    return all(guard.transition_clear(current, {6: int(pan)},
+    return all(guard.transition_clear(current, target,
                                       guards.OwnPose(float(p[0]), float(p[1]), float(p[2]), 0., 0.),
                                       loaded=False) for p in points)
 
@@ -356,7 +428,10 @@ class StationaryBootstrap:
     Completion is decided only at the home pan, after the settle time and on
     the report current at that moment (review #261 finding 4). A pan view is
     visited once: revisiting could feed a byte-different copy of an earlier
-    view as new evidence, so after the queue the scan only holds and observes.
+    view as new evidence. A pan refused by the current belief is NOT consumed:
+    it stays queued and is rechecked (at most once per settle time) as the
+    belief improves; a pan interrupted before its target returns to the queue
+    front (re-review #261).
     """
 
     def __init__(self, guard, pans, start_servo, now, *, first_motion=None):
@@ -367,6 +442,7 @@ class StationaryBootstrap:
         self.first_motion = None if first_motion is None else {**dict(first_motion), 6: self.home}
         self.queue = [int(p) for p in dict.fromkeys(pans) if int(p) != self.home]
         self.target, self.since, self.stage = None, float(now), 'observe'
+        self.visited, self.refused, self.checked_at = [], set(), None
         self.log = [{'t': round(float(now), 3), 'event': 'start', 'home_pan': self.home}]
         self.outcome = None
 
@@ -387,7 +463,7 @@ class StationaryBootstrap:
 
     def step(self, now, provider, servo):
         rep = provider.report(now)
-        hyps = belief_hypotheses(provider)
+        particles = belief_particles(provider)
         settled = now - self.since + 1e-9 >= SETTLE_AFTER_PAN_S
         if self.stage == 'verify' and settled:
             if self._complete(rep, servo) and int(servo.get(6, self.home)) == self.home:
@@ -404,10 +480,12 @@ class StationaryBootstrap:
         if self.stage in ('pan', 'restore'):
             if int(servo.get(6, self.home)) != self.target:
                 step = self._pan_step(servo)
-                if not belief_pan_clear(self.guard, servo, step['pan_pulse'], rep, hypotheses=hyps):
+                if not belief_pan_clear(self.guard, servo, step['pan_pulse'], rep, particles=particles):
                     self._event(now, 'pan_step_refused', rep, target=self.target)
                     if self.stage == 'pan':
-                        self.stage = 'observe'          # observe where we are, then the next pan
+                        self.queue.insert(0, self.target)   # never reached: not a visited view
+                        self.visited.remove(self.target)
+                        self.stage, self.checked_at = 'observe', now
                     return [{'kind': 'hold'}]
                 self.since = now
                 return [{'kind': 'hold'}, step]
@@ -421,11 +499,18 @@ class StationaryBootstrap:
                 self.stage, self.target = 'restore', self.home
                 self._event(now, 'restore', rep)
                 return self.step(now, provider, servo)
-            while self.queue:
-                pan = self.queue.pop(0)
-                if belief_pan_clear(self.guard, servo, pan, rep, hypotheses=hyps):
-                    self.target, self.stage = pan, 'pan'
-                    self._event(now, 'pan', rep, target=pan)
-                    return self.step(now, provider, servo)
-                self._event(now, 'pan_refused', rep, target=pan)
+            due = self.checked_at is None or now - self.checked_at + 1e-9 >= SETTLE_AFTER_PAN_S
+            if self.queue and due:
+                self.checked_at = now
+                for pan in list(self.queue):
+                    if belief_pan_clear(self.guard, servo, pan, rep, particles=particles):
+                        self.queue.remove(pan)
+                        self.visited.append(pan)
+                        self.refused.discard(pan)
+                        self.target, self.stage = pan, 'pan'
+                        self._event(now, 'pan', rep, target=pan)
+                        return self.step(now, provider, servo)
+                    if pan not in self.refused:          # log a refusal once until it changes
+                        self.refused.add(pan)
+                        self._event(now, 'pan_refused', rep, target=pan)
         return [{'kind': 'hold'}]

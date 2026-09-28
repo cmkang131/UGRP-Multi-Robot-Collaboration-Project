@@ -43,7 +43,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from harness import zone_own_guards as guards                       # noqa: E402
-from harness.owncam_bootstrap_v6b import (belief_hypotheses, belief_pan_clear,  # noqa: E402
+from harness.owncam_bootstrap_v6b import (belief_particles, belief_pan_clear,  # noqa: E402
                                           bootstrap_fix, enable_bootstrap)
 from harness.owncam_drive import LOOK_P20, WIDE_LOOK_PANS             # noqa: E402
 from harness.owncam_pose_source import OwnCamPoseSource              # noqa: E402
@@ -114,9 +114,9 @@ def assess(src, static, gt, now, schedule):
                                          and rep.std_yaw_rad <= guards.SIGMA_CAP_YAW_RAD),
                    arm_raise_decision=decision,
                    belief_pan_1230_clear=belief_pan_clear(guard, servo, 1230, rep,
-                                                          hypotheses=belief_hypotheses(src)),
+                                                          particles=belief_particles(src)),
                    belief_pans_clear=[p for p in (1230, 970, 1770, 2030) if belief_pan_clear(
-                       guard, servo, p, rep, hypotheses=belief_hypotheses(src))],
+                       guard, servo, p, rep, particles=belief_particles(src))],
                    sigma_point_pan_1230_clear=belief_pan_clear(guard, servo, 1230, rep),
                    eval_err_xy_m=round(err, 4), eval_err_yaw_rad=round(yerr, 4))
     out.update(v6_informative_fix=bool(schedule != 'v5h_logged' and bootstrap_fix(rep)),

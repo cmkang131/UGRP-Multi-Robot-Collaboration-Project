@@ -232,12 +232,14 @@
     "flag_definitions": {
       "posterior_relook": "B: posterior-preserving relook, observation quality receipts, blocked-pan cancel",
       "beam_relative": "A: own-view beam-relative align/close-in and pre-close shape report; separate global safety envelope with planned safety looks; during align/pre-close the PF is a reference only (no HIGH/convergence stop) while an object-anchored bound (entry fix + ready relative view of the static beam) certifies wall/arm clearance",
-      "stationary_bootstrap": "v6b: equal-weight AMCL-default Gaussian prior on the static start_dock rows; no own arm/wheel command before an informative settled fix whose first arm transition the unchanged guard clears (or gate LOW); only camera pans in between, each checked by the unchanged guard at 64 posterior samples + mean (particle chance constraint); completion only at the home pan after settle, with sigma within the guard cap; resample-move on the stationary belief after an accepted view (no dual samples); a rejected view never mutates the PF; 10 s stationary budget per motion job, then STATIONARY_BOOTSTRAP_NO_FIX, and a failed bootstrap never unlocks motion"
+      "stationary_bootstrap": "v6b: equal-weight AMCL-default Gaussian prior on the static start_dock rows; no own arm/wheel command before an informative settled fix whose first arm transition the unchanged guard clears (or gate LOW); only camera pans in between, each checked by the unchanged guard at the mean plus a conservative collision-mass bound over all weighted particles (cell-inflated, <= 1 %; particle chance constraint); refused pans stay queued and are rechecked; non-finite reports never complete; completion only at the home pan after settle, with sigma within the guard cap; resample-move on the stationary belief after an accepted view (no dual samples); a rejected view never mutates the PF; 10 s stationary budget per motion job, then STATIONARY_BOOTSTRAP_NO_FIX, and a failed bootstrap never unlocks motion"
     },
     "bootstrap_constants": {
       "amcl_initial_std_xy_m": 0.5,
       "amcl_initial_std_yaw_rad": 0.2617993877991494,
-      "belief_samples": 64,
+      "pan_risk_bound": 0.01,
+      "risk_cell_xy_m": 0.04,
+      "risk_cell_yaw_rad": 0.04,
       "max_boot_frames": 6,
       "move_steps": [
         [
@@ -343,7 +345,7 @@
       "harness/zone_pair_global.py": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
       "harness/owncam_recovery_v6.py": "74d90f36dd3f170091ed7c3e8b73432d81cb9ee0ca36d8472b063c9af92b5b46",
       "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
-      "scripts/zone_pair_v6_contract.py": "e7b6ffbaa9e7f2d40d263a0f17e4a6e253ab360cea141d479a9d8db9ec7ee7f8",
+      "scripts/zone_pair_v6_contract.py": "54a1da123946aaab3e11d996b0a19b7d7f69c48888fb0da1c563c7870c0b1f52",
       "harness/zone_own_sweep.py": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
       "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
       "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
@@ -351,7 +353,7 @@
       "scripts/study_owncam_pair_beam.py": "3e4c77e279cde780e19b1a1eb2643c626c46dac15e4671001607c5fa6b9c3cff",
       "harness/visual_arm.py": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
       "harness/m1_owncam_delivery.py": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
-      "harness/owncam_bootstrap_v6b.py": "0c128d4e2a1346dd1d67c7e52992a73f862e349ea754b2ef507ae913d150164e"
+      "harness/owncam_bootstrap_v6b.py": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90"
     }
   },
   "planned_run_count": 6,
@@ -575,5 +577,5 @@
   "scene_contract_changed_sources": [
     "scripts/run_zone_pair_dev.py"
   ],
-  "registration_sha256": "d34f16cbfc5f9bf02fca954bacc887ca7f55c2449f62184d874d4515c798a5b3"
+  "registration_sha256": "c2c07a66d94127be023cbcc4e2c62a63a29edc11218ad69892f78f4bcce34bf7"
 }

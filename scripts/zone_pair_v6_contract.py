@@ -54,8 +54,10 @@ def contract(revision=CURRENT_REVISION):
             'stationary_bootstrap':('v6b: equal-weight AMCL-default Gaussian prior on the static start_dock rows; '
                                     'no own arm/wheel command before an informative settled fix whose first arm '
                                     'transition the unchanged guard clears (or gate LOW); only camera pans in between, '
-                                    'each checked by the unchanged guard at 64 posterior samples + mean (particle chance '
-                                    'constraint); completion '
+                                    'each checked by the unchanged guard at the mean plus a conservative collision-mass bound '
+                                    'over all weighted particles (cell-inflated, <= 1 %; particle chance constraint); '
+                                    'refused pans stay queued and are rechecked; non-finite reports never complete; '
+                                    'completion '
                                     'only at the home pan after settle, with sigma within the guard cap; '
                                     'resample-move on the stationary belief after an accepted view (no dual samples); '
                                     'a rejected view '
@@ -63,7 +65,8 @@ def contract(revision=CURRENT_REVISION):
                                     'STATIONARY_BOOTSTRAP_NO_FIX, and a failed bootstrap never unlocks motion')},
         'bootstrap_constants':{'amcl_initial_std_xy_m':boot.AMCL_INITIAL_STD_XY_M,
                                'amcl_initial_std_yaw_rad':boot.AMCL_INITIAL_STD_YAW_RAD,
-                               'belief_samples':boot.BELIEF_SAMPLES,
+                               'pan_risk_bound':boot.PAN_RISK_BOUND,
+                               'risk_cell_xy_m':boot.CELL_XY_M,'risk_cell_yaw_rad':boot.CELL_YAW_RAD,
                                'max_boot_frames':boot.BootstrapLocalizer.MAX_BOOT_FRAMES,
                                'move_steps':[list(s) for s in boot.BootstrapLocalizer.MOVE_STEPS],
                                'move_iters':boot.BootstrapLocalizer.MOVE_ITERS,

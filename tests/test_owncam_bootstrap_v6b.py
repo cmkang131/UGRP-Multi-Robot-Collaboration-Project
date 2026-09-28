@@ -9,8 +9,8 @@ import pytest
 
 from harness import zone_own_guards as guards
 from harness.owncam_bootstrap_v6b import (AMCL_INITIAL_STD_XY_M, AMCL_INITIAL_STD_YAW_RAD, FAIL_REASON,
-                                          BootstrapLocalizer, StationaryBootstrap, belief_hypotheses,
-                                          belief_pan_clear,
+                                          BootstrapLocalizer, PAN_RISK_BOUND, StationaryBootstrap,
+                                          belief_cells, belief_pan_clear, belief_particles, pan_risk_upper,
                                           bootstrap_complete, bootstrap_state, dock_prior, enable_bootstrap,
                                           prior_logdensity, sigma_points)
 from harness.owncam_drive import WIDE_LOOK_PANS
@@ -216,12 +216,75 @@ def test_particle_pan_check_handles_a_multimodal_row_belief():
     cov = np.cov(rows.T) + np.eye(3) * 1e-6
     rep = report(x=mean[0], y=mean[1], yaw=mean[2], cov=tuple(map(tuple, cov)))
     assert not belief_pan_clear(guard, FOLDED, 1230, rep)                       # Gaussian fallback refuses
-    assert belief_pan_clear(guard, FOLDED, 1230, rep, hypotheses=rows)
-    bad = np.vstack([rows, [[-1.0, -.85, 0.]]])                                 # one hypothesis at the west wall
-    assert not belief_pan_clear(guard, FOLDED, 1230, rep, hypotheses=bad)
+    even = np.full(len(rows), 1 / len(rows))
+    assert belief_pan_clear(guard, FOLDED, 1230, rep, particles=(rows, even))
+    bad = np.vstack([rows, [[-1.0, -.85, 0.]]])                                 # 1/61 of the mass at the west wall
+    assert not belief_pan_clear(guard, FOLDED, 1230, rep, particles=(bad, np.full(len(bad), 1 / len(bad))))
     p = provider(particles=300); enable_provider(p); enable_bootstrap(p, 0.)
-    hyps = belief_hypotheses(p)
-    assert hyps.shape == (64, 3) and np.all(np.isin(hyps, p.loc.px).all(axis=1))
+    pts, w = belief_particles(p)
+    assert pts.shape == (300, 3) and np.isclose(w.sum(), 1.) and np.array_equal(pts, p.loc.px)
+
+
+def _wall_mixture(n=800, n_wall=80, order='interleaved'):
+    safe = np.array([[-.65, y, 0.] for y in (-2.25, -.85, .55)])
+    pts = np.array([safe[i % 3] for i in range(n - n_wall)] + [[-1.0, .55, 0.]] * n_wall)
+    if order == 'interleaved':                  # collision particles spread between systematic sample indices
+        idx = np.argsort(np.r_[np.arange(n - n_wall), (np.arange(n_wall) + .5) * (n - n_wall) / n_wall])
+        pts = pts[idx]
+    elif order == 'shuffled':
+        pts = pts[np.random.default_rng(5).permutation(n)]
+    return pts, np.full(n, 1 / n)
+
+
+@pytest.mark.parametrize('order', ['interleaved', 'shuffled', 'blocked'])
+def test_pan_risk_counts_all_particle_mass_regardless_of_order(order):
+    """Re-review #261 P1: a 10 % collision mass must be refused whatever the particle order."""
+    guard = guards.SweepGuard(DOCK_MAP)
+    pts, w = _wall_mixture(order=order)
+    wall = guards.OwnPose(-1.0, .55, 0., 0., 0.)
+    assert not guard.transition_clear(FOLDED, {6: 1440}, wall, loaded=False)
+    rep = report(x=-.65, y=-.85, cov=((.01, 0, 0), (0, .8, 0), (0, 0, .001)))
+    clear, risk, _ = pan_risk_upper(guard, FOLDED, {6: 1440}, (pts, w))
+    assert not clear and risk > PAN_RISK_BOUND and risk >= .1 - 1e-9
+    assert not belief_pan_clear(guard, FOLDED, 1440, rep, particles=(pts, w))
+    small_pts, small_w = _wall_mixture(n=1000, n_wall=5, order=order)          # 0.5 % mass: within the bound
+    assert belief_pan_clear(guard, FOLDED, 1440, rep, particles=(small_pts, small_w))
+
+
+def test_cell_bound_is_conservative_for_every_particle_in_a_clear_cell():
+    guard = guards.SweepGuard(DOCK_MAP)
+    rng = np.random.default_rng(11)
+    pts = np.c_[rng.uniform(-1.0, -.4, 3000), rng.uniform(.3, .8, 3000), rng.normal(0, .15, 3000)]
+    centres, mass = belief_cells((pts, np.full(len(pts), 1 / len(pts))))
+    assert np.isclose(mass.sum(), 1.)
+    half_xy = math.hypot(.04, .04) / 2
+    for c in centres[:60]:
+        inflated = guards.OwnPose(*map(float, c), half_xy / guards.K_SIGMA, .02 / guards.K_SIGMA)
+        if not guard.transition_clear(FOLDED, {6: 1440}, inflated, loaded=False):
+            continue
+        members = pts[np.all(np.floor(pts[:, :2] / .04) == np.floor(c[:2] / .04), axis=1)
+                      & (np.floor(((pts[:, 2] + math.pi) % (2 * math.pi) - math.pi) / .04) == math.floor(c[2] / .04))]
+        for q in members:
+            assert guard.transition_clear(FOLDED, {6: 1440}, guards.OwnPose(*map(float, q), 0., 0.), loaded=False)
+
+
+@pytest.mark.parametrize('field,value', [('std_xy_m', float('nan')), ('std_yaw_rad', float('inf')),
+                                         ('x_m', float('nan')), ('std_xy_m', -.01)])
+def test_non_finite_or_negative_report_never_completes_or_pans(field, value):
+    """Re-review #261 P1: NaN sigma must not pass as 'within cap' nor as the guard's uninitialized pose."""
+    import dataclasses
+    guard = guards.SweepGuard(DOCK_MAP)
+    first = {**LOOK_P20_FOR_TEST, 1: 2000, 6: 1500}
+    good = report(cov=((.004, 0, 0), (0, .004, 0), (0, 0, .004)), fix=1.5)
+    assert bootstrap_complete(good, guard=guard, servo=FOLDED, first_motion=first)
+    bad = dataclasses.replace(good, **{field: value})
+    assert not bootstrap_complete(bad, guard=guard, servo=FOLDED, first_motion=first)
+    assert not belief_pan_clear(guard, FOLDED, 1230, bad)
+    low = dataclasses.replace(report(fix=1.5), **{field: value})               # gate-LOW path too
+    assert not bootstrap_complete(low, guard=guard, servo=FOLDED, first_motion=first)
+
+
+from harness.owncam_drive import LOOK_P20 as LOOK_P20_FOR_TEST  # noqa: E402
 
 
 class FakeProvider:
@@ -272,6 +335,24 @@ def test_scan_fails_closed_on_budget_without_arm_or_wheel_commands():
                                until=30.)
     assert scan.outcome == 'blocked' and 10. - 1e-6 <= scan.wait.waited_s <= 10.2
     assert {c['kind'] for _, c in issued} <= {'hold', 'look'}
+
+
+def test_refused_pans_stay_queued_and_are_rechecked_when_the_belief_improves():
+    """Re-review #261 P2: a pan refused under a wide early belief is not consumed."""
+    wide = ((.09, 0, 0), (0, .2, 0), (0, 0, .04))
+    def reports(now):
+        if now < 1.95:
+            return report(cov=wide, t=now)                                     # every pan refused
+        if now < 4.:
+            return report(cov=((.004, 0, 0), (0, .12, .01), (0, .01, .01)), t=now)
+        return report(fix=4., t=now)
+    guard = guards.SweepGuard(DOCK_MAP)
+    assert not any(belief_pan_clear(guard, FOLDED, p, report(cov=wide)) for p in (1230, 970, 1770, 2030))
+    scan, issued, t = run_scan(reports)
+    refused = [e for e in scan.log if e['event'] == 'pan_refused']
+    assert refused and all(e['t'] < 1.95 for e in refused)
+    assert any(c['kind'] == 'look' and c['pan_pulse'] != 1500 for _, c in issued)
+    assert scan.outcome == 'fix' and scan.visited
 
 
 def test_restore_rechecks_after_settle_and_reobserves_when_the_fix_is_lost():
