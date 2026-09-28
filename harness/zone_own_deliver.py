@@ -19,7 +19,8 @@ from harness import visual_arm as va
 from harness import zone_own_guards as guards
 from harness.zone_own_driver import GuardedDriver
 from harness.zone_own_sweep import SweepRecheck, reachable_pan
-from harness.m1_owncam_delivery import NEAR_MIN_DETECTIONS, M1OwnCamDelivery
+from harness.m1_owncam_delivery import NEAR_MIN_DETECTIONS
+from harness.owncam_delivery_shared import SharedPoseDelivery
 from harness.owncam_drive import CARRY_POSTURE
 from harness.owncam_pose_source import OwnCamPoseSource
 from harness.zone_own_contract import SLOT_SEARCH_MARGIN_M, lane_viewpoints
@@ -65,14 +66,14 @@ def bottom_clipped_cyan_px(image_b64: str) -> int:
     return int(np.count_nonzero(hit))
 
 
-class _DeliverController(M1OwnCamDelivery):
+class _DeliverController(SharedPoseDelivery):
     """M1 delivery on the executor's localizer, gate and sweep guard; own-RGB search limited to the ordered slot."""
 
     def __init__(self, *args, shared_pose: OwnCamPoseSource, servo: Mapping[int, int],
                  slot_rect: tuple[tuple[float, float], tuple[float, float]], all_rows_y: Sequence[float] = (),
                  gate: guards.UncertaintyGate, guard: guards.SweepGuard, static_keepouts: Sequence[Mapping] = (),
                  **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, pose_source=shared_pose, **kwargs)
         self.all_rows_y = tuple(float(y) for y in all_rows_y)
         self.pose = shared_pose                 # one localizer per robot for the whole episode
         self.servo = dict(servo)                # own issued servo state at job start

@@ -440,7 +440,7 @@ REQUIRED_MOVEMENT_M = .10           # Nav2 required_movement_radius (default 0.5
 # "6 s of commanded driving" fires on slow crawls near a goal and after long looks: 3 of 5 stalls were
 # false. v3 counts the robot's own COMMANDED displacement (sum |v_cmd| * tick) since the baseline.
 STALL_COMMANDED_M = .40             # 4x REQUIRED_MOVEMENT_M; ~0.56 m actual (gain ~1.4) > the 0.5 m loaded travel look
-TRUSTED_TAG_AGE_S = .3
+TRUSTED_FIX_AGE_S = .3
 MAX_RECOVERIES = 2                  # Nav2 RecoveryNode number_of_retries style bound
 MAX_PROGRESS_LOOK_FAILURES = 3      # cumulative per leg; neither refix nor recovery resets this budget
 RECOVERY_BACKOFF_M = .08
@@ -451,7 +451,7 @@ STALL_KEEPOUT_MIN_DOOR_M = .60      # ... nor in a door lane (v2 s700 r1: the on
 
 
 class ProgressMonitor:
-    """No-progress check on trusted own estimates (after a fixed look, or a fresh tag with low sigma).
+    """No-progress check on trusted own estimates (after a fixed look, or a fresh observation with low sigma).
 
     ``stalled`` needs (1) ``STALL_COMMANDED_M`` of own commanded travel since the baseline and (2) a
     trusted estimate taken AFTER that point that still did not move the baseline. When (1) holds

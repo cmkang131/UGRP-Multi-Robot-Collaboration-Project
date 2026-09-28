@@ -147,8 +147,10 @@ def _regions(data: Mapping) -> dict:
 
 
 def _landmarks(data: Mapping, detail: str) -> dict | None:
+    if detail == 'none':
+        return None
     marks = data.get('landmarks')
-    if marks is None or detail == 'none':
+    if marks is None:
         return None
     if marks.get('schema') != LANDMARK_SCHEMA:
         raise ValueError(f'unexpected landmark schema: {marks.get("schema")!r}')
@@ -321,7 +323,7 @@ def map_bundle(map_id: str, *, maps_dir: Path | str = MAP_DIR, landmark_detail: 
               'map_file_sha256': file_sha, 'landmark_detail': landmark_detail,
               'public_map': projection, 'public_map_sha256': digest(projection),
               'base_map': dict(data['base_map']) if 'base_map' in data else None,
-              'has_landmarks': 'landmarks' in data}
+              'has_landmarks': landmark_detail != 'none' and 'landmarks' in data}
     if schematic:
         png, meta = render_schematic(data, width_px=width_px, path=schematic_path,
                                      landmark_detail=landmark_detail)

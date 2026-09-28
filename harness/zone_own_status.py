@@ -66,12 +66,16 @@ class OwnStatusMixin:
         near_door = (math.hypot(self.door_xy[0] - report.x_m, self.door_xy[1] - report.y_m) < DOOR_LANE_RANGE_M
                      and abs(math.cos(report.yaw_rad)) > .8)
         passage = self.door_id if near_door else None
-        block = perception.judge_route_blockage(rgb, pose, static_map=self.map, pose_belief=belief, passage_id=passage)
+        from harness.zone_pair_obstruction import target_context
+        target = target_context(self, report, now)
+        block = perception.judge_route_blockage(obs['image'], pose, static_map=self.map, pose_belief=belief,
+                                                passage_id=passage, expected_target=target)
         committed = block['answer'] == 'yes' and block['confidence'] >= COMMIT_CONFIDENCE
         key = guards.BlockageStreak.key_of(passage, guards.OwnPose.from_report(report))
         row = {'t': round(now, 3), 'judgment': 'route_blockage', 'posture': name, 'frame_id': int(obs['frame_id']),
                'answer': block['answer'], 'confidence': block['confidence'], 'reason': block['reason'],
-               'passage_id': passage, 'belief_confidence': belief['confidence'], 'location_key': key}
+               'passage_id': passage, 'belief_confidence': belief['confidence'], 'location_key': key,
+               'expected_target_occupancy': block.get('expected_target_occupancy', [])}
         self.judgment_log.append(row)
         self._last_blockage = row
         if self.streak.observe(now, block['answer'], committed, key):
@@ -153,7 +157,7 @@ class OwnStatusMixin:
         loc = {'level': self._level, 'gate': self.gate.state, 'initialized': bool(rep is not None and rep.initialized)}
         if rep is not None and rep.initialized:
             loc.update(std_xy_m=round(rep.std_xy_m, 4), std_yaw_rad=round(rep.std_yaw_rad, 4),
-                       since_tag_s=None if rep.since_tag_s is None else round(rep.since_tag_s, 2),
+                       fix_age_s=None if rep.fix_age_s is None else round(rep.fix_age_s, 2),
                        own_estimate_xy_yaw=[round(rep.x_m, 3), round(rep.y_m, 3), round(rep.yaw_rad, 4)])
         return {'schema': STATUS_SCHEMA, 'robot_id': self.robot_id, 'mode': self.mode, 'sim_s': round(self.now, 3),
                 'local_state': self._local_state, 'stopped': self.stopped is not None,

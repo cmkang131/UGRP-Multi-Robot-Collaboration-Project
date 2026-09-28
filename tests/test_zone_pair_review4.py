@@ -123,6 +123,7 @@ def beam_pair(y=.35, sigma=.001, yaw=0.):
     for rid, sign in (('r1', -1.), ('r2', 1.)):
         ep, own = active(host)[rid], exs[rid]
         ep.controller.state = 'carry'
+        ep.controller.beam_grasp_confirmed = True  # explicit own-grip fixture; phase alone is insufficient
         own.servo = dict(hover)
         own.last_report = replace(own.last_report,
                                   x_m=2.2 + sign * .425 * math.cos(yaw),

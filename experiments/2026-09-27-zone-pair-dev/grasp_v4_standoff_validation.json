@@ -1,0 +1,76 @@
+{
+  "schema": "ugrp.zone_pair_standoff_p1_fix.v1",
+  "source_head": "f49fa5ea35b5e92406474ae5dacae8bb3f0abe17",
+  "committed": false,
+  "scope": "PR240 review2; no physics/model calls; actual saved own inputs, deterministic own-pose fixtures, no GT/evaluation input in controller",
+  "tests": {
+    "passed": 426,
+    "elapsed_s": 19.73,
+    "selection": "tests/test_zone_pair*.py",
+    "new_saved_input_cases": 15,
+    "args": [
+      "-q",
+      "--basetemp=./.pytest_tmp",
+      "-p",
+      "no:cacheprovider"
+    ],
+    "OMP_NUM_THREADS": "1",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "runner": "/private/tmp/zone_pair_240_pytest.py",
+    "runner_sha256": "111b4734c7b38bf4c81bbf798ac9b57f633f03acecadef353ef5c902b34314d6",
+    "physical_step_attempts": 0,
+    "physical_steps": 0,
+    "model_calls": 0,
+    "pytest_tmp_removed": true
+  },
+  "earlier_tests": [
+    {
+      "passed": 13,
+      "scope": "initial real-input regressions"
+    },
+    {
+      "passed": 424,
+      "scope": "before camera-command mismatch gate and actual close-command regression"
+    }
+  ],
+  "grasp_contract_sha256": "f69ab138e4f150807751e453a880bb7d24980a2436312c4d75d7fc2a44bb7bf6",
+  "prereg_sha256": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8",
+  "preservation": {
+    "judgement_fields": [
+      "criteria",
+      "stage_rules",
+      "planned_setdown",
+      "limits",
+      "timing",
+      "safety_coverage",
+      "environment",
+      "inputs"
+    ],
+    "past_experiment_files": 23,
+    "frozen_imports": 32,
+    "geometry_sha256": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+    "source_rgb_metadata_and_commands_rehashed_unchanged": true
+  },
+  "fixture": {
+    "files": 4,
+    "total_bytes": 96315,
+    "manifest_sha256": "d918bf52bced062cbf9592388f359d736dfefd16cd7e804ea61e64ef7d66f8cb"
+  },
+  "source_sha256": {
+    "experiments/2026-09-27-zone-pair-dev/prereg_v4.json": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8",
+    "harness/zone_pair_beam_track.py": "8cddf3873b6dea3582d772d08220752308356166f1c8f218ee76f504193c0303",
+    "harness/zone_pair_executor.py": "c0113a2ad1dbc02b7214474c52d7613be0a26732b0c8df8bf016e4f243ab14d9",
+    "harness/zone_pair_grasp.py": "2512f43d7196e8b99d7260a22047145c35dffb35bb13f49aefcb58449d66b1e6",
+    "harness/zone_pair_guards.py": "b147e6d5c166c8c97cd5a9c8f01fc8ff65dfbd408bb11bfb981d8ba3b4c05761",
+    "scripts/evaluate_zone_pair_dev.py": "a2d2ec208c9ed5176003e70f22e258d7d870bf73a3d11fbbbf97af4ecb31c7ed",
+    "scripts/run_ci_tests.py": "358a75c4d62bf6f0668e5741b59ff9edd1aa9602ed774420c1dba539b2622233",
+    "scripts/zone_pair_grasp_contract.py": "2234c285e6fc525ecd061c2cdf1c397dfc12931b8eab11560d466b9e816131d2",
+    "tests/test_zone_pair_grasp.py": "6e268c7156a6d15f411daab5337e14da67f7861f5e0bd4b3e513563658bb97b6",
+    "tests/test_zone_pair_standoff.py": "0bd5bf187b8450642904e166469522fe520ac274fddd8e271754317f27cda5db"
+  },
+  "remaining": [
+    "physical validation not run",
+    "P2 issue229 STATUS v5 integration deferred",
+    "remote fetch/PR refresh unavailable under sandbox/network restrictions"
+  ]
+}

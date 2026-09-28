@@ -1,5 +1,23 @@
 # Pair executor dev PHYSICAL 게이트 준비 — 2026-09-27
 
+최신 미실행 후보는 [검토 8 반영 v5g](review8_v5g.md)와 [prereg_v5g.json](prereg_v5g.json)이다.
+dev11·dev12는 승인 null이며 prepare-only다. [실행 승인](../../docs/zone_pair_execution_authorization.md)은
+실행 직전 GitHub 소유자 댓글·소스 SHA·등록 해시·run_id 대조를 요구한다. 아래 과거 기록과 사전등록은 그대로 보존한다.
+
+## dev07/dev08 결과 진단 — 소스 8effc2ce, prereg_v4
+
+**tags_temporary · dev · 연구 결과 아님.** 원본을 읽기만 했으며 코드 수정·신규 물리 step·모델 호출·git 커밋 없음.
+[진단 v5](diagnosis_v5.md) · [하위 조건·원본 해시·수치](diagnosis_v5.json) · [prereg_v4.json](prereg_v4.json).
+
+| 실행 | 결과·실패 (SIM 절대시각) | 미도달·판정 |
+|---|---|---|
+| dev07 / seed901 / 정상 시도 | approach·align·양쪽 pregrasp relook/fix·standoff·descend 후 202.8 s r1 `PREGRASP_NOT_READY` → r2 `PARTNER_ABORT`. 하위 원인은 **END_CLIPPED 입력을 BAND_CLIPPED 전용 track이 거부**한 BEAM_UNCERTAIN; 자세/전파 σ는 한도 이내, 여유 계산은 미도달 | 닫힘 명령 0건, joint_grasp·lift·door·배치 미도달, `DEV_NOT_CONFIRMED` |
+| dev08 / seed902 / abort 진단 | align 중 175.6 s r2 `POSE_UNCERTAIN` → r1 `PARTNER_ABORT`. **XY σ 0.07004 m > loaded HIGH 0.07 m**; yaw σ 1.512°는 3° 이내. 태그 갱신 공백 15.3 s/153프레임 | 닫힘 명령 0건, joint_grasp·lift·door·배치 미도달, `intervention_not_reached`, `DEV_NOT_CONFIRMED` |
+
+권고는 **align 전/중 공통 pose 재관측 + 근접 preclose 관측 계약 보완**이며 임계값 완화는 권고하지 않는다.
+원본 16,642개 해시 일치, 비물리 회귀 81개 통과. TensorBoard 임시 snapshot 변환·이벤트/영상 등록은 확인했고,
+primary 쓰기 제한으로 공유 게시·화면/핀/HParams 검증은 남았다. 아래 v3/v2 준비·결과는 당시 기록으로 보존한다.
+
 ## dev05/dev06 결과 진단 — 소스 4a17e7d4, prereg_v3
 
 **tags_temporary · dev · 연구 결과 아님.** dock x=−0.65 m의 기존 실행을 읽기 전용으로 진단했다.

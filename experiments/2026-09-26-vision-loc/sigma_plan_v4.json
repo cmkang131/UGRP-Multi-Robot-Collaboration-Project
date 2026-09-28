@@ -1,0 +1,44 @@
+{
+  "schema": "ugrp.vision_loc.sigma_plan.v4.1",
+  "status": "FROZEN_BEFORE_CALIBRATION_FIT_OR_VARIANT_COMPARISON_UNCOMMITTED_BY_USER_REQUEST",
+  "scope": "Offline covariance-report calibration on cached DEV estimates only. No physics, renderer, RGB model call, old test access, or online truth correction. Original motion plan and rejection remain unchanged.",
+  "point_estimator": "b0 VIS3 a1; preserve all position/yaw estimates and particle dynamics",
+  "fit_teacher_episodes": ["vl-dev-s909", "vl-dev-s910", "vl-dev-s911", "vl3-dev-s941", "vl3-dev-s942", "vl3-dev-s943"],
+  "fit_closed_loop": ["VISW-vl3-dev-s942-r2"],
+  "validation_teacher_episodes": ["vl3-dev-s945", "vl3-dev-s946", "vl3-dev-s947"],
+  "independence": "VISW is one previously inspected dev episode sharing seed942 with teacher dev, not an independent validation. Validation945/946/947 has already been seen in motion work; held out from fitting, not a new test. Frames are temporally correlated; no frame-iid significance claims.",
+  "observations": "Teacher baseline measured flag reconstructs last-applied-scan time; VISW own report.last_valid_obs.t provides it. Own issued command history determines load and arm settling; same-time frame before command. Reject input/report state or timestamp mismatches.",
+  "states": ["unloaded_settled", "unloaded_unsettled", "loaded_settled", "loaded_unsettled"],
+  "state_definition": "own inferred load x own command arm/pan settle predicate from selected_config_v3; never actual contact, task phase, elapsed episode window, GT pose or observed error",
+  "variants": {
+    "u0": "unchanged covariance report",
+    "u1": "one positive global variance multiplier a; no stale envelope",
+    "u2": "per-state a*raw_trace_xy+b+q*scan_age; if no newer applied scan, max with previous reported variance+q*dt (preserved across state changes); yaw unchanged"
+  },
+  "fit_rule": {
+    "targets": "GT squared XY error, fit DEV only, vision estimates only; oracle uses same frozen coefficients and is diagnostic",
+    "weight": "each of the seven fitting sequences has total weight 1/7; conditional objectives renormalize those weights without duplicating frames",
+    "u1": "analytic a=weighted mean(error_squared/max(raw_trace_xy,1e-10)), clipped to [0.0625,4096]",
+    "u2_stage1": "independently for each state choose (a,b) minimizing weighted isotropic 2D Gaussian NLL on all fitting frames of that state; no observation-age term in stage1; <100 frames uses u1 with b=0",
+    "a_grid": [0.25, 1, 4, 16, 64, 256, 1024],
+    "b_std_grid_m": [0, 0.01, 0.03, 0.1, 0.3, 1],
+    "u2_stage2": "freeze stage1 then jointly search q for four states, evaluating the identical causal stale-envelope recurrence used at runtime on complete fitting sequences; minimize episode-balanced NLL",
+    "q_trace_grid_m2_per_s": [0.000001, 0.0001, 0.01],
+    "tie": "lower objective then lower a,b in stage1; lexicographic q vector in states order in stage2",
+    "no_adaptation": "One finite comparison. No extra variants, grid extensions, window-specific coefficients, yaw retuning or validation refitting after results. New changes require another pre-run plan."
+  },
+  "metrics": {
+    "sigma_definition": "sigma_xy=sqrt(trace(Pxy)), not an axis sigma",
+    "legacy_proxy": "NEES_iso=2*error_xy_norm^2/sigma_xy^2; NLL_iso=log(pi*sigma_xy^2)+error_xy_norm^2/sigma_xy^2; radial coverage(p): error<=sigma*sqrt(-log(1-p)). Isotropy assumption, not exact NEES.",
+    "exact_future": "log full raw/reported 3x3 covariance; exact XY NEES=e_xy^T Pxy^-1 e_xy when covariance is available; no invented off-diagonal entries for old records",
+    "report": ["coverage50/90/95/99", "NEES_iso mean/p90", "NLL_iso", "error>3sigma fraction", "sigma p50/p90", "error p50/p90", "yaw error and sigma", "stale runs and variance decreases", "state and per-episode slices"],
+    "VISW_windows_diagnostic_only": {"grasp_s": [90,150], "near_A_s": [430,462]}
+  },
+  "selection": {
+    "cohort": "validation teacher vision, pooled frames for coverage/tail and equal-episode mean NLL",
+    "requirements": "NLL improves >=0.05 nats; pooled 95% radial coverage in [0.90,0.99]; >3sigma fraction<=0.01; each validation episode NLL does not worsen by >0.10 nats; oracle validation episode-balanced NLL does not worsen by >0.10; all point estimates bitwise unchanged",
+    "rank": "minimum validation equal-episode NLL, tie u1 before u2; if neither eligible keep u0, leave candidates default OFF",
+    "no_gate_relaxation": "A smaller reported sigma is not delivery success; no gate threshold change. Calibration-only eligibility cannot override VIS4 motion NO_GO."
+  },
+  "execution": {"offline_lock_exception": "explicit coordinator/user authorization applies to this entire task", "omp_threads": 1, "new_test_enabled": false, "outputs": "outputs/vision-loc-v4/sigma/", "source_freeze": "hash plan/runtime/analysis/input files before finite comparison; verify after", "commit": false}
+}

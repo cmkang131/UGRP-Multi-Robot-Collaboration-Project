@@ -32,6 +32,22 @@ ORDER = {'orders': [{'order_id': 'cargoX', 'kind': 'long_beam', 'count': 1, 'req
 SHEETS = {'cargoX': m2.pa.coarse_order_sheet([1., .05, 0.])}
 
 
+@pytest.fixture
+def beam_fit(monkeypatch):
+    """Explicit own-RGB geometry fixture, independent of recorded grip pixels.
+
+    The grip JPEG tests the existing close-view classifier only; it does not
+    establish an unclipped whole-beam pose. Scheduling positives supply that
+    separate observation here, rather than silently assuming attachment.
+    """
+    from harness import owncam_pair_beam_v2 as ob2
+    beam = dict(visible=True, end_visible=True, grip_source='band_centre',
+                grip_base_m=[.162, 0.], axis_heading_rad=0.,
+                lateral_spread_m=.001, visible_length_m=.5)
+    monkeypatch.setattr(ob2, 'observe_beam', lambda image, servo: dict(beam))
+    return beam
+
+
 def pair_obs(rid, fid, now, servo):
     result = obs(rid, fid, now, servo)
     jpeg = (ROOT / 'tests/fixtures/m2_pair_door_v3/lift_824_r2_00759.jpg').read_bytes()
@@ -48,7 +64,7 @@ class PairFakeHost(FakeHost):
         # evidence from this recorded JPEG or a simulated ground-truth pose.
         slot.executor.pose.on_frame = lambda t, rgb: PoseReport(
             t, True, x_m=0., y_m=0., yaw_rad=0., std_xy_m=.01, std_yaw_rad=.01,
-            since_tag_s=0., source=slot.executor.pose.source)
+            since_tag_s=0., fix_age_s=0., last_fix_t=now, source=slot.executor.pose.source)
         slot.executor.on_frame(now, frame, rgb_of(frame))
         slot.next_frame = now + self.FRAME_S
 
@@ -292,7 +308,7 @@ def test_done_is_joint_sequence_completion_never_zone_success():
 
 
 @pytest.mark.parametrize('start_s', [0., .55])
-def test_host_drives_checkpoint_barriers_to_joint_done_with_identical_go_times(start_s):
+def test_host_drives_checkpoint_barriers_to_joint_done_with_identical_go_times(start_s, beam_fit):
     host, exs = setup(factory=PhasedM2)
     if start_s:
         host.world.data.time = start_s
@@ -446,12 +462,23 @@ def test_real_v3_rejects_lost_lift_from_own_image_and_stops_both():
     assert ends(exs['r1'])[0]['detail']['reason'] == 'LOAD_NOT_HELD_AFTER_LIFT'
 
 
-def test_frozen_m2_import_manifest_is_unchanged():
+def test_frozen_m2_sources_or_explicit_followup_hashes():
     manifest = json.loads((ROOT / 'experiments/2026-09-26-zone-m2-pair/imports.json').read_text())
     files = manifest['imports']
     # Reviewed revisions that reached main after the freeze (records stay on their pinned SHA).
     post_freeze = {'sim/zone_landmarks.py': {
         '2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1'}}  # PR #208 env v3 registries
+    # PR #240 v5d and v5g candidates; frozen PF and old records stay unchanged.
+    post_freeze['harness/owncam_pose_source.py'] = {
+        '7c41c40db0c502af8522f263971ebfb0ae370543952da2a31960e3044e5388da',
+        # v5g adds only the detached public motion query; no measurement/control change.
+        '7e45cc820f3c0b96b0144c2a3318bf7b18a97f61d88aec2a62130e96ed29b155',
+    }
+    # v5h review10: replay-input frame timestamps now use raw SIM time.
+    # The frozen M2 imports manifest and original result identity stay unchanged.
+    post_freeze['scripts/run_owncam_closed_loop.py'] = {
+        '18af9bcea74cbd509f2eafe9a21a138f517ced17350f034964adec4babf6399e',
+    }
     for row in files:
         got = hashlib.sha256((ROOT / row['path']).read_bytes()).hexdigest()
         assert got in {row['sha256'], *post_freeze.get(row['path'], ())}, row['path']

@@ -58,7 +58,8 @@ RUNTIME_FILES = ('harness/m1_owncam_delivery.py', 'harness/m1_owncam_contract.py
                  'harness/wrist_zone_skill_v9.py', 'harness/owncam_view.py', 'harness/markerless_box.py',
                  'harness/visual_box_skill.py', 'harness/visual_attachment.py',
                  'sim/zone_cargo_contact.py', 'sim/zone_landmarks.py', 'sim/zone_scene.py', 'sim/camera_robot_port.py',
-                 'sim/exact_speedups.py', 'sim/physics_drive_kernel.py', 'scripts/run_m1_owncam.py')
+                 'sim/exact_speedups.py', 'sim/physics_drive_kernel.py', 'scripts/run_m1_owncam.py',
+                 'scripts/record_owncam_localization.py')
 
 
 def git(*args):
@@ -221,7 +222,7 @@ def run(spec, out, student, speedups=None):
         index = len(frames)
         (frames_dir/f'{index:05d}.jpg').write_bytes(jpeg)
         report = ctl.on_frame(now, obs, rgb)
-        frames.append({'frame': index, 't': round(now, 4), 'file': f'frames/{index:05d}.jpg', 'frame_id': obs['frame_id'],
+        frames.append({'frame': index, 't': float(now), 'file': f'frames/{index:05d}.jpg', 'frame_id': obs['frame_id'],
                        'sha256': obs['sha256'], 'camera': obs['camera'], 'phase': ctl.phase,
                        'skill_phase': getattr(ctl.skill, 'phase', None),
                        'commanded_servo': obs['actuator_state']['servo_pulses'], 'report': report.as_dict()})
