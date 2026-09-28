@@ -217,6 +217,22 @@ def test_grasp_range_patch_needs_the_beam_cross_section():
     assert track.estimate(obs['sim_time'], obs, servo, 3) is None
 
 
+def test_cross_section_needs_one_contiguous_in_footprint_band():
+    """Follow-up review: separate strips or out-of-footprint outliers cannot add up to a width."""
+    beam = {'axis_heading_rad': 0., 'grip_base_m': [0., 0.], 'std_xy_m': .005, 'std_yaw_rad': .01}
+    rng = np.random.default_rng(3)
+    along = rng.uniform(.005, .035, 4000)
+    solid = np.c_[along, rng.uniform(-.019, .019, 4000)]
+    assert cross_section(solid, beam) >= MIN_WIDTH_FRACTION * BEAM_WIDTH_M
+    strips = np.c_[along, np.where(rng.random(4000) < .5, -1, 1) * rng.uniform(.0155, .0195, 4000)]
+    assert cross_section(strips, beam) is None                        # two 4 mm strips, 31 mm gap
+    narrow = np.c_[along[:970], rng.uniform(-.004, .004, 970)]
+    outliers = np.c_[rng.uniform(.005, .035, 30), rng.choice([-.08, .08], 30)]  # outside the footprint
+    span = cross_section(np.r_[narrow, outliers], beam)
+    assert span is not None and span < MIN_WIDTH_FRACTION * BEAM_WIDTH_M
+    assert cross_section(solid[:40], beam) is None                     # < MIN_POINTS
+
+
 def test_reused_v6c_provider_is_refused_for_baseline_policies():
     from harness.zone_pair_executor import PairTeam
     bound = source(True)

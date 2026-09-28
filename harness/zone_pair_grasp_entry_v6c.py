@@ -38,9 +38,19 @@ v6c keeps every gate and threshold (3 degrees, 50 mm, >= 4 strips over
    CROSS-SECTION on the tracked axis: beyond the band centre, the 2-98 %
    across-axis span of the beam-colour points is at least
    ``MIN_WIDTH_FRACTION`` of ``BEAM_WIDTH_M`` (the footprint test above
-   already bounds it from above). Recorded grasp-pose views: 0.032-0.051 m on
-   all 155 boundary frames. A beam-width yellow object lying exactly on the
-   tracked axis is not excluded; that residual is stated, not hidden.
+   already bounds it from above). Only in-footprint points count, and they
+   must form ONE contiguous band across the axis (largest across-axis gap
+   <= ``MAX_LATERAL_GAP_M``), so separate strips or outliers cannot add up
+   to a width (follow-up review). Recorded grasp-pose views: span
+   0.032-0.051 m, largest gap 0.58 mm, on all 155 boundary frames.
+
+   Residual (stated, not hidden): one monocular view cannot tell a planar
+   floor mark from a raised surface of the same image footprint (plane
+   ambiguity; parallax from a second viewpoint or post-close verification
+   is needed). A beam-coloured, beam-width floor mark on the tracked axis
+   therefore still passes. The registered v5h/b-only path has the same
+   limit and a weaker one: its lime patch test accepts a 12 mm lime mark
+   with no beam, which v6c rejects (``identity_marks_replay.py``).
 
 These are development bounds from the recorded boundary frames, not
 calibrated accuracy.
@@ -58,6 +68,7 @@ MIN_STRIP_SUPPORT = .25          # of the median supported strip (partial strips
 FINAL_DESCENT_SETTLE_S = .3      # = RecoveryLocalizer 'settled' after an own arm command
 BEAM_WIDTH_M = .04               # catalogue cross-section (RestingBeamTrack footprint |n| <= .02)
 MIN_WIDTH_FRACTION = .7          # 0.028 m; recorded grasp-pose spans 0.032-0.051 m (155 frames)
+MAX_LATERAL_GAP_M = .003         # one contiguous band; recorded largest across-axis gap 0.58 mm
 
 
 def grasp_range_points(image, servo):
@@ -72,13 +83,22 @@ def grasp_range_points(image, servo):
 
 
 def cross_section(points, beam):
-    """2-98 % across-axis span of the patch beyond the tracked grip (None: too few points)."""
+    """2-98 % across-axis span of the in-footprint patch beyond the tracked grip.
+
+    None when fewer than MIN_POINTS such points exist or when they are not one
+    contiguous band across the axis (largest gap > MAX_LATERAL_GAP_M).
+    """
     u = np.array([np.cos(beam['axis_heading_rad']), np.sin(beam['axis_heading_rad'])])
     rel = np.asarray(points) - np.asarray(beam['grip_base_m'])
-    far = rel @ u > 0.
-    if far.sum() < v1.MIN_POINTS:
+    a, n = rel @ u, rel @ np.array([-u[1], u[0]])
+    pad = 2 * (beam['std_xy_m'] + beam['std_yaw_rad'] * .60)      # = RestingBeamTrack.estimate footprint
+    inside = (a > 0.) & (a <= .57 + pad) & (np.abs(n) <= .02 + pad)
+    if inside.sum() < v1.MIN_POINTS:
         return None
-    lo, hi = np.percentile(rel[far] @ np.array([-u[1], u[0]]), [2, 98])
+    across = np.sort(n[inside])
+    if float(np.max(np.diff(across))) > MAX_LATERAL_GAP_M:
+        return None
+    lo, hi = np.percentile(across, [2, 98])
     return float(hi - lo)
 
 
