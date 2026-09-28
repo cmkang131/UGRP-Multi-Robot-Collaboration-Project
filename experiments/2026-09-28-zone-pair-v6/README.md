@@ -134,3 +134,28 @@ PR #240이 main에 병합됐다(d5bd208e). 코디네이터가 #246의 base를 ma
   - v5h 관련 테스트는 main의 `tests/zone_pair_current_source.py` 방식(합성 current-source fixture + 커밋된 v5h 거부)을 따른다.
   - 이 브랜치는 v5h scene 계약 소스(`zone_own_team_host.py`, `run_zone_pair_dev.py`, `zone_pair_dev_runtime.py`)도 바꾼다. `load_config`가 scene 계약을 먼저 검사하므로, 커밋된 v5h 거부 사유는 scene 또는 grasp 불일치 둘 다 허용하도록 helper 한 줄을 고쳤다. 거부 자체와 출력 미생성 검사는 그대로다.
 - **의미 변화:** 세 조건(v5h/b-only/a+b) 모두 main의 다중 턴 스케줄러 위에서 돈다. pair 조건 간 차이는 여전히 `pair_policy` 하나다.
+
+## 최종 적대적 검토 수정 (2026-09-28)
+
+검토: 기본 체크아웃 `outputs/review-246-final-20260928.md`(HEAD d5a8c5f2, P1 3건·P2 4건·P3 5건). 물리 step·모델 호출은 없다.
+
+- **P1-1 (정렬 중 예정 재관측이 끝나지 않음):** `before_control`은 재관측 상태가 아니면 모든 분기보다 먼저 활성 예정 look을 끝낸다. 이제 align relook마다 회당 6초 허용량과 count가 따로 적용된다. 회귀 테스트는 align 예약 relook 3회를 강제해 index 1·2·3, HIGH 대기 0을 확인한다.
+- **P1-2 (바이트 동일 새 프레임):** 자기 명령이 없었고 카메라 PWM·segment가 같은데 픽셀이 같으면, 직전 판정을 새 frame에 그대로 유지한다(`IDENTICAL_PIXELS_NO_NEW_COMMAND`). anchor·identity 시각은 갱신하지 않으므로 계속 나이를 먹고, close-in 근거가 되지 않는다. 명령 뒤 같은 픽셀이면 여전히 `DUPLICATE_IMAGE`다. 회귀 테스트는 저장 raw JPEG(dev09 r2 1491)를 두 frame으로 넣는다.
+- **P1-3 (정지 빔 전제 미검증):** object anchor를 다음 세 경우에 버린다.
+  1. 전역 envelope와 anchored bound가 K_SIGMA 원끼리 겹치지 않을 때(`GLOBAL_ANCHOR_DISAGREE`).
+  2. anchor 이후 자기 발행 명령의 도달 범위(전역 envelope와 같은 절반 이득 중심·[0, 1.6] 반경)로 전파한 anchor 시점 빔과 현재 track 빔이 어긋날 때. 누적 기준 연관이다(`BEAM_MOVED_SINCE_ANCHOR`).
+  3. 상대가 close/hold 단계를 메시지로 알릴 때(`close_*`·`ready`·`lift`·`carry` 등). 이 동안에는 새 anchor도 만들지 않는다.
+  anchor가 없으면 기존 envelope 경로(relook·abort 규칙)가 판단한다.
+  한계: 2번 검사의 폭은 자기 명령 이득 범위 도달 반경 + 2×(두 뷰 bound 합)이다. 정지 상태에서도 약 0.2 m이고, 자기 이동이 있으면 더 넓다. 이보다 작은 누적 이동은 1번(전역 envelope 유효 시)과 3번에 의존한다.
+- **P2-1 (approach look 끝 무한 hold):** 전역 fix 확인 대기를 look 시작 뒤 6초(등록된 회당 허용량)로 제한했다. 그 뒤에는 frozen `look_done` 경로(no-fix → GATE_MAX_LOOKS/relocalize)로 넘긴다.
+- **P2-2 (예산 범위·조건 비대칭):** HIGH 복구 10초와 align `MAX_LOOKS`·`MAX_TOTAL_LOOK_S`를 approach/reapproach/align 진입(regrasp 포함)마다 초기화한다. 세 조건에 동일하게 적용되고, relook 복귀는 채우지 않는다. 범위는 `v6_contract.reobserve_budgets.scope`에 등록했다.
+- **P2-3 (not-ready 사유 즉시 실패):** 입력 유효성 사유(`DUPLICATE_IMAGE`, `OUT_OF_ORDER`, stale, `BEAM_MOVED…`)는 다음 frame을 기다린다. `SHAPE_AMBIGUOUS`·`END_ID_AMBIGUOUS`·`PAIRED_EDGES_UNOBSERVABLE`은 남은 고정 자세를 먼저 시도한다. 둘 다 align 마감이 제한한다.
+- **P3-4:** `v6_contract.source_sha256`에 제어 경로 모듈 7개(`zone_own_sweep`, `pair_owncam_approach`, `owncam_drive`, `run_m2_pair`, `study_owncam_pair_beam`, `visual_arm`, `m1_owncam_delivery`)를 추가했다.
+- **남긴 항목:**
+  - P2-4: anchored bound는 가까운 거리에서만 reserve(0.10) 아래로 선택된다. 범위 주장은 README 검토 3 절의 "약 0.10–0.12 m" 그대로이며 거리별 시험은 하지 않았다.
+  - P3-1: anchored 비-clear relook이 같은 bound로 곧 `GLOBAL_ENVELOPE_BLOCKED`로 끝난다(유한).
+  - P3-2: 전경 행 밖 label 0 빔색 픽셀 포함(조사 위반 0).
+  - P3-3: 정지 장면의 재획득 3회 미충족(HIGH 예산으로 유한).
+  - P3-5: 통합 번들 이름이 pair ID를 가져온다.
+- **번들 ID:** v70을 유지한다. main과 열린 PR 전체에서 v70은 #249·#250 설계 문서가 #246의 번호로 언급할 뿐이다. v70으로 기록된 실행·결과·prereg는 이 브랜치 밖에 없다. 이 브랜치의 prereg_v6도 DRAFT이고 실행 기록이 없다. `v6_contract`와 `registration_sha256`(`d200e5b3…2419`)은 다시 계산했다.
+- **v5h 조건:** 예산 초기화 범위 변경도 공용 경로라 v5h에 적용된다. 이는 frozen v5h와의 차이에 하나 더 추가된다.

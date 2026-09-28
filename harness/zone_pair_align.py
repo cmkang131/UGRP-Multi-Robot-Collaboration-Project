@@ -12,7 +12,7 @@ from harness.owncam_time import accepted_fix_checks
 MAX_FIX_GAP_S = 6.
 RELOOK_XY_M = .055
 RELOOK_YAW_RAD = math.radians(2.5)
-MAX_LOOKS = 8                 # cumulative across the job, including entry looks
+MAX_LOOKS = 8                 # per alignment attempt (final review P2-2), including entry looks
 MAX_LOOK_S = 8.               # includes stop, arm settling and return posture
 MAX_TOTAL_LOOK_S = 40.
 MAX_DIRECTIONS = 3
@@ -66,7 +66,16 @@ class PairAlignRelook:
     """Adapter mixin; frozen M2 beam alignment itself is unchanged."""
 
     def set(self, state, now, **detail):
+        if state in ('approach', 'reapproach', 'align'):
+            # Final review P2-2: look/HIGH budgets are per phase entry (each
+            # approach and each alignment attempt, incl. regrasp), identical
+            # for v5h / b-only / a+b; a resumed align (relook return) does not
+            # come through here and never refills them.
+            reset = getattr(self, 'reset_phase_budget', None)
+            if reset is not None:
+                reset(now, state)
         if state == 'align':
+            self.align_look_count, self.align_look_total_s = 0, 0.
             self.align_started_at = now
             if getattr(getattr(self,'policy',None),'beam_relative',False):
                 return super().set(state, now, **detail)

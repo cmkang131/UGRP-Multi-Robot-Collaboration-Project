@@ -239,8 +239,13 @@
         "reserve_gap_m": 0.04,
         "reducible_sigma_m": 0.005,
         "reducible_sigma_rad": 0.005
-      }
+      },
+      "scope": "HIGH recovery and align MAX_LOOKS/MAX_TOTAL_LOOK_S reset at each approach/reapproach/align entry (incl. regrasp), identical for v5h/b-only/a+b; scheduled looks: per look, job total",
+      "align_max_looks": 8,
+      "align_max_total_look_s": 40.0,
+      "approach_look_fix_confirm_s": 6.0
     },
+    "object_anchor_checks": "dropped when the global envelope and anchored bounds do not overlap (K_SIGMA), when the beam leaves the command-propagated reach since the anchor, or while the partner messages a close/hold phase",
     "qualification": "offline development; uncalibrated bounds; no physical inheritance",
     "source_sha256": {
       "harness/owncam_memory.py": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
@@ -275,11 +280,11 @@
       "harness/zone_own_status.py": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
       "harness/zone_own_perception.py": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
       "harness/zone_pair_obstruction.py": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
-      "harness/zone_pair_grasp.py": "ac013b6e15a4256866d74c074331b176f30a18e80609d6d99e76c103b96be339",
-      "harness/zone_pair_executor.py": "4f96ef665a04bf7867554b9c8ea119183e39d5eac03e4c77fb47b08510b079cb",
+      "harness/zone_pair_grasp.py": "ad73902d3cdf821d61097e5556d3fe01ecb4f7eb910eb5f1708372ef0281d738",
+      "harness/zone_pair_executor.py": "92ecf819d18b3e4549982f6bd3ec12451961dcc036d89ee197dde4d7baee29b9",
       "harness/zone_pair_beam_track.py": "c36e9ea7179307f45787d89ddf9ba1ac07598dd309137933780834c0ec83ffc0",
-      "harness/zone_pair_align.py": "0e8dbe8986155e4419640924f87de4cb8e837ee8bd155e4dafe64537bc834550",
-      "harness/zone_pair_guards.py": "dac779a805074df395b2eae03f5060cbaf9fbba0e737a2075279b0f507b47c6f",
+      "harness/zone_pair_align.py": "e3fc667e42e5ad289ea4e6684be7e3be52aae9ca26e4e101de94410851e1956d",
+      "harness/zone_pair_guards.py": "466dc7eed0510efeaf2651746acf695f3e42eca3bc8c35d5ecd0fcc9b1434114",
       "harness/zone_pair_geometry.py": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
       "harness/zone_pair_status.py": "bdacc2369212bdd8810d2f91498e971af572e1ef037a34baf76828a2702b1926",
       "harness/zone_pair_vision.py": "8552c044d498a6c3e02efdc7f53ca72c9b11c4b17b87abfa159e780673d8c7d4",
@@ -303,11 +308,18 @@
       "scripts/zone_pair_dev_contract.py": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e",
       "harness/zone_study_integration.py": "cacc1a99e691ba732ba65698292fd317b58abcb87c6aca310973a811cd029306",
       "harness/zone_pair_v6_policy.py": "ebbfbfbd3a6c404614591f16bcc6eb7015363dd9d7b40e5135dff300725fb7bf",
-      "harness/zone_pair_relative.py": "d457d985f0947a7662ec4586a319a8f33d338d53ea96319e5594781658bf1d20",
+      "harness/zone_pair_relative.py": "e58844d49f4ce8ad5a02e55539dfeebecbe211d9042458a21b3c3ddf946adcb6",
       "harness/zone_pair_global.py": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
       "harness/owncam_recovery_v6.py": "74d90f36dd3f170091ed7c3e8b73432d81cb9ee0ca36d8472b063c9af92b5b46",
       "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
-      "scripts/zone_pair_v6_contract.py": "e64b9600a1a595de7bfa91337f5785b1f8b2fdc3be3ee0f9870ffe13d4e7b82e"
+      "scripts/zone_pair_v6_contract.py": "86dac3a9aa4f8bc5fc9f08e57674e477512fa4ee55ef5eed5aff9617ca85b71c",
+      "harness/zone_own_sweep.py": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
+      "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+      "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+      "scripts/run_m2_pair.py": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+      "scripts/study_owncam_pair_beam.py": "3e4c77e279cde780e19b1a1eb2643c626c46dac15e4671001607c5fa6b9c3cff",
+      "harness/visual_arm.py": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+      "harness/m1_owncam_delivery.py": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09"
     }
   },
   "planned_run_count": 6,
@@ -520,5 +532,5 @@
     "path": "experiments/2026-09-27-zone-pair-dev/prereg_v5h.json",
     "sha256": "7b9c13b0ed829b7cb9b22cf58b47fd1862b247fe7bc8d0a4a4704686ca6994e9"
   },
-  "registration_sha256": "a93caeb1a3578c6c39d9dd67f7df5f83302cbb19e00ccde52c44a970b88ba9a2"
+  "registration_sha256": "d200e5b319646b5263ae8ee52d15833457f801b4ecd151e2456a5cbb3ee92419"
 }

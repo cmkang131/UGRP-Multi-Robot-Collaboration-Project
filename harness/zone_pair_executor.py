@@ -142,6 +142,9 @@ def m2_controller(execution, plan, params):
         def reset_object_anchor(self):
             execution.command_guard.object_anchor = None
 
+        def reset_phase_budget(self, now, phase):
+            execution.command_guard.reset_phase_budget(now, phase)
+
         def align_stop_ready(self, now):
             return execution.command_guard.align_stop_ready(now, self.align_look_started_at)
 

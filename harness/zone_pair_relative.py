@@ -319,7 +319,20 @@ class RelativeBeamTrack(RestingBeamTrack):
                 return self.last_report  # idempotent read, not a new measurement
             return unknown('IMAGE_PRECEDES_ISSUED_COMMAND')
         if self.last_report and self.last_report.sha256 == obs['sha256']:
-            return unknown('DUPLICATE_IMAGE')
+            last = self.last_report
+            if (self.report_command_epoch == self.command_epoch and last.segment == segment
+                    and last.mode == mode and last.camera_pwm == pwm and obs['sim_time'] > self.last_capture):
+                # Final review P1-2: both robots stopped and no own command since
+                # the previous image -> byte-identical render. No new
+                # information: keep the previous verdict (same fit, same
+                # anchor/identity times, which keep ageing) for this new frame.
+                self.last_frame, self.last_capture = key, obs['sim_time']
+                reasons = last.reasons if 'IDENTICAL_PIXELS_NO_NEW_COMMAND' in last.reasons else (
+                    *last.reasons, 'IDENTICAL_PIXELS_NO_NEW_COMMAND')
+                self.last_report = replace(last, frame_id=obs['frame_id'], captured_at_s=obs['sim_time'],
+                                           reasons=reasons)
+                return self.last_report
+            return unknown('DUPLICATE_IMAGE')  # identical pixels after an issued command: stale
         if obs['sim_time'] <= self.last_capture:
             return unknown('OUT_OF_ORDER')
         self.last_frame, self.last_capture = key, obs['sim_time']

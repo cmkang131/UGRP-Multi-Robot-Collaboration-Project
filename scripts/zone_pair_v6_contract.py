@@ -17,9 +17,14 @@ def contract():
     paths = (*SOURCE_PATHS,*scene_contract()['source_sha256'],
              'harness/zone_study_integration.py','harness/zone_pair_v6_policy.py','harness/zone_pair_relative.py',
              'harness/zone_pair_global.py','harness/owncam_recovery_v6.py',
-             'harness/owncam_observability_v6.py','scripts/zone_pair_v6_contract.py')
+             'harness/owncam_observability_v6.py','scripts/zone_pair_v6_contract.py',
+             # Final review P3-4: control-path modules outside the v5h receipts.
+             'harness/zone_own_sweep.py','harness/pair_owncam_approach.py','harness/owncam_drive.py',
+             'scripts/run_m2_pair.py','scripts/study_owncam_pair_beam.py','harness/visual_arm.py',
+             'harness/m1_owncam_delivery.py')
     from harness.zone_pair_global import SCHEDULED_REOBSERVE
     from harness.zone_own_sweep import SWEEP_REOBSERVE_S
+    from harness.zone_pair_align import MAX_LOOKS, MAX_TOTAL_LOOK_S
     return {'execution_bundle_id':EXECUTION_BUNDLE_ID,'policy_flags':{
         k:vars(v) for k,v in POLICIES.items()},
         # Review 3: flag semantics are part of the registration. beam_relative
@@ -31,7 +36,16 @@ def contract():
                              'a reference only (no HIGH/convergence stop) while an object-anchored bound '
                              '(entry fix + ready relative view of the static beam) certifies wall/arm clearance')},
         'reobserve_budgets':{'high_recovery_s':SWEEP_REOBSERVE_S,
-                             'scheduled_safety_look':dict(SCHEDULED_REOBSERVE)},
+                             'scheduled_safety_look':dict(SCHEDULED_REOBSERVE),
+                             # Final review: scopes are part of the registration.
+                             'scope':('HIGH recovery and align MAX_LOOKS/MAX_TOTAL_LOOK_S reset at each '
+                                      'approach/reapproach/align entry (incl. regrasp), identical for '
+                                      'v5h/b-only/a+b; scheduled looks: per look, job total'),
+                             'align_max_looks':MAX_LOOKS,'align_max_total_look_s':MAX_TOTAL_LOOK_S,
+                             'approach_look_fix_confirm_s':SCHEDULED_REOBSERVE['per_look_s']},
+        'object_anchor_checks':('dropped when the global envelope and anchored bounds do not overlap '
+                                '(K_SIGMA), when the beam leaves the command-propagated reach since the '
+                                'anchor, or while the partner messages a close/hold phase'),
         'qualification':'offline development; uncalibrated bounds; no physical inheritance',
         'source_sha256':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths}}
 

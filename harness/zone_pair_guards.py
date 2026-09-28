@@ -118,7 +118,12 @@ class GuardedPairApproach(GuardedDriver, PairApproachDriverV2):
                 self.look_queue.clear()  # the requested new fix is complete
             elif (ready is False and not self.look_queue
                   and all(self.servo.get(k)==v for k,v in self.arm_target.items())):
-                return [{'kind':'hold'}]  # allow the three-receipt check to finish
+                from harness.zone_pair_global import SCHEDULED_REOBSERVE
+                # Final review P2-1: this dwell is bounded by the registered
+                # per-look allowance; afterwards the frozen look_done path
+                # (no fix -> GATE_MAX_LOOKS / relocalize) takes over.
+                if self.look_t0 is None or now-self.look_t0 < SCHEDULED_REOBSERVE['per_look_s']-1e-9:
+                    return [{'kind':'hold'}]  # allow the three-receipt check to finish
         # Bypass the frozen V2 post-hook: its receipt is provider-specific.
         # _event below applies the same rule using the common report contract.
         return super(PairApproachDriverV2, self).tick(now)
@@ -167,6 +172,7 @@ class PairCommandGuard:
         self.relative_track = RelativeBeamTrack()
         self.global_envelope = GlobalEnvelope()
         self.object_anchor = None
+        self.anchor_motion = None
         self.monitor = ProgressMonitor()
         self.segment = None
         self.last_evidence = None
@@ -226,7 +232,7 @@ class PairCommandGuard:
         if a is not None and a['segment'] == self.ep.controller.seg and self.relative_track.beam is not None:
             return
         self.object_anchor = None
-        if not report.ready(now):
+        if not report.ready(now) or self._partner_grasping():
             return  # a loose far-range bound would make a loose world anchor
         entry = self.global_envelope.pose(self.ep.own.last_report, now)
         if entry is None or self._high(entry):
@@ -234,13 +240,24 @@ class PairCommandGuard:
         g = report.grip_base_m
         c, s_ = math.cos(entry.yaw), math.sin(entry.yaw)
         bound = report.std_xy_m+report.bias_bound_m
+        # Final review P1-3: own issued base motion since the anchor, with the
+        # same half-gain centre / [0, 1.6] gain reach as the global envelope,
+        # in the anchor-time robot frame. The static-beam premise is checked
+        # against it on every use (cumulative association, not frame-to-frame).
+        from harness.zone_pair_global import GlobalEnvelope
+        motion = GlobalEnvelope()
+        motion.anchor, motion.fix_t, motion.t = OwnPose(0., 0., 0., 0., 0.), now, now
+        motion.motion, motion.until = self.global_envelope.motion, self.global_envelope.until
+        self.anchor_motion = motion
         self.object_anchor = {
             'segment': self.ep.controller.seg, 't': now, 'entry_fix_t': self.global_envelope.fix_t,
             'grip_world': (entry.x+c*g[0]-s_*g[1], entry.y+s_*g[0]+c*g[1]),
             'heading_world': entry.yaw+report.axis_heading_rad,
             'std_xy': entry.std_xy+entry.std_yaw*math.hypot(*g)+bound,
             'std_yaw': entry.std_yaw+report.std_yaw_rad,
-            'frame_id': report.frame_id, 'sha256': report.sha256}
+            'frame_id': report.frame_id, 'sha256': report.sha256,
+            'rel_grip': tuple(g), 'rel_heading': report.axis_heading_rad,
+            'rel_bound': bound, 'rel_std_yaw': report.std_yaw_rad}
         self.ep.log(self.ep.own.robot_id, 'object_anchor', now, anchor=dict(self.object_anchor),
                     source='entry global envelope + own relative beam view; PF reference only afterwards')
 
@@ -260,6 +277,11 @@ class PairCommandGuard:
         if b is None or track.segment != a['segment']:
             self.object_anchor = None
             return None
+        why = self._anchor_invalid(now, a, b)
+        if why is not None:
+            self.object_anchor = None
+            self.ep.log(self.ep.own.robot_id, 'object_anchor_invalidated', now, reason=why)
+            return None
         g = b['grip_base_m']
         yaw = a['heading_world']-b['axis_heading_rad']
         std_yaw = a['std_yaw']+b['std_yaw_rad']
@@ -269,6 +291,42 @@ class PairCommandGuard:
         std_xy = a['std_xy']+b['std_xy_m']+b['bias_bound_m']+std_yaw*math.hypot(*g)
         return OwnPose(x, y, (yaw+math.pi) % (2*math.pi)-math.pi, std_xy, std_yaw)
 
+    PARTNER_GRASP_STATES = ('ready', 'lift', 'carry', 'put_down')
+
+    def _partner_grasping(self):
+        # Messaged peer phase only (no peer pose): its closing/holding fingers
+        # may move the beam, so the static-beam premise no longer holds.
+        channel = self.ep.controller.status[0]
+        me = self.ep.own.robot_id
+        for rid, msg in channel.latest.items():
+            state = msg.get('state') or ''
+            if rid != me and (state in self.PARTNER_GRASP_STATES
+                              or any(state.startswith(f'{p}_') for p in ('close', 'lift', 'carry', 'lower', 'open'))):
+                return True
+        return False
+
+    def _anchor_invalid(self, now, a, b):
+        """Final review P1-3: verify the static-beam premise of the object anchor."""
+        from harness.zone_own_guards import K_SIGMA
+        from harness.zone_pair_global import heading_spread, _wrap
+        if self._partner_grasping():
+            return 'PARTNER_HOLDING_PHASE'
+        m = getattr(self, 'anchor_motion', None)
+        if m is None:
+            return 'ANCHOR_MOTION_UNKNOWN'
+        m.advance(now)
+        cx, cy = m.centre_offset
+        th, yaw_tol = m.centre_turn, m.turn_bound/2
+        d = (a['rel_grip'][0]-cx, a['rel_grip'][1]-cy)
+        expected = (math.cos(th)*d[0]+math.sin(th)*d[1], -math.sin(th)*d[0]+math.cos(th)*d[1])
+        tol_xy = (m.travel_bound*heading_spread(yaw_tol)+yaw_tol*math.hypot(*d)
+                  + K_SIGMA*(a['rel_bound']+b['std_xy_m']+b['bias_bound_m']))
+        tol_yaw = yaw_tol+K_SIGMA*(a['rel_std_yaw']+b['std_yaw_rad'])
+        if (math.dist(b['grip_base_m'], expected) > tol_xy
+                or abs(_wrap(b['axis_heading_rad']-(a['rel_heading']-th))) > tol_yaw):
+            return 'BEAM_MOVED_SINCE_ANCHOR'
+        return None
+
     def safety_pose(self, now, envelope=None):
         """Componentwise tighter of two independent enclosing bounds."""
         envelope = self.global_envelope.pose(self.ep.own.last_report, now) if envelope is None else envelope
@@ -277,6 +335,18 @@ class PairCommandGuard:
             return envelope
         if envelope is None:
             return anchored
+        from harness.zone_own_guards import K_SIGMA
+        from harness.zone_pair_global import _wrap
+        if (math.dist((envelope.x, envelope.y), (anchored.x, anchored.y)) > K_SIGMA*(envelope.std_xy+anchored.std_xy)
+                or abs(_wrap(envelope.yaw-anchored.yaw)) > K_SIGMA*(envelope.std_yaw+anchored.std_yaw)):
+            # Final review P1-3: two enclosing bounds that do not overlap mean
+            # one premise failed (moved beam or bad fix). Drop the anchor;
+            # the envelope path (and its relook/abort rules) decides.
+            self.object_anchor = None
+            self.ep.log(self.ep.own.robot_id, 'object_anchor_invalidated', now, reason='GLOBAL_ANCHOR_DISAGREE',
+                        envelope=[envelope.x, envelope.y, envelope.yaw, envelope.std_xy, envelope.std_yaw],
+                        anchored=[anchored.x, anchored.y, anchored.yaw, anchored.std_xy, anchored.std_yaw])
+            return envelope
         xy = envelope if envelope.std_xy <= anchored.std_xy else anchored
         yaw = envelope if envelope.std_yaw <= anchored.std_yaw else anchored
         return OwnPose(xy.x, xy.y, yaw.yaw, xy.std_xy, yaw.std_yaw)
@@ -408,6 +478,14 @@ class PairCommandGuard:
                         count=self.recheck.scheduled_count, total_s=self.recheck.scheduled_total_s)
         return ok
 
+    def reset_phase_budget(self, now, phase):
+        """HIGH recovery budget (SWEEP_REOBSERVE_S) is per phase entry (final review P2-2)."""
+        r = self.recheck
+        self.ep.log(self.ep.own.robot_id, 'phase_budget_reset', now, phase=phase,
+                    previous_high_waited_s=r.waited_s, scheduled_count=r.scheduled_count)
+        r.waited_s, r.last_wait, r.sweep_waiting, r.uncertain = 0., None, False, False
+        r.scheduled = None
+
     @staticmethod
     def sigma_reserve(pose):
         # Same reserve as GlobalPairSweepGuard.certificate, before its .15/.20 support caps.
@@ -470,6 +548,8 @@ class PairCommandGuard:
         if self.relative_enabled:
             self.relative_track.command(row, self.ep.own.servo)
             self.global_envelope.command(row)
+            if getattr(self, 'anchor_motion', None) is not None:
+                self.anchor_motion.command(row)
         if row['kind'] in ('drive', 'mecanum') and any(row.get(k, 0.) for k in ('forward', 'left', 'turn')):
             self.stationary_pose = None
             self.motion_until = row['t'] + row['duration_s']
@@ -488,6 +568,13 @@ class PairCommandGuard:
         pose = self._pose(now)
         if self.reobserving:
             return self._stationary_reobserve(now, pose)
+        if self.recheck.scheduled is not None:
+            # Final review P1-1: a planned look ends as soon as its relook
+            # (approach look or align relook) has returned, on every branch,
+            # including the relative_manipulation early return below. Each
+            # new planned look then gets its own per-look allowance and count.
+            self.recheck.sweep_waiting = False
+            self.recheck.end_scheduled(now)
         if self.relative_enabled and self.ep.controller.state in ('approach', 'reapproach', 'align'):
             # HIGH is a scheduling trigger, not a collision. Never let the
             # nominal PF's small sigma bypass the independent envelope.
@@ -519,8 +606,6 @@ class PairCommandGuard:
             return True
         self.recheck.sweep_waiting = False
         self.recheck.check_gate(now, ready=True)  # account prior wait; never refill
-        if self.recheck.scheduled is not None:
-            self.recheck.end_scheduled(now)
         if self.ep.controller.state not in ('approach', 'reapproach'):
             if not own.gate.ok or pose is None or self._high(pose):
                 self.ep.abort(now, 'POSE_UNCERTAIN')

@@ -43,6 +43,14 @@ def stationary_beam_estimate(obs, servo):
     return {**beam, 'std_xy_m': spread, 'std_yaw_rad': syaw}
 
 
+
+# Final review P2-3. Input-validity outcomes that carry no alignment verdict:
+TRANSIENT_INPUT_REASONS = frozenset(('DUPLICATE_IMAGE', 'OUT_OF_ORDER', 'STALE_OR_CAMERA_MISMATCH',
+                                     'IMAGE_PRECEDES_ISSUED_COMMAND', 'CAMERA_COMMAND_MISMATCH',
+                                     'BEAM_MOVED_OR_ASSOCIATION_LOST', 'PARTIAL_INCONSISTENT_OR_BEAM_MOVED'))
+# Identity outcomes another fixed view can resolve (bounded by the posture list):
+VIEW_DEPENDENT_REASONS = frozenset(('SHAPE_AMBIGUOUS', 'END_ID_AMBIGUOUS', 'PAIRED_EDGES_UNOBSERVABLE'))
+
 class PairGraspRelook(PairAlignRelook):
     """Mixin before M2DoorStudent. All live inputs come from the own port."""
 
@@ -71,6 +79,12 @@ class PairGraspRelook(PairAlignRelook):
         self.aligned_frame = key
         if not relative.ready(now):
             self.aligned_streak = 0
+            if set(relative.reasons) & TRANSIENT_INPUT_REASONS:
+                # Final review P2-3: a stale/duplicate/out-of-order input or a
+                # track just dropped for re-identification carries no verdict.
+                # Wait for the next own frame; the align deadline bounds this.
+                self.log(self.rid,'relative_input_skipped',now,reasons=list(relative.reasons))
+                return
             if relative.closing_ready(now):
                 # Review 3: identified complete shape, bound too large only
                 # from range. Approach under the global envelope, then re-fit.
@@ -101,6 +115,10 @@ class PairGraspRelook(PairAlignRelook):
                 # Review 3: an adjacent/ambiguous second component is an
                 # occluder candidate; another fixed view may separate it.
                 return self._set_look(choices[0],now,reason='relative_occluder_candidate')
+            if set(relative.reasons) & VIEW_DEPENDENT_REASONS and choices:
+                # Final review P2-3: identity not established from this view
+                # (e.g. a peer gripper joined to the far end); try the rest.
+                return self._set_look(choices[0],now,reason='relative_identity_unknown')
             return self.fail('BEAM_RELATIVE_UNCERTAIN',now)
         if not self.global_certificate(now,relative.beam())['clear']:
             return self._begin_align_relook(now,'global_safety')
