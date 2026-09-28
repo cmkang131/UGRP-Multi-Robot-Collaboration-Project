@@ -1,0 +1,138 @@
+{
+ "configs_sha256": {
+  "T0": "aa23adec5dfbf82016b4f84ef45b05f6404fc9057d4b4959bb76994eed9ced7e",
+  "T1abc_d02a3_eta0125": "52216f3808e3a11e7ede35cc7444ce68802e46c5c28da9984e8b32120eef5405",
+  "T1abc_d02a3_eta025": "faf4ec6931cd8206beae9369e5c3e02343829f8982488c3131003554aab07404",
+  "T1abc_d02a3_eta050": "76caf3d962c232be4c9cb877985cf0fc66f235ec4e411bf9655775b565f92761",
+  "T1abc_d02a6_eta0125": "8f87305d2145878da63a63104c72fa398d8580fcfc96d8d78caeef66d5f470ec",
+  "T1abc_d02a6_eta025": "56ba42c0a2bdacd1f9f79bce31efb7fd5bec3154d25363d8921aeb0e4d85f7a7",
+  "T1abc_d02a6_eta050": "9c9b3a8f28f9ed59c5de25317f3b5c08f0adffc7da706f23876d46dd7991ebd2",
+  "T1abc_d05a3_eta0125": "26507e83563db0f51ee35c7e279df63ad2dc628f307b2932c75ad7808defbeec",
+  "T1abc_d05a3_eta025": "e85582e9d8d2ec82d8d66060f5e1ca14e9c808b4fd37f8525347dffc09d1de15",
+  "T1abc_d05a3_eta050": "8beab49e7c5bef0fd9ee3957a3b51c3407bb035457dddab536f39c4b5e693f50",
+  "T1abc_d05a6_eta0125": "c03e68f151403cfde0bd26b7b96b04491505e6711d2c5e8f6ff9c4ea779d3064",
+  "T1abc_d05a6_eta025": "60c5a6be75ee80f785dc12f72c9ad1a1e4ea7d3cd0020d0e6eedd1b2b4afe783",
+  "T1abc_d05a6_eta050": "5ff6d8b4e02480a3a4600f801c8c09edefdbf3dd3d1e16e84204655370d3a0e8",
+  "T1abc_d10a3_eta0125": "06b994fb4a75c5197ccccda01d860866972f28d7ffd8484f1d0daab8989ed07d",
+  "T1abc_d10a3_eta025": "f01474818588cb21637a9b3f591213ae627bb73efff98e74968ab7cf0038a5de",
+  "T1abc_d10a3_eta050": "6be9b70c45f89d2ab402ae2b004b152c21ca1356a431b5966ea7a5a555b8e2f0",
+  "T1abc_d10a6_eta0125": "6aabd0bb5c24bd535ce975314c9c5f158f580f40b549f732fef101fdd9a33acf",
+  "T1abc_d10a6_eta025": "d99e6196a112d8c07d4a02f05745c8cde2d55794e6448799db6e725abb679261",
+  "T1abc_d10a6_eta050": "220bf030a748dca5c4ffd072dba04efe4b30f760711dd7bed265865b911f0227",
+  "T1ac_d02a3": "1b3bc7a9bb38912d6b2a2dbd1a0ba710b679bf4f431ac8d6ca55b657555d5f34",
+  "T1ac_d02a6": "6f054e7c207758d27f692a4a1f6d01983c55f2da06d7a5fdb20fc7a65481d728",
+  "T1ac_d05a3": "031ffc26b6f136529825de4a3740681337890af75b6c950dcdf1826eee464a05",
+  "T1ac_d05a6": "e09aa21ad22b7572c8e6c502af49722f1a6c204ed64b1ab8387bbbbbf88f5f0e",
+  "T1ac_d10a3": "2878334ea7b4b7982e05aaffbe3f71827a313b50756ed0a25ad0e6b1c604d4d7",
+  "T1ac_d10a6": "c439a14ec7de41730afd95a6f4a5e4fbecc4eed02cdf4fa1c26c9ef3ca164dbd",
+  "T1b_eta0125": "3e9d2e1383ec8a2514a0a09ee84a8a96925a75ed990238d1d96b3272d7768d39",
+  "T1b_eta025": "c55ff698d1b179f74ab88c71ff55e7177466eaa007bdef78c95253e69d59bae1",
+  "T1b_eta050": "c42880fb6f1e8237343ad3bfd59706f2e14603b57efe40e2773e1cfc391ec3ec",
+  "T1c": "59af9f72258610b0eb05bc08ed1ffd8e9294c1eec9169487786d5d15def1fc94"
+ },
+ "inputs": {
+  "calibration": "experiments/2026-09-26-vision-loc/calibration_train.json",
+  "frames": "render/<ep>/inputs/frames.jsonl + frames/*.jpg (1c classical image processing only)",
+  "gt": "render/<ep>/eval_only/frames_eval.jsonl, scoring only",
+  "nn_inference_frames": 0,
+  "obs": "outputs/vision-loc-20260926/r3/obs-w6 (vision, checkpoint sha256 3485390...)",
+  "test_episodes": "none (refused by replay_v6.py)"
+ },
+ "issue": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/216",
+ "particles": 2000,
+ "rules": {
+  "calibration_selection": "eligible: fit seed-mean XY 95% ellipse coverage in band; choose lowest fit episode-equal XY NLL; ties to the earlier (larger eta) name; accuracy is not a selection criterion; none eligible -> the component is dropped",
+  "coverage95_band": [
+   0.9,
+   0.99
+  ],
+  "detector_gate": {
+   "correct_stall": "GT displacement <= 0.5 x predicted displacement",
+   "min_positives": 20,
+   "min_precision": 0.8,
+   "min_recall": 0.3,
+   "positive": "GT speed < 0.01 m/s and predicted speed > 0.05 m/s over the frame pair"
+  },
+  "validation": {
+   "coverage95_band": [
+    0.9,
+    0.99
+   ],
+   "door_lat_p99_worse_max_m": 0.003,
+   "door_pos_p90_worse_max_m": 0.003,
+   "door_yaw_p90_worse_max_deg": 0.2,
+   "episode_nll_no_worse": true,
+   "events_must_decrease": true,
+   "exceed3_xy_max": 0.02,
+   "sigma_xy_p90_loaded_max_m": 0.07
+  }
+ },
+ "schema": "ugrp.vision_loc.vis6.plan.v1",
+ "seeds": {
+  "final_validation": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "rule": "index 0 = episode seed (VIS3/VIS4), k >= 1 = episode_seed*1000 + k",
+  "selection_fit": [
+   0,
+   1,
+   2
+  ]
+ },
+ "source": "outputs/lit-review-tagfree-localization-20260928.md section 6.1 (recipe #1: 1a gating, 1b eta, 1c stall)",
+ "split": {
+  "fit": [
+   "vl-dev-s909",
+   "vl-dev-s910",
+   "vl-dev-s911",
+   "vl3-dev-s941",
+   "vl3-dev-s942",
+   "vl3-dev-s943"
+  ],
+  "note": "same fit/validation split as VIS4/VIS5; validation was seen before (not an independent test)",
+  "validation": [
+   "vl3-dev-s945",
+   "vl3-dev-s946",
+   "vl3-dev-s947"
+  ]
+ },
+ "stages": [
+  {
+   "id": "P0",
+   "what": "T0 fit seeds 0-2; reproduce: T0 seed 0 == stored VIS3 a1 xyyaw on every fit frame"
+  },
+  {
+   "id": "S1",
+   "what": "1b eta on fit: select calibration over [T0, T1b_eta050, T1b_eta025, T1b_eta0125]"
+  },
+  {
+   "id": "S2",
+   "what": "1c detector gate on T1c fit (seeds 0-2 pooled)"
+  },
+  {
+   "id": "S3",
+   "what": "1a gating grid on fit at eta 1: lowest fit NLL over T1ac_* in order d02a3, d02a6, d05a3, d05a6, d10a3, d10a6 (ties to the earlier)"
+  },
+  {
+   "id": "S4",
+   "what": "1a+1b+1c: select calibration over [T1ac_<S3>, T1abc_<S3>_eta050, _eta025, _eta0125]"
+  },
+  {
+   "id": "F",
+   "what": "validation seeds 0-4: T0 baseline vs T1b_<S1>, T1c, T1ac_<S3>, T1abc_<S4>; validation_gate each; adopt the passing one with the lowest validation NLL"
+  }
+ ],
+ "status": "FROZEN_BEFORE_ANY_VIS6_REPLAY",
+ "stop_rules": [
+  "P0 reproduce fails -> STOP before any comparison (code or data drift); record, no selection",
+  "S2 detector gate fails -> 1c dropped; 1a is dropped with it (gating needs 1c); F compares T1b only",
+  "S1 or S4 with no eligible candidate -> that stage contributes no candidate",
+  "no candidate passes F -> keep b0 (VIS3 a1 = T0); no re-tuning of grids, thresholds or rules in this cohort; a new idea needs a new plan",
+  "host: AC power only; ENOSPC or a killed run -> HOST_ERROR, rerun the whole unit into a new root; evaluate refuses partial sets",
+  "budget: stop after the running stage when the cohort passes 40 CPU-hours; report what finished"
+ ]
+}

@@ -104,6 +104,8 @@ class BoundaryTests(unittest.TestCase):
                 'PR #240 HEAD 8b0ddd27 neutral fix receipt adapter',
             '7e45cc820f3c0b96b0144c2a3318bf7b18a97f61d88aec2a62130e96ed29b155':
                 'PR #240 v5g: add detached public get_motion_params; frozen PF and old records unchanged',
+            '46809a556ecb7915f8dd49b03d7eb0f57181261599173b439477466f1940a538':
+                'v6: opt-in posterior-preserving recovery/observability; default OFF, no inherited M1 qualification',
         },
         'scripts/run_m1_owncam.py': {
             '04be35ed0e960a7683321b24e8218af293637879962d83871de71243a9f28c72':
@@ -126,6 +128,10 @@ class BoundaryTests(unittest.TestCase):
         import hashlib
         for f, want in frozen['sha256'].items():
             with self.subTest(file=f):
+                # The frozen claim still belongs to these exact original blobs,
+                # even when the current checkout contains an explicit successor.
+                original = subprocess.check_output(['git', 'show', f'{frozen["source_sha"]}:{f}'], cwd=ROOT)
+                self.assertEqual(hashlib.sha256(original).hexdigest(), want)
                 got = hashlib.sha256((ROOT/f).read_bytes()).hexdigest()
                 self.assertIn(got, {want, *self.POST_FREEZE_REVISIONS.get(f, {})})
 

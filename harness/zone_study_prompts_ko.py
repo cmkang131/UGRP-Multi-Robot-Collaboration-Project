@@ -38,7 +38,13 @@ from harness.zone_study_contract import (MAIN_CONDITIONS, ORDER_SHEET_SCHEMA, PA
                                          ROLE_NAMES, validate_robot_payload)
 from harness.zone_study_inputs import INPUT_PROFILE, payload_sha256, vocabulary
 
-PROMPT_VERSION = 'ugrp.zone_study_prompts_ko.v2'
+LEGACY_PROMPT_VERSION = 'ugrp.zone_study_prompts_ko.v2'
+PROMPT_VERSION = 'ugrp.zone_study_prompts_ko.v3'
+
+
+def prompt_version(cap_window=6, cap_robot=2):
+    """Preserve the v66 default and closed-channel request bytes exactly."""
+    return LEGACY_PROMPT_VERSION if (cap_window, cap_robot) in ((6, 2), (0, 0)) else PROMPT_VERSION
 #: Which A schema this prompt builder consumes. A bump here is a prompt change.
 CONTRACT_PAYLOAD_SCHEMA = PAYLOAD_SCHEMA
 
@@ -471,19 +477,20 @@ KO_LANGUAGE_STRUCT = '''
 JSON 키와 값(null, true, false), enum 값은 번역하거나 바꾸지 않고 그대로 씁니다.'''
 
 
-def _channel_block(condition, role, *, spec, leader=None):
+def _channel_block(condition, role, *, spec, leader=None, cap_window=None, cap_robot=None):
     """The ONLY part of the fixed prompt that differs between conditions."""
     key = {'no_comm': 'no_comm', 'reference_R': 'commander', 'structured': 'structured',
            'peer_ko': 'peer_ko'}.get(condition, role)
     slots = KO_CHANNEL_SLOTS[key]
-    values = {'cap_window': spec.max_window_utterances, 'cap_robot': spec.max_robot_utterances,
+    values = {'cap_window': spec.max_window_utterances if cap_window is None else cap_window,
+              'cap_robot': spec.max_robot_utterances if cap_robot is None else cap_robot,
               'leader': leader, 'fields': ', '.join(zp.STRUCT_FIELDS), 'acts': ', '.join(zp.STRUCT_ACTS),
               'states': ', '.join(zp.STRUCT_STATES), 'confidence': ', '.join(zp.CONFIDENCE)}
     return KO_CHANNEL_TEMPLATE.format(**{name: text.format(**values) for name, text in slots.items()})
 
 
 def system_prompt(condition, rid, *, seed=None, leader=None, robots=zp.ROBOTS,
-                  allow_leader_override=False) -> str:
+                  allow_leader_override=False, cap_window=None, cap_robot=None) -> str:
     """Korean system prompt of one condition and actor. Literals stay literal.
 
     Every block except the channel section is identical across the conditions
@@ -491,7 +498,8 @@ def system_prompt(condition, rid, *, seed=None, leader=None, robots=zp.ROBOTS,
     not a difference in the amount of task, safety or behaviour guidance.
     """
     parts = prompt_parts(condition, rid, seed=seed, leader=leader, robots=robots,
-                         allow_leader_override=allow_leader_override)
+                         allow_leader_override=allow_leader_override,
+                         cap_window=cap_window, cap_robot=cap_robot)
     return '\n\n'.join(parts[name] for name in PROMPT_BLOCKS)
 
 
@@ -505,7 +513,7 @@ PROMPT_BLOCKS = ('head', 'channel', 'behaviour', 'output', 'action', 'sources', 
 
 
 def prompt_parts(condition, rid, *, seed=None, leader=None, robots=zp.ROBOTS,
-                 allow_leader_override=False) -> dict:
+                 allow_leader_override=False, cap_window=None, cap_robot=None) -> dict:
     """The system prompt as named blocks, so the fixed cost can be measured."""
     s = zp.spec(condition)
     role = zp.role_of(condition, rid, seed=seed, leader=leader, robots=robots,
@@ -523,7 +531,8 @@ def prompt_parts(condition, rid, *, seed=None, leader=None, robots=zp.ROBOTS,
     else:
         messages = KO_MESSAGES_KO.replace('__CHARS__', str(zp.PROMPT_TEXT_CHARS))
     return {'head': head,
-            'channel': _channel_block(condition, role, spec=s, leader=lead),
+            'channel': _channel_block(condition, role, spec=s, leader=lead,
+                                      cap_window=cap_window, cap_robot=cap_robot),
             'behaviour': KO_BEHAVIOUR,
             'output': KO_OUTPUT_HEAD.strip('\n'),
             'action': (KO_ACTION_COMMANDER if role == 'commander' else KO_ACTION_ROBOT).strip('\n'),
@@ -715,9 +724,12 @@ def build_request(inputs, *, seed=None, leader=None, window=None, sent=(), robot
         raise zp.ProtocolError(f'the payload changed after validation: {exc}') from None
     if payload_sha256(body) != inputs.payload_sha256:
         raise zp.ProtocolError('the payload changed after validation (digest mismatch)')
+    cap_window, cap_robot = s.max_window_utterances, s.max_robot_utterances
     if s.channel_open:
         cap_window = window.pop('max_utterances', s.max_window_utterances)
         cap_robot = window.pop('max_your_utterances', s.max_robot_utterances)
+        if any(type(cap) is not int or cap < 0 for cap in (cap_window, cap_robot)):
+            raise zp.ProtocolError('dialogue caps must be non-negative integers')
         left = window.pop('your_utterances_left', max(0, cap_robot - len(issued)))
         window_id = window.pop('window_id', None)
         if window:
@@ -731,7 +743,8 @@ def build_request(inputs, *, seed=None, leader=None, window=None, sent=(), robot
                             'max_your_utterances': cap_robot, 'your_utterances_left': left,
                             'sent': issued}
     system = system_prompt(condition, rid, seed=seed, leader=leader, robots=robots,
-                           allow_leader_override=allow_leader_override)
+                           allow_leader_override=allow_leader_override,
+                           cap_window=cap_window, cap_robot=cap_robot)
     user = json.dumps(body, sort_keys=True, ensure_ascii=False)
     images = _images(inputs)
     manifest = image_manifest(inputs)
@@ -741,7 +754,7 @@ def build_request(inputs, *, seed=None, leader=None, window=None, sent=(), robot
         if row['bytes_sha256'] != row['sha256']:
             raise zp.ProtocolError(f'{row["label"]}: the attached bytes are not the frame {row["ref"]} names')
     request = {'request_id': request_id, 'condition': condition, 'actor': rid, 'prompt_role': role,
-               'prompt_version': PROMPT_VERSION, 'protocol_version': zp.PROTOCOL_VERSION,
+               'prompt_version': prompt_version(cap_window, cap_robot), 'protocol_version': zp.PROTOCOL_VERSION,
                'payload_schema': PAYLOAD_SCHEMA, 'input_sha256': inputs.payload_sha256,
                'input_profile_id': INPUT_PROFILE['profile_id'],
                'messages': [{'role': 'system', 'content': system},

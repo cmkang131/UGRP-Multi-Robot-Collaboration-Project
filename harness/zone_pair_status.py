@@ -26,6 +26,24 @@ STATES = frozenset(('available', 'busy', 'uncertain', 'stopped', 'occupied', 'in
                     'put_down', 'done', 'abort') + tuple(
                         f'{phase}_{event}_{seg}' for seg in range(MAX_SEGMENTS) for phase in BARRIERS for event in ('ready', 'go')))
 
+# Wire phase semantics shared by partner_view and resting-beam safety. The
+# channel has no separate descending/closing/lifting messages: open descent is
+# aligning, grasp/closing is ready, and lifting is lift. Even approach barriers
+# normalize to aligning; they do not certify that the peer cannot touch cargo.
+BARRIER_PHASES = dict(approach='aligning', close='aligning', lift='ready',
+                      carry='lift', lower='carry', open='put_down')
+
+
+def status_phase(state):
+    if state == 'not_ready':
+        return 'aligning'
+    if state in STATES and ('_ready_' in state or '_go_' in state):
+        return BARRIER_PHASES[state.split('_')[0]]
+    return state
+
+
+BEAM_MOTION_STATES = frozenset(state for state in STATES if status_phase(state) in BARRIER_PHASES.values())
+
 
 def finite(v):
     return type(v) in (int, float) and math.isfinite(v)
@@ -80,12 +98,7 @@ class PairStatusChannel:
             if rid == me:
                 continue
             msg = self.latest.get(rid)
-            state = None if msg is None else msg['state']
-            if state == 'not_ready':
-                state = 'aligning'
-            if state and ('_ready_' in state or '_go_' in state):
-                state = {'approach': 'aligning', 'close': 'aligning', 'lift': 'ready', 'carry': 'lift',
-                         'lower': 'carry', 'open': 'put_down'}[state.split('_')[0]]
+            state = None if msg is None else status_phase(msg['state'])
             age = None if msg is None else now - msg['sent_at_s']
             out[rid] = {'state': state, 'age_s': age,
                         'alive': age is not None and -EPS <= age < self.heartbeat_timeout_s - EPS}

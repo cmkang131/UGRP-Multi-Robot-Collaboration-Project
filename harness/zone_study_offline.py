@@ -311,7 +311,7 @@ class OfflineTrial:
                                      execution_bundle_id=EXECUTION_BUNDLE_ID, model=FIXTURE_MODEL,
                                      provider=None,
                                      model_settings_sha256=digest(self.client_factory.settings),
-                                     prompt_template_sha256=digest(pk.PROMPT_VERSION),
+                                     prompt_template_sha256=digest(pk.prompt_version()),
                                      cost_profile_id=self.params.version)
         # package C owns message VALIDATION and the canonical envelope id; the SIM
         # scheduler owns DELIVERY, so there is exactly one inbox and one clock

@@ -1,0 +1,93 @@
+{
+  "schema": "zone_pair_v6_review2_regression.v1",
+  "base_and_current_head": "19b3a7b242ccecf63ac5087ba122b1cb559d0991",
+  "passed": 2787,
+  "failed": 0,
+  "skipped": 2,
+  "subtests_passed": 382,
+  "test_files": 80,
+  "junit_tests_including_subtests": 3171,
+  "review2_scenarios": [
+    "test_actual_endpoint_normal_approach_and_rotation_reobserve_then_arrive[False]",
+    "test_actual_endpoint_normal_approach_and_rotation_reobserve_then_arrive[True]",
+    "test_actual_endpoint_align_yaw_reacquires_three_fixes_then_returns",
+    "test_actual_endpoint_partial_view_forward_reaches_pregrasp",
+    "test_occluded_partial_boundary_does_not_update_axis_or_contract_bound",
+    "test_two_piece_obstacle_stays_yes_in_actual_status_judge",
+    "test_missing_fixes_stop_then_exhaust_existing_reobserve_budget",
+    "test_recovery_envelope_keeps_posterior_hypotheses_and_invalidity",
+    "test_two_fragments_cannot_initialize_relative_shape_either",
+    "test_partial_multiview_cache_cannot_cross_base_command_or_expired_view",
+    "test_multiview_report_cannot_outlive_identity_on_duplicate_read",
+    "test_last_approach_pan_is_reachable_while_global_fix_is_pending"
+  ],
+  "skips": [
+    {
+      "test": "test_team_host_feeds_each_executor_only_its_own_camera",
+      "reason": "real-world physical steps are outside the explicitly nonphysical suite"
+    },
+    {
+      "test": "test_team_host_isolation_abort_and_horizon_on_the_real_world",
+      "reason": "real-world physical steps are outside the explicitly nonphysical suite"
+    }
+  ],
+  "suite_guards": {
+    "physical_step_attempts": 0,
+    "real_vision_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "child_physics_attempts": 0,
+  "model_calls": 0,
+  "pytest_temporary_removed": true,
+  "adjacent_policy_flags": {
+    "v5h": {
+      "posterior_relook": false,
+      "beam_relative": false
+    },
+    "b-only": {
+      "posterior_relook": true,
+      "beam_relative": false
+    },
+    "a+b": {
+      "posterior_relook": true,
+      "beam_relative": true
+    }
+  },
+  "prereg_source_hashes_verified": 65,
+  "prereg_sha256": "a12ebaa29d628955f29a968aa68e1b3723996e4f6cb502543ce4bfe4199f2ca5",
+  "draft_execution_refused": [
+    "v6-s911-v5h",
+    "v6-s911-b",
+    "v6-s911-ab",
+    "v6-s912-v5h",
+    "v6-s912-b",
+    "v6-s912-ab"
+  ],
+  "frozen_files_unchanged": 18,
+  "unchanged_safety_definitions": {
+    "harness/zone_pair_global.py": [
+      "GlobalPairSweepGuard.margin",
+      "GlobalPairSweepGuard.certificate",
+      "GlobalEnvelope._verified_reacquisition"
+    ],
+    "harness/zone_pair_align.py": [
+      "PairAlignRelook.align_relook_expired"
+    ]
+  },
+  "project_commit_created": false,
+  "remote_refresh_verified": false,
+  "scope": "offline command-response/analytic RGB source regression, not physics or cohort success",
+  "changed_file_sha256": {
+    "experiments/2026-09-28-zone-pair-v6/prereg_v6.json": "a12ebaa29d628955f29a968aa68e1b3723996e4f6cb502543ce4bfe4199f2ca5",
+    "harness/zone_pair_align.py": "7476e41f72416ad25c2f937a15a3a9b90982b09091cba486c6c1abc53f01e579",
+    "harness/zone_pair_executor.py": "bca43cbf23cce9fd0370768eda1ff993789300168a68b15ae20e7c40ad3855ea",
+    "harness/zone_pair_global.py": "4e8ad38576d6d07cb57ca27a760b0805cee9796ed0da3af8b11a071ee8c6cbc2",
+    "harness/zone_pair_grasp.py": "58c72b08c28fb66b27aff25fb179af9bcd3cba53cc76bfb7e5980d2706579830",
+    "harness/zone_pair_guards.py": "7b49091d24c6d837f3409fa7a6023d27af8b31aa9c7f53067b3e91fd009550eb",
+    "harness/zone_pair_obstruction.py": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
+    "harness/zone_pair_relative.py": "6b9cbc22b0b09240c4385102b308995a0be56362210288281e6bee6e7d2d27da",
+    "tests/test_zone_pair_v6.py": "77c49993538e9316558df412c7b0e0580cb20d9d3455972f6a957a89f835eeb8",
+    "tests/test_zone_pair_v6_review1.py": "a58e38a3f5697ebe0ed2d72c5a00d76acb7d364c5129e9a9fc975cdb68412330",
+    "tests/test_zone_pair_v6_review2.py": "78ae78f720615f4d8a9f41e116139b02a4c79dd91f4cb9c7c37051580ad5c8a2"
+  }
+}

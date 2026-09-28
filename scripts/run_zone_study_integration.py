@@ -16,13 +16,20 @@ Pose provider: chosen by ``--prereg``'s ``pose_provider`` from
 ``configs/zone_study_integration/pose_providers.json``; ``tags_temporary`` is the
 own-camera wall-tag PF, a TEMPORARY provider: "임시, 표식 사용, 연구 결과 아님".
 
-CLI defaults to plumbing with fixture decisions. An embedding runner can inject
-the budgeted #194 ModelAdapter; it uses the same live own-camera inputs. Tests
-exercise that adapter over a fake wire, without a model call or physical run.
+CLI defaults to plumbing with fixture decisions. ``--llm`` drives real model
+calls per robot per turn through the same scheduler and own-camera inputs
+(B7, ``harness.zone_study_llm_driver``): the prereg selects a registered driver
+profile and speech-cap profile, and every POST is recorded in the NEW main-study
+ledger (``harness.zone_main_budget``, never the #222 pilot DB) with raw
+request/response bytes, tokens, latency and failure class. The only retry is
+in place, once, for a HOST_ERROR before the first model request. Tests exercise
+the driver over a fake wire, without a model call or physical run.
 
     python scripts/run_zone_study_integration.py --prereg experiments/2026-09-26-zone-study-integration/prereg.json \
         --episode smoke-i700 --condition no_comm --output /Users/changmin/projects/ugrp/outputs/zone-study-integration
     python scripts/run_zone_study_integration.py --prereg ... --episode smoke-i700 --bundle   # print the run bundle only
+    python scripts/run_zone_study_integration.py --prereg <main prereg> --episode ... --condition peer_ko \
+        --output ... --llm --proxy-pid <running proxy PID>        # real model calls (prereg llm_driver block)
 """
 from __future__ import annotations
 
@@ -46,6 +53,7 @@ if str(ROOT) not in sys.path:
 
 from harness import zone_study_integration as zi  # noqa: E402
 from harness import zone_study_offline as zo  # noqa: E402
+from harness import zone_study_llm_driver as llm  # noqa: E402
 from harness import zone_study_referee as zr  # noqa: E402  (eval only: physics owner side, never the study layer)
 from harness.zone_own_executor import OwnCamTeamHost, ROBOTS  # noqa: E402
 from harness.zone_study_contract import MAIN_CONDITIONS, digest  # noqa: E402
@@ -61,7 +69,8 @@ PROGRESS_EVERY_S = 60.
 # injection uses the supported transport entry point, even in fixture bundles.
 RUNTIME_ENTRY_POINTS = ('scripts/run_zone_study_integration.py',
                         'harness/zone_study_llm_transport.py')
-RUNTIME_ASSETS = ('configs/zone_study_integration/pose_providers.json',)
+RUNTIME_ASSETS = ('configs/zone_study_integration/pose_providers.json',
+                  'configs/zone_study_integration/llm_driver.json')
 
 
 def runtime_files(prereg, provider):
@@ -334,7 +343,7 @@ def host_spec(scenario, episode, map_bundle):
     return spec
 
 
-def run_bundle(prereg, episode, *, model_adapter=None):
+def run_bundle(prereg, episode, *, model_adapter=None, driver=None):
     """Everything that identifies this execution, hashed (docs/execution_versioning.md)."""
     from harness.zone_study_scenarios import bundle_for, validate
     from sim.zone_own_scene_provider import scene_static_map
@@ -355,12 +364,15 @@ def run_bundle(prereg, episode, *, model_adapter=None):
     # the M2 loop-v2 calibration. Never label it with the registry's M1 default.
     provider['calibration'] = prereg['student']['calibration']
     stub = {r: _StubLink(r) for r in ROBOTS}
+    limits, caps = llm.speech_caps_for(prereg)
     trial = zi.IntegratedTrial(scenario, condition=MAIN_CONDITIONS[0], seed=episode['trial_seed'], links=stub,
                                horizon_s=prereg['horizon_s'], map_bundle=map_bundle,
                                policy=zo.CallPolicy(**prereg.get('call_policy', {})),
-                               decision_limits=zi.DecisionLimits(**prereg.get('decision_limits', {})),
+                               decision_limits=limits,
                                pose_label=zi.provider_record(provider)['label'])
     invariant = zi.condition_invariant_config(trial.study_config())
+    if driver is not None:
+        model_adapter = zi.ModelAdapter(driver.client_factory, None)
     if model_adapter is not None:
         invariant.update(zi.model_config('gemini_proxy', model_adapter.client_factory))
     from harness.owncam_memory_time import TIME_CONTRACT
@@ -383,7 +395,8 @@ def run_bundle(prereg, episode, *, model_adapter=None):
               'eval_top_camera': evaluation_top_config(static),
               'referee': zr.profile(), 'hidden_events': zr.HiddenEventSchedule(scenario).config(),
               'study_invariant': invariant,
-              'conditions': list(MAIN_CONDITIONS), 'horizon_s': prereg['horizon_s']}
+              'conditions': list(MAIN_CONDITIONS), 'horizon_s': prereg['horizon_s'],
+              'speech_caps': caps, 'llm_driver': driver.bundle_record() if driver is not None else None}
     return bundle, scenario, map_bundle, provider
 
 
@@ -453,13 +466,15 @@ def check_run_source(prereg, bundle_sha, *, dev=False, expected_source_sha=None)
     return code
 
 
-def run_loop(host, trial, referee, t, horizon_s, *, progress=None):
+def run_loop(host, trial, referee, t, horizon_s, *, progress=None, health=None):
     """The chunked episode loop. Returns (stop, t).
 
     Per chunk: due hidden events act on physics only -> physics + own executor
-    events -> study scheduler -> eval-only referee sample. The referee's result
-    reaches nothing but this loop's stop decision: robots see the episode end,
-    exactly as at the horizon, and never why.
+    events -> study scheduler -> (``health``: the B7 runner boundary, which
+    raises on a fatal ledger/budget state before another physics step) ->
+    eval-only referee sample. The referee's result reaches nothing but this
+    loop's stop decision: robots see the episode end, exactly as at the
+    horizon, and never why.
     """
     stop, next_report = 'horizon', t + PROGRESS_EVERY_S
     host.hidden_tick(t)
@@ -471,6 +486,8 @@ def run_loop(host, trial, referee, t, horizon_s, *, progress=None):
         for event in host.advance_to(t):
             trial.on_executor_event(event, at_s=t)
         trial.step_to(t)
+        if health is not None:
+            health(trial)
         host.hidden_tick(t)
         referee.observe(t, host.referee_truth())
         if referee.orders_complete():
@@ -486,14 +503,22 @@ def run_loop(host, trial, referee, t, horizon_s, *, progress=None):
 
 
 def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_adapter=None,
-              expected_source_sha=None):
-    bundle, scenario, map_bundle, provider = run_bundle(prereg, episode, model_adapter=model_adapter)
+              expected_source_sha=None, driver=None, run_key=None, attempt=1, raise_on_failure=True):
+    """One trial attempt. With ``driver`` (``llm.LiveDriver``) the model adapter is built per attempt.
+
+    ``raise_on_failure=False`` returns ``(record, exception)`` so the caller can
+    apply the single pre-request retry (``llm.run_attempts``).
+    """
+    if driver is not None and (model_adapter is not None or run_key is None):
+        raise zi.ContractViolation('a driver run builds its own adapter and needs the ledger run_key')
+    bundle, scenario, map_bundle, provider = run_bundle(prereg, episode, model_adapter=model_adapter,
+                                                        driver=driver)
     bundle_sha = digest(bundle)
     code = check_run_source(prereg, bundle_sha, dev=dev, expected_source_sha=expected_source_sha)
     import cv2
     import mujoco
     import numpy as np
-    run_id = f'{condition}-{episode["episode_id"]}'
+    run_id = f'{condition}-{episode["episode_id"]}' + ('' if attempt == 1 else f'-attempt{attempt}')
     out = Path(out) / run_id
     out.mkdir(parents=True, exist_ok=False)                   # never overwrite a result
     started, load0 = time.time(), os.getloadavg()
@@ -501,11 +526,14 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
     (out / 'attempt_started.json').write_text(json.dumps(
         {'run_id': run_id, 'condition': condition, 'episode': episode['episode_id'], 'code': code, 'dev': dev,
          'bundle_sha256': bundle_sha, 'horizon_s': horizon_s, 'pose_provider': label,
+         'attempt': attempt, 'ledger_run_key': run_key,
          'started_unix': round(started, 3), 'load_average_start': load0}, indent=2, ensure_ascii=False) + '\n')
     spec = host_spec(scenario, episode, map_bundle)
-    host = trial = result = referee = None
+    host = trial = result = referee = error = None
     failure, t = None, 0.0
     try:
+        if driver is not None:
+            model_adapter = driver.adapter(run_key=run_key, store_dir=out / 'study' / 'wire')
         host = StudyTeamHost(spec, prereg['student'], root=ROOT, provider_spec=provider,
                              frames_dir=out / 'own_frames', hidden=zr.HiddenEventSchedule(scenario))
         expected = bundle['contact_profile_expected']
@@ -518,21 +546,25 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
                                    pose_label=label, actor='gemini_proxy' if model_adapter else zi.FIXTURE_ACTOR,
                                    model_adapter=model_adapter,
                                    policy=zo.CallPolicy(**prereg.get('call_policy', {})),
-                                   decision_limits=zi.DecisionLimits(**prereg.get('decision_limits', {})),
+                                   decision_limits=llm.speech_caps_for(prereg)[0],
                                    pair_records=lambda: host.pairs.records() if host.pairs else [])
         referee = zr.Referee(spec['order_sheet']['orders'], host.static)
         t = host.settle(float(prereg['t0_s']))
         trial.begin(t)
+        llm.check_trial_health(trial)
         stop, t = run_loop(host, trial, referee, t, horizon_s, progress=lambda t: print(json.dumps(
             {'run_id': run_id, 'sim_s': t, 'wall_s': round(time.time() - started, 1),
              'calls': len(trial.scheduler.calls), 'load': [round(v, 1) for v in os.getloadavg()]}),
-            file=sys.stderr, flush=True))
+            file=sys.stderr, flush=True), health=llm.check_trial_health)
+        llm.check_trial_health(trial, final=True)
         for rid in ROBOTS:
             host._hold(rid, float(host.world.data.time))
         result = trial.finish(t)
     except Exception as exc:                                 # noqa: BLE001 - recorded, then re-raised below
+        error = exc
         failure = {'type': type(exc).__name__, 'message': str(exc)[:2000], 'traceback': traceback.format_exc()[-8000:],
-                   'sim_s': None if host is None else round(float(host.world.data.time), 3)}
+                   'sim_s': None if host is None else round(float(host.world.data.time), 3),
+                   'failure_class': llm.classify_exception(exc)}
         stop = 'exception'
     finally:
         record = write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, trial, result, stop,
@@ -543,6 +575,8 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
     manifest = json.loads((out / 'manifest.json').read_text())
     manifest['env'].update(env)
     (out / 'manifest.json').write_text(json.dumps(manifest, indent=2, ensure_ascii=False, default=str) + '\n')
+    if not raise_on_failure:
+        return record, error
     if failure is not None:
         raise SystemExit(f'{run_id}: {failure["type"]}: {failure["message"]}')
     return record
@@ -551,8 +585,12 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
 def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, trial, result, stop, failure, code,
                   started, load0, dev, *, referee=None):
     """Everything that exists, also after an exception; returns the result summary."""
+    ledger = getattr(trial, 'send_ledger', None) if trial is not None else None
     summary = {'schema': SCHEMA, 'run_id': out.name, 'condition': condition, 'episode': episode['episode_id'],
                'dev': dev, 'stop': stop, 'failure': failure, 'bundle_sha256': bundle_sha,
+               'failure_class': (failure or {}).get('failure_class') or (
+                   llm.trial_failure_class(None, ledger, transport=trial.transport)
+                   if isinstance(ledger, llm.MainStudySendLedger) else None),
                'pose_provider': bundle['pose_provider']['label'],
                'actor': trial.actor if trial else prereg.get('actor', zi.FIXTURE_ACTOR),
                'plumbing_only': trial is None or trial.actor == zi.FIXTURE_ACTOR,
@@ -615,6 +653,14 @@ def write_study(out, trial, result, summary, referee=None):
     images.mkdir(parents=True, exist_ok=True)
     for sha, jpeg in trial.request_images.items():
         (images / f'{sha}.jpg').write_bytes(jpeg)
+    if isinstance(trial.send_ledger, llm.MainStudySendLedger):
+        # Raw request/response bytes are already in study/wire/ (written before/after each POST).
+        rows = llm.call_rows(trial.send_ledger)
+        jsonl(study / 'model_calls.jsonl', rows)
+        summary['model_usage'] = llm.usage_summary(rows)
+        summary['model_ledger'] = {'run_key': trial.send_ledger.run_key, 'live': trial.send_ledger.live,
+                                   'host_errors': list(trial.send_ledger.host_errors),
+                                   'proxy_identity': getattr(trial.send_ledger, 'proxy_identity', None)}
     jsonl(study / 'dispatch.jsonl', trial.dispatch_log)
     jsonl(study / 'inputs.jsonl', trial.input_log)
     jsonl(study / 'executor_events.jsonl', trial.executor_events)
@@ -630,6 +676,11 @@ def write_study(out, trial, result, summary, referee=None):
     # record is never a success.
     record = (zr.apply_to_record(trial.trial_record(result), referee) if referee is not None
               else zr.not_evaluated(trial.trial_record(result)))
+    if isinstance(trial.send_ledger, llm.MainStudySendLedger):
+        record['failure_class'] = summary.get('failure_class')
+        record['model_usage'] = summary['model_usage']
+        if record['failure_class'] == llm.API_ERROR:
+            record['end_reason'] = 'api_failure'
     record['pose_provider'] = dict(summary['pose_provider'])   # A's provenance keys are closed: top level
     record['plumbing_only'] = trial.actor == zi.FIXTURE_ACTOR
     (study / 'trial_record.json').write_text(json.dumps(record, indent=1, ensure_ascii=False) + '\n')
@@ -652,6 +703,46 @@ def write_study(out, trial, result, summary, referee=None):
                         'study_config_sha256': digest(trial.study_config())}
 
 
+def llm_driver(prereg, args, *, wire=None):
+    """The prereg's registered driver + main-study ledger cohort (never the #222 pilot DB)."""
+    path = ROOT / prereg['_path'] if prereg.get('_path') else None
+    return llm.LiveDriver.from_prereg(
+        prereg, prereg_sha256=zi.file_sha256(path) if path else None,
+        source={'code_sha': git('rev-parse', 'HEAD'), 'execution_bundle_id': zi.EXECUTION_BUNDLE_ID},
+        proxy_pid=args.proxy_pid, create_budget=args.create_budget, wire=wire)
+
+
+def run_llm_trial(prereg, episode, condition, out, *, horizon_s, dev, expected_source_sha, driver):
+    """All attempts of one (episode, condition); only a pre-request HOST_ERROR is retried, once."""
+    run_id = f'{condition}-{episode["episode_id"]}'
+    paths = [Path(out) / run_id, Path(out) / f'{run_id}-attempt2', Path(out) / f'{run_id}.attempts.json']
+    if any(path.exists() or path.is_symlink() for path in paths):
+        raise SystemExit(f'{run_id}: existing result/attempt path; refusing overwrite or rerun')
+    driver.budget.check_available(driver.cohort_id)
+    bundle_sha = digest(run_bundle(prereg, episode, driver=driver)[0])
+
+    def start(attempt, run_key):
+        driver.start_run(run_key, bundle_id=zi.EXECUTION_BUNDLE_ID, bundle_sha256=bundle_sha,
+                         record={'run_id': run_id, 'attempt': attempt, 'condition': condition,
+                                 'episode': episode['episode_id'], 'dev': dev})
+
+    def attempt_fn(attempt, run_key):
+        return run_trial(prereg, episode, condition, out, horizon_s=horizon_s, dev=dev,
+                         expected_source_sha=expected_source_sha, driver=driver, run_key=run_key,
+                         attempt=attempt, raise_on_failure=False)
+
+    record, exc, attempts = llm.run_attempts(attempt_fn, budget=driver.budget, run_id=run_id, start=start)
+    path = Path(out) / f'{run_id}.attempts.json'
+    with path.open('x') as handle:
+        handle.write(json.dumps({'run_id': run_id, 'bundle_sha256': bundle_sha, 'attempts': attempts,
+                                'ledger': driver.ledger_record(),
+                                'cohort_usage': driver.budget.usage(driver.cohort_id)},
+                               indent=1, ensure_ascii=False) + '\n')
+    if exc is not None:
+        raise SystemExit(f'{run_id}: {type(exc).__name__}: {exc} (attempts: {path})')
+    return record
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     p.add_argument('--prereg', required=True)
@@ -661,22 +752,31 @@ def main(argv=None):
     p.add_argument('--expected-source-sha', help='expected execution commit; checked alongside prereg.source_sha')
     p.add_argument('--bundle', action='store_true', help='print the run bundle and its sha256, run nothing')
     p.add_argument('--dev-horizon-s', type=float, help='dev plumbing only: shorter horizon, bundle not enforced')
+    p.add_argument('--llm', action='store_true', help='real model calls via the prereg llm_driver block (B7)')
+    p.add_argument('--proxy-pid', type=int, help='PID of the already running local subscription proxy (read-only check)')
+    p.add_argument('--create-budget', action='store_true',
+                   help='explicitly create the NEW main-study ledger file named by llm_driver.budget_db')
     args = p.parse_args(argv)
     prereg = load_prereg(args.prereg)
     prereg['_path'] = str(Path(args.prereg).resolve().relative_to(ROOT)) if Path(args.prereg).resolve().is_relative_to(ROOT) else None
     episode = next((e for e in prereg['episodes'] if e['episode_id'] == args.episode), None)
     if episode is None:
         raise SystemExit(f'unknown episode {args.episode!r}')
+    driver = llm_driver(prereg, args) if args.llm else None
     if args.bundle:
-        bundle = run_bundle(prereg, episode)[0]
+        bundle = run_bundle(prereg, episode, driver=driver)[0]
         print(json.dumps({'bundle_sha256': digest(bundle), 'bundle': bundle}, indent=1, ensure_ascii=False))
         return 0
     if not args.condition or not args.output:
         raise SystemExit('--condition and --output are required to run')
     dev = args.dev_horizon_s is not None
     horizon = float(args.dev_horizon_s if dev else prereg['horizon_s'])
-    rec = run_trial(prereg, episode, args.condition, args.output, horizon_s=horizon, dev=dev,
-                    expected_source_sha=args.expected_source_sha)
+    if driver is not None:
+        rec = run_llm_trial(prereg, episode, args.condition, args.output, horizon_s=horizon, dev=dev,
+                            expected_source_sha=args.expected_source_sha, driver=driver)
+    else:
+        rec = run_trial(prereg, episode, args.condition, args.output, horizon_s=horizon, dev=dev,
+                        expected_source_sha=args.expected_source_sha)
     study = rec.get('study', {})
     print(json.dumps({'run_id': rec['run_id'], 'stop': rec['stop'], 'sim_s': rec.get('sim_s'),
                       'end_reason': study.get('end_reason'), 'end_state': study.get('end_state'),
