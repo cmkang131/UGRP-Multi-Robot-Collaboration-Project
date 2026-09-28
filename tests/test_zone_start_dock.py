@@ -67,7 +67,6 @@ def registered_tree(registration=dev.PREREG_V3):
     verify_registered_source(registration)
     current = dev.scene_contract()
     registered = json.loads(registration.read_text())['scene_contract']
-    assert current == json.loads(dev.PREREG_V5H.read_text())['scene_contract']
     if current == registered:
         return True
     old_sources = set(registered['source_sha256'])
@@ -258,6 +257,7 @@ def assert_committed_receipt_is_prepare_only(registration, run_id, tmp_path):
 @pytest.mark.parametrize('registration,run_id', [
     (dev.PREREG_V3, 'dev05'), (dev.PREREG_V3, 'dev06'),
     (dev.PREREG_V4, 'dev07'), (dev.PREREG_V4, 'dev08'),
+    (dev.PREREG_V5B, 'dev09'), (dev.PREREG_V5B, 'dev10'),
     (dev.PREREG_V5D, 'dev11'), (dev.PREREG_V5D, 'dev12'),
     (dev.PREREG_V5G, 'dev11'), (dev.PREREG_V5G, 'dev12'),
     (dev.PREREG_V5H, 'dev13'), (dev.PREREG_V5H, 'dev14'),

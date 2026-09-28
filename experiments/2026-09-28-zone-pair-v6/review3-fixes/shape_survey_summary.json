@@ -1,0 +1,185 @@
+{
+ "current_working_tree": {
+  "source_rev": "working tree",
+  "frames": 9528,
+  "fits": 4838,
+  "ready_fits_bound_le_5cm": 3021,
+  "violations_err_gt_bound": 4,
+  "max_err_m": 0.0771,
+  "max_err_over_bound": 2.1270718232044197,
+  "first_reason": {
+   "END_CLIPPED": 2271,
+   "MONOCULAR_RESTING_PLANE_HYPOTHESIS": 4838,
+   "SHAPE_AMBIGUOUS": 2257,
+   "DISCONNECTED_SHAPE_OR_OCCLUSION": 162
+  },
+  "separate_component_excluded_fits": 20,
+  "gt_grip_x_range_of_fits": [
+   0.2494,
+   0.7857
+  ],
+  "frames_json_sha256": "aaa967e54b41c29c959f1f589c0d57ab8c55dc6f06af47987b60026ca8dfe55e",
+  "raw_roots": [
+   "/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5h-f87921dc52f7a3f12d41b4bc6ab5c30227890e8e",
+   "/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5b-3ea2edc08e5addafaf3cedc934c463ad8e1635c8",
+   "/Users/changmin/projects/ugrp/outputs/zone-pair-dev-v5g-c38f94e6c551d8c0fa9993945ff4df087754672e"
+  ],
+  "scope": "saved own frames with open gripper and >=60 beam-colour points; GT used only to score"
+ },
+ "stationary_split": {
+  "settle_s": 0.6,
+  "survey_frames_sha256": "aaa967e54b41c29c959f1f589c0d57ab8c55dc6f06af47987b60026ca8dfe55e",
+  "all_frames": {
+   "frames": 9528,
+   "fits": 4838,
+   "ready_fits_bound_le_5cm": 3021,
+   "violations_err_gt_bound": 4,
+   "max_err_over_bound": 2.1270718232044197,
+   "violations": [
+    {
+     "root": "zone-pair-dev-v5h-f87921dc52f7a3f12d41b4bc6ab5c30227890e8e",
+     "run": "dev13",
+     "rid": "r1",
+     "frame": 1423,
+     "view": "other",
+     "err": 0.0771,
+     "bound": 0.0363,
+     "since_motion_s": 0.008
+    },
+    {
+     "root": "zone-pair-dev-v5b-3ea2edc08e5addafaf3cedc934c463ad8e1635c8",
+     "run": "dev09",
+     "rid": "r1",
+     "frame": 1481,
+     "view": "other",
+     "err": 0.052,
+     "bound": 0.0473,
+     "since_motion_s": 0.03
+    },
+    {
+     "root": "zone-pair-dev-v5b-3ea2edc08e5addafaf3cedc934c463ad8e1635c8",
+     "run": "dev09",
+     "rid": "r2",
+     "frame": 1482,
+     "view": "other",
+     "err": 0.0532,
+     "bound": 0.0486,
+     "since_motion_s": 0.03
+    },
+    {
+     "root": "zone-pair-dev-v5g-c38f94e6c551d8c0fa9993945ff4df087754672e",
+     "run": "dev11",
+     "rid": "r1",
+     "frame": 1534,
+     "view": "other",
+     "err": 0.077,
+     "bound": 0.0362,
+     "since_motion_s": 0.003
+    }
+   ]
+  },
+  "stationary": {
+   "frames": 5211,
+   "fits": 3766,
+   "ready_fits_bound_le_5cm": 2188,
+   "violations_err_gt_bound": 0,
+   "max_err_over_bound": 0.1907756813417191,
+   "violations": []
+  },
+  "stationary_look_postures": {
+   "frames": 4928,
+   "fits": 3693,
+   "ready_fits_bound_le_5cm": 2121,
+   "violations_err_gt_bound": 0,
+   "max_err_over_bound": 0.1907756813417191,
+   "violations": []
+  },
+  "in_motion": {
+   "frames": 4317,
+   "fits": 1072,
+   "ready_fits_bound_le_5cm": 833,
+   "violations_err_gt_bound": 4,
+   "max_err_over_bound": 2.1270718232044197,
+   "violations": [
+    {
+     "root": "zone-pair-dev-v5h-f87921dc52f7a3f12d41b4bc6ab5c30227890e8e",
+     "run": "dev13",
+     "rid": "r1",
+     "frame": 1423,
+     "view": "other",
+     "err": 0.0771,
+     "bound": 0.0363,
+     "since_motion_s": 0.008
+    },
+    {
+     "root": "zone-pair-dev-v5b-3ea2edc08e5addafaf3cedc934c463ad8e1635c8",
+     "run": "dev09",
+     "rid": "r1",
+     "frame": 1481,
+     "view": "other",
+     "err": 0.052,
+     "bound": 0.0473,
+     "since_motion_s": 0.03
+    },
+    {
+     "root": "zone-pair-dev-v5b-3ea2edc08e5addafaf3cedc934c463ad8e1635c8",
+     "run": "dev09",
+     "rid": "r2",
+     "frame": 1482,
+     "view": "other",
+     "err": 0.0532,
+     "bound": 0.0486,
+     "since_motion_s": 0.03
+    },
+    {
+     "root": "zone-pair-dev-v5g-c38f94e6c551d8c0fa9993945ff4df087754672e",
+     "run": "dev11",
+     "rid": "r1",
+     "frame": 1534,
+     "view": "other",
+     "err": 0.077,
+     "bound": 0.0362,
+     "since_motion_s": 0.003
+    }
+   ]
+  },
+  "head_look_postures_all": {
+   "frames": 7537,
+   "fits": 2105,
+   "ready_fits_bound_le_5cm": 2083,
+   "violations_err_gt_bound": 1,
+   "max_err_over_bound": 1.0711382113821137,
+   "violations": [
+    {
+     "root": "zone-pair-dev-v5h-f87921dc52f7a3f12d41b4bc6ab5c30227890e8e",
+     "run": "dev14",
+     "rid": "r1",
+     "frame": 1239,
+     "view": "search",
+     "err": 0.0527,
+     "bound": 0.0492,
+     "since_motion_s": 0.05
+    }
+   ]
+  },
+  "head_look_postures_stationary": {
+   "frames": 4928,
+   "fits": 1625,
+   "ready_fits_bound_le_5cm": 1625,
+   "violations_err_gt_bound": 0,
+   "max_err_over_bound": 0.7714884696016772,
+   "violations": []
+  }
+ },
+ "head_a5b486eb": {
+  "source": "git show a5b486eb:harness/zone_pair_relative.py (sha256 6b9cbc22b0b09240c4385102b308995a0be56362210288281e6bee6e7d2d27da)",
+  "selection": "look postures only (search/p45/inspect), same raw roots, >=60 beam-colour points",
+  "frames_json_sha256": {
+   "v5h": "5f241c0014d4260167263248c021d14597d3f0108d3d9286bafb8fa0b47052c4",
+   "v5b": "36dc6caa440c3ec0f13bdecd0e5d2d75ab8d70b3686ace567be1e517de8ef0a2",
+   "v5g": "6fd88be4e3093902cc1c7a5ec1f74915fda3753ce7e97888ae208f939e3ecd93"
+  },
+  "frames_json_location": "outputs/zone-pair-v6-review3-shape-survey/head-a5b486eb/ (primary checkout; script survey_head.py + source head_relative.py preserved with it)"
+ },
+ "note": "All 4 all-frame violations are frames captured <0.6 s after an issued arm/look command (camera still moving; recorded pulses are the issued target). v6 feeds the relative track only when the arm queue is idle (arm_idle includes settle)."
+}

@@ -1,0 +1,727 @@
+{
+  "schema": "ugrp.zone_study_main_prereg.draft.v1",
+  "status": "DRAFT",
+  "status_note_ko": "초안. 고정·승인 아님. 차단 선행 조건 충족 뒤 관리 세션이 새 파일 prereg_main.json으로 고정한다.",
+  "created": "2026-09-28",
+  "author": "claude (Opus 5.5), branch claude/main-study-prereg-draft",
+  "base_sha": "d5bd208e45331a73f1f71dd9b3e129c26c5eaac6",
+  "survey": {
+    "pr": 252,
+    "branch": "claude/nl-dialogue-eval-survey",
+    "sha": "704d87299107797e1e3c47408fa79fbd5555355e",
+    "path": "experiments/2026-09-28-nl-dialogue-eval-survey/README.md"
+  },
+  "approval": {
+    "approved_by": null,
+    "approved_at": null,
+    "frozen_commit_sha": null,
+    "frozen_file": null
+  },
+  "freeze_pins": {
+    "source_sha": "FILL_AT_FREEZE",
+    "execution_bundle_id": "FILL_AT_FREEZE",
+    "execution_bundle_sha256": "FILL_AT_FREEZE",
+    "map_id": "FILL_AT_FREEZE",
+    "map_sha256": "FILL_AT_FREEZE",
+    "scenario_config_version": "v2 (new files; v1 unchanged)",
+    "scenario_sha256": "FILL_AT_FREEZE",
+    "robot_model": "FILL_AT_FREEZE",
+    "robot_model_sha256": "FILL_AT_FREEZE",
+    "pair_executor": "FILL_AT_FREEZE",
+    "pose_provider": "FILL_AT_FREEZE",
+    "ultrasonic_input_included": "FILL_AT_FREEZE",
+    "model_requested": "gemini-3.8-flash (draft, bundle PLANNED_MODEL)",
+    "model_temperature": 0.2,
+    "model_reasoning_effort": "none",
+    "model_effective": "FILL_AT_FREEZE",
+    "sim_cost_profile": "zone_sim_cost.v1 (provisional flag recorded)",
+    "sim_cost_digest": "FILL_AT_FREEZE",
+    "contact_profile": "cargo_noslip_v1",
+    "weld": "OFF",
+    "budget_db_pilot_id": "FILL_AT_FREEZE"
+  },
+  "question_ko": "한국어 자연어 로봇 대화가 다중 로봇 팀 효율(실패를 분모에 남긴 SIM 시간)에 주는 효과",
+  "conditions": [
+    "no_comm",
+    "peer_ko",
+    "leader_ko",
+    "structured"
+  ],
+  "excluded_conditions": [
+    "reference_R"
+  ],
+  "leader_rotation": "robots[seed % 3]",
+  "robot_inputs": {
+    "identical_across_conditions": true,
+    "allowed": [
+      "own_wrist_fisheye_rgb",
+      "static_map",
+      "order_sheet",
+      "own_command_history",
+      "own_message_history_and_inbox",
+      "own_ultrasonic_range_if_wired_at_freeze"
+    ],
+    "forbidden": [
+      "top_camera",
+      "referee",
+      "simulator_state",
+      "ground_truth_poses",
+      "measured_joints",
+      "contact_or_success_flags",
+      "peer_raw_rgb",
+      "peer_raw_commands",
+      "teacher_outputs",
+      "landmark_tags"
+    ],
+    "pose_provider_rule": "tag-free provider only; tags_temporary forbidden",
+    "environment": {
+      "walls": "walls_v3 (0.40 m)",
+      "april_tags": 0,
+      "weld": "OFF",
+      "contact_profile": "cargo_noslip_v1"
+    }
+  },
+  "limits": {
+    "logical_calls_per_robot": 30,
+    "logical_calls_per_trial": 90,
+    "http_attempts_per_robot": 30,
+    "http_attempts_per_trial": 90,
+    "utterances_per_robot_pilot": 10,
+    "utterances_per_trial_pilot": 30,
+    "cap_rule": "after pilot, pooled over conditions: >20% of channel-condition trials hit utterance cap or >10% of all trials hit call cap -> double that cap before freeze; outcome metrics not inspected",
+    "requires_new_bundle_id": true
+  },
+  "hypotheses": {
+    "family_alpha": 0.05,
+    "sides": 2,
+    "multiplicity": "graphical Holm (equal initial weights 1/3, equal re-allocation) combined with group-sequential boundaries (Maurer & Bretz 2013)",
+    "sign": "variant - baseline on primary metric (PAR-2: lower is better)",
+    "H1": {
+      "contrast": [
+        "peer_ko",
+        "no_comm"
+      ],
+      "pooled_direction": "negative",
+      "by_scenario": {
+        "s1": "zero_or_positive",
+        "s2": "negative",
+        "s3": "negative",
+        "s4": "negative",
+        "s5": "negative",
+        "s6": "negative"
+      }
+    },
+    "H2": {
+      "contrast": [
+        "peer_ko",
+        "structured"
+      ],
+      "pooled_direction": "none (two-sided)",
+      "by_scenario": {
+        "s1": "zero_or_positive",
+        "s2": "zero",
+        "s3": "zero",
+        "s4": "zero",
+        "s5": "zero",
+        "s6": "negative"
+      }
+    },
+    "H3": {
+      "contrast": [
+        "leader_ko",
+        "peer_ko"
+      ],
+      "pooled_direction": "negative",
+      "by_scenario": {
+        "s1": "negative",
+        "s2": "positive_or_zero",
+        "s3": "negative_or_zero",
+        "s4": "negative",
+        "s5": "positive_or_zero",
+        "s6": "zero"
+      }
+    },
+    "scenario_level_status": "exploratory, unadjusted, reported with CI"
+  },
+  "primary_metric": {
+    "name": "par_makespan_sim_s",
+    "definition": "success ? end_sim_s - t0_sim_s : penalty_factor * sim_horizon_s",
+    "success": "end_reason == 'orders_complete' (referee: every ordered item correctly delivered, once per item) and end_sim_s <= t0_sim_s + sim_horizon_s",
+    "sim_horizon_s": 1800,
+    "penalty_factor": 2.0,
+    "itt": true,
+    "switch_rule": {
+      "to": "delivery_rate",
+      "definition": "delivered_items / ordered_items (referee, once per item, at end_sim_s <= horizon)",
+      "trigger": "blinded pooled pilot success rate (all 72 pilot trials, conditions not labelled) < 0.30",
+      "decided": "once, after pilot, before any per-condition table; result committed",
+      "threshold_basis": "PR #252 proposal, no literature basis"
+    }
+  },
+  "secondary_metrics": {
+    "key_secondary": {
+      "metric": "success",
+      "test": "exact McNemar per contrast, separate Holm family over H1-H3",
+      "effect": "paired risk difference + Newcombe CI"
+    },
+    "sim_time": [
+      "makespan_sim_s",
+      "makespan_success_only_s (never alone)",
+      "par_sim_s_per_delivered",
+      "idle_share",
+      "idle_by_reason",
+      "think_sim_cost_s",
+      "talk_sim_cost_s"
+    ],
+    "commands": [
+      "issued_commands_per_trial",
+      "replans",
+      "replans_by_kind"
+    ],
+    "model_calls": [
+      "model_calls",
+      "http_attempts",
+      "calls_by_trigger:start|own_view_change|own_timer|message_received|idle_review|execution_review"
+    ],
+    "tokens": [
+      "tokens_input",
+      "tokens_output",
+      "tokens_image",
+      "tokens_cached",
+      "tokens_total",
+      "tokens_complete",
+      "usage_unknown_calls",
+      "tokens_*_lower_bound"
+    ],
+    "cost": [
+      "tokens x unit_price (unit price not recorded; cost_usd null)",
+      "http_attempts"
+    ],
+    "messages": [
+      "utterances",
+      "output_tokens_per_utterance",
+      "informative_utterance_share (claims>=1)",
+      "truthful_share",
+      "korean_compliance",
+      "code_switch_messages",
+      "channel_violations",
+      "comm_efficiency = delivered_items / (utterance_output_tokens/1000)"
+    ],
+    "coordination": [
+      "conflicts_by_kind",
+      "deadlocks",
+      "deadlock_sim_s",
+      "duplicate_claims"
+    ],
+    "reference_only": [
+      "wall_latency_ms_mean"
+    ]
+  },
+  "design": {
+    "unit_of_analysis": "trial (team episode)",
+    "block": "(scenario, seed)",
+    "scenarios": [
+      "s1",
+      "s2",
+      "s3",
+      "s4",
+      "s5",
+      "s6"
+    ],
+    "scenario_note": "all six in the block design; seeds per scenario multiple of 3 -> blocks multiple of 18",
+    "pilot": {
+      "blocks": 18,
+      "trials": 72,
+      "seeds": {
+        "s1": [
+          601,
+          602,
+          603
+        ],
+        "s2": [
+          611,
+          612,
+          613
+        ],
+        "s3": [
+          621,
+          622,
+          623
+        ],
+        "s4": [
+          631,
+          632,
+          633
+        ],
+        "s5": [
+          641,
+          642,
+          643
+        ],
+        "s6": [
+          651,
+          652,
+          653
+        ]
+      },
+      "role": "external pilot, excluded from confirmatory analysis",
+      "purposes": [
+        "primary metric switch",
+        "within-block correlation rho",
+        "cap hit rates",
+        "calls/tokens per trial",
+        "manipulation-check and failure-coding rehearsal"
+      ]
+    },
+    "main_seeds": {
+      "s1": [
+        10101,
+        10102,
+        10103,
+        10104,
+        10105,
+        10106,
+        10107,
+        10108,
+        10109,
+        10110,
+        10111,
+        10112,
+        10113,
+        10114,
+        10115,
+        10116,
+        10117,
+        10118
+      ],
+      "s2": [
+        10201,
+        10202,
+        10203,
+        10204,
+        10205,
+        10206,
+        10207,
+        10208,
+        10209,
+        10210,
+        10211,
+        10212,
+        10213,
+        10214,
+        10215,
+        10216,
+        10217,
+        10218
+      ],
+      "s3": [
+        10301,
+        10302,
+        10303,
+        10304,
+        10305,
+        10306,
+        10307,
+        10308,
+        10309,
+        10310,
+        10311,
+        10312,
+        10313,
+        10314,
+        10315,
+        10316,
+        10317,
+        10318
+      ],
+      "s4": [
+        10401,
+        10402,
+        10403,
+        10404,
+        10405,
+        10406,
+        10407,
+        10408,
+        10409,
+        10410,
+        10411,
+        10412,
+        10413,
+        10414,
+        10415,
+        10416,
+        10417,
+        10418
+      ],
+      "s5": [
+        10501,
+        10502,
+        10503,
+        10504,
+        10505,
+        10506,
+        10507,
+        10508,
+        10509,
+        10510,
+        10511,
+        10512,
+        10513,
+        10514,
+        10515,
+        10516,
+        10517,
+        10518
+      ],
+      "s6": [
+        10601,
+        10602,
+        10603,
+        10604,
+        10605,
+        10606,
+        10607,
+        10608,
+        10609,
+        10610,
+        10611,
+        10612,
+        10613,
+        10614,
+        10615,
+        10616,
+        10617,
+        10618
+      ]
+    },
+    "main_seed_rule": "10000 + 100*k + j, j=1..18, used in order j",
+    "replicates": "1 of every 3 consecutive seeds per scenario drawn with RNG seed 20260928; all 4 conditions rerun once; averaged before pairing; ICC reported",
+    "order": "blocks shuffled within each look segment, conditions shuffled within block, RNG seed 20260928, one trial at a time, load average recorded",
+    "n_reestimation": {
+      "rho_hat": "Fisher-z mean of the three contrast-pair Pearson correlations on scenario-centred block values of the (switched) primary metric",
+      "rho_used": "one-sided 80% lower bound tanh(atanh(rho_hat) - z0.8/sqrt(15)), clipped to [0, 0.8]",
+      "d_target": 0.4,
+      "dz": "d_target / sqrt(2(1-rho_used))",
+      "alpha": 0.016667,
+      "power": 0.8,
+      "n_formula": "ceil(((z_{1-a/2}+z_{0.8})/dz)^2 + z_{1-a/2}^2/2)",
+      "N_plan": "clamp(ceil(n/18)*18, 36, 108)",
+      "lookup": {
+        "0.0-0.4": 108,
+        "0.5": 108,
+        "0.6": 90,
+        "0.7": 72,
+        "0.8": 54,
+        "0.9": 36
+      },
+      "observed_effect_used": false,
+      "script": "design_calc.py"
+    },
+    "N_min_blocks": 36,
+    "N_max_blocks": 108,
+    "N_max_trials": 432,
+    "sequential": {
+      "looks": 2,
+      "interim_blocks": "smallest multiple of 18 >= N_plan/2",
+      "spending": "Lan-DeMets O'Brien-Fleming-type, two-sided, per hypothesis at its current local alpha",
+      "stop_for": "efficacy only; no futility",
+      "cohort_stop": "only if all three H rejected at interim; otherwise run to N_plan",
+      "nominal_p_examples": {
+        "0.0167@t0.5": [
+          0.00071,
+          0.01638
+        ],
+        "0.0167@t0.6": [
+          0.002,
+          0.0159
+        ],
+        "0.0167@t0.667": [
+          0.00337,
+          0.01541
+        ],
+        "0.025@t0.5": [
+          0.00153,
+          0.02439
+        ],
+        "0.05@t0.5": [
+          0.00558,
+          0.04778
+        ]
+      },
+      "interim_scope": "primary metric and H1-H3 only"
+    },
+    "operational_stops": [
+      "model string or proxy effective model changes",
+      "any input-boundary or channel-isolation violation",
+      "infra failures (HOST_ERROR incl. ENOSPC, API) > 10% cumulative",
+      "source or bundle hash differs from frozen",
+      "cumulative tokens > 1.3 x pilot-based projection (runaway guard, not an N rule)"
+    ],
+    "operational_stop_consequence": "report completed blocks as incomplete cohort, no effect claim, re-register a new cohort"
+  },
+  "tests": {
+    "primary": "paired sign-flip permutation on block differences, statistic = mean; exact if n<=20 else 1e5 Monte Carlo with fixed seed; compared to group-sequential nominal p",
+    "primary_intervals": [
+      "paired t CI",
+      "BCa bootstrap CI",
+      "repeated CI at group-sequential level"
+    ],
+    "success": [
+      "exact McNemar",
+      "scenario-stratified exact conditional (Mantel-Haenszel exact)",
+      "risk difference + Newcombe CI"
+    ],
+    "stratified": "scenario-stratified permutation decomposition; full per-block paired table",
+    "mixed_model_secondary": "log(PAR) ~ condition + scenario + (1|block), Kenward-Roger; NB GLMM for counts; logit GLMM for success; condition x scenario exploratory",
+    "omnibus_secondary": "Friedman or LMM condition F",
+    "effect_sizes": [
+      "paired dz",
+      "rank_biserial",
+      "probability of improvement P(D<0)",
+      "risk difference"
+    ],
+    "effect_rule": "say 'effect' only if H rejected by graphical Holm + sequential boundary AND repeated CI excludes 0; opposite direction reported as such; otherwise 'not detected in this sample', never 'no effect'",
+    "equivalence": "only via TOST with margin +-0.20 (pooled-SD d), secondary",
+    "bootstrap_percentile": "descriptive only"
+  },
+  "confound_controls": {
+    "call_count_mediator": {
+      "mediator": [
+        "model_calls",
+        "calls_by_trigger"
+      ],
+      "analysis": "block-difference regression dPAR = c' + b*dcalls, product-of-coefficients, block bootstrap CI; exploratory"
+    },
+    "yoked_wake_arm": {
+      "name": "no_comm_yoked",
+      "blocks": "first 36 main blocks (j=1..6 per scenario)",
+      "yoked_to": "peer_ko of the same block",
+      "rule": "replay per-robot message_received call SIM times as empty-inbox re-calls labelled own_timer; everything else as no_comm",
+      "contrasts": [
+        "peer_ko - no_comm_yoked",
+        "no_comm_yoked - no_comm"
+      ],
+      "status": "secondary, outside Holm family"
+    },
+    "scale0_decomposition": {
+      "blocks": "same 36 blocks",
+      "conditions": "all 4",
+      "cost_variant": "zone_sim_cost.v1+scale=0 via zc.sweep()",
+      "trials": 144,
+      "estimand": "total(scale1) = info(scale0 contrast) + cost(scale1 - scale0 difference); condition x scale interaction"
+    },
+    "branch_replay": {
+      "scenarios": [
+        "s2",
+        "s5"
+      ],
+      "conditions": [
+        "peer_ko",
+        "leader_ko",
+        "structured"
+      ],
+      "key_message": {
+        "s2": "first utterance with claim blocked(door_narrow)",
+        "s5": "first utterance with claim absent(cyan_1) or drop of red_1"
+      },
+      "method": "replay recorded model responses to the checkpoint just before delivery, then branch deliver vs block (recipient inbox), live calls afterwards, 1 run per branch",
+      "outcomes": [
+        "recipient next decision change",
+        "PAR after checkpoint"
+      ]
+    },
+    "manipulation_checks": {
+      "informative_utterance_delivered_share_channel_conditions": ">= 0.80",
+      "korean_compliance_peer_leader": ">= 0.90",
+      "structured_free_text_violations": 0,
+      "no_comm_utterances": 0,
+      "leader_hub_spoke_violations": 0,
+      "s2_block_report_before_peer_door_choice": "report only",
+      "on_fail": "report H results with label 'manipulation check failed'"
+    }
+  },
+  "failure_handling": {
+    "itt": true,
+    "post_hoc_exclusion": false,
+    "classes": [
+      "executor",
+      "perception",
+      "localization",
+      "infra:HOST_ERROR (incl. ENOSPC)",
+      "infra:API (api_failure)",
+      "communication_attributed",
+      "coordination_attributed",
+      "other"
+    ],
+    "only_retry": "process died before the first model request -> rerun the same (block, condition) in place once; both attempts recorded; second failure counts as infra:HOST_ERROR",
+    "no_rerun_after_first_model_request": true,
+    "never_rerun_single_condition_selectively": true,
+    "enospc_prevention": "ugrp_session.py 10 GiB free-space gate before each trial",
+    "api": "proxy upstream attempts <= 2 per POST; http_attempts recorded; api_failure counts as failure",
+    "sensitivity": "exclude whole blocks with any infra failure (all 4 conditions); secondary only",
+    "balance_diagnostic": "executor and infra failure rates by condition"
+  },
+  "dialogue_coding": {
+    "coders": 2,
+    "coder_profile": "native Korean, independent, not involved in implementation preferred; LLM is not a coder",
+    "blinding": "free-Korean utterances only; condition/scenario/seed/time hidden; robot ids replaced by X/Y/Z; shuffled across conditions; structured mapped from enum",
+    "codebook": "v1: 5 acts (report/request/order/objection/ack) + ISO 24617-2 map + info content codes + ellipsis-ambiguity + honorific level + failure attribution",
+    "codebook_development_data": "2026-09-25 ko pilot + main-study pilot utterances only",
+    "reliability_sample": "stratified condition x scenario, max(20% of main utterances, 200)",
+    "krippendorff_alpha": {
+      "conclusion": 0.8,
+      "tentative": 0.67,
+      "below_tentative": "category not used for conclusions"
+    },
+    "held_out": "separate stratified >=200 utterances never used for codebook or rule development; classifier per-category F1; new held-out set after each rule change",
+    "extras": [
+      "LPR/WPR (Marchisio et al.)",
+      "utterance length and non-dictionary ratio over time (GlossoGen)",
+      "Kiwi morphology"
+    ]
+  },
+  "budget": {
+    "status": "information only; user 2026-09-28: tokens not a constraint on N",
+    "measured_tokens_per_call": {
+      "source": "outputs/zone-study-adapter-pilot-r10/{preflight-02-v63,cohort-01-v63}/*/wire/*-response.json usage (read-only)",
+      "calls": 16,
+      "scope": "first call only",
+      "prompt_mean": 10477.0,
+      "completion_mean": 165.6,
+      "reasoning_mean": 256.5,
+      "total_mean": 10899.1,
+      "total_sd": 440.1,
+      "total_min": 10512,
+      "total_max": 12168,
+      "images_per_call": 1,
+      "by_condition_total_mean": {
+        "no_comm": 10593.5,
+        "peer_ko": 10784.2,
+        "leader_ko": 10790.0,
+        "structured": 11428.5
+      }
+    },
+    "estimated": {
+      "calls_per_trial": [
+        15,
+        30,
+        90
+      ],
+      "per_call_growth": [
+        1.0,
+        1.5
+      ],
+      "basis": "calls/trial and growth unmeasured for v69 own-camera multi-turn; ZC2 reference 6-31 calls/trial (mean 15.2)"
+    },
+    "trials": {
+      "pilot": 72,
+      "main_N36": 192,
+      "main_N72": 384,
+      "main_N108": 576,
+      "diagnostics": 216,
+      "total_pilot_Nmax_diag": 864
+    },
+    "tokens_total_pilot_Nmax_diag_M": {
+      "15x1.0": 141.3,
+      "30x1.0": 282.5,
+      "30x1.5": 423.8,
+      "90x1.5": 1271.3
+    },
+    "usd": null,
+    "usd_note": "subscription proxy, cost_usd null, unit price not recorded",
+    "remaining_pilot_budget_db": {
+      "path": "outputs/zone-study-adapter-pilot-r10/budget.sqlite",
+      "sha256": "00e2c0dd213b0af9e8610c3a4ff461cc8b78e3bbde18c50b56563da9d556b16c",
+      "cap_tokens": 5000000,
+      "cap_attempts": 600,
+      "used_tokens": 409793,
+      "used_attempts": 18,
+      "remaining_tokens": 4590207,
+      "remaining_attempts": 582,
+      "sufficient_for_pilot": false
+    },
+    "action": "new budget DB (new pilot_id) sized to pilot + N_max + diagnostics projection; runaway guard 1.3x; old DB untouched"
+  },
+  "dependencies": [
+    {
+      "id": "B1",
+      "item": "pair-carry executor v6 (#246) or v7 (#250)",
+      "blocking": true,
+      "reason": "2-robot cargo in s1,s2,s3,s4,s6"
+    },
+    {
+      "id": "B2",
+      "item": "robot model v3 (#249)",
+      "blocking": true,
+      "reason": "user adopted v3 physics; freeze pins one robot model; M1/M2 revalidation on it"
+    },
+    {
+      "id": "B3",
+      "item": "tag-free localization VIS6 (#216)",
+      "blocking": true,
+      "reason": "final env has 0 tags; VIS5 candidates rejected; vision_zero_tag_v2 research_result false"
+    },
+    {
+      "id": "B4",
+      "item": "ultrasonic wiring (#248)",
+      "blocking": false,
+      "reason": "identical across conditions; include from pilot only if wired and validated at freeze, else exclude for the whole study; no mid-cohort change"
+    },
+    {
+      "id": "B5",
+      "item": "final walls_v3 zero-tag map hash (#218) + scenario configs v2 with main seeds",
+      "blocking": true,
+      "reason": "current scenarios use *_tags_v1 maps"
+    },
+    {
+      "id": "B6",
+      "item": "referee success (orders_complete, deliveries) and physical hidden events in the integration runner",
+      "blocking": true,
+      "reason": "main decision_end_reason() returns only budget_exhausted/sim_horizon"
+    },
+    {
+      "id": "B7",
+      "item": "real multi-turn LLM driver connection + new budget DB",
+      "blocking": true,
+      "reason": "#222: driver connection still open after #245 merge"
+    },
+    {
+      "id": "B8",
+      "item": "final-env 3-robot no-LLM smoke (#221/#224) and M1/M2 revalidation (#219)",
+      "blocking": true,
+      "reason": "executor failures must not mask dialogue effects; zero false success"
+    },
+    {
+      "id": "N1",
+      "item": "no_comm_yoked input replay; branch-replay checkpoint",
+      "blocking": false,
+      "reason": "diagnostics only; reported as not run if missing"
+    },
+    {
+      "id": "N2",
+      "item": "two native Korean coders; Kiwi",
+      "blocking": false,
+      "reason": "coding happens after the cohort"
+    }
+  ],
+  "freeze_procedure": [
+    "all blocking dependencies met",
+    "reserve next bundle id over main and all open PRs",
+    "fill FILL_AT_FREEZE into new prereg_main.json and commit",
+    "run pilot at that SHA",
+    "commit switch / N_plan / cap decisions computed by the pre-fixed rules",
+    "start main cohort"
+  ],
+  "user_decisions_pending": [],
+  "design_decisions_record": "PREREG_DRAFT.md section 12 (D1-D13)",
+  "scripts": {
+    "design_calc.py": "design_calc_output.txt",
+    "token_estimate.py": "token_estimate_output.txt"
+  },
+  "not_run_in_this_draft": [
+    "SIM",
+    "pytest",
+    "model calls"
+  ]
+}

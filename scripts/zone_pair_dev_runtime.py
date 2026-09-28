@@ -342,6 +342,7 @@ def run_physical(args, prereg, case, manifest):
     status_code = 0
     try:
         spec = {'map': prereg['environment']['map'], 'seed': case['seed'], 'goal': {'B': {'cyan': 1}},
+                'pair_policy': case.get('pair_policy','v5h'),
                 'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam', 'pose': case['setup_beam_xyyaw']}],
                 'pair_order_sheets': {'cargoX': case['coarse_order_sheet']}, 'order_sheet': copy.deepcopy(ORDER),
                 'contact_profile': EXPECTED['contact_profile'], 'job_sim_limit_s': prereg['limits']['sim_s']}

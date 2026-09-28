@@ -1,0 +1,43 @@
+Guo d GPT-3.5 0.539  GPT-4 0.272
+Guo t->d check 1.71*sqrt(2/20)=0.541
+Marlow overall r=0.31 -> d=0.652
+Marlow frequency r=0.19 -> d=0.387
+Marlow quality r=0.36 -> d=0.772
+Marlow info elaboration r=0.52 -> d=1.218
+h HMAS2 vs DMAS BoxNet1 .825 v .25 = 1.231
+h RoCo dialog vs central PackGrocery .44 v .82 = 0.815
+h RoCo dialog vs central MoveRope .65 v .50 = 0.305
+
+Paired n (pairs) for alpha .05 two-sided / alpha .0167 (Holm-3 worst case), power .8
+  Guo GPT-4 d      d=0.27 rho=0.0 dz=0.19  n=214  n(Holm3)=286
+  Guo GPT-4 d      d=0.27 rho=0.5 dz=0.27  n=108  n(Holm3)=145
+  Guo GPT-4 d      d=0.27 rho=0.7 dz=0.35  n=66  n(Holm3)=88
+  Guo GPT-3.5 d    d=0.54 rho=0.0 dz=0.38  n=56  n(Holm3)=75
+  Guo GPT-3.5 d    d=0.54 rho=0.5 dz=0.54  n=29  n(Holm3)=39
+  Guo GPT-3.5 d    d=0.54 rho=0.7 dz=0.70  n=19  n(Holm3)=25
+  Marlow freq d    d=0.39 rho=0.0 dz=0.27  n=107  n(Holm3)=143
+  Marlow freq d    d=0.39 rho=0.5 dz=0.39  n=55  n(Holm3)=73
+  Marlow freq d    d=0.39 rho=0.7 dz=0.50  n=34  n(Holm3)=45
+  Marlow overall d d=0.65 rho=0.0 dz=0.46  n=39  n(Holm3)=53
+  Marlow overall d d=0.65 rho=0.5 dz=0.65  n=21  n(Holm3)=28
+  Marlow overall d d=0.65 rho=0.7 dz=0.84  n=13  n(Holm3)=18
+  d=0.8            d=0.80 rho=0.0 dz=0.57  n=27  n(Holm3)=36
+  d=0.8            d=0.80 rho=0.5 dz=0.80  n=15  n(Holm3)=20
+  d=0.8            d=0.80 rho=0.7 dz=1.03  n=10  n(Holm3)=13
+  d=1.0            d=1.00 rho=0.0 dz=0.71  n=18  n(Holm3)=24
+  d=1.0            d=1.00 rho=0.5 dz=1.00  n=10  n(Holm3)=14
+  d=1.0            d=1.00 rho=0.7 dz=1.29  n=7  n(Holm3)=10
+
+Min detectable dz at power .8:
+  pairs=18: alpha.05 dz=0.7  alpha.0167 dz=0.84
+  pairs=24: alpha.05 dz=0.6  alpha.0167 dz=0.71
+  pairs=36: alpha.05 dz=0.48  alpha.0167 dz=0.57
+  pairs=54: alpha.05 dz=0.39  alpha.0167 dz=0.46
+  pairs=72: alpha.05 dz=0.34  alpha.0167 dz=0.39
+
+Unpaired success-rate n per arm (arcsine), alpha .05 / .0167, power .8
+  0.825 vs 0.25: h=1.23 n=6 n(Holm3)=7
+  0.8 vs 0.5: h=0.64 n=19 n(Holm3)=26
+  0.8 vs 0.6: h=0.44 n=41 n(Holm3)=54
+  0.65 vs 0.5: h=0.30 n=85 n(Holm3)=113
+  0.9 vs 0.7: h=0.52 n=30 n(Holm3)=40

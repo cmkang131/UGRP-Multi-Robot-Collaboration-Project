@@ -89,7 +89,10 @@ class DelayedPoseSource:
         while self.pending and self.pending[0][0] <= self.now - PERCEPTION_DELAY_S + 1e-9:
             t, _, method, args = heapq.heappop(self.pending)
             start = time.monotonic()
-            getattr(self.provider, method)(*args)
+            if method == 'begin_observation':
+                self.provider.begin_observation(args[0], args[1], lost=args[2])
+            else:
+                getattr(self.provider, method)(*args)
             if method == 'on_frame':
                 self.timing.append({'captured_sim_s': t, 'available_sim_s': t + PERCEPTION_DELAY_S,
                                     'consumed_sim_s': self.now,
@@ -104,6 +107,8 @@ class DelayedPoseSource:
         return self.provider.expected_observability(pose, pan, static_map)
 
     def begin_relocalization(self, now, servo):
+        if getattr(self.provider, 'recovery_v6', False):
+            return self.begin_observation(now, servo)
         # Reset on the already released clock. Commands/new frames still wait
         # the full perception delay; pending pre-reset captures cannot be fixes.
         self.report(now)
@@ -111,6 +116,12 @@ class DelayedPoseSource:
         cutoff = max(0., float(now) - PERCEPTION_DELAY_S)
         self.provider.begin_relocalization(cutoff, servo)
         self.on_command({'t': float(now), 'kind': 'initial_servo_command', 'pulses': dict(servo)})
+
+    def begin_observation(self, now, servo, *, lost=False):
+        # Queue on the capture clock. Do not clear pending observations or
+        # advance the underlying PF beyond the already released cutoff.
+        self._queue(float(now), 'begin_observation', float(now), dict(servo), lost)
+
 
     def close(self):
         close = getattr(self.provider, 'close', None)

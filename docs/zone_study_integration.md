@@ -1,8 +1,16 @@
-현재 미실행 후보는 `zone-study-integration-v72-llm-driver`(workflow `2.3.0`)이다. 2026-09-28 B7(PR #254): 러너에 실제 다회 모델 드라이버(`--llm`, `harness/zone_study_llm_driver.py`)와 본연구 사용량 원장(`harness/zone_main_budget.py`, #222 DB와 별개)을 연결하고, 발화 상한을 번들별 등록 프로필(`configs/zone_study_integration/llm_driver.json`: v66 기본 2/6, 파일럿 10/30)로 고르게 했다. v69는 `RETIRED_BUNDLE_IDS`에 보존한다.
+현재 미실행 후보는 `zone-study-integration-v72-llm-driver`(workflow `2.5.0`)이다. 2026-09-28 B7(PR #254): 러너에 실제 다회 모델 드라이버(`--llm`, `harness/zone_study_llm_driver.py`)와 본연구 사용량 원장(`harness/zone_main_budget.py`, #222 DB와 별개)을 연결하고, 발화 상한을 번들별 등록 프로필(`configs/zone_study_integration/llm_driver.json`: v66 기본 2/6, 파일럿 10/30)로 고르게 했다. v69는 `RETIRED_BUNDLE_IDS`에 보존한다.
+
+2026-09-29 main 병합(PR #256): main의 v70(#246 v6 pair 경로, #259 v6 dev 코호트가 기록, #262에서 이력 기록으로 전환)에 B7 드라이버를 합쳤다. 번들 ID는 그대로 v72(main v70, 열린 PR v73 #257·v74 #249·v75 #261과 겹치지 않음)이고, `EXECUTION_BUNDLE_ID`는 main 구조대로 `harness/zone_pair_v6_policy.py`에 둔다. v70은 `RETIRED_BUNDLE_IDS`에 보존한다. workflow는 main 2.3.0과 열린 PR의 2.4.0을 피해 2.5.0으로 올렸다(#257 2.6.0, #249 2.7.0, #261 2.8.0 예약).
 
 2026-09-28 PR #256 검토 수정: [실패·분석 규칙 보완](zone_study_llm_failure_rules.md)에 코호트 상한/응답 0 중단, API 오류 1건 이상 시행의 infra 분류, 조건 공통 pacing, 정산 실패와 덮어쓰기 거부를 고정했다. 10/30 열린 채널은 실제 상한을 반영한 프롬프트 v3, 기본 2/6·no_comm은 기존 바이트를 유지한다. v72 실행 기록이 없다는 사용자 확인에 따라 새 번들 번호를 등록하지 않았다.
 
-이전: 현재 미실행 후보는 `zone-study-integration-v69-multiturn-landmark-agnostic`(workflow `2.2.0`, pair executor v7)이다. 2026-09-28 PR #240 main 병합 충돌 해결에서 main의 v66 다중 턴 스케줄러와 #240의 v67 표식 무관 pair 경로(v5h)를 합쳤다. 합성 소스는 v66·v67 어느 쪽과도 달라 main과 열린 PR 최댓값(v68, #246) 다음 번호를 썼다. v64·v65·v66·v67은 `RETIRED_BUNDLE_IDS`에 보존하며 dev13·dev14 기록의 v67 문자열은 바꾸지 않는다. [병합 기록](../experiments/2026-09-27-zone-pair-dev/merge-main-v69/README.md)
+이전 후보 v70의 설명:
+
+현재 미실행 후보는 `zone-pair-v70-beam-relative-multiturn`(workflow `2.3.0`)이다. 2026-09-28 PR #246 main 병합에서 main의 v69(v66 다중 턴 스케줄러 + v67 표식 무관 pair 경로)와 #246의 v6 pair 경로(v68 빔 상대 정렬 + 검토 3)를 합쳤다. 합성 소스는 v68·v69 어느 쪽과도 달라 main과 열린 PR(#248·#249) 최댓값 v69 다음 번호를 썼다. v68은 병합 전 v6 초안으로 오프라인 재생 기록에만 남으며 v69와 함께 `RETIRED_BUNDLE_IDS`에 보존한다. 세 pair 조건(v5h/b-only/a+b)은 이 번들 안에서 `pair_policy` 하나로만 다르다. [v6 기록](../experiments/2026-09-28-zone-pair-v6/README.md)
+
+이전 후보 v69의 설명:
+
+현재 미실행 후보는 `zone-study-integration-v69-multiturn-landmark-agnostic`(workflow `2.2.0`, pair executor v7)이다. 2026-09-28 PR #240 main 병합 충돌 해결에서 main의 v66 다중 턴 스케줄러와 #240의 v67 표식 무관 pair 경로(v5h)를 합쳤다. 합성 소스는 v66·v67 어느 쪽과도 달라 main과 열린 PR 최댓값(v68, #246) 다음 번호를 썼다. v64·v65·v66·v67은 `RETIRED_BUNDLE_IDS`에 보존하며 dev13·dev14 기록의 v67 문자열은 바꾸지 않는다. [병합 기록](../experiments/2026-09-27-zone-pair-dev/merge-main-v69/README.md)
 
 이전 후보 `zone-study-integration-v67-landmark-agnostic`(workflow `2.1.0`, pair executor v7)의 설명은 아래에 보존한다.
 [표식 무관 자세 계약·검증 범위](../experiments/2026-09-27-zone-pair-dev/landmark_v5d.md)를 따른다.
