@@ -789,6 +789,14 @@ def install_diag_patch(name):
             still = float(np.max(np.abs(self.vel))) < 1e-3 and not (self.t < self.cmd_expires - 1e-9)
             return {**mp, 'noise_abs': [0., 0., 0.]} if still else mp
         OwnCamLocalizer._motion_params = motion_params
+    elif name == 'sigma_held_at_prior':
+        from harness.owncam_localizer import OwnCamLocalizer
+        registered = OwnCamLocalizer.estimate
+        cap_xy, cap_yaw = sp.E2E_MATCHED_PRIOR['std_xy_m'], sp.E2E_MATCHED_PRIOR['std_yaw_rad']
+
+        def estimate(self):
+            return sp.clamp_estimate_sigma(registered(self), cap_xy, cap_yaw)
+        OwnCamLocalizer.estimate = estimate   # RecoveryLocalizer / FixReportingLocalizer.estimate call super().estimate()
     elif name == 'image_valid_off':
         import importlib
         import harness.zone_pair_vision as vision

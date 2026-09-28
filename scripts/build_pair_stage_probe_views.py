@@ -21,7 +21,7 @@ DEFINITION = ('stage probe verdict, NOT E2E success: both robots reached the sta
 SHORT = {'align': 'al', 'grasp_lift': 'gl', 'carry': 'ca', 'setdown': 'sd',
          'teacher_grid': 't', 'e2e_checkpoint': 'e2e', 'tolerance_boundary': 'bd'}
 DIAG_SHORT = {'fix_age_round': '', 'loaded_yaw_gate_wide': 'G', 'pf_rest_no_abs_noise': 'N', 'rest_noise_off_and_gate_wide': 'NG',
-              'image_valid_off': 'V'}
+              'image_valid_off': 'V', 'sigma_held_at_prior': 'S'}
 IK_ENVELOPE_TEXT = 'outside the calibrated 14.5..18.0 cm grasp envelope'   # harness.pair_stage_probe.STAGING_IK_ENVELOPE_TEXT
 POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C'}   # C = v6c (exact clock + grasp-range entry)
 

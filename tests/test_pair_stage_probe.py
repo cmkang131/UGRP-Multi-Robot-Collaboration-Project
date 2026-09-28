@@ -564,3 +564,31 @@ def test_diag_image_valid_off_forces_every_check_and_keeps_the_real_verdict_in_a
                'assert vis.valid_frame.__wrapped__("x", "r1", 3.) is False\n')
     out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
     assert out.returncode == 0, out.stderr
+
+
+def test_clamp_estimate_sigma_is_pure_and_leaves_uninitialised_or_non_finite_alone():
+    est = {'initialized': True, 'x': 1., 'y': 2., 'yaw': .1, 'std_xy_m': .09, 'std_yaw_rad': .02, 'cov': [[1]]}
+    out = sp.clamp_estimate_sigma(est, .03, .012)
+    assert (out['std_xy_m'], out['std_yaw_rad']) == (.03, .012) and out['x'] == 1. and out['cov'] == [[1]]
+    assert est['std_xy_m'] == .09                                                      # input untouched
+    small = sp.clamp_estimate_sigma({'initialized': True, 'std_xy_m': .01, 'std_yaw_rad': .005}, .03, .012)
+    assert (small['std_xy_m'], small['std_yaw_rad']) == (.01, .005)                    # never raised
+    bad = {'initialized': True, 'std_xy_m': float('inf'), 'std_yaw_rad': None}
+    assert sp.clamp_estimate_sigma(bad, .03, .012) == bad
+    assert sp.clamp_estimate_sigma({'initialized': False}, .03, .012) == {'initialized': False}
+
+
+def test_diag_sigma_held_at_prior_caps_the_reported_sigma_in_a_subprocess():
+    assert 'sigma_held_at_prior' in sp.DIAG_PATCHES
+    d = sp.apply_diag_patch([_carry()], 'sigma_held_at_prior')[0]
+    assert d['case_id'].endswith(':diag-sigma_held_at_prior') and d['diag_patch'] == 'sigma_held_at_prior'
+    program = ('from scripts import run_pair_stage_probes as r\n'
+               'from harness.owncam_localizer import OwnCamLocalizer as L\n'
+               'from harness.owncam_recovery_v6 import RecoveryLocalizer as R\n'
+               'L.estimate = lambda self: {"initialized": True, "x": 1., "std_xy_m": .2, "std_yaw_rad": .3}\n'
+               'r.install_diag_patch("sigma_held_at_prior")\n'
+               'e = L.estimate(object())\n'
+               'assert (e["std_xy_m"], e["std_yaw_rad"], e["x"]) == (.03, .012, 1.), e\n'
+               'assert issubclass(R, L) and R.estimate is not L.estimate      # subclass keeps super().estimate()\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr

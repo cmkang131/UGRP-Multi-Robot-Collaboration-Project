@@ -30,12 +30,13 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.4.2'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+PROBE_VERSION = '0.4.3'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
 #                          0.4.2: STAGING_IK_ENVELOPE cause (excluded from the staged denominator), image_valid_off
 #                                 diagnostic patch
+#                          0.4.3: sigma_held_at_prior diagnostic patch
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
 POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
@@ -415,6 +416,13 @@ DIAG_PATCHES = {
                              'stationary robot without a fix diffuses (yaw sigma ~ 0.0218 rad/sqrt(s)). Motion-time '
                              'noise is unchanged. Confirms the rest-diffusion cause; not a proposed model.'),
     'rest_noise_off_and_gate_wide': '0.4.0. both patches above (pf_rest_no_abs_noise + loaded_yaw_gate_wide).',
+    'sigma_held_at_prior': ('0.4.3. harness.owncam_localizer.OwnCamLocalizer.estimate reports std_xy_m / std_yaw_rad '
+                            'capped at the stated E2E prior (0.03 m, 0.012 rad); the particle filter itself, the pose mean, '
+                            'the gate, the sweep guard and every threshold are unchanged. Every consumer (uncertainty gate, '
+                            'PoseReport, swept-beam collision margin) then sees a sigma that does not diffuse while the robot '
+                            'carries without an absolute fix. Answers "does the carry work once the declared sigma is '
+                            'bounded" (the effect of a motion-scaled process noise or an absolute aid), never "does v6c '
+                            'carry" and never a proposed estimator.'),
     'image_valid_off': ('0.4.2. harness.zone_pair_vision.valid_frame (admission image_valid, the endpoint per-step '
                         'INVALID_OWN_IMAGE abort, the guard/grasp checks) always returns True; the real verdict is counted '
                         'per robot in result.json image_valid_real_stats. Everything else, including the localizer that '
@@ -423,6 +431,20 @@ DIAG_PATCHES = {
                         'set down".'),
 }
 DIAG_COMPONENTS = {'rest_noise_off_and_gate_wide': ('pf_rest_no_abs_noise', 'loaded_yaw_gate_wide')}
+
+
+def clamp_estimate_sigma(est, std_xy_m, std_yaw_rad):
+    """Pure helper of the sigma_held_at_prior diagnostic: a copy of an OwnCamLocalizer.estimate() dict whose reported
+    std_xy_m / std_yaw_rad are capped at the given values (a non-finite or missing std and an uninitialised estimate are
+    left untouched, so the gate's own 'not initialised / not finite' handling is unchanged)."""
+    if not est.get('initialized'):
+        return est
+    out = dict(est)
+    for key, cap in (('std_xy_m', std_xy_m), ('std_yaw_rad', std_yaw_rad)):
+        value = out.get(key)
+        if value is not None and math.isfinite(value):
+            out[key] = min(float(value), float(cap))
+    return out
 
 
 def apply_diag_patch(cases, name):
