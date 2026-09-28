@@ -414,6 +414,13 @@ class PairTeam:
         if not finite_number(rendezvous_timeout_s) or not .2 <= rendezvous_timeout_s <= 30.:
             raise ValueError('invalid rendezvous timeout')
         self.executors = dict(executors)
+        if not self.policy.exact_fix_clock:
+            # Review (v6c): enable_provider mutates the shared PF in place, so a
+            # provider once bound to b-v6c would silently keep the exact clock.
+            from harness.owncam_recovery_v6c import exact_clock_bound
+            if any(exact_clock_bound(getattr(executor, 'pose', None)) for executor in self.executors.values()):
+                raise ValueError(f'pose provider is bound to exact_fix_clock (b-v6c); {self.policy.name} '
+                                 'needs a fresh provider')
         if self.policy.posterior_relook:
             if self.policy.exact_fix_clock:
                 from harness.owncam_recovery_v6c import enable_provider

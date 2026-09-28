@@ -50,3 +50,11 @@ def enable_provider(provider):
     if not isinstance(loc, ExactClockRecoveryLocalizer):
         loc.__class__ = ExactClockRecoveryLocalizer  # same object: frozen drivers share this PF
     inner.exact_fix_clock_v6c = True   # the ':recovery_v6' source label stays the v6 contract's
+
+
+def exact_clock_bound(provider):
+    """True when this provider's PF was switched to the v6c clock (same object, reused)."""
+    inner = provider
+    while hasattr(inner, 'provider'):
+        inner = inner.provider
+    return isinstance(getattr(inner, 'loc', None), ExactClockRecoveryLocalizer)

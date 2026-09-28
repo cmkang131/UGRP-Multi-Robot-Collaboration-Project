@@ -29,7 +29,18 @@ v6c keeps every gate and threshold (3 degrees, 50 mm, >= 4 strips over
    strip support are dropped before the line fit;
 3. the last descent pose settles (``FINAL_DESCENT_SETTLE_S``) before the first
    READY frame, as every other own look does; a frame taken while the joints
-   still lag the issued PWM is not a grasp-pose view.
+   still lag the issued PWM is not a grasp-pose view;
+4. identity (adversarial review, 2026-09-29): v1 only used a partial patch that
+   its lime shape classifier called a clipped BEAM. Colour alone is not that
+   identity: a narrow yellow floor mark on dark floor inside the tracked
+   footprint passed the footprint and grip-view checks and closed the jaws
+   with no beam. The grasp-range patch must therefore also show the catalogue
+   CROSS-SECTION on the tracked axis: beyond the band centre, the 2-98 %
+   across-axis span of the beam-colour points is at least
+   ``MIN_WIDTH_FRACTION`` of ``BEAM_WIDTH_M`` (the footprint test above
+   already bounds it from above). Recorded grasp-pose views: 0.032-0.051 m on
+   all 155 boundary frames. A beam-width yellow object lying exactly on the
+   tracked axis is not excluded; that residual is stated, not hidden.
 
 These are development bounds from the recorded boundary frames, not
 calibrated accuracy.
@@ -45,6 +56,8 @@ from harness.zone_pair_beam_track import RestingBeamTrack, standoff_estimate
 
 MIN_STRIP_SUPPORT = .25          # of the median supported strip (partial strips at band/end cuts)
 FINAL_DESCENT_SETTLE_S = .3      # = RecoveryLocalizer 'settled' after an own arm command
+BEAM_WIDTH_M = .04               # catalogue cross-section (RestingBeamTrack footprint |n| <= .02)
+MIN_WIDTH_FRACTION = .7          # 0.028 m; recorded grasp-pose spans 0.032-0.051 m (155 frames)
 
 
 def grasp_range_points(image, servo):
@@ -58,6 +71,17 @@ def grasp_range_points(image, servo):
     return pts[(distance > 0) & (np.linalg.norm(pts, axis=1) < 2.5)]
 
 
+def cross_section(points, beam):
+    """2-98 % across-axis span of the patch beyond the tracked grip (None: too few points)."""
+    u = np.array([np.cos(beam['axis_heading_rad']), np.sin(beam['axis_heading_rad'])])
+    rel = np.asarray(points) - np.asarray(beam['grip_base_m'])
+    far = rel @ u > 0.
+    if far.sum() < v1.MIN_POINTS:
+        return None
+    lo, hi = np.percentile(rel[far] @ np.array([-u[1], u[0]]), [2, 98])
+    return float(hi - lo)
+
+
 def standoff_estimate_v6c(obs, servo):
     return standoff_estimate(obs, servo, points=grasp_range_points, min_strip_support=MIN_STRIP_SUPPORT)
 
@@ -68,9 +92,24 @@ class GraspRangeBeamTrack(RestingBeamTrack):
     def _standoff(self, obs, servo):
         return standoff_estimate_v6c(obs, servo)
 
+    _patch = None
+
     def _partial_points(self, obs, servo):
         # No v1 lime 'visible' precondition: at the grasp pose the lime model
         # sees nothing although the band and beam top fill the view. The
         # footprint support test in ``estimate`` is unchanged; the patch never
-        # renews pose, age or sigma.
-        return grasp_range_points(obs['image'], servo), 'GRASP_RANGE_BEAM_COLOUR'
+        # renews pose, age or sigma. Identity is checked in ``estimate``.
+        self._patch = grasp_range_points(obs['image'], servo)
+        return self._patch, 'GRASP_RANGE_BEAM_COLOUR'
+
+    def estimate(self, now, obs, servo, segment):
+        self._patch = None
+        got = super().estimate(now, obs, servo, segment)
+        patch, self._patch = self._patch, None
+        if got is None:
+            return None
+        span = cross_section(patch, self.beam)
+        if span is None or span < MIN_WIDTH_FRACTION * BEAM_WIDTH_M:
+            return None                  # colour without the beam cross-section is not beam evidence
+        return {**got, 'partial_cross_section_m': span,
+                'partial_identity': 'catalogue cross-section on the tracked axis'}

@@ -18,7 +18,8 @@ from harness.owncam_recovery_v6 import RecoveryLocalizer, enable_provider as ena
 from harness import owncam_recovery_v6c as v6c_clock
 from harness.owncam_time import accepted_fix_checks
 from harness.zone_pair_beam_track import RestingBeamTrack, standoff_estimate
-from harness.zone_pair_grasp_entry_v6c import (FINAL_DESCENT_SETTLE_S, GraspRangeBeamTrack, grasp_range_points,
+from harness.zone_pair_grasp_entry_v6c import (BEAM_WIDTH_M, FINAL_DESCENT_SETTLE_S, MIN_WIDTH_FRACTION,
+                                               GraspRangeBeamTrack, cross_section, grasp_range_points,
                                                standoff_estimate_v6c)
 from harness.zone_pair_v6_policy import POLICIES, REVISION_POLICIES, pair_policy
 
@@ -171,6 +172,78 @@ def test_grasp_pose_patch_outside_the_tracked_footprint_is_refused(shift):
     gx, gy = track.beam['grip_base_m']
     track.beam['grip_base_m'] = [gx + shift[0], gy + shift[1]]
     assert track.estimate(grasp['sim_time'], grasp, servo, 3) is None
+
+
+def _narrow_mark_without_beam(half_width_m):
+    """Adversarial review: keep only beam-colour pixels within half_width_m of the tracked axis,
+    paint every other beam/band pixel as dark floor -> a narrow yellow mark, no beam."""
+    import cv2
+    from harness import owncam_pair_beam as v1
+    from harness import owncam_pair_beam_v2 as v2
+    from harness.owncam_view import base_rays
+    grasp, servo = frame('grasp_pose_ex+8mm_r1')
+    track, _ = anchored(GraspRangeBeamTrack)
+    img = v1.decode(grasp['image']).copy()
+    origin, rays, xs, ys, valid = base_rays(servo, 1)
+    xi, yi = xs.astype(int), ys.astype(int)
+    down = valid & (rays[:, 2] < -1e-6)
+    s = np.where(down, (v1.BEAM_TOP_Z_M - origin[2]) / np.where(down, rays[:, 2], -1.), np.nan)
+    pts = origin[:2] + s[:, None] * rays[:, :2]
+    b = track.beam
+    u = np.array([math.cos(b['axis_heading_rad']), math.sin(b['axis_heading_rad'])])
+    n = (pts - np.asarray(b['grip_base_m'])) @ np.array([-u[1], u[0]])
+    keep = np.zeros(img.shape[:2], bool)
+    keep[yi[down & (np.abs(n) <= half_width_m)], xi[down & (np.abs(n) <= half_width_m)]] = True
+    colour = v2.beam_colour_mask(img)
+    img[colour & ~keep] = (28, 28, 28)                     # dark floor where the beam was
+    ok, jpg = cv2.imencode('.jpg', img, [cv2.IMWRITE_JPEG_QUALITY, 95])
+    data = jpg.tobytes()
+    obs = {**grasp, 'image': base64.b64encode(data).decode(), 'sha256': hashlib.sha256(data).hexdigest()}
+    return track, obs, servo
+
+
+def test_grasp_range_patch_needs_the_beam_cross_section():
+    grasp, servo = frame('grasp_pose_ex+8mm_r1')
+    track, _ = anchored(GraspRangeBeamTrack)
+    real = track.estimate(grasp['sim_time'], grasp, servo, 3)
+    assert real is not None and real['partial_cross_section_m'] >= MIN_WIDTH_FRACTION * BEAM_WIDTH_M
+    # 12 mm yellow mark on the tracked axis, no beam: inside the footprint (the colour-only
+    # footprint test of RestingBeamTrack alone would accept it) but not the beam cross-section.
+    track, obs, servo = _narrow_mark_without_beam(.006)
+    pts = grasp_range_points(obs['image'], servo)
+    assert len(pts) > 500 and cross_section(pts, track.beam) < MIN_WIDTH_FRACTION * BEAM_WIDTH_M
+    assert RestingBeamTrack.estimate(track, obs['sim_time'], obs, servo, 3) is not None  # footprint alone passes
+    track, obs, servo = _narrow_mark_without_beam(.006)
+    assert track.estimate(obs['sim_time'], obs, servo, 3) is None
+
+
+def test_reused_v6c_provider_is_refused_for_baseline_policies():
+    from harness.zone_pair_executor import PairTeam
+    bound = source(True)
+    assert v6c_clock.exact_clock_bound(bound) and not v6c_clock.exact_clock_bound(source(False))
+    for policy in ('v5h', 'b-only', 'a+b'):
+        ex = type('Ex', (), {'pose': bound})()
+        with pytest.raises(ValueError, match='fresh provider'):
+            PairTeam({'r1': ex}, {}, {}, cancel_scheduled=lambda *a: None, contact_profile='cargo_noslip_v1',
+                     policy=policy)
+    ex = type('Ex', (), {'pose': bound})()
+    PairTeam({'r1': ex}, {}, {}, cancel_scheduled=lambda *a: None, contact_profile='cargo_noslip_v1',
+             policy='b-v6c')                               # same policy may reuse its own provider
+    fresh = type('Ex', (), {'pose': source(False)})()
+    PairTeam({'r1': fresh}, {}, {}, cancel_scheduled=lambda *a: None, contact_profile='cargo_noslip_v1',
+             policy='b-only')
+    assert not v6c_clock.exact_clock_bound(fresh.pose)
+
+
+def test_every_policy_has_a_unique_probe_view_abbreviation():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('views', ROOT/'scripts/build_pair_stage_probe_views.py')
+    views = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(views)
+    from harness.pair_stage_probe import POLICIES as PROBE_POLICIES
+    assert set(PROBE_POLICIES) <= set(views.POLICY_SHORT) and set(POLICIES) <= set(views.POLICY_SHORT)
+    assert len(set(views.POLICY_SHORT.values())) == len(views.POLICY_SHORT)
+    assert views._pol('b-v6c') == 'C-'
 
 
 def test_track_limits_are_unchanged_for_v6c():
