@@ -88,7 +88,9 @@ jobs:
   offline-regressions:
     runs-on: ubuntu-latest
     # 2026-09-27: the suite reached 9m38s (#194) and one run was cancelled at the 10 min limit (#238).
-    timeout-minutes: 20
+    # 2026-09-29: main 7f649959 took 19m49s after #262 added the v6 tests; #256 runs were cancelled
+    # twice at 98-99% by the 20 min limit with no failure, so the limit is 30 min.
+    timeout-minutes: 30
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
