@@ -1,4 +1,6 @@
-"""Build the v6b DRAFT prereg from the v6 DRAFT (prepare-only; no approval, no execution source).
+"""Build the v6b DRAFT prereg from the v6 registration (prepare-only; no approval, no execution source).
+
+v6 was REGISTERED and run in PR #259; v6b drops its draft_registration receipt and starts as DRAFT.
 
 Only revision/bundle/contract/run-policy/denominator/readiness fields change;
 every science field (environment, criteria, limits, timing, stage rules,
@@ -55,7 +57,8 @@ def build():
                       'requires': [*v6['readiness']['requires'],
                                    'bootstrap-only SIM probe grid (scripts/probe_zone_pair_bootstrap.py) before '
                                    'any full v6b cohort',
-                                   'REGISTERED execution path (PR #259 zone_pair_v6_contract change) for v6b']}
+                                   'v6b REGISTERED conversion through the PR #259 admission path (draft_registration + coordinator envelope)']}
+    p.pop('draft_registration', None)
     p.pop('registration_sha256', None)
     p['registration_sha256'] = digest(registration_payload(p))
     for key in SCIENCE:

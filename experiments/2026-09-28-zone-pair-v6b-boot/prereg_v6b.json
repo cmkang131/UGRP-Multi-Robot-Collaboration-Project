@@ -205,7 +205,7 @@
   "execution_bundle_id": "zone-pair-v75-dock-prior-bootstrap",
   "predecessor": {
     "path": "experiments/2026-09-28-zone-pair-v6/prereg_v6.json",
-    "sha256": "4ce32a6a1247d5ea4150681e1622c1b435df9434aa6d13215706cd3f50efe9bf"
+    "sha256": "649a00e65d1f53bf38014ac4a1f5e93094dad3ee11acccf3d1343cefa1298b42"
   },
   "v6_contract": {
     "execution_bundle_id": "zone-pair-v75-dock-prior-bootstrap",
@@ -343,7 +343,7 @@
       "harness/zone_pair_global.py": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
       "harness/owncam_recovery_v6.py": "74d90f36dd3f170091ed7c3e8b73432d81cb9ee0ca36d8472b063c9af92b5b46",
       "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
-      "scripts/zone_pair_v6_contract.py": "090309c3953cc4b297f84bf727a03b772d837845f435b738252c38d550916d05",
+      "scripts/zone_pair_v6_contract.py": "e7b6ffbaa9e7f2d40d263a0f17e4a6e253ab360cea141d479a9d8db9ec7ee7f8",
       "harness/zone_own_sweep.py": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
       "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
       "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
@@ -360,7 +360,7 @@
   "disk_error_classification": "ENOSPC=HOST_ERROR",
   "model_calls": 0,
   "readiness": {
-    "status": "NOT_READY_FOR_PHYSICAL",
+    "status": "DEV_EXECUTION_AUTHORIZED_OPEN_REQUIREMENTS",
     "requires": [
       "source review and commit",
       "explicit execution authorization",
@@ -368,9 +368,15 @@
       "markerless provider and shape coverage",
       "exclusive physical lock at future execution",
       "bootstrap-only SIM probe grid (scripts/probe_zone_pair_bootstrap.py) before any full v6b cohort",
-      "REGISTERED execution path (PR #259 zone_pair_v6_contract change) for v6b"
+      "v6b REGISTERED conversion through the PR #259 admission path (draft_registration + coordinator envelope)"
     ],
-    "legacy_marker_dependency": "a+b relative alignment/close-ready use body edges only; inherited post-close M2 grip/hold receipts still include black band. Alternative: separately calibrate colour-edge co-motion/hold receipts before markerless cohort."
+    "legacy_marker_dependency": "a+b relative alignment/close-ready use body edges only; inherited post-close M2 grip/hold receipts still include black band. Alternative: separately calibrate colour-edge co-motion/hold receipts before markerless cohort.",
+    "draft_status": "NOT_READY_FOR_PHYSICAL",
+    "open_at_execution": [
+      "relative/global bound calibration",
+      "markerless provider and shape coverage"
+    ],
+    "decision": "2026-09-28 manager session authorized the six dev runs on the user delegation (merges approved; run decisions delegated). Open requirements are disclosed, not waived as evidence: results stay tags_temporary dev diagnostics."
   },
   "runs": [
     {
@@ -569,5 +575,5 @@
   "scene_contract_changed_sources": [
     "scripts/run_zone_pair_dev.py"
   ],
-  "registration_sha256": "abfa6752821a813798259c6f999b048d9712c2d83d68ed203e7010dc6646e872"
+  "registration_sha256": "d34f16cbfc5f9bf02fca954bacc887ca7f55c2449f62184d874d4515c798a5b3"
 }

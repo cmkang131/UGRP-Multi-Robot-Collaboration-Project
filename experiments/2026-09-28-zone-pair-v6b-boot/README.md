@@ -5,6 +5,7 @@ weld OFF, 모델 호출 0. 제어 입력은 자기 손목 RGB·자기 발행 명
 
 > **태그 전용 경고.** 오늘의 부트스트랩 PF(`BootstrapLocalizer._usable`, 부모 우도)는 임시 벽 태그만 읽는다. 최종 환경에는 AprilTag가 없다.
 > 무태그 환경에서의 동작은 **검증되지 않았다.** `initialize_from_prior`·`PoseReport` 계약을 구현하는 markerless 제공자(VIS6, #253)가 있어야 한다.
+> #253은 main에 병합됐지만 실험용 레시피 코드(`experiments/2026-09-26-vision-loc/vision_pf_v6.py`, 재생 전)다. 하네스 제공자가 아니며 이 계약을 아직 구현하지 않는다.
 
 ## 검토 #261 반영 (Codex 적대적 검토, 2026-09-28)
 
@@ -39,7 +40,7 @@ weld OFF, 모델 호출 0. 제어 입력은 자기 손목 RGB·자기 발행 명
 | 새 정책 | `b-boot`, `a+b-boot` (`stationary_bootstrap=True`) |
 | 불변 | `v5h`, `b-only`, `a+b`의 플래그와 동작. 부트스트랩 상태가 없는 제공자는 실행기 훅을 그대로 지나간다(단위 테스트로 확인). |
 | workflow | `zone-study-integration-run` 2.3.0 → **2.5.0** (#249가 2.4.0 사용). 새 `zone-pair-bootstrap-probe` 0.1.0 |
-| 사전등록 | `prereg_v6b.json` **DRAFT** (prepare-only, 승인·실행 소스 없음). v6 DRAFT는 이력으로 남긴다. 자기 커밋의 blob으로만 감사한다(`verify_v6_historical`). |
+| 사전등록 | `prereg_v6b.json` **DRAFT** (prepare-only, 승인·실행 소스 없음). 실행된 v6(REGISTERED, #259)는 이력으로 남긴다. 자기 커밋의 blob으로만 감사한다(`verify_v6_historical`). |
 
 코드: `harness/owncam_bootstrap_v6b.py`(새 파일), `harness/zone_own_executor.py`(opt-in 훅), `harness/zone_pair_executor.py`(PairTeam opt-in),
 `harness/zone_pair_v6_policy.py`, `scripts/zone_pair_v6_contract.py`, `scripts/probe_zone_pair_bootstrap.py`(새 파일).
@@ -178,7 +179,7 @@ OMP_NUM_THREADS=2 python3 scripts/ugrp_session.py run v6b-boot-probe -- \
 - 매칭 seed 911/912는 부트스트랩 설계에 쓴 출발 프레임과 같다. v6b 코호트는 짝지은 개발 확인이지 held-out 결과가 아니다.
 - **태그 전용.** 최종 환경에는 AprilTag가 없다. 부트스트랩 PF와 관측 경로는 임시 태그 제공자다. 무태그 동작은 검증되지 않았다.
   markerless 제공자(VIS6, #253)가 같은 계약(`initialize_from_prior`, `belief_hypotheses` 권장, 보고 영수증)을 구현해야 한다.
-- v6b를 실행하려면 PR #259의 REGISTERED 경로가 필요하다. 이 PR은 main 기준이다. 둘 다 `scripts/zone_pair_v6_contract.py`를 바꾸므로 병합 순서에 따라 충돌 해소가 필요하다.
+- #259 병합 뒤 origin/main을 합쳤다. `load_config`는 현재 revision(v6b)에만 #259의 DRAFT/REGISTERED 승인 경로를 적용한다. 실행된 v6(REGISTERED)은 이력으로 자기 커밋 blob에서만 감사한다. v6b는 아직 DRAFT이며, 실행하려면 같은 경로로 REGISTERED 전환(draft_registration + coordinator envelope)이 필요하다.
 
 ## 참고 자료
 
@@ -191,4 +192,4 @@ OMP_NUM_THREADS=2 python3 scripts/ugrp_session.py run v6b-boot-probe -- \
 - A. Bry, N. Roy, "Rapidly-exploring Random Belief Trees for motion planning under uncertainty," ICRA 2011: https://doi.org/10.1109/ICRA.2011.5980508
 - S. J. Julier, J. K. Uhlmann, "Unscented filtering and nonlinear estimation," *Proc. IEEE* 92(3), 2004 (σ점 대체 검사): https://doi.org/10.1109/JPROC.2003.823141
 - 검토 #261 원문: 기본 체크아웃 `outputs/review-261-20260928.md` (Codex, 검토 SHA 8229cde4)
-- v6 dev 결과와 실패 분석: PR #259 `experiments/2026-09-28-zone-pair-v6/dev-runs/README.md`
+- v6 dev 결과와 실패 분석: PR #259(병합) `experiments/2026-09-28-zone-pair-v6/dev-runs/README.md`
