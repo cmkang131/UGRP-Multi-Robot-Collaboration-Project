@@ -1,5 +1,6 @@
 # 실험 인덱스
 
+- [2026-09-28 MasterPi 외관 모델 v3 (공식 치수도 기반)](2026-09-28-masterpi-visual-v3/README.md): v2를 바이트 그대로 두고 `sim/masterpi_visual_v3.py`를 추가했다. `appearance_only`는 v2 물리와 비트 단위로 같다. `drawing_layout_proposal`은 팔 yaw 축 +48.2 mm와 차체·덮개 충돌 proxy를 치수도에 맞춘 검토용 제안이다. 초음파는 공식 치수도 축척값(송수신면 88.0 mm 앞, 높이 61.7 mm; v2 84/54)이고 실측이 아니다. 공식 URDF/STL은 찾지 못했다. 물리 step·모델 호출 0회, 전환하지 않음, 실측 목록 13항.
 - [2026-09-27 태그 없는 위치 추정 VIS4 dev 수정·새 test 설계](2026-09-26-vision-loc/README_v4.md): 운동 x1/m1 및 VISW σ 보정 u1/u2 모두 사전 규칙에서 기각, b0/u0 유지·NO_GO. VISW >3σ 19.03%, 구역 A 실패는 yaw σ 상한 초과로 분리했다. 문·슬롯·경로 게이트와 독립 seed/중복 감사 초안 저장. 관련 pytest 132 passed/1 skipped, 두 TensorBoard 스냅샷 실제 로딩 검증 완료; viewer 화면 확인은 sandbox 차단. 새 test·렌더·커밋 미실행.
 - [2026-09-27 디스크 정리 (무손실 항목만)](2026-09-27-disk-cleanup/README.md): 병합되고 사용 중이 아닌 worktree 10개를 은퇴시켰다(무시 자료 sha256 일치, push 안 된 커밋 0). `zone-team-a2`는 sparse로 바꿨고 캐시 14 MiB를 지웠다. `outputs/`에서 09-26 뒤 새로 생긴 중복 45,076개를 APFS clone으로 합쳤다(재해시 문제 0). worktree `du`는 −4.92 GiB, `df`는 약 +4.2 GiB다. raw는 삭제하지 않았다. `outputs/` 75.6 GiB(예산 40)를 줄일 보존 등급 재측정과 선택지 A–C(외장 보관·삭제·솎기)는 사용자 결정으로 남겼다. 사용 중인 worktree 20여 개는 제외했다.
 - [2026-09-27 #223 다회 결정 루프 감사·수정](2026-09-27-zone-study-multiturn/README.md): v66 미커밋 후보. 늦은 메시지는 자기 작업 경계에서 재결정하고 idle은 즉시 호출 자격을 얻는다. 4조건 가짜 전송과 관련 회귀 502개 통과, 실제 모델 호출·물리 step 0회. v64 대조·SIM 비용·상한·읽기 전용 잔여 예산을 기록했으며 실제 파일럿 실행은 남아 있다.
