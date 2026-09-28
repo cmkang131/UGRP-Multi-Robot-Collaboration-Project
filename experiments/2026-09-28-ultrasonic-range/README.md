@@ -10,6 +10,40 @@
 - 이번 범위가 아닌 일: PF·guard·align 연결. 공동 운반 v6(#246)에서 이어받는다. 연결 제안은 [센서 문서 7절](../../docs/ultrasonic_range_sensor.md#7-공동-운반-v6246-연결-제안-이번-범위-아님)에 있다.
 - 기존 등록 실험·번들: 동작 변경 없음. 새 모듈은 기존 코드가 import하지 않고, 기본값은 OFF다.
 
+## PR #248 적대적 검토 수정 (2026-09-28 후속 5, 아래 절의 해당 내용보다 우선)
+
+검토 기록은 기본 체크아웃의 `outputs/review-248-20260928.md`다(P1 1건, P2 6건, P3 11건). 센서 모델은 `masterpi_ultrasonic_v2`, provider source는 `own_ultrasonic_v2:<해시>`, 이력 스키마는 v2가 되었다. 운동학만 썼고 물리 step·시뮬레이션·모델 호출은 0회다.
+
+- **P1, 자기 팔 포함:**
+  - ray는 자기 차체 쪽(센서 하우징이 달린 차체, 바퀴)만 건너뛴다. 팔·손목·카메라·집게·쥔 짐은 포함한다. ray 원점은 송수신면(+6 mm)이다.
+  - `own_arm_pose_sweep.json`: 파지 자세(보정 IK)에서 **자기 집게가 첫 에코**다(막대·box·can 0.043 m, tile 0.031 m). grip z 0.040 m에서 0.048 m이고, 0.060 m 이상에서 팔은 원뿔 밖이다.
+  - 이전의 "파지 자세에서 상대 로봇이 보인다"와 v6 정렬 교차 확인 제안은 **철회한다**(문서 4·7절). 운반 권장 높이(0.110 m)와 `carry_p30`의 결론은 자기 팔을 포함해도 그대로다.
+- **P2-1, 지도 우도:** Thrun beam model 혼합(hit/short/specular/rand/max)으로 바꿨다. 지도 σ 2 cm, logistic 검출 확률(가시 경계의 불연속 제거), 판독당 |LLR| ≤ 2 nats를 넣었다. "강한 증거" 표현은 "보정 전 가설"로 낮췄다.
+- **P2-2, 판독 상태:** `ok`, `blind`, `no_echo`, `sensor_absent`로 나눴다. 누락은 실물처럼 `no_echo`로 내고 원인은 진단에만 둔다. SDK 어댑터 `reading_from_sdk`를 넣었다. solo 전진 규칙은 무반사·blind를 `clear`로 보지 않는다(`hold`/`no_echo`/`stop_near_field`).
+- **P2-3, 운반 monitor:** 기준값 검증(자기 짐 끝면 거리 거부), 5개 중 3개 정지 투표, `relook`, `stale`, 보정 시간 제한을 넣었다.
+- **P2-4, 간섭:**
+  - 위상 표류 모델로 바꿨다(쌍별 클럭 차 ±0.5 %, 20 µs 지터). 마주 보는 대형의 평가용 `FACING_PAIR_SPEC`(간섭 ON)을 넣었다.
+  - 이 모델에서 10분 운반당 `above_cone` monitor 오정지는 20개 seed 중앙값 34회(최대 50회, 짧은 판독 6.5 %)였다(순수 Python, 문서 7절). 그래서 대형 감시는 **후보로 낮췄다.**
+- **P2-5, 잡음 seed:** seed는 필수이고 `sensor_seed(episode_seed, robot_id)`로 정한다. 잡음 색인은 tick `round(t/60 ms)`이고, 간섭은 별도 스트림이다. seed는 provider 설정과 이력 헤더에 기록한다.
+- **P2-6:** AGENTS.md를 "허용된 관측, 현재 어떤 번들·실행기에도 연결 안 됨, 켠 실행은 baseline과 구분"으로 고쳤다.
+- **P3에서 고친 것:**
+  - 송수신면 원점, 모델에서 차체 높이 읽기와 센서 site 지원
+  - `arm_links`를 분석 스크립트로 옮김
+  - ray 빈틈 서술 정정(최대 약 2.2°, 34 mm 상자는 약 0.45 m 너머에서 빠질 수 있음)
+  - 방향 이득 주석을 왕복으로 통일
+  - 잘린 ray 수 진단
+  - 실행기가 진단 API를 참조하지 않는지 AST 테스트
+  - seed 64비트 전체 사용
+  - 문서 주장 정정(`Avoidance.py`는 미확인, `output_receipt`는 workflow_manager 경로만, dev14는 미검증)
+- **P3에서 남긴 것:**
+  - 원뿔을 조밀하게 쏘거나 해석적 원뿔 교차를 보조로 쓰는 일(P3-1)
+  - terrain·비상자 정적 요소와 지도별 SIM–지도 일치 테스트(P3-6)
+  - 실행기용 얇은 래퍼(P3-10; AST 테스트로 대신함)
+  - group 5 규칙: v2에는 group 5 로봇 하드웨어가 없어 영향이 없고, v3 모델에서 다시 확인한다(P3-5)
+  - 송·수신 소자 간격 모델링(10 cm 이하 정확도)
+- **main 병합:** origin/main(#240·#242·#243)을 병합하고 `experiments/README.md` 충돌을 해결했다. 번들 closure 테스트를 현재 main의 zone 번들로 다시 돌려 통과했다.
+- **검증:** 배터리 제약으로 대상 두 파일만 `OMP_NUM_THREADS=1`과 step 가드 아래에서 실행했다(`test_ultrasonic_range.py`, `test_ultrasonic_carry.py`). 전체 suite는 GitHub CI에 맡겼다.
+
 ## 소스·환경
 
 - 브랜치 `claude/ultrasonic-range`, base `origin/main` `6e44c5e7`. 구현 커밋은 이 README가 들어간 커밋이다(PR 참조).
@@ -47,10 +81,10 @@
 - **기하:** 벽 정면(지도 예측과 SIM 차이 < 4 mm, 벽 태그 두께), 10°·30° 비스듬한 벽, 40°에서 에코 없음, 4 m 너머 벽 없음, 2 cm 미만 invalid, 바닥 단독 grazing 무반사.
 - **막대(실제 `zone_wide_door_tags_v2` + `long_beam` 장면):**
   - 바닥 막대는 틈 5·7 cm에서 안 보이고, 10–100 cm에서 보이며, 150 cm에서 안 보인다(ray 해상도).
-  - 파지 자세에서는 막대가 아니라 상대 로봇이 보인다.
+  - ~~파지 자세에서는 막대가 아니라 상대 로봇이 보인다.~~ 철회(후속 5): 실제 파지 IK 자세에서는 자기 집게가 보인다.
   - M2 운반 높이(몸체 z 0.061 m)로 든 막대는 끝면 47 mm가 첫 에코다. 쥔 물체를 숨기는 API는 없다(시그니처 검사).
 - **상대 로봇 감지:** 마주 본 r2(팔 포함)가 첫 에코가 된다. crosstalk OFF에서는 편차 < 5 cm이고, ON에서는 400회 중 5–60회(실측 16회)가 짧거나 invalid였다. 상대가 90° 돌면 간섭은 0이다.
-- **자기 팔 제외:** 팔을 내려 집게가 원뿔을 가리는 자세를 만들었다. 제외하지 않은 raw ray는 `r1__` geom에 맞고, 센서 판독은 벽 거리를 낸다.
+- ~~**자기 팔 제외**~~ (후속 5에서 뒤집음): 이제 팔을 내린 자세에서는 자기 집게가 판독(또는 blind)이 된다.
 - **결정성:** 같은 seed는 같은 판독, 다른 seed와 다른 로봇은 다른 판독을 낸다. 잡음 평균과 σ를 확인하고, 1 mm 양자화를 확인한다.
 - **provider:** 시각·나이·출처·σ, `stale`·`invalid`·`no_reading` 제한, 미래 판독 미사용, 시간 역행 거부를 확인한다.
 - **이력 JSONL:** 행은 `t, range_m, valid`만 담고, 덮어쓰기는 거부한다.
@@ -63,7 +97,7 @@
 - 실물 장착·정확도·주기·블라인드 존·무반사 반환값은 측정하지 않았다(보정 계획은 문서 6절).
 - `near_face` 권장 높이는 막대 아랫면의 grazing 무반사 가정에 기댄다. 아랫면 모서리 회절 에코는 실물에서 확인하지 않았다.
 - 권장 높이에서 tool pitch가 grasp 대비 12.1° 바뀐다(M2 8.0°). 턱 안에서 막대가 도는 마찰 여유는 물리로 확인하지 않았다. 카메라 IoU는 pinhole 대리값이다.
-- 2.5° ray 간격이라 약 1.2 m 너머의 작은 띠를 놓친다.
+- ray 사이 최대 빈틈이 약 2.2°라 작은 물체를 놓친다(34 mm 상자는 약 0.45 m 너머; 후속 5에서 정정).
 - 간섭 모델(기본 OFF)과 우도 가중치는 적합하지 않은 시작값이다.
 
 ## 운반 높이 (2026-09-28 후속)
@@ -125,13 +159,16 @@ v3 값은 센서 88.0/61.7 mm, 팔 축 +48.2 mm다(도면 기반, 측정 아님)
 
 ## 원본
 
-raw 출력은 없다(물리 실행 0회). 분석 JSON은 이 폴더에 커밋했다. 재현 명령: `OMP_NUM_THREADS=2 .venv-sim/bin/python scripts/analyze_ultrasonic_carry_height.py --out carry_height_analysis.json --solo-out solo_carry_height_analysis.json --side-out side_grasp_pair_analysis.json --geometry-out geometry_v2_v3_analysis.json`
+raw 출력은 없다(물리 실행 0회). 분석 JSON은 이 폴더에 커밋했다. 재현 명령: `OMP_NUM_THREADS=1 .venv-sim/bin/python scripts/analyze_ultrasonic_carry_height.py --out carry_height_analysis.json --solo-out solo_carry_height_analysis.json --side-out side_grasp_pair_analysis.json --geometry-out geometry_v2_v3_analysis.json --pose-sweep-out own_arm_pose_sweep.json`
 
-| 파일 | sha256 |
+| 파일 | sha256 (후속 5 재생성) |
 |---|---|
-| `carry_height_analysis.json` | `147ba67117122dc3793d010726d2a5e8bd344dbcbd7a8d9a3a41f63a131458bb` |
-| `solo_carry_height_analysis.json` | `e906de961473078a17680429ba9c12776f4c3b1aabed088e344ecec4adc704b2` |
-| `side_grasp_pair_analysis.json` | `3ac92dec110cf7e7d52410e6ccbb44a9acb0912ed8d02696418d36a0a63a9ede` |
-| `geometry_v2_v3_analysis.json` | `3d9cf884568b6def01970a815b5b8200e21b14c167ef7a291191ac28b05b568f` |
+| `carry_height_analysis.json` | `ba9decfc982e135802b824e8451908d1c27a18694fc298b1557fffc6bf021ccf` |
+| `solo_carry_height_analysis.json` | `7f4d6a002e4f3a557c70088b2045be1f2132318170c03ba5ca1e46b7a18b569e` |
+| `side_grasp_pair_analysis.json` | `e4844f96b27de06f91f7fefc5d0f57f7efa2fd2c1babea4559f3a8bf4b6de01c` |
+| `geometry_v2_v3_analysis.json` | `b4c93ab14b4c797eb6bf4b8e80b0bc1ed3e375c7610894ec57cc11210f1f3e37` |
+| `own_arm_pose_sweep.json` | `661a2ee529184f8e0f91a8d21148b726d675f4eebb7c1023a3b3c562cb5dc8ca` |
+
+후속 5 이전 수치(송수신면 보정 전: 파트너 0.694 m, 끝면 0.047/0.048 m, 벽 0.495/0.497 m 등)는 위 절들에 기록 당시 값으로 남겼다. 현재 값은 센서 문서 4·8–11절과 위 JSON이다.
 
 테스트 로그는 PR 검증 절에 요약했다.
