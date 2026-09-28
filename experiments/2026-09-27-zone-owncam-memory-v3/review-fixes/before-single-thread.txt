@@ -1,0 +1,187 @@
+Numerical thread caps: 1; OpenCV threads: 1; pytest worker: main process
+Baseline runtime: eebab596; four review regressions; expected 9 failures
+FFFFFFFFF                                                                [100%]
+=================================== FAILURES ===================================
+______ test_p1_place_gate_accepts_attainable_saved_release_evidence[s162] ______
+
+item = {'seed': 162, 'source': '/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926/test-a1/memory_v2/m1mem-s162', 'frames_index_sha256': '4f3664c845c0b55c08f4839db4d8f71cf59a0d5a928608ff63572190e74d6c21', 'slot_id': 'B1', ...}
+
+    @pytest.mark.parametrize('item', SAVED, ids=lambda i: f"s{i['seed']}")
+    def test_p1_place_gate_accepts_attainable_saved_release_evidence(item):
+        ctl, now, xy, before, after = saved_place(item)
+        # Actual saved pose + fixed camera model: no possible loaded floor proof.
+        slot = np.all(np.abs(ctl.memory.view.cells - ctl.slot_xy) <= ctl._slot_half(), axis=1)
+        for posture in (LOOK_P20, CARRY_POSTURE):
+            for pan in WIDE_LOOK_PANS:
+                idx, _ = ctl.memory.view.floor_footprint(xy, {**posture, 6: pan}, True, max_range=1.1)
+                assert not slot[idx].any()
+        assert compare_box_comotion(before, after, min_saturation=150)['attached']
+        with mock.patch.object(ctl, '_gate_look', return_value={'mode': 'capture'}):
+>           assert ctl._boundary_gate(now, 'place') is None
+E           AssertionError: assert {'mode': 'capture'} is None
+E            +  where {'mode': 'capture'} = _boundary_gate(237.912, 'place')
+E            +    where _boundary_gate = <harness.m1_owncam_memory_v3.M1OwnCamDeliveryMemV3 object at 0x113219340>._boundary_gate
+
+tests/test_owncam_memory_v3_review.py:69: AssertionError
+______ test_p1_place_gate_accepts_attainable_saved_release_evidence[s164] ______
+
+item = {'seed': 164, 'source': '/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926/test-a1/memory_v2/m1mem-s164', 'frames_index_sha256': '7250069439449e82f14ad3fda5a66bcd4b016823a0c9e8054c8fdfe5955af0bb', 'slot_id': 'A3', ...}
+
+    @pytest.mark.parametrize('item', SAVED, ids=lambda i: f"s{i['seed']}")
+    def test_p1_place_gate_accepts_attainable_saved_release_evidence(item):
+        ctl, now, xy, before, after = saved_place(item)
+        # Actual saved pose + fixed camera model: no possible loaded floor proof.
+        slot = np.all(np.abs(ctl.memory.view.cells - ctl.slot_xy) <= ctl._slot_half(), axis=1)
+        for posture in (LOOK_P20, CARRY_POSTURE):
+            for pan in WIDE_LOOK_PANS:
+                idx, _ = ctl.memory.view.floor_footprint(xy, {**posture, 6: pan}, True, max_range=1.1)
+                assert not slot[idx].any()
+        assert compare_box_comotion(before, after, min_saturation=150)['attached']
+        with mock.patch.object(ctl, '_gate_look', return_value={'mode': 'capture'}):
+>           assert ctl._boundary_gate(now, 'place') is None
+E           AssertionError: assert {'mode': 'capture'} is None
+E            +  where {'mode': 'capture'} = _boundary_gate(210.7525, 'place')
+E            +    where _boundary_gate = <harness.m1_owncam_memory_v3.M1OwnCamDeliveryMemV3 object at 0x113574c20>._boundary_gate
+
+tests/test_owncam_memory_v3_review.py:69: AssertionError
+______ test_p1_place_gate_accepts_attainable_saved_release_evidence[s165] ______
+
+item = {'seed': 165, 'source': '/Users/changmin/projects/ugrp/outputs/owncam-memory-20260926/test-a1/memory_v2/m1mem-s165', 'frames_index_sha256': '9179ca60ca63f5cebda3cac9d1b17ed7ae42ac1e3fb0a37a8e84b915e7dc930a', 'slot_id': 'B2', ...}
+
+    @pytest.mark.parametrize('item', SAVED, ids=lambda i: f"s{i['seed']}")
+    def test_p1_place_gate_accepts_attainable_saved_release_evidence(item):
+        ctl, now, xy, before, after = saved_place(item)
+        # Actual saved pose + fixed camera model: no possible loaded floor proof.
+        slot = np.all(np.abs(ctl.memory.view.cells - ctl.slot_xy) <= ctl._slot_half(), axis=1)
+        for posture in (LOOK_P20, CARRY_POSTURE):
+            for pan in WIDE_LOOK_PANS:
+                idx, _ = ctl.memory.view.floor_footprint(xy, {**posture, 6: pan}, True, max_range=1.1)
+                assert not slot[idx].any()
+        assert compare_box_comotion(before, after, min_saturation=150)['attached']
+        with mock.patch.object(ctl, '_gate_look', return_value={'mode': 'capture'}):
+>           assert ctl._boundary_gate(now, 'place') is None
+E           AssertionError: assert {'mode': 'capture'} is None
+E            +  where {'mode': 'capture'} = _boundary_gate(190.4627, 'place')
+E            +    where _boundary_gate = <harness.m1_owncam_memory_v3.M1OwnCamDeliveryMemV3 object at 0x113576450>._boundary_gate
+
+tests/test_owncam_memory_v3_review.py:69: AssertionError
+__________ test_p1_yaw_only_no_progress_look_loop_stops[short-False] ___________
+
+loaded = False, mode = 'short'
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    @pytest.mark.parametrize('mode', ['short', 'full'])
+    def test_p1_yaw_only_no_progress_look_loop_stops(loaded, mode):
+        leg, loc, _ = leg_fixture(loaded, mode=mode)
+        for attempt in range(6):
+            loc.t = 2. + attempt
+            fix(leg.memory, loc.t)
+            if leg._should_refix(True):
+                leg._start_look(loc.t, 'refix')
+            if leg.outcome:
+                break
+>       assert leg.outcome == 'pose_unverified'
+E       AssertionError: assert None == 'pose_unverified'
+E        +  where None = <harness.owncam_drive_mem_v3.LegDriverMemV3 object at 0x11361d5e0>.outcome
+
+tests/test_owncam_memory_v3_review.py:95: AssertionError
+___________ test_p1_yaw_only_no_progress_look_loop_stops[short-True] ___________
+
+loaded = True, mode = 'short'
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    @pytest.mark.parametrize('mode', ['short', 'full'])
+    def test_p1_yaw_only_no_progress_look_loop_stops(loaded, mode):
+        leg, loc, _ = leg_fixture(loaded, mode=mode)
+        for attempt in range(6):
+            loc.t = 2. + attempt
+            fix(leg.memory, loc.t)
+            if leg._should_refix(True):
+                leg._start_look(loc.t, 'refix')
+            if leg.outcome:
+                break
+>       assert leg.outcome == 'pose_unverified'
+E       AssertionError: assert None == 'pose_unverified'
+E        +  where None = <harness.owncam_drive_mem_v3.LegDriverMemV3 object at 0x1135768a0>.outcome
+
+tests/test_owncam_memory_v3_review.py:95: AssertionError
+___________ test_p1_yaw_only_no_progress_look_loop_stops[full-False] ___________
+
+loaded = False, mode = 'full'
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    @pytest.mark.parametrize('mode', ['short', 'full'])
+    def test_p1_yaw_only_no_progress_look_loop_stops(loaded, mode):
+        leg, loc, _ = leg_fixture(loaded, mode=mode)
+        for attempt in range(6):
+            loc.t = 2. + attempt
+            fix(leg.memory, loc.t)
+            if leg._should_refix(True):
+                leg._start_look(loc.t, 'refix')
+            if leg.outcome:
+                break
+>       assert leg.outcome == 'pose_unverified'
+E       AssertionError: assert None == 'pose_unverified'
+E        +  where None = <harness.owncam_drive_mem_v3.LegDriverMemV3 object at 0x113269f10>.outcome
+
+tests/test_owncam_memory_v3_review.py:95: AssertionError
+___________ test_p1_yaw_only_no_progress_look_loop_stops[full-True] ____________
+
+loaded = True, mode = 'full'
+
+    @pytest.mark.parametrize('loaded', [False, True])
+    @pytest.mark.parametrize('mode', ['short', 'full'])
+    def test_p1_yaw_only_no_progress_look_loop_stops(loaded, mode):
+        leg, loc, _ = leg_fixture(loaded, mode=mode)
+        for attempt in range(6):
+            loc.t = 2. + attempt
+            fix(leg.memory, loc.t)
+            if leg._should_refix(True):
+                leg._start_look(loc.t, 'refix')
+            if leg.outcome:
+                break
+>       assert leg.outcome == 'pose_unverified'
+E       AssertionError: assert None == 'pose_unverified'
+E        +  where None = <harness.owncam_drive_mem_v3.LegDriverMemV3 object at 0x11321a300>.outcome
+
+tests/test_owncam_memory_v3_review.py:95: AssertionError
+___________ test_p1_yaw_interval_out_of_fov_is_not_absence_evidence ____________
+
+    def test_p1_yaw_interval_out_of_fov_is_not_absence_evidence():
+        mem, tr = track_at()
+        pose = (0., 0., 0.)
+        cov = np.diag([.0001, .0001, .5**2])
+        assert mem.view.point_in_view(pose, SEARCH_POSE, False, (*tr.x, .016))
+        assert not mem.view.point_in_view((0., 0., 1.), SEARCH_POSE, False, (*tr.x, .016))
+>       assert not mem._visible_for_absence(tr, pose, cov, SEARCH_POSE, [])
+E       assert not True
+E        +  where True = _visible_for_absence(<harness.owncam_memory_v3.BoxTrackV3 object at 0x1128bbe90>, (0.0, 0.0, 0.0), array([[1.0e-04, 0.0e+00, 0.0e+00],\n       [0.0e+00, 1.0e-04, 0.0e+00],\n       [0.0e+00, 0.0e+00, 2.5e-01]]), {1: 2000, 3: 740, 4: 2320, 5: 1320, ...}, [])
+E        +    where _visible_for_absence = <harness.owncam_memory_v3.OwnCamMemoryV3 object at 0x1129007a0>._visible_for_absence
+
+tests/test_owncam_memory_v3_review.py:112: AssertionError
+_____________ test_p2_self_gripper_possible_occlusion_defers_miss ______________
+
+    def test_p2_self_gripper_possible_occlusion_defers_miss():
+        mem, tr = track_at(.42)
+        pose = (0., 0., 0.)
+        cov = np.diag([.000001, .000001, .000001])
+        assert mem.view.point_in_view(pose, SEARCH_POSE, False, (*tr.x, .016))
+        # Camera is above the tool axis; this near floor ray descends through the
+        # forward gripper region. Geometric FOV alone cannot certify an absence.
+>       assert not mem._visible_for_absence(tr, pose, cov, SEARCH_POSE, [])
+E       assert not True
+E        +  where True = _visible_for_absence(<harness.owncam_memory_v3.BoxTrackV3 object at 0x108785220>, (0.0, 0.0, 0.0), array([[1.e-06, 0.e+00, 0.e+00],\n       [0.e+00, 1.e-06, 0.e+00],\n       [0.e+00, 0.e+00, 1.e-06]]), {1: 2000, 3: 740, 4: 2320, 5: 1320, ...}, [])
+E        +    where _visible_for_absence = <harness.owncam_memory_v3.OwnCamMemoryV3 object at 0x112903920>._visible_for_absence
+
+tests/test_owncam_memory_v3_review.py:122: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_place_gate_accepts_attainable_saved_release_evidence[s162]
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_place_gate_accepts_attainable_saved_release_evidence[s164]
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_place_gate_accepts_attainable_saved_release_evidence[s165]
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_yaw_only_no_progress_look_loop_stops[short-False]
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_yaw_only_no_progress_look_loop_stops[short-True]
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_yaw_only_no_progress_look_loop_stops[full-False]
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_yaw_only_no_progress_look_loop_stops[full-True]
+FAILED tests/test_owncam_memory_v3_review.py::test_p1_yaw_interval_out_of_fov_is_not_absence_evidence
+FAILED tests/test_owncam_memory_v3_review.py::test_p2_self_gripper_possible_occlusion_defers_miss
+9 failed, 36 deselected in 1.06s

@@ -1,0 +1,68 @@
+{
+  "snapshot": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/beam-frame-diagnosis-tb-ewfs6mhh/snapshot",
+  "source_sha256": "8f3c3c4cc47064cbd9884c47079d121a7a90cb451fe946a919422e63167893c1",
+  "verified": [
+    {
+      "run": "dev09",
+      "sha256": "c298efe9008292f1b3fc2d78dd2b5981308c26d83e343526a24a5d2dc94c34a1",
+      "event": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/beam-frame-diagnosis-tb-ewfs6mhh/snapshot/dev09/events.out.tfevents.1790523047.gangchangmin-ui-MacBookAir.local.5604.0",
+      "values": {
+        "offline/relook_frames": 77.0,
+        "offline/tag_detected_frames": 77.0,
+        "offline/decision_frames": 5.0,
+        "offline/exact_fix_pass": 0.0,
+        "offline/clock_clause_pass": 5.0,
+        "offline/abort_sim_s": 179.5,
+        "offline/new_physics_steps": 0.0,
+        "offline/new_model_calls": 0.0
+      },
+      "hparams_loaded": true
+    },
+    {
+      "run": "dev10",
+      "sha256": "cca3533f151a16c31436568edd6100829a81bdf7f8759c88746ff11b1b2be394",
+      "event": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/beam-frame-diagnosis-tb-ewfs6mhh/snapshot/dev10/events.out.tfevents.1790523047.gangchangmin-ui-MacBookAir.local.5604.1",
+      "values": {
+        "offline/relook_frames": 77.0,
+        "offline/tag_detected_frames": 77.0,
+        "offline/decision_frames": 5.0,
+        "offline/exact_fix_pass": 0.0,
+        "offline/clock_clause_pass": 4.0,
+        "offline/abort_sim_s": 156.6999969482422,
+        "offline/new_physics_steps": 0.0,
+        "offline/new_model_calls": 0.0
+      },
+      "hparams_loaded": true
+    },
+    {
+      "run": "m2-evidence",
+      "sha256": "4d057c7169276c0712d54d29f548db88860a9465c310f8b62bde149fb2febdba",
+      "event": "/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/beam-frame-diagnosis-tb-ewfs6mhh/snapshot/m2-evidence/events.out.tfevents.1790523047.gangchangmin-ui-MacBookAir.local.5604.2",
+      "values": {
+        "offline/success_selected_runs": 49.0,
+        "offline/traces": 98.0,
+        "offline/vo_traces": 46.0,
+        "offline/first_align_shape_fit": 96.0,
+        "offline/full_design_unknown": 49.0,
+        "offline/preclose_input_pass": 0.0
+      },
+      "hparams_loaded": true
+    }
+  ],
+  "shared_root_published": false,
+  "gui_verified": false,
+  "new_video": null,
+  "server_started": false,
+  "dashboard_url": "http://127.0.0.1:6006",
+  "view_config_read": true,
+  "blockers": [
+    "shared primary outputs/tensorboard outside writable roots",
+    "Chrome CUA cgWindowNotFound; browser inventory empty; PID inspection denied"
+  ],
+  "proposed_hparams_visible_columns": [
+    "condition",
+    "split",
+    "case",
+    "source_sha"
+  ]
+}

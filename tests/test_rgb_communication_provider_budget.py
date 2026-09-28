@@ -5,6 +5,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import subprocess
 import threading
 
 import pytest
@@ -170,11 +171,14 @@ def test_planning_packet_is_blocked_and_pins_current_c_policy_without_approving_
     assert not candidate.readiness()["ready"]
     assert candidate.policy_manifest() == packet["candidate_policy_manifest"]
     for name, expected in packet["base_component_sha256"].items():
-        # B/D may advance in the subsequent integrated candidate. Their hashes
-        # here are explicitly historical BASE locks, not current attestations.
-        if name.rsplit("/", 1)[-1] in {"rgb_communication_planner.py", "rgb_communication_async.py",
-                "rgb_communication_runtime.py", "rgb_communication_clock.py", "gemini_proxy.py"}:
-            assert hashlib.sha256((root / name).read_bytes()).hexdigest() == expected
+        # Every component is a historical BASE lock, including gemini_proxy.py
+        # after R9/R10. Current source pins belong to the execution bundle.
+        # Offline CI fetches full history; a missing BASE must fail, not fall
+        # back to the working tree or silently skip an archived component.
+        source = subprocess.check_output(
+            ["git", "show", f"{packet['base_source_sha']}:{name}"], cwd=root,
+        )
+        assert hashlib.sha256(source).hexdigest() == expected, name
     scheduler = dict(packet["scheduler_proposal"])
     assert scheduler.pop("scheduler_id") == "rgb-independent-async.v1"
     limits = AsyncRuntimeLimits(**scheduler)

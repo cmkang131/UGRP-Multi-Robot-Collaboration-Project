@@ -47,8 +47,6 @@ from collections.abc import Mapping
 import numpy as np
 
 import vision_loc as vl
-import vision_motion as vm
-import vision_sigma as vs
 
 
 def _num(v, name, lo=0., hi=math.inf, lo_open=False):
@@ -100,21 +98,14 @@ def validate_robust(robust: Mapping | None) -> dict:
 
 
 def make_robust_pf(m1_module, static_map: Mapping, params: Mapping, measurement: Mapping, obs_params: Mapping,
-                   sag_table: Mapping, seed: int, pan_table: Mapping | None = None, robust: Mapping | None = None,
-                   motion_v4: Mapping | None = None, sigma_v4: Mapping | None = None):
+                   sag_table: Mapping, seed: int, pan_table: Mapping | None = None, robust: Mapping | None = None):
     base = vl.vision_pf_class(m1_module)
     cfg = validate_robust(robust)
-    motion = vm.validate_motion(motion_v4)
-    sigma = vs.validate_sigma(sigma_v4)
 
     class RobustVisionLocalizer(base):
         def __init__(self):
             super().__init__(static_map, params, measurement, obs_params, sag_table, seed, pan_table)
             self.robust = cfg
-            self.motion_v4 = motion
-            self.sigma_head = vs.VarianceCalibrator(sigma)
-            self.pending_wheels = []
-            self._last_effective_wheel_t = -math.inf
             self.stuck = np.zeros(self.n, bool)
             self.w_slow = self.w_fast = 0.
             self._inject = 0.
@@ -124,19 +115,6 @@ def make_robust_pf(m1_module, static_map: Mapping, params: Mapping, measurement:
 
         # ------------------------------------------------------------ motion
         def command(self, row):
-            if self.motion_v4['exact']:
-                t = float(row['t'])
-                self.predict_to(t)
-                if row['kind'] not in ('initial_servo_command', 'arm', 'look'):
-                    # Fine manipulation retains its calibrated lag, with no new delay.
-                    delay = (0. if getattr(self, 'motion_profile', None) is not None else
-                             self.motion_v4['delay_s']['loaded' if self.load.loaded else 'unloaded'])
-                    # FIFO even if the load-state delay changes between commands.
-                    effective = max(t + delay, self._last_effective_wheel_t)
-                    self._last_effective_wheel_t = effective
-                    self.pending_wheels.append((effective, dict(row)))
-                    self.predict_to(t)
-                    return
             was = self.load.loaded
             super().command(row)
             if self.robust['loaded_scale_reinit'] and self.initialized and self.load.loaded != was:
@@ -147,10 +125,10 @@ def make_robust_pf(m1_module, static_map: Mapping, params: Mapping, measurement:
         def predict_to(self, t):
             st = self.robust['stuck']
             if not st or not self.initialized or t <= self.t + 1e-9:
-                return self._predict_base(t)
+                return super().predict_to(t)
             t0, before, logw0 = self.t, self.px.copy(), self.logw.copy()
             wheels = bool(np.any(self.cmd)) and t0 < self.cmd_expires - 1e-9 or bool(np.any(np.abs(self.vel) > 1e-6))
-            self._predict_base(t)
+            super().predict_to(t)
             if not wheels:
                 return None
             dt = self.t - t0
@@ -166,20 +144,6 @@ def make_robust_pf(m1_module, static_map: Mapping, params: Mapping, measurement:
                 steps = max(1, math.ceil(dt/self.step_s - 1e-9))
                 self.logw[s] = logw0[s] + steps*self._map_logprior(self.px[s])
             return None
-
-        def _predict_base(self, t):
-            if not self.motion_v4['exact']:
-                return super().predict_to(t)
-            while self.pending_wheels and self.pending_wheels[0][0] <= t + 1e-9:
-                effective, row = self.pending_wheels.pop(0)
-                vm.predict_exact(self, effective)
-                if row['kind'] in ('mecanum', 'drive'):
-                    self.cmd = np.array([row['forward'], row.get('left', 0.) if row['kind'] == 'mecanum' else 0.,
-                                         row['turn']], float)
-                    self.cmd_expires = effective + float(row['duration_s'])
-                else:
-                    self.cmd, self.cmd_expires = np.zeros(3), -1.
-            return vm.predict_exact(self, t)
 
         step_s = m1_module.STEP_S
 
@@ -314,15 +278,9 @@ def make_robust_pf(m1_module, static_map: Mapping, params: Mapping, measurement:
             if est.get('initialized'):
                 w = self._weights()
                 est['diag'] = {**self.diag, 'stuck_share': round(float(self.stuck.mean()), 4),
-                               'stuck_weight': round(float(w[self.stuck].sum()), 4),
-                               'command_velocity': [float(v) for v in self.vel],
-                               'scale_mean': [float(v) for v in np.sum(w[:, None]*self.scale, axis=0)],
-                               'motion_profile': getattr(self, 'motion_profile', None)}
+                               'stuck_weight': round(float(w[self.stuck].sum()), 4)}
                 est['since_lateral_info_s'] = (None if self.last_info_t['lat'] is None
                                                else round(self.t - self.last_info_t['lat'], 3))
-                est['last_scan_t'] = self.last_scan_t
-                est = self.sigma_head.report(est, t=self.t, last_scan_t=self.last_scan_t,
-                                             loaded=bool(self.load.loaded), settled=bool(self.settled(self.t)))
             return est
 
         def _dominant_estimate(self):

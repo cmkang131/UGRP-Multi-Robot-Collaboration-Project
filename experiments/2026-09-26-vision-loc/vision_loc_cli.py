@@ -396,7 +396,7 @@ def _make_sinks(args, ep, ctx) -> dict:
         return vision_pf.make_robust_pf(ctx['m1'], ctx['static'], ctx['params'], cfg.get('measurement', {}),
                                         cfg.get('obs', {}), ctx['cal']['sag'], seed,
                                         ctx['cal'].get('pan_base_yaw') if cfg.get('pan_coupling', True) else None,
-                                        cfg.get('robust', {}), cfg.get('motion_v4'), cfg.get('sigma_v4'))
+                                        cfg.get('robust', {}))
     sinks = {}
     for name in args.filters.split(','):
         if name == 'vision':
@@ -437,11 +437,7 @@ def _frame_record(row, sinks) -> dict:
             'xyyaw': [round(e['x'], 5), round(e['y'], 5), round(e['yaw'], 6)],
             'std_xy_m': round(e['std_xy_m'], 5), 'std_yaw_rad': round(e['std_yaw_rad'], 5),
             'measured': bool(e.get('measured')), 'n_cols': e.get('n_cols'), 'diag': e.get('diag'),
-            'since_lateral_info_s': e.get('since_lateral_info_s'),
-            'cov': e.get('cov'), 'raw_cov': e.get('raw_cov'), 'raw_std_xy_m': e.get('raw_std_xy_m'),
-            'last_scan_t': e.get('last_scan_t'), 'since_scan_s': e.get('since_scan_s'),
-            'sigma_calibration_state': e.get('sigma_calibration_state'),
-            'radius95_xy_m': e.get('radius95_xy_m')}
+            'since_lateral_info_s': e.get('since_lateral_info_s')}
     return rec
 
 
@@ -503,8 +499,7 @@ def localize(args):
                     'calibration': {'path': str(args.calibration), 'sha256': sha_file(args.calibration)},
                     'config': {'path': str(args.config), 'sha256': sha_file(args.config), 'value': ctx['cfg']},
                     'checkpoint_sha256': ctx['ckpt_sha'], 'obs_dirs': {'vision': args.obs, 'oracle': args.oracle_obs},
-                    'module_sha256': {f: sha_file(HERE/f) for f in ('vision_loc.py', 'vision_pf.py', 'vision_motion.py', 'vision_sigma.py',
-                                                                  'vision_loc_cli.py')},
+                    'module_sha256': {f: sha_file(HERE/f) for f in ('vision_loc.py', 'vision_pf.py', 'vision_loc_cli.py')},
                     'pr210_probe_sha256': sha_file(vl._PROBE)}
             (out/f'{ep}.meta.json').write_text(json.dumps(meta, indent=1))
         print(f'{ep}: {n} frames, {meta["wall_s"]} s', flush=True)

@@ -1,0 +1,88 @@
+{
+  "base_head": "59bb3435570235efc5f8c3c6111e5ad42984127e",
+  "branch": "kiro/zone-study-core",
+  "scope": "R9 offline tests and dry-run only; coordinator commits",
+  "fail_before": {
+    "failed": 4,
+    "conditions": [
+      "no_comm",
+      "peer_ko",
+      "leader_ko",
+      "structured"
+    ],
+    "reason": "length executed action"
+  },
+  "pass_after_counterexamples": 4,
+  "final_focused": {
+    "passed": 157,
+    "r9": 106,
+    "r8": 51
+  },
+  "expanded_regression": {
+    "passed": 1039,
+    "deselected": 1,
+    "subtests_passed": 26,
+    "note": "Final focused suite also covers preserved not_sent stop gate added during broad run."
+  },
+  "excluded": "test_parent_exit_cleans_background_child: ps permission limitation seen in R8; not re-run here",
+  "live_network_calls": 0,
+  "physical_runs": 0,
+  "proxy_modified": false,
+  "proxy_sha256": "7d4c4e8c2addf9e0dc159de6ba0f4ec4374f876d915a6bc0752d3fd18db3e556",
+  "dry_run": {
+    "network_calls": 0,
+    "model_calls": 0,
+    "completion_policy": "ugrp.zone_completion.proxy_stop_and_valid_reply.v1",
+    "completion_limitation": {
+      "finish_reason_source": "proxy_response",
+      "proxy_mapping": "MAX_TOKENS -> length; other reasons including SAFETY -> stop",
+      "success_scope": "proxy stop + valid study reply, not verified upstream STOP or physical success",
+      "undetectable_case": "masked upstream failure with complete valid JSON and no remaining failure signal",
+      "upstream_finish_reason_verified": false
+    }
+  },
+  "final_source_files_sha256": {
+    "docs/zone_study_pilot.md": "b0e75d988c8cac624308f4a8a89844231136ea8b82eb9957d672e07a3ffe0113",
+    "harness/gemini_proxy.py": "ff1429522b75414390e69f592e4ed91dd1a01ec71afd65aa33bc422818224531",
+    "harness/zone_completion.py": "6a0ffca04e2dc597788fb227fb5279dd45cbb2cb355b1214ba108cd502fb5100",
+    "harness/zone_event_scheduler.py": "318042c58b105d0da05806aa631f0eaac73948f6e90e1052a3f8948a7f5ed7b5",
+    "harness/zone_pilot_budget.py": "26b5daede1e365f9ef100fe7a24940b58f8ef9d994f85b4b7ba95ffc6e321ffc",
+    "harness/zone_pilot_ledger.py": "bfecbd92e4fe9c4f2959be924b7cd188ac8e712453347108b0b1ea2fca4aee4c",
+    "harness/zone_pilot_reconcile.py": "eb0f0a5a048dea11a0d93379f7ecfd569888bb13a6ac781b7fc78887cdc05567",
+    "harness/zone_send_ledger.py": "4821a07afc69104cc15a721ae31167f6995b1d0afbd5d1716018e2e863e3681f",
+    "harness/zone_sim_cost.py": "7588003a1db68f11e94426ce241da9a951f30070cdc32db8bbee9f085ef6f292",
+    "harness/zone_study_eval.py": "c443a333e1d092c0fb8a6d4ddbca6178e36caecec872fa0c2b6fb068278a7529",
+    "harness/zone_study_llm_transport.py": "5c6cbba73d8050edb0dec52721d85a49dcc1402c5e6b9465e2811dfb682c0bd5",
+    "harness/zone_study_offline.py": "7693967756f4a4f84cdedc8892b93fabb0f0497ffcab1ca35ab5002770463433",
+    "scripts/run_ci_tests.py": "81a2d5bb610db126b3b81f9b4522af6ebaec67f95af53366fecca955eb906073",
+    "scripts/run_zone_study_pilot.py": "1a59271b07c3f03fe2687411156b8bed03d9a9b25b2725cbc978f042d594cdf4",
+    "tests/test_zone_study_review_r9.py": "b74c4564643556ea5d75257492e54c58edee1ab2f236dc96e80bb17f0fa0113d"
+  },
+  "raw_artifacts": {
+    "fail-before.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r9/fail-before.txt",
+      "bytes": 3740,
+      "sha256": "cff7eb390579a518bb56a9ae428d43a32605dd774f7e76f1995da6f7bfdf29ee"
+    },
+    "fail-before-test.py": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r9/fail-before-test.py",
+      "bytes": 2565,
+      "sha256": "79a31b8f04f01a7e8aabd26135e0e8f2b628e486cd4e8b08de02457f06bc6857"
+    },
+    "final-focused.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r9/final-focused.txt",
+      "bytes": 261,
+      "sha256": "4a3bcbdfc8bbef48f8ab7fea0d1dc5d073840494313356f9d3b1fe68742fb061"
+    },
+    "final-regression.txt": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r9/final-regression.txt",
+      "bytes": 1241,
+      "sha256": "99d58c172e450462b94490caac6b6469d67b8ea0946f10f4c6929eda580ce46f"
+    },
+    "dry-review/manifest.json": {
+      "path": "/Users/changmin/projects/ugrp-wt/kiro-study-core/.tmp/r9/dry-review/manifest.json",
+      "bytes": 94635,
+      "sha256": "bd0a89ffd2514a1b2f9cc77b874b3959b5adb10af0f7e5dd315f77f33a2b5a3f"
+    }
+  }
+}

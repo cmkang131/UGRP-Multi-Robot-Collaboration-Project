@@ -16,13 +16,13 @@ from types import SimpleNamespace
 
 import diagnose_v4 as d
 import vision_loc as vl
-import vision_loc_cli as cli
+import vision_loc_cli_v4 as cli
 import vision_loc_io as vio
 import vision_loc_score as score
 
 HERE = Path(__file__).resolve().parent
 OUT = d.OUT
-RUNTIME = ('vision_loc.py', 'vision_pf.py', 'vision_motion.py', 'vision_sigma.py', 'vision_loc_cli.py', 'vision_loc_io.py',
+RUNTIME = ('vision_loc.py', 'vision_pf_v4.py', 'vision_motion.py', 'vision_sigma.py', 'vision_loc_cli_v4.py', 'vision_loc_io.py',
            'vision_loc_score.py', 'compare_v4.py', 'diagnose_v4.py', 'dev_plan_v4.json', 'selected_config_v3.json',
            'calibration_train.json', 'maps/zone_wide_door_walls_v3_notags.json')
 

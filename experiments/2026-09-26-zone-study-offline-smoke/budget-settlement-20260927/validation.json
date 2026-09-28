@@ -1,0 +1,41 @@
+{
+  "tests": {
+    "expanded": {
+      "passed": 394,
+      "seconds": 130.36
+    },
+    "final_settlement": {
+      "passed": 35,
+      "seconds": 1.18
+    },
+    "unique_passed": 396,
+    "physical_runs": 0,
+    "model_calls": 0,
+    "OMP_NUM_THREADS": "1",
+    "basetemp": "./.pytest_tmp",
+    "basetemp_removed": true
+  },
+  "bundle": {
+    "id": "rgb-standard-dispatch-v63",
+    "sha256": "ef4fe391e57c145b6625ba052e651542745bfcb6244d8e25736827ee8122aa01",
+    "closure_count": 174,
+    "changed_files_in_closure": []
+  },
+  "pilot_source_identity_includes_changed_production": [
+    "harness/zone_pilot_budget.py",
+    "harness/zone_pilot_reconcile.py",
+    "harness/zone_pilot_settlement.py",
+    "scripts/run_zone_study_pilot.py"
+  ],
+  "ci_collects_new_test": true,
+  "final_source_hashes": {
+    "docs/zone_study_pilot.md": "c55aa78b848d00811c080253c8f686804e687698865bd8d03ae5c9a4b314f457",
+    "harness/zone_pilot_budget.py": "73f365fce8fc2ddadbb354b9aa135854a44ae2212a80f656405b4bbde17629a2",
+    "harness/zone_pilot_reconcile.py": "8751bb952a39009523530e5dc5951050a37098c6c4dc7c3ce212e18e429c63e0",
+    "harness/zone_pilot_settlement.py": "3c1b5041bf204dac8718aea1e557bf4e1d11654a2a320b3a4b88b4c24d50630c",
+    "scripts/run_ci_tests.py": "956464a6cdbcc60703bef5470ff43386a969b40117bd2fd730f6534cec80d66e",
+    "scripts/run_zone_study_pilot.py": "8bb842fc6ee5895a7f512495ccfea7ccb0fc511d487676cac458549085dd060c",
+    "tests/test_zone_pilot_settlement.py": "06cda16bafb1436a7ed27281c3e3d2c7d9035689d486b26961a1fb6a8a635ddd"
+  },
+  "committed": false
+}
