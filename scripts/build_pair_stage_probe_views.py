@@ -49,7 +49,7 @@ def write(out, name, view):
 
 
 def case_view(raw, row, manifest):
-    d = raw / 'cases' / re.sub(r'[^A-Za-z0-9_.+-]+', '_', row['case_id'])
+    d = Path(row.get('raw_dir') or raw) / 'cases' / re.sub(r'[^A-Za-z0-9_.+-]+', '_', row['case_id'])   # raw_dir: combined grids (experiments/2026-09-29-pair-v6d-align/combine_grid.py)
     src = d / 'result.json'
     result = json.loads(src.read_text())
     cmds = json.loads((d / 'commands.json').read_text()) if (d / 'commands.json').exists() else {}
