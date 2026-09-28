@@ -110,10 +110,9 @@ def final_map(map_id: str) -> dict:
     """Definition of a final map: base map + walls_v3 + id/version + base-map link (no landmarks)."""
     from sim.research_dispatch_arena import digest
     from sim.zone_arena import apply_wall_profile, authored_map
-    base = FINAL_MAPS[map_id][0] if map_id in FINAL_MAPS else None
-    if base is None:
+    if map_id not in FINAL_MAPS:
         raise FinalEnvError(f'unknown final map: {map_id!r}')
-    source = authored_map(base)
+    source = authored_map(FINAL_MAPS[map_id][0])
     value = apply_wall_profile(source, WALL_PROFILE)
     value.update(map_id=map_id, version=MAP_VERSION,
                  base_map={'map_id': source['map_id'], 'version': source['version'],
