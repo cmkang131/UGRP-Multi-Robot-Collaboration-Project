@@ -75,6 +75,7 @@ TEST_PATTERNS = (
     "tests/test_zone_cargo_perception_v2.py",
     "tests/test_zone_study_contract.py", "tests/test_zone_study_inputs.py",
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
+    "tests/test_zone_final_env.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",
     "tests/test_zone_study_eval.py", "tests/test_zone_study_offline.py",
     "tests/test_zone_study_review_fixes.py", "tests/test_zone_study_review_r5.py",
@@ -197,6 +198,8 @@ TEST_PATTERNS = (
     "tests/test_markerless*.py",
     "tests/test_vision_loc*.py",  # VIS4 motion, covariance calibration, split and geometry-budget regressions
     "tests/test_vision_pose_source.py",
+    "tests/test_ultrasonic_range.py",
+    "tests/test_ultrasonic_carry.py",
     "tests/test_visual_attachment*.py",
     "tests/test_placement_guidance.py",
     "tests/test_visual_placement*.py",

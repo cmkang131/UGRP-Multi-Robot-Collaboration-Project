@@ -58,6 +58,8 @@ def registered_v3(prereg):
 
 
 def map_path(prereg):
+    if prereg.get('registration_version') == 6:
+        return ROOT / prereg['inputs']['map']['path']
     if registered_v3(prereg):
         from sim.zone_start_dock import MAP_ID
         return ROOT / f'maps/zones/{MAP_ID}.json'
@@ -103,11 +105,17 @@ def parser():
     p.add_argument('--execute', action='store_true', help='explicit physical run; coordinator only')
     p.add_argument('--expected-source-sha', help='full clean committed HEAD required for --execute')
     p.add_argument('--lock-owner', choices=('claude', 'codex', 'kiro'))
+    p.add_argument('--pair-policy', choices=('v5h','b-only','a+b'), help='must match the v6 registered case')
     return p
 
 
 def load_config(args):
     prereg = json.loads(args.prereg.read_text())
+    if prereg.get('registration_version') == 6:
+        from scripts.zone_pair_v6_contract import load_config as load_v6
+        return load_v6(args)
+    if getattr(args,'pair_policy',None) not in (None,'v5h'):
+        raise ValueError('v6 pair policy requires a v6 registration')
     expected = expected_environment(prereg)
     if prereg.get('schema') != SCHEMA or prereg.get('labels') != LABELS or prereg.get('environment') != expected:
         raise ValueError('unsupported or altered dev environment/labels')
@@ -254,6 +262,8 @@ def build_manifest(prereg, case, *, source, environment, prereg_path, applied=No
                           'normal_physics_preserved': True, 'noninterference': 'pending eval_only checks'},
             'execution_authorization': copy.deepcopy(prereg.get('execution_authorization')),
             'github_authorization': None,
+            'pair_policy': case.get('pair_policy','v5h'),
+            'v6_contract': copy.deepcopy(prereg.get('v6_contract')),
             'registration_sha256': prereg.get('registration_sha256'),
             'model_calls': 0, 'physical_success': None,
             'common_record': 'parent sim_cli workflow manifest links source/config/input/environment/result receipts'}
