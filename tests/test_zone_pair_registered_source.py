@@ -47,23 +47,41 @@ def test_modified_registration_bytes_are_rejected(monkeypatch):
         verify_registered_source(dev.PREREG_V3)
 
 
-def test_v6_records_current_scene_and_full_source_closure():
-    from scripts.zone_pair_v6_contract import PREREG, V5H, contract
+def test_v6_records_registered_scene_and_full_source_closure_at_its_commit():
+    """v6 is historical: its receipt is checked against the registration commit, not the current tree."""
+    from scripts.zone_pair_registered_source import committed_blob
+    from scripts.zone_pair_v6_contract import PREREG, V5H, V6_REGISTRATION_COMMIT, verify_v6_historical
     p = json.loads(PREREG.read_text())
-    assert p['scene_contract'] == dev.scene_contract()
-    assert p['v6_contract'] == contract()
+    assert verify_v6_historical()['sources'] == len(p['v6_contract']['source_sha256'])
     assert 'grasp_contract' not in p  # old behavior/source receipt belongs to the baseline
     assert p['baseline_registration'] == {'path': str(V5H.relative_to(dev.ROOT)),
                                            'sha256': hashlib.sha256(V5H.read_bytes()).hexdigest()}
     assert p['scene_contract']['source_sha256'].items() <= p['v6_contract']['source_sha256'].items()
-    for path, expected in p['v6_contract']['source_sha256'].items():
+    for path, expected in p['scene_contract']['source_sha256'].items():
+        assert hashlib.sha256(committed_blob(str(dev.ROOT), V6_REGISTRATION_COMMIT, path)).hexdigest() == expected
+
+
+def test_current_tree_v6_family_contract_closes_over_the_scene_sources():
+    from scripts.zone_pair_v6_contract import contract
+    current = contract()
+    assert dev.scene_contract()['source_sha256'].items() <= current['source_sha256'].items()
+    for path, expected in current['source_sha256'].items():
         assert hashlib.sha256((dev.ROOT/path).read_bytes()).hexdigest() == expected
 
 
 @pytest.mark.parametrize('fault', ['source', 'scene', 'inherited_grasp', 'baseline'])
-def test_v6_rejects_stale_or_inherited_source_contracts(tmp_path, fault):
+def test_v6_rejects_stale_or_inherited_source_contracts(tmp_path, monkeypatch, fault):
+    """On a current-revision v6-family registration, each fault alone is rejected."""
+    from scripts import zone_pair_v6_contract as c
     from scripts.zone_pair_v6_contract import PREREG, V5H
     p = json.loads(PREREG.read_text()); old = json.loads(V5H.read_text())
+    p.update(registration_revision='v6-current-tree-test', status='DRAFT', runnable=False,
+             execution_authorization=None, v6_contract=c.contract(), scene_contract=dev.scene_contract())
+    p.pop('draft_registration', None)
+    monkeypatch.setattr(c, 'CURRENT_REVISION', 'v6-current-tree-test')
+    clean = tmp_path/'clean.json'; clean.write_text(json.dumps(p))
+    dev.load_config(dev.parser().parse_args(['--prereg', str(clean), '--run-id', 'v6-s911-ab',
+                                             '--output', str(tmp_path/'clean-never')]))
     if fault == 'source': p['v6_contract']['source_sha256']['harness/zone_own_team_host.py'] = '0'*64
     elif fault == 'scene': p['scene_contract'] = old['scene_contract']
     elif fault == 'inherited_grasp': p['grasp_contract'] = old['grasp_contract']

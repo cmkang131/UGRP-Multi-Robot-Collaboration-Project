@@ -1,5 +1,10 @@
 # 공동 운반 v6: 상대 조작 / 전역 안전 / posterior 보존 복구
 
+> **2026-09-29 이력 전환.** v6 등록(PR #259, REGISTERED `3c26acdd`, dev 6회 완료)은 이제 **이력 기록**이다.
+> 등록 커밋의 blob으로만 감사하며(`scripts/zone_pair_v6_contract.py::verify_v6_historical`), 현재 트리에서는
+> 준비·실행을 거부한다. 72개 소스 해시가 현재 트리에 고정돼 있어 이후 PR이 고정 소스를 바꿀 때마다
+> 로컬 테스트가 깨졌기 때문이다(관리자 결정). 새 v6 계열 실행은 자기 revision·번들(v6b, v6c)로 등록한다.
+
 2026-09-28 · `codex/zone-pair-beam-relative` · 기반 `f87921dc52f7a3f12d41b4bc6ab5c30227890e8e`.
 미커밋 구현과 오프라인 검증이다. **물리 실행·모델 호출·완주 검증은 없으며 물리 dev 준비 완료가 아니다.**
 
