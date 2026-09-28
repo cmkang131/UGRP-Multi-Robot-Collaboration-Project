@@ -135,7 +135,12 @@ OMP_NUM_THREADS=2 python3 scripts/ugrp_session.py run v6b-boot-probe -- \
     --perturb 0,0,0 0.05,0,0 0,0.05,0 0,-0.05,0 0,0,0.1 0,0,-0.1 --policy b-boot
 ```
 
-smoke 결과는 이 소스 커밋 뒤 실행해 "smoke 결과" 절에 추가한다.
+### smoke 결과: 미실행 (물리 잠금)
+
+- 소스 커밋(e4c5c7c2) 뒤 `agent_lock status`를 확인했다. 다른 작업(`claude/pair-stage-probes`, PID 39242, "pair stage probes v6 policies smoke+grid")이 잠금을 잡고 있었다.
+  예상 종료는 2026-09-28 22:56 (로컬)이다.
+- 규칙(잠금 중 물리 새로 시작 금지)에 따라 smoke를 시작하지 않았다. 앞선 잠금 해제 틈은 회귀 테스트가 끝나기 전이라 소스가 커밋되지 않은 상태였다.
+- 따라서 접힌 팔 팬 스캔이 실제 렌더 영상에서 guard 통과까지 가는지는 **아직 모른다**. 잠금이 풀리면 위 1건 명령을 먼저 실행한다.
 
 ## 검증 범위와 남은 위험
 
