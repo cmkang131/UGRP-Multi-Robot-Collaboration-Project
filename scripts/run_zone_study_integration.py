@@ -50,12 +50,11 @@ from harness import zone_study_referee as zr  # noqa: E402  (eval only: physics 
 from harness.zone_own_executor import OwnCamTeamHost, ROBOTS  # noqa: E402
 from harness.zone_study_contract import MAIN_CONDITIONS, digest  # noqa: E402
 from sim import zone_eval_top  # noqa: E402
+from sim import zone_hidden_events as zhe  # noqa: E402  (eval only: experimenter-injected physics)
 
 SCHEMA = 'ugrp.zone_study_integration_run.v1'
 ON_FLOOR_MAX_Z_M = zr.ON_FLOOR_MAX_Z_M
 SLOT_HALF_M = .06
-PARK_Z_M = -5.
-HIDDEN_BODY_PREFIX = 'hidden_obstacle__'
 TAP_FRAMES = 64
 PROGRESS_EVERY_S = 60.
 # Module names selected by config (importlib) are roots too. External adapter
@@ -137,7 +136,6 @@ class StudyTeamHost(OwnCamTeamHost):
     def __init__(self, spec, student, *, root, provider_spec, frames_dir=None, hidden=None):
         self.provider_sources = {}
         self.hidden = hidden or zr.HiddenEventSchedule({'eval': {'hidden_events': []}})
-        self.hidden_log, self._hold_until, self._drop_restore, self._parked = [], {}, [], {}
         providers = []
 
         def pose_factory(rid, static, params, seed):
@@ -157,10 +155,13 @@ class StudyTeamHost(OwnCamTeamHost):
             # before XML generation, never based on runtime state).
             from scripts.zone_pair_dev_runtime import make_scene
             scene = make_scene(spec)
+        if self.hidden.obstacles():
+            # Parked obstacles through the host's scene= argument (the host and
+            # the frozen scene sources stay unchanged); none -> the same scene.
+            scene = zhe.hidden_event_scene(spec, spec['contact_profile'], self.hidden.obstacles(), scene)
         try:
             super().__init__(spec, student, root=root, study_layer=self._no_layer, frames_dir=frames_dir,
-                             scene=scene, pose_factory=pose_factory,
-                             xml_extra=hidden_obstacle_xml(self.hidden.obstacles()) if self.hidden.obstacles() else None)
+                             scene=scene, pose_factory=pose_factory)
         except Exception:
             for provider in providers:
                 if callable(getattr(provider, 'close', None)):
@@ -174,97 +175,20 @@ class StudyTeamHost(OwnCamTeamHost):
         self.eval_static = zone_eval_top.eval_static_map(self.static, profile)
         self.eval_only['top_camera'] = zone_eval_top.apply_to_world(self.world, self.static, profile)
         self.links = {rid: HostRobotLink(self, rid) for rid in ROBOTS}
-        for rid in sorted({e['target']['robot_id'] for e in self.hidden.events if e['kind'] == 'robot_hold'}):
-            self._gate_drive(rid)                  # only robots a scenario event holds; others unchanged
+        # Hidden events act on physics only (sim.zone_hidden_events): never a robot
+        # input, command row or wake. No events -> nothing is built or wrapped.
+        self.hidden_physics = (zhe.HiddenEventPhysics(self.world, self.hidden, objects=self.objects,
+                                                      item_geoms=self._box_geom, finger_geoms=self._fingers)
+                               if self.hidden.events else None)
 
-    # -- hidden events (physics only; never a robot input, command row or wake) --
-    def _gate_drive(self, rid):
-        """robot_hold: while held, this robot's drive/mecanum commands stop its wheels instead."""
-        port = self.robots[rid].port
-        apply = port.apply
-
-        def gated(action, sim_time):
-            if action.get('kind') in ('drive', 'mecanum') and float(sim_time) < self._hold_until.get(rid, -math.inf):
-                port.validate_action(action)
-                port.stop()
-                self.hidden_log.append({'t': round(float(sim_time), 4), 'robot_id': rid,
-                                        'effect': 'drive_suppressed', 'kind': action['kind']})
-                return {'ok': True, 'robot_id': rid, 'kind': action['kind'], 'sim_time': float(sim_time)}
-            return apply(action, sim_time)
-        port.apply = gated
+    @property
+    def hidden_log(self):
+        return self.hidden_physics.log if self.hidden_physics is not None else []
 
     def hidden_tick(self, now):
-        """Fire the due hidden events and end expired drop windows (before physics advances)."""
-        for row in [r for r in self._drop_restore if now + 1e-9 >= r['until']]:
-            self._drop_restore.remove(row)
-            m = self.world.model
-            for g, (ct, ca) in row['geoms'].items():
-                m.geom_contype[g], m.geom_conaffinity[g] = ct, ca
-            self.hidden_log.append({'t': round(now, 4), 'event_id': row['event_id'], 'effect': 'finger_contacts_restored'})
-        for event in self.hidden.due(now):
-            self.hidden_log.append({'t': round(now, 4), **self.apply_hidden_event(event, now)})
-
-    def _holders(self, item):
-        """Robots whose finger geoms touch ``item`` (simulator truth, eval/physics only)."""
-        data, geoms = self.world.data, self._box_geom.get(item, set())
-        out = set()
-        for i in range(data.ncon):
-            pair = {int(data.contact[i].geom1), int(data.contact[i].geom2)}
-            if pair & geoms:
-                out.update(r for r in ROBOTS if pair & (self._fingers[r][0] | self._fingers[r][1]))
-        return sorted(out)
-
-    def apply_hidden_event(self, event, now):
-        import mujoco
-        m, d = self.world.model, self.world.data
-        kind, target = event['kind'], event['target']
-        row = {'event_id': event['event_id'], 'kind': kind, 'at_sim_s': event['trigger']['at_sim_s']}
-        if kind == 'robot_hold':
-            self._hold_until[target['robot_id']] = now + float(target['duration_s'])
-            self.robots[target['robot_id']].port.stop()
-            return {**row, 'effect': 'drive_held', 'until_sim_s': round(now + float(target['duration_s']), 4)}
-        if kind in ('passage_blocked', 'obstruction_added', 'passage_cleared'):
-            if kind == 'passage_cleared':
-                ob = self._parked.pop(target['passage'], None)
-                if ob is None:
-                    return {**row, 'effect': 'none_no_obstacle'}
-                mid, pos = ob, [0., 0., PARK_Z_M]
-            else:
-                ob = target['obstacle']
-                bid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, HIDDEN_BODY_PREFIX + ob['obstacle_id'])
-                mid = int(m.body_mocapid[bid])
-                pos = [float(ob['center_m'][0]), float(ob['center_m'][1]), float(ob['height_m']) / 2]
-                if kind == 'passage_blocked':
-                    self._parked[target['passage']] = mid
-            d.mocap_pos[mid] = pos
-            mujoco.mj_forward(m, d)
-            return {**row, 'effect': 'obstacle_moved', 'pos_m': [round(v, 4) for v in pos]}
-        item = target['item_id']
-        body = self.objects[item]['body_name']
-        holders = self._holders(item)
-        if kind == 'item_moved':
-            if holders:
-                return {**row, 'effect': 'none_item_held', 'holders': holders}
-            bid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, body)
-            jid = int(m.body_jntadr[bid])
-            if jid < 0 or int(m.jnt_type[jid]) != int(mujoco.mjtJoint.mjJNT_FREE):
-                raise zi.ContractViolation(f'{item}: item_moved needs a free joint')
-            q, v = int(m.jnt_qposadr[jid]), int(m.jnt_dofadr[jid])
-            x, y, yaw = (float(t) for t in target['to_pose_m'])
-            d.qpos[q:q + 7] = [x, y, float(d.qpos[q + 2]), math.cos(yaw / 2), 0, 0, math.sin(yaw / 2)]
-            d.qvel[v:v + 6] = 0
-            mujoco.mj_forward(m, d)
-            return {**row, 'effect': 'item_moved', 'to_pose_m': [x, y, yaw]}
-        if kind == 'item_dropped':
-            if not holders:
-                return {**row, 'effect': 'none_item_not_held'}
-            geoms = {g: (int(m.geom_contype[g]), int(m.geom_conaffinity[g]))
-                     for r in holders for g in self._fingers[r][0] | self._fingers[r][1]}
-            for g in geoms:
-                m.geom_contype[g], m.geom_conaffinity[g] = 0, 0
-            self._drop_restore.append({'event_id': event['event_id'], 'until': now + zr.DROP_WINDOW_S, 'geoms': geoms})
-            return {**row, 'effect': 'finger_contacts_disabled', 'holders': holders, 'window_s': zr.DROP_WINDOW_S}
-        raise zi.ContractViolation(f'unsupported hidden event kind {kind!r}')
+        """Fire the due hidden events (before physics advances past ``now``)."""
+        if self.hidden_physics is not None:
+            self.hidden_physics.tick(now)
 
     # -- referee truth (eval only) -----------------------------------------------
     def referee_truth(self):
@@ -349,22 +273,6 @@ class StudyTeamHost(OwnCamTeamHost):
             if errors:
                 raise errors[0]
 
-
-
-def hidden_obstacle_xml(obstacles):
-    """XML transform adding each hidden obstacle as a parked static (mocap) box below the floor."""
-    bodies = ''.join(
-        f'<body name="{HIDDEN_BODY_PREFIX}{o["obstacle_id"]}" mocap="true" pos="0 0 {PARK_Z_M}">'
-        f'<geom name="{HIDDEN_BODY_PREFIX}{o["obstacle_id"]}_geom" type="box" '
-        f'size="{o["half_extents_m"][0]} {o["half_extents_m"][1]} {float(o["height_m"]) / 2}" '
-        f'rgba=".45 .33 .20 1" contype="1" conaffinity="1"/></body>' for o in obstacles)
-
-    def transform(xml):
-        head, sep, tail = xml.rpartition('</worldbody>')
-        if not sep:
-            raise zi.ContractViolation('scene XML has no </worldbody> for hidden obstacles')
-        return head + bodies + sep + tail
-    return transform
 
 
 # ---------------------------------------------------------------------------
@@ -640,11 +548,6 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
     return record
 
 
-def trial_record_for(trial, result, referee):
-    """The package I trial record, with the eval-only referee block filled from simulator truth."""
-    return zr.apply_to_record(trial.trial_record(result), referee)
-
-
 def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, trial, result, stop, failure, code,
                   started, load0, dev, *, referee=None):
     """Everything that exists, also after an exception; returns the result summary."""
@@ -661,7 +564,9 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
                  if o['kind'] in ('cyan', 'long_beam')}
         ref_row = referee.record() if referee is not None else None
         summary['robots'] = {rid: robot_eval(host, rid, boxes) for rid in ROBOTS}
-        summary['eval_only'] = {'referee': ref_row, 'hidden_events': list(getattr(host, 'hidden_log', [])),
+        hidden = list(getattr(host, 'hidden_log', []))    # the full rows go to eval_only/hidden_events.jsonl only
+        summary['eval_only'] = {'referee': ref_row, 'hidden_events': {'file': 'eval_only/hidden_events.jsonl',
+                                                                       'rows': len(hidden)},
                                 'box_final_xyz': {b: [round(v, 4) for v in p] for b, p in boxes.items()},
                                 'weld_max_eq_active': ev['max_eq_active'], 'contact_profile': host.contact_record}
         for rid, slot in host.robots.items():
@@ -679,7 +584,7 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
         jsonl(out / 'eval_only' / 'frames_eval.jsonl', ev['frames_eval'])
         jsonl(out / 'eval_only' / 'contacts.jsonl', ev['contacts'])
         (out / 'eval_only' / 'referee.json').write_text(json.dumps(ref_row, indent=1) + '\n')
-        jsonl(out / 'eval_only' / 'hidden_events.jsonl', getattr(host, 'hidden_log', []))
+        jsonl(out / 'eval_only' / 'hidden_events.jsonl', hidden)
         (out / 'eval_only' / 'top_camera.json').write_text(json.dumps(ev['top_camera'], indent=1) + '\n')
         (out / 'eval_only' / 'static_map.json').write_text(json.dumps(host.eval_static, indent=1) + '\n')
         (out / 'scene.xml').write_text(host.world.scene_xml)
@@ -720,13 +625,17 @@ def write_study(out, trial, result, summary, referee=None):
     (study / 'send_ledger.json').write_text(json.dumps(trial.send_ledger.to_dict(), indent=1) + '\n')
     if result is None:
         return
-    if referee is None:
-        return
-    record = trial_record_for(trial, result, referee)
+    # Always write the trial record (PR #257 review P1-G b). Without a referee
+    # (the run failed before it existed) the block says not_evaluated and the
+    # record is never a success.
+    record = (zr.apply_to_record(trial.trial_record(result), referee) if referee is not None
+              else zr.not_evaluated(trial.trial_record(result)))
     record['pose_provider'] = dict(summary['pose_provider'])   # A's provenance keys are closed: top level
     record['plumbing_only'] = trial.actor == zi.FIXTURE_ACTOR
     (study / 'trial_record.json').write_text(json.dumps(record, indent=1, ensure_ascii=False) + '\n')
-    evaluation = zr.evaluation_block(record, referee)
+    evaluation = (zr.evaluation_block(record, referee) if referee is not None
+                  else {'schema': 'ugrp.zone_study_referee_evaluation.v2', 'status': 'not_evaluated',
+                        'success': False, 'note': 'no referee: the run failed before the referee existed'})
     summary.setdefault('eval_only', {})['evaluation'] = evaluation
     (out / 'eval_only').mkdir(parents=True, exist_ok=True)
     (out / 'eval_only' / 'evaluation.json').write_text(json.dumps(evaluation, indent=1, ensure_ascii=False) + '\n')

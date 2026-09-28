@@ -80,15 +80,82 @@ def test_landing_extents_not_the_centre_decide():
     assert ref.zone_of(box_edge) is None
 
 
-def test_departure_undoes_a_delivery_and_a_bump_does_not():
+def test_departure_undoes_a_delivery_but_a_bump_or_a_brief_touch_does_not():
     ref = zr.Referee(SCENARIO['orders'], MAP)
     feed(ref, 0., 2., {'box_00': at_zone('A')})
     feed(ref, 2.1, 2.1, {'box_00': at_zone('A', speed=.2)})           # bumped but still in A
-    assert list(ref.standing) == ['box_00']
-    feed(ref, 2.2, 2.2, {'box_00': at_zone('A', held=True)})          # picked up again
-    assert not ref.standing and ref.history[-1]['event'] == 'departed'
-    record = zr.apply_to_record({'orders': SCENARIO['orders'], 'end_sim_s': 3., 'end_reason': 'sim_horizon'}, ref)
+    feed(ref, 2.2, 3.0, {'box_00': at_zone('A', held=True)})          # fingers brush it for 0.8 s < HELD_DEPART_S
+    feed(ref, 3.1, 3.5, {'box_00': at_zone('A')})
+    assert list(ref.standing) == ['box_00'] and [r['event'] for r in ref.history] == ['confirmed']
+    feed(ref, 3.6, 3.6 + zr.HELD_DEPART_S, {'box_00': at_zone('A', held=True)})   # re-grasped and kept
+    assert not ref.standing
+    assert {k: ref.history[-1][k] for k in ('event', 'reason', 'held_since_sim_s', 'sim_s', 'from_zone')} == \
+        {'event': 'departed', 'reason': 'held', 'held_since_sim_s': 3.6, 'sim_s': 4.6, 'from_zone': 'A'}
+    record = zr.apply_to_record({'orders': SCENARIO['orders'], 'end_sim_s': 5., 'end_reason': 'sim_horizon'}, ref)
     assert ev.delivery_state({**record, 't0_sim_s': 0.})['delivered'] == {}
+
+
+@pytest.mark.parametrize('moved, reason', [(dict(z=.09), 'lifted'), (dict(zone='B'), 'left_zone')])
+def test_lifting_or_leaving_the_zone_departs_at_once(moved, reason):
+    ref = zr.Referee(SCENARIO['orders'], MAP)
+    feed(ref, 0., 2., {'box_00': at_zone('A')})
+    zone = moved.pop('zone', 'A')
+    feed(ref, 2.1, 2.1, {'box_00': at_zone(zone, **moved)})
+    assert not ref.standing and ref.history[-1]['reason'] == reason and ref.history[-1]['sim_s'] == 2.1
+
+
+def test_an_item_that_departed_and_never_settled_is_neither_delivered_nor_misdelivered():
+    """PR #257 review P2-K: the departure row used to reach delivery_state as a zone-None misdelivery."""
+    ref = zr.Referee(SCENARIO['orders'], MAP)
+    feed(ref, 0., 2., {'box_00': at_zone('A')})
+    feed(ref, 2.1, 2.5, {'box_00': at_zone('A', z=.09, held=True)})  # carried away, still in transit at the end
+    record = zr.apply_to_record({'orders': SCENARIO['orders'], 'end_sim_s': 3., 'end_reason': 'sim_horizon'}, ref)
+    state = ev.delivery_state({**record, 't0_sim_s': 0.})
+    assert state['delivered'] == {} and state['misdelivered'] == {} and state['misdelivery_history'] == []
+    assert record['referee']['deliveries'] == []
+    assert [(r['item_id'], r['reason']) for r in record['referee']['departed_unsettled']] == [('box_00', 'lifted')]
+    assert ref.record()['departures'] == 1 and len(ref.record()['departed_unsettled']) == 1
+
+
+def test_a_corrected_misdelivery_keeps_its_history_and_is_delivered_once():
+    orders = [{'order_id': 'o1', 'kind': 'cyan', 'count': 1, 'identity': 'specific_item', 'item_ids': ['box_00'],
+               'destination_zone': 'A'}]
+    ref = zr.Referee(orders, MAP)
+    feed(ref, 0., 2., {'box_00': at_zone('B')})                         # wrong zone, confirmed
+    feed(ref, 2.1, 2.1, {'box_00': at_zone('B', z=.09, held=True)})     # picked up again
+    feed(ref, 3., 5., {'box_00': at_zone('A')})
+    record = zr.apply_to_record({'orders': orders, 'end_sim_s': 6., 'end_reason': 'sim_horizon'}, ref)
+    state = ev.delivery_state({**record, 't0_sim_s': 0.})
+    assert list(state['delivered']) == ['box_00'] and state['delivered']['box_00']['sim_s'] == 3.
+    assert state['misdelivered'] == {} and [(r['zone'], r['sim_s']) for r in state['misdelivery_history']] == [('B', 0.)]
+    assert record['end_reason'] == 'orders_complete' and record['end_sim_s'] == 3.
+    assert record['referee']['departed_unsettled'] == []
+
+
+@pytest.mark.parametrize('bad', [dict(x=math.nan), dict(z=math.nan), dict(yaw=math.inf), dict(speed=math.nan),
+                                 dict(speed=-math.inf), dict(z=None), dict(x='1'), dict(speed=True), dict(held=1),
+                                 dict(held=None)])
+def test_corrupted_truth_rows_are_refused_not_judged(bad):
+    ref = zr.Referee(SCENARIO['orders'], MAP)
+    with pytest.raises(A.ContractViolation, match='truth row'):
+        ref.observe(0., {'box_00': {**at_zone('A'), **bad}})
+    with pytest.raises(A.ContractViolation, match='keys'):
+        ref.observe(0., {'box_00': {k: v for k, v in at_zone('A').items() if k != 'held'}})
+    assert not ref.observe(0., {}) and not ref.history
+
+
+def test_a_run_without_a_referee_still_writes_a_not_evaluated_trial_record(tmp_path):
+    """PR #257 review P1-G b: write_study returned before trial_record.json when the referee was None."""
+    from tests.test_zone_study_integration import run
+    trial, result, _ = run('no_comm')
+    summary = {'pose_provider': {'pose_provider': 'tags_temporary', 'note_ko': zi.TEMPORARY_NOTE_KO}}
+    runner.write_study(tmp_path, trial, result, summary)
+    record = json.loads((tmp_path / 'study/trial_record.json').read_text())
+    assert record['referee'] == {'deliveries': [], 'status': 'not_evaluated', 'profile': zr.REFEREE_PROFILE}
+    assert record['end_reason'] != ev.SUCCESS_END_REASON and summary['study']['reopen']['ok']
+    assert summary['eval_only']['evaluation']['status'] == 'not_evaluated'
+    assert summary['eval_only']['evaluation']['success'] is False
+    assert json.loads((tmp_path / 'eval_only' / 'evaluation.json').read_text())['status'] == 'not_evaluated'
 
 
 def test_orders_complete_only_when_every_order_is_filled_and_success_comes_from_the_referee():
@@ -230,67 +297,6 @@ def test_scenario_hidden_events_are_scheduled_in_sim_order():
     s2 = zr.HiddenEventSchedule(scenarios['s2_unmapped_blockage'])
     assert [o['obstacle_id'] for o in s2.obstacles()] == ['fallen_pallet_1']
     assert s2.config()['sha256'] != s5.config()['sha256']
-
-
-MJCF = """<mujoco><worldbody><geom name="floor" type="plane" size="5 5 .1"/>
-<body name="item_body" pos="0 0 .016"><freejoint/><geom name="item_body_geom" type="box" size=".017 .02 .016"/></body>
-<body name="r1_hand" pos="0 0 .016"><geom name="r1__left_finger" type="box" size=".005 .005 .005" pos="0 .02 0"/>
-<geom name="r1__right_finger" type="box" size=".005 .005 .005" pos="0 -.02 0"/></body>
-</worldbody></mujoco>"""
-
-
-def tiny_host(held):
-    mujoco = pytest.importorskip('mujoco')
-    obstacle = {'obstacle_id': 'p1', 'center_m': [1., 1.], 'half_extents_m': [.1, .2], 'height_m': .12}
-    xml = runner.hidden_obstacle_xml([obstacle])(MJCF if held else MJCF.replace('pos="0 0 .016"><geom', 'pos="3 3 .016"><geom'))
-    model = mujoco.MjModel.from_xml_string(xml)
-    data = mujoco.MjData(model)
-    mujoco.mj_forward(model, data)                                     # no physics step
-    host = runner.StudyTeamHost.__new__(runner.StudyTeamHost)
-    gid = lambda n: mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, n)   # noqa: E731
-    stops = []
-    host.world = SimpleNamespace(model=model, data=data)
-    host.objects = {'it': {'kind': 'cyan', 'body_name': 'item_body'}}
-    host._box_geom = {'it': {gid('item_body_geom')}}
-    host._fingers = {r: ({gid('r1__left_finger')}, {gid('r1__right_finger')}) if r == 'r1' else (set(), set())
-                     for r in A.ROBOTS}
-    host.robots = {r: SimpleNamespace(port=SimpleNamespace(stop=lambda r=r: stops.append(r))) for r in A.ROBOTS}
-    host.hidden_log, host._hold_until, host._drop_restore, host._parked = [], {}, [], {}
-    return host, model, data, obstacle, stops
-
-
-def ev_row(kind, target, at=1.):
-    return {'event_id': kind, 'kind': kind, 'trigger': {'kind': 'sim_time', 'at_sim_s': at}, 'target': target}
-
-
-def test_hidden_event_hooks_act_on_the_world_only():
-    host, model, data, obstacle, stops = tiny_host(held=False)
-    assert 'hidden_obstacle__p1' in [model.body(i).name for i in range(model.nbody)]
-    out = host.apply_hidden_event(ev_row('passage_blocked', {'passage': 'door_x', 'obstacle': obstacle}), 1.)
-    assert out['effect'] == 'obstacle_moved' and list(data.mocap_pos[0]) == pytest.approx([1., 1., .06])
-    assert host.apply_hidden_event(ev_row('passage_cleared', {'passage': 'door_x'}), 2.)['effect'] == 'obstacle_moved'
-    assert data.mocap_pos[0][2] == runner.PARK_Z_M
-    out = host.apply_hidden_event(ev_row('item_moved', {'item_id': 'it', 'to_pose_m': [.5, -.5, math.pi / 2]}), 3.)
-    assert out['effect'] == 'item_moved' and list(data.body('item_body').xpos[:2]) == pytest.approx([.5, -.5])
-    assert host.apply_hidden_event(ev_row('item_dropped', {'item_id': 'it'}), 4.)['effect'] == 'none_item_not_held'
-    assert host.apply_hidden_event(ev_row('robot_hold', {'robot_id': 'r3', 'duration_s': 40.}), 5.)['until_sim_s'] == 45.
-    assert stops == ['r3'] and host._hold_until == {'r3': 45.}
-    truth = host.referee_truth()['it']
-    assert set(truth) == zr.TRUTH_KEYS and truth['held'] is False
-
-
-def test_item_dropped_disables_the_holders_finger_contacts_for_the_window():
-    host, model, data, _, _ = tiny_host(held=True)
-    assert host.referee_truth()['it']['held'] is True
-    assert host.apply_hidden_event(ev_row('item_moved', {'item_id': 'it', 'to_pose_m': [1, 1, 0]}), 1.)['effect'] \
-        == 'none_item_held'
-    out = host.apply_hidden_event(ev_row('item_dropped', {'item_id': 'it'}), 2.)
-    assert out['effect'] == 'finger_contacts_disabled' and out['holders'] == ['r1']
-    fingers = sorted(host._fingers['r1'][0] | host._fingers['r1'][1])
-    assert all(model.geom_contype[g] == 0 and model.geom_conaffinity[g] == 0 for g in fingers)
-    host.hidden = zr.HiddenEventSchedule({'eval': {'hidden_events': []}})
-    host.hidden_tick(2. + zr.DROP_WINDOW_S)
-    assert all(model.geom_contype[g] == 1 and model.geom_conaffinity[g] == 1 for g in fingers)
 
 
 def test_bundle_pins_the_referee_and_hidden_event_profiles():

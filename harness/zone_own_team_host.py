@@ -52,7 +52,7 @@ class OwnCamTeamHost:
     GT_S = .05
 
     def __init__(self, spec: Mapping, student: Mapping, *, root, study_layer: Callable, frames_dir=None, scene=None,
-                 pose_factory=None, xml_extra: Callable[[str], str] | None = None):
+                 pose_factory=None):
         import importlib
         import json
         from pathlib import Path
@@ -75,10 +75,6 @@ class OwnCamTeamHost:
         self.scene = own_scene(spec, profile, scene)
         xml_transform = ((lambda xml: apply_cargo_profile(self.scene.transform(xml), profile))
                          if profile in CARGO_PROFILES else self.scene.transform)
-        if xml_extra is not None:
-            # Evaluation-side scene additions (e.g. parked hidden-event obstacles); None keeps the scene unchanged.
-            base_transform = xml_transform
-            xml_transform = lambda xml: xml_extra(base_transform(xml))  # noqa: E731
         self.world = MultiMasterPiProductionV2(seed=spec['seed'], width=640, height=480, render=True,
                                                warehouse_layout=self.scene.engine_layout, warehouse_cargo_ids=None,
                                                xml_transform=xml_transform)
