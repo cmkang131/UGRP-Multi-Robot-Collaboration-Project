@@ -270,6 +270,14 @@ class _SubmitFailed:
         self.error = error
 
 
+@dataclass(frozen=True)
+class RetryRoot:
+    """Identity of one retry allowance. Causes never share an allowance."""
+
+    cause: str
+    call_id: str
+
+
 @dataclass
 class PendingCall:
     """An in-flight call: submitted to the transport, not yet costed."""
@@ -281,6 +289,12 @@ class PendingCall:
     token: object = None
     merged: tuple = ()
     retry_of: str = ''
+    #: Isolated eligibility lane; empty = the original v64 common schedule.
+    scheduling_lane: str = ''
+    event_inputs: tuple = ()
+    retry_root: RetryRoot | None = None
+    #: Coalescing shares a snapshot, not the retry allowance of its inputs.
+    event_roots: tuple = ()
     #: ``reserve(count=1) -> bool``: optional pre-reservation of further HTTP
     #: attempts (second review, finding 15). Advisory since the seventh review:
     #: the send ledger authorises every request against the budget anyway, and
@@ -290,6 +304,28 @@ class PendingCall:
     #: by the scheduler at the call start: the ONLY way a request of this call
     #: reaches the wire (seventh review, P1).
     http_open: object = None
+
+
+@dataclass(eq=False)
+class EventInput:
+    """A durable, tagged event input, acknowledged by an input snapshot.
+
+    Availability is supplied by the producer (infinity = its next boundary).
+    Cause partitions eligibility/merging; tags are provenance, never control.
+    All settlement and retry handling belongs to EventScheduler.
+    """
+    actor: str
+    cause: str
+    tags: tuple
+    available_at: float
+    trigger: str = 'report'
+    active: bool = True
+    claimed_by: str = ''
+    retry_root: RetryRoot | None = None
+
+    @property
+    def retry_of(self):
+        return self.retry_root.call_id if self.retry_root else ''
 
 
 @dataclass(frozen=True)
@@ -334,13 +370,51 @@ class AttemptBudget:
     synchronous contract, not an assertion of asynchronous atomicity.
     """
 
-    def __init__(self, *, per_actor=None, total=None):
+    def __init__(self, *, per_actor=None, total=None, calls_per_actor=None,
+                 actors=(), ledger=None, send_ledger=None):
         self._thread = threading.get_ident()
         self.per_actor = per_actor
         self.total = total
         self.used = collections.Counter()      # committed attempts per actor
         self.reserved = collections.Counter()  # in-flight reservations per actor
         self.refusals = []
+        self.calls_per_actor = calls_per_actor
+        self.actors = tuple(actors)
+        # The audit ledger is a view of call state, not a second balance. Actual
+        # sends (including pre-settlement sends) come only from the wire ledger.
+        self.ledger = ledger if ledger is not None else {}
+        self.send_ledger = send_ledger
+        self._started = set()
+
+    def start_call(self, call_id):
+        self._assert_thread()
+        self._started.add(call_id)
+
+    def call_count(self, actor, *, confirmed_only=False):
+        return sum(row['actor'] == actor and row['status'] != 'not_sent'
+                   and (not confirmed_only or self.send_ledger.sends(cid) > 0)
+                   for cid in self._started for row in (self.ledger[cid],))
+
+    def call_limit_reached(self, actor, *, confirmed_only=False):
+        return (self.calls_per_actor is not None and
+                self.call_count(actor, confirmed_only=confirmed_only) >= self.calls_per_actor)
+
+    def confirmed_usage(self):
+        """Irreversible HTTP spend, whether or not SIM cost has settled."""
+        committed = self.used.copy()
+        if self.send_ledger is not None:
+            for cid, row in self.ledger.items():
+                if row['status'] in ('outstanding', 'interrupted'):
+                    committed[row['actor']] += self.send_ledger.sends(cid)
+        return committed
+
+    def exhausted(self, actor=None):
+        """Permanent inability to admit a decision; reservations never exhaust."""
+        if actor is None:
+            return self.remaining(confirmed_only=True) == 0 or (
+                bool(self.actors) and all(self.exhausted(a) for a in self.actors))
+        return (self.remaining(actor, confirmed_only=True) == 0
+                or self.call_limit_reached(actor, confirmed_only=True))
 
     def used_total(self):
         return sum(self.used.values())
@@ -348,13 +422,15 @@ class AttemptBudget:
     def outstanding(self):
         return sum(self.reserved.values())
 
-    def remaining(self, actor=None):
-        """Attempts still available (team budget, and the actor's own budget)."""
+    def remaining(self, actor=None, *, confirmed_only=False):
+        """Admission capacity by default; irreversible balance when requested."""
+        used = self.confirmed_usage() if confirmed_only else self.used
+        reserved = collections.Counter() if confirmed_only else self.reserved
         left = None
         if self.total is not None:
-            left = self.total - self.used_total() - self.outstanding()
+            left = self.total - sum(used.values()) - sum(reserved.values())
         if actor is not None and self.per_actor is not None:
-            own = self.per_actor - self.used[actor] - self.reserved[actor]
+            own = self.per_actor - used[actor] - reserved[actor]
             left = own if left is None else min(left, own)
         return left
 
@@ -468,7 +544,9 @@ class EventScheduler:
 
     def __init__(self, transport, *, cost_params=None, policy=None, actors=DEFAULT_ACTORS,
                  advance=None, on_hold=None, on_action=None, on_message=None, on_observe=None,
-                 on_timer=None, start_s=0., bus=None, bus_owner='sim_scheduler', send_ledger=None):
+                 on_timer=None, start_s=0., bus=None, bus_owner='sim_scheduler', send_ledger=None,
+                 event_available_at=None, received_event_cause='', max_calls_total=None,
+                 external_budget_spent=lambda: False):
         self.transport = transport
         ledger = send_ledger if send_ledger is not None else getattr(transport, 'send_ledger', None)
         if not isinstance(ledger, SendLedger):
@@ -490,6 +568,13 @@ class EventScheduler:
         self._last_start = {}
         self._retries = {}
         self._calls_started = 0
+        self.received_event_cause = received_event_cause
+        self.event_inputs = []
+        self.event_available_at = event_available_at or (lambda actor, cause: self.clock)
+        self.max_calls_total = max_calls_total
+        self.external_budget_spent = external_budget_spent
+        self.call_causes = {}
+        self.decision_events = []
         # The message bus this scheduler OWNS (review finding 2). When set, the
         # canonical envelope ids come from it and it is the only object whose
         # inbox this scheduler mutates.
@@ -498,12 +583,16 @@ class EventScheduler:
         if bus is not None and getattr(bus, 'delivery_owner', None) != bus_owner:
             raise ValueError(f'the bus must be constructed with delivery_owner={bus_owner!r} so exactly '
                              'one component owns its inboxes')
-        # Single owner of the HTTP attempt budget (review finding 15).
+        self.ledger = {}
+        # One account owns HTTP and logical-call admission, confirmed spend and
+        # refundable reservations. Metrics are reporting only.
         self.budget = AttemptBudget(per_actor=self.policy.max_http_attempts_per_actor,
-                                    total=self.policy.max_attempts_total)
+                                    total=min(self.policy.max_attempts_total, max_calls_total)
+                                    if max_calls_total is not None else self.policy.max_attempts_total,
+                                    calls_per_actor=self.policy.max_calls_per_actor,
+                                    actors=self.actors, ledger=self.ledger, send_ledger=ledger)
         #: Call ledger, opened at START so a call still outstanding at the
         #: horizon stays visible as ``censored`` (review finding 16).
-        self.ledger = {}
         self.calls = []
         self.censored = []
         self.messages = []
@@ -571,6 +660,34 @@ class EventScheduler:
             raise ValueError('cannot schedule a call in the SIM past')
         self._push('call_start', when, (0., self._rank[actor], 0, 0),
                    {'actor': actor, 'trigger': trigger, 'merged': (), 'retry_of': retry_of})
+
+    def event(self, actor, *, cause, tags, available_at, trigger='report'):
+        """Inject ONE tagged event into the ordinary call-start queue."""
+        self._check_actor(actor)
+        if not cause or trigger not in TRIGGERS:
+            raise ValueError('a tagged event needs a cause and a known trigger')
+        source = EventInput(actor, cause, tuple(tags), float(available_at), trigger)
+        self.event_inputs.append(source)
+        self._push('call_start', self.clock, (1., self._rank[actor], 0, 0),
+                   {'actor': actor, 'trigger': trigger, 'merged': (), 'retry_of': '',
+                    'scheduling_lane': cause, 'event_inputs': (source,)})
+        return source
+
+    def available(self, actor, *, at):
+        """The producer supplies an event's previously unknown boundary time."""
+        for source in self.event_inputs:
+            if (source.actor == actor and math.isinf(source.available_at)
+                    and (source.active or source.claimed_by in self._pending)):
+                # A pending snapshot has only provisionally consumed its inputs.
+                # If it sends nothing, refund must retain this own-job boundary.
+                source.available_at = float(at)
+        self._resume_deferred(actor=actor, at=at)
+
+    def calls_spent(self):
+        # Call IDs are serial numbers, not spend. Pending reservations count
+        # until settlement, and the sole 0-send refund removes them again.
+        return (self.max_calls_total is not None
+                and self.budget.used_total() + self.budget.outstanding() >= self.max_calls_total)
 
     def timer(self, actor, label='timer', *, delay_s=None, at=None):
         """Arm a local timer; ``label`` becomes the trigger of the call it makes."""
@@ -805,6 +922,8 @@ class EventScheduler:
             raise KeyError(f'unknown actor {actor!r}; known: {self.actors}')
 
     def _push(self, kind, at, tie, payload):
+        if kind == 'call_start' and payload.get('scheduling_lane'):
+            tie = (1., self._rank[payload['actor']], 0, 0)
         self._seq += 1
         heapq.heappush(self._queue, _Event(at=_round(at), kind_rank=KIND_ORDER[kind], tie=tie,
                                            seq=self._seq, kind=kind, payload=payload))
@@ -835,8 +954,8 @@ class EventScheduler:
         if not due:
             return False
         for call in sorted(due, key=lambda c: (c.started_sim_s, self._rank[c.actor], c.call_id)):
-            del self._pending[call.call_id]
             reply, violation = self._reply_of(call)
+            del self._pending[call.call_id]
             if reply is None:                # the ledger shows no send: refunded, no SIM cost
                 self._release_unsent(call)
                 continue
@@ -984,7 +1103,9 @@ class EventScheduler:
                                   'blocked_sends': self.send_ledger.blocked(call.call_id)})
         self._log(f'call_not_sent {actor} {call.trigger} {call.call_id}', kind='call_not_sent',
                   actor=actor, call_id=call.call_id)
+        self._restore_inputs(call)
         if unsent['stage'] == 'submit':
+            self._resume_deferred(call)
             return                      # it never became pending: no hold, no call counted
         self.metrics[actor]['calls'] -= 1
         self.metrics[actor]['not_sent'] += 1
@@ -994,25 +1115,111 @@ class EventScheduler:
                 break
         if self.on_hold:
             self.on_hold(actor, False, self.now())
-        held = self._deferred.pop(actor, None)
-        if held:
-            self._push('call_start', self.clock, (0., self._rank[actor], 0, 0),
-                       {'actor': actor, 'trigger': held['trigger'], 'merged': held['merged'], 'retry_of': ''})
+        self._resume_deferred(call)
 
     # -- dispatch ----------------------------------------------------------
 
     def _dispatch(self, event):
         getattr(self, f'_on_{event.kind}')(event.payload)
 
+    @staticmethod
+    def _schedule_key(actor, lane=''):
+        return (actor, lane) if lane else actor
+
+    def _outstanding(self, actor, lane=''):
+        return (sum(c.actor == actor and c.scheduling_lane == lane for c in self._pending.values())
+                + sum(a == actor and self.ledger[cid].get('scheduling_lane', '') == lane
+                      for cid, a in self._thinking.items()))
+
+    def _restore_inputs(self, call):
+        # A 0-send snapshot acknowledged nothing. Restore the SAME event,
+        # not a message-specific retry. Backoff prevents a zero-time spin.
+        for source in call.event_inputs:
+            if source.claimed_by == call.call_id:
+                source.active = True
+                source.available_at = max(source.available_at,
+                    quantize(call.started_sim_s + max(self.policy.min_interval_s, self.params.quantum_s),
+                             self.params.quantum_s))
+                self._defer(source.actor, source.trigger, (), 'not_sent',
+                            scheduling_lane=source.cause, event_inputs=(source,),
+                            retry_of=source.retry_of)
+
+    def _resume_deferred(self, call=None, *, actor=None, at=None):
+        actor = call.actor if call is not None else actor
+        when = self.clock if at is None else float(at)
+        for key, held in list(self._deferred.items()):
+            if held['actor'] != actor and held.get('budget_wait') is not True:
+                continue
+            waiting_actor = held['actor']
+            lane = held.get('scheduling_lane', '')
+            sources = tuple(e for e in held.get('event_inputs', ()) if e.active)
+            if lane and not sources:
+                del self._deferred[key]
+                continue
+            if (self._outstanding(waiting_actor, lane) >= self.policy.max_outstanding_per_actor
+                    or (lane and self._outstanding(waiting_actor))):
+                continue
+            available = max((e.available_at for e in sources), default=when)
+            if not math.isfinite(available):
+                continue
+            del self._deferred[key]
+            self._push('call_start', max(when, available), (0., self._rank[waiting_actor], 0, 0),
+                       {**held, 'event_inputs': sources})
+
+    def _refuse_event_inputs(self, actor, trigger, merged, sources, *, lane, retry_of):
+        """Retain tagged inputs when a reservation, rather than spend, blocks them.
+
+        In-flight ledgered sends are already irreversible even before SIM cost
+        settlement. Unsent pending calls can still refund their logical slots.
+        Ordinary common events retain v64's refusal behavior.
+        """
+        if not sources:
+            return
+        permanent = self.external_budget_spent() or self.budget.exhausted(actor)
+        if permanent:
+            for source in sources:
+                source.active = False
+        else:
+            self._defer(actor, trigger, merged, 'budget', scheduling_lane=lane,
+                        event_inputs=sources, retry_of=retry_of)
+
     def _on_call_start(self, payload):
         actor, trigger = payload['actor'], payload['trigger']
+        lane = payload.get('scheduling_lane', '')
+        key = self._schedule_key(actor, lane)
+        sources = tuple(e for e in payload.get('event_inputs', ()) if e.active)
+        if lane and not sources:
+            return  # another snapshot already acknowledged this event
         merged = tuple(payload.get('merged', ()))
-        outstanding = (sum(1 for c in self._pending.values() if c.actor == actor)
-                       + sum(1 for a in self._thinking.values() if a == actor))
-        if outstanding >= self.policy.max_outstanding_per_actor:
-            self._defer(actor, trigger, merged, 'outstanding')
+        if sources:
+            sources = tuple(e for e in self.event_inputs
+                            if e.active and e.actor == actor and e.cause == lane)
+            # Durable inputs alone own event lineage. Queue/deferred payloads
+            # may outlive a consumed input and must not lend its root to a new
+            # message. retry_of is only the representative audit field.
+            payload = {**payload, 'retry_of':
+                       next((e.retry_of for e in sources if e.retry_of), '')}
+            available = max(self.event_available_at(actor, lane),
+                            *(e.available_at for e in sources))
+            for source in sources:
+                source.available_at = available
+            if available > self.clock + 1e-9:
+                if math.isfinite(available):
+                    self._push('call_start', available, (1., self._rank[actor], 0, 0), payload)
+                else:
+                    self._defer(actor, trigger, merged, 'availability', scheduling_lane=lane,
+                                event_inputs=sources, retry_of=payload.get('retry_of', ''))
+                return
+        outstanding = self._outstanding(actor, lane)
+        if (outstanding >= self.policy.max_outstanding_per_actor
+                or (lane and self._outstanding(actor))):
+            self._defer(actor, trigger, merged, 'outstanding', scheduling_lane=lane,
+                        event_inputs=sources, retry_of=payload.get('retry_of', '') if lane else '')
             return
-        earliest = self._last_start.get(actor)
+        earliest = self._last_start.get(key)
+        if lane:
+            earliest = max((t for t in (earliest, self._last_start.get(actor)) if t is not None),
+                           default=None)
         if earliest is not None:
             earliest = quantize(earliest + self.policy.min_interval_s, self.params.quantum_s)
             if earliest > self.clock + 1e-9:
@@ -1020,35 +1227,77 @@ class EventScheduler:
                 self._log(f'call_deferred {actor} {trigger} until={earliest:.3f}',
                           kind='call_deferred', actor=actor)
                 self._push('call_start', earliest, (0., self._rank[actor], 0, 0),
-                           {'actor': actor, 'trigger': trigger, 'merged': merged,
-                            'retry_of': payload.get('retry_of', '')})
+                           {**payload, 'actor': actor, 'trigger': trigger, 'merged': merged,
+                            'retry_of': payload.get('retry_of', ''),
+                            **({'scheduling_lane': lane} if lane else {})})
                 return
-        if self.metrics[actor]['calls'] >= self.policy.max_calls_per_actor:
+        # When the two caps coincide, retain v64's HTTP admission path (and its
+        # exact refusal records). A stricter episode cap has a distinct label.
+        episode_blocked = (self.max_calls_total is not None
+                           and self.max_calls_total < self.policy.max_attempts_total
+                           and self.calls_spent())
+        if episode_blocked or self.external_budget_spent():
+            reason = 'episode_call_cap' if episode_blocked else 'pilot_budget_exhausted'
+            self.metrics[actor]['budget_refused'] += 1
+            self._log(f'call_refused {actor} {trigger} {reason}', kind='call_refused', actor=actor)
+            self.decision_events.append({'sim_s': self.now(), 'actor': actor,
+                                         'event': reason, 'triggers': [trigger]})
+            self._refuse_event_inputs(actor, trigger, merged, sources, lane=lane,
+                                      retry_of=payload.get('retry_of', ''))
+            return
+        if self.budget.call_limit_reached(actor):
             self.metrics[actor]['budget_refused'] += 1
             self._log(f'call_refused {actor} {trigger} budget', kind='call_refused', actor=actor)
+            self._refuse_event_inputs(actor, trigger, merged, sources, lane=lane,
+                                      retry_of=payload.get('retry_of', ''))
             return
         # finding 15: reserve the first HTTP attempt BEFORE the request leaves, so
         # three simultaneous actors cannot each consume the last attempt.
         if not self.budget.reserve(actor, 1):
             self.metrics[actor]['budget_refused'] += 1
             self._log(f'call_refused {actor} {trigger} http_budget', kind='call_refused', actor=actor)
+            self._refuse_event_inputs(actor, trigger, merged, sources, lane=lane,
+                                      retry_of=payload.get('retry_of', ''))
             return
+        sources = tuple(e for e in self.event_inputs if e.actor == actor and e.active
+                        and (not lane or e.cause == lane))
+        if sources:
+            merged = tuple(sorted(set(merged) | {e.trigger for e in sources} - {trigger}))
         self._calls_started += 1
         call = PendingCall(call_id=f'call-{self._calls_started:04d}-{actor}', actor=actor, trigger=trigger,
-                           started_sim_s=self.clock, merged=merged, retry_of=payload.get('retry_of', ''))
+                           started_sim_s=self.clock, merged=merged, retry_of=payload.get('retry_of', ''),
+                           scheduling_lane=lane, event_inputs=sources)
+        call.retry_root = RetryRoot(lane or 'common', call.retry_of or call.call_id)
+        if lane:
+            call.event_roots = tuple((e, e.retry_root or RetryRoot(lane, call.call_id)) for e in sources)
+            assert all(root.cause == lane for _, root in call.event_roots)
+        if call.retry_of:
+            # A durable event may carry its own root across common snapshots;
+            # the common call's root can never become an event's root.
+            assert self.call_causes[call.retry_of]['cause'] == call.retry_root.cause
         # finding 16: the ledger row exists from the START of the call.
         self.ledger[call.call_id] = {'call_id': call.call_id, 'actor': actor, 'trigger': trigger,
                                      'started_sim_s': self.clock, 'reserved_attempts': 1,
                                      'authorized': 0, 'status': 'outstanding', 'finished_sim_s': None,
                                      'retry_of': call.retry_of, 'merged_triggers': tuple(merged)}
+        if lane:
+            self.ledger[call.call_id]['scheduling_lane'] = lane
+        for source in sources:
+            source.active, source.claimed_by = False, call.call_id
+        self.call_causes[call.call_id] = {'cause': lane or 'common',
+            'message_ids': [tag for e in sources for tag in e.tags], 'retry_of': call.retry_of}
         call.reserve = lambda count=1, _call=call: self._reserve_more(_call, count)
         # seventh review: every request of this call reaches the wire through its
         # ledger opener, which asks ``_authorize_send`` first
         call.http_open = self.send_ledger.opener_for(call.call_id, actor)
         if not self._submit(call):
             return                      # the ledger shows no send: refunded, never pending
+        self.budget.start_call(call.call_id)
+        self.decision_events.append({'sim_s': self.now(), 'actor': actor,
+            'event': 'decision_started', 'call_id': call.call_id,
+            'triggers': sorted({call.trigger, *call.merged}), **self.call_causes[call.call_id]})
         self._pending[call.call_id] = call
-        self._last_start[actor] = self.clock
+        self._last_start[key] = self.clock
         self.metrics[actor]['calls'] += 1
         self.metrics[actor]['merged_triggers'] += len(merged)
         self.holds.append({'actor': actor, 'call_id': call.call_id, 'from_sim_s': self.clock, 'to_sim_s': None})
@@ -1147,13 +1396,20 @@ class EventScheduler:
         entry['reserved_attempts'] += count
         return True
 
-    def _defer(self, actor, trigger, merged, reason):
-        held = self._deferred.get(actor)
+    def _defer(self, actor, trigger, merged, reason, *, scheduling_lane='', event_inputs=(), retry_of=''):
+        key = self._schedule_key(actor, scheduling_lane)
+        held = self._deferred.get(key)
         labels = set(merged) | {trigger} | set(held['merged'] if held else ())
         if held:
             labels.add(held['trigger'])
         best = max(labels, key=lambda t: (TRIGGERS[t], t))
-        self._deferred[actor] = {'trigger': best, 'merged': tuple(sorted(labels - {best}))}
+        self._deferred[key] = {'actor': actor, 'trigger': best, 'merged': tuple(sorted(labels - {best})),
+            **({'scheduling_lane': scheduling_lane} if scheduling_lane else {}),
+            **({'retry_of': retry_of or (held or {}).get('retry_of', '')} if scheduling_lane else {}),
+            **({'budget_wait': True} if reason == 'budget' or (held or {}).get('budget_wait') else {}),
+            'event_inputs': tuple(dict.fromkeys((*((held or {}).get('event_inputs', ())), *event_inputs)))}
+        self.decision_events.append({'sim_s': self.now(), 'actor': actor,
+                                     'event': 'deferred_' + reason, 'triggers': [best]})
         self.metrics[actor]['deferred'] += 1
         self._log(f'call_merged {actor} {best} ({reason})', kind='call_merged', actor=actor)
 
@@ -1223,10 +1479,7 @@ class EventScheduler:
                 if self.on_action:
                     self.on_action(actor, reply.action, self.now())
             self._emit(call, reply)
-        held = self._deferred.pop(actor, None)
-        if held:
-            self._push('call_start', self.clock, (0., self._rank[actor], 0, 0),
-                       {'actor': actor, 'trigger': held['trigger'], 'merged': held['merged'], 'retry_of': ''})
+        self._resume_deferred(call)
 
     def _emit(self, call, reply):
         """Schedule deliveries of one reply's utterances, in a fixed order.
@@ -1270,16 +1523,25 @@ class EventScheduler:
 
     def _retry(self, call, cost):
         """A failed call may be retried as a separate, separately costed call."""
-        root = call.retry_of or call.call_id
-        if self._retries.get(root, 0) >= self.policy.max_retries:
+        roots = tuple(dict.fromkeys(root for _, root in call.event_roots)) or (call.retry_root,)
+        eligible = tuple(root for root in roots if self._retries.get(root, 0) < self.policy.max_retries)
+        if not eligible:
             self._log(f'retry_exhausted {call.actor} {call.call_id} {cost.outcome}',
                       kind='retry_exhausted', actor=call.actor)
             return
-        self._retries[root] = self._retries.get(root, 0) + 1
+        inputs = []
+        for source, root in call.event_roots:
+            if root in eligible and source.claimed_by == call.call_id:
+                source.active, source.retry_root = True, root
+                inputs.append(source)
+        for root in eligible:
+            self._retries[root] = self._retries.get(root, 0) + 1
         self.metrics[call.actor]['retries'] += 1
         trigger = 'timeout' if cost.outcome == 'timeout' else 'retry'
         self._push('call_start', self.clock, (0., self._rank[call.actor], 0, 0),
-                   {'actor': call.actor, 'trigger': trigger, 'merged': (), 'retry_of': root})
+                   {'actor': call.actor, 'trigger': trigger, 'merged': (), 'retry_of': eligible[0].call_id,
+                    'event_inputs': tuple(inputs) if call.scheduling_lane else call.event_inputs,
+                    **({'scheduling_lane': call.scheduling_lane} if call.scheduling_lane else {})})
 
     def _on_message(self, payload):
         recipient = payload['recipient']
@@ -1313,7 +1575,10 @@ class EventScheduler:
                   kind='message', actor=recipient, message_id=record.message_id)
         if self.on_message:
             self.on_message(recipient, dict(envelope), self.now())
-        if self.policy.trigger_on_message:
+        if self.policy.trigger_on_message and self.received_event_cause:
+            self.event(recipient, cause=self.received_event_cause, tags=(record.message_id,),
+                       available_at=self.event_available_at(recipient, self.received_event_cause))
+        elif self.policy.trigger_on_message:
             self._push('call_start', self.clock, (0., self._rank[recipient], 0, 0),
                        {'actor': recipient, 'trigger': 'report', 'merged': (), 'retry_of': ''})
 

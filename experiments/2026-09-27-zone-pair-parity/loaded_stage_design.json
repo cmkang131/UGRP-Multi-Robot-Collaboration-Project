@@ -1,0 +1,928 @@
+{
+  "schema": "ugrp.loaded_stage_design.v1",
+  "status": "DESIGN_DRAFT_NOT_RUN",
+  "language": "ko",
+  "scope": {
+    "production_code_changes": false,
+    "physics_steps": 0,
+    "model_calls": 0,
+    "git_commits": 0,
+    "control_consumes_eval": false,
+    "google_drive_used": false,
+    "new_checkpoint_rgb": false
+  },
+  "recommendation": {
+    "candidate_ids": [
+      "B",
+      "C"
+    ],
+    "name": "단계별 오차 예산으로 진입을 결정하는 정지·내려놓기·재관측 checkpoint",
+    "relative_beam_role": "A는 local slip/receipt 검사만; global gauge uncertainty를 줄이지 않음",
+    "implementation_after": "사용자 승인으로 PR #240 병합된 뒤",
+    "dev_ready": false,
+    "adoption": "none",
+    "blockers": [
+      "pair 모드별 bias/Q 보정 및 독립 coverage 미완",
+      "현 noise의 blind budget보다 carry가 길어 feasible plan 미확인",
+      "loaded support/release RGB 및 새 look 관측 없음",
+      "PR #240 미병합 및 dev09/10 결과 미포함",
+      "새 source/bundle/seed/자원 미동결"
+    ]
+  },
+  "sources": {
+    "worktree_sha": "a1a304d1594bbe9b060b48c95b99e65b793a2094",
+    "pr240_sha": "3839555dc0de0880f74a40c831044e2b5be2d2d7",
+    "remote_checked_at_utc": "2026-09-27 14:38:26 UTC",
+    "latest_issue_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221#issuecomment-5856789331",
+    "pr240_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/240",
+    "upstream_prereg_path": "experiments/2026-09-27-zone-pair-dev/prereg_v5.json",
+    "upstream_prereg_blob_sha256": "bcf02558167a9140a97b961bdc612b45679b3ff1e91fe496e9863ac8e9f3568e",
+    "evidence_files": {
+      "README.md": "ee986b77f5eeea7b5706f504c36061f78e4f2f95dd9410a729f65861d86b9d86",
+      "loaded_stage_metrics.json": "b76e275766ca7b21d131b88e46d8b1088d9a1f4dd8a519d702bdb55eac497f85",
+      "loaded_stage_sources.json": "4cac082163bd57397278476bf520ae8f93d3776d69b58b50d628940684bda72c",
+      "loaded_stage_analysis.py": "97857742a5672bba9cf664e6022203c0321661e0ee34c8697e2eb1a50feca234"
+    },
+    "raw_file_hash_count": 223,
+    "full_source_manifest": "loaded_stage_metrics.json#source_hashes",
+    "scope_notes": [
+      "M2 inherited shadow JPEG results are not newly replayed",
+      "own sample selection before eval-only as-of join, <=.051s",
+      "success-selected 49 episodes are not an unbiased test cohort"
+    ]
+  },
+  "findings": {
+    "dev_stop_reports": [
+      {
+        "run": "dev05",
+        "robot": "r1",
+        "t": 190.4,
+        "frame_id": 1598,
+        "phase": "grasp",
+        "xyyaw": [
+          1.31836,
+          0.09247,
+          0.067231
+        ],
+        "sigma_xy_m": 0.05985,
+        "sigma_yaw_deg": 1.3624936368210976,
+        "tag_age_s": 28.2,
+        "load_state": "unloaded",
+        "n_eff": 2000.0,
+        "eval_match_age_s": 2.774385166048887e-09,
+        "eval_gt_xyyaw": [
+          0.5605934720145427,
+          0.04569741015643899,
+          0.049727500278666674
+        ],
+        "eval_xy_error_m": 0.7592086578114141,
+        "error_over_sigma_xy": 12.685190606707003,
+        "eval_yaw_error_deg": 1.0028766607408077
+      },
+      {
+        "run": "dev05",
+        "robot": "r2",
+        "t": 190.4,
+        "frame_id": 1599,
+        "phase": "grasp",
+        "xyyaw": [
+          0.55214,
+          0.03163,
+          3.131828
+        ],
+        "sigma_xy_m": 0.05441,
+        "sigma_yaw_deg": 1.1424778434908616,
+        "tag_age_s": 26.7,
+        "load_state": "unloaded",
+        "n_eff": 2000.0,
+        "eval_match_age_s": 2.774385166048887e-09,
+        "eval_gt_xyyaw": [
+          1.4386831182146345,
+          0.04443783369673282,
+          -3.1398368081766703
+        ],
+        "eval_xy_error_m": 0.8866356303790924,
+        "error_over_sigma_xy": 16.295453600056835,
+        "eval_yaw_error_deg": 0.6600759707517768
+      },
+      {
+        "run": "dev06",
+        "robot": "r1",
+        "t": 193.7,
+        "frame_id": 1631,
+        "phase": "grasp",
+        "xyyaw": [
+          1.19231,
+          0.0455,
+          0.072281
+        ],
+        "sigma_xy_m": 0.05653,
+        "sigma_yaw_deg": 1.3825471596506764,
+        "tag_age_s": 26.9,
+        "load_state": "unloaded",
+        "n_eff": 1517.2,
+        "eval_match_age_s": 2.852402758435346e-09,
+        "eval_gt_xyyaw": [
+          0.4910111089109221,
+          -0.00110448061551056,
+          -0.004900258392645326
+        ],
+        "eval_xy_error_m": 0.7028457243636129,
+        "error_over_sigma_xy": 12.433145663605394,
+        "eval_yaw_error_deg": 4.422160363407248
+      },
+      {
+        "run": "dev06",
+        "robot": "r2",
+        "t": 193.7,
+        "frame_id": 1632,
+        "phase": "wait_lift",
+        "xyyaw": [
+          0.42094,
+          -0.09166,
+          2.881649
+        ],
+        "sigma_xy_m": 0.05753,
+        "sigma_yaw_deg": 3.0011529308952523,
+        "tag_age_s": 30.5,
+        "load_state": "loaded",
+        "n_eff": 2000.0,
+        "eval_match_age_s": 2.852402758435346e-09,
+        "eval_gt_xyyaw": [
+          1.3690344214580952,
+          -0.05119326787146817,
+          3.0222907976858324
+        ],
+        "eval_xy_error_m": 0.9489576325680312,
+        "error_over_sigma_xy": 16.495004911664022,
+        "eval_yaw_error_deg": 8.058181430530992
+      },
+      {
+        "run": "dev07",
+        "robot": "r1",
+        "t": 202.8,
+        "frame_id": 1722,
+        "phase": "failed",
+        "xyyaw": [
+          0.56794,
+          0.03694,
+          0.063824
+        ],
+        "sigma_xy_m": 0.02383,
+        "sigma_yaw_deg": 0.6921330165180345,
+        "tag_age_s": 2.9,
+        "load_state": "unloaded",
+        "n_eff": 1337.1,
+        "eval_match_age_s": 3.0676119422423653e-09,
+        "eval_gt_xyyaw": [
+          0.5615710790667049,
+          0.04365488054359071,
+          0.06050777328969209
+        ],
+        "eval_xy_error_m": 0.00925487842001491,
+        "error_over_sigma_xy": 0.38837089467120894,
+        "eval_yaw_error_deg": 0.1900057944091863
+      },
+      {
+        "run": "dev07",
+        "robot": "r2",
+        "t": 202.7,
+        "frame_id": 1722,
+        "phase": "pregrasp_descend",
+        "xyyaw": [
+          1.43385,
+          0.05319,
+          -3.127299
+        ],
+        "sigma_xy_m": 0.02676,
+        "sigma_yaw_deg": 0.538007369627843,
+        "tag_age_s": 2.8,
+        "load_state": "unloaded",
+        "n_eff": 1205.8,
+        "eval_match_age_s": 3.0652245186502114e-09,
+        "eval_gt_xyyaw": [
+          1.4385226729262677,
+          0.04536815811247032,
+          -3.1297627321021
+        ],
+        "eval_xy_error_m": 0.009111261317149679,
+        "error_over_sigma_xy": 0.34048061723279816,
+        "eval_yaw_error_deg": 0.1411614513012462
+      },
+      {
+        "run": "dev08",
+        "robot": "r1",
+        "t": 175.6,
+        "frame_id": 1450,
+        "phase": "align",
+        "xyyaw": [
+          1.11933,
+          -0.06292,
+          0.127568
+        ],
+        "sigma_xy_m": 0.04265,
+        "sigma_yaw_deg": 1.1843037625354116,
+        "tag_age_s": 10.8,
+        "load_state": "unloaded",
+        "n_eff": 1494.8,
+        "eval_match_age_s": 2.4244002361228922e-09,
+        "eval_gt_xyyaw": [
+          0.4400027920070765,
+          0.007965814927299423,
+          0.02201566491847684
+        ],
+        "eval_xy_error_m": 0.6830155593230421,
+        "error_over_sigma_xy": 16.014432809449993,
+        "eval_yaw_error_deg": 6.047703317921942
+      },
+      {
+        "run": "dev08",
+        "robot": "r2",
+        "t": 175.6,
+        "frame_id": 1451,
+        "phase": "align",
+        "xyyaw": [
+          0.69574,
+          -0.36768,
+          2.913079
+        ],
+        "sigma_xy_m": 0.07004,
+        "sigma_yaw_deg": 1.5120356213502426,
+        "tag_age_s": 15.3,
+        "load_state": "unloaded",
+        "n_eff": 1027.0,
+        "eval_match_age_s": 2.4244002361228922e-09,
+        "eval_gt_xyyaw": [
+          1.3881969413446067,
+          -0.053347502610089866,
+          3.0230230554217927
+        ],
+        "eval_xy_error_m": 0.7604613958194761,
+        "error_over_sigma_xy": 10.85752992317927,
+        "eval_yaw_error_deg": 6.299330358221128
+      }
+    ],
+    "m2": {
+      "run_count": 49,
+      "trace_count": 98,
+      "first_reject_phase": {
+        "carry": 63,
+        "wait_lift": 10,
+        "wait_carry": 19,
+        "lift": 6
+      },
+      "tag_age_at_reject_s": {
+        "n": 98,
+        "min": 8.621,
+        "p50": 24.561,
+        "p90": 25.8843,
+        "max": 31.779
+      },
+      "phase_duration_s": {
+        "wait_lift": {
+          "n": 206,
+          "min": 0.19999999999998863,
+          "p50": 0.2009999999999934,
+          "p90": 4.161000000000001,
+          "max": 8.62100000000001
+        },
+        "lift": {
+          "n": 206,
+          "min": 1.502999999999986,
+          "p50": 1.5039999999999907,
+          "p90": 1.504000000000019,
+          "max": 1.504000000000019
+        },
+        "wait_carry": {
+          "n": 206,
+          "min": 0.19999999999998863,
+          "p50": 0.20000000000001705,
+          "p90": 0.20100000000002183,
+          "max": 0.20100000000002183
+        },
+        "carry": {
+          "n": 206,
+          "min": 16.23999999999998,
+          "p50": 23.85899999999998,
+          "p90": 24.861999999999995,
+          "max": 54.035
+        },
+        "wait_lower": {
+          "n": 206,
+          "min": 0.19999999999998863,
+          "p50": 0.20100000000000762,
+          "p90": 0.40100000000001046,
+          "max": 0.40100000000001046
+        },
+        "lower": {
+          "n": 206,
+          "min": 1.603999999999985,
+          "p50": 1.6039999999999992,
+          "p90": 1.6040000000000134,
+          "max": 1.6040000000000134
+        }
+      },
+      "phase_duration_by_stage_s": {
+        "open_floor": {
+          "wait_lift": {
+            "n": 42,
+            "min": 0.19999999999998863,
+            "p50": 1.2035000000000053,
+            "p90": 5.2830000000000155,
+            "max": 8.120000000000005
+          },
+          "lift": {
+            "n": 42,
+            "min": 1.5030000000000001,
+            "p50": 1.5039999999999907,
+            "p90": 1.5040000000000049,
+            "max": 1.5040000000000049
+          },
+          "wait_carry": {
+            "n": 42,
+            "min": 0.19999999999998863,
+            "p50": 0.2009999999999934,
+            "p90": 0.20100000000000762,
+            "max": 0.20100000000002183
+          },
+          "carry": {
+            "n": 42,
+            "min": 20.650999999999982,
+            "p50": 20.65100000000001,
+            "p90": 20.652,
+            "max": 20.652000000000015
+          },
+          "wait_lower": {
+            "n": 42,
+            "min": 0.19999999999998863,
+            "p50": 0.2009999999999934,
+            "p90": 0.20100000000000762,
+            "max": 0.20100000000000762
+          },
+          "lower": {
+            "n": 42,
+            "min": 1.6039999999999992,
+            "p50": 1.6039999999999992,
+            "p90": 1.6039999999999992,
+            "max": 1.6040000000000134
+          }
+        },
+        "door": {
+          "wait_lift": {
+            "n": 164,
+            "min": 0.19999999999998863,
+            "p50": 0.2009999999999934,
+            "p90": 3.4090000000000202,
+            "max": 8.62100000000001
+          },
+          "lift": {
+            "n": 164,
+            "min": 1.502999999999986,
+            "p50": 1.5039999999999907,
+            "p90": 1.504000000000019,
+            "max": 1.504000000000019
+          },
+          "wait_carry": {
+            "n": 164,
+            "min": 0.19999999999998863,
+            "p50": 0.20000000000001705,
+            "p90": 0.20100000000002183,
+            "max": 0.20100000000002183
+          },
+          "carry": {
+            "n": 164,
+            "min": 16.23999999999998,
+            "p50": 23.859499999999997,
+            "p90": 24.861999999999995,
+            "max": 54.035
+          },
+          "wait_lower": {
+            "n": 164,
+            "min": 0.19999999999998863,
+            "p50": 0.40099999999998204,
+            "p90": 0.40100000000001046,
+            "max": 0.40100000000001046
+          },
+          "lower": {
+            "n": 164,
+            "min": 1.603999999999985,
+            "p50": 1.6040000000000134,
+            "p90": 1.6040000000000134,
+            "max": 1.6040000000000134
+          }
+        }
+      },
+      "seconds_since_loaded_command_at_shadow_reject": {
+        "n": 98,
+        "min": 4.358299998414708,
+        "p50": 5.176299999023932,
+        "p90": 5.571099998479193,
+        "max": 6.550549998236903
+      },
+      "reject_load_states": {
+        "loaded": 98
+      },
+      "scope": "49 success-selected historical runs; 98 inherited conditional PF prefixes, not new rollouts"
+    },
+    "noise": {
+      "variance_rule": "Var(delta_pose)=noise_velocity^2 * sum(dt_k^2), not Q * sum(dt_k)",
+      "zero_motion": [
+        {
+          "mode": "motion",
+          "external_predict_interval_s": 0.05,
+          "elapsed_s": 10.0,
+          "predicted_yaw_std_deg": 0.569630133232601,
+          "synthetic_pf_yaw_std_deg": 0.5845310382496786,
+          "predicted_xy_std_m": 0.011444343581001054,
+          "synthetic_pf_xy_std_m": 0.011154835007538996
+        },
+        {
+          "mode": "motion",
+          "external_predict_interval_s": 0.025,
+          "elapsed_s": 10.0,
+          "predicted_yaw_std_deg": 0.4027893299769687,
+          "synthetic_pf_yaw_std_deg": 0.4063453652258188,
+          "predicted_xy_std_m": 0.008092372952354581,
+          "synthetic_pf_xy_std_m": 0.007926136389973889
+        },
+        {
+          "mode": "motion",
+          "external_predict_interval_s": 0.01,
+          "elapsed_s": 10.0,
+          "predicted_yaw_std_deg": 0.25474633998807156,
+          "synthetic_pf_yaw_std_deg": 0.2567565809497874,
+          "predicted_xy_std_m": 0.005118066040996345,
+          "synthetic_pf_xy_std_m": 0.004976171639603067
+        },
+        {
+          "mode": "motion_loaded",
+          "external_predict_interval_s": 0.05,
+          "elapsed_s": 10.0,
+          "predicted_yaw_std_deg": 3.954999545246552,
+          "synthetic_pf_yaw_std_deg": 4.058458034523386,
+          "predicted_xy_std_m": 0.01090403595005079,
+          "synthetic_pf_xy_std_m": 0.01061063858763619
+        },
+        {
+          "mode": "motion_loaded",
+          "external_predict_interval_s": 0.025,
+          "elapsed_s": 10.0,
+          "predicted_yaw_std_deg": 2.796606998033548,
+          "synthetic_pf_yaw_std_deg": 2.8212969099457816,
+          "predicted_xy_std_m": 0.007710317762582811,
+          "synthetic_pf_xy_std_m": 0.007542414690514312
+        },
+        {
+          "mode": "motion_loaded",
+          "external_predict_interval_s": 0.01,
+          "elapsed_s": 10.0,
+          "predicted_yaw_std_deg": 1.7687295668304088,
+          "synthetic_pf_yaw_std_deg": 1.7826868728541352,
+          "predicted_xy_std_m": 0.004876433122683013,
+          "synthetic_pf_xy_std_m": 0.004737368912649864
+        }
+      ],
+      "loaded_yaw_variance_rate_rad2_per_s_at_50ms": 0.00047648322000000003,
+      "stationary_budget": [
+        {
+          "initial_yaw_deg": 0,
+          "stationary_seconds_to_3deg": 5.753732058141265
+        },
+        {
+          "initial_yaw_deg": 1,
+          "stationary_seconds_to_3deg": 5.114428496125569
+        },
+        {
+          "initial_yaw_deg": 2,
+          "stationary_seconds_to_3deg": 3.1965178100784812
+        },
+        {
+          "initial_yaw_deg": 2.5,
+          "stationary_seconds_to_3deg": 1.758084795543165
+        }
+      ],
+      "loaded_to_unloaded_yaw_variance_ratio": 48.20665143694267,
+      "door_axial_segments": [
+        {
+          "length_m": 0.55,
+          "nominal_s_at_m2_speed": 11.87392055267703
+        },
+        {
+          "length_m": 0.65,
+          "nominal_s_at_m2_speed": 14.032815198618309
+        },
+        {
+          "length_m": 0.85,
+          "nominal_s_at_m2_speed": 18.350604490500864
+        },
+        {
+          "length_m": 0.8,
+          "nominal_s_at_m2_speed": 17.271157167530227
+        }
+      ],
+      "scope": "analytic and pure PF synthetic sensitivity; not fitted replacement noise, no physical claim"
+    },
+    "root_causes_confirmed": [
+      "arm-lowered align mean dynamics mismatch",
+      "PF spread omits common model bias",
+      "no accepted tags means no absolute likelihood/reset; no age bias floor",
+      "load state from own gripper/height commands, distinct from visual grasp",
+      "velocity noise times dt causes variance proportional to sum(dt squared)",
+      "loaded yaw variance rate 48.21x unloaded at same discretization"
+    ],
+    "not_quantitatively_attributed": [
+      "map prior clipping and resampling contribution",
+      "each physical force or lag contribution",
+      "exact original M2 hidden predict clock",
+      "new checkpoint observations",
+      "calibrated pair Q/bias coefficients"
+    ]
+  },
+  "input_contract": {
+    "allowed": [
+      "own wrist RGB and frame identity/time",
+      "own issued commands",
+      "static map/geometry/calibration",
+      "fixed task/role/checkpoint metadata",
+      "finite STATUS enum with existing freshness metadata"
+    ],
+    "denied": [
+      "TOP/foreign RGB",
+      "peer coordinates/covariance/beam fit",
+      "GT pose or contact/measured joints",
+      "host runtime scene info",
+      "task/plan synthesis by host",
+      "metric info encoded in enum/seq/time"
+    ],
+    "same_policy_all_research_conditions": true,
+    "eval_separate_process_required_for_future_replay": true
+  },
+  "candidates": [
+    {
+      "id": "A",
+      "name": "빔 상대 자세와 grasp anchor",
+      "inputs": [
+        "own wrist RGB",
+        "own issued commands",
+        "static geometry/map/calibration",
+        "fixed role/cargo contract",
+        "fresh STATUS enum"
+      ],
+      "effect": "상대 slip/tilt 및 파지 유효성 감시, 정지빔 align VO의 bias 완화 후보",
+      "unobservable": "공동 beam+robot SE(2) 이동은 beam-only 관측에서 식별 불가",
+      "forbidden": [
+        "held beam을 stationary world landmark로 반복 update",
+        "peer pose/covariance/image 공유",
+        "STATUS를 metric loop closure로 사용",
+        "동일 anchor를 독립 정보로 재계산하여 global covariance 축소"
+      ],
+      "risks": [
+        "partial view의 rank 손실",
+        "한 손/다른 beam 오탐",
+        "FK sag와 slip/flex",
+        "전역 오차 하한을 지우는 과신"
+      ],
+      "validation": [
+        "정지빔 replay의 상대 residual/anchor propagation",
+        "공통 SE(2) gauge 및 한 손 slip 반례",
+        "holdout 이후 별도 dev"
+      ],
+      "selection": "상대 파지 감시만 권고에 포함; global update 미채택"
+    },
+    {
+      "id": "B",
+      "name": "양쪽 정지·내려놓기·순차 재관측 checkpoint",
+      "inputs": [
+        "own RGB",
+        "own command history",
+        "static checkpoint/look plan",
+        "STATUS enum"
+      ],
+      "effect": "새 자기 태그 관측으로 absolute 위치 회복",
+      "risks": [
+        "loaded wrist pan의 beam/peer torque",
+        "문 안 setdown 공간 부재",
+        "support 시각증거 부재",
+        "재파지 실패 및 overhead"
+      ],
+      "required_protocol": [
+        "both stop ready/go",
+        "both lower ready/go",
+        "own visual support + both open ready/go",
+        "양쪽 release 확인 후 end_neg then end_pos look",
+        "fresh own tag fixes, beam anchors and both close/lift ready/go"
+      ],
+      "validation": [
+        "static stop/lower/look tube와 가시성 후보 offline",
+        "새 viewpoint는 dev에서만 판정",
+        "stale/silent/cancel에서 양쪽 queue cleanup"
+      ],
+      "selection": "C와 결합해 권고"
+    },
+    {
+      "id": "C",
+      "name": "모드·시간·거리별 오차 예산과 단계별 gate",
+      "inputs": [
+        "own RGB residual/accepted tag fix",
+        "own commands/phase",
+        "static map/calibration",
+        "STATUS freshness only"
+      ],
+      "effect": "잘못된 confidence와 미래 budget 부족을 구간 진입 전에 검출",
+      "risks": [
+        "미보정 noise 감소",
+        "단독 box calibration의 pair 오용",
+        "저속화의 blind time 증가",
+        "짧은 segment로 MAX_SEGMENTS 초과"
+      ],
+      "validation": [
+        "episode/seed 단위 holdout calibration",
+        "report cadence invariant budget",
+        "미래 static-wall certificate와 eval-only false-safe 채점",
+        "8 run bounded dev 초안"
+      ],
+      "selection": "B와 결합해 권고"
+    }
+  ],
+  "stage_contracts": [
+    {
+      "phase": "wait_lift",
+      "evidence": "자기 postclose grip receipt + absolute anchor + 양쪽 fresh lift READY",
+      "horizon": "남은 barrier + lift + 안전 stop/lower",
+      "allow": "hold always; budget 없으면 READY 거부"
+    },
+    {
+      "phase": "lift",
+      "evidence": "자기 beam/gripper RGB + lift GO",
+      "horizon": "전체 lift sweep + abort stop/lower reserve",
+      "allow": "base motion 금지, grip loss/unsafe tube는 양쪽 abort"
+    },
+    {
+      "phase": "wait_carry",
+      "evidence": "fresh postlift hold view + 양쪽 carry READY",
+      "horizon": "다음 checkpoint travel + barrier + lower + settle",
+      "allow": "남은 예산 없으면 GO 거부"
+    },
+    {
+      "phase": "carry",
+      "evidence": "자기 RGB 상대 잔차 + issued commands + 모드 오차 bound",
+      "horizon": "명령 expiry + coast 및 다음 checkpoint lower",
+      "allow": "soft limit 전에 계획된 checkpoint로 종료; 일방 look/backoff 금지"
+    },
+    {
+      "phase": "wait_lower",
+      "evidence": "자기 support 후보 + 양쪽 lower READY",
+      "horizon": "대기 + lower + settle",
+      "allow": "wait timeout 전에 safe reserve 유지; hold는 차단하지 않음"
+    },
+    {
+      "phase": "lower",
+      "evidence": "자기 grip/support view + lower GO",
+      "horizon": "full lower sweep + settle",
+      "allow": "증명된 lower만 실행; hold/abort를 지원면 도달 성공으로 보고하지 않음"
+    }
+  ],
+  "uncertainty_budget": {
+    "modes": [
+      "align_low_open",
+      "grasp_closing_unknown",
+      "loaded_stationary",
+      "loaded_translation",
+      "loaded_turn",
+      "lowering"
+    ],
+    "covariance_proposal": "P_next = F P F^T + Q_mode dt + Q_distance dL + Q_turn abs(dpsi_cmd)",
+    "bias_proposal": "B_xy=b0+b_t*T+b_L*L+b_A*A+B_stop+B_arm+B_anchor; B_yaw=c0+c_t*T+c_L*L+c_A*A",
+    "persistent_bias": "bias state/correlation or T^2/L^2 variance; not white-noise reset",
+    "coefficients": null,
+    "mode_unknown": "conservative union of feasible own-input modes",
+    "no_tag_rule": "age, bias and global gauge budget keep growing; prediction timestamp is not a fix",
+    "global_confidence_reduction": "only accepted independent absolute observations, never held beam/STATUS/heartbeat alone",
+    "hold_rule": "hold/abort always allowed; stationary is not inferred solely from zero command",
+    "motion_horizon": "next observation checkpoint plus all waits, lift/lower, settling and stop coast",
+    "gate_initial_values": {
+      "high_xy_m": 0.07,
+      "high_yaw_deg": 3.0,
+      "low_xy_m": 0.06,
+      "low_yaw_deg": 2.5,
+      "unchanged": true
+    },
+    "wall_margin": {
+      "base_plus_body_residual_m": 0.035,
+      "existing_k_sigma": 2.0,
+      "formula": "distance - radius - [0.035 + sampling_pad + B_xy + 2*lever*sin(min(B_yaw,pi)/2) + k*sqrt(n^T*J*P*J^T*n) + B_relative]",
+      "initial_margin": "max(existing conservative sigma margin, proposed directional margin)",
+      "cap_rule": "never reduce large uncertainty to .15m/.20rad to admit; out-of-domain rejects",
+      "k2_is_95_percent_proof": false
+    },
+    "scalar_gate_relaxation_in_recommendation": false
+  },
+  "implementation_scope": [
+    {
+      "path": "harness/owncam_localizer.py",
+      "change": "mode별 Q/bias와 시간 이산화; 이전 calibration 버전 보존",
+      "implemented": false
+    },
+    {
+      "path": "harness/owncam_pose_source.py",
+      "change": "accepted absolute fix, anchor age, load hypothesis provenance",
+      "implemented": false
+    },
+    {
+      "path": "harness/zone_pair_budget.py",
+      "change": "신규 후보; 다음 stop/lower까지 own-only budget",
+      "implemented": false
+    },
+    {
+      "path": "harness/zone_pair_geometry.py",
+      "change": "full beam/arm/base 미래 tube, bias/stop pad, cap bypass 금지",
+      "implemented": false
+    },
+    {
+      "path": "harness/zone_pair_guards.py",
+      "change": "hold/readiness/action/completion 분리",
+      "implemented": false
+    },
+    {
+      "path": "harness/zone_pair_executor.py",
+      "change": "make_plan 및 checkpoint 통합; frozen M2는 변경하지 않음",
+      "implemented": false
+    },
+    {
+      "path": "harness/zone_pair_checkpoint.py",
+      "change": "신규 후보; 양쪽 stop/lower/release, 순차 look, 새 준비 증거",
+      "implemented": false
+    },
+    {
+      "path": "harness/zone_pair_status.py",
+      "change": "유한 enum/epoch; peer metric payload 금지",
+      "implemented": false
+    },
+    {
+      "path": "harness/zone_pair_grasp.py",
+      "change": "v5 close/anchor 계약 재사용",
+      "implemented": false
+    },
+    {
+      "path": "harness/zone_pair_align.py",
+      "change": "v5 relook 재사용",
+      "implemented": false
+    },
+    {
+      "path": "scripts/run_zone_pair_dev.py",
+      "change": "기존 CLI에 future 후보/사전등록/증거 로그",
+      "implemented": false
+    },
+    {
+      "path": "configs/simulation_workflows.json",
+      "change": "기존 zone-pair-dev workflow 연결",
+      "implemented": false
+    }
+  ],
+  "future_tests": [
+    "10/25/50/100ms report partition invariance",
+    "same-image/anchor reuse does not create independent fix",
+    "empty/filtered tags do not renew accepted fix",
+    "grip failed/regrasp/release mode ambiguity",
+    "common SE(2) beam gauge remains unobservable",
+    "full beam middle/ends/lever/pan/coast/lower wall collision",
+    "support unknown forbids release/look",
+    "stale/duplicate/old segment/late GO/cancel/silent peer stops both queues",
+    "foreign RGB/pose/covariance/free text rejected",
+    "no-tag budget and bias monotonicity",
+    "null calibration and unknown profile fail closed"
+  ],
+  "preregistration_draft": {
+    "status": "DRAFT_NOT_RUN",
+    "runnable": false,
+    "research_result": false,
+    "implementation_source_sha": null,
+    "execution_bundle_id": null,
+    "new_seed_ids": null,
+    "registration_required_after": [
+      "PR240 merge",
+      "dev09/10 outcome review",
+      "O0 offline calibration/coverage/certificate gate",
+      "source and runtime hashes frozen",
+      "main and open PR ID/seed collision scan"
+    ],
+    "offline": {
+      "existing_success_cohort_usage": "diagnostic only, no fitting to 98 gate refusals",
+      "split_unit": "episode/seed, all paired condition/frame variants together",
+      "fit_data": "past dev only, list and hashes frozen before fit",
+      "holdout_manifest": null,
+      "already_inspected_successes_are_blind_holdout": false,
+      "missing_covariance_or_clock": "insufficient_evidence",
+      "coverage_target": {
+        "nominal_bound": 0.95,
+        "episode_block_bootstrap_confidence": 0.95,
+        "required_lower_bound": 0.95,
+        "sparse_strata": "insufficient_evidence"
+      },
+      "false_safe_certificates_on_unsafe_heldout_trajectories_required": 0,
+      "cadence_budget_relative_tolerance": 0.01,
+      "counterfactual_boundary": "stop exact replay at first changed action/view; later trace conditional only",
+      "feasible_plan_required": true
+    },
+    "dev": {
+      "conditions": [
+        "frozen PR240 v5 baseline",
+        "B+C candidate with same v5 pregrasp"
+      ],
+      "normal_seed_count": 2,
+      "conditions_per_seed": 2,
+      "normal_runs": 4,
+      "fault_cases": 2,
+      "fault_runs": 4,
+      "total_runs": 8,
+      "fault_case_definitions": [
+        "registered loaded no-tag blackout",
+        "choose and freeze STATUS abort OR silence at carry/checkpoint"
+      ],
+      "max_sim_s_per_run": 900,
+      "max_total_sim_s": 7200,
+      "max_physics_steps_per_run": 3600000,
+      "additional_retries": 0,
+      "max_wall_s_per_run": null,
+      "cpu_budget": null,
+      "disk_budget_bytes": null,
+      "raw_absolute_path": null,
+      "model_calls": 0,
+      "weld": false,
+      "contact_profile": "cargo_noslip_v1",
+      "timestep_s": 0.00025,
+      "camera_changes": false,
+      "same_conditions": [
+        "scene",
+        "static map",
+        "task sheet",
+        "contact profile",
+        "capture/command timing",
+        "STATUS policy",
+        "v5 pregrasp"
+      ],
+      "phase_and_physical_criteria": "Preserve referenced prereg_v5 criteria/stage_rules/planned_setdown by hash; explicit new checkpoint list before run",
+      "pass": {
+        "candidate_normal_completed_pairs": 2,
+        "candidate_normal_denominator": 2,
+        "candidate_fault_stop_passes": 2,
+        "candidate_fault_denominator": 2,
+        "forbidden_contacts": 0,
+        "stale_or_unsafe_GO": 0,
+        "runtime_eval_leaks": 0,
+        "unilateral_loaded_pan": 0,
+        "commands_after_pair_abort": 0,
+        "coverage": "complete"
+      },
+      "early_failure": "loaded not_reached; never evidence of loaded design efficacy",
+      "enospc": "HOST_ERROR",
+      "safety_data_missing": "not confirmed",
+      "metrics": [
+        "phase success/failure denominators",
+        "SIM runtime",
+        "issued commands",
+        "model calls/cost",
+        "pose error coverage",
+        "bias/sigma age growth",
+        "minimum swept clearance",
+        "checkpoint count and overhead",
+        "stop/abort latency"
+      ],
+      "not_claimed": [
+        "general success rate",
+        "research communication advantage",
+        "physical MasterPi readiness"
+      ]
+    }
+  },
+  "verification": {
+    "analysis_completed": true,
+    "existing_sim_free_tests": {
+      "passed": 73,
+      "subtests_passed": 92,
+      "source_sha": "a1a304d1594bbe9b060b48c95b99e65b793a2094",
+      "whole_ci": false,
+      "candidate_tests": false,
+      "omp_num_threads": 1,
+      "basetemp": "./.pytest_tmp",
+      "basetemp_deleted": true,
+      "bytecode_and_cache_disabled": true,
+      "selection": [
+        "tests/test_owncam_localizer.py::RuntimeBoundaryTests",
+        "tests/test_owncam_localizer.py::LoopV2Tests",
+        "tests/test_zone_pair_review4.py",
+        "tests/test_zone_pair_review5.py"
+      ]
+    },
+    "tensorboard_receipt": "loaded_stage_tensorboard.json",
+    "shared_tensorboard_published": false,
+    "gui_verified": false,
+    "git_fetch": "blocked: shared FETCH_HEAD outside write scope",
+    "github_current_read": "connector GET successful",
+    "primary_checkout_updated": false,
+    "design_markdown_sha256": "ece82b4d2cc71ea89a580d479eddf519ab13da614bebb22993adbc97709ea2df",
+    "all_recorded_source_hashes_rechecked": 223,
+    "native_tensorboard_events_rechecked": 3,
+    "local_links_valid": true
+  }
+}

@@ -212,14 +212,19 @@ def test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort(tmp_path):
     from scripts import run_zone_pair_dev as dev
     from scripts.zone_pair_grasp_contract import grasp_contract
     old = json.loads(dev.PREREG_V3.read_text())
-    p = json.loads(dev.PREREG_V5H.read_text())
+    from tests.zone_pair_current_source import assert_executed_v5h_is_historical, write_current_source_v5h
+    committed = json.loads(dev.PREREG_V5H.read_text())
+    # dev13/dev14 executed at f87921dc; the v69 main merge made v5h historical.
+    assert_executed_v5h_is_historical(tmp_path)
+    fixture = write_current_source_v5h(tmp_path / 'current-source-v5h.json')
+    p = json.loads(fixture.read_text())
     for key in ('criteria', 'stage_rules', 'planned_setdown', 'limits', 'timing', 'safety_coverage', 'environment', 'inputs'):
-        assert p[key] == old[key], key
+        assert p[key] == old[key] == committed[key], key
     current_grasp = grasp_contract()
-    # v5h is immutable history. The v6 source must not execute under its old
-    # source receipts even when the v5h behavior flag is selected.
-    assert p['grasp_contract'] != current_grasp
-    assert p['scene_contract'] != dev.scene_contract()
+    # The fixture rebinds v5h to the current source. The committed v5h stays
+    # historical: v6 also changed its scene sources (team host, dev runner).
+    assert p['grasp_contract'] == current_grasp
+    assert p['scene_contract'] == dev.scene_contract() != committed['scene_contract']
     assert p['registration_revision'] == 'v5h'
     assert p['supersedes'] == {'path': str(dev.PREREG_V5G.relative_to(dev.ROOT)),
                                'sha256': dev.sha_file(dev.PREREG_V5G)}
@@ -228,9 +233,8 @@ def test_new_prereg_preserves_all_v3_judgement_and_uses_fresh_cohort(tmp_path):
     assert workflow['version'] == '0.6.0'
     assert p['commands']['owner'] == 'claude'
     for rid, seed in [('dev13', 909), ('dev14', 910)]:
-        args = dev.parser().parse_args(['--prereg', str(dev.PREREG_V5H), '--run-id', rid, '--output', str(tmp_path / rid)])
-        with pytest.raises(ValueError, match='scene contract'):
-            dev.load_config(args)
+        args = dev.parser().parse_args(['--prereg', str(fixture), '--run-id', rid, '--output', str(tmp_path / rid)])
+        assert dev.load_config(args)[1]['seed'] == seed
     # Historical v3 bytes remain bound to their old source, never silently
     # accepted with a changed controller under the old registration.
     args.prereg, args.run_id = dev.PREREG_V3, 'dev05'

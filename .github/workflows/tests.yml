@@ -15,6 +15,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  zone-multiturn-properties:
+    runs-on: ubuntu-latest
+    # Preserve every seed; each family uses contiguous seed ranges. Keep the
+    # expensive v64 suite separate from offline-regressions. Target <15 min/job.
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    env:
+      OMP_NUM_THREADS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-test.txt
+      - run: python -m pip install --requirement requirements-test.txt
+      - name: Compare additive scheduling against frozen v64
+        run: python -m pytest tests/test_zone_study_multiturn_properties.py tests/test_zone_study_multiturn_generated.py tests/test_zone_study_multiturn_exits.py tests/test_zone_study_multiturn_review5.py tests/test_zone_study_multiturn_review6.py tests/test_zone_study_multiturn_review7.py tests/test_zone_study_multiturn_model.py tests/test_zone_multiturn_ci.py -p tests.zone_multiturn_ci --multiturn-shard=${{ matrix.shard }}/16 --multiturn-report=outputs/ci-multiturn/shard-${{ matrix.shard }}.json --durations=20 --basetemp=./.pytest_tmp -q
+      - name: Remove test temporary directory
+        if: always()
+        run: python -c 'import shutil; shutil.rmtree(".pytest_tmp", ignore_errors=True)'
+      - name: Keep shard coverage and per-test costs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: multiturn-shard-${{ matrix.shard }}
+          path: outputs/ci-multiturn/
+          if-no-files-found: error
+          retention-days: 14
+
   tensorboard-export:
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -28,7 +61,7 @@ jobs:
       - name: Install optional TensorBoard tooling
         run: python -m pip install -r requirements-observability.txt pytest==9.1.1
       - name: Verify event readback and local original-video serving
-        run: python -m pytest -q tests/test_tensorboard_export.py tests/test_offline_audit_export.py
+        run: python -m pytest -q tests/test_tensorboard_export.py tests/test_offline_audit_export.py tests/test_owncam_loop_views.py
 
   reference-act-smoke:
     runs-on: ubuntu-24.04

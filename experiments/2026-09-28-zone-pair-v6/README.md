@@ -22,7 +22,7 @@ TensorBoard [로컬 snapshot](tensorboard-snapshot/)의 8개 scalar는 EventAccu
 | `b-only` | 기존 | v6 | 기존 gate·sweep |
 | `a+b` | v6 형상 보고 | v6 | 별도 global envelope + full beam/body/arm 검사 |
 
-`zone-pair-v68-beam-relative-recovery`를 main/열린 PR 전체 최대 v67 다음으로 예약했다.
+`zone-pair-v68-beam-relative-recovery`를 main/열린 PR 전체 최대 v67 다음으로 예약했다. (2026-09-28 main 병합 뒤 v70으로 재등록, 아래 절 참조)
 통합 실행 bundle도 이 ID를 사용하고 과거 v67은 이력으로 보존한다. 워크플로 버전은 0.6.0이다.
 Git fetch는 공유 FETCH_HEAD 쓰기 제한, gh는 네트워크 제한으로 실패했다. GitHub GET의
 main/열린 PR 7개 SHA와 로컬 origin 참조를 모두 대조했다. PR 코멘트는 도구 승인 정책 때문에
@@ -115,6 +115,22 @@ receipt는 아직 band를 포함한다.** 전체 운반이 markerless라는 주�
 
 - 전역 envelope의 이동 거리 이중 합산을 없앴다. 예정 안전 재관측은 HIGH 복구 예산과 분리해 회당 6초·총 240초·80회로 `v6_contract`에 등록했다.
 - a+b 정렬은 원거리에서 전진 전용 close-in을 한다. view 시도 기록은 다중 뷰 창 만료와 relook 뒤에 초기화한다.
-- 형상 fit은 연관 성분만 쓴다. 가까운 끝면을 중간 높이 가설로 모델링했다. 실제 렌더 7,537장 표본에서 4,465장이 fit했고 GT 평가 오차는 모두 보고 bound 안이었다.
+- 형상 fit은 연관 성분만 쓴다. 가까운 끝면을 중간 높이 가설로 모델링했다. 저장 자기 프레임 중 정지·look 자세 4,928장에서 3,693장이 fit했고 GT 평가 오차는 모두 보고 bound 안이었다(최대 0.19배). 움직이는 중 프레임의 위반 4건은 제어 입력 조건 밖이다.
 - 문헌 레시피에 따라 a+b 정렬 중에는 PF HIGH를 중단 조건에서 뺐다. 정적 빔 기준 bound로 벽·팔 여유는 계속 검사한다. 이 정의를 `v6_contract.flag_definitions`에 등록했다.
 - **v5h 조건은 과거 frozen v5h와 동일하지 않다.** 공용 경로 변경 2건(`zone_pair_executor.py`의 차단 명령 처리, `zone_pair_obstruction.py`의 성분 마스킹)이 v5h와 b-only에도 적용된다. 세 조건 사이의 한 플래그 공정성은 유지된다.
+
+## main 병합과 번들 ID v70 (2026-09-28)
+
+PR #240이 main에 병합됐다(d5bd208e). 코디네이터가 #246의 base를 main으로 바꿨고, 이 브랜치에 origin/main을 병합했다.
+물리 step·모델 호출은 없다.
+
+- **번들 ID:** `zone-pair-v70-beam-relative-multiturn`, workflow `zone-study-integration-run` 2.3.0.
+  - 병합으로 v6 소스 closure에 main의 v66 다중 턴 스케줄러가 들어왔다. 합성 소스는 v68(병합 전 v6 초안)·v69(main) 어느 쪽과도 다르다.
+  - v68은 이미 [오프라인 재생 기록](offline_replay.json)에 쓰였다. 그래서 v68을 다른 소스에 다시 쓰지 않고 다음 빈 번호를 썼다.
+  - 번호 확인: main 최대 v69, 열린 PR #248·#249는 v66까지이고 v68 이상이 없다. 그래서 v70이다.
+  - v68·v69는 `RETIRED_BUNDLE_IDS`에 추가했다. `offline_replay.json` 등 과거 기록의 v68 문자열은 그대로 둔다.
+- **prereg_v6:** `execution_bundle_id`(최상위·`v6_contract`)를 v70으로 바꾸고 `review3-fixes/update_prereg.py`로 `v6_contract`와 `registration_sha256`을 다시 계산했다(`a93caeb1…a9a2`). 상태는 DRAFT·승인 null 그대로다.
+- **충돌 해결:**
+  - v5h 관련 테스트는 main의 `tests/zone_pair_current_source.py` 방식(합성 current-source fixture + 커밋된 v5h 거부)을 따른다.
+  - 이 브랜치는 v5h scene 계약 소스(`zone_own_team_host.py`, `run_zone_pair_dev.py`, `zone_pair_dev_runtime.py`)도 바꾼다. `load_config`가 scene 계약을 먼저 검사하므로, 커밋된 v5h 거부 사유는 scene 또는 grasp 불일치 둘 다 허용하도록 helper 한 줄을 고쳤다. 거부 자체와 출력 미생성 검사는 그대로다.
+- **의미 변화:** 세 조건(v5h/b-only/a+b) 모두 main의 다중 턴 스케줄러 위에서 돈다. pair 조건 간 차이는 여전히 `pair_policy` 하나다.

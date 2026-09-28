@@ -35,7 +35,7 @@ def test_closure_follows_nested_relative_imports_initializers_and_config_roots(t
                                      'sim/session_scenes.py', 'harness/wrist_zone_skill_v9.py',
                                      'harness/owncam_pose_source.py', 'harness/zone_pair_grasp.py',
                                      'harness/zone_pair_status.py', 'harness/zone_pair_beam_track.py',
-                                     'harness/zone_pair_align.py'])
+                                     'harness/zone_pair_align.py', 'harness/zone_study_decisions.py'])
 def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed):
     pre = runner.load_prereg(PREREG)
     original = runner.run_bundle(pre, pre['episodes'][0])[0]
@@ -45,7 +45,7 @@ def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed)
     mutated = runner.run_bundle(pre, pre['episodes'][0])[0]
     assert mutated['runtime_files_sha256'][changed] == 'f' * 64
     assert runner.digest(original) != runner.digest(mutated)
-    assert original['execution_bundle_id'] == 'zone-pair-v68-beam-relative-recovery'
+    assert original['execution_bundle_id'] == 'zone-pair-v70-beam-relative-multiturn'
 
 
 HEAD = '1' * 40

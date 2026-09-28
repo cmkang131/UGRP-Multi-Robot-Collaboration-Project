@@ -1,7 +1,8 @@
 """Explicit pair ablations; the frozen v5h path remains the default."""
 from dataclasses import dataclass
 
-EXECUTION_BUNDLE_ID = 'zone-pair-v68-beam-relative-recovery'
+# v68 = pre-merge v6 draft (retired, offline replay only); v70 = v6 on main v69.
+EXECUTION_BUNDLE_ID = 'zone-pair-v70-beam-relative-multiturn'
 
 
 @dataclass(frozen=True)
