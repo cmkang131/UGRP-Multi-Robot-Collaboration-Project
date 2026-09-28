@@ -425,6 +425,8 @@ def run_case(case, out):
               'weld': False, 'contact_profile': 'cargo_noslip_v1', 'model_calls': 0, 'ultrasonic': 'off (not connected)'}
     result['diag_patch'] = case.get('diag_patch')
     result['loadavg_case_start'] = list(os.getloadavg())
+    IMAGE_VALID_REAL.clear()
+    result['image_valid_real_stats'] = IMAGE_VALID_REAL if case.get('diag_patch') == 'image_valid_off' else None
     install_diag_patch(case.get('diag_patch'))
     result['staging_bypass'] = case.get('staging_bypass')
     result['admission_image_valid_real'] = {}
@@ -676,6 +678,7 @@ def finish_result(case, result, out):
         record['exits'] = {r: {} for r in sp.PARTICIPANTS if result.get('final_states', {}).get(r) == 'done'}
     ev = sp.evaluate(stage, record)
     diag = stage_diagnostics(case, result, out, record)
+    diag['host_error_message'] = (result.get('host_error') or {}).get('message')
     cause = sp.classify_cause(stage, ev, record, diag)
     entry_t = min((v['sim_s'] for v in result.get('entry', {}).values()), default=None)
     end_t = (result.get('termination') or {}).get('sim_s')
@@ -691,6 +694,8 @@ def finish_result(case, result, out):
            'pair_policy': case.get('pair_policy', 'v5h'),
            'diag_patch': case.get('diag_patch'),
            'leg': case.get('leg'), 'cause': cause['code'], 'cause_sub': cause['sub'],
+           'staging_infeasible': cause['code'] == 'STAGING_IK_ENVELOPE',
+           'image_valid_real_stats': result.get('image_valid_real_stats'),
            'contacts_in_stage': cause['contacts_in_stage'],
            'own_at_entry': diag['own_at_entry'], 'own_at_ref': diag['own_at_ref'], 'ref_t': diag['ref_t'],
            'est_vs_gt_at_ref': diag['est_vs_gt_at_ref'], 'sigma_yaw_max': diag['sigma_yaw_max'],
@@ -753,6 +758,9 @@ def build_cases(args):
     return cases
 
 
+IMAGE_VALID_REAL = {}   # image_valid_off: robot id -> [frames the real valid_frame accepted, frames it rejected]
+
+
 def install_diag_patch(name):
     """Probe-process-only diagnostic patch (sp.DIAG_PATCHES). Never used by a non-diag case."""
     if name in sp.DIAG_COMPONENTS:
@@ -781,6 +789,20 @@ def install_diag_patch(name):
             still = float(np.max(np.abs(self.vel))) < 1e-3 and not (self.t < self.cmd_expires - 1e-9)
             return {**mp, 'noise_abs': [0., 0., 0.]} if still else mp
         OwnCamLocalizer._motion_params = motion_params
+    elif name == 'image_valid_off':
+        import importlib
+        import harness.zone_pair_vision as vision
+        real = vision.valid_frame
+
+        def forced(obs, rid, now):
+            IMAGE_VALID_REAL.setdefault(rid, [0, 0])[0 if real(obs, rid, now) else 1] += 1
+            return True
+        forced.__wrapped__ = real
+        vision.valid_frame = forced      # zone_pair_admission / _executor / _guards import it at call time
+        grasp = importlib.import_module('harness.zone_pair_grasp')   # imports the name at module load
+        if not hasattr(grasp, 'valid_frame'):
+            raise RuntimeError('harness.zone_pair_grasp has no valid_frame to patch')
+        grasp.valid_frame = forced
     elif name == 'fix_age_round':
         from harness.owncam_recovery_v6 import RecoveryLocalizer
         from harness.owncam_localizer import OwnCamLocalizer
@@ -808,7 +830,8 @@ def install_staging_bypass(names, verdicts):
         raise ValueError(f'unknown staging bypass {names!r}')
     import harness.zone_pair_admission as admission
     import harness.zone_pair_vision as vision
-    registered_snapshot, real = admission.readiness_snapshot, vision.valid_frame
+    registered_snapshot, current = admission.readiness_snapshot, vision.valid_frame
+    real = getattr(current, '__wrapped__', current)   # image_valid_off wraps the real predicate; record the real verdict
 
     def snapshot(ex, now, *a, **k):
         verdicts.setdefault(ex.robot_id, []).append(bool(real(ex.last_obs, ex.robot_id, now)))
@@ -816,7 +839,7 @@ def install_staging_bypass(names, verdicts):
         try:
             return registered_snapshot(ex, now, *a, **k)
         finally:
-            vision.valid_frame = real
+            vision.valid_frame = current
     admission.readiness_snapshot = snapshot
 
 

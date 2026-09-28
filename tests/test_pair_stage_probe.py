@@ -520,3 +520,47 @@ def test_staging_bypass_forces_only_the_admission_predicate_and_records_the_real
                'r.install_staging_bypass(None, {})\n')
     out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
     assert out.returncode == 0, out.stderr
+
+
+def test_staging_ik_envelope_is_its_own_cause_and_leaves_the_staged_denominator():
+    msg = 'target radius is outside the calibrated 14.5..18.0 cm grasp envelope'
+    ev = {'passed': False, 'category': 'HOST_ERROR', 'checks': {}}
+    c = sp.classify_cause('carry', ev, {'first_failure': {'robot_id': None, 'sim_s': None, 'reason': 'HOST_ERROR'}},
+                          {'host_error_message': msg})
+    assert c['code'] == 'STAGING_IK_ENVELOPE' and 'STAGING_IK_ENVELOPE' in sp.CAUSES
+    assert sp.classify_cause('carry', ev, {}, {'host_error_message': 'MuJoCo exploded'})['code'] == 'HOST_ERROR'
+    assert sp.classify_cause('carry', ev, {})['code'] == 'HOST_ERROR'
+    rows = [{'stage': 'carry', 'source': 'teacher_grid', 'passed': False, 'category': 'HOST_ERROR', 'cause': 'STAGING_IK_ENVELOPE',
+             'wall_s': 8, 'stage_sim_s': None},
+            {'stage': 'carry', 'source': 'teacher_grid', 'passed': True, 'category': 'PASS', 'cause': 'PASS', 'wall_s': 60,
+             'stage_sim_s': 20.},
+            {'stage': 'carry', 'source': 'teacher_grid', 'passed': False, 'category': 'POSE_UNCERTAIN', 'cause': 'SELF_POSE_UNCERTAIN',
+             'wall_s': 60, 'stage_sim_s': 3.}]
+    st = sp.summarize(rows)['stages']['carry']
+    assert (st['cases'], st['passed'], st['staging_infeasible'], st['staged_cases']) == (3, 1, 1, 2)
+    assert st['pass_rate'] == round(1 / 3, 4) and st['staged_pass_rate'] == .5
+
+
+def test_diag_image_valid_off_forces_every_check_and_keeps_the_real_verdict_in_a_subprocess():
+    assert 'image_valid_off' in sp.DIAG_PATCHES
+    d = sp.apply_diag_patch([_carry()], 'image_valid_off')[0]
+    assert d['case_id'].endswith(':diag-image_valid_off') and d['diag_patch'] == 'image_valid_off'
+    program = ('from scripts import run_pair_stage_probes as r\n'
+               'import harness.zone_pair_admission as adm, harness.zone_pair_grasp as gr, harness.zone_pair_vision as vis\n'
+               'real = vis.valid_frame\n'
+               'vis.valid_frame = lambda obs, rid, now: rid == "r2"                         # r1 invalid, r2 valid\n'
+               'r.IMAGE_VALID_REAL.clear()\n'
+               'r.install_diag_patch("image_valid_off")\n'
+               'assert vis.valid_frame(None, "r1", 1.) is True and gr.valid_frame(None, "r1", 1.) is True\n'
+               'assert vis.valid_frame(None, "r2", 1.) is True\n'
+               'assert r.IMAGE_VALID_REAL == {"r1": [0, 2], "r2": [1, 0]}                    # real verdicts counted\n'
+               'seen = []\n'
+               'adm.readiness_snapshot = lambda ex, now, *a, **k: seen.append(vis.valid_frame(None, "r1", now)) or {"state": "READY"}\n'
+               'ex = type("E", (), {"robot_id": "r1", "last_obs": None})()\n'
+               'verdicts = {}\n'
+               'r.install_staging_bypass(["admission_image_valid"], verdicts)\n'
+               'adm.readiness_snapshot(ex, 2.)\n'
+               'assert seen == [True] and verdicts == {"r1": [False]}                       # real verdict, not the forced one\n'
+               'assert vis.valid_frame.__wrapped__("x", "r1", 3.) is False\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr

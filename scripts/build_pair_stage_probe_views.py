@@ -20,7 +20,9 @@ DEFINITION = ('stage probe verdict, NOT E2E success: both robots reached the sta
               'state, no in-stage failure, and the eval-only GT stage criteria held (harness/pair_stage_probe.py CRITERIA)')
 SHORT = {'align': 'al', 'grasp_lift': 'gl', 'carry': 'ca', 'setdown': 'sd',
          'teacher_grid': 't', 'e2e_checkpoint': 'e2e', 'tolerance_boundary': 'bd'}
-DIAG_SHORT = {'fix_age_round': '', 'loaded_yaw_gate_wide': 'G', 'pf_rest_no_abs_noise': 'N', 'rest_noise_off_and_gate_wide': 'NG'}
+DIAG_SHORT = {'fix_age_round': '', 'loaded_yaw_gate_wide': 'G', 'pf_rest_no_abs_noise': 'N', 'rest_noise_off_and_gate_wide': 'NG',
+              'image_valid_off': 'V'}
+IK_ENVELOPE_TEXT = 'outside the calibrated 14.5..18.0 cm grasp envelope'   # harness.pair_stage_probe.STAGING_IK_ENVELOPE_TEXT
 POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C'}   # C = v6c (exact clock + grasp-range entry)
 
 
@@ -47,6 +49,12 @@ def write(out, name, view):
     d.mkdir(parents=True, exist_ok=False)
     (d / 'result.json').write_text(json.dumps(view, ensure_ascii=False, indent=1, allow_nan=False) + '\n')
     return name
+
+
+def staging_infeasible(row, result):
+    if row.get('staging_infeasible') or row.get('cause') == 'STAGING_IK_ENVELOPE':
+        return True
+    return row.get('category', '').startswith('HOST_ERROR') and IK_ENVELOPE_TEXT in str((result.get('host_error') or {}).get('message'))
 
 
 def case_view(raw, row, manifest):
@@ -84,6 +92,10 @@ def case_view(raw, row, manifest):
     for rid, n in (row.get('localizer_replaced') or {}).items():
         scalars[f'offline/localizer_replaced/{rid}'] = n
     policy = row.get('pair_policy', 'v5h')
+    infeasible = staging_infeasible(row, result)
+    if infeasible:
+        row = {**row, 'cause': 'STAGING_IK_ENVELOPE', 'cause_sub': None}   # 0.4.1 raws recorded HOST_ERROR; the message says why
+        scalars['offline/staging_infeasible'] = 1
     view = {'schema': SCHEMA, 'derived_view_only': True,
             'offline_source': {'path': str(src), 'sha256': sha(src)},
             'offline_scalar_scope': ('one stage-probe case (stage probe, not E2E success). Staged from GT/teacher '
@@ -109,7 +121,7 @@ def case_view(raw, row, manifest):
         view['condition'] += f" diag:{row['diag_patch']}"
     if row.get('leg') is not None:                                  # 0.4.0: route leg (carry k / setdown 'end')
         leg = row['leg']
-        view['condition'] += f' leg{leg}'
+        view['condition'] += ' dest' if row['stage'] == 'setdown' else f' leg{leg}'   # setdown 'end' = the route destination
         diag += f'-L{leg}' if row['stage'] == 'carry' else '-Lend'
     if row.get('cause'):
         view['cause'] = row['cause'] + (f"/{row['cause_sub']}" if row.get('cause_sub') else '')
@@ -134,21 +146,28 @@ def main(argv=None):
             names.append(write(a.output, name, view))
         summary = raw / 'summary.json'
         s = json.loads(summary.read_text())
+        infeasible_ids = {r['case_id'] for r in rows if staging_infeasible(
+            r, json.loads((raw / 'cases' / re.sub(r'[^A-Za-z0-9_.+-]+', '_', r['case_id']) / 'result.json').read_text()))}
         for stage, st0 in s['stages'].items():
             for policy, st in (st0.get('by_policy') or {'v5h': st0}).items():
                 for source, bs in st['by_source'].items():
+                    n_inf = sum(1 for r in rows if r['case_id'] in infeasible_ids and r['stage'] == stage
+                                and r['source'] == source and r.get('pair_policy', 'v5h') == policy)
                     view = {'schema': SCHEMA, 'derived_view_only': True,
                             'offline_source': {'path': str(summary), 'sha256': sha(summary)},
                             'offline_scalar_scope': f'aggregate of {bs["cases"]} stage-probe cases ({stage}, {source}); '
                                                     'stage probe, not E2E success',
                             'offline_scalars': {'offline/cases': bs['cases'], 'offline/passed': bs['passed'],
-                                                'offline/pass_rate': bs['passed'] / bs['cases']},
+                                                'offline/pass_rate': bs['passed'] / bs['cases'],
+                                                'offline/staging_infeasible': n_inf, 'offline/staged_cases': bs['cases'] - n_inf,
+                                                'offline/staged_pass_rate': (bs['passed'] / (bs['cases'] - n_inf)
+                                                                             if bs['cases'] > n_inf else 0.)},
                             'success': bs['passed'] == bs['cases'], 'success_definition': 'all cases of this group passed; ' + DEFINITION,
                             'model_calls': 0, 'family': 'pair_stage_probe_aggregate', 'policy': policy,
                             'case': 'all', 'condition': f'{stage}/{source}{_run_tag(raw)}', 'outcome': json.dumps(st['failures']),
                             'source_sha': manifest['source']['source_sha'], 'run_id': raw.name,
                             'scope': 'stage_probe_not_e2e', 'texts': {'evaluation/summary': st},
-                            'hparam_metrics': ['offline/pass_rate', 'offline/cases']}
+                            'hparam_metrics': ['offline/pass_rate', 'offline/staged_pass_rate', 'offline/cases']}
                     names.append(write(a.output, f'ALL-{_pol(policy)}{SHORT[stage]}-{SHORT[source]}-{manifest["source"]["source_sha"][:8]}{_run_tag(raw)}', view))
     index = {'views': names, 'raw': [str(r) for r in a.raw],
              'raw_summary_sha256': {str(r): sha(r / 'summary.json') for r in a.raw}}

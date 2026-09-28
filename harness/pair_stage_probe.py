@@ -30,10 +30,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.4.1'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+PROBE_VERSION = '0.4.2'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
+#                          0.4.2: STAGING_IK_ENVELOPE cause (excluded from the staged denominator), image_valid_off
+#                                 diagnostic patch
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
 POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
@@ -413,6 +415,12 @@ DIAG_PATCHES = {
                              'stationary robot without a fix diffuses (yaw sigma ~ 0.0218 rad/sqrt(s)). Motion-time '
                              'noise is unchanged. Confirms the rest-diffusion cause; not a proposed model.'),
     'rest_noise_off_and_gate_wide': '0.4.0. both patches above (pf_rest_no_abs_noise + loaded_yaw_gate_wide).',
+    'image_valid_off': ('0.4.2. harness.zone_pair_vision.valid_frame (admission image_valid, the endpoint per-step '
+                        'INVALID_OWN_IMAGE abort, the guard/grasp checks) always returns True; the real verdict is counted '
+                        'per robot in result.json image_valid_real_stats. Everything else, including the localizer that '
+                        'still sees the same frames, is unchanged. Answers "what does the set-down controller do at the '
+                        'dev-map destination once the dark-floor image check is not the first blocker", never "does v6c '
+                        'set down".'),
 }
 DIAG_COMPONENTS = {'rest_noise_off_and_gate_wide': ('pf_rest_no_abs_noise', 'loaded_yaw_gate_wide')}
 
@@ -596,6 +604,8 @@ CAUSES = {
     'STAGE_TIMEOUT_NO_EXIT': 'no controller failure and no stage exit within the stage budget',
     'OWN_IMAGE_INVALID': 'the endpoint\'s per-step own-image check failed (dark-pixel share >= 25 % / low contrast)',
     'ENTRY_ERROR': 'staged entry rejected (admission / entry check)', 'HOST_ERROR': 'simulator/host exception',
+    'STAGING_IK_ENVELOPE': ('teacher staging infeasible: solve_grip_ik rejects the placed grasp (target radius outside the '
+                            'calibrated 14.5..18.0 cm envelope); the controller never ran -> not a controller result'),
     'UNCLASSIFIED': 'reason not in the map (see category)'}
 FAILURE_TO_CAUSE = {
     'POSE_UNCERTAIN': 'SELF_POSE_UNCERTAIN', 'POSE_UNCERTAIN_PROGRESS': 'SELF_POSE_UNCERTAIN',
@@ -609,6 +619,7 @@ FAILURE_TO_CAUSE = {
 CHECK_TO_CAUSE = {'lift': 'LOAD_DROP', 'held_throughout': 'LOAD_DROP', 'both_jaws_both_robots': 'LOAD_DROP',
                   'tilt': 'TILT', 'leg_error': 'MOTION_ERROR', 'end_error': 'MOTION_ERROR',
                   'rest': 'NOT_LOWERED', 'released': 'NOT_RELEASED', 'shift': 'DRAGGED'}
+STAGING_IK_ENVELOPE_TEXT = 'outside the calibrated 14.5..18.0 cm grasp envelope'   # visual_arm.solve_grip_ik ValueError
 CONTACT_KINDS = ('wall', 'cargo_wall', 'peer_robot')   # eval-only host contact kinds that count as a collision
 
 
@@ -639,7 +650,7 @@ def classify_cause(stage, ev, record, diag=None):
     cat = ev['category']
     failure = record.get('first_failure')
     if cat.startswith('HOST_ERROR'):
-        out['code'] = 'HOST_ERROR'
+        out['code'] = 'STAGING_IK_ENVELOPE' if STAGING_IK_ENVELOPE_TEXT in str(diag.get('host_error_message') or '') else 'HOST_ERROR'
     elif cat.startswith('ENTRY:'):
         out['code'] = 'ENTRY_ERROR'
         out['sub'] = cat[len('ENTRY:'):]
@@ -671,9 +682,13 @@ def summarize(rows):
             by_source[src] = {'cases': len(sub), 'passed': sum(r['passed'] for r in sub)}
         walls = sorted(r['wall_s'] for r in rs if r.get('wall_s') is not None)
         sims = sorted(r['stage_sim_s'] for r in rs if r.get('stage_sim_s') is not None)
+        infeasible = sum(r.get('cause') == 'STAGING_IK_ENVELOPE' for r in rs)
+        staged = len(rs) - infeasible
         out['stages'][stage] = {
             'cases': len(rs), 'passed': sum(r['passed'] for r in rs),
             'pass_rate': round(sum(r['passed'] for r in rs) / len(rs), 4) if rs else None,
+            'staging_infeasible': infeasible, 'staged_cases': staged,
+            'staged_pass_rate': round(sum(r['passed'] for r in rs) / staged, 4) if staged else None,
             'by_source': by_source,
             'failures': dict(Counter(r['category'] for r in rs if not r['passed']).most_common()),
             'causes': dict(Counter(r['cause'] for r in rs if not r['passed'] and r.get('cause')).most_common()),
