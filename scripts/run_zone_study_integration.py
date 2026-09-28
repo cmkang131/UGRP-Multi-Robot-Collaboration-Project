@@ -313,6 +313,8 @@ def run_bundle(prereg, episode, *, model_adapter=None):
     stub = {r: _StubLink(r) for r in ROBOTS}
     trial = zi.IntegratedTrial(scenario, condition=MAIN_CONDITIONS[0], seed=episode['trial_seed'], links=stub,
                                horizon_s=prereg['horizon_s'], map_bundle=map_bundle,
+                               policy=zo.CallPolicy(**prereg.get('call_policy', {})),
+                               decision_limits=zi.DecisionLimits(**prereg.get('decision_limits', {})),
                                pose_label=zi.provider_record(provider)['label'])
     invariant = zi.condition_invariant_config(trial.study_config())
     if model_adapter is not None:
@@ -466,6 +468,8 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
                                    horizon_s=horizon_s, code_sha=code['sha'], map_bundle=map_bundle,
                                    pose_label=label, actor='gemini_proxy' if model_adapter else zi.FIXTURE_ACTOR,
                                    model_adapter=model_adapter,
+                                   policy=zo.CallPolicy(**prereg.get('call_policy', {})),
+                                   decision_limits=zi.DecisionLimits(**prereg.get('decision_limits', {})),
                                    pair_records=lambda: host.pairs.records() if host.pairs else [])
         t = host.settle(float(prereg['t0_s']))
         trial.begin(t)
@@ -587,6 +591,7 @@ def write_study(out, trial, result, summary):
     jsonl(study / 'inputs.jsonl', trial.input_log)
     jsonl(study / 'executor_events.jsonl', trial.executor_events)
     jsonl(study / 'scheduler_events.jsonl', trial.scheduler.events)
+    jsonl(study / 'decision_events.jsonl', trial.scheduler.decision_events)
     (study / 'pair_status.json').write_text(json.dumps(trial.pair_status.record(), indent=1) + '\n')
     (study / 'study_config.json').write_text(json.dumps(trial.study_config(), indent=1, ensure_ascii=False) + '\n')
     (study / 'send_ledger.json').write_text(json.dumps(trial.send_ledger.to_dict(), indent=1) + '\n')
@@ -599,6 +604,7 @@ def write_study(out, trial, result, summary):
     (study / 'trial_record.json').write_text(json.dumps(record, indent=1, ensure_ascii=False) + '\n')
     summary['study'] = {'calls': len(result.calls), 'messages': len(result.messages), 'actions': len(result.actions),
                         'end_reason': record['end_reason'], 'end_sim_s': record['end_sim_s'],
+                        'end_state': record['end_state'],
                         'channel': zo.channel_checks(trial, result), 'cost': zo.cost_checks(trial, result),
                         'requests': zo.request_checks(result),
                         'reopen': zo.reopen_trial_record(study / 'trial_record.json'),
@@ -636,7 +642,8 @@ def main(argv=None):
                     expected_source_sha=args.expected_source_sha)
     study = rec.get('study', {})
     print(json.dumps({'run_id': rec['run_id'], 'stop': rec['stop'], 'sim_s': rec.get('sim_s'),
-                      'end_reason': study.get('end_reason'), 'calls': study.get('calls'),
+                      'end_reason': study.get('end_reason'), 'end_state': study.get('end_state'),
+                      'calls': study.get('calls'),
                       'messages': study.get('messages'), 'dispatch': study.get('dispatch'),
                       'deliveries': len(rec.get('eval_only', {}).get('referee', {}).get('deliveries', [])),
                       'pose_provider': rec['pose_provider']}, ensure_ascii=False, default=str), flush=True)

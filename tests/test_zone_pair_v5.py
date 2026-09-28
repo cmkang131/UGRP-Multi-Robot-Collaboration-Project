@@ -358,12 +358,66 @@ raise SystemExit(main(sys.argv[1:]))
     assert m['physical_success'] is None
     assert (out / 'prereg.json').read_bytes() == registration.read_bytes()
     assert not (out / 'eval_only/trace.jsonl').exists()
-    p = json.loads(registration.read_text())
-    case = next(r for r in p['runs'] if r['id'] == run)
+    # Preparation copies receipts; it does not admit the scene to execution.
+    # In particular, rebinding source contracts in this synthetic fixture does
+    # not re-register the macOS catalogue/scene-instance hashes for Linux.
+    assert p['scene_instances'] == json.loads(dev.PREREG_V5B.read_text())['scene_instances']
+
+
+@pytest.mark.parametrize('run', ['dev09', 'dev10'])
+@pytest.mark.parametrize('catalogue_kind', ['native', 'registered', 'one_ulp'])
+def test_v5_scene_admission_keeps_frozen_hash_across_catalogue_platforms(monkeypatch, run, catalogue_kind):
+    """A platform float difference must refuse execution, not rewrite history.
+
+    Exercise both branches on every host. The old catalogue is DATA read from
+    the registration's own commit, never historical Python imported under the
+    current interpreter. Only the static catalogue input is replaced; scene
+    construction, hashing and admission are the production implementations.
+    """
+    from scripts import run_zone_pair_dev as dev
     from scripts.zone_pair_dev_runtime import make_scene
+    from scripts.zone_pair_registered_source import committed_blob, verify_registered_source
+    from sim import zone_tagged_cargo_scene as tagged
+
+    receipt = verify_registered_source(dev.PREREG_V5B)
+    p = json.loads(committed_blob(str(dev.ROOT), receipt['source_commit'], receipt['registration_path']))
+    original = copy.deepcopy(p)
+    catalogue_path = 'experiments/2026-09-25-zone-cargo-catalogue/results.json'
+    archived = json.loads(committed_blob(str(dev.ROOT), receipt['source_commit'], catalogue_path))['catalogue']
+
+    def catalogue_hash(value):
+        # Match the existing catalogue's exact serialization, without rounding.
+        return hashlib.sha256(json.dumps({k: v for k, v in value.items() if k != 'sha256'},
+                                         sort_keys=True).encode()).hexdigest()
+
+    assert archived['sha256'] == catalogue_hash(archived)
+    current = tagged.catalogue_record() if catalogue_kind == 'native' else copy.deepcopy(archived)
+    if catalogue_kind == 'one_ulp':
+        # tri_frame vertices use libm sin/cos. Even an unused kind's last bit
+        # changes catalogue_sha256 embedded in the long_beam scene receipt.
+        center = current['kinds']['tri_frame']['parts'][0]['center']
+        center[1] = math.nextafter(center[1], math.inf)
+        current['sha256'] = catalogue_hash(current)
+        assert current['sha256'] != archived['sha256']
+    monkeypatch.setattr(tagged, 'catalogue_record', lambda: copy.deepcopy(current))
+    case = next(r for r in p['runs'] if r['id'] == run)
     scene = make_scene({'map': p['environment']['map'], 'seed': case['seed'], 'goal': {'B': {'cyan': 1}},
                         'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam', 'pose': case['setup_beam_xyyaw']}]})
-    dev.validate_scene(p, scene)
+    # Prove catalogue identity is the ONLY difference before accepting the
+    # native-host mismatch branch. Other scene drift must still fail this test.
+    comparable = copy.deepcopy(scene.config)
+    comparable['cargo_set']['catalogue_sha256'] = archived['sha256']
+    assert dev.digest({'config': comparable, 'map': scene.map}) == p['scene_instances'][run]['resolved_sha256']
+    if current['sha256'] == archived['sha256']:
+        dev.validate_scene(p, scene)
+    else:
+        with pytest.raises(ValueError, match='^resolved scene configuration hash mismatch$'):
+            dev.validate_scene(p, scene)
+    # A changed spawn still fails the structural guard on BOTH catalogue paths.
+    scene.config['setup_only']['spawns']['r3'][0] -= .01
+    with pytest.raises(ValueError, match='^actual scene configuration differs from dock prereg$'):
+        dev.validate_scene(p, scene)
+    assert p == original  # No expected hash/registration updates, even in memory.
 
 
 def current_registration():

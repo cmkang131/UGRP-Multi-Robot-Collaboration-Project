@@ -1,0 +1,65 @@
+{
+  "schema": "ugrp.zone_study_integration_prereg.v1",
+  "pose_provider": "tags_temporary",
+  "pose_provider_note_ko": "임시, 표식 사용, 연구 결과 아님",
+  "actor": "fixture_v1",
+  "student": {
+    "executor": "harness/zone_own_executor.py (ZoneOwnExecutor, OwnCamTeamHost; PR #206 c8a2355a)",
+    "mode": "m1",
+    "skill_module": "harness.wrist_zone_skill_v9",
+    "skill_class": "WristZoneDeliveryV9",
+    "calibration": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json"
+  },
+  "t0_s": 0.5,
+  "conditions": [
+    "no_comm",
+    "peer_ko",
+    "leader_ko",
+    "structured"
+  ],
+  "registered": null,
+  "source_sha": null,
+  "bundle_sha256": null,
+  "horizon_s": 120,
+  "question": "v66 다회 결정 경계 후보; 미실행 DRAFT, 통신 효과나 물리 성공 아님",
+  "call_policy": {
+    "max_calls_per_actor": 3,
+    "max_http_attempts_per_actor": 3,
+    "max_attempts_total": 9,
+    "max_retries": 1
+  },
+  "decision_limits": {
+    "max_calls_total": 9,
+    "max_utterances_per_actor": 2,
+    "max_utterances_total": 6
+  },
+  "episodes": [
+    {
+      "episode_id": "multiturn-dev-draft",
+      "split": "dev",
+      "scenario": "configs/zone_study_integration/i1_cyan_three_slots.json",
+      "map": "zone_wide_door_tags_v2",
+      "base_map": "zone_wide_door",
+      "layout_seed": 700,
+      "trial_seed": 701,
+      "goal": {
+        "A": {
+          "cyan": 1
+        },
+        "B": {
+          "cyan": 1
+        },
+        "C": {
+          "cyan": 1
+        }
+      },
+      "extra_boxes": {
+        "red": 2,
+        "green": 1
+      },
+      "contact_profile": "cargo_noslip_v1",
+      "job_sim_limit_s": 720
+    }
+  ],
+  "stop_rule": "모델·물리 실행 미승인; 고정 소스·새 bundle pin·실행 예산·물리 잠금은 별도. ENOSPC는 HOST_ERROR."
+}

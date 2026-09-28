@@ -57,7 +57,14 @@ def registration_host_catalogue():
 
 
 def registered_tree(registration=dev.PREREG_V3):
-    """Latest receipt must match; historical source differences never become executable."""
+    """Latest receipt must match; historical source differences never become executable.
+
+    Every receipt is first audited against the git blobs of its own
+    registration commit (provenance only, never execution admission).
+    """
+    from scripts.zone_pair_registered_source import verify_registered_source
+
+    verify_registered_source(registration)
     current = dev.scene_contract()
     registered = json.loads(registration.read_text())['scene_contract']
     assert current == json.loads(dev.PREREG_V5H.read_text())['scene_contract']
@@ -227,14 +234,40 @@ def test_registered_v3_rejects_drift_before_world_import(tmp_path, fault):
     assert not args.output.exists()
 
 
+def assert_committed_receipt_is_prepare_only(registration, run_id, tmp_path):
+    """The committed receipt never carries an authorization envelope.
+
+    dev13/dev14 ran with a coordinator envelope added only to their execution
+    checkout; the committed bytes stay prepare-only on every host. Use the
+    host's own primary checkout so the output guard is not what refuses it.
+    """
+    assert json.loads(registration.read_text()).get('execution_authorization') is None
+    execute = ['--execute', '--expected-source-sha', 'a' * 40, '--lock-owner', 'codex']
+    outside = dev.parser().parse_args(['--prereg', str(registration), '--run-id', run_id,
+                                       '--output', str(tmp_path / 'not-primary-outputs'), *execute])
+    with pytest.raises(ValueError, match='^physical raw output must be absolute under primary checkout outputs/$'):
+        dev.load_config(outside)
+    primary = dev.primary_root() / 'outputs' / f'dock-NOT-EXECUTED-{run_id}-{tmp_path.name}'
+    args = dev.parser().parse_args(['--prereg', str(registration), '--run-id', run_id,
+                                    '--output', str(primary), *execute])
+    with pytest.raises(ValueError, match='^prepare-only: execution_authorization from coordinator is required$'):
+        dev.load_config(args)
+    assert not primary.exists() and not outside.output.exists()
+
+
 @pytest.mark.parametrize('registration,run_id', [
     (dev.PREREG_V3, 'dev05'), (dev.PREREG_V3, 'dev06'),
     (dev.PREREG_V4, 'dev07'), (dev.PREREG_V4, 'dev08'),
     (dev.PREREG_V5D, 'dev11'), (dev.PREREG_V5D, 'dev12'),
     (dev.PREREG_V5G, 'dev11'), (dev.PREREG_V5G, 'dev12'),
     (dev.PREREG_V5H, 'dev13'), (dev.PREREG_V5H, 'dev14'),
+    ('current_source_v5h', 'dev13'), ('current_source_v5h', 'dev14'),
 ])
 def test_registered_prepare_and_workflow_inputs_without_mujoco_import(tmp_path, registration, run_id):
+    synthetic = registration == 'current_source_v5h'
+    if synthetic:
+        from tests.zone_pair_current_source import write_current_source_v5h
+        registration = write_current_source_v5h(tmp_path / 'synthetic-current-source-v5h.json')
     code = '''
 import builtins, sys
 original = builtins.__import__
@@ -250,9 +283,19 @@ raise SystemExit(main(sys.argv[1:]))
     argv = ['--prereg', str(registration), '--run-id', run_id, '--output', str(out)]
     result = subprocess.run([sys.executable, '-c', code, *argv], cwd=dev.ROOT, text=True, capture_output=True,
                             env={**os.environ, 'OMP_NUM_THREADS': '1', 'PYTHONDONTWRITEBYTECODE': '1'})
-    if not registered_tree(registration):
+    if not synthetic and not registered_tree(registration):
         # Historical registrations require their pinned source, including v4.
         assert result.returncode != 0 and 'scene contract/hash mismatch' in result.stderr, result.stderr
+        assert not out.exists()
+        return
+    from scripts.zone_pair_grasp_contract import grasp_contract
+    if json.loads(registration.read_text())['grasp_contract'] != grasp_contract():
+        # v5h dev13/dev14 already executed at their pinned source (f87921dc).
+        # Later source (the v69 main merge) must not re-prepare or re-admit them.
+        from tests.zone_pair_current_source import assert_executed_v5h_is_historical
+        assert registration == dev.PREREG_V5H
+        assert_executed_v5h_is_historical(tmp_path, run_id)
+        assert result.returncode != 0 and 'grasp contract/hash mismatch' in result.stderr, result.stderr
         assert not out.exists()
         return
     assert result.returncode == 0, result.stderr
@@ -268,9 +311,4 @@ raise SystemExit(main(sys.argv[1:]))
     plan = wm.plan(dev.ROOT, dev.WORKFLOW, [*argv[:-1], str(tmp_path / 'planned-not-run')])
     paths = {r['path'] for r in plan['inputs']}
     assert {str(registration), str(dev.MAP), str(dev.map_path(prereg())), str(dev.CALIBRATION)} <= paths
-    # Latest unexecuted cohort is held even with otherwise valid execute args.
-    args = dev.parser().parse_args(['--prereg', str(registration), '--run-id', run_id,
-        '--output', '/Users/changmin/projects/ugrp/outputs/dock-NOT-EXECUTED-' + run_id,
-        '--execute', '--expected-source-sha', 'a' * 40, '--lock-owner', 'codex'])
-    with pytest.raises(ValueError, match='prepare-only'):
-        dev.load_config(args)
+    assert_committed_receipt_is_prepare_only(registration, run_id, tmp_path)

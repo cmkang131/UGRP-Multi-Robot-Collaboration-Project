@@ -1,0 +1,969 @@
+{
+  "source_commit": "b454ad3ce63ac9182248ea751e8224ef13762e89",
+  "before_integration_sha256": "3dbf55972122c7f6d62e812ee724a66177c437d2d70d9a969c7474e23f2206ab",
+  "model_calls": 0,
+  "physics_steps": 0,
+  "review7_counterexamples": 12,
+  "rows": [
+    {
+      "condition": "no_comm",
+      "first": "claim",
+      "horizon_s": 8.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "no_comm",
+      "first": "claim",
+      "horizon_s": 12.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "no_comm",
+      "first": "claim",
+      "horizon_s": 20.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "no_comm",
+      "first": "continue",
+      "horizon_s": 8.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 0,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 0,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 0,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": true,
+          "pending_work_count": 0,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "no_comm",
+      "first": "claim",
+      "horizon_s": 90.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 3,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 3,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 3,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "peer_ko",
+      "first": "claim",
+      "horizon_s": 8.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "peer_ko",
+      "first": "claim",
+      "horizon_s": 12.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "peer_ko",
+      "first": "claim",
+      "horizon_s": 20.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "peer_ko",
+      "first": "continue",
+      "horizon_s": 8.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 0,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 0,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 0,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": true,
+          "pending_work_count": 0,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "peer_ko",
+      "first": "claim",
+      "horizon_s": 90.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 3,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 5,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 3,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "leader_ko",
+      "first": "claim",
+      "horizon_s": 8.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "leader_ko",
+      "first": "claim",
+      "horizon_s": 12.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "leader_ko",
+      "first": "claim",
+      "horizon_s": 20.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "leader_ko",
+      "first": "continue",
+      "horizon_s": 8.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 0,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 0,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 0,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": true,
+          "pending_work_count": 0,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "leader_ko",
+      "first": "claim",
+      "horizon_s": 90.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 3,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 5,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 3,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "structured",
+      "first": "claim",
+      "horizon_s": 8.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "structured",
+      "first": "claim",
+      "horizon_s": 12.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "structured",
+      "first": "claim",
+      "horizon_s": 20.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "sim_horizon",
+        "pending_work_count": 3,
+        "refusals": 0,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "structured",
+      "first": "continue",
+      "horizon_s": 8.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 0,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 0,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 0,
+        "refusals": 2,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": true,
+          "pending_work_count": 0,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    },
+    {
+      "condition": "structured",
+      "first": "claim",
+      "horizon_s": 90.0,
+      "before": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 3,
+        "send_count": 3,
+        "end_state": {}
+      },
+      "v64": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 5,
+        "send_count": 3,
+        "end_state": null
+      },
+      "after": {
+        "end_reason": "budget_exhausted",
+        "pending_work_count": 3,
+        "refusals": 3,
+        "send_count": 3,
+        "end_state": {
+          "quiescent": false,
+          "pending_work_count": 3,
+          "in_flight_calls": 0,
+          "censored_calls": 0,
+          "committed_sends": 3,
+          "reserved": 0,
+          "remaining_budget": {
+            "http_total": 0,
+            "http_per_actor": {
+              "r1": 0,
+              "r2": 0,
+              "r3": 0
+            },
+            "calls_per_actor": {
+              "r1": 29,
+              "r2": 29,
+              "r3": 29
+            },
+            "calls_total": 87
+          },
+          "horizon_hit": true
+        }
+      }
+    }
+  ]
+}

@@ -143,7 +143,8 @@ def test_pair_and_multiple_real_adapter_calls_use_each_own_camera(condition, tmp
         for rid in zi.ROBOTS:
             calls = [p for p, _ in raw_requests if p['robot_id'] == rid]
             assert any(p.get('inbox') for p in calls[1:])
-            assert any(trigger == 'report' for _, trigger in trial.wakeups(rid))
+            assert any(c.actor == rid and 'report' in {c.trigger, *c.merged_triggers}
+                       for c in trial.scheduler.calls)
     assert trial.sim_output_tokens(outputs[0], 0) == zi.pk.count_tokens(outputs[0])
     runner.write_study(tmp_path, trial, result, {'pose_provider': bundle['pose_provider']['label']})
     for sha, jpeg in trial.request_images.items():
@@ -171,10 +172,10 @@ def test_research_scenarios_and_bundle_use_study_wide_profile():
     assert bundle['contact_profile_expected']['noslip_iterations'] == 10
     assert bundle['contact_profile_expected']['timestep_s'] == .00025
     assert bundle['perception_delay_s'] == .16
-    assert bundle['execution_bundle_id'] == 'zone-study-integration-v67-landmark-agnostic'
+    assert bundle['execution_bundle_id'] == 'zone-study-integration-v69-multiturn-landmark-agnostic'
     workflow = next(w for w in json.loads((ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
                     if w['id'] == 'zone-study-integration-run')
-    assert workflow['version'] == '2.1.0'
+    assert workflow['version'] == '2.2.0'
     assert bundle['pose_provider']['label']['research_result'] is False
     assert bundle['pose_provider']['spec']['calibration'] == pre['student']['calibration']
     from scripts.zone_pair_dev_runtime import make_scene

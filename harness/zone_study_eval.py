@@ -1171,7 +1171,7 @@ def act_types(utterance):
     encoding = utterance.get('encoding')
     if encoding in STRUCTURED_ENCODINGS:
         message = utterance.get('message')
-        fine = zm.struct_acts(message if isinstance(message, dict) else None)
+        fine = _study_struct_acts(message if isinstance(message, dict) else None)
         coarse = sorted({_STRUCT_TO_COARSE.get(f, 'report') for f in fine if f != 'silence'})
         return {'fine': fine, 'coarse': coarse or (['silence'] if 'silence' in fine else ['report'])}
     text = utterance.get('text') or ''
@@ -1186,6 +1186,19 @@ def act_types(utterance):
         fine.append('order')
     coarse = sorted({FINE_TO_COARSE.get(f, 'order' if f == 'order' else 'report') for f in fine})
     return {'fine': sorted(fine), 'coarse': coarse}
+
+
+def _study_struct_acts(message):
+    """Fine label of a study structured message (``zone_study_contract.STRUCTURED_ACTS``).
+
+    The pilot's ``zm.struct_acts`` validates against the PR 172 V3 vocabulary
+    (``zone_dialogue_ko.ACTS``), which differs from the study enum
+    (``reject``/``accept``/``inform``/``cancel``), so it is not reused here.
+    """
+    if message is None:
+        return ['silence']
+    act = message.get('act')
+    return [act if isinstance(act, str) and act in STRUCTURED_ACTS else 'other']
 
 
 _STRUCT_TO_COARSE = {

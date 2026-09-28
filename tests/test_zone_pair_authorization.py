@@ -25,7 +25,17 @@ def no_real_gh(monkeypatch):
 
 
 def registered():
-    return json.loads(dev.PREREG_V5H.read_text())
+    # dev13/dev14 executed under the committed v5h; after the v69 main merge
+    # it is historical (see test_committed_v5h_is_historical_after_execution).
+    # Admission logic is exercised on the synthetic current-source copy.
+    from tests.zone_pair_current_source import current_source_v5h
+    return current_source_v5h()
+
+
+def test_committed_v5h_is_historical_after_execution(tmp_path):
+    from tests.zone_pair_current_source import assert_executed_v5h_is_historical
+    assert_executed_v5h_is_historical(tmp_path, 'dev13')
+    assert_executed_v5h_is_historical(tmp_path, 'dev14')
 
 
 def authorize(p):

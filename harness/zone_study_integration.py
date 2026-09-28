@@ -46,7 +46,8 @@ import hashlib
 import importlib
 import json
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
+from functools import partial
 from pathlib import Path
 from typing import Protocol
 
@@ -56,7 +57,8 @@ from harness import zone_pair_executor as pair_executor
 from harness.zone_study_pose_delay import DelayedPoseSource, PERCEPTION_DELAY_S
 from harness import zone_study_offline as zo
 from harness import zone_study_prompts_ko as pk
-from harness.zone_event_scheduler import REASK_POLICY, EventScheduler
+from harness.zone_event_scheduler import REASK_POLICY
+from harness.zone_study_decisions import DECISION_POLICY, DecisionLimits, DecisionScheduler
 from harness.zone_own_executor import API_TO_ACTION_KIND, EVENTS as EXECUTOR_EVENTS
 from harness.zone_sim_cost import params as cost_params_for
 from harness.zone_study_contract import (COMMAND_ARGUMENT_KEYS, MAIN_CONDITIONS, ROBOTS, ContractViolation,
@@ -67,8 +69,14 @@ from harness.zone_study_llm_transport import ModelCallTransport
 
 ROOT = Path(__file__).resolve().parents[1]
 INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
-# v64 and its source receipts remain historical; v65 binds the v5 close barrier.
-EXECUTION_BUNDLE_ID = 'zone-study-integration-v67-landmark-agnostic'
+# v64/v65/v66/v67 and their source receipts remain historical. v69 is the
+# merge of main's v66 multi-turn scheduler with PR #240's v67 landmark-agnostic
+# pair path (v5h); its source equals neither, so it takes the next free number
+# (v68 is reserved by PR #246). dev13/dev14 recorded v67 byte-for-byte.
+EXECUTION_BUNDLE_ID = 'zone-study-integration-v69-multiturn-landmark-agnostic'
+RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
+                      'zone-study-integration-v64-source-closure', 'zone-study-integration-v65-pair-close',
+                      'zone-study-integration-v66-multiturn', 'zone-study-integration-v67-landmark-agnostic')
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',
@@ -82,7 +90,7 @@ QUANTUM_S = cost_params_for().quantum_s
 #: The thinking/talking cost reaches physics through the delayed action release.
 THINK_HOLD_POLICY = 'idle_robot_holds_busy_job_continues'
 ACTION_MAP_VERSION = 'zone_study_action_map.v2_pair'
-#: ``wait`` on an idle executor = hold this long (then job_done -> idle wake).
+#: Preserve the v64 idle wait job, command history and common re-ask timing.
 WAIT_HOLD_S = 10.0
 FIXTURE_ACTOR = 'fixture_v1'
 #: Planned defaults only. CLI remains fixture-only; an embedding runner may
@@ -308,7 +316,7 @@ class IntegratedTrial(zo.OfflineTrial):
 
     def __init__(self, scenario, *, condition, seed, links, horizon_s, code_sha='unknown', map_bundle=None,
                  cost_params=None, policy=None, actor=FIXTURE_ACTOR, pose_label=None,
-                 model_adapter=None, pair_records=None):
+                 model_adapter=None, pair_records=None, decision_limits=None):
         if model_adapter is None:
             check_actor(actor)
         elif actor != 'gemini_proxy':
@@ -318,9 +326,25 @@ class IntegratedTrial(zo.OfflineTrial):
                                     'commander R is not wired into this runner')
         if sorted(links) != sorted(ROBOTS) or any(links[r].robot_id != r for r in links):
             raise ContractViolation(f'links must be exactly one own RobotLink per robot {ROBOTS}')
+        self.links = dict(links)
+        self.decision_limits = decision_limits or DecisionLimits()
+        policy = policy or zo.CallPolicy()
+        for name in ('max_calls_per_actor', 'max_http_attempts_per_actor', 'max_attempts_total'):
+            value = getattr(policy, name)
+            if type(value) is not int or value < 1:
+                raise ContractViolation(f'integrated {name} must be a positive integer')
+        if policy.max_outstanding_per_actor != 1:
+            raise ContractViolation('integrated decisions require one outstanding call per robot per lane')
+        scheduler_factory = partial(DecisionScheduler, own_job=lambda actor: self.links[actor].job(),
+                                    decision_limits=self.decision_limits,
+                                    external_budget_spent=lambda: self.transport.budget_exhausted)
         super().__init__(scenario, condition=condition, seed=seed, map_bundle=map_bundle,
                          cost_params=cost_params, policy=policy, library=_NoStoredFrames(),
-                         horizon_s=horizon_s, run_id=None, code_sha=code_sha)
+                         horizon_s=horizon_s, run_id=None, code_sha=code_sha,
+                         scheduler_factory=scheduler_factory)
+        # One window for this episode. These limits cannot be renewed by a call.
+        self.channel.cap_robot = min(self.channel.cap_robot, self.decision_limits.max_utterances_per_actor)
+        self.channel.cap_total = self.decision_limits.max_utterances_total
         self.actor = actor
         if model_adapter is not None:
             self.client_factory = model_adapter.client_factory
@@ -336,10 +360,9 @@ class IntegratedTrial(zo.OfflineTrial):
         if model_adapter is None:
             self.scheduler.transport = self.transport  # retain the existing ledger owner
         else:
-            self.scheduler = EventScheduler(self.transport, cost_params=self.params, policy=self.policy,
+            self.scheduler = scheduler_factory(self.transport, cost_params=self.params, policy=self.policy,
                                             actors=self.actors, on_action=self._on_action,
                                             bus=self.channel, bus_owner=zo.BUS_OWNER)
-        self.links = dict(links)
         self.pose_label = dict(pose_label or {})
         self.pair_status = PairStatusBus(self.sheet, pair_records)
         self._snapshots, self._jobs = {}, {}
@@ -350,6 +373,14 @@ class IntegratedTrial(zo.OfflineTrial):
     def sim_output_tokens(self, raw, utterances):
         return (super().sim_output_tokens(raw, utterances) if self.actor == FIXTURE_ACTOR
                 else pk.count_tokens(raw))
+
+    def cost_summary(self):
+        row = super().cost_summary()
+        if self.actor != FIXTURE_ACTOR:
+            # The inherited fixture wire was never used by this adapter. Its
+            # zero is not an independent measurement of real proxy traffic.
+            row.update(wire_requests=None, wire_requests_basis='requires_provider_reconciliation')
+        return row
 
     # -- clock --------------------------------------------------------------
     def begin(self, t0_s):
@@ -377,12 +408,53 @@ class IntegratedTrial(zo.OfflineTrial):
         trigger = event.get('scheduler_trigger')
         if trigger is not None and at_s <= self.horizon_s + 1e-9:
             self.scheduler.trigger(rid, trigger, at=at_s)
+        if event['event'] in ('job_done', 'job_failed') and at_s <= self.horizon_s + 1e-9:
+            self.scheduler.available(rid, at=at_s)
+
+    def decision_budget_spent(self) -> bool:
+        return self.transport.budget_exhausted or self.scheduler.budget.exhausted()
 
     def quiescent(self) -> bool:
         """No further decision can happen: every budget spent, nobody thinking, every executor idle."""
-        spent = all(self.scheduler.metrics[a]['calls'] >= self.policy.max_calls_per_actor for a in self.actors) \
-            or self.scheduler.budget.remaining() == 0
-        return spent and not self.scheduler.holding() and all(self.links[a].job() is None for a in self.actors)
+        return (self.decision_budget_spent() and not self.scheduler.holding()
+                and all(self.links[a].job() is None for a in self.actors))
+
+    def decision_end_reason(self):
+        """Frozen v64 compatibility label; actual terminal facts are in end_state."""
+        return ('budget_exhausted' if any(self.scheduler.metrics[a]['budget_refused']
+                                          for a in self.actors)
+                else 'sim_horizon')
+
+    def end_state(self, t_end_s):
+        """Post-settlement facts, identical for every communication condition.
+
+        Censored calls remain unfinished SIM decisions even after shutdown has
+        removed them from holding(). Reservations/remaining budgets are the
+        reconciled scheduler balances, not upstream provider or pilot balances.
+        This record never feeds a model input or changes scheduling.
+        """
+        s, budget = self.scheduler, self.scheduler.budget
+        pending = sum(self.links[a].job() is not None for a in self.actors)
+        unfinished = sum(r['status'] in ('outstanding', 'interrupted', 'censored')
+                         for r in s.ledger.values())
+        logical = {a: budget.call_count(a, confirmed_only=True) for a in self.actors}
+        return {
+            'quiescent': self.decision_budget_spent() and not pending and not unfinished,
+            'pending_work_count': pending,
+            'in_flight_calls': unfinished,
+            'censored_calls': len(s.censored),
+            'committed_sends': s.send_ledger.sends(),
+            'reserved': budget.outstanding(),
+            'remaining_budget': {
+                'http_total': budget.remaining(),
+                'http_per_actor': {a: budget.remaining(a) for a in self.actors},
+                'calls_per_actor': {a: max(0, self.policy.max_calls_per_actor - logical[a])
+                                    for a in self.actors},
+                'calls_total': (None if s.max_calls_total is None else
+                                max(0, s.max_calls_total - sum(logical.values()))),
+            },
+            'horizon_hit': float(t_end_s) >= self.horizon_s,
+        }
 
     def finish(self, t_end_s) -> zo.TrialResult:
         report = self.scheduler.run(until_s=t_end_s)
@@ -392,8 +464,7 @@ class IntegratedTrial(zo.OfflineTrial):
                               actions=self.actions, requests=self.requests, trace=self.scheduler.trace(),
                               report=report.to_dict(), channel=self.channel_summary(), cost=self.cost_summary(),
                               send_ledger=self.send_ledger_record(),
-                              end_reason='budget_exhausted' if any(self.scheduler.metrics[a]['budget_refused']
-                                                                   for a in self.actors) else 'sim_horizon')
+                              end_reason=self.decision_end_reason(), end_state=self.end_state(t_end_s))
 
     # -- inputs ---------------------------------------------------------------
     def snapshot(self, call):
@@ -453,7 +524,8 @@ class IntegratedTrial(zo.OfflineTrial):
             local_state=local))
         if ack or reason:
             self._remember_command(actor, call_id, sim_s, plan, ack, kind, arguments, local)
-        self._arm_reask(actor, sim_s)
+        if self.scheduler.call_causes[call_id]['cause'] == 'common':
+            self._arm_reask(actor, sim_s)
 
     def _remember_command(self, actor, call_id, sim_s, plan, ack, kind, arguments, local):
         """Own command history: what this robot issued and its own command state."""
@@ -471,7 +543,10 @@ class IntegratedTrial(zo.OfflineTrial):
         The core's ``arm_reask`` owns the cap (``REASK_POLICY``); the integration
         supplies only the own-job-dependent delay and the budget/horizon checks.
         """
-        if self.scheduler.metrics[actor]['calls'] >= self.policy.max_calls_per_actor:
+        # v64 creates common timers independently of the HTTP balance. Admission
+        # checks the balance when the timer fires. Temporary reservations must
+        # neither remove that future opportunity nor affect a common re-ask.
+        if self.scheduler.budget.call_limit_reached(actor, confirmed_only=True):
             return
         busy = self.links[actor].job() is not None
         at = sim_s + (self.policy.busy_reask_s if busy else self.policy.idle_reask_s)
@@ -496,6 +571,9 @@ class IntegratedTrial(zo.OfflineTrial):
                 'call_policy': policy, 'quantum_s': QUANTUM_S,
                 'perception_delay_s': PERCEPTION_DELAY_S, 'think_hold_policy': THINK_HOLD_POLICY,
                 'action_map': {'version': ACTION_MAP_VERSION, 'wait_hold_s': WAIT_HOLD_S},
+                'decision_policy': DECISION_POLICY, 'decision_limits': asdict(self.decision_limits),
+                'dialogue_caps': {'window': self.channel.cap_window, 'actor': self.channel.cap_robot,
+                                  'episode': self.channel.cap_total, 'windows_per_episode': 1},
                 'reask_policy': REASK_POLICY,
                 'pair_status': self.pair_status.config(), 'pair_status_sha256': self.pair_status.config_sha256(),
                 'order_sheet_sha256': self.source.sha256, 'pose_provider': dict(self.pose_label),
@@ -505,4 +583,4 @@ class IntegratedTrial(zo.OfflineTrial):
 def condition_invariant_config(config) -> dict:
     """The part of ``study_config`` that must be identical in all four conditions."""
     return {k: v for k, v in config.items()
-            if k not in ('condition', 'topology', 'encoding', 'leader_id', 'inter_robot_channels')}
+            if k not in ('condition', 'topology', 'encoding', 'leader_id', 'inter_robot_channels', 'dialogue_caps')}
