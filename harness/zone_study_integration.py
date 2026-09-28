@@ -69,14 +69,17 @@ from harness.zone_study_llm_transport import ModelCallTransport
 
 ROOT = Path(__file__).resolve().parents[1]
 INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
-# v64/v65/v66/v67 and their source receipts remain historical. v69 is the
-# merge of main's v66 multi-turn scheduler with PR #240's v67 landmark-agnostic
-# pair path (v5h); its source equals neither, so it takes the next free number
-# (v68 is reserved by PR #246). dev13/dev14 recorded v67 byte-for-byte.
-EXECUTION_BUNDLE_ID = 'zone-study-integration-v69-multiturn-landmark-agnostic'
+# v64/v65/v66/v67/v68/v69 and their source receipts remain historical. v70 is
+# PR #246's v6 pair path (v68 beam-relative recovery + review 3) composed with
+# main's v69 (v66 multi-turn scheduler + v67 landmark-agnostic pair path). The
+# composed source equals none of them, so it takes the next free number; v68
+# stays reserved as the pre-merge v6 draft recorded by its offline replay.
+from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID
 RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
                       'zone-study-integration-v64-source-closure', 'zone-study-integration-v65-pair-close',
-                      'zone-study-integration-v66-multiturn', 'zone-study-integration-v67-landmark-agnostic')
+                      'zone-study-integration-v66-multiturn', 'zone-study-integration-v67-landmark-agnostic',
+                      'zone-pair-v68-beam-relative-recovery',
+                      'zone-study-integration-v69-multiturn-landmark-agnostic')
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',

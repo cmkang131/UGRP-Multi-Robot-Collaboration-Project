@@ -43,6 +43,15 @@ def stationary_beam_estimate(obs, servo):
     return {**beam, 'std_xy_m': spread, 'std_yaw_rad': syaw}
 
 
+
+# Final review P2-3. Input-validity outcomes that carry no alignment verdict:
+TRANSIENT_INPUT_REASONS = frozenset(('DUPLICATE_IMAGE', 'OUT_OF_ORDER', 'STALE_OR_CAMERA_MISMATCH',
+                                     'IDENTICAL_PIXELS_NO_NEW_COMMAND',
+                                     'IMAGE_PRECEDES_ISSUED_COMMAND', 'CAMERA_COMMAND_MISMATCH',
+                                     'BEAM_MOVED_OR_ASSOCIATION_LOST', 'PARTIAL_INCONSISTENT_OR_BEAM_MOVED'))
+# Identity outcomes another fixed view can resolve (bounded by the posture list):
+VIEW_DEPENDENT_REASONS = frozenset(('SHAPE_AMBIGUOUS', 'END_ID_AMBIGUOUS', 'PAIRED_EDGES_UNOBSERVABLE'))
+
 class PairGraspRelook(PairAlignRelook):
     """Mixin before M2DoorStudent. All live inputs come from the own port."""
 
@@ -51,6 +60,80 @@ class PairGraspRelook(PairAlignRelook):
         if self.state == 'align':
             self.record_standoff(now, obs)
         return obs
+
+    def _align(self, now, arm_idle):
+        if not getattr(getattr(self,'policy',None),'beam_relative',False):
+            return super()._align(now,arm_idle)
+        from harness import owncam_pair_beam as ob
+        from harness import owncam_pair_beam_v2 as postures
+        from scripts.study_owncam_pair_beam import LOOK_EVERY_S, STATE_LIMIT_S
+        if not arm_idle or now < self.next_look:
+            return
+        self.next_look = now+LOOK_EVERY_S
+        if now-self.state_t > STATE_LIMIT_S['align']:
+            return self.fail('ALIGN_TIMEOUT',now)
+        obs = self.look(now)
+        relative = self.relative_report(now,obs)
+        key = (relative.frame_id,relative.sha256)
+        if key == getattr(self,'aligned_frame',None):
+            return  # a repeated JPEG is not a second aligned receipt
+        self.aligned_frame = key
+        if not relative.ready(now):
+            self.aligned_streak = 0
+            if set(relative.reasons) & TRANSIENT_INPUT_REASONS:
+                # Final review P2-3: a stale/duplicate/out-of-order input or a
+                # track just dropped for re-identification carries no verdict.
+                # Wait for the next own frame; the align deadline bounds this.
+                self.log(self.rid,'relative_input_skipped',now,reasons=list(relative.reasons))
+                return
+            if relative.closing_ready(now):
+                # Review 3: identified complete shape, bound too large only
+                # from range. Approach under the global envelope, then re-fit.
+                command = relative.closing_command()
+                if command is not None:
+                    if not self.global_certificate(now,relative.beam())['clear']:
+                        return self._begin_align_relook(now,'global_safety')
+                    self.relative_views_tried = {}
+                    self.log(self.rid,'relative_close_in',now,bound_m=relative.std_xy_m+relative.bias_bound_m,
+                             grip_base_m=list(relative.grip_base_m),command=command)
+                    return self.drive(command,now)
+            # Missing longitudinal/depth/identity information is not zero
+            # alignment error. A new camera branch will require new images.
+            # A view counts as tried only while its image can still be fused
+            # (MULTIVIEW_KEEP_S); an interrupted/expired window is retried.
+            from harness.zone_pair_relative import MULTIVIEW_KEEP_S
+            order = postures.order()
+            tried = getattr(self,'relative_views_tried',{})
+            if not isinstance(tried, dict):
+                tried = {}
+            tried = {k:t for k,t in tried.items() if now-t <= MULTIVIEW_KEEP_S}
+            tried[self.look_name] = now
+            self.relative_views_tried = tried
+            choices = [name for name in order if name not in tried]
+            if 'END_CLIPPED' in relative.reasons and choices:
+                return self._set_look(choices[0],now,reason='relative_end_clipped')
+            if 'DISCONNECTED_SHAPE_OR_OCCLUSION' in relative.reasons and choices:
+                # Review 3: an adjacent/ambiguous second component is an
+                # occluder candidate; another fixed view may separate it.
+                return self._set_look(choices[0],now,reason='relative_occluder_candidate')
+            if set(relative.reasons) & VIEW_DEPENDENT_REASONS and choices:
+                # Final review P2-3: identity not established from this view
+                # (e.g. a peer gripper joined to the far end); try the rest.
+                return self._set_look(choices[0],now,reason='relative_identity_unknown')
+            return self.fail('BEAM_RELATIVE_UNCERTAIN',now)
+        if not self.global_certificate(now,relative.beam())['clear']:
+            return self._begin_align_relook(now,'global_safety')
+        command = ob.align_command(relative.beam())
+        if command is not None:
+            self.aligned_streak = 0
+            self.relative_views_tried = {}
+            return self.drive(command,now)
+        self.aligned_streak += 1
+        self.grip_base = list(relative.grip_base_m)
+        if self.aligned_streak >= 2:
+            self.claims['aligned'] = {'relative_report':relative.as_dict(),
+                                      'errors':ob.align_errors(relative.beam()),'sim_time':now}
+            return self._queue_grasp(now)
 
     @property
     def beam_grasp_confirmed(self):
@@ -70,14 +153,22 @@ class PairGraspRelook(PairAlignRelook):
         own = self.port.own
         report = own.last_report
         start = getattr(self, 'pregrasp_started_at', None)
+        if getattr(getattr(self,'policy',None),'beam_relative',False):
+            relative = self.relative_report(now,own.last_obs)
+            return {'relative_ready':relative.ready(now),
+                    'global_safety':self.global_certificate(now,relative.beam())['clear']}
         # No VO-only bypass, old low-sigma report, or a different localizer.
-        return {**accepted_fix_checks(report, now, start, strict_start=False),
+        checks = {**accepted_fix_checks(report, now, start, strict_start=False),
                 'shared_localizer': self.driver.loc is own.pose.loc,
                 'initialized': report is not None and report.initialized,
                 'pose_finite': report is not None and all(finite_number(v) for v in (report.x_m, report.y_m, report.yaw_rad)),
                 'gate_ok': own.gate.ok,
                 'std_xy': report is not None and 0 <= report.std_xy_m <= FIX_STD_XY_M,
                 'std_yaw': report is not None and 0 <= report.std_yaw_rad <= FIX_STD_YAW_RAD}
+        if getattr(getattr(self,'policy',None),'posterior_relook',False):
+            from harness.zone_pair_v6_policy import informative_fix
+            checks['informative_fix'] = informative_fix(report)
+        return checks
 
     def _grasp_pose_ready(self, now):
         return all(self._grasp_pose_checks(now).values())
@@ -95,11 +186,35 @@ class PairGraspRelook(PairAlignRelook):
         self.pregrasp_done = False
         self.pregrasp_started_at = now
         self.beam_grasp_receipt = None
+        if getattr(getattr(self,'policy',None),'beam_relative',False):
+            if not self._grasp_pose_ready(now):
+                return self.fail('PREGRASP_RELATIVE_OR_GLOBAL_UNCERTAIN',now)
+            self.pregrasp_done = True
+            r = self.port.own.last_report
+            self.grasp_estimate = [r.x_m,r.y_m,r.yaw_rad]  # navigation remains global
+            return self._queue_open_descent(now)
         drv = self.driver
-        self.port.own.pose.begin_relocalization(now, drv.servo)
+        if getattr(getattr(self,'policy',None),'posterior_relook',False):
+            from harness.zone_pair_align import MAX_LOOKS, MAX_TOTAL_LOOK_S
+            previous = getattr(self,'pregrasp_look_started_at',None)
+            if previous is not None and self.state == 'pregrasp_look':
+                self.align_look_total_s = getattr(self,'align_look_total_s',0.)+now-previous
+            count,total = getattr(self,'align_look_count',0),getattr(self,'align_look_total_s',0.)
+            if count>=MAX_LOOKS or total>=MAX_TOTAL_LOOK_S:
+                return self.fail('ALIGN_RELOOK_LIMIT',now)
+            self.align_look_count=count+1
+            self.pregrasp_look_started_at=now
+        self._begin_provider_look(now)
         self.pregrasp_sweeps += 1
         self.pg_pans = list(m2.PREGRASP_PANS_V2)
-        self.arm.queue({**LOOK_P20, 6: self.pg_pans.pop(0)}, now, duration=.8, settle=.6)
+        if getattr(getattr(self,'policy',None),'posterior_relook',False):
+            self.relook_excluded = set()
+            self.pg_pans = [r['pan'] for r in self.align_look_choices()[:3]]
+            if not self.pg_pans:
+                return self.fail('PREGRASP_NO_SAFE_VIEW',now)
+        self.active_relook_pan = self.pg_pans.pop(0)
+        self.relook_directions_used = 1
+        self.arm.queue({**LOOK_P20, 6: self.active_relook_pan}, now, duration=.8, settle=.6)
         self.set('pregrasp_look', now, sweep=self.pregrasp_sweeps, profile=PROFILE)
 
     def _pregrasp_look(self, now, arm_idle):
@@ -110,8 +225,28 @@ class PairGraspRelook(PairAlignRelook):
         # Host on_frame has already fed this own RGB to the SAME pose source
         # read by PairCommandGuard. Do not run a second independent estimate.
         self.look(now)
+        if getattr(getattr(self,'policy',None),'posterior_relook',False):
+            checks = self._grasp_pose_checks(now)
+            if all(checks.values()):
+                self.pg_pans.clear()
+                self.relook_cancelled = False
+            elif [k for k,v in checks.items() if not v] == ['gate_ok']:
+                return
+            else:
+                self.relook_excluded = getattr(self,'relook_excluded',set())
+                self.relook_excluded.add(getattr(self,'active_relook_pan',self.port.own.servo[6]))
+                if getattr(self,'relook_directions_used',0)>=3:
+                    self.pg_pans.clear()
+            if (getattr(self,'relook_cancelled',False)
+                    and getattr(self,'relook_directions_used',0)<3):
+                self.pg_pans = [r['pan'] for r in self.align_look_choices()[:3]]
+                self.relook_cancelled = False
+                if not self.pg_pans:
+                    return self.fail('PREGRASP_NO_SAFE_VIEW',now)
         if self.pg_pans:
-            self.arm.queue({6: self.pg_pans.pop(0)}, now, duration=.4, settle=.6)
+            self.active_relook_pan = self.pg_pans.pop(0)
+            self.relook_directions_used = getattr(self,'relook_directions_used',0)+1
+            self.arm.queue({6: self.active_relook_pan}, now, duration=.4, settle=.6)
             return
         ok = self._grasp_pose_ready(now)
         report = self.port.own.last_report
@@ -126,6 +261,8 @@ class PairGraspRelook(PairAlignRelook):
                 return self.fail('DOOR_POSE_NOT_LOCALIZED', now)
             return self._queue_grasp(now)
         self.pregrasp_done = True
+        if getattr(getattr(self,'policy',None),'posterior_relook',False):
+            self.align_look_total_s = getattr(self,'align_look_total_s',0.)+now-self.pregrasp_look_started_at
         self.grasp_estimate = [report.x_m, report.y_m, report.yaw_rad]
         self.claims['grasp_pose_estimate'] = {'xyyaw': list(self.grasp_estimate),
                                             'source': 'shared own.pose/last_report', 'sim_time': now}
@@ -165,6 +302,11 @@ class PairGraspRelook(PairAlignRelook):
         self.set('pregrasp_descend', now)
 
     def tick(self, now):
+        if self.state == 'pregrasp_look' and getattr(getattr(self,'policy',None),'posterior_relook',False):
+            from harness.zone_pair_align import MAX_LOOK_S, MAX_TOTAL_LOOK_S
+            elapsed=now-self.pregrasp_look_started_at
+            if elapsed>=MAX_LOOK_S or elapsed+getattr(self,'align_look_total_s',0.)>=MAX_TOTAL_LOOK_S:
+                return self.fail('PREGRASP_RELOOK_TIMEOUT',now)
         if self.state not in ('pregrasp_standoff', 'pregrasp_descend', 'wait_close'):
             return super().tick(now)
         channel, publisher = self.status
@@ -190,7 +332,9 @@ class PairGraspRelook(PairAlignRelook):
         ready = (self.pregrasp_done and self._grasp_pose_ready(now)
                  and own.servo.get(1) == m2.study.OPEN
                  and all(own.servo.get(k) == v for k, v in self.grasp_pose.items() if k != 1)
-                 and valid_frame(obs, self.rid, now) and m2.grip_view_m2(obs['image'])['seen']
+                 and valid_frame(obs, self.rid, now)
+                 and (getattr(getattr(self,'policy',None),'beam_relative',False)
+                      or m2.grip_view_m2(obs['image'])['seen'])
                  and self.preclose_check(now, obs))
         self.report('close', obs, now, ready=ready, reason='own relook + open grip view + stationary beam clearance')
         if not ready:

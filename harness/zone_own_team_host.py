@@ -151,16 +151,18 @@ class OwnCamTeamHost:
             # Explicit static task sheets, not generated from the cargo's live pose.
             from scripts.run_m2_pair import CALIBRATION
             pair_params = json.loads(CALIBRATION.read_text())['params']
-            self.enable_pair_carry(spec['pair_order_sheets'], pair_params)
+            self.enable_pair_carry(spec['pair_order_sheets'], pair_params, policy=spec.get('pair_policy', 'v5h'))
 
-    def enable_pair_carry(self, sheets, params, *, controller_factory=None, rendezvous_timeout_s=5., heartbeat_timeout_s=.15):
+    def enable_pair_carry(self, sheets, params, *, controller_factory=None, rendezvous_timeout_s=5., heartbeat_timeout_s=.15,
+                          policy='v5h'):
         """Attach the M2 dispatcher; may also be used with a simulator-free host."""
         from harness.zone_pair_executor import PairTeam, m2_controller
         self.pairs = PairTeam({r: s.executor for r, s in self.robots.items()}, sheets, params,
                               cancel_scheduled=self._drop_scheduled,
                               contact_profile=self.contact_record['profile'], weld=False,
                               controller_factory=controller_factory or m2_controller,
-                              rendezvous_timeout_s=rendezvous_timeout_s, heartbeat_timeout_s=heartbeat_timeout_s)
+                              rendezvous_timeout_s=rendezvous_timeout_s, heartbeat_timeout_s=heartbeat_timeout_s,
+                              policy=policy)
         self._next_pair_arm = 0.  # original CLI clock lifetime, never reset on a submission
 
     def _pair_safety(self, now):

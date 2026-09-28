@@ -1,0 +1,76 @@
+{
+  "base_and_current_head": "19b3a7b242ccecf63ac5087ba122b1cb559d0991",
+  "passed": 2793,
+  "failed": 0,
+  "skipped": 2,
+  "subtests_passed": 382,
+  "test_files": 80,
+  "suite_guards": {
+    "physical_step_attempts": 0,
+    "real_vision_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "child_physics_attempts": 0,
+  "model_calls": 0,
+  "temporary_directory_removed": true,
+  "unchanged_review2_source_files": 11,
+  "unchanged_frozen_files": [
+    "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v3.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v4.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5b.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5c.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5d.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5e.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5f.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5g.json",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5h.json",
+    "scripts/run_zone_pair_dev.py",
+    "scripts/zone_pair_registered_source.py",
+    "sim/zone_cargo.py",
+    "sim/zone_tagged_cargo_scene.py",
+    "sim/session_scenes.py"
+  ],
+  "v6_source_hashes_verified": 65,
+  "v6_prereg_sha256": "a12ebaa29d628955f29a968aa68e1b3723996e4f6cb502543ce4bfe4199f2ca5",
+  "policy_flags": {
+    "v5h": {
+      "name": "v5h",
+      "posterior_relook": false,
+      "beam_relative": false
+    },
+    "b-only": {
+      "name": "b-only",
+      "posterior_relook": true,
+      "beam_relative": false
+    },
+    "a+b": {
+      "name": "a+b",
+      "posterior_relook": true,
+      "beam_relative": true
+    }
+  },
+  "new_scene_regressions": [
+    "test_v5_scene_admission_keeps_frozen_hash_across_catalogue_platforms[native-dev09]",
+    "test_v5_scene_admission_keeps_frozen_hash_across_catalogue_platforms[native-dev10]",
+    "test_v5_scene_admission_keeps_frozen_hash_across_catalogue_platforms[registered-dev09]",
+    "test_v5_scene_admission_keeps_frozen_hash_across_catalogue_platforms[registered-dev10]",
+    "test_v5_scene_admission_keeps_frozen_hash_across_catalogue_platforms[one_ulp-dev09]",
+    "test_v5_scene_admission_keeps_frozen_hash_across_catalogue_platforms[one_ulp-dev10]"
+  ],
+  "test_change_sha256": "179b4a791609c38f2dbfa4b688e942ca10020b9d3e86b678300df7f92048f48e",
+  "native_ubuntu_run": false,
+  "remote_ci_rerun": false,
+  "project_commit_created": false,
+  "full_checkout_presence_regression": {
+    "tracked_files_present": 6743,
+    "passed": 104,
+    "failed": 0,
+    "includes_original_head_tests": 2,
+    "hydrated_files": 1555,
+    "hydrated_copies_verified_and_removed": 1555
+  }
+}
