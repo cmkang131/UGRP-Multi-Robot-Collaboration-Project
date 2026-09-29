@@ -316,6 +316,82 @@ def save_checkpoint(host, out, label):
             'roundtrip_bitwise': roundtrip}
 
 
+EPISODE_GAP_S = .1       # a wall contact with the same (who, wall geom, other geom) within this gap continues its episode
+HARD_LIMITS = {'max_tilt_deg': 15., 'max_penetration_m': .005}   # eval-side hard limits of the door-relax runs (user 2026-09-29)
+
+
+def track_wall_contacts(host, data, now, track):
+    """Eval-only. Record every MuJoCo contact between a wall geom and a robot (r1, r2) or the beam, with the signed
+    distance (negative = penetration). Never read by control. One episode per (who, wall geom, other geom)."""
+    import mujoco
+    wall, own, box = host._wall, host._own, host._all_box
+    seen = set()
+    for i in range(data.ncon):
+        c = data.contact[i]
+        g1, g2 = int(c.geom1), int(c.geom2)
+        if g1 in wall:
+            w, o = g1, g2
+        elif g2 in wall:
+            w, o = g2, g1
+        else:
+            continue
+        who = ('beam' if o in box else 'r1' if o in own['r1'] else 'r2' if o in own['r2'] else None)
+        if who is None:
+            continue
+        key = (who, w, o)
+        pen = max(0., -float(c.dist))
+        ep = track['open'].get(key)
+        if ep is None or now - ep['t_last'] > EPISODE_GAP_S:
+            if ep is not None:
+                track['episodes'].append(ep)
+            model = host.world.model
+            ep = {'who': who, 'wall_geom': mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, w),
+                  'other_geom': mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_GEOM, o),
+                  't_first': round(now, 4), 't_last': now, 'steps': 0, 'max_pen_m': 0.}
+            track['open'][key] = ep
+        ep['t_last'], ep['steps'] = now, ep['steps'] + (0 if key in seen else 1)
+        ep['max_pen_m'] = max(ep['max_pen_m'], pen)
+        seen.add(key)
+    for who in {k[0] for k in seen}:
+        track['steps'][who] = track['steps'].get(who, 0) + 1
+
+
+def close_wall_episodes(track):
+    for ep in track['open'].values():
+        track['episodes'].append(ep)
+    track['open'].clear()
+    for ep in track['episodes']:
+        ep['t_last'] = round(ep['t_last'], 4)
+        ep['max_pen_m'] = round(ep['max_pen_m'], 6)
+
+
+def contact_outcome(row, result):
+    """Outcome class of a --contact-track case (eval only): PASS_CLEAN / PASS_CONTACT_RECOVERED / FAIL_HARD_LIMIT / FAIL.
+
+    Contact counts from the stage submit to the stage stop. A standard pass whose contact exceeded a hard limit
+    (max tilt over the stage > 15 deg, wall penetration > 5 mm) is FAIL_HARD_LIMIT, never a pass."""
+    wc = (result.get('wall_contact') or {})
+    t0 = result.get('submit_t')
+    t1 = (result.get('gt_at_stop') or {}).get('t') or (result.get('termination') or {}).get('sim_s')
+    eps = [e for e in wc.get('episodes', []) if (t0 is None or e['t_last'] >= t0 - 1e-9) and (t1 is None or e['t_first'] <= t1 + 1e-9)]
+    pen = max((e['max_pen_m'] for e in eps), default=0.)
+    tilt = result.get('max_tilt_deg')
+    summary = {'episodes': len(eps), 'who': sorted({e['who'] for e in eps}), 'max_penetration_m': round(pen, 6),
+               'first_contact_sim_s': min((e['t_first'] for e in eps), default=None),
+               'wall_geoms': sorted({e['wall_geom'] for e in eps if e['wall_geom']}), 'max_tilt_deg_stage': tilt,
+               'hard_limits': HARD_LIMITS}
+    over = pen > HARD_LIMITS['max_penetration_m'] or (tilt is not None and tilt > HARD_LIMITS['max_tilt_deg'])
+    if not row['passed']:
+        outcome = 'FAIL'
+    elif over:
+        outcome = 'FAIL_HARD_LIMIT'
+    elif eps:
+        outcome = 'PASS_CONTACT_RECOVERED'
+    else:
+        outcome = 'PASS_CLEAN'
+    return outcome, summary
+
+
 def run_case(case, out):
     """One staged case in THIS process. Returns the result row."""
     import mujoco
@@ -361,6 +437,7 @@ def run_case(case, out):
         x, y, yaw = case['r3_xyyaw']
         spawns['r3'] = [float(x), float(y), z, float(yaw)]
     trace, loc_log, checkpoints = [], [], []
+    wall_track = {'open': {}, 'episodes': [], 'steps': {}}     # eval-only: wall contacts with penetration (--contact-track)
 
     class ProbeHost(OwnCamTeamHost):
         def enable_pair_carry(self, sheets, params, **kw):
@@ -403,6 +480,8 @@ def run_case(case, out):
         def _contact_kinds(self, data):
             kinds, fingers = super()._contact_kinds(data)
             now = float(data.time)
+            if case.get('contact_track'):
+                track_wall_contacts(self, data, now, wall_track)
             if now + 1e-9 >= self.next_sample:
                 self.next_sample = now + SAMPLE_S
                 xyz, yaw, tilt = self.beam_pose()
@@ -463,6 +542,8 @@ def run_case(case, out):
     IMAGE_VALID_REAL.clear()
     result['image_valid_real_stats'] = IMAGE_VALID_REAL if case.get('diag_patch') == 'image_valid_off' else None
     install_diag_patch(case.get('diag_patch'))
+    from harness import zone_pair_door_relax as door_relax
+    result['door_relax'] = door_relax.install(case.get('door_relax'))     # b-v6h only; None = registered thresholds
     result['staging_bypass'] = case.get('staging_bypass')
     result['admission_image_valid_real'] = {}
     install_staging_bypass(case.get('staging_bypass'), result['admission_image_valid_real'])
@@ -586,6 +667,11 @@ def run_case(case, out):
                 result['checkpoints'] = checkpoints
                 result['max_tilt_deg'] = host.max_tilt
                 result['min_lift_after_first_lift_m'] = host.min_lift_after
+                result['door_relax_overrides'] = list(door_relax.EVENTS)
+                if case.get('contact_track'):
+                    close_wall_episodes(wall_track)
+                    result['wall_contact'] = {'episodes': wall_track['episodes'], 'steps': wall_track['steps'],
+                                              'note': 'eval only; contact.dist < 0 is penetration (m); who = r1 / r2 / beam'}
                 with (out / 'eval_only/trace.jsonl').open('w') as f:
                     for row in trace:
                         f.write(json.dumps(row, default=_jsonable) + '\n')
@@ -763,6 +849,11 @@ def finish_result(case, result, out):
            'checkpoints_roundtrip': [c['roundtrip_bitwise'] for c in result.get('checkpoints', [])]}
     if case.get('render_profile'):
         row['render_profile'] = case['render_profile']
+    if case.get('policy_id'):
+        row.update(policy_id=case['policy_id'], door_relax=case.get('door_relax'),
+                   door_relax_overrides=len(result.get('door_relax_overrides') or []))
+    if case.get('contact_track'):
+        row['outcome_class'], row['wall_contact'] = contact_outcome(row, result)
     if stage == 'chain':
         record['chain']['first_failure'] = pcp.first_failure(record['chain'], record, diag.get('own_at_failure'))
         row['chain'] = record['chain']
@@ -798,6 +889,8 @@ def build_cases(args):
         from harness.pair_passage_plan import passage_build_cases
         return passage_build_cases(args)
     cases = []
+    if 'b-v6h' in args.policies and set(args.sources) - {'teacher'}:
+        raise ValueError('policy b-v6h is defined for --sources teacher only')
     for stage in args.stage:
         spec = sp.STAGES[stage]
         if not spec['implemented']:
@@ -809,12 +902,13 @@ def build_cases(args):
                         for hsetup, hrows in sp.hr_setups(variant=args.setup_variant):
                             cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
                                                       setup=hsetup, subset=set(args.cells) if args.cells else None,
-                                                      policy=policy, prior_std=args.prior_std, leg=leg, rows=hrows)
+                                                      policy=policy, prior_std=args.prior_std, leg=leg, rows=hrows,
+                                                      door_relax=args.door_relax)
                         continue
                     cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
                                               setup=sp.setup_variant(args.setup_variant),
                                               subset=set(args.cells) if args.cells else None, policy=policy,
-                                              prior_std=args.prior_std, leg=leg)
+                                              prior_std=args.prior_std, leg=leg, door_relax=args.door_relax)
             if 'boundary' in args.sources and stage == 'grasp_lift':
                 cases += sp.boundary_cases(stage, policy=policy, seed=args.seeds[0],
                                            subset=set(args.cells) if args.cells else None, prior_std=args.prior_std)
@@ -976,6 +1070,11 @@ def run_worker(case, case_dir, timeout_s, omp_threads=2):
     return row['row']
 
 
+def door_relax_variants():
+    from harness import zone_pair_door_relax as relax
+    return relax.VARIANTS
+
+
 def rp_names():
     from sim import render_profile as rp
     return rp.PROFILES
@@ -996,6 +1095,13 @@ def parser():
                         'name and hash go to manifest.json and every result row.')
     p.add_argument('--policies', nargs='+', default=['v5h'], choices=list(sp.POLICIES),
                    help='harness.zone_pair_v6_policy policies; there is no A-only policy on main')
+    p.add_argument('--door-relax', choices=sorted(door_relax_variants()),
+                   help='with --policies b-v6h: the door-guard relaxation variant (harness/zone_pair_door_relax.py). '
+                        'b-v6h is the registered b-v6g plus a process-local relaxation of the loaded-carry inflation; '
+                        'it is not a registered policy and needs a variant.')
+    p.add_argument('--contact-track', action='store_true',
+                   help='eval-only wall-contact tracker (penetration per robot/beam) and outcome_class per case; '
+                        'always on for b-v6h, opt-in for any policy so a baseline can be measured the same way')
     p.add_argument('--seeds', nargs='+', type=int, default=[911])
     p.add_argument('--nominal-seeds', nargs='+', type=int, default=[911, 912, 913])
     p.add_argument('--e2e-seeds', nargs='+', type=int)
@@ -1044,6 +1150,9 @@ def main(argv=None):
     if args.pf_track:
         for c in cases:
             c['pf_track'] = True
+    if args.contact_track:
+        for c in cases:
+            c['contact_track'] = True
     if len({c['case_id'] for c in cases}) != len(cases):
         p.error('duplicate case ids')
     from sim.workflow_manager import environment_identity, git_identity, source_fingerprint
