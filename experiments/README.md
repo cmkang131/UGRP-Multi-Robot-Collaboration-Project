@@ -1,5 +1,6 @@
 # 실험 인덱스
 
+- [2026-09-29 시나리오 v3: 화물 목록 전체와 3대 운반](2026-09-29-zone-scenarios-v3/README.md): v2 여섯 종은 yellow와 3대 필요 화물 tri_frame을 쓰지 않았다. v2 여섯 종을 그대로 두고 삼자 결속 `s7`과 1·2·3대 혼합 `s8`을 더해 화물 종류 9개와 필요 인원 1/2/3을 모두 덮는 v3 여덟 종을 만들었다(두 문 지도, 사건 없음). 오프라인 검증만 했고 3대 자기 카메라 실행기는 아직 없어 실행하지 않았다.
 - [2026-09-28 MasterPi 모델 v3 (공식 치수도 + SDK 팔, 물리 포함)](2026-09-28-masterpi-visual-v3/README.md): v2는 바이트 그대로 두고 `build_v3_xml`을 물리 모델로 만들었다. 연구 장면 전환·번들 ID는 할 일 목록에 있다.
 - [2026-09-28 MasterPi 공개 치수·센서 사양 조사](2026-09-28-masterpi-public-specs/README.md): 공식 도면·MasterPi SDK 고정 SHA·카메라 보정 NPZ·서보/초음파 사양 대조. 초음파 장착 약62/88 mm, yaw 약48 mm; 반각/갱신 주기·개체별 보정은 미확인. 실측·물리·모델 호출 없음.
 - [2026-09-28 4조건 본연구 사전 등록 초안 (DRAFT, 미고정)](2026-09-28-main-study-prereg-draft/PREREG_DRAFT.md): H1 `peer_ko−no_comm`·H2 `peer_ko−structured`·H3 `leader_ko−peer_ko`, 그래프식 Holm + 2회 OBF 순차 경계. 주 지표 PAR-2(조건 가린 파일럿 합산 성공률 < 0.30이면 `delivery_rate`). 외부 파일럿 18블록 → ρ 하한으로 N 재추정(36–108블록). yoked-wake·scale=0·s2/s5 분기 소거 진단, 원어민 2인 맹검 코딩. raw 첫 호출 16회 실측 10,899 토큰/호출, 전체 추정 141M–1.27G 토큰. 차단 선행 조건: 짝 운반 v6/v7, 로봇 모델 v3, VIS6, 최종 지도·시나리오 v2, 심판·다회 드라이버, 3대 스모크. SIM·pytest·모델 호출 0회.
