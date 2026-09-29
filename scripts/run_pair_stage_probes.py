@@ -42,6 +42,13 @@ SAMPLE_S = .05
 PF_TRACK_S = .25   # --pf-track: PF posterior sampling period [SIM s] (eval-only trace field 'pf')
 
 
+def order_for(target='B'):
+    """The probe order sheet; `target` defaults to zone B (unchanged). Other zones are the passage-map opt-in."""
+    order = copy.deepcopy(ORDER)
+    order['orders'][0]['destination_zone'] = target
+    return order
+
+
 def write_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -329,13 +336,22 @@ def run_case(case, out):
     spec_stage = sp.STAGES[stage]
     write_json(out / 'case.json', {**case, 'labels': sp.LABELS})
     sheet = case['coarse_order_sheet']
-    spec = {'map': MAP_ID, 'seed': case['seed'], 'goal': {'B': {'cyan': 1}}, 'pair_policy': case.get('pair_policy', 'v5h'),
+    target = case.get('target', 'B')     # 'map' / 'target' / 'pair_passage' are opt-in fields (harness.pair_passage_plan)
+    if case.get('pair_passage'):
+        from harness import pair_passage_plan
+        pair_passage_plan.install(case['pair_passage'])     # process-local: executor file stays byte-identical
+    spec = {'map': case.get('map', MAP_ID), 'seed': case['seed'], 'goal': {target: {'cyan': 1}}, 'pair_policy': case.get('pair_policy', 'v5h'),
             'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam', 'pose': list(case['beam_xyyaw'])}],
-            'pair_order_sheets': {'cargoX': sheet}, 'order_sheet': copy.deepcopy(ORDER),
+            'pair_order_sheets': {'cargoX': sheet}, 'order_sheet': order_for(target),
             'contact_profile': 'cargo_noslip_v1', 'job_sim_limit_s': 900.}
     student = {'mode': 'm1', 'calibration': CALIBRATION,
                'skill_module': 'harness.wrist_zone_skill_v9', 'skill_class': 'WristZoneDeliveryV9'}
     scene = make_scene(spec)
+    if case.get('render_profile'):     # opt-in visual profile (sim/render_profile.py); absent = unchanged behaviour
+        from sim import render_profile as rp
+        rp.install(scene, case['render_profile'])
+    if case.get('pair_passage'):     # ZoneOwnExecutor needs a door-kind passage (probe-only alias, see executor_view)
+        scene.config['static_map'] = pair_passage_plan.executor_view(scene.config['static_map'])
     spawns = scene.config['setup_only']['spawns']
     z = spawns['r1'][2]
     for rid in sp.PARTICIPANTS:
@@ -356,7 +372,7 @@ def run_case(case, out):
             if (rid in sp.PARTICIPANTS and probe.submit_t is not None and now + 1e-9 >= probe.submit_t
                     and rid not in probe.submitted and not self.closed):
                 probe.submitted.add(rid)
-                probe.acks[rid] = self.call(rid, 'pair_carry', 'cargoX', 'B', 'r2' if rid == 'r1' else 'r1')
+                probe.acks[rid] = self.call(rid, 'pair_carry', 'cargoX', target, 'r2' if rid == 'r1' else 'r1')
             return super()._decide_raw(rid, now)
 
         # ---------------- eval-only observer (never read by control)
@@ -459,7 +475,7 @@ def run_case(case, out):
         probe.host = host
         if case.get('route') is not None:   # the staged route must be the controller's own static route
             from harness.zone_pair_executor import make_plan
-            got = [[float(v) for v in q] for q in make_plan(scene.config['static_map'], sheet, 'B')['route']]
+            got = [[float(v) for v in q] for q in make_plan(scene.config['static_map'], sheet, target)['route']]
             result['route_check'] = {'matches_case_route': got == case['route'], 'leg': case.get('leg'), 'route': got}
             if got != case['route']:
                 raise RuntimeError('case route differs from make_plan(scene static map)')
@@ -472,6 +488,10 @@ def run_case(case, out):
                              'contact_record': host.contact_record,
                              'scene_resolved_sha256': host.scene.record()['resolved_sha256'],
                              'scene_xml_sha256': host.scene.manifest.get('scene_xml_sha256')}
+        if case.get('render_profile'):
+            from sim import render_profile as rp
+            result['applied']['render_profile'] = {**host.scene.manifest['render_profile'],
+                                                   'model_audit': rp.verify_model(host.world.model, case['render_profile'])}
         host.rest_z = host.beam_pose()[0][2]
         t0 = float(host.world.data.time)
         # ---- stated priors (no fix). Before ANY own frame reaches the PF.
@@ -738,6 +758,8 @@ def finish_result(case, result, out):
                                          and x['event'] == 'localizer_object_replaced') for r in sp.PARTICIPANTS},
            'localizer_resets_stat': {r: (result.get('localizer_stats') or {}).get(r, {}).get('resets') for r in sp.PARTICIPANTS},
            'checkpoints_roundtrip': [c['roundtrip_bitwise'] for c in result.get('checkpoints', [])]}
+    if case.get('render_profile'):
+        row['render_profile'] = case['render_profile']
     if stage == 'chain':
         record['chain']['first_failure'] = pcp.first_failure(record['chain'], record, diag.get('own_at_failure'))
         row['chain'] = record['chain']
@@ -759,7 +781,19 @@ def leg_arg(text):
     return text if text == 'end' else int(text)
 
 
+def with_render_profile(cases, name):
+    """Mark every case with the opt-in render profile. ``None`` returns the cases untouched (no new key)."""
+    if name is None:
+        return cases
+    from sim import render_profile as rp
+    rp.resolve(name)
+    return [{**c, 'render_profile': name} for c in cases]
+
+
 def build_cases(args):
+    if getattr(args, 'passage_map', None):     # opt-in: passage map cases (harness.pair_passage_plan)
+        from harness.pair_passage_plan import passage_build_cases
+        return passage_build_cases(args)
     cases = []
     for stage in args.stage:
         spec = sp.STAGES[stage]
@@ -787,6 +821,7 @@ def build_cases(args):
                     else:
                         cases += got
     cases = sp.apply_diag_patch(cases, args.diag_patch)
+    cases = with_render_profile(cases, args.render_profile)
     if args.limit:
         cases = cases[:args.limit]
     return cases
@@ -932,6 +967,11 @@ def run_worker(case, case_dir, timeout_s, omp_threads=2):
     return row['row']
 
 
+def rp_names():
+    from sim import render_profile as rp
+    return rp.PROFILES
+
+
 def parser():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--stage', nargs='+', choices=[s for s, v in sp.STAGES.items() if v['implemented']])
@@ -941,6 +981,10 @@ def parser():
                    help='probe-only DIAGNOSTIC controller patch (case ids get :diag-<name>; not the registered v6)')
     p.add_argument('--prior-std', choices=['grid', 'e2e'], default='grid',
                    help="teacher/boundary prior std: 'grid' (0.06 m, 0.05 rad; grid1) or 'e2e' (sp.E2E_MATCHED_PRIOR)")
+    p.add_argument('--render-profile', choices=sorted(rp_names()),
+                   help='opt-in visual profile from sim/render_profile.py (default: none = current behaviour). Changes '
+                        'every camera image, so runs are a separate condition; not a registered bundle. The profile '
+                        'name and hash go to manifest.json and every result row.')
     p.add_argument('--policies', nargs='+', default=['v5h'], choices=list(sp.POLICIES),
                    help='harness.zone_pair_v6_policy policies; there is no A-only policy on main')
     p.add_argument('--seeds', nargs='+', type=int, default=[911])
@@ -959,6 +1003,10 @@ def parser():
     p.add_argument('--pf-track', action='store_true',
                    help='record the PF posterior next to the GT pose in the trace (eval-only, read-only; 0.6.0)')
     p.add_argument('--case-timeout-s', type=float, default=1500.)
+    p.add_argument('--passage-map', help='opt-in: teacher cases on this passage map (maps/zones/<id>.json, e.g. '
+                                         'zone_wide_corridor_tags_v3) through harness.pair_passage_plan')
+    p.add_argument('--passage', default='auto', help="with --passage-map: 'auto' (shortest valid) or a passage id")
+    p.add_argument('--passage-target', default='B', choices=('A', 'B', 'C'), help='with --passage-map: destination zone')
     p.add_argument('--execute', action='store_true', help='physical probes (MuJoCo); otherwise plan only')
     p.add_argument('--lock-owner', choices=('claude', 'codex', 'kiro'))
     p.add_argument('--worker-case', type=Path, help=argparse.SUPPRESS)
@@ -999,6 +1047,9 @@ def main(argv=None):
                 'workers': args.workers, 'omp_num_threads_per_worker': args.omp_threads, 'pf_track': bool(args.pf_track),
                 'cases': len(cases), 'cases_sha256': sp.digest(cases), 'unavailable_e2e': args.unavailable,
                 'state': 'planned'}
+    if args.render_profile:
+        from sim import render_profile as rp
+        manifest['render_profile'] = rp.profile_record(args.render_profile)
     if not args.execute:
         print(json.dumps({'state': 'planned', 'cases': len(cases), 'case_ids': [c['case_id'] for c in cases],
                           'unavailable_e2e': args.unavailable}, ensure_ascii=False, indent=1))

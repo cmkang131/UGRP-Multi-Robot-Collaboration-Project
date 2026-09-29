@@ -1,0 +1,71 @@
+{"owner": "claude", "branch": "claude/render-profile", "purpose": "render profile A/B (SIM time)", "pid": 92193, "acquired_unix": 1790658483.4822972, "expected_end_unix": 1790660283.4822972, "loadavg_at_acquire": [16.50341796875, 20.60302734375, 20.0537109375]}
+2026-09-29 14:08:03 START s0-none profile=none workers=1 load=16.50 20.60 20.05
+2026-09-29 14:08:09 END s0-none rc=0 load=17.91 20.79 20.13
+2026-09-29 14:08:09 START s0-shadows profile=shadows_v1 workers=1 load=17.91 20.79 20.13
+2026-09-29 14:08:15 END s0-shadows rc=0 load=16.95 20.55 20.04
+2026-09-29 14:08:15 START smoke-noshadow profile=noshadow_v1 workers=1 load=16.95 20.55 20.04
+2026-09-29 14:08:18 END smoke-noshadow rc=0 load=16.95 20.55 20.04
+2026-09-29 14:08:18 PHASE A DONE
+{"owner": "claude", "branch": "claude/render-profile", "purpose": "render profile A/B (SIM time)", "pid": 92193, "acquired_unix": 1790658483.4822972, "expected_end_unix": 1790660283.4822972, "loadavg_at_acquire": [16.50341796875, 20.60302734375, 20.0537109375], "pid_alive": true}
+{"owner": "claude", "branch": "claude/render-profile", "purpose": "render profile A/B (SIM time)", "pid": 92606, "acquired_unix": 1790658542.758195, "expected_end_unix": 1790660942.7581959, "loadavg_at_acquire": [13.87109375, 19.1767578125, 19.5625]}
+2026-09-29 14:09:02 NOTE: plan command lacked --prior-std e2e; grid prior gave ENTRY:ADMISSION_SELF_UNCERTAIN in s0-none/s0-shadows/smoke-noshadow (5 s each). Re-running with --prior-std e2e as in b-v6c/b-v6d grids.
+2026-09-29 14:09:02 START s0e-none profile=none workers=1 load=13.87 19.18 19.56
+2026-09-29 14:10:58 END s0e-none rc=0 load=9.92 16.17 18.33
+2026-09-29 14:10:58 START s0e-shadows profile=shadows_v1 workers=1 load=9.92 16.17 18.33
+2026-09-29 14:12:59 END s0e-shadows rc=0 load=13.78 15.55 17.80
+2026-09-29 14:12:59 START smoke-noshadow-e profile=noshadow_v1 workers=1 load=13.78 15.55 17.80
+2026-09-29 14:13:56 END smoke-noshadow-e rc=0 load=11.39 14.73 17.35
+2026-09-29 14:13:56 PHASE A2 DONE
+{"owner": "claude", "branch": "claude/render-profile", "purpose": "render profile A/B (SIM time)", "pid": 92606, "acquired_unix": 1790658542.758195, "expected_end_unix": 1790660942.7581959, "loadavg_at_acquire": [13.87109375, 19.1767578125, 19.5625], "pid_alive": true}
+{"owner": "claude", "branch": "claude/render-profile", "purpose": "render profile A/B (SIM time)", "pid": 94410, "acquired_unix": 1790658852.9881659, "expected_end_unix": 1790673252.9881659, "loadavg_at_acquire": [12.80078125, 14.900390625, 17.36474609375]}
+2026-09-29 14:14:13 START st1-shadows-align-grasp profile=shadows_v1 workers=2 load=12.80 14.90 17.36
+2026-09-29 14:19:57 END st1-shadows-align-grasp rc=0 load=12.72 16.99 17.76
+2026-09-29 14:19:57 START st1-shadows-carry-L0 profile=shadows_v1 workers=2 load=12.72 16.99 17.76
+2026-09-29 14:21:00 END st1-shadows-carry-L0 rc=0 load=9.93 15.56 17.18
+2026-09-29 14:21:00 START st1-shadows-setdown-Lend profile=shadows_v1 workers=2 load=9.93 15.56 17.18
+2026-09-29 14:30:14 END st1-shadows-setdown-Lend rc=0 load=14.66 21.40 20.28
+2026-09-29 14:30:14 START st1-noshadow-align-grasp profile=noshadow_v1 workers=2 load=14.66 21.40 20.28
+2026-09-29 14:34:05 END st1-noshadow-align-grasp rc=0 load=18.49 20.57 20.24
+2026-09-29 14:34:05 START st1-noshadow-carry-L0 profile=noshadow_v1 workers=2 load=18.49 20.57 20.24
+2026-09-29 14:34:50 END st1-noshadow-carry-L0 rc=0 load=13.19 18.86 19.62
+2026-09-29 14:34:50 START st1-noshadow-setdown-Lend profile=noshadow_v1 workers=2 load=13.19 18.86 19.62
+2026-09-29 14:35:19 END st1-noshadow-setdown-Lend rc=0 load=12.70 18.25 19.38
+2026-09-29 14:35:19 STAGE1 DONE
+2026-09-29 14:35:19 START st2-S1-align-grasp profile=shadows_v1 workers=1 load=12.70 18.25 19.38
+2026-09-29 14:38:10 END st2-S1-align-grasp rc=0 load=8.98 14.27 17.52
+2026-09-29 14:38:10 START st2-S1-carry-L0 profile=shadows_v1 workers=1 load=8.98 14.27 17.52
+2026-09-29 14:38:38 END st2-S1-carry-L0 rc=0 load=8.18 13.67 17.20
+2026-09-29 14:38:38 START st2-S1-setdown-Lend profile=shadows_v1 workers=1 load=8.18 13.67 17.20
+2026-09-29 14:43:02 END st2-S1-setdown-Lend rc=0 load=22.25 20.68 19.71
+2026-09-29 14:43:02 START st2-N1-align-grasp profile=noshadow_v1 workers=1 load=22.25 20.68 19.71
+2026-09-29 14:46:53 END st2-N1-align-grasp rc=0 load=59.23 37.17 26.73
+2026-09-29 14:46:53 START st2-N1-carry-L0 profile=noshadow_v1 workers=1 load=59.23 37.17 26.73
+2026-09-29 14:48:05 END st2-N1-carry-L0 rc=0 load=90.70 51.58 33.00
+2026-09-29 14:48:05 START st2-N1-setdown-Lend profile=noshadow_v1 workers=1 load=90.70 51.58 33.00
+2026-09-29 14:48:30 END st2-N1-setdown-Lend rc=0 load=83.33 53.32 34.26
+2026-09-29 14:48:30 START st2-N2-align-grasp profile=noshadow_v1 workers=1 load=83.33 53.32 34.26
+2026-09-29 14:51:20 END st2-N2-align-grasp rc=0 load=28.56 47.56 35.85
+2026-09-29 14:51:20 START st2-N2-carry-L0 profile=noshadow_v1 workers=1 load=28.56 47.56 35.85
+2026-09-29 14:51:35 END st2-N2-carry-L0 rc=0 load=25.73 46.32 35.55
+2026-09-29 14:51:35 START st2-N2-setdown-Lend profile=noshadow_v1 workers=1 load=25.73 46.32 35.55
+2026-09-29 14:51:44 END st2-N2-setdown-Lend rc=0 load=23.41 45.14 35.25
+2026-09-29 14:51:44 START st2-S2-align-grasp profile=shadows_v1 workers=1 load=23.41 45.14 35.25
+2026-09-29 14:54:44 END st2-S2-align-grasp rc=0 load=15.19 31.81 31.56
+2026-09-29 14:54:44 START st2-S2-carry-L0 profile=shadows_v1 workers=1 load=15.19 31.81 31.56
+2026-09-29 14:55:11 END st2-S2-carry-L0 rc=0 load=13.15 29.71 30.81
+2026-09-29 14:55:11 START st2-S2-setdown-Lend profile=shadows_v1 workers=1 load=13.15 29.71 30.81
+2026-09-29 14:59:28 END st2-S2-setdown-Lend rc=0 load=21.63 25.67 28.80
+2026-09-29 14:59:28 PHASE B DONE
+{"owner": "claude", "branch": "claude/render-profile", "purpose": "render profile A/B (SIM time)", "pid": 94410, "acquired_unix": 1790658852.9881659, "expected_end_unix": 1790673252.9881659, "loadavg_at_acquire": [12.80078125, 14.900390625, 17.36474609375], "pid_alive": true}
+{"owner": "claude", "branch": "claude/render-profile", "purpose": "render profile A/B (SIM time)", "pid": 65818, "acquired_unix": 1790661761.6122901, "expected_end_unix": 1790664161.6122901, "loadavg_at_acquire": [21.4599609375, 23.94775390625, 27.41455078125]}
+2026-09-29 15:02:41 NOTE: extra repeat pair N3,S3 (align+grasp, carry only) because N1/N2 ran under load spikes (up to 90); not part of the pre-registered S1,N1,N2,S2 order
+2026-09-29 15:02:41 START st2-N3-align-grasp profile=noshadow_v1 workers=1 load=21.46 23.95 27.41
+2026-09-29 15:03:57 END st2-N3-align-grasp rc=0 load=23.54 23.48 26.90
+2026-09-29 15:03:57 START st2-N3-carry-L0 profile=noshadow_v1 workers=1 load=23.54 23.48 26.90
+2026-09-29 15:04:29 END st2-N3-carry-L0 rc=0 load=21.91 23.02 26.61
+2026-09-29 15:04:29 START st2-S3-align-grasp profile=shadows_v1 workers=1 load=21.91 23.02 26.61
+2026-09-29 15:13:16 END st2-S3-align-grasp rc=0 load=114.64 88.45 55.19
+2026-09-29 15:13:16 START st2-S3-carry-L0 profile=shadows_v1 workers=1 load=114.64 88.45 55.19
+2026-09-29 15:13:38 END st2-S3-carry-L0 rc=0 load=78.34 82.06 53.85
+2026-09-29 15:13:38 PHASE C DONE
+{"owner": "claude", "branch": "claude/render-profile", "purpose": "render profile A/B (SIM time)", "pid": 65818, "acquired_unix": 1790661761.6122901, "expected_end_unix": 1790664161.6122901, "loadavg_at_acquire": [21.4599609375, 23.94775390625, 27.41455078125], "pid_alive": true}

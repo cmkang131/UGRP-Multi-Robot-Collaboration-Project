@@ -1,0 +1,130 @@
+diff --git a/harness/zone_own_executor.py b/harness/zone_own_executor.py
+index 0ece36fd..937e5c0e 100644
+--- a/harness/zone_own_executor.py
++++ b/harness/zone_own_executor.py
+@@ -131,7 +131,8 @@ class ZoneOwnExecutor(OwnStatusMixin):
+         if mode == 'm1':
+             self._require_owncam(pose_source.source, 'pose source')
+         self.pose = pose_source
+-        door = next(p for p in self.map['passages'] if p['kind'] == 'door')
++        door = (next((p for p in self.map['passages'] if p['kind'] == 'door'), None)
++                or next(p for p in self.map['passages'] if p['kind'] == 'corridor'))   # corridor maps: its entrance
+         self.door_id = door['id']
+         self.door_xy = (float(door['center_m'][0]), float(door['center_m'][1]))
+         self.gate = guards.UncertaintyGate()
+diff --git a/harness/zone_own_team_host.py b/harness/zone_own_team_host.py
+index d0b338ce..9c8a398c 100644
+--- a/harness/zone_own_team_host.py
++++ b/harness/zone_own_team_host.py
+@@ -171,10 +171,11 @@ class OwnCamTeamHost:
+             # Explicit static task sheets, not generated from the cargo's live pose.
+             from scripts.run_m2_pair import CALIBRATION
+             pair_params = json.loads(CALIBRATION.read_text())['params']
+-            self.enable_pair_carry(spec['pair_order_sheets'], pair_params, policy=spec.get('pair_policy', 'v5h'))
++            self.enable_pair_carry(spec['pair_order_sheets'], pair_params, policy=spec.get('pair_policy', 'v5h'),
++                                   **({'passage': spec['pair_passage']} if spec.get('pair_passage') else {}))
+ 
+     def enable_pair_carry(self, sheets, params, *, controller_factory=None, rendezvous_timeout_s=5., heartbeat_timeout_s=.15,
+-                          policy='v5h'):
++                          policy='v5h', passage=None):
+         """Attach the M2 dispatcher; may also be used with a simulator-free host."""
+         from harness.zone_pair_executor import PairTeam, m2_controller
+         self.pairs = PairTeam({r: s.executor for r, s in self.robots.items()}, sheets, params,
+@@ -182,7 +183,7 @@ class OwnCamTeamHost:
+                               contact_profile=self.contact_record['profile'], weld=False,
+                               controller_factory=controller_factory or m2_controller,
+                               rendezvous_timeout_s=rendezvous_timeout_s, heartbeat_timeout_s=heartbeat_timeout_s,
+-                              policy=policy)
++                              policy=policy, **({} if passage is None else {'passage': passage}))
+         self._next_pair_arm = 0.  # original CLI clock lifetime, never reset on a submission
+ 
+     def _pair_safety(self, now):
+diff --git a/harness/zone_pair_executor.py b/harness/zone_pair_executor.py
+index 38c38dd6..a83096ce 100644
+--- a/harness/zone_pair_executor.py
++++ b/harness/zone_pair_executor.py
+@@ -25,7 +25,7 @@ def _digest(value):
+     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()).hexdigest()
+ 
+ 
+-def make_plan(static_map, sheet, target_zone):
++def make_plan(static_map, sheet, target_zone, *, passage=None):
+     """Static coarse work order -> M2 approach + axis-aligned route to a zone.
+ 
+     Sheet is authored BEFORE execution, never reconstructed from world state.
+@@ -43,8 +43,12 @@ def make_plan(static_map, sheet, target_zone):
+         raise ValueError('BAD_COARSE_ORDER_SHEET')
+     if m2.pa.coarse_order_sheet(pose) != dict(sheet):
+         raise ValueError('ORDER_SHEET_NOT_ON_COARSE_GRID')
++    passage_plan = None
++    if passage is not None:      # opt-in (harness.pair_passage_plan): corridor / other doors
++        from harness.pair_passage_plan import plan_passage_route
++        passage_plan = plan_passage_route(static_map, pose, target_zone, passage)
+     door = next((p for p in static_map['passages'] if p['id'] == m2.DOOR_PLAN['door_id']), None)
+-    if door is None or list(door['center_m']) != [2.2, .05] or door['width_m'] != .5:
++    if passage_plan is None and (door is None or list(door['center_m']) != [2.2, .05] or door['width_m'] != .5):
+         raise ValueError('UNSUPPORTED_PAIR_MAP')
+     if not (.7 <= pose[0] <= 1.2 and abs(pose[1] - .05) <= .15 and abs(pose[2]) <= math.radians(10) + 1e-6):
+         raise ValueError('PAIR_PICKUP_OUTSIDE_M2_DOOR_ENVELOPE')
+@@ -61,6 +65,8 @@ def make_plan(static_map, sheet, target_zone):
+         n = max(1, math.ceil(math.dist(a, b) / .85))
+         split_route.extend([[a[k] + (b[k] - a[k]) * i / n for k in (0, 1)] for i in range(1, n + 1)])
+     route = split_route
++    if passage_plan is not None:
++        route = passage_plan['route']
+     if len(route) - 1 > MAX_SEGMENTS:
+         raise ValueError('TOO_MANY_PAIR_SEGMENTS')
+     # Static footprint includes the beam and both carriers. This is a planning
+@@ -89,12 +95,16 @@ def make_plan(static_map, sheet, target_zone):
+             keepouts[r].append({'id': 'partner_' + label, 'center_m': station[:2],
+                                 'half_extents_m': [m2.PARTNER_KEEPOUT_HALF_M] * 2,
+                                 'source': 'static order sheet'})
+-    return {'sheet': copy.deepcopy(sheet), 'route': route, 'prestations': pre, 'keepouts': keepouts,
++    plan = {'sheet': copy.deepcopy(sheet), 'route': route, 'prestations': pre, 'keepouts': keepouts,
+             'beam_geometry': {'center_m': list(bar.center), 'half_extents_m': list(bar.size),
+                               'grasps': {g.role: {'xyz_m': list(g.grip_xyz), 'yaw_rad': g.approach_yaw}
+                                          for g in item.spec().grasps}},
+             'target_zone': target_zone, 'door_plan': copy.deepcopy(m2.DOOR_PLAN),
+             'map_sha256': _digest(static_map), 'sheet_sha256': _digest(sheet)}
++    if passage_plan is not None:
++        plan['door_plan'].update(passage_plan['door_plan'])
++        plan['passage'] = passage_plan['passage']
++    return plan
+ 
+ 
+ class _OwnPort:
+@@ -408,9 +418,10 @@ class PairTeam:
+     """
+     def __init__(self, executors, sheets, params, *, cancel_scheduled, contact_profile, weld=False,
+                  controller_factory=m2_controller, rendezvous_timeout_s=5., heartbeat_timeout_s=.15,
+-                 policy='v5h'):
++                 policy='v5h', passage=None):
+         from harness.zone_pair_v6_policy import pair_policy
+         self.policy = pair_policy(policy)
++        self.passage = passage      # opt-in (harness.pair_passage_plan); None = frozen M2 door map only
+         if not finite_number(rendezvous_timeout_s) or not .2 <= rendezvous_timeout_s <= 30.:
+             raise ValueError('invalid rendezvous timeout')
+         self.executors = dict(executors)
+@@ -503,7 +514,8 @@ class PairTeam:
+             return refuse('SELF_' + state.upper())
+         try:
+             # Both actors compute from their own configured static inputs.
+-            plan = make_plan(ex.map, self.sheets.get(item_ref), target_zone)
++            plan = make_plan(ex.map, self.sheets.get(item_ref), target_zone,
++                             **({} if self.passage is None else {'passage': self.passage}))
+             if pending and _digest(plan) != _digest(first.plan):
+                 pending['submissions'][rid] = (item_ref, target_zone, partner_id)
+                 first.abort(now, 'PAIR_STATIC_INPUT_MISMATCH')
+@@ -520,8 +532,10 @@ class PairTeam:
+                 session, channel = pending, pending['channel']
+             ep = PairExecution(ex, PairStatusEndpoint(channel, rid), args, plan, self.params, self.factory,
+                                policy=self.policy.name)
+-        except (ValueError, KeyError, TypeError):
+-            return refuse('INVALID_PAIR_PLAN')
++        except (ValueError, KeyError, TypeError) as error:
++            code = getattr(error, 'code', '')      # PassageRefusal keeps its explicit reason (opt-in only)
++            return refuse(code if self.passage is not None and code.startswith(('PAIR_PASSAGE_', 'PAIR_NO_PATH_'))
++                          else 'INVALID_PAIR_PLAN')
+         ep.rendezvous_deadline = now + self.rendezvous_timeout_s
+         ex._pair = ep
+         ack = ex.pair_carry(item_ref, target_zone, partner_id)  # ONLY the caller's job

@@ -111,6 +111,8 @@ TEST_PATTERNS = (
     "tests/test_zone_pair_v5.py", "tests/test_pose_provider_contract.py", "tests/test_pose_provider_boundary.py",
     "tests/test_zone_start_dock.py",
     "tests/test_zone_pair_admission.py",
+    "tests/test_pair_chain_probe.py",
+    "tests/test_pair_passage_plan.py",  # 2026-09-29: opt-in corridor/door route planning for the pair carry (static geometry)
     # 2026-09-29: v6 is audited as history; these guard its receipt and the current v6-family path.
     "tests/test_zone_pair_v6.py", "tests/test_zone_pair_registered_source.py",
     "tests/test_owncam_bootstrap_v6b.py",
@@ -118,6 +120,8 @@ TEST_PATTERNS = (
     "tests/test_zone_pair_v6d.py",  # v6d (bundle v80): wide-hue beam heading + M1 fine align motion
     "tests/test_zone_pair_v6e.py",  # v6e carry flags (dead-reckoning model, lateral lag); flags off = v6c
     "tests/test_zone_pair_v6f.py",  # v6f place flags (optical-black dark reference, bounded retreat); flags off = v6c
+    "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
+    "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_m2_pair_door_v3.py", "tests/test_pair_owncam_approach.py", "tests/test_zone_tagged_cargo_scene.py",
     "tests/test_owncam_localizer.py", "tests/test_zone_landmarks_sim.py",
     "tests/test_zone_eval_top.py",
