@@ -333,3 +333,330 @@ def test_diag_fix_age_round_matches_base_rounding_in_a_subprocess():
                'assert e["fix_age_s"] >= 0 and e["since_tag_s"] == e["fix_age_s"] and e["last_fix_t"] == 4.4, e\n')
     out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
     assert out.returncode == 0, out.stderr
+
+
+# ------------------------------------------------------------------ 0.4.0: route legs, cause codes, diag patches
+def _carry(**kw):
+    return sp.teacher_cases('carry', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c', prior_std='e2e', **kw)[0]
+
+
+def test_route_legs_leg0_is_the_030_case_and_other_legs_translate_beam_and_prior():
+    legacy, leg0, leg3 = _carry(), _carry(leg=0), _carry(leg=3)
+    assert legacy['case_id'] == leg0['case_id'] == 'carry@b-v6c:teacher:nominal:s911:pE2E'   # ids of 0.3.0 unchanged
+    same = lambda c: {k: v for k, v in c.items() if k not in ('leg', 'route', 'route_note')}
+    assert same(leg0) == same(legacy)
+    assert leg3['case_id'] == leg0['case_id'] + ':L3' and leg3['leg'] == 3
+    dx, dy = (leg3['route'][3][i] - leg3['route'][0][i] for i in (0, 1))
+    for rid in sp.PARTICIPANTS:
+        assert leg3['placement_xyyaw'][rid][:2] == pytest.approx([leg0['placement_xyyaw'][rid][0] + dx,
+                                                                  leg0['placement_xyyaw'][rid][1] + dy])
+        assert leg3['prior'][rid]['mean_xyyaw'][:2] == pytest.approx([leg0['prior'][rid]['mean_xyyaw'][0] + dx,
+                                                                      leg0['prior'][rid]['mean_xyyaw'][1] + dy])
+        assert leg3['prior'][rid]['std_xy_m'] == leg0['prior'][rid]['std_xy_m']
+    # the true-beam vs static-sheet offset of BASE_SETUP is kept on every leg (prior is the plan, not the placement)
+    assert (leg3['beam_xyyaw'][1] - leg3['coarse_order_sheet']['beam_xyyaw'][1]
+            == pytest.approx(leg0['beam_xyyaw'][1] - leg0['coarse_order_sheet']['beam_xyyaw'][1]))
+
+
+def test_route_is_the_controller_static_plan_and_matches_the_runner_map():
+    from harness.zone_pair_executor import make_plan
+    from scripts import run_pair_stage_probes as r
+    assert r.MAP_ID == sp.MAP_ID
+    route = _carry()['route']
+    assert route == sp.plan_route(sp.BASE_SETUP['coarse_order_sheet'])
+    assert len(route) == 9 and route[0] == [1.0, .05] and route[-1] == [4.6, -2.1]
+    static_map = json.loads((ROOT / 'maps/zones' / f'{sp.MAP_ID}.json').read_text())
+    assert make_plan(static_map, sp.BASE_SETUP['coarse_order_sheet'], 'B')['route'] == route
+
+
+def test_leg_index_and_setdown_end_case():
+    assert sp.leg_index('carry', None, 9) == 0 and sp.leg_index('carry', 7, 9) == 7
+    for bad in (8, -1):
+        with pytest.raises(ValueError):
+            sp.leg_index('carry', bad, 9)
+    assert sp.leg_index('setdown', None, 9) is None and sp.leg_index('setdown', 'end', 9) == 8
+    with pytest.raises(ValueError):
+        sp.leg_index('setdown', 3, 9)
+    end = sp.teacher_cases('setdown', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c', prior_std='e2e', leg='end')[0]
+    legacy = sp.teacher_cases('setdown', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c', prior_std='e2e')[0]
+    assert end['case_id'] == legacy['case_id'] + ':Lend' and end['beam_xyyaw'][:2] == [4.6, -2.1]
+    assert 'leg' not in legacy or legacy['leg'] is None
+    assert len(sp.teacher_cases('carry', policy='b-v6c', prior_std='e2e', leg=6)) == 19
+
+
+def test_carry_end_error_check_only_when_the_runner_measured_it():
+    def exit_(gt):
+        return {'sim_s': 9., 'gt': gt}
+    gt = {'lift_m': .06, 'tilt_deg': 0., 'jaws': {'r1': [True, True], 'r2': [True, True]}}
+    rec = {'exits': {r: exit_(gt) for r in sp.PARTICIPANTS}, 'gt_at_exit': gt, 'beam_travel_m': .55, 'planned_leg_m': .55,
+           'min_lift_after_first_lift_m': .058, 'max_tilt_deg': 1.}
+    base = sp.evaluate('carry', dict(rec))
+    assert 'end_error' not in base['checks']                               # 0.3.0 records are judged as before
+    good = sp.evaluate('carry', {**rec, 'end_error_m': .03, 'cross_track_m': .01, 'yaw_drift_deg': 1.})
+    assert good['checks']['end_error'] and good['metrics']['end_error_m'] == .03
+    bad = sp.evaluate('carry', {**rec, 'end_error_m': .12})
+    assert not bad['checks']['end_error'] and not bad['passed']
+
+
+def _ev(**checks):
+    ok = all(checks.values()) if checks else True
+    return {'passed': ok, 'category': 'PASS' if ok else 'GT_CRITERIA', 'checks': checks}
+
+
+def test_classify_cause_codes_and_pose_uncertainty_sub():
+    own = {'r1': {'std_xy_m': .03, 'std_yaw_rad': .0728}}
+    fail = {'first_failure': {'robot_id': 'r1', 'sim_s': 8.7, 'reason': 'POSE_UNCERTAIN_PROGRESS'}}
+    c = sp.classify_cause('carry', {'passed': False, 'category': 'POSE_UNCERTAIN_PROGRESS', 'checks': {}}, fail,
+                          {'own_at_failure': own, 'contacts': {'box': 2}})
+    assert c['code'] == 'SELF_POSE_UNCERTAIN' and c['sub'] == 'yaw' and c['contacts_in_stage'] == {}
+    assert sp.pose_uncertainty_sub({'std_xy_m': .09, 'std_yaw_rad': .09}) == 'yaw+xy'
+    assert sp.pose_uncertainty_sub({'std_xy_m': .03, 'std_yaw_rad': .02}) == 'gate_not_ok_dwell_or_hysteresis'
+    assert sp.pose_uncertainty_sub(None) == 'no_report'
+    assert sp.classify_cause('carry', {'passed': True, 'category': 'PASS', 'checks': {}}, {})['code'] == 'PASS'
+    # no controller failure: the first GT check that failed names the cause; contacts are reported, not assumed
+    lift = sp.classify_cause('carry', _ev(controller_exit_both=True, lift=False, end_error=False), {},
+                             {'contacts': {'wall': 3, 'box': 9}})
+    assert lift['code'] == 'LOAD_DROP' and lift['contacts_in_stage'] == {'wall': 3}
+    assert sp.classify_cause('carry', _ev(controller_exit_both=True, end_error=False), {})['code'] == 'MOTION_ERROR'
+    assert sp.classify_cause('setdown', _ev(controller_exit_both=True, released=False), {})['code'] == 'NOT_RELEASED'
+    assert sp.classify_cause('carry', _ev(controller_exit_both=False), {})['code'] == 'STAGE_TIMEOUT_NO_EXIT'
+    partner = {'first_failure': {'robot_id': 'r2', 'sim_s': 4., 'reason': 'PARTNER_ABORT_X'}}
+    assert sp.classify_cause('carry', {'passed': False, 'category': 'PARTNER_ABORT_X', 'checks': {}}, partner)['code'] \
+        == 'PARTNER_ABORT'
+    assert sp.classify_cause('carry', {'passed': False, 'category': 'HOST_ERROR:x', 'checks': {}}, {})['code'] == 'HOST_ERROR'
+    assert set(sp.FAILURE_TO_CAUSE.values()) <= set(sp.CAUSES) and set(sp.CHECK_TO_CAUSE.values()) <= set(sp.CAUSES)
+
+
+def test_diag_patches_040_are_labelled_and_components_exist():
+    for name in ('loaded_yaw_gate_wide', 'pf_rest_no_abs_noise', 'rest_noise_off_and_gate_wide'):
+        assert name in sp.DIAG_PATCHES
+        d = sp.apply_diag_patch([_carry()], name)[0]
+        assert d['case_id'].endswith(':diag-' + name) and d['diag_patch'] == name
+    assert set(sp.DIAG_COMPONENTS['rest_noise_off_and_gate_wide']) <= set(sp.DIAG_PATCHES)
+    assert sp.LOADED_YAW_GATE_DIAG_DEG == (12., 10.)
+
+
+def test_diag_loaded_yaw_gate_and_rest_noise_patches_in_a_subprocess():
+    program = ('import math, numpy as np\n'
+               'from scripts import run_pair_stage_probes as r\n'
+               'from harness import zone_own_guards as g, zone_own_driver as d, zone_own_sweep as s, zone_pair_guards as p\n'
+               'from harness.owncam_localizer import OwnCamLocalizer\n'
+               'assert g.GATE_LOADED.high_yaw_rad == math.radians(3.)\n'
+               'reg = OwnCamLocalizer._motion_params\n'
+               'loc = OwnCamLocalizer.__new__(OwnCamLocalizer)\n'
+               'loc.motion_profile, loc.params = None, {"motion_loaded": {"noise_abs": [.01, .004, .098]}, "motion": {"noise_abs": [1, 1, 1]}}\n'
+               'loc.load = type("L", (), {"loaded": True})()\n'
+               'loc.vel, loc.t, loc.cmd_expires = np.zeros(3), 5., -1.\n'
+               'assert reg(loc)["noise_abs"] == [.01, .004, .098]\n'
+               'r.install_diag_patch("rest_noise_off_and_gate_wide")\n'
+               'assert loc._motion_params()["noise_abs"] == [0., 0., 0.]                    # at rest\n'
+               'loc.cmd_expires = 6.\n'
+               'assert loc._motion_params()["noise_abs"] == [.01, .004, .098]               # live command\n'
+               'loc.cmd_expires, loc.vel = -1., np.array([.1, 0., 0.])\n'
+               'assert loc._motion_params()["noise_abs"] == [.01, .004, .098]               # still moving\n'
+               'for m in (g, d, s, p):\n'
+               '    assert m.GATE_LOADED.high_yaw_rad == math.radians(12.) and m.GATE_LOADED.low_yaw_rad == math.radians(10.)\n'
+               '    assert m.GATE_LOADED.high_xy_m == .07 and m.GATE_LOADED.enter_dwell_s == .6\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+
+
+def test_finish_result_carry_leg_metrics_cause_and_command_counts(tmp_path):
+    from scripts import run_pair_stage_probes as r
+    case = _carry(leg=3)
+    p1 = case['route'][4]                                                     # leg 3 ends at route[4]
+    gt0 = {'beam_xyz': [3.2, .05, .06], 'beam_yaw': 0., 'lift_m': .06}
+    gt1 = {'beam_xyz': [p1[0] + .02, p1[1] - .03, .06], 'beam_yaw': math.radians(2.), 'lift_m': .059, 'tilt_deg': 0.,
+           'jaws': {q: [True, True] for q in sp.PARTICIPANTS}}
+    exits = {q: {'sim_s': 30., 'gt': gt1} for q in sp.PARTICIPANTS}
+    (tmp_path / 'commands.json').write_text(json.dumps({'r1': [{'kind': 'mecanum', 't': 12.}, {'kind': 'mecanum', 't': 13.},
+                                                                 {'kind': 'look', 't': 13.}, {'kind': 'mecanum', 't': 1.}],
+                                                        'r2': []}))
+    result = {'wall_s': 1., 'exits': exits, 'entry': {'r1': {'sim_s': 10., 'own_report': {'std_yaw_rad': .03}}},
+              'event_log': [], 'gt_at_entry': gt0, 'submit_t': 10., 'termination': {'sim_s': 30.},
+              'loadavg_case_start': [20., 20., 20.], 'loadavg_case_end': [21., 21., 21.],
+              'max_tilt_deg': 1., 'min_lift_after_first_lift_m': .058}
+    row = r.finish_result(case, result, tmp_path)
+    m = row['metrics']
+    assert row['leg'] == 3 and m['end_error_m'] == pytest.approx(math.hypot(.02, .03))
+    assert m['cross_track_m'] == pytest.approx(.02) and m['yaw_drift_deg'] == pytest.approx(2.)   # leg 3 is along -y
+    assert row['commands_after_submit']['r1'] == {'mecanum': 2, 'look': 1} and row['base_motion_commands']['r1'] == 2
+    assert row['loadavg_case'] == [[20., 20., 20.], [21., 21., 21.]] and row['cause'] in sp.CAUSES
+    assert row['passed'] and row['cause'] == 'PASS'
+
+
+def test_staging_bypass_only_on_setdown_at_the_destination_and_new_image_cause():
+    end = sp.teacher_cases('setdown', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c', prior_std='e2e', leg='end')[0]
+    assert end['staging_bypass'] == ['admission_image_valid'] and 'image_valid' in end['staging_bypass_note']
+    legacy = sp.teacher_cases('setdown', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c', prior_std='e2e')[0]
+    assert 'staging_bypass' not in legacy
+    for leg in (0, 3):
+        assert 'staging_bypass' not in sp.teacher_cases('carry', nominal_seeds=(911,), subset={'nominal'}, policy='b-v6c',
+                                                        prior_std='e2e', leg=leg)[0]
+    fail = {'first_failure': {'robot_id': 'r1', 'sim_s': 3., 'reason': 'INVALID_OWN_IMAGE'}}
+    c = sp.classify_cause('setdown', {'passed': False, 'category': 'INVALID_OWN_IMAGE', 'checks': {}}, fail)
+    assert c['code'] == 'OWN_IMAGE_INVALID' and 'OWN_IMAGE_INVALID' in sp.CAUSES
+    e = sp.classify_cause('setdown', {'passed': False, 'category': 'ENTRY:ADMISSION_SELF_INVALID_IMAGE', 'checks': {}}, {})
+    assert e['code'] == 'ENTRY_ERROR' and e['sub'] == 'ADMISSION_SELF_INVALID_IMAGE'
+
+
+def test_staging_bypass_forces_only_the_admission_predicate_and_records_the_real_verdict():
+    program = ('from scripts import run_pair_stage_probes as r\n'
+               'import harness.zone_pair_admission as adm, harness.zone_pair_vision as vis\n'
+               'real = vis.valid_frame\n'
+               'seen = []\n'
+               'adm.readiness_snapshot = lambda ex, now, *a, **k: seen.append(vis.valid_frame(None, "r1", now)) or {"state": "READY"}\n'
+               'ex = type("E", (), {"robot_id": "r1", "last_obs": None})()\n'
+               'vis.valid_frame = lambda obs, rid, now: False                                 # the real verdict: invalid\n'
+               'verdicts = {}\n'
+               'r.install_staging_bypass(["admission_image_valid"], verdicts)\n'
+               'assert adm.readiness_snapshot(ex, 1.)["state"] == "READY" and seen == [True]  # forced during the call\n'
+               'assert verdicts == {"r1": [False]} and vis.valid_frame(None, "r1", 2.) is False  # restored afterwards\n'
+               'try:\n'
+               '    r.install_staging_bypass(["nope"], {})\n'
+               '    raise SystemExit(1)\n'
+               'except ValueError:\n'
+               '    pass\n'
+               'r.install_staging_bypass(None, {})\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+
+
+def test_staging_ik_envelope_is_its_own_cause_and_leaves_the_staged_denominator():
+    msg = 'target radius is outside the calibrated 14.5..18.0 cm grasp envelope'
+    ev = {'passed': False, 'category': 'HOST_ERROR', 'checks': {}}
+    c = sp.classify_cause('carry', ev, {'first_failure': {'robot_id': None, 'sim_s': None, 'reason': 'HOST_ERROR'}},
+                          {'host_error_message': msg})
+    assert c['code'] == 'STAGING_IK_ENVELOPE' and 'STAGING_IK_ENVELOPE' in sp.CAUSES
+    assert sp.classify_cause('carry', ev, {}, {'host_error_message': 'MuJoCo exploded'})['code'] == 'HOST_ERROR'
+    assert sp.classify_cause('carry', ev, {})['code'] == 'HOST_ERROR'
+    rows = [{'stage': 'carry', 'source': 'teacher_grid', 'passed': False, 'category': 'HOST_ERROR', 'cause': 'STAGING_IK_ENVELOPE',
+             'wall_s': 8, 'stage_sim_s': None},
+            {'stage': 'carry', 'source': 'teacher_grid', 'passed': True, 'category': 'PASS', 'cause': 'PASS', 'wall_s': 60,
+             'stage_sim_s': 20.},
+            {'stage': 'carry', 'source': 'teacher_grid', 'passed': False, 'category': 'POSE_UNCERTAIN', 'cause': 'SELF_POSE_UNCERTAIN',
+             'wall_s': 60, 'stage_sim_s': 3.}]
+    st = sp.summarize(rows)['stages']['carry']
+    assert (st['cases'], st['passed'], st['staging_infeasible'], st['staged_cases']) == (3, 1, 1, 2)
+    assert st['pass_rate'] == round(1 / 3, 4) and st['staged_pass_rate'] == .5
+
+
+def test_diag_image_valid_off_forces_every_check_and_keeps_the_real_verdict_in_a_subprocess():
+    assert 'image_valid_off' in sp.DIAG_PATCHES
+    d = sp.apply_diag_patch([_carry()], 'image_valid_off')[0]
+    assert d['case_id'].endswith(':diag-image_valid_off') and d['diag_patch'] == 'image_valid_off'
+    program = ('from scripts import run_pair_stage_probes as r\n'
+               'import harness.zone_pair_admission as adm, harness.zone_pair_grasp as gr, harness.zone_pair_vision as vis\n'
+               'real = vis.valid_frame\n'
+               'vis.valid_frame = lambda obs, rid, now: rid == "r2"                         # r1 invalid, r2 valid\n'
+               'r.IMAGE_VALID_REAL.clear()\n'
+               'r.install_diag_patch("image_valid_off")\n'
+               'assert vis.valid_frame(None, "r1", 1.) is True and gr.valid_frame(None, "r1", 1.) is True\n'
+               'assert vis.valid_frame(None, "r2", 1.) is True\n'
+               'assert r.IMAGE_VALID_REAL == {"r1": [0, 2], "r2": [1, 0]}                    # real verdicts counted\n'
+               'seen = []\n'
+               'adm.readiness_snapshot = lambda ex, now, *a, **k: seen.append(vis.valid_frame(None, "r1", now)) or {"state": "READY"}\n'
+               'ex = type("E", (), {"robot_id": "r1", "last_obs": None})()\n'
+               'verdicts = {}\n'
+               'r.install_staging_bypass(["admission_image_valid"], verdicts)\n'
+               'adm.readiness_snapshot(ex, 2.)\n'
+               'assert seen == [True] and verdicts == {"r1": [False]}                       # real verdict, not the forced one\n'
+               'assert vis.valid_frame.__wrapped__("x", "r1", 3.) is False\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+
+
+def test_clamp_estimate_sigma_is_pure_and_leaves_uninitialised_or_non_finite_alone():
+    est = {'initialized': True, 'x': 1., 'y': 2., 'yaw': .1, 'std_xy_m': .09, 'std_yaw_rad': .02, 'cov': [[1]]}
+    out = sp.clamp_estimate_sigma(est, .03, .012)
+    assert (out['std_xy_m'], out['std_yaw_rad']) == (.03, .012) and out['x'] == 1. and out['cov'] == [[1]]
+    assert est['std_xy_m'] == .09                                                      # input untouched
+    small = sp.clamp_estimate_sigma({'initialized': True, 'std_xy_m': .01, 'std_yaw_rad': .005}, .03, .012)
+    assert (small['std_xy_m'], small['std_yaw_rad']) == (.01, .005)                    # never raised
+    bad = {'initialized': True, 'std_xy_m': float('inf'), 'std_yaw_rad': None}
+    assert sp.clamp_estimate_sigma(bad, .03, .012) == bad
+    assert sp.clamp_estimate_sigma({'initialized': False}, .03, .012) == {'initialized': False}
+
+
+def test_diag_sigma_held_at_prior_caps_the_reported_sigma_in_a_subprocess():
+    assert 'sigma_held_at_prior' in sp.DIAG_PATCHES
+    d = sp.apply_diag_patch([_carry()], 'sigma_held_at_prior')[0]
+    assert d['case_id'].endswith(':diag-sigma_held_at_prior') and d['diag_patch'] == 'sigma_held_at_prior'
+    program = ('from scripts import run_pair_stage_probes as r\n'
+               'from harness.owncam_localizer import OwnCamLocalizer as L\n'
+               'from harness.owncam_recovery_v6 import RecoveryLocalizer as R\n'
+               'L.estimate = lambda self: {"initialized": True, "x": 1., "std_xy_m": .2, "std_yaw_rad": .3}\n'
+               'r.install_diag_patch("sigma_held_at_prior")\n'
+               'e = L.estimate(object())\n'
+               'assert (e["std_xy_m"], e["std_yaw_rad"], e["x"]) == (.03, .012, 1.), e\n'
+               'assert issubclass(R, L) and R.estimate is not L.estimate      # subclass keeps super().estimate()\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+
+
+def test_diag_carry_all_three_is_the_composite_of_the_three_single_patches():
+    assert sp.DIAG_COMPONENTS['carry_all_three'] == ('sigma_held_at_prior', 'carry_lateral_scale_measured', 'image_valid_off')
+    assert all(part in sp.DIAG_PATCHES for part in sp.DIAG_COMPONENTS['carry_all_three']) and 'carry_all_three' in sp.DIAG_PATCHES
+    d = sp.apply_diag_patch([_carry()], 'carry_all_three')[0]
+    assert d['case_id'].endswith(':diag-carry_all_three') and d['diag_patch'] == 'carry_all_three'
+    assert sp.CARRY_LATERAL_SCALE_DIAG == 0.806 and abs(0.697 * 0.829084 / 0.716667 - 0.806) < 1e-3
+
+
+def test_diag_carry_lateral_scale_measured_changes_only_the_lateral_scale_in_a_subprocess():
+    program = ('from scripts import run_pair_stage_probes as r\n'
+               'from scripts import study_owncam_pair_beam as s\n'
+               'before = dict(s.CARRY_ODOM_SCALE)\n'
+               'r.install_diag_patch("carry_lateral_scale_measured")\n'
+               'assert s.CARRY_ODOM_SCALE == {"axial": before["axial"], "lateral": .806}, s.CARRY_ODOM_SCALE\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+
+
+def test_diag_setdown_sigma_tiny_image_off_is_the_composite_and_caps_sigma_at_the_floor_in_a_subprocess():
+    assert sp.DIAG_COMPONENTS['setdown_sigma_tiny_image_off'] == ('sigma_held_tiny', 'image_valid_off')
+    assert all(part in sp.DIAG_PATCHES for part in sp.DIAG_COMPONENTS['setdown_sigma_tiny_image_off'])
+    assert 'setdown_sigma_tiny_image_off' in sp.DIAG_PATCHES
+    d = sp.apply_diag_patch([_carry()], 'setdown_sigma_tiny_image_off')[0]
+    assert d['case_id'].endswith(':diag-setdown_sigma_tiny_image_off') and d['diag_patch'] == 'setdown_sigma_tiny_image_off'
+    assert sp.SIGMA_TINY_DIAG == {'std_xy_m': .001, 'std_yaw_rad': .0005}
+    program = ('from scripts import run_pair_stage_probes as r\n'
+               'from harness.owncam_localizer import OwnCamLocalizer as L\n'
+               'L.estimate = lambda self: {"initialized": True, "x": 1., "std_xy_m": .2, "std_yaw_rad": .3}\n'
+               'r.install_diag_patch("sigma_held_tiny")\n'
+               'e = L.estimate(object())\n'
+               'assert (e["std_xy_m"], e["std_yaw_rad"], e["x"]) == (.001, .0005, 1.), e\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+
+
+def test_probe_view_name_collision_between_raws_keeps_both_views():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('views', ROOT / 'scripts/build_pair_stage_probe_views.py')
+    views = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(views)
+    first, again = Path('/x/pair-stage-probes-aaaa-carryL0'), Path('/x/pair-stage-probes-bbbb-postBaseL0')
+    assert views.unique_name('C-ca-t-nominal-s911-pE-L0', [], first) == 'C-ca-t-nominal-s911-pE-L0'
+    assert views.unique_name('C-ca-t-nominal-s911-pE-L0', ['C-ca-t-nominal-s911-pE-L0'], again) == \
+        'C-ca-t-nominal-s911-pE-L0-postBaseL0'
+
+
+def test_probe_view_scalar_tags_are_accepted_by_the_offline_audit_exporter(tmp_path):
+    import importlib.util
+    import re
+    from scripts.tensorboard_tools.offline_audit import SCALAR_TAG
+    spec = importlib.util.spec_from_file_location('views', ROOT / 'scripts/build_pair_stage_probe_views.py')
+    views = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(views)
+    row = {'case_id': 'carry@b-v6c:teacher:nominal:s911:pE2E', 'stage': 'carry', 'source': 'teacher_grid', 'cell': 'nominal',
+           'seed': 911, 'passed': False, 'category': 'POSE_UNCERTAIN', 'labels': ['stage_probe'], 'pair_policy': 'b-v6c',
+           'diag_patch': None, 'leg': 0, 'cause': 'SELF_POSE_UNCERTAIN', 'cause_sub': 'yaw', 'stage_sim_s': 3.1, 'wall_s': 5.,
+           'look_commands': {'r1': 1}, 'base_motion_commands': {'r1': 2}, 'sigma_yaw_max': {'r1': .05, 'r2': None},
+           'own_at_entry': {'r1': {'std_yaw_rad': .036}, 'r2': None}, 'metrics': {'lift_m': .06, 'end_error_m': .1},
+           'remaining_at_stop': {'r1': {'grip_x_err_m': .001}}, 'relook_calls': {'r1': [1]}, 'localizer_replaced': {'r1': 2}}
+    d = tmp_path / 'cases' / re.sub(r'[^A-Za-z0-9_.+-]+', '_', row['case_id'])
+    d.mkdir(parents=True)
+    (d / 'result.json').write_text('{}')
+    _, view = views.case_view(tmp_path, row, {'source': {'source_sha': 'a' * 40}})
+    tags = set(view['offline_scalars'])
+    assert 'gate/own_sigma_yaw_max/r1' in tags and 'gate/own_sigma_yaw_entry/r1' in tags
+    assert all(SCALAR_TAG.fullmatch(t) for t in tags), sorted(t for t in tags if not SCALAR_TAG.fullmatch(t))

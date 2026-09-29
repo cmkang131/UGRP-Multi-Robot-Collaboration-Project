@@ -22,11 +22,11 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 | 항목 | 값 | 이유 |
 |---|---|---|
 | 실행 번들 | `zone-pair-v80-align-widehue-finemotion` (**v80**) | 조정자 배정. #263 병합 뒤 main 번들 v76에 이어 배정받았다. v76은 `RETIRED_BUNDLE_IDS`로 옮겼고 `llm_driver.json`에 v80을 등록했다 |
-| workflow `zone-study-integration-run` | **`2.13.0`** | main 2.12.0(#263) 다음. 단계 4/5 probe 쪽이 workflow 소스를 바꾸면 2.13.0이 겹친다. PR 코멘트로 조정한다 |
+| workflow `zone-study-integration-run` | **`2.13.0`** | main 2.12.0(#263) 다음. 단계 4/5 probe 쪽(#266)은 병합됐고 workflow 버전을 바꾸지 않아 2.13.0은 겹치지 않았다 |
 | 정책 | `b-v6d` = `b-v6c` + `align_fine_motion` + `beam_wide_hue` | 새 플래그 2개는 opt-in. v5h·b-only·a+b·b-v6c 동작은 바뀌지 않는다 |
 | 등록 revision | `v6d` ([prereg_v6d.json](prereg_v6d.json), DRAFT, `CURRENT_REVISION`) | 파일 sha256 `cbdb4b2503d928e141131b893cb56060fd6fe54292ef1667da9f57bdeea39972`, `registration_sha256` `1a1529963a320d6644f5f1f6ff3120c0fbcffb737840772d74dc4530292290e3`. 적대적 검토 반영(플래그 설명·probe 버전) 뒤 한 번 다시 봉인했다. 이전 봉인 값(파일 `4c403253…`, 등록 `f4bcd84e…`)은 이 값으로 대체됐다 |
 | v6c 봉인 | `prereg_v6c.json` 바이트 그대로, historical | `scripts/zone_pair_v6_contract.py`가 v6/v6b/v6c를 봉인 커밋(v6c는 `be95f8b018bb110e2fc97ec5a3c90e357a949449`)의 blob으로 감사한다. v6c 소스를 고치지 않고 v6d revision으로 분리했다 |
-| probe | `PROBE_VERSION 0.5.0` (`b-v6d` 추가) | 정렬 정책 목록과 TensorBoard 뷰 접두어(`D-`) 추가. **raw의 0.4.0은 두 가지 코드 상태(#265, #266 smoke)에서 나왔고 실행 SHA로 구분한다.** #266(`claude/pair-v6c-carry-probes`)도 0.4.x(0.4.0–0.4.5)를 쓰므로 겹치지 않게 이 PR은 0.5.0으로 올렸다. 이 PR의 raw(25셀·단계 3)는 manifest `probe_version`이 모두 `0.4.0`이고, 0.5.0으로 다시 돌린 물리 실행은 없다. 이 값은 기록용 문자열이라 동작을 바꾸지 않는다 |
+| probe | `PROBE_VERSION 0.5.0` (`b-v6d` 추가) | 정렬 정책 목록과 TensorBoard 뷰 접두어(`D-`) 추가. **raw의 0.4.0은 두 가지 코드 상태(#265, #266 smoke)에서 나왔고 실행 SHA로 구분한다.** #266(`claude/pair-v6c-carry-probes`, 단계 4/5 probe 도구, main에 병합됨)이 0.4.0–0.4.5를 써서 겹치지 않게 이 PR은 0.5.0으로 올렸다. 병합 뒤 `harness/pair_stage_probe.py`의 `PROBE_VERSION` 주석에 0.4.x가 #266의 값이라는 매핑 메모를 남겼다. 이 PR의 raw(25셀·단계 3)는 manifest `probe_version`이 모두 `0.4.0`이고, 0.5.0으로 다시 돌린 물리 실행은 없다. 이 값은 기록용 문자열이라 동작을 바꾸지 않는다 |
 
 - 등록의 `denominator`에는 이 단계 probe를 포함하지 않는다.
 - **raw 기록의 번들 ID.** 각 경우 `result.json`의 `execution_bundle_id_on_main`은 실행 당시 main의 번들을 적은 값이다. 단계 2 25셀(`052e3eba-v6d-venv-align-0`·`-1`, 13+12)과 단계 3 공식 환경 실행(`052e3eba-v6d-venv-bound-e2e`, 23)은 `zone-pair-v76-fixclock-grasp-entry`(v76)로 기록됐다. v6c 기준선(`b5234b7a-v6c-align` 25, `b534a9b5-v6c-bound-e2e` 46)도 v76이다. **v80(`zone-pair-v80-align-widehue-finemotion`)으로 기록된 raw는 병합 트리 `4714263a`에서 돌린 6셀(`4714263a-v6d-final-align-subset`)과 단계 3의 23셀(`4714263a-v6d-final-bound-e2e`)뿐이다.** 그래서 25셀 결과는 v80 등록 트리의 실행이 아니라 그 코드 트리 `052e3eba`의 실행이다. 두 트리가 같은 소스라는 근거는 `052e3eba` 실행 트리 파일 951개가 각각 `git show 052e3eba:<경로>`의 blob과 바이트 단위로 같다는 확인(manifest에 `source_dirty: true`가 있는 것은 실행 트리 밖의 미커밋 실험 기록 때문이다)과, `4714263a` 974개가 모두 blob과 같다는 확인이다. 25셀 전체를 v80 트리에서 다시 돌린 것은 아니다.
@@ -244,6 +244,9 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 
 병합 트리 `4714263a`에서 다시 돌린 결과다(공식 환경 python 3.12.13, 로컬 Mac, `OMP_NUM_THREADS=1`).
 
+- **검토 반영 뒤 재확인(origin/main `1e7bdfe0` = #264·#266 병합 후의 브랜치, 코드 동작 변경 없음).** `scripts/run_ci_tests.py`의 314개 파일 전체 pytest: **6252 통과, 16 건너뜀, 3 실패**(831 s, 실패 3건은 아래와 같은 sparse checkout 원인). `tests/test_pair_stage_probe.py`(#266이 327줄 추가, CI 목록에 없음)와 `tests/test_zone_pair_v6d.py` 80개 통과. `tests/test_zone_study_multiturn_properties.py`·`tests/test_zone_multiturn_ci.py` 두 파일 전체 750개 통과. `verify-current`, `verify-registry --base origin/main`(= `1e7bdfe0`)과 `--base 98efe0e6`, `scripts/check_media_size.py --base origin/main` 통과. `build_prereg_v6d.py`를 병합 뒤 다시 돌려도 `prereg_v6d.json`이 바이트 같아(`registration_sha256` `1a152996…`) 병합 때문에 다시 봉인할 필요는 없었다.
+- 아래는 그 전, 병합 트리 `4714263a` 시점의 결과다.
+
 - **CI 오프라인 묶음.** `scripts/run_ci_tests.py`의 `TEST_PATTERNS` 314개 파일 전체를 `pytest -q`로 직접 돌렸다(로컬 agent_lock은 잡지 않으려고 스크립트 대신 같은 목록을 썼다). **6252 통과, 16 건너뜀, 3 실패**(853 s). 실패 3건은 모두 `tests/test_zone_study_review_r7_contract.py::test_r7_p2_frozen_records_…`이고 원인은 이 worktree의 sparse checkout이 `experiments/**/*.gz`를 뺀 것이다(`experiments/2026-09-26-zone-study-offline-smoke/v{3,4,5}/example_trial_record.json.gz` 없음, FileNotFoundError). 전체 체크아웃인 기본 체크아웃에서 같은 파일을 돌리면 22개 모두 통과한다. GitHub Actions는 전체 체크아웃이므로 영향이 없다.
 - **v6d 신규·TensorBoard 시험.** `tests/test_zone_pair_v6d.py` 38개(마스크·프로필 적용 조건·플래그 조합·등록 계약·재생 기록 고정값)와 `tests/test_tensorboard_export.py`, `tests/test_offline_audit_export.py`, `tests/test_owncam_loop_views.py`를 함께 돌려 125개 통과.
 - **CI 계약 검사.** `python -m harness.rgb_execution_bundle verify-current --id rgb-standard-dispatch-v63`, `verify-registry --base origin/main`(= `98efe0e6`), `scripts/check_media_size.py --base origin/main`을 로컬에서 통과시켰다. multiturn 16개 shard 중 shard 0/16(`tests/test_zone_study_multiturn_properties.py`, `tests/test_zone_multiturn_ci.py`)만 로컬에서 49개 통과시켰다. 나머지 shard는 CI에 맡긴다. 이 PR이 바꾼 것은 `test_zone_study_multiturn_properties.py`의 기대 번들 ID 한 줄(v76 → v80)뿐이다.
@@ -262,7 +265,7 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 ## 다음 막힘
 
 1. **플래그별 ablation 없음.** A(`align_fine_motion`)와 B(`beam_wide_hue`)를 하나씩 켠 물리 실행으로 기여를 나눈다. 재생상 A는 NO_FIX 6건, B는 yaw 6건을 설명하지만 물리로 확인하지는 않았다.
-2. **단계 4(운반)·5(내려놓기).** v6d 정책으로는 아직 probe하지 않았다. 단계 4/5 probe 쪽 PR과 workflow 2.13.0이 겹치면 PR 코멘트로 조정한다.
+2. **단계 4(운반)·5(내려놓기).** v6d 정책으로는 아직 probe하지 않았다. #266이 만든 단계 4/5 probe 도구는 이 브랜치에 병합되어 있고(`--policies b-v6d` 선택 가능), 실행은 후속 작업이다.
 3. **a+b 정렬.** a+b 정렬은 손대지 않았다. 제안(구현 안 함): r1의 노란 윗면이 r2의 시야에도 들어오게 두 정책을 합치면 빔 길이 1.54 m를 r2의 한 번 관측에 맞출 수 있는지 확인할 가치가 있다.
 4. **ex+12 mm 파지 셀의 라이브러리 민감도.** 위 환경 불일치 절 참고. v6c 견고성 문제로 따로 다룬다.
 5. **held-out 확인.** 원인을 v6c 실패 셀에서 찾았으므로, 새 시드·새 체크포인트의 정렬 확인은 아직 없다.
