@@ -48,3 +48,22 @@ def test_b_v6h_envelope_cases_carry_the_variant_and_the_registered_policy():
 def test_chain_stop_leg_only_for_the_chain_stage():
     with pytest.raises(SystemExit):
         runner.main(['--stage', 'carry', '--sources', 'teacher', '--chain-stop-leg', '1', '--output', '/tmp/never_written'])
+
+
+def test_progress_relax_is_process_local_and_only_for_b_v6h(monkeypatch):
+    from harness import zone_own_guards as g
+    from harness import zone_pair_progress_relax as pr
+    assert pr.install(None) is None
+    monkeypatch.setattr(g, 'STALL_COMMANDED_M', g.STALL_COMMANDED_M)      # restored after the test
+    reg = g.STALL_COMMANDED_M
+    assert reg == pr.REGISTERED['stall_commanded_m']
+    info = pr.install('p1')
+    assert g.STALL_COMMANDED_M == 1.2 and info['registered']['stall_commanded_m'] == reg
+    mon = g.ProgressMonitor()
+    mon.trusted((1., 0.), 1.)
+    mon.drove(0.9)
+    assert not mon.needs_check()                    # 0.9 m commanded: the registered 0.40 m rule would have fired
+    with pytest.raises(ValueError):
+        pr.install('p9')
+    with pytest.raises(SystemExit):
+        runner.main(['--stage', 'carry', '--sources', 'teacher', '--policies', 'b-v6g', '--progress-relax', 'p1', '--output', '/tmp/never_written'])

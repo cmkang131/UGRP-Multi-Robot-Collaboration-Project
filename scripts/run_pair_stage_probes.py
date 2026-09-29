@@ -554,6 +554,8 @@ def run_case(case, out):
     install_diag_patch(case.get('diag_patch'))
     from harness import zone_pair_door_relax as door_relax
     result['door_relax'] = door_relax.install(case.get('door_relax'))     # b-v6h only; None = registered thresholds
+    from harness import zone_pair_progress_relax as progress_relax
+    result['progress_relax'] = progress_relax.install(case.get('progress_relax'))     # probe-only diagnostic; None = registered
     result['staging_bypass'] = case.get('staging_bypass')
     result['admission_image_valid_real'] = {}
     install_staging_bypass(case.get('staging_bypass'), result['admission_image_valid_real'])
@@ -1158,6 +1160,8 @@ def parser():
     p.add_argument('--env-prior', default='hR2_01', help='envelope grid: hR2 sample whose recorded PF posterior is the start prior')
     p.add_argument('--env-bias-y-m', nargs='+', type=float, default=[0.], help='envelope grid: extra prior y error [m] (both robots)')
     p.add_argument('--env-bias-yaw-deg', nargs='+', type=float, default=[0.], help='envelope grid: extra prior yaw error [deg] (both robots)')
+    p.add_argument('--progress-relax', choices=['p1'], help='with --policies b-v6h only: probe-only relaxation of the loaded pair\'s '
+                   'no-progress check (harness/zone_pair_progress_relax.py); the case id gets +<name>')
     p.add_argument('--chain-stop-leg', type=int, help='stage chain only: stop the run when both robots reach the END of this route '
                    'leg (eval-only stop; the controller is untouched)')
     p.add_argument('--limit', type=int)
@@ -1201,6 +1205,12 @@ def main(argv=None):
     if args.contact_track:
         for c in cases:
             c['contact_track'] = True
+    if args.progress_relax:
+        if args.policies != ['b-v6h']:
+            p.error('--progress-relax applies to --policies b-v6h only')
+        for c in cases:
+            c['progress_relax'] = args.progress_relax
+            c['case_id'] = c['case_id'].replace(f".{c['door_relax']}:", f".{c['door_relax']}+{args.progress_relax}:", 1)
     if args.chain_stop_leg is not None:
         if args.stage != ['chain']:
             p.error('--chain-stop-leg applies to --stage chain only')
