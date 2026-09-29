@@ -132,22 +132,30 @@ def build_world_look(look):
     return world, scene
 
 
-def sample_state(rng, rects, bounds, stations, servos, split):
+def sample_state(rng, rects, bounds, stations, servos, split, mode='uniform'):
     def pose():
         while True:
             x = rng.uniform(bounds[0], bounds[1]); y = rng.uniform(bounds[2], bounds[3])
             if free(x, y, rects, bounds):
                 return float(x), float(y), float(rng.uniform(-math.pi, math.pi))
 
+    def pose_far():
+        # 'farwall' mode: like the carry corridor - heading within 20 deg of +x or -x (looking down the corridor / at the far wall)
+        while True:
+            x = rng.uniform(bounds[0], bounds[1]); y = rng.uniform(bounds[2], bounds[3])
+            if free(x, y, rects, bounds):
+                base = 0.0 if rng.random() < .5 else math.pi
+                return float(x), float(y), float(base + rng.uniform(-math.radians(20), math.radians(20)))
+
     def near_station(p):
         return any(math.hypot(p[0] - s[0], p[1] - s[1]) < EXCL_POS_M and abs((p[2] - s[2] + math.pi) % (2 * math.pi) - math.pi) < EXCL_YAW for s in stations)
     while True:
         rid = 'r1' if rng.random() < .5 else 'r2'
-        p_self, p_partner = pose(), pose()
+        p_self, p_partner = (pose_far() if mode == 'farwall' else pose()), pose()
         if near_station(p_self) or math.hypot(p_self[0] - p_partner[0], p_self[1] - p_partner[1]) < .40:
             continue
         break
-    u = rng.random()
+    u = rng.random() if mode != 'farwall' else 0.5      # farwall: search-pose family only
     if u < .35:
         arm = {3: 1072, 4: 2400, 5: 1482}
         arm = {k: int(v + rng.integers(-45, 46)) for k, v in arm.items()}
@@ -176,6 +184,7 @@ def main(argv=None):
     ap.add_argument('--looks', nargs='+', required=True)
     ap.add_argument('--n-per-look', type=int, default=60)
     ap.add_argument('--seed', type=int, default=1)
+    ap.add_argument('--mode', choices=('uniform', 'farwall'), default='uniform')
     a = ap.parse_args(argv)
     looks = all_looks()
     rects, bounds = wall_rects()
@@ -194,11 +203,11 @@ def main(argv=None):
         world, scene = build_world_look(look)
         t_build = float(world.data.time)
         label_render = rc.make_label_renderer(world)
-        seed = int(hashlib.sha256(f'{a.seed}|{a.split}|{name}'.encode()).hexdigest()[:8], 16)
+        seed = int(hashlib.sha256(f'{a.seed}|{a.split}|{name}' + ('' if a.mode == 'uniform' else '|' + a.mode).encode()).hexdigest()[:8], 16)
         rng = np.random.default_rng(seed)
         rows = []
         for i in range(a.n_per_look):
-            st = sample_state(rng, rects, bounds, stations, servos, a.split)
+            st = sample_state(rng, rects, bounds, stations, servos, a.split, a.mode)
             rid = st['robot']
             partner = 'r2' if rid == 'r1' else 'r1'
             b = st['beam'] or (rc.ROUTE[0][0], rc.ROUTE[0][1], 0.0)

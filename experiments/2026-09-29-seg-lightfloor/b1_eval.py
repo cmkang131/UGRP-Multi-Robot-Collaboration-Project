@@ -21,10 +21,10 @@ import seg_ft  # noqa: E402
 OUT = Path('/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929')
 
 
-def make_obs(ckpt, pre, xf, src: Path, dst: Path):
+def make_obs(ckpt, pre, xf, src: Path, dst: Path, infer_size=None):
     ctx = common.Context()
     vl = ctx.vl
-    seg = seg_ft.Seg(Path(ckpt), pre, ctx.infer_size, xf=seg_ft.XFS[xf])
+    seg = seg_ft.Seg(Path(ckpt), pre, infer_size or ctx.infer_size, xf=seg_ft.XFS[xf])
     man = json.loads((src / 'render_manifest.json').read_text())
     obs_v, agree = {}, {}
     t0 = time.time()
@@ -45,7 +45,7 @@ def make_obs(ckpt, pre, xf, src: Path, dst: Path):
                 per[name] = {'iou': None if union == 0 else round(inter / union, 4), 'label_px': int(((lab == c) & valid).sum())}
             per['pixel_acc'] = round(float(((pred == lab) & valid).sum() / max(valid.sum(), 1)), 4)
             agree[row['name']] = per
-    meta = {'frames': len(obs_v), 'wall_s': round(time.time() - t0, 1), 'device': str(seg.dev), 'infer_size': list(ctx.infer_size),
+    meta = {'frames': len(obs_v), 'wall_s': round(time.time() - t0, 1), 'device': str(seg.dev), 'infer_size': list(infer_size or ctx.infer_size),
             'checkpoint_sha256': seg.sha256, 'pre': pre, 'xf': xf}
     (dst / 'obs_vision.json').write_text(json.dumps({'meta': meta, 'obs': obs_v}))
     (dst / 'seg_agreement.json').write_text(json.dumps(agree, indent=1))
@@ -58,7 +58,7 @@ def main():
     ap.add_argument('--pre', default='rgb'); ap.add_argument('--xf', default='none')
     ap.add_argument('--looks', nargs='*', default=['p20']); ap.add_argument('--cells', nargs='+', default=['S', 'Y'])
     ap.add_argument('--n', default='S=40,Y=8'); ap.add_argument('--checkpoints', type=int, nargs='*'); ap.add_argument('--robots', nargs='*')
-    ap.add_argument('--skip-runs', action='store_true'); ap.add_argument('--tag', default='')
+    ap.add_argument('--infer-size', type=int, nargs=2); ap.add_argument('--skip-runs', action='store_true'); ap.add_argument('--tag', default='')
     a = ap.parse_args()
     src = Path(a.render)
     dst = OUT / 'b1' / a.name / src.name
@@ -69,7 +69,7 @@ def main():
         os.symlink(src / 'eval_only', dst / 'eval_only')
     (dst / 'render_manifest.json').write_bytes((src / 'render_manifest.json').read_bytes())
     if not (dst / 'obs_vision.json').exists():
-        meta, agree = make_obs(a.ckpt, a.pre, a.xf, src, dst)
+        meta, agree = make_obs(a.ckpt, a.pre, a.xf, src, dst, a.infer_size)
         w = [v['wall']['iou'] for v in agree.values() if v['wall']['iou'] is not None]
         print('obs', json.dumps(meta), 'wall IoU median', round(float(np.median(w)), 3), 'p10', round(float(np.percentile(w, 10)), 3), flush=True)
     if a.skip_runs:

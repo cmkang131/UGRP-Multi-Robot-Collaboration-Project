@@ -195,7 +195,7 @@ class CacheDataset(torch.utils.data.Dataset):
 
 
 def train(prefix: Path, train_idx, val_idx, out: Path, *, pre: str = 'rgb', init: Path = SEG_V2, epochs: int = 4, batch: int = 16,
-          lr: float = 3e-4, seed: int = 0, workers: int = 3, recolour_p: float = 0.0, cast: float = .05, gamma: float = .25,
+          lr: float = 3e-4, seed: int = 0, workers: int = 1, recolour_p: float = 0.0, cast: float = .05, gamma: float = .25,
           bn_idx=None, log=print, tag: str = '') -> dict:
     torch.manual_seed(seed); np.random.seed(seed)
     dev = sm.device()
