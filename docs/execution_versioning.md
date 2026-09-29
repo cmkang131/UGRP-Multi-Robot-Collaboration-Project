@@ -36,6 +36,10 @@
 - 제어·접촉 설정은 유지한다: GT 제어 입력 없음, weld OFF, `cargo_noslip_v1`, 인식 지연 0.16 SIM초.
 - 새 번들 JSON은 [미커밋 후보 기록](../experiments/2026-09-27-pr229-source-delay/README.md)에만 저장한다. 소스 커밋·실행 pin 확정·물리 완주는 별도이며 이번 검증은 오프라인 회귀다.
 
+## 선택 입력(센서) 스위치 (2026-09-29)
+
+실행 구성의 `sensors.ultrasonic_front`(`off` | `on_v1`)는 번들 ID를 새로 만들지 않는 **선택 입력 스위치**다. 기본은 꺼짐이며, 꺼진 실행은 소스·번들·해시·출력이 바이트 동일하다. 켜면 `bundle.sensors`에 프로필·센서 모델 id·spec 해시·`baseline_comparable: false`를 기록하고 센서 소스를 소스 고정 목록에 넣으므로 번들 해시가 꺼진 실행과 달라진다. 켠 실행의 성공률은 꺼진 baseline에 합치지 않는다. 구현은 `scripts/run_zone_study_sensors.py`(어댑터)이며 세부는 [초음파 센서 12절](ultrasonic_range_sensor.md)에 있다.
+
 ## 공통 RGB 실행기에 적용된 검사
 
 - `rgb-standard-dispatch-v63` (PR #194, 실제 R10 PREFLIGHT 펜스 회귀 수정):

@@ -220,6 +220,7 @@ TEST_PATTERNS = (
     "tests/test_vision_pose_source.py",
     "tests/test_ultrasonic_range.py",
     "tests/test_ultrasonic_carry.py",
+    "tests/test_ultrasonic_input.py",
     "tests/test_visual_attachment*.py",
     "tests/test_placement_guidance.py",
     "tests/test_visual_placement*.py",
