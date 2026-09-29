@@ -117,6 +117,7 @@ class _OwnPort:
 
 def m2_controller(execution, plan, params):
     """Instantiate the REAL frozen controller, with only route and I/O adapters."""
+    from harness import owncam_carry_v6e as v6e_carry
     from scripts import run_m2_pair as m2
     from scripts.zone_teacher import ArmSequence
     from harness.zone_pair_guards import GuardedPairApproach
@@ -189,11 +190,15 @@ def m2_controller(execution, plan, params):
             axis = 'lateral' if lateral else 'axial'
             duration = math.hypot(dx, dy) / (m2.study.SPEED_M_S * m2.study.CARRY_ODOM_SCALE[axis])
             sign = 1. if self.rid == 'r1' else -1.
-            schedule[-1] = (start, start + duration,
-                            {'forward': sign * math.copysign(m2.study.SPEED_M_S, dx) / m2.study.FORWARD_GAIN
-                             if not lateral else 0.,
-                             'left': sign * math.copysign(m2.study.SPEED_M_S, dy) / m2.study.LEFT_GAIN
-                             if lateral else 0., 'turn': 0.})
+            command = {'forward': sign * math.copysign(m2.study.SPEED_M_S, dx) / m2.study.FORWARD_GAIN
+                       if not lateral else 0.,
+                       'left': sign * math.copysign(m2.study.SPEED_M_S, dy) / m2.study.LEFT_GAIN
+                       if lateral else 0., 'turn': 0.}
+            if self.policy.carry_lateral_lag and axis in v6e_carry.LAG_AXES:
+                # v6e: invert the calibrated loaded first-order-lag plant (harness/owncam_carry_v6e.py)
+                duration = v6e_carry.leg_duration(math.hypot(dx, dy), axis,
+                                                  [command['forward'], command['left'], command['turn']], params)
+            schedule[-1] = (start, start + duration, command)
             claim = self.claims['segments'][-1]
             claim.pop('axial_m', None)
             claim.update(axis=axis, distance_m=math.hypot(dx, dy), static_from_xy=list(a), static_to_xy=list(b))
@@ -431,6 +436,18 @@ class PairTeam:
         elif any(v6d_motion.bound(getattr(executor, 'pose', None)) for executor in self.executors.values()):
             raise ValueError(f'pose provider is bound to align_fine_motion (b-v6d); {self.policy.name} '
                              'needs a fresh provider')
+        from harness import owncam_carry_v6e as v6e_carry
+        self.carry_dr = {}
+        if self.policy.carry_dr_model:
+            if not self.policy.posterior_relook or self.policy.stationary_bootstrap:
+                raise ValueError('carry_dr_model is defined for the posterior-relook policies without the v6b bootstrap')
+            for rid, executor in self.executors.items():
+                self.carry_dr[rid] = v6e_carry.enable_provider(executor.pose)
+        elif any(v6e_carry.bound(getattr(executor, 'pose', None)) for executor in self.executors.values()):
+            raise ValueError(f'pose provider is bound to carry_dr_model (b-v6e); {self.policy.name} '
+                             'needs a fresh provider')
+        if self.policy.carry_lateral_lag and 'motion_loaded' not in params:
+            raise ValueError('carry_lateral_lag needs the calibrated loaded motion model (params.motion_loaded)')
         if self.policy.posterior_relook:
             if self.policy.exact_fix_clock:
                 from harness.owncam_recovery_v6c import enable_provider
@@ -553,6 +570,7 @@ class PairTeam:
     def records(self):
         return [{'profile': PROFILE, 'status_profile': STATUS_PROFILE, 'pair_policy': self.policy.name,
                  **({'align_motion_v6d': copy.deepcopy(self.align_motion)} if self.align_motion else {}),
+                 **({'carry_dr_v6e': copy.deepcopy(self.carry_dr)} if self.carry_dr else {}),
                  'timing': {'control_s': CONTROL_S, 'arm_s': ARM_S,
                             'heartbeat_timeout_s': s['channel'].heartbeat_timeout_s,
                             'readiness_ttl_s': s['channel'].readiness_ttl_s,

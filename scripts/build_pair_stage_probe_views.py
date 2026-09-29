@@ -27,7 +27,8 @@ DIAG_SHORT = {'fix_age_round': '', 'loaded_yaw_gate_wide': 'G', 'pf_rest_no_abs_
 IK_ENVELOPE_TEXT = 'outside the calibrated 14.5..18.0 cm grasp envelope'   # harness.pair_stage_probe.STAGING_IK_ENVELOPE_TEXT
 POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C',   # C = v6c (exact clock + grasp-range entry)
                 'b-boot': 'BB', 'a+b-boot': 'ABB',                    # v6b start bootstrap (PR #261)
-                'b-v6d': 'D'}                                          # D = v6d (wide hue, fine align motion)
+                'b-v6d': 'D',                                          # D = v6d (wide hue, fine align motion)
+                'b-v6e-dr': 'ED', 'b-v6e-lag': 'EL', 'b-v6e': 'E'}    # v6e carry flags: dead-reckoning model / lateral lag / both
 
 
 def _run_tag(raw):
@@ -132,6 +133,9 @@ def case_view(raw, row, manifest):
         leg = row['leg']
         view['condition'] += ' dest' if row['stage'] == 'setdown' else f' leg{leg}'   # setdown 'end' = the route destination
         diag += f'-L{leg}' if row['stage'] == 'carry' else '-Lend'
+    if row.get('setup_variant'):                                    # 0.6.0: held-out / calibration placement
+        view['condition'] += f" placement:{row['setup_variant']}"
+        diag += f"-V{row['setup_variant']}"
     if row.get('cause'):
         view['cause'] = row['cause'] + (f"/{row['cause_sub']}" if row.get('cause_sub') else '')
         view['outcome'] = f"{row['category']} [{view['cause']}]"

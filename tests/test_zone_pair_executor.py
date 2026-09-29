@@ -487,6 +487,11 @@ def test_frozen_m2_sources_or_explicit_followup_hashes():
     post_freeze['scripts/study_owncam_pair_beam.py'] = {
         '6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00',
     }
+    # v6e opt-in loaded dead-reckoning profile (params['motion_loaded']['load_transition']); with the key
+    # absent every branch is a no-op and the localizer output is byte-identical (tests/test_zone_pair_v6e.py).
+    post_freeze['harness/owncam_localizer.py'] = {
+        '36fd50c0f33dd14ffb97fca68284290e47b26f76342778b2ad9daa0ee19f1fa9',
+    }
     for row in files:
         got = hashlib.sha256((ROOT / row['path']).read_bytes()).hexdigest()
         assert got in {row['sha256'], *post_freeze.get(row['path'], ())}, row['path']

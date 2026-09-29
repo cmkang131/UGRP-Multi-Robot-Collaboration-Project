@@ -30,9 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.5.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
-#                          0.4.x is PR #266 (carry legs + setdown); raw manifests with 0.4.0 come from two code states
-#                                 (PR #265 align/grasp probes and PR #266 smoke) and are told apart by the run source SHA
+PROBE_VERSION = '0.6.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
@@ -42,9 +40,13 @@ PROBE_VERSION = '0.5.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set
 #                          0.4.4: carry_lateral_scale_measured + carry_all_three diagnostic patches
 #                          0.4.5: sigma_held_tiny + setdown_sigma_tiny_image_off diagnostic patches
 #                          0.5.0: b-v6d policy (align_fine_motion + beam_wide_hue) in the probe policy axis
+#                          0.6.0: b-v6e-dr / b-v6e-lag / b-v6e policies (v6e carry flags); optional eval-only PF-vs-GT
+#                                 track (case.pf_track, runner --pf-track) for the error-model consistency check;
+#                                 registered setup variants (SETUP_VARIANTS, runner --setup-variant) for held-out and
+#                                 calibration placements
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
-POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
 ROLE = {'r1': 'end_neg', 'r2': 'end_pos'}
 
 # Stage registry. ``entry`` is the controller state injected at stage start;
@@ -211,6 +213,25 @@ BASE_SETUP = {
 }
 
 
+# Registered placements besides the diagnosis one (BASE_SETUP). The true beam pose is stated; the coarse order sheet is
+# that pose rounded to the sheet grid exactly as harness.pair_owncam_approach.coarse_order_sheet does. Chosen once,
+# before the v6e carry runs, inside the controller's pickup envelope (sheet x 0.7..1.2, |y - 0.05| <= 0.15, yaw 0):
+#   cal   = calibration cohort for the v6e dead-reckoning error model (disjoint from every diagnosis cell)
+#   hA/hB/hC = held-out placements (not used in the PR #266 diagnosis, the v6e design or the calibration)
+SETUP_VARIANTS = {'cal': [.93, .03, 0.], 'hA': [.84, .13, 0.], 'hB': [1.13, -.04, 0.], 'hC': [1.03, .12, 0.]}
+
+
+def setup_variant(name=None):
+    """A stage-probe setup: the diagnosis setup (``None``/'base') or a registered variant placement."""
+    if name in (None, 'base'):
+        return copy.deepcopy(BASE_SETUP)
+    if name not in SETUP_VARIANTS:
+        raise ValueError(f'unknown setup variant {name!r}')
+    pose = list(SETUP_VARIANTS[name])
+    from harness.pair_owncam_approach import coarse_order_sheet
+    return {'beam_xyyaw': pose, 'coarse_order_sheet': coarse_order_sheet(pose), 'variant': name}
+
+
 def _grid_offsets(stage):
     """(name, r1 offset, r2 offset); offsets are (along, lateral, yaw) in the staged pose frame."""
     if stage == 'align':
@@ -319,6 +340,9 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     # sheet). Later stages start at the station aligned to the TRUE beam.
     base = plan_geo[key] if stage == 'align' else true_geo[key]
     ltag = '' if not k else (':Lend' if stage == 'setdown' else f':L{k}')
+    variant = setup.get('variant')
+    if variant:
+        ltag += f':V{variant}'
     out = []
     for name, off1, off2 in _grid_offsets(stage):
         if subset is not None and name not in subset:
@@ -335,6 +359,8 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
                     'placement_xyyaw': placement, 'r3_xyyaw': None, 'offsets': {'r1': list(off1), 'r2': list(off2)},
                     'prior': priors, 'teacher_held': bool(spec.get('teacher_held')),
                     'staging': 'teacher placement from GT beam geometry (setup only)'}
+            if variant:
+                case['setup_variant'] = variant
             if route is not None and stage == 'setdown' and k is not None:
                 # Staging only: the destination view can fail the submit-time image admission (dark floor), and a
                 # real setdown never re-submits there. The real verdict is recorded; the endpoint's own per-step

@@ -494,7 +494,9 @@ def test_policies_bundle_and_pair_team_opt_in():
     assert {'zone-study-integration-v78-referee-hidden-events', 'zone-study-integration-v79-masterpi-v3',
             'zone-pair-v76-fixclock-grasp-entry'} <= set(RETIRED_BUNDLE_IDS)
     assert 'zone-pair-v75-dock-prior-bootstrap' in RETIRED_BUNDLE_IDS
-    v6c_off = {'exact_fix_clock': False, 'grasp_range_entry': False, 'beam_wide_hue': False, 'align_fine_motion': False}
+    # v6e carry flags (opt-in, harness/owncam_carry_v6e.py) are also False for every policy below.
+    v6c_off = {'exact_fix_clock': False, 'grasp_range_entry': False, 'beam_wide_hue': False, 'align_fine_motion': False,
+               'carry_dr_model': False, 'carry_lateral_lag': False}
     assert [vars(POLICIES[k]) for k in ('v5h', 'b-only', 'a+b', 'b-boot', 'a+b-boot')] == [
         {'name': 'v5h', 'posterior_relook': False, 'beam_relative': False, 'stationary_bootstrap': False, **v6c_off},
         {'name': 'b-only', 'posterior_relook': True, 'beam_relative': False, 'stationary_bootstrap': False, **v6c_off},

@@ -4,7 +4,7 @@
 Stage probe, NOT E2E success. Each case starts from a staged state, runs ONLY
 one controller stage (the merged v5h PairTeam/M2 controller, unchanged) and
 stops with pass/fail and stage metrics. Cases run in parallel subprocesses
-(OMP_NUM_THREADS=2 each). No model calls. weld OFF, cargo_noslip_v1.
+(OMP_NUM_THREADS=--omp-threads each, default 2). No model calls. weld OFF, cargo_noslip_v1.
 
   plan only (no MuJoCo):   run_pair_stage_probes.py --stage align --output <dir>
   physical grid:           ... --execute --lock-owner claude --output /abs/<primary>/outputs/<name>
@@ -39,6 +39,7 @@ CALIBRATION = 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.js
 ORDER = {'orders': [{'order_id': 'cargoX', 'kind': 'long_beam', 'count': 1, 'required_robots': 2,
                      'destination_zone': 'B', 'initial_location': {'pickup_bay': 'P2', 'slot': 'P2-3'}}]}
 SAMPLE_S = .05
+PF_TRACK_S = .25   # --pf-track: PF posterior sampling period [SIM s] (eval-only trace field 'pf')
 
 
 def write_json(path, value):
@@ -209,6 +210,15 @@ def install_stage(ctl, execution, probe):
             ctl.set(spec['exit_state'], now, stage_probe_exit=True)
         setattr(ctl, hook, exit_now)
     return ctl
+
+
+def pf_snapshot(loc):
+    """The filter's posterior mean/covariance at its own clock (eval-only read; ``estimate()`` draws nothing)."""
+    est = loc.estimate()
+    if not est.get('initialized'):
+        return {'t': est.get('t'), 'initialized': False}
+    return {'t': est['t'], 'initialized': True, 'x': est['x'], 'y': est['y'], 'yaw': est['yaw'], 'cov': est['cov'],
+            'std_xy_m': est['std_xy_m'], 'std_yaw_rad': est['std_yaw_rad'], 'n_eff': est['n_eff']}
 
 
 def instrument_pose(pose, rid, log, clock):
@@ -385,6 +395,11 @@ def run_case(case, out):
                 row = {'t': now, 'states': states, 'beam_xyz': xyz, 'beam_yaw': yaw, 'tilt_deg': tilt,
                        'lift_m': lift, 'jaws': self.jaws(fingers),
                        'robots': {r: list(self._truth(r)) for r in sp.PARTICIPANTS}}
+                if case.get('pf_track') and now + 1e-9 >= self.next_pf:
+                    # eval-only, read-only: the filter's own posterior (no predict_to, no RNG) next to the GT
+                    # pose already in this row; used by the error-model consistency analysis (NEES / coverage).
+                    self.next_pf = now + PF_TRACK_S
+                    row['pf'] = {r: pf_snapshot(self.robots[r].executor.pose.loc) for r in sp.PARTICIPANTS}
                 for r in sp.PARTICIPANTS:
                     loc = self.robots[r].executor.pose.loc
                     if id(loc) != self.loc_ids.get(r):
@@ -416,6 +431,7 @@ def run_case(case, out):
 
     host = ProbeHost.__new__(ProbeHost)
     host.next_sample, host.max_tilt, host.lifted_once, host.min_lift_after = 0., 0., False, None
+    host.next_pf = 0.
     host.rest_z = 0.
     host.loc_ids, host.gt_at_stop = {}, None
     result = {'case_id': case['case_id'], 'stage': stage, 'source': case['source'], 'cell': case['cell'],
@@ -739,6 +755,7 @@ def build_cases(args):
             if 'teacher' in args.sources:
                 for leg in (args.legs or [None]):
                     cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
+                                              setup=sp.setup_variant(args.setup_variant),
                                               subset=set(args.cells) if args.cells else None, policy=policy,
                                               prior_std=args.prior_std, leg=leg)
             if 'boundary' in args.sources and stage == 'grasp_lift':
@@ -870,8 +887,9 @@ def primary_root():
     return (ROOT / git('rev-parse', '--git-common-dir')).resolve().parent
 
 
-def run_worker(case, case_dir, timeout_s):
-    env = {**os.environ, 'OMP_NUM_THREADS': '2', 'MKL_NUM_THREADS': '2', 'OPENBLAS_NUM_THREADS': '2'}
+def run_worker(case, case_dir, timeout_s, omp_threads=2):
+    n = str(int(omp_threads))
+    env = {**os.environ, 'OMP_NUM_THREADS': n, 'MKL_NUM_THREADS': n, 'OPENBLAS_NUM_THREADS': n}
     case_file = case_dir.parent / (case_dir.name + '.case.json')
     write_json(case_file, case)
     log = case_dir.parent / (case_dir.name + '.log')
@@ -912,8 +930,13 @@ def parser():
     p.add_argument('--legs', nargs='+', type=leg_arg,
                    help="carry: route leg indexes (0 = pickup to first waypoint); setdown: 'end' = destination zone "
                         "(default: legacy behaviour)")
+    p.add_argument('--setup-variant', choices=['base', *sp.SETUP_VARIANTS], default='base',
+                   help='teacher placement: base (the PR #266 diagnosis placement) or a registered variant (0.6.0)')
     p.add_argument('--limit', type=int)
     p.add_argument('--workers', type=int, default=4)
+    p.add_argument('--omp-threads', type=int, default=2, help='OMP/MKL/OPENBLAS threads per worker (manifest records it)')
+    p.add_argument('--pf-track', action='store_true',
+                   help='record the PF posterior next to the GT pose in the trace (eval-only, read-only; 0.6.0)')
     p.add_argument('--case-timeout-s', type=float, default=1500.)
     p.add_argument('--execute', action='store_true', help='physical probes (MuJoCo); otherwise plan only')
     p.add_argument('--lock-owner', choices=('claude', 'codex', 'kiro'))
@@ -936,8 +959,13 @@ def main(argv=None):
         p.error('output must be new; raw results are never overwritten')
     if not 1 <= args.workers <= 8:
         p.error('workers must be 1..8')
+    if not 1 <= args.omp_threads <= 8:
+        p.error('omp-threads must be 1..8')
     args.unavailable = []
     cases = build_cases(args)
+    if args.pf_track:
+        for c in cases:
+            c['pf_track'] = True
     if len({c['case_id'] for c in cases}) != len(cases):
         p.error('duplicate case ids')
     from sim.workflow_manager import environment_identity, git_identity, source_fingerprint
@@ -947,7 +975,7 @@ def main(argv=None):
                 'stage_registry': {s: sp.STAGES[s] for s in sp.STAGES},
                 'source': {**git_identity(ROOT), 'execution_tree': source_fingerprint(ROOT)},
                 'environment': {**environment_identity(), 'loadavg_at_start': list(os.getloadavg())},
-                'workers': args.workers, 'omp_num_threads_per_worker': 2,
+                'workers': args.workers, 'omp_num_threads_per_worker': args.omp_threads, 'pf_track': bool(args.pf_track),
                 'cases': len(cases), 'cases_sha256': sp.digest(cases), 'unavailable_e2e': args.unavailable,
                 'state': 'planned'}
     if not args.execute:
@@ -973,7 +1001,8 @@ def main(argv=None):
     start = time.monotonic()
     rows = []
     with cf.ThreadPoolExecutor(max_workers=args.workers) as pool, (args.output / 'cases.jsonl').open('x') as sink:
-        futures = {pool.submit(run_worker, c, args.output / 'cases' / safe_name(c['case_id']), args.case_timeout_s): c
+        futures = {pool.submit(run_worker, c, args.output / 'cases' / safe_name(c['case_id']), args.case_timeout_s,
+                                 args.omp_threads): c
                    for c in cases}
         for fut in cf.as_completed(futures):
             row = fut.result()

@@ -43,6 +43,14 @@ class PairPolicy:
     # its own noise_abs, slip scale off).
     beam_wide_hue: bool = False
     align_fine_motion: bool = False
+    # v6e (2026-09-29 carry stage probes, PR #266), two independent flags:
+    # carry_dr_model: the PF carries the loaded plant's calibrated dead-reckoning error (motion-gated white
+    # noise, a constant per-leg yaw-rate bias, loaded slip-scale spread) instead of the registered
+    # rest-diffusing rate noise (harness/owncam_carry_v6e.py). The gate and its thresholds are unchanged.
+    carry_dr_model: bool = False
+    # carry_lateral_lag: the open-loop lateral carry leg length inverts the calibrated first-order-lag loaded
+    # plant instead of the constant CARRY_ODOM_SCALE['lateral'] (harness/owncam_carry_v6e.py).
+    carry_lateral_lag: bool = False
 
 
 POLICIES = {
@@ -54,6 +62,13 @@ POLICIES = {
     'b-v6c': PairPolicy('b-v6c', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True),
     'b-v6d': PairPolicy('b-v6d', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
                         beam_wide_hue=True, align_fine_motion=True),
+    # v6e carry ablation: the latest policy b-v6d plus one or both carry flags.
+    'b-v6e-dr': PairPolicy('b-v6e-dr', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                           beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True),
+    'b-v6e-lag': PairPolicy('b-v6e-lag', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                            beam_wide_hue=True, align_fine_motion=True, carry_lateral_lag=True),
+    'b-v6e': PairPolicy('b-v6e', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                        beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True, carry_lateral_lag=True),
 }
 # Registered ablation sets. v6 (historical, PR #246/#259), v6b (historical DRAFT,
 # PR #261, bundle v75), v6c (PR #263, bundle v76; sealed, now historical) and

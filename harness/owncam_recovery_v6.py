@@ -106,6 +106,7 @@ class RecoveryLocalizer(OwnCamLocalizer):
         if not self.initialized:
             self.px = self._reset_from(dets, pose, self.n)
             self.scale = 1. + self.rng.normal(size=(self.n, 3)) * self.params['motion']['scale_std']
+            self._init_plant_state()
             self.logw = self._map_logprior(self.px)
             self.initialized = True
         elif self.recovery_frames and settled:
@@ -115,6 +116,7 @@ class RecoveryLocalizer(OwnCamLocalizer):
             idx = self.rng.choice(self.n, count, replace=False)
             self.px[idx] = self._reset_from(dets, pose, count)
             self.scale[idx] = 1.
+            self._reset_plant_state(idx)
             self.logw[idx] = np.max(self.logw)
             self.recovery_frames -= 1
             self.stats['resets'] += 1
