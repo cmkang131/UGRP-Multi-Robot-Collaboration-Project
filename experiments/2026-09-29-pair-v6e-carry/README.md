@@ -674,6 +674,19 @@ cal 통과 뒤 계획대로 hA 10건(`--setup-variant hA`, legs 0 1 3 6 7 × nom
 
 실행 규칙: 소스·적합 파일·기준은 코호트 중 고정(해시 기록). 각 단계는 앞 단계 통과 뒤에만. 코호트 안에서 재적합·재시도·케이스 제외 없음. 실패하면 그 자리에서 멈추고 원인별(MOTION_ERROR/가드/정직성/PF 편향)로 보고. 세 held-out은 서로 독립이라 hB·hC·hD를 한 번에 돌리며(같은 소스), 하나라도 실패하면 어느 것도 "일반화 통과"로 쓰지 않고, 실패 뒤 그 raw는 진단용이 된다. 정직성 조건은 게이트를 바꾸지 않은 채(σ_yaw 상한 `GATE_LOADED` 유지) 측정하며, σ가 커져 `SELF_POSE_UNCERTAIN`이 나면 그 자체가 결과다. 모델 호출 0, weld OFF, `--workers 2 --omp-threads 1 --pf-track`, driver PID로 agent_lock, 부하 평균 기록, 관련 테스트만.
 
+## 렌더 프로필 전환 `floor_light_v1` (2026-09-29, 사용자 결정) 과 계획 갱신
+
+사용자 결정으로 이 코호트를 기존 그림자 설정이 아니라 새 렌더 프로필 `floor_light_v1`(그림자·반사 끔 + 점광원 0.3배 + 밝은 무채색 바닥, main 병합 PR #272)로 진행한다(렌더 CPU 약 절반, 더 현실적인 밝기). 이에 따라:
+
+- 방금 시작한 `ba834d02-gcal4`(결과 0건)는 내가 자기 프로세스만 정상 중단했다(**렌더 프로필 전환으로 중단**, 잠금 해제; 드라이버 로그에 기록). 이미 끝난 `ba834d02-gcal2`, `-gcal3`(20건씩)와 그 이전 raw(cal 35/40, hA 4/10 등)는 **기존 그림자 설정** 결과로 다른 조건이다. **새 결과와 합산·직접 비교하지 않고**(같은 케이스 비교만 참고), 위 "(1) 원인 분리" 표도 기존 프로필 raw에서 나온 것이다. 새 프로필 raw로 같은 분해를 다시 낸다.
+- 위의 "사전 등록 계획" 표와 적합 입력 목록은 **기존 프로필 기준이라 폐기**하고 아래 갱신 계획으로 대체한다(원문은 이력으로 남김). 기준값(≥ 8/10, 커버리지 ≥ 90 %, NEES [1.5, 6])은 그대로다.
+- 모든 실행에 `--render-profile floor_light_v1`을 붙이고 manifest·케이스 행에 프로필 이름·해시가 기록되는지 확인한다.
+- 소스: main(#272 포함) 병합 뒤 `cb215732`(v6g opt-in 코드; 플래그 OFF는 이전 출력과 같음). 관련 테스트 485 통과, 5 실패는 알려진 봉인 해시(`test_zone_pair_registered_source.py`, 등록 전 예상).
+
+### 단계 R: 새 영상 스모크 (측정 전 고정 기준; 소스 `cb215732`, 정책 `b-v6e`, cal 배치)
+
+영상이 바뀌므로 빔 가장자리(own_beam_edge)·빔 색 검출·영상 검사가 정상인지 먼저 본다. 케이스 5건: nominal L0·L1·L6, lat−/opp L1·L3(기존 프로필 cal 40건의 같은 케이스와 나란히 비교). 판정(모두 만족해야 다음 단계): (1) 5/5 통과, (2) 영상 검사 실패·검은 프레임 0건, (3) 빔 색 검출 픽셀 수가 기존 프로필 같은 케이스 대비 0.7–1.3배, (4) 가장자리 추적기 `no_edge`·`rejected` 0, 가장자리 기울기 대 GT 상대 yaw 비율이 기존 적합 1.008과 ±15 % 안. 어긋나면 전체를 돌리지 않고 원인만 보고한다.
+
 ## TensorBoard
 
 - **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e`, run 106개(경우별 98 + 그룹 집계 `ALL-*` 8). `collection.json` sha256 `ec6f3639cf33b470cbda4fea2501bb8b65fae61c9fd9881e2a7bcbce3ad0ae9b`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e`(빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`). 기존 스냅샷은 건드리지 않았다.
