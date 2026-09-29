@@ -323,6 +323,9 @@ def run_case(case, out):
     student = {'mode': 'm1', 'calibration': CALIBRATION,
                'skill_module': 'harness.wrist_zone_skill_v9', 'skill_class': 'WristZoneDeliveryV9'}
     scene = make_scene(spec)
+    if case.get('render_profile'):     # opt-in visual profile (sim/render_profile.py); absent = unchanged behaviour
+        from sim import render_profile as rp
+        rp.install(scene, case['render_profile'])
     spawns = scene.config['setup_only']['spawns']
     z = spawns['r1'][2]
     for rid in sp.PARTICIPANTS:
@@ -453,6 +456,10 @@ def run_case(case, out):
                              'contact_record': host.contact_record,
                              'scene_resolved_sha256': host.scene.record()['resolved_sha256'],
                              'scene_xml_sha256': host.scene.manifest.get('scene_xml_sha256')}
+        if case.get('render_profile'):
+            from sim import render_profile as rp
+            result['applied']['render_profile'] = {**host.scene.manifest['render_profile'],
+                                                   'model_audit': rp.verify_model(host.world.model, case['render_profile'])}
         host.rest_z = host.beam_pose()[0][2]
         t0 = float(host.world.data.time)
         # ---- stated priors (no fix). Before ANY own frame reaches the PF.
@@ -711,6 +718,8 @@ def finish_result(case, result, out):
                                          and x['event'] == 'localizer_object_replaced') for r in sp.PARTICIPANTS},
            'localizer_resets_stat': {r: (result.get('localizer_stats') or {}).get(r, {}).get('resets') for r in sp.PARTICIPANTS},
            'checkpoints_roundtrip': [c['roundtrip_bitwise'] for c in result.get('checkpoints', [])]}
+    if case.get('render_profile'):
+        row['render_profile'] = case['render_profile']
     result['evaluation'] = ev
     result['row'] = row
     write_json(out / 'result.json', result)
@@ -727,6 +736,15 @@ def _load(path):
 # ================================================================== coordinator
 def leg_arg(text):
     return text if text == 'end' else int(text)
+
+
+def with_render_profile(cases, name):
+    """Mark every case with the opt-in render profile. ``None`` returns the cases untouched (no new key)."""
+    if name is None:
+        return cases
+    from sim import render_profile as rp
+    rp.resolve(name)
+    return [{**c, 'render_profile': name} for c in cases]
 
 
 def build_cases(args):
@@ -753,6 +771,7 @@ def build_cases(args):
                     else:
                         cases += got
     cases = sp.apply_diag_patch(cases, args.diag_patch)
+    cases = with_render_profile(cases, args.render_profile)
     if args.limit:
         cases = cases[:args.limit]
     return cases
@@ -893,6 +912,11 @@ def run_worker(case, case_dir, timeout_s):
     return row['row']
 
 
+def rp_names():
+    from sim import render_profile as rp
+    return rp.PROFILES
+
+
 def parser():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--stage', nargs='+', choices=[s for s, v in sp.STAGES.items() if v['implemented']])
@@ -902,6 +926,10 @@ def parser():
                    help='probe-only DIAGNOSTIC controller patch (case ids get :diag-<name>; not the registered v6)')
     p.add_argument('--prior-std', choices=['grid', 'e2e'], default='grid',
                    help="teacher/boundary prior std: 'grid' (0.06 m, 0.05 rad; grid1) or 'e2e' (sp.E2E_MATCHED_PRIOR)")
+    p.add_argument('--render-profile', choices=sorted(rp_names()),
+                   help='opt-in visual profile from sim/render_profile.py (default: none = current behaviour). Changes '
+                        'every camera image, so runs are a separate condition; not a registered bundle. The profile '
+                        'name and hash go to manifest.json and every result row.')
     p.add_argument('--policies', nargs='+', default=['v5h'], choices=list(sp.POLICIES),
                    help='harness.zone_pair_v6_policy policies; there is no A-only policy on main')
     p.add_argument('--seeds', nargs='+', type=int, default=[911])
@@ -950,6 +978,9 @@ def main(argv=None):
                 'workers': args.workers, 'omp_num_threads_per_worker': 2,
                 'cases': len(cases), 'cases_sha256': sp.digest(cases), 'unavailable_e2e': args.unavailable,
                 'state': 'planned'}
+    if args.render_profile:
+        from sim import render_profile as rp
+        manifest['render_profile'] = rp.profile_record(args.render_profile)
     if not args.execute:
         print(json.dumps({'state': 'planned', 'cases': len(cases), 'case_ids': [c['case_id'] for c in cases],
                           'unavailable_e2e': args.unavailable}, ensure_ascii=False, indent=1))
