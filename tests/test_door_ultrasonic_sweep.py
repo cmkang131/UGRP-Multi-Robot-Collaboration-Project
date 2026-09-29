@@ -7,6 +7,8 @@ import math
 import numpy as np
 import pytest
 
+pytest.importorskip('mujoco')                                  # the CI offline shards have no MuJoCo
+
 from harness.ultrasonic_model import DEFAULT_SPEC, noisy_reading_with_cause, reading_rng, sensor_seed
 from scripts import door_ultrasonic_sweep as ds
 
