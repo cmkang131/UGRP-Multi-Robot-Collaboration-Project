@@ -124,6 +124,7 @@ TEST_PATTERNS = (
     "tests/test_zone_pair_v6g.py",  # v6g carry_dr_general (lateral breakaway ramp, cross-axis drift) + route end inset; flags off = v6e
     "tests/test_zone_pair_door_relax.py",  # b-v6h stage-probe door-guard relaxation (process-local; registered sources untouched)
     "tests/test_door_relax_envelope.py",  # envelope grid + chain early stop of the stage-probe runner (opt-in flags)
+    "tests/test_b_v6h_gain.py",  # b-v6h gain-fix tooling: PF forward gain x0.9483, p2f timing rule, k2 identity variant, placement list
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)

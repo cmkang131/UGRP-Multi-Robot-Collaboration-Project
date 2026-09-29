@@ -43,6 +43,9 @@ BASE_POLICY = 'b-v6g'      # the registered policy every b-v6h case runs (spec['
 
 # name -> knobs. k_xy / k_yaw: sigma multiples (registered 2 / 2). gate_yaw_deg: (high, low) or None (registered 3.0 / 2.5).
 VARIANTS = {
+    'k2': {'k_xy': 2., 'k_yaw': 2., 'gate_yaw_deg': None, 'advisory_s': 0.,
+           'note': 'identity: the registered sigma multiples (2, 2), gate and margins, so b-v6h can run the other opt-in probe patches '
+                   '(--progress-relax, --carry-gain-fix) WITHOUT any collision or gate relaxation (added 2026-09-30, b-v6h gain fix)'},
     'k1': {'k_xy': 1., 'k_yaw': 1., 'gate_yaw_deg': None, 'advisory_s': 0.,
            'note': 'sigma multiples 2 -> 1 on the inflation; gate and fixed margins registered'},
     'k0': {'k_xy': 0., 'k_yaw': 0., 'gate_yaw_deg': None, 'advisory_s': 0.,

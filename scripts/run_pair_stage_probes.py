@@ -556,6 +556,8 @@ def run_case(case, out):
     result['door_relax'] = door_relax.install(case.get('door_relax'))     # b-v6h only; None = registered thresholds
     from harness import zone_pair_progress_relax as progress_relax
     result['progress_relax'] = progress_relax.install(case.get('progress_relax'))     # probe-only diagnostic; None = registered
+    from harness import zone_pair_carry_gain_fix as carry_gain_fix
+    result['carry_gain_fix'] = carry_gain_fix.install(case.get('carry_gain_fix'))     # b-v6h only; None = registered PF gain
     result['staging_bypass'] = case.get('staging_bypass')
     result['admission_image_valid_real'] = {}
     install_staging_bypass(case.get('staging_bypass'), result['admission_image_valid_real'])
@@ -680,6 +682,9 @@ def run_case(case, out):
                 result['max_tilt_deg'] = host.max_tilt
                 result['min_lift_after_first_lift_m'] = host.min_lift_after
                 result['door_relax_overrides'] = list(door_relax.EVENTS)
+                result['carry_gain_fix_applied'] = list(carry_gain_fix.APPLIED)
+                result['progress_relax_p2f'] = ({'armed': list(progress_relax.ARMED), 'ignored': list(progress_relax.IGNORED)}
+                                                if case.get('progress_relax') == 'p2f' else None)
                 if case.get('contact_track'):
                     close_wall_episodes(wall_track)
                     result['wall_contact'] = {'episodes': wall_track['episodes'], 'steps': wall_track['steps'],
@@ -901,24 +906,30 @@ def envelope_cases(stage, args, policy, leg):
     coarse order sheet fixed at the base sheet, so the controller's route (door axis y = 0.05) does not move with the placement.
     Robots stand at the stations of the true beam. The start prior is the RECORDED PF posterior of one hR2 sample
     (std and error), optionally shifted by a stated bias (--env-bias-y-m / --env-bias-yaw-deg) to test estimator error."""
-    smp = {s['id']: s for s in json.loads(sp.SAMPLE_FILES['hR2'].read_text())['samples']}[args.env_prior]
+    samples = {s['id']: s for s in json.loads(sp.SAMPLE_FILES['hR2'].read_text())['samples']}
+    if getattr(args, 'env_placements', None):       # explicit list: one entry per placement (its own recorded prior)
+        entries = [(float(e['y']), float(e['yaw_deg']), e.get('prior', args.env_prior), e.get('name'), float(e.get('x', args.env_x)))
+                   for e in json.loads(Path(args.env_placements).read_text())]
+    else:
+        entries = [(float(y), float(yaw_deg), args.env_prior, None, float(args.env_x)) for y in args.env_y for yaw_deg in args.env_yaw_deg]
     out = []
-    for y in args.env_y:
-        for yaw_deg in args.env_yaw_deg:
-            for by in args.env_bias_y_m:
-                for byaw in args.env_bias_yaw_deg:
-                    prior_err = copy.deepcopy(smp['prior_err'])
-                    for rid in sp.PARTICIPANTS:
-                        e = prior_err[rid]['mean_err_xyyaw']
-                        prior_err[rid]['mean_err_xyyaw'] = [e[0], e[1] + by, e[2] + math.radians(byaw)]
-                    name = f'E_y{y:+.3f}_h{yaw_deg:+.1f}'
-                    if by or byaw:
-                        name += f'_b{by:+.3f}_{byaw:+.1f}'
-                    setup = {'beam_xyyaw': [args.env_x, float(y), math.radians(float(yaw_deg))],
-                             'coarse_order_sheet': copy.deepcopy(sp.BASE_SETUP['coarse_order_sheet']), 'variant': 'ENV'}
-                    out += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds), setup=setup,
-                                            policy=policy, prior_std=args.prior_std, leg=leg, door_relax=args.door_relax, chain_stop_leg=args.chain_stop_leg,
-                                            rows=[(name, (0, 0, 0), (0, 0, 0), prior_err)])
+    for y, yaw_deg, prior_id, given_name, x in entries:
+        smp = samples[prior_id]
+        for by in args.env_bias_y_m:
+            for byaw in args.env_bias_yaw_deg:
+                prior_err = copy.deepcopy(smp['prior_err'])
+                for rid in sp.PARTICIPANTS:
+                    e = prior_err[rid]['mean_err_xyyaw']
+                    prior_err[rid]['mean_err_xyyaw'] = [e[0], e[1] + by, e[2] + math.radians(byaw)]
+                name = given_name or f'E_y{y:+.3f}_h{yaw_deg:+.1f}'
+                if by or byaw:
+                    name += f'_b{by:+.3f}_{byaw:+.1f}'
+                setup = {'beam_xyyaw': [x, float(y), math.radians(float(yaw_deg))],
+                         'coarse_order_sheet': copy.deepcopy(sp.BASE_SETUP['coarse_order_sheet']), 'variant': 'ENV'}
+                out += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds), setup=setup,
+                                        policy=policy, prior_std=args.prior_std, leg=leg, door_relax=args.door_relax,
+                                        chain_stop_leg=args.chain_stop_leg,
+                                        rows=[(name, (0, 0, 0), (0, 0, 0), prior_err)])
     return out
 
 
@@ -940,7 +951,7 @@ def build_cases(args):
         for policy in args.policies:
             if 'teacher' in args.sources:
                 for leg in (args.legs or [None]):
-                    if args.env_y:      # opt-in envelope grid (2026-09-30): true beam at (x, y, heading) on the fixed base sheet
+                    if args.env_y or args.env_placements:      # opt-in envelope grid (2026-09-30): true beam at (x, y, heading) on the fixed base sheet
                         cases += envelope_cases(stage, args, policy, leg)
                         continue
                     if args.setup_variant in sp.SAMPLE_FILES:      # entries sampled from recorded stage end states
@@ -1164,8 +1175,12 @@ def parser():
     p.add_argument('--env-prior', default='hR2_01', help='envelope grid: hR2 sample whose recorded PF posterior is the start prior')
     p.add_argument('--env-bias-y-m', nargs='+', type=float, default=[0.], help='envelope grid: extra prior y error [m] (both robots)')
     p.add_argument('--env-bias-yaw-deg', nargs='+', type=float, default=[0.], help='envelope grid: extra prior yaw error [deg] (both robots)')
-    p.add_argument('--progress-relax', choices=['p1', 'p2'], help='with --policies b-v6h only: probe-only relaxation of the loaded pair\'s '
+    p.add_argument('--progress-relax', choices=['p1', 'p2', 'p2f'], help='with --policies b-v6h only: probe-only relaxation of the loaded pair\'s '
                    'no-progress check (harness/zone_pair_progress_relax.py); the case id gets +<name>')
+    p.add_argument('--carry-gain-fix', choices=['pf'], help='with --policies b-v6h only: probe-only correction of the loaded pair PF forward '
+                   'gain x0.9483 (harness/zone_pair_carry_gain_fix.py, PR #284 fit); the case id gets +gain')
+    p.add_argument('--env-placements', type=Path, help='envelope grid from an explicit list: JSON [{"name","x"(optional),"y","yaw_deg","prior"}, ...] '
+                   '(one case per entry; replaces --env-y/--env-yaw-deg products; bias flags still apply)')
     p.add_argument('--chain-stop-leg', type=int, help='stage chain only: stop the run when both robots reach the END of this route '
                    'leg (eval-only stop; the controller is untouched)')
     p.add_argument('--limit', type=int)
@@ -1209,12 +1224,16 @@ def main(argv=None):
     if args.contact_track:
         for c in cases:
             c['contact_track'] = True
-    if args.progress_relax:
+    if args.progress_relax or args.carry_gain_fix:
         if args.policies != ['b-v6h']:
-            p.error('--progress-relax applies to --policies b-v6h only')
+            p.error('--progress-relax / --carry-gain-fix apply to --policies b-v6h only')
+        tag = (f'+{args.progress_relax}' if args.progress_relax else '') + ('+gain' if args.carry_gain_fix else '')
         for c in cases:
-            c['progress_relax'] = args.progress_relax
-            c['case_id'] = c['case_id'].replace(f".{c['door_relax']}:", f".{c['door_relax']}+{args.progress_relax}:", 1)
+            if args.progress_relax:
+                c['progress_relax'] = args.progress_relax
+            if args.carry_gain_fix:
+                c['carry_gain_fix'] = args.carry_gain_fix
+            c['case_id'] = c['case_id'].replace(f".{c['door_relax']}:", f".{c['door_relax']}{tag}:", 1)
     if args.chain_stop_leg is not None:
         if args.stage != ['chain']:
             p.error('--chain-stop-leg applies to --stage chain only')
