@@ -908,12 +908,12 @@ def envelope_cases(stage, args, policy, leg):
     (std and error), optionally shifted by a stated bias (--env-bias-y-m / --env-bias-yaw-deg) to test estimator error."""
     samples = {s['id']: s for s in json.loads(sp.SAMPLE_FILES['hR2'].read_text())['samples']}
     if getattr(args, 'env_placements', None):       # explicit list: one entry per placement (its own recorded prior)
-        entries = [(float(e['y']), float(e['yaw_deg']), e.get('prior', args.env_prior), e.get('name'), float(e.get('x', args.env_x)))
-                   for e in json.loads(Path(args.env_placements).read_text())]
+        entries = [(float(e['y']), float(e['yaw_deg']), e.get('prior', args.env_prior), e.get('name'), float(e.get('x', args.env_x)),
+                    e.get('sheet', 'base')) for e in json.loads(Path(args.env_placements).read_text())]
     else:
-        entries = [(float(y), float(yaw_deg), args.env_prior, None, float(args.env_x)) for y in args.env_y for yaw_deg in args.env_yaw_deg]
+        entries = [(float(y), float(yaw_deg), args.env_prior, None, float(args.env_x), 'base') for y in args.env_y for yaw_deg in args.env_yaw_deg]
     out = []
-    for y, yaw_deg, prior_id, given_name, x in entries:
+    for y, yaw_deg, prior_id, given_name, x, sheet in entries:
         smp = samples[prior_id]
         for by in args.env_bias_y_m:
             for byaw in args.env_bias_yaw_deg:
@@ -924,8 +924,13 @@ def envelope_cases(stage, args, policy, leg):
                 name = given_name or f'E_y{y:+.3f}_h{yaw_deg:+.1f}'
                 if by or byaw:
                     name += f'_b{by:+.3f}_{byaw:+.1f}'
-                setup = {'beam_xyyaw': [x, float(y), math.radians(float(yaw_deg))],
-                         'coarse_order_sheet': copy.deepcopy(sp.BASE_SETUP['coarse_order_sheet']), 'variant': 'ENV'}
+                beam = [x, float(y), math.radians(float(yaw_deg))]
+                if sheet == 'coarse':       # the order sheet is this beam pose rounded to the sheet grid (as in the recorded hR2 setups)
+                    from harness.pair_owncam_approach import coarse_order_sheet
+                    order_sheet, variant = coarse_order_sheet(beam), 'ENVS'
+                else:                       # the fixed base sheet: the route does not move with the placement
+                    order_sheet, variant = copy.deepcopy(sp.BASE_SETUP['coarse_order_sheet']), 'ENV'
+                setup = {'beam_xyyaw': beam, 'coarse_order_sheet': order_sheet, 'variant': variant}
                 out += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds), setup=setup,
                                         policy=policy, prior_std=args.prior_std, leg=leg, door_relax=args.door_relax,
                                         chain_stop_leg=args.chain_stop_leg,
@@ -1179,7 +1184,7 @@ def parser():
                    'no-progress check (harness/zone_pair_progress_relax.py); the case id gets +<name>')
     p.add_argument('--carry-gain-fix', choices=['pf'], help='with --policies b-v6h only: probe-only correction of the loaded pair PF forward '
                    'gain x0.9483 (harness/zone_pair_carry_gain_fix.py, PR #284 fit); the case id gets +gain')
-    p.add_argument('--env-placements', type=Path, help='envelope grid from an explicit list: JSON [{"name","x"(optional),"y","yaw_deg","prior"}, ...] '
+    p.add_argument('--env-placements', type=Path, help='envelope grid from an explicit list: JSON [{"name","x"(optional),"y","yaw_deg","prior","sheet":"base"|"coarse"}, ...] '
                    '(one case per entry; replaces --env-y/--env-yaw-deg products; bias flags still apply)')
     p.add_argument('--chain-stop-leg', type=int, help='stage chain only: stop the run when both robots reach the END of this route '
                    'leg (eval-only stop; the controller is untouched)')

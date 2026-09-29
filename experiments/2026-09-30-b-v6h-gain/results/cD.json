@@ -1,0 +1,3880 @@
+[
+ {
+  "label": "cD",
+  "raw": "/Users/changmin/projects/ugrp/outputs/b-v6h-gain-69c2a99a-cD",
+  "cases": [
+   {
+    "case": "F_hR2_04:s911:pPOST:VENV",
+    "wall_s": 131.53,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 46.1,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.531704833881404,
+      "sigma_yaw_end_deg": 2.2643292063570133,
+      "sigma_xy_start_m": 0.02557,
+      "sigma_xy_end_m": 0.03839,
+      "end_error_m": 0.07820164011501433,
+      "cross_track_m": 0.043132328945672815,
+      "tilt_deg": 0.010817502341525875,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 433.6,
+      "min_clear_chassis_mm": 162.2,
+      "est_err_xy_end_m": 0.017647303429191727,
+      "est_err_yaw_end_deg": 0.21722192147245523,
+      "nees": {
+       "r1": 1.0397071278968186,
+       "r2": 0.10218962552616397
+      },
+      "z": {
+       "r1": [
+        0.3412812584629374,
+        0.7396767320199972,
+        0.09688410479861793
+       ],
+       "r2": [
+        0.06449684715241528,
+        0.2843920585444185,
+        0.07796525700423068
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.007709557980908555,
+         -0.01684450346459279,
+         0.003789592996039648
+        ],
+        "sd": [
+         0.022590042053967054,
+         0.022772790781983663,
+         0.039114703117881386
+        ],
+        "z2": [
+         0.11647289737804627,
+         0.5471216678917827,
+         0.009386529762629582
+        ],
+        "nees": 1.0397071278968186
+       },
+       "r2": {
+        "e": [
+         0.0016164021695266317,
+         0.00814662880943319,
+         0.0029670057313566645
+        ],
+        "sd": [
+         0.025061723803441772,
+         0.028645767575682102,
+         0.03805548580691094
+        ],
+        "z2": [
+         0.00415984329260202,
+         0.08087884296313197,
+         0.006078581299735741
+        ],
+        "nees": 0.10218962552616397
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "F_hR2_04",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5273
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5508
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5273
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5508
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5273
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5508
+      }
+     ]
+    }
+   },
+   {
+    "case": "F_hR2_04:s913:pPOST:VENV",
+    "wall_s": 132.33,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 46.3,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5706659639502999,
+      "sigma_yaw_end_deg": 2.284955686981723,
+      "sigma_xy_start_m": 0.02569,
+      "sigma_xy_end_m": 0.03931,
+      "end_error_m": 0.07761698052151764,
+      "cross_track_m": 0.04204321246027923,
+      "tilt_deg": 0.010822613914944422,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 434.1,
+      "min_clear_chassis_mm": 163.1,
+      "est_err_xy_end_m": 0.01952028178402415,
+      "est_err_yaw_end_deg": 0.06577404348459752,
+      "nees": {
+       "r1": 0.9150824404433401,
+       "r2": 0.08113681190749754
+      },
+      "z": {
+       "r1": [
+        0.32196914405564653,
+        0.791176253753067,
+        0.016909699611259852
+       ],
+       "r2": [
+        0.05480619459116349,
+        0.20764517890729972,
+        0.029534333907134575
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.007502433772863304,
+         -0.01882018568794883,
+         -0.000667524180003376
+        ],
+        "sd": [
+         0.023301716674957663,
+         0.023787601812709072,
+         0.03947581538106591
+        ],
+        "z2": [
+         0.10366412972392566,
+         0.6259598645027374,
+         0.0002859379409430416
+        ],
+        "nees": 0.9150824404433401
+       },
+       "r2": {
+        "e": [
+         0.0014208974990139733,
+         0.006068712328812417,
+         -0.0011233379145489941
+        ],
+        "sd": [
+         0.025925855820011036,
+         0.029226357966739544,
+         0.03803498389640779
+        ],
+        "z2": [
+         0.003003718965564478,
+         0.043116520323444506,
+         0.0008722768793381191
+        ],
+        "nees": 0.08113681190749754
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "F_hR2_04",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5274
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5518
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5274
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5518
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5274
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5518
+      }
+     ]
+    }
+   },
+   {
+    "case": "N01:s911:pPOST:VENV",
+    "wall_s": 179.2,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 59.4,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5569149768671602,
+      "sigma_yaw_end_deg": 2.2368272321907336,
+      "sigma_xy_start_m": 0.02812,
+      "sigma_xy_end_m": 0.04093,
+      "end_error_m": 0.018053122492037985,
+      "cross_track_m": 0.017939352919098026,
+      "tilt_deg": 0.011805164380325443,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 389.5,
+      "min_clear_chassis_mm": 140.7,
+      "est_err_xy_end_m": 0.019698934761896856,
+      "est_err_yaw_end_deg": 0.9968838252530318,
+      "nees": {
+       "r1": 0.25774145368887996,
+       "r2": 0.4043503448780698
+      },
+      "z": {
+       "r1": [
+        0.08533468433494029,
+        0.4500786427932759,
+        0.43492724305800495
+       ],
+       "r2": [
+        0.08031935111985382,
+        0.620789556485255,
+        0.45488074068881007
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.001979010497994649,
+         0.010291754559025562,
+         0.01680969881690464
+        ],
+        "sd": [
+         0.02319116210973482,
+         0.02286656948473032,
+         0.03864945019013854
+        ],
+        "z2": [
+         0.007282008350543904,
+         0.20257078469863726,
+         0.18916170675403693
+        ],
+        "nees": 0.25774145368887996
+       },
+       "r2": {
+        "e": [
+         0.0021449928976080557,
+         0.019030819990387512,
+         0.017464754922231762
+        ],
+        "sd": [
+         0.026705804612480784,
+         0.030655831419160694,
+         0.03839414017789694
+        ],
+        "z2": [
+         0.0064511981643143625,
+         0.38537967344115964,
+         0.20691648824960046
+        ],
+        "nees": 0.4043503448780698
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N01",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.472
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.455
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.472
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.455
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.472
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.455
+      }
+     ]
+    }
+   },
+   {
+    "case": "N01:s913:pPOST:VENV",
+    "wall_s": 178.82,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 59.3,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5632175126135992,
+      "sigma_yaw_end_deg": 2.267766953127798,
+      "sigma_xy_start_m": 0.02771,
+      "sigma_xy_end_m": 0.04044,
+      "end_error_m": 0.01803896332010172,
+      "cross_track_m": 0.017925649117867246,
+      "tilt_deg": 0.011771251982066085,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 389.5,
+      "min_clear_chassis_mm": 140.8,
+      "est_err_xy_end_m": 0.018297845598009864,
+      "est_err_yaw_end_deg": 0.8673844388118767,
+      "nees": {
+       "r1": 0.1723879605042613,
+       "r2": 0.3513352948202246
+      },
+      "z": {
+       "r1": [
+        0.05428867743592996,
+        0.34932817168185987,
+        0.3750099251810301
+       ],
+       "r2": [
+        0.08385001132134036,
+        0.5792739590347177,
+        0.39193076851973496
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0012914544961679653,
+         0.008498085402712997,
+         0.014690962963991083
+        ],
+        "sd": [
+         0.02378865275714453,
+         0.024326939799325355,
+         0.03917486439032048
+        ],
+        "z2": [
+         0.0029472604977424507,
+         0.12203017153059097,
+         0.1406324439842818
+        ],
+        "nees": 0.1723879605042613
+       },
+       "r2": {
+        "e": [
+         0.002200723378111835,
+         0.01758819216654665,
+         0.015158907334405392
+        ],
+        "sd": [
+         0.02624595206884292,
+         0.03036247684231311,
+         0.038677512846614116
+        ],
+        "z2": [
+         0.007030824398588906,
+         0.3355583196157558,
+         0.15360972731247008
+        ],
+        "nees": 0.3513352948202246
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N01",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4713
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4558
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4713
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4558
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4713
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4558
+      }
+     ]
+    }
+   },
+   {
+    "case": "N02:s911:pPOST:VENV",
+    "wall_s": 177.85,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 59.9,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5712389217454308,
+      "sigma_yaw_end_deg": 2.2488593458884814,
+      "sigma_xy_start_m": 0.02918,
+      "sigma_xy_end_m": 0.04175,
+      "end_error_m": 0.02088922781616732,
+      "cross_track_m": 0.017641796010011743,
+      "tilt_deg": 0.012987884935674444,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 385.7,
+      "min_clear_chassis_mm": 160.7,
+      "est_err_xy_end_m": 0.01012244229074057,
+      "est_err_yaw_end_deg": 0.7602448849593426,
+      "nees": {
+       "r1": 0.18913067162780106,
+       "r2": 0.2481700883246482
+      },
+      "z": {
+       "r1": [
+        0.14564201220755243,
+        0.10289455121053998,
+        0.27879471849146953
+       ],
+       "r2": [
+        0.27915496537258494,
+        0.028877180175638513,
+        0.3470871802746768
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0035046201485511297,
+         0.002378177791268518,
+         -0.010831345246404389
+        ],
+        "sd": [
+         0.024063249988312052,
+         0.023112767034693185,
+         0.03885061132080163
+        ],
+        "z2": [
+         0.02121159571986485,
+         0.010587288668818433,
+         0.07772649505873774
+        ],
+        "nees": 0.18913067162780106
+       },
+       "r2": {
+        "e": [
+         0.007637936964681735,
+         -0.0008984841217864678,
+         -0.01326472572517412
+        ],
+        "sd": [
+         0.02736092103712885,
+         0.031113983994339265,
+         0.0382172735814579
+        ],
+        "z2": [
+         0.0779274946921691,
+         0.0008338915348962899,
+         0.12046951071102598
+        ],
+        "nees": 0.2481700883246482
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N02",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5291
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4935
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5291
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4935
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5291
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4935
+      }
+     ]
+    }
+   },
+   {
+    "case": "N02:s913:pPOST:VENV",
+    "wall_s": 176.14,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 59.7,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5912924445750095,
+      "sigma_yaw_end_deg": 2.2614644173813594,
+      "sigma_xy_start_m": 0.02913,
+      "sigma_xy_end_m": 0.04095,
+      "end_error_m": 0.02150425433549382,
+      "cross_track_m": 0.018395762840111296,
+      "tilt_deg": 0.01308236491785232,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 385.3,
+      "min_clear_chassis_mm": 160.0,
+      "est_err_xy_end_m": 0.009928598034234225,
+      "est_err_yaw_end_deg": 0.8519056509203611,
+      "nees": {
+       "r1": 0.18507627122083714,
+       "r2": 0.24991951689100073
+      },
+      "z": {
+       "r1": [
+        0.11993787298159488,
+        0.004129697134244213,
+        0.35080894804191814
+       ],
+       "r2": [
+        0.2623215450999147,
+        0.09020068234458904,
+        0.3821963742235633
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0028812811799350246,
+         9.93644950554734e-05,
+         -0.01370392847214763
+        ],
+        "sd": [
+         0.024023113869771337,
+         0.024060964236705062,
+         0.03906379397856793
+        ],
+        "z2": [
+         0.014385093375349186,
+         1.7054398420584864e-05,
+         0.12306691802627723
+        ],
+        "nees": 0.18507627122083714
+       },
+       "r2": {
+        "e": [
+         0.00699971017147627,
+         -0.0027727871679335617,
+         -0.014849743247021152
+        ],
+        "sd": [
+         0.02668370289146542,
+         0.03074020169094536,
+         0.03885369995251418
+        ],
+        "z2": [
+         0.06881259302360657,
+         0.008136163095429458,
+         0.14607406846963802
+        ],
+        "nees": 0.24991951689100073
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N02",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5285
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4918
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5285
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4918
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5285
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4918
+      }
+     ]
+    }
+   },
+   {
+    "case": "N03:s911:pPOST:VENV",
+    "wall_s": 65.85,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 24.4,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 0,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "FAIL",
+      "reached": false
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N03",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": []
+    }
+   },
+   {
+    "case": "N03:s913:pPOST:VENV",
+    "wall_s": 65.98,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 24.4,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 0,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "FAIL",
+      "reached": false
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N03",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": []
+    }
+   },
+   {
+    "case": "N04:s911:pPOST:VENV",
+    "wall_s": 147.16,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 50.9,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.586708782213963,
+      "sigma_yaw_end_deg": 2.241983852346911,
+      "sigma_xy_start_m": 0.02858,
+      "sigma_xy_end_m": 0.04054,
+      "end_error_m": 0.04801476086815844,
+      "cross_track_m": 0.03575164790421963,
+      "tilt_deg": 0.0111963714689583,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 409.3,
+      "min_clear_chassis_mm": 150.8,
+      "est_err_xy_end_m": 0.014242577415605685,
+      "est_err_yaw_end_deg": 0.6571886209358587,
+      "nees": {
+       "r1": 0.37139126493325225,
+       "r2": 0.06892383735771128
+      },
+      "z": {
+       "r1": [
+        0.12861750005975522,
+        0.5923829999238619,
+        0.29590361148103916
+       ],
+       "r2": [
+        0.057934201679086285,
+        0.019922500005549335,
+        0.22044305843550172
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0030821004184367062,
+         -0.014108792264051734,
+         -0.011460985190715256
+        ],
+        "sd": [
+         0.023963305281200255,
+         0.02381701072762911,
+         0.03873215718237238
+        ],
+        "z2": [
+         0.016542461321621134,
+         0.35091761859879417,
+         0.08755894728752177
+        ],
+        "nees": 0.37139126493325225
+       },
+       "r2": {
+        "e": [
+         0.0015760871527537024,
+         -0.0005908759595145583,
+         -0.008414632352074847
+        ],
+        "sd": [
+         0.02720477899193449,
+         0.029658725528923187,
+         0.038171455303669
+        ],
+        "z2": [
+         0.003356371724193044,
+         0.00039690600647111323,
+         0.04859514201239802
+        ],
+        "nees": 0.06892383735771128
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N04",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5307
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5586
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5307
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5586
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5307
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5586
+      }
+     ]
+    }
+   },
+   {
+    "case": "N04:s913:pPOST:VENV",
+    "wall_s": 146.2,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 50.6,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5706659639502999,
+      "sigma_yaw_end_deg": 2.278080193440153,
+      "sigma_xy_start_m": 0.02815,
+      "sigma_xy_end_m": 0.04138,
+      "end_error_m": 0.04710580922965556,
+      "cross_track_m": 0.034515121187980814,
+      "tilt_deg": 0.011213210638602693,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 410.0,
+      "min_clear_chassis_mm": 152.1,
+      "est_err_xy_end_m": 0.016043845409897915,
+      "est_err_yaw_end_deg": 0.7825251767748341,
+      "nees": {
+       "r1": 0.4479455896317816,
+       "r2": 0.10344049054213175
+      },
+      "z": {
+       "r1": [
+        0.15390522169366508,
+        0.6504233983166807,
+        0.34636456265207266
+       ],
+       "r2": [
+        0.024533677531694213,
+        0.06396718586266135,
+        0.2887733770726685
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.003774476534825988,
+         -0.015856329977309343,
+         -0.013632074928738636
+        ],
+        "sd": [
+         0.0245246814454337,
+         0.024378474111395897,
+         0.03935759138971794
+        ],
+        "z2": [
+         0.023686817264576197,
+         0.4230505970778195,
+         0.11996841026116156
+        ],
+        "nees": 0.4479455896317816
+       },
+       "r2": {
+        "e": [
+         0.0006620048185153049,
+         -0.0019790583089117422,
+         -0.011221177571397067
+        ],
+        "sd": [
+         0.026983513485089372,
+         0.030938648968563576,
+         0.03885807509385919
+        ],
+        "z2": [
+         0.0006019013332291574,
+         0.004091800867188263,
+         0.08339006330595357
+        ],
+        "nees": 0.10344049054213175
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N04",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.531
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5598
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.531
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5598
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.531
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5598
+      }
+     ]
+    }
+   },
+   {
+    "case": "N05:s911:pPOST:VENV",
+    "wall_s": 182.81,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 60.3,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5723848373356925,
+      "sigma_yaw_end_deg": 2.2706317421034523,
+      "sigma_xy_start_m": 0.02875,
+      "sigma_xy_end_m": 0.04072,
+      "end_error_m": 0.017698339411960074,
+      "cross_track_m": 0.017049002483154496,
+      "tilt_deg": 0.011882279988335648,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 398.4,
+      "min_clear_chassis_mm": 163.6,
+      "est_err_xy_end_m": 0.01585550654926773,
+      "est_err_yaw_end_deg": 0.08425928266687745,
+      "nees": {
+       "r1": 0.04530488767122096,
+       "r2": 0.35884417887593045
+      },
+      "z": {
+       "r1": [
+        0.07575957516375491,
+        0.1437518561578262,
+        0.0375076873249223
+       ],
+       "r2": [
+        0.22000293253136396,
+        0.4447080955783466,
+        0.02423807717997889
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0017825086615324004,
+         0.003308916684277647,
+         -0.0014713678204198999
+        ],
+        "sd": [
+         0.023528493364429436,
+         0.02301825362619849,
+         0.03922843356546371
+        ],
+        "z2": [
+         0.0057395132289926295,
+         0.020664596148820356,
+         0.001406826608464137
+        ],
+        "nees": 0.04530488767122096
+       },
+       "r2": {
+        "e": [
+         0.005917874417869617,
+         0.013445563758994424,
+         -0.0009171158021494819
+        ],
+        "sd": [
+         0.02689907061591534,
+         0.030234582848122776,
+         0.0378378117760528
+        ],
+        "z2": [
+         0.048401290322399884,
+         0.19776529027291986,
+         0.0005874843853826134
+        ],
+        "nees": 0.35884417887593045
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N05",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4836
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4585
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4836
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4585
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4836
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4585
+      }
+     ]
+    }
+   },
+   {
+    "case": "N05:s913:pPOST:VENV",
+    "wall_s": 181.02,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 60.0,
+     "reason": "POSE_UNCERTAIN",
+     "robot_id": "r1",
+     "phase": "carry",
+     "leg": 1,
+     "code": "SELF_POSE_UNCERTAIN",
+     "sub": "yaw"
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5563420190720294,
+      "sigma_yaw_end_deg": 2.291831180523293,
+      "sigma_xy_start_m": 0.02849,
+      "sigma_xy_end_m": 0.04115,
+      "end_error_m": 0.017698106605585656,
+      "cross_track_m": 0.017043536728957392,
+      "tilt_deg": 0.011820388729664478,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 398.4,
+      "min_clear_chassis_mm": 163.6,
+      "est_err_xy_end_m": 0.014064839649144206,
+      "est_err_yaw_end_deg": 0.20161744876025564,
+      "nees": {
+       "r1": 0.03322700843191649,
+       "r2": 0.363212966741732
+      },
+      "z": {
+       "r1": [
+        0.07320191529060827,
+        0.07546560236149304,
+        0.08106000497363769
+       ],
+       "r2": [
+        0.19299875062462574,
+        0.38113551047819944,
+        0.09031627915665313
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0017287124770517526,
+         0.0018212400114626312,
+         -0.00320934157357744
+        ],
+        "sd": [
+         0.023615672761960433,
+         0.02413337937380507,
+         0.03959217094325594
+        ],
+        "z2": [
+         0.005358520402213388,
+         0.005695057139782984,
+         0.006570724406326167
+        ],
+        "nees": 0.03322700843191649
+       },
+       "r2": {
+        "e": [
+         0.005142719616392233,
+         0.01178541010862856,
+         -0.003492765348103166
+        ],
+        "sd": [
+         0.02664638812297081,
+         0.030921836944140302,
+         0.038672600119464426
+        ],
+        "z2": [
+         0.03724851774266647,
+         0.14526427734747768,
+         0.008157030280702497
+        ],
+        "nees": 0.363212966741732
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N05",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4837
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4599
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4837
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4599
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4837
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4599
+      }
+     ]
+    }
+   },
+   {
+    "case": "N06:s911:pPOST:VENV",
+    "wall_s": 183.12,
+    "first_failure": null,
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5666552593843841,
+      "sigma_yaw_end_deg": 2.2368272321907336,
+      "sigma_xy_start_m": 0.02953,
+      "sigma_xy_end_m": 0.04222,
+      "end_error_m": 0.03455372122348976,
+      "cross_track_m": 0.01233660716150526,
+      "tilt_deg": 0.012970813484360508,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 427.0,
+      "min_clear_chassis_mm": 186.4,
+      "est_err_xy_end_m": 0.005082679230016902,
+      "est_err_yaw_end_deg": 0.19686797343325435,
+      "nees": {
+       "r1": 0.02180747548730636,
+       "r2": 0.012076732281190031
+      },
+      "z": {
+       "r1": [
+        0.0525132986047444,
+        0.03991968820112868,
+        0.08898233748593067
+       ],
+       "r2": [
+        0.06860863686460897,
+        0.08483741104610977,
+        0.0387463815738678
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0012506987718376994,
+         -0.0009393858413821315,
+         0.0034383240378232927
+        ],
+        "sd": [
+         0.02381680079271773,
+         0.023531893251500187,
+         0.03864052277079077
+        ],
+        "z2": [
+         0.0027576465303510503,
+         0.0015935815060753322,
+         0.007917856384460062
+        ],
+        "nees": 0.02180747548730636
+       },
+       "r2": {
+        "e": [
+         0.0018656629944906467,
+         0.0027046773376529845,
+         0.0014775077978534945
+        ],
+        "sd": [
+         0.027192829937319873,
+         0.03188071517391039,
+         0.03813279428523433
+        ],
+        "z2": [
+         0.004707145052419781,
+         0.007197386313006588,
+         0.001501282085067762
+        ],
+        "nees": 0.012076732281190031
+       }
+      }
+     },
+     "1": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.8909493714284301,
+      "sigma_yaw_end_deg": 2.9988610997147287,
+      "sigma_xy_start_m": 0.03871,
+      "sigma_xy_end_m": 0.05784,
+      "end_error_m": 0.0179639686066798,
+      "cross_track_m": 0.010279597878337918,
+      "tilt_deg": 0.0056635691186390025,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 229.3,
+      "min_clear_chassis_mm": 159.4,
+      "est_err_xy_end_m": 0.012267731597752476,
+      "est_err_yaw_end_deg": 0.6048261853455895,
+      "nees": {
+       "r1": 0.10408957792952397,
+       "r2": 0.07724418051579844
+      },
+      "z": {
+       "r1": [
+        0.06999761904378422,
+        0.31096222368193965,
+        0.20250669500693289
+       ],
+       "r2": [
+        0.1828547815483159,
+        0.22655529743313169,
+        0.21711645874952437
+       ]
+      },
+      "start_sim_s": 36.30000000008231,
+      "end_sim_s": 61.50000000020264,
+      "handover_s": 11.600000000055388,
+      "signed": {
+       "r1": {
+        "e": [
+         0.001850414564429581,
+         0.01136378675600614,
+         0.010520861101382284
+        ],
+        "sd": [
+         0.026435392942038897,
+         0.03654394614707065,
+         0.05195315197367721
+        ],
+        "z2": [
+         0.004899666671798744,
+         0.09669750455721667,
+         0.041008961522630935
+        ],
+        "nees": 0.10408957792952397
+       },
+       "r2": {
+        "e": [
+         -0.006680633915170819,
+         0.010034481699873306,
+         0.010564338946201346
+        ],
+        "sd": [
+         0.036535188517373224,
+         0.04429153417979558,
+         0.0486574763011811
+        ],
+        "z2": [
+         0.033435871135082326,
+         0.05132730279501477,
+         0.04713955665993392
+        ],
+        "nees": 0.07724418051579844
+       }
+      }
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N06",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5098
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4772
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5098
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4772
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5098
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4772
+      }
+     ]
+    }
+   },
+   {
+    "case": "N06:s913:pPOST:VENV",
+    "wall_s": 180.79,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 60.7,
+     "reason": "POSE_UNCERTAIN",
+     "robot_id": "r1",
+     "phase": "carry",
+     "leg": 1,
+     "code": "SELF_POSE_UNCERTAIN",
+     "sub": "yaw"
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5540501878915061,
+      "sigma_yaw_end_deg": 2.279226109030415,
+      "sigma_xy_start_m": 0.0296,
+      "sigma_xy_end_m": 0.04183,
+      "end_error_m": 0.03466163129006212,
+      "cross_track_m": 0.012578197168760213,
+      "tilt_deg": 0.013059395873730815,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 426.9,
+      "min_clear_chassis_mm": 186.7,
+      "est_err_xy_end_m": 0.0033666730159245496,
+      "est_err_yaw_end_deg": 0.11033063087251216,
+      "nees": {
+       "r1": 0.02418492935970919,
+       "r2": 0.005116133471960538
+      },
+      "z": {
+       "r1": [
+        0.04520213061945873,
+        0.09122957159140457,
+        0.04949644893988785
+       ],
+       "r2": [
+        0.032564802286395265,
+        0.010838951446596332,
+        0.042498300942087924
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0011159434775185328,
+         -0.002192776341035499,
+         0.0019414157927024611
+        ],
+        "sd": [
+         0.024687851263323828,
+         0.024035806622620344,
+         0.039223334891362815
+        ],
+        "z2": [
+         0.0020432326125386082,
+         0.008322834732751212,
+         0.002449898457658925
+        ],
+        "nees": 0.02418492935970919
+       },
+       "r2": {
+        "e": [
+         0.0008671169759755237,
+         0.00034493249394220576,
+         -0.0016732947080506655
+        ],
+        "sd": [
+         0.02662742946662332,
+         0.03182341904949875,
+         0.03937321424522006
+        ],
+        "z2": [
+         0.0010604663479520143,
+         0.00011748286846167272,
+         0.0018061055829642714
+        ],
+        "nees": 0.005116133471960538
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N06",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5099
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4751
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5099
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4751
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5099
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4751
+      }
+     ]
+    }
+   },
+   {
+    "case": "N07:s911:pPOST:VENV",
+    "wall_s": 176.96,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 59.3,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5597797658428142,
+      "sigma_yaw_end_deg": 2.2712046998985835,
+      "sigma_xy_start_m": 0.02592,
+      "sigma_xy_end_m": 0.03891,
+      "end_error_m": 0.036160544773160094,
+      "cross_track_m": 0.0147148708183166,
+      "tilt_deg": 0.011953463698730819,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 423.9,
+      "min_clear_chassis_mm": 179.6,
+      "est_err_xy_end_m": 0.04055369050151271,
+      "est_err_yaw_end_deg": 2.4572157733903732,
+      "nees": {
+       "r1": 1.4239216921874895,
+       "r2": 1.9488750991732964
+      },
+      "z": {
+       "r1": [
+        0.18835773676121614,
+        0.1840255102665269,
+        1.092659325586593
+       ],
+       "r2": [
+        0.15460816109282702,
+        1.386739353682523,
+        0.9609735402808675
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.004372780741126681,
+         0.004142454703528503,
+         0.04287236527934768
+        ],
+        "sd": [
+         0.023215296681283224,
+         0.022510219901191546,
+         0.03923671749777241
+        ],
+        "z2": [
+         0.035478636997807594,
+         0.03386538842885559,
+         1.1939044017913485
+        ],
+        "nees": 1.4239216921874895
+       },
+       "r2": {
+        "e": [
+         -0.003954343634914759,
+         0.040137421260020095,
+         0.03630025874250897
+        ],
+        "sd": [
+         0.02557655176133014,
+         0.028943738528393322,
+         0.03777446227281071
+        ],
+        "z2": [
+         0.02390368347650555,
+         1.9230460350518217,
+         0.923470145119944
+        ],
+        "nees": 1.9488750991732964
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N07",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4563
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5443
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4563
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5443
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4563
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5443
+      }
+     ]
+    }
+   },
+   {
+    "case": "N07:s913:pPOST:VENV",
+    "wall_s": 148.21,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 50.7,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5620715970233375,
+      "sigma_yaw_end_deg": 2.270058784308322,
+      "sigma_xy_start_m": 0.02593,
+      "sigma_xy_end_m": 0.03918,
+      "end_error_m": 0.03657224201848666,
+      "cross_track_m": 0.015753856342211922,
+      "tilt_deg": 0.01197252576353011,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 423.2,
+      "min_clear_chassis_mm": 178.2,
+      "est_err_xy_end_m": 0.03899239227177612,
+      "est_err_yaw_end_deg": 2.2578283905762357,
+      "nees": {
+       "r1": 1.3709785547906346,
+       "r2": 1.7957356698821219
+      },
+      "z": {
+       "r1": [
+        0.21504358006050378,
+        0.07005243091945135,
+        1.005033449744162
+       ],
+       "r2": [
+        0.1409353534117393,
+        1.331421726077353,
+        0.886182009592826
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.005011853490779927,
+         0.0016209078969463137,
+         0.03941525416993219
+        ],
+        "sd": [
+         0.023306222345116336,
+         0.023138496061758204,
+         0.03921785307739321
+        ],
+        "z2": [
+         0.0462437413252383,
+         0.004907343077724503,
+         1.0100922351046508
+        ],
+        "nees": 1.3709785547906346
+       },
+       "r2": {
+        "e": [
+         -0.003650089612843077,
+         0.0386183456201592,
+         0.034128018606349286
+        ],
+        "sd": [
+         0.025899034731047408,
+         0.029005344335139342,
+         0.03851129704385455
+        ],
+        "z2": [
+         0.019862773841291856,
+         1.7726838126707982,
+         0.7853185541259795
+        ],
+        "nees": 1.7957356698821219
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N07",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4558
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5433
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4558
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5433
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4558
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5433
+      }
+     ]
+    }
+   },
+   {
+    "case": "N08:s911:pPOST:VENV",
+    "wall_s": 185.03,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 61.2,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5345696228570581,
+      "sigma_yaw_end_deg": 2.2488593458884814,
+      "sigma_xy_start_m": 0.02648,
+      "sigma_xy_end_m": 0.03934,
+      "end_error_m": 0.0338288107361451,
+      "cross_track_m": 0.012547173696042344,
+      "tilt_deg": 0.011562022388547023,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 427.4,
+      "min_clear_chassis_mm": 182.8,
+      "est_err_xy_end_m": 0.029936290345684704,
+      "est_err_yaw_end_deg": 1.7339746845255768,
+      "nees": {
+       "r1": 1.1589969701679932,
+       "r2": 1.0628089227168585
+      },
+      "z": {
+       "r1": [
+        0.11332840136293566,
+        0.21511121348562312,
+        0.7789211159470485
+       ],
+       "r2": [
+        0.11536073191230321,
+        1.0228057702865445,
+        0.706459435695077
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.002567957558043066,
+         -0.004855751502077302,
+         0.030263165413447535
+        ],
+        "sd": [
+         0.022659435120938032,
+         0.022573214215082443,
+         0.03885267043589154
+        ],
+        "z2": [
+         0.012843326555478637,
+         0.046272834167257325,
+         0.6067181048681953
+        ],
+        "nees": 1.1589969701679932
+       },
+       "r2": {
+        "e": [
+         -0.003010030982822487,
+         0.029707534015544393,
+         0.026800430482030624
+        ],
+        "sd": [
+         0.026092336039534675,
+         0.02904513728664404,
+         0.0379362623356598
+        ],
+        "z2": [
+         0.013308098467342292,
+         1.0461316437314516,
+         0.4990849342826066
+        ],
+        "nees": 1.0628089227168585
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N08",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4834
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5112
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4834
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5112
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4834
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5112
+      }
+     ]
+    }
+   },
+   {
+    "case": "N08:s913:pPOST:VENV",
+    "wall_s": 183.69,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 60.7,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5586338502525526,
+      "sigma_yaw_end_deg": 2.26203737517649,
+      "sigma_xy_start_m": 0.02577,
+      "sigma_xy_end_m": 0.03852,
+      "end_error_m": 0.033947165127503,
+      "cross_track_m": 0.012861709538072433,
+      "tilt_deg": 0.011575384242933464,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 427.1,
+      "min_clear_chassis_mm": 183.2,
+      "est_err_xy_end_m": 0.027748507228569985,
+      "est_err_yaw_end_deg": 1.6454503314574072,
+      "nees": {
+       "r1": 1.1093835513623216,
+       "r2": 0.9443147808362102
+      },
+      "z": {
+       "r1": [
+        0.13497217461179542,
+        0.24130373074669959,
+        0.7350045636681128
+       ],
+       "r2": [
+        0.09854849010816238,
+        0.962817781510852,
+        0.5725079439819469
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0030336628927982723,
+         -0.005601677839318267,
+         0.02872420027804612
+        ],
+        "sd": [
+         0.022476209644866726,
+         0.023214219780126145,
+         0.03908030194356231
+        ],
+        "z2": [
+         0.018217487919436993,
+         0.05822749047227569,
+         0.540231708612953
+        ],
+        "nees": 1.1093835513623216
+       },
+       "r2": {
+        "e": [
+         -0.0024914453844095963,
+         0.0275892239040949,
+         0.021783908460753842
+        ],
+        "sd": [
+         0.025281416099577965,
+         0.028654668031579077,
+         0.038049967148474646
+        ],
+        "z2": [
+         0.00971180490259858,
+         0.9270180803934787,
+         0.3277653459224361
+        ],
+        "nees": 0.9443147808362102
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N08",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.484
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5108
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.484
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5108
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.484
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5108
+      }
+     ]
+    }
+   },
+   {
+    "case": "N09:s911:pPOST:VENV",
+    "wall_s": 146.18,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 49.8,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5225375091593107,
+      "sigma_yaw_end_deg": 2.2603185017910974,
+      "sigma_xy_start_m": 0.02676,
+      "sigma_xy_end_m": 0.03976,
+      "end_error_m": 0.04910597765515943,
+      "cross_track_m": 0.014308644189980346,
+      "tilt_deg": 0.012655515122248238,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 432.8,
+      "min_clear_chassis_mm": 177.3,
+      "est_err_xy_end_m": 0.0330539151090886,
+      "est_err_yaw_end_deg": 1.0486278597970844,
+      "nees": {
+       "r1": 0.7594456377311054,
+       "r2": 1.3409920819396337
+      },
+      "z": {
+       "r1": [
+        0.05715792552771733,
+        0.3670790057024744,
+        0.46868084507143964
+       ],
+       "r2": [
+        0.28648672481326737,
+        1.0931698124225169,
+        0.4036457906223363
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0012640821235996302,
+         -0.008399133438019804,
+         0.018302572091614344
+        ],
+        "sd": [
+         0.022115605350068988,
+         0.022880996481796853,
+         0.03905124837953328
+        ],
+        "z2": [
+         0.0032670284506320806,
+         0.13474699642751725,
+         0.21966173453687882
+        ],
+        "nees": 0.7594456377311054
+       },
+       "r2": {
+        "e": [
+         -0.0074695610746133845,
+         0.03240893608993278,
+         0.015408381714921315
+        ],
+        "sd": [
+         0.026072974513852463,
+         0.02964675361654291,
+         0.03817302712649339
+        ],
+        "z2": [
+         0.08207464349423278,
+         1.1950202387918807,
+         0.16292992428713096
+        ],
+        "nees": 1.3409920819396337
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N09",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4773
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5161
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4773
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5161
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4773
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5161
+      }
+     ]
+    }
+   },
+   {
+    "case": "N09:s913:pPOST:VENV",
+    "wall_s": 130.92,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 45.5,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5334237072667964,
+      "sigma_yaw_end_deg": 2.26203737517649,
+      "sigma_xy_start_m": 0.02633,
+      "sigma_xy_end_m": 0.03906,
+      "end_error_m": 0.04945727803171037,
+      "cross_track_m": 0.015421967501454387,
+      "tilt_deg": 0.01268112209529952,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 432.1,
+      "min_clear_chassis_mm": 175.9,
+      "est_err_xy_end_m": 0.030425244860119743,
+      "est_err_yaw_end_deg": 0.8707475950262091,
+      "nees": {
+       "r1": 0.7169442829278662,
+       "r2": 1.257177387616371
+      },
+      "z": {
+       "r1": [
+        0.08393033992589773,
+        0.42218798409111524,
+        0.3891939327078804
+       ],
+       "r2": [
+        0.2411729089205236,
+        1.0347414989048103,
+        0.29517963459208457
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0019297591122195978,
+         -0.009783381021059377,
+         0.015211310155397673
+        ],
+        "sd": [
+         0.022992390045404154,
+         0.023173044685582428,
+         0.039084140005889854
+        ],
+        "z2": [
+         0.007044301960076742,
+         0.17824269391091976,
+         0.15147191725662612
+        ],
+        "nees": 0.7169442829278662
+       },
+       "r2": {
+        "e": [
+         -0.0062349144360063224,
+         0.02999233531958262,
+         0.011148376389406689
+        ],
+        "sd": [
+         0.025852466033243326,
+         0.028985341122712355,
+         0.037768108239624607
+        ],
+        "z2": [
+         0.058164371997187166,
+         1.0706899695557734,
+         0.08713101667791658
+        ],
+        "nees": 1.257177387616371
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N09",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4766
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.515
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4766
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.515
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4766
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.515
+      }
+     ]
+    }
+   },
+   {
+    "case": "N10:s911:pPOST:VENV",
+    "wall_s": 178.88,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 60.9,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5454558209645437,
+      "sigma_yaw_end_deg": 2.2414108945517808,
+      "sigma_xy_start_m": 0.02786,
+      "sigma_xy_end_m": 0.04096,
+      "end_error_m": 0.04814813221537935,
+      "cross_track_m": 0.004684806796298513,
+      "tilt_deg": 0.011750877459489138,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 441.1,
+      "min_clear_chassis_mm": 186.1,
+      "est_err_xy_end_m": 0.04104913456409289,
+      "est_err_yaw_end_deg": 1.5581059507361814,
+      "nees": {
+       "r1": 0.5742936933536213,
+       "r2": 1.751494385287949
+      },
+      "z": {
+       "r1": [
+        0.2066107081404767,
+        0.5634228918300813,
+        0.7022128482247848
+       ],
+       "r2": [
+        0.2680556975952231,
+        1.2915937526040213,
+        0.673489422678708
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.004788735260032206,
+         0.01314660121668458,
+         0.027189605313374887
+        ],
+        "sd": [
+         0.023177575369309016,
+         0.02333345238064869,
+         0.038719891528773684
+        ],
+        "z2": [
+         0.042687984718309244,
+         0.3174453550381715,
+         0.49310288421196463
+        ],
+        "nees": 0.5742936933536213
+       },
+       "r2": {
+        "e": [
+         0.007114745616584095,
+         0.03971372509309573,
+         0.025892055379131307
+        ],
+        "sd": [
+         0.02654204212188655,
+         0.030747845452974425,
+         0.03844463551654509
+        ],
+        "z2": [
+         0.07185385701326168,
+         1.6682144217657378,
+         0.45358800246009945
+        ],
+        "nees": 1.751494385287949
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N10",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.512
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5337
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.512
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5337
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.512
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5337
+      }
+     ]
+    }
+   },
+   {
+    "case": "N10:s913:pPOST:VENV",
+    "wall_s": 176.94,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 60.2,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5786873730821315,
+      "sigma_yaw_end_deg": 2.2568807550203127,
+      "sigma_xy_start_m": 0.02772,
+      "sigma_xy_end_m": 0.04044,
+      "end_error_m": 0.04825869871219092,
+      "cross_track_m": 0.006022393182912075,
+      "tilt_deg": 0.011749335461994146,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 441.8,
+      "min_clear_chassis_mm": 187.4,
+      "est_err_xy_end_m": 0.03861606575996488,
+      "est_err_yaw_end_deg": 1.4057240947711678,
+      "nees": {
+       "r1": 0.4554528733166842,
+       "r2": 1.6728686080369597
+      },
+      "z": {
+       "r1": [
+        0.20296060828335366,
+        0.4259936281788827,
+        0.6322191060108144
+       ],
+       "r2": [
+        0.2293640210968314,
+        1.2375766892600533,
+        0.5952966855416574
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.004990726660361489,
+         0.01064157321905547,
+         0.0245522515698946
+        ],
+        "sd": [
+         0.02458963196145888,
+         0.024980592466953222,
+         0.038835035728063905
+        ],
+        "z2": [
+         0.04119300851474893,
+         0.18147057124900817,
+         0.39970099800511344
+        ],
+        "nees": 0.4554528733166842
+       },
+       "r2": {
+        "e": [
+         0.006055601105735331,
+         0.03746874561721568,
+         0.023209777254370234
+        ],
+        "sd": [
+         0.026401704490430156,
+         0.030275898004848676,
+         0.038988588073948
+        ],
+        "z2": [
+         0.052607854173707724,
+         1.5315960617998745,
+         0.35437814381688293
+        ],
+        "nees": 1.6728686080369597
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N10",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.511
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5324
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.511
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5324
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.511
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.5324
+      }
+     ]
+    }
+   },
+   {
+    "case": "N11:s911:pPOST:VENV",
+    "wall_s": 134.47,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 45.6,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5706659639502999,
+      "sigma_yaw_end_deg": 2.224795118492987,
+      "sigma_xy_start_m": 0.02859,
+      "sigma_xy_end_m": 0.04072,
+      "end_error_m": 0.028565837180792614,
+      "cross_track_m": 0.0278997574003385,
+      "tilt_deg": 0.011228682647247598,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 386.8,
+      "min_clear_chassis_mm": 130.1,
+      "est_err_xy_end_m": 0.02325668952628734,
+      "est_err_yaw_end_deg": 1.2151907335364547,
+      "nees": {
+       "r1": 0.4146259598448239,
+       "r2": 0.595932292368503
+      },
+      "z": {
+       "r1": [
+        0.08312677580054845,
+        0.588893467767999,
+        0.5383714538094899
+       ],
+       "r2": [
+        0.20634946577002794,
+        0.7276141150418662,
+        0.5541101146616101
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.001967507354897702,
+         0.013633233549080137,
+         0.020692662435020992
+        ],
+        "sd": [
+         0.023668755776339406,
+         0.02315059394486457,
+         0.038435660525090495
+        ],
+        "z2": [
+         0.006910060854994647,
+         0.34679551637981926,
+         0.2898438222769437
+        ],
+        "nees": 0.4146259598448239
+       },
+       "r2": {
+        "e": [
+         0.005657927756903991,
+         0.021644410350207626,
+         0.021205193926373322
+        ],
+        "sd": [
+         0.02741915388920672,
+         0.029747100699059732,
+         0.03826891689086588
+        ],
+        "z2": [
+         0.042580102023575934,
+         0.5294223004081582,
+         0.30703801917030266
+        ],
+        "nees": 0.595932292368503
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N11",
+    "seed": 911,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4712
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4655
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4712
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4655
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4712
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4655
+      }
+     ]
+    }
+   },
+   {
+    "case": "N11:s913:pPOST:VENV",
+    "wall_s": 129.96,
+    "first_failure": {
+     "source": "controller",
+     "sim_s": 44.9,
+     "reason": "PAIR_COLLISION_GUARD",
+     "robot_id": "r2",
+     "phase": "carry",
+     "leg": 1,
+     "code": "COLLISION_GUARD",
+     "sub": null
+    },
+    "localizer_replaced_events": [],
+    "legs": {
+     "0": {
+      "class": "PASS_CLEAN",
+      "checks": {
+       "lift": true,
+       "tilt": true,
+       "both_jaws_both_robots": true,
+       "end_error": true,
+       "leg_error": true
+      },
+      "sigma_yaw_start_deg": 0.5620715970233375,
+      "sigma_yaw_end_deg": 2.2729235732839754,
+      "sigma_xy_start_m": 0.02838,
+      "sigma_xy_end_m": 0.04025,
+      "end_error_m": 0.028518336859441884,
+      "cross_track_m": 0.02785068308186744,
+      "tilt_deg": 0.011123240383424162,
+      "contact_episodes": 0,
+      "max_pen_m": 0.0,
+      "contact_who": [],
+      "min_clear_beam_mm": 386.8,
+      "min_clear_chassis_mm": 130.1,
+      "est_err_xy_end_m": 0.020938693432992577,
+      "est_err_yaw_end_deg": 1.0717067712662283,
+      "nees": {
+       "r1": 0.30100150336247916,
+       "r2": 0.47555072890046346
+      },
+      "z": {
+       "r1": [
+        0.08299920545375016,
+        0.4893566855662416,
+        0.4675001783461318
+       ],
+       "r2": [
+        0.15486702472267017,
+        0.6591466116196907,
+        0.48506359191973625
+       ]
+      },
+      "start_sim_s": 6.100000000001709,
+      "end_sim_s": 24.700000000026925,
+      "handover_s": null,
+      "signed": {
+       "r1": {
+        "e": [
+         -0.0019606618956784505,
+         0.011688456276869347,
+         0.01835734564125424
+        ],
+        "sd": [
+         0.02362265861413571,
+         0.023885351159235655,
+         0.0392670345200653
+        ],
+        "z2": [
+         0.006888868105953829,
+         0.23946996570837747,
+         0.21855641675366502
+        ],
+        "nees": 0.30100150336247916
+       },
+       "r2": {
+        "e": [
+         0.004092329993605981,
+         0.019768465138971163,
+         0.018723831636735522
+        ],
+        "sd": [
+         0.026424798958554065,
+         0.029990998649594848,
+         0.03860077719424831
+        ],
+        "z2": [
+         0.023983795346452133,
+         0.43447425560971936,
+         0.23528668820607643
+        ],
+        "nees": 0.47555072890046346
+       }
+      }
+     },
+     "1": {
+      "class": "FAIL",
+      "reached": false
+     }
+    },
+    "door_relax_overrides": 0,
+    "unit": "N11",
+    "seed": 913,
+    "progress_relax": "p2f",
+    "carry_gain_fix": "pf",
+    "gain_applied": [
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     },
+     {
+      "kappa": 0.9483378899463337,
+      "forward_gain_before": 1.4004,
+      "forward_gain_after": 1.3280523810808458
+     }
+    ],
+    "p2f": {
+     "armed": [],
+     "ignored": [
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4706
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4673
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4706
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4673
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4706
+      },
+      {
+       "fix_t": 30.000000000052232,
+       "move_t0": null,
+       "commanded_m": 0.4673
+      }
+     ]
+    }
+   }
+  ],
+  "tally": {
+   "L0": {
+    "PASS_CLEAN": 22,
+    "FAIL": 2
+   },
+   "L1": {
+    "FAIL": 23,
+    "PASS_CLEAN": 1
+   }
+  },
+  "both_pass": 1,
+  "honesty": {
+   "all": {
+    "n": 46,
+    "mean_nees": 0.5948659029731325,
+    "median_nees": 0.38787080490566106,
+    "cov2sigma_xyyaw": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "L0": {
+    "n": 44,
+    "mean_nees": 0.6177840404163356,
+    "median_nees": 0.40948815236144687,
+    "cov2sigma_xyyaw": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   "L1": {
+    "n": 2,
+    "mean_nees": 0.0906668792226612,
+    "median_nees": 0.0906668792226612,
+    "cov2sigma_xyyaw": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "units": [
+   "F_hR2_04",
+   "N01",
+   "N02",
+   "N03",
+   "N04",
+   "N05",
+   "N06",
+   "N07",
+   "N08",
+   "N09",
+   "N10",
+   "N11"
+  ],
+  "summary": {
+   "n_cases": 24,
+   "n_units": 12,
+   "legs": {
+    "L0": {
+     "cases_pass": 22,
+     "cases_clean": 22,
+     "units_strict": 11,
+     "units_any": 11,
+     "classes": {
+      "PASS_CLEAN": 22,
+      "FAIL": 2
+     },
+     "case_ci": [
+      0.741507847985494,
+      0.9768416721570266
+     ],
+     "unit_strict_ci": [
+      0.6461140782014047,
+      0.9851352905492264
+     ],
+     "unit_any_ci": [
+      0.6461140782014047,
+      0.9851352905492264
+     ]
+    },
+    "L1": {
+     "cases_pass": 1,
+     "cases_clean": 1,
+     "units_strict": 0,
+     "units_any": 1,
+     "classes": {
+      "FAIL": 23,
+      "PASS_CLEAN": 1
+     },
+     "case_ci": [
+      0.007393265354805126,
+      0.20242226248842232
+     ],
+     "unit_strict_ci": [
+      0.0,
+      0.2425007574992425
+     ],
+     "unit_any_ci": [
+      0.014864709450773478,
+      0.35388592179859524
+     ]
+    }
+   },
+   "both": {
+    "cases_pass": 1,
+    "units_strict": 0,
+    "units_any": 1,
+    "case_ci": [
+     0.007393265354805126,
+     0.20242226248842232
+    ],
+    "unit_strict_ci": [
+     0.0,
+     0.2425007574992425
+    ],
+    "unit_any_ci": [
+     0.014864709450773478,
+     0.35388592179859524
+    ]
+   },
+   "honesty": {
+    "L0": {
+     "n_samples": 44,
+     "n_units": 12,
+     "mean_signed_err_xyyaw": [
+      -0.0008029131159892143,
+      0.008495266415323817,
+      0.01063604034665213
+     ],
+     "mean_z2_xyyaw": [
+      0.02735631753646145,
+      0.39015928741324984,
+      0.24553330574987478
+     ],
+     "cov2sigma_xyyaw": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "cov2sigma_ci_units": [
+      [
+       0.7574992425007574,
+       1.0
+      ],
+      [
+       0.7574992425007574,
+       1.0
+      ],
+      [
+       0.7574992425007574,
+       1.0
+      ]
+     ],
+     "mean_nees3": 0.6177840404163356
+    },
+    "L1": {
+     "n_samples": 2,
+     "n_units": 12,
+     "mean_signed_err_xyyaw": [
+      -0.002415109675370619,
+      0.010699134227939723,
+      0.010542600023791815
+     ],
+     "mean_z2_xyyaw": [
+      0.019167768903440536,
+      0.07401240367611572,
+      0.04407425909128243
+     ],
+     "cov2sigma_xyyaw": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "cov2sigma_ci_units": [
+      [
+       0.7574992425007574,
+       1.0
+      ],
+      [
+       0.7574992425007574,
+       1.0
+      ],
+      [
+       0.7574992425007574,
+       1.0
+      ]
+     ],
+     "mean_nees3": 0.0906668792226612
+    }
+   },
+   "l1_end_error_mm": {
+    "mean": 17.9639686066798,
+    "max": 17.9639686066798,
+    "n": 1
+   },
+   "contact_episodes": 0,
+   "first_failure_codes": {
+    "COLLISION_GUARD": 21,
+    "SELF_POSE_UNCERTAIN": 2
+   }
+  }
+ }
+]

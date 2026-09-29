@@ -247,3 +247,20 @@ def test_flags_tag_the_case_ids_and_are_refused_for_other_policies(capsys):
     with pytest.raises(SystemExit):
         runner.main(['--stage', 'carry', '--sources', 'teacher', '--policies', 'b-v6g', '--carry-gain-fix', 'pf',
                      '--output', '/tmp/never_written_gain'])
+
+
+SHEET_PLACEMENTS = ROOT / 'experiments/2026-09-30-b-v6h-gain/placements/held_out_sheet_12.json'
+
+
+def test_sheet_placements_use_the_rounded_order_sheet_so_the_route_moves_with_the_beam(restore):
+    from harness.pair_owncam_approach import coarse_order_sheet
+    entries = json.loads(SHEET_PLACEMENTS.read_text())
+    assert len(entries) == 12 and all(e['sheet'] == 'coarse' for e in entries)
+    a = args_for('--env-placements', str(SHEET_PLACEMENTS), '--policies', 'b-v6h', '--door-relax', 'k1g', '--chain-stop-leg', '1', '--seeds', '911')
+    cases = runner.envelope_cases('chain', a, 'b-v6h', None)
+    assert len(cases) == 12 and all(c['setup_variant'] == 'ENVS' for c in cases)
+    for e, c in zip(entries, cases):
+        beam = [e['x'], e['y'], math.radians(e['yaw_deg'])]
+        assert c['coarse_order_sheet'] == coarse_order_sheet(beam) and c['beam_xyyaw'] == pytest.approx(beam)
+    assert len({c['route'][0][0] for c in cases}) > 1                      # the route start follows the rounded sheet x
+    assert all(abs(c['route'][1][1] - 0.05) < 1e-9 for c in cases)          # the door axis stays
