@@ -563,6 +563,11 @@ cal이 아래 구조 문제를 보여서 **33셀 운반 격자·held-out 운반�
 - **통과 시** 작동 범위를 "이어받은 사후분포가 정렬 종료 범위(PF y 오차 ≲ 3 cm, σ_xy ≈ 3 cm, 파지 오차 ≤ 2.6 cm)일 때"로 명시해 v81 / 2.14.0 / v6e로 등록·봉인·push·PR(Opus 독립 검토 요청 포함). **미통과 시** 등록하지 않고 원인 보고.
 - **한계(미리 적는다).** hG의 시작은 정렬 raw 10건(E2E 6 + 교사 4)뿐이라 분포 폭이 좁다. 파지·들기 종료 오차가 이 표본에서 작게 나와도 다른 시드·장면·긴 작업 뒤의 드리프트로 일반화하지 못한다. 그리고 운반 구간 L1 이후는 앞 구간 오차를 이어받지 않은 독립 진입이다.
 
+### hG 실행 결과 (소스 `19c8f0b2`, raw `pair-stage-probes-19c8f0b2-ghG`, 부하 평균 10.4 / 12.6 / 15.3, 잠금 획득·해제 기록됨)
+
+- 10/10 PASS(파지·들기 실패 0, 각 7.3 s). 시작 사전이 기록된 정렬 종료 사후분포로 들어갔는지 확인: `prior_seeded`의 추정이 GT 대비 y +0.3 cm 등 기록값과 일치(예: hG01 r1 추정 y 0.0455 vs GT 0.0421).
+- **파지·들기가 끝난 시점의 이어받은 PF 오차(GT 대비, 로봇 20표본)**: |y| 중앙 0.7 cm / 최대 2.7 cm, |x| 0.2 / 0.7 cm, |yaw| 0.30° / 1.31°, σ_xy 중앙 2.6 cm (최대 3.2 cm). 즉 시작이 실제 정렬 종료 값이면 파지·들기가 y 오차를 키우지 않는다(3–6 cm는 5 cm 시트 사전에서 시작했기 때문이었다). 이 20표본이 hR2 진입 사전이다(`hR2_samples.json`, `extract_hR2_samples.py 19c8f0b2-ghG`, 선별 없이 10건 전부).
+
 ## TensorBoard
 스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e-yaw`(run 41개 = 경우 40 + 집계 1, `collection.json` sha256 `9a5eba0cd3fc922e419343cad908bcf9f6a9b904d0a6f36875cfe74c9bf42035`), 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e-yaw`. 스모크 4건은 cal과 같은 경우 이름이라 넣지 않았다(raw는 위에 있음). EventAccumulator로 경우별 `offline/stage_pass` 합 35 = cases.jsonl 통과 35, 집계 `pass_rate` 0.875를 확인했다. `outputs/tensorboard-view.json`에는 키 `pair_stage_probes_v6e_yaw_20260929` 하나만 추가했다(run filter `^0929-pair-stage-probes-v6(c(-carry)?|e|e-yaw)/`로 v6c·v6e 기준선과 함께 보임). TensorBoard 서버가 떠 있지 않았고 새로 시작하지 않았다(브라우저 표시는 확인하지 못했다).
 

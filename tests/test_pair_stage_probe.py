@@ -714,3 +714,19 @@ def test_recorded_posterior_prior_hG_hR2():
     d0 = c0['prior']['r1']['mean_xyyaw'][1] - c0['placement_xyyaw']['r1'][1]
     d3 = c3['prior']['r1']['mean_xyyaw'][1] - c3['placement_xyyaw']['r1'][1]
     assert abs(d0 - d3) < 1e-9
+
+
+def test_hR2_carry_entries_seed_the_recorded_posterior():
+    import json
+    import pytest
+    from harness import pair_stage_probe as sp
+    if not sp.SAMPLE_FILES['hR2'].exists():
+        pytest.skip('hR2_samples.json not present')
+    data = json.loads(sp.SAMPLE_FILES['hR2'].read_text())
+    for (setup, rows), smp in zip(sp.hr_setups(variant='hR2'), data['samples']):
+        case = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=0, rows=rows)[0]
+        assert case['case_id'].endswith(':pPOST:VhR2') and case['teacher_held'] is True
+        for r in ('r1', 'r2'):
+            e = smp['prior_err'][r]['mean_err_xyyaw']
+            got = [a - b for a, b in zip(case['prior'][r]['mean_xyyaw'][:2], case['placement_xyyaw'][r][:2])]
+            assert abs(got[0] - e[0]) < 1e-9 and abs(got[1] - e[1]) < 1e-9
