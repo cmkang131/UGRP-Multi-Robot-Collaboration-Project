@@ -436,6 +436,8 @@ cal이 아래 구조 문제를 보여서 **33셀 운반 격자·held-out 운반�
 
 ## yaw 플래그 구현과 사전 등록 재측정 계획 (2026-09-29, 소스 `86cdefc9`에 고정)
 
+> **갱신 안내.** 이 절과 아래 "결과 (소스 `86cdefc9`)"는 첫 소스의 기록이다. 독립 검토(Codex, fix-then-proceed)를 반영해 소스가 `4fac772d`로 바뀌었고 **b·비율 수치, 가장자리 마스크 규칙, σ 폴백은 뒤의 "소스 `4fac772d` 갱신" 절이 대체한다.** 첫 소스의 35/40 결과는 비교용으로 그대로 둔다.
+
 조정자 결정(추천 1 구현; 파트너 오프셋 전달·초음파 yaw·yaw 게이트/정렬 허용오차 변경은 하지 않음)에 따른 구현이다. **물리 시뮬은 아직 돌리지 않았다**(아래 "실행 상태"). 이 절의 모든 수치는 기록된 cal raw의 재생이며 제어기 결과가 아니다.
 
 ### 무엇을 넣었나 (기본 OFF, 다른 정책 출력 바이트 불변)
@@ -528,6 +530,86 @@ cal이 아래 구조 문제를 보여서 **33셀 운반 격자·held-out 운반�
 
 ### TensorBoard
 스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e-yaw`(run 41개 = 경우 40 + 집계 1, `collection.json` sha256 `9a5eba0cd3fc922e419343cad908bcf9f6a9b904d0a6f36875cfe74c9bf42035`), 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e-yaw`. 스모크 4건은 cal과 같은 경우 이름이라 넣지 않았다(raw는 위에 있음). EventAccumulator로 경우별 `offline/stage_pass` 합 35 = cases.jsonl 통과 35, 집계 `pass_rate` 0.875를 확인했다. `outputs/tensorboard-view.json`에는 키 `pair_stage_probes_v6e_yaw_20260929` 하나만 추가했다(run filter `^0929-pair-stage-probes-v6(c(-carry)?|e|e-yaw)/`로 v6c·v6e 기준선과 함께 보임). TensorBoard 서버가 떠 있지 않았고 새로 시작하지 않았다(브라우저 표시는 확인하지 못했다).
+
+## 소스 `4fac772d` 갱신: 독립 검토 반영, cal 재측정, hA 결과 (2026-09-29, stage probe)
+
+**stage probe이며 E2E·제어기·학생 성공이 아니다.** 소스 `4fac772d`(커밋 메시지: availability fallback, first-run edge check, canonical b-v6e-base, MED4 refit) = `86cdefc9` + 아래 수정. 플래그 OFF 출력은 여전히 main과 바이트 동일(기존 골든 테스트 통과). 등록·번들·push·PR 없음.
+
+### 검토 지적과 반영
+
+| 지적 | 반영 |
+|---|---|
+| HIGH: b가 영구 교체됨(`owncam_carry_v6e.py`, `own_beam_edge.py`) — 빔이 안 보이거나 글리치 재시작·계획 불일치일 때도 작은 b를 씀 | **가용성 폴백.** 프레임마다 (쌍 평균 계획 일치, 가장자리 추적 중) 조합을 판단해 실제로 유효한 추정기의 b를 쓴다. 조합별 b 표: `pm+edge`(적합값 1.56), `pm`, `edge`, `''`(등록값 2.331). 유효하지 않은 추정기의 몫은 입자별 상수 yaw-rate 오차 `sqrt(b_eff² − b_full²)`로 보탠다(`localizer.set_extra_yaw_std`). 계획 불일치는 2 s 유지(`PM_HOLD_S`)해 깜빡임을 막고, 하역 시 해제. 가장자리 최근 성공(`last_ok_t`)이 2 s 넘게 없으면 가장자리 무효. 테스트: 마스크 비움, 글리치 1프레임 억제·지속 점프 거절, 계획 불일치 주입 |
+| MED1: `MIN_RUN_PX`가 첫 run에 안 걸림 | `_first_run_end`: 첫 연속 run이 40 px 이상일 때만 아랫 경계 채택. 직선 적합 후 잔차 4 px 초과 열 제거, 남은 열 ≥ 20이고 ≥ 60 %, RMS ≤ 2.5 px 아니면 거절. 낱개 픽셀·비직선 경계 테스트(기록 프레임에서 띠는 모든 열에서 76–89 px 연속, 잔차 RMS ≤ 1.2 px) |
+| MED2: 쌍 평균 모델이 파트너 타이밍·정지에 취약 | 아래 "쌍 평균 모델의 가정과 한계" |
+| MED3: 예전 `b-v6e` raw가 새 이름과 섞임 | `harness/pair_stage_probe.py::canonical_policy`(PROBE_VERSION < 0.7.0 또는 버전 불명 → `b-v6e-base`); 뷰 빌더가 사용. 테스트 포함(cal-2 raw가 있으면 실제로 `E0-…` 확인) |
+| MED4: `fit_carry_pair_yaw.py`의 RGB/GT 시간 창 불일치 | GT 상대 yaw를 추적기의 실제 기준·유효 시각(`ref_t`, `eff_t`)에서 보간해 창을 맞춤. **cal1 자료로만** 재적합 |
+
+재적합 결과(`carry_pair_fit.json` sha256 `5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b`): `slope_to_yaw_ratio` 1.008(이전 1.065; 상관 0.9996, 잔차 0.53 mrad), b[mrad/s] = 등록 재생 2.30(등록값 2.331과 일치), `pm` 1.90, `edge` 1.85, `pm+edge` 1.56. cal2 복제(적합 밖): 2.28 / 1.88 / 1.82 / 1.53. 이전 표의 1.065, 1.87, 1.57은 폐기.
+
+### 쌍 평균 모델의 가정과 한계 (MED2)
+
+- **가정.** 파트너는 계획된 leg를 같은 시간 창에 그대로 수행한다(`_wait_carry` 계약). 파트너 명령은 계획·역할에서만 유도한다(통신·GT 없음).
+- **기록된 cal 케이스에서 본 타이밍.** 파트너와의 시작 어긋남 0 s, 끝 어긋남 ≥ −0.1 s. 어긋남 δ의 yaw 오차는 0.5·a·δ; 옆 이동 leg의 a = −0.0026 rad/s면 0.1 s당 약 0.13 mrad로 무시할 수준이다.
+- **상한.** 파트너가 옆 이동 leg 전체에서 없는 최악은 약 1.1°이며 그때는 이미 쌍 운반 실패다.
+- **신뢰 제한.** 자기 발행 명령이 계획된 own 명령과 같고 leg 창 안일 때만 파트너 항을 쓴다. 아니면 `pair_unmatched`로 세고 등록값 b로 폴백한다(위 폴백). cal 40건에서 `unmatched` 0.
+- **한계.** 파트너가 다르게 움직이는 것(지연, 미끄러짐, 다른 게인)은 볼 수 없다. 이는 뒤의 lat−/opp·hA 과신의 한 원인 후보다.
+
+### 소스 고정과 스모크·cal 40 재측정 (사전 기준 그대로)
+
+관련 테스트: `test_zone_pair_v6e*`, `owncam_localizer`, `zone_pair_executor`, `v6c/v6d/v6f`, `pair_stage_probe`, `pair_chain_probe`, `registered_source`, `provider_init`, `bootstrap_v6b`, `vision_pose_source`, `zone_pair_v6`, `owncam_loop_views`: 414 통과, 2 skip, **5 실패 = 봉인 해시 테스트(등록 전 예상, main 병합 커밋 `62a5deaa`에서도 같음)**. 모델 호출 0, weld OFF, `--workers 2 --omp-threads 1 --pf-track`, driver PID로 agent_lock. raw(로컬, 원격 백업 아님): `outputs/pair-stage-probes-4fac772d-yawsmoke`, `-yawsmoke2`, `-yawcal`, `-yawhA`(각 `.stdout.log`, `-driver-driver.log`). cases.jsonl sha256 앞 16자: yawsmoke `8852c99fcbe1278f`, yawsmoke2 `95cd444f9cc0b9d0`, yawcal `97c39c53ef3dab0c`. cal 시작 부하 평균(1분) 9.3–28.2, 중앙 14.3(케이스별 `loadavg_case`; SIM 시간 결과 영향 없음), wall 합 4195 s.
+
+| 항목 | 새 소스 `4fac772d` | 이전 `86cdefc9` | 사전 기준 |
+|---|---|---|---|
+| 스모크 | 4/4 | 4/4 | 통과 |
+| cal 40건 전체 | 35/40 | 35/40 | (게이트 아님) |
+| L1 / L2 | 5/5 / 5/5 | 5/5 / 5/5 | ≥ 4/5 |
+| leg 끝 3자유도 평균 NEES (80 표본) | 2.20 (중앙 1.70) | 2.25 | [1.5, 6] |
+| ±2σ 커버리지 x / y / yaw | 100 / 100 / 96.2 % | 100 / 100 / 93.8 % | yaw ≥ 90 % |
+| L7 | 0/5 `PAIR_COLLISION_GUARD` | 0/5 | (판정 대상 아님) |
+
+**판정: 사전 등록 cal 기준을 모두 충족(폴백이 통과를 깨지 않음).** 폴백 발동 비율(cal 40건, 로봇·프레임 합): `pm+edge` 59 %, `edge`만 23 %, `pm`만 7 %, 등록값 11 %; `partner_plan_unmatched` 0, 가장자리 `no_edge` 0·`rejected` 0(`resets` 560은 서보 변화·하역에 따른 기준 재시작). 세부: `analysis/nees_yawcal2.txt`(이전 `nees_yawcal.txt`).
+
+### held-out hA 결과 (단계 2): **4/10, 기준(≥ 8/10) 미달**
+
+cal 통과 뒤 계획대로 hA 10건(`--setup-variant hA`, legs 0 1 3 6 7 × nominal·yaw−/opp, `--nominal-seeds 914`)을 한 번 돌렸다. 계획에 따라 **hB·hC는 돌리지 않았고**, 소스·적합·기준을 바꾸지 않았다(재적합 없음). 앞서 중단한 `pair-stage-probes-b16f7987-yawhA`는 결과를 열지 않았고 held-out 증거로 쓰지 않는다(위 소스 변경 전 실행, 중단됨).
+
+| 원인 | 건수 | 케이스 |
+|---|---:|---|
+| `MOTION_ERROR` end_error(끝점 오차 > 0.10 m) | 4 | yaw−/opp L0(0.116), yaw−/opp L1(0.130), nominal L1(0.105), yaw−/opp L6(0.111) |
+| `PAIR_COLLISION_GUARD` (L7, 27.6–27.8 s) | 2 | nominal, yaw−/opp |
+| 통과 | 4 | nominal L0, L3, L6; yaw−/opp L3 |
+
+- 통과한 4건의 끝점 오차도 0.068–0.097 m로 기준 0.10 m에 붙어 있다. hA는 빔이 경로선(y=0.05)에서 옆으로 0.08 m 떨어진 채 시작한다(cal은 0.02 m). 끝점 오차는 계획 경로점과의 거리라 시작 오프셋이 이미 0.08 m를 차지한다(여유 2 cm). 결과는 시작 오프셋 + 열린루프 drift가 기준을 넘는지의 문제다.
+- **PF 정직성도 hA에서 깨졌다**: leg 끝 NEES 8.62(> 6), 커버리지 x 100 / **y 35** / yaw 80 %(`analysis/nees_yawhA.txt`). 지배 항은 **y**다(z 1.3–3.4, err_y 5–12 cm 대 σ 약 3 cm). PF y 오차는 시작 −0.03 m에서 leg 끝 −0.04…−0.12 m로 자란다(yaw−/opp r2는 GT y가 0.13→0.18로 밀리는데 PF y가 거의 못 따라감). cal에서는 같은 셀(lat−/opp)의 GT y drift(+8 cm)를 PF가 따라갔는데(끝 오차 −2 cm) hA에서는 아니므로, y 쪽 dr 모델이 cal 배치(y = 0.03)에 맞춰져 있고 y = 0.13 배치에서 일반화하지 않았다고 본다(추정, 검증 안 됨).
+- yaw는 σ 약 2.2°, 게이트 σ 상한 아래(σ_yaw_max 2.0–2.4°)라 `SELF_POSE_UNCERTAIN` 없음. yaw−/opp r2 leg 끝 yaw 오차 +4.3…+5.1°는 cal lat−/opp r2와 같은 크기의 과신이다(아래 분석).
+- 축 leg에서 빔 이동 거리는 계획을 넘는다(0.89 대 0.85, 0.727 대 0.70 m). 열린루프 게인 초과 +3–4 cm.
+- **해석 범위.** 이 4/10은 "hA 배치에서 cal로 적합한 dr 모델이 일반화하지 않았다"로 읽는다. 원인 분해(y 모델 vs 열린루프 물리 vs 시작 오프셋)는 하지 않았다. hB·hC는 미실행이므로 held-out 통과율은 hA 하나(4/10)뿐이다.
+
+### L7 `PAIR_COLLISION_GUARD` 오프라인 진단 (raw만 읽음, 새 시뮬 0, 코드 변경 0)
+
+재구성: 같은 장면의 정적 지도로 `PairSweepGuard`(role end_pos)를 만들고 기록된 r2 PF 자세(σ 포함)와 팔 서보 명령(`{1:1500,3:611,4:1711,5:2200,6:1500}`)으로 leg 7 마지막 명령(`forward -0.038, 0.15 s`) 직전 여유를 계산했다(작업 스크래치 `l7diag.py`). 대상 raw는 소스 `86cdefc9` 실행(`f2186414-yawcal`) nominal s911 L7이며 새 소스 raw도 같은 시각(27.8 s)에 같은 원인으로 실패했다.
+
+- **어느 장애물, 어느 로봇**: 동쪽 벽 `wall_east`(x = 5.4 중심, 안쪽 면 5.375 m)와 r2(동쪽 끝 캐리어, 방위 π라 차체 뒤쪽이 +x). 판정 함수는 `PairSweepGuard.motion_clear` → `chassis_clearance`(뒤쪽 차체 모서리). 팔·빔 구가 아니라 차체다(팔+빔 여유는 +0.12 m).
+- **숫자 (27.8 s)**: PF r2 x = 5.087, GT x = 5.065(PF가 벽 쪽으로 +2.2 cm 치우침). GT 원 간격(σ·잔차 없음) 0.157 m. 가드 여유 항: 기본 0.02 + 잔차 0.015 + 2σ_xy = 0.082(σ_xy 0.041) + 2σ_yaw·레버 = 0.012(σ_yaw 0.0344 rad, 레버 0.18 m) → 여유 합 0.130 m. 정지 여유 +0.008 m인데 다음 명령의 이동(0.038×1.6×0.15 ≈ 9 mm)과 표본 보정(1.5 mm)을 더하면 음수 → 거부.
+- **σ가 작아지면 여유가 늘었나**: cal-2(σ_yaw 0.0499, σ_xy 0.045) 여유 합 0.142 m, 실패 시각 27.5–27.6 s. 새 σ(σ_yaw 0.0344, σ_xy 0.041) 0.130 m, 실패 27.8 s. 즉 **여유 항이 0.012 m 줄었고 실패가 0.2–0.3 s 늦어졌을 뿐 통과에는 못 미친다.** 줄어든 몫은 σ_xy 0.007 m + σ_yaw·레버 0.0055 m. σ_yaw·레버 항은 전체 여유의 10 % 안팎이고 지배 항은 2σ_xy(63 %)다. 부족분은 약 0.5–0.7 cm이고 PF의 x 편향 +2 cm가 그보다 크다.
+- **좁은 통로/문인가**: 아니다. 문(`door_1`)은 x = 2.2, 이 leg는 x = 3.9→4.6의 목적 구역 B 안이다(`zone_B` 중심 (4.6, −2.1), 반폭 0.3 × 0.7). 병목이 아니라 **동쪽 벽까지 끝점 접근**이다: 빔 중심 4.6 + 캐리어 r2 기준점 +0.42 + 뒤쪽 0.15 = 약 5.2 m, 벽 면 5.375 m → 물리 간격 약 0.16 m(GT), 가드는 0.13 m 이상의 여유를 요구.
+- **후보(적용 안 함, 입력 경계 준수)**: (1) 경로 끝점을 안쪽으로 0.10 m(x = 4.5, `zone_B` 반폭 0.3 안) — 물리 간격 약 0.26 m로 늘어 가드 여유를 넉넉히 통과, 지도·경로 계획 변경이라 가장 작은 변경; 성공 판정(구역 안 도착)이 x = 4.5에서도 유지되는지 확인 필요. (2) 가드 문턱: `BASE_MARGIN_M` 0.02 또는 xy `K_SIGMA`를 낮추면 통과하지만 안전 여유를 줄이는 결정이라 사용자 결정. (3) 정렬 허용오차·yaw 개선은 이 벽 접촉과 무관(σ_yaw 항 10 %). (4) PF x 편향(+2 cm)을 줄이면 0.5–0.7 cm 부족은 해소. 어느 것이든 새 코호트가 필요하다.
+
+### lat−/opp·yaw−/opp r2 leg 끝 yaw 오차 4–6° > σ 2° (과신) 원인 추정 (기록만)
+
+관찰: cal lat−/opp r2는 L1·L2·L6에서 −5.7°, −5.0°, −4.2°(σ 2.1–2.3°, z 2.0–2.5), 같은 leg의 nominal은 −0.5…−0.1°. L3–L5(옆 이동)는 작다(−0.75°). r1도 L1·L2에서 −3.6°, −3.1°. L1을 GT로 분해: 실제 yaw 변화 r1 +1.5°, r2 +7.9°, 빔 +4.7°(= 두 로봇 평균). PF 변화 r1 −2.1°, r2 +2.1°(평균 0°). 즉
+
+1. **공통 모드 회전이 예측·측정 어디에도 없다.** 빔+두 로봇이 함께 +4.7° 도는데(nominal은 0.4°), 쌍 평균 플랜트 모델은 반대칭 결합을 상쇄해 평균 yaw 변화를 0으로 예측하고, 빔 가장자리 측정은 상대 yaw만 본다(공통 모드는 보이지 않는다는 분석 절의 한계와 일치). PF 평균 0° 대 GT +4.7°가 오차의 대부분이다.
+2. **b가 셀 평균을 무시한 풀링 값이다.** b = cal 케이스별 (GT − 추정)/시간의 셀 균형 RMS(1.56 mrad/s = 0.09°/s). lat−/opp는 공통 모드 회전율이 약 0.15°/s로 b의 1.7배, nominal은 0.01°/s로 거의 0이다. 즉 편향이 영평균 무작위가 아니라 **셀(파지 오프셋)에 따라 결정되는 한쪽 방향 값**이다. 평균 NEES(2.2)와 커버리지(96 %)는 nominal이 많아 통과하지만 셀 조건부로는 과신이다. cal에 lat−/opp가 1 seed뿐이라 이 조건부 분산을 b가 못 본다.
+3. **부분 관측된 상대 성분도 덜 보정된다.** 상대 yaw(r2−r1) GT 6.4° 중 PF는 4.2°(66 %)만 반영: 3 s 정착·중앙값 3·0.03 rad 스텝 한계·증분만 반영하는 설계의 지연·과소 반응이 원인 후보(검증 안 함).
+4. **파트너 비대칭.** 쌍 평균 모델은 두 로봇이 거울 대칭으로 움직인다고 본다. lat−/opp에서는 GT 회전율이 r1 0.05°/s, r2 0.26°/s로 거울이 아니다(파지 오프셋으로 결합이 비대칭 — 추정).
+5. **영향.** 스윕 가드 여유는 σ_yaw·레버(0.18 m)로 잡는데, 5.7° = 0.10 rad × 0.18 = 1.8 cm가 여유(1.2 cm)보다 커서 이 셀은 가드가 실제 자세 오차를 덮지 못한다. 게이트는 σ만 보므로 오차 5.7°에도 통과한다. hA yaw−/opp r2의 +4.3…+5.1°도 같은 패턴(공통 모드 + 셀 비대칭).
+
+원인 추정이며 새 실험은 하지 않았다. 검증 방법 후보: 셀별 b로 바꾼 오프라인 재생, lat−/opp seed를 늘려 cal 재적합(사용자 결정, 소스 변경 포함).
+
+### TensorBoard (소스 `4fac772d`)
+스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e-yaw2`(cal 40 + hA 10 = 50 run + 집계 2, `collection.json` sha256 `d496e8fd68a24e9a669909878e72a4b3fd53aeeba10394a164d54aeb817ccce9`), 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e-yaw2`. EventAccumulator로 경우별 `offline/stage_pass` 합 39(= cal 35 + hA 4), 집계 `pass_rate` 0.875(cal), 0.40(hA) 확인. `outputs/tensorboard-view.json`에는 키 `pair_stage_probes_v6e_yaw2_20260929` 하나만 추가했다. 대시보드 서버가 떠 있지 않았고 새로 시작하지 않았다(브라우저 표시 미확인). 이전 스냅샷(`…-v6e-yaw`, 소스 `86cdefc9`)은 그대로 두었다.
 
 ## TensorBoard
 
