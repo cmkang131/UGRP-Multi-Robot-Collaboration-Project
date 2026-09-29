@@ -1,0 +1,745 @@
+{
+ "schema": "ugrp.render_profile_ab_analysis.v1",
+ "runs": {
+  "sd-shadows": {
+   "arm": "shadows_v1",
+   "dir": "/Users/changmin/projects/ugrp/outputs/render-profile-ab-20260929/st1-shadows-setdown-Lend",
+   "render_profile": {
+    "schema": "ugrp.render_profile.v1",
+    "name": "shadows_v1",
+    "sha256": "f10e51dab22f30913f68eb3981f8373ce747676a66292f4b1cd0c974c598f8c5",
+    "xml_ops": [],
+    "summary": "Current behaviour: every light casts shadows, groundmat reflectance stays as authored. Selecting it changes nothing.",
+    "changes_images": false,
+    "changes_physics": false
+   },
+   "environment": {
+    "python": "3.12.13",
+    "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+     "mujoco": "3.12.0",
+     "numpy": "2.5.2",
+     "opencv-python": null,
+     "opencv-python-headless": "5.0.0.93",
+     "Pillow": "12.3.0",
+     "torch": null,
+     "gymnasium": "1.3.0"
+    },
+    "loadavg_at_start": [
+     9.92578125,
+     15.5576171875,
+     17.1787109375
+    ],
+    "loadavg_at_end": [
+     14.658203125,
+     21.39794921875,
+     20.2841796875
+    ]
+   },
+   "cases": {
+    "setdown@b-v6d:teacher:nominal:s911:pE2E:Lend": {
+     "stage": "setdown",
+     "passed": false,
+     "category": "INVALID_OWN_IMAGE",
+     "cause": "OWN_IMAGE_INVALID",
+     "first_failure": {
+      "robot_id": "r1",
+      "sim_s": 6.05,
+      "reason": "INVALID_OWN_IMAGE"
+     },
+     "wall_s": 289.58,
+     "sim_s": null,
+     "wall_per_sim": null,
+     "loadavg_case": [
+      [
+       9.92578125,
+       15.5576171875,
+       17.1787109375
+      ],
+      [
+       23.482421875,
+       20.64697265625,
+       19.17333984375
+      ]
+     ],
+     "host_error": null,
+     "render_profile": "shadows_v1",
+     "pf": {
+      "est_vs_gt_at_ref": {
+       "r1": {
+        "xy_m": 0.0211,
+        "yaw_rad": 0.0117,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       },
+       "r2": {
+        "xy_m": 0.039,
+        "yaw_rad": -0.0106,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       }
+      },
+      "sigma_yaw_max": {
+       "r1": 0.03503,
+       "r2": 0.0348
+      },
+      "std_xy_at_ref": {
+       "r1": 0.02593,
+       "r2": 0.03025
+      }
+     },
+     "frames": {
+      "r1": {
+       "frames": 24,
+       "gate_pass": 22,
+       "gate_reject_reasons": {
+        "dark_fraction": 2,
+        "contrast": 0,
+        "std": 0,
+        "decode": 0
+       },
+       "mean_v": 41.226796832473106,
+       "low_v_fraction_mean": 0.12083050234624264,
+       "contrast_min": 62.0,
+       "beam_visible": 24,
+       "band_visible": 7,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 0.04131602159894151,
+       "detector_errors": 0,
+       "tag_fix_frames": 4,
+       "mean_tags": 0.2916666666666667
+      },
+      "r2": {
+       "frames": 24,
+       "gate_pass": 24,
+       "gate_reject_reasons": {
+        "dark_fraction": 0,
+        "contrast": 0,
+        "std": 0,
+        "decode": 0
+       },
+       "mean_v": 43.71938808959032,
+       "low_v_fraction_mean": 0.005252557159450464,
+       "contrast_min": 72.0,
+       "beam_visible": 24,
+       "band_visible": 0,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 0.0011373614802983165,
+       "detector_errors": 0,
+       "tag_fix_frames": 4,
+       "mean_tags": 0.625
+      }
+     }
+    },
+    "setdown@b-v6d:teacher:nominal:s912:pE2E:Lend": {
+     "stage": "setdown",
+     "passed": false,
+     "category": "INVALID_OWN_IMAGE",
+     "cause": "OWN_IMAGE_INVALID",
+     "first_failure": {
+      "robot_id": "r1",
+      "sim_s": 6.05,
+      "reason": "INVALID_OWN_IMAGE"
+     },
+     "wall_s": 290.43,
+     "sim_s": null,
+     "wall_per_sim": null,
+     "loadavg_case": [
+      [
+       9.92578125,
+       15.5576171875,
+       17.1787109375
+      ],
+      [
+       23.482421875,
+       20.64697265625,
+       19.17333984375
+      ]
+     ],
+     "host_error": null,
+     "render_profile": "shadows_v1",
+     "pf": {
+      "est_vs_gt_at_ref": {
+       "r1": {
+        "xy_m": 0.0208,
+        "yaw_rad": 0.0118,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       },
+       "r2": {
+        "xy_m": 0.04,
+        "yaw_rad": -0.0111,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       }
+      },
+      "sigma_yaw_max": {
+       "r1": 0.03439,
+       "r2": 0.03381
+      },
+      "std_xy_at_ref": {
+       "r1": 0.02506,
+       "r2": 0.02923
+      }
+     },
+     "frames": {
+      "r1": {
+       "frames": 24,
+       "gate_pass": 22,
+       "gate_reject_reasons": {
+        "dark_fraction": 2,
+        "contrast": 0,
+        "std": 0,
+        "decode": 0
+       },
+       "mean_v": 41.226796832473106,
+       "low_v_fraction_mean": 0.12083050234624264,
+       "contrast_min": 62.0,
+       "beam_visible": 24,
+       "band_visible": 7,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 0.04131602159894151,
+       "detector_errors": 0,
+       "tag_fix_frames": 4,
+       "mean_tags": 0.2916666666666667
+      },
+      "r2": {
+       "frames": 24,
+       "gate_pass": 24,
+       "gate_reject_reasons": {
+        "dark_fraction": 0,
+        "contrast": 0,
+        "std": 0,
+        "decode": 0
+       },
+       "mean_v": 43.71938808959032,
+       "low_v_fraction_mean": 0.005252557159450464,
+       "contrast_min": 72.0,
+       "beam_visible": 24,
+       "band_visible": 0,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 0.0011373614802983165,
+       "detector_errors": 0,
+       "tag_fix_frames": 4,
+       "mean_tags": 0.625
+      }
+     }
+    },
+    "setdown@b-v6d:teacher:nominal:s913:pE2E:Lend": {
+     "stage": "setdown",
+     "passed": false,
+     "category": "INVALID_OWN_IMAGE",
+     "cause": "OWN_IMAGE_INVALID",
+     "first_failure": {
+      "robot_id": "r1",
+      "sim_s": 6.05,
+      "reason": "INVALID_OWN_IMAGE"
+     },
+     "wall_s": 260.1,
+     "sim_s": null,
+     "wall_per_sim": null,
+     "loadavg_case": [
+      [
+       23.482421875,
+       20.64697265625,
+       19.17333984375
+      ],
+      [
+       14.658203125,
+       21.39794921875,
+       20.2841796875
+      ]
+     ],
+     "host_error": null,
+     "render_profile": "shadows_v1",
+     "pf": {
+      "est_vs_gt_at_ref": {
+       "r1": {
+        "xy_m": 0.021,
+        "yaw_rad": 0.0117,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       },
+       "r2": {
+        "xy_m": 0.0392,
+        "yaw_rad": -0.0107,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       }
+      },
+      "sigma_yaw_max": {
+       "r1": 0.03477,
+       "r2": 0.0336
+      },
+      "std_xy_at_ref": {
+       "r1": 0.02474,
+       "r2": 0.02986
+      }
+     },
+     "frames": {
+      "r1": {
+       "frames": 24,
+       "gate_pass": 22,
+       "gate_reject_reasons": {
+        "dark_fraction": 2,
+        "contrast": 0,
+        "std": 0,
+        "decode": 0
+       },
+       "mean_v": 41.226796832473106,
+       "low_v_fraction_mean": 0.12083050234624264,
+       "contrast_min": 62.0,
+       "beam_visible": 24,
+       "band_visible": 7,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 0.04131602159894151,
+       "detector_errors": 0,
+       "tag_fix_frames": 4,
+       "mean_tags": 0.2916666666666667
+      },
+      "r2": {
+       "frames": 24,
+       "gate_pass": 24,
+       "gate_reject_reasons": {
+        "dark_fraction": 0,
+        "contrast": 0,
+        "std": 0,
+        "decode": 0
+       },
+       "mean_v": 43.71938808959032,
+       "low_v_fraction_mean": 0.005252557159450464,
+       "contrast_min": 72.0,
+       "beam_visible": 24,
+       "band_visible": 0,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 0.0011373614802983165,
+       "detector_errors": 0,
+       "tag_fix_frames": 4,
+       "mean_tags": 0.625
+      }
+     }
+    }
+   }
+  },
+  "sd-noshadow": {
+   "arm": "noshadow_v1",
+   "dir": "/Users/changmin/projects/ugrp/outputs/render-profile-ab-20260929/st1-noshadow-setdown-Lend",
+   "render_profile": {
+    "schema": "ugrp.render_profile.v1",
+    "name": "noshadow_v1",
+    "sha256": "c30f1ef68e8c28de662ee541020181cc41cf68a13d58f3a44ed2624c3abc5809",
+    "xml_ops": [
+     {
+      "op": "light_castshadow",
+      "value": "false"
+     },
+     {
+      "op": "material_reflectance",
+      "value": "0"
+     }
+    ],
+    "summary": "Every <light> castshadow=false and every <material> reflectance=0 (only groundmat, .035, is non-zero in the zone scene). Other light values (diffuse/ambient/specular/headlight), texture, shadowsize and MSAA are unchanged.",
+    "changes_images": true,
+    "changes_physics": false
+   },
+   "environment": {
+    "python": "3.12.13",
+    "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+     "mujoco": "3.12.0",
+     "numpy": "2.5.2",
+     "opencv-python": null,
+     "opencv-python-headless": "5.0.0.93",
+     "Pillow": "12.3.0",
+     "torch": null,
+     "gymnasium": "1.3.0"
+    },
+    "loadavg_at_start": [
+     13.193359375,
+     18.85791015625,
+     19.62255859375
+    ],
+    "loadavg_at_end": [
+     12.701171875,
+     18.25048828125,
+     19.37841796875
+    ]
+   },
+   "cases": {
+    "setdown@b-v6d:teacher:nominal:s912:pE2E:Lend": {
+     "stage": "setdown",
+     "passed": false,
+     "category": "INVALID_OWN_IMAGE",
+     "cause": "OWN_IMAGE_INVALID",
+     "first_failure": {
+      "robot_id": "r2",
+      "sim_s": 6.05,
+      "reason": "INVALID_OWN_IMAGE"
+     },
+     "wall_s": 13.64,
+     "sim_s": 6.050000000001648,
+     "wall_per_sim": 2.2545454545448402,
+     "loadavg_case": [
+      [
+       13.193359375,
+       18.85791015625,
+       19.62255859375
+      ],
+      [
+       12.4921875,
+       18.41015625,
+       19.4482421875
+      ]
+     ],
+     "host_error": null,
+     "render_profile": "noshadow_v1",
+     "pf": {
+      "est_vs_gt_at_ref": {
+       "r1": {
+        "xy_m": 0.0503,
+        "yaw_rad": -0.0005,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       },
+       "r2": {
+        "xy_m": 0.0402,
+        "yaw_rad": -0.0119,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       }
+      },
+      "sigma_yaw_max": {
+       "r1": 0.03485,
+       "r2": 0.03388
+      },
+      "std_xy_at_ref": {
+       "r1": 0.03057,
+       "r2": 0.02936
+      }
+     },
+     "frames": {
+      "r1": {
+       "frames": 24,
+       "gate_pass": 14,
+       "gate_reject_reasons": {
+        "dark_fraction": 10,
+        "contrast": 0,
+        "std": 0,
+        "decode": 0
+       },
+       "mean_v": 39.00651623695263,
+       "low_v_fraction_mean": 0.13550511431890092,
+       "contrast_min": 60.0,
+       "beam_visible": 24,
+       "band_visible": 0,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 0.1105407748229557,
+       "detector_errors": 0,
+       "tag_fix_frames": 0,
+       "mean_tags": 0.0
+      },
+      "r2": {
+       "frames": 24,
+       "gate_pass": 11,
+       "gate_reject_reasons": {
+        "dark_fraction": 13,
+        "contrast": 6,
+        "std": 6,
+        "decode": 0
+       },
+       "mean_v": 26.66254534545989,
+       "low_v_fraction_mean": 0.4770461580028528,
+       "contrast_min": 0.0,
+       "beam_visible": 18,
+       "band_visible": 0,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 1.655548006256647e-07,
+       "detector_errors": 0,
+       "tag_fix_frames": 4,
+       "mean_tags": 0.5416666666666666
+      }
+     }
+    },
+    "setdown@b-v6d:teacher:nominal:s911:pE2E:Lend": {
+     "stage": "setdown",
+     "passed": false,
+     "category": "INVALID_OWN_IMAGE",
+     "cause": "OWN_IMAGE_INVALID",
+     "first_failure": {
+      "robot_id": "r2",
+      "sim_s": 6.05,
+      "reason": "INVALID_OWN_IMAGE"
+     },
+     "wall_s": 13.72,
+     "sim_s": 6.050000000001648,
+     "wall_per_sim": 2.2677685950407045,
+     "loadavg_case": [
+      [
+       13.193359375,
+       18.85791015625,
+       19.62255859375
+      ],
+      [
+       12.4921875,
+       18.41015625,
+       19.4482421875
+      ]
+     ],
+     "host_error": null,
+     "render_profile": "noshadow_v1",
+     "pf": {
+      "est_vs_gt_at_ref": {
+       "r1": {
+        "xy_m": 0.0505,
+        "yaw_rad": -0.0,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       },
+       "r2": {
+        "xy_m": 0.0393,
+        "yaw_rad": -0.0106,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       }
+      },
+      "sigma_yaw_max": {
+       "r1": 0.0354,
+       "r2": 0.03477
+      },
+      "std_xy_at_ref": {
+       "r1": 0.03132,
+       "r2": 0.0297
+      }
+     },
+     "frames": {
+      "r1": {
+       "frames": 24,
+       "gate_pass": 14,
+       "gate_reject_reasons": {
+        "dark_fraction": 10,
+        "contrast": 0,
+        "std": 0,
+        "decode": 0
+       },
+       "mean_v": 39.00651623695263,
+       "low_v_fraction_mean": 0.13550511431890092,
+       "contrast_min": 60.0,
+       "beam_visible": 24,
+       "band_visible": 0,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 0.1105407748229557,
+       "detector_errors": 0,
+       "tag_fix_frames": 0,
+       "mean_tags": 0.0
+      },
+      "r2": {
+       "frames": 24,
+       "gate_pass": 11,
+       "gate_reject_reasons": {
+        "dark_fraction": 13,
+        "contrast": 6,
+        "std": 6,
+        "decode": 0
+       },
+       "mean_v": 26.66254534545989,
+       "low_v_fraction_mean": 0.4770461580028528,
+       "contrast_min": 0.0,
+       "beam_visible": 18,
+       "band_visible": 0,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 1.655548006256647e-07,
+       "detector_errors": 0,
+       "tag_fix_frames": 4,
+       "mean_tags": 0.5416666666666666
+      }
+     }
+    },
+    "setdown@b-v6d:teacher:nominal:s913:pE2E:Lend": {
+     "stage": "setdown",
+     "passed": false,
+     "category": "INVALID_OWN_IMAGE",
+     "cause": "OWN_IMAGE_INVALID",
+     "first_failure": {
+      "robot_id": "r2",
+      "sim_s": 6.05,
+      "reason": "INVALID_OWN_IMAGE"
+     },
+     "wall_s": 11.85,
+     "sim_s": 6.050000000001648,
+     "wall_per_sim": 1.9586776859498796,
+     "loadavg_case": [
+      [
+       12.4921875,
+       18.41015625,
+       19.4482421875
+      ],
+      [
+       12.701171875,
+       18.25048828125,
+       19.37841796875
+      ]
+     ],
+     "host_error": null,
+     "render_profile": "noshadow_v1",
+     "pf": {
+      "est_vs_gt_at_ref": {
+       "r1": {
+        "xy_m": 0.0512,
+        "yaw_rad": -0.0007,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       },
+       "r2": {
+        "xy_m": 0.0395,
+        "yaw_rad": -0.0107,
+        "gt_t": 6.0002500000015875,
+        "est_t": 5.9003
+       }
+      },
+      "sigma_yaw_max": {
+       "r1": 0.03457,
+       "r2": 0.03359
+      },
+      "std_xy_at_ref": {
+       "r1": 0.0309,
+       "r2": 0.02992
+      }
+     },
+     "frames": {
+      "r1": {
+       "frames": 24,
+       "gate_pass": 14,
+       "gate_reject_reasons": {
+        "dark_fraction": 10,
+        "contrast": 0,
+        "std": 0,
+        "decode": 0
+       },
+       "mean_v": 39.00651623695263,
+       "low_v_fraction_mean": 0.13550511431890092,
+       "contrast_min": 60.0,
+       "beam_visible": 24,
+       "band_visible": 0,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 0.1105407748229557,
+       "detector_errors": 0,
+       "tag_fix_frames": 0,
+       "mean_tags": 0.0
+      },
+      "r2": {
+       "frames": 24,
+       "gate_pass": 11,
+       "gate_reject_reasons": {
+        "dark_fraction": 13,
+        "contrast": 6,
+        "std": 6,
+        "decode": 0
+       },
+       "mean_v": 26.66254534545989,
+       "low_v_fraction_mean": 0.4770461580028528,
+       "contrast_min": 0.0,
+       "beam_visible": 18,
+       "band_visible": 0,
+       "grip_seen": 0,
+       "beam_colour_fraction_mean": 1.655548006256647e-07,
+       "detector_errors": 0,
+       "tag_fix_frames": 4,
+       "mean_tags": 0.5416666666666666
+      }
+     }
+    }
+   }
+  }
+ },
+ "by_arm": {
+  "shadows_v1": {
+   "setdown": {
+    "cases": 3,
+    "host_errors_excluded": 0,
+    "passed": 0,
+    "causes": {
+     "OWN_IMAGE_INVALID": 3
+    },
+    "wall_per_sim_median": null,
+    "r1": {
+     "frames": 72,
+     "gate_pass_rate": 0.9167,
+     "reject_dark": 6,
+     "reject_contrast": 0,
+     "reject_std": 0,
+     "mean_v": 41.23,
+     "beam_visible_rate": 1.0,
+     "band_visible_rate": 0.2917,
+     "grip_seen_rate": 0.0,
+     "tag_fix_rate": 0.1667,
+     "detector_errors": 0,
+     "pf_xy_err_m_mean": 0.021,
+     "pf_yaw_err_rad_mean_abs": 0.0117,
+     "sigma_yaw_max_mean": 0.0347
+    },
+    "r2": {
+     "frames": 72,
+     "gate_pass_rate": 1.0,
+     "reject_dark": 0,
+     "reject_contrast": 0,
+     "reject_std": 0,
+     "mean_v": 43.72,
+     "beam_visible_rate": 1.0,
+     "band_visible_rate": 0.0,
+     "grip_seen_rate": 0.0,
+     "tag_fix_rate": 0.1667,
+     "detector_errors": 0,
+     "pf_xy_err_m_mean": 0.0394,
+     "pf_yaw_err_rad_mean_abs": 0.0108,
+     "sigma_yaw_max_mean": 0.0341
+    }
+   }
+  },
+  "noshadow_v1": {
+   "setdown": {
+    "cases": 3,
+    "host_errors_excluded": 0,
+    "passed": 0,
+    "causes": {
+     "OWN_IMAGE_INVALID": 3
+    },
+    "wall_per_sim_median": 2.255,
+    "r1": {
+     "frames": 72,
+     "gate_pass_rate": 0.5833,
+     "reject_dark": 30,
+     "reject_contrast": 0,
+     "reject_std": 0,
+     "mean_v": 39.01,
+     "beam_visible_rate": 1.0,
+     "band_visible_rate": 0.0,
+     "grip_seen_rate": 0.0,
+     "tag_fix_rate": 0.0,
+     "detector_errors": 0,
+     "pf_xy_err_m_mean": 0.0507,
+     "pf_yaw_err_rad_mean_abs": 0.0004,
+     "sigma_yaw_max_mean": 0.0349
+    },
+    "r2": {
+     "frames": 72,
+     "gate_pass_rate": 0.4583,
+     "reject_dark": 39,
+     "reject_contrast": 18,
+     "reject_std": 18,
+     "mean_v": 26.66,
+     "beam_visible_rate": 0.75,
+     "band_visible_rate": 0.0,
+     "grip_seen_rate": 0.0,
+     "tag_fix_rate": 0.1667,
+     "detector_errors": 0,
+     "pf_xy_err_m_mean": 0.0397,
+     "pf_yaw_err_rad_mean_abs": 0.0111,
+     "sigma_yaw_max_mean": 0.0341
+    }
+   }
+  }
+ },
+ "time_l": {}
+}

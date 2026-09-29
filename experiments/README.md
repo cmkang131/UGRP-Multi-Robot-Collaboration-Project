@@ -1,5 +1,6 @@
 # 실험 인덱스
 
+- [2026-09-29 렌더 프로필(그림자·반사) A/B (단계 probe 측정 완료, 채택 안 함)](2026-09-29-render-profile/README.md): `sim/render_profile.py`의 `shadows_v1`(현재)·`noshadow_v1`(광원 그림자 끔 + 바닥 반사 0)을 opt-in으로 넣고 b-v6d nominal(정렬·파지+들기·운반 L0·내려놓기)에서 비교했다. 기본 불변 확인(프레임 924장 바이트 동일)과 재실행 결정성(반복 프레임·결과 동일)을 확인했다. 케이스 성공은 두 arm 모두 6/12로 같다(운반은 σ, 내려놓기는 OWN_IMAGE_INVALID). 그림자를 꺼도 어두운 목적지의 영상 거절은 줄지 않고 r2 영상이 더 어두워졌다(같은 창 통과율 r2 1.00→0.46). CPU 초는 quiet 구간에서 약 절반(부하에 민감, 표본 소수). 단계 probe이며 E2E 성공이 아니다.
 - [2026-09-28 MasterPi 모델 v3 (공식 치수도 + SDK 팔, 물리 포함)](2026-09-28-masterpi-visual-v3/README.md): v2는 바이트 그대로 두고 `build_v3_xml`을 물리 모델로 만들었다. 연구 장면 전환·번들 ID는 할 일 목록에 있다.
 - [2026-09-28 MasterPi 공개 치수·센서 사양 조사](2026-09-28-masterpi-public-specs/README.md): 공식 도면·MasterPi SDK 고정 SHA·카메라 보정 NPZ·서보/초음파 사양 대조. 초음파 장착 약62/88 mm, yaw 약48 mm; 반각/갱신 주기·개체별 보정은 미확인. 실측·물리·모델 호출 없음.
 - [2026-09-28 4조건 본연구 사전 등록 초안 (DRAFT, 미고정)](2026-09-28-main-study-prereg-draft/PREREG_DRAFT.md): H1 `peer_ko−no_comm`·H2 `peer_ko−structured`·H3 `leader_ko−peer_ko`, 그래프식 Holm + 2회 OBF 순차 경계. 주 지표 PAR-2(조건 가린 파일럿 합산 성공률 < 0.30이면 `delivery_rate`). 외부 파일럿 18블록 → ρ 하한으로 N 재추정(36–108블록). yoked-wake·scale=0·s2/s5 분기 소거 진단, 원어민 2인 맹검 코딩. raw 첫 호출 16회 실측 10,899 토큰/호출, 전체 추정 141M–1.27G 토큰. 차단 선행 조건: 짝 운반 v6/v7, 로봇 모델 v3, VIS6, 최종 지도·시나리오 v2, 심판·다회 드라이버, 3대 스모크. SIM·pytest·모델 호출 0회.
