@@ -111,6 +111,7 @@ PYTHONPATH=. .venv-sim-worker-mac/bin/python scripts/verify_gemini_budget_run.py
 
 - `tests/fixtures/`: 작은 재현용 입력, 출처와 SHA를 함께 저장한다.
 - `experiments/<ID>/`: 코드 SHA, 환경, 설정, 모든 결과, 원본 해시, 실제 저장 위치.
+- 새 제어기·정책 버전의 측정 기록을 남길 때 [버전별 대표 영상 색인](docs/version_videos.md)에 대표 영상 행을 채운다(영상은 파일당 1 MiB 미만, 원본은 `outputs/`와 해시).
 - `outputs/`: raw 영상과 로그. 현재 로컬 보관이며 Git에서 제외된다. 다른 사람이 필요로 하면 허가된 저장소에 공유하고 접근 가능한 위치를 결과 기록에 추가한다.
 - 보관만 한 해시는 백업이 아니다. raw 자료가 공유·백업되지 않았으면 그대로 명시한다.
 - 실험 중복 ZIP, 개인 계정 설정, 키·토큰, 가상환경과 의존성 폴더를 커밋하지 않는다.
