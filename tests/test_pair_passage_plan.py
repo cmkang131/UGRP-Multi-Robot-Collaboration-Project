@@ -214,9 +214,10 @@ def test_frozen_eight_segment_protocol_bounds_the_corridor_targets(target, ok):
         assert raised.value.code == 'PAIR_PASSAGE_TOO_MANY_SEGMENTS' and raised.value.detail['legs'] > pp.MAX_LEGS
 
 
-def test_two_doors_narrow_door_route_equals_the_frozen_door_route():
-    frozen = zpe.make_plan(load(DOOR_MAP), SHEET, 'B')
-    plan = pp.passage_make_plan(load(TWO_DOORS), SHEET, 'B', 'auto')
+@pytest.mark.parametrize('target', ['A', 'B', 'C'])
+def test_two_doors_narrow_door_route_equals_the_frozen_door_route(target):
+    frozen = zpe.make_plan(load(DOOR_MAP), SHEET, target)
+    plan = pp.passage_make_plan(load(TWO_DOORS), SHEET, target, 'auto')
     assert plan['passage']['id'] == 'door_narrow' and plan['route'] == frozen['route']
     assert plan['door_plan']['checkpoints_beam_x_m'] == m2.DOOR_PLAN['checkpoints_beam_x_m']
 
