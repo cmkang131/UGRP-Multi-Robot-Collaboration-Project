@@ -1,5 +1,6 @@
 # 실험 인덱스
 
+- [2026-09-29 버전별 대표 영상: 짝 운반 stage probe 재생성 도구와 첫 백필](2026-09-29-version-videos/README.md): `scripts/render_pair_probe_video.py`가 저장된 case로 위에서 본 정답 위치(평가용, top 카메라 영상 아님)와 로봇 yaw σ 곡선, 선택적으로 손목 카메라를 mp4로 만든다. 게이트 선은 `GATE_LOADED`를 import한다. b-v6c 운반 실패, b-v6c→b-v6d 정렬, b-v6e-base(실패)→b-v6e yaw 수정(통과, 31.3 s, σ 약 40 mrad) 영상 4개(합계 약 0.3 MiB)를 남겼다. 한 케이스씩이며 일반화가 아니고 yaw 수정 cal 40건 판정은 진행 중이다. 색인 [docs/version_videos.md](../docs/version_videos.md). 물리·모델 호출 0회.
 - [2026-09-29 렌더 프로필(그림자·반사) A/B (단계 probe 측정 완료, 채택 안 함)](2026-09-29-render-profile/README.md): `sim/render_profile.py`의 `shadows_v1`(현재)·`noshadow_v1`(광원 그림자 끔 + 바닥 반사 0)을 opt-in으로 넣고 b-v6d nominal(정렬·파지+들기·운반 L0·내려놓기)에서 비교했다. 기본 불변 확인(프레임 924장 바이트 동일)과 재실행 결정성(반복 프레임·결과 동일)을 확인했다. 케이스 성공은 두 arm 모두 6/12로 같다(운반은 σ, 내려놓기는 OWN_IMAGE_INVALID). 그림자를 꺼도 어두운 목적지의 영상 거절은 줄지 않고 r2 영상이 더 어두워졌다(같은 창 통과율 r2 1.00→0.46). CPU 초는 quiet 구간에서 약 절반(부하에 민감, 표본 소수). 단계 probe이며 E2E 성공이 아니다.
 - [2026-09-28 MasterPi 모델 v3 (공식 치수도 + SDK 팔, 물리 포함)](2026-09-28-masterpi-visual-v3/README.md): v2는 바이트 그대로 두고 `build_v3_xml`을 물리 모델로 만들었다. 연구 장면 전환·번들 ID는 할 일 목록에 있다.
 - [2026-09-28 MasterPi 공개 치수·센서 사양 조사](2026-09-28-masterpi-public-specs/README.md): 공식 도면·MasterPi SDK 고정 SHA·카메라 보정 NPZ·서보/초음파 사양 대조. 초음파 장착 약62/88 mm, yaw 약48 mm; 반각/갱신 주기·개체별 보정은 미확인. 실측·물리·모델 호출 없음.
