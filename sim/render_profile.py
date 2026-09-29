@@ -52,6 +52,17 @@ PROFILES = {
                     {'op': 'light_cutoff', 'value': '180'},
                     {'op': 'light_color_scale', 'value': '0.3'}],
     },
+    'floor_light_v1': {
+        'summary': 'noshadow_bright_v1 plus a lighter floor: texture "ground" (the checker under material groundmat) '
+                   'changes from rgb1 .20 .22 .24 / rgb2 .27 .29 .31 to a neutral mid-tone grey checker rgb1 .36 .35 .34 / '
+                   'rgb2 .62 .61 .59 (checker contrast kept and raised). User statement 2026-09-29: the real floor is '
+                   'lighter than the simulated dark blue-grey one; the real colour was not measured.',
+        'xml_ops': [{'op': 'light_castshadow', 'value': 'false'},
+                    {'op': 'material_reflectance', 'value': '0'},
+                    {'op': 'light_cutoff', 'value': '180'},
+                    {'op': 'light_color_scale', 'value': '0.3'},
+                    {'op': 'texture_rgb', 'texture': 'ground', 'rgb1': '.36 .35 .34', 'rgb2': '.62 .61 .59'}],
+    },
 }
 
 # MuJoCo defaults for the light colours a <light> may omit (XML reference), needed to scale an omitted attribute.
@@ -114,6 +125,13 @@ def apply_xml(xml, name):
                 for key, default in LIGHT_COLOR_DEFAULTS.items():
                     values = [float(v) for v in light.get(key).split()] if light.get(key) is not None else list(default)
                     light.set(key, ' '.join(f'{v * factor:.6g}' for v in values))
+        elif op['op'] == 'texture_rgb':
+            named = [t for t in root.iter('texture') if t.get('name') == op['texture']]
+            if not named:
+                raise ValueError(f'render profile edits texture {op["texture"]!r} but the scene XML has none')
+            for texture in named:
+                texture.set('rgb1', op['rgb1'])
+                texture.set('rgb2', op['rgb2'])
         else:  # pragma: no cover - registry is closed
             raise ValueError(f'unknown render profile op {op["op"]!r}')
     return ET.tostring(root, encoding='unicode')
@@ -154,7 +172,15 @@ def audit_model(model):
     import mujoco
     reflective = {mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_MATERIAL, i) or f'material{i}': float(model.mat_reflectance[i])
                   for i in range(model.nmat) if float(model.mat_reflectance[i]) != 0.}
-    return {'nlight': int(model.nlight), 'light_castshadow': [int(v) for v in model.light_castshadow],
+    import numpy as np
+    textures = {}
+    for i in range(model.ntex):
+        name = mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_TEXTURE, i)
+        if name == 'ground':
+            n = int(model.tex_width[i] * model.tex_height[i] * model.tex_nchannel[i])
+            data = np.asarray(model.tex_data[int(model.tex_adr[i]):int(model.tex_adr[i]) + n]).reshape(-1, int(model.tex_nchannel[i]))
+            textures[name] = [round(float(v), 1) for v in data.mean(0)]
+    return {'nlight': int(model.nlight), 'ground_texture_mean_rgb': textures.get('ground'), 'light_castshadow': [int(v) for v in model.light_castshadow],
             'light_cutoff': [float(v) for v in model.light_cutoff],
             'nmat': int(model.nmat), 'materials_with_reflectance': reflective}
 
@@ -163,8 +189,12 @@ def verify_model(model, name):
     """Fail closed when the compiled model does not carry the requested profile."""
     name = resolve(name)
     audit = audit_model(model)
-    if name in ('noshadow_v1', 'noshadow_bright_v1') and (any(audit['light_castshadow']) or audit['materials_with_reflectance']):
+    if name in ('noshadow_v1', 'noshadow_bright_v1', 'floor_light_v1') and (any(audit['light_castshadow']) or audit['materials_with_reflectance']):
         raise RuntimeError(f'render profile {name} requested but the compiled model still has shadows/reflections: {audit}')
-    if name == 'noshadow_bright_v1' and any(c != 180. for c in audit['light_cutoff']):
+    if name in ('noshadow_bright_v1', 'floor_light_v1') and any(c != 180. for c in audit['light_cutoff']):
         raise RuntimeError(f'render profile {name} requested but the compiled model still has spot lights: {audit}')
+    if name == 'floor_light_v1':
+        mean = audit['ground_texture_mean_rgb']
+        if mean is None or not all(abs(m - e) <= 8 for m, e in zip(mean, (125., 122., 118.))):
+            raise RuntimeError(f'render profile {name} requested but the floor texture mean is {mean}, expected about (125, 122, 118)')
     return audit

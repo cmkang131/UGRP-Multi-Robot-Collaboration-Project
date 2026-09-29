@@ -23,6 +23,7 @@ def test_profile_hashes_are_pinned_and_default_equals_shadows_v1():
     assert rp.profile_sha256('shadows_v1') == 'f10e51dab22f30913f68eb3981f8373ce747676a66292f4b1cd0c974c598f8c5'
     assert rp.profile_sha256('noshadow_v1') == 'c30f1ef68e8c28de662ee541020181cc41cf68a13d58f3a44ed2624c3abc5809'
     assert rp.profile_sha256('noshadow_bright_v1') == 'f994f8d61af3157e973764225d581758106329ab2259922e28d5d14881fe2e5f'
+    assert rp.profile_sha256('floor_light_v1') == 'e3ea8aebc473f99def92fa368f8aaa11e5872dc5b2a8ec8ba9a308641d2b6ec5'
     assert rp.profile_sha256(None) == rp.profile_sha256('shadows_v1')
     assert rp.profile_sha256('noshadow_v1') != rp.profile_sha256('shadows_v1')
     record = rp.profile_record('noshadow_v1')
@@ -78,6 +79,22 @@ def test_noshadow_bright_v1_xml_edit_scales_light_colours_and_makes_point_lights
     assert SYNTH.count('castshadow') == 1                        # input string is not mutated
 
 
+def test_floor_light_v1_edits_only_the_named_floor_texture_on_top_of_noshadow_bright_v1():
+    import xml.etree.ElementTree as ET
+    xml = SYNTH.replace('<asset>', '<asset><texture name="ground" type="2d" builtin="checker" rgb1=".2 .22 .24" rgb2=".27 .29 .31"/>'
+                        '<texture name="sky" type="skybox" builtin="gradient" rgb1="1 1 1" rgb2="0 0 0"/>')
+    bright, floor = ET.fromstring(rp.apply_xml(xml, 'noshadow_bright_v1')), ET.fromstring(rp.apply_xml(xml, 'floor_light_v1'))
+    ground = floor.find('.//texture[@name="ground"]')
+    assert (ground.get('rgb1'), ground.get('rgb2')) == ('.36 .35 .34', '.62 .61 .59')
+    assert floor.find('.//texture[@name="sky"]').attrib == bright.find('.//texture[@name="sky"]').attrib   # other textures kept
+    for root in (bright, floor):                               # everything else equals noshadow_bright_v1
+        for t in root.iter('texture'):
+            t.attrib.pop('rgb1', None), t.attrib.pop('rgb2', None)
+    assert ET.tostring(bright) == ET.tostring(floor)
+    with pytest.raises(ValueError, match='has none'):        # fail closed: no floor texture to edit
+        rp.apply_xml(SYNTH, 'floor_light_v1')
+
+
 class _FakeScene:
     """Like the zone scenes: ``transform`` rebuilds ``self.manifest`` on every call."""
     def __init__(self):
@@ -129,7 +146,11 @@ def zone_models():
     xml_bright = bright.transform(raw)
     kept = rp.install(_zone_xml()[0], 'shadows_v1')
     xml_kept = kept.transform(raw)
+    floor = _zone_xml()[0]
+    rp.install(floor, 'floor_light_v1')
+    xml_floor = floor.transform(raw)
     return {'bright': mujoco.MjModel.from_xml_string(xml_bright), 'bright_scene': bright,
+            'floor': mujoco.MjModel.from_xml_string(xml_floor), 'floor_xml': xml_floor, 'bright_xml': xml_bright,
             'xml': xml, 'noshadow_xml': xml_noshadow, 'kept_xml': xml_kept,
             'scene': profiled, 'default': mujoco.MjModel.from_xml_string(xml),
             'kept': mujoco.MjModel.from_xml_string(xml_kept),
@@ -190,6 +211,25 @@ def test_noshadow_bright_v1_changes_only_lights_and_reflectance_never_physics(zo
     assert record['changes_images'] and not record['changes_physics']
 
 
+def test_floor_light_v1_changes_only_the_floor_texture_relative_to_noshadow_bright_v1(zone_models):
+    import numpy as np
+    bright, floor = _arrays(zone_models['bright']), _arrays(zone_models['floor'])
+    assert bright.keys() == floor.keys()
+    changed = sorted(k for k in bright if not np.array_equal(bright[k], floor[k], equal_nan=True))
+    assert changed == ['tex_data']                             # geometry, physics, lights, materials: identical
+    default = _arrays(zone_models['default'])
+    vs_default = sorted(k for k in default if not np.array_equal(default[k], floor[k], equal_nan=True))
+    assert vs_default == ['light_ambient', 'light_castshadow', 'light_cutoff', 'light_diffuse', 'light_specular',
+                          'mat_reflectance', 'tex_data']
+    audit = rp.verify_model(zone_models['floor'], 'floor_light_v1')
+    assert audit['ground_texture_mean_rgb'] == pytest.approx([124.5, 122., 118.], abs=1.)
+    assert rp.audit_model(zone_models['default'])['ground_texture_mean_rgb'][0] < 70
+    with pytest.raises(RuntimeError, match='floor texture'):
+        rp.verify_model(zone_models['bright'], 'floor_light_v1')     # lights right, floor not lightened
+    with pytest.raises(RuntimeError, match='still has spot lights'):
+        rp.verify_model(zone_models['noshadow'], 'floor_light_v1')
+
+
 def test_noshadow_bright_v1_verify_fails_closed_when_spot_lights_remain(zone_models):
     with pytest.raises(RuntimeError, match='still has spot lights'):
         rp.verify_model(zone_models['noshadow'], 'noshadow_bright_v1')      # noshadow_v1 model: shadows off, cones kept
@@ -240,7 +280,8 @@ def test_probe_flag_is_off_by_default_and_marks_cases_only_when_given():
     from scripts import run_pair_stage_probes as r
     cases = sp.teacher_cases('align', subset={'nominal'}, nominal_seeds=(911,))
     assert r.with_render_profile(cases, None) is cases and all('render_profile' not in c for c in cases)
-    assert all(c['render_profile'] == 'noshadow_bright_v1' for c in r.with_render_profile(cases, 'noshadow_bright_v1'))
+    for name in ('noshadow_bright_v1', 'floor_light_v1'):
+        assert all(c['render_profile'] == name for c in r.with_render_profile(cases, name))
     marked = r.with_render_profile(cases, 'noshadow_v1')
     assert [c['case_id'] for c in marked] == [c['case_id'] for c in cases]      # ids unchanged, output dir decides the arm
     assert all(c['render_profile'] == 'noshadow_v1' for c in marked) and all('render_profile' not in c for c in cases)
