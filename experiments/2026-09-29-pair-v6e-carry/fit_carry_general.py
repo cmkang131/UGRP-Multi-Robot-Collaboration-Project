@@ -1,8 +1,8 @@
 """Cal-cohort fit of the v6g ``carry_dr_general`` model: lateral deadband, cross-axis drift ratio, yaw-flag biases.
 
 Inputs (recorded raws, eval-only GT used as the calibration target ONLY; no hA / hB / hC / hD / grid raw is read):
-  the cal placement raws (y 0.03, beam heading 0) of the earlier cohorts, the 4fac772d cal re-measurement, and the NEW fitting
-  placements cal2 / cal3 / cal4 (y offsets 0.08 / -0.01 / 0.14, beam heading 0 / +0.03 / -0.03 rad).
+  the stage-F raws recorded with render profile floor_light_v1: cal placement (y 0.03, heading 0) and cal2 / cal3 / cal4
+  (y offsets 0.08 / -0.01 / 0.14, beam heading 0 / +0.03 / -0.03 rad). Shadow-profile raws are not mixed in.
 Method:
   1 steer phase (own-estimate route-line correction, |left| < 0.03, ~5.9 s): the loaded plant does not follow tiny lateral commands
     linearly. Model: body-lateral travel = gain_yy * u * r(|u|) * Teff with the breakaway ramp
@@ -30,8 +30,7 @@ import fit_carry_pair_yaw as pfit  # noqa: E402
 import y_error_phases as yph  # noqa: E402
 
 OUT = Path('/Users/changmin/projects/ugrp/outputs')
-FIT_RAWS = ['ece38792-cal', 'a704ecc6-calB2', 'a704ecc6-calB', '4fac772d-yawcal',
-            'ba834d02-gcal2', 'ba834d02-gcal3', 'ba834d02-gcal4']
+FIT_RAWS = ['ece01311-fcal', 'ece01311-fcal2', 'ece01311-fcal3', 'ece01311-fcal4']   # floor_light_v1 raws only (stage F)
 DIAGNOSTIC_RAWS = ['4fac772d-yawhA']         # scored by the fitted model, never fitted
 GAIN_YY = 1.0159                             # calibration_loop_v2 motion_loaded gain[1][1]
 TAU = .8
