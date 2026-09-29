@@ -738,6 +738,33 @@ def cmd_side(args):
                                                       'profile_y0_yaw0': profile, 'rows': rows}, indent=1))
 
 
+# ---- error versus heading, from the stored traces of a sweep run ---------------------------------------------------
+def cmd_yawbias(args):
+    """Bias and scatter of ``y`` and ``yaw`` per heading error at one design, from ``sweep/echo_traces.npz`` (no new casts)."""
+    z = np.load(Path(args.sweep) / 'echo_traces.npz')
+    facts = DoorWorld().facts
+    draws = [noise_draws(k, MAX_TICKS) for k in range(args.seeds)]
+    out_rows = []
+    for th in HALF_ANGLES_DEG:
+        traces = z[f'th{th}_d{args.d}']
+        spec = spec_for(th)
+        by_yaw = {}
+        for row, (y0, psi, pd) in zip(traces, cells()):
+            ests, _ = run_cell(row, spec, args.W, args.v, draws, facts, None)
+            for e in ests:
+                if e['status'] == 'ok' and e['yaw_resolved']:
+                    by_yaw.setdefault(pd, []).append(((e['y_base_m'] - y0) * 100, e['yaw_deg'] - pd))
+        for pd in sorted(by_yaw):
+            a = np.array(by_yaw[pd])
+            out_rows.append({'half_angle_true_deg': th, 'yaw_deg': pd, 'y_bias_cm': float(a[:, 0].mean()),
+                             'y_std_cm': float(a[:, 0].std()), 'yaw_bias_deg': float(a[:, 1].mean()), 'n': int(len(a))})
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / 'yawbias.json').write_text(json.dumps({'design': {'d': args.d, 'W': args.W, 'v': args.v}, 'rows': out_rows}, indent=1))
+    for th in HALF_ANGLES_DEG:
+        print(th, [(r['yaw_deg'], round(r['y_bias_cm'], 2)) for r in out_rows if r['half_angle_true_deg'] == th])
+
+
 # ---- manifest and report -----------------------------------------------------------------------------------------
 def cmd_manifest(args):
     import subprocess
@@ -827,6 +854,14 @@ def main(argv=None):
     sd.add_argument('--v', type=float, default=.05)
     sd.add_argument('--seeds', type=int, default=8)
     sd.set_defaults(fn=cmd_side)
+    yb = sub.add_parser('yawbias')
+    yb.add_argument('--sweep', required=True)
+    yb.add_argument('--out', required=True)
+    yb.add_argument('--d', type=float, default=.5)
+    yb.add_argument('--W', type=float, default=.4)
+    yb.add_argument('--v', type=float, default=.05)
+    yb.add_argument('--seeds', type=int, default=12)
+    yb.set_defaults(fn=cmd_yawbias)
     mf = sub.add_parser('manifest')
     mf.add_argument('--out', required=True)
     mf.set_defaults(fn=cmd_manifest)
