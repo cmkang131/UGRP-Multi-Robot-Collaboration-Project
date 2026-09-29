@@ -123,20 +123,29 @@ def contract(revision=None):
                                  'must show one contiguous in-footprint band across the tracked axis (2-98 % span, '
                                  'largest gap <= MAX_LATERAL_GAP_M) at least MIN_WIDTH_FRACTION x BEAM_WIDTH_M wide. '
                                  'All gates, thresholds and the footprint support test are unchanged'),
-            'beam_wide_hue':('v6d: in the r1 p45 and inspect views the beam heading (PCA axis) reads the hue range '
+            'beam_wide_hue':('v6d: in the p45 and inspect views the beam heading (PCA axis) reads the hue range '
                              '25-54 instead of the v1 lime range 36-54, because the beam top renders yellow (hue '
-                             '25-36) there and the lime-only mask kept just the end faces (heading error up to '
-                             '1.5 rad, aligned reported at a true yaw of 0.07-0.115 rad). The frozen v1/v2 beam '
-                             'modules are unchanged: the added non-band pixels are recoloured lime on a copy of the '
-                             'frame and v2 runs on it; dark grip-band pixels are never recoloured. The search posture '
-                             'keeps the v1 range (the wide range doubles r2 search yaw noise in replay)'),
+                             '25-36) there in r1 and the lime-only mask kept just the end faces (heading error up to '
+                             '1.5 rad, aligned reported at a true yaw of 0.07-0.115 rad). The condition is the '
+                             'posture only, so it also applies to r2 in p45/inspect, where the wide range is '
+                             'unverified (r2 used hue 25 in 42 frames of the stage probe; no negative check that '
+                             'non-beam yellow objects stay out of the mask). The frozen v1/v2 beam modules are '
+                             'unchanged: the added non-band pixels are recoloured lime on a copy of the frame and v2 '
+                             'runs on it; dark grip-band pixels are never recoloured. The search posture keeps the '
+                             'v1 range (the wide range doubles r2 search yaw noise in replay)'),
             'align_fine_motion':('v6d: while the controller is in an align state (align, align_relook_stop, '
                                  'align_relook, align_relook_return) the tag PF predicts motion with the M1 ``fine`` '
-                                 'profile of calibration_m1_dev.json (gain 1.95/0.95, tau 1.28 s) instead of the '
-                                 'navigation default (gain 1.47, tau 0.3 s), which over-integrated the 0.2-0.3 s '
-                                 '<=0.05 m/s align pulses about 4-5 times; other states keep the default profile. '
-                                 'No filter code, noise or gate changes; a provider bound to the profile is refused by '
-                                 'policies without the flag')},
+                                 'profile of calibration_m1_dev.json instead of the navigation default '
+                                 '(gain 1.47, tau 0.3 s), which over-integrated the 0.2-0.3 s <=0.05 m/s align pulses '
+                                 'about 4-5 times (x axis, median). The profile is a whole parameter set, not just '
+                                 'gain/tau: gain 1.95/0.95, tau 1.28 s, tau_stop 0.05 s, smaller absolute noise '
+                                 '(noise_abs 0.003/0.003/0.005 vs default 0.015/0.005/0.014, i.e. also a lower yaw '
+                                 'noise) and the slip scale switched off (use_scale false). No filter code or gate '
+                                 'changes; other states keep the default profile. The profile was fitted on one M1 '
+                                 'dev seed (s91) with the arm lowered at the box, so its use in the wrist-camera '
+                                 'look postures of the align states is checked only by the offline replay and the '
+                                 'stage probe. A provider bound to the profile is refused by policies without the '
+                                 'flag')},
         'v6d_constants':{'wide_hue_lo':WIDE_HUE_LO,'wide_hue_postures':list(WIDE_HUE_POSTURES),
                          'wide_lime_bgr':list(wide.WIDE_LIME_BGR),
                          'motion_profile':fine.PROFILE,'motion_calibration':fine.CALIBRATION,

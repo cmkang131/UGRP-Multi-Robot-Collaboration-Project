@@ -38,7 +38,9 @@ class PairPolicy:
     # v6d (2026-09-29 stage-2 replay of the b-v6c probe, see harness/owncam_align_motion_v6d.py and
     # experiments/2026-09-29-pair-v6d-align): (1) beam heading in the close p45/inspect views uses the
     # hue range 25-54, because the beam top renders yellow there (hue 25-36) and the lime-only mask kept
-    # just the end faces; (2) the PF predicts align pulses with the M1 ``fine`` motion profile.
+    # just the end faces (posture-only condition, so it also applies to r2, where it is unverified);
+    # (2) the PF predicts align pulses with the M1 ``fine`` motion profile (whole parameter set: gain/tau,
+    # its own noise_abs, slip scale off).
     beam_wide_hue: bool = False
     align_fine_motion: bool = False
 

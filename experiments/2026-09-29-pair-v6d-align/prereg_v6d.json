@@ -248,8 +248,8 @@
       "stationary_bootstrap": "v6b: equal-weight AMCL-default Gaussian prior on the static start_dock rows; no own arm/wheel command before an informative settled fix whose first arm transition the unchanged guard clears (or gate LOW); only camera pans in between, each checked by the unchanged guard at the mean plus a conservative collision-mass bound over all weighted particles (cell-inflated, <= 1 %; particle chance constraint); refused pans stay queued and are rechecked; non-finite reports never complete; completion only at the home pan after settle, with sigma within the guard cap; resample-move on the stationary belief after an accepted view (no dual samples); a rejected view never mutates the PF; 10 s stationary budget per motion job, then STATIONARY_BOOTSTRAP_NO_FIX, and a failed bootstrap never unlocks motion",
       "exact_fix_clock": "v6c: after predict_to(t) the posterior-preserving PF is stamped with t when its step sum stopped within the unchanged 1e-9 s loop tolerance before t, so a fix at this frame has age 0 (never < 0); an older frame is never moved forward; a provider bound to it is refused by policies without the flag",
       "grasp_range_entry": "v6c: standoff edge-pair fit and pre-close partial patch use the grasp-range beam colour (owncam_pair_beam_v2.beam_colour_mask) instead of v1 lime; strips below MIN_STRIP_SUPPORT x median support are dropped before the line fit; the final descent pose settles FINAL_DESCENT_SETTLE_S before READY frames; the partial patch must show one contiguous in-footprint band across the tracked axis (2-98 % span, largest gap <= MAX_LATERAL_GAP_M) at least MIN_WIDTH_FRACTION x BEAM_WIDTH_M wide. All gates, thresholds and the footprint support test are unchanged",
-      "beam_wide_hue": "v6d: in the r1 p45 and inspect views the beam heading (PCA axis) reads the hue range 25-54 instead of the v1 lime range 36-54, because the beam top renders yellow (hue 25-36) there and the lime-only mask kept just the end faces (heading error up to 1.5 rad, aligned reported at a true yaw of 0.07-0.115 rad). The frozen v1/v2 beam modules are unchanged: the added non-band pixels are recoloured lime on a copy of the frame and v2 runs on it; dark grip-band pixels are never recoloured. The search posture keeps the v1 range (the wide range doubles r2 search yaw noise in replay)",
-      "align_fine_motion": "v6d: while the controller is in an align state (align, align_relook_stop, align_relook, align_relook_return) the tag PF predicts motion with the M1 ``fine`` profile of calibration_m1_dev.json (gain 1.95/0.95, tau 1.28 s) instead of the navigation default (gain 1.47, tau 0.3 s), which over-integrated the 0.2-0.3 s <=0.05 m/s align pulses about 4-5 times; other states keep the default profile. No filter code, noise or gate changes; a provider bound to the profile is refused by policies without the flag"
+      "beam_wide_hue": "v6d: in the p45 and inspect views the beam heading (PCA axis) reads the hue range 25-54 instead of the v1 lime range 36-54, because the beam top renders yellow (hue 25-36) there in r1 and the lime-only mask kept just the end faces (heading error up to 1.5 rad, aligned reported at a true yaw of 0.07-0.115 rad). The condition is the posture only, so it also applies to r2 in p45/inspect, where the wide range is unverified (r2 used hue 25 in 42 frames of the stage probe; no negative check that non-beam yellow objects stay out of the mask). The frozen v1/v2 beam modules are unchanged: the added non-band pixels are recoloured lime on a copy of the frame and v2 runs on it; dark grip-band pixels are never recoloured. The search posture keeps the v1 range (the wide range doubles r2 search yaw noise in replay)",
+      "align_fine_motion": "v6d: while the controller is in an align state (align, align_relook_stop, align_relook, align_relook_return) the tag PF predicts motion with the M1 ``fine`` profile of calibration_m1_dev.json instead of the navigation default (gain 1.47, tau 0.3 s), which over-integrated the 0.2-0.3 s <=0.05 m/s align pulses about 4-5 times (x axis, median). The profile is a whole parameter set, not just gain/tau: gain 1.95/0.95, tau 1.28 s, tau_stop 0.05 s, smaller absolute noise (noise_abs 0.003/0.003/0.005 vs default 0.015/0.005/0.014, i.e. also a lower yaw noise) and the slip scale switched off (use_scale false). No filter code or gate changes; other states keep the default profile. The profile was fitted on one M1 dev seed (s91) with the arm lowered at the box, so its use in the wrist-camera look postures of the align states is checked only by the offline replay and the stage probe. A provider bound to the profile is refused by policies without the flag"
     },
     "v6d_constants": {
       "wide_hue_lo": 25,
@@ -386,12 +386,12 @@
       "sim/zone_tagged_cargo_scene.py": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7",
       "scripts/zone_pair_dev_contract.py": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e",
       "harness/zone_study_integration.py": "7ebdcb1db72dbbf3085b31a3d2c84f6a6e8009b6611b0d71c2985dee83938210",
-      "harness/zone_pair_v6_policy.py": "a4b9bfbc50e7a766ab31d5f2b3529a39d7f6b4f527638cc29c1fe2bccd3c0a52",
+      "harness/zone_pair_v6_policy.py": "59b7b2486230579492aa0f9b945244e4913d296a170f33cb9f7961ce5afa189f",
       "harness/zone_pair_relative.py": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af",
       "harness/zone_pair_global.py": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
       "harness/owncam_recovery_v6.py": "74d90f36dd3f170091ed7c3e8b73432d81cb9ee0ca36d8472b063c9af92b5b46",
       "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
-      "scripts/zone_pair_v6_contract.py": "4bb2eeeddbdc27f5833e225e8378617f0d62d7c75d104b583d9208e282b13d92",
+      "scripts/zone_pair_v6_contract.py": "bf6013dfef84298f00354517eb37d7a2a921712c31bc6ad953891897a3a477b6",
       "harness/zone_own_sweep.py": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
       "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
       "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
@@ -403,7 +403,7 @@
       "harness/owncam_recovery_v6c.py": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd",
       "harness/zone_pair_grasp_entry_v6c.py": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e",
       "harness/owncam_pair_beam_v6d.py": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12",
-      "harness/owncam_align_motion_v6d.py": "a271e828ba25845a5302032c41cad95b55847000e0d1c09415515ed6607d41eb",
+      "harness/owncam_align_motion_v6d.py": "4ac391e60c0d3930576c9daacbd066495fad8f9bb5863dc3ce8eaab6cff8d879",
       "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
       "sim/zone_masterpi_v3_scene.py": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca",
       "sim/zone_model_conventions.py": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff"
@@ -632,5 +632,5 @@
   "scene_contract_changed_sources": [
     "scripts/run_zone_pair_dev.py"
   ],
-  "registration_sha256": "f4bcd84ec4fc1088a2fbcbd560c44cf338ae9dcd02b75fdd86491bc4820acfb6"
+  "registration_sha256": "1a1529963a320d6644f5f1f6ff3120c0fbcffb737840772d74dc4530292290e3"
 }

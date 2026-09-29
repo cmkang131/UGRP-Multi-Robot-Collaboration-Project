@@ -24,17 +24,18 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 | 실행 번들 | `zone-pair-v80-align-widehue-finemotion` (**v80**) | 조정자 배정. #263 병합 뒤 main 번들 v76에 이어 배정받았다. v76은 `RETIRED_BUNDLE_IDS`로 옮겼고 `llm_driver.json`에 v80을 등록했다 |
 | workflow `zone-study-integration-run` | **`2.13.0`** | main 2.12.0(#263) 다음. 단계 4/5 probe 쪽이 workflow 소스를 바꾸면 2.13.0이 겹친다. PR 코멘트로 조정한다 |
 | 정책 | `b-v6d` = `b-v6c` + `align_fine_motion` + `beam_wide_hue` | 새 플래그 2개는 opt-in. v5h·b-only·a+b·b-v6c 동작은 바뀌지 않는다 |
-| 등록 revision | `v6d` ([prereg_v6d.json](prereg_v6d.json), DRAFT, `CURRENT_REVISION`) | 파일 sha256 `4c4032532bacb23dbdbbd618ac1e03a596fa1bfb390128c8115e6647e5b35472`, `registration_sha256` `f4bcd84ec4fc1088a2fbcbd560c44cf338ae9dcd02b75fdd86491bc4820acfb6` |
+| 등록 revision | `v6d` ([prereg_v6d.json](prereg_v6d.json), DRAFT, `CURRENT_REVISION`) | 파일 sha256 `cbdb4b2503d928e141131b893cb56060fd6fe54292ef1667da9f57bdeea39972`, `registration_sha256` `1a1529963a320d6644f5f1f6ff3120c0fbcffb737840772d74dc4530292290e3`. 적대적 검토 반영(플래그 설명·probe 버전) 뒤 한 번 다시 봉인했다. 이전 봉인 값(파일 `4c403253…`, 등록 `f4bcd84e…`)은 이 값으로 대체됐다 |
 | v6c 봉인 | `prereg_v6c.json` 바이트 그대로, historical | `scripts/zone_pair_v6_contract.py`가 v6/v6b/v6c를 봉인 커밋(v6c는 `be95f8b018bb110e2fc97ec5a3c90e357a949449`)의 blob으로 감사한다. v6c 소스를 고치지 않고 v6d revision으로 분리했다 |
-| probe | `PROBE_VERSION 0.4.0` (`b-v6d` 추가) | 정렬 정책 목록과 TensorBoard 뷰 접두어(`D-`) 추가 |
+| probe | `PROBE_VERSION 0.5.0` (`b-v6d` 추가) | 정렬 정책 목록과 TensorBoard 뷰 접두어(`D-`) 추가. **raw의 0.4.0은 두 가지 코드 상태(#265, #266 smoke)에서 나왔고 실행 SHA로 구분한다.** #266(`claude/pair-v6c-carry-probes`)도 0.4.x(0.4.0–0.4.5)를 쓰므로 겹치지 않게 이 PR은 0.5.0으로 올렸다. 이 PR의 raw(25셀·단계 3)는 manifest `probe_version`이 모두 `0.4.0`이고, 0.5.0으로 다시 돌린 물리 실행은 없다. 이 값은 기록용 문자열이라 동작을 바꾸지 않는다 |
 
 - 등록의 `denominator`에는 이 단계 probe를 포함하지 않는다.
+- **raw 기록의 번들 ID.** 각 경우 `result.json`의 `execution_bundle_id_on_main`은 실행 당시 main의 번들을 적은 값이다. 단계 2 25셀(`052e3eba-v6d-venv-align-0`·`-1`, 13+12)과 단계 3 공식 환경 실행(`052e3eba-v6d-venv-bound-e2e`, 23)은 `zone-pair-v76-fixclock-grasp-entry`(v76)로 기록됐다. v6c 기준선(`b5234b7a-v6c-align` 25, `b534a9b5-v6c-bound-e2e` 46)도 v76이다. **v80(`zone-pair-v80-align-widehue-finemotion`)으로 기록된 raw는 병합 트리 `4714263a`에서 돌린 6셀(`4714263a-v6d-final-align-subset`)과 단계 3의 23셀(`4714263a-v6d-final-bound-e2e`)뿐이다.** 그래서 25셀 결과는 v80 등록 트리의 실행이 아니라 그 코드 트리 `052e3eba`의 실행이다. 두 트리가 같은 소스라는 근거는 `052e3eba` 실행 트리 파일 951개가 각각 `git show 052e3eba:<경로>`의 blob과 바이트 단위로 같다는 확인(manifest에 `source_dirty: true`가 있는 것은 실행 트리 밖의 미커밋 실험 기록 때문이다)과, `4714263a` 974개가 모두 blob과 같다는 확인이다. 25셀 전체를 v80 트리에서 다시 돌린 것은 아니다.
 
 ## 12건 실패의 원인 분류 (v6c 정렬 격자, `pair-stage-probes-b5234b7a-v6c-align`)
 
 | 분류 | 셀 | 판정 | 원인 |
 |---|---|---|---|
-| **A** PF 운동 모델 | teacher corner++/same, corner−−/opp, corner−−/same, yaw+/opp, yaw+/same, yaw−/same (6건) | `ALIGN_RELOOK_NO_FIX` (SIM 20–36 s에 종료) | 정렬 펄스의 예측 이동거리가 실제의 약 4.7배 |
+| **A** PF 운동 모델 | teacher corner++/same, corner−−/opp, corner−−/same, yaw+/opp, yaw+/same, yaw−/same (6건) | `ALIGN_RELOOK_NO_FIX` (SIM 20–36 s에 종료) | 기본 운동 프로필이 정렬 펄스의 이동을 크게 과대 적분함(재생 중앙값: x 4.74배, y 4.27배, yaw 2.17배) |
 | **B** 빔 윗면 색 | teacher along+/same (r1 yaw 115 mrad), corner++/opp (r1 57), yaw−/opp (r1 54) | `GT_CRITERIA:r1_yaw` | r1이 보는 빔 윗면이 노란색이라 heading이 치우침 |
 | B | E2E `v6-s912-v5h` × 시드 911/912/913 (r1·r2 yaw 66 mrad) | `GT_CRITERIA:r1_yaw,r2_yaw` | 같은 체크포인트라 세 시드가 사실상 같은 셀 |
 
@@ -44,14 +45,22 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 
 **증상.** relook 스윕이 정보 있는 fix를 얻지 못해 `ALIGN_RELOOK_NO_FIX`로 끝났다. v6c가 고친 음수 fix 나이(#263 문제 1)가 아니라, 그 뒤에 남은 다음 원인이다.
 
-**근본 원인.** 자기 위치 필터(`OwnCamLocalizer`)는 자기 발행 명령을 운동 프로필로 적분한다. 기본 프로필(`experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json`의 `motion`, gain 1.47, spin-up tau 0.3 s)은 주행 명령으로 맞춘 것이다. 정렬은 0.2–0.3 s, 최대 0.05 m/s 펄스를 손목 카메라 팔을 든 채 보낸다. 이때 실제 차체는 훨씬 느리게 가속하므로 기본 프로필은 이동을 크게 과대 예측한다.
+**근본 원인.** 자기 위치 필터(`OwnCamLocalizer`)는 자기 발행 명령을 운동 프로필로 적분한다. 기본 프로필(`experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json`의 `motion`, gain 1.47, spin-up tau 0.3 s)은 주행 명령으로 맞춘 것이다. 정렬은 0.2–0.3 s, 최대 0.05 m/s 펄스를 손목 카메라가 주변을 둘러보는 자세(`search`/`p45`/`inspect`)에서 보낸다. 이때 실제 차체는 훨씬 느리게 가속하므로 기본 프로필은 이동을 크게 과대 예측한다.
 
-- **재생** ([diagnosis/motion_replay.py](diagnosis/motion_replay.py), 결과 [diagnosis/motion_replay.txt](diagnosis/motion_replay.txt)). v6c 원자료의 발행 명령 이력 50건(25셀 × 로봇 2대)을 두 프로필로 적분해 정렬 구간 전체의 몸통 x 이동을 eval-only GT와 비교했다.
+- **재생** ([diagnosis/motion_replay.py](diagnosis/motion_replay.py), 결과 [diagnosis/motion_replay.txt](diagnosis/motion_replay.txt), 축별 요약 [diagnosis/motion_replay_axes.py](diagnosis/motion_replay_axes.py) → [diagnosis/motion_replay_axes.txt](diagnosis/motion_replay_axes.txt)). v6c 원자료의 발행 명령 이력 50건(25셀 × 로봇 2대)을 두 프로필로 적분해 정렬 구간 전체의 몸통 x·y·yaw 이동을 eval-only GT와 비교했다. 아래 배율은 예측 이동량 / GT 이동량의 **중앙값**(범위)이고, 배율은 GT 이동량이 축별 임계(x 0.05 m, y 0.03 m, yaw 0.03 rad) 이상인 이력만 쓴다. 평균 절대 오차는 50건 전체다.
 
-| 프로필 | 예측 x 이동 / GT x 이동 (중앙값, 범위) | 평균 절대 x 오차 |
-|---|---:|---:|
-| 기본 (`calibration_loop_v2`) | **4.74** (4.35–5.02) | 1.035 m |
-| M1 `fine` (`calibration_m1_dev`) | **0.96** (0.94–0.99) | 0.010 m |
+| 축 | 프로필 | 배율 중앙값 (최소–최대) | 배율에 쓴 이력 | 평균 절대 오차 (최대) |
+|---|---|---:|---:|---:|
+| x | 기본 (`calibration_loop_v2`) | **4.74** (4.35–5.02) | 50 | 1035 mm (1244) |
+| x | M1 `fine` (`calibration_m1_dev`) | **0.96** (0.94–0.99) | 50 | 9.9 mm (16.0) |
+| y | 기본 | **4.27** (3.14–6.64) | 35 | 144.5 mm (275.0) |
+| y | M1 `fine` | **1.40** (1.07–2.06) | 35 | 19.2 mm (38.0) |
+| yaw | 기본 | **2.17** (0.90–3.31) | 31 | 53.2 mrad (136.0) |
+| yaw | M1 `fine` | **1.16** (0.84–1.66) | 31 | 10.3 mrad (40.0) |
+
+- **x축만 좋아 보이지 않게 정리하면:** `fine` 프로필도 y는 실제의 1.40배(최대 2.06배), yaw는 1.16배(최대 1.66배)로 아직 과대 예측한다. 평균 오차는 기본 프로필보다 y에서 7.5배, yaw에서 5.2배 작아졌지만 x(9.9 mm)만큼 잘 맞지는 않는다. 앞선 초안의 "평균 4.74배"는 x축 배율의 중앙값이었다.
+- **독립 이력은 50건이 아니라 36건이다.** 25셀 중 nominal 3시드와 E2E 체크포인트 3시드가 같은 궤적이라, GT·기본·`fine` 세 값이 완전히 같은 이력을 합치면 36건이 된다. 36건만으로 다시 구해도 x 4.74/0.96, y 4.14/1.35, yaw 2.20/1.22로 결론이 같다(같은 파일에 있다).
+- **한계.** 이 재생은 v6c 실패를 진단한 바로 그 원자료(25셀)로 프로필의 효과를 본 것이다(in-sample). 프로필은 새로 맞추지 않고 M1 dev의 기존 값을 그대로 썼으므로 이 재생에서 적합한 매개변수는 없다. 다만 새 조건(새 시드·새 자세)의 독립 확인은 아니다. 재생은 결정적이다(무작위 없음).
 
 - 정렬 구간에서 실제 차체는 0.25–0.33 m 움직였는데 기본 프로필은 1.2–1.6 m로 적분했다.
 - 그 결과 자세 사후분포가 과신한 채(표준편차 약 0.03 m) 6 s fix 간격 동안 0.23–0.26 m 어긋났다. relook 프레임에는 tag가 보이는데도 내부 일치 비율이 0이라 fix를 얻지 못하고 `ALIGN_RELOOK_NO_FIX`로 끝났다.
@@ -59,8 +68,10 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 
 **수정** (`harness/owncam_align_motion_v6d.py`, 플래그 `align_fine_motion`). 정렬 상태(`align`, `align_relook_stop`, `align_relook`, `align_relook_return`)에서만 M1 `fine` 프로필로 적분한다.
 
-- M1 `fine` 프로필은 M1 dev 분할에서 팔을 내린 미세 이동으로 보정된 저장소 기존 값이다(`harness/m1_owncam_delivery.py:_set_motion_profile`이 같은 방식으로 고른다). 새 값을 만들지 않고 그대로 가져왔다. 정렬 단계 probe 셀로 맞춘 값이 아니다. 팔을 든 정렬에도 잘 맞는지는 위 재생(비 0.96)과 물리 격자로 확인했다. 출처 파일 sha256 `126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72`, 프로필 sha256 `8651d76e…97e`(gain xy 1.9468 / yaw 0.9537, tau 1.28 s).
-- 임계값을 풀거나 fix를 clamp하지 않았다. 상태 전이마다 프로필만 바꾼다. 다른 상태에서는 v6c와 같은 프로필이다.
+- M1 `fine` 프로필은 저장소에 있던 값이다(`harness/m1_owncam_delivery.py:_set_motion_profile`이 같은 방식으로 고른다). 새 값을 만들지 않고 그대로 가져왔다. 출처 파일 sha256 `126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72`, 프로필 sha256 `8651d76e…97e`.
+- **`fine`은 gain·tau만이 아니라 매개변수 묶음 전체다.** gain 대각 (1.95, 1.95, 0.95), tau 1.28 s(축별 (1.28, 1.28, 0.05)), tau_stop 0.05 s, 잡음 noise_rel (0.25, 0.4, 0.2), **noise_abs (0.003, 0.003, 0.005)**, scale_std 0.2, **슬립 배율 끔(`use_scale` false)**이다. 기본 프로필은 noise_abs (0.015, 0.005, 0.014)이고 슬립 배율이 켜져 있다. 그래서 프로필을 바꾸면 이동 예측뿐 아니라 yaw를 포함한 절대 잡음도 함께 줄고 슬립 배율이 사라진다. 이전 초안의 "잡음 변경 없음"은 틀렸다.
+- **적합 조건과 적용 조건이 다르다.** `fine`은 M1 dev 시드 s91에서 파지 단계에 발행한 명령(팔을 내리고 상자 곁에서 느리게 움직이는 구간, 전진 21개·회전 7개)으로 맞춘 값이다(`experiments/2026-09-26-zone-m1-owncam/fine_motion_fit_dev.json`, 적합 코드 `fit_fine_motion.py`). 그 자료에 옆걸음(y) 명령이 없어 y 이득은 전진 값을 그대로 쓴다. 위 재생에서 y가 x보다 덜 맞는(1.40배) 것과 맞는 방향이지만, 이것이 원인이라고 확인한 것은 아니다. 정렬 펄스는 손목 카메라가 둘러보는 자세에서 나간다. 이 자세에서 `fine`이 맞는지는 위 재생(x 0.96, y 1.40, yaw 1.16)과 물리 격자로만 확인했고, 독립 시드에서 적합 조건을 재현한 확인은 없다. 정렬 단계 probe 셀로 맞춘 값이 아니라는 점은 그대로다.
+- 임계값을 풀거나 fix를 clamp하지 않았다. 필터 코드와 판정 게이트는 바뀌지 않았고 상태 전이마다 프로필(매개변수 묶음)만 바꾼다. 다른 상태에서는 v6c와 같은 프로필이다.
 
 ### 원인 B: 노랗게 렌더되는 r1의 빔 윗면
 
@@ -68,7 +79,7 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 
 **근본 원인.** 정렬의 빔 heading은 v1 lime 마스크(hue 36–54)의 픽셀을 PCA로 맞춰 얻는다. r1이 45° 자세(`p45`)와 점검(`inspect`) 자세에서 보는 빔 윗면은 노랗게(hue ≈ 25–36) 렌더되어 마스크 밖에 놓인다. 같은 현상을 `owncam_pair_beam_v2`가 이미 기록했다(`BEAM_HUE = (25, 54)`, dev 613). 마스크 밖 픽셀 때문에 PCA 축이 치우친다.
 
-- **재생** ([diagnosis/fullreplay_v6d.py](diagnosis/fullreplay_v6d.py), 결과 [fullsum_v6d.txt](fullsum_v6d.txt) · [fullsum_simplemask.txt](fullsum_simplemask.txt) · [heading_diag.txt](heading_diag.txt)). v6c 원자료의 자기 프레임을 v1 마스크와 넓힌 hue 25 마스크로 다시 처리하고 eval-only GT heading과 비교했다.
+- **재생** ([diagnosis/fullreplay_v6d.py](diagnosis/fullreplay_v6d.py), 결과 [diagnosis/fullsum_v6d.txt](diagnosis/fullsum_v6d.txt) · [diagnosis/fullsum_simplemask.txt](diagnosis/fullsum_simplemask.txt) · [diagnosis/heading_diag.txt](diagnosis/heading_diag.txt)). v6c 원자료의 자기 프레임을 v1 마스크와 넓힌 hue 25 마스크로 다시 처리하고 eval-only GT heading과 비교했다.
 
 | 자세 | v1 마스크 yaw 오차 (편향 / rms) | 넓힌 마스크 (편향 / rms) |
 |---|---:|---:|
@@ -77,10 +88,13 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 | r2 `search` (2321 프레임) | 편향 +0.007 / rms 0.014 | 편향 +0.027 / rms 0.030 (나빠짐) |
 
 - r2 `search`에서는 넓힌 마스크가 오히려 나빠지므로 search에는 적용하지 않는다.
+- **적용 조건은 자세뿐이고 로봇을 가리지 않는다.** `p45`/`inspect`이면 r2에도 hue 25가 적용된다(정렬 셀 25개에서 r2가 hue 25를 쓴 프레임은 모두 1062개, 셀당 약 42개다). 위 표는 r1 `p45`/`inspect`와 r2 `search`만 재생했고, r2 `p45`/`inspect`에서 넓힌 마스크의 효과는 재생으로 확인하지 않았다(아래 '후속 확인 근거'가 저장 프레임 위에서 오프라인으로 본 것뿐이다).
 
 **수정** (`harness/owncam_pair_beam_v6d.py`, 플래그 `beam_wide_hue`). `p45`와 `inspect`에서만 hue 하한을 25로 넓힌다(`WIDE_HUE_LO = 25`, `WIDE_HUE_POSTURES = ('p45', 'inspect')`).
 
-- 프레임 복사본에서 hue 25–36 픽셀을 lime 색으로 다시 칠한 뒤(`widen_lime`) v1 관측기를 그대로 호출한다. v1/v2 빔 모듈과 `scripts/study_owncam_pair_beam.py`는 해시 고정 대상이라 건드리지 않았다.
+- 프레임 복사본에서 hue 25–36 픽셀을 lime 색으로 다시 칠한 뒤(`widen_lime`) v1 관측기를 그대로 호출한다. `harness/owncam_pair_beam.py`와 `harness/owncam_pair_beam_v2.py`(v1/v2 빔 모듈)는 바꾸지 않았다.
+- **M2 동결 파일은 바뀌었다(앞선 초안의 "건드리지 않았다"는 틀렸다).** `scripts/study_owncam_pair_beam.py`는 M2 동결 파일(`experiments/2026-09-26-zone-m2-pair/imports.json`이 고정)인데 이 PR이 16줄(추가 15, 삭제 1)을 바꿨다. 새 메서드 `_beam_hue_lo()`가 `policy.beam_wide_hue`가 켜져 있고 현재 자세가 `p45`/`inspect`일 때만 hue 하한 25를 돌려주고, `_align`은 그 값이 있을 때만 `owncam_pair_beam_v6d.observe_beam(..., hue_lo=…)`를 부르며 아니면 v2 `observe_beam`을 이전과 똑같이 부른다. `beam_obs` 로그에 `hue_lo`가 붙는 것도 넓힌 경우뿐이다. 왜 이 파일을 바꿨나: 자세별로 색 범위를 고르는 곳이 `PairStudent._align` 안이라, 이 파일 밖에서는 다른 호출을 끼울 수 없었다(다른 정책은 코드 경로가 그대로다).
+- **그 영향.** 동결 파일 허용 목록(`tests/test_zone_pair_executor.py:485-489`)이 이 파일의 새 sha256 `6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00`을 추가로 허용하도록 바뀌었다. 초안의 "바이트 계약 테스트 통과"는 이 허용 목록 변경 덕분이지, 파일을 안 건드려서가 아니다. 이전 revision 봉인(v6/v6b/v6c)은 `verify_v6_historical`이 각 봉인 커밋(v6c는 `be95f8b018bb110e2fc97ec5a3c90e357a949449`)의 blob과 대조하므로 이 변경으로 영향을 받지 않는다.
 - 판정 임계값·채도·명도 하한은 v1 그대로다. 마스크가 보는 색 범위만 넓힌다.
 - 새 AprilTag 경로는 없다.
 
@@ -88,6 +102,30 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 
 - **귀속은 재생으로만 했다.** A와 B를 각각 따로 켠 물리 실행(단일 플래그 ablation)은 하지 않았다. 재생에서 A는 NO_FIX 6건을, B는 yaw 6건을 각각 설명했다. 물리 25/25는 두 플래그를 함께 켠 결과이며, 플래그별 기여는 후속 작업이다.
 - **원인 B의 자세 제한.** r2 `search`와 다른 자세는 v1 마스크를 유지한다. 새 자세에 적용하려면 재생으로 다시 확인한다.
+- **`beam_wide_hue`는 r2 p45/inspect에도 걸린다.** 조건이 자세뿐이라서다. r2에서 이 범위가 안전한지는 이 PR의 재생이 아니라 후속 확인(아래)으로만 봤다.
+- **음성 대조가 없다.** 노란 물체가 빔 옆에 있을 때 마스크에 들어오지 않는지는 확인하지 않았다. 후속 확인에서 넓힌 범위가 추가한 픽셀이 모두 빔 발자국 안이었지만, 그 프레임에 빔이 아닌 노란 물체가 있었는지는 알 수 없다.
+- **`align_fine_motion`은 잡음·슬립 배율도 바꾼다.** 위 '수정' 절 참고. 적합은 M1 dev 시드 하나(s91)의 팔 내린 파지 구간이고, 정렬 자세에서의 적합성은 재생과 물리 격자만 본다.
+- **동결 파일 수정.** `scripts/study_owncam_pair_beam.py`가 바뀌었고 허용 목록에 새 해시가 들어갔다(위 '수정' 절 참고).
+- **재생 통계.** 독립 이력 36건, in-sample이다. 평균 4.74배가 아니라 축별 중앙값(x 4.74, y 4.27, yaw 2.17)이다.
+
+### 후속 확인 근거 (판정에 쓰지 않음)
+
+적대적 검토(PR #265 코멘트)가 지적한 r2 p45/inspect의 미검증과 음성 대조 부재를 저장 프레임으로 오프라인에서 봤다. 물리·모델 호출은 없다. **물리 25/25 판정에도, 이 PR의 어떤 주장에도 쓰지 않는다.** 이후 확인의 근거로만 남긴다.
+
+- 스크립트 [diagnosis/hue_mask_check.py](diagnosis/hue_mask_check.py), 결과 [diagnosis/hue_mask_check.txt](diagnosis/hue_mask_check.txt)(sha256 `1fc8afcee74e98081056cd361b9404fd37d8c114cb6f348cae27007c946bd851`). 프레임별 행은 1 MiB 한도 때문에 저장소 밖 `/Users/changmin/projects/ugrp/outputs/pair-stage-probes-052e3eba-v6d-hue-mask-check.json`(sha256 `96aafae9bae05fef89930ab61a1ac049c2424e0062356dc93fbbd531f6801cbd`)에 둔다.
+- 대상: `052e3eba-v6d-venv-align-0`·`-1`의 저장 프레임 중 제어기가 hue 25로 빔을 본 `beam_obs` 이벤트에 대응하는 프레임(r1 1049개, r2 1062개). 각 프레임을 같은 jpg로 v1 마스크(hue 36)와 넓힌 마스크(hue 25)로 다시 관측했고, 로그의 `points`·`axis_heading_rad`와 일치함을 확인했다(재현 2111/2111).
+- 비교는 eval-only GT(오프라인 진단에만 사용, 제어기 입력 아님)의 빔 heading과 빔 윗면 평면에 투영한 발자국(0.60 × 0.05 m + 여유 0.06 m)이다.
+
+| 로봇 | 자세 | 프레임 | \|heading 오차\| 중앙값 hue36 → hue25 | 0.05 rad 초과 hue36 → hue25 | 발자국 밖 추가 픽셀 |
+|---|---|---:|---:|---:|---:|
+| r1 | p45 | 288 | 0.023 → 0.005 | 28 → 0 | 0 |
+| r1 | inspect | 761 | 0.050 → 0.005 | 377 → 0 | 0 |
+| r2 | p45 | 290 | 0.007 → 0.003 | 0 → 0 | 0 |
+| r2 | inspect | 772 | 0.006 → 0.004 | 93 → 0 | 0 |
+
+- **r2:** 넓힌 범위는 r2 p45/inspect에서 프레임 대부분(1062개 중 855개)에서 결과를 바꾸지 않고, 바뀐 프레임에서도 대개 좋아졌다(201개 개선, 6개 악화, 5 mrad 이상 차이 기준). 참고로 v6d 정렬 25셀은 r2가 넓힌 범위를 쓰고도 모두 통과했으므로 물리 결과와 어긋나지는 않는다.
+- **빔 밖 노랑:** 추가된 픽셀은 프레임마다 0개가 발자국 밖이었다(r1 5,964,436개, r2 650,715개 중 0). 빔 평면 위로 투영되지 않는 추가 표본도 0개다.
+- **한계.** 이것은 음성 대조가 아니다. 저장 프레임에는 빔 옆에 노란 다른 물체(노란 바퀴·상자)가 시야에 들어온 경우가 없었을 수 있고, 있었는지 라벨링하지 않았다. "빔이 아닌 노랑이 마스크에 안 들어온다"의 증거가 아니라 "이 프레임들에서는 들어오지 않았다"는 관찰이다. 다음 확인은 노란 물체를 시야에 일부러 넣는 별도 장면이다.
 
 ## 물리 격자 (단계 probe)
 
@@ -200,7 +238,7 @@ Refs #221. #263(v6c, 병합됨)의 후속이다. v6c 정렬 13/25의 실패 12�
 - `summary.json` sha256: `venv-align-combined` `aab7ef69229a56be668ca14e5b3e9ad6c17c758e4cf126b9f3eccc2b796729be`, `venv-bound-e2e` `43470ac653623fad5b0c1b376f53d6fc0944650b4b2b235081dec442070d1ee1`, `final-bound-e2e` `d3ef9bc13fceb346738fcb3daba92c52a436854b70fd6970ee8d9faf2e1d8307`, `final-align-subset` `d39d1254537171df430d58eeaadc061eb674f99d112a9e0c761ad3f0be9b736d`.
 - 각 디렉터리의 `artifacts.sha256.json`에 `cases.jsonl` · `summary.json` · `manifest.json`의 바이트 수와 sha256이 있다(합친 디렉터리는 `combine_grid.py`가 만든다).
 - **부하(uptime, load 1/5/15분).** 실행마다 manifest에 기록했다. 공식 환경 실행: 단계 3 시작 26.54/25.86/21.63 → 종료 13.29/15.61/17.35, 단계 2 두 분할 시작 9.48/14.53/16.91 → 종료 23.74/22.28/20.12(분할 1은 36.37/23.68/19.97). 다른 작업이 동시에 돌아 부하가 높았지만 동기 SIM 시간이라 결과에는 영향이 없다.
-- **진단 스크립트의 고정 경로.** `diagnosis/*.py`는 분석 시점의 worktree(`/Users/changmin/projects/ugrp-wt/claude-v6d-align`)와 v6c raw 경로를 하드코딩했다. 다른 곳에서 다시 돌리려면 경로를 바꿔야 한다.
+- **진단 스크립트의 고정 경로.** `diagnosis/*.py`는 분석 시점의 worktree(`/Users/changmin/projects/ugrp-wt/claude-v6d-align`)와 v6c raw 경로를 하드코딩했다. 다른 곳에서 다시 돌리려면 경로를 바꿔야 한다. 새로 추가한 `hue_mask_check.py`는 저장소 루트를 `UGRP_ROOT`(기본: 파일 위치 기준)로 잡고 raw는 기본 체크아웃 `outputs/` 절대 경로를 쓴다. `motion_replay_axes.py`는 `motion_replay.txt`만 읽는다.
 
 ## 검증
 
