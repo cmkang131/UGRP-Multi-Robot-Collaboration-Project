@@ -42,6 +42,9 @@ VARIANTS = {
            'note': 'sigma multiples 2 -> 1 on the inflation; gate and fixed margins registered'},
     'k0': {'k_xy': 0., 'k_yaw': 0., 'gate_yaw_deg': None, 'advisory_s': 0.,
            'note': 'no sigma inflation (only the fixed 0.035 m + command pad); gate registered'},
+    'k1g': {'k_xy': 1., 'k_yaw': 1., 'gate_yaw_deg': (5., 4.), 'advisory_s': 0.,
+            'note': 'k1 plus the loaded yaw gate 3.0/2.5 deg -> 5.0/4.0 deg (added after the k0/k1 door cohorts: the gate '
+                    'was the next blocker)'},
     'k0g': {'k_xy': 0., 'k_yaw': 0., 'gate_yaw_deg': (5., 4.), 'advisory_s': 0.,
             'note': 'k0 plus the loaded yaw gate 3.0/2.5 deg -> 5.0/4.0 deg'},
     'adv': {'k_xy': 0., 'k_yaw': 0., 'gate_yaw_deg': (5., 4.), 'advisory_s': 3.,
