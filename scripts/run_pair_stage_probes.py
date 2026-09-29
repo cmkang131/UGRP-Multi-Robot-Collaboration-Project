@@ -209,6 +209,9 @@ def install_stage(ctl, execution, probe):
             ctl.port.hold(now)
             ctl.set(spec['exit_state'], now, stage_probe_exit=True)
         setattr(ctl, hook, exit_now)
+    if stage == 'chain':   # opt-in chain stage: pass-through recorder only, no exit hook, no re-staging (harness.pair_chain_probe)
+        from harness import pair_chain_probe as pcp
+        pcp.install_recorder(ctl, rid, probe, execution)
     return ctl
 
 
@@ -538,6 +541,9 @@ def run_case(case, out):
                 result['acks'] = probe.acks
                 result['entry'] = probe.entry
                 result['exits'] = probe.exits
+                if stage == 'chain':
+                    from harness import pair_chain_probe as pcp
+                    result['chain_raw'] = pcp.raw_of(probe)
                 result['api_calls'] = host.api_calls
                 result['event_log'] = host.event_log
                 sessions = host.pairs.sessions
@@ -692,6 +698,11 @@ def finish_result(case, result, out):
         if result.get('gt_at_entry'):
             record['beam_shift_m'] = math.dist(result['gt_at_entry']['beam_xyz'][:2], result['gt_at_end']['beam_xyz'][:2])
         record['exits'] = {r: {} for r in sp.PARTICIPANTS if result.get('final_states', {}).get(r) == 'done'}
+    if stage == 'chain':
+        from harness import pair_chain_probe as pcp
+        record['exits'] = {r: {} for r in sp.PARTICIPANTS if result.get('final_states', {}).get(r) == 'done'}
+        record['chain'] = pcp.chain_record(case, result.get('chain_raw') or {}, result.get('gt_at_end'),
+                                           result.get('final_states'), result.get('localizer_log'))
     ev = sp.evaluate(stage, record)
     diag = stage_diagnostics(case, result, out, record)
     diag['host_error_message'] = (result.get('host_error') or {}).get('message')
@@ -727,6 +738,9 @@ def finish_result(case, result, out):
                                          and x['event'] == 'localizer_object_replaced') for r in sp.PARTICIPANTS},
            'localizer_resets_stat': {r: (result.get('localizer_stats') or {}).get(r, {}).get('resets') for r in sp.PARTICIPANTS},
            'checkpoints_roundtrip': [c['roundtrip_bitwise'] for c in result.get('checkpoints', [])]}
+    if stage == 'chain':
+        record['chain']['first_failure'] = pcp.first_failure(record['chain'], record, diag.get('own_at_failure'))
+        row['chain'] = record['chain']
     result['evaluation'] = ev
     result['row'] = row
     write_json(out / 'result.json', result)
@@ -761,7 +775,10 @@ def build_cases(args):
             if 'boundary' in args.sources and stage == 'grasp_lift':
                 cases += sp.boundary_cases(stage, policy=policy, seed=args.seeds[0],
                                            subset=set(args.cells) if args.cells else None, prior_std=args.prior_std)
-            if 'e2e' in args.sources:
+            if 'e2e' in args.sources and stage == 'chain':
+                args.unavailable.append({'unavailable': True, 'stage': 'chain', 'pair_policy': policy,
+                                         'reason': 'the chain stage is teacher-staged only (no E2E checkpoint source)'})
+            elif 'e2e' in args.sources:
                 for run in E2E_RUNS:
                     got = sp.e2e_checkpoint(args.e2e_root / run, stage, seeds=tuple(args.e2e_seeds) if args.e2e_seeds else None,
                                             policy=policy)
