@@ -17,9 +17,14 @@ echo "driver pid $$ sha $SHA start $(date -u +%FT%TZ) load: $(sysctl -n vm.loada
 EXTRA=()
 [ "$PROG" != none ] && EXTRA+=(--progress-relax "$PROG")
 [ "$GAIN" != none ] && EXTRA+=(--carry-gain-fix "$GAIN")
+if [ "${SETUP:-env}" = hr2 ]; then   # the ten RECORDED hR2 approach-end setups (the ones of PR #283), seeds 911 and 913
+  SETUP_ARGS=(--setup-variant hR2 --seeds 911 913)
+else                                  # the 12 held-out placements on the fixed door-axis sheet
+  SETUP_ARGS=(--env-placements "$WT/experiments/2026-09-30-b-v6h-gain/placements/${PLACEMENTS:-held_out_12}.json" --seeds 911 913)
+fi
 "$PY" -m scripts.run_pair_stage_probes --stage chain --sources teacher --policies b-v6h --door-relax "$DOOR" "${EXTRA[@]}" \
   --prior-std e2e --chain-stop-leg 1 --render-profile floor_light_v1 --pf-track --workers "${WORKERS:-4}" --omp-threads 1 \
-  --env-placements "$WT/experiments/2026-09-30-b-v6h-gain/placements/${PLACEMENTS:-held_out_12}.json" --seeds 911 913 \
+  "${SETUP_ARGS[@]}" \
   --execute --lock-owner claude --output "$OUT" "$@" > "$OUT.stdout.log" 2>&1
 CODE=$?
 echo "exit $CODE end $(date -u +%FT%TZ) load: $(sysctl -n vm.loadavg)" >> "$LOG"
