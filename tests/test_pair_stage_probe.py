@@ -638,3 +638,25 @@ def test_probe_view_name_collision_between_raws_keeps_both_views():
     assert views.unique_name('C-ca-t-nominal-s911-pE-L0', [], first) == 'C-ca-t-nominal-s911-pE-L0'
     assert views.unique_name('C-ca-t-nominal-s911-pE-L0', ['C-ca-t-nominal-s911-pE-L0'], again) == \
         'C-ca-t-nominal-s911-pE-L0-postBaseL0'
+
+
+def test_probe_view_scalar_tags_are_accepted_by_the_offline_audit_exporter(tmp_path):
+    import importlib.util
+    import re
+    from scripts.tensorboard_tools.offline_audit import SCALAR_TAG
+    spec = importlib.util.spec_from_file_location('views', ROOT / 'scripts/build_pair_stage_probe_views.py')
+    views = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(views)
+    row = {'case_id': 'carry@b-v6c:teacher:nominal:s911:pE2E', 'stage': 'carry', 'source': 'teacher_grid', 'cell': 'nominal',
+           'seed': 911, 'passed': False, 'category': 'POSE_UNCERTAIN', 'labels': ['stage_probe'], 'pair_policy': 'b-v6c',
+           'diag_patch': None, 'leg': 0, 'cause': 'SELF_POSE_UNCERTAIN', 'cause_sub': 'yaw', 'stage_sim_s': 3.1, 'wall_s': 5.,
+           'look_commands': {'r1': 1}, 'base_motion_commands': {'r1': 2}, 'sigma_yaw_max': {'r1': .05, 'r2': None},
+           'own_at_entry': {'r1': {'std_yaw_rad': .036}, 'r2': None}, 'metrics': {'lift_m': .06, 'end_error_m': .1},
+           'remaining_at_stop': {'r1': {'grip_x_err_m': .001}}, 'relook_calls': {'r1': [1]}, 'localizer_replaced': {'r1': 2}}
+    d = tmp_path / 'cases' / re.sub(r'[^A-Za-z0-9_.+-]+', '_', row['case_id'])
+    d.mkdir(parents=True)
+    (d / 'result.json').write_text('{}')
+    _, view = views.case_view(tmp_path, row, {'source': {'source_sha': 'a' * 40}})
+    tags = set(view['offline_scalars'])
+    assert 'gate/own_sigma_yaw_max/r1' in tags and 'gate/own_sigma_yaw_entry/r1' in tags
+    assert all(SCALAR_TAG.fullmatch(t) for t in tags), sorted(t for t in tags if not SCALAR_TAG.fullmatch(t))

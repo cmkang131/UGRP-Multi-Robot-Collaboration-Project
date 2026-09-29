@@ -85,10 +85,10 @@ def case_view(raw, row, manifest):
             scalars[f'gate/{k}'] = m[k]
     for rid, v in (row.get('sigma_yaw_max') or {}).items():          # own-report yaw sigma over the stage (0.4.0 rows)
         if v is not None:
-            scalars[f'own/sigma_yaw_max/{rid}'] = v
+            scalars[f'gate/own_sigma_yaw_max/{rid}'] = v
     for rid, v in ((row.get('own_at_entry') or {}).items()):
         if v and v.get('std_yaw_rad') is not None:
-            scalars[f'own/sigma_yaw_entry/{rid}'] = v['std_yaw_rad']
+            scalars[f'gate/own_sigma_yaw_entry/{rid}'] = v['std_yaw_rad']
     for rid, n in (row.get('base_motion_commands') or {}).items():
         scalars[f'offline/base_motion_commands/{rid}'] = n
     for rid, rem in (row.get('remaining_at_stop') or {}).items():
