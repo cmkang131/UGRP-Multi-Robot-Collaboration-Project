@@ -3,11 +3,16 @@
 
 from __future__ import annotations
 
+import argparse
+from collections import Counter
+import json
+import math
 import os
 from pathlib import Path
 import signal
 import subprocess
 import sys
+from statistics import median
 import time
 
 
@@ -323,17 +328,105 @@ def run_locked(command: list[str], env: dict, lock_root: Path) -> int:
                 raise RuntimeError("Owned test group cleanup unconfirmed; inspect the retained lock")
 
 
-def main() -> int:
-    tests = sorted(
+def collect_test_files(root: Path, patterns: tuple[str, ...]) -> list[str]:
+    """Keep the original glob expansion, de-duplication and sorted file order."""
+    return sorted(
         {
-            str(path.relative_to(ROOT))
-            for pattern in TEST_PATTERNS
-            for path in ROOT.glob(pattern)
+            str(path.relative_to(root))
+            for pattern in patterns
+            for path in root.glob(pattern)
         }
     )
+
+
+def validate_shards(tests: list[str], shards: list[list[str]]) -> None:
+    """Reject missing, unexpected or repeated files (set equality is not enough)."""
+    expected = Counter(tests)
+    actual = Counter(path for shard in shards for path in shard)
+    duplicate_input = sorted(path for path, count in expected.items() if count != 1)
+    duplicates = sorted(path for path, count in actual.items() if count != 1)
+    missing = sorted(expected.keys() - actual.keys())
+    unexpected = sorted(actual.keys() - expected.keys())
+    if duplicate_input or duplicates or missing or unexpected:
+        raise ValueError(
+            f"Invalid shard coverage: duplicate_input={duplicate_input}, "
+            f"duplicates={duplicates}, missing={missing}, unexpected={unexpected}"
+        )
+
+
+def shard_test_files(
+    tests: list[str], count: int, durations: dict[str, float] | None = None,
+) -> list[list[str]]:
+    """Deterministic file-count balancing, or longest-first measured-cost balancing.
+
+    Unknown files use the median known cost. Path order and then shard index
+    break ties, so input/duration-map iteration order cannot change ownership.
+    """
+    if type(count) is not int or count < 1:
+        raise ValueError("shard count must be a positive integer")
+    if durations is not None and (
+        not isinstance(durations, dict)
+        or any(not isinstance(path, str) or type(value) not in (int, float)
+               or not math.isfinite(value) or value < 0
+               for path, value in durations.items())
+    ):
+        raise ValueError("durations must map file paths to finite nonnegative seconds")
+    durations = durations or {}
+    known = [durations[path] for path in tests if path in durations]
+    fallback = median(known) if known else 1.0
+    costs = {path: durations.get(path, fallback) for path in tests}
+    shards: list[list[str]] = [[] for _ in range(count)]
+    loads = [0.0] * count
+    for path in sorted(tests, key=lambda path: (-costs[path], path)):
+        index = min(range(count), key=lambda i: (loads[i], len(shards[i]), i))
+        shards[index].append(path)
+        loads[index] += costs[path]
+    # Preserve the original pytest collection order within each selected shard.
+    shards = [sorted(shard) for shard in shards]
+    validate_shards(tests, shards)
+    return shards
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--shard-count", type=int, default=1)
+    parser.add_argument("--shard-index", type=int, help="zero-based shard to execute")
+    parser.add_argument("--list-shards", action="store_true", help="print JSON without running pytest or taking a lock")
+    parser.add_argument("--durations-json", type=Path, help="optional JSON mapping test paths to measured seconds")
+    parser.add_argument("--junitxml", type=Path, help="save pytest results and per-test durations")
+    args = parser.parse_args(argv)
+    if args.shard_count < 1:
+        parser.error("--shard-count must be positive")
+    if args.shard_index is not None and not 0 <= args.shard_index < args.shard_count:
+        parser.error("--shard-index must satisfy 0 <= INDEX < COUNT")
+    if not args.list_shards and args.shard_count > 1 and args.shard_index is None:
+        parser.error("--shard-index is required when executing multiple shards")
+
+    tests = collect_test_files(ROOT, TEST_PATTERNS)
     if not tests:
         print("No CI tests matched", file=sys.stderr)
         return 2
+    try:
+        durations = json.loads(args.durations_json.read_text()) if args.durations_json else None
+        if args.durations_json and not isinstance(durations, dict):
+            raise ValueError("durations JSON must be an object")
+        shards = shard_test_files(tests, args.shard_count, durations)
+    except (OSError, ValueError) as error:
+        parser.error(str(error))
+    if args.list_shards:
+        print(json.dumps({
+            "total_files": len(tests), "shard_count": len(shards),
+            "coverage_verified": True,
+            "balance": "durations" if durations and any(path in durations for path in tests) else "file_count",
+            "shards": shards,
+        }, indent=2))
+        return 0
+
+    index = args.shard_index if args.shard_index is not None else 0
+    tests = shards[index]
+    if not tests:
+        print(f"Shard {index}/{args.shard_count} has no test files", file=sys.stderr)
+        return 2  # Never invoke pytest with no paths: that collects the whole repo.
 
     env = os.environ.copy()
     for name in tuple(env):
@@ -341,7 +434,9 @@ def main() -> int:
             env.pop(name)
     env.update({"CI": "true", "PYTHONDONTWRITEBYTECODE": "1"})
     command = [sys.executable, "-m", "pytest", "-q", *tests]
-    print(f"Running {len(tests)} offline test modules", flush=True)
+    if args.junitxml:
+        command.extend([f"--junitxml={args.junitxml}", "-o", "junit_family=legacy"])
+    print(f"Running {len(tests)} offline test modules (shard {index}/{args.shard_count})", flush=True)
     lock_root = local_lock_root()
     if lock_root is not None:
         return run_locked(command, env, lock_root)
