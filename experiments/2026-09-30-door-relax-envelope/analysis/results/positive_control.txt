@@ -1,0 +1,67 @@
+
+== adv_nobias_edge: door-relax-envelope-ac87cec8-posCtl n=3 load [18.8, 32.1, 40.6]/[19.5, 27.3, 37.5] source=c955e513 changed=False
+variant | leg | y | heading | bias y/yaw | standard | envelope class | first failure | contact (who; max pen mm; walls) | cross-track mm | sigma_yaw max deg | min clr beam/chassis mm
+ b-v6h.adv | L1 | -0.230 | +0.0 | +0.00/+0 | FAIL | TRAVERSED_CLEAN | - | none | 140 | 2.97 | 95.2/25.3
+ b-v6h.adv | L1 | -0.190 | +0.0 | +0.00/+0 | FAIL | TRAVERSED_CLEAN | - | none | 100 | 3.0 | 135.2/54.5
+ b-v6h.adv | L1 | +0.320 | +0.0 | +0.00/+0 | FAIL | TRAVERSED_CLEAN | - | none | 129 | 3.04 | 105.7/35.7
+
+variant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL
+ b-v6h.adv | L1 | 3 | 0/3 [0-56%] | 3/3 [44-100%] | 0 | 0 | 0 | 0 | 0
+
+== k1g_bias0.30: door-relax-envelope-c955e513-posK1g n=4 load [11.0, 23.1, 35.1]/[21.1, 24.3, 35.2] source=c955e513 changed=False
+variant | leg | y | heading | bias y/yaw | standard | envelope class | first failure | contact (who; max pen mm; walls) | cross-track mm | sigma_yaw max deg | min clr beam/chassis mm
+ b-v6h.k1g | L1 | -0.100 | +0.0 | -0.30/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6h.k1g | L1 | -0.100 | +0.0 | +0.30/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6h.k1g | L1 | +0.200 | +0.0 | -0.30/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6h.k1g | L1 | +0.200 | +0.0 | +0.30/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+
+variant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL
+ b-v6h.k1g | L1 | 4 | 0/4 [0-49%] | 0/4 [0-49%] | 0 | 0 | 0 | 4 | 0
+
+== base_bias0.30: door-relax-envelope-c955e513-posBase n=4 load [21.1, 24.3, 35.2]/[74.6, 37.7, 39.4] source=c955e513 changed=False
+variant | leg | y | heading | bias y/yaw | standard | envelope class | first failure | contact (who; max pen mm; walls) | cross-track mm | sigma_yaw max deg | min clr beam/chassis mm
+ b-v6g | L1 | -0.100 | +0.0 | -0.30/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6g | L1 | -0.100 | +0.0 | +0.30/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6g | L1 | +0.200 | +0.0 | -0.30/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6g | L1 | +0.200 | +0.0 | +0.30/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+
+variant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL
+ b-v6g | L1 | 4 | 0/4 [0-49%] | 0/4 [0-49%] | 0 | 0 | 0 | 4 | 0
+
+== adv_bias_y0.20: door-relax-envelope-c955e513-posAdv n=3 load [55.4, 37.5, 39.3]/[116.6, 89.3, 61.7] source=c955e513 changed=False
+variant | leg | y | heading | bias y/yaw | standard | envelope class | first failure | contact (who; max pen mm; walls) | cross-track mm | sigma_yaw max deg | min clr beam/chassis mm
+ b-v6h.adv | L1 | +0.200 | +0.0 | -0.25/+0 | FAIL | TRAVERSED_CLEAN | - | none | 134 | 3.02 | 84.7/14.7
+ b-v6h.adv | L1 | +0.200 | +0.0 | -0.20/+0 | FAIL | TRAVERSED_CLEAN | - | none | 144 | 2.97 | 87.7/17.7
+ b-v6h.adv | L1 | +0.200 | +0.0 | -0.15/+0 | FAIL | TRAVERSED_CLEAN | - | none | 137 | 2.96 | 95.5/25.6
+
+variant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL
+ b-v6h.adv | L1 | 3 | 0/3 [0-56%] | 3/3 [44-100%] | 0 | 0 | 0 | 0 | 0
+
+== adv_bias_ym0.10: door-relax-envelope-4194d34c-posAdvM n=3 load [109.5, 88.3, 61.5]/[81.0, 107.9, 81.4] source=4194d34c changed=False
+variant | leg | y | heading | bias y/yaw | standard | envelope class | first failure | contact (who; max pen mm; walls) | cross-track mm | sigma_yaw max deg | min clr beam/chassis mm
+ b-v6h.adv | L1 | -0.100 | +0.0 | +0.15/+0 | FAIL | TRAVERSED_CLEAN | - | none | 149 | 2.95 | 85.4/15.6
+ b-v6h.adv | L1 | -0.100 | +0.0 | +0.20/+0 | FAIL | TRAVERSED_CLEAN | - | none | 149 | 2.92 | 82.8/12.9
+ b-v6h.adv | L1 | -0.100 | +0.0 | +0.25/+0 | FAIL | BLOCKED_BY_CONTACT | - | (['r2'], 0.37, ['zone_wall_divider_1']) | 237 | 3.23 | 202.0/0.0
+
+variant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL
+ b-v6h.adv | L1 | 3 | 0/3 [0-56%] | 2/3 [21-94%] | 0 | 0 | 1 | 0 | 0
+
+== adv_y0.30_0.34: door-relax-envelope-4194d34c-posAdv2R n=4 load [63.2, 99.2, 79.6]/[102.8, 119.4, 96.5] source=4194d34c changed=False
+variant | leg | y | heading | bias y/yaw | standard | envelope class | first failure | contact (who; max pen mm; walls) | cross-track mm | sigma_yaw max deg | min clr beam/chassis mm
+ b-v6h.adv | L1 | +0.300 | +0.0 | -0.29/+0 | FAIL | BLOCKED_BY_CONTACT | - | (['r2'], 0.38, ['zone_wall_divider_2']) | 251 | 2.92 | 204.9/0.0
+ b-v6h.adv | L1 | +0.300 | +0.0 | -0.25/+0 | FAIL | BLOCKED_BY_CONTACT | - | (['r2'], 0.38, ['zone_wall_divider_2']) | 248 | 2.92 | 204.4/0.0
+ b-v6h.adv | L1 | +0.340 | +0.0 | -0.29/+0 | FAIL | BLOCKED_BY_CONTACT | - | (['r2'], 0.38, ['zone_wall_divider_2']) | 270 | 2.92 | 208.2/0.0
+ b-v6h.adv | L1 | +0.340 | +0.0 | -0.25/+0 | FAIL | BLOCKED_BY_CONTACT | - | (['r2'], 0.37, ['zone_wall_divider_2']) | 263 | 2.92 | 206.9/0.0
+
+variant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL
+ b-v6h.adv | L1 | 4 | 0/4 [0-49%] | 0/4 [0-49%] | 0 | 0 | 4 | 0 | 0
+
+== adv_ym0.20_0.24: door-relax-envelope-4194d34c-posAdv2L n=4 load [102.8, 119.4, 96.5]/[63.9, 88.4, 87.5] source=4194d34c changed=False
+variant | leg | y | heading | bias y/yaw | standard | envelope class | first failure | contact (who; max pen mm; walls) | cross-track mm | sigma_yaw max deg | min clr beam/chassis mm
+ b-v6h.adv | L1 | -0.240 | +0.0 | +0.25/+0 | FAIL | BLOCKED_BY_CONTACT | - | (['r2'], 0.38, ['zone_wall_divider_1']) | 268 | 2.92 | 207.6/0.0
+ b-v6h.adv | L1 | -0.240 | +0.0 | +0.29/+0 | FAIL | BLOCKED_BY_CONTACT | - | (['r2'], 0.39, ['zone_wall_divider_1']) | 271 | 2.92 | 208.1/0.0
+ b-v6h.adv | L1 | -0.200 | +0.0 | +0.25/+0 | FAIL | BLOCKED_BY_CONTACT | - | (['r2'], 0.39, ['zone_wall_divider_1']) | 250 | 2.92 | 204.4/0.0
+ b-v6h.adv | L1 | -0.200 | +0.0 | +0.29/+0 | FAIL | BLOCKED_BY_CONTACT | - | (['r2'], 0.38, ['zone_wall_divider_1']) | 257 | 2.92 | 205.6/0.0
+
+variant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL
+ b-v6h.adv | L1 | 4 | 0/4 [0-49%] | 0/4 [0-49%] | 0 | 0 | 4 | 0 | 0

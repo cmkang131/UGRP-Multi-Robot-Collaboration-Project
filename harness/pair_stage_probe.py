@@ -402,8 +402,18 @@ def door_relax_setup(policy, door_relax):
     return policy, ''
 
 
+def chain_relax_allowed(stage, chain_stop_leg):
+    """b-v6h may run the chain stage only when the run is stopped at the end of route leg 0 or 1 (the door leg); a chain that
+    continues into the later legs is refused.
+
+    Scope caveat: b-v6h is a process-wide switch, so in such a run it is also active for every loaded phase after leg 0 (lower,
+    open, stored re-grasp, relocalize, align, grasp, lift) and not only for the door approach/crossing. Only the outcome of legs 0
+    and 1 is measured; the wall contact tracker sees walls only, not beam <-> partner contact."""
+    return stage == 'chain' and chain_stop_leg is not None and int(chain_stop_leg) in (0, 1)
+
+
 def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=None, subset=None, policy='v5h',
-                  prior_std=None, leg=None, rows=None, door_relax=None):
+                  prior_std=None, leg=None, rows=None, door_relax=None, chain_stop_leg=None):
     """Teacher-placed cases with a perturbation grid (placement = GT, prior = static plan).
 
     ``leg`` (carry/setdown only, 0.4.0): carry leg k starts with the beam lifted at route point k and the
@@ -417,7 +427,7 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     setup = copy.deepcopy(setup or BASE_SETUP)
     policy_id = policy
     policy, relax_tag = door_relax_setup(policy_id, door_relax)      # registered policy name + id tag
-    if relax_tag and stage not in DOOR_RELAX_STAGES:
+    if relax_tag and stage not in DOOR_RELAX_STAGES and not chain_relax_allowed(stage, chain_stop_leg):
         raise ValueError(f'policy b-v6h is defined for the stages {DOOR_RELAX_STAGES} only, not {stage!r}')
     route, k = None, None
     if stage in ('carry', 'setdown', 'chain'):

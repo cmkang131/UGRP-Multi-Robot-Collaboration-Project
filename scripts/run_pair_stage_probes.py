@@ -521,6 +521,16 @@ def run_case(case, out):
             eps = self.pairs.sessions[-1]['endpoints']
             if set(eps) != set(sp.PARTICIPANTS):
                 return False
+            stop_leg = case.get('chain_stop_leg')
+            if stage == 'chain' and stop_leg is not None:
+                # opt-in early stop (eval-only bookkeeping): both robots have recorded the END of route leg `stop_leg`
+                # (first wait_lower tick, beam still held). The controller is not touched; a failed/terminal robot also ends the run.
+                recs = probe.__dict__.get('chain', {})
+                if len(recs) == len(sp.PARTICIPANTS) and all(int(stop_leg) in rec.leg_end for rec in recs.values()):
+                    if self.gt_at_stop is None:
+                        self.gt_at_stop = self.gt_snapshot()
+                        checkpoints.append(save_checkpoint(self, out, 'stage_stop'))
+                    return True
             finished = [r in probe.exits or eps[r].terminal for r in sp.PARTICIPANTS]
             if all(finished) and self.gt_at_stop is None:
                 self.gt_at_stop = self.gt_snapshot()          # eval only, at the stage stop instant
@@ -544,6 +554,8 @@ def run_case(case, out):
     install_diag_patch(case.get('diag_patch'))
     from harness import zone_pair_door_relax as door_relax
     result['door_relax'] = door_relax.install(case.get('door_relax'))     # b-v6h only; None = registered thresholds
+    from harness import zone_pair_progress_relax as progress_relax
+    result['progress_relax'] = progress_relax.install(case.get('progress_relax'))     # probe-only diagnostic; None = registered
     result['staging_bypass'] = case.get('staging_bypass')
     result['admission_image_valid_real'] = {}
     install_staging_bypass(case.get('staging_bypass'), result['admission_image_valid_real'])
@@ -884,6 +896,32 @@ def with_render_profile(cases, name):
     return [{**c, 'render_profile': name} for c in cases]
 
 
+def envelope_cases(stage, args, policy, leg):
+    """Opt-in envelope grid: one case per (beam y, beam heading, prior bias) with the TRUE beam at (x, y, heading) and the
+    coarse order sheet fixed at the base sheet, so the controller's route (door axis y = 0.05) does not move with the placement.
+    Robots stand at the stations of the true beam. The start prior is the RECORDED PF posterior of one hR2 sample
+    (std and error), optionally shifted by a stated bias (--env-bias-y-m / --env-bias-yaw-deg) to test estimator error."""
+    smp = {s['id']: s for s in json.loads(sp.SAMPLE_FILES['hR2'].read_text())['samples']}[args.env_prior]
+    out = []
+    for y in args.env_y:
+        for yaw_deg in args.env_yaw_deg:
+            for by in args.env_bias_y_m:
+                for byaw in args.env_bias_yaw_deg:
+                    prior_err = copy.deepcopy(smp['prior_err'])
+                    for rid in sp.PARTICIPANTS:
+                        e = prior_err[rid]['mean_err_xyyaw']
+                        prior_err[rid]['mean_err_xyyaw'] = [e[0], e[1] + by, e[2] + math.radians(byaw)]
+                    name = f'E_y{y:+.3f}_h{yaw_deg:+.1f}'
+                    if by or byaw:
+                        name += f'_b{by:+.3f}_{byaw:+.1f}'
+                    setup = {'beam_xyyaw': [args.env_x, float(y), math.radians(float(yaw_deg))],
+                             'coarse_order_sheet': copy.deepcopy(sp.BASE_SETUP['coarse_order_sheet']), 'variant': 'ENV'}
+                    out += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds), setup=setup,
+                                            policy=policy, prior_std=args.prior_std, leg=leg, door_relax=args.door_relax, chain_stop_leg=args.chain_stop_leg,
+                                            rows=[(name, (0, 0, 0), (0, 0, 0), prior_err)])
+    return out
+
+
 def build_cases(args):
     if getattr(args, 'passage_map', None):     # opt-in: passage map cases (harness.pair_passage_plan)
         from harness.pair_passage_plan import passage_build_cases
@@ -891,9 +929,10 @@ def build_cases(args):
     cases = []
     if 'b-v6h' in args.policies and set(args.sources) - {'teacher'}:
         raise ValueError('policy b-v6h is defined for --sources teacher only')
-    if 'b-v6h' in args.policies and set(args.stage) - set(sp.DOOR_RELAX_STAGES):
+    if 'b-v6h' in args.policies and any(st not in sp.DOOR_RELAX_STAGES and not sp.chain_relax_allowed(st, args.chain_stop_leg)
+                                        for st in args.stage):
         raise ValueError(f'policy b-v6h is defined for the stages {sp.DOOR_RELAX_STAGES} only '
-                         '(it patches SweepGuard.margin for the whole worker process)')
+                         '(it patches SweepGuard.margin for the whole worker process); stage chain only with --chain-stop-leg 0 or 1')
     for stage in args.stage:
         spec = sp.STAGES[stage]
         if not spec['implemented']:
@@ -901,17 +940,20 @@ def build_cases(args):
         for policy in args.policies:
             if 'teacher' in args.sources:
                 for leg in (args.legs or [None]):
+                    if args.env_y:      # opt-in envelope grid (2026-09-30): true beam at (x, y, heading) on the fixed base sheet
+                        cases += envelope_cases(stage, args, policy, leg)
+                        continue
                     if args.setup_variant in sp.SAMPLE_FILES:      # entries sampled from recorded stage end states
                         for hsetup, hrows in sp.hr_setups(variant=args.setup_variant):
                             cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
                                                       setup=hsetup, subset=set(args.cells) if args.cells else None,
                                                       policy=policy, prior_std=args.prior_std, leg=leg, rows=hrows,
-                                                      door_relax=args.door_relax)
+                                                      door_relax=args.door_relax, chain_stop_leg=args.chain_stop_leg)
                         continue
                     cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
                                               setup=sp.setup_variant(args.setup_variant),
                                               subset=set(args.cells) if args.cells else None, policy=policy,
-                                              prior_std=args.prior_std, leg=leg, door_relax=args.door_relax)
+                                              prior_std=args.prior_std, leg=leg, door_relax=args.door_relax, chain_stop_leg=args.chain_stop_leg)
             if 'boundary' in args.sources and stage == 'grasp_lift':
                 cases += sp.boundary_cases(stage, policy=policy, seed=args.seeds[0],
                                            subset=set(args.cells) if args.cells else None, prior_std=args.prior_std)
@@ -1115,6 +1157,17 @@ def parser():
                         "(default: legacy behaviour)")
     p.add_argument('--setup-variant', choices=['base', *sp.SETUP_VARIANTS], default='base',
                    help='teacher placement: base (the PR #266 diagnosis placement) or a registered variant (0.6.0)')
+    p.add_argument('--env-y', nargs='+', type=float, help='opt-in envelope grid: TRUE beam y values [m] (teacher cases; the route '
+                   'stays on the door axis y=0.05 because the coarse sheet is fixed). Needs --env-yaw-deg.')
+    p.add_argument('--env-yaw-deg', nargs='+', type=float, default=[0.], help='envelope grid: beam heading values [deg]')
+    p.add_argument('--env-x', type=float, default=1.0, help='envelope grid: true beam x at route point 0 [m]')
+    p.add_argument('--env-prior', default='hR2_01', help='envelope grid: hR2 sample whose recorded PF posterior is the start prior')
+    p.add_argument('--env-bias-y-m', nargs='+', type=float, default=[0.], help='envelope grid: extra prior y error [m] (both robots)')
+    p.add_argument('--env-bias-yaw-deg', nargs='+', type=float, default=[0.], help='envelope grid: extra prior yaw error [deg] (both robots)')
+    p.add_argument('--progress-relax', choices=['p1', 'p2'], help='with --policies b-v6h only: probe-only relaxation of the loaded pair\'s '
+                   'no-progress check (harness/zone_pair_progress_relax.py); the case id gets +<name>')
+    p.add_argument('--chain-stop-leg', type=int, help='stage chain only: stop the run when both robots reach the END of this route '
+                   'leg (eval-only stop; the controller is untouched)')
     p.add_argument('--limit', type=int)
     p.add_argument('--workers', type=int, default=4)
     p.add_argument('--omp-threads', type=int, default=2, help='OMP/MKL/OPENBLAS threads per worker (manifest records it)')
@@ -1156,6 +1209,17 @@ def main(argv=None):
     if args.contact_track:
         for c in cases:
             c['contact_track'] = True
+    if args.progress_relax:
+        if args.policies != ['b-v6h']:
+            p.error('--progress-relax applies to --policies b-v6h only')
+        for c in cases:
+            c['progress_relax'] = args.progress_relax
+            c['case_id'] = c['case_id'].replace(f".{c['door_relax']}:", f".{c['door_relax']}+{args.progress_relax}:", 1)
+    if args.chain_stop_leg is not None:
+        if args.stage != ['chain']:
+            p.error('--chain-stop-leg applies to --stage chain only')
+        for c in cases:
+            c['chain_stop_leg'] = int(args.chain_stop_leg)
     if len({c['case_id'] for c in cases}) != len(cases):
         p.error('duplicate case ids')
     from sim.workflow_manager import environment_identity, git_identity, source_fingerprint
