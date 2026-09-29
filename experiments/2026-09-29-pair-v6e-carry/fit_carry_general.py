@@ -86,6 +86,12 @@ def fit_drift(rows_phase):
 
 
 def main():
+    global FIT_RAWS
+    argv = sys.argv[1:]
+    if '--exclude' in argv:       # placements outside the operating range are not fitted (README, fixed before the held-out run)
+        drop = argv[argv.index('--exclude')+1:]
+        FIT_RAWS = [r for r in FIT_RAWS if not any(r.endswith(d) for d in drop)]
+    out_path = HERE/(argv[argv.index('--out')+1] if '--out' in argv else 'carry_general_fit.json')
     raws = raw_paths(FIT_RAWS)
     print('fit raws:', [r.name for r in raws])
     phase = yph.collect([str(r) for r in raws])
@@ -98,7 +104,7 @@ def main():
     print('diagnostic (hA, not fitted): ', diag_score)
 
     # yaw flags: the pair fit on the same raws
-    pfit.FIT_RAWS = ['ece01311-fcal', '7cecaf9b-fcal2', '7cecaf9b-fcal3', '7cecaf9b-fcal4']   # floor_light_v1 raws only (stage F)
+    pfit.FIT_RAWS = FIT_RAWS
     rows1 = pfit.rows_for([r.name.removeprefix('pair-stage-probes-') for r in raws], 1.)
     pairs = [(r['d_slope_total'], r['d_rel_gt']) for r in rows1 if r['d_rel_gt'] is not None]
     s, y = np.array([p[0] for p in pairs]), np.array([p[1] for p in pairs])
@@ -122,8 +128,8 @@ def main():
     out['inputs'] = [{'raw': r.name, 'cases_jsonl_sha256': hashlib.sha256((r/'cases.jsonl').read_bytes()).hexdigest()} for r in raws]
     out['not_read'] = 'hB, hC, hD, the 33-cell grid; hA only as a diagnostic score of the deadband (never fitted)'
     out['n_case_robots'] = len(rows1)
-    (HERE/'carry_general_fit.json').write_text(json.dumps(out, indent=1))
-    json.dump(rows1, open(HERE/'carry_general_fit_rows.json', 'w'), indent=0)
+    out_path.write_text(json.dumps(out, indent=1))
+    json.dump(rows1, open(out_path.with_name(out_path.stem + '_rows.json'), 'w'), indent=0)
 
 
 if __name__ == '__main__':

@@ -735,6 +735,32 @@ raw(로컬, 원격 백업 아님): `outputs/pair-stage-probes-cb215732-rsmoke`(n
 
 **소스 고정.** 관련 테스트 496 통과, 4 skip, 5 실패 = 알려진 봉인 해시(`test_zone_pair_registered_source.py`, 등록 전 예상). 새 테스트 `tests/test_zone_pair_v6g.py`(11건, 커밋된 적합 파일 로딩 포함). 이 커밋 이후 소스(`harness/`, `scripts/`, `sim/`, `tests/`)를 바꾸지 않고, README만 결과 기록으로 바꾼다.
 
+## v6g 스모크 결과(소스 `f844a373`): **1/4 통과 — 사전 기준(4/4) 미달** — 그리고 held-out으로 직행하는 결정
+
+raw: `outputs/pair-stage-probes-f844a373-gsmoke`, `-gsmoke2`, `-gsmokeL7`(`--render-profile floor_light_v1`, manifest 프로필 해시 기록 확인).
+
+| 케이스 (cal 배치) | 결과 | 원인 |
+|---|---|---|
+| nominal L0 | 실패 | `PAIR_COLLISION_GUARD` (25.8 s) |
+| nominal L1 | 실패 | `SELF_POSE_UNCERTAIN` yaw (31.3 s): σ_yaw 3.01° / 2.94°가 게이트(3°/2.5° 계열)를 넘음 |
+| lat−/opp L3 | 통과 | 끝점 오차 0.023 m |
+| lat−/opp L1 | 실패 | `PAIR_COLLISION_GUARD` (29.5 s) |
+| (별도 표기) `b-v6g-l7` nominal L7 | **통과** | 끝점 오차 0.047 m — 끝점을 안쪽 0.10 m로 옮기면 가드 문제가 사라짐 |
+
+같은 케이스의 `b-v6e`(4fac772d, 기존 프로필)는 모두 통과였다. 원인 분해(leg 끝 σ와 오차, v6e → v6g):
+- **PF의 y 편향은 없어졌다.** GT−PF y 오차 leg 끝 v6e −21…−13 mm(유령 이동) → v6g +4…+21 mm(사전 오차 −30 mm는 그대로 남고 σ_y 안). yaw 오차는 거의 같다(예: nominal 0.2→0.2°).
+- **그러나 σ가 정직해지며 커졌다.** σ_yaw(leg 끝) nominal L0 1.95→2.36°, L1 2.33→3.01°; σ_xy 0.033→0.036, 0.040→0.047. b가 1.56→2.04 mrad/s로(회전 셀·y 오프셋 배치를 적합에 넣은 결과), 교차 축 드리프트 비율 0.0159가 nominal 셀(실측 0.0034)에도 똑같이 적용된 결과다. 회전이 있는 셀만의 b(2.2–2.8)에 비해 nominal은 0.9–1.2로 작다. **고정 게이트(`GATE_LOADED`, 스윕 가드 여유 = 기본 + 2σ)는 σ가 커지면 통과하지 못한다.** 즉 "정직한 σ"와 "안전 게이트 유지"가 충돌한다(앞서 예고한 긴장). 게이트는 바꾸지 않았다.
+- 이것은 사전 기준 4/4 미달이므로 원래 계획(앞 단계 통과 뒤에만 다음 단계)은 여기서 멈추는 것이 맞다. 그러나 조정자(사용자) 결정으로 현재 소스를 **최종으로 고정하고 hB·hC·hD를 한 번씩 실행**한다. 이 경우 성공률은 게이트 실패를 포함하고, **PF 정직성(NEES·커버리지)은 실패한 케이스도 트레이스가 있는 구간까지 포함해 별도로 보고**한다(성공률과 정직성을 분리해 원인별로 보이기 위함). 재적합은 최대 1회이며 그 뒤에는 멈추고 보고한다.
+
+### 작동 범위와 cal4 (측정 전 고정)
+
+- `cal4`(빔 y 0.14 m, 헤딩 −0.03 rad)는 L1(문 통과)에서 4/4 실패하고 가드 2·MOTION_ERROR 2로 16/20이었다. 사용자 결정으로 **작동 범위 밖**으로 기록하고 더 고치지 않는다. 작동 범위(측정 전 고정): 빔 월드 y ∈ [−0.04, 0.12] m, |헤딩| ≤ 0.03 rad. (hB −.04·hC .12·hD .10은 범위 안, cal4 .14는 밖, 범위의 이유는 아래 "배치 분포"에서 참고로만 덧붙임.) 범위 밖 배치는 통과 기준·held-out에서 제외한다.
+- **cal4 자료는 적합에 그대로 사용한다**(재적합 없음). steer 단계 램프·드리프트·b는 플랜트 성질이지 배치 성질이 아니다. cal4를 뺀 대체 적합(같은 스크립트 `--exclude fcal4`)도 계산했더니 램프 rms 3.74 mm, `drift_ratio_std` 0.0161, b(pm+edge) 2.16으로 거의 같아서(오히려 b가 큼) 바꾸지 않는다. 최종 적합은 `carry_general_fit.json`(sha256 `9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b`) 그대로다.
+
+### held-out 실행 계획 (측정 전 고정, 기준값 불변)
+
+hB [1.13, −.04, 0], hC [1.03, .12, 0], hD [1.00, .10, +.03] 각각 `b-v6g`로 legs 0 1 2 3 6 × nominal(seed 914)·yaw−/opp = 10건, 별도로 `b-v6g-l7` L7 2건. 소스 `f844a373`의 코드 그대로(README·적합 스크립트 옵션만 이후 커밋). 판정: 각 held-out ≥ 8/10, leg 끝 NEES ∈ [1.5, 6], x·y·yaw ±2σ 커버리지 ≥ 90 %. 통과하지 못하면 어떤 것도 "일반화 통과"로 쓰지 않고 원인별(가드·게이트·모션 오차·정직성) 표로 보고한다. 통과하면 소스 등록·push·PR 절차로 넘어간다.
+
 ## TensorBoard
 
 - **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e`, run 106개(경우별 98 + 그룹 집계 `ALL-*` 8). `collection.json` sha256 `ec6f3639cf33b470cbda4fea2501bb8b65fae61c9fd9881e2a7bcbce3ad0ae9b`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e`(빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`). 기존 스냅샷은 건드리지 않았다.
