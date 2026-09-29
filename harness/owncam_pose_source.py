@@ -181,6 +181,12 @@ class OwnCamPoseSource:
             self._last_image_digest = key
         dets = self.detector.detect(rgb)
         self.frames += 1
+        edge = getattr(self, 'beam_edge', None)
+        if edge is not None:
+            # v6e carry_beam_edge: own-RGB robot-minus-beam relative-yaw increment (harness/own_beam_edge.py)
+            dyaw = edge.observe(now, rgb, self.servo, self.loc.load.loaded)
+            if dyaw:
+                self.loc.apply_relative_yaw(now, dyaw)
         self.loc.update(now, dets, dict(self.servo))
         if dets:
             self.last_obs = {'t': round(now, 4), 'tag_ids': sorted(int(d['id']) for d in dets), 'n_tags': len(dets)}

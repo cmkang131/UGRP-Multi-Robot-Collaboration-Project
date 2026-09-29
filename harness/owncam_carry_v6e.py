@@ -37,6 +37,9 @@ ROOT = Path(__file__).resolve().parents[1]
 # carry_dr_fit.json (dev box carry, first fit) + the yaw bias std refitted on the cal cohort only after the cal
 # honesty gate failed (refit_carry_dr_cal.py; the 33-cell grid and the held-out placements were not read).
 FIT = 'experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json'
+# Yaw flags (carry_pair_yaw / carry_beam_edge): the per-particle yaw-rate bias std of each estimator variant and the
+# beam-edge slope-to-yaw ratio, fitted on the cal cohort only (fit_carry_pair_yaw.py; grid and held-out unread).
+PAIR_FIT = 'experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json'
 # Axes whose open-loop leg length uses the lag model (flag ``carry_lateral_lag``).
 LAG_AXES = ('lateral',)
 
@@ -81,18 +84,49 @@ def _pf(provider):
     return inner, pf
 
 
-def enable_provider(provider):
-    """Give this provider's PF the calibrated loaded profile (idempotent; other providers are untouched)."""
+def variant_key(pair_yaw=False, beam_edge=False):
+    """Estimator variant name in ``carry_pair_fit.json``; '' is the yaw-flags-off v6e profile."""
+    return '+'.join(k for k, on in (('pm', pair_yaw), ('edge', beam_edge)) if on)
+
+
+def load_pair_fit():
+    raw = (ROOT/PAIR_FIT).read_bytes()
+    fit = json.loads(raw)
+    return fit, {'source': PAIR_FIT, 'file_sha256': hashlib.sha256(raw).hexdigest()}
+
+
+def enable_provider(provider, pair_yaw=False, beam_edge=False):
+    """Give this provider's PF the calibrated loaded profile (idempotent; other providers are untouched).
+
+    ``pair_yaw`` / ``beam_edge`` (yaw flags) select the estimator variant: the per-particle yaw-rate bias std is the
+    cal-fitted value of that variant, and ``beam_edge`` attaches the own-RGB beam-edge tracker. The pair-mean model
+    itself is driven by the executor (partner command derived from the route plan). A provider stays bound to one
+    variant.
+    """
     inner, pf = _pf(provider)
+    variant = variant_key(pair_yaw, beam_edge)
     if getattr(inner, 'carry_dr_v6e', None) is not None:
+        if getattr(inner, 'carry_variant_v6e', '') != variant:
+            raise ValueError(f'pose provider is bound to carry variant {getattr(inner, "carry_variant_v6e", "")!r}; '
+                             f'{variant!r} needs a fresh provider')
         return inner.carry_dr_v6e
     unloaded = pf.params['motion']['scale_std']
     profile, info = load_profile(unloaded)
+    if variant:
+        fit, fit_info = load_pair_fit()
+        profile['yaw_bias_std_rad_s'] = float(fit['b_rad_s'][variant])
+        info = {**info, 'variant': variant, 'pair_fit': fit_info, 'yaw_bias_std_rad_s': profile['yaw_bias_std_rad_s'],
+                'profile_sha256': _digest(profile)}
+        if beam_edge:
+            from harness.own_beam_edge import BeamEdgeTracker
+            inner.beam_edge = BeamEdgeTracker(float(fit['slope_to_yaw_ratio']))
+            info['slope_to_yaw_ratio'] = float(fit['slope_to_yaw_ratio'])
     # Rebind, never mutate: the params dict may be shared with other providers of the same run.
     pf.params = {**pf.params, 'motion_loaded': {**pf.params['motion_loaded'], **copy.deepcopy(profile)}}
     if pf.initialized and pf.load.loaded:
         pf._draw_plant_state(True)
     inner.carry_dr_v6e = info
+    inner.carry_variant_v6e = variant
     return info
 
 
@@ -132,3 +166,18 @@ def leg_duration(distance_m, axis, command, calibration):
     mp = calibration['motion_loaded']
     v = abs(steady_speed(calibration, axis, command))
     return lag_duration(distance_m, v, float(mp['tau_s']), float(mp.get('tau_stop_s', mp['tau_s'])))
+
+
+def set_partner_plan(provider, t0, t1, *, own, partner):
+    """Hand the PF the plan-derived partner command of the carry leg [t0, t1] (flag ``carry_pair_yaw``).
+
+    ``own`` and ``partner`` are ``{'forward','left','turn'}`` commands built by the same plan function
+    (route leg from the static map, role signs from the order sheet). The PF uses the partner command only for the
+    yaw target while an issued own command equals ``own`` inside the window.
+    """
+    import numpy as np
+    loc = getattr(_inner(provider), 'loc', None)
+    if loc is None or not hasattr(loc, 'pair_plan'):
+        raise ValueError('carry_pair_yaw needs a tag PF provider')
+    vec = lambda c: np.array([c['forward'], c['left'], c['turn']], float)
+    loc.pair_plan = {'t0': float(t0), 't1': float(t1), 'own': vec(own), 'partner': vec(partner)}

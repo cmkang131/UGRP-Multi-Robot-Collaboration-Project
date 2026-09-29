@@ -51,6 +51,15 @@ class PairPolicy:
     # carry_lateral_lag: the open-loop lateral carry leg length inverts the calibrated first-order-lag loaded
     # plant instead of the constant CARRY_ODOM_SCALE['lateral'] (harness/owncam_carry_v6e.py).
     carry_lateral_lag: bool = False
+    # v6e yaw (2026-09-29 offline yaw analysis, experiments/2026-09-29-pair-v6e-carry), two more opt-in flags; both
+    # need carry_dr_model (they re-parameterise its per-particle yaw-rate bias):
+    # carry_pair_yaw: the PF's carry yaw prediction is the MEAN of the own and the partner's loaded-plant yaw
+    # targets (a rigid pair turns with the mean); the partner's command of the leg is derived from the static
+    # route plan and the role (mirrored command), never received (harness/zone_pair_executor.py, README).
+    carry_pair_yaw: bool = False
+    # carry_beam_edge: the slope change of the carried beam's lower edge in the own wrist RGB is the robot-minus-beam
+    # relative-yaw change and is added to the PF yaw (harness/own_beam_edge.py).
+    carry_beam_edge: bool = False
     # v6f (2026-09-29 stage 5 probe, PR #266 baseline 0/13): the destination set-down.
     # (1) The per-step own-image validity gate measures "dark" against the frame's own optical-black
     # reference (the fisheye exterior) instead of the fixed level V < 8, which rejects the
@@ -76,10 +85,21 @@ POLICIES = {
                            beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True),
     'b-v6e-lag': PairPolicy('b-v6e-lag', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
                             beam_wide_hue=True, align_fine_motion=True, carry_lateral_lag=True),
-    # b-v6e = the combined candidate: b-v6d + both carry flags + both place flags (stage-4 and stage-5 probes).
+    # b-v6e-base = the b-v6e of the first carry cohorts (PR #266 and the cal raws): dr + lag + both place flags.
+    'b-v6e-base': PairPolicy('b-v6e-base', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                             beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True,
+                             carry_lateral_lag=True, own_image_ob=True, bounded_retreat=True),
+    # b-v6e = b-v6e-base + both yaw flags (pair-mean plant model, own-RGB beam-edge relative yaw); the two
+    # ablations switch one yaw flag each.
     'b-v6e': PairPolicy('b-v6e', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
                         beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True, carry_lateral_lag=True,
-                        own_image_ob=True, bounded_retreat=True),
+                        own_image_ob=True, bounded_retreat=True, carry_pair_yaw=True, carry_beam_edge=True),
+    'b-v6e-pm': PairPolicy('b-v6e-pm', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                           beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True,
+                           carry_lateral_lag=True, own_image_ob=True, bounded_retreat=True, carry_pair_yaw=True),
+    'b-v6e-edge': PairPolicy('b-v6e-edge', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                             beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True,
+                             carry_lateral_lag=True, own_image_ob=True, bounded_retreat=True, carry_beam_edge=True),
     # v6f = b-v6c + own_image_ob + bounded_retreat; the two ablations switch one flag each.
     'b-v6f-a': PairPolicy('b-v6f-a', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
                           own_image_ob=True),

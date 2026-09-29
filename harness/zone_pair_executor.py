@@ -115,6 +115,11 @@ class _OwnPort:
         return copy.deepcopy(obs)
 
 
+def carry_role_sign(rid):
+    """Direction sign of a robot's carry command (the two ends of the beam drive mirrored commands)."""
+    return 1. if rid == 'r1' else -1.
+
+
 def m2_controller(execution, plan, params):
     """Instantiate the REAL frozen controller, with only route and I/O adapters."""
     from harness import owncam_carry_v6e as v6e_carry
@@ -189,19 +194,29 @@ def m2_controller(execution, plan, params):
             lateral = abs(dy) > 1e-6
             axis = 'lateral' if lateral else 'axial'
             duration = math.hypot(dx, dy) / (m2.study.SPEED_M_S * m2.study.CARRY_ODOM_SCALE[axis])
-            sign = 1. if self.rid == 'r1' else -1.
-            command = {'forward': sign * math.copysign(m2.study.SPEED_M_S, dx) / m2.study.FORWARD_GAIN
-                       if not lateral else 0.,
-                       'left': sign * math.copysign(m2.study.SPEED_M_S, dy) / m2.study.LEFT_GAIN
-                       if lateral else 0., 'turn': 0.}
+
+            def leg_command(sign):
+                return {'forward': sign * math.copysign(m2.study.SPEED_M_S, dx) / m2.study.FORWARD_GAIN
+                        if not lateral else 0.,
+                        'left': sign * math.copysign(m2.study.SPEED_M_S, dy) / m2.study.LEFT_GAIN
+                        if lateral else 0., 'turn': 0.}
+            sign = carry_role_sign(self.rid)
+            command = leg_command(sign)
             if self.policy.carry_lateral_lag and axis in v6e_carry.LAG_AXES:
                 # v6e: invert the calibrated loaded first-order-lag plant (harness/owncam_carry_v6e.py)
                 duration = v6e_carry.leg_duration(math.hypot(dx, dy), axis,
                                                   [command['forward'], command['left'], command['turn']], params)
             schedule[-1] = (start, start + duration, command)
+            if self.policy.carry_pair_yaw:
+                # v6e carry_pair_yaw: the partner's command of this leg is the SAME plan function with the partner's
+                # role sign (route leg from the static plan, roles fixed by the order sheet); nothing is received.
+                partner = leg_command(carry_role_sign(execution.partner_id))
+                v6e_carry.set_partner_plan(execution.own.pose, start, start + duration, own=command, partner=partner)
             claim = self.claims['segments'][-1]
             claim.pop('axial_m', None)
             claim.update(axis=axis, distance_m=math.hypot(dx, dy), static_from_xy=list(a), static_to_xy=list(b))
+            if self.policy.carry_pair_yaw:
+                claim['pair_partner_command'] = {'source': 'route plan + role sign (no message)', **partner}
             return schedule
 
     own, rid = execution.own, execution.own.robot_id
@@ -438,11 +453,14 @@ class PairTeam:
                              'needs a fresh provider')
         from harness import owncam_carry_v6e as v6e_carry
         self.carry_dr = {}
+        if (self.policy.carry_pair_yaw or self.policy.carry_beam_edge) and not self.policy.carry_dr_model:
+            raise ValueError('carry_pair_yaw / carry_beam_edge re-parameterise the carry_dr_model profile and need it')
         if self.policy.carry_dr_model:
             if not self.policy.posterior_relook or self.policy.stationary_bootstrap:
                 raise ValueError('carry_dr_model is defined for the posterior-relook policies without the v6b bootstrap')
             for rid, executor in self.executors.items():
-                self.carry_dr[rid] = v6e_carry.enable_provider(executor.pose)
+                self.carry_dr[rid] = v6e_carry.enable_provider(executor.pose, pair_yaw=self.policy.carry_pair_yaw,
+                                                               beam_edge=self.policy.carry_beam_edge)
         elif any(v6e_carry.bound(getattr(executor, 'pose', None)) for executor in self.executors.values()):
             raise ValueError(f'pose provider is bound to carry_dr_model (b-v6e); {self.policy.name} '
                              'needs a fresh provider')
@@ -567,10 +585,24 @@ class PairTeam:
                     if len(endpoints) == 1:
                         session['closed'] = True
 
+    def _carry_yaw_record(self):
+        """Run counters of the yaw flags per robot: plan-partner matches, beam-edge tracker state."""
+        from harness import owncam_carry_v6e as v6e_carry
+        out = {}
+        for rid, executor in self.executors.items():
+            inner = v6e_carry._inner(executor.pose)
+            edge = getattr(inner, 'beam_edge', None)
+            out[rid] = {'partner_plan_matched': int(getattr(inner.loc, 'pair_matched', 0)),
+                        'partner_plan_unmatched': int(getattr(inner.loc, 'pair_unmatched', 0)),
+                        **({'beam_edge': {**edge.stats, 'total_rad': edge.total_rad}} if edge is not None else {})}
+        return out
+
     def records(self):
         return [{'profile': PROFILE, 'status_profile': STATUS_PROFILE, 'pair_policy': self.policy.name,
                  **({'align_motion_v6d': copy.deepcopy(self.align_motion)} if self.align_motion else {}),
                  **({'carry_dr_v6e': copy.deepcopy(self.carry_dr)} if self.carry_dr else {}),
+                 **({'carry_yaw_v6e': self._carry_yaw_record()}
+                    if self.policy.carry_pair_yaw or self.policy.carry_beam_edge else {}),
                  'timing': {'control_s': CONTROL_S, 'arm_s': ARM_S,
                             'heartbeat_timeout_s': s['channel'].heartbeat_timeout_s,
                             'readiness_ttl_s': s['channel'].readiness_ttl_s,

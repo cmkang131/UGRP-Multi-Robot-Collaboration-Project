@@ -50,7 +50,7 @@ def test_flags_are_off_for_every_registered_policy_and_on_only_for_the_v6e_set()
     for name in ('v5h', 'b-only', 'a+b', 'b-boot', 'a+b-boot', 'b-v6c', 'b-v6d'):
         p = POLICIES[name]
         assert not p.carry_dr_model and not p.carry_lateral_lag
-    dr, lag, both = pair_policy('b-v6e-dr'), pair_policy('b-v6e-lag'), pair_policy('b-v6e')
+    dr, lag, both = pair_policy('b-v6e-dr'), pair_policy('b-v6e-lag'), pair_policy('b-v6e-base')   # b-v6e-base = the 0.6.0 b-v6e
     assert (dr.carry_dr_model, dr.carry_lateral_lag) == (True, False)
     assert (lag.carry_dr_model, lag.carry_lateral_lag) == (False, True)
     assert (both.carry_dr_model, both.carry_lateral_lag) == (True, True)

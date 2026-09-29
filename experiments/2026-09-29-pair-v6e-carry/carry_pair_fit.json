@@ -1,0 +1,86 @@
+{
+ "slope_to_yaw_ratio": 1.0650450719849023,
+ "b_rad_s": {
+  "pm": 0.0019030395629542583,
+  "edge": 0.0018669808932371486,
+  "pm+edge": 0.0015674668456146295
+ },
+ "estimators": {
+  "e0_registered": {
+   "balanced_rms_rad_s": 0.0022975885168377307,
+   "per_cell_rms_rad_s": {
+    "nominal": 0.0008916711776671378,
+    "lat-/opp": 0.0034609041203173593,
+    "yaw+/same": 0.0017503725771965903
+   },
+   "n_per_cell": {
+    "nominal": 16,
+    "lat-/opp": 16,
+    "yaw+/same": 16
+   }
+  },
+  "pm": {
+   "balanced_rms_rad_s": 0.0019030395629542583,
+   "per_cell_rms_rad_s": {
+    "nominal": 0.0003276147024155043,
+    "lat-/opp": 0.002887907528913308,
+    "yaw+/same": 0.0015547789057336853
+   },
+   "n_per_cell": {
+    "nominal": 16,
+    "lat-/opp": 16,
+    "yaw+/same": 16
+   }
+  },
+  "edge": {
+   "balanced_rms_rad_s": 0.0018669808932371486,
+   "per_cell_rms_rad_s": {
+    "nominal": 0.0009019051859981488,
+    "lat-/opp": 0.002559359753362789,
+    "yaw+/same": 0.0017587204597303552
+   },
+   "n_per_cell": {
+    "nominal": 16,
+    "lat-/opp": 16,
+    "yaw+/same": 16
+   }
+  },
+  "pm+edge": {
+   "balanced_rms_rad_s": 0.0015674668456146295,
+   "per_cell_rms_rad_s": {
+    "nominal": 0.00031063150818763646,
+    "lat-/opp": 0.0022058927898883822,
+    "yaw+/same": 0.0015519027037616615
+   },
+   "n_per_cell": {
+    "nominal": 16,
+    "lat-/opp": 16,
+    "yaw+/same": 16
+   }
+  }
+ },
+ "replicate_check_not_in_fit": {
+  "e0_registered": 0.002279434809971593,
+  "pm": 0.0018812213022309026,
+  "edge": 0.001840150669890417,
+  "pm+edge": 0.0015354540920047973
+ },
+ "registered_v6e_b_rad_s": 0.002331418995960997,
+ "rule": "b(variant) = cell-balanced RMS over cal1 case-robots of (GT yaw change - replayed estimate)/window, window = [entry, exit]; ratio = through-origin LS slope of tracker slope change on GT relative yaw change",
+ "inputs": [
+  {
+   "raw": "pair-stage-probes-ece38792-cal",
+   "cases_jsonl_sha256": "3a34943858fb4acbc8f5a63406c5a689220665332617ee56ab02da840d16b74e"
+  },
+  {
+   "raw": "pair-stage-probes-a704ecc6-calB2",
+   "cases_jsonl_sha256": "8be128221d53a23374a1ad1a2f82bf4ea8102e16c8505f8901ce1f172a688ce9"
+  },
+  {
+   "raw": "pair-stage-probes-a704ecc6-calB",
+   "cases_jsonl_sha256": "b84fd24cbc5c8a66ab6bcbcd7eeb123420d29ce92507a723ef94221cf2728460"
+  }
+ ],
+ "not_read": "33-cell grid, held-out placements; cal2 only as a printed replicate check",
+ "n_case_robots": 48
+}

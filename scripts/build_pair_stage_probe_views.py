@@ -28,7 +28,8 @@ IK_ENVELOPE_TEXT = 'outside the calibrated 14.5..18.0 cm grasp envelope'   # har
 POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C',   # C = v6c (exact clock + grasp-range entry)
                 'b-boot': 'BB', 'a+b-boot': 'ABB',                    # v6b start bootstrap (PR #261)
                 'b-v6d': 'D',                                          # D = v6d (wide hue, fine align motion)
-                'b-v6e-dr': 'ED', 'b-v6e-lag': 'EL', 'b-v6e': 'E',    # v6e carry flags: dead-reckoning model / lateral lag / both
+                'b-v6e-dr': 'ED', 'b-v6e-lag': 'EL', 'b-v6e-base': 'E0', 'b-v6e': 'E',   # v6e carry flags: dead-reckoning model / lateral lag / both = base
+                'b-v6e-pm': 'Ep', 'b-v6e-edge': 'Ee',                  # v6e yaw flags: pair-mean model / beam edge (E = both)
                 'b-v6f-a': 'Fa', 'b-v6f-b': 'Fb', 'b-v6f': 'F'}       # v6f: own_image_ob / bounded_retreat / both
 
 

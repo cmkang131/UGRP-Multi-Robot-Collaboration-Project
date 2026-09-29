@@ -130,6 +130,13 @@ class OwnCamLocalizer:
         self.t = 0.
         self.cmd = np.zeros(3)
         self.cmd_expires = -1.
+        # v6e carry_pair_yaw (optional): the partner's command of the current carry leg, derived by the executor from
+        # the static route plan and the role (never received from the partner). ``pair_plan`` holds the leg window,
+        # the own command and the derived partner command; ``cmd_partner`` is set only while an issued command
+        # equals the planned own command inside that window.
+        self.pair_plan: dict | None = None
+        self.cmd_partner: np.ndarray | None = None
+        self.pair_matched = self.pair_unmatched = 0
         self.vel = np.zeros(3)
         self.servo: dict[int, int] = {}
         self.load = LoadState()
@@ -171,12 +178,15 @@ class OwnCamLocalizer:
         elif kind == 'mecanum':
             self.cmd = np.array([row['forward'], row['left'], row['turn']], float)
             self.cmd_expires = t + float(row['duration_s'])
+            self.cmd_partner = self._partner_of(t, self.cmd)
         elif kind == 'drive':
             self.cmd = np.array([row['forward'], 0., row['turn']], float)
             self.cmd_expires = t + float(row['duration_s'])
+            self.cmd_partner = None
         else:  # hold / stop / anything else stops the wheels (port semantics)
             self.cmd = np.zeros(3)
             self.cmd_expires = -1.
+            self.cmd_partner = None
 
     def _load_transition_profile(self):
         return self.params.get('motion_loaded', {}).get('load_transition')
@@ -217,6 +227,16 @@ class OwnCamLocalizer:
         if self.yaw_bias is not None:
             self.yaw_bias[idx] = self.rng.normal(size=len(idx))*self._yaw_bias_std()
 
+    def _partner_of(self, t: float, cmd) -> np.ndarray | None:
+        plan = self.pair_plan
+        if plan is None or not (plan['t0'] - 1e-6 <= t <= plan['t1'] + 1e-6):
+            return None
+        if not np.array_equal(cmd, plan['own']):
+            self.pair_unmatched += 1       # a command inside the leg window that is not the planned leg command
+            return None
+        self.pair_matched += 1
+        return plan['partner']
+
     def set_motion_profile(self, t: float, name: str | None) -> None:
         """Select ``params['motion_profiles'][name]`` from time ``t`` on (None: default selection)."""
         if name is not None and name not in self.params.get('motion_profiles', {}):
@@ -239,6 +259,11 @@ class OwnCamLocalizer:
             dt = min(STEP_S, t - self.t)
             u = self.cmd if self.t < self.cmd_expires - 1e-9 else np.zeros(3)
             target = gain @ u
+            if self.cmd_partner is not None and self.load.loaded and np.any(u):
+                # v6e carry_pair_yaw: a rigid pair's beam yaw is the MEAN of the two plants' yaw predictions, so the
+                # antisymmetric part of the yaw coupling (mirrored partner command) cancels; x/y stay the own plant.
+                target = target.copy()
+                target[2] = .5*(target[2] + gain[2] @ self.cmd_partner)
             # Optional separate stop lag (loop v2 dev fit): wheels commanded to zero
             # (hold / expired command) stop much faster than they spin up.
             tau = mp.get('tau_stop_s', mp['tau_s']) if not np.any(u) else mp['tau_s']
@@ -270,6 +295,15 @@ class OwnCamLocalizer:
                     self.scale += self.rng.normal(size=(self.n, 3))*mp['scale_walk']*math.sqrt(dt)
                 self.logw += self._map_logprior(self.px)
             self.t += dt
+
+    def apply_relative_yaw(self, t: float, dyaw: float) -> None:
+        """v6e carry_beam_edge: add the own-RGB measured robot-minus-beam relative-yaw increment to every particle.
+
+        The common-mode beam yaw is not visible in that view and stays with the per-particle yaw-rate bias, so the
+        cloud shifts, its spread does not change."""
+        self.predict_to(t)
+        if self.initialized and dyaw:
+            self.px[:, 2] = wrap(self.px[:, 2] + float(dyaw))
 
     def _map_logprior(self, px):
         x, y = px[:, 0], px[:, 1]
