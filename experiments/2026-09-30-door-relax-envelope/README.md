@@ -133,7 +133,7 @@ L1 (문 통과), 가운데 열이 헤딩 0°. P = 통과(접촉 0), X = 가드�
 - `p1`은 검사를 사실상 끄는 진단이고, `p2`도 봉인 밖 프로세스 패치다. 두 변형 모두 진짜 정지(막힘)를 만든 물리 케이스로 시험하지 않았다.
 - L0 이후의 구간(L2–L7)과 벽 근접 배치는 시험하지 않았다. `chain_relax_allowed`(`--chain-stop-leg 0/1`)는 b-v6h를 프로세스 전체에 켠다. 즉 L0 뒤의 내려놓기·열기·다시 잡기·재정위·정렬·잡기·들기에서도 완화가 켜져 있었고, "문 접근·통과용으로만 측정"이라고 쓸 수 없다. 측정한 것은 L0·L1의 결과뿐이다. 접촉 추적기는 벽만 보고 막대↔파트너 접촉은 보지 않는다.
 - 접촉 반응(후진·재시도)은 여전히 없다. 막힘을 컨트롤러가 알아채지 못하는 것이 이번에 직접 확인됐다(8/8 막힘, 중단 0).
-- TensorBoard 스냅샷은 아래 "실행 기록"에 적었다. raw는 로컬 `outputs/`에만 있다(원격 백업 아님).
+- raw는 로컬 `outputs/`에만 있다(원격 백업 아님). TensorBoard 스냅샷은 "실행 기록"의 마지막 항목.
 
 ## 이력 (계획 이탈, 정직 기록)
 
@@ -179,3 +179,4 @@ raw는 로컬 `/Users/changmin/projects/ugrp/outputs/door-relax-envelope-<sha8>-
 - 분석: `analysis/chain_analysis.py`, `analysis/envelope_analysis.py`; 출력 `analysis/results/{chain,chain_p2,envelope_placement,envelope_bias,positive_control}.{txt,json}`. 재현 예: `python experiments/2026-09-30-door-relax-envelope/analysis/chain_analysis.py k1g+p2=<raw>`.
 - 케이스 계획 재현: chain `--stage chain --sources teacher --policies b-v6h --door-relax k1g --progress-relax p2 --prior-std e2e --setup-variant hR2 --chain-stop-leg 1 --seeds 911 912 --render-profile floor_light_v1 --pf-track`; 격자 `--stage carry --legs 1 --env-y -0.10 -0.06 -0.02 0.09 0.13 0.17 0.20 --env-yaw-deg 0 -3.9 3 -7 7 --policies b-v6h --door-relax k1g` (기준선은 `--policies b-v6g --contact-track`).
 - 검증: `tests/test_door_relax_envelope.py` 6건, `test_zone_pair_door_relax.py`, `test_pair_stage_probe.py`, `test_pair_chain_probe.py`, `test_zone_pair_registered_source.py`, `test_ci_sharding.py` 통과. 전체 CI 묶음은 개발 중이라 돌리지 않았다.
+- TensorBoard: 새 스냅샷 `outputs/tensorboard/0930-door-relax-envelope`(기본 체크아웃, 파생 뷰 `outputs/door-relax-envelope-tbviews-0930`, 변환기 `analysis/build_tb_views.py` + `scripts/export_offline_audit.py`). 실행 22개(연쇄 7, 배치·편향 격자 8, 양성 대조 7)의 케이스 279건과 raw별 집계 22건 = 301개 run, 변환 실패 0. 중단된 `44ef9eda-chBase`(케이스 0)와 스모크 2건은 넣지 않았다. 성공 표시(`evaluation/reported_success`)는 이 실험의 포락선 판정(연쇄는 L0·L1 모두 PASS_CLEAN, 격자는 접촉 없이 통과)이며 표준 stage 판정도 E2E도 아니다. 실패 케이스도 모두 들어 있다. 이벤트를 다시 읽어 집계 통과 수가 위 분석과 같음을 확인했고(예: k1g+p1 14/20, 격자 L1 k1g 19/35, 기준선 2/35) 브라우저에서 run 301개 목록과 고정 카드 값을 확인했다. `outputs/tensorboard-view.json`에 `door_relax_envelope_20260930` 키만 추가했다. 보기: `outputs/tensorboard-view.json`의 같은 키의 `url`(집계 22개 run만 필터, 로그 디렉터리에 run이 500개를 넘어 새 run이 기본 미선택이라 왼쪽 목록 맨 위 체크박스로 필터된 run을 선택해야 그래프가 나온다). 케이스별 보기는 필터를 `^0930-door-relax-envelope/(ch|ev|bias|pos)-`로 바꾼다. HParams 표 열 설정은 화면 저장이라 열 때마다 다시 지정해야 한다(권장 열은 같은 키에 기록).
