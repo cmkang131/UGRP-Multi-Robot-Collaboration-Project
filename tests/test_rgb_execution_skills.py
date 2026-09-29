@@ -304,6 +304,8 @@ def test_worker_guard_logs_actual_duration_separately_from_late_poll(monkeypatch
         port.tick(0.)
         runner = port._runners["r2"]
         runner.future.result(timeout=1.)
+        # Integer start keeps (start + wall_age) - start exact at the 2.0 s boundary.
+        runner.started_wall = float(math.floor(runner.started_wall))
         # A completed image-only fixture, then only the supervisor polling
         # clock/image-age changes. Neither cap uses worker completion time.
         runner.observation["observed_at_s"] = -sim_age
