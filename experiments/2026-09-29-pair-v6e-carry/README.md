@@ -500,6 +500,35 @@ cal이 아래 구조 문제를 보여서 **33셀 운반 격자·held-out 운반�
 
 `python3 scripts/agent_lock.py status`가 `claude/render-profile`(렌더 프로필 A/B, PID 94410, 생존)이 잡은 잠금을 보고했고 부하 평균이 20을 넘었다(약 75). 지침에 따라 **물리 실행을 시작하지 않았다.** 실행 준비 완료 명령은 보고서에 있다.
 
+## 결과: yaw 플래그 스모크 4건 + cal 40건 재측정 (소스 `86cdefc9`, 2026-09-29, stage probe)
+
+**stage probe이며 E2E·제어기·학생 성공이 아니다.** 소스 트리 해시 `23351504a85d…`가 스모크·cal에서 같고 계획 이탈 없음(적합 파일 `carry_pair_fit.json` sha256 `52f996b7…` 그대로, 재적합 없음). 정책 `b-v6e`(두 yaw 플래그 모두), cal 배치, `--workers 2 --omp-threads 1 --pf-track`, 모델 호출 0, weld OFF, 진단 패치 없음. raw는 로컬 `outputs/`이며 원격 백업이 아니다: `pair-stage-probes-f2186414-yawsmoke`, `-yawsmoke2`, `-yawcal`(디렉터리 이름의 `f2186414`는 실행 시점 HEAD인 README 커밋이고 소스는 `86cdefc9`와 같다). cases.jsonl sha256 앞 16자: yawcal `ebab748c2d94f08c`, yawsmoke `bdc5c3691792473d`, yawsmoke2 `0b813dc13b162164`. 부하 평균(1분)은 1분마다 `pair-stage-probes-f2186414-yawcal-load.log`에 기록했다(cal 실행 중 9.1–32.3, 중앙값 15.6; wall 2467 s = 41 min; SIM 시간 결과에는 영향 없음). agent_lock은 driver PID로 잡고 종료 때 해제했다(`status` null).
+
+### 스모크 (단계 0)
+4/4 통과: nominal L0·L1, lat−/opp L1·L3(전부 cal 배치). ① HOST_ERROR·예외 0. ② 모든 로봇 `partner_plan_matched` 140–183, `unmatched` 0, `beam_edge.applied` 36–45. ③ leg 끝 PF yaw σ가 cal-2(등록 v6e)보다 작음: 1.9–2.3° 대 2.8–3.0°. 기준 통과.
+
+### cal 40건 (단계 1)
+
+| 항목 | 값 | 사전 기준 | 판정 |
+|---|---|---|---|
+| 전체 통과 | 35/40 | (게이트 아님) | – |
+| leg별 통과 | L0–L6 각 5/5, **L7 0/5** | – | – |
+| **L1** | **5/5** | ≥ 4/5 | 통과 |
+| **L2** | **5/5** | ≥ 4/5 | 통과 |
+| leg 끝 3자유도 평균 NEES (80 표본) | **2.25** (중앙값 1.70) | [1.5, 6] | 통과 |
+| ±2σ 커버리지 x / y / yaw | 100 % / 100 % / **93.8 %** | yaw ≥ 90 % | 통과 |
+
+- 비교(같은 40건, 기준선 정책): 예전 `b-v6e`(= `b-v6e-base`)의 cal-2(정직한 b 0.00233)는 L1 0/5, L2 0/5 `SELF_POSE_UNCERTAIN`(yaw), 전체 23/40이었다. 이제 L1·L2가 5/5다. 개선폭은 yaw σ가 게이트 밖으로 자라지 않게 된 것(leg 끝 σ 약 1.9–2.3° 대 2.8–3.0°)이며, 이 표는 **같은 cal 배치**의 결과라 독립 검증이 아니다(b는 이 cal 자료로 적합했다). 독립 검증은 held-out(단계 2)이다.
+- 실패 5건은 모두 L7 `PAIR_COLLISION_GUARD`(nominal 3 seed, lat−/opp, yaw+/same)이며 cal-2의 L7 0/5와 같은 원인 계열이다. yaw 플래그의 판정 대상이 아니다. L7은 내려놓기 직전의 마지막 leg이고 이 실패는 아직 진단하지 않았다.
+- 남은 오차: lat−/opp의 r2는 leg 끝 yaw 오차가 4–6°(NEES 7–10, yaw z 2.0–2.5)로 여전히 σ(약 2°)보다 크다. 평균 NEES와 커버리지 기준은 넘었지만 이 셀의 한쪽 로봇은 과신이다(공통 모드 물리 회전은 가장자리로 안 보인다는 분석 절의 한계와 일치). 통과에는 영향이 없었다.
+- 세부: `analysis/nees_yawcal.txt`(스크립트 `analysis/nees_pf.py`).
+
+### 판정
+사전 등록 단계 1 기준(L1·L2 각 ≥ 4/5, NEES ∈ [1.5, 6], yaw 커버리지 ≥ 90 %)을 **모두 충족**했다. 계획대로 다음은 단계 2(held-out `hA`)이지만 이번 작업 범위 밖이라 시작하지 않았다. 절제 1b(`b-v6e-pm`, `-edge`)도 돌리지 않았다.
+
+### TensorBoard
+스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e-yaw`(run 41개 = 경우 40 + 집계 1, `collection.json` sha256 `9a5eba0cd3fc922e419343cad908bcf9f6a9b904d0a6f36875cfe74c9bf42035`), 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e-yaw`. 스모크 4건은 cal과 같은 경우 이름이라 넣지 않았다(raw는 위에 있음). EventAccumulator로 경우별 `offline/stage_pass` 합 35 = cases.jsonl 통과 35, 집계 `pass_rate` 0.875를 확인했다. `outputs/tensorboard-view.json`에는 키 `pair_stage_probes_v6e_yaw_20260929` 하나만 추가했다(run filter `^0929-pair-stage-probes-v6(c(-carry)?|e|e-yaw)/`로 v6c·v6e 기준선과 함께 보임). TensorBoard 서버가 떠 있지 않았고 새로 시작하지 않았다(브라우저 표시는 확인하지 못했다).
+
 ## TensorBoard
 
 - **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e`, run 106개(경우별 98 + 그룹 집계 `ALL-*` 8). `collection.json` sha256 `ec6f3639cf33b470cbda4fea2501bb8b65fae61c9fd9881e2a7bcbce3ad0ae9b`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e`(빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`). 기존 스냅샷은 건드리지 않았다.
