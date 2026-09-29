@@ -83,8 +83,8 @@ def _load(path: Path):
     return json.loads(path.read_text()) if path.is_file() else None
 
 
-def analyze_case(case_dir: Path) -> dict:
-    """Per-robot frame statistics of one case directory."""
+def analyze_case(case_dir: Path, t_max: float | None = None) -> dict:
+    """Per-robot frame statistics of one case directory (optionally only frames with t <= t_max)."""
     robots = (_load(case_dir / 'robots.json') or {})
     frames_dir = case_dir / 'frames'
     per_robot = {}
@@ -92,6 +92,8 @@ def analyze_case(case_dir: Path) -> dict:
         records = (robots.get(rid) or {}).get('frames', [])
         gate, det, tags = [], [], []
         for rec in records:
+            if t_max is not None and rec.get('t', 0) > t_max:
+                continue
             path = frames_dir / rid / f'{rec["frame"]:05d}.jpg'
             if not path.is_file():
                 continue
@@ -148,7 +150,7 @@ def compare_case_dirs(a: Path, b: Path) -> dict:
             'result_keys_differing': rdiff, 'result_equal': not rdiff}
 
 
-def analyze_run(run_dir: Path, frames: bool = True) -> dict:
+def analyze_run(run_dir: Path, frames: bool = True, t_max: float | None = None) -> dict:
     """One probe output directory: rows plus (optionally) frame statistics per case."""
     rows = [json.loads(line) for line in (run_dir / 'cases.jsonl').read_text().splitlines() if line.strip()]
     manifest = _load(run_dir / 'manifest.json') or {}
@@ -169,7 +171,7 @@ def analyze_run(run_dir: Path, frames: bool = True) -> dict:
             else row.get('render_profile'),
             'pf': {'est_vs_gt_at_ref': row.get('est_vs_gt_at_ref'), 'sigma_yaw_max': row.get('sigma_yaw_max'),
                    'std_xy_at_ref': {r: (v or {}).get('std_xy_m') for r, v in (row.get('own_at_ref') or {}).items()}},
-            'frames': analyze_case(cdir) if frames and cdir.is_dir() else None}
+            'frames': analyze_case(cdir, t_max) if frames and cdir.is_dir() else None}
     return {'dir': str(run_dir), 'render_profile': manifest.get('render_profile'),
             'environment': manifest.get('environment'), 'cases': cases}
 
@@ -244,6 +246,7 @@ def main(argv=None) -> int:
     p.add_argument('--compare', nargs=2, metavar=('CASE_DIR_A', 'CASE_DIR_B'),
                    help='stage 0: compare two executions of one case (frame bytes, result.json)')
     p.add_argument('--no-frames', action='store_true')
+    p.add_argument('--t-max', type=float, help='only frames up to this SIM time (matched windows across arms)')
     p.add_argument('--out', type=Path)
     args = p.parse_args(argv)
     result = {'schema': 'ugrp.render_profile_ab_analysis.v1'}
@@ -253,7 +256,7 @@ def main(argv=None) -> int:
     for spec in args.run:
         head, _, path = spec.partition('=')
         arm, _, name = head.partition(':')
-        runs[name] = {'arm': arm, **analyze_run(Path(path), frames=not args.no_frames)}
+        runs[name] = {'arm': arm, **analyze_run(Path(path), frames=not args.no_frames, t_max=args.t_max)}
         by_arm.setdefault(arm, []).append(runs[name])
     result['runs'] = runs
     result['by_arm'] = {arm: aggregate(rs) for arm, rs in by_arm.items()}

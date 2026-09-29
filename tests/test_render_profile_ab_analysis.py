@@ -96,3 +96,15 @@ def test_aggregate_pools_cases_by_stage_and_computes_rates():
     assert agg['r1']['gate_pass_rate'] == 0.65 and agg['r2']['gate_pass_rate'] == 1.0
     assert agg['r1']['reject_dark'] == 7 and agg['r1']['pf_xy_err_m_mean'] == 0.02
     assert agg['wall_per_sim_median'] == 2.0
+
+
+def test_analyze_case_time_window(tmp_path):
+    d = tmp_path / 'case'
+    (d / 'frames' / 'r1').mkdir(parents=True)
+    records = []
+    for i in range(4):
+        (d / 'frames' / 'r1' / f'{i:05d}.jpg').write_bytes(_jpeg(_textured(i)))
+        records.append({'frame': i, 't': 1.0 + i, 'commanded_servo': {'1': 2000}, 'report': {}})
+    (d / 'robots.json').write_text(json.dumps({'r1': {'frames': records}}))
+    assert A.analyze_case(d)['r1']['frames'] == 4
+    assert A.analyze_case(d, t_max=2.0)['r1']['frames'] == 2
