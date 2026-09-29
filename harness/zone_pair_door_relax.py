@@ -8,6 +8,11 @@ patches, so ``b-v6e`` / ``b-v6g`` stay byte-identical (``tests/test_zone_pair_re
 Folding a variant into the registered closure (``zone_own_guards.py``, ``zone_pair_v6_policy.py``, ...) is a
 separate, later step that needs a new bundle number and resealing; nothing here reserves one.
 
+Scope: ``install`` patches ``SweepGuard.margin`` (and the gate names) for the WHOLE worker process, i.e. for every
+``SweepGuard`` call of every robot and every controller state, not only the door legs. The stage-probe runner therefore
+allows b-v6h for the carry and setdown stages only (``harness.pair_stage_probe.DOOR_RELAX_STAGES``); one case runs
+per worker subprocess, so the patch never leaks into another case.
+
 What is relaxed (everything reads only the robot's own estimate, its own issued commands and the static map):
 
 * ``SweepGuard.margin`` = ``BASE_MARGIN_M + residual + K_SIGMA*sigma_xy + K_SIGMA*sigma_yaw*lever`` (registered:

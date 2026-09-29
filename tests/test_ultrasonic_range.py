@@ -303,7 +303,8 @@ def test_new_modules_are_outside_existing_bundle_closures():
 
 def test_executors_never_touch_the_diagnostic_api():
     """Only the reading (measure/due) may reach a controller; diagnostics stay in tests/analysis."""
-    allowed = {'sim/ultrasonic_range.py', 'scripts/analyze_ultrasonic_carry_height.py'}
+    allowed = {'sim/ultrasonic_range.py', 'scripts/analyze_ultrasonic_carry_height.py',
+               'scripts/door_ultrasonic_sweep.py'}    # offline sensor characterisation, no controller
     bad = []
     for path in list((ROOT / 'harness').glob('*.py')) + list((ROOT / 'scripts').glob('*.py')) + list((ROOT / 'sim').glob('*.py')):
         rel = str(path.relative_to(ROOT))
