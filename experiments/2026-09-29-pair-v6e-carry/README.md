@@ -434,6 +434,72 @@ cal이 아래 구조 문제를 보여서 **33셀 운반 격자·held-out 운반�
 
 이 절은 문서와 오프라인 분석 스크립트뿐이다(`harness/`·`scripts/`·`tests/` 미변경, 소스 트리 해시 불변). 저장소 테스트는 돌리지 않았다(코드가 바뀌지 않았고 분석 스크립트는 `harness.ultrasonic_map`을 읽기 전용으로 import한다). 스크립트는 각각 한 번씩 실행해 `.txt`에 저장했다.
 
+## yaw 플래그 구현과 사전 등록 재측정 계획 (2026-09-29, 소스 `86cdefc9`에 고정)
+
+조정자 결정(추천 1 구현; 파트너 오프셋 전달·초음파 yaw·yaw 게이트/정렬 허용오차 변경은 하지 않음)에 따른 구현이다. **물리 시뮬은 아직 돌리지 않았다**(아래 "실행 상태"). 이 절의 모든 수치는 기록된 cal raw의 재생이며 제어기 결과가 아니다.
+
+### 무엇을 넣었나 (기본 OFF, 다른 정책 출력 바이트 불변)
+
+| 플래그 | 정책 필드 | 내용 | 파일 |
+|---|---|---|---|
+| (i) 쌍 평균 플랜트 yaw 모델 | `carry_pair_yaw` | 운반 중 PF의 yaw 예측 목표 = (자기 loaded 플랜트 yaw 목표 + 계획에서 유도한 파트너 명령의 yaw 목표)/2. x/y는 자기 플랜트 그대로 | `harness/owncam_localizer.py`(`pair_plan`, `_partner_of`), `harness/owncam_carry_v6e.py`(`set_partner_plan`), `harness/zone_pair_executor.py` |
+| (ii) 자기 RGB 빔 아랫 가장자리 상대 yaw | `carry_beam_edge` | 손목 RGB의 빔 띠 아랫 가장자리 기울기 변화/`slope_to_yaw_ratio` = 로봇-빔 상대 yaw 변화. 증분을 모든 입자 yaw에 더한다 | `harness/own_beam_edge.py`(신규), `harness/owncam_pose_source.py::on_frame`, `localizer.apply_relative_yaw` |
+
+정책(`harness/zone_pair_v6_policy.py`): `b-v6e` = 두 플래그 모두, `b-v6e-pm` = (i)만, `b-v6e-edge` = (ii)만, 나머지 필드는 모두 같다(테스트로 고정). **주의: 이름 `b-v6e`의 뜻이 바뀌었다.** 예전 raw(`carry@b-v6e:…`, cal1·cal2·스모크·진단)의 `b-v6e`는 이제 `b-v6e-base`(= dr + lag + 내려놓기 플래그 2개)와 같다. 예전 raw를 새 `b-v6e`와 섞어 합산하지 않는다. `PROBE_VERSION` 0.7.0. 둘 다 `carry_dr_model`이 필요하다(PF의 입자별 yaw-rate 편향 std를 변형별 cal 적합값으로 바꾸므로; 없으면 `PairTeam`이 거부).
+
+**입력 경계.** (i)의 파트너 명령은 통신·GT·상태 채널 없이 계획에서 유도한다(아래). (ii)는 자기 RGB 프레임, 자기 발행 서보 명령, 자기 load 상태(자기 명령으로 판단)만 쓴다. 초음파·GT·파트너 오프셋은 쓰지 않는다. 게이트(σ_yaw 3°/2.5°, 0.6 s/0.4 s dwell)·스윕 가드·정렬 허용오차는 그대로다.
+
+### 파트너 명령이 통신·GT 없이 유도되는가 (코드로 확인, 결론: 된다)
+
+1. 운반 leg 명령은 `RoutedM2.door_schedule`의 함수 `leg_command(sign)`이 만든다: 경로 leg `(a, b) = plan['route'][seg:seg+2]`(정적 지도·주문서의 경로 계획)에서 `dx, dy`, 축은 `abs(dy) > 1e-6`, 크기 `SPEED_M_S`/게인 상수, 방향 `sign`. `turn = 0`이다.
+2. `sign`은 역할 상수 `carry_role_sign(rid)`(r1 = +1, r2 = -1; 예전 코드의 `1. if self.rid == 'r1' else -1.`과 같은 식)이다. 두 로봇은 같은 경로 leg를 서로 마주 보고 든다. 파트너 명령 = 같은 함수에 `carry_role_sign(execution.partner_id)`를 넣은 값이다. `partner_id`는 job의 쌍 구성(정적)이다. 입력은 `plan`(정적)과 역할뿐이며 파트너 프로세스의 어떤 출력도 읽지 않는다.
+3. 유도 결과는 `claims['segments'][-1]['pair_partner_command']`(source = "route plan + role sign (no message)")로 기록된다. 테스트 `test_partner_command_is_derived_from_the_plan_and_the_role_only`는 유도한 파트너 벡터가 **다른 로봇의 실제 own 스케줄 명령과 같음**을 축·옆 이동 두 leg에서 확인한다(파트너 상태 채널을 읽지 않고도 같다).
+4. PF는 발행된 own 명령이 계획된 own 명령과 정확히 같고 그 leg 시간 창 안일 때만 파트너 벡터를 쓴다(`_partner_of`). 어긋난 명령은 `pair_unmatched`로 세고 registered 예측으로 돌아간다. 실행 기록 `carry_yaw_v6e`에 로봇별 `partner_plan_matched/unmatched`가 남는다.
+5. 가정과 한계(정직하게): 파트너가 실제로는 그 leg를 그대로 수행한다고 가정한다(양쪽 스케줄이 같은 시간 창을 가진다는 `_wait_carry` 계약). 파트너가 실패·정지하면 모델이 틀리지만 그때는 쌍 운반이 이미 실패다. 파트너 상태 채널(`aligning/ready/lift/carry`)은 쓰지 않는다. **GT나 상태 채널이 필요하지 않았으므로 중단 조건은 발동하지 않았다.**
+
+### 빔 가장자리 측정 (`harness/own_beam_edge.py`)
+
+- 마스크(PIL HSV 0–255): H 25–90, S > 100, V > 60. 열 140..500(4 간격), 행 40..300에서 열마다 첫 run의 아랫 경계를 잡아(20 px 초과) 20열 이상이면 직선 적합, 기울기를 쓴다. 분석의 `edge_line`과 같다.
+- 추적기: 적재 중이고 팔 서보(2–6)가 3 s 안 변했으면 대기, 처음 2개 표본 평균이 기준 기울기, 이후 최근 3개 중앙값−기준 = 누적 상대 yaw(÷ratio), **증분**만 PF에 준다(증분이 telescope하므로 누적 이동 = 평활한 측정 1회, 프레임 잡음이 랜덤워크로 쌓이지 않는다). 프레임 간격 ≥ 0.5 s, 한 걸음 0.03 rad 초과는 거절(5회 연속이면 기준 재시작), 서보 변화·적재 해제 때 기준 재시작(이미 준 이동은 유지).
+- 보이지 않는 것: 빔 자체의 공통 회전(common mode)과 집게 yaw 오프셋은 이 뷰에 없다. 그 몫은 입자별 yaw-rate 편향 b가 맡는다.
+
+### 공통 모드 b와 비율: cal 자료로만 적합 (`fit_carry_pair_yaw.py` → `carry_pair_fit.json`)
+
+입력은 cal1 raw 3개(`ece38792-cal`, `a704ecc6-calB2`, `a704ecc6-calB`; `refit_carry_dr_cal.py`와 같은 raw)뿐이다. 격자·held-out은 읽지 않았고, cal2(`d08818ef-cal2`)는 적합에 넣지 않고 복제 확인으로만 출력했다. 구현된 추정기(기록된 프레임에 실제 추적기, 기록된 명령의 플랜트 재생, 반전 명령 = 유도한 파트너)를 케이스·로봇별로 돌려 (GT yaw 변화 − 추정)/창 길이의 셀 균형 RMS를 b로 쓴다(48 case-robot, 3 셀).
+
+| 변형 | b [mrad/s] (cal1 적합) | cal2 복제(적합 밖) | 비고 |
+|---|---:|---:|---|
+| 등록 v6e(재생) | 2.28 | 2.28 | 등록값 2.331(PF 기반)과 일치 → 재생 검증 |
+| `pm`(b-v6e-pm) | 1.90 | 1.88 | |
+| `edge`(b-v6e-edge) | 1.87 | 1.84 | 자기 모델 + 가장자리 |
+| `pm+edge`(b-v6e) | 1.57 | 1.54 | |
+
+`slope_to_yaw_ratio` = 1.065(기울기 변화 = 1.065 × 상대 yaw 변화, 상관 0.9996, 잔차 sd 0.54 mrad, 48 case-robot). 분석 절의 0.96(전 코호트, 다른 창 정렬)과 다르므로 cal 값으로 고정했다. 즉 **b는 등록값의 약 0.69배**(pm+edge)라 σ가 게이트에 도달하는 시간이 약 34 s로 늘 뿐이다(분석 표의 E2). 전 경로(170.8 s)를 3°로 유지하지 못하는 한계는 그대로다(분석 절). 이 수치는 기록 재생이며 **PF NEES·커버리지는 아래 cal 재측정으로만 확인된다.**
+
+### 테스트 (관련 테스트만, 전체 CI 안 돌림)
+
+`tests/test_zone_pair_v6e_yaw.py` 15건: 정책 필드(세 정책만 ON, 서로 한 플래그 차이, `b-v6e-base` = 예전 b-v6e), 변형 바인딩·적합 파일 출처, 파트너 명령의 계획·역할 유도, OFF일 때 door_schedule이 등록 식과 비트 동일, 쌍 평균이 반대칭 yaw 결합을 상쇄하고 x/y·비적재는 그대로, 국소 PF 난수 흐름 불변(기존 골든 `test_flags_off_localizer_is_bit_identical_to_main_1e7bdfe0`도 통과), 합성 띠 기울기 회복·추적기 telescope·재시작·글리치 거절, 기록된 프레임 재생(커밋된 48행 상관 > 0.99, 잔차 sd < 2 mrad; cal raw가 있으면 실제 프레임을 다시 읽어 GT 상대 yaw와 3 mrad 이내 + 커밋 행과 비트 동일). 기존 `test_zone_pair_v6e.py`(정책 목록), `test_owncam_bootstrap_v6b.py`(정책 필드 목록), `test_zone_pair_executor.py`(동결 해시 목록에 두 파일 새 해시)를 필드 추가에 맞춰 고쳤다. 봉인 해시 테스트 5건은 등록 전이라 이전과 같이 실패한다(예상, 등록 때 해결).
+
+### 사전 등록 재측정 계획 (측정 전 고정; 소스 `86cdefc9`, 적합 파일 `carry_pair_fit.json` sha256 `52f996b7c5e793439211a3c1b9b42c5a69b41a790804c7eeed931896c032d5a1`)
+
+소스·적합 파일은 코호트 동안 바꾸지 않는다. 결과를 보고 임계값·판정 기준을 바꾸지 않는다. 각 단계는 **앞 단계 통과 시에만** 진행한다(스모크 우선·조건부). 러너는 위 "공통 조건"과 같다(`--workers 2 --omp-threads 1`, 사전분포 e2e, seed 911, 기록 `--pf-track`). 성공 판정은 위 "성공 판정" 표 그대로다.
+
+| 단계 | 내용 | 통과 기준(사전 고정) | 미통과 시 |
+|---|---|---|---|
+| 0 스모크 | cal 배치(`--setup-variant cal`) `b-v6e` 4건: nominal L0·L1, lat−/opp L1·L3 | ① HOST_ERROR·예외 0 ② `carry_yaw_v6e`에서 모든 로봇 `partner_plan_matched` > 0, `partner_plan_unmatched` = 0(leg 명령 안), `beam_edge.applied` > 0(운반 10 s 이상인 케이스) ③ 계획된 leg에서 PF yaw σ가 등록 v6e 대비 같거나 작음 | 멈추고 배선 진단(소스 수정은 새 커밋·새 코호트) |
+| 1 cal 40건 | `--stage carry --policies b-v6e --cells nominal yaw+/same lat-/opp --legs 0..7 --nominal-seeds 911 912 913 --setup-variant cal --pf-track`(40건) | **① L1과 L2 각각 cal 5건 중 ≥ 4건 통과**(nominal 3 seed + yaw+/same + lat−/opp; 기준선 `b-v6e-base`(소스 d08818ef, 정직한 b)는 cal-2에서 L1 0/5, L2 0/5 `SELF_POSE_UNCERTAIN`(yaw)). L7 `COLLISION_GUARD`(cal-2 0/5)는 yaw 문제가 아니므로 이 플래그의 판정 대상이 아니며 보고에 따로 적는다. ② 정직성: leg 끝 (x, y, yaw) 3자유도 평균 NEES ∈ [1.5, 6]와 yaw ±2σ 커버리지 ≥ 90 % | 정직성만 실패하면 **cal 자료로만** `fit_carry_pair_yaw.py`를 한 번 다시 적합·재커밋 후 1번 반복(1회 한정). ①이 실패하면 멈추고 보고(격자·held-out 시작 안 함) |
+| 1b 절제(정보용, 게이트 아님) | 1이 통과하면 cal에서 leg 1·2·3만 `b-v6e-pm`, `b-v6e-edge`(각 15건) | 어느 플래그가 통과를 만드는지 기록. 임계 없음 | — |
+| 2 진짜 held-out | 배치 `hA`(legs 0 1 3 6 7 × nominal·yaw−/opp, `b-v6e`, 10건, `--nominal-seeds 914`)를 먼저. 통과하면 `hB`, `hC` 각각 같은 10건 | 배치당 **≥ 8/10**, 세 배치 합 ≥ 24/30, 격자보다 20 %p 넘게 낮으면 과적합 의심으로 기록. hA 미통과 시 hB·hC는 돌리지 않는다 | 멈추고 원인 진단 보고. 결과를 보고 소스를 고치지 않는다 |
+| 3 운반 33셀 격자 | `--policies b-v6e`(33건, nominal 3 seed). 기준선은 `b-v6c` 0/33과 `b-v6e-base`(측정된 cal·스모크 값, 격자는 미측정)를 인용 | **≥ 26/33**이고 legs 0·1·3·6·7 각각 최소 절반 이상 | 임계에 못 미치면 실패 원인을 가르는 셀만 `b-v6e-pm`/`b-v6e-edge`/`b-v6e-base`로 절제 |
+
+- 정직성 지표(NEES·커버리지) 산출은 `refit_carry_dr_cal.py`와 cal 게이트 판정(위 "cal 게이트 판정")과 같은 방식이다.
+- 보고 항목: 통과율, 실패 원인 코드, leg 끝 yaw 오차 분포(GT vs PF, eval-only), σ가 게이트에 닿은 시각, `carry_yaw_v6e` 카운터, NEES·커버리지. 이 측정은 stage probe이며 제어기·E2E·학생 성공이 아니다.
+- 등록(v81/2.14.0, revision v6e)은 측정이 끝난 뒤 최종 소스로 한 번만 한다.
+
+### 실행 상태 (이 절 작성 시점)
+
+`python3 scripts/agent_lock.py status`가 `claude/render-profile`(렌더 프로필 A/B, PID 94410, 생존)이 잡은 잠금을 보고했고 부하 평균이 20을 넘었다(약 75). 지침에 따라 **물리 실행을 시작하지 않았다.** 실행 준비 완료 명령은 보고서에 있다.
+
 ## TensorBoard
 
 - **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e`, run 106개(경우별 98 + 그룹 집계 `ALL-*` 8). `collection.json` sha256 `ec6f3639cf33b470cbda4fea2501bb8b65fae61c9fd9881e2a7bcbce3ad0ae9b`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e`(빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`). 기존 스냅샷은 건드리지 않았다.
