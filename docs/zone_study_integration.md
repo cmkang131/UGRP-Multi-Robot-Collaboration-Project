@@ -1,3 +1,7 @@
+현재 미실행 후보는 `zone-pair-v81-carry-dr-general`(workflow `2.14.0`)이다. v81(b-v6g 운반 단계 probe)은 main의 v80에 opt-in 공동 운반 정책 `b-v6g`를 더한 것이다. 번호 v81과 workflow 2.14.0은 2026-09-29 조정자가 배정했다. v80은 `RETIRED_BUNDLE_IDS`로 옮겼고, v6d 사전 등록은 v6c처럼 역사 기록(봉인 커밋 `48f9872a`의 blob으로만 감사)이 되어 바이트가 그대로 남는다. 현재 v6 계열 초안은 `experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json`(`CURRENT_REVISION = v6e`)이다. `b-v6g`는 b-v6d 위에 (1) 운반 중 PF가 하중 플랜트의 추측 항법 오차 모델(모션 게이트 백색 잡음, 구간별 yaw 편향, 옆 이동 돌파 램프와 교차축 표류)을 쓰고, (2) 옆 이동 길이를 지연 플랜트 역산으로 정하며, (3) 운반 yaw를 둘의 평균 플랜트로 예측하고 손목 RGB의 빔 아래 가장자리 기울기 변화를 상대 yaw로 더하며, (4) 프레임 자신의 광학 검정을 기준으로 영상 유효성을 판단하고, (5) 내려놓은 뒤 후진을 같은 스윕 가드로 한정한다. 가드·게이트 문턱, 다른 pair 정책, 연구 층은 바뀌지 않았다. 근거와 결과는 `experiments/2026-09-29-pair-v6e-carry/README.md`(단계 probe이며 E2E 성공이 아니다; 통과 기준은 hR2 56/70 = 80.0 %로 문턱 그대로이며 문 통과 구간 L0·L1은 6/20이다).
+
+이전 후보 v80의 설명:
+
 현재 미실행 후보는 `zone-pair-v80-align-widehue-finemotion`(workflow `2.13.0`)이다. v80(b-v6d 단계 probe)은 main의 v76에 opt-in 공동 운반 정책 `b-v6d`를 더한 것이다. 번호 v80과 workflow 2.13.0은 2026-09-29 조정자가 배정했다. v76은 `RETIRED_BUNDLE_IDS`로 옮겼고, v6c 사전 등록은 v6b처럼 역사 기록(봉인 커밋 `be95f8b0`의 blob으로만 감사)이 되어 바이트가 그대로 남는다. 현재 v6 계열 초안은 `experiments/2026-09-29-pair-v6d-align/prereg_v6d.json`(`CURRENT_REVISION = v6d`)이다. `b-v6d`는 (1) 가까운 r1 뷰(p45·inspect)에서 빔 방향을 노랑 계열까지 포함한 색 범위(hue 25-54)로 추정하고, (2) align 단계에서 PF가 M1 `fine` 동작 프로파일로 예측한다. 검색 자세의 색 범위, 나머지 pair 정책, 연구 층은 바뀌지 않았다. 근거와 결과는 `experiments/2026-09-29-pair-v6d-align/README.md`(단계 probe이며 E2E 성공이 아니다).
 
 이전 후보 v76의 설명:

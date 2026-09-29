@@ -6,7 +6,7 @@ of that commit, so checking it against the current tree broke every later PR
 that touched a pinned source. It is now audited only against the blobs of its
 registration commit (``verify_v6_historical``), and ``load_config`` refuses
 to prepare or run it from the current tree. New v6-family runs register their
-own revision and bundle (v6b, v6c, v6d) and set ``CURRENT_REVISION``.
+own revision and bundle (v6b, v6c, v6d, v6e) and set ``CURRENT_REVISION``.
 
 2026-09-29 (manager decision A, PR #256): the v6b DRAFT (PR #261, bundle v75,
 opt-in ``stationary_bootstrap`` policies) is historical in the same way. It
@@ -29,6 +29,14 @@ historical in the same way as v6b: its bytes stay, and it is audited only agains
 sealing commit ``be95f8b0`` (``verify_v6_historical(revision='v6c')``). The current DRAFT is v6d
 (bundle v80, ``REVISION_POLICIES['v6d']``): the opt-in ``beam_wide_hue`` / ``align_fine_motion`` policy
 ``b-v6d`` on top of b-v6c, with v5h and b-only as matched controls.
+
+2026-09-29 (coordinator, b-v6g carry stage probes): the v6d DRAFT pins the executor, policy, localizer and
+contract modules the carry flags change. It is historical in the same way as v6c: its bytes stay, and it is
+audited only against the blobs of its last sealing commit ``48f9872a`` (``verify_v6_historical(revision='v6d')``).
+The current DRAFT is v6e (bundle v81, ``REVISION_POLICIES['v6e']``): the opt-in carry policy ``b-v6g`` (dead-reckoning
+PF model with lateral breakaway ramp and cross-axis drift, pair-mean carry yaw, beam-edge relative yaw, optical-black
+image validity, bounded retreat) on top of b-v6d, with v5h and b-only as matched controls. The L7 end-inset policy
+``b-v6g-l7`` is defined (opt-in route change) but is not part of the registered run set.
 """
 import copy
 import hashlib
@@ -44,14 +52,16 @@ PREREG = ROOT/'experiments/2026-09-28-zone-pair-v6/prereg_v6.json'
 PREREG_V6B = ROOT/'experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json'
 PREREG_V6C = ROOT/'experiments/2026-09-29-pair-v6c/prereg_v6c.json'
 PREREG_V6D = ROOT/'experiments/2026-09-29-pair-v6d-align/prereg_v6d.json'
+PREREG_V6E = ROOT/'experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json'
 V5H = ROOT/'experiments/2026-09-27-zone-pair-dev/prereg_v5h.json'
 V6_REGISTRATION_COMMIT = '3c26acddec066adcd9164e6d2a6f51c1261c5f66'   # PR #259 REGISTERED conversion
 V6B_DRAFT_COMMIT = '15793691b3af136769cdf0b090e722daddf80ab4'         # PR #261 last v6b DRAFT sealing
 V6C_DRAFT_COMMIT = 'be95f8b018bb110e2fc97ec5a3c90e357a949449'         # PR #263 v6c sealing (merge with #256/#257/#249)
+V6D_DRAFT_COMMIT = '48f9872ab5175f1369ff2980b187cd8bc2b1a6b2'         # PR #265 last v6d DRAFT sealing (review fixes)
 HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT), 'v6b': (PREREG_V6B, V6B_DRAFT_COMMIT),
-                        'v6c': (PREREG_V6C, V6C_DRAFT_COMMIT)}
-HISTORICAL_STATUS = {'v6': 'REGISTERED', 'v6b': 'DRAFT', 'v6c': 'DRAFT'}
-CURRENT_REVISION = 'v6d'      # current v6-family DRAFT (b-v6d stage probe, bundle v80)
+                        'v6c': (PREREG_V6C, V6C_DRAFT_COMMIT), 'v6d': (PREREG_V6D, V6D_DRAFT_COMMIT)}
+HISTORICAL_STATUS = {'v6': 'REGISTERED', 'v6b': 'DRAFT', 'v6c': 'DRAFT', 'v6d': 'DRAFT'}
+CURRENT_REVISION = 'v6e'      # current v6-family DRAFT (b-v6g carry stage probe, bundle v81)
 
 
 def contract(revision=None):
@@ -80,6 +90,12 @@ def contract(revision=None):
              # its calibration file (the profile the PF selects during align).
              'harness/owncam_pair_beam_v6d.py','harness/owncam_align_motion_v6d.py',
              'experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json',
+             # v6e/v6f/v6g flags: the carry dead-reckoning PF model and its three fit files (loaded at run time), the
+             # beam-edge relative yaw, and the optical-black image validity / bounded retreat live in already pinned modules.
+             'harness/owncam_carry_v6e.py','harness/own_beam_edge.py',
+             'experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json',
+             'experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json',
+             'experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json',
              # PR #249: the team host picks the robot model and spawn keepouts through these on
              # every map (v2 maps delegate to the legacy path), so they are in the run closure.
              'sim/zone_masterpi_v3_scene.py','sim/zone_model_conventions.py')
@@ -145,7 +161,28 @@ def contract(revision=None):
                                  'dev seed (s91) with the arm lowered at the box, so its use in the wrist-camera '
                                  'look postures of the align states is checked only by the offline replay and the '
                                  'stage probe. A provider bound to the profile is refused by policies without the '
-                                 'flag')},
+                                 'flag'),
+            'carry_dr_model':('v6e: while the pair carries, the tag PF predicts with the loaded plant\'s calibrated '
+                              'dead-reckoning error model (motion-gated white noise, a constant per-leg yaw-rate bias, '
+                              'loaded slip-scale spread) instead of the rest-diffusing rate noise; the gate thresholds '
+                              'are unchanged'),
+            'carry_lateral_lag':('v6e: the open-loop lateral carry leg length inverts the calibrated first-order-lag '
+                                 'loaded plant instead of the constant lateral odometry scale'),
+            'carry_pair_yaw':('v6e: the PF carry yaw prediction is the mean of the own and the partner\'s loaded-plant '
+                              'yaw targets; the partner command is derived from the static route plan and the role, '
+                              'never received'),
+            'carry_beam_edge':('v6e: the slope change of the carried beam\'s lower edge in the own wrist RGB is added '
+                               'to the PF yaw as the robot-minus-beam relative-yaw change'),
+            'carry_dr_general':('v6g: carry_dr_model plus a lateral breakaway ramp on the lateral command, a '
+                                'per-particle cross-axis drift ratio proportional to the travelled distance, and yaw '
+                                'biases refitted on several placements (carry_general_fit.json); the gate and guard '
+                                'thresholds are unchanged'),
+            'own_image_ob':('v6f: the per-step own-image validity measures dark against the frame\'s optical-black '
+                            'reference instead of the fixed level'),
+            'bounded_retreat':('v6f: after release the reverse retreat is bounded by the unchanged sweep guard: a '
+                               'vetoed reverse command is not issued and the robot holds'),
+            'carry_end_inset_m':('v6g-l7 (not in the registered run set): the last route point moves back along the last '
+                                 'leg by this many metres; results with it are reported separately')},
         'v6d_constants':{'wide_hue_lo':WIDE_HUE_LO,'wide_hue_postures':list(WIDE_HUE_POSTURES),
                          'wide_lime_bgr':list(wide.WIDE_LIME_BGR),
                          'motion_profile':fine.PROFILE,'motion_calibration':fine.CALIBRATION,

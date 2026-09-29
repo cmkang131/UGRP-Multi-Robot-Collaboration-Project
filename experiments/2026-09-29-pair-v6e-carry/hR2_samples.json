@@ -1,0 +1,437 @@
+{
+ "rule": "hR2: carry entries = the END of the hG grasp_lift runs (GT poses + the recorded PF posterior at grasp_lift stop).\n\nRule (fixed in the README before any hG case ran): every hG grasp_lift case with category PASS and a stage_stop checkpoint, in hG\nsample order, no selection. Usage: extract_hR2_samples.py <hG raw dir name suffix, e.g. 19c8f0b2-ghG>",
+ "source_raw": "19c8f0b2-ghG",
+ "skipped_not_pass": [],
+ "samples": [
+  {
+   "id": "hR2_01",
+   "source_case_id": "grasp_lift@b-v6g:teacher:hG01:s911:pPOST:VhG",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-19c8f0b2-ghG/cases/grasp_lift_b-v6g_teacher_hG01_s911_pPOST_VhG",
+   "note": "grasp_lift end of hG01 (19c8f0b2-ghG)",
+   "beam_xyyaw": [
+    0.9998708824251402,
+    0.04932891297853095,
+    -0.0002972745894516343
+   ],
+   "robots": {
+    "r1": [
+     0.5637532118187676,
+     0.04212164569914918,
+     0.004627929128338946
+    ],
+    "r2": [
+     1.4363036679785464,
+     0.04530161544766225,
+     -3.122908067455327
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.0017781813342907515,
+      0.0023323467275068316,
+      0.005477617889332098
+     ],
+     "std_xy_m": 0.023588524442129347,
+     "std_yaw_rad": 0.012048710721102104
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      0.0022240214572193384,
+      0.01158069664547199,
+      0.0006234997440830448
+     ],
+     "std_xy_m": 0.030863578127115047,
+     "std_yaw_rad": 0.011581820090883379
+    }
+   }
+  },
+  {
+   "id": "hR2_02",
+   "source_case_id": "grasp_lift@b-v6g:teacher:hG02:s911:pPOST:VhG",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-19c8f0b2-ghG/cases/grasp_lift_b-v6g_teacher_hG02_s911_pPOST_VhG",
+   "note": "grasp_lift end of hG02 (19c8f0b2-ghG)",
+   "beam_xyyaw": [
+    0.9998863662593818,
+    0.049317794588144774,
+    -0.00031729647386520674
+   ],
+   "robots": {
+    "r1": [
+     0.5637920410532198,
+     0.042119723659181034,
+     0.004608826670096968
+    ],
+    "r2": [
+     1.4362905273338433,
+     0.04534485100331779,
+     -3.122549653378271
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.0026135665955523413,
+      0.003447406569533351,
+      0.005094531208063469
+     ],
+     "std_xy_m": 0.024891298021915052,
+     "std_yaw_rad": 0.012523941576698618
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      0.0036953264761481197,
+      0.011841963980401916,
+      0.0005176450191912707
+     ],
+     "std_xy_m": 0.030361575412143012,
+     "std_yaw_rad": 0.011525137533799615
+    }
+   }
+  },
+  {
+   "id": "hR2_03",
+   "source_case_id": "grasp_lift@b-v6g:teacher:hG03:s911:pPOST:VhG",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-19c8f0b2-ghG/cases/grasp_lift_b-v6g_teacher_hG03_s911_pPOST_VhG",
+   "note": "grasp_lift end of hG03 (19c8f0b2-ghG)",
+   "beam_xyyaw": [
+    0.9998863662593818,
+    0.049317794588144774,
+    -0.00031729647386520674
+   ],
+   "robots": {
+    "r1": [
+     0.5637920410532198,
+     0.042119723659181034,
+     0.004608826670096968
+    ],
+    "r2": [
+     1.4362905273338433,
+     0.04534485100331779,
+     -3.122549653378271
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      0.0027119700117164136,
+      0.003446992001196053,
+      0.005132444350075982
+     ],
+     "std_xy_m": 0.02302143375498863,
+     "std_yaw_rad": 0.011530232082923681
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      0.0024574503092507083,
+      0.011838647964467028,
+      0.00046400683218239536
+     ],
+     "std_xy_m": 0.028506964531428695,
+     "std_yaw_rad": 0.01103996642171908
+    }
+   }
+  },
+  {
+   "id": "hR2_04",
+   "source_case_id": "grasp_lift@b-v6g:teacher:hG04:s911:pPOST:VhG",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-19c8f0b2-ghG/cases/grasp_lift_b-v6g_teacher_hG04_s911_pPOST_VhG",
+   "note": "grasp_lift end of hG04 (19c8f0b2-ghG)",
+   "beam_xyyaw": [
+    0.929839164072001,
+    -0.020445400674040437,
+    -0.06809391307124296
+   ],
+   "robots": {
+    "r1": [
+     0.49392589482229765,
+     0.0007749248458536513,
+     -0.05525634054233227
+    ],
+    "r2": [
+     1.365550389173862,
+     -0.04155325789818207,
+     3.0927734836819942
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      -0.001540633729804397,
+      -0.009122083805703184,
+      0.02294647044125231
+     ],
+     "std_xy_m": 0.023662482487807387,
+     "std_yaw_rad": 0.011148092572455599
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.004780360899590663,
+      0.005464260431913705,
+      0.01563197563675267
+     ],
+     "std_xy_m": 0.02664295744274481,
+     "std_yaw_rad": 0.010184971120204205
+    }
+   }
+  },
+  {
+   "id": "hR2_05",
+   "source_case_id": "grasp_lift@b-v6g:teacher:hG05:s911:pPOST:VhG",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-19c8f0b2-ghG/cases/grasp_lift_b-v6g_teacher_hG05_s911_pPOST_VhG",
+   "note": "grasp_lift end of hG05 (19c8f0b2-ghG)",
+   "beam_xyyaw": [
+    0.929839164072001,
+    -0.020445400674040437,
+    -0.06809391307124296
+   ],
+   "robots": {
+    "r1": [
+     0.49392589482229765,
+     0.0007749248458536513,
+     -0.05525634054233227
+    ],
+    "r2": [
+     1.365550389173862,
+     -0.04155325789818207,
+     3.0927734836819942
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      3.934636918945245e-06,
+      -0.007637838530291948,
+      0.02198329765799034
+     ],
+     "std_xy_m": 0.024067217821230443,
+     "std_yaw_rad": 0.011579845832598884
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.005556545495799758,
+      0.00244136031892548,
+      0.014421166028319554
+     ],
+     "std_xy_m": 0.02611940543687394,
+     "std_yaw_rad": 0.010201451800387952
+    }
+   }
+  },
+  {
+   "id": "hR2_06",
+   "source_case_id": "grasp_lift@b-v6g:teacher:hG06:s911:pPOST:VhG",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-19c8f0b2-ghG/cases/grasp_lift_b-v6g_teacher_hG06_s911_pPOST_VhG",
+   "note": "grasp_lift end of hG06 (19c8f0b2-ghG)",
+   "beam_xyyaw": [
+    0.929839164072001,
+    -0.020445400674040437,
+    -0.06809391307124296
+   ],
+   "robots": {
+    "r1": [
+     0.49392589482229765,
+     0.0007749248458536513,
+     -0.05525634054233227
+    ],
+    "r2": [
+     1.365550389173862,
+     -0.04155325789818207,
+     3.0927734836819942
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      -0.0005982497525793273,
+      -0.005425915085420205,
+      0.020824894495184765
+     ],
+     "std_xy_m": 0.023035001898059352,
+     "std_yaw_rad": 0.010986358298016365
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.005106049506870214,
+      0.0038917155938510695,
+      0.015050058477269701
+     ],
+     "std_xy_m": 0.026966092171180626,
+     "std_yaw_rad": 0.010324792858401374
+    }
+   }
+  },
+  {
+   "id": "hR2_07",
+   "source_case_id": "grasp_lift@b-v6g:teacher:hG07:s911:pPOST:VhG",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-19c8f0b2-ghG/cases/grasp_lift_b-v6g_teacher_hG07_s911_pPOST_VhG",
+   "note": "grasp_lift end of hG07 (19c8f0b2-ghG)",
+   "beam_xyyaw": [
+    0.9999693314662355,
+    0.04960204350929376,
+    -9.054036906410309e-05
+   ],
+   "robots": {
+    "r1": [
+     0.562829265955556,
+     0.04554074054030126,
+     -0.01049244469374562
+    ],
+    "r2": [
+     1.4363212132773426,
+     0.04570754321229677,
+     -3.1347573032785814
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      -0.0016383502888477341,
+      -0.005203837649634724,
+      0.005984002752630335
+     ],
+     "std_xy_m": 0.024445763437240812,
+     "std_yaw_rad": 0.012343233742289553
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.00015687243277651142,
+      0.01396333406199201,
+      0.0014528485749583098
+     ],
+     "std_xy_m": 0.029098476182041304,
+     "std_yaw_rad": 0.011381672240422545
+    }
+   }
+  },
+  {
+   "id": "hR2_08",
+   "source_case_id": "grasp_lift@b-v6g:teacher:hG08:s911:pPOST:VhG",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-19c8f0b2-ghG/cases/grasp_lift_b-v6g_teacher_hG08_s911_pPOST_VhG",
+   "note": "grasp_lift end of hG08 (19c8f0b2-ghG)",
+   "beam_xyyaw": [
+    1.0002380098287253,
+    0.04960723379402858,
+    6.0362501847206975e-05
+   ],
+   "robots": {
+    "r1": [
+     0.563215459972908,
+     0.04682902424381603,
+     -0.018458346463044232
+    ],
+    "r2": [
+     1.436291331280461,
+     0.04396686531519406,
+     -3.136321716659595
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      -0.001671437280992616,
+      -0.005544195564279812,
+      0.006036786463823329
+     ],
+     "std_xy_m": 0.023426521290664085,
+     "std_yaw_rad": 0.01146050099990877
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.006604597258025757,
+      0.008646088604284612,
+      -0.002583054550465036
+     ],
+     "std_xy_m": 0.03196418454733425,
+     "std_yaw_rad": 0.011991718600135924
+    }
+   }
+  },
+  {
+   "id": "hR2_09",
+   "source_case_id": "grasp_lift@b-v6g:teacher:hG09:s911:pPOST:VhG",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-19c8f0b2-ghG/cases/grasp_lift_b-v6g_teacher_hG09_s911_pPOST_VhG",
+   "note": "grasp_lift end of hG09 (19c8f0b2-ghG)",
+   "beam_xyyaw": [
+    0.9999893545204526,
+    0.04959284870516921,
+    2.285215203320059e-05
+   ],
+   "robots": {
+    "r1": [
+     0.5637086139467321,
+     0.045447533327263964,
+     -0.008418711775737239
+    ],
+    "r2": [
+     1.436412627356976,
+     0.04535380408830705,
+     -3.1339582197519076
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      -0.0009489281560178808,
+      0.00017286340679033285,
+      0.003702385481151982
+     ],
+     "std_xy_m": 0.02277306044952495,
+     "std_yaw_rad": 0.01129622991995755
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      -0.0006330667725840122,
+      0.014482265223793658,
+      0.0019804365342190877
+     ],
+     "std_xy_m": 0.02984564508538894,
+     "std_yaw_rad": 0.011299900166837875
+    }
+   }
+  },
+  {
+   "id": "hR2_10",
+   "source_case_id": "grasp_lift@b-v6g:teacher:hG10:s911:pPOST:VhG",
+   "source_raw_dir": "/Users/changmin/projects/ugrp/outputs/pair-stage-probes-19c8f0b2-ghG/cases/grasp_lift_b-v6g_teacher_hG10_s911_pPOST_VhG",
+   "note": "grasp_lift end of hG10 (19c8f0b2-ghG)",
+   "beam_xyyaw": [
+    0.9999444485637553,
+    0.049644987441724533,
+    0.0002464081322428811
+   ],
+   "robots": {
+    "r1": [
+     0.5638671670472183,
+     0.04850561750228628,
+     -0.022535459196091873
+    ],
+    "r2": [
+     1.435234923942886,
+     0.043934538722990316,
+     3.1351064266009456
+    ]
+   },
+   "prior_err": {
+    "r1": {
+     "mean_err_xyyaw": [
+      -0.002806708720507367,
+      -0.007954068230928445,
+      0.005387630156881151
+     ],
+     "std_xy_m": 0.022384104630205803,
+     "std_yaw_rad": 0.010888934315853577
+    },
+    "r2": {
+     "mean_err_xyyaw": [
+      0.0012569497775460903,
+      0.026569355602777872,
+      0.003930925470199131
+     ],
+     "std_xy_m": 0.02851862053516473,
+     "std_yaw_rad": 0.011342256931068637
+    }
+   }
+  }
+ ]
+}
