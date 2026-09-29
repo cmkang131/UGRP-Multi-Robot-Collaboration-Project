@@ -55,9 +55,13 @@ def test_flags_are_off_for_every_registered_policy_and_on_only_for_the_v6e_set()
     assert (lag.carry_dr_model, lag.carry_lateral_lag) == (False, True)
     assert (both.carry_dr_model, both.carry_lateral_lag) == (True, True)
     base = vars(POLICIES['b-v6d'])
-    for p in (dr, lag, both):     # every v6e policy is b-v6d plus the carry flags only
-        assert {k: v for k, v in vars(p).items() if k not in ('name', 'carry_dr_model', 'carry_lateral_lag')} == \
-               {k: v for k, v in base.items() if k not in ('name', 'carry_dr_model', 'carry_lateral_lag')}
+    skip = ('name', 'carry_dr_model', 'carry_lateral_lag')
+    for p in (dr, lag):     # the carry ablations are b-v6d plus the carry flags only
+        assert {k: v for k, v in vars(p).items() if k not in skip} == {k: v for k, v in base.items() if k not in skip}
+    # the combined b-v6e is b-v6d plus both carry flags plus both v6f place flags
+    assert (both.own_image_ob, both.bounded_retreat) == (True, True)
+    skip += ('own_image_ob', 'bounded_retreat')
+    assert {k: v for k, v in vars(both).items() if k not in skip} == {k: v for k, v in base.items() if k not in skip}
     assert REVISION_POLICIES['v6c'] == ('v5h', 'b-only', 'b-v6c')
 
 

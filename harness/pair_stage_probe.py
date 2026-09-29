@@ -44,9 +44,11 @@ PROBE_VERSION = '0.6.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set
 #                                 track (case.pf_track, runner --pf-track) for the error-model consistency check;
 #                                 registered setup variants (SETUP_VARIANTS, runner --setup-variant) for held-out and
 #                                 calibration placements
+#                          0.4.6 (place branch, merged into 0.6.0): b-v6f-a / b-v6f-b / b-v6f policies (own_image_ob, bounded_retreat);
+#                                 image_valid_off also forces valid_frame_ob; run_pair_stage_probes --omp-threads
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
-POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e', 'b-v6f-a', 'b-v6f-b', 'b-v6f')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
 ROLE = {'r1': 'end_neg', 'r2': 'end_pos'}
 
 # Stage registry. ``entry`` is the controller state injected at stage start;

@@ -51,6 +51,15 @@ class PairPolicy:
     # carry_lateral_lag: the open-loop lateral carry leg length inverts the calibrated first-order-lag loaded
     # plant instead of the constant CARRY_ODOM_SCALE['lateral'] (harness/owncam_carry_v6e.py).
     carry_lateral_lag: bool = False
+    # v6f (2026-09-29 stage 5 probe, PR #266 baseline 0/13): the destination set-down.
+    # (1) The per-step own-image validity gate measures "dark" against the frame's own optical-black
+    # reference (the fisheye exterior) instead of the fixed level V < 8, which rejects the
+    # shadowed dark floor at the destination on one robot (harness.zone_pair_vision.valid_frame_ob).
+    own_image_ob: bool = False
+    # (2) After the beam is released (controller state ``released``), the reverse retreat is bounded by
+    # the unchanged sweep guard: a vetoed reverse command is not issued and the robot holds (MoveIt
+    # Task Constructor MoveRelative min_distance 0), instead of failing the whole job.
+    bounded_retreat: bool = False
 
 
 POLICIES = {
@@ -67,8 +76,17 @@ POLICIES = {
                            beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True),
     'b-v6e-lag': PairPolicy('b-v6e-lag', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
                             beam_wide_hue=True, align_fine_motion=True, carry_lateral_lag=True),
+    # b-v6e = the combined candidate: b-v6d + both carry flags + both place flags (stage-4 and stage-5 probes).
     'b-v6e': PairPolicy('b-v6e', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
-                        beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True, carry_lateral_lag=True),
+                        beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True, carry_lateral_lag=True,
+                        own_image_ob=True, bounded_retreat=True),
+    # v6f = b-v6c + own_image_ob + bounded_retreat; the two ablations switch one flag each.
+    'b-v6f-a': PairPolicy('b-v6f-a', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                          own_image_ob=True),
+    'b-v6f-b': PairPolicy('b-v6f-b', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                          bounded_retreat=True),
+    'b-v6f': PairPolicy('b-v6f', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                        own_image_ob=True, bounded_retreat=True),
 }
 # Registered ablation sets. v6 (historical, PR #246/#259), v6b (historical DRAFT,
 # PR #261, bundle v75), v6c (PR #263, bundle v76; sealed, now historical) and

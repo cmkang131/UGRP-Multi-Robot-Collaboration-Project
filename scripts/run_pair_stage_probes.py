@@ -828,17 +828,21 @@ def install_diag_patch(name):
     elif name == 'image_valid_off':
         import importlib
         import harness.zone_pair_vision as vision
-        real = vision.valid_frame
+        grasp = importlib.import_module('harness.zone_pair_grasp')   # imports the names at module load
 
-        def forced(obs, rid, now):
-            IMAGE_VALID_REAL.setdefault(rid, [0, 0])[0 if real(obs, rid, now) else 1] += 1
-            return True
-        forced.__wrapped__ = real
-        vision.valid_frame = forced      # zone_pair_admission / _executor / _guards import it at call time
-        grasp = importlib.import_module('harness.zone_pair_grasp')   # imports the name at module load
-        if not hasattr(grasp, 'valid_frame'):
-            raise RuntimeError('harness.zone_pair_grasp has no valid_frame to patch')
-        grasp.valid_frame = forced
+        def force(real):
+            def forced(obs, rid, now):
+                IMAGE_VALID_REAL.setdefault(rid, [0, 0])[0 if real(obs, rid, now) else 1] += 1
+                return True
+            forced.__wrapped__ = real
+            return forced
+        # valid_frame_ob is the own_image_ob policy's per-step gate (zone_pair_vision.frame_gate); both are forced.
+        for gate in ('valid_frame', 'valid_frame_ob'):
+            forced = force(getattr(vision, gate))
+            setattr(vision, gate, forced)    # zone_pair_admission / _executor / _guards / frame_gate look it up at call time
+            if not hasattr(grasp, gate):
+                raise RuntimeError(f'harness.zone_pair_grasp has no {gate} to patch')
+            setattr(grasp, gate, forced)
     elif name == 'fix_age_round':
         from harness.owncam_recovery_v6 import RecoveryLocalizer
         from harness.owncam_localizer import OwnCamLocalizer

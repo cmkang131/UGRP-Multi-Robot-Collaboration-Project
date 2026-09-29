@@ -309,8 +309,8 @@ class PairExecution:
         self.check(now)
         if self.terminal:
             return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
-        from harness.zone_pair_vision import valid_frame
-        if not valid_frame(self.own.last_obs, self.own.robot_id, now):
+        from harness.zone_pair_vision import frame_gate
+        if not frame_gate(self.policy)(self.own.last_obs, self.own.robot_id, now):
             self.abort(now, 'INVALID_OWN_IMAGE')
             return {'mode': 'tick', 'commands': [{'kind': 'hold'}]}
         if not self.started:
@@ -371,8 +371,8 @@ class PairExecution:
         self.check(now)
         if self.terminal or not self.started:
             return []
-        from harness.zone_pair_vision import valid_frame
-        if not valid_frame(self.own.last_obs, self.own.robot_id, now):
+        from harness.zone_pair_vision import frame_gate
+        if not frame_gate(self.policy)(self.own.last_obs, self.own.robot_id, now):
             self.abort(now, 'INVALID_OWN_IMAGE')
             return []
         arm = self.controller.arm
