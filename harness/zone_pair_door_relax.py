@@ -10,7 +10,7 @@ separate, later step that needs a new bundle number and resealing; nothing here 
 
 Scope: ``install`` patches ``SweepGuard.margin`` (and the gate names) for the WHOLE worker process, i.e. for every
 ``SweepGuard`` call of every robot and every controller state, not only the door legs. The stage-probe runner therefore
-allows b-v6h for the carry and setdown stages only (``harness.pair_stage_probe.DOOR_RELAX_STAGES``); one case runs
+allows b-v6h for the carry and setdown stages only (the door-relax phase list in ``harness.pair_stage_probe``); one case runs
 per worker subprocess, so the patch never leaks into another case.
 
 What is relaxed (everything reads only the robot's own estimate, its own issued commands and the static map):
