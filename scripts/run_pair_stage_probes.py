@@ -369,7 +369,7 @@ def contact_outcome(row, result):
     """Outcome class of a --contact-track case (eval only): PASS_CLEAN / PASS_CONTACT_RECOVERED / FAIL_HARD_LIMIT / FAIL.
 
     Contact counts from the stage submit to the stage stop. A standard pass whose contact exceeded a hard limit
-    (max tilt over the stage > 15 deg, wall penetration > 5 mm) is FAIL_HARD_LIMIT, never a pass."""
+    (max tilt over the whole case, staging included and sampled at the 50 ms interval, > 15 deg, wall penetration > 5 mm) is FAIL_HARD_LIMIT, never a pass."""
     wc = (result.get('wall_contact') or {})
     t0 = result.get('submit_t')
     t1 = (result.get('gt_at_stop') or {}).get('t') or (result.get('termination') or {}).get('sim_s')
@@ -891,6 +891,9 @@ def build_cases(args):
     cases = []
     if 'b-v6h' in args.policies and set(args.sources) - {'teacher'}:
         raise ValueError('policy b-v6h is defined for --sources teacher only')
+    if 'b-v6h' in args.policies and set(args.stage) - set(sp.DOOR_RELAX_STAGES):
+        raise ValueError(f'policy b-v6h is defined for the stages {sp.DOOR_RELAX_STAGES} only '
+                         '(it patches SweepGuard.margin for the whole worker process)')
     for stage in args.stage:
         spec = sp.STAGES[stage]
         if not spec['implemented']:
@@ -1093,7 +1096,7 @@ def parser():
                    help='opt-in visual profile from sim/render_profile.py (default: none = current behaviour). Changes '
                         'every camera image, so runs are a separate condition; not a registered bundle. The profile '
                         'name and hash go to manifest.json and every result row.')
-    p.add_argument('--policies', nargs='+', default=['v5h'], choices=list(sp.POLICIES),
+    p.add_argument('--policies', nargs='+', default=['v5h'], choices=list(sp.POLICIES) + list(sp.PROBE_ONLY_POLICIES),
                    help='harness.zone_pair_v6_policy policies; there is no A-only policy on main')
     p.add_argument('--door-relax', choices=sorted(door_relax_variants()),
                    help='with --policies b-v6h: the door-guard relaxation variant (harness/zone_pair_door_relax.py). '

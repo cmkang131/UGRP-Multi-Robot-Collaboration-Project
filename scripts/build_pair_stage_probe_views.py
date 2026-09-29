@@ -17,7 +17,7 @@ import re
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from harness.pair_stage_probe import canonical_policy  # noqa: E402
+from harness.pair_stage_probe import canonical_policy, policy_key, summarize as summarize_rows  # noqa: E402
 
 SCHEMA = 'ugrp.offline_audit_view.v1'
 DEFINITION = ('stage probe verdict, NOT E2E success: both robots reached the stage exit by their own controller '
@@ -34,7 +34,9 @@ POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C',   # C = v6c
                 'b-v6d': 'D',                                          # D = v6d (wide hue, fine align motion)
                 'b-v6e-dr': 'ED', 'b-v6e-lag': 'EL', 'b-v6e-base': 'E0', 'b-v6e': 'E',   # v6e carry flags: dead-reckoning model / lateral lag / both = base
                 'b-v6e-pm': 'Ep', 'b-v6e-edge': 'Ee', 'b-v6g': 'G', 'b-v6g-l7': 'GL',                  # v6e yaw flags: pair-mean model / beam edge (E = both)
-                'b-v6f-a': 'Fa', 'b-v6f-b': 'Fb', 'b-v6f': 'F'}       # v6f: own_image_ob / bounded_retreat / both
+                'b-v6f-a': 'Fa', 'b-v6f-b': 'Fb', 'b-v6f': 'F',       # v6f: own_image_ob / bounded_retreat / both
+                # b-v6h.<variant> = registered b-v6g + door-guard relaxation (probe-only; harness/zone_pair_door_relax.py)
+                'b-v6h.k1': 'H1', 'b-v6h.k0': 'H0', 'b-v6h.k1g': 'H1g', 'b-v6h.k0g': 'H0g', 'b-v6h.adv': 'Ha'}
 
 
 def _run_tag(raw):
@@ -44,6 +46,7 @@ def _run_tag(raw):
 
 
 def _pol(policy):
+    """Abbreviation prefix of an analysis policy (``b-v6h.<variant>`` for a door-relax row; see ``policy_key``)."""
     return POLICY_SHORT[policy] + '-' if POLICY_SHORT[policy] else ''
 
 
@@ -107,7 +110,7 @@ def case_view(raw, row, manifest):
         scalars[f'offline/relook_calls/{rid}'] = len(calls)
     for rid, n in (row.get('localizer_replaced') or {}).items():
         scalars[f'offline/localizer_replaced/{rid}'] = n
-    policy = canonical_policy(row.get('pair_policy', 'v5h'), manifest.get('probe_version'))   # 0.6.x b-v6e = b-v6e-base
+    policy = canonical_policy(policy_key(row), manifest.get('probe_version'))   # 0.6.x b-v6e = b-v6e-base
     infeasible = staging_infeasible(row, result)
     if infeasible:
         row = {**row, 'cause': 'STAGING_IK_ENVELOPE', 'cause_sub': None}   # 0.4.1 raws recorded HOST_ERROR; the message says why
@@ -168,11 +171,16 @@ def main(argv=None):
         infeasible_ids = {r['case_id'] for r in rows if staging_infeasible(
             r, json.loads((raw / 'cases' / re.sub(r'[^A-Za-z0-9_.+-]+', '_', r['case_id']) / 'result.json').read_text()))}
         for stage, st0 in s['stages'].items():
-            for raw_policy, st in (st0.get('by_policy') or {'v5h': st0}).items():
+            by_policy = st0.get('by_policy') or {'v5h': st0}
+            if any(r.get('policy_id') and r['stage'] == stage for r in rows):
+                # Raws written before 0.11.1 grouped door-relax rows under their registered ``pair_policy`` (b-v6g), which merges
+                # variants and looks like the registered policy. Regroup from the case rows; summary.json stays untouched.
+                by_policy = summarize_rows([r for r in rows if r['stage'] == stage])['stages'][stage]['by_policy']
+            for raw_policy, st in by_policy.items():
                 policy = canonical_policy(raw_policy, manifest.get('probe_version'))
                 for source, bs in st['by_source'].items():
                     n_inf = sum(1 for r in rows if r['case_id'] in infeasible_ids and r['stage'] == stage
-                                and r['source'] == source and r.get('pair_policy', 'v5h') == raw_policy)
+                                and r['source'] == source and policy_key(r) == raw_policy)
                     view = {'schema': SCHEMA, 'derived_view_only': True,
                             'offline_source': {'path': str(summary), 'sha256': sha(summary)},
                             'offline_scalar_scope': f'aggregate of {bs["cases"]} stage-probe cases ({stage}, {source}); '

@@ -216,3 +216,46 @@ def test_outcome_summary_names_who_touched_what():
     assert outcome == 'PASS_CONTACT_RECOVERED'
     assert s['who'] == ['beam', 'r2'] and s['max_penetration_m'] == .004 and s['episodes'] == 2
     assert s['hard_limits'] == {'max_tilt_deg': 15., 'max_penetration_m': .005}
+
+
+# ---- review fixes (PR #281): registry, grouping key, stage limit ----
+
+def test_b_v6h_is_probe_only_not_a_registered_policy():
+    from harness import pair_stage_probe as sp
+    assert 'b-v6h' not in sp.POLICIES and 'b-v6h' in sp.PROBE_ONLY_POLICIES
+    assert sp._pid('b-v6h')                          # accepted for case ids
+    with pytest.raises(ValueError):
+        sp._pid('b-v9z')
+
+
+def test_policy_key_and_summary_group_by_variant_not_registered_policy():
+    from harness import pair_stage_probe as sp
+    assert sp.policy_key({'pair_policy': 'b-v6g'}) == 'b-v6g'
+    assert sp.policy_key({'pair_policy': 'b-v6g', 'policy_id': 'b-v6h', 'door_relax': 'k1g'}) == 'b-v6h.k1g'
+    assert sp.policy_key({}) == 'v5h'
+    rows = [{'stage': 'carry', 'source': 'teacher', 'passed': p, 'category': 'x', 'cause': None, 'pair_policy': 'b-v6g', **extra}
+            for p, extra in ((True, {}), (False, {'policy_id': 'b-v6h', 'door_relax': 'k1g'}),
+                             (True, {'policy_id': 'b-v6h', 'door_relax': 'k0g'}))]
+    bp = sp.summarize(rows)['stages']['carry']['by_policy']
+    assert set(bp) == {'b-v6g', 'b-v6h.k1g', 'b-v6h.k0g'}
+    assert bp['b-v6h.k1g']['passed'] == 0 and bp['b-v6h.k0g']['passed'] == 1
+
+
+def test_view_abbreviations_cover_every_variant_uniquely():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('views', ROOT / 'scripts' / 'build_pair_stage_probe_views.py')
+    views = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(views)
+    from harness import zone_pair_door_relax as relax
+    for v in relax.VARIANTS:
+        assert f'b-v6h.{v}' in views.POLICY_SHORT
+    vals = [x for x in views.POLICY_SHORT.values() if x]
+    assert len(vals) == len(set(vals))
+
+
+def test_b_v6h_limited_to_carry_and_setdown():
+    from harness import pair_stage_probe as sp
+    for stage in ('grasp_lift', 'chain'):
+        with pytest.raises(ValueError):
+            sp.teacher_cases(stage, policy='b-v6h', door_relax='k1')
+    assert sp.teacher_cases('carry', policy='b-v6h', door_relax='k1', leg=1)

@@ -30,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.11.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+PROBE_VERSION = '0.11.1'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
@@ -54,11 +54,17 @@ PROBE_VERSION = '0.11.0'  # 0.2.0: pair_policy axis, align-tolerance boundary se
 #                          0.11.0: opt-in stage-probe policy b-v6h (= registered b-v6g + a process-local door-guard relaxation,
 #                                 harness/zone_pair_door_relax.py, runner --door-relax) and an eval-only wall-contact tracker
 #                                 (runner --contact-track); no registered source changes
+#                          0.11.1: b-v6h moved out of POLICIES into PROBE_ONLY_POLICIES; summaries/views group door-relax rows by
+#                                 policy_key ``b-v6h.<variant>`` (0.11.0 raws grouped them under the registered b-v6g label);
+#                                 b-v6h is limited to the carry/setdown stages
 #                          0.4.6 (place branch, merged into 0.6.0): b-v6f-a / b-v6f-b / b-v6f policies (own_image_ob, bounded_retreat);
 #                                 image_valid_off also forces valid_frame_ob; run_pair_stage_probes --omp-threads
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
-POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e-base', 'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6g', 'b-v6g-l7', 'b-v6f-a', 'b-v6f-b', 'b-v6f', 'b-v6h')   # b-v6h: probe-only alias (registered b-v6g + door relaxation); harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e-base', 'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6g', 'b-v6g-l7', 'b-v6f-a', 'b-v6f-b', 'b-v6f')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+# Probe-only names that are NOT in harness.zone_pair_v6_policy.POLICIES: b-v6h = registered b-v6g + a process-local door-guard relaxation.
+PROBE_ONLY_POLICIES = ('b-v6h',)
+DOOR_RELAX_STAGES = ('carry', 'setdown')     # the stages b-v6h was defined and measured for (it patches SweepGuard process-wide)
 
 
 def canonical_policy(policy, probe_version):
@@ -299,8 +305,16 @@ def _grid_offsets(stage):
     return rows
 
 
+def policy_key(row):
+    """Analysis grouping key of a case/result row: ``b-v6h.<variant>`` for a door-relax row (its ``pair_policy`` is the
+    registered b-v6g the controller ran), else the recorded ``pair_policy``."""
+    if row.get('policy_id') and row.get('door_relax'):
+        return f"{row['policy_id']}.{row['door_relax']}"
+    return row.get('pair_policy', 'v5h')
+
+
 def _pid(policy):
-    if policy not in POLICIES:
+    if policy not in POLICIES and policy not in PROBE_ONLY_POLICIES:
         raise ValueError(f'unknown pair policy {policy!r}')
     return '' if policy == 'v5h' else '@' + policy
 
@@ -403,6 +417,8 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     setup = copy.deepcopy(setup or BASE_SETUP)
     policy_id = policy
     policy, relax_tag = door_relax_setup(policy_id, door_relax)      # registered policy name + id tag
+    if relax_tag and stage not in DOOR_RELAX_STAGES:
+        raise ValueError(f'policy b-v6h is defined for the stages {DOOR_RELAX_STAGES} only, not {stage!r}')
     route, k = None, None
     if stage in ('carry', 'setdown', 'chain'):
         from harness.zone_pair_v6_policy import pair_policy
@@ -909,8 +925,8 @@ def summarize(rows):
             'stage_sim_s_median': sims[len(sims) // 2] if sims else None,
         }
         by_policy = {}
-        for pol in sorted({r.get('pair_policy', 'v5h') for r in rs}):
-            sub = [r for r in rs if r.get('pair_policy', 'v5h') == pol]
+        for pol in sorted({policy_key(r) for r in rs}):
+            sub = [r for r in rs if policy_key(r) == pol]
             by_policy[pol] = {
                 'cases': len(sub), 'passed': sum(r['passed'] for r in sub),
                 'by_source': {src: {'cases': len(q), 'passed': sum(r['passed'] for r in q)}
