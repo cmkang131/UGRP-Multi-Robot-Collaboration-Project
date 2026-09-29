@@ -379,13 +379,14 @@ def test_probe_and_views_know_the_new_policy():
     assert views._pol('b-v6d') == 'D-'
 
 
-def test_execution_bundle_and_workflow_are_registered_as_v80_and_v6c_stays_sealed():
+def test_execution_bundle_and_workflow_move_on_to_v81_and_v6d_is_historical():
     from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID
     from harness.zone_study_integration import RETIRED_BUNDLE_IDS
     from scripts.zone_pair_v6_contract import CURRENT_REVISION, HISTORICAL_REVISIONS, verify_v6_historical
     catalog = {w['id']: w for w in json.loads((ROOT/'configs/simulation_workflows.json').read_text())['workflows']}
-    assert catalog['zone-study-integration-run']['version'] == '2.13.0'
-    assert EXECUTION_BUNDLE_ID == 'zone-pair-v80-align-widehue-finemotion'
-    assert 'zone-pair-v76-fixclock-grasp-entry' in RETIRED_BUNDLE_IDS
-    assert CURRENT_REVISION == 'v6d' and 'v6c' in HISTORICAL_REVISIONS
+    assert catalog['zone-study-integration-run']['version'] == '2.14.0'
+    assert EXECUTION_BUNDLE_ID == 'zone-pair-v81-carry-dr-general'
+    assert {'zone-pair-v76-fixclock-grasp-entry', 'zone-pair-v80-align-widehue-finemotion'} <= set(RETIRED_BUNDLE_IDS)
+    assert CURRENT_REVISION == 'v6e' and {'v6c', 'v6d'} <= set(HISTORICAL_REVISIONS)
     assert verify_v6_historical(revision='v6c')['execution_bundle_id'] == 'zone-pair-v76-fixclock-grasp-entry'
+    assert verify_v6_historical(revision='v6d')['execution_bundle_id'] == 'zone-pair-v80-align-widehue-finemotion'

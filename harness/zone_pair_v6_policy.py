@@ -19,7 +19,11 @@ from dataclasses import dataclass
 # v80 (PR stage probe b-v6d, workflow zone-study-integration-run 2.13.0, coordinator-assigned) = v76 plus
 # the opt-in b-v6d flags (wide-hue beam heading in the close p45/inspect views, M1 ``fine`` motion profile
 # for align pulses); v76 is retired. The other pair policies are unchanged.
-EXECUTION_BUNDLE_ID = 'zone-pair-v80-align-widehue-finemotion'
+# v81 (stage probes v6e/v6g carry, workflow zone-study-integration-run 2.14.0, coordinator-assigned) = v80 plus the
+# opt-in v6e/v6f/v6g pair flags (carry dead-reckoning model, pair-mean yaw, beam-edge relative yaw, general lateral
+# breakaway + cross-axis drift model, end inset, own-image validity by optical black, bounded retreat); the b-v6g policy
+# is the registered v6e-revision policy. v80 is retired. The other pair policies are unchanged.
+EXECUTION_BUNDLE_ID = 'zone-pair-v81-carry-dr-general'
 
 
 @dataclass(frozen=True)
@@ -129,9 +133,10 @@ POLICIES = {
 }
 # Registered ablation sets. v6 (historical, PR #246/#259), v6b (historical DRAFT,
 # PR #261, bundle v75), v6c (PR #263, bundle v76; sealed, now historical) and
-# v6d (current stage-probe DRAFT, bundle v80).
+# v6d (PR #265, bundle v80; now historical) and v6e (current carry stage-probe DRAFT, bundle v81; b-v6g).
 REVISION_POLICIES = {'v6': ('v5h', 'b-only', 'a+b'), 'v6b': ('v5h', 'b-boot', 'a+b-boot'),
-                     'v6c': ('v5h', 'b-only', 'b-v6c'), 'v6d': ('v5h', 'b-only', 'b-v6d')}
+                     'v6c': ('v5h', 'b-only', 'b-v6c'), 'v6d': ('v5h', 'b-only', 'b-v6d'),
+                     'v6e': ('v5h', 'b-only', 'b-v6g')}
 # Beam postures in which the b-v6d wide hue range applies (search keeps the v1 lime range: the far
 # view of the beam is lime, and the partner robot's yellow parts enter it; replay, README).
 WIDE_HUE_LO = 25

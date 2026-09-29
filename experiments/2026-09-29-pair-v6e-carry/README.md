@@ -976,9 +976,17 @@ hB [1.13, −.04, 0], hC [1.03, .12, 0], hD [1.00, .10, +.03] 각각 `b-v6g`로 
 
 ### 해석 (범위 제한)
 
-- 이 결과는 "이어받은 사후분포가 정렬 종료 수준(PF y 오차 중앙 0.7 cm, 최대 2.7 cm, σ_xy ≈ 2.6 cm, yaw ≤ 1.3°)일 때 운반 L0–L7이 사전 기준(80 %)에 도달한다"는 것이다. L2–L7은 60/60, 문 통과 L0·L1은 6/20이다. **문 통과 구간은 합격이 아니다**: 통과율 80 %는 문 이후 구간이 100 %여서 나온 합계다.
+- 이 결과는 "이어받은 사후분포가 정렬 종료 수준(PF y 오차 중앙 0.7 cm, 최대 2.7 cm, σ_xy ≈ 2.6 cm, yaw ≤ 1.3°)일 때 운반 L0–L7이 사전 기준(80 %)에 도달한다"는 것이다. L2–L6은 50/50(별도로 L7 10/10), 문 통과 L0·L1은 6/20이다. **문 통과 구간은 합격이 아니다**: 통과율 80 %는 문 이후 구간(L2–L6)이 100 %여서 나온 합계다.
 - 진입 오차는 hG의 정렬 종료 표본(실제 E2E 6 + 교사 4, 시드 911 한 번)에서 왔다. 표본이 작고 각 구간이 독립 진입이다(앞 구간 누적 드리프트는 이 시험에 없다). 다른 시드·긴 작업 뒤 재측위·하중 변화·다른 빔 위치에서는 검증되지 않았다.
 - 통과율이 문턱과 같아 재현성(다른 시드에서 같은 값이 나오는지)은 미확인이다. 위 표대로 합계 상승은 표본 구성 차이가 크므로 "사후분포 이어받기가 성공률을 올렸다"고 쓰지 않는다(정직성 지표는 좋아졌다). 등록은 사전 기준을 충족했기 때문이지 "문 통과가 해결됐다"는 뜻이 아니다.
+
+## 등록 (hR2가 사전 기준을 충족했으므로; DRAFT, 실행 승인 아님)
+
+- 번들 **v81** `zone-pair-v81-carry-dr-general`, workflow **2.14.0**, v6 계열 revision **v6e**(조정자 배정). v80(`zone-pair-v80-align-widehue-finemotion`)은 `RETIRED_BUNDLE_IDS`로 옮겼고 v6d 사전 등록은 v6c처럼 역사 기록이 됐다(봉인 커밋 `48f9872a`의 blob으로만 감사, 바이트 그대로). 사용한 번호 확인: `git grep RUNNABLE_ID origin/main -- harness/rgb_execution_bundle.py`는 `rgb-standard-dispatch-v63`(다른 계열)이고 zone-pair 계열 최댓값은 main의 v80이었다.
+- 사전 등록 초안 `prereg_v6e.json`(`build_prereg_v6e.py`; 상태 DRAFT, `runnable=false`, 승인·실행 소스 null)은 v6d 초안에서 과학 필드(환경·기준·한계·타이밍·단계 규칙·접촉)를 그대로 복사해 단언하고, 정책 셋을 `v5h`/`b-only`/`b-v6g`로 바꾸며, 소스 계약 85개 해시(새로 추가: `owncam_carry_v6e.py`, `own_beam_edge.py`, 적합 파일 3개)를 고정한다. 등록 정책은 `b-v6g`뿐이고 L7 끝점 안쪽 이동 정책 `b-v6g-l7`은 정의되어 있으나 등록 실행 집합에 넣지 않았다.
+- **이 등록은 E2E 승인이 아니다.** 완주 dev 6회는 아직 하지 않았다. 등록의 근거는 단계 probe hR2가 사전 기준(≥ 80 %, NEES 1.5–6, 커버리지 ≥ 90 %)을 **문턱 그대로** 충족한 것이며, 문 통과 구간 L0·L1은 6/20이다. 작동 범위: 운반 시작 PF가 정렬 종료 수준(y 오차 ≲ 3 cm, σ_xy ≈ 3 cm, yaw ≲ 1.5°)이고 빔 y 0.05 ± 0.002 m, 헤딩 ≤ 0.5°, 파지 오차 along ≤ 2.6 cm / lateral ≤ 1.3 cm일 때만. 문 통과(L0 끝·L1)는 이 범위에서도 30 %라 작동한다고 쓰지 않는다.
+- 소스 변경 범위: `harness/zone_pair_v6_policy.py`(번들 id, `REVISION_POLICIES['v6e']`), `harness/zone_study_integration.py`(v80 은퇴), `configs/`(workflow 2.14.0, llm_driver 번들 항목), `scripts/zone_pair_v6_contract.py`(v6d 역사화, v6e 계약), `scripts/run_zone_pair_dev.py`(`--pair-policy` 선택지), 관련 테스트와 문서. 제어기·PF·적합 파일 변경은 없다(`f844a373` 그대로).
+- 관련 테스트: `tests/test_zone_pair_v6.py`, `_v6d`, `_v6e`, `_v6e_yaw`, `_v6f`, `_v6g`, `test_zone_pair_registered_source.py`, `test_owncam_bootstrap_v6b.py`, `test_zone_pair_executor.py`, `test_zone_study_*`(llm_driver, integration_pair, multiturn_properties, referee, source_pinning), `test_pair_stage_probe.py` 1171건 통과.
 
 ## TensorBoard
 
