@@ -9,6 +9,8 @@ One line per case: placement (beam y, heading, stated prior bias), the standard 
   TRAVERSED_CLEAN      controller finished the leg, lift/tilt/jaws/leg-length checks hold, no wall contact
   TRAVERSED_CONTACT    same, but the wall tracker saw contact with penetration <= 5 mm and tilt <= 15 deg
   HARD_LIMIT           contact with penetration > 5 mm or tilt > 15 deg (whatever the controller did)
+  BLOCKED_BY_CONTACT   finished the schedule without a controller abort, but a robot/beam touched the wall and the leg length
+                       check failed (the pair was held back; nothing in the controller noticed)
   STOPPED              the controller (or partner) aborted the leg (cause recorded)
   OTHER_FAIL           finished but a non-end-point check failed
 
@@ -70,7 +72,7 @@ def envelope_class(r):
     c = dict(r['checks'])
     c.pop('end_error', None)
     if not all(c.values()):
-        return 'OTHER_FAIL'
+        return 'BLOCKED_BY_CONTACT' if wc.get('episodes') else 'OTHER_FAIL'
     return 'TRAVERSED_CONTACT' if wc.get('episodes') else 'TRAVERSED_CLEAN'
 
 
@@ -114,12 +116,12 @@ def analyse(label, root):
     for it in out['cases']:
         by[(it['variant'], it['leg'])][it['envelope']] += 1
         by[(it['variant'], it['leg'])]['std_' + it['standard']] += 1
-    print('\nvariant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | STOPPED | OTHER_FAIL')
+    print('\nvariant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL')
     out['tally'] = {}
     for (v, k), c in sorted(by.items()):
-        n = sum(c[e] for e in ('TRAVERSED_CLEAN', 'TRAVERSED_CONTACT', 'HARD_LIMIT', 'STOPPED', 'OTHER_FAIL'))
+        n = sum(c[e] for e in ('TRAVERSED_CLEAN', 'TRAVERSED_CONTACT', 'HARD_LIMIT', 'BLOCKED_BY_CONTACT', 'STOPPED', 'OTHER_FAIL'))
         print(f" {v} | L{k} | {n} | {fmt_ci(c['std_PASS_CLEAN'] + c['std_PASS'], n)} | {fmt_ci(c['TRAVERSED_CLEAN'], n)} | {c['TRAVERSED_CONTACT']} | "
-              f"{c['HARD_LIMIT']} | {c['STOPPED']} | {c['OTHER_FAIL']}")
+              f"{c['HARD_LIMIT']} | {c['BLOCKED_BY_CONTACT']} | {c['STOPPED']} | {c['OTHER_FAIL']}")
         out['tally'][f'{v}/L{k}'] = dict(c)
     return out
 
