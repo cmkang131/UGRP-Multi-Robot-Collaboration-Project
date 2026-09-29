@@ -19,17 +19,33 @@ import seg_model as sm
 OUT = Path('/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929')
 TRAIN_ROOT = OUT / 'train'
 CACHE = OUT / 'cache' / 'mix'
+CACHE_FL = OUT / 'cache' / 'mix_fl'            # F2 ablation: 8000 floor_light_v1 renders + default + replay (same static-frame count as C)
+CACHE_FAR = OUT / 'cache' / 'mix_far'          # + far-wall corridor frames (search-pose family), C2 iteration
 VLR = Path('/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/render')
 N_PER_LOOK = 300
 REPLAY_EVERY = 5
 
 
-def items_all():
+def items_all(far=False, fl=False):
     items = []
-    for d in sorted(TRAIN_ROOT.iterdir()):
+    if fl:
+        d = OUT / 'train_fl' / 'floor_light_v1'
+        man = json.loads((d / 'manifest.json').read_text())
+        for r in man['rows']:
+            items.append((d / r['file'], d / r['label'], 'static:floor_light_v1'))
+        d = TRAIN_ROOT / 'default'
+        man = json.loads((d / 'manifest.json').read_text())
+        for r in man['rows'][:N_PER_LOOK]:
+            items.append((d / r['file'], d / r['label'], 'static:default'))
+    for d in ([] if fl else sorted(TRAIN_ROOT.iterdir())):
         man = json.loads((d / 'manifest.json').read_text())
         for r in man['rows'][:N_PER_LOOK]:
             items.append((d / r['file'], d / r['label'], 'static:' + d.name))
+    if far:
+        for d in sorted((OUT / 'train_farwall').iterdir()):
+            man = json.loads((d / 'manifest.json').read_text())
+            for r in man['rows']:
+                items.append((d / r['file'], d / r['label'], 'static:far_' + d.name))
     for i in range(8):
         ep = VLR / f'vl-train-s90{i + 1}'
         for fr, lb in sm.episode_items(ep, REPLAY_EVERY):
@@ -40,18 +56,32 @@ def items_all():
 VARIANTS = {
     'A_aug_only': dict(kinds=('replay',), pre='rgb', recolour_p=.7, cast=.10, gamma=.40),
     'C_mix_rgb': dict(kinds=('static', 'replay'), pre='rgb', recolour_p=.3, cast=.06, gamma=.25),
+    'C2_mix_far': dict(kinds=('static', 'replay'), pre='rgb', recolour_p=.3, cast=.06, gamma=.25, far=True),
+    'F2_floorlight_8k': dict(kinds=('static', 'replay'), pre='rgb', recolour_p=0., cast=.03, gamma=.15),
     'B_mix_perimg': dict(kinds=('static', 'replay'), pre='perimg', recolour_p=.3, cast=.06, gamma=.25),
     'B_mix_gray': dict(kinds=('static', 'replay'), pre='gray_perimg', recolour_p=.3, cast=.06, gamma=.25),
     'F_floorlight_only': dict(kinds=('static:floor_light_v1', 'static:default', 'replay'), pre='rgb', recolour_p=0., cast=.03, gamma=.15),
 }
 
 if __name__ == '__main__':
+    if sys.argv[1] == 'cache_fl':
+        it = items_all(fl=True)
+        print(len(it), 'items')
+        seg_ft.build_cache(it, CACHE_FL)
+        sys.exit()
+    if sys.argv[1] == 'cache_far':
+        it = items_all(far=True)
+        print(len(it), 'items')
+        seg_ft.build_cache(it, CACHE_FAR)
+        sys.exit()
     if sys.argv[1] == 'cache':
         CACHE.parent.mkdir(parents=True, exist_ok=True)
         it = items_all()
         print(len(it), 'items')
         seg_ft.build_cache(it, CACHE)
         sys.exit()
+    far = sys.argv[1] == 'C2_mix_far'
+    CACHE = CACHE_FAR if far else (CACHE_FL if sys.argv[1] == 'F2_floorlight_8k' else globals()['CACHE'])
     meta = json.loads(Path(str(CACHE) + '_meta.json').read_text())
     kinds = np.array([m['kind'] for m in meta])
     rng = np.random.default_rng(0)

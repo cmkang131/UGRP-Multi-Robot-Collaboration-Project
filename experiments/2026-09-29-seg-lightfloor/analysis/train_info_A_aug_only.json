@@ -1,0 +1,146 @@
+{
+ "tag": "A_aug_only",
+ "checkpoint": "/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929/model/A_aug_only/seg_lraspp_mbv3.pt",
+ "sha256": "2bdf00dc91ba7f7227f194a3839142a239fb0c444f53ced8e507c56c17a5594f",
+ "bytes": 13071657,
+ "preproc": "rgb",
+ "init": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/model/seg-v2/seg_lraspp_mbv3.pt",
+ "epochs": 3,
+ "batch": 16,
+ "lr": 0.0003,
+ "seed": 0,
+ "recolour_p": 0.7,
+ "cast": 0.1,
+ "gamma": 0.4,
+ "train_frames": 2905,
+ "val_frames": 81,
+ "device": "mps",
+ "torch": "2.11.0",
+ "wall_s": 929.6,
+ "history": [
+  {
+   "step": 50,
+   "epoch": 0,
+   "loss": 0.06843,
+   "wall_s": 98.4
+  },
+  {
+   "step": 100,
+   "epoch": 0,
+   "loss": 0.02462,
+   "wall_s": 121.5
+  },
+  {
+   "step": 150,
+   "epoch": 0,
+   "loss": 0.01575,
+   "wall_s": 144.6
+  },
+  {
+   "step": 181,
+   "epoch": 0,
+   "val": {
+    "pixel_acc": 0.97497,
+    "iou": {
+     "floor": 0.9633,
+     "wall": 0.8607,
+     "self": 0.4986,
+     "object": 0.9813,
+     "background": 0.7322
+    },
+    "miou": 0.8072
+   },
+   "wall_s": 257.1
+  },
+  {
+   "step": 200,
+   "epoch": 1,
+   "loss": 0.02036,
+   "wall_s": 265.9
+  },
+  {
+   "step": 250,
+   "epoch": 1,
+   "loss": 0.03101,
+   "wall_s": 287.2
+  },
+  {
+   "step": 300,
+   "epoch": 1,
+   "loss": 0.01123,
+   "wall_s": 308.7
+  },
+  {
+   "step": 350,
+   "epoch": 1,
+   "loss": 0.01521,
+   "wall_s": 330.2
+  },
+  {
+   "step": 362,
+   "epoch": 1,
+   "val": {
+    "pixel_acc": 0.9597,
+    "iou": {
+     "floor": 0.9432,
+     "wall": 0.768,
+     "self": 0.8518,
+     "object": 0.9741,
+     "background": 0.5721
+    },
+    "miou": 0.8218
+   },
+   "wall_s": 450.1
+  },
+  {
+   "step": 400,
+   "epoch": 2,
+   "loss": 0.01657,
+   "wall_s": 470.4
+  },
+  {
+   "step": 450,
+   "epoch": 2,
+   "loss": 0.01605,
+   "wall_s": 493.3
+  },
+  {
+   "step": 500,
+   "epoch": 2,
+   "loss": 0.01414,
+   "wall_s": 515.5
+  },
+  {
+   "step": 543,
+   "epoch": 2,
+   "val": {
+    "pixel_acc": 0.96577,
+    "iou": {
+     "floor": 0.9517,
+     "wall": 0.8154,
+     "self": 0.8474,
+     "object": 0.9703,
+     "background": 0.584
+    },
+    "miou": 0.8338
+   },
+   "wall_s": 633.9
+  },
+  {
+   "step": 543,
+   "val": {
+    "pixel_acc": 0.98776,
+    "iou": {
+     "floor": 0.9843,
+     "wall": 0.953,
+     "self": 0.7899,
+     "object": 0.9714,
+     "background": 0.7745
+    },
+    "miou": 0.8946
+   },
+   "bn": "precise BN on 2905 clean mixture frames",
+   "wall_s": 929.2
+  }
+ ]
+}

@@ -203,7 +203,7 @@ def main(argv=None):
         world, scene = build_world_look(look)
         t_build = float(world.data.time)
         label_render = rc.make_label_renderer(world)
-        seed = int(hashlib.sha256(f'{a.seed}|{a.split}|{name}' + ('' if a.mode == 'uniform' else '|' + a.mode).encode()).hexdigest()[:8], 16)
+        seed = int(hashlib.sha256((f'{a.seed}|{a.split}|{name}' + ('' if a.mode == 'uniform' else '|' + a.mode)).encode()).hexdigest()[:8], 16)
         rng = np.random.default_rng(seed)
         rows = []
         for i in range(a.n_per_look):

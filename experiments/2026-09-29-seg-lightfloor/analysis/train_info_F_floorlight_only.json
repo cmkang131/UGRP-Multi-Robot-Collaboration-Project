@@ -1,0 +1,164 @@
+{
+ "tag": "F_floorlight_only",
+ "checkpoint": "/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929/model/F_floorlight_only/seg_lraspp_mbv3.pt",
+ "sha256": "16aeec8706d84a8a23622581740466d019da7d179b3796e8ba0a804fb983a1ec",
+ "bytes": 13071657,
+ "preproc": "rgb",
+ "init": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/model/seg-v2/seg_lraspp_mbv3.pt",
+ "epochs": 3,
+ "batch": 16,
+ "lr": 0.0003,
+ "seed": 0,
+ "recolour_p": 0.0,
+ "cast": 0.03,
+ "gamma": 0.15,
+ "train_frames": 3484,
+ "val_frames": 102,
+ "device": "mps",
+ "torch": "2.11.0",
+ "wall_s": 544.3,
+ "history": [
+  {
+   "step": 50,
+   "epoch": 0,
+   "loss": 0.06528,
+   "wall_s": 44.9
+  },
+  {
+   "step": 100,
+   "epoch": 0,
+   "loss": 0.04098,
+   "wall_s": 68.2
+  },
+  {
+   "step": 150,
+   "epoch": 0,
+   "loss": 0.1308,
+   "wall_s": 90.5
+  },
+  {
+   "step": 200,
+   "epoch": 0,
+   "loss": 0.20789,
+   "wall_s": 112.2
+  },
+  {
+   "step": 217,
+   "epoch": 0,
+   "val": {
+    "pixel_acc": 0.96259,
+    "iou": {
+     "floor": 0.946,
+     "wall": 0.8748,
+     "self": 0.3607,
+     "object": 0.9265,
+     "background": 0.7217
+    },
+    "miou": 0.766
+   },
+   "wall_s": 149.8
+  },
+  {
+   "step": 250,
+   "epoch": 1,
+   "loss": 0.01409,
+   "wall_s": 164.5
+  },
+  {
+   "step": 300,
+   "epoch": 1,
+   "loss": 0.01805,
+   "wall_s": 187.2
+  },
+  {
+   "step": 350,
+   "epoch": 1,
+   "loss": 0.01329,
+   "wall_s": 210.0
+  },
+  {
+   "step": 400,
+   "epoch": 1,
+   "loss": 0.02043,
+   "wall_s": 232.7
+  },
+  {
+   "step": 434,
+   "epoch": 1,
+   "val": {
+    "pixel_acc": 0.95608,
+    "iou": {
+     "floor": 0.9394,
+     "wall": 0.7649,
+     "self": 0.5228,
+     "object": 0.9801,
+     "background": 0.6698
+    },
+    "miou": 0.7754
+   },
+   "wall_s": 276.8
+  },
+  {
+   "step": 450,
+   "epoch": 2,
+   "loss": 0.01441,
+   "wall_s": 283.9
+  },
+  {
+   "step": 500,
+   "epoch": 2,
+   "loss": 0.04945,
+   "wall_s": 306.0
+  },
+  {
+   "step": 550,
+   "epoch": 2,
+   "loss": 0.03545,
+   "wall_s": 328.5
+  },
+  {
+   "step": 600,
+   "epoch": 2,
+   "loss": 0.01394,
+   "wall_s": 350.9
+  },
+  {
+   "step": 650,
+   "epoch": 2,
+   "loss": 0.01493,
+   "wall_s": 372.8
+  },
+  {
+   "step": 651,
+   "epoch": 2,
+   "val": {
+    "pixel_acc": 0.96236,
+    "iou": {
+     "floor": 0.948,
+     "wall": 0.8017,
+     "self": 0.5616,
+     "object": 0.9803,
+     "background": 0.6712
+    },
+    "miou": 0.7925
+   },
+   "wall_s": 400.4
+  },
+  {
+   "step": 651,
+   "val": {
+    "pixel_acc": 0.98786,
+    "iou": {
+     "floor": 0.9839,
+     "wall": 0.9501,
+     "self": 0.742,
+     "object": 0.9786,
+     "background": 0.8182
+    },
+    "miou": 0.8945
+   },
+   "bn": "precise BN on 3484 clean mixture frames",
+   "wall_s": 543.9
+  }
+ ]
+}

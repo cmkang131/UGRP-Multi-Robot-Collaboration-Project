@@ -1,0 +1,22 @@
+{
+  "_note": "Draft entry for configs/model_artifacts.json. NOT added to that file and NOT uploaded (task: describe only). Fill release.* and archive.* only after a release upload and a verified re-download + full-hash + model-load check (docs/model_artifacts.md).",
+  "id": "vision-loc-seg-lraspp-mbv3-lightfloor-20260929-c",
+  "status": "unavailable_pending_upload",
+  "description": "Tag-free wall/floor segmentation (LR-ASPP MobileNetV3-Large, 5 classes), seg-v2 fine-tuned on static renders under 24 random floor/light/wall looks + floor_light_v1 + default, plus replayed VIS3 TRAIN frames; robust to floor colour/brightness in the B1 checkpoint protocol (offline, simulator renders only)",
+  "source_sha": "SET_AT_MERGE (final commit of PR claude/seg-lightfloor)",
+  "training_source_sha": "SET_AT_MERGE",
+  "init_from": {"id": "vision-loc-seg-lraspp-mbv3-20260926-v2", "sha256": "348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9"},
+  "release": null,
+  "entrypoints": {"segmentation": "seg/seg_lraspp_mbv3.pt", "loader": "experiments/2026-09-29-seg-lightfloor/seg_ft.py:Seg (infer_size 480x360, preproc rgb)", "student_config_round3": "config/selected_config_v3.json (unchanged)", "calibration": "calibration/calibration_train.json (unchanged)"},
+  "local_files": [
+    {"path": "/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929/model/C_mix_rgb/seg_lraspp_mbv3.pt", "bytes": 13071657, "sha256": "0e7a696e7100cc19d84149251456afedc1318ff4f7901b06bd9396590c651c9d"},
+    {"path": "/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929/model/C_mix_rgb/train_info.json", "bytes": 4734, "sha256": "673f5e6a4fa9ecb3dfaa9098c66f330a89d318ac7b6ba727479f5e7f5fbecfaa"}
+  ],
+  "verified_scope": "B1 checkpoint protocol on floor_light_v1 and four held-out floor/wall looks, look p20, 480x360 inference: 9/9 checkpoints (position p90 <= 5 cm and yaw p90 <= 2 deg). Static simulator renders only; real floor/walls unmeasured.",
+  "limitations": [
+    "Simulator renders only; the real room's floor and wall colours, texture, lighting and shadows were not measured.",
+    "Only the p20 look pose is reliable; the search pose (SEARCH_POSE) still has silent 6-14 cm x-biases at checkpoints 3-5 of robot r1 (far-wall edge, thin wall strip).",
+    "640x480 inference is NOT a drop-in: it fixes search but breaks p20 checkpoint 2 (12 cm).",
+    "Trained/evaluated on one map (zone_wide_door_geometry_v2, 0.40 m walls, no tags)."
+  ]
+}
