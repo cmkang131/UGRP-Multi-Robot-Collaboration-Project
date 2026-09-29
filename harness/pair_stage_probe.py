@@ -30,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.4.4'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+PROBE_VERSION = '0.4.5'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
@@ -38,6 +38,7 @@ PROBE_VERSION = '0.4.4'  # 0.2.0: pair_policy axis, align-tolerance boundary set
 #                                 diagnostic patch
 #                          0.4.3: sigma_held_at_prior diagnostic patch
 #                          0.4.4: carry_lateral_scale_measured + carry_all_three diagnostic patches
+#                          0.4.5: sigma_held_tiny + setdown_sigma_tiny_image_off diagnostic patches
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
 POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
@@ -404,6 +405,9 @@ LOADED_YAW_GATE_DIAG_DEG = (12., 10.)   # (high, low) for loaded_yaw_gate_wide; 
 # carry_lateral_scale_measured: 0.697 (static calibration, dev 601 run 7d97bab) x measured/planned lateral beam travel
 # 0.829084 m / 0.716667 m (b-v6c, cargo_noslip_v1, carry legs 3/4/5, eval-only GT travel, 8 of 8 runs) = 0.806.
 CARRY_LATERAL_SCALE_DIAG = 0.806
+# sigma_held_tiny: the reported sigma is capped far below any filter's real spread, so the swept-beam margin
+# (.02 + .015 + 2 std_xy + 2 std_yaw lever) is at its geometric floor. A best case, never an estimate.
+SIGMA_TINY_DIAG = {'std_xy_m': .001, 'std_yaw_rad': .0005}
 DIAG_PATCHES = {
     'fix_age_round': ('harness.owncam_recovery_v6.RecoveryLocalizer.estimate reports fix_age_s = self.t - t '
                       'unrounded; predict_to stops within 1e-9 s of t, so a fix made at this frame has '
@@ -435,6 +439,14 @@ DIAG_PATCHES = {
     'carry_all_three': ('0.4.4. sigma_held_at_prior + carry_lateral_scale_measured + image_valid_off in one process: the '
                         'three carry / set-down blockers found by the 0.4.0 to 0.4.3 diagnostics removed together. Answers '
                         '"what fails next once those three are not the first blocker", never "does v6c carry / set down".'),
+    'sigma_held_tiny': ('0.4.5. same patch point as sigma_held_at_prior (OwnCamLocalizer.estimate), but std_xy_m / '
+                        'std_yaw_rad are capped at 0.001 m / 0.0005 rad, i.e. the swept-beam / clearance margin is at its '
+                        'geometric floor (.035 m + 2 sigma terms ~ 0). Answers "is the release retreat blocked by the '
+                        'reported sigma, or by the geometry of the dev-map destination", never an estimator.'),
+    'setdown_sigma_tiny_image_off': ('0.4.5. sigma_held_tiny + image_valid_off in one process (the set-down at the dev-map '
+                                     'destination with the two blockers found by the 0.4.2 and 0.4.4 diagnostics removed). '
+                                     'Answers "does the set-down itself work once the dark-floor image check and the reported '
+                                     'sigma are not the first blockers", never "does v6c set down".'),
     'image_valid_off': ('0.4.2. harness.zone_pair_vision.valid_frame (admission image_valid, the endpoint per-step '
                         'INVALID_OWN_IMAGE abort, the guard/grasp checks) always returns True; the real verdict is counted '
                         'per robot in result.json image_valid_real_stats. Everything else, including the localizer that '
@@ -443,7 +455,8 @@ DIAG_PATCHES = {
                         'set down".'),
 }
 DIAG_COMPONENTS = {'rest_noise_off_and_gate_wide': ('pf_rest_no_abs_noise', 'loaded_yaw_gate_wide'),
-                   'carry_all_three': ('sigma_held_at_prior', 'carry_lateral_scale_measured', 'image_valid_off')}
+                   'carry_all_three': ('sigma_held_at_prior', 'carry_lateral_scale_measured', 'image_valid_off'),
+                   'setdown_sigma_tiny_image_off': ('sigma_held_tiny', 'image_valid_off')}
 
 
 def clamp_estimate_sigma(est, std_xy_m, std_yaw_rad):

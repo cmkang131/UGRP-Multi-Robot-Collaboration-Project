@@ -792,6 +792,14 @@ def install_diag_patch(name):
     elif name == 'carry_lateral_scale_measured':
         from scripts import study_owncam_pair_beam as study
         study.CARRY_ODOM_SCALE['lateral'] = sp.CARRY_LATERAL_SCALE_DIAG   # in place: run_m2_pair / the executor share this dict
+    elif name == 'sigma_held_tiny':
+        from harness.owncam_localizer import OwnCamLocalizer
+        registered = OwnCamLocalizer.estimate
+        cap_xy, cap_yaw = sp.SIGMA_TINY_DIAG['std_xy_m'], sp.SIGMA_TINY_DIAG['std_yaw_rad']
+
+        def estimate(self):
+            return sp.clamp_estimate_sigma(registered(self), cap_xy, cap_yaw)
+        OwnCamLocalizer.estimate = estimate
     elif name == 'sigma_held_at_prior':
         from harness.owncam_localizer import OwnCamLocalizer
         registered = OwnCamLocalizer.estimate

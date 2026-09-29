@@ -610,3 +610,20 @@ def test_diag_carry_lateral_scale_measured_changes_only_the_lateral_scale_in_a_s
                'assert s.CARRY_ODOM_SCALE == {"axial": before["axial"], "lateral": .806}, s.CARRY_ODOM_SCALE\n')
     out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
     assert out.returncode == 0, out.stderr
+
+
+def test_diag_setdown_sigma_tiny_image_off_is_the_composite_and_caps_sigma_at_the_floor_in_a_subprocess():
+    assert sp.DIAG_COMPONENTS['setdown_sigma_tiny_image_off'] == ('sigma_held_tiny', 'image_valid_off')
+    assert all(part in sp.DIAG_PATCHES for part in sp.DIAG_COMPONENTS['setdown_sigma_tiny_image_off'])
+    assert 'setdown_sigma_tiny_image_off' in sp.DIAG_PATCHES
+    d = sp.apply_diag_patch([_carry()], 'setdown_sigma_tiny_image_off')[0]
+    assert d['case_id'].endswith(':diag-setdown_sigma_tiny_image_off') and d['diag_patch'] == 'setdown_sigma_tiny_image_off'
+    assert sp.SIGMA_TINY_DIAG == {'std_xy_m': .001, 'std_yaw_rad': .0005}
+    program = ('from scripts import run_pair_stage_probes as r\n'
+               'from harness.owncam_localizer import OwnCamLocalizer as L\n'
+               'L.estimate = lambda self: {"initialized": True, "x": 1., "std_xy_m": .2, "std_yaw_rad": .3}\n'
+               'r.install_diag_patch("sigma_held_tiny")\n'
+               'e = L.estimate(object())\n'
+               'assert (e["std_xy_m"], e["std_yaw_rad"], e["x"]) == (.001, .0005, 1.), e\n')
+    out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
