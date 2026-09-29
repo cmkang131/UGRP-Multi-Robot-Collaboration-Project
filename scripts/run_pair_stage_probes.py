@@ -917,7 +917,7 @@ def envelope_cases(stage, args, policy, leg):
                     setup = {'beam_xyyaw': [args.env_x, float(y), math.radians(float(yaw_deg))],
                              'coarse_order_sheet': copy.deepcopy(sp.BASE_SETUP['coarse_order_sheet']), 'variant': 'ENV'}
                     out += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds), setup=setup,
-                                            policy=policy, prior_std=args.prior_std, leg=leg, door_relax=args.door_relax,
+                                            policy=policy, prior_std=args.prior_std, leg=leg, door_relax=args.door_relax, chain_stop_leg=args.chain_stop_leg,
                                             rows=[(name, (0, 0, 0), (0, 0, 0), prior_err)])
     return out
 
@@ -929,9 +929,10 @@ def build_cases(args):
     cases = []
     if 'b-v6h' in args.policies and set(args.sources) - {'teacher'}:
         raise ValueError('policy b-v6h is defined for --sources teacher only')
-    if 'b-v6h' in args.policies and set(args.stage) - set(sp.DOOR_RELAX_STAGES):
+    if 'b-v6h' in args.policies and any(st not in sp.DOOR_RELAX_STAGES and not sp.chain_relax_allowed(st, args.chain_stop_leg)
+                                        for st in args.stage):
         raise ValueError(f'policy b-v6h is defined for the stages {sp.DOOR_RELAX_STAGES} only '
-                         '(it patches SweepGuard.margin for the whole worker process)')
+                         '(it patches SweepGuard.margin for the whole worker process); stage chain only with --chain-stop-leg 0 or 1')
     for stage in args.stage:
         spec = sp.STAGES[stage]
         if not spec['implemented']:
@@ -947,12 +948,12 @@ def build_cases(args):
                             cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
                                                       setup=hsetup, subset=set(args.cells) if args.cells else None,
                                                       policy=policy, prior_std=args.prior_std, leg=leg, rows=hrows,
-                                                      door_relax=args.door_relax)
+                                                      door_relax=args.door_relax, chain_stop_leg=args.chain_stop_leg)
                         continue
                     cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
                                               setup=sp.setup_variant(args.setup_variant),
                                               subset=set(args.cells) if args.cells else None, policy=policy,
-                                              prior_std=args.prior_std, leg=leg, door_relax=args.door_relax)
+                                              prior_std=args.prior_std, leg=leg, door_relax=args.door_relax, chain_stop_leg=args.chain_stop_leg)
             if 'boundary' in args.sources and stage == 'grasp_lift':
                 cases += sp.boundary_cases(stage, policy=policy, seed=args.seeds[0],
                                            subset=set(args.cells) if args.cells else None, prior_std=args.prior_std)
