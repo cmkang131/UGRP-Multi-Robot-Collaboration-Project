@@ -627,3 +627,14 @@ def test_diag_setdown_sigma_tiny_image_off_is_the_composite_and_caps_sigma_at_th
                'assert (e["std_xy_m"], e["std_yaw_rad"], e["x"]) == (.001, .0005, 1.), e\n')
     out = subprocess.run([sys.executable, '-c', program], cwd=ROOT, capture_output=True, text=True)
     assert out.returncode == 0, out.stderr
+
+
+def test_probe_view_name_collision_between_raws_keeps_both_views():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('views', ROOT / 'scripts/build_pair_stage_probe_views.py')
+    views = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(views)
+    first, again = Path('/x/pair-stage-probes-aaaa-carryL0'), Path('/x/pair-stage-probes-bbbb-postBaseL0')
+    assert views.unique_name('C-ca-t-nominal-s911-pE-L0', [], first) == 'C-ca-t-nominal-s911-pE-L0'
+    assert views.unique_name('C-ca-t-nominal-s911-pE-L0', ['C-ca-t-nominal-s911-pE-L0'], again) == \
+        'C-ca-t-nominal-s911-pE-L0-postBaseL0'

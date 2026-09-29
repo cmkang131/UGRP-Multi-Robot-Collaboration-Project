@@ -43,6 +43,11 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def unique_name(name, taken, raw):
+    """The same cell re-run in another raw (e.g. a post-merge continuity check) keeps its first view and gets that raw's tag."""
+    return name if name not in taken else name + _run_tag(raw)
+
+
 def slug(text):
     return re.sub(r'[^A-Za-z0-9_+-]+', '_', text).strip('_')
 
@@ -146,7 +151,7 @@ def main(argv=None):
         rows = [json.loads(line) for line in (raw / 'cases.jsonl').read_text().splitlines() if line]
         for row in rows:
             name, view = case_view(raw, row, manifest)
-            names.append(write(a.output, name, view))
+            names.append(write(a.output, unique_name(name, names, raw), view))
         summary = raw / 'summary.json'
         s = json.loads(summary.read_text())
         infeasible_ids = {r['case_id'] for r in rows if staging_infeasible(
