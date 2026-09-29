@@ -85,10 +85,45 @@ jobs:
       - name: Verify real RGB inference, backward, checkpoint, and subprocess boundary
         run: python -m pytest -q tests/test_reference_approach_data.py tests/test_reference_act_optional.py tests/test_act_training_optional.py tests/test_recovery_act_optional.py tests/test_pair_carry_act_optional.py tests/test_pair_carry_input_optional.py tests/test_carry_training_checkpoint_optional.py tests/test_act_deployed_window_cache_optional.py
 
-  offline-regressions:
+  offline-regression-shards:
+    name: offline-regression-shard (${{ matrix.shard }}/8)
     runs-on: ubuntu-latest
-    # 2026-09-27: the suite reached 9m38s (#194) and one run was cancelled at the 10 min limit (#238).
-    timeout-minutes: 20
+    # No complete file-duration history yet: spread the unchanged list over 8
+    # jobs by file count. Keep JUnit timings to tune any observed imbalance.
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    env:
+      OMP_NUM_THREADS: "2"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-test.txt
+      - run: python -m pip install --requirement requirements-test.txt
+      - name: Run offline regression shard
+        run: python scripts/run_ci_tests.py --shard-index ${{ matrix.shard }} --shard-count 8 --junitxml outputs/ci-offline/shard-${{ matrix.shard }}.xml
+      - name: Keep shard results and per-test costs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: offline-shard-${{ matrix.shard }}
+          path: outputs/ci-offline/
+          if-no-files-found: error
+          retention-days: 14
+
+  offline-regression-checks:
+    runs-on: ubuntu-latest
+    # Run the shared bundle/registry checks and protocol fixtures exactly once.
+    timeout-minutes: 10
+    env:
+      OMP_NUM_THREADS: "2"
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -117,8 +152,14 @@ jobs:
         continue-on-error: true
         run: python scripts/check_media_size.py --base "${{ github.event.pull_request.base.sha }}" --github-annotations
 
-      - name: Run offline regression suite
-        run: python scripts/run_ci_tests.py
+      - name: Verify shard allocation and exact file coverage
+        run: |
+          python -m pytest -q -p no:cacheprovider --basetemp=./.pytest_tmp tests/test_ci_sharding.py
+          python scripts/run_ci_tests.py --shard-count 8 --list-shards
+
+      - name: Remove test temporary directory
+        if: always()
+        run: python -c 'import shutil; shutil.rmtree(".pytest_tmp", ignore_errors=True)'
 
       - name: Exercise the task-stage JSON contract with fixture robot ports
         run: python scripts/demo_task_stage_sync.py --output outputs/task-stage-sync-ci
@@ -146,6 +187,23 @@ jobs:
           path: outputs/task-stage-sync-ci/
           if-no-files-found: warn
           retention-days: 14
+
+  offline-regressions:
+    # Preserve the required status-check name; skipped/cancelled dependencies
+    # must fail this gate too. No continue-on-error on the shard jobs.
+    name: offline-regressions
+    needs: [offline-regression-shards, offline-regression-checks]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require every offline shard and shared check to succeed
+        env:
+          SHARDS_RESULT: ${{ needs.offline-regression-shards.result }}
+          CHECKS_RESULT: ${{ needs.offline-regression-checks.result }}
+        run: |
+          test "$SHARDS_RESULT" = success
+          test "$CHECKS_RESULT" = success
 
   ubuntu-simulation-runtime:
     runs-on: ubuntu-24.04
