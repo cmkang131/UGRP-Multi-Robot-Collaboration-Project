@@ -41,6 +41,13 @@ ORDER = {'orders': [{'order_id': 'cargoX', 'kind': 'long_beam', 'count': 1, 'req
 SAMPLE_S = .05
 
 
+def order_for(target='B'):
+    """The probe order sheet; `target` defaults to zone B (unchanged). Other zones are the passage-map opt-in."""
+    order = copy.deepcopy(ORDER)
+    order['orders'][0]['destination_zone'] = target
+    return order
+
+
 def write_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -319,13 +326,19 @@ def run_case(case, out):
     spec_stage = sp.STAGES[stage]
     write_json(out / 'case.json', {**case, 'labels': sp.LABELS})
     sheet = case['coarse_order_sheet']
-    spec = {'map': MAP_ID, 'seed': case['seed'], 'goal': {'B': {'cyan': 1}}, 'pair_policy': case.get('pair_policy', 'v5h'),
+    target = case.get('target', 'B')     # 'map' / 'target' / 'pair_passage' are opt-in fields (harness.pair_passage_plan)
+    if case.get('pair_passage'):
+        from harness import pair_passage_plan
+        pair_passage_plan.install(case['pair_passage'])     # process-local: executor file stays byte-identical
+    spec = {'map': case.get('map', MAP_ID), 'seed': case['seed'], 'goal': {target: {'cyan': 1}}, 'pair_policy': case.get('pair_policy', 'v5h'),
             'team_cargo': [{'item_id': 'cargoX', 'kind': 'long_beam', 'pose': list(case['beam_xyyaw'])}],
-            'pair_order_sheets': {'cargoX': sheet}, 'order_sheet': copy.deepcopy(ORDER),
+            'pair_order_sheets': {'cargoX': sheet}, 'order_sheet': order_for(target),
             'contact_profile': 'cargo_noslip_v1', 'job_sim_limit_s': 900.}
     student = {'mode': 'm1', 'calibration': CALIBRATION,
                'skill_module': 'harness.wrist_zone_skill_v9', 'skill_class': 'WristZoneDeliveryV9'}
     scene = make_scene(spec)
+    if case.get('pair_passage'):     # ZoneOwnExecutor needs a door-kind passage (probe-only alias, see executor_view)
+        scene.config['static_map'] = pair_passage_plan.executor_view(scene.config['static_map'])
     spawns = scene.config['setup_only']['spawns']
     z = spawns['r1'][2]
     for rid in sp.PARTICIPANTS:
@@ -346,7 +359,7 @@ def run_case(case, out):
             if (rid in sp.PARTICIPANTS and probe.submit_t is not None and now + 1e-9 >= probe.submit_t
                     and rid not in probe.submitted and not self.closed):
                 probe.submitted.add(rid)
-                probe.acks[rid] = self.call(rid, 'pair_carry', 'cargoX', 'B', 'r2' if rid == 'r1' else 'r1')
+                probe.acks[rid] = self.call(rid, 'pair_carry', 'cargoX', target, 'r2' if rid == 'r1' else 'r1')
             return super()._decide_raw(rid, now)
 
         # ---------------- eval-only observer (never read by control)
@@ -443,7 +456,7 @@ def run_case(case, out):
         probe.host = host
         if case.get('route') is not None:   # the staged route must be the controller's own static route
             from harness.zone_pair_executor import make_plan
-            got = [[float(v) for v in q] for q in make_plan(scene.config['static_map'], sheet, 'B')['route']]
+            got = [[float(v) for v in q] for q in make_plan(scene.config['static_map'], sheet, target)['route']]
             result['route_check'] = {'matches_case_route': got == case['route'], 'leg': case.get('leg'), 'route': got}
             if got != case['route']:
                 raise RuntimeError('case route differs from make_plan(scene static map)')
@@ -744,6 +757,9 @@ def leg_arg(text):
 
 
 def build_cases(args):
+    if getattr(args, 'passage_map', None):     # opt-in: passage map cases (harness.pair_passage_plan)
+        from harness.pair_passage_plan import passage_build_cases
+        return passage_build_cases(args)
     cases = []
     for stage in args.stage:
         spec = sp.STAGES[stage]
@@ -932,6 +948,10 @@ def parser():
     p.add_argument('--limit', type=int)
     p.add_argument('--workers', type=int, default=4)
     p.add_argument('--case-timeout-s', type=float, default=1500.)
+    p.add_argument('--passage-map', help='opt-in: teacher cases on this passage map (maps/zones/<id>.json, e.g. '
+                                         'zone_wide_corridor_tags_v3) through harness.pair_passage_plan')
+    p.add_argument('--passage', default='auto', help="with --passage-map: 'auto' (shortest valid) or a passage id")
+    p.add_argument('--passage-target', default='B', choices=('A', 'B', 'C'), help='with --passage-map: destination zone')
     p.add_argument('--execute', action='store_true', help='physical probes (MuJoCo); otherwise plan only')
     p.add_argument('--lock-owner', choices=('claude', 'codex', 'kiro'))
     p.add_argument('--worker-case', type=Path, help=argparse.SUPPRESS)

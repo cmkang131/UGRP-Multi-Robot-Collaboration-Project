@@ -263,7 +263,7 @@ def _prior_std(prior_std):
     raise ValueError(f'unknown prior std {prior_std!r}')
 
 
-def plan_route(sheet, *, map_id=MAP_ID, target='B'):
+def plan_route(sheet, *, map_id=MAP_ID, target='B', passage=None):
     """The controller's own static route for a coarse order sheet (harness.zone_pair_executor.make_plan).
 
     Pure static geometry: the map JSON and the sheet, no world. 9 points / 8 legs for the dev map:
@@ -271,6 +271,9 @@ def plan_route(sheet, *, map_id=MAP_ID, target='B'):
     """
     from harness.zone_pair_executor import make_plan
     static = json.loads((ROOT / 'maps' / 'zones' / f'{map_id}.json').read_text())
+    if passage is not None:      # opt-in passage map (harness.pair_passage_plan); raises PassageRefusal with a code
+        from harness.pair_passage_plan import passage_make_plan
+        return [[float(v) for v in p] for p in passage_make_plan(static, sheet, target, passage)['route']]
     return [[float(v) for v in p] for p in make_plan(static, sheet, target)['route']]
 
 
@@ -317,7 +320,7 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     setup = copy.deepcopy(setup or BASE_SETUP)
     route, k = None, None
     if stage in ('carry', 'setdown', 'chain'):
-        route = plan_route(setup['coarse_order_sheet'])
+        route = plan_route(setup['coarse_order_sheet'], **{name: v for name, v in setup.items() if name in ('map_id', 'target', 'passage')})
         k = leg_index(stage, leg, len(route))
     else:
         leg_index(stage, leg, 0)
