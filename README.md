@@ -6,11 +6,11 @@
 
 - **[표준 시뮬레이션 관리](docs/simulation_management.md)** — 연구별 실행 선택·버전·입력·결과 기록을 하나의 CLI에서 관리
 - **[로컬 시뮬레이션 · 간편 메뉴/CLI/Python API](docs/local_simulation.md) · [환경·제어기·action 확장](docs/simulation_extensions.md)** — 터미널에서 모델·맵·관찰 속도를 고르고 자연어 지시 → 기존 공동 plan → 로봇별 RGB 스킬 실행과 MuJoCo 기본 창 · [구성 검토](docs/simulation_inventory.md)
-- **[연구 TODO와 우선순위](docs/research_todo.md)** — 독립 에이전트의 무통신·정형·자연어 비교를 중심으로 실행 기반·본실험·ACT/Jev 보조 과제 정리
+- **[연구 TODO와 우선순위](docs/research_todo.md)** — 독립 에이전트의 무통신·정형·자연어 비교를 중심으로 실행 기반·본실험·ACT/Jev 보조 과제 정리(§0 로드맵 상태 2026-09-29 갱신)
 - **[Kaggle CLI 배치 실행](docs/kaggle_simulation.md)** — 비공개 CPU·오프라인 실행·결과 회수 검증 완료; 신규 계정은 최초 인증 필요
 - **[Colab CLI 시뮬레이션·평가](docs/colab_simulation.md)** — 선택 가능한 원격 배치 경로; 실제 런타임 검증 상태는 안내 참조
 
-- **[현재 상태와 실행 경로](docs/current_status.md)** — main에 포함된 결과·제약과 작업별 진입점
+- **[현재 상태와 실행 경로](docs/current_status.md)** — 2026-09-29 진행 요약(단계 probe·dev 결과 구분), main에 포함된 결과·제약과 작업별 진입점
 - **[Ubuntu 설치·무료 데모](docs/ubuntu_quickstart.md)** — 새 팀원은 여기서 시작
 - [개발·테스트·실험·PR 절차](CONTRIBUTING.md) · [로봇 입력과 작업 규칙](AGENTS.md)
 - [TensorBoard로 학습·실험 기록 보기](docs/tensorboard.md)

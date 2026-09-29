@@ -1,8 +1,8 @@
 # UGRP 연구 TODO — 통신 효과 중심
 
-최초 작성: 2026-09-22. **2026-09-26 개정:** §0 로드맵과 이슈 연결을 추가했다. §1 이하는 연구 방법의 원칙으로 유지한다. 단, 9/22의 A/B/C 조건 표기는 §0의 조건 4개로 대체한다. 개정 전 판은 git 이력 `6588dafc`에 있다.
+최초 작성: 2026-09-22. **2026-09-29:** §0 표의 상태 열만 최신화했다(로드맵 순서·내용 불변, 상세는 [현재 상태 9/29 절](current_status.md#2026-09-29-기준-진행-요약-main-45a21b23-pr-256268-병합-뒤)). **2026-09-26 개정:** §0 로드맵과 이슈 연결을 추가했다. §1 이하는 연구 방법의 원칙으로 유지한다. 단, 9/22의 A/B/C 조건 표기는 §0의 조건 4개로 대체한다. 개정 전 판은 git 이력 `6588dafc`에 있다.
 
-## 0. 현재 로드맵 (2026-09-26)
+## 0. 현재 로드맵 (2026-09-26, 상태 열 2026-09-29 갱신)
 
 진행 관리는 GitHub 마일스톤 **"E2E 첫 파일럿"**과 `roadmap` 라벨 이슈로 한다. 모든 PR 본문에 `Refs #이슈`를 적고, 작업이 끝나면 해당 이슈에 결과 댓글을 남긴다. 이슈가 대체되면 이유와 대체 이슈를 적고 닫는다(`superseded` 라벨).
 
@@ -11,21 +11,21 @@
 - **로봇 LLM 입력:** 자기 팔 끝 RGB, 정적 지도, 주문서, 자기 명령 이력. TOP 카메라는 평가 전용이다. 대화·생각 시간은 SIM 시간 비용으로 계산한다.
 - **최종 환경:** walls_v3(0.40 m), **AprilTag 0개**. 문·문기둥·벽 모서리를 비전으로 인식해 위치를 추정한다. cargo_noslip_v1 사용, weld OFF. 짝 상태 채널은 모든 조건에 넣는다.
 
-| 단계 | 이슈 | 관련 PR | 상태 (9/26) |
+| 단계 | 이슈 | 관련 PR | 상태 (2026-09-29 기록 기준) |
 |---|---|---|---|
-| 1 표식 없는 비전 위치 추정 | [#216](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/216) | #210, VIS2 | 진행 중. **가장 큰 위험** |
-| 2 로봇별 관측 기억 (표식 무관) | [#217](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/217) | #211 | 표식 무관 방식으로 재작업 중 |
-| 3 최종 환경 고정 | [#218](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/218) | #208 | 벽 완료, 표식 0개 버전 확정 필요 |
-| 4 자기 카메라 기술 재검증 (M1·M2) | [#219](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219) | #201, #203, #205 | 옛 환경 결과만 있음 |
-| 5 인식 잔여 오류 | [#220](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/220) | #193 | v3.1, 그림자·가림 오류 남음 |
-| 6 실행기 보완·3대 no-LLM 스모크 | [#221](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221) | #206 | 1차 3/6, 수정 대기 |
-| 7 대화 연구 뼈대·실제 LLM adapter | [#222](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/222) | #184–#190, #194 | 1건 수정 중 |
-| 8 통합·조건 연결·host 교란 제거 | [#223](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/223) | – | 미착수 |
-| 9 스모크 → LLM 파일럿 → 본 실험 | [#224](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/224) | – | 미착수 |
-| 지원: 교사 실행기 (시연 전용) | [#225](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/225) | #207 | 진행 중 |
-| 운영: 디스크·속도·기록 | [#226](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/226), [#3](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/3), [#6](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/6) | #191, #192, #195, #199, #209, #212 | 진행 중 |
-| 후속: 도메인 랜덤화 | [#213](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/213) | – | VIS2 1차 결과 뒤 |
-| 후속: sim2real | [#214](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/214) | – | 연구 뒤, 사용자 확인 필요 |
+| 1 표식 없는 비전 위치 추정 | [#216](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/216) | #210, VIS2, #227, #233, #242, #243, #264 | 진행 중. **가장 큰 위험**. 9/27 VIS3 독립 test 게이트 FAIL, 9/28 VIS4·VIS5 후보 기각, 9/29 VIS6 레시피 1 오프라인 재생(214단위) 채택 후보 없음, b0 유지. 태그 0개 폐루프 dev 1회는 배송 실패(#237) |
+| 2 로봇별 관측 기억 (표식 무관) | [#217](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/217) | #211, #234 | 9/27 memory_v2 test OFF 4/6 대 3/6이라 이득 주장 불충족(interim, 태그 제공자). memory_v3(#234) 병합, 이슈 마지막 코멘트(9/26)는 검토 P1 3건 수정 중 |
+| 3 최종 환경 고정 | [#218](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/218) | #208, #232, #255 | 9/28 표식 0개 지도 3종·시나리오 v2 6종 고정(정적 검사 9/9, 물리 없음). 남은 일: 2인 편대 경로 재검사, 신규 지도 장면·러너 연결, 최종 환경 스모크(B8) |
+| 4 자기 카메라 기술 재검증 (M1·M2) | [#219](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219) | #201, #203, #205 | 표식 0개 최종 환경 재검증은 미착수. 옛 태그 환경 결과만 있음(M1 test 4/6, M2 1단계 8/8·접근 관문 2 seed 실패) |
+| 5 인식 잔여 오류 | [#220](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/220) | #193 | v3.1 병합(9/27). 그림자·가림 오류 남음. 이슈 마지막 코멘트(9/26)의 T3 판정식 결함 수정 여부는 미확인 |
+| 6 실행기 보완·3대 no-LLM 스모크 | [#221](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/221) | #206, #229, #235, #244, #259, #260, #263, #265, #266 | 실행기 API·통합 러너 4조건 no-LLM 배선·공동 운반 API 병합(9/27). 공동 운반은 E2E가 아닌 단계 probe로 전환(9/28): 정렬 0/25 → 13/25(b-v6c) → 25/25(b-v6d), 파지 22/23, 운반 0/33·목적지 내려놓기 0/13(b-v6c, 제어기 미수정). 모두 dev 격자, E2E 성공 아님 |
+| 7 대화 연구 뼈대·실제 LLM adapter | [#222](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/222) | #184–#190, #194, #238, #245 | 9/28 다회 결정 루프(#245) 병합. 9/27 실제 LLM 첫 호출 파일럿 17회(물리 0회). 실제 다회 LLM 드라이버(B7, #256) 병합 |
+| 8 통합·조건 연결·host 교란 제거 | [#223](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/223) | #229, #245, #256, #257 | 4조건 no-LLM 배선(9/27)·다회 루프(9/28)·평가 전용 심판(B6, 9/28) 병합. 남은 일은 전체 장면 실행 |
+| 9 스모크 → LLM 파일럿 → 본 실험 | [#224](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/224) | #254, #257 | 본연구 사전 등록은 DRAFT·미고정(#254). 전체 스모크·파일럿·본 실험은 미착수 |
+| 지원: 교사 실행기 (시연 전용) | [#225](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/225) | #207, #202 | 9/27 교사 실현 가능성 5/8(교사, 로봇 성공 아님). N1(TOP green 검출) 열림 |
+| 운영: 디스크·속도·기록 | [#226](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/226), [#3](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/3), [#6](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/6) | #191, #192, #195, #199, #209, #212, #228, #236, #239, #241, #267, #268 | 진행 중. 9/27 디스크 정리 기록(raw 결정은 사용자 대기), 9/28 캡처 프로필, 9/29 CI 8개 shard 분할·플래키 수정 |
+| 후속: 도메인 랜덤화 | [#213](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/213) | – | VIS2 1차 결과 뒤(변화 없음) |
+| 후속: sim2real | [#214](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/214) | #251, #258 | 연구 뒤, 사용자 확인 필요. 9/28 실측 절차·공개 사양 조사(문서만, 실측 미실행) |
 
 **사용자 결정이 필요한 것:** 실제 LLM 파일럿의 모델과 비용 한도(#222), sim2real의 로봇 대수·경기장·천장 카메라(#214).
 

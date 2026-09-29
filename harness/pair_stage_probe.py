@@ -83,6 +83,14 @@ STAGES = {
         'plan_pose': 'station', 'teacher_held': True,
         'description': 'lower, open and back off with a teacher-lifted beam (final segment)',
     },
+    # Opt-in (harness.pair_chain_probe, CHAIN_PROBE_VERSION): the whole route in one controller run after ONE teacher staging.
+    # No exit hook: the controller runs carry -> lower -> open -> checkpoint relocalization -> re-grasp -> ... -> done itself.
+    'chain': {
+        'order': 6, 'implemented': True, 'entry': 'wait_carry', 'exit_hook': None,
+        'exit_state': None, 'exit_status': None, 'budget_s': 800., 'final_states': ('done',),
+        'plan_pose': 'station', 'teacher_held': True,
+        'description': 'carry legs 0..7 and the destination set-down in one run from a teacher-lifted beam (no re-staging)',
+    },
 }
 
 # GT criteria (eval only). Development hypotheses, recorded with every result
@@ -100,6 +108,8 @@ CRITERIA = {
     'setdown': {'max_rest_height_m': .005, 'max_tilt_deg': 3., 'no_jaw_contact': True, 'max_shift_m': .05,
                 'note': 'beam back on the floor, level, released, and not dragged'},
 }
+from harness import pair_chain_probe as _chain   # noqa: E402  (pure module; CRITERIA['chain'] is its criteria)
+CRITERIA['chain'] = _chain.CRITERIA
 
 MAP_ID = 'zone_wide_door_tags_v2_dock_v3'   # the dev map every probe runs on (scripts/run_pair_stage_probes.py MAP_ID)
 GRASP_RADIUS_M = .162        # harness.owncam_pair_beam.GRASP_RADIUS_M (controller align target)
@@ -218,7 +228,7 @@ def _grid_offsets(stage):
         singles = [('along+', (d, 0, 0)), ('along-', (-d, 0, 0)), ('lat+', (0, lat, 0)), ('lat-', (0, -lat, 0)),
                    ('yaw+', (0, 0, yaw)), ('yaw-', (0, 0, -yaw))]
         corners = [('corner++', (d, lat, yaw)), ('corner--', (-d, -lat, -yaw))]
-    elif stage in ('grasp_lift', 'carry', 'setdown'):
+    elif stage in ('grasp_lift', 'carry', 'setdown', 'chain'):
         # v7 DESIGN axis D: align-tolerance boundary (12 mm standoff, 8 mm width, 0.035 rad).
         d, lat, yaw = .012, .008, .035
         singles = [('along+', (d, 0, 0)), ('along-', (-d, 0, 0)), ('lat+', (0, lat, 0)), ('lat-', (0, -lat, 0)),
@@ -253,7 +263,7 @@ def _prior_std(prior_std):
     raise ValueError(f'unknown prior std {prior_std!r}')
 
 
-def plan_route(sheet, *, map_id=MAP_ID, target='B'):
+def plan_route(sheet, *, map_id=MAP_ID, target='B', passage=None):
     """The controller's own static route for a coarse order sheet (harness.zone_pair_executor.make_plan).
 
     Pure static geometry: the map JSON and the sheet, no world. 9 points / 8 legs for the dev map:
@@ -261,6 +271,9 @@ def plan_route(sheet, *, map_id=MAP_ID, target='B'):
     """
     from harness.zone_pair_executor import make_plan
     static = json.loads((ROOT / 'maps' / 'zones' / f'{map_id}.json').read_text())
+    if passage is not None:      # opt-in passage map (harness.pair_passage_plan); raises PassageRefusal with a code
+        from harness.pair_passage_plan import passage_make_plan
+        return [[float(v) for v in p] for p in passage_make_plan(static, sheet, target, passage)['route']]
     return [[float(v) for v in p] for p in make_plan(static, sheet, target)['route']]
 
 
@@ -279,8 +292,11 @@ def leg_index(stage, leg, n_points):
         if k != n_points - 1:
             raise ValueError('setdown is defined for the final segment (leg end) only')
         return k
+    if stage == 'chain' and leg is None:
+        return None   # the chain always starts at route point 0 and runs every leg itself
     if leg is not None:
-        raise ValueError(f'stage {stage!r} has no route legs')
+        raise ValueError(f'stage {stage!r} has no route legs' if stage != 'chain' else
+                         "stage 'chain' runs every leg itself; --legs does not apply")
     return None
 
 
@@ -303,8 +319,8 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
         raise ValueError(f'stage {stage!r} is not implemented here: {spec["owner"]}')
     setup = copy.deepcopy(setup or BASE_SETUP)
     route, k = None, None
-    if stage in ('carry', 'setdown'):
-        route = plan_route(setup['coarse_order_sheet'])
+    if stage in ('carry', 'setdown', 'chain'):
+        route = plan_route(setup['coarse_order_sheet'], **{name: v for name, v in setup.items() if name in ('map_id', 'target', 'passage')})
         k = leg_index(stage, leg, len(route))
     else:
         leg_index(stage, leg, 0)
@@ -346,6 +362,9 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
                 case.update(leg=k, route=[list(p) for p in route],
                             route_note='controller static route (make_plan) for the coarse sheet; staged at route point '
                                        + ('0 (legacy setdown at the pickup)' if k is None else str(k)))
+                if stage == 'chain':
+                    case['route_note'] = ('controller static route (make_plan); ONE teacher staging at route point 0, the '
+                                          'controller then runs legs 0..%d and the destination set-down' % (len(route) - 2))
             out.append(case)
     return out
 
@@ -613,6 +632,11 @@ def evaluate(stage, record):
                     metrics.update(end_error_m=record['end_error_m'], cross_track_m=record.get('cross_track_m'),
                                    yaw_drift_deg=record.get('yaw_drift_deg'))
                     checks['end_error'] = record['end_error_m'] <= crit['max_end_error_m']
+    elif stage == 'chain':
+        # opt-in chain stage: per-leg GT checks over the whole run (harness.pair_chain_probe); no exit hook, so the run must end in done
+        if record.get('chain') is not None:
+            checks.update(_chain.chain_checks(record['chain']))
+            metrics = _chain.chain_metrics(record['chain'])
     elif stage == 'setdown':
         gt = record.get('gt_at_exit')
         if gt is not None:
@@ -760,4 +784,6 @@ def summarize(rows):
                               for q in [[r for r in sub if r['source'] == src]]},
                 'failures': dict(Counter(r['category'] for r in sub if not r['passed']).most_common())}
         out['stages'][stage]['by_policy'] = by_policy
+        if stage == 'chain':
+            out['stages'][stage]['chain'] = _chain.summarize_chain(rs)
     return out
