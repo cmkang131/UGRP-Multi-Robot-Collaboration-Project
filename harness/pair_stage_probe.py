@@ -244,7 +244,12 @@ BASE_SETUP = {
 # before the v6e carry runs, inside the controller's pickup envelope (sheet x 0.7..1.2, |y - 0.05| <= 0.15, yaw 0):
 #   cal   = calibration cohort for the v6e dead-reckoning error model (disjoint from every diagnosis cell)
 #   hA/hB/hC = held-out placements (not used in the PR #266 diagnosis, the v6e design or the calibration)
-SETUP_VARIANTS = {'cal': [.93, .03, 0.], 'hA': [.84, .13, 0.], 'hB': [1.13, -.04, 0.], 'hC': [1.03, .12, 0.]}
+SETUP_VARIANTS = {'cal': [.93, .03, 0.], 'hA': [.84, .13, 0.], 'hB': [1.13, -.04, 0.], 'hC': [1.03, .12, 0.],
+                  # 2026-09-29 (coordinator, after hA 4/10): generalisation cohort of the v6g motion model. hA was read
+                  # (diagnosis only, never a fit input or held-out again); cal2-4 are the NEW fitting placements (y offsets
+                  # 0.08 / -0.01 / 0.14, beam heading +0.03 / -0.03 rad on cal3 / cal4), hB, hC and hD (y 0.10, heading
+                  # +0.03 rad; a y value none of the fitting placements uses) stay unread held-outs.
+                  'cal2': [.90, .08, 0.], 'cal3': [.96, -.01, .03], 'cal4': [1.05, .14, -.03], 'hD': [1.00, .10, .03]}
 
 
 def setup_variant(name=None):
