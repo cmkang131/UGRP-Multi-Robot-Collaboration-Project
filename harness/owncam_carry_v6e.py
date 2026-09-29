@@ -34,7 +34,9 @@ import math
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FIT = 'experiments/2026-09-29-pair-v6e-carry/carry_dr_fit.json'
+# carry_dr_fit.json (dev box carry, first fit) + the yaw bias std refitted on the cal cohort only after the cal
+# honesty gate failed (refit_carry_dr_cal.py; the 33-cell grid and the held-out placements were not read).
+FIT = 'experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json'
 # Axes whose open-loop leg length uses the lag model (flag ``carry_lateral_lag``).
 LAG_AXES = ('lateral',)
 

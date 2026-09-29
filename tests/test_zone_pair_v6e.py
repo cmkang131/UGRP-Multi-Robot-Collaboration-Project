@@ -162,7 +162,7 @@ def test_loaded_rest_does_not_diffuse_and_leg_sigma_stays_under_the_hold_gate_wi
     loc.predict_to(3.)
     assert np.allclose(loc.px, before, atol=1e-12, rtol=0)   # no wheel motion, no diffusion (rest_noise False)
     leg(loc)
-    assert 0. < loc.px[:, 2].std() < math.radians(3.) - .005
+    assert 0. < loc.px[:, 2].std() < math.radians(3.) - .003   # cal-refitted bias std (0.00233 rad/s): 14 s from a 2 deg start leaves ~0.27 deg
     assert loc.px[:, :2].std(0).max() < .07             # xy hold gate is 0.07 m
     # a fix-free 14 s leg still grows sigma: honest, not frozen
     assert loc.px[:, 2].std() > .0357 and loc.px[:, :2].std(0).min() > .03
