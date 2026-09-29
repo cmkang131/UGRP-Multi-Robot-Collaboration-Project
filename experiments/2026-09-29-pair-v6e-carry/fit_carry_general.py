@@ -30,7 +30,7 @@ import fit_carry_pair_yaw as pfit  # noqa: E402
 import y_error_phases as yph  # noqa: E402
 
 OUT = Path('/Users/changmin/projects/ugrp/outputs')
-FIT_RAWS = ['ece01311-fcal', 'ece01311-fcal2', 'ece01311-fcal3', 'ece01311-fcal4']   # floor_light_v1 raws only (stage F)
+FIT_RAWS = ['ece01311-fcal', '7cecaf9b-fcal2', '7cecaf9b-fcal3', '7cecaf9b-fcal4']   # floor_light_v1 raws only (stage F)
 DIAGNOSTIC_RAWS = ['4fac772d-yawhA']         # scored by the fitted model, never fitted
 GAIN_YY = 1.0159                             # calibration_loop_v2 motion_loaded gain[1][1]
 TAU = .8
@@ -98,7 +98,7 @@ def main():
     print('diagnostic (hA, not fitted): ', diag_score)
 
     # yaw flags: the pair fit on the same raws
-    pfit.FIT_RAWS = FIT_RAWS
+    pfit.FIT_RAWS = ['ece01311-fcal', '7cecaf9b-fcal2', '7cecaf9b-fcal3', '7cecaf9b-fcal4']   # floor_light_v1 raws only (stage F)
     rows1 = pfit.rows_for([r.name.removeprefix('pair-stage-probes-') for r in raws], 1.)
     pairs = [(r['d_slope_total'], r['d_rel_gt']) for r in rows1 if r['d_rel_gt'] is not None]
     s, y = np.array([p[0] for p in pairs]), np.array([p[1] for p in pairs])

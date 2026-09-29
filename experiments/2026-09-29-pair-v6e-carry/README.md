@@ -717,6 +717,24 @@ raw(로컬, 원격 백업 아님): `outputs/pair-stage-probes-cb215732-rsmoke`(n
 
 실행 규칙은 위 폐기된 계획과 같다: 소스·적합 파일·기준은 코호트 중 고정(해시 기록), 재적합·재시도·케이스 제외 없음, 실패 시 멈추고 원인별(MOTION_ERROR / 가드 / 정직성 / PF 편향) 보고, 하나라도 실패하면 어느 것도 "일반화 통과"로 쓰지 않고 그 raw는 진단용. 게이트(`GATE_LOADED`) 미변경. 모델 호출 0, weld OFF, `--workers 2 --omp-threads 1 --pf-track`, driver PID로 agent_lock, 부하 평균 기록, 관련 테스트만. 이 단락이 커밋된 뒤에만 단계 F를 시작한다.
 
+## 단계 F 결과와 v6g 적합 (새 프로필 raw만 사용; 소스 고정)
+
+**단계 F 수집** (정책 `b-v6e`, `--render-profile floor_light_v1`, 케이스 행 전부 프로필 기록 확인; 판정 없는 적합 자료). raw(로컬, 원격 백업 아님): `outputs/pair-stage-probes-ece01311-fcal`(42건), `-7cecaf9b-fcal2`, `-fcal3`, `-fcal4`(각 20건). 통과: cal 41/42(가드 1), cal2 19/20, cal3 19/20, cal4 16/20(가드 2, MOTION_ERROR 2). `ece01311`에서 fcal2–4는 내가 적합 스크립트를 수정하는 바람에 "tracked source must be clean"으로 시작하지 못했고(0건), 코드 동일한 `7cecaf9b`에서 다시 돌렸다. 앞의 `ba834d02-gcal4`는 프로필 전환으로 중단, 기존 프로필 gcal2·gcal3는 적합에 쓰지 않았다. 부하 평균은 케이스별 `loadavg_case_*`에 기록.
+
+**적합** (`fit_carry_general.py`, 입력 = 위 4개 raw만; 출력 `carry_general_fit.json` sha256 `9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b`, 행 `carry_general_fit_rows.json` `071341df1dda54584a886f65158b610b79c9e25ad433f66b6942e4da6baa9e77`):
+
+| 항목 | 값 | 수락 조건/참고 |
+|---|---|---|
+| steer 단계 옆 이동 램프 c0 / u1 | 0.0002 / 0.0292 (사실상 2차 곡선: 작은 명령에서 응답 ∝ u²) | 잔차 rms 3.85 mm ≤ 4 mm, 선형 모델 32.83 mm → **수락**(200 로봇-케이스) |
+| hA(적합 안 함, 기존 프로필 raw) 진단 점수 | 램프 모델 rms 4.43 mm, 부호 평균 −0.26 mm | 선형 모델 33.90 mm, +33.85 mm(유령 이동). 즉 hA의 유령 이동이 없어짐 |
+| 교차 축 드리프트 비율 `drift_ratio_std` | 0.0159 m/m (셀별 RMS: lat−/opp 0.0245, yaw−/opp 0.0196, nominal 0.0034, yaw+/same 0.0035) | 셀 균형 RMS. 회전이 있는 두 셀이 지배 |
+| 기울기→yaw 비율 | 1.0056 (상관 0.9993, n 172) | 이전 1.008 |
+| yaw b [mrad/s] | pm 2.28, edge 2.26, pm+edge 2.04, 등록값 e0 2.55 | 이전(pm+edge) 1.56. yaw−/opp 셀과 y 오프셋 배치를 넣어 커졌다(더 정직한 값). 셀별 RMS(pm+edge): nominal 1.21, lat−/opp 2.60, yaw−/opp 2.16, yaw+/same 1.95 |
+
+주의(측정 전 기록): b가 커져 leg 끝 σ_yaw가 커진다. `GATE_LOADED`(3°/2.5°)는 바꾸지 않으므로 `SELF_POSE_UNCERTAIN`이 나면 그 자체가 결과다.
+
+**소스 고정.** 관련 테스트 496 통과, 4 skip, 5 실패 = 알려진 봉인 해시(`test_zone_pair_registered_source.py`, 등록 전 예상). 새 테스트 `tests/test_zone_pair_v6g.py`(11건, 커밋된 적합 파일 로딩 포함). 이 커밋 이후 소스(`harness/`, `scripts/`, `sim/`, `tests/`)를 바꾸지 않고, README만 결과 기록으로 바꾼다.
+
 ## TensorBoard
 
 - **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e`, run 106개(경우별 98 + 그룹 집계 `ALL-*` 8). `collection.json` sha256 `ec6f3639cf33b470cbda4fea2501bb8b65fae61c9fd9881e2a7bcbce3ad0ae9b`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e`(빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`). 기존 스냅샷은 건드리지 않았다.
