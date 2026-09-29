@@ -343,4 +343,12 @@ cal이 아래 구조 문제를 보여서 **33셀 운반 격자·held-out 운반�
 - cal-2의 "정직성 통과"는 재적합에 쓴 같은 cal 자료 위의 결과다.
 - 내려놓기 13/13은 놓은 뒤 후진이 가드에 막혀 멈춘 통과다. 운반 수정 뒤 최종 소스에서 재확인이 필요하다. held-out은 없다.
 - 반증 예측 ①–④(운반 절제 정책)는 격자를 안 돌려 검증하지 못했다. 예측 ⑤(내려놓기: `b-v6f-a` 단독은 물러남에서 막힘, `b-v6f-b` 단독은 영상 검사에서 막힘)도 절제를 안 돌려 검증하지 못했다. 통합 b-v6e의 내려놓기 통과는 예측과 같은 방향이다.
-- TensorBoard: 이 측정 뒤 스냅샷을 만들었는지는 아래 별도 줄에 적는다.
+- TensorBoard: 아래 절.
+
+## TensorBoard
+
+- **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e`, run 106개(경우별 98 + 그룹 집계 `ALL-*` 8). `collection.json` sha256 `ec6f3639cf33b470cbda4fea2501bb8b65fae61c9fd9881e2a7bcbce3ad0ae9b`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e`(빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`). 기존 스냅샷은 건드리지 않았다.
+- **뺀 것.** 중단된 raw `ece38792-cal`(14건, `summary.json` 없음)은 README 규칙대로 뷰에서 뺐다(같은 물리의 cal-1 26건은 `a704ecc6-calB2`, `-calB`로 들어 있다). 그래서 스냅샷의 cal-1은 26건이고 위 표의 cal-1 40건과 다르다.
+- **검증.** EventAccumulator로 98개 경우 run의 `offline/stage_pass`·`result/sim_s`·`result/wall_s`를 cases.jsonl과 비교해 불일치 0건, 8개 집계 값을 읽었다. TensorBoard 서버는 실행 중이 아니었고 새로 시작하지 않았다(브라우저 표시 확인은 못 했다).
+- **대시보드 설정.** `outputs/tensorboard-view.json`의 `pair_stage_probes_v6e_20260929`(쓰기 직전 다시 읽고 내 키만 추가, 118개 키). 고정 카드는 v6c-carry와 같고 run filter는 `^0929-pair-stage-probes-v6(c(-carry)?|e)/`(v6c 스냅샷을 기준선으로 함께 보임). 링크는 서버를 다시 띄우면 열린다: `python3 scripts/ugrp_session.py run tensorboard-review -- .venv-sim-worker-mac/bin/python scripts/run_tensorboard.py --logdir outputs/tensorboard`.
+- **이름.** `E-` = b-v6e, `ca` 운반, `sd` 내려놓기, `-Vcal` cal 배치, `-L<n>` leg, `-Lend` 목적지.
