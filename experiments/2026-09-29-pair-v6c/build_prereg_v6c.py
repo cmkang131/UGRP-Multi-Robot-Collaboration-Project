@@ -29,7 +29,11 @@ SCIENCE = ('schema', 'labels', 'research_result', 'environment', 'inputs', 'crit
 SCENE_SOURCE_CHANGES = {'harness/zone_pair_executor.py', 'harness/zone_pair_guards.py', 'harness/zone_pair_grasp.py',
                         'harness/zone_pair_beam_track.py', 'harness/zone_pair_v6_policy.py',
                         'harness/zone_study_integration.py', 'scripts/run_zone_pair_dev.py',
-                        'scripts/zone_pair_v6_contract.py'}
+                        'scripts/zone_pair_v6_contract.py',
+                        # PR #249 (MasterPi v3, merged before the v6c resealing): the host and scene
+                        # provider branch to v3 only for v3 maps; v2 maps keep the legacy scene, world
+                        # and spawn keepouts (sim.zone_model_conventions delegates to zone_start_dock).
+                        'harness/zone_own_team_host.py', 'sim/zone_own_scene_provider.py'}
 
 
 def build():

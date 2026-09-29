@@ -61,6 +61,21 @@ def test_v6_records_registered_scene_and_full_source_closure_at_its_commit():
         assert hashlib.sha256(committed_blob(str(dev.ROOT), V6_REGISTRATION_COMMIT, path)).hexdigest() == expected
 
 
+def test_v6b_records_sealed_scene_and_full_source_closure_at_its_commit():
+    """v6b is historical (PR #256, decision A): its DRAFT receipt is checked against its sealing commit."""
+    from scripts.zone_pair_registered_source import committed_blob
+    from scripts.zone_pair_v6_contract import PREREG_V6B as PREREG, V5H, V6B_DRAFT_COMMIT, verify_v6_historical
+    p = json.loads(PREREG.read_text())
+    assert p['registration_revision'] == 'v6b' and 'harness/owncam_bootstrap_v6b.py' in p['v6_contract']['source_sha256']
+    assert verify_v6_historical(revision='v6b')['sources'] == len(p['v6_contract']['source_sha256'])
+    assert 'grasp_contract' not in p  # old behavior/source receipt belongs to the baseline
+    assert p['baseline_registration'] == {'path': str(V5H.relative_to(dev.ROOT)),
+                                           'sha256': hashlib.sha256(V5H.read_bytes()).hexdigest()}
+    assert p['scene_contract']['source_sha256'].items() <= p['v6_contract']['source_sha256'].items()
+    for path, expected in p['scene_contract']['source_sha256'].items():
+        assert hashlib.sha256(committed_blob(str(dev.ROOT), V6B_DRAFT_COMMIT, path)).hexdigest() == expected
+
+
 def test_v6c_records_current_scene_and_full_source_closure():
     """v6c is the current v6-family revision (bundle v76): its DRAFT pins the current tree."""
     from scripts.zone_pair_v6_contract import CURRENT_REVISION, PREREG_V6C, contract
@@ -72,6 +87,9 @@ def test_v6c_records_current_scene_and_full_source_closure():
 
 def test_current_tree_v6_family_contract_closes_over_the_scene_sources():
     from scripts.zone_pair_v6_contract import contract
+    for historical in ('v6', 'v6b'):
+        with pytest.raises(ValueError, match='historical'):
+            contract(historical)
     current = contract()
     assert dev.scene_contract()['source_sha256'].items() <= current['source_sha256'].items()
     for path, expected in current['source_sha256'].items():
@@ -80,7 +98,7 @@ def test_current_tree_v6_family_contract_closes_over_the_scene_sources():
 
 @pytest.mark.parametrize('fault', ['source', 'scene', 'inherited_grasp', 'baseline'])
 def test_v6_rejects_stale_or_inherited_source_contracts(tmp_path, fault):
-    """On the current v6-family registration (v6c DRAFT), each fault alone is rejected."""
+    """On the current v6-family registration (v6c DRAFT, as committed), each fault alone is rejected."""
     from scripts.zone_pair_v6_contract import PREREG_V6C, V5H
     p = json.loads(PREREG_V6C.read_text()); old = json.loads(V5H.read_text())
     assert p['registration_revision'] == 'v6c' and p['status'] == 'DRAFT'

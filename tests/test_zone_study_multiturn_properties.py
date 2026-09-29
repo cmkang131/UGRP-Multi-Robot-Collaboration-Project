@@ -1,8 +1,10 @@
 """Seeded differential properties against frozen v64 source, no model/physics.
 
 Three frozen modules retain v64's actual scheduling and integration code.
-Only transport DTO identities are shared, so a current fake wire's exception
-is recognised by both versions. No git/network access is needed by these tests.
+Transport DTO identities and the other current dependencies are shared, so a
+current fake wire's exception is recognised by both versions. The reference's
+prompt identity is pinned to v64; request bytes are still compared in full.
+No git/network access is needed by these tests.
 """
 import builtins
 from dataclasses import asdict, replace
@@ -22,6 +24,9 @@ from tests import test_zone_study_multiturn as fixture
 from tests.test_zone_study_multiturn import offline_only  # noqa: F401
 
 
+V64_PROMPT_VERSION = 'ugrp.zone_study_prompts_ko.v2'
+
+
 @pytest.fixture(scope='module')
 def v64():
     root = Path(__file__).parent / 'fixtures/zone_study_multiturn/v64'
@@ -29,10 +34,19 @@ def v64():
     modules = {}
     package = types.ModuleType('harness')
     package.__dict__.update(harness.__dict__)
+    # 동결 소스의 pk.PROMPT_VERSION은 당시 v2였다. 현재 전역 v3를 읽으면
+    # 요청/스케줄은 같아도 출처 해시만 달라진다. 참조 전용 facade를 써서
+    # 현재 모듈이나 동결 파일을 바꾸지 않고, 해시 필드의 전체 비교도 유지한다.
+    prompts = types.ModuleType('_frozen_v64_prompts')
+    prompts.__dict__.update(vars(zi.pk))
+    prompts.PROMPT_VERSION = V64_PROMPT_VERSION
+    package.zone_study_prompts_ko = prompts
 
     def frozen_import(name, globals=None, locals=None, fromlist=(), level=0):
         if name in modules:
             return modules[name]
+        if name == 'harness.zone_study_prompts_ko':
+            return prompts
         if name == 'harness':
             return package
         return builtins.__import__(name, globals, locals, fromlist, level)
@@ -204,6 +218,7 @@ def signature(trial, requests):
         bundle = row['provenance'].pop('execution_bundle_id')
         assert bundle == ('zone-pair-v76-fixclock-grasp-entry' if hasattr(trial, 'end_state')
                           else 'zone-study-integration-v64-source-closure')
+        assert row['provenance']['prompt_template_sha256'] == zi.digest(V64_PROMPT_VERSION)
     # v64's unused fixture-wire counter falsely reported zero for adapters.
     # The candidate explicitly marks it unmeasured; ledger counts/hashes, all
     # billed usage and every other cost field remain exact comparisons.

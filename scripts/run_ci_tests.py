@@ -82,7 +82,9 @@ TEST_PATTERNS = (
     "tests/test_zone_study_review_r6*.py", "tests/test_zone_study_review_r7*.py",
     "tests/test_zone_study_integration.py", "tests/test_zone_study_integration_seams.py",
     "tests/test_zone_study_integration_pair.py", "tests/test_zone_study_source_pinning.py",
+    "tests/test_zone_study_llm_driver.py",
     "tests/test_zone_study_pair_delay.py",
+    "tests/test_zone_study_referee.py", "tests/test_zone_hidden_events.py",
     "tests/test_zone_study_multiturn.py",
     "tests/test_zone_study_review_r8*.py", "tests/test_zone_study_review_r9*.py",
     "tests/test_zone_study_review_r10*.py",
@@ -106,6 +108,7 @@ TEST_PATTERNS = (
     "tests/test_zone_pair_admission.py",
     # 2026-09-29: v6 is audited as history; these guard its receipt and the current v6-family path.
     "tests/test_zone_pair_v6.py", "tests/test_zone_pair_registered_source.py",
+    "tests/test_owncam_bootstrap_v6b.py",
     "tests/test_zone_pair_v6c.py",  # v6c (bundle v76): exact PF fix clock + grasp-range entry
     "tests/test_m2_pair_door_v3.py", "tests/test_pair_owncam_approach.py", "tests/test_zone_tagged_cargo_scene.py",
     "tests/test_owncam_localizer.py", "tests/test_zone_landmarks_sim.py",
@@ -226,6 +229,12 @@ TEST_PATTERNS = (
     "tests/test_semantic_pick_policy.py",
     "tests/test_pick_match*.py",
     "tests/test_replay_pick_match.py",
+    "tests/test_masterpi_model_v3.py",
+    "tests/test_zone_masterpi_v3_scene.py",
+    "tests/test_zone_model_conventions.py",
+    "tests/test_visual_arm_v3.py",
+    "tests/test_masterpi_v3_static_audit.py",
+    "tests/test_masterpi_robot_models.py",
 )
 
 

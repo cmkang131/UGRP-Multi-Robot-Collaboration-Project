@@ -1,0 +1,134 @@
+{
+  "작업": "Claude 시작 PR #249를 Codex가 이어 구현",
+  "상태": "로컬 구현/정적 검증 완료; 실제 v3 소비자 이관 및 커밋/push/PR 갱신 미완료",
+  "시작_SHA": "961271a44ad34cf17e94f36217589af7cde2fa2a",
+  "브랜치": "claude/masterpi-visual-v3",
+  "번들_ID": "zone-study-integration-v74-masterpi-v3",
+  "검증": [
+    {
+      "범위": "v2 기하 두 파일",
+      "결과": "23 passed in 0.87s",
+      "물리_step": "사용자가 허용한 두 파일에만 있음"
+    },
+    {
+      "범위": "v3/번들/소스 고정 중간 회귀",
+      "결과": "80 passed in 57.56s",
+      "물리_step": 0
+    },
+    {
+      "범위": "기존 통합 pair/seams/입력 경계",
+      "결과": "125 passed in 25.60s",
+      "물리_step": 0
+    },
+    {
+      "범위": "기존 장면/보호 소스 26개 및 RGB 번들 등록 파일",
+      "결과": "origin/main 바이트 동일"
+    },
+    {
+      "범위": "정적 감사 workflow",
+      "결과": "카탈로그 검증 통과; 관리 실행은 하지 않음"
+    },
+    {
+      "범위": "v3/기존 번들/소스 고정/v64 생성 비교",
+      "결과": "826 passed in 924.17s (0:15:24)",
+      "물리_step": 0,
+      "파일": [
+        "tests/test_zone_masterpi_v3_scene.py",
+        "tests/test_zone_model_conventions.py",
+        "tests/test_visual_arm_v3.py",
+        "tests/test_masterpi_v3_static_audit.py",
+        "tests/test_masterpi_robot_models.py",
+        "tests/test_masterpi_model_v3.py",
+        "tests/test_rgb_execution_bundle.py",
+        "tests/test_zone_study_source_pinning.py",
+        "tests/test_zone_study_multiturn_properties.py"
+      ]
+    },
+    {
+      "범위": "정적 감사 접촉 프로필 보완 후",
+      "결과": "25 passed in 2.46s",
+      "물리_step": 0
+    },
+    {
+      "범위": "최종 감사/장면/팔/규약 및 MuJoCo 없는 CI 수집 대응",
+      "결과": "31 passed in 3.73s",
+      "물리_step": 0,
+      "파일": [
+        "tests/test_masterpi_v3_static_audit.py",
+        "tests/test_visual_arm_v3.py",
+        "tests/test_zone_masterpi_v3_scene.py",
+        "tests/test_zone_model_conventions.py"
+      ]
+    },
+    {
+      "범위": "MuJoCo import 금지 상태",
+      "결과": "v3 장면 해석/제어 수학/가드 선택 통과"
+    }
+  ],
+  "실패_수정": [
+    {
+      "범위": "최초 v3 IK 수학 테스트",
+      "결과": "6 failed, 9 passed in 1.25s",
+      "조치": "145mm 부동소수점 경계 수정; 180mm 물리 도달 불가능 목표를 거부 테스트로 구분"
+    }
+  ],
+  "게시": {
+    "커밋": [],
+    "push": false,
+    "병합": false,
+    "PR_댓글": false,
+    "PR_본문": false,
+    "Git_오류": "FETCH_HEAD 및 index.lock: Operation not permitted",
+    "GitHub_오류": "MCP tool call requires approval, but approval policy is never"
+  },
+  "물리_에피소드": 0,
+  "모델_LLM_호출": 0,
+  "weld": "OFF",
+  "남은_일": [
+    "v3 손목 스킬/표식 없는 자세 제공자/짝 운반/전체 교사 소비자 이관",
+    "실제 host 초기화 및 물리/실물 검증",
+    "권한 허용 세션에서 번호 재확인, 테스트 후 커밋/push, PR 갱신"
+  ],
+  "해시": {
+    "configs/masterpi_v3_scenes.json": "5cee4f4d3f8aed9b969407507d9f6d69483dc8204df4e8c6033d1e377e6d5b8f",
+    "configs/simulation_workflows.json": "3dcabd959ff44cbb303e093663fd5bb1872897eed54838835000ca0b84abe50c",
+    "harness/visual_arm_v3.py": "b6b1f9ebf3b6e6510e4068e264b9472b2d83bea24996590f678e69805dbb1100",
+    "harness/zone_own_guards_v3.py": "677b5355d8f434a90deea01022615e67b341e139436c83f9fa56b54dadf54112",
+    "harness/zone_own_team_host.py": "078efc3634209da3807ff71f46edbe49f55e1e7c795c10482e0a67b8333f7595",
+    "harness/zone_robot_model_runtime.py": "2fac37cc0f38564d5352a9c7f32d238fff1e47c36f1f6217d71cbe5644e44cb2",
+    "harness/zone_study_integration.py": "ec2e1e30fcd198fef55164e4627229ec00e76f3603a5db22b7752e021055cbd9",
+    "harness/zone_team_footprint_v3.py": "916a8f5021f47c9e01ec79589fbe8df5840c55fee8adff49e3f9e6e3b50ebff2",
+    "maps/zones/zone_wide_door_geometry_v3.json": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17",
+    "maps/zones/zone_wide_door_geometry_v3_dock_v1.json": "be374c31aca5f785078f095081f464444ec6d00f46a49967a424ccc8221e5f04",
+    "scripts/audit_masterpi_v3_static.py": "cdef37695e56850c38e408a106a3cf81a738a04138325cc48f3fc378893fcf58",
+    "scripts/render_masterpi_model_v3.py": "d544935282cb63578eef7c5133ee71a2647407908528d54f7e36f3f58a90d0c1",
+    "scripts/run_ci_tests.py": "cb7209f99ec6892809496a44df0518d3136855104c1a85ccb495ac4fe61b82c7",
+    "scripts/run_zone_study_integration.py": "8e985d01308c7306215f538310eacb978945057ec5299414202e935a0c06ee99",
+    "scripts/zone_teacher_v3.py": "4fd92b44fbe1a7191e71c409e8f0ffbb234f66a57ebc30d414eb739fc11a42d6",
+    "sim/masterpi_geometry_v3.py": "bed49926f11cba9fe338ee228866771efd29d0a94c5ca3a0c65d67e7e82aa942",
+    "sim/masterpi_model_v3.py": "e2d9ff9224d7f7df01957bdf9ca95f52db9f5c7b54828eaab8185e5422d38fb5",
+    "sim/masterpi_robot_models.py": "ed3115774b8f4bb41f462cf91cc086609491afb21664819e1c482698ac468e11",
+    "sim/zone_masterpi_v3_scene.py": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca",
+    "sim/zone_model_conventions.py": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff",
+    "sim/zone_own_scene_provider.py": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+    "tests/test_masterpi_model_v3.py": "38973d3fe24b2d69d4415db416a7d44087f89565ef0c939805565ce1c4a731d0",
+    "tests/test_masterpi_robot_models.py": "54369b16732fc2bedb643a12b37224d3a439511da7b7adeabcf7aec901af020c",
+    "tests/test_masterpi_v3_static_audit.py": "2efd88a20c53f8bdbd8ffeafb8e3ec37fbb2b171c8b43de3b23b77f297a8a46a",
+    "tests/test_visual_arm_v3.py": "9955db805b93d68e741229cd284186720675ac0704c69c189522883af5722415",
+    "tests/test_zone_masterpi_v3_scene.py": "e5fe2ae5d2bf3d993b79653b2e1abb79812e19221b426b41aedafad47b691240",
+    "tests/test_zone_model_conventions.py": "3fe1828c05cf3cba72ab41e62bde04f8939a11838e8589e7143072c3af2ed3a6",
+    "tests/test_zone_study_integration_pair.py": "92bc201780b5db7d38707c4f9d190a322a41b221a41c86db96de8920cb2210fa",
+    "tests/test_zone_study_multiturn_properties.py": "f430c598ed5061e52d08f99dfa6115b6afd5c41e100a9226baaf86bc910761ea",
+    "tests/test_zone_study_source_pinning.py": "e97d7bcec97f27762de8f8eb5404bb0535a1d7c8e383b908833575f4675ebef2"
+  },
+  "감사_해시": {
+    "experiments/2026-09-28-masterpi-visual-v3/codex-static-audit-v1.json": "f26f852ca879e23a74d9a0d6e81a8c76d5c8b069025622786d9fa7aaf2112fa2",
+    "experiments/2026-09-28-masterpi-visual-v3/codex-static-audit-v2.json": "7036e6ba3da7e176c3f6cc16c7ffc402f12e830324b21c6d4eec6b72d1d57582",
+    "experiments/2026-09-28-masterpi-visual-v3/codex-static-audit-v3.json": "7fa17a287db8424934f96beb0a9895c7f20b66bb2ffb1aea948a2489c2e62fbb"
+  },
+  "pytest_명령_형식": "OMP_NUM_THREADS=2 ../../ugrp/.venv-sim/bin/python -m pytest -q -p no:cacheprovider --basetemp=./.pytest_tmp <파일 목록>",
+  "감사_최종본": "codex-static-audit-v3.json",
+  "감사_수정_이력": "v1/v2는 base contact profile만 적용했다. v3는 host와 같은 cargo_noslip_v1(noslip_iterations=10)을 추가 적용했다. 이전 원본은 그대로 보존했다.",
+  "pytest_tmp_삭제_확인": true,
+  "원격_PR_head_최종_확인": "961271a44ad34cf17e94f36217589af7cde2fa2a"
+}

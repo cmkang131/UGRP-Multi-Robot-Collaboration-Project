@@ -1,4 +1,58 @@
-현재 미실행 후보는 `zone-pair-v76-fixclock-grasp-entry`(workflow 번호 `2.12.0` 예약: 2026-09-29 조정자 배정. main 2.8.0, #256 2.9.0, #257 2.10.0, #249 2.11.0 다음. 카탈로그 반영은 그 PR들이 병합된 뒤 main 위로 다시 맞출 때 한 번에 한다)이다. 2026-09-28–29 단계 probe(PR #260)에서 v6 b-only 정렬은 RecoveryLocalizer의 PF 시계와 프레임 시각이 1e-9 s 안에서 어긋나 fix 나이가 음수가 되어 막혔고, 파지 입장은 정렬 허용오차(ex ±12 mm) 중 −8…−4 mm에서만 통과했다. v70에 opt-in 정책 `b-v6c`(PF 시계를 예측한 관측 시각에 맞춤 + 파지 거리의 빔 색 모델로 standoff fit·pre-close 부분 관측 + 마지막 하강 자세 정착)를 더했다. v5h·b-only·a+b의 동작은 바뀌지 않는다. main v70과 열린 PR 최댓값 v75(#261) 다음 번호다. v70은 v6 dev 코호트 기록 소스로 `RETIRED_BUNDLE_IDS`에 보존한다. [v6c 기록](../experiments/2026-09-29-pair-v6c/README.md)
+현재 미실행 후보는 `zone-pair-v76-fixclock-grasp-entry`(workflow `2.12.0`)이다. v76(PR #263)은 main의 v79에 opt-in 공동 운반 정책 `b-v6c`를 더한 것이다. 번호 v76과 workflow 2.12.0은 2026-09-29 조정자가 배정했다(#256 v77/2.9.0, #257 v78/2.10.0, #249 v79/2.11.0 다음 병합). v79는 `RETIRED_BUNDLE_IDS`로 옮겼다. 2026-09-28–29 단계 probe(PR #260)에서 v6 b-only 정렬은 RecoveryLocalizer의 PF 시계와 프레임 시각이 1e-9 s 안에서 어긋나 fix 나이가 음수가 되어 막혔고, 파지 입장은 정렬 허용오차(ex ±12 mm) 중 −8…−4 mm에서만 통과했다. `b-v6c`는 PF 시계를 예측한 관측 시각에 맞추고, 파지 거리의 빔 색 모델로 standoff fit과 pre-close 부분 관측을 하며(빔 폭의 연속 단면 요구), 마지막 하강 자세를 정착시킨다. v5h·b-only·a+b·b-boot·a+b-boot의 동작은 바뀌지 않는다. v6c 단계 probe는 병합 전 v76(main v70 위)으로 돌렸다. 등록 초안 `prereg_v6c.json`은 이 병합 뒤 한 번 다시 봉인했다. [v6c 기록](../experiments/2026-09-29-pair-v6c/README.md)
+
+이전 후보 v79의 설명:
+
+현재 미실행 후보는 `zone-study-integration-v79-masterpi-v3`(workflow `2.11.0`)이다. v79(PR #249)는 v78에 명시적으로 버전을 붙인 MasterPi v3 장면 2종(`zone_wide_door_geometry_v3`, `zone_wide_door_geometry_v3_dock_v1`)과 v3 명령 기하를 더한 것이고, v2 장면과 연구 층은 바뀌지 않았다. v78은 `RETIRED_BUNDLE_IDS`로 옮겼다. 아래 B6 설명의 v73은 병합 전 후보 번호이고, B6가 main에 들어간 번호는 v78이다. 2026-09-28 B6(#224, PR #254 사전 등록 초안): 물리 소유자(`scripts/run_zone_study_integration.py`)에 평가 전용 심판 `harness/zone_study_referee.py`와 시나리오 숨은 사건 훅을 붙였다. 연구 층(`harness/zone_study_integration.py`의 `IntegratedTrial`)은 번호 외에 바뀌지 않았다. v70(#246)·v71(#249)·v72(#256)는 열린 PR이 예약해 다음 번호 v73을 썼고 v69는 `RETIRED_BUNDLE_IDS`에 보존한다. 2026-09-28 Kiro가 이 PR(#257, Claude)의 검토 지적 P1-G·P1-H·P1-I·P2-K·P2-M을 같은 번호 안에서 고쳤다(v73으로 기록된 실행은 없다; main과 열린 PR 전체에 v73 이후 번호 사용 없음을 확인).
+
+## 평가 전용 심판과 숨은 사건 (v73)
+
+- **배송 판정(물건별, 물리 청크마다 시뮬레이터 정답):** 물건의 착지 직사각형(`sim/zone_cargo.py` `landing_half_extents_m`, 색 상자는 `sim.zone_arena.BOX_HALF`)이 목적 구역 안(`zone_scenario_feasibility.landing_fits` 재사용), 바닥 위(몸체 높이 < 0.05 m), 어떤 로봇 손가락도 닿지 않음, 선속도 < 0.01 m/s가 `SETTLE_S`=2 SIM초 연속이면 확인한다. 배송 시각은 창의 시작, 확인 시각은 `confirmed_sim_s`다. 비유한 값·잘못된 형식의 정답 행은 판정하지 않고 거부한다(`ContractViolation`).
+- **확인 뒤 해제(`departed`, 심판 프로필 v2):** 들림(z ≥ 0.05 m)·구역 이탈은 즉시, 파지는 `HELD_DEPART_S`=1 SIM초 이상 이어질 때만 해제한다. 부딪힘이나 손가락이 스친 짧은 접촉은 배송을 풀지 않는다. trial record의 `referee.deliveries`에는 **확인 행만** 넣는다. 지금 서 있는 물건은 모든 확인 행(바로잡은 오배송 이력 포함)을 넣고, 해제된 뒤 다시 정착하지 않은 물건은 넣지 않고 `departed_unsettled`에 따로 적는다. 그래서 이 물건은 배송도 오배송도 아니다(검토 P2-K: 전에는 zone None 행이 오배송으로 집계됐다). `departures`·`departed_unsettled_items`는 평가 블록에 따로 둔다.
+- **주문 판정:** 확인 행에 `zone_study_eval.delivery_state`를 그대로 적용한다. 모든 주문이 채워지면 러너가 그 청크에서 에피소드를 멈춘다(`stop = orders_complete`). 로봇에게는 horizon 종료와 같은 일반 종료만 보이고 이유는 전달되지 않는다.
+- **지표:** 저장한 trial record에 `zone_study_eval.efficiency_metrics`를 적용해 `par_makespan_sim_s`(PAR-2)·`delivery_rate`·성공과 주문별 완료 시각을 `result.json`의 `eval_only.evaluation`과 `eval_only/evaluation.json`에 쓴다. trial record의 `end_reason`은 심판이 완료를 확인했을 때만 `orders_complete`이고 `end_sim_s`는 마지막 필요 물건의 배송 시각이다. 별도 공식을 만들지 않았다. 심판이 생기기 전에 실패한 실행도 `study/trial_record.json`을 쓰며, `referee.status = not_evaluated`이고 성공이 아니다(검토 P1-G b).
+- **숨은 사건(`sim/zone_hidden_events.py`, 실현 프로필 `zone_study_hidden_events.v2`):** 시나리오 `eval.hidden_events`를 SIM 시각에 한 번씩 물리에만 적용하고, 효과 행은 `eval_only/hidden_events.jsonl`에만 쓴다(`result.json`에는 파일 이름과 행 수만). 어느 것도 로봇 입력·메시지·명령 행·깨움을 만들지 않고, 로봇은 자기 카메라로만 알 수 있다.
+  - `passage_blocked`·`obstruction_added`: 바닥 아래(z = −5 m)에 둔 정적(mocap) 상자를 개구부로 옮긴다. 상자는 host가 이미 받는 `scene=` 인자로 넘기는 장면 **인스턴스**의 transform을 감싸 XML에 넣는다. 그래서 `harness/zone_own_team_host.py`와 장면 계약 소스(`scripts/zone_pair_dev_contract.py`)는 main과 바이트 단위로 같다(검토 P1-G a). `TaggedZoneScene`은 host가 주입 장면으로 받지 않으므로 화물 없는 `TaggedCargoZoneScene` 쌍둥이를 만들고, 설정·재고·경계가 원래 장면과 같지 않으면 거부한다. 장애물이 없는 시나리오는 이 경로를 타지 않아 장면이 이전과 같다. `passage_cleared`는 되돌린다.
+  - `item_moved`: 자유 관절을 `to_pose_m`으로 옮긴다(잡혀 있으면 효과 없음).
+  - `item_dropped`(그리퍼 서보 고장): 잡고 있는 로봇의 그리퍼 위치 액추에이터 목표를 물리 스텝 안에서만 열림(PWM 2000)으로 바꾸기를 `GRIPPER_FAULT_S`=1 SIM초 동안 한다. 스텝 뒤에는 발행한 목표로 되돌리므로 포트의 발행 상태, 로봇의 `servo_command_pulses`, 명령 행에는 나타나지 않는다. 접촉·마찰·접촉 프로필은 바꾸지 않는다(검토 P1-H: 손가락 접촉 끄기는 `cargo_noslip_v1`의 명시 `<pair>` 때문에 효과가 없었고 AGENTS.md 정상 물리 원칙과도 맞지 않았다). 잡혀 있지 않으면 효과가 없다.
+  - `robot_hold`(바퀴 구속): 그 로봇의 바퀴 모터 상태와 명령을 물리 스텝 안에서만 0으로 두기를 `duration_s` 동안 한다. 스텝 뒤에는 발행한 명령으로 되돌리므로 로봇이 보는 `actuator_state.motor_commands`와 명령 행은 발행한 그대로다(검토 P1-I: 전에는 `port.stop()`이 자기 명령 상태를 정지로 바꿨다).
+  - 스텝 감싸기(`ActuatorFaults`)는 `robot_hold`·`item_dropped`가 있는 시나리오의 world 인스턴스 하나에만 설치한다. 사건이 없으면 아무것도 만들거나 감싸지 않는다.
+- **검증:** `tests/test_zone_study_referee.py`가 네 조건에서 완료 유무·숨은 사건 유무만 바꾼 두 실행의 로봇 요청·깨움·실행 호출·메시지가 정지 시각까지 같음과, 연구 층 소스 폐포에 심판이 없음을 확인한다. `tests/test_zone_hidden_events.py`는 실제 `CameraRobotPort`와 명시 `<pair>` 파지가 있는 toy MuJoCo 모델을 실제로 스텝해 낙하·정지와 로봇이 보는 명령 상태의 불변을 확인하고, 실제 world XML이 숨은 장애물 몸체 외에는 같음을 확인한다. 두 파일 모두 `scripts/run_ci_tests.py` TEST_PATTERNS에 있다. 실제 로봇 world의 짧은 물리 프로브는 `scripts/probe_zone_hidden_events.py`(진단 전용, 아래 결과)다.
+- **아직 확인하지 않은 것:** 실제 연구 에피소드에서 심판이 i1/i2 배송을 확인하고 멈추는지, s2·s3·s5 장면 전체 실행. 현재 러너의 `host_spec`은 i1(청록 상자)·i2(긴 막대) 장면만 받으므로 s1–s6 장면 실행은 별도 작업이다.
+
+### 숨은 사건 물리 프로브 (2026-09-28, 진단 전용)
+
+`scripts/probe_zone_hidden_events.py`, 코드 `3db43850`(작업 트리 깨끗), MuJoCo 3.12.0, `OMP_NUM_THREADS=1`, `ugrp_session.py run fix257-probe`, 부하 평균 시작 16.94/15.04/16.04 → 끝 13.91/14.77/15.92, wall 40.5 s. 모델 호출·연구 층·로봇 판단은 없다. 연구 결과가 아니다.
+
+- 조건: 통합 prereg 첫 에피소드(`smoke-i700`, `zone_wide_door_tags_v2`, seed 700, `cargo_noslip_v1`, weld OFF)의 실제 `StudyTeamHost` 두 개를 같은 순서로 스텝했다. 두 world 모두에서 교사(정답, 평가 쪽)가 `box_00`을 r1 앞에 놓고 `scripts/zone_teacher`의 팔 순서·파지 IK로 잡아 들었다. r2에는 같은 주행 명령을 보냈다. 사건 world에만 6.6 s에 `item_dropped`(`box_00`)·`robot_hold`(r2, 2 s)·`passage_blocked`를 넣었다.
+- 결과(11개 검사 모두 통과):
+  - 6.2 s 두 world 모두 상자 z 0.0857 m, 손가락 접촉 r1(정상 접촉만으로 들린 상태).
+  - `item_dropped`: 9.8 s 사건 world 상자 z 0.0159 m(바닥), 손가락 접촉 없음. 대조 world는 z 0.0857 m, r1 파지 유지. 그리퍼 열림은 6.6–7.6 s(4000 스텝)만.
+  - `robot_hold`: r2 이동 거리는 6.9–8.6 s 사이 사건 world 0.00001 m, 대조 world 0.217 m. 해제 뒤 8.7–9.8 s에는 0.078 m 다시 움직였다.
+  - 세 로봇의 명령 행, 자기 카메라 캡처마다 보이는 `actuator_state`, `servo_command_pulses`가 두 world에서 같다.
+  - 장면 XML은 숨은 장애물 몸체를 빼면 같다. 장애물은 (2.2, 0.05, 0.06)으로 올라왔다.
+- 원본: `/Users/changmin/projects/ugrp/outputs/fix257-hidden-events-probe-20260928-152803/`(로컬 보관, 원격 백업 아님). `probe.json` sha256 `43d7269cec42ba92c4fad826e65974a3c62f95a5b008e8293aebf7a08ff6f8ac`, `eval_only/hidden_events.jsonl` `623f21ebd2bedb30554b4b2bc51a7a31e001ae0016880a53b7eb31c99fe2638f`, `control_samples.json` `58ee47eb94150577d3abdfea5f882c36065337e1622f89db7f76ba978190e7c7`, `fault_samples.json` `64b53b6f63c8818d3175f34ac82646af6a3a82d74529348aefdd84470a986cbb`, 자기 카메라 프레임 258장.
+- 범위: 교사가 잡은 상자 하나와 주행 명령 하나다. 학생 실행기의 파지·재탐색, 긴 막대 공동 운반 중 낙하, s2·s3·s5 장면 전체는 확인하지 않았다.
+
+### 참고 자료 (검토 수정분)
+
+- 내부 모듈 재사용: `sim/zone_own_scene_provider.own_scene`(주입 장면 검사), `sim/zone_tagged_cargo_scene.TaggedCargoZoneScene`(화물 없으면 `TaggedZoneScene`과 같은 XML), `sim/masterpi_dynamics_v2.MasterPiDynamicsV2.pulse_to_joint_targets`(PWM → 집게 닫힘), `sim/multi_masterpi_production._physics_step_for`(모터 필터·구동 힘; 감싸기만, 수정 없음), `sim/camera_robot_port.CameraRobotPort`(수정 없음), `scripts/zone_teacher`(`OPEN`/`CLOSED`, `ArmSequence`, 파지 IK 순서), `harness/visual_arm.solve_grip_ik`, `harness/zone_study_eval.delivery_state/efficiency_metrics`, `harness/zone_scenario_feasibility.landing_fits`.
+- 버린 대안: 손가락 `contype/conaffinity` 0(명시 `<pair>`는 필터를 거치지 않아 효과 없음, 검토 프로브 2; 정상 물리 원칙과 충돌), 물건에 `xfrc_applied` 외란(파지가 남은 채 힘만 가해 "떨어뜨림"이 아니라 실험자 힘이 되고 힘 크기를 따로 정해야 함), `port.stop()`/주행 명령 게이트(로봇 자기 명령 상태가 바뀜, 검토 P1-I), host 파일에 XML 훅 추가(동결 장면 계약 변경, 검토 P1-G).
+- 외부 라이브러리: MuJoCo 3.12.0(Apache-2.0, 기존 환경 그대로). 새 의존성 없음. 논문은 인용하지 않았다.
+- 검토: `outputs/review-256-257-20260928.md`(Kiro RV256)와 PR #257 코멘트.
+
+2026-09-29 main 병합(PR #257): main의 v77(#256 B7 실제 다회 LLM 드라이버, v75 위)에 B6 심판·숨은 사건을 합쳤다. 합성 소스가 v77과 병합 전 후보 v73 어느 쪽과도 달라 새 번호 v78을 썼다(main v77, 열린 PR 최댓값 v76 #263; #249는 v79 예약). v73은 실행 기록이 없고 main에 없었다. v77은 `RETIRED_BUNDLE_IDS`에 보존하고 `llm_driver.json`에 v78을 v77과 같은 발화 상한·드라이버 프로필로 등록했다. workflow는 main 2.9.0 다음 2.10.0이다. 러너는 #257의 `run_loop`(숨은 사건 → 물리·실행기 → 스케줄러 → 심판)에 #256의 `llm.check_trial_health`를 루프 전·매 청크 `step_to` 직후·루프 뒤(final)에 그대로 넣었고, trial record는 심판 블록을 채운 뒤 #256 규칙대로 `failure_class`·`model_usage`와 API 실패 `end_reason='api_failure'`를 적는다(평가 블록은 그 record로 계산한다).
+
+이전 후보 v77의 설명:
+
+현재 미실행 후보는 `zone-study-integration-v77-llm-driver`(workflow `2.9.0`)이다. 2026-09-28 B7(PR #254): 러너에 실제 다회 모델 드라이버(`--llm`, `harness/zone_study_llm_driver.py`)와 본연구 사용량 원장(`harness/zone_main_budget.py`, #222 DB와 별개)을 연결하고, 발화 상한을 번들별 등록 프로필(`configs/zone_study_integration/llm_driver.json`: v66 기본 2/6, 파일럿 10/30)로 고르게 했다. v69는 `RETIRED_BUNDLE_IDS`에 보존한다.
+
+2026-09-28 PR #256 검토 수정: [실패·분석 규칙 보완](zone_study_llm_failure_rules.md)에 코호트 상한/응답 0 중단, API 오류 1건 이상 시행의 infra 분류, 조건 공통 pacing, 정산 실패와 덮어쓰기 거부를 고정했다. 10/30 열린 채널은 실제 상한을 반영한 프롬프트 v3, 기본 2/6·no_comm은 기존 바이트를 유지한다. v72 실행 기록이 없다는 사용자 확인에 따라 새 번들 번호를 등록하지 않았다.
+
+2026-09-29 main 병합(PR #256): main의 v75(#261 v6b 출발 부트스트랩, v70 위)에 B7 드라이버를 합쳤다. 합성 소스가 v75와 병합 전 후보 v72 어느 쪽과도 달라 번호 규칙대로 새 번호 v77을 썼다(main v75, 열린 PR 최댓값 v76 #263 다음; v72는 실행 기록이 없고 main에 없었다). `EXECUTION_BUNDLE_ID`는 main 구조대로 `harness/zone_pair_v6_policy.py`에 두고, v75는 v6b 오프라인 재생 기록 소스로 `RETIRED_BUNDLE_IDS`에 보존한다. workflow는 main 2.8.0 다음 2.9.0이다. v6b DRAFT(`prereg_v6b.json`)는 v6와 같은 방식(#262)으로 봉인 커밋 `15793691` blob 기준 이력 기록으로 돌렸다(관리자 결정 A). main에는 현재 v6 계열 초안이 없으며 다음 초안은 v6c(#263)다.
+
+이전 후보 v75의 설명:
+
+현재 미실행 후보는 `zone-pair-v75-dock-prior-bootstrap`(workflow `2.8.0`, 병합 순서 #256 2.5.0 · #257 2.6.0 · #249 2.7.0 다음)이다. 2026-09-28 v6 dev 코호트(PR #259)에서 b-only·a+b가 출발 위치 부트스트랩에서 막힌 뒤, v70에 opt-in 정책 `b-boot`·`a+b-boot`(정적 지도 dock 행 AMCL식 사전분포 + 첫 움직임 전 정지 관측·belief 검사 팬 스캔)를 더했다. v5h·b-only·a+b의 동작은 바뀌지 않는다. main v70과 열린 PR 최댓값 v74(#249) 다음 번호다. v70은 v6 dev 코호트 기록 소스로 `RETIRED_BUNDLE_IDS`에 보존한다. [v6b 기록](../experiments/2026-09-28-zone-pair-v6b-boot/README.md)
 
 이전 후보 v70의 설명:
 
