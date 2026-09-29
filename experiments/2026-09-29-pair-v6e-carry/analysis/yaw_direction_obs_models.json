@@ -1,0 +1,122 @@
+{
+ "summary": {
+  "E0 registered (own commands only)": {
+   "balanced_rms_rad_s": 0.0021549998208943827,
+   "per_cell_mrad_s": {
+    "nominal": 1.1134888125763163,
+    "lat-/opp": 3.6909199505147123,
+    "yaw+/same": 1.4787642951938893,
+    "along-/same": 1.0536962852115743,
+    "lat+/same": 1.8176057054772337,
+    "lat+/opp": 2.8899438126336285,
+    "lat-/same": 1.546146523195514,
+    "yaw+/opp": 2.321216587139204,
+    "yaw-/same": 1.2483018650214608,
+    "yaw-/opp": 2.6761250955547395,
+    "corner--/same": 2.1841508784691324
+   }
+  },
+  "E1 pair-mean model": {
+   "balanced_rms_rad_s": 0.001863462407335073,
+   "per_cell_mrad_s": {
+    "nominal": 0.11316057177303125,
+    "lat-/opp": 3.1395670467047383,
+    "yaw+/same": 1.0091874863987262,
+    "along-/same": 0.10914549452457453,
+    "lat+/same": 1.4307488695291877,
+    "lat+/opp": 3.0474110150830285,
+    "lat-/same": 1.1924164328304387,
+    "yaw+/opp": 2.100062896201147,
+    "yaw-/same": 0.6366388610341679,
+    "yaw-/opp": 2.426279550183881,
+    "corner--/same": 1.9594223809101383
+   }
+  },
+  "E2 pair-mean + image relative yaw": {
+   "balanced_rms_rad_s": 0.0015025663297323203,
+   "per_cell_mrad_s": {
+    "nominal": 0.12650890062504688,
+    "lat-/opp": 2.5137304458196916,
+    "yaw+/same": 0.9984197924752926,
+    "along-/same": 0.11156156872998314,
+    "lat+/same": 0.34958785796761965,
+    "lat+/opp": 2.395784180448733,
+    "lat-/same": 0.12409941632835776,
+    "yaw+/opp": 2.1137794772682392,
+    "yaw-/same": 0.6157962923698571,
+    "yaw-/opp": 2.427108216800025,
+    "corner--/same": 0.9354735606957598
+   }
+  },
+  "E3 E2 - offsets regression (noise x0)": {
+   "balanced_rms_rad_s": 0.0002500760207094791
+  },
+  "E3 E2 - offsets regression (noise x1)": {
+   "balanced_rms_rad_s": 0.0007961831933986654
+  },
+  "E3 E2 - offsets regression (noise x2)": {
+   "balanced_rms_rad_s": 0.0015332635678552032
+  },
+  "L": {
+   "balanced_rms_rad_s": 0.00018083614229411023
+  }
+ },
+ "gate": [
+  {
+   "name": "E0 registered (own commands only)",
+   "b": 0.0021549998208943827,
+   "gate_s": [
+    23.812824516303095,
+    23.54798527602253
+   ]
+  },
+  {
+   "name": "E1 pair-mean model",
+   "b": 0.001863462407335073,
+   "gate_s": [
+    27.53832455413477,
+    27.232051396638337
+   ]
+  },
+  {
+   "name": "E2 pair-mean + image relative yaw",
+   "b": 0.0015025663297323203,
+   "gate_s": [
+    34.15265705891633,
+    33.7728212379765
+   ]
+  },
+  {
+   "name": "E3 E2 - offsets regression (noise x0)",
+   "b": 0.0002500760207094791,
+   "gate_s": [
+    205.2041312159178,
+    202.92191113839405
+   ]
+  },
+  {
+   "name": "E3 E2 - offsets regression (noise x1)",
+   "b": 0.0007961831933986654,
+   "gate_s": [
+    64.4532979257793,
+    63.736467276624104
+   ]
+  },
+  {
+   "name": "E3 E2 - offsets regression (noise x2)",
+   "b": 0.0015332635678552032,
+   "gate_s": [
+    33.468891874478246,
+    33.09666068909322
+   ]
+  },
+  {
+   "name": "L LEAK: GT beam yaw + image relative yaw",
+   "b": 0.00018083614229411023,
+   "gate_s": [
+    283.77420529222326,
+    280.6181519273921
+   ]
+  }
+ ]
+}
