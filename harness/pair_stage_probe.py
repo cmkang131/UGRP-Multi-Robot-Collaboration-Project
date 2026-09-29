@@ -30,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.10.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+PROBE_VERSION = '0.11.1'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
@@ -50,11 +50,21 @@ PROBE_VERSION = '0.10.0'  # 0.2.0: pair_policy axis, align-tolerance boundary se
 #                                 variants cal2/cal3/cal4/hD; plan_route(end_inset_m)
 #                          0.9.0: setup variant hR = carry entries sampled from recorded grasp_lift raws (hr_setups / teacher_cases rows);
 #                                 staging only, no controller change
+#                          0.10.0: setup variants hG/hR2 = recorded-state staging (start prior = recorded PF posterior)
+#                          0.11.0: opt-in stage-probe policy b-v6h (= registered b-v6g + a process-local door-guard relaxation,
+#                                 harness/zone_pair_door_relax.py, runner --door-relax) and an eval-only wall-contact tracker
+#                                 (runner --contact-track); no registered source changes
+#                          0.11.1: b-v6h moved out of POLICIES into PROBE_ONLY_POLICIES; summaries/views group door-relax rows by
+#                                 policy_key ``b-v6h.<variant>`` (0.11.0 raws grouped them under the registered b-v6g label);
+#                                 b-v6h is limited to the carry/setdown stages
 #                          0.4.6 (place branch, merged into 0.6.0): b-v6f-a / b-v6f-b / b-v6f policies (own_image_ob, bounded_retreat);
 #                                 image_valid_off also forces valid_frame_ob; run_pair_stage_probes --omp-threads
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
 POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e-base', 'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6g', 'b-v6g-l7', 'b-v6f-a', 'b-v6f-b', 'b-v6f')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+# Probe-only names that are NOT in harness.zone_pair_v6_policy.POLICIES: b-v6h = registered b-v6g + a process-local door-guard relaxation.
+PROBE_ONLY_POLICIES = ('b-v6h',)
+DOOR_RELAX_STAGES = ('carry', 'setdown')     # the stages b-v6h was defined and measured for (it patches SweepGuard process-wide)
 
 
 def canonical_policy(policy, probe_version):
@@ -295,8 +305,16 @@ def _grid_offsets(stage):
     return rows
 
 
+def policy_key(row):
+    """Analysis grouping key of a case/result row: ``b-v6h.<variant>`` for a door-relax row (its ``pair_policy`` is the
+    registered b-v6g the controller ran), else the recorded ``pair_policy``."""
+    if row.get('policy_id') and row.get('door_relax'):
+        return f"{row['policy_id']}.{row['door_relax']}"
+    return row.get('pair_policy', 'v5h')
+
+
 def _pid(policy):
-    if policy not in POLICIES:
+    if policy not in POLICIES and policy not in PROBE_ONLY_POLICIES:
         raise ValueError(f'unknown pair policy {policy!r}')
     return '' if policy == 'v5h' else '@' + policy
 
@@ -369,8 +387,23 @@ def shifted_pose(pose, route, k):
     return [float(pose[0]) + route[k][0] - route[0][0], float(pose[1]) + route[k][1] - route[0][1], float(pose[2])]
 
 
+def door_relax_setup(policy, door_relax):
+    """(registered policy the case runs, id tag). ``b-v6h`` = b-v6g + a named door-guard relaxation variant
+    (harness.zone_pair_door_relax); every other policy takes no relaxation. The case's ``pair_policy`` stays the
+    registered name, so the controller, the spec and the bundle receipts see b-v6g unchanged."""
+    from harness import zone_pair_door_relax as relax
+    if policy == relax.POLICY_ID:
+        if door_relax is None:
+            raise ValueError(f'policy {relax.POLICY_ID} needs a door-relax variant: {sorted(relax.VARIANTS)}')
+        relax.variant(door_relax)
+        return relax.BASE_POLICY, f'.{door_relax}'
+    if door_relax is not None:
+        raise ValueError(f'--door-relax applies to policy {relax.POLICY_ID} only, not {policy!r}')
+    return policy, ''
+
+
 def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=None, subset=None, policy='v5h',
-                  prior_std=None, leg=None, rows=None):
+                  prior_std=None, leg=None, rows=None, door_relax=None):
     """Teacher-placed cases with a perturbation grid (placement = GT, prior = static plan).
 
     ``leg`` (carry/setdown only, 0.4.0): carry leg k starts with the beam lifted at route point k and the
@@ -382,6 +415,10 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     if not spec['implemented']:
         raise ValueError(f'stage {stage!r} is not implemented here: {spec["owner"]}')
     setup = copy.deepcopy(setup or BASE_SETUP)
+    policy_id = policy
+    policy, relax_tag = door_relax_setup(policy_id, door_relax)      # registered policy name + id tag
+    if relax_tag and stage not in DOOR_RELAX_STAGES:
+        raise ValueError(f'policy b-v6h is defined for the stages {DOOR_RELAX_STAGES} only, not {stage!r}')
     route, k = None, None
     if stage in ('carry', 'setdown', 'chain'):
         from harness.zone_pair_v6_policy import pair_policy
@@ -420,7 +457,7 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
             else:
                 priors = {r: recorded_prior(placement[r], recorded[r]) for r in PARTICIPANTS}
                 rtag = ':pPOST'
-            case = {'case_id': f'{stage}{_pid(policy)}:teacher:{name}:s{seed}{rtag}{ltag}', 'stage': stage,
+            case = {'case_id': f'{stage}{_pid(policy_id)}{relax_tag}:teacher:{name}:s{seed}{rtag}{ltag}', 'stage': stage,
                     'source': 'teacher_grid', 'pair_policy': policy, 'prior_std': prior_std or 'grid',
                     'cell': name, 'seed': seed, 'beam_xyyaw': list(true_beam),
                     'coarse_order_sheet': copy.deepcopy(setup['coarse_order_sheet']),
@@ -429,6 +466,8 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
                     'staging': 'teacher placement from GT beam geometry (setup only)'}
             if variant:
                 case['setup_variant'] = variant
+            if relax_tag:
+                case.update(policy_id=policy_id, door_relax=door_relax, contact_track=True)
             if route is not None and stage == 'setdown' and k is not None:
                 # Staging only: the destination view can fail the submit-time image admission (dark floor), and a
                 # real setdown never re-submits there. The real verdict is recorded; the endpoint's own per-step
@@ -886,8 +925,8 @@ def summarize(rows):
             'stage_sim_s_median': sims[len(sims) // 2] if sims else None,
         }
         by_policy = {}
-        for pol in sorted({r.get('pair_policy', 'v5h') for r in rs}):
-            sub = [r for r in rs if r.get('pair_policy', 'v5h') == pol]
+        for pol in sorted({policy_key(r) for r in rs}):
+            sub = [r for r in rs if policy_key(r) == pol]
             by_policy[pol] = {
                 'cases': len(sub), 'passed': sum(r['passed'] for r in sub),
                 'by_source': {src: {'cases': len(q), 'passed': sum(r['passed'] for r in q)}
