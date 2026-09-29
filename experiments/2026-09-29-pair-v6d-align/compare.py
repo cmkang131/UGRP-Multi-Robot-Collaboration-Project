@@ -46,7 +46,8 @@ def main(argv=None):
     p.add_argument('--baseline-policy', default='b-v6c')
     p.add_argument('--policy', default='b-v6d')
     a = p.parse_args(argv)
-    base, cand = rows(a.baseline), rows(a.candidate)
+    base = {k: v for k, v in rows(a.baseline).items() if f'@{a.baseline_policy}:' in k}  # a dir may also hold other policies
+    cand = rows(a.candidate)
     head = 'verdict | x mm | y mm | yaw mrad | SIM s | look cmds'
     print(f'| case | {a.baseline_policy}: {head} | {a.policy}: {head} |')
     print('|---|' + '---|' * 12)
