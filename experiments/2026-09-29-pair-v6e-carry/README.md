@@ -932,6 +932,54 @@ hB [1.13, −.04, 0], hC [1.03, .12, 0], hD [1.00, .10, +.03] 각각 `b-v6g`로 
 - 가능한 개선(어느 것도 이번 소스에 넣지 않음, 조정자·사용자 결정): (1) 문 접근 전에 y를 고칠 관측 넣기(문틀·표식·통과 지도 PR #271), (2) 사전 y σ를 실제 반올림 범위 ±0.05에 맞춰 넓히기(그러면 σ가 커져 가드가 더 막음), (3) 가드·게이트 문턱(사용자 결정), (4) 시트 격자 반올림 자체를 바꾸는 것은 입력 경계 밖이라 하지 않음.
 - 스테이징 참고: 실제 분포 표본 중 along −2.5 cm 이상 어긋난 것(hR06·hR07)은 보정된 파지 범위 밖이라 스테이징되지 않았다. 실제 E2E에서 이런 자세가 생기면 운반 전에 파지 범위 검사(위 진입 검사 메모)가 필요하다.
 
+## hR2 결과 (소스 `3f6ca985` = 컨트롤러·PF·적합은 `f844a373` 그대로; 새 프로필 `floor_light_v1`): **사전 기준 충족 — 단, 통과율이 문턱(56/70)에 정확히 걸림**
+
+**stage probe이며 E2E·제어기·학생 성공이 아니다.** raw(로컬, 원격 백업 아님): `outputs/pair-stage-probes-3f6ca985-ghR2`(`b-v6g`, 70건), `-ghR2L7`(`b-v6g-l7`, 10건, 별도 표기), 표본 생성 `-19c8f0b2-ghG`(10건). cases.jsonl sha256 앞 16자: ghR2 `029fa9bdf4378804`, ghR2L7 `07ec5b415a97ddb4`, ghG `724267056a4dbd00`. 모델 호출 0, weld OFF, `--workers 2 --omp-threads 1 --pf-track`, driver PID로 agent_lock(ghG 33664, hR2 34237), 시작 부하 평균 10.4 / 7.5(끝날 때 16–34; SIM 시간 결과에는 영향 없음), wall ghR2 30.6 min, ghR2L7 4.3 min. 소스는 hG 이후 `git diff f844a373 -- harness/zone_pair_executor.py harness/owncam_localizer.py harness/owncam_carry_v6e.py harness/zone_pair_v6_policy.py carry_general_fit.json` 변경 0(스테이징 코드 `pair_stage_probe.py`·러너·테스트만 다름).
+
+### 구간별 결과 (L0–L6, 표본 10개; 분석은 `analysis/hR_analysis.py` 재사용, 출력 `analysis/hR2_analysis.txt`)
+
+| 구간 | hR (계획 위치 사전, 5 cm 편향) | **hR2 (기록된 사후분포 사전)** | hR2 실패 원인 |
+|---|---|---|---|
+| L0 | 2/10 | **4/10** | `COLLISION_GUARD` 6 |
+| L1 | 2/10 | **2/10** | `COLLISION_GUARD` 8 |
+| L2 | 8/10 | **10/10** | — |
+| L3 | 8/10 | **10/10** | — |
+| L4 | 8/10 | **10/10** | — |
+| L5 | 8/10 | **10/10** | — |
+| L6 | 8/10 | **10/10** | — |
+| 합계 | 44/70 | **56/70 = 80.0 %** | 문 통과(L0 끝·L1)에서만 실패 14 |
+| L7 (`b-v6g-l7`, 별도) | 8/10 | **10/10** | — |
+
+`STAGING_IK_ENVELOPE`(스테이징 불가)는 0건이다(hR의 14건은 파지 raw의 자세가 보정된 파지 범위 밖이었던 것이고, 정렬 종료 상태에서 이어 만든 hR2 표본은 모두 범위 안이다). 표본 10개 중 어느 것도 파지·들기에서 실패하지 않았다(hG 10/10).
+
+### 사전 기준 대비
+
+| 기준 | 결과 | 판정 |
+|---|---|---|
+| 통과율 ≥ 80 % (70건 중 ≥ 56건) | **56/70 = 80.0 %** (문턱 그대로; 1건만 더 실패했어도 미달) | 충족 |
+| leg 끝 NEES ∈ [1.5, 6] | 2.60 (중앙 1.92, 로봇 140표본) | 충족 |
+| ±2σ 커버리지 x / y / yaw ≥ 90 % | 100 / 100 / 97.9 % | 충족 |
+| 어느 구간도 0인 채 숨기지 않음 | 최저 L1 2/10 | 충족(L1을 표에 그대로 표시) |
+| (별도) L7 | 10/10, NEES 2.99, 커버리지 100/100/100 % | 합산 안 함 |
+
+### 미통과 케이스는 모두 문 통과 가드 (수치)
+
+문(y −0.20…0.30) 가장자리까지의 GT 여유와 가드 요구 여유(0.02 + 0.015 + 2σ_xy + 2σ_yaw·0.18)를 비교하면(`analysis/hR2_analysis.txt`) 실패 14건은 이렇게 나뉜다.
+
+| 읽기 | hR (문 실패 12건, 별도 `SELF_POSE_UNCERTAIN` 2건 포함) | **hR2 (문 실패 14건)** |
+|---|---|---|
+| GT 여유 자체가 요구보다 작다 (진짜로 빠듯) | 5 | **9** (L0 hR2_02–06: GT y −0.02…+0.075, 여유 0.073–0.127 vs 요구 0.128–0.134; L1 hR2_04–07: 여유 0.057–0.143 vs 요구 0.091–0.146) |
+| GT로는 통과할 여유인데 PF y 치우침으로 가드가 막음 ("PF 편향 가짜 경보") | 5 | **5** (여유 0.137–0.148 ≥ 요구 0.132–0.143, PF y가 GT와 1.2–1.9 cm 다름) |
+| σ 게이트 (`SELF_POSE_UNCERTAIN`) | 2 | 0 |
+
+가드·게이트 문턱은 바꾸지 않았다. 읽는 법: 이어받은 사후분포는 PF의 **정직성**을 되돌렸다(y 커버리지 86.6 → 100 %, NEES 3.51 → 2.60, σ 게이트 실패 2 → 0). 그러나 **문 통과 자체는 거의 그대로**다: 문 두 구간의 통과율은 hR 4/16(스테이징된 것 기준) = 25 %, hR2 6/20 = 30 %. 가드는 빔·로봇이 문 가운데(y 0.05)에서 옆으로 3 cm 이상 벗어나면(빔 y +0.075, −0.02…−0.03 등) 0.13–0.15 m 여유 요구를 못 채운다. 그리고 hR → hR2에서 합계가 44 → 56이 된 대부분은 PF 사전이 아니라 **표본 차이**다: hR의 L2–L6 실패 10건은 전부 파지 범위 밖 자세(`STAGING_IK_ENVELOPE`) 때문에 스테이징이 안 된 것이고, hR2 표본은 정렬 종료 상태에서 만들어 전부 범위 안이다.
+
+### 해석 (범위 제한)
+
+- 이 결과는 "이어받은 사후분포가 정렬 종료 수준(PF y 오차 중앙 0.7 cm, 최대 2.7 cm, σ_xy ≈ 2.6 cm, yaw ≤ 1.3°)일 때 운반 L0–L7이 사전 기준(80 %)에 도달한다"는 것이다. L2–L7은 60/60, 문 통과 L0·L1은 6/20이다. **문 통과 구간은 합격이 아니다**: 통과율 80 %는 문 이후 구간이 100 %여서 나온 합계다.
+- 진입 오차는 hG의 정렬 종료 표본(실제 E2E 6 + 교사 4, 시드 911 한 번)에서 왔다. 표본이 작고 각 구간이 독립 진입이다(앞 구간 누적 드리프트는 이 시험에 없다). 다른 시드·긴 작업 뒤 재측위·하중 변화·다른 빔 위치에서는 검증되지 않았다.
+- 통과율이 문턱과 같아 재현성(다른 시드에서 같은 값이 나오는지)은 미확인이다. 위 표대로 합계 상승은 표본 구성 차이가 크므로 "사후분포 이어받기가 성공률을 올렸다"고 쓰지 않는다(정직성 지표는 좋아졌다). 등록은 사전 기준을 충족했기 때문이지 "문 통과가 해결됐다"는 뜻이 아니다.
+
 ## TensorBoard
 
 - **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e`, run 106개(경우별 98 + 그룹 집계 `ALL-*` 8). `collection.json` sha256 `ec6f3639cf33b470cbda4fea2501bb8b65fae61c9fd9881e2a7bcbce3ad0ae9b`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e`(빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`). 기존 스냅샷은 건드리지 않았다.
@@ -939,3 +987,4 @@ hB [1.13, −.04, 0], hC [1.03, .12, 0], hD [1.00, .10, +.03] 각각 `b-v6g`로 
 - **검증.** EventAccumulator로 98개 경우 run의 `offline/stage_pass`·`result/sim_s`·`result/wall_s`를 cases.jsonl과 비교해 불일치 0건, 8개 집계 값을 읽었다. TensorBoard 서버는 실행 중이 아니었고 새로 시작하지 않았다(브라우저 표시 확인은 못 했다).
 - **대시보드 설정.** `outputs/tensorboard-view.json`의 `pair_stage_probes_v6e_20260929`(쓰기 직전 다시 읽고 내 키만 추가, 118개 키). 고정 카드는 v6c-carry와 같고 run filter는 `^0929-pair-stage-probes-v6(c(-carry)?|e)/`(v6c 스냅샷을 기준선으로 함께 보임). 링크는 서버를 다시 띄우면 열린다: `python3 scripts/ugrp_session.py run tensorboard-review -- .venv-sim-worker-mac/bin/python scripts/run_tensorboard.py --logdir outputs/tensorboard`.
 - **이름.** `E-` = b-v6e, `ca` 운반, `sd` 내려놓기, `-Vcal` cal 배치, `-L<n>` leg, `-Lend` 목적지.
+- **v6g-hr2 스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6g-hr2`(케이스 run 91 + 집계 3 = 93개, 실패 0), `collection.json` sha256 `eca3513380ca752ecd40ecf229d5c9780a53e979d8811ef8b68fa8ce3e7b3828`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6g-hr2`. 설정 키 `pair_stage_probes_v6g_hr2_20260929`(쓰기 직전 다시 읽고 내 키만 추가; run filter는 v6e·v6g·v6g-hr·v6g-hr2를 함께 보임). EventAccumulator로 집계 확인: `ALL-G-ca` 0.8(=56/70), `ALL-GL-ca` 1.0, `ALL-G-gl`(hG) 1.0. 서버는 시작하지 않았고 브라우저 표시는 확인하지 못했다. 이름: `G-ca-t-hR2_NN-s911-pP-L<n>-VhR2`(P=recorded posterior), `G-gl-t-hG<NN>`.
