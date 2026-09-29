@@ -298,19 +298,24 @@ def s_grid():
     return np.arange(-n, n + 1) * GRID_STEP
 
 
-def sample_sweep(trace, W, v, period, t0=0., latency=0., scale=1.):
-    """Sample the fine-grid trace along one left-going pass from -W to +W at speed ``v`` (m/s).
+def sample_sweep(trace, W, v, period, t0=0., latency=0., scale=1., reverse=False):
+    """Sample the fine-grid trace along one pass at speed ``v`` (m/s): -W to +W, or +W to -W with ``reverse``.
 
-    ``latency`` (s): the position stamped on a reading lags the true position by v*latency.
-    ``scale``: the commanded strafe distance is ``scale`` times the true one (odometry gain error).
-    Returns the coordinate the ESTIMATOR uses (commanded), the noise-free echo at the true position and the ticks.
+    ``latency`` (s): the position stamped on a reading lags the true position by v*latency (along the motion).
+    ``scale``: the true strafe distance from the pass start is ``scale`` times the commanded one (odometry gain error).
+    Returns arrays sorted by the commanded coordinate (ascending): coordinate the ESTIMATOR uses, the noise-free echo at
+    the true position and the reading ticks (time order, so a reverse pass keeps its own noise stream).
     """
     n = int(math.floor(2 * W / (v * period) + 1e-9)) + 1
     k = np.arange(n)
-    s_cmd = -W + k * v * period
-    s_true = np.clip(-W + (k * v * period - v * latency) * scale, -S_MAX, S_MAX)
+    travelled = k * v * period
+    start = W if reverse else -W
+    s_cmd = start + (-travelled if reverse else travelled)
+    s_true = np.clip(start + (-1. if reverse else 1.) * (travelled - v * latency) * scale, -S_MAX, S_MAX)
     idx = np.clip(np.round(s_true / GRID_STEP).astype(int) + int(round(S_MAX / GRID_STEP)), 0, len(trace) - 1)
-    return s_cmd, trace[idx], (k + int(round(t0 / period))).astype(int)
+    ticks = (k + int(round(t0 / period))).astype(int)
+    order = np.argsort(s_cmd)
+    return s_cmd[order], trace[idx][order], ticks[order]
 
 
 def summarise(err_y, err_psi, ok_flags):
@@ -333,7 +338,7 @@ APPROACH_M = (.40, .50, .60, .75, .90)                         # sensor face to 
 HALF_ANGLES_DEG = (15., 7.5)                                   # the two readings of "measuring angle 15 deg"
 SWEEP_HALF_WIDTHS_M = (.15, .20, .30, .40, .50)
 SPEEDS_MPS = (.03, .05, .08, .12)
-MAX_TICKS = 700
+MAX_TICKS = 1300
 sha256_file = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
 
@@ -402,6 +407,9 @@ def grid_stats(world_facts, traces, spec, d, W, v, draws_list, theta_deg, cell_l
 
 
 def cmd_sweep(args):
+    approaches = tuple(float(x) for x in args.approach.split(',')) if args.approach else APPROACH_M
+    widths = tuple(float(x) for x in args.widths.split(',')) if args.widths else SWEEP_HALF_WIDTHS_M
+    speeds = tuple(float(x) for x in args.speeds.split(',')) if args.speeds else SPEEDS_MPS
     world = DoorWorld()
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -411,12 +419,12 @@ def cmd_sweep(args):
     t0 = time.time()
     for th in HALF_ANGLES_DEG:
         spec = spec_for(th)
-        for d in APPROACH_M:
+        for d in approaches:
             traces = build_traces(world, th, d, sg)
             trace_store[f'th{th}_d{d}'] = traces
             print(f'traces th={th} d={d} {time.time() - t0:.0f}s', flush=True)
-            for W in SWEEP_HALF_WIDTHS_M:
-                for v in SPEEDS_MPS:
+            for W in widths:
+                for v in speeds:
                     st = grid_stats(world.facts, traces, spec, d, W, v, draws, None)
                     results.append({'half_angle_true_deg': th, 'approach_m': d, 'sweep_half_width_m': W,
                                     'speed_mps': v, 'theta_assumed': 'self_calibrated', **st})
@@ -515,6 +523,35 @@ def cmd_ablate(args):
                         **score(world, spec_for(th), d, W, v, seeds, None, y_list=ys, scale=scale)})
     res['timing_odometry'] = tim
     print('timing done', flush=True)
+    # 4. out-and-back: average the forward and the return pass (latency and strafe gain error flip sign between them)
+    bi = []
+    for th in (15., 7.5):
+        spec = spec_for(th)
+        cs = _cells_subset(ys)
+        traces = np.stack([echo_trace(world, spec, d, y, psi, s_grid()) for y, psi, _ in cs])
+        draws = [noise_draws(k, MAX_TICKS) for k in range(seeds)]
+        for latency, scale in ((0., 1.), (.12, 1.), (.25, 1.), (0., .97), (0., 1.03), (0., .90), (0., 1.10), (.12, 1.03)):
+            for mode in ('forward_only', 'out_and_back'):
+                ey, epsi = [], []
+                nok = ntot = 0
+                for row, (y0, psi, pd) in zip(traces, cs):
+                    for dr in draws:
+                        ests = []
+                        for rev in ((False,) if mode == 'forward_only' else (False, True)):
+                            s, e, ticks = sample_sweep(np.asarray(row, float), W, v, spec.period_s, latency=latency, scale=scale, reverse=rev,
+                                                       t0=(0. if not rev else 40.))
+                            ok, r = apply_noise(e, ticks, dr, spec)
+                            ests.append(estimate_sweep(s, ok, r, world.facts, theta_deg=None))
+                        ntot += 1
+                        if all(x['status'] == 'ok' and x['yaw_resolved'] for x in ests):
+                            nok += 1
+                            ey.append(np.mean([x['y_base_m'] for x in ests]) - y0)
+                            epsi.append(np.mean([x['yaw_deg'] for x in ests]) - pd)
+                bi.append({'half_angle_true_deg': th, 'latency_s': latency, 'strafe_scale': scale, 'mode': mode,
+                           'resolved_rate': nok / ntot, 'y_cm': _stat(100 * np.array(ey)), 'yaw_deg': _stat(epsi),
+                           'duration_s': float(2 * W / v * (1 if mode == 'forward_only' else 2))})
+    res['out_and_back'] = bi
+    print('out-and-back done', flush=True)
     (out / 'ablate.json').write_text(json.dumps(res, indent=1))
 
 
@@ -552,8 +589,10 @@ def _category(model, geom, rid, load_prefix):
         return 'load_beam'
     if gname.startswith(('r1__', 'r2__', 'r3__')) or body.startswith(('r1__', 'r2__', 'r3__')):
         return 'partner_robot'
+    if 'divider' in gname:
+        return 'door_wall'
     if 'wall' in gname:
-        return 'wall'
+        return 'other_wall'
     return 'other'
 
 
@@ -582,8 +621,8 @@ def cone_census(model, data, rid, spec, load_prefix):
            'first_echo_is': None if i is None else _category(model, c['geom'][i], rid, load_prefix),
            'eligible_rays': int(eligible.sum()), 'n_rays': int(len(eligible)),
            'eligible_rays_by_target': cats, 'nearest_by_target_m': {k: round(v, 3) for k, v in nearest.items()}}
-    row['door_wall_in_cone'] = bool(cats.get('wall', 0))
-    row['wall_share'] = round(cats.get('wall', 0) / max(1, int(eligible.sum())), 3)
+    row['door_wall_rays'] = int(cats.get('door_wall', 0))
+    row['door_wall_share'] = round(cats.get('door_wall', 0) / max(1, int(eligible.sum())), 3)
     return row
 
 
@@ -736,25 +775,28 @@ def cmd_report(args):
             lines.append(f"| {k[0]:.2f} | {100 * k[1]:.0f} | {100 * k[2]:.0f} | {a['n_readings']} | {a['duration_s']:.0f} | "
                          f"{_fmt(a['y_cm']['rms'])} / {_fmt(b['y_cm']['rms'])} | {_fmt(a['yaw_deg']['rms'])} / {_fmt(b['yaw_deg']['rms'])} | "
                          f"{_fmt(a['y_cm']['p95_abs'])} / {_fmt(b['y_cm']['p95_abs'])} |")
+    ds_ = sorted({k[0] for k in by})
+    ws_ = sorted({k[1] for k in by})
     lines.append('\n## Sweep width (v = 5 cm/s): bracketed / yaw-resolved fraction, y RMS (cm), aim RMS (cm) per approach distance\n')
-    lines.append('| cone | d (m) | ' + ' | '.join(f'W={100 * w:.0f} cm' for w in SWEEP_HALF_WIDTHS_M) + ' |')
-    lines.append('|---|---|' + '---|' * len(SWEEP_HALF_WIDTHS_M))
+    lines.append('| cone | d (m) | ' + ' | '.join(f'W={100 * w:.0f} cm' for w in ws_) + ' |')
+    lines.append('|---|---|' + '---|' * len(ws_))
     for th in HALF_ANGLES_DEG:
-        for d in APPROACH_M:
+        for d in ds_:
             cols = []
-            for w in SWEEP_HALF_WIDTHS_M:
-                r = by[(d, w, .05)][th]
-                cols.append(f"{r['bracket_rate']:.2f}/{r['resolved_rate']:.2f}, y {_fmt(r['y_cm'] and r['y_cm']['rms'], 1)}, aim {_fmt(r['aim_cm'] and r['aim_cm']['rms'], 2)}")
+            for w in ws_:
+                r = by.get((d, w, .05), {}).get(th)
+                cols.append('-' if r is None else f"{r['bracket_rate']:.2f}/{r['resolved_rate']:.2f}, y {_fmt(r['y_cm'] and r['y_cm']['rms'], 1)}, aim {_fmt(r['aim_cm'] and r['aim_cm']['rms'], 2)}")
             lines.append(f'| {th:g} deg | {d:.2f} | ' + ' | '.join(cols) + ' |')
-    lines.append('\n## Speed (d = 0.50 m, W = 40 cm)\n')
-    lines.append('| cone | speed (cm/s) | readings | SIM s | y RMS | y noise-only std | y systematic RMS | yaw RMS (deg) | y p95 | y max |')
-    lines.append('|---|---|---|---|---|---|---|---|---|---|')
-    for th in HALF_ANGLES_DEG:
-        for v in SPEEDS_MPS:
-            r = by[(.5, .4, v)][th]
-            lines.append(f"| {th:g} deg | {100 * v:.0f} | {r['n_readings']} | {r['duration_s']:.0f} | {_fmt(r['y_cm']['rms'])} | "
-                         f"{_fmt(r['y_noise_std_cm'])} | {_fmt(r['y_systematic_rms_cm'])} | {_fmt(r['yaw_deg']['rms'])} | "
-                         f"{_fmt(r['y_cm']['p95_abs'])} | {_fmt(r['y_cm']['max_abs'])} |")
+    if (.5, .4, .05) in by:
+        lines.append('\n## Speed (d = 0.50 m, W = 40 cm)\n')
+        lines.append('| cone | speed (cm/s) | readings | SIM s | y RMS | y noise-only std | y systematic RMS | yaw RMS (deg) | y p95 | y max |')
+        lines.append('|---|---|---|---|---|---|---|---|---|---|')
+        for th in HALF_ANGLES_DEG:
+            for v in SPEEDS_MPS:
+                r = by[(.5, .4, v)][th]
+                lines.append(f"| {th:g} deg | {100 * v:.0f} | {r['n_readings']} | {r['duration_s']:.0f} | {_fmt(r['y_cm']['rms'])} | "
+                             f"{_fmt(r['y_noise_std_cm'])} | {_fmt(r['y_systematic_rms_cm'])} | {_fmt(r['yaw_deg']['rms'])} | "
+                             f"{_fmt(r['y_cm']['p95_abs'])} | {_fmt(r['y_cm']['max_abs'])} |")
     (src / 'report_tables.md').write_text('\n'.join(lines) + '\n')
     print('\n'.join(lines))
 
@@ -765,6 +807,9 @@ def main(argv=None):
     sw = sub.add_parser('sweep')
     sw.add_argument('--out', required=True)
     sw.add_argument('--seeds', type=int, default=8)
+    sw.add_argument('--approach', default='')
+    sw.add_argument('--widths', default='')
+    sw.add_argument('--speeds', default='')
     sw.set_defaults(fn=cmd_sweep)
     st = sub.add_parser('stationary')
     st.add_argument('--out', required=True)

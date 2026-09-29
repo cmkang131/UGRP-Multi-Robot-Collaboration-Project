@@ -120,3 +120,18 @@ def test_truth_aim_matches_geometry():
     psi = math.radians(4)
     assert ds.truth_aim(.6, 0., psi) == pytest.approx((.6 + DEFAULT_SPEC.face_x_m * (1 - math.cos(psi))) * math.tan(psi)
                                                       + DEFAULT_SPEC.face_x_m * math.sin(psi))
+
+
+def test_strafe_gain_error_flips_sign_between_the_out_and_back_passes():
+    sg = ds.s_grid()
+    trace = sg.copy()                                           # 'echo' equals the true strafe coordinate
+    W, v, period, gain = .4, .05, .06, 1.03
+    s_f, e_f, _ = ds.sample_sweep(trace, W, v, period, scale=gain)
+    s_b, e_b, _ = ds.sample_sweep(trace, W, v, period, scale=gain, reverse=True)
+    assert np.all(np.diff(s_f) > 0) and np.all(np.diff(s_b) > 0)
+    err_f = np.interp(0., s_f, e_f - s_f)
+    err_b = np.interp(0., s_b, e_b - s_b)
+    assert err_f == pytest.approx((gain - 1) * W, abs=.002)     # forward pass drifts by gain*distance from its start
+    assert err_b == pytest.approx(-(gain - 1) * W, abs=.002)    # return pass starts at the other end: opposite sign
+    s0, e0, _ = ds.sample_sweep(trace, W, v, period, latency=.1)
+    assert np.mean(e0 - s0) == pytest.approx(-.1 * v, abs=.001)  # stamped position lags the true one
