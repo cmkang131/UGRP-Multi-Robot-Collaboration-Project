@@ -787,7 +787,7 @@ hB [1.13, −.04, 0], hC [1.03, .12, 0], hD [1.00, .10, +.03] 각각 `b-v6g`로 
 | hD nominal | G | G | P | P | P |
 | hD yaw−/opp | P | G | P | P | P |
 
-30건 중 실패 10건: 가드 9건, 모션 오차 1건. **L2·L3·L6은 12/13 통과(실패 1은 모션 오차), L1(문 통과)은 0/6, L0은 hC·hD(빔 y ≥ 0.10)에서 3/4 실패.** 스모크(cal 배치)에서도 L0 nominal, L1 nominal(`SELF_POSE_UNCERTAIN`), L1 lat−/opp가 같은 이유로 실패했다.
+30건 중 실패 10건: 가드 9건, 모션 오차 1건. **L2·L3·L6은 17/18 통과(실패 1은 모션 오차), L1(문 통과)은 0/6, L0은 hB 2/2 통과, hC·hD(빔 y ≥ 0.10)에서 1/4 통과.** 스모크(cal 배치)에서도 L0 nominal, L1 nominal(`SELF_POSE_UNCERTAIN`), L1 lat−/opp가 같은 이유로 실패했다.
 
 ### 원인별 분석
 
