@@ -158,6 +158,7 @@ python3 -m scripts.run_pair_stage_probes --stage carry --sources teacher \
 python3 scripts/agent_lock.py release
 ```
 
+- `--stage chain`(main #270, 한 번 staging 뒤 전 leg를 이어서 실행)도 `--passage-map`과 함께 동작한다(계획 전용 확인, 통로→A 8 leg). 개별 leg probe 결과가 나온 뒤의 후속 단계로 둔다.
 - 계획 전용(물리 없음)은 `--execute`·`--lock-owner`를 빼면 된다(이번에 실행함: 40 case).
 - 러너는 case에 `pair_passage`가 있으면 워커 프로세스 안에서 `harness.pair_passage_plan.install`을 켜고 scene의 정적 지도를 `executor_view`로 바꾼다.
 - **판정(사전 기록):** v6c carry 기준을 그대로 쓴다: 든 채 유지(높이 ≥ 3 cm), 기울기 ≤ 10°, 두 집게 접촉, `leg_error` ≤ 10 cm, `end_error` ≤ 10 cm. 통로 전용으로 **통로 벽 접촉 0**(`CONTACT_KINDS`의 `wall`)과 **횡 오차 ≤ 0.05 m**(봉투 한쪽 여유)를 함께 기록한다. 한 leg 미달이 다른 leg에 전파되지 않도록 leg를 하나씩 따로 시작한다(8 leg를 이은 E2E가 아님).

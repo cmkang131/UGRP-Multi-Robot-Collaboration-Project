@@ -412,3 +412,15 @@ def test_cli_reports_plan_and_refusal(capsys):
     assert json.loads(capsys.readouterr().out)['refused'] == 'PAIR_PASSAGE_TOO_MANY_SEGMENTS'
     assert pp.main(['--map', DOOR_MAP]) == 0
     assert json.loads(capsys.readouterr().out)['legacy_m2_door_route'] is True
+
+
+def test_chain_stage_composes_with_the_passage_opt_in():
+    """One teacher staging at route point 0, then the controller runs every corridor leg (harness.pair_chain_probe)."""
+    cases = pp.passage_teacher_cases('chain', CORRIDOR, passage='auto', target='A', subset={'nominal'}, seeds=(911,))
+    assert [c['case_id'] for c in cases] == [f'chain:teacher:nominal:s{s}:Mcorridor_tags_v3' for s in (911, 912, 913)]
+    c = cases[0]
+    assert (c['map'], c['pair_passage'], c['target'], c['stage']) == (CORRIDOR, 'auto', 'A', 'chain')
+    assert c['route'] == sp.plan_route(SHEET, map_id=CORRIDOR, target='A', passage='auto') and len(c['route']) - 1 == 8
+    assert c['beam_xyyaw'] == [1.0, .05, 0.]
+    with pytest.raises(ValueError, match='chain'):
+        pp.passage_teacher_cases('chain', CORRIDOR, passage='auto', target='A', leg=2)
