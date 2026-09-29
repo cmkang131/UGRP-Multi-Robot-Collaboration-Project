@@ -594,6 +594,7 @@ class PairTeam:
             edge = getattr(inner, 'beam_edge', None)
             out[rid] = {'partner_plan_matched': int(getattr(inner.loc, 'pair_matched', 0)),
                         'partner_plan_unmatched': int(getattr(inner.loc, 'pair_unmatched', 0)),
+                        'availability_frames': dict(getattr(inner, 'carry_yaw_fallback', {}).get('level_frames', {})),
                         **({'beam_edge': {**edge.stats, 'total_rad': edge.total_rad}} if edge is not None else {})}
         return out
 

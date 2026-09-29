@@ -52,23 +52,21 @@ def mirrored(cmds):
 
 
 def track(d, rid, rb, t_lo, t_hi, ratio):
-    """Run the tracker over the recorded own frames of one robot; returns (tracker, first ref time, last applied time)."""
+    """Run the tracker over the recorded own frames of one robot (recorded servo and load state)."""
     tr = BeamEdgeTracker(ratio)
-    first = last = None
     for f in rb[rid]['frames']:
         if not (t_lo <= f['t'] <= t_hi):
             continue
         servo = {int(k): int(v) for k, v in f['commanded_servo'].items()}
         loaded = f['report'].get('load_state') == 'loaded'
-        before = tr.stats['applied']
-        rgb = None
-        # decode only when the tracker will look at the frame (it ignores earlier ones anyway)
         rgb = np.asarray(Image.open(d/'frames'/rid/f'{f["frame"]:05d}.jpg').convert('RGB'))
         tr.observe(f['t'], rgb, servo, loaded)
-        if tr.stats['applied'] > before:
-            first = f['t'] if first is None else first
-            last = f['t']
-    return tr, first, last
+    return tr
+
+
+def gt_rel_change(trace_t, rel_unwrapped, t_a, t_b):
+    """GT relative-yaw change between two capture times (linear interpolation of the 0.25 s trace)."""
+    return float(np.interp(t_b, trace_t, rel_unwrapped) - np.interp(t_a, trace_t, rel_unwrapped))
 
 
 def rows_for(raws, ratio):
@@ -94,17 +92,18 @@ def rows_for(raws, ratio):
             rb = json.load(open(d/'robots.json'))
             cmds = json.load(open(d/'commands.json'))
             for rid in ('r1', 'r2'):
-                tr, ref_t, last_t = track(d, rid, rb, trace[ia]['t'], trace[ib]['t'], ratio)
+                tr = track(d, rid, rb, trace[ia]['t'], trace[ib]['t'], ratio)
                 ms = replay_yaw(cmds[rid], trace[ia]['t'], trace[ib]['t'])
                 mp = replay_yaw(mirrored(cmds[rid]), trace[ia]['t'], trace[ib]['t'])
                 g = wrap(trace[ib]['robots'][rid][2] - trace[ia]['robots'][rid][2])
                 d_rel = None
-                if ref_t is not None and last_t is not None and last_t > ref_t:
-                    ka, kb = int(np.argmin(np.abs(tt - ref_t))), int(np.argmin(np.abs(tt - last_t)))
-                    d_rel = float(wrap(rel_yaw(trace[kb], rid) - rel_yaw(trace[ka], rid)))
+                if tr.ref_t is not None and tr.eff_t is not None and tr.eff_t > tr.ref_t:
+                    # the tracker's shift is (smoothed slope at eff_t) - (mean slope of the reference samples at ref_t)
+                    rel = np.unwrap([rel_yaw(x, rid) for x in trace])
+                    d_rel = gt_rel_change(tt, rel, tr.ref_t, tr.eff_t)
                 rows.append({'raw': raw, 'cell': c['cell'], 'leg': c['leg'], 'robot': rid, 'T': T, 'g': g, 'ms': ms, 'mp': mp,
                              'edge': tr.total_rad, 'd_slope_total': tr.total_rad*ratio, 'd_rel_gt': d_rel,
-                             'stats': dict(tr.stats)})
+                             'ref_t': tr.ref_t, 'eff_t': tr.eff_t, 'stats': dict(tr.stats)})
                 print(raw, c['cell'], c['leg'], rid, 'T %.1f own %+.2f pm %+.2f edge %+.2f gt %+.2f deg' %
                       (T, math.degrees(ms), math.degrees((ms + mp)/2), math.degrees(tr.total_rad), math.degrees(g)), flush=True)
     return rows

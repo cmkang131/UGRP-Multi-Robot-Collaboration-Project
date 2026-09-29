@@ -51,6 +51,18 @@ PROBE_VERSION = '0.7.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
 POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e-base', 'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6f-a', 'b-v6f-b', 'b-v6f')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+
+
+def canonical_policy(policy, probe_version):
+    """Analysis name of a recorded policy. Raws recorded with probe_version < 0.7.0 ran ``b-v6e`` as dr + lag + the two
+    place flags, which is ``b-v6e-base`` since 0.7.0 (the name ``b-v6e`` now also includes both yaw flags)."""
+    try:
+        version = tuple(int(x) for x in str(probe_version).split('.')[:3])
+    except ValueError:
+        version = (0, 0, 0)
+    return 'b-v6e-base' if policy == 'b-v6e' and version < (0, 7, 0) else policy
+
+
 ROLE = {'r1': 'end_neg', 'r2': 'end_pos'}
 
 # Stage registry. ``entry`` is the controller state injected at stage start;

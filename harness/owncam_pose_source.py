@@ -187,6 +187,9 @@ class OwnCamPoseSource:
             dyaw = edge.observe(now, rgb, self.servo, self.loc.load.loaded)
             if dyaw:
                 self.loc.apply_relative_yaw(now, dyaw)
+        if getattr(self, 'carry_yaw_fallback', None) is not None:
+            from harness import owncam_carry_v6e
+            owncam_carry_v6e.update_availability(self, now)
         self.loc.update(now, dets, dict(self.servo))
         if dets:
             self.last_obs = {'t': round(now, 4), 'tag_ids': sorted(int(d['id']) for d in dets), 'n_tags': len(dets)}

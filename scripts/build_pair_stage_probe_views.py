@@ -14,6 +14,10 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from harness.pair_stage_probe import canonical_policy  # noqa: E402
 
 SCHEMA = 'ugrp.offline_audit_view.v1'
 DEFINITION = ('stage probe verdict, NOT E2E success: both robots reached the stage exit by their own controller '
@@ -103,7 +107,7 @@ def case_view(raw, row, manifest):
         scalars[f'offline/relook_calls/{rid}'] = len(calls)
     for rid, n in (row.get('localizer_replaced') or {}).items():
         scalars[f'offline/localizer_replaced/{rid}'] = n
-    policy = row.get('pair_policy', 'v5h')
+    policy = canonical_policy(row.get('pair_policy', 'v5h'), manifest.get('probe_version'))   # 0.6.x b-v6e = b-v6e-base
     infeasible = staging_infeasible(row, result)
     if infeasible:
         row = {**row, 'cause': 'STAGING_IK_ENVELOPE', 'cause_sub': None}   # 0.4.1 raws recorded HOST_ERROR; the message says why
@@ -164,10 +168,11 @@ def main(argv=None):
         infeasible_ids = {r['case_id'] for r in rows if staging_infeasible(
             r, json.loads((raw / 'cases' / re.sub(r'[^A-Za-z0-9_.+-]+', '_', r['case_id']) / 'result.json').read_text()))}
         for stage, st0 in s['stages'].items():
-            for policy, st in (st0.get('by_policy') or {'v5h': st0}).items():
+            for raw_policy, st in (st0.get('by_policy') or {'v5h': st0}).items():
+                policy = canonical_policy(raw_policy, manifest.get('probe_version'))
                 for source, bs in st['by_source'].items():
                     n_inf = sum(1 for r in rows if r['case_id'] in infeasible_ids and r['stage'] == stage
-                                and r['source'] == source and r.get('pair_policy', 'v5h') == policy)
+                                and r['source'] == source and r.get('pair_policy', 'v5h') == raw_policy)
                     view = {'schema': SCHEMA, 'derived_view_only': True,
                             'offline_source': {'path': str(summary), 'sha256': sha(summary)},
                             'offline_scalar_scope': f'aggregate of {bs["cases"]} stage-probe cases ({stage}, {source}); '

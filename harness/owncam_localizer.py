@@ -137,6 +137,10 @@ class OwnCamLocalizer:
         self.pair_plan: dict | None = None
         self.cmd_partner: np.ndarray | None = None
         self.pair_matched = self.pair_unmatched = 0
+        # v6e availability fallback (optional, set by the pose source): extra per-particle constant yaw-rate error
+        # (std ``extra_std``) that widens the yaw spread while the flagged yaw information is unavailable.
+        self.yaw_extra: np.ndarray | None = None
+        self.extra_std = 0.
         self.vel = np.zeros(3)
         self.servo: dict[int, int] = {}
         self.load = LoadState()
@@ -216,6 +220,7 @@ class OwnCamLocalizer:
         else:
             self.scale = 1. + self.rng.normal(size=(self.n, 3))*np.asarray(prof['unloaded_scale_std'], float)
             self.yaw_bias = None
+            self.yaw_extra, self.extra_std = None, 0.
 
     def _init_plant_state(self) -> None:
         """Filter initialised while carrying: same draws as the pick-up transition (no-op without the profile)."""
@@ -226,6 +231,8 @@ class OwnCamLocalizer:
         """Re-seeded particles start with scale 1 (registered); with the loaded profile they also get a fresh bias."""
         if self.yaw_bias is not None:
             self.yaw_bias[idx] = self.rng.normal(size=len(idx))*self._yaw_bias_std()
+        if self.yaw_extra is not None:
+            self.yaw_extra[idx] = self.rng.normal(size=len(idx))*self.extra_std
 
     def _partner_of(self, t: float, cmd) -> np.ndarray | None:
         plan = self.pair_plan
@@ -287,6 +294,8 @@ class OwnCamLocalizer:
                 v = self.vel[None, :]*sc + self.rng.normal(size=(self.n, 3))*std
                 if self.yaw_bias is not None and moving and 'yaw_bias_std_rad_s' in mp:
                     v[:, 2] += self.yaw_bias
+                if self.yaw_extra is not None and self.yaw_bias is not None and moving:
+                    v[:, 2] += self.yaw_extra
                 c, s = np.cos(self.px[:, 2]), np.sin(self.px[:, 2])
                 self.px[:, 0] += (c*v[:, 0] - s*v[:, 1])*dt
                 self.px[:, 1] += (s*v[:, 0] + c*v[:, 1])*dt
@@ -295,6 +304,20 @@ class OwnCamLocalizer:
                     self.scale += self.rng.normal(size=(self.n, 3))*mp['scale_walk']*math.sqrt(dt)
                 self.logw += self._map_logprior(self.px)
             self.t += dt
+
+    def set_extra_yaw_std(self, t: float, std: float) -> None:
+        """v6e availability fallback: from time ``t`` on every particle carries an extra constant yaw-rate error of
+        std ``std`` (0 clears it). The earlier interval keeps the earlier setting; a changed std draws fresh values."""
+        self.predict_to(t)
+        if not self.initialized or self.yaw_bias is None or abs(std - self.extra_std) < 1e-12:
+            return
+        self.extra_std = float(std)
+        self.yaw_extra = self.rng.normal(size=self.n)*self.extra_std if self.extra_std > 0. else None
+
+    def pair_ok(self) -> bool:
+        """True unless a moving loaded robot is not on a plan-matched carry leg (checked at the current PF clock)."""
+        moving = bool(np.any(self.cmd)) and self.t < self.cmd_expires - 1e-9
+        return (not moving) or self.cmd_partner is not None
 
     def apply_relative_yaw(self, t: float, dyaw: float) -> None:
         """v6e carry_beam_edge: add the own-RGB measured robot-minus-beam relative-yaw increment to every particle.
@@ -455,6 +478,8 @@ class OwnCamLocalizer:
             self.px, self.scale = self.px[idx].copy(), self.scale[idx].copy()
             if self.yaw_bias is not None:
                 self.yaw_bias = self.yaw_bias[idx].copy()
+            if self.yaw_extra is not None:
+                self.yaw_extra = self.yaw_extra[idx].copy()
             # Roughening (regularized PF): small jitter so the cloud can move
             # when the likelihood is much sharper than the motion noise.
             rough = np.asarray(self.params.get('roughen', [0., 0., 0.]), float)

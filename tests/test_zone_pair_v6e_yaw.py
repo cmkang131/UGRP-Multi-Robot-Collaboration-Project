@@ -266,9 +266,150 @@ def test_tracker_on_recorded_frames_matches_the_recorded_replay_rows():
     tt = np.array([x['t'] for x in trace])
     tex = max(c['exit_sim_s'].values()) if c.get('exit_sim_s') else trace[-1]['t']
     ratio = json.loads((ROOT/v6e.PAIR_FIT).read_text())['slope_to_yaw_ratio']
-    tr, first, last = fit.track(d, top['robot'], rb, c['entry_sim_s'], tex, ratio)
-    ka, kb = int(np.argmin(np.abs(tt - first))), int(np.argmin(np.abs(tt - last)))
-    gt = fit.wrap(fit.rel_yaw(trace[kb], top['robot']) - fit.rel_yaw(trace[ka], top['robot']))
+    tr = fit.track(d, top['robot'], rb, c['entry_sim_s'], tex, ratio)
+    rel = np.unwrap([fit.rel_yaw(x, top['robot']) for x in trace])
+    gt = fit.gt_rel_change(tt, rel, tr.ref_t, tr.eff_t)
     assert abs(gt) > math.radians(1.)                          # the leg really turns the robot against the beam
     assert tr.total_rad == pytest.approx(gt, abs=.003)          # own-RGB estimate of the change vs eval-only GT
     assert tr.total_rad == pytest.approx(top['edge'], abs=1e-9)  # bit-for-bit the committed replay row
+    assert tr.stats['no_edge'] == 0 and tr.available(tr.last_ok_t)
+
+
+# ------------------------------------------------------------ edge-line robustness (stray pixels, non-line boundary)
+def test_edge_line_ignores_isolated_coloured_pixels_above_the_band():
+    img = band(.03).copy()
+    rng = np.random.default_rng(5)
+    for c in range(140, 500, 4):                                # one stray yellow-green pixel above the band in every column
+        img[rng.integers(45, 60), c] = (150, 200, 30)
+    got = edge_line(img)
+    assert got is not None and got[0] == pytest.approx(.03, abs=2e-3) and got[1] == pytest.approx(120, abs=1.5)
+
+
+def test_edge_line_rejects_a_boundary_that_is_not_a_line():
+    img = np.asarray(Image.new('RGB', (640, 480), (40, 40, 40))).copy()
+    for c in range(0, 640):
+        lo = 120 + (60 if 250 < c < 420 else 0)                 # a wedge of band hanging down: boundary jumps 60 px
+        img[lo - 45:lo, c] = (150, 200, 30)
+    assert edge_line(img) is None
+    img2 = np.asarray(Image.new('RGB', (640, 480), (40, 40, 40))).copy()
+    img2[100:110, :] = (150, 200, 30)                            # a thin stripe (10 px): shorter than a beam band
+    assert edge_line(img2) is None
+
+
+def test_tracker_availability_and_reference_times():
+    tr = BeamEdgeTracker(1.)
+    assert not tr.available(0.)
+    feed(tr, [0.]*10)
+    assert tr.ref_t is not None and tr.eff_t is not None and tr.ref_t < tr.eff_t
+    assert tr.available(tr.last_ok_t + 1.9) and not tr.available(tr.last_ok_t + 2.5)     # stale after 2 s
+    empty = np.full((480, 640, 3), 40, np.uint8)
+    out = tr.observe(30., empty, {1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500}, True)
+    assert out is None and not tr.available(30.) and tr.stats['no_edge'] >= 1
+
+
+# ------------------------------------------------------------ availability fallback of the yaw bias
+def _flagged_provider(pair=True, edge=True):
+    p = OwnCamPoseSource(V6['map'], V6['params'], seed=628)
+    v6e.enable_provider(p, pair_yaw=pair, beam_edge=edge)
+    loc = p.loc
+    n = loc.n
+    loc.px = np.zeros((n, 3)); loc.scale = np.ones((n, 3)); loc.logw = np.zeros(n)
+    loc.initialized = True; loc.load.loaded = True
+    loc._draw_plant_state(True)
+    return p
+
+
+def test_fallback_std_is_the_quadrature_gap_to_the_available_estimator():
+    p = _flagged_provider()
+    cfg = p.carry_yaw_fallback
+    b = cfg['b']
+    assert b['pm+edge'] == cfg['b_full'] and b[''] == pytest.approx(.002331418995960997)
+    full, key = v6e.fallback_std(cfg, True, True)
+    assert full == 0. and key == 'pm+edge'
+    no_edge, key = v6e.fallback_std(cfg, True, False)
+    assert key == 'pm' and no_edge == pytest.approx(math.sqrt(b['pm']**2 - b['pm+edge']**2))
+    no_pm, key = v6e.fallback_std(cfg, False, True)
+    assert key == 'edge' and no_pm == pytest.approx(math.sqrt(max(b['edge']**2 - b['pm+edge']**2, 0.)))
+    none, key = v6e.fallback_std(cfg, False, False)
+    assert key == '' and none == pytest.approx(math.sqrt(b['']**2 - b['pm+edge']**2)) and none > no_edge
+    # variants without a flag never count that flag as available
+    edge_only = _flagged_provider(pair=False, edge=True).carry_yaw_fallback
+    assert v6e.fallback_std(edge_only, True, True)[1] == 'edge'
+
+
+def test_update_availability_widens_the_filter_when_the_edge_or_the_plan_is_missing():
+    p = _flagged_provider()
+    loc = p.loc
+    cfg = p.carry_yaw_fallback
+    v6e.update_availability(p, 1.)                              # no edge reference yet: pair-mean level only
+    assert loc.extra_std == pytest.approx(v6e.fallback_std(cfg, True, False)[0]) and loc.yaw_extra is not None
+    # edge tracked (good frames): fallback cleared
+    for i in range(12):
+        p.beam_edge.observe(1. + i*.6, band(0.), {1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500}, True)
+    t = 1. + 11*.6
+    assert p.beam_edge.available(t)
+    v6e.update_availability(p, t)
+    assert loc.extra_std == 0. and loc.yaw_extra is None
+    # mask emptied (beam not seen): after the stale time the pair-mean level returns
+    empty = np.full((480, 640, 3), 40, np.uint8)
+    for i in range(6):
+        p.beam_edge.observe(t + .6*(i + 1), empty, {1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500}, True)
+    t2 = t + 3.6
+    v6e.update_availability(p, t2)
+    assert loc.extra_std == pytest.approx(v6e.fallback_std(cfg, True, False)[0])
+    # partner plan mismatch while moving: registered level, and it is held for PM_HOLD_S (no per-pulse flapping)
+    loc.cmd, loc.cmd_expires, loc.t, loc.cmd_partner = np.array([0., .05, 0.]), t2 + 5., t2, None
+    v6e.update_availability(p, t2)
+    assert loc.extra_std == pytest.approx(v6e.fallback_std(cfg, False, False)[0])
+    loc.cmd_expires = -1.
+    v6e.update_availability(p, t2 + .5)
+    assert loc.extra_std == pytest.approx(v6e.fallback_std(cfg, False, False)[0])
+    v6e.update_availability(p, t2 + v6e.PM_HOLD_S + .1)
+    assert loc.extra_std == pytest.approx(v6e.fallback_std(cfg, True, False)[0])
+    # unloaded: nothing extra
+    loc.load.loaded = False
+    v6e.update_availability(p, t2 + 10.)
+    assert loc.extra_std == 0.
+
+
+def test_the_extra_yaw_error_widens_the_yaw_spread_and_is_off_by_default():
+    def spread(extra):
+        p = _flagged_provider()
+        loc = p.loc
+        loc.set_extra_yaw_std(0., extra)
+        loc.command({'t': 0., 'kind': 'mecanum', 'forward': 0., 'left': LEFT_CMD, 'turn': 0., 'duration_s': 30.})
+        loc.predict_to(20.)
+        return float(np.std(loc.px[:, 2]))
+    assert spread(.002) > spread(0.)*1.05
+    assert _flagged_provider().loc.yaw_extra is None
+    # resampling carries the extra error with the particles; a kidnap reset redraws it
+    p = _flagged_provider()
+    p.loc.set_extra_yaw_std(0., .002)
+    assert p.loc.yaw_extra.shape == (p.loc.n,)
+    p.loc.logw = np.where(np.arange(p.loc.n) < 5, 0., -50.)
+    p.loc._normalize_and_resample()
+    assert p.loc.yaw_extra.shape == (p.loc.n,)
+
+
+# ------------------------------------------------------------ analysis names of old raws
+def test_old_b_v6e_raws_are_analysed_as_b_v6e_base():
+    from harness.pair_stage_probe import canonical_policy
+    assert canonical_policy('b-v6e', '0.6.0') == 'b-v6e-base' and canonical_policy('b-v6e', '0.5.0') == 'b-v6e-base'
+    assert canonical_policy('b-v6e', '0.7.0') == 'b-v6e' and canonical_policy('b-v6e', '0.7.1') == 'b-v6e'
+    assert canonical_policy('b-v6e-pm', '0.6.0') == 'b-v6e-pm' and canonical_policy('b-v6d', '0.6.0') == 'b-v6d'
+    assert canonical_policy('b-v6e', None) == 'b-v6e-base'
+
+
+@pytest.mark.skipif(not (OUTPUTS/'pair-stage-probes-d08818ef-cal2/manifest.json').exists(), reason='cal-2 raw not present')
+def test_view_builder_names_old_raws_base_and_new_raws_plain(tmp_path):
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('views', ROOT/'scripts/build_pair_stage_probe_views.py')
+    views = importlib.util.module_from_spec(spec); spec.loader.exec_module(views)
+    raw = OUTPUTS/'pair-stage-probes-d08818ef-cal2'
+    manifest = json.loads((raw/'manifest.json').read_text())
+    row = json.loads(next(l for l in open(raw/'cases.jsonl')))
+    assert manifest['probe_version'] == '0.6.0' and row['pair_policy'] == 'b-v6e'
+    name, view = views.case_view(raw, row, manifest)
+    assert view['policy'] == 'b-v6e-base' and name.startswith('E0-')
+    name2, view2 = views.case_view(raw, row, {**manifest, 'probe_version': '0.7.0'})
+    assert view2['policy'] == 'b-v6e' and name2.startswith('E-')

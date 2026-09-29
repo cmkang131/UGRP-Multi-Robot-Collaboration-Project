@@ -1,9 +1,9 @@
 {
- "slope_to_yaw_ratio": 1.0650450719849023,
+ "slope_to_yaw_ratio": 1.0079613827806073,
  "b_rad_s": {
   "pm": 0.0019030395629542583,
-  "edge": 0.0018669808932371486,
-  "pm+edge": 0.0015674668456146295
+  "edge": 0.0018509167520632144,
+  "pm+edge": 0.0015597537798802067
  },
  "estimators": {
   "e0_registered": {
@@ -33,11 +33,11 @@
    }
   },
   "edge": {
-   "balanced_rms_rad_s": 0.0018669808932371486,
+   "balanced_rms_rad_s": 0.0018509167520632144,
    "per_cell_rms_rad_s": {
-    "nominal": 0.0009019051859981488,
-    "lat-/opp": 0.002559359753362789,
-    "yaw+/same": 0.0017587204597303552
+    "nominal": 0.0009025303144308542,
+    "lat-/opp": 0.0025235540036230818,
+    "yaw+/same": 0.0017592022884068722
    },
    "n_per_cell": {
     "nominal": 16,
@@ -46,11 +46,11 @@
    }
   },
   "pm+edge": {
-   "balanced_rms_rad_s": 0.0015674668456146295,
+   "balanced_rms_rad_s": 0.0015597537798802067,
    "per_cell_rms_rad_s": {
-    "nominal": 0.00031063150818763646,
-    "lat-/opp": 0.0022058927898883822,
-    "yaw+/same": 0.0015519027037616615
+    "nominal": 0.0003097846776575103,
+    "lat-/opp": 0.0021896568200260253,
+    "yaw+/same": 0.0015517512769622345
    },
    "n_per_cell": {
     "nominal": 16,
@@ -62,8 +62,8 @@
  "replicate_check_not_in_fit": {
   "e0_registered": 0.002279434809971593,
   "pm": 0.0018812213022309026,
-  "edge": 0.001840150669890417,
-  "pm+edge": 0.0015354540920047973
+  "edge": 0.0018237268301872006,
+  "pm+edge": 0.0015274247617686593
  },
  "registered_v6e_b_rad_s": 0.002331418995960997,
  "rule": "b(variant) = cell-balanced RMS over cal1 case-robots of (GT yaw change - replayed estimate)/window, window = [entry, exit]; ratio = through-origin LS slope of tracker slope change on GT relative yaw change",

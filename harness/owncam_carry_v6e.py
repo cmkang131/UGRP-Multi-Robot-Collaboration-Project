@@ -121,6 +121,13 @@ def enable_provider(provider, pair_yaw=False, beam_edge=False):
             from harness.own_beam_edge import BeamEdgeTracker
             inner.beam_edge = BeamEdgeTracker(float(fit['slope_to_yaw_ratio']))
             info['slope_to_yaw_ratio'] = float(fit['slope_to_yaw_ratio'])
+        # Availability fallback: b of the estimator actually in effect (pair-mean matched? edge tracked?), the
+        # registered (yaw flags off) value when neither is.
+        inner.carry_yaw_fallback = {'pair': bool(pair_yaw), 'edge': bool(beam_edge), 'b_full': profile['yaw_bias_std_rad_s'],
+                                    'b': {'': float(load_profile(unloaded)[0]['yaw_bias_std_rad_s']),
+                                          **{k: float(v) for k, v in fit['b_rad_s'].items()}},
+                                    'level_frames': {}, 'pm_bad_until': -1.}
+        info['fallback_b_rad_s'] = dict(inner.carry_yaw_fallback['b'])
     # Rebind, never mutate: the params dict may be shared with other providers of the same run.
     pf.params = {**pf.params, 'motion_loaded': {**pf.params['motion_loaded'], **copy.deepcopy(profile)}}
     if pf.initialized and pf.load.loaded:
@@ -181,3 +188,34 @@ def set_partner_plan(provider, t0, t1, *, own, partner):
         raise ValueError('carry_pair_yaw needs a tag PF provider')
     vec = lambda c: np.array([c['forward'], c['left'], c['turn']], float)
     loc.pair_plan = {'t0': float(t0), 't1': float(t1), 'own': vec(own), 'partner': vec(partner)}
+
+
+PM_HOLD_S = 2.       # a plan mismatch keeps the fallback for this long (no per-pulse flapping)
+
+
+def fallback_std(cfg, pm_ok, edge_ok):
+    """Extra constant yaw-rate std [rad/s] that brings the PF's bias spread from the variant's ``b_full`` up to the b
+    of the estimator that is actually available (in quadrature; never negative)."""
+    key = variant_key(cfg['pair'] and pm_ok, cfg['edge'] and edge_ok)
+    b = cfg['b'][key]
+    return math.sqrt(max(b*b - cfg['b_full']**2, 0.)), key
+
+
+def update_availability(provider, now):
+    """Per own frame (flags carry_pair_yaw / carry_beam_edge): set the PF's extra yaw std from what is available now."""
+    inner = _inner(provider)
+    cfg = getattr(inner, 'carry_yaw_fallback', None)
+    if cfg is None:
+        return
+    loc = inner.loc
+    if not loc.load.loaded:
+        loc.set_extra_yaw_std(now, 0.)
+        return
+    if cfg['pair'] and not loc.pair_ok():
+        cfg['pm_bad_until'] = float(now) + PM_HOLD_S
+    pm_ok = float(now) >= cfg['pm_bad_until']
+    edge = getattr(inner, 'beam_edge', None)
+    edge_ok = edge is not None and edge.available(now)
+    std, key = fallback_std(cfg, pm_ok, edge_ok)
+    loc.set_extra_yaw_std(now, std)
+    cfg['level_frames'][key or 'registered'] = cfg['level_frames'].get(key or 'registered', 0) + 1
