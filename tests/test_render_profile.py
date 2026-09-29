@@ -22,6 +22,7 @@ SYNTH = ('<mujoco><default><material reflectance=".2"/></default>'
 def test_profile_hashes_are_pinned_and_default_equals_shadows_v1():
     assert rp.profile_sha256('shadows_v1') == 'f10e51dab22f30913f68eb3981f8373ce747676a66292f4b1cd0c974c598f8c5'
     assert rp.profile_sha256('noshadow_v1') == 'c30f1ef68e8c28de662ee541020181cc41cf68a13d58f3a44ed2624c3abc5809'
+    assert rp.profile_sha256('noshadow_bright_v1') == 'f994f8d61af3157e973764225d581758106329ab2259922e28d5d14881fe2e5f'
     assert rp.profile_sha256(None) == rp.profile_sha256('shadows_v1')
     assert rp.profile_sha256('noshadow_v1') != rp.profile_sha256('shadows_v1')
     record = rp.profile_record('noshadow_v1')
@@ -57,6 +58,24 @@ def test_noshadow_v1_xml_edit_touches_only_castshadow_and_reflectance():
         element.attrib.pop('reflectance', None)
     assert ET.tostring(root) == ET.tostring(ref)
     assert rp.apply_xml(out, 'noshadow_v1') == out       # idempotent
+
+
+def test_noshadow_bright_v1_xml_edit_scales_light_colours_and_makes_point_lights():
+    import xml.etree.ElementTree as ET
+    out = rp.apply_xml(SYNTH, 'noshadow_bright_v1')
+    root, ref = ET.fromstring(out), ET.fromstring(SYNTH)
+    lights = list(root.iter('light'))
+    assert len(lights) == 3 and all(l.get('castshadow') == 'false' and l.get('cutoff') == '180' for l in lights)
+    plain, nested = lights[0], root.find('.//light[@name="nested"]')
+    # omitted colours are scaled from MuJoCo's defaults (ambient 0, diffuse .7, specular .3)
+    assert (plain.get('ambient'), plain.get('diffuse'), plain.get('specular')) == ('0 0 0', '0.21 0.21 0.21', '0.09 0.09 0.09')
+    assert nested.get('diffuse') == '0.15 0.15 0.15'
+    assert [m.get('reflectance') for m in root.iter('material')] == ['0', '0', None]
+    for element in list(ref.iter()) + list(root.iter()):        # nothing else differs
+        for key in ('castshadow', 'reflectance', 'cutoff', 'ambient', 'diffuse', 'specular'):
+            element.attrib.pop(key, None)
+    assert ET.tostring(root) == ET.tostring(ref)
+    assert SYNTH.count('castshadow') == 1                        # input string is not mutated
 
 
 class _FakeScene:
@@ -105,9 +124,13 @@ def zone_models():
     profiled = _zone_xml()[0]
     rp.install(profiled, 'noshadow_v1')
     xml_noshadow = profiled.transform(raw)
+    bright = _zone_xml()[0]
+    rp.install(bright, 'noshadow_bright_v1')
+    xml_bright = bright.transform(raw)
     kept = rp.install(_zone_xml()[0], 'shadows_v1')
     xml_kept = kept.transform(raw)
-    return {'xml': xml, 'noshadow_xml': xml_noshadow, 'kept_xml': xml_kept,
+    return {'bright': mujoco.MjModel.from_xml_string(xml_bright), 'bright_scene': bright,
+            'xml': xml, 'noshadow_xml': xml_noshadow, 'kept_xml': xml_kept,
             'scene': profiled, 'default': mujoco.MjModel.from_xml_string(xml),
             'kept': mujoco.MjModel.from_xml_string(xml_kept),
             'noshadow': mujoco.MjModel.from_xml_string(xml_noshadow)}
@@ -146,6 +169,33 @@ def test_noshadow_v1_changes_exactly_light_castshadow_and_mat_reflectance(zone_m
     assert (model.light_diffuse == ref.light_diffuse).all() and (model.light_ambient == ref.light_ambient).all()
     assert (model.cam_pos == ref.cam_pos).all() and (model.cam_fovy == ref.cam_fovy).all()
     assert model.opt.timestep == ref.opt.timestep and model.opt.noslip_iterations == ref.opt.noslip_iterations
+
+
+def test_noshadow_bright_v1_changes_only_lights_and_reflectance_never_physics(zone_models):
+    import numpy as np
+    default, bright = _arrays(zone_models['default']), _arrays(zone_models['bright'])
+    assert default.keys() == bright.keys()
+    changed = sorted(k for k in default if not np.array_equal(default[k], bright[k], equal_nan=True))
+    assert changed == ['light_ambient', 'light_castshadow', 'light_cutoff', 'light_diffuse', 'light_specular', 'mat_reflectance']
+    ref, model = zone_models['default'], zone_models['bright']
+    np.testing.assert_allclose(model.light_diffuse, ref.light_diffuse * .3, rtol=1e-5)
+    np.testing.assert_allclose(model.light_ambient, ref.light_ambient * .3, rtol=1e-5)
+    np.testing.assert_allclose(model.light_specular, ref.light_specular * .3, rtol=1e-5)
+    assert (model.light_cutoff == 180).all() and (model.light_castshadow == 0).all() and (model.mat_reflectance == 0).all()
+    assert (model.cam_pos == ref.cam_pos).all() and (model.cam_fovy == ref.cam_fovy).all()
+    assert model.opt.timestep == ref.opt.timestep and model.opt.noslip_iterations == ref.opt.noslip_iterations
+    assert rp.verify_model(model, 'noshadow_bright_v1')['light_cutoff'] == [180., 180., 180., 180.]
+    record = zone_models['bright_scene'].record()['render_profile']
+    assert record['name'] == 'noshadow_bright_v1' and record['sha256'] == rp.profile_sha256('noshadow_bright_v1')
+    assert record['changes_images'] and not record['changes_physics']
+
+
+def test_noshadow_bright_v1_verify_fails_closed_when_spot_lights_remain(zone_models):
+    with pytest.raises(RuntimeError, match='still has spot lights'):
+        rp.verify_model(zone_models['noshadow'], 'noshadow_bright_v1')      # noshadow_v1 model: shadows off, cones kept
+    with pytest.raises(RuntimeError, match='still has shadows'):
+        rp.verify_model(zone_models['default'], 'noshadow_bright_v1')
+    assert rp.verify_model(zone_models['noshadow'], 'noshadow_v1')['light_cutoff'] == [45.] * 4
 
 
 def test_verify_model_fails_closed_when_the_profile_is_missing(zone_models):
@@ -190,6 +240,7 @@ def test_probe_flag_is_off_by_default_and_marks_cases_only_when_given():
     from scripts import run_pair_stage_probes as r
     cases = sp.teacher_cases('align', subset={'nominal'}, nominal_seeds=(911,))
     assert r.with_render_profile(cases, None) is cases and all('render_profile' not in c for c in cases)
+    assert all(c['render_profile'] == 'noshadow_bright_v1' for c in r.with_render_profile(cases, 'noshadow_bright_v1'))
     marked = r.with_render_profile(cases, 'noshadow_v1')
     assert [c['case_id'] for c in marked] == [c['case_id'] for c in cases]      # ids unchanged, output dir decides the arm
     assert all(c['render_profile'] == 'noshadow_v1' for c in marked) and all('render_profile' not in c for c in cases)

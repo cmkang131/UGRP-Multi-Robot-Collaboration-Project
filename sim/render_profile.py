@@ -7,7 +7,7 @@ hashed condition; the default path is left byte-for-byte alone and nothing here
 runs unless a runner passes an explicit profile name.
 
 A profile only edits the scene XML string (``<light castshadow>``,
-``<material reflectance>``). Geometry, masses, contacts, actuators, timestep and
+``<material reflectance>``; ``noshadow_bright_v1`` also ``<light cutoff>`` and the light colours). Geometry, masses, contacts, actuators, timestep and
 camera pose/FOV are never touched, so physics is unchanged by construction; the
 tests compile both models and diff every mjModel array to prove it.
 
@@ -42,8 +42,24 @@ PROFILES = {
         'xml_ops': [{'op': 'light_castshadow', 'value': 'false'},
                     {'op': 'material_reflectance', 'value': '0'}],
     },
+    'noshadow_bright_v1': {
+        'summary': 'noshadow_v1 plus: every <light> becomes a point light (cutoff=180) and its diffuse, ambient and '
+                   'specular colours are multiplied by 0.3. Deliberately brighter than shadows_v1 where the spot cones '
+                   'leave the floor dark (user decision 2026-09-29); the real room was not measured. The point lights '
+                   'avoid the all-black frames MuJoCo renders through its non-shadow spot-light path (README).',
+        'xml_ops': [{'op': 'light_castshadow', 'value': 'false'},
+                    {'op': 'material_reflectance', 'value': '0'},
+                    {'op': 'light_cutoff', 'value': '180'},
+                    {'op': 'light_color_scale', 'value': '0.3'}],
+    },
 }
 
+# MuJoCo defaults for the light colours a <light> may omit (XML reference), needed to scale an omitted attribute.
+LIGHT_COLOR_DEFAULTS = {'ambient': (0., 0., 0.), 'diffuse': (.7, .7, .7), 'specular': (.3, .3, .3)}
+
+# ``noshadow_bright_v1`` (user decision 2026-09-29: drop shadows/reflections and make it brighter) was sized on static
+# frames at recorded probe poses, not on the real room: experiments/2026-09-29-render-profile/static_frames/
+# calibrate_brightness.py. The 0.3 is the middle of the 0.26-0.34 plateau that passes the pre-set rules (README).
 # ``softshadow_v1`` is deliberately absent: nothing in the repository (code, docs, measurement protocol)
 # records the real room's light levels, so any diffuse/ambient number would be a guess. The user-facing
 # question is shadows on vs off; a weaker-shadow profile can be added once the room is measured.
@@ -89,6 +105,15 @@ def apply_xml(xml, name):
             for material in root.iter('material'):
                 if material.get('reflectance') is not None:   # absent means MuJoCo's default, 0
                     material.set('reflectance', op['value'])
+        elif op['op'] == 'light_cutoff':
+            for light in root.iter('light'):
+                light.set('cutoff', op['value'])
+        elif op['op'] == 'light_color_scale':
+            factor = float(op['value'])
+            for light in root.iter('light'):
+                for key, default in LIGHT_COLOR_DEFAULTS.items():
+                    values = [float(v) for v in light.get(key).split()] if light.get(key) is not None else list(default)
+                    light.set(key, ' '.join(f'{v * factor:.6g}' for v in values))
         else:  # pragma: no cover - registry is closed
             raise ValueError(f'unknown render profile op {op["op"]!r}')
     return ET.tostring(root, encoding='unicode')
@@ -130,6 +155,7 @@ def audit_model(model):
     reflective = {mujoco.mj_id2name(model, mujoco.mjtObj.mjOBJ_MATERIAL, i) or f'material{i}': float(model.mat_reflectance[i])
                   for i in range(model.nmat) if float(model.mat_reflectance[i]) != 0.}
     return {'nlight': int(model.nlight), 'light_castshadow': [int(v) for v in model.light_castshadow],
+            'light_cutoff': [float(v) for v in model.light_cutoff],
             'nmat': int(model.nmat), 'materials_with_reflectance': reflective}
 
 
@@ -137,6 +163,8 @@ def verify_model(model, name):
     """Fail closed when the compiled model does not carry the requested profile."""
     name = resolve(name)
     audit = audit_model(model)
-    if name == 'noshadow_v1' and (any(audit['light_castshadow']) or audit['materials_with_reflectance']):
+    if name in ('noshadow_v1', 'noshadow_bright_v1') and (any(audit['light_castshadow']) or audit['materials_with_reflectance']):
         raise RuntimeError(f'render profile {name} requested but the compiled model still has shadows/reflections: {audit}')
+    if name == 'noshadow_bright_v1' and any(c != 180. for c in audit['light_cutoff']):
+        raise RuntimeError(f'render profile {name} requested but the compiled model still has spot lights: {audit}')
     return audit

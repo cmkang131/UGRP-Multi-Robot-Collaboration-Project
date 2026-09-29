@@ -1,6 +1,8 @@
 # 2026-09-29 렌더 프로필(그림자·반사) A/B — 측정 완료(단계 probe, 진단 규모)
 
-**상태: 물리 probe를 실행했다(SIM 시간, 잠금 보유, b-v6d 정책, 소스 `584ee391`). 아래 "결과"에 채웠다. 이것은 단계 probe 비교이며 E2E 성공이 아니다. b-v6d의 운반은 σ(SELF_POSE_UNCERTAIN)로 조기 종료돼 성공이 아니다. 렌더 프로필의 채택·등록·push·PR은 하지 않았다(사용자가 #218에서 정한다).** 계획서였던 이전 본문은 아래에 그대로 두었고, 실행에서 계획과 달라진 점은 "실행 기록"에 적었다.
+**상태: 물리 probe를 실행했다(SIM 시간, 잠금 보유, b-v6d 정책, 소스 `584ee391`). 아래 "결과"에 채웠다. 이것은 단계 probe 비교이며 E2E 성공이 아니다. b-v6d의 운반은 σ(SELF_POSE_UNCERTAIN)로 조기 종료돼 성공이 아니다. 렌더 프로필의 채택·번들 등록은 하지 않았다(사용자가 #218에서 정한다). PR은 opt-in 코드와 이 기록을 담는다.** 계획서였던 이전 본문은 아래에 그대로 두었고, 실행에서 계획과 달라진 점은 "실행 기록"에 적었다.
+
+**2026-09-29 추가(사용자 결정): "그림자/반사는 빼고 밝게. 기존 영상에 맞추지 말고 더 밝게 해. 굳이 더 테스트하지 않는다."** 그래서 새 프로필 `noshadow_bright_v1`(opt-in)을 추가했다. 정의·근거 수치·검증 범위는 맨 아래 "## noshadow_bright_v1(밝게)" 절. 기본 경로·기존 두 프로필은 바이트 불변이고 물리는 바뀌지 않는다. 이 프로필로 인식·성공을 다시 재지 않았다. 채택(기본값 여부)은 #218 최종 환경 동결 때 정한다.
 
 ## 왜 하는가
 
@@ -14,6 +16,7 @@
 |---|---|---|---|
 | `shadows_v1` (= 플래그 없음) | 아무것도 바꾸지 않는다 | `f10e51da…c598f8c5` | 없음(같은 XML 문자열 객체를 돌려준다) |
 | `noshadow_v1` | 모든 `<light>`에 `castshadow="false"`, 반사 재질(`reflectance` 속성이 있는 모든 `<material>`)을 `0`으로 | `c30f1ef6…5abc5809` | zone 장면 기준 광원 4개(키 3 + `dispatch_ceiling`)의 그림자 끔, `groundmat` 반사 0.035 → 0. 광원의 diffuse/ambient/specular, headlight, 텍스처, `shadowsize`, MSAA는 그대로 |
+| `noshadow_bright_v1` | `noshadow_v1`의 두 편집에 더해 모든 `<light>`를 점광원(`cutoff=180`)으로 바꾸고 diffuse·ambient·specular에 0.3을 곱한다 | `f994f8d6…e2e5f` | 아래 "noshadow_bright_v1(밝게)" 절. 물리 배열은 바뀌지 않는다(테스트로 mjModel 전 배열 비교) |
 | `softshadow_v1` | **만들지 않았다** | — | 저장소 코드·문서·측정 프로토콜에 실제 방의 조명 세기(lux, 그림자 농도)를 적은 곳이 없다. diffuse/ambient 값을 정하면 근거 없는 추측이 된다. 실물 조명을 재면(#213/#214 실측 항목에 추가) 그때 추가한다 |
 
 - 물리 불변: 두 모델을 컴파일해 `mjModel`의 모든 배열을 비교한 테스트에서 달라지는 것은 `light_castshadow`와 `mat_reflectance` 둘뿐이다. 광원 밝기·카메라 pose/FOV·timestep·noslip은 같다. 다만 영상이 바뀌므로 인식·제어 경로는 달라진다(그것이 A/B의 대상이다).
@@ -214,8 +217,75 @@ python -m scripts.run_pair_stage_probes --stage align grasp_lift --sources teach
 - 분석 산출물(이 폴더): [analysis-stage1.json](analysis-stage1.json)(단계 1 프레임 통계), [analysis-setdown-t6p05.json](analysis-setdown-t6p05.json)(setdown 같은 창), [analysis-repro.json](analysis-repro.json)(재실행 프레임 동일성), [stage0-compare.json](stage0-compare.json), [timing.json](timing.json), [build_tb_views.py](build_tb_views.py). 분석 스크립트: `scripts/analyze_render_profile_ab.py`(테스트 `tests/test_render_profile_ab_analysis.py`).
 - 실행 SHA `584ee39118aed683869b965709056c7008aa008d`(source_dirty false). 실행 시작 부하는 표와 `driver.log`에 있다. 잠금: 단계 0(A2), 단계 1·2(B), 추가 반복(C) 각각 `agent_lock`을 잡고 EXIT에서 해제했고 종료 뒤 `status`가 null이다.
 
+## noshadow_bright_v1(밝게) — 2026-09-29, 정지 프레임 측정, 물리 실행 없음
+
+### 사용자 결정과 이 절이 답하는 것
+
+A/B에서 `noshadow_v1`은 CPU를 약 절반으로 줄였지만 영상이 어두워졌다(setdown r2 평균 V 43.7 → 26.7, 검사 통과율 0.92/1.00 → 0.58/0.46). 사용자는 "그림자·반사는 빼고 밝게"를 정했고, 이어서 "기존 영상에 맞추지 말고 그냥 더 밝게, 어두워서 못하는 게 비현실적"이라고 정정했다. 원인 분리는 하지 않기로 했으나, 밝기를 정하다가 **어두워진 원인이 조명 세기가 아니라 렌더러의 검은 프레임**임이 드러나 그것만 확인했다(아래). 물리 probe는 하지 않았다(잠금 없음). 실행한 것은 정지 프레임 렌더뿐이다.
+
+### 정의
+
+`sim/render_profile.py`의 `noshadow_bright_v1`(정의 해시 `f994f8d61af3157e973764225d581758106329ab2259922e28d5d14881fe2e5f`). 장면 XML만 고친다.
+
+1. 모든 `<light>` `castshadow="false"`, 반사가 있는 모든 `<material>` `reflectance=0` (`noshadow_v1`과 같음)
+2. 모든 `<light>` `cutoff="180"` (스포트라이트 → 점광원)
+3. 모든 `<light>`의 `diffuse`, `ambient`, `specular`에 **하나의 스칼라 0.3**을 곱한다(속성이 없으면 MuJoCo 기본값 ambient 0, diffuse .7, specular .3에서 곱함)
+
+컴파일된 모델 검증: 기본과 다른 mjModel 배열은 `light_ambient`, `light_castshadow`, `light_cutoff`, `light_diffuse`, `light_specular`, `mat_reflectance`뿐이다(`tests/test_render_profile.py`, 나머지 배열·timestep·noslip·카메라 위치/FOV 동일). `verify_model`은 그림자·반사가 남았거나 스포트 광원(`cutoff != 180`)이 남으면 실행을 막는다. 카메라 배치·FOV, 로봇 외관, 물체, 물리, 헤드라이트, 텍스처는 그대로다. **실물 방 밝기는 측정하지 않았다. 값은 shadows_v1에 맞춘 것이 아니라 아래 규칙으로 정지 프레임에서 정했다.**
+
+### 왜 점광원(cutoff 180)인가 — `noshadow_v1`의 검은 프레임
+
+- 같은 상태(A/B raw의 `setdown` 시작 체크포인트, `mj_setState`+`mj_forward`)에서 r2의 own 카메라는 `noshadow_v1`에서 **모든 픽셀이 0**(평균 V 0.0, V<8 비율 100 %)이고 shadows_v1에서는 평균 V 34.6이다. A/B 원본 프레임에서도 noshadow arm의 r2는 setdown 프레임 18번(0부터)부터 평균 V 0이 된다(s911, 처음 30장 중 12장). 그러니 "어두워짐"의 큰 몫은 밝기가 아니라 **검은 프레임**이다.
+- 이것은 조명 세기 때문이 아니다. 광원 세기를 5배로 올려도, 헤드라이트를 5배로 올려도, 문제의 광원(세 번째 광원)의 diffuse·ambient·specular를 0으로 만들어도 검다. 렌더러 플래그(`mjRND_SHADOW`)를 끄고 `castshadow` 속성은 그대로 두어도 검다(XML이 아니라 그림자 없는 렌더 경로의 문제). 세 번째 광원을 0.1 m 옮기거나 방향을 기울이면 값이 바뀐다. 그 시점 r2 카메라의 시선과 그 광원의 축 사이 코사인이 0.997이다(관찰이며 기전은 확인하지 않았다).
+- `cutoff`를 60·90·120으로 줄이거나 넓혀도 검고, **179 이상(점광원)에서만 사라진다.** 스포트 그림자 없는 경로를 피하는 방법으로 점광원을 골랐다.
+- 무작위 자세 감사(로봇 r1·r2 각 60자세, 기준 상태 주변 x 0.3–5.5, y −2.6–0.4, yaw 전 범위, 렌더만, 일부는 비물리적 자세): **전체 어두운 프레임(평균 V<1) shadows_v1 0/120, noshadow_v1 16/120(13 %), noshadow_bright_v1 0/120.** [brightness_calibration.json](static_frames/brightness_calibration.json)의 `black_audit`.
+- 점광원으로 바꾸면 스포트 원뿔이 사라져 조명이 균일해지므로, 원뿔 밖의 어두운 바닥(setdown 목적지)은 밝아지고 원뿔 안의 밝은 곳은 다소 어두워진다. 이 변화는 의도한 것이다(어두워서 못 하는 것을 줄임).
+
+### 0.3을 정한 방법(정지 프레임, 관측 전에 정한 규칙)
+
+정지 프레임: A/B raw(`st1-*`)의 `mj_getState` 체크포인트 8개(align·grasp_lift·carry·setdown의 시작·종료 시점, seed 911)를 같은 장면에 복원하고 로봇 own 카메라(실제 포트 경로: 어안 재매핑 + JPEG q82)와 공용 top 카메라를 렌더했다. 도구: [calibrate_brightness.py](static_frames/calibrate_brightness.py), 결과: [brightness_calibration.json](static_frames/brightness_calibration.json), 그림: [noshadow_bright_v1_montage.jpg](static_frames/noshadow_bright_v1_montage.jpg)(왼쪽 shadows_v1, 가운데 noshadow_v1, 오른쪽 bright). 통계는 `valid_frame`과 같은 림 마스크와 HSV V로 계산했다. 광원 배율 k를 0.15–0.5로 훑고 아래 규칙을 모든 상태·로봇에 적용했다.
+
+- 규칙 1(검사 여유): V<8 비율 ≤ 1 %(기준 25 %의 1/25), 1–99 백분위 대비 ≥ 30(기준 15의 2배), V 표준편차 ≥ 6(기준 3의 2배).
+- 규칙 2(과노출 상한): 포화(V ≥ 250) 비율 ≤ max(shadows_v1, noshadow_v1) + 1 %p.
+- 규칙 3: 위를 만족하는 k의 구간 안에서 가운데 값.
+
+결과: k = 0.26–0.34가 규칙을 모두 만족하고 0.36에서 setdown r1의 벽 띠가 포화(15 %)해 규칙 2를 깬다. 그 구간의 가운데 근처 **k = 0.30**을 골랐다(0.34에서는 align·grasp의 큰 물체도 포화가 0.8 % → 8.9 %로 뛰는 절벽이 있어 그 아래로 잡음).
+
+| k | setdown 평균V / 하위10%V / 포화% (r1) | align_entry 포화% (r1/r2) | grasp_lift_entry 포화% (r1/r2) | 최악 V<8 % | 최소 대비 | 최소 표준편차 |
+|---|---|---|---|---:|---:|---:|
+| shadows_v1 | 32.7 / 7 / 0.0 | 2.4 / 2.3 | 8.3 / 8.5 | 30.1(r1 setdown, 검사 실패 2건) | 106 | 35.8 |
+| noshadow_v1 | 37.4 / 9 / 0.0 | 2.3 / 2.0 | 8.2 / 8.7 | 100(r2 setdown, 검은 프레임) | 0 | 0 |
+| 0.20 | 56 / 14 / 0.0 | 0.0 / 0.0 | 0.0 / 0.0 | 0.52 | 147 | 19.3 |
+| **0.30** | **68.8 / 17 / 0.0** | **0.5 / 0.1** | **0.8 / 0.2** | **0.30** | **204** | **25.6** |
+| 0.34 | 74 / 18 / 0.0 | 2.8 / 2.3 | 8.9 / 8.3 | 0.24 | 221 | 28.2 |
+| 0.36 | 76 / 19 / 15.2 | 2.8 / 2.4 | 9.0 / 8.4 | 0.22 | 227 | 28.1 |
+| 0.50 | 81 / 23 / 23.6 | 3.0 / 2.5 | 9.4 / 8.7 | 0.15 | 223 | 28.5 |
+
+### 0.3에서의 수치(shadows_v1과 비교, 정지 프레임 16개: 8상태 × r1/r2)
+
+- **검사(`valid_frame` 식): 16/16 통과**(shadows_v1 14/16: setdown 시작·종료 r1이 V<8 28.6·30.1 %로 실패 — A/B의 기존 `OWN_IMAGE_INVALID` 재현. noshadow_v1 14/16: setdown r2가 검은 프레임). V<8 비율 최대 0.30 %(기준 25 %), 대비 최소 204(기준 15), 표준편차 최소 25.6(기준 3).
+- **가장 어두운 장면(setdown, 목적지 바닥):** 평균 V 32.7/34.6 → 68.8/67.7(r1/r2, 약 2배), 하위 10 % V 7/8 → 17/17.
+- **잘 보이는 장면:** 평균 V가 오히려 낮다. align_entry r1 130.1 → 107.9(−17 %), align_stop r1 154.6 → 124.1(−20 %), grasp_lift_entry r1 115.2 → 112.3(−3 %). 스포트 원뿔의 밝은 중심이 사라진 결과다. **"모든 장면이 shadows_v1보다 밝다"가 아니라 "어두운 곳을 끌어올리고 밝은 곳의 과노출(핫스팟)을 줄인다"이다.**
+- **포화(V ≥ 250):** align_entry 2.4 → 0.5 %, grasp_lift_entry 8.3 → 0.8 %(r1). 그 외는 shadows_v1과 같은 수준(align_stop 11.6, grasp_lift_stop 39.7/38.5, carry 23.5–25.0). 어떤 상태도 규칙 2를 넘지 않는다.
+- **더 밝게 못 올리는 이유:** 어두운 바닥의 하위 10 % V는 k를 0.3 → 0.5 → 0.7로 올려도 17 → 23 → 30 정도로 느리게 늘지만, 벽 띠·빔은 0.36부터 포화(setdown 15–24 %)한다. 8비트 영상 한 장 안에서 어두운 면과 밝은 물체의 밝기 비가 크다(하위 10 % V 17 대 벽 띠 250 근처). 톤 매핑 없이 하나의 스칼라로 "어두운 면 V ≥ 100"은 불가능하다. 규칙에 넣지 않았고, 사용자가 더 밝은 값을 원하면 k 한 상수만 바꾸면 되지만 새 프로필 이름·해시가 필요하다.
+- 공용 top 카메라 평균 V 86.9 → 100.2(+15 %, 점광원 효과). top 영상 인식은 이번에도 재지 않았다.
+
+### 속도 이득(정지 프레임 기준, 렌더만)
+
+640×480 own 카메라 한 프레임의 이 프로세스 CPU 시간(`time.process_time`, 세 프로필을 교차해 5회 반복, 부하 평균 14–21의 Mac): shadows_v1 대비 `noshadow_v1` **0.15배**(0.134 → 0.020 s), `noshadow_bright_v1` **0.15배**(0.021 s). 즉 밝기 조정은 렌더 시간 이득을 그대로 유지했고(+6 % 이내, 부하 잡음 범위) 렌더 −85 %이다. 이것은 A/B의 전체 probe CPU −50 % 안팎과 다른 값이다(probe에는 인식·PF·물리가 남는다). 이 프로필로 probe 전체의 CPU를 다시 재지는 않았다.
+
+### 아직 검증되지 않은 것
+
+- **이 프로필로 인식·성공을 재측정하지 않았다.** 빔·집게 색 검출, PF, 검사 통과율, 단계 성공은 미측정이다. 특히 빔 색조가 바뀐다(밝은 노랑 → 노란 초록, `noshadow_v1`의 채널 클리핑이 줄어든 결과, montage 참고). 색 범위 검출기의 문턱은 바꾸지 않았고 영향은 보지 않았다.
+- 실물 영상과 비교하지 않았다. 실물 방 밝기는 저장소에 없다(**실물 방 미측정, 값은 위 규칙으로 정지 프레임에서 정함**). 실물에 더 가깝다는 근거가 없다.
+- 정지 프레임은 seed 911의 nominal 8개 시점뿐이다. 다른 경로 구간·목적지·로봇 자세는 무작위 자세 감사(렌더만)에서 검은 프레임이 없다는 것까지만 봤다.
+- 자세 감사의 자세는 일부가 비물리적이다. 검은 프레임의 기전(광원 축과 시선 정렬)은 확인하지 않았다.
+- 점광원은 스포트 원뿔을 없앤다. 실제 방의 조명 배치와 무관하게 균일해진다(측정 없음).
+- 채택 시점: **#218 최종 환경 동결 때** 기본값으로 삼을지 정한다. 지금은 opt-in(`--render-profile noshadow_bright_v1`)뿐이고 기본 경로(플래그 없음 = shadows_v1)는 바이트 불변이다. 채택하면 실행 번들·workflow ID를 새로 배정하고 기존 기준선과 합산하지 않는다.
+
 ## 사용자가 정할 것
 
+0. (2026-09-29 사용자 결정 반영) 그림자·반사를 빼고 밝게 가는 방향으로 `noshadow_bright_v1`을 만들었다. 기본값 여부는 #218에서 정한다. 아래 2·3번(그림자만/반사만 분리, `softshadow_v1`)은 사용자가 "더 테스트하지 않는다"고 해서 하지 않는다.
 1. **채택 후보로 볼지.** 이 A/B만 보면 noshadow_v1은 인식·성공을 개선하지 않았고(목적지에서는 악화) CPU를 약 절반으로 줄인다. 최종 환경 고정(#218)에서 정하며, 속도만을 이유로 채택하기에는 목적지 영상 악화가 걸린다.
 2. 그림자만/반사만을 분리한 arm(목적지가 어두워지는 원인 분리)과 밝기를 보정한 부드러운 그림자 arm(`softshadow_v1`)을 더 돌릴지. 근거가 되는 실물 방 조명 실측을 #213/#214 항목에 추가할지.
 3. 셀·시드를 늘린 확대(다른 셀, carry 구간 이후)를 할지. 물리가 결정적이므로 시드 반복보다 셀·경로 구간을 늘리는 쪽이 정보가 많다.
@@ -226,5 +296,6 @@ python -m scripts.run_pair_stage_probes --stage align grasp_lift --sources teach
 - 저장소 측정·구현(재사용): `experiments/2026-09-26-sim-speed/README.md`(그림자 광원 4개·shadowsize 4096·MSAA 4, 그림자 끄기 300,548 px 변경, 반사 끄기 18,996 px 변경, robot_cam 렌더 CPU 비중), `docs/sim_speed.md`, `docs/local_simulation.md`(표준 관찰 창의 그림자·반사 생략), `scripts/dispatch_native_view.py`(관찰 창 `mjRND_SHADOW`/`mjRND_REFLECTION`), `scripts/eval_zone_own_perception_v3_1.py`(`LIGHTING` 조명 스트레스 프로필: 빌드된 모델의 광원 배열을 고치는 선행 방식), `harness/zone_pair_vision.py`(`valid_frame`), `experiments/2026-09-29-pair-v6c-carry/README.md`(내려놓기 목적지 `OWN_IMAGE_INVALID` 0/13), `experiments/2026-09-26-zone-m2-pair/README.md`·`experiments/2026-09-26-zone-eval-topcam/README.md`·`docs/report/04-executor.md`(조명·그림자로 인한 인식 실패 사례).
 - MuJoCo 3.12 문서: XML reference의 `light`의 `castshadow`(그림자를 만드는 광원마다 렌더 패스가 하나 더 든다는 설명)와 `material`의 `reflectance`, `mjtRndFlag`(`mjRND_SHADOW`, `mjRND_REFLECTION`). 이번 세션에서 웹 문서를 다시 열지는 않았고, 설치본 MuJoCo 3.12.0에서 두 속성의 효과를 컴파일된 모델과 렌더 프레임으로 직접 확인했다(위 테스트·정적 관찰).
 - 도메인 무작위화(조명·질감 변형)가 sim2real 완화책이라는 선행 근거는 `docs/design/2026-09-26-vision-localization-tagfree.md`(Tobin 등 2017 인용)와 `docs/research_todo.md`에 있다. 이 프로필은 무작위화가 아니라 고정 조건의 변경이다.
+- `noshadow_bright_v1` 정지 프레임 측정(2026-09-29)도 저장소 기존 도구를 재사용했다: `mj_getState` 체크포인트(`scripts/run_pair_stage_probes.py` `save_checkpoint`), `scripts/zone_pair_dev_runtime.make_scene`, `harness/zone_own_team_host.OwnCamTeamHost`의 실제 own 카메라 경로(`world.render_jpeg`), `harness/zone_pair_vision.valid_frame`의 림 마스크·문턱. 새 외부 문헌은 조사하지 않았고 검은 프레임은 MuJoCo 3.12.0에서 직접 측정했다(기전 미확인, 위 절). 광원의 `cutoff`·`diffuse`·`ambient`·`specular`는 MuJoCo XML 참조의 `light` 속성이다.
 - 만들지 않은 것: 약한 그림자 프로필(근거 부재), 새 렌더러·후처리, 러너별 별도 플래그(사전등록 소스 보존).
 - 이번 측정(2026-09-29 실행)의 실행·분석 방법은 저장소 기존 도구를 재사용했다: `scripts/run_pair_stage_probes.py`, `scripts/build_pair_stage_probe_views.py`, `scripts/export_offline_audit.py`, `harness/zone_pair_vision.valid_frame`·`harness/owncam_pair_beam_v2` 검출기(문턱 불변). 새 외부 문헌은 조사하지 않았다.
