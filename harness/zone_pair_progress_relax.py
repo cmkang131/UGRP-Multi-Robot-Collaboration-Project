@@ -7,6 +7,10 @@ door-leg views give none (``no_usable_geometry``), so ``needs_check`` fires and 
 ``POSE_UNCERTAIN_PROGRESS``. That is independent of the collision inflation that ``b-v6h`` relaxes. A single-leg stage probe
 never sees it (no baseline is ever set there).
 
+Both variants patch the whole ``ProgressMonitor`` class, so they also change the no-progress check of unloaded ``GuardedDriver``
+driving, not only the loaded carry. The worker records ``progress_relax`` in result.json (``null`` by default), so the default
+output is not byte-identical to before this key existed.
+
 ``install('p2')`` (added after the p1 cohorts, see the README) keeps stall detection but refuses to arm the baseline from a
 stationary fix, i.e. it makes the loaded pair behave as in a single-leg stage probe unless a trusted estimate arrives after the
 leg has started moving.

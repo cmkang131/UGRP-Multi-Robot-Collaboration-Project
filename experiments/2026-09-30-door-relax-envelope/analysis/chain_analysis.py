@@ -152,11 +152,18 @@ def analyse(label, root, legs_wanted=(0, 1)):
     return out
 
 
+CLASSIFIER_NOTE = (
+    "NOTE: 'SELF_POSE_UNCERTAIN gate_not_ok_dwell_or_hysteresis' in the first-failure column is the name the existing classifier "
+    "(harness/pair_stage_probe.py ~855-868) gives an abort; the raw controller reason in these runs is POSE_UNCERTAIN_PROGRESS "
+    "(ProgressMonitor no-progress stop), not a pose gate.\n")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--json', type=Path)
     ap.add_argument('raws', nargs='+')
     a = ap.parse_args()
+    print(CLASSIFIER_NOTE, end='')
     res = []
     for spec in a.raws:
         label, _, path = spec.partition('=')

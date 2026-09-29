@@ -403,8 +403,12 @@ def door_relax_setup(policy, door_relax):
 
 
 def chain_relax_allowed(stage, chain_stop_leg):
-    """b-v6h may run the chain stage only when the run is stopped at the end of route leg 0 or 1 (the door leg): the relaxation
-    was measured for the door approach/crossing, so a chain that continues into the later legs is refused."""
+    """b-v6h may run the chain stage only when the run is stopped at the end of route leg 0 or 1 (the door leg); a chain that
+    continues into the later legs is refused.
+
+    Scope caveat: b-v6h is a process-wide switch, so in such a run it is also active for every loaded phase after leg 0 (lower,
+    open, stored re-grasp, relocalize, align, grasp, lift) and not only for the door approach/crossing. Only the outcome of legs 0
+    and 1 is measured; the wall contact tracker sees walls only, not beam <-> partner contact."""
     return stage == 'chain' and chain_stop_leg is not None and int(chain_stop_leg) in (0, 1)
 
 
