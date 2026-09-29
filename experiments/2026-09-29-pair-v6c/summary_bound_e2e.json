@@ -1,0 +1,63 @@
+{
+  "schema": "ugrp.pair_stage_probe.v1",
+  "labels": [
+    "stage_probe",
+    "not_e2e_success",
+    "dev",
+    "연구 결과 아님"
+  ],
+  "stages": {
+    "grasp_lift": {
+      "cases": 46,
+      "passed": 30,
+      "pass_rate": 0.6522,
+      "by_source": {
+        "tolerance_boundary": {
+          "cases": 46,
+          "passed": 30
+        }
+      },
+      "failures": {
+        "PREGRASP_NOT_READY": 11,
+        "PREGRASP_BEAM_UNCERTAIN": 3,
+        "PREGRASP_BEAM_UNSAFE": 1,
+        "LOAD_NOT_HELD_AFTER_LIFT": 1
+      },
+      "wall_s_median": 71.09,
+      "wall_s_max": 79.23,
+      "stage_sim_s_median": 7.2,
+      "by_policy": {
+        "b-only": {
+          "cases": 23,
+          "passed": 8,
+          "by_source": {
+            "tolerance_boundary": {
+              "cases": 23,
+              "passed": 8
+            }
+          },
+          "failures": {
+            "PREGRASP_NOT_READY": 11,
+            "PREGRASP_BEAM_UNCERTAIN": 3,
+            "PREGRASP_BEAM_UNSAFE": 1
+          }
+        },
+        "b-v6c": {
+          "cases": 23,
+          "passed": 22,
+          "by_source": {
+            "tolerance_boundary": {
+              "cases": 23,
+              "passed": 22
+            }
+          },
+          "failures": {
+            "LOAD_NOT_HELD_AFTER_LIFT": 1
+          }
+        }
+      }
+    }
+  },
+  "wall_s_total": 738.8,
+  "unavailable_e2e": []
+}

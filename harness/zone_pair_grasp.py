@@ -297,6 +297,10 @@ class PairGraspRelook(PairAlignRelook):
         self.arm.queue({**self.hover, 1: study.OPEN}, now, duration=1.)
         for pose in path:
             self.arm.queue(pose, now, duration=.12, settle=0.)
+        if getattr(getattr(self,'policy',None),'grasp_range_entry',False):
+            # v6c: the first READY frame must show the settled grasp pose.
+            from harness.zone_pair_grasp_entry_v6c import FINAL_DESCENT_SETTLE_S
+            self.arm.until += FINAL_DESCENT_SETTLE_S
         # Deliberately no close in this queue. Each robot must first publish
         # fresh readiness and consume the same close GO on the control grid.
         self.set('pregrasp_descend', now)

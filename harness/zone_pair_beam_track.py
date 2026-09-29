@@ -31,7 +31,7 @@ def plane_points(image, servo):
     return pts[(distance > 0) & (np.linalg.norm(pts, axis=1) < 2.5)]
 
 
-def standoff_estimate(obs, servo):
+def standoff_estimate(obs, servo, *, points=None, min_strip_support=0.):
     """Full band anchors position; equal-length edge pairs fit the beam axis.
 
     Pixel PCA weights the near end face heavily; width/sight-length is also
@@ -48,12 +48,12 @@ def standoff_estimate(obs, servo):
         return None
     heading = beam['axis_heading_rad']
     u = np.array([math.cos(heading), math.sin(heading)])
-    pts = plane_points(obs['image'], servo)
+    pts = (plane_points if points is None else points)(obs['image'], servo)
     if len(pts) < v1.MIN_POINTS:
         return None
     along, across = pts @ u, pts @ np.array([-u[1], u[0]])
     lo, hi = np.percentile(along, [1, 99])
-    centres = []
+    centres, support = [], []
     for start in np.arange(lo, hi, .01):
         mask = (along >= start) & (along < start + .01)
         if mask.sum() < 4:
@@ -61,6 +61,12 @@ def standoff_estimate(obs, servo):
         left, right = np.percentile(across[mask], [2, 98])
         if .025 <= right - left <= .055:  # catalogue 40 mm width, both edges
             centres.append((float(np.mean(along[mask])), float((left + right) / 2)))
+            support.append(int(mask.sum()))
+    if min_strip_support > 0 and centres:
+        # v6c: a strip cut by the band/end boundary is partly covered; its
+        # midpoint is not a two-edge midpoint. Keep well-supported strips.
+        floor = min_strip_support * float(np.median(support))
+        centres = [c for c, n in zip(centres, support) if n >= floor]
     if len(centres) < 4:
         return None
     a, n = np.array(centres).T
@@ -82,6 +88,18 @@ def standoff_estimate(obs, servo):
 
 
 class RestingBeamTrack:
+    # v6c GraspRangeBeamTrack overrides these two hooks; defaults are the v5h/v6 behaviour.
+    def _standoff(self, obs, servo):
+        return standoff_estimate(obs, servo)
+
+    def _partial_points(self, obs, servo):
+        """Visible beam patch for a consistency check, or None (no renewal)."""
+        partial = observe_beam(obs['image'], servo)
+        if (partial.get('reason') not in ('BAND_CLIPPED', 'END_CLIPPED')
+                or partial.get('end_visible') is not False):
+            return None, None  # missing/unrecognized evidence cannot renew a track
+        return plane_points(obs['image'], servo), partial['reason']
+
     def __init__(self):
         self.beam = None
         self.segment = None
@@ -138,7 +156,7 @@ class RestingBeamTrack:
         if self.last_frame == key:
             return False  # duplicate reads cannot refill age or uncertainty
         self.last_frame = key
-        beam = standoff_estimate(obs, servo)
+        beam = self._standoff(obs, servo)
         if beam is None:
             return False
         self.segment = segment
@@ -157,12 +175,8 @@ class RestingBeamTrack:
                 or not 0 <= b['std_xy_m'] <= FIX_STD_XY_M
                 or not 0 <= b['std_yaw_rad'] <= FIX_STD_YAW_RAD):
             return None
-        partial = observe_beam(obs['image'], servo)
-        if (partial.get('reason') not in ('BAND_CLIPPED', 'END_CLIPPED')
-                or partial.get('end_visible') is not False):
-            return None  # missing/unrecognized evidence cannot renew a track
-        pts = plane_points(obs['image'], servo)
-        if len(pts) < v1.MIN_POINTS:
+        pts, partial_reason = self._partial_points(obs, servo)
+        if pts is None or len(pts) < v1.MIN_POINTS:
             return None
         # Only a visible patch is constrained. The short strip may be the END
         # face, so neither its PCA axis nor its v1 grip is a new beam pose.
@@ -175,5 +189,5 @@ class RestingBeamTrack:
         if inside.mean() < .95:
             return None
         return {**b, 'partial_frame_id': obs['frame_id'], 'partial_sha256': obs['sha256'],
-                'partial_support_fraction': float(inside.mean()), 'partial_reason': partial['reason'],
+                'partial_support_fraction': float(inside.mean()), 'partial_reason': partial_reason,
                 'partial_use': 'visible patch consistency only; no pose/age/sigma reset'}

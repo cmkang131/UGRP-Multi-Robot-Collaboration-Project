@@ -166,7 +166,11 @@ class PairCommandGuard:
         from harness.zone_pair_beam_track import RestingBeamTrack
 
         self.ep = execution
-        self.beam_track = RestingBeamTrack()
+        if getattr(getattr(execution, 'policy', None), 'grasp_range_entry', False):
+            from harness.zone_pair_grasp_entry_v6c import GraspRangeBeamTrack
+            self.beam_track = GraspRangeBeamTrack()
+        else:
+            self.beam_track = RestingBeamTrack()
         from harness.zone_pair_global import GlobalEnvelope
         from harness.zone_pair_relative import RelativeBeamTrack
         self.relative_track = RelativeBeamTrack()

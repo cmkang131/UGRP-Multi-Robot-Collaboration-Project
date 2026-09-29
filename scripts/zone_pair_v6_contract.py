@@ -7,6 +7,21 @@ that touched a pinned source. It is now audited only against the blobs of its
 registration commit (``verify_v6_historical``), and ``load_config`` refuses
 to prepare or run it from the current tree. New v6-family runs register their
 own revision and bundle (v6b, v6c) and set ``CURRENT_REVISION``.
+
+2026-09-29 (manager decision A, PR #256): the v6b DRAFT (PR #261, bundle v75,
+opt-in ``stationary_bootstrap`` policies) is historical in the same way. It
+pinned 73 source hashes of the tree, including the study runner and the
+workflow catalog, so the B7 runner merge (bundle v77) could not land without
+re-sealing it. Its bytes and the v75 offline replay records stay unchanged;
+it is audited only against the blobs of its sealing commit 15793691. There is
+no current v6-family draft on main (``CURRENT_REVISION = None``): ``contract``
+and ``load_config`` refuse until the next draft (v6c, PR #263) sets its own
+revision. A draft should be sealed last, right before registration.
+
+v6c (PR #263, experiments/2026-09-29-pair-v6c): the current DRAFT. The opt-in
+``exact_fix_clock`` / ``grasp_range_entry`` policy ``b-v6c`` in bundle v76 on
+top of main's v79; its registration keeps v5h and b-only as matched controls
+(``REVISION_POLICIES['v6c']``). Sealed once after the #256/#257/#249 merges.
 """
 import copy
 import hashlib
@@ -14,17 +29,27 @@ import json
 from pathlib import Path
 import subprocess
 
-from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES
+from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES, REVISION_POLICIES
 
 ROOT = Path(__file__).resolve().parents[1]
 PREREG = ROOT/'experiments/2026-09-28-zone-pair-v6/prereg_v6.json'
+PREREG_V6B = ROOT/'experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json'
+PREREG_V6C = ROOT/'experiments/2026-09-29-pair-v6c/prereg_v6c.json'
 V5H = ROOT/'experiments/2026-09-27-zone-pair-dev/prereg_v5h.json'
 V6_REGISTRATION_COMMIT = '3c26acddec066adcd9164e6d2a6f51c1261c5f66'   # PR #259 REGISTERED conversion
-HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT)}
-CURRENT_REVISION = None       # no current v6-family registration on main; v6b/v6c set their own
+V6B_DRAFT_COMMIT = '15793691b3af136769cdf0b090e722daddf80ab4'         # PR #261 last v6b DRAFT sealing
+HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT), 'v6b': (PREREG_V6B, V6B_DRAFT_COMMIT)}
+HISTORICAL_STATUS = {'v6': 'REGISTERED', 'v6b': 'DRAFT'}
+CURRENT_REVISION = 'v6c'      # current v6-family DRAFT (PR #263, bundle v76)
 
 
-def contract():
+def contract(revision=None):
+    revision = CURRENT_REVISION if revision is None else revision
+    if revision is None:
+        raise ValueError('no current v6-family draft on main (v6 and v6b are historical; '
+                         'the next draft sets CURRENT_REVISION)')
+    if revision != CURRENT_REVISION:
+        raise ValueError(f'{revision} is historical; audit it with verify_v6_historical')
     from scripts.zone_pair_grasp_contract import SOURCE_PATHS
     from scripts.zone_pair_dev_contract import scene_contract
     paths = (*SOURCE_PATHS,*scene_contract()['source_sha256'],
@@ -34,12 +59,23 @@ def contract():
              # Final review P3-4: control-path modules outside the v5h receipts.
              'harness/zone_own_sweep.py','harness/pair_owncam_approach.py','harness/owncam_drive.py',
              'scripts/run_m2_pair.py','scripts/study_owncam_pair_beam.py','harness/visual_arm.py',
-             'harness/m1_owncam_delivery.py')
+             'harness/m1_owncam_delivery.py',
+             # v6b start bootstrap and its executor hook.
+             'harness/owncam_bootstrap_v6b.py','harness/zone_own_executor.py','harness/zone_pair_executor.py',
+             # v6c flags and their hooks.
+             'harness/owncam_recovery_v6c.py','harness/zone_pair_grasp_entry_v6c.py',
+             'harness/zone_pair_guards.py','harness/zone_pair_grasp.py','harness/zone_pair_beam_track.py',
+             # PR #249: the team host picks the robot model and spawn keepouts through these on
+             # every map (v2 maps delegate to the legacy path), so they are in the run closure.
+             'sim/zone_masterpi_v3_scene.py','sim/zone_model_conventions.py')
+    paths = tuple(dict.fromkeys(paths))
     from harness.zone_pair_global import SCHEDULED_REOBSERVE
     from harness.zone_own_sweep import SWEEP_REOBSERVE_S
     from harness.zone_pair_align import MAX_LOOKS, MAX_TOTAL_LOOK_S
+    from harness import owncam_bootstrap_v6b as boot
+    from harness import owncam_recovery_v6c as clock, zone_pair_grasp_entry_v6c as entry
     return {'execution_bundle_id':EXECUTION_BUNDLE_ID,'policy_flags':{
-        k:vars(v) for k,v in POLICIES.items()},
+        k:vars(POLICIES[k]) for k in REVISION_POLICIES[revision]},
         # Review 3: flag semantics are part of the registration. beam_relative
         # (A) now also removes PF convergence from the align stop conditions.
         'flag_definitions':{
@@ -47,7 +83,45 @@ def contract():
             'beam_relative':('A: own-view beam-relative align/close-in and pre-close shape report; separate '
                              'global safety envelope with planned safety looks; during align/pre-close the PF is '
                              'a reference only (no HIGH/convergence stop) while an object-anchored bound '
-                             '(entry fix + ready relative view of the static beam) certifies wall/arm clearance')},
+                             '(entry fix + ready relative view of the static beam) certifies wall/arm clearance'),
+            'stationary_bootstrap':('v6b: equal-weight AMCL-default Gaussian prior on the static start_dock rows; '
+                                    'no own arm/wheel command before an informative settled fix whose first arm '
+                                    'transition the unchanged guard clears (or gate LOW); only camera pans in between, '
+                                    'each checked by the unchanged guard at the mean plus a conservative collision-mass bound '
+                                    'over all weighted particles (cell-inflated, <= 1 %; particle chance constraint); '
+                                    'refused pans stay queued and are rechecked; non-finite reports never complete; '
+                                    'completion '
+                                    'only at the home pan after settle, with sigma within the guard cap; '
+                                    'resample-move on the stationary belief after an accepted view (no dual samples); '
+                                    'a rejected view '
+                                    'never mutates the PF; 10 s stationary budget per motion job, then '
+                                    'STATIONARY_BOOTSTRAP_NO_FIX, and a failed bootstrap never unlocks motion'),
+            'exact_fix_clock':('v6c: after predict_to(t) the posterior-preserving PF is stamped with t when its '
+                               'step sum stopped within the unchanged 1e-9 s loop tolerance before t, so a fix at '
+                               'this frame has age 0 (never < 0); an older frame is never moved forward; a provider '
+                               'bound to it is refused by policies without the flag'),
+            'grasp_range_entry':('v6c: standoff edge-pair fit and pre-close partial patch use the grasp-range beam '
+                                 'colour (owncam_pair_beam_v2.beam_colour_mask) instead of v1 lime; strips below '
+                                 'MIN_STRIP_SUPPORT x median support are dropped before the line fit; the final '
+                                 'descent pose settles FINAL_DESCENT_SETTLE_S before READY frames; the partial patch '
+                                 'must show one contiguous in-footprint band across the tracked axis (2-98 % span, '
+                                 'largest gap <= MAX_LATERAL_GAP_M) at least MIN_WIDTH_FRACTION x BEAM_WIDTH_M wide. '
+                                 'All gates, thresholds and the footprint support test are unchanged')},
+        'v6c_constants':{'clock_tolerance_s':clock.CLOCK_TOLERANCE_S,
+                         'min_strip_support':entry.MIN_STRIP_SUPPORT,
+                         'final_descent_settle_s':entry.FINAL_DESCENT_SETTLE_S,
+                         'beam_width_m':entry.BEAM_WIDTH_M,
+                         'min_width_fraction':entry.MIN_WIDTH_FRACTION,
+                         'max_lateral_gap_m':entry.MAX_LATERAL_GAP_M},
+        'bootstrap_constants':{'amcl_initial_std_xy_m':boot.AMCL_INITIAL_STD_XY_M,
+                               'amcl_initial_std_yaw_rad':boot.AMCL_INITIAL_STD_YAW_RAD,
+                               'pan_risk_bound':boot.PAN_RISK_BOUND,
+                               'risk_cell_xy_m':boot.CELL_XY_M,'risk_cell_yaw_rad':boot.CELL_YAW_RAD,
+                               'max_boot_frames':boot.BootstrapLocalizer.MAX_BOOT_FRAMES,
+                               'move_steps':[list(s) for s in boot.BootstrapLocalizer.MOVE_STEPS],
+                               'move_iters':boot.BootstrapLocalizer.MOVE_ITERS,
+                               'settle_after_pan_s':boot.SETTLE_AFTER_PAN_S,
+                               'fail_reason':boot.FAIL_REASON},
         'reobserve_budgets':{'high_recovery_s':SWEEP_REOBSERVE_S,
                              'scheduled_safety_look':dict(SCHEDULED_REOBSERVE),
                              # Final review: scopes are part of the registration.
@@ -65,13 +139,18 @@ def contract():
         'source_sha256':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in paths}}
 
 
-def verify_v6_historical(path=PREREG, *, root=ROOT, commit=V6_REGISTRATION_COMMIT):
-    """Audit the historical v6 receipt at its registration commit (read-only).
+def verify_v6_historical(path=None, *, root=ROOT, commit=None, revision='v6'):
+    """Audit a historical v6-family receipt at its registration commit (read-only).
 
-    The registration bytes must equal the committed blob, and every pinned
-    source hash must match that commit's blob, not the current tree.
+    ``revision`` selects v6 (REGISTERED at 3c26acdd) or v6b (DRAFT sealed at
+    15793691). The registration bytes must equal the committed blob, and every
+    pinned source hash must match that commit's blob, not the current tree.
     """
     from scripts.zone_pair_registered_source import committed_blob
+    if revision not in HISTORICAL_REVISIONS:
+        raise ValueError(f'{revision!r} is not a historical v6-family revision')
+    path = HISTORICAL_REVISIONS[revision][0] if path is None else path
+    commit = HISTORICAL_REVISIONS[revision][1] if commit is None else commit
     relative = Path(path).resolve().relative_to(Path(root).resolve()).as_posix()
     if subprocess.run(['git', 'merge-base', '--is-ancestor', commit, 'HEAD'], cwd=root,
                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode != 0:
@@ -80,8 +159,8 @@ def verify_v6_historical(path=PREREG, *, root=ROOT, commit=V6_REGISTRATION_COMMI
     if Path(path).read_bytes() != blob:
         raise ValueError('historical v6 registration bytes differ from their registration commit')
     p = json.loads(blob)
-    if p.get('registration_revision') != 'v6' or p.get('status') != 'REGISTERED':
-        raise ValueError('historical v6 registration is not the REGISTERED v6 record')
+    if p.get('registration_revision') != revision or p.get('status') != HISTORICAL_STATUS[revision]:
+        raise ValueError(f'historical v6 registration is not the {HISTORICAL_STATUS[revision]} {revision} record')
     for source, expected in p['v6_contract']['source_sha256'].items():
         if hashlib.sha256(committed_blob(str(root), commit, source)).hexdigest() != expected:
             raise ValueError(f'historical v6 source hash mismatch at {commit}: {source}')
@@ -99,6 +178,7 @@ def load_config(args):
                              'it is never prepared or run from the current tree')
         raise ValueError(f'v6-family revision {revision!r} is not the current registration '
                          f'({CURRENT_REVISION!r})')
+    # PR #259 DRAFT/REGISTERED admission path, applied to the current revision.
     if p.get('registration_version')!=6 or p.get('execution_source_sha') is not None or p.get('approval') is not None:
         raise ValueError('v6 registration contract changed')
     if p.get('status')=='DRAFT':
@@ -121,7 +201,7 @@ def load_config(args):
                 'limits','safety_coverage','timing','stage_rules','contact_profile_contract'):
         if p.get(key)!=old[key]:
             raise ValueError(f'v6 comparison must preserve v5h {key}')
-    if p.get('v6_contract')!=contract():
+    if p.get('v6_contract')!=contract(revision):
         raise ValueError('v6 source contract/hash mismatch')
     from scripts.zone_pair_dev_contract import scene_contract
     if p.get('scene_contract')!=scene_contract():
@@ -134,7 +214,7 @@ def load_config(args):
         raise ValueError('v6 requires two matched seeds times three conditions')
     for seed in {r['seed'] for r in rows}:
         group=[r for r in rows if r['seed']==seed]
-        if {r['pair_policy'] for r in group}!=set(POLICIES):
+        if {r['pair_policy'] for r in group}!=set(REVISION_POLICIES[revision]):
             raise ValueError('v6 ablation missing')
         for key in ('setup_beam_xyyaw','coarse_order_sheet','intervention'):
             if any(r[key]!=group[0][key] for r in group):

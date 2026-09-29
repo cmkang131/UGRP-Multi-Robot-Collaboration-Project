@@ -2,9 +2,15 @@
 
 
 def own_scene(spec, profile, scene=None):
+    from sim.zone_masterpi_v3_scene import MAP_IDS as V3_MAP_IDS, MasterPiV3ZoneScene
     from sim.zone_cargo_contact import base_profile
     from sim.zone_landmarks import TaggedZoneScene
     from sim.zone_geometry_scene import GeometryCargoZoneScene, MAP_IDS
+    if spec['map'] in V3_MAP_IDS:
+        if scene is None:
+            return MasterPiV3ZoneScene.from_spec(spec, base_profile(profile))
+        if not isinstance(scene, MasterPiV3ZoneScene):
+            raise ValueError('v3 map requires its registered v3 Scene')
     if scene is not None:
         from sim.zone_tagged_cargo_scene import TaggedCargoZoneScene
         if (not isinstance(scene, (TaggedCargoZoneScene, GeometryCargoZoneScene))
@@ -32,6 +38,9 @@ def own_scene(spec, profile, scene=None):
 
 
 def scene_static_map(map_id):
+    from sim.zone_masterpi_v3_scene import MAP_IDS as V3_MAP_IDS, static_map
+    if map_id in V3_MAP_IDS:
+        return static_map(map_id)
     from sim.zone_geometry_scene import MAP_IDS, geometry_map
     if map_id in MAP_IDS:
         return geometry_map(map_id)

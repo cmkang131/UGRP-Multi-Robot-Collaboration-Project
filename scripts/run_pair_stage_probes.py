@@ -137,6 +137,8 @@ def install_stage(ctl, execution, probe):
         ctl.claims['lifted'] = {'held_iou': None, 'sim_time': now, 'source': 'stage probe entry (teacher lift)'}
         if stage == 'setdown':
             ctl.seg = len(ctl.segments) - 1   # final segment: lower -> open -> release -> done
+        elif probe.case.get('leg'):
+            ctl.seg = int(probe.case['leg'])  # carry leg k: the controller's own segment index (route[k] -> route[k+1])
         record_entry(now, anchor_frame=obs['frame_id'], seg=ctl.seg)
         return ctl.set(spec['entry'], now, stage_probe_entry=True)
 
@@ -284,7 +286,8 @@ def save_checkpoint(host, out, label):
             'servo': {str(k): int(v) for k, v in loc.servo.items()}, 'loaded': bool(loc.load.loaded),
             'motion_profile': loc.motion_profile, 'stats': dict(loc.stats),
             'rng_state': loc.rng.bit_generator.state, 'provider_servo': {str(k): int(v) for k, v in pose.servo.items()},
-            'recovery_v6': bool(getattr(pose, 'recovery_v6', False))}
+            'recovery_v6': bool(getattr(pose, 'recovery_v6', False)),
+            'exact_fix_clock_v6c': bool(getattr(pose, 'exact_fix_clock_v6c', False))}
     path = Path(out) / 'checkpoints' / f'{label}.npz'
     path.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(path, **arrays)
@@ -421,7 +424,13 @@ def run_case(case, out):
                              'factory': 'harness.zone_pair_executor.m2_controller (unchanged) + probe entry/exit wrapper'},
               'weld': False, 'contact_profile': 'cargo_noslip_v1', 'model_calls': 0, 'ultrasonic': 'off (not connected)'}
     result['diag_patch'] = case.get('diag_patch')
+    result['loadavg_case_start'] = list(os.getloadavg())
+    IMAGE_VALID_REAL.clear()
+    result['image_valid_real_stats'] = IMAGE_VALID_REAL if case.get('diag_patch') == 'image_valid_off' else None
     install_diag_patch(case.get('diag_patch'))
+    result['staging_bypass'] = case.get('staging_bypass')
+    result['admission_image_valid_real'] = {}
+    install_staging_bypass(case.get('staging_bypass'), result['admission_image_valid_real'])
     result['staged_global_anchor'] = (sp.staged_global_anchor(case) if case.get('pair_policy') == 'a+b' else None)
     if result['staged_global_anchor']:
         stage_global_anchor(result['staged_global_anchor'], loc_log)
@@ -429,6 +438,12 @@ def run_case(case, out):
         OwnCamTeamHost.__init__(host, spec, student, root=ROOT, study_layer=lambda *a: None,
                                 frames_dir=out / 'frames', scene=scene)
         probe.host = host
+        if case.get('route') is not None:   # the staged route must be the controller's own static route
+            from harness.zone_pair_executor import make_plan
+            got = [[float(v) for v in q] for q in make_plan(scene.config['static_map'], sheet, 'B')['route']]
+            result['route_check'] = {'matches_case_route': got == case['route'], 'leg': case.get('leg'), 'route': got}
+            if got != case['route']:
+                raise RuntimeError('case route differs from make_plan(scene static map)')
         for rid in sp.PARTICIPANTS:
             instrument_pose(host.robots[rid].executor.pose, rid, loc_log, lambda: float(host.world.data.time))
         if any(host.world.data.eq_active):
@@ -491,6 +506,7 @@ def run_case(case, out):
         else:
             probe.submit_t = max(float(host.world.data.time), sp.SUBMIT_AFTER_S) + sp.STAGING_S
         sim_end = probe.submit_t + spec_stage['budget_s']
+        result['submit_t'] = probe.submit_t
         result['gt_at_entry'] = host.gt_snapshot()
         checkpoints.append(save_checkpoint(host, out, 'staged_before_submit'))
         run = host.run(sim_end, done=host.done)
@@ -532,7 +548,87 @@ def run_case(case, out):
             if getattr(host, 'world', None) is not None:
                 host.close()
     result['wall_s'] = time.monotonic() - started
+    result['loadavg_case_end'] = list(os.getloadavg())
     return finish_result(case, result, out)
+
+
+def leg_end_metrics(p0, p1, beam_end_xy, yaw0, yaw1):
+    """Eval-only leg-end metrics: distance to the planned route point, cross-track vs the leg line, beam yaw drift."""
+    length = math.dist(p0, p1)
+    ux, uy = (p1[0] - p0[0]) / length, (p1[1] - p0[1]) / length
+    dx, dy = beam_end_xy[0] - p0[0], beam_end_xy[1] - p0[1]
+    return {'end_error_m': math.dist(beam_end_xy, p1), 'along_error_m': dx * ux + dy * uy - length,
+            'cross_track_m': abs(-dx * uy + dy * ux), 'yaw_drift_deg': math.degrees(sp.wrap(yaw1 - yaw0))}
+
+
+def stage_diagnostics(case, result, out, record):
+    """Own-report / eval-only summaries for cause classification and the README tables.
+
+    ANALYSIS ONLY: reads files the run already wrote. own_* fields are the robots' own PoseReports; est_vs_gt is
+    the eval-only own-estimate-vs-truth error at the reference time (failure, else stage exit, else stop).
+    """
+    frames = (_load(out / 'robots.json') or {})
+    tpath = out / 'eval_only/trace.jsonl'
+    trace = [json.loads(line) for line in tpath.read_text().splitlines() if line] if tpath.exists() else []
+    host = _load(out / 'eval_only/host.json') or {}
+    cmds = _load(out / 'commands.json') or {}
+    submit_t = result.get('submit_t')
+    stop_t = (result.get('termination') or {}).get('sim_s')
+    ff = record.get('first_failure') or {}
+    exits = result.get('exits', {})
+
+    def ref_t(rid):
+        if ff.get('sim_s') is not None:
+            return ff['sim_s']
+        if rid in exits:
+            return exits[rid]['sim_s']
+        return stop_t
+
+    def brief(rep):
+        if not rep:
+            return None
+        q = rep.get('observation_quality') or {}
+        return {'t': rep.get('t_est'), 'xyyaw': rep.get('xyyaw') or [rep.get('x_m'), rep.get('y_m'), rep.get('yaw_rad')],
+                'std_xy_m': rep.get('std_xy_m'), 'std_yaw_rad': rep.get('std_yaw_rad'), 'fix_age_s': rep.get('fix_age_s'),
+                'fix_source': rep.get('fix_source'), 'obs_reason': q.get('reason'), 'load_state': rep.get('load_state')}
+
+    d = {'own_at_entry': {}, 'own_at_ref': {}, 'own_at_failure': {}, 'ref_t': {}, 'est_vs_gt_at_ref': {}, 'sigma_yaw_max': {}}
+    for rid in sp.PARTICIPANTS:
+        fr = [f for f in (frames.get(rid) or {}).get('frames', []) if f.get('report')]
+        entry_rep = (result.get('entry', {}).get(rid) or {}).get('own_report')
+        d['own_at_entry'][rid] = brief(entry_rep)
+        t = ref_t(rid)
+        d['ref_t'][rid] = t
+        upto = [f for f in fr if t is None or f['t'] <= t + 1e-6]
+        last = upto[-1] if upto else None
+        d['own_at_ref'][rid] = brief(last['report']) if last else None
+        d['own_at_failure'][rid] = d['own_at_ref'][rid]
+        t0 = (result.get('entry', {}).get(rid) or {}).get('sim_s')
+        span = [f for f in upto if t0 is None or f['t'] >= t0 - 1e-6]
+        ys = [f['report'].get('std_yaw_rad') for f in span if f['report'].get('std_yaw_rad') is not None]
+        d['sigma_yaw_max'][rid] = None if not ys else round(max(ys), 5)
+        rows = [r for r in trace if t is not None and r['t'] <= t + 1e-6]
+        if last and rows:
+            gt = rows[-1]['robots'][rid]
+            est = last['report']['xyyaw']
+            d['est_vs_gt_at_ref'][rid] = {'xy_m': round(math.dist(est[:2], gt[:2]), 4),
+                                          'yaw_rad': round(sp.wrap(est[2] - gt[2]), 4), 'gt_t': rows[-1]['t'], 'est_t': last['t']}
+    kinds = {}
+    for rid in sp.PARTICIPANTS:
+        after = [c for c in cmds.get(rid, []) if submit_t is not None and c.get('t', -1) >= submit_t - 1e-9]
+        kinds[rid] = {}
+        for c in after:
+            kinds[rid][c['kind']] = kinds[rid].get(c['kind'], 0) + 1
+    d['commands_after_submit'] = kinds
+    d['command_total'] = {rid: sum(v.values()) for rid, v in kinds.items()}
+    d['base_motion_commands'] = {rid: sum(n for k, n in v.items() if k in ('mecanum', 'drive')) for rid, v in kinds.items()}
+    contacts = {}
+    for c in host.get('contacts', []):
+        if c['robot_id'] in sp.PARTICIPANTS and submit_t is not None and c['t'] >= submit_t - 1e-9 \
+                and (stop_t is None or c['t'] <= stop_t + 1e-9):
+            contacts[c['kind']] = contacts.get(c['kind'], 0) + 1
+    d['contacts'] = contacts
+    return d
 
 
 def finish_result(case, result, out):
@@ -570,16 +666,20 @@ def finish_result(case, result, out):
     if stage == 'carry' and record.get('gt_at_exit') and result.get('gt_at_entry'):
         a, b = result['gt_at_entry']['beam_xyz'], record['gt_at_exit']['beam_xyz']
         record['beam_travel_m'] = math.dist(a[:2], b[:2])
-        plan_geo = sp.stations(case['coarse_order_sheet']['beam_xyyaw'])
-        route0 = [case['coarse_order_sheet']['beam_xyyaw'][0], .05]
-        record['planned_leg_m'] = math.dist(route0, [1.55, .05])  # make_plan route leg 0 (static sheet)
-        del plan_geo
+        route, k = case['route'], int(case.get('leg') or 0)     # controller static route (make_plan), leg k
+        p0, p1 = route[k], route[k + 1]
+        record['planned_leg_m'] = math.dist(p0, p1)
+        record.update(leg_error_frame='world; beam end vs route[k+1] (eval only)', **leg_end_metrics(
+            p0, p1, b[:2], result['gt_at_entry']['beam_yaw'], record['gt_at_exit']['beam_yaw']))
     if stage == 'setdown' and result.get('gt_at_end'):
         record['gt_at_exit'] = result['gt_at_end']
         if result.get('gt_at_entry'):
             record['beam_shift_m'] = math.dist(result['gt_at_entry']['beam_xyz'][:2], result['gt_at_end']['beam_xyz'][:2])
         record['exits'] = {r: {} for r in sp.PARTICIPANTS if result.get('final_states', {}).get(r) == 'done'}
     ev = sp.evaluate(stage, record)
+    diag = stage_diagnostics(case, result, out, record)
+    diag['host_error_message'] = (result.get('host_error') or {}).get('message')
+    cause = sp.classify_cause(stage, ev, record, diag)
     entry_t = min((v['sim_s'] for v in result.get('entry', {}).values()), default=None)
     end_t = (result.get('termination') or {}).get('sim_s')
     row = {'case_id': case['case_id'], 'stage': stage, 'source': case['source'], 'cell': case['cell'],
@@ -593,6 +693,15 @@ def finish_result(case, result, out):
            'host_error': result.get('host_error', {}).get('type'),
            'pair_policy': case.get('pair_policy', 'v5h'),
            'diag_patch': case.get('diag_patch'),
+           'leg': case.get('leg'), 'cause': cause['code'], 'cause_sub': cause['sub'],
+           'staging_infeasible': cause['code'] == 'STAGING_IK_ENVELOPE',
+           'image_valid_real_stats': result.get('image_valid_real_stats'),
+           'contacts_in_stage': cause['contacts_in_stage'],
+           'own_at_entry': diag['own_at_entry'], 'own_at_ref': diag['own_at_ref'], 'ref_t': diag['ref_t'],
+           'est_vs_gt_at_ref': diag['est_vs_gt_at_ref'], 'sigma_yaw_max': diag['sigma_yaw_max'],
+           'commands_after_submit': diag['commands_after_submit'], 'command_total': diag['command_total'],
+           'base_motion_commands': diag['base_motion_commands'], 'submit_t': result.get('submit_t'),
+           'loadavg_case': [result.get('loadavg_case_start'), result.get('loadavg_case_end')],
            'stop_sim_s': (result.get('gt_at_stop') or {}).get('t'),
            'remaining_at_stop': {r: {k: round(v, 5) for k, v in e.items() if k != 'grip_base_m'}
                                  for r, e in ((result.get('gt_at_stop') or {}).get('grip_errors_all') or {}).items()},
@@ -616,6 +725,10 @@ def _load(path):
 
 
 # ================================================================== coordinator
+def leg_arg(text):
+    return text if text == 'end' else int(text)
+
+
 def build_cases(args):
     cases = []
     for stage in args.stage:
@@ -624,9 +737,10 @@ def build_cases(args):
             raise ValueError(f'stage {stage} is not implemented here ({spec["owner"]})')
         for policy in args.policies:
             if 'teacher' in args.sources:
-                cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
-                                          subset=set(args.cells) if args.cells else None, policy=policy,
-                                          prior_std=args.prior_std)
+                for leg in (args.legs or [None]):
+                    cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
+                                              subset=set(args.cells) if args.cells else None, policy=policy,
+                                              prior_std=args.prior_std, leg=leg)
             if 'boundary' in args.sources and stage == 'grasp_lift':
                 cases += sp.boundary_cases(stage, policy=policy, seed=args.seeds[0],
                                            subset=set(args.cells) if args.cells else None, prior_std=args.prior_std)
@@ -644,9 +758,71 @@ def build_cases(args):
     return cases
 
 
+IMAGE_VALID_REAL = {}   # image_valid_off: robot id -> [frames the real valid_frame accepted, frames it rejected]
+
+
 def install_diag_patch(name):
     """Probe-process-only diagnostic patch (sp.DIAG_PATCHES). Never used by a non-diag case."""
-    if name == 'fix_age_round':
+    if name in sp.DIAG_COMPONENTS:
+        for part in sp.DIAG_COMPONENTS[name]:
+            install_diag_patch(part)
+        return
+    if name == 'loaded_yaw_gate_wide':
+        import dataclasses
+        import importlib
+        import harness.zone_own_guards as guards
+        wide = dataclasses.replace(guards.GATE_LOADED, high_yaw_rad=math.radians(sp.LOADED_YAW_GATE_DIAG_DEG[0]),
+                                   low_yaw_rad=math.radians(sp.LOADED_YAW_GATE_DIAG_DEG[1]))
+        # GATE_LOADED is imported by name; rebind it in every module that holds it (zone_pair_obstruction re-imports lazily).
+        for mod in ('harness.zone_own_guards', 'harness.zone_own_driver', 'harness.zone_own_sweep', 'harness.zone_pair_guards'):
+            module = importlib.import_module(mod)
+            if not hasattr(module, 'GATE_LOADED'):
+                raise RuntimeError(f'{mod} has no GATE_LOADED to patch')
+            module.GATE_LOADED = wide
+    elif name == 'pf_rest_no_abs_noise':
+        import numpy as np
+        from harness.owncam_localizer import OwnCamLocalizer
+        registered = OwnCamLocalizer._motion_params
+
+        def motion_params(self):
+            mp = registered(self)
+            still = float(np.max(np.abs(self.vel))) < 1e-3 and not (self.t < self.cmd_expires - 1e-9)
+            return {**mp, 'noise_abs': [0., 0., 0.]} if still else mp
+        OwnCamLocalizer._motion_params = motion_params
+    elif name == 'carry_lateral_scale_measured':
+        from scripts import study_owncam_pair_beam as study
+        study.CARRY_ODOM_SCALE['lateral'] = sp.CARRY_LATERAL_SCALE_DIAG   # in place: run_m2_pair / the executor share this dict
+    elif name == 'sigma_held_tiny':
+        from harness.owncam_localizer import OwnCamLocalizer
+        registered = OwnCamLocalizer.estimate
+        cap_xy, cap_yaw = sp.SIGMA_TINY_DIAG['std_xy_m'], sp.SIGMA_TINY_DIAG['std_yaw_rad']
+
+        def estimate(self):
+            return sp.clamp_estimate_sigma(registered(self), cap_xy, cap_yaw)
+        OwnCamLocalizer.estimate = estimate
+    elif name == 'sigma_held_at_prior':
+        from harness.owncam_localizer import OwnCamLocalizer
+        registered = OwnCamLocalizer.estimate
+        cap_xy, cap_yaw = sp.E2E_MATCHED_PRIOR['std_xy_m'], sp.E2E_MATCHED_PRIOR['std_yaw_rad']
+
+        def estimate(self):
+            return sp.clamp_estimate_sigma(registered(self), cap_xy, cap_yaw)
+        OwnCamLocalizer.estimate = estimate   # RecoveryLocalizer / FixReportingLocalizer.estimate call super().estimate()
+    elif name == 'image_valid_off':
+        import importlib
+        import harness.zone_pair_vision as vision
+        real = vision.valid_frame
+
+        def forced(obs, rid, now):
+            IMAGE_VALID_REAL.setdefault(rid, [0, 0])[0 if real(obs, rid, now) else 1] += 1
+            return True
+        forced.__wrapped__ = real
+        vision.valid_frame = forced      # zone_pair_admission / _executor / _guards import it at call time
+        grasp = importlib.import_module('harness.zone_pair_grasp')   # imports the name at module load
+        if not hasattr(grasp, 'valid_frame'):
+            raise RuntimeError('harness.zone_pair_grasp has no valid_frame to patch')
+        grasp.valid_frame = forced
+    elif name == 'fix_age_round':
         from harness.owncam_recovery_v6 import RecoveryLocalizer
         from harness.owncam_localizer import OwnCamLocalizer
 
@@ -659,6 +835,31 @@ def install_diag_patch(name):
         RecoveryLocalizer.estimate = estimate
     elif name is not None:
         raise ValueError(f'unknown diagnostic patch {name!r}')
+
+
+def install_staging_bypass(names, verdicts):
+    """Staging aid, not a controller change: force ONLY the submit-time admission ``image_valid`` predicate true.
+
+    The real ``valid_frame`` verdict at every admission is written to ``verdicts`` (rid -> [bool...]). The
+    endpoint's own per-step ``valid_frame`` check (PairEndpoint.step/arm_step -> INVALID_OWN_IMAGE) is left intact.
+    """
+    if not names:
+        return
+    if list(names) != ['admission_image_valid']:
+        raise ValueError(f'unknown staging bypass {names!r}')
+    import harness.zone_pair_admission as admission
+    import harness.zone_pair_vision as vision
+    registered_snapshot, current = admission.readiness_snapshot, vision.valid_frame
+    real = getattr(current, '__wrapped__', current)   # image_valid_off wraps the real predicate; record the real verdict
+
+    def snapshot(ex, now, *a, **k):
+        verdicts.setdefault(ex.robot_id, []).append(bool(real(ex.last_obs, ex.robot_id, now)))
+        vision.valid_frame = lambda obs, rid, t: True
+        try:
+            return registered_snapshot(ex, now, *a, **k)
+        finally:
+            vision.valid_frame = current
+    admission.readiness_snapshot = snapshot
 
 
 def git(*a):
@@ -708,6 +909,9 @@ def parser():
     p.add_argument('--e2e-seeds', nargs='+', type=int)
     p.add_argument('--e2e-root', type=Path, default=E2E_DEFAULT)
     p.add_argument('--cells', nargs='+', help='subset of grid cell names (e.g. nominal along+/same)')
+    p.add_argument('--legs', nargs='+', type=leg_arg,
+                   help="carry: route leg indexes (0 = pickup to first waypoint); setdown: 'end' = destination zone "
+                        "(default: legacy behaviour)")
     p.add_argument('--limit', type=int)
     p.add_argument('--workers', type=int, default=4)
     p.add_argument('--case-timeout-s', type=float, default=1500.)
