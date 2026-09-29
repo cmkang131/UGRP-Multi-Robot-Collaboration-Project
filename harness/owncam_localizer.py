@@ -141,6 +141,9 @@ class OwnCamLocalizer:
         # (std ``extra_std``) that widens the yaw spread while the flagged yaw information is unavailable.
         self.yaw_extra: np.ndarray | None = None
         self.extra_std = 0.
+        # v6g carry_dr_general (optional, params['motion_loaded']['drift_ratio_std']): per-particle constant cross-axis drift
+        # ratios (n, 2) = [body-lateral per body-forward travel, body-forward per body-lateral travel]; None otherwise.
+        self.drift: np.ndarray | None = None
         self.vel = np.zeros(3)
         self.servo: dict[int, int] = {}
         self.load = LoadState()
@@ -217,9 +220,13 @@ class OwnCamLocalizer:
             sd = np.asarray(prof['scale_std'], float)
             self.scale = 1. + self.rng.normal(size=(self.n, 3))*sd
             self.yaw_bias = self.rng.normal(size=self.n)*self._yaw_bias_std()
+            dstd = self.params['motion_loaded'].get('drift_ratio_std')
+            if dstd:
+                self.drift = self.rng.normal(size=(self.n, 2))*float(dstd)
         else:
             self.scale = 1. + self.rng.normal(size=(self.n, 3))*np.asarray(prof['unloaded_scale_std'], float)
             self.yaw_bias = None
+            self.drift = None
             self.yaw_extra, self.extra_std = None, 0.
 
     def _init_plant_state(self) -> None:
@@ -233,6 +240,8 @@ class OwnCamLocalizer:
             self.yaw_bias[idx] = self.rng.normal(size=len(idx))*self._yaw_bias_std()
         if self.yaw_extra is not None:
             self.yaw_extra[idx] = self.rng.normal(size=len(idx))*self.extra_std
+        if self.drift is not None:
+            self.drift[idx] = self.rng.normal(size=(len(idx), 2))*float(self.params['motion_loaded']['drift_ratio_std'])
 
     def _partner_of(self, t: float, cmd) -> np.ndarray | None:
         plan = self.pair_plan
@@ -265,6 +274,13 @@ class OwnCamLocalizer:
             rel, ab = np.asarray(mp['noise_rel']), np.asarray(mp['noise_abs'])
             dt = min(STEP_S, t - self.t)
             u = self.cmd if self.t < self.cmd_expires - 1e-9 else np.zeros(3)
+            db = mp.get('deadband')
+            if db is not None and np.any(u):
+                # v6g carry_dr_general: a loaded wheel plant does not follow tiny commands linearly (static-friction breakaway:
+                # no motion below c0, the calibrated gain from u1 up, linear in between; per axis [forward, left, turn],
+                # u1 <= c0 leaves an axis linear). Fitted on the recorded steer-phase responses.
+                c0, u1 = np.asarray(db['c0'], float), np.asarray(db['u1'], float)
+                u = u*np.where(u1 > c0, np.clip((np.abs(u) - c0)/np.maximum(u1 - c0, 1e-9), 0., 1.), 1.)
             target = gain @ u
             if self.cmd_partner is not None and self.load.loaded and np.any(u):
                 # v6e carry_pair_yaw: a rigid pair's beam yaw is the MEAN of the two plants' yaw predictions, so the
@@ -296,6 +312,11 @@ class OwnCamLocalizer:
                     v[:, 2] += self.yaw_bias
                 if self.yaw_extra is not None and self.yaw_bias is not None and moving:
                     v[:, 2] += self.yaw_extra
+                if self.drift is not None and moving:
+                    # v6g: cross-axis drift proportional to the travelled distance (Thrun et al. 2005 sec. 5.4 / AMCL omni
+                    # model: lateral spread grows with translation, not with time)
+                    v[:, 1] += self.drift[:, 0]*abs(float(self.vel[0]))
+                    v[:, 0] += self.drift[:, 1]*abs(float(self.vel[1]))
                 c, s = np.cos(self.px[:, 2]), np.sin(self.px[:, 2])
                 self.px[:, 0] += (c*v[:, 0] - s*v[:, 1])*dt
                 self.px[:, 1] += (s*v[:, 0] + c*v[:, 1])*dt
@@ -480,6 +501,8 @@ class OwnCamLocalizer:
                 self.yaw_bias = self.yaw_bias[idx].copy()
             if self.yaw_extra is not None:
                 self.yaw_extra = self.yaw_extra[idx].copy()
+            if self.drift is not None:
+                self.drift = self.drift[idx].copy()
             # Roughening (regularized PF): small jitter so the cloud can move
             # when the likelihood is much sharper than the motion noise.
             rough = np.asarray(self.params.get('roughen', [0., 0., 0.]), float)

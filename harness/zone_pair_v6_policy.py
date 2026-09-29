@@ -60,6 +60,16 @@ class PairPolicy:
     # carry_beam_edge: the slope change of the carried beam's lower edge in the own wrist RGB is the robot-minus-beam
     # relative-yaw change and is added to the PF yaw (harness/own_beam_edge.py).
     carry_beam_edge: bool = False
+    # v6g (2026-09-29, after the held-out hA 4/10): carry_dr_general adds to the carry_dr_model PF (i) a lateral command
+    # deadband (the loaded plant does not respond to the tiny own-estimate steer commands; the linear model did, a
+    # 33 mm phantom shift per steer phase) and (ii) a per-particle cross-axis drift ratio proportional to the travelled
+    # distance (Thrun et al. 2005 odometry model / AMCL omni alpha5), and takes the yaw-flag biases from a refit on
+    # cal placements that span several y offsets and beam headings (harness/owncam_carry_v6e.py, README).
+    carry_dr_general: bool = False
+    # carry_end_inset_m: opt-in ROUTE change. The last route point is moved back along the last leg by this many
+    # metres (the beam stops short of the zone centre); the L7 collision-guard diagnosis (east wall x 5.375 m) motivates
+    # 0.10. Changes the end point definition: results with it are reported separately (harness/zone_pair_executor.py).
+    carry_end_inset_m: float = 0.
     # v6f (2026-09-29 stage 5 probe, PR #266 baseline 0/13): the destination set-down.
     # (1) The per-step own-image validity gate measures "dark" against the frame's own optical-black
     # reference (the fisheye exterior) instead of the fixed level V < 8, which rejects the
@@ -100,6 +110,15 @@ POLICIES = {
     'b-v6e-edge': PairPolicy('b-v6e-edge', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
                              beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True,
                              carry_lateral_lag=True, own_image_ob=True, bounded_retreat=True, carry_beam_edge=True),
+    # v6g = b-v6e + carry_dr_general; b-v6g-l7 = b-v6g + the 0.10 m end inset (the L7 route change, reported separately).
+    'b-v6g': PairPolicy('b-v6g', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                        beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True, carry_lateral_lag=True,
+                        own_image_ob=True, bounded_retreat=True, carry_pair_yaw=True, carry_beam_edge=True,
+                        carry_dr_general=True),
+    'b-v6g-l7': PairPolicy('b-v6g-l7', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                           beam_wide_hue=True, align_fine_motion=True, carry_dr_model=True, carry_lateral_lag=True,
+                           own_image_ob=True, bounded_retreat=True, carry_pair_yaw=True, carry_beam_edge=True,
+                           carry_dr_general=True, carry_end_inset_m=.10),
     # v6f = b-v6c + own_image_ob + bounded_retreat; the two ablations switch one flag each.
     'b-v6f-a': PairPolicy('b-v6f-a', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
                           own_image_ob=True),

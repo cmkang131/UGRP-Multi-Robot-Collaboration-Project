@@ -611,6 +611,69 @@ cal 통과 뒤 계획대로 hA 10건(`--setup-variant hA`, legs 0 1 3 6 7 × nom
 ### TensorBoard (소스 `4fac772d`)
 스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e-yaw2`(cal 40 + hA 10 = 50 run + 집계 2, `collection.json` sha256 `d496e8fd68a24e9a669909878e72a4b3fd53aeeba10394a164d54aeb817ccce9`), 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e-yaw2`. EventAccumulator로 경우별 `offline/stage_pass` 합 39(= cal 35 + hA 4), 집계 `pass_rate` 0.875(cal), 0.40(hA) 확인. `outputs/tensorboard-view.json`에는 키 `pair_stage_probes_v6e_yaw2_20260929` 하나만 추가했다. 대시보드 서버가 떠 있지 않았고 새로 시작하지 않았다(브라우저 표시 미확인). 이전 스냅샷(`…-v6e-yaw`, 소스 `86cdefc9`)은 그대로 두었다.
 
+## y 오차 원인 분리, 일반화 모델 v6g 설계, 사전 등록 계획 (2026-09-29, 조정자 지시: hA 4/10 이후)
+
+**stage probe이며 E2E·제어기·학생 성공이 아니다.** hA 10건은 이미 열어 봤으므로 **held-out 증거로는 소진**됐고 진단 자료로만 쓴다(적합에도 쓰지 않는다). hB·hC는 여전히 열지 않았다. 아래 분석은 기록된 raw만 다시 읽었다(새 물리 0; GT는 평가·분석에만 사용, 로봇 입력 경로에 들어가지 않는다). 등록·push·PR 없음.
+
+### (1) 오프라인 원인 분리: 왜 σ_y ≈ 3 cm인데 y 오차가 5–12 cm였나
+
+도구: `analysis/y_error_decomposition.py`(leg별 PF y 오차 변화를 heading·전진·옆 이동 항으로 분해), `analysis/y_error_phases.py`(steer 단계 6.4–12.3 s와 계획 leg 단계로 나눔), `analysis/y_error_summary.py` → 표 `analysis/y_error_summary.txt`. 입력: `pair-stage-probes-4fac772d-yawcal`(cal 40건, 로봇 80개 leg), `-yawhA`(10건). 부호는 명령 방향을 양으로 맞췄다.
+
+| 배치·셀 | 로봇-leg | y 오차 시작 → leg 끝 (mm, PF−GT) | 변화 = heading + 전진 + 옆 (mm) | steer 단계 몸체 옆 이동 GT / PF (mm) | PF−GT (mm) |
+|---|---:|---|---|---|---:|
+| cal nominal | 48 | −30.3 → +11.4 | +41.7 = −0.7 −0.0 +42.5 | +9.0 / +42.9 | +34.0 |
+| cal lat−/opp | 16 | −22.1 → −0.2 | +21.9 = −13.6 +0.2 +35.3 | +14.6 / +46.2 | +31.6 |
+| cal yaw+/same | 16 | −30.1 → −18.1 | +12.0 = −25.0 +0.3 +36.7 | +15.0 / +41.8 | +26.8 |
+| hA nominal | 10 | −29.5 → −55.8 | −26.4 = −3.5 −0.0 −22.8 | +33.8 / +68.5 | +34.7 |
+| hA yaw−/opp | 10 | −30.1 → −92.4 | −62.3 = −15.9 +0.1 −46.5 | +5.3 / +38.3 | +33.0 |
+
+시작 오차의 −0.03 m는 코스 order sheet(0.1 m·10° 격자 반올림)가 만드는 사전 오차다(배치별 −.03(cal), +.02(cal2), +.01(cal3), −.04(cal4), −.03(hA), +.04(hB), −.02(hC), 0(hD)).
+
+**(a) 실제 y 드리프트의 출처.**
+1. **지배 원인: 플랜트 선형 모델이 steer 단계에서 옆 이동을 부풀린다(모든 셀·배치에서 +33 ± 2 mm, 유령 이동).** steer 단계는 5.9 s 동안 아주 작은 옆 명령(|left| 0.0006–0.0145)을 낸다. 적재 플랜트의 옆 축은 정지 마찰 때문에 그 정도 명령에 거의 안 움직인다(GT 5–34 mm). 적합 GT = 0.844·sgn(u)·max(|u|−0.0059, 0)·T_eff, 잔차 rms 2.5 mm(선형 모델 6.3 mm). PF는 선형 게인으로 적분해 34–69 mm를 넣는다. 이 유령 이동은 **분산이 아니라 결정적 편향**이라 σ에 잡히지 않는다.
+2. **cal에서 안 보였던 이유 = 우연한 상쇄.** cal은 빔이 경로선 아래(y .03 대 .05)라 steer가 +y로 가고 유령도 +y다. 시작 사전 오차(−0.03)가 반대 부호라 합이 +11 mm에서 0 근처로 상쇄된다. hA는 빔이 경로선 위(y .13)라 steer가 −y로 가서 유령(−35)이 사전 오차(−30)와 **같은 부호로 더해져** −56…−92 mm가 된다. "cal 배치(y = 0.03)에 맞춰져 y = 0.13에서 일반화 안 됨"이라는 앞선 추정은 옳았고 원인은 dr 모델의 y 외삽이 아니라 이 유령 이동의 부호 의존 상쇄다.
+3. **yaw → y 결합(2차, 셀 조건부).** 전진 leg에서 PF yaw 오차 × 이동 거리가 y로 샌다. cal lat−/opp −13.6 mm, yaw+/same −25.0 mm, hA yaw−/opp −15.9 mm(nominal은 −0.7…−3.5). 공통 모드 yaw 드리프트가 있는 셀에서만 생기고 빔 가장자리 추적기는 그것을 못 본다.
+4. **측방 슬립/지연(3차, 작음).** 축 leg의 몸체 옆 GT 이동 평균은 hA yaw−/opp +5.0 mm(PF −0.4), cal lat−/opp +7.1 mm(PF −0.1), 나머지 셀 −0.3…+0.1 mm다. 진짜 옆 슬립은 회전이 있는 두 셀에만 있고 5–7 mm로 유령 이동(33 mm)의 1/5 이하다.
+5. **dr 모델 y 외삽(배치 y = 0.13)은 독립 원인이 아니다.** steer 단계의 유령 이동은 명령 크기(≈ 0.0006–0.0145)가 작다는 것에서 오며 y 배치 자체와는 부호를 통해서만 연결된다.
+
+**(b) PF y 프로세스 노이즈가 이동거리·측방 속도에 비례하는가: 아니다.** 적재 플랜트 프로파일은 `noise_rel` 0, 시간 기반 백색 `noise_abs` y 0.0111 m/s, 옆 명령에만 곱해지는 스케일 표준편차 0.024(6 s steer 43 mm에서 ≈ 1 mm), 입자별 yaw 편향 b(pm+edge 1.56 mrad/s)뿐이다. leg 끝 σ_y 2.4–3.9 cm는 e2e 사전 표준편차 0.03에 거의 그대로 머물고(시작 σ 0.030 → 끝 0.027–0.038) 이동거리 비례 성장이 없다. 그래서 (i) 결정적 편향(유령 이동)은 어떤 입자도 덮지 못하고 (ii) 교차 축 드리프트(전진 leg의 옆 밀림)도 분산에 들어가 있지 않다.
+
+### (2) 참고자료 조사(막힌 뒤 레퍼런스 우선)와 일반화 원칙
+
+- Thrun, Burgard, Fox, *Probabilistic Robotics* (MIT Press, 2005), 5장 odometry motion model: 회전1·이동·회전2 각각의 분산이 α1–α4 곱하기 명령 크기(회전²·이동²)에 비례한다. **잡음은 명령 크기에 비례**하고 상수 시간 잡음이 아니다.
+- AMCL `amcl_odom.cpp`(ROS `nav2`·`navigation` 저장소, omni 모델; raw GitHub에서 읽음): 옆(strafe) 분산 = α1·rot² + α5·trans², 이동 분산 = α3·trans² + α1·rot², 회전 분산 = α4·rot² + α2·trans². 즉 옆 이동 잡음이 **전체 이동 거리에 비례**(교차 축 α5)한다. `wiki.ros.org/amcl`은 접근 차단(Anubis)이라 소스 코드로 대신 확인.
+- Borenstein & Feng, "Measurement and correction of systematic odometry errors in mobile robots", *IEEE Trans. Robotics and Automation* 12(6):869–880 (1996), UMBmark: 체계 오차(게인·바퀴 비대칭)와 비체계 오차를 나눠 **체계 성분은 소수의 물리 파라미터로 보정하고 잔차만 잡음**으로 둔다.
+- 우리 상황에서 얻은 것: 위 셋의 공통 구조 = "**명령 크기에 비례하는 잡음 + 소수의 물리 파라미터(체계 오차)**". 지금 모델은 (i) 체계 오차(정지 마찰 = 옆 명령 비선형)를 선형으로 근사해 편향을, (ii) 잡음이 시간 기반이라 교차 축 성분을 놓쳤다.
+- 우리 제약 때문에 바꾼 부분: 표준 모델은 바퀴 엔코더 오도메트리를 쓰지만 우리는 발행 명령(`u`)만 있다(측정 관절·엔코더 금지). 그래서 명령→운동 변환은 적재 플랜트 선형 게인 위에 옆 축 돌파(breakaway) 램프와 거리 비례 교차 축 비율만 얹는다. 게이트 `GATE_LOADED`(3°/2.5°)는 바꾸지 않는다.
+
+### v6g 설계 (`carry_dr_general` 플래그, 기본 OFF, OFF 출력은 v6e와 바이트 동일)
+
+| 요소 | 내용 | 근거 |
+|---|---|---|
+| 옆 명령 돌파 램프 | r = clip((|u|−c0)/(u1−c0), 0, 1)를 옆 축 명령에만 곱함(전진·회전은 선형). c0, u1은 cal steer 단계에서 최소제곱 | UMBmark의 체계 성분 = 소수 물리 파라미터. 뺄셈 데드밴드는 큰 명령의 보정 게인을 바꾸므로 램프를 쓴다 |
+| 교차 축 드리프트 비율 | 입자별 상수 비율(표준편차 `drift_ratio_std`) × 축 이동 거리 | Thrun α, AMCL α5(거리 비례 옆 잡음) |
+| yaw b·기울기 비율 | 구조는 v6e 그대로, **새 cal 집합으로 다시 적합** | 셀·배치 일반화 |
+
+구현: `harness/owncam_localizer.py`(`drift` 입자 필드, `predict_to` 램프·드리프트), `harness/owncam_carry_v6e.py`(`GENERAL_FIT`, `load_pair_fit(general)`, `enable_provider(..., general)`), `harness/zone_pair_v6_policy.py`(정책 `b-v6g`, `b-v6g-l7`), `experiments/2026-09-29-pair-v6e-carry/fit_carry_general.py`(적합 → `carry_general_fit.json`). 적합 입력은 cal 배치 raw만이며 hA·hB·hC·hD는 읽지 않는다(hA는 램프의 진단 점수만 계산, 적합 안 함).
+
+### (4) L7 끝점 안쪽 0.10 m (opt-in 경로 계획 변경)
+
+`make_plan(..., end_inset_m)`이 **마지막 경로점만** 안쪽(x = 4.6 → 4.5, `zone_B` 반폭 0.3 안)으로 옮긴다. 분할 뒤에 적용하므로 이전 leg(L6 포함)는 그대로다. 정책 `b-v6g-l7`(`carry_end_inset_m` 0.10) 전용, 기본 0. 가드 문턱(`BASE_MARGIN_M`, `K_SIGMA`)은 바꾸지 않는다. 끝점 정의가 바뀌므로 **L7은 다른 leg와 합산하지 않고 따로 표기**한다.
+
+### (3)(5) 사전 등록 계획 (측정 전에 고정; 이 문단이 커밋된 뒤에만 v6g 측정 시작)
+
+배치(setup variant, `beam_xyyaw`): cal [.93, .03, 0], cal2 [.90, .08, 0], cal3 [.96, −.01, +.03], cal4 [1.05, .14, −.03] = **적합 배치**(y 오프셋 .03/.08/−.01/.14, 헤딩 0/0/+.03/−.03 rad). 적합 자료 수집은 이 README 계획 고정보다 먼저 시작했다(`pair-stage-probes-ba834d02-gcal{2,3,4}`, b-v6e, 소스 `ba834d02`; 기준은 수집 결과를 보기 전에 정했다). held-out = hB [1.13, −.04, 0] (y −.04, 적합 범위 밖), hC [1.03, .12, 0] (y .12), hD [1.00, .10, +.03] (y .10, 적합에 안 쓴 값). hA는 진단.
+
+적합 자료: 이전 cal raw(`ece38792-cal`, `a704ecc6-calB2`, `-calB`, `4fac772d-yawcal`)와 새 `ba834d02-gcal2/3/4`. 적합 수락 조건(측정 전): steer 단계 옆 이동 잔차 rms ≤ 4 mm이고 선형 모델보다 개선. 아니면 여기서 멈추고 보고한다(held-out을 본 뒤 모델 구조를 바꾸지 않는다).
+
+| 단계 | 내용 | 통과 기준 |
+|---|---|---|
+| 0 스모크 | `b-v6g` cal 배치 4건(nominal L0·L1, lat−/opp L1·L3) + `b-v6g-l7` nominal L7 1건(별도 표기) | 4/4 통과. L7은 결과만 보고 |
+| 1 새 cal | `b-v6g`로 cal 35건(이전 사양에서 L7 제외: legs 0–6 × nominal ×3 seed·yaw+/same·lat−/opp) + cal2·cal3·cal4 각 20건(legs 0 1 2 3 6 × nominal·yaw+/same·lat−/opp·yaw−/opp). L7은 `b-v6g-l7`로 cal 배치 5건(nominal ×3·yaw+/same·lat−/opp)을 **따로** 돌려 별도 표기(끝점이 달라 합산하지 않음) | cal 배치: 비 L7 통과 전부(이전 35/35 유지). cal2–4 각 ≥ 18/20. 세 배치 각각 leg 끝 3자유도 평균 NEES ∈ [1.5, 6]. 각 배치에서 x·y·yaw ±2σ 커버리지 ≥ 90 % |
+| 2 held-out | hB, hC, hD 각각: legs 0 1 2 3 6 × nominal(seed 914)·yaw−/opp = 10건(hA 사양에서 L7 대신 L2). 동시에 별도 L7 2건(`b-v6g-l7`, nominal·yaw−/opp) | **각 held-out ≥ 8/10**, leg 끝 NEES ∈ [1.5, 6], x·y·yaw 커버리지 ≥ 90 %(표본 20). 정직성(NEES·커버리지)이 통과의 전제: 성공률이 8/10 이상이라도 NEES 또는 커버리지가 기준 밖이면 **그 held-out은 미통과**. |
+
+실행 규칙: 소스·적합 파일·기준은 코호트 중 고정(해시 기록). 각 단계는 앞 단계 통과 뒤에만. 코호트 안에서 재적합·재시도·케이스 제외 없음. 실패하면 그 자리에서 멈추고 원인별(MOTION_ERROR/가드/정직성/PF 편향)로 보고. 세 held-out은 서로 독립이라 hB·hC·hD를 한 번에 돌리며(같은 소스), 하나라도 실패하면 어느 것도 "일반화 통과"로 쓰지 않고, 실패 뒤 그 raw는 진단용이 된다. 정직성 조건은 게이트를 바꾸지 않은 채(σ_yaw 상한 `GATE_LOADED` 유지) 측정하며, σ가 커져 `SELF_POSE_UNCERTAIN`이 나면 그 자체가 결과다. 모델 호출 0, weld OFF, `--workers 2 --omp-threads 1 --pf-track`, driver PID로 agent_lock, 부하 평균 기록, 관련 테스트만.
+
 ## TensorBoard
 
 - **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e`, run 106개(경우별 98 + 그룹 집계 `ALL-*` 8). `collection.json` sha256 `ec6f3639cf33b470cbda4fea2501bb8b65fae61c9fd9881e2a7bcbce3ad0ae9b`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e`(빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`). 기존 스냅샷은 건드리지 않았다.

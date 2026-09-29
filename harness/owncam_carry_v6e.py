@@ -40,6 +40,9 @@ FIT = 'experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json'
 # Yaw flags (carry_pair_yaw / carry_beam_edge): the per-particle yaw-rate bias std of each estimator variant and the
 # beam-edge slope-to-yaw ratio, fitted on the cal cohort only (fit_carry_pair_yaw.py; grid and held-out unread).
 PAIR_FIT = 'experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json'
+# v6g flag ``carry_dr_general``: the loaded plant's lateral deadband, the distance-proportional cross-axis drift ratio and
+# the yaw-flag biases refitted on the cal cohort that spans several y offsets and beam headings (fit_carry_general.py).
+GENERAL_FIT = 'experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json'
 # Axes whose open-loop leg length uses the lag model (flag ``carry_lateral_lag``).
 LAG_AXES = ('lateral',)
 
@@ -89,31 +92,40 @@ def variant_key(pair_yaw=False, beam_edge=False):
     return '+'.join(k for k, on in (('pm', pair_yaw), ('edge', beam_edge)) if on)
 
 
-def load_pair_fit():
-    raw = (ROOT/PAIR_FIT).read_bytes()
+def load_pair_fit(general=False):
+    path = GENERAL_FIT if general else PAIR_FIT
+    raw = (ROOT/path).read_bytes()
     fit = json.loads(raw)
-    return fit, {'source': PAIR_FIT, 'file_sha256': hashlib.sha256(raw).hexdigest()}
+    return fit, {'source': path, 'file_sha256': hashlib.sha256(raw).hexdigest()}
 
 
-def enable_provider(provider, pair_yaw=False, beam_edge=False):
+def enable_provider(provider, pair_yaw=False, beam_edge=False, general=False):
     """Give this provider's PF the calibrated loaded profile (idempotent; other providers are untouched).
 
     ``pair_yaw`` / ``beam_edge`` (yaw flags) select the estimator variant: the per-particle yaw-rate bias std is the
     cal-fitted value of that variant, and ``beam_edge`` attaches the own-RGB beam-edge tracker. The pair-mean model
     itself is driven by the executor (partner command derived from the route plan). A provider stays bound to one
-    variant.
+    variant. ``general`` (flag ``carry_dr_general``) adds the fitted lateral deadband and the distance-proportional
+    cross-axis drift ratio to the loaded profile and takes the yaw-flag biases from the general fit.
     """
     inner, pf = _pf(provider)
     variant = variant_key(pair_yaw, beam_edge)
     if getattr(inner, 'carry_dr_v6e', None) is not None:
-        if getattr(inner, 'carry_variant_v6e', '') != variant:
-            raise ValueError(f'pose provider is bound to carry variant {getattr(inner, "carry_variant_v6e", "")!r}; '
-                             f'{variant!r} needs a fresh provider')
+        if getattr(inner, 'carry_variant_v6e', '') != variant or bool(getattr(inner, 'carry_general_v6e', False)) != bool(general):
+            raise ValueError(f'pose provider is bound to carry variant {getattr(inner, "carry_variant_v6e", "")!r}'
+                             f'{" +general" if getattr(inner, "carry_general_v6e", False) else ""}; '
+                             f'{variant!r}{" +general" if general else ""} needs a fresh provider')
         return inner.carry_dr_v6e
     unloaded = pf.params['motion']['scale_std']
     profile, info = load_profile(unloaded)
+    if general:
+        gfit, gfit_info = load_pair_fit(general=True)
+        profile['deadband'] = {k: [float(v) for v in gfit['deadband_cmd'][k]] for k in ('c0', 'u1')}
+        profile['drift_ratio_std'] = float(gfit['drift_ratio_std'])
+        info = {**info, 'general_fit': gfit_info, 'deadband_cmd': profile['deadband'],
+                'drift_ratio_std': profile['drift_ratio_std'], 'profile_sha256': _digest(profile)}
     if variant:
-        fit, fit_info = load_pair_fit()
+        fit, fit_info = load_pair_fit(general)
         profile['yaw_bias_std_rad_s'] = float(fit['b_rad_s'][variant])
         info = {**info, 'variant': variant, 'pair_fit': fit_info, 'yaw_bias_std_rad_s': profile['yaw_bias_std_rad_s'],
                 'profile_sha256': _digest(profile)}
@@ -134,6 +146,7 @@ def enable_provider(provider, pair_yaw=False, beam_edge=False):
         pf._draw_plant_state(True)
     inner.carry_dr_v6e = info
     inner.carry_variant_v6e = variant
+    inner.carry_general_v6e = bool(general)
     return info
 
 

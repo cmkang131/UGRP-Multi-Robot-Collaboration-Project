@@ -30,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.7.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+PROBE_VERSION = '0.8.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
@@ -46,11 +46,13 @@ PROBE_VERSION = '0.7.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set
 #                                 calibration placements
 #                          0.7.0: b-v6e-base (= the 0.6.0 b-v6e) and the yaw policies b-v6e / b-v6e-pm / b-v6e-edge (carry_pair_yaw,
 #                                 carry_beam_edge); the 0.6.0 name b-v6e now includes both yaw flags
+#                          0.8.0: b-v6g (b-v6e + carry_dr_general) and b-v6g-l7 (+ carry_end_inset_m 0.10 route change); setup
+#                                 variants cal2/cal3/cal4/hD; plan_route(end_inset_m)
 #                          0.4.6 (place branch, merged into 0.6.0): b-v6f-a / b-v6f-b / b-v6f policies (own_image_ob, bounded_retreat);
 #                                 image_valid_off also forces valid_frame_ob; run_pair_stage_probes --omp-threads
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
-POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e-base', 'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6f-a', 'b-v6f-b', 'b-v6f')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e-base', 'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6g', 'b-v6g-l7', 'b-v6f-a', 'b-v6f-b', 'b-v6f')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
 
 
 def canonical_policy(policy, probe_version):
@@ -305,7 +307,7 @@ def _prior_std(prior_std):
     raise ValueError(f'unknown prior std {prior_std!r}')
 
 
-def plan_route(sheet, *, map_id=MAP_ID, target='B', passage=None):
+def plan_route(sheet, *, map_id=MAP_ID, target='B', passage=None, end_inset_m=0.):
     """The controller's own static route for a coarse order sheet (harness.zone_pair_executor.make_plan).
 
     Pure static geometry: the map JSON and the sheet, no world. 9 points / 8 legs for the dev map:
@@ -314,9 +316,11 @@ def plan_route(sheet, *, map_id=MAP_ID, target='B', passage=None):
     from harness.zone_pair_executor import make_plan
     static = json.loads((ROOT / 'maps' / 'zones' / f'{map_id}.json').read_text())
     if passage is not None:      # opt-in passage map (harness.pair_passage_plan); raises PassageRefusal with a code
+        if end_inset_m:
+            raise ValueError('end_inset_m is not supported together with a passage map')
         from harness.pair_passage_plan import passage_make_plan
         return [[float(v) for v in p] for p in passage_make_plan(static, sheet, target, passage)['route']]
-    return [[float(v) for v in p] for p in make_plan(static, sheet, target)['route']]
+    return [[float(v) for v in p] for p in make_plan(static, sheet, target, end_inset_m)['route']]
 
 
 def leg_index(stage, leg, n_points):
@@ -362,7 +366,9 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     setup = copy.deepcopy(setup or BASE_SETUP)
     route, k = None, None
     if stage in ('carry', 'setdown', 'chain'):
-        route = plan_route(setup['coarse_order_sheet'], **{name: v for name, v in setup.items() if name in ('map_id', 'target', 'passage')})
+        from harness.zone_pair_v6_policy import pair_policy
+        route = plan_route(setup['coarse_order_sheet'], end_inset_m=pair_policy(policy).carry_end_inset_m,
+                           **{name: v for name, v in setup.items() if name in ('map_id', 'target', 'passage')})
         k = leg_index(stage, leg, len(route))
     else:
         leg_index(stage, leg, 0)

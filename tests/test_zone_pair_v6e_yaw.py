@@ -27,11 +27,11 @@ BASE = dict(posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
 # ------------------------------------------------------------ policies
 def test_yaw_flags_are_off_everywhere_except_the_three_b_v6e_yaw_policies():
     on = {name for name, p in POLICIES.items() if any(getattr(p, f) for f in YAW)}
-    assert on == {'b-v6e', 'b-v6e-pm', 'b-v6e-edge'}
+    assert on == {'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6g', 'b-v6g-l7'}
     base, full, pm, edge = (pair_policy(n) for n in ('b-v6e-base', 'b-v6e', 'b-v6e-pm', 'b-v6e-edge'))
     assert [getattr(full, f) for f in YAW] == [True, True]
     assert [getattr(pm, f) for f in YAW] == [True, False] and [getattr(edge, f) for f in YAW] == [False, True]
-    rest = lambda p: {k: v for k, v in vars(p).items() if k not in YAW + ('name',)}
+    rest = lambda p: {k: v for k, v in vars(p).items() if k not in YAW + ('name', 'carry_dr_general', 'carry_end_inset_m')}
     assert rest(full) == rest(pm) == rest(edge) == rest(base)      # one flag apart, nothing else moved
     assert not any(getattr(base, f) for f in YAW)
     # b-v6e-base is the 0.6.0 b-v6e (dr + lag + both place flags)

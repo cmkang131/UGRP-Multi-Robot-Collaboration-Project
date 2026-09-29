@@ -25,7 +25,7 @@ def _digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()).hexdigest()
 
 
-def make_plan(static_map, sheet, target_zone):
+def make_plan(static_map, sheet, target_zone, end_inset_m=0.):
     """Static coarse work order -> M2 approach + axis-aligned route to a zone.
 
     Sheet is authored BEFORE execution, never reconstructed from world state.
@@ -61,6 +61,16 @@ def make_plan(static_map, sheet, target_zone):
         n = max(1, math.ceil(math.dist(a, b) / .85))
         split_route.extend([[a[k] + (b[k] - a[k]) * i / n for k in (0, 1)] for i in range(1, n + 1)])
     route = split_route
+    if end_inset_m:
+        # opt-in (policy carry_end_inset_m): the LAST route point stops short of the zone centre, back along the last (already split)
+        # leg, so every earlier leg is unchanged
+        if not finite_number(end_inset_m) or not 0. < end_inset_m <= .3:
+            raise ValueError('BAD_END_INSET')
+        a, b = route[-2], route[-1]
+        length = math.dist(a, b)
+        if length < end_inset_m + .3:
+            raise ValueError('END_INSET_TOO_LARGE')
+        route[-1] = [b[k] - (b[k] - a[k])/length*end_inset_m for k in (0, 1)]
     if len(route) - 1 > MAX_SEGMENTS:
         raise ValueError('TOO_MANY_PAIR_SEGMENTS')
     # Static footprint includes the beam and both carriers. This is a planning
@@ -94,7 +104,8 @@ def make_plan(static_map, sheet, target_zone):
                               'grasps': {g.role: {'xyz_m': list(g.grip_xyz), 'yaw_rad': g.approach_yaw}
                                          for g in item.spec().grasps}},
             'target_zone': target_zone, 'door_plan': copy.deepcopy(m2.DOOR_PLAN),
-            'map_sha256': _digest(static_map), 'sheet_sha256': _digest(sheet)}
+            'map_sha256': _digest(static_map), 'sheet_sha256': _digest(sheet),
+            **({'end_inset_m': float(end_inset_m)} if end_inset_m else {})}
 
 
 class _OwnPort:
@@ -453,14 +464,17 @@ class PairTeam:
                              'needs a fresh provider')
         from harness import owncam_carry_v6e as v6e_carry
         self.carry_dr = {}
-        if (self.policy.carry_pair_yaw or self.policy.carry_beam_edge) and not self.policy.carry_dr_model:
-            raise ValueError('carry_pair_yaw / carry_beam_edge re-parameterise the carry_dr_model profile and need it')
+        if (self.policy.carry_pair_yaw or self.policy.carry_beam_edge or self.policy.carry_dr_general) \
+                and not self.policy.carry_dr_model:
+            raise ValueError('carry_pair_yaw / carry_beam_edge / carry_dr_general re-parameterise the carry_dr_model '
+                             'profile and need it')
         if self.policy.carry_dr_model:
             if not self.policy.posterior_relook or self.policy.stationary_bootstrap:
                 raise ValueError('carry_dr_model is defined for the posterior-relook policies without the v6b bootstrap')
             for rid, executor in self.executors.items():
                 self.carry_dr[rid] = v6e_carry.enable_provider(executor.pose, pair_yaw=self.policy.carry_pair_yaw,
-                                                               beam_edge=self.policy.carry_beam_edge)
+                                                               beam_edge=self.policy.carry_beam_edge,
+                                                               general=self.policy.carry_dr_general)
         elif any(v6e_carry.bound(getattr(executor, 'pose', None)) for executor in self.executors.values()):
             raise ValueError(f'pose provider is bound to carry_dr_model (b-v6e); {self.policy.name} '
                              'needs a fresh provider')
@@ -538,7 +552,8 @@ class PairTeam:
             return refuse('SELF_' + state.upper())
         try:
             # Both actors compute from their own configured static inputs.
-            plan = make_plan(ex.map, self.sheets.get(item_ref), target_zone)
+            plan = (make_plan(ex.map, self.sheets.get(item_ref), target_zone, self.policy.carry_end_inset_m)
+                    if self.policy.carry_end_inset_m else make_plan(ex.map, self.sheets.get(item_ref), target_zone))
             if pending and _digest(plan) != _digest(first.plan):
                 pending['submissions'][rid] = (item_ref, target_zone, partner_id)
                 first.abort(now, 'PAIR_STATIC_INPUT_MISMATCH')

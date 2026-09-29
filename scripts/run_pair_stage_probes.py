@@ -475,7 +475,10 @@ def run_case(case, out):
         probe.host = host
         if case.get('route') is not None:   # the staged route must be the controller's own static route
             from harness.zone_pair_executor import make_plan
-            got = [[float(v) for v in q] for q in make_plan(scene.config['static_map'], sheet, target)['route']]
+            from harness.zone_pair_v6_policy import pair_policy
+            inset = pair_policy(case.get('pair_policy', 'v5h')).carry_end_inset_m
+            got = [[float(v) for v in q] for q in (make_plan(scene.config['static_map'], sheet, target, inset) if inset
+                                                   else make_plan(scene.config['static_map'], sheet, target))['route']]
             result['route_check'] = {'matches_case_route': got == case['route'], 'leg': case.get('leg'), 'route': got}
             if got != case['route']:
                 raise RuntimeError('case route differs from make_plan(scene static map)')
