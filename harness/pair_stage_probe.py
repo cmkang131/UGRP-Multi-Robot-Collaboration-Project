@@ -30,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.9.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+PROBE_VERSION = '0.10.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
@@ -255,7 +255,11 @@ SETUP_VARIANTS = {'cal': [.93, .03, 0.], 'hA': [.84, .13, 0.], 'hB': [1.13, -.04
                   # +0.03 rad; a y value none of the fitting placements uses) stay unread held-outs.
                   'cal2': [.90, .08, 0.], 'cal3': [.96, -.01, .03], 'cal4': [1.05, .14, -.03], 'hD': [1.00, .10, .03],
                   # 2026-09-29 (coordinator): hR = carry entries taken from recorded grasp_lift raws (hr_setups); placeholder pose = base
-                  'hR': [1.00, .05, 0.]}
+                  'hR': [1.00, .05, 0.],
+                  # 0.10.0: hG = grasp_lift entries taken from recorded ALIGN end states (GT pose + the recorded PF posterior as the
+                  # start prior); hR2 = carry entries taken from the grasp_lift end states of an hG run (GT pose + recorded PF
+                  # posterior). Both stage the real pipeline's inherited posterior instead of the coarse-sheet plan station.
+                  'hG': [1.00, .05, 0.], 'hR2': [1.00, .05, 0.]}
 
 
 def setup_variant(name=None):
@@ -309,6 +313,16 @@ def _prior_std(prior_std):
     if prior_std == 'e2e':
         return E2E_MATCHED_PRIOR['std_xy_m'], E2E_MATCHED_PRIOR['std_yaw_rad'], ':pE2E', '; std ' + E2E_MATCHED_PRIOR['why']
     raise ValueError(f'unknown prior std {prior_std!r}')
+
+
+def recorded_prior(placement, rec):
+    """Start prior = the RECORDED PF posterior of an earlier stage (0.10.0): mean = staged GT placement + (PF - GT) error
+    of that recorded posterior (world frame), std = the posterior's own weighted spread. GT enters only through the
+    staging placement and the recorded error (evaluation raws); the controller receives a stated Gaussian, not GT."""
+    err = rec['mean_err_xyyaw']
+    mean = [placement[0] + err[0], placement[1] + err[1], wrap(placement[2] + err[2])]
+    return gaussian_prior(mean, max(float(rec['std_xy_m']), 1e-3), max(float(rec['std_yaw_rad']), 1e-4),
+                          'recorded PF posterior of an earlier stage (weighted particle mean / spread from stage_stop.npz)')
 
 
 def plan_route(sheet, *, map_id=MAP_ID, target='B', passage=None, end_inset_m=0.):
@@ -391,15 +405,22 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     if variant:
         ltag += f':V{variant}'
     out = []
-    for name, off1, off2 in (_grid_offsets(stage) if rows is None else rows):
+    for row in (_grid_offsets(stage) if rows is None else rows):
+        name, off1, off2 = row[:3]
+        recorded = row[3] if len(row) > 3 else None     # 0.10.0: {rid: {'mean_err_xyyaw', 'std_xy_m', 'std_yaw_rad'}} (PF - GT)
         if subset is not None and name not in subset:
             continue
         for seed in (nominal_seeds if name == 'nominal' else seeds):
             placement = {'r1': offset_pose(base['r1'], *off1), 'r2': offset_pose(base['r2'], *off2)}
-            priors = {r: gaussian_prior(plan_geo[key][r], sxy, syaw,
-                                        f'static plan {key} from the coarse order sheet (not GT){pnote}')
-                      for r in PARTICIPANTS}
-            case = {'case_id': f'{stage}{_pid(policy)}:teacher:{name}:s{seed}{ptag}{ltag}', 'stage': stage,
+            if recorded is None:
+                priors = {r: gaussian_prior(plan_geo[key][r], sxy, syaw,
+                                            f'static plan {key} from the coarse order sheet (not GT){pnote}')
+                          for r in PARTICIPANTS}
+                rtag = ptag
+            else:
+                priors = {r: recorded_prior(placement[r], recorded[r]) for r in PARTICIPANTS}
+                rtag = ':pPOST'
+            case = {'case_id': f'{stage}{_pid(policy)}:teacher:{name}:s{seed}{rtag}{ltag}', 'stage': stage,
                     'source': 'teacher_grid', 'pair_policy': policy, 'prior_std': prior_std or 'grid',
                     'cell': name, 'seed': seed, 'beam_xyyaw': list(true_beam),
                     'coarse_order_sheet': copy.deepcopy(setup['coarse_order_sheet']),
@@ -426,7 +447,9 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     return out
 
 
-HR_SAMPLES = ROOT / 'experiments' / '2026-09-29-pair-v6e-carry' / 'hR_samples.json'
+EXP_DIR = ROOT / 'experiments' / '2026-09-29-pair-v6e-carry'
+HR_SAMPLES = EXP_DIR / 'hR_samples.json'
+SAMPLE_FILES = {'hR': HR_SAMPLES, 'hR2': EXP_DIR / 'hR2_samples.json', 'hG': EXP_DIR / 'hG_samples.json'}
 
 
 def pose_offset(base, pose):
@@ -436,21 +459,24 @@ def pose_offset(base, pose):
     return (c * dx + s * dy, -s * dx + c * dy, wrap(pose[2] - base[2]))
 
 
-def hr_setups(path=None):
-    """[(setup, rows)] for the hR carry entries: one per recorded grasp_lift end state (staging only).
+def hr_setups(path=None, variant='hR'):
+    """[(setup, rows)] for the recorded-state entries (hR / hR2 carry, hG grasp_lift): one per recorded end state (staging only).
 
     The setup carries the sampled TRUE beam pose (sheet = that pose rounded to the sheet grid); the row is the sample's
     robot poses expressed as (along, lateral, yaw) offsets from the stations of that beam, so teacher_cases(rows=...)
-    reproduces the recorded end-of-grasp_lift placement exactly at leg 0 (and shifted along the route for later legs).
+    reproduces the recorded placement exactly at leg 0 (and shifted along the route for later legs). A sample with
+    ``prior_err`` (hR2 / hG) also carries the recorded PF posterior error/spread, which becomes the start prior.
     """
     from harness.pair_owncam_approach import coarse_order_sheet
-    data = json.loads(Path(path or HR_SAMPLES).read_text())
+    data = json.loads(Path(path or SAMPLE_FILES[variant]).read_text())
     out = []
     for smp in data['samples']:
         beam = [float(v) for v in smp['beam_xyyaw']]
         st = stations(beam)['station']
         row = (smp['id'], pose_offset(st['r1'], smp['robots']['r1']), pose_offset(st['r2'], smp['robots']['r2']))
-        out.append(({'beam_xyyaw': beam, 'coarse_order_sheet': coarse_order_sheet(beam), 'variant': 'hR'}, [row]))
+        if smp.get('prior_err'):
+            row += (smp['prior_err'],)
+        out.append(({'beam_xyyaw': beam, 'coarse_order_sheet': coarse_order_sheet(beam), 'variant': variant}, [row]))
     return out
 
 

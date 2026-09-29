@@ -683,3 +683,34 @@ def test_hr_setups_reproduce_the_recorded_grasp_lift_end_placements():
     c0 = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=0, rows=rows)[0]
     c3 = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=3, rows=rows)[0]
     assert c0['offsets'] == c3['offsets'] and c0['placement_xyyaw'] != c3['placement_xyyaw']
+
+
+def test_recorded_posterior_prior_hG_hR2():
+    """0.10.0: a sample with prior_err seeds the start prior at placement + (PF - GT) with the recorded spread."""
+    import json
+    import pytest
+    from harness import pair_stage_probe as sp
+    path = sp.SAMPLE_FILES['hG']
+    if not path.exists():
+        pytest.skip('hG_samples.json not present')
+    data = json.loads(path.read_text())
+    setups = sp.hr_setups(variant='hG')
+    assert len(setups) == len(data['samples']) == 10
+    for (setup, rows), smp in zip(setups, data['samples']):
+        assert setup['variant'] == 'hG' and len(rows[0]) == 4
+        case = sp.teacher_cases('grasp_lift', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', rows=rows)[0]
+        assert case['case_id'].endswith(':pPOST:VhG') and case['stage'] == 'grasp_lift'
+        for r in ('r1', 'r2'):
+            place, want = case['placement_xyyaw'][r], smp['robots'][r]
+            assert abs(place[0] - want[0]) < 1e-9 and abs(place[1] - want[1]) < 1e-9
+            err, pri = smp['prior_err'][r], case['prior'][r]
+            assert abs(pri['mean_xyyaw'][0] - (want[0] + err['mean_err_xyyaw'][0])) < 1e-9
+            assert abs(pri['mean_xyyaw'][1] - (want[1] + err['mean_err_xyyaw'][1])) < 1e-9
+            assert abs(pri['std_xy_m'] - err['std_xy_m']) < 1e-9 and pri['is_fix'] is False
+    # a carry leg shifts placement and prior together (the recorded error is kept)
+    setup, rows = setups[0]
+    c0 = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=0, rows=rows)[0]
+    c3 = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=3, rows=rows)[0]
+    d0 = c0['prior']['r1']['mean_xyyaw'][1] - c0['placement_xyyaw']['r1'][1]
+    d3 = c3['prior']['r1']['mean_xyyaw'][1] - c3['placement_xyyaw']['r1'][1]
+    assert abs(d0 - d3) < 1e-9
