@@ -52,7 +52,7 @@ def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed)
     mutated = runner.run_bundle(pre, pre['episodes'][0])[0]
     assert mutated['runtime_files_sha256'][changed] == 'f' * 64
     assert runner.digest(original) != runner.digest(mutated)
-    assert original['execution_bundle_id'] == 'zone-pair-v76-fixclock-grasp-entry'
+    assert original['execution_bundle_id'] == 'zone-pair-v80-align-widehue-finemotion'
 
 
 HEAD = '1' * 40

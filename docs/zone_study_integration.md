@@ -1,3 +1,7 @@
+현재 미실행 후보는 `zone-pair-v80-align-widehue-finemotion`(workflow `2.13.0`)이다. v80(b-v6d 단계 probe)은 main의 v76에 opt-in 공동 운반 정책 `b-v6d`를 더한 것이다. 번호 v80과 workflow 2.13.0은 2026-09-29 조정자가 배정했다. v76은 `RETIRED_BUNDLE_IDS`로 옮겼고, v6c 사전 등록은 v6b처럼 역사 기록(봉인 커밋 `be95f8b0`의 blob으로만 감사)이 되어 바이트가 그대로 남는다. 현재 v6 계열 초안은 `experiments/2026-09-29-pair-v6d-align/prereg_v6d.json`(`CURRENT_REVISION = v6d`)이다. `b-v6d`는 (1) 가까운 r1 뷰(p45·inspect)에서 빔 방향을 노랑 계열까지 포함한 색 범위(hue 25-54)로 추정하고, (2) align 단계에서 PF가 M1 `fine` 동작 프로파일로 예측한다. 검색 자세의 색 범위, 나머지 pair 정책, 연구 층은 바뀌지 않았다. 근거와 결과는 `experiments/2026-09-29-pair-v6d-align/README.md`(단계 probe이며 E2E 성공이 아니다).
+
+이전 후보 v76의 설명:
+
 현재 미실행 후보는 `zone-pair-v76-fixclock-grasp-entry`(workflow `2.12.0`)이다. v76(PR #263)은 main의 v79에 opt-in 공동 운반 정책 `b-v6c`를 더한 것이다. 번호 v76과 workflow 2.12.0은 2026-09-29 조정자가 배정했다(#256 v77/2.9.0, #257 v78/2.10.0, #249 v79/2.11.0 다음 병합). v79는 `RETIRED_BUNDLE_IDS`로 옮겼다. 2026-09-28–29 단계 probe(PR #260)에서 v6 b-only 정렬은 RecoveryLocalizer의 PF 시계와 프레임 시각이 1e-9 s 안에서 어긋나 fix 나이가 음수가 되어 막혔고, 파지 입장은 정렬 허용오차(ex ±12 mm) 중 −8…−4 mm에서만 통과했다. `b-v6c`는 PF 시계를 예측한 관측 시각에 맞추고, 파지 거리의 빔 색 모델로 standoff fit과 pre-close 부분 관측을 하며(빔 폭의 연속 단면 요구), 마지막 하강 자세를 정착시킨다. v5h·b-only·a+b·b-boot·a+b-boot의 동작은 바뀌지 않는다. v6c 단계 probe는 병합 전 v76(main v70 위)으로 돌렸다. 등록 초안 `prereg_v6c.json`은 이 병합 뒤 한 번 다시 봉인했다. [v6c 기록](../experiments/2026-09-29-pair-v6c/README.md)
 
 이전 후보 v79의 설명:

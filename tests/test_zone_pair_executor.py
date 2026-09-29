@@ -482,6 +482,11 @@ def test_frozen_m2_sources_or_explicit_followup_hashes():
     post_freeze['scripts/run_owncam_closed_loop.py'] = {
         '18af9bcea74cbd509f2eafe9a21a138f517ced17350f034964adec4babf6399e',
     }
+    # b-v6d stage probe: PairStudent._align passes an opt-in lower hue bound in the p45/inspect views
+    # (policy.beam_wide_hue); every other policy calls the frozen v2 observe_beam exactly as before.
+    post_freeze['scripts/study_owncam_pair_beam.py'] = {
+        '6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00',
+    }
     for row in files:
         got = hashlib.sha256((ROOT / row['path']).read_bytes()).hexdigest()
         assert got in {row['sha256'], *post_freeze.get(row['path'], ())}, row['path']

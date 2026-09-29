@@ -6,7 +6,7 @@ of that commit, so checking it against the current tree broke every later PR
 that touched a pinned source. It is now audited only against the blobs of its
 registration commit (``verify_v6_historical``), and ``load_config`` refuses
 to prepare or run it from the current tree. New v6-family runs register their
-own revision and bundle (v6b, v6c) and set ``CURRENT_REVISION``.
+own revision and bundle (v6b, v6c, v6d) and set ``CURRENT_REVISION``.
 
 2026-09-29 (manager decision A, PR #256): the v6b DRAFT (PR #261, bundle v75,
 opt-in ``stationary_bootstrap`` policies) is historical in the same way. It
@@ -18,10 +18,17 @@ no current v6-family draft on main (``CURRENT_REVISION = None``): ``contract``
 and ``load_config`` refuse until the next draft (v6c, PR #263) sets its own
 revision. A draft should be sealed last, right before registration.
 
-v6c (PR #263, experiments/2026-09-29-pair-v6c): the current DRAFT. The opt-in
+v6c (PR #263, experiments/2026-09-29-pair-v6c): the opt-in
 ``exact_fix_clock`` / ``grasp_range_entry`` policy ``b-v6c`` in bundle v76 on
 top of main's v79; its registration keeps v5h and b-only as matched controls
-(``REVISION_POLICIES['v6c']``). Sealed once after the #256/#257/#249 merges.
+(``REVISION_POLICIES['v6c']``). Sealed once after the #256/#257/#249 merges (be95f8b0).
+
+2026-09-29 (coordinator, PR #263 merged, b-v6d stage probe): the v6c DRAFT pins 77 source hashes
+including the align, executor, policy and contract modules the b-v6d fixes must change. It is
+historical in the same way as v6b: its bytes stay, and it is audited only against the blobs of its
+sealing commit ``be95f8b0`` (``verify_v6_historical(revision='v6c')``). The current DRAFT is v6d
+(bundle v80, ``REVISION_POLICIES['v6d']``): the opt-in ``beam_wide_hue`` / ``align_fine_motion`` policy
+``b-v6d`` on top of b-v6c, with v5h and b-only as matched controls.
 """
 import copy
 import hashlib
@@ -29,18 +36,22 @@ import json
 from pathlib import Path
 import subprocess
 
-from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID, POLICIES, REVISION_POLICIES
+from harness.zone_pair_v6_policy import (EXECUTION_BUNDLE_ID, POLICIES, REVISION_POLICIES, WIDE_HUE_LO,
+                                         WIDE_HUE_POSTURES)
 
 ROOT = Path(__file__).resolve().parents[1]
 PREREG = ROOT/'experiments/2026-09-28-zone-pair-v6/prereg_v6.json'
 PREREG_V6B = ROOT/'experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json'
 PREREG_V6C = ROOT/'experiments/2026-09-29-pair-v6c/prereg_v6c.json'
+PREREG_V6D = ROOT/'experiments/2026-09-29-pair-v6d-align/prereg_v6d.json'
 V5H = ROOT/'experiments/2026-09-27-zone-pair-dev/prereg_v5h.json'
 V6_REGISTRATION_COMMIT = '3c26acddec066adcd9164e6d2a6f51c1261c5f66'   # PR #259 REGISTERED conversion
 V6B_DRAFT_COMMIT = '15793691b3af136769cdf0b090e722daddf80ab4'         # PR #261 last v6b DRAFT sealing
-HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT), 'v6b': (PREREG_V6B, V6B_DRAFT_COMMIT)}
-HISTORICAL_STATUS = {'v6': 'REGISTERED', 'v6b': 'DRAFT'}
-CURRENT_REVISION = 'v6c'      # current v6-family DRAFT (PR #263, bundle v76)
+V6C_DRAFT_COMMIT = 'be95f8b018bb110e2fc97ec5a3c90e357a949449'         # PR #263 v6c sealing (merge with #256/#257/#249)
+HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT), 'v6b': (PREREG_V6B, V6B_DRAFT_COMMIT),
+                        'v6c': (PREREG_V6C, V6C_DRAFT_COMMIT)}
+HISTORICAL_STATUS = {'v6': 'REGISTERED', 'v6b': 'DRAFT', 'v6c': 'DRAFT'}
+CURRENT_REVISION = 'v6d'      # current v6-family DRAFT (b-v6d stage probe, bundle v80)
 
 
 def contract(revision=None):
@@ -65,6 +76,10 @@ def contract(revision=None):
              # v6c flags and their hooks.
              'harness/owncam_recovery_v6c.py','harness/zone_pair_grasp_entry_v6c.py',
              'harness/zone_pair_guards.py','harness/zone_pair_grasp.py','harness/zone_pair_beam_track.py',
+             # v6d flags: wide-hue beam heading (recoloured frame copy), the M1 ``fine`` motion profile and
+             # its calibration file (the profile the PF selects during align).
+             'harness/owncam_pair_beam_v6d.py','harness/owncam_align_motion_v6d.py',
+             'experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json',
              # PR #249: the team host picks the robot model and spawn keepouts through these on
              # every map (v2 maps delegate to the legacy path), so they are in the run closure.
              'sim/zone_masterpi_v3_scene.py','sim/zone_model_conventions.py')
@@ -74,6 +89,7 @@ def contract(revision=None):
     from harness.zone_pair_align import MAX_LOOKS, MAX_TOTAL_LOOK_S
     from harness import owncam_bootstrap_v6b as boot
     from harness import owncam_recovery_v6c as clock, zone_pair_grasp_entry_v6c as entry
+    from harness import owncam_align_motion_v6d as fine, owncam_pair_beam_v6d as wide
     return {'execution_bundle_id':EXECUTION_BUNDLE_ID,'policy_flags':{
         k:vars(POLICIES[k]) for k in REVISION_POLICIES[revision]},
         # Review 3: flag semantics are part of the registration. beam_relative
@@ -106,7 +122,35 @@ def contract(revision=None):
                                  'descent pose settles FINAL_DESCENT_SETTLE_S before READY frames; the partial patch '
                                  'must show one contiguous in-footprint band across the tracked axis (2-98 % span, '
                                  'largest gap <= MAX_LATERAL_GAP_M) at least MIN_WIDTH_FRACTION x BEAM_WIDTH_M wide. '
-                                 'All gates, thresholds and the footprint support test are unchanged')},
+                                 'All gates, thresholds and the footprint support test are unchanged'),
+            'beam_wide_hue':('v6d: in the p45 and inspect views the beam heading (PCA axis) reads the hue range '
+                             '25-54 instead of the v1 lime range 36-54, because the beam top renders yellow (hue '
+                             '25-36) there in r1 and the lime-only mask kept just the end faces (heading error up to '
+                             '1.5 rad, aligned reported at a true yaw of 0.07-0.115 rad). The condition is the '
+                             'posture only, so it also applies to r2 in p45/inspect, where the wide range is '
+                             'unverified (r2 used hue 25 in 42 frames of the stage probe; no negative check that '
+                             'non-beam yellow objects stay out of the mask). The frozen v1/v2 beam modules are '
+                             'unchanged: the added non-band pixels are recoloured lime on a copy of the frame and v2 '
+                             'runs on it; dark grip-band pixels are never recoloured. The search posture keeps the '
+                             'v1 range (the wide range doubles r2 search yaw noise in replay)'),
+            'align_fine_motion':('v6d: while the controller is in an align state (align, align_relook_stop, '
+                                 'align_relook, align_relook_return) the tag PF predicts motion with the M1 ``fine`` '
+                                 'profile of calibration_m1_dev.json instead of the navigation default '
+                                 '(gain 1.47, tau 0.3 s), which over-integrated the 0.2-0.3 s <=0.05 m/s align pulses '
+                                 'about 4-5 times (x axis, median). The profile is a whole parameter set, not just '
+                                 'gain/tau: gain 1.95/0.95, tau 1.28 s, tau_stop 0.05 s, smaller absolute noise '
+                                 '(noise_abs 0.003/0.003/0.005 vs default 0.015/0.005/0.014, i.e. also a lower yaw '
+                                 'noise) and the slip scale switched off (use_scale false). No filter code or gate '
+                                 'changes; other states keep the default profile. The profile was fitted on one M1 '
+                                 'dev seed (s91) with the arm lowered at the box, so its use in the wrist-camera '
+                                 'look postures of the align states is checked only by the offline replay and the '
+                                 'stage probe. A provider bound to the profile is refused by policies without the '
+                                 'flag')},
+        'v6d_constants':{'wide_hue_lo':WIDE_HUE_LO,'wide_hue_postures':list(WIDE_HUE_POSTURES),
+                         'wide_lime_bgr':list(wide.WIDE_LIME_BGR),
+                         'motion_profile':fine.PROFILE,'motion_calibration':fine.CALIBRATION,
+                         'motion_profile_sha256':fine.load_profile()[1]['profile_sha256'],
+                         'align_states':list(fine.ALIGN_STATES)},
         'v6c_constants':{'clock_tolerance_s':clock.CLOCK_TOLERANCE_S,
                          'min_strip_support':entry.MIN_STRIP_SUPPORT,
                          'final_descent_settle_s':entry.FINAL_DESCENT_SETTLE_S,
