@@ -2,7 +2,7 @@
 
 2026-09-28 사용자 결정(#221 최신 코멘트)으로 로봇 입력에 **자기 초음파 거리**를 추가했다. MasterPi 차체 앞면의 초음파 센서를 쓴다. 네 통신 조건 모두 같게 제공하며 조작 변수가 아니다. 용도는 세 가지다. 정적 지도와 비교해 위치 추정을 보조하고(PF 과신 검출), 충돌 여유를 확인하고, 정렬할 때 전방 거리로 단안 깊이의 모호성을 보완한다. GT 금지와 표식 비의존 원칙은 그대로 적용한다.
 
-이 문서는 센서 모델(v2, `masterpi_ultrasonic_v2`; PR #248 적대적 검토 반영)의 사양, 가정, 한계, sim2real 보정 계획을 기록한다. 이 입력은 허용된 관측이지만 **현재 어떤 번들·실행기에도 연결되어 있지 않다.** 켠 실행은 기존 baseline과 나눠 비교한다. 실험 기록은 [`experiments/2026-09-28-ultrasonic-range`](../experiments/2026-09-28-ultrasonic-range/README.md)에 있다.
+이 문서는 센서 모델(v2, `masterpi_ultrasonic_v2`; PR #248 적대적 검토 반영)의 사양, 가정, 한계, sim2real 보정 계획을 기록한다. 이 입력은 허용된 관측이다. 2026-09-29부터 구역 연구 실행기에 **명시적으로 켜는 경우에만** 연결된다(12절, 기본 꺼짐, 켜도 어떤 제어기도 값을 쓰지 않는다). 켠 실행은 기존 baseline과 나눠 비교한다. 실험 기록은 [`experiments/2026-09-28-ultrasonic-range`](../experiments/2026-09-28-ultrasonic-range/README.md)에 있다.
 
 ## 1. 실물 사양
 
@@ -64,7 +64,7 @@
   - 우도는 Thrun *Probabilistic Robotics* 6.3의 beam model 혼합이다(hit / short / max / rand + 경면·다중 반사의 긴 쪽 균등 항). hit 폭에는 센서 σ, 자세 σ, 지도 σ(2 cm, 가정)를 넣는다.
   - 검출 확률은 에코 세기의 logistic(문턱 0.2, 폭 0.05)이다. 그래서 가시 경계(약 35°)에서 우도가 **연속적으로** 바뀐다. 예측 원뿔에 에코가 있는 판독과 무반사 판독의 판독당 |LLR|은 2 nats로 제한한다.
   - `blind`와 `sensor_absent`는 자세 정보가 없으므로 LLR 0이다. 가중치·폭·상한은 가설이며, 6절 3단계(입사각 측정) 뒤에 정한다.
-- **기존 동작 불변:** 새 모듈(`harness/ultrasonic_{model,map,carry}.py`, `harness/range_provider.py`, `sim/ultrasonic_range.py`, `scripts/analyze_ultrasonic_carry_height.py`)은 기존 코드가 import하지 않는다. `rgb-standard-dispatch-v63`의 source closure와 zone study 실행 번들(현재 main, #240·#242·#243 병합 후)의 `runtime_files_sha256`에 들어가지 않는 것을 테스트로 확인했다. 기존 번들에서 이 입력은 OFF이고 실행기 연결도 없다.
+- **기존 동작 불변:** 새 모듈(`harness/ultrasonic_{model,map,carry}.py`, `harness/range_provider.py`, `sim/ultrasonic_range.py`, `scripts/analyze_ultrasonic_carry_height.py`)은 기존 코드가 import하지 않는다. `rgb-standard-dispatch-v63`의 source closure와 zone study 실행 번들(현재 main, #240·#242·#243 병합 후)의 `runtime_files_sha256`에 들어가지 않는 것을 테스트로 확인했다. 기존 번들에서 이 입력은 OFF다. 실행기 연결은 12절의 어댑터가 켤 때만 붙는다.
 
 ## 4. 공동 운반 막대·자기 팔과 센서 높이 (실제 장면 `zone_wide_door_tags_v2` + `long_beam`)
 
@@ -260,6 +260,36 @@ PR #249는 도면 비율로 로봇을 다시 모델링한다(측정값 아님). 
   | 둘 다 | 0.151 m | 0.228 m | 0.013 m | −64.0° |
 
   권장 높이(공동 0.125, solo 0.140)는 모두 도달 범위 안이다. `carry_p30` FK는 z 0.173–0.183 m로 바뀌지만 원뿔 여유는 40–52 mm로 유지된다. 다만 집게가 94 mm이면 tile의 7 mm grip 높이가 보정 pitch 범위의 최소 grip z(8–13 mm)보다 낮아 **IK가 풀리지 않는다.** 링크를 바꾸면 tile 파지 자세를 다시 보정해야 한다.
+
+## 12. 하네스 입력 연결 (2026-09-29, opt-in, 배선만)
+
+사용자 요청("전면 초음파를 일단 입력으로 쓸 수 있게 하네스 자체를 구성")에 따라 위 센서를 구역 연구 실행기의 **선택 입력**으로 연결했다. 성공 근거가 아니라 배선이다. 어떤 제어기도 값을 쓰지 않는다(사용은 별도 결정).
+
+**켜는 법.** prereg(실행 구성)에 `"sensors": {"ultrasonic_front": "on_v1"}`를 적고 `scripts/run_zone_study_sensors.py`로 실행한다. 키가 없거나 `off`이면 이 스크립트는 원래 실행기(`run_zone_study_integration.py`)를 **그대로** 호출한다. 알 수 없는 키·값은 기본값으로 넘기지 않고 거부한다. 원래 실행기를 직접 쓰면 `sensors` 키는 무시되므로 켠 실행은 반드시 어댑터로 돌린다(열린 질문 1).
+
+| 항목 | 내용 |
+|---|---|
+| 프로필 `on_v1` | `DEFAULT_SPEC`(`masterpi_ultrasonic_v2`), 두 로봇 간섭(crosstalk) 끔 |
+| 번들 기록 | `bundle.sensors`: 프로필, 센서 모델 id, spec 해시, source 라벨, 판독 필드, `baseline_comparable: false`. 번들 해시가 꺼진 실행과 달라진다. 센서 소스 파일(`harness/ultrasonic_*`, `sim/ultrasonic_*`, `range_provider`, 어댑터)이 소스 고정 목록에 들어간다 |
+| 로봇 관측 | 로봇마다 **자기** 판독만: `{t, range_m, valid, status}`(`ok`/`blind`/`no_echo`/`sensor_absent`). 무엇에 맞았는지는 없다. `range_m`은 유효할 때만 값이 있다 |
+| 위치 | 물리 실행기(호스트)의 로봇별 자기 센서 경로. 물리 step 뒤 매 호출마다 자기 60 ms 시계로 읽는다. 통신 조건(대화 채널, 쌍 상태 채널)보다 아래이며 조건 이름을 받지 않는다. 다른 로봇의 판독은 전달 경로가 없다 |
+| 잡음 seed | `sensor_seed(trial_seed, robot_id)`. 조건과 호출 횟수에 무관하므로 네 조건이 같은 SIM 시각에 같은 잡음을 받는다 |
+| 물리 영향 | 없음. ray cast는 읽기 전용이고 `mj_step`·`mj_forward`를 부르지 않는다. 직전 step이 남긴 상태를 읽는다(자세는 최대 한 timestep 이전). 렌더 프로필·카메라와 무관하다(충돌 geom group 기준 ray) |
+| 정답 누출 | 없음. 어댑터는 `measure`(판독)만 쓰고 `measure_diagnostic`(맞은 geom, 원인)은 쓰지 않는다. 테스트가 제어기·스킬 모듈이 값을 참조하지 않는지, 판독 표면에 대상 이름이 없는지 확인한다 |
+| 실행 기록 | `robots/<rid>/inputs/range.jsonl`(헤더: 모델·spec 해시·잡음 seed, 행: `t, range_m, valid, status`)와 `sensors.json`. 둘 다 manifest가 해시한다. 모델 요청 이미지·텍스트 보존과 같은 방식이다 |
+| 제어기 쪽 통로 | 각 로봇 실행기에 `range_provider`(자기 provider)가 붙는다. `harness.ultrasonic_input.range_report(executor, now)`가 최신 보고를 돌려준다. 아무 스킬도 읽지 않는다 |
+
+**끔일 때 동일성.** 어댑터는 고정 소스(`zone_own_executor.py`, `zone_own_team_host.py`, `run_zone_study_integration.py`)를 고치지 않고 감싼다. 그래서 꺼진 실행은 소스·번들·해시·출력이 바이트 단위로 같다(`pair_dev_DRAFT`의 `--bundle` 출력이 main과 동일함을 확인). v6d DRAFT 같은 소스 고정 기록도 깨지지 않는다.
+
+**본 실행기에 합칠 때(조정자가 번들 버전을 등록하는 시점).** 어댑터의 세 가지를 실행기 안으로 옮긴다: `bundle.sensors` 블록, `_physics_until` 뒤 `rig.tick`, `write_outputs` 전에 rig 닫기. 그 밖에는 바꿀 것이 없다.
+
+**열린 질문.**
+1. 원래 실행기로 켠 prereg를 돌리면 조용히 꺼진 채 실행된다. 본 실행기에 합칠 때 `sensors`를 아는 실행기만 받게(모르면 거부) 해야 한다.
+2. 두 로봇 간섭(crosstalk)은 `on_v1`에서 끈다. 마주 보는 운반 평가는 켜야 하므로(2절) `FACING_PAIR_SPEC`용 프로필이 따로 필요하다.
+3. 판독 상태 어휘는 이 문서의 `ok/blind/no_echo/sensor_absent`다. 요청서의 `valid/out_of_range/no_echo`는 `valid=ok`, `out_of_range=blind`(너무 가까움)와 `no_echo`(4 m 안에 없음)로 대응한다.
+4. 다른 실행기(카메라 짝 운반, 파이프라인 프로브)에는 아직 연결하지 않았다. 리그(`sim/ultrasonic_input.py`)는 MuJoCo 세계와 로봇 목록만 받으므로 재사용할 수 있다.
+5. v3 장면에서는 센서 site(`r*__v3_ultrasonic_site`)를 자동으로 쓰며 정지 상태 판독 생성까지 확인했다. v3 장면의 물리 실행 중 판독은 확인하지 않았다.
+6. 이 배선은 한 번도 완전한 실행(로봇·카메라·모델 포함)으로 돌려 보지 않았다(다른 에이전트가 물리 잠금 사용 중). 실행기 통합 검증은 단위 시험과 `--bundle` 출력 수준이다.
 
 ## 참고 자료
 
