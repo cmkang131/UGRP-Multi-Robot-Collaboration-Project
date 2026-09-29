@@ -67,3 +67,27 @@ def test_progress_relax_is_process_local_and_only_for_b_v6h(monkeypatch):
         pr.install('p9')
     with pytest.raises(SystemExit):
         runner.main(['--stage', 'carry', '--sources', 'teacher', '--policies', 'b-v6g', '--progress-relax', 'p1', '--output', '/tmp/never_written'])
+
+
+def test_progress_relax_p2_arms_the_monitor_only_after_commanded_motion(monkeypatch):
+    from harness import zone_own_guards as g
+    from harness import zone_pair_progress_relax as pr
+    for name in ('drove', 'reset', 'trusted'):
+        monkeypatch.setattr(g.ProgressMonitor, name, getattr(g.ProgressMonitor, name))     # restored after the test
+    reg = g.ProgressMonitor()
+    reg.trusted((1., 0.), 1.)
+    assert reg.baseline is not None                          # registered: a stationary fix arms the baseline
+    info = pr.install('p2')
+    assert g.STALL_COMMANDED_M == pr.REGISTERED['stall_commanded_m'] and 'ProgressMonitor' in info['patched'][0]
+    mon = g.ProgressMonitor()
+    mon.reset()
+    mon.trusted((1., 0.), 1.)                                # stationary re-grasp fix: ignored
+    assert mon.baseline is None
+    mon.drove(0.5)
+    assert not mon.needs_check()                             # no baseline -> nothing to check (single-leg-probe behaviour)
+    mon.trusted((1.3, 0.), 0.7)                              # an in-leg trusted estimate arms it
+    assert mon.baseline is not None
+    mon.drove(0.45)                                          # the 0.40 m rule still fires afterwards
+    assert mon.needs_check()
+    mon.reset()
+    assert mon.baseline is None

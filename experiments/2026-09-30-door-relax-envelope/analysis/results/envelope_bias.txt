@@ -1,0 +1,84 @@
+
+== k1g_ybias: door-relax-envelope-fdd35cee-biasYK1g n=24 load [13.1, 13.2, 15.2]/[10.2, 12.9, 14.5] source=fdd35cee changed=False
+variant | leg | y | heading | bias y/yaw | standard | envelope class | first failure | contact (who; max pen mm; walls) | cross-track mm | sigma_yaw max deg | min clr beam/chassis mm
+ b-v6h.k1g | L1 | -0.100 | +0.0 | -0.25/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6h.k1g | L1 | -0.100 | +0.0 | -0.20/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6h.k1g | L1 | -0.100 | +0.0 | -0.15/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6h.k1g | L1 | -0.100 | +0.0 | -0.10/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.49 | 335.9/58.4
+ b-v6h.k1g | L1 | -0.100 | +0.0 | +0.10/+0 | FAIL | TRAVERSED_CLEAN | - | none | 126 | 2.95 | 118.8/48.9
+ b-v6h.k1g | L1 | -0.100 | +0.0 | +0.15/+0 | FAIL | TRAVERSED_CLEAN | - | none | 149 | 2.95 | 85.4/15.6
+ b-v6h.k1g | L1 | -0.100 | +0.0 | +0.20/+0 | FAIL | TRAVERSED_CLEAN | - | none | 149 | 2.92 | 82.8/12.9
+ b-v6h.k1g | L1 | -0.100 | +0.0 | +0.25/+0 | FAIL | BLOCKED_BY_CONTACT | - | (['r2'], 0.37, ['zone_wall_divider_1']) | 237 | 3.23 | 202.0/0.0
+ b-v6h.k1g | L1 | +0.050 | +0.0 | -0.25/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.97 | 401.0/174.4
+ b-v6h.k1g | L1 | +0.050 | +0.0 | -0.20/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 401.0/174.4
+ b-v6h.k1g | L1 | +0.050 | +0.0 | -0.15/+0 | PASS_CLEAN | TRAVERSED_CLEAN | - | none | 68 | 2.96 | 154.2/84.2
+ b-v6h.k1g | L1 | +0.050 | +0.0 | -0.10/+0 | PASS_CLEAN | TRAVERSED_CLEAN | - | none | 46 | 2.99 | 195.9/125.9
+ b-v6h.k1g | L1 | +0.050 | +0.0 | +0.10/+0 | PASS_CLEAN | TRAVERSED_CLEAN | - | none | 72 | 2.96 | 172.1/102.2
+ b-v6h.k1g | L1 | +0.050 | +0.0 | +0.15/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 401.0/174.4
+ b-v6h.k1g | L1 | +0.050 | +0.0 | +0.20/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 401.0/174.4
+ b-v6h.k1g | L1 | +0.050 | +0.0 | +0.25/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 401.0/174.4
+ b-v6h.k1g | L1 | +0.200 | +0.0 | -0.25/+0 | FAIL | TRAVERSED_CLEAN | - | none | 134 | 3.02 | 84.7/14.7
+ b-v6h.k1g | L1 | +0.200 | +0.0 | -0.20/+0 | FAIL | TRAVERSED_CLEAN | - | none | 144 | 2.97 | 87.7/17.7
+ b-v6h.k1g | L1 | +0.200 | +0.0 | -0.15/+0 | FAIL | TRAVERSED_CLEAN | - | none | 137 | 2.96 | 95.5/25.6
+ b-v6h.k1g | L1 | +0.200 | +0.0 | -0.10/+0 | FAIL | TRAVERSED_CLEAN | - | none | 107 | 3.02 | 137.7/58.2
+ b-v6h.k1g | L1 | +0.200 | +0.0 | +0.10/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.95 | 335.9/58.4
+ b-v6h.k1g | L1 | +0.200 | +0.0 | +0.15/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6h.k1g | L1 | +0.200 | +0.0 | +0.20/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6h.k1g | L1 | +0.200 | +0.0 | +0.25/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+
+variant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL
+ b-v6h.k1g | L1 | 24 | 3/24 [4-31%] | 10/24 [24-61%] | 0 | 0 | 1 | 13 | 0
+
+== base_ybias: door-relax-envelope-fdd35cee-biasYBase n=24 load [10.2, 12.9, 14.5]/[15.6, 14.2, 14.7] source=fdd35cee changed=False
+variant | leg | y | heading | bias y/yaw | standard | envelope class | first failure | contact (who; max pen mm; walls) | cross-track mm | sigma_yaw max deg | min clr beam/chassis mm
+ b-v6g | L1 | -0.100 | +0.0 | -0.25/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6g | L1 | -0.100 | +0.0 | -0.20/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6g | L1 | -0.100 | +0.0 | -0.15/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6g | L1 | -0.100 | +0.0 | -0.10/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.49 | 335.9/58.4
+ b-v6g | L1 | -0.100 | +0.0 | +0.10/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 2.83 | 118.8/48.9
+ b-v6g | L1 | -0.100 | +0.0 | +0.15/+0 | FAIL | TRAVERSED_CLEAN | - | none | 149 | 2.95 | 85.4/15.6
+ b-v6g | L1 | -0.100 | +0.0 | +0.20/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 2.78 | 82.8/12.9
+ b-v6g | L1 | -0.100 | +0.0 | +0.25/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 1.38 | 335.9/58.4
+ b-v6g | L1 | +0.050 | +0.0 | -0.25/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.97 | 401.0/174.4
+ b-v6g | L1 | +0.050 | +0.0 | -0.20/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 401.0/174.4
+ b-v6g | L1 | +0.050 | +0.0 | -0.15/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 401.0/174.4
+ b-v6g | L1 | +0.050 | +0.0 | -0.10/+0 | PASS_CLEAN | TRAVERSED_CLEAN | - | none | 46 | 2.99 | 195.9/125.9
+ b-v6g | L1 | +0.050 | +0.0 | +0.10/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.51 | 401.0/174.4
+ b-v6g | L1 | +0.050 | +0.0 | +0.15/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 401.0/174.4
+ b-v6g | L1 | +0.050 | +0.0 | +0.20/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 401.0/174.4
+ b-v6g | L1 | +0.050 | +0.0 | +0.25/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 401.0/174.4
+ b-v6g | L1 | +0.200 | +0.0 | -0.25/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 2.9 | 84.7/14.7
+ b-v6g | L1 | +0.200 | +0.0 | -0.20/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 2.84 | 87.7/17.7
+ b-v6g | L1 | +0.200 | +0.0 | -0.15/+0 | FAIL | TRAVERSED_CLEAN | - | none | 137 | 2.96 | 95.5/25.6
+ b-v6g | L1 | +0.200 | +0.0 | -0.10/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.49 | 335.9/58.4
+ b-v6g | L1 | +0.200 | +0.0 | +0.10/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.95 | 335.9/58.4
+ b-v6g | L1 | +0.200 | +0.0 | +0.15/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6g | L1 | +0.200 | +0.0 | +0.20/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+ b-v6g | L1 | +0.200 | +0.0 | +0.25/+0 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 0.74 | 335.9/58.4
+
+variant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL
+ b-v6g | L1 | 24 | 1/24 [1-20%] | 3/24 [4-31%] | 0 | 0 | 0 | 21 | 0
+
+== k1g_yawbias: door-relax-envelope-fdd35cee-biasHK1g n=6 load [15.6, 14.2, 14.7]/[19.0, 16.0, 15.4] source=fdd35cee changed=False
+variant | leg | y | heading | bias y/yaw | standard | envelope class | first failure | contact (who; max pen mm; walls) | cross-track mm | sigma_yaw max deg | min clr beam/chassis mm
+ b-v6h.k1g | L1 | +0.050 | +0.0 | +0.00/-10 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 2.85 | 229.6/159.6
+ b-v6h.k1g | L1 | +0.050 | +0.0 | +0.00/-6 | PASS_CLEAN | TRAVERSED_CLEAN | - | none | 5 | 3.04 | 231.9/161.9
+ b-v6h.k1g | L1 | +0.050 | +0.0 | +0.00/-3 | PASS_CLEAN | TRAVERSED_CLEAN | - | none | 2 | 2.97 | 233.4/163.4
+ b-v6h.k1g | L1 | +0.050 | +0.0 | +0.00/+3 | PASS_CLEAN | TRAVERSED_CLEAN | - | none | 34 | 3.02 | 207.7/137.8
+ b-v6h.k1g | L1 | +0.050 | +0.0 | +0.00/+6 | PASS_CLEAN | TRAVERSED_CLEAN | - | none | 4 | 2.93 | 231.3/161.5
+ b-v6h.k1g | L1 | +0.050 | +0.0 | +0.00/+10 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 2.83 | 222.0/152.2
+
+variant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL
+ b-v6h.k1g | L1 | 6 | 4/6 [30-90%] | 4/6 [30-90%] | 0 | 0 | 0 | 2 | 0
+
+== base_yawbias: door-relax-envelope-fdd35cee-biasHBase n=6 load [19.0, 16.0, 15.4]/[15.7, 15.1, 15.0] source=fdd35cee changed=False
+variant | leg | y | heading | bias y/yaw | standard | envelope class | first failure | contact (who; max pen mm; walls) | cross-track mm | sigma_yaw max deg | min clr beam/chassis mm
+ b-v6g | L1 | +0.050 | +0.0 | +0.00/-10 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 2.71 | 229.6/159.6
+ b-v6g | L1 | +0.050 | +0.0 | +0.00/-6 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 2.85 | 231.9/161.9
+ b-v6g | L1 | +0.050 | +0.0 | +0.00/-3 | PASS_CLEAN | TRAVERSED_CLEAN | - | none | 2 | 2.97 | 233.4/163.4
+ b-v6g | L1 | +0.050 | +0.0 | +0.00/+3 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 1.65 | 223.0/137.8
+ b-v6g | L1 | +0.050 | +0.0 | +0.00/+6 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 2.74 | 231.3/161.5
+ b-v6g | L1 | +0.050 | +0.0 | +0.00/+10 | FAIL | STOPPED | PAIR_COLLISION_GUARD | none | None | 1.64 | 229.4/152.2
+
+variant | leg | n | standard PASS_CLEAN (Wilson) | envelope TRAVERSED_CLEAN (Wilson) | TRAVERSED_CONTACT | HARD_LIMIT | BLOCKED | STOPPED | OTHER_FAIL
+ b-v6g | L1 | 6 | 1/6 [3-56%] | 1/6 [3-56%] | 0 | 0 | 0 | 5 | 0

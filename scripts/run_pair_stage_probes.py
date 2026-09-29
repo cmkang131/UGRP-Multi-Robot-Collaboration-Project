@@ -1164,7 +1164,7 @@ def parser():
     p.add_argument('--env-prior', default='hR2_01', help='envelope grid: hR2 sample whose recorded PF posterior is the start prior')
     p.add_argument('--env-bias-y-m', nargs='+', type=float, default=[0.], help='envelope grid: extra prior y error [m] (both robots)')
     p.add_argument('--env-bias-yaw-deg', nargs='+', type=float, default=[0.], help='envelope grid: extra prior yaw error [deg] (both robots)')
-    p.add_argument('--progress-relax', choices=['p1'], help='with --policies b-v6h only: probe-only relaxation of the loaded pair\'s '
+    p.add_argument('--progress-relax', choices=['p1', 'p2'], help='with --policies b-v6h only: probe-only relaxation of the loaded pair\'s '
                    'no-progress check (harness/zone_pair_progress_relax.py); the case id gets +<name>')
     p.add_argument('--chain-stop-leg', type=int, help='stage chain only: stop the run when both robots reach the END of this route '
                    'leg (eval-only stop; the controller is untouched)')

@@ -107,14 +107,15 @@ def analyse(label, root, legs_wanted=(0, 1)):
                 clr_b = round(1000 * min(dra.min_dist_to_posts(dra.beam_points(x['beam_xyz'], x['beam_yaw'])) for x in win), 1) if win else None
                 clr_c = round(1000 * min(dra.min_dist_to_posts(dra.chassis_points(x['robots'][rid])) for x in win for rid in ('r1', 'r2')), 1) if win else None
                 nz = {rid: nees_of(trace, t1, rid) for rid in ('r1', 'r2')}
-                honesty += [v for v in nz.values() if v]
+                honesty += [{**v, 'leg': k} for v in nz.values() if v]
                 item['legs'][k] = {'class': cls, 'checks': pcp.leg_checks(leg), 'sigma_yaw_start_deg': math.degrees(leg['sigma_yaw_start_rad']),
                                    'sigma_yaw_end_deg': math.degrees(leg['sigma_yaw_end_rad']), 'sigma_xy_start_m': leg['sigma_xy_start_m'],
                                    'sigma_xy_end_m': leg['sigma_xy_end_m'], 'end_error_m': leg['end_error_m'], 'cross_track_m': leg['cross_track_m'],
                                    'tilt_deg': leg['tilt_deg'], 'contact_episodes': len(ce), 'max_pen_m': max((e['max_pen_m'] for e in ce), default=0.),
                                    'contact_who': sorted({e['who'] for e in ce}), 'min_clear_beam_mm': clr_b, 'min_clear_chassis_mm': clr_c,
                                    'est_err_xy_end_m': leg.get('est_err_xy_end_m'), 'est_err_yaw_end_deg': math.degrees(leg['est_err_yaw_end_rad']),
-                                   'nees': {rid: (v or {}).get('nees') for rid, v in nz.items()}, 'start_sim_s': t0, 'end_sim_s': t1,
+                                   'nees': {rid: (v or {}).get('nees') for rid, v in nz.items()},
+                                   'z': {rid: (v or {}).get('z') for rid, v in nz.items()}, 'start_sim_s': t0, 'end_sim_s': t1,
                                    'handover_s': leg.get('handover_from_prev_end_s')}
                 cells.append(f"{cls}, {item['legs'][k]['sigma_yaw_start_deg']:.2f}/{item['legs'][k]['sigma_yaw_end_deg']:.2f}, "
                              f"{1000 * leg['end_error_m']:.0f}, {clr_b}/{clr_c}")
@@ -137,11 +138,17 @@ def analyse(label, root, legs_wanted=(0, 1)):
     print(f'chain L0->L1 both legs pass: {fmt_ci(both, n)}')
     out['both_pass'] = both
     if honesty:
-        nn = np.array([h['nees'] for h in honesty])
-        z = np.array([h['z'] for h in honesty])
-        cov = (z <= 2).mean(0)
-        out['honesty'] = {'n': len(honesty), 'mean_nees': float(nn.mean()), 'median_nees': float(np.median(nn)), 'cov2sigma_xyyaw': cov.tolist()}
-        print(f'PF honesty at the leg ends (case-robot-leg samples): n={len(honesty)} meanNEES={nn.mean():.2f} median={np.median(nn):.2f} cov2sigma x/y/yaw={cov.round(3).tolist()}')
+        out['honesty'] = {}
+        for label_, sel in (('all', honesty), *[(f'L{k}', [h for h in honesty if h['leg'] == k]) for k in legs_wanted]):
+            if not sel:
+                continue
+            nn = np.array([h['nees'] for h in sel])
+            z = np.array([h['z'] for h in sel])
+            cov = (z <= 2).mean(0)
+            out['honesty'][label_] = {'n': len(sel), 'mean_nees': float(nn.mean()), 'median_nees': float(np.median(nn)),
+                                      'cov2sigma_xyyaw': cov.tolist()}
+            print(f'PF honesty {label_} at the leg ends (case-robot samples): n={len(sel)} meanNEES={nn.mean():.2f} '
+                  f'median={np.median(nn):.2f} cov2sigma x/y/yaw={cov.round(3).tolist()}')
     return out
 
 
