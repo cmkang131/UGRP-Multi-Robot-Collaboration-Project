@@ -26,7 +26,8 @@ DIAG_SHORT = {'fix_age_round': '', 'loaded_yaw_gate_wide': 'G', 'pf_rest_no_abs_
               'sigma_held_tiny': 'T', 'setdown_sigma_tiny_image_off': 'D'}
 IK_ENVELOPE_TEXT = 'outside the calibrated 14.5..18.0 cm grasp envelope'   # harness.pair_stage_probe.STAGING_IK_ENVELOPE_TEXT
 POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C',   # C = v6c (exact clock + grasp-range entry)
-                'b-boot': 'BB', 'a+b-boot': 'ABB'}                    # v6b start bootstrap (PR #261)
+                'b-boot': 'BB', 'a+b-boot': 'ABB',                    # v6b start bootstrap (PR #261)
+                'b-v6f-a': 'Fa', 'b-v6f-b': 'Fb', 'b-v6f': 'F'}       # v6f: own_image_ob / bounded_retreat / both
 
 
 def _run_tag(raw):

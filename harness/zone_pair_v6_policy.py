@@ -32,6 +32,15 @@ class PairPolicy:
     # v6c: standoff fit and pre-close partial evidence use the grasp-range beam
     # colour (hue 25-54, as grip_view/co-motion) and a settled final descent frame.
     grasp_range_entry: bool = False
+    # v6f (2026-09-29 stage 5 probe, PR #266 baseline 0/13): the destination set-down.
+    # (1) The per-step own-image validity gate measures "dark" against the frame's own optical-black
+    # reference (the fisheye exterior) instead of the fixed level V < 8, which rejects the
+    # shadowed dark floor at the destination on one robot (harness.zone_pair_vision.valid_frame_ob).
+    own_image_ob: bool = False
+    # (2) After the beam is released (controller state ``released``), the reverse retreat is bounded by
+    # the unchanged sweep guard: a vetoed reverse command is not issued and the robot holds (MoveIt
+    # Task Constructor MoveRelative min_distance 0), instead of failing the whole job.
+    bounded_retreat: bool = False
 
 
 POLICIES = {
@@ -41,6 +50,13 @@ POLICIES = {
     'b-boot': PairPolicy('b-boot', posterior_relook=True, stationary_bootstrap=True),
     'a+b-boot': PairPolicy('a+b-boot', posterior_relook=True, beam_relative=True, stationary_bootstrap=True),
     'b-v6c': PairPolicy('b-v6c', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True),
+    # v6f = b-v6c + own_image_ob + bounded_retreat; the two ablations switch one flag each.
+    'b-v6f-a': PairPolicy('b-v6f-a', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                          own_image_ob=True),
+    'b-v6f-b': PairPolicy('b-v6f-b', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                          bounded_retreat=True),
+    'b-v6f': PairPolicy('b-v6f', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
+                        own_image_ob=True, bounded_retreat=True),
 }
 # Registered ablation sets. v6 (historical, PR #246/#259), v6b (historical DRAFT,
 # PR #261, bundle v75) and v6c (current DRAFT, PR #263, bundle v76).

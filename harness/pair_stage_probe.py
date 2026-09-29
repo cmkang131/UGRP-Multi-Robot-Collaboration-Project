@@ -30,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.4.5'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+PROBE_VERSION = '0.4.6'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
@@ -39,9 +39,11 @@ PROBE_VERSION = '0.4.5'  # 0.2.0: pair_policy axis, align-tolerance boundary set
 #                          0.4.3: sigma_held_at_prior diagnostic patch
 #                          0.4.4: carry_lateral_scale_measured + carry_all_three diagnostic patches
 #                          0.4.5: sigma_held_tiny + setdown_sigma_tiny_image_off diagnostic patches
+#                          0.4.6: b-v6f-a / b-v6f-b / b-v6f policies (own_image_ob, bounded_retreat); image_valid_off
+#                                 also forces valid_frame_ob; run_pair_stage_probes --omp-threads
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
-POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6f-a', 'b-v6f-b', 'b-v6f')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
 ROLE = {'r1': 'end_neg', 'r2': 'end_pos'}
 
 # Stage registry. ``entry`` is the controller state injected at stage start;

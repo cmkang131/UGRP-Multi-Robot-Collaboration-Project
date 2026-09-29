@@ -9,7 +9,7 @@ from __future__ import annotations
 import math
 
 from harness.zone_own_contract import finite_number
-from harness.zone_pair_vision import valid_frame
+from harness.zone_pair_vision import valid_frame, valid_frame_ob
 from harness.zone_pair_align import PairAlignRelook
 from harness.owncam_time import accepted_fix_checks
 
@@ -17,6 +17,11 @@ PROFILE = 'zone_pair_grasp_relook_v3'
 FIX_STD_XY_M = .05
 FIX_STD_YAW_RAD = math.radians(3.)
 CLOSE_WAIT_S = 20.
+
+
+def _frame_gate(controller):
+    """The own-image gate for this controller's policy, resolved from this module's names at call time."""
+    return valid_frame_ob if getattr(getattr(controller, 'policy', None), 'own_image_ob', False) else valid_frame
 
 
 def stationary_beam_estimate(obs, servo):
@@ -336,7 +341,7 @@ class PairGraspRelook(PairAlignRelook):
         ready = (self.pregrasp_done and self._grasp_pose_ready(now)
                  and own.servo.get(1) == m2.study.OPEN
                  and all(own.servo.get(k) == v for k, v in self.grasp_pose.items() if k != 1)
-                 and valid_frame(obs, self.rid, now)
+                 and _frame_gate(self)(obs, self.rid, now)
                  and (getattr(getattr(self,'policy',None),'beam_relative',False)
                       or m2.grip_view_m2(obs['image'])['seen'])
                  and self.preclose_check(now, obs))
@@ -369,7 +374,7 @@ class PairGraspRelook(PairAlignRelook):
         closed = getattr(self, 'close_issued_at', None)
         if (closed is None or closed < getattr(self, 'close_started_at', math.inf)
                 or own.servo.get(1) != m2.study.CLOSED
-                or not valid_frame(own.last_obs, self.rid, now)
+                or not _frame_gate(self)(own.last_obs, self.rid, now)
                 or own.last_obs['sim_time'] <= closed):
             return self.fail('GRIP_NOT_CONFIRMED', now)
         super()._grasp(now, arm_idle)  # unchanged own-RGB grip check + lift anchor
