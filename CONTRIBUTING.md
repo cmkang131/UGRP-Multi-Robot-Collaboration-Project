@@ -38,6 +38,32 @@ python3.12 -m venv .venv-test
 
 정확한 CI 테스트 명령과 포함 범위는 [workflow](.github/workflows/tests.yml)를 따른다. 테스트 전용 의존성과 실제 실험 의존성은 구분한다.
 
+오프라인 회귀 목록은 `scripts/run_ci_tests.py`의 `TEST_PATTERNS`를 glob 확장한 뒤
+중복 제거·정렬한다. CI에서는 이 목록을 파일 단위로 8개 shard에 나누며,
+각 실행 전에 전체 shard의 합집합과 원래 목록이 같고 각 파일이 정확히 한 번
+포함되는지 검사한다. 목록만 확인하는 다음 명령은 pytest나 공용 잠금을 시작하지 않는다.
+
+```sh
+python scripts/run_ci_tests.py --shard-count 8 --list-shards
+```
+
+한 shard 실행은 `--shard-count 8 --shard-index 0`처럼 지정한다(번호 0–7).
+옵션을 생략하면 기존처럼 전체 목록을 실행한다. 현재는 파일 수 기준으로 균등 분할한다.
+파일별 측정 시간이 생기면 `--durations-json <파일>`로
+`{"tests/test_example.py": 12.5}` 형태의 초 단위 JSON을 모든 shard에 동일하게
+전달할 수 있다. 긴 파일부터 누적 시간이 가장 작은 shard에 배치하고 새 파일에는
+현재 목록에서 측정된 시간의 중앙값을 쓴다. 같은 입력은 항상 같은 분할을 만든다.
+CI의 `offline-shard-*` JUnit artifact에는 파일 경로와 테스트별 setup/call/teardown
+합산 시간이 남는다. 시간 자료를 갱신할 때 파일별로 합산하고 실행 SHA·환경도 기록한다.
+파일 수 균등은 시간 균등을 보장하지 않으므로 실제 shard 실행 시간을 확인한다.
+
+`offline-regression-checks`는 bundle/registry 검증과 기존 protocol fixture를
+한 번씩 실행하고, 분할 전용 단위 테스트와 전체 shard 목록도 검증한다.
+기존 required check 이름인 **`offline-regressions`**는 이 공통 job과
+`offline-regression-shards` matrix 전체를 기다리는 집계 job이다.
+둘 다 `success`일 때만 통과하며 실패·취소·건너뜀은 통과시키지 않는다.
+branch protection의 required check는 이 이름을 유지한다.
+
 공용 Mac의 기본 저장소와 연결된 worktree에서는 `run_ci_tests.py`가 실험과 같은
 `outputs/agent-locks` 잠금을 **획득한 뒤** pytest를 시작한다. 점유 중이면 테스트를
 생성하지 않고 종료 코드 3을 반환한다. 중단 시 자신이 만든 프로세스 그룹을 정리한
