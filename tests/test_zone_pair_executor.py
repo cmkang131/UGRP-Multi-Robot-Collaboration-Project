@@ -487,6 +487,20 @@ def test_frozen_m2_sources_or_explicit_followup_hashes():
     post_freeze['scripts/study_owncam_pair_beam.py'] = {
         '6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00',
     }
+    # v6e opt-in loaded dead-reckoning profile (params['motion_loaded']['load_transition']); with the key
+    # absent every branch is a no-op and the localizer output is byte-identical (tests/test_zone_pair_v6e.py).
+    post_freeze['harness/owncam_localizer.py'] = {
+        '36fd50c0f33dd14ffb97fca68284290e47b26f76342778b2ad9daa0ee19f1fa9',
+        # v6e yaw flags: plan-derived partner command (carry_pair_yaw) and the relative-yaw increment hook
+        # (carry_beam_edge); both inert until the opt-in plan/hook is set (tests/test_zone_pair_v6e_yaw.py).
+        '1c6b1ca517310a2c1845efc4cf69fe929c5ff00574449a973874ce3b5eb58827',
+        # v6g carry_dr_general: breakaway ramp on the lateral command and a per-particle cross-axis drift ratio, both
+        # inert unless the profile carries 'deadband' / 'drift_ratio_std' (tests/test_zone_pair_v6g.py).
+        '9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347',
+    }
+    post_freeze['harness/owncam_pose_source.py'].add(
+        # v6e carry_beam_edge: on_frame calls the opt-in beam-edge tracker only when one is attached.
+        'b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e')
     for row in files:
         got = hashlib.sha256((ROOT / row['path']).read_bytes()).hexdigest()
         assert got in {row['sha256'], *post_freeze.get(row['path'], ())}, row['path']

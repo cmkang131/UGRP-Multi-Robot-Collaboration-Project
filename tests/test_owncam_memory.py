@@ -107,6 +107,10 @@ class BoundaryTests(unittest.TestCase):
             '46809a556ecb7915f8dd49b03d7eb0f57181261599173b439477466f1940a538':
                 'v6: opt-in posterior-preserving recovery/observability; default OFF, no inherited M1 qualification',
         },
+        'harness/owncam_localizer.py': {
+            '36fd50c0f33dd14ffb97fca68284290e47b26f76342778b2ad9daa0ee19f1fa9':
+                'v6e: opt-in loaded dead-reckoning profile (motion_loaded.load_transition); key absent = byte-identical output',
+        },
         'scripts/run_m1_owncam.py': {
             '04be35ed0e960a7683321b24e8218af293637879962d83871de71243a9f28c72':
                 'PR #240 v5h review10: raw input frame time and LoggingPort source receipt; old freeze unchanged',

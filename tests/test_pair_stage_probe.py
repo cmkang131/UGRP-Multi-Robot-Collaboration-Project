@@ -660,3 +660,73 @@ def test_probe_view_scalar_tags_are_accepted_by_the_offline_audit_exporter(tmp_p
     tags = set(view['offline_scalars'])
     assert 'gate/own_sigma_yaw_max/r1' in tags and 'gate/own_sigma_yaw_entry/r1' in tags
     assert all(SCALAR_TAG.fullmatch(t) for t in tags), sorted(t for t in tags if not SCALAR_TAG.fullmatch(t))
+
+
+def test_hr_setups_reproduce_the_recorded_grasp_lift_end_placements():
+    """hR (2026-09-29): carry entries sampled from recorded grasp_lift raws; the staged placement equals the sample."""
+    import json
+    import pytest
+    from harness import pair_stage_probe as sp
+    if not sp.HR_SAMPLES.exists():
+        pytest.skip('hR_samples.json not present')
+    data = json.loads(sp.HR_SAMPLES.read_text())
+    setups = sp.hr_setups()
+    assert len(setups) == len(data['samples']) == 10
+    for (setup, rows), smp in zip(setups, data['samples']):
+        cases = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=0, rows=rows)
+        assert len(cases) == 1 and cases[0]['cell'] == smp['id'] and cases[0]['case_id'].endswith(':VhR')
+        for r in ('r1', 'r2'):
+            got, want = cases[0]['placement_xyyaw'][r], smp['robots'][r]
+            assert abs(got[0] - want[0]) < 1e-9 and abs(got[1] - want[1]) < 1e-9 and abs(sp.wrap(got[2] - want[2])) < 1e-9
+    # later legs shift the whole entry along the route (same offsets)
+    setup, rows = setups[0]
+    c0 = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=0, rows=rows)[0]
+    c3 = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=3, rows=rows)[0]
+    assert c0['offsets'] == c3['offsets'] and c0['placement_xyyaw'] != c3['placement_xyyaw']
+
+
+def test_recorded_posterior_prior_hG_hR2():
+    """0.10.0: a sample with prior_err seeds the start prior at placement + (PF - GT) with the recorded spread."""
+    import json
+    import pytest
+    from harness import pair_stage_probe as sp
+    path = sp.SAMPLE_FILES['hG']
+    if not path.exists():
+        pytest.skip('hG_samples.json not present')
+    data = json.loads(path.read_text())
+    setups = sp.hr_setups(variant='hG')
+    assert len(setups) == len(data['samples']) == 10
+    for (setup, rows), smp in zip(setups, data['samples']):
+        assert setup['variant'] == 'hG' and len(rows[0]) == 4
+        case = sp.teacher_cases('grasp_lift', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', rows=rows)[0]
+        assert case['case_id'].endswith(':pPOST:VhG') and case['stage'] == 'grasp_lift'
+        for r in ('r1', 'r2'):
+            place, want = case['placement_xyyaw'][r], smp['robots'][r]
+            assert abs(place[0] - want[0]) < 1e-9 and abs(place[1] - want[1]) < 1e-9
+            err, pri = smp['prior_err'][r], case['prior'][r]
+            assert abs(pri['mean_xyyaw'][0] - (want[0] + err['mean_err_xyyaw'][0])) < 1e-9
+            assert abs(pri['mean_xyyaw'][1] - (want[1] + err['mean_err_xyyaw'][1])) < 1e-9
+            assert abs(pri['std_xy_m'] - err['std_xy_m']) < 1e-9 and pri['is_fix'] is False
+    # a carry leg shifts placement and prior together (the recorded error is kept)
+    setup, rows = setups[0]
+    c0 = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=0, rows=rows)[0]
+    c3 = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=3, rows=rows)[0]
+    d0 = c0['prior']['r1']['mean_xyyaw'][1] - c0['placement_xyyaw']['r1'][1]
+    d3 = c3['prior']['r1']['mean_xyyaw'][1] - c3['placement_xyyaw']['r1'][1]
+    assert abs(d0 - d3) < 1e-9
+
+
+def test_hR2_carry_entries_seed_the_recorded_posterior():
+    import json
+    import pytest
+    from harness import pair_stage_probe as sp
+    if not sp.SAMPLE_FILES['hR2'].exists():
+        pytest.skip('hR2_samples.json not present')
+    data = json.loads(sp.SAMPLE_FILES['hR2'].read_text())
+    for (setup, rows), smp in zip(sp.hr_setups(variant='hR2'), data['samples']):
+        case = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=0, rows=rows)[0]
+        assert case['case_id'].endswith(':pPOST:VhR2') and case['teacher_held'] is True
+        for r in ('r1', 'r2'):
+            e = smp['prior_err'][r]['mean_err_xyyaw']
+            got = [a - b for a, b in zip(case['prior'][r]['mean_xyyaw'][:2], case['placement_xyyaw'][r][:2])]
+            assert abs(got[0] - e[0]) < 1e-9 and abs(got[1] - e[1]) < 1e-9

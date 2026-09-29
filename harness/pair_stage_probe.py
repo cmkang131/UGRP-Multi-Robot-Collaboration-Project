@@ -30,9 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.5.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
-#                          0.4.x is PR #266 (carry legs + setdown); raw manifests with 0.4.0 come from two code states
-#                                 (PR #265 align/grasp probes and PR #266 smoke) and are told apart by the run source SHA
+PROBE_VERSION = '0.10.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
@@ -42,9 +40,33 @@ PROBE_VERSION = '0.5.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set
 #                          0.4.4: carry_lateral_scale_measured + carry_all_three diagnostic patches
 #                          0.4.5: sigma_held_tiny + setdown_sigma_tiny_image_off diagnostic patches
 #                          0.5.0: b-v6d policy (align_fine_motion + beam_wide_hue) in the probe policy axis
+#                          0.6.0: b-v6e-dr / b-v6e-lag / b-v6e policies (v6e carry flags); optional eval-only PF-vs-GT
+#                                 track (case.pf_track, runner --pf-track) for the error-model consistency check;
+#                                 registered setup variants (SETUP_VARIANTS, runner --setup-variant) for held-out and
+#                                 calibration placements
+#                          0.7.0: b-v6e-base (= the 0.6.0 b-v6e) and the yaw policies b-v6e / b-v6e-pm / b-v6e-edge (carry_pair_yaw,
+#                                 carry_beam_edge); the 0.6.0 name b-v6e now includes both yaw flags
+#                          0.8.0: b-v6g (b-v6e + carry_dr_general) and b-v6g-l7 (+ carry_end_inset_m 0.10 route change); setup
+#                                 variants cal2/cal3/cal4/hD; plan_route(end_inset_m)
+#                          0.9.0: setup variant hR = carry entries sampled from recorded grasp_lift raws (hr_setups / teacher_cases rows);
+#                                 staging only, no controller change
+#                          0.4.6 (place branch, merged into 0.6.0): b-v6f-a / b-v6f-b / b-v6f policies (own_image_ob, bounded_retreat);
+#                                 image_valid_off also forces valid_frame_ob; run_pair_stage_probes --omp-threads
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
-POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e-base', 'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6g', 'b-v6g-l7', 'b-v6f-a', 'b-v6f-b', 'b-v6f')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+
+
+def canonical_policy(policy, probe_version):
+    """Analysis name of a recorded policy. Raws recorded with probe_version < 0.7.0 ran ``b-v6e`` as dr + lag + the two
+    place flags, which is ``b-v6e-base`` since 0.7.0 (the name ``b-v6e`` now also includes both yaw flags)."""
+    try:
+        version = tuple(int(x) for x in str(probe_version).split('.')[:3])
+    except ValueError:
+        version = (0, 0, 0)
+    return 'b-v6e-base' if policy == 'b-v6e' and version < (0, 7, 0) else policy
+
+
 ROLE = {'r1': 'end_neg', 'r2': 'end_pos'}
 
 # Stage registry. ``entry`` is the controller state injected at stage start;
@@ -221,6 +243,36 @@ BASE_SETUP = {
 }
 
 
+# Registered placements besides the diagnosis one (BASE_SETUP). The true beam pose is stated; the coarse order sheet is
+# that pose rounded to the sheet grid exactly as harness.pair_owncam_approach.coarse_order_sheet does. Chosen once,
+# before the v6e carry runs, inside the controller's pickup envelope (sheet x 0.7..1.2, |y - 0.05| <= 0.15, yaw 0):
+#   cal   = calibration cohort for the v6e dead-reckoning error model (disjoint from every diagnosis cell)
+#   hA/hB/hC = held-out placements (not used in the PR #266 diagnosis, the v6e design or the calibration)
+SETUP_VARIANTS = {'cal': [.93, .03, 0.], 'hA': [.84, .13, 0.], 'hB': [1.13, -.04, 0.], 'hC': [1.03, .12, 0.],
+                  # 2026-09-29 (coordinator, after hA 4/10): generalisation cohort of the v6g motion model. hA was read
+                  # (diagnosis only, never a fit input or held-out again); cal2-4 are the NEW fitting placements (y offsets
+                  # 0.08 / -0.01 / 0.14, beam heading +0.03 / -0.03 rad on cal3 / cal4), hB, hC and hD (y 0.10, heading
+                  # +0.03 rad; a y value none of the fitting placements uses) stay unread held-outs.
+                  'cal2': [.90, .08, 0.], 'cal3': [.96, -.01, .03], 'cal4': [1.05, .14, -.03], 'hD': [1.00, .10, .03],
+                  # 2026-09-29 (coordinator): hR = carry entries taken from recorded grasp_lift raws (hr_setups); placeholder pose = base
+                  'hR': [1.00, .05, 0.],
+                  # 0.10.0: hG = grasp_lift entries taken from recorded ALIGN end states (GT pose + the recorded PF posterior as the
+                  # start prior); hR2 = carry entries taken from the grasp_lift end states of an hG run (GT pose + recorded PF
+                  # posterior). Both stage the real pipeline's inherited posterior instead of the coarse-sheet plan station.
+                  'hG': [1.00, .05, 0.], 'hR2': [1.00, .05, 0.]}
+
+
+def setup_variant(name=None):
+    """A stage-probe setup: the diagnosis setup (``None``/'base') or a registered variant placement."""
+    if name in (None, 'base'):
+        return copy.deepcopy(BASE_SETUP)
+    if name not in SETUP_VARIANTS:
+        raise ValueError(f'unknown setup variant {name!r}')
+    pose = list(SETUP_VARIANTS[name])
+    from harness.pair_owncam_approach import coarse_order_sheet
+    return {'beam_xyyaw': pose, 'coarse_order_sheet': coarse_order_sheet(pose), 'variant': name}
+
+
 def _grid_offsets(stage):
     """(name, r1 offset, r2 offset); offsets are (along, lateral, yaw) in the staged pose frame."""
     if stage == 'align':
@@ -263,7 +315,17 @@ def _prior_std(prior_std):
     raise ValueError(f'unknown prior std {prior_std!r}')
 
 
-def plan_route(sheet, *, map_id=MAP_ID, target='B', passage=None):
+def recorded_prior(placement, rec):
+    """Start prior = the RECORDED PF posterior of an earlier stage (0.10.0): mean = staged GT placement + (PF - GT) error
+    of that recorded posterior (world frame), std = the posterior's own weighted spread. GT enters only through the
+    staging placement and the recorded error (evaluation raws); the controller receives a stated Gaussian, not GT."""
+    err = rec['mean_err_xyyaw']
+    mean = [placement[0] + err[0], placement[1] + err[1], wrap(placement[2] + err[2])]
+    return gaussian_prior(mean, max(float(rec['std_xy_m']), 1e-3), max(float(rec['std_yaw_rad']), 1e-4),
+                          'recorded PF posterior of an earlier stage (weighted particle mean / spread from stage_stop.npz)')
+
+
+def plan_route(sheet, *, map_id=MAP_ID, target='B', passage=None, end_inset_m=0.):
     """The controller's own static route for a coarse order sheet (harness.zone_pair_executor.make_plan).
 
     Pure static geometry: the map JSON and the sheet, no world. 9 points / 8 legs for the dev map:
@@ -272,9 +334,11 @@ def plan_route(sheet, *, map_id=MAP_ID, target='B', passage=None):
     from harness.zone_pair_executor import make_plan
     static = json.loads((ROOT / 'maps' / 'zones' / f'{map_id}.json').read_text())
     if passage is not None:      # opt-in passage map (harness.pair_passage_plan); raises PassageRefusal with a code
+        if end_inset_m:
+            raise ValueError('end_inset_m is not supported together with a passage map')
         from harness.pair_passage_plan import passage_make_plan
         return [[float(v) for v in p] for p in passage_make_plan(static, sheet, target, passage)['route']]
-    return [[float(v) for v in p] for p in make_plan(static, sheet, target)['route']]
+    return [[float(v) for v in p] for p in make_plan(static, sheet, target, end_inset_m)['route']]
 
 
 def leg_index(stage, leg, n_points):
@@ -306,7 +370,7 @@ def shifted_pose(pose, route, k):
 
 
 def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=None, subset=None, policy='v5h',
-                  prior_std=None, leg=None):
+                  prior_std=None, leg=None, rows=None):
     """Teacher-placed cases with a perturbation grid (placement = GT, prior = static plan).
 
     ``leg`` (carry/setdown only, 0.4.0): carry leg k starts with the beam lifted at route point k and the
@@ -320,7 +384,9 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     setup = copy.deepcopy(setup or BASE_SETUP)
     route, k = None, None
     if stage in ('carry', 'setdown', 'chain'):
-        route = plan_route(setup['coarse_order_sheet'], **{name: v for name, v in setup.items() if name in ('map_id', 'target', 'passage')})
+        from harness.zone_pair_v6_policy import pair_policy
+        route = plan_route(setup['coarse_order_sheet'], end_inset_m=pair_policy(policy).carry_end_inset_m,
+                           **{name: v for name, v in setup.items() if name in ('map_id', 'target', 'passage')})
         k = leg_index(stage, leg, len(route))
     else:
         leg_index(stage, leg, 0)
@@ -335,22 +401,34 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     # sheet). Later stages start at the station aligned to the TRUE beam.
     base = plan_geo[key] if stage == 'align' else true_geo[key]
     ltag = '' if not k else (':Lend' if stage == 'setdown' else f':L{k}')
+    variant = setup.get('variant')
+    if variant:
+        ltag += f':V{variant}'
     out = []
-    for name, off1, off2 in _grid_offsets(stage):
+    for row in (_grid_offsets(stage) if rows is None else rows):
+        name, off1, off2 = row[:3]
+        recorded = row[3] if len(row) > 3 else None     # 0.10.0: {rid: {'mean_err_xyyaw', 'std_xy_m', 'std_yaw_rad'}} (PF - GT)
         if subset is not None and name not in subset:
             continue
         for seed in (nominal_seeds if name == 'nominal' else seeds):
             placement = {'r1': offset_pose(base['r1'], *off1), 'r2': offset_pose(base['r2'], *off2)}
-            priors = {r: gaussian_prior(plan_geo[key][r], sxy, syaw,
-                                        f'static plan {key} from the coarse order sheet (not GT){pnote}')
-                      for r in PARTICIPANTS}
-            case = {'case_id': f'{stage}{_pid(policy)}:teacher:{name}:s{seed}{ptag}{ltag}', 'stage': stage,
+            if recorded is None:
+                priors = {r: gaussian_prior(plan_geo[key][r], sxy, syaw,
+                                            f'static plan {key} from the coarse order sheet (not GT){pnote}')
+                          for r in PARTICIPANTS}
+                rtag = ptag
+            else:
+                priors = {r: recorded_prior(placement[r], recorded[r]) for r in PARTICIPANTS}
+                rtag = ':pPOST'
+            case = {'case_id': f'{stage}{_pid(policy)}:teacher:{name}:s{seed}{rtag}{ltag}', 'stage': stage,
                     'source': 'teacher_grid', 'pair_policy': policy, 'prior_std': prior_std or 'grid',
                     'cell': name, 'seed': seed, 'beam_xyyaw': list(true_beam),
                     'coarse_order_sheet': copy.deepcopy(setup['coarse_order_sheet']),
                     'placement_xyyaw': placement, 'r3_xyyaw': None, 'offsets': {'r1': list(off1), 'r2': list(off2)},
                     'prior': priors, 'teacher_held': bool(spec.get('teacher_held')),
                     'staging': 'teacher placement from GT beam geometry (setup only)'}
+            if variant:
+                case['setup_variant'] = variant
             if route is not None and stage == 'setdown' and k is not None:
                 # Staging only: the destination view can fail the submit-time image admission (dark floor), and a
                 # real setdown never re-submits there. The real verdict is recorded; the endpoint's own per-step
@@ -366,6 +444,39 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
                     case['route_note'] = ('controller static route (make_plan); ONE teacher staging at route point 0, the '
                                           'controller then runs legs 0..%d and the destination set-down' % (len(route) - 2))
             out.append(case)
+    return out
+
+
+EXP_DIR = ROOT / 'experiments' / '2026-09-29-pair-v6e-carry'
+HR_SAMPLES = EXP_DIR / 'hR_samples.json'
+SAMPLE_FILES = {'hR': HR_SAMPLES, 'hR2': EXP_DIR / 'hR2_samples.json', 'hG': EXP_DIR / 'hG_samples.json'}
+
+
+def pose_offset(base, pose):
+    """Inverse of offset_pose: (along, lateral, dyaw) of ``pose`` in the frame of ``base``."""
+    dx, dy = pose[0] - base[0], pose[1] - base[1]
+    c, s = math.cos(base[2]), math.sin(base[2])
+    return (c * dx + s * dy, -s * dx + c * dy, wrap(pose[2] - base[2]))
+
+
+def hr_setups(path=None, variant='hR'):
+    """[(setup, rows)] for the recorded-state entries (hR / hR2 carry, hG grasp_lift): one per recorded end state (staging only).
+
+    The setup carries the sampled TRUE beam pose (sheet = that pose rounded to the sheet grid); the row is the sample's
+    robot poses expressed as (along, lateral, yaw) offsets from the stations of that beam, so teacher_cases(rows=...)
+    reproduces the recorded placement exactly at leg 0 (and shifted along the route for later legs). A sample with
+    ``prior_err`` (hR2 / hG) also carries the recorded PF posterior error/spread, which becomes the start prior.
+    """
+    from harness.pair_owncam_approach import coarse_order_sheet
+    data = json.loads(Path(path or SAMPLE_FILES[variant]).read_text())
+    out = []
+    for smp in data['samples']:
+        beam = [float(v) for v in smp['beam_xyyaw']]
+        st = stations(beam)['station']
+        row = (smp['id'], pose_offset(st['r1'], smp['robots']['r1']), pose_offset(st['r2'], smp['robots']['r2']))
+        if smp.get('prior_err'):
+            row += (smp['prior_err'],)
+        out.append(({'beam_xyyaw': beam, 'coarse_order_sheet': coarse_order_sheet(beam), 'variant': variant}, [row]))
     return out
 
 
