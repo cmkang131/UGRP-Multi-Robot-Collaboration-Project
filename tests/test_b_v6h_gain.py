@@ -264,3 +264,21 @@ def test_sheet_placements_use_the_rounded_order_sheet_so_the_route_moves_with_th
         assert c['coarse_order_sheet'] == coarse_order_sheet(beam) and c['beam_xyyaw'] == pytest.approx(beam)
     assert len({c['route'][0][0] for c in cases}) > 1                      # the route start follows the rounded sheet x
     assert all(abs(c['route'][1][1] - 0.05) < 1e-9 for c in cases)          # the door axis stays
+
+
+def test_confirmatory_placement_draft_is_reproducible_fresh_and_in_distribution():
+    """DRAFT prereg placements (not run): the committed list is exactly the seeded draw, shares no placement with the exploratory
+    cohorts, and lies in the exploratory distribution."""
+    import importlib.util
+    path = ROOT / 'experiments/2026-09-30-pair-v6h-carry/make_confirmatory_placements.py'
+    spec = importlib.util.spec_from_file_location('make_confirmatory_placements', path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    rows = mod.draw()
+    assert json.loads(mod.OUT.read_text()) == rows and len(rows) == 60
+    assert len({r['name'] for r in rows}) == 60 and all(r['sheet'] == 'coarse' for r in rows)
+    assert all(mod.X_RANGE[0] <= r['x'] <= mod.X_RANGE[1] and mod.Y_RANGE[0] <= r['y'] <= mod.Y_RANGE[1]
+               and mod.YAW_RANGE_DEG[0] <= r['yaw_deg'] <= mod.YAW_RANGE_DEG[1] for r in rows)
+    old = mod.used()
+    assert not any(math.hypot(r['x'] - a, r['y'] - b) < mod.DISTINCT_XY_M and abs(r['yaw_deg'] - c) < mod.DISTINCT_YAW_DEG
+                   for r in rows for a, b, c in old)
