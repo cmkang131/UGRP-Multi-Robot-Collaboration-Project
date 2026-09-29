@@ -660,3 +660,26 @@ def test_probe_view_scalar_tags_are_accepted_by_the_offline_audit_exporter(tmp_p
     tags = set(view['offline_scalars'])
     assert 'gate/own_sigma_yaw_max/r1' in tags and 'gate/own_sigma_yaw_entry/r1' in tags
     assert all(SCALAR_TAG.fullmatch(t) for t in tags), sorted(t for t in tags if not SCALAR_TAG.fullmatch(t))
+
+
+def test_hr_setups_reproduce_the_recorded_grasp_lift_end_placements():
+    """hR (2026-09-29): carry entries sampled from recorded grasp_lift raws; the staged placement equals the sample."""
+    import json
+    import pytest
+    from harness import pair_stage_probe as sp
+    if not sp.HR_SAMPLES.exists():
+        pytest.skip('hR_samples.json not present')
+    data = json.loads(sp.HR_SAMPLES.read_text())
+    setups = sp.hr_setups()
+    assert len(setups) == len(data['samples']) == 10
+    for (setup, rows), smp in zip(setups, data['samples']):
+        cases = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=0, rows=rows)
+        assert len(cases) == 1 and cases[0]['cell'] == smp['id'] and cases[0]['case_id'].endswith(':VhR')
+        for r in ('r1', 'r2'):
+            got, want = cases[0]['placement_xyyaw'][r], smp['robots'][r]
+            assert abs(got[0] - want[0]) < 1e-9 and abs(got[1] - want[1]) < 1e-9 and abs(sp.wrap(got[2] - want[2])) < 1e-9
+    # later legs shift the whole entry along the route (same offsets)
+    setup, rows = setups[0]
+    c0 = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=0, rows=rows)[0]
+    c3 = sp.teacher_cases('carry', seeds=(911,), setup=setup, policy='b-v6g', prior_std='e2e', leg=3, rows=rows)[0]
+    assert c0['offsets'] == c3['offsets'] and c0['placement_xyyaw'] != c3['placement_xyyaw']

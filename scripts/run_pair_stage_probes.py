@@ -805,6 +805,12 @@ def build_cases(args):
         for policy in args.policies:
             if 'teacher' in args.sources:
                 for leg in (args.legs or [None]):
+                    if args.setup_variant == 'hR':      # carry entries sampled from recorded grasp_lift raws
+                        for hsetup, hrows in sp.hr_setups():
+                            cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
+                                                      setup=hsetup, subset=set(args.cells) if args.cells else None,
+                                                      policy=policy, prior_std=args.prior_std, leg=leg, rows=hrows)
+                        continue
                     cases += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds),
                                               setup=sp.setup_variant(args.setup_variant),
                                               subset=set(args.cells) if args.cells else None, policy=policy,

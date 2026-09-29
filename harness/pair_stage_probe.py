@@ -30,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.8.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+PROBE_VERSION = '0.9.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
@@ -48,6 +48,8 @@ PROBE_VERSION = '0.8.0'  # 0.2.0: pair_policy axis, align-tolerance boundary set
 #                                 carry_beam_edge); the 0.6.0 name b-v6e now includes both yaw flags
 #                          0.8.0: b-v6g (b-v6e + carry_dr_general) and b-v6g-l7 (+ carry_end_inset_m 0.10 route change); setup
 #                                 variants cal2/cal3/cal4/hD; plan_route(end_inset_m)
+#                          0.9.0: setup variant hR = carry entries sampled from recorded grasp_lift raws (hr_setups / teacher_cases rows);
+#                                 staging only, no controller change
 #                          0.4.6 (place branch, merged into 0.6.0): b-v6f-a / b-v6f-b / b-v6f policies (own_image_ob, bounded_retreat);
 #                                 image_valid_off also forces valid_frame_ob; run_pair_stage_probes --omp-threads
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
@@ -251,7 +253,9 @@ SETUP_VARIANTS = {'cal': [.93, .03, 0.], 'hA': [.84, .13, 0.], 'hB': [1.13, -.04
                   # (diagnosis only, never a fit input or held-out again); cal2-4 are the NEW fitting placements (y offsets
                   # 0.08 / -0.01 / 0.14, beam heading +0.03 / -0.03 rad on cal3 / cal4), hB, hC and hD (y 0.10, heading
                   # +0.03 rad; a y value none of the fitting placements uses) stay unread held-outs.
-                  'cal2': [.90, .08, 0.], 'cal3': [.96, -.01, .03], 'cal4': [1.05, .14, -.03], 'hD': [1.00, .10, .03]}
+                  'cal2': [.90, .08, 0.], 'cal3': [.96, -.01, .03], 'cal4': [1.05, .14, -.03], 'hD': [1.00, .10, .03],
+                  # 2026-09-29 (coordinator): hR = carry entries taken from recorded grasp_lift raws (hr_setups); placeholder pose = base
+                  'hR': [1.00, .05, 0.]}
 
 
 def setup_variant(name=None):
@@ -352,7 +356,7 @@ def shifted_pose(pose, route, k):
 
 
 def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=None, subset=None, policy='v5h',
-                  prior_std=None, leg=None):
+                  prior_std=None, leg=None, rows=None):
     """Teacher-placed cases with a perturbation grid (placement = GT, prior = static plan).
 
     ``leg`` (carry/setdown only, 0.4.0): carry leg k starts with the beam lifted at route point k and the
@@ -387,7 +391,7 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
     if variant:
         ltag += f':V{variant}'
     out = []
-    for name, off1, off2 in _grid_offsets(stage):
+    for name, off1, off2 in (_grid_offsets(stage) if rows is None else rows):
         if subset is not None and name not in subset:
             continue
         for seed in (nominal_seeds if name == 'nominal' else seeds):
@@ -419,6 +423,34 @@ def teacher_cases(stage, *, seeds=(911,), nominal_seeds=(911, 912, 913), setup=N
                     case['route_note'] = ('controller static route (make_plan); ONE teacher staging at route point 0, the '
                                           'controller then runs legs 0..%d and the destination set-down' % (len(route) - 2))
             out.append(case)
+    return out
+
+
+HR_SAMPLES = ROOT / 'experiments' / '2026-09-29-pair-v6e-carry' / 'hR_samples.json'
+
+
+def pose_offset(base, pose):
+    """Inverse of offset_pose: (along, lateral, dyaw) of ``pose`` in the frame of ``base``."""
+    dx, dy = pose[0] - base[0], pose[1] - base[1]
+    c, s = math.cos(base[2]), math.sin(base[2])
+    return (c * dx + s * dy, -s * dx + c * dy, wrap(pose[2] - base[2]))
+
+
+def hr_setups(path=None):
+    """[(setup, rows)] for the hR carry entries: one per recorded grasp_lift end state (staging only).
+
+    The setup carries the sampled TRUE beam pose (sheet = that pose rounded to the sheet grid); the row is the sample's
+    robot poses expressed as (along, lateral, yaw) offsets from the stations of that beam, so teacher_cases(rows=...)
+    reproduces the recorded end-of-grasp_lift placement exactly at leg 0 (and shifted along the route for later legs).
+    """
+    from harness.pair_owncam_approach import coarse_order_sheet
+    data = json.loads(Path(path or HR_SAMPLES).read_text())
+    out = []
+    for smp in data['samples']:
+        beam = [float(v) for v in smp['beam_xyyaw']]
+        st = stations(beam)['station']
+        row = (smp['id'], pose_offset(st['r1'], smp['robots']['r1']), pose_offset(st['r2'], smp['robots']['r2']))
+        out.append(({'beam_xyyaw': beam, 'coarse_order_sheet': coarse_order_sheet(beam), 'variant': 'hR'}, [row]))
     return out
 
 

@@ -826,6 +826,16 @@ hB [1.13, −.04, 0], hC [1.03, .12, 0], hD [1.00, .10, +.03] 각각 `b-v6g`로 
 
 번들 v81 / workflow 2.14.0 / revision v6e는 예약된 채 **사용하지 않았다**. 등록·봉인·push·PR은 하지 않았다. 재적합 1회 권한은 쓰지 않았다(원인이 재적합으로 풀리지 않는다).
 
+## hR: 실제 운반 출발 분포에서 뽑은 held-out (측정 전 고정; 소스·적합은 `f844a373` 그대로)
+
+앞의 hB·hC·hD는 실제 출발 분포(빔 y 0.05 ± 0.001 m, 헤딩 ≈ 0, 파지 오차 ±2.6 cm, 로봇 yaw 오차 ±2.5°)보다 훨씬 바깥이라, 실제로 일어나는 상황에서 통하는지가 본질이다. 그래서 **hR**을 한 번만 실행한다. 컨트롤러·PF·적합 파일(`carry_general_fit.json`)은 바꾸지 않는다(`git diff f844a373 -- harness scripts sim`은 stage probe 스테이징 코드 `pair_stage_probe.py`·`run_pair_stage_probes.py`와 CI 목록뿐; 컨트롤러 파일 변경 0).
+
+- **표본(측정 전 고정).** 적합에 쓴 적 없는 기존 grasp_lift raw 두 개에서 각각 5개: `pair-stage-probes-4714263a-v6d-final-bound-e2e`(정책 `b-v6d`, E2E 사전 σ, 허용 경계 오프셋 23건 중 PASS)와 `pair-stage-probes-b534a9b5-v6c-grasp-grid`(정책 `b-v6c`, 교란 격자 35건 중 PASS). 규칙: category PASS만 case_id 정렬, 인덱스 round(i·(n−1)/4), i = 0…4 (`extract_hR_samples.py` → `hR_samples.json`). 각 표본은 파지·들기 끝 상태의 실제 빔 자세(x, y, 헤딩)와 두 로봇의 실제 베이스 자세를 그대로 쓴다(운반 시작 자세로 스테이징). 빔 y 0.0500–0.0508 m, 헤딩 ≤ 0.12°, 파지 오차 along ≤ 2.6 cm / lateral ≤ 1.2 cm, 로봇 yaw 오차 ≤ 2.2°로 실제 분포 안이다.
+- **케이스.** 표본 10개 × 운반 구간 L0–L6 = 70건(`b-v6g`, seed 911, `--setup-variant hR`, `--render-profile floor_light_v1`, 각 구간의 진입 자세는 경로 변위만큼 함께 이동). L7은 `b-v6g-l7`로 별도 10건(합산하지 않음).
+- **기준(이미 정한 것 그대로, 다시 적는다).** 통과율 ≥ 8/10 — 표본 10개 각각을 "표본" 단위로 보지 않고 hB·hC·hD와 같이 **케이스 통과율 ≥ 80 %(70건 중 ≥ 56건)** 로 판정하되, 구간별(L0–L6) 통과율도 함께 표로 보이고 어느 구간도 0인 채로 숨기지 않는다; leg 끝 3자유도 평균 NEES ∈ [1.5, 6]; x·y·yaw ±2σ 커버리지 ≥ 90 %(70건 × 로봇 2 = 140표본). NEES·커버리지가 기준 밖이면 통과율이 충족돼도 미통과(정직성이 전제). 가드·게이트 문턱은 바꾸지 않는다.
+- **통과 시**: 작동 범위를 "실제 분포 안(빔 y 0.05 ± 0.002 m, 헤딩 ≤ 0.5°, 파지 오차 along ≤ 2.6 cm / lateral ≤ 1.3 cm, 로봇 yaw ±2.5°)"으로 명시해 v81 / 2.14.0 / v6e로 등록·봉인·push·PR(Opus 독립 검토 요청 포함). **미통과 시** 등록하지 않고 구간별·원인별 보고와 L1 가드 여유의 수치 정리.
+- **구간별 표시.** 결과는 배치별이 아니라 구간별(L0–L6)로 낸다. 실패는 (a) 원인 코드, (b) 실패 시각의 PF 위치·σ, (c) 문 가장자리(y −0.20, 0.30)까지의 GT 여유와 가드 요구 여유(기본 0.02 + 잔차 0.015 + 2σ_xy + 2σ_yaw × 0.18)를 수치로 정리한다.
+
 ## TensorBoard
 
 - **스냅샷.** `/Users/changmin/projects/ugrp/outputs/tensorboard/0929-pair-stage-probes-v6e`, run 106개(경우별 98 + 그룹 집계 `ALL-*` 8). `collection.json` sha256 `ec6f3639cf33b470cbda4fea2501bb8b65fae61c9fd9881e2a7bcbce3ad0ae9b`. 파생 뷰 `outputs/pair-stage-probes-tbviews-0929-v6e`(빌더 `scripts/build_pair_stage_probe_views.py`, 변환기 `scripts/export_offline_audit.py`). 기존 스냅샷은 건드리지 않았다.

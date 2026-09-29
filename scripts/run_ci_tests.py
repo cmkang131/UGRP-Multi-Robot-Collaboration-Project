@@ -120,6 +120,8 @@ TEST_PATTERNS = (
     "tests/test_zone_pair_v6d.py",  # v6d (bundle v80): wide-hue beam heading + M1 fine align motion
     "tests/test_zone_pair_v6e.py",  # v6e carry flags (dead-reckoning model, lateral lag); flags off = v6c
     "tests/test_zone_pair_v6f.py",  # v6f place flags (optical-black dark reference, bounded retreat); flags off = v6c
+    "tests/test_zone_pair_v6e_yaw.py",  # v6e yaw flags (pair-mean plant yaw, beam-edge relative yaw); flags off = v6e
+    "tests/test_zone_pair_v6g.py",  # v6g carry_dr_general (lateral breakaway ramp, cross-axis drift) + route end inset; flags off = v6e
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_m2_pair_door_v3.py", "tests/test_pair_owncam_approach.py", "tests/test_zone_tagged_cargo_scene.py",
