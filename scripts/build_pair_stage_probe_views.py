@@ -14,6 +14,10 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from harness.pair_stage_probe import canonical_policy  # noqa: E402
 
 SCHEMA = 'ugrp.offline_audit_view.v1'
 DEFINITION = ('stage probe verdict, NOT E2E success: both robots reached the stage exit by their own controller '
@@ -27,7 +31,10 @@ DIAG_SHORT = {'fix_age_round': '', 'loaded_yaw_gate_wide': 'G', 'pf_rest_no_abs_
 IK_ENVELOPE_TEXT = 'outside the calibrated 14.5..18.0 cm grasp envelope'   # harness.pair_stage_probe.STAGING_IK_ENVELOPE_TEXT
 POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C',   # C = v6c (exact clock + grasp-range entry)
                 'b-boot': 'BB', 'a+b-boot': 'ABB',                    # v6b start bootstrap (PR #261)
-                'b-v6d': 'D'}                                          # D = v6d (wide hue, fine align motion)
+                'b-v6d': 'D',                                          # D = v6d (wide hue, fine align motion)
+                'b-v6e-dr': 'ED', 'b-v6e-lag': 'EL', 'b-v6e-base': 'E0', 'b-v6e': 'E',   # v6e carry flags: dead-reckoning model / lateral lag / both = base
+                'b-v6e-pm': 'Ep', 'b-v6e-edge': 'Ee', 'b-v6g': 'G', 'b-v6g-l7': 'GL',                  # v6e yaw flags: pair-mean model / beam edge (E = both)
+                'b-v6f-a': 'Fa', 'b-v6f-b': 'Fb', 'b-v6f': 'F'}       # v6f: own_image_ob / bounded_retreat / both
 
 
 def _run_tag(raw):
@@ -100,7 +107,7 @@ def case_view(raw, row, manifest):
         scalars[f'offline/relook_calls/{rid}'] = len(calls)
     for rid, n in (row.get('localizer_replaced') or {}).items():
         scalars[f'offline/localizer_replaced/{rid}'] = n
-    policy = row.get('pair_policy', 'v5h')
+    policy = canonical_policy(row.get('pair_policy', 'v5h'), manifest.get('probe_version'))   # 0.6.x b-v6e = b-v6e-base
     infeasible = staging_infeasible(row, result)
     if infeasible:
         row = {**row, 'cause': 'STAGING_IK_ENVELOPE', 'cause_sub': None}   # 0.4.1 raws recorded HOST_ERROR; the message says why
@@ -132,6 +139,9 @@ def case_view(raw, row, manifest):
         leg = row['leg']
         view['condition'] += ' dest' if row['stage'] == 'setdown' else f' leg{leg}'   # setdown 'end' = the route destination
         diag += f'-L{leg}' if row['stage'] == 'carry' else '-Lend'
+    if row.get('setup_variant'):                                    # 0.6.0: held-out / calibration placement
+        view['condition'] += f" placement:{row['setup_variant']}"
+        diag += f"-V{row['setup_variant']}"
     if row.get('cause'):
         view['cause'] = row['cause'] + (f"/{row['cause_sub']}" if row.get('cause_sub') else '')
         view['outcome'] = f"{row['category']} [{view['cause']}]"
@@ -158,10 +168,11 @@ def main(argv=None):
         infeasible_ids = {r['case_id'] for r in rows if staging_infeasible(
             r, json.loads((raw / 'cases' / re.sub(r'[^A-Za-z0-9_.+-]+', '_', r['case_id']) / 'result.json').read_text()))}
         for stage, st0 in s['stages'].items():
-            for policy, st in (st0.get('by_policy') or {'v5h': st0}).items():
+            for raw_policy, st in (st0.get('by_policy') or {'v5h': st0}).items():
+                policy = canonical_policy(raw_policy, manifest.get('probe_version'))
                 for source, bs in st['by_source'].items():
                     n_inf = sum(1 for r in rows if r['case_id'] in infeasible_ids and r['stage'] == stage
-                                and r['source'] == source and r.get('pair_policy', 'v5h') == policy)
+                                and r['source'] == source and r.get('pair_policy', 'v5h') == raw_policy)
                     view = {'schema': SCHEMA, 'derived_view_only': True,
                             'offline_source': {'path': str(summary), 'sha256': sha(summary)},
                             'offline_scalar_scope': f'aggregate of {bs["cases"]} stage-probe cases ({stage}, {source}); '

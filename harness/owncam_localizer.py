@@ -122,11 +122,28 @@ class OwnCamLocalizer:
         self.n = int(self.params['particles'])
         self.px = np.zeros((self.n, 3))
         self.scale = np.ones((self.n, 3))
+        # v6e (optional, params['motion_loaded']['load_transition']): per-particle yaw-rate bias of the
+        # loaded plant; None (and never drawn) unless the loaded profile asks for it.
+        self.yaw_bias: np.ndarray | None = None
         self.logw = np.zeros(self.n)
         self.initialized = False
         self.t = 0.
         self.cmd = np.zeros(3)
         self.cmd_expires = -1.
+        # v6e carry_pair_yaw (optional): the partner's command of the current carry leg, derived by the executor from
+        # the static route plan and the role (never received from the partner). ``pair_plan`` holds the leg window,
+        # the own command and the derived partner command; ``cmd_partner`` is set only while an issued command
+        # equals the planned own command inside that window.
+        self.pair_plan: dict | None = None
+        self.cmd_partner: np.ndarray | None = None
+        self.pair_matched = self.pair_unmatched = 0
+        # v6e availability fallback (optional, set by the pose source): extra per-particle constant yaw-rate error
+        # (std ``extra_std``) that widens the yaw spread while the flagged yaw information is unavailable.
+        self.yaw_extra: np.ndarray | None = None
+        self.extra_std = 0.
+        # v6g carry_dr_general (optional, params['motion_loaded']['drift_ratio_std']): per-particle constant cross-axis drift
+        # ratios (n, 2) = [body-lateral per body-forward travel, body-forward per body-lateral travel]; None otherwise.
+        self.drift: np.ndarray | None = None
         self.vel = np.zeros(3)
         self.servo: dict[int, int] = {}
         self.load = LoadState()
@@ -151,7 +168,10 @@ class OwnCamLocalizer:
         """Feed one issued command (in time order)."""
         t = float(row['t'])
         self.predict_to(t)
+        was_loaded = self.load.loaded
         self.load.command(row)
+        if self.load.loaded != was_loaded:
+            self._load_transition(self.load.loaded)
         kind = row['kind']
         if kind == 'initial_servo_command':
             self.servo = {int(k): int(v) for k, v in row['pulses'].items()}
@@ -165,12 +185,73 @@ class OwnCamLocalizer:
         elif kind == 'mecanum':
             self.cmd = np.array([row['forward'], row['left'], row['turn']], float)
             self.cmd_expires = t + float(row['duration_s'])
+            self.cmd_partner = self._partner_of(t, self.cmd)
         elif kind == 'drive':
             self.cmd = np.array([row['forward'], 0., row['turn']], float)
             self.cmd_expires = t + float(row['duration_s'])
+            self.cmd_partner = None
         else:  # hold / stop / anything else stops the wheels (port semantics)
             self.cmd = np.zeros(3)
             self.cmd_expires = -1.
+            self.cmd_partner = None
+
+    def _load_transition_profile(self):
+        return self.params.get('motion_loaded', {}).get('load_transition')
+
+    def _yaw_bias_std(self) -> float:
+        return float(self.params['motion_loaded']['yaw_bias_std_rad_s'])
+
+    def _load_transition(self, loaded: bool) -> None:
+        """Optional v6e loaded profile: the slip scales and the yaw-rate bias belong to one plant.
+
+        Only acts when ``params['motion_loaded']['load_transition']`` exists (otherwise nothing is drawn and the
+        registered behaviour is unchanged). Picking up the load re-draws the per-particle scales with the
+        calibrated LOADED spread and draws the yaw-rate bias; putting it down re-draws the scales with the
+        unloaded spread the filter started with.
+        """
+        prof = self._load_transition_profile()
+        if not prof or not self.initialized:
+            return
+        self._draw_plant_state(loaded)
+
+    def _draw_plant_state(self, loaded: bool) -> None:
+        prof = self._load_transition_profile()
+        if loaded:
+            sd = np.asarray(prof['scale_std'], float)
+            self.scale = 1. + self.rng.normal(size=(self.n, 3))*sd
+            self.yaw_bias = self.rng.normal(size=self.n)*self._yaw_bias_std()
+            dstd = self.params['motion_loaded'].get('drift_ratio_std')
+            if dstd:
+                self.drift = self.rng.normal(size=(self.n, 2))*float(dstd)
+        else:
+            self.scale = 1. + self.rng.normal(size=(self.n, 3))*np.asarray(prof['unloaded_scale_std'], float)
+            self.yaw_bias = None
+            self.drift = None
+            self.yaw_extra, self.extra_std = None, 0.
+
+    def _init_plant_state(self) -> None:
+        """Filter initialised while carrying: same draws as the pick-up transition (no-op without the profile)."""
+        if self.load.loaded and self._load_transition_profile():
+            self._draw_plant_state(True)
+
+    def _reset_plant_state(self, idx) -> None:
+        """Re-seeded particles start with scale 1 (registered); with the loaded profile they also get a fresh bias."""
+        if self.yaw_bias is not None:
+            self.yaw_bias[idx] = self.rng.normal(size=len(idx))*self._yaw_bias_std()
+        if self.yaw_extra is not None:
+            self.yaw_extra[idx] = self.rng.normal(size=len(idx))*self.extra_std
+        if self.drift is not None:
+            self.drift[idx] = self.rng.normal(size=(len(idx), 2))*float(self.params['motion_loaded']['drift_ratio_std'])
+
+    def _partner_of(self, t: float, cmd) -> np.ndarray | None:
+        plan = self.pair_plan
+        if plan is None or not (plan['t0'] - 1e-6 <= t <= plan['t1'] + 1e-6):
+            return None
+        if not np.array_equal(cmd, plan['own']):
+            self.pair_unmatched += 1       # a command inside the leg window that is not the planned leg command
+            return None
+        self.pair_matched += 1
+        return plan['partner']
 
     def set_motion_profile(self, t: float, name: str | None) -> None:
         """Select ``params['motion_profiles'][name]`` from time ``t`` on (None: default selection)."""
@@ -193,7 +274,19 @@ class OwnCamLocalizer:
             rel, ab = np.asarray(mp['noise_rel']), np.asarray(mp['noise_abs'])
             dt = min(STEP_S, t - self.t)
             u = self.cmd if self.t < self.cmd_expires - 1e-9 else np.zeros(3)
+            db = mp.get('deadband')
+            if db is not None and np.any(u):
+                # v6g carry_dr_general: a loaded wheel plant does not follow tiny commands linearly (static-friction breakaway:
+                # no motion below c0, the calibrated gain from u1 up, linear in between; per axis [forward, left, turn],
+                # u1 <= c0 leaves an axis linear). Fitted on the recorded steer-phase responses.
+                c0, u1 = np.asarray(db['c0'], float), np.asarray(db['u1'], float)
+                u = u*np.where(u1 > c0, np.clip((np.abs(u) - c0)/np.maximum(u1 - c0, 1e-9), 0., 1.), 1.)
             target = gain @ u
+            if self.cmd_partner is not None and self.load.loaded and np.any(u):
+                # v6e carry_pair_yaw: a rigid pair's beam yaw is the MEAN of the two plants' yaw predictions, so the
+                # antisymmetric part of the yaw coupling (mirrored partner command) cancels; x/y stay the own plant.
+                target = target.copy()
+                target[2] = .5*(target[2] + gain[2] @ self.cmd_partner)
             # Optional separate stop lag (loop v2 dev fit): wheels commanded to zero
             # (hold / expired command) stop much faster than they spin up.
             tau = mp.get('tau_stop_s', mp['tau_s']) if not np.any(u) else mp['tau_s']
@@ -206,10 +299,24 @@ class OwnCamLocalizer:
             self.vel = self.vel + alpha*(target - self.vel)
             if self.initialized:
                 std = rel*np.abs(self.vel) + ab
+                # Optional (v6e loaded profile): rate noise belongs to wheel motion; a robot at rest
+                # (no live command, |vel| < 1 mm/s) does not diffuse. The draw below still happens.
+                moving = np.any(u) or float(np.max(np.abs(self.vel))) >= 1e-3
+                if not mp.get('rest_noise', True) and not moving:
+                    std = np.zeros(3)
                 # use_scale False (M1 'fine' profile): the per-particle slip scales track the
                 # navigation plant and do not transfer to the arm-lowered plant.
                 sc = self.scale if mp.get('use_scale', True) else 1.
                 v = self.vel[None, :]*sc + self.rng.normal(size=(self.n, 3))*std
+                if self.yaw_bias is not None and moving and 'yaw_bias_std_rad_s' in mp:
+                    v[:, 2] += self.yaw_bias
+                if self.yaw_extra is not None and self.yaw_bias is not None and moving:
+                    v[:, 2] += self.yaw_extra
+                if self.drift is not None and moving:
+                    # v6g: cross-axis drift proportional to the travelled distance (Thrun et al. 2005 sec. 5.4 / AMCL omni
+                    # model: lateral spread grows with translation, not with time)
+                    v[:, 1] += self.drift[:, 0]*abs(float(self.vel[0]))
+                    v[:, 0] += self.drift[:, 1]*abs(float(self.vel[1]))
                 c, s = np.cos(self.px[:, 2]), np.sin(self.px[:, 2])
                 self.px[:, 0] += (c*v[:, 0] - s*v[:, 1])*dt
                 self.px[:, 1] += (s*v[:, 0] + c*v[:, 1])*dt
@@ -218,6 +325,29 @@ class OwnCamLocalizer:
                     self.scale += self.rng.normal(size=(self.n, 3))*mp['scale_walk']*math.sqrt(dt)
                 self.logw += self._map_logprior(self.px)
             self.t += dt
+
+    def set_extra_yaw_std(self, t: float, std: float) -> None:
+        """v6e availability fallback: from time ``t`` on every particle carries an extra constant yaw-rate error of
+        std ``std`` (0 clears it). The earlier interval keeps the earlier setting; a changed std draws fresh values."""
+        self.predict_to(t)
+        if not self.initialized or self.yaw_bias is None or abs(std - self.extra_std) < 1e-12:
+            return
+        self.extra_std = float(std)
+        self.yaw_extra = self.rng.normal(size=self.n)*self.extra_std if self.extra_std > 0. else None
+
+    def pair_ok(self) -> bool:
+        """True unless a moving loaded robot is not on a plan-matched carry leg (checked at the current PF clock)."""
+        moving = bool(np.any(self.cmd)) and self.t < self.cmd_expires - 1e-9
+        return (not moving) or self.cmd_partner is not None
+
+    def apply_relative_yaw(self, t: float, dyaw: float) -> None:
+        """v6e carry_beam_edge: add the own-RGB measured robot-minus-beam relative-yaw increment to every particle.
+
+        The common-mode beam yaw is not visible in that view and stays with the per-particle yaw-rate bias, so the
+        cloud shifts, its spread does not change."""
+        self.predict_to(t)
+        if self.initialized and dyaw:
+            self.px[:, 2] = wrap(self.px[:, 2] + float(dyaw))
 
     def _map_logprior(self, px):
         x, y = px[:, 0], px[:, 1]
@@ -324,6 +454,7 @@ class OwnCamLocalizer:
                 self.px = self._reset_from(dets, pose, self.n)
                 sd = self.params['motion']['scale_std']
                 self.scale = 1. + self.rng.normal(size=(self.n, 3))*sd
+                self._init_plant_state()
                 self.logw = self._map_logprior(self.px)
                 self.initialized = True
             ll = self._loglik(self.px, dets, pose)
@@ -347,6 +478,7 @@ class OwnCamLocalizer:
                 idx = self.rng.choice(self.n, size=k, replace=False)
                 self.px[idx] = self._reset_from(dets, pose, k)
                 self.scale[idx] = 1.
+                self._reset_plant_state(idx)
                 self.logw[idx] = np.max(self.logw)
                 ll[idx] = self._loglik(self.px[idx], dets, pose)
                 self.stats['resets'] += 1
@@ -365,6 +497,12 @@ class OwnCamLocalizer:
             positions = (np.arange(self.n) + self.rng.uniform())/self.n
             idx = np.minimum(np.searchsorted(np.cumsum(w), positions), self.n - 1)
             self.px, self.scale = self.px[idx].copy(), self.scale[idx].copy()
+            if self.yaw_bias is not None:
+                self.yaw_bias = self.yaw_bias[idx].copy()
+            if self.yaw_extra is not None:
+                self.yaw_extra = self.yaw_extra[idx].copy()
+            if self.drift is not None:
+                self.drift = self.drift[idx].copy()
             # Roughening (regularized PF): small jitter so the cloud can move
             # when the likelihood is much sharper than the motion noise.
             rough = np.asarray(self.params.get('roughen', [0., 0., 0.]), float)

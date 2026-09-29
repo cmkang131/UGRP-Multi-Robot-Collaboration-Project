@@ -389,9 +389,10 @@ class PairCommandGuard:
         Commands/time grow its uncertainty; absent evidence still fails closed.
         """
         from harness.zone_pair_grasp import FIX_STD_XY_M, FIX_STD_YAW_RAD, stationary_beam_estimate
-        from harness.zone_pair_vision import valid_frame
+        from harness.zone_pair_vision import frame_gate
 
         own = self.ep.own
+        valid_frame = frame_gate(self.ep.policy)
         if self.relative_enabled:
             if (now < self.motion_until or not valid_frame(obs, own.robot_id, now)
                     or not self._same_camera_commands(obs)):
@@ -428,9 +429,10 @@ class PairCommandGuard:
             return False
 
     def observe_standoff(self, now, obs):
-        from harness.zone_pair_vision import valid_frame
+        from harness.zone_pair_vision import frame_gate
 
         own = self.ep.own
+        valid_frame = frame_gate(self.ep.policy)
         if (now < self.motion_until or own.servo.get(1) != 2000
                 or not valid_frame(obs, own.robot_id, now) or not self._same_camera_commands(obs)):
             return False
@@ -630,6 +632,24 @@ class PairCommandGuard:
             return False
         return True  # only checked stationary arm/camera commands, never base motion
 
+    def _bounded_retreat(self, now, commands):
+        """Policy ``bounded_retreat``: after the beam is released, a reverse command the unchanged sweep guard
+        cannot clear ends the retreat instead of failing the job (MoveIt Task Constructor MoveRelative with
+        min_distance 0: move as far as is collision-free, then stop). The veto itself is not weakened, no
+        unchecked command is issued, and nothing but the post-release reverse retreat can take this path."""
+        ep = self.ep
+        if not getattr(getattr(ep, 'policy', None), 'bounded_retreat', False):
+            return False
+        if ep.controller.state != 'released' or self.carrying_beam:
+            return False
+        if not all(c['kind'] == 'mecanum' and c.get('forward', 0.) < 0. and not c.get('left') and not c.get('turn')
+                   for c in commands):
+            return False
+        self.retreat_holds = getattr(self, 'retreat_holds', 0) + 1
+        if self.retreat_holds == 1:
+            ep.log(ep.own.robot_id, 'retreat_bounded', now, reason='SWEEP_GUARD_VETO_AFTER_RELEASE')
+        return True
+
     def check(self, now, commands):
         ep, own = self.ep, self.ep.own
         loaded = not self.approach
@@ -707,6 +727,8 @@ class PairCommandGuard:
                     reason = 'POSE_UNCERTAIN'
                     break
                 if not guard.motion_clear(servo, pose, cmd, loaded=self.carrying_beam):
+                    if self._bounded_retreat(now, commands):
+                        return [{'kind': 'hold'}]
                     reason = 'PAIR_COLLISION_GUARD'
                     break
         if reason:

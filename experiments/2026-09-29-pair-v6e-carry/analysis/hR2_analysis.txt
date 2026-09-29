@@ -1,0 +1,30 @@
+== pair-stage-probes-3f6ca985-ghR2: 56/70 passed; staged (IK envelope excluded) 56/70
+leg  pass  causes
+ L0  4/10  {'COLLISION_GUARD': 6}
+ L1  2/10  {'COLLISION_GUARD': 8}
+ L2  10/10  {}
+ L3  10/10  {}
+ L4  10/10  {}
+ L5  10/10  {}
+ L6  10/10  {}
+failures: id | fail t | robot | PF sigma_xy sigma_yaw(deg) | GT y | PF y | door clearance GT (m) | door clearance by PF y (m) | guard need (m) | reading
+  hR2_02:s911:pPOST:VhR2 | 24.3 | r2 | 0.043 2.21 | 0.073 0.072 | 0.127 | 0.128 | 0.134 | COLLISION_GUARD | true tight (GT clearance < need)
+  hR2_03:s911:pPOST:VhR2 | 24.6 | r2 | 0.042 2.23 | 0.075 0.072 | 0.125 | 0.128 | 0.132 | COLLISION_GUARD | true tight (GT clearance < need)
+  hR2_04:s911:pPOST:VhR2 | 24.5 | r2 | 0.040 2.18 | -0.027 -0.006 | 0.073 | 0.094 | 0.128 | COLLISION_GUARD | true tight (GT clearance < need)
+  hR2_05:s911:pPOST:VhR2 | 24.6 | r2 | 0.040 2.19 | -0.021 -0.006 | 0.079 | 0.094 | 0.128 | COLLISION_GUARD | true tight (GT clearance < need)
+  hR2_06:s911:pPOST:VhR2 | 24.5 | r2 | 0.040 2.18 | -0.023 -0.006 | 0.077 | 0.094 | 0.129 | COLLISION_GUARD | true tight (GT clearance < need)
+  hR2_10:s911:pPOST:VhR2 | 24.3 | r2 | 0.041 2.20 | 0.063 0.075 | 0.137 | 0.125 | 0.132 | COLLISION_GUARD | PF bias false alarm (GT clearance >= need, PF-based < need)
+  hR2_01:s911:pPOST:L1:VhR2 | 31.0 | r1 | 0.045 3.01 | 0.046 0.029 | 0.146 | 0.129 | 0.143 | COLLISION_GUARD | PF bias false alarm (GT clearance >= need, PF-based < need)
+  hR2_02:s911:pPOST:L1:VhR2 | 31.0 | r1 | 0.044 3.00 | 0.047 0.027 | 0.147 | 0.127 | 0.142 | COLLISION_GUARD | PF bias false alarm (GT clearance >= need, PF-based < need)
+  hR2_04:s911:pPOST:L1:VhR2 | 6.4 | r2 | 0.027 0.46 | -0.043 -0.024 | 0.057 | 0.076 | 0.091 | COLLISION_GUARD | true tight (GT clearance < need)
+  hR2_05:s911:pPOST:L1:VhR2 | 6.4 | r2 | 0.027 0.46 | -0.043 -0.028 | 0.057 | 0.072 | 0.091 | COLLISION_GUARD | true tight (GT clearance < need)
+  hR2_06:s911:pPOST:L1:VhR2 | 6.4 | r2 | 0.027 0.46 | -0.043 -0.026 | 0.057 | 0.074 | 0.092 | COLLISION_GUARD | true tight (GT clearance < need)
+  hR2_03:s911:pPOST:L1:VhR2 | 31.0 | r1 | 0.044 3.00 | 0.047 0.028 | 0.147 | 0.128 | 0.142 | COLLISION_GUARD | PF bias false alarm (GT clearance >= need, PF-based < need)
+  hR2_07:s911:pPOST:L1:VhR2 | 30.7 | r1 | 0.046 2.93 | 0.043 0.026 | 0.143 | 0.126 | 0.146 | COLLISION_GUARD | true tight (GT clearance < need)
+  hR2_08:s911:pPOST:L1:VhR2 | 31.0 | r1 | 0.044 2.97 | 0.048 0.027 | 0.148 | 0.127 | 0.142 | COLLISION_GUARD | PF bias false alarm (GT clearance >= need, PF-based < need)
+PF honesty at last sample per case-robot: n=140 meanNEES=2.60 median=1.92 cov2σ x/y/yaw=[1.    1.    0.979]
+== pair-stage-probes-3f6ca985-ghR2L7: 10/10 passed; staged (IK envelope excluded) 10/10
+leg  pass  causes
+ L7  10/10  {}
+failures: id | fail t | robot | PF sigma_xy sigma_yaw(deg) | GT y | PF y | door clearance GT (m) | door clearance by PF y (m) | guard need (m) | reading
+PF honesty at last sample per case-robot: n=20 meanNEES=2.99 median=2.30 cov2σ x/y/yaw=[1. 1. 1.]
