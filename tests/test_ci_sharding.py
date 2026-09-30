@@ -170,7 +170,7 @@ def test_execution_forwards_only_selected_files_and_preserves_failure_code(index
     monkeypatch.setattr(runner.subprocess, "call", execute)
     monkeypatch.setattr(runner, "run_locked", execute_locked)
     argv = [] if index is None else ["--shard-count", "3", "--shard-index", str(index)]
-    assert runner.main([*argv, "--junitxml", "report.xml"]) == 7
+    assert runner.main([*argv, "--host-lock", "--junitxml", "report.xml"]) == 7
     selected = files if index is None else runner.shard_test_files(files, 3)[index]
     assert calls == [[runner.sys.executable, "-m", "pytest", "-q", *selected,
                       "--junitxml=report.xml", "-o", "junit_family=legacy"]]
