@@ -81,6 +81,7 @@ TEST_PATTERNS = (
     "tests/test_zone_study_contract.py", "tests/test_zone_study_inputs.py",
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py",
+    "tests/test_zone_environment_registry.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",
     "tests/test_zone_study_eval.py", "tests/test_zone_study_offline.py",
     "tests/test_zone_study_review_fixes.py", "tests/test_zone_study_review_r5.py",
