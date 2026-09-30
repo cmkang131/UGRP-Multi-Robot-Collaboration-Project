@@ -38,19 +38,20 @@
 
 ## 명령과 해시
 
-개봉(읽기 전용; 분석 재실행 아님, 여기서는 그 산출물만 읽었다). 개봉 명령의 원문 한 줄은 실행 로그에 남지 않았다. 스크립트가 받는 인자와 기록에서 확인되는 값으로 재구성하면:
+개봉(읽기 전용; 분석 재실행 아님, 여기서는 그 산출물만 읽었다). 조정자가 실제로 실행한 명령 원문(2026-10-01 08:07 KST, 종료 코드 0)은 다음과 같다. 사전 검사 `--verify`·`--verify-seal --seal-revision v2`는 모두 종료 코드 0, REGISTRATION_PLAN의 12개 테스트 파일은 480개 통과·6개 오류였고, 6개 오류는 `GIT_WORK_TREE`를 export한 상태에서 테스트 fixture의 `git clone --shared`가 실패한 것이며 변수를 해제하고 다시 돌리면 6개 모두 통과했다.
 
 ```
-python3 experiments/2026-09-30-pair-v6h-carry/analysis/apply_sealed_analysis.py \
-  --seal-commit 5be4330eca9b23d2cbde3657dcbb215ee1923b25 \
-  --prereg experiments/2026-09-30-pair-v6h-carry/prereg_v6h.json \
+cd /Users/changmin/projects/ugrp-wt/unblind-v6h1-s2        # 분리 HEAD 5be4330e, 깨끗한 작업 트리
+export GIT_WORK_TREE=/Users/changmin/projects/ugrp-wt/unblind-v6h1-s2
+V6H_PYTHON=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+V6H_SEAL_V2_COMMIT=5be4330eca9b23d2cbde3657dcbb215ee1923b25
+$V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis \
+  --seal-commit "$V6H_SEAL_V2_COMMIT" \
+  --prereg experiments/2026-09-30-pair-v6h-carry/analysis/seal_v2/prereg_v6h.json \
   --raw /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 \
   --inventory /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory/acquisition_inventory.json \
   --output /Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-v2-20261001
-# 실행 위치: 분리된 worktree /Users/changmin/projects/ugrp-wt/unblind-v6h1-s2 (5be4330e)
-```
-
-(조정자가 원문과 다르면 이 블록을 정정한다.) 이 기록을 만든 명령(모두 읽기 전용):
+``` 이 기록을 만든 명령(모두 읽기 전용):
 
 ```
 python3 experiments/2026-10-01-v6h1-confirm-results/tabulate.py            # per_case.csv, distributions.json
