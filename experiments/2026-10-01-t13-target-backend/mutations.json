@@ -1,0 +1,96 @@
+{
+  "schema": "ugrp.t13_offline_mutations.v1",
+  "physics_run": false,
+  "temporary_extraction_directories": [],
+  "mutants": [
+    {
+      "name": "public_ambiguity_removed",
+      "module": "harness.zone_target_identity",
+      "before": "return 'PUBLIC_CUE_AMBIGUOUS'",
+      "after": "pass",
+      "test": "tests/test_zone_own_executor_target.py::test_ambiguity_never_submits_even_when_the_detection_is_named_like_the_item[public_duplicate-PUBLIC_CUE_AMBIGUOUS]",
+      "source_sha256": "c080f5330e5656afee6c2d4b8c1c81815a47a095c53eb3d62a789169a59639c5",
+      "pytest_exit_code": 1,
+      "caught": true,
+      "worktree_unchanged": true
+    },
+    {
+      "name": "active_ambiguity_cancel_removed",
+      "module": "harness.zone_target_identity",
+      "before": "self._stop('OWN_CUE_AMBIGUOUS')",
+      "after": "pass",
+      "test": "tests/test_zone_own_executor_target.py::test_ambiguity_during_delivery_cancels_before_refresh_without_backend_fault",
+      "source_sha256": "c080f5330e5656afee6c2d4b8c1c81815a47a095c53eb3d62a789169a59639c5",
+      "pytest_exit_code": 1,
+      "caught": true,
+      "worktree_unchanged": true
+    },
+    {
+      "name": "explicit_target_removed",
+      "module": "harness.zone_target_executor",
+      "before": "self.delivery_factory(self.inner, self.inner.job, target, view, point)",
+      "after": "self.delivery_factory(self.inner, self.inner.job, None, view, point)",
+      "test": "tests/test_zone_own_executor_target.py::test_backend_passes_exact_target_to_delivery_and_cancel_drops_scheduled_commands",
+      "source_sha256": "265ac29e4a0e2f160059bc58157a3bd8e294956e34d954e82a8dd190f86965b8",
+      "pytest_exit_code": 1,
+      "caught": true,
+      "worktree_unchanged": true
+    },
+    {
+      "name": "host_queue_cancel_removed",
+      "module": "harness.zone_target_executor",
+      "before": "self.cancel_scheduled(self.now, reason)",
+      "after": "pass",
+      "test": "tests/test_zone_own_executor_target.py::test_cancel_uses_actual_host_queue_drop_and_does_not_touch_peer",
+      "source_sha256": "265ac29e4a0e2f160059bc58157a3bd8e294956e34d954e82a8dd190f86965b8",
+      "pytest_exit_code": 1,
+      "caught": true,
+      "worktree_unchanged": true
+    },
+    {
+      "name": "rgb_recognizer_removed",
+      "module": "harness.zone_target_rgb",
+      "before": "if information['sufficient']:",
+      "after": "if False:",
+      "test": "tests/test_zone_own_executor_target.py::test_real_saved_rgb_recognizer_produces_specific_grounding_without_labels",
+      "source_sha256": "c8c231e3cb370e82957a6478ca9091e72f1e0b8c68534f1dde470007cb950452",
+      "pytest_exit_code": 1,
+      "caught": true,
+      "worktree_unchanged": true
+    },
+    {
+      "name": "target_mask_removed",
+      "module": "harness.zone_target_rgb",
+      "before": "selected[mask == 0] = 0",
+      "after": "pass",
+      "test": "tests/test_zone_own_executor_target.py::test_attention_excludes_other_objects_and_preserves_selected_pixel_geometry",
+      "source_sha256": "c8c231e3cb370e82957a6478ca9091e72f1e0b8c68534f1dde470007cb950452",
+      "pytest_exit_code": 1,
+      "caught": true,
+      "worktree_unchanged": true
+    },
+    {
+      "name": "target_freshness_relaxed",
+      "module": "harness.zone_target_executor",
+      "before": "<= .25:",
+      "after": "<= 25.:",
+      "test": "tests/test_zone_own_executor_target.py::test_freshness_timeout_stops_before_lower_step",
+      "source_sha256": "265ac29e4a0e2f160059bc58157a3bd8e294956e34d954e82a8dd190f86965b8",
+      "pytest_exit_code": 1,
+      "caught": true,
+      "worktree_unchanged": true
+    },
+    {
+      "name": "bundle_drift_gate_removed",
+      "module": "scripts.zone_target_bundle",
+      "before": "if expected != actual:",
+      "after": "if False:",
+      "test": "tests/test_zone_target_workflow.py::test_bundle_freezes_all_new_control_files_config_assets_and_verifies_drift",
+      "source_sha256": "fc03290d1882aeba4b9af39e0183e2b7c5ba32ad5202f65ecc90c3a4e6799a7a",
+      "pytest_exit_code": 1,
+      "caught": true,
+      "worktree_unchanged": true
+    }
+  ],
+  "all_caught": true
+}

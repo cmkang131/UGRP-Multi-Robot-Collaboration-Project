@@ -1,0 +1,303 @@
+{
+  "schema": "ugrp.t13_target_checks.v1",
+  "status": "experimental_unqualified",
+  "seed": 641,
+  "execution_bundle_id": "zone-target-v84",
+  "map_id": "zone_wide_door_geometry_v2",
+  "robot_model": "masterpi_v2",
+  "scope": "development_only_not_final_v3_or_e2e",
+  "contact_profile": "cargo_noslip_v1",
+  "weld": false,
+  "render_profile": "floor_light_v1",
+  "pose_provider": "vision_zero_tag_v2",
+  "sensor": "off",
+  "own_memory": "target_tracks_only",
+  "conditions": [
+    "no_comm",
+    "peer_ko",
+    "leader_ko",
+    "structured"
+  ],
+  "sim_cap_s_per_cell": 900,
+  "public_orders": [
+    {
+      "order_id": "order-1",
+      "kind": "cyan",
+      "count": 1,
+      "identity": "specific_item",
+      "item_ids": [
+        "cyan_1"
+      ],
+      "required_robots": 1,
+      "destination_zone": "A",
+      "initial_location": {
+        "pickup_bay": "P1",
+        "slot": "P1-1"
+      }
+    },
+    {
+      "order_id": "order-2",
+      "kind": "red",
+      "count": 2,
+      "identity": "kind_fungible",
+      "required_robots": 1,
+      "destination_zone": "B",
+      "initial_location": {
+        "pickup_bay": "P2",
+        "slot": "P2-1"
+      }
+    },
+    {
+      "order_id": "order-3",
+      "kind": "can",
+      "count": 1,
+      "identity": "kind_fungible",
+      "required_robots": 1,
+      "destination_zone": "C",
+      "initial_location": {
+        "pickup_bay": "P1",
+        "slot": "P1-2"
+      }
+    }
+  ],
+  "public_visual_catalogue": {
+    "schema": "ugrp.public_visual_catalogue.v1",
+    "complete": true,
+    "objects": [
+      {
+        "item_id": "cyan_1",
+        "kind": "cyan",
+        "shape": "box",
+        "color": "cyan",
+        "dimensions_m": [
+          0.034,
+          0.04,
+          0.032
+        ]
+      },
+      {
+        "item_id": "red_1",
+        "kind": "red",
+        "shape": "box",
+        "color": "red",
+        "dimensions_m": [
+          0.034,
+          0.04,
+          0.032
+        ]
+      },
+      {
+        "item_id": "red_2",
+        "kind": "red",
+        "shape": "box",
+        "color": "red",
+        "dimensions_m": [
+          0.034,
+          0.04,
+          0.032
+        ]
+      },
+      {
+        "item_id": "can_1",
+        "kind": "can",
+        "shape": "cylinder",
+        "color": "violet",
+        "dimensions_m": [
+          0.038,
+          0.038,
+          0.05
+        ]
+      }
+    ]
+  },
+  "public_dock_priors": {
+    "r2": {
+      "mean": [
+        -0.85,
+        -2.25,
+        0.0
+      ],
+      "std": [
+        0.15,
+        0.15,
+        0.17453292519943295
+      ],
+      "source": "authored_seed641_own_start_dock"
+    },
+    "r3": {
+      "mean": [
+        -0.85,
+        -0.85,
+        0.0
+      ],
+      "std": [
+        0.15,
+        0.15,
+        0.17453292519943295
+      ],
+      "source": "authored_seed641_own_start_dock"
+    },
+    "r1": {
+      "mean": [
+        -0.85,
+        0.55,
+        0.0
+      ],
+      "std": [
+        0.15,
+        0.15,
+        0.17453292519943295
+      ],
+      "source": "authored_seed641_own_start_dock"
+    }
+  },
+  "student": {
+    "mode": "m1",
+    "skill_module": "harness.wrist_zone_skill_v9",
+    "skill_class": "WristZoneDeliveryV9",
+    "calibration": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json"
+  },
+  "setup_only": {
+    "arena_variant": "zone_wide_door",
+    "map_file_sha256": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+    "contact_profile": "cargo_noslip_v1",
+    "weld": "off",
+    "robot_spawns": "arena_default",
+    "placements": [
+      {
+        "item_id": "cyan_1",
+        "kind": "cyan",
+        "order_id": "order-1",
+        "slot": "P1-1",
+        "pose_m": [
+          0.4,
+          -2.45,
+          0.0
+        ]
+      },
+      {
+        "item_id": "red_1",
+        "kind": "red",
+        "order_id": "order-2",
+        "slot": "P2-1",
+        "pose_m": [
+          1.0,
+          -2.45,
+          0.0
+        ]
+      },
+      {
+        "item_id": "red_2",
+        "kind": "red",
+        "order_id": "order-2",
+        "slot": "P2-1",
+        "pose_m": [
+          1.6,
+          -2.45,
+          0.0
+        ]
+      },
+      {
+        "item_id": "can_1",
+        "kind": "can",
+        "order_id": "order-3",
+        "slot": "P1-2",
+        "pose_m": [
+          0.4,
+          -0.85,
+          0.0
+        ]
+      }
+    ]
+  },
+  "hidden_events": [
+    {
+      "event_id": "cyan_1_moved",
+      "kind": "item_moved",
+      "trigger": {
+        "kind": "sim_time",
+        "at_sim_s": 30.0
+      },
+      "target": {
+        "item_id": "cyan_1",
+        "to_pose_m": [
+          -0.2,
+          0.75,
+          0.0
+        ]
+      },
+      "discovery": {
+        "kind": "own_camera_near_anchor",
+        "anchor": "P1-1",
+        "radius_m": 1.0
+      },
+      "notes_ko": "P1-1이 비었다는 사실만 slot 근처에서 보인다. 새 위치 P1-3은 별도의 재탐색으로만 알 수 있다."
+    },
+    {
+      "event_id": "red_1_dropped",
+      "kind": "item_dropped",
+      "trigger": {
+        "kind": "sim_time",
+        "at_sim_s": 62.5
+      },
+      "target": {
+        "item_id": "red_1"
+      },
+      "discovery": {
+        "kind": "own_camera_self"
+      },
+      "notes_ko": "운반 중이면 집게가 열려 물건이 떨어진다. 아직 집지 않았다면 사건은 효과 없이 기록만 남기고, 그 사실도 평가에만 적는다."
+    }
+  ],
+  "cells": {
+    "I1": {
+      "group": "t13a",
+      "actor": "r1",
+      "order_id": "order-1",
+      "start_after_s": 0.5,
+      "focal_event": "cyan_1_moved",
+      "expected_effect": "item_moved"
+    },
+    "I2": {
+      "group": "t13a",
+      "actor": "r1",
+      "order_id": "order-1",
+      "start_after_s": 0.5,
+      "focal_event": "cyan_1_moved",
+      "expected_effect": "item_moved",
+      "duplicate_cyan": true
+    },
+    "M-U": {
+      "group": "t13b",
+      "actor": "r1",
+      "order_id": "order-1",
+      "start_after_s": 70.0,
+      "focal_event": "cyan_1_moved",
+      "expected_effect": "item_moved"
+    },
+    "M-H": {
+      "group": "t13b",
+      "actor": "r1",
+      "order_id": "order-1",
+      "start_after_s": 0.5,
+      "focal_event": "cyan_1_moved",
+      "expected_effect": "none_item_held"
+    },
+    "D-H": {
+      "group": "t13b",
+      "actor": "r2",
+      "order_id": "order-2",
+      "start_after_s": 0.5,
+      "focal_event": "red_1_dropped",
+      "expected_effect": "gripper_fault_open"
+    },
+    "D-U": {
+      "group": "t13b",
+      "actor": "r2",
+      "order_id": "order-2",
+      "start_after_s": 70.0,
+      "focal_event": "red_1_dropped",
+      "expected_effect": "none_item_not_held"
+    }
+  }
+}
