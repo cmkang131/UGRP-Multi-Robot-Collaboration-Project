@@ -17,14 +17,6 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CiFastPathTests(unittest.TestCase):
-    def test_new_push_preserves_queued_and_running_ci(self):
-        workflow = (ROOT / ".github/workflows/tests.yml").read_text()
-        concurrency = workflow.split("\nconcurrency:\n", 1)[1].split("\njobs:\n", 1)[0]
-        # A shared PR group can replace even a pending run; every run needs its own group.
-        self.assertIn("${{ github.run_id }}", concurrency)
-        self.assertNotIn("github.ref", concurrency)
-        self.assertIn("cancel-in-progress: false", concurrency)
-
     def test_only_allowed_documentation_uses_fast_path(self):
         paths = ["README.md", "AGENTS.md", "docs/guide.md", "docs/images/example.png",
                  "experiments/2026-09-30-process-review/NOTES.md"]

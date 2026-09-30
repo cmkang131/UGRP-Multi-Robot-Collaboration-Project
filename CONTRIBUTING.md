@@ -58,8 +58,7 @@ CI의 `offline-shard-*` JUnit artifact에는 파일 경로와 테스트별 setup
 파일 수 균등은 시간 균등을 보장하지 않으므로 실제 shard 실행 시간을 확인한다.
 
 CI는 feature branch의 push 대신 PR에서 실행하고, main push에서도 전체 검사를
-유지한다. 각 실행은 run ID로 구분하고 새 커밋으로 이전 대기·실행을 취소하지 않는다.
-CI를 수동 취소하거나 커밋 메시지로 건너뛰지 않는다. `ci-preflight`는 의존성
+유지한다. 같은 PR의 새 커밋은 이전 실행을 취소한다. `ci-preflight`는 의존성
 설치 전에 필수 frozen fixture 3개와 CI 분기·집계 로직을 검사한다.
 root Markdown, `docs/`의 문서·이미지 등 허용된 문서 형식,
 `experiments/`의 Markdown만 바뀐 PR은 문서 전용 경로를 쓴다.
@@ -81,12 +80,9 @@ root Markdown, `docs/`의 문서·이미지 등 허용된 문서 형식,
 새 worktree의 sparse 규칙에는 이 작은 fixture 3개가 포함된다.
 `--list-shards`는 fixture·pytest·잠금을 시작하지 않는 목록 확인으로 유지한다.
 
-공용 Mac의 기본 저장소와 연결된 worktree에서는 `run_ci_tests.py`가 실험과 같은
-`outputs/agent-locks` 잠금을 **획득한 뒤** pytest를 시작한다. 점유 중이면 테스트를
-생성하지 않고 종료 코드 3을 반환한다. 중단 시 자신이 만든 프로세스 그룹을 정리한
-뒤에만 잠금을 반환하며, 정리가 확인되지 않으면 잠금을 유지한다. GitHub CI와 별도
-clone에서는 Mac 경로를 만들지 않는다. 직접 `pytest`를 실행하거나 이전 브랜치의
-실행기를 쓰는 경우에는 이 보호가 없으므로 공용 잠금을 별도로 획득해야 한다.
+로컬 `run_ci_tests.py`는 기본적으로 공용 호스트 잠금 없이 실행하며, `agent_lock.py acquire --timing-sensitive`로 표시된 잠금이 있으면 경고만 출력한다(표시 기본값 false).
+wall 시간 측정 때문에 직렬 실행이 필요하면 `--host-lock` 또는 `UGRP_TEST_HOST_LOCK=1`을 사용한다. 기존처럼 점유 시 종료 코드 3을 반환하고 자식 정리 확인 뒤 잠금을 반환한다.
+GitHub CI·별도 clone은 Mac 잠금을 만들지 않으며, 오프라인 목록에서 제외된 native 물리·렌더 테스트는 계속 제외한다.
 
 ## 실제 실험 재현
 
