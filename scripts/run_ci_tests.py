@@ -111,6 +111,8 @@ TEST_PATTERNS = (
     "tests/test_zone_pair_role_exchange.py",  # T07: six explicit role assignments; fake ports only
     "tests/test_stall_observation_contract.py",  # P08: synthetic observation/stop contract only
     "tests/test_zone_pair_review2.py",
+    "tests/test_zone_pair_rendezvous.py",
+    "tests/test_zone_pair_rendezvous_t07.py",
     "tests/test_zone_pair_review3.py",
     "tests/test_zone_pair_review4.py",
     "tests/test_zone_pair_review5.py",
