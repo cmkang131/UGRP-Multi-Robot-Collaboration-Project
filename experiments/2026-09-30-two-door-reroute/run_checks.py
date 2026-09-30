@@ -20,6 +20,7 @@ os.environ['OPENBLAS_NUM_THREADS'] = '1'
 os.environ['PYTEST_DISABLE_PLUGIN_AUTOLOAD'] = '1'
 TARGET = 'tests/test_zone_own_executor_observed_reroute.py'
 RELATED = [TARGET, 'tests/test_zone_own_executor_door_routes.py',
+           'tests/test_review_e2e_batch_i.py',
            'tests/test_pair_passage_plan.py', 'tests/test_zone_model_conventions.py',
            'tests/test_zone_pair_status.py', 'tests/test_zone_pair_registered_source.py',
            'tests/test_zone_study_source_pinning.py', 'tests/test_zone_study_protocol.py',
@@ -39,7 +40,8 @@ def no_network(event, args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    mutations = ['ignore_observation', 'ignore_replan', 'skip_stop', 'ignore_messages', 'ignore_pair_failure']
+    mutations = ['ignore_observation', 'ignore_replan', 'skip_stop', 'ignore_messages', 'ignore_pair_failure',
+                 'ignore_capture_age', 'ignore_future_capture', 'ignore_capture_order', 'ignore_cancel_capture']
     parser.add_argument('--mutation', default='none', choices=['none', 'suite', *mutations])
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
@@ -77,6 +79,10 @@ def main():
             'ignore_replan': ('needs_replan = self.route is not None and self.route.passage_id in self._blocked',
                               'needs_replan = False'),
             'ignore_pair_failure': ("return self._fail('PAIR_NOT_SAFE', now_s)", 'pass'),
+            'ignore_capture_age': ("return self._fail('STALE_OWN_CAPTURE', now_s)", 'pass'),
+            'ignore_future_capture': ("return self._fail('FUTURE_OWN_CAPTURE', now_s)", 'pass'),
+            'ignore_capture_order': ("return self._fail('NONINCREASING_OWN_CAPTURE', now_s)", 'pass'),
+            'ignore_cancel_capture': ("return self._fail('PRE_CANCEL_OWN_CAPTURE', now_s)", 'pass'),
         }
         import pytest
         record['runs'] = []

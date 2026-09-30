@@ -21,9 +21,12 @@ from typing import Protocol
 from harness.zone_static_door_routes import DoorRoute, MotionContract, plan_door_routes
 from harness.zone_study_contract import ENVELOPE_KEYS, MESSAGE_ENVELOPE_SCHEMA, STRUCTURED_FIELDS
 
-VERSION = 'ugrp.observed_door_reroute.v1'
+VERSION = 'ugrp.observed_door_reroute.v2'
 MEMORY_VERSION = 'monotone_blocked_doors.v1'
 STATUS_PROFILE = 'zone_pair_status_v5'
+# One fixed admission policy for every communication condition. This candidate
+# bound needs validation with the real camera/navigation adapters.
+MAX_FRAME_AGE_S = .25
 
 
 def digest(value):
@@ -33,9 +36,15 @@ def digest(value):
 
 @dataclass(frozen=True)
 class OwnFrame:
+    """Camera capture time uses the same local monotonic clock as tick(now_s).
+
+    Stamp at capture, never at delivery/decode. A new sequence is not evidence
+    of a new capture. This metadata carries no scenario or evaluator state.
+    """
     robot_id: str
     sequence: int
     rgb: bytes
+    captured_at_s: float
 
     @property
     def sha256(self):
@@ -172,6 +181,8 @@ class ObservedDoorReroute:
         self.route = None
         self.state, self.reason = 'NEW', None
         self._last_sequence, self._last_now = -1, -math.inf
+        self._last_capture = -math.inf
+        self._resume_after_s = -math.inf
 
     @property
     def belief(self):
@@ -188,6 +199,10 @@ class ObservedDoorReroute:
                 'status_channel': STATUS_PROFILE, 'map_sha256': digest(self._map),
                 'prior_sha256': digest({}), 'observer': self.observer.version,
                 'navigation': self.navigation.version, 'motion': asdict(MotionContract()),
+                'frame_timing': {'clock': 'own_monotonic_capture',
+                                 'max_age_s': MAX_FRAME_AGE_S,
+                                 'strict_capture_order': True,
+                                 'capture_after_cancel_tick': True},
                 'cargo_kind': self.kind, 'roles': self.roles, 'goal': self.goal}
 
     def _decision(self):
@@ -239,6 +254,9 @@ class ObservedDoorReroute:
 
         delivered_messages MUST come from the existing transport's robot inbox
         after delivery. No pending/send log, peer controller or evaluator view.
+        now_s must be sampled at admission, not copied from a queued frame.
+        Navigation must still enforce its live RGB/command lease while driving;
+        this entry check is not a safety claim about later adapter latency.
         """
         if self.state in {'FAILED', 'REFUSED', 'PAIR_REPLAN_REQUIRED', 'ROUTE_FINISHED'}:
             if not self._stop_confirmed:
@@ -252,6 +270,18 @@ class ObservedDoorReroute:
                 or not isinstance(frame.rgb, bytes) or not frame.rgb):
             return self._fail('INVALID_OWN_FRAME', now_s)
         self._last_sequence = frame.sequence
+        if (type(frame.captured_at_s) not in (int, float)
+                or not math.isfinite(frame.captured_at_s) or frame.captured_at_s < 0):
+            return self._fail('INVALID_OWN_CAPTURE_TIME', now_s)
+        if frame.captured_at_s > now_s:
+            return self._fail('FUTURE_OWN_CAPTURE', now_s)
+        if now_s - frame.captured_at_s > MAX_FRAME_AGE_S:
+            return self._fail('STALE_OWN_CAPTURE', now_s)
+        if frame.captured_at_s <= self._last_capture:
+            return self._fail('NONINCREASING_OWN_CAPTURE', now_s)
+        if frame.captured_at_s <= self._resume_after_s:
+            return self._fail('PRE_CANCEL_OWN_CAPTURE', now_s)
+        self._last_capture = frame.captured_at_s
         try:
             observation = self.observer.observe(frame, copy.deepcopy(self._map), self._history)
             pose = observation.pose_m_rad
@@ -292,6 +322,7 @@ class ObservedDoorReroute:
             if self.route is None:
                 return self._decision()
             # Fresh own RGB after cancellation, not the pre-stop pose, starts it.
+            self._resume_after_s = now_s
             self.state, self.reason = 'REPLAN_READY', None
             return self._decision()
         if self.route is None or self.state == 'REPLAN_READY':

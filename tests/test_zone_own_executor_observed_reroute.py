@@ -65,8 +65,9 @@ def make(*, kind='cyan', robot='r1', channel=None, observer=None, navigation=Non
 
 
 def tick(controller, sequence, pixels='clear', inbox=(), now=None):
-    return controller.tick(rr.OwnFrame(controller.robot_id, sequence, PIXELS[pixels]),
-                           now_s=sequence * .01 if now is None else now, delivered_messages=inbox)
+    now = sequence * .01 if now is None else now
+    return controller.tick(rr.OwnFrame(controller.robot_id, sequence, PIXELS[pixels], now),
+                           now_s=now, delivered_messages=inbox)
 
 
 def bus(condition):
@@ -224,7 +225,7 @@ def test_invalid_observation_fails_closed(fault):
 def test_bad_frame_or_own_clock_stops(fault):
     c = make()
     tick(c, 1)
-    frame, now = rr.OwnFrame('r1', 2, PIXELS['clear']), .02
+    frame, now = rr.OwnFrame('r1', 2, PIXELS['clear'], .02), .02
     if fault == 'peer_frame':
         frame = replace(frame, robot_id='r2')
     if fault == 'stale_frame':
@@ -397,3 +398,114 @@ def test_pair_announces_abort_even_while_stop_is_pending():
 def test_existing_ci_glob_collects_this_file():
     from scripts.run_ci_tests import TEST_PATTERNS
     assert any(Path(__file__).match(pattern) for pattern in TEST_PATTERNS)
+    assert 'tests/test_review_e2e_batch_i.py' in TEST_PATTERNS
+
+
+@pytest.mark.parametrize('condition', CONDITIONS)
+@pytest.mark.parametrize('phase', ['new', 'running', 'stopping', 'replan_ready'])
+@pytest.mark.parametrize('captured,reason', [
+    (.01, 'STALE_OWN_CAPTURE'),
+    (1.01, 'FUTURE_OWN_CAPTURE'),
+    (None, 'INVALID_OWN_CAPTURE_TIME'),
+    (True, 'INVALID_OWN_CAPTURE_TIME'),
+    ('1', 'INVALID_OWN_CAPTURE_TIME'),
+    (-.01, 'INVALID_OWN_CAPTURE_TIME'),
+    (float('nan'), 'INVALID_OWN_CAPTURE_TIME'),
+    (float('inf'), 'INVALID_OWN_CAPTURE_TIME'),
+    (-float('inf'), 'INVALID_OWN_CAPTURE_TIME'),
+])
+def test_capture_admission_precedes_observer_messages_and_navigation(condition, phase, captured, reason):
+    c, transport = make(), bus(condition)
+    if phase != 'new':
+        assert tick(c, 0).state == 'RUNNING'
+    if phase in {'stopping', 'replan_ready'}:
+        if phase == 'stopping':
+            c.navigation.stop_result = 'running'
+        assert tick(c, 1, 'narrow').state == ('STOPPING' if phase == 'stopping' else 'REPLAN_READY')
+    # Even a delivered blockage cannot make an invalid camera capture usable.
+    report(transport, door='door_wide', at=0.)
+    before = (len(c.navigation.calls), len(c.observer.calls), c.belief)
+    stops = c.navigation.cancelled
+    result = c.tick(rr.OwnFrame('r1', 2, PIXELS['both'], captured), now_s=1.,
+                    delivered_messages=transport.inbox('r1', now_sim_s=1.))
+    assert result.state == 'FAILED' and result.reason.split(':')[0] == reason
+    assert (len(c.navigation.calls), len(c.observer.calls), c.belief) == before
+    assert c.navigation.cancelled == stops + 1
+    # A later fresh capture never silently revives this aborted job.
+    c.navigation.stop_result = 'stopped'
+    assert tick(c, 3, now=1.01).state == 'FAILED'
+    assert len(c.navigation.calls) == before[0]
+
+
+@pytest.mark.parametrize('age,allowed', [(0., True), (.249, True), (.25, True), (.250001, False)])
+def test_capture_age_boundary_is_fixed_and_metadata_reaches_adapters(age, allowed):
+    c = make()
+    # Literal quarter-second boundary is intentional: changing policy must not
+    # silently change both implementation and test expectations.
+    frame = rr.OwnFrame('r1', 0, PIXELS['clear'], 1. - age)
+    result = c.tick(frame, now_s=1.)
+    assert (result.state == 'RUNNING') is allowed
+    assert c.invariant['frame_timing']['max_age_s'] == .25
+    if allowed:
+        assert c.observer.calls[0][0] == c.navigation.calls[0][1] == frame
+        assert not c.navigation.cancelled
+    else:
+        assert result.reason == 'STALE_OWN_CAPTURE'
+        assert c.navigation.cancelled == 1 and not c.observer.calls and not c.navigation.calls
+
+
+@pytest.mark.parametrize('captured', [.095, .1])
+def test_new_sequence_cannot_replay_or_reorder_capture_time(captured):
+    c = make()
+    assert tick(c, 0, now=.1).state == 'RUNNING'
+    result = c.tick(rr.OwnFrame('r1', 1, PIXELS['clear'], captured), now_s=.11)
+    assert result.reason == 'NONINCREASING_OWN_CAPTURE'
+    assert len(c.navigation.calls) == len(c.observer.calls) == c.navigation.cancelled == 1
+
+
+@pytest.mark.parametrize('pending_stop', [False, True])
+@pytest.mark.parametrize('offset,allowed', [(-.005, False), (0., False), (.001, True)])
+def test_restart_requires_capture_after_cancellation_tick(pending_stop, offset, allowed):
+    c = make()
+    assert tick(c, 0).state == 'RUNNING'
+    if pending_stop:
+        c.navigation.stop_result = 'running'
+    # This observation is fresh but predates its processing/cancellation tick.
+    result = c.tick(rr.OwnFrame('r1', 1, PIXELS['narrow'], .01), now_s=.02)
+    if pending_stop:
+        assert result.state == 'STOPPING'
+        c.navigation.stop_result = 'stopped'
+        result = c.tick(rr.OwnFrame('r1', 2, PIXELS['clear'], .021), now_s=.04)
+    assert result.state == 'REPLAN_READY' and len(c.navigation.calls) == 1
+    cancel_tick = .04 if pending_stop else .02
+    frame = rr.OwnFrame('r1', 3, PIXELS['clear'], cancel_tick + offset)
+    result = c.tick(frame, now_s=cancel_tick + .01)
+    if allowed:
+        assert result.state == 'RUNNING' and result.route.passage_id == 'door_wide'
+        assert c.navigation.calls[-1][1] == frame and len(c.navigation.calls) == 2
+    else:
+        assert result.state == 'FAILED' and result.reason == 'PRE_CANCEL_OWN_CAPTURE'
+        assert len(c.navigation.calls) == 1
+
+
+@pytest.mark.parametrize('condition', CONDITIONS)
+def test_delayed_capture_aborts_pair_and_stops_other_side(condition):
+    channel = PairStatusChannel('pair-job')
+    a, b = [make(kind='heavy_crate', robot=rid, channel=channel) for rid in ('r1', 'r2')]
+    for c in (a, b):
+        c.pair_status.tick('carry', 0., force=True)
+    assert tick(a, 0).state == tick(b, 0).state == 'RUNNING'
+    # Keep heartbeat current to isolate image age from peer timeout.
+    b.pair_status.tick('carry', 1., force=True)
+    stale = rr.OwnFrame('r1', 1, PIXELS['clear'], .01)
+    result = a.tick(stale, now_s=1., delivered_messages=bus(condition).inbox('r1', now_sim_s=1.))
+    assert result.reason == 'STALE_OWN_CAPTURE'
+    assert channel.latest['r1']['state'] == 'abort'
+    assert tick(b, 1, now=1.).reason == 'PAIR_NOT_SAFE'
+    assert a.navigation.cancelled == b.navigation.cancelled == 1
+    assert len(a.navigation.calls) == len(b.navigation.calls) == 1
+
+
+def test_capture_timestamp_is_required():
+    with pytest.raises(TypeError, match='captured_at_s'):
+        rr.OwnFrame('r1', 0, PIXELS['clear'])
