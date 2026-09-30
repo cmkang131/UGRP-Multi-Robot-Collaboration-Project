@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from harness.zone_corridor_contract import require_door_runtime
+from harness.zone_corridor_admission import require_door_runtime
 from harness.zone_map_schematic import map_path
 
 
