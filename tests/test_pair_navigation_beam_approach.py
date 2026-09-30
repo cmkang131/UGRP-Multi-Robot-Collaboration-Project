@@ -13,12 +13,19 @@ import pytest
 from harness import beam_approach as ba
 from harness import beam_initial_pose_plan as bp
 from harness.owncam_pose_source import PoseReport
+from harness.owncam_drive import SEARCH_POSE
+
+# Collect the imported independent counterexample in the existing CI glob.
+pytest.register_assert_rewrite('test_review_e2e_batch_h')
+from test_review_e2e_batch_h import (  # noqa: E402,F401
+    beam, test_beam_accepts_native_issued_search_history_without_rescaling,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 CASES = [('s1_normal_mixed_v2', [1.3, .4, 1.570796]),
          ('s3_late_rendezvous_v2', [.1, .4, 1.570796]),
          ('s6_novel_relation_v2', [1.1, -.8, 1.570796])]
-SERVO = {1: 500, 2: 400, 3: 300, 4: 400, 5: 500, 6: 500}
+SERVO = dict(SEARCH_POSE)
 
 
 def public_inputs(index=0):
@@ -72,19 +79,22 @@ class Guard:
         return self.allowed
 
 
-def controller(index=0, role='end_neg', condition='no_comm', assignment=None):
+def controller(index=0, role='end_neg', condition='no_comm', assignment=None,
+               initial_servo=None, search_servo=None, provider=None):
     static, sheet, order = public_inputs(index)
-    p, beam, guard = FakeProvider(), FakeBeam(), Guard()
-    initial = [{'kind': 'initial_servo_command', 't': 0., 'pulses': dict(SERVO)},
+    p, beam, guard = provider or FakeProvider(), FakeBeam(), Guard()
+    initial = [{'kind': 'initial_servo_command', 't': 0., 'pulses': dict(SERVO if initial_servo is None else initial_servo)},
                {'kind': 'mecanum', 't': .1, 'forward': .03, 'left': 0., 'turn': 0., 'duration_s': .1},
                {'kind': 'hold', 't': .2}]
     # Pretend earlier owned port commands were already consumed, exactly once.
-    p.commands = copy.deepcopy(initial)
+    for row in initial:
+        p.on_command(copy.deepcopy(row))
     memory = ba.OwnApproachMemory(p, initial)
     assignment = assignment or {'end_neg': 'r1', 'end_pos': 'r2'}
     ctl = ba.BeamApproach(static, sheet, order, robot_id=assignment[role], role_assignment=assignment,
                           task_id='beam-approach', condition=condition, memory=memory,
-                          observe_beam=beam, command_clear=guard, search_servo=SERVO, started_at=0.)
+                          observe_beam=beam, command_clear=guard, search_servo=SERVO if search_servo is None else search_servo,
+                          started_at=0.)
     return ctl, p, beam, guard
 
 
@@ -226,16 +236,16 @@ def test_repeated_frame_cannot_confirm_arrival_or_alignment():
 
 def test_arm_transition_uses_issued_servo_and_waits_for_ack_and_image_after_settle():
     ctl, p, _, guard = controller()
-    ctl.search_servo[2] = 440
+    ctl.search_servo[3] = 780
     old = dict(ctl.memory.servo)
     d = step(ctl, .3, 1, ack=False)
-    assert d.action == {'kind': 'arm', 'servo_id': 2, 'pulse': 420, 'duration_s': .1}
+    assert d.action == {'kind': 'arm', 'servo_id': 3, 'pulse': 760, 'duration_s': .1}
     assert ctl.memory.servo == old and len(ctl.memory.history) == 3
     assert ctl.tick(.35, image(ctl, .35, 2)).action == {}
     assert ctl.on_command({'t': .3, **d.action})
-    assert ctl.memory.servo[2] == 420
+    assert ctl.memory.servo[3] == 760
     assert step(ctl, .35, 2).action == {'kind': 'hold'}
-    assert step(ctl, .5, 3).action['pulse'] == 440
+    assert step(ctl, .5, 3).action['pulse'] == 780
     assert len(guard.calls) == 2 and len(p.commands) == len(ctl.memory.history)
 
 
@@ -310,7 +320,7 @@ def test_private_noninterference_and_four_condition_same_control(condition):
 
 def test_sim_cap_includes_posture_and_staging_and_boundary_is_failure():
     ctl, p, _, guard = controller()
-    ctl.search_servo[2] = 440
+    ctl.search_servo[3] = 780
     step(ctl, .3, 1)
     ctl.receive_status(status(ctl, 900., seq=3), 900.)
     d = ctl.tick(900., image(ctl, 900., 2))
@@ -458,3 +468,114 @@ def test_controller_and_assignment_hashes_are_separate():
     assert ctl.audit['controller_code_sha256'] == hashlib.sha256((ROOT/'harness/beam_approach.py').read_bytes()).hexdigest()
     assert ctl.audit['role_assignment_sha256'] == bp.digest({'end_neg': 'r1', 'end_pos': 'r2'})
     assert ctl.audit['search_servo_sha256'] == bp.digest(SERVO)
+
+
+@pytest.mark.parametrize('role', bp.ROLES)
+@pytest.mark.parametrize('condition', ba.CONDITIONS)
+@pytest.mark.parametrize('json_keys', [False, True])
+def test_native_pwm_posture_navigation_and_handoff_keep_provider_history(role, condition, json_keys):
+    from types import SimpleNamespace
+    from harness.owncam_pose_source import OwnCamPoseSource
+
+    class NativeBookkeepingProvider(FakeProvider):
+        # Exercise the actual provider command consumer; only RGB localization
+        # is fake. No PF initialization, simulator state or measured joint input.
+        def __init__(self):
+            super().__init__()
+            self.loc = SimpleNamespace(command=lambda row: self.commands.append(copy.deepcopy(row)))
+
+        on_command = OwnCamPoseSource.on_command
+
+    initial = {**SEARCH_POSE, 3: 700, 6: 1460}
+    if json_keys:
+        initial = {str(k): v for k, v in initial.items()}
+    ctl, p, beam, guard = controller(role=role, condition=condition, initial_servo=initial,
+                                     provider=NativeBookkeepingProvider())
+    memory, loc, history, servo = ctl.memory, p.loc, ctl.memory.history, ctl.memory.servo
+    prefix = copy.deepcopy(history)
+    assert servo == p.servo == {int(k): v for k, v in initial.items()}
+    for fid, t, expected in [
+        (1, .3, {'kind': 'arm', 'servo_id': 3, 'pulse': 720, 'duration_s': .1}),
+        (2, .5, {'kind': 'arm', 'servo_id': 3, 'pulse': 740, 'duration_s': .1}),
+        (3, .7, {'kind': 'look', 'pan_pulse': 1480, 'duration_s': .1}),
+        (4, .9, {'kind': 'look', 'pan_pulse': 1500, 'duration_s': .1}),
+    ]:
+        assert step(ctl, t, fid).action == expected
+        assert p.servo == servo and p.commands == history
+        assert servo[1] == 2000 and set(servo) == {1, 3, 4, 5, 6}
+    assert p.servo == servo == SEARCH_POSE
+    p.pose = (ctl.goal[0] - .5, ctl.goal[1] - .25, ctl.goal[2])
+    assert step(ctl, 1.1, 5).action['kind'] == 'mecanum'
+    p.pose = ctl.goal  # fake next RGB estimate, not a production state/reset hook
+    assert step(ctl, 1.3, 6).phase == 'approaching'
+    assert step(ctl, 1.5, 7).phase == 'aligning'
+    assert ctl.handoff() is memory and memory.provider is p and p.loc is loc
+    assert memory.history is history and memory.servo is servo
+    assert history[:len(prefix)] == prefix and history[0]['pulses'] == initial
+    assert ctl.alignment_entry['servo'] == SEARCH_POSE
+    assert ctl.alignment_entry['history_sha256'] == bp.digest(history[:-1])
+    beam.result.update(grip_base_m=[.2032, 0.], axis_heading_rad=0.)
+    assert step(ctl, 1.7, 8).phase == 'aligning'
+    assert step(ctl, 1.9, 9).phase == 'aligned'
+    assert ctl.handoff() is memory and p.commands == history and p.servo == SEARCH_POSE
+    assert all(call[1] == SEARCH_POSE for call in beam.calls)
+    assert guard.calls and ctl.audit['delivery_success'] is None
+
+
+@pytest.mark.parametrize('location', ['initial', 'search'])
+@pytest.mark.parametrize('fault', ['missing', 'inactive', 'unknown', 'bool_channel', 'fractional_channel',
+                                 'duplicate_channel', 'low', 'high', 'fractional_pwm', 'bool_pwm', 'nan'])
+def test_native_servo_contract_rejects_missing_unknown_or_noninteger_values(location, fault):
+    pulses = dict(SEARCH_POSE)
+    if fault == 'missing': del pulses[3]
+    if fault == 'inactive': pulses[2] = 1500
+    if fault == 'unknown': pulses[7] = 1500
+    if fault == 'bool_channel':
+        del pulses[1]
+        pulses[True] = 2000
+    if fault == 'fractional_channel': pulses[3.5] = 1500
+    if fault == 'duplicate_channel': pulses['3'] = pulses[3]
+    if fault == 'low': pulses[3] = 499
+    if fault == 'high': pulses[3] = 2501
+    if fault == 'fractional_pwm': pulses[3] = 740.5
+    if fault == 'bool_pwm': pulses[3] = True
+    if fault == 'nan': pulses[3] = float('nan')
+    error = 'ISSUED_SERVO' if location == 'initial' else 'OPEN_SEARCH_POSTURE_REQUIRED'
+    with pytest.raises(ValueError, match=error):
+        controller(**{location + '_servo' if location == 'initial' else 'search_servo': pulses})
+
+
+@pytest.mark.parametrize('kind', ['arm', 'look'])
+@pytest.mark.parametrize('pulse', [499, 2501, 740.5, True, float('nan')])
+def test_bad_incremental_pwm_cannot_be_clamped_or_truncated(kind, pulse):
+    row = ({'kind': 'arm', 'servo_id': 3, 'pulse': pulse} if kind == 'arm' else
+           {'kind': 'look', 'pan_pulse': pulse})
+    history = [{'t': 0., 'kind': 'initial_servo_command', 'pulses': dict(SEARCH_POSE)},
+               {'t': .1, **row}]
+    before = copy.deepcopy(history[0])
+    with pytest.raises(ValueError, match='BAD_ISSUED_SERVO'):
+        ba.OwnApproachMemory(object(), history)
+    assert history[0] == before and history[1]['kind'] == kind
+
+
+@pytest.mark.parametrize('pulse', [500, 2500])
+def test_native_pwm_endpoints_and_json_keys_are_preserved(pulse):
+    pose = {**SEARCH_POSE, 3: pulse, 6: pulse}
+    serialized = {str(k): v for k, v in pose.items()}
+    ctl, p, _, _ = controller(initial_servo=serialized, search_servo=serialized)
+    assert ctl.memory.servo == ctl.search_servo == pose
+    assert ctl.memory.history[0]['pulses'] == serialized
+    p.pose = ctl.goal
+    assert step(ctl, .3, 1).phase == 'approaching'
+
+
+@pytest.mark.parametrize('location', ['initial_servo', 'search_servo'])
+@pytest.mark.parametrize('pulse', [500, 1500, 1999, 2000, 2500])
+def test_open_gripper_threshold_is_native_pwm(location, pulse):
+    kwargs = {location: {**SEARCH_POSE, 1: pulse}}
+    if pulse < 2000:
+        with pytest.raises(ValueError, match='OPEN_SEARCH_POSTURE_REQUIRED'):
+            controller(**kwargs)
+    else:
+        ctl, _, _, _ = controller(**kwargs)
+        assert ctl.memory.servo[1] >= 2000 and ctl.search_servo[1] >= 2000

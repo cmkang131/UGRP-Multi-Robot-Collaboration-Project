@@ -40,6 +40,16 @@ REPLACEMENTS = {
     'delivered_abort_check_removed': ("if peer['state'] == 'abort':", 'if False:'),
     'sim_cap_boundary_weakened': ("if now - self.started_at >= CONFIG['sim_cap_s']:",
                                 "if now - self.started_at > CONFIG['sim_cap_s']:"),
+    'legacy_pwm_units_restored': ('not SAFE_PULSE_MIN <= pulse <= SAFE_PULSE_MAX',
+                                  'not 0 <= pulse <= 1000'),
+    'inactive_channel_2_required': ('ACTIVE_SERVOS = frozenset((1, 3, 4, 5, 6))',
+                                     'ACTIVE_SERVOS = frozenset((1, 2, 3, 4, 5, 6))'),
+    'search_gripper_open_check_removed': ('search_servo[1] < OPEN_GRIPPER_PWM', 'False'),
+    'current_gripper_open_check_removed': ('memory.servo[1] < OPEN_GRIPPER_PWM', 'False'),
+    'issued_pwm_rescaled': ('result[key] = pulse', 'result[key] = pulse // 2'),
+    'issued_servo_ack_removed': ('        self.memory._servo_command(row)', '        pass'),
+    'pan_pwm_rescaled': ("{'kind': 'look', 'pan_pulse': pulse}",
+                         "{'kind': 'look', 'pan_pulse': pulse // 2}"),
 }
 
 

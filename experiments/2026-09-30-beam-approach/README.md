@@ -5,6 +5,9 @@ posterior·발행 servo·명령 이력을 유지하며 상대 정렬로 넘어�
 물리·렌더·모델 실행은 0회. 실행 가능한 최종 환경 어댑터와 물리 인수는 아직 없다.
 `physical_ready=false`, 배송 성공은 null이며 close/lift/carry/pivot을 포함하지 않는다.
 
+2026-10-01 독립 검토 H333-1의 native PWM/활성 채널 수정과 새 검증은
+[REVIEW_FIXES.md](REVIEW_FIXES.md)에 별도로 기록한다. 아래 최초 검증 기록은 보존한다.
+
 ## 구현 범위
 
 - `harness/beam_approach.py::BeamApproach`: 명시적 공개 역할 배정, T08a의 지도/sheet/주문

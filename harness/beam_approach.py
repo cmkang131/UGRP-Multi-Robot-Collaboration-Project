@@ -21,10 +21,15 @@ import numpy as np
 from harness import beam_initial_pose_plan as bp
 from harness.map_goto import plan_path
 from harness.static_keepouts import polygon_at
+from harness.visual_arm import SAFE_PULSE_MIN, SAFE_PULSE_MAX
 from harness.zone_pair_status import PairStatusChannel, PROFILE as STATUS_PROFILE
 
 PROFILE = 'beam_approach_t08b_v1'
 CONDITIONS = ('no_comm', 'peer_ko', 'leader_ko', 'structured')
+# Native issued PWM, matching owncam_drive.SEARCH_POSE and the own port.
+# Channel 2 is not an active MasterPi axis. No normalized 0..1000 units.
+ACTIVE_SERVOS = frozenset((1, 3, 4, 5, 6))
+OPEN_GRIPPER_PWM = 2000
 CONFIG = {'sim_cap_s': 900., 'uncertain_timeout_s': 30., 'frame_max_age_s': .25,
           'max_std_xy_m': .025, 'max_std_yaw_rad': .04, 'max_fix_age_s': 2.,
           'prestation_xy_tol_m': .035, 'prestation_yaw_tol_rad': .06,
@@ -43,6 +48,24 @@ def wrap(x):
 
 def clip(x, limit):
     return max(-limit, min(limit, x))
+
+
+def issued_servo(pulses):
+    """Validate native PWM without clamping, rounding or inventing channels.
+
+    JSON string channel IDs are accepted; history records remain unchanged.
+    """
+    if not isinstance(pulses, dict):
+        raise ValueError('BAD_ISSUED_SERVO')
+    result = {}
+    for key, pulse in pulses.items():
+        if type(key) is str and key in {str(s) for s in ACTIVE_SERVOS}:
+            key = int(key)
+        if (type(key) is not int or key not in ACTIVE_SERVOS or key in result
+                or type(pulse) is not int or not SAFE_PULSE_MIN <= pulse <= SAFE_PULSE_MAX):
+            raise ValueError('BAD_ISSUED_SERVO')
+        result[key] = pulse
+    return result
 
 
 @dataclass
@@ -66,18 +89,20 @@ class OwnApproachMemory:
                 raise ValueError('BAD_OWN_HISTORY')
             last_t = row['t']
             self._servo_command(row)
-        if set(self.servo) != set(range(1, 7)):
+        if set(self.servo) != ACTIVE_SERVOS:
             raise ValueError('INITIAL_ISSUED_SERVO_REQUIRED')
 
     def _servo_command(self, row):
         if row['kind'] == 'initial_servo_command':
-            self.servo.update({int(k): int(v) for k, v in row['pulses'].items()})
+            pulses = issued_servo(row['pulses'])
+            if set(pulses) != ACTIVE_SERVOS:
+                raise ValueError('INITIAL_ISSUED_SERVO_REQUIRED')
+            self.servo.clear()
+            self.servo.update(pulses)
         elif row['kind'] == 'arm':
-            self.servo[int(row['servo_id'])] = int(row['pulse'])
+            self.servo.update(issued_servo({row['servo_id']: row['pulse']}))
         elif row['kind'] == 'look':
-            self.servo[6] = int(row['pan_pulse'])
-        if any(not 0 <= v <= 1000 for v in self.servo.values()):
-            raise ValueError('BAD_ISSUED_SERVO')
+            self.servo.update(issued_servo({6: row['pan_pulse']}))
 
 
 @dataclass(frozen=True)
@@ -110,9 +135,12 @@ class BeamApproach:
             raise ValueError('UNSUPPORTED_ROLE_ASSIGNMENT_OR_CONDITION')
         if not finite(started_at) or started_at < 0 or not memory.history or started_at > memory.history[0]['t']:
             raise ValueError('BAD_START_TIME')
-        if (set(search_servo) != set(range(1, 7))
-                or any(type(v) is not int or not 0 <= v <= 1000 for v in search_servo.values())
-                or search_servo[1] < 400 or memory.servo[1] < 400):
+        try:
+            search_servo = issued_servo(search_servo)
+        except ValueError as exc:
+            raise ValueError('OPEN_SEARCH_POSTURE_REQUIRED') from exc
+        if (set(search_servo) != ACTIVE_SERVOS
+                or search_servo[1] < OPEN_GRIPPER_PWM or memory.servo[1] < OPEN_GRIPPER_PWM):
             raise ValueError('OPEN_SEARCH_POSTURE_REQUIRED')
         self.plan = bp.make_initial_pose_plan(static_map, sheet, order)
         self.map = copy.deepcopy(static_map)
@@ -238,9 +266,10 @@ class BeamApproach:
         for servo_id, target in self.search_servo.items():
             current = self.memory.servo[servo_id]
             if current != target:
-                return self._offer({'kind': 'arm', 'servo_id': servo_id,
-                                    'pulse': current + int(clip(target - current, 20)),
-                                    'duration_s': .1}, now, report)
+                pulse = current + int(clip(target - current, 20))
+                action = ({'kind': 'look', 'pan_pulse': pulse} if servo_id == 6 else
+                          {'kind': 'arm', 'servo_id': servo_id, 'pulse': pulse})
+                return self._offer({**action, 'duration_s': .1}, now, report)
         return None
 
     def _navigate(self, now, report):
