@@ -9,6 +9,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+from collections.abc import Mapping
 from pathlib import Path
 
 from harness.zone_map_schematic import digest, load_map
@@ -62,7 +63,9 @@ def resolve_static_map(map_id, *, root=ROOT, robot_model=None, static_map_sha256
         # Keep the existing tagged path's authored-definition/base check. This
         # computes static metadata only; it neither constructs nor renders a Scene.
         from sim.zone_landmarks import tagged_map
-        if data != tagged_map(map_id):
+        from sim.zone_start_dock import MAP_ID as DOCK_MAP_ID, dock_map
+        expected = dock_map() if map_id == DOCK_MAP_ID else tagged_map(map_id)
+        if data != expected:
             raise ValueError('tagged map identity mismatch')
     model = data.get('robot_model', 'masterpi_v2')
     if (model not in ('masterpi_v2', 'masterpi_v3') or (entry and entry['robot_model'] != model)
@@ -86,6 +89,26 @@ def resolve_static_map(map_id, *, root=ROOT, robot_model=None, static_map_sha256
 def maps_dir_for(map_id, *, root=ROOT):
     resolve_static_map(map_id, root=root)
     return static_map_path(map_id, root=root).parent
+
+
+def bundle_for(scenario, *, schematic=False):
+    """Opt-in public map projection; legacy scenario defaults stay frozen."""
+    from harness.zone_study_scenarios import bundle_for as legacy_bundle
+    return legacy_bundle(scenario, maps_dir=maps_dir_for(scenario['map_id']), schematic=schematic)
+
+
+def validate(scenario):
+    """Use the existing non-raising validator with the selected map directory."""
+    from harness.zone_study_scenarios import CHECK_NAMES, Report, validate as legacy_validate
+    if not isinstance(scenario, Mapping):
+        return legacy_validate(scenario)
+    try:
+        directory = maps_dir_for(scenario.get('map_id'))
+    except (OSError, ValueError) as error:
+        report = Report(str(scenario.get('scenario_id')), {name: [] for name in CHECK_NAMES})
+        report.checks['schema'].append(f'the pinned map could not be read: {error}')
+        return report
+    return legacy_validate(scenario, maps_dir=directory)
 
 
 def provider_binding(map_id, provider, calibration, *, root=ROOT, robot_model=None, static_map_sha256=None):

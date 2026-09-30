@@ -20,8 +20,9 @@ from harness import zone_environment_registry as env
 from harness import zone_final_env as fe
 from harness import zone_study_scenarios as scenarios
 from harness.zone_map_schematic import digest, map_bundle
-from scripts import run_zone_study_integration as runner
-from sim.zone_own_scene_provider import own_scene, scene_static_map
+from scripts import run_zone_study_integration as legacy_runner
+from scripts import zone_environment_bundle as runner
+from sim.zone_environment_scene_provider import own_scene, scene_static_map
 
 ROOT = env.ROOT
 CATALOG = json.loads(fe.CATALOG_PATH.read_text())
@@ -41,7 +42,7 @@ def no_runtime_side_effects(monkeypatch):
     monkeypatch.setattr(zone_map_schematic, 'render_schematic', forbidden)
     from sim.session_scenes import Scene
     monkeypatch.setattr(Scene, '__init__', forbidden)
-    monkeypatch.setattr(runner, 'StudyTeamHost', forbidden)
+    monkeypatch.setattr(legacy_runner, 'StudyTeamHost', forbidden)
     monkeypatch.setattr(runner.zi, 'build_pose_provider', forbidden)
     from harness.vision_loc_client import VisionWorkerClient, InProcessWorker
     monkeypatch.setattr(VisionWorkerClient, '__init__', forbidden)
@@ -78,11 +79,11 @@ def test_three_final_maps_share_pinned_resolver_and_fake_scene_factory(map_id):
 
 
 @pytest.mark.parametrize('sid', sorted(CATALOG['scenarios']))
-def test_six_scenarios_validate_and_project_without_explicit_directory(sid):
+def test_six_scenarios_validate_and_project_through_opt_in_adapter(sid):
     scenario = scenarios.load(sid, directory=fe.V2_SCENARIO_DIR)
-    report = scenarios.validate(scenario)
+    report = env.validate(scenario)
     assert report.ok, report.problems
-    bundle = scenarios.bundle_for(scenario)
+    bundle = env.bundle_for(scenario)
     assert bundle == scenarios.bundle_for(scenario, maps_dir=fe.maps_dir_for(scenario['map_id']))
     assert bundle['map_file'] == CATALOG['maps'][scenario['map_id']]['file']
     assert bundle['public_map_sha256'] == CATALOG['maps'][scenario['map_id']]['public_map_sha256']
@@ -94,7 +95,7 @@ def test_unknown_or_unsafe_maps_are_refused_before_factory(mid):
     with pytest.raises((ValueError, OSError)):
         own_scene({'map': mid, 'seed': 700, 'goal': {}}, 'cargo_noslip_v1',
                   scene_factory=lambda *a: pytest.fail('unknown map reached factory'))
-    assert not scenarios.validate({'schema': scenarios.SCENARIO_SCHEMA, 'map_id': mid}).ok
+    assert not env.validate({'schema': scenarios.SCENARIO_SCHEMA, 'map_id': mid}).ok
 
 
 @pytest.mark.parametrize('override', [{'robot_model': 'masterpi_v3'}, {'robot_model': 'unknown'},
@@ -202,7 +203,7 @@ def test_all_scenario_bundle_file_routing_with_fake_p03_and_host_seams(monkeypat
     provider['maps'] = list(CATALOG['maps'])
     monkeypatch.setattr(runner.zi, 'pose_provider_spec', lambda *a, **k: copy.deepcopy(provider))
     monkeypatch.setattr(runner, 'host_spec', lambda scenario, episode, bundle: {'fake_setup': True})
-    pre = runner.load_prereg(ROOT / 'configs/zone_study_integration/pair_dev_DRAFT.json')
+    pre = legacy_runner.load_prereg(ROOT / 'configs/zone_study_integration/pair_dev_DRAFT.json')
     pre['pose_provider'] = provider['provider_id']
     pre['student']['calibration'] = CALIBRATION
     episode = copy.deepcopy(pre['episodes'][0])
@@ -220,7 +221,7 @@ def test_all_scenario_bundle_file_routing_with_fake_p03_and_host_seams(monkeypat
 
 
 def test_runner_refuses_scenario_episode_map_disagreement():
-    pre = runner.load_prereg(ROOT / 'configs/zone_study_integration/pair_dev_DRAFT.json')
+    pre = legacy_runner.load_prereg(ROOT / 'configs/zone_study_integration/pair_dev_DRAFT.json')
     episode = {**pre['episodes'][0], 'map': 'zone_wide_corridor_final_v1'}
     with pytest.raises(SystemExit, match='scenario map_id'):
         runner.run_bundle(pre, episode)
@@ -228,7 +229,7 @@ def test_runner_refuses_scenario_episode_map_disagreement():
 
 @pytest.mark.parametrize('changed', [env.REGISTRY_FILE, 'maps/zones_final/catalog.json'])
 def test_environment_configuration_is_pinned_even_on_legacy_tagged_bundle(monkeypatch, changed):
-    pre = runner.load_prereg(ROOT / 'configs/zone_study_integration/pair_dev_DRAFT.json')
+    pre = legacy_runner.load_prereg(ROOT / 'configs/zone_study_integration/pair_dev_DRAFT.json')
     original = runner.run_bundle(pre, pre['episodes'][0])[0]
     assert changed in original['runtime_files_sha256']
     file_sha = runner.zi.file_sha256
@@ -268,3 +269,121 @@ def test_final_scene_resolve_uses_base_contract_without_constructing_scene(monke
 def test_ci_collects_the_new_contract_file():
     from scripts.run_ci_tests import TEST_PATTERNS
     assert 'tests/test_zone_environment_registry.py' in TEST_PATTERNS
+
+
+@pytest.mark.parametrize('use_adapter', [False, True])
+def test_review_a305_1_dock_reaches_existing_factory(monkeypatch, use_adapter):
+    from sim.zone_dock_scene import DockTaggedCargoZoneScene
+    from sim.zone_start_dock import MAP_ID, dock_map
+    from sim.zone_own_scene_provider import own_scene as legacy_scene
+    calls, sentinel = [], object()
+    def fake(*args, **kwargs):
+        calls.append((args, kwargs))
+        return sentinel
+    monkeypatch.setattr(DockTaggedCargoZoneScene, 'from_tagged_cargo', fake)
+    spec = {'map': MAP_ID, 'seed': 911, 'goal': {}, 'team_cargo': [{'item_id': 'beam'}]}
+    assert env.resolve_static_map(MAP_ID)[0] == dock_map()
+    assert (own_scene if use_adapter else legacy_scene)(spec, 'cargo_noslip_v1') is sentinel
+    assert len(calls) == 1 and calls[0][0] == (MAP_ID, 911)
+    assert calls[0][1]['contact_profile'] == 'local_contact_fine'
+
+
+def test_review_a305_2_v6e_pinned_sources_and_legacy_closure_remain_unchanged():
+    from harness.python_source_closure import source_closure
+    pre = json.loads((ROOT / 'experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json').read_text())
+    for name, expected in pre['v6_contract']['source_sha256'].items():
+        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == expected, name
+    # A305-3's hidden #292 dependency disappears from the legacy import graph.
+    closure = source_closure(ROOT, legacy_runner.RUNTIME_ENTRY_POINTS)
+    assert 'harness/zone_environment_registry.py' not in closure
+    assert 'sim/zone_environment_scene_provider.py' not in closure
+
+
+@pytest.mark.parametrize('mid', [
+    'zone_wide_door_tags_v2_dock_v3', 'zone_wide_door_geometry_v2',
+    'zone_wide_two_doors_final_v1', 'zone_wide_corridor_final_v1',
+    'zone_wide_door_geometry_v3', 'zone_wide_door_geometry_v3_dock_v1',
+])
+def test_review_a305_3_composed_candidate_explicitly_pins_environment_inputs(mid):
+    from harness.zone_environment_candidate import candidate_contract, verify_candidate_contract
+    path = 'scripts/run_zone_study_integration.py'
+    base = {'source_sha256': {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest()},
+            'policy': 'unsealed-preview'}
+    original = copy.deepcopy(base)
+    candidate = candidate_contract(base, mid)
+    assert base == original and candidate['base_contract'] == base
+    assert candidate['base_contract'] is not base
+    assert verify_candidate_contract(candidate, base) == candidate
+    pins = candidate['source_sha256']
+    assert env.REGISTRY_FILE in pins and 'maps/zones_final/catalog.json' in pins
+    assert env.static_map_path(mid).relative_to(ROOT).as_posix() in pins
+    entry = env.environment_entry(mid)
+    if entry:
+        module = entry['scene_factory'].partition(':')[0]
+        assert candidate['dynamic_imports'] == [module]
+        assert module.replace('.', '/') + '.py' in pins
+    assert not candidate['runnable'] and not candidate['research_result']
+
+
+def test_environment_candidate_rejects_a_stale_base_source():
+    from harness.zone_environment_candidate import candidate_contract
+    base = {'source_sha256': {'scripts/run_zone_study_integration.py': '0' * 64}}
+    with pytest.raises(ValueError, match='base candidate source hash mismatch'):
+        candidate_contract(base, 'zone_wide_door_tags_v2_dock_v3')
+
+
+def test_opt_in_validator_does_not_fall_back_when_registry_is_invalid(monkeypatch):
+    scenario = json.loads((ROOT / 'configs/zone_study_integration/i1_cyan_three_slots.json').read_text())
+    def invalid(root=ROOT):
+        raise ValueError('invalid unsealed environment registry')
+    monkeypatch.setattr(env, 'registry', invalid)
+    report = env.validate(scenario)
+    assert not report.ok and 'invalid unsealed environment registry' in str(report.problems)
+    assert not env.validate(None).ok
+
+
+@pytest.mark.parametrize('changed', [
+    env.REGISTRY_FILE, 'maps/zones_final/catalog.json', 'configs/masterpi_v3_scenes.json',
+    'maps/zones_final/zone_wide_two_doors_final_v1.json',
+    'sim/zone_final_scene.py', 'sim/zone_environment_scene_provider.py',
+])
+def test_review_a305_3_candidate_rejects_each_mutated_dependency(tmp_path, changed):
+    from harness.zone_environment_candidate import candidate_contract, verify_candidate_contract
+    mid = 'zone_wide_two_doors_final_v1'
+    base = {'candidate': 'v6h-preview'}
+    candidate = candidate_contract(base, mid)
+    assert changed in candidate['source_sha256']
+    for name in candidate['source_sha256']:
+        target = tmp_path / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / name).read_bytes())
+    assert verify_candidate_contract(candidate, base, root=tmp_path) == candidate
+    path = tmp_path / changed
+    if changed == env.REGISTRY_FILE:
+        reg = json.loads(path.read_text())
+        reg['status'] = 'INVALID'
+        path.write_text(json.dumps(reg))
+    else:
+        path.write_bytes(path.read_bytes() + b'\n')
+    with pytest.raises(ValueError, match='environment source hash mismatch'):
+        verify_candidate_contract(candidate, base, root=tmp_path)
+
+
+def test_review_a305_3_candidate_rejects_missing_pins_and_changed_base():
+    from harness.zone_environment_candidate import candidate_contract, verify_candidate_contract
+    base = {'candidate': 'v6h-preview'}
+    candidate = candidate_contract(base, 'zone_wide_door_tags_v2_dock_v3')
+    with pytest.raises(ValueError, match='candidate contract mismatch'):
+        verify_candidate_contract(candidate, {'candidate': 'different'})
+    del candidate['source_sha256'][env.REGISTRY_FILE]
+    with pytest.raises(ValueError, match='candidate contract mismatch'):
+        verify_candidate_contract(candidate, base)
+
+
+def test_environment_bundle_preview_cannot_inherit_registered_execution_id():
+    pre = legacy_runner.load_prereg(ROOT / 'configs/zone_study_integration/pair_dev_DRAFT.json')
+    preview = runner.run_bundle(pre, pre['episodes'][0])[0]
+    assert preview['execution_bundle_id'] is None
+    assert preview['base_execution_bundle_id'] == legacy_runner.zi.EXECUTION_BUNDLE_ID
+    assert preview['status'] == 'DRAFT_UNSEALED' and preview['runnable'] is False
+    assert preview['environment_contract']['source_sha256'].items() <= preview['runtime_files_sha256'].items()

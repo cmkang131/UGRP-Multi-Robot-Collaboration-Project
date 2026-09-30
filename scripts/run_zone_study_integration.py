@@ -71,21 +71,15 @@ RUNTIME_ENTRY_POINTS = ('scripts/run_zone_study_integration.py',
                         'harness/zone_study_llm_transport.py')
 RUNTIME_ASSETS = ('configs/zone_study_integration/pose_providers.json',
                   'configs/zone_study_integration/llm_driver.json',
-                  'configs/zone_final_environment_registry_v1.json',
-                  'maps/zones_final/catalog.json',
                   'configs/masterpi_v3_scenes.json',
                   'maps/zones/zone_wide_door_geometry_v3.json',
                   'maps/zones/zone_wide_door_geometry_v3_dock_v1.json')
 
 
-def runtime_files(prereg, provider, environment=None):
+def runtime_files(prereg, provider):
     from harness.python_source_closure import source_closure
-    assets = () if environment is None else (environment['registry_file'], environment['catalog_file'],
-                                             environment['map_file'])
-    scene_modules = () if environment is None else (environment['scene_factory'].partition(':')[0],)
-    return source_closure(ROOT, (*RUNTIME_ENTRY_POINTS, *RUNTIME_ASSETS, *assets, *provider['source_files']),
-                          modules=(prereg['student']['skill_module'], provider['factory'].partition(':')[0],
-                                   *scene_modules))
+    return source_closure(ROOT, (*RUNTIME_ENTRY_POINTS, *RUNTIME_ASSETS, *provider['source_files']),
+                          modules=(prereg['student']['skill_module'], provider['factory'].partition(':')[0]))
 
 
 
@@ -355,28 +349,16 @@ def host_spec(scenario, episode, map_bundle):
 def run_bundle(prereg, episode, *, model_adapter=None, driver=None):
     """Everything that identifies this execution, hashed (docs/execution_versioning.md)."""
     from harness.zone_study_scenarios import bundle_for, validate
-    from harness.zone_environment_registry import maps_dir_for, provider_binding
     from sim.zone_own_scene_provider import scene_static_map
-    scenario = json.loads((ROOT / episode['scenario']).read_text())
-    if scenario['map_id'] != episode['map']:
-        raise SystemExit('scenario map_id differs from episode map')
-    maps_dir = maps_dir_for(episode['map'])
     provider = zi.pose_provider_spec(prereg['pose_provider'], map_id=episode['map'])
-    try:
-        environment = provider_binding(episode['map'], provider, prereg['student']['calibration'],
-                                       robot_model=episode.get('robot_model'),
-                                       static_map_sha256=episode.get('static_map_sha256'))
-    except ValueError as error:
-        raise SystemExit(str(error)) from error
+    scenario = json.loads((ROOT / episode['scenario']).read_text())
     if not provider['uses_landmark_tags'] and scenario.get('landmark_detail') != 'none':
         raise SystemExit('geometry provider requires explicit landmark_detail=none')
-    report = validate(scenario, maps_dir=maps_dir)
+    report = validate(scenario)
     if not report.ok:
         raise SystemExit(f'scenario {episode["scenario"]} fails validation: {report.checks}')
-    map_bundle = bundle_for(scenario, maps_dir=maps_dir)
+    map_bundle = bundle_for(scenario)
     static = json.loads(Path(map_bundle['map_file']).read_text())
-    if environment is not None and episode['base_map'] != static['base_map']['map_id']:
-        raise SystemExit('episode base_map differs from registered environment')
     if static != scene_static_map(episode['map']):
         raise SystemExit('the map file the robots read differs from the static map the scene builds')
     spec = host_spec(scenario, episode, map_bundle)
@@ -399,7 +381,7 @@ def run_bundle(prereg, episode, *, model_adapter=None, driver=None):
     from harness.owncam_memory_time import TIME_CONTRACT
     bundle = {'execution_bundle_id': zi.EXECUTION_BUNDLE_ID, 'schema': SCHEMA,
               'memory_time_contract': TIME_CONTRACT,
-              'runtime_files_sha256': {f: zi.file_sha256(ROOT / f) for f in runtime_files(prereg, provider, environment)},
+              'runtime_files_sha256': {f: zi.file_sha256(ROOT / f) for f in runtime_files(prereg, provider)},
               'scenario': episode['scenario'], 'scenario_sha256': zi.file_sha256(ROOT / episode['scenario']),
               'map_id': episode['map'], 'map_file_sha256': map_bundle['map_file_sha256'],
               'public_map_sha256': map_bundle['public_map_sha256'], 'scene_static_map_sha256': digest(scene_static_map(episode['map'])),
@@ -418,8 +400,6 @@ def run_bundle(prereg, episode, *, model_adapter=None, driver=None):
               'study_invariant': invariant,
               'conditions': list(MAIN_CONDITIONS), 'horizon_s': prereg['horizon_s'],
               'speech_caps': caps, 'llm_driver': driver.bundle_record() if driver is not None else None}
-    if environment is not None:
-        bundle['environment_binding'] = environment
     return bundle, scenario, map_bundle, provider
 
 

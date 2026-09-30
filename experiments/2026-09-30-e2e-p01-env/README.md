@@ -5,10 +5,12 @@ Refs #218, #223. 기준 감사 `a8094cc14e098a55483f53a3c49bf6a0b116043d`, [READ
 ## 변경과 보존
 
 - `configs/zone_final_environment_registry_v1.json`은 기존 final catalog와 v3 scene catalog의 파일 해시를 참조하는 **DRAFT_UNSEALED** 계약이다. 지도 ID → 파일/파일 해시/정적 해시 → Scene factory → 로봇 모델 → provider/실제 실행 보정 지원을 연결한다.
-- `harness.zone_environment_registry`의 정적 resolver를 시나리오 기본 validator/공개 map bundle, host의 Scene 선택/정적 지도, 실행 bundle에서 재사용한다. 알 수 없는 지도, map/model/static hash 불일치, provider/calibration 불일치와 표식 지도→무표식 provider를 factory 이전에 거부한다.
+- `harness.zone_environment_registry`의 정적 resolver를 새 opt-in `validate`/`bundle_for`, `sim.zone_environment_scene_provider`, `scripts.zone_environment_bundle.run_bundle`에서 재사용한다. 기존 runner·host·scenario 기본 경로는 그대로 보존한다. 알 수 없는 지도, map/model/static hash 불일치, provider/calibration 불일치와 표식 지도→무표식 provider를 factory 이전에 거부한다.
 - 문 1개 지도는 기존 `GeometryCargoZoneScene` 그대로, 문 2개·복도는 새 `FinalGeometryCargoZoneScene` 어댑터로 표준 `CargoZoneScene`의 base scene/reset/transform을 재사용한다. cargo가 있으면 기존 pair-only placeholder 제거 의미도 그대로다. 혼합 주문 구현은 P02/P09 소유이며 이 PR로 해결하지 않는다.
 - `sim/zone_geometry_scene.py`, `sim/session_scenes.py`, #249 `legacy_files_sha256`의 모든 파일, 원래 지도 3종·시나리오 6종·catalog bytes는 바꾸지 않는다. `pose_providers.json`, `vision_pose_source.py`, worker/model 등록부도 P03 소유이므로 수정하지 않는다.
-- `run_bundle` 변경은 `runtime_files`/`run_bundle`에 제한한다. 실제 지도 경로를 `validate`와 `bundle_for`에 전달하고 등록된 환경만 `environment_binding`을 추가한다. 선택된 scene 모듈·catalog·registry·map을 해시로 기록한다. provider 기본값, 등록 실행 번들 ID, workflow 버전·기존 봉인 파일은 바꾸지 않는다. 최종 새 실행 ID와 봉인은 코디네이터에게 남긴다.
+- A305-2 수정으로 `scripts/run_zone_study_integration.py`, `sim/zone_own_scene_provider.py`, `harness/zone_study_scenarios.py`를 main bytes로 복원했다. v6e의 현재 소스 봉인과 #249의 고정 파일을 유지하며 새 의존성을 기존 실행에 몰래 연결하지 않는다.
+- 새 `scripts.zone_environment_bundle.run_bundle`은 실제 지도 경로를 validator/공개 bundle에 전달하는 **정적 미리보기**다. schema를 분리하고 `execution_bundle_id:null`, `runnable:false`, `DRAFT_UNSEALED`로 기록한다. 기존 v81은 `base_execution_bundle_id`로만 남기며 실행 승인을 상속하지 않는다. 실행 CLI/host 전역 monkeypatch는 추가하지 않는다. 최종 실행 어댑터 연결·새 ID·봉인은 코디네이터에게 남긴다.
+- `harness.zone_environment_candidate.candidate_contract(base_contract, map_id)`는 #292 등 미봉인 기반 계약과 환경 입력을 합성한다. registry·catalog·선택 지도와 부모 지도·보정·동적으로 선택한 Scene 모듈 및 Python 의존성을 명시적으로 해시한다. `verify_candidate_contract`는 파일 변조·누락 pin·기반 계약 변경을 거절한다. 기존 등록 파일에 이 계약을 덮어쓰지 않는다.
 
 ## 지원 판정
 
@@ -25,7 +27,9 @@ Refs #218, #223. 기준 감사 `a8094cc14e098a55483f53a3c49bf6a0b116043d`, [READ
 
 [VERIFICATION.json](VERIFICATION.json)에 명령, 소스/보존 해시, 결과를 남긴다. `run_ci_tests.main`의 선택 파일 목록만 제한하고 공용 `local_lock_root`/`run_locked`를 그대로 사용했다. 점유 중인 다른 작업 잠금을 우회하지 않는다.
 
-새 fake-seam 시험은 renderer·Scene 생성자·World 모듈·host·pose factory·worker·torch·socket·subprocess 호출을 금지한다. 3지도의 dict/fake scene factory, 6시나리오 validator/공개 지도 hash, 잘못된 지도/모델/hash/보정/표식 반례를 검사한다. 6시나리오 `run_bundle` 경로 시험은 **P03 지원 선언과 host_spec만 메모리 내 fake로 바꾼다**. 실제 미지원 provider/cargo 조합을 허용했다는 결과가 아니다. P03 확장 없이 문 2개·복도는 실제 allow-list 및 환경 계약 양쪽에서 거부되는 별도 양성 거절 시험이 있다.
+위 JSON은 최초 제출 SHA의 과거 기록이다. 독립 리뷰 A305-1/2/3의 수정과 재검증은 [REVIEW_FIXES.md](REVIEW_FIXES.md)에 별도로 기록한다. 일반 GitHub CI는 실행하며 취소하거나 skip 표식을 쓰지 않는다.
+
+새 fake-seam 시험은 renderer·Scene 생성자·World 모듈·host·pose factory·worker·torch·socket·subprocess 호출을 금지한다. 3지도의 dict/fake scene factory, 6시나리오 validator/공개 지도 hash, 잘못된 지도/모델/hash/보정/표식 반례를 검사한다. 6시나리오의 새 bundle 미리보기 시험은 **P03 지원 선언과 host_spec만 메모리 내 fake로 바꾼다**. 실제 미지원 provider/cargo 조합을 허용했다는 결과가 아니다. P03 확장 없이 문 2개·복도는 실제 allow-list 및 환경 계약 양쪽에서 거부되는 별도 양성 거절 시험이 있다.
 
 기존 시험은 소스를 읽고 정적 범위만 선정했다. `test_zone_final_env`의 NumPy grid/reachability는 정적 CPU 계산이다. `test_zone_study_integration_seams`는 기존 태그 PF 생성/가짜 host/가짜 mj_forward만 사용한다. `test_zone_study_source_pinning`은 bundle/dict/fake wire이며 실제 LLM을 호출하지 않는다. `test_zone_masterpi_v3_scene`은 Scene/MjModel/mj_forward, `test_vision_pose_source` 전체는 관측 처리·worker subprocess, integration_pair 일부는 Scene/프레임 처리라 이번 실행 목록에서 제외했다. #249 봉인 해시는 새 시험에서 순수 bytes로 검증한다.
 

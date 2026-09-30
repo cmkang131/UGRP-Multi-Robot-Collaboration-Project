@@ -205,11 +205,8 @@ def private_part(scenario: Mapping) -> dict:
     return copy.deepcopy(dict(scenario.get(PRIVATE_KEY) or {}))
 
 
-def bundle_for(scenario: Mapping, *, maps_dir: Path | str | None = None, schematic: bool = False) -> dict:
+def bundle_for(scenario: Mapping, *, maps_dir: Path | str = MAP_DIR, schematic: bool = False) -> dict:
     """The map bundle a scenario pins: map file hash + public projection hash (read-only)."""
-    if maps_dir is None:
-        from harness.zone_environment_registry import maps_dir_for
-        maps_dir = maps_dir_for(scenario['map_id'])
     return map_bundle(scenario['map_id'], maps_dir=maps_dir,
                       landmark_detail=scenario.get('landmark_detail', 'full'), schematic=schematic)
 
@@ -700,7 +697,7 @@ def check_leader_rotation(scenario: Mapping) -> list[str]:
 # ---------------------------------------------------------------------------
 # Validation and manifest
 
-def validate(scenario: Mapping, *, maps_dir: Path | str | None = None, bundle: Mapping | None = None) -> Report:
+def validate(scenario: Mapping, *, maps_dir: Path | str = MAP_DIR, bundle: Mapping | None = None) -> Report:
     """Run every study check over one scenario config (never raises on a bad config)."""
     scenario_id = scenario.get('scenario_id') if isinstance(scenario, Mapping) else None
     report = Report(str(scenario_id), {name: [] for name in CHECK_NAMES})
@@ -711,9 +708,6 @@ def validate(scenario: Mapping, *, maps_dir: Path | str | None = None, bundle: M
         report.checks['schema'].append(f'schema must be {SCENARIO_SCHEMA}, got {scenario.get("schema")!r}')
         return report
     try:
-        if maps_dir is None:
-            from harness.zone_environment_registry import maps_dir_for
-            maps_dir = maps_dir_for(scenario.get('map_id'))
         bundle = bundle_for(scenario, maps_dir=maps_dir) if bundle is None else bundle
     except (OSError, ValueError) as error:
         report.checks['schema'].append(f'the pinned map could not be read: {error}')
@@ -738,7 +732,7 @@ def validate(scenario: Mapping, *, maps_dir: Path | str | None = None, bundle: M
     return report
 
 
-def validate_all(*, directory: Path | str = SCENARIO_DIR, maps_dir: Path | str | None = None) -> dict:
+def validate_all(*, directory: Path | str = SCENARIO_DIR, maps_dir: Path | str = MAP_DIR) -> dict:
     return {sid: validate(scenario, maps_dir=maps_dir)
             for sid, scenario in load_all(directory=directory).items()}
 
