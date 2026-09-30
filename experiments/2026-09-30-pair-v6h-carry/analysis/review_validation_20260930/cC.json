@@ -1,0 +1,2150 @@
+{
+  "schema": "ugrp.v6h_placement_classification.draft.v2",
+  "label": "cC",
+  "raw": "/Users/changmin/projects/ugrp/outputs/b-v6h-gain-69c2a99a-cC",
+  "source_sha": "69c2a99ac1fe6babd49c562786a0ba2ff4a7f662",
+  "manifest_state": "completed",
+  "source_changed": false,
+  "input_sha256": {
+    "cases.jsonl": "67c7ec54b8682883a68355e7589619f3039c04d132ba19350eb8941e38e28cd8",
+    "manifest.json": "46d30c554ddc9e40d45db1dc66950514793df95565d5cf8cb71f0408bea81274",
+    "chain_analysis.py": "62ff145d9016f61aa2f6f71d588ba7dab5b35d9aabb2b19ca15a934bafc0d2e5",
+    "/Users/changmin/projects/ugrp-wt/v6h-fixcls/experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3",
+    "/Users/changmin/projects/ugrp-wt/v6h-fixcls/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "cd7dc24d245e7e674cef6b986e594c506b2bbedb015aad8946c9b6f10ce60950",
+    "/Users/changmin/projects/ugrp-wt/v6h-fixcls/harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+    "/Users/changmin/projects/ugrp-wt/v6h-fixcls/experiments/2026-09-29-door-guard-relax/analysis/door_relax_analysis.py": "5add0c7ac29c94e13cf65ffe0f95abbf96a7c80e125194a20a485cd8dca6186f",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_F_hR2_04_s913_pPOST_VENV/result.json": "58a41d9fe35100642e6899ffc92eeaf8676ddc36899fb38ba6bfae3d3be6a8af",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_F_hR2_04_s913_pPOST_VENV/eval_only/trace.jsonl": "a0bc2dde55e47881abff323e1f3b1ee7e6f7e51a81944675b6cc843177ad98da",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_F_hR2_04_s911_pPOST_VENV/result.json": "de9a04ab150d6ce9618abcf39f1429ed6c288a9015ced3e4a7130e09943e4057",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_F_hR2_04_s911_pPOST_VENV/eval_only/trace.jsonl": "6ea9ab45e68aee05695f19f3889d5691e17708ec7113d823f5c434ffbbefcc80",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N01_s913_pPOST_VENV/result.json": "6582e3490bfe072c8b4a6d0cd3b9c11c8976ac843c1d86bc58b2e5fd4b6eb94d",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N01_s913_pPOST_VENV/eval_only/trace.jsonl": "576dd39061b1a4d825e5967b2a3fd77c456768a1caa9cbff3fd5db657e4045e0",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N01_s911_pPOST_VENV/result.json": "4a322cc57303142389b2139e0eebb58a72ddd0a80adb401e4d5897ab6a717fe0",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N01_s911_pPOST_VENV/eval_only/trace.jsonl": "d10fa884ac58fea0c2aaef6de57e4bbc2085ddb1469c3dc4ef4b9f039fcc0243",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N02_s913_pPOST_VENV/result.json": "bb9d869284b31a1c9a27ae6c5664ce3ea7702bd4e3cef07b50de9e482295fbec",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N02_s913_pPOST_VENV/eval_only/trace.jsonl": "181f7b34499249344e5ca3e53ca79b8d28b9443d73d5fa7175a8e95a8493309e",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N02_s911_pPOST_VENV/result.json": "d12210fe00013ebe23289ed91748a338f5df68dd716cd40b5b6ff8856a85d8d7",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N02_s911_pPOST_VENV/eval_only/trace.jsonl": "48e36d841f1a5b1e77fff9725d1dbe910d45a938b1c49af35bbca7ed2052dbb0",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N03_s913_pPOST_VENV/result.json": "f3d433c148821cf2cd5b48a39f08874b818cba0ae4f4c86c681b9217ba2831fc",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N03_s913_pPOST_VENV/eval_only/trace.jsonl": "2ff504b27cd1e0d947859ebd1e2f175a67d0f7e0b19f4f0a46ff6eea0f5d0cb0",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N03_s911_pPOST_VENV/result.json": "6627bc2dd3071d728c862ec2bc2c98792c139a825b654f138f385367b37e770c",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N03_s911_pPOST_VENV/eval_only/trace.jsonl": "6a6a80e729408f844a17f20369297ea5ab758ef17328ec228065b8cca0a9894e",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N04_s913_pPOST_VENV/result.json": "540b635fe3c2c32c76e31f9d2b14a3fb81c3076c80731e64dec3fdc24dd6ab9c",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N04_s913_pPOST_VENV/eval_only/trace.jsonl": "d1d711b67e02781ce523ecef084785358ac64dcbe02004ba0f31d35d89f3eb8e",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N04_s911_pPOST_VENV/result.json": "782265e163232e99c50e5b22c7baa1632796c5543e1ac2f99e297fe73a9888e3",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N04_s911_pPOST_VENV/eval_only/trace.jsonl": "7a0f1aa5c30a8c731557e87fd747ef0b2ef50692a6a1fdec2e0b75122e36e3c1",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N05_s913_pPOST_VENV/result.json": "abe1a77a27342e77e9f13092de4e6caf176a00630c66ad36cd8c578976dd0e04",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N05_s913_pPOST_VENV/eval_only/trace.jsonl": "d9fa1ca4f4f50c1030038032e14cc142fb7c6289229e8e0250a204256f5c8b24",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N05_s911_pPOST_VENV/result.json": "7e249c28355487b4d5ef24d9cc6638a85787c1430b3c1ca4e9f09d43056fef94",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N05_s911_pPOST_VENV/eval_only/trace.jsonl": "d05894ced1d646863205922cb7522a243361a6b3fb671b372e897bc5967a1fed",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N06_s913_pPOST_VENV/result.json": "f7f4df1d67a6b32cf5b69ec1eabf9766cf7b38efc97f7104f571056943f999d7",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N06_s913_pPOST_VENV/eval_only/trace.jsonl": "fc6f321984b56a9ffea73a288ef0bc040ef34dd327edd22ce025967a51766fb0",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N06_s911_pPOST_VENV/result.json": "8c3b8464097a3db712b33d766f1f88d3ab226aea66629c3b2a38f793deb09aa1",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N06_s911_pPOST_VENV/eval_only/trace.jsonl": "e32f90f8340bf078d6b6859212c6b1d1b9a1da462f6c4e78280726f3f8b7db95",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N07_s913_pPOST_VENV/result.json": "08c22087496415d627ac43a584b4e677eb5b85ca0f554f882018b32627143b24",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N07_s913_pPOST_VENV/eval_only/trace.jsonl": "04525afb8a517b0b15245e7c3840604e11b8a167d0505128350eb8f758907f2f",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N07_s911_pPOST_VENV/result.json": "33b6d0599de208e0821e91f9ab02ff294ec4f41db5dc57124028646bac733cb3",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N07_s911_pPOST_VENV/eval_only/trace.jsonl": "f8a50bc413628632cafb34dc8ce87ae11beefe15672fef8155bb51c8bc7b255e",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N08_s913_pPOST_VENV/result.json": "36fbc381111fe5895153fd54f870c7e98579f982a457eec833bdba1be87c44f3",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N08_s913_pPOST_VENV/eval_only/trace.jsonl": "26da94263f6e9e6329a114f2861b751e6741984df4b3a4d12cefeb2785a725fc",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N08_s911_pPOST_VENV/result.json": "c530eedef040de54575d2ff41e2614a78c10df4d5109cc4e66472dcce6e1d199",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N08_s911_pPOST_VENV/eval_only/trace.jsonl": "64a868aebf846048e1960789a1b18dc945a8e38a380d79b2f85c0b8ae2dfe0ba",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N09_s911_pPOST_VENV/result.json": "69bc0578ec9acf8e22ae845a24c0a38517cca5f28f19b249e737c1199072f8db",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N09_s911_pPOST_VENV/eval_only/trace.jsonl": "f84efd1a37c52b2b3581bcb0c660e6b7c8f0fc97e78fc951b06f01a992322a1a",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N09_s913_pPOST_VENV/result.json": "b22a16ffde5a20c73b463efac03fa577ce25a7bc12fab220533dc5266704238c",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N09_s913_pPOST_VENV/eval_only/trace.jsonl": "d07593fa7993759f578ed34367f65c0c61d7989039c9d46b3c6ca0be1431c6a3",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N10_s913_pPOST_VENV/result.json": "a890f38b6d203cd3df118b15fbc1c23790a19d05b8749ee16a1213e8fdd6686a",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N10_s913_pPOST_VENV/eval_only/trace.jsonl": "833d71a44ce9c71057825bba8a8fdd396c1eab06053a19f64cd3d2aac5943ceb",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N10_s911_pPOST_VENV/result.json": "2b374ac44edd4dab9bfd391a6c94358faa12ab72c70bdd58a9d888f1b817c081",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N10_s911_pPOST_VENV/eval_only/trace.jsonl": "ef4cc2c5720baa6efd4168fa3fd69699eaccf2c11061bbfa0c34ccd23570a8b7",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N11_s913_pPOST_VENV/result.json": "26ef208b6f0cb2f8bb7ec10fdf48145de967b2970983ab5d7fd2d19dfbb3e6e8",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N11_s913_pPOST_VENV/eval_only/trace.jsonl": "d3ed2e05afa737138c44835e171f646c3e9d5e66dfb277053095014cc0e08c36",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N11_s911_pPOST_VENV/result.json": "ced0bc7bc31279bfc2d8b7108ad47ad760e2445a865034e7f72dad6a3edf9384",
+    "cases/chain_b-v6h.k1+p2f+gain_teacher_N11_s911_pPOST_VENV/eval_only/trace.jsonl": "37c97d1084a0a9ad2316f956d94a16282330737243510363443bb744c6487545"
+  },
+  "interpretations": "Provisional pre-seal interpretations in analysis/CLASSIFY_NOTES.md; not an approved preregistration.",
+  "placements": [
+    {
+      "placement": "F_hR2_04",
+      "primary_seed": 911,
+      "class": "FAIL",
+      "first_failure": {
+        "source": "controller",
+        "sim_s": 61.4,
+        "reason": "POSE_UNCERTAIN",
+        "robot_id": "r1",
+        "phase": "carry",
+        "leg": 1,
+        "code": "SELF_POSE_UNCERTAIN",
+        "sub": "yaw"
+      },
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:F_hR2_04:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:F_hR2_04:s911:pPOST:VENV",
+          "placement": "F_hR2_04",
+          "seed": 911,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 61.4,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 61.4,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                61.4
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018037295945966637,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 61.4,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 61.4,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:F_hR2_04:s913:pPOST:VENV",
+          "placement": "F_hR2_04",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 61.0,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 61.0,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                61.0
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018040604524615433,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 61.0,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 61.0,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N01",
+      "primary_seed": 911,
+      "class": "FAIL",
+      "first_failure": {
+        "source": "controller",
+        "sim_s": 61.3,
+        "reason": "POSE_UNCERTAIN",
+        "robot_id": "r1",
+        "phase": "carry",
+        "leg": 1,
+        "code": "SELF_POSE_UNCERTAIN",
+        "sub": "yaw"
+      },
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:N01:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N01:s911:pPOST:VENV",
+          "placement": "N01",
+          "seed": 911,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 61.3,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 61.3,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                61.3
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01847581245721874,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 61.3,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 61.3,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N01:s913:pPOST:VENV",
+          "placement": "N01",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 61.0,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 61.0,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                61.0
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01846039782634123,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 61.0,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 61.0,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N02",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:N02:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N02:s911:pPOST:VENV",
+          "placement": "N02",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.019099715658285592,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N02:s913:pPOST:VENV",
+          "placement": "N02",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 60.7,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 60.7,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                60.7
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.0191522666711172,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 60.7,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 60.7,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N03",
+      "primary_seed": 911,
+      "class": "FAIL",
+      "first_failure": {
+        "source": "controller",
+        "sim_s": 61.4,
+        "reason": "POSE_UNCERTAIN",
+        "robot_id": "r1",
+        "phase": "carry",
+        "leg": 1,
+        "code": "SELF_POSE_UNCERTAIN",
+        "sub": "yaw"
+      },
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:N03:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N03:s911:pPOST:VENV",
+          "placement": "N03",
+          "seed": 911,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 61.4,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 61.4,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                61.4
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018398766571261188,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 61.4,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 61.4,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N03:s913:pPOST:VENV",
+          "placement": "N03",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 60.6,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 60.6,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                60.6
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018404255018807283,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 60.6,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 60.6,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N04",
+      "primary_seed": 911,
+      "class": "FAIL",
+      "first_failure": {
+        "source": "controller",
+        "sim_s": 61.2,
+        "reason": "POSE_UNCERTAIN",
+        "robot_id": "r1",
+        "phase": "carry",
+        "leg": 1,
+        "code": "SELF_POSE_UNCERTAIN",
+        "sub": "yaw"
+      },
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:N04:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N04:s911:pPOST:VENV",
+          "placement": "N04",
+          "seed": 911,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 61.2,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 61.2,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                61.2
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018222823160049393,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 61.2,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 61.2,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N04:s913:pPOST:VENV",
+          "placement": "N04",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 60.8,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 60.8,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                60.8
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018232053651576915,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 60.8,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 60.8,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N05",
+      "primary_seed": 911,
+      "class": "FAIL",
+      "first_failure": {
+        "source": "controller",
+        "sim_s": 61.3,
+        "reason": "POSE_UNCERTAIN",
+        "robot_id": "r2",
+        "phase": "carry",
+        "leg": 1,
+        "code": "SELF_POSE_UNCERTAIN",
+        "sub": "yaw"
+      },
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:N05:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N05:s911:pPOST:VENV",
+          "placement": "N05",
+          "seed": 911,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 61.3,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r2",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r2",
+            "sim_s": 61.3,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                61.3
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018566100603963406,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 61.3,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r2",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r2",
+              "sim_s": 61.3,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N05:s913:pPOST:VENV",
+          "placement": "N05",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 60.0,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 60.0,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                60.0
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018535234656908612,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 60.0,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 60.0,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N06",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:N06:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N06:s911:pPOST:VENV",
+          "placement": "N06",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.019077698894181965,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N06:s913:pPOST:VENV",
+          "placement": "N06",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 60.7,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 60.7,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                60.7
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01912685226929116,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 60.7,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 60.7,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N07",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:N07:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N07:s911:pPOST:VENV",
+          "placement": "N07",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.017571989488151706,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N07:s913:pPOST:VENV",
+          "placement": "N07",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 60.5,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 60.5,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                60.5
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01760511714560921,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 60.5,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 60.5,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N08",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:N08:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N08:s911:pPOST:VENV",
+          "placement": "N08",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.0180041843305381,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N08:s913:pPOST:VENV",
+          "placement": "N08",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 60.8,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 60.8,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                60.8
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018051738204303818,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 60.8,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 60.8,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N09",
+      "primary_seed": 911,
+      "class": "FAIL",
+      "first_failure": {
+        "source": "controller",
+        "sim_s": 61.3,
+        "reason": "POSE_UNCERTAIN",
+        "robot_id": "r1",
+        "phase": "carry",
+        "leg": 1,
+        "code": "SELF_POSE_UNCERTAIN",
+        "sub": "yaw"
+      },
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:N09:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N09:s911:pPOST:VENV",
+          "placement": "N09",
+          "seed": 911,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 61.3,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 61.3,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                61.3
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018918591131267756,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 61.3,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 61.3,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N09:s913:pPOST:VENV",
+          "placement": "N09",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 60.7,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 60.7,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                60.7
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018933132293974538,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 60.7,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 60.7,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N10",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:N10:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N10:s911:pPOST:VENV",
+          "placement": "N10",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018421975102681266,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N10:s913:pPOST:VENV",
+          "placement": "N10",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 60.7,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 60.7,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                60.7
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018421271917900783,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 60.7,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 60.7,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N11",
+      "primary_seed": 911,
+      "class": "FAIL",
+      "first_failure": {
+        "source": "controller",
+        "sim_s": 61.5,
+        "reason": "POSE_UNCERTAIN",
+        "robot_id": "r1",
+        "phase": "carry",
+        "leg": 1,
+        "code": "SELF_POSE_UNCERTAIN",
+        "sub": "yaw"
+      },
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1+p2f+gain:teacher:N11:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N11:s911:pPOST:VENV",
+          "placement": "N11",
+          "seed": 911,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 61.5,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 61.5,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                61.5
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01818100340677863,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 61.5,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 61.5,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1+p2f+gain:teacher:N11:s913:pPOST:VENV",
+          "placement": "N11",
+          "seed": 913,
+          "class": "FAIL",
+          "first_failure": {
+            "source": "controller",
+            "sim_s": 60.7,
+            "reason": "POSE_UNCERTAIN",
+            "robot_id": "r1",
+            "phase": "carry",
+            "leg": 1,
+            "code": "SELF_POSE_UNCERTAIN",
+            "sub": "yaw"
+          },
+          "raw_first_failure": {
+            "robot_id": "r1",
+            "sim_s": 60.7,
+            "reason": "POSE_UNCERTAIN"
+          },
+          "failed_legs": [
+            "L1"
+          ],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": false,
+              "recorded": false,
+              "checks": {},
+              "window_sim_s": [
+                36.30000000008231,
+                60.7
+              ],
+              "window_source": "first_failure_sim_s",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01813339351686979,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [
+            {
+              "source": "controller",
+              "sim_s": 60.7,
+              "reason": "POSE_UNCERTAIN",
+              "robot_id": "r1",
+              "phase": "carry",
+              "leg": 1,
+              "code": "SELF_POSE_UNCERTAIN",
+              "sub": "yaw"
+            },
+            {
+              "robot_id": "r1",
+              "sim_s": 60.7,
+              "reason": "POSE_UNCERTAIN"
+            }
+          ],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": true,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "n_cases": 24,
+    "n_placements": 12,
+    "n_classified_primary": 12,
+    "primary_seed": 911,
+    "counts": {
+      "PASS_CLEAN": 5,
+      "PASS_CONTACT_RECOVERED": 0,
+      "BLOCKED_BY_CONTACT": 0,
+      "FAIL": 7,
+      "FAIL_HARD_LIMIT": 0
+    },
+    "pass_placements": 5,
+    "wilson95_primary_classified": [
+      0.19325746190524656,
+      0.6804926643446272
+    ],
+    "unclassified_cases": [],
+    "unclassified_placements": [],
+    "hard_limit_chain_cases": 0,
+    "hard_limit_chain_placements_any_seed": 0,
+    "case_counts": {
+      "FAIL": 19,
+      "PASS_CLEAN": 5
+    },
+    "cases_pass": 5,
+    "placements_all_recorded_seeds_pass": 0,
+    "placements_any_recorded_seed_pass": 5,
+    "criterion": {
+      "minimum_pass": 48,
+      "required_placements": 60,
+      "maximum_hard_limit_cases": 0,
+      "evaluable": false,
+      "verdict": "NOT_EVALUABLE",
+      "mode": "historical_endpoints",
+      "scope": "Observed criterion A + whole-chain safety; see separate sigma_criterion_B in confirmatory mode."
+    },
+    "probability_observed_count_criterion_n60": {
+      "0.7": 0.056770682002336884,
+      "0.75": 0.23155763368805587,
+      "0.8": 0.5764403014458759,
+      "0.85": 0.8937539990224598
+    }
+  }
+}

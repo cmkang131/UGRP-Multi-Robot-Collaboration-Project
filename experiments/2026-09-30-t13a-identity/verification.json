@@ -1,0 +1,137 @@
+{
+  "schema": "ugrp.t13a_offline_verification.v1",
+  "recorded_at_utc": "2026-09-30T12:27:47.414436+00:00",
+  "base_sha": "c12796676802ab54cad2f0635e3e96e911691c76",
+  "implementation_source_commit": "13e7958a2515dbdc0c8aa12359d6f37bad51b296",
+  "branch": "codex/identity-count-exec",
+  "source_files_sha256": {
+    "harness/zone_identity_jobs.py": "254bd4efa01966fb2ccca740ed1d7d511669f9a1242e739b8d5895ace484616e",
+    "tests/test_zone_identity_jobs.py": "dd85e919785e27012afa6186259912cd211d54a01c7aa436da0b21d77923ab6d",
+    "scripts/run_ci_tests.py": "0994be304b792122537fdeb3ba2eefeacfcce208485b675af9b7ce656f33c7aa",
+    "harness/zone_study_inputs.py": "179489a24bc76e73a52bebec1f5918b1a1ac0d128480864ae35debf57c007e0a",
+    "harness/zone_study_contract.py": "f6e4c5fef3bdb7e332d2871b309bec1a46e3d1d98533050e723094200dc460f6",
+    "harness/zone_map_schematic.py": "84e75a70448786ef331df81bf9aef6026b7a0331f629f1e4fde8887efe2622b9"
+  },
+  "protected_files": {
+    "manifest": "protected_sha256.json",
+    "manifest_sha256": "6654d47c23caaacbe57bb9d6d93d6af5b6150fdc566bd38712a6547d4c18f92a",
+    "count": 58,
+    "equal_to_base": true
+  },
+  "environment": {
+    "python": "3.12.13",
+    "pytest": "9.1.1",
+    "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "threads": {
+      "OMP_NUM_THREADS": 1,
+      "OPENBLAS_NUM_THREADS": 1,
+      "MKL_NUM_THREADS": 1
+    },
+    "pytest_plugin_autoload": false
+  },
+  "local_test": {
+    "lock": "scripts.run_ci_tests.run_locked(command, env, local_lock_root())",
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_zone_identity_jobs.py",
+      "tests/test_zone_study_inputs.py",
+      "tests/test_zone_study_contract.py",
+      "tests/test_ci_sharding.py",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/t13a-identity-offline-20260930/pytest-01.xml"
+    ],
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/t13a-identity-offline-20260930/pytest-01.xml",
+    "junit_sha256": "01d2917dfb8bf495f799d16e9f535a45504574467c6318c2cb2b2bd5acbaaa1c",
+    "tests": 235,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_s": 1.739,
+    "counts_by_module": {
+      "tests.test_zone_identity_jobs": 71,
+      "tests.test_zone_study_inputs": 45,
+      "tests.test_zone_study_contract": 53,
+      "tests.test_ci_sharding": 66
+    },
+    "exit_code": 0,
+    "pretest_lock_refusals": "One immediate lock refusal and one finite 300-second wait; pytest not started; no other task stopped"
+  },
+  "four_condition_contract": {
+    "common_config": {
+      "identity_version": "ugrp.zone_identity_jobs.v1",
+      "target_api": "ugrp.own_rgb_target_job.v1",
+      "max_relooks": 3,
+      "max_frame_age_s": 1.0,
+      "settle_observations": 2,
+      "settle_cadence_s": 1.0,
+      "sensors": "not_used_in_fake",
+      "own_memory_version": "ugrp.zone_identity_jobs.v1",
+      "shared_peer_enum_source_sha256": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+      "controller_source_sha256": "254bd4efa01966fb2ccca740ed1d7d511669f9a1242e739b8d5895ace484616e"
+    },
+    "common_config_sha256": "55629d3c42a4e5206957d71c7106149a910ce3430a5ebe2f4b1b5004d02d3d96",
+    "conditions": {
+      "no_comm": {
+        "common_config_sha256": "55629d3c42a4e5206957d71c7106149a910ce3430a5ebe2f4b1b5004d02d3d96"
+      },
+      "peer_ko": {
+        "common_config_sha256": "55629d3c42a4e5206957d71c7106149a910ce3430a5ebe2f4b1b5004d02d3d96"
+      },
+      "leader_ko": {
+        "common_config_sha256": "55629d3c42a4e5206957d71c7106149a910ce3430a5ebe2f4b1b5004d02d3d96"
+      },
+      "structured": {
+        "common_config_sha256": "55629d3c42a4e5206957d71c7106149a910ce3430a5ebe2f4b1b5004d02d3d96"
+      }
+    },
+    "role_assignments": {
+      "r1": {
+        "actor": "r1",
+        "role": "west",
+        "sha256": "2a70ca0d34956a8b5ef4e19e921d4db156e54d963cdd41de4add0b7f44482e19"
+      },
+      "r2": {
+        "actor": "r2",
+        "role": "west",
+        "sha256": "5a1e1bce7785bf092800321e936626ccca6c50ab64e9a7812c5070f9374a1de2"
+      },
+      "r3": {
+        "actor": "r3",
+        "role": "west",
+        "sha256": "b98b8c2fb343c95f85e38f7ba5b79b229abd5ee16a6cec0ff2090616710d1300"
+      }
+    },
+    "private_variants": [
+      "unchanged",
+      "setup_pose_only",
+      "hidden_event_only",
+      "peer_actual_deliveries_only"
+    ],
+    "fixed_action_cases": 48,
+    "model_calls": 0
+  },
+  "scope": {
+    "logic_tests_passed": true,
+    "specific_grounding_supported": false,
+    "legacy_executor_target_api_supported": false,
+    "physical_ready": false,
+    "physical_runs": 0,
+    "sim_seconds": 0,
+    "model_calls": 0,
+    "camera_render_calls": 0,
+    "new_recognizer": false,
+    "detection_fixture": "synthetic typed detections and synthetic hashes; not recognized camera images",
+    "static_map_schematic": "existing input tests may draw a static PIL map; no simulator/Scene",
+    "tensorboard": "not applicable to pure unit contracts; coordinator must verify new real results"
+  },
+  "physics_proposal": {
+    "file": "SIM_CHECKS.md",
+    "cells": 2,
+    "sim_cap_per_cell": 900,
+    "total_sim_cap": 1800,
+    "additional_identity_design_cost": "unestimated",
+    "approval_or_completed_run": false
+  }
+}

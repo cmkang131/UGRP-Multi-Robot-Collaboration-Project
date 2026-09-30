@@ -1,0 +1,54 @@
+{
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "platform": "macOS-27.2-arm64-arm-64bit",
+  "pid": 98009,
+  "wait_started_unix": 1790769244.923197,
+  "initial_holder": {
+    "owner": "codex",
+    "branch": "codex/chain-contract",
+    "purpose": "local offline regression tests",
+    "pid": 93845,
+    "acquired_unix": 1790769168.755394,
+    "expected_end_unix": 1790769768.7553952,
+    "loadavg_at_acquire": [
+      15.91650390625,
+      20.96337890625,
+      23.65771484375
+    ],
+    "pid_alive": true
+  },
+  "lock": {
+    "owner": "codex",
+    "branch": "codex/s6-order-design",
+    "purpose": "T11 static counterexamples and feasibility tests; no physics/render",
+    "pid": 98009,
+    "acquired_unix": 1790769506.927422,
+    "expected_end_unix": 1790769626.927422,
+    "loadavg_at_acquire": [
+      13.01171875,
+      21.875,
+      23.99951171875
+    ]
+  },
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-c",
+    "import sys; sys.path.insert(0, 'experiments/2026-09-30-s6-order-design'); import audit; audit.enable_static_guard(); import pytest; raise SystemExit(pytest.main(['-q','experiments/2026-09-30-s6-order-design/test_audit.py','tests/test_zone_scenario_feasibility.py']))"
+  ],
+  "exit_code": 0,
+  "release": {
+    "owner": "codex",
+    "branch": "codex/s6-order-design",
+    "purpose": "T11 static counterexamples and feasibility tests; no physics/render",
+    "pid": 98009,
+    "acquired_unix": 1790769506.927422,
+    "expected_end_unix": 1790769626.927422,
+    "loadavg_at_acquire": [
+      13.01171875,
+      21.875,
+      23.99951171875
+    ],
+    "pid_alive": true
+  },
+  "finished_unix": 1790769527.228946
+}

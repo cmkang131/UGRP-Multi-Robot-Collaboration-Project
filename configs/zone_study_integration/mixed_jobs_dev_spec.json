@@ -1,0 +1,60 @@
+{
+  "schema": "ugrp.zone_mixed_jobs_dev_spec.v1",
+  "status": "DRAFT_CONTRACT_ONLY",
+  "execution_status": "not_run",
+  "source_sha": null,
+  "execution_bundle_id": null,
+  "bundle_sha256": null,
+  "horizon_s": 1800,
+  "conditions": [
+    "no_comm",
+    "peer_ko",
+    "leader_ko",
+    "structured"
+  ],
+  "episode": {
+    "episode_id": "mixed-cyan-beam-fixed-r12-r3-dev",
+    "split": "smoke",
+    "scenario": "configs/zone_study_integration/mixed_cyan_beam_fixed_r12_r3_dev.json",
+    "map": "zone_wide_door_geometry_v2",
+    "base_map": "zone_wide_door",
+    "layout_seed": 700,
+    "trial_seed": 700,
+    "goal": {
+      "A": {
+        "cyan": 1
+      }
+    },
+    "extra_boxes": {},
+    "contact_profile": "cargo_noslip_v1",
+    "job_sim_limit_s": 1800,
+    "team_cargo": [
+      {
+        "item_id": "beam_dev",
+        "kind": "long_beam",
+        "pose": [
+          1.2,
+          0.05,
+          0.0
+        ]
+      }
+    ],
+    "pair_order_sheets": {
+      "beam-order": {
+        "beam_xyyaw": [
+          1.2,
+          0.0,
+          0.0
+        ],
+        "grid": {
+          "xy_m": 0.1,
+          "yaw_rad": 0.174533
+        },
+        "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+      }
+    },
+    "mixed_jobs_profile": "mixed_cyan_beam_fixed_r12_r3_v1",
+    "pair_policy": "v5h"
+  },
+  "note_ko": "표준 integration host의 opt-in 준비 명세. runnable 등록·봉인은 코디네이터 담당. 최종 v3/provider 조합과 실제 경로는 별도 검증 전 미지원."
+}

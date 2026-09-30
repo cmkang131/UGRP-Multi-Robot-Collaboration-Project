@@ -69,6 +69,10 @@ def capture():
 
 def binomial_pmf(n, p):
     """Exact binomial recurrence in floating point, starting at the mode (no normal approximation)."""
+    if p == 0:
+        return [1.] + [0.] * n
+    if p == 1:
+        return [0.] * n + [1.]
     mode = int((n + 1) * p)
     values = [0.] * (n + 1)
     values[mode] = math.exp(math.lgamma(n + 1) - math.lgamma(mode + 1) - math.lgamma(n - mode + 1)
@@ -83,6 +87,35 @@ def binomial_pmf(n, p):
 
 def tail(n, p, k):
     return math.fsum(binomial_pmf(n, p)[k:])
+
+
+def mc_interval(successes, draws, alpha=.05):
+    """Exact binomial interval for IID simulator draws, conditional on this model.
+
+    This measures Monte Carlo sampling error, NOT model transfer or real risk.
+    """
+    if not 0 <= successes <= draws or draws <= 0:
+        raise ValueError("invalid Monte Carlo counts")
+
+    def inverse(k, target):
+        lo, hi = 0., 1.
+        for _ in range(60):
+            mid = (lo + hi) / 2
+            if tail(draws, mid, k) < target:
+                lo = mid
+            else:
+                hi = mid
+        return (lo + hi) / 2
+
+    lower = inverse(successes, alpha / 2) if successes else 0.
+    upper = inverse(successes + 1, 1 - alpha / 2) if successes < draws else 1.
+    lower_one_sided = inverse(successes, alpha) if successes else 0.
+    prob = successes / draws
+    return {"draws": draws, "gate_success_draws": successes, "gate_failure_draws": draws - successes,
+            "plugin_mcse": math.sqrt(prob * (1 - prob) / draws),
+            "gate_probability_exact95": [lower, upper],
+            "gate_failure_probability_upper_one_sided95": 1 - lower_one_sided,
+            "scope": "Monte Carlo sampling error conditional on model; not model transfer or physical safety risk"}
 
 
 def critical_count(n):
@@ -158,6 +191,7 @@ def calculate(training):
                                "expected_pass_fraction": float(counts.mean() / 60),
                                "P_ge_48": float((counts >= 48).mean()), "P_ge_55": float((counts >= 55).mean()),
                                "gate_mc_standard_error": {str(k): float(math.sqrt((counts >= k).mean() * (1 - (counts >= k).mean()) / DRAWS)) for k in (48, 55)},
+                               "gate_mc_intervals": {str(k): mc_interval(int((counts >= k).sum()), DRAWS) for k in (48, 55)},
                                "count_p05_p50_p95": np.percentile(counts, [5, 50, 95]).tolist(),
                                "per_placement_pass_prob": dict(zip([p["name"] for p in placements], probabilities.tolist()))}
     return {"scope": "DRAFT: count criteria only; contact, sigma gates, setdown and hard-limit success not modeled",
@@ -165,7 +199,7 @@ def calculate(training):
                              MODEL_DIR / "results/raw_manifest.json", SAVED / "training_inputs.json")},
             "method": {"draws": DRAWS, "rng_seed": RNG_SEED, "bootstrap_unit": "placement (34), not PF seed (68 cases)",
                        "uncertainty": "shared tick phase, placement-bootstrap fit, paired L0/L1 residual bootstrap; P55 computed from counts",
-                       "population_test": "H0 p<=0.80; exact binomial tail <=0.025 (two-sided exact 95% lower confidence endpoint); power target 0.90"},
+                       "population_test": "Hypothetical IID design only (current placement draws are dependent): H0 p<=0.80; exact binomial tail <=0.025 (two-sided exact 95% lower confidence endpoint); power target 0.90"},
             "training": {"cases": 68, "placements": 34, "L0_coefficients": b0.tolist(), "L1_coefficients": b1.tolist(),
                          "residual_sd_mm": residual.std(0).tolist()},
             "model_scenarios": model_results,
@@ -183,11 +217,19 @@ def report(result):
         lines.append(f"| {name} | {item['expected_pass_count']:.3f} | {item['P_ge_48']:.6f} | {item['P_ge_55']:.6f} |")
     lines += ["", "모형 행: PR #286 simulate를 3,000회, 시드 20261001로 조건마다 재시작했다(짝지은 민감도). 독립 동일확률 이항으로 평균 통과율을 대입하지 않았다.",
               "기존 모형의 ≥54 출력 대신 ≥55를 원래 통과 수에서 계산했다. 횡 오차 배율은 평균과 잔차를 함께 배율 조정한다.",
-              "p=0.88/0.80 행: 모든 배치의 참 통과확률이 같은 독립 이항이라는 별도 보수적 가정이며 실제 참값의 추정/보장은 아니다.",
-              f"29/29의 Wilson 95% 하한(z=1.96)은 {result['wilson95_lower_29_of_29']:.9f}; 보수적 행에는 반올림한 0.88을 썼다.", "",
+              "p=0.88/0.80 행: 모든 배치의 참 통과확률이 같은 독립 이항이라는 검증되지 않은 설계 가정이며 실제 참값의 추정/보장은 아니다.",
+              f"29/29의 Wilson 95% 하한(z=1.96)은 {result['wilson95_lower_29_of_29']:.9f}; 명목 하한이다. 29 구성은 26개 좌표/20개 근접 연결 묶음이고, p=0.88의 보수성은 보증되지 않았다.", "",
               "| 모집단 주장 설계의 참 p 가정 | 최소 N | 최소 통과 수 | 정확 검정력 | p=0.80에서 꼬리 확률 | 모든 더 작은 N의 최대 검정력 |", "|---|---:|---:|---:|---:|---:|"]
     for item in result["population_sizing"]:
         lines.append(f"| {item['true_p']} | {item['N']} | {item['minimum_pass']} | {item['exact_power']:.6f} | {item['null_tail_p080']:.6f} | {item['maximum_power_at_any_smaller_N']:.6f} |")
+    lines += ["", "현재 생성기는 앞서 채택한 배치와 근접한 추첨도 거부해 독립 동일분포 추출이 아니다. 현재 Wilson/이항 수치는 명목 구간과 설계 민감도로만 읽는다.",
+              "MC 구간은 모형에 조건부인 모의 추출 오차다. 실제 안전 위험이나 모형 전이 오차 구간이 아니다.",
+              "| 모형 | 문턱 | 성공/실패 draw | 모형 내부 확률의 정확 95% 구간 | 실패 확률 단측 95% 상한 |",
+              "|---|---:|---:|---:|---:|"]
+    for name, item in result["model_scenarios"].items():
+        for k, mc in item["gate_mc_intervals"].items():
+            lo, hi = mc["gate_probability_exact95"]
+            lines.append(f"| {name} | {k} | {mc['gate_success_draws']}/{mc['gate_failure_draws']} | [{lo:.6f}, {hi:.6f}] | {mc['gate_failure_probability_upper_one_sided95']:.6f} |")
     lines += ["", "권장(별도 결정): 참 p=0.88, 양측 정확 95% 구간의 하한>0.80, 검정력≥90%라면 N=225 및 ≥192/225.",
               "p=0.85를 설계 가정으로 잡으면 N=619 및 ≥515/619. p=0.80에서는 모든 N의 검정력이≤0.025라 표본 수만으로 90%를 얻을 수 없다.",
               "고정된 현재 60곳의 모형 예측을 확대된 모집단 표본의 검정력으로 외삽하지 않는다. 독립·동일분포 배치 설계/대표성은 별도로 확정해야 한다.", "",
@@ -200,6 +242,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--capture", action="store_true")
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--output", type=Path, default=HERE / "sizing_review_20260930",
+                        help="new outputs; historic sizing_20260930 remains unchanged")
     args = parser.parse_args()
     if args.capture and args.check:
         parser.error("--capture and --check are mutually exclusive")
@@ -210,8 +254,10 @@ def main():
         (SAVED / "training_inputs.json").write_text(encoded(captured))
     training = json.loads((SAVED / "training_inputs.json").read_text())
     result = calculate(training)
+    if not args.check:
+        args.output.mkdir(exist_ok=False, parents=True)
     for name, content in (("cohort_sizing.json", encoded(result)), ("COHORT_SIZING.md", report(result))):
-        path = SAVED / name
+        path = args.output / name
         if args.check:
             assert path.read_text() == content, f"saved output changed: {path}"
         else:

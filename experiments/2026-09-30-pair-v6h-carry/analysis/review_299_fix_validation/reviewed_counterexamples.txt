@@ -1,0 +1,164 @@
+FFFFFF                                                                   [100%]
+=================================== FAILURES ===================================
+______ test_endpoint_hard_limit_between_trace_samples_must_veto_cohort[0] ______
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1199/test_endpoint_hard_limit_betwe0')
+leg = 0
+
+    @pytest.mark.parametrize("leg", [0, 1])
+    def test_endpoint_hard_limit_between_trace_samples_must_veto_cohort(tmp_path, leg):
+        raw, seal, rows, identity = sealed_cohort(tmp_path)
+        row, result, trace = record()
+        row["chain"]["legs"][leg]["tilt_deg"] = 16.
+        row["chain"]["first_failure"] = {"phase": "carry", "leg": leg, "code": "TILT",
+            "source": "gt_criterion", "sim_s": row["chain"]["legs"][leg]["end_sim_s"]}
+        for sample in trace:
+            if abs(sample["t"] - row["chain"]["legs"][leg]["end_sim_s"]) < .051:
+                sample["tilt_deg"] = 14.9
+        # Endpoints 1.01/3.01 are not on the trace's 0.05-second sampling grid.
+        assert row["chain"]["legs"][leg]["end_sim_s"] not in {s["t"] for s in trace}
+        rows[0] = row
+        write_record(raw, row, result, trace, identity)
+        write_rows(raw, rows)
+        s = analyse(raw, seal)
+>       assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E       AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E       assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E         - FAIL_A_B_SAFETY
+E         ? ^ ^^
+E         + PASS_A_B_SAFETY
+E         ? ^ ^^
+
+tests/test_classify_review_299.py:207: AssertionError
+______ test_endpoint_hard_limit_between_trace_samples_must_veto_cohort[1] ______
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1199/test_endpoint_hard_limit_betwe1')
+leg = 1
+
+    @pytest.mark.parametrize("leg", [0, 1])
+    def test_endpoint_hard_limit_between_trace_samples_must_veto_cohort(tmp_path, leg):
+        raw, seal, rows, identity = sealed_cohort(tmp_path)
+        row, result, trace = record()
+        row["chain"]["legs"][leg]["tilt_deg"] = 16.
+        row["chain"]["first_failure"] = {"phase": "carry", "leg": leg, "code": "TILT",
+            "source": "gt_criterion", "sim_s": row["chain"]["legs"][leg]["end_sim_s"]}
+        for sample in trace:
+            if abs(sample["t"] - row["chain"]["legs"][leg]["end_sim_s"]) < .051:
+                sample["tilt_deg"] = 14.9
+        # Endpoints 1.01/3.01 are not on the trace's 0.05-second sampling grid.
+        assert row["chain"]["legs"][leg]["end_sim_s"] not in {s["t"] for s in trace}
+        rows[0] = row
+        write_record(raw, row, result, trace, identity)
+        write_rows(raw, rows)
+        s = analyse(raw, seal)
+>       assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E       AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E       assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E         - FAIL_A_B_SAFETY
+E         ? ^ ^^
+E         + PASS_A_B_SAFETY
+E         ? ^ ^^
+
+tests/test_classify_review_299.py:207: AssertionError
+_______ test_host_retry_must_not_erase_known_safety_violation[tilt-941] ________
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1199/test_host_retry_must_not_erase0')
+seed = 941, hard = 'tilt'
+
+    @pytest.mark.parametrize("seed", [941, 943])
+    @pytest.mark.parametrize("hard", ["tilt", "penetration"])
+    def test_host_retry_must_not_erase_known_safety_violation(tmp_path, seed, hard):
+        raw, seal, rows, identity = sealed_cohort(tmp_path, retry_seed=seed)
+        original_id = add_host_retry(raw, seal, rows, identity, seed, hard)
+        s = analyse(raw, seal)
+        assert original_id in s["attempt_case_ids"] and original_id not in s["selected_case_ids"]
+        assert (s["n_cases"], s["n_placements"]) == (72, 60)  # count selected attempt only, retain safety from all
+>       assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E       AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E       assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E         - FAIL_A_B_SAFETY
+E         ? ^ ^^
+E         + PASS_A_B_SAFETY
+E         ? ^ ^^
+
+tests/test_classify_review_299.py:241: AssertionError
+_______ test_host_retry_must_not_erase_known_safety_violation[tilt-943] ________
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1199/test_host_retry_must_not_erase1')
+seed = 943, hard = 'tilt'
+
+    @pytest.mark.parametrize("seed", [941, 943])
+    @pytest.mark.parametrize("hard", ["tilt", "penetration"])
+    def test_host_retry_must_not_erase_known_safety_violation(tmp_path, seed, hard):
+        raw, seal, rows, identity = sealed_cohort(tmp_path, retry_seed=seed)
+        original_id = add_host_retry(raw, seal, rows, identity, seed, hard)
+        s = analyse(raw, seal)
+        assert original_id in s["attempt_case_ids"] and original_id not in s["selected_case_ids"]
+        assert (s["n_cases"], s["n_placements"]) == (72, 60)  # count selected attempt only, retain safety from all
+>       assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E       AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E       assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E         - FAIL_A_B_SAFETY
+E         ? ^ ^^
+E         + PASS_A_B_SAFETY
+E         ? ^ ^^
+
+tests/test_classify_review_299.py:241: AssertionError
+____ test_host_retry_must_not_erase_known_safety_violation[penetration-941] ____
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1199/test_host_retry_must_not_erase2')
+seed = 941, hard = 'penetration'
+
+    @pytest.mark.parametrize("seed", [941, 943])
+    @pytest.mark.parametrize("hard", ["tilt", "penetration"])
+    def test_host_retry_must_not_erase_known_safety_violation(tmp_path, seed, hard):
+        raw, seal, rows, identity = sealed_cohort(tmp_path, retry_seed=seed)
+        original_id = add_host_retry(raw, seal, rows, identity, seed, hard)
+        s = analyse(raw, seal)
+        assert original_id in s["attempt_case_ids"] and original_id not in s["selected_case_ids"]
+        assert (s["n_cases"], s["n_placements"]) == (72, 60)  # count selected attempt only, retain safety from all
+>       assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E       AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E       assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E         - FAIL_A_B_SAFETY
+E         ? ^ ^^
+E         + PASS_A_B_SAFETY
+E         ? ^ ^^
+
+tests/test_classify_review_299.py:241: AssertionError
+____ test_host_retry_must_not_erase_known_safety_violation[penetration-943] ____
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1199/test_host_retry_must_not_erase3')
+seed = 943, hard = 'penetration'
+
+    @pytest.mark.parametrize("seed", [941, 943])
+    @pytest.mark.parametrize("hard", ["tilt", "penetration"])
+    def test_host_retry_must_not_erase_known_safety_violation(tmp_path, seed, hard):
+        raw, seal, rows, identity = sealed_cohort(tmp_path, retry_seed=seed)
+        original_id = add_host_retry(raw, seal, rows, identity, seed, hard)
+        s = analyse(raw, seal)
+        assert original_id in s["attempt_case_ids"] and original_id not in s["selected_case_ids"]
+        assert (s["n_cases"], s["n_placements"]) == (72, 60)  # count selected attempt only, retain safety from all
+>       assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E       AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E       assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E         - FAIL_A_B_SAFETY
+E         ? ^ ^^
+E         + PASS_A_B_SAFETY
+E         ? ^ ^^
+
+tests/test_classify_review_299.py:241: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_classify_review_299.py::test_endpoint_hard_limit_between_trace_samples_must_veto_cohort[0]
+FAILED tests/test_classify_review_299.py::test_endpoint_hard_limit_between_trace_samples_must_veto_cohort[1]
+FAILED tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[tilt-941]
+FAILED tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[tilt-943]
+FAILED tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[penetration-941]
+FAILED tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[penetration-943]
+6 failed, 53 deselected in 3.16s

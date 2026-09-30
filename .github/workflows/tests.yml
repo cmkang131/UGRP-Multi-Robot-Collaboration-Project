@@ -5,17 +5,39 @@ on:
   push:
     branches:
       - main
-      - "codex/**"
 
 permissions:
   contents: read
 
 concurrency:
-  group: tests-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: tests-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  ci-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      full_suite: ${{ steps.paths.outputs.full_suite }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reject missing sparse-checkout fixtures before installing dependencies
+        run: python3 scripts/check_ci_fixtures.py
+      - name: Check CI routing and required-gate failure cases without simulator dependencies
+        run: python3 -m unittest -q tests.test_ci_fast_path
+      - name: Select full or docs-only CI from every changed path
+        id: paths
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: python3 scripts/ci_paths.py --event "$EVENT_NAME" --base "$BASE_SHA" --head "$HEAD_SHA"
+
   zone-multiturn-properties:
+    needs: ci-preflight
+    if: needs.ci-preflight.outputs.full_suite == 'true'
     runs-on: ubuntu-latest
     # Preserve every seed; each family uses contiguous seed ranges. Keep the
     # expensive v64 suite separate from offline-regressions. Target <15 min/job.
@@ -49,6 +71,8 @@ jobs:
           retention-days: 14
 
   tensorboard-export:
+    needs: ci-preflight
+    if: needs.ci-preflight.outputs.full_suite == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -64,6 +88,8 @@ jobs:
         run: python -m pytest -q tests/test_tensorboard_export.py tests/test_offline_audit_export.py tests/test_owncam_loop_views.py
 
   reference-act-smoke:
+    needs: ci-preflight
+    if: needs.ci-preflight.outputs.full_suite == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
@@ -86,6 +112,8 @@ jobs:
         run: python -m pytest -q tests/test_reference_approach_data.py tests/test_reference_act_optional.py tests/test_act_training_optional.py tests/test_recovery_act_optional.py tests/test_pair_carry_act_optional.py tests/test_pair_carry_input_optional.py tests/test_carry_training_checkpoint_optional.py tests/test_act_deployed_window_cache_optional.py
 
   offline-regression-shards:
+    needs: ci-preflight
+    if: needs.ci-preflight.outputs.full_suite == 'true'
     name: offline-regression-shard (${{ matrix.shard }}/8)
     runs-on: ubuntu-latest
     # No complete file-duration history yet: spread the unchanged list over 8
@@ -119,6 +147,8 @@ jobs:
           retention-days: 14
 
   offline-regression-checks:
+    needs: ci-preflight
+    if: needs.ci-preflight.outputs.full_suite == 'true'
     runs-on: ubuntu-latest
     # Run the shared bundle/registry checks and protocol fixtures exactly once.
     timeout-minutes: 10
@@ -189,25 +219,41 @@ jobs:
           retention-days: 14
 
   offline-regressions:
-    # Preserve the required status-check name; skipped/cancelled dependencies
-    # must fail this gate too. No continue-on-error on the shard jobs.
+    # Never path-filter the workflow itself: required checks would stay Pending.
+    # Only a successful, explicit docs-only preflight can accept skipped suites.
+    # Full-suite PRs still reject every failed, skipped or cancelled dependency.
     name: offline-regressions
-    needs: [offline-regression-shards, offline-regression-checks]
+    needs: [ci-preflight, offline-regression-shards, offline-regression-checks]
     if: ${{ always() }}
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
       - name: Require every offline shard and shared check to succeed
         env:
+          PREFLIGHT_RESULT: ${{ needs.ci-preflight.result }}
+          FULL_SUITE: ${{ needs.ci-preflight.outputs.full_suite }}
           SHARDS_RESULT: ${{ needs.offline-regression-shards.result }}
           CHECKS_RESULT: ${{ needs.offline-regression-checks.result }}
         run: |
-          test "$SHARDS_RESULT" = success
-          test "$CHECKS_RESULT" = success
+          test "$PREFLIGHT_RESULT" = success
+          case "$FULL_SUITE" in
+            true)
+              test "$SHARDS_RESULT" = success
+              test "$CHECKS_RESULT" = success
+              ;;
+            false)
+              test "$SHARDS_RESULT" = skipped
+              test "$CHECKS_RESULT" = skipped
+              echo "Docs-only checks passed; offline suites intentionally not selected."
+              ;;
+            *) echo "Missing or invalid CI selection" >&2; exit 1 ;;
+          esac
 
   ubuntu-simulation-runtime:
+    needs: ci-preflight
+    if: needs.ci-preflight.outputs.full_suite == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     env:
       MUJOCO_GL: osmesa
       UGRP_SESSION_DIR: ${{ github.workspace }}/outputs/.quickstart-sessions-runtime
@@ -296,8 +342,10 @@ jobs:
           retention-days: 14
 
   ubuntu-simulation-scenarios:
+    needs: ci-preflight
+    if: needs.ci-preflight.outputs.full_suite == 'true'
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     env:
       MUJOCO_GL: osmesa
       UGRP_SESSION_DIR: ${{ github.workspace }}/outputs/.quickstart-sessions-scenarios
@@ -388,6 +436,8 @@ jobs:
           retention-days: 14
 
   multi-object-scenes:
+    needs: ci-preflight
+    if: needs.ci-preflight.outputs.full_suite == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
@@ -425,6 +475,8 @@ jobs:
           retention-days: 14
 
   individual-proxy-bootstrap:
+    needs: ci-preflight
+    if: needs.ci-preflight.outputs.full_suite == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:

@@ -21,8 +21,10 @@ if __name__ == "__main__":
     sys.path.insert(0, str(ROOT))
 
 from scripts import agent_lock
+from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_ci_fast_path.py",
     "tests/test_owncam_memory_v3.py",
     "tests/test_owncam_memory_time.py",
     "tests/test_record_owncam_time.py",
@@ -79,14 +81,19 @@ TEST_PATTERNS = (
     "tests/test_zone_teacher_fix.py",
     "tests/test_zone_cargo_perception_v2.py",
     "tests/test_zone_study_contract.py", "tests/test_zone_study_inputs.py",
+    "tests/test_zone_identity_jobs.py",  # T13a: own-RGB identity/count and target-job seam (fake only)
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py",
+    "tests/test_zone_environment_registry.py",
+    "tests/test_scenario_capabilities_docs.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",
     "tests/test_zone_study_eval.py", "tests/test_zone_study_offline.py",
     "tests/test_zone_study_review_fixes.py", "tests/test_zone_study_review_r5.py",
     "tests/test_zone_study_review_r6*.py", "tests/test_zone_study_review_r7*.py",
     "tests/test_zone_study_integration.py", "tests/test_zone_study_integration_seams.py",
     "tests/test_zone_study_integration_pair.py", "tests/test_zone_study_source_pinning.py",
+    "tests/test_zone_mixed_jobs.py",  # P02: pure inventory and independent fake-port mixed jobs
+    "tests/test_zone_e2e_manifest.py",  # P07: planning/admission only, runtime side effects forbidden
     "tests/test_zone_study_llm_driver.py",
     "tests/test_zone_study_pair_delay.py",
     "tests/test_zone_study_referee.py", "tests/test_zone_hidden_events.py",
@@ -99,7 +106,10 @@ TEST_PATTERNS = (
     "tests/test_zone_own_perception.py", "tests/test_zone_own_perception_v2.py",
     "tests/test_zone_own_perception_v3.py", "tests/test_zone_own_perception_v3_1.py",
     "tests/test_zone_own_executor*.py",
+    "tests/test_review_325b.py",  # T03: mandatory independent loss/mode counterexamples
     "tests/test_zone_pair_executor.py", "tests/test_zone_pair_status.py", "tests/test_zone_pair_review.py",
+    "tests/test_zone_pair_role_exchange.py",  # T07: six explicit role assignments; fake ports only
+    "tests/test_stall_observation_contract.py",  # P08: synthetic observation/stop contract only
     "tests/test_zone_pair_review2.py",
     "tests/test_zone_pair_review3.py",
     "tests/test_zone_pair_review4.py",
@@ -115,6 +125,10 @@ TEST_PATTERNS = (
     "tests/test_pair_passage_plan.py",  # 2026-09-29: opt-in corridor/door route planning for the pair carry (static geometry)
     # 2026-09-29: v6 is audited as history; these guard its receipt and the current v6-family path.
     "tests/test_zone_pair_v6.py", "tests/test_zone_pair_registered_source.py",
+    "tests/test_execution_dependency_contract.py", "tests/test_seal_v2_review_301.py",
+    "tests/test_seal_v2_fail_closed.py", "tests/test_seal_runtime_provenance.py",
+    "tests/test_seal_v2_review_301b.py", "tests/test_seal_v2_review_301c.py",
+    "tests/test_seal_v2_review_301d.py", "tests/test_seal_runtime_outputs.py",
     "tests/test_owncam_bootstrap_v6b.py",
     "tests/test_zone_pair_v6c.py",  # v6c (bundle v76): exact PF fix clock + grasp-range entry
     "tests/test_zone_pair_v6d.py",  # v6d (bundle v80): wide-hue beam heading + M1 fine align motion
@@ -127,9 +141,18 @@ TEST_PATTERNS = (
     "tests/test_b_v6h_gain.py",  # b-v6h gain-fix tooling: PF forward gain x0.9483, p2f timing rule, k2 identity variant, placement list
     "tests/test_chain_analysis_hard_limit.py",  # chain_analysis leg_class: hard limit takes precedence over ordinary failure
     "tests/test_v6h_classify_placements.py",  # eval-only prereg draft: placement contact classes + whole-chain hard-limit veto
+    "tests/test_v6h_blinded_run_manifest.py",  # committed metadata + synthetic records only; never blinded raw
+    "tests/test_classify_review_299.py",
+    "tests/test_classify_review_299b.py",
+    "tests/test_classify_review_299c.py",
+    "tests/test_classify_review_299d.py",
+    "tests/test_classify_review_299g.py",  # public/synthetic chronology; no blinded raw
+    "tests/test_v6h_recorder_contract.py",  # pinned recorder consumer contract; JSON only
+    "tests/test_v6h_classifier_properties.py",  # 10,000 seeded evidence chains; no physics
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)
+    "tests/test_carry_lateral_error_model.py",  # offline endpoint extraction, grouped validation and paired prediction
     "tests/test_m2_pair_door_v3.py", "tests/test_pair_owncam_approach.py", "tests/test_zone_tagged_cargo_scene.py",
     "tests/test_owncam_localizer.py", "tests/test_zone_landmarks_sim.py",
     "tests/test_zone_eval_top.py",
@@ -288,7 +311,7 @@ def run_locked(command: list[str], env: dict, lock_root: Path) -> int:
     try:
         acquired = agent_lock.acquire(
             lock_root, owner=owner, branch=branch, purpose="local offline regression tests",
-            pid=os.getpid(), expected_minutes=10,
+            pid=os.getpid(), expected_minutes=10, timing_sensitive=True,
         )
     except RuntimeError as error:
         print(f"Tests not started: {error}", file=sys.stderr)
@@ -330,7 +353,19 @@ def run_locked(command: list[str], env: dict, lock_root: Path) -> int:
                 except ProcessLookupError:
                     pass
                 child.wait(timeout=5)
-            cleanup_verified = child is None or not ugrp_session.process_group_alive(child.pid)
+                # wait() reaps the leader, not the process group. In particular,
+                # macOS may still report an exiting group (including EPERM),
+                # and stop_group's last SIGKILL is asynchronous. Confirm actual
+                # disappearance with a bound; never unlock on an uncertain probe.
+                deadline = time.monotonic() + 5
+                while ugrp_session.process_group_alive(child.pid):
+                    if time.monotonic() >= deadline:
+                        break
+                    time.sleep(0.02)
+                else:
+                    cleanup_verified = True
+            else:
+                cleanup_verified = True
         finally:
             held = agent_lock.status(lock_root)
             ours = held and all(held.get(key) == acquired[key] for key in ("owner", "pid", "acquired_unix"))
@@ -410,6 +445,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--list-shards", action="store_true", help="print JSON without running pytest or taking a lock")
     parser.add_argument("--durations-json", type=Path, help="optional JSON mapping test paths to measured seconds")
     parser.add_argument("--junitxml", type=Path, help="save pytest results and per-test durations")
+    parser.add_argument("--host-lock", action="store_true", default=os.environ.get("UGRP_TEST_HOST_LOCK") == "1",
+                        help="opt into the exclusive local host lock (also UGRP_TEST_HOST_LOCK=1)")
     args = parser.parse_args(argv)
     if args.shard_count < 1:
         parser.error("--shard-count must be positive")
@@ -444,6 +481,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Shard {index}/{args.shard_count} has no test files", file=sys.stderr)
         return 2  # Never invoke pytest with no paths: that collects the whole repo.
 
+    if not check_fixtures(ROOT):
+        return 2  # Refuse before pytest or the shared host lock is started.
+
     env = os.environ.copy()
     for name in tuple(env):
         if name.endswith("_API_KEY") or name in {"GOOGLE_APPLICATION_CREDENTIALS"}:
@@ -455,7 +495,16 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Running {len(tests)} offline test modules (shard {index}/{args.shard_count})", flush=True)
     lock_root = local_lock_root()
     if lock_root is not None:
-        return run_locked(command, env, lock_root)
+        if args.host_lock:
+            return run_locked(command, env, lock_root)
+        try:
+            held = agent_lock.status(lock_root)
+        except (OSError, ValueError) as error:
+            print(f"Warning: cannot read host lock ({error}); running offline tests without it", file=sys.stderr)
+        else:
+            if held and held.get("timing_sensitive") is True:
+                print(f"Warning: timing-sensitive host lock held by {held.get('owner')}: "
+                      f"{held.get('purpose')}; running offline tests without the host lock", file=sys.stderr)
     return subprocess.call(command, cwd=ROOT, env=env)
 
 

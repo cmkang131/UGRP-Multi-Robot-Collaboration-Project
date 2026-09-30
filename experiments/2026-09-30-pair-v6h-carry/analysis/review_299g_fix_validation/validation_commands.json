@@ -1,0 +1,57 @@
+[
+  {
+    "name": "mutations_299g",
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/check_299g_mutations.py",
+      "--output",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/review_299g_fix_validation/mutations_299g.json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 2.456374792032875
+  },
+  {
+    "name": "mutations_299d",
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/check_299d_mutations.py",
+      "--output",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/review_299g_fix_validation/mutations_299d.json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 1.5833973749540746
+  },
+  {
+    "name": "mutations_299c",
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/check_299c_mutations.py",
+      "--output",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/review_299g_fix_validation/mutations_299c.json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 1.9206396250519902
+  },
+  {
+    "name": "golden",
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/verify_recorder_contract.py",
+      "--output",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/review_299g_fix_validation/golden.json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 2.4234590829582885
+  },
+  {
+    "name": "published",
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py",
+      "--output",
+      "/Users/changmin/projects/ugrp/outputs/review-299g-fix-20261001/published"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 19.137751374975778
+  }
+]

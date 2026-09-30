@@ -1,0 +1,1366 @@
+{
+  "scope": "offline reproducibility checks only",
+  "before_fix_head": "b7f53d34e56407d64aea5ef74e41a07b46706911",
+  "merge_head": "c8e3fe063edd550dd08467defba611ec12cb1603",
+  "origin_main_at_start": "394f9cda5d67a9d1b94ad1688f39f5616fc00e7b",
+  "review_commit": "c463b667c4085b83168244f8582c6d985f551959",
+  "environment": {
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "pytest": "9.1.1",
+    "host_lock_used": false
+  },
+  "before_fix_counterexamples": {
+    "counts": {
+      "failed": 3,
+      "passed": 1
+    },
+    "suites": {
+      "tests.test_seal_v2_review_301d": {
+        "failed": 3,
+        "passed": 1
+      }
+    }
+  },
+  "related": {
+    "counts": {
+      "passed": 401,
+      "xfailed": 13
+    },
+    "suites": {
+      "tests.test_seal_runtime_provenance": {
+        "passed": 68
+      },
+      "tests.test_execution_dependency_contract": {
+        "passed": 35
+      },
+      "tests.test_seal_v2_review_301": {
+        "passed": 41
+      },
+      "tests.test_seal_v2_fail_closed": {
+        "passed": 27
+      },
+      "tests.test_seal_v2_review_301b": {
+        "xfailed": 13,
+        "passed": 14
+      },
+      "tests.test_seal_v2_review_301c": {
+        "passed": 14
+      },
+      "tests.test_zone_pair_registered_source": {
+        "passed": 22
+      },
+      "tests.test_zone_study_source_pinning": {
+        "passed": 34
+      },
+      "tests.test_zone_pair_v6": {
+        "passed": 43
+      },
+      "tests.test_rgb_execution_bundle": {
+        "passed": 7
+      },
+      "tests.test_ci_sharding": {
+        "passed": 66
+      },
+      "tests.test_ci_host_lock": {
+        "passed": 24
+      },
+      "tests.test_agent_lock": {
+        "passed": 6
+      }
+    }
+  },
+  "targeted": {
+    "counts": {
+      "passed": 25
+    },
+    "suites": {
+      "tests.test_seal_v2_review_301d": {
+        "passed": 10
+      },
+      "tests.test_seal_runtime_outputs": {
+        "passed": 15
+      }
+    }
+  },
+  "combined_unique_checks": {
+    "passed": 426,
+    "strict_xfailed_static_api": 13,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "review_test_integrity": {
+    "review_commit": "c463b667c4085b83168244f8582c6d985f551959",
+    "function_class_bodies_identical": true,
+    "count": 16,
+    "xfail_removed": 3
+  },
+  "runtime_mutations": {
+    "scope": "offline isolated mutation checks; no physics",
+    "results": [
+      {
+        "name": "baseline",
+        "source_sha256": "b9c5ace7b675b4a417c391749532c9763285cfbcd35b43b6b02be184947eedfa",
+        "selector": "(test_unseen_read_aborts_before_consumer_even_if_exception_caught) or (test_environment_runtime_comparison) or (test_N3_same_bytes_source_symlink_target or test_N3_declared_xml_link_selects_other_declared_asset) or (test_static_unobserved_union_and_multiple_cases) or (test_identity_abort_or_warn) or (test_unknown_environment_name_is_never_covered_by_warn) or (test_symlink_dotdot_consumed_file_drift or test_symlink_dotdot_binding_drift) or (test_indirect_symlink_chain_is_pinned_even_when_final_target_is_unchanged) or (test_guard_matches_resolved_identity_across_path_spellings) or (test_normal_script_main_module_semantics or test_main_module_remains_the_entry_through_shutdown) or (test_documented_directory_query_boundary or test_unobserved_directory_is_rejected_before_query) or (test_cli_receipt_save_and_first_run) or (test_reserved_output_directory_view_stays_equal) or (test_reserved_output_cannot_be_consumed_as_input) or (test_readonly_environment_copy_keeps_python_semantics) or (test_environment_copy_is_independent_and_reads_every_item)",
+        "exit_code": 0,
+        "tests": 41,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "unseen-file",
+        "source_sha256": "24d36a5175e47cd3baf2643e2300da7de0b55ca709e872a5ec87db9ba996af2b",
+        "selector": "test_unseen_read_aborts_before_consumer_even_if_exception_caught",
+        "exit_code": 1,
+        "tests": 4,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "environment-drift",
+        "source_sha256": "5ed0f7b49919daedf06862957a03ff70cba1a1e00d2d4f10046e44519a1dce88",
+        "selector": "test_environment_runtime_comparison",
+        "exit_code": 1,
+        "tests": 4,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "path-binding",
+        "source_sha256": "ba3ce0ceb5b5b6387d199854ff87d9cec19c6c41e619e43aef04aebcf72246c3",
+        "selector": "test_N3_same_bytes_source_symlink_target or test_N3_declared_xml_link_selects_other_declared_asset",
+        "exit_code": 1,
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "static-union",
+        "source_sha256": "1832a0ce5ae52a0e1445103deec580c09eb5e8976b56c309e56f278d363cff8b",
+        "selector": "test_static_unobserved_union_and_multiple_cases",
+        "exit_code": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "identity-drift",
+        "source_sha256": "9897540deaeeb6dc804765f76ad91ebf073b182b5d6f44357b6e40bdc4912535",
+        "selector": "test_identity_abort_or_warn",
+        "exit_code": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "unknown-environment",
+        "source_sha256": "a509862ea91bdf7a5b05c0ad5c740903954b27e683e0da67718c4d8339b8feb8",
+        "selector": "test_unknown_environment_name_is_never_covered_by_warn",
+        "exit_code": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "lexical-dotdot",
+        "source_sha256": "94e66bd73b91e4862fae3fa6f5e6f0f4cc72ef4fcf7275d566f94ec85a49ff77",
+        "selector": "test_symlink_dotdot_consumed_file_drift or test_symlink_dotdot_binding_drift",
+        "exit_code": 1,
+        "tests": 4,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "indirect-link-binding",
+        "source_sha256": "33cefb6ec3bc0961448a53ebcf69836ee37f14f06313932498e66debb251f7e8",
+        "selector": "test_indirect_symlink_chain_is_pinned_even_when_final_target_is_unchanged",
+        "exit_code": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "resolved-identity",
+        "source_sha256": "4742b1164b4b5e72b1b126a0bb94d5cd2afb6aba48e481b7193f65522cbdb06c",
+        "selector": "test_guard_matches_resolved_identity_across_path_spellings",
+        "exit_code": 1,
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "main-module",
+        "source_sha256": "135f0a8cba09fefe91a4825f7778b4706ca21ccacb87e71e336d7552fe9e8f1a",
+        "selector": "test_normal_script_main_module_semantics or test_main_module_remains_the_entry_through_shutdown",
+        "exit_code": 1,
+        "tests": 3,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "directory-query",
+        "source_sha256": "d743fa6616beadc3951c8054982ba2880128797d363cfc87506ffa9636ac430e",
+        "selector": "test_documented_directory_query_boundary or test_unobserved_directory_is_rejected_before_query",
+        "exit_code": 1,
+        "tests": 4,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "tool-output-reservation",
+        "source_sha256": "985551ac980b36e3341f01e860a11c6650c6e65fd84c5cca35deb0532c512c98",
+        "selector": "test_cli_receipt_save_and_first_run",
+        "exit_code": 1,
+        "tests": 2,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "tool-output-view",
+        "source_sha256": "694aab0af1e58db73127787c5e8cc4a4813b77fcda5b2ee6e5c0732ed8accebf",
+        "selector": "test_reserved_output_directory_view_stays_equal",
+        "exit_code": 1,
+        "tests": 6,
+        "failures": 6,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "tool-output-read",
+        "source_sha256": "6f25282246295e618c98492109e520a75cf860b6caef15f8e29f4e423571c614",
+        "selector": "test_reserved_output_cannot_be_consumed_as_input",
+        "exit_code": 1,
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "environment-copy",
+        "source_sha256": "4b82376092f78d055238c988cfcb2e2b90bb773317c40f9f1f8ca608651fa037",
+        "selector": "test_readonly_environment_copy_keeps_python_semantics",
+        "exit_code": 1,
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "environment-copy-reads",
+        "source_sha256": "c57b6f96d92d39077f39f0084cc228aec82b43294a1145db71957c33ba9415af",
+        "selector": "test_environment_copy_is_independent_and_reads_every_item",
+        "exit_code": 1,
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      }
+    ],
+    "passed": true
+  },
+  "legacy_preservation": {
+    "base": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
+    "merged_head": "c8e3fe063edd550dd08467defba611ec12cb1603",
+    "origin_main": "394f9cda5d67a9d1b94ad1688f39f5616fc00e7b",
+    "legacy_files_unchanged": 76,
+    "v6e_hashes_match": 85,
+    "workflows_equal_origin_main": true,
+    "legacy": [
+      {
+        "path": "experiments/2026-09-28-zone-pair-v6/prereg_v6.json",
+        "sha256": "649a00e65d1f53bf38014ac4a1f5e93094dad3ee11acccf3d1343cefa1298b42",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json",
+        "sha256": "3fecc73b7b44c6dab1e752d276fe8b2442be7119016ff2b5783599579ffc9605",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6c/prereg_v6c.json",
+        "sha256": "64acc04a8c08af61b0fa488440c70a8bec4338881c7a32b4895d4b07970ca95e",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6d-align/prereg_v6d.json",
+        "sha256": "cbdb4b2503d928e141131b893cb56060fd6fe54292ef1667da9f57bdeea39972",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json",
+        "sha256": "64c2680781f1b989312c3ac091c6e0458579ced7ed65d9e9730aadbc416f4bfd",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/dispatch-f1-local-contact-fine-v1.json",
+        "sha256": "119cf3529285a6854bec3022a11564f3e33199f53a3fd83dff32de417815f647",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-boundary-identity-v5.json",
+        "sha256": "bf197ffd371b9294e3420f0cfe0f6cd0838cfeac48e59e88886bf239b6d0feea",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-component-identity-v4.json",
+        "sha256": "fe9a7e256fa0c70e4104b5dc88f29d556f5b2a19e0a24ef70bb7133853cbf88c",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-progress-budget-v7.json",
+        "sha256": "0a4d811993771982864f5d6b0a5d3c81a51336f849f0df1a562e16257635db5c",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-replay-v2.json",
+        "sha256": "f320480a7985325da4fbcf0f5bbcd3c9948914e9373ae28f3326de92aee894ec",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-role-binding-v6.json",
+        "sha256": "6d93803a0afb0ef43abfbd438f8362856fb180b1791f4858062d9a4e5cbe00f3",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-solo-parity-v1.json",
+        "sha256": "c9be8e97181dc1c9855442de3cb2aff17350b1ee5bd2b4b0d6c23c8d44ef504b",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-visual-recovery-v3.json",
+        "sha256": "09e0f4936b518bf745871ccd6f31b6b5903cf4d125693f00c1440647cc6f4fe2",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-yaw-wheel-anchor-v8.json",
+        "sha256": "6abb07042f3723fb987c10f5d934a18981535d4501f055eb46899a04ba4a64c8",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-legacy-v1.json",
+        "sha256": "e5d89e7fcebf7f59132c4f9b2c3e455989165da9aa07cb310ef0f3ec04f2f970",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v10.json",
+        "sha256": "aa3a4373fcbe2970b1ce95062d684704ea8c342cab77a0fce913720bb71eb606",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v11.json",
+        "sha256": "2ccc0a79d25d7a7cb32a9f909127a26655ebe32309616cb8a5cc6c1c7a19c4aa",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v12.json",
+        "sha256": "4577c8d906715ab98341f97aa6afa656e704acafd03ef20a2a4ac67adb41a54a",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v13.json",
+        "sha256": "fce4968d73ec94f38fde438ab74989a0a4199ec6e93c295ca50b85501a8089a2",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v14.json",
+        "sha256": "9fa9bd26155e66a60bb636be2c1334420024e40ed89357ac7698b4a43046aa72",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v15.json",
+        "sha256": "1933cd0e277e6249f5b6125d006bdca2fe8d9a4edf02603efb01514bfe12edaa",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v16.json",
+        "sha256": "9d11f82ca02fb60d283fe6908fe1f696b2d31aabfc1acd9bf779c56a94b98958",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v17.json",
+        "sha256": "8a686939f6505bfaae2f4ebadb3e637b0e229b63e25dfb96877c411235bf6125",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v18.json",
+        "sha256": "a6891549ad88372a168fca34813ae96dd5c387447cc2ec4b352d3c96d5b891e4",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v19.json",
+        "sha256": "5516e639e7a31029a7cfb2a5d92844eeee784e32a8aca629735bac8e0dc16e32",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v2.json",
+        "sha256": "771a1cb51feeeecb55174d0e68e0dad30bfedfb748149dcd7c9e1cf3f1e2d120",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v20.json",
+        "sha256": "c55ce2163f89d6db069f47a18b7cf46f92e27887611370019e5b2fc25dab3ad5",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v21.json",
+        "sha256": "0c50a3f5d842d675dc1c78fc33e5a17eab014c87cbf6bed167d228bb371815b3",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v22.json",
+        "sha256": "89fadd2c963025a8514a24c6c435b8f06b5caf4e7561b944506e1645c55ea157",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v23.json",
+        "sha256": "abc0d78e520fa5994003c36f1e9193352c08fabcbf75fdf99fc5ba5c595d0745",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v24.json",
+        "sha256": "d1dc432c4bcb176fd5c73cfa65c555c8ba856070b067e4ad8b37ec637c2a6173",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v25.json",
+        "sha256": "e591f30cc8318d2decad6c961da5912d96a81503f8a2b42998398cd1f18ace1f",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v26.json",
+        "sha256": "4900ac0cb6f2933c4acbe6275a3567cfb1af3714cabb48c68c7a2a195c951514",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v27.json",
+        "sha256": "74ac7aa8fb6c70a4f5781128a472a6722e993a8d9f731d430d365e3c01d75373",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v28.json",
+        "sha256": "3414ab8c93995bf8692f71ce4205fb17dd05698c10efc1edab97ae5c81775d25",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v29.json",
+        "sha256": "484b6b7692a07b3fc0b0dec4ffcd0123a163e566185879550fdd0cac2b00a472",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v3.json",
+        "sha256": "a1a975381e4097c6e0c324d2153ab1cf6e886873f9068afe7c8cba604d235732",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v30.json",
+        "sha256": "53502d8267792b92b5058b2608c5cc9cc5a4481e94cc0a7d8dfd9f65650ce8fb",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v31.json",
+        "sha256": "95b34426376d395b5f4a043a3a5c13349d53b3ee000fa1a7631ddbda66aaa699",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v32.json",
+        "sha256": "0530406ff15386f03c14194ec6e02ef722c51719d419bd92520c9c5384490254",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v33.json",
+        "sha256": "8ceb961bc3947d7dcb1a066b421e9106be69104fbb0e50305d48ca79a40b5140",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v4.json",
+        "sha256": "16cf1053ff07372cb86921d52dfebb7f2a938e6d275d9923f4f11320eb158379",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v40.json",
+        "sha256": "73273a67afa5bd47d4d76be824a1091a9b4356a969fbce723c59e97d1be87083",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v41.json",
+        "sha256": "dd04d35cdc976941190c0fb75f0fe9b963075a24b3ef9c67c4a1d992b4f2f583",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v42.json",
+        "sha256": "09c11352258b07fd678d7f01fd7d744fc3c52e275699fc3331c5679de93ea408",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v43.json",
+        "sha256": "7509360909e7015e592f741151413bf443484203e22755f1690ecaa683b7e260",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v44.json",
+        "sha256": "005c833efd5f1a3afdbad51a0e36da2e740043750f7a7aff3b2b9765504e612f",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v45.json",
+        "sha256": "8eccb79037d4d4a2b1600c463ce5e70db03f7dc977b5d7ad83be8f004d10c28c",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v46.json",
+        "sha256": "825469d961ac32c5a90e9951d54d96ab1d833d04a7e0e55e4ba37fec1b4b6bd4",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v47.json",
+        "sha256": "f47844c224801ecdded15c764475d680e0806ae234da2c9d64981b58ca5706a4",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v48.json",
+        "sha256": "c4f40a2b701fc0cd05172b5ea0d4f18410a48f9a26a2de7077ce7475f4437c78",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v49.json",
+        "sha256": "77cbad29275a06460dae831e20f901f0daa93f3f5c0fe0ef2d114855a9e8a62c",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v5.json",
+        "sha256": "8ab2b8a67141d769c425065b01015c5f5a0cd1c6c6bebc8474a0d55e10d2fd3f",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v50.json",
+        "sha256": "d00d9403dfb0048a2135ad5e208e8f27e743f8eb1e05dc7fd237c5d3449a33b2",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v51.json",
+        "sha256": "4fd6c800cdad69164d9f950fef5161502f515676bbe91b538aa0ef6afb2ad26b",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v53.json",
+        "sha256": "f81af754bdda7c34ab7b69d5207d30b4064a4bc6877d10a5f55e99be6966f20d",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v54.json",
+        "sha256": "ae0eb8ca604f8dddae6119bb0bf82aa5115086349fa50ab96214a40e7d25164a",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v55.json",
+        "sha256": "54a7d2be2126c58bde8a5b4a7309e03b9c8badf128b6514311d87191747d0984",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v56.json",
+        "sha256": "fcf38e5b90d1511a7038bbb516e72566db8033e2bd7496c05c53518a5419dc7b",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v57.json",
+        "sha256": "1d512106caabbbc0fb2e15f88f8c4dbe037744b618da028bb9424d4f76b636be",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v58.json",
+        "sha256": "83dd89d987fbc5a4df6ae6f9f9c2c75b8ed1045eeae875a06f936dbe6fb96011",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v59.json",
+        "sha256": "8032aef817b431e1d9cd63311307f02367a1233b6048fa1049b9867be93408a9",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v6.json",
+        "sha256": "f07581649e84418c0ad31fc4577aaaebc680b34928ce3485fa8cb813d04d8045",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v60.json",
+        "sha256": "52b5e6d34fe862c8aeac50cdfa41f16cb8cc37ec5ae296c0700c688d82925355",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v61.json",
+        "sha256": "98b77ad6878548f21d97f4575f37fe5c0dfdbdcdf8b68087ca1f5ea2e829790b",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v62.json",
+        "sha256": "6601192a6da7ac018dd3a7104364065bb9afb9dce0d61e79021f824648b07f69",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v63.json",
+        "sha256": "ef4fe391e57c145b6625ba052e651542745bfcb6244d8e25736827ee8122aa01",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v7.json",
+        "sha256": "86f22c3d05280a5d8ab35a57b646852768520e0fcd536f7a54cc8018144544be",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v8.json",
+        "sha256": "a312cac4acb581c5c97b41d042049fa83ac6636d35f15f1579525c44119fb93e",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v9.json",
+        "sha256": "d50e4a2e2ebcac796daec1b4eca1c203da8b15b12d5182465f72d93865f0428c",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/rgb_execution_bundle.py",
+        "sha256": "93c0d91880b23b1f00d7b0bd3a7491e79ef785ea4dbf2dc561cb3ee89e2b996a",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/python_source_closure.py",
+        "sha256": "992388762ded3be5f945bc9620728ff189423d155d9119209130b570aeebbcea",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/zone_pair_v6_contract.py",
+        "sha256": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/zone_pair_registered_source.py",
+        "sha256": "285c77cb2a3d4f7d532fe1d19c0d80300b7057b38da84465f095b42df7ddc894",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/run_zone_pair_dev.py",
+        "sha256": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/run_zone_study_integration.py",
+        "sha256": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+        "base_git_and_head_equal": true,
+        "local_checked": true
+      }
+    ],
+    "v6e_sources": [
+      {
+        "path": "harness/owncam_memory.py",
+        "sha256": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_memory_time.py",
+        "sha256": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_delivery_shared.py",
+        "sha256": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_memory_delivery.py",
+        "sha256": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_memory_inputs.py",
+        "sha256": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_pose_guard_provider.py",
+        "sha256": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_pose_guard_v3.py",
+        "sha256": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "configs/zone_pair_authorization.json",
+        "sha256": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_drive_mem_v3.py",
+        "sha256": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/m1_owncam_memory_v3.py",
+        "sha256": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/vision_motion_init.py",
+        "sha256": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/m2_provider_adapter.py",
+        "sha256": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_own_deliver.py",
+        "sha256": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_own_team_host.py",
+        "sha256": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/zone_pair_authorization.py",
+        "sha256": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/run_zone_study_integration.py",
+        "sha256": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/run_m1_owncam_memory_v3.py",
+        "sha256": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "sim/zone_geometry_scene.py",
+        "sha256": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "configs/zone_study_integration/pose_providers.json",
+        "sha256": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "maps/zones/zone_wide_door_geometry_v2.json",
+        "sha256": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/pose_provider.py",
+        "sha256": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/vision_pose_source.py",
+        "sha256": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_study_pose_delay.py",
+        "sha256": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_own_driver.py",
+        "sha256": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_drive_shared.py",
+        "sha256": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "sim/zone_own_scene_provider.py",
+        "sha256": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_time.py",
+        "sha256": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_own_contract.py",
+        "sha256": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_own_executor.py",
+        "sha256": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_own_status.py",
+        "sha256": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_own_perception.py",
+        "sha256": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_obstruction.py",
+        "sha256": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_grasp.py",
+        "sha256": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_executor.py",
+        "sha256": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_beam_track.py",
+        "sha256": "7b0870a80a200ee6eaa99d6ca86653094d420dd527bf7b8fcf385b2ff030ce9e",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_align.py",
+        "sha256": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_guards.py",
+        "sha256": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_geometry.py",
+        "sha256": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_status.py",
+        "sha256": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_vision.py",
+        "sha256": "cce72504edf01d119aafbefc8cb4ea1aa5a407196f9809f6cb5b8ec0bfecc9fc",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_pose_source.py",
+        "sha256": "b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_localizer.py",
+        "sha256": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_pair_beam.py",
+        "sha256": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_pair_beam_v2.py",
+        "sha256": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_view.py",
+        "sha256": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_own_guards.py",
+        "sha256": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/run_zone_pair_dev.py",
+        "sha256": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/zone_pair_dev_runtime.py",
+        "sha256": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/zone_pair_grasp_contract.py",
+        "sha256": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/evaluate_zone_pair_dev.py",
+        "sha256": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "configs/simulation_workflows.json",
+        "sha256": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "sim/zone_start_dock.py",
+        "sha256": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "sim/zone_dock_scene.py",
+        "sha256": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "sim/zone_arena.py",
+        "sha256": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "sim/zone_landmarks.py",
+        "sha256": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "sim/zone_scene.py",
+        "sha256": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "sim/zone_tagged_cargo_scene.py",
+        "sha256": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/zone_pair_dev_contract.py",
+        "sha256": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_study_integration.py",
+        "sha256": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_v6_policy.py",
+        "sha256": "dcf1d3804f3ccf02622fc8410d00478b171975a0e1f0b299fdd46d2e323ee9bd",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_relative.py",
+        "sha256": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_global.py",
+        "sha256": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_recovery_v6.py",
+        "sha256": "3909f45ecc856ca2f666f9e3c3ee2327ad813c15449f0b0b0f04173492c92f67",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_observability_v6.py",
+        "sha256": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/zone_pair_v6_contract.py",
+        "sha256": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_own_sweep.py",
+        "sha256": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/pair_owncam_approach.py",
+        "sha256": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_drive.py",
+        "sha256": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/run_m2_pair.py",
+        "sha256": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "scripts/study_owncam_pair_beam.py",
+        "sha256": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/visual_arm.py",
+        "sha256": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/m1_owncam_delivery.py",
+        "sha256": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_bootstrap_v6b.py",
+        "sha256": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_recovery_v6c.py",
+        "sha256": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/zone_pair_grasp_entry_v6c.py",
+        "sha256": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_pair_beam_v6d.py",
+        "sha256": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_align_motion_v6d.py",
+        "sha256": "4ac391e60c0d3930576c9daacbd066495fad8f9bb5863dc3ce8eaab6cff8d879",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+        "sha256": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/owncam_carry_v6e.py",
+        "sha256": "ec3b42b3502e21491585360bc588663f89003f8e6ed09ab829ae617d867737ec",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "harness/own_beam_edge.py",
+        "sha256": "f72118c5c1faeb91094347469dd15fa6059dd99bd6acede4760eec96411f3e8d",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json",
+        "sha256": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json",
+        "sha256": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json",
+        "sha256": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "sim/zone_masterpi_v3_scene.py",
+        "sha256": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca",
+        "head_git_matches": true,
+        "local_checked": true
+      },
+      {
+        "path": "sim/zone_model_conventions.py",
+        "sha256": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff",
+        "head_git_matches": true,
+        "local_checked": true
+      }
+    ]
+  },
+  "ci_list": {
+    "files": 346,
+    "shards": 8,
+    "coverage_verified": true,
+    "new_test_files_once": true
+  },
+  "checks": {
+    "frozen_fixtures": 3,
+    "bundle_v63_static": "passed",
+    "registry_immutable": "passed",
+    "workflows_equal_origin_main": true
+  },
+  "source_sha256": {
+    "harness/runtime_provenance.py": "b9c5ace7b675b4a417c391749532c9763285cfbcd35b43b6b02be184947eedfa",
+    "scripts/trace_execution_dependencies.py": "11121811e3014acd182e9ae5e3f230cc3b0e7bec99f3998b8ecd0471452953f7",
+    "scripts/run_ci_tests.py": "324496e4ca160df366035f06e1a3a8007d0b7e75bccbe9fcde1986e6f466b2f7",
+    "tests/test_seal_v2_review_301d.py": "91766952ede7f0ecc2dfea8cb91690ba368244887644ffb447301b5f400598fe",
+    "tests/test_seal_runtime_outputs.py": "e469c1dd2fd7024259a4731ae61cc6a18e63304d28e27c4a5d83543423742138",
+    "experiments/2026-09-30-seal-dependency-decouple/check_runtime_mutations.py": "d69d054896a43a675bd1be5876b871b3ae244c0c1f96fdbcd8b2913db033b851"
+  },
+  "scratch_cleanup": {
+    "full_git_trees_extracted": false,
+    "mutation_temporary_directory_contexts_completed": 17,
+    "remaining_mutation_copies": []
+  },
+  "git_binding_observation": {
+    "scope": "Git worktree binding reproducibility check",
+    "actual_cwd": "/Users/changmin/projects/ugrp-wt/seal-decouple",
+    "reported_without_explicit_worktree": "/Users/changmin/projects/ugrp-wt/cap-t12-r3-delay",
+    "reported_with_explicit_worktree": "/Users/changmin/projects/ugrp-wt/seal-decouple",
+    "common_config_modified_by_this_task": false,
+    "handling": "All subsequent Git reads/staging/commit/push specify --work-tree. Source files remained in seal-decouple. Related tests resolve ROOT from __file__; temporary Git fixtures are independent."
+  },
+  "raw_local_root": "/Users/changmin/projects/ugrp/outputs/seal-review-301d-fixes-20261001",
+  "raw_remote_backup": false,
+  "raw_sha256": {
+    "before.log": "12235e632626f15f60b7b4319ab5b94184d68c40d14908607b43f0ff23b5cef2",
+    "before.xml": "59344e6793d35cae0e18702db2d005f2d9bcaa8c9571e1a8dcc5b5e5f0268583",
+    "bundle-current.log": "b96742cc27325cb55a496a041e43f187c8acd1cba46d9a4f5f93202b5aeebc20",
+    "bundle-registry.log": "0311a7c096cfc78536e21f5ab095b8e3c83f884945a59052b80f6c976b7486d0",
+    "ci-list.json": "d73ff6e397d107065076494f5483324394a5dd39538fac188d78e03ad3733d62",
+    "collect_validation.py": "f445b2d0fc9e727bd718b74ba8f3d706ff69ba7e358824ed0203b0db31f0b16d",
+    "git-worktree-binding.json": "f8f1165f34ac8fa438aaf39b24670c17a2ff94baeb1161a5ea11d9816f0faccf",
+    "mutations/baseline.log": "699e846e0c3130f02c67fbdd21145cda26ccc1752ab7153b41699f4fdca6c4b6",
+    "mutations/baseline.xml": "133e5445d6bfbff63d08521a93f430d280c3dabde82704fead0c1ada5eb424dd",
+    "mutations/directory-query.log": "bbd958250c65259e33966df74dfb696525d640e61bc94e802aac01b4d21b686a",
+    "mutations/directory-query.xml": "28c94f858214bce573e03e26bb47d77ea476a4a30d6be48a2a7656dfc9d82e2a",
+    "mutations/environment-copy-reads.log": "8ae8dfc1272074d43fa6079c9de9c7d231b801e6cc3b4b2aa9ad88f8498b4bf5",
+    "mutations/environment-copy-reads.xml": "c4d2753b2f586df2004cb763082980c566b34362959895904a20017411051ac3",
+    "mutations/environment-copy.log": "c5f9d3dd6e9e19501bf8a4f34f9c0fec2f768b1fdc68029308c6099dc47d2122",
+    "mutations/environment-copy.xml": "cc335b3a1fb9e3c74cc0989c0da7cfc43a57a9faffc7fd89e9fd34968633016f",
+    "mutations/environment-drift.log": "259cdc92c847b61b96ae5b601539bbee3fe650bfeac03fc8716919ac9c2ae191",
+    "mutations/environment-drift.xml": "4ef3919b2259b655f7c8ed781fec8eb06b90021db65fb0d680ee64a47c2aeb1d",
+    "mutations/identity-drift.log": "bce305c272a47f4b24588988a88dc38d6ff2cf66edfa3f9fe63d76ffb708f316",
+    "mutations/identity-drift.xml": "9338ee23ed982b57b6093a9d2ed283b230c2f2dbd6624d9d12bf7d2a7b0c06b4",
+    "mutations/indirect-link-binding.log": "3298fcacfa7c5ed009213dc05fe55b9cb1e2d2ebbf7495aab922606f9927c3ee",
+    "mutations/indirect-link-binding.xml": "ecbb594e831b9fd7a435646aec51fe9eb1582a09d81bd735ecbb15377f4d4000",
+    "mutations/lexical-dotdot.log": "7c1620d8bfbd7f0874c3cf7e9957f094eada27cf60beeca622ee01cd5f2578b9",
+    "mutations/lexical-dotdot.xml": "3efd326d3b9668db88583d3a01cd795b8e2fc4e1aef7998d7f2fe70d7792a5a8",
+    "mutations/main-module.log": "9b228ae5f5710b6d940cbe4a3c9d70f8c867344eca8baf230bae5037d80daeaa",
+    "mutations/main-module.xml": "078a514ceda792c70b4a4af22f2579d4587b04bfcdb18a8f2d6e398998da3879",
+    "mutations/path-binding.log": "80ceb919a57a1108901b44aeecb5aa1300869232244a151400b2215bfebcbcfb",
+    "mutations/path-binding.xml": "853a986bd0597a3bf5c6dee85f374d95bc661f93b92c716ff1b8445ea8b8ffd8",
+    "mutations/resolved-identity.log": "33e6e772cfba9f2bb7d5c3f90af87d5f144f53aa790a33a6509a588ac3b8da36",
+    "mutations/resolved-identity.xml": "7b634f905c59d304471a789f049be03b8a96716955be97e93569c57aaa972ee7",
+    "mutations/static-union.log": "2216f262030bc9da20f0d40742e33bccee4e57075f5df0572ea6df8d9f821aa2",
+    "mutations/static-union.xml": "3bcbb47bc6f5091d9ec5405932d6f4430dbdfa7cfe96e2835e6e6e785b8bf7d1",
+    "mutations/summary.json": "6a46d2e951c24f3e1d5b5bbc7fcc05afc8e33473141d5784e57b499032541912",
+    "mutations/tool-output-read.log": "1662a9781396a503aedfdd64b34bef4e0255d870b0b15d0d85863ea26e8a8714",
+    "mutations/tool-output-read.xml": "e4c644037224296dbc86719ad39deecf9d9453a8698633350235ceab44b50673",
+    "mutations/tool-output-reservation.log": "fc07540ac22a050f8e9b421fd864fb6bceca804ef6b6ef4a94412a004521736e",
+    "mutations/tool-output-reservation.xml": "1aacffd6dc638b4917cc1511bbdabcfc402b1deccf7ed966c2e672588aee279c",
+    "mutations/tool-output-view.log": "4c55ffd1110524738591ee0a694f33ab79e91e45b0b3afbb89689109a21c7a0c",
+    "mutations/tool-output-view.xml": "8160f176047934e667030e774d85a3de7dd79bac5aac1ab24ea734ff71dcd1f6",
+    "mutations/unknown-environment.log": "48585f05eac18a110f63f55290e3dfb25022fd208fb2acf387dd076d420d3e2d",
+    "mutations/unknown-environment.xml": "13ce6ad8980679744355d0603f331ad12b0270265e2feb50050064fe051c71a5",
+    "mutations/unseen-file.log": "5b213fcf673c6fe00a0e9f1d7e45f87d04a1435ede5b5b2acb5631e18f5f9f22",
+    "mutations/unseen-file.xml": "f747147f84a1b463b67032422ce582c77d2115b58a46093bd21a62ffd8b266cd",
+    "mutations.log": "6a46d2e951c24f3e1d5b5bbc7fcc05afc8e33473141d5784e57b499032541912",
+    "preservation.json": "d4673f485638931d5a0f259118f2321d74f0b7655c5e3aa212e9f62721be7edf",
+    "related.log": "256e4b4b9668dfc1f38141f094c259edd87c276bb6793ef945b4fe2ec04d8242",
+    "related.xml": "0aec90901247dafb7023886c425f5739b5289a13ee1c33a85bd689c4afdcf848",
+    "review-test-integrity.json": "70c70de32e0585cf1893175eba9ffea22585e3e95cd6b2f6aa5b96202cc4a1ef",
+    "scratch-cleanup.json": "b4ccea5e0f76f16472f7cadf4598eb4ab6632c9d29c3c391ca62da76debdcb74",
+    "targeted.log": "ebaba9c5d5c007cd647549fff0394187ce8927008bd028f88000db62fa633f91",
+    "targeted.xml": "79f61b03af4fc8d3778d72cb9ecc664832e1281eb2b90fac93893d61280338db"
+  },
+  "remaining": [
+    "Independent delta re-review and normal PR CI",
+    "Native/child tracing, metadata/order/races, immutable input enforcement and runner admission"
+  ],
+  "pr_policy": {
+    "draft": true,
+    "merge": false,
+    "normal_ci": true
+  }
+}
