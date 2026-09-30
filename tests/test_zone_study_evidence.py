@@ -16,6 +16,7 @@ import pytest
 from harness import zone_study_eval as ev
 from harness import zone_study_referee as zr
 from scripts import run_zone_study_integration as runner
+from scripts import zone_study_evidence_writer as evidence_writer
 from scripts.tensorboard_tools import export as tb
 from scripts.tensorboard_tools.media import media_registry
 from tests.test_zone_study_integration import MAP, SCENARIO, run
@@ -194,14 +195,14 @@ def completed():
     return run('no_comm', horizon=12.)[:2]
 
 
-def synthetic_source(tmp_path, outcome, completed):
-    src = tmp_path / outcome
+def synthetic_source(tmp_path, outcome, completed, *, attempt=1):
+    src = tmp_path / (outcome if attempt == 1 else f'{outcome}-attempt{attempt}')
     src.mkdir()
     trial, result = completed
     ref = zr.Referee(SCENARIO['orders'], MAP)
     feed(ref, 2., 4., {'box_00': at_zone('A'), 'box_02': at_zone('B'), 'box_05': at_zone('C')})
     bundle = {'pose_provider': {'label': {'pose_provider': 'synthetic'}},
-              'host_spec': {'order_sheet': {'orders': SCENARIO['orders']}}}
+              'host_spec': {'order_sheet': trial.sheet}}
     failure_class = {'api_failure': runner.llm.API_ERROR, 'host_error': runner.llm.HOST_ERROR,
                      'policy_failure': runner.llm.OTHER}.get(outcome)
     failure = {'type': 'SyntheticFailure', 'failure_class': failure_class} if failure_class else None
@@ -210,11 +211,11 @@ def synthetic_source(tmp_path, outcome, completed):
         trial = result = None
     elif outcome == 'interrupted':
         result = None
-    summary = runner.write_outputs(src, {'horizon_s': 99.}, {'episode_id': 'fake', 'trial_seed': 700},
+    summary = evidence_writer.write_outputs(src, {'horizon_s': 99.}, {'episode_id': 'fake', 'trial_seed': 700},
                                    'no_comm', bundle, runner.digest(bundle), None, trial, result, stopped,
                                    failure, {'sha': 'synthetic-no-execution'}, time.time(), (0., 0., 0.), True,
                                    referee=None if outcome == 'not_evaluated' else ref, horizon_s=12.,
-                                   scenario_id=SCENARIO['scenario_id'])
+                                   scenario_id=SCENARIO['scenario_id'], attempt=attempt)
     summary['evidence_kind'] = 'synthetic'
     put(src, 'result.json', summary)
     reseal(src)
@@ -303,6 +304,157 @@ def test_broken_raw_chain_publishes_no_events(tmp_path, completed, export_api, d
     assert json.loads((out / 'manifest.json').read_text())['complete'] is False
 
 
+@pytest.mark.parametrize('damage', ['trial_id', 'scenario', 'seed', 'order_ids'])
+def test_a303_1_resealed_foreign_trial_or_orders_publish_no_events(tmp_path, completed, export_api, damage):
+    src = synthetic_source(tmp_path, 'success', completed)
+    record = json.loads((src / 'study/trial_record.json').read_text())
+    if damage == 'order_ids':
+        for i, row in enumerate(record['orders']):
+            row['order_id'] = f'unrelated-order-{i}'
+    else:
+        record[damage] = 987654 if damage == 'seed' else f'unrelated-{damage}'
+    put(src, 'study/trial_record.json', record)
+    reseal(src)  # Content joins must reject even when every file hash is valid.
+    out = tmp_path / 'events'
+    with pytest.raises(ValueError):
+        tb.convert(src, out, max_images=0, allow_synthetic=True)
+    assert not list(out.glob('events*'))
+
+
+@pytest.mark.parametrize('damage', ['result_identity', 'manifest_identity', 'evaluation_identity',
+    'result_scenario', 'result_seed', 'result_episode', 'result_attempt_bool', 'attempt_type', 'attempt_zero',
+    'bundle_scenario', 'bundle_orders', 'evaluation_order_id', 'evaluation_item_id',
+    'evaluation_time', 'evaluation_order_counts', 'evaluation_count_type', 'study_config_seed', 'request_sheet', 'legacy'])
+def test_a303_1_all_evidence_joins_reject_rehashed_content(tmp_path, completed, export_api, damage):
+    src = synthetic_source(tmp_path, 'success', completed)
+    paths = {'result': 'result.json', 'manifest': 'manifest.json', 'trial': 'study/trial_record.json',
+             'evaluation': 'eval_only/evaluation.json', 'config': 'study/study_config.json'}
+    rows = {name: json.loads((src / path).read_text()) for name, path in paths.items()}
+    if damage.endswith('_identity'):
+        rows[damage.removesuffix('_identity')]['evidence_identity']['trial_id'] = 'foreign'
+    elif damage == 'result_attempt_bool':
+        rows['result']['evidence_identity']['attempt'] = True
+    elif damage.startswith('result_'):
+        rows['result'][damage.removeprefix('result_')] = 'foreign'
+    elif damage.startswith('attempt_'):
+        for name in ('result', 'manifest', 'trial', 'evaluation'):
+            rows[name]['evidence_identity']['attempt'] = True if damage == 'attempt_type' else 0
+    elif damage.startswith('bundle_'):
+        sheet = rows['manifest']['bundle']['host_spec']['order_sheet']
+        if damage == 'bundle_scenario':
+            sheet['scenario_id'] = runner.digest('foreign')
+        else:
+            sheet['orders'][0]['order_id'] = 'foreign'
+        bundle_sha = runner.digest(rows['manifest']['bundle'])
+        rows['manifest']['bundle_sha256'] = rows['result']['bundle_sha256'] = bundle_sha
+        # Update all declared digests as well: actual trial/request content still disagrees.
+        for name in ('result', 'manifest', 'trial', 'evaluation'):
+            rows[name]['evidence_identity'].update(bundle_sha256=bundle_sha,
+                order_sheet_sha256=runner.digest(sheet), orders_sha256=runner.digest(sheet['orders']))
+    elif damage.startswith('evaluation_'):
+        evaluation = rows['evaluation']
+        oid = next(iter(evaluation['orders']))
+        if damage == 'evaluation_order_id':
+            evaluation['orders']['foreign'] = evaluation['orders'].pop(oid)
+        elif damage == 'evaluation_order_counts':
+            evaluation['orders_by_id'][oid]['delivered'] = 999
+        elif damage == 'evaluation_count_type':
+            evaluation['orders'][oid]['delivered'] = True
+        else:
+            items = evaluation['orders'][oid]['item_delivered_sim_s']
+            item = next(iter(items))
+            if damage == 'evaluation_item_id':
+                items['foreign'] = items.pop(item)
+            else:
+                items[item] += .5
+    elif damage == 'study_config_seed':
+        rows['config']['seed'] += 1
+    elif damage == 'request_sheet':
+        # Replace every outer order reference consistently; leave the saved model request intact.
+        # parse_trial still validates that request against its original call provenance.
+        sheet = rows['manifest']['bundle']['host_spec']['order_sheet']
+        sheet['note_ko'] += ' changed'
+        sheet_sha = runner.digest(sheet)
+        bundle_sha = runner.digest(rows['manifest']['bundle'])
+        rows['manifest']['bundle_sha256'] = rows['result']['bundle_sha256'] = bundle_sha
+        rows['config']['order_sheet_sha256'] = sheet_sha
+        for name in ('result', 'manifest', 'trial', 'evaluation'):
+            rows[name]['evidence_identity'].update(order_sheet_sha256=sheet_sha, bundle_sha256=bundle_sha)
+    else:
+        for name in ('result', 'manifest', 'trial', 'evaluation'):
+            rows[name].pop('evidence_identity')
+    for name, path in paths.items():
+        put(src, path, rows[name])
+    reseal(src)
+    out = tmp_path / 'events'
+    with pytest.raises(ValueError):
+        tb.convert(src, out, max_images=0, allow_synthetic=True)
+    assert not list(out.glob('events*'))
+
+
+def test_a303_1_retry_keeps_logical_trial_and_distinct_attempt_identity(tmp_path, completed, export_api):
+    identities = []
+    for attempt in (1, 2):
+        src = synthetic_source(tmp_path, 'success', completed, attempt=attempt)
+        out = tmp_path / f'events-{attempt}'
+        manifest = tb.convert(src, out, max_images=0, allow_synthetic=True)
+        identities.append(manifest['metadata']['evidence_identity'])
+        assert export_api(str(out)).Reload().Scalars('cohort/trials')[0].value == 1
+    assert identities[0]['trial_id'] == identities[1]['trial_id']
+    assert identities[0]['run_id'] != identities[1]['run_id']
+    assert [row['attempt'] for row in identities] == [1, 2]
+
+
+def test_a303_2_evidence_writer_preserves_the_registered_runner_bytes():
+    from scripts.zone_pair_v6_contract import PREREG_V6E
+    sources = json.loads(PREREG_V6E.read_text())['v6_contract']['source_sha256']
+    path = 'scripts/run_zone_study_integration.py'
+    assert hashlib.sha256((runner.ROOT / path).read_bytes()).hexdigest() == sources[path]
+    assert runner.write_outputs is not evidence_writer.write_outputs
+    assert 'scripts/zone_study_evidence_writer.py' not in sources
+
+
+@pytest.mark.parametrize('envelope', ['result', 'manifest', 'both'])
+def test_a303_3_missing_terminal_marker_publishes_no_events(tmp_path, completed, export_api, envelope):
+    src = synthetic_source(tmp_path, 'success', completed)
+    for name in ('result', 'manifest') if envelope == 'both' else (envelope,):
+        row = json.loads((src / f'{name}.json').read_text())
+        row.pop('terminal')
+        put(src, f'{name}.json', row)
+    reseal(src)
+    out = tmp_path / 'events'
+    with pytest.raises(ValueError):
+        tb.convert(src, out, max_images=0, allow_synthetic=True)
+    assert not list(out.glob('events*'))
+
+
+@pytest.mark.parametrize('damage', ['false', 'integer', 'string', 'null', 'empty_manifest',
+                                   'partial_manifest', 'incomplete_type', 'missing_complete', 'end_time'])
+def test_a303_3_invalid_terminal_marker_publishes_no_events(tmp_path, completed, export_api, damage):
+    src = synthetic_source(tmp_path, 'success', completed)
+    result = json.loads((src / 'result.json').read_text())
+    manifest = json.loads((src / 'manifest.json').read_text())
+    if damage in ('false', 'integer', 'string', 'null'):
+        result['terminal'] = {'false': False, 'integer': 1, 'string': 'true', 'null': None}[damage]
+    elif damage == 'empty_manifest':
+        manifest['terminal'] = {}
+    elif damage == 'partial_manifest':
+        manifest['terminal'].pop('failure_class')
+    elif damage == 'incomplete_type':
+        manifest['terminal']['record_complete'] = 1
+    elif damage == 'missing_complete':
+        result['study'].pop('record_complete')
+    else:
+        manifest['terminal']['end_sim_s'] += 1.
+    put(src, 'result.json', result)
+    put(src, 'manifest.json', manifest)
+    reseal(src)
+    out = tmp_path / 'events'
+    with pytest.raises(ValueError):
+        tb.convert(src, out, max_images=0, allow_synthetic=True)
+    assert not list(out.glob('events*'))
+
+
 def test_synthetic_requires_opt_in_and_temporary_destination(tmp_path, completed, export_api, monkeypatch):
     src = synthetic_source(tmp_path, 'success', completed)
     with pytest.raises(ValueError, match='temporary-logdir'):
@@ -337,24 +489,32 @@ def test_camera_json_is_not_video_and_gt_is_not_top_rgb(tmp_path, completed, exp
 
 def test_unknown_usage_and_unrecorded_metrics_survive_export(tmp_path, completed, export_api):
     src = synthetic_source(tmp_path, 'api_failure', completed)
-    rec = metric_trial(end_reason='api_failure', model={
+    original = json.loads((src / 'study/trial_record.json').read_text())
+    rec = metric_trial(condition='no_comm', scenario=original['scenario'], seed=original['seed'],
+                       orders=original['orders'], provenance=original['provenance'],
+                       deliveries=[], end_reason='api_failure', model={
         'logical_calls': 2, 'http_attempts': 3, 'tokens_complete': False, 'usage_unknown_calls': 1,
         'tokens': {'input': 30, 'output': 4, 'image': 0, 'cached': 0},
         'sim_cost_s': {'think': 1., 'talk': .2, 'call': 1.2, 'delivery': .1},
         'wall_latency_ms': [250.]})
     rec['condition'] = 'no_comm'
     rec['failure_class'] = runner.llm.API_ERROR
+    rec['evidence_identity'] = original['evidence_identity']
+    rec['record_complete'] = True
     rec.pop('idle')
     rec.pop('replans')
     rec['referee'].pop('conflicts')
     rec['referee'].pop('deadlocks')
     put(src, 'study/trial_record.json', rec)
-    put(src, 'eval_only/evaluation.json', ev.efficiency_metrics(rec))
+    put(src, 'eval_only/evaluation.json', {**ev.efficiency_metrics(rec),
+        'orders': evidence_writer.per_order_evaluation(rec), 'evidence_identity': rec['evidence_identity']})
     summary = json.loads((src / 'result.json').read_text())
     summary['study'].update(end_sim_s=rec['end_sim_s'])
+    summary['sim_horizon_s'] = rec['budget']['sim_horizon_s']
     put(src, 'result.json', summary)
     manifest = json.loads((src / 'manifest.json').read_text())
     manifest['terminal']['sim_horizon_s'] = rec['budget']['sim_horizon_s']
+    manifest['terminal']['end_sim_s'] = rec['end_sim_s']
     put(src, 'manifest.json', manifest)
     reseal(src)
     out = tmp_path / 'events'

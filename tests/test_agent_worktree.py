@@ -50,6 +50,7 @@ def repo(tmp_path, monkeypatch):
         "tests/fixtures/frame.jpg": "F" * 100,
         "scripts/tool.py": "print(1)\n",
     }
+    files.update({path: "frozen fixture\n" for path in aw.REQUIRED_FIXTURES})
     for rel, text in files.items():
         (primary / rel).parent.mkdir(parents=True, exist_ok=True)
         (primary / rel).write_text(text)

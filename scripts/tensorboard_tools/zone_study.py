@@ -11,6 +11,7 @@ from pathlib import Path
 
 from harness import zone_study_eval as ev
 from harness.zone_study_contract import digest
+from scripts.zone_study_evidence_contract import verify_identity_join
 
 RUN_SCHEMA = 'ugrp.zone_study_integration_run.v1'
 MEDIA_SCHEMA = 'ugrp.zone_study_media.v1'
@@ -105,8 +106,14 @@ def export_study(src, w, result, max_images):
     trial = ev.parse_trial(record)
     metrics = ev.efficiency_metrics(trial)
     evaluation = src.read('eval_only/evaluation.json', required=True)
-    if result.get('terminal') is False:
-        raise ValueError('Zone-study run is still running')
+    identity = verify_identity_join(raw, result, record, evaluation)
+    if 'study/study_config.json' in src.files:
+        config = src.read('study/study_config.json', required=True)
+        for key in ('seed', 'condition', 'order_sheet_sha256'):
+            if digest(config.get(key)) != digest(identity[key]):
+                raise ValueError(f'Zone-study study config identity mismatch: {key}')
+    if result.get('terminal') is not True:
+        raise ValueError('Zone-study terminal=true is required; running/legacy evidence refused')
     for key in ('success', 'end_reason', 'par_makespan_sim_s', 'delivered_items', 'sim_horizon_s'):
         if key in evaluation and evaluation[key] != metrics[key]:
             raise ValueError(f'Zone-study evaluation disagrees with trial record: {key}')
@@ -118,14 +125,19 @@ def export_study(src, w, result, max_images):
             raise ValueError(f'Zone-study result/trial mismatch: {key}')
     if result.get('condition') != record['condition'] or result.get('failure_class') != record.get('failure_class'):
         raise ValueError('Zone-study condition/failure class mismatch')
-    terminal = raw.get('terminal', {})
-    for key in ('end_reason', 'failure_class'):
-        if key in terminal and terminal[key] != record.get(key):
+    terminal = raw.get('terminal')
+    required_terminal = {'end_reason', 'end_sim_s', 'failure_class', 'sim_horizon_s', 'record_complete'}
+    if not isinstance(terminal, dict) or not required_terminal <= terminal.keys():
+        raise ValueError('Zone-study complete terminal manifest is required')
+    for key in ('end_reason', 'end_sim_s', 'failure_class'):
+        if terminal[key] != record.get(key):
             raise ValueError(f'Zone-study terminal manifest mismatch: {key}')
-    if 'sim_horizon_s' in terminal and terminal['sim_horizon_s'] != metrics['sim_horizon_s']:
+    if (terminal['sim_horizon_s'] != metrics['sim_horizon_s']
+            or result.get('sim_horizon_s') != metrics['sim_horizon_s']):
         raise ValueError('Zone-study manifest SIM cap mismatch')
-    for envelope in (terminal, study):
-        if envelope.get('record_complete', True) != record.get('record_complete', True):
+    for envelope in (record, terminal, study):
+        if (type(envelope.get('record_complete')) is not bool
+                or envelope['record_complete'] != record['record_complete']):
             raise ValueError('Zone-study record completeness mismatch')
     values = {tag: metrics[key] for tag, key in ev.SCALAR_TAGS.items()}
     values.update({'evaluation/reported_success': metrics['success'], 'cohort/trials': 1,
@@ -155,6 +167,7 @@ def export_study(src, w, result, max_images):
     w.text('evaluation/top_camera_configuration', camera if camera is not None else {'status': 'missing'})
     w.text('result/trial_record', record)
     meta = {'family': 'zone-study', 'run_id': result['run_id'], 'condition': record['condition'],
+            'evidence_identity': identity,
             'case': record['scenario'], 'seed': record['seed'], 'source_sha': raw.get('code', {}).get('sha'),
             'outcome': record['end_reason'], 'failure_class': record.get('failure_class'),
             'clock': 'SIM', 'sim_horizon_s': metrics['sim_horizon_s'],

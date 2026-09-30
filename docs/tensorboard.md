@@ -133,6 +133,24 @@ HParams의 **session status=success는 이벤트 가져오기 완료**를 뜻한
 미등록 파일, 해시 변조, trial/result/evaluation의 종료 사유·판정·SIM cap 불일치는
 변환 실패이며 이벤트를 게시하지 않는다. 변환 중 파일이 바뀌어도 실패한다.
 
+새 기록 후보는 `scripts/zone_study_evidence_writer.py`다. v6e가 봉인한 기존
+`run_zone_study_integration.py`는 그대로 보존하며 이 후보를 자동으로 호출하지 않는다.
+실제 적용 전 코디네이터가 새 실행기에 연결하고 source/bundle을 고정해야 한다.
+종료·예외·중단을 잡는 실행기 책임과 이미 종료된 자료를 쓰는 함수의 책임은 별개다.
+
+- result/manifest/trial/evaluation에 같은 `evidence_identity`를 저장한다.
+  논리 `trial_id`와 실제 `run_id`/`episode_id`/양의 정수 `attempt`를 구분하며
+  condition·scenario·seed·bundle SHA·order sheet SHA·orders SHA를 연결한다.
+  bundle의 공개 scenario 참조, trial의 주문 전체, 요청 원문의 주문서와 provenance,
+  study config의 seed/condition/주문서 해시, 심판의 주문별 개체·시각·배송 수를 대조한다.
+  모든 파일 해시를 다시 계산해도 다른 시행/주문을 끼워 넣은 자료는 거절한다.
+- result의 `terminal`은 반드시 JSON `true`여야 한다. manifest의 `terminal` 객체에는
+  end_reason·end_sim_s·failure_class·sim_horizon_s·record_complete가 모두 있어야 하며
+  trial/result와 일치해야 한다. `record_complete`는 반드시 boolean이다.
+  **표식 없는 구형 자료의 묵시적 호환 수입은 지원하지 않는다.** 실행 schema가 같아도
+  identity나 terminal 표식이 빠지면 이벤트를 내지 않는다. 기존 원본에 표식을 덧붙이거나
+  다시 봉인하지 않는다. 구형 자료 전환은 별도 출처 검토·버전 명세가 필요하다.
+
 - 시도 1개마다 `cohort/trials=1`이다. 성공·정책실패·API·HOST_ERROR·중단·미평가를
   같은 분모에 남긴다. 재시도는 새 run/attempt로 보존하고, 본연구 시행 단위의 재시도
   집계 규칙은 사전 등록에 따라 별도로 적용한다. 변환기가 실패 시도를 삭제하지 않는다.
@@ -194,7 +212,9 @@ P06은 아래 절차의 **synthetic 파일/event 계약만** 검사한다. 실�
 
 1. terminal attempt 목록을 원장과 대조한다. 성공·실패·중단·미평가의 수, 누락,
    실제 SIM cap, 실행 SHA/bundle/profile, 원문 요청/응답과 이미지 해시를 확인한다.
-   P06 코드 변경을 포함한 새 실행 source/bundle을 코디네이터가 고정해야 한다.
+   P06 후보 writer를 명시적으로 연결하고 실제 scenario/cap/attempt를 전달하는 새
+   실행 source/bundle을 코디네이터가 고정해야 한다. 기존 runner의 KeyboardInterrupt
+   처리나 trial 생성 전 실패 기록까지 이 PR로 적용됐다고 간주하지 않는다.
 2. 기존 export manifest의 source 경로/해시와 중복 여부를 검사한 뒤, 기본 체크아웃
    `/Users/changmin/projects/ugrp/outputs/tensorboard/<NEW-ID>`에 새 snapshot을 만든다.
    원본과 기존 snapshot은 읽기 전용으로 보존한다.

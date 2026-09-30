@@ -4,6 +4,10 @@ Refs #223, #224, #226. READINESS S11/S14의 **synthetic 계약 검사**다.
 물리·시뮬레이션·렌더·모델 호출·실제 실험 코호트는 수행하지 않았다.
 공용 대시보드 게시, 기존 raw/snapshot 변경, Drive 작업, 병합은 없다.
 
+독립 검토 A303-1/2/3 후속은 [REVIEW_FIXES.md](REVIEW_FIXES.md)를 따른다.
+최초 203개 검사에 빠졌던 식별값 교환·terminal 누락·v6e 고정 소스 검사를 추가했다.
+정상 GitHub CI는 실행하며 생략·취소하지 않는다.
+
 - 기준 감사 SHA: `a8094cc14e098a55483f53a3c49bf6a0b116043d`.
 - 시작 소스: `d17ca4345affef8cf027e121cf1f3197b36c23e0`.
   감사 SHA 이후 차이는 process-review 기록뿐이며 P06 대상 코드는 같다.
@@ -23,9 +27,11 @@ Refs #223, #224, #226. READINESS S11/S14의 **synthetic 계약 검사**다.
    전체 발자국·높이·선속도·손에서 놓임·2초 연속 정착의 기존 기준은 유지한다.
    truth 누락 표본은 연속 정착/기존 배송을 무효화하고 비유한 시각·개체 종류 변조를 거절한다.
 3. 러너의 `result=None`/`trial=None` 종료에는 trial record가 빠질 수 있었다.
-   이제 HOST_ERROR·API·정책실패·중단/미평가의 터미널 기록을 남기고 불완전성을 표시한다.
-   실패 기록을 만들기 위해 scheduler를 추가 실행하지 않는다. KeyboardInterrupt도 기록
-   경로에 포함하고 실제 CLI SIM cap과 scenario ID를 전달한다. 시작 전 실패도 같은
+   별도 후보 `scripts/zone_study_evidence_writer.py`는 HOST_ERROR·API·정책실패·중단/
+   미평가의 터미널 기록을 남기고 불완전성을 표시한다. 기존 runner는 v6e가 고정한
+   바이트로 복원했으며 이 후보를 자동으로 호출하지 않는다. 새 실행기에서 예외·중단을
+   잡고 실제 SIM cap·scenario ID·attempt를 전달하는 연결은 후속 등록 때 필요하다.
+   실패 기록을 만들기 위해 scheduler를 추가 실행하지 않는다. 시작 전 실패도 같은
    scenario/seed 비교에 남기며 불완전 모델 기록은 알려진 하한과 미상 총계를 구분한다. 외부 강제 종료·ENOSPC로 기록 쓰기 자체가
    불가능한 경우까지 디스크 기록을 보장하는 수정은 아니다.
 4. 통합 run의 전용 TensorBoard adapter를 추가했다. raw manifest의 전체 파일/해시,
@@ -71,4 +77,4 @@ D1 0.1초/1초 비교창은 1 Hz 기록만으로 재현할 수 없다. 실제 �
 - [캡처 정책 PR #241](https://github.com/kcm0127-dotcom/ugrp/pull/241)
 - [D1 탐색 기록 PR #291](https://github.com/kcm0127-dotcom/ugrp/pull/291), [사전 등록 초안 #293](https://github.com/kcm0127-dotcom/ugrp/pull/293)
 - [평가 지표](../../harness/zone_study_eval.py), [심판](../../harness/zone_study_referee.py),
-  [기록 러너](../../scripts/run_zone_study_integration.py), [변환기](../../scripts/tensorboard_tools/zone_study.py)
+  [기록 후보](../../scripts/zone_study_evidence_writer.py), [변환기](../../scripts/tensorboard_tools/zone_study.py)

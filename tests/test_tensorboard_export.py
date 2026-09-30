@@ -813,11 +813,14 @@ def test_gpu_probe_reports_devices_without_robot_success(tmp_path, export_api):
     assert manifest['metadata']['outcome'] == 'gpu_available'
 
 
-def test_zone_study_terminal_manifest_readback_without_runtime(tmp_path, export_api):
+@pytest.mark.parametrize('damage', ['file_hash', 'trial_id', 'scenario', 'seed', 'order_id',
+                                   'terminal_result', 'terminal_manifest'])
+def test_zone_study_terminal_manifest_readback_without_runtime(tmp_path, export_api, damage):
     """Optional TensorBoard CI lane: pure JSON evidence, no robot imports."""
-    from harness.zone_study_contract import digest
+    from harness.zone_study_contract import digest, scenario_ref
     from harness.zone_study_eval import PROVISIONAL_SCHEMA, efficiency_metrics
     from scripts.tensorboard_tools.zone_study import RUN_SCHEMA
+    from scripts.zone_study_evidence_contract import identity_for, per_order_evaluation
     convert, EA = export_api
     src = tmp_path / 'synthetic'
     record = {'schema': PROVISIONAL_SCHEMA, 'trial_id': 'fake-host-error', 'condition': 'no_comm',
@@ -827,15 +830,25 @@ def test_zone_study_terminal_manifest_readback_without_runtime(tmp_path, export_
               'orders': [{'order_id': 'o1', 'item_ids': ['i1'], 'kind': 'cyan',
                           'count': 1, 'destination_zone': 'A'}],
               'referee': {'status': 'not_evaluated', 'deliveries': []}, 'record_complete': False}
+    bundle = {'host_spec': {'order_sheet': {'scenario_id': scenario_ref(record['scenario']),
+                                          'orders': record['orders']}}}
+    identity = identity_for(run_id='fake-host-error', trial_id=record['trial_id'], episode_id='fake',
+                            attempt=1, condition='no_comm', scenario='synthetic', seed=1, bundle=bundle)
+    record['evidence_identity'] = identity
     put(src, 'study/trial_record.json', record)
-    put(src, 'eval_only/evaluation.json', efficiency_metrics(record))
+    put(src, 'eval_only/evaluation.json', {**efficiency_metrics(record),
+        'orders': per_order_evaluation(record), 'evidence_identity': identity})
     put(src, 'result.json', {'schema': RUN_SCHEMA, 'run_id': 'fake-host-error', 'condition': 'no_comm',
-                            'evidence_kind': 'synthetic', 'terminal': True, 'bundle_sha256': digest({}),
+                            'scenario': 'synthetic', 'seed': 1, 'episode': 'fake', 'sim_horizon_s': 120.,
+                            'evidence_identity': identity,
+                            'evidence_kind': 'synthetic', 'terminal': True, 'bundle_sha256': digest(bundle),
                             'failure_class': 'infra:HOST_ERROR',
                             'study': {'end_reason': 'host_error', 'end_sim_s': 0., 'record_complete': False}})
-    put(src, 'manifest.json', {'schema': RUN_SCHEMA, 'run_id': 'fake-host-error', 'bundle': {},
-                              'terminal': {'record_complete': False},
-                              'bundle_sha256': digest({}), 'files': {
+    put(src, 'manifest.json', {'schema': RUN_SCHEMA, 'run_id': 'fake-host-error', 'bundle': bundle,
+                              'evidence_identity': identity,
+                              'terminal': {'record_complete': False, 'end_reason': 'host_error',
+                                           'end_sim_s': 0., 'sim_horizon_s': 120., 'failure_class': 'infra:HOST_ERROR'},
+                              'bundle_sha256': digest(bundle), 'files': {
                                   str(p.relative_to(src)): hashlib.sha256(p.read_bytes()).hexdigest()
                                   for p in src.rglob('*.json')}})
     manifest = convert(src, tmp_path / 'events', max_images=0, allow_synthetic=True)
@@ -846,7 +859,24 @@ def test_zone_study_terminal_manifest_readback_without_runtime(tmp_path, export_
     assert 'result/tokens_total' not in ea.Tags()['scalars']
     assert 'result/delivery_rate' not in ea.Tags()['scalars']
     assert manifest['metadata']['failure_class'] == 'infra:HOST_ERROR'
-    (src / 'study/trial_record.json').write_text('{}')
-    with pytest.raises(ValueError, match='hash mismatch'):
+    if damage == 'file_hash':
+        (src / 'study/trial_record.json').write_text('{}')
+    else:
+        if damage.startswith('terminal_'):
+            name = damage.removeprefix('terminal_') + '.json'
+            row = json.loads((src / name).read_text())
+            row.pop('terminal')
+            put(src, name, row)
+        else:
+            if damage == 'order_id':
+                record['orders'][0]['order_id'] = 'foreign'
+            else:
+                record[damage] = 987654 if damage == 'seed' else 'foreign'
+            put(src, 'study/trial_record.json', record)
+        raw = json.loads((src / 'manifest.json').read_text())
+        raw['files'] = {str(p.relative_to(src)): hashlib.sha256(p.read_bytes()).hexdigest()
+                        for p in src.rglob('*') if p.is_file() and p != src / 'manifest.json'}
+        put(src, 'manifest.json', raw)
+    with pytest.raises(ValueError):
         convert(src, tmp_path / 'rejected', max_images=0, allow_synthetic=True)
     assert not list((tmp_path / 'rejected').glob('events*'))

@@ -1,5 +1,8 @@
 # P06 검증 기록
 
+이 파일과 `source_files.sha256`은 최초 제출 당시 기록이다. 독립 검토 후 수정·추가
+검사의 현재 결과는 [REVIEW_FIXES.md](REVIEW_FIXES.md)에 따로 보존한다.
+
 최종 선별 회귀: **203 passed, 0 failed, 0 errors, 0 skipped** (pytest 표시 13.00초).
 이 시간은 테스트 실행 시간이며 로봇/학습 성능 측정이 아니다.
 
