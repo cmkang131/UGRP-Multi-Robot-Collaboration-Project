@@ -1,0 +1,159 @@
+{
+  "schema": "ugrp.t03_offline_verification.v1",
+  "observed_at_utc": "2026-09-30T12:48:42.912003+00:00",
+  "base_sha": "c12796676802ab54cad2f0635e3e96e911691c76",
+  "candidate_code_sha": "ae9726a3eb051cc6ef6c22f364216aa7badccca9",
+  "scope": "fake/offline RGB and static checks only; no local physics, renderer, model/provider calls",
+  "result": {
+    "passed": 808,
+    "subtests_passed": 291,
+    "deselected": 3,
+    "failures": 0,
+    "new_color_tests": 142,
+    "pytest_wall_s": 83.75
+  },
+  "pytest_argv": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "pytest",
+    "-p",
+    "offline_guard",
+    "-q",
+    "--junitxml",
+    "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-wb6etx_d/junit.xml",
+    "tests/test_zone_own_executor.py",
+    "tests/test_zone_own_executor_boundaries.py",
+    "tests/test_zone_own_executor_color_boxes.py",
+    "tests/test_zone_own_executor_guards.py",
+    "tests/test_zone_own_executor_host.py",
+    "tests/test_zone_own_executor_review3.py",
+    "tests/test_zone_own_executor_review4.py",
+    "tests/test_zone_own_executor_review5.py",
+    "tests/test_zone_own_executor_sweep_start.py",
+    "tests/test_wrist_zone_skill.py",
+    "tests/test_wrist_zone_skill_v2.py",
+    "tests/test_wrist_zone_skill_v3.py",
+    "tests/test_wrist_zone_skill_v4.py",
+    "tests/test_wrist_zone_skill_v5.py",
+    "tests/test_wrist_zone_skill_v6.py",
+    "tests/test_wrist_zone_skill_v7.py",
+    "tests/test_wrist_zone_skill_v8.py",
+    "tests/test_wrist_zone_skill_v9.py",
+    "tests/test_m1_owncam.py",
+    "tests/test_zone_color_boxes.py",
+    "tests/test_owncam_memory.py",
+    "tests/test_owncam_memory_time.py",
+    "tests/test_owncam_memory_v3.py",
+    "tests/test_owncam_memory_v3_pose_provider.py",
+    "tests/test_owncam_memory_v3_review.py",
+    "tests/test_owncam_memory_v3_review2.py",
+    "tests/test_owncam_memory_v3_review3.py",
+    "tests/test_owncam_memory_v3_review4.py",
+    "tests/test_owncam_memory_v3_review5.py",
+    "tests/test_owncam_memory_v3_review6.py",
+    "tests/test_zone_study_source_pinning.py",
+    "-k",
+    "not test_team_host_feeds_each_executor_only_its_own_camera and not test_team_host_isolation_abort_and_horizon_on_the_real_world and not test_contact_log_counts_cargo_wall_every_physics_step"
+  ],
+  "source_unchanged_before_after": true,
+  "raw_records": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-lrekzp05",
+      "result": "109 failed, 23 passed: PNG supplied to JPEG-only path; preserved",
+      "files_sha256": {
+        "command.txt": "b9e7a80d9f6971d2948ad6c958ce3f9515ad8cb3ad319854f8968bb9983fcd61",
+        "exit_code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "junit.xml": "badece462bb0a7add8ed777ff2b2e4f6e3b07a967eca8764ebb24fcf5a46f9ae",
+        "pytest.log": "2fa967afc9d50d711c89aea8b2676d7fdcd32c04b3c742dec00c3edb989008fe"
+      }
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-ogxe_5gp",
+      "result": "142 passed before later probe/refactor changes; interim only",
+      "files_sha256": {
+        "command.txt": "e1fa0ec2a339814a59367647419ca4a5d54c8cc80bc53434c1c93fb3c88b1f70",
+        "exit_code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "junit.xml": "5af7c9b43212df961b22bc6f516c183b17f61747dd97dad965415f7d63cb5d43",
+        "pytest.log": "54a4c43169b0fbc633836b10dfb04a7be3e72fec6adddb59b103a57e30d1d30d"
+      }
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-dw41y7oe",
+      "result": "811 passed, 3 deselected, 288 subtests passed, 6 subtest failures: frozen/import boundaries and two preexisting stale hash entries; preserved",
+      "files_sha256": {
+        "command.txt": "afb2c83139873f583eeeb7029c0e6bb30ca4286463acb37a3faa71b5b2752601",
+        "exit_code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "inputs-after.json": "33c1b994133c32b8e284615b4750c9ec9a8db3f57faca5e8a7962a2a1086be56",
+        "inputs-before.json": "33c1b994133c32b8e284615b4750c9ec9a8db3f57faca5e8a7962a2a1086be56",
+        "junit.xml": "959f162cd53ebad7f98910ecc65a1c717ec99874de9455c87904820704aa692d",
+        "pytest.log": "36122ec5f3808558f4c5238f2a2f7a4301c85e2115b85249119c4012f7d3aff1",
+        "verified_exit_code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-wb6etx_d",
+      "result": "final: 808 passed, 3 deselected, 291 subtests passed",
+      "files_sha256": {
+        "command.txt": "a607462359af0a53a235c0428bab825c9b9ea7d5fe4d97523afcca0db5d3a615",
+        "controller-source-closure.json": "ae84ac182baf372feff45cbb9eca530d0d9b15e13d29d019428742220579d620",
+        "exit_code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "inputs-after.json": "eccbe75ede76640305c01220fb381999398566fd2efcca16bde3fa34ca6e7ecc",
+        "inputs-before.json": "eccbe75ede76640305c01220fb381999398566fd2efcca16bde3fa34ca6e7ecc",
+        "junit.xml": "870b8c3b31f30209621d0b93a7dad18369c2da71164ac96421f0bf5aa21c9303",
+        "pytest.log": "b485b26cc830528ec7f69216d230248062a273b0187bd99f2761e064e833ac81",
+        "verified_exit_code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
+    }
+  ],
+  "controller_source_manifest": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-wb6etx_d/controller-source-closure.json",
+  "controller_source_manifest_sha256": "ae84ac182baf372feff45cbb9eca530d0d9b15e13d29d019428742220579d620",
+  "controller_code_hash_canonical": "515f9b35e73405cb52999630f5b007663ce1152ccea7d784e25ef913475ea3b2",
+  "controller_source_count": 186,
+  "role_assignment": {
+    "solo_actor": "r1",
+    "other_robots": "idle"
+  },
+  "role_assignment_hash_canonical": "f2ebe9d6dda1dc83184ed1fbd991d6e63663df37f6272be7b9702ec527f909f4",
+  "hash_encoding": "UTF-8 JSON, sorted keys, compact separators for canonical hashes; controller hash is path->file SHA-256 map, role hash excludes all code",
+  "fixture_labels_sha256": "99f74aa7ce7c8565697da8a3d6f621c98677eed542054ddaed72e0bf59e03ff4",
+  "fixture_transport_sha256": "a1657bbabf915d8ba6ee670b066ee771e8cb96f7c26ad352344bc195a021f6d1",
+  "static_checks": {
+    "git_diff_check": "passed",
+    "check_ci_fixtures": "3 frozen fixtures present",
+    "rgb_standard_dispatch_v63": {
+      "result": "passed",
+      "status": "experimental_unqualified",
+      "sha256": "ef4fe391e57c145b6625ba052e651542745bfcb6244d8e25736827ee8122aa01",
+      "scope": "static manifest/source hashes only"
+    },
+    "registry_against_base": "passed; existing bundle bytes unchanged",
+    "protected_files": "no change to frozen M1/N7/wrist v1-v9, maps, scenarios, calibration or successful bundle records"
+  },
+  "environment": {
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "pytest": "9.1.1",
+      "numpy": "2.5.2",
+      "cv2": "5.0.0"
+    }
+  },
+  "local_execution": {
+    "physics_runs": 0,
+    "render_runs": 0,
+    "model_calls": 0,
+    "tensorboard_new_cohort": false
+  },
+  "github_ci": "normal PR CI required; run state recorded separately after PR creation",
+  "physical_ready": false,
+  "physical_proposal": "physics_proposal.json; DRAFT_NOT_RUNNABLE; 4 cells, 3600 SIM s including staging",
+  "dependencies": "dependencies.json; all predecessor PRs open/draft when inspected, no merge SHA or inherited verification",
+  "remaining": [
+    "independent review",
+    "integration with P01/P02/P03/P05/P07",
+    "final-v3 skill/provider/camera geometry calibration and admission",
+    "physical negative visibility labels and four-cell execution",
+    "new physical TensorBoard snapshot and original hash readback"
+  ],
+  "storage": "raw local primary outputs only; not remote backup; no Drive per project exception"
+}
