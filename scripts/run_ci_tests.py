@@ -107,6 +107,7 @@ TEST_PATTERNS = (
     "tests/test_zone_own_perception_v3.py", "tests/test_zone_own_perception_v3_1.py",
     "tests/test_zone_own_executor*.py",
     "tests/test_review_325b.py",  # T03: mandatory independent loss/mode counterexamples
+    "tests/test_review_e2e_batch_i.py",  # T04: issued arm sweep counterexample
     "tests/test_zone_pair_executor.py", "tests/test_zone_pair_status.py", "tests/test_zone_pair_review.py",
     "tests/test_zone_pair_role_exchange.py",  # T07: six explicit role assignments; fake ports only
     "tests/test_stall_observation_contract.py",  # P08: synthetic observation/stop contract only
