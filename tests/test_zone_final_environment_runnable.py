@@ -244,6 +244,55 @@ def test_p03_plan_is_honest_about_missing_calibration_and_chain(capsys, tmp_path
     assert not (tmp_path / 'not-created').exists()
 
 
+@pytest.mark.parametrize('failure', [False, True])
+def test_cli_creates_fresh_parent_and_preserves_case_denominator(monkeypatch, tmp_path, failure):
+    from types import SimpleNamespace
+    from scripts import agent_lock
+    from sim import final_environment_checks
+    owned = []
+
+    class Backend(FakePhysics):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            owned.append(self)
+
+        def capture(self):
+            if failure:
+                raise OSError(28, 'synthetic disk full')
+            super().capture()
+
+    def git(argv, **kwargs):
+        if argv == ['git', 'rev-parse', '--path-format=absolute', '--git-common-dir']:
+            return str(tmp_path / '.git') + '\n'
+        if argv == ['git', 'branch', '--show-current']:
+            return 'codex/fake-final-env\n'
+        pytest.fail(f'unexpected subprocess: {argv}')
+
+    monkeypatch.setattr(run, 'check_source', lambda sha: sha)
+    monkeypatch.setattr(run.subprocess, 'check_output', git)
+    monkeypatch.setattr(run.shutil, 'disk_usage', lambda path: SimpleNamespace(free=20 * 1024 ** 3))
+    monkeypatch.setattr(agent_lock, 'status', lambda path: {
+        'pid_alive': True, 'owner': 'codex', 'branch': 'codex/fake-final-env'})
+    monkeypatch.setattr(final_environment_checks, 'PhysicsBackend', Backend)
+    output = tmp_path / 'outputs' / 'new-cohort' / 'p01'
+    argv = ['--check', 'p01', '--expected-source-sha', 'a' * 40,
+            '--output', str(output), '--execute', '--lock-owner', 'codex']
+    assert run.main(argv) == int(failure)
+    result = env.read(output / 'result.json')
+    assert result['denominator'] == 3
+    assert result['source_unchanged'] and result['physical_success'] is None
+    assert result['status'] == ('HOST_ERROR' if failure else 'COLLECTED_UNQUALIFIED')
+    assert len(result['cases']) == len(owned) == (1 if failure else 3)
+    assert result['unattempted'] == (list(MAPS[1:]) if failure else [])
+    assert all(b.closed for b in owned)
+    if not failure:
+        assert sum(r['check_sim_s'] for r in result['cases']) == 90.
+    original = (output / 'result.json').read_bytes()
+    with pytest.raises(FileExistsError):
+        run.main(argv)
+    assert (output / 'result.json').read_bytes() == original
+
+
 def test_final_scene_uses_standard_resolver_and_v3_spawn_hook(monkeypatch):
     from sim.zone_final_v3_scene import FinalV3Scene, CargoZoneScene
     from sim import zone_final_v3_scene as scene_module

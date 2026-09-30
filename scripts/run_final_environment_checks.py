@@ -162,7 +162,7 @@ def main(argv=None):
     if not held or not held['pid_alive'] or held['owner'] != args.lock_owner or held['branch'] != branch:
         raise ValueError('live owned host lock for this branch required')
     from sim.final_environment_checks import PhysicsBackend
-    args.output.mkdir()
+    args.output.mkdir(parents=True)
     write(args.output / 'plan.json', plan)
     results = []
     for bundle in bundles:

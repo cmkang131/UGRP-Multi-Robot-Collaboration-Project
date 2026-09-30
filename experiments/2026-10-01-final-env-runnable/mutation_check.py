@@ -4,6 +4,7 @@ No SIM/worker/model/host lock; pytest only runs the targeted fake regression.
 Use in the dedicated integration worktree with no other edit in progress.
 """
 from pathlib import Path
+import argparse
 import json
 import os
 import subprocess
@@ -25,6 +26,9 @@ MUTATIONS = (
     ('owned-cleanup', 'scripts/run_final_environment_checks.py',
      '                backend.close()', '                pass  # mutant',
      'test_frame_failure_retains_host_error_and_closes_owned_world'),
+    ('fresh-cohort-output', 'scripts/run_final_environment_checks.py',
+     '    args.output.mkdir(parents=True)', '    args.output.mkdir()',
+     'test_cli_creates_fresh_parent_and_preserves_case_denominator'),
     ('catalog-registration', 'sim/workflow_manager.py',
      '        data["workflows"].extend(extra.get("workflows", []))', '        pass  # mutant',
      'test_workflow_is_discoverable_and_plan_does_not_execute'),
@@ -44,6 +48,11 @@ MUTATIONS = (
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, required=True)
+    args = parser.parse_args()
+    if args.output.exists():
+        raise FileExistsError(args.output)
     rows = []
     for name, relative, before, after, test in MUTATIONS:
         path = ROOT / relative
@@ -64,8 +73,8 @@ def main():
             path.write_bytes(raw)
             if path.read_bytes() != raw:
                 raise RuntimeError(f'{name}: original bytes were not restored')
-    out = ROOT / 'experiments/2026-10-01-final-env-runnable/mutation_results.json'
-    out.write_text(json.dumps(rows, indent=2, ensure_ascii=False) + '\n')
+    with args.output.open('x') as stream:
+        stream.write(json.dumps(rows, indent=2, ensure_ascii=False) + '\n')
     print(json.dumps({'killed': sum(r['killed'] for r in rows), 'total': len(rows),
                       'all_sources_restored': True}))
     return int(not all(row['killed'] for row in rows))
