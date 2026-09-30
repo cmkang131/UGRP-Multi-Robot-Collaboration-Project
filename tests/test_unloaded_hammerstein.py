@@ -1,6 +1,7 @@
 """Offline synthetic identification and calibration boundary regressions."""
 import copy
 import json
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -153,11 +154,15 @@ def test_revision_artifact_and_p03_admission():
     with pytest.raises(ValueError,match='combination mismatch'):
         path=folder/'calibration_partial_r2.json'
         env.measured_calibration(path,env.sha(path),'zone_wide_two_doors_final_v3')
-    # Portable source integrity check, without requiring local-only raw in CI.
+    # This manifest records r2's source, not every future working-tree revision.
+    # Resolve its immutable reviewed commit; r3 may extend the test registry.
+    # No local-only raw is required in CI (offline shards fetch full history).
     for entry in json.loads(manifest)['files']:
         if entry['kind']=='file' and '/ugrp-wt/calib-fit-v87/' in entry['path']:
             rel=entry['path'].split('/ugrp-wt/calib-fit-v87/',1)[1]
-            assert h.sha((h.ROOT/rel).read_bytes())==entry['sha256']
+            frozen = subprocess.check_output([
+                'git', 'show', f'8feab5788141ce47418012a2bf458dece908e50c:{rel}'], cwd=h.ROOT)
+            assert h.sha(frozen)==entry['sha256']
 
 
 def test_offline_suite_collects_this_file_once():
