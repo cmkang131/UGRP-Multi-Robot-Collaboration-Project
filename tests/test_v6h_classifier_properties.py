@@ -123,7 +123,7 @@ def test_ten_thousand_generated_evidence_chains():
         else:
             hs['gt_at_stop']['tilt_deg'] = 1.
         erased = event(hr, hs, ht)
-        assert erased['class'] == 'FAIL' and not erased['evidence_valid'], (SEED, index, erased)
+        assert erased['class'] is None and not erased['evidence_valid'], (SEED, index, erased)
         # Only a complete, validated, failure-free HOST_ERROR may lead to PASS.
         safe_row, safe_result, safe_trace = base.record()
         safe_row.update(category='HOST_ERROR:ENOSPC', host_error='cleanup')
@@ -150,9 +150,10 @@ def test_ten_thousand_generated_evidence_chains():
         # ID lists are a set-valued diagnostic; normalize before comparing.
         for summary in (before, after):
             summary['hard_limit_attempt_case_ids'].sort()
+            summary['unclassified_cases'].sort()
         assert normalized(before) == normalized(after), (SEED, index)  # (c)
-        assert after['n_placements'] == after['n_classified_primary'] == n  # (e)
-        assert sum(after['counts'].values()) == n
+        assert after['n_placements'] == n == after['n_classified_primary'] + len(after['unclassified_placements'])  # (e)
+        assert sum(after['counts'].values()) + len(after['unclassified_placements']) == n
         statuses[mutated['state']] = statuses.get(mutated['state'], 0) + 1
     report = {'seed': SEED, 'generated_cases': GENERATED_CASES, 'invariants_per_case': 5,
               'mutation_counts': counts, 'mutated_states': statuses, 'physics_runs': 0}
@@ -164,7 +165,7 @@ def test_ten_thousand_generated_evidence_chains():
 
 def test_empty_attempt_chain_is_total_and_fail_closed():
     out = cp.classify_attempt_sequence([])
-    assert out['class'] == 'FAIL' and out['reason_code'] == 'MISSING_ORIGINAL'
+    assert out['class'] is None and out['reason_code'] == 'MISSING_ORIGINAL'
 
 
 def test_generated_file_loss_keeps_all_admissions_and_hard_evidence(tmp_path):
@@ -210,7 +211,7 @@ def test_generated_file_loss_keeps_all_admissions_and_hard_evidence(tmp_path):
         report = cp.analyse('generated-files', raw, sealed_manifest=seal)
         s = report['summary']
         assert s['n_cases'] == 72 and s['denominator'] == s['admitted_placement_count'] == 60
-        assert s['full_verdict'] == 'FAIL_A_B_SAFETY', (index, mutation, s)
+        assert s['full_verdict'] == ('FAIL_A_B_SAFETY' if mutation in ('duplicate_row', 'missing_retry_row') else 'NOT_EVALUABLE'), (index, mutation, s)
         assert cid in s['selected_case_ids']
         if mutation == 'duplicate_row':
             assert cid in s['hard_limit_attempt_case_ids']

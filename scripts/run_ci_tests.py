@@ -135,6 +135,8 @@ TEST_PATTERNS = (
     "tests/test_v6h_classify_placements.py",  # eval-only prereg draft: placement contact classes + whole-chain hard-limit veto
     "tests/test_classify_review_299.py",
     "tests/test_classify_review_299b.py",
+    "tests/test_classify_review_299c.py",
+    "tests/test_v6h_recorder_contract.py",  # pinned recorder consumer contract; JSON only
     "tests/test_v6h_classifier_properties.py",  # 10,000 seeded evidence chains; no physics
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)

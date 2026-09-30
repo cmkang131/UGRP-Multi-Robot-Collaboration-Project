@@ -267,16 +267,16 @@ def test_host_retry_without_hard_violation_counts_once(tmp_path):
 
 
 @pytest.mark.parametrize("seed", [941, 943])
-def test_unreplaced_host_error_is_invalid_counted_as_failure(tmp_path, seed):
+def test_unreplaced_host_error_is_invalid_unclassified(tmp_path, seed):
     raw, seal, rows, identity = sealed_cohort(tmp_path)
     row = next(r for r in rows if r["cell"] == "C01" and r["seed"] == seed)
     row["category"] = "HOST_ERROR:worker_exit_-15"
     write_rows(raw, rows)
     s = analyse(raw, seal)
-    assert s["full_verdict"] == "FAIL_A_B_SAFETY"
+    assert s["full_verdict"] == "NOT_EVALUABLE"
     assert s["n_cases"] == 72 and s["n_placements"] == 60
-    assert s["unclassified_cases"] == []
-    assert s["counts"]["FAIL"] == (1 if seed == 941 else 0)
+    assert s["unclassified_cases"] == [row["case_id"]]
+    assert s["counts"]["FAIL"] == 0
     assert row["case_id"] in s["invalid_cases"]
 
 
@@ -289,7 +289,7 @@ def test_sealed_cohort_rejects_wrong_inventory(tmp_path, mutation):
     if mutation == "arbitrary_name": rows[0]["cell"] = "P0"
     write_rows(raw, rows)
     s = analyse(raw, seal)
-    assert s["full_verdict"] == "FAIL_A_B_SAFETY"
+    assert s["full_verdict"] == "NOT_EVALUABLE"
     assert s["invalid_cases"] and s["n_placements"] == s["denominator"] == 60
 
 
@@ -424,7 +424,7 @@ def test_unreadable_host_evidence_cannot_be_assumed_safe(tmp_path):
     report = cp.analyse("review299", raw, sealed_manifest=seal)
     s = report["summary"]
     assert s["safety_evidence_issues"][original_id]
-    assert s["full_verdict"] == "FAIL_A_B_SAFETY"
+    assert s["full_verdict"] == "NOT_EVALUABLE"
     assert report["input_sha256"][str(path.relative_to(raw))] == cp.sha256(path)
 
 
@@ -436,7 +436,7 @@ def test_absent_host_files_are_explicit_and_original_invalid_is_terminal(tmp_pat
         (directory / name).unlink()
     report = cp.analyse("review299", raw, sealed_manifest=seal)
     assert len(report["missing_host_evidence"]) == 2
-    assert report["summary"]["full_verdict"] == "FAIL_A_B_SAFETY"
+    assert report["summary"]["full_verdict"] == "NOT_EVALUABLE"
     assert report["summary"]["pass_placements"] == 59
     assert original_id in report["summary"]["invalid_cases"]
 
@@ -458,7 +458,7 @@ def test_changed_replaced_host_file_is_rejected(tmp_path, monkeypatch):
 
     monkeypatch.setattr(cp, "sha256", changing_sha256)
     s = cp.analyse("review299", raw, sealed_manifest=seal)["summary"]
-    assert s["full_verdict"] == "FAIL_A_B_SAFETY"
+    assert s["full_verdict"] == "NOT_EVALUABLE"
     assert any("INPUT_CHANGED" in e for e in s["cohort_evidence_issues"])
 
 

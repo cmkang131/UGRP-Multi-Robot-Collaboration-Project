@@ -159,7 +159,7 @@ def test_primary_seed_is_separate_from_all_seed_and_any_seed_counts():
     assert s["criterion"]["verdict"] == "NOT_EVALUABLE"
     _, missing = cp.summarize([classify(other)])
     assert missing["unclassified_placements"] == ["A"]
-    assert missing["wilson95_primary_classified"] == cp.ca.wilson(0, 1)  # admitted denominator
+    assert missing["wilson95_primary_classified"] is None  # no failure imputation
 
 
 def test_duplicate_seed_is_rejected_instead_of_merging_different_policies():
@@ -238,9 +238,9 @@ def test_host_error_is_unclassified_not_an_ordinary_fail_or_a_pass(tmp_path):
         stream.write(json.dumps(host) + "\n")
     report = cp.analyse("host", raw)
     assert report["summary"]["n_placements"] == 2
-    assert report["summary"]["n_classified_primary"] == 2
-    assert report["summary"]["unclassified_placements"] == []
-    assert report["summary"]["counts"]["FAIL"] == 1
+    assert report["summary"]["n_classified_primary"] == 1
+    assert report["summary"]["unclassified_placements"] == ["HOST"]
+    assert report["summary"]["counts"]["FAIL"] == 0
     assert report["summary"]["criterion"]["verdict"] == "NOT_EVALUABLE"
 
 
@@ -431,7 +431,7 @@ def test_seal_exact_60_plus_12_and_pinned_hash(tmp_path):
     (raw / 'cases.jsonl').write_text(''.join(json.dumps(r) + '\n' for r in rows if r['seed'] == 941))
     result = cp.analyse('missing', raw, sealed_manifest=seal)['summary']
     assert result['n_cases'] == 72 and result['denominator'] == 60
-    assert result['full_verdict'] == 'FAIL_A_B_SAFETY'
+    assert result['full_verdict'] == 'NOT_EVALUABLE'
     (raw / 'cases.jsonl').write_text(''.join(json.dumps(r) + '\n' for r in rows))
     spec_path = cp.ca.dra.case_dir(raw, rows[0]['case_id']) / 'case.json'
     spec_path.write_text(spec_path.read_text() + ' ')
@@ -570,9 +570,9 @@ def test_confirmatory_cli_missing_pf_blocks_full_verdict(tmp_path):
     assert cp.main(['--output', str(output), '--sealed-manifest', str(path),
                     '--sealed-manifest-sha256', cp.sha256(path), f'confirm={raw}']) == 0
     s = json.loads((output / 'confirm.json').read_text())['summary']
-    assert s['criterion']['verdict'] == 'FAIL_OBSERVED_CRITERION'
+    assert s['criterion']['verdict'] == 'NOT_EVALUABLE'
     assert s['sigma_criterion_B']['verdict'] == 'NOT_EVALUABLE'
-    assert s['full_verdict'] == 'FAIL_A_B_SAFETY'
+    assert s['full_verdict'] == 'NOT_EVALUABLE'
 
 
 def test_3000_of_3000_mc_has_nonzero_interval_uncertainty():

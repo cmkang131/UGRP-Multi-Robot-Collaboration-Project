@@ -169,7 +169,7 @@ def test_host_stored_trace_contradiction_is_not_silent_success(tmp_path, corrupt
     path.write_text("".join(json.dumps(s) + "\n" for s in trace))
     out = report(raw, seal)
     s = out["summary"]
-    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+    assert s["full_verdict"] == "NOT_EVALUABLE", s
     assert s["safety_evidence_issues"].get(original["case_id"])
 
 
@@ -204,7 +204,7 @@ def test_host_present_observation_with_missing_metric_blocks_pass(tmp_path, miss
     retry(raw, seal, rows, identity)
     s = report(raw, seal)["summary"]
     assert s["safety_evidence_issues"][row["case_id"]]
-    assert s["full_verdict"] == "FAIL_A_B_SAFETY"
+    assert s["full_verdict"] == "NOT_EVALUABLE"
 
 
 def test_many_legal_retries_are_order_independent_and_count_unique_placements(tmp_path):
@@ -249,11 +249,11 @@ def test_host_then_fail_or_host_keeps_the_selected_outcome(tmp_path, after, hard
     change(raw, rows, identity, rr, res, tr)
     s = report(raw, seal)["summary"]
     assert (s["n_cases"], s["n_attempts"], s["pass_placements"]) == (72, 73, 59)
-    assert s["counts"]["FAIL"] == (0 if hard else 1)
+    assert s["counts"]["FAIL"] == (int(not hard and after == "FAIL"))
     assert s["counts"]["FAIL_HARD_LIMIT"] == int(hard)
-    assert s["unclassified_cases"] == []
+    assert s["unclassified_cases"] == ([rr["case_id"]] if not hard and after == "HOST_ERROR" else [])
     assert s["full_verdict"] == ("FAIL_A_B_SAFETY" if hard else
-                                 "PASS_A_B_SAFETY" if after == "FAIL" else "FAIL_A_B_SAFETY")
+                                 "PASS_A_B_SAFETY" if after == "FAIL" else "NOT_EVALUABLE")
 
 
 @pytest.mark.parametrize("before", ["PASS", "FAIL"])
@@ -269,10 +269,10 @@ def test_retry_cannot_replace_non_host_original(tmp_path, before):
     assert s["pass_placements"] == 59
     assert rows[0]["case_id"] in s["selected_case_ids"]
     if before == "PASS":
-        assert s["full_verdict"] == "FAIL_A_B_SAFETY" and s["invalid_cases"]
+        assert s["full_verdict"] == "NOT_EVALUABLE" and s["invalid_cases"]
     else:
         assert s["counts"]["FAIL"] == 1
-        assert s["full_verdict"] == "FAIL_A_B_SAFETY"  # unauthorized retry cannot certify a valid chain
+        assert s["full_verdict"] == "NOT_EVALUABLE"  # unauthorized retry cannot certify a valid chain
 
 
 @pytest.mark.parametrize("sequence", ["HOST_HOST_PASS", "HOST_FAIL_PASS"])
@@ -294,7 +294,7 @@ def test_third_attempt_is_rejected_even_when_first_is_host(tmp_path, sequence):
     base.write_json(path / "case.json", dict(spec, case_id=third["case_id"]))
     change(raw, rows, identity, third, res, tr)
     s = report(raw, seal)["summary"]
-    assert s["full_verdict"] == "FAIL_A_B_SAFETY"
+    assert s["full_verdict"] == "NOT_EVALUABLE"
     assert any("UNAUTHORIZED_ATTEMPT" in e for e in s["cohort_evidence_issues"])
     seal_path = tmp_path / "seal.json"
     doc = json.loads(seal_path.read_text())
@@ -357,5 +357,5 @@ def test_duplicate_inventory_is_rejected(tmp_path, mutation):
         return
     base.write_rows(raw, rows)
     s = report(raw, seal)["summary"]
-    assert s["full_verdict"] == "FAIL_A_B_SAFETY"
+    assert s["full_verdict"] == "NOT_EVALUABLE"
     assert s["invalid_cases"] and s["denominator"] == 60

@@ -1,106 +1,70 @@
-# v6h 판정기 재설계 — 초안 v3
+# v6h 판정기 — 등록 recorder 계약 반영 v4
 
-PR #299의 `c86d9bac`와 `8a1631b9`가 독립 검토에서 두 번 BLOCK됐다.
-개별 반례 패치를 중단하고 **전원 분모 유지, 선행 스키마 검증, 종단 실패 상태,
-생성 기반 불변식 검사**로 판정 경계를 바꾼다. 제어기·러너·물리를 바꾸거나
-실제 확증 자료를 봉인하지 않았다. 이 문서는 v2의 미분류/HOST_ERROR 대체 규칙을 대체한다.
-과거 검증은 `review_validation_20260930/`, `review_299_fix_validation/`에 그대로 보존한다.
+PR #299 세 번째 독립 검토(`d1c64f85`, 검토 대상 `f32d5fd9`)의 R1–R5와
+조정자의 D1–D5 결정을 반영한다. v3의 **새 필드 소급 필수화와 INVALID→FAIL 대치**를
+폐기한다. 과거 검증 기록은 그대로 보존한다. 이 수정은 제어기·recorder·물리·등록 봉인을
+바꾸지 않으며, 공개 인수 자료의 형식 검증을 새 확증 표본으로 세지 않는다.
 
-## 참고 자료
+## R1 / D1: 실제 생산자와 소비자의 계약
 
-- Schulz, Altman, Moher, **CONSORT 2010 Statement**, item 13/16,
-  [BMJ 2010;340:c332](https://www.bmj.com/content/340/bmj.c332),
-  [Explanation and Elaboration, item 16](https://www.bmj.com/content/bmj/340/bmj.c869.full.pdf).
-  분석에 포함한 수와 제외 사유, 원래 배정된 집단을 명확히 보고하는 원칙을 채택한다.
-  이 로봇 실험이 무작위 임상시험이거나 CONSORT 인증을 받았다는 뜻은 아니다.
-- **ICH E9(R1)**, 2019-11-20 final, A.1/A.3/A.5/A.6,
-  [원문](https://database.ich.org/sites/default/files/E9-R1_Step4_Guideline_2019_1203.pdf).
-  대상 집단·평가량·중간 사건(HOST_ERROR) 처리와 누락 자료 처리를 사전에 구별한다.
-  **누락을 실패로 세는 것은 이 프로젝트의 보수적 판정 규칙**이다.
-  CONSORT/ICH가 모든 임상 누락값의 실패 대치를 요구한다고 주장하지 않는다.
-- **JSON Schema Validation 2020-12**, §6.1/6.3/6.5,
-  [type, bounds, required](https://json-schema.org/draft/2020-12/json-schema-validation).
-  필드 존재·타입·유한값·범위를 먼저 검사한다. 시간 순서·파일 간 동일성은 별도 의미 검사다.
-  구현은 프로젝트 전용 Python 검증기이며 범용 JSON Schema 구현이라고 주장하지 않는다.
-- **W3C SCXML 1.0**, D.1,
-  [determinism/completeness/run-to-completion](https://www.w3.org/TR/scxml/#AlgorithmforSCXMLInterpretation).
-  사건 순서와 우선순위를 고정한 전이표를 사용한다. SCXML 실행기를 도입한 것은 아니다.
-- Claessen & Hughes, **QuickCheck**, ICFP 2000,
-  [논문](https://www.cs.tufts.edu/~nr/cs257/archive/john-hughes/quick.pdf).
-  예제별 기대값만으로 끝내지 않고 생성 입력에 공통으로 성립해야 하는 성질을 검사한다.
-  `.venv-sim`에 Hypothesis가 없어 고정 시드 `202609300299`의 Python 난수 생성기를 쓴다.
+등록 생산자는 #292 `4c6b439f3f7c9a147c901f8b260a1e214d4eb396`의
+`scripts/run_pair_stage_probes.py`다. 공개 acceptance 소스
+`3c4fe30e2197518443b195392212b0341507ac59`와 바이트가 같으며 파일 SHA-256은
+`531c420696ccb4c7d53fbfd17d1b96f3851730fd1f6881951b3c0892edc97c63`이다.
+`recorder_v4c6b.py`는 이 fingerprint를 확인하는 읽기 전용 어댑터다.
 
-- **NIST FIPS 180-4**, [Secure Hash Standard](https://csrc.nist.gov/pubs/fips/180-4/upd1/final).
-  저장한 SHA-256과 내용을 비교해 생성 이후 삭제·손상을 확인한다. 자기 파일에 든 해시는
-  작성자 인증을 제공하지 않는다. 원본과 해시를 함께 위조한 경우까지 식별한다는 주장은 하지 않는다.
+| 입력 | 판정기에 제공하는 값 | 제공하지 않는 값 |
+|---|---|---|
+| native manifest `source.source_sha`, `source.execution_tree.files` | 저장된 실행 SHA·파일 해시 | 런타임에 없던 `execution_identity` 객체 |
+| 공개 인수 wrapper `source_sha`, `source_fingerprint.files` | 같은 recorder 형식인지 확인 | 봉인·확증 입장 자격 |
+| 봉인 `execution_source_sha` 또는 authorization SHA, `v6_contract.source_sha256`, `execution_bundle_id` | 저장 출처와의 일치 검사, 등록 번들 | case에 없던 `source_sha`, `bundle_id`, `prior_id` |
+| case `registration_run_id`, `registration` receipt | run·등록 해시·실행 SHA 및 manifest 사본 대조 | 임의 실행이나 새 retry의 승인 |
+| trace t·길이 | 관측된 시작/끝·행 수·최대 관측 공백 | 실제 collector 시작/끝을 새로 측정했다는 주장 |
+| wall_contact episodes·steps | 에피소드 수·양성 접촉 step 수 | 전체 표본 수·수집 시작/끝·주기·최대 공백 |
 
-## 입력에서 판정까지
+측정하지 않은 항목은 **`not_recorded`**다. `steps`는 접촉한 step 수이지 전체
+수집 표본 수가 아니다. 저장 당시 `evidence_sha256`도 없으므로 만들거나 요구하지 않는다.
+어댑터 출력은 판정 결과의 `recorder_contract`에만 남고 입력 객체·raw를 수정하지 않는다.
+기존 synthetic receipt 형식도 명시적으로 지원하되, 그 형식의 해시·coverage 검사는 유지한다.
+등록 형식에 추가 receipt/coverage가 실제 존재하면 모순을 묵인하지 않는다.
 
-1. **입장 명부를 먼저 고정한다.** 확증은 봉인의 C01…C60×941과 C01…C12×943이다.
-   원본 기록이 없거나 파싱되지 않아도 그 자리에 INVALID를 만든다. 등록된 재시도도
-   result/trace가 남아 있으면 행이 없어도 검사한다. 파일이 없는 미실행 재시도만 생략하며
-   그 파일의 부재도 종료 시 재확인한다. 과거 대조는
-   manifest의 계획과 저장 행을 사용한다. 실제 봉인 자체가 없거나 해시가 틀리면
-   분석 대상을 승인할 수 없어 CLI 입력 오류(종료 2)이며 PASS 출력이 없다.
-2. **증거를 읽고 검증한다.** `EvidenceReader`는 읽은 바이트를 해시하고 유효 JSON
-   관측을 보존한다. 파일 부재·빈 파일·잘린 줄·중복 시도·다른 실행 식별자는 오류다.
-   정상 JSON 줄에서 끝난 잘림도 coverage/count/time 검사로 잡는다.
-   확증에서는 저장된 `result.evidence_sha256`도 필수다. 필수 필드가 아닌 GT 관측 하나를
-   지우거나 그 수치를 그럴듯한 정상값으로 바꿔도 기록 당시 해시와 달라져 실패한다. 처리 중 변경은
-   코호트 INVALID다. 입력 행 순서로 재시도를 선택하지 않는다.
-3. **시도 하나를 판정한다.** `adjudicate_attempt`는 스키마 오류를 결과의 이유로
-   바꾼다. 저수준 `classify_case`/검증 함수가 내는 `EvidenceError`는 이 경계에서 잡는다.
-   하드 관측 수집은 손상 자료에서 양성 위반만 보존하며 안전함을 증명하지 않는다.
-4. **봉인에 적힌 원본→허용 재시도 순으로 전이한다.** 아래 표 외의 선택 경로가 없다.
-   `select_confirmatory_rows`와 HOST_ERROR 전용 느슨한 검증 경로를 삭제했다.
-5. **선택 결과를 한 번 집계한다.** 72개 시도 슬롯·60개 배치, 주 시드 941 분모 60이다.
-   INVALID는 `class=FAIL`, 별도 `state/reason_code/invalid_cases`를 가진다.
-   모든 실행 시도(거부한 재시도 포함)의 하드 위반은 전체 안전 관문에 남는다.
+등록 builder의 `ugrp.zone_pair_v6h_confirmatory.DRAFT.v1` + `sealed=true`를
+별도로 읽는다. `runs/cases`의 C01…C60×941 + C01…C12×943, 등록 payload 해시,
+배치 파일 해시와 실행 source contract를 확인한다. 기존 synthetic 평가 봉인
+`ugrp.v6h_confirmatory.v1`의 이름으로 덮어쓰지 않는다. 실제 봉인 파일은 열거나 바꾸지 않았다.
 
-## 필수 증거와 경계
+`verify_recorder_contract.py`가 허용된 공개 acceptance 11건의 전체 원본을 직접
+소비하고, 원본 36파일 해시를 리뷰의 고정 감사 목록 및 검사 후 해시와 대조한다.
+기대값은 조정자가 정한 **lag-on 10 PASS_CLEAN + lag-off sanity 1 FAIL**로 고정했다.
+`tests/fixtures/v6h_recorder_v4c6b/`는 필요한 필드만 복사한 CI용 projection이다.
+시각·값을 반올림하거나 새 필드를 채우지 않으며 전체 원본과 projection의 판정 객체가
+동일한지도 확인한다. fixture 자동 갱신은 없고 기존 디렉터리 덮어쓰기도 거부한다.
 
-| 단위 | 검사 |
-|---|---|
-| 시도 | `case_id`, `cell`, 정수 `seed`, `stage=chain`; 봉인의 case id·replaces·case.json 해시·설정 일치 |
-| 저장 안전 요약 | `row.wall_contact` 필수: episodes 정수≥0, max_penetration_m 유한≥0, max_tilt_deg_stage 유한 0…180, hard_limits 정확히 15°/0.005 m |
-| 과제 | `chain.legs`에 L0/L1, `first_failure` 명시; recorded bool, 도달한 leg의 start/end/lift/tilt/error/네 집게 bool, L0 끝<L1 시작 |
-| 실패·종료 | `result.failures`에 정확히 r1/r2(null=실패 없음), termination outcome/time; 실패 시각이 있으면 종료 전에 있어야 함. HOST_ERROR 행과 종료 상태 일치 |
-| trace | 빈 trace 금지, 시각 엄격 증가, 간격≤0.051 s, 유한 기울기; 확증에서는 lift/네 집게 및 전체 수집→종료 coverage/count 일치 |
-| 접촉 | episodes 배열, 유한·정렬된 구간과 관통값; 확증에서 전체 접촉 추적 coverage/count/period/max_gap |
-| 확증 성공 | teacher 포함 전체 창, L0 바닥 놓기·개방 및 L1 직전 재파지, restaging=false, L1 첫 wait_lower 종료, 도달한 끝점의 유효 PF 증거 |
-| 저장 증거 해시 | 확증에서 evidence_sha256 필수; 아래 canonical payload와 일치. 판정기가 새 해시로 보충하지 않음 |
-| 파일 관계 | runtime identity와 봉인 일치, result.row와 cases 행 일치, 입력 파일의 분석 전후 해시/존재 일치 |
+형식/출처 연결에 실패하면 `state=INVALID`, `class=null`,
+`classification_status=UNCLASSIFIABLE`, `UNCLASSIFIABLE_RECORDER_FORMAT` 사유다.
+물리적 과제 실패로 세지 않는다. 알려진 하드 위반은 이 경우에도 우선 보존한다.
 
-저장 증거 해시는 `value_hash({"row": row, "result": payload, "trace": trace})`다.
-`value_hash`는 UTF-8 JSON의 sort_keys=true, separators=(",",":"), allow_nan=false에 SHA-256을 적용한다.
-`payload`는 result에서 evidence_sha256만 뺀 객체다. 중복 row와 execution_identity도
-해시에 포함하고 봉인/행 동일성 검사를 별도로 거친다. trace 순서는 포함하며 무관한
-cases 행 순서는 포함하지 않는다. 선택적 관측도 해시 대상이다. 이 필드는 **새 기록 계약**이며
-기존 raw에 판정기가 소급 추가하지 않는다. 실제 기록 어댑터는 후속 검토/인수가 필요하다.
+## R2 / D2: HOST_ERROR와 누락의 집계
 
-기록기에는 두 가지 실패 형식이 있다. pair_chain_probe의 phase/code와
-run_pair_stage_probes의 robot_id/sim_s/reason이다. 각각 명시적으로 검사하며 임의의
-non-null dict를 허용하지 않는다. reason=HOST_ERROR인 wrapper 표시는 과제 실패와
-구별하지만, 같은 기록에 있는 실제 chain/controller 실패는 계속 종단 실패다.
-계획된 L2 이후의 미실행 leg도 남기고 검사한다. n_legs가 있으면 그 목록과 일치해야 한다.
+등록 PREREG_DRAFT(#285 167–168, 191–193; #292 148–150)의 규칙을 따른다.
+HOST_ERROR·ENOSPC·주 시드 누락·증거 INVALID는 **미분류**로 남는다.
+`class=null`, 사유, 원 시도와 파일 해시를 보존하고 완료/성공 선언을 막는다.
+60개 입장 분모는 유지하며 FAIL 개수에는 대치하지 않는다. 주 시드에 미분류가 있으면
+Wilson 구간도 출력하지 않는다. 주 시드 성공과 보조 943 성공은 합치지 않는다.
 
-하드 관측은 trace, leg 끝점, 저장 GT(teacher·entry/stop/end·robot별 leg start/end/done·exit),
-result 최대값, **cases와 result.row 각각의 저장 안전 요약**, 접촉 episodes의 합집합이다.
-기울기 **>15°**, 관통 **>5 mm**가 하나라도 있으면 `FAIL_HARD_LIMIT`다.
-정확히 문턱인 값과 바로 다음 부동소수점 값을 구별한다. 일반 leg 기울기 한계 10°는 별도다.
+실제 `result.host_error`를 HOST 신호로 읽는다. 실제 except 경로는 termination을
+남기지 않을 수 있고, cleanup 오류에서는 STUDY_LAYER_DONE이 남을 수도 있다.
+row의 HOST 표지와 result의 HOST 기록이 일치하면 이런 형식을 허용한다.
+완전한 관측창에서 알려진 과제 실패·하드 위반이 없는 HOST 시도만 `HOST_SAFE` 사건으로
+재시도 선택이 가능하다. 같은 배치·시드·설정의 재실행은 최대 1회다.
+불완전한 원본의 재실행 자체를 금지하는 것은 아니지만, 확인할 수 없는 원본 안전 증거를
+재실행의 정상값으로 대체해 전체 성공을 선언하지 않는다.
 
-과거 raw에는 새 전체 창/접촉 coverage가 없으므로 `historical_endpoints`로만 대조한다.
-이 모드의 끝점 PASS를 새 확증 PASS로 승격하지 않는다. 전체 확증 판정은 언제나 봉인과
-완전한 기록을 요구한다. 원 raw를 보완하거나 새 필드를 소급 삽입하지 않는다.
+EOF의 미해결 HOST는 `state=INVALID`, `class=null`이다. 전이표는 완전하며
+FAIL/HARD/INVALID는 후속 PASS로 복구되지 않는다. 모든 시도의 양성 하드 위반은
+선택 여부·손상 여부와 관계없이 합집합으로 남는다.
 
-## 상태와 전이표
-
-사건은 검증이 끝난 시도다. `HARD`는 알려진 하드 위반, `INVALID`는 증거 오류,
-`FAIL`은 확정 과제 실패, `HOST_SAFE`는 **완전한 원본 기록이 위반·과제 실패 없음과
-HOST_ERROR 종료를 함께 입증한 경우**, `PASS`는 모든 성공 증거가 유효한 경우다.
-과제 실패와 cleanup HOST_ERROR가 함께 있으면 FAIL 또는 INVALID이며 HOST_SAFE가 아니다.
-
-| 현재 상태 | PASS 사건 | FAIL 사건 | HARD 사건 | INVALID 사건 | HOST_SAFE 사건 |
+| 현재 상태 | PASS | FAIL | HARD | INVALID | HOST_SAFE |
 |---|---|---|---|---|---|
 | NEW | PASS | FAIL | HARD | INVALID | RETRY |
 | RETRY | PASS | FAIL | HARD | INVALID | INVALID |
@@ -109,55 +73,67 @@ HOST_ERROR 종료를 함께 입증한 경우**, `PASS`는 모든 성공 증거�
 | INVALID | INVALID | INVALID | HARD | INVALID | INVALID |
 | HARD | HARD | HARD | HARD | HARD | HARD |
 
-EOF에서 NEW/RETRY는 INVALID→FAIL이다. 빈 시도열도 MISSING_ORIGINAL 실패다.
-RETRY만 다음 결과를 선택할 수 있고 같은 설정·시드의 봉인된 재시도 최대 1회만 허용한다.
-원본 FAIL/FAIL_HARD_LIMIT은 성공 재시도로 바뀌지 않는다. FAIL 뒤 하드 위반은 더 강한
-FAIL_HARD_LIMIT으로 남는다. PASS 뒤 추가 실행은 승인된 재시도가 아니므로 INVALID다.
-미등록 세 번째 시도도 분모를 늘리지 않으며 증거 오류와 안전 검사에 남는다.
-FAIL/HARD 뒤 덧붙인 시도는 원본 선택 ID를 바꾸지 않는다. RETRY 이외 상태에서의
-추가 시도는 sequence_issues에 위반으로 남고 전체 PASS를 막는다.
+`INVALID`는 실패 class가 아니라 증거 상태다. 성공 요건을 평가할 수 없으면
+`full_verdict=NOT_EVALUABLE`; 관측된 하드 위반이나 평가 가능한 기준 불충족은
+`FAIL_A_B_SAFETY`다. 어느 쪽도 성공 선언을 허용하지 않는다.
 
-출력은 `attempts`의 모든 시도 상태와 `attempt_transitions`를 보존한다.
-`n_attempts`는 실제 행이 있는 시도 수, `n_adjudicated_attempt_slots`는 누락 원본의
-INVALID 자리까지 포함한 판정 슬롯 수다. 누락을 실제 실행 증거로 부르지 않는다.
-주 시드의 실패를 분모에서 빼지 않는다. 보조 943의 성공은 A의 분자가 아니며
-943에서의 위반은 안전 거부 사유다. `full_verdict`는 증거 오류 또는 B 미평가에도
-FAIL_A_B_SAFETY다. B의 진단 상태 NOT_EVALUABLE은 그대로 보여 주되 최종 PASS로 읽지 않는다.
+## R3 / D3: 관측된 과제 실패의 보존
 
-## 생성 검사의 불변식
+HOST 표지를 검사하기 전에 완료 끝점·controller 실패와 이미 도달한 handover를 검사한다.
+L0 끝→L1 시작 창이 실제 trace로 덮인 경우 rest_release/regrasp_lift 실패를 확정한다.
+L1 시작 뒤 HOST가 발생해 L1 끝점이 없어도 이미 도달한 handover 판정은 유지한다.
+`restaging_between_legs=true`도 양성 실패 증거다. 이 뒤 cleanup HOST나 정상 retry가
+와도 성공으로 바뀌지 않는다. HOST 중단으로 아직 도달하지 않은 미래 handover와,
+trace가 빠져 실패를 확정할 수 없는 창은 실패로 추정하지 않는다.
 
-`tests/test_v6h_classifier_properties.py`는 10,000개 생성 사례 각각에서 다음을 확인한다.
+## R4 / D4: source→derived 모순 검사
 
-- 실패 입력의 필수 필드 삭제·trace 잘림·손상·시각/개수 모순이 성공을 만들지 않는다.
-- 어느 시도의 어느 지원 안전 기록에 하드 위반을 넣어도 FAIL_HARD_LIMIT이 남는다.
-- 무관한 배치 기록의 순서를 바꿔도 집계와 판정이 같다.
-- PASS에는 원본부터 선택 결과까지 유효한 증거가 필요하며, 불완전한 HOST_ERROR는 재시도 성공으로 덮이지 않는다.
-- 분모와 상태 집계 합은 입장한 배치 수와 같다.
+- result.host_error가 있는데 row가 정상이라고 하면 INVALID다. row HOST + 실제
+  result HOST + 이전 정상 termination은 recorder의 합법적인 cleanup 형태다.
+- `pair_chain_probe.chain_legs()`는 나중에 도착한 robot endpoint의 GT를 반올림 없이
+  row에 복사한다. 그 동일 시각의 `lift_m`, `tilt_deg`, `jaws`와 derived leg 값을
+  대조한다. 수치 직렬화 허용오차는 1e-9이며 0.05초 trace 간격과 혼동하지 않는다.
+  두 source 끝점이 있으면 row 끝 시각도 더 늦은 source 시각과 같아야 한다.
+- 다른 시각의 robot GT 값은 같은 순간의 값처럼 비교하지 않는다. 안전 관측의
+  합집합에는 계속 포함한다. SHA 일치는 논리적 일치를 대신하지 않는다.
 
-12개 손상군·선택적 하드 GT 삭제/정상값 손상·다섯 하드 관측 위치·확정 실패+cleanup·허용 재시도를 조합한다.
-별도 파일 경계 검사에서 행/파일 삭제, 잘린 JSON, 빈 trace, 중복 행의 하드 위반, 재시도 행만 사라지고 남은 결과 파일,
-저장 요약 누락·비표준 NaN JSON·중복 JSON 키를 검사하고 파일 손상을 실제 `analyse`에 넣고 60개 분모와 순서 불변성을 확인한다.
-생성 시험은 수학적 증명이나 원본 기록의 진실성 인증이 아니다. 여러 원본을 일관되게
-위조한 경우까지 식별한다는 주장이 아니며, 실행 소스 고정·파일 출처 보존은 별도 계약이다.
+## R5 / D5: 관측창과 coverage의 자체 일관성
 
-## 리뷰 finding → 설계 반영
+trace 시각은 음수가 아니며 엄격 증가, 공백 ≤0.051 SIM초다.
+제공된 coverage는 end>start, count·period·자기 창 길이·최대 공백이 일치해야 한다.
+wall 창을 evaluation 창 길이만으로 검사하지 않는다.
+`include_teacher=true`일 때 저장된 `teacher.gt_after_lift.t`와 `gt_at_entry.t`는
+실제 기록창 안에 있어야 한다. 등록 형식에는 관측된 trace 창을 사용한다.
+원 recorder에 없는 전체 접촉 coverage를 지어 넣어 통과시키지 않는다.
 
-| 리뷰 | 이전 문제 | v3에서 막는 경계 |
-|---|---|---|
-| #299 R1 | 비동기 끝점 기울기가 일반 실패로 축소 | 안전 관측 합집합과 HARD 최우선 |
-| #299 R2 | HOST_ERROR 원본이 선택에서 빠짐 | 모든 시도를 먼저 판정, terminal 실패 보존 |
-| #299b P1-1 | row.wall_contact 요약을 읽지 않음 | 필수 저장 요약과 두 복사본의 양성 관측 수집 |
-| #299b P1-2 | HOST_ERROR만 coverage/count/시간 검사를 우회 | 원본·재시도 공통 검증기, INVALID→FAIL |
-| #299b P1-3 | END_ERROR 뒤 cleanup ENOSPC가 실패를 대체 | HOST_SAFE는 과제 실패 없음 증명 필요, FAIL 흡수 상태 |
+## 검증과 범위
 
-리뷰 시험 출처: `de16cbc96becf19755f09197b9ef139609f00fe9` 및
-`9a3a338fa784555969b913b2196892a252eaf8d6`. 두 파일을 포함하고 모든 xfail을 제거했다.
-양성 합성 fixture에는 필수 저장 안전 요약과 기록 시점 해시를 추가했다.
-새 규칙과 충돌한 기대값(미분류, 원본 하드 위반 뒤 60/60, 누락 파일 재시도 PASS)은
-반례 입력을 보존한 채 실패 집계로 바꿨다. 모든 스키마 추가·기대값 이관을 검증 기록에
-공개한다. “원래 assertion을 전부 그대로 통과했다”라고 보고하지 않는다.
+- 3차 리뷰 27개 시험에서 13개 strict-xfail을 모두 해제한다. R1의 네 시험은
+  없는 필드 생성을 요구하는 대신 실제 producer 형식을 소비하도록 뒤집는다.
+- 이전 리뷰 반례와 10,000개 생성 사례를 유지한다. 바꾼 기대는 D2의 INVALID→FAIL
+  대치 제거와 `NOT_EVALUABLE` 구분뿐이며, 안전/실패의 성공 승격 금지는 유지한다.
+  분모 불변식은 `분류된 수 + 미분류 수 = 입장 수`로 검사한다.
+- `check_299c_mutations.py`는 소스 파일을 쓰지 않고 메모리에서 D1–D5 guard를
+  제거한다. 정상 witness 통과 후 mutant의 AssertionError만 제거 검출로 센다.
+  import 오류나 예상 밖 예외를 검출 성공으로 세지 않는다.
+- 공개 16코호트 308건 및 부분 tX1은 `revalidate_published.py`로 별도 대조한다.
+  cA/cB 각 24/24 유지와 모든 raw 입력 해시를 확인한다. tX1의 HOST 두 건은 다시
+  미분류로 돌아가며, 완료 308건과 합치지 않는다.
+- 최종 로그·해시·명령은 `review_299c_fix_validation/`에 남긴다. blinded confirmatory
+  raw의 열거/읽기, 물리·SIM step·렌더·모델 호출은 하지 않는다. 새 실험 결과가 아닌
+  오프라인 판정기 회귀이므로 기존 TensorBoard snapshot을 보존하고 재변환하지 않는다.
+  원 raw는 로컬이며 테스트 fixture의 GitHub 보존을 raw 원격 백업이라고 표현하지 않는다.
 
-검증 결과·공개 308건 및 부분 tX1의 변경 내역은 `redesign_validation/`에 기록한다.
-물리/SIM step/렌더/모델 호출은 없으며 독립 재검토·실제 기록 어댑터·봉인/등록 인수는
-별도다. 기존 TensorBoard snapshot을 보존한다. 이 작업은 새 실험/학습 결과가 없어
-재변환·서버 실행·브라우저 표시를 하지 않는다.
+## 참고 자료
+
+- [Pact: How Pact works](https://docs.pact.io/getting_started/how_pact_works),
+  [provider verification](https://docs.pact.io/implementation_guides/javascript/docs/provider).
+  소비자가 요구하는 계약을 실제 생산자의 출력에 대해 검증하는 원칙을 적용했다.
+  이 파일 기반 검증은 Pact 방식의 contract test이며 Pact 서버/브로커를 도입하지 않았다.
+- [ApprovalTests: approval testing / golden master](https://approvaltestscpp.readthedocs.io/en/latest/generated_docs/ApprovalTestingConcept.html).
+  고정한 입력·검토된 기대 결과의 변화 감지에 적용했다. 여기서는 조정자가 지정한
+  11건의 기대 판정과 공개 원본 해시가 golden 기준이며 성공률을 새로 추정하지 않는다.
+- [ICH E9(R1), 2019-11-20 final](https://database.ich.org/sites/default/files/E9-R1_Step4_Guideline_2019_1203.pdf), A.1/A.3/A.5.
+  중간 사건과 누락 자료, 목표 평가량을 구분하고 사전 정의된 처리 전략을 지키는 원칙을
+  참조했다. HOST_ERROR 처리의 실제 규칙은 이 프로젝트 PREREG_DRAFT다.
+  ICH가 로봇 실험의 특정 미분류/실패 대치를 요구한다고 주장하지 않는다.

@@ -27,6 +27,10 @@ SIGMA_PATH = ROOT / "experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_anal
 _spec = importlib.util.spec_from_file_location("v6h_sigma_analysis", SIGMA_PATH)
 ga = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(ga)
+RECORDER_PATH = Path(__file__).with_name("recorder_v4c6b.py")
+_spec = importlib.util.spec_from_file_location("v6h_registered_recorder", RECORDER_PATH)
+rv = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(rv)
 
 CLASSES = ("PASS_CLEAN", "PASS_CONTACT_RECOVERED", "BLOCKED_BY_CONTACT", "FAIL", "FAIL_HARD_LIMIT")
 PASS = CLASSES[:2]
@@ -42,10 +46,10 @@ EVALUATION_PROTOCOL = {"include_teacher": True, "end_boundary": "termination",
                        "L1_stop": "first_wait_lower_both_robots",
                        "hard_limit_observations": "trace_endpoints_and_saved_gt",
                        "host_error_safety": "complete_safe_original_without_task_failure_only",
-                       "accounting": "admitted_placements_invalid_counts_as_fail",
+                       "accounting": "admitted_placements_unclassified_blocks_claim",
                        "attempt_machine": "terminal_failure_v1",
                        "stored_safety_summary": "required",
-                       "evidence_integrity": "canonical_attempt_sha256_v1"}
+                       "evidence_integrity": "registered_producer_contract_or_canonical_attempt_sha256_v1"}
 
 
 class EvidenceError(ValueError):
@@ -83,11 +87,22 @@ def jaws_valid(jaws):
     return jaws
 
 
-def validate_trace(row, result, trace, confirmatory):
+def validate_teacher_window(result, start, end):
+    if not EVALUATION_PROTOCOL["include_teacher"]:
+        return
+    for name, snap in (("teacher.gt_after_lift", (result.get("teacher") or {}).get("gt_after_lift")),
+                       ("gt_at_entry", result.get("gt_at_entry"))):
+        if snap is not None:
+            t = finite(snap.get("t"), name + ".t")
+            if not start - 1e-9 <= t <= end + 1e-9:
+                raise EvidenceError(name + ": outside recorded window")
+
+
+def validate_trace(row, result, trace, confirmatory, recorder=None):
     if not isinstance(trace, list) or not trace or any(not isinstance(s, dict) for s in trace):
         raise EvidenceError("trace: require nonempty object array")
     times = [finite(s.get("t"), "trace t") for s in trace]
-    if any(b <= a or b - a > TRACE_GAP_S + 1e-9 for a, b in zip(times, times[1:])):
+    if times[0] < 0 or any(b <= a or b - a > TRACE_GAP_S + 1e-9 for a, b in zip(times, times[1:])):
         raise EvidenceError("trace: unordered times or missing samples (gap > .051 SIM s)")
     for sample in trace:
         tilt = finite(sample.get("tilt_deg"), "trace tilt_deg")
@@ -97,9 +112,41 @@ def validate_trace(row, result, trace, confirmatory):
                   for key in ("start_sim_s", "end_sim_s") if l.get(key) is not None]
     if row.get("stop_sim_s") is not None:
         boundaries.append(finite(row["stop_sim_s"], "stop_sim_s"))
-    if not boundaries or times[0] > min(boundaries) + TRACE_GAP_S or times[-1] < max(boundaries) - TRACE_GAP_S:
+    if ((not boundaries and not host_signal(row, result)) or (boundaries and
+            (times[0] > min(boundaries) + TRACE_GAP_S or times[-1] < max(boundaries) - TRACE_GAP_S))):
         raise EvidenceError("trace: truncated execution window")
     if not confirmatory:
+        return
+    if recorder is not None and "evaluation_coverage" not in result and "coverage" not in (result.get("wall_contact") or {}):
+        # The pinned v4c6b producer has no coverage receipt. These are observed
+        # timestamps, NOT invented acquisition start/end or contact cadence.
+        if len(times) < 2 or times[-1] <= times[0]:
+            raise EvidenceError("trace: empty recorded window")
+        term = result.get("termination") or {}
+        if term.get("sim_s") is not None and abs(finite(term["sim_s"], "termination time") - times[-1]) > TRACE_GAP_S:
+            raise EvidenceError("trace: truncated termination window")
+        validate_teacher_window(result, times[0], times[-1])
+        wall = result.get("wall_contact") or {}
+        if not isinstance(wall.get("steps"), dict) or any(type(n) is not int or n < 0 for n in wall["steps"].values()):
+            raise EvidenceError("wall-contact: invalid recorded contact steps")
+        by_who = defaultdict(list)
+        for episode in wall["episodes"]:
+            n = episode.get("steps")
+            if type(n) is not int or n < 1 or episode.get("who") not in wall["steps"]:
+                raise EvidenceError("wall-contact: episode/contact steps mismatch")
+            by_who[episode["who"]].append(n)
+        for who, n in wall["steps"].items():
+            counts = by_who.get(who, [])
+            if not max(counts, default=0) <= n <= sum(counts):
+                raise EvidenceError("wall-contact: positive steps contradict episodes")
+        # The recorder tracks contacts every physics step, earlier/later than
+        # the trace grid by up to one sample. No total sample count is stored.
+        if any(e["t_first"] < times[0] - TRACE_GAP_S or e["t_last"] > times[-1] + TRACE_GAP_S
+               for e in wall["episodes"]):
+            raise EvidenceError("wall episode outside recorded trace window")
+        for sample in trace:
+            finite(sample.get("lift_m"), "trace lift_m")
+            jaws_valid(sample.get("jaws"))
         return
     coverage = result.get("evaluation_coverage") or {}
     start = finite(coverage.get("start_sim_s"), "record start")
@@ -116,9 +163,13 @@ def validate_trace(row, result, trace, confirmatory):
     period = wall["sample_period_s"]
     count = wall.get("sample_count")
     if (period <= 0 or period > TRACE_GAP_S or not 0 <= wall["max_gap_s"] <= period + 1e-9
-            or type(count) is not int or count < math.floor((end - start) / period)
+            or wall["start_sim_s"] < 0 or wall["end_sim_s"] <= wall["start_sim_s"]
+            or type(count) is not int or count < 2
+            or abs((count - 1) * period - (wall["end_sim_s"] - wall["start_sim_s"])) > period + 1e-9
+            or (count - 1) * wall["max_gap_s"] < wall["end_sim_s"] - wall["start_sim_s"] - 1e-9
             or wall["start_sim_s"] > start + period or wall["end_sim_s"] < end - period):
         raise EvidenceError("wall-contact: incomplete full-record coverage")
+    validate_teacher_window(result, max(start, times[0]), min(end, times[-1]))
     if any(e["t_first"] < start - 1e-9 or e["t_last"] > end + 1e-9 for e in result["wall_contact"]["episodes"]):
         raise EvidenceError("wall episode outside full record")
     for sample in trace:
@@ -146,7 +197,7 @@ def validate_leg(leg):
 def handover_checks(chain, trace):
     """Evaluation only: L0 end -> L1 start; destination setdown is outside this probe."""
     legs = {l["leg"]: l for l in chain["legs"]}
-    if not all(legs.get(k, {}).get("recorded") for k in REQUIRED_LEGS):
+    if not legs.get(0, {}).get("recorded") or legs.get(1, {}).get("start_sim_s") is None:
         return {"rest_release": False, "regrasp_lift": False}
     start, end = legs[0]["end_sim_s"], legs[1]["start_sim_s"]
     if end <= start:
@@ -288,7 +339,7 @@ def observed_hard_limits(row, result, trace, *, partial=False):
             "evidence_issues": issues}
 
 
-def classify_case(row, result, trace, confirmatory=False):
+def classify_case(row, result, trace, confirmatory=False, recorder=None):
     """Classify one completed seed case; whole-run hard limits have precedence."""
     chain = row.get("chain")
     if not chain or not trace:
@@ -302,7 +353,7 @@ def classify_case(row, result, trace, confirmatory=False):
             finite(episode.get(key), f"contact {key}")
         if episode["t_last"] < episode["t_first"] or episode["max_pen_m"] < 0:
             raise EvidenceError("invalid contact interval or penetration")
-    validate_trace(row, result, trace, confirmatory)
+    validate_trace(row, result, trace, confirmatory, recorder)
     if confirmatory:
         validate_required_record(row, result)
     first_failure = chain.get("first_failure")
@@ -456,6 +507,18 @@ def load_sealed_manifest(path, expected_sha256):
     if not expected_sha256 or sha256(path) != expected_sha256:
         raise EvidenceError("sealed manifest hash mismatch or missing independently pinned hash")
     seal = json.loads(path.read_text())
+    if seal.get("schema") == rv.REGISTERED_SCHEMA:
+        source = Path(seal["placements"]["path"])
+        source = source if source.is_absolute() else (ROOT if source.parts[0] == "experiments" else path.parent) / source
+        pinned = seal["placements"]["sha256"]
+        if sha256(source) != pinned:
+            raise EvidenceError("registered placements hash mismatch")
+        try:
+            normalized = rv.normalize_registration(seal, json.loads(source.read_text()))
+        except (KeyError, ValueError, TypeError) as error:
+            raise EvidenceError("registered recorder contract: " + str(error)) from error
+        normalized.update(_path=str(path), _sha256=expected_sha256, _input_hashes={str(source): pinned})
+        return normalized
     if (seal.get("state") != "sealed" or seal.get("schema") != "ugrp.v6h_confirmatory.v1"
             or seal.get("primary_seed") != 941 or seal.get("secondary_seed") != 943):
         raise EvidenceError("require sealed v6h manifest with seeds 941/943")
@@ -571,7 +634,7 @@ def summarize(cases, primary_seed=941, sealed_manifest=None, safety_attempts=Non
                "n_adjudicated_attempt_slots": len(safety_attempts),
                "n_placements": len(placements), "n_classified_primary": len(classified),
                "primary_seed": primary_seed, "counts": counts, "pass_placements": passed,
-               "wilson95_primary_classified": ca.wilson(passed, len(placements)) if placements else None,
+               "wilson95_primary_classified": ca.wilson(passed, len(placements)) if placements and len(classified) == len(placements) else None,
                "unclassified_cases": unclassified,
                "unclassified_placements": [p["placement"] for p in placements if p["class"] is None],
                "hard_limit_chain_cases": hard_cases,
@@ -590,7 +653,7 @@ def summarize(cases, primary_seed=941, sealed_manifest=None, safety_attempts=Non
 
 
 # The public adjudicator is total over admitted attempts. Low-level validators
-# raise EvidenceError; only this boundary converts them to INVALID (counted FAIL).
+# raise EvidenceError; only this boundary converts them to INVALID (unclassified).
 # See CLASSIFY_NOTES.md for the schema, transition table and reference methods.
 def require_object(value, keys, name):
     if not isinstance(value, dict) or not set(keys) <= value.keys():
@@ -621,7 +684,8 @@ def validate_required_record(row, result):
             raise EvidenceError("stored safety summary: invalid maximum")
     if wall["hard_limits"] != {"max_tilt_deg": 15., "max_penetration_m": .005}:
         raise EvidenceError("stored safety summary: wrong hard limits")
-    require_object(result, ("wall_contact", "failures", "termination"), "result")
+    require_object(result, ("wall_contact", "failures"), "result")
+    missing_host_termination = "termination" not in result and bool(result.get("host_error"))
     failures = require_object(result["failures"], ROBOTS, "failures")
     if set(failures) != set(ROBOTS):
         raise EvidenceError("failures: require exactly r1/r2")
@@ -639,15 +703,46 @@ def validate_required_record(row, result):
                 raise EvidenceError("failure: unknown robot")
             if failure.get("sim_s") is not None:
                 t = finite(failure["sim_s"], "failure time")
-                if not 0 <= t <= finite(result["termination"].get("sim_s"), "termination time"):
+                if t < 0 or (not missing_host_termination and t > finite(result["termination"].get("sim_s"), "termination time")):
                     raise EvidenceError("failure time outside record")
+    if missing_host_termination:
+        return  # real except-path stores host_error, not a fabricated termination
     term = require_object(result["termination"], ("outcome", "sim_s"), "termination")
     if not isinstance(term["outcome"], str) or not term["outcome"]:
         raise EvidenceError("termination: missing outcome")
     finite(term["sim_s"], "termination time")
 
 
-def confirmed_task_failure(row, result):
+def completed_handover_failure(chain, trace):
+    """Negative handover evidence requires the reached, fully observed window.
+
+    An unvisited future handover or a hole in its trace is not a task failure.
+    Explicit teacher restaging is positive evidence, even after a host stop.
+    """
+    if chain.get("restaging_between_legs") is True:
+        return True
+    legs = {l["leg"]: l for l in chain["legs"]}
+    if not legs.get(0, {}).get("recorded") or legs.get(1, {}).get("start_sim_s") is None:
+        return False
+    validate_leg(legs[0])
+    if legs[1].get("recorded"):
+        validate_leg(legs[1])
+    finite(legs[1]["start_sim_s"], "handover L1 start")
+    start, end = legs[0]["end_sim_s"], legs[1]["start_sim_s"]
+    samples = [s for s in trace if start - TRACE_GAP_S <= finite(s.get("t"), "handover t") <= end + TRACE_GAP_S]
+    if (not samples or end <= start or samples[0]["t"] > start + TRACE_GAP_S
+            or samples[-1]["t"] < end - TRACE_GAP_S
+            or any(b["t"] <= a["t"] or b["t"] - a["t"] > TRACE_GAP_S + 1e-9 for a, b in zip(samples, samples[1:]))):
+        return False
+    for sample in samples:
+        finite(sample.get("lift_m"), "handover lift")
+        finite(sample.get("tilt_deg"), "handover tilt")
+        jaws_valid(sample.get("jaws"))
+    checks = handover_checks(chain, samples)
+    return not all(checks[k] for k in ("rest_release", "regrasp_lift"))
+
+
+def confirmed_task_failure(row, result, trace=(), *, confirmatory=False):
     """Positive failure evidence survives a later host/cleanup status overwrite.
 
     An unrecorded leg on its own is not a confirmed failure during a host abort.
@@ -663,6 +758,12 @@ def confirmed_task_failure(row, result):
         host_marker = isinstance(first, dict) and first.get("reason") == "HOST_ERROR" and "phase" not in first and "code" not in first
         if (first and not host_marker) or chain.get("first_failure"):
             return True
+        if confirmatory:
+            try:
+                if completed_handover_failure(chain, trace):
+                    return True
+            except (EvidenceError, KeyError, TypeError, ValueError, AttributeError):
+                pass  # incomplete evidence cannot establish a negative event
         for leg in chain.get("legs", []) if isinstance(chain.get("legs"), list) else []:
             if isinstance(leg, dict) and leg.get("recorded") is True:
                 try:
@@ -678,6 +779,53 @@ def confirmed_task_failure(row, result):
     return isinstance(term, dict) and term.get("outcome") not in (None, "STUDY_LAYER_DONE", "HOST_ERROR")
 
 
+def host_signal(row, result):
+    return bool(row.get("host_error") or str(row.get("category", "")).startswith("HOST_ERROR")
+                or result.get("host_error") or (isinstance(result.get("termination"), dict)
+                                               and result["termination"].get("outcome") == "HOST_ERROR"))
+
+
+def validate_source_to_derived(row, result):
+    """Real producer copies the later robot endpoint GT without rounding.
+
+    Compare lift/tilt/jaws only at the SAME GT time as the derived end. Earlier
+    asynchronous robot snapshots remain separate safety witnesses. 1e-9 is
+    numerical serialization tolerance, not the 0.05s trace sampling period.
+    """
+    row_host = bool(row.get("host_error") or str(row.get("category", "")).startswith("HOST_ERROR"))
+    result_host = bool(result.get("host_error"))
+    term = result.get("termination") or {}
+    if result_host and not row_host:
+        raise EvidenceError("HOST_ERROR result/row contradiction")
+    if term.get("outcome") == "HOST_ERROR" and not row_host:
+        raise EvidenceError("HOST_ERROR termination/row mismatch")
+    if row_host and not result_host and term.get("outcome") != "HOST_ERROR":
+        raise EvidenceError("HOST_ERROR row/termination mismatch")
+    raw = result.get("chain_raw") or {}
+    for leg in row["chain"]["legs"]:
+        if not leg.get("recorded"):
+            continue
+        endpoints = [((raw.get(r) or {}).get("leg_end") or {}).get(str(leg["leg"])) for r in ROBOTS]
+        if all(endpoints) and abs(max(finite(s.get("sim_s"), "source endpoint time") for s in endpoints) - leg["end_sim_s"]) > 1e-9:
+            raise EvidenceError("endpoint source/derived timestamp contradiction")
+        for rid in ROBOTS:
+            snap = ((raw.get(rid) or {}).get("leg_end") or {}).get(str(leg["leg"]))
+            if snap is None:
+                continue
+            gt = snap.get("gt")
+            if gt is None:
+                continue
+            t = finite(gt.get("t"), "endpoint GT time")
+            if abs(t - finite(snap.get("sim_s"), "endpoint time")) > 1e-9:
+                raise EvidenceError("endpoint GT/source timestamp contradiction")
+            if abs(t - leg["end_sim_s"]) <= 1e-9:
+                for key in ("lift_m", "tilt_deg"):
+                    if abs(finite(gt.get(key), "endpoint GT " + key) - leg[key]) > 1e-9:
+                        raise EvidenceError("endpoint GT/derived " + key + " contradiction")
+                if jaws_valid(gt.get("jaws")) != leg["jaws"]:
+                    raise EvidenceError("endpoint GT/derived jaws contradiction")
+
+
 def validate_record_consistency(row, result):
     """Match contact_outcome's persisted stage summary, including its rounding.
 
@@ -690,18 +838,19 @@ def validate_record_consistency(row, result):
             raise EvidenceError("stored safety summary differs from result maximum tilt")
     episodes = result["wall_contact"]["episodes"]
     start = result.get("submit_t")
-    end = (result.get("gt_at_stop") or {}).get("t") or result["termination"]["sim_s"]
+    end = (result.get("gt_at_stop") or {}).get("t") or (result.get("termination") or {}).get("sim_s")
     if start is not None:
         finite(start, "submit time")
-    finite(end, "summary end time")
+    if end is not None:
+        finite(end, "summary end time")
     stage = [e for e in episodes if (start is None or e["t_last"] >= start - 1e-9)
-             and e["t_first"] <= end + 1e-9]
+             and (end is None or e["t_first"] <= end + 1e-9)]
     if (stored["episodes"] != len(stage)
             or stored["max_penetration_m"] != round(max((e["max_pen_m"] for e in stage), default=0.), 6)):
         raise EvidenceError("stored safety summary differs from stage contact episodes")
 
 
-def adjudicate_attempt(row, result, trace, *, confirmatory=True, issues=()):
+def adjudicate_attempt(row, result, trace, *, confirmatory=True, issues=(), recorder_context=None):
     """Validate first, then emit one of PASS/FAIL/HARD/INVALID/HOST_SAFE.
 
     Salvaging positive hard evidence is independent of validation. It can only
@@ -713,45 +862,45 @@ def adjudicate_attempt(row, result, trace, *, confirmatory=True, issues=()):
     trace = trace if isinstance(trace, list) else []
     hard = observed_hard_limits(row, result, trace, partial=True)
     problems.extend(hard["evidence_issues"])
-    host = bool(row.get("host_error") or str(row.get("category", "")).startswith("HOST_ERROR"))
-    failed = confirmed_task_failure(row, result)
+    host = host_signal(row, result)
+    failed = confirmed_task_failure(row, result, trace, confirmatory=confirmatory)
     detail = {}
+    recorder = None
     try:
+        if recorder_context is not None:
+            recorder = rv.adapt(row, result, trace, **recorder_context)
         validate_required_record(row, result)
-        if confirmatory and (not isinstance(result.get("evidence_sha256"), str)
+        if confirmatory and (recorder is None or "evidence_sha256" in result) and (not isinstance(result.get("evidence_sha256"), str)
                 or result["evidence_sha256"] != evidence_digest(row, result, trace)):
             problems.append("EVIDENCE_DIGEST_MISMATCH: missing or changed record-time receipt")
         # Coverage validation applies equally to HOST_ERROR and ordinary results.
-        validate_trace(row, result, trace, confirmatory)
+        validate_trace(row, result, trace, confirmatory, recorder)
         # Structural/leg/contact validators are shared with historical arithmetic.
         detail = classify_case(row, result, trace, confirmatory=False)
         try:
             validate_record_consistency(row, result)
+            validate_source_to_derived(row, result)
         except (EvidenceError, KeyError, TypeError, ValueError, AttributeError) as error:
             problems.append(str(error))
         if confirmatory and not host and not failed and not hard["violated"]:
-            detail = classify_case(row, result, trace, confirmatory=True)
+            detail = classify_case(row, result, trace, confirmatory=True, recorder=recorder)
         if confirmatory:
             detail["sigma"] = sigma_case(row, trace)
             if any(leg["reached"] and any(leg["signed"].get(r) is None for r in ROBOTS)
                    for leg in detail["sigma"].values()):
                 raise EvidenceError("reached endpoint missing valid PF evidence")
-        if host and result["termination"]["outcome"] != "HOST_ERROR":
-            raise EvidenceError("HOST_ERROR row/termination mismatch")
-        if not host and result["termination"]["outcome"] == "HOST_ERROR":
-            raise EvidenceError("HOST_ERROR termination/row mismatch")
     except (EvidenceError, KeyError, TypeError, ValueError, IndexError, AttributeError, OverflowError) as error:
         problems.append(str(error))
     if hard["violated"]:
         state, outcome, reason = "HARD", "FAIL_HARD_LIMIT", "HARD_LIMIT_OBSERVED"
     elif problems:
-        state, outcome, reason = "INVALID", "FAIL", "INVALID_EVIDENCE"
+        state, outcome, reason = "INVALID", None, "UNCLASSIFIABLE_RECORDER_FORMAT" if recorder_context is not None and recorder is None else "INVALID_EVIDENCE"
     elif failed:
         state, outcome, reason = "FAIL", detail.get("class", "FAIL"), "TASK_FAILURE"
         if outcome in PASS:
             outcome = "FAIL"
     elif host:
-        state, outcome, reason = "HOST_SAFE", "FAIL", "HOST_ERROR_PENDING_RETRY"
+        state, outcome, reason = "HOST_SAFE", None, "HOST_ERROR_PENDING_RETRY"
     else:
         outcome = detail["class"]
         state, reason = ("PASS", "COMPLETE_PASS") if outcome in PASS else ("FAIL", "TASK_FAILURE")
@@ -759,7 +908,9 @@ def adjudicate_attempt(row, result, trace, *, confirmatory=True, issues=()):
     return {**detail, "case_id": row.get("case_id"), "placement": row.get("cell"), "seed": row.get("seed"),
             "class": outcome, "state": state, "reason_code": reason, "host_error": host,
             "first_failure": detail.get("first_failure", row.get("first_failure")),
-            "unclassified_reason": None, "hard_limit_chain": hard,
+            "unclassified_reason": reason if outcome is None else None, "hard_limit_chain": hard,
+            "classification_status": "UNCLASSIFIABLE" if reason == "UNCLASSIFIABLE_RECORDER_FORMAT" else "UNCLASSIFIED" if outcome is None else "CLASSIFIED",
+            "recorder_contract": recorder,
             "confirmed_task_failure": failed, "evidence_valid": not problems,
             "confirmatory_evidence_checked": confirmatory and not problems}
 
@@ -784,6 +935,15 @@ def classify_attempt_sequence(attempts):
         if event not in TRANSITIONS[state]:
             event = "INVALID"
         old = state
+        if old == "RETRY" and any(chosen.get(k) != attempt.get(k) for k in ("placement", "seed")):
+            event = "HARD" if event == "HARD" else "INVALID"
+            issues.append("RETRY_PLACEMENT_SEED_MISMATCH")
+        if old == "RETRY" and chosen.get("recorder_contract") is not None:
+            original_identity = chosen["recorder_contract"]["identity"]
+            retry_identity = (attempt.get("recorder_contract") or {}).get("identity")
+            if retry_identity != original_identity:
+                event = "HARD" if event == "HARD" else "INVALID"
+                issues.append("RETRY_RECORDED_IDENTITY_MISMATCH")
         if index and old != "RETRY":
             issues.append(f"RETRY_NOT_ALLOWED_AFTER_{old}:{attempt['case_id']}")
         state = TRANSITIONS[state][event]
@@ -791,12 +951,13 @@ def classify_attempt_sequence(attempts):
             chosen = attempt
         transitions.append({"case_id": attempt["case_id"], "from": old, "event": event, "to": state})
     if chosen is None:
-        return {"case_id": None, "state": "INVALID", "class": "FAIL", "reason_code": "MISSING_ORIGINAL",
+        return {"case_id": None, "state": "INVALID", "class": None, "reason_code": "MISSING_ORIGINAL", "unclassified_reason": "missing_primary_seed",
                 "invalid_evidence": True, "attempt_transitions": []}
     out = dict(chosen)
     out["state"] = state if state not in ("NEW", "RETRY") else "INVALID"
     if state == "HARD":
-        out.update({"class": "FAIL_HARD_LIMIT", "reason_code": "HARD_LIMIT_OBSERVED"})
+        out.update({"class": "FAIL_HARD_LIMIT", "reason_code": "HARD_LIMIT_OBSERVED", "unclassified_reason": None,
+                    "classification_status": "CLASSIFIED"})
         hard = {"violated": True, "evidence_issues": sorted({issue for a in attempts
             for issue in a.get("hard_limit_chain", {}).get("evidence_issues", [])})}
         for key in ("max_tilt_deg", "max_pen_m"):
@@ -804,9 +965,12 @@ def classify_attempt_sequence(attempts):
             hard[key] = max((v for v in values if v is not None), default=None)
         out["hard_limit_chain"] = hard
     elif state in ("INVALID", "NEW", "RETRY"):
-        out.update({"class": "FAIL", "reason_code": "HOST_ERROR_RETRY_EXHAUSTED" if state == "RETRY"
+        incompatible = out.get("classification_status") == "UNCLASSIFIABLE"
+        out.update({"class": None, "reason_code": "HOST_ERROR_RETRY_EXHAUSTED" if state == "RETRY"
                     or (transitions and transitions[-1]["from"] == "RETRY" and transitions[-1]["event"] == "HOST_SAFE")
-                    else "INVALID_ATTEMPT_SEQUENCE"})
+                    else "UNCLASSIFIABLE_RECORDER_FORMAT" if incompatible else "INVALID_ATTEMPT_SEQUENCE"})
+        out["unclassified_reason"] = out["reason_code"]
+        out["classification_status"] = "UNCLASSIFIABLE" if incompatible else "UNCLASSIFIED"
     out["attempt_transitions"] = transitions
     out["sequence_issues"] = issues
     out["invalid_evidence"] = bool(issues) or any(not a.get("evidence_valid", False) for a in attempts) or out["state"] == "INVALID"
@@ -867,12 +1031,13 @@ class EvidenceReader:
 def analyse(label, raw, primary_seed=941, sealed_manifest=None):
     raw = Path(raw).resolve()
     reader = EvidenceReader(raw)
-    for source in (Path(__file__).resolve(), CHAIN_PATH, SIGMA_PATH, Path(ca.pcp.__file__).resolve(), Path(ca.dra.__file__).resolve()):
+    for source in (Path(__file__).resolve(), RECORDER_PATH, CHAIN_PATH, SIGMA_PATH, Path(ca.pcp.__file__).resolve(), Path(ca.dra.__file__).resolve()):
         reader.hashes[str(source)] = sha256(source)
     rows, cohort_issues = reader.read(raw / "cases.jsonl", lines=True)
     manifest, problems = reader.read(raw / "manifest.json")
     cohort_issues += problems
     seal = sealed_manifest
+    runtime_plan = {}
     if manifest.get("state") != "completed" or manifest.get("source_changed") is not False:
         cohort_issues.append("INVALID_MANIFEST: requires completed/source_changed=false")
     by_id = defaultdict(list)
@@ -891,14 +1056,22 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
                     cohort_issues.append("CHANGED_SEALED_INPUT:" + name)
             except OSError:
                 cohort_issues.append("MISSING_SEALED_INPUT:" + name)
-        identity = seal["execution_identity"]
+        identity = seal.get("execution_identity")
         try:
-            inventory = manifest["source"]["execution_tree"]["files"]
-            if (manifest.get("execution_identity") != identity or manifest["source"]["source_sha"] != identity["source_sha"]
-                    or len(inventory) != len(identity["source_files_sha256"])
-                    or {f["path"]: f["sha256"] for f in inventory} != identity["source_files_sha256"]):
-                raise EvidenceError("source inventory differs from seal")
-        except (KeyError, TypeError, EvidenceError) as error:
+            if "_registered" in seal:
+                rv.source_identity(manifest)
+                runtime_plan, errors = reader.read(raw / "plan.json")
+                cohort_issues += errors
+                if (manifest.get("cases") != len(runtime_plan["cases"])
+                        or manifest.get("cases_sha256") != value_hash(runtime_plan["cases"])):
+                    raise EvidenceError("registered runtime plan count/hash mismatch")
+            else:
+                inventory = manifest["source"]["execution_tree"]["files"]
+                if (manifest.get("execution_identity") != identity or manifest["source"]["source_sha"] != identity["source_sha"]
+                        or len(inventory) != len(identity["source_files_sha256"])
+                        or {f["path"]: f["sha256"] for f in inventory} != identity["source_files_sha256"]):
+                    raise EvidenceError("source inventory differs from seal")
+        except (KeyError, TypeError, ValueError) as error:
             cohort_issues.append(f"INVALID_EXECUTION_IDENTITY:{error}")
         allowed = set(seal["_attempts"])
         if set(by_id) - allowed:
@@ -951,19 +1124,27 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
             local_issues += problems
             trace, problems = reader.read(directory / "eval_only/trace.jsonl", lines=True)
             local_issues += problems
+            recorder_context = None
             if seal:
                 spec_path = directory / "case.json"
                 spec, problems = reader.read(spec_path)
                 local_issues += problems
                 original = seal["_plan_specs"][entry["attempts"][0]["case_id"]]
-                if (reader.hashes.get(str(spec_path.relative_to(raw))) != registered["case_sha256"]
+                if "_registered" in seal:
+                    recorder_context = {"manifest": manifest, "case": spec, "registration": seal["_registered"]}
+                    runtime_specs = [c for c in runtime_plan.get("cases", []) if c.get("case_id") == cid]
+                    if len(runtime_specs) != 1 or {k: v for k, v in spec.items() if k != "labels"} != {
+                            k: v for k, v in runtime_specs[0].items() if k != "labels"}:
+                        local_issues.append("INVALID_CASE_IDENTITY: runtime plan/case mismatch")
+                elif (reader.hashes.get(str(spec_path.relative_to(raw))) != registered["case_sha256"]
                         or spec.get("case_id") != cid or row.get("cell") != entry["placement"] or row.get("seed") != entry["seed"]
                         or {k: v for k, v in spec.items() if k != "case_id"} != {k: v for k, v in original.items() if k != "case_id"}):
                     local_issues.append("INVALID_CASE_IDENTITY: raw case hash/contents differ from sealed plan")
-                if result.get("execution_identity") != identity or result.get("row") != row:
+                if ("_registered" not in seal and result.get("execution_identity") != identity) or result.get("row") != row:
                     local_issues.append("INVALID_RESULT_IDENTITY: result identity/row differs from cases record")
             # Duplicate rows are invalid but cannot hide a positive hard observation.
-            evidence = adjudicate_attempt(row, result, trace, confirmatory=bool(seal), issues=local_issues)
+            evidence = adjudicate_attempt(row, result, trace, confirmatory=bool(seal), issues=local_issues,
+                                          recorder_context=recorder_context)
             for duplicate in candidates[1:]:
                 extra = observed_hard_limits(duplicate, {}, [], partial=True)
                 combined = evidence["hard_limit_chain"]
@@ -997,7 +1178,8 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
         for case in cases:
             case["invalid_evidence"] = True
             if case["class"] != "FAIL_HARD_LIMIT":
-                case.update({"class": "FAIL", "state": "INVALID", "reason_code": "INVALID_COHORT_EVIDENCE"})
+                case.update({"class": None, "state": "INVALID", "reason_code": "INVALID_COHORT_EVIDENCE",
+                             "unclassified_reason": "INVALID_COHORT_EVIDENCE", "classification_status": "UNCLASSIFIED"})
     placements, summary = summarize(cases, primary_seed, seal, attempts)
     summary["admitted_placement_count"] = len({e["placement"] for e in entries})
     summary["denominator"] = summary["n_placements"]
@@ -1013,15 +1195,17 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
         summary["selected_case_ids"] = [c["case_id"] for c in cases]
         invalid = bool(summary["invalid_cases"] or cohort_issues)
         if invalid:
-            summary["criterion"].update(evaluable=False, verdict="FAIL_OBSERVED_CRITERION")
+            summary["criterion"].update(evaluable=False, verdict="FAIL_OBSERVED_CRITERION" if summary["hard_limit_chain_cases"] else "NOT_EVALUABLE")
         summary["full_verdict"] = ("PASS_A_B_SAFETY" if not invalid and not summary["hard_limit_chain_cases"]
             and summary["criterion"]["verdict"] == "PASS_OBSERVED_CRITERION"
-            and summary["sigma_criterion_B"]["verdict"] == "PASS" else "FAIL_A_B_SAFETY")
-    return {"schema": "ugrp.v6h_placement_classification.draft.v3", "label": label, "raw": str(raw),
+            and summary["sigma_criterion_B"]["verdict"] == "PASS" else
+            "FAIL_A_B_SAFETY" if summary["hard_limit_chain_cases"] or summary["criterion"]["verdict"] == "FAIL_OBSERVED_CRITERION"
+            or summary["sigma_criterion_B"]["verdict"] == "FAIL" else "NOT_EVALUABLE")
+    return {"schema": "ugrp.v6h_placement_classification.draft.v4", "label": label, "raw": str(raw),
             "source_sha": (manifest.get("source") if isinstance(manifest.get("source"), dict) else {}).get("source_sha"), "manifest_state": manifest.get("state"),
             "source_changed": manifest.get("source_changed"), "input_sha256": reader.hashes,
             "attempts": attempts, "missing_host_evidence": reader.missing,
-            "interpretations": "Fail-closed draft v3; see CLASSIFY_NOTES.md. No actual seal or physical validation.",
+            "interpretations": "Fail-closed draft v4; unresolved/invalid is unclassified. See CLASSIFY_NOTES.md.",
             "placements": placements, "summary": summary}
 
 
@@ -1039,7 +1223,7 @@ def report_text(report):
              f"Primary pass: {s['pass_placements']}/{s['n_placements']} admitted; classified primary={s['n_classified_primary']}"]
     if s["wilson95_primary_classified"]:
         lo, hi = s["wilson95_primary_classified"]
-        lines.append(f"Wilson 95% (all admitted placements; invalid counts as FAIL): {100 * lo:.2f}-{100 * hi:.2f}%")
+        lines.append(f"Wilson 95% (all admitted placements; unclassified reported separately): {100 * lo:.2f}-{100 * hi:.2f}%")
     lines += [f"Selected cases pass: {s['cases_pass']}/{s['n_cases']}; placements all/any recorded seeds pass: "
               f"{s['placements_all_recorded_seeds_pass']}/{s['placements_any_recorded_seed_pass']}",
               f"Whole-chain hard limits: {s['hard_limit_chain_cases']} attempts, {s['hard_limit_chain_placements_any_seed']} placements (all seeds and HOST_ERROR attempts)",
