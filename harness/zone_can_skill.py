@@ -159,10 +159,17 @@ class CanSkill:
 
     def _arm_to(self, target, pose, now, *, loaded=False):
         target = {**self.servo, **target}
-        if not self.guard.transition_clear(self.servo, target, pose, loaded=loaded):
+        # Check exactly the simultaneous increment that will be issued below.
+        # The sealed guard clips long paths at 60 PWM per tick, whereas this
+        # skill issues 40. Unequal joint remainders make those paths different.
+        # Every delta here is <=40, so the guard samples this single increment
+        # (including its start and interior), with no 60-PWM waypoint to diverge.
+        next_servo = {k: self.servo[k] + max(-40, min(40, v-self.servo[k]))
+                      for k, v in target.items()}
+        if not self.guard.transition_clear(self.servo, next_servo, pose, loaded=loaded):
             return self._fail(now, 'static_arm_sweep_blocked')
-        commands = [{'kind': 'arm', 'servo_id': k, 'pulse': self.servo[k] + max(-40, min(40, v-self.servo[k])),
-                     'duration_ms': 100} for k, v in sorted(target.items()) if self.servo[k] != v]
+        commands = [{'kind': 'arm', 'servo_id': k, 'pulse': v,
+                     'duration_ms': 100} for k, v in sorted(next_servo.items()) if self.servo[k] != v]
         if commands:
             return self._result([{'kind': 'hold'}, *commands])
         if now - self.last_arm_t < SETTLE_S:

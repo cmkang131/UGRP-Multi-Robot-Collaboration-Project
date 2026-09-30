@@ -33,6 +33,19 @@ MUTATIONS = (
      "original = module.decode_own\n"
      "module.decode_own = lambda obs, **kw: original({**obs, 'camera':'robot_cam', 'robot_id':kw['robot_id']}, **kw)",
      'test_input_and_pose_refusal[top]'),
+    ('restore_full_target_sweep_mismatch', 'harness.zone_can_skill',
+     "needle = 'self.guard.transition_clear(self.servo, next_servo, pose, loaded=loaded)'\n"
+     "assert source.count(needle) == 1\n"
+     "exec(compile(source.replace(needle, 'self.guard.transition_clear(self.servo, target, pose, loaded=loaded)'), module.__file__, 'exec'), module.__dict__)",
+     'tests/test_review_e2e_batch_i.py::test_t04_issued_arm_increment_passes_the_same_static_sweep'),
+    ('remove_arm_sweep_gate', 'harness.zone_can_skill',
+     "needle = 'self.guard.transition_clear(self.servo, next_servo, pose, loaded=loaded)'\n"
+     "assert source.count(needle) == 1\n"
+     "exec(compile(source.replace(needle, 'True'), module.__file__, 'exec'), module.__dict__)",
+     'tests/test_review_e2e_batch_i.py::test_t04_issued_arm_increment_passes_the_same_static_sweep'),
+    ('check_arm_endpoint_only', 'harness.zone_can_skill',
+     "module._CanGuard.transition_samples = lambda self, current, target: iter((current, target))",
+     'tests/test_zone_own_executor_can_sweep.py::test_clear_endpoints_do_not_bypass_blocked_interior'),
 )
 
 
@@ -40,18 +53,21 @@ def run(output):
     output.mkdir(parents=True, exist_ok=False)
     rows = []
     for name, module_name, mutation, test_name in MUTATIONS:
+        node = test_name if test_name.startswith('tests/') else f'{TEST}::{test_name}'
         code = ("import importlib, pathlib, sys\n"
+                "sys.path.insert(0, 'experiments/2026-09-30-cap-t04-can')\n"
+                "import offline_guard\n"
                 "sys.modules['mujoco'] = None\n"
                 f"module = importlib.import_module({module_name!r})\n"
                 "source = pathlib.Path(module.__file__).read_text()\n" + mutation +
-                f"\nimport pytest\nsys.exit(pytest.main(['-q', '-p', 'no:cacheprovider', '{TEST}::{test_name}']))\n")
+                f"\nimport pytest\nsys.exit(pytest.main(['-q', '-p', 'no:cacheprovider', '-p', 'offline_guard', {node!r}]))\n")
         result = subprocess.run([sys.executable, '-c', code], cwd=ROOT, text=True,
                                 capture_output=True, timeout=180)
         content = result.stdout + result.stderr
         path = output / f'{name}.log'
         path.write_text(content)
         killed = result.returncode == 1 and 'AssertionError' in content and 'FAILED' in content and 'ERROR collecting' not in content
-        rows.append({'mutation': name, 'test': f'{TEST}::{test_name}', 'exit_code': result.returncode,
+        rows.append({'mutation': name, 'test': node, 'exit_code': result.returncode,
                      'killed_by_assertion': killed, 'log': str(path),
                      'log_sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
     record = {'schema':'ugrp.can_skill_mutation.v1', 'physics_runs':0, 'model_calls':0,
