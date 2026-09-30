@@ -14,6 +14,7 @@ import math
 from dataclasses import dataclass
 
 from harness import static_keepouts as ko
+from harness.zone_corridor_admission import UnsupportedCorridor, require_door_runtime
 from harness.zone_team_footprint import transform
 from harness.zone_team_footprint_v3 import team_footprint
 
@@ -21,16 +22,6 @@ SCHEMA = 'ugrp.corridor_bay_static.v1'
 ROBOTS = frozenset(('r1', 'r2', 'r3'))
 STEP_M = .01
 STEP_RAD = math.radians(1)
-
-
-class UnsupportedCorridor(ValueError):
-    """Explicit refusal, including legacy door-only executor construction."""
-
-
-def require_door_runtime(static_map):
-    """Refuse unsupported geometry; passing this check grants no run approval."""
-    if not any(p.get('kind') == 'door' for p in static_map.get('passages', ())):
-        raise UnsupportedCorridor('CORRIDOR_RUNTIME_UNSUPPORTED: T10b required')
 
 
 def create_own_executor(robot_id, static_map, *args, **kwargs):

@@ -68,6 +68,22 @@ def test_legacy_door_factory_preserves_arguments(monkeypatch):
     assert calls == [(('r2', static, {'param': 1}, {'orders': []}), {'mode': 'm1'})]
 
 
+def test_managed_admission_keeps_unrelated_workflow_sealable():
+    from harness.execution_dependency_contract import build_contract, verify_contract, workflow_spec
+    from harness.zone_corridor_admission import UnsupportedCorridor as SharedError
+
+    # Use the real conservative closure. Lazy factory imports count too; merely
+    # checking sys.modules would miss the CI regression on other workflows.
+    receipt = build_contract(workflow_spec('communication'))
+    sources = set(receipt['source_sha256'])
+    assert {'sim/workflow_manager.py', 'sim/zone_study_admission.py',
+            'harness/zone_corridor_admission.py'} <= sources
+    assert not sources.intersection({'harness/zone_corridor_contract.py',
+                                     'harness/zone_own_executor.py', 'harness/zone_own_team_host.py'})
+    assert UnsupportedCorridor is SharedError
+    verify_contract(receipt, expected_sha256=receipt['sha256'])
+
+
 @pytest.fixture
 def managed_study(tmp_path, monkeypatch):
     """Real CLI/catalog dispatch, fake files; any launch is a test failure."""

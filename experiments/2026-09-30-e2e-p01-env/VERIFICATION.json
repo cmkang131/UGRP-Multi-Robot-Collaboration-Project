@@ -1,0 +1,344 @@
+{
+  "schema": "ugrp.e2e_p01_static_verification.v1",
+  "status": "static_tests_passed_unsealed",
+  "base_sha": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
+  "readiness_audit_sha": "a8094cc14e098a55483f53a3c49bf6a0b116043d",
+  "branch": "codex/final-env-registry",
+  "python": "3.12.13",
+  "scope": "dict/file/fake factory only; no physics, simulator, renderer, vision inference or LLM calls",
+  "source_files_sha256": {
+    "harness/zone_study_scenarios.py": "0e4e448e1e194241c650d8ff35bbbc45e5075c274af2a995d5bfa13f3316639e",
+    "scripts/run_ci_tests.py": "43b807a67a72c8402d5f516ab1964c06b7a0043124d40a36e04a183cfb31ea47",
+    "scripts/run_zone_study_integration.py": "6f9ef85dedf10d84d0ec2f1779a14d225e3853e98fc3e6696aff3f4676e26833",
+    "sim/zone_own_scene_provider.py": "2f77857b76edc6608741d5facfcc49fc6b37b2f60b9eed46ea9f5ab9882e0556",
+    "configs/zone_final_environment_registry_v1.json": "26bf511ef5929799ee82eefc6143358454178cce82335e1d28cb86fd5b58073e",
+    "harness/zone_environment_registry.py": "722ab3410c07468bfe2dc93a1d6e88468d53e15fd68d310838eb8824b2fb242c",
+    "sim/zone_final_scene.py": "7f51cd9ce7cdfa87610a9fdd1ab75d241d45e8143b015ad928661b9f76e3b285",
+    "tests/test_zone_environment_registry.py": "b625a5269f2d665c820c4b46f179afb6119a9d833a91e81dd39c33e95f050f08"
+  },
+  "protected_files": {
+    "configs/masterpi_v3_scenes.json": {
+      "sha256": "5cee4f4d3f8aed9b969407507d9f6d69483dc8204df4e8c6033d1e377e6d5b8f",
+      "bytes": 3674,
+      "base_bytes_equal": true
+    },
+    "configs/model_artifacts.json": {
+      "sha256": "d99b470e793ce95e1866a9ae00e20f13c817248b4290e93cbcf3e550c29997e0",
+      "bytes": 17903,
+      "base_bytes_equal": true
+    },
+    "configs/vision_loc_worker.json": {
+      "sha256": "c2fe0499ba5c85f353b2c977ef98336cf9bec3bbb8cf75a5ecacbfbe051f9eaa",
+      "bytes": 1655,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_integration/pose_providers.json": {
+      "sha256": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d",
+      "bytes": 2202,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios/s1_normal_mixed.json": {
+      "sha256": "97709cbd901c15d2f45fd996659b836763ae9f197e15109e2fdaf12fb16f730b",
+      "bytes": 3922,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios/s2_unmapped_blockage.json": {
+      "sha256": "7a08d478d2adf91ed9da60f48cd55bef7aa10fc1c8988aa23531b84540d50632",
+      "bytes": 3672,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios/s3_late_rendezvous.json": {
+      "sha256": "db261ce07a558947fcece3158b8fc7c3d120dd0b5fbd7262d8071b054c871c0f",
+      "bytes": 3598,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios/s4_narrow_door_standoff.json": {
+      "sha256": "a108895c7740186ad784e321325f4b7e885c8c4568e4972e49613fcfc953e595",
+      "bytes": 3201,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios/s5_moved_dropped_item.json": {
+      "sha256": "6720b8f03fb480ee21e8667fa5c1483924a4acb4ca20d3c1b1b7b11d54fbdd80",
+      "bytes": 3839,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios/s6_novel_relation.json": {
+      "sha256": "2c165d0971717ca8cc27d9558bc1458740edcc45985882f2ba458a9a402ba22b",
+      "bytes": 3499,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios_v2/s1_normal_mixed_v2.json": {
+      "sha256": "8e1e98d936cb1e06c8dbd38fb8cb8bbea08c66f0963ca7a96f5aebe07dc0bd04",
+      "bytes": 4871,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios_v2/s2_unmapped_blockage_v2.json": {
+      "sha256": "59828ecf8c56918dbd52e72cb2deaee3b469c755dd7d1373a821ccc99c2fb6de",
+      "bytes": 4376,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios_v2/s3_late_rendezvous_v2.json": {
+      "sha256": "d49cd32bfaa4446be50d0366c231fb39c4ad801ee3f4e5be080021b0f7c494ce",
+      "bytes": 4245,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios_v2/s4_narrow_door_standoff_v2.json": {
+      "sha256": "eb7fd21d856b8db5673f150754e6d27a0d643d8c07f6263f349ee13bb307793a",
+      "bytes": 3765,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios_v2/s5_moved_dropped_item_v2.json": {
+      "sha256": "6aa1171c158a830bfe2fb4c4958dabe2522144175c40465009c52d77ec9d8e5a",
+      "bytes": 4600,
+      "base_bytes_equal": true
+    },
+    "configs/zone_study_scenarios_v2/s6_novel_relation_v2.json": {
+      "sha256": "c5930160d4cfff2e6f7e20c1222697dd865498a6c16e01796e8ef6e7132165f1",
+      "bytes": 3967,
+      "base_bytes_equal": true
+    },
+    "harness/vision_pose_source.py": {
+      "sha256": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+      "bytes": 14841,
+      "base_bytes_equal": true
+    },
+    "harness/visual_arm.py": {
+      "sha256": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+      "bytes": 9718,
+      "base_bytes_equal": true
+    },
+    "harness/zone_own_guards.py": {
+      "sha256": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+      "bytes": 28871,
+      "base_bytes_equal": true
+    },
+    "harness/zone_team_footprint.py": {
+      "sha256": "a482d6fdbd42f74fc47178779fc55fe3be6a6f6c168d0b7a385fc399fb575e0b",
+      "bytes": 9178,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_open.json": {
+      "sha256": "2057e40536f0f71077ff362ee127b36c6a4a486fca409d92cfb348a3a8c1c1e0",
+      "bytes": 4070,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide.json": {
+      "sha256": "6b7b9eb671e5114c78b52e1ee0a4cc02288038aa04edfe37ab4f908bbac6f852",
+      "bytes": 4572,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_corridor.json": {
+      "sha256": "f7b62732a6db80b97f51cb792082b702dfbbade20de7c81a7795611794919c32",
+      "bytes": 6488,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_corridor_tags_v1.json": {
+      "sha256": "a349d42d60f3fcefd1efa29016aeb39e15e40c0092268c0485814e7f9f3916db",
+      "bytes": 30070,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_corridor_tags_v3.json": {
+      "sha256": "1414781ac689012dc5d679266da625c36ab9d5362ebeddbbd342a3ad81ba5243",
+      "bytes": 24521,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_door.json": {
+      "sha256": "a4d2c03de5d0085c2d0ea04d631ec4e9dd95de6dffbb8d44c09870e2ec921903",
+      "bytes": 5331,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_door_geometry_v2.json": {
+      "sha256": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+      "bytes": 5972,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_door_tags_v1.json": {
+      "sha256": "f86fc314ed3c4c2866f9b5c8448b9b1919462f0c1a958bedf46442513604ea14",
+      "bytes": 24440,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_door_tags_v2.json": {
+      "sha256": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b",
+      "bytes": 28355,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_door_tags_v2_dock_v3.json": {
+      "sha256": "ff85120be345f8c264c0a6158bce8b5102ac10aaff4d77e0820cb8cde7a3b4e8",
+      "bytes": 28917,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_door_tags_v3.json": {
+      "sha256": "74a3a95925a9531878b43a9c63d26f34ce391ede852d90b4f592e54c793fee0e",
+      "bytes": 23576,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_door_tags_v3a1.json": {
+      "sha256": "23de1456e5d38a89bd8cf0b0e7e31521599bb71d39272f80d5d295ae46d8bd3c",
+      "bytes": 29613,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_two_doors.json": {
+      "sha256": "04b6baf6e457e65e490f921ad2f82aa2778726bf6e7d547fdb5158e55b5b84d2",
+      "bytes": 5666,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_two_doors_tags_v1.json": {
+      "sha256": "2562d2f09940e9ba864cf1fe71740592e5305835a6c1af24b3493298a583c4ed",
+      "bytes": 23495,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_two_doors_tags_v2.json": {
+      "sha256": "10f9b2f854a161843d9dc53bb518431cd9a35317b4252491f8e4186a25e3b206",
+      "bytes": 30360,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_two_doors_tags_v3.json": {
+      "sha256": "9a1391762661c0303105878caa7854a031896bed68b5c2651031d29dc9a8d290",
+      "bytes": 25511,
+      "base_bytes_equal": true
+    },
+    "maps/zones/zone_wide_two_doors_tags_v3a1.json": {
+      "sha256": "6088284c6a590b3f9573ac58ba0b6e67661320735fbd61ddf99d6ca4bd58351a",
+      "bytes": 35191,
+      "base_bytes_equal": true
+    },
+    "maps/zones_final/catalog.json": {
+      "sha256": "2b9080dd51b52c3a6ad4f88c844785cda3be7cd6ac4844dfe8a2aa56f2b05577",
+      "bytes": 7776,
+      "base_bytes_equal": true
+    },
+    "maps/zones_final/zone_wide_corridor_final_v1.json": {
+      "sha256": "f968251ae0e9a3af3e2198fdce850ed649b06f370bf4c8b526c921903faef4fc",
+      "bytes": 7130,
+      "base_bytes_equal": true
+    },
+    "maps/zones_final/zone_wide_two_doors_final_v1.json": {
+      "sha256": "e93bce155c01aef3cc7c8418c4d921aee1e50b9539167fb7b9f94cdd2a29d888",
+      "bytes": 6309,
+      "base_bytes_equal": true
+    },
+    "scripts/zone_teacher.py": {
+      "sha256": "e84742fe788d80c726d79c0a46f7617a0f237edcaa0a325f2592a25c40acd5e4",
+      "bytes": 35429,
+      "base_bytes_equal": true
+    },
+    "sim/masterpi_dynamics_v2.py": {
+      "sha256": "100634bb32bfc1751549de2410e5eea9304fcb0ef99589d7a09822e6c557b53a",
+      "bytes": 80529,
+      "base_bytes_equal": true
+    },
+    "sim/masterpi_geometry.py": {
+      "sha256": "2bf71ed3311d22ce25f45879da38f353ce204be38ed9642c43985577a15daeeb",
+      "bytes": 8288,
+      "base_bytes_equal": true
+    },
+    "sim/session_scenes.py": {
+      "sha256": "2f967bd227db022af4864c8c8c4e9afa1c665d4fc0493e2cacac6a21e63c74f2",
+      "bytes": 13561,
+      "base_bytes_equal": true
+    },
+    "sim/zone_geometry_scene.py": {
+      "sha256": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+      "bytes": 2284,
+      "base_bytes_equal": true
+    },
+    "sim/zone_start_dock.py": {
+      "sha256": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+      "bytes": 3773,
+      "base_bytes_equal": true
+    }
+  },
+  "test_driver": "import sys,time\nsys.path.insert(0, '/Users/changmin/projects/ugrp-wt/e2e-p01-env')\nfrom scripts import run_ci_tests\nfrom scripts import agent_lock\nrun_ci_tests.TEST_PATTERNS = (\n 'tests/test_zone_environment_registry.py',\n 'tests/test_zone_final_env.py',\n 'tests/test_zone_study_scenarios.py',\n 'tests/test_zone_study_integration_seams.py',\n 'tests/test_zone_study_source_pinning.py',\n)\nroot=run_ci_tests.local_lock_root()\ndeadline=time.monotonic()+900\nprint('Waiting for the shared lock; no bypass or forced release (15 minute cap).', flush=True)\nwhile time.monotonic() < deadline:\n    if root is None or agent_lock.status(root) is None:\n        code=run_ci_tests.main(['--junitxml', '/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests-v3.xml'])\n        if code != 3:\n            raise SystemExit(code)\n    time.sleep(3)\nprint('Shared lock wait cap reached; no tests spawned.', flush=True)\nraise SystemExit(3)\n",
+  "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 MKL_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python /private/tmp/run-p01-tests-v3.py",
+  "tests": {
+    "modules": 5,
+    "passed": 278,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pytest_seconds": 56.17,
+    "junit": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "278",
+      "time": "56.150",
+      "timestamp": "2026-09-30T20:17:29.941916+09:00",
+      "hostname": "gangchangmin-ui-MacBookAir.local"
+    },
+    "runner_exit_code": 0,
+    "lock_bypassed": false,
+    "own_process_group_cleanup_verified_by_run_locked": true
+  },
+  "preliminary_attempts": [
+    {
+      "log": "static-tests.log",
+      "passed": 271,
+      "failed": 2,
+      "adopted": false,
+      "findings": [
+        "unknown map reached guarded legacy Scene constructor",
+        "map_bundle default schematic reached guarded renderer"
+      ],
+      "actual_physics_or_render_executed": false
+    },
+    {
+      "log": "static-tests-v2.log",
+      "exit_code": 3,
+      "tests_started": false,
+      "reason": "shared lock occupied"
+    }
+  ],
+  "raw_local_only": {
+    "static-tests-v2.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests-v2.log",
+      "sha256": "0501559f18acb6f92d2065c97236a8a0c467fc3af783cfde032744c26386a264",
+      "bytes": 337
+    },
+    "static-tests-v3.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests-v3.log",
+      "sha256": "0366fc2b46beac061ddb706e97a22b618004ea4840ab3fb6dc7e3174af8419d2",
+      "bytes": 803
+    },
+    "static-tests-v3.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests-v3.xml",
+      "sha256": "2d683a8f52a37035062e8d62e464310941205c1857735b738f43596602ee8d1a",
+      "bytes": 54863
+    },
+    "static-tests.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests.log",
+      "sha256": "2b3cff1e2710af1da5d34efcfa1c017e38ff973c4841257319042517e8e7fe8f",
+      "bytes": 3841
+    },
+    "static-tests.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/static-tests.xml",
+      "sha256": "b99ec19a218b33d3edfa7a5de856fbd1100b02e39ba909fe00d0cbded534bc02",
+      "bytes": 56659
+    }
+  },
+  "raw_remote_backup": false,
+  "id_inventory": {
+    "main": "zone-pair-v81-carry-dr-general",
+    "open_pr_292": "zone-pair-v83-carry-door-gain",
+    "rgb_runnable": "rgb-standard-dispatch-v63",
+    "new_id_reserved": false,
+    "sealed": false
+  },
+  "unverified": [
+    "new-map provider registration/calibration",
+    "robot v3 two-door/corridor scene versions and calibration",
+    "actual reset/initial collision/cameras",
+    "localisation accuracy",
+    "M1/M2/E2E physical completion",
+    "mixed cargo support (P02/P09)"
+  ],
+  "coordinator_plan": {
+    "maps": 3,
+    "reset_hold_sim_seconds_per_map": 30,
+    "total_sim_seconds_cap": 90,
+    "executed": false
+  },
+  "drive_used": false,
+  "tensorboard_new_cohort": false
+}

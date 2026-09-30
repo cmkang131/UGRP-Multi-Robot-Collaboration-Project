@@ -194,7 +194,8 @@ def check_reply(reply, *, seq: int, bgr_sha256: str, n_columns: int):
     """``('obs', ColumnObs, infer_ms)`` or ``('rejected', reason, None)``; any other reply raises."""
     import numpy as np
     vl, _ = load_vis3()
-    if not isinstance(reply, Mapping) or reply.get('schema') != SCHEMA or reply.get('seq') != seq \
+    if not isinstance(reply, Mapping) or reply.get('schema') != SCHEMA \
+            or not isinstance(reply.get('seq'), int) or isinstance(reply.get('seq'), bool) or reply.get('seq') != seq \
             or reply.get('bgr_sha256') != bgr_sha256:
         raise ProtocolError(f'reply does not answer request {seq}: {str(reply)[:200]}')
     if set(reply) == REJECT_KEYS:
