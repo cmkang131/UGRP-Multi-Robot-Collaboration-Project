@@ -57,12 +57,30 @@ CI의 `offline-shard-*` JUnit artifact에는 파일 경로와 테스트별 setup
 합산 시간이 남는다. 시간 자료를 갱신할 때 파일별로 합산하고 실행 SHA·환경도 기록한다.
 파일 수 균등은 시간 균등을 보장하지 않으므로 실제 shard 실행 시간을 확인한다.
 
+CI는 feature branch의 push 대신 PR에서 실행하고, main push에서도 전체 검사를
+유지한다. 각 실행은 고유 concurrency group을 쓰며, 같은 PR의 새 커밋도
+이전 실행이나 대기 중인 실행을 취소하지 않는다. CI를 수동 취소하거나
+`[skip ci]`로 건너뛰지 않는다. `ci-preflight`는 의존성
+설치 전에 필수 frozen fixture 3개와 CI 분기·집계 로직을 검사한다.
+root Markdown, `docs/`의 문서·이미지 등 허용된 문서 형식,
+`experiments/`의 Markdown만 바뀐 PR은 문서 전용 경로를 쓴다.
+코드·설정·테스트·알 수 없는 경로, 비교 실패, main push는 전체 검사를 쓴다.
+사전 등록·판정 문서의 독립 검토는 문서 전용 CI에서도 유지한다.
+
 `offline-regression-checks`는 bundle/registry 검증과 기존 protocol fixture를
 한 번씩 실행하고, 분할 전용 단위 테스트와 전체 shard 목록도 검증한다.
 기존 required check 이름인 **`offline-regressions`**는 이 공통 job과
 `offline-regression-shards` matrix 전체를 기다리는 집계 job이다.
-둘 다 `success`일 때만 통과하며 실패·취소·건너뜀은 통과시키지 않는다.
-branch protection의 required check는 이 이름을 유지한다.
+전체 검사에서는 둘 다 `success`일 때만 통과하며 실패·취소·건너뜀은
+통과시키지 않는다. 문서 전용 경로는 `ci-preflight` 성공과 명시적인 문서
+판정이 있을 때만 두 suite의 의도된 건너뜀을 허용한다. 집계 job은 항상
+실행하며 branch protection의 required check 이름을 유지한다.
+
+로컬 `run_ci_tests.py`도 pytest와 공용 잠금 시작 전에 frozen fixture 누락을
+거부한다. `python3 scripts/check_ci_fixtures.py`로 먼저 확인할 수 있으며,
+오류 메시지의 sparse 추가 명령은 기존 기록을 다시 체크아웃한다.
+새 worktree의 sparse 규칙에는 이 작은 fixture 3개가 포함된다.
+`--list-shards`는 fixture·pytest·잠금을 시작하지 않는 목록 확인으로 유지한다.
 
 공용 Mac의 기본 저장소와 연결된 worktree에서는 `run_ci_tests.py`가 실험과 같은
 `outputs/agent-locks` 잠금을 **획득한 뒤** pytest를 시작한다. 점유 중이면 테스트를
