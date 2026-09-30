@@ -1,0 +1,1145 @@
+{
+  "review_head": "3a46de0b7d3c1c295335355b106e95502839cb87",
+  "review_branch_base": "394f9cda5d67a9d1b94ad1688f39f5616fc00e7b",
+  "base_main": "394f9cda5d67a9d1b94ad1688f39f5616fc00e7b",
+  "verdict": "BLOCK",
+  "environment": {
+    "python": "3.12.13",
+    "pytest": "9.1.1",
+    "tensorboard": "2.21.0",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "physics": false,
+    "host_lock": false
+  },
+  "suites": {
+    "submitted": {
+      "counts": {
+        "tests": 525,
+        "passed": 525,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "files": {
+        "tests.test_zone_study_evidence": {
+          "passed": 84
+        },
+        "tests.test_zone_study_eval.ParseTest": {
+          "passed": 9
+        },
+        "tests.test_zone_study_eval.EfficiencyTest": {
+          "passed": 8
+        },
+        "tests.test_zone_study_eval.BoundaryTest": {
+          "passed": 8
+        },
+        "tests.test_zone_study_eval.ChannelTest": {
+          "passed": 6
+        },
+        "tests.test_zone_study_eval.DialogueTest": {
+          "passed": 20
+        },
+        "tests.test_zone_study_eval.ComparisonTest": {
+          "passed": 9
+        },
+        "tests.test_zone_study_eval.SummaryTest": {
+          "passed": 3
+        },
+        "tests.test_zone_study_eval.ReportTest": {
+          "passed": 8
+        },
+        "tests.test_tensorboard_export": {
+          "passed": 64
+        },
+        "tests.test_zone_pair_registered_source": {
+          "passed": 22
+        },
+        "tests.test_zone_study_source_pinning": {
+          "passed": 34
+        },
+        "tests.test_zone_pair_door_relax": {
+          "passed": 1
+        },
+        "tests.test_zone_study_referee": {
+          "passed": 23
+        },
+        "tests.test_zone_study_review_fixes": {
+          "passed": 3
+        },
+        "tests.test_zone_study_review_r5": {
+          "passed": 1
+        },
+        "tests.test_zone_study_evidence_join": {
+          "passed": 61
+        },
+        "tests.test_zone_study_evidence_review_a303": {
+          "passed": 4
+        },
+        "tests.test_zone_study_evidence_review_f303": {
+          "passed": 7
+        },
+        "tests.test_ci_sharding": {
+          "passed": 66
+        },
+        "tests.test_review_303c": {
+          "passed": 13
+        },
+        "tests.test_zone_study_evidence_review_c303": {
+          "passed": 71
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303d/submitted.xml",
+      "junit_sha256": "151a75ce7ebf1e364461326d51999efdd015c382501f55cc36f8d6c1a0bd8598",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303d/submitted.log",
+      "log_sha256": "6edd5c818a367223a2361a5d6a3881f929196f1ff05dc3563bb7a16147be1490",
+      "failures": []
+    },
+    "review-final": {
+      "counts": {
+        "tests": 16,
+        "passed": 5,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 11
+      },
+      "files": {
+        "tests.test_review_303d": {
+          "xfail": 11,
+          "passed": 5
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303d/review-final.xml",
+      "junit_sha256": "07f36c944fae00cb30ded3f528fe674cb33a98bb36ea730a45eb7fccc09f4eb1",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303d/review-final.log",
+      "log_sha256": "c0868d9b65b6d7c3afb5518e14ae8a7ef03a1564dc17ebac52a333d0173a748b",
+      "failures": []
+    },
+    "review-runxfail": {
+      "counts": {
+        "tests": 16,
+        "passed": 5,
+        "failed": 11,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "files": {
+        "tests.test_review_303d": {
+          "failed": 11,
+          "passed": 5
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303d/review-runxfail.xml",
+      "junit_sha256": "7c776572bc46e45ff6dbe1e5af9894ee544f2df625f16ad00d43ba26b583eecf",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303d/review-runxfail.log",
+      "log_sha256": "3523d99969966900ac27018cadb9ccccf60f9e827449ed6d808738cafbec73e6",
+      "failures": [
+        {
+          "name": "tests.test_review_303d::test_late_redelivery_cannot_resurrect_a_departed_delivery[10.1]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert 2 <= 1"
+        },
+        {
+          "name": "tests.test_review_303d::test_late_redelivery_cannot_resurrect_a_departed_delivery[11.0]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert 2 <= 1"
+        },
+        {
+          "name": "tests.test_review_303d::test_failed_final_referee_cannot_join_an_earlier_success_window[4.0]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert 2 <= 1"
+        },
+        {
+          "name": "tests.test_review_303d::test_failed_final_referee_cannot_join_an_earlier_success_window[5.0]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert 2 <= 1"
+        },
+        {
+          "name": "tests.test_review_303d::test_other_referee_policy_cannot_use_the_original_frozen_bundle[settle_s-0.1]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "name": "tests.test_review_303d::test_other_referee_policy_cannot_use_the_original_frozen_bundle[on_floor_max_z_m-0.5]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "name": "tests.test_review_303d::test_other_referee_policy_cannot_use_the_original_frozen_bundle[settled_speed_m_s-0.5]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "name": "tests.test_review_303d::test_other_referee_policy_cannot_use_the_original_frozen_bundle[held_depart_s-10.0]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "name": "tests.test_review_303d::test_confirmation_cannot_be_shorter_than_its_pinned_settle_window[0.0]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "name": "tests.test_review_303d::test_confirmation_cannot_be_shorter_than_its_pinned_settle_window[0.1]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "name": "tests.test_review_303d::test_confirmation_cannot_be_shorter_than_its_pinned_settle_window[1.9]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        }
+      ]
+    },
+    "negative-a303": {
+      "counts": {
+        "tests": 35,
+        "passed": 1,
+        "failed": 34,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "files": {
+        "tests.test_zone_study_evidence": {
+          "failed": 34,
+          "passed": 1
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-a303.xml",
+      "junit_sha256": "fbb21dd9cbd3c4d68edd75e9c6c3942cf2c90ca3014f75e105b92f9c219fc42c",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-a303.log",
+      "log_sha256": "8d12b8966ab8acc38249dbbf8b0d705e4e7f9a82c992c0af3309f12ac0dd88fb",
+      "failures": [
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[trial_id]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[scenario]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[seed]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[order_ids]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_identity]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[manifest_identity]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_identity]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_scenario]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_seed]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_episode]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_attempt_bool]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[attempt_type]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[attempt_zero]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[bundle_scenario]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[bundle_orders]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_order_id]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_item_id]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_time]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_order_counts]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_count_type]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[study_config_seed]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[request_sheet]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[legacy]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_missing_terminal_marker_publishes_no_events[result]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_missing_terminal_marker_publishes_no_events[manifest]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_missing_terminal_marker_publishes_no_events[both]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[integer]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[string]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[null]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[empty_manifest]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[partial_manifest]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[incomplete_type]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[missing_complete]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[end_time]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        }
+      ]
+    },
+    "negative-pins": {
+      "counts": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "files": {
+        "tests.test_zone_study_evidence": {
+          "failed": 1
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-pins.xml",
+      "junit_sha256": "506d1aa40fe06de71f583723d1b40086428077d7b336daa95fd70b726b1b72ff",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-pins.log",
+      "log_sha256": "15f21131b0534af7a5bfcbb51a4fe9c869e535944e3b8aea5921c3367d213f51",
+      "failures": [
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_2_evidence_writer_preserves_the_registered_runner_bytes",
+          "message": "AssertionError: assert '84e90031d0c3...572a859071fe0' == '85508cc58e1c...3dbaa64a99edd'\n  \n  - 85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd\n  + 84e90031d0c31b67a43719585687b386b8973873a2e8932f670572a859071fe0"
+        }
+      ]
+    },
+    "negative-f303": {
+      "counts": {
+        "tests": 7,
+        "passed": 0,
+        "failed": 7,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "files": {
+        "tests.test_zone_study_evidence_review_f303": {
+          "failed": 7
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-f303.xml",
+      "junit_sha256": "91b8de308f945a90226b259e91ae8542bc21e2a22ab8498eca0f64654508e6d2",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-f303.log",
+      "log_sha256": "eae3a89c49dac092f8dbaf088cd479d245cb71f91d2d98a0a2ad99def2c60fb7",
+      "failures": [
+        {
+          "name": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[run_id-foreign-trial-calls]",
+          "message": "Failed: foreign calls[0].run_id='foreign-trial' accepted; reported_success=1.0"
+        },
+        {
+          "name": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[run_id-foreign-trial-actions]",
+          "message": "Failed: foreign actions[0].run_id='foreign-trial' accepted; reported_success=1.0"
+        },
+        {
+          "name": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[seed-987654-calls]",
+          "message": "Failed: foreign calls[0].seed=987654 accepted; reported_success=1.0"
+        },
+        {
+          "name": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[seed-987654-actions]",
+          "message": "Failed: foreign actions[0].seed=987654 accepted; reported_success=1.0"
+        },
+        {
+          "name": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[condition-peer_ko-calls]",
+          "message": "Failed: foreign calls[0].condition='peer_ko' accepted; reported_success=1.0"
+        },
+        {
+          "name": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[condition-peer_ko-actions]",
+          "message": "Failed: foreign actions[0].condition='peer_ko' accepted; reported_success=1.0"
+        },
+        {
+          "name": "tests.test_zone_study_evidence_review_f303::test_reject_relabelled_trial_with_original_call_and_action_run_ids",
+          "message": "Failed: relabelled trial retained foreign call/action run IDs; reported_success=1.0"
+        }
+      ]
+    },
+    "negative-c303": {
+      "counts": {
+        "tests": 13,
+        "passed": 2,
+        "failed": 11,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "files": {
+        "tests.test_review_303c": {
+          "failed": 11,
+          "passed": 2
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-c303.xml",
+      "junit_sha256": "8dc193efc3ab94c701bb9edc675ca2df8a42e99a5f7e2dbd367c2f8e414eb2e8",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-c303.log",
+      "log_sha256": "ac62f0c1fec8d36df712bb2882152a21a1283b5d865b7801563b429ccb89a08f",
+      "failures": [
+        {
+          "name": "tests.test_review_303c::test_failed_referee_cannot_back_a_success_when_counts_are_missing",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "name": "tests.test_review_303c::test_foreign_referee_history_row_is_invalid[run_id-foreign-trial]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "name": "tests.test_review_303c::test_foreign_referee_history_row_is_invalid[seed-987654]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "name": "tests.test_review_303c::test_foreign_referee_history_row_is_invalid[condition-peer_ko]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "name": "tests.test_review_303c::test_conflicting_referee_state_is_invalid[standing_zone]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "name": "tests.test_review_303c::test_conflicting_referee_state_is_invalid[referee_order_id]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "name": "tests.test_review_303c::test_conflicting_referee_state_is_invalid[referee_verdict]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "name": "tests.test_review_303c::test_raw_action_and_camera_receipts_must_match_the_call[dispatch_order]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "name": "tests.test_review_303c::test_raw_action_and_camera_receipts_must_match_the_call[input_frame]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "name": "tests.test_review_303c::test_raw_action_and_camera_receipts_must_match_the_call[missing_dispatch]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "name": "tests.test_review_303c::test_reordered_simultaneous_referee_rows_preserve_valid_success",
+          "message": "AssertionError: [{'source': '/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1353/test_reordered_si...49999dbde64b0ad71c38c043f73e0451da3d423ceefc3aa44b9908cbd2', ...}, 'unavailable_inputs': {}, 'status': 'INVALID', ...}]\nassert (0 == 1)"
+        }
+      ]
+    },
+    "negative-c303-initial-collection-error": {
+      "counts": {
+        "tests": 1,
+        "passed": 0,
+        "failed": 0,
+        "errors": 1,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "files": {
+        "": {
+          "errors": 1
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-c303-initial-collection-error.xml",
+      "junit_sha256": "0f4035ba767eaf3bf5834e458a73f81bfb69c24c4a4f9ac6bdc64a822cec6946",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-c303-initial-collection-error.log",
+      "log_sha256": "7ca57dc1c9c44bdbc4eac9bcd00e90575340f85a26bbaebcd6cdebad26f82e57",
+      "failures": []
+    },
+    "negative-a303-with-positive-retry": {
+      "counts": {
+        "tests": 36,
+        "passed": 1,
+        "failed": 35,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "files": {
+        "tests.test_zone_study_evidence": {
+          "failed": 35,
+          "passed": 1
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-a303-with-positive-retry.xml",
+      "junit_sha256": "abf861d6aa7a75e07a9eff98ce0eb2fa66c6c2b9322fe0129c1a5626ab80c9f0",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303d/negative-a303-with-positive-retry.log",
+      "log_sha256": "1d01ca2aefd83743b267a57fa5b7e9cdde04097b671ab5cc2024100c25605a13",
+      "failures": [
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[trial_id]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[scenario]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[seed]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[order_ids]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_identity]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[manifest_identity]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_identity]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_scenario]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_seed]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_episode]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_attempt_bool]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[attempt_type]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[attempt_zero]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[bundle_scenario]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[bundle_orders]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_order_id]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_item_id]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_time]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_order_counts]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_count_type]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[study_config_seed]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[request_sheet]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[legacy]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_1_retry_keeps_logical_trial_and_distinct_attempt_identity",
+          "message": "KeyError: 'evidence_identity'"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_missing_terminal_marker_publishes_no_events[result]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_missing_terminal_marker_publishes_no_events[manifest]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_missing_terminal_marker_publishes_no_events[both]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[integer]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[string]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[null]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[empty_manifest]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[partial_manifest]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[incomplete_type]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[missing_complete]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "name": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[end_time]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        }
+      ]
+    }
+  },
+  "generated_cases": {
+    "count": 12000,
+    "operations": [
+      "mix",
+      "duplicate",
+      "drop",
+      "reorder"
+    ],
+    "per_operation": 3000,
+    "pytest_items": 4,
+    "scope": "normalized already-verified relations; not raw semantic validation"
+  },
+  "source_sha256": {
+    "harness/zone_study_eval.py": "3f00d0bacffd5e581b3a11372169d0856f257cbf08db45b353e51de2c592be2f",
+    "harness/zone_study_referee.py": "c44d2881dab6e4bf3e4c0232d46e31065d9fcb4061e49aee9a2ad686dbf96d44",
+    "scripts/zone_study_evidence_contract.py": "f9bf3cfa554bd3fe7e95dc2d1ee600f3315c6c906b2e4853140172fe43b53c35",
+    "scripts/zone_study_evidence_join.py": "789c5e385174155ee772643c57d51f1ae0e7907e5138ef5cea3f53a6322dccfd",
+    "scripts/zone_study_evidence_cohort.py": "bbec6d223faba008421c80f0129bb1d9e529fcf7fe890694d71747f304ca5d72",
+    "scripts/zone_study_evidence_writer.py": "dbc765f2c6546a2d6f9d90d388bdbea5e0ae6aa714657e62be55c0bff7131ae9",
+    "scripts/tensorboard_tools/zone_study.py": "91ddeb86d9760799d7194e0cdef704e354d2a3e5067825286c7a831d1002ea9c",
+    "scripts/tensorboard_tools/export.py": "cbeab2d8640d6e89c5f38588e2a55e8c2f5462241c05b4947b02d5e6dac4d98e",
+    "scripts/run_zone_study_integration.py": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5"
+  },
+  "source_pins": {
+    "harness/owncam_memory.py": {
+      "expected": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
+      "actual": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a"
+    },
+    "harness/owncam_memory_time.py": {
+      "expected": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0",
+      "actual": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0"
+    },
+    "harness/owncam_delivery_shared.py": {
+      "expected": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba",
+      "actual": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba"
+    },
+    "harness/owncam_memory_delivery.py": {
+      "expected": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50",
+      "actual": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50"
+    },
+    "harness/owncam_memory_inputs.py": {
+      "expected": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83",
+      "actual": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83"
+    },
+    "harness/owncam_pose_guard_provider.py": {
+      "expected": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1",
+      "actual": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1"
+    },
+    "harness/owncam_pose_guard_v3.py": {
+      "expected": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6",
+      "actual": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6"
+    },
+    "configs/zone_pair_authorization.json": {
+      "expected": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e",
+      "actual": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e"
+    },
+    "harness/owncam_drive_mem_v3.py": {
+      "expected": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425",
+      "actual": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425"
+    },
+    "harness/m1_owncam_memory_v3.py": {
+      "expected": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2",
+      "actual": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2"
+    },
+    "harness/vision_motion_init.py": {
+      "expected": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316",
+      "actual": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316"
+    },
+    "harness/m2_provider_adapter.py": {
+      "expected": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624",
+      "actual": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624"
+    },
+    "harness/zone_own_deliver.py": {
+      "expected": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab",
+      "actual": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab"
+    },
+    "harness/zone_own_team_host.py": {
+      "expected": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64",
+      "actual": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64"
+    },
+    "scripts/zone_pair_authorization.py": {
+      "expected": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649",
+      "actual": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649"
+    },
+    "scripts/run_zone_study_integration.py": {
+      "expected": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+      "actual": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd"
+    },
+    "scripts/run_m1_owncam_memory_v3.py": {
+      "expected": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8",
+      "actual": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8"
+    },
+    "sim/zone_geometry_scene.py": {
+      "expected": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+      "actual": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0"
+    },
+    "configs/zone_study_integration/pose_providers.json": {
+      "expected": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d",
+      "actual": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d"
+    },
+    "maps/zones/zone_wide_door_geometry_v2.json": {
+      "expected": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+      "actual": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf"
+    },
+    "harness/pose_provider.py": {
+      "expected": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2",
+      "actual": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2"
+    },
+    "harness/vision_pose_source.py": {
+      "expected": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+      "actual": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7"
+    },
+    "harness/zone_study_pose_delay.py": {
+      "expected": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894",
+      "actual": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894"
+    },
+    "harness/zone_own_driver.py": {
+      "expected": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d",
+      "actual": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d"
+    },
+    "harness/owncam_drive_shared.py": {
+      "expected": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792",
+      "actual": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792"
+    },
+    "sim/zone_own_scene_provider.py": {
+      "expected": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+      "actual": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b"
+    },
+    "harness/owncam_time.py": {
+      "expected": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+      "actual": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4"
+    },
+    "harness/zone_own_contract.py": {
+      "expected": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
+      "actual": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301"
+    },
+    "harness/zone_own_executor.py": {
+      "expected": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+      "actual": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5"
+    },
+    "harness/zone_own_status.py": {
+      "expected": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
+      "actual": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3"
+    },
+    "harness/zone_own_perception.py": {
+      "expected": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
+      "actual": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff"
+    },
+    "harness/zone_pair_obstruction.py": {
+      "expected": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
+      "actual": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd"
+    },
+    "harness/zone_pair_grasp.py": {
+      "expected": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565",
+      "actual": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565"
+    },
+    "harness/zone_pair_executor.py": {
+      "expected": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+      "actual": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465"
+    },
+    "harness/zone_pair_beam_track.py": {
+      "expected": "7b0870a80a200ee6eaa99d6ca86653094d420dd527bf7b8fcf385b2ff030ce9e",
+      "actual": "7b0870a80a200ee6eaa99d6ca86653094d420dd527bf7b8fcf385b2ff030ce9e"
+    },
+    "harness/zone_pair_align.py": {
+      "expected": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e",
+      "actual": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e"
+    },
+    "harness/zone_pair_guards.py": {
+      "expected": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde",
+      "actual": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde"
+    },
+    "harness/zone_pair_geometry.py": {
+      "expected": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+      "actual": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d"
+    },
+    "harness/zone_pair_status.py": {
+      "expected": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+      "actual": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646"
+    },
+    "harness/zone_pair_vision.py": {
+      "expected": "cce72504edf01d119aafbefc8cb4ea1aa5a407196f9809f6cb5b8ec0bfecc9fc",
+      "actual": "cce72504edf01d119aafbefc8cb4ea1aa5a407196f9809f6cb5b8ec0bfecc9fc"
+    },
+    "harness/owncam_pose_source.py": {
+      "expected": "b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e",
+      "actual": "b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e"
+    },
+    "harness/owncam_localizer.py": {
+      "expected": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+      "actual": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347"
+    },
+    "harness/owncam_pair_beam.py": {
+      "expected": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+      "actual": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6"
+    },
+    "harness/owncam_pair_beam_v2.py": {
+      "expected": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+      "actual": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97"
+    },
+    "harness/owncam_view.py": {
+      "expected": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+      "actual": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260"
+    },
+    "harness/zone_own_guards.py": {
+      "expected": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+      "actual": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e"
+    },
+    "scripts/run_zone_pair_dev.py": {
+      "expected": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec",
+      "actual": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec"
+    },
+    "scripts/zone_pair_dev_runtime.py": {
+      "expected": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877",
+      "actual": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877"
+    },
+    "scripts/zone_pair_grasp_contract.py": {
+      "expected": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85",
+      "actual": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85"
+    },
+    "scripts/evaluate_zone_pair_dev.py": {
+      "expected": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+      "actual": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53"
+    },
+    "configs/simulation_workflows.json": {
+      "expected": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140",
+      "actual": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140"
+    },
+    "sim/zone_start_dock.py": {
+      "expected": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+      "actual": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4"
+    },
+    "sim/zone_dock_scene.py": {
+      "expected": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+      "actual": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498"
+    },
+    "sim/zone_arena.py": {
+      "expected": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+      "actual": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8"
+    },
+    "sim/zone_landmarks.py": {
+      "expected": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1",
+      "actual": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1"
+    },
+    "sim/zone_scene.py": {
+      "expected": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714",
+      "actual": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714"
+    },
+    "sim/zone_tagged_cargo_scene.py": {
+      "expected": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7",
+      "actual": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7"
+    },
+    "scripts/zone_pair_dev_contract.py": {
+      "expected": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e",
+      "actual": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e"
+    },
+    "harness/zone_study_integration.py": {
+      "expected": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06",
+      "actual": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06"
+    },
+    "harness/zone_pair_v6_policy.py": {
+      "expected": "dcf1d3804f3ccf02622fc8410d00478b171975a0e1f0b299fdd46d2e323ee9bd",
+      "actual": "dcf1d3804f3ccf02622fc8410d00478b171975a0e1f0b299fdd46d2e323ee9bd"
+    },
+    "harness/zone_pair_relative.py": {
+      "expected": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af",
+      "actual": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af"
+    },
+    "harness/zone_pair_global.py": {
+      "expected": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
+      "actual": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed"
+    },
+    "harness/owncam_recovery_v6.py": {
+      "expected": "3909f45ecc856ca2f666f9e3c3ee2327ad813c15449f0b0b0f04173492c92f67",
+      "actual": "3909f45ecc856ca2f666f9e3c3ee2327ad813c15449f0b0b0f04173492c92f67"
+    },
+    "harness/owncam_observability_v6.py": {
+      "expected": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
+      "actual": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d"
+    },
+    "scripts/zone_pair_v6_contract.py": {
+      "expected": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b",
+      "actual": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b"
+    },
+    "harness/zone_own_sweep.py": {
+      "expected": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
+      "actual": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6"
+    },
+    "harness/pair_owncam_approach.py": {
+      "expected": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+      "actual": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184"
+    },
+    "harness/owncam_drive.py": {
+      "expected": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+      "actual": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82"
+    },
+    "scripts/run_m2_pair.py": {
+      "expected": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+      "actual": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783"
+    },
+    "scripts/study_owncam_pair_beam.py": {
+      "expected": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00",
+      "actual": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00"
+    },
+    "harness/visual_arm.py": {
+      "expected": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+      "actual": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a"
+    },
+    "harness/m1_owncam_delivery.py": {
+      "expected": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+      "actual": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09"
+    },
+    "harness/owncam_bootstrap_v6b.py": {
+      "expected": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90",
+      "actual": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90"
+    },
+    "harness/owncam_recovery_v6c.py": {
+      "expected": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd",
+      "actual": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd"
+    },
+    "harness/zone_pair_grasp_entry_v6c.py": {
+      "expected": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e",
+      "actual": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e"
+    },
+    "harness/owncam_pair_beam_v6d.py": {
+      "expected": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12",
+      "actual": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12"
+    },
+    "harness/owncam_align_motion_v6d.py": {
+      "expected": "4ac391e60c0d3930576c9daacbd066495fad8f9bb5863dc3ce8eaab6cff8d879",
+      "actual": "4ac391e60c0d3930576c9daacbd066495fad8f9bb5863dc3ce8eaab6cff8d879"
+    },
+    "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": {
+      "expected": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+      "actual": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72"
+    },
+    "harness/owncam_carry_v6e.py": {
+      "expected": "ec3b42b3502e21491585360bc588663f89003f8e6ed09ab829ae617d867737ec",
+      "actual": "ec3b42b3502e21491585360bc588663f89003f8e6ed09ab829ae617d867737ec"
+    },
+    "harness/own_beam_edge.py": {
+      "expected": "f72118c5c1faeb91094347469dd15fa6059dd99bd6acede4760eec96411f3e8d",
+      "actual": "f72118c5c1faeb91094347469dd15fa6059dd99bd6acede4760eec96411f3e8d"
+    },
+    "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json": {
+      "expected": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+      "actual": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d"
+    },
+    "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json": {
+      "expected": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b",
+      "actual": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b"
+    },
+    "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json": {
+      "expected": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b",
+      "actual": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b"
+    },
+    "sim/zone_masterpi_v3_scene.py": {
+      "expected": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca",
+      "actual": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca"
+    },
+    "sim/zone_model_conventions.py": {
+      "expected": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff",
+      "actual": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff"
+    }
+  },
+  "unchanged_prereg_git_blobs": {
+    "experiments/2026-09-16-act-recovery/preregistration-audit.json": "34e270fe531c505b054a5d632ff1b39f24e1347c",
+    "experiments/2026-09-25-zc3-prereg-draft/analysis/measured_runs.json": "ce7c84c9214a8a49f98ea0b9d25c8561ca82b818",
+    "experiments/2026-09-25-zc3-prereg-draft/analysis/power.json": "c6886c4ffb332ea1ebceabf6bd57bdad6b296967",
+    "experiments/2026-09-25-zc3-prereg-draft/analysis/seed_plan.json": "e53e5b370c04e1d5e082bc0c2778baa20546af39",
+    "experiments/2026-09-25-zc3-prereg-draft/budget.json": "de1ac6ecee87ba282c72c7cac633c55060e1f2a0",
+    "experiments/2026-09-25-zone-owncam-loop/prereg.json": "af5e1c51904ed278430dd0fc3b281b29f1284f9a",
+    "experiments/2026-09-25-zone-owncam-loop/prereg_amendments.json": "be84a778570798e80306f853e68ee61d41e21bf9",
+    "experiments/2026-09-26-markerless-probe/prereg.json": "a414209e2d3136962bc3adde997e69d2583ea495",
+    "experiments/2026-09-26-sim-speed/prereg_default_check_DRAFT.json": "616542bd1339920bafdfbe04a75ed57b4df96e12",
+    "experiments/2026-09-26-vision-loc/prereg.json": "c97a5ee19699f5658a08189ba674919b77aa5a13",
+    "experiments/2026-09-26-vision-loc/prereg_v3.json": "2ba7cd4c3c5d51b6d7ce3db1fb8e81981ecdab27",
+    "experiments/2026-09-26-vision-loc/prereg_v4_DRAFT.json": "427f659aa8e1f57d3c542d0c75a500b40804b74a",
+    "experiments/2026-09-26-zone-env-v3/loop/prereg.json": "c3b58530d7ae8fcbb83e48f379084b4ea0458794",
+    "experiments/2026-09-26-zone-env-v3/loop/prereg_a1.json": "cf24ab8c15b1140eea3eea065848af36102c53ac",
+    "experiments/2026-09-26-zone-env-v3/m1/prereg.json": "a1643d7a4ce4772a4d9f2cbc4194edefe7a9f84b",
+    "experiments/2026-09-26-zone-env-v3/m1/prereg_a1.json": "d26738580c68143e5e469169bd8a36725809858b",
+    "experiments/2026-09-26-zone-env-v3/prereg.json": "899385a9223b0440ef58c96709f73059b599d39d",
+    "experiments/2026-09-26-zone-env-v3/prereg_amendments.json": "c7bd1a36df7999f34344594dd479b4a051e52448",
+    "experiments/2026-09-26-zone-eval-topcam/prereg.json": "70ec86276925732abe715d0bf9e9533d1279fc66",
+    "experiments/2026-09-26-zone-eval-topcam/prereg_amendments.json": "b610a4b312a43714a82ad870831d6ca19a66eb37",
+    "experiments/2026-09-26-zone-m1-owncam/prereg.json": "818395173f5e8f7356e926c6dd664799312ea7f2",
+    "experiments/2026-09-26-zone-m1-owncam/prereg_amendments.json": "d55a8a3865610f56a17c630dfa45b331a3704e82",
+    "experiments/2026-09-26-zone-own-executor/prereg.json": "f5c5085e73910a86b8fe76c3f52888dca881ad51",
+    "experiments/2026-09-26-zone-own-executor/prereg_v2.json": "b06f7b8b0e60a9ebc3eade8cc879ce862e71643b",
+    "experiments/2026-09-26-zone-own-executor/prereg_v3.json": "3ab952f5a3103b8a65effd93dbbbd0767e3f9849",
+    "experiments/2026-09-26-zone-owncam-loop-v2/prereg.json": "8e9ccd65e5ba2a10eb03172256a7073659eb8f3c",
+    "experiments/2026-09-26-zone-owncam-memory/prereg.json": "b86ae97af6bee975f2d8c641359492da84d15150",
+    "experiments/2026-09-26-zone-owncam-memory/prereg_amendments.json": "c29c07724ecdff695a3fe24a9e0069b5a3dacda7",
+    "experiments/2026-09-26-zone-study-integration/prereg.json": "bbbdb61bf7344f840892d6a15cc5143d3117979b",
+    "experiments/2026-09-26-zone-study-integration/prereg_v2.json": "36c356ebff0ca73b73e5602b9301b822303fc670",
+    "experiments/2026-09-27-zone-owncam-memory-v3/prereg_DRAFT.json": "9613e5fb39d8b2e0b005e581066d5f171857da7e",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review-fixes/prereg_review_DRAFT.json": "600dfa47eb7c285ffac1454dce8207cde5badce4",
+    "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json": "2e8a547c32f9396df659cd5f973e00dd1ea09a79",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json": "eea9bc3767d0fdd71ef4968a89a019744be06d68",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v3.json": "456a066831864b816458ee8d87ae3c035aa239a6",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json": "f73afc3de3ab0d865d030aaf75682407c21d72b1",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v4.json": "719e7139aec0007eee0049472cdf2b57f993b4d6",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5.json": "9b10fbe357caaf4974876745efed24c4b8cf9dee",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5b.json": "746dd7149a0405215ffe59781a419fb1870bd989",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5c.json": "d45266cc708f5e63d7299110e6861b0f2fca7bd7",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5d.json": "b5b0a96166af41bdd71c86d289820182720ea6d1",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5e.json": "348f36545651b5436b8f43c174db33a55141877d",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5f.json": "d9ddc97168b3cf78fad105da9faabd4c703941a1",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5g.json": "f1bf6db43bcef4cff79c003dd60f4a674e2b2ed8",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5h.json": "13c7563ca05e0b3b5488a669d366285b1afa2c07",
+    "experiments/2026-09-28-main-study-prereg-draft/prereg_main_DRAFT.json": "355a1be9bae2c243d1106c9b1f14855109543a72",
+    "experiments/2026-09-28-zone-pair-v5f/prepare-before-canonical-hardening/dev11/prereg.json": "bbabfcbd3caec812875919fd7f7b36c426ae366e",
+    "experiments/2026-09-28-zone-pair-v5f/prepare-before-canonical-hardening/dev12/prereg.json": "bbabfcbd3caec812875919fd7f7b36c426ae366e",
+    "experiments/2026-09-28-zone-pair-v5f/prepare-before-index-seal-check/dev11/prereg.json": "430a2e5baad2f7f23ca044db47cc15985e41655b",
+    "experiments/2026-09-28-zone-pair-v5f/prepare-before-index-seal-check/dev12/prereg.json": "430a2e5baad2f7f23ca044db47cc15985e41655b",
+    "experiments/2026-09-28-zone-pair-v5f/prepare/dev11/prereg.json": "d9ddc97168b3cf78fad105da9faabd4c703941a1",
+    "experiments/2026-09-28-zone-pair-v5f/prepare/dev12/prereg.json": "d9ddc97168b3cf78fad105da9faabd4c703941a1",
+    "experiments/2026-09-28-zone-pair-v6/prereg_v6.json": "aad0c15182138359327a35b4adb145764596f5da",
+    "experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json": "19939522baf054c5cc2e89b97732a22b1aa14bf8",
+    "experiments/2026-09-29-pair-v6c/prereg_v6c.json": "73cdc51335efeb76ecc67e42f9e762e90b40efaf",
+    "experiments/2026-09-29-pair-v6d-align/prereg_v6d.json": "cb1f849acc04d4f381baf409e54b46d6c0fd7486",
+    "experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json": "2f08ce4160c290e2abcf1438b48c30e5edcc2f5b"
+  },
+  "workflow_two_dot_diff": "",
+  "workflow_three_dot_diff": "",
+  "pr": {
+    "head": "3a46de0b7d3c1c295335355b106e95502839cb87",
+    "state": "OPEN",
+    "draft": true,
+    "merge_state": "BEHIND",
+    "failed_checks": [
+      "offline-regression-shard (1/8)",
+      "offline-regression-shard (3/8)",
+      "offline-regression-shard (4/8)",
+      "offline-regressions"
+    ]
+  },
+  "ci": {
+    "ci-job-109961104888.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303d/ci-job-109961104888.log",
+      "sha256": "dc112bf6aec6cb721e422576ed28c814b223ee4eb4fee868c9903554eeec74da",
+      "failed": 13,
+      "causes": [
+        "ModuleNotFoundError: No module named 'tensorboard'"
+      ]
+    },
+    "ci-job-109961104727.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303d/ci-job-109961104727.log",
+      "sha256": "656d96d8ea0e9cfdd26fec25b1fd97449ec1af45fdf4154fb97bb84c36c017cc",
+      "failed": 66,
+      "causes": [
+        "ModuleNotFoundError: No module named 'tensorboard'"
+      ]
+    },
+    "ci-job-109961104796.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303d/ci-job-109961104796.log",
+      "sha256": "f37d8a18f5faa1a3de67d244e6c887adfbf7fed9a03fe1d5c2407afdce79ecc2",
+      "failed": 5,
+      "causes": [
+        "ModuleNotFoundError: No module named 'tensorboard'"
+      ]
+    }
+  },
+  "review_test_sha256": "4f58e75adb94e5c43f1840528ecf9bd75a14885a2943d6ba9792e275325beae0",
+  "commands": {
+    "archive_head": "git archive origin/codex/evidence-referee | tar -x -C /private/tmp/ugrp-review-303d/head",
+    "submitted": "GIT_DIR=/Users/changmin/projects/ugrp/.git /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py --junitxml=/Users/changmin/projects/ugrp/outputs/review-303d/submitted.xml",
+    "new_review": "python review_303d/offline.py /private/tmp/ugrp-review-303d/head tests/test_review_303d.py -rxX -s",
+    "new_review_unmarked": "python review_303d/offline.py /private/tmp/ugrp-review-303d/head tests/test_review_303d.py --runxfail",
+    "negative_a303": "python review_303d/negative_control.py cbac1dfc tests/test_zone_study_evidence.py -k '(a303_1 or a303_3) and not retry'",
+    "negative_pins": "python review_303d/negative_control.py old-runner tests/test_zone_study_evidence.py::test_a303_2_evidence_writer_preserves_the_registered_runner_bytes",
+    "negative_f303": "python review_303d/negative_control.py 114349e0 tests/test_zone_study_evidence_review_f303.py",
+    "archive_pre_c303": "git archive f5566289 harness sim scripts tests configs maps experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json | tar -x -C /private/tmp/ugrp-review-303d/pre-c303; copy head tests/test_review_303c.py and pyproject.toml into that archive",
+    "negative_c303": "python review_303d/offline.py /private/tmp/ugrp-review-303d/pre-c303 tests/test_review_303c.py"
+  },
+  "commands_note": "Use the existing /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python. Drivers are in experiments/2026-09-30-e2e-readiness/review_303d. Submitted driver runs from the PR archive. Local logs were redirected to matching XML basename.log."
+}
