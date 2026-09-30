@@ -85,7 +85,7 @@ def assert_rejected_with_fixed_denominator(src, out):
 
 def failing_referee(src):
     """An internally consistent referee: box_00 is settled in the wrong zone."""
-    ref = zr.Referee(SCENARIO['orders'], MAP)
+    ref = zr.Referee(SCENARIO['orders'], MAP, evidence_key=read(src, 'eval_only/referee.json')['evidence_key'])
     feed(ref, 2., 4., {'box_00': at_zone('C'), 'box_02': at_zone('B'), 'box_05': at_zone('C')})
     assert not ref.orders_complete()
     old = read(src, 'eval_only/referee.json')

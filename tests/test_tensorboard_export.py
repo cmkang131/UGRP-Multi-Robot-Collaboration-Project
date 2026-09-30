@@ -33,6 +33,24 @@ def test_p06_adversarial_event_readback_with_real_tensorboard(tmp_path):
         assert list((root / 'events').glob('events*')), (check.__name__, args)
 
 
+def test_p06_rejected_owners_with_real_tensorboard(tmp_path):
+    """Run E303's eight regressions in the existing optional-tooling CI job."""
+    pytest.importorskip('tensorboard')
+    from tests import test_review_303e as e
+    from tests import test_zone_referee_ownership as o
+    for damage in ('policy_hash', 'profile', 'events', 'summary'):
+        for reverse in (False, True):
+            root = tmp_path / f'{damage}-{reverse}'
+            e.test_invalidating_duplicate_replay_cannot_increase_cohort_success(root, damage, reverse)
+            for stage in ('before', 'after'):
+                assert list((root / stage).glob('events*'))
+    for target in ('event', 'file', 'manifest', 'identity'):
+        for rejected in (False, True):
+            root = tmp_path / f'{target}-{rejected}'
+            o.test_key_source_disagreement_invalidates_both_trials(root, target, rejected)
+            assert list((root / 'events').glob('events*'))
+
+
 def put(root, name, value):
     p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(value));return p
 

@@ -131,8 +131,9 @@ def seal_new_evidence(root, plan, plan_sha256):
     for envelope in (raw, result, record, evaluation):
         if digest(envelope.get('evidence_identity')) != digest(identity):
             raise ValueError('Cannot seal conflicting identities')
-        envelope.update(keys)
-        envelope['plan_sha256'] = plan_sha256
+        for field, value in keys.items():
+            envelope.setdefault(field, value)
+        envelope.setdefault('plan_sha256', plan_sha256)
 
     def write(path, value):
         (root / path).write_text(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + '\n')
@@ -145,9 +146,14 @@ def seal_new_evidence(root, plan, plan_sha256):
             nested = result.get('eval_only', {}).get('referee')
             if nested is not None and digest(nested) != digest(referee):
                 raise ValueError('Cannot seal conflicting embedded referee history')
-            referee.update(keys)
-            referee['evidence_identity'] = identity
-            referee['plan_sha256'] = plan_sha256
+            # Preserve source declarations even when they conflict. Sealing is
+            # not permission to rebind rejected raw events to this admission.
+            for field, value in keys.items():
+                referee.setdefault(field, value)
+            referee.setdefault('evidence_identity', identity)
+            referee.setdefault('plan_sha256', plan_sha256)
+            raw.setdefault('event_sources', {
+                'eval_only/referee.json': {'evidence_key': keys['evidence_key']}})
             write('eval_only/referee.json', referee)
             if nested is not None:
                 result['eval_only']['referee'] = referee
@@ -177,7 +183,7 @@ def seal_new_evidence(root, plan, plan_sha256):
     return result
 
 
-def verify_referee_derivations(record, evaluation, referee, identity, *, pinned_policy=None, bundle=None):
+def verify_referee_derivations(record, evaluation, referee, identity, *, pinned_policy=None, bundle=None, source_key=None):
     """Replay the pinned referee, then compare every declared projection.
 
     Pure callers may use the current policy; publication always supplies the
@@ -201,7 +207,10 @@ def verify_referee_derivations(record, evaluation, referee, identity, *, pinned_
         raise ValueError('INVALID: referee identity/plan mismatch')
     if referee.get('policy_sha256') != pin['sha256'] or digest(referee.get('profile')) != digest(pin['profile']):
         raise ValueError('INVALID: recorded referee policy differs from frozen code/parameters')
-    full = replay.replay(referee.get('events'), record['orders'], pin)
+    evidence_key = join.key_for(identity)
+    source_key = referee['evidence_key'] if source_key is None else source_key
+    full = replay.replay(referee.get('events'), record['orders'], pin,
+                         evidence_key=evidence_key, source_key=source_key)
     rebuilt = full.record()
     if bundle is not None:
         context = sorted(referee['events'], key=lambda r: r['seq'])[0]['static_map']
@@ -246,7 +255,8 @@ def verify_referee_derivations(record, evaluation, referee, identity, *, pinned_
             raise ValueError(f'INVALID: evaluation/referee replay conflict: {key}')
     t0 = float(record.get('t0_sim_s') or 0.)
     cutoff = min(observed, t0 + float(record['budget']['sim_horizon_s']))
-    bounded = replay.replay(referee['events'], record['orders'], pin, cutoff=cutoff)
+    bounded = replay.replay(referee['events'], record['orders'], pin,
+                            evidence_key=evidence_key, source_key=source_key, cutoff=cutoff)
     projected = replay.trial_projection(record, bounded)
     metrics = ev.efficiency_metrics(projected)
     if digest(metrics) != digest(ev.efficiency_metrics(record)):

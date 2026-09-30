@@ -83,7 +83,7 @@ def profile() -> dict:
 class Referee:
     """Online delivery judge from simulator truth. Evaluation only."""
 
-    def __init__(self, orders: Sequence[Mapping], static_map: Mapping):
+    def __init__(self, orders: Sequence[Mapping], static_map: Mapping, *, evidence_key=None):
         if not orders:
             raise ContractViolation('the referee needs a non-empty order sheet')
         self.orders = [copy.deepcopy(dict(o)) for o in orders]
@@ -99,7 +99,12 @@ class Referee:
         self._kinds: dict[str, str] = {}
         from harness.zone_referee_replay import append_event
         self._events: list[dict] = []
-        append_event(self._events, {'event': 'orders', 'orders': self.orders, 'static_map': static_map})
+        # Legacy judges may compute projections but cannot emit publishable raw
+        # events. Evidence producers must bind the complete key before sampling.
+        self._evidence_key = copy.deepcopy(evidence_key)
+        if evidence_key is not None:
+            append_event(self._events, {'event': 'orders', 'orders': self.orders, 'static_map': static_map},
+                         evidence_key=self._evidence_key)
 
     # -- judgement ----------------------------------------------------------
     def zone_of(self, row: Mapping):
@@ -147,7 +152,9 @@ class Referee:
                     or self._kinds.get(item, row['kind']) != row['kind']):
                 raise ContractViolation('invalid item identity, kind, height or speed')
         from harness.zone_referee_replay import append_event
-        append_event(self._events, {'event': 'sample', 'sim_s': t, 'items': items})
+        if self._evidence_key is not None:
+            append_event(self._events, {'event': 'sample', 'sim_s': t, 'items': items},
+                         evidence_key=self._evidence_key)
         self.last_t, self.samples = t, self.samples + 1
         new = []
         # A missing truth sample is not evidence of continuous settling/standing.
@@ -240,7 +247,8 @@ class Referee:
     def record(self) -> dict:
         """The eval-only referee block (deliveries = confirmations; history also has departures)."""
         from harness.zone_referee_replay import policy
-        return {'profile': profile(), 'policy_sha256': policy()['sha256'],
+        return {**({'evidence_key': copy.deepcopy(self._evidence_key)} if self._evidence_key is not None else {}),
+                'profile': profile(), 'policy_sha256': policy()['sha256'],
                 'events': copy.deepcopy(self._events), 'source': 'eval_only simulator truth',
                 'deliveries': [dict(r) for r in self.history if r['event'] == 'confirmed'],
                 'history': [dict(r) for r in self.history], 'standing': copy.deepcopy(self.standing),

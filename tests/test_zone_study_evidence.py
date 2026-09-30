@@ -202,14 +202,14 @@ def synthetic_source(tmp_path, outcome, completed, *, attempt=1):
     src.mkdir()
     trial, result = completed
     condition, scenario_id, seed = trial.condition, trial.scenario_id, trial.seed
-    ref = zr.Referee(trial.sheet['orders'], MAP)
-    feed(ref, 2., 4., {'box_00': at_zone('A'), 'box_02': at_zone('B'), 'box_05': at_zone('C')})
     bundle = {'referee': zr.profile(), 'scene_static_map_sha256': runner.digest(MAP), 'horizon_s': 12.,
               'pose_provider': {'label': {'pose_provider': 'synthetic'}},
               'host_spec': {'order_sheet': trial.sheet}}
     identity = identity_for(run_id=src.name, trial_id=trial.run_id, episode_id='fake', attempt=attempt,
                             condition=condition, scenario=scenario_id, seed=seed, bundle=bundle)
     plan = freeze_plan([admission(identity, trial.sheet['orders'])])
+    ref = zr.Referee(trial.sheet['orders'], MAP, evidence_key=plan['admitted'][0]['key'])
+    feed(ref, 2., 4., {'box_00': at_zone('A'), 'box_02': at_zone('B'), 'box_05': at_zone('C')})
     failure_class = {'api_failure': runner.llm.API_ERROR, 'host_error': runner.llm.HOST_ERROR,
                      'policy_failure': runner.llm.OTHER}.get(outcome)
     failure = {'type': 'SyntheticFailure', 'failure_class': failure_class} if failure_class else None

@@ -140,7 +140,18 @@ def export_study(src, w, result, max_images):
     nested = result.get('eval_only', {}).get('referee')
     if nested is not None and digest(nested) != digest(referee):
         raise ValueError('INVALID: embedded referee history conflicts with its source')
+    source_key = None
+    if referee is not None:
+        sources = raw.get('event_sources')
+        if (not isinstance(sources, dict) or set(sources) != {'eval_only/referee.json'}
+                or not isinstance(sources['eval_only/referee.json'], dict)
+                or set(sources['eval_only/referee.json']) != {'evidence_key'}):
+            raise ValueError('INVALID: missing/conflicting raw event manifest entry')
+        source_key = sources['eval_only/referee.json']['evidence_key']
+        if join.key_tuple(source_key) != join.key_tuple(join.key_for(identity)):
+            raise ValueError('INVALID: raw event manifest entry/trial key conflict')
     raw_metrics = verify_referee_derivations(record, evaluation, referee, identity,
+                                              source_key=source_key,
                                               pinned_policy=plan['referee_policy'], bundle=raw['bundle'])
     if digest(raw_metrics) != digest(metrics):
         raise ValueError('INVALID: raw referee outcome conflicts with trial metrics')

@@ -13,8 +13,9 @@ from functools import lru_cache
 from pathlib import Path
 
 from harness.zone_study_contract import digest
+from harness.zone_evidence_key import trial_key
 
-EVENT_SCHEMA = 'ugrp.zone_referee_events.v1'
+EVENT_SCHEMA = 'ugrp.zone_referee_events.v2'
 POLICY_SCHEMA = 'ugrp.zone_referee_policy.v1'
 
 
@@ -45,13 +46,18 @@ def validate_policy(pin):
         raise ValueError('INVALID: frozen referee policy code/parameters differ from the loaded implementation')
 
 
-def append_event(events, payload):
+def append_event(events, payload, *, evidence_key):
+    trial_key(evidence_key)
+    if 'evidence_key' in payload:
+        raise ValueError('INVALID: payload cannot override its source trial key')
+    if events and any(trial_key(e['evidence_key']) != trial_key(evidence_key) for e in events):
+        raise ValueError('INVALID: raw event stream cannot be rebound')
     row = {'seq': len(events), 'previous_sha256': events[-1]['sha256'] if events else None,
-           **copy.deepcopy(payload)}
+           **copy.deepcopy(payload), 'evidence_key': copy.deepcopy(evidence_key)}
     events.append({**row, 'sha256': digest(row)})
 
 
-def replay(events, orders, pin, *, cutoff=None):
+def replay(events, orders, pin, *, evidence_key, source_key, cutoff=None):
     """Rebuild from zero, never from standing/deliveries/success summary fields.
 
     Validate the whole immutable stream, including samples beyond cutoff, then
@@ -60,6 +66,9 @@ def replay(events, orders, pin, *, cutoff=None):
     """
     from harness import zone_study_referee as zr
     validate_policy(pin)
+    expected = trial_key(evidence_key)
+    if trial_key(source_key) != expected:
+        raise ValueError('INVALID: raw source/trial key conflict')
     if not isinstance(events, list) or not events:
         raise ValueError('INVALID: raw referee event log missing')
     if any(not isinstance(r, dict) or type(r.get('seq')) is not int for r in events):
@@ -68,7 +77,9 @@ def replay(events, orders, pin, *, cutoff=None):
     previous, last = None, None
     ref = None
     for seq, row in enumerate(ordered):
-        payload = {k: v for k, v in row.items() if k not in ('seq', 'previous_sha256', 'sha256')}
+        if trial_key(row.get('evidence_key')) != expected:
+            raise ValueError('INVALID: raw event/source trial key conflict')
+        payload = {k: v for k, v in row.items() if k not in ('seq', 'previous_sha256', 'sha256', 'evidence_key')}
         if (row['seq'] != seq or row.get('previous_sha256') != previous
                 or row.get('sha256') != digest({k: v for k, v in row.items() if k != 'sha256'})):
             raise ValueError('INVALID: referee event duplicate/gap/hash chain conflict')
@@ -77,7 +88,7 @@ def replay(events, orders, pin, *, cutoff=None):
             if (set(payload) != {'event', 'orders', 'static_map'} or payload['event'] != 'orders'
                     or digest(payload['orders']) != digest(orders)):
                 raise ValueError('INVALID: referee order event conflicts with admission')
-            ref = zr.Referee(orders, payload['static_map'])
+            ref = zr.Referee(orders, payload['static_map'], evidence_key=evidence_key)
             continue
         if set(payload) != {'event', 'sim_s', 'items'} or payload['event'] != 'sample':
             raise ValueError('INVALID: unknown referee input event')

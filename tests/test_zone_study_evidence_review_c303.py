@@ -159,7 +159,7 @@ def test_history_reconstruction_keeps_failures_and_recoveries_order_independent(
     from tests.test_zone_study_referee import MAP, at_zone, feed
     record = read(source, 'study/trial_record.json')
     identity = record['evidence_identity']
-    ref = zr.Referee(record['orders'], MAP)
+    ref = zr.Referee(record['orders'], MAP, evidence_key=record['evidence_key'])
     truth = {'box_00': at_zone('A'), 'box_02': at_zone('B'), 'box_05': at_zone('C')}
     feed(ref, 0., 2., truth)
     truth['box_00'] = at_zone('C')

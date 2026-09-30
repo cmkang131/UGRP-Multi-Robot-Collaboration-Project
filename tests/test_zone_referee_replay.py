@@ -42,7 +42,7 @@ def test_12000_generated_replay_vs_summary_invariants(operation):
     pin = plan['referee_policy']
     orders = plan['admitted'][0]['orders']
     for case in range(3000):
-        ref = zr.Referee(orders, MAP)
+        ref = zr.Referee(orders, MAP, evidence_key=plan['admitted'][0]['key'])
         # Initial settle followed by cancellation/recovery, all inside the cap.
         for t in (0., 2.):
             ref.observe(t, {'item-0': at_zone('A'), 'item-1': at_zone('A')})
@@ -65,7 +65,7 @@ def test_12000_generated_replay_vs_summary_invariants(operation):
         baseline = verify_referee_derivations(record, evaluation, raw, identity, pinned_policy=pin)
         assert baseline['success'] is expected_success, (operation, case)
         if operation == 'rebuild':
-            rebuilt = replay.replay(raw['events'], orders, pin)
+            rebuilt = replay.replay(raw['events'], orders, pin, evidence_key=join.key_for(identity), source_key=raw['evidence_key'])
             assert rebuilt.record() == ref.record(), case
         elif operation == 'summary':
             field = ['orders_complete', 'samples', 'last_sample_sim_s', 'departures',
@@ -144,16 +144,18 @@ def test_lazy_writer_needs_no_tensorboard_until_an_event(tmp_path, monkeypatch):
 @pytest.mark.parametrize('break_kind', ['missing', 'moving', 'held', 'lifted'])
 def test_full_settle_window_restarts_on_interruptions(break_kind):
     plan, _ = planned(1, 1)
-    ref = zr.Referee(plan['admitted'][0]['orders'], MAP)
+    ref = zr.Referee(plan['admitted'][0]['orders'], MAP, evidence_key=plan['admitted'][0]['key'])
     ref.observe(0., {'item-0': at_zone('A')})
     row = at_zone('A', **{'missing': {}, 'moving': {'speed': .1},
                          'held': {'held': True}, 'lifted': {'z': .1}}[break_kind])
     ref.observe(1.9, {} if break_kind == 'missing' else {'item-0': row})
     for t in (2., 3.9):
         ref.observe(t, {'item-0': at_zone('A')})
-    assert not replay.replay(ref.record()['events'], ref.orders, plan['referee_policy']).orders_complete()
+    assert not replay.replay(ref.record()['events'], ref.orders, plan['referee_policy'],
+                             evidence_key=plan['admitted'][0]['key'], source_key=ref.record()['evidence_key']).orders_complete()
     ref.observe(4., {'item-0': at_zone('A')})
-    assert replay.replay(ref.record()['events'], ref.orders, plan['referee_policy']).orders_complete()
+    assert replay.replay(ref.record()['events'], ref.orders, plan['referee_policy'],
+                             evidence_key=plan['admitted'][0]['key'], source_key=ref.record()['evidence_key']).orders_complete()
 
 
 def test_offline_counterexamples_do_not_import_tensorboard(tmp_path):
@@ -167,7 +169,8 @@ for name in ('tensorboard', 'mujoco', 'torch', 'sim.multi_masterpi_production'):
 import pytest
 raise SystemExit(pytest.main(['-q', 'tests/test_review_303d.py', 'tests/test_review_303c.py',
     'tests/test_zone_study_evidence_review_c303.py', 'tests/test_zone_study_evidence_review_a303.py',
-    'tests/test_zone_study_evidence_review_f303.py']))
+    'tests/test_zone_study_evidence_review_f303.py', 'tests/test_review_303e.py',
+    'tests/test_zone_referee_ownership.py', '-k', 'not 192']))
 """
     result = subprocess.run([sys.executable, '-c', code], capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr

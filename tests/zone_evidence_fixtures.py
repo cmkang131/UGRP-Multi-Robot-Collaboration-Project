@@ -55,7 +55,7 @@ def raw_source(root, plan, bundle, i, success=True):
     # A successful publication now requires the independent raw referee too.
     # Use pure truth samples, never a world or a copied success declaration.
     from harness import zone_study_referee as zr
-    referee = zr.Referee(orders, MAP)
+    referee = zr.Referee(orders, MAP, evidence_key=j.key_for(identity))
     if success:
         feed(referee, 2., 4., {o['item_ids'][0]: at_zone('A') for o in orders})
     deliveries = referee.trial_rows()

@@ -59,7 +59,7 @@ def published(root, plan, sources):
 
 def redelivery_record(src, release):
     record = read(src, 'study/trial_record.json')
-    ref = zr.Referee(record['orders'], MAP)
+    ref = zr.Referee(record['orders'], MAP, evidence_key=record['evidence_key'])
     feed(ref, 2., 4., {'item-0': at_zone('A'), 'item-1': at_zone('C')})
     feed(ref, 5., 6., {'item-0': at_zone('A', held=True), 'item-1': at_zone('C')})
     feed(ref, 6.1, 8.1, {'item-0': at_zone('A', held=True), 'item-1': at_zone('A')})
@@ -94,7 +94,7 @@ def test_failed_final_referee_cannot_join_an_earlier_success_window(tmp_path, en
     bad = raw_source(tmp_path, plan, bundle, 0)
     good = raw_source(tmp_path, plan, bundle, 1)
     record = read(bad, 'study/trial_record.json')
-    ref = zr.Referee(record['orders'], MAP)
+    ref = zr.Referee(record['orders'], MAP, evidence_key=record['evidence_key'])
     feed(ref, 2., 4., {'item-0': at_zone('A')})
     feed(ref, 6., 8., {'item-0': at_zone('C')})
     assert not ref.orders_complete()
