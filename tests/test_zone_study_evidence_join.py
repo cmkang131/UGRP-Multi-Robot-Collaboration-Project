@@ -134,17 +134,27 @@ def raw_source(root, plan, bundle, i, success=True):
     admitted = plan['admitted'][i]
     identity, orders = admitted['identity'], admitted['orders']
     src = root / identity['run_id']
-    deliveries = [{'item_id': o['item_ids'][0], 'kind': 'cyan', 'zone': 'A',
-                   'sim_s': 2., 'correct': True} for o in orders] if success else []
+    # A successful publication now requires the independent raw referee too.
+    # Use pure truth samples, never a world or a copied success declaration.
+    from harness import zone_study_referee as zr
+    from tests.test_zone_study_referee import MAP, at_zone, feed
+    referee = zr.Referee(orders, MAP)
+    if success:
+        feed(referee, 2., 4., {o['item_ids'][0]: at_zone('A') for o in orders})
+    deliveries = referee.trial_rows()
     record = metric_trial(condition='no_comm', scenario='synthetic', seed=i, orders=orders,
                           deliveries=deliveries, horizon=12., end_sim_s=5., model={}, requests=[], provenance={},
                           end_reason='orders_complete' if success else 'host_error')
     record.update(trial_id=identity['trial_id'], evidence_identity=identity, record_complete=True,
                   failure_class=None if success else 'infra:HOST_ERROR')
     record['referee']['status'] = 'evaluated'
+    record['referee']['departed_unsettled'] = []
     metrics = ev.efficiency_metrics(record)
     assert metrics['success'] is success
     put(src, 'study/trial_record.json', record)
+    (src / 'study/dispatch.jsonl').write_text('')
+    (src / 'study/inputs.jsonl').write_text('')
+    put(src, 'eval_only/referee.json', referee.record())
     put(src, 'eval_only/evaluation.json', {**metrics, 'orders': per_order_evaluation(record),
                                           'evidence_identity': identity})
     terminal = {'end_reason': record['end_reason'], 'end_sim_s': record['end_sim_s'],
@@ -153,6 +163,7 @@ def raw_source(root, plan, bundle, i, success=True):
                             'evidence_kind': 'synthetic', 'evidence_identity': identity, 'condition': 'no_comm',
                             'episode': identity['episode_id'], 'scenario': 'synthetic', 'seed': i,
                             'bundle_sha256': digest(bundle), 'terminal': True, 'sim_horizon_s': 12.,
+                            'eval_only': {'evaluation': json.loads((src / 'eval_only/evaluation.json').read_text())},
                             'study': terminal, 'failure_class': record['failure_class']})
     put(src, 'manifest.json', {'schema': 'ugrp.zone_study_integration_run.v1', 'run_id': identity['run_id'],
                               'bundle': bundle, 'bundle_sha256': digest(bundle), 'evidence_identity': identity,

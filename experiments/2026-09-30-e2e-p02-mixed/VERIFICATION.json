@@ -1,0 +1,188 @@
+{
+  "schema": "ugrp.p02_offline_verification.v1",
+  "base_sha": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
+  "source_commit": "c76e67dbc8c4d97cd96447ed7d9d4b344c2dd869",
+  "source_files_sha256": {
+    "configs/zone_study_integration/mixed_cyan_beam_fixed_r12_r3_dev.json": "02cf0dee623b34fc396586808798238f8f5f4d280bd845d7ffeea1effcb09a3b",
+    "configs/zone_study_integration/mixed_jobs_dev_spec.json": "49b84954f70706c8ce4769ab1f748a3c81c8627fbc8cf34c23574b1748d5f026",
+    "harness/zone_mixed_jobs.py": "731ac2878bf31b128fb8e5cd5783df3af8fa6430c3bc7d9b380f061c8db0f9bc",
+    "harness/zone_own_team_host.py": "43402dd94ae925c15b687182c20c630a77615507f434e83ec72881c3a1877c83",
+    "harness/zone_study_integration.py": "c8dcb2e8e351ce6abfe46c3e75ac21560f4b1d5972be865672332c2859ea65a8",
+    "scripts/run_ci_tests.py": "0a410354b3c02c6f7c9bae793500b09279282980c50de8ab7631584c946d46ce",
+    "scripts/run_zone_study_integration.py": "4a61c2920d298c7640e633bad3af38ad542719486c1cde452b5ed9d6ec8d5cb1",
+    "sim/zone_mixed_inventory.py": "94feb5898caf48d115f314e373e2d045772662425ed6bcd1ca56fe32517f5139",
+    "tests/test_zone_mixed_jobs.py": "7ee1da61f4d68c3ce580389d1818b725c38142737381f755adfeb4dbea69b138"
+  },
+  "environment": {
+    "python": "3.12.13",
+    "pytest": "9.1.1",
+    "numpy": "2.5.2",
+    "environment_path": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac"
+  },
+  "lock": "scripts.run_ci_tests.run_locked with primary outputs/agent-locks; normal acquire/release",
+  "test_files": [
+    "tests/test_zone_mixed_jobs.py",
+    "tests/test_zone_study_integration.py",
+    "tests/test_zone_study_integration_pair.py",
+    "tests/test_zone_study_integration_seams.py",
+    "tests/test_zone_pair_executor.py",
+    "tests/test_zone_study_inputs.py",
+    "tests/test_zone_study_source_pinning.py"
+  ],
+  "runs": [
+    {
+      "label": "initial: NaN rejected late; fake host used default tag PF",
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p02-mixed/pytest-initial.xml",
+      "sha256": "bfec0a035b206829dc8eba639013da23ef05aba69bdf57f7eb9b449b135bb635",
+      "tests": 254,
+      "failures": 7,
+      "errors": 0,
+      "skipped": 0,
+      "duration_s": 72.479
+    },
+    {
+      "label": "repair 1: fake provider did not satisfy registered-provider identity",
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p02-mixed/pytest-final.xml",
+      "sha256": "d9d08fd340a6b73e6404ebe2ecd6b9fa290a75cdb35b02791cbd7686637e3a9f",
+      "tests": 254,
+      "failures": 6,
+      "errors": 0,
+      "skipped": 0,
+      "duration_s": 76.547
+    },
+    {
+      "label": "repair 2: own-port tap bypass left no call snapshots/readiness",
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p02-mixed/pytest-mixed-repair.xml",
+      "sha256": "09649117f9418b62daa95e39814912dd98e1b319a48105196c339e9b490c086a",
+      "tests": 26,
+      "failures": 6,
+      "errors": 0,
+      "skipped": 0,
+      "duration_s": 3.037
+    },
+    {
+      "label": "mixed suite passed with registered fake subclass and real own-port tap",
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p02-mixed/pytest-mixed-port.xml",
+      "sha256": "da9380b736c92684f662f11c95cdca1d7b07390232b359dabb9ecaa37a2fc48c",
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_s": 3.752
+    },
+    {
+      "label": "final complete related suite",
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p02-mixed/pytest-verified.xml",
+      "sha256": "22b37a51686b46efd1edfd05d77ecf7871ca0e69bb552e6a7caa53d499a0e364",
+      "tests": 254,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "duration_s": 99.115
+    }
+  ],
+  "final_result": {
+    "passed": 254,
+    "failed": 0,
+    "skipped": 0
+  },
+  "preserved_files": [
+    {
+      "path": "sim/zone_geometry_scene.py",
+      "sha256": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+      "baseline_equal": true
+    },
+    {
+      "path": "sim/zone_cargo_scene.py",
+      "sha256": "84d1075c3422b0e2c9aa3db6d9b842e042ee780b1989a90146ea854d3ff94c19",
+      "baseline_equal": true
+    },
+    {
+      "path": "harness/zone_pair_executor.py",
+      "sha256": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+      "baseline_equal": true
+    },
+    {
+      "path": "harness/zone_own_executor.py",
+      "sha256": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+      "baseline_equal": true
+    },
+    {
+      "path": "harness/zone_study_inputs.py",
+      "sha256": "179489a24bc76e73a52bebec1f5918b1a1ac0d128480864ae35debf57c007e0a",
+      "baseline_equal": true
+    },
+    {
+      "path": "harness/rgb_execution_bundle.py",
+      "sha256": "93c0d91880b23b1f00d7b0bd3a7491e79ef785ea4dbf2dc561cb3ee89e2b996a",
+      "baseline_equal": true
+    },
+    {
+      "path": "configs/simulation_workflows.json",
+      "sha256": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140",
+      "baseline_equal": true
+    },
+    {
+      "path": "configs/zone_study_integration/i2_pair_long_beam.json",
+      "sha256": "e6282a18068bc8633c0193ddbfc7f343ea8232869cdf242f31543242e95a401f",
+      "baseline_equal": true
+    },
+    {
+      "path": "configs/zone_study_scenarios_v2/s1_normal_mixed_v2.json",
+      "sha256": "8e1e98d936cb1e06c8dbd38fb8cb8bbea08c66f0963ca7a96f5aebe07dc0bd04",
+      "baseline_equal": true
+    },
+    {
+      "path": "configs/zone_study_scenarios_v2/s2_unmapped_blockage_v2.json",
+      "sha256": "59828ecf8c56918dbd52e72cb2deaee3b469c755dd7d1373a821ccc99c2fb6de",
+      "baseline_equal": true
+    },
+    {
+      "path": "configs/zone_study_scenarios_v2/s3_late_rendezvous_v2.json",
+      "sha256": "d49cd32bfaa4446be50d0366c231fb39c4ad801ee3f4e5be080021b0f7c494ce",
+      "baseline_equal": true
+    },
+    {
+      "path": "configs/zone_study_scenarios_v2/s4_narrow_door_standoff_v2.json",
+      "sha256": "eb7fd21d856b8db5673f150754e6d27a0d643d8c07f6263f349ee13bb307793a",
+      "baseline_equal": true
+    },
+    {
+      "path": "configs/zone_study_scenarios_v2/s5_moved_dropped_item_v2.json",
+      "sha256": "6aa1171c158a830bfe2fb4c4958dabe2522144175c40465009c52d77ec9d8e5a",
+      "baseline_equal": true
+    },
+    {
+      "path": "configs/zone_study_scenarios_v2/s6_novel_relation_v2.json",
+      "sha256": "c5930160d4cfff2e6f7e20c1222697dd865498a6c16e01796e8ef6e7132165f1",
+      "baseline_equal": true
+    }
+  ],
+  "fake_comparison": {
+    "seed": 700,
+    "conditions": [
+      "no_comm",
+      "peer_ko",
+      "leader_ko",
+      "structured"
+    ],
+    "gt_top_mutation_pairs": 4,
+    "teacher_access": "blocked in P02 tests"
+  },
+  "physics_runs": 0,
+  "simulator_runs": 0,
+  "renders": 0,
+  "real_model_calls": 0,
+  "teacher_calls": 0,
+  "execution_bundle_id": null,
+  "sealed": false,
+  "full_s1_s6_supported": false,
+  "raw_storage": "local only; XML files not uploaded/backed up remotely",
+  "tensorboard": "no experiment/training/evaluation cohort; shared snapshot/server/UI unchanged",
+  "remaining": [
+    "final environment/model/provider composition",
+    "new runnable/source freeze by coordinator",
+    "independent review",
+    "4 conditions x 1800 SIM seconds physical one-run verification"
+  ]
+}

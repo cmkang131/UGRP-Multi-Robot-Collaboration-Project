@@ -1,8 +1,50 @@
 # 현재 상태와 실행 경로
 
-아래 첫 절은 2026-09-30 진행 요약이고, 그 아래 절은 2026-09-29 진행 요약(그대로 보존)이다. 앞으로의 연구 우선순위와 완료 기준은 [연구 TODO](research_todo.md)(2026-09-26 개정: §0 로드맵, 마일스톤 "E2E 첫 파일럿" 이슈 #216–#226)를 따른다. 통신 효과가 주 질문이며 ACT·Jev·맵 확대는 관련 보조 과제로 구분한다. 아래 검증 수치는 각 기록 당시의 범위를 유지한다.
+아래 첫 절은 2026-09-30 저녁 진행 요약이고, 이전 9/30·9/29 절도 당시 기록 그대로 보존한다. 앞으로의 연구 우선순위와 완료 기준은 [연구 TODO](research_todo.md)(2026-09-26 개정: §0 로드맵, 마일스톤 "E2E 첫 파일럿" 이슈 #216–#226)를 따른다. 통신 효과가 주 질문이며 ACT·Jev·맵 확대는 관련 보조 과제로 구분한다. 아래 검증 수치는 각 기록 당시의 범위를 유지한다.
 
 기준: 2026-09-25, main `80df7f4`에 포함된 기록(아래 9/25 절). 그 아래 절은 적힌 날짜의 기록이다. 9/26 절은 **기록 당시(기준 `1cd9ea1`) 미병합 draft PR의 상태**이며 main의 결과가 아니다. 그 뒤 상당수가 병합되었으므로 최신 상태는 각 PR과 [연구 TODO](research_todo.md)를 따른다. 이 문서는 진입점이며 실험 결과는 연결된 보고서의 실행 SHA·조건에만 적용된다. 새 결과를 병합하면 이 문서와 README의 요약을 함께 갱신한다.
+
+## 2026-09-30 저녁 진행 요약 (22:08 KST 조회)
+
+기준: `origin/main` `ad496486271f441f00eb7d95fbd44dc454999004`와 22:08 KST까지 조회한 PR·검토 댓글. #295 이후 오늘 병합된 PR은 **#295·#296·#297·#298·#300·#304·#306·#313**이다. 열린 PR의 수정 제출과 독립 재검토 완료는 구분한다. 이 절은 기존 기록을 대조한 문서 갱신이며 새 물리·렌더·모델 실행은 없다.
+
+**오늘 아래에 인용한 결과 중 E2E 성공은 없다. 물리 실행 근거는 모두 단계 시험이며, 알려진 사례의 재현을 새 확증으로 세지 않는다. 모형의 예측값도 관측 성공률이 아니다.** 여기서 E2E는 표식 없는 최종 환경에서 출발부터 목적지 방출까지 정답 보정 없이 상태를 이어 수행한 전체 임무를 뜻한다.
+
+### 무엇이 끝났고 무엇이 남았나
+
+| 단계·작업 | 끝난 것과 남은 것 | 증거 수준 | PR |
+|---|---|---|---|
+| 공동 운반 후보의 인수 재생 | `3afc61b0`는 보정 ON **4/10**만 원본과 같아 FAIL. 충돌 여유의 시그마 적용 범위를 맞춘 `3c4fe30e`는 **11/11** 동일(ON 10 + OFF 대조 1), PASS. **구간 0–1의 동등성만** 확인했고 구간 2 이후·확증은 남았다. | 단계 시험 | [#285](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/285), [#292](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/292) 열림 |
+| 옆 방향 끝점 오차 모형 | 60곳의 조건부 기대 통과 **59.14/60(98.56%)**, 계수 불확실성의 90% 대역 **58.32–59.85**. 두 구간에 도달한 뒤 끝점 오차만 예측한다. 파지·접촉·정지·방출·전체 완주를 포함하지 않는다. | 오프라인·예측 | [#306](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/306) 병합; 검토 [#321](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/321) |
+| 확증 판정기·봉인 준비 | 분류기 #299는 **두 차례 차단(BLOCK)**. 접촉 요약의 위반 누락, 잘린 기록 수용, 확정 실패를 저장 오류 재시도로 대체하는 문제가 남았다. 증거가 불완전하면 통과시키지 않는 방식(fail-closed)으로 재설계·재검토 중이다. | 정적·오프라인 | [#299](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/299) 열림 |
+| 최종 환경·표식 없는 위치 추정 | P01 환경 계약은 검토 지적 수정본 제출. P03 위치 제공자는 기존 v6e 소스 고정 검사 실패로 차단 상태. 최종 로봇·카메라·모델·보정 조합의 실제 연결은 남았다. | 정적·오프라인 | P01 [#305](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/305), P03 [#312](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/312) 검토 중 |
+| 혼합 주문·네 조건 대화 | P02는 cyan 상자와 고정 r1/r2 공동 봉의 연결, P05는 모의 다회 대화·원장 계약을 검사했다. 둘 다 지적 수정본 제출. 최종 환경의 실제 혼합 배송·한국어 왕복·상류 사용량 정산은 미검증이다. | 정적·오프라인 | P02 [#307](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/307), P05 [#308](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/308) 검토 중 |
+| 단계 연결·평가·실행 계획 | P04는 종료 기록 모순·재파지 프레임 누락의 검증 보완이 필요하다. P06 평가/기록 연결과 P07 실행 없는 계획 생성기는 수정본 제출. 모의 전이·가짜 자료 검사를 실제 임무 완료로 올릴 수 없다. | 정적·오프라인 | P04 [#316](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/316), P06 [#303](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/303), P07 [#311](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/311) 검토 중 |
+| 정체 감지와 중단 | P08의 기본 OFF 관찰·모의 중단 계약은 병합됐다. D1 사전 등록 #293, 새 정체/정상 자료의 확증, 실제 정지·복구는 남았다. | 정적·오프라인 | P08 [#304](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/304) 병합; [#293](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/293) 열림 |
+| 정식 6시나리오의 기능 범위 | P09 지원 차이 감사는 검토 중이고 s6 순서·회전 설계는 병합됐다. 복도 거절은 수정본 제출; 두 문 경로·남북 빔 자세는 운반자 형상 누락을 잡는 검사 보강이 남았다. 정적 경로가 실제 통과를 뜻하지 않는다. | 정적 | P09 [#302](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/302), [#310](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/310), [#314](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/314), [#315](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/315) 검토 중; [#313](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/313) 병합 |
+| 개체·개수·역할·색상 확장 | 자기 영상의 개체/개수 계약, r3 양끝 역할, 지연·취소 후 명시적 재배정, 빨강/초록 상자 기술을 초안으로 제출했다. 실제 인식·실행기 연결·최종 환경 인수는 남았다. #324는 #323에 의존한다. | 정적·오프라인 | [#320](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/320), [#323](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/323), [#324](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/324), [#325](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/325) 열림 |
+| 연구 절차·자동 검사(CI) | 문헌 조사·관리 지연 측정과 중복 CI 제거·문서 전용 빠른 검증 경로가 병합됐다. 새 봉인의 의존성 계약은 검토 지적 수정본이 제출됐으나 재검토와 #292 연결은 남았다. | 정적·오프라인 | [#295](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/295), [#296](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/296), [#300](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/300) 병합; [#301](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/301) 검토 중 |
+| 디스크·원본 보존 | #297 기록의 후속 정리에서 작업 폴더 49개를 정리하고 무시 자료를 옮겨 보존했다. #309의 원본 보존·감축안은 검토 중이며 학습 입력이 삭제 후보에 포함된다는 차단 지적이 있다. 감축 완료로 세지 않는다. | 정적·오프라인 운영 기록 | [#297](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/297) 병합; [#309](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/309) 열림 |
+| 새 확증·전체 임무 | **확증 완료 없음, E2E 완료 없음.** 준비 감사와 관문만 정리됐으며 작은 개발 연결·정식 스모크·외부 파일럿은 각각 다른 분모다. | 확증·E2E: 미실행 | [#298](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/298) 준비 감사 병합; [이슈 #224](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/224) 열림 |
+
+수치 출처는 [인수 재생 기록](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/cfb5c010ec983f2506cd386b429e043ae0ffa12d/experiments/2026-09-30-pair-v6h-carry/ACCEPTANCE_REPLAY.md)과 같은 커밋의 `acceptance_replay.json`, [옆 오차 분석 §5](../experiments/2026-09-30-l1-lateral-error/README.md), [작업 폴더 정리의 후속 결과](../experiments/2026-09-30-process-review/HOUSEKEEPING.md#claude-side-retire-results-2026-09-30)다. 이 갱신에서 재생 JSON의 사례 수·원본 명령 파일 해시와 예측 JSON의 60곳 확률 합계를 대조했다. **11/11은 임무 성공률이 아니라 명령·구간 기록의 동등성**이며 OFF 대조의 끝점 실패도 원본과 같다는 뜻이다. #306 본문의 `3afc61b0` 정지는 당시 기록이고 후속 인수 PASS는 `3c4fe30e`에만 연결한다. #292의 이후 `4c6b439f`는 입력 고정 목록·설명 수정본이며, 별도 새 물리 재생으로 세지 않는다.
+
+독립 검토 묶음은 [A #319](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/319)(P01/P06/P08), [B #317](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/317)(P02/P05/P09), [C #318](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/318)(복도/P07/P03), [D #322](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/322)(s6/두 문/빔 자세), [E #321](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/321)(P04/옆 오차)다. 위 표의 수정 제출은 작성자의 후속 댓글까지 반영했으며 독립 재검토 통과를 뜻하지 않는다. #299의 [첫 차단](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/299#issuecomment-5910181333)·[재차 차단](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/299#issuecomment-5911439546), #309의 [학습 입력 보호 지적](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/309#issuecomment-5911724580)은 다음 검토에서 해소를 확인해야 한다.
+
+운영 근거는 [절차 문헌 조사](../experiments/2026-09-30-process-review/LITERATURE.md)·[관리 지연 실측](../experiments/2026-09-30-process-review/MEASUREMENTS.md)이다. #296이 측정한 과거 CI 8분할 전후의 시간과 #300의 새 빠른 경로 효과를 같은 측정으로 합치지 않는다. 기존 재생 [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E0930-v6h1-acceptance-3c4fe30e-replay%2F#timeseries)는 `0930-v6h1-acceptance-3c4fe30e-replay` 스냅샷이다. 저장된 뷰 기록은 이벤트·서버 API 로딩 확인과 브라우저 그래프 선택 문제를 구분한다. 이 문서 작업에서는 재변환·재표시하지 않았고, 원본은 로컬 보관이며 원격 백업이 아니다.
+
+### 다음 관문
+
+[준비 감사 #298의 C0–C7](../experiments/2026-09-30-e2e-readiness/READINESS.md#42-의존성과-중단-조건)을 따른다. **P01–P09 중 병합된 것은 P08의 계약 범위뿐**이며 C0 전체는 아직 닫히지 않았다. 아래 실행은 남은 일의 순서이고 실행 승인이나 완료 기록이 아니다.
+
+1. **C0 — 최종 구성과 판정부터 고정.** 열린 수정본의 독립 재검토·필수 CI를 마치고 P01–P09를 합친다. #299의 fail-closed 판정과 #292 기록기/입력 형식·추적 범위를 맞추고, #301을 쓴다면 실제 의존성까지 검증한 뒤 새 소스·배치·실행 묶음(bundle)을 봉인한다. 탐색·인수 자료와 새 확증 자료는 분리한다.
+2. **C1 — 실제 출발 연결 확인.** 최종 지도·로봇·카메라·위치 제공자·모델·보정을 같은 구성으로 맞춘 뒤 초기화→접근→정렬→파지·재측위를 확인한다. 정답 근처에서 시작한 단계 시험의 상태를 실제 접근의 상태로 대신하지 않는다.
+3. **C2 — 인수 뒤 최종 연쇄 확인.** 구간 0–1의 11건 동등성 다음에는 앞 구간에서 실제로 얻은 상태로 문·목적지 연쇄를 검증한다. 구간 2 이후와 최종 구성은 아직 확인되지 않았다. 옆 오차 예측만으로 통과시키지 않는다.
+4. **C3 — 정체를 감지하고 실제로 중단.** D1 #293의 독립 검토·봉인 후 새 정체 30건/정상 60구간과 별도 중단 흐름 3건을 확인한다. P08 모의 중단 통과나 p2f를 실제 정체 감지·복구 성공으로 세지 않는다.
+5. **C4 — 최종 후보의 단독·공동 기술 재검증.** C2·C3 뒤 같은 후보로 M1 배송 새 6회와 M2 공동 운반 새 6회를 수행한다. 전체 구간과 실패·미도달을 분모에 남기고 거짓 성공이 없는지 검사한다.
+6. **C5 — 작은 혼합 임무를 네 조건에 연결.** 같은 초기 상태의 고정 결정 4회(C5a) 뒤 실제 다회 한국어 4회(C5b)를 별도로 확인한다. 상자와 봉의 실제 배송, 통신 왕복, 호출·사용량 원장, 평가·영상·TensorBoard를 같은 실행에 연결한다.
+7. **C6 — 정식 스모크 24회.** P09의 개체·개수·화물·역할·경로·사건 지원을 먼저 검증한 뒤 정식 6시나리오 × 4조건의 no-LLM 시험을 한다. s2/s3/s5 사건이 실제로 성립했는지도 확인한다. C5의 작은 시나리오로 대체하지 않는다.
+8. **C7 — 범위를 고정한 실제 LLM 파일럿.** 준비 감사의 최소 검토용 24회 제안과 본연구 초안의 6시나리오 × 3seed × 4조건 = 72회 외부 파일럿을 구분해 선택·고정한다. 실패·비용·미상 사용량과 실제 대화 효과를 보고하며, 24회로 72회 설계를 완료했다고 하지 않는다.
 
 ## 2026-09-30 기준 진행 요약 (main `af96f664`, PR #278–#284·#286 병합 뒤)
 

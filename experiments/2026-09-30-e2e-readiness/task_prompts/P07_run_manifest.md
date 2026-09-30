@@ -4,6 +4,9 @@ UGRP의 [READINESS §4](../READINESS.md)를 실제 검토 가능한 실행 계�
 
 **범위:** 실행 없는 manifest/사전 등록 초안과 admission 검사를 작성한다. 물리/시뮬레이션/렌더/비전 추론/LLM 호출/worker 시작/실제 DB 생성 금지. `execute` 기능을 만들거나 승인·봉인 값을 채우지 않는다. 기존 사전 등록·bundles는 byte 보존한다.
 
+위 실행 제한은 로컬 작업에 적용한다. 정상 GitHub CI는 허용되며 필수다.
+CI를 취소하거나 skip 커밋 표기를 사용하지 않는다.
+
 읽을 자료:
 
 - `experiments/2026-09-28-main-study-prereg-draft/PREREG_DRAFT.md`(#254)

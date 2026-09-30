@@ -1,6 +1,7 @@
 """Evaluation-only joins for P06 evidence; never a robot input or run admission."""
 import json
 import hashlib
+import math
 from pathlib import Path
 
 from harness import zone_study_eval as ev
@@ -177,37 +178,89 @@ def seal_new_evidence(root, plan, plan_sha256):
 
 
 def verify_referee_derivations(record, evaluation, referee, identity):
-    """Recompute history-derived counts, not just compare copied declarations."""
-    if 'departures' not in evaluation and 'departed_unsettled_items' not in evaluation:
-        return
+    """Rebuild the outcome from raw history, independent of optional aggregates.
+
+    Trial/evaluation fields are redundant claims, never the success authority.
+    A pre-referee failure may have no history, but cannot report any delivery.
+    """
     if not isinstance(referee, dict):
+        metrics = ev.efficiency_metrics(record)
+        if (referee is None and not record['referee'].get('deliveries')
+                and not metrics['success'] and not evaluation.get('success')
+                and (record['referee'].get('status') == 'not_evaluated'
+                     or record.get('end_reason') in ('host_error', 'api_failure', 'interrupted', 'aborted'))):
+            return metrics
         raise ValueError('INVALID: referee history is missing')
     join.validate_envelope(referee, identity, record['orders'])
     if (referee.get('evidence_identity') != identity or referee.get('plan_sha256') != record['plan_sha256']):
         raise ValueError('INVALID: referee history identity/plan mismatch')
-    history = referee.get('history')
-    if not isinstance(history, list):
-        raise ValueError('INVALID: referee history is not a relation')
+    required = {'history', 'standing', 'deliveries', 'orders', 'orders_complete',
+                'completion_sim_s', 'departed_unsettled', 'last_sample_sim_s', 'profile'}
+    if not required <= referee.keys() or type(referee['orders_complete']) is not bool:
+        raise ValueError('INVALID: required raw referee outcome fields are missing/invalid')
+    def canonical(rows):
+        return join.canonical_referee_rows(rows, identity, record['orders'])
+    history = canonical(referee['history'])
     seen, last = set(), {}
     def observed(row):
         return row['confirmed_sim_s'] if row.get('event') == 'confirmed' else row['sim_s']
+    last_sample = referee['last_sample_sim_s']
+    if (last_sample is not None and (type(last_sample) not in (int, float)
+            or not math.isfinite(last_sample) or last_sample < 0)) or (history and last_sample is None):
+        raise ValueError('INVALID: referee last sample time is missing/invalid')
+    # Chronology determines transitions; canonical full keys break timestamp ties.
     for row in sorted(history, key=observed):
+        if (row.get('event') not in ('confirmed', 'departed')
+                or any(type(row.get(k)) is not str or not row[k] for k in ('item_id', 'kind'))
+                or type(row.get('sim_s')) not in (float, int) or not math.isfinite(row['sim_s'])
+                or row['sim_s'] < 0 or type(observed(row)) not in (float, int)
+                or not math.isfinite(observed(row))
+                or observed(row) < row['sim_s'] or observed(row) > last_sample):
+            raise ValueError('INVALID: referee event/item/time fields are missing/invalid')
         pk = (row.get('item_id'), observed(row))
         if pk in seen:
             raise ValueError('INVALID: duplicate referee history key')
         seen.add(pk)
+        previous = last.get(row['item_id'])
+        if previous and previous['kind'] != row['kind']:
+            raise ValueError('INVALID: referee item kind conflict')
+        if row['event'] == 'departed':
+            if (not previous or previous['event'] != 'confirmed' or row.get('zone') is not None
+                    or row.get('from_zone') != previous['zone']):
+                raise ValueError('INVALID: orphan/conflicting referee departure')
+        elif (row.get('zone') not in ('A', 'B', 'C')
+              or (previous and previous['event'] == 'confirmed')):
+            raise ValueError('INVALID: conflicting referee confirmation')
         last[row['item_id']] = row
+    standing = {item: row for item, row in last.items() if row['event'] == 'confirmed'}
+    confirmations = [row for row in history if row['event'] == 'confirmed']
     departures = sum(r['event'] == 'departed' for r in history)
     unsettled = [r for _, r in sorted(last.items()) if r['event'] == 'departed']
     deliveries = [{k: row[k] for k in ('item_id', 'kind', 'zone', 'sim_s', 'confirmed_sim_s')}
-                  for row in history if row['event'] == 'confirmed' and row['item_id'] in referee['standing']]
-    checks = [(evaluation.get('departures'), departures),
-              (evaluation.get('departed_unsettled_items'), len(unsettled)),
-              (referee.get('departures'), departures), (referee.get('departed_unsettled'), unsettled),
-              (record['referee'].get('deliveries'), deliveries),
-              (record['referee'].get('departed_unsettled'), unsettled),
-              (evaluation.get('t0_sim_s'), record.get('t0_sim_s')),
-              (evaluation.get('end_sim_s'), record.get('end_sim_s')),
-              (evaluation.get('referee_profile_sha256'), referee.get('profile', {}).get('sha256'))]
+                  for row in confirmations if row['item_id'] in standing]
+    # Raw referee order counts use the last observed state without the trial's
+    # success backdating or budget window. Evaluation then applies that window.
+    final = {'orders': record['orders'], 't0_sim_s': 0., 'end_sim_s': last_sample or 0.,
+             'referee': {'deliveries': [{k: row[k] for k in ('item_id', 'kind', 'zone', 'sim_s')}
+                                         for row in standing.values()]}}
+    state = ev.delivery_state(final)
+    complete = bool(standing) and state['orders_complete']
+    completion = max(d['sim_s'] for d in state['delivered'].values()) if complete else None
+    checks = [(referee['standing'], standing), (referee['orders'], per_order_evaluation(final)),
+              (referee['orders_complete'], complete), (referee['completion_sim_s'], completion),
+              (canonical(referee['deliveries']), canonical(confirmations)),
+              (canonical(referee['departed_unsettled']), canonical(unsettled)),
+              (canonical(record['referee'].get('deliveries')), canonical(deliveries)),
+              (canonical(record['referee'].get('departed_unsettled')), canonical(unsettled))]
+    # These copies are optional statistics. Their absence never skips the raw
+    # outcome check; if supplied, every value must agree with the derivation.
+    for envelope, values in ((referee, {'departures': departures}), (evaluation, {
+            'departures': departures, 'departed_unsettled_items': len(unsettled),
+            't0_sim_s': record.get('t0_sim_s'), 'end_sim_s': record.get('end_sim_s'),
+            'referee_profile_sha256': referee['profile'].get('sha256')})):
+        checks.extend((envelope[k], v) for k, v in values.items() if k in envelope)
     if any(digest(actual) != digest(expected) for actual, expected in checks):
         raise ValueError('INVALID: referee history/trial/derived numbers conflict')
+    raw_record = {**record, 'referee': {**record['referee'], 'deliveries': canonical(deliveries),
+                                      'departed_unsettled': canonical(unsettled)}}
+    return ev.efficiency_metrics(raw_record)

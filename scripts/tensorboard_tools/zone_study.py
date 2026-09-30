@@ -140,7 +140,10 @@ def export_study(src, w, result, max_images):
     nested = result.get('eval_only', {}).get('referee')
     if nested is not None and digest(nested) != digest(referee):
         raise ValueError('INVALID: embedded referee history conflicts with its source')
-    verify_referee_derivations(record, evaluation, referee, identity)
+    raw_metrics = verify_referee_derivations(record, evaluation, referee, identity)
+    if digest(raw_metrics) != digest(metrics):
+        raise ValueError('INVALID: raw referee outcome conflicts with trial metrics')
+    metrics = raw_metrics
     if 'study/study_config.json' in src.files:
         config = src.read('study/study_config.json', required=True)
         for key in ('seed', 'condition', 'order_sheet_sha256'):

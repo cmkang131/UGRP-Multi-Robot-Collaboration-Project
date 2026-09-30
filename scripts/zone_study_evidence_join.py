@@ -126,6 +126,45 @@ def validate_envelope(envelope, identity, orders):
         raise ValueError('INVALID: duplicate/missing/orphan order foreign key')
 
 
+def row_key(row, identity, order_id=TRIAL_SCOPE):
+    """Resolve a legacy row only after checking every declared key column.
+
+    Legacy run_id denotes the logical trial. An explicit evidence_key uses the
+    physical run_id, as in the frozen plan. Never overwrite either declaration.
+    """
+    if not isinstance(row, dict):
+        raise ValueError('INVALID: internal row is not an object')
+    expected = key_for(identity, order_id)
+    for field in KEY_FIELDS:
+        value = identity['trial_id'] if field == 'run_id' else expected[field]
+        if field == 'order_id' and order_id == TRIAL_SCOPE:
+            value = None
+        if field in row and digest(row[field]) != digest(value):
+            raise ValueError(f'INVALID: declared internal {field} conflicts with admission')
+    if 'evidence_key' in row and key_tuple(row['evidence_key']) != key_tuple(expected):
+        raise ValueError('INVALID: declared internal composite key conflicts with admission')
+    return key_tuple(expected)
+
+
+def canonical_referee_rows(rows, identity, orders):
+    """A relation has no list-position identity; retain duplicates for rejection."""
+    if not isinstance(rows, list):
+        raise ValueError('INVALID: referee rows are not a relation')
+    def sort_key(row):
+        if not isinstance(row, dict):
+            raise ValueError('INVALID: referee row is not an object')
+        named = [o['order_id'] for o in orders if row.get('item_id') in o.get('item_ids', [])]
+        oid = named[0] if len(named) == 1 else row.get('order_id') or TRIAL_SCOPE
+        if oid != TRIAL_SCOPE and oid not in {o['order_id'] for o in orders}:
+            raise ValueError('INVALID: referee order key is orphaned')
+        key = row_key(row, identity, oid)
+        time = row.get('confirmed_sim_s', row.get('sim_s')) if row.get('event') != 'departed' else row.get('sim_s')
+        if type(time) not in (int, float) or not math.isfinite(time):
+            raise ValueError('INVALID: referee time is missing/nonfinite')
+        return (*key, time, row.get('item_id', ''), digest(row))
+    return sorted(rows, key=sort_key)
+
+
 def validate_internal(record, identity, auxiliary=None):
     """Validate old log IDs BEFORE assigning new keys; never relabel foreign rows.
 
@@ -142,14 +181,11 @@ def validate_internal(record, identity, auxiliary=None):
     complete = record.get('record_complete', True)
     declared_rows = [*calls.values(), *requests.values(), *actions.values(), *messages.values(),
                      *record.get('referee', {}).get('deliveries', [])]
-    for name in ('dispatch', 'inputs', 'model_calls'):
+    for name in ('inputs', 'model_calls'):
         declared_rows.extend(auxiliary.get(name, []))
     declared_rows.extend(auxiliary.get('send_ledger', {}).get('entries', []))
     for row in declared_rows:
-        for field, expected in (('run_id', identity['trial_id']), ('trial_id', identity['trial_id']),
-                                ('condition', identity['condition']), ('seed', identity['seed'])):
-            if field in row and digest(row[field]) != digest(expected):
-                raise ValueError(f'INVALID: declared internal {field} conflicts with admission')
+        row_key(row, identity, row.get('order_id') or TRIAL_SCOPE)
         if row.get('order_id') is not None and row['order_id'] not in orders:
             raise ValueError('INVALID: declared internal order foreign key is orphaned')
     for table in (calls, actions, messages):
@@ -205,7 +241,15 @@ def validate_internal(record, identity, auxiliary=None):
     for row in actions.values():
         if row.get('order_id') is not None and row['order_id'] not in orders:
             raise ValueError('INVALID: action references an orphan order')
+    # Empty early-failure records need no fabricated rows. Once a relation has
+    # consumers, losing its entire source table is still a missing foreign key.
+    complete_relations = complete and (calls or record.get('end_reason') not in
+        ('host_error', 'api_failure', 'interrupted', 'aborted', 'not_evaluated'))
+    for name, consumers in (('dispatch', actions), ('inputs', requests)):
+        if (consumers or complete_relations) and name not in auxiliary:
+            raise ValueError(f'INVALID: missing required {name} table')
     if 'dispatch' in auxiliary:
+        from harness.zone_study_offline import _action_row
         dispatch = unique(auxiliary['dispatch'], 'call_id', 'dispatch')
         expected = {requests[rid]['call_id'] for rid in action_requests}
         if set(dispatch) != expected:
@@ -213,6 +257,13 @@ def validate_internal(record, identity, auxiliary=None):
         for cid, row in dispatch.items():
             request = request_calls[cid]
             action = action_requests[request['request_id']]
+            kind, arguments, oid, role = _action_row(row['action'])
+            dispatch_key = row_key(row['action'], identity, oid or TRIAL_SCOPE)
+            if (row_key(row, identity, oid or TRIAL_SCOPE) != dispatch_key
+                    or dispatch_key != row_key(action, identity, action.get('order_id') or TRIAL_SCOPE)
+                    or digest([kind, arguments, oid, role]) != digest(
+                        [action['kind'], action['arguments'], action.get('order_id'), action.get('role')])):
+                raise ValueError('INVALID: dispatch/action composite key or content conflict')
             if row.get('actor') != action['actor'] or row.get('sim_s') != action['submitted_at_sim_s']:
                 raise ValueError('INVALID: dispatch actor/time conflict')
     if 'inputs' in auxiliary:
@@ -220,8 +271,29 @@ def validate_internal(record, identity, auxiliary=None):
         if set(inputs) != set(requests):
             raise ValueError('INVALID: input/request join is not one-to-one')
         for rid, row in inputs.items():
-            if row.get('robot') != requests[rid].get('robot'):
-                raise ValueError('INVALID: input/request robot conflict')
+            request, call = requests[rid], calls[rid]
+            body = strict_json(request['user'])
+            if (row_key(row, identity) != row_key(request, identity)
+                    or row.get('robot') != request.get('robot')
+                    or digest(row.get('sim_s')) != digest(body.get('sim_time_s'))
+                    or digest(row.get('sim_s')) != digest(call.get('requested_at_sim_s'))):
+                raise ValueError('INVALID: input/request composite key, robot or time conflict')
+            frame_index = row.get('frame_index')
+            if type(frame_index) is not int or frame_index < 0:
+                raise ValueError('INVALID: missing/invalid input frame index')
+            frame = {'kind': 'own_wrist_rgb', 'ref': f'own-{row["robot"]}-{frame_index:04d}',
+                     'captured_at_sim_s': row.get('frame_t'), 'sha256': row.get('frame_sha256')}
+            refs = body.get('own_rgb_refs', [])
+            images = request.get('image_refs', [])
+            own_images = [image for image in images if image.get('ref') == frame['ref']]
+            if (digest(refs) != digest([frame]) or not images
+                    or len(own_images) != 1
+                    or any(digest(own_images[0].get(k)) != digest(v) for k, v in (
+                        ('bytes_sha256', frame['sha256']), ('sha256', frame['sha256']),
+                        ('captured_at_sim_s', frame['captured_at_sim_s'])))
+                    or row.get('history_entries') != len(body.get('own_command_history', []))
+                    or row.get('inbox_ids') != [m['message_id'] for m in body.get('inbox', [])]):
+                raise ValueError('INVALID: input/request frame or content conflict')
     ledger = auxiliary.get('send_ledger')
     if ledger is not None:
         entries = unique(ledger.get('entries'), 'seq', 'transport entries')
@@ -275,8 +347,11 @@ def record_index(record, identity, auxiliary):
         keyed = []
         for row in rows:
             oid = row['order_id'] if name == 'order' else row.get('order_id') or TRIAL_SCOPE
+            if name == 'dispatch':
+                from harness.zone_study_offline import _action_row
+                oid = _action_row(row['action'])[2] or TRIAL_SCOPE
             keyed.append({'key': key_for(identity, oid), 'row_id': row[field], 'sha256': digest(row)})
-        tables[name] = sorted(keyed, key=lambda row: str(row['row_id']))
+        tables[name] = sorted(keyed, key=lambda row: (key_tuple(row['key']), str(row['row_id']), row['sha256']))
     messages = {row['message_id']: row for row in record.get('messages', [])}
     edges = []
     for call in record.get('calls', []):
