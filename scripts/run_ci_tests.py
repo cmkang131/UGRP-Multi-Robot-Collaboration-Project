@@ -146,6 +146,7 @@ TEST_PATTERNS = (
     "tests/test_classify_review_299b.py",
     "tests/test_classify_review_299c.py",
     "tests/test_classify_review_299d.py",
+    "tests/test_classify_review_299g.py",  # public/synthetic chronology; no blinded raw
     "tests/test_v6h_recorder_contract.py",  # pinned recorder consumer contract; JSON only
     "tests/test_v6h_classifier_properties.py",  # 10,000 seeded evidence chains; no physics
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)

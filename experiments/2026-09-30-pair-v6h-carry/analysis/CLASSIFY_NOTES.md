@@ -1,4 +1,4 @@
-# v6h 판정기 — 등록 recorder 계약 반영 v5
+# v6h 판정기 — 등록 recorder 계약 반영 v6
 
 PR #299 세 번째 독립 검토(`d1c64f85`, 검토 대상 `f32d5fd9`)의 R1–R5와
 조정자의 D1–D5 결정을 반영한다. v3의 **새 필드 소급 필수화와 INVALID→FAIL 대치**를
@@ -8,6 +8,11 @@ PR #299 세 번째 독립 검토(`d1c64f85`, 검토 대상 `f32d5fd9`)의 R1–R
 4차 검토(`a0903178`, 검토 대상 `58dc07e7`)의 두 P1도 같은 D1–D5 안에서
 보완했다. 등록 recorder가 실제로 저장하는 원 좌표·시작 기록·시각 순서를
 거리/경계 요약과 대조한다. 없는 계측값을 새로 요구하지 않는다.
+
+후속 검토 `34242f27`의 299g-R1(대상 `3a136bc8`)은 실행 전 entry·제출 예약과
+운반 시작 사이의 누락된 순서를 보완한다. 반례 5개의 현재 후보 xfail을 해제하고
+공개/합성 자료만으로 수정했다. 이 변경은 블라인드 결과를 보거나 admission을
+승인한 기록이 아니다.
 
 ## R1 / D1: 실제 생산자와 소비자의 계약
 
@@ -73,6 +78,51 @@ manifest의 `finished`는 파일 완료 메타데이터이며 과제 성공 증�
 이 입력 경로는 실행 당시 미봉인 상태를 등록 실행으로 소급 승격하지 않는다.
 per-case 증거 검사는 엄격한 모드로 수행하지만 전체 A/B 확증 판정은
 `NOT_EVALUABLE`로 유지하고, `--sealed-manifest`와의 혼용은 거부한다.
+
+### 2026-10-01: 별도 드라이버·미봉인 입장 상태의 공개 기록
+
+검토 `REVIEW_299g_astra.md`(커밋 `34242f27`)가 요구한 공개 내용이다.
+등록 계획의 `scripts.run_pair_stage_probes --prereg` 대신 별도 드라이버가
+worker를 호출한 실행 경로와 등록 시점의 차이를 명시한다. 같은 worker라는
+설명만으로 이 차이를 생략하지 않는다. 아래 내용은 **커밋 메타데이터의 진술과
+소비자 연결 검사**이며, 드라이버 본문·실제 블라인드 명령 동등성 검증이 아니다.
+
+- 실제 실행 source는 `4c6b439f3f7c9a147c901f8b260a1e214d4eb396`이다.
+  드라이버는 표준 runner의 `--prereg` 입장 경로를 거치지 않고 같은 모듈의
+  worker를 호출했다고 기록됐다. driver 전체 SHA-256은
+  `7a35229e431409904dffec27b5e9572f290cd900f0595c8e0babc5ef92cf3e56`이다.
+  로컬 보존 위치는 manifest의 `raw.path`를 고정 참조하되 그 경로를 따라가지
+  않았다. 정확한 driver 파일 위치·호출 진입점·표준 runner 대비 역할 차이와
+  실제 파일 해시는 조정자가 봉인/개봉 전에 별도 확인·기록해야 한다.
+- 실행 당시 **`--prereg` 없음, `prereg_v6h.json` 미봉인,
+  계획에서 `registration_run_id` 제외, `unsealed_stage_probe`**였다.
+  메타데이터상 실행은 2026-09-30 23:06:29–2026-10-01 00:55:10 KST이고,
+  메타데이터 커밋 `e78ef70f`는 2026-10-01 00:56:00 KST다.
+  판정기 봉인·개봉의 실제 시각과 선후관계는 후속 prereg/seal 변경 기록에
+  남겨야 한다. 이 수정에서 두 절차를 수행하지 않았다. 새 봉인은 과거 실행에
+  registration receipt나 사전 등록 이력을 소급 생성하지 않는다. 향후 입장 자격은
+  이 실행 경로와 한계를 포함한 별도 결정이며, 분류기 병합과 구분한다.
+- 전체 72개 case ID·case별 command hash의 고정 참조는 위 커밋의
+  `experiments/2026-10-01-v6h1-confirm-blinded/RUN_MANIFEST.json`이다.
+  전체 manifest SHA-256은
+  `99723de36d20a55f348ea5b25ca203cf1db910dd9a620d3a8c4a17f27407f210`,
+  같은 위치 `plan.json` 전체 SHA-256은
+  `d627f9cda827d07bab5b86c04f9e45ffceb474e97a8dda566c4956372d5fb026`이다.
+  주 시드 941×60곳·보조 943×첫 12곳·재실행 0은 기록된 메타데이터이며,
+  허용된 HOST 재시도 규칙을 실제로 사용했다는 뜻이 아니다. 누락은 미분류,
+  모순·계획 밖 기록은 INVALID로 처리하고 60곳/72슬롯 분모를 유지한다.
+- 기록된 설정은 b-v6h1/axial lag ON, teacher-held 진입의 chain L0–L1 종료,
+  SIM, weld OFF, 모델 호출 0, floor_light_v1, PF/contact ON,
+  800 SIM초/1500 wall초 예산, workers 4/OMP 1과 plan의 개별 설정이다.
+  이 경로의 검사를 E2E 또는 실물 성공으로 확대하지 않는다.
+- 최종 classifier/adapter의 봉인 SHA·파일 hash와 고정 D1–D5 규칙을
+  후속 prereg/seal에 연결해야 한다. 이번 수정의 코드 hash·공개 acceptance·
+  과거 탐색 대조는 `review_299g_fix_validation/`에 별도로 기록한다.
+  이 수정·검토에 블라인드 결과는 사용하지 않았으며, 공개 11건·과거 308건의
+  재분류는 새로운 확증 자료가 아니다.
+
+이 공개 기록은 조정자의 prereg/seal 변경 기록을 대신하지 않는다. 봉인·개봉과
+미봉인 실행의 향후 입장 자격 결정은 이번 PR 수정 범위 밖의 남은 일이다.
 판정기 정의의 봉인과 실행의 사전 등록은 별개다. 기존 표준 러너의 등록 입력 경로는 유지한다.
 새 테스트는 두 메타데이터 fixture와 새로 생성한 가짜 per-case 기록만 사용한다.
 공개 11건·과거 308건 대조와 실제 블라인드 코호트 판정은 별도 작업이다.
@@ -173,6 +223,19 @@ wall 창을 evaluation 창 길이만으로 검사하지 않는다.
 로봇 간 비동기 시각, 동시각 상태 전이, robot/경계 dict와 요약 leg 배열 순서
 변경은 허용한다. 기존 trace의 엄격 증가·공백 조건은 바꾸지 않는다.
 HOST except 경로의 termination 부재와 아직 시작하지 않은 leg도 계속 허용한다.
+
+등록 recorder의 `gt_at_entry.t`와 `result.submit_t`/`row.submit_t`도 각 로봇의
+**원 `chain_raw[robot].leg_start[*].sim_s` 중 최초 시각보다 엄격히 앞서야** 한다.
+교사 시각 ≤ entry < submit < 각 로봇의 첫 carry 시작이며, entry/submit이 시작과
+같아도 INVALID/null이다. `submit_t`는 producer가 저장한 SIM 제출 예약 시각이며
+별도의 명령 접수·완료 시각을 만들어 넣지 않는다. row/result 제출 시각의 일치에는
+기존 직렬화 허용오차 1e-9초를 쓰지만 선후관계에는 그 오차를 쓰지 않는다.
+두 제출 시각 사본의 차이가 1e-9초 이내여도 어느 하나가 entry/carry 경계를
+넘거나 경계와 같으면 INVALID다.
+한 로봇이 먼저 시작했는데 더 늦은 로봇의 요약 시작 시각으로 위반이 가려지는 것도
+거부한다. carry가 기록된 경우 entry/submit은 유한한 필수 시각이고, 아직 carry를
+시작하지 못한 HOST 부분 기록에는 미래 제출·경계를 소급 요구하지 않는다.
+양성 하드 위반은 이 모순이 있어도 FAIL_HARD_LIMIT 우선순위를 유지한다.
 
 ## 검증과 범위
 

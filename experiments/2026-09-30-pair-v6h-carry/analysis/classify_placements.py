@@ -952,6 +952,24 @@ def validate_recorder_chronology(row, result, trace):
                 if event is None or abs(event[0] - t) > 1e-9:
                     raise EvidenceError("boundary/timeline timestamp contradiction")
         ordered([t for _, _, t in sorted(boundaries)], rid + " leg boundaries")
+        starts = [t for _, boundary, t in boundaries if boundary == 0]
+        if starts:
+            # The pinned producer snapshots entry, then host.run submits the
+            # command at submit_t before either robot enters its carry window.
+            # Use each raw stream, not the later robot's derived row boundary.
+            # A HOST abort before any carry start need not have these fields.
+            entry = time((result.get("gt_at_entry") or {}).get("t"), "gt_at_entry.t")
+            submit = time(result.get("submit_t"), "result submit_t")
+            row_submit = time(row.get("submit_t"), "row submit_t")
+            if abs(submit - row_submit) > 1e-9:
+                raise EvidenceError("submit source/derived timestamp contradiction")
+            first_start = min(starts)
+            if not entry < first_start:
+                raise EvidenceError(rid + ": gt_at_entry.t must strictly precede carry start")
+            if not submit < first_start or not row_submit < first_start:
+                raise EvidenceError(rid + ": submit_t must strictly precede carry start")
+            if not entry < submit or not entry < row_submit:
+                raise EvidenceError("gt_at_entry.t must strictly precede submit_t")
         done = stream.get("done")
         if done is not None:
             t = time(done.get("sim_s"), rid + " done")

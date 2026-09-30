@@ -26,6 +26,9 @@ def metadata():
 def synthetic_record(case):
     """Fresh perfect geometry/timelines, no public or blinded outcome copied."""
     row, result, trace = base.record(case["cell"], case["seed"])
+    # The registered producer reserves submission 0.2 SIM seconds after entry.
+    # These are synthetic values, never additions to a recorded raw fixture.
+    row["submit_t"] = result["submit_t"] = .2
     row["case_id"] = case["case_id"]
     result.pop("evidence_sha256")
     result.pop("evaluation_coverage")
