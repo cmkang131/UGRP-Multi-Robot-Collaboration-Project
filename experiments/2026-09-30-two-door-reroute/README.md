@@ -29,6 +29,23 @@
   `REQUIREMENTS.md`의 s2와 `TASKS.md` T09a/T09b를 따르며,
   inventory·feasibility·referee는 controller import/input으로 사용하지 않는다.
 
+### CI 대기 중 main 후속 반영
+
+최초 제출 HEAD `6cdfe47515e69d8e44ccbca3f044b8a1fa605385`의 CI
+`36730563767`은 32개 job 통과 후 Ubuntu runtime 한 job이 두 시도 모두
+10분 제한으로 자동 중단됐다. 수동 취소·코드 실패 감추기·원본 삭제는 없었다.
+원본 log/annotation/상태 해시는 `ci_before_main_332.json`에 있다.
+
+그 사이 main에 #307과 **#332**가 병합되어 `26545c2499f94c3f99a5d650f7cc8ea992f24196`이 됐다.
+#332의 Ubuntu simulation 제한 10→15분을 main 그대로 반영했다. T09b 제어기·
+fake 검사·변이 드라이버는 바꾸지 않았고, workflow는 이 최신 main과 동일하다.
+추가된 mixed-job CI glob까지 포함한 통합 회귀·변이를 새 원본에 다시 실행했다.
+이 재검증도 **356 passed, 280 subtests passed**, 필수 봉인 56개 통과와
+동일한 5/5 제거 변이 검출을 확인했다. 소스는 실행 중 불변이었다.
+최신 결과는 `verification_main_26545c24.json`, 기존 source/config/map 보존은
+`protected_sources_main_26545c24.json`(928개 blob 동일)을 따른다.
+출력 복사본은 `latest-main-tests.txt`이며 이전 검증 숫자에 합산하지 않는다.
+
 ## 실제 추가한 동작
 
 `ObservedDoorReroute.tick`은 `OwnFrame`의 자기 RGB를 주입한 관측기에 넘긴다.

@@ -1,0 +1,86 @@
+{
+  "schema": "ugrp.zone_scenario.v1",
+  "scenario_id": "mixed_cyan_beam_fixed_r12_r3_dev",
+  "map_id": "zone_wide_door_geometry_v2",
+  "landmark_detail": "none",
+  "seeds": [
+    700,
+    701,
+    702
+  ],
+  "orders": [
+    {
+      "order_id": "beam-order",
+      "kind": "long_beam",
+      "count": 1,
+      "identity": "specific_item",
+      "item_ids": [
+        "beam_dev"
+      ],
+      "required_robots": 2,
+      "destination_zone": "B",
+      "initial_location": {
+        "pickup_bay": "P2",
+        "slot": "P2-3"
+      }
+    },
+    {
+      "order_id": "cyan-order",
+      "kind": "cyan",
+      "count": 1,
+      "identity": "specific_item",
+      "item_ids": [
+        "cyan_dev"
+      ],
+      "required_robots": 1,
+      "destination_zone": "A",
+      "initial_location": {
+        "pickup_bay": "P1",
+        "slot": "P1-1"
+      }
+    }
+  ],
+  "eval": {
+    "schema": "ugrp.zone_study_scenario_private.v1",
+    "design_notes_ko": "P02 정적 혼합 dev 계약. 고정 r1/end_neg·r2/end_pos 공동 봉과 r3 청록 상자. 전체 s1–s6 지원·물리 성공·파트너 자유 선택 아님.",
+    "tests_ko": "World 없는 inventory, 독립 API, 주문/개체 evidence join, 네 조건 자기 입력 비누출 fake 검사.",
+    "setup": {
+      "arena_variant": "zone_wide_door",
+      "map_file_sha256": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+      "contact_profile": "cargo_noslip_v1",
+      "weld": "off",
+      "robot_spawns": "arena_default",
+      "placements": [
+        {
+          "item_id": "beam_dev",
+          "kind": "long_beam",
+          "order_id": "beam-order",
+          "slot": "P2-3",
+          "pose_m": [
+            1.2,
+            0.05,
+            0.0
+          ]
+        },
+        {
+          "item_id": "cyan_dev",
+          "kind": "cyan",
+          "order_id": "cyan-order",
+          "slot": "P1-1",
+          "pose_m": [
+            -0.2,
+            -2.45,
+            0.0
+          ]
+        }
+      ]
+    },
+    "hidden_events": [],
+    "budget": {
+      "sim_seconds": 1800,
+      "http_attempts_per_trial": 90,
+      "http_attempts_per_actor": 30,
+      "output_tokens_per_call": 768
+    }
+  }
+}
