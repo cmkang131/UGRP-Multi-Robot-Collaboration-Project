@@ -1,0 +1,63 @@
+{
+  "schema": "ugrp.offline_hammerstein_validation.v1",
+  "scope": "offline only; no physics, rendering, student execution or external model calls",
+  "test_runs": [
+    {
+      "command": "python3 -m pytest -q tests/test_unloaded_hammerstein.py tests/test_final_environment_unloaded_fit.py tests/test_zone_final_environment_floor_light.py tests/test_zone_final_environment_runnable.py tests/test_ci_sharding.py",
+      "result": "150 passed",
+      "pytest_wall_s": 223.41,
+      "note": "Before final delay-period and legacy-limit metadata clarification; unaffected suites unchanged."
+    },
+    {
+      "command": "python3 -m pytest -q tests/test_unloaded_hammerstein.py",
+      "result": "20 passed",
+      "pytest_wall_s": 2.1,
+      "note": "After final code, artifact and provenance refresh; includes separate control/observation period, r2 hash and P03 rejection."
+    }
+  ],
+  "unique_related_tests_passed": 151,
+  "ci_fixtures": "3 present",
+  "diff_check": "passed",
+  "environment": {
+    "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "platform": "macOS-27.2-arm64-arm-64bit-Mach-O"
+  },
+  "inputs": {
+    "manifest_entries": 196,
+    "unique_paths": 195,
+    "raw_v89_files": 162,
+    "local_inputs_unchanged": true,
+    "manifest_sha256": "13a9108f6ca22166055dccc90de65212b080afda9ac1b9b23093460502841414",
+    "old_calibration_bytes_preserved_from_sha": "a5cc1402049a249253893762e1ca347e448a5f3f",
+    "old_calibration_sha256": "e44f2306da3879c54402357b005597939ad5aecf41b65a0b8786569781a0d93a"
+  },
+  "tensorflow_or_torch_used": false,
+  "temporary_extraction_directories_created": [],
+  "temporary_extraction_directories_remaining": [],
+  "raw_remote_backup": false,
+  "tensorboard": {
+    "record": "tensorboard_record_v89.json",
+    "runs": 9,
+    "scalar_values_verified": 78,
+    "hparams_events_verified": 9,
+    "display_verified": false,
+    "blocker": "cgWindowNotFound"
+  },
+  "git": {
+    "draft_required": true,
+    "merge_performed": false,
+    "github_workflows_changed": false
+  },
+  "not_performed": [
+    "physics",
+    "rendering",
+    "model calls",
+    "controller changes",
+    "P03",
+    "new data collection",
+    "independent confirmatory validation",
+    "merge"
+  ]
+}

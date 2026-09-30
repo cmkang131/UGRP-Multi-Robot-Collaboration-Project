@@ -1,4 +1,108 @@
-# v87 무하중 오프라인 보정 — PARTIAL_UNLOADED_SIM
+# v87/v89 무하중 오프라인 보정 — PARTIAL_UNLOADED_SIM
+
+## v89 후속 식별: 채택 실패, r2도 null
+
+Refs #348. 먼저 정한 기준은 **계단↔PRBS 양방향 NRMSE ≤5%(fit ≥95%)와 정적 함수 식별 가능성**이다.
+부호별 deadband+2차 다항식/PWL, 1·2차 선형 동역학, 0–4 control-step 지연을 비교했다.
+**전진·측면 모두 실패, 회전은 PRBS가 없어 검증 불가**다. 기존 교정 파일의 바이트를 보존하고
+[schema v2 교정 리비전](calibration_partial_r2.json)을 새로 썼다. 세 축 적용 모델은 모두 null이다.
+
+| 축·검증 방향 | 최저 오차 구조 | NRMSE | fit% | RMS | 판정 |
+|---|---|---:|---:|---:|---|
+| 전진 계단→PRBS | deadband+quadratic, 1차, delay=0 | 27.39% | 72.61% | 4.199 mm | 5% 초과 |
+| 측면 계단→PRBS | deadband+PWL, 1차, delay=0 | 31.68% | 68.32% | 3.237 mm | 5% 초과 |
+| 전진 PRBS→계단, 식별 가능한 참고 | 부호별 linear, 1차, delay=0 | 35.78% | 64.22% | 43.508 mm | 5% 초과 |
+| 측면 PRBS→계단, 식별 가능한 참고 | 부호별 linear, 1차, delay=0 | 44.65% | 55.35% | 37.582 mm | 5% 초과 |
+| 전진 PRBS→계단, 비선형 외삽 진단 | deadband+quadratic, 2차 | 12.50% | 87.50% | 15.202 mm | 파라미터 식별 불가·5% 초과 |
+| 측면 PRBS→계단, 비선형 외삽 진단 | deadband+quadratic, 1차 | 13.25% | 86.75% | 11.152 mm | 파라미터 식별 불가·5% 초과 |
+| 회전 | v89 turn 명령 0개; v87 ±.03 한 크기씩 | — | — | — | 교차검증 불가 |
+
+NRMSE 분모는 구간 평균을 뺀 위치 신호다. #348과 같은 시작점 기준 분모라면
+계단→PRBS 전진 **11.83%**, 측면 **13.83%**다. 둘 다 5%를 넘으며 분모를 섞어 비교하지 않는다.
+PRBS는 ±.02 한 크기여서 deadband와 크기별 gain을 역방향 훈련으로 분리할 수 없다.
+비선형 외삽 진단을 정식 역방향 검증 통과로 취급하지 않았다.
+
+다음은 **계단 훈련**에서 각 구조별로 PRBS 오차가 가장 작은 지연을 고른 표다(전부 0 step).
+AIC/BIC는 같은 축·분할의 명목 Gaussian 위치 잔차 점수다. 시간 상관 때문에 확률적 증거로 해석하지 않는다.
+양방향 전체 **160후보**, 회전 진단 **10후보**는 [전체 보고서](hammerstein_report.json)에 있다.
+
+| 축 | 정적 구조 | 차수 | PRBS NRMSE | AIC | BIC |
+|---|---|---:|---:|---:|---:|
+| 전진 | linear | 1 | 36.70% | -14238.1 | -14210.3 |
+| 전진 | linear | 2 | 36.73% | -14236.0 | -14202.7 |
+| 전진 | deadband | 1 | 27.45% | -23786.8 | -23747.9 |
+| 전진 | deadband | 2 | 27.47% | -23769.0 | -23724.5 |
+| 전진 | deadband+quadratic | 1 | 27.39% | -23783.9 | -23733.8 |
+| 전진 | deadband+quadratic | 2 | 27.41% | -23766.0 | -23710.4 |
+| 전진 | deadband+PWL | 1 | 27.39% | -23783.9 | -23733.8 |
+| 전진 | deadband+PWL | 2 | 27.41% | -23766.0 | -23710.4 |
+| 측면 | linear | 1 | 46.65% | -14413.9 | -14386.1 |
+| 측면 | linear | 2 | 46.69% | -14411.9 | -14378.5 |
+| 측면 | deadband | 1 | 32.33% | -25078.7 | -25039.8 |
+| 측면 | deadband | 2 | 32.35% | -25062.4 | -25017.9 |
+| 측면 | deadband+quadratic | 1 | 31.68% | -25160.5 | -25110.5 |
+| 측면 | deadband+quadratic | 2 | 31.70% | -25143.6 | -25088.0 |
+| 측면 | deadband+PWL | 1 | 31.68% | -25160.5 | -25110.5 |
+| 측면 | deadband+PWL | 2 | 31.70% | -25143.6 | -25088.0 |
+
+전진은 BIC가 더 단순한 deadband+1차를 선호한다. PWL/다항식의 작은 CV 개선으로도 기준에는 못 미친다.
+회전 v87 진단 최저 BIC 후보는 linear+2차(delay=0), 훈련 NRMSE 6.76%, fit 93.24%,
+AIC -592.1/BIC -582.0이다. 이는 0.2초 표본의 **같은 두 계단에 대한 적합**이며 회전 PRBS 검증값이 아니다.
+
+구간 bootstrap 100회에서 전진/측면의 선택 비선형 모델은 완전한 입력 크기 coverage를 유지한 반복이
+각 **1/100회**였다. 파라미터 신뢰구간은 null이며 퇴화 적합의 산포를 보고서에 따로 남겼다.
+단순 PRBS linear 참고의 조건부 2.5–97.5백분위는 전진 tau **0.505–0.697초**,
+측면 **0.474–0.659초**다. 부호별 gain(속도/명령)은 전진 + **0.988–1.098**, − **0.945–1.124**,
+측면 + **0.648–0.716**, − **0.619–0.725**다. 모델 실패를 덮는 불확실성 보장이 아니다.
+회전도 독립 구간이 부호당 하나뿐이므로 bootstrap 신뢰구간을 보고하지 않는다.
+
+실제 소스에는 **.085초 모터 지연 → 차체 힘·접촉**, 그리고 정지 시 감쇠 **1.4→18** 전환이 있다.
+모터 clip은 이번 명령 크기에서 비활성이고, chassis에 별도 slew clamp는 없다.
+접촉의 속도 의존성과 감쇠 전환 때문에 고정 LTI Hammerstein 근사는 구조적 한계가 있다.
+[명령 경로·수식·모델 선택·bootstrap·schema·소비자 호환 설명](hammerstein_method.md)을 따른다.
+
+현재 소비자는 `gain @ command`+1차 상태만 사용하므로 새 정적 함수·2차 상태를 바로 소비하지 못한다.
+schema 로더, 비선형 함수, 상태·정확 적분, 지연/lease·정지 경계와 검증을 별도 변경해야 한다.
+제어기·factory·기존 번들·`.github/workflows`는 변경하지 않았다. P03·loaded/fine은 여전히 미완료다.
+
+새 입력의 원본/소스 SHA-256은 [input_manifest_v89.json](input_manifest_v89.json)에 있다.
+v89 raw 전체와 사용한 v87 회전 원본, 계획·선행 진단·명령 경로·기존 적합 코드까지 기록했고
+로컬 입력의 읽기 전후 동일성을 확인했다. raw는 로컬 보관이며 원격 백업이 아니다.
+`/private/tmp` extraction 디렉터리는 만들지 않았다.
+
+재현(기존 시스템 Python의 NumPy/SciPy 사용; 시뮬레이션 환경 생성 없음):
+
+```sh
+python3 -m scripts.fit_unloaded_hammerstein \
+  --raw /Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001 \
+  --v87-raw /Users/changmin/projects/ugrp/outputs/final-env-v87-04eb11c6-20261001/calibration-unloaded \
+  --output /Users/changmin/projects/ugrp/outputs/v89-hammerstein-fit-NEW --bootstrap 100
+```
+
+### 검증·TensorBoard
+
+관련 오프라인 검사 150개 통과 후, 마지막 지연 주기·출처 설명 변경 범위 20개를 다시 검사했다.
+**중복 제외 151개 통과**이며 원본 보존, 합성 응답 회복, control/observation 주기 분리, 식별 불가 거부,
+PARTIAL/P03 차단, v84/v87 및 CI 목록 회귀를 포함한다. [검증 기록](validation_v89.json).
+새 입력 manifest는 196항목/195고유 경로(v89 raw 162파일 포함)다. 고정 소스와 측정 브랜치의
+동일 계획을 각각 확인해 한 항목이 중복되며, 별도 독립 자료로 세지 않았다.
+
+[TensorBoard](http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcv_nrmse_percent%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcv_fit_percent%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcv_rmse_mm%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ftrain_nrmse_percent%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fvalidation_pass%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fvalidation_available%22%7D%5D&smoothing=0&runFilter=%5E1001-v89-hammerstein-r2-final%2F#timeseries)에 최종 9 runs(선형 참고·비선형 후보·회전 검증 불가)를 저장했다.
+기존 공용 서버의 logdir, **scalar 78개 실제 값·HParams 이벤트 9개**를 원본과 대조했다.
+새 영상은 없다. Chrome `cgWindowNotFound`로 고정 카드·HParams 열의 **화면 확인은 미완료**다.
+기존 서버는 변경하지 않았다. [대시보드 검증 기록](tensorboard_record_v89.json).
+
+### 참고 자료
+
+- Ljung (1999), *System Identification: Theory for the User*, 2판:
+  [저자 서지](https://www.rt.isy.liu.se/en/books/sysid/).
+- Schoukens & Tiels (2017), *Identification of block-oriented nonlinear systems starting from linear approximations: A survey*:
+  [공개 원문](https://arxiv.org/abs/1607.01217), [DOI](https://doi.org/10.1016/j.automatica.2017.06.044).
+- [VIS4 기존 운동 모델](../2026-09-26-vision-loc/vision_motion.py),
+  [v2 drive/stop 적합](../2026-09-26-zone-owncam-loop-v2/fit_stop_dynamics.py),
+  [수집·선행 진단 #348](https://github.com/kcm0127-dotcom/ugrp/pull/348).
+
+## 이전 v87 적합 기록 (보존)
 
 Refs #342 #343. **P03 투입 불가.** 원시 자료를 읽어 적합했으며 물리·렌더·모델 호출은 0회다.
 loaded/fine은 수집 전이다. 전진·측면의 이득과 지연도 이 짧은 자료로 분리하지 못했다.
