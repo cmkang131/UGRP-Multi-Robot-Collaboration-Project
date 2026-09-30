@@ -21,8 +21,10 @@ if __name__ == "__main__":
     sys.path.insert(0, str(ROOT))
 
 from scripts import agent_lock
+from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_ci_fast_path.py",
     "tests/test_owncam_memory_v3.py",
     "tests/test_owncam_memory_time.py",
     "tests/test_record_owncam_time.py",
@@ -100,6 +102,7 @@ TEST_PATTERNS = (
     "tests/test_zone_own_perception_v3.py", "tests/test_zone_own_perception_v3_1.py",
     "tests/test_zone_own_executor*.py",
     "tests/test_zone_pair_executor.py", "tests/test_zone_pair_status.py", "tests/test_zone_pair_review.py",
+    "tests/test_stall_observation_contract.py",  # P08: synthetic observation/stop contract only
     "tests/test_zone_pair_review2.py",
     "tests/test_zone_pair_review3.py",
     "tests/test_zone_pair_review4.py",
@@ -129,6 +132,7 @@ TEST_PATTERNS = (
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)
+    "tests/test_carry_lateral_error_model.py",  # offline endpoint extraction, grouped validation and paired prediction
     "tests/test_m2_pair_door_v3.py", "tests/test_pair_owncam_approach.py", "tests/test_zone_tagged_cargo_scene.py",
     "tests/test_owncam_localizer.py", "tests/test_zone_landmarks_sim.py",
     "tests/test_zone_eval_top.py",
@@ -442,6 +446,9 @@ def main(argv: list[str] | None = None) -> int:
     if not tests:
         print(f"Shard {index}/{args.shard_count} has no test files", file=sys.stderr)
         return 2  # Never invoke pytest with no paths: that collects the whole repo.
+
+    if not check_fixtures(ROOT):
+        return 2  # Refuse before pytest or the shared host lock is started.
 
     env = os.environ.copy()
     for name in tuple(env):
