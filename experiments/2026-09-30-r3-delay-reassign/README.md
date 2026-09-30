@@ -2,6 +2,11 @@
 
 상태: **구현 후보·DRAFT, 물리 실행 준비 미완료**. `r3_hold_late`의 실제 정지·발견·집결 지연·정식 s3 배달은 측정하지 않았다. 정상 GitHub CI는 실행하며 PR을 병합하지 않는다.
 
+후속 Batch F 수정·main 합성 검증은 [REVIEW_FIXES.md](REVIEW_FIXES.md)를 따른다.
+아래 최초 SHA·425개 검사·잠금 기록은 당시 결과로 보존한다. 현재 역할 host는
+`harness.zone_pair_role_host.OwnCamTeamHost`이고, 기존 `zone_own_team_host`는 봉인된
+r1/r2 API를 유지한다. 역할용 study 연결도 `zone_pair_role_integration`을 명시적으로 선택한다.
+
 ## 변경과 경계
 
 `harness/zone_pair_rendezvous.py`는 로봇 한 대에 묶인 `OwnPairPort`로 자기 job을 제출·취소·재배정한다. 새 파트너와 양끝 역할은 호출자가 고른 명시적 `PairRequest`다. host가 상대 private state를 보고 파트너·양보를 고르지 않는다. `replace(old_job_id, request)`는 자기 취소의 완료를 확인한 뒤에만 새 요청을 보낸다. 과거 job ID의 취소는 `STALE_JOB`으로 거절하므로 새 job을 지우지 않는다. 취소 거절/미확인은 새 제출을 차단한다.

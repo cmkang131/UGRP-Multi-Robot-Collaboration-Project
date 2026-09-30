@@ -84,6 +84,7 @@ TEST_PATTERNS = (
     "tests/test_zone_identity_jobs.py",  # T13a: own-RGB identity/count and target-job seam (fake only)
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py",
+    "tests/test_zone_environment_registry.py",
     "tests/test_scenario_capabilities_docs.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",
     "tests/test_zone_study_eval.py", "tests/test_zone_study_offline.py",
@@ -91,6 +92,7 @@ TEST_PATTERNS = (
     "tests/test_zone_study_review_r6*.py", "tests/test_zone_study_review_r7*.py",
     "tests/test_zone_study_integration.py", "tests/test_zone_study_integration_seams.py",
     "tests/test_zone_study_integration_pair.py", "tests/test_zone_study_source_pinning.py",
+    "tests/test_zone_mixed_jobs.py",  # P02: pure inventory and independent fake-port mixed jobs
     "tests/test_zone_e2e_manifest.py",  # P07: planning/admission only, runtime side effects forbidden
     "tests/test_zone_study_llm_driver.py",
     "tests/test_zone_study_pair_delay.py",

@@ -2,6 +2,11 @@
 
 **이 문서는 실행 결과가 아니다.** 이 worktree에서는 물리·렌더·모델을 실행하지 않았다. T07/P01/P03/T08b 등의 합성·고정이 끝나기 전에는 아래 두 셀을 시작하지 않는다. 본연구 DRAFT·seed·성공 기준과 원본 s1–s6를 수정하지 않는다.
 
+후속 수정: 아래 최초 `1a17829e` 의존 소스는 #323의 `ad22566311cf1efb2911af69ee2b8e4c9c650dd0`를
+merge해 대체했다. 역할 host/study는 각각 `zone_pair_role_host`와 `zone_pair_role_integration`을
+명시적으로 사용해야 한다. 기존 봉인 host는 네 인자 역할 API를 거절한다.
+[Batch F 수정 기록](REVIEW_FIXES.md)의 최종 합성 소스를 고정하며, 아래 물리 2셀은 계속 미실행이다.
+
 ## 1. 소스·입력 고정
 
 - T07 #323의 `1a17829e` 역할→로봇 mapping과 PairTeam/상태/명령 routing을 의존 소스로 연결했다. `RoleAwareOwnPairPort.submit(request)`는 명시된 actor·partner·role 그대로 자기 `pair_carry`를 호출하고 ack의 order/zone/role을 검사한다. 상대 요청은 생성하지 않는다. 코디네이터 합성 시 이 의존 SHA와 T12 최종 SHA를 고정하고 독립 검토/필수 CI를 확인한다.
