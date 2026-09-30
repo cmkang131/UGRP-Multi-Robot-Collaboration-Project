@@ -10,13 +10,74 @@ from pathlib import Path
 import pytest
 
 from harness import beam_initial_pose_plan as bp
-from harness.static_keepouts import polygon_at
+from harness.static_keepouts import polygon_at, polygons_overlap, rect_corners
 
 ROOT = Path(__file__).resolve().parents[1]
 # Public setup declarations, authored literally; NOT extracted from eval.setup.
 CASES = [('s1_normal_mixed_v2', [1.3, .4, 1.570796], (1.275, .45, math.pi / 2)),
          ('s3_late_rendezvous_v2', [.1, .4, 1.570796], (.125, .45, math.pi / 2)),
          ('s6_novel_relation_v2', [1.1, -.8, 1.570796], (1.1, -.85, math.pi / 2))]
+
+# Independent v3 contract oracle, deliberately not read from the planner,
+# TeamFootprintV3, or its constants. See masterpi_robot_models.py and
+# zone_team_footprint_v3.py: mount .0482 + reach .155, grip at beam +/- .27.
+ROLES = ('end_neg', 'end_pos')
+XY_ERROR = .0500005
+YAW_ERROR = math.radians(5) + .0000005
+MARGIN = .02
+
+
+def reference_rect(x0, x1, y0, y1):
+    return [(x1, y1), (x0, y1), (x0, y0), (x1, y0)]
+
+
+def reference_carrier(role, fraction):
+    """Chassis then arm, from pre (0) to station (1), in the beam frame."""
+    direction = 1 if role == 'end_neg' else -1
+    centre = -direction * (.7232 - .25 * fraction)
+    parts = [reference_rect(-.100, .1682, -.105, .105),
+             reference_rect(0., .2332, -.035, .035)]
+    return [[(centre + direction*x, direction*y) for x, y in p] for p in parts]
+
+
+def reference_search(role):
+    direction = 1 if role == 'end_neg' else -1
+    return [(-direction*.7232 + direction*x, direction*y)
+            for x, y in [(-.2, -.2), (.2482, -.2), (.2482, .2), (-.2, .2)]]
+
+
+def assert_polygon_equal(actual, expected):
+    assert len(actual) == len(expected) == 4
+    for point, reference in zip(actual, expected):
+        assert point == pytest.approx(reference, abs=1e-12)
+
+
+def reference_envelope(role, *, search_only=False):
+    """Loose interval bound at the s1 coarse pose; no planner/helper output.
+
+    cos lies in [cos(a), 1], |sin| <= sin(a) about north. This contains
+    every XY/yaw error, so disjointness also holds between sampled poses.
+    """
+    a = YAW_ERROR + abs(math.pi/2 - CASES[0][1][2])
+    near, far, width = (.475 if search_only else .24), .9232, .2
+    pad = XY_ERROR + MARGIN
+    dx = far*math.sin(a) + width + pad
+    low = near*math.cos(a) - width*math.sin(a) - pad
+    high = far + width*math.sin(a) + pad
+    y0, y1 = ((.4-high, .4-low) if role == 'end_neg' else (.4+low, .4+high))
+    return reference_rect(1.3-dx, 1.3+dx, y0, y1)
+
+
+def assert_clear_except_target_carrier(wall, role):
+    for other in ROLES:
+        assert not polygons_overlap(wall, reference_envelope(other, search_only=True))
+    opposite = 'end_pos' if role == 'end_neg' else 'end_neg'
+    assert not polygons_overlap(wall, reference_envelope(opposite))
+    a = YAW_ERROR + abs(math.pi/2 - CASES[0][1][2])
+    # Full .60 m beam and .0205 m marking half-width, plus error and margin.
+    dx = .3*math.sin(a) + .0205 + XY_ERROR + MARGIN
+    dy = .3 + .0205*math.sin(a) + XY_ERROR + MARGIN
+    assert not polygons_overlap(wall, reference_rect(1.3-dx, 1.3+dx, .4-dy, .4+dy))
 
 
 def inputs(index=0):
@@ -55,12 +116,22 @@ def test_original_pose_counterexamples_remain_refused_by_legacy(index):
 def test_formal_north_south_geometry_is_static_only(index):
     value = plan(index)
     pose = CASES[index][1]
-    radius = .27 + value['model_convention']['station_radius_m']
+    radius = .4732
+    assert set(value['roles']) == set(ROLES)
     for role, sign in [('end_neg', -1), ('end_pos', 1)]:
         g = value['roles'][role]
         assert g['station_xyyaw'][:2] == pytest.approx([pose[0], pose[1] + sign * radius], abs=1e-6)
         assert g['station_xyyaw'][2] == pytest.approx(-sign * math.pi / 2, abs=1e-6)
-        assert math.dist(g['prestation_xyyaw'][:2], g['station_xyyaw'][:2]) == pytest.approx(.25)
+        assert g['prestation_xyyaw'] == pytest.approx(
+            [pose[0], pose[1] + sign*.7232, -sign*math.pi/2], abs=1e-6)
+        assert g['local_approach'] == [g['prestation_xyyaw'], g['station_xyyaw']]
+        endpoints = g['local_parts_at_endpoints']
+        # Require BOTH chassis and arm at BOTH endpoints before iterating.
+        assert len(endpoints) == 4
+        expected = reference_carrier(role, 1) + reference_carrier(role, 0)
+        for actual, reference in zip(endpoints, expected):
+            assert_polygon_equal(actual, reference)
+        assert_polygon_equal(g['search_at_pre'], reference_search(role))
     assert value['model_convention']['robot_model'] == 'masterpi_v3'
     assert value['role_assignment'] is value['controller_code_sha256'] is None
     assert not value['executable'] and not value['e2e_admitted'] and value['sim_cap_s'] == 0
@@ -82,25 +153,21 @@ def test_continuous_uncertainty_box_contains_original_and_all_carrier_sweeps(ind
     value = plan(index)
     cx, cy, yaw = CASES[index][1]
     original = CASES[index][2]
-    assert max(abs(original[i] - (cx, cy)[i]) for i in (0, 1)) <= bp.ERROR['xy_per_axis_m']
-    assert abs(original[2] - yaw) <= bp.ERROR['yaw_rad']
-    e, a = bp.ERROR.values()
+    assert max(abs(original[i] - (cx, cy)[i]) for i in (0, 1)) <= XY_ERROR
+    assert abs(original[2] - yaw) <= YAW_ERROR
+    e, a = XY_ERROR, YAW_ERROR
     # Independent vertices/translation fractions and interior yaw samples,
     # including all error-box corners and both physical carrier roles.
-    for role in bp.ROLES:
-        g = value['roles'][role]
-        endpoints = g['local_parts_at_endpoints']
-        n = len(endpoints) // 2
-        samples = [g['search_at_pre']]
+    for role in ROLES:
+        samples = [reference_search(role)]
         for t in (0., .17, .5, .91, 1.):
-            for p, q in zip(endpoints[:n], endpoints[n:]):
-                samples.append([(x*(1-t)+u*t, y*(1-t)+v*t) for (x, y), (u, v) in zip(p, q)])
+            samples.extend(reference_carrier(role, t))
         x0, x1, y0, y1 = value['swept_bounds_m'][role]
         for dx, dy, da in itertools.product((-e, e), (-e, e), (-a, -.31*a, 0, .79*a, a)):
             for poly in samples:
                 for x, y in polygon_at((cx+dx, cy+dy, yaw+da), poly):
-                    assert x0 + bp.MARGIN_M - 1e-12 <= x <= x1 - bp.MARGIN_M + 1e-12
-                    assert y0 + bp.MARGIN_M - 1e-12 <= y <= y1 - bp.MARGIN_M + 1e-12
+                    assert x0 + MARGIN - 1e-12 <= x <= x1 - MARGIN + 1e-12
+                    assert y0 + MARGIN - 1e-12 <= y <= y1 - MARGIN + 1e-12
 
 
 def test_analytic_extrema_include_interior_turning_point_not_only_endpoints():
@@ -151,17 +218,55 @@ def test_changing_a_frozen_coarse_pose_requires_a_new_declaration():
         bp.make_initial_pose_plan(static, sheet, order)
 
 
-@pytest.mark.parametrize('role', bp.ROLES)
+@pytest.mark.parametrize('role', ROLES)
 @pytest.mark.parametrize('field', ['obstacles', 'terrain'])
 def test_carrier_outer_corner_blocked_even_when_beam_and_centres_clear(role, field):
     static, coarse, order = inputs()
-    value = plan()
-    x0, x1, y0, y1 = value['swept_bounds_m'][role]
-    static[field].append({'id': 'corner_block', 'center_m': [x1-.002, (y0+y1)/2],
-                          'half_extents_m': [.001, .001], 'yaw_rad': .37})
+    # D2's fixed 2 mm wall at a chassis station corner, plus its mirrored role.
+    # No bounds/geometry returned by the planner are used to place the wall.
+    point = (1.118816959, .055312013)
+    if role == 'end_pos':
+        point = (2.6-point[0], .8-point[1])
+    wall = rect_corners((*point, .001, .001, 0.))
+    assert_clear_except_target_carrier(wall, role)
+    shift = -.05 if role == 'end_neg' else .05
+    witness = (1.3+shift, .4+shift, 1.570796-YAW_ERROR)
+    assert polygons_overlap(wall, polygon_at(witness, reference_carrier(role, 1)[0]))
+    static[field].append({'id': 'corner_block', 'center_m': list(point),
+                          'half_extents_m': [.001, .001], 'yaw_rad': 0.})
     with pytest.raises(bp.PlanRefusal, match='INITIAL_APPROACH_BLOCKED') as exc:
         bp.make_initial_pose_plan(static, bp.freeze_public_sheet(static, coarse, order), order)
     assert exc.value.detail['component'] == role
+    assert exc.value.detail['obstacle_id'] == 'corner_block'
+
+
+@pytest.mark.parametrize('role', ROLES)
+@pytest.mark.parametrize('field', ['obstacles', 'terrain'])
+@pytest.mark.parametrize('stage', ['approach_chassis', 'station_arm_envelope'])
+def test_carrier_approach_and_arm_blockers_outside_search(role, field, stage):
+    static, coarse, order = inputs()
+    direction = 1 if role == 'end_neg' else -1
+    if stage == 'approach_chassis':
+        # Authored point inside the chassis 90% along pre -> station.
+        # The wall is clear of SEARCH throughout its full uncertainty interval.
+        witness = (1.3-direction*.05, .4+direction*.05, 1.570796-YAW_ERROR)
+        point = polygon_at(witness, [(-direction*.35, direction*.10)])[0]
+        wall = rect_corners((*point, .001, .001, 0.))
+        assert polygons_overlap(wall, polygon_at(witness, reference_carrier(role, .9)[0]))
+    else:
+        # A conservative AABB-only corner: its forward edge requires the arm.
+        # This is an envelope refusal, not a claim of actual 3-D arm contact.
+        point = (1.14, .22) if role == 'end_neg' else (1.46, .58)
+        wall = rect_corners((*point, .001, .001, 0.))
+        a = YAW_ERROR + abs(math.pi/2 - coarse['beam_xyyaw'][2])
+        chassis_near = .305*math.cos(a) - .105*math.sin(a) - XY_ERROR - MARGIN
+        assert direction*(.4-point[1]) + .001 < chassis_near
+    assert_clear_except_target_carrier(wall, role)
+    static[field].append({'id': stage, 'center_m': list(point),
+                          'half_extents_m': [.001, .001], 'yaw_rad': 0.})
+    with pytest.raises(bp.PlanRefusal, match='INITIAL_APPROACH_BLOCKED') as exc:
+        bp.make_initial_pose_plan(static, bp.freeze_public_sheet(static, coarse, order), order)
+    assert exc.value.detail == {'component': role, 'obstacle_id': stage}
 
 
 @pytest.mark.parametrize('axis,side', [(0, 0), (0, 1), (1, 0), (1, 1)])
