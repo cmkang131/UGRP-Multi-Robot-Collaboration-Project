@@ -1,5 +1,10 @@
 # P03 — 무표식 provider와 재측위 상태 보존 계약
 
+**독립 리뷰 후 수정:** 현재 구현과 재검증은 [REVIEW_FIXES.md](REVIEW_FIXES.md)를 따른다.
+아래는 최초 구현·검증 당시의 기록이다. v6e에 고정된 공용 소스 변경은 철회하고
+P03 전용 후보 파일과 별도 provider ID로 옮겼다. 기존 등록·봉인 bytes는 유지한다.
+로컬 물리·렌더·추론은 실행하지 않으며, 정상 GitHub CI는 실행하고 확인한다.
+
 상태: **DRAFT, 오프라인 계약 검사, 병합·봉인·실행 승인 없음.** Refs #216, #219, #223.
 감사 기준은 `a8094cc14e098a55483f53a3c49bf6a0b116043d`의 READINESS S02/S03(PR #298)이다.
 작업 시작 HEAD와 fetch 당시 origin/main은 `d17ca4345affef8cf027e121cf1f3197b36c23e0`이었다.

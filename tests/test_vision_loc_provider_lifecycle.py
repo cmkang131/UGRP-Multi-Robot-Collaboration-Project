@@ -8,8 +8,8 @@ import pytest
 
 from harness import vision_loc_protocol as vp
 from harness.vision_loc_client import InProcessWorker
-from harness.vision_pose_source import VisionPoseSourceV2
-from harness.zone_study_pose_delay import DelayedPoseSource
+from harness.vision_pose_source_p03 import VisionPoseSourceV2
+from harness.zone_study_pose_delay_p03 import DelayedPoseSource
 from tests.test_vision_pose_source import CALIB, DOCK, FRAME, SEARCH_POSE, _reply
 
 
@@ -96,6 +96,17 @@ def test_delay_cannot_be_applied_twice():
     d = DelayedPoseSource(p)
     try:
         with pytest.raises(ValueError, match='delay'):
+            DelayedPoseSource(d)
+    finally:
+        d.close()
+
+
+def test_candidate_delay_rejects_an_already_legacy_wrapped_provider():
+    from harness.zone_study_pose_delay import DelayedPoseSource as LegacyDelay
+    p = make()
+    d = LegacyDelay(p)
+    try:
+        with pytest.raises(ValueError, match='exactly once'):
             DelayedPoseSource(d)
     finally:
         d.close()
@@ -269,7 +280,7 @@ def test_queued_runtime_input_locks_the_setup_prior_boundary(runtime_input):
 
 @pytest.mark.parametrize('failure', ['none', 'missing_prior', 'post_setup'])
 def test_study_host_owns_each_worker_and_closes_on_exit_or_setup_failure(monkeypatch, failure):
-    from scripts import run_zone_study_integration as runner
+    from scripts import zone_study_provider_p03 as runner
     from tests.test_zone_pair_tag_boundary_matrix import host_fixture
     from tests.test_zone_own_executor import MAP
     spec, student = host_fixture(monkeypatch, MAP)
@@ -281,7 +292,7 @@ def test_study_host_owns_each_worker_and_closes_on_exit_or_setup_failure(monkeyp
         monkeypatch.setattr(runner.zone_eval_top, 'apply_to_world', fail)
     poses = [make(prior=False) for _ in range(3)]
     providers = iter(DelayedPoseSource(p) for p in poses)
-    monkeypatch.setattr(runner.zi, 'build_pose_provider', lambda *a: next(providers))
+    monkeypatch.setattr(runner, 'build_pose_provider', lambda *a: next(providers))
     try:
         if failure == 'missing_prior':
             with pytest.raises(runner.zi.ContractViolation, match='own dock prior'):
@@ -300,3 +311,49 @@ def test_study_host_owns_each_worker_and_closes_on_exit_or_setup_failure(monkeyp
     finally:
         for p in poses:
             p.close()
+
+
+def test_candidate_writer_adds_provider_receipt_and_retains_legacy_summary(monkeypatch, tmp_path):
+    import json
+    from types import SimpleNamespace as NS
+    from scripts import zone_study_provider_p03 as runner
+
+    summary = {'stop': 'fake-only'}
+    monkeypatch.setattr(runner.legacy, 'write_outputs', lambda *a, **kw: summary)
+    p = make()
+    d = DelayedPoseSource(p)
+    try:
+        host = NS(robots={'r1': NS(executor=NS(pose=d))})
+        result = runner.write_outputs(tmp_path, {}, {}, 'no_comm', {}, 'fake', host,
+                                      None, None, 'fake-only', None, {}, 0., (), True)
+        assert result is summary
+        receipt = json.loads((tmp_path / 'robots/r1/inputs/pose_provider.json').read_text())
+        assert receipt['applied_perception_delay_s'] == .16
+        assert receipt['provider']['provider'] == runner.PROVIDER_ID
+        assert receipt['provider']['prior']['setup_only'] is True
+    finally:
+        d.close()
+
+
+def test_candidate_factory_uses_new_provider_and_one_delay_without_rebinding_defaults(monkeypatch):
+    from harness import vision_pose_source_p03
+    from scripts import zone_study_provider_p03 as runner
+
+    worker = InProcessWorker(lambda seq, own_bgr: None)
+    monkeypatch.setattr(vision_pose_source_p03, 'VisionWorkerClient', lambda cfg: worker)
+    static = vp.load_json(VisionPoseSourceV2.map_file)
+    spec = runner.provider_spec(static['map_id'])
+    d = runner.build_pose_provider(spec, static, CALIB['params'], 0)
+    try:
+        assert type(d) is DelayedPoseSource
+        assert type(d.provider) is VisionPoseSourceV2
+        assert d.provider.provider_id == spec['provider_id'] == runner.PROVIDER_ID
+        assert d.source.startswith(spec['source_label_prefix'])
+        assert d.record()['applied_perception_delay_s'] == .16
+        assert d.provider.record()['applied_perception_delay_s'] == 0.
+        with pytest.raises(runner.zi.ContractViolation, match='exact explicit'):
+            runner.build_pose_provider({**spec, 'factory': 'harness.vision_pose_source:VisionPoseSourceV2'},
+                                       static, CALIB['params'], 0)
+    finally:
+        d.close()
+    assert worker.closed

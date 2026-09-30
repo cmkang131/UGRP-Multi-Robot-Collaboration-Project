@@ -193,9 +193,10 @@ def test_required_status_gate_rejects_every_non_success_result(shards, checks):
     workflow = (runner.ROOT / ".github/workflows/tests.yml").read_text()
     gate = workflow.split("  offline-regressions:\n", 1)[1].split("\n  ubuntu-simulation-runtime:", 1)[0]
     assert "    name: offline-regressions\n" in gate
-    assert "    needs: [offline-regression-shards, offline-regression-checks]\n" in gate
+    assert "    needs: [ci-preflight, offline-regression-shards, offline-regression-checks]\n" in gate
     assert "    if: ${{ always() }}\n" in gate
     script = textwrap.dedent(gate.split("        run: |\n", 1)[1])
     result = subprocess.run(["sh", "-eu", "-c", script],
-                            env={"SHARDS_RESULT": shards, "CHECKS_RESULT": checks})
+                            env={"PREFLIGHT_RESULT": "success", "FULL_SUITE": "true",
+                                 "SHARDS_RESULT": shards, "CHECKS_RESULT": checks})
     assert (result.returncode == 0) == (shards == checks == "success")

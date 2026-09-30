@@ -22,7 +22,7 @@
   "frame_timeout_s": 30,
   "sim_time_charge": {
     "charged": false,
-    "why": "worker 추론 wall 시간에 비례한 SIM 비용은 부과하지 않는다. StudyTeamHost는 DelayedPoseSource를 정확히 한 번 적용해 별도의 고정 camera-to-estimate 0.16 SIM초를 부과한다. 실효 지연은 0.16 SIM초이며 worker wall 비용과 중복 합산하지 않는다. 추론 wall 시간은 별도 기록한다.",
+    "why": "연구 설계의 SIM 비용 모형(#223, harness/zone_sim_cost.py)은 LLM 생각·발화만 부과한다. 인식 추론 비용은 설계에 없다. SYNC SIM에서 물리는 worker 응답을 기다리므로 SIM 시간 0, wall 시간만 기록한다. 부과 여부는 사용자 결정 필요(미결).",
     "recorded_as": "VisionPoseSource.timing / record()['inference_wall_ms']"
   }
 }

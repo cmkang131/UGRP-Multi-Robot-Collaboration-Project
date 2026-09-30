@@ -9,6 +9,9 @@ from scripts.run_ci_tests import local_lock_root, run_locked
 
 TESTS = (
     'tests/test_vision_loc_provider_lifecycle.py',
+    'tests/test_vision_loc_p03_source_pinning.py',
+    'tests/test_zone_pair_registered_source.py',
+    'tests/test_zone_pair_door_relax.py',
     'tests/test_zone_study_source_pinning.py',
     'tests/test_zone_pair_provider_init.py',
     'tests/test_zone_study_pair_delay.py',  # inspected/collected, deselected by the no-inference guard
