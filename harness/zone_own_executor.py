@@ -309,10 +309,10 @@ class ZoneOwnExecutor(OwnStatusMixin):
         from harness.zone_pair_admission import readiness_snapshot
         return readiness_snapshot(self, now, item_ref, target_zone)['state']
 
-    def pair_carry(self, item_ref=None, target_zone=None, partner_id=None):
+    def pair_carry(self, item_ref=None, target_zone=None, partner_id=None, role=None):
         """Submit this robot only; the partner must independently submit the identical task."""
         args = {'order_id': self._token(item_ref), 'target_ref': self._token(target_zone),
-                'role': 'end_neg' if self.robot_id == 'r1' else 'end_pos'}
+                'role': role if role is not None else {'r1': 'end_neg', 'r2': 'end_pos'}.get(self.robot_id)}
         if not all(isinstance(v, str) and v for v in (item_ref, target_zone, partner_id)):
             return self._ack('pair_carry', args, False, 'BAD_PAIR_ARGUMENTS')
         if self.stopped is not None:

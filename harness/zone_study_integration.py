@@ -225,9 +225,11 @@ class PairStatusBus:
     PairTeam creates a wire only when a robot submits its own pair_carry job.
     """
 
-    def __init__(self, order_sheet, records=None):
+    def __init__(self, order_sheet, records=None, *, role_assignment=None):
         self.tasks = sorted(o['order_id'] for o in order_sheet['orders'] if o['required_robots'] == 2)
         self._records = records or (lambda: [])
+        from harness.zone_pair_roles import PairRoles
+        self.roles = PairRoles.from_mapping(role_assignment) if role_assignment is not None else None
 
     def config(self):
         return {'profile': pair_status.PROFILE, 'executor_profile': pair_executor.PROFILE,
@@ -235,8 +237,11 @@ class PairStatusBus:
                 'heartbeat_s': pair_status.HEARTBEAT_S, 'heartbeat_timeout_s': pair_status.HEARTBEAT_TIMEOUT_S,
                 'readiness_ttl_s': pair_status.READINESS_TTL_S, 'rendezvous_timeout_s': 5.,
                 'control_s': pair_status.CONTROL_S, 'arm_s': pair_status.ARM_S,
-                'tasks': self.tasks, 'participants': list(pair_executor.PAIR),
-                'roles': {'r1': 'end_neg', 'r2': 'end_pos'},
+                'tasks': self.tasks, 'participants': list(self.roles.participants if self.roles else pair_executor.PAIR),
+                'roles': ({r: self.roles.role(r) for r in self.roles.participants} if self.roles
+                          else {'r1': 'end_neg', 'r2': 'end_pos'}),
+                **({'role_profile': 'zone_pair_roles_v1', 'role_to_robot': self.roles.mapping(),
+                    'role_assignment_sha256': self.roles.sha256()} if self.roles else {}),
                 'scope': 'long_beam only; independent matching submissions; no peer-state arbitration'}
 
     def config_sha256(self):
@@ -258,7 +263,7 @@ class Plan:
     rejected_reason: str | None = None
 
 
-def executor_plan(action, job, *, actor=None, orders=()) -> Plan:
+def executor_plan(action, job, *, actor=None, orders=(), role_assignment=None) -> Plan:
     """The executor call for one validated model action (at most one call).
 
     ``job`` is the robot's OWN running job (``{'kind', 'order_id'}``) or None.
@@ -275,11 +280,17 @@ def executor_plan(action, job, *, actor=None, orders=()) -> Plan:
         if row and row['required_robots'] > 1:
             if row['kind'] != 'long_beam' or row['required_robots'] != 2 or row['count'] != 1:
                 return Plan(None, rejected_reason='UNSUPPORTED_TEAM_ORDER')
-            roles = {'r1': 'end_neg', 'r2': 'end_pos'}
-            if actor not in roles or action.get('role') != roles[actor]:
+            from harness.zone_pair_roles import LEGACY_ROLES, PairRoles
+            try:
+                roles = (LEGACY_ROLES if role_assignment is None
+                         else PairRoles.from_mapping(role_assignment))
+                role = roles.role(actor)
+            except ValueError as exc:
+                return Plan(None, rejected_reason=str(exc))
+            if action.get('role') != role:
                 return Plan(None, rejected_reason='UNSUPPORTED_PAIR_ROLE')
-            partner = next(r for r in roles if r != actor)
-            return Plan('pair_carry', (order, zone, partner))
+            args = (order, zone, roles.partner(actor))
+            return Plan('pair_carry', args + (role,) if role_assignment is not None else args)
         return Plan('deliver', (order, zone))
     if kind == 'continue':
         return Plan(None)
@@ -350,7 +361,7 @@ class IntegratedTrial(zo.OfflineTrial):
 
     def __init__(self, scenario, *, condition, seed, links, horizon_s, code_sha='unknown', map_bundle=None,
                  cost_params=None, policy=None, actor=FIXTURE_ACTOR, pose_label=None,
-                 model_adapter=None, pair_records=None, decision_limits=None):
+                 model_adapter=None, pair_records=None, decision_limits=None, pair_role_assignment=None):
         if model_adapter is None:
             check_actor(actor)
         elif actor != 'gemini_proxy':
@@ -408,7 +419,8 @@ class IntegratedTrial(zo.OfflineTrial):
                                             actors=self.actors, on_action=self._on_action,
                                             bus=self.channel, bus_owner=zo.BUS_OWNER)
         self.pose_label = dict(pose_label or {})
-        self.pair_status = PairStatusBus(self.sheet, pair_records)
+        self.pair_status = PairStatusBus(self.sheet, pair_records, role_assignment=pair_role_assignment)
+        self.pair_role_assignment = self.pair_status.roles.mapping() if self.pair_status.roles else None
         self._snapshots, self._jobs = {}, {}
         self.request_images: dict[str, bytes] = {}
         self.input_log, self.dispatch_log, self.executor_events = [], [], []
@@ -551,7 +563,8 @@ class IntegratedTrial(zo.OfflineTrial):
         if extra is None or self.scheduler.calls[-1].actor != actor:
             raise AssertionError(f'released action of {actor} has no recorded call')
         link = self.links[actor]
-        plan = executor_plan(action, link.job(), actor=actor, orders=self.sheet['orders'])
+        plan = executor_plan(action, link.job(), actor=actor, orders=self.sheet['orders'],
+                             role_assignment=self.pair_role_assignment)
         kind, arguments, order_id, role = zo._action_row(action)
         ack = link.call(plan.api, *plan.args) if plan.api else None
         self.dispatch_log.append({'call_id': call_id, 'actor': actor, 'sim_s': sim_s, 'action': action,
