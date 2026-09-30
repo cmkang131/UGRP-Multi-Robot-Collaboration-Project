@@ -498,7 +498,9 @@ def test_policies_bundle_and_pair_team_opt_in():
     # v6f (unregistered, place-stage flags) adds own_image_ob / bounded_retreat, likewise False.
     v6c_off = {'exact_fix_clock': False, 'grasp_range_entry': False, 'beam_wide_hue': False, 'align_fine_motion': False,
                'carry_dr_model': False, 'carry_lateral_lag': False, 'carry_pair_yaw': False, 'carry_beam_edge': False,
-               'carry_dr_general': False, 'carry_end_inset_m': 0.0, 'own_image_ob': False, 'bounded_retreat': False}
+               'carry_dr_general': False, 'carry_end_inset_m': 0.0, 'own_image_ob': False, 'bounded_retreat': False,
+               'carry_fwd_gain': 1.0, 'loaded_k_xy': 2.0, 'loaded_k_yaw': 2.0, 'loaded_gate_yaw_deg': None,
+               'progress_arm_on_moved_fix': False, 'carry_axial_lag': False}
     assert [vars(POLICIES[k]) for k in ('v5h', 'b-only', 'a+b', 'b-boot', 'a+b-boot')] == [
         {'name': 'v5h', 'posterior_relook': False, 'beam_relative': False, 'stationary_bootstrap': False, **v6c_off},
         {'name': 'b-only', 'posterior_relook': True, 'beam_relative': False, 'stationary_bootstrap': False, **v6c_off},

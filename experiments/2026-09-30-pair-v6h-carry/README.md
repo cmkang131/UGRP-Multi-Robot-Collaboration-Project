@@ -31,9 +31,11 @@ python -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify
 
 ## 검증
 
-허용된 파일만 실행했다: `tests/test_zone_pair_v6h.py` **64**, `tests/test_zone_pair_registered_source.py` **24**, `tests/test_ci_sharding.py` **66**, 합계 **154 passed**(14.56초; 성능 측정이 아님). `scripts.run_ci_tests.run_locked`로 공용 잠금을 획득·반환하고 pytest를 실행했다. 마지막 JUnit: `/Users/changmin/projects/ugrp/outputs/v6h-register-unit-20260930/pytest-final-02.xml`. 모든 이전 시도도 같은 폴더에 보존했다. 첫 5개 실패는 잘못된 테스트 역할명과 JSON tuple/list 계약 차이를 고쳤고, 추가 guard golden 준비 오류도 수정했다. 지정되지 않은 테스트는 로컬에서 실행하지 않았다.
+허용된 파일만 실행했다: `tests/test_zone_pair_v6h.py` **64**, `tests/test_zone_pair_registered_source.py` **24**, `tests/test_ci_sharding.py` **66**, 합계 **154 passed**(14.92초; 성능 측정이 아님). `scripts.run_ci_tests.run_locked`로 공용 잠금을 획득·반환하고 pytest를 실행했다. 마지막 JUnit: `/Users/changmin/projects/ugrp/outputs/v6h-register-unit-20260930/pytest-ci-fix-01.xml`. 모든 이전 시도도 같은 폴더에 보존했다. 첫 5개 실패는 잘못된 테스트 역할명과 JSON tuple/list 계약 차이를 고쳤고, 추가 guard golden 준비 오류도 수정했다. 지정되지 않은 테스트는 로컬에서 실행하지 않았다.
 
-18개 기존 정책의 loaded PF 출력은 main `a8094cc1` 골든과 평균·표준편차 1e-9 이내, 입자 bytes SHA-256 및 난수 소비도 일치한다. 4개 대표 정책의 PairCommandGuard 명령·monitor·gate 골든도 일치한다. 각 옵션의 on/off, gain 복사/중복 적용/재사용 방지, loaded-motion 범위, invalid fix, axial 시간, 정책·번들·CI 목록·workflow 조합을 검사했다. 빌더 두 모드와 stage-probe CLI의 `--policies b-v6h1 --stage chain` 계획 모드도 확인했다(새 output 폴더나 물리 생성 없음). `git diff --check` 통과. 단위 검증을 인수 재생·E2E·실물 성공으로 표현하지 않는다. 새 실험 결과가 없으므로 TensorBoard 변환·서버 시작은 하지 않았다.
+18개 기존 정책의 loaded PF 출력은 main `a8094cc1`의 저장된 평균·표준편차 골든과 1e-9 이내다. 입자 bytes와 난수 상태는 같은 호스트에서 동결된 main carry 모듈을 별도 provider로 실행한 값과 정확히 일치한다. localizer/beam-edge 의존성은 그 commit의 blob과 현재 바이트가 같은지도 확인한다. 저장된 Mac 입자 해시는 참고 기록이며 Linux에 그대로 강제하지 않는다. 4개 대표 정책의 PairCommandGuard 명령·monitor·gate 골든도 일치한다. 각 옵션의 on/off, gain 복사/중복 적용/재사용 방지, loaded-motion 범위, invalid fix, axial 시간, 정책·번들·CI 목록·workflow 조합을 검사했다. 빌더 두 모드와 stage-probe CLI의 `--policies b-v6h1 --stage chain` 계획 모드도 확인했다(새 output 폴더나 물리 생성 없음). `git diff --check` 통과. 단위 검증을 인수 재생·E2E·실물 성공으로 표현하지 않는다. 새 실험 결과가 없으므로 TensorBoard 변환·서버 시작은 하지 않았다.
+
+초기 push CI (`36687347436`)의 shard 3/5/7에서 기존 정책 기본값 표 누락, 역사 봉인의 현재 바이트 검사, Mac/Linux 입자 해시 차이를 발견했다. 앞의 두 테스트는 새 기본값·봉인 commit 감사로 갱신했고, 마지막은 같은 호스트의 이전 소스와 정확한 입자 bytes/난수 상태를 비교하도록 고쳤다(저장된 1e-9 골든 검사는 유지). 실패 로그 3개를 primary outputs에 보존했고 허용된 세 파일 재실행은 154 passed다. 수정 후 CI 결과는 PR에서 별도로 확인한다.
 
 ## 조정자의 인수 재생 (아직 실행하지 않음)
 

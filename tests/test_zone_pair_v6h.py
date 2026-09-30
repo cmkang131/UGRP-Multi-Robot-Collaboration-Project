@@ -6,7 +6,7 @@ import importlib
 import json
 import math
 from pathlib import Path
-from types import SimpleNamespace
+from types import ModuleType, SimpleNamespace
 
 import numpy as np
 import pytest
@@ -26,6 +26,39 @@ FLAGS = ('carry_fwd_gain', 'loaded_k_xy', 'loaded_k_yaw', 'loaded_gate_yaw_deg',
 BUILDER = importlib.import_module('experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h')
 
 
+@pytest.fixture(scope='module')
+def baseline_carry():
+    """Compare exact PF bytes on this host; libm/NumPy bytes differ across hosts.
+
+    The PF and its dependencies are unchanged. Execute only the frozen carry
+    module, with a separate namespace/provider, never an old simulation runner.
+    Fixed Mac mean/std goldens below still apply with the 1e-9 tolerance.
+    """
+    from scripts.zone_pair_registered_source import committed_blob
+    for path in ('harness/owncam_localizer.py', 'harness/own_beam_edge.py'):
+        assert (ROOT/path).read_bytes() == committed_blob(str(ROOT), GOLDEN['source_commit'], path)
+    path = 'harness/owncam_carry_v6e.py'
+    raw = committed_blob(str(ROOT), GOLDEN['source_commit'], path)
+    module = ModuleType('v6h_off_baseline_carry')
+    module.__file__ = str(ROOT/path)
+    exec(compile(raw, module.__file__, 'exec'), module.__dict__)
+    return module
+
+
+def _off_pf_trace(name, carry_module):
+    loc = cloud(); p = pair_policy(name); provider = SimpleNamespace(loc=loc)
+    info = None
+    if p.carry_dr_model:
+        info = carry_module.enable_provider(provider, pair_yaw=p.carry_pair_yaw,
+                                            beam_edge=p.carry_beam_edge, general=p.carry_dr_general)
+    loc.predict_to(2.)
+    loc.command({'t': 2., 'kind': 'mecanum', 'forward': .035, 'left': 0., 'turn': 0., 'duration_s': 4.})
+    loc.predict_to(7.)
+    loc.command({'t': 7., 'kind': 'mecanum', 'forward': 0., 'left': .025, 'turn': .01, 'duration_s': 3.})
+    loc.predict_to(11.)
+    return loc, info
+
+
 @pytest.mark.parametrize('name', GOLDEN['policies'])
 def test_all_existing_policy_fields_are_unchanged_and_new_flags_default_off(name):
     p = pair_policy(name)
@@ -41,24 +74,16 @@ def test_bv6h1_is_bv6g_plus_exactly_the_five_decided_options():
 
 
 @pytest.mark.parametrize('name', GOLDEN['policies'])
-def test_flags_off_localizer_is_bit_identical_to_main_a8094cc1(name):
-    loc = cloud(); p = pair_policy(name); provider = SimpleNamespace(loc=loc)
-    info = None
-    if p.carry_dr_model:
-        info = carry.enable_provider(provider, pair_yaw=p.carry_pair_yaw,
-                                     beam_edge=p.carry_beam_edge, general=p.carry_dr_general,
-                                     carry_fwd_gain=p.carry_fwd_gain)
-    loc.predict_to(2.)
-    loc.command({'t': 2., 'kind': 'mecanum', 'forward': .035, 'left': 0., 'turn': 0., 'duration_s': 4.})
-    loc.predict_to(7.)
-    loc.command({'t': 7., 'kind': 'mecanum', 'forward': 0., 'left': .025, 'turn': .01, 'duration_s': 3.})
-    loc.predict_to(11.)
+def test_flags_off_localizer_is_bit_identical_to_main_a8094cc1(name, baseline_carry):
+    loc, info = _off_pf_trace(name, carry)
+    old, old_info = _off_pf_trace(name, baseline_carry)
     gold = GOLDEN['policies'][name]
     assert loc.px.mean(0) == pytest.approx(gold['mean'], abs=1e-9, rel=0)
     assert loc.px.std(0) == pytest.approx(gold['std'], abs=1e-9, rel=0)
-    assert hashlib.sha256(loc.px.tobytes()).hexdigest() == gold['particle_sha256']
+    assert loc.px.tobytes() == old.px.tobytes()
+    assert loc.rng.bit_generator.state == old.rng.bit_generator.state
     assert float(loc.rng.random()) == pytest.approx(gold['rng_next'], abs=1e-12, rel=0)
-    assert info == gold['info']
+    assert info == old_info == gold['info']
 
 
 def test_gain_only_changes_loaded_00_once_and_does_not_mutate_other_providers_or_inputs():
