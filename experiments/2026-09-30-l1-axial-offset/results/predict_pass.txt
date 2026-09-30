@@ -1,0 +1,52 @@
+cross-track model (gain-fix cases, n=68, 34 placements): signed y at the L0 end = -5.2 +4.57*yaw_deg +0.43*(y-0.05)[mm]; L1 end = -6.1 +7.34*yaw +0.21*(y-0.05)
+  residual sd L0 12.6 mm, L1 26.4 mm, corr 0.82; R2 L1 0.44
+  recorded |y| at the L1 end: mean 31.1 mm, 90th percentile 58.8 mm, max 68.5 mm
+  the yaw slope +7.3 mm/deg is what an alignment pulse that achieves ~0.6 of the commanded rotation predicts (0.4 * 1.45 m * pi/180 = 10 mm/deg)
+
+== 0. back-test of the model on the recorded baseline (P0), leave one cohort out; expected vs recorded pass (placements)
+  hold out cB: model expects  23.7 of 24 cases to pass, recorded 24/24
+  hold out rB: model expects  14.6 of 20 cases to pass, recorded 14/20
+  hold out sB: model expects  20.0 of 24 cases to pass, recorded 22/24
+
+== 1. REPLAY on the recorded gain-fix chains (recorded cross-track kept, variant applied to the recorded placement; tick phase f swept)
+  variant                                                                  cases pass   placements pass   worst L1 end error [mm]
+  recorded run (physics)                                                   60/68
+  P0 registered (0.772 timed scale)                                         60.0/68     30.0/34            117
+  P1a lag plan, registered PF plant (1.4004): WRONG                         39.8/68     19.9/34            159
+  P1b lag plan, PF plant x kappa (1.3281)  [recommended]                    68.0/68     34.0/34             94
+  P1c one constant CARRY_ODOM_SCALE axial 0.810 (exact for 0.85 m only)     66.0/68     33.0/34            103
+  P2 lag plan, fully recalibrated plant (1.3417, 0.898, 0.006)              68.0/68     34.0/34             90
+  (exact for P0; for the other variants the recorded cross-track is assumed unchanged. P4 is not replayable this way, see 2.)
+
+== 2. the 60 planned confirmatory placements (placements_confirmatory_DRAFT.json), Monte Carlo (3000 draws over tick phase, training-set bootstrap, residual bootstrap)
+  order sheets: {0.9: 10, 1.0: 39, 1.1: 11} ; dx = x - sheet: min -49 max +47 mm ; rule of the draft (dx <= +33 mm): 49/60 = 0.817
+  variant                                                                  expected pass   along only   P(>=48/60)  P(>=54/60)   count 5/50/95%
+  P0 registered (0.772 timed scale)                                          84.9%          91.7%     0.975       0.026      [48.0, 51.0, 53.0]
+  P1a lag plan, registered PF plant (1.4004): WRONG                          57.0%          61.3%     0.000       0.000      [31.0, 34.0, 37.0]
+  P1b lag plan, PF plant x kappa (1.3281)  [recommended]                     99.5%         100.0%     1.000       1.000      [59.0, 60.0, 60.0]
+  P1c one constant CARRY_ODOM_SCALE axial 0.810 (exact for 0.85 m only)      98.8%         100.0%     1.000       0.999      [57.0, 60.0, 60.0]
+  P2 lag plan, fully recalibrated plant (1.3417, 0.898, 0.006)               99.6%         100.0%     1.000       1.000      [59.0, 60.0, 60.0]
+  P4 = P1b + alignment turn gain fixed (analytic: yaw slope of the cross-track removed)  100.0%           -         1.000       1.000      [60.0, 60.0, 60.0]
+  P3 = P1b + first leg length from the own PF x (analytic; needs a physics check)   99.8%           -         1.000       1.000      [59.0, 60.0, 60.0]
+      (PF x error at the L0 forward start, n=68: pair mean sd 2.9 mm, max 7.0 mm; r1-r2 difference -4.7 +- 3.7 mm, max 11.6 mm = the timing mismatch between the two robots: 0.23 s at most)
+
+== 3. sensitivity to the cross-track assumption (expected pass %, P(>=48/60), P(>=54/60))
+  P0 baseline  cross-track as modelled    expected  84.9%   P(>=48) 0.972   P(>=54) 0.039
+  P0 baseline  cross-track x 1.5          expected  75.1%   P(>=48) 0.217   P(>=54) 0.000
+  P0 baseline  cross-track x 2.0          expected  62.0%   P(>=48) 0.001   P(>=54) 0.000
+  P1b          cross-track as modelled    expected  99.6%   P(>=48) 1.000   P(>=54) 0.999
+  P1b          cross-track x 1.5          expected  92.4%   P(>=48) 0.989   P(>=54) 0.791
+  P1b          cross-track x 2.0          expected  79.0%   P(>=48) 0.504   P(>=54) 0.040
+  P4           cross-track x 2.0          expected  91.0%   P(>=48) 0.929   P(>=54) 0.642
+
+== 4. what remains after P1b
+  along L1 error after P1b: mean -11.4 mm, per-placement range -57 ... +45 mm (this is dx, the 0.1 m sheet rounding: |dx| <= 50 mm by construction)
+  lowest pass probability 0.90: C12 x 0.952 sheet 1.0 dx -48 mm  yaw -3.83 y -0.027
+  lowest pass probability 0.97: C44 x 0.952 sheet 1.0 dx -48 mm  yaw +4.13 y +0.042
+  lowest pass probability 0.98: C41 x 0.958 sheet 1.0 dx -42 mm  yaw -4.45 y +0.018
+  lowest pass probability 0.98: C23 x 1.057 sheet 1.1 dx -43 mm  yaw -4.33 y +0.022
+  lowest pass probability 0.99: C29 x 1.070 sheet 1.1 dx -30 mm  yaw +4.24 y -0.028
+  lowest pass probability 0.99: C14 x 1.059 sheet 1.1 dx -41 mm  yaw -4.46 y +0.049
+  the dx term is not correctable from the order sheet alone (it is what the sheet does not say); it needs the robots to use their own PF x (see README, option P3)
+  the cross-track term is bounded by the PF yaw error at the alignment pulse (sd ~0.9 deg -> 26 mm over 1.45 m) and by the pulse gain (P4)
+
