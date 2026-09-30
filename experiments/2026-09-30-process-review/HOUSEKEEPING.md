@@ -321,3 +321,70 @@
 - [관련 자동 검사](../../tests/test_agent_worktree.py)·[디스크 보고 검사](../../tests/test_disk_report.py): 이번에 코드 변경 없음, pytest 미실행.
 
 Generated with Codex
+
+## Claude-side retire results (2026-09-30)
+
+위 49개 후보를 Claude 쪽(`ps` 사용 가능)에서 `python3 scripts/agent_worktree.py retire <경로> --execute`로만 다시 정리했다. `git worktree remove`·`rm -rf`는 쓰지 않았고, 프로세스 종료·물리 실행·원격 브랜치 push는 없다.
+
+| 항목 | 결과 |
+|---|---|
+| 정리됨(retired) | 49개 (거부 0, 건너뜀 0) |
+| 병합 확인 | 47개는 HEAD가 `origin/main`의 조상, `v6h-classify`(#290)·`v6h-prereg-upd`(#294)는 `--pr`로 병합 PR 머리 커밋 일치를 확인(스쿼시/리베이스 병합) |
+| 이동한 무시 자료 | 31,380개 / 688,865,284 B (아래 표) |
+| 추정 checkout 해제 | 약 19.8 GiB (스크립트 추정합 21,259,223,040 B) |
+| 프로젝트 합계(`disk_report.py`) | 109.44 GiB → 90.54 GiB, worktree 28.63 → 9.02 GiB, 볼륨 여유 53 → 71 GiB |
+| 보호 목록·최근 60분·열린 PR 폴더 | 후보에 없었고 건드리지 않음 |
+
+이동한 자료는 `same-path`면 기본 체크아웃의 같은 상대 경로로, 아니면 `outputs/retired-worktrees/<라벨>/` 아래로 갔다. 영수증(RETIRED.json)·MANIFEST.tsv는 각 `outputs/retired-worktrees/<라벨>/`에 있다.
+
+| 작업 폴더 | 결과 | 병합 근거 | 이동 자료 | 이동 경로 | 영수증 |
+|---|---|---|---|---|---|
+| `carry-relocalization-b1` | 정리됨(retired) | HEAD 6966fa0b88dc is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-carry-relocalization-b1` |
+| `carry-relocalization-design` | 정리됨(retired) | HEAD 9973a68279d8 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-carry-relocalization-design` |
+| `carry-x-bias` | 정리됨(retired) | HEAD fc1b39a5654b is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-carry-x-bias` |
+| `chainfix-0930` | 정리됨(retired) | HEAD 8e07eb96d70b is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-chainfix-0930` |
+| `claude-v6g-dev` | 정리됨(retired) | HEAD 8def4da14cb7 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-v6g-dev` |
+| `codex-memory-v3` | 정리됨(retired) | HEAD ad8b9babdd87 is an ancestor of origin/main | 1개 / 136 B | `outputs/retired-worktrees/codex-memory-v3/MUJOCO_LOG.TXT` | `outputs/retired-worktrees/codex-memory-v3` |
+| `codex-pair-executor` | 정리됨(retired) | HEAD 07953a2fbc32 is an ancestor of origin/main | 5개 / 637 B | `outputs/retired-worktrees/codex-pair-executor/outputs/simulation-runs` | `outputs/retired-worktrees/codex-pair-executor` |
+| `codex-probe` | 정리됨(retired) | HEAD f06d1a7a0805 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/codex-probe` |
+| `codex-sim-speed-fix` | 정리됨(retired) | HEAD 92041cdbe017 is an ancestor of origin/main | 9787개 / 2,562,978 B | `outputs/retired-worktrees/codex-sim-speed-fix/tmp` | `outputs/retired-worktrees/codex-sim-speed-fix` |
+| `docs-0930` | 정리됨(retired) | HEAD 0abf52528fca is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-docs-0930` |
+| `door-guard-relax` | 정리됨(retired) | HEAD 953caa24db0e is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-door-guard-relax` |
+| `door-ultrasonic-sweep` | 정리됨(retired) | HEAD ad4441c52087 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-door-ultrasonic-sweep` |
+| `followup-docs` | 정리됨(retired) | HEAD 09eec0725a00 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/codex-followup-docs` |
+| `kiro-final-map` | 정리됨(retired) | HEAD 4c448f673ed2 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/kiro-final-map` |
+| `kiro-ko-pilot-fix` | 정리됨(retired) | HEAD 3c9323f0878c is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/kiro-ko-pilot-fix` |
+| `kiro-m2-pair-s2c-frozen` | 정리됨(retired) | HEAD ca44f66f555d is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/kiro-m2-pair-s2c-frozen` |
+| `kiro-map-v3` | 정리됨(retired) | HEAD f3edeb967287 is an ancestor of origin/main | 1개 / 107 B | `outputs/retired-worktrees/kiro-map-v3/MUJOCO_LOG.TXT` | `outputs/retired-worktrees/kiro-map-v3` |
+| `kiro-own-executor` | 정리됨(retired) | HEAD 7a3d4c85ab17 is an ancestor of origin/main | 1개 / 136 B | `outputs/retired-worktrees/kiro-own-executor/MUJOCO_LOG.TXT` | `outputs/retired-worktrees/kiro-own-executor` |
+| `kiro-own-perception` | 정리됨(retired) | HEAD a019d55747a9 is an ancestor of origin/main | 13497개 / 259,124,954 B | `outputs/2026-09-26-held-can`, `outputs/2026-09-26-zone-own-perception`, `outputs/2026-09-26-zone-own-perception-v2`, `outputs/2026-09-26-zone-own-perception-v3`, `outputs/2026-09-26-zone-own-perception-v3-1` | `outputs/retired-worktrees/kiro-own-perception` |
+| `kiro-owncam-memory` | 정리됨(retired) | HEAD 00682ef6a2bc is an ancestor of origin/main | 5개 / 1,073,220 B | `outputs/retired-worktrees/kiro-owncam-memory/MUJOCO_LOG.TXT`, `outputs/retired-worktrees/kiro-owncam-memory/outputs/simulation-runs` | `outputs/retired-worktrees/kiro-owncam-memory` |
+| `kiro-records-0926b` | 정리됨(retired) | HEAD 71eb25532b8d is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/kiro-records-0926b` |
+| `kiro-report-draft` | 정리됨(retired) | HEAD 1453a96dad58 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/kiro-report-draft` |
+| `kiro-sim-speed` | 정리됨(retired) | HEAD 325559eb59f0 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/kiro-sim-speed` |
+| `kiro-study-core` | 정리됨(retired) | HEAD 71b3dcd13d54 is an ancestor of origin/main | 6117개 / 119,709,984 B | `outputs/proxy-log-exclusive-window-review`, `outputs/retired-worktrees/kiro-study-core/.tmp`, `outputs/retired-worktrees/kiro-study-core/MUJOCO_LOG.TXT`, `outputs/retired-worktrees/kiro-study-core/experiments/2026-09-26-zone-study-offline-smoke/review-r12/preflight-01-readonly/000001-proxy-window.log`, `outputs/retired-worktrees/kiro-study-core/outputs/real_traces`, `outputs/retired-worktrees/kiro-study-core/outputs/sim_traces`, `outputs/retired-worktrees/kiro-study-core/outputs/simulation-runs` | `outputs/retired-worktrees/kiro-study-core` |
+| `kiro-study-integration` | 정리됨(retired) | HEAD 059468bbce97 is an ancestor of origin/main | 239개 / 6,953,756 B | `outputs/retired-worktrees/kiro-study-integration/MUJOCO_LOG.TXT`, `outputs/retired-worktrees/kiro-study-integration/tmp` | `outputs/retired-worktrees/kiro-study-integration` |
+| `kiro-study-scenarios` | 정리됨(retired) | HEAD 3186100117c4 is an ancestor of origin/main | 2개 / 78 B | `outputs/retired-worktrees/kiro-study-scenarios/.venv-sim`, `outputs/retired-worktrees/kiro-study-scenarios/.venv-sim-worker-mac` | `outputs/retired-worktrees/kiro-study-scenarios` |
+| `kiro-tb-loop` | 정리됨(retired) | HEAD d2bf3fa14139 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/kiro-tb-loop` |
+| `kiro-tb-perc` | 정리됨(retired) | HEAD f6d57383865e is an ancestor of origin/main | 92개 / 1,694,543 B | `outputs/tb-perception-noslip-20260926` | `outputs/retired-worktrees/kiro-tb-perc` |
+| `kiro-teacher-fix` | 정리됨(retired) | HEAD 2bada98e9d16 is an ancestor of origin/main | 1615개 / 293,164,190 B | `outputs/tb-teacher-fix-20260926`, `outputs/zone-teacher-fix-20260926` | `outputs/retired-worktrees/kiro-teacher-fix` |
+| `kiro-vision-loc` | 정리됨(retired) | HEAD ae3bdb9db592 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/kiro-vision-loc` |
+| `kiro-vision-worker` | 정리됨(retired) | HEAD ca88782cf1f7 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/kiro-vision-worker` |
+| `l1-axial-offset` | 정리됨(retired) | HEAD f0399e458d9b is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-l1-axial-offset` |
+| `merge-229` | 정리됨(retired) | HEAD 6a9b680b5645 is an ancestor of origin/main | 9개 / 2,301,148 B | `outputs/retired-worktrees/claude-merge-229/MUJOCO_LOG.TXT`, `outputs/retired-worktrees/claude-merge-229/outputs/simulation-runs` | `outputs/retired-worktrees/claude-merge-229` |
+| `merge-235` | 정리됨(retired) | HEAD 8120aa47a94d is an ancestor of origin/main | 9개 / 2,279,417 B | `outputs/retired-worktrees/claude-merge-235/MUJOCO_LOG.TXT`, `outputs/retired-worktrees/claude-merge-235/outputs/simulation-runs` | `outputs/retired-worktrees/claude-merge-235` |
+| `pair-chain-probe` | 정리됨(retired) | HEAD 156e31ce7140 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-pair-chain-probe` |
+| `pair-passage-map` | 정리됨(retired) | HEAD 7ae944afbc62 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-pair-passage-map` |
+| `probe-videos` | 정리됨(retired) | HEAD 09e455d933fe is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-probe-videos` |
+| `relocalization-audit` | 정리됨(retired) | HEAD dba562466d1a is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-relocalization-audit` |
+| `render-profile` | 정리됨(retired) | HEAD 105e0e8e381a is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-render-profile` |
+| `seg-lightfloor` | 정리됨(retired) | HEAD 8bbcab6e2d14 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-seg-lightfloor` |
+| `stall-research-0930` | 정리됨(retired) | HEAD ea3c83d02435 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-stall-research-0930` |
+| `status-refresh` | 정리됨(retired) | HEAD 485a734a63a2 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-status-refresh` |
+| `ultrasonic-input` | 정리됨(retired) | HEAD 859522749e86 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-ultrasonic-input` |
+| `v6h-classify` | 정리됨(retired) | PR #290 MERGED with head af6bcdb81b1c (squash or rebase merg | 0개 / 0 B | 없음 | `outputs/retired-worktrees/codex-v6h-classify` |
+| `v6h-prereg-upd` | 정리됨(retired) | PR #294 MERGED with head 9a63140edfaa (squash or rebase merg | 0개 / 0 B | 없음 | `outputs/retired-worktrees/codex-v6h-prereg-upd` |
+| `zone-m2-pair-s1-frozen` | 정리됨(retired) | HEAD 3fdf0112f7e9 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-zone-m2-pair-s1-frozen` |
+| `zone-m2-pair-s2-frozen` | 정리됨(retired) | HEAD fa682a6d9c6d is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-zone-m2-pair-s2-frozen` |
+| `zone-m2-pair-s2b-frozen` | 정리됨(retired) | HEAD ed15489ab5e8 is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-zone-m2-pair-s2b-frozen` |
+| `zone-m2-pair-s3-frozen` | 정리됨(retired) | HEAD 5f748734fc8f is an ancestor of origin/main | 0개 / 0 B | 없음 | `outputs/retired-worktrees/claude-zone-m2-pair-s3-frozen` |
