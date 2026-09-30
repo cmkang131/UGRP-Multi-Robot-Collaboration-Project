@@ -21,6 +21,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+from types import ModuleType
 
 SCHEMA = 'ugrp.execution_runtime_seal.v2'
 PROFILE = 'python-audit-offline-v1'
@@ -40,23 +41,84 @@ def digest(value):
                                      allow_nan=False).encode()).hexdigest()
 
 
-def file_state(path):
-    """Pin bytes AND lexical-to-real path binding, including symlink parents."""
-    path = Path(os.path.abspath(path))
+def _used_path(path):
+    """Absolutize without erasing symlink/.. traversal or the caller's spelling."""
+    path = os.fsdecode(path)
+    return path if os.path.isabs(path) else os.path.join(os.getcwd(), path)
+
+
+def _path_identity(path):
+    """Resolve components in filesystem order and record every traversed link.
+
+    Do not normpath/abspath first: alias/.. means the target's parent. Expanding
+    each link before processing the next component also captures links inside
+    link targets, including links no longer present in the final real path.
+    """
+    used = _used_path(path)
+    pending = used.split(os.sep)
+    resolved = os.sep
     links = {}
-    for part in (*reversed(path.parents), path):
-        if part.is_symlink():
-            links[str(part)] = os.readlink(part)
-    real = path.resolve()
+    traversals = 0
+    while pending:
+        part = pending.pop(0)
+        if part in ('', '.'):
+            continue
+        if part == '..':
+            # Missing/non-directory prefix followed by .. cannot be represented
+            # as an ordinary absent leaf. Reject instead of pinning another file.
+            if not os.path.isdir(resolved):
+                raise ValueError('unresolvable parent traversal: ' + used)
+            resolved = os.path.dirname(resolved)
+            continue
+        candidate = os.path.join(resolved, part)
+        if os.path.islink(candidate):
+            traversals += 1
+            if traversals > 40:
+                raise ValueError('symlink chain too long or cyclic: ' + used)
+            target = os.readlink(candidate)
+            links[candidate] = target
+            if os.path.isabs(target):
+                resolved = os.sep
+            pending = target.split(os.sep) + pending
+        else:
+            resolved = candidate
+    # realpath is authoritative; the traversal above inventories bindings and
+    # normalizes .. only after following links, not by lexical cancellation.
+    real = os.path.realpath(used)
+    if real != resolved:
+        raise ValueError('path resolution disagrees: ' + used)
+    return {'path_used': used, 'realpath': real, 'links': links}
+
+
+def file_state(path):
+    """Pin bytes and the used-to-real path binding, including symlink chains."""
+    binding = _path_identity(path)
+    real = Path(binding['realpath'])
     if not real.exists():
-        return {'realpath': str(real), 'links': links, 'sha256': None}
+        return {**binding, 'sha256': None}
     if not real.is_file():
         raise ValueError('not a regular input file: ' + str(path))
     hasher = hashlib.sha256()
     with real.open('rb') as stream:
         for chunk in iter(lambda: stream.read(1024 * 1024), b''):
             hasher.update(chunk)
-    return {'realpath': str(real), 'links': links, 'sha256': hasher.hexdigest()}
+    return {**binding, 'sha256': hasher.hexdigest()}
+
+
+def directory_state(path):
+    """Pin directory names/types/link bindings, not file contents or stat data."""
+    binding = _path_identity(path)
+    try:
+        with os.scandir(path) as entries:
+            members = []
+            for entry in entries:
+                kind = ('symlink' if entry.is_symlink() else
+                        'directory' if entry.is_dir() else 'file' if entry.is_file() else 'other')
+                members.append([entry.name, kind,
+                                os.readlink(entry.path) if kind == 'symlink' else None])
+        return {**binding, 'entries': sorted(members), 'error': None}
+    except (FileNotFoundError, NotADirectoryError) as exc:
+        return {**binding, 'entries': None, 'error': type(exc).__name__}
 
 
 def identity():
@@ -159,18 +221,20 @@ def trace_contract(static, *, expected_static_sha256, cases, root=ROOT,
     initial_identity = identity()
     initial_tools = tool_identity()
     seed = [str(root / p) for p in static['source_sha256']]
-    files, environment, traces = {}, {}, []
+    files, directories, environment, traces = {}, {}, {}, []
     for case in cases:
         result = _child(root, case, env_names, seed, policy=policy, timeout=timeout)
         if result['status'] != 'OK':
             raise TraceFailure(case, result)
-        for target, observed in ((files, result['files']), (environment, result['environment'])):
+        for target, observed in ((files, result['files']), (directories, result['directories']),
+                                 (environment, result['environment'])):
             for key, state in observed.items():
                 if key in target and target[key] != state:
                     raise ValueError('canonical cases disagree on input: ' + key)
                 target[key] = state
         traces.append({'case': case, 'events': result['events'],
-                       'observed_files': result['observed_files']})
+                       'observed_files': result['observed_files'],
+                       'observed_directories': sorted(result['directories'])})
     # A canonical run must not mutate its own registration, inputs or environment.
     verify_contract(static, expected_sha256=expected_static_sha256, root=root)
     if identity() != initial_identity or tool_identity() != initial_tools:
@@ -178,8 +242,11 @@ def trace_contract(static, *, expected_static_sha256, cases, root=ROOT,
     for path, state in files.items():
         if file_state(path) != state:
             raise ValueError('input changed during capture: ' + path)
+    for path, state in directories.items():
+        if directory_state(path) != state:
+            raise ValueError('directory changed during capture: ' + path)
     body = {'schema': SCHEMA, 'profile': PROFILE, 'root': str(root), 'static': static,
-            'cases': cases, 'files': files, 'environment': environment,
+            'cases': cases, 'files': files, 'directories': directories, 'environment': environment,
             'env_names': env_names, 'policy': policy, 'identity': initial_identity,
             'tools': initial_tools, 'traces': traces, 'limitations': LIMITATIONS}
     return {**body, 'sha256': digest(body)}
@@ -210,6 +277,9 @@ def run_sealed(value, *, expected_sha256, root=ROOT, case_index=0, timeout=30):
         for path, state in value['files'].items():
             if file_state(path) != state:
                 raise ValueError('sealed file drift: ' + path)
+        for path, state in value['directories'].items():
+            if directory_state(path) != state:
+                raise ValueError('sealed directory drift: ' + path)
         if not isinstance(case_index, int) or not 0 <= case_index < len(value['cases']):
             raise ValueError('unsealed canonical case')
         case = _case(root, value['cases'][case_index])
@@ -252,7 +322,7 @@ class _Audit:
         self.fd = fd
         self.active = False
         self.local = threading.local()
-        self.files, self.environment, self.events = {}, {}, {}
+        self.files, self.directories, self.environment, self.events = {}, {}, {}, {}
         self.observed = set()
         self.warnings = []
         self.values = dict(os.environ)
@@ -261,6 +331,7 @@ class _Audit:
     def finish(self, status='OK', reason=None, detail=None):
         value = {'status': status, 'reason': reason, 'detail': detail,
                  'files': self.files, 'observed_files': sorted(self.observed),
+                 'directories': self.directories,
                  'environment': self.environment, 'events': self.events, 'warnings': self.warnings}
         data = json.dumps(value).encode()
         while data:
@@ -272,20 +343,39 @@ class _Audit:
     def fail(self, detail):
         self.finish('HOST_ERROR', 'seal-violation', detail)
 
+    def check_path(self, collection, path, state):
+        """Match consumed identity, while requiring every used link to be sealed."""
+        if self.expected:
+            expected = self.expected[collection]
+            payload = lambda s: {k: v for k, v in s.items() if k not in ('path_used', 'links')}
+            known_links = {p: target for s in expected.values() for p, target in s['links'].items()}
+            matched = any(payload(s) == payload(state) for s in expected.values())
+            if (not matched or any(known_links.get(p) != target for p, target in state['links'].items())
+                    or (path in expected and expected[path] != state)):
+                noun = 'file read' if collection == 'files' else 'directory query'
+                self.fail('unsealed or changed ' + noun + ': ' + path)
+        observed = getattr(self, collection)
+        if path in observed and observed[path] != state:
+            self.fail('input changed within run: ' + path)
+        observed[path] = state
+
     def read(self, path, *, observed=True):
         if isinstance(path, int):
             self.fail('untracked file descriptor read')
-        path = os.path.abspath(os.fsdecode(path))
+        path = _used_path(path)
         state = file_state(path)
-        if Path(path).suffix == '.pyc' and Path(path).is_relative_to(self.root) and state['sha256']:
+        real = Path(state['realpath'])
+        if real.suffix == '.pyc' and real.is_relative_to(self.root) and state['sha256']:
             self.fail('repository bytecode cache unsupported; use a clean staged tree')
-        if self.expected and (path not in self.expected['files'] or self.expected['files'][path] != state):
-            self.fail('unsealed or changed file read: ' + path)
-        if path in self.files and self.files[path] != state:
-            self.fail('file changed within run: ' + path)
-        self.files[path] = state
+        self.check_path('files', path, state)
         if observed:
             self.observed.add(path)
+
+    def list_directory(self, path):
+        if isinstance(path, int):
+            self.fail('untracked directory descriptor query')
+        path = _used_path('.' if path is None else path)
+        self.check_path('directories', path, directory_state(path))
 
     def env_read(self, name):
         state = {'present': name in self.values,
@@ -319,6 +409,8 @@ class _Audit:
                 if flags & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC | os.O_APPEND):
                     self.fail('offline trace is read-only')
                 self.read(path)
+            elif event in ('os.listdir', 'os.scandir'):
+                self.list_directory(args[0])
             elif event == 'import':
                 name, filename = args[:2]
                 if name.split('.')[0] in {'ctypes', '_ctypes', 'mujoco', 'numpy'}:
@@ -369,8 +461,16 @@ def _worker():
     threading.excepthook = lambda _exc: guard.finish('HOST_ERROR', 'canonical-case-failed', 'thread error')
     try:
         source = entry.read_bytes()
-        exec(compile(source, str(entry), 'exec'),
-             {'__name__': '__main__', '__file__': str(entry), '__package__': None})
+        # Like coverage.py / runpy: execute in a real __main__ module namespace.
+        # This child never resumes a caller, so keep it installed through atexit
+        # too (run_path would restore the worker module as soon as it returns).
+        main = ModuleType('__main__')
+        main.__file__ = str(entry)
+        main.__package__ = main.__spec__ = main.__cached__ = None
+        main.__loader__ = importlib.machinery.SourceFileLoader('__main__', str(entry))
+        main.__builtins__ = sys.modules['builtins']
+        sys.modules['__main__'] = main
+        exec(compile(source, str(entry), 'exec'), main.__dict__)
     except SystemExit as exc:
         if exc.code not in (None, 0):
             guard.finish('HOST_ERROR', 'canonical-case-failed', 'nonzero SystemExit')

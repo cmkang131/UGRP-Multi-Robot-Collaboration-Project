@@ -386,3 +386,97 @@ def test_startup_environment_cannot_run_before_hook(root, name):
     write(root, 'entry.py', 'pass\n')
     with pytest.raises(ValueError, match='startup environment'):
         seal(root, env=[name])
+
+
+def test_indirect_symlink_chain_is_pinned_even_when_final_target_is_unchanged(root):
+    write(root, 'deep/payload.txt', 'STOP')
+    (root / 'deep/sub').mkdir()
+    (root / 'bridge').symlink_to('deep', target_is_directory=True)
+    (root / 'alias').symlink_to('bridge/sub', target_is_directory=True)
+    write(root, 'entry.py', 'assert open("alias/../payload.txt").read() == "STOP"\n')
+    value = seal(root)
+    used = str(root / 'alias/../payload.txt')
+    state = value['files'][used]
+    assert state['path_used'] == used
+    assert state['realpath'] == str(root / 'deep/payload.txt')
+    assert state['links'][str(root / 'alias')] == 'bridge/sub'
+    assert state['links'][str(root / 'bridge')] == 'deep'
+    (root / 'bridge').unlink()
+    (root / 'bridge').symlink_to('./deep', target_is_directory=True)
+    assert (root / 'alias/../payload.txt').read_text() == 'STOP'
+    rejects(root, value, 'sealed file drift')
+
+
+@pytest.mark.parametrize('alternate', ['deep/payload.txt', 'deep/sub/../payload.txt'])
+def test_guard_matches_resolved_identity_across_path_spellings(root, monkeypatch, alternate):
+    write(root, 'deep/payload.txt', 'STOP')
+    (root / 'deep/sub').mkdir()
+    (root / 'alias').symlink_to('deep/sub', target_is_directory=True)
+    write(root, 'entry.py', 'import os\nassert open(os.getenv("SEAL_PATH")).read() == "STOP"\n')
+    monkeypatch.setenv('SEAL_PATH', 'alias/../payload.txt')
+    value = seal(root, env=['SEAL_PATH'], policy={
+        'environment': 'warn', 'identity': 'abort', 'reason': 'equivalent path spelling'})
+    monkeypatch.setenv('SEAL_PATH', alternate)
+    result = run_sealed(value, expected_sha256=value['sha256'], root=root)
+    assert result['status'] == 'OK', result
+    assert str(root / alternate) in result['observed_files']
+
+
+@pytest.mark.parametrize('query', ['os.listdir', 'os.scandir'])
+def test_unobserved_directory_is_rejected_before_query(root, monkeypatch, query):
+    for name in ('settings', 'other'):
+        (root / name).mkdir()
+    write(root, 'entry.py', 'import os\n' + f'list({query}(os.getenv("SEAL_PATH")))\n')
+    monkeypatch.setenv('SEAL_PATH', 'settings')
+    value = seal(root, env=['SEAL_PATH'], policy={
+        'environment': 'warn', 'identity': 'abort', 'reason': 'unobserved directory case'})
+    monkeypatch.setenv('SEAL_PATH', 'other')
+    rejects(root, value, 'unsealed or changed directory query')
+
+
+@pytest.mark.parametrize('change', ['remove', 'type', 'binding', 'unread-content'])
+def test_directory_members_and_links_are_checked_without_pinning_unread_bytes(root, change):
+    write(root, 'settings/input.cfg', 'STOP')
+    (root / 'alias').symlink_to('settings', target_is_directory=True)
+    write(root, 'entry.py', 'import os\nassert os.listdir("alias") == ["input.cfg"]\n')
+    value = seal(root)
+    assert value['directories'][str(root / 'alias')]['realpath'] == str(root / 'settings')
+    if change == 'binding':
+        (root / 'alias').unlink()
+        (root / 'alias').symlink_to('./settings', target_is_directory=True)
+    elif change == 'unread-content':
+        write(root, 'settings/input.cfg', 'UNREAD CHANGE')
+        assert run_sealed(value, expected_sha256=value['sha256'], root=root)['status'] == 'OK'
+        return
+    else:
+        (root / 'settings/input.cfg').unlink()
+        if change == 'type':
+            (root / 'settings/input.cfg').mkdir()
+    rejects(root, value, 'sealed directory drift')
+
+
+def test_missing_directory_creation_is_checked_before_start(root, monkeypatch):
+    from harness import runtime_provenance as rp
+    write(root, 'entry.py', 'import os\ntry:\n os.listdir("settings")\n'
+          'except FileNotFoundError:\n pass\n')
+    value = seal(root)
+    assert value['directories'][str(root / 'settings')]['error'] == 'FileNotFoundError'
+    (root / 'settings').mkdir()
+    monkeypatch.setattr(rp, '_child', lambda *a, **k: pytest.fail('changed directory reached child'))
+    rejects(root, value, 'sealed directory drift')
+
+
+def test_main_module_remains_the_entry_through_shutdown(root):
+    write(root, 'entry.py', 'import atexit, pickle, sys\nclass Command:\n pass\n'
+          'def on_exit():\n import __main__\n assert __main__.__dict__ is globals()\n'
+          ' assert isinstance(pickle.loads(pickle.dumps(Command())), Command)\n'
+          ' sys.audit("main.shutdown.OK")\natexit.register(on_exit)\n')
+    value = seal(root)
+    assert value['traces'][0]['events']['main.shutdown.OK'] == 1
+
+
+def test_unresolvable_parent_traversal_is_explicitly_rejected(root):
+    from harness.runtime_provenance import file_state
+    write(root, 'payload.txt', 'UNUSED')
+    with pytest.raises(ValueError, match='unresolvable parent traversal'):
+        file_state(root / 'absent/../payload.txt')

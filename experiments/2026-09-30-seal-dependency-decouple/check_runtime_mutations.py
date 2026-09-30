@@ -22,19 +22,19 @@ COPIED = (
     'harness/execution_dependency_contract.py', 'harness/python_source_closure.py',
     'harness/python_source_closure_v2.py', 'sim/workflow_manager.py',
     'harness/runtime_provenance.py', 'scripts/trace_execution_dependencies.py',
-    'tests/test_seal_runtime_provenance.py',
+    'tests/test_seal_runtime_provenance.py', 'tests/test_seal_v2_review_301c.py',
 )
 MUTATIONS = (
     ('unseen-file',
-     "if self.expected and (path not in self.expected['files'] or self.expected['files'][path] != state):",
-     'if False:',
+     "self.check_path('files', path, state)",
+     'self.files[path] = state',
      'test_unseen_read_aborts_before_consumer_even_if_exception_caught'),
     ('environment-drift',
      "if self.expected['environment'][name] != state:", 'if False:',
      'test_environment_runtime_comparison'),
     ('path-binding',
-     "return {'realpath': str(real), 'links': links, 'sha256': hasher.hexdigest()}",
-     "return {'sha256': hasher.hexdigest()}",
+     "return {'path_used': used, 'realpath': real, 'links': links}",
+     "return {'path_used': used, 'realpath': used, 'links': {}}",
      'test_N3_same_bytes_source_symlink_target or test_N3_declared_xml_link_selects_other_declared_asset'),
     ('static-union', "for path in request['seed']:", 'for path in []:',
      'test_static_unobserved_union_and_multiple_cases'),
@@ -43,6 +43,18 @@ MUTATIONS = (
     ('unknown-environment', "if name not in self.expected['environment']:",
      "if name not in self.expected['environment']:\n                return",
      'test_unknown_environment_name_is_never_covered_by_warn'),
+    ('lexical-dotdot', 'used = _used_path(path)', 'used = os.path.abspath(path)',
+     'test_symlink_dotdot_consumed_file_drift or test_symlink_dotdot_binding_drift'),
+    ('indirect-link-binding', "return {'path_used': used, 'realpath': real, 'links': links}",
+     "return {'path_used': used, 'realpath': real, 'links': {}}",
+     'test_indirect_symlink_chain_is_pinned_even_when_final_target_is_unchanged'),
+    ('resolved-identity', 'matched = any(payload(s) == payload(state) for s in expected.values())',
+     'matched = path in expected and expected[path] == state',
+     'test_guard_matches_resolved_identity_across_path_spellings'),
+    ('main-module', "sys.modules['__main__'] = main", 'pass  # main module registration removed',
+     'test_normal_script_main_module_semantics or test_main_module_remains_the_entry_through_shutdown'),
+    ('directory-query', 'self.list_directory(args[0])', 'pass  # directory observation removed',
+     'test_documented_directory_query_boundary or test_unobserved_directory_is_rejected_before_query'),
 )
 
 
@@ -57,6 +69,7 @@ def run(root, output, name, source, selector):
         report = output / (name + '.xml')
         command = [sys.executable, '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
                    '--rootdir=.', '--confcutdir=.', 'tests/test_seal_runtime_provenance.py',
+                   'tests/test_seal_v2_review_301c.py',
                    '-k', selector, '--junitxml=' + str(report)]
         env = dict(os.environ, PYTHONPATH=str(staged), PYTHONDONTWRITEBYTECODE='1')
         with (output / (name + '.log')).open('x') as log:
