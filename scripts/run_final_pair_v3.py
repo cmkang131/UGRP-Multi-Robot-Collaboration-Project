@@ -42,15 +42,17 @@ def run_case(bundle, out, *, seed, backend_factory, runtime_factory=None, calibr
     out = Path(out)
     out.mkdir(parents=True, exist_ok=False)
     write(out / 'bundle.json', bundle)
-    if bundle['case']['sim_cap_s'] != 120.:
-        raise ValueError('v88 case must retain the 120 SIM s denominator')
     collection = bundle['check'].startswith('calibration-')
+    cap = 370. if collection else 120.
+    if bundle['case']['sim_cap_s'] != cap or bundle['timing'] != contract.execution_timing(bundle['check']):
+        raise ValueError('v88 case cap/timing differs from registered acquisition or student protocol')
     events = schedule(bundle['check']) if collection else []
     write(out / 'inputs/schedule.json', events)
     backend = runtime = None
     result = {'check': bundle['check'], 'case': bundle['case'], 'status': 'HOST_ERROR',
               'protocol_complete': False, 'physical_success': None, 'research_result': False,
-              'student_control': not collection, 'reset_sim_cap_s': 5., 'check_sim_cap_s': 120.,
+              'student_control': not collection, 'reset_sim_cap_s': 5., 'check_sim_cap_s': cap,
+              'timing': bundle['timing'],
               'loadavg_start': list(os.getloadavg()), 'failure': None}
     try:
         backend = backend_factory(bundle, out, seed=seed)
@@ -58,7 +60,7 @@ def run_case(bundle, out, *, seed, backend_factory, runtime_factory=None, calibr
         if not 0 <= reset <= contract.RESET_CAP_S+1e-8:
             raise RuntimeError('RESET_SIM_CAP_EXCEEDED')
         start = backend.now
-        backend.set_deadline(start+120.)
+        backend.set_deadline(start+cap)
         result['reset_sim_s'] = reset
         if not collection:
             if runtime_factory is None:
@@ -68,15 +70,17 @@ def run_case(bundle, out, *, seed, backend_factory, runtime_factory=None, calibr
             runtime = runtime_factory(static, calibration, calibration_sha, seed=seed)
             runtime.initial_commands(start, backend.commands)
         event_i = 0
-        for i in range(2401):
-            elapsed = i*.05
+        steps = round(cap/contract.TICK_S)
+        frame_stride = round(contract.COLLECTION_FRAME_S/contract.TICK_S)
+        for i in range(steps+1):
+            elapsed = i*contract.TICK_S
             # Raw labels have no return channel into either command selector.
             backend.eval_sample()
-            if runtime is not None or i % 4 == 0:
+            if runtime is not None or i % frame_stride == 0:
                 frames = backend.capture()
                 if runtime is not None:
                     runtime.on_frames(backend.now, frames)
-            if i == 2400:
+            if i == steps:
                 break
             while event_i < len(events) and events[event_i]['t'] <= elapsed+1e-8:
                 e = events[event_i]
@@ -89,8 +93,8 @@ def run_case(bundle, out, *, seed, backend_factory, runtime_factory=None, calibr
                 for rid, action in runtime.arm_step(backend.now):
                     backend.issue(rid, action)
                     runtime.on_command(rid, backend.now, action)
-            backend.advance_to(start+(i+1)*.05)
-        if event_i != len(events) or abs(backend.now-start-120.) > 1e-7:
+            backend.advance_to(start+(i+1)*contract.TICK_S)
+        if event_i != len(events) or abs(backend.now-start-cap) > 1e-7:
             raise RuntimeError('INCOMPLETE_BOUNDED_PROTOCOL')
         result.update(protocol_complete=True, status='COLLECTED_UNQUALIFIED', check_sim_s=backend.now-start)
     except Exception as exc:

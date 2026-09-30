@@ -35,7 +35,7 @@
   },
   "new_tests": {
     "passed": 31,
-    "independent_review_elapsed_s": 20.03
+    "author_reported_review_elapsed_s_unverified": 20.03
   },
   "local_environment_limitation": {
     "test": "test_parent_exit_cleans_background_child",
@@ -46,24 +46,6 @@
     "missing workflow sample for zone-final-pair-v3; added",
     "ps forbidden by sandbox; local invocation deselection only"
   ],
-  "independent_review": {
-    "status": "draft ready within reviewed offline scope",
-    "resolved_findings": [
-      "measured standoff projection",
-      "reachable static v3 grasp radius",
-      "full pair envelope after-door checkpoint",
-      "finite IK posture calibration coverage",
-      "partner deadband before yaw mean",
-      "axis lag used by alignment and leg schedule"
-    ],
-    "pf_yaw_counterexample_after_fix_rad_s": 0.0,
-    "axial_lateral_schedule_distance_m": [
-      0.5,
-      0.5
-    ],
-    "max_align_error": 2.43e-17,
-    "physical_acceptance": false
-  },
   "preserved_sources_sha256": {
     "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
     "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
@@ -345,5 +327,31 @@
     "tensorboard_conversion": "not applicable: no new experiment/model/video outputs",
     "manual_tmp_extraction_dirs_created": []
   },
-  "qualification": "fake/static only; no P03/carry/load/physical success claim"
+  "qualification": "fake/static only; no P03/carry/load/physical success claim",
+  "author_review_summary_unverified": {
+    "status": "author-provided summary; reviewer/original artifact unavailable; not independent approval",
+    "resolved_findings": [
+      "measured standoff projection",
+      "reachable static v3 grasp radius",
+      "full pair envelope after-door checkpoint",
+      "finite IK posture calibration coverage",
+      "partner deadband before yaw mean",
+      "axis lag used by alignment and leg schedule"
+    ],
+    "pf_yaw_counterexample_after_fix_rad_s": 0.0,
+    "axial_lateral_schedule_distance_m": [
+      0.5,
+      0.5
+    ],
+    "max_align_error": 2.43e-17,
+    "physical_acceptance": false
+  },
+  "independent_review": {
+    "reviewer": "Codex in separate codex/review-344 worktree",
+    "reviewed_sha": "45c4ebc43daa96542cf298cea6f69964e501ec4a",
+    "review_commit": "17b54de7f7440589fa5cc388a46b61f6c4c20467",
+    "report_url": "https://github.com/kcm0127-dotcom/ugrp/blob/17b54de7f7440589fa5cc388a46b61f6c4c20467/experiments/2026-10-01-v3-pair-adapter/REVIEW_344.md",
+    "review_url": "https://github.com/kcm0127-dotcom/ugrp/pull/344#issuecomment-5919940960",
+    "status": "BLOCK: R1/R2 P1, R3/R4 P2. Review of revised implementation pending; no independent approval."
+  }
 }

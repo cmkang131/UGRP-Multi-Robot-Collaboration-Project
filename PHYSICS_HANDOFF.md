@@ -1,6 +1,7 @@
 # 최종 v3 공동 운반 v88 인계 — DRAFT, 미봉인
 
-v88은 `floor_light_v1`의 세 최종 v3 지도에 공동 운반과 보정 수집 경로를 추가한다.
+v88은 `floor_light_v1`의 세 최종 v3 지도에 공동 운반을 연결한다. 보정 수집은 두 문 지도 한 곳이다.
+**v88은 한 번도 실행되지 않아 REVIEW_344 수정은 같은 번들에서 개정했다.** 과거 실행을 다시 이름 붙이지 않았다.
 **이번 검증은 fake/offline만 수행했다. 물리·렌더·모델 추론·P03·운반 성공 결과는 없다.**
 학생 실행은 실측 v3 보정 파일의 해시·조합·필수 자세 coverage가 없으면 시작하지 않는다.
 아래 v84 기록은 당시 기본 조명과 reset 전용 결과의 이력으로 그대로 보존한다.
@@ -33,30 +34,55 @@ v88은 `floor_light_v1`의 세 최종 v3 지도에 공동 운반과 보정 수�
 
 ## 보정 수집 — 모델/기존 loaded fit 없이 실행 가능
 
-세 수집 종류는 각각 **세 지도 × 120 SIM초**, 각 reset은 별도 최대 5 SIM초다.
-`configs/final_environment_measurement_v1.json`은 원본 그대로 두고 새 명시적 schedule로 확장한다.
+세 수집 종류는 각각 **한 지도 × 370 SIM초 + reset 최대 5초 = 최대 375초**다.
+지도는 `zone_wide_two_doors_final_v3`로 고정한다. P03/운반의 3×120초는 유지한다.
+기존 세 지도 반복 분모를 한 지도 장시간 자극으로 바꾼 것이며, 지도 간 보정 검증을 뜻하지 않는다.
+원본 `final_environment_measurement_v1.json`과 #347의 실행된 v89는 바꾸지 않는다.
+#347 `eaeaaff0`의 계단·PRBS/50 ms 평가/전체 경로 중단 설계를 v88에 적용했다.
+#348 `dba873d4`는 선형 1차 모델 부적합, 크기별 gain, deadband와 약 0.84초 drive tau의 근거다.
+그 실측값을 loaded/fine 보정값으로 복사하지 않는다.
 
-- `calibration-unloaded`: 원본 24 camera pose/pan 조건과 ±3% 운동 펄스,
-  102초부터 실제 제어기가 쓰는 열린 hover·grasp·p45·inspect·search 자세.
-- `calibration-fine`: 같은 수집에 70초 p45 정렬 자세를 배치하고 ±1.5% 운동 펄스를 발행한다.
-- `calibration-loaded`: **교사 측정 전용**으로 정적 catalogue station에 r1/r2를 배치한다.
-  0초 열린 grasp, 2초 close, 4초 hover, 12–37.75초 양 운반자 대칭 운동 펄스,
-  48–69초 loaded pan 조건, 80초 open. 파지/하중 판정으로 다음 명령을 바꾸지 않는다.
-  pan 동작은 빔을 놓칠 수 있으므로 운동 표본을 먼저 모은다.
+- 모든 축(forward/left/turn)에 각 크기의 **양·음 10초 계단 + 1초 coast**,
+  x^5+x^2+1 PRBS31(0.5초 chip, 중간 크기) + 2.5초 coast를 넣는다. 실제 lease는 0.05초다.
+- `calibration-unloaded`: 크기 .01/.02/.03, 74–326초 운동.
+  0–72초 원본 자세/pan, 330–342초 hover·grasp·p45·inspect·search. r1 고정 시작 `[3.25,-.85,0]`.
+- `calibration-fine`: 크기 .004/.016/.028, 같은 시각; 70초 p45로 바꾸고 운동 중 유지한다.
+- `calibration-loaded`: 크기 .006/.015/.025/.04. 데드밴드 아래·중간 두 수준·포화 영역을
+  구별하는 설계이며, 실제 deadband 범위가 다르면 적합을 거부하고 새 설계가 필요하다.
+  **교사 전용** 빔 시작 `[3.55,-.85,0]`의 정적 양끝 station에 두 로봇을 둔다.
+  0초 open/grasp, 2초 close, 4초 hover, **12–330초 운동**, 334–355초 pan, 362초 open.
+  r2는 세 축 모두 반대 부호인 고정 공동 진단이다. 하중 유지·강체 회전을 보장하지 않는다.
+- 매 물리 substep 전후, 명령 직전, 0.05초 평가에서 로봇/팔·loaded 빔의 실제 geom 경계를 검사한다.
+  벽 여유 0.30 m + 중단 buffer 0.05 m, 로봇 반경 bound 0.40 m,
+  substep geom 이동 bound 0.01 m. 누락·NaN·초과는 hold 후 **HOST_ERROR로 중단**한다.
+  GT는 이 교사 진단의 중단에만 쓰고, 명령 수정/경로 보정이나 학생에게 전달하지 않는다.
+  전체 경로의 실제 여유와 loaded 성공은 실행 전 확정할 수 없다.
+
+[오프라인 식별 결과](experiments/2026-10-01-v3-pair-adapter/identifiability_v2.json)는
+#347의 정확 lag 적분·gain 해석적 적합·drive/stop tau profiling에 정적 비선형을 추가했다.
+세 profile×세 축의 subtractive deadband 모델은 rank 3, loaded runtime ramp 모델은 rank 4다.
+전진/측면에서 20% 다른 drive tau 대안의 최소 잔차는 fine 0.797–1.167 mm,
+loaded 1.112–1.583 mm; loaded ramp는 0.833 mm다. 가정한 잔차 바닥 0.1 mm의 5배를 넘는다.
+**조건부 설계 결과**다. #348 실제 잔차 약 1.8 mm 및 PRBS 잔차 3.4–4.24 mm보다
+낮은 합성 잡음 가정이며, 물리 데이터에서 같은 식별성을 보장하지 않는다. stop tau는 nuisance로
+profile했고 20 Hz에서 검증된 보정값으로 채택하지 않는다. 실제 fit의 모델 형태·잔차를 다시 검토한다.
 
 교사 위치·카메라 실제 transform·qpos/qvel·빔 궤적·접촉은 `eval_only/`에만 기록한다.
 **요청한 loaded 상태가 실제 하중을 뜻하지 않는다.** 접촉·빔 상승·유지 구간을 오프라인에서
 판정하고, 실패/낙하/정지 표본을 함께 남긴 뒤 적합할 loaded 표본을 선택해야 한다.
 수집 완료 상태는 `COLLECTED_UNQUALIFIED`이며 보정 적합/물리 성공을 뜻하지 않는다.
 각 own JPEG·발행 명령·frame metadata·요청 schedule·전체 artifact hash를 보존한다.
-카메라 label은 optical→실제 chassis base의 origin/rotation이며 pan에 따른 chassis yaw는 따로 적합한다.
+카메라 label은 optical→실제 chassis의 origin/rotation과 `chassis_to_floor`를 함께 저장한다.
+후자는 world xy/yaw를 제거하고 차체 높이·roll/pitch를 보존한다. 유효한 정착 자세별/하중별로
+오프라인 적합한 고정 변환만 학생에게 준다. beam/PF는 두 변환의 합성을 함께 사용한다.
+실행 중 GT 높이·기울기 또는 nominal wheel radius로 보정하지 않는다. 이전 frame 계약 파일은 거부한다.
 
 ```bash
 cd /Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter
 PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA=$(git rev-parse HEAD)
 FINAL_BRANCH=$(git branch --show-current)
-RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v88-NEW-COHORT
+RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v88-review344-NEW-COHORT
 git status --short --untracked-files=all
 "$PY" scripts/disk_report.py
 "$PY" scripts/agent_lock.py status
@@ -70,12 +96,12 @@ git status --short --untracked-files=all
 (
 set -euo pipefail
 "$PY" scripts/agent_lock.py acquire --owner codex --branch "$FINAL_BRANCH" \
-  --purpose 'v88 v3 calibration 3 profiles x 3 maps x 120 SIM s' --pid $$ --expected-minutes 90
+  --purpose 'v88 revised calibration 3 profiles x (370+5) SIM s, teacher only' --pid $$ --expected-minutes 90
 trap '"$PY" scripts/agent_lock.py release --owner codex' EXIT
 for CHECK in calibration-unloaded calibration-loaded calibration-fine; do
   "$PY" scripts/ugrp_session.py run "final-pair-v88-$CHECK" -- \
     "$PY" -m scripts.sim_cli workflow run zone-final-pair-v3 -- \
-    --check "$CHECK" --seed 911 --expected-source-sha "$FINAL_SHA" \
+    --check "$CHECK" --map-id zone_wide_two_doors_final_v3 --seed 911 --expected-source-sha "$FINAL_SHA" \
     --execute --lock-owner codex --output "$RUN_ROOT/$CHECK"
 done
 "$PY" scripts/agent_lock.py release --owner codex
@@ -90,8 +116,24 @@ status `MEASURED_SIM`, 새 contract hash, 세 map hash, `floor_light_v1`, source
 manifest hash를 포함해야 한다. `params.motion`, `params.motion_loaded`, `params.motion_profiles.fine`의
 3×3 gain·lag·noise·scale, loaded load_transition/deadband/drift/yaw spread,
 `pair_model.slope_to_yaw_ratio`·`b_rad_s` 네 조건, `pan_base_yaw`와 unloaded/loaded
-`camera_models`가 필수다. `required_camera_poses()`의 모든 settled 자세를 실제로 측정한다.
+`camera_models`의 `frame=optical_to_actual_chassis`와 `chassis_to_floor`가 필수다. `required_camera_poses()`의 모든 settled 자세를 실제로 측정한다.
 이 PR은 fitting·정확도 승인·실측 파일 생성을 자동으로 수행하지 않는다.
+
+## 실제 관측·팔 실행 시계 (bundle.timing / result.timing)
+
+- 기준 시각은 표준 reset 종료 `t_start`. eval pose/qpos/qvel은 `t_start+n×0.05초`.
+- 학생 RGB 두 대 capture/provider 전달은 **0.05초 고정**, 처음/끝 포함 120초에 대당 2401장.
+  기존 배경 RGB 0.2초 + 제어 시 fresh capture에서 바뀌었다. settled/initialized 조건에 따라
+  실제 inference 수는 달라지며 모든 전달 frame이 추론 1회라는 뜻은 아니다.
+- 수집 RGB/camera label은 기존 **0.2초** 유지(370초에 대당 1851장), pose는 독립 0.05초(7401개).
+  #347의 5초 RGB보다 촘촘하며 v89와 같은 관측 코호트로 합산하지 않는다.
+- 순서는 eval → capture/provider → 고정 수집 명령 또는 Runtime.step → arm_step → advance.
+  제어 gate 0.1초, LOOK_EVERY 0.4초, P03 지연 0.16초는 유지한다.
+- 팔 dispatch는 **reset 기준 0.05초 격자**다. 기존 physics-step `now>=next_arm`,
+  `next_arm=now+0.05`와 위상/반올림 궤적이 다르다. 봉인된 실행의 동일 재생이 아니다.
+- constructor 0.30초와 표준 Scene.setup은 reset≤5초 안에 포함한다. hover 1초,
+  하강 7×0.12초, 최종 settle 0.3초와 나머지 상속된 arm queue의 duration/settle은 유지한다.
+  이 값이 v3에 충분하다는 물리 승인은 없다. 자세별 보정 선택은 새 contract/hash로 고정한다.
 
 ## P03 — 독립 reset 세 번, 각 120 SIM초
 

@@ -1,5 +1,8 @@
 # 최종 v3 공동 운반 어댑터 — 오프라인 구현 기록
 
+**v88은 아직 한 번도 실행되지 않아 R1–R4를 같은 번들에서 개정했다.**
+[수정·검증 기록](REVIEW_344_FIXES.md)을 함께 읽는다.
+
 번들 `zone-final-pair-v88`, workflow `zone-final-pair-v3` 3.1.0, **DRAFT_UNSEALED**.
 세 최종 v3 지도에서 b-v6h1 계열 공동 운반을 연결하고 unloaded/loaded/fine 운동·자세별
 카메라 자료를 수집할 관리 경로를 추가했다. 물리·렌더·실제 모델 추론은 실행하지 않았다.
@@ -40,8 +43,9 @@ camera transform은 평가 파일에만 남는다. fixed grasp 실패/낙하/정
 요청 schedule·own JPEG·발행 명령·평가 trace·artifact hash를 함께 저장한다.
 
 실측 파일이 없거나 해시/지도/render/필수 자세 coverage가 틀리면 학생 실행을 거부한다.
-각 사례는 reset 최대 5초와 check 120초로 제한한다. P03 분모는 checkpoint 3개,
-collection/운반 분모는 지도 3개이며 HOST_ERROR 뒤의 미시도 사례도 남긴다.
+학생 사례는 reset 최대 5초와 check 120초다. P03/운반 분모는 3개다.
+수정된 collection은 두 문 지도 하나에서 370초(reset 포함 최대 375초), 분모 1이다.
+HOST_ERROR 뒤 미시도 사례도 남긴다.
 ENOSPC, 중단, worker 정리 실패를 성공으로 처리하지 않는다.
 
 ## 검증과 독립 검토
@@ -51,7 +55,7 @@ GT mutation 뒤 명령 동일성, 120초 cap/분모, ENOSPC/worker 정리, 실�
 PF 동일성/지연/latent resampling, 실제 pair controller 구성, per-pose 수집 coverage,
 informative/blank scan, partner deadband·축별 lag 반례를 검사한다.
 
-독립 검토에서 찾은 다음 문제를 반영했다.
+최초 작성자가 제공한 다음 수정 요약은 검토자·원문을 확인할 수 없어 **독립 승인 근거로 쓰지 않는다**.
 
 1. standoff 관측에도 실측 camera projection을 연결했다.
 2. 도달 불가능했던 v3 파지 반경을 정적 station 반경 0.2032 m로 수정했다.
@@ -63,7 +67,9 @@ informative/blank scan, partner deadband·축별 lag 반례를 검사한다.
 최초 관련 검사: 268 통과/3 실패. 새 workflow 테스트 목록 누락 2건은 수정했다.
 나머지 `test_parent_exit_cleans_background_child`는 샌드박스가 `ps` 실행을 거부했다.
 테스트를 약화하거나 skip으로 바꾸지 않고 로컬 선택에서만 제외했다. 정상 CI에는 포함된다.
-최종 재검사 수치와 독립 검토 판정은 `verification.json`을 따른다.
+위 수치와 6개 수정 요약은 최초 구현 당시 기록이다. 확인 가능한 독립 검토는 별도 Codex의
+[REVIEW_344 (17b54de7)](https://github.com/kcm0127-dotcom/ugrp/blob/17b54de7f7440589fa5cc388a46b61f6c4c20467/experiments/2026-10-01-v3-pair-adapter/REVIEW_344.md)이며,
+대상 `45c4ebc4`에 **BLOCK**을 판정했다. 수정 후보의 독립 재검토는 아직 없다.
 
 ## 물리 담당자에게 남은 작업
 
@@ -76,7 +82,8 @@ P03 3×120 SIM초의 잠금·세션·표준 workflow 명령을 적었다. collec
 정체 baseline을 잡지 못하는 기존 한계가 있으며 이 PR이 이를 해소했다고 주장하지 않는다.
 명령 receipt인 `SEQUENCE_OBSERVED_UNQUALIFIED`도 물리 성공 판정이 아니다.
 
-새 실험/영상/모델 산출물이 없으므로 TensorBoard 변환·모델 Release는 만들지 않았다.
+최초 구현 당시에는 새 결과가 없어 TensorBoard 변환을 하지 않았다. 이번 수정의 합성 식별 결과는
+[tensorboard_review_fixes.json](tensorboard_review_fixes.json)의 별도 snapshot에 변환했다. 모델 Release는 없다.
 실제 결과를 회수한 담당자가 새 snapshot과 표시를 확인해야 한다. Drive는 사용하지 않았다.
 `/private/tmp`에 수동 extraction directory를 만들지 않았고 fake 테스트 임시 폴더는 자동 정리했다.
 

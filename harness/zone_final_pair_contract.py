@@ -5,7 +5,6 @@ Calibration acquisition is a teacher measurement, never student acceptance.
 """
 from __future__ import annotations
 
-import copy
 import math
 import re
 from pathlib import Path
@@ -23,6 +22,34 @@ CHECKPOINTS = ('before_door', 'after_door', 'before_destination')
 CHECKS = ('p03', 'carry', 'calibration-unloaded', 'calibration-loaded', 'calibration-fine')
 ROBOTS = ('r1', 'r2')
 RESET_CAP_S = 5.
+TICK_S = .05
+COLLECTION_FRAME_S = .2
+
+
+def execution_timing(check):
+    collection = check.startswith('calibration-')
+    return {'phase_origin': 'end of standard Scene reset; t_start=backend.now',
+            'scheduler_period_s': TICK_S, 'eval_pose_period_s': TICK_S,
+            'rgb_capture_period_s': COLLECTION_FRAME_S if collection else TICK_S,
+            'provider_delivery_period_s': None if collection else TICK_S,
+            'capture_at_start_and_end': True, 'capture_before_commands': True,
+            'provider_inference': 'on each delivered settled frame; uninitialized/unsettled frames skipped',
+            'control_gate_s': None if collection else .1,
+            'look_every_s': None if collection else .4,
+            'arm_dispatch_period_s': None if collection else TICK_S,
+            'arm_dispatch_phase': 't_start+n*0.05, after Runtime.step; no physics-step now+0.05 gate',
+            'pose_delay_s': None if collection else .16,
+            'reset_cap_s': RESET_CAP_S,
+            'stabilization': {'scene_setup': 'standard constructor 0.30s + Scene.setup within reset cap',
+                              'hover_s': 1., 'descent_steps': 7, 'descent_step_s': .12,
+                              'final_descent_settle_s': .3,
+                              'other_arm_settles': 'inherited frozen per-command queues; dispatched on reset grid'},
+            'parent_differences': [
+                'sealed host background RGB 0.2s plus fresh control captures -> fixed 0.05s student RGB/provider',
+                'sealed physics-step arm now>=next_arm, next_arm=now+0.05 -> reset-relative 0.05s grid',
+                'collection camera 0.2s retained; independent pose/qpos/qvel every 0.05s',
+                'collection v1 0.25s leases -> v2 0.05s leases, multi-amplitude 10s steps + PRBS',
+                'P03 delay 0.16s and control 0.1s retained; not a sealed trajectory replay']}
 
 
 def registry():
@@ -62,7 +89,8 @@ def camera_record(calibration, state, servo):
             or not np.allclose(rotation.T @ rotation, np.eye(3), atol=1e-5)
             or not np.isclose(np.linalg.det(rotation), 1., atol=1e-5)):
         raise CalibrationError('invalid measured v3 camera transform')
-    return copy.deepcopy(record)
+    from harness.zone_final_pair_camera import floor_camera
+    return floor_camera(record)
 
 
 def measured_calibration(path, expected_sha, map_id):
@@ -141,6 +169,11 @@ def cases(check, map_id=None):
         raise ValueError('unknown final pair check')
     if map_id is not None and map_id not in reg['maps']:
         raise ValueError('unknown final v3 map')
+    if check.startswith('calibration-'):
+        from harness.zone_final_pair_excitation import MAP_ID, COLLECTION_S
+        if map_id not in (None, MAP_ID):
+            raise ValueError('v88 motion identification requires the registered two-door collection map')
+        return [{'id': MAP_ID, 'map_id': MAP_ID, 'checkpoint': None, 'sim_cap_s': COLLECTION_S}]
     if check == 'p03':
         if map_id not in (None, reg['p03_map']):
             raise ValueError('P03 checkpoints require the registered one-door map')
@@ -162,6 +195,10 @@ def bundle(map_id, check):
     paths = set(source_closure(ROOT, entries)) | set(old['source_sha256'])
     paths.update((REGISTRY, WORKFLOW, CALIBRATION_CONTRACT,
                   'configs/final_environment_measurement_v1.json'))
+    from harness.zone_final_pair_excitation import design
+    collection = check.startswith('calibration-')
+    if collection:
+        cases(check, map_id)  # never label another map as this acquisition cohort
     return {'schema': 'ugrp.final_pair_bundle.v88', 'execution_bundle_id': BUNDLE_ID,
             'status': 'DRAFT_UNSEALED', 'check': check, 'map_id': map_id,
             'map_sha256': base.digest(static), 'robot_model': 'masterpi_v3',
@@ -169,5 +206,11 @@ def bundle(map_id, check):
             'weld': 'off', 'sensors': {'ultrasonic_front': 'off'},
             'controller_family': 'b-v6h1', 'controller_variant': 'b-v6h1-v3-measured',
             'controller_inputs': ['own_rgb', 'static_map', 'own_command_history', 'delivered_messages'],
+            'revision': 'v88 unexecuted; revised in place for REVIEW_344; no old run is relabelled',
+            'timing': execution_timing(check),
+            'caps': {'reset_per_case_s': 5., 'per_case_s': 370. if collection else 120.,
+                     'default_cases': 1 if collection else 3, 'total_including_reset_s': 375.},
+            'measurement': design(check) if collection else None,
+            'calibration_selection': 'v88 contract hash; per-load/per-posture optical->chassis->floor; no v2 fallback',
             'calibration_contract': contract, 'physical_ready': False,
             'research_result': False, 'source_sha256': {p: base.sha(ROOT / p) for p in sorted(paths)}}

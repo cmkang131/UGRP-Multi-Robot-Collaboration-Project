@@ -1,0 +1,55 @@
+{
+  "schema": "ugrp.review_fix_verification.v1",
+  "reviewed_sha": "45c4ebc43daa96542cf298cea6f69964e501ec4a",
+  "review_sha": "17b54de7f7440589fa5cc388a46b61f6c4c20467",
+  "bundle": "zone-final-pair-v88",
+  "unexecuted_bundle_revised_in_place": true,
+  "merged_main_sha": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+  "latest_main_followup_pending": "a520d9d8a70b9945a6eeb396e0a07c19aa3cb3c4",
+  "physics_steps": 0,
+  "native_model_compiles": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "host_lock_used": false,
+  "review_status": "author fixes only; independent rereview pending",
+  "tests": {
+    "review_original_baseline": "7 strict xfailed, 18 deselected before edits",
+    "related": "331 passed, 1 deselected in 161.71s",
+    "ci_sharding": "66 passed in 1.19s",
+    "deselected": "test_parent_exit_cleans_background_child: prior sandbox ps PermissionError, unrelated process test remains enabled in normal CI",
+    "frozen_fixtures": 3,
+    "xfails_remaining_in_test_review_344": 0
+  },
+  "offline_design": {
+    "report": "identifiability_v2.json",
+    "initial_failure_preserved": "identifiability_v2_initial.json",
+    "passed": true,
+    "scope": "conditional Hammerstein synthetic; actual residual floor/stop dynamics/load validity unqualified"
+  },
+  "source_sha256": {
+    "harness/zone_final_pair_camera.py": "0debca532478d2e08ca3fd5db0ed62f3b8776a95294464a73cef680ce6900770",
+    "harness/zone_final_pair_clearance.py": "6ec2fc8c8d544856976dd080a091c77af19e5a5c796544008a35368415aa6826",
+    "harness/zone_final_pair_excitation.py": "618da65836acf0bc79e72d71b9e6d9415ad0e85924fb5769b2339f62cca9b258",
+    "harness/zone_final_pair_calibration.py": "4a54f79930b0897559cef659c8949ba6ae4aed9b6414e54ed79351cf80dea025",
+    "harness/zone_final_pair_contract.py": "2e2d12b10b73f79c63824e25445016255a747f838c3e862fdea4d7ad3e882a99",
+    "scripts/run_final_pair_v3.py": "f43e51a5ec08b141364cd5b701cb32ad945d839f5caaea91e5338efc0ae2a4e6",
+    "scripts/check_pair_v88_identifiability.py": "0a8451b2a697a6b61da826b7cfe79f41a9979f9d139452f1d971ac1ef8e04938",
+    "sim/final_pair_v3.py": "bcaa984d35494d2c5a2758a9596e63c8520b6b312d4680d38269381d9cc7c3e1",
+    "tests/test_review_344.py": "7a696224995b29418a2335182774992cc9160127baf2994909c8397db1daa5ba",
+    "tests/test_zone_final_pair_review_fixes.py": "20fff32938ba31aeeecc23ac10cf70e54ac1d155a793614914b526ed37f3ac2c",
+    "tests/test_zone_final_pair_v3.py": "50168e1ee46799007e42c866b2831719acc7be4690ee6475864e901ec454df95"
+  },
+  "artifacts_sha256": {
+    "identifiability_v2_initial.json": "b9c41eb4903a02bf7e06d3b3cc1cf808a99ec5230c078fae97c267c848cf95fa",
+    "review_fixes_tests.txt": "a3fa1d4689f4d16d4ac6b3206409d16a8c863c01b90e07ca26e5f685500304ed",
+    "REVIEW_344.md": "d8161a18f52c60df8ede035f1c48337f51b6956ce66dd3fc95c7217ddf48d3d0",
+    "review_fixes_tests.xml": "600dabdc28e5d93c5e9ca51efaf0085cd4e1da3bf2e22a015af570d0593bb397",
+    "identifiability_v2.json": "84856f5f7459bc80af9045d10952875cf6c90f2a44514b463b4568cf40a43b40",
+    "REVIEW_344_EVIDENCE.json": "633617e50662a5f7effd6484463cfa08b5a8ace97d1d90db108158530a62f093",
+    "review_fixes_ci_sharding.txt": "306057a61d89f2d41074036bb062e051079fc9baceab68965fef974f483377ec",
+    "tensorboard_review_fixes.json": "03fca04ac9950d74a94e744d565468d31b534b59c1545f86bd3d9d16891d2014"
+  },
+  "temp_extraction_dirs_created": [],
+  "github_workflow_authored_changes": false,
+  "test_command": "python -m pytest -q tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_review_344.py tests/test_zone_final_environment_runnable.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_executor.py tests/test_zone_pair_grasp.py tests/test_pair_passage_plan.py tests/test_simulation_workflow_manager.py tests/test_vision_loc_p03_source_pinning.py -k \"not test_parent_exit_cleans_background_child\" --junitxml=experiments/2026-10-01-v3-pair-adapter/review_fixes_tests.xml"
+}

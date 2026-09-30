@@ -22,7 +22,8 @@
     "mount_sha256": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
     "sag": null,
     "pan_base_yaw": null,
-    "extrinsics_frame": "optical to actual chassis base; pan yaw offset recorded separately"
+    "extrinsics_frame": "optical -> actual chassis -> floor-heading; per-posture/load measured chassis_to_floor is mandatory; world xy/yaw removed offline",
+    "floor_transform_policy": "fit height/roll/pitch from eval_only settled samples offline, never runtime GT or nominal wheel radius"
   },
   "motion": {
     "unloaded": null,
@@ -36,6 +37,6 @@
     "sim/masterpi_dynamics_calibration.json": "6d1791939e8fbac5a33a22185aea7ee66c2aeba561757e3f1945207812d07416"
   },
   "measurements": null,
-  "qualification": "V3 pair measurement contract. No v2 motion/camera/pair fit inheritance. Collection remains unqualified until offline fitting and review.",
+  "qualification": "V3 pair measurement contract. No v2 motion/camera/pair fit inheritance. Collection remains unqualified until offline fitting and review. v88 never executed; revised in place for REVIEW_344. No calibration fit is delivered.",
   "handoff": "PHYSICS_HANDOFF.md"
 }

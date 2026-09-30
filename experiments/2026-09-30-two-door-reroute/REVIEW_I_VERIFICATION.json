@@ -1,0 +1,319 @@
+{
+  "review_commit": "e24cb9ce3c10236efe03a1b66c9ec7671ece71b9",
+  "reviewed_candidate": "f5d5af557525c9aa6d7fff043d933d2fc2c67967",
+  "main_at_merge": "26bfcf8e2977e85132845d7704fe1070f277dd13",
+  "dependency_pr314": "994b269d97d05dd2159c1a78f2b9eae9955790f9",
+  "tested_base_head": "3aaf62e6dbb460d6b998bcb97d876b79056b3bec",
+  "qualification": "Tests ran before the fix commit; exact tested bytes are source_sha256. No physics or E2E result.",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "before_fix": {
+    "test": "test_t09b_delayed_own_capture_cannot_issue_a_new_drive",
+    "result": "assertion_failure",
+    "state": "RUNNING",
+    "new_drive_calls": 1,
+    "stop_calls": 0,
+    "raw": "before.txt"
+  },
+  "baseline": {
+    "passed": 518,
+    "subtests_passed": 280,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "xfail": 0,
+    "source_pinning_passed": 56
+  },
+  "ci_list_checks": {
+    "passed": 90,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "files": [
+      "tests/test_ci_sharding.py",
+      "tests/test_ci_host_lock.py"
+    ]
+  },
+  "unique_passed_excluding_subtests": 608,
+  "mutations": [
+    {
+      "mutation": "ignore_observation",
+      "exit_code": 1,
+      "tests": 223,
+      "failures": 87,
+      "errors": 0,
+      "skipped": 0,
+      "assertion_failures_only": true,
+      "first_failure": "test_observation_triggers_cancellation_then_wide_from_fresh_pose"
+    },
+    {
+      "mutation": "ignore_replan",
+      "exit_code": 1,
+      "tests": 223,
+      "failures": 88,
+      "errors": 0,
+      "skipped": 0,
+      "assertion_failures_only": true,
+      "first_failure": "test_observation_triggers_cancellation_then_wide_from_fresh_pose"
+    },
+    {
+      "mutation": "skip_stop",
+      "exit_code": 1,
+      "tests": 223,
+      "failures": 177,
+      "errors": 0,
+      "skipped": 0,
+      "assertion_failures_only": true,
+      "first_failure": "test_observation_triggers_cancellation_then_wide_from_fresh_pose"
+    },
+    {
+      "mutation": "ignore_messages",
+      "exit_code": 1,
+      "tests": 223,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0,
+      "assertion_failures_only": true,
+      "first_failure": "test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko]"
+    },
+    {
+      "mutation": "ignore_pair_failure",
+      "exit_code": 1,
+      "tests": 223,
+      "failures": 11,
+      "errors": 0,
+      "skipped": 0,
+      "assertion_failures_only": true,
+      "first_failure": "test_one_pair_side_failure_propagates_existing_abort_enum[no_comm]"
+    },
+    {
+      "mutation": "ignore_capture_age",
+      "exit_code": 1,
+      "tests": 223,
+      "failures": 21,
+      "errors": 0,
+      "skipped": 0,
+      "assertion_failures_only": true,
+      "first_failure": "test_capture_admission_precedes_observer_messages_and_navigation[0.01-STALE_OWN_CAPTURE-new-no_comm]"
+    },
+    {
+      "mutation": "ignore_future_capture",
+      "exit_code": 1,
+      "tests": 223,
+      "failures": 16,
+      "errors": 0,
+      "skipped": 0,
+      "assertion_failures_only": true,
+      "first_failure": "test_capture_admission_precedes_observer_messages_and_navigation[1.01-FUTURE_OWN_CAPTURE-new-no_comm]"
+    },
+    {
+      "mutation": "ignore_capture_order",
+      "exit_code": 1,
+      "tests": 223,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "assertion_failures_only": true,
+      "first_failure": "test_new_sequence_cannot_replay_or_reorder_capture_time[0.095]"
+    },
+    {
+      "mutation": "ignore_cancel_capture",
+      "exit_code": 1,
+      "tests": 223,
+      "failures": 4,
+      "errors": 0,
+      "skipped": 0,
+      "assertion_failures_only": true,
+      "first_failure": "test_restart_requires_capture_after_cancellation_tick[-0.005-False-False]"
+    }
+  ],
+  "mutation_denominator_per_case": 223,
+  "source_sha256": {
+    "harness/zone_observed_door_reroute.py": "89620818ee98c1b6fa684993c750b60013c1015d683325f2603f8dae3449edab",
+    "harness/zone_static_door_routes.py": "cec5fd95847496d5492b73dba67bf4393eef0c57394510ee7d2a22e597d9d24c",
+    "harness/zone_pair_status.py": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+    "harness/zone_study_protocol.py": "07e315ca26a94333d15d67ebf2446019987cf00dde92b2756be17dd4178c4890",
+    "harness/zone_study_contract.py": "f6e4c5fef3bdb7e332d2871b309bec1a46e3d1d98533050e723094200dc460f6",
+    "scripts/run_ci_tests.py": "bfcf6850be3e217ddf1ea3a85977d7439eeaab0a81f983c3397070968b4e5cec",
+    "tests/test_zone_own_executor_observed_reroute.py": "9052b68447b9604acd61fe7502f984b77a5da702ebfa87d3730624ebaf28a169",
+    "tests/test_zone_own_executor_door_routes.py": "9d4e213efb6834e72265132f8b6aa94588879fe8945e1fe9713a7f00ac3befd9",
+    "tests/test_review_e2e_batch_i.py": "dd3b2463d3902277069ca298fbe79cdbb388c05d9094f0fed39e25248b6d6930",
+    "tests/test_pair_passage_plan.py": "ceb5572bb8299f90b237598ab629f4d3b8beb62c9ebe14a310ebbe59c3a06866",
+    "tests/test_zone_model_conventions.py": "3fe1828c05cf3cba72ab41e62bde04f8939a11838e8589e7143072c3af2ed3a6",
+    "tests/test_zone_pair_status.py": "6e39c94da07b30bff6f3289943f5267752ba1e37ffbde33a692d6678542722ca",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+    "tests/test_zone_study_protocol.py": "f59b9c624178814acc2b4c9ff39236efdd7a905376989b4f08d37105ed70190e",
+    "tests/test_ci_fast_path.py": "7cbce2fb52492b6adf3e5d53f5e98c3f7928b98bbdc6d5fa387c424ade570aab",
+    "experiments/2026-09-30-two-door-reroute/run_checks.py": "0681049917f9dc13725798b5a37639329d495ac869e7563ed667575277194010"
+  },
+  "input_boundary": "own RGB with own capture/monotonic timing, static map, own issued history, delivered messages and existing pair fixed enums only",
+  "config": {
+    "controller": "ugrp.observed_door_reroute.v2",
+    "max_frame_age_s": 0.25,
+    "capture_order": "strictly increasing",
+    "resume": "capture strictly after cancellation acknowledgement tick",
+    "conditions": [
+      "no_comm",
+      "peer_ko",
+      "leader_ko",
+      "structured"
+    ]
+  },
+  "protected": {
+    "baseline": "3aaf62e6dbb460d6b998bcb97d876b79056b3bec",
+    "count": 955,
+    "all_identical": true,
+    "manifest": "protected-sources.json",
+    "excluded_modified_sources": [
+      "harness/zone_observed_door_reroute.py",
+      "scripts/run_ci_tests.py"
+    ],
+    "explicit_pins": {
+      "tests/test_zone_pair_registered_source.py": {
+        "git_blob": "ce422dd8961fe07ce5a5cd9773f64a2158b3b569",
+        "sha256": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb"
+      },
+      "tests/test_zone_study_source_pinning.py": {
+        "git_blob": "8a1e6280f7db4d6c7dfa770fa8ca15f77aa13d32",
+        "sha256": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5"
+      },
+      ".github/workflows/tests.yml": {
+        "git_blob": "652a1462e59906feb2aa8a4a40f211f13109c356",
+        "sha256": "8831e19de2f6afa377d9d1835445917804821519e1eb572f4483d1f66bb7f866"
+      }
+    }
+  },
+  "physics_steps": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "host_lock_acquired": false,
+  "load_start": [
+    28.26416015625,
+    76.67431640625,
+    181.09033203125
+  ],
+  "load_end": [
+    90.52587890625,
+    95.99755859375,
+    164.56982421875
+  ],
+  "tensorboard": "not applicable to unit regressions; no new physical/training/evaluation experiment",
+  "raw_local_root": "/Users/changmin/projects/ugrp/outputs/2026-10-01-t09b-review-i-fixes",
+  "raw_remote_backed_up": false,
+  "raw_files": {
+    "before.txt": {
+      "bytes": 712,
+      "sha256": "fdafe427b8304787004057b174eb08c3ab16e25baeac7a56884817571208676c"
+    },
+    "checks-01/ignore_cancel_capture.xml": {
+      "bytes": 60566,
+      "sha256": "902f121c41ca955a9ace6f5f3cc8ac406a551d91cec49d80aa5651ea38972327"
+    },
+    "checks-01/ignore_capture_age.xml": {
+      "bytes": 70940,
+      "sha256": "6742a924d659b8e3d9c3e233cdb8fdc228c3aa2f1a2abf47e2cf7e0a09f65520"
+    },
+    "checks-01/ignore_capture_order.xml": {
+      "bytes": 60682,
+      "sha256": "8c06ad3062acf28e03b5db77f991ba7ef12862b65d9d7171f648ef33b523a473"
+    },
+    "checks-01/ignore_future_capture.xml": {
+      "bytes": 65543,
+      "sha256": "5b98daf0721ad61637d5a7ccbde463bbaa78b393a28907fa7124403a5c919fdd"
+    },
+    "checks-01/ignore_messages.xml": {
+      "bytes": 60273,
+      "sha256": "cd23b2e7a7b7e0d98607bdfa398af3bb1e448c3bc56cb5bca271c0410adfa6b3"
+    },
+    "checks-01/ignore_observation.xml": {
+      "bytes": 96948,
+      "sha256": "a7c708032750d13cedb8bcc972389f7b7eacfba499d312267e1bd258968c3faf"
+    },
+    "checks-01/ignore_pair_failure.xml": {
+      "bytes": 76026,
+      "sha256": "352be0691383383f93519184ea40879df4f07f6d294567bdb197780759587e1b"
+    },
+    "checks-01/ignore_replan.xml": {
+      "bytes": 97362,
+      "sha256": "005b76ed697fe22d7940982f6383212d740ffd046089a8b78d46f529a6b3ae60"
+    },
+    "checks-01/manifest.json": {
+      "bytes": 3184,
+      "sha256": "b05d9b6a914c575e832b668f426e6a7c8daebdd49b7f4d184493d35f93ca7877"
+    },
+    "checks-01/none.xml": {
+      "bytes": 116901,
+      "sha256": "ce0340819936da2d5ba928cbba4e30968bbf18cbbf8a2a0d8b444a34ded6c158"
+    },
+    "checks-01/skip_stop.xml": {
+      "bytes": 201058,
+      "sha256": "12cc4c7326a129dfb8347f40c7a134ebee8ffc94da76bd4f7ae1a27eddebf114"
+    },
+    "checks-01.txt": {
+      "bytes": 275343,
+      "sha256": "f2dd75f1bf085aa665af6ddc5b40b168b71da7134604d9221ead4e18aac125fd"
+    },
+    "ci-list-checks.txt": {
+      "bytes": 180,
+      "sha256": "3ef5d3a4a974e25ef1fbd67c6e7cfc94e7e936725a824fe82a1a469e67452d35"
+    },
+    "ci-list-checks.xml": {
+      "bytes": 12024,
+      "sha256": "a8ae7b4525c169fb87cb203907f485bad640838487f492e6c779564e4597a476"
+    },
+    "protected-sources.json": {
+      "bytes": 185414,
+      "sha256": "a70c9a1840c66233985d1d1994cebb72fd5e73ed2f4c7f68b86fe1db403bbaef"
+    },
+    "format-check.json": {
+      "bytes": 293,
+      "sha256": "3d44ae91068b33d8377caa6b489fe1be10c8d5ef52987f104f8bb3f6e28a0635"
+    },
+    "format-retest.xml": {
+      "bytes": 397,
+      "sha256": "eef78016fcb26b2a257e79b91e7d5dc2aa876b2c44bf788a6e235e2cde97c206"
+    },
+    "format-retest.txt": {
+      "bytes": 98,
+      "sha256": "866432d567eb30f716ad0380ad29e9453b6fd80645780de4fbe94565dc3eab20"
+    }
+  },
+  "private_tmp_extraction_directories_created": [],
+  "workflow_changes": false,
+  "pr_state_requested": "draft; do not merge",
+  "remaining": [
+    "independent re-review of this fix",
+    "normal CI after push",
+    "real RGB/navigation and T06 adapters",
+    "physical acceptance and E2E"
+  ],
+  "source_unchanged_during_tests": true,
+  "post_test_format_cleanup": {
+    "path": "tests/test_review_e2e_batch_i.py",
+    "change": "remove extra blank line at EOF",
+    "ast_identical": true,
+    "before_sha256": "dd3b2463d3902277069ca298fbe79cdbb388c05d9094f0fed39e25248b6d6930",
+    "after_sha256": "fac0304d1d5815954ecd4ceb528ba58c492a7baba8a1be40f6b341b2fded2a76",
+    "retest_passed": 1,
+    "retest_already_counted_in_unique_total": true
+  },
+  "final_source_sha256": {
+    "harness/zone_observed_door_reroute.py": "89620818ee98c1b6fa684993c750b60013c1015d683325f2603f8dae3449edab",
+    "harness/zone_static_door_routes.py": "cec5fd95847496d5492b73dba67bf4393eef0c57394510ee7d2a22e597d9d24c",
+    "harness/zone_pair_status.py": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+    "harness/zone_study_protocol.py": "07e315ca26a94333d15d67ebf2446019987cf00dde92b2756be17dd4178c4890",
+    "harness/zone_study_contract.py": "f6e4c5fef3bdb7e332d2871b309bec1a46e3d1d98533050e723094200dc460f6",
+    "scripts/run_ci_tests.py": "bfcf6850be3e217ddf1ea3a85977d7439eeaab0a81f983c3397070968b4e5cec",
+    "tests/test_zone_own_executor_observed_reroute.py": "9052b68447b9604acd61fe7502f984b77a5da702ebfa87d3730624ebaf28a169",
+    "tests/test_zone_own_executor_door_routes.py": "9d4e213efb6834e72265132f8b6aa94588879fe8945e1fe9713a7f00ac3befd9",
+    "tests/test_review_e2e_batch_i.py": "fac0304d1d5815954ecd4ceb528ba58c492a7baba8a1be40f6b341b2fded2a76",
+    "tests/test_pair_passage_plan.py": "ceb5572bb8299f90b237598ab629f4d3b8beb62c9ebe14a310ebbe59c3a06866",
+    "tests/test_zone_model_conventions.py": "3fe1828c05cf3cba72ab41e62bde04f8939a11838e8589e7143072c3af2ed3a6",
+    "tests/test_zone_pair_status.py": "6e39c94da07b30bff6f3289943f5267752ba1e37ffbde33a692d6678542722ca",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+    "tests/test_zone_study_protocol.py": "f59b9c624178814acc2b4c9ff39236efdd7a905376989b4f08d37105ed70190e",
+    "tests/test_ci_fast_path.py": "7cbce2fb52492b6adf3e5d53f5e98c3f7928b98bbdc6d5fa387c424ade570aab",
+    "experiments/2026-09-30-two-door-reroute/run_checks.py": "0681049917f9dc13725798b5a37639329d495ac869e7563ed667575277194010"
+  }
+}

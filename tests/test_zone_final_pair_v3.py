@@ -39,7 +39,7 @@ def synthetic(tmp_path):
         deadband={'c0': [0., 0., 0.], 'u1': [0., 0., 0.]},
         load_transition={'scale_std': [.02, .02, .01], 'unloaded_scale_std': .05})
     params['motion_profiles'] = {'fine': copy.deepcopy(params['motion'])}
-    rec = {'origin_m': [.15, 0., .2], 'rotation': [[0., 0., 1.], [-1., 0., 0.], [0., -1., 0.]]}
+    rec = {'frame': 'optical_to_actual_chassis', 'chassis_to_floor': {'origin_m': [0.,0.,.03236], 'rotation': np.eye(3).tolist()}, 'origin_m': [.15, 0., .2], 'rotation': [[0., 0., 1.], [-1., 0., 0.], [0., -1., 0.]]}
     cal = {'schema': 'ugrp.final_environment_measured_calibration.v1', 'status': 'MEASURED_SIM',
         'contract_sha256': c.base.sha(c.ROOT/c.CALIBRATION_CONTRACT), 'maps': c.resolve(MAPS[0])[2]['maps'],
         'robot_model': 'masterpi_v3', 'render_profile': 'floor_light_v1',
@@ -150,7 +150,7 @@ def test_provider_keeps_pf_commands_uncertainty_and_delay_at_each_checkpoint(tmp
             p.init_prior([999, 999, 0], source='late teacher injection')
         with pytest.raises(ValueError, match='UNMEASURED_V3_CAMERA_POSTURE'):
             pf.column_model_for({**SERVO, 6: 700})
-        np.testing.assert_array_equal(pf.column_model_for(SERVO).origin, [.15, 0., .2])
+        np.testing.assert_allclose(pf.column_model_for(SERVO).origin, [.15, 0., .23236])
     finally:
         p.close()
     assert p.provider._closed
@@ -214,7 +214,8 @@ class FakeRuntime:
 
 @pytest.mark.parametrize('check', c.CHECKS)
 def test_fake_full_protocol_preserves_120_second_caps_and_ignores_truth(tmp_path, check):
-    b = {**c.bundle(MAPS[0], check), 'case': c.cases(check, None if check == 'p03' else MAPS[0])[0]}
+    case = c.cases(check)[0]
+    b = {**c.bundle(case['map_id'], check), 'case': case}
     receipts = []
     for mutation in (False, True):
         instances = []
@@ -227,8 +228,8 @@ def test_fake_full_protocol_preserves_120_second_caps_and_ignores_truth(tmp_path
         backend = instances[0]
         assert result['protocol_complete'] and result['status'] == 'COLLECTED_UNQUALIFIED'
         assert result['physical_success'] is None
-        assert backend.closed and backend.now == backend.deadline == 121.
-        assert len(backend.samples) == 2401
+        assert backend.closed and backend.now == backend.deadline == 1.+b['case']['sim_cap_s']
+        assert len(backend.samples) == round(b['case']['sim_cap_s']/.05)+1
         receipts.append(backend.actions)
         if check == 'p03': assert result['checkpoint']['status'] == 'NOT_REACHED'
     assert receipts[0] == receipts[1]
@@ -236,7 +237,8 @@ def test_fake_full_protocol_preserves_120_second_caps_and_ignores_truth(tmp_path
 
 @pytest.mark.parametrize('failure', [RuntimeError('camera failed'), OSError(errno.ENOSPC, 'full')])
 def test_failure_keeps_partial_record_and_closes_owner(tmp_path, failure):
-    b = {**c.bundle(MAPS[0], 'calibration-fine'), 'case': c.cases('calibration-fine', MAPS[0])[0]}
+    case = c.cases('calibration-fine')[0]
+    b = {**c.bundle(case['map_id'], 'calibration-fine'), 'case': case}
     owners = []
     def factory(*a, **kw):
         obj = FakePhysics(*a, **kw)
@@ -256,13 +258,13 @@ def test_collection_has_real_grasp_attempt_fine_pulses_and_per_pose_labels():
     loaded, fine, unloaded = [schedule(k) for k in ('calibration-loaded', 'calibration-fine', 'calibration-unloaded')]
     for rid in c.ROBOTS:
         closes = [e for e in loaded if e['robot_id'] == rid and e['action'].get('servo_id') == 1]
-        assert [(e['t'], e['action']['pulse']) for e in closes] == [(0., 2000), (2., 1500), (80., 2000)]
-    f = [e['action'] for e in fine if e['phase'] == 'fine_motion']
-    u = [e['action'] for e in unloaded if e['phase'] == 'unloaded_motion']
-    assert len(f) == len(u) == 24
-    for a, b in zip(f, u):
-        for axis in ('forward', 'left', 'turn'): assert a[axis] == b[axis]*.5
-    assert max(e['t'] for e in fine) < 120
+        assert [(e['t'], e['action']['pulse']) for e in closes] == [(0., 2000), (2., 1500), (362., 2000)]
+    f = [e['action'] for e in fine if e['action']['kind'] == 'mecanum']
+    u = [e['action'] for e in unloaded if e['action']['kind'] == 'mecanum']
+    assert len(f) == len(u) == 5040
+    assert sorted({abs(a['forward']) for a in f}) == [0., .004, .016, .028]
+    assert sorted({abs(a['forward']) for a in u}) == [0., .01, .02, .03]
+    assert max(e['t'] for e in fine) < 370
     assert {'camera_p45', 'camera_inspect', 'camera_search'} <= {e['phase'] for e in fine}
 
 
@@ -371,10 +373,10 @@ def test_fixed_grasp_catalogue_covers_accepted_alignment_and_acquisition():
     for check in c.CHECKS[2:]:
         state = pair_motion_module().OwnCamLocalizer(c.resolve(MAPS[0])[0], seed=1).load
         state.command({'t': 0., 'kind': 'initial_servo_command', 'pulses': SERVO})
-        events = [e for e in schedule(check) if e['robot_id'] == 'r1']
+        events = [e for e in schedule(check) if e['robot_id'] == 'r1' and e['action']['kind'] != 'mecanum']
         for i, e in enumerate(events):
             state.command({'t': e['t'], **e['action']})
-            next_t = events[i+1]['t'] if i+1 < len(events) else 120.
+            next_t = events[i+1]['t'] if i+1 < len(events) else 370.
             if next_t-e['t'] >= .4:
                 seen['loaded' if state.loaded else 'unloaded'].add(camera_key(state.servo))
     for load, poses in required_camera_poses().items():

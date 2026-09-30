@@ -8,9 +8,8 @@ in the raw record and MUST NOT be fitted as successful loaded measurements.
 from __future__ import annotations
 
 from harness import zone_final_pair_contract as contract
-from harness import visual_arm_v3 as arm
-from harness.zone_final_pair_skill import task
 from harness.zone_final_pair_vision import grasp_postures
+from harness.zone_final_pair_excitation import motion_events, LOADED_BEAM_POSE
 
 
 def schedule(check):
@@ -36,9 +35,9 @@ def schedule(check):
         pans = [e['actions'][-1]['pan_pulse'] for e in protocol['events'][:8]]
         for k, pan in enumerate(pans):
             for rid in contract.ROBOTS:
-                add(48.+3*k, 'loaded_camera', rid, {'kind': 'look', 'pan_pulse': pan})
+                add(334.+3*k, 'loaded_camera', rid, {'kind': 'look', 'pan_pulse': pan})
         for rid in contract.ROBOTS:
-            add(80., 'post_loaded_open', rid, {'kind': 'arm', 'servo_id': 1, 'pulse': 2000})
+            add(362., 'post_loaded_open', rid, {'kind': 'arm', 'servo_id': 1, 'pulse': 2000})
     else:
         for event in protocol['events']:
             if event['t'] >= 72:
@@ -57,25 +56,15 @@ def schedule(check):
                      ('p45', pose_of('p45')), ('inspect', pose_of('inspect')), ('search', pose_of('search'))]
         for k, (name, pose) in enumerate(catalogue):
             for sid, pulse in pose.items():
-                add(102.+3*k, 'camera_'+name, 'r1', {'kind': 'look', 'pan_pulse': pulse}
+                add(330.+3*k, 'camera_'+name, 'r1', {'kind': 'look', 'pan_pulse': pulse}
                     if sid == 6 else {'kind': 'arm', 'servo_id': sid, 'pulse': pulse})
-    for event in protocol['events']:
-        if event['t'] < 72:
-            continue
-        for rid in (contract.ROBOTS if loaded else ('r1',)):
-            action = dict(event['actions'][0])
-            scale = .5 if check == 'calibration-fine' else 1.
-            for axis in ('forward', 'left', 'turn'):
-                # Opposed carriers translate together; yaw is deliberately
-                # counter-signed as a fixed pair diagnostic, not a success.
-                action[axis] *= scale * (-1 if rid == 'r2' else 1)
-            add(event['t']-(60. if loaded else 0.), check.removeprefix('calibration-')+'_motion', rid, action)
+    events.extend(motion_events(check))
     return sorted(events, key=lambda x: x['t'])
 
 
 def teacher_stations(static):
     from sim.zone_model_conventions import station_offset
-    pose = task(static)['beam_pose']
+    pose = LOADED_BEAM_POSE
     return {rid: [pose[0]+offset[0], pose[1]+offset[1], offset[2]]
             for rid, role in zip(contract.ROBOTS, ('end_neg', 'end_pos'))
             for offset in [station_offset(static, 'long_beam', role)]}
