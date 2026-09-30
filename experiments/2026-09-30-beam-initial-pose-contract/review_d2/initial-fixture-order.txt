@@ -1,0 +1,48 @@
+...FFF.................................................................. [ 43%]
+........................................................................ [ 87%]
+....................                                                     [100%]
+=================================== FAILURES ===================================
+______________ test_formal_north_south_geometry_is_static_only[0] ______________
+tests/test_beam_initial_pose_plan.py:134: in test_formal_north_south_geometry_is_static_only
+    assert_polygon_equal(g['search_at_pre'], reference_search(role))
+tests/test_beam_initial_pose_plan.py:52: in assert_polygon_equal
+    assert point == pytest.approx(reference, abs=1e-12)
+E   assert (-0.9232, -0.2) == approx((-0.47....2 ± 1.0e-12))
+E
+E     comparison failed. Mismatched elements: 2 / 2:
+E     Max absolute difference: 0.44820000000000004
+E     Max relative difference: 2.0
+E     Index | Obtained | Expected
+E     0     | -0.9232  | -0.475 ± 1.0e-12
+E     1     | -0.2     | 0.2 ± 1.0e-12
+______________ test_formal_north_south_geometry_is_static_only[1] ______________
+tests/test_beam_initial_pose_plan.py:134: in test_formal_north_south_geometry_is_static_only
+    assert_polygon_equal(g['search_at_pre'], reference_search(role))
+tests/test_beam_initial_pose_plan.py:52: in assert_polygon_equal
+    assert point == pytest.approx(reference, abs=1e-12)
+E   assert (-0.9232, -0.2) == approx((-0.47....2 ± 1.0e-12))
+E
+E     comparison failed. Mismatched elements: 2 / 2:
+E     Max absolute difference: 0.44820000000000004
+E     Max relative difference: 2.0
+E     Index | Obtained | Expected
+E     0     | -0.9232  | -0.475 ± 1.0e-12
+E     1     | -0.2     | 0.2 ± 1.0e-12
+______________ test_formal_north_south_geometry_is_static_only[2] ______________
+tests/test_beam_initial_pose_plan.py:134: in test_formal_north_south_geometry_is_static_only
+    assert_polygon_equal(g['search_at_pre'], reference_search(role))
+tests/test_beam_initial_pose_plan.py:52: in assert_polygon_equal
+    assert point == pytest.approx(reference, abs=1e-12)
+E   assert (-0.9232, -0.2) == approx((-0.47....2 ± 1.0e-12))
+E
+E     comparison failed. Mismatched elements: 2 / 2:
+E     Max absolute difference: 0.44820000000000004
+E     Max relative difference: 2.0
+E     Index | Obtained | Expected
+E     0     | -0.9232  | -0.475 ± 1.0e-12
+E     1     | -0.2     | 0.2 ± 1.0e-12
+=========================== short test summary info ============================
+FAILED tests/test_beam_initial_pose_plan.py::test_formal_north_south_geometry_is_static_only[0]
+FAILED tests/test_beam_initial_pose_plan.py::test_formal_north_south_geometry_is_static_only[1]
+FAILED tests/test_beam_initial_pose_plan.py::test_formal_north_south_geometry_is_static_only[2]
+3 failed, 161 passed in 60.85s (0:01:00)

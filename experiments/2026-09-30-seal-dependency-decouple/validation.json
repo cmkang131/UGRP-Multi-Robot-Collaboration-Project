@@ -1,0 +1,63 @@
+{
+  "schema": "ugrp.offline_validation.v1",
+  "date": "2026-09-30",
+  "base_commit": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
+  "branch": "codex/seal-dependency-decouple",
+  "python": "3.12.13",
+  "environment": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac",
+  "tested_files_sha256": {
+    "harness/execution_dependency_contract.py": "4a45a05093c21df9b038a18c7c372bb9f20060c35624732737d3c11d0c0ed9c2",
+    "scripts/build_execution_dependency_contract.py": "da993bc1b55c371bf1ca9fc1a1cf2b41f5f9d14ff9a78711a218cc2a30526385",
+    "scripts/run_ci_tests.py": "f1d9cbad996262fb1114ec20b71c961bedeb6fa3edae0cf4148a51e0b281cc16",
+    "tests/test_execution_dependency_contract.py": "24c2c7543843f80ab1b298c00a5b194af764847862eb2d0e0400bf817cfa3797",
+    "harness/python_source_closure.py": "992388762ded3be5f945bc9620728ff189423d155d9119209130b570aeebbcea",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_study_source_pinning.py": "98b1f59ce0af4c81102612ee9e8d9e1a12912e1635341cb7b439c920738ad1ef",
+    "tests/test_zone_pair_v6.py": "ab9c01ad2824e86b31594054f8c2a8afd00abac5237b19dbfb6b5d466e2edb34",
+    "tests/test_rgb_execution_bundle.py": "e2e282ffdb88c8bf659dd5e3d95be280d5476bd015b6c78e30ad8f4ae16af81b",
+    "tests/test_ci_sharding.py": "19708060b0085d4ed255e08fe2d73abb2318e74bcaa87a15e94bbbddadf629b1"
+  },
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/test_execution_dependency_contract.py",
+    "tests/test_zone_pair_registered_source.py",
+    "tests/test_zone_study_source_pinning.py",
+    "tests/test_zone_pair_v6.py",
+    "tests/test_rgb_execution_bundle.py",
+    "tests/test_ci_sharding.py"
+  ],
+  "lock_wrapper": "scripts.run_ci_tests.run_locked",
+  "result": {
+    "passed": 204,
+    "failed": 0,
+    "duration_s": 88.91,
+    "exit_code": 0
+  },
+  "legacy": {
+    "registration_jsons_byte_identical": 5,
+    "current_v6e_source_hashes_unchanged": 85
+  },
+  "ci_shards": {
+    "files": 329,
+    "shards": 8,
+    "coverage_verified": true,
+    "new_suite_occurrences": 1
+  },
+  "scope": {
+    "physics_runs": 0,
+    "model_calls": 0,
+    "new_runnable_registrations": 0,
+    "legacy_seals_modified": 0,
+    "pr292_branch_modified": false,
+    "merged": false
+  },
+  "limitations": [
+    "dependency declaration coverage still requires review",
+    "new candidates must wire v2 verifier into admission; legacy paths unchanged",
+    "CI and independent review remain separate",
+    "no physical or scientific result inheritance"
+  ]
+}
