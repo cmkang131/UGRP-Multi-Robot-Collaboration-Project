@@ -1,0 +1,87 @@
+{
+  "schema": "ugrp.vision_provider_pin.p03.v1",
+  "status": "DRAFT_contract_only_unsealed",
+  "audit_sha": "a8094cc14e098a55483f53a3c49bf6a0b116043d",
+  "active": {
+    "provider_ids": [
+      "vision_zero_tag_v1",
+      "vision_zero_tag_v2"
+    ],
+    "map_ids": [
+      "zone_wide_door_walls_v3_notags",
+      "zone_wide_door_geometry_v2"
+    ],
+    "robot_model": "masterpi_v2",
+    "scene": "sim.zone_geometry_scene.GeometryCargoZoneScene (v2 provider)",
+    "render_profile": "default (unmodified authored XML; shadows_v1 identity)",
+    "wall_profile": "walls_v3 (0.40 m)",
+    "camera": {
+      "own_rgb_size": [
+        640,
+        480
+      ],
+      "seg_infer_size": [
+        480,
+        360
+      ],
+      "input": "own wrist RGB -> lossless BGR -> RGB segmentation",
+      "intrinsics_mount": "ugrp1-icspring-fisheye-centered-mount-provisional-20260831",
+      "mount_validation": "CENTERED_STRUCTURAL_MOUNT_UNVALIDATED",
+      "sag_pan_calibration": "experiments/2026-09-26-vision-loc/calibration_train.json",
+      "final_model_calibration_verified": false
+    },
+    "motion_calibration": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+    "model": {
+      "artifact_id": "vision-loc-seg-lraspp-mbv3-20260926-v2",
+      "release": "models-20260927-vision-loc-v1",
+      "entrypoint": "seg/seg_lraspp_mbv3.pt",
+      "sha256": "348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9",
+      "bytes": 13071401
+    },
+    "files_sha256": {
+      "configs/vision_loc_worker.json": "c92165360bb5385f83894a32bcfe411ab0258c983f38b80b09e700498fefce88",
+      "experiments/2026-09-26-vision-loc/selected_config_v3.json": "87f94b342b260715b1c556da3dea3832cc11daeaf88ef0aa97f14b3c9a970707",
+      "experiments/2026-09-26-vision-loc/calibration_train.json": "60177d6b4e116f4d63aea0b5c0bd200cd5eaebe66a63080612c7949491f085dd",
+      "experiments/2026-09-26-vision-loc/vision_loc.py": "d320d8d63c0551d254fe654efadaa12abf6365fc78dd151ba7c254d5a326cc2e",
+      "experiments/2026-09-26-vision-loc/vision_pf.py": "ac9d42706a3a933a95e3170b7ff71c40b255b40851663c00be13946d5c980a64",
+      "experiments/2026-09-26-vision-loc/seg_model.py": "c837bce7d369d730a41161bd72280c710e6af3a72d6866ddfd694898240ac229",
+      "experiments/2026-09-26-markerless-probe/markerless_probe.py": "015df71be345e16ebea9062b2f6b31cfdac26351b6200a763ca44265618d2b15",
+      "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+      "sim/masterpi_camera_profile.py": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+      "sim/masterpi_geometry.py": "2bf71ed3311d22ce25f45879da38f353ce204be38ed9642c43985577a15daeeb",
+      "sim/masterpi_dynamics_v2.py": "100634bb32bfc1751549de2410e5eea9304fcb0ef99589d7a09822e6c557b53a",
+      "sim/zone_geometry_scene.py": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+      "sim/render_profile.py": "782a531a5a89d23dce2974778e26b7ab1f0b6df8cd60f83df9404079cf7290d5",
+      "maps/zones/zone_wide_door_geometry_v2.json": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+      "harness/wall_tags.py": "eb0327012047cc413b7bb930fb7884cdfe4c18239058d954b1cce56593e0336e"
+    }
+  },
+  "candidate_opt_in": {
+    "name": "C_mix_rgb",
+    "artifact_id": "vision-loc-seg-lraspp-mbv3-lightfloor-20260929-c",
+    "status": "unavailable_pending_upload",
+    "runtime_selectable": false,
+    "release": null,
+    "local_checkpoint": {
+      "path": "/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929/model/C_mix_rgb/seg_lraspp_mbv3.pt",
+      "bytes": 13071657,
+      "sha256": "0e7a696e7100cc19d84149251456afedc1318ff4f7901b06bd9396590c651c9d"
+    },
+    "loader": "experiments/2026-09-29-seg-lightfloor/seg_ft.py:Seg (infer_size 480x360, preproc rgb)",
+    "robot_model": "masterpi_v2 static B1 only",
+    "render_profile": "floor_light_v1",
+    "infer_size": [
+      480,
+      360
+    ],
+    "preproc": "rgb",
+    "calibration": "VIS3 train sag/pan (final combination unverified)",
+    "requires_explicit_opt_in": true,
+    "pending": [
+      "coordinator: versioned Release download, full archive/file SHA256 and loading",
+      "coordinator: final robot/camera/render calibration",
+      "coordinator: 3 checkpoints x 120 SIM seconds after actual preceding legs",
+      "new worker/config/bundle identity before opt-in; no default adoption"
+    ]
+  }
+}
