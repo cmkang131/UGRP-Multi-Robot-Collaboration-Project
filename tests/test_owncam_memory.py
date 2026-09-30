@@ -106,10 +106,14 @@ class BoundaryTests(unittest.TestCase):
                 'PR #240 v5g: add detached public get_motion_params; frozen PF and old records unchanged',
             '46809a556ecb7915f8dd49b03d7eb0f57181261599173b439477466f1940a538':
                 'v6: opt-in posterior-preserving recovery/observability; default OFF, no inherited M1 qualification',
+            'b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e':
+                'merged 4fac772dbc6657937dea4486baf185ca85028abc: v6e carry yaw availability fallback; present at T03 base',
         },
         'harness/owncam_localizer.py': {
             '36fd50c0f33dd14ffb97fca68284290e47b26f76342778b2ad9daa0ee19f1fa9':
                 'v6e: opt-in loaded dead-reckoning profile (motion_loaded.load_transition); key absent = byte-identical output',
+            '9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347':
+                'merged cb21573263d851680b3637620fca35a5070026d5: opt-in carry_dr_general; present at T03 base',
         },
         'scripts/run_m1_owncam.py': {
             '04be35ed0e960a7683321b24e8218af293637879962d83871de71243a9f28c72':

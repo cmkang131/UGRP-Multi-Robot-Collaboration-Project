@@ -1,0 +1,1036 @@
+{
+  "scope": "Offline Python runtime tracing and reproducibility checks; no physics/render/model calls/training",
+  "tested_tree_base": "2420571403177e2bfc26ddd0d0366438e4463878",
+  "merged_main": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e",
+  "review_original_sha": "13afa3dc04fa15630248716b580d776a7e6cb1d7",
+  "environment": {
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "pytest": "9.1.1",
+      "numpy": "2.5.2",
+      "mujoco": "3.12.0"
+    }
+  },
+  "host_lock_used": false,
+  "checks": {
+    "runtime-final": {
+      "tests": 56,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds_junit": 204.026,
+      "by_suite": {
+        "tests.test_seal_runtime_provenance": 56
+      }
+    },
+    "related-02": {
+      "tests": 295,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "seconds_junit": 834.484,
+      "by_suite": {
+        "tests.test_execution_dependency_contract": 35,
+        "tests.test_seal_v2_review_301": 41,
+        "tests.test_seal_v2_fail_closed": 27,
+        "tests.test_zone_pair_registered_source": 22,
+        "tests.test_zone_study_source_pinning": 34,
+        "tests.test_zone_pair_v6": 43,
+        "tests.test_rgb_execution_bundle": 7,
+        "tests.test_ci_sharding": 66,
+        "tests.test_ci_host_lock": 20
+      }
+    },
+    "review-original": {
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 13,
+      "seconds_junit": 13.353,
+      "by_suite": {
+        "test_seal_v2_review_301b": 27
+      }
+    }
+  },
+  "final_implementation_passed": 351,
+  "review_original_passed": 14,
+  "review_original_strict_xfailed": 13,
+  "review_case_coverage": {
+    "R1_R6_defect_kinds": 6,
+    "R1_R6_runtime_cases": 10,
+    "N1_N7_additional_runtime_cases": 12
+  },
+  "mutation_checks": {
+    "scope": "offline isolated mutation checks; no physics",
+    "results": [
+      {
+        "name": "baseline",
+        "source_sha256": "f4485bee87a582070ae42987cbe4164a8175f99181e4e05bb4972ccce5d5b3ee",
+        "selector": "(test_unseen_read_aborts_before_consumer_even_if_exception_caught) or (test_environment_runtime_comparison) or (test_N3_same_bytes_source_symlink_target or test_N3_declared_xml_link_selects_other_declared_asset) or (test_static_unobserved_union_and_multiple_cases) or (test_identity_abort_or_warn) or (test_unknown_environment_name_is_never_covered_by_warn)",
+        "exit_code": 0,
+        "tests": 13,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "unseen-file",
+        "source_sha256": "45fb8832d0d9fa55d9847d8ad6374292837691966832897f523a3f30f1d4e6b5",
+        "selector": "test_unseen_read_aborts_before_consumer_even_if_exception_caught",
+        "exit_code": 1,
+        "tests": 4,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "environment-drift",
+        "source_sha256": "f27d8fdaf826518571cb8b5474ac7d775d028bee10d0d6f5db4a6d4dbf36c5c3",
+        "selector": "test_environment_runtime_comparison",
+        "exit_code": 1,
+        "tests": 4,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "path-binding",
+        "source_sha256": "c83088f97cb0ed41e81c745b83d93d1bba47a714cf23e80de5e7669644ecb98d",
+        "selector": "test_N3_same_bytes_source_symlink_target or test_N3_declared_xml_link_selects_other_declared_asset",
+        "exit_code": 1,
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "static-union",
+        "source_sha256": "7b8ffef5c93eb4676fa0d2437ed26929c461c073a426985e97727b6f59ca6669",
+        "selector": "test_static_unobserved_union_and_multiple_cases",
+        "exit_code": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "identity-drift",
+        "source_sha256": "344113a1c19520d35ad20a5eab4c34ee5ea6c22a3d4ea7430542e6862eab4c0c",
+        "selector": "test_identity_abort_or_warn",
+        "exit_code": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      },
+      {
+        "name": "unknown-environment",
+        "source_sha256": "44fe845462cf99320c41a20b3d30ff84f728b269b1c913c2810c8a80a87db7f6",
+        "selector": "test_unknown_environment_name_is_never_covered_by_warn",
+        "exit_code": 1,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "verified": true
+      }
+    ],
+    "passed": true
+  },
+  "legacy_preservation": {
+    "base": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
+    "head": "2420571403177e2bfc26ddd0d0366438e4463878",
+    "legacy": [
+      {
+        "path": "experiments/2026-09-28-zone-pair-v6/prereg_v6.json",
+        "sha256": "649a00e65d1f53bf38014ac4a1f5e93094dad3ee11acccf3d1343cefa1298b42",
+        "same_as_base": true
+      },
+      {
+        "path": "experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json",
+        "sha256": "3fecc73b7b44c6dab1e752d276fe8b2442be7119016ff2b5783599579ffc9605",
+        "same_as_base": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6c/prereg_v6c.json",
+        "sha256": "64acc04a8c08af61b0fa488440c70a8bec4338881c7a32b4895d4b07970ca95e",
+        "same_as_base": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6d-align/prereg_v6d.json",
+        "sha256": "cbdb4b2503d928e141131b893cb56060fd6fe54292ef1667da9f57bdeea39972",
+        "same_as_base": true
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json",
+        "sha256": "64c2680781f1b989312c3ac091c6e0458579ced7ed65d9e9730aadbc416f4bfd",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/dispatch-f1-local-contact-fine-v1.json",
+        "sha256": "119cf3529285a6854bec3022a11564f3e33199f53a3fd83dff32de417815f647",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-boundary-identity-v5.json",
+        "sha256": "bf197ffd371b9294e3420f0cfe0f6cd0838cfeac48e59e88886bf239b6d0feea",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-component-identity-v4.json",
+        "sha256": "fe9a7e256fa0c70e4104b5dc88f29d556f5b2a19e0a24ef70bb7133853cbf88c",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-progress-budget-v7.json",
+        "sha256": "0a4d811993771982864f5d6b0a5d3c81a51336f849f0df1a562e16257635db5c",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-replay-v2.json",
+        "sha256": "f320480a7985325da4fbcf0f5bbcd3c9948914e9373ae28f3326de92aee894ec",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-role-binding-v6.json",
+        "sha256": "6d93803a0afb0ef43abfbd438f8362856fb180b1791f4858062d9a4e5cbe00f3",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-solo-parity-v1.json",
+        "sha256": "c9be8e97181dc1c9855442de3cb2aff17350b1ee5bd2b4b0d6c23c8d44ef504b",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-visual-recovery-v3.json",
+        "sha256": "09e0f4936b518bf745871ccd6f31b6b5903cf4d125693f00c1440647cc6f4fe2",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-contact-fine-yaw-wheel-anchor-v8.json",
+        "sha256": "6abb07042f3723fb987c10f5d934a18981535d4501f055eb46899a04ba4a64c8",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-adapter-legacy-v1.json",
+        "sha256": "e5d89e7fcebf7f59132c4f9b2c3e455989165da9aa07cb310ef0f3ec04f2f970",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v10.json",
+        "sha256": "aa3a4373fcbe2970b1ce95062d684704ea8c342cab77a0fce913720bb71eb606",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v11.json",
+        "sha256": "2ccc0a79d25d7a7cb32a9f909127a26655ebe32309616cb8a5cc6c1c7a19c4aa",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v12.json",
+        "sha256": "4577c8d906715ab98341f97aa6afa656e704acafd03ef20a2a4ac67adb41a54a",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v13.json",
+        "sha256": "fce4968d73ec94f38fde438ab74989a0a4199ec6e93c295ca50b85501a8089a2",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v14.json",
+        "sha256": "9fa9bd26155e66a60bb636be2c1334420024e40ed89357ac7698b4a43046aa72",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v15.json",
+        "sha256": "1933cd0e277e6249f5b6125d006bdca2fe8d9a4edf02603efb01514bfe12edaa",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v16.json",
+        "sha256": "9d11f82ca02fb60d283fe6908fe1f696b2d31aabfc1acd9bf779c56a94b98958",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v17.json",
+        "sha256": "8a686939f6505bfaae2f4ebadb3e637b0e229b63e25dfb96877c411235bf6125",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v18.json",
+        "sha256": "a6891549ad88372a168fca34813ae96dd5c387447cc2ec4b352d3c96d5b891e4",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v19.json",
+        "sha256": "5516e639e7a31029a7cfb2a5d92844eeee784e32a8aca629735bac8e0dc16e32",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v2.json",
+        "sha256": "771a1cb51feeeecb55174d0e68e0dad30bfedfb748149dcd7c9e1cf3f1e2d120",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v20.json",
+        "sha256": "c55ce2163f89d6db069f47a18b7cf46f92e27887611370019e5b2fc25dab3ad5",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v21.json",
+        "sha256": "0c50a3f5d842d675dc1c78fc33e5a17eab014c87cbf6bed167d228bb371815b3",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v22.json",
+        "sha256": "89fadd2c963025a8514a24c6c435b8f06b5caf4e7561b944506e1645c55ea157",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v23.json",
+        "sha256": "abc0d78e520fa5994003c36f1e9193352c08fabcbf75fdf99fc5ba5c595d0745",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v24.json",
+        "sha256": "d1dc432c4bcb176fd5c73cfa65c555c8ba856070b067e4ad8b37ec637c2a6173",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v25.json",
+        "sha256": "e591f30cc8318d2decad6c961da5912d96a81503f8a2b42998398cd1f18ace1f",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v26.json",
+        "sha256": "4900ac0cb6f2933c4acbe6275a3567cfb1af3714cabb48c68c7a2a195c951514",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v27.json",
+        "sha256": "74ac7aa8fb6c70a4f5781128a472a6722e993a8d9f731d430d365e3c01d75373",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v28.json",
+        "sha256": "3414ab8c93995bf8692f71ce4205fb17dd05698c10efc1edab97ae5c81775d25",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v29.json",
+        "sha256": "484b6b7692a07b3fc0b0dec4ffcd0123a163e566185879550fdd0cac2b00a472",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v3.json",
+        "sha256": "a1a975381e4097c6e0c324d2153ab1cf6e886873f9068afe7c8cba604d235732",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v30.json",
+        "sha256": "53502d8267792b92b5058b2608c5cc9cc5a4481e94cc0a7d8dfd9f65650ce8fb",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v31.json",
+        "sha256": "95b34426376d395b5f4a043a3a5c13349d53b3ee000fa1a7631ddbda66aaa699",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v32.json",
+        "sha256": "0530406ff15386f03c14194ec6e02ef722c51719d419bd92520c9c5384490254",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v33.json",
+        "sha256": "8ceb961bc3947d7dcb1a066b421e9106be69104fbb0e50305d48ca79a40b5140",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v4.json",
+        "sha256": "16cf1053ff07372cb86921d52dfebb7f2a938e6d275d9923f4f11320eb158379",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v40.json",
+        "sha256": "73273a67afa5bd47d4d76be824a1091a9b4356a969fbce723c59e97d1be87083",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v41.json",
+        "sha256": "dd04d35cdc976941190c0fb75f0fe9b963075a24b3ef9c67c4a1d992b4f2f583",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v42.json",
+        "sha256": "09c11352258b07fd678d7f01fd7d744fc3c52e275699fc3331c5679de93ea408",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v43.json",
+        "sha256": "7509360909e7015e592f741151413bf443484203e22755f1690ecaa683b7e260",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v44.json",
+        "sha256": "005c833efd5f1a3afdbad51a0e36da2e740043750f7a7aff3b2b9765504e612f",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v45.json",
+        "sha256": "8eccb79037d4d4a2b1600c463ce5e70db03f7dc977b5d7ad83be8f004d10c28c",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v46.json",
+        "sha256": "825469d961ac32c5a90e9951d54d96ab1d833d04a7e0e55e4ba37fec1b4b6bd4",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v47.json",
+        "sha256": "f47844c224801ecdded15c764475d680e0806ae234da2c9d64981b58ca5706a4",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v48.json",
+        "sha256": "c4f40a2b701fc0cd05172b5ea0d4f18410a48f9a26a2de7077ce7475f4437c78",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v49.json",
+        "sha256": "77cbad29275a06460dae831e20f901f0daa93f3f5c0fe0ef2d114855a9e8a62c",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v5.json",
+        "sha256": "8ab2b8a67141d769c425065b01015c5f5a0cd1c6c6bebc8474a0d55e10d2fd3f",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v50.json",
+        "sha256": "d00d9403dfb0048a2135ad5e208e8f27e743f8eb1e05dc7fd237c5d3449a33b2",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v51.json",
+        "sha256": "4fd6c800cdad69164d9f950fef5161502f515676bbe91b538aa0ef6afb2ad26b",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v53.json",
+        "sha256": "f81af754bdda7c34ab7b69d5207d30b4064a4bc6877d10a5f55e99be6966f20d",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v54.json",
+        "sha256": "ae0eb8ca604f8dddae6119bb0bf82aa5115086349fa50ab96214a40e7d25164a",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v55.json",
+        "sha256": "54a7d2be2126c58bde8a5b4a7309e03b9c8badf128b6514311d87191747d0984",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v56.json",
+        "sha256": "fcf38e5b90d1511a7038bbb516e72566db8033e2bd7496c05c53518a5419dc7b",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v57.json",
+        "sha256": "1d512106caabbbc0fb2e15f88f8c4dbe037744b618da028bb9424d4f76b636be",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v58.json",
+        "sha256": "83dd89d987fbc5a4df6ae6f9f9c2c75b8ed1045eeae875a06f936dbe6fb96011",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v59.json",
+        "sha256": "8032aef817b431e1d9cd63311307f02367a1233b6048fa1049b9867be93408a9",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v6.json",
+        "sha256": "f07581649e84418c0ad31fc4577aaaebc680b34928ce3485fa8cb813d04d8045",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v60.json",
+        "sha256": "52b5e6d34fe862c8aeac50cdfa41f16cb8cc37ec5ae296c0700c688d82925355",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v61.json",
+        "sha256": "98b77ad6878548f21d97f4575f37fe5c0dfdbdcdf8b68087ca1f5ea2e829790b",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v62.json",
+        "sha256": "6601192a6da7ac018dd3a7104364065bb9afb9dce0d61e79021f824648b07f69",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v63.json",
+        "sha256": "ef4fe391e57c145b6625ba052e651542745bfcb6244d8e25736827ee8122aa01",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v7.json",
+        "sha256": "86f22c3d05280a5d8ab35a57b646852768520e0fcd536f7a54cc8018144544be",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v8.json",
+        "sha256": "a312cac4acb581c5c97b41d042049fa83ac6636d35f15f1579525c44119fb93e",
+        "same_as_base": true
+      },
+      {
+        "path": "config/rgb_execution_bundles/rgb-standard-dispatch-v9.json",
+        "sha256": "d50e4a2e2ebcac796daec1b4eca1c203da8b15b12d5182465f72d93865f0428c",
+        "same_as_base": true
+      },
+      {
+        "path": "harness/rgb_execution_bundle.py",
+        "sha256": "93c0d91880b23b1f00d7b0bd3a7491e79ef785ea4dbf2dc561cb3ee89e2b996a",
+        "same_as_base": true
+      },
+      {
+        "path": "harness/python_source_closure.py",
+        "sha256": "992388762ded3be5f945bc9620728ff189423d155d9119209130b570aeebbcea",
+        "same_as_base": true
+      },
+      {
+        "path": "scripts/zone_pair_v6_contract.py",
+        "sha256": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b",
+        "same_as_base": true
+      },
+      {
+        "path": "scripts/zone_pair_registered_source.py",
+        "sha256": "285c77cb2a3d4f7d532fe1d19c0d80300b7057b38da84465f095b42df7ddc894",
+        "same_as_base": true
+      },
+      {
+        "path": "scripts/run_zone_pair_dev.py",
+        "sha256": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec",
+        "same_as_base": true
+      },
+      {
+        "path": "scripts/run_zone_study_integration.py",
+        "sha256": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+        "same_as_base": true
+      }
+    ],
+    "all_identical": true,
+    "v6e_sources": [
+      {
+        "path": "harness/owncam_memory.py",
+        "expected": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
+        "actual": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a"
+      },
+      {
+        "path": "harness/owncam_memory_time.py",
+        "expected": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0",
+        "actual": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0"
+      },
+      {
+        "path": "harness/owncam_delivery_shared.py",
+        "expected": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba",
+        "actual": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba"
+      },
+      {
+        "path": "harness/owncam_memory_delivery.py",
+        "expected": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50",
+        "actual": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50"
+      },
+      {
+        "path": "harness/owncam_memory_inputs.py",
+        "expected": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83",
+        "actual": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83"
+      },
+      {
+        "path": "harness/owncam_pose_guard_provider.py",
+        "expected": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1",
+        "actual": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1"
+      },
+      {
+        "path": "harness/owncam_pose_guard_v3.py",
+        "expected": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6",
+        "actual": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6"
+      },
+      {
+        "path": "configs/zone_pair_authorization.json",
+        "expected": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e",
+        "actual": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e"
+      },
+      {
+        "path": "harness/owncam_drive_mem_v3.py",
+        "expected": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425",
+        "actual": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425"
+      },
+      {
+        "path": "harness/m1_owncam_memory_v3.py",
+        "expected": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2",
+        "actual": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2"
+      },
+      {
+        "path": "harness/vision_motion_init.py",
+        "expected": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316",
+        "actual": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316"
+      },
+      {
+        "path": "harness/m2_provider_adapter.py",
+        "expected": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624",
+        "actual": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624"
+      },
+      {
+        "path": "harness/zone_own_deliver.py",
+        "expected": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab",
+        "actual": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab"
+      },
+      {
+        "path": "harness/zone_own_team_host.py",
+        "expected": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64",
+        "actual": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64"
+      },
+      {
+        "path": "scripts/zone_pair_authorization.py",
+        "expected": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649",
+        "actual": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649"
+      },
+      {
+        "path": "scripts/run_zone_study_integration.py",
+        "expected": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+        "actual": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd"
+      },
+      {
+        "path": "scripts/run_m1_owncam_memory_v3.py",
+        "expected": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8",
+        "actual": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8"
+      },
+      {
+        "path": "sim/zone_geometry_scene.py",
+        "expected": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+        "actual": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0"
+      },
+      {
+        "path": "configs/zone_study_integration/pose_providers.json",
+        "expected": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d",
+        "actual": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d"
+      },
+      {
+        "path": "maps/zones/zone_wide_door_geometry_v2.json",
+        "expected": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+        "actual": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf"
+      },
+      {
+        "path": "harness/pose_provider.py",
+        "expected": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2",
+        "actual": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2"
+      },
+      {
+        "path": "harness/vision_pose_source.py",
+        "expected": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+        "actual": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7"
+      },
+      {
+        "path": "harness/zone_study_pose_delay.py",
+        "expected": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894",
+        "actual": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894"
+      },
+      {
+        "path": "harness/zone_own_driver.py",
+        "expected": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d",
+        "actual": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d"
+      },
+      {
+        "path": "harness/owncam_drive_shared.py",
+        "expected": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792",
+        "actual": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792"
+      },
+      {
+        "path": "sim/zone_own_scene_provider.py",
+        "expected": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+        "actual": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b"
+      },
+      {
+        "path": "harness/owncam_time.py",
+        "expected": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+        "actual": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4"
+      },
+      {
+        "path": "harness/zone_own_contract.py",
+        "expected": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
+        "actual": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301"
+      },
+      {
+        "path": "harness/zone_own_executor.py",
+        "expected": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+        "actual": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5"
+      },
+      {
+        "path": "harness/zone_own_status.py",
+        "expected": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
+        "actual": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3"
+      },
+      {
+        "path": "harness/zone_own_perception.py",
+        "expected": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
+        "actual": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff"
+      },
+      {
+        "path": "harness/zone_pair_obstruction.py",
+        "expected": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
+        "actual": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd"
+      },
+      {
+        "path": "harness/zone_pair_grasp.py",
+        "expected": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565",
+        "actual": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565"
+      },
+      {
+        "path": "harness/zone_pair_executor.py",
+        "expected": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+        "actual": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465"
+      },
+      {
+        "path": "harness/zone_pair_beam_track.py",
+        "expected": "7b0870a80a200ee6eaa99d6ca86653094d420dd527bf7b8fcf385b2ff030ce9e",
+        "actual": "7b0870a80a200ee6eaa99d6ca86653094d420dd527bf7b8fcf385b2ff030ce9e"
+      },
+      {
+        "path": "harness/zone_pair_align.py",
+        "expected": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e",
+        "actual": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e"
+      },
+      {
+        "path": "harness/zone_pair_guards.py",
+        "expected": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde",
+        "actual": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde"
+      },
+      {
+        "path": "harness/zone_pair_geometry.py",
+        "expected": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+        "actual": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d"
+      },
+      {
+        "path": "harness/zone_pair_status.py",
+        "expected": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+        "actual": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646"
+      },
+      {
+        "path": "harness/zone_pair_vision.py",
+        "expected": "cce72504edf01d119aafbefc8cb4ea1aa5a407196f9809f6cb5b8ec0bfecc9fc",
+        "actual": "cce72504edf01d119aafbefc8cb4ea1aa5a407196f9809f6cb5b8ec0bfecc9fc"
+      },
+      {
+        "path": "harness/owncam_pose_source.py",
+        "expected": "b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e",
+        "actual": "b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e"
+      },
+      {
+        "path": "harness/owncam_localizer.py",
+        "expected": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+        "actual": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347"
+      },
+      {
+        "path": "harness/owncam_pair_beam.py",
+        "expected": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+        "actual": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6"
+      },
+      {
+        "path": "harness/owncam_pair_beam_v2.py",
+        "expected": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+        "actual": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97"
+      },
+      {
+        "path": "harness/owncam_view.py",
+        "expected": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+        "actual": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260"
+      },
+      {
+        "path": "harness/zone_own_guards.py",
+        "expected": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+        "actual": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e"
+      },
+      {
+        "path": "scripts/run_zone_pair_dev.py",
+        "expected": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec",
+        "actual": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec"
+      },
+      {
+        "path": "scripts/zone_pair_dev_runtime.py",
+        "expected": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877",
+        "actual": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877"
+      },
+      {
+        "path": "scripts/zone_pair_grasp_contract.py",
+        "expected": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85",
+        "actual": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85"
+      },
+      {
+        "path": "scripts/evaluate_zone_pair_dev.py",
+        "expected": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+        "actual": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53"
+      },
+      {
+        "path": "configs/simulation_workflows.json",
+        "expected": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140",
+        "actual": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140"
+      },
+      {
+        "path": "sim/zone_start_dock.py",
+        "expected": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+        "actual": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4"
+      },
+      {
+        "path": "sim/zone_dock_scene.py",
+        "expected": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+        "actual": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498"
+      },
+      {
+        "path": "sim/zone_arena.py",
+        "expected": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+        "actual": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8"
+      },
+      {
+        "path": "sim/zone_landmarks.py",
+        "expected": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1",
+        "actual": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1"
+      },
+      {
+        "path": "sim/zone_scene.py",
+        "expected": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714",
+        "actual": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714"
+      },
+      {
+        "path": "sim/zone_tagged_cargo_scene.py",
+        "expected": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7",
+        "actual": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7"
+      },
+      {
+        "path": "scripts/zone_pair_dev_contract.py",
+        "expected": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e",
+        "actual": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e"
+      },
+      {
+        "path": "harness/zone_study_integration.py",
+        "expected": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06",
+        "actual": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06"
+      },
+      {
+        "path": "harness/zone_pair_v6_policy.py",
+        "expected": "dcf1d3804f3ccf02622fc8410d00478b171975a0e1f0b299fdd46d2e323ee9bd",
+        "actual": "dcf1d3804f3ccf02622fc8410d00478b171975a0e1f0b299fdd46d2e323ee9bd"
+      },
+      {
+        "path": "harness/zone_pair_relative.py",
+        "expected": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af",
+        "actual": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af"
+      },
+      {
+        "path": "harness/zone_pair_global.py",
+        "expected": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
+        "actual": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed"
+      },
+      {
+        "path": "harness/owncam_recovery_v6.py",
+        "expected": "3909f45ecc856ca2f666f9e3c3ee2327ad813c15449f0b0b0f04173492c92f67",
+        "actual": "3909f45ecc856ca2f666f9e3c3ee2327ad813c15449f0b0b0f04173492c92f67"
+      },
+      {
+        "path": "harness/owncam_observability_v6.py",
+        "expected": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
+        "actual": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d"
+      },
+      {
+        "path": "scripts/zone_pair_v6_contract.py",
+        "expected": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b",
+        "actual": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b"
+      },
+      {
+        "path": "harness/zone_own_sweep.py",
+        "expected": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
+        "actual": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6"
+      },
+      {
+        "path": "harness/pair_owncam_approach.py",
+        "expected": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+        "actual": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184"
+      },
+      {
+        "path": "harness/owncam_drive.py",
+        "expected": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+        "actual": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82"
+      },
+      {
+        "path": "scripts/run_m2_pair.py",
+        "expected": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+        "actual": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783"
+      },
+      {
+        "path": "scripts/study_owncam_pair_beam.py",
+        "expected": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00",
+        "actual": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00"
+      },
+      {
+        "path": "harness/visual_arm.py",
+        "expected": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+        "actual": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a"
+      },
+      {
+        "path": "harness/m1_owncam_delivery.py",
+        "expected": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+        "actual": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09"
+      },
+      {
+        "path": "harness/owncam_bootstrap_v6b.py",
+        "expected": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90",
+        "actual": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90"
+      },
+      {
+        "path": "harness/owncam_recovery_v6c.py",
+        "expected": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd",
+        "actual": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd"
+      },
+      {
+        "path": "harness/zone_pair_grasp_entry_v6c.py",
+        "expected": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e",
+        "actual": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e"
+      },
+      {
+        "path": "harness/owncam_pair_beam_v6d.py",
+        "expected": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12",
+        "actual": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12"
+      },
+      {
+        "path": "harness/owncam_align_motion_v6d.py",
+        "expected": "4ac391e60c0d3930576c9daacbd066495fad8f9bb5863dc3ce8eaab6cff8d879",
+        "actual": "4ac391e60c0d3930576c9daacbd066495fad8f9bb5863dc3ce8eaab6cff8d879"
+      },
+      {
+        "path": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+        "expected": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+        "actual": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72"
+      },
+      {
+        "path": "harness/owncam_carry_v6e.py",
+        "expected": "ec3b42b3502e21491585360bc588663f89003f8e6ed09ab829ae617d867737ec",
+        "actual": "ec3b42b3502e21491585360bc588663f89003f8e6ed09ab829ae617d867737ec"
+      },
+      {
+        "path": "harness/own_beam_edge.py",
+        "expected": "f72118c5c1faeb91094347469dd15fa6059dd99bd6acede4760eec96411f3e8d",
+        "actual": "f72118c5c1faeb91094347469dd15fa6059dd99bd6acede4760eec96411f3e8d"
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json",
+        "expected": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+        "actual": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d"
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json",
+        "expected": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b",
+        "actual": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b"
+      },
+      {
+        "path": "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json",
+        "expected": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b",
+        "actual": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b"
+      },
+      {
+        "path": "sim/zone_masterpi_v3_scene.py",
+        "expected": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca",
+        "actual": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca"
+      },
+      {
+        "path": "sim/zone_model_conventions.py",
+        "expected": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff",
+        "actual": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff"
+      }
+    ],
+    "v6e_sources_match": true,
+    "workflow_matches_main": true
+  },
+  "ci_listing": {
+    "files": 338,
+    "shards": 8,
+    "new_test_occurrences": 1
+  },
+  "ci_preflight": {
+    "frozen_fixtures_present": 3,
+    "missing_sparse_fixtures_restored_from_git": 3
+  },
+  "failed_attempts": [
+    {
+      "name": "related",
+      "kind": "pytest collection",
+      "tests_executed": 0,
+      "reason": "external tmp test and worktree selected root /; corrected by separate invocations with explicit root/confcutdir"
+    },
+    {
+      "name": "earlier pending record",
+      "tests_executed": 0,
+      "reason": "host lock gate before PR 328; retained in RUNTIME_PROVENANCE_validation_pending.json"
+    }
+  ],
+  "source_sha256": {
+    "harness/runtime_provenance.py": "f4485bee87a582070ae42987cbe4164a8175f99181e4e05bb4972ccce5d5b3ee",
+    "scripts/trace_execution_dependencies.py": "1904017e8d600fc35177c76d632775037ca4c6cfd2e16abc72903d2a3b66eec7",
+    "tests/test_seal_runtime_provenance.py": "697e3da470d2df3e17947d9dc22326a30ea9298c8624f6b467a67d0d356b8d7b",
+    "scripts/run_ci_tests.py": "39c88456604f7540293c0c79f578f4a3ecc756c37b53ccdfed5abc50189afb94",
+    "harness/execution_dependency_contract.py": "3580c778896a1395fc92424e7307e0dc3f3c3d9bb0205f77617f3ad50956ab50",
+    "harness/python_source_closure_v2.py": "7d4102f6e12e0a33e454e61f7ce8aed4014ff8169d8d9324920757418df72965",
+    "experiments/2026-09-30-seal-dependency-decouple/check_runtime_mutations.py": "ea36aaa4ca18bb67a480bb5b6410fe681b20e40d99249e435505a4ac6fc66848"
+  },
+  "raw_local_root": "/Users/changmin/projects/ugrp/outputs/seal-runtime-provenance-20260930/resume-01",
+  "raw_remote_backup": false,
+  "raw_sha256": {
+    "ci-list.json": "1e71d9492f05943ab188dfb07193f591ca090c9fb7fca8367b76802ef63aed6c",
+    "mutations/baseline.log": "6affc9a3c465946fe662c8d8da2e280eb7b7ba0337a01d84b38142d279fb5872",
+    "mutations/baseline.xml": "74ae7ae138a48c436d753a7bc643ed849099da3c35cd902ce93551fc66ad3021",
+    "mutations/environment-drift.log": "bbd4031733da0a1cce176f77b0a9235d9e34fc8b04220dcde1c3b287ddc5222d",
+    "mutations/environment-drift.xml": "9110c1d7891ed2b0014c5852954b08dfb737131e519ceeb6f045d4f392e2d83b",
+    "mutations/identity-drift.log": "4171d12bdb787700e5b24ea09295552e2c527bb16eb1666bcf6000ba4bffb8da",
+    "mutations/identity-drift.xml": "9a5183524ee1313e0ec81faeed0f4ea1a651f6df143795422303bbe6ba46843c",
+    "mutations/path-binding.log": "ac7839c1f47cf3e0c526b7cd258b34c8cee49efbf5492fd533c5768bb76d2894",
+    "mutations/path-binding.xml": "9c1ac2abc26af68f52b4fba36d015298d9f8e21cb4fc4a2d32424725eeffcae7",
+    "mutations/static-union.log": "19a04e8337c39afddc661116dbae680c2746f570cd1727923ab9cdce5a6a8f2c",
+    "mutations/static-union.xml": "e4d8f5806fd4f83a049346ca13d3aba5d2ef357b41c6d71771366991213bb2e1",
+    "mutations/summary.json": "8ac078e8079957c1234612ca6c36e9a92eb758ba580c6cdf572e255a7af6249a",
+    "mutations/unknown-environment.log": "b2223446f02a21b4f79d3545baaed091231f7292c8dbd179026560a42fd16ce9",
+    "mutations/unknown-environment.xml": "fc19e7d7e1d151974b1de5482c66cd7fe82bf6d85fe6420512a03be91f1212d0",
+    "mutations/unseen-file.log": "1c5fb1b287416d419cc8872733fbb24426c55029ae184f585e6fae07a4af081b",
+    "mutations/unseen-file.xml": "2cd1015e265de96f3adc20626f8b1dbf39a9282dfa0a38f2bc4910cf1481138e",
+    "mutations.log": "8ac078e8079957c1234612ca6c36e9a92eb758ba580c6cdf572e255a7af6249a",
+    "preflight.log": "588f529af41c33591232794d31d3820b17e58faa201d9a5cc93a4d521128a4ea",
+    "preservation.json": "451ceb5953bf6edcb3281dc130202fb41b37680d7c1d100c2501c18a348de51e",
+    "related-02.log": "27d725c8bd97cf754b2739af6d4a62d1e53464e8d9991030306efa2ae7487784",
+    "related-02.xml": "00e19b0bbf7fd50b55f73cf09e5b3d2d9ef1c041fae1c489243916e4e68212c8",
+    "related.log": "d7be60e63def5ab09d1da844afdafe121267a2ceeb0541a8aff732b7951c736a",
+    "related.xml": "6378b555c8927b8333637aa690aa36fc63a0e679002d064c0d8bdf0cca2d8637",
+    "review-original.log": "7760a34a4c7fcd3dae6a6867a83cc02d5e55881e92ae5c8ff2950bcbb2f89c73",
+    "review-original.xml": "f39aff8b610ff7b473cb644834cca0b3d57382f6706a22a457ce33a847730dd5",
+    "runtime-final.log": "43c190d6266a6b1ad566ce24c3c77f17cd260bad672d2053b8228b52dd81ed3f",
+    "runtime-final.xml": "3c8f46a255ed2eb3c0c59bafeb0c838d6cc556814c20d010a13529f00138758d",
+    "runtime.log": "8e8e2d57844b8a32a079efab5dacfd7d24e430973eb92158659d2a2f349bc60f",
+    "runtime.xml": "0ede4075dd106117b5e5c15853f043ab3e7c2e81fc0898433c272f0f72c54fd8",
+    "test_seal_v2_review_301b.py": "0b6c51f52f9400fb7fd836ebc22f037331a8fc20a052e059ae59036e063090da"
+  },
+  "remaining": [
+    "OS native and descendant tracing/enforcement",
+    "immutable input staging and metadata/race coverage",
+    "sim_cli and worker admission integration",
+    "canonical physics trace and independent re-review",
+    "registry slice adapter before claiming unrelated-catalog edit tolerance"
+  ],
+  "workflow_diff_from_main": false
+}
