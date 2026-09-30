@@ -16,6 +16,9 @@ import sys
 import time
 import uuid
 
+if str(Path(__file__).resolve().parents[1]) not in sys.path:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 DEFAULT_ROOT = Path('/Users/changmin/projects/ugrp/outputs')
 SCHEMA = 'ugrp.outputs-retention.v2'
 MIN_AGE_SECONDS = 24 * 60 * 60
@@ -31,7 +34,7 @@ def sha256(path: Path) -> str:
 
 
 def relative_path(value: str) -> PurePosixPath:
-    if not isinstance(value, str) or not value or '\\' in value:
+    if not isinstance(value, str) or not value or any(c in value for c in ('\\', '\n', '\r', '\0')):
         raise Refusal(f'invalid relative path: {value!r}')
     p = PurePosixPath(value)
     if p.is_absolute() or any(x in ('', '.', '..') for x in value.split('/')):
@@ -292,11 +295,19 @@ def _remove(root: Path, path: Path, identities: dict, record: dict, save, *, nam
         save()  # Includes partial counts if an OS error interrupted this entry.
 
 
-def prune(manifest_path: Path, *, execute: bool = False, root: Path = DEFAULT_ROOT) -> dict:
+def prune(manifest_path: Path, *, execute: bool = False, root: Path = DEFAULT_ROOT,
+          resume: Path | None = None, progress_every: int = 100) -> dict:
     # root injection is for isolated tests. The CLI always uses DEFAULT_ROOT.
     root = root.absolute()
     raw = manifest_path.read_bytes()
     manifest = json.loads(raw)
+    if manifest.get('schema') == 'ugrp.outputs-retention.v3':
+        # Lazy import retains the original v2 API and isolated regression tests.
+        from scripts.outputs_prune_stream import prune_stream
+        return prune_stream(manifest_path, execute=execute, root=root, resume=resume,
+                            progress_every=progress_every)
+    if resume:
+        raise Refusal('resume is supported only for v3 manifests')
     entries = validate_plan(manifest, manifest_path, root)
     summary = {'execute': execute, 'paths': len(entries),
                'bytes': sum(row['bytes'] for row in entries),
@@ -363,9 +374,16 @@ def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('manifest', type=Path)
     parser.add_argument('--execute', action='store_true', help='only after the user approves this batch')
+    parser.add_argument('--resume', type=Path, help='resume this receipt with the identical v3 manifest')
+    parser.add_argument('--progress-every', type=int, default=100, help='batch interval on stderr (0 disables)')
     args = parser.parse_args(argv)
     try:
-        result = prune(args.manifest, execute=args.execute)
+        kwargs = {}
+        if args.resume is not None:
+            kwargs['resume'] = args.resume
+        if args.progress_every != 100:
+            kwargs['progress_every'] = args.progress_every
+        result = prune(args.manifest, execute=args.execute, **kwargs)
     except (Refusal, OSError, ValueError, KeyError, TypeError) as error:
         print(f'REFUSED: {error}', file=sys.stderr)
         return 1
@@ -374,4 +392,6 @@ def main(argv=None) -> int:
 
 
 if __name__ == '__main__':
+    # The streaming module must share this invocation's Refusal class.
+    sys.modules.setdefault('scripts.outputs_prune', sys.modules[__name__])
     raise SystemExit(main())

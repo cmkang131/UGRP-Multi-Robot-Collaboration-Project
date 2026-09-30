@@ -279,3 +279,240 @@ def test_dead_lock_does_not_get_removed_by_pruner(batch, monkeypatch):
     monkeypatch.setattr(prune.os, 'kill', dead)
     prune.prune(manifest, root=root, execute=True)
     assert (lock / 'owner.json').is_file()
+
+
+def stream_batch(batch):
+    from scripts import outputs_prune_stream as s
+    root, manifest, _ = batch
+    # Make three independently journaled batches; retain endpoints and record.
+    frames = root / 'dev/frames'
+    for i in range(3, 13):
+        (frames / f'{i:02d}.jpg').write_bytes(f'frame-{i}'.encode())
+    age(root)
+    delete = ['03.jpg', '04.jpg', '05.jpg', '06.jpg', '07.jpg', '08.jpg', '09.jpg', '10.jpg']
+    keep = ['1.jpg', '11.jpg', '12.jpg', '2.jpg']
+    def row(folder, names):
+        names = sorted(names)
+        with s.directory_fd(root, folder) as fd:
+            recs = [s.file_record(fd, n) for n in names]
+        return {'folder': folder, 'names_zlib_base64': s.pack_names(names), 'files': len(names),
+                'bytes': sum(r['bytes'] for r in recs),
+                'allocated_bytes': sum(r['allocated_bytes'] for r in recs),
+                'content_sha256': s.digest_records(recs), 'rule_id': 'D1',
+                'reason': '1 Hz thinning; retain first/last and model request'}
+    dels = [row('dev/frames', delete[i:i+3]) for i in range(0, len(delete), 3)]
+    keeps = [row('dev', ['result.json']), row('dev/frames', keep)]
+    data = {'schema': s.SCHEMA, 'outputs_root': str(root),
+            'delete_totals': {k: sum(r[k] for r in dels) for k in ['files', 'bytes', 'allocated_bytes']}}
+    for action, entries in [('delete', dels), ('keep', keeps)]:
+        p = manifest.parent / (action + '.jsonl')
+        p.write_bytes(b''.join(s.canonical(r) for r in entries))
+        data[action + '_lists'] = [{'path': p.name, 'sha256': prune.sha256(p), 'batches': len(entries)}]
+    rewrite(manifest, data)
+    return root, manifest, data, delete, keep
+
+
+def test_stream_thinning_dry_run_and_receipt(batch):
+    from scripts import outputs_prune_stream as s
+    root, manifest, _, deletes, keeps = stream_batch(batch)
+    before = prune.fingerprint(root, enforce_age=False)
+    result = prune.prune(manifest, root=root, progress_every=0)
+    assert result['files'] == len(deletes)
+    assert result['kept_files_verified'] == len(keeps) + 1
+    assert prune.fingerprint(root, enforce_age=False) == before
+    result = prune.prune(manifest, root=root, execute=True, progress_every=0)
+    assert sorted(p.name for p in (root / 'dev/frames').iterdir()) == keeps
+    receipt = json.loads(Path(result['receipt']).read_text())
+    expected = hashlib.sha256(''.join('dev/frames/' + p + '\n' for p in deletes).encode()).hexdigest()
+    assert receipt['removed_paths_sha256'] == expected
+    assert receipt['folders']['dev/frames']['removed_files'] == len(deletes)
+    assert receipt['folders']['dev/frames']['kept_files_after'] == len(keeps)
+    assert receipt['folders']['dev/frames']['recovered_absent'] == 0
+    assert receipt['state'] == 'complete'
+    assert receipt['kept_files_verified_after'] == len(keeps) + 1
+
+
+def test_stream_resume_partial_batch_and_completed_batch(batch, monkeypatch):
+    root, manifest, _, deletes, keeps = stream_batch(batch)
+    unlink = os.unlink
+    def stop(name, **kwargs):
+        if str(name) == '07.jpg':
+            raise KeyboardInterrupt('power-cut simulation')
+        unlink(name, **kwargs)
+    monkeypatch.setattr(prune.os, 'unlink', stop)
+    with pytest.raises(KeyboardInterrupt):
+        prune.prune(manifest, root=root, execute=True, progress_every=0)
+    receipt = next((root / 'prune-receipts').glob('*.json'))
+    receipt = next(p for p in (root / 'prune-receipts').glob('*.json') if '.pending.' not in p.name)
+    partial = json.loads(receipt.read_text())
+    assert partial['state'] == 'interrupted'
+    assert partial['completed_batches'] == 1
+    assert partial['folders']['dev/frames']['removed_files'] == 4
+    assert partial['pending_absent_uncommitted'] == 1
+    monkeypatch.setattr(prune.os, 'unlink', unlink)
+    result = prune.prune(manifest, root=root, execute=True, resume=receipt, progress_every=0)
+    after = json.loads(receipt.read_text())
+    assert after['state'] == 'complete'
+    assert after['folders']['dev/frames']['removed_files'] == 8
+    assert after['folders']['dev/frames']['recovered_absent'] == 1
+    assert sorted(p.name for p in (root / 'dev/frames').iterdir()) == keeps
+    assert after['removed_paths_sha256'] == hashlib.sha256(''.join('dev/frames/'+p+'\n' for p in deletes).encode()).hexdigest()
+    # Repeating a complete receipt is idempotent.
+    again = prune.prune(manifest, root=root, execute=True, resume=receipt, progress_every=0)
+    assert again['removed_paths_sha256'] == result['removed_paths_sha256']
+
+
+def test_stream_resume_refuses_missing_outside_durable_pending(batch, monkeypatch):
+    root, manifest, _, _, _ = stream_batch(batch)
+    (root / 'dev/frames/03.jpg').unlink()
+    with pytest.raises(FileNotFoundError):
+        prune.prune(manifest, root=root, execute=True, progress_every=0)
+    assert (root / 'dev/frames/04.jpg').exists()
+
+
+@pytest.mark.parametrize('target', ['keep', 'delete'])
+def test_stream_content_hash_and_keep_overlap(batch, target):
+    from scripts import outputs_prune_stream as s
+    root, manifest, data, _, _ = stream_batch(batch)
+    p = root / 'dev/frames' / ('11.jpg' if target == 'keep' else '07.jpg')
+    stamp = p.stat().st_mtime_ns
+    p.write_bytes(b'changed')
+    os.utime(p, ns=(stamp, stamp))
+    with pytest.raises(prune.Refusal, match='content changed'):
+        prune.prune(manifest, root=root, execute=True, progress_every=0)
+    assert (root / 'dev/frames/03.jpg').exists()
+
+
+def test_stream_sidecar_overlap_and_path_validation(batch):
+    from scripts import outputs_prune_stream as s
+    root, manifest, data, _, _ = stream_batch(batch)
+    data['keep_lists'] = data['delete_lists']
+    rewrite(manifest, data)
+    with pytest.raises(prune.Refusal, match='overlaps kept'):
+        prune.prune(manifest, root=root, progress_every=0)
+    for name in ['../outside', '/outside', 'a/b', 'a\\b']:
+        row = {'files': 1, 'names_zlib_base64': s.pack_names([name])}
+        with pytest.raises(prune.Refusal):
+            s.unpack_names(row)
+    with pytest.raises(prune.Refusal, match='batch size'):
+        s.unpack_names({'files': 513, 'names_zlib_base64': s.pack_names([f'{n:04d}' for n in range(513)])})
+
+
+def test_stream_torn_journal_after_unlink_recovers(batch, monkeypatch):
+    from scripts import outputs_prune_stream as s
+    root, manifest, _, _, _ = stream_batch(batch)
+    original = s._unlink_pending
+    def cut(*args):
+        original(*args)
+        raise SystemExit('crash before journal commit')
+    monkeypatch.setattr(s, '_unlink_pending', cut)
+    with pytest.raises(SystemExit):
+        prune.prune(manifest, root=root, execute=True, progress_every=0)
+    receipt = next(p for p in (root / 'prune-receipts').glob('*.json') if '.pending.' not in p.name)
+    with receipt.with_suffix('.done.jsonl').open('ab') as stream:
+        stream.write(b'{"batch_index":0')
+    monkeypatch.setattr(s, '_unlink_pending', original)
+    prune.prune(manifest, root=root, execute=True, resume=receipt, progress_every=0)
+    result = json.loads(receipt.read_text())
+    assert result['state'] == 'complete'
+    assert result['folders']['dev/frames']['recovered_absent'] == 3
+
+
+def test_stream_resume_refuses_reappeared_file_and_changed_manifest(batch, monkeypatch):
+    root, manifest, data, _, _ = stream_batch(batch)
+    result = prune.prune(manifest, root=root, execute=True, progress_every=0)
+    receipt = Path(result['receipt'])
+    data['note'] = 'a different approval batch'
+    rewrite(manifest, data)
+    with pytest.raises(prune.Refusal, match='manifest or root mismatch'):
+        prune.prune(manifest, root=root, execute=True, resume=receipt, progress_every=0)
+    del data['note'];rewrite(manifest, data)
+    (root / 'dev/frames/03.jpg').write_bytes(b'new data')
+    with pytest.raises(prune.Refusal, match='reappeared'):
+        prune.prune(manifest, root=root, execute=True, resume=receipt, progress_every=0)
+
+
+def test_stream_symlink_and_recent_and_active_lock(batch):
+    root, manifest, _, _, _ = stream_batch(batch)
+    lock = root / 'agent-locks/physics';lock.mkdir(parents=True)
+    (lock/'owner.json').write_text(json.dumps({'pid': os.getpid()}))
+    assert 'active agent_lock' in prune.prune(manifest, root=root, progress_every=0)['execution_blocker']
+    with pytest.raises(prune.Refusal, match='active agent_lock'):
+        prune.prune(manifest, root=root, execute=True, progress_every=0)
+    (lock/'owner.json').unlink();lock.rmdir()
+    original_stamp = (root / 'dev/frames/03.jpg').stat().st_mtime_ns
+    os.utime(root / 'dev/frames/03.jpg', None)
+    with pytest.raises(prune.Refusal, match='24 hours'):
+        prune.prune(manifest, root=root, execute=True, progress_every=0)
+    os.utime(root / 'dev/frames/03.jpg', ns=(original_stamp, original_stamp))
+    p=root/'dev/frames/03.jpg';p.unlink();p.symlink_to(root/'dev/result.json')
+    with pytest.raises(prune.Refusal, match='symlink'):
+        prune.prune(manifest, root=root, execute=True, progress_every=0)
+
+
+def test_d1_samples_use_sim_time_and_endpoints_per_camera():
+    from scripts.outputs_retention_rules import select_samples
+    for camera in ['r1', 'r2', 'top']:
+        frames = [(f'{camera}/{i}.jpg', f'{i}.jpg', i * .2) for i in range(19)]
+        kept, rule, cadence = select_samples(frames)
+        assert kept == {f'{camera}/{i}.jpg' for i in [0, 5, 10, 15, 18]}
+        assert cadence == pytest.approx(.2)
+        assert 'SIM second' in rule
+    frames = [(f'{i}.jpg', f'{i}.jpg', i) for i in range(21)]
+    assert len(select_samples(frames)[0]) == 21  # already 1 Hz: no extra thinning
+
+
+@pytest.mark.parametrize('n', [1, 2, 9, 19, 20, 21, 99, 100, 101, 10000])
+def test_d1_unknown_timing_numeric_order_and_ten_percent(n):
+    from scripts.outputs_retention_rules import select_samples
+    frames = [(f'{i}.jpg', f'{i}.jpg', None) for i in reversed(range(n))]
+    kept, rule, cadence = select_samples(frames)
+    assert '0.jpg' in kept and f'{n-1}.jpg' in kept
+    assert len(kept) <= max(2, n // 10)
+    assert cadence is None and 'unknown SIM timing' in rule
+
+
+def test_d1_missing_or_invalid_time_uses_explicit_fallback():
+    from scripts.outputs_retention_rules import select_samples
+    frames = [(str(i), str(i), i * .2 if i != 2 else float('nan')) for i in range(30)]
+    assert 'unknown SIM timing' in select_samples(frames)[1]
+
+
+def test_stream_does_not_collect_new_unlisted_files(batch):
+    root, manifest, _, _, keeps = stream_batch(batch)
+    (root/'dev/frames/new.jpg').write_bytes(b'new active capture')
+    result = prune.prune(manifest, root=root, execute=True, progress_every=0)
+    receipt = json.loads(Path(result['receipt']).read_text())
+    assert (root/'dev/frames/new.jpg').read_bytes() == b'new active capture'
+    assert receipt['folders']['dev/frames']['kept_files_after'] == len(keeps) + 1
+
+
+def test_stream_refuses_directory_symlink_swap_after_preflight(batch, monkeypatch):
+    from scripts import outputs_prune_stream as s
+    root, manifest, _, _, _ = stream_batch(batch)
+    original = s._unlink_pending
+    def swap(*args):
+        (root/'dev/frames').rename(root/'dev/oldframes')
+        (root/'dev/frames').symlink_to(root/'dev/oldframes', target_is_directory=True)
+        return original(*args)
+    monkeypatch.setattr(s, '_unlink_pending', swap)
+    with pytest.raises((OSError, prune.Refusal)):
+        prune.prune(manifest, root=root, execute=True, progress_every=0)
+    assert (root/'dev/oldframes/03.jpg').exists()
+
+
+def test_stream_concurrent_pruner_is_refused(batch, monkeypatch):
+    from scripts import outputs_prune_stream as s
+    root, manifest, _, _, _ = stream_batch(batch)
+    def busy(*args):
+        raise BlockingIOError('owned')
+    monkeypatch.setattr(s.fcntl, 'flock', busy)
+    with pytest.raises(prune.Refusal, match='another pruning process'):
+        prune.prune(manifest, root=root, execute=True, progress_every=0)
+    assert (root/'dev/frames/03.jpg').exists()
+
+
+@pytest.mark.parametrize('boundary,expected', [(-1, {0}), (.2, {0, 1}), (.3, {1, 2}), (9, {2})])
+def test_d1_keeps_frames_on_both_sides_of_recorded_leg_boundary(boundary, expected):
+    from scripts.outputs_retention_rules import bracket_indices
+    assert bracket_indices([0., .2, .4], boundary) == expected

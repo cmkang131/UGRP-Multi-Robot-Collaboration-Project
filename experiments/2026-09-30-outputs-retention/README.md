@@ -1,150 +1,163 @@
-# outputs 보존 v2 조사 — 삭제 전 초안
+# outputs 보존 2차 — D1–D5 실행안, 실제 삭제 없음
 
-**76.91 GiB 중 이번 확정 후보는 3.48 GiB다. 승인 후 예상 잔량은 73.42 GiB로,
-요청한 40 GiB에 도달하지 못한다.** 40 GiB까지 추가 33.42 GiB, 25–30 GiB까지
-추가 43.42–48.42 GiB를 줄여야 한다. 불확실한 원자료를 삭제로 바꿔 목표를 맞추지는 않았다.
+**고정 재고 77.39 GiB → 53.65 GiB: 23.74 GiB, 파일 1,022,553개를 삭제 후보로 확정했다.**
+동시 작업을 포함해 같은 작업 중 다시 잰 `du`는 **78.13 GiB**이며, 같은 목록을 적용하면
+**54.39 GiB**다. 이는 예상값이며 실제 공간을 확보한 결과가 아니다. 40 GiB보다 약 14.39 GiB 크다.
+1차의 3.48 GiB보다 후보가 약 20.26 GiB 늘었다. 두 배치를 합산해서 실행하면 안 된다.
 
-이 작업은 `/Users/changmin/projects/ugrp/outputs/`를 읽기만 했다. 삭제·이동·압축·수정·
-새 스냅샷 생성·Drive 접근은 하지 않았다. `--execute`는 실제 원자료에 실행하지 않았다.
-단위 테스트의 삭제는 `/private/tmp/ugrp-retention-pytest/`의 가상 자료에서만 수행했다.
-이 문서와 manifest는 **배치 승인을 받기 위한 초안**이며, 실행 담당자는 코디네이터다.
+사용자가 전달한 코디네이터 결정 D1–D5를 적용했다. 7일 미만·미병합 분석·test라는 이유만으로
+폴더 전체를 보류하던 1차 기준은 이번 배치에 적용하지 않았다. 재생 가능성은 코디네이터가
+제공한 판단 근거이며, 이 작업에서 새 물리 재생을 실행하지 않았다.
 
-## 측정과 예상 잔량
+`/Users/changmin/projects/ugrp/outputs/`는 **읽기만 했다**. 이 에이전트는 삭제·이동·수정·압축·
+새 TensorBoard 변환·Drive 접근을 하지 않았다. 실제 실행 담당자는 코디네이터다.
+삭제·재개 테스트는 `/private/tmp/outputs-retention-r2/`의 가짜 outputs 트리에서만 했다.
 
-09-30 19:57 KST `disk_report.py --sections outputs,retention`은 76.908916 GiB,
-795개 최상위 항목을 보고했다. 이어진 파일별 조사는 2,632,454개 파일/디렉터리 항목,
-76.909000 GiB였다. 두 측정은 동시 작업 때문에 원자적 스냅샷이 아니며 차이는 약 88 KiB다.
-이후 새 자료가 생길 수 있으므로 이 값을 현재 파일시스템의 고정 크기로 읽지 않는다.
+## 용량과 삭제 기준
 
-단위는 **GiB, `du` 방식 할당 바이트**다. 하드 링크는 한 번만 센다. APFS clone 공유분도
-각 경로에서 계산하므로 아래 절감량은 `df`의 실제 확보 공간을 약속하지 않는다.
+단위는 GiB, `du` 방식 **할당 바이트**다. JPEG/JSON의 논리 크기와 다르고, APFS 공유 블록 때문에
+실제 `df` 확보 공간과도 같다고 보장하지 않는다. 하드 링크는 재고에서 한 번만 계산했고,
+여러 경로로 연결된 파일은 전부 유지했다. 디렉터리는 지우지 않아 그 할당량도 예상 잔량에 포함된다.
 
-| 분류 | 현재 | 조치 | 예상 잔량 | 이유 |
-|---|---:|---|---:|---|
-| 최근·분석 미병합·날짜 불명 자료 | 32.10 | 유지 | 32.10 | 24시간/7일 보호와 열린 분석 |
-| 시험·사전 등록 관련 표식이 있는 자료 | 18.40 | 유지 | 18.40 | 확증/보고 범위를 확정하기 전 보수적으로 보호 |
-| 모델 요청·학습·체크포인트 포함 자료 | 13.50 | 유지 | 13.50 | 실제 모델 입력 연결과 미배포 모델 보호 |
-| 퇴역 실시간 연구 | 3.69 | 부분 정리 | 0.78 | 비모델 반복 JPEG 49,684개만 후보 |
-| 캐시가 섞인 ACT/보고 영상 작업 폴더 | 3.48 | 부분 정리 | 2.91 | 설치본/캐시 0.57만 후보; 모델·소스·영상 유지 |
-| TensorBoard·대표 영상 원자료·작은 기록 | 2.05 | 유지 | 2.05 | 수치/영상/출처 보존 |
-| 09-07 유일 압축본·기타 불확실 자료 | 3.68 | 유지 | 3.68 | 대체 사본 또는 폐기 근거 미확정 |
-| **합계** | **76.91** | **3.48 정리 후보** | **73.42** | **40 GiB 목표 미달** |
+| 규칙 | 삭제 후보 | 내용 |
+|---|---:|---|
+| D1 | 18.94 GiB | 모델 요청이 아닌 렌더 프레임을 SIM 약 1 Hz로 솎기. 시각 불명은 번호 순서 10% 이하 + 필수 처음·끝 |
+| D2 | 3.60 GiB | 퇴역 realtime/sim-speed의 큰 캡처·큰 상세 로그·기타 bulk. 실행별 작은 기록 ≤5 MiB + 대표 영상 1개 보존 |
+| D3 | 0.57 GiB | 1차 목록의 재설치 가능한 캐시만 적용 |
+| D4 | 0 | 체크포인트 45개 모두 유지(Release 목록 불일치 39개), 09-07 유일 ZIP 유지 |
+| D5 | 0.64 GiB | 남길 JSON과 전체 바이트 SHA-256이 같은 사본. 남긴 파일을 그대로 복사하면 복원됨 |
+| **합계** | **23.74 GiB** | **1,022,553개 파일. 실제 삭제 0개** |
 
-앞 세 행만 64.00 GiB다. 이는 폴더 전체를 보호한 현재 분류의 합이며, 전부 필수 raw라고
-독립 검증했다는 뜻은 아니다. 보고서 범위와 모델 입력 연결을 더 좁혀 확인해야 다음 배치를 만들 수 있다.
-수치 기록이나 TensorBoard가 있다는 사실만으로 원자료가 불필요하다고 판단하지 않았다.
+서로 겹치지 않는 파일 형식별 합계는 다음과 같다. 작은 디렉터리·링크 할당량은 별도이며,
+전체 합계·폴더별 수치는 [summary.json](summary.json), [manifest.csv](manifest.csv)를 따른다.
+[잔량이 큰 40개 폴더](remaining-largest.csv)도 별도로 정렬했다.
 
-## 실제 삭제 목록과 보존 목록
+| 파일 종류 | 재고 | 삭제 | 예상 잔량 |
+|---|---:|---:|---:|
+| JPG/PNG 등 이미지 | 51.41 | 22.24 | 29.17 |
+| JSON | 11.52 | 0.90 | 10.62 |
+| JSONL | 3.38 | 0.04 | 3.34 |
+| ZIP | 3.57 | 0 | 3.57 |
+| 체크포인트 | 1.64 | 0 | 1.64 |
+| NPZ | 1.37 | 0 | 1.37 |
+| MJB | 1.02 | 0 | 1.02 |
+| MP4 | 0.89 | 0 | 0.89 |
+| 기타 파일 | 2.59 | 0.57 | 2.02 |
 
-- [manifest.json](manifest.json) / [manifest.csv](manifest.csv): 257개 작업, 파일 63,553개,
-  논리 크기 3,593,677,729바이트, `du` 예상 감소 3,741,364,224바이트.
-- `selections/01.json`–`19.json`: 실시간 19회 실행의 **정확한 삭제 파일명**과 보존 파일명.
-  `*.jpg`는 설명용이며 실행기가 새 파일을 글롭으로 주워서 지우지 않는다.
-- `keep/01.json`–`05.json`: 남길 manifest/JSON/JSONL/명령/로그/소스/설정/영상/표본 7,899개의 크기와 SHA-256.
-  manifest가 이 목록 파일 자체의 해시도 고정한다.
-- [inventory.csv](inventory.csv)와 `inventory/*.json`: 최상위 795항목과 은퇴 폴더 내부 85항목.
-  `retired-worktrees` 행은 **비가산 소계**(`non_additive=true`)다. 총합에는 하위 항목만 더한다.
-- [uncertain.csv](uncertain.csv): 불확실한 587항목을 모두 `KEEP (uncertain)`으로 남기고 Q1–Q5를 연결했다.
+## 반드시 남기는 자료와 불확실성
 
-실시간 19회는 result의 SHA가 실제 Git 커밋으로 존재하고, config·seed 11·저장 계획 경로가 있다.
-`llm_calls=0`, `carry_act_model=null`을 확인했다([실행별 근거](run-evidence.json)).
-모델 요청/응답 JSON과 그 안에서 가리키는 이미지, 계획/참조 이미지, 모든 실행 영상,
-각 pair 단계/카메라 및 solo 단계의 처음·중간·끝 표본 **4,405장**을 유지한다.
-문서에서 요구한 RGB 규칙 제어 캡처와 모델 요청 입력을 구분한 후보다.
+- **최근 24시간 변경 14.72 GiB**는 보존한다. 조사 기준 시각·cutoff는 summary에 고정했다.
+  실행기도 삭제 직전에 24시간을 다시 검사한다. `agent_lock`에는 출력 경로가 없어 살아 있는
+  잠금 하나라도 있으면 배치 전체 실행을 차단한다. 조사 중 다른 작업의 잠금은 건드리지 않았다.
+- 모델 요청 payload에서 이미지 해시 41,242개와 파일 경로 3,204개를 추출했다.
+  요청·응답·텍스트와 실제 이미지 해시가 일치하는 사본을 모두 보존한다. 동일 픽셀 사본 중
+  어느 경로가 실제 요청 원본인지 불명확하면 그 사본들도 남기는 보수적인 처리다.
+- 모델 입력/학습 자료 연결이 완전하지 않은 이미지 **3.20 GiB**는 유지한다.
+  여기에는 Jev/ACT 과거 입력과 위치 추정 학습·평가 자료가 있다. 단순히 `teacher`라는 단어가
+  붙은 단계 probe는 학습 자료로 간주하지 않았고 D1을 적용했다.
+- 추적 기록·문서·TensorBoard가 이름으로 참조한 이미지 **4.21 GiB**를 유지한다.
+  main과 조사 당시 열린 PR들의 서로 다른 텍스트 blob 4,660개를 확인했다. 상대 경로만 적힌
+  이미지 참조가 여러 실행과 대응되면 일치하는 사본을 모두 남겼다.
+- 체크포인트 전체 파일 해시 45개 중 Release registry 일치 6개, 불일치 39개다.
+  [checkpoint-audit.json](checkpoint-audit.json)에 모두 나열했다. 미등록 모델과 09-07 ZIP은
+  코디네이터가 전달한 D4대로 후속 사용자 판단 전까지 유지한다. 새 Release 다운로드·로딩 검증은 하지 않았다.
+- 순서·시각을 판단할 수 없는 단일 이미지 약 **0.12 GiB**, 하드 링크 자료,
+  완전한 복원 방법을 입증하지 못한 기록·NPZ·MJB 등은 남겼다. 경로별 불확실성은 [uncertain.csv](uncertain.csv)에 있다.
+- 큰 JSON의 대부분은 개별 프레임 사본 파일이 아니라 `robots.json`, `result.json`, `host.json`,
+  요청 payload다. JSON 129,153개를 전체 바이트 해시로 대조했다. robots의 보고·발행 서보 값,
+  host의 평가 배열, result의 소스·localizer 이력은 다른 JSONL 일부만으로 전체 파일을 복원할 수 있다고
+  입증되지 않았다. D5는 **내용이 완전히 일치한 경우만** 적용했다([조사](json-audit-r2.json)).
 
-실시간 스케줄링 때문에 SHA+config+seed가 같아도 과거 픽셀을 정확히 재생성한다고 주장하지 않는다.
-S2를 승인하면 삭제된 프레임의 원본 RGB 재감사 능력은 잃는다. 기존 수치·명령·실패·영상과 해시는 남는다.
-이번 배치는 모델 입력, confirmatory/test raw, 새 버전의 대표 case 후보에는 삭제를 제안하지 않는다.
+따라서 이번 결정만으로 40 GiB 이하를 달성했다고 보고하지 않는다. 현재 보호분을 후보로
+바꾸거나 시간이 지났다는 이유만으로 예약 삭제하지 않는다.
 
-캐시는 Python `__pycache__`와 `status-video/remotion/node_modules` 안의 검증된 238개 디렉터리다.
-심볼릭 링크가 있는 패키지 등은 [제외 목록](cache-exclusions.json)에 남겼다.
-`package-lock.json`, 제작 소스, 최종 MP4와 체크포인트는 유지한다.
-미참조 smoke/HOST_ERROR는 종료·모델 입력·분모 관계를 확정하지 못한 경우 그대로 보존했다.
+## 봉인·보고 코호트
 
-## 기록·TensorBoard·모델 대조
+최종 지도에서 네 통신 조건을 비교하는 **본 확증 코호트의 봉인·보고 완료 자료는 찾지 못했다**.
+현재 후보·stage probe와 완료된 본 실험을 혼동하지 않았다. 추가로 다음 **이미 동결·보고된
+구성요소 코호트 8개 경로, 합계 1.97 GiB**를 통째로 남겼다. 성공·실패·HOST_ERROR를 모두 포함한다.
 
-`origin/main@6594536b1a1afec6d9d109b35dd85a8426142d01`과 당시 열린 PR 12개(#285,
-#292, #293, #295, #299–#306)의 정확한 head SHA는 manifest의 `source_refs`에 있다.
-폴더 이름으로 `git grep -l -I -F`를 실행해 `experiments/`, `docs/`, `configs/`,
-추적 view 경로를 조사하고 실제 `outputs/tensorboard-view.json`도 읽었다.
-같은 blob은 재사용하고 달라진 blob만 다시 조사했다. [참조 색인](references.json.gz)은
-출처 파일/행과 ref ID를 연결한다. 이름을 구성하는 동적 경로는 놓칠 수 있으므로 미참조는 삭제 증거가 아니다.
+- `m1-owncam-20260926/test` — 동결 SHA `ca2fdb8`, test 101–106.
+- `owncam-memory-20260926/test-a1` — OFF/memory_v2 test 161–166.
+- `zone-m2-pair-20260926/{stage1-3fdf011,stage2-fa682a6,stage2b-ed15489,stage3-5f74873}`.
+- `zone-m2-pair-kiro-20260926/{stage2b-ed15489-completion,stage2c-ca44f66}`.
 
-`claim_evidence`, test/prereg 표식, 상태 문자열은 **보호를 위한 신호**다. 모든 README의 주장·봉인·
-진행 상태를 독립적으로 인증한 것은 아니다. 확정하지 못한 항목에는 질문을 붙였다.
-날짜는 실행 시작 시각으로 꾸미지 않고 폴더 날짜 또는 `mtime_not_run_date`로 구분했다.
-09-26/27 APFS 정리가 mtime을 바꾼 자료도 있어 mtime을 과거 실행 날짜로 역산하지 않는다.
+정확한 근거 파일은 [sealed-cohorts.json](sealed-cohorts.json)에 있다. 옛 태그 환경의 이 코호트를
+현재 최종 지도 성공 증거로 승격하지 않는다. 그 밖의 test/cohort raw도 D1의 일반 대상에 포함했다.
 
-- TensorBoard: 기존 manifest 3,531개를 읽고 EventAccumulator로 **3,529개 스냅샷의
-  scalar sample 1,197,721개**, 읽기 오류 0을 확인했다([감사](tensorboard-audit.json.gz)).
-  여러 스냅샷의 중복 수치가 포함되며 독립 실험 수가 아니다. 각 inventory 행은 경로가 연결된
-  스냅샷/스칼라 수를 갖는다. 과거 worktree 이동 경로는 현재 raw 해시 일치까지 보증하지 않는다.
-  모든 `tensorboard*`와 view 설정을 보호했다. 새로운 실험 결과가 아니므로 재변환/뷰어 재시작은 하지 않았다.
-- 보고서: [대표 영상 색인](../../docs/version_videos.md)의 원자료를 보호했다.
-  b-v6g/v6h, 파지·내려놓기 등 아직 영상이 없는 행은 미완료 그대로 두었다.
-  이번에 선택한 실시간 표본/영상과 현재 연구의 보존 raw에서 보고서용 장면을 고를 수 있다.
-- 모델: 체크포인트 45개를 해시했고 6개만 현재 배포 registry의 파일 해시와 일치했다.
-  나머지 39개는 같은 크기라는 이유로 대체/삭제하지 않았다([해시 목록](checkpoint-audit.json)).
-  GitHub의 3개 Release 태그에 있는 4개 모델 ZIP은 크기·digest가 registry와 일치했다
-  ([조회 결과](release-audit.json)). 이번에 새 다운로드/모델 로딩은 하지 않았다.
-  과거 재다운로드·전체 해시·로딩 검증은 기존 배포 기록과 구분한다.
-- 중복: 은퇴 폴더의 **1 MiB 이상 일반 파일**을 같은 크기의 비은퇴 파일과 전부 SHA-256 대조했다.
-  일치 사본은 0개였다([범위와 결과](duplicates.json)). 작은 파일까지 중복이 없다는 뜻은 아니다.
+## 솎기와 기록 구조
 
-## 추가로 결정할 항목
+- [manifest.json](manifest.json): 실행용 v3 manifest. 삭제 목록과 보존 목록 파일의 SHA-256,
+  수량·바이트 및 근거 파일을 고정한다. **1차 manifest를 대체하는 하나의 배치**다.
+- [manifest.csv](manifest.csv) / [inventory.csv](inventory.csv): 최상위 폴더·은퇴 worktree별
+  가산 합계. `folder-details/*.csv`에는 모든 개별 디렉터리의 before/after 바이트,
+  삭제/보존 파일 수, 규칙과 솎기 설명을 넣었다. 각 shard 해시도 manifest에 묶었다.
+- [thinning.csv](thinning.csv)는 `thinning/*.csv` 색인이다. 각 shard에 카메라 스트림·에피소드/leg/단계별 실제 규칙, 프레임 수,
+  처음·끝 이름, 기록으로 측정한 SIM 간격. `robots.json`, `inputs/frames.jsonl`,
+  `skill-inputs.jsonl`, 결정 기록의 SIM 시각을 우선했다. `tick-00001.0-*.jpg`는
+  생성 코드 `scripts/eval_zone_rgb_outcome.py`의 SIM 시각임을 확인했다.
+  구형 `robots/<rid>/inputs/frames.jsonl`에서도 frame 번호와 robot_id로 실제 경로를 연결해
+  247,863건의 SIM 시각을 복원했다. 작업·leg·phase 전환 시각 앞뒤의 프레임을 추가 보존했다
+  ([경계 조사](boundary-audit.json)). 경계 후보 15,045개 중 퇴역 D2 자료 1,047개는
+  D2의 작은 기록·대표 영상 보존 규칙을 따라 삭제 후보에 남겼다. D1 경계 프레임과 삭제 목록의 겹침은 0개다.
+- 시각이 불명확하면 파일 번호 순서로 간격 N을 정해 **10% 이하**만 표본으로 남긴다.
+  단, 처음·끝 2장이 필요한 20장 미만 스트림과 별도 보호 이미지 때문에 최종 비율은 더 높을 수 있다.
+  이미 1 Hz 이하인 스트림은 더 줄이지 않는다. wall 시간을 SIM 시간으로 대신 쓰지 않았다.
+- `round2-delete/*.jsonl`, `round2-keep/*.jsonl`: 최대 512파일의 작은 묶음이다.
+  이름 목록은 **명시적 파일명 JSON을 zlib+base64로 압축한 메타데이터**이며 원본 이미지 압축이 아니다.
+  각 묶음의 `content_sha256`은 파일명·크기·mtime_ns·각 파일 전체 SHA-256을 이름 순서로
+  canonical JSON 배열 `[name,bytes,mtime_ns,sha256]` + LF로 이어 SHA-256한 값이다.
+  보존 목록에는 오래된 안정 파일 766,309개가 들어 있다. 최근/실행 중·인프라 파일은 삭제 대상에서도
+  보존 해시 동결에서도 제외해 동시 기록을 방해하지 않는다.
+- [json-reconstruction.csv](json-reconstruction.csv)는 `json-reconstruction/*.csv` 색인이다.
+  각 행은 삭제 파일 → 보존 원본 → 전체 SHA-256 → 바이트 복사 복원 규칙이다. 모든 원본은 보존 목록에 있다.
+- [retired-records.json](retired-records.json): 퇴역 실행별 ≤5 MiB 기록과 대표 영상 선택.
+  모델 요청·기존 참조·최근 파일 등 보호 예외는 별도로 기록했다. 원래 영상이 없는 실행은
+  `video: null`로 표시했고 새 영상을 만들지 않았다.
 
-| 질문 | 결정이 필요한 내용 | 그 전 조치 |
-|---|---|---|
-| Q1 | 최근 7일 및 미병합 분석 자료를 언제 분석 완료로 볼지, 대표 case를 어느 것으로 고를지 | 유지. 특히 v6h·door·stage probe는 아직 열린 분석이 있음 |
-| Q2 | 최종 보고서가 과거 Jev/ACT/RGB/지도·시험 결과 중 무엇을 수치/그림 근거로 쓸지 | 관련 raw 유지. 실험 중단과 과거 주장 근거 폐기는 같은 결정이 아님 |
-| Q3 | 미등록 체크포인트 39개 중 실제 결과에 쓰인 모델/필수 자산이 무엇인지 | 식별과 필요한 Release 검증 전 유지 |
-| Q4 | 유일 사본인 09-07 ZIP 2.71 GiB의 과거 결과를 포기할지 | 유지. 외부 보관을 해결책으로 전제하지 않음 |
-| Q5 | 나머지 자료가 재생성 가능한 비모델 dev인지, SHA/config/seed·입력 연결이 충분한지 | `slim-plus`: 작은 기록과 bulk 모두 보류 |
+1차의 `inventory/*.json`, `keep/*.json`, `selections/*.json`, `*-audit.json.gz` 등은 **1차 조사 이력**이다.
+현재 실행 대상은 v3 manifest가 참조하는 `round2-*` 목록뿐이다. 이전 초안은 Git `55df84d`에도 남는다.
 
-경로별 질문과 크기는 uncertain.csv에 있다. 우선 zone-rgb-outcome-v2(3.42 GiB),
-plan-guidance(2.93), dynamic-team-recovery(2.33), 현재 pair/own-camera 자료부터 범위를 좁히는 것이 필요하다.
-새 40 GiB 이하 배치를 만들려면 보호 대상과 비모델 캡처를 하위 실행/파일 단위로 더 분리해야 한다.
-현재 manifest는 이 추가 판단이 이뤄졌다고 가정하지 않는다.
-
-## 실행기와 검증 범위
-
-`scripts/outputs_prune.py`는 기본적으로 dry-run이다. **사용자가 이 manifest 배치를 승인한 뒤에만**
-코디네이터가 같은 파일로 실행한다.
+## 대량 실행·중단 재개·검증
 
 ```sh
+# 실제 원본에서 수행한 동작: 읽기 전용 검사
 python3 scripts/outputs_prune.py experiments/2026-09-30-outputs-retention/manifest.json
-# 아래 명령은 이번 작업에서 실행하지 않았다. 사용자 배치 승인 후 담당자가 실행한다.
+
+# 실제 원본에서는 실행하지 않았음. 코디네이터가 위와 같은 manifest를 검토한 뒤 실행
 python3 scripts/outputs_prune.py experiments/2026-09-30-outputs-retention/manifest.json --execute
+
+# 중단 시: 동일한 manifest와 그 실행의 영수증만 사용
+python3 scripts/outputs_prune.py experiments/2026-09-30-outputs-retention/manifest.json \
+  --execute --resume /Users/changmin/projects/ugrp/outputs/prune-receipts/<receipt>.json
 ```
 
-경로 이탈·심볼릭 링크·24시간 변경·실행 잠금·크기/mtime/전체 내용 해시 변화·보존 목록 겹침을 거부한다.
-모든 후보를 먼저 검사한 뒤 항목마다 다시 검사하며, 디렉터리 fd를 통해 명시한 항목만 삭제한다.
-도중 실패는 `partial_failure` 영수증으로 남긴다. 성공 끝에는 보존 파일 해시도 다시 확인한다.
-실행 잠금에 raw 경로 범위가 없으므로 살아 있는 잠금은 배치 전체를 막는다.
+파일을 한꺼번에 메모리에 올리지 않고, 512개 이하 묶음을 스트리밍한다. 먼저 전체 삭제·보존 파일을
+검증하고, 실제 삭제에서는 해당 묶음을 다시 검증한다. `--progress-every` 간격으로 stderr에 진행 수를
+찍는다. 삭제는 열린 디렉터리 fd와 `O_NOFOLLOW`를 통해 정확한 파일명에만 수행한다.
+새로 생긴 파일·목록 밖 파일·디렉터리는 삭제하지 않는다. 동시에 두 pruner가 실행되지 않게 파일 잠금을 쓴다.
 
-임시 폴더 회귀 **38건 통과**(약 1초): 경로·보호 영역·symlink·최근 변경·동일 크기 내용 변경,
-실행 잠금/불명 잠금, keep/selection 목록 해시, dry-run 불변, 실제 temp 삭제와 영수증,
-중간 OS 오류, 검사 뒤 삽입을 확인했다. 공용 outputs에 테스트 잠금을 만들지 않기 위해 관련 소스와
-테스트를 `/private/tmp/ugrp-retention-tests/`로 복사했고 원본과 해시 일치를 검증했다.
-전체 CI·실물·시뮬레이션·모델 재로딩 성공으로 확대하지 않는다.
+묶음을 지우기 **전에** 각 파일의 해시와 inode/mtime을 담은 pending 기록을 fsync한다.
+완료 묶음은 append journal에 fsync한다. 강제 종료 후에는 같은 manifest와 receipt만 허용한다.
+완료 경로가 다시 생겼거나, pending 밖에서 파일이 사라졌거나, 남은 파일 내용이 바뀌면 거부한다.
+중단 순간 지워졌지만 완료 기록을 못 쓴 파일은 `recovered_absent`로 구분해 합산한다.
 
-[실제 dry-run](dry-run.json)은 257개 작업과 바이트를 확인했으며, 당시 다른 작업의 physics 잠금으로
-실행 차단 사유를 표시했다. 테스트 영수증은 임시 폴더에만 있고, 실제 `outputs/prune-receipts/`는 만들지 않았다.
+영수증에는 폴더별 삭제 파일 수·바이트·현재 보존 파일 수, 삭제/부재 확인 경로 목록의 SHA-256
+(`UTF-8 상대 경로 + LF`, manifest 순서), 중단된 묶음의 미완료 수가 남는다.
+목록·보존 파일·24시간·활성 잠금 검사는 재개할 때도 생략하지 않는다.
 
-새 dev/diag의 문서 기준은 `dev_1hz_decisions_v1`로 정했다. 다만 공용 정책을 주요 러너에 연결하는
-작업은 아직 남아 있다. 이번 문서 변경을 실행기의 저장량이 이미 줄었다는 증거로 보고하지 않는다.
+임시 자료 테스트 **60건 통과**: 1 Hz·알 수 없는 시각의 10% 솎기·처음/끝 보존,
+부분 묶음 중단·journal이 잘린 강제 종료·완료 재실행, manifest/내용 변경·재생성 경로 거부,
+symlink 교체·동시 pruner·활성 잠금·새 파일 보존 등이다. 실제 원본 dry-run 결과는
+[dry-run.json](dry-run.json), 최종 소스·검증 범위는 [verification.json](verification.json)에 기록한다.
+[별도 목록 대조](plan-consistency.json)에서 21,238개 스트림, JSON 복원 연결 17,523개,
+봉인 경로 8개와 모델 입력/삭제 목록의 겹침 0건을 확인했다.
+GitHub CI 결과와 로컬 테스트, 실제 삭제는 별개다.
 
-`audit/`은 이 조사에서 쓴 읽기 전용 수집/계획 작성 코드다. 임시 SQLite는 파일 메타데이터만 포함하며
-약 0.9 GiB라 커밋하지 않는다. 승인 없는 자동 분류/삭제 작업이나 예약 작업은 만들지 않았다.
+TensorBoard는 이벤트 **1,282,403개**, 이미지 항목 **1,386개**를 읽었고 읽기 오류는 0개였다.
+이미지 원본 해시·파일명 참조와 기존 스냅샷/동영상은 보존했다([감사](reference-audit-r2.json)).
+새 실험 결과가 생긴 작업이 아니므로 변환·뷰어 재시작·재등록은 하지 않았다.
 
-## 참고 자료
-
-- [디스크 관리 v2](../../docs/disk_management.md), [AGENTS.md](../../AGENTS.md),
-  [TensorBoard](../../docs/tensorboard.md), [모델 배포](../../docs/model_artifacts.md),
-  [대표 영상](../../docs/version_videos.md).
-- [09-23 실시간 실행 기록](../2026-09-23-realtime-dispatch/README.md),
-  [09-26 속도 연구](../2026-09-26-sim-speed/README.md),
-  [09-27 디스크 정리](../2026-09-27-disk-cleanup/README.md),
-  [09-24 모델 다운로드/로딩 검증](../2026-09-24-model-release/verification.json).
-- 이 기록의 `disk-report.json.gz`, `metadata-audit.json.gz`, `references.json.gz`,
-  `tensorboard-audit.json.gz`는 이번에 만든 조사 메타데이터다. 기존 raw를 압축하거나 대체한 것이 아니다.
+재조사 도구는 `audit/round2_collect.py` → `round2_evidence.py` → `round2_tensorboard.py`
+→ `round2_boundaries.py` → `round2_plan.py` → `round2_finalize.py` → `round2_check.py` 순서다. 임시 SQLite는 `/private/tmp/`에만 만들며,
+raw 안에는 어떤 조사 파일도 쓰지 않는다. 실행기 자체는 이 후보 발견 코드를 실행하지 않는다.
