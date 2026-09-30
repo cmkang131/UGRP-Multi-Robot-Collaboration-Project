@@ -1,0 +1,63 @@
+{
+  "reviewed_sha": "c86d9bac62036904ecc641db5e59e79edb58dec2",
+  "base_sha": "76e0f9ce793f8cbbff2349b2be2bbaa359250a42",
+  "branch": "codex/review-299",
+  "interpreter": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "pytest_cache": "disabled"
+  },
+  "lock": "scripts.run_ci_tests.run_locked; shared lock acquired before tests; released after owned process group cleanup",
+  "results": {
+    "initial_related": {
+      "passed": 201
+    },
+    "related_plus_independent": {
+      "passed": 228,
+      "xfailed": 6
+    },
+    "independent_tests": {
+      "passed": 27,
+      "xfailed": 6
+    },
+    "unmasked_counterexamples": {
+      "failed": 6,
+      "deselected": 27,
+      "expected_exit": 1
+    },
+    "old_classifier_selected_tests": {
+      "failed": 17,
+      "expected_exit": 1
+    },
+    "published_completed_cases": 308,
+    "published_raw_hashes_matched": 17
+  },
+  "local_output_root": "/Users/changmin/projects/ugrp/outputs/review-299-astra-c86d9ba",
+  "physics_steps": 0,
+  "renders": 0,
+  "model_calls": 0,
+  "tracked_evidence_sha256": {
+    "experiments/2026-09-30-pair-v6h-carry/analysis/review_299_validation/counterexample_summary.json": "c9f2721e1e3a0c3045eacbecb832db8b6b2e5e28359734f7f2f5c8b4ab27b64a",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/review_299_validation/counterexamples_unmasked.txt": "8f218ff30ac0d2052e06971268b98616efc506566f63491f2388adf75ce0d05b",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/review_299_validation/final_tests.txt": "9482f901a595f37deb62d534afae9fe59e8ab1f3dde3539bd19dbc92f39a1242",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/review_299_validation/old_code_tests.txt": "c2ef6da310ce605216725adbd7e2b24918199d0c04a5fd71d5d2dd9d1051ff84",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/review_299_validation/old_validation_outcomes.json": "3c4adfd994f9182a7aca535540893b5d5fdd7468a1d053f3b956a9e147a2d04d",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/review_299_validation/published_count_checks.json": "9c855130548bb66bd46d5417219b9c05ef757afa707ac4aa69ab9ab846ccaa95",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/review_299_validation/published_counts.txt": "00b069891e38620d31c1226ebe45797dc4beb3edfccdcfa9c83cbe92e0968090",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/review_299_validation/related_tests.txt": "65e8b5f6355af0cf37b26f7967a61563ec7801d4223bcc36a91e7238bb385094",
+    "tests/test_classify_review_299.py": "4f213b37d6635d183a4de5fcdd58f30f5f535e864b9c5b7a77b66476e2bd5279",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "cd7dc24d245e7e674cef6b986e594c506b2bbedb015aad8946c9b6f10ce60950",
+    "experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3"
+  },
+  "full_reconciliation_sha256": "ef8476f6c1a04e41e31d604080ce3f6713408e5309c1c4e94696e1ace012ce16",
+  "display_log_transform": "Committed TXT copies remove trailing whitespace only; original local stdout is preserved unchanged.",
+  "original_local_log_sha256": {
+    "/Users/changmin/projects/ugrp/outputs/review-299-astra-c86d9ba/counterexamples_unmasked.txt": "7d8a15136a68de29fe4668abbef1a6df0c6733743f2f3e9ac9869ae1228e3834",
+    "/Users/changmin/projects/ugrp/outputs/review-299-astra-c86d9ba/final_tests.txt": "9482f901a595f37deb62d534afae9fe59e8ab1f3dde3539bd19dbc92f39a1242",
+    "/Users/changmin/projects/ugrp/outputs/review-299-astra-c86d9ba/old_code_tests.txt": "26cbc27845e657ffffa715831fcf68bb2c26e4c629216c99e12a93231273c723",
+    "/Users/changmin/projects/ugrp/outputs/review-299-astra-c86d9ba/published_counts.txt": "00b069891e38620d31c1226ebe45797dc4beb3edfccdcfa9c83cbe92e0968090",
+    "/Users/changmin/projects/ugrp/outputs/review-299-astra-c86d9ba/related_tests.txt": "65e8b5f6355af0cf37b26f7967a61563ec7801d4223bcc36a91e7238bb385094"
+  }
+}

@@ -1,0 +1,280 @@
+FFFFFFFFFFFFFFFFF                                                        [100%]
+=================================== FAILURES ===================================
+___ test_observed_criterion_48_of_60_and_safety_veto_even_for_auxiliary_seed ___
+
+    def test_observed_criterion_48_of_60_and_safety_veto_even_for_auxiliary_seed():
+        cases = cohort_cases()
+        _, s = cp.summarize(cases)
+>       assert s["criterion"]["verdict"] == "NOT_EVALUABLE"  # no seal; historical endpoints only
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert 'PASS_OBSERVED_CRITERION' == 'NOT_EVALUABLE'
+E
+E         - NOT_EVALUABLE
+E         + PASS_OBSERVED_CRITERION
+
+tests/test_v6h_classify_placements.py:182: AssertionError
+____________ test_truncated_or_unordered_trace_is_rejected[one_row] ____________
+
+mutation = 'one_row'
+
+    @pytest.mark.parametrize('mutation', ['one_row', 'cut_tail', 'cut_head', 'gap', 'reverse', 'duplicate'])
+    def test_truncated_or_unordered_trace_is_rejected(mutation):
+        trace = dense_trace()
+        if mutation == 'one_row': trace = trace[:1]
+        if mutation == 'cut_tail': trace = trace[:100]
+        if mutation == 'cut_head': trace = trace[250:]
+        if mutation == 'gap': del trace[100]
+        if mutation == 'reverse': trace.reverse()
+        if mutation == 'duplicate': trace.insert(100, trace[100])
+>       with pytest.raises(cp.EvidenceError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:276: Failed
+___________ test_truncated_or_unordered_trace_is_rejected[cut_tail] ____________
+
+mutation = 'cut_tail'
+
+    @pytest.mark.parametrize('mutation', ['one_row', 'cut_tail', 'cut_head', 'gap', 'reverse', 'duplicate'])
+    def test_truncated_or_unordered_trace_is_rejected(mutation):
+        trace = dense_trace()
+        if mutation == 'one_row': trace = trace[:1]
+        if mutation == 'cut_tail': trace = trace[:100]
+        if mutation == 'cut_head': trace = trace[250:]
+        if mutation == 'gap': del trace[100]
+        if mutation == 'reverse': trace.reverse()
+        if mutation == 'duplicate': trace.insert(100, trace[100])
+>       with pytest.raises(cp.EvidenceError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:276: Failed
+___________ test_truncated_or_unordered_trace_is_rejected[cut_head] ____________
+
+mutation = 'cut_head'
+
+    @pytest.mark.parametrize('mutation', ['one_row', 'cut_tail', 'cut_head', 'gap', 'reverse', 'duplicate'])
+    def test_truncated_or_unordered_trace_is_rejected(mutation):
+        trace = dense_trace()
+        if mutation == 'one_row': trace = trace[:1]
+        if mutation == 'cut_tail': trace = trace[:100]
+        if mutation == 'cut_head': trace = trace[250:]
+        if mutation == 'gap': del trace[100]
+        if mutation == 'reverse': trace.reverse()
+        if mutation == 'duplicate': trace.insert(100, trace[100])
+>       with pytest.raises(cp.EvidenceError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:276: Failed
+______________ test_truncated_or_unordered_trace_is_rejected[gap] ______________
+
+mutation = 'gap'
+
+    @pytest.mark.parametrize('mutation', ['one_row', 'cut_tail', 'cut_head', 'gap', 'reverse', 'duplicate'])
+    def test_truncated_or_unordered_trace_is_rejected(mutation):
+        trace = dense_trace()
+        if mutation == 'one_row': trace = trace[:1]
+        if mutation == 'cut_tail': trace = trace[:100]
+        if mutation == 'cut_head': trace = trace[250:]
+        if mutation == 'gap': del trace[100]
+        if mutation == 'reverse': trace.reverse()
+        if mutation == 'duplicate': trace.insert(100, trace[100])
+>       with pytest.raises(cp.EvidenceError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:276: Failed
+____________ test_truncated_or_unordered_trace_is_rejected[reverse] ____________
+
+mutation = 'reverse'
+
+    @pytest.mark.parametrize('mutation', ['one_row', 'cut_tail', 'cut_head', 'gap', 'reverse', 'duplicate'])
+    def test_truncated_or_unordered_trace_is_rejected(mutation):
+        trace = dense_trace()
+        if mutation == 'one_row': trace = trace[:1]
+        if mutation == 'cut_tail': trace = trace[:100]
+        if mutation == 'cut_head': trace = trace[250:]
+        if mutation == 'gap': del trace[100]
+        if mutation == 'reverse': trace.reverse()
+        if mutation == 'duplicate': trace.insert(100, trace[100])
+>       with pytest.raises(cp.EvidenceError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:276: Failed
+___________ test_truncated_or_unordered_trace_is_rejected[duplicate] ___________
+
+mutation = 'duplicate'
+
+    @pytest.mark.parametrize('mutation', ['one_row', 'cut_tail', 'cut_head', 'gap', 'reverse', 'duplicate'])
+    def test_truncated_or_unordered_trace_is_rejected(mutation):
+        trace = dense_trace()
+        if mutation == 'one_row': trace = trace[:1]
+        if mutation == 'cut_tail': trace = trace[:100]
+        if mutation == 'cut_head': trace = trace[250:]
+        if mutation == 'gap': del trace[100]
+        if mutation == 'reverse': trace.reverse()
+        if mutation == 'duplicate': trace.insert(100, trace[100])
+>       with pytest.raises(cp.EvidenceError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:276: Failed
+______________ test_missing_or_nonboolean_jaws_cannot_pass[jaws0] ______________
+
+jaws = {}
+
+    @pytest.mark.parametrize('jaws', [{}, {'r1': [True, True]}, {'r1': [], 'r2': []},
+                                      {'r1': [1, 1], 'r2': [True, True]}])
+    def test_missing_or_nonboolean_jaws_cannot_pass(jaws):
+        r = row()
+        r['chain']['legs'][1]['jaws'] = jaws
+>       with pytest.raises(cp.EvidenceError, match='jaws'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:285: Failed
+______________ test_missing_or_nonboolean_jaws_cannot_pass[jaws1] ______________
+
+jaws = {'r1': [True, True]}
+
+    @pytest.mark.parametrize('jaws', [{}, {'r1': [True, True]}, {'r1': [], 'r2': []},
+                                      {'r1': [1, 1], 'r2': [True, True]}])
+    def test_missing_or_nonboolean_jaws_cannot_pass(jaws):
+        r = row()
+        r['chain']['legs'][1]['jaws'] = jaws
+>       with pytest.raises(cp.EvidenceError, match='jaws'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:285: Failed
+______________ test_missing_or_nonboolean_jaws_cannot_pass[jaws2] ______________
+
+jaws = {'r1': [], 'r2': []}
+
+    @pytest.mark.parametrize('jaws', [{}, {'r1': [True, True]}, {'r1': [], 'r2': []},
+                                      {'r1': [1, 1], 'r2': [True, True]}])
+    def test_missing_or_nonboolean_jaws_cannot_pass(jaws):
+        r = row()
+        r['chain']['legs'][1]['jaws'] = jaws
+>       with pytest.raises(cp.EvidenceError, match='jaws'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:285: Failed
+______________ test_missing_or_nonboolean_jaws_cannot_pass[jaws3] ______________
+
+jaws = {'r1': [1, 1], 'r2': [True, True]}
+
+    @pytest.mark.parametrize('jaws', [{}, {'r1': [True, True]}, {'r1': [], 'r2': []},
+                                      {'r1': [1, 1], 'r2': [True, True]}])
+    def test_missing_or_nonboolean_jaws_cannot_pass(jaws):
+        r = row()
+        r['chain']['legs'][1]['jaws'] = jaws
+>       with pytest.raises(cp.EvidenceError, match='jaws'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:285: Failed
+_______________ test_invalid_leg_metrics_cannot_pass[lift_m-inf] _______________
+
+field = 'lift_m', value = inf
+
+    @pytest.mark.parametrize('field,value', [('lift_m', float('inf')), ('end_error_m', -.01),
+                                             ('tilt_deg', 181.), ('leg_error_m', float('nan'))])
+    def test_invalid_leg_metrics_cannot_pass(field, value):
+        r = row()
+        r['chain']['legs'][1][field] = value
+>       with pytest.raises(cp.EvidenceError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:294: Failed
+___________ test_invalid_leg_metrics_cannot_pass[end_error_m--0.01] ____________
+
+field = 'end_error_m', value = -0.01
+
+    @pytest.mark.parametrize('field,value', [('lift_m', float('inf')), ('end_error_m', -.01),
+                                             ('tilt_deg', 181.), ('leg_error_m', float('nan'))])
+    def test_invalid_leg_metrics_cannot_pass(field, value):
+        r = row()
+        r['chain']['legs'][1][field] = value
+>       with pytest.raises(cp.EvidenceError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:294: Failed
+_____________ test_invalid_leg_metrics_cannot_pass[tilt_deg-181.0] _____________
+
+field = 'tilt_deg', value = 181.0
+
+    @pytest.mark.parametrize('field,value', [('lift_m', float('inf')), ('end_error_m', -.01),
+                                             ('tilt_deg', 181.), ('leg_error_m', float('nan'))])
+    def test_invalid_leg_metrics_cannot_pass(field, value):
+        r = row()
+        r['chain']['legs'][1][field] = value
+>       with pytest.raises(cp.EvidenceError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:294: Failed
+____________ test_invalid_leg_metrics_cannot_pass[leg_error_m-nan] _____________
+
+field = 'leg_error_m', value = nan
+
+    @pytest.mark.parametrize('field,value', [('lift_m', float('inf')), ('end_error_m', -.01),
+                                             ('tilt_deg', 181.), ('leg_error_m', float('nan'))])
+    def test_invalid_leg_metrics_cannot_pass(field, value):
+        r = row()
+        r['chain']['legs'][1][field] = value
+>       with pytest.raises(cp.EvidenceError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE EvidenceError
+
+tests/test_v6h_classify_placements.py:294: Failed
+_ test_null_failures_mean_no_failure_and_nonnull_failure_vetoes_good_endpoints _
+
+    def test_null_failures_mean_no_failure_and_nonnull_failure_vetoes_good_endpoints():
+        r = row()
+        result = {'wall_contact': {'episodes': []}, 'failures': {'r1': None, 'r2': None}}
+        assert cp.classify_case(r, result, dense_trace())['class'] == 'PASS_CLEAN'
+        result['failures']['r1'] = {'phase': 'handover', 'code': 'SETDOWN_FAILED'}
+>       assert cp.classify_case(r, result, dense_trace())['class'] == 'FAIL'
+E       AssertionError: assert 'PASS_CLEAN' == 'FAIL'
+E
+E         - FAIL
+E         + PASS_CLEAN
+
+tests/test_v6h_classify_placements.py:303: AssertionError
+_________ test_actual_timeout_cannot_be_relabelled_from_good_endpoints _________
+
+    def test_actual_timeout_cannot_be_relabelled_from_good_endpoints():
+        r, res, trace = full_evidence()
+        res['termination']['outcome'] = 'BUDGET_EXHAUSTED'
+>       assert cp.classify_case(r, res, trace)['class'] == 'FAIL'
+E       AssertionError: assert 'PASS_CLEAN' == 'FAIL'
+E
+E         - FAIL
+E         + PASS_CLEAN
+
+tests/test_v6h_classify_placements.py:365: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_v6h_classify_placements.py::test_observed_criterion_48_of_60_and_safety_veto_even_for_auxiliary_seed
+FAILED tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[one_row]
+FAILED tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[cut_tail]
+FAILED tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[cut_head]
+FAILED tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[gap]
+FAILED tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[reverse]
+FAILED tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[duplicate]
+FAILED tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws0]
+FAILED tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws1]
+FAILED tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws2]
+FAILED tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws3]
+FAILED tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[lift_m-inf]
+FAILED tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[end_error_m--0.01]
+FAILED tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[tilt_deg-181.0]
+FAILED tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[leg_error_m-nan]
+FAILED tests/test_v6h_classify_placements.py::test_null_failures_mean_no_failure_and_nonnull_failure_vetoes_good_endpoints
+FAILED tests/test_v6h_classify_placements.py::test_actual_timeout_cannot_be_relabelled_from_good_endpoints
+17 failed in 0.41s

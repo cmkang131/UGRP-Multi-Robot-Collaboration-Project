@@ -1,0 +1,70 @@
+FFFFFF                                                                   [100%]
+=================================== FAILURES ===================================
+______ test_endpoint_hard_limit_between_trace_samples_must_veto_cohort[0] ______
+tests/test_classify_review_299.py:208: in test_endpoint_hard_limit_between_trace_samples_must_veto_cohort
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+______ test_endpoint_hard_limit_between_trace_samples_must_veto_cohort[1] ______
+tests/test_classify_review_299.py:208: in test_endpoint_hard_limit_between_trace_samples_must_veto_cohort
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+_______ test_host_retry_must_not_erase_known_safety_violation[tilt-941] ________
+tests/test_classify_review_299.py:243: in test_host_retry_must_not_erase_known_safety_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+_______ test_host_retry_must_not_erase_known_safety_violation[tilt-943] ________
+tests/test_classify_review_299.py:243: in test_host_retry_must_not_erase_known_safety_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+____ test_host_retry_must_not_erase_known_safety_violation[penetration-941] ____
+tests/test_classify_review_299.py:243: in test_host_retry_must_not_erase_known_safety_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+____ test_host_retry_must_not_erase_known_safety_violation[penetration-943] ____
+tests/test_classify_review_299.py:243: in test_host_retry_must_not_erase_known_safety_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_placements': 60, 'n_classified_primary': 60, 'primary_seed': 941, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+=========================== short test summary info ============================
+FAILED tests/test_classify_review_299.py::test_endpoint_hard_limit_between_trace_samples_must_veto_cohort[0]
+FAILED tests/test_classify_review_299.py::test_endpoint_hard_limit_between_trace_samples_must_veto_cohort[1]
+FAILED tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[tilt-941]
+FAILED tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[tilt-943]
+FAILED tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[penetration-941]
+FAILED tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[penetration-943]
+6 failed, 27 deselected in 1.72s

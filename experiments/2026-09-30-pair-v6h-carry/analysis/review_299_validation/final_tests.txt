@@ -1,0 +1,12 @@
+........................................................................ [ 30%]
+........................................................................ [ 61%]
+........................................................................ [ 92%]
+.....xxxxxx.......                                                       [100%]
+=========================== short test summary info ============================
+XFAIL tests/test_classify_review_299.py::test_endpoint_hard_limit_between_trace_samples_must_veto_cohort[0] - R1: endpoint tilt >15 is absent from whole-chain safety maximum
+XFAIL tests/test_classify_review_299.py::test_endpoint_hard_limit_between_trace_samples_must_veto_cohort[1] - R1: endpoint tilt >15 is absent from whole-chain safety maximum
+XFAIL tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[tilt-941] - R2: retry selection discards the original attempt's recorded hard violations
+XFAIL tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[tilt-943] - R2: retry selection discards the original attempt's recorded hard violations
+XFAIL tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[penetration-941] - R2: retry selection discards the original attempt's recorded hard violations
+XFAIL tests/test_classify_review_299.py::test_host_retry_must_not_erase_known_safety_violation[penetration-943] - R2: retry selection discards the original attempt's recorded hard violations
+228 passed, 6 xfailed in 8.31s
