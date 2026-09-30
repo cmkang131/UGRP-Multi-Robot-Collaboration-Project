@@ -1,4 +1,4 @@
-"""Local suite scheduling must not race a timing-sensitive simulation."""
+"""Offline tests are unlocked by default; host serialization is opt-in."""
 import json
 import os
 from pathlib import Path
@@ -6,10 +6,98 @@ import signal
 import subprocess
 import sys
 import time
+from types import SimpleNamespace
 
 import pytest
 
 from scripts import agent_lock, run_ci_tests as runner
+
+
+@pytest.fixture(autouse=True)
+def clear_host_lock_env(monkeypatch):
+    monkeypatch.delenv("UGRP_TEST_HOST_LOCK", raising=False)
+
+
+@pytest.mark.parametrize("lock_kind", ["absent", "ordinary", "timing", "legacy"])
+def test_default_runs_pytest_without_modifying_host_lock(tmp_path, monkeypatch, capsys, lock_kind):
+    root = tmp_path / "locks"
+    owner_path = root / "physics/owner.json"
+    if lock_kind != "absent":
+        agent_lock.acquire(root, owner="claude", branch="claude/physics", purpose="cohort",
+                           pid=os.getpid(), expected_minutes=1, timing_sensitive=lock_kind == "timing")
+        if lock_kind == "legacy":
+            record = json.loads(owner_path.read_text())
+            record.pop("timing_sensitive")
+            owner_path.write_text(json.dumps(record))
+    before = owner_path.read_bytes() if owner_path.exists() else None
+    marker = tmp_path / "pytest-ran"
+    test_file = tmp_path / "test_offline.py"
+    test_file.write_text(f"from pathlib import Path\ndef test_runs():\n    Path({str(marker)!r}).touch()\n")
+    monkeypatch.setattr(runner, "ROOT", tmp_path)
+    monkeypatch.setattr(runner, "TEST_PATTERNS", ("test_offline.py",))
+    monkeypatch.setattr(runner, "check_fixtures", lambda _: True)
+    monkeypatch.setattr(runner, "local_lock_root", lambda: root)
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("default offline tests must not acquire or release the host lock")
+
+    monkeypatch.setattr(agent_lock, "acquire", forbidden)
+    monkeypatch.setattr(agent_lock, "release", forbidden)
+    assert runner.main([]) == 0
+    assert marker.exists()
+    assert ("Warning: timing-sensitive host lock" in capsys.readouterr().err) == (lock_kind == "timing")
+    assert (owner_path.read_bytes() if owner_path.exists() else None) == before
+    assert not (root / "released.jsonl").exists()
+    if lock_kind == "absent":
+        assert not root.exists()
+
+
+@pytest.mark.parametrize("argv,env_value,expected", [
+    ([], None, 7), ([], "0", 7), ([], "1", 3), (["--host-lock"], None, 3), (["--host-lock"], "0", 3),
+])
+def test_cli_and_environment_opt_in_restore_busy_refusal(tmp_path, monkeypatch, argv, env_value, expected):
+    root = tmp_path / "locks"
+    held = agent_lock.acquire(root, owner="claude", branch="claude/physics", purpose="cohort",
+                              pid=os.getpid(), expected_minutes=1)
+    if env_value is not None:
+        monkeypatch.setenv("UGRP_TEST_HOST_LOCK", env_value)
+    monkeypatch.setattr(runner, "check_fixtures", lambda _: True)
+    monkeypatch.setattr(runner, "local_lock_root", lambda: root)
+    calls = []
+
+    def execute(command, **kwargs):
+        calls.append(command)
+        return 7
+
+    monkeypatch.setattr(subprocess, "call", execute)
+    assert runner.main(argv) == expected
+    assert bool(calls) == (expected == 7)
+    assert agent_lock.status(root)["acquired_unix"] == held["acquired_unix"]
+
+
+@pytest.mark.parametrize("error", [FileNotFoundError("released during read"), ValueError("partial JSON")])
+def test_advisory_lock_read_failure_does_not_block_tests(tmp_path, monkeypatch, capsys, error):
+    monkeypatch.setattr(runner, "check_fixtures", lambda _: True)
+    monkeypatch.setattr(runner, "local_lock_root", lambda: tmp_path)
+
+    def read_status(_):
+        raise error
+
+    monkeypatch.setattr(agent_lock, "status", read_status)
+    monkeypatch.setattr(subprocess, "call", lambda *a, **k: 7)
+    assert runner.main([]) == 7
+    assert "Warning: cannot read host lock" in capsys.readouterr().err
+
+
+def test_listing_ignores_host_lock_opt_in(monkeypatch, capsys):
+    monkeypatch.setenv("UGRP_TEST_HOST_LOCK", "1")
+
+    def forbidden():
+        pytest.fail("listing must not inspect or acquire host locks")
+
+    monkeypatch.setattr(runner, "local_lock_root", forbidden)
+    assert runner.main(["--host-lock", "--shard-count", "8", "--list-shards"]) == 0
+    assert json.loads(capsys.readouterr().out)["coverage_verified"] is True
 
 
 def test_linked_worktrees_share_primary_lock_but_other_clones_do_not(tmp_path, monkeypatch):
@@ -59,9 +147,47 @@ def test_child_observes_live_lock_and_normal_exit_releases_it(tmp_path, exit_cod
             f"r=json.loads(p.read_text()); os.kill(r['pid'], 0); "
             f"Path({str(receipt)!r}).write_text(json.dumps(r)); raise SystemExit({exit_code})")
     assert runner.run_locked([sys.executable, "-c", code], dict(os.environ), root) == exit_code
-    assert json.loads(receipt.read_text())["pid"] == os.getpid()
+    record = json.loads(receipt.read_text())
+    assert record["pid"] == os.getpid()
+    assert record["timing_sensitive"] is True
     assert agent_lock.status(root) is None
     assert len((root / "released.jsonl").read_text().splitlines()) == 1
+
+
+@pytest.mark.parametrize("exit_code", [0, 7])
+@pytest.mark.parametrize("disappears", [True, False], ids=["delayed", "never-confirmed"])
+def test_group_cleanup_waits_for_confirmation(tmp_path, monkeypatch, exit_code, disappears):
+    """Deterministically reproduce delayed group teardown after leader wait()."""
+    from scripts import ugrp_session
+    root = tmp_path / "locks"
+    now, probes = [0.0], []
+    monkeypatch.setattr(ugrp_session, "stop_group", lambda *a, **k: None)
+
+    def alive(pgid):
+        assert agent_lock.status(root) is not None
+        probes.append(pgid)
+        return not disappears or len(probes) < 3
+
+    def sleep(delay):
+        assert agent_lock.status(root) is not None
+        now[0] += delay
+
+    monkeypatch.setattr(ugrp_session, "process_group_alive", alive)
+    monkeypatch.setattr(runner, "time", SimpleNamespace(monotonic=lambda: now[0], sleep=sleep))
+    command = [sys.executable, "-c", f"raise SystemExit({exit_code})"]
+    if disappears:
+        assert runner.run_locked(command, dict(os.environ), root) == exit_code
+        assert len(probes) == 3
+        assert agent_lock.status(root) is None
+        assert len((root / "released.jsonl").read_text().splitlines()) == 1
+    else:
+        with pytest.raises(RuntimeError, match="cleanup unconfirmed"):
+            runner.run_locked(command, dict(os.environ), root)
+        held = agent_lock.status(root)
+        assert held is not None
+        assert not (root / "released.jsonl").exists()
+        agent_lock.release(root, owner=held["owner"])
+    assert len(set(probes)) == 1
 
 
 def test_spawn_failure_releases_only_unused_lock(tmp_path):

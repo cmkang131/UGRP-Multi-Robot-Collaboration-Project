@@ -1,0 +1,303 @@
+{
+  "recorded_at_utc": "2026-09-30T12:45:50.473287+00:00",
+  "review_head": "bd95530a2d5a8b8467620809749273068a7ed55d",
+  "merged_main": "c12796676802ab54cad2f0635e3e96e911691c76",
+  "scope": "documentation and static regression tests; no local physics/render/model calls",
+  "test_runs": {
+    "red": [
+      {
+        "tests": "6",
+        "failures": "6",
+        "errors": "0",
+        "skipped": "0",
+        "time": "0.173"
+      }
+    ],
+    "green-guard-error": [
+      {
+        "tests": "1",
+        "failures": "0",
+        "errors": "1",
+        "skipped": "0",
+        "time": "0.776"
+      }
+    ],
+    "green-final": [
+      {
+        "tests": "251",
+        "failures": "22",
+        "errors": "0",
+        "skipped": "0",
+        "time": "39.789"
+      }
+    ],
+    "green-verified": [
+      {
+        "tests": "251",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "79.692"
+      }
+    ]
+  },
+  "final_tests_by_module": {
+    "tests.test_scenario_capabilities_docs": 6,
+    "tests.test_zone_pair_registered_source": 22,
+    "tests.test_zone_study_source_pinning": 33,
+    "tests.test_zone_scenario_feasibility": 31,
+    "tests.test_zone_final_env": 90,
+    "experiments.2026-09-30-scenario-capabilities.test_audit": 3,
+    "tests.test_ci_sharding": 66
+  },
+  "final_exit_code": 0,
+  "protected_file_count": 145,
+  "protected_files_sha256": {
+    "configs/simulation_workflows.json": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140",
+    "configs/zone_pair_authorization.json": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e",
+    "configs/zone_study_integration/pose_providers.json": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d",
+    "experiments/2026-09-16-act-recovery/preregistration-audit.json": "557c22cfbf65cd03aebdb5bdc484acce6ce53ac129fb3a03501dca3f3258d291",
+    "experiments/2026-09-25-zone-owncam-loop/prereg.json": "38873a0da0d8933790759647e3839b6f3670cdb7b645aa62573a59731b2d7e30",
+    "experiments/2026-09-25-zone-owncam-loop/prereg_amendments.json": "6978a675a136e384c94053288f4b68f7cc5df8af85275d26333519a499b7f9a8",
+    "experiments/2026-09-26-markerless-probe/prereg.json": "d5f8c3c54085d21a10737f7af3ea9d435f45d746e9332186eb4b06bed41514c5",
+    "experiments/2026-09-26-sim-speed/prereg_default_check_DRAFT.json": "501604af22eaf9a17cdc742cdb4b38caca902709d8bc2596002a605989506b2f",
+    "experiments/2026-09-26-vision-loc/prereg.json": "84edad4d700b33500de26e686e102dc40af77e509a8eb6ba01af9ebcbbfba822",
+    "experiments/2026-09-26-vision-loc/prereg_v3.json": "b1f86fdd2d0f2da71d6bd8f044e81bdfa3d206bf0907c92bf221cf4175771f82",
+    "experiments/2026-09-26-vision-loc/prereg_v4_DRAFT.json": "92b194c0972b70c66af942ffbf9fdad97a118a1ab5aaabcfa58af368fe7e1cef",
+    "experiments/2026-09-26-zone-env-v3/loop/prereg.json": "1b982d32bacaec220bc8838dc97d2537dc1f8874253fd75409d07827edd8f950",
+    "experiments/2026-09-26-zone-env-v3/loop/prereg_a1.json": "9b84d3f7ed9122ccd1aa941af9ad065bb9d0bc45058c94b17af5a27239830321",
+    "experiments/2026-09-26-zone-env-v3/m1/prereg.json": "e4a79708f371f92ecc28805c620ce1c3a5511105c8277368cf5c723a200bc7dd",
+    "experiments/2026-09-26-zone-env-v3/m1/prereg_a1.json": "3183f89ed727a84eb5956dda074e90748397a7d11522b26080fc60f4a89fcd5a",
+    "experiments/2026-09-26-zone-env-v3/prereg.json": "15310deae07c39e4df56407f0a6387942cd482b3ed76fbff503a1264fd97722d",
+    "experiments/2026-09-26-zone-env-v3/prereg_amendments.json": "6ea5f64e758bc974c7c7d7095b925874110a129c5084f71af5c7f3e09c4a40e1",
+    "experiments/2026-09-26-zone-eval-topcam/prereg.json": "1d7113a7fca218961bb6213e288f1b2acfd3c8a9c433dc14416cf2d0cc96ba0a",
+    "experiments/2026-09-26-zone-eval-topcam/prereg_amendments.json": "2645974d99a875ab2c03cdea14bcef43762558bebaae5b6efc3cf6195c9d53bf",
+    "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+    "experiments/2026-09-26-zone-m1-owncam/prereg.json": "d1994c785c2c42b717b7e1e5fee007db7a4d431a7f3e1a8ba4fa30a33a8a44c8",
+    "experiments/2026-09-26-zone-m1-owncam/prereg_amendments.json": "585a607d695e71430721f1f7e9f466317d3d308f99d9d0a2bac2f10b3b6f1767",
+    "experiments/2026-09-26-zone-own-executor/prereg.json": "82dccdcbf1663465dae9591db491d106eac817c4f8012caaeab07cbaaea02a67",
+    "experiments/2026-09-26-zone-own-executor/prereg_v2.json": "03f7df961f35762c9f890820a7307203b02f95ff91c6ddd8ceb9aad9fd7fbc48",
+    "experiments/2026-09-26-zone-own-executor/prereg_v3.json": "290e9ce0e041ee659fc2f6570a80725f3e94d853a653faf03bf35b08e3e6ac6b",
+    "experiments/2026-09-26-zone-owncam-loop-v2/prereg.json": "9d59911a1a85e532cabcbb28fc2ae5997e90ad2d20b425eaa794190bcdc059f9",
+    "experiments/2026-09-26-zone-owncam-memory/prereg.json": "b2dc241a150a64527d6e353615258af8a2b43825814fa97eb08ffc6f15f63770",
+    "experiments/2026-09-26-zone-owncam-memory/prereg_amendments.json": "31ec9d638b7357084dc11938205a71847288a620e5236c3db49a1444ebb3741c",
+    "experiments/2026-09-26-zone-study-integration/prereg.json": "6e2585c0a3d539623d848e631e7228e22ac007bbff98d1ad4665a53eab24b3d0",
+    "experiments/2026-09-26-zone-study-integration/prereg_v2.json": "a3ef97cb4989807f495fe4ba7598ebe0011328fbdec9084ca62a34fd82cb65aa",
+    "experiments/2026-09-27-zone-owncam-memory-v3/prereg_DRAFT.json": "9961d889be4ca41f167062a32782ab628bd287b4ffd9c26322959526fb5b344d",
+    "experiments/2026-09-27-zone-owncam-memory-v3/review-fixes/prereg_review_DRAFT.json": "fbbd8659212fa670fa5a9db3f76e99557d5510e307e870f918bb7bfe96385a0c",
+    "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json": "85334a68bae0d35c197c612cd610c84307c0eba268a34247e71f4e233a0fe0f3",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json": "896091d17022d569dfb34123587712395bf9870d065ce2b438d38acedee9108b",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v3.json": "9470d95261c464cd37705cdebde87d6cdd8f5166bbd02cb10236489611853b6e",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json": "34ab87dc51467226221ca8c991e960bc0715a9bad9c67764b98b99049e9683c4",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v4.json": "ca8e2d6b7cf1fda6056e8939a568bc11affc9c9b413b07f97e2d134af98d7fb8",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5.json": "bcf02558167a9140a97b961bdc612b45679b3ff1e91fe496e9863ac8e9f3568e",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5b.json": "c1f35505ed4983537c89b3c0b901c1d9920aadf2229ae44561e5d5074d9f7977",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5c.json": "be6a7a0f4779e713e3c78921176688c765190dfafd4d49f339bd6ee9ca4568ec",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5d.json": "93ff696a2b73100c9307824bed12c6a4a1c65665f4573dbf1783f522cd589cd0",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5e.json": "babe4cac26a4aa4e3312f0e8e68e25df76e6466786a939699ab7ae1d6bd3d934",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5f.json": "a9764dded0588fb871200354ff590b976c7bdd2c4524c7f1d4482c5c1f6870df",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5g.json": "fa216827dcc4a6fc39f539621518f8207beaba47eaea7ef09796f96d542111ca",
+    "experiments/2026-09-27-zone-pair-dev/prereg_v5h.json": "7b9c13b0ed829b7cb9b22cf58b47fd1862b247fe7bc8d0a4a4704686ca6994e9",
+    "experiments/2026-09-28-main-study-prereg-draft/prereg_main_DRAFT.json": "f3864cdd68eff75fa350ab8441490f6569d2cc8c41556cd3ef992c05e2bdae29",
+    "experiments/2026-09-28-zone-pair-v5f/prepare-before-canonical-hardening/dev11/prereg.json": "2004c6128056e457403595093a46d435b9282f24d8c71b40256458a5f700663d",
+    "experiments/2026-09-28-zone-pair-v5f/prepare-before-canonical-hardening/dev12/prereg.json": "2004c6128056e457403595093a46d435b9282f24d8c71b40256458a5f700663d",
+    "experiments/2026-09-28-zone-pair-v5f/prepare-before-index-seal-check/dev11/prereg.json": "7b835a51b3be17e3c0db62421bdfe78ab969be483915bc6ea6ed411e3abae899",
+    "experiments/2026-09-28-zone-pair-v5f/prepare-before-index-seal-check/dev12/prereg.json": "7b835a51b3be17e3c0db62421bdfe78ab969be483915bc6ea6ed411e3abae899",
+    "experiments/2026-09-28-zone-pair-v5f/prepare/dev11/prereg.json": "a9764dded0588fb871200354ff590b976c7bdd2c4524c7f1d4482c5c1f6870df",
+    "experiments/2026-09-28-zone-pair-v5f/prepare/dev12/prereg.json": "a9764dded0588fb871200354ff590b976c7bdd2c4524c7f1d4482c5c1f6870df",
+    "experiments/2026-09-28-zone-pair-v6/prereg_v6.json": "649a00e65d1f53bf38014ac4a1f5e93094dad3ee11acccf3d1343cefa1298b42",
+    "experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json": "3fecc73b7b44c6dab1e752d276fe8b2442be7119016ff2b5783599579ffc9605",
+    "experiments/2026-09-29-pair-v6c/prereg_v6c.json": "64acc04a8c08af61b0fa488440c70a8bec4338881c7a32b4895d4b07970ca95e",
+    "experiments/2026-09-29-pair-v6d-align/prereg_v6d.json": "cbdb4b2503d928e141131b893cb56060fd6fe54292ef1667da9f57bdeea39972",
+    "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+    "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b",
+    "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b",
+    "experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json": "64c2680781f1b989312c3ac091c6e0458579ced7ed65d9e9730aadbc416f4bfd",
+    "experiments/2026-09-30-scenario-capabilities/data/artifact_checksums.json": "01daaac0eb0a9308f35ab5853ddd946b72ed80efdda482aadc574fa51a1752de",
+    "experiments/2026-09-30-scenario-capabilities/data/ci_cancellation.json": "26fd24716cb180e75a4aaeb915478bc90df1c7ca0929f4ef6fd1fe72be1a32c7",
+    "experiments/2026-09-30-scenario-capabilities/data/feasibility.json": "7760ca6bb4adae9051808bad42669740aa71fe2fa0e328ff509cec3cb7417f0e",
+    "experiments/2026-09-30-scenario-capabilities/data/inventory.json": "77e8db1d73d222cf0bec6495dfc8e19ebd0e8c4e8ce51e4c124c2a46d783792a",
+    "experiments/2026-09-30-scenario-capabilities/data/manifest.json": "7f1c2b2f36a06a82959b5d72fb73241816cbb8623dc3bfec6e91216f60ddd10a",
+    "experiments/2026-09-30-scenario-capabilities/data/validation.log": "49e5ac087f5587dd01d1ea0e97e4ae79db5954ba1722e444f0073b77258ad178",
+    "harness/m1_owncam_delivery.py": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+    "harness/m1_owncam_memory_v3.py": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2",
+    "harness/m2_provider_adapter.py": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624",
+    "harness/own_beam_edge.py": "f72118c5c1faeb91094347469dd15fa6059dd99bd6acede4760eec96411f3e8d",
+    "harness/owncam_align_motion_v6d.py": "4ac391e60c0d3930576c9daacbd066495fad8f9bb5863dc3ce8eaab6cff8d879",
+    "harness/owncam_bootstrap_v6b.py": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90",
+    "harness/owncam_carry_v6e.py": "ec3b42b3502e21491585360bc588663f89003f8e6ed09ab829ae617d867737ec",
+    "harness/owncam_delivery_shared.py": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba",
+    "harness/owncam_drive.py": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+    "harness/owncam_drive_mem_v3.py": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425",
+    "harness/owncam_drive_shared.py": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792",
+    "harness/owncam_localizer.py": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+    "harness/owncam_memory.py": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
+    "harness/owncam_memory_delivery.py": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50",
+    "harness/owncam_memory_inputs.py": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83",
+    "harness/owncam_memory_time.py": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0",
+    "harness/owncam_observability_v6.py": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
+    "harness/owncam_pair_beam.py": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+    "harness/owncam_pair_beam_v2.py": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+    "harness/owncam_pair_beam_v6d.py": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12",
+    "harness/owncam_pose_guard_provider.py": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1",
+    "harness/owncam_pose_guard_v3.py": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6",
+    "harness/owncam_pose_source.py": "b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e",
+    "harness/owncam_recovery_v6.py": "3909f45ecc856ca2f666f9e3c3ee2327ad813c15449f0b0b0f04173492c92f67",
+    "harness/owncam_recovery_v6c.py": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd",
+    "harness/owncam_time.py": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+    "harness/owncam_view.py": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+    "harness/pair_owncam_approach.py": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+    "harness/pose_provider.py": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2",
+    "harness/rgb_execution_bundle.py": "93c0d91880b23b1f00d7b0bd3a7491e79ef785ea4dbf2dc561cb3ee89e2b996a",
+    "harness/vision_motion_init.py": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316",
+    "harness/vision_pose_source.py": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+    "harness/visual_arm.py": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+    "harness/zone_own_contract.py": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
+    "harness/zone_own_deliver.py": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab",
+    "harness/zone_own_driver.py": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d",
+    "harness/zone_own_executor.py": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+    "harness/zone_own_guards.py": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+    "harness/zone_own_perception.py": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
+    "harness/zone_own_status.py": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
+    "harness/zone_own_sweep.py": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
+    "harness/zone_own_team_host.py": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64",
+    "harness/zone_pair_align.py": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e",
+    "harness/zone_pair_beam_track.py": "7b0870a80a200ee6eaa99d6ca86653094d420dd527bf7b8fcf385b2ff030ce9e",
+    "harness/zone_pair_executor.py": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+    "harness/zone_pair_geometry.py": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+    "harness/zone_pair_global.py": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
+    "harness/zone_pair_grasp.py": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565",
+    "harness/zone_pair_grasp_entry_v6c.py": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e",
+    "harness/zone_pair_guards.py": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde",
+    "harness/zone_pair_obstruction.py": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
+    "harness/zone_pair_relative.py": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af",
+    "harness/zone_pair_status.py": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+    "harness/zone_pair_v6_policy.py": "dcf1d3804f3ccf02622fc8410d00478b171975a0e1f0b299fdd46d2e323ee9bd",
+    "harness/zone_pair_vision.py": "cce72504edf01d119aafbefc8cb4ea1aa5a407196f9809f6cb5b8ec0bfecc9fc",
+    "harness/zone_study_integration.py": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06",
+    "harness/zone_study_pose_delay.py": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894",
+    "maps/zones/zone_wide_door_geometry_v2.json": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+    "scripts/evaluate_zone_pair_dev.py": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+    "scripts/run_m1_owncam_memory_v3.py": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8",
+    "scripts/run_m2_pair.py": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+    "scripts/run_zone_pair_dev.py": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec",
+    "scripts/run_zone_study_integration.py": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+    "scripts/study_owncam_pair_beam.py": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00",
+    "scripts/zone_pair_authorization.py": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649",
+    "scripts/zone_pair_dev_contract.py": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e",
+    "scripts/zone_pair_dev_runtime.py": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877",
+    "scripts/zone_pair_grasp_contract.py": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85",
+    "scripts/zone_pair_v6_contract.py": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b",
+    "sim/zone_arena.py": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+    "sim/zone_dock_scene.py": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+    "sim/zone_geometry_scene.py": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+    "sim/zone_landmarks.py": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1",
+    "sim/zone_masterpi_v3_scene.py": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca",
+    "sim/zone_model_conventions.py": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff",
+    "sim/zone_own_scene_provider.py": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+    "sim/zone_scene.py": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714",
+    "sim/zone_start_dock.py": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+    "sim/zone_tagged_cargo_scene.py": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7"
+  },
+  "restored_sparse_fixtures": {
+    "experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz": "72e2ccec45cb1bff6ad74fb5ce359cac847616e9c02059c839aec725f1bb31ad",
+    "experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz": "0406d1338503f57f3116068100ca8f1490965edf8882aa89ffe19cb912adf6d0",
+    "experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz": "a5ae31a1d8cb1f2af255bd2f38521a877e83d99a5e1fc25e7a75a8246a9d3201"
+  },
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/p09-review-fixes-20260930",
+  "artifacts": {
+    "ci-shards.json": {
+      "sha256": "9bb030065583d5cf2faabc291fed21b1881930620679c67a6f7654bcc9014f17",
+      "bytes": 14778
+    },
+    "fixture-preflight.log": {
+      "sha256": "588f529af41c33591232794d31d3820b17e58faa201d9a5cc93a4d521128a4ea",
+      "bytes": 40
+    },
+    "green-completed.json": {
+      "sha256": "ecd7dcc614a15d59c7f0bd6039591ebcd55a39063a3f5b5541afaf90412e44cb",
+      "bytes": 99
+    },
+    "green-final.log": {
+      "sha256": "7228e1033d1f7856de2d68852fe7f589d4f3c802a03658af040746883c0201aa",
+      "bytes": 114155
+    },
+    "green-final.xml": {
+      "sha256": "2a9f76754ae7265b16b0a3c330684005b0833a399dce09590719e2bf426fd516",
+      "bytes": 98406
+    },
+    "green-guard-error.xml": {
+      "sha256": "c0f472b6987a2559e5d738e4463ec873318e71a6f70d2ffafce3c4e60a0b4573",
+      "bytes": 1784
+    },
+    "green-retry.log": {
+      "sha256": "02c516058e3b2ab2eb09df7a2a29dcd4a432baf00716b117e266f9bfc9ab46e8",
+      "bytes": 9279
+    },
+    "green-verified-completed.json": {
+      "sha256": "1c930a7454ab46965d85b14f54c7824250e3dac392acc73bb10d81f21dcc633e",
+      "bytes": 99
+    },
+    "green-verified.log": {
+      "sha256": "adfc4792a730b391caba1f3fbac396b2fd08069e22daa631ef99f5f2ee0a46c3",
+      "bytes": 40655
+    },
+    "green-verified.xml": {
+      "sha256": "bdfd5e3163b81dc9eca73ea773b5ca69675cbcdd73a3f4a21dca04cbc01a7811",
+      "bytes": 34178
+    },
+    "green.log": {
+      "sha256": "06bcfe380b9ac6989a04895d8431aaefe00e29a7c128bd448e88cd1a24a69b22",
+      "bytes": 23814
+    },
+    "green.xml": {
+      "sha256": "c0f472b6987a2559e5d738e4463ec873318e71a6f70d2ffafce3c4e60a0b4573",
+      "bytes": 1784
+    },
+    "pr-body-before.json": {
+      "sha256": "56793f8483b3c0c87d69fa5fd4648fa9355fefd922ad873de0c953e75500a448",
+      "bytes": 4128
+    },
+    "preservation-before.json": {
+      "sha256": "97fa0ef791cf754fc5e8d9ca37c423bfe52be7716010446fd980f5bbf9270a47",
+      "bytes": 17176
+    },
+    "prior-multi-object-canonical.log": {
+      "sha256": "700d8d7fb8c756ecc3aa3ff46697c64dc31ed2c54a461b53d0622b049cf01eda",
+      "bytes": 215
+    },
+    "prior-multi-object.log": {
+      "sha256": "f3d3ab60ae3ce1c1ffb231d98f458b7023b4d7eab7e98f18c760fb4184194420",
+      "bytes": 215
+    },
+    "prior-shard-3-canonical.log": {
+      "sha256": "9ec8146cc734be405496b4998efea2a5fafa6849351f948f2e0ce2bae9b09d9f",
+      "bytes": 215
+    },
+    "prior-shard-3.log": {
+      "sha256": "366447569f7da8cc89e239c99f0ec3e5eec23e13c8d01890f2154678f8e92692",
+      "bytes": 215
+    },
+    "red-source-sha256.json": {
+      "sha256": "9f3d128a84403cd5abe02148407cab48efc06ecd0c31529fc8535d24fc388ecf",
+      "bytes": 790
+    },
+    "red.log": {
+      "sha256": "42ce14f6328bd0bf23d2bc30945cc413107ad5c95b3296ad9f6fa0e88bcf5119",
+      "bytes": 19391
+    },
+    "red.xml": {
+      "sha256": "edd6eddac72245c53364ab22c66ad715b1d6dd4c4d1454606e941a9e2df33990",
+      "bytes": 11573
+    },
+    "restored-fixtures.json": {
+      "sha256": "bfef9e514a72b76a2ff06bacda4e16c023b5c3119e7469b3230158ce60d5c23b",
+      "bytes": 461
+    },
+    "test_driver.py": {
+      "sha256": "8cbd41390468294072e4fc348241b30b204cdadfa53358dc94b583eb3a01c61b",
+      "bytes": 3993
+    }
+  },
+  "github_ci": "Latest correction commit CI must be checked separately after push; old PR run 36711853986 failed, old push run 36711847777 succeeded. Neither cancelled."
+}

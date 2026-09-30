@@ -143,6 +143,12 @@ class ModelCallTransport:
             raise self._failure(call, request, client, exc) from exc
         try:
             reply = self.pipeline.finish_call(call, prepared, raw, provider_usage=client.last_usage)
+            if getattr(self.send_ledger, 'requires_provider_usage', False):
+                from harness.zone_main_budget import known_total
+                # Main-study DB and result records use the same provider
+                # counters, including CallReply's read-only Mapping. Local
+                # billed tokens/SIM costs and fixture semantics stay intact.
+                reply = replace(reply, usage_known=known_total(reply.provider_usage) is not None)
             return replace(reply, completion=completion_record(client.last_completion))
         except TransportFailure as exc:
             exc.completion = freeze_completion(client.last_completion)
@@ -153,6 +159,8 @@ class ModelCallTransport:
     def _failure(self, call, request, client, exc):
         from harness.zone_study_prompts_ko import count_tokens
         from harness.zone_pilot_budget import BudgetExceeded, usage_total
+        if getattr(self.send_ledger, 'requires_provider_usage', False):
+            from harness.zone_main_budget import known_total as usage_total
         if isinstance(exc, BudgetExceeded):
             self.budget_exhausted = True
         kind = getattr(exc, 'error_kind', 'transport_error')

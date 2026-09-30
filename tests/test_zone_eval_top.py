@@ -14,6 +14,7 @@ import importlib.util
 import math
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from sim import zone_eval_top as zet
 from sim.zone_eval_top import EvalTopError
@@ -181,9 +182,9 @@ class RobotInputBoundaryTests(unittest.TestCase):
                 text = path.read_text(errors='ignore')
                 if any(n in text for n in needles):
                     hits.append(str(path.relative_to(ROOT)))
-        # The study integration runner orchestrates the world and the evaluator; it may name the profiles only
+        # Both study hosts orchestrate the world and the evaluator; they may name the profiles only
         # to apply the evaluation camera and to write eval_only/ records (checked below).
-        orchestrators = {'scripts/run_zone_study_integration.py'}
+        orchestrators = {'scripts/run_zone_study_integration.py', 'scripts/zone_study_provider_p03.py'}
         self.assertEqual(sorted(set(hits) - orchestrators), [])
         for rel in set(hits) & orchestrators:
             self.assert_eval_only_uses(ROOT/rel)
@@ -200,6 +201,28 @@ class RobotInputBoundaryTests(unittest.TestCase):
             ok = (code.startswith('from sim import zone_eval_top') or in_eval_config
                   or code.startswith(('self.eval_static = zone_eval_top.', "self.eval_only['top_camera'] = zone_eval_top.")))
             self.assertTrue(ok, f'{path.name}: non-evaluation use of the TOP profiles: {code}')
+
+    def test_each_host_rejects_evaluation_camera_use_in_control(self):
+        """Exercise the repository scan too: an unchecked host must fail this regression."""
+        read_text = Path.read_text
+        for rel in ('scripts/run_zone_study_integration.py', 'scripts/zone_study_provider_p03.py'):
+            target = ROOT / rel
+            original = target.read_text()
+            for before, after in (
+                ('self.eval_static = zone_eval_top.', 'self.static = zone_eval_top.'),
+                ("self.eval_only['top_camera'] = zone_eval_top.", 'self.control_camera = zone_eval_top.'),
+            ):
+                with self.subTest(host=rel, mutation=after):
+                    self.assertEqual(original.count(before), 1)
+                    mutated = original.replace(before, after)
+
+                    def source(path, *args, **kwargs):
+                        return mutated if path == target else read_text(path, *args, **kwargs)
+
+                    # Only the in-memory read changes; frozen host bytes stay intact.
+                    with patch.object(Path, 'read_text', source):
+                        with self.assertRaisesRegex(AssertionError, 'non-evaluation use of the TOP profiles'):
+                            self.test_no_robot_side_module_references_the_profiles()
 
     def test_module_itself_reads_no_robot_camera(self):
         text = (ROOT/'sim'/'zone_eval_top.py').read_text()

@@ -1,13 +1,16 @@
-"""P03-only numeric/fake-worker regressions under the existing shared lock."""
+"""P03 numeric/fake-worker and evaluation-boundary regressions; no host lock (#328)."""
 from pathlib import Path
 import os
+import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
-from scripts.run_ci_tests import local_lock_root, run_locked
 
 TESTS = (
+    'tests/test_zone_eval_top.py::ProfileTests',
+    'tests/test_zone_eval_top.py::BoundaryTests',
+    'tests/test_zone_eval_top.py::RobotInputBoundaryTests',
     'tests/test_vision_loc_provider_lifecycle.py',
     'tests/test_vision_loc_p03_source_pinning.py',
     'tests/test_zone_pair_registered_source.py',
@@ -27,7 +30,7 @@ def main():
     env['PYTHONPATH'] = str(ROOT) + os.pathsep + str(Path(__file__).parent)
     command = [sys.executable, '-m', 'pytest', '-q', '-p', 'offline_guard', *TESTS,
                '-k', 'not geometry_scene_and_public_projection_bypass_marker_transforms', *sys.argv[1:]]
-    return run_locked(command, env, local_lock_root())
+    return subprocess.call(command, env=env, cwd=ROOT)
 
 
 if __name__ == '__main__':
