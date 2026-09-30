@@ -1,0 +1,38 @@
+.FF                                                                      [100%]
+=================================== FAILURES ===================================
+___________________ test_wait_timeout_boundary[0.2-ABORTED] ____________________
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+offset = 0.2, expected = 'ABORTED'
+
+    @pytest.mark.parametrize('offset, expected', [(.199, 'WAIT_LANE'), (.2, 'ABORTED'), (.201, 'ABORTED')])
+    def test_wait_timeout_boundary(static, offset, expected):
+        t = Trace(plan(static), config=replace(ControlConfig(), wait_timeout_s=.2))
+        t.tick(travel='blocked')
+>       assert t.tick(now=offset, travel='blocked').state == expected
+E       AssertionError: assert 'WAIT_LANE' == 'ABORTED'
+E         
+E         - ABORTED
+E         + WAIT_LANE
+
+tests/test_zone_own_executor_corridor_control.py:146: AssertionError
+__________________ test_wait_timeout_boundary[0.201-ABORTED] ___________________
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+offset = 0.201, expected = 'ABORTED'
+
+    @pytest.mark.parametrize('offset, expected', [(.199, 'WAIT_LANE'), (.2, 'ABORTED'), (.201, 'ABORTED')])
+    def test_wait_timeout_boundary(static, offset, expected):
+        t = Trace(plan(static), config=replace(ControlConfig(), wait_timeout_s=.2))
+        t.tick(travel='blocked')
+>       assert t.tick(now=offset, travel='blocked').state == expected
+E       AssertionError: assert 'WAIT_LANE' == 'ABORTED'
+E         
+E         - ABORTED
+E         + WAIT_LANE
+
+tests/test_zone_own_executor_corridor_control.py:146: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_corridor_control.py::test_wait_timeout_boundary[0.2-ABORTED]
+FAILED tests/test_zone_own_executor_corridor_control.py::test_wait_timeout_boundary[0.201-ABORTED]
+2 failed, 1 passed in 0.42s

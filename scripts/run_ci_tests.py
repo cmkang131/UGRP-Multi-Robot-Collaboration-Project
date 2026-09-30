@@ -107,11 +107,13 @@ TEST_PATTERNS = (
     "tests/test_zone_own_perception_v3.py", "tests/test_zone_own_perception_v3_1.py",
     "tests/test_zone_own_executor*.py",
     "tests/test_review_325b.py",  # T03: mandatory independent loss/mode counterexamples
-    "tests/test_review_e2e_batch_i.py",  # T09b: delayed own capture must stop before driving
+    "tests/test_review_e2e_batch_i.py",  # T04/T09b: issued arm sweep and delayed own capture counterexamples
     "tests/test_zone_pair_executor.py", "tests/test_zone_pair_status.py", "tests/test_zone_pair_review.py",
     "tests/test_zone_pair_role_exchange.py",  # T07: six explicit role assignments; fake ports only
     "tests/test_stall_observation_contract.py",  # P08: synthetic observation/stop contract only
     "tests/test_zone_pair_review2.py",
+    "tests/test_zone_pair_rendezvous.py",
+    "tests/test_zone_pair_rendezvous_t07.py",
     "tests/test_zone_pair_review3.py",
     "tests/test_zone_pair_review4.py",
     "tests/test_zone_pair_review5.py",
@@ -124,6 +126,7 @@ TEST_PATTERNS = (
     "tests/test_zone_pair_admission.py",
     "tests/test_pair_chain_probe.py",
     "tests/test_pair_passage_plan.py",  # 2026-09-29: opt-in corridor/door route planning for the pair carry (static geometry)
+    "tests/test_beam_initial_pose_plan.py",  # T08a: static north/south setup sheet and role geometry, no execution
     # 2026-09-29: v6 is audited as history; these guard its receipt and the current v6-family path.
     "tests/test_zone_pair_v6.py", "tests/test_zone_pair_registered_source.py",
     "tests/test_execution_dependency_contract.py", "tests/test_seal_v2_review_301.py",

@@ -1,0 +1,13 @@
+======================================================================
+FAIL: test_new_commits_preserve_running_and_pending_ci (tests.test_ci_fast_path.CiFastPathTests.test_new_commits_preserve_running_and_pending_ci)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/changmin/projects/ugrp-wt/cap-t09a-two-door/tests/test_ci_fast_path.py", line 25, in test_new_commits_preserve_running_and_pending_ci
+    self.assertIn("  group: tests-${{ github.workflow }}-${{ github.run_id }}\n", concurrency)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: '  group: tests-${{ github.workflow }}-${{ github.run_id }}\n' not found in "  group: tests-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}\n  cancel-in-progress: ${{ github.event_name == 'pull_request' }}\n"
+
+----------------------------------------------------------------------
+Ran 11 tests in 9.203s
+
+FAILED (failures=1)

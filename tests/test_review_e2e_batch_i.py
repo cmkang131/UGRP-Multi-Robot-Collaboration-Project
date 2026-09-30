@@ -1,8 +1,9 @@
-"""I-330-1 regression from independent review e24cb9ce (PR #330 only).
+"""Batch I counterexamples promoted from strict xfail to live regressions.
 
-Run against the working checkout, including uncommitted fixes, with no archive,
-physics or network. The original case body/assertion is retained; xfail is
-removed so normal CI must pass. PR #335 belongs to its separate change.
+Source: codex/review-e2e-batch-i, e24cb9ce3c10236efe03a1b66c9ec7671ece71b9.
+Retain main's I-335-1 static sweep and PR #330's I-330-1 delayed capture case.
+Run against the current tree, including uncommitted fixes, without old-source
+extraction or physics. Both original case bodies and assertions are unchanged.
 """
 from __future__ import annotations
 
@@ -33,6 +34,39 @@ def probe(tree, code):
     result = subprocess.run([sys.executable, "-c", OFFLINE + code], cwd=tree, env=env,
                             text=True, capture_output=True, timeout=60, check=True)
     return json.loads(result.stdout)
+
+
+def test_t04_issued_arm_increment_passes_the_same_static_sweep():
+    import copy
+    import numpy as np
+    from tests.test_zone_own_executor_can import MAP, FakeOwnPose, observation, pose, decide
+    from harness.zone_can_skill import CanSkill, VIEWS
+    from harness.zone_own_guards import OwnPose
+    initial = {1:2000, 3:1164, 4:2321, 5:2080, 6:1174}
+    static = copy.deepcopy(MAP)
+    # Authored static geometry, not a simulator state or a physical collision claim.
+    static['obstacles'].append(dict(id='review_static_post',
+        center_m=[.27446602791450786, -.11115416383666454],
+        half_extents_m=[.0001, .0001], height_m=.025))
+    skill = CanSkill('r1', static, destination_zone='C', pose_source=FakeOwnPose())
+    skill.on_command(dict(robot_id='r1', t=0., kind='initial_servo_command', pulses=initial))
+    own = OwnPose(0., 0., 0., .002, .002)
+    out = decide(skill, 1., observation(np.full((480,640,3),80,np.uint8)), pose(1.,xy=(0.,0.)))
+    issued = dict(initial)
+    for cmd in out['commands']:
+        if cmd['kind'] == 'arm':
+            issued[cmd['servo_id']] = cmd['pulse']
+    def clearance(target):
+        return min(skill.guard.arm_clearance(p, own, loaded=False)[0]
+                   for p in skill.guard.transition_samples(initial, target))
+    result = dict(phase=out['phase'], issued=issued,
+        start_clearance_m=skill.guard.arm_clearance(initial,own,loaded=False)[0],
+        chassis_clearance_m=skill.guard.chassis_clearance(own)[0],
+        checked_clearance_m=clearance(VIEWS[0]), issued_clearance_m=clearance(issued))
+    # Fixture validity is separate from the expected failing safety assertion.
+    if min(result["start_clearance_m"], result["chassis_clearance_m"]) <= 0:
+        raise RuntimeError(f"counterexample no longer starts clear: {result}")
+    assert result["issued_clearance_m"] >= 0, result
 
 
 def test_t09b_delayed_own_capture_cannot_issue_a_new_drive():
