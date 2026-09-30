@@ -32,3 +32,28 @@
 - [독립 검토 원문](https://github.com/kcm0127-dotcom/ugrp/blob/codex/review-293-294/experiments/2026-09-30-pair-v6h-carry/REVIEW_294_293_astra.md), 기준 #294 `76e0f9ce`.
 - [기존 공개 집계](analysis/VALIDATION.md) 및 [최초 대조 입력](analysis/validation_20260930/published_count_checks.json).
 - [입력 계약](analysis/SEALED_INPUT.md), [초안](PREREG_DRAFT.md), [새 검증 기록](analysis/review_validation_20260930/), [모의 추출 구간](analysis/sizing_review_20260930/COHORT_SIZING.md).
+
+## #299 독립 검토 응답 (2026-09-30)
+
+대상 `c86d9bac62036904ecc641db5e59e79edb58dec2`, 리뷰와 테스트 출처 `de16cbc96becf19755f09197b9ef139609f00fe9`의 [REVIEW_299_astra.md](https://github.com/kcm0127-dotcom/ugrp/blob/de16cbc96becf19755f09197b9ef139609f00fe9/experiments/2026-09-30-pair-v6h-carry/REVIEW_299_astra.md). 위 #294 응답과 그 검증 기록은 당시 기록으로 보존한다.
+
+| 검토 항목 | 수정 및 검증 결과 |
+|---|---|
+| **R1: trace 사이 끝점 16°가 일반 FAIL** | trace·모든 leg 끝점·저장 GT(teacher, leg 시작/끝/done, stage stop/exit, 종료)·저장 최대값을 합쳐 안전 검사. L0/L1 각각 16°이면 **FAIL_HARD_LIMIT**, 하드 위반 1, 전체 **FAIL_A_B_SAFETY**. 일반 종료 실패도 안전 거부를 낮추지 않음. 정확히 15°/5 mm 경계 유지 |
+| **R2: HOST_ERROR 재시도가 원본 위반 삭제** | `attempts`와 선택 72건을 분리. 원본·재시도·941/943 모든 시도의 남은 관측과 result/trace 해시를 검사. 원 시도 16°/6 mm는 성공한 재시도 뒤에도 전체 **FAIL_A_B_SAFETY**. 성공률은 대체 한 건만 계산하고 원 HOST_ERROR 자체는 미분류로 유지 |
+| **HOST_ERROR 사전등록 해석** | PREREG §4/§5.1(10–11)/§8과 REGISTRATION_PLAN 확인. 기존 문서는 안전 면제를 정하지 않았으며 전체 안전 거부를 유지하는 보수적 해석과 이번 사용자 지시를 문서화. 없는 파일은 명시, 손상된 파일은 조용히 0으로 간주하지 않음. 부분 trace에 남은 위반이 있으면 거부, 알려진 위반 없이 저장 자료가 손상됐으면 NOT_EVALUABLE. protocol에도 안전 범위/시도 규칙 고정 |
+| **정상 동작·분모/경계** | 리뷰 파일 복사 후 두 xfail 장식자 제거. 원 33개 시험의 fixture/assertion 유지, offline CI에 등록. 추가 시험은 GT 위치별 관측, 부분/손상 HOST_ERROR, 원본 해시·변경 감지, 시도/배치 중복 계산, B 미평가보다 안전 거부 우선 확인 |
+| **공개 308건** | 기대 집계나 원 raw를 바꾸지 않고 새 경로에서 재분류. cA/cB 24/24 및 16코호트·주 시드·L0/L1·17개 cases.jsonl 해시, 부분 tX1 12/14 + HOST_ERROR 2건을 별도 대조 |
+| **구 코드 17개 실패의 해석** | 같은 17개 node ID를 수정 코드에서 명시 실행. 17개는 assertion/입력 검증 회귀이며 서로 다른 false PASS 17개가 아님. 181°/NaN leg error는 구 코드도 일반 FAIL, 새 계약은 EvidenceError. null 정상 assertion 이후 실제 non-null 실패 거부를 검증한 것. 이전 중단 patch의 cA 0/24 문제와 구별 |
+
+검증 기록은 [analysis/review_299_fix_validation/](analysis/review_299_fix_validation/)에 추가한다. 원본·배치·기존 결과/출력은 보존한다. 새 검증은 합성 JSON과 저장 raw의 오프라인 재분류이며 물리/SIM step/렌더·모델 호출·실제 봉인·등록 실행은 0회다. 기존 TensorBoard snapshot은 그대로 보존하고, 새 실험이 없으므로 재변환/서버 시작/UI 재검증을 하지 않는다. 수정 코드의 독립 재검토·실제 러너 입력 계약/인수·확증 결과는 이 회귀 통과와 별개다.
+
+### #299 최종 검증 결과
+
+- 관련 6개 파일 **260 passed**, xfail/skip 0. 기존 201개 + 복사한 독립 33개 + 추가 26개다. 기존 구 코드 회귀 17개 node ID도 따로 **17 passed**(260개에 포함되는 부분집합이며 추가 17건으로 합산하지 않음).
+- 검토 대상 `c86d9bac`을 메모리에 불러 원 R1/R2만 실행하면 **6 failed, 53 deselected**. 모두 실제 assertion 실패다. 수정 코드의 같은 6개 입력은 **FAIL_A_B_SAFETY**: R1 L0/L1은 59/60·하드 1, R2 기울기/관통×941/943은 선택 72건/실제 73시도·60/60·하드 1이다. 원본 HOST_ERROR의 result/trace 해시도 출력에 있다.
+- 공개 16개 완료 코호트 **308건**의 모든 집계 일치. **cA/cB 각 24/24**, 부분 **tX1 12/14 + HOST_ERROR 2건** 유지. 17개 cases.jsonl 해시와 주 시드·배치·L0/L1·하드 위반 집계도 모두 일치한다.
+- 첫 실행의 **259 passed, 1 failed**도 보존했다. 새로 추가한 끝점 15° 테스트가 일반 leg 한계 10°까지 통과한다고 잘못 기대한 것이며, 이를 일반 FAIL/하드 위반 없음으로 바로잡았다. 리뷰어의 원본 33개 assertion은 그대로다. 마지막 실행 뒤 분류기·두 시험 파일·CI 목록의 SHA-256을 다시 대조해 일치함을 확인했다.
+- 기존 Mac venv와 단일 BLAS/OMP 스레드, pytest cache 비활성, `run_ci_tests.run_locked`의 공용 잠금 아래 수행했다. 전체 로컬 CI나 새 물리 실험은 아니다. 잠금은 wrapper가 반환했다.
+
+[검증 로그·출처·반례 요약](analysis/review_299_fix_validation/README.md). 전체 합성 fixture와 17개 재분류 JSON은 `/Users/changmin/projects/ugrp/outputs/v6h-fixcls-review299-20260930/final/`에 로컬 보관한다. 작은 로그·해시·요약은 Git에 보존하며 전체 raw의 원격 백업을 뜻하지 않는다. 수정 뒤 독립 재검토는 아직 받지 않았고 이 작업에서 병합하지 않는다.

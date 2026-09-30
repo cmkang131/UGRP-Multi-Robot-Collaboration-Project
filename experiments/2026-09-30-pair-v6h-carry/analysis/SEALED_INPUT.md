@@ -8,6 +8,7 @@
 
 - `schema="ugrp.v6h_confirmatory.v1"`, `state="sealed"`, `primary_seed=941`, `secondary_seed=943`.
 - `evaluation_protocol`: `classify_placements.EVALUATION_PROTOCOL`과 정확히 같은 정의(teacher 포함, 종료 정리까지, trace 공백 .051 s, PF 나이 .30 s, 주 σ 시드 941, 최종 목적지 내려놓기 제외, L0 handover/재파지 및 L1 첫 wait_lower). 이 정의도 manifest의 독립 고정 해시에 묶인다.
+  - #299 수정은 `hard_limit_observations="trace_endpoints_and_saved_gt"`, `host_error_safety="all_attempts_observed_violations_veto"`도 요구한다. 비동기 끝점/GT와 모든 HOST_ERROR 시도의 관측 위반을 포함하는 규칙이다. 실제 봉인 파일을 만들거나 기존 봉인을 덮어쓰지 않았다.
 - `execution_identity`: `source_sha`(40자리), `policy_id`, `bundle_id`, `source_files_sha256`(실행 파일 전체의 경로→SHA-256). 정책·번들·지도·센서·물리·환경 구성도 실행 계획/파일 해시로 고정한다. runtime manifest의 실제 `source.execution_tree.files` 목록이 이 전체 목록과 같아야 한다. 이름만 맞는 `execution_identity` 선언으로 대체하지 않는다.
 - `placements_file`, `placements_sha256`: C01…C60 순서의 JSON 목록. 각 항목 `name,x,y,yaw_deg,prior,sheet="coarse"`. 기존 DRAFT 파일을 이번 수정에서 다시 추첨하지 않았다.
 - `plan_file`, `plan_sha256`: JSON `{execution_identity, cases}`. `cases`는 정확한 72개 원본 계획이며 각 case에 `case_id,cell,seed,stage,beam_xyyaw,prior,prior_id,coarse_order_sheet,policy_id,bundle_id,source_sha,chain_stop_leg=1`와 실행에 쓰는 전체 설정을 둔다. 빔 좌표는 배치 x/y 및 yaw 라디안과 같아야 한다. `prior_id`는 배치의 prior 이름과 같고 `prior`는 r1/r2 실제 사전분포다.
@@ -15,6 +16,10 @@
 - `attempts`: 원본 1개 + 미리 정한 HOST_ERROR 재시도 최대 1개. 각 항목 `case_id,case_sha256,replaces`이며 원본은 `replaces=null`, 재시도는 원본 case id다. `case_sha256`은 실제 `case.json` 바이트 해시다. 재시도 case는 id 외 전체 설정이 원본과 같아야 한다. **선택 시도를 봉인에 사후 기록하지 않는다**(`selected_attempt` 거부). 실제 결과에서 원본 HOST_ERROR일 때만 재시도를 선택하고, 미실행 허용 재시도는 누락으로 세지 않는다. 재시도 없는 HOST_ERROR/재시도 HOST_ERROR는 미분류로 남는다. controller 실패는 재시도하지 않는다. 실제 원본 72건은 모두 필요하며 중복/미등록 추가 케이스를 거부한다.
 
 runtime `manifest.json`은 `state=completed`, `source_changed=false`, 고정 실행 SHA와 위 identity/실제 파일 목록이 같아야 한다. 각 `result.json`의 `execution_identity`와 `row`도 위 identity/`cases.jsonl` 행과 일치해야 한다. 원본/재시도 `case.json`의 해시와 전체 설정을 계획과 대조한다. 결과/trace/입력 파일 해시는 계산 후 다시 읽어 안정성을 확인한다.
+
+HOST_ERROR는 종료 증거가 불완전할 수 있다. 존재하는 result/trace 파일은 대체 여부와 관계없이 해시하고, 남은 trace·cases 행의 끝점·result의 GT/최대값을 검사한다. 잘린 JSONL의 앞쪽 유효 행도 보존한다. 없는 파일은 `missing_host_evidence`, 손상/모순은 `safety_evidence_issues`에 적는다. 손상 없이 없는 파일만 있는 정상 HOST_ERROR는 사전 허용 재시도로 대체할 수 있다. 파일 부재가 원 시도의 안전을 입증한다는 뜻은 아니다. 알려진 위반은 항상 전체 FAIL_A_B_SAFETY, 위반 없이 손상된 저장 증거는 NOT_EVALUABLE이다.
+
+출력 `attempts`는 모든 실행 시도의 선택 여부·HOST_ERROR·안전 최대값을 보존한다. `n_cases`, A/B, 성공률은 선택 72건으로 유지하며 `hard_limit_chain_cases`는 **위반 시도 수**다(원 시도와 재시도 둘 다 위반하면 2). `hard_limit_chain_placements_any_seed`는 중복 없는 배치 수, `hard_limit_attempt_case_ids`는 위반 시도 ID다. HOST_ERROR를 일반 FAIL로 바꾸지 않으며 성공한 선택 결과와 배치의 `hard_limit_any_seed=true`를 함께 표시할 수 있다.
 
 일반 케이스 증거:
 

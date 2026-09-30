@@ -39,7 +39,9 @@ EVALUATION_PROTOCOL = {"include_teacher": True, "end_boundary": "termination",
                        "trace_max_gap_s": TRACE_GAP_S, "pf_max_age_s": PF_MAX_AGE_S,
                        "primary_sigma_seed": 941, "destination_setdown": False,
                        "handover": "L0_end_to_L1_start_rest_release_then_lift",
-                       "L1_stop": "first_wait_lower_both_robots"}
+                       "L1_stop": "first_wait_lower_both_robots",
+                       "hard_limit_observations": "trace_endpoints_and_saved_gt",
+                       "host_error_safety": "all_attempts_observed_violations_veto"}
 
 
 class EvidenceError(ValueError):
@@ -189,6 +191,85 @@ def failed_leg_window(leg, first_failure, stop_sim_s, trace_end):
     return (start, end), source
 
 
+def observed_hard_limits(row, result, trace, *, partial=False):
+    """Union of saved safety observations, not an assertion of complete coverage.
+
+    GT snapshots are asynchronous to the trace; neither can replace the other.
+    A HOST_ERROR may leave partial evidence. Keep every valid observation even
+    if another value is malformed; report those issues separately to block PASS.
+    """
+    tilts, episodes, issues = [], [], []
+
+    def container(value, kind, name):
+        if value is None:
+            return kind()
+        if isinstance(value, kind):
+            return value
+        message = f"{name}: expected {kind.__name__}"
+        if not partial:
+            raise EvidenceError(message)
+        issues.append(message)
+        return kind()
+
+    def mapping(value, name):
+        return container(value, dict, name)
+
+    def observe(value, name, target, maximum=None):
+        try:
+            finite(value, name)
+            if value < 0 or (maximum is not None and value > maximum):
+                raise EvidenceError(f"{name}: invalid range")
+            target.append(value)
+        except EvidenceError as error:
+            if not partial:
+                raise
+            issues.append(str(error))
+
+    def snapshot(snap, name):
+        if snap is not None:
+            observe(mapping(snap, name).get("tilt_deg"), name + ".tilt_deg", tilts, 180)
+
+    for sample in trace:
+        snapshot(sample, "trace")
+    for label, record in (("row", row), ("result.row", result.get("row") or {})):
+        record = mapping(record, label)
+        chain = mapping(record.get("chain"), label + ".chain")
+        for leg in container(chain.get("legs"), list, label + ".chain.legs"):
+            leg = mapping(leg, label + ".chain.leg")
+            if "tilt_deg" in leg:
+                snapshot(leg, label + ".chain.leg")
+        if "tilt_deg" in mapping(chain.get("setdown"), label + ".chain.setdown"):
+            snapshot(chain["setdown"], label + ".chain.setdown")
+        if record.get("max_tilt_deg") is not None:
+            observe(record["max_tilt_deg"], label + ".max_tilt_deg", tilts, 180)
+    if result.get("max_tilt_deg") is not None:
+        observe(result["max_tilt_deg"], "result.max_tilt_deg", tilts, 180)
+    for key in ("gt_at_entry", "gt_at_stop", "gt_at_end"):
+        snapshot(result.get(key), key)
+    snapshot(mapping(result.get("teacher"), "teacher").get("gt_after_lift"), "teacher.gt_after_lift")
+    for rid, robot in mapping(result.get("chain_raw"), "chain_raw").items():
+        robot = mapping(robot, f"chain_raw.{rid}")
+        for boundary in ("leg_start", "leg_end"):
+            name = f"chain_raw.{rid}.{boundary}"
+            for k, snap in mapping(robot.get(boundary), name).items():
+                snapshot(mapping(snap, f"{name}.{k}").get("gt"), f"{name}.{k}.gt")
+        snapshot(mapping(robot.get("done"), f"chain_raw.{rid}.done").get("gt"), f"chain_raw.{rid}.done.gt")
+    for rid, snap in mapping(result.get("exits"), "exits").items():
+        snapshot(mapping(snap, f"exits.{rid}").get("gt"), f"exits.{rid}.gt")
+    wall = mapping(result.get("wall_contact"), "wall_contact")
+    for episode in container(wall.get("episodes"), list, "wall_contact.episodes"):
+        episode = mapping(episode, "contact")
+        penetrations = []
+        observe(episode.get("max_pen_m"), "contact.max_pen_m", penetrations)
+        if penetrations:
+            episodes.append({"max_pen_m": penetrations[0]})
+    max_tilt = max(tilts, default=None)
+    return {"violated": ca.hard_limit_violated(episodes, max_tilt or 0.),
+            "max_tilt_deg": max_tilt,
+            "max_pen_m": max((e["max_pen_m"] for e in episodes), default=0. if "episodes" in wall else None),
+            "evidence_issues": issues}
+
+
 def classify_case(row, result, trace, confirmatory=False):
     """Classify one completed seed case; whole-run hard limits have precedence."""
     chain = row.get("chain")
@@ -204,12 +285,6 @@ def classify_case(row, result, trace, confirmatory=False):
         if episode["t_last"] < episode["t_first"] or episode["max_pen_m"] < 0:
             raise EvidenceError("invalid contact interval or penetration")
     validate_trace(row, result, trace, confirmatory)
-    all_tilt = max(sample["tilt_deg"] for sample in trace)
-    # ca.analyse's hard_limit_chain uses ALL trace samples and ALL episodes,
-    # including lower/open/regrasp and any additional recorded legs. Reuse its
-    # shared predicate, not the leg-only classes or a copy of the thresholds.
-    hard = {"violated": ca.hard_limit_violated(episodes, all_tilt),
-            "max_tilt_deg": all_tilt, "max_pen_m": max((e["max_pen_m"] for e in episodes), default=0.)}
     first_failure = chain.get("first_failure")
     by_leg = {}
     for leg in chain["legs"]:
@@ -220,6 +295,7 @@ def classify_case(row, result, trace, confirmatory=False):
             raise EvidenceError(f"duplicate leg {k}")
         by_leg[k] = leg
         validate_leg(leg)
+    hard = observed_hard_limits(row, result, trace)
     if all(by_leg.get(k, {}).get("recorded") for k in REQUIRED_LEGS):
         if by_leg[1]["start_sim_s"] <= by_leg[0]["end_sim_s"]:
             raise EvidenceError("L0 end must precede L1 start")
@@ -258,8 +334,11 @@ def classify_case(row, result, trace, confirmatory=False):
     if termination.get("outcome") not in (None, "STUDY_LAYER_DONE"):
         failures.append({"phase": "termination", "code": termination["outcome"], "sim_s": termination.get("sim_s")})
     unresolved = bool(failures)
-    handover = handover_checks(chain, trace) if confirmatory else None
-    end_window = validate_end_window(row, result, by_leg) if confirmatory else None
+    # Success-only handover/stop requirements cannot demote a known violation
+    # to an ordinary failure or an unevaluable completion (e.g. failure stop).
+    check_completion = confirmatory and not hard["violated"]
+    handover = handover_checks(chain, trace) if check_completion else None
+    end_window = validate_end_window(row, result, by_leg) if check_completion else None
     handover_failed = bool(handover and not all(handover[k] for k in ("rest_release", "regrasp_lift")))
     if hard["violated"]:
         outcome = "FAIL_HARD_LIMIT"
@@ -278,6 +357,7 @@ def classify_case(row, result, trace, confirmatory=False):
             "contact_episodes_whole_chain": len(episodes), "unclassified_reason": None,
             "unresolved_failure_records": failures,
             "handover": handover, "end_window": end_window, "unresolved_failure": unresolved,
+            "completion_checks_skipped_for_hard_limit": confirmatory and hard["violated"],
             "confirmatory_evidence_checked": confirmatory}
 
 
@@ -448,7 +528,12 @@ def select_confirmatory_rows(rows, raw, manifest, seal):
     return selected
 
 
-def summarize(cases, primary_seed=941, sealed_manifest=None):
+def summarize(cases, primary_seed=941, sealed_manifest=None, safety_attempts=None):
+    # Success/sigma use one selected attempt per placement/seed. Safety uses
+    # every executed attempt, including replaced or unreplaced HOST_ERRORs.
+    safety_attempts = cases if safety_attempts is None else safety_attempts
+    hard_attempts = [c for c in safety_attempts if (c.get("hard_limit_chain") or {}).get("violated")]
+    hard_placements = {c["placement"] for c in hard_attempts}
     grouped = defaultdict(list)
     for case in cases:
         grouped[case["placement"]].append(case)
@@ -462,12 +547,12 @@ def summarize(cases, primary_seed=941, sealed_manifest=None):
                            "first_failure": primary["first_failure"] if primary else None,
                            "unclassified_reason": primary["unclassified_reason"] if primary else "missing_primary_seed",
                            "primary_case_id": primary["case_id"] if primary else None,
-                           "hard_limit_any_seed": any((c.get("hard_limit_chain") or {}).get("violated") for c in members),
+                           "hard_limit_any_seed": name in hard_placements,
                            "cases": sorted(members, key=lambda c: c["seed"])})
     classified = [p for p in placements if p["class"] is not None]
     counts = {name: sum(p["class"] == name for p in placements) for name in CLASSES}
     passed = sum(counts[name] for name in PASS)
-    hard_cases = sum((c.get("hard_limit_chain") or {}).get("violated", False) for c in cases)
+    hard_cases = len(hard_attempts)
     unclassified = [c["case_id"] for c in cases if c["class"] is None]
     # A is a fixed 60-placement test, never scale 48/60 to a small dev cohort.
     expected = {(e["placement"], e["seed"]) for e in sealed_manifest["cases"]} if sealed_manifest else set()
@@ -476,13 +561,20 @@ def summarize(cases, primary_seed=941, sealed_manifest=None):
                  and {(c["placement"], c["seed"]) for c in cases} == expected
                  and all(c.get("confirmatory_evidence_checked") for c in cases))
     rule_pass = passed >= 48 and hard_cases == 0
-    verdict = ("PASS_OBSERVED_CRITERION" if rule_pass else "FAIL_OBSERVED_CRITERION") if evaluable else "NOT_EVALUABLE"
-    summary = {"n_cases": len(cases), "n_placements": len(placements), "n_classified_primary": len(classified),
+    if sealed_manifest and hard_cases:
+        verdict = "FAIL_OBSERVED_CRITERION"
+    elif evaluable:
+        verdict = "PASS_OBSERVED_CRITERION" if rule_pass else "FAIL_OBSERVED_CRITERION"
+    else:
+        verdict = "NOT_EVALUABLE"
+    summary = {"n_cases": len(cases), "n_attempts": len(safety_attempts),
+               "n_placements": len(placements), "n_classified_primary": len(classified),
                "primary_seed": primary_seed, "counts": counts, "pass_placements": passed,
                "wilson95_primary_classified": ca.wilson(passed, len(classified)) if classified else None,
                "unclassified_cases": unclassified,
                "unclassified_placements": [p["placement"] for p in placements if p["class"] is None],
                "hard_limit_chain_cases": hard_cases,
+               "hard_limit_attempt_case_ids": [c["case_id"] for c in hard_attempts],
                "hard_limit_chain_placements_any_seed": sum(p["hard_limit_any_seed"] for p in placements),
                "case_counts": dict(Counter(c["class"] for c in cases if c["class"] is not None)),
                "cases_pass": sum(c["class"] in PASS for c in cases),
@@ -496,13 +588,54 @@ def summarize(cases, primary_seed=941, sealed_manifest=None):
     return placements, summary
 
 
+def read_host_safety(row, raw, inputs, missing_inputs, seal):
+    """Read/hash remaining HOST_ERROR evidence without requiring a finished run.
+
+    ENOSPC can truncate the last JSONL line. Preserve earlier observations and
+    flag unreadable content; never turn an unreadable file into zero violations.
+    """
+    directory = ca.dra.case_dir(raw, row["case_id"])
+    result_path, trace_path = directory / "result.json", directory / "eval_only/trace.jsonl"
+    result, trace, issues = {}, [], []
+    for path in (result_path, trace_path):
+        name = str(path.relative_to(raw))
+        if not path.exists():
+            missing_inputs.append(name)
+            continue
+        inputs[name] = sha256(path)
+        # Split bytes first so a truncated UTF-8/JSON tail cannot hide prior rows.
+        records = path.read_bytes().splitlines() if path == trace_path else [path.read_bytes()]
+        for index, data in enumerate(records, 1):
+            try:
+                value = json.loads(data)
+                if not isinstance(value, dict):
+                    raise ValueError("expected an object")
+            except (ValueError, UnicodeError):
+                issues.append(f"{name}:{index}: unreadable JSON object")
+                continue
+            if path == trace_path:
+                trace.append(value)
+            else:
+                result = value
+    if seal:
+        # Absent metadata is possible in an interrupted write. Contradictory
+        # metadata must block PASS, but cannot erase an observed violation.
+        if "execution_identity" in result and result["execution_identity"] != seal["execution_identity"]:
+            issues.append("HOST_ERROR result identity differs from seal")
+        if "row" in result and result["row"] != row:
+            issues.append("HOST_ERROR result row differs from cases record")
+    hard = observed_hard_limits(row, result, trace, partial=True)
+    hard["evidence_issues"].extend(issues)
+    return hard
+
+
 def analyse(label, raw, primary_seed=941, sealed_manifest=None):
     raw = Path(raw).resolve()
     cases_path, manifest_path = raw / "cases.jsonl", raw / "manifest.json"
     initial_hash = sha256(cases_path)
     manifest_hash = sha256(manifest_path)
     manifest = json.loads(manifest_path.read_text())
-    cases = []
+    cases, attempts, missing_inputs = [], [], []
     inputs = {"cases.jsonl": initial_hash, "manifest.json": manifest_hash, "chain_analysis.py": sha256(CHAIN_PATH), str(SIGMA_PATH): sha256(SIGMA_PATH)}
     for path in (Path(__file__).resolve(), Path(ca.pcp.__file__).resolve(), Path(ca.dra.__file__).resolve()):
         inputs[str(path)] = sha256(path)
@@ -514,15 +647,24 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
         for r in rows:
             path = ca.dra.case_dir(raw, r["case_id"]) / "case.json"
             inputs[str(path.relative_to(raw))] = sha256(path)
-        rows = select_confirmatory_rows(rows, raw, manifest, sealed_manifest)
+        selected = select_confirmatory_rows(rows, raw, manifest, sealed_manifest)
+    else:
+        selected = rows
+    selected_ids = {r["case_id"] for r in selected}
     for row in rows:
         if row.get("stage") != "chain":
             raise EvidenceError(f"{row['case_id']}: not a chain cohort (single-leg probes are outside this classifier)")
         category = str(row.get("category") or "")
+        attempt = {"case_id": row["case_id"], "placement": row["cell"], "seed": row["seed"],
+                   "selected": row["case_id"] in selected_ids,
+                   "host_error": row.get("host_error") or (category if category.startswith("HOST_ERROR") else None)}
         if row.get("host_error") or category.startswith("HOST_ERROR"):
-            cases.append({"case_id": row["case_id"], "placement": row["cell"], "seed": row["seed"], "class": None,
-                          "first_failure": row.get("first_failure"), "hard_limit_chain": None,
-                          "unclassified_reason": row.get("host_error") or category})
+            attempt["hard_limit_chain"] = read_host_safety(row, raw, inputs, missing_inputs, sealed_manifest)
+            attempts.append(attempt)
+            if attempt["selected"]:
+                cases.append({"case_id": row["case_id"], "placement": row["cell"], "seed": row["seed"], "class": None,
+                              "first_failure": row.get("first_failure"), "hard_limit_chain": attempt["hard_limit_chain"],
+                              "unclassified_reason": row.get("host_error") or category})
             continue
         directory = ca.dra.case_dir(raw, row["case_id"])
         result_path, trace_path = directory / "result.json", directory / "eval_only/trace.jsonl"
@@ -542,20 +684,32 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
         if sealed_manifest:
             case["sigma"] = sigma_case(row, trace)
         cases.append(case)
+        attempt["hard_limit_chain"] = case["hard_limit_chain"]
+        attempts.append(attempt)
     if sha256(cases_path) != initial_hash:
         raise EvidenceError("cases.jsonl changed during analysis; retry only on a stable cohort")
     for name, digest in inputs.items():
         path = Path(name) if Path(name).is_absolute() else (CHAIN_PATH if name == "chain_analysis.py" else raw / name)
         if sha256(path) != digest:
             raise EvidenceError(f"input changed during analysis: {path}")
-    placements, summary = summarize(cases, primary_seed, sealed_manifest)
+    if any((raw / name).exists() for name in missing_inputs):
+        raise EvidenceError("HOST_ERROR evidence appeared during analysis; retry on stable inputs")
+    placements, summary = summarize(cases, primary_seed, sealed_manifest, attempts)
+    safety_issues = {a["case_id"]: a["hard_limit_chain"]["evidence_issues"]
+                     for a in attempts if a["hard_limit_chain"]["evidence_issues"]}
+    summary["safety_evidence_issues"] = safety_issues
+    if safety_issues:
+        summary["criterion"]["evaluable"] = False
+        if not summary["hard_limit_chain_cases"]:
+            summary["criterion"]["verdict"] = "NOT_EVALUABLE"
     if sealed_manifest:
         summary["sigma_criterion_B"] = summarize_sigma(cases)
         summary["attempt_case_ids"] = attempt_ids
         summary["selected_case_ids"] = [c["case_id"] for c in cases]
         av = summary["criterion"]["verdict"]
         bv = summary["sigma_criterion_B"]["verdict"]
-        summary["full_verdict"] = ("NOT_EVALUABLE" if "NOT_EVALUABLE" in (av, bv)
+        summary["full_verdict"] = ("FAIL_A_B_SAFETY" if summary["hard_limit_chain_cases"] else
+            "NOT_EVALUABLE" if "NOT_EVALUABLE" in (av, bv)
             else "PASS_A_B_SAFETY" if av == "PASS_OBSERVED_CRITERION" and bv == "PASS" else "FAIL_A_B_SAFETY")
     if manifest.get("state") != "completed" or manifest.get("source_changed") is not False:
         summary["criterion"].update(evaluable=False, verdict="NOT_EVALUABLE")
@@ -563,6 +717,7 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
     return {"schema": "ugrp.v6h_placement_classification.draft.v2", "label": label, "raw": str(raw),
             "source_sha": manifest.get("source", {}).get("source_sha"), "manifest_state": manifest.get("state"),
             "source_changed": manifest.get("source_changed"), "input_sha256": inputs,
+            "attempts": attempts, "missing_host_evidence": missing_inputs,
             "interpretations": "Provisional pre-seal interpretations in analysis/CLASSIFY_NOTES.md; not an approved preregistration.",
             "placements": placements, "summary": summary}
 
@@ -571,7 +726,7 @@ def report_text(report):
     s = report["summary"]
     lines = [f"== {report['label']}: {report['raw']}",
              "DRAFT / eval-only; 고정 60곳의 관측 통과율 기준이며 모집단 80 %를 입증하지 않는다.",
-             f"Primary seed={s['primary_seed']}; cases={s['n_cases']}; placements={s['n_placements']}; classified primary={s['n_classified_primary']}",
+             f"Primary seed={s['primary_seed']}; selected cases={s['n_cases']}; attempts={s['n_attempts']}; placements={s['n_placements']}; classified primary={s['n_classified_primary']}",
              "placement | primary class | first failure phase/code | per-seed classes | hard any seed"]
     for p in report["placements"]:
         ff = p["first_failure"] or {}
@@ -582,9 +737,10 @@ def report_text(report):
     if s["wilson95_primary_classified"]:
         lo, hi = s["wilson95_primary_classified"]
         lines.append(f"Wilson 95% (classified primary placements only): {100 * lo:.2f}-{100 * hi:.2f}%")
-    lines += [f"All recorded cases pass: {s['cases_pass']}/{s['n_cases']}; placements all/any recorded seeds pass: "
+    lines += [f"Selected cases pass: {s['cases_pass']}/{s['n_cases']}; placements all/any recorded seeds pass: "
               f"{s['placements_all_recorded_seeds_pass']}/{s['placements_any_recorded_seed_pass']}",
-              f"Whole-chain hard limits: {s['hard_limit_chain_cases']} cases, {s['hard_limit_chain_placements_any_seed']} placements (all seeds)",
+              f"Whole-chain hard limits: {s['hard_limit_chain_cases']} attempts, {s['hard_limit_chain_placements_any_seed']} placements (all seeds and HOST_ERROR attempts)",
+              f"Hard-limit attempt IDs: {s['hard_limit_attempt_case_ids']}; safety evidence issues: {s['safety_evidence_issues']}",
               f"Unclassified primary placements: {s['unclassified_placements']}; unclassified cases: {s['unclassified_cases']}",
               f"Observed criterion: >=48/60 AND zero whole-chain hard violations; {s['criterion']['verdict']}",
               (f"Sigma B: {s['sigma_criterion_B']['verdict']}; full: {s['full_verdict']}" if "sigma_criterion_B" in s
