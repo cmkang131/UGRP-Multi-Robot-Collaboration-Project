@@ -78,9 +78,10 @@ CI 분할 66개. `review_d1.py`의 합성 반례와 `fake_examples.py`의 자기
 단위 검사 수를 성공률 카드로 만들지 않는다. 후속 실제 코호트는 실패·미완료·무장 여부와 함께
 [TensorBoard 지침](../../docs/tensorboard.md)을 적용해야 한다. raw는 삭제·덮어쓰기·Drive 전송하지 않는다.
 
-GitHub workflow에는 렌더/시뮬레이션 job도 있으므로 이 DRAFT의 커밋에는 `[skip ci]`를 사용한다.
-사용자가 금지한 실행을 push/PR의 자동 workflow로 우회하지 않는다. 로컬 표적 검사와 전체 CI는 구분하며
-전체 CI 통과/병합 준비로 보고하지 않는다. 필수 Co-Authored-By trailer는 유지한다.
+2026-09-30 사용자 지침에 따라 정상 GitHub CI는 렌더/시뮬레이션 job을 포함해 허용하며 실행한다.
+CI를 취소하거나 `[skip ci]`를 사용하지 않는다. 로컬 물리 실행 금지와 GitHub CI 허용은 별개다.
+`verification.json`의 CI skip 표기는 최초 실행 당시의 기록으로 보존하며 현재 실행 지침으로 쓰지 않는다.
+로컬 표적 검사와 실제 CI 결과는 구분하고, 확인한 범위만 보고한다. 필수 Co-Authored-By trailer는 유지한다.
 
 ## 참고 자료
 

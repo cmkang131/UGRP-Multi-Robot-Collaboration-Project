@@ -421,7 +421,7 @@ def test_v6b_historical_audit_uses_sealing_commit_blobs(monkeypatch):
     from scripts import zone_pair_v6_contract as c
     # Literal pins (not the module constants): PR #261 last v6b DRAFT sealing and its registration hash.
     assert c.V6B_DRAFT_COMMIT == '15793691b3af136769cdf0b090e722daddf80ab4'
-    assert c.CURRENT_REVISION == 'v6e'
+    assert c.CURRENT_REVISION == 'v6h'
     p = json.loads(c.PREREG_V6B.read_text())
     assert p['registration_sha256'] == '5c687740f43e77f2531d16edc0a2bec88cb0e0544b88110b06e6c7c052c071e9'
     receipt = c.verify_v6_historical(revision='v6b')

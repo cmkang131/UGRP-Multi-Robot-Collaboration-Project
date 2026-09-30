@@ -1,0 +1,115 @@
+{
+  "scope": "static/fake unit regression only; not physical or E2E admission",
+  "base_sha": "6594536b1a1afec6d9d109b35dd85a8426142d01",
+  "tested_sources": [
+    {
+      "path": "harness/beam_initial_pose_plan.py",
+      "sha256": "532ec0718114c117a2df1ce5fb2ad17bb3379a51ba9c3a213ac6db0936bf6f64"
+    },
+    {
+      "path": "tests/test_beam_initial_pose_plan.py",
+      "sha256": "6cf2b946f6fc468e79cf68ada0c30c4ebbe3b4b4164939f00f74c194f5ce90f4"
+    },
+    {
+      "path": "scripts/run_ci_tests.py",
+      "sha256": "a7e88430eb26ce2f4a50215d82633b6194024e73d241ce26bb768eea5a7757ee"
+    }
+  ],
+  "result": {
+    "exit_code": 0,
+    "tests": [
+      "tests/test_beam_initial_pose_plan.py",
+      "tests/test_pair_passage_plan.py::test_default_plan_and_probe_cases_are_byte_identical_to_main",
+      "tests/test_pair_passage_plan.py::test_opt_in_on_the_m2_door_map_returns_the_frozen_plan",
+      "tests/test_pair_passage_plan.py::test_planner_constants_match_the_sources_they_mirror",
+      "tests/test_zone_pair_executor.py::test_destination_route_reaches_zone_b_and_uses_bounded_segments"
+    ],
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "sim_s": 0,
+    "physics_model_imports_blocked": true,
+    "loadavg_after": [
+      9.796875,
+      20.2578125,
+      23.33984375
+    ]
+  },
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "60",
+    "time": "0.803",
+    "timestamp": "2026-09-30T20:58:56.104355+09:00",
+    "hostname": "gangchangmin-ui-MacBookAir.local"
+  },
+  "raw_directory": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/tests-20260930-205351-1c7915",
+  "raw_files": [
+    {
+      "name": "junit.xml",
+      "sha256": "e5578a89c0599b96a3103d3adf1ad995229d7aa3a2f777e578b9524507a6599a",
+      "bytes": 9080
+    },
+    {
+      "name": "lock.json",
+      "sha256": "276887cd78920bf4600c92c8e0f051cf33426b5e7b0944668c602f42265a7b30",
+      "bytes": 305
+    },
+    {
+      "name": "pytest.log",
+      "sha256": "492959d097c3ec6a29d082642f9bbb1078da24428744d63d7020f1c5de48f4eb",
+      "bytes": 99
+    },
+    {
+      "name": "result.json",
+      "sha256": "3ab476caa3fc1dbfc039472bd69364be2cbd405278c751b96f8e4c943ee29201",
+      "bytes": 689
+    }
+  ],
+  "lock": {
+    "owner": "codex",
+    "branch": "codex/beam-initial-pose-contract",
+    "purpose": "T08a static/fake pytest only; 0 SIM",
+    "pid": 97844,
+    "acquired_unix": 1790769535.985908,
+    "expected_end_unix": 1790769655.985909,
+    "loadavg_at_acquire": [
+      10.388671875,
+      20.54931640625,
+      23.4599609375
+    ]
+  },
+  "release": {
+    "owner": "codex",
+    "branch": "codex/beam-initial-pose-contract",
+    "purpose": "T08a static/fake pytest only; 0 SIM",
+    "pid": 97844,
+    "acquired_unix": 1790769535.985908,
+    "expected_end_unix": 1790769655.985909,
+    "loadavg_at_acquire": [
+      10.388671875,
+      20.54931640625,
+      23.4599609375
+    ],
+    "pid_alive": true,
+    "released_by": "codex",
+    "released_unix": 1790769536.995168,
+    "stale_release": false
+  },
+  "preserved_files_verified": 44,
+  "pretest_wait_restart": {
+    "raw_directory": "/Users/changmin/projects/ugrp/outputs/beam-initial-pose-contract/tests-20260930-203432-a159d2",
+    "tests_started": 0
+  },
+  "controller_selected": false,
+  "role_assignment": null,
+  "physical_sim_s": 0,
+  "tensorboard": "not applicable to static/fake unit tests; required for follow-up physical results",
+  "github_ci": "normal automatic CI allowed, including ACT/local model tests; status recorded in draft PR",
+  "verification_driver": {
+    "path": "experiments/2026-09-30-beam-initial-pose-contract/verification_driver.py",
+    "sha256": "62d7ab66f56c4f03ce899dad281c384f819260827079d1b825d22c25190ce427",
+    "invocation": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python /tmp/t08a_tests.py",
+    "note": "verbatim archived local driver; paths are this worktree and shared raw root"
+  }
+}

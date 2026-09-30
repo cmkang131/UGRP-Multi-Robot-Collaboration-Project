@@ -1,0 +1,207 @@
+{
+  "qualification": "authored static proposals; no runtime/physics/E2E evidence",
+  "pair": {
+    "schema": "ugrp.corridor_bay_static.v1",
+    "geometry_sha256": "b3a14b442e1df8780a865160090310a1aae003d382608faf466c7ec1f28a9ae3",
+    "formation": {
+      "kind": "long_beam",
+      "role_assignment": {
+        "end_neg": "r1",
+        "end_pos": "r2"
+      },
+      "robot_model": "masterpi_v3",
+      "margin_m": 0.03,
+      "envelope_status": "conservative_static_not_physical_validation"
+    },
+    "runtime_support": "unsupported_T10b_required",
+    "disc_passage": {
+      "status": "pass",
+      "static_ok": true,
+      "reason": "disc_only_centreline",
+      "radius_m": 0.17
+    },
+    "item_rotation": {
+      "status": "unsupported",
+      "static_ok": null,
+      "reason": "rotation_not_supplied"
+    },
+    "pose_paths": {
+      "west_to_east": {
+        "status": "pass",
+        "static_ok": true,
+        "reason": "full_formation_crossing",
+        "direction": "west_to_east",
+        "swept_clear": true,
+        "full_crossing": true,
+        "path_m_rad": [
+          [
+            1.5,
+            1.175,
+            0.0
+          ],
+          [
+            4.6,
+            1.175,
+            0.0
+          ]
+        ]
+      },
+      "east_to_west": {
+        "status": "pass",
+        "static_ok": true,
+        "reason": "full_formation_crossing",
+        "direction": "east_to_west",
+        "swept_clear": true,
+        "full_crossing": true,
+        "path_m_rad": [
+          [
+            4.6,
+            1.175,
+            0.0
+          ],
+          [
+            1.5,
+            1.175,
+            0.0
+          ]
+        ]
+      }
+    },
+    "bay": {
+      "stop": {
+        "status": "blocked",
+        "static_ok": false,
+        "reason": "bay_extent_or_wall_blocked",
+        "boundary_gap_m": -0.3281999999999998,
+        "required_clearance_m": 0.01,
+        "width_m": 0.27,
+        "length_m": 1.2063999999999995
+      },
+      "evacuation": {
+        "status": "unsupported",
+        "static_ok": null,
+        "reason": "bay_motion_not_supplied"
+      },
+      "reentry": {
+        "status": "unsupported",
+        "static_ok": null,
+        "reason": "bay_motion_not_supplied"
+      },
+      "rotation": {
+        "status": "unsupported",
+        "static_ok": null,
+        "reason": "bay_rotation_not_supplied"
+      }
+    },
+    "simultaneous_occupancy": {
+      "status": "pass",
+      "static_ok": true,
+      "reason": "joint_static_poses_only",
+      "robot_count": 3,
+      "simultaneous_passing": "unsupported"
+    },
+    "physics_verified": false,
+    "sim_cap_s": 0
+  },
+  "solo_bay": {
+    "schema": "ugrp.corridor_bay_static.v1",
+    "geometry_sha256": "b3a14b442e1df8780a865160090310a1aae003d382608faf466c7ec1f28a9ae3",
+    "formation": {
+      "kind": "cyan",
+      "role_assignment": {
+        "west": "r3"
+      },
+      "robot_model": "masterpi_v3",
+      "margin_m": 0.03,
+      "envelope_status": "conservative_static_not_physical_validation"
+    },
+    "runtime_support": "unsupported_T10b_required",
+    "disc_passage": {
+      "status": "pass",
+      "static_ok": true,
+      "reason": "disc_only_centreline",
+      "radius_m": 0.17
+    },
+    "item_rotation": {
+      "status": "unsupported",
+      "static_ok": null,
+      "reason": "rotation_not_supplied"
+    },
+    "pose_paths": {
+      "west_to_east": {
+        "status": "unsupported",
+        "static_ok": null,
+        "reason": "pose_path_not_supplied",
+        "direction": "west_to_east"
+      },
+      "east_to_west": {
+        "status": "unsupported",
+        "static_ok": null,
+        "reason": "pose_path_not_supplied",
+        "direction": "east_to_west"
+      }
+    },
+    "bay": {
+      "stop": {
+        "status": "pass",
+        "static_ok": true,
+        "reason": "whole_formation_inside_bay",
+        "boundary_gap_m": 0.04179999999999984,
+        "required_clearance_m": 0.01,
+        "width_m": 0.27,
+        "length_m": 0.3932000000000002
+      },
+      "evacuation": {
+        "status": "pass",
+        "static_ok": true,
+        "reason": "bay_motion_clear",
+        "endpoint_linked": true,
+        "swept_clear": true,
+        "path_m_rad": [
+          [
+            3.2,
+            1.175,
+            0.0
+          ],
+          [
+            3.2,
+            0.625,
+            0.0
+          ]
+        ]
+      },
+      "reentry": {
+        "status": "pass",
+        "static_ok": true,
+        "reason": "bay_motion_clear",
+        "endpoint_linked": true,
+        "swept_clear": true,
+        "path_m_rad": [
+          [
+            3.2,
+            0.625,
+            0.0
+          ],
+          [
+            3.2,
+            1.175,
+            0.0
+          ]
+        ]
+      },
+      "rotation": {
+        "status": "unsupported",
+        "static_ok": null,
+        "reason": "bay_rotation_not_supplied"
+      }
+    },
+    "simultaneous_occupancy": {
+      "status": "unsupported",
+      "static_ok": null,
+      "reason": "joint_poses_not_supplied",
+      "simultaneous_passing": "unsupported"
+    },
+    "physics_verified": false,
+    "sim_cap_s": 0
+  }
+}

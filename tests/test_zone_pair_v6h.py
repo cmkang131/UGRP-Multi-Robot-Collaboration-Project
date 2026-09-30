@@ -388,7 +388,7 @@ def test_axial_lag_requires_forward_correction_and_gain_requires_dr(monkeypatch)
             PairTeam({}, {}, V6['params'], cancel_scheduled=lambda *a: None, contact_profile='cargo_noslip_v1', policy=name)
 
 
-def test_candidate_policy_bundle_workflow_and_ci_list_are_consistent_without_a_seal():
+def test_candidate_policy_bundle_workflow_and_ci_list_match_analysis_seal():
     from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID
     from harness import pair_stage_probe as sp, zone_study_integration as zi
     from scripts.zone_pair_v6_contract import CURRENT_REVISION, PENDING_REVISION, PREREG_V6H, candidate_contract, contract
@@ -400,9 +400,8 @@ def test_candidate_policy_bundle_workflow_and_ci_list_are_consistent_without_a_s
     assert 'zone-pair-v81-carry-dr-general' in zi.RETIRED_BUNDLE_IDS
     assert 'b-v6h1' in sp.POLICIES and 'b-v6h1' not in sp.PROBE_ONLY_POLICIES
     assert 'tests/test_zone_pair_v6h.py' in collect_test_files(ROOT, TEST_PATTERNS)
-    assert CURRENT_REVISION == 'v6e' and PENDING_REVISION == 'v6h' and not PREREG_V6H.exists()
-    with pytest.raises(ValueError, match='pending seal'):
-        contract()
+    assert CURRENT_REVISION == 'v6h' and PENDING_REVISION is None and PREREG_V6H.exists()
+    assert json.loads(PREREG_V6H.read_text())['state'] == 'sealed'
     flags = candidate_contract()['policy_flags']['b-v6h1']
     assert flags == json.loads(json.dumps(vars(pair_policy('b-v6h1'))))
 
@@ -432,7 +431,7 @@ def test_builder_dry_run_verify_and_tamper_rejection_without_final_seal(capsys):
     assert operation['contact_track'] and operation['pf_track'] and not operation['weld']
     assert p['confirmatory_plan']['text_verbatim'] == (BUILDER.HERE/'PREREG_DRAFT.md').read_text()
     assert BUILDER.main(['--dry-run']) == BUILDER.main(['--verify']) == 0
-    assert not PREREG_V6H.exists()
+    assert json.loads(PREREG_V6H.read_text())['state'] == 'sealed'
     capsys.readouterr(); p['runs'][0]['seed'] = 911
     with pytest.raises(ValueError, match='differs'):
         BUILDER.verify(p)

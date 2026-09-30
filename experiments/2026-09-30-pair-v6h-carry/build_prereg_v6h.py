@@ -1,12 +1,13 @@
-"""Prepare/verify the v6h confirmatory DRAFT in memory; NEVER write a seal.
+"""Prepare the fixed v6h cases, or create/verify the coordinator-authorized analysis seal.
 
 python -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --dry-run
 python -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify
 
-The final prereg_v6h.json + CURRENT_REVISION promotion belongs to a separate
-coordinator commit AFTER independent review. Neither mode creates that file.
-Science text is copied verbatim from PR #285, with only the coordinator's
-one-line axial-lag decision prepended; defaults A=48/60 and C=report-only stay.
+build(), --dry-run and --verify remain current-tree previews. --seal writes the
+separate two-commit registration once; --verify-seal audits it without reading raw.
+Independent review is required before unblinding/merging this registration.
+Science text comes from the final disclosure/definitions in PREREG_DRAFT.md;
+the coordinator fixed A=48/60 and C=report-only before any outcome inspection.
 """
 from __future__ import annotations
 
@@ -88,6 +89,10 @@ def build():
             'qualification': 'UNSEALED preview; no physical replay, confirmatory result or execution admission'}
     from scripts.zone_pair_v6h_admission import cases_for_plan
     value['cases'] = cases_for_plan(value)
+    # Match the committed thin-driver plan's JSON key order, not just values.
+    # No execution/admission/controller source is changed by this formatting.
+    for case in value['cases']:
+        case['chain_stop_leg'] = case.pop('chain_stop_leg')
     return value
 
 
@@ -105,7 +110,23 @@ def main(argv=None):
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--dry-run', action='store_true', help='print source changes; no writes')
     mode.add_argument('--verify', action='store_true', help='verify fixed draw, predecessor, fit and sources; no writes')
+    mode.add_argument('--seal', action='store_true', help='write coordinator-authorized seal once; never overwrite')
+    mode.add_argument('--verify-seal', action='store_true', help='audit separate execution/analysis pins; no raw')
+    parser.add_argument('--seal-commit', help='commit containing this seal (analysis git-blob verification)')
     args = parser.parse_args(argv)
+    if args.seal or args.verify_seal:
+        module = importlib.import_module('experiments.2026-09-30-pair-v6h-carry.analysis.seal_registration')
+        path = HERE/'prereg_v6h.json'
+        if args.seal:
+            if path.exists():
+                raise FileExistsError('sealed registration is immutable; write a new revision')
+            value = module.build_seal(build())
+            module.verify_seal(value)
+            with path.open('x') as stream:
+                stream.write(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False) + '\n')
+        value = json.loads(path.read_bytes())
+        print(json.dumps(module.verify_seal(value, args.seal_commit), indent=2))
+        return 0
     value = build()
     print(json.dumps(verify(value) if args.verify else {
         'status': 'UNSEALED', 'reserved_ids': RESERVED, 'runs': len(value['runs']),

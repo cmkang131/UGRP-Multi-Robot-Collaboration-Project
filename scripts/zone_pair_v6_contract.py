@@ -38,11 +38,11 @@ PF model with lateral breakaway ramp and cross-axis drift, pair-mean carry yaw, 
 image validity, bounded retreat) on top of b-v6d, with v5h and b-only as matched controls. The L7 end-inset policy
 ``b-v6g-l7`` is defined (opt-in route change) but is not part of the registered run set.
 
-2026-09-30 pre-seal v6h: v6e bytes are historical at e510779d. CURRENT_REVISION
-is intentionally left v6e until the coordinator's separate final-seal commit;
-contract/load_config reject the historical record. candidate_contract('v6h')
-is a hash preview only, never current-source admission. No prereg_v6h seal is
-written before independent review.
+2026-10-01 coordinator seal: v6e bytes remain historical at e510779d.
+v6h execution is pinned at 4c6b439f; analysis is pinned separately at the seal
+commit. candidate_contract is only a current-tree preview. The final sealed
+plan cannot pass current-tree execution admission; replay requires checkout
+4c6b439f. Use build_prereg_v6h --verify-seal to audit the two pin sets.
 
 """
 import ast
@@ -72,11 +72,11 @@ HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT), 'v6b': (PREREG_V
                         'v6c': (PREREG_V6C, V6C_DRAFT_COMMIT), 'v6d': (PREREG_V6D, V6D_DRAFT_COMMIT),
                         'v6e': (PREREG_V6E, V6E_DRAFT_COMMIT)}
 HISTORICAL_STATUS = {'v6': 'REGISTERED', 'v6b': 'DRAFT', 'v6c': 'DRAFT', 'v6d': 'DRAFT', 'v6e': 'DRAFT'}
-CURRENT_REVISION = 'v6e'      # intentionally NOT flipped: v6h final seal is a separate coordinator commit
-PENDING_REVISION = 'v6h'      # pre-seal source preview only; no current-source admission
+CURRENT_REVISION = 'v6h'      # analysis seal; executed controller remains pinned at 4c6b439f
+PENDING_REVISION = None      # re-execution requires the frozen execution checkout
 
-# One path per line. After the classifier review lands, add its entry point and
-# CLASSIFY_NOTES here; its Python dependencies are pinned transitively as well.
+# These six extras belong to the immutable 274-file execution closure at
+# 4c6b439f. Analysis dependencies are a SEPARATE pin set in prereg_v6h.json.
 V6H_EXTRA_SOURCE_PATHS = (
     'scripts/zone_pair_v6h_admission.py',
     'scripts/zone_teacher.py',  # ArmSequence is also used by the student controller.

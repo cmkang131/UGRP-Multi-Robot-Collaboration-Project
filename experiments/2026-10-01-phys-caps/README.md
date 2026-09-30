@@ -1,0 +1,110 @@
+# 물리(SIM) 인수 점검 큐 — 2026-10-01 (claude)
+
+Refs #221. **탐색용 점검이다. 확증 결과나 E2E 성공이 아니다.** 시계는 SIM, 모델 호출 0, weld OFF, 렌더 프로필 `floor_light_v1`.
+봉인 전 b-v6h1 확증 실행(`outputs/v6h1-confirm-*`)은 읽지도 나열하지도 않았다.
+
+## 결과 한눈에
+
+| 점검 | 판정 | SIM초 | 통과/실패 | 원본(raw) |
+|---|---|---:|---|---|
+| T13b 사건 복구 | **실행 불가** | 0 / 상한 3,600 | 해당 없음 | 없음 |
+| T13a 정체성·개수 | **실행 불가** | 0 / 상한 1,800 | 해당 없음 | 없음 |
+| L1 최소 차단 재확인 (S07, X01) | **실행함** | 125.6 | 관문 대용(L0·L1 끝점 오차 ≤100 mm) 2/2, 명령 바이트가 3c4fe30e 인수와 2/2 동일 | `/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-recheck` |
+| L0/L1 측면 오차 탐사 6건, **seed 951(주 결과)** | **실행함** | 357.2 | 관문 대용 6/6 (실패 0, HOST_ERROR 0) | `/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-probes6-s951` |
+| 같은 6건, seed 911 (옵션 누락 실수, 탐색용) | 실행함 | 357.2 | 관문 대용 6/6 | `/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-probes6` |
+| P01 3×30 s | **실행 불가** | 0 / 상한 90 | 해당 없음 | 없음 |
+| P03 3×120 s | **실행 불가(인계 문서 없음)** | 0 | 해당 없음 | 없음 |
+
+L1 문서 예상 합계는 482.8 SIM초(62.8×2 + 60.8×2 + 58.9×4)이며 주 결과(재확인 + seed 951)가 그만큼이다. seed 911 실수 실행 357.2초가 추가로 들어 총 840.0 SIM초를 썼다. 선택 항목인 hR2_10 두 건(119.7초)은 조정자 결정으로 생략했고 측면 모형 수정도 보류했다.
+"관문 대용"은 두 구간 끝점의 `hypot(진행축, 측면) ≤ 100 mm`뿐이다. 접촉·재관측·방출·이후 구간·E2E 완주는 포함하지 않는다.
+`outcome_class=FAIL`, `STAGE_BUDGET_EXHAUSTED`는 leg 1에서 멈추는 평가용 종료(`--chain-stop-leg 1`)라서 인수 재생(3c4fe30e)에서도 모든 사례에 똑같이 나온 표기다.
+
+## 실행 불가 4건 — 정확한 이유
+
+기준 main `394f9cda5d67a9d1b94ad1688f39f5616fc00e7b`. 즉석 대체 제어기·GT·weld는 쓰지 않았다.
+
+- **T13b** (`experiments/2026-09-30-t13b-recovery/SIM_CHECKS.md`): 문서가 스스로 "현재 정상 복구 실행은 차단"이라 적는다.
+  (1) #320의 specific identity가 cyan을 RGB로 구분하는 단서를 갖지 않는다(`resolved_item_id=null`, `SPECIFIC_IDENTITY_UNGROUNDED`).
+  (2) 새 `RecoveryJobs`는 target-aware 하위 backend와 실제 RGB 인식기에 연결돼 있지 않다. main의 `ZoneOwnExecutor.deliver(item_ref, zone_slot_id)`(`harness/zone_own_executor.py:277`)는 target 인수를 받지 않고,
+  `submit_target` 구현은 `harness/zone_identity_jobs.py`/`zone_item_recovery.py`의 계약 밖 `harness`·`sim`·`scripts`에 없다(`git grep`으로 확인).
+  (3) 실행 번들·표준 `sim_cli` workflow가 없다(`configs/`·`scripts/`에 t13 등록 없음). 문서는 "현재 실행할 수 없는 CLI 옵션을 제시하지 않는다"고 명시한다.
+- **T13a** (`experiments/2026-09-30-t13a-identity/SIM_CHECKS.md`): 위 (1)–(3)과 같은 차단 조건. I1은 시각 식별 설계·fixture가 정해지기 전에는 실행 명령을 만들 수 없고, 정상 셀도 `UNSUPPORTED_SPECIFIC_GROUNDING / 미실행`이다. P01/P02/P03/P05/P07의 실제 최종 조합 연결도 안 됐다(현황 문서: P03 #312 검토 중, 기존 v6e 소스 고정 검사로 차단).
+- **P01 3×30 s** (`experiments/2026-09-30-e2e-p01-env/README.md` 코디네이터 계획): `scripts/zone_environment_bundle.py`가 `runnable: False`, `DRAFT_UNSEALED`, `execution_bundle_id: null`이다. 문 2개·복도·v3 지도 조합은 P03 allow-list·새 보정이 없어 거부된다. 문서가 "P01/P03/P02 합성·독립 검토 뒤, 새 번들 등록·봉인 뒤"에 실행하라고 한다. 아직 아니다.
+- **P03 3×120 s**: main에 구체적 인계 문서가 없다. 근거로 볼 만한 것은 준비도 감사(`experiments/2026-09-30-e2e-readiness/READINESS.md`)의 "3×120=360초 단축 연쇄 상한" 제안뿐이며 명령·번들이 없다. P03 PR #312는 아직 OPEN이다. 지시에 따라 건너뛰고 기록만 남긴다.
+
+## L1 점검 — 무엇을 어떻게 실행했나
+
+- 후보: PR #292 head `4c6b439f3f7c9a147c901f8b260a1e214d4eb396`(b-v6h1, 봉인 전). 읽기 전용 고정 worktree `ugrp-wt/phys-caps-1001-src`(detached, 깨끗함)에서 실행. 실행기 `scripts/run_pair_stage_probes.py`의 `admission=unsealed_stage_probe` 경로다(봉인된 확증 경로가 아니다). 실행 중 소스 변경 없음(`source_changed=false`, 두 그룹 실행 트리 해시 `95aae677…` 동일).
+- 명령(레지스트리 등가): `--stage chain --sources teacher --policies b-v6h1 --prior-std e2e --chain-stop-leg 1 --render-profile floor_light_v1 --pf-track --contact-track --workers 2 --omp-threads 1 --env-placements <json> --execute --lock-owner claude`. 배치 JSON은 `l1-inputs/`(SHA-256 `blocker_recheck.json`=c7c2d484…, `lateral_probes_6.json`=b1a8637a…). 시드: 재확인 911, 탐사 951(주 결과; 911은 옵션 누락 실수). 감쌈 스크립트 `l1-inputs/run_group.sh`가 공용 잠금을 잡고(소유자 claude, pid=스크립트 셸) 소유 세션(`ugrp_session.py run`)으로 돌렸다. 세션·잠금은 모두 해제·종료했다.
+- 병렬 작업자 2개(상한 준수). 여유 디스크 34–44 GiB(≥10 GiB), AC 전원.
+- **부하 평균**(1/5/15분): 재확인 시작 110.8/76.4/72.2 → 끝 889.5/606.2/334.7. 탐사 시작 885.0/619.1/344.0 → 끝 226.9/301.5/410.7. 다른 작업이 호스트를 크게 눌렀다. 벽시계는 재확인 779.8초, 탐사 1,215.8초(사례당 379–778초)이며 판단은 SIM 시간으로만 했다. 사례별 부하는 `l1_results.json`의 `loadavg_case`.
+
+### 1) 최소 차단 재확인 (S07, X01)
+
+이전 등록 후보 `3afc61b0`은 S07에서 `PREGRASP_NO_SAFE_VIEW`로 L0 뒤 정지했다(#306 감사). 고정 후보 `4c6b439f`에서는 재발하지 않았다.
+
+| 사례 | 진행축/측면/끝점 L0 (mm) | L1 (mm) | SIM초 | 명령 바이트(SHA-256) |
+|---|---|---|---:|---|
+| S07 (0.932, 0.037, −4.16°, hR2_05) | 23.3 / −53.0 / 57.9 | 29.8 / −65.7 / 72.1 | 62.8 | `c0c5fcd8…` = 3c4fe30e 인수 기록과 동일 |
+| X01 (0.940, 0.050, −3.51°, hR2_07) | 31.5 / −37.6 / 49.1 | 37.4 / −72.9 / 81.9 | 62.8 | `2d2f77a4…` = 3c4fe30e 인수 기록과 동일 |
+
+두 사례 모두 두 구간 끝점 기록됨, 벽 접촉 에피소드 0. 3c4fe30e 인수의 같은 사례와 명령이 비트 단위로 같으므로, #292의 3c4fe30e→4c6b439f 변경("명령 흐름 불변")이 이 두 사례에서는 실제로 명령을 바꾸지 않았다. 이것은 두 사례에 한한 확인이다.
+
+### 2) 측면 오차 탐사 6건 — seed 951(주 결과)
+
+#306 §6은 "새 탐색 seed 951 한 번씩"을 지정했다. 처음에는 `--seeds`를 주지 않아 실행기 기본값 911로 돌렸다(아래 별도 기록). 조정자 지시로 같은 고정 worktree·명령·잠금 절차·작업자 2개로 `--seeds 951`을 다시 돌렸다. `l1-inputs/run_group.sh`는 4번째 인자로 seed를 받도록 고쳤다(기본값 911 유지).
+
+| 배치 | (x, y, yaw°, prior) | L0 측면 관측/예측 (mm) | L1 측면 관측/예측 (mm) | 관측−예측 L0/L1 (mm) | 끝점 L0/L1 (mm) | 벽 접촉 | SIM초 |
+|---|---|---:|---:|---:|---:|---:|---:|
+| LE_A_04 | .951, −.025, −4.5, hR2_04 | −39.2 / −66.5 | −56.5 / −80.4 | +27.3 / +23.9 | 71.3 / 77.9 | 0 | 60.8 |
+| LE_A_07 | .951, −.025, −4.5, hR2_07 | −33.4 / −55.5 | −37.2 / −64.9 | +22.1 / +27.7 | 68.3 / 64.8 | 0 | 60.8 |
+| LE_B_04 | 1.069, .109, +4.5, hR2_04 | +8.0 / +27.5 | −9.5 / +14.7 | −19.5 / −24.1 | 39.3 / 33.8 | 0 | 58.9 |
+| LE_B_07 | 1.069, .109, +4.5, hR2_07 | +12.8 / +38.5 | +4.9 / +30.2 | −25.6 / −25.2 | 40.4 / 32.1 | 0 | 58.9 |
+| LE_C_04 | 1.069, .109, −4.5, hR2_04 | +14.3 / −9.9 | −16.9 / −43.8 | +24.2 / +27.0 | 41.3 / 37.2 | 0 | 58.9 |
+| LE_C_07 | 1.069, .109, −4.5, hR2_07 | +15.2 / +1.1 | +0.5 / −28.3 | +14.1 / +28.9 | 41.3 / 32.3 | 0 | 58.9 |
+
+관문 대용(두 구간 끝점 ≤100 mm) 6/6, 끝점 오차 최대 **77.9 mm**(LE_A_04 L1), 벽 접촉 에피소드 전부 0, HOST_ERROR 0, 진행축 끝점 오차는 −32…−60 mm(목표에 못 미침)로 부호 일정. 예측은 #306의 `target_ENV_30_prior` 점 예측이다. 관측−예측(L1)은 +23.9, +27.7, −24.1, −25.2, +27.0, +28.9 mm로, 이 모형의 보류 잔차 표준편차(OOF SD 약 19 mm)의 1.3–1.5배이며 부호가 배치별로 몰려 있다: yaw ±4.5° 가장자리에서 **예측이 실제보다 크게 벗어난다**(A는 관측이 덜 음수, B는 관측이 덜 양수, C는 관측이 더 양수). 학습 yaw 범위(−4.16…+4.24°) 밖 외삽 영향일 수 있으나 6건으로 원인을 확정할 수 없다. 조정자 결정으로 측면 모형 수정은 보류했다(관문 대용 전부 통과). 이 6건은 탐색 자료이며 확증 표본에 섞지 않는다. 모형을 바꾸면 사전 등록에 반영한 뒤 봉인한다(#306 지침).
+부하 평균(1/5/15분): 시작 273.0/271.1/354.8 → 끝 65.6/145.0/237.8. 벽시계 1,447.3초(사례당 423–518초). 소스 트리 해시 `95aae677…`로 앞선 실행과 같고 실행 중 변경 없음.
+
+### 2b) 같은 6건, seed 911 — "seed 실수, 탐색용"으로 보존
+
+옵션을 빼먹어 기본값 911로 먼저 돌린 결과다(원본 삭제하지 않음). 관문 대용 6/6, 끝점 오차 최대 72.3 mm(LE_A_04 L0), 벽 접촉 0, 관측−예측(L1) +34.5, +27.2, −26.8, −25.4, +24.7, +29.0 mm. seed 951과의 L1 측면 관측 차이는 최대 10.6 mm(LE_A_04)로 배치 효과가 seed 효과보다 훨씬 크다. 요약은 `l1_results.json`의 `probes6` 그룹. 주 결과로 쓰지 않으며 951 결과와 합산하지 않는다.
+
+## TensorBoard
+
+- **seed 951(주 결과):** 새 스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/1001-phys-caps-l1-probes-s951`(6 run `P951-LE_*`). 실행 중인 공용 서버(6006)의 API 값 90개가 원본(`l1_results.json`)과 일치(불일치 0). 설정 키 `phys_caps_l1_s951_20261001`(`outputs/tensorboard-view.json`에 내 키만 추가; 고정 태그 10개와 HParams 열 포함).
+  [대시보드](http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fpass%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fl1_end_error_mm%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fl1_lateral_mm%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fl1_lateral_pred_mm%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%5D&smoothing=0&runFilter=%5E1001-phys-caps-l1-probes-s951%2F#timeseries)
+- **재확인 2건 + seed 911 6건(탐색용):** 스냅샷 `1001-phys-caps-l1-probes`(8 run `B-*`, `P-LE_*`), 키 `phys_caps_l1_20261001`. 서버 API 값 122개가 원본과 일치. 이 스냅샷의 run 설명은 seed 실수를 표시하지 않으므로 이 README와 함께 읽는다.
+- 공용 logdir의 run이 500개를 넘어 새 run은 기본 미선택이다. 위 링크의 run 필터로 왼쪽 목록에서 선택한다. 첫 화면 렌더는 확인했고 값은 API로 대조했다.
+- 첫 변환 시도는 `commands`가 dict라서 8건 모두 실패했다. 지우지 않고 `outputs/phys-caps-1001-failed-tb-attempt-1/`로 옮겨 보존하고 수정 후 새 스냅샷을 만들었다. 새 영상은 없다(SIM 명령 단위 점검). 실행 불가 4건은 결과가 없어 스냅샷이 없다.
+
+## 원본 위치와 해시
+
+원본은 로컬 보관이며 원격 백업이 아니다. 각 그룹 폴더 전체 크기: 재확인 54.1 MB, 탐사(seed 911) 154.4 MB, 탐사(seed 951) 161 MB.
+
+| 그룹 | manifest.json | cases.jsonl | artifacts.sha256.json | plan.json |
+|---|---|---|---|---|
+| recheck | e233119c3219… | fac7ea9a0aa5… | 77c2620154b0… | 44019ab05435… |
+| probes6 (seed 911, 탐색용) | afcac1122ea3… | 8b04e2fbdbcb… | 3ebdb9f71ba7… | 85a183e13cd4… |
+| probes6-s951 (주 결과) | 4c4408716145… | 670a134363da… | c7d5e8f4cadc… | 20e4f5b1cb9b… |
+
+전체 해시는 `l1_results.json`(그룹별 `*_sha256`)과 각 폴더의 `artifacts.sha256.json`(모든 파일의 바이트·SHA-256)에 있다. 사례별 `commands.json`·`result.json` 해시도 `l1_results.json`에 있다.
+
+## 파일
+
+- `summarize_l1.py`, `build_tb_l1.py`: 원본을 읽기만 하는 요약·스냅샷 생성(사용한 Python: `Project-Runtimes/ugrp/.venv-sim-worker-mac`).
+- `l1_results.json`, `tensorboard_verification.json`(재확인+911), `tensorboard_verification_1001-phys-caps-l1-probes-s951.json`, `l1-inputs/`(배치 JSON, `run_group.sh`).
+- 검증: `tests/test_offline_audit_export.py` 19 통과, 스크립트 컴파일·`bash -n` 통과. 소스·설정·제어기는 바꾸지 않았다.
+
+## 남은 일·조정자 결정 (처리 완료 표시)
+
+1. seed 951 재실행: 완료(주 결과). seed 911 결과는 "seed 실수, 탐색용"으로 보존.
+2. hR2_10 두 건 생략, 측면 모형 수정 보류: 조정자 결정(관문 대용 전부 통과).
+3. T13a/T13b/P01/P03: 조정자가 선행 연결 작업을 따로 맡긴다. 끝난 뒤 새 인계로 다시 요청한다.
+
+## 참고 자료
+
+- [PR #306 측면 오차 분석·제안 탐사](../2026-09-30-l1-lateral-error/README.md), [PR #292 b-v6h1 등록 후보](https://github.com/kcm0127-dotcom/ugrp/pull/292)
+- 3c4fe30e 인수 재생 원본(로컬 `outputs/v6h1-acceptance-3c4fe30e-claude-20260930`): S07/X01 명령 SHA와 비교하려고 `acceptance_receipts.json`만 읽었다.
+- T13a/T13b/P01 인계 문서: [T13b](../2026-09-30-t13b-recovery/SIM_CHECKS.md), [T13a](../2026-09-30-t13a-identity/SIM_CHECKS.md), [P01](../2026-09-30-e2e-p01-env/README.md), [준비도 감사](../2026-09-30-e2e-readiness/READINESS.md)
+- 새 외부 문헌·라이브러리는 쓰지 않았다(기존 실행기·변환기 재사용).

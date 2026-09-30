@@ -1,3 +1,5 @@
+> **2026-10-01 업데이트: 분석 봉인 — 독립 검토 필요.** `prereg_v6h.json`은 기록 뒤 블라인드 분석 봉인이다. EXECUTION 274파일은 `4c6b439f`, 분석 파일은 봉인 커밋으로 따로 검증한다. CURRENT_REVISION=v6h, v83/2.16.0 유지. 블라인드 raw를 열거나 결과를 계산하지 않았으며 재실행에는 4c6b439f checkout이 필요하다. 현재 규칙은 [PREREG_DRAFT.md](PREREG_DRAFT.md)와 [REGISTRATION_PLAN.md](REGISTRATION_PLAN.md), 아래 내용은 이전 구현 단계 기록이다.
+
 # b-v6h1 등록 제어기 구현 — 봉인 전, 독립 검토 필요
 
 Refs #216. `codex/pair-v6h-register`, base `a8094cc14e098a55483f53a3c49bf6a0b116043d`. 구현과 지정된 오프라인 단위 검증만 했다. 물리·시뮬레이션·실모델 호출 0, 새 실험 결과 0. 기본 체크아웃과 다른 브랜치는 수정하지 않았다. 아래 탐색 raw는 비교 기준을 읽었을 뿐 이 구현의 성능 근거로 합산하지 않았다. UGRP 예외에 따라 Google Drive는 사용하지 않았다.

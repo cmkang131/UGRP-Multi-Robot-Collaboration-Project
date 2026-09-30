@@ -1,85 +1,62 @@
-# b-v6h 등록 구현 계획 (초안 — 아직 등록·봉인·실행하지 않았다) (2026-09-30, Claude)
+# b-v6h1 봉인 절차와 재현 경계 (2026-10-01)
 
-Refs #216. 이 문서는 `experiments/2026-09-30-b-v6h-gain`의 탐색 결과를 **등록된 제어기 변경**으로 옮기는 방법을 정한다. b-v6h1 구현 후보는 PR #292에 있고 아직 봉인하지 않았다. 과거 v6e 등록 바이트는 보존한다. 사전 등록 초안은 같은 폴더의 `PREREG_DRAFT.md`. **독립 검토(Opus) 전에는 봉인하지 않는다.**
+조정자의 재개 결정에 따른 **분석 봉인**이다. 실행 revision v6h / bundle `zone-pair-v83-carry-door-gain` / workflow 2.16.0을 유지한다. `prereg_v6h.json`의 두 pin 집합과 [PREREG_DRAFT.md](PREREG_DRAFT.md)의 공개 사항이 기준이다. PR #292는 **봉인 — 독립 검토 필요**, 병합하지 않는다.
 
-## 1. 번호 예약
+## 실행 소스와 분석 소스
 
-| 항목 | 예약 값 | 근거 |
-|---|---|---|
-| 실행 번들 | `zone-pair-v83-carry-door-gain` (번호 **v83**) | 2026-09-30 `git fetch` 뒤 `origin/main`과 열린 PR 브랜치(현재 #284 하나)에서 사용 중인 최댓값은 **v81**(`harness/zone_pair_v6_policy.py`, `configs/simulation_workflows.json`, `configs/zone_study_integration/llm_driver.json`, `harness/zone_study_integration.py`를 좁게 grep). v82/2.15.0/revision v6f는 v6e README가 "쓰지 않는 번호"로 명시했으므로 건너뛴다 |
-| workflow | `2.16.0` | 2.15.0은 위와 같은 이유로 건너뜀. main과 열린 PR에서 2.15.0·2.16.0 사용 없음 |
-| revision | `v6h` (`REVISION_POLICIES['v6h'] = ('v5h', 'b-only', <등록 정책 id>)`) | `CURRENT_REVISION = 'v6e'` 다음 |
-| 등록 정책 id | **`b-v6h1`** (권장) | `b-v6h`는 이미 stage-probe의 opt-in 이름이다(`harness/zone_pair_door_relax.POLICY_ID`, 과거 raw와 TB 뷰가 이 이름을 쓴다). 같은 이름을 진짜 정책으로 재사용하면 과거 기록의 뜻이 바뀐다. 이름은 검토자가 바꿀 수 있다 |
+- EXECUTION은 `4c6b439f3f7c9a147c901f8b260a1e214d4eb396`의 274파일과 EXTRA 6개다. 각각 Git blob SHA + SHA-256을 저장하고 `git show 4c6b439f:<path>`로 검증한다. 봉인 작업 트리의 파일로 원본 pin을 다시 계산하지 않는다.
+- ANALYSIS는 최종 classifier/registered-recorder·blinded-run-manifest adapter/CLASSIFY_NOTES/분석 gate/의존성과 등록 metadata의 봉인 커밋 바이트다. 겹치는 경로는 별도 해시로 구분한다. 봉인 커밋은 `--seal-commit`으로 전달해 자기 커밋 해시의 순환을 피한다.
+- 재실행하려면 `4c6b439f`를 checkout한다. 이 분석 봉인은 새 실행 권한·실행 전 등록 receipt를 만들지 않는다. 실행 당시와 현재 모두 GT→학생 보정, weld, 모델 호출을 새로 허용하지 않는다.
+- `probe_all_sweeps`의 σ 1/1 범위와 `not approach`의 yaw/p2f 범위는 동결된 원본 제어기 그대로다. 든 쌍의 신뢰할 만한 정지 감지는 없다.
 
-실제 봉인 직전에 위 grep을 다시 돌려 다른 PR이 v83/2.16.0/v6h를 가져가지 않았는지 확인한다(가져갔으면 다음 번호로).
+## 기록이 봉인보다 앞섰다는 공개
 
-## 2. 무엇이 제어기 코드가 되나
+커밋 메타데이터 `e78ef70fb5004fed1dfef1866aaf99bbf0bdda41`는 72개 case가 **봉인 전에 블라인드로 기록**되었다고 명시한다. source는 `4c6b439f`, 얇은 driver가 같은 `scripts.run_pair_stage_probes` worker를 호출했으며 prereg가 없어서 `--prereg` 없이 **unsealed_stage_probe admission**을 썼다. 이 차이를 삭제하거나 실행 전 봉인으로 표현하지 않는다.
 
-탐색에서 프로세스 내부 패치였던 다섯 변경군을 `PairPolicy` 플래그로 만든다(기본값 = 등록 값 = 끔). 값은 탐색 코호트 그대로이며 이 값들이 확증 대상이다.
+builder의 `build()['cases']`에서 `registration_run_id`만 뺀 바이트는 커밋된 plan의 cases 배열과 같다. 원래 builder와 plan 사이에는 `chain_stop_leg` 키 순서만 달랐고 봉인 builder에서 그 순서를 맞춘다. 필드 값·placement/prior·옵션은 변하지 않는다. 검증기는 정렬·반올림·추가 필드 제거 없이 plan의 literal JSON 배열을 비교한다.
 
-| 플래그(안) | 기본(끔) | b-v6h1 값 | 탐색 패치와의 대응 | 쓰이는 곳 |
-|---|---|---|---|---|
-| `carry_fwd_gain` | 1.0 | **0.9483378899463337** | `harness/zone_pair_carry_gain_fix.py`(`scaled_gain`, `enable_provider` 뒤에 한 번) | `harness/owncam_carry_v6e.enable_provider` 안, 든 PF의 `motion_loaded.gain[0][0]` 복사본 |
-| `loaded_k_xy`, `loaded_k_yaw` | 2.0, 2.0 | **1.0, 1.0** | `relaxed_margin`(`SweepGuard.margin`의 σ 배수) | `harness/zone_own_guards.SweepGuard.margin` |
-| `door_relax_sigma_scope` | `loaded_base_motion` | **`probe_all_sweeps`** | probe의 모든 margin 호출과 동일한 범위 | 쌍 가드·접근용 작업별 가드·preclose |
-| `loaded_gate_yaw_deg` | `None`(3.0/2.5) | **(5.0, 4.0)** | `GATE_LOADED` 재바인딩(4개 모듈) | `zone_own_guards`, `zone_own_driver`, `zone_own_sweep`, `zone_pair_guards`의 `GATE_LOADED` 참조 |
-| `progress_arm_on_moved_fix` | False | **True** | `install_p2f`(`MovedFixMonitor`) | 쌍 감시기의 모든 `not approach` 단계 |
-| `carry_axial_lag` | False | **True** | gain 보정 후 axial lag 역산 | `zone_pair_executor.RoutedM2.door_schedule` |
+- RUN_MANIFEST.json SHA-256: `99723de36d20a55f348ea5b25ca203cf1db910dd9a620d3a8c4a17f27407f210`.
+- plan.json SHA-256: `d627f9cda827d07bab5b86c04f9e45ffceb474e97a8dda566c4956372d5fb026`.
+- cases.jsonl SHA-256: `8e7837cbc948abcd7a29a6b81272870ec7ab716c1aba87f018cd3aca655d1836`.
+- driver SHA-256: `7a35229e431409904dffec27b5e9572f290cd900f0595c8e0babc5ef92cf3e56`.
 
-- `κ = 0.94834`의 출처: PR #284 `proposed_carry_fwd_gain_fit.json`(sha256 `02884b59…6a2f56`). 봉인 파일 목록에 **적합 입력 파일을 추가**한다(v6e의 `carry_dr_fit.json`처럼). 값에 손을 대지 않고 파일 해시를 고정한다.
-- 정책 값은 `PairPolicy`(동결 dataclass)의 필드로 두고, 다른 정책(`v5h`, `b-only`, `b-v6g`, …)의 필드는 전부 기본값이어야 한다.
+위 첫 두 해시는 커밋 blob에서 직접 재계산했다. 뒤 두 해시는 manifest 진술이며 raw/driver 본문을 여기서 읽거나 검증하지 않았다. 허용된 메타데이터 3개 이외에 블라인드 raw의 목록·내용을 열지 않고 outcome을 계산/확인하지 않았다. 분류기의 마지막 버전은 블라인드 결과 없이 reviews 299–299g를 거쳐 `1f0e4eb5`에서 고정됐다.
 
-### 결정이 필요한 점 (검토자에게)
+조정자가 승인한 main 4파일(`zone_main_budget.py`, `zone_study_llm_driver.py`, `zone_study_llm_transport.py`, `agent_lock.py`)은 작업 트리에서 main 바이트를 쓴다. 코호트 모델 호출은 0이며 lock은 호스트 도구다. 원본 EXECUTION 검증은 4c6b439f에서 하므로 바뀐 작업 트리를 코호트 소스로 오인하지 않는다. 등록 builder·두 문서·CURRENT_REVISION도 허용된 metadata 변경이다. 모든 차이와 원본/봉인 해시는 prereg의 notes에 남긴다.
 
-1. **σ 배수 완화의 범위(2026-09-30 인수 실패 뒤 조정자 결정).** `door_relax_sigma_scope="probe_all_sweeps"`에서 1/1은 probe가 교체한 모든 `SweepGuard.margin` 호출에 적용한다. 짐 없는/든 팔 스윕, 접근·후진·차체 이동, preclose의 자기 위치 여유를 포함하며 파지 확인(confirmed grasp)은 조건이 아니다. 별도 빔 영상 불확실성 항은 2σ다. 기존 head `3afc61b0`의 좁은 범위는 lag-on 10건 중 6건과 lag-off sanity의 pregrasp 시야 후보를 막아 인수 재생에 실패했다. 모든 margin을 1/1로 덮어쓴 원인 확인은 7/7 명령·leg 일치를 회복했다. tS/tR/tX 탐색 29/29는 probe 범위에서 나온 기록이므로 좁힌 제어기에 그대로 옮길 수 없다. [정확한 대응 표](SIGMA_SCOPE_CORRECTION.md)를 따른다. 새 소스의 물리 재생은 별도다.
-   **yaw gate와 p2f는 별도 범위다.** `PairCommandGuard.approach`가 거짓인 모든 단계(`not approach`)에 적용한다. 파지 receipt가 없는 align과 재파지도 포함된다. 빈 몸 접근 `GuardedDriver`의 진행 감시기는 기존대로다.
-2. `GlobalPairSweepGuard`의 `K_SIGMA`(빔 상대 모드에서만 사용)와 `zone_pair_guards`의 정합 검사(`K_SIGMA` 309–340줄)는 **바꾸지 않는다.** 탐색도 이것들을 건드리지 않았다(클래스 상수 `K_SIGMA`는 그대로 2).
-3. 진행 감시 규칙 p2f는 실제로는 **무장하지 않았다**(208건 중 0건). 등록하면 "든 쌍에는 사실상 정지 감지가 없다"는 성질을 코드에 굳히는 것이다. 이를 수용하거나(전제: fail-open 명시, 사전 등록에 적음), 정지 감지를 다른 방식으로 복원하기 전까지 등록을 미루는지는 검토자가 정한다. 이 계획은 수용 + 명시를 전제로 쓴다.
-4. **`carry_axial_lag=True`는 2026-09-30 조정자 결정으로 포함했다.** gain 보정을 필수로 하며 같은 plant 복사본으로 축 방향 시간을 역산한다. lateral과 전역 `LAG_AXES`는 보존한다. 과거 탐색 물리 결과는 이 구현의 인수 통과가 아니다.
+## 오프라인 검증 명령 (raw 접근 없음)
 
-## 3. 봉인 파일 중 바뀌는 것
+다른 작업의 공용 `core.worktree` 설정에 영향을 받지 않도록 이 worktree 경로를 명시한다. 공용 host lock은 획득하지 않는다.
 
-`experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json`의 85개 해시 중 다음이 바뀐다(정확한 목록은 재봉인 때 스크립트가 만든다):
+```sh
+export GIT_WORK_TREE=/Users/changmin/projects/ugrp-wt/v6h-register
+V6H_PYTHON=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+$V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify
+$V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify-seal --seal-commit "$V6H_SEAL_COMMIT"
+$V6H_PYTHON -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair_v6h_seal.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_v6h.py tests/test_zone_pair_v6h_review_delta.py tests/test_v6h_classify_placements.py tests/test_v6h_classifier_properties.py tests/test_v6h_recorder_contract.py tests/test_v6h_blinded_run_manifest.py
+```
 
-| 파일 | 변경 |
-|---|---|
-| `harness/zone_pair_v6_policy.py` | `PairPolicy` 다섯 변경군, `b-v6h1` 정책, `REVISION_POLICIES['v6h']`, `EXECUTION_BUNDLE_ID` |
-| `harness/owncam_carry_v6e.py` | `enable_provider`에서 gain 배수 적용, 프로필/입력 해시 기록 |
-| `harness/zone_own_guards.py` | 정책별 σ 범위·배수 인수, 게이트 프로필 선택 |
-| `harness/zone_pair_guards.py` | 든 쌍 감시기의 fix 시각 규칙(`progress_arm_on_moved_fix`), 게이트 조회 |
-| `harness/zone_pair_geometry.py`, `harness/zone_own_sweep.py`, `harness/zone_own_driver.py`, `harness/zone_own_executor.py`, `harness/zone_pair_executor.py` | 정책 값을 가드에 전달(방식은 위 결정 1에 따름) |
-| `harness/zone_study_integration.py` | 번들 ID, `RETIRED_BUNDLE_IDS`에 v81 추가 |
-| `scripts/zone_pair_v6_contract.py` | `CURRENT_REVISION = 'v6h'`, 봉인 해시 재생성, v6e를 historical로 |
-| 새 파일 | κ 적합 입력(PR #284 파일 사본과 sha256), `experiments/2026-09-30-pair-v6h-carry/prereg_v6h.json`, `build_prereg_v6h.py` |
+`V6H_SEAL_COMMIT`은 PR의 실제 봉인 커밋 SHA다. 커밋 전에는 `--seal-commit`을 빼고 분석 작업 트리 pin을 검사하며, 커밋 뒤에는 반드시 위처럼 Git blob 감사를 한다. `--seal`은 최초 생성에만 쓰고 기존 파일이 있으면 거절한다. 수정이 필요하면 기존 봉인을 덮어쓰지 않고 새 revision으로 등록한다.
 
-봉인 밖에 남는 것: 탐색 패치 모듈(`zone_pair_door_relax.py`, `zone_pair_progress_relax.py`, `zone_pair_carry_gain_fix.py`)은 stage-probe 전용으로 남기되 `b-v6h` 이름 그대로 두고, 등록 정책과 겹치지 않게 한다(정책 id `b-v6h1`).
+## 독립 검토·개봉 결정 뒤 실행할 분석 명령 (이번 작업에서는 실행하지 않음)
 
-## 4. 재봉인 절차 (`docs/execution_versioning.md`, 선례: 커밋 `e510779d` v6e 등록)
+먼저 봉인 커밋을 checkout한 별도 작업 경로에서 위 Git blob 감사로 실행/분석 두 집합을 확인한다. 아래 출력 경로는 반드시 새 이름이어야 한다. raw는 읽기 전용이다.
 
-1. 새 브랜치 `claude/pair-v6h-register`를 최신 `origin/main`에서 만든다(이 초안 브랜치를 그대로 봉인하지 않는다: 탐색 코드와 등록 코드를 분리).
-2. 위 번호가 아직 비어 있는지 재확인, PR 본문에 사용한 ID를 적는다.
-3. 위 플래그 구현. 모든 플래그는 끔이 기본이고 끔이면 출력이 바이트 동일.
-4. `build_prereg_v6h.py`를 `build_prereg_v6e.py`를 본떠 만든다. 확증 코호트 계획(`PREREG_DRAFT.md`의 검토 반영본)을 `prereg_v6h.json`에 담고 `scripts/zone_pair_v6_contract.py`가 검사하는 봉인 해시를 기록한다.
-5. `CURRENT_REVISION = 'v6h'`. v6e는 historical로 내리고 그 봉인 커밋(`e510779d` 계열)과의 일치를 감사한다. v81은 `RETIRED_BUNDLE_IDS`로.
-6. 갱신: `configs/simulation_workflows.json`(2.16.0), `configs/zone_study_integration/llm_driver.json`, `docs/zone_study_integration.md`, `docs/current_status.md`, 그리고 v81/2.14.0을 언급하는 테스트(`test_owncam_bootstrap_v6b.py`, `test_zone_pair_v6d.py`, `test_zone_study_integration_pair.py`, `test_zone_study_llm_driver.py`, `test_zone_study_multiturn_properties.py`, `test_zone_study_referee.py`, `test_zone_study_source_pinning.py`, `test_zone_pair_registered_source.py`, `test_zone_pair_v6.py`).
-7. `scripts.run_pair_stage_probes --prereg`에서 72건 admission과 실제 worker 설정 일치를 검사한다. `run_zone_pair_dev`의 과거 6건 경로로 실행하지 않는다. README의 준비 명령과 지적 2의 병합/pin TODO를 먼저 확인한다.
-8. 로컬 검증 → 독립 검토 → PR(초안 → CI 통과 → 검토) → **병합·확증 코호트 실행은 별도 결정**.
+```sh
+$V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis \
+  --seal-commit "$V6H_SEAL_COMMIT" \
+  --prereg experiments/2026-09-30-pair-v6h-carry/prereg_v6h.json \
+  --raw /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 \
+  --output /Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-NEW
+```
 
-## 5. 단위 시험 (새 파일 `tests/test_zone_pair_v6h.py` 안)
+이 명령은 내부에서 고정된 `classify_placements.analyse`를 `--recorded-run-manifest`와 그 고정 해시로 적용한다. 실행이 미봉인이었다는 classifier 원보고서를 보존한 뒤, 별도 봉인 gate로 941×60의 48/60·전체 안전·B를 판정하고 943×12를 민감도로 구분한다. HOST_ERROR/ENOSPC/누락은 UNCLASSIFIED이며 분모를 줄이지 않고 통과를 막는다. 원본 분류기는 `--sealed-manifest`와 recorded-run manifest의 혼용을 계속 거절한다.
 
-- 모든 기존 정책(`v5h`, `b-only`, `b-v6c`, `b-v6d`, `b-v6e*`, `b-v6g*`)의 새 필드가 기본값이다. `b-v6h1` = `b-v6g` + 다섯 변경군 외 차이가 없다.
-- 끔 상태에서 든 PF·`SweepGuard.margin`·`GATE_LOADED`·`PairCommandGuard`의 출력이 main의 골든과 `1e-9` 안에서 같다(`test_flags_off_localizer_is_bit_identical_*` 선례).
-- 켜짐 상태: `carry_fwd_gain`은 `gain[0][0]`만 곱하고 다른 항목·다른 PF·원본 dict를 건드리지 않으며 두 번 곱하지 않는다. σ 배수는 `probe_all_sweeps`의 모든 margin 호출에서 1/1이다. 팔/차체/translation/plan/preclose 출력은 probe 수식과 정확히 같아야 하고, 접근 가드 복사본이 own executor에 새지 않아야 한다. S03 기록 자세에서 2/2는 후보 0개, 1/1은 probe와 같은 후보·점수여야 한다. yaw 게이트와 p2f는 모든 not approach 단계(align·재파지 포함)에 적용한다. 진행 감시는 이동 시작 이후의 fix만 기준선을 세우고, 시각이 없거나 NaN이면 세우지 않는다. 빈 몸 `GuardedDriver`의 감시기는 등록 규칙 그대로다.
-- 정책 조합: 등록 정책 목록·번들 ID·workflow 버전·봉인 해시(`test_zone_pair_registered_source.py`)가 서로 일치한다.
+새 결과의 native TensorBoard 변환·데이터 로딩·뷰 검증은 개봉 뒤 결과 전달 작업에서 한다. 이번 봉인은 raw 분석·물리·렌더·모델 호출·TensorBoard 결과 검증이 아니다.
 
-## 6. 인수 시험 (등록 뒤, 확증 코호트 전, 물리 필요)
 
-**bit-for-bit 재생은 필수다.** #294의 같은 gain+p2f+k1g+axial ON 참조 **5건**으로 통일한다: **tS S01·S07, tR hR2_04, tX1 X01, tX1b X06; 모두 seed 911**. 정확한 목록은 `analysis/acceptance_replay_DRAFT.json`, 실행용 case 사본은 `acceptance_reference_DRAFT.json`이다. #294 원문에서 X01의 출처는 tX1이다(tX1b X01 raw는 없다). 요청의 tS/tR/tX1b 약칭으로 출처를 바꾸지 않는다. OFF sB/cA와 과거 PR #292의 6건 목록은 현재 기준이 아니다.
+추가 공개: 병합한 main `f5cd3a2b`에는 기존 4개 외에 `harness/vision_loc_protocol.py`(응답 seq int 검사/bool 거절, `b38c1d59`)와 `sim/workflow_manager.py`(표준 study 실행 전 admission 검사)도 바뀌었다. 최종 작업 트리에서는 총 6개의 main 변경을 구분해 공개한다. 재개 결정 A(1)의 원본 커밋 검증과 B의 정상 main 병합에 따라 main 바이트를 반영했다. 원래 4개 목록에 들어 있던 변경으로 표현하지 않으며, 실행 274파일은 계속 4c6b439f에서 검증한다.
 
-동일 배치·prior·환경·설정·SIM 타이밍으로 다시 실행해 `commands.json` **바이트 및 SHA-256 완전 동일**, leg 판정 동일, **연쇄 전체 접촉/하드 한계 판정 동일**을 모두 요구한다. 정렬/반올림/필드 제거/수치 허용오차로 바이트 비교를 대체하지 않는다. 수정된 `probe_all_sweeps`의 arm/preclose 가드까지 새 SHA에서 이 재생으로 확인한다. 최종 분류기 반영은 `REVIEW_RESPONSE.md`의 지적 2 TODO를 따른다. 하나라도 다르면 원인 검토 전 확증을 시작하지 않는다. 물리 잠금과 실행은 조정자 소관이며 이 수정 작업에서는 실행하지 않았다.
+## 참고 자료
 
-## 7. 알려진 위험
-
-- 탐색 통과가 "정지 감시가 없어서"일 수 있다(§2 결정 3). 등록 정책의 든 상태 안전성은 충돌 가드와 σ 게이트에만 의존한다.
-- σ가 x에서 약 6배 보수적이라(gain 패치 뒤 z² 0.03) 게이트·여유는 실제 오차 대비 넉넉하다. 앞으로 σ를 다시 보정하면(보수성을 줄이면) 이 완화가 필요한지가 달라질 수 있다.
-- 인수 실패 원인인 좁은 σ 범위는 probe와 맞췄으나 새 SHA의 물리 재생 전에는 명령 동등성을 확정하지 않는다. 접촉 허용은 기존 사용자 결정이며 penetration >5 mm / tilt >15°의 하드 한계는 평가 분류기가 먼저 확인한다(최종 분류기 병합/pin은 별도 TODO).
+[ICH E9(R1)](https://database.ich.org/sites/default/files/E9-R1_Step4_Guideline_2019_1203.pdf)의 주 분석/민감도 사전 명시와 [CONSORT 2025 item 3](https://www.consort-spirit.org/item3-accesstotrialprotocol)의 분석계획 확정·버전 공개 원칙을 참고했다. 로봇 연구에 대한 유추이며, 기록 후 봉인을 실행 전 등록으로 소급하는 근거로 쓰지 않는다.
