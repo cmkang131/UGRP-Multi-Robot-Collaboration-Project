@@ -91,12 +91,20 @@ def test_base_mode_checks_pull_request_commits(repo, capsys):
 
 
 @pytest.mark.skipif(shutil.which("bash") is None, reason="bash hook")
-def test_pre_commit_hook_warns_but_keeps_20_mib_block(repo):
+@pytest.mark.parametrize("extra_scripts", [
+    pytest.param((), id="standalone"),
+    pytest.param(("agent_worktree.py", "tree_manifest.py", "worktree_guard.py"), id="without-ci-module"),
+    pytest.param(("agent_worktree.py", "tree_manifest.py", "worktree_guard.py", "check_ci_fixtures.py"),
+                 id="without-ci-fixtures"),
+])
+def test_pre_commit_hook_warns_but_keeps_20_mib_block(repo, monkeypatch, extra_scripts):
+    # Do not let the parent checkout satisfy missing modules in this partial repo.
+    monkeypatch.delenv("PYTHONPATH", raising=False)
     hooks = repo / ".githooks"
     hooks.mkdir()
     shutil.copy2(ROOT / ".githooks/pre-commit", hooks / "pre-commit")
     (repo / "scripts").mkdir()
-    for name in ("check_media_size.py", "agent_worktree.py", "tree_manifest.py", "worktree_guard.py"):
+    for name in ("check_media_size.py", *extra_scripts):
         shutil.copy2(ROOT / "scripts" / name, repo / "scripts" / name)
     git(repo, "config", "core.hooksPath", ".githooks")
     git(repo, "add", "-A")
@@ -106,6 +114,8 @@ def test_pre_commit_hook_warns_but_keeps_20_mib_block(repo):
     result = subprocess.run(["git", "commit", "-m", "media"], cwd=repo, capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
     assert "WARNING (media budget)" in result.stderr
+    assert "Traceback" not in result.stderr
+    assert "CI preflight" not in result.stderr
     write(repo, "experiments/new/huge.bin", 21 * MIB)
     git(repo, "add", "-f", "experiments/new/huge.bin")
     result = subprocess.run(["git", "commit", "-m", "huge"], cwd=repo, capture_output=True, text=True)
