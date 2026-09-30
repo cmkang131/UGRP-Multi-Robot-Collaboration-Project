@@ -1,64 +1,106 @@
 {
-  "checked_at_kst": "2026-09-30T21:47:20.656477+09:00",
-  "round": 2,
-  "raw_outputs_mutations_performed": false,
-  "real_execute_performed": false,
-  "manifest_sha256": "7dae93f5544dba9575048865ccd1ed40e014b30423a949f16f80384976a4a635",
+  "round": 3,
+  "status": "READ-ONLY proposal; actual deletion not authorized or attempted",
+  "recorded_at": "2026-09-30T15:00:06.888019+00:00",
+  "audit_base_sha": "70f2f09c46bdc1e265af70fb44111f5906324dff",
+  "manifest_sha256": "c2f2a13d25e51657a28dd1a1b00f2c2cc8748ba08668dced93073c0dea06795b",
   "dry_run": {
     "execute": false,
     "schema": "ugrp.outputs-retention.v3",
-    "batches": 12706,
-    "files": 1022553,
-    "bytes": 23672815675,
-    "allocated_bytes": 25495932928,
-    "kept_files_verified": 766309,
-    "manifest_sha256": "7dae93f5544dba9575048865ccd1ed40e014b30423a949f16f80384976a4a635",
-    "execution_blocker": "active agent_lock: physics, pid=48789"
+    "batches": 1048,
+    "files": 13794,
+    "bytes": 569695537,
+    "allocated_bytes": 609755136,
+    "kept_files_verified": 1775068,
+    "manifest_sha256": "c2f2a13d25e51657a28dd1a1b00f2c2cc8748ba08668dced93073c0dea06795b",
+    "execution_blocker": "active agent_lock: physics, pid=21249"
   },
-  "plan_consistency": {
-    "completed_unix": 1790772108.722635,
-    "manifest_sha256": "7dae93f5544dba9575048865ccd1ed40e014b30423a949f16f80384976a4a635",
-    "boundary_deletion_conflicts": 0,
-    "model_payload_hash_conflicts": 0,
-    "model_path_conflicts": 0,
-    "age_or_infrastructure_conflicts": 0,
-    "sealed_prefixes_verified": 8,
-    "hardlink_deletions": 0,
-    "thinning_streams_recomputed": 21238,
-    "json_reconstruction_mappings_checked": 17523,
-    "scope": "Separate consistency check of collected file hashes and rule decisions; real filesystem hashes separately verified by outputs_prune dry-run.",
-    "boundary_paths_detected": 15045,
-    "retired_D2_boundaries_exempted": 1047
+  "consistency": {
+    "manifest_sha256": "c2f2a13d25e51657a28dd1a1b00f2c2cc8748ba08668dced93073c0dea06795b",
+    "original_delete_files": 1022553,
+    "new_delete_files": 13794,
+    "new_keep_files": 1775068,
+    "restored_to_keep": 1008759,
+    "reviewer_excluded_files": 724107,
+    "protected_inventory_entries": 2645846,
+    "candidate_protection_overlap": 0,
+    "candidate_reviewer_overlap": 0,
+    "graph_sources": 212184,
+    "matched_reference_edges": 3237527,
+    "folder_edges": 25302,
+    "d5_reconstruction_links": 0,
+    "original_partition_preserved": true,
+    "new_candidates_added": 0,
+    "dry_run_files_verified": true,
+    "actual_deleted_files": 0,
+    "execution_blocker": "active agent_lock: physics, pid=21249"
   },
   "tests": {
-    "passed": 60,
+    "passed": 80,
     "failed": 0,
-    "scope": "Destructive behavior tested only in isolated /private/tmp outputs fixtures; source copies byte-identical",
+    "skipped": 0,
+    "python": "3.13.5",
+    "command": "/opt/anaconda3/bin/python3 -m pytest -q --noconftest --rootdir=. --basetemp=./fixtures --junitxml=./junit.xml tests/test_outputs_prune.py tests/test_outputs_retention_graph.py",
+    "cwd": "/private/tmp/retention-r3-tests",
+    "scope": "byte-identical source copies; destructive execution tests only in synthetic /private/tmp outputs fixtures; real outputs strictly read-only",
     "junit_path": "unit-tests.xml",
-    "junit_sha256": "f81cb95d01f836cb5398e805fb9fd7e423c1013be5d385bd1dd86cfe7bc15e00"
+    "junit_sha256": "8112d652b7fc65d3aac7a663c60815dff27855920a492d2ea8c1dab6fae02e0f"
   },
   "source_file_sha256": {
     "scripts/outputs_prune.py": "4cadd8efb88be890274e4eeda8d948a27d52221a8f15380759728f989ed1c5e9",
     "scripts/outputs_prune_stream.py": "953f24054e0119973094844d84280af4742d1d0e816c3b8ab40a0aa025251be0",
     "scripts/outputs_retention_rules.py": "4cf5e6ae9f208c9be51e7f781d71584d2058f56818bdf062e8246aa2582d2bcc",
-    "tests/test_outputs_prune.py": "9bc0ec0ff3da304876e19e880f4c27d8fe7281e356fa3074c8c803c0592400bf"
+    "scripts/outputs_retention_graph.py": "53bc423a860ec15e951c2e63987dc0129759f212b77f49e30f135f6492d0f6c2",
+    "scripts/run_ci_tests.py": "17356c716d28271ac28af6e44c331e3077f838842398cbd515de8036ca886463",
+    "experiments/2026-09-30-outputs-retention/audit/round3_graph.py": "8b04d8d3447704bd7290ffe82fa35b6b0b0a2897ab33c9f0b3c7f42717ddd1c5",
+    "experiments/2026-09-30-outputs-retention/audit/round3_check.py": "ccef113665e38e85ab1f78e55f8127714275e0c7f5d06eca1c77d53e30e1b72d",
+    "tests/test_outputs_prune.py": "9bc0ec0ff3da304876e19e880f4c27d8fe7281e356fa3074c8c803c0592400bf",
+    "tests/test_outputs_retention_graph.py": "40c0b059b059ad98529dee05f555dcf3bc51df1c3d572d2c07db1d31ad4c4294"
+  },
+  "artifact_sha256": {
+    "dry-run.json": "09202a96d227527bd4619d43581d37de173c12d709efe78d392cb7bdf51e00b5",
+    "round3-consistency.json": "942018083f1847eb9819ba6d8e1872439f8a19b8cdccf96d0f9d1be17fdebb01",
+    "round3-graph-summary.json": "67bf1f93d50575bc7716a8477520933a6608b5acf49948896d1bf456ab0d91c6",
+    "round3-optional-decisions.json": "ee70b6adfccb41318adc4170d1800339327f4a737ce2607085959a4951425806",
+    "summary.json": "9702337d268189ff733edf1e87cd9b8ea77d9860966737c38e0324418951544d",
+    "inventory.csv": "ae09fc926b197b3986feb7ffe7466c32bc65a5bbbfcb6b03292ad870333a20b1"
   },
   "checks": {
     "git_diff_check": "pass",
+    "git_cached_diff_check": "pass",
     "media_budget_staged_strict": "pass",
     "test_registered_once_in_ci_shards": true
   },
-  "projection": {
-    "inventory_before_allocated_bytes": 83100135424,
-    "inventory_after_allocated_bytes": 57604202496,
-    "live_du": {
-      "allocated_bytes": 83892047872,
-      "projected_allocated_bytes": 58396114944,
-      "measured_at_kst": "2026-09-30T21:40:16.402202+09:00",
-      "method": "du -sk outputs, read-only; concurrent tree, not an atomic snapshot",
-      "inventory_growth_allocated_bytes": 791912448
-    }
+  "reviewer_source_sha": "7cd7e6c04ef20d3cb82ba4aa5b6a89f36d0a6c4d",
+  "reviewer_artifacts_verified_byte_identical": true,
+  "reviewer_exclusion_union": {
+    "files": 724107,
+    "bytes": 18468346428,
+    "allocated_bytes": 19634872320,
+    "sorted_paths_lf_sha256": "59b4eb61c1f8c8c299913e009fe4730d28aec9734cca3ea7e70b79f8d62986a3"
   },
-  "ci_scope": "Local targeted tests and actual read-only dry-run; GitHub CI after push is separate. No physics, model loading or actual pruning claimed.",
-  "primary_checkout": "Not updated: main was behind origin/main and shared source was in use; no merge performed in this task."
+  "reference_errors_by_kind": {
+    "ValueError": 9,
+    "JSONDecodeError": 62
+  },
+  "error_policy": "unreadable/changing producer families and unresolved D1/D2 files remain protected",
+  "projection": {
+    "inventory_allocated_bytes": 84017451008,
+    "projected_allocated_bytes": 83407695872,
+    "method": "per-entry stat inventory, hardlinks counted once; concurrent tree, not atomic; APFS actual free space not promised"
+  },
+  "actual_deleted_files": 0,
+  "execution": "not performed; no receipts, output files, locks or raw data written by this audit",
+  "ci_scope": "local targeted tests + actual read-only dry-run + catalog/partition consistency; GitHub CI after push is separate",
+  "primary_checkout": "unchanged; no merge or primary source update performed",
+  "outside_scope": [
+    "Drive",
+    "new TensorBoard snapshot",
+    "physics",
+    "model calls",
+    "model loading",
+    "release upload",
+    "actual pruning",
+    "PR merge"
+  ]
 }

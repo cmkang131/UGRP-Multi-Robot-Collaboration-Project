@@ -1,0 +1,64 @@
+{
+  "checked_at_kst": "2026-09-30T21:47:20.656477+09:00",
+  "round": 2,
+  "raw_outputs_mutations_performed": false,
+  "real_execute_performed": false,
+  "manifest_sha256": "7dae93f5544dba9575048865ccd1ed40e014b30423a949f16f80384976a4a635",
+  "dry_run": {
+    "execute": false,
+    "schema": "ugrp.outputs-retention.v3",
+    "batches": 12706,
+    "files": 1022553,
+    "bytes": 23672815675,
+    "allocated_bytes": 25495932928,
+    "kept_files_verified": 766309,
+    "manifest_sha256": "7dae93f5544dba9575048865ccd1ed40e014b30423a949f16f80384976a4a635",
+    "execution_blocker": "active agent_lock: physics, pid=48789"
+  },
+  "plan_consistency": {
+    "completed_unix": 1790772108.722635,
+    "manifest_sha256": "7dae93f5544dba9575048865ccd1ed40e014b30423a949f16f80384976a4a635",
+    "boundary_deletion_conflicts": 0,
+    "model_payload_hash_conflicts": 0,
+    "model_path_conflicts": 0,
+    "age_or_infrastructure_conflicts": 0,
+    "sealed_prefixes_verified": 8,
+    "hardlink_deletions": 0,
+    "thinning_streams_recomputed": 21238,
+    "json_reconstruction_mappings_checked": 17523,
+    "scope": "Separate consistency check of collected file hashes and rule decisions; real filesystem hashes separately verified by outputs_prune dry-run.",
+    "boundary_paths_detected": 15045,
+    "retired_D2_boundaries_exempted": 1047
+  },
+  "tests": {
+    "passed": 60,
+    "failed": 0,
+    "scope": "Destructive behavior tested only in isolated /private/tmp outputs fixtures; source copies byte-identical",
+    "junit_path": "unit-tests.xml",
+    "junit_sha256": "f81cb95d01f836cb5398e805fb9fd7e423c1013be5d385bd1dd86cfe7bc15e00"
+  },
+  "source_file_sha256": {
+    "scripts/outputs_prune.py": "4cadd8efb88be890274e4eeda8d948a27d52221a8f15380759728f989ed1c5e9",
+    "scripts/outputs_prune_stream.py": "953f24054e0119973094844d84280af4742d1d0e816c3b8ab40a0aa025251be0",
+    "scripts/outputs_retention_rules.py": "4cf5e6ae9f208c9be51e7f781d71584d2058f56818bdf062e8246aa2582d2bcc",
+    "tests/test_outputs_prune.py": "9bc0ec0ff3da304876e19e880f4c27d8fe7281e356fa3074c8c803c0592400bf"
+  },
+  "checks": {
+    "git_diff_check": "pass",
+    "media_budget_staged_strict": "pass",
+    "test_registered_once_in_ci_shards": true
+  },
+  "projection": {
+    "inventory_before_allocated_bytes": 83100135424,
+    "inventory_after_allocated_bytes": 57604202496,
+    "live_du": {
+      "allocated_bytes": 83892047872,
+      "projected_allocated_bytes": 58396114944,
+      "measured_at_kst": "2026-09-30T21:40:16.402202+09:00",
+      "method": "du -sk outputs, read-only; concurrent tree, not an atomic snapshot",
+      "inventory_growth_allocated_bytes": 791912448
+    }
+  },
+  "ci_scope": "Local targeted tests and actual read-only dry-run; GitHub CI after push is separate. No physics, model loading or actual pruning claimed.",
+  "primary_checkout": "Not updated: main was behind origin/main and shared source was in use; no merge performed in this task."
+}

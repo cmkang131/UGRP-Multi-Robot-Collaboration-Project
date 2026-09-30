@@ -1,0 +1,69 @@
+{
+  "schema": "ugrp.retention-optional-questions.v1",
+  "executable": false,
+  "scope": "research-retirement questions only; current manifest preserves every file; coordinator must ask user and build/review a separate exact manifest after any decision",
+  "model_input_note": "E1/E2 learned input families and training checkpoints are not offered; cross-study input dependencies must still be checked before any later deletion",
+  "questions": [
+    {
+      "id": "Q1",
+      "research_line": "9/25 TOP RGB 작업 결과 판정 v1/v2",
+      "prefixes": [
+        "zone-rgb-outcome-20260925",
+        "zone-rgb-outcome-v2-20260925"
+      ],
+      "selector": "all image extensions in these families; no JSON/JSONL/CSV/models/video",
+      "files": 73619,
+      "bytes": 4089435650,
+      "allocated_bytes": 4249776128,
+      "allocated_gib": 3.9579124450683594,
+      "sorted_paths_lf_sha256": "f695063d679595e4b8f2b5a1c9449aeed09bb7b9a7d93ef4339ff3b5e833a6ff",
+      "content_records_sha256": "eabe5a57f26d0bb0652b7e7933982c7cb2bdf3a3a2dc93b34a49594aaa5ce5dd",
+      "lost_capability": "전후·시계열 픽셀에서 delivered/미확정 판정과 false-delivered 수치를 다시 계산하거나 판정 시점을 감사할 수 없음",
+      "evidence": [
+        "experiments/2026-09-25-zone-rgb-outcome/README.md",
+        "scripts/eval_zone_rgb_outcome.py"
+      ],
+      "decision": "KEEP; user decision pending"
+    },
+    {
+      "id": "Q2",
+      "research_line": "9/25 상자 4색 검출 평가",
+      "prefixes": [
+        "zone-rgb-color-20260925"
+      ],
+      "selector": "all image extensions in these families; no JSON/JSONL/CSV/models/video",
+      "files": 4470,
+      "bytes": 135891192,
+      "allocated_bytes": 145039360,
+      "allocated_gib": 0.13507843017578125,
+      "sorted_paths_lf_sha256": "9a69c0d2f0ed0a60918992c82462394e3866e8e37b9e3019ea91847376f582e5",
+      "content_records_sha256": "0a5b9ecd6764ec31f6aaa5f5f1a9fdd74a36585aadf86f3ab04f980a6ef7aff3",
+      "lost_capability": "RGB와 정답 segmentation에서 오검출·색별 재현율·위치 오차를 다시 채점할 수 없음",
+      "evidence": [
+        "experiments/2026-09-25-zone-rgb-color/README.md",
+        "scripts/eval_zone_color_detection.py"
+      ],
+      "decision": "KEEP; user decision pending"
+    },
+    {
+      "id": "Q3",
+      "research_line": "9/25 AprilTag 자기 카메라 위치 추정 오프라인 평가",
+      "prefixes": [
+        "owncam-loc-20260925"
+      ],
+      "selector": "all image extensions in these families; no JSON/JSONL/CSV/models/video",
+      "files": 8770,
+      "bytes": 157494431,
+      "allocated_bytes": 177225728,
+      "allocated_gib": 0.1650543212890625,
+      "sorted_paths_lf_sha256": "59669b94185608f5b7903666fe2148bbcbfe645b4bd0296d72447f3204463499",
+      "content_records_sha256": "aa259db2bb600772deee35580ddcd87cbeb518e2de77b8b261f1960d38bee41f",
+      "lost_capability": "태그 재검출→위치 추정→오차 점수와 자세별 태그 가시율을 원본 영상에서 다시 검증할 수 없음",
+      "evidence": [
+        "experiments/2026-09-25-zone-owncam-loc/README.md",
+        "scripts/eval_owncam_localization.py"
+      ],
+      "decision": "KEEP; user decision pending"
+    }
+  ]
+}

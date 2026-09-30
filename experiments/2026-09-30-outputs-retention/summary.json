@@ -1,191 +1,192 @@
 {
-  "measured_unix": 1790770318.5392919,
-  "cutoff_24h_unix_ns": 1790683918539291904,
-  "before_allocated_bytes": 83100135424,
-  "before_bytes": 78346654014,
-  "categories": [
-    {
-      "rule_id": "D1",
-      "delete_files": 925336,
-      "delete_bytes": 18754818461,
-      "delete_allocated_bytes": 20338622464
+  "round": 3,
+  "status": "READ-ONLY proposal; DO NOT EXECUTE before coordinator approval and re-review",
+  "manifest_sha256": "c2f2a13d25e51657a28dd1a1b00f2c2cc8748ba08668dced93073c0dea06795b",
+  "inventory": {
+    "started_unix": 1790775816.382142,
+    "finished_unix": 1790776390.939486,
+    "entries": 2743706,
+    "round2_manifest_sha256": "7dae93f5544dba9575048865ccd1ed40e014b30423a949f16f80384976a4a635",
+    "root": "/Users/changmin/projects/ugrp/outputs",
+    "cutoff_unix": 1790683918.5392919
+  },
+  "before_allocated_bytes": 84017451008,
+  "projected_after_allocated_bytes": 83407695872,
+  "delete_totals": {
+    "files": 13794,
+    "bytes": 569695537,
+    "allocated_bytes": 609755136
+  },
+  "keep_totals": {
+    "files": 1775068,
+    "bytes": 62807977442,
+    "allocated_bytes": 66229477376
+  },
+  "reviewer_exclusions_verified": {
+    "files": 724107,
+    "bytes": 18468346428,
+    "allocated_bytes": 19634872320,
+    "sorted_paths_lf_sha256": "59b4eb61c1f8c8c299913e009fe4730d28aec9734cca3ea7e70b79f8d62986a3"
+  },
+  "round2_reclassification": {
+    "analysis_script_input_directory": {
+      "files": 83,
+      "bytes": 1384538,
+      "allocated_bytes": 1560576
     },
-    {
-      "rule_id": "D2",
-      "delete_files": 65827,
-      "delete_bytes": 3719379369,
-      "delete_allocated_bytes": 3864215552
+    "candidate:D3": {
+      "files": 13794,
+      "bytes": 569695537,
+      "allocated_bytes": 609755136
     },
-    {
-      "rule_id": "D3",
-      "delete_files": 13867,
-      "delete_bytes": 571025611,
-      "delete_allocated_bytes": 611241984
+    "content_sha256_reference": {
+      "files": 284392,
+      "bytes": 4630164567,
+      "allocated_bytes": 5246091264
     },
-    {
-      "rule_id": "D5",
-      "delete_files": 17523,
-      "delete_bytes": 627592234,
-      "delete_allocated_bytes": 681852928
+    "image_path_reference": {
+      "files": 151,
+      "bytes": 2314361,
+      "allocated_bytes": 2674688
+    },
+    "referenced_input_directory": {
+      "files": 23,
+      "bytes": 855024,
+      "allocated_bytes": 917504
+    },
+    "reviewer:E1": {
+      "files": 173756,
+      "bytes": 10925266596,
+      "allocated_bytes": 11288457216
+    },
+    "reviewer:E2": {
+      "files": 5900,
+      "bytes": 77406441,
+      "allocated_bytes": 86736896
+    },
+    "reviewer:E3": {
+      "files": 496540,
+      "bytes": 6584779282,
+      "allocated_bytes": 7282229248
+    },
+    "reviewer:E4": {
+      "files": 31588,
+      "bytes": 654559532,
+      "allocated_bytes": 714850304
+    },
+    "reviewer:E5": {
+      "files": 16323,
+      "bytes": 226334577,
+      "allocated_bytes": 262598656
+    },
+    "unresolved_producer_consumer": {
+      "files": 3,
+      "bytes": 55220,
+      "allocated_bytes": 61440
     }
-  ],
-  "kept_reasons": [
-    {
-      "reason": "D1_leg_or_event_endpoint",
-      "files": 8678,
-      "bytes": 132649239,
-      "allocated_bytes": 145625088
-    },
-    {
-      "reason": "D1_sample_or_endpoint",
-      "files": 216783,
-      "bytes": 6004758312,
-      "allocated_bytes": 6386266112
-    },
-    {
-      "reason": "D4_model_or_unique_zip",
-      "files": 46,
-      "bytes": 4577740574,
-      "allocated_bytes": 4577800192
-    },
-    {
-      "reason": "hardlink_allocation_uncertain",
-      "files": 66,
-      "bytes": 69609717,
-      "allocated_bytes": 69791744
-    },
-    {
-      "reason": "infrastructure_or_receipt",
-      "files": 8042,
-      "bytes": 484174798,
-      "allocated_bytes": 501665792
-    },
-    {
-      "reason": "model_input_or_training_uncertain",
-      "files": 155440,
-      "bytes": 3097766403,
-      "allocated_bytes": 3435032576
-    },
-    {
-      "reason": "model_payload_content_match",
-      "files": 54996,
-      "bytes": 2853946419,
-      "allocated_bytes": 2971934720
-    },
-    {
-      "reason": "model_request_path",
-      "files": 2,
-      "bytes": 30,
-      "allocated_bytes": 8192
-    },
-    {
-      "reason": "model_request_records",
-      "files": 13661,
-      "bytes": 2619320028,
-      "allocated_bytes": 2650804224
-    },
-    {
-      "reason": "modified_within_24h",
-      "files": 812642,
-      "bytes": 14484806237,
-      "allocated_bytes": 15799771136
-    },
-    {
-      "reason": "reconstruction_source_not_frozen",
-      "files": 13,
-      "bytes": 14118,
-      "allocated_bytes": 53248
-    },
-    {
-      "reason": "records_or_other_kept",
-      "files": 96383,
-      "bytes": 13827873477,
-      "allocated_bytes": 14104686592
-    },
-    {
-      "reason": "retired_small_records_or_representative_video",
-      "files": 7409,
-      "bytes": 171970871,
-      "allocated_bytes": 196571136
-    },
-    {
-      "reason": "sealed_reported_cohort",
-      "files": 105799,
-      "bytes": 1890200230,
-      "allocated_bytes": 2117697536
-    },
-    {
-      "reason": "tensorboard_image_content_match",
-      "files": 513,
-      "bytes": 35184499,
-      "allocated_bytes": 36237312
-    },
-    {
-      "reason": "tracked_or_tensorboard_image_reference",
-      "files": 104645,
-      "bytes": 4294714028,
-      "allocated_bytes": 4517433344
-    },
-    {
-      "reason": "unsequenced_image_uncertain",
-      "files": 1875,
-      "bytes": 129109359,
-      "allocated_bytes": 133357568
-    }
-  ],
+  },
   "source_refs": [
     {
+      "ref": "HEAD",
+      "sha": "70f2f09c46bdc1e265af70fb44111f5906324dff"
+    },
+    {
       "ref": "origin/main",
-      "sha": "c12796676802ab54cad2f0635e3e96e911691c76"
+      "sha": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e"
+    },
+    {
+      "ref": "origin/codex/review-e2e-batch-f",
+      "sha": "887b4d5e73823733a39d10060734080e46668548",
+      "pr": 327
+    },
+    {
+      "ref": "origin/codex/red-green-m1",
+      "sha": "be97d9dd53638a1efbda7627b420bd9b1cbd9880",
+      "pr": 325
+    },
+    {
+      "ref": "origin/codex/r3-delay-reassign",
+      "sha": "c4d680c80f5f8a07c27d5a1edb0acf6683a9f014",
+      "pr": 324
+    },
+    {
+      "ref": "origin/codex/r3-role-exchange",
+      "sha": "1a17829e79cdf7771ee2d09ca25e444c39cf37be",
+      "pr": 323
+    },
+    {
+      "ref": "origin/codex/review-e2e-batch-d",
+      "sha": "cd4a71ab7c7cca801fe6dba163a8bb8a1179aa91",
+      "pr": 322
+    },
+    {
+      "ref": "origin/codex/review-e2e-batch-e",
+      "sha": "585cf9c01d4396d6f5f1d94f5a187cd9b71425f4",
+      "pr": 321
+    },
+    {
+      "ref": "origin/codex/review-e2e-batch-a",
+      "sha": "933bb1d63f2de7d5df16ede55c4235e4a65cc1f4",
+      "pr": 319
+    },
+    {
+      "ref": "origin/codex/review-e2e-batch-c",
+      "sha": "7ee20a048c6b29089dbcd3c332d734bf43cd77c0",
+      "pr": 318
+    },
+    {
+      "ref": "origin/codex/review-e2e-batch-b",
+      "sha": "ec0f85807ddb55927a81ac071b407b8ea53802d8",
+      "pr": 317
+    },
+    {
+      "ref": "origin/codex/chain-contract",
+      "sha": "21d138ac65b00d5a206f444bd7be9511b01dd55d",
+      "pr": 316
+    },
+    {
+      "ref": "origin/codex/beam-initial-pose-contract",
+      "sha": "86847071f0332c23e5858c93607e2b0bbeb6dc98",
+      "pr": 315
+    },
+    {
+      "ref": "origin/codex/two-door-route-interface",
+      "sha": "994b269d97d05dd2159c1a78f2b9eae9955790f9",
+      "pr": 314
+    },
+    {
+      "ref": "origin/codex/tagfree-provider-lifecycle",
+      "sha": "b38c1d5905fdf798dcfd34d215c7e82d0a0cf296",
+      "pr": 312
     },
     {
       "ref": "origin/codex/corridor-bay-contract",
-      "sha": "2bfb9dce5655f2a71e62ab700281cc5258abb40b",
+      "sha": "5d363335a286247a58d19652771b7ecddb21ef05",
       "pr": 310
     },
     {
-      "ref": "origin/codex/dialogue-ledger-wire",
-      "sha": "5411f5e8d29186c00b44c2731e9915583da39aae",
-      "pr": 308
-    },
-    {
       "ref": "origin/codex/mixed-jobs",
-      "sha": "6bb522b14aa28fcaa3ff30f988aebca4ab3aee15",
+      "sha": "1bf7a1cd6352effce0b5619a7e01a3c960068263",
       "pr": 307
     },
     {
-      "ref": "origin/codex/l1-lateral-error-model",
-      "sha": "aae9343ae59eb3ee834c42bc4c23e4fd3d465e38",
-      "pr": 306
-    },
-    {
       "ref": "origin/codex/final-env-registry",
-      "sha": "5a852fbfde3b0df836f3a423be29a774a9c54614",
+      "sha": "408d384b880bb80a014580ec8bd3da03874d6422",
       "pr": 305
     },
     {
-      "ref": "origin/codex/stall-contract",
-      "sha": "0cfe29df04abead833940420f08bdd0acefdb556",
-      "pr": 304
-    },
-    {
       "ref": "origin/codex/evidence-referee",
-      "sha": "cbac1dfca5d0a1d8f18e4ff2633626d4cadf2af8",
+      "sha": "114349e0adc6d934ceb9a990ee9589aa123b8543",
       "pr": 303
     },
     {
-      "ref": "origin/codex/scenario-capabilities",
-      "sha": "dec67997815e4cdc564a9848ed6020eede45cbfa",
-      "pr": 302
-    },
-    {
       "ref": "origin/codex/seal-dependency-decouple",
-      "sha": "2ff92e9fbeff1b90b0aa35104a9766753e67f94e",
+      "sha": "e25d7509d78af711b9a33ae62bd5c103a425200e",
       "pr": 301
     },
     {
       "ref": "origin/codex/v6h-classifier-fixes",
-      "sha": "c86d9bac62036904ecc641db5e59e79edb58dec2",
+      "sha": "f32d5fd9afc54ca57ed49860843f54d6b5ca174d",
       "pr": 299
     },
     {
@@ -195,7 +196,7 @@
     },
     {
       "ref": "origin/codex/pair-v6h-register",
-      "sha": "3c4fe30e2197518443b195392212b0341507ac59",
+      "sha": "4c6b439f3f7c9a147c901f8b260a1e214d4eb396",
       "pr": 292
     },
     {
@@ -204,310 +205,9 @@
       "pr": 285
     }
   ],
-  "errors": [
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-r8/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-r8/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-r8/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-r8/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-regression/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-regression/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-regression/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-regression/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-targeted/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-targeted/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-targeted/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/final-targeted/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/full-after/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/full-after/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/full-after/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/full-after/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/regression/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/regression/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/regression/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/regression/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/runner-after/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/runner-after/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/runner-after/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r8/runner-after/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/failure-final/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/failure-final/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/failure-final/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/failure-final/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/failures-verified/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/failures-verified/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/failures-verified/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/failures-verified/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/final-focused/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/final-focused/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/final-focused/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/final-focused/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/final-regression/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/final-regression/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/final-regression/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/final-regression/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/first-pass/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/first-pass/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/first-pass/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/first-pass/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/regression/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/regression/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/regression/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ],
-    [
-      "retired-worktrees/kiro-study-core/.tmp/r9/regression/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
-      "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
-    ]
-  ],
-  "hardlinks_note": "allocation counts each inode once; all multiply-linked paths kept conservatively",
-  "not_executed": true,
-  "projected_allocated_bytes": 57604202496,
-  "file_categories": {
-    "other_files": {
-      "before_files": 31338,
-      "before_bytes": 2714984774,
-      "before_allocated_bytes": 2782035968,
-      "delete_files": 13858,
-      "delete_bytes": 570415709,
-      "delete_allocated_bytes": 610390016,
-      "after_files": 17480,
-      "after_bytes": 2144569065,
-      "after_allocated_bytes": 2171645952
-    },
-    ".json": {
-      "before_files": 129153,
-      "before_bytes": 11991190113,
-      "before_allocated_bytes": 12367409152,
-      "delete_files": 17931,
-      "delete_bytes": 910533177,
-      "delete_allocated_bytes": 965939200,
-      "after_files": 111222,
-      "after_bytes": 11080656936,
-      "after_allocated_bytes": 11401469952
-    },
-    ".jsonl": {
-      "before_files": 13486,
-      "before_bytes": 3599155425,
-      "before_allocated_bytes": 3631017984,
-      "delete_files": 13,
-      "delete_bytes": 41232717,
-      "delete_allocated_bytes": 41259008,
-      "after_files": 13473,
-      "after_bytes": 3557922708,
-      "after_allocated_bytes": 3589758976
-    },
-    "camera_images": {
-      "before_files": 2429678,
-      "before_bytes": 50905472133,
-      "before_allocated_bytes": 55202058240,
-      "delete_files": 990751,
-      "delete_bytes": 22150634072,
-      "delete_allocated_bytes": 23878344704,
-      "after_files": 1438927,
-      "after_bytes": 28754838061,
-      "after_allocated_bytes": 31323713536
-    },
-    ".mp4": {
-      "before_files": 1263,
-      "before_bytes": 987612086,
-      "before_allocated_bytes": 960368640,
-      "after_files": 1263,
-      "after_bytes": 987612086,
-      "after_allocated_bytes": 960368640,
-      "delete_files": 0,
-      "delete_bytes": 0,
-      "delete_allocated_bytes": 0
-    },
-    ".zip": {
-      "before_files": 97,
-      "before_bytes": 3828194706,
-      "before_allocated_bytes": 3828404224,
-      "after_files": 97,
-      "after_bytes": 3828194706,
-      "after_allocated_bytes": 3828404224,
-      "delete_files": 0,
-      "delete_bytes": 0,
-      "delete_allocated_bytes": 0
-    },
-    "checkpoints": {
-      "before_files": 45,
-      "before_bytes": 1763336804,
-      "before_allocated_bytes": 1763397632,
-      "after_files": 45,
-      "after_bytes": 1763336804,
-      "after_allocated_bytes": 1763397632,
-      "delete_files": 0,
-      "delete_bytes": 0,
-      "delete_allocated_bytes": 0
-    },
-    ".npz": {
-      "before_files": 4278,
-      "before_bytes": 1460838160,
-      "before_allocated_bytes": 1469153280,
-      "after_files": 4278,
-      "after_bytes": 1460838160,
-      "after_allocated_bytes": 1469153280,
-      "delete_files": 0,
-      "delete_bytes": 0,
-      "delete_allocated_bytes": 0
-    },
-    ".mjb": {
-      "before_files": 208,
-      "before_bytes": 1095869813,
-      "before_allocated_bytes": 1096290304,
-      "after_files": 208,
-      "after_bytes": 1095869813,
-      "after_allocated_bytes": 1096290304,
-      "delete_files": 0,
-      "delete_bytes": 0,
-      "delete_allocated_bytes": 0
-    }
-  },
-  "remaining_to_40_gib": 13.648094177246094,
-  "live_du_before_dry_run": {
-    "allocated_bytes": 83892047872,
-    "projected_allocated_bytes": 58396114944,
-    "measured_at_kst": "2026-09-30T21:40:16.402202+09:00",
-    "method": "du -sk outputs, read-only; concurrent tree, not an atomic snapshot",
-    "inventory_growth_allocated_bytes": 791912448
-  }
+  "graph_summary": "round3-graph-summary.json",
+  "optional_questions": "round3-optional-decisions.json",
+  "actual_deleted_files": 0,
+  "units": "allocated_bytes = st_blocks * 512; GiB = 2^30; projected, not measured disk freed",
+  "scope": "Original round2 frozen partition only; all new/live/unlisted files retained. Concurrent inventory is not atomic."
 }
