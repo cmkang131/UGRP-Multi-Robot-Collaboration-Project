@@ -7,6 +7,8 @@ posterior·발행 servo·명령 이력을 유지하며 상대 정렬로 넘어�
 
 2026-10-01 독립 검토 H333-1의 native PWM/활성 채널 수정과 새 검증은
 [REVIEW_FIXES.md](REVIEW_FIXES.md)에 별도로 기록한다. 아래 최초 검증 기록은 보존한다.
+이후 #315·#334의 최종 main 병합본 반영, 반례 충돌 해결과 CI 확인은
+[MAIN_INTEGRATION.md](MAIN_INTEGRATION.md)를 따른다.
 
 ## 구현 범위
 

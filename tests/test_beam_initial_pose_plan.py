@@ -399,7 +399,5 @@ def test_registered_in_normal_ci():
     files = ci.collect_test_files(ROOT, ci.TEST_PATTERNS)
     shards = ci.shard_test_files(files, 8)
     ci.validate_shards(files, shards)
-    # T08b must not edit CI configuration. The existing navigation glob collects
-    # the small bridge module, which imports this entire unchanged test suite.
-    assert sum(path == 'tests/test_pair_navigation_beam_initial_pose_plan.py'
+    assert sum(path == 'tests/test_beam_initial_pose_plan.py'
                for shard in shards for path in shard) == 1
