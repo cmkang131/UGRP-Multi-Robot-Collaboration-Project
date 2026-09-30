@@ -12,21 +12,9 @@ from harness.zone_study_contract import digest
 from scripts import zone_study_evidence_join as join
 from scripts import zone_study_evidence_cohort as cohort
 from scripts.zone_study_evidence_contract import verify_referee_derivations
-from tests.test_zone_study_evidence_join import planned, raw_source, put
-from tests.test_zone_study_eval import trial
-from tests.test_zone_study_referee import MAP, at_zone
-from tests.test_review_303c import read, refresh_receipts
-
-
-def claims(ref, plan):
-    identity = plan['admitted'][0]['identity']
-    record = trial(orders=ref.orders, end_sim_s=ref.last_t or 0., horizon=12.,
-                   end_reason='sim_horizon', model={}, requests=[], provenance={})
-    zr.apply_to_record(record, ref)
-    record.update(evidence_identity=identity, plan_sha256=digest(plan))
-    raw = {**ref.record(), **join.envelope_keys(identity, ref.orders),
-           'evidence_identity': identity, 'plan_sha256': digest(plan)}
-    return record, zr.evaluation_block(record, ref), raw, identity
+from tests.zone_evidence_fixtures import (
+    MAP, at_zone, claims, planned, put, raw_source, read, refresh_receipts,
+)
 
 
 @pytest.mark.parametrize('operation', ['rebuild', 'summary', 'events', 'reorder'])

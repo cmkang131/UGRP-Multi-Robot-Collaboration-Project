@@ -1,0 +1,560 @@
+{
+  "review_source": "7623f3ca:experiments/2026-09-30-e2e-readiness/REVIEW_FIXES_2.md",
+  "finding": "F310-1",
+  "head_before_commit": "5d363335a286247a58d19652771b7ecddb21ef05",
+  "merged_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+  "fix": "Restore CI policy test and current guide to main; workflows unedited",
+  "protected": {
+    "head": "5d363335a286247a58d19652771b7ecddb21ef05",
+    "merged_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+    "v6e_count": 85,
+    "v6e_mismatches": [],
+    "files": {
+      "harness/owncam_memory.py": {
+        "sha256": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
+        "matches_main": true
+      },
+      "harness/owncam_memory_time.py": {
+        "sha256": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0",
+        "matches_main": true
+      },
+      "harness/owncam_delivery_shared.py": {
+        "sha256": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba",
+        "matches_main": true
+      },
+      "harness/owncam_memory_delivery.py": {
+        "sha256": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50",
+        "matches_main": true
+      },
+      "harness/owncam_memory_inputs.py": {
+        "sha256": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83",
+        "matches_main": true
+      },
+      "harness/owncam_pose_guard_provider.py": {
+        "sha256": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1",
+        "matches_main": true
+      },
+      "harness/owncam_pose_guard_v3.py": {
+        "sha256": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6",
+        "matches_main": true
+      },
+      "configs/zone_pair_authorization.json": {
+        "sha256": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e",
+        "matches_main": true
+      },
+      "harness/owncam_drive_mem_v3.py": {
+        "sha256": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425",
+        "matches_main": true
+      },
+      "harness/m1_owncam_memory_v3.py": {
+        "sha256": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2",
+        "matches_main": true
+      },
+      "harness/vision_motion_init.py": {
+        "sha256": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316",
+        "matches_main": true
+      },
+      "harness/m2_provider_adapter.py": {
+        "sha256": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624",
+        "matches_main": true
+      },
+      "harness/zone_own_deliver.py": {
+        "sha256": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab",
+        "matches_main": true
+      },
+      "harness/zone_own_team_host.py": {
+        "sha256": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64",
+        "matches_main": true
+      },
+      "scripts/zone_pair_authorization.py": {
+        "sha256": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649",
+        "matches_main": true
+      },
+      "scripts/run_zone_study_integration.py": {
+        "sha256": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+        "matches_main": true
+      },
+      "scripts/run_m1_owncam_memory_v3.py": {
+        "sha256": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8",
+        "matches_main": true
+      },
+      "sim/zone_geometry_scene.py": {
+        "sha256": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+        "matches_main": true
+      },
+      "configs/zone_study_integration/pose_providers.json": {
+        "sha256": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d",
+        "matches_main": true
+      },
+      "maps/zones/zone_wide_door_geometry_v2.json": {
+        "sha256": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+        "matches_main": true
+      },
+      "harness/pose_provider.py": {
+        "sha256": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2",
+        "matches_main": true
+      },
+      "harness/vision_pose_source.py": {
+        "sha256": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+        "matches_main": true
+      },
+      "harness/zone_study_pose_delay.py": {
+        "sha256": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894",
+        "matches_main": true
+      },
+      "harness/zone_own_driver.py": {
+        "sha256": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d",
+        "matches_main": true
+      },
+      "harness/owncam_drive_shared.py": {
+        "sha256": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792",
+        "matches_main": true
+      },
+      "sim/zone_own_scene_provider.py": {
+        "sha256": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+        "matches_main": true
+      },
+      "harness/owncam_time.py": {
+        "sha256": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+        "matches_main": true
+      },
+      "harness/zone_own_contract.py": {
+        "sha256": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
+        "matches_main": true
+      },
+      "harness/zone_own_executor.py": {
+        "sha256": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+        "matches_main": true
+      },
+      "harness/zone_own_status.py": {
+        "sha256": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
+        "matches_main": true
+      },
+      "harness/zone_own_perception.py": {
+        "sha256": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
+        "matches_main": true
+      },
+      "harness/zone_pair_obstruction.py": {
+        "sha256": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
+        "matches_main": true
+      },
+      "harness/zone_pair_grasp.py": {
+        "sha256": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565",
+        "matches_main": true
+      },
+      "harness/zone_pair_executor.py": {
+        "sha256": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+        "matches_main": true
+      },
+      "harness/zone_pair_beam_track.py": {
+        "sha256": "7b0870a80a200ee6eaa99d6ca86653094d420dd527bf7b8fcf385b2ff030ce9e",
+        "matches_main": true
+      },
+      "harness/zone_pair_align.py": {
+        "sha256": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e",
+        "matches_main": true
+      },
+      "harness/zone_pair_guards.py": {
+        "sha256": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde",
+        "matches_main": true
+      },
+      "harness/zone_pair_geometry.py": {
+        "sha256": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+        "matches_main": true
+      },
+      "harness/zone_pair_status.py": {
+        "sha256": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+        "matches_main": true
+      },
+      "harness/zone_pair_vision.py": {
+        "sha256": "cce72504edf01d119aafbefc8cb4ea1aa5a407196f9809f6cb5b8ec0bfecc9fc",
+        "matches_main": true
+      },
+      "harness/owncam_pose_source.py": {
+        "sha256": "b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e",
+        "matches_main": true
+      },
+      "harness/owncam_localizer.py": {
+        "sha256": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+        "matches_main": true
+      },
+      "harness/owncam_pair_beam.py": {
+        "sha256": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+        "matches_main": true
+      },
+      "harness/owncam_pair_beam_v2.py": {
+        "sha256": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+        "matches_main": true
+      },
+      "harness/owncam_view.py": {
+        "sha256": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+        "matches_main": true
+      },
+      "harness/zone_own_guards.py": {
+        "sha256": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+        "matches_main": true
+      },
+      "scripts/run_zone_pair_dev.py": {
+        "sha256": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec",
+        "matches_main": true
+      },
+      "scripts/zone_pair_dev_runtime.py": {
+        "sha256": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877",
+        "matches_main": true
+      },
+      "scripts/zone_pair_grasp_contract.py": {
+        "sha256": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85",
+        "matches_main": true
+      },
+      "scripts/evaluate_zone_pair_dev.py": {
+        "sha256": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+        "matches_main": true
+      },
+      "configs/simulation_workflows.json": {
+        "sha256": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140",
+        "matches_main": true
+      },
+      "sim/zone_start_dock.py": {
+        "sha256": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+        "matches_main": true
+      },
+      "sim/zone_dock_scene.py": {
+        "sha256": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+        "matches_main": true
+      },
+      "sim/zone_arena.py": {
+        "sha256": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+        "matches_main": true
+      },
+      "sim/zone_landmarks.py": {
+        "sha256": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1",
+        "matches_main": true
+      },
+      "sim/zone_scene.py": {
+        "sha256": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714",
+        "matches_main": true
+      },
+      "sim/zone_tagged_cargo_scene.py": {
+        "sha256": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7",
+        "matches_main": true
+      },
+      "scripts/zone_pair_dev_contract.py": {
+        "sha256": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e",
+        "matches_main": true
+      },
+      "harness/zone_study_integration.py": {
+        "sha256": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06",
+        "matches_main": true
+      },
+      "harness/zone_pair_v6_policy.py": {
+        "sha256": "dcf1d3804f3ccf02622fc8410d00478b171975a0e1f0b299fdd46d2e323ee9bd",
+        "matches_main": true
+      },
+      "harness/zone_pair_relative.py": {
+        "sha256": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af",
+        "matches_main": true
+      },
+      "harness/zone_pair_global.py": {
+        "sha256": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
+        "matches_main": true
+      },
+      "harness/owncam_recovery_v6.py": {
+        "sha256": "3909f45ecc856ca2f666f9e3c3ee2327ad813c15449f0b0b0f04173492c92f67",
+        "matches_main": true
+      },
+      "harness/owncam_observability_v6.py": {
+        "sha256": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
+        "matches_main": true
+      },
+      "scripts/zone_pair_v6_contract.py": {
+        "sha256": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b",
+        "matches_main": true
+      },
+      "harness/zone_own_sweep.py": {
+        "sha256": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
+        "matches_main": true
+      },
+      "harness/pair_owncam_approach.py": {
+        "sha256": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+        "matches_main": true
+      },
+      "harness/owncam_drive.py": {
+        "sha256": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+        "matches_main": true
+      },
+      "scripts/run_m2_pair.py": {
+        "sha256": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+        "matches_main": true
+      },
+      "scripts/study_owncam_pair_beam.py": {
+        "sha256": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00",
+        "matches_main": true
+      },
+      "harness/visual_arm.py": {
+        "sha256": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+        "matches_main": true
+      },
+      "harness/m1_owncam_delivery.py": {
+        "sha256": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+        "matches_main": true
+      },
+      "harness/owncam_bootstrap_v6b.py": {
+        "sha256": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90",
+        "matches_main": true
+      },
+      "harness/owncam_recovery_v6c.py": {
+        "sha256": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd",
+        "matches_main": true
+      },
+      "harness/zone_pair_grasp_entry_v6c.py": {
+        "sha256": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e",
+        "matches_main": true
+      },
+      "harness/owncam_pair_beam_v6d.py": {
+        "sha256": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12",
+        "matches_main": true
+      },
+      "harness/owncam_align_motion_v6d.py": {
+        "sha256": "4ac391e60c0d3930576c9daacbd066495fad8f9bb5863dc3ce8eaab6cff8d879",
+        "matches_main": true
+      },
+      "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": {
+        "sha256": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+        "matches_main": true
+      },
+      "harness/owncam_carry_v6e.py": {
+        "sha256": "ec3b42b3502e21491585360bc588663f89003f8e6ed09ab829ae617d867737ec",
+        "matches_main": true
+      },
+      "harness/own_beam_edge.py": {
+        "sha256": "f72118c5c1faeb91094347469dd15fa6059dd99bd6acede4760eec96411f3e8d",
+        "matches_main": true
+      },
+      "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json": {
+        "sha256": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+        "matches_main": true
+      },
+      "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json": {
+        "sha256": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b",
+        "matches_main": true
+      },
+      "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json": {
+        "sha256": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b",
+        "matches_main": true
+      },
+      "sim/zone_masterpi_v3_scene.py": {
+        "sha256": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca",
+        "matches_main": true
+      },
+      "sim/zone_model_conventions.py": {
+        "sha256": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff",
+        "matches_main": true
+      },
+      "tests/test_zone_pair_registered_source.py": {
+        "sha256": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+        "matches_main": true
+      },
+      "tests/test_zone_study_source_pinning.py": {
+        "sha256": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+        "matches_main": true
+      }
+    }
+  },
+  "workflows_sha256": {
+    ".github/workflows/tests.yml": "8831e19de2f6afa377d9d1835445917804821519e1eb572f4483d1f66bb7f866"
+  },
+  "results": {
+    "baseline": {
+      "mode": "baseline",
+      "args": [
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/baseline/pytest-tmp",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/baseline/junit.xml",
+        "tests/test_ci_fast_path.py",
+        "tests/test_ci_sharding.py",
+        "tests/test_ci_host_lock.py",
+        "tests/test_zone_own_executor_corridor_contract.py",
+        "tests/test_zone_own_executor.py",
+        "tests/test_zone_own_executor_host.py",
+        "tests/test_zone_pair_registered_source.py",
+        "tests/test_zone_study_source_pinning.py",
+        "tests/test_zone_hard_routes.py",
+        "tests/test_simulation_workflow_manager.py",
+        "--deselect=tests/test_zone_own_executor.py::test_team_host_feeds_each_executor_only_its_own_camera",
+        "--deselect=tests/test_zone_own_executor_host.py::test_team_host_isolation_abort_and_horizon_on_the_real_world",
+        "--deselect=tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_parent_exit_cleans_background_child"
+      ],
+      "exit_code": 0,
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+      "head_before_commit": "5d363335a286247a58d19652771b7ecddb21ef05",
+      "merged_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+      "all_scanned_files_unchanged": true,
+      "protected_files_unchanged": true,
+      "protected_files_count": 87,
+      "v6e_count": 85,
+      "scope": "offline static/fake, import/network guard; no physics, model or host lock",
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "538",
+        "time": "200.585",
+        "timestamp": "2026-10-01T02:11:22.483975+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      },
+      "files_scanned": 4736,
+      "source_sha256": {
+        "harness/zone_corridor_contract.py": "622e66bd5ec757dbab69712b6462575b8f2f877ba76f3f40641ad3783645b757",
+        "sim/workflow_manager.py": "742353d3afe79f55774593670ba60295915263853bdc7b16cf9c39cce8190a07",
+        "sim/zone_study_admission.py": "d2493e0ec8b56ef01a51b3b046ad9ed4ca411e6cec3eb24f2a66f0d4001f81b7",
+        "tests/test_ci_fast_path.py": "7cbce2fb52492b6adf3e5d53f5e98c3f7928b98bbdc6d5fa387c424ade570aab",
+        "tests/test_zone_own_executor_corridor_contract.py": "26b1f3f825741abc521d8dbd094a1a70385b99c8ceaeb2f885e22dff84d388fc"
+      }
+    },
+    "admission_noop": {
+      "mode": "admission_noop",
+      "args": [
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/admission_noop/pytest-tmp",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/admission_noop/junit.xml",
+        "tests/test_zone_own_executor_corridor_contract.py",
+        "-k",
+        "test_managed_"
+      ],
+      "exit_code": 1,
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+      "head_before_commit": "5d363335a286247a58d19652771b7ecddb21ef05",
+      "merged_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+      "all_scanned_files_unchanged": true,
+      "protected_files_unchanged": true,
+      "protected_files_count": 87,
+      "v6e_count": 85,
+      "scope": "offline static/fake, import/network guard; no physics, model or host lock",
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "22",
+        "skipped": "0",
+        "tests": "23",
+        "time": "2.164",
+        "timestamp": "2026-10-01T02:11:59.319517+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      },
+      "files_scanned": 4736,
+      "source_sha256": {
+        "harness/zone_corridor_contract.py": "622e66bd5ec757dbab69712b6462575b8f2f877ba76f3f40641ad3783645b757",
+        "sim/workflow_manager.py": "742353d3afe79f55774593670ba60295915263853bdc7b16cf9c39cce8190a07",
+        "sim/zone_study_admission.py": "d2493e0ec8b56ef01a51b3b046ad9ed4ca411e6cec3eb24f2a66f0d4001f81b7",
+        "tests/test_ci_fast_path.py": "7cbce2fb52492b6adf3e5d53f5e98c3f7928b98bbdc6d5fa387c424ade570aab",
+        "tests/test_zone_own_executor_corridor_contract.py": "26b1f3f825741abc521d8dbd094a1a70385b99c8ceaeb2f885e22dff84d388fc"
+      }
+    },
+    "door_gate_noop": {
+      "mode": "door_gate_noop",
+      "args": [
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/door_gate_noop/pytest-tmp",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1/door_gate_noop/junit.xml",
+        "tests/test_zone_own_executor_corridor_contract.py",
+        "-k",
+        "test_managed_"
+      ],
+      "exit_code": 1,
+      "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+      "head_before_commit": "5d363335a286247a58d19652771b7ecddb21ef05",
+      "merged_main": "7e081d7047aa2df737cc1890c963b1d3a14302c0",
+      "all_scanned_files_unchanged": true,
+      "protected_files_unchanged": true,
+      "protected_files_count": 87,
+      "v6e_count": 85,
+      "scope": "offline static/fake, import/network guard; no physics, model or host lock",
+      "junit": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "17",
+        "skipped": "0",
+        "tests": "23",
+        "time": "1.897",
+        "timestamp": "2026-10-01T02:11:59.319987+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      },
+      "files_scanned": 4736,
+      "source_sha256": {
+        "harness/zone_corridor_contract.py": "622e66bd5ec757dbab69712b6462575b8f2f877ba76f3f40641ad3783645b757",
+        "sim/workflow_manager.py": "742353d3afe79f55774593670ba60295915263853bdc7b16cf9c39cce8190a07",
+        "sim/zone_study_admission.py": "d2493e0ec8b56ef01a51b3b046ad9ed4ca411e6cec3eb24f2a66f0d4001f81b7",
+        "tests/test_ci_fast_path.py": "7cbce2fb52492b6adf3e5d53f5e98c3f7928b98bbdc6d5fa387c424ade570aab",
+        "tests/test_zone_own_executor_corridor_contract.py": "26b1f3f825741abc521d8dbd094a1a70385b99c8ceaeb2f885e22dff84d388fc"
+      }
+    }
+  },
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/2026-10-01-cap-t10a-f310-1",
+  "raw_manifest": {
+    "verify_offline.py": {
+      "bytes": 3495,
+      "sha256": "18790cf228db000ba9584cb085bd21b81551e759f76bdbaacd0b3273ab334bac"
+    },
+    "protected-before.json": {
+      "bytes": 13996,
+      "sha256": "0c4f53ba4ff8ae05b24a63dac143294508f78ae8813b58e71f8de54cf980ad1c"
+    },
+    "pre-fix-unittest.txt": {
+      "bytes": 868,
+      "sha256": "bea7b0a2665e5908246b7c093f0f2d098d7828c6d0d2cd55cc02fa6fb34409ef"
+    },
+    "previous-ci-failed.txt": {
+      "bytes": 41597,
+      "sha256": "36586d76b59c2bcbb962c2e46332eabc187f36efc44c0e4e78e823e9e5789b28"
+    },
+    "shards.txt": {
+      "bytes": 15749,
+      "sha256": "d1e4019cb32a58e29087032ecb400dfcb75028d0d910d00f722d9e80a7b95d76"
+    },
+    "baseline.txt": {
+      "bytes": 403,
+      "sha256": "6206eddc1fb9d1da372ab9a955be667ab5e67dc0dfdac77c7c02a0694baed1d6"
+    },
+    "baseline/receipt.json": {
+      "bytes": 637881,
+      "sha256": "af5fe8199f7e3236b8118ccbb2801df901c1ad4c398da1868fb71a0568ef1b66"
+    },
+    "baseline/junit.xml": {
+      "bytes": 36886,
+      "sha256": "369a5444be279b4763ddd7a4016100caecf97251c7053da359cb4f3442da8ee8"
+    },
+    "admission_noop.txt": {
+      "bytes": 62043,
+      "sha256": "f8244de1b697f65c9859b7481665fffa364d131e883fa440eda879b9704425d2"
+    },
+    "admission_noop/receipt.json": {
+      "bytes": 637216,
+      "sha256": "7f4c359c3fd02856ff11e4ea293445b3bda9f5249abd900fa52c2601c23b605f"
+    },
+    "admission_noop/junit.xml": {
+      "bytes": 50738,
+      "sha256": "0ae417ede2ffddfabbd483d7e2cba82e44909f6e1dd67e3ebd920e797fb3bbe3"
+    },
+    "door_gate_noop.txt": {
+      "bytes": 48997,
+      "sha256": "8869c2a691109ef0c94b9e28b5fd4a77f63fa339794c0e683c0819096c3d7177"
+    },
+    "door_gate_noop/receipt.json": {
+      "bytes": 637216,
+      "sha256": "cf85fbd8fc4626ce465c866b9361ae78cf9491b9233561613f38772486c686b6"
+    },
+    "door_gate_noop/junit.xml": {
+      "bytes": 38110,
+      "sha256": "ba6aa8a8888994126749e5349e51d47d7c15cd3e667afbdda0f3fb95e4494c26"
+    }
+  },
+  "remote_ci": "Verified separately on pushed commit; see final PR comment",
+  "scope": "offline static/fake only; no physics/model/cohort/TensorBoard/Drive",
+  "temporary_extraction_directories_created": []
+}

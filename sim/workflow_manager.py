@@ -35,7 +35,8 @@ MANAGED_CHILD = "UGRP_SIM_MANAGED_CHILD"
 INPUT_PATH_FLAGS = ("--plan-replay", "--grasp-model-dir", "--stage-model-dir", "--protocol", "--manifest",
                     "--artifacts", "--map-file", "--map", "--act-python", "--mjpython", "--grasp",
                     "--stages", "--cases-json", "--dataset", "--evidence-root", "--inventory", "--config",
-                    "--carry-act-model", "--carry-act-python", "--reference-top", "--spec", "--prereg")
+                    "--carry-act-model", "--carry-act-python", "--reference-top", "--spec", "--prereg",
+                    "--calibration")
 
 
 def _sha(path: Path) -> str:
@@ -165,6 +166,19 @@ def catalog(root: Path) -> tuple[dict, str]:
     data = json.loads(path.read_text(encoding="utf-8"))
     if data.get("schema") != "ugrp.local_workflow_catalog.v1":
         raise ValueError("unsupported workflow catalog schema")
+    # The original catalog is pinned by historical/current registrations. New
+    # opt-in workflows can be added without editing those bytes or replacing a
+    # registered ID. Include every fragment in the effective catalog identity.
+    fragments = sorted((root / "configs/simulation_workflows.d").glob("*.json"))
+    receipts = {str(CATALOG): _sha(path)}
+    for fragment in fragments:
+        if fragment.is_symlink():
+            raise ValueError("workflow catalog fragment must be a local regular file")
+        extra = json.loads(fragment.read_text(encoding="utf-8"))
+        if extra.get("schema") != "ugrp.local_workflow_catalog.v1":
+            raise ValueError("unsupported workflow catalog fragment schema")
+        data["workflows"].extend(extra.get("workflows", []))
+        receipts[str(fragment.relative_to(root))] = _sha(fragment)
     rows = data.get("workflows", [])
     if not rows or len({r["id"] for r in rows}) != len(rows):
         raise ValueError("workflow catalog must have distinct workflows")
@@ -173,7 +187,9 @@ def catalog(root: Path) -> tuple[dict, str]:
             raise ValueError(f"incomplete workflow declaration: {row.get('id')}")
         if not (root / row["entry"]).is_file():
             raise ValueError(f"workflow entry missing: {row['entry']}")
-    return data, _sha(path)
+    digest = (hashlib.sha256(json.dumps(receipts, sort_keys=True).encode()).hexdigest()
+              if fragments else _sha(path))
+    return data, digest
 
 
 def _row(root: Path, workflow_id: str) -> tuple[dict, str]:
@@ -388,6 +404,10 @@ def plan(root: Path, workflow_id: str, args: list[str], *, inputs: list[Path] | 
     argv = list(args)
     _validate_args(row, argv)
     _validate_input_paths(root, workflow_id, argv)
+    if workflow_id == "zone-study-integration-run":
+        # Admission precedes records/subprocesses; the sealed host stays intact.
+        from sim.zone_study_admission import require_study_runtime
+        require_study_runtime(root, _at_root(root, _option(argv, "--prereg")), _option(argv, "--episode"))
     if row["id"] == "physical" and not _at_root(root, argv[0]).is_dir():
         raise ValueError("physical trace directory does not exist")
     if row["id"] == "physical" and (root / RECORDS).resolve().is_relative_to(_at_root(root, argv[0])):

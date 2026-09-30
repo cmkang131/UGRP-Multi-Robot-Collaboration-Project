@@ -40,6 +40,19 @@ def planned(n=3, order_count=2):
     return plan, bundle
 
 
+def claims(ref, plan):
+    """Project pure referee samples into records without importing a runner."""
+    from harness import zone_study_referee as zr
+    identity = plan['admitted'][0]['identity']
+    record = metric_trial(orders=ref.orders, end_sim_s=ref.last_t or 0., horizon=12.,
+                          end_reason='sim_horizon', model={}, requests=[], provenance={})
+    zr.apply_to_record(record, ref)
+    record.update(evidence_identity=identity, plan_sha256=digest(plan))
+    raw = {**ref.record(), **j.envelope_keys(identity, ref.orders),
+           'evidence_identity': identity, 'plan_sha256': digest(plan)}
+    return record, zr.evaluation_block(record, ref), raw, identity
+
+
 def put(root, name, value):
     path = root / name
     path.parent.mkdir(parents=True, exist_ok=True)

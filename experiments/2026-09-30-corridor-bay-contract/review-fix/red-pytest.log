@@ -1,0 +1,1132 @@
+FFFFFFFFFFFFFFFF.FFFFFF                                                  [100%]
+=================================== FAILURES ===================================
+____ test_managed_corridor_entry_refuses_before_runtime[zones-no_comm-plan] ____
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106d617c0>, action = 'plan'
+condition = 'no_comm', directory = 'zones'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+>       with pytest.raises(SystemExit) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SystemExit
+
+tests/test_zone_own_executor_corridor_contract.py:111: Failed
+----------------------------- Captured stdout call -----------------------------
+{
+  "workflow_id": "zone-study-integration-run",
+  "workflow_version": "2.14.0",
+  "catalog_sha256": "0a0ff743c8315636e31a049a2446813255412e98ea3bbf2cdf37d2b191eaffd2",
+  "runner": "scripts.run_zone_study_integration",
+  "adapter": "managed_legacy_cli",
+  "side_effect": "local_simulation",
+  "argv": [
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=no_comm",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "scripts.run_zone_study_integration",
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=no_comm",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re0/never-created",
+  "output_flag": "--output",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re0/prereg.json",
+      "kind": "file",
+      "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
+      "files": [
+        {
+          "path": "prereg.json",
+          "sha256": "87080fb24480fd7d7bcdb618b4c9ae47f5b6a9d73223a89d9ef445fb78728596",
+          "bytes": 215
+        }
+      ]
+    }
+  ],
+  "readiness": "required_inputs_present; legacy_parser_and_runtime_not_executed",
+  "execution_started": false
+}
+____ test_managed_corridor_entry_refuses_before_runtime[zones-no_comm-run] _____
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106da6d20>, action = 'run'
+condition = 'no_comm', directory = 'zones'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+        with pytest.raises(SystemExit) as error:
+>           sim_cli.main(['workflow', action, 'zone-study-integration-run', '--',
+                          '--prereg=prereg.json', '--episode=chosen', f'--condition={condition}',
+                          '--output=never-created', '--dev-horizon-s=1'])
+
+tests/test_zone_own_executor_corridor_contract.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/sim_cli.py:492: in main
+    return workflow_cli(argv[1:], root=ROOT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sim/workflow_manager.py:703: in workflow_cli
+    record = run_workflow(root, args.workflow_id, tail, inputs=args.input,
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re1'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+____ test_managed_corridor_entry_refuses_before_runtime[zones-peer_ko-plan] ____
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106d63f20>, action = 'plan'
+condition = 'peer_ko', directory = 'zones'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+>       with pytest.raises(SystemExit) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SystemExit
+
+tests/test_zone_own_executor_corridor_contract.py:111: Failed
+----------------------------- Captured stdout call -----------------------------
+{
+  "workflow_id": "zone-study-integration-run",
+  "workflow_version": "2.14.0",
+  "catalog_sha256": "0a0ff743c8315636e31a049a2446813255412e98ea3bbf2cdf37d2b191eaffd2",
+  "runner": "scripts.run_zone_study_integration",
+  "adapter": "managed_legacy_cli",
+  "side_effect": "local_simulation",
+  "argv": [
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=peer_ko",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "scripts.run_zone_study_integration",
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=peer_ko",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re2/never-created",
+  "output_flag": "--output",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re2/prereg.json",
+      "kind": "file",
+      "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
+      "files": [
+        {
+          "path": "prereg.json",
+          "sha256": "87080fb24480fd7d7bcdb618b4c9ae47f5b6a9d73223a89d9ef445fb78728596",
+          "bytes": 215
+        }
+      ]
+    }
+  ],
+  "readiness": "required_inputs_present; legacy_parser_and_runtime_not_executed",
+  "execution_started": false
+}
+____ test_managed_corridor_entry_refuses_before_runtime[zones-peer_ko-run] _____
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106d9bdd0>, action = 'run'
+condition = 'peer_ko', directory = 'zones'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+        with pytest.raises(SystemExit) as error:
+>           sim_cli.main(['workflow', action, 'zone-study-integration-run', '--',
+                          '--prereg=prereg.json', '--episode=chosen', f'--condition={condition}',
+                          '--output=never-created', '--dev-horizon-s=1'])
+
+tests/test_zone_own_executor_corridor_contract.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/sim_cli.py:492: in main
+    return workflow_cli(argv[1:], root=ROOT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sim/workflow_manager.py:703: in workflow_cli
+    record = run_workflow(root, args.workflow_id, tail, inputs=args.input,
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re3'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+___ test_managed_corridor_entry_refuses_before_runtime[zones-leader_ko-plan] ___
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106da9d60>, action = 'plan'
+condition = 'leader_ko', directory = 'zones'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+>       with pytest.raises(SystemExit) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SystemExit
+
+tests/test_zone_own_executor_corridor_contract.py:111: Failed
+----------------------------- Captured stdout call -----------------------------
+{
+  "workflow_id": "zone-study-integration-run",
+  "workflow_version": "2.14.0",
+  "catalog_sha256": "0a0ff743c8315636e31a049a2446813255412e98ea3bbf2cdf37d2b191eaffd2",
+  "runner": "scripts.run_zone_study_integration",
+  "adapter": "managed_legacy_cli",
+  "side_effect": "local_simulation",
+  "argv": [
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=leader_ko",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "scripts.run_zone_study_integration",
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=leader_ko",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re4/never-created",
+  "output_flag": "--output",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re4/prereg.json",
+      "kind": "file",
+      "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
+      "files": [
+        {
+          "path": "prereg.json",
+          "sha256": "87080fb24480fd7d7bcdb618b4c9ae47f5b6a9d73223a89d9ef445fb78728596",
+          "bytes": 215
+        }
+      ]
+    }
+  ],
+  "readiness": "required_inputs_present; legacy_parser_and_runtime_not_executed",
+  "execution_started": false
+}
+___ test_managed_corridor_entry_refuses_before_runtime[zones-leader_ko-run] ____
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106dbcd40>, action = 'run'
+condition = 'leader_ko', directory = 'zones'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+        with pytest.raises(SystemExit) as error:
+>           sim_cli.main(['workflow', action, 'zone-study-integration-run', '--',
+                          '--prereg=prereg.json', '--episode=chosen', f'--condition={condition}',
+                          '--output=never-created', '--dev-horizon-s=1'])
+
+tests/test_zone_own_executor_corridor_contract.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/sim_cli.py:492: in main
+    return workflow_cli(argv[1:], root=ROOT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sim/workflow_manager.py:703: in workflow_cli
+    record = run_workflow(root, args.workflow_id, tail, inputs=args.input,
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re5'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+__ test_managed_corridor_entry_refuses_before_runtime[zones-structured-plan] ___
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106dbf9b0>, action = 'plan'
+condition = 'structured', directory = 'zones'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+>       with pytest.raises(SystemExit) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SystemExit
+
+tests/test_zone_own_executor_corridor_contract.py:111: Failed
+----------------------------- Captured stdout call -----------------------------
+{
+  "workflow_id": "zone-study-integration-run",
+  "workflow_version": "2.14.0",
+  "catalog_sha256": "0a0ff743c8315636e31a049a2446813255412e98ea3bbf2cdf37d2b191eaffd2",
+  "runner": "scripts.run_zone_study_integration",
+  "adapter": "managed_legacy_cli",
+  "side_effect": "local_simulation",
+  "argv": [
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=structured",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "scripts.run_zone_study_integration",
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=structured",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re6/never-created",
+  "output_flag": "--output",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re6/prereg.json",
+      "kind": "file",
+      "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
+      "files": [
+        {
+          "path": "prereg.json",
+          "sha256": "87080fb24480fd7d7bcdb618b4c9ae47f5b6a9d73223a89d9ef445fb78728596",
+          "bytes": 215
+        }
+      ]
+    }
+  ],
+  "readiness": "required_inputs_present; legacy_parser_and_runtime_not_executed",
+  "execution_started": false
+}
+___ test_managed_corridor_entry_refuses_before_runtime[zones-structured-run] ___
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106dbd130>, action = 'run'
+condition = 'structured', directory = 'zones'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+        with pytest.raises(SystemExit) as error:
+>           sim_cli.main(['workflow', action, 'zone-study-integration-run', '--',
+                          '--prereg=prereg.json', '--episode=chosen', f'--condition={condition}',
+                          '--output=never-created', '--dev-horizon-s=1'])
+
+tests/test_zone_own_executor_corridor_contract.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/sim_cli.py:492: in main
+    return workflow_cli(argv[1:], root=ROOT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sim/workflow_manager.py:703: in workflow_cli
+    record = run_workflow(root, args.workflow_id, tail, inputs=args.input,
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re7'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+_ test_managed_corridor_entry_refuses_before_runtime[zones_final-no_comm-plan] _
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106f54c50>, action = 'plan'
+condition = 'no_comm', directory = 'zones_final'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+>       with pytest.raises(SystemExit) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SystemExit
+
+tests/test_zone_own_executor_corridor_contract.py:111: Failed
+----------------------------- Captured stdout call -----------------------------
+{
+  "workflow_id": "zone-study-integration-run",
+  "workflow_version": "2.14.0",
+  "catalog_sha256": "0a0ff743c8315636e31a049a2446813255412e98ea3bbf2cdf37d2b191eaffd2",
+  "runner": "scripts.run_zone_study_integration",
+  "adapter": "managed_legacy_cli",
+  "side_effect": "local_simulation",
+  "argv": [
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=no_comm",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "scripts.run_zone_study_integration",
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=no_comm",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re8/never-created",
+  "output_flag": "--output",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re8/prereg.json",
+      "kind": "file",
+      "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
+      "files": [
+        {
+          "path": "prereg.json",
+          "sha256": "87080fb24480fd7d7bcdb618b4c9ae47f5b6a9d73223a89d9ef445fb78728596",
+          "bytes": 215
+        }
+      ]
+    }
+  ],
+  "readiness": "required_inputs_present; legacy_parser_and_runtime_not_executed",
+  "execution_started": false
+}
+_ test_managed_corridor_entry_refuses_before_runtime[zones_final-no_comm-run] __
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106dbc080>, action = 'run'
+condition = 'no_comm', directory = 'zones_final'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+        with pytest.raises(SystemExit) as error:
+>           sim_cli.main(['workflow', action, 'zone-study-integration-run', '--',
+                          '--prereg=prereg.json', '--episode=chosen', f'--condition={condition}',
+                          '--output=never-created', '--dev-horizon-s=1'])
+
+tests/test_zone_own_executor_corridor_contract.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/sim_cli.py:492: in main
+    return workflow_cli(argv[1:], root=ROOT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sim/workflow_manager.py:703: in workflow_cli
+    record = run_workflow(root, args.workflow_id, tail, inputs=args.input,
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re9'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+_ test_managed_corridor_entry_refuses_before_runtime[zones_final-peer_ko-plan] _
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106dbef30>, action = 'plan'
+condition = 'peer_ko', directory = 'zones_final'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+>       with pytest.raises(SystemExit) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SystemExit
+
+tests/test_zone_own_executor_corridor_contract.py:111: Failed
+----------------------------- Captured stdout call -----------------------------
+{
+  "workflow_id": "zone-study-integration-run",
+  "workflow_version": "2.14.0",
+  "catalog_sha256": "0a0ff743c8315636e31a049a2446813255412e98ea3bbf2cdf37d2b191eaffd2",
+  "runner": "scripts.run_zone_study_integration",
+  "adapter": "managed_legacy_cli",
+  "side_effect": "local_simulation",
+  "argv": [
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=peer_ko",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "scripts.run_zone_study_integration",
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=peer_ko",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re10/never-created",
+  "output_flag": "--output",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re10/prereg.json",
+      "kind": "file",
+      "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
+      "files": [
+        {
+          "path": "prereg.json",
+          "sha256": "87080fb24480fd7d7bcdb618b4c9ae47f5b6a9d73223a89d9ef445fb78728596",
+          "bytes": 215
+        }
+      ]
+    }
+  ],
+  "readiness": "required_inputs_present; legacy_parser_and_runtime_not_executed",
+  "execution_started": false
+}
+_ test_managed_corridor_entry_refuses_before_runtime[zones_final-peer_ko-run] __
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106dbc3b0>, action = 'run'
+condition = 'peer_ko', directory = 'zones_final'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+        with pytest.raises(SystemExit) as error:
+>           sim_cli.main(['workflow', action, 'zone-study-integration-run', '--',
+                          '--prereg=prereg.json', '--episode=chosen', f'--condition={condition}',
+                          '--output=never-created', '--dev-horizon-s=1'])
+
+tests/test_zone_own_executor_corridor_contract.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/sim_cli.py:492: in main
+    return workflow_cli(argv[1:], root=ROOT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sim/workflow_manager.py:703: in workflow_cli
+    record = run_workflow(root, args.workflow_id, tail, inputs=args.input,
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re11'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+_ test_managed_corridor_entry_refuses_before_runtime[zones_final-leader_ko-plan] _
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106f5fad0>, action = 'plan'
+condition = 'leader_ko', directory = 'zones_final'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+>       with pytest.raises(SystemExit) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SystemExit
+
+tests/test_zone_own_executor_corridor_contract.py:111: Failed
+----------------------------- Captured stdout call -----------------------------
+{
+  "workflow_id": "zone-study-integration-run",
+  "workflow_version": "2.14.0",
+  "catalog_sha256": "0a0ff743c8315636e31a049a2446813255412e98ea3bbf2cdf37d2b191eaffd2",
+  "runner": "scripts.run_zone_study_integration",
+  "adapter": "managed_legacy_cli",
+  "side_effect": "local_simulation",
+  "argv": [
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=leader_ko",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "scripts.run_zone_study_integration",
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=leader_ko",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re12/never-created",
+  "output_flag": "--output",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re12/prereg.json",
+      "kind": "file",
+      "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
+      "files": [
+        {
+          "path": "prereg.json",
+          "sha256": "87080fb24480fd7d7bcdb618b4c9ae47f5b6a9d73223a89d9ef445fb78728596",
+          "bytes": 215
+        }
+      ]
+    }
+  ],
+  "readiness": "required_inputs_present; legacy_parser_and_runtime_not_executed",
+  "execution_started": false
+}
+_ test_managed_corridor_entry_refuses_before_runtime[zones_final-leader_ko-run] _
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106da44d0>, action = 'run'
+condition = 'leader_ko', directory = 'zones_final'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+        with pytest.raises(SystemExit) as error:
+>           sim_cli.main(['workflow', action, 'zone-study-integration-run', '--',
+                          '--prereg=prereg.json', '--episode=chosen', f'--condition={condition}',
+                          '--output=never-created', '--dev-horizon-s=1'])
+
+tests/test_zone_own_executor_corridor_contract.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/sim_cli.py:492: in main
+    return workflow_cli(argv[1:], root=ROOT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sim/workflow_manager.py:703: in workflow_cli
+    record = run_workflow(root, args.workflow_id, tail, inputs=args.input,
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re13'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+_ test_managed_corridor_entry_refuses_before_runtime[zones_final-structured-plan] _
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106d076e0>, action = 'plan'
+condition = 'structured', directory = 'zones_final'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+>       with pytest.raises(SystemExit) as error:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE SystemExit
+
+tests/test_zone_own_executor_corridor_contract.py:111: Failed
+----------------------------- Captured stdout call -----------------------------
+{
+  "workflow_id": "zone-study-integration-run",
+  "workflow_version": "2.14.0",
+  "catalog_sha256": "0a0ff743c8315636e31a049a2446813255412e98ea3bbf2cdf37d2b191eaffd2",
+  "runner": "scripts.run_zone_study_integration",
+  "adapter": "managed_legacy_cli",
+  "side_effect": "local_simulation",
+  "argv": [
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=structured",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "command": [
+    "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "-m",
+    "scripts.run_zone_study_integration",
+    "--prereg=prereg.json",
+    "--episode=chosen",
+    "--condition=structured",
+    "--output=never-created",
+    "--dev-horizon-s=1"
+  ],
+  "output": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re14/never-created",
+  "output_flag": "--output",
+  "inputs": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re14/prereg.json",
+      "kind": "file",
+      "sha256": "b3da251a4925439cacd2c97a633549f50cc55e854e7b54785bcf2f77df716143",
+      "files": [
+        {
+          "path": "prereg.json",
+          "sha256": "87080fb24480fd7d7bcdb618b4c9ae47f5b6a9d73223a89d9ef445fb78728596",
+          "bytes": 215
+        }
+      ]
+    }
+  ],
+  "readiness": "required_inputs_present; legacy_parser_and_runtime_not_executed",
+  "execution_started": false
+}
+_ test_managed_corridor_entry_refuses_before_runtime[zones_final-structured-run] _
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corrido...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+capsys = <_pytest.capture.CaptureFixture object at 0x106d04650>, action = 'run'
+condition = 'structured', directory = 'zones_final'
+
+    @pytest.mark.parametrize('action', ['plan', 'run'])
+    @pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+    @pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+    def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+        from scripts import sim_cli
+        root, _ = managed_study
+        # A neutral file name proves admission checks passages, not an ID substring.
+        static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+        static['map_id'] = 'selected'
+        (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+        with pytest.raises(SystemExit) as error:
+>           sim_cli.main(['workflow', action, 'zone-study-integration-run', '--',
+                          '--prereg=prereg.json', '--episode=chosen', f'--condition={condition}',
+                          '--output=never-created', '--dev-horizon-s=1'])
+
+tests/test_zone_own_executor_corridor_contract.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/sim_cli.py:492: in main
+    return workflow_cli(argv[1:], root=ROOT)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sim/workflow_manager.py:703: in workflow_cli
+    record = run_workflow(root, args.workflow_id, tail, inputs=args.input,
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_corridor_entry_re15'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+__________ test_managed_study_selection_fails_closed[unknown_episode] __________
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...tudy_integration_prereg.v1', 'episodes': [{'episode_id': 'unselected', 'map': 'missing', 'scenario': 'missing.json'}]})
+fault = 'unknown_episode'
+
+    @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
+                                      'missing_map', 'ambiguous_map', 'empty_passages'])
+    def test_managed_study_selection_fails_closed(managed_study, fault):
+        from sim import workflow_manager as wm
+        root, pre = managed_study
+        static = {'map_id': 'selected', 'passages': [{'kind': 'door'}]}
+        if fault == 'empty_passages':
+            static['passages'] = []
+        if fault != 'missing_map':
+            (root / 'maps/zones/selected.json').write_text(json.dumps(static))
+        if fault == 'ambiguous_map':
+            (root / 'maps/zones_final/selected.json').write_text(json.dumps(static))
+        if fault == 'unknown_episode':
+            pre['episodes'].pop()
+        if fault == 'duplicate_episode':
+            pre['episodes'].append(copy.deepcopy(pre['episodes'][-1]))
+        if fault == 'map_mismatch':
+            (root / 'scenario.json').write_text(json.dumps({'map_id': 'different'}))
+        (root / 'prereg.json').write_text(json.dumps(pre))
+        with pytest.raises(ValueError):
+>           wm.run_workflow(root, 'zone-study-integration-run',
+                            ['--prereg', 'prereg.json', '--episode', 'chosen', '--condition', 'no_comm'])
+
+tests/test_zone_own_executor_corridor_contract.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f0'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+_________ test_managed_study_selection_fails_closed[duplicate_episode] _________
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...: 'selected', 'scenario': 'scenario.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+fault = 'duplicate_episode'
+
+    @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
+                                      'missing_map', 'ambiguous_map', 'empty_passages'])
+    def test_managed_study_selection_fails_closed(managed_study, fault):
+        from sim import workflow_manager as wm
+        root, pre = managed_study
+        static = {'map_id': 'selected', 'passages': [{'kind': 'door'}]}
+        if fault == 'empty_passages':
+            static['passages'] = []
+        if fault != 'missing_map':
+            (root / 'maps/zones/selected.json').write_text(json.dumps(static))
+        if fault == 'ambiguous_map':
+            (root / 'maps/zones_final/selected.json').write_text(json.dumps(static))
+        if fault == 'unknown_episode':
+            pre['episodes'].pop()
+        if fault == 'duplicate_episode':
+            pre['episodes'].append(copy.deepcopy(pre['episodes'][-1]))
+        if fault == 'map_mismatch':
+            (root / 'scenario.json').write_text(json.dumps({'map_id': 'different'}))
+        (root / 'prereg.json').write_text(json.dumps(pre))
+        with pytest.raises(ValueError):
+>           wm.run_workflow(root, 'zone-study-integration-run',
+                            ['--prereg', 'prereg.json', '--episode', 'chosen', '--condition', 'no_comm'])
+
+tests/test_zone_own_executor_corridor_contract.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f1'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+___________ test_managed_study_selection_fails_closed[map_mismatch] ____________
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+fault = 'map_mismatch'
+
+    @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
+                                      'missing_map', 'ambiguous_map', 'empty_passages'])
+    def test_managed_study_selection_fails_closed(managed_study, fault):
+        from sim import workflow_manager as wm
+        root, pre = managed_study
+        static = {'map_id': 'selected', 'passages': [{'kind': 'door'}]}
+        if fault == 'empty_passages':
+            static['passages'] = []
+        if fault != 'missing_map':
+            (root / 'maps/zones/selected.json').write_text(json.dumps(static))
+        if fault == 'ambiguous_map':
+            (root / 'maps/zones_final/selected.json').write_text(json.dumps(static))
+        if fault == 'unknown_episode':
+            pre['episodes'].pop()
+        if fault == 'duplicate_episode':
+            pre['episodes'].append(copy.deepcopy(pre['episodes'][-1]))
+        if fault == 'map_mismatch':
+            (root / 'scenario.json').write_text(json.dumps({'map_id': 'different'}))
+        (root / 'prereg.json').write_text(json.dumps(pre))
+        with pytest.raises(ValueError):
+>           wm.run_workflow(root, 'zone-study-integration-run',
+                            ['--prereg', 'prereg.json', '--episode', 'chosen', '--condition', 'no_comm'])
+
+tests/test_zone_own_executor_corridor_contract.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f2'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+____________ test_managed_study_selection_fails_closed[missing_map] ____________
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+fault = 'missing_map'
+
+    @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
+                                      'missing_map', 'ambiguous_map', 'empty_passages'])
+    def test_managed_study_selection_fails_closed(managed_study, fault):
+        from sim import workflow_manager as wm
+        root, pre = managed_study
+        static = {'map_id': 'selected', 'passages': [{'kind': 'door'}]}
+        if fault == 'empty_passages':
+            static['passages'] = []
+        if fault != 'missing_map':
+            (root / 'maps/zones/selected.json').write_text(json.dumps(static))
+        if fault == 'ambiguous_map':
+            (root / 'maps/zones_final/selected.json').write_text(json.dumps(static))
+        if fault == 'unknown_episode':
+            pre['episodes'].pop()
+        if fault == 'duplicate_episode':
+            pre['episodes'].append(copy.deepcopy(pre['episodes'][-1]))
+        if fault == 'map_mismatch':
+            (root / 'scenario.json').write_text(json.dumps({'map_id': 'different'}))
+        (root / 'prereg.json').write_text(json.dumps(pre))
+        with pytest.raises(ValueError):
+>           wm.run_workflow(root, 'zone-study-integration-run',
+                            ['--prereg', 'prereg.json', '--episode', 'chosen', '--condition', 'no_comm'])
+
+tests/test_zone_own_executor_corridor_contract.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f3'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+___________ test_managed_study_selection_fails_closed[ambiguous_map] ___________
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+fault = 'ambiguous_map'
+
+    @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
+                                      'missing_map', 'ambiguous_map', 'empty_passages'])
+    def test_managed_study_selection_fails_closed(managed_study, fault):
+        from sim import workflow_manager as wm
+        root, pre = managed_study
+        static = {'map_id': 'selected', 'passages': [{'kind': 'door'}]}
+        if fault == 'empty_passages':
+            static['passages'] = []
+        if fault != 'missing_map':
+            (root / 'maps/zones/selected.json').write_text(json.dumps(static))
+        if fault == 'ambiguous_map':
+            (root / 'maps/zones_final/selected.json').write_text(json.dumps(static))
+        if fault == 'unknown_episode':
+            pre['episodes'].pop()
+        if fault == 'duplicate_episode':
+            pre['episodes'].append(copy.deepcopy(pre['episodes'][-1]))
+        if fault == 'map_mismatch':
+            (root / 'scenario.json').write_text(json.dumps({'map_id': 'different'}))
+        (root / 'prereg.json').write_text(json.dumps(pre))
+        with pytest.raises(ValueError):
+>           wm.run_workflow(root, 'zone-study-integration-run',
+                            ['--prereg', 'prereg.json', '--episode', 'chosen', '--condition', 'no_comm'])
+
+tests/test_zone_own_executor_corridor_contract.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f4'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+__________ test_managed_study_selection_fails_closed[empty_passages] ___________
+
+managed_study = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_s...p': 'missing', 'scenario': 'missing.json'}, {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]})
+fault = 'empty_passages'
+
+    @pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
+                                      'missing_map', 'ambiguous_map', 'empty_passages'])
+    def test_managed_study_selection_fails_closed(managed_study, fault):
+        from sim import workflow_manager as wm
+        root, pre = managed_study
+        static = {'map_id': 'selected', 'passages': [{'kind': 'door'}]}
+        if fault == 'empty_passages':
+            static['passages'] = []
+        if fault != 'missing_map':
+            (root / 'maps/zones/selected.json').write_text(json.dumps(static))
+        if fault == 'ambiguous_map':
+            (root / 'maps/zones_final/selected.json').write_text(json.dumps(static))
+        if fault == 'unknown_episode':
+            pre['episodes'].pop()
+        if fault == 'duplicate_episode':
+            pre['episodes'].append(copy.deepcopy(pre['episodes'][-1]))
+        if fault == 'map_mismatch':
+            (root / 'scenario.json').write_text(json.dumps({'map_id': 'different'}))
+        (root / 'prereg.json').write_text(json.dumps(pre))
+        with pytest.raises(ValueError):
+>           wm.run_workflow(root, 'zone-study-integration-run',
+                            ['--prereg', 'prereg.json', '--episode', 'chosen', '--condition', 'no_comm'])
+
+tests/test_zone_own_executor_corridor_contract.py:154: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sim/workflow_manager.py:541: in run_workflow
+    record = _new_record(root, workflow_id, record_dir)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+args = (PosixPath('/Users/changmin/projects/ugrp/outputs/2026-09-30-cap-t10a-corridor/review-fix-red/tmp/test_managed_study_selection_f5'), 'zone-study-integration-run', None)
+kwargs = {}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail('admission must precede records, subprocesses, host and physics')
+E       Failed: admission must precede records, subprocesses, host and physics
+
+tests/test_zone_own_executor_corridor_contract.py:94: Failed
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones-no_comm-plan]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones-no_comm-run]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones-peer_ko-plan]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones-peer_ko-run]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones-leader_ko-plan]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones-leader_ko-run]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones-structured-plan]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones-structured-run]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones_final-no_comm-plan]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones_final-no_comm-run]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones_final-peer_ko-plan]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones_final-peer_ko-run]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones_final-leader_ko-plan]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones_final-leader_ko-run]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones_final-structured-plan]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_corridor_entry_refuses_before_runtime[zones_final-structured-run]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_study_selection_fails_closed[unknown_episode]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_study_selection_fails_closed[duplicate_episode]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_study_selection_fails_closed[map_mismatch]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_study_selection_fails_closed[missing_map]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_study_selection_fails_closed[ambiguous_map]
+FAILED tests/test_zone_own_executor_corridor_contract.py::test_managed_study_selection_fails_closed[empty_passages]
+22 failed, 1 passed, 31 deselected in 0.55s

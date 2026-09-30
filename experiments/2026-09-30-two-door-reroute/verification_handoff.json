@@ -1,0 +1,105 @@
+{
+  "status": "BLOCKED_FINAL_LOCAL_VERIFICATION_PENDING",
+  "qualification": "Implementation/fake test source only; no physical or E2E readiness. No new commit/push/draft PR yet.",
+  "worktree_head": "7e134745b35895f177ac1a82f18c7aee6466d3a4",
+  "pending_prerequisite_merge_head": "994b269d97d05dd2159c1a78f2b9eae9955790f9",
+  "prerequisite_pr": 314,
+  "prerequisite_main_merge_sha": null,
+  "initial_test_attempt": {
+    "directory": "/Users/changmin/projects/ugrp/outputs/2026-09-30-two-door-reroute/checks-04",
+    "results_by_class": {
+      "tests.test_zone_own_executor_observed_reroute": {
+        "passed": 39,
+        "failed": 15
+      },
+      "tests.test_zone_own_executor_door_routes": {
+        "passed": 76
+      },
+      "tests.test_pair_passage_plan": {
+        "passed": 44
+      },
+      "tests.test_zone_model_conventions": {
+        "passed": 6
+      },
+      "tests.test_zone_pair_status": {
+        "passed": 16
+      },
+      "tests.test_zone_pair_registered_source": {
+        "passed": 22
+      },
+      "tests.test_zone_study_source_pinning": {
+        "passed": 33
+      }
+    },
+    "exit_code": 1,
+    "source_unchanged": false,
+    "failure_cause": "15 fixture failures: leader=r2 was supplied to no_comm/peer_ko/structured. Changed Transport fixture to seed=1, no override.",
+    "final_qualification": false,
+    "concurrent_edit": "Constructor participant validation and its 3 new tests changed during checks-04. Final candidate requires a new immutable run."
+  },
+  "source_at_handoff_sha256": {
+    "harness/zone_observed_door_reroute.py": "69752ba0b9764abc589507af3db4e530b70f8d9c619409cc4f862f210f5e22fb",
+    "tests/test_zone_own_executor_observed_reroute.py": "556b87bd693270ee57fab4ebb10610ec7e802e5321f37ff48a15260b26e05ba1",
+    "experiments/2026-09-30-two-door-reroute/run_checks.py": "a2825c3d9184171edaf8d6ff04839f72a3a3b32621bf41d4dfc3bead744c1af2"
+  },
+  "unmodified_previous_test_sources": {
+    "harness/zone_static_door_routes.py": "cec5fd95847496d5492b73dba67bf4393eef0c57394510ee7d2a22e597d9d24c",
+    "harness/zone_pair_status.py": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+    "tests/test_zone_own_executor_door_routes.py": "9d4e213efb6834e72265132f8b6aa94588879fe8945e1fe9713a7f00ac3befd9",
+    "tests/test_pair_passage_plan.py": "ceb5572bb8299f90b237598ab629f4d3b8beb62c9ebe14a310ebbe59c3a06866",
+    "tests/test_zone_model_conventions.py": "3fe1828c05cf3cba72ab41e62bde04f8939a11838e8589e7143072c3af2ed3a6",
+    "tests/test_zone_pair_status.py": "6e39c94da07b30bff6f3289943f5267752ba1e37ffbde33a692d6678542722ca",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_study_source_pinning.py": "98b1f59ce0af4c81102612ee9e8d9e1a12912e1635341cb7b439c920738ad1ef"
+  },
+  "raw_local_only": {
+    "/Users/changmin/projects/ugrp/outputs/t09b-baseline-01.log": {
+      "bytes": 1281,
+      "sha256": "7fd16f2a6e9594bbce96677df5d974ba5d3ffb6b04032465410b3ed775a4b80c"
+    },
+    "/Users/changmin/projects/ugrp/outputs/t09b-baseline-02.log": {
+      "bytes": 2023,
+      "sha256": "f8e5a429e89e4704a179eb3638823a1845ea51f58e7028e5be78fadc2546e604"
+    },
+    "/Users/changmin/projects/ugrp/outputs/t09b-checks-03.log": {
+      "bytes": 2388,
+      "sha256": "07e1f92c8a58283a62fc7e37526fbdb2406f2f6bbdf10ae92fa99cf276c20e4a"
+    },
+    "/Users/changmin/projects/ugrp/outputs/t09b-checks-04.log": {
+      "bytes": 14807,
+      "sha256": "b66644ef52628a694b95991410293007d7c826c031a93782fea5a04f67e435c0"
+    },
+    "/Users/changmin/projects/ugrp/outputs/t09b-checks-05.log": {
+      "bytes": 1760,
+      "sha256": "c0c3ab88605d4f19a062b10e9a26a99a9d47da0427191a94f02a2a982aec06a3"
+    },
+    "/Users/changmin/projects/ugrp/outputs/2026-09-30-two-door-reroute/checks-04/manifest.json": {
+      "bytes": 2542,
+      "sha256": "5d0fd04506470df4d7dd8eda867c563caeb4f8e5ee7a99638494bd495ba893b1"
+    },
+    "/Users/changmin/projects/ugrp/outputs/2026-09-30-two-door-reroute/checks-04/none.xml": {
+      "bytes": 51630,
+      "sha256": "202b0446e15e0a7d2509654ef73ba7ea8606e4d7ab1553a3ab7dd6781195acef"
+    }
+  },
+  "waiting_attempts": {
+    "baseline-01": "exit 130 before tests",
+    "baseline-02": "exit 130 before tests",
+    "checks-03": "exit 130 before tests",
+    "checks-05": "exit 130 before tests; physical confirmatory owner retained lock"
+  },
+  "mutation_checks": "NOT_RUN: five in-memory mutations implemented; baseline must pass first",
+  "final_candidate_tests": "NOT_RUN after fixture correction",
+  "lock_blocker": {
+    "branch": "claude/v6h1-confirm-run",
+    "pid": 21249,
+    "purpose": "v6h1 blinded confirmatory 72",
+    "expected_minutes": 150
+  },
+  "physics_steps": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "proposed_physics_sim_cap_s": 3600,
+  "github_ci": "Not started for T09b: commit is gated on related local test pass; no workflows cancelled",
+  "tensorboard": "No physical/evaluation run; unit regressions not converted to robot results"
+}

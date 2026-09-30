@@ -146,7 +146,8 @@ def test_192_generated_raw_record_transformations_never_increase_success(tmp_pat
     """64 independent raw cohorts per operation, beyond the prior 24,000 cases.
 
     Keep keys and the external plan fixed. Include rejected duplicates: moving
-    their rows must not remove their original owner's INVALID verdict. Check
+    their rows OR renaming their directory to another admitted run must not
+    remove their original owner's INVALID verdict. Check
     actual raw -> collect, and real event readback for each operation's last case.
     """
     rng = random.Random(303_500 + ['permute', 'duplicate', 'move'].index(operation))
@@ -154,15 +155,26 @@ def test_192_generated_raw_record_transformations_never_increase_success(tmp_pat
         root = tmp_path / str(case)
         plan, bundle = planned(rng.randint(2, 4), rng.randint(1, 2))
         flags = [bool(rng.getrandbits(1)) for _ in plan['admitted']]
+        rename_rejected = operation == 'move' and case % 3 == 0
+        owner, alias = rng.sample(range(len(flags)), 2) if rename_rejected else (0, None)
+        if rename_rejected:
+            # A must be a success and B a non-success: losing A's rejected
+            # duplicate must expose the original 0 -> 1 success inflation.
+            flags[owner], flags[alias] = True, False
         sources = [raw_source(root / 'primary', plan, bundle, i, flag) for i, flag in enumerate(flags)]
-        if case % 2:
-            duplicate = raw_source(root / 'extra', plan, bundle, 0, False)
+        if case % 2 or rename_rejected:
+            duplicate = raw_source(root / 'extra', plan, bundle, owner, False)
             raw = read(duplicate, 'eval_only/referee.json')
             raw['policy_sha256'] = '0' * 64
             put(duplicate, 'eval_only/referee.json', raw)
             refresh_receipts(duplicate)
             sources.append(duplicate)
         baseline = cohort.collect(plan, digest(plan), sources)
+        if rename_rejected:
+            assert baseline['successes'] == sum(flags) - 1
+            assert baseline['invalid_trials'] == 1
+            assert baseline['trials'][owner]['status'] == 'INVALID'
+            assert baseline['trials'][alias]['status'] == 'VALID'
         donor, recipient = rng.sample(sources, 2)
         if operation == 'permute':
             rng.shuffle(sources)
@@ -181,7 +193,18 @@ def test_192_generated_raw_record_transformations_never_increase_success(tmp_pat
                 raw['events'].extend(copy.deepcopy(read(donor, 'eval_only/referee.json')['events']))
                 put(recipient, 'eval_only/referee.json', raw)
                 refresh_receipts(recipient)
-        elif case % 3 == 0:
+        elif rename_rejected:
+            # Rename the existing rejected source; retaining an unmoved copy
+            # would mask the bug. Every file (including keys/receipts) is fixed.
+            original = {p.relative_to(duplicate): p.read_bytes()
+                        for p in duplicate.rglob('*') if p.is_file()}
+            moved = duplicate.with_name(plan['admitted'][alias]['key']['run_id'])
+            duplicate.rename(moved)
+            sources[-1] = moved
+            assert not duplicate.exists()
+            assert {p.relative_to(moved): p.read_bytes()
+                    for p in moved.rglob('*') if p.is_file()} == original
+        elif case % 3 == 1:
             # The source manifest/envelopes remain, even when its raw file moves.
             shutil.move(str(donor / 'eval_only/referee.json'), str(recipient / 'eval_only/referee.json'))
             refresh_receipts(donor)
@@ -195,7 +218,15 @@ def test_192_generated_raw_record_transformations_never_increase_success(tmp_pat
                 refresh_receipts(src)
         result = cohort.collect(plan, digest(plan), sources)
         assert result['admitted_trials'] == baseline['admitted_trials'] == len(plan['admitted'])
-        assert result['successes'] <= baseline['successes'], (operation, case, result['trials'])
+        assert result['successes'] <= baseline['successes'], (
+            operation, case, 'successes', baseline['successes'], result['successes'], result['trials'])
+        if rename_rejected:
+            assert result['invalid_trials'] == 1
+            assert result['trials'][owner]['status'] == 'INVALID'
+            assert result['trials'][alias]['status'] == 'VALID'
+            receipt = next(r for r in result['sources'] if r['source'] == str(moved.resolve()))
+            assert receipt['status'] == 'INVALID'
+            assert receipt['affected_keys'] == [plan['admitted'][owner]['key']]
         if operation == 'permute':
             assert result['trials'] == baseline['trials']
         assert all(new['status'] == 'INVALID' for old, new in zip(baseline['trials'], result['trials'])

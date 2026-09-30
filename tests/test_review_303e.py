@@ -16,8 +16,7 @@ from harness import zone_study_referee as zr
 from harness.zone_study_contract import digest
 from scripts import zone_study_evidence_join as join
 from scripts.zone_study_evidence_contract import verify_referee_derivations
-from tests.test_zone_referee_replay import claims
-from tests.zone_evidence_fixtures import MAP, at_zone, planned
+from tests.zone_evidence_fixtures import MAP, at_zone, claims, planned
 from tests.zone_evidence_fixtures import put, raw_source, read, refresh_receipts
 from tests.zone_evidence_assertions import checked_cohort
 
