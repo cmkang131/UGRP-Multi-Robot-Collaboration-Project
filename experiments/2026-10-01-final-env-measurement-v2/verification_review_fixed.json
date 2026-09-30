@@ -1,0 +1,100 @@
+{
+  "status": "OFFLINE_PASSED",
+  "review_source": "cfc562da",
+  "collection_source": "eaeaaff05553ea02c649b4db9ff82470fe6372b5",
+  "integrated_main": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+  "latest_main_observed": "a520d9d8a70b9945a6eeb396e0a07c19aa3cb3c4",
+  "main_scope": "Later #345 changes CI workflows; unnecessary for this fix and not imported to preserve the explicit no-workflow-change instruction.",
+  "scope": "offline synthetic/fake backend only; no physics, renderer or model calls",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "numpy": "2.5.2",
+  "pytest": "9.1.1",
+  "baseline_review": "2 passed, 6 strict xfailed, independently reproduced before edits",
+  "final_review": "8 passed, 0 xfail (included in final 63)",
+  "suites": [
+    {
+      "file": "review_fixed_offline.xml",
+      "name": "pytest",
+      "errors": "0",
+      "failures": "1",
+      "skipped": "9",
+      "tests": "689",
+      "time": "417.572",
+      "timestamp": "2026-10-01T06:25:59.710717+09:00",
+      "hostname": "gangchangmin-ui-MacBookAir.local"
+    },
+    {
+      "file": "review_fixed_final.xml",
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "63",
+      "time": "52.093",
+      "timestamp": "2026-10-01T06:30:18.526462+09:00",
+      "hostname": "gangchangmin-ui-MacBookAir.local"
+    }
+  ],
+  "deduplicated_passed_tests_excluding_subtests": 654,
+  "subtests": 27,
+  "source_files_sha256": {
+    "configs/final_environment_measurement_v2.json": "bda01f670febea5d5d298ac0e707515f956d25d2cc1c412c8690047bf86ed402",
+    "configs/final_environment_measurement_v2_clearance.json": "fb2c0c6a5d8ccdd7237bcd70d33e21ec54a690e80051d0cfdcf9abf7d0365741",
+    "harness/final_environment_measurement_v2.py": "63c48ee890413827dc99b88c04ae190b9b4cd4eb38edd6ccbcaae873e1599adb",
+    "harness/measurement_path_clearance.py": "091e0705390a74fb77d60aa6d95f32c004f3feaab221216e1e30a8037b54aad7",
+    "sim/final_environment_measurement_v2.py": "0dfa6d0b6317dcea9f430168331c55a3e1f5b299a3b5d01c580cb3611bf3f0af",
+    "scripts/check_measurement_v2_identifiability.py": "4bad2fd6748cf1fdfdc2804c61432d91d69c523dc294f9955451deac030f5498",
+    "scripts/run_final_environment_measurement_v2.py": "6f1ac5975f69493d1164cc798c4161741b51ded5baa2153808190b5757fde77e",
+    "scripts/run_ci_tests.py": "022c393b39d47bf2c53b10a589c5ae4134ceccfd462fc5869eee66e1675a5c4e",
+    "tests/test_review_347.py": "6260fa03d63e1e30273c1ee0cce251b47e925eb32f0474f233c8d09887030fb5",
+    "tests/test_final_environment_measurement_v2.py": "e217e37b64e1d803b15cc45a8354b5b909b109e4ab849a798e8f42428d662079"
+  },
+  "preserved_originals": {
+    "configs/final_environment_measurement_v2.json": "bda01f670febea5d5d298ac0e707515f956d25d2cc1c412c8690047bf86ed402",
+    "experiments/2026-10-01-final-env-measurement-v2/design_before_plan.json": "eb31b498af0771a3dc47a889ce4c63b94e35657c6affc39a8ef3ed78d1003872",
+    "experiments/2026-10-01-final-env-measurement-v2/identifiability.json": "59770527a5b7880ca7738bbbab2caa7608ed3599510d49c96ba843afdf041ebf"
+  },
+  "unchanged_commands": 4600,
+  "temporary_extraction_directories_created": [],
+  "prior_review_extraction_removed_or_absent": true,
+  "workflow_bytes_unchanged": true,
+  "static_checks": [
+    "git diff --check",
+    "check_ci_fixtures.py: 3 present",
+    "rgb_execution_bundle verify-current --id rgb-standard-dispatch-v63",
+    "rgb_execution_bundle verify-registry --base origin/codex/final-env-floor-light",
+    "corrected identifiability report exactly regenerated and compared",
+    "CLI dry plan runnable=false; no output/backend created"
+  ],
+  "native_import_guard": [
+    "mujoco",
+    "torch",
+    "torchvision"
+  ],
+  "local_limits": {
+    "skipped": "9 native MuJoCo compilation/render tests; module blocked before pytest",
+    "deselected": "WorkflowManagerTests::test_parent_exit_cleans_background_child: sandbox denies ps",
+    "ui": "Chrome cgWindowNotFound; all 16 TensorBoard scalars checked with EventAccumulator and HTTP"
+  },
+  "initial_suites": {
+    "narrow": "62 passed before final overflow assertion added",
+    "interrupted": "review_fixed_tests.xml: 8 passed then interrupted to install process-wide no-MuJoCo guard; not a completed suite",
+    "broad_failure": "1 source-change refusal, captured in source_change_abort_evidence.json; final affected-scope 63 passed after source freeze"
+  },
+  "artifacts_sha256": {
+    "source_change_abort_evidence.json": "07ba6c9731c17bfe5febce99677c75bcc01047cc1562ae2e0d3dad8114891639",
+    "tensorboard_review_fixed.json": "9d82d342cc527d3d46566e168cc52ee29576464d9e0788b3cb129fca70d68e4b",
+    "REVIEW_347_RESULTS.json": "f7a662fdee97ae5284b6c077f97d17e8201b078c1d1f345dc28678dc909d8793",
+    "review_fixed_final.xml": "d187cb9aac2dd0eedc76935d32b3f1a5ae8fcebbb9995162578568e419cac9d2",
+    "review_fixed_offline.xml": "10833633fd325ba610775e98c8da6107cbb7bad29cf80d673c5b06f79f4523dc",
+    "plan_review_fixed.json": "e62b71ebe18ab25871b9e62cef60c2d836d2bc1176971d2ab12727c23780ba2f",
+    "identifiability_review_fixed.json": "bc067da15f2d40632e200e30bd21f27c72eedebca3314397742fd3b3a48f770f",
+    "REVIEW_347.md": "a28da2867131bad5c2954d47cba4b8c6ab0c8f1bb694936fb71b82f1341db267",
+    "review_fixed_tests.xml": "55d5285385362920cb69ea8b9af5320a849cf732d1488ef6ba675ee9beb9c407"
+  },
+  "latest_outcomes_from_junit": {
+    "passed": 654,
+    "skipped": 9,
+    "failed": 0
+  }
+}

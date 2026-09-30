@@ -16,6 +16,7 @@ import sys
 
 from harness import zone_final_pair_contract as contract
 from harness.zone_final_pair_calibration import schedule
+from harness.zone_final_pair_clearance import require_collection_clearance
 from scripts.run_final_environment_checks import write, check_source
 
 
@@ -39,6 +40,7 @@ def checkpoint_record(runtime_record, checkpoint):
 
 
 def run_case(bundle, out, *, seed, backend_factory, runtime_factory=None, calibration=None, calibration_sha=None):
+    require_collection_clearance(bundle)
     out = Path(out)
     out.mkdir(parents=True, exist_ok=False)
     write(out / 'bundle.json', bundle)
@@ -142,6 +144,9 @@ def main(argv=None):
     bundles = [{**contract.bundle(c['map_id'], args.check), 'case': c,
                 'source_sha': args.expected_source_sha} for c in cases]
     blocked = []
+    for bundle in bundles:
+        if bundle['clearance_preflight'] is not None and not bundle['clearance_preflight']['admitted']:
+            blocked.append('FULL_PATH_CLEARANCE_REJECTED: ' + bundle['clearance_preflight']['reason'])
     if args.check in ('p03', 'carry'):
         try:
             for c in cases:
@@ -155,9 +160,9 @@ def main(argv=None):
     if not args.execute:
         print(json.dumps(plan, ensure_ascii=False, indent=2))
         return 0
-    check_source(args.expected_source_sha)
     if blocked:
         raise ValueError('; '.join(blocked))
+    check_source(args.expected_source_sha)
     primary = Path(subprocess.check_output(['git', 'rev-parse', '--path-format=absolute', '--git-common-dir'],
         cwd=contract.ROOT, text=True).strip()).parent
     if not args.output.is_absolute() or not args.output.resolve().is_relative_to((primary/'outputs').resolve()):

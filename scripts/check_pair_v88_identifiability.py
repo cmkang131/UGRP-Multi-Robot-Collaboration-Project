@@ -119,7 +119,7 @@ def report():
 
 
 def enrich(result):
-    """Same conditional full-path clearance calculation as #347, not safety proof."""
+    """Nominal sampled trajectory only; never collection admission or a plant bound."""
     from harness import zone_final_pair_contract as c
     from harness.zone_final_pair_calibration import teacher_stations
     from harness.zone_final_pair_excitation import UNLOADED_POSE

@@ -198,8 +198,11 @@ def test_no_clearance_truth_channel_for_student(monkeypatch):
     assert obj.collection_guard() is None
 
 
-def test_bundle_clocks_are_exactly_the_applied_loop_values(tmp_path):
-    from scripts.run_final_pair_v3 import run_case
+def test_bundle_clocks_are_exactly_the_applied_loop_values(tmp_path, monkeypatch):
+    from scripts import run_final_pair_v3 as run
+    # Isolate fake clock behavior after hypothetical admission.
+    monkeypatch.setattr(run, 'require_collection_clearance', lambda bundle: None)
+    run_case = run.run_case
     from tests.test_zone_final_pair_v3 import FakePhysics,FakeRuntime
     for check,period,cap in [('p03',.05,120.),('calibration-fine',.2,370.)]:
         row=c.cases(check)[0];b={**c.bundle(row['map_id'],check),'case':row}
@@ -239,3 +242,100 @@ def test_offline_hammerstein_evidence_and_actual_schedule_have_same_design():
             assert row['practically_separated']
             axis='forward' if name=='runtime_ramp' else name
             assert row['samples']==1+round(sum(s['duration_s'] for s in design(check)['segments'] if s['axis']==axis)/.05)
+
+
+@pytest.mark.parametrize('check', c.CHECKS[2:])
+def test_collection_rejects_all_entry_points_before_output_or_physics(tmp_path, monkeypatch, capsys, check):
+    from scripts import run_final_pair_v3 as run
+    from sim.final_pair_v3 import PhysicsBackend
+    from harness.zone_final_pair_clearance import CLEARANCE_REVIEW
+    row = c.cases(check)[0]
+    bundle = {**c.bundle(row['map_id'], check), 'case': row}
+    assert CLEARANCE_REVIEW in bundle['source_sha256']
+    assert not bundle['clearance_preflight']['admitted']
+    args = ['--check', check, '--expected-source-sha', 'a'*40, '--output', str(tmp_path/'raw')]
+    assert run.main(args) == 0
+    plan = json.loads(capsys.readouterr().out)
+    assert not plan['runnable'] and plan['blocked_on'] == [
+        'FULL_PATH_CLEARANCE_REJECTED: MISSING_INDEPENDENT_MOTION_BOUNDS']
+    # Neither a fake saved PASS nor a direct owner constructor may bypass the
+    # independently re-read evidence. Imports themselves are sentinels.
+    bundle['clearance_preflight']['admitted'] = True
+    monkeypatch.setitem(sys.modules, 'sim.zone_final_v3_scene', None)
+    monkeypatch.setitem(sys.modules, 'sim.final_pair_v3', None)
+    def forbidden(*args, **kwargs):
+        pytest.fail('reached source/lock/backend work before clearance rejection')
+    monkeypatch.setattr(run, 'check_source', forbidden)
+    with pytest.raises(ValueError, match='FULL_PATH_CLEARANCE_REJECTED'):
+        run.main(args + ['--execute'])
+    with pytest.raises(ValueError, match='FULL_PATH_CLEARANCE_REJECTED'):
+        run.run_case(bundle, tmp_path/'case', seed=911, backend_factory=forbidden)
+    with pytest.raises(ValueError, match='FULL_PATH_CLEARANCE_REJECTED'):
+        PhysicsBackend(bundle, tmp_path/'native', seed=911)
+    assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.parametrize('check', c.CHECKS[2:])
+@pytest.mark.parametrize('fault', ['corrupt', 'unsupported'])
+def test_v89_bound_evidence_cannot_certify_v88_rotation_or_pair(tmp_path, monkeypatch, check, fault):
+    from harness import zone_final_pair_clearance as clearance
+    from harness.measurement_path_clearance import point_model_bounds
+    from scripts.check_measurement_v2_identifiability import CANDIDATES
+    evidence = tmp_path/'fixture.txt'
+    evidence.write_text('SYNTHETIC UNIT TEST ONLY: not a plant bound')
+    review = c.base.read(c.ROOT/clearance.CLEARANCE_REVIEW)
+    review['profiles'][check].update(status='QUALIFIED_BOUNDS', bounds=point_model_bounds(CANDIDATES),
+        independent_bound_evidence={'fixture.txt': c.base.sha(evidence)})
+    (tmp_path/'configs').mkdir()
+    (tmp_path/clearance.CLEARANCE_REVIEW).write_text(json.dumps(review))
+    static = c.resolve(MAP_ID)[0]
+    monkeypatch.setattr(c, 'ROOT', tmp_path)
+    monkeypatch.setattr(c, 'resolve', lambda _: (static, None, None))
+    if fault == 'corrupt':
+        evidence.write_text('corrupted after qualification')
+        reason = 'BOUND_EVIDENCE_HASH_MISMATCH'
+    else:
+        reason = 'UNSUPPORTED_MULTI_BODY_PATH' if check == 'calibration-loaded' else 'UNSUPPORTED_PATH_AXIS'
+    with pytest.raises(ValueError, match=reason):
+        clearance.path_preflight(check, MAP_ID)
+
+
+@pytest.mark.parametrize('fault', ['robot_z', 'beam_z', 'radius', 'distance', 'computed_gap'])
+def test_collection_validates_original_xyz_and_computed_geometry(monkeypatch, fault):
+    from harness import zone_final_pair_clearance as clearance
+    obj = fake_guard(monkeypatch, True)
+    obj.collection_guard()
+    if fault == 'robot_z':
+        obj.world.data.geom_xpos[1, 2] = float('inf')
+    elif fault == 'beam_z':
+        obj.world.data.geom_xpos[2, 2] = float('-inf')
+    elif fault == 'radius':
+        obj.world.model.geom_rbound[2] = float('inf')
+    elif fault == 'distance':
+        # Move the geom, not the separately held base centre.
+        obj.world.data.body = lambda _: SimpleNamespace(xpos=np.array([3.25, -.85, .1]))
+        obj.world.data.geom_xpos[1, 0] = 1e308
+    else:
+        monkeypatch.setattr(np, 'hypot',
+                            lambda *args: np.full(1, float('nan')))
+    with np.errstate(over='ignore'), pytest.raises(ValueError):
+        obj.collection_guard()
+    assert obj.held == ['r1', 'r2']
+    assert obj.saved[0][0] == 'eval_only/clearance_abort.jsonl'
+
+
+def test_unloaded_already_has_rotation_steps_and_prbs_at_20hz():
+    from harness.zone_final_pair_calibration import schedule
+    plan = design('calibration-unloaded')
+    turn = [s for s in plan['segments'] if s['axis'] == 'turn']
+    for sign in (-1, 1):
+        assert len({abs(s['value']) for s in turn if s['phase'] == 'step' and s['value']*sign > 0}) >= 2
+    assert len([s for s in turn if s['phase'] == 'prbs']) == 31
+    # Existing 84 s rotation block is retained; the conditional <=50 s request
+    # concerned adding a missing block. No additional commands or cap increase.
+    assert sum(s['duration_s'] for s in turn) == 84.
+    rows = [e for e in schedule('calibration-unloaded') if e['action'].get('turn', 0)]
+    assert min(e['t'] for e in rows) == 242.
+    assert max(e['t']+.05 for e in rows) == pytest.approx(323.5)
+    assert plan['eval_pose_period_s'] == .05
+    assert plan['sim_cap_s'] + plan['reset_cap_s'] == 375.

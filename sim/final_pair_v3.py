@@ -42,6 +42,8 @@ def make_scene(bundle, seed):
 
 class PhysicsBackend(BaseBackend):
     def __init__(self, bundle, out, *, seed):
+        from harness.zone_final_pair_clearance import require_collection_clearance
+        require_collection_clearance(bundle)
         from sim.zone_final_v3_scene import build_world
         from sim.camera_robot_port import CameraRobotPort
         self.out, self.bundle = Path(out), bundle
@@ -93,7 +95,7 @@ class PhysicsBackend(BaseBackend):
             return
         import mujoco
         import numpy as np
-        from harness.zone_final_pair_clearance import require_clearance, sphere_clearances
+        from harness.zone_final_pair_clearance import require_clearance, sphere_clearances, geometry_envelope
         from harness.zone_final_pair_excitation import design
         plan = design(self.bundle['check'])
         static = self.scene.config['static_map']
@@ -120,12 +122,13 @@ class PhysicsBackend(BaseBackend):
             for rid, ids in groups[:len(robots)]:
                 xy = np.asarray(d.body(rid+'__robot').xpos[:2], float)
                 minimum = min(minimum, require_clearance(static, xy, plan))
-                radius = float(np.max(np.linalg.norm(d.geom_xpos[ids, :2]-xy, axis=1) + m.geom_rbound[ids]))
+                radius = max(geometry_envelope(d.geom_xpos[i], m.geom_rbound[i], xy) for i in ids)
                 if not math.isfinite(radius) or radius > plan['clearance']['robot_radius_bound_m']:
                     raise ValueError('ROBOT_ENVELOPE_BOUND_EXCEEDED')
             for name, ids in groups:
-                xy = np.asarray(d.geom_xpos[ids, :2], float)
-                gaps = sphere_clearances(static, xy, m.geom_rbound[ids])
+                xyz = np.asarray(d.geom_xpos[ids], float)
+                gaps = sphere_clearances(static, xyz, m.geom_rbound[ids])
+                xy = xyz[:, :2]
                 if np.any(gaps < .35-1e-10):
                     raise ValueError('CLEARANCE_ABORT: collection geometry wall margin')
                 previous = self._last_guard_xy.get(name)

@@ -1,9 +1,15 @@
 # 최종 v3 공동 운반 v88 인계 — DRAFT, 미봉인
 
 v88은 `floor_light_v1`의 세 최종 v3 지도에 공동 운반을 연결한다. 보정 수집은 두 문 지도 한 곳이다.
-**v88은 한 번도 실행되지 않아 REVIEW_344 수정은 같은 번들에서 개정했다.** 과거 실행을 다시 이름 붙이지 않았다.
+**v88은 한 번도 실행되지 않아 REVIEW_344/344b 수정은 같은 번들에서 개정했다.** 과거 실행을 다시 이름 붙이지 않았다.
 **이번 검증은 fake/offline만 수행했다. 물리·렌더·모델 추론·P03·운반 성공 결과는 없다.**
 학생 실행은 실측 v3 보정 파일의 해시·조합·필수 자세 coverage가 없으면 시작하지 않는다.
+**세 보정 수집도 현재 실행 불가다.** `origin/main` `2c45b137`의 #347(v89)·#342(v87)를
+통합했고, #347의 독립 근거 해시·전체 경로 검사와 xyz/반경/계산 거리 검사를 공유한다.
+`configs/zone_final_pair_v88_clearance.json`의 종류별 운동 범위·독립 근거는 null로 보존했다.
+계획은 `runnable:false`, 사유는 `FULL_PATH_CLEARANCE_REJECTED: MISSING_INDEPENDENT_MOTION_BOUNDS`다.
+CLI·`run_case`·직접 backend 생성 모두 물리 시작 전에 거부하며 저장된 PASS로 우회할 수 없다.
+아래 실행 명령은 향후 검토된 후보를 위한 형식이다. **현재 SHA에서 실행하지 않는다.**
 아래 v87 인계와 v84 기록은 각 번들의 당시 지침으로 보존한다. v88 실행에는 위쪽 v88 명령만 쓴다.
 
 ## v88 조합과 검증 경계
@@ -32,12 +38,13 @@ v88은 `floor_light_v1`의 세 최종 v3 지도에 공동 운반을 연결한다
   coarse order는 실행 전에 고정한다. seeded robot→dock row 정보는 학생에게 주지 않으며,
   초기 PF는 공용 지도에 공개된 dock 영역으로만 한 번 초기화한다.
 
-## 보정 수집 — 모델/기존 loaded fit 없이 실행 가능
+## 보정 수집 — 전체 경로 근거가 없어 실행 차단
 
 세 수집 종류는 각각 **한 지도 × 370 SIM초 + reset 최대 5초 = 최대 375초**다.
 지도는 `zone_wide_two_doors_final_v3`로 고정한다. P03/운반의 3×120초는 유지한다.
 기존 세 지도 반복 분모를 한 지도 장시간 자극으로 바꾼 것이며, 지도 간 보정 검증을 뜻하지 않는다.
-원본 `final_environment_measurement_v1.json`과 #347의 실행된 v89는 바꾸지 않는다.
+원본 `final_environment_measurement_v1.json`과 v89의 실행 기록·일정은 그대로 보존한다.
+measurement v2의 검사를 공용 함수로 재사용하며 새 소스 SHA를 과거 v89 실행에 소급하지 않는다.
 #347 `eaeaaff0`의 계단·PRBS/50 ms 평가/전체 경로 중단 설계를 v88에 적용했다.
 #348 `dba873d4`는 선형 1차 모델 부적합, 크기별 gain, deadband와 약 0.84초 drive tau의 근거다.
 그 실측값을 loaded/fine 보정값으로 복사하지 않는다.
@@ -46,6 +53,9 @@ v88은 `floor_light_v1`의 세 최종 v3 지도에 공동 운반을 연결한다
   x^5+x^2+1 PRBS31(0.5초 chip, 중간 크기) + 2.5초 coast를 넣는다. 실제 lease는 0.05초다.
 - `calibration-unloaded`: 크기 .01/.02/.03, 74–326초 운동.
   0–72초 원본 자세/pan, 330–342초 hover·grasp·p45·inspect·search. r1 고정 시작 `[3.25,-.85,0]`.
+  **회전은 이미 242–326초의 84초 블록에 있다.** 양·음 .01/.02/.03의 10초 계단 각각 3개,
+  PRBS31 15.5초와 coast를 포함한다. #346용 pose 표본은 0.05초다.
+  누락된 회전 블록이 없어 새 ≤50초 블록은 추가하지 않았고 기존 375초 상한을 유지했다.
 - `calibration-fine`: 크기 .004/.016/.028, 같은 시각; 70초 p45로 바꾸고 운동 중 유지한다.
 - `calibration-loaded`: 크기 .006/.015/.025/.04. 데드밴드 아래·중간 두 수준·포화 영역을
   구별하는 설계이며, 실제 deadband 범위가 다르면 적합을 거부하고 새 설계가 필요하다.
@@ -56,7 +66,13 @@ v88은 `floor_light_v1`의 세 최종 v3 지도에 공동 운반을 연결한다
   벽 여유 0.30 m + 중단 buffer 0.05 m, 로봇 반경 bound 0.40 m,
   substep geom 이동 bound 0.01 m. 누락·NaN·초과는 hold 후 **HOST_ERROR로 중단**한다.
   GT는 이 교사 진단의 중단에만 쓰고, 명령 수정/경로 보정이나 학생에게 전달하지 않는다.
-  전체 경로의 실제 여유와 loaded 성공은 실행 전 확정할 수 없다.
+  원래 xyz 전체·반경·계산 거리와 wall gap의 유한성을 XY 투영 전에/계산 후 검사한다.
+- 수집 허용에는 종류·자세별 양/음 gain, drive/stop/coast, reset 오차, 축간/yaw/slip 오차의
+  독립 범위와 근거 해시, 명령 경계 사이를 포함한 전체 경로 여유가 필요하다.
+  loaded는 두 로봇·팔·빔 모두를 포함해야 한다. nominal 예측·한 번의 v89 결과는 대체 근거가 아니다.
+  공용 v89 계산기는 현재 단일 로봇 평행이동만 지원하므로, 근거 파일만 채워도 회전/loaded를
+  통과시키지 않는다. 회전 swept path·여러 물체의 경로 검증을 확장하고 독립 검토해야 한다.
+  초기 hold·마지막 coast/팔/카메라 구간까지 370초 전체를 preflight에 전달한다.
 
 [오프라인 식별 결과](experiments/2026-10-01-v3-pair-adapter/identifiability_v2.json)는
 #347의 정확 lag 적분·gain 해석적 적합·drive/stop tau profiling에 정적 비선형을 추가했다.
@@ -92,7 +108,7 @@ git status --short --untracked-files=all
   --check calibration-loaded --expected-source-sha "$FINAL_SHA" \
   --output "$RUN_ROOT/calibration-loaded"
 
-# 아래부터는 물리 담당 코디네이터가 수행한다. 기존 잠금이 있으면 실행하지 않는다.
+# 현재 실행 차단. 전체 경로 근거와 계산기 지원을 검토한 새 후보에서만 코디네이터가 수행한다.
 (
 set -euo pipefail
 "$PY" scripts/agent_lock.py acquire --owner codex --branch "$FINAL_BRANCH" \

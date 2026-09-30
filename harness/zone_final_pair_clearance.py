@@ -1,75 +1,60 @@
-"""Wall geometry from PR #347 (eaeaaff0), shared design for v88 acquisition.
+"""V88 uses main's measurement-v2 evidence admission and geometry checks.
 
-Pure geometry only. The physics owner enforces these bounds at every substep
-and may only abort. There is no command correction or student GT channel.
+No qualified motion bounds exist for any v88 collection. Rotation and the
+loaded pair/beam additionally exceed the shared translator's supported scope.
 """
-import math
+from harness import final_environment_measurement_v2 as shared
+from harness.final_environment_measurement_v2 import (  # compatibility for diagnostics
+    rectangles, free_floor_area, clearance, require_clearance, geometry_envelope,
+)
 
-def rectangles(static):
-    """Reject unsupported geometry instead of treating it as free space."""
-    bounds = static['bounds_m']
-    if len(bounds) != 4 or not all(math.isfinite(v) for v in bounds):
-        raise ValueError('invalid static bounds')
-    if bounds[0] >= bounds[1] or bounds[2] >= bounds[3] or static.get('terrain'):
-        raise ValueError('unsupported floor geometry')
-    result = []
-    if not static['obstacles']:
-        raise ValueError('missing static walls')
-    for obstacle in static['obstacles']:
-        if obstacle.get('kind') != 'wall' or obstacle.get('yaw_rad', 0) != 0:
-            raise ValueError('unsupported static obstacle')
-        x, y = obstacle['center_m']
-        hx, hy = obstacle['half_extents_m']
-        if not all(math.isfinite(v) for v in (x, y, hx, hy)) or min(hx, hy) <= 0:
-            raise ValueError('invalid static obstacle')
-        result.append((x - hx, x + hx, y - hy, y + hy))
-    return result
+CLEARANCE_REVIEW = 'configs/zone_final_pair_v88_clearance.json'
 
 
-def free_floor_area(static):
-    """Exact union of clipped, axis-aligned wall rectangles (square metres)."""
-    x0, x1, y0, y1 = static['bounds_m']
-    rects = [(max(x0, a), min(x1, b), max(y0, c), min(y1, d)) for a, b, c, d in rectangles(static)]
-    rects = [r for r in rects if r[0] < r[1] and r[2] < r[3]]
-    xs = sorted({x0, x1, *(v for r in rects for v in r[:2])})
-    blocked = 0.
-    for a, b in zip(xs, xs[1:]):
-        intervals = sorted((c, d) for l, r, c, d in rects if l < (a + b) / 2 < r)
-        end, height = y0, 0.
-        for c, d in intervals:
-            height += max(0., d - max(c, end))
-            end = max(end, d)
-        blocked += (b - a) * height
-    return (x1 - x0) * (y1 - y0) - blocked
+def path_preflight(check, map_id):
+    from harness import zone_final_pair_contract as contract
+    from harness.zone_final_pair_excitation import design, UNLOADED_POSE
+    from harness.zone_final_pair_calibration import teacher_stations
+    plan = design(check)
+    if map_id != plan['map_id']:
+        raise ValueError('collection clearance map differs from registered design')
+    static = contract.resolve(map_id)[0]
+    review = contract.base.read(contract.ROOT / CLEARANCE_REVIEW)['profiles'][check]
+    # Cover the complete 370 s command window, including initial staging,
+    # coast and camera/arm-only tail. No rotation is dropped from segments.
+    tail = plan['sim_cap_s'] - plan['motion_start_s'] - sum(s['duration_s'] for s in plan['segments'])
+    if tail < 0:
+        raise ValueError('collection path exceeds SIM cap')
+    loaded = check == 'calibration-loaded'
+    path = {**plan, 'initial_hold_s': plan['motion_start_s'],
+            'spawn_xy_yaw': teacher_stations(static)['r1'] if loaded else UNLOADED_POSE,
+            'path_bodies': ['r1', 'r2', 'beam'] if loaded else ['r1'],
+            'segments': [*plan['segments'], {'axis': 'forward', 'duration_s': tail, 'value': 0.}]}
+    return shared.path_preflight(static, path, root=contract.ROOT, review=review)
 
 
-def clearance(static, xy, radius):
-    """Distance from a conservative robot disc to walls and map boundary."""
-    x, y = xy
-    if not all(math.isfinite(v) for v in (x, y, radius)) or radius <= 0:
-        raise ValueError('missing/non-finite clearance measurement')
-    x0, x1, y0, y1 = static['bounds_m']
-    distances = [x - x0, x1 - x, y - y0, y1 - y]
-    for a, b, c, d in rectangles(static):
-        distances.append(math.hypot(max(a - x, 0., x - b), max(c - y, 0., y - d)))
-    return min(distances) - radius
+def require_collection_clearance(bundle):
+    """Recompute admission even for direct callers; never trust a saved PASS."""
+    from harness.zone_final_pair_excitation import design
+    if not bundle['check'].startswith('calibration-'):
+        return
+    if bundle.get('measurement') != design(bundle['check']):
+        raise ValueError('collection measurement differs from registered design')
+    receipt = path_preflight(bundle['check'], bundle['map_id'])
+    if not receipt['admitted']:
+        raise ValueError('FULL_PATH_CLEARANCE_REJECTED: ' + receipt['reason'])
 
 
-def require_clearance(static, xy, plan):
-    safety = plan['clearance']
-    gap = clearance(static, xy, safety['robot_radius_bound_m'])
-    if gap < safety['minimum_m'] + safety['abort_buffer_m'] - 1e-10:
-        raise ValueError('CLEARANCE_ABORT: static-map wall margin not available')
-    return gap
-
-
-def sphere_clearances(static, xy, radii):
+def sphere_clearances(static, xyz, radii):
     """Vectorized version for every robot/arm/beam geom at each substep."""
     import numpy as np
-    xy, radii = np.asarray(xy, float), np.asarray(radii, float)
-    if (xy.ndim != 2 or xy.shape[1] != 2 or radii.shape != (len(xy),) or not len(xy)
-            or not np.isfinite(xy).all() or not np.isfinite(radii).all() or np.any(radii <= 0)):
+    xyz, radii = np.asarray(xyz, float), np.asarray(radii, float)
+    if (xyz.ndim != 2 or xyz.shape[1] != 3 or radii.shape != (len(xyz),) or not len(xyz)
+            or np.any(radii <= 0)):
         raise ValueError('missing/non-finite clearance geometry')
+    for position, radius in zip(xyz, radii):
+        geometry_envelope(position, radius, position[:2])
+    xy = xyz[:, :2]
     rects = rectangles(static)
     x0, x1, y0, y1 = static['bounds_m']
     x, y = xy.T
@@ -77,4 +62,7 @@ def sphere_clearances(static, xy, radii):
     for a, b, c, d in rects:
         gaps = np.minimum(gaps, np.hypot(np.maximum.reduce((a-x, x-b, np.zeros(len(x)))),
                                         np.maximum.reduce((c-y, y-d, np.zeros(len(y))))))
-    return gaps-radii
+    gaps = gaps-radii
+    if not np.isfinite(gaps).all():
+        raise ValueError('INVALID_ROBOT_GEOMETRY')
+    return gaps

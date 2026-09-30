@@ -1,0 +1,64 @@
+{
+  "status": "OFFLINE_PASSED_WITH_ENVIRONMENT_LIMITS",
+  "base_source_sha": "04eb11c6a001f2a7d2ab916765d59b3661c06efe",
+  "scope": "offline/fake only; no physics, rendering or model calls",
+  "suites": [
+    {
+      "file": "pytest.xml",
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "152",
+      "time": "161.343",
+      "timestamp": "2026-10-01T05:48:26.319161+09:00",
+      "hostname": "gangchangmin-ui-MacBookAir.local"
+    },
+    {
+      "file": "dependencies_after_fix.xml",
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "1",
+      "tests": "104",
+      "time": "29.256",
+      "timestamp": "2026-10-01T05:51:29.909327+09:00",
+      "hostname": "gangchangmin-ui-MacBookAir.local"
+    }
+  ],
+  "unique_passing_testcases_including_subtests": 195,
+  "source_files_sha256": {
+    "configs/final_environment_measurement_v2.json": "bda01f670febea5d5d298ac0e707515f956d25d2cc1c412c8690047bf86ed402",
+    "configs/simulation_workflows.d/final_environment_measurement_v89.json": "44e48591bad779e50ecb67432febd8d415f2afc4d7b4ff2d61ca08b42c7d8a15",
+    "harness/final_environment_measurement_v2.py": "2be1b3586dd28acfbc9c989b19ff674a48323cac478456866d12f5b76fff4006",
+    "scripts/check_measurement_v2_identifiability.py": "a8f684044eddbaccb25c956810951fb6fdeb6f3402a657190c0640d798826a36",
+    "scripts/run_final_environment_measurement_v2.py": "972d2fac647813ba86228b75cc13cc2b4e68c76828b36426e52dafb055c25110",
+    "sim/final_environment_measurement_v2.py": "7f010a09b92149e7769ecd9e2cade93fe554eef4afce1e8fe3914b2bb76f1fe5",
+    "tests/test_final_environment_measurement_v2.py": "2827e6f9536ad78918547af229194192b4c8cccb45dad17dd3c27f520d11bd46",
+    "tests/test_simulation_workflow_manager.py": "fda8321810c86583af25b016b4656136115b4ef2a0bab68bf7d95d751ca0ee8d",
+    "scripts/run_ci_tests.py": "1dac66a104cd8a39511236f813a0c6a08c9413f040212b3432e426510a636357"
+  },
+  "static_checks": [
+    "git diff --check",
+    "scripts/check_ci_fixtures.py: 3 frozen fixtures present",
+    "harness.rgb_execution_bundle verify-current --id rgb-standard-dispatch-v63",
+    "harness.rgb_execution_bundle verify-registry --base origin/codex/final-env-floor-light"
+  ],
+  "initial_dependencies_failures": {
+    "record": "dependencies.xml",
+    "catalog_count_and_example": "fixed and rerun passed",
+    "process_cleanup_test": "PermissionError: ps denied by sandbox; excluded only locally; unchanged test remains in CI",
+    "raw_junit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/measurement-v89-design/dependencies-initial-raw.xml",
+      "sha256": "68abdb8ac95886c08ba3409371b64c9a6ca42eaf4eecc50166748f568e146ee6",
+      "committed_copy": "dependencies.xml, trailing whitespace normalized; messages and outcomes preserved"
+    }
+  },
+  "skip": "optional native render test skipped; no renderer started",
+  "unverified": [
+    "native acquisition and abort interlock on actual physics",
+    "actual gain/tau fit and plateau",
+    "Chrome TensorBoard UI/HParams columns: cgWindowNotFound"
+  ],
+  "temp_extraction_directories_created": []
+}

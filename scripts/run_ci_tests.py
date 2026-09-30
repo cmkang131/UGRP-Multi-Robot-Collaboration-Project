@@ -89,7 +89,10 @@ TEST_PATTERNS = (
     "tests/test_zone_final_pair_v3.py",
     "tests/test_zone_final_pair_review_fixes.py",
     "tests/test_review_344.py",
+    "tests/test_review_344b.py",
     "tests/test_zone_final_environment_floor_light.py",
+    "tests/test_final_environment_measurement_v2.py",
+    "tests/test_review_347.py",
     "tests/test_review_e2e_batch_k.py",  # K1: final environment CI collection regression
     "tests/test_scenario_capabilities_docs.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",

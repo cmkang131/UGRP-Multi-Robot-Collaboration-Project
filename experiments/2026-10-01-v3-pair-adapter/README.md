@@ -95,3 +95,10 @@ P03 3×120 SIM초의 잠금·세션·표준 workflow 명령을 적었다. collec
 - [등록 b-v6h1 계열 #292](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/292)
 - [P03 #312](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/312)
 - [실행 버전 관리](../../docs/execution_versioning.md)
+
+## REVIEW_344b 후속 수정
+
+[재검토 반영 기록](REVIEW_344b_FIXES.md)을 따른다. 세 보정 수집은 독립 운동 범위와
+전체 경로 여유 근거가 없어 실행 차단 상태다. main #347의 검사 코드를 공유하며,
+로봇·빔의 z 비정상값도 투영 전에 거부한다. unloaded 회전 계단·PRBS는 이미 있어 유지했다.
+이전 실행 가능 안내보다 이 절과 최신 `PHYSICS_HANDOFF.md`의 차단 상태가 우선한다.
