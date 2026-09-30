@@ -1,0 +1,98 @@
+{
+  "reviewed_sha": "8a1631b9cf6f9d658961fcb80339539e87541d3d",
+  "review_branch": "codex/review-299b",
+  "previous_review_sha": "de16cbc96becf19755f09197b9ef139609f00fe9",
+  "created_utc": "2026-09-30T12:33:56.499031+00:00",
+  "python_executable": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "pytest_cache": "disabled"
+  },
+  "lock": "scripts.run_ci_tests.run_locked; shared lock acquired before every test/validation driver and released after owned process cleanup; busy locks left untouched",
+  "local_output_root": "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9",
+  "results": {
+    "existing_related_passed": 260,
+    "new_cases": 58,
+    "new_case_families": 13,
+    "final_passed": 300,
+    "final_xfailed": 18,
+    "unmasked_failed": 18,
+    "unmasked_deselected": 40,
+    "incorrect_full_pass_variants": 14,
+    "known_violation_downgraded_to_not_evaluable": 4,
+    "completed_cases_reconciled": 308,
+    "cases_jsonl_hashes_matched": 17,
+    "partial_tX1": {
+      "total": 14,
+      "pass": 12,
+      "host_error": 2
+    }
+  },
+  "physics_steps": 0,
+  "renders": 0,
+  "model_calls": 0,
+  "source_file_sha256": {
+    "experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "3e9cc53e0a1b5f2b971362e24478103a1d6a5ed330535b79008312dc6156aa62",
+    "experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3",
+    "tests/test_classify_review_299.py": "0fe79fcc25dfdbfc1f75a8be7d14aeec7a86d218652263de8c1d1e3aabe307a2",
+    "tests/test_classify_review_299b.py": "81bb98fe969b8bfd52f502709c79b2ca3e94cb89efadfb08a1fea5aa9e1b7880",
+    "tests/test_v6h_classify_placements.py": "12f19030ae38333d34010ed7ff9fe021cffb089dc8478f3c0b3f4b7c91c7b27a",
+    "scripts/run_ci_tests.py": "09f5ef8ea4e5a0bba91d10cd8c0c233ed6e6ff625bb774e0b03f2b892fcdad38"
+  },
+  "log_copy_hashes": {
+    "baseline_tests.txt": {
+      "raw_sha256": "b28d3aaa00ebf692bd2a794a4159a2881ccb37ae4fed13e9d9907d149463e215",
+      "git_copy_sha256": "b28d3aaa00ebf692bd2a794a4159a2881ccb37ae4fed13e9d9907d149463e215",
+      "transform": "strip trailing whitespace only"
+    },
+    "final_tests.txt": {
+      "raw_sha256": "cfb26f99819747a187ee9a8627f5c03712029160f0ea24e90db8f8abbf4aee46",
+      "git_copy_sha256": "cfb26f99819747a187ee9a8627f5c03712029160f0ea24e90db8f8abbf4aee46",
+      "transform": "strip trailing whitespace only"
+    },
+    "initial_new_tests.txt": {
+      "raw_sha256": "5deb93cf396eb9173983812a28b06932973738871d6c0f1990c8a00d6aa4db75",
+      "git_copy_sha256": "c325ae5e2fa3a62cbd8441a9e5226cc978755b94b9f75d6a0d8df7daec431f0e",
+      "transform": "strip trailing whitespace only"
+    },
+    "counterexamples_unmasked.txt": {
+      "raw_sha256": "5ef5d547cb9bc2d58bc18accc5f3b3526845cbb2d6969116996dbd4ad9e329d6",
+      "git_copy_sha256": "ec8f889f6ce0e12e3b4ff23781805ca1f0d77a9edabfc97a39e5c2167f398b89",
+      "transform": "strip trailing whitespace only"
+    },
+    "published_counts.txt": {
+      "raw_sha256": "00b069891e38620d31c1226ebe45797dc4beb3edfccdcfa9c83cbe92e0968090",
+      "git_copy_sha256": "00b069891e38620d31c1226ebe45797dc4beb3edfccdcfa9c83cbe92e0968090",
+      "transform": "strip trailing whitespace only"
+    },
+    "sizing_check.txt": {
+      "raw_sha256": "6282b80f670a9ea4e13304ca7cbb0e48602e6a87ad6b6f2801609f690c22ff2d",
+      "git_copy_sha256": "6282b80f670a9ea4e13304ca7cbb0e48602e6a87ad6b6f2801609f690c22ff2d",
+      "transform": "strip trailing whitespace only"
+    }
+  },
+  "initial_new_test_source_sha256": "2ee2f2ca710f28249dc26394da7a861780fa8c17cc343a3ea695b3097bcee9d5",
+  "initial_to_final_test_change": "Added strict AssertionError-only xfail reasons; added the 47/60 failing control assertion before the mixed cleanup/retry example; expectations of the 18 counterexamples unchanged.",
+  "unmasked_failed_nodeids": [
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[cases_only-tilt-941]",
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[cases_only-tilt-943]",
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[cases_only-penetration-941]",
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[cases_only-penetration-943]",
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-tilt-941]",
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-tilt-943]",
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-penetration-941]",
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-penetration-943]",
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[both-tilt-941]",
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[both-tilt-943]",
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[both-penetration-941]",
+    "tests.test_classify_review_299b::test_r2_saved_contact_summary_must_keep_known_violation[both-penetration-943]",
+    "tests.test_classify_review_299b::test_host_stored_trace_contradiction_is_not_silent_success[empty]",
+    "tests.test_classify_review_299b::test_host_stored_trace_contradiction_is_not_silent_success[line_aligned_tail]",
+    "tests.test_classify_review_299b::test_host_stored_trace_contradiction_is_not_silent_success[missing_middle]",
+    "tests.test_classify_review_299b::test_host_stored_trace_contradiction_is_not_silent_success[duplicate_time]",
+    "tests.test_classify_review_299b::test_host_stored_trace_contradiction_is_not_silent_success[reverse_time]",
+    "tests.test_classify_review_299b::test_controller_failures_followed_by_cleanup_errors_cannot_be_retried_to_pass"
+  ]
+}

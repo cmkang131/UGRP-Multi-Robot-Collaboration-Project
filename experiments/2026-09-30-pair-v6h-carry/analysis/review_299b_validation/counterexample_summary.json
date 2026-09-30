@@ -1,0 +1,845 @@
+[
+  {
+    "name": "F1_tilt941_cases_only",
+    "test": "test_r2_saved_contact_summary_must_keep_known_violation",
+    "parameters": [
+      941,
+      "tilt",
+      "cases_only"
+    ],
+    "expected": "FAIL_A_B_SAFETY",
+    "actual": "PASS_A_B_SAFETY",
+    "raw": "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_tilt941_cases_only/raw",
+    "full_report_sha256": "3a8d3f4263a0f6353431326b5fc25293a102a814ec82a25c0cade4ce553d78b0",
+    "n_cases": 72,
+    "n_attempts": 73,
+    "n_placements": 60,
+    "pass_placements": 60,
+    "counts": {
+      "PASS_CLEAN": 60,
+      "PASS_CONTACT_RECOVERED": 0,
+      "BLOCKED_BY_CONTACT": 0,
+      "FAIL": 0,
+      "FAIL_HARD_LIMIT": 0
+    },
+    "hard_limit_attempt_case_ids": [],
+    "hard_limit_chain_cases": 0,
+    "safety_evidence_issues": {},
+    "sigma_B": "PASS",
+    "original_attempts": [
+      {
+        "case_id": "review299:C01:s941",
+        "placement": "C01",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": null,
+          "evidence_issues": []
+        }
+      }
+    ],
+    "retained_original_rows": [
+      {
+        "case_id": "review299:C01:s941",
+        "seed": 941,
+        "cell": "C01",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "wall_contact": {
+          "episodes": 1,
+          "who": [
+            "beam"
+          ],
+          "max_penetration_m": 0.004,
+          "first_contact_sim_s": 1.25,
+          "wall_geoms": [
+            "wall"
+          ],
+          "max_tilt_deg_stage": 16.0,
+          "hard_limits": {
+            "max_tilt_deg": 15.0,
+            "max_penetration_m": 0.005
+          }
+        },
+        "chain_first_failure": null
+      }
+    ],
+    "audit_input_sha256": {
+      "cases.jsonl": "9068fc07c2b687758822263ac4728b1e4d93c9ae43d57ddbcad4179c2b2e274b",
+      "manifest.json": "f38c1592a8505338fa1437da30d1d7ed735e48cc775b95f7d6ecee1e8ee1edd5",
+      "chain_analysis.py": "62ff145d9016f61aa2f6f71d588ba7dab5b35d9aabb2b19ca15a934bafc0d2e5",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "3e9cc53e0a1b5f2b971362e24478103a1d6a5ed330535b79008312dc6156aa62",
+      "/Users/changmin/projects/ugrp-wt/review-299/harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-29-door-guard-relax/analysis/door_relax_analysis.py": "5add0c7ac29c94e13cf65ffe0f95abbf96a7c80e125194a20a485cd8dca6186f",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_tilt941_cases_only/seal.json": "9dbe4893d5a2437d5e571dda4984f4dd3c2029eb91cb6b3e97221dee81938e34",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_tilt941_cases_only/placements.json": "d08d9f4750ad706a13836d0521759d2ee231e391c719fa9cebe0be7b9c1d3a76",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_tilt941_cases_only/plan.json": "b21692dd95fbc8f5cb5f220c01f02eeca138b8d37770dc428fe5f60372ecafd1",
+      "cases/review299_C01_s941/case.json": "fefa6b67f3dc55136e44f30a5be7888e36146a603926743b3db4ede8bef7b820",
+      "cases/review299_C01_s941_retry1/case.json": "044a8ca125da1a2b01b357568d51597777305b79307e544ec1c18d7ff0273fda",
+      "cases/review299_C01_s941_retry1/result.json": "02371a55566c168f02e76069082a8b172b2e59760d550c5054cf07ed60ef1269",
+      "cases/review299_C01_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce"
+    }
+  },
+  {
+    "name": "F1_pen943_both",
+    "test": "test_r2_saved_contact_summary_must_keep_known_violation",
+    "parameters": [
+      943,
+      "penetration",
+      "both"
+    ],
+    "expected": "FAIL_A_B_SAFETY",
+    "actual": "PASS_A_B_SAFETY",
+    "raw": "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_pen943_both/raw",
+    "full_report_sha256": "77d1df9d55df57d88df79372395df87203a75b94e7cf2a0a787d94744098b2a4",
+    "n_cases": 72,
+    "n_attempts": 73,
+    "n_placements": 60,
+    "pass_placements": 60,
+    "counts": {
+      "PASS_CLEAN": 60,
+      "PASS_CONTACT_RECOVERED": 0,
+      "BLOCKED_BY_CONTACT": 0,
+      "FAIL": 0,
+      "FAIL_HARD_LIMIT": 0
+    },
+    "hard_limit_attempt_case_ids": [],
+    "hard_limit_chain_cases": 0,
+    "safety_evidence_issues": {},
+    "sigma_B": "PASS",
+    "original_attempts": [
+      {
+        "case_id": "review299:C01:s943",
+        "placement": "C01",
+        "seed": 943,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      }
+    ],
+    "retained_original_rows": [
+      {
+        "case_id": "review299:C01:s943",
+        "seed": 943,
+        "cell": "C01",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "wall_contact": {
+          "episodes": 1,
+          "who": [
+            "beam"
+          ],
+          "max_penetration_m": 0.006,
+          "first_contact_sim_s": 1.25,
+          "wall_geoms": [
+            "wall"
+          ],
+          "max_tilt_deg_stage": 1.0,
+          "hard_limits": {
+            "max_tilt_deg": 15.0,
+            "max_penetration_m": 0.005
+          }
+        },
+        "chain_first_failure": null
+      }
+    ],
+    "audit_input_sha256": {
+      "cases.jsonl": "c562670f90b88c10dd7fd0dab72a6ea98411cff4fae45e497bea06c848c5206d",
+      "manifest.json": "f38c1592a8505338fa1437da30d1d7ed735e48cc775b95f7d6ecee1e8ee1edd5",
+      "chain_analysis.py": "62ff145d9016f61aa2f6f71d588ba7dab5b35d9aabb2b19ca15a934bafc0d2e5",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "3e9cc53e0a1b5f2b971362e24478103a1d6a5ed330535b79008312dc6156aa62",
+      "/Users/changmin/projects/ugrp-wt/review-299/harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-29-door-guard-relax/analysis/door_relax_analysis.py": "5add0c7ac29c94e13cf65ffe0f95abbf96a7c80e125194a20a485cd8dca6186f",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_pen943_both/seal.json": "63691473f72fec4a3bb4e4e134f16cb09e1c6482d80620efb4e69bc70c36688d",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_pen943_both/placements.json": "d08d9f4750ad706a13836d0521759d2ee231e391c719fa9cebe0be7b9c1d3a76",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_pen943_both/plan.json": "b21692dd95fbc8f5cb5f220c01f02eeca138b8d37770dc428fe5f60372ecafd1",
+      "cases/review299_C01_s943/case.json": "466756d2381453a27fb753b76a90f768e2f2ea347f2d11151c26dc79d6f7c5f1",
+      "cases/review299_C01_s943_retry1/case.json": "71618580b7ff718244d90164f7e3ca90aa4e25b2f2bcfac55930d2db78236152",
+      "cases/review299_C01_s943/result.json": "3bc038367328231e2f96cbbd1edb9c8fae5adf378d76abf1a269ea999099dfd6",
+      "cases/review299_C01_s943/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C01_s943_retry1/result.json": "11bd5db87741e13b645d93dc431d9fd5a2e5aa2d70c849254a9b2e229ea7e34d",
+      "cases/review299_C01_s943_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce"
+    }
+  },
+  {
+    "name": "F1_pen941_result_row_only",
+    "test": "test_r2_saved_contact_summary_must_keep_known_violation",
+    "parameters": [
+      941,
+      "penetration",
+      "result_row_only"
+    ],
+    "expected": "FAIL_A_B_SAFETY",
+    "actual": "NOT_EVALUABLE",
+    "raw": "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_pen941_result_row_only/raw",
+    "full_report_sha256": "e22bb6dc80ef783b7c11818c92aa7748ea3aa887d8da833a12c43efd8a0df8e2",
+    "n_cases": 72,
+    "n_attempts": 73,
+    "n_placements": 60,
+    "pass_placements": 60,
+    "counts": {
+      "PASS_CLEAN": 60,
+      "PASS_CONTACT_RECOVERED": 0,
+      "BLOCKED_BY_CONTACT": 0,
+      "FAIL": 0,
+      "FAIL_HARD_LIMIT": 0
+    },
+    "hard_limit_attempt_case_ids": [],
+    "hard_limit_chain_cases": 0,
+    "safety_evidence_issues": {
+      "review299:C01:s941": [
+        "HOST_ERROR result row differs from cases record"
+      ]
+    },
+    "sigma_B": "PASS",
+    "original_attempts": [
+      {
+        "case_id": "review299:C01:s941",
+        "placement": "C01",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": [
+            "HOST_ERROR result row differs from cases record"
+          ]
+        }
+      }
+    ],
+    "retained_original_rows": [
+      {
+        "case_id": "review299:C01:s941",
+        "seed": 941,
+        "cell": "C01",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": null
+      }
+    ],
+    "audit_input_sha256": {
+      "cases.jsonl": "43c5d4f39b6844b579e0c500f646f1e69919ea6a47adc2b6cb2d93b3f0c1afd0",
+      "manifest.json": "f38c1592a8505338fa1437da30d1d7ed735e48cc775b95f7d6ecee1e8ee1edd5",
+      "chain_analysis.py": "62ff145d9016f61aa2f6f71d588ba7dab5b35d9aabb2b19ca15a934bafc0d2e5",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "3e9cc53e0a1b5f2b971362e24478103a1d6a5ed330535b79008312dc6156aa62",
+      "/Users/changmin/projects/ugrp-wt/review-299/harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-29-door-guard-relax/analysis/door_relax_analysis.py": "5add0c7ac29c94e13cf65ffe0f95abbf96a7c80e125194a20a485cd8dca6186f",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_pen941_result_row_only/seal.json": "9dbe4893d5a2437d5e571dda4984f4dd3c2029eb91cb6b3e97221dee81938e34",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_pen941_result_row_only/placements.json": "d08d9f4750ad706a13836d0521759d2ee231e391c719fa9cebe0be7b9c1d3a76",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F1_pen941_result_row_only/plan.json": "b21692dd95fbc8f5cb5f220c01f02eeca138b8d37770dc428fe5f60372ecafd1",
+      "cases/review299_C01_s941/case.json": "fefa6b67f3dc55136e44f30a5be7888e36146a603926743b3db4ede8bef7b820",
+      "cases/review299_C01_s941_retry1/case.json": "044a8ca125da1a2b01b357568d51597777305b79307e544ec1c18d7ff0273fda",
+      "cases/review299_C01_s941/result.json": "2d8672c020877f987c23788b2122f42d5da6742562732026f220eea5a983153f",
+      "cases/review299_C01_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C01_s941_retry1/result.json": "02371a55566c168f02e76069082a8b172b2e59760d550c5054cf07ed60ef1269",
+      "cases/review299_C01_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce"
+    }
+  },
+  {
+    "name": "F2_empty",
+    "test": "test_host_stored_trace_contradiction_is_not_silent_success",
+    "parameters": [
+      "empty"
+    ],
+    "expected": "NOT_EVALUABLE",
+    "actual": "PASS_A_B_SAFETY",
+    "raw": "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F2_empty/raw",
+    "full_report_sha256": "d80198ad1f6c6bc95aed2fb747182904ce1cf32065caf515890c56166071c59f",
+    "n_cases": 72,
+    "n_attempts": 73,
+    "n_placements": 60,
+    "pass_placements": 60,
+    "counts": {
+      "PASS_CLEAN": 60,
+      "PASS_CONTACT_RECOVERED": 0,
+      "BLOCKED_BY_CONTACT": 0,
+      "FAIL": 0,
+      "FAIL_HARD_LIMIT": 0
+    },
+    "hard_limit_attempt_case_ids": [],
+    "hard_limit_chain_cases": 0,
+    "safety_evidence_issues": {},
+    "sigma_B": "PASS",
+    "original_attempts": [
+      {
+        "case_id": "review299:C01:s941",
+        "placement": "C01",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      }
+    ],
+    "retained_original_rows": [
+      {
+        "case_id": "review299:C01:s941",
+        "seed": 941,
+        "cell": "C01",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": null
+      }
+    ],
+    "audit_input_sha256": {
+      "cases.jsonl": "43c5d4f39b6844b579e0c500f646f1e69919ea6a47adc2b6cb2d93b3f0c1afd0",
+      "manifest.json": "f38c1592a8505338fa1437da30d1d7ed735e48cc775b95f7d6ecee1e8ee1edd5",
+      "chain_analysis.py": "62ff145d9016f61aa2f6f71d588ba7dab5b35d9aabb2b19ca15a934bafc0d2e5",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "3e9cc53e0a1b5f2b971362e24478103a1d6a5ed330535b79008312dc6156aa62",
+      "/Users/changmin/projects/ugrp-wt/review-299/harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-29-door-guard-relax/analysis/door_relax_analysis.py": "5add0c7ac29c94e13cf65ffe0f95abbf96a7c80e125194a20a485cd8dca6186f",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F2_empty/seal.json": "9dbe4893d5a2437d5e571dda4984f4dd3c2029eb91cb6b3e97221dee81938e34",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F2_empty/placements.json": "d08d9f4750ad706a13836d0521759d2ee231e391c719fa9cebe0be7b9c1d3a76",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F2_empty/plan.json": "b21692dd95fbc8f5cb5f220c01f02eeca138b8d37770dc428fe5f60372ecafd1",
+      "cases/review299_C01_s941/case.json": "fefa6b67f3dc55136e44f30a5be7888e36146a603926743b3db4ede8bef7b820",
+      "cases/review299_C01_s941_retry1/case.json": "044a8ca125da1a2b01b357568d51597777305b79307e544ec1c18d7ff0273fda",
+      "cases/review299_C01_s941/result.json": "09de8cc5adc9c9c4b3e6fe711b304631cb79cc6283398558dbc92b1b8f1474b9",
+      "cases/review299_C01_s941/eval_only/trace.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cases/review299_C01_s941_retry1/result.json": "02371a55566c168f02e76069082a8b172b2e59760d550c5054cf07ed60ef1269",
+      "cases/review299_C01_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce"
+    }
+  },
+  {
+    "name": "F2_line_aligned_tail",
+    "test": "test_host_stored_trace_contradiction_is_not_silent_success",
+    "parameters": [
+      "line_aligned_tail"
+    ],
+    "expected": "NOT_EVALUABLE",
+    "actual": "PASS_A_B_SAFETY",
+    "raw": "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F2_line_aligned_tail/raw",
+    "full_report_sha256": "e2263aece8cc113eece7f579b9cbaf5ad8a64c68a4e6491abf25733f12a9de03",
+    "n_cases": 72,
+    "n_attempts": 73,
+    "n_placements": 60,
+    "pass_placements": 60,
+    "counts": {
+      "PASS_CLEAN": 60,
+      "PASS_CONTACT_RECOVERED": 0,
+      "BLOCKED_BY_CONTACT": 0,
+      "FAIL": 0,
+      "FAIL_HARD_LIMIT": 0
+    },
+    "hard_limit_attempt_case_ids": [],
+    "hard_limit_chain_cases": 0,
+    "safety_evidence_issues": {},
+    "sigma_B": "PASS",
+    "original_attempts": [
+      {
+        "case_id": "review299:C01:s941",
+        "placement": "C01",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      }
+    ],
+    "retained_original_rows": [
+      {
+        "case_id": "review299:C01:s941",
+        "seed": 941,
+        "cell": "C01",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": null
+      }
+    ],
+    "audit_input_sha256": {
+      "cases.jsonl": "43c5d4f39b6844b579e0c500f646f1e69919ea6a47adc2b6cb2d93b3f0c1afd0",
+      "manifest.json": "f38c1592a8505338fa1437da30d1d7ed735e48cc775b95f7d6ecee1e8ee1edd5",
+      "chain_analysis.py": "62ff145d9016f61aa2f6f71d588ba7dab5b35d9aabb2b19ca15a934bafc0d2e5",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "3e9cc53e0a1b5f2b971362e24478103a1d6a5ed330535b79008312dc6156aa62",
+      "/Users/changmin/projects/ugrp-wt/review-299/harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-29-door-guard-relax/analysis/door_relax_analysis.py": "5add0c7ac29c94e13cf65ffe0f95abbf96a7c80e125194a20a485cd8dca6186f",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F2_line_aligned_tail/seal.json": "9dbe4893d5a2437d5e571dda4984f4dd3c2029eb91cb6b3e97221dee81938e34",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F2_line_aligned_tail/placements.json": "d08d9f4750ad706a13836d0521759d2ee231e391c719fa9cebe0be7b9c1d3a76",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F2_line_aligned_tail/plan.json": "b21692dd95fbc8f5cb5f220c01f02eeca138b8d37770dc428fe5f60372ecafd1",
+      "cases/review299_C01_s941/case.json": "fefa6b67f3dc55136e44f30a5be7888e36146a603926743b3db4ede8bef7b820",
+      "cases/review299_C01_s941_retry1/case.json": "044a8ca125da1a2b01b357568d51597777305b79307e544ec1c18d7ff0273fda",
+      "cases/review299_C01_s941/result.json": "09de8cc5adc9c9c4b3e6fe711b304631cb79cc6283398558dbc92b1b8f1474b9",
+      "cases/review299_C01_s941/eval_only/trace.jsonl": "ab3eb5cd71b1e903ee0034a3c04d6f2be842abb0c1be5dd27a96b1aeb5e1e4f6",
+      "cases/review299_C01_s941_retry1/result.json": "02371a55566c168f02e76069082a8b172b2e59760d550c5054cf07ed60ef1269",
+      "cases/review299_C01_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce"
+    }
+  },
+  {
+    "name": "F3_completed_fail_then_cleanup_error",
+    "test": "test_controller_failures_followed_by_cleanup_errors_cannot_be_retried_to_pass",
+    "parameters": [],
+    "expected": "reject retry or preserve original FAIL",
+    "actual": "PASS_A_B_SAFETY",
+    "raw": "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F3_completed_fail_then_cleanup_error/raw",
+    "full_report_sha256": "2be8c1bfa4ee5c6a1ea12f36069e172208cb8ebe88513a35533c5944b901d148",
+    "n_cases": 72,
+    "n_attempts": 85,
+    "n_placements": 60,
+    "pass_placements": 60,
+    "counts": {
+      "PASS_CLEAN": 60,
+      "PASS_CONTACT_RECOVERED": 0,
+      "BLOCKED_BY_CONTACT": 0,
+      "FAIL": 0,
+      "FAIL_HARD_LIMIT": 0
+    },
+    "hard_limit_attempt_case_ids": [],
+    "hard_limit_chain_cases": 0,
+    "safety_evidence_issues": {},
+    "sigma_B": "PASS",
+    "original_attempts": [
+      {
+        "case_id": "review299:C01:s941",
+        "placement": "C01",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C02:s941",
+        "placement": "C02",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C03:s941",
+        "placement": "C03",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C04:s941",
+        "placement": "C04",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C05:s941",
+        "placement": "C05",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C06:s941",
+        "placement": "C06",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C07:s941",
+        "placement": "C07",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C08:s941",
+        "placement": "C08",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C09:s941",
+        "placement": "C09",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C10:s941",
+        "placement": "C10",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C11:s941",
+        "placement": "C11",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C12:s941",
+        "placement": "C12",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      },
+      {
+        "case_id": "review299:C13:s941",
+        "placement": "C13",
+        "seed": 941,
+        "selected": false,
+        "host_error": "ENOSPC during cleanup",
+        "hard_limit_chain": {
+          "violated": false,
+          "max_tilt_deg": 1.0,
+          "max_pen_m": 0.0,
+          "evidence_issues": []
+        }
+      }
+    ],
+    "retained_original_rows": [
+      {
+        "case_id": "review299:C01:s941",
+        "seed": 941,
+        "cell": "C01",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C02:s941",
+        "seed": 941,
+        "cell": "C02",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C03:s941",
+        "seed": 941,
+        "cell": "C03",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C04:s941",
+        "seed": 941,
+        "cell": "C04",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C05:s941",
+        "seed": 941,
+        "cell": "C05",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C06:s941",
+        "seed": 941,
+        "cell": "C06",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C07:s941",
+        "seed": 941,
+        "cell": "C07",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C08:s941",
+        "seed": 941,
+        "cell": "C08",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C09:s941",
+        "seed": 941,
+        "cell": "C09",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C10:s941",
+        "seed": 941,
+        "cell": "C10",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C11:s941",
+        "seed": 941,
+        "cell": "C11",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C12:s941",
+        "seed": 941,
+        "cell": "C12",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      },
+      {
+        "case_id": "review299:C13:s941",
+        "seed": 941,
+        "cell": "C13",
+        "host_error": "ENOSPC during cleanup",
+        "category": "HOST_ERROR:ENOSPC",
+        "chain_first_failure": {
+          "phase": "carry",
+          "leg": 1,
+          "code": "END_ERROR",
+          "sim_s": 3.01
+        }
+      }
+    ],
+    "audit_input_sha256": {
+      "cases.jsonl": "9ab048bc1ea3c82affa8363d7ec1d081574e281aa403f16bf5e923ee7eb79f02",
+      "manifest.json": "f38c1592a8505338fa1437da30d1d7ed735e48cc775b95f7d6ecee1e8ee1edd5",
+      "chain_analysis.py": "62ff145d9016f61aa2f6f71d588ba7dab5b35d9aabb2b19ca15a934bafc0d2e5",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "3e9cc53e0a1b5f2b971362e24478103a1d6a5ed330535b79008312dc6156aa62",
+      "/Users/changmin/projects/ugrp-wt/review-299/harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+      "/Users/changmin/projects/ugrp-wt/review-299/experiments/2026-09-29-door-guard-relax/analysis/door_relax_analysis.py": "5add0c7ac29c94e13cf65ffe0f95abbf96a7c80e125194a20a485cd8dca6186f",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F3_completed_fail_then_cleanup_error/seal.json": "7137575eb39a4a6dee3db06d58efb07af39cc8f6cdb9b25c643162783e5eb599",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F3_completed_fail_then_cleanup_error/placements.json": "d08d9f4750ad706a13836d0521759d2ee231e391c719fa9cebe0be7b9c1d3a76",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/examples/F3_completed_fail_then_cleanup_error/plan.json": "b21692dd95fbc8f5cb5f220c01f02eeca138b8d37770dc428fe5f60372ecafd1",
+      "cases/review299_C01_s941/case.json": "fefa6b67f3dc55136e44f30a5be7888e36146a603926743b3db4ede8bef7b820",
+      "cases/review299_C02_s941/case.json": "355fd4bc539e534b021f2cb5349c777760ff03a317a3d0c84bf65a139a95b615",
+      "cases/review299_C03_s941/case.json": "736fdad3af81fb140cc76a382bf33a54f3192034018160c8a0935cf6cbbbb6f8",
+      "cases/review299_C04_s941/case.json": "55968b2fd4a57cd8601bc20118946292e14f9845b64a054561801d0c124ae490",
+      "cases/review299_C05_s941/case.json": "c0abb164eafda8307dee43c0440a7164f2c2509590ceec502dacd6780714b87b",
+      "cases/review299_C06_s941/case.json": "b2315cd7ef259762084e2307acfcd40f9b885ae9a48dfafbd3d5822c8fb4a44a",
+      "cases/review299_C07_s941/case.json": "047f946538e841af8a20dc6287dfb7610a9e6b04607424ae22ccacd081f1231b",
+      "cases/review299_C08_s941/case.json": "77c6a487ede8914e52454f5fa10c0354b3a760910ff748356a891556b340c52e",
+      "cases/review299_C09_s941/case.json": "ba65c4443c9c97c297966bc9d3ed83c1b4b035144cea97f412fc269fc345bfc9",
+      "cases/review299_C10_s941/case.json": "980af721172b9c6ddfb2bed03ebbe2edac493987baf16a110a3e9fcb885b7db7",
+      "cases/review299_C11_s941/case.json": "466f7a0a0a2a94c71be5d7a3568ace1acec78a7dc58af5666c9590a3009f10bb",
+      "cases/review299_C12_s941/case.json": "6601326a80c9929cf5b647641b1295a2294c73b24ee2ee15d1201f2151f655fa",
+      "cases/review299_C13_s941/case.json": "f6ef08cc58c22fd3ad4829f627805869857cc139fce2991d7a4664da3a212c27",
+      "cases/review299_C01_s941_retry1/case.json": "044a8ca125da1a2b01b357568d51597777305b79307e544ec1c18d7ff0273fda",
+      "cases/review299_C02_s941_retry1/case.json": "9eae171951b97def5d7e64a99058f674fbe748d16555fb240c8c20dabafa2958",
+      "cases/review299_C03_s941_retry1/case.json": "d46fe9d96d1f0860daab0e6e8b73d42a5b85891e72c58ee8add216b9a8b0490c",
+      "cases/review299_C04_s941_retry1/case.json": "42aa84740bc2f0cb09b29a9385868c21879eef2cbf8a8afc107f6d78d863c862",
+      "cases/review299_C05_s941_retry1/case.json": "217a7210fa2c27a3e9537b75ca5be5ee4e4531294ec3242bc8682babc6842a75",
+      "cases/review299_C06_s941_retry1/case.json": "db7561fc853d239c472dd680e620bd006e8fd781bc339eb77fb8e9153826df90",
+      "cases/review299_C07_s941_retry1/case.json": "6d51fac8325252e767c4e561bd43e0828a769c8b20aaef6fddd5dbcc39548d76",
+      "cases/review299_C08_s941_retry1/case.json": "b2c2522f56016bf2f551780d7834734870ada4238c541668dbbe9f7b1382eb19",
+      "cases/review299_C09_s941_retry1/case.json": "15cbe3a5034afd0c60dd65702f8f2890383574c3d459153335725e1894dcb818",
+      "cases/review299_C10_s941_retry1/case.json": "3626b961194dcf88dbf5bd9f9d7ff5fe92caed18c2669ab3b40273aba52b93c0",
+      "cases/review299_C11_s941_retry1/case.json": "dfa2165d8e1e9bf94b3a4f7cd07287a9458cef44ef0e7fdd57b98e0514d6b69f",
+      "cases/review299_C12_s941_retry1/case.json": "944b42efcf820aa4b76a877f0208886af1ef442780b85a7e4ec4ceab5724d1c6",
+      "cases/review299_C13_s941_retry1/case.json": "da80e3220aa397bff647765b0bb6228cbb4578ed082418395024afaf41738c96",
+      "cases/review299_C01_s941/result.json": "3ebbd7e6bd65ddc606235bdfd58c21ba0757438268bb43602aacba9d07cd5e7d",
+      "cases/review299_C01_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C02_s941/result.json": "b6e07b41c04a3c9f2f868022a14853785c54024c8751200f5e2621dc69caffa9",
+      "cases/review299_C02_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C03_s941/result.json": "3587f1d19d971d3adc6ca2779d6fc73244c55708a0a0310cd8b210bb7d6cbeda",
+      "cases/review299_C03_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C04_s941/result.json": "55be5cc8fe75c40b774b474101ee6d4f3cbdd2575510c04d21cb8e8081eb43b4",
+      "cases/review299_C04_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C05_s941/result.json": "629a0a5dbd72835a3d54e4ceef6ed8337d55fb8bd4df839a6e29862badc033fe",
+      "cases/review299_C05_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C06_s941/result.json": "ac8e90c9e46e8d1178b2cf6b07378812954c7ad448405289a4594aeb44dca4b1",
+      "cases/review299_C06_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C07_s941/result.json": "5085b9c83e1fc3a584955bdb35d618bb6dbe9225cc10ad4f0619d6c60c07997b",
+      "cases/review299_C07_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C08_s941/result.json": "e9ce78ab160aae2a6fe413d5d263635871476d9e6bff44b013411e0b5d03008b",
+      "cases/review299_C08_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C09_s941/result.json": "0301bd0c33a31a82b42696c855d168ddb1fbcc0a73979ed55c27f05b8d90a0a7",
+      "cases/review299_C09_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C10_s941/result.json": "76e5c2af63abdd0b0f5dc58714bd8393eb8429f3dc14371f2b05921773e50b08",
+      "cases/review299_C10_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C11_s941/result.json": "f5088af246dc9dcb01ab86ddc2d9b6435cd271df771095af30a936f962a930e2",
+      "cases/review299_C11_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C12_s941/result.json": "82cbe5fe25ac7972a2f0f8554ef86350b5c34ef3172e5a82de951e76fed48281",
+      "cases/review299_C12_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C13_s941/result.json": "1c3696f71181c93a5400096540a3f56d621a695dd245de4771defce3942fd84c",
+      "cases/review299_C13_s941/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C01_s941_retry1/result.json": "02371a55566c168f02e76069082a8b172b2e59760d550c5054cf07ed60ef1269",
+      "cases/review299_C01_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C02_s941_retry1/result.json": "1642194e4771bc38bf16cedd798a6c04d734c6618a973eb9f760aaa5312fc668",
+      "cases/review299_C02_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C03_s941_retry1/result.json": "29e65f1179999ece429a562e019d7ecac064f806f9d47213643ae8b7c4454dc8",
+      "cases/review299_C03_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C04_s941_retry1/result.json": "644acc25e478784944a605e98364c14b1436bcfe8d2b64a7b4f09844ed7559e8",
+      "cases/review299_C04_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C05_s941_retry1/result.json": "3a460f12c540306ae6f17ebcd543267fdaa3cdd939108c6cf0c99ab516962a5e",
+      "cases/review299_C05_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C06_s941_retry1/result.json": "d0927c1bcd99e70f926eb75bb9b36a2398ed5bc8113916c0b64e84628598db0a",
+      "cases/review299_C06_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C07_s941_retry1/result.json": "4991e31e7c2cb65cbb72616fc39285ea12fb02827d456e2526ab912de4c3de62",
+      "cases/review299_C07_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C08_s941_retry1/result.json": "3af6deec238d0527d2db63891495dbef5992ba31f2ecb038461bc764ba53ab48",
+      "cases/review299_C08_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C09_s941_retry1/result.json": "c28ee84f287e81402640b34c4376046fd680338a4cca79edb27dd840853d0e0a",
+      "cases/review299_C09_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C10_s941_retry1/result.json": "a56724d33590a6a6e50794f88671faebee9a1ff6f76c71977b1a287751a863ce",
+      "cases/review299_C10_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C11_s941_retry1/result.json": "dd048cffe50bc4ca446e765514e685db25d2d8b8e5a291c609477e443faf0d81",
+      "cases/review299_C11_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C12_s941_retry1/result.json": "5ad1850dc795755079e4fc03f35a442dfdab93ab6cddc27e0f20864ed5f8e1ee",
+      "cases/review299_C12_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce",
+      "cases/review299_C13_s941_retry1/result.json": "9884c68eecbb6658d8718f2c6a36a1023d0ef6379308f1dd05bec53223a6bfd1",
+      "cases/review299_C13_s941_retry1/eval_only/trace.jsonl": "aebad95350591a980ffd062665516a56cd99495db82910fa05b7da6579a278ce"
+    }
+  }
+]

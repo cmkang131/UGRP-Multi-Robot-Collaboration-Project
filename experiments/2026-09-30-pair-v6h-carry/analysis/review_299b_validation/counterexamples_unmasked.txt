@@ -1,0 +1,179 @@
+FFFFFFFFFFFFFFFFFF                                                       [100%]
+=================================== FAILURES ===================================
+_ test_r2_saved_contact_summary_must_keep_known_violation[cases_only-tilt-941] _
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+_ test_r2_saved_contact_summary_must_keep_known_violation[cases_only-tilt-943] _
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+_ test_r2_saved_contact_summary_must_keep_known_violation[cases_only-penetration-941] _
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+_ test_r2_saved_contact_summary_must_keep_known_violation[cases_only-penetration-943] _
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+_ test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-tilt-941] _
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'NOT_EVALUABLE' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     + NOT_EVALUABLE
+_ test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-tilt-943] _
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'NOT_EVALUABLE' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     + NOT_EVALUABLE
+_ test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-penetration-941] _
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'NOT_EVALUABLE' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     + NOT_EVALUABLE
+_ test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-penetration-943] _
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'NOT_EVALUABLE' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     + NOT_EVALUABLE
+____ test_r2_saved_contact_summary_must_keep_known_violation[both-tilt-941] ____
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+____ test_r2_saved_contact_summary_must_keep_known_violation[both-tilt-943] ____
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+_ test_r2_saved_contact_summary_must_keep_known_violation[both-penetration-941] _
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+_ test_r2_saved_contact_summary_must_keep_known_violation[both-penetration-943] _
+tests/test_classify_review_299b.py:145: in test_r2_saved_contact_summary_must_keep_known_violation
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'FAIL_A_B_SAFETY'
+E
+E     - FAIL_A_B_SAFETY
+E     ? ^ ^^
+E     + PASS_A_B_SAFETY
+E     ? ^ ^^
+______ test_host_stored_trace_contradiction_is_not_silent_success[empty] _______
+tests/test_classify_review_299b.py:176: in test_host_stored_trace_contradiction_is_not_silent_success
+    assert s["full_verdict"] == "NOT_EVALUABLE", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'NOT_EVALUABLE'
+E
+E     - NOT_EVALUABLE
+E     + PASS_A_B_SAFETY
+_ test_host_stored_trace_contradiction_is_not_silent_success[line_aligned_tail] _
+tests/test_classify_review_299b.py:176: in test_host_stored_trace_contradiction_is_not_silent_success
+    assert s["full_verdict"] == "NOT_EVALUABLE", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'NOT_EVALUABLE'
+E
+E     - NOT_EVALUABLE
+E     + PASS_A_B_SAFETY
+__ test_host_stored_trace_contradiction_is_not_silent_success[missing_middle] __
+tests/test_classify_review_299b.py:176: in test_host_stored_trace_contradiction_is_not_silent_success
+    assert s["full_verdict"] == "NOT_EVALUABLE", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'NOT_EVALUABLE'
+E
+E     - NOT_EVALUABLE
+E     + PASS_A_B_SAFETY
+__ test_host_stored_trace_contradiction_is_not_silent_success[duplicate_time] __
+tests/test_classify_review_299b.py:176: in test_host_stored_trace_contradiction_is_not_silent_success
+    assert s["full_verdict"] == "NOT_EVALUABLE", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'NOT_EVALUABLE'
+E
+E     - NOT_EVALUABLE
+E     + PASS_A_B_SAFETY
+___ test_host_stored_trace_contradiction_is_not_silent_success[reverse_time] ___
+tests/test_classify_review_299b.py:176: in test_host_stored_trace_contradiction_is_not_silent_success
+    assert s["full_verdict"] == "NOT_EVALUABLE", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' == 'NOT_EVALUABLE'
+E
+E     - NOT_EVALUABLE
+E     + PASS_A_B_SAFETY
+_ test_controller_failures_followed_by_cleanup_errors_cannot_be_retried_to_pass _
+tests/test_classify_review_299b.py:327: in test_controller_failures_followed_by_cleanup_errors_cannot_be_retried_to_pass
+    assert s["full_verdict"] != "PASS_A_B_SAFETY", s
+E   AssertionError: {'n_cases': 72, 'n_attempts': 85, 'n_placements': 60, 'n_classified_primary': 60, ...}
+E   assert 'PASS_A_B_SAFETY' != 'PASS_A_B_SAFETY'
+=========================== short test summary info ============================
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[cases_only-tilt-941]
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[cases_only-tilt-943]
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[cases_only-penetration-941]
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[cases_only-penetration-943]
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-tilt-941]
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-tilt-943]
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-penetration-941]
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[result_row_only-penetration-943]
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[both-tilt-941]
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[both-tilt-943]
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[both-penetration-941]
+FAILED tests/test_classify_review_299b.py::test_r2_saved_contact_summary_must_keep_known_violation[both-penetration-943]
+FAILED tests/test_classify_review_299b.py::test_host_stored_trace_contradiction_is_not_silent_success[empty]
+FAILED tests/test_classify_review_299b.py::test_host_stored_trace_contradiction_is_not_silent_success[line_aligned_tail]
+FAILED tests/test_classify_review_299b.py::test_host_stored_trace_contradiction_is_not_silent_success[missing_middle]
+FAILED tests/test_classify_review_299b.py::test_host_stored_trace_contradiction_is_not_silent_success[duplicate_time]
+FAILED tests/test_classify_review_299b.py::test_host_stored_trace_contradiction_is_not_silent_success[reverse_time]
+FAILED tests/test_classify_review_299b.py::test_controller_failures_followed_by_cleanup_errors_cannot_be_retried_to_pass
+18 failed, 40 deselected in 4.15s

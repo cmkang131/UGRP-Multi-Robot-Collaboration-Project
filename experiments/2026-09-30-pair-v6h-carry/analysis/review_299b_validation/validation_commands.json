@@ -1,0 +1,57 @@
+[
+  {
+    "log": "baseline_tests.txt",
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/baseline-fixtures",
+      "tests/test_v6h_classify_placements.py",
+      "tests/test_ci_sharding.py",
+      "tests/test_chain_analysis_hard_limit.py",
+      "tests/test_pair_chain_probe.py",
+      "tests/test_b_v6h_gain.py",
+      "tests/test_classify_review_299.py"
+    ],
+    "exit_code": 0
+  },
+  {
+    "log": "published_counts.txt",
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py",
+      "--output",
+      "/Users/changmin/projects/ugrp/outputs/review-299b-astra-8a1631b9/published"
+    ],
+    "exit_code": 0
+  },
+  {
+    "log": "sizing_check.txt",
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/cohort_sizing.py",
+      "--check"
+    ],
+    "exit_code": 0
+  },
+  {
+    "log": "placements_check.txt",
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/make_confirmatory_placements.py",
+      "--check"
+    ],
+    "exit_code": 0
+  },
+  {
+    "log": "probe_dependence.json",
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/check_probe_dependence.py"
+    ],
+    "exit_code": 0
+  }
+]
