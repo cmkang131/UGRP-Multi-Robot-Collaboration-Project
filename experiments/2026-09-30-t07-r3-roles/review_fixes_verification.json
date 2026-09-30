@@ -527,9 +527,41 @@
     "/Users/changmin/projects/ugrp/outputs/t07-r3-roles/review-batch-nohost-20260930T140930/mutations/driver.py": "a8ad8751df78da32883e7664fe31c9c7f1bb96cefcea56c7983ed9f61b5ce0c1",
     "/Users/changmin/projects/ugrp/outputs/t07-r3-roles/review-batch-nohost-20260930T140930/mutations/driver_keepouts_removed.log": "a4df96ca68279f9e4e069c754779e26e9c34474a8efdba6152faebf6b9f9e43f",
     "/Users/changmin/projects/ugrp/outputs/t07-r3-roles/review-batch-nohost-20260930T140930/mutations/legacy_dispatch_isolation_removed.xml": "21aec7429313246aead23f1fad80476b3ea55c4b559c18d18364d437cd0e799b",
-    "/Users/changmin/projects/ugrp/outputs/t07-r3-roles/review-batch-nohost-20260930T140930/mutations/plan_wrong_role.log": "3cee170c4847146127eb0c033f23545aabc9b5eeb4f87315d2d1a119b0dc06eb"
+    "/Users/changmin/projects/ugrp/outputs/t07-r3-roles/review-batch-nohost-20260930T140930/mutations/plan_wrong_role.log": "3cee170c4847146127eb0c033f23545aabc9b5eeb4f87315d2d1a119b0dc06eb",
+    "/Users/changmin/projects/ugrp/outputs/t07-r3-roles/offline-hqf5hi4h/result.json": "02b8727f7819f05701a5ebf1c22b5e193601b13f05581f79cf49e2178d9ee979",
+    "/Users/changmin/projects/ugrp/outputs/t07-r3-roles/offline-hqf5hi4h/lock_waits.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "/Users/changmin/projects/ugrp/outputs/t07-r3-roles/offline-hqf5hi4h/source_sha256.json": "2e1395d0d66675799a4ddc0bd5960e64b2431f1862f61618743216d46fa37cf6",
+    "/Users/changmin/projects/ugrp/outputs/t07-r3-roles/offline-hqf5hi4h/command.json": "b03876cbd91ca9395e19ffc38266a2146b564479895143865b9c7759a84b6de6",
+    "/Users/changmin/projects/ugrp/outputs/t07-r3-roles/offline-hqf5hi4h/junit.xml": "a4339ddc9d0c51f3a2c7a0cc093df617e4303ce03f8b69f70783d9b61b409f26"
   },
   "local_raw_only": true,
   "tensorboard": "No new experiment/training/physical evaluation cohort; no snapshot created.",
-  "ci": "Normal GitHub CI required after push; workflows unchanged; never canceled or skipped."
+  "ci": "Normal GitHub CI required after push; workflows unchanged; never canceled or skipped.",
+  "fix_commit": "2ddc1aeb4638db246818be3cacd25d9769b42733",
+  "final_merged_main": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e",
+  "post_main_merge": {
+    "raw": "/Users/changmin/projects/ugrp/outputs/t07-r3-roles/offline-hqf5hi4h",
+    "passed": 279,
+    "subtests_passed": 280,
+    "junit": {
+      "tests": 559,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "elapsed_s": 552.27,
+    "overlap": "Includes the same 56 registered-source/source-pinning tests; do not sum as distinct tests.",
+    "role_controller_closure_and_tested_sources_unchanged": true,
+    "ci_patterns": {
+      "T07": 1,
+      "P08": 1,
+      "P07": 1
+    }
+  },
+  "offline_lock_policy": {
+    "reference": "main PR #328, 6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e",
+    "host_lock_used_for_full_and_mutation_checks": false,
+    "thread_limits": 1,
+    "timing_benchmark": false
+  }
 }

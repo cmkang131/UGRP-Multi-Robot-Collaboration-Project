@@ -90,3 +90,10 @@ rebase한 뒤 아래 import 경계를 반영하고 합성 검사·정상 CI를 �
 - 작업 트리의 v6e source 85개와 scene source 12개가 등록 해시와 일치한다.
   등록 JSON은 검토 당시 원본과 바이트 동일하다. 정상/변이/복구 로그와 JUnit은
   `review_fixes_verification.json`의 경로·SHA-256으로 식별한다.
+- 시작 시 main `38c5bb61`을 먼저 합성한 뒤 수정했고, 작업 중 추가된 main
+  `6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e`도 병합했다. 마지막 합성 검사
+  **279 passed + 280 subtests passed**, 실패·오류·skip 0.
+  소스 고정 56개는 앞 검사와 겹친다. CI host-lock/sharding/fast-path,
+  agent-lock 및 main의 P07 manifest 검사를 함께 확인했다.
+  역할 제어 의존 소스 201개와 앞서 검증한 코드·테스트 해시는 모두 그대로다.
+  T07/P08/P07은 각각 CI 목록과 전체 shard에 정확히 한 번 들어간다.
