@@ -4,6 +4,8 @@ No model call, socket, MuJoCo import or physical step. The client is the
 registered GeminiProxyCompleter; only its wire is a local function.
 """
 import base64
+from collections import Counter
+import copy
 import errno
 import hashlib
 import io
@@ -40,6 +42,8 @@ def offline_only(monkeypatch):
         pytest.fail('network forbidden in the LLM driver tests')
     monkeypatch.setattr(socket.socket, 'connect', refuse)
     monkeypatch.setattr(socket.socket, 'connect_ex', refuse)
+    monkeypatch.setattr(socket, 'create_connection', refuse)
+    monkeypatch.setattr(socket, 'getaddrinfo', refuse)
     monkeypatch.setattr(llm, 'check_disk', lambda path, *, min_free_gib: 1)
 
 
@@ -94,6 +98,7 @@ def driven_trial(tmp_path, condition, *, budget=None, limits=None, fault=None, h
     links = links_for(clock)
     trial = tm.TimingTrial(SCENARIO, condition=condition, seed=11, links=links, horizon_s=horizon,
                            map_bundle=BUNDLE, actor='gemini_proxy', model_adapter=adapter,
+                           policy=tm.CallPolicy(max_retries=0),
                            cost_params=tm.CostParams(input_token_s=0., output_token_s=.1, utterance_s=.1),
                            decision_limits=limits or llm.speech_caps('main_pilot_10_30')[0])
     trial.begin(0.)
@@ -184,6 +189,7 @@ def test_no_comm_keeps_frozen_v64_bytes_through_the_driver_ledger_and_any_speech
             return made[-1]
         monkeypatch.setattr(tm, 'SendLedger', ledger)
         trial, clock, links, requests = tm.make_trial('no_comm', first='wait', send=False, follow_claim=False,
+                                                      policy=tm.CallPolicy(max_retries=0),
                                                       limits=llm.speech_caps(caps)[0])
         tm.advance(trial, clock, links, 90.)
         assert trial.send_ledger is made[0]
@@ -598,7 +604,8 @@ def test_runner_aborts_before_next_host_step_and_records_infra(tmp_path, monkeyp
     def write_without_physics(out, prereg, episode, condition, bundle, bundle_sha, host, *args, **kwargs):
         return write_outputs(out, prereg, episode, condition, bundle, bundle_sha, None, *args, **kwargs)
     monkeypatch.setattr(runner, 'write_outputs', write_without_physics)
-    prereg = {'student': {}, 't0_s': 0., 'speech_cap_profile': 'main_pilot_10_30'}
+    prereg = {'student': {}, 't0_s': 0., 'speech_cap_profile': 'main_pilot_10_30',
+              'call_policy': {'max_retries': 0}}
     out = tmp_path / 'results'
     with pytest.raises(SystemExit):
         runner.run_llm_trial(prereg, {'episode_id': 'e1', 'trial_seed': 11}, condition, out,
@@ -615,3 +622,485 @@ def test_runner_aborts_before_next_host_step_and_records_infra(tmp_path, monkeyp
     if fault_kind == 'prewire_input':
         assert wire.bodies == [] and budget.requests() == []
         assert attempts[0]['model_requests'] == 0
+
+
+# P05: production driver/client/input builder/scheduler, fake wire + robot port.
+# The fixture matches fixed Korean strings; it does not measure model understanding.
+P05_COST = tm.CostParams(input_token_s=.00001, output_token_s=.001, utterance_s=.1)
+
+
+def dialogue_scenario():
+    scenario = copy.deepcopy(SCENARIO)
+    # Public, specific item IDs exercise literal preservation without host poses.
+    for order in scenario['orders']:
+        order.update(identity='specific_item', item_ids=[f'cyan-{order["order_id"][-1]}'])
+    return scenario
+
+
+class DialogueWire:
+    """Fixed proposal/ack script using only the actual request, never executor state."""
+
+    def __init__(self, seed, *, talk=True, fault=None):
+        self.sender = zi.ROBOTS[seed % 3]
+        self.talk, self.fault = talk, fault
+        self.turns, self.payloads, self.requests, self.responses, self.headers = Counter(), [], [], [], []
+        self.targets = {r: f'order-{i + 2}' for i, r in enumerate(r for r in zi.ROBOTS if r != self.sender)}
+
+    @staticmethod
+    def text(sender, recipient, order_id, item_id, *, ack=False):
+        return (f'{sender}가 {recipient}에게 알립니다. {order_id}의 {item_id}를 '
+                f'west 역할로 {"맡겠습니다" if ack else "맡아 주세요"}.')
+
+    def message(self, payload, recipient, order_id, *, reply_to=None):
+        item_id = next(o['item_ids'][0] for o in payload['order_sheet']['orders'] if o['order_id'] == order_id)
+        message = {'recipients': [recipient], 'reply_to': reply_to}
+        if payload['condition'] == 'structured':
+            message['message'] = {'act': 'accept' if reply_to else 'propose', 'item': item_id,
+                                  'zone': next(o['destination_zone'] for o in payload['order_sheet']['orders']
+                                               if o['order_id'] == order_id),
+                                  'role': 'west', 'passage': None, 'location_ref': None,
+                                  'state': 'unknown', 'confidence': 'low',
+                                  'observed_at_sim_s': payload['sim_time_s'], 'reply_to': reply_to}
+        else:
+            message['text'] = self.text(payload['robot_id'], recipient, order_id, item_id, ack=bool(reply_to))
+        return message
+
+    def __call__(self, request, *, timeout=None):
+        body = json.loads(request.data)
+        payload = json.loads(next(p['text'] for p in body['messages'][-1]['content'] if p['type'] == 'text'))
+        self.requests.append(bytes(request.data))
+        self.payloads.append(payload)
+        self.headers.append(request.get_header('X-ugrp-call-id'))
+        rid = payload['robot_id']
+        self.turns[rid] += 1
+        n = self.turns[rid]
+        proposals = [m for m in payload.get('inbox', []) if m['sender'] == self.sender and m['reply_to'] is None]
+        order_id, messages = 'order-1', []
+        if proposals and n == 2 and self.fault != 'saturate':
+            order_id = self.targets[rid]
+            # Fixed fixture matching, with a positive assertion on the actual inbox bytes.
+            proposal = proposals[0]
+            item_id = next(o['item_ids'][0] for o in payload['order_sheet']['orders'] if o['order_id'] == order_id)
+            expected = self.message({**payload, 'robot_id': self.sender,
+                                     'sim_time_s': proposal['created_at_sim_s']}, rid, order_id)
+            if payload['condition'] == 'structured':
+                assert proposal['body']['item'] == expected['message']['item'] == item_id
+                assert proposal['body']['role'] == 'west'
+            else:
+                assert proposal['body'] == {'text': expected['text']}
+            messages = [self.message(payload, self.sender, order_id, reply_to=proposal['message_id'])]
+        if self.talk and payload['condition'] != 'no_comm' and rid == self.sender and n == 1:
+            messages = [self.message(payload, peer, target) for peer, target in self.targets.items()]
+        order = next(o for o in payload['order_sheet']['orders'] if o['order_id'] == order_id)
+        reply = {'request_id': payload['request_id'],
+                 'action': ({'kind': 'claim', 'order_id': order_id, 'role': 'west',
+                             'destination_zone': order['destination_zone']} if n <= 2 else {'kind': 'continue'}),
+                 'decision_sources': ['own_rgb', 'order_sheet'] + (['message'] if proposals else []),
+                 'messages': messages}
+        if self.fault == 'saturate':
+            reply.update(action={'kind': 'wait'}, decision_sources=['own_rgb', 'order_sheet'],
+                         messages=[self.message(payload, payload['channel']['can_send_to'][0], 'order-1')])
+        if self.fault == 'stale':
+            reply['request_id'] = 'req_old_r1'
+        raw = completion_body(json.dumps(reply, ensure_ascii=False), usage=None if self.fault == 'unknown' else USAGE,
+                              model='fake-effective-model',
+                              finish_reason=self.fault if self.fault in ('length', 'content_filter') else 'stop')
+        self.responses.append(raw)
+        if self.fault in ('429', '503'):
+            raise HTTPError(request.full_url, int(self.fault), 'fake status', {}, None)
+        if self.fault == 'lost':
+            class LostResponse(io.BytesIO):
+                def read(self, *a, **k):
+                    raise TimeoutError('fake POST accepted; response lost while reading')
+            return LostResponse(raw)
+        return io.BytesIO(raw)
+
+
+def dialogue_trial(tmp_path, condition, seed, *, profile='v66_default', talk=True, fault=None,
+                   scenario=None, per_robot=None, budget=None, run_key='p05#a1', horizon=12.):
+    budget = budget or budget_for(tmp_path, charge=700)
+    wire = DialogueWire(seed, talk=talk, fault=fault)
+    driver = llm.LiveDriver(PROFILE, budget=budget, cohort_id='pilot-A', wire=wire)
+    driver.start_run(run_key, bundle_id=zi.EXECUTION_BUNDLE_ID, bundle_sha256='b' * 64,
+                     record={'condition': condition, 'seed': seed, 'fake_only': True})
+    adapter = driver.adapter(run_key=run_key, store_dir=tmp_path / run_key.replace('#', '-') / 'wire')
+    clock = [0.]
+    links = links_for(clock, **(per_robot or {}))
+    trial = zi.IntegratedTrial(scenario or dialogue_scenario(), condition=condition, seed=seed, links=links,
+                               horizon_s=horizon, map_bundle=BUNDLE, actor='gemini_proxy', model_adapter=adapter,
+                               policy=tm.CallPolicy(max_retries=0),
+                               cost_params=P05_COST, decision_limits=llm.speech_caps(profile)[0])
+    trial.begin(0.)
+    return trial, wire, budget, clock, links
+
+
+def dialogue_advance(trial, clock, links, to, *, boundaries=(4., 8.), outcome='job_done'):
+    for tick in range(round(clock[0] * 10) + 1, round(to * 10) + 1):
+        clock[0] = tick / 10
+        for link in links.values():
+            link.ex.now = clock[0]
+            if clock[0] in boundaries and link.ex.job:
+                if outcome == 'job_done':
+                    link.ex._finish(clock[0], 'unconfirmed', 'P05_FAKE_OWN_BOUNDARY')
+                else:
+                    link.ex._fail(clock[0], 'P05_FAKE_OWN_FAILURE')
+            for event in link.ex.drain_events():
+                trial.on_executor_event(event, at_s=clock[0])
+        trial.step_to(clock[0])
+
+
+def assert_wire_accounting(trial, wire, budget, run_key='p05#a1'):
+    """Re-open raw bytes and join every layer by call/request ID, not row position alone."""
+    rows = llm.call_rows(trial.send_ledger)
+    stored = {r['call_id']: r for r in budget.requests(run_key)}
+    calls = {c.call_id: c for c in trial.scheduler.calls}
+    archives = {r['call_id']: r for r in trial.requests}
+    assert len(rows) == trial.send_ledger.sends() == len(wire.requests) == len(stored)
+    for row, request, response, header in zip(rows, wire.requests, wire.responses, wire.headers, strict=True):
+        db = stored[row['call_id']]
+        body = json.loads(request)
+        payload = json.loads(next(p['text'] for p in body['messages'][-1]['content'] if p['type'] == 'text'))
+        archive = archives[row['call_id']]
+        assert header == f'{run_key}:{row["call_id"]}:{row["seq"]}'
+        assert archive['request_id'] == payload['request_id'] == f'req_{row["call_id"].replace("-", "_")}'
+        assert Path(db['request_path']).read_bytes() == request
+        assert db['body_sha256'] == row['body_sha256'] == hashlib.sha256(request).hexdigest()
+        assert Path(db['response_path']).read_bytes() == response
+        assert db['response_sha256'] == row['response_sha256'] == hashlib.sha256(response).hexdigest()
+        assert archive['system'] == body['messages'][0]['content']
+        assert archive['user'] == next(p['text'] for p in body['messages'][-1]['content'] if p['type'] == 'text')
+        assert llm.pk.verify_archived_request(archive) == []
+        assert trial.provenance['model_settings_sha256'] == zi.digest(trial.client_factory.settings)
+        assert db['settings'] == {k: PROFILE['model'][k] for k in ('model', 'temperature', 'max_tokens', 'reasoning_effort')}
+        jpeg = base64.b64decode(next(p['image_url']['url'] for p in body['messages'][-1]['content']
+                                    if p['type'] == 'image_url').split(',', 1)[1])
+        sha = hashlib.sha256(jpeg).hexdigest()
+        assert row['images'] == db['images'] == [{'sha256': sha, 'bytes': len(jpeg)}]
+        assert trial.request_images[sha] == jpeg
+        assert payload['own_rgb_refs'][0]['ref'].startswith(f'own-{row["actor"]}-')
+        assert archive['image_refs'][0]['bytes_sha256'] == sha
+        assert row['provider_usage'] == db['provider_usage'] == archive['provider_usage'] == USAGE
+        assert row['usage_known'] and db['usage_known'] and db['total_tokens'] == 600
+        assert db['id'] == row['budget_request_id'] and db['run_key'] == run_key
+        assert row['failure_class'] is None and db['status'] == 'response_received'
+        call = calls[row['call_id']]
+        attempt = call.cost.attempts[0]
+        text = json.loads(response)['choices'][0]['message']['content']
+        assert attempt.input_tokens == archive['billed_tokens']['total_text_billed']
+        assert attempt.output_tokens == llm.pk.count_tokens(text)
+        assert attempt.utterances == len(json.loads(text)['messages'])
+        assert call.cost == zi.zo.call_cost((attempt,), trial.params)
+        assert call.finished_sim_s == pytest.approx(call.started_sim_s + call.cost.sim_s)
+        dispatch = next(d for d in trial.dispatch_log if d['call_id'] == call.call_id)
+        assert dispatch['sim_s'] == call.finished_sim_s
+    assert budget.usage('pilot-A')['known_tokens'] == 600 * len(rows)
+
+
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+@pytest.mark.parametrize('seed', [700, 701, 702])
+@pytest.mark.parametrize('profile', ['v66_default', 'main_pilot_10_30'])
+def test_p05_dialogue_ids_own_boundary_and_wire_accounting(tmp_path, condition, seed, profile):
+    trial, wire, budget, clock, links = dialogue_trial(tmp_path, condition, seed, profile=profile)
+    dialogue_advance(trial, clock, links, 3.)
+    first = {d['actor']: d for d in trial.dispatch_log}
+    assert set(first) == set(zi.ROBOTS) and all(d['ack']['accepted'] for d in first.values())
+    assert all(d['args'][0] == 'order-1' for d in first.values())
+    assert len(wire.requests) == 3  # delivered messages cannot interrupt a busy own job
+    proposals = list(trial.scheduler.messages)
+    assert len(proposals) == (0 if condition == 'no_comm' else 2)
+    for edge in proposals:
+        assert edge.sender == wire.sender and edge.call_id == first[wire.sender]['call_id']
+        assert edge.delivered_sim_s > first[edge.recipient]['sim_s']
+        assert edge.delivered_sim_s < 4.
+        assert trial.channel.inbox(edge.recipient, now_sim_s=edge.delivered_sim_s - .001) == ()
+        assert trial.channel.inbox(edge.recipient, now_sim_s=3.) == trial.scheduler.inbox(edge.recipient)
+    dialogue_advance(trial, clock, links, 12.)
+    assert wire.turns == Counter({rid: 3 for rid in zi.ROBOTS})
+    for rid in zi.ROBOTS:
+        payloads = [p for p in wire.payloads if p['robot_id'] == rid]
+        assert [p['sim_time_s'] for p in payloads] == [0., 4., 8.]
+        if condition == 'leader_ko':
+            assert trial.leader_id == wire.sender
+            assert {p['role'] for p in payloads} == ({'leader'} if rid == wire.sender else {'follower'})
+        if condition != 'no_comm':
+            cap = llm.speech_caps(profile)[1]['values']
+            assert all(p['dialogue_window']['max_utterances'] == cap['max_utterances_total']
+                       and p['dialogue_window']['max_your_utterances'] == cap['max_utterances_per_actor'] for p in payloads)
+        if rid == wire.sender or condition == 'no_comm':
+            continue
+        edge = next(e for e in proposals if e.recipient == rid)
+        inbox = payloads[1]['inbox']
+        assert [m['message_id'] for m in inbox] == [edge.message_id]
+        assert inbox[0]['sender'] == wire.sender and inbox[0]['recipients'] == [rid]
+        second = [d for d in trial.dispatch_log if d['actor'] == rid][1]
+        own_job_id = first[rid]['ack']['job_id']
+        event = next(e for e in trial.executor_events if e['event'] == 'job_done' and e['job_id'] == own_job_id)
+        assert event['robot_id'] == rid
+        assert payloads[1]['own_command_history'][0]['command_id'] == f'cmd_{first[rid]["call_id"].replace("-", "_")}'
+        assert payloads[1]['own_command_history'][0]['local_state'] == 'queue_empty'
+        assert second['ack']['accepted'] and second['ack']['job_id'] != own_job_id
+        assert second['args'][0] == wire.targets[rid] and second['action']['role'] == 'west'
+        ack_edge = next(e for e in trial.scheduler.messages if e.call_id == second['call_id'])
+        ack = next(m for m in trial.channel.inbox(wire.sender, now_sim_s=8.) if m['message_id'] == ack_edge.message_id)
+        assert ack['reply_to'] == edge.message_id and ack['sender'] == rid
+        sender_third = next(p for p in wire.payloads if p['robot_id'] == wire.sender and p['sim_time_s'] == 8.)
+        assert ack in sender_third['inbox']
+        if condition == 'structured':
+            assert inbox[0]['body']['item'] == ack['body']['item'] == f'cyan-{wire.targets[rid][-1]}'
+            assert inbox[0]['body']['role'] == ack['body']['role'] == 'west'
+        else:
+            assert inbox[0]['body']['text'] == wire.text(wire.sender, rid, wire.targets[rid], f'cyan-{wire.targets[rid][-1]}')
+            assert ack['body']['text'] == wire.text(rid, wire.sender, wire.targets[rid], f'cyan-{wire.targets[rid][-1]}', ack=True)
+    result = trial.finish(12.)
+    assert result.channel['inbox_agrees_with_scheduler']
+    assert not trial.scheduler.send_violations
+    assert result.channel['follower_to_follower'] == 0
+    if condition == 'no_comm':
+        assert not result.messages and all('inbox' not in p for p in wire.payloads)
+    elif condition == 'structured':
+        assert result.channel['free_text_messages'] == 0
+        assert all('text' not in m['body'] for m in result.messages)
+    else:
+        assert len(result.messages) == 4 and all(m['korean_ok'] for m in result.messages)
+    assert_wire_accounting(trial, wire, budget)
+    assert zi.zo.cost_checks(trial, result)['ok']
+    # Persistent local test evidence alongside the dummy ledger and raw bytes.
+    (tmp_path / 'contract_trace.json').write_text(json.dumps({
+        'fake_only': True, 'profile': profile, 'pair_status_sha256': trial.pair_status.config_sha256(),
+        'inputs': trial.input_log, 'dispatch': trial.dispatch_log, 'executor_events': trial.executor_events,
+        'result': result.trial_record(provenance_row=trial.provenance)}, ensure_ascii=False, indent=2))
+
+
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+@pytest.mark.parametrize('outcome', ['job_done', 'job_failed'])
+def test_p05_host_truth_and_peer_private_mutations_keep_common_calls(tmp_path, condition, outcome):
+    runs = []
+    for variant in ('base', 'host_truth', 'peer_private'):
+        path = tmp_path / variant
+        path.mkdir()
+        scenario = dialogue_scenario()
+        if variant != 'base':
+            scenario['eval']['setup']['placements'][0]['pose_m'] = [999., -999., 3.]
+            scenario['eval']['hidden_events'] = [{'at_sim_s': 4., 'kind': 'item_dropped', 'item': 'cyan-1'}]
+            scenario['eval']['success'] = True
+        private = ({'r2': {'frame_offset': 3, 'belief': {**zi.zo.belief_skeleton(),
+                    'region': 'zone_B', 'held_item_guess': 'yes', 'notes_ko': '사적인 상태 변이'}}}
+                   if variant == 'peer_private' else {})
+        trial, wire, _, clock, links = dialogue_trial(path, condition, 702, talk=False,
+                                                      scenario=scenario, per_robot=private, horizon=90.)
+        # Audit-only pair/GT records must not be another observation or wake source.
+        trial.pair_status._records = lambda v=variant: [{'status_messages': [], 'eval_only': v}]
+        dialogue_advance(trial, clock, links, 90., outcome=outcome)
+        runs.append((trial, wire))
+    base, host, peer = runs
+    assert base[1].requests == host[1].requests
+    assert base[0].scheduler.trace() == host[0].scheduler.trace()
+    assert base[0].pair_status.record() != host[0].pair_status.record()  # positive control
+    assert len({t.pair_status.config_sha256() for t, _ in runs}) == 1
+    own = lambda w, rid: [raw for raw, p in zip(w.requests, w.payloads, strict=True) if p['robot_id'] == rid]
+    assert own(base[1], 'r2') != own(peer[1], 'r2')
+    for rid in ('r1', 'r3'):
+        assert own(base[1], rid) == own(peer[1], rid)
+        assert base[0].wakeups(rid) == peer[0].wakeups(rid)
+        calls = [c for c in peer[0].scheduler.calls if c.actor == rid]
+        assert any('timer' in {c.trigger, *c.merged_triggers} for c in calls)
+        assert any(('idle' if outcome == 'job_done' else 'failure') in {c.trigger, *c.merged_triggers}
+                   for c in calls if c.started_sim_s == 4.)
+    assert all(not t.scheduler.messages for t, _ in runs)
+
+
+@pytest.mark.parametrize('profile', ['v66_default', 'main_pilot_10_30'])
+def test_p05_pair_status_and_execution_settings_are_identical_across_conditions(tmp_path, profile):
+    configs = []
+    for condition in zi.MAIN_CONDITIONS:
+        path = tmp_path / condition
+        path.mkdir()
+        trial, *_ = dialogue_trial(path, condition, 700, profile=profile)
+        configs.append(zi.condition_invariant_config(trial.study_config()))
+    assert all(c == configs[0] for c in configs)
+    assert all(c['pair_status_sha256'] == zi.digest(c['pair_status']) for c in configs)
+
+
+@pytest.mark.parametrize('condition', ['peer_ko', 'leader_ko', 'structured'])
+@pytest.mark.parametrize('profile, per_actor, total', [('v66_default', 2, 6), ('main_pilot_10_30', 10, 30)])
+def test_p05_effective_episode_caps_stop_actual_sends_but_keep_generated_cost(tmp_path, condition, profile, per_actor, total):
+    trial, wire, _, clock, links = dialogue_trial(tmp_path, condition, 700, profile=profile,
+                                                  fault='saturate', horizon=150.)
+    tm.advance(trial, clock, links, 150.)  # advance only fake hold timers, no executor/physics step
+    result = trial.finish(150.)
+    assert trial.channel.sent_count() == len(result.messages) == total
+    assert all(trial.channel.sent_count(rid) == per_actor for rid in zi.ROBOTS)
+    assert trial.scheduler.rejected_messages
+    assert sum(c.cost.breakdown['utterances'] for c in trial.scheduler.calls) > total
+    assert trial.channel.windows == ['w1']  # turn boundaries cannot replenish the episode budget
+    for raw, payload in zip(wire.requests, wire.payloads, strict=True):
+        window = payload['dialogue_window']
+        assert (window['max_your_utterances'], window['max_utterances']) == (per_actor, total)
+        assert (f'팀 전체 최대 {total}발화, 당신은 최대 {per_actor}발화입니다.'
+                in json.loads(raw)['messages'][0]['content'])
+    assert any(p['dialogue_window']['your_utterances_left'] == 0 for p in wire.payloads)
+    assert zi.zo.cost_checks(trial, result)['ok']
+
+
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+@pytest.mark.parametrize('fault', ['429', '503', 'lost', 'length', 'content_filter', 'stale', 'unknown', 'late'])
+def test_p05_post_failure_costs_and_no_attempt_replay(tmp_path, condition, fault):
+    """Run the real attempts wrapper; none of these post-wire cases may retry."""
+    budget = budget_for(tmp_path, charge=700)
+    trials = []
+    def attempt(attempt, key):
+        # A read timeout pays the unchanged 20 SIM-second timeout tariff.
+        horizon = .5 if fault == 'late' else 30. if fault == 'lost' else 3.
+        trial, wire, _, clock, links = dialogue_trial(tmp_path, condition, 700, fault=fault,
+                                                      budget=budget, run_key=key, horizon=horizon)
+        dialogue_advance(trial, clock, links, horizon, boundaries=())
+        result = trial.finish(horizon)
+        trials.append((trial, wire, result))
+        return {'failure_class': llm.trial_failure_class(None, trial.send_ledger, transport=trial.transport)}, None
+    # The helper registers before begin(), so the wrapper's start hook has no other work.
+    record, exc, attempts = llm.run_attempts(attempt, budget=budget, run_id='fault', start=lambda *a: None)
+    assert exc is None and len(attempts) == 1 and not attempts[0]['retried']
+    trial, wire, result = trials[0]
+    assert len(wire.requests) == trial.send_ledger.sends() == budget.run_requests('fault#a1') == 3
+    assert all(trial.send_ledger.sends(r['call_id']) == 1 for r in trial.send_ledger.entries)
+    usage = budget.usage('pilot-A')
+    unknown = fault in ('429', '503', 'lost', 'unknown')
+    assert usage['requests'] == 3 and usage['pending_requests'] == 0
+    assert usage['known_tokens'] == (0 if unknown else 1800)
+    assert usage['usage_unknown_requests'] == (3 if unknown else 0)
+    assert usage['charged_tokens'] == (2100 if unknown else 1800)
+    rows = llm.call_rows(trial.send_ledger)
+    for row in rows:
+        db = next(r for r in budget.requests('fault#a1') if r['id'] == row['budget_request_id'])
+        assert Path(db['request_path']).read_bytes() == wire.requests[row['seq'] - 1]
+        assert row['usage_known'] == db['usage_known'] == (not unknown)
+        assert row['provider_usage'] == db['provider_usage'] == (None if unknown else USAGE)
+        if fault in ('429', '503', 'lost'):
+            assert row['response_path'] is None and db['status'] == 'wire_error'
+            assert row['failure_class'] == llm.API_ERROR
+            assert row['http_status'] == (int(fault) if fault != 'lost' else None)
+        else:
+            assert Path(db['response_path']).read_bytes() == wire.responses[row['seq'] - 1]
+    if fault in ('429', '503', 'lost', 'length', 'content_filter', 'stale', 'late'):
+        assert not trial.dispatch_log and not result.actions and not result.messages
+        assert all(not history for history in trial._history.values())
+        if fault == 'late':
+            assert len(result.calls) == 3 and all(c['status'] == 'censored' for c in result.calls)
+            assert all(c['cost_terms']['would_release_sim_s'] > .5 for c in result.calls)
+            trial.step_to(20.)  # closing the horizon permanently discards those late actions
+            assert not trial.dispatch_log and trial.send_ledger.sends() == 3
+        else:
+            assert len(trial.scheduler.calls) == 3
+            assert all(c.cost.sim_s > 0 and c.cost.breakdown['attempts'] == 1 for c in trial.scheduler.calls)
+            if fault in ('length', 'content_filter'):
+                assert all(c.cost.breakdown['output_tokens'] > 0 for c in trial.scheduler.calls)
+                assert sum(c.cost.breakdown['utterances'] for c in trial.scheduler.calls) == (0 if condition == 'no_comm' else 2)
+    if fault in ('429', '503', 'lost', 'length', 'content_filter'):
+        assert record['failure_class'] == llm.API_ERROR and budget.run('fault#a1')['status'] == 'failed'
+    elif fault == 'stale':
+        assert all(c['status'] == 'invalid_json' for c in result.calls)
+    elif fault == 'unknown':
+        assert all(not c['cost_terms']['usage_known'] for c in result.calls)
+        assert all(c['cost_terms']['usage_bound'] == 'lower_bound' for c in result.calls)
+        assert all(c.cost.breakdown['input_tokens'] > 0 and c.cost.breakdown['output_tokens'] > 0
+                   for c in trial.scheduler.calls)
+    # No old reply or adapter can reopen a completed/censored call and issue another POST.
+    from harness.zone_send_ledger import SendBlocked, send
+    first = rows[0]
+    with pytest.raises(SendBlocked):
+        send(trial.send_ledger.opener_for(first['call_id'], first['actor']), wire.requests[0])
+    assert len(wire.requests) == 3
+    assert budget.usage('pilot-A') == usage
+    (tmp_path / 'failure_trace.json').write_text(json.dumps({
+        'fake_only': True, 'fault': fault, 'attempts': attempts, 'budget_usage': usage,
+        'calls': result.calls, 'send_rows': rows, 'actions': result.actions,
+        'failure_class': record['failure_class']}, ensure_ascii=False, indent=2))
+
+
+@pytest.mark.parametrize('when', ['first_request', 'both_pre_requests', 'first_response', 'after_one_post'])
+def test_p05_enospc_real_send_boundary_retry_is_once_only_before_any_post(tmp_path, monkeypatch, when):
+    budget = budget_for(tmp_path, charge=700)
+    original = SendLedger._store
+    injected, trials = [], []
+    def full(self, row, kind, data):
+        eligible = ((when in ('first_request', 'both_pre_requests') and kind == 'request' and row['seq'] == 1) or
+                    (when == 'first_response' and kind == 'response') or
+                    (when == 'after_one_post' and kind == 'request' and row['seq'] == 2))
+        if eligible and len(injected) < (2 if when == 'both_pre_requests' else 1):
+            injected.append((row['call_id'], kind))
+            raise OSError(errno.ENOSPC, 'P05 fake disk full')
+        return original(self, row, kind, data)
+    monkeypatch.setattr(SendLedger, '_store', full)
+    def attempt(attempt, key):
+        trial, wire, _, clock, links = dialogue_trial(tmp_path, 'peer_ko', 700, budget=budget, run_key=key)
+        trials.append((trial, wire))
+        if trial.send_ledger.fatal is not None:
+            with pytest.raises(llm.HostError):
+                llm.check_trial_health(trial)  # runner's pre-next-step boundary
+        else:
+            dialogue_advance(trial, clock, links, 3., boundaries=())
+        return {'failure_class': llm.trial_failure_class(None, trial.send_ledger)}, trial.send_ledger.fatal
+    record, exc, attempts = llm.run_attempts(attempt, budget=budget, run_id='disk', start=lambda *a: None)
+    assert injected
+    first_trial, first_wire = trials[0]
+    assert attempts[0]['failure_class'] == llm.HOST_ERROR
+    assert budget.run('disk#a1')['status'] == 'failed'
+    if when in ('first_request', 'both_pre_requests'):
+        assert first_wire.requests == [] and attempts[0]['model_requests'] == 0
+        assert [a['retried'] for a in attempts] == [True, False]
+        if when == 'both_pre_requests':
+            assert isinstance(exc, llm.HostError) and all(a['model_requests'] == 0 for a in attempts)
+            assert budget.run('disk#a2')['status'] == 'failed'
+        else:
+            assert exc is None and record['failure_class'] is None
+            assert budget.run('disk#a2')['status'] == 'finished'
+    else:
+        assert len(attempts) == 1 and not attempts[0]['retried']
+        assert len(first_wire.requests) == attempts[0]['model_requests'] == 1
+        assert isinstance(exc, llm.HostError)
+        assert budget.usage('pilot-A')['requests'] == 1
+        assert Path(budget.requests()[0]['request_path']).read_bytes() == first_wire.requests[0]
+        assert llm.trial_failure_class(None, first_trial.send_ledger) == llm.HOST_ERROR
+        assert not first_trial.dispatch_log
+        if when == 'first_response':
+            assert budget.usage('pilot-A')['usage_unknown_requests'] == 1
+            assert budget.usage('pilot-A')['charged_tokens'] == 700
+
+
+@pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
+def test_p05_cap_stops_before_another_boundary_and_never_replays_paid_posts(tmp_path, condition):
+    budget = budget_for(tmp_path, cap=1200, charge=700)
+    trials = []
+    def attempt(attempt, key):
+        trial, wire, *_ = dialogue_trial(tmp_path, condition, 700, budget=budget, run_key=key)
+        trials.append((trial, wire))
+        with pytest.raises(BudgetExceeded):
+            llm.check_trial_health(trial)
+        return {'failure_class': llm.trial_failure_class(None, trial.send_ledger)}, trial.send_ledger.fatal
+    _, exc, attempts = llm.run_attempts(attempt, budget=budget, run_id='cap', start=lambda *a: None)
+    trial, wire = trials[0]
+    assert isinstance(exc, BudgetExceeded)
+    assert len(attempts) == 1 and not attempts[0]['retried']
+    assert attempts[0]['model_requests'] == len(wire.requests) == 2
+    assert budget.run('cap#a1')['status'] == 'failed'
+    assert budget.run('cap#a1')['failure_class'] == llm.API_ERROR
+    assert budget.usage('pilot-A')['known_tokens'] == budget.usage('pilot-A')['charged_tokens'] == 1200
+    blocked = [r for r in trial.send_ledger.entries if r['status'] == 'blocked']
+    assert len(blocked) == 1 and blocked[0]['budget_cap']
+    assert (trial.send_ledger.store_dir / blocked[0]['request_path']).read_bytes()
+    assert not trial.dispatch_log  # health check precedes any executor boundary/action release
+
+
+@pytest.mark.parametrize('retries', [None, 1, 2, True])
+def test_p05_driver_refuses_scheduler_retry_configuration_before_any_send(tmp_path, retries):
+    budget = budget_for(tmp_path)
+    wire = DialogueWire(700, fault='429')
+    driver = llm.LiveDriver(PROFILE, budget=budget, cohort_id='pilot-A', wire=wire)
+    driver.start_run('r#a1', bundle_id=zi.EXECUTION_BUNDLE_ID, bundle_sha256='b', record={})
+    adapter = driver.adapter(run_key='r#a1', store_dir=tmp_path / 'wire')
+    policy = tm.CallPolicy(max_retries=retries) if retries is not None else None
+    with pytest.raises(ContractViolation, match='call_policy.max_retries=0'):
+        zi.IntegratedTrial(dialogue_scenario(), condition='no_comm', seed=700, links=links_for([0.]),
+                           horizon_s=3., map_bundle=BUNDLE, actor='gemini_proxy', model_adapter=adapter,
+                           policy=policy)
+    assert wire.requests == [] and budget.requests() == [] and adapter.send_ledger.entries == []

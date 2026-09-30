@@ -344,6 +344,17 @@ class _LiveTransport(ModelCallTransport):
         self.pipeline.snapshot(call)
         return super().submit(call)
 
+    def reply(self, call):
+        reply = super().reply(call)
+        if getattr(self.send_ledger, 'requires_provider_usage', False):
+            from dataclasses import replace
+            from harness.zone_main_budget import known_total
+            # A normal completion can omit usage. Keep the standardised SIM
+            # counts, but label provider usage consistently with the DB/send
+            # rows; the fixture-only pipeline retains its frozen semantics.
+            reply = replace(reply, usage_known=known_total(reply.provider_usage) is not None)
+        return reply
+
 
 class IntegratedTrial(zo.OfflineTrial):
     """OfflineTrial whose inputs come from live robots and whose actions reach executors."""
