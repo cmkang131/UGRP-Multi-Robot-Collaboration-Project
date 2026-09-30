@@ -1,4 +1,4 @@
-"""T10a: static corridor/bay checks, never a runtime admission or traffic policy.
+"""T10a: static corridor/bay checks and door-only runtime refusal, no traffic policy.
 
 Inputs are an authored map, catalogue kinds, caller-selected role assignments
 and proposed poses (metres/radians). No scenario, setup inventory, event,
@@ -27,14 +27,19 @@ class UnsupportedCorridor(ValueError):
     """Explicit refusal, including legacy door-only executor construction."""
 
 
+def require_door_runtime(static_map):
+    """Refuse unsupported geometry; passing this check grants no run approval."""
+    if not any(p.get('kind') == 'door' for p in static_map.get('passages', ())):
+        raise UnsupportedCorridor('CORRIDOR_RUNTIME_UNSUPPORTED: T10b required')
+
+
 def create_own_executor(robot_id, static_map, *args, **kwargs):
     """Safe opt-in factory; corridor runtime remains T10b's responsibility.
 
     Preserve the sealed legacy module byte-for-byte. In particular, never
     fabricate a door at the corridor centre to satisfy its door checkpoint.
     """
-    if not any(p.get('kind') == 'door' for p in static_map.get('passages', ())):
-        raise UnsupportedCorridor('CORRIDOR_RUNTIME_UNSUPPORTED: T10b required')
+    require_door_runtime(static_map)
     from harness.zone_own_executor import ZoneOwnExecutor
     return ZoneOwnExecutor(robot_id, static_map, *args, **kwargs)
 

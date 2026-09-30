@@ -68,6 +68,94 @@ def test_legacy_door_factory_preserves_arguments(monkeypatch):
     assert calls == [(('r2', static, {'param': 1}, {'orders': []}), {'mode': 'm1'})]
 
 
+@pytest.fixture
+def managed_study(tmp_path, monkeypatch):
+    """Real CLI/catalog dispatch, fake files; any launch is a test failure."""
+    from scripts import sim_cli
+    from sim import workflow_manager as wm
+    row = next(r for r in json.loads((ROOT / wm.CATALOG).read_text())['workflows']
+               if r['id'] == 'zone-study-integration-run')
+    (tmp_path / 'configs').mkdir()
+    (tmp_path / wm.CATALOG).write_text(json.dumps({
+        'schema': 'ugrp.local_workflow_catalog.v1', 'workflows': [row]}))
+    entry = tmp_path / row['entry']
+    entry.parent.mkdir()
+    entry.write_text('raise AssertionError("legacy runtime must not start")\n')
+    (tmp_path / 'maps/zones').mkdir(parents=True)
+    (tmp_path / 'maps/zones_final').mkdir()
+    (tmp_path / 'scenario.json').write_text(json.dumps({'map_id': 'selected'}))
+    pre = {'schema': 'ugrp.zone_study_integration_prereg.v1', 'episodes': [
+        {'episode_id': 'unselected', 'map': 'missing', 'scenario': 'missing.json'},
+        {'episode_id': 'chosen', 'map': 'selected', 'scenario': 'scenario.json'}]}
+    (tmp_path / 'prereg.json').write_text(json.dumps(pre))
+    monkeypatch.setattr(sim_cli, 'ROOT', tmp_path)
+
+    def forbidden(*args, **kwargs):
+        pytest.fail('admission must precede records, subprocesses, host and physics')
+
+    monkeypatch.setattr(wm, '_new_record', forbidden)
+    monkeypatch.setattr(subprocess, 'Popen', forbidden)
+    return tmp_path, pre
+
+
+@pytest.mark.parametrize('action', ['plan', 'run'])
+@pytest.mark.parametrize('condition', ['no_comm', 'peer_ko', 'leader_ko', 'structured'])
+@pytest.mark.parametrize('directory', ['zones', 'zones_final'])
+def test_managed_corridor_entry_refuses_before_runtime(managed_study, capsys, action, condition, directory):
+    from scripts import sim_cli
+    root, _ = managed_study
+    # A neutral file name proves admission checks passages, not an ID substring.
+    static = json.loads((ROOT / 'maps/zones_final/zone_wide_corridor_final_v1.json').read_text())
+    static['map_id'] = 'selected'
+    (root / f'maps/{directory}/selected.json').write_text(json.dumps(static))
+    with pytest.raises(SystemExit) as error:
+        sim_cli.main(['workflow', action, 'zone-study-integration-run', '--',
+                      '--prereg=prereg.json', '--episode=chosen', f'--condition={condition}',
+                      '--output=never-created', '--dev-horizon-s=1'])
+    assert error.value.code == 2
+    assert 'CORRIDOR_RUNTIME_UNSUPPORTED' in capsys.readouterr().err
+    assert not (root / 'outputs').exists() and not (root / 'never-created').exists()
+
+
+def test_managed_door_entry_preserves_selected_runner_and_arguments(managed_study):
+    from sim import workflow_manager as wm
+    root, _ = managed_study
+    static = json.loads((ROOT / 'maps/zones/zone_wide_door_geometry_v2.json').read_text())
+    static['map_id'] = 'selected'
+    (root / 'maps/zones/selected.json').write_text(json.dumps(static))
+    args = ['--prereg', 'prereg.json', '--episode', 'chosen', '--condition', 'no_comm',
+            '--output', 'never-created']
+    result = wm.plan(root, 'zone-study-integration-run', args)
+    assert result['command'] == [sys.executable, '-m', 'scripts.run_zone_study_integration', *args]
+    assert result['execution_started'] is False
+    assert not (root / 'outputs').exists()
+
+
+@pytest.mark.parametrize('fault', ['unknown_episode', 'duplicate_episode', 'map_mismatch',
+                                  'missing_map', 'ambiguous_map', 'empty_passages'])
+def test_managed_study_selection_fails_closed(managed_study, fault):
+    from sim import workflow_manager as wm
+    root, pre = managed_study
+    static = {'map_id': 'selected', 'passages': [{'kind': 'door'}]}
+    if fault == 'empty_passages':
+        static['passages'] = []
+    if fault != 'missing_map':
+        (root / 'maps/zones/selected.json').write_text(json.dumps(static))
+    if fault == 'ambiguous_map':
+        (root / 'maps/zones_final/selected.json').write_text(json.dumps(static))
+    if fault == 'unknown_episode':
+        pre['episodes'].pop()
+    if fault == 'duplicate_episode':
+        pre['episodes'].append(copy.deepcopy(pre['episodes'][-1]))
+    if fault == 'map_mismatch':
+        (root / 'scenario.json').write_text(json.dumps({'map_id': 'different'}))
+    (root / 'prereg.json').write_text(json.dumps(pre))
+    with pytest.raises(ValueError):
+        wm.run_workflow(root, 'zone-study-integration-run',
+                        ['--prereg', 'prereg.json', '--episode', 'chosen', '--condition', 'no_comm'])
+    assert not (root / 'outputs').exists()
+
+
 def test_missing_corridor_missing_bay_and_unknown_axis_are_explicit(static):
     with pytest.raises(UnsupportedCorridor, match='CORRIDOR_NOT_FOUND'):
         CorridorContract({**static, 'passages': []})

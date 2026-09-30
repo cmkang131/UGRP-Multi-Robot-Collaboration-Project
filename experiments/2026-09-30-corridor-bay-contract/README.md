@@ -1,6 +1,7 @@
 # T10a — 복도와 bay 정적 계약
 
-상태: **정적 구현·관련 회귀 78건 통과, draft 전용**. 물리·렌더·로컬 모델 호출은
+상태: **정적 구현 + C310-1 표준 CLI 실행 전 거절 연결, draft**. 최초 관련 회귀는
+78건 통과했으며 리뷰 수정의 별도 검증은 [REVIEW_FIX.md](REVIEW_FIX.md)에 기록한다. 물리·렌더·로컬 모델 호출은
 실행하지 않았다. 이 작업의 SIM cap은 **0초**다. 기존 s1–s6, 지도, 성공 기록,
 v6e DRAFT, bundle/workflow ID를 바꾸지 않는다. 연구 성공률과 통신 효과는 미측정이다.
 
@@ -67,8 +68,17 @@ v3 envelope이며 실제 관절·짐 흔들림·마찰·3D 접촉을 보증하�
 
 **기존 `ZoneOwnExecutor` 직접 호출과 현재 runner는 그대로 보존했다.** 이 모듈은
 현재 v6e DRAFT의 source hash 대상이므로 직접 수정하거나 봉인을 다시 쓰지 않았다.
-기존 호출 경로의 `StopIteration` 자체가 전역으로 사라진 것은 아니다.
-T10b가 새로운 실행 버전에서 안전 진입점/복도 제어를 연결해야 한다.
+독립 검토 C310-1 수정으로 **표준 선택 경로**인
+`sim_cli workflow plan/run zone-study-integration-run`에 상위 검사를 연결했다.
+`sim/zone_study_admission.py`가 선택한 episode의 정적 지도 내용을 읽고
+문이 없으면 같은 명시적 오류로 거절한다. 기록 폴더·자식 프로세스·host·pose provider·world
+생성 전에 끝나며, `--dev-horizon-s`나 통신 조건으로 우회하지 않는다.
+문 지도는 기존 runner와 CLI 인자를 그대로 사용하며 기존 소스·provider·봉인 검사를 계속 거친다.
+동일 ID의 지도 파일이 둘이거나 episode가 중복되는 모호한 선택도 거절한다.
+
+봉인된 `ZoneOwnExecutor(...)`의 직접 호출까지 바뀐 것은 아니다. 직접 호출은
+이 상위 검사를 거치지 않는 역사 경로다. T10b는 실제 복도 제어를 별도 실행 버전으로
+구현해야 하며, 이 PR은 복도에 가짜 문을 넣거나 기존 등록의 범위를 늘리지 않는다.
 이번 정적 PASS는 runtime admission, 기존 DRAFT의 확장 승인, E2E 준비 판정이 아니다.
 
 ## 검증과 보존
