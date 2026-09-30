@@ -1,0 +1,363 @@
+{
+  "scope": "offline synthetic regression only; no physics/render/training/provider calls",
+  "preservation": {
+    "start_head": "f55662896c310509db32e5ea1e451827ab5b40ab",
+    "main": "26545c2499f94c3f99a5d650f7cc8ea992f24196",
+    "review_commit": "039bba05387746987ea74e494b0465cc4ec84a7d",
+    "registered_sources": {
+      "harness/owncam_memory.py": true,
+      "harness/owncam_memory_time.py": true,
+      "harness/owncam_delivery_shared.py": true,
+      "harness/owncam_memory_delivery.py": true,
+      "harness/owncam_memory_inputs.py": true,
+      "harness/owncam_pose_guard_provider.py": true,
+      "harness/owncam_pose_guard_v3.py": true,
+      "configs/zone_pair_authorization.json": true,
+      "harness/owncam_drive_mem_v3.py": true,
+      "harness/m1_owncam_memory_v3.py": true,
+      "harness/vision_motion_init.py": true,
+      "harness/m2_provider_adapter.py": true,
+      "harness/zone_own_deliver.py": true,
+      "harness/zone_own_team_host.py": true,
+      "scripts/zone_pair_authorization.py": true,
+      "scripts/run_zone_study_integration.py": true,
+      "scripts/run_m1_owncam_memory_v3.py": true,
+      "sim/zone_geometry_scene.py": true,
+      "configs/zone_study_integration/pose_providers.json": true,
+      "maps/zones/zone_wide_door_geometry_v2.json": true,
+      "harness/pose_provider.py": true,
+      "harness/vision_pose_source.py": true,
+      "harness/zone_study_pose_delay.py": true,
+      "harness/zone_own_driver.py": true,
+      "harness/owncam_drive_shared.py": true,
+      "sim/zone_own_scene_provider.py": true,
+      "harness/owncam_time.py": true,
+      "harness/zone_own_contract.py": true,
+      "harness/zone_own_executor.py": true,
+      "harness/zone_own_status.py": true,
+      "harness/zone_own_perception.py": true,
+      "harness/zone_pair_obstruction.py": true,
+      "harness/zone_pair_grasp.py": true,
+      "harness/zone_pair_executor.py": true,
+      "harness/zone_pair_beam_track.py": true,
+      "harness/zone_pair_align.py": true,
+      "harness/zone_pair_guards.py": true,
+      "harness/zone_pair_geometry.py": true,
+      "harness/zone_pair_status.py": true,
+      "harness/zone_pair_vision.py": true,
+      "harness/owncam_pose_source.py": true,
+      "harness/owncam_localizer.py": true,
+      "harness/owncam_pair_beam.py": true,
+      "harness/owncam_pair_beam_v2.py": true,
+      "harness/owncam_view.py": true,
+      "harness/zone_own_guards.py": true,
+      "scripts/run_zone_pair_dev.py": true,
+      "scripts/zone_pair_dev_runtime.py": true,
+      "scripts/zone_pair_grasp_contract.py": true,
+      "scripts/evaluate_zone_pair_dev.py": true,
+      "configs/simulation_workflows.json": true,
+      "sim/zone_start_dock.py": true,
+      "sim/zone_dock_scene.py": true,
+      "sim/zone_arena.py": true,
+      "sim/zone_landmarks.py": true,
+      "sim/zone_scene.py": true,
+      "sim/zone_tagged_cargo_scene.py": true,
+      "scripts/zone_pair_dev_contract.py": true,
+      "harness/zone_study_integration.py": true,
+      "harness/zone_pair_v6_policy.py": true,
+      "harness/zone_pair_relative.py": true,
+      "harness/zone_pair_global.py": true,
+      "harness/owncam_recovery_v6.py": true,
+      "harness/owncam_observability_v6.py": true,
+      "scripts/zone_pair_v6_contract.py": true,
+      "harness/zone_own_sweep.py": true,
+      "harness/pair_owncam_approach.py": true,
+      "harness/owncam_drive.py": true,
+      "scripts/run_m2_pair.py": true,
+      "scripts/study_owncam_pair_beam.py": true,
+      "harness/visual_arm.py": true,
+      "harness/m1_owncam_delivery.py": true,
+      "harness/owncam_bootstrap_v6b.py": true,
+      "harness/owncam_recovery_v6c.py": true,
+      "harness/zone_pair_grasp_entry_v6c.py": true,
+      "harness/owncam_pair_beam_v6d.py": true,
+      "harness/owncam_align_motion_v6d.py": true,
+      "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": true,
+      "harness/owncam_carry_v6e.py": true,
+      "harness/own_beam_edge.py": true,
+      "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json": true,
+      "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json": true,
+      "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json": true,
+      "sim/zone_masterpi_v3_scene.py": true,
+      "sim/zone_model_conventions.py": true
+    },
+    "prior_preregistrations": {
+      "experiments/2026-09-16-act-recovery/preregistration-audit.json": true,
+      "experiments/2026-09-25-zc3-prereg-draft/analysis/measured_runs.json": true,
+      "experiments/2026-09-25-zc3-prereg-draft/analysis/power.json": true,
+      "experiments/2026-09-25-zc3-prereg-draft/analysis/seed_plan.json": true,
+      "experiments/2026-09-25-zc3-prereg-draft/budget.json": true,
+      "experiments/2026-09-25-zone-owncam-loop/prereg.json": true,
+      "experiments/2026-09-25-zone-owncam-loop/prereg_amendments.json": true,
+      "experiments/2026-09-26-markerless-probe/prereg.json": true,
+      "experiments/2026-09-26-sim-speed/prereg_default_check_DRAFT.json": true,
+      "experiments/2026-09-26-vision-loc/prereg.json": true,
+      "experiments/2026-09-26-vision-loc/prereg_v3.json": true,
+      "experiments/2026-09-26-vision-loc/prereg_v4_DRAFT.json": true,
+      "experiments/2026-09-26-zone-env-v3/loop/prereg.json": true,
+      "experiments/2026-09-26-zone-env-v3/loop/prereg_a1.json": true,
+      "experiments/2026-09-26-zone-env-v3/m1/prereg.json": true,
+      "experiments/2026-09-26-zone-env-v3/m1/prereg_a1.json": true,
+      "experiments/2026-09-26-zone-env-v3/prereg.json": true,
+      "experiments/2026-09-26-zone-env-v3/prereg_amendments.json": true,
+      "experiments/2026-09-26-zone-eval-topcam/prereg.json": true,
+      "experiments/2026-09-26-zone-eval-topcam/prereg_amendments.json": true,
+      "experiments/2026-09-26-zone-m1-owncam/prereg.json": true,
+      "experiments/2026-09-26-zone-m1-owncam/prereg_amendments.json": true,
+      "experiments/2026-09-26-zone-own-executor/prereg.json": true,
+      "experiments/2026-09-26-zone-own-executor/prereg_v2.json": true,
+      "experiments/2026-09-26-zone-own-executor/prereg_v3.json": true,
+      "experiments/2026-09-26-zone-owncam-loop-v2/prereg.json": true,
+      "experiments/2026-09-26-zone-owncam-memory/prereg.json": true,
+      "experiments/2026-09-26-zone-owncam-memory/prereg_amendments.json": true,
+      "experiments/2026-09-26-zone-study-integration/prereg.json": true,
+      "experiments/2026-09-26-zone-study-integration/prereg_v2.json": true,
+      "experiments/2026-09-27-zone-owncam-memory-v3/prereg_DRAFT.json": true,
+      "experiments/2026-09-27-zone-owncam-memory-v3/review-fixes/prereg_review_DRAFT.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_DRAFT.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v3.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v3_DRAFT.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v4.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v5.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v5b.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v5c.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v5d.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v5e.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v5f.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v5g.json": true,
+      "experiments/2026-09-27-zone-pair-dev/prereg_v5h.json": true,
+      "experiments/2026-09-28-main-study-prereg-draft/prereg_main_DRAFT.json": true,
+      "experiments/2026-09-28-zone-pair-v5f/prepare-before-canonical-hardening/dev11/prereg.json": true,
+      "experiments/2026-09-28-zone-pair-v5f/prepare-before-canonical-hardening/dev12/prereg.json": true,
+      "experiments/2026-09-28-zone-pair-v5f/prepare-before-index-seal-check/dev11/prereg.json": true,
+      "experiments/2026-09-28-zone-pair-v5f/prepare-before-index-seal-check/dev12/prereg.json": true,
+      "experiments/2026-09-28-zone-pair-v5f/prepare/dev11/prereg.json": true,
+      "experiments/2026-09-28-zone-pair-v5f/prepare/dev12/prereg.json": true,
+      "experiments/2026-09-28-zone-pair-v6/prereg_v6.json": true,
+      "experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json": true,
+      "experiments/2026-09-29-pair-v6c/prereg_v6c.json": true,
+      "experiments/2026-09-29-pair-v6d-align/prereg_v6d.json": true,
+      "experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json": true
+    },
+    "workflows_equal_origin_main": {
+      ".github/workflows/tests.yml": true
+    },
+    "runner_sha256": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd"
+  },
+  "python": "Python 3.12.13",
+  "raw_output_root": "/Users/changmin/projects/ugrp/outputs/p06-review303c-fixes-20261001",
+  "host_lock_acquired": false,
+  "before": {
+    "tests": 13,
+    "failures": 11,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final": {
+    "tests": 525,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "final_by_module": {
+    "tests.test_ci_sharding": 66,
+    "tests.test_review_303c": 13,
+    "tests.test_tensorboard_export": 64,
+    "tests.test_zone_pair_door_relax": 1,
+    "tests.test_zone_pair_registered_source": 22,
+    "tests.test_zone_study_eval.BoundaryTest": 8,
+    "tests.test_zone_study_eval.ChannelTest": 6,
+    "tests.test_zone_study_eval.ComparisonTest": 9,
+    "tests.test_zone_study_eval.DialogueTest": 20,
+    "tests.test_zone_study_eval.EfficiencyTest": 8,
+    "tests.test_zone_study_eval.ParseTest": 9,
+    "tests.test_zone_study_eval.ReportTest": 8,
+    "tests.test_zone_study_eval.SummaryTest": 3,
+    "tests.test_zone_study_evidence": 84,
+    "tests.test_zone_study_evidence_join": 61,
+    "tests.test_zone_study_evidence_review_a303": 4,
+    "tests.test_zone_study_evidence_review_c303": 71,
+    "tests.test_zone_study_evidence_review_f303": 7,
+    "tests.test_zone_study_referee": 23,
+    "tests.test_zone_study_review_fixes": 3,
+    "tests.test_zone_study_review_r5": 1,
+    "tests.test_zone_study_source_pinning": 34
+  },
+  "generated_relational_cases": 12000,
+  "simultaneous_independent_permutations": 216,
+  "publication_permutations": 6,
+  "failure_recovery_permutations": 256,
+  "mutations": {
+    "canonical_sort_bypass": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "dispatch_content_bypass": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "input_content_bypass": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "missing_table_bypass": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "optional_count_bypass": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "source_sha256": {
+    "scripts/zone_study_evidence_contract.py": "f9bf3cfa554bd3fe7e95dc2d1ee600f3315c6c906b2e4853140172fe43b53c35",
+    "scripts/zone_study_evidence_join.py": "789c5e385174155ee772643c57d51f1ae0e7907e5138ef5cea3f53a6322dccfd",
+    "scripts/tensorboard_tools/zone_study.py": "91ddeb86d9760799d7194e0cdef704e354d2a3e5067825286c7a831d1002ea9c",
+    "scripts/run_ci_tests.py": "05875266a35685d967ead351e4de389073a0d6039206a9452ce03f738e534b1c",
+    "tests/test_zone_study_evidence_join.py": "297c7ad341d47167fdb5704fa03a0152199475974aa4a512db372d9745d6351b",
+    "tests/test_review_303c.py": "bbdb7da1bef2f871825821e5bd2a1cb8361a5d133bd206bb2b259d617f1e4d1b",
+    "tests/test_zone_study_evidence_review_c303.py": "d11d9a7d3124fccf3c0d18c456c317567e0f0f94ebd2a522b88055461ae3f48c",
+    "experiments/2026-09-30-e2e-p06-evidence/redesign_test_selectors.json": "6fa20ce0c13a6d1aa409923e0501ac73fcec1177bce6ad17306cec274a38dbd6",
+    "experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py": "458c9bccf71db2a276aa7833e8724b79d8e865b143229a8ff898ba7cb722ec88",
+    "experiments/2026-09-30-e2e-p06-evidence/review_c303_mutations.py": "cf9b191141f621d2e304e544fdb6bdfd809a97cb61235bdbb385feab50caf889"
+  },
+  "commands": {
+    "before": "PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_review_303c.py --runxfail --junitxml=/Users/changmin/projects/ugrp/outputs/p06-review303c-fixes-20261001/before.xml",
+    "final": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py --junitxml=/Users/changmin/projects/ugrp/outputs/p06-review303c-fixes-20261001/final.xml"
+  },
+  "ci_shards": {
+    "total_files": 341,
+    "shard_count": 8,
+    "coverage_verified": true,
+    "balance": "file_count"
+  },
+  "frozen_fixture_preflight": "3 present",
+  "github_ci": "separate verification on pushed commit; not inferred from local tests",
+  "raw_files": {
+    "before.log": {
+      "bytes": 33460,
+      "sha256": "6fbd46242758a20cf937bb9548b3b8888e4a4294caeba9e6db29759664e33f6e"
+    },
+    "before.xml": {
+      "bytes": 32527,
+      "sha256": "e80a86ef85f7d4dce36cd1b73d37bbafd0407bc8ded0ea23b16377a0d46e3578"
+    },
+    "ci-shards.json": {
+      "bytes": 15290,
+      "sha256": "0c1c459687b8431dd20461efbb93b736cffbe587bb58788521925322f60e1de3"
+    },
+    "final.log": {
+      "bytes": 672,
+      "sha256": "f5a20a000cf115349f1ec1ff640d3301ca83fc5af5b78743ae1b433e8d21d74b"
+    },
+    "final.xml": {
+      "bytes": 74228,
+      "sha256": "d4c13c0a642ac9796ce571a856fba83b6566957262b6441d0c3250f8f882d80a"
+    },
+    "history.log": {
+      "bytes": 113,
+      "sha256": "d82371a4444676954397610bb49204707757db9a8fb4a8c584c189eab69dcd6c"
+    },
+    "history.xml": {
+      "bytes": 607,
+      "sha256": "84d3e1da0ec47abefa8745dff46ed11751e2e6a47e44c5591f410385eb425bd7"
+    },
+    "iteration1.log": {
+      "bytes": 2648,
+      "sha256": "f36ed8949cadc7a72fb0b259adabee8f54ac8ef2c79b0e98549eee84ae49be99"
+    },
+    "iteration2.log": {
+      "bytes": 195,
+      "sha256": "f1a26f9e25bd4c25d5b715d451816b0017d8ed0c1efec464bbb98a51c184969b"
+    },
+    "mutation-canonical_sort_bypass.log": {
+      "bytes": 1986,
+      "sha256": "d30733f47a99a4a7e5915598f89ec2843cd218e1a061c97ddb7f1d4e357ea0b3"
+    },
+    "mutation-canonical_sort_bypass.xml": {
+      "bytes": 2169,
+      "sha256": "d38a887c40624973af4f4a585ab8d358b3fb14c2bed798c4098f2381e0d3f2bd"
+    },
+    "mutation-dispatch_content_bypass.log": {
+      "bytes": 3716,
+      "sha256": "2c2942440c37d600a249868f851aa90e32eb0e1d685c7748694d6749a5d79d1d"
+    },
+    "mutation-dispatch_content_bypass.xml": {
+      "bytes": 3490,
+      "sha256": "f01b9889dfa9d85114acdfef376a209ff48a7d983ff3f8b653059cfb37ad26d2"
+    },
+    "mutation-input_content_bypass.log": {
+      "bytes": 3707,
+      "sha256": "bab53958465f05a637c88bd1339fdafb09709c0ad78b81738546af078804fe21"
+    },
+    "mutation-input_content_bypass.xml": {
+      "bytes": 3484,
+      "sha256": "362842ec4d8409fdbfd388e769b2509c6c429cc6b0a1cbce67dca8b202711ea8"
+    },
+    "mutation-missing_table_bypass.log": {
+      "bytes": 3717,
+      "sha256": "a770d79a928d6ab5e800c08adbdd690c35f9d8366b68ee87c96cd40ac13439a1"
+    },
+    "mutation-missing_table_bypass.xml": {
+      "bytes": 3494,
+      "sha256": "8489f9e6d43ce9f82508fe3e1189b170b33564dbdff054c59e7b3735ae7a05b2"
+    },
+    "mutation-optional_count_bypass.log": {
+      "bytes": 3092,
+      "sha256": "6d70542c6cdffe21aaa37ad0130f4dd545b7419934e8a518595e21a750a01b50"
+    },
+    "mutation-optional_count_bypass.xml": {
+      "bytes": 2855,
+      "sha256": "06f1423a6112ae4aeb8cb151394da82ec70593a1905f2440002a049c92027a75"
+    },
+    "preservation.json": {
+      "bytes": 8291,
+      "sha256": "01e517c9c742a0f791dd408946e0903023f83908064311966175c59cd99b2e0d"
+    },
+    "related.log": {
+      "bytes": 5478,
+      "sha256": "807d2b901694f93ee432466745bc6e5411ae2b273e1271c6ae3d04960757d99e"
+    },
+    "related.xml": {
+      "bytes": 78255,
+      "sha256": "70f29f98ec4b86c8ecd9d108d967d761fb9e8bc9539d6c92364668608f745dee"
+    }
+  },
+  "intermediate_runs": {
+    "iteration1": "2 failed, 152 passed; old raw-source success fixture lacked independent referee",
+    "iteration2": "137 passed, 4 deselected",
+    "related": {
+      "tests": 523,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "history": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  }
+}

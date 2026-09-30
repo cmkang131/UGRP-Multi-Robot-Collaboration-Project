@@ -4,6 +4,8 @@ UGRP의 [READINESS S11/S14](../READINESS.md) 작업이다. 기준 감사 SHA는 
 
 **범위:** synthetic truth·가짜 완료/실패 기록을 써서 referee→trial record→raw manifest→TensorBoard export의 일관성을 검증/보완한다. 물리/시뮬레이션/렌더/모든 모델 호출 금지. 실제 실험 결과를 새로 만들거나 기존 snapshot에 덮어쓰지 않는다. fake 자료는 임시 폴더에 두고 연구 결과로 공용 대시보드에 게시하지 않는다.
 
+2026-09-30 정정: 위 실행 제한은 로컬 작업 범위다. 정상 GitHub CI는 허용하며 필수로 확인한다. CI를 생략하는 커밋 표식이나 실행 취소를 사용하지 않는다. v6e가 고정한 `scripts/run_zone_study_integration.py`는 바이트 그대로 보존하며 P06 기록 후보는 `scripts/zone_study_evidence_writer.py`에서 검사한다. 기존 실행기에 자동 적용되지 않으며 새 실행기 연결·등록·물리 인수는 별도다.
+
 대상/출처:
 
 - `harness/zone_study_referee.py`, `harness/zone_study_eval.py`

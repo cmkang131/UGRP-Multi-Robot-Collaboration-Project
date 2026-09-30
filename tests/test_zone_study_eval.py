@@ -538,12 +538,22 @@ class DialogueTest(unittest.TestCase):
 
 
 class ComparisonTest(unittest.TestCase):
+    @staticmethod
+    def success_record(condition, **kwargs):
+        record = trial(condition, **kwargs)
+        # These comparisons need successful trials. A delivery after the trial
+        # ends is not success evidence (the old fixture had an 850 s delivery
+        # even in its 800 s trial).
+        for delivery in record['referee']['deliveries']:
+            delivery['sim_s'] = min(delivery['sim_s'], record['end_sim_s'])
+        return ev.parse_trial(record)
+
     def cohort(self):
         trials = []
         for seed, (base, var) in enumerate([(1000.0, 900.0), (1200.0, 1000.0),
                                             (800.0, 850.0), (1100.0, 950.0)], start=101):
-            trials.append(ev.parse_trial(trial('no_comm', seed=seed, end_sim_s=base)))
-            trials.append(ev.parse_trial(trial('peer_ko', seed=seed, end_sim_s=var)))
+            trials.append(self.success_record('no_comm', seed=seed, end_sim_s=base))
+            trials.append(self.success_record('peer_ko', seed=seed, end_sim_s=var))
         return trials
 
     def test_paired_values_match_on_scenario_and_seed(self):
@@ -608,7 +618,7 @@ class ComparisonTest(unittest.TestCase):
 
     def test_repeats_of_a_seed_are_averaged_into_one_pair(self):
         trials = [ev.parse_trial(trial('no_comm', seed=1, end_sim_s=1000.0)),
-                  ev.parse_trial(trial('peer_ko', seed=1, end_sim_s=800.0)),
+                  self.success_record('peer_ko', seed=1, end_sim_s=800.0),
                   ev.parse_trial(trial('peer_ko', seed=1, end_sim_s=1000.0))]
         trials[2]['trial_id'] = 'peer_ko-mixed-s1-rep2'
         pairs = ev.paired_values(trials, 'par_makespan_sim_s', 'no_comm', 'peer_ko')

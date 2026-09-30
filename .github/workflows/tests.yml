@@ -119,9 +119,12 @@ jobs:
     if: needs.ci-preflight.outputs.full_suite == 'true'
     name: offline-regression-shard (${{ matrix.shard }}/8)
     runs-on: ubuntu-latest
-    # No complete file-duration history yet: spread the unchanged list over 8
-    # jobs by file count. Keep JUnit timings to tune any observed imbalance.
-    timeout-minutes: 10
+    # Files are packed longest-first by measured seconds from
+    # configs/ci_test_durations.json (pytest-split style; unknown files use the
+    # median). Refresh it from the offline-shard-* artifacts with
+    # scripts/refresh_ci_durations.py (see CONTRIBUTING.md). The 15 minute limit
+    # is a margin, not the balance mechanism.
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -139,7 +142,7 @@ jobs:
           cache-dependency-path: requirements-test.txt
       - run: python -m pip install --requirement requirements-test.txt
       - name: Run offline regression shard
-        run: python scripts/run_ci_tests.py --shard-index ${{ matrix.shard }} --shard-count 8 --junitxml outputs/ci-offline/shard-${{ matrix.shard }}.xml
+        run: python scripts/run_ci_tests.py --shard-index ${{ matrix.shard }} --shard-count 8 --durations-json configs/ci_test_durations.json --junitxml outputs/ci-offline/shard-${{ matrix.shard }}.xml
       - name: Keep shard results and per-test costs
         if: always()
         uses: actions/upload-artifact@v4
@@ -188,7 +191,7 @@ jobs:
       - name: Verify shard allocation and exact file coverage
         run: |
           python -m pytest -q -p no:cacheprovider --basetemp=./.pytest_tmp tests/test_ci_sharding.py
-          python scripts/run_ci_tests.py --shard-count 8 --list-shards
+          python scripts/run_ci_tests.py --shard-count 8 --durations-json configs/ci_test_durations.json --list-shards
 
       - name: Remove test temporary directory
         if: always()
