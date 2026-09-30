@@ -58,7 +58,9 @@ CI의 `offline-shard-*` JUnit artifact에는 파일 경로와 테스트별 setup
 파일 수 균등은 시간 균등을 보장하지 않으므로 실제 shard 실행 시간을 확인한다.
 
 CI는 feature branch의 push 대신 PR에서 실행하고, main push에서도 전체 검사를
-유지한다. 같은 PR의 새 커밋은 이전 실행을 취소한다. `ci-preflight`는 의존성
+유지한다. 각 실행은 고유 concurrency group을 쓰며, 같은 PR의 새 커밋도
+이전 실행이나 대기 중인 실행을 취소하지 않는다. CI를 수동 취소하거나
+`[skip ci]`로 건너뛰지 않는다. `ci-preflight`는 의존성
 설치 전에 필수 frozen fixture 3개와 CI 분기·집계 로직을 검사한다.
 root Markdown, `docs/`의 문서·이미지 등 허용된 문서 형식,
 `experiments/`의 Markdown만 바뀐 PR은 문서 전용 경로를 쓴다.
