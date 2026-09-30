@@ -1,0 +1,51 @@
+== 1. measured loaded-carry plant (fit of the GT beam x(t) around every forward command window, rms < 0.25 mm)
+  L0 v_ss      n=182 mean 0.05120 sd 0.00004 min 0.05112 max 0.05124
+  L0 tau       n=182 mean 0.89877 sd 0.00208 min 0.89603 max 0.90459
+  L0 tau_stop  n=182 mean 0.01092 sd 0.00290 min 0.00500 max 0.02131
+  L0 delay     n=182 mean 0.06223 sd 0.00142 min 0.05801 max 0.06423
+  L1 v_ss      n=182 mean 0.05123 sd 0.00001 min 0.05120 max 0.05124
+  L1 tau       n=182 mean 0.89795 sd 0.00020 min 0.89759 max 0.89817
+  L1 tau_stop  n=182 mean 0.00626 sd 0.00010 min 0.00607 max 0.00663
+  L1 delay     n=182 mean 0.06321 sd 0.00009 min 0.06285 max 0.06339
+  steady gain (v_ss / forward command 0.0381818) = 1.3417
+  gain the open-loop plan implies (SPEED*0.772/CMD)      = 1.2131
+  gain of the registered PF plant / after kappa          = 1.4004 / 1.3281   (lag 0.8 s, stop 0.05 s)
+  measured lag / stop lag                                = 0.898 s / 0.0063 s
+
+== 2. stopping rule: timed. Commanded window T_cmd against the plan T = d / (0.06 * 0.772)
+  sheet x 0.9: L0 T_plan 14.033 -> T_cmd 14.0 ; L1 T_plan 18.351 -> T_cmd 18.4   (32 cases)
+  sheet x 1.0: L0 T_plan 11.874 -> T_cmd 11.8 ; L1 T_plan 18.351 -> T_cmd 18.4   (146 cases)
+  sheet x 1.1: L0 T_plan 9.715 -> T_cmd 9.7 ; L1 T_plan 18.351 -> T_cmd 18.4   (4 cases)
+  T_cmd depends only on the order sheet (same value for every placement, PF seed, prior, gain fix): the leg is not closed on any estimate.
+
+== 3. exact decomposition of the L1 along error (mm; identity checked to < 3 mm)
+  cohort  sheet_x  n   dx_lift   L0_excess(F-d0)  coast   L1_excess(F-c-.85)  along_L1(obs)  along_L1(model)  resid
+  cA      1.0     24    -30.4       +8.8          +3.8       +43.2            +22.2          +21.6      +0.58
+  cB      1.0     24    -30.4       +8.8          +3.8       +43.2            +22.1          +21.6      +0.53
+  rA      0.9      6    +29.8      +21.5          +3.8       +43.2            +94.6          +94.6      +0.02
+  rA      1.0     14     -0.0       +8.8          +3.8       +43.2            +51.5          +52.0      -0.47
+  rB      0.9      6    +29.8      +21.5          +3.8       +43.2            +94.6          +94.6      +0.05
+  rB      1.0     14     -0.0       +8.8          +3.8       +43.2            +51.6          +52.0      -0.41
+  sA      0.9      4    +30.5      +21.5          +3.8       +43.2            +95.4          +95.2      +0.12
+  sA      1.0     18     -4.3       +8.8          +3.8       +43.2            +48.7          +47.7      +0.97
+  sA      1.1      2    -46.0       +1.3          +3.8       +43.2             -0.1           -1.6      +1.44
+  sB      0.9      4    +30.5      +21.5          +3.8       +43.2            +95.4          +95.2      +0.13
+  sB      1.0     18     -4.3       +8.8          +3.8       +43.2            +48.7          +47.7      +0.99
+  sB      1.1      2    -46.0       +1.3          +3.8       +43.2             +0.0           -1.6      +1.57
+  model residual against recorded along error: L0 mean +0.05 sd 0.52 max|.| 0.99 mm ; L1 mean +0.42 sd 0.84 max|.| 2.22 mm  (n=136)
+
+== 4. regression of the L1 END error (the pass gate, 100 mm) on dx = beam x - rounded sheet x
+  sA: end_error =  63.8 + 1.08*dx (corr 0.96); along =  54.6 + 1.10*dx (corr 0.99) ; inside sheet 1.0 only: along =  53.0 + 1.00*dx
+  sB: end_error =  64.5 + 1.09*dx (corr 0.95); along =  54.6 + 1.10*dx (corr 0.99) ; inside sheet 1.0 only: along =  53.0 + 0.99*dx
+  rA: end_error =  63.2 + 1.38*dx (corr 0.99); along =  51.6 + 1.44*dx (corr 1.00)
+  rB: end_error =  62.4 + 1.63*dx (corr 0.99); along =  51.6 + 1.44*dx (corr 1.00)
+  The slope is above 1 because dx and the L0 excess move together: a beam at x < 0.95 rounds to sheet 0.9, which makes L0 longer (0.65 m)
+  and therefore adds a larger timed-plan excess exactly where dx is already large and positive.
+
+== 5. axial travel excess of one leg as a function of its length (measured plant, tick phase averaged)
+  d [m]   registered plan   PF-lag plan (1.4004, not fixed)   PF-lag plan (kappa 0.9483)   exact plant
+  0.45       +2.0 mm         -26.1 mm                        -2.6 mm                 +0.0 mm
+  0.55      +12.6 mm         -30.3 mm                        -1.6 mm                 -0.0 mm
+  0.65      +23.2 mm         -34.5 mm                        -0.6 mm                 -0.0 mm
+  0.85      +44.4 mm         -42.9 mm                        +1.5 mm                 -0.0 mm
+
