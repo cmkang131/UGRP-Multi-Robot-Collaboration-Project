@@ -84,6 +84,7 @@ TEST_PATTERNS = (
     "tests/test_zone_identity_jobs.py",  # T13a: own-RGB identity/count and target-job seam (fake only)
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py",
+    "tests/test_zone_environment_registry.py",
     "tests/test_scenario_capabilities_docs.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",
     "tests/test_zone_study_eval.py", "tests/test_zone_study_offline.py",
