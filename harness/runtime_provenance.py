@@ -105,13 +105,32 @@ def file_state(path):
     return {**binding, 'sha256': hasher.hexdigest()}
 
 
-def directory_state(path):
+def _output_artifacts(paths):
+    """Reserve exact tool-owned leaf paths, never a filename pattern or subtree."""
+    artifacts = []
+    for path in paths:
+        binding = _path_identity(path)
+        if (not Path(binding['realpath']).parent.is_dir() or os.path.islink(path)
+                or (os.path.lexists(path) and not os.path.isfile(path))):
+            raise ValueError('tool output must be an absent or regular file: ' + str(path))
+        artifacts.append(binding)
+    return artifacts
+
+
+def _output_paths(artifacts):
+    return {artifact['realpath'] for artifact in artifacts}
+
+
+def directory_state(path, output_artifacts=()):
     """Pin directory names/types/link bindings, not file contents or stat data."""
     binding = _path_identity(path)
+    outputs = _output_paths(output_artifacts)
     try:
         with os.scandir(path) as entries:
             members = []
             for entry in entries:
+                if os.path.join(binding['realpath'], os.fsdecode(entry.name)) in outputs:
+                    continue
                 kind = ('symlink' if entry.is_symlink() else
                         'directory' if entry.is_dir() else 'file' if entry.is_file() else 'other')
                 members.append([entry.name, kind,
@@ -168,11 +187,12 @@ def _policy(value):
     return dict(value)
 
 
-def _child(root, case, env_names, seed, expected=None, policy=None, timeout=30):
+def _child(root, case, env_names, seed, expected=None, policy=None, timeout=30,
+           output_artifacts=()):
     if not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or timeout <= 0:
         raise ValueError('timeout must be finite and positive')
     request = {'root': str(root), 'case': case, 'seed': seed, 'expected': expected,
-               'policy': policy or _policy(None)}
+               'policy': policy or _policy(None), 'output_artifacts': output_artifacts}
     # Report FD is opened by the trusted parent; policy code cannot mask a caught
     # violation because the hook writes the report and calls os._exit immediately.
     with tempfile.TemporaryFile() as report:
@@ -205,7 +225,7 @@ class TraceFailure(ValueError):
 
 
 def trace_contract(static, *, expected_static_sha256, cases, root=ROOT,
-                   env_names=None, policy=None, timeout=30):
+                   env_names=None, policy=None, timeout=30, output_artifacts=()):
     """Execute canonical offline cases; do not turn failures into partial seals."""
     from harness.execution_dependency_contract import verify_contract
     root = Path(root).resolve()
@@ -218,12 +238,14 @@ def trace_contract(static, *, expected_static_sha256, cases, root=ROOT,
     env_names = sorted(set(env_names or []))
     _environment(env_names)
     policy = _policy(policy)
+    artifacts = _output_artifacts(output_artifacts)
     initial_identity = identity()
     initial_tools = tool_identity()
     seed = [str(root / p) for p in static['source_sha256']]
     files, directories, environment, traces = {}, {}, {}, []
     for case in cases:
-        result = _child(root, case, env_names, seed, policy=policy, timeout=timeout)
+        result = _child(root, case, env_names, seed, policy=policy, timeout=timeout,
+                        output_artifacts=artifacts)
         if result['status'] != 'OK':
             raise TraceFailure(case, result)
         for target, observed in ((files, result['files']), (directories, result['directories']),
@@ -243,12 +265,15 @@ def trace_contract(static, *, expected_static_sha256, cases, root=ROOT,
         if file_state(path) != state:
             raise ValueError('input changed during capture: ' + path)
     for path, state in directories.items():
-        if directory_state(path) != state:
+        if directory_state(path, artifacts) != state:
             raise ValueError('directory changed during capture: ' + path)
+    if _output_artifacts([a['path_used'] for a in artifacts]) != artifacts:
+        raise ValueError('tool output binding changed during capture')
     body = {'schema': SCHEMA, 'profile': PROFILE, 'root': str(root), 'static': static,
             'cases': cases, 'files': files, 'directories': directories, 'environment': environment,
             'env_names': env_names, 'policy': policy, 'identity': initial_identity,
-            'tools': initial_tools, 'traces': traces, 'limitations': LIMITATIONS}
+            'tools': initial_tools, 'traces': traces, 'limitations': LIMITATIONS,
+            'output_artifacts': artifacts}
     return {**body, 'sha256': digest(body)}
 
 
@@ -273,18 +298,21 @@ def run_sealed(value, *, expected_sha256, root=ROOT, case_index=0, timeout=30):
                 raise ValueError('interpreter/library identity drift')
             warnings.append('interpreter/library identity drift: ' + policy['reason'])
         verify_contract(value['static'], expected_sha256=value['static']['sha256'], root=root)
+        artifacts = value.get('output_artifacts', [])
+        if _output_artifacts([a['path_used'] for a in artifacts]) != artifacts:
+            raise ValueError('sealed tool output binding drift')
         # Check the complete union, including unobserved static files and symlinks.
         for path, state in value['files'].items():
             if file_state(path) != state:
                 raise ValueError('sealed file drift: ' + path)
         for path, state in value['directories'].items():
-            if directory_state(path) != state:
+            if directory_state(path, artifacts) != state:
                 raise ValueError('sealed directory drift: ' + path)
         if not isinstance(case_index, int) or not 0 <= case_index < len(value['cases']):
             raise ValueError('unsealed canonical case')
         case = _case(root, value['cases'][case_index])
         result = _child(root, case, value['env_names'], list(value['files']),
-                        expected=value, policy=policy, timeout=timeout)
+                        expected=value, policy=policy, timeout=timeout, output_artifacts=artifacts)
         result['warnings'] = warnings + result.get('warnings', [])
         return result
     except (ValueError, OSError, KeyError, TypeError) as exc:
@@ -313,12 +341,43 @@ class _Environment(Mapping):
             self.guard.env_read(key)
         return len(self.values)
 
+    def copy(self):
+        """Return an independent dict through the same audited mapping reads."""
+        return dict(self)
+
+
+class _InputScandir:
+    """Preserve scandir iteration/context/close while hiding reserved outputs."""
+    def __init__(self, entries, visible):
+        self.entries, self.visible = entries, visible
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        while True:
+            entry = next(self.entries)
+            if self.visible(entry.name):
+                return entry
+
+    def close(self):
+        self.entries.close()
+
+    def __enter__(self):
+        self.entries.__enter__()
+        return self
+
+    def __exit__(self, *args):
+        return self.entries.__exit__(*args)
+
 
 class _Audit:
     def __init__(self, request, fd):
         self.root = Path(request['root'])
         self.expected = request['expected']
         self.policy = request['policy']
+        self.output_artifacts = request.get('output_artifacts', [])
+        self.outputs = _output_paths(self.output_artifacts)
         self.fd = fd
         self.active = False
         self.local = threading.local()
@@ -363,6 +422,8 @@ class _Audit:
         if isinstance(path, int):
             self.fail('untracked file descriptor read')
         path = _used_path(path)
+        if self.outputs and _path_identity(path)['realpath'] in self.outputs:
+            self.fail('tool output cannot be read as input: ' + path)
         state = file_state(path)
         real = Path(state['realpath'])
         if real.suffix == '.pyc' and real.is_relative_to(self.root) and state['sha256']:
@@ -375,7 +436,30 @@ class _Audit:
         if isinstance(path, int):
             self.fail('untracked directory descriptor query')
         path = _used_path('.' if path is None else path)
-        self.check_path('directories', path, directory_state(path))
+        self.check_path('directories', path, directory_state(path, self.output_artifacts))
+
+    def install_output_view(self):
+        # The observed snapshot AND the consumer see the same input directory.
+        # Otherwise len(listdir(...)) could change after the parent saves a seal.
+        listdir, scandir = os.listdir, os.scandir
+
+        def visible(path):
+            parent = _path_identity('.' if path is None else path)['realpath']
+            return lambda name: os.path.join(parent, os.fsdecode(name)) not in self.outputs
+
+        def input_listdir(path='.'):
+            entries = listdir(path)  # audit hook validates before returning names
+            if not self.active or getattr(self.local, 'busy', False):
+                return entries
+            return list(filter(visible(path), entries))
+
+        def input_scandir(path='.'):
+            entries = scandir(path)
+            if not self.active or getattr(self.local, 'busy', False):
+                return entries
+            return _InputScandir(entries, visible(path))
+
+        os.listdir, os.scandir = input_listdir, input_scandir
 
     def env_read(self, name):
         state = {'present': name in self.values,
@@ -445,6 +529,8 @@ def _worker():
         guard.env_read(name)
     os.environ = _Environment(guard, guard.values)
     os.environb = _Environment(guard, guard.values, binary=True)
+    if guard.outputs:
+        guard.install_output_view()
     entry = guard.root / request['case']['entry']
     # Match CPython file-mode script resolution, including a symlinked script.
     sys.path[:0] = [str(entry.resolve().parent), str(guard.root)]

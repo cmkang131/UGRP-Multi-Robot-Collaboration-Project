@@ -7,6 +7,9 @@
 무관한 catalog 편집 허용을 현재 완료 기능으로 해석하지 않는다.
 새 경로의 실제 물리 실행 연결과 독립 재검토는 남아 있다.
 
+후속 재현성 검사는 [301c 답변](REVIEW_RESPONSE_301c.md)과
+[301d의 출력 제외·환경 복사 수정](REVIEW_RESPONSE_301d.md)에 기록한다.
+
 기준 main: `d17ca4345affef8cf027e121cf1f3197b36c23e0`.
 읽기 전용으로 조사한 #292 HEAD: `3afc61b00f2c127ac3fbe2be5e7bb57da989b15a`.
 이 작업은 `codex/seal-dependency-decouple`에서만 수정한다. #292 브랜치·봉인·

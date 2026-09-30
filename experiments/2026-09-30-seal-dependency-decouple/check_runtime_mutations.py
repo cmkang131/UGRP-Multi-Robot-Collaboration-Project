@@ -23,6 +23,7 @@ COPIED = (
     'harness/python_source_closure_v2.py', 'sim/workflow_manager.py',
     'harness/runtime_provenance.py', 'scripts/trace_execution_dependencies.py',
     'tests/test_seal_runtime_provenance.py', 'tests/test_seal_v2_review_301c.py',
+    'tests/test_seal_v2_review_301d.py', 'tests/test_seal_runtime_outputs.py',
 )
 MUTATIONS = (
     ('unseen-file',
@@ -55,6 +56,17 @@ MUTATIONS = (
      'test_normal_script_main_module_semantics or test_main_module_remains_the_entry_through_shutdown'),
     ('directory-query', 'self.list_directory(args[0])', 'pass  # directory observation removed',
      'test_documented_directory_query_boundary or test_unobserved_directory_is_rejected_before_query'),
+    ('tool-output-reservation', 'artifacts = _output_artifacts(output_artifacts)', 'artifacts = []',
+     'test_cli_receipt_save_and_first_run'),
+    ('tool-output-view', 'if guard.outputs:', 'if False:',
+     'test_reserved_output_directory_view_stays_equal'),
+    ('tool-output-read', "if self.outputs and _path_identity(path)['realpath'] in self.outputs:",
+     'if False:', 'test_reserved_output_cannot_be_consumed_as_input'),
+    ('environment-copy', 'def copy(self):', 'def removed_copy(self):',
+     'test_readonly_environment_copy_keeps_python_semantics'),
+    ('environment-copy-reads', 'return dict(self)',
+     'return {os.fsencode(k): os.fsencode(v) for k, v in self.values.items()} if self.binary else dict(self.values)',
+     'test_environment_copy_is_independent_and_reads_every_item'),
 )
 
 
@@ -70,6 +82,7 @@ def run(root, output, name, source, selector):
         command = [sys.executable, '-m', 'pytest', '-q', '-p', 'no:cacheprovider',
                    '--rootdir=.', '--confcutdir=.', 'tests/test_seal_runtime_provenance.py',
                    'tests/test_seal_v2_review_301c.py',
+                   'tests/test_seal_v2_review_301d.py', 'tests/test_seal_runtime_outputs.py',
                    '-k', selector, '--junitxml=' + str(report)]
         env = dict(os.environ, PYTHONPATH=str(staged), PYTHONDONTWRITEBYTECODE='1')
         with (output / (name + '.log')).open('x') as log:

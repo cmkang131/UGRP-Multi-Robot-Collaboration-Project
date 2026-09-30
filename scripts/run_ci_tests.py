@@ -127,6 +127,7 @@ TEST_PATTERNS = (
     "tests/test_execution_dependency_contract.py", "tests/test_seal_v2_review_301.py",
     "tests/test_seal_v2_fail_closed.py", "tests/test_seal_runtime_provenance.py",
     "tests/test_seal_v2_review_301b.py", "tests/test_seal_v2_review_301c.py",
+    "tests/test_seal_v2_review_301d.py", "tests/test_seal_runtime_outputs.py",
     "tests/test_owncam_bootstrap_v6b.py",
     "tests/test_zone_pair_v6c.py",  # v6c (bundle v76): exact PF fix clock + grasp-range entry
     "tests/test_zone_pair_v6d.py",  # v6d (bundle v80): wide-hue beam heading + M1 fine align motion

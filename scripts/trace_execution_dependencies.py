@@ -33,7 +33,8 @@ def main(argv=None):
             value = trace_contract(read_json(args.static_contract),
                                    expected_static_sha256=args.expected_static_sha256,
                                    cases=read_json(args.cases), root=args.root, env_names=args.env,
-                                   policy=read_json(args.policy) if args.policy else None, timeout=args.timeout)
+                                   policy=read_json(args.policy) if args.policy else None, timeout=args.timeout,
+                                   output_artifacts=[args.output, args.output.with_name(args.output.name + '.failed.json')])
         except TraceFailure as exc:
             failure = args.output.with_name(args.output.name + '.failed.json')
             with failure.open('x') as stream:
