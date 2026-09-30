@@ -1,6 +1,8 @@
 # P04 — 한 실행의 전이·실패·교사 경계 계약
 
 상태: DRAFT, 전이 계약 검사. 실제 연쇄·학생 운반 성공·봉인·병합 없음.
+독립 검토 E316-1/2 후속 수정·새 검증은 [REVIEW_FIXES.md](REVIEW_FIXES.md)를 따른다.
+아래 validation-01–04와 VERIFICATION.json은 수정 전 원본 기록이다.
 기준은 배정 `codex/chain-contract`의 `d17ca4345affef8cf027e121cf1f3197b36c23e0`이다.
 사용자 프롬프트의 `a8094cc14e098a55483f53a3c49bf6a0b116043d` 이후 최신 main을 fetch하여 확인했다.
 Refs #219, #221, #225. 상위 설계는 [PR #298 READINESS S03–S08/S15](https://github.com/kcm0127-dotcom/ugrp/pull/298).
@@ -93,7 +95,7 @@ non-string scope의 `Counter` 키와 실패 trace의 non-string phase 집합이 
 검증하여 둘 다 기록 불충분으로 전체 분모에 남기도록 보완했다. 이 3개 회귀를 추가한
 최종 소스는 별도 `validation-04`로 검증하며 이전 결과를 덮어쓰지 않는다.
 
-**최종 결과: 9개 모듈 277 passed / 0 failed / 0 skipped(317.60초), 그중 새 계약 검사 38개.**
+**수정 전 validation-04 결과: 9개 모듈 277 passed / 0 failed / 0 skipped(317.60초), 그중 새 계약 검사 38개.**
 검사 전후 소스·fixture 19개 파일의 SHA-256이 일치한다.
 [VERIFICATION.json](VERIFICATION.json)에 모듈별 수, 실패 이력, 환경, 소스·raw의 전체 해시를 기록했다.
 raw는 `/Users/changmin/projects/ugrp/outputs/p04-chain-contract-20260930/`의 로컬 보관이며
@@ -121,8 +123,9 @@ PY
 ```
 
 새 물리·학습·평가 코호트가 없으므로 TensorBoard snapshot 변환/서버/UI는 실행하지 않았다.
-기존 GitHub 자동 workflow에는 실제 모델·물리·렌더 검사가 포함되므로 이 Draft는
-`[skip ci]`로 push하고 전체 CI 통과를 주장하지 않는다.
+2026-09-30 사용자 지시로 기존 CI 생략 방침을 바로잡았다. 로컬 물리·렌더 실행은
+하지 않으며 일반 GitHub CI는 정상 실행한다. CI 취소나 커밋의 CI 생략 표시는 사용하지 않는다.
+`VERIFICATION.json`의 remote_ci는 수정 전 제출 당시의 이력이며 현재 실행 지침이 아니다.
 
 ## 코디네이터에게 넘기는 3개 새 출발 명세 — 실행 승인 아님
 

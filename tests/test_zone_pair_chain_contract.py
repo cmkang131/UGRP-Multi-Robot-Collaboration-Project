@@ -479,6 +479,150 @@ def test_success_requires_separate_complete_boundary_and_destination_evidence(co
         assert summary['overall_pass'] == 0 and summary['categories'] == {'destination_failed_or_unverified': 1}
 
 
+def synthetic_student_attempt(completed_chain):
+    """Schema positive control, never a measured student/physical result."""
+    record = completed_chain[2].record()
+    record['scope'] = 'student_run'
+    return {'run_id': record['run_id'], 'trace': record,
+            'boundary_audit': {'complete': True, 'teacher_state_replacements': 0,
+                               'gt_prior_resets': 0, 'privileged_accesses': 0},
+            'eval_only': {'run_id': record['run_id'], 'verdict': 'PASS', 'destination_released': True,
+                          'job_ids': {r['robot_id']: r['job_id'] for r in record['robots']}}}
+
+
+def assert_incomplete_attempt(attempt):
+    assert not verify_trace(attempt['trace'])['valid']
+    summary = summarize_attempts([attempt])
+    assert summary['denominator'] == 1 and summary['overall_pass'] == 0
+    assert summary['categories'] == {'evidence_incomplete': 1}
+    assert summary['attempts'][0]['sequence_done'] is False
+
+
+@pytest.mark.parametrize('mutation', [
+    'done_failed', 'carry_failed', 'carry_sequence_done', 'end_unknown', 'end_missing',
+    'terminal_phase', 'terminal_leg', 'terminal_leg_float', 'terminal_leg_bool',
+    'terminal_reason', 'terminal_reason_type', 'terminal_nan', 'terminal_inf',
+    'terminal_time_bool', 'terminal_time_string', 'terminal_time_negative',
+    'terminal_before_end', 'terminal_after_end', 'failed_with_done_end',
+    'failed_with_done_reason',
+])
+def test_review_e316_1_inconsistent_end_cannot_earn_pass(completed_chain, mutation):
+    attempt = synthetic_student_attempt(completed_chain)
+    assert summarize_attempts([attempt])['overall_pass'] == 1  # positive control
+    rob = attempt['trace']['robots'][0]
+    terminal, end = rob['terminal'], rob['receipts'][-1]
+    carry = next(r for r in rob['receipts'] if r['phase'] == 'carry' and r['edge'] == 'end')
+    if mutation == 'done_failed':
+        end['outcome'] = 'failed'
+    elif mutation == 'carry_failed':
+        carry['outcome'] = 'failed'
+    elif mutation == 'carry_sequence_done':
+        carry['outcome'] = 'sequence_done'
+    elif mutation == 'end_unknown':
+        end['outcome'] = 'PASS'
+    elif mutation == 'end_missing':
+        end.pop('outcome')
+    elif mutation == 'terminal_phase':
+        terminal['phase'] = 'approach'
+    elif mutation.startswith('terminal_leg'):
+        terminal['leg_index'] = {'terminal_leg': 999, 'terminal_leg_float': 7.,
+                                 'terminal_leg_bool': True}[mutation]
+    elif mutation == 'terminal_reason':
+        terminal['reason'] = 'PREGRASP_NOT_READY'
+    elif mutation == 'terminal_reason_type':
+        terminal['reason'] = ['PAIR_SEQUENCE_DONE']
+    elif mutation in ('failed_with_done_end', 'failed_with_done_reason'):
+        terminal['outcome'] = 'failed'
+        if mutation == 'failed_with_done_end':
+            terminal['reason'] = 'PREGRASP_NOT_READY'
+        else:
+            end['outcome'] = 'failed'
+    else:
+        terminal['sim_s'] = {
+            'terminal_nan': float('nan'), 'terminal_inf': float('inf'),
+            'terminal_time_bool': True, 'terminal_time_string': str(end['sim_s']),
+            'terminal_time_negative': -1., 'terminal_before_end': end['sim_s'] - .1,
+            'terminal_after_end': end['sim_s'] + .1,
+        }[mutation]
+    assert_incomplete_attempt(attempt)
+
+
+@pytest.mark.parametrize('mutation', [
+    'missing_all', 'missing_frame_id', 'missing_frame_sha256', 'missing_captured_at_s',
+    'null_all', 'null_partial', 'unknown_frame', 'wrong_sha', 'wrong_capture',
+    'frame_bool', 'frame_float', 'sha_type', 'capture_nan', 'capture_inf', 'capture_bool',
+    'unconsumed_frame', 'other_leg_frame', 'future_consumption',
+    'fix_without_frame', 'fix_nan', 'fix_bool', 'report_before_fix', 'report_nan',
+    'report_mismatch', 'fix_mismatch', 'initial_field_missing',
+])
+def test_review_e316_2_checkpoint_requires_consumed_input_link(completed_chain, mutation):
+    attempt = synthetic_student_attempt(completed_chain)
+    assert summarize_attempts([attempt])['overall_pass'] == 1
+    rob = attempt['trace']['robots'][0]
+    close = next(r for r in rob['receipts'] if r['phase'] == 'grasp' and
+                 r['edge'] == 'start' and r['leg_index'] == 1)
+    fields = ('frame_id', 'frame_sha256', 'captured_at_s')
+    if mutation.startswith('missing_'):
+        for key in fields if mutation == 'missing_all' else (mutation.removeprefix('missing_'),):
+            close.pop(key)
+    elif mutation in ('null_all', 'null_partial'):
+        for key in fields if mutation == 'null_all' else ('frame_id',):
+            close[key] = None
+    elif mutation == 'initial_field_missing':
+        rob['receipts'][0].pop('frame_id')
+    elif mutation == 'unknown_frame':
+        close['frame_id'] = max(f['frame_id'] for f in rob['frames']) + 1
+    elif mutation == 'wrong_sha':
+        close['frame_sha256'] = '0' * 64
+    elif mutation == 'wrong_capture':
+        close['captured_at_s'] -= .01
+    elif mutation in ('frame_bool', 'frame_float'):
+        close['frame_id'] = True if mutation == 'frame_bool' else float(close['frame_id'])
+    elif mutation == 'sha_type':
+        close['frame_sha256'] = ['0' * 64]
+    elif mutation.startswith('capture_'):
+        close['captured_at_s'] = {'capture_nan': float('nan'), 'capture_inf': float('inf'),
+                                  'capture_bool': True}[mutation]
+    elif mutation == 'unconsumed_frame':
+        close['consumed_frame_count'] -= 1
+    elif mutation in ('other_leg_frame', 'future_consumption'):
+        frame = next(f for f in rob['frames'] if f['frame_id'] == close['frame_id'])
+        if mutation == 'other_leg_frame':
+            frame['leg_index'] = 0
+        else:
+            frame['sim_s'] = close['sim_s'] + .01
+    elif mutation == 'fix_without_frame':
+        close['last_fix_t'] += .01  # still fresh, but no consumed capture at this time
+    elif mutation in ('fix_nan', 'fix_bool'):
+        close['last_fix_t'] = float('nan') if mutation == 'fix_nan' else True
+    elif mutation == 'report_before_fix':
+        close['report_t'] = close['last_fix_t'] - .01
+    elif mutation == 'report_nan':
+        close['report_t'] = float('nan')
+    elif mutation in ('report_mismatch', 'fix_mismatch'):
+        frame = next(f for f in rob['frames'] if f['frame_id'] == close['frame_id'])
+        frame['report_t' if mutation == 'report_mismatch' else 'last_fix_t'] -= .01
+    assert_incomplete_attempt(attempt)
+
+
+def test_review_e316_2_explicit_null_before_first_frame_is_valid(monkeypatch):
+    host, eps, trace = setup_contract(monkeypatch)
+    host.close_episode('SIM_LIMIT')
+    record = trace.record()
+    # Admission fixtures already carry a frame, and start() issues a hold that
+    # opens the first receipt. Model the explicit pre-capture schema here;
+    # clearing last_obs after start() would leave that earlier receipt intact.
+    for rob in record['robots']:
+        assert not rob['frames']
+        for row in rob['receipts'] + [rob['terminal']]:
+            for key in ('frame_id', 'frame_sha256', 'captured_at_s', 'report_t', 'last_fix_t'):
+                row[key] = None
+    assert verify_trace(record) == {'valid': True, 'errors': []}
+    summary = summarize_attempts([{'run_id': record['run_id'], 'trace': record}])
+    assert summary['denominator'] == 1 and summary['overall_pass'] == 0
+    assert len(summary['attempts'][0]['failure_receipts']) == 2
+
+
 def test_output_observer_does_not_change_commands_transitions_or_status():
     results = []
     for trace_on in (False, True):

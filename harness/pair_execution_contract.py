@@ -246,6 +246,44 @@ def _verify_trace(record):
     return {'valid': not errors, 'errors': sorted(set(errors))}
 
 
+def _finite_time(value):
+    return type(value) in (int, float) and math.isfinite(value) and value >= 0
+
+
+def _frame_metadata_valid(row, *, allow_null=False):
+    # Index every field: an explicitly absent pre-capture observation is not a
+    # missing field. Failure receipts may retain an old image, so TTL belongs
+    # to consumed frames/checkpoints, not every receipt (including aborts).
+    fid, sha, captured = (row[k] for k in ('frame_id', 'frame_sha256', 'captured_at_s'))
+    if fid is None and sha is None and captured is None:
+        return allow_null
+    return (type(fid) is int and fid >= 0 and isinstance(sha, str)
+            and re.fullmatch('[a-f0-9]{64}', sha) is not None
+            and _finite_time(captured) and captured <= row['sim_s'])
+
+
+def _checkpoint_linked(close, look, frames):
+    """A grasp must cite a frame already consumed by this robot in this leg.
+
+    The saved consumption also carries the report/fix used at that boundary.
+    Delayed fixes need an earlier consumed capture, not a fabricated fresh time.
+    This audits recorded inputs only; it does not authenticate JPEG bytes or
+    prove that the provider's numerical estimate is correct.
+    """
+    if (look is None or not all(_finite_time(close[k]) for k in
+                               ('captured_at_s', 'report_t', 'last_fix_t'))
+            or not look['sim_s'] <= close['last_fix_t'] <= close['captured_at_s']
+                   <= close['report_t'] <= close['sim_s']
+            or close['command_count'] <= look['command_count']
+            or type(close['consumed_frame_count']) is not int):
+        return False
+    consumed = [f for f in frames[:close['consumed_frame_count']]
+                if f['leg_index'] == close['leg_index'] and f['sim_s'] <= close['sim_s']]
+    fields = ('frame_id', 'frame_sha256', 'captured_at_s', 'report_t', 'last_fix_t')
+    return (any(all(f[k] == close[k] for k in fields) for f in consumed)
+            and any(f['captured_at_s'] == close['last_fix_t'] for f in consumed))
+
+
 def verify_trace(record):
     """Malformed/missing fields are verification failures, never dropped runs."""
     try:
@@ -253,21 +291,22 @@ def verify_trace(record):
         errors = result['errors']
         for robot in record['robots']:
             rid, receipts = robot['robot_id'], robot['receipts']
+            terminal = robot['terminal']
             if type(robot['n_legs']) is not int or robot['n_legs'] <= 0:
                 errors.append(f'{rid}:INVALID_LEG_COUNT')
             if (any(type(r['receipt_id']) is not int for r in receipts)
                     or [r['receipt_id'] for r in receipts] != list(range(1, len(receipts) + 1))):
                 errors.append(f'{rid}:RECEIPT_GAP')
-            for sequence in (receipts, robot['frames'], robot['commands']):
-                if any(type(r['sim_s']) not in (int, float) or not math.isfinite(r['sim_s'])
-                       or r['sim_s'] < 0 for r in sequence):
+            for sequence in (receipts, robot['frames'], robot['commands'],
+                             [terminal] if terminal is not None else []):
+                if any(not _finite_time(r['sim_s']) for r in sequence):
                     errors.append(f'{rid}:INVALID_CLOCK')
                 if any(b['sim_s'] < a['sim_s'] for a, b in zip(sequence, sequence[1:])):
                     errors.append(f'{rid}:CLOCK_REGRESSION')
                 for row in sequence:
                     if type(row['leg_index']) is not int or not 0 <= row['leg_index'] < robot['n_legs']:
                         errors.append(f'{rid}:INVALID_LEG_INDEX')
-            for row in receipts + robot['frames'] + robot['commands']:
+            for row in receipts + robot['frames'] + robot['commands'] + ([terminal] if terminal is not None else []):
                 for field, limit in (('command_count', len(robot['commands'])),
                                      ('consumed_frame_count', len(robot['frames']))):
                     if type(row[field]) is not int or not 0 <= row[field] <= limit:
@@ -279,30 +318,45 @@ def verify_trace(record):
                     errors.append(f'{rid}:INVALID_COMMAND_LINK')
             frame_keys = {}
             for frame in robot['frames']:
-                if (type(frame['frame_id']) is not int or frame['frame_id'] < 0
-                        or re.fullmatch('[a-f0-9]{64}', frame['frame_sha256']) is None
+                if (not _frame_metadata_valid(frame)
                         or not 0 <= frame['sim_s'] - frame['captured_at_s'] <= .25):
                     errors.append(f'{rid}:INVALID_FRAME_LINK')
                 key = (frame['frame_sha256'], frame['captured_at_s'])
                 if frame['frame_id'] in frame_keys and frame_keys[frame['frame_id']] != key:
                     errors.append(f'{rid}:FRAME_ID_REUSED')
                 frame_keys[frame['frame_id']] = key
-            terminal = robot['terminal']
+            look_by_leg = {}
+            for row in receipts:
+                allow_null = (row['phase'] == 'approach' and row['leg_index'] == 0
+                              and row['consumed_frame_count'] == 0)
+                if not _frame_metadata_valid(row, allow_null=allow_null):
+                    errors.append(f'{rid}:INVALID_RECEIPT_FRAME')
+                if row['edge'] == 'start' and row['phase'] == 'pregrasp_look':
+                    look_by_leg[row['leg_index']] = row
+                if row['edge'] == 'start' and row['phase'] == 'grasp':
+                    if not _checkpoint_linked(row, look_by_leg.get(row['leg_index']), robot['frames']):
+                        errors.append(f'{rid}:FRESH_CHECKPOINT_FIX_MISSING')
+            # Only intermediate phase ends are transitions. A failure or
+            # sequence completion cannot be followed by more successful phases.
+            ends = [row for row in receipts if row['edge'] == 'end']
+            if any(row['outcome'] != 'transition' for row in ends[:-1]):
+                errors.append(f'{rid}:INVALID_PHASE_OUTCOME')
             if terminal is not None:
-                if terminal['outcome'] not in ('failed', 'unconfirmed') or not terminal['reason']:
+                if (terminal['outcome'] not in ('failed', 'unconfirmed')
+                        or not isinstance(terminal['reason'], str) or not terminal['reason'].strip()):
                     errors.append(f'{rid}:INVALID_TERMINAL')
                 if receipts and terminal['sim_s'] < receipts[-1]['sim_s']:
                     errors.append(f'{rid}:TERMINAL_BEFORE_PHASE_END')
+                expected_end = 'sequence_done' if terminal['outcome'] == 'unconfirmed' else 'failed'
+                if (not receipts or receipts[-1]['outcome'] != expected_end
+                        or any(terminal[k] != receipts[-1][k] for k in ('phase', 'leg_index', 'sim_s'))):
+                    errors.append(f'{rid}:TERMINAL_END_MISMATCH')
+                if terminal['outcome'] == 'failed' and terminal['reason'] == 'PAIR_SEQUENCE_DONE':
+                    errors.append(f'{rid}:INVALID_TERMINAL')
                 if terminal['outcome'] == 'unconfirmed':
-                    for leg in range(robot['n_legs']):
-                        looks = [r for r in receipts if r['edge'] == 'start' and
-                                 r['phase'] == 'pregrasp_look' and r['leg_index'] == leg]
-                        closes = [r for r in receipts if r['edge'] == 'start' and
-                                  r['phase'] == 'grasp' and r['leg_index'] == leg]
-                        if (not looks or not closes or closes[-1]['last_fix_t'] is None
-                                or not looks[-1]['sim_s'] <= closes[-1]['last_fix_t'] <= closes[-1]['sim_s']
-                                or closes[-1]['command_count'] <= looks[-1]['command_count']):
-                            errors.append(f'{rid}:FRESH_CHECKPOINT_FIX_MISSING')
+                    if ((terminal['phase'], terminal['leg_index'], terminal['reason']) !=
+                            ('done', robot['n_legs'] - 1, 'PAIR_SEQUENCE_DONE')):
+                        errors.append(f'{rid}:INVALID_SEQUENCE_COMPLETION')
                     if not robot['frames'] or not robot['commands']:
                         errors.append(f'{rid}:INPUT_HISTORY_MISSING')
         return {'valid': not errors, 'errors': sorted(set(errors))}
