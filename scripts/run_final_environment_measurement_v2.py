@@ -94,7 +94,7 @@ def main(argv=None):
     bundle = env.bundle()
     plan = {'execution_bundle_id': env.BUNDLE_ID, 'workflow_id': env.WORKFLOW_ID,
             'workflow_version': env.WORKFLOW_VERSION, 'status': 'DRAFT_UNSEALED',
-            'execution_started': False, 'runnable': True, 'physical_ready': False,
+            'execution_started': False, 'runnable': bundle['runnable'], 'physical_ready': False,
             'expected_source_sha': args.expected_source_sha, 'check': env.CHECK,
             'bundle_sha256': env.digest(bundle), 'caps': bundle['caps'],
             'measurement_sha256': bundle['measurement_sha256'],
@@ -103,6 +103,7 @@ def main(argv=None):
         print(json.dumps(plan, indent=2, ensure_ascii=False))
         return 0
     check_source(args.expected_source_sha)
+    env.validate(bundle['measurement'])  # reject before backend import/output/lock use
     primary = Path(subprocess.check_output(['git', 'rev-parse', '--path-format=absolute', '--git-common-dir'],
                                           cwd=env.ROOT, text=True).strip()).parent
     if not args.output.is_absolute() or not args.output.resolve().is_relative_to((primary / 'outputs').resolve()):

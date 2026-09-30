@@ -61,25 +61,38 @@ def response(segments, dt, tau, stop_tau):
     return np.asarray(rows)
 
 
-def assess(segments, dt, gain, tau, stop_tau):
-    observed = gain * response(segments, dt, tau, stop_tau)
+def assess(segments, dt, gain, tau, stop_tau, *, independent_windows=None):
+    """Each explicit fit window starts at x=v=0 and retains its initial sample.
+
+    Generic `segments` remain one continuous trajectory (including v2). v1
+    must supply its two real fit windows; never infer resets from command signs.
+    """
+    if independent_windows is not None and segments is not None:
+        raise ValueError('supply a trajectory OR independent windows')
+    windows = [segments] if independent_windows is None else independent_windows
+    if not windows or any(not window for window in windows):
+        raise ValueError('missing fit windows')
+    def sampled(td, ts):
+        return np.concatenate([response(window, dt, td, ts) for window in windows], axis=0)
+    observed = gain * sampled(tau, stop_tau)
     # Log-parameter sensitivities make gain and seconds dimensionless.
     eps = 1e-4
-    d_tau = gain * (response(segments, dt, tau * np.exp(eps), stop_tau)
-                    - response(segments, dt, tau * np.exp(-eps), stop_tau)) / (2 * eps)
+    d_tau = gain * (sampled(tau * np.exp(eps), stop_tau)
+                    - sampled(tau * np.exp(-eps), stop_tau)) / (2 * eps)
     jacobian = np.column_stack((observed, d_tau)) / RESIDUAL_FLOOR_M
     fisher = jacobian.T @ jacobian
     eig = np.linalg.eigvalsh(fisher)
     taus = np.unique(np.r_[np.geomspace(.05, 100., 241), tau, tau * .8, tau * 1.2])
     stops = np.array([.03, .05, .08, .12, .2, .3, .44, 1.])
     td, ts = np.meshgrid(taus, stops, indexing='ij')
-    x = response(segments, dt, td.ravel(), ts.ravel())
+    x = sampled(td.ravel(), ts.ravel())
     gains = observed @ x / np.sum(x * x, axis=0)
     rms = np.sqrt(np.mean((x * gains - observed[:, None]) ** 2, axis=0))
     far = np.abs(td.ravel() / tau - 1) >= .199999
     j = np.flatnonzero(far)[np.argmin(rms[far])]
     equivalent = rms <= RESIDUAL_FLOOR_M
-    return {'samples': len(observed), 'sample_period_s': dt,
+    return {'samples': len(observed), 'sample_period_s': dt, 'independent_windows': len(windows),
+            'initial_state_per_window': {'position_m': 0., 'velocity_m_s': 0.},
             'samples_per_drive_tau': tau / dt,
             'fisher_log_gain_log_tau': fisher.tolist(), 'fisher_condition': float(eig[-1] / eig[0]),
             'fisher_min_eigenvalue': float(eig[0]),
@@ -99,10 +112,10 @@ def report(plan=None):
     for axis, (gain, tau, stop) in CANDIDATES.items():
         # The old fit uses two independent 4 s windows. Opposite signs only
         # repeat the same shape, so duplicate it for the information matrix.
-        legacy = [(1., .03), (3., 0.), (1., -.03), (3., 0.)]
+        legacy = [[(1., .03), (3., 0.)], [(1., -.03), (3., 0.)]]
         segments = design_segments() if plan is None else [
             (s['duration_s'], s['value']) for s in plan['segments'] if s['axis'] == axis]
-        result['v1'][axis] = assess(legacy, .2, gain, tau, stop)
+        result['v1'][axis] = assess(None, .2, gain, tau, stop, independent_windows=legacy)
         result['v2'][axis] = assess(segments, .05, gain, tau, stop)
     result['passed'] = all(not x['practically_separated'] for x in result['v1'].values()) and all(
         x['practically_separated'] and x['samples_per_drive_tau'] >= 10 for x in result['v2'].values())
@@ -120,6 +133,8 @@ def report(plan=None):
         result['nominal_clearance'] = {'minimum_m': min(gaps), 'xy_min_m': xy.min(axis=0).tolist(),
                                        'xy_max_m': xy.max(axis=0).tolist(),
                                        'scope': 'conditional prediction, not safety proof; private abort interlock required'}
+        result['clearance_preflight'] = env.validate(plan, for_execution=False)['full_path']
+        result['runnable'] = result['clearance_preflight']['admitted']
     return result
 
 

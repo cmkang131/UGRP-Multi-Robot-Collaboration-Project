@@ -1,4 +1,11 @@
-# 무하중 운동 측정 v2 인계 — DRAFT, 물리 미실행
+# 무하중 운동 측정 v2 인계 — DRAFT, 후속 실행 차단
+
+2026-10-01 독립 검토 R1–R3 반영: 명령 JSON은 `eaeaaff0`와 바이트가 같지만,
+독립적으로 검증된 운동 범위가 없고 전체 경로 반례가 있으므로 현재 head는 실행을 거부한다.
+아래 명령은 **이전 수집 절차의 기록**이며 현재 실행 승인/인계가 아니다. 새 수집을 시작하지 않는다.
+[#348](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/348)의 수집은
+`eaeaaff0`/v89에서 이미 끝났고 그대로 보존한다. 현재 head의 새 물리 검증은 없다.
+계획 조회의 `runnable=false`와 [수정 기록](experiments/2026-10-01-final-env-measurement-v2/REVIEW_FIXES.md)을 따른다.
 
 Refs #342 #346. 새 번들 **zone-final-environment-v89**, floor-light 후속 workflow
 **zone-final-environment-floor-light-v2-check 2.21.0**, 새 check **calibration-motion-v2**.

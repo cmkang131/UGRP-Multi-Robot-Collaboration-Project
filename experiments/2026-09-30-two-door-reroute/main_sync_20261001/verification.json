@@ -1,0 +1,128 @@
+{
+  "main": "0d45ef8c2afb55e3e4ac9f8a61ac519f41e92e4f",
+  "reviewed_head": "9363997ca32c26bf6e2e0196f8b5a126c5328104",
+  "main_source_files_checked": 973,
+  "main_source_files_identical": 972,
+  "main_source_exceptions": [
+    "scripts/run_ci_tests.py"
+  ],
+  "workflow_files_identical": [
+    ".github/workflows/tests.yml"
+  ],
+  "reviewed_files_byte_identical": [
+    "harness/zone_observed_door_reroute.py",
+    "tests/test_zone_own_executor_observed_reroute.py",
+    "experiments/2026-09-30-two-door-reroute/run_checks.py"
+  ],
+  "original_test_functions_ast_identical": [
+    "test_t04_issued_arm_increment_passes_the_same_static_sweep",
+    "test_t09b_delayed_own_capture_cannot_issue_a_new_drive",
+    "probe"
+  ],
+  "api_adaptations": [],
+  "conflicts_resolved": [
+    "scripts/run_ci_tests.py",
+    "tests/test_review_e2e_batch_i.py"
+  ],
+  "physics_steps": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "tmp_extraction_dirs_created": [],
+  "total_pytest_passed": 794,
+  "total_subtests_passed": 280,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "xfailed": 0,
+  "sealed_sources_matched": 85,
+  "runs": [
+    {
+      "name": "baseline",
+      "tests_by_class": {
+        "tests.test_zone_own_executor_observed_reroute": 223,
+        "tests.test_zone_own_executor_door_routes": 76,
+        "tests.test_review_e2e_batch_i": 2,
+        "tests.test_pair_passage_plan": 44,
+        "tests.test_zone_model_conventions": 6,
+        "tests.test_zone_pair_status": 16,
+        "tests.test_zone_pair_registered_source": 22,
+        "tests.test_zone_study_source_pinning": 34,
+        "tests.test_zone_study_protocol": 86,
+        "tests.test_ci_fast_path.CiFastPathTests": 10
+      },
+      "junit": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "799",
+          "time": "89.983",
+          "timestamp": "2026-10-01T03:59:44.430774+09:00",
+          "hostname": "gangchangmin-ui-MacBookAir.local"
+        }
+      ],
+      "exit_code": 0,
+      "host_lock_acquired": false
+    },
+    {
+      "name": "related",
+      "tests_by_class": {
+        "tests.test_zone_own_executor_corridor_contract": 55,
+        "tests.test_zone_own_executor_corridor_control": 78,
+        "tests.test_zone_team_jobs": 41,
+        "tests.test_zone_hard_routes": 11,
+        "tests.test_ci_sharding": 66,
+        "tests.test_ci_host_lock": 24
+      },
+      "junit": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "275",
+          "time": "55.036",
+          "timestamp": "2026-10-01T04:00:09.590987+09:00",
+          "hostname": "gangchangmin-ui-MacBookAir.local"
+        }
+      ],
+      "exit_code": 0,
+      "host_lock_acquired": false
+    }
+  ],
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/2026-10-01-t09b-main-sync-01",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "commands": [
+    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-two-door-reroute/run_checks.py --mutation none --output /Users/changmin/projects/ugrp/outputs/2026-10-01-t09b-main-sync-01/baseline",
+    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-two-door-route-interface/review_f314_1/verify.py --output /Users/changmin/projects/ugrp/outputs/2026-10-01-t09b-main-sync-01/related tests/test_zone_own_executor_corridor_contract.py tests/test_zone_own_executor_corridor_control.py tests/test_zone_team_jobs.py tests/test_zone_hard_routes.py tests/test_ci_sharding.py tests/test_ci_host_lock.py"
+  ],
+  "reviewed_source_sha256": {
+    "harness/zone_observed_door_reroute.py": "89620818ee98c1b6fa684993c750b60013c1015d683325f2603f8dae3449edab",
+    "harness/zone_static_door_routes.py": "cec5fd95847496d5492b73dba67bf4393eef0c57394510ee7d2a22e597d9d24c",
+    "harness/zone_pair_status.py": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+    "harness/zone_study_protocol.py": "07e315ca26a94333d15d67ebf2446019987cf00dde92b2756be17dd4178c4890",
+    "harness/zone_study_contract.py": "f6e4c5fef3bdb7e332d2871b309bec1a46e3d1d98533050e723094200dc460f6",
+    "scripts/run_ci_tests.py": "8abec68c81e1078bad82b7d956ea8338726a5dd1872d73e1a7841f7e313485dc",
+    "tests/test_zone_own_executor_observed_reroute.py": "9052b68447b9604acd61fe7502f984b77a5da702ebfa87d3730624ebaf28a169",
+    "tests/test_zone_own_executor_door_routes.py": "9d4e213efb6834e72265132f8b6aa94588879fe8945e1fe9713a7f00ac3befd9",
+    "tests/test_review_e2e_batch_i.py": "0c911da6776b5793ee0ad8a68eea832fd0308f567a47e9ea700739a9b4247aa0",
+    "tests/test_pair_passage_plan.py": "ceb5572bb8299f90b237598ab629f4d3b8beb62c9ebe14a310ebbe59c3a06866",
+    "tests/test_zone_model_conventions.py": "3fe1828c05cf3cba72ab41e62bde04f8939a11838e8589e7143072c3af2ed3a6",
+    "tests/test_zone_pair_status.py": "6e39c94da07b30bff6f3289943f5267752ba1e37ffbde33a692d6678542722ca",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+    "tests/test_zone_study_protocol.py": "f59b9c624178814acc2b4c9ff39236efdd7a905376989b4f08d37105ed70190e",
+    "tests/test_ci_fast_path.py": "7cbce2fb52492b6adf3e5d53f5e98c3f7928b98bbdc6d5fa387c424ade570aab",
+    "experiments/2026-09-30-two-door-reroute/run_checks.py": "0681049917f9dc13725798b5a37639329d495ac869e7563ed667575277194010"
+  },
+  "raw_files_sha256": {
+    "baseline/manifest.json": "db9379c5ac4662d401e389142393b4b0c5abded1d989238b258ac264209c25d3",
+    "baseline/none.xml": "2190e5811c45abf46d29f83c0ba238d04b7ca849ce084793bd224152485859fa",
+    "baseline.log": "1b1325711238adfa2eae14a88963f5449c6a0d9bb7a2fb07d1b23a5c9e69987f",
+    "related/junit.xml": "ccb92ef374a718747947f0ac076f9bc7e773a132a8d23c14721ac986c31149ae",
+    "related/manifest.json": "e725eeef3d1bb43fa5bd768a673ab73c4e037ed38dbc4301160ad26399813273",
+    "related.log": "b1e2b8b5b18338b78f2ad84e456028a75e46eb21b8022073b779569e8b7bc57f",
+    "source_audit.json": "393b677f93f4a60e3d2a669b6abd32c412d873a1a480c20c5f8e24b901e28982"
+  }
+}

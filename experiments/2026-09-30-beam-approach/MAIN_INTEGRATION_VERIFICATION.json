@@ -1,0 +1,131 @@
+{
+  "kind": "offline_main_integration_verification",
+  "date_kst": "2026-10-01",
+  "source": {
+    "main_sha": "fb8ee9fbde4f5a458d1c9c7efa625110dd196edc",
+    "head_before_merge": "86aec953a11fa3ea5df4c3a847a28a536c89a500",
+    "reviewed_sha": "d054ac955cd5add7ec88ea6c00fcabb764f27984",
+    "ci_file_count": 353,
+    "shard_coverage_verified": true,
+    "test_shards": {
+      "tests/test_beam_initial_pose_plan.py": [
+        1
+      ],
+      "tests/test_pair_navigation_beam_approach.py": [
+        5
+      ],
+      "tests/test_zone_own_executor_tile.py": [
+        7
+      ],
+      "tests/test_zone_own_executor_tile_review_h.py": [
+        0
+      ]
+    },
+    "workflow_sha256": {
+      ".github/workflows/tests.yml": "8831e19de2f6afa377d9d1835445917804821519e1eb572f4483d1f66bb7f866"
+    },
+    "workflows_byte_identical_to_main": true,
+    "T08a_main": {
+      "harness/beam_initial_pose_plan.py": "532ec0718114c117a2df1ce5fb2ad17bb3379a51ba9c3a213ac6db0936bf6f64",
+      "tests/test_beam_initial_pose_plan.py": "1946fde8afd303170ac863bd2c7dfe51f0856db827247769b8b2dc2393f0644a",
+      "scripts/run_ci_tests.py": "26d871cc9fa786e88d3705361991056ce8668aec52e12c8877e244a0d1b365c5"
+    },
+    "T08b_reviewed": {
+      "harness/beam_approach.py": "334e5403542b4d9f3ab9c1ade4d7ebaa64422e9e69c134893ad7f322aacea959",
+      "tests/test_pair_navigation_beam_approach.py": "eb8ed0984c3f688ebc69a4cfbf824ea533ace35bf2d9b1adff030551caec03d5"
+    },
+    "v6e_pinned_sources": {
+      "total": 85,
+      "matched": 85
+    },
+    "review_functions_unchanged": {
+      "origin/main": [
+        "test_tile_consumes_native_navigation_command_history",
+        "test_tile_same_capture_cannot_supply_two_holding_confirmations",
+        "tile"
+      ],
+      "d054ac95": [
+        "beam",
+        "test_beam_accepts_native_issued_search_history_without_rescaling"
+      ]
+    },
+    "review_file_sha256": "5530ad31cbc8e94855517b4e5dd48c640c685b391e51eb1d7aa39c5b278dddaa"
+  },
+  "local_physics_runs": 0,
+  "local_render_runs": 0,
+  "local_model_calls": 0,
+  "host_lock_acquired": false,
+  "guard": "experiments/2026-09-30-beam-approach/offline_guard.py",
+  "pytest": {
+    "exit_code": 0,
+    "passed": 492,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "xfail": 0,
+    "counts_by_module": {
+      "tests.test_review_e2e_batch_h": 3,
+      "tests.test_zone_pair_registered_source": 22,
+      "tests.test_zone_study_source_pinning": 34,
+      "tests.test_pair_navigation_beam_approach": 124,
+      "tests.test_beam_initial_pose_plan": 64,
+      "tests.test_pair_owncam_approach": 12,
+      "tests.test_pair_passage_plan": 44,
+      "tests.test_zone_pair_status": 16,
+      "tests.test_zone_own_executor_tile": 105,
+      "tests.test_zone_own_executor_tile_review_h": 2,
+      "tests.test_ci_sharding": 66
+    },
+    "repeat_note": "The three batch H counterexamples were invoked directly and through their normal-CI bridge modules; three invocations are repeats.",
+    "unique_test_cases_excluding_review_repeats": 489
+  },
+  "ci_failure": {
+    "run_id": 36748682228,
+    "job_id": 110001619053,
+    "name": "ubuntu-simulation-scenarios",
+    "conclusion": "cancelled",
+    "annotation": "The job has exceeded the maximum execution time of 15m0s",
+    "ubuntu_install_step_s": 726,
+    "apt_download_s": 710,
+    "download_size_mb": 171,
+    "download_rate_kBps": 241,
+    "last_logged_traffic_sequence": 60,
+    "assertion_failure_in_observed_log": false,
+    "resolution": "No workflow or runtime changes; recheck on normal PR push."
+  },
+  "raw_directory": "/Users/changmin/projects/ugrp/outputs/t08b-main-integration-20261001",
+  "raw_storage": "local only; not a remote raw backup",
+  "logs": {
+    "ci-annotations.json": {
+      "bytes": 2049,
+      "sha256": "94995ffe33aff91b17c0124fc32a98676c52a08676ecdcb2af257649fbc809e2"
+    },
+    "ci-failed.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ci-job.json": {
+      "bytes": 2341,
+      "sha256": "6702032d1ad03aecf456515671f55aab1af51a832434c3648f696ea80e46bf03"
+    },
+    "ci-scenarios.log": {
+      "bytes": 184889,
+      "sha256": "b10ed76f9fb4bf85f252eaaeaba6dbb66ecae93ed5ae6d1d390bd69811ca182b"
+    },
+    "offline.log": {
+      "bytes": 592,
+      "sha256": "27e7dbd01e657210b39f3ce4b8bfd5c1e2650874d374bc895d969c6cfecd6638"
+    },
+    "offline.xml": {
+      "bytes": 71381,
+      "sha256": "07eee8611fd12475ba5eddda77241363ecdd67ff27c859c97ca33854074cca56"
+    },
+    "source-checks.json": {
+      "bytes": 1774,
+      "sha256": "8f1bf2328e851504fb87d7b790e9c82e8dc0ef87074e375bb142f56bbb864df9"
+    }
+  },
+  "private_tmp_extraction_dirs_created": [],
+  "tensorboard": "No new research experiment/training/evaluation result; no snapshot or viewer changes.",
+  "pr_merge_authorized": false
+}

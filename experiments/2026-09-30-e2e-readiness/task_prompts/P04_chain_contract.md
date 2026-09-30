@@ -2,7 +2,7 @@
 
 UGRP의 [READINESS S03–S08/S15](../READINESS.md) 후속이다. 기준 main은 `a8094cc14e098a55483f53a3c49bf6a0b116043d`; 최신 fetch/열린 PR을 확인하고 AGENTS.md·CONTRIBUTING.md·README.md·docs/current_status.md를 먼저 읽는다. 배정된 자기 worktree/codex 브랜치만 사용한다.
 
-**범위:** 접근부터 목적지까지 robot/job/phase/leg/명령/프레임/receipt의 한 실행 계약을 검사하는 fake-port 통합과 누락 기록을 구현한다. 물리/시뮬레이션/렌더/모든 모델 호출 금지. 기존 제어기 threshold·정상 물리·카메라·gate를 완화하지 않는다.
+**범위:** 접근부터 목적지까지 robot/job/phase/leg/명령/프레임/receipt의 한 실행 계약을 검사하는 fake-port 통합과 누락 기록을 구현한다. 로컬 물리/시뮬레이션/렌더/모든 모델 호출 금지. 일반 GitHub CI는 정상 실행하며 취소하거나 커밋에서 생략하지 않는다. 기존 제어기 threshold·정상 물리·카메라·gate를 완화하지 않는다.
 
 읽을 코드/기록:
 

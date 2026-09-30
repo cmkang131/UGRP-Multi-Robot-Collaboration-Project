@@ -5,9 +5,11 @@ import math
 
 from harness import zone_final_environment_floor_light as parent
 from harness.zone_final_environment import ROOT, digest, local_path, read, sha
+from harness.measurement_path_clearance import full_path_clearance, point_model_bounds
 from sim.camera_robot_port import validate_raw_action
 
 CONFIG = 'configs/final_environment_measurement_v2.json'
+CLEARANCE_REVIEW = 'configs/final_environment_measurement_v2_clearance.json'
 WORKFLOW = 'configs/simulation_workflows.d/final_environment_measurement_v89.json'
 WORKFLOW_ID = 'zone-final-environment-floor-light-v2-check'
 WORKFLOW_VERSION = '2.21.0'
@@ -87,7 +89,34 @@ def action_at(plan, step):
     return action
 
 
-def validate(plan, *, root=ROOT):
+def path_preflight(static, plan, *, root=ROOT):
+    """Keep unsafe diagnostic predictions visible without admitting execution."""
+    review = read(local_path(CLEARANCE_REVIEW, root=root))
+    walls = rectangles(static)
+    witnesses = {}
+    for axis, model in review['unexcluded_v1_models'].items():
+        models = dict(review['nominal_models'], **{axis: model})
+        witnesses[axis] = full_path_clearance(static, walls, plan, point_model_bounds(models))
+    result = {'admitted': False, 'reason': 'MISSING_INDEPENDENT_MOTION_BOUNDS',
+              'unexcluded_v1_witnesses': witnesses, 'bounded_path': None,
+              'missing_bounds': review['missing_bounds']}
+    # The checked-in review explicitly has NO qualified bounds. A successful
+    # recorded run or a nominal model must never silently fill them in.
+    bounds, evidence = review.get('bounds'), review.get('independent_bound_evidence')
+    if bounds is None or not evidence or review['status'] != 'QUALIFIED_BOUNDS':
+        return result
+    if not isinstance(evidence, dict) or not evidence:
+        raise ValueError('INVALID_BOUND_EVIDENCE')
+    for path, expected in evidence.items():
+        if sha(local_path(path, root=root)) != expected:
+            raise ValueError('BOUND_EVIDENCE_HASH_MISMATCH')
+    result['bounded_path'] = full_path_clearance(static, walls, plan, bounds)
+    result['admitted'] = result['bounded_path']['satisfies_margin']
+    result['reason'] = 'BOUNDED_PATH_CLEAR' if result['admitted'] else 'FULL_PATH_CLEARANCE_UNSAFE'
+    return result
+
+
+def validate(plan, *, root=ROOT, for_execution=True):
     # Reject widened caps/limits/sampling and arbitrary command schedules.
     expected = {'schema': 'ugrp.final_environment_measurement.v2', 'status': 'DRAFT_DIAGNOSTIC_COMMANDS',
                 'robot_id': 'r1', 'load_state': 'unloaded', 'map_id': MAP_ID,
@@ -130,13 +159,17 @@ def validate(plan, *, root=ROOT):
     if max(areas, key=areas.get) != MAP_ID:
         raise ValueError('selected map no longer has most free floor')
     start_clearance = require_clearance(maps[MAP_ID], plan['spawn_xy_yaw'][:2], plan)
+    path = path_preflight(maps[MAP_ID], plan, root=root)
+    if for_execution and not path['admitted']:
+        raise ValueError('FULL_PATH_CLEARANCE_REJECTED: ' + path['reason'])
     return {'free_floor_area_m2': areas, 'spawn_wall_clearance_m': start_clearance,
-            'pose_samples_including_initial': round(duration / .05) + 1}
+            'pose_samples_including_initial': round(duration / .05) + 1, 'full_path': path}
 
 
 def protocol(*, root=ROOT):
+    """Read/inspect the recorded schedule. Execution requires validate(plan)."""
     plan = read(local_path(CONFIG, root=root))
-    validate(plan, root=root)
+    validate(plan, root=root, for_execution=False)
     return plan
 
 
@@ -144,7 +177,7 @@ def bundle(*, root=ROOT):
     from harness.python_source_closure import source_closure
     plan = protocol(root=root)
     ancestor = parent.bundle(MAP_ID, check='calibration', root=root)
-    paths = [CONFIG, WORKFLOW, 'harness/final_environment_measurement_v2.py',
+    paths = [CONFIG, CLEARANCE_REVIEW, WORKFLOW, 'harness/final_environment_measurement_v2.py',
              'scripts/run_final_environment_measurement_v2.py', 'sim/final_environment_measurement_v2.py']
     files = set(source_closure(root, paths)) | set(paths) | set(ancestor['source_sha256'])
     value = dict(ancestor)
@@ -154,6 +187,7 @@ def bundle(*, root=ROOT):
                        'total_including_reset_cap_s': 235., 'student_control': False},
                  parent_execution_bundle_id=parent.BUNDLE_ID, parent_bundle_sha256=digest(ancestor),
                  measurement=plan, measurement_sha256=sha(local_path(CONFIG, root=root)),
-                 clearance_preflight=validate(plan, root=root), controller_inputs=[],
+                 clearance_preflight=validate(plan, root=root, for_execution=False), controller_inputs=[],
                  source_sha256={p: sha(local_path(p, root=root)) for p in sorted(files)})
+    value['runnable'] = value['clearance_preflight']['full_path']['admitted']
     return value

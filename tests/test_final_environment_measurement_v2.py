@@ -29,6 +29,17 @@ def bundle():
     return env.bundle()
 
 
+@pytest.fixture
+def fake_path_admission(monkeypatch):
+    """Isolate existing scheduler/cleanup tests using an explicitly fake gate.
+
+    Production admission is tested without this fixture in test_review_347 and
+    the pre-backend rejection tests below. This is no claim of plant safety.
+    """
+    monkeypatch.setattr(env, 'path_preflight', lambda *a, **k: {
+        'admitted': True, 'reason': 'TEST_FAKE_ONLY'})
+
+
 def test_v1_and_all_v87_pinned_sources_and_nine_bundles_preserved():
     record = env.read(env.ROOT / 'experiments/2026-10-01-final-env-measurement-v2/v87_preservation.json')
     for path, sha in record['files_sha256'].items():
@@ -40,13 +51,14 @@ def test_v1_and_all_v87_pinned_sources_and_nine_bundles_preserved():
 
 def test_single_most_free_map_caps_excitation_and_sampling(bundle):
     plan = bundle['measurement']
-    receipt = env.validate(plan)
+    receipt = env.validate(plan, for_execution=False)
     assert receipt['free_floor_area_m2'][env.MAP_ID] == pytest.approx(28.9675)
     assert receipt['spawn_wall_clearance_m'] == pytest.approx(.675)
     assert receipt['pose_samples_including_initial'] == 4601
     assert bundle['execution_bundle_id'] == 'zone-final-environment-v89'
     assert bundle['caps']['cases'] == 1 and bundle['caps']['total_including_reset_cap_s'] == 235
     assert bundle['controller_inputs'] == [] and not bundle['physical_ready']
+    assert not bundle['runnable'] and not receipt['full_path']['admitted']
     assert env.CONFIG in bundle['source_sha256']
     for axis in plan['axes']:
         rows = [s for s in plan['segments'] if s['axis'] == axis and s['phase'] == 'step']
@@ -129,7 +141,7 @@ def test_v1_practical_ambiguity_and_v2_profiled_grid_separation():
     assert not degraded['practically_separated']
 
 
-def test_fake_schedule_exact_cap_no_eval_feedback_and_no_pan(bundle, tmp_path):
+def test_fake_schedule_exact_cap_no_eval_feedback_and_no_pan(bundle, tmp_path, fake_path_admission):
     owned = []
     class Backend(FakePhysics):
         def __init__(self, *a, **k):
@@ -151,7 +163,7 @@ def test_fake_schedule_exact_cap_no_eval_feedback_and_no_pan(bundle, tmp_path):
 
 
 @pytest.mark.parametrize('failure', ['reset_cap', 'wall', 'disk', 'clock'])
-def test_failure_aborts_stops_and_preserves_failed_denominator(bundle, tmp_path, failure):
+def test_failure_aborts_stops_and_preserves_failed_denominator(bundle, tmp_path, failure, fake_path_admission):
     owned = []
     class Backend(FakePhysics):
         def __init__(self, *a, **k):
@@ -185,6 +197,7 @@ def test_workflow_new_check_plan_and_ci_registration(capsys, tmp_path):
     run.main(['--check', env.CHECK, '--expected-source-sha', 'a' * 40, '--output', str(tmp_path / 'raw')])
     value = json.loads(capsys.readouterr().out)
     assert not value['execution_started'] and value['caps']['total_including_reset_cap_s'] == 235
+    assert not value['runnable'] and not value['clearance_preflight']['full_path']['admitted']
     assert not (tmp_path / 'raw').exists()
 
 
@@ -200,7 +213,7 @@ def test_wrong_source_refused_before_physics(monkeypatch, tmp_path):
 
 
 @pytest.mark.parametrize('lock_valid', [False, True])
-def test_managed_cli_owned_lock_receipt_and_no_overwrite(monkeypatch, tmp_path, lock_valid):
+def test_managed_cli_owned_lock_receipt_and_no_overwrite(monkeypatch, tmp_path, lock_valid, fake_path_admission):
     from scripts import agent_lock
     from sim import final_environment_measurement_v2 as physics
     monkeypatch.setattr(run, 'check_source', lambda sha: sha)
@@ -302,3 +315,141 @@ def test_eval_pose_is_separate_from_camera_and_guard_checks_each_substep(tmp_pat
     rows = [json.loads(s) for s in (tmp_path / 'eval_only/r1/pose.jsonl').read_text().splitlines()]
     assert [r['t'] for r in rows] == [0., .05] and [r['sample_index'] for r in rows] == [0, 1]
     assert len(steps) == 2 and not (tmp_path / 'robots/r1/rgb').exists()
+
+
+def test_recorded_schedule_bytes_and_commands_are_unchanged():
+    import subprocess
+    before = subprocess.check_output(['git', 'show', 'eaeaaff0:' + env.CONFIG], cwd=env.ROOT)
+    assert (env.ROOT / env.CONFIG).read_bytes() == before
+    plan = env.protocol()
+    previous = json.loads(before)
+    assert [env.action_at(plan, i) for i in range(4600)] == [env.action_at(previous, i) for i in range(4600)]
+
+
+def test_blocked_cli_and_direct_backend_never_import_physics(monkeypatch, tmp_path, bundle):
+    from sim.final_environment_measurement_v2 import PhysicsBackend
+    monkeypatch.setattr(run, 'check_source', lambda sha: sha)
+    monkeypatch.setitem(sys.modules, 'sim.zone_final_v3_scene', None)
+    with pytest.raises(ValueError, match='FULL_PATH_CLEARANCE_REJECTED'):
+        PhysicsBackend(bundle, tmp_path / 'native', seed=911)
+    with pytest.raises(ValueError, match='FULL_PATH_CLEARANCE_REJECTED'):
+        run.main(['--check', env.CHECK, '--expected-source-sha', 'a' * 40,
+                  '--output', str(tmp_path / 'raw'), '--execute', '--lock-owner', 'claude'])
+    assert not (tmp_path / 'raw').exists() and not (tmp_path / 'native').exists()
+
+
+def test_swept_path_catches_an_extremum_between_safe_endpoints():
+    import math
+    from harness.measurement_path_clearance import full_path_clearance, point_model_bounds
+    # v0=+1, target=-1, tau=1: maximum x=1-log(2) at t=log(2).
+    static = {'bounds_m': [-5., 5., -5., 5.], 'obstacles': [
+        {'kind': 'wall', 'center_m': [.42, 0.], 'half_extents_m': [.015, 1.]}]}
+    plan = {'control_period_s': 1., 'spawn_xy_yaw': [0., 0., 0.], 'initial_hold_s': 0.,
+            'segments': [{'duration_s': 1., 'axis': 'forward', 'value': -1.}],
+            'clearance': {'robot_radius_bound_m': .1, 'minimum_m': .005, 'abort_buffer_m': .005}}
+    bounds = point_model_bounds({'forward': (1., 1., 1.), 'left': (1., 1., 1.)})
+    bounds['forward']['initial_velocity_m_s'] = [1., 1.]
+    for x in (0., -1 + 2 * (1 - math.exp(-1))):
+        assert env.clearance(static, (x, 0.), .1) > .01
+    assert env.clearance(static, (1 - math.log(2), 0.), .1) < .01
+    receipt = full_path_clearance(static, env.rectangles(static), plan, bounds)
+    assert not receipt['satisfies_margin'] and receipt['worst_interval_s'] == [0., 1.]
+
+
+@pytest.mark.parametrize('axis,key,value', [
+    ('forward', 'positive_gain', [1., float('nan')]),
+    ('left', 'negative_gain', [1., float('inf')]),
+    ('left', 'drive_tau_s', [0., 1.]),
+    ('forward', 'stop_tau_s', [2., 1.]),
+    ('forward', 'world_speed_error_m_s', float('nan')),
+    ('left', 'initial_position_error_m', -1.),
+    ('forward', 'initial_velocity_m_s', [0., float('inf')]),
+])
+def test_invalid_motion_intervals_fail_closed(axis, key, value):
+    from harness.measurement_path_clearance import full_path_clearance, point_model_bounds
+    bounds = point_model_bounds(ident.CANDIDATES)
+    bounds[axis][key] = value
+    static = env.parent.resolve(env.MAP_ID)[0]
+    with pytest.raises(ValueError, match='INVALID_MOTION_BOUNDS'):
+        full_path_clearance(static, env.rectangles(static), env.protocol(), bounds)
+
+
+def test_finite_inputs_that_overflow_the_path_envelope_fail_closed():
+    from harness.measurement_path_clearance import full_path_clearance, point_model_bounds
+    bounds = point_model_bounds(ident.CANDIDATES)
+    bounds['forward']['world_speed_error_m_s'] = 1e308
+    static = env.parent.resolve(env.MAP_ID)[0]
+    with pytest.raises(ValueError, match='NONFINITE_PATH_ENVELOPE'):
+        full_path_clearance(static, env.rectangles(static), env.protocol(), bounds)
+
+
+def test_interval_bound_covers_direction_asymmetry_and_cross_axis_error():
+    from harness.measurement_path_clearance import full_path_clearance, point_model_bounds
+    plan = env.protocol()
+    static = env.parent.resolve(env.MAP_ID)[0]
+    walls = env.rectangles(static)
+    bounds = point_model_bounds(ident.CANDIDATES)
+    nominal = full_path_clearance(static, walls, plan, bounds)
+    assert nominal['satisfies_margin']
+    for axis in bounds:
+        bounds[axis]['positive_gain'] = [1., 3.]
+        bounds[axis]['negative_gain'] = [1., 4.]
+        bounds[axis]['drive_tau_s'] = [.8, 5.]
+        bounds[axis]['stop_tau_s'] = [.03, .1]
+        bounds[axis]['world_speed_error_m_s'] = .005
+    envelope = full_path_clearance(static, walls, plan, bounds)
+    assert not envelope['satisfies_margin']
+    assert envelope['minimum_lower_bound_m'] <= nominal['minimum_lower_bound_m']
+    # Even with point parameters a transverse/yaw/model speed error accumulates;
+    # omitting it must not masquerade as a robust safety bound.
+    bounds = point_model_bounds(ident.CANDIDATES)
+    bounds['left']['world_speed_error_m_s'] = .01
+    assert not full_path_clearance(static, walls, plan, bounds)['satisfies_margin']
+
+
+@pytest.mark.parametrize('case', ['missing', 'unqualified', 'safe', 'unsafe', 'corrupt'])
+def test_admission_requires_evidence_and_the_whole_bounded_path(tmp_path, case):
+    from harness.measurement_path_clearance import point_model_bounds
+    plan = env.protocol()
+    static = env.parent.resolve(env.MAP_ID)[0]
+    review = env.read(env.ROOT / env.CLEARANCE_REVIEW)
+    # Synthetic evidence used only to exercise the gate, never installed in the
+    # repository's blocked record or used as evidence of a real motion envelope.
+    evidence = tmp_path / 'synthetic.txt'
+    evidence.write_text('test fixture: hypothetical bounded plant')
+    review.update(status='QUALIFIED_BOUNDS', bounds=point_model_bounds(ident.CANDIDATES),
+                  independent_bound_evidence={'synthetic.txt': env.sha(evidence)})
+    if case == 'missing':
+        review['bounds'] = None
+    elif case == 'unqualified':
+        review['status'] = 'UNQUALIFIED'
+    elif case == 'unsafe':
+        review['bounds']['left']['negative_gain'] = [20., 22.]
+    elif case == 'corrupt':
+        evidence.write_text('changed')
+    path = tmp_path / env.CLEARANCE_REVIEW
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps(review))
+    if case == 'corrupt':
+        with pytest.raises(ValueError, match='BOUND_EVIDENCE_HASH_MISMATCH'):
+            env.path_preflight(static, plan, root=tmp_path)
+    else:
+        receipt = env.path_preflight(static, plan, root=tmp_path)
+        assert receipt['admitted'] == (case == 'safe')
+
+
+@pytest.mark.parametrize('field,value', [('radius', -1.), ('radius', float('inf')),
+    ('z', float('nan')), ('position', float('inf')), ('distance_overflow', 1e308)])
+def test_guard_checks_each_geometry_component_and_computed_distance(tmp_path, monkeypatch, field, value):
+    backend, base, held = fake_native_owner(tmp_path, monkeypatch)
+    if field == 'radius':
+        backend.world.model.geom_rbound[0] = value
+    elif field == 'z':
+        backend.world.data.geom_xpos[0, 2] = value
+    else:
+        backend.world.data.geom_xpos[0, 0] = value
+    with np.errstate(over='ignore'), pytest.raises(ValueError, match='INVALID_ROBOT_GEOMETRY'):
+        backend.guard(check_geometry=True)
+    backend.close()
+    assert held
+    assert json.loads((tmp_path / 'eval_only/clearance_abort.jsonl').read_text())['reason'] == 'INVALID_ROBOT_GEOMETRY'
