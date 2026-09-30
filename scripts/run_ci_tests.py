@@ -84,6 +84,7 @@ TEST_PATTERNS = (
     "tests/test_zone_identity_jobs.py",  # T13a: own-RGB identity/count and target-job seam (fake only)
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py",
+    "tests/test_zone_environment_registry.py",
     "tests/test_scenario_capabilities_docs.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",
     "tests/test_zone_study_eval.py", "tests/test_zone_study_offline.py",
@@ -106,6 +107,7 @@ TEST_PATTERNS = (
     "tests/test_zone_own_perception_v3.py", "tests/test_zone_own_perception_v3_1.py",
     "tests/test_zone_own_executor*.py",
     "tests/test_zone_pair_executor.py", "tests/test_zone_pair_status.py", "tests/test_zone_pair_review.py",
+    "tests/test_zone_pair_role_exchange.py",  # T07: six explicit role assignments; fake ports only
     "tests/test_stall_observation_contract.py",  # P08: synthetic observation/stop contract only
     "tests/test_zone_pair_review2.py",
     "tests/test_zone_pair_review3.py",
