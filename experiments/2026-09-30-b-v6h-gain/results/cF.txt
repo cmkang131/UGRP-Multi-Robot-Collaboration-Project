@@ -29,10 +29,13 @@ case | L0: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm |
 L0: n=24 PASS_CLEAN=14/24 [39-76%] PASS_any=14/24 [39-76%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=10
 L1: n=24 PASS_CLEAN=0/24 [0-14%] PASS_any=0/24 [0-14%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=24
 chain L0->L1 both legs pass: 0/24 [0-14%]
+hard limit (pen > 5 mm or tilt > 15 deg) anywhere in the run (all legs, set-down, regrasp): 0/24 cases
 PF honesty all at the leg ends (case-robot samples): n=28 meanNEES=1.89 median=1.77 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
 PF honesty L0 at the leg ends (case-robot samples): n=28 meanNEES=1.89 median=1.77 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
 L0: cases pass 14/24 [39-76%] (clean 14); independent units (placements) strict 7/12 [32-81%], any-seed 7/12 [32-81%]; classes {'PASS_CLEAN': 14, 'FAIL': 10}
 L1: cases pass 0/24 [0-14%] (clean 0); independent units (placements) strict 0/12 [0-24%], any-seed 0/12 [0-24%]; classes {'FAIL': 24}
 chain L0->L1: cases 0/24 [0-14%]; units strict 0/12 [0-24%], any 0/12 [0-24%]
-honesty L0 (samples=28, units=12): mean e x/y/yaw = +29.8 mm / +7.0 mm / +0.45 deg; mean z^2 x/y/yaw = [1.42, 0.29, 0.17]; +-2sigma coverage [1.0, 1.0, 1.0]; NEES3 mean 1.89
+honesty L0 (samples=28, observed placements=7/12): mean e x/y/yaw = +29.8 mm / +7.0 mm / +0.45 deg; mean z^2 x/y/yaw = [1.42, 0.29, 0.17]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 1.89
+  L0 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 7/7 [65-100%] / y 7/7 [65-100%] / yaw 7/7 [65-100%]; UNVERIFIED (검증되지 않음) placements: 5 ['N03', 'N04', 'N07', 'N09', 'N11']
+honesty L1: no robot sample reached this leg end; all 12 placements UNVERIFIED (검증되지 않음)
 contact episodes (both legs): 0; first-failure codes: {'COLLISION_GUARD': 24}

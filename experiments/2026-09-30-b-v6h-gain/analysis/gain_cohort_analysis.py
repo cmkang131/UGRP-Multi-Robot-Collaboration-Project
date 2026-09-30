@@ -10,8 +10,17 @@ what the gain-fix question needs:
   placement (12 per cohort): the physics is deterministic and the two PF seeds (911, 913) of a placement give near-identical
   outcomes, so a placement counts once. A placement is "all seeds pass" (strict) or "any seed passes"; both are reported.
 * per-axis honesty at each leg end (case-robot samples): mean signed PF error (estimate - ground truth), mean z^2 per axis
-  (an honest sigma gives z^2 ~ 1), +-2 sigma coverage per axis with a Wilson interval whose n is the number of independent
-  units, and the 3-DOF NEES (kept for continuity; it is NOT the acceptance criterion because y and yaw are conservative).
+  (an honest sigma gives z^2 ~ 1), +-2 sigma coverage per axis, and the 3-DOF NEES (kept for continuity; it is NOT the acceptance
+  criterion because y and yaw are conservative). The sample-level coverage (``cov2sigma_xyyaw``) has NO interval: the samples of one
+  placement (2 robots x the PF seeds) are not independent. The interval is at the PLACEMENT level and its n is the number of OBSERVED
+  placements, i.e. those that reached that leg end with at least one robot sample (``n_observed_placements``). A placement is covered
+  on an axis if ALL its samples there have z^2 <= 4. Placements that never reached the leg are UNVERIFIED (검증되지 않음): they are
+  listed and neither count as covered nor enter the denominator. (Before 2026-09-30 review P1-2 the interval used
+  round(sample coverage x ALL placements) as n, which overstated n whenever few placements reached the leg, e.g. cD L1: 2 robot
+  samples of 1 placement, n = 12.)
+* coverage is a check against over-confidence only. A coverage of 100 % and a low mean z^2 do NOT show that sigma is calibrated: a
+  sigma far larger than the error also gives both (cB L1 x mean z^2 0.03, NEES3 0.27). The over-conservatism diagnostic is the mean
+  z^2 itself (reported, not a gate).
 * contacts (wall tracker episodes), min GT clearance, end errors and the first-failure code per case.
 
 Ground truth is used for evaluation only (never a controller input).
@@ -50,6 +59,26 @@ def signed_error(trace, t, rid):
 
 def unit_of(row):
     return row['cell']
+
+
+def placement_coverage(per_case, k, units, z2_max=4.):
+    """Placement-level +-2 sigma coverage of leg ``k`` end (review P1-2).
+
+    OBSERVED placement = at least one robot sample (``signed``) at the end of leg ``k``. COVERED on an axis = all samples of the
+    placement on that axis have z^2 <= ``z2_max``. UNVERIFIED (검증되지 않음) = no sample at that leg: not covered, not in the CI n.
+    """
+    by_unit = collections.defaultdict(list)
+    for c in per_case:
+        sig = c['legs'][k].get('signed')
+        for s in (sig or {}).values():
+            if s:
+                by_unit[c['unit']].append(s['z2'])
+    observed = sorted(by_unit)
+    covered = [sum(all(z[j] <= z2_max for z in by_unit[u]) for u in observed) for j in range(3)]
+    return {'n_units': len(units), 'n_observed_placements': len(observed), 'n_unverified_placements': len(units) - len(observed),
+            'unverified_placements': sorted(set(units) - set(observed)), 'covered_placements_xyyaw': covered,
+            'placement_coverage_xyyaw': [c / len(observed) if observed else None for c in covered],
+            'cov2sigma_ci_placements': [wilson(c, len(observed)) if observed else None for c in covered]}
 
 
 def analyse(label, root):
@@ -103,20 +132,27 @@ def analyse(label, root):
     summary['honesty'] = {}
     for k in (0, 1):
         samples = [s for c in per_case if c['legs'][k].get('signed') for s in c['legs'][k]['signed'].values() if s]
+        pc = placement_coverage(per_case, k, units)
         if not samples:
+            summary['honesty'][f'L{k}'] = {'n_samples': 0, **pc}
+            print(f'honesty L{k}: no robot sample reached this leg end; all {len(units)} placements UNVERIFIED (검증되지 않음)')
             continue
         z2 = np.array([s['z2'] for s in samples])
         e = np.array([s['e'] for s in samples])
         cov = (z2 <= 4.).mean(0)
         nees = np.array([s['nees'] for s in samples])
         # reached-only: samples come from legs that were recorded, i.e. the leg end exists
-        ci = [wilson(int(round(v * len(units))), len(units)) for v in cov]
-        summary['honesty'][f'L{k}'] = {'n_samples': len(samples), 'n_units': len(units), 'mean_signed_err_xyyaw': e.mean(0).tolist(),
+        summary['honesty'][f'L{k}'] = {'n_samples': len(samples), 'mean_signed_err_xyyaw': e.mean(0).tolist(),
                                        'mean_z2_xyyaw': z2.mean(0).tolist(), 'cov2sigma_xyyaw': cov.tolist(),
-                                       'cov2sigma_ci_units': ci, 'mean_nees3': float(nees.mean())}
-        print(f'honesty L{k} (samples={len(samples)}, units={len(units)}): mean e x/y/yaw = {e[:, 0].mean() * 1000:+.1f} mm / '
-              f'{e[:, 1].mean() * 1000:+.1f} mm / {math.degrees(e[:, 2].mean()):+.2f} deg; mean z^2 x/y/yaw = {z2.mean(0).round(2).tolist()}; '
-              f'+-2sigma coverage {cov.round(3).tolist()}; NEES3 mean {nees.mean():.2f}')
+                                       'mean_nees3': float(nees.mean()), **pc}
+        print(f'honesty L{k} (samples={len(samples)}, observed placements={pc["n_observed_placements"]}/{len(units)}): mean e x/y/yaw = '
+              f'{e[:, 0].mean() * 1000:+.1f} mm / {e[:, 1].mean() * 1000:+.1f} mm / {math.degrees(e[:, 2].mean()):+.2f} deg; '
+              f'mean z^2 x/y/yaw = {z2.mean(0).round(2).tolist()}; +-2sigma coverage (samples) {cov.round(3).tolist()}; NEES3 mean {nees.mean():.2f}')
+        n_obs = pc['n_observed_placements']
+        print(f'  L{k} placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): '
+              + ' / '.join(f'{name} {fmt_ci(c, n_obs)}' for name, c in zip(('x', 'y', 'yaw'), pc['covered_placements_xyyaw']))
+              + (f'; UNVERIFIED (검증되지 않음) placements: {pc["n_unverified_placements"]} {pc["unverified_placements"]}'
+                 if pc['n_unverified_placements'] else '; unverified placements: 0'))
     ends = [1000 * c['legs'][1]['end_error_m'] for c in per_case if c['legs'][1].get('end_error_m') is not None]
     summary['l1_end_error_mm'] = {'mean': float(np.mean(ends)), 'max': float(np.max(ends)), 'n': len(ends)} if ends else None
     contacts = sum(c['legs'][k].get('contact_episodes', 0) for c in per_case for k in (0, 1))

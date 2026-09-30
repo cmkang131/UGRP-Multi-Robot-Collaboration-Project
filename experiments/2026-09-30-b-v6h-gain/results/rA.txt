@@ -25,12 +25,15 @@ case | L0: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm |
 L0: n=20 PASS_CLEAN=20/20 [84-100%] PASS_any=20/20 [84-100%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=0
 L1: n=20 PASS_CLEAN=14/20 [48-85%] PASS_any=14/20 [48-85%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=6
 chain L0->L1 both legs pass: 14/20 [48-85%]
+hard limit (pen > 5 mm or tilt > 15 deg) anywhere in the run (all legs, set-down, regrasp): 0/20 cases
 PF honesty all at the leg ends (case-robot samples): n=80 meanNEES=3.50 median=3.51 cov2sigma x/y/yaw=[0.762, 1.0, 1.0]
 PF honesty L0 at the leg ends (case-robot samples): n=40 meanNEES=2.53 median=2.19 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
 PF honesty L1 at the leg ends (case-robot samples): n=40 meanNEES=4.47 median=3.96 cov2sigma x/y/yaw=[0.525, 1.0, 1.0]
 L0: cases pass 20/20 [84-100%] (clean 20); independent units (placements) strict 10/10 [72-100%], any-seed 10/10 [72-100%]; classes {'PASS_CLEAN': 20}
 L1: cases pass 14/20 [48-85%] (clean 14); independent units (placements) strict 7/10 [40-89%], any-seed 7/10 [40-89%]; classes {'PASS_CLEAN': 14, 'FAIL': 6}
 chain L0->L1: cases 14/20 [48-85%]; units strict 7/10 [40-89%], any 7/10 [40-89%]
-honesty L0 (samples=40, units=10): mean e x/y/yaw = +31.4 mm / -1.6 mm / -0.94 deg; mean z^2 x/y/yaw = [1.49, 0.12, 0.68]; +-2sigma coverage [1.0, 1.0, 1.0]; NEES3 mean 2.53
-honesty L1 (samples=40, units=10): mean e x/y/yaw = +66.4 mm / -8.4 mm / -1.04 deg; mean z^2 x/y/yaw = [4.28, 0.06, 0.13]; +-2sigma coverage [0.525, 1.0, 1.0]; NEES3 mean 4.47
+honesty L0 (samples=40, observed placements=10/10): mean e x/y/yaw = +31.4 mm / -1.6 mm / -0.94 deg; mean z^2 x/y/yaw = [1.49, 0.12, 0.68]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 2.53
+  L0 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 10/10 [72-100%] / y 10/10 [72-100%] / yaw 10/10 [72-100%]; unverified placements: 0
+honesty L1 (samples=40, observed placements=10/10): mean e x/y/yaw = +66.4 mm / -8.4 mm / -1.04 deg; mean z^2 x/y/yaw = [4.28, 0.06, 0.13]; +-2sigma coverage (samples) [0.525, 1.0, 1.0]; NEES3 mean 4.47
+  L1 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 0/10 [0-28%] / y 10/10 [72-100%] / yaw 10/10 [72-100%]; unverified placements: 0
 contact episodes (both legs): 0; first-failure codes: {'MOTION_ERROR': 6}
