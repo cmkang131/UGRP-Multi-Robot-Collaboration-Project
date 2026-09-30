@@ -1,0 +1,1381 @@
+{
+  "execution_order": [
+    {
+      "step": "C0",
+      "depends_on": [],
+      "segments": [],
+      "sim_cap_s": 0
+    },
+    {
+      "step": "C1",
+      "depends_on": [
+        "C0"
+      ],
+      "segments": [
+        {
+          "name": "map_reset",
+          "runs": 3,
+          "cap_s": 30
+        },
+        {
+          "name": "approach_grasp_relocalize",
+          "runs": 3,
+          "cap_s": 300
+        },
+        {
+          "name": "invalid_frame_one_sided_grasp",
+          "runs": 2,
+          "cap_s": 60
+        }
+      ],
+      "sim_cap_s": 1110
+    },
+    {
+      "step": "C2",
+      "depends_on": [
+        "C1",
+        "PR292_INDEPENDENT_REVIEW"
+      ],
+      "segments": [
+        {
+          "name": "registered_acceptance",
+          "runs": 5,
+          "cap_s": 180
+        },
+        {
+          "name": "final_door_chain",
+          "runs": 3,
+          "cap_s": 300
+        },
+        {
+          "name": "destination_leg",
+          "runs": 3,
+          "cap_s": 60
+        }
+      ],
+      "sim_cap_s": 1980
+    },
+    {
+      "step": "C3",
+      "depends_on": [
+        "C2",
+        "PR293_PREREG_REVIEW"
+      ],
+      "segments": [
+        {
+          "name": "d1_stalled",
+          "runs": 30,
+          "cap_s": 120
+        },
+        {
+          "name": "d1_normal",
+          "runs": 60,
+          "cap_s": 120
+        },
+        {
+          "name": "abort_flow",
+          "runs": 3,
+          "cap_s": 120
+        }
+      ],
+      "sim_cap_s": 11160
+    },
+    {
+      "step": "C4",
+      "depends_on": [
+        "C2",
+        "C3"
+      ],
+      "segments": [
+        {
+          "name": "M1_final",
+          "runs": 6,
+          "cap_s": 900
+        },
+        {
+          "name": "M2_final",
+          "runs": 6,
+          "cap_s": 900
+        }
+      ],
+      "sim_cap_s": 10800
+    },
+    {
+      "step": "C5a",
+      "cohort_id": "cyan_beam_dev_fixture_4",
+      "claim_scope": "dev_connection_only",
+      "actor": "fixture_no_llm",
+      "depends_on": [
+        "C4"
+      ],
+      "trials": [
+        {
+          "scenario_id": "p02_cyan1_beam1_dev_pending",
+          "map_id": "zone_wide_door_geometry_v3",
+          "seed": 17001,
+          "scenario_binding": "pending_P02_new_final_v3_scenario",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "p02_cyan1_beam1_dev_pending",
+          "map_id": "zone_wide_door_geometry_v3",
+          "seed": 17001,
+          "scenario_binding": "pending_P02_new_final_v3_scenario",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "p02_cyan1_beam1_dev_pending",
+          "map_id": "zone_wide_door_geometry_v3",
+          "seed": 17001,
+          "scenario_binding": "pending_P02_new_final_v3_scenario",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "p02_cyan1_beam1_dev_pending",
+          "map_id": "zone_wide_door_geometry_v3",
+          "seed": 17001,
+          "scenario_binding": "pending_P02_new_final_v3_scenario",
+          "condition": "leader_ko",
+          "leader": "r1",
+          "sim_cap_s": 1800
+        }
+      ],
+      "sim_cap_s": 7200
+    },
+    {
+      "step": "C5b",
+      "cohort_id": "cyan_beam_dev_llm_4",
+      "claim_scope": "dev_korean_connection_only",
+      "actor": "live_llm_proposed",
+      "depends_on": [
+        "C5a"
+      ],
+      "trials": [
+        {
+          "scenario_id": "p02_cyan1_beam1_dev_pending",
+          "map_id": "zone_wide_door_geometry_v3",
+          "seed": 17001,
+          "scenario_binding": "pending_P02_new_final_v3_scenario",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "p02_cyan1_beam1_dev_pending",
+          "map_id": "zone_wide_door_geometry_v3",
+          "seed": 17001,
+          "scenario_binding": "pending_P02_new_final_v3_scenario",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "p02_cyan1_beam1_dev_pending",
+          "map_id": "zone_wide_door_geometry_v3",
+          "seed": 17001,
+          "scenario_binding": "pending_P02_new_final_v3_scenario",
+          "condition": "leader_ko",
+          "leader": "r1",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "p02_cyan1_beam1_dev_pending",
+          "map_id": "zone_wide_door_geometry_v3",
+          "seed": 17001,
+          "scenario_binding": "pending_P02_new_final_v3_scenario",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        }
+      ],
+      "sim_cap_s": 7200
+    },
+    {
+      "step": "C6",
+      "cohort_id": "formal_six_scenario_no_llm_24",
+      "claim_scope": "milestone_224_smoke_only",
+      "actor": "fixture_no_llm",
+      "depends_on": [
+        "C5b",
+        "P09_ALL_CAPABILITIES"
+      ],
+      "trials": [
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17100,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17100,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "leader_ko",
+          "leader": "r1",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17100,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17100,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17104,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17104,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17104,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17104,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "leader_ko",
+          "leader": "r2",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17102,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "leader_ko",
+          "leader": "r3",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17102,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17102,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 17102,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 17101,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "leader_ko",
+          "leader": "r2",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 17101,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 17101,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 17101,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 17105,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 17105,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "leader_ko",
+          "leader": "r3",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 17105,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 17105,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 17103,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "leader_ko",
+          "leader": "r1",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 17103,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 17103,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 17103,
+          "scenario_binding": "new_smoke_seed_requires_new_scenario_version",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        }
+      ],
+      "sim_cap_s": 43200
+    },
+    {
+      "step": "C7",
+      "cohort_id": "external_pilot_72",
+      "claim_scope": "external_pilot_excluded_from_confirmatory",
+      "actor": "live_llm_proposed",
+      "depends_on": [
+        "C6"
+      ],
+      "trials": [
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 623,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 623,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r3",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 623,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 623,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 621,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 621,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 621,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r1",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 621,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 652,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 652,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r2",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 652,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 652,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 632,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 632,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 632,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 632,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r3",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 611,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 611,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 611,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r3",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 611,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 641,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 641,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 641,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 641,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r3",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 653,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r3",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 653,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 653,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 653,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 601,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r2",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 601,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 601,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 601,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 651,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 651,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 651,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s6_novel_relation_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 651,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r1",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 622,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 622,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 622,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s3_late_rendezvous_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 622,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r2",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 603,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 603,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 603,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r1",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 603,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 633,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 633,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 633,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r1",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 633,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 642,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 642,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 642,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r1",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 642,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 602,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r3",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 602,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 602,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s1_normal_mixed_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 602,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 643,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 643,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 643,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r2",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s5_moved_dropped_item_v2",
+          "map_id": "zone_wide_door_geometry_v2",
+          "seed": 643,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 631,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r2",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 631,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 631,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s4_narrow_door_standoff_v2",
+          "map_id": "zone_wide_corridor_final_v1",
+          "seed": 631,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 613,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 613,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 613,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 613,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r2",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 612,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "structured",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 612,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "peer_ko",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 612,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "no_comm",
+          "leader": "not_applicable",
+          "sim_cap_s": 1800
+        },
+        {
+          "scenario_id": "s2_unmapped_blockage_v2",
+          "map_id": "zone_wide_two_doors_final_v1",
+          "seed": 612,
+          "scenario_binding": "original_v2_external_pilot",
+          "condition": "leader_ko",
+          "leader": "r1",
+          "sim_cap_s": 1800
+        }
+      ],
+      "sim_cap_s": 129600
+    }
+  ],
+  "total_sim_cap_s": 212250,
+  "leader_balance": {
+    "cyan_beam_dev_fixture_4": {
+      "r1": 1,
+      "r2": 0,
+      "r3": 0
+    },
+    "cyan_beam_dev_llm_4": {
+      "r1": 1,
+      "r2": 0,
+      "r3": 0
+    },
+    "formal_six_scenario_no_llm_24": {
+      "r1": 2,
+      "r2": 2,
+      "r3": 2
+    },
+    "external_pilot_72": {
+      "r1": 6,
+      "r2": 6,
+      "r3": 6
+    }
+  },
+  "raw_destinations": [
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C1/map_reset-001",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C1/map_reset-002",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C1/map_reset-003",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C1/approach_grasp_relocalize-001",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C1/approach_grasp_relocalize-002",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C1/approach_grasp_relocalize-003",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C1/invalid_frame_one_sided_grasp-001",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C1/invalid_frame_one_sided_grasp-002",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C2/registered_acceptance-001",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C2/registered_acceptance-002",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C2/registered_acceptance-003",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C2/registered_acceptance-004",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C2/registered_acceptance-005",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C2/final_door_chain-001",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C2/final_door_chain-002",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C2/final_door_chain-003",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C2/destination_leg-001",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C2/destination_leg-002",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C2/destination_leg-003",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-001",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-002",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-003",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-004",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-005",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-006",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-007",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-008",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-009",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-010",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-011",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-012",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-013",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-014",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-015",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-016",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-017",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-018",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-019",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-020",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-021",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-022",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-023",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-024",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-025",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-026",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-027",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-028",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-029",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_stalled-030",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-001",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-002",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-003",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-004",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-005",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-006",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-007",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-008",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-009",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-010",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-011",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-012",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-013",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-014",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-015",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-016",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-017",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-018",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-019",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-020",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-021",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-022",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-023",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-024",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-025",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-026",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-027",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-028",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-029",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-030",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-031",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-032",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-033",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-034",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-035",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-036",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-037",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-038",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-039",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-040",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-041",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-042",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-043",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-044",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-045",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-046",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-047",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-048",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-049",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-050",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-051",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-052",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-053",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-054",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-055",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-056",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-057",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-058",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-059",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/d1_normal-060",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/abort_flow-001",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/abort_flow-002",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C3/abort_flow-003",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M1_final-001",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M1_final-002",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M1_final-003",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M1_final-004",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M1_final-005",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M1_final-006",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M2_final-001",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M2_final-002",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M2_final-003",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M2_final-004",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M2_final-005",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/C4/M2_final-006",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/cyan_beam_dev_fixture_4/001-p02_cyan1_beam1_dev_pending-s17001-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/cyan_beam_dev_fixture_4/002-p02_cyan1_beam1_dev_pending-s17001-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/cyan_beam_dev_fixture_4/003-p02_cyan1_beam1_dev_pending-s17001-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/cyan_beam_dev_fixture_4/004-p02_cyan1_beam1_dev_pending-s17001-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/cyan_beam_dev_llm_4/001-p02_cyan1_beam1_dev_pending-s17001-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/cyan_beam_dev_llm_4/002-p02_cyan1_beam1_dev_pending-s17001-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/cyan_beam_dev_llm_4/003-p02_cyan1_beam1_dev_pending-s17001-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/cyan_beam_dev_llm_4/004-p02_cyan1_beam1_dev_pending-s17001-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/001-s1_normal_mixed_v2-s17100-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/002-s1_normal_mixed_v2-s17100-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/003-s1_normal_mixed_v2-s17100-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/004-s1_normal_mixed_v2-s17100-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/005-s5_moved_dropped_item_v2-s17104-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/006-s5_moved_dropped_item_v2-s17104-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/007-s5_moved_dropped_item_v2-s17104-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/008-s5_moved_dropped_item_v2-s17104-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/009-s3_late_rendezvous_v2-s17102-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/010-s3_late_rendezvous_v2-s17102-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/011-s3_late_rendezvous_v2-s17102-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/012-s3_late_rendezvous_v2-s17102-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/013-s2_unmapped_blockage_v2-s17101-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/014-s2_unmapped_blockage_v2-s17101-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/015-s2_unmapped_blockage_v2-s17101-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/016-s2_unmapped_blockage_v2-s17101-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/017-s6_novel_relation_v2-s17105-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/018-s6_novel_relation_v2-s17105-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/019-s6_novel_relation_v2-s17105-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/020-s6_novel_relation_v2-s17105-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/021-s4_narrow_door_standoff_v2-s17103-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/022-s4_narrow_door_standoff_v2-s17103-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/023-s4_narrow_door_standoff_v2-s17103-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/formal_six_scenario_no_llm_24/024-s4_narrow_door_standoff_v2-s17103-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/001-s3_late_rendezvous_v2-s623-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/002-s3_late_rendezvous_v2-s623-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/003-s3_late_rendezvous_v2-s623-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/004-s3_late_rendezvous_v2-s623-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/005-s3_late_rendezvous_v2-s621-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/006-s3_late_rendezvous_v2-s621-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/007-s3_late_rendezvous_v2-s621-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/008-s3_late_rendezvous_v2-s621-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/009-s6_novel_relation_v2-s652-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/010-s6_novel_relation_v2-s652-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/011-s6_novel_relation_v2-s652-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/012-s6_novel_relation_v2-s652-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/013-s4_narrow_door_standoff_v2-s632-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/014-s4_narrow_door_standoff_v2-s632-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/015-s4_narrow_door_standoff_v2-s632-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/016-s4_narrow_door_standoff_v2-s632-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/017-s2_unmapped_blockage_v2-s611-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/018-s2_unmapped_blockage_v2-s611-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/019-s2_unmapped_blockage_v2-s611-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/020-s2_unmapped_blockage_v2-s611-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/021-s5_moved_dropped_item_v2-s641-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/022-s5_moved_dropped_item_v2-s641-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/023-s5_moved_dropped_item_v2-s641-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/024-s5_moved_dropped_item_v2-s641-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/025-s6_novel_relation_v2-s653-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/026-s6_novel_relation_v2-s653-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/027-s6_novel_relation_v2-s653-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/028-s6_novel_relation_v2-s653-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/029-s1_normal_mixed_v2-s601-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/030-s1_normal_mixed_v2-s601-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/031-s1_normal_mixed_v2-s601-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/032-s1_normal_mixed_v2-s601-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/033-s6_novel_relation_v2-s651-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/034-s6_novel_relation_v2-s651-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/035-s6_novel_relation_v2-s651-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/036-s6_novel_relation_v2-s651-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/037-s3_late_rendezvous_v2-s622-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/038-s3_late_rendezvous_v2-s622-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/039-s3_late_rendezvous_v2-s622-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/040-s3_late_rendezvous_v2-s622-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/041-s1_normal_mixed_v2-s603-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/042-s1_normal_mixed_v2-s603-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/043-s1_normal_mixed_v2-s603-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/044-s1_normal_mixed_v2-s603-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/045-s4_narrow_door_standoff_v2-s633-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/046-s4_narrow_door_standoff_v2-s633-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/047-s4_narrow_door_standoff_v2-s633-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/048-s4_narrow_door_standoff_v2-s633-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/049-s5_moved_dropped_item_v2-s642-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/050-s5_moved_dropped_item_v2-s642-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/051-s5_moved_dropped_item_v2-s642-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/052-s5_moved_dropped_item_v2-s642-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/053-s1_normal_mixed_v2-s602-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/054-s1_normal_mixed_v2-s602-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/055-s1_normal_mixed_v2-s602-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/056-s1_normal_mixed_v2-s602-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/057-s5_moved_dropped_item_v2-s643-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/058-s5_moved_dropped_item_v2-s643-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/059-s5_moved_dropped_item_v2-s643-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/060-s5_moved_dropped_item_v2-s643-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/061-s4_narrow_door_standoff_v2-s631-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/062-s4_narrow_door_standoff_v2-s631-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/063-s4_narrow_door_standoff_v2-s631-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/064-s4_narrow_door_standoff_v2-s631-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/065-s2_unmapped_blockage_v2-s613-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/066-s2_unmapped_blockage_v2-s613-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/067-s2_unmapped_blockage_v2-s613-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/068-s2_unmapped_blockage_v2-s613-leader_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/069-s2_unmapped_blockage_v2-s612-structured",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/070-s2_unmapped_blockage_v2-s612-peer_ko",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/071-s2_unmapped_blockage_v2-s612-no_comm",
+    "/Users/changmin/projects/ugrp/outputs/p07-e2e-review-20260930/external_pilot_72/072-s2_unmapped_blockage_v2-s612-leader_ko"
+  ],
+  "unmet_conditions": [
+    "DRAFT_ONLY: 계획 생성은 실행 승인이 아니다; 이 도구에는 execute가 없다",
+    "FINAL_FREEZE: 합성·독립 검토 후 새 실행 source SHA와 봉인 파일을 별도 커밋",
+    "BUNDLE_RESERVATION: main/열린 PR 최댓값 확인 후 새 번호 예약; #292 v83/2.16.0 사용 금지",
+    "COST_APPROVAL: 실제 모델/실효 모델·토큰 상한·비용 승인 및 새 예산 DB는 코디네이터 작업",
+    "HOST_ADMISSION: 실행 직전 소유 잠금·10 GiB·부하·raw 경로를 재확인; ENOSPC=HOST_ERROR",
+    "STANDARD_ENTRY: 최종 후보를 표준 sim_cli workflow에 등록하고 그 경로에서만 실행",
+    "RESULT_DELIVERY: 실패/미도달 포함 raw·원장·평가와 TensorBoard 로딩/영상/화면 대조",
+    "P01_SUPPORTED_COMBINATION: unavailable; v3/map/render/provider/model/calibration not admitted",
+    "P03_SUPPORTED_COMBINATION: blocked; v3/map/render/provider/model/calibration not admitted",
+    "S01: P01/P03 최종 v3 map/scene/provider/보정 조합; 3지도 reset 3×30 SIM초/초기 접촉/카메라 검증",
+    "S02: 최종 v3 모델/카메라/위치 추정 독립 검증; 새 dev 출발 3개 접근; #216 완료 아님",
+    "S03: 실제 이전 leg 뒤 3체크포인트×120 SIM초: lower/open/p20/fresh fix/re-align/regrasp/lift; Release 재다운로드/해시/로딩과 최종 보정",
+    "S04: 실제 접근 posterior를 정렬로 이관; teacher 준비 자세 치환 금지; M1_FINAL/M2_FINAL 새 코호트",
+    "S05: 실제 접근 3개→정렬/preclose와 invalid-frame 1개; 새 모델/바닥 검증",
+    "S06: 정렬 종료 상태에서 close/lift/hold 및 한쪽 파지 실패 전파; checkpoint 누적 retention/동기 정지",
+    "S07: #292 인수 5개 및 classifier/정의 pin; 최종 문/목적지 연쇄와 L0–L7 전체 통과",
+    "S08: 목적지 접근/lower/open/양손 분리/재측위와 평가 일치; 처음부터 끝까지 단일 run_id 및 상태 유지",
+    "S09: PR293_CONFIRMATION과 3개 중단 흐름; 결측/시작 정체/느린 정상 동작을 분모에 유지",
+    "S10: 4조건 실제 다회 한국어/주문 수행; no_comm 송수신0/leader 허브/structured schema; C5b 실제 호출·응답·시각·정산",
+    "S11: 최종 s2/s3/s5 사건 실제 발생/관측 도달; 거짓 성공0 및 실패/미도달/HOST_ERROR 보존",
+    "S12: P05 요청 이미지/텍스트·call_id→ledger→proxy→usage 대조; 실효 모델/토큰 상한/비용 승인; 새 DB는 이 도구에서 만들지 않음",
+    "S13: P02 cyan1+봉1+r3 계약과 물리 연결; P09 비청록/heavy_crate/can/tile/재배정/회전/순서·기억 별도 검증",
+    "S14: P06 같은 run의 manifest/raw/wire/ledger/eval 해시와 전체 분모; 새 결과의 TensorBoard event 로딩·영상 등록·pin/HParams 화면 대조",
+    "S15: scenario reset 뒤 teacher mutation/GT PF 초기화/성공 receipt 0; P04 privileged read/write 금지와 단일 상태 이력",
+    "PR292_ACCEPTANCE: seed911 tS/S01,S07; tR/hR2_04; tX1/X01; tX1b/X06: 명령 bytes/hash·leg·전체 연쇄 접촉/하드 판정 동일; classifier/정의/일반 setdown/teacher 준비 경계 결정과 독립 검토; 원본 해시만으로 인수 통과 불가",
+    "PR293_CONFIRMATION: 새 30정체+60정상 확증, 시작부터 막힌 6건 포함, 주 설정 수용 기준; 독립 배치/시드·staging 성립·분모·검출 지연/오경보와 제어 중단 흐름; 물리 안전 승인 아님",
+    "M1_FINAL: 같은 최종 v3/tag0/보정 후보 새6회×900 SIM초; ≥5/6 및 거짓 성공0; 초기 접근부터 끝까지 실패·미도달 포함",
+    "M2_FINAL: 같은 최종 후보 새6회×900 SIM초의 접근→L0–L7→방출 전체; 최종 수용 문턱 별도 고정·거짓 성공0·checkpoint 상태 연속성",
+    "C5A: 고정 r1/r2 pair+r3 solo, 같은 seed×4조건; 중간 재배치 없는 실제 임무; 축소 시나리오·다른 코호트를 합산하여 완료로 표시하지 않음",
+    "C5B: C5a 고정 구성 유지; 실제 한국어 왕복/원장/작업 경계와 최대360호출; 축소 시나리오·다른 코호트를 합산하여 완료로 표시하지 않음",
+    "C6: P09 모든 능력 + 새 smoke seed 버전 + 사건 성립/거짓 성공0/경계 감사; 축소 시나리오·다른 코호트를 합산하여 완료로 표시하지 않음",
+    "C7: C6 통과 뒤 별도 코호트; 조건 가린 합산 판정/상한/ρ/정산, 확증 H1–H3 제외; 축소 시나리오·다른 코호트를 합산하여 완료로 표시하지 않음",
+    "P02_SCENARIO: cyan1+long_beam1/r1-r2 pair/r3 solo 최종 v3 dev 시나리오 합성·pin 필요; v2 명세 승계 금지",
+    "SMOKE_SEEDS: C6 신규 seed는 기존 v2에 없음; 원본 보존 후 새 버전 시나리오 등록 필요",
+    "P09_ALL_CAPABILITIES: C6/C7는 6종 물건·역할·경로·숨은 사건 전체 검증 필요",
+    "FINAL_CALIBRATION: v3 카메라/명령 보정 미선택; legacy 보정의 암묵적 승계 금지",
+    "DEV_LEADER_SCOPE: C5a/C5b는 각각 1 seed/leader 1종; 지휘자 균형·일반화 claim 없음"
+  ]
+}

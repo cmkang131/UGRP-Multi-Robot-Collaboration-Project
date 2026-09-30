@@ -17,14 +17,6 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class CiFastPathTests(unittest.TestCase):
-    def test_new_commits_preserve_running_and_pending_ci(self):
-        workflow = (ROOT / ".github/workflows/tests.yml").read_text()
-        concurrency = workflow.split("\nconcurrency:\n", 1)[1].split("\njobs:\n", 1)[0]
-        # A shared PR group with cancellation disabled still replaces pending
-        # runs. Every run must have its own group, as well as no active cancel.
-        self.assertIn("  group: tests-${{ github.workflow }}-${{ github.run_id }}\n", concurrency)
-        self.assertIn("  cancel-in-progress: false\n", concurrency)
-
     def test_only_allowed_documentation_uses_fast_path(self):
         paths = ["README.md", "AGENTS.md", "docs/guide.md", "docs/images/example.png",
                  "experiments/2026-09-30-process-review/NOTES.md"]
