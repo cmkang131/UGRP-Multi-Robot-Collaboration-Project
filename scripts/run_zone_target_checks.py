@@ -16,6 +16,7 @@ import traceback
 
 from harness.zone_study_contract import digest
 from scripts.zone_target_bundle import ROOT, BUNDLE_ID, cell_inputs, load_config, verify_bundle
+from harness.zone_target_environment import execution_blockers, require_execution
 
 
 def write(path, value):
@@ -32,11 +33,13 @@ def selection(cfg, args):
     names = [args.cell] if args.cell else [k for k, c in cfg['cells'].items() if c['group'] == args.group]
     return {'cells': names, 'sim_cap_s': len(names)*cfg['sim_cap_s_per_cell'], 'condition': args.condition,
             'execution_bundle_id': BUNDLE_ID, 'scope': cfg['scope'], 'physics_run': False,
+            'runnable': not execution_blockers(cfg), 'blocked_on': execution_blockers(cfg),
             'controller_config_sha256': digest({k: v for k, v in cfg.items() if k != 'cells'}),
             'role_assignment_sha256': digest({k: cfg['cells'][k] for k in names})}
 
 
 def execute_cell(cfg, name, condition, out, bundle, bundle_sha):
+    require_execution(cfg)  # also protects direct API calls before any native imports / writes
     from harness import zone_study_integration as zi
     from harness.zone_study_referee import HiddenEventSchedule, Referee
     from harness.zone_target_actor import TargetActor
@@ -166,6 +169,7 @@ def main(argv=None):
     code = git_identity(ROOT)
     if not args.expected_source_sha or args.expected_source_sha != code['source_sha'] or code['source_dirty']:
         raise SystemExit('execution requires clean committed source and exact --expected-source-sha')
+    require_execution(cfg)  # before output directories, host locks, workers and physics
     if args.output is None or not args.output.is_absolute() or args.output.exists():
         raise SystemExit('execute requires a NEW absolute output directory')
     parent = args.output.parent

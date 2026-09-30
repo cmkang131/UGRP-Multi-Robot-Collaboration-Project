@@ -17,6 +17,8 @@ from harness.zone_own_deliver import _DeliverController
 from harness.zone_own_contract import zone_slot
 from harness.wrist_zone_skill_v9 import WristZoneDeliveryV9
 
+SUPPORTED_ROBOT_MODELS = ('masterpi_v2',)
+
 
 class TargetSkill(WristZoneDeliveryV9):
     def __init__(self, order, *, target, **kwargs):
@@ -39,6 +41,8 @@ class TargetSkill(WristZoneDeliveryV9):
 
 class TargetDelivery(_DeliverController):
     def __init__(self, executor, job, target, view, target_xy):
+        if executor.map.get('robot_model', 'masterpi_v2') not in SUPPORTED_ROBOT_MODELS:
+            raise ContractViolation('FINAL_V3_TARGET_MANIPULATION_ADAPTER_REQUIRED')
         self.target = target
         self.target_view = view
 
@@ -110,6 +114,8 @@ class TargetOwnExecutor:
 
     def __init__(self, executor, *, visual_catalogue, cancel_scheduled,
                  recognizer=None, delivery_factory=TargetDelivery):
+        if executor.map.get('robot_model', 'masterpi_v2') not in SUPPORTED_ROBOT_MODELS:
+            raise ContractViolation('FINAL_V3_TARGET_RGB_AND_MANIPULATION_ADAPTER_REQUIRED')
         self.inner = executor
         self.recognizer = recognizer or OwnRGBRecognizer(executor.robot_id, executor.map)
         self.cancel_scheduled = cancel_scheduled

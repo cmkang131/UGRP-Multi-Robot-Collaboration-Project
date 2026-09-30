@@ -2,14 +2,14 @@
   "schema": "ugrp.t13_target_checks.v1",
   "status": "experimental_unqualified",
   "seed": 641,
-  "execution_bundle_id": "zone-target-v85",
-  "map_id": "zone_wide_door_geometry_v2",
-  "robot_model": "masterpi_v2",
-  "scope": "development_only_not_final_v3_or_e2e",
+  "execution_bundle_id": "zone-target-v86",
+  "map_id": "zone_wide_door_geometry_v3",
+  "robot_model": "masterpi_v3",
+  "scope": "final_v3_environment_contract_only_execution_blocked",
   "contact_profile": "cargo_noslip_v1",
   "weld": false,
-  "render_profile": "floor_light_v1",
-  "pose_provider": "vision_zero_tag_v2",
+  "render_profile": "default",
+  "pose_provider": "vision_zero_tag_final_v3_p03",
   "sensor": "off",
   "own_memory": "target_tracks_only",
   "conditions": [
@@ -155,7 +155,8 @@
     "mode": "m1",
     "skill_module": "harness.wrist_zone_skill_v9",
     "skill_class": "WristZoneDeliveryV9",
-    "calibration": "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json"
+    "calibration": null,
+    "calibration_sha256": null
   },
   "setup_only": {
     "arena_variant": "zone_wide_door",
@@ -299,5 +300,6 @@
       "focal_event": "red_1_dropped",
       "expected_effect": "none_item_not_held"
     }
-  }
+  },
+  "final_environment_bundle_id": "zone-final-environment-v84"
 }

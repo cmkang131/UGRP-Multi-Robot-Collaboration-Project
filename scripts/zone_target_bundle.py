@@ -1,4 +1,4 @@
-"""Immutable T13 development execution bundle, separate from sealed families."""
+"""T13 v86 final-environment candidate; historical v85 bytes stay unchanged."""
 from __future__ import annotations
 import copy
 import hashlib
@@ -8,23 +8,26 @@ from pathlib import Path
 from harness.python_source_closure import source_closure
 from harness.zone_study_contract import digest
 from harness.zone_target_identity import PublicVisualCatalogue
+from harness.zone_target_environment import environment_contract, execution_blockers
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = 'configs/t13_target_checks.json'
-BUNDLE = 'config/rgb_execution_bundles/zone-target-v85.json'
-BUNDLE_ID = 'zone-target-v85'
-WORKFLOW_VERSION = '2.18.0'
+BUNDLE = 'config/rgb_execution_bundles/zone-target-v86.json'
+BUNDLE_ID = 'zone-target-v86'
+WORKFLOW_VERSION = '2.19.0'
+WORKFLOW = 'configs/simulation_workflows.d/target_v86.json'
 
 
 def load_config(root=ROOT):
     cfg = json.loads((Path(root)/CONFIG).read_text())
-    if (cfg['execution_bundle_id'] != BUNDLE_ID or cfg['map_id'] != 'zone_wide_door_geometry_v2'
-            or cfg['robot_model'] != 'masterpi_v2' or cfg['pose_provider'] != 'vision_zero_tag_v2'
+    if (cfg['execution_bundle_id'] != BUNDLE_ID or cfg['map_id'] != 'zone_wide_door_geometry_v3'
+            or cfg['robot_model'] != 'masterpi_v3' or cfg['pose_provider'] != 'vision_zero_tag_final_v3_p03'
             or cfg['sim_cap_s_per_cell'] != 900 or cfg['weld'] is not False
             or cfg['sensor'] != 'off' or cfg['contact_profile'] != 'cargo_noslip_v1'
             or cfg['conditions'] != ['no_comm', 'peer_ko', 'leader_ko', 'structured']):
         raise ValueError('unsupported T13 controller/environment/config')
     PublicVisualCatalogue(cfg['public_visual_catalogue'])
+    environment_contract(cfg, root=root)
     return cfg
 
 
@@ -49,25 +52,29 @@ def cell_inputs(cfg, name):
             'team_cargo': [{'item_id': p['item_id'], 'kind': p['kind'], 'pose': p['pose_m']}
                            for p in placements if p['kind'] == 'can'],
             'pose_priors': copy.deepcopy(cfg['public_dock_priors']), 'target_placements': placements,
-            'visual_catalogue': catalogue, 'render_profile': cfg['render_profile']}
+            'visual_catalogue': catalogue, 'render_profile': cfg['render_profile'],
+            'robot_model': cfg['robot_model']}
     return cell, spec, {'eval': {'hidden_events': events}}
 
 
 def candidate_bundle(root=ROOT):
     root = Path(root)
     cfg = load_config(root)
-    roots = ('scripts/run_zone_target_checks.py', CONFIG, 'configs/simulation_workflows.json',
-             cfg['student']['calibration'], 'configs/vision_loc_worker.json',
-             'configs/zone_study_integration/pose_providers.json',
-             'maps/zones/zone_wide_door_geometry_v2.json',
-             'sim/masterpi_scene_v2.xml',
+    from harness import zone_final_environment as final
+    parent = final.bundle(cfg['map_id'], check='p01', root=root)
+    roots = ('scripts/run_zone_target_checks.py', CONFIG, WORKFLOW,
+             'sim/masterpi_scene_v2.xml',  # template transformed by the v3 environment hook
              'configs/zone_study_scenarios_v2/s5_moved_dropped_item_v2.json')
-    files = source_closure(root, roots, modules=('harness.vision_pose_source',))
+    files = sorted(set(source_closure(root, roots)) | set(parent['source_sha256']))
     from scripts.zone_pair_dev_contract import profile_contract
     return {'schema': 'ugrp.target_execution_bundle.v1', 'bundle_id': BUNDLE_ID,
             'status': 'experimental_unqualified', 'workflow_id': 'zone-target-checks',
+            'runnable': not execution_blockers(cfg, root=root),
+            'blocked_on': execution_blockers(cfg, root=root),
             'workflow_version': WORKFLOW_VERSION, 'scope': cfg['scope'],
-            'parent_reference': 'zone-pair-v81-carry-dr-general; no inherited physical result',
+            'parent_reference': 'zone-final-environment-v84 (PR #338); no inherited physical result',
+            'final_environment': parent,
+            'controller_inputs': parent['controller_inputs'],
             'controller_config_sha256': digest({k: v for k, v in cfg.items() if k != 'cells'}),
             'condition_overrides': False, 'role_assignment_in_controller_hash': False,
             'camera': {'sensor': 'own_robot_cam', 'width': 640, 'height': 480,
@@ -75,11 +82,12 @@ def candidate_bundle(root=ROOT):
                        'source_profile': 'sim/masterpi_camera_profile.py'},
             'commands': {'executor': 'TargetOwnExecutor + unchanged OwnCamTeamHost macro timeline',
                          'tick_s': .1, 'frame_s': .2, 'maximum_frame_age_s': .25,
-                         'cancel': 'drop own scheduled macro commands and hold immediately'},
+                         'cancel': 'drop own scheduled macro commands and hold immediately',
+                         'capture': 'one observation per robot per exact SIM timestamp'},
             'contact': profile_contract(),
             'pose_provider': cfg['pose_provider'], 'sensors': 'off',
             'sources': {p: hashlib.sha256((root/p).read_bytes()).hexdigest() for p in files},
-            'assets': json.loads((root/'configs/vision_loc_worker.json').read_text())['model'],
+            'assets': parent['model'],
             'verification': {'offline': 'see experiment record', 'physics': 'not_run', 'e2e': 'not_run'}}
 
 

@@ -18,13 +18,17 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_bundle_freezes_all_new_control_files_config_assets_and_verifies_drift(monkeypatch):
     bundle, sha = registry.verify_bundle()
     assert sha == digest(bundle)
-    assert bundle['bundle_id'] == 'zone-target-v85'
-    assert bundle['workflow_version'] == '2.18.0'
+    assert bundle['bundle_id'] == 'zone-target-v86'
+    assert bundle['workflow_version'] == '2.19.0'
     required = {'harness/zone_target_executor.py', 'harness/zone_target_rgb.py',
                 'harness/zone_target_identity.py', 'harness/zone_target_actor.py',
                 'scripts/run_zone_target_checks.py', 'scripts/zone_target_host.py',
                 'sim/zone_target_scene.py', 'configs/t13_target_checks.json',
-                'harness/vision_pose_source.py', 'configs/vision_loc_worker.json',
+                'harness/vision_pose_source_final.py', 'configs/vision_loc_worker.json',
+                'harness/zone_final_environment.py', 'harness/zone_target_environment.py',
+                'configs/simulation_workflows.d/target_v86.json',
+                'configs/zone_final_environment_v84.json', 'sim/zone_final_v3_scene.py',
+                'configs/calibration/zone_final_v3_contract.json',
                 'sim/masterpi_scene_v2.xml'}
     assert required <= bundle['sources'].keys()
     for path in required:
@@ -63,7 +67,7 @@ def test_original_s5_setup_events_orders_and_caps_are_preserved_across_condition
 def test_workflow_plan_is_runnable_module_with_explicit_registration(tmp_path):
     p = plan(ROOT, 'zone-target-checks', ['--group', 't13a', '--condition', 'no_comm',
                                           '--output', str(tmp_path/'new')])
-    assert p['workflow_version'] == '2.18.0'
+    assert p['workflow_version'] == '2.19.0'
     assert 'scripts.run_zone_target_checks' in p['command']
     assert p['runner'] == 'scripts.run_zone_target_checks' and p['execution_started'] is False
 
@@ -124,6 +128,9 @@ def fake_native(monkeypatch, *, fail_advance=False, fail_close=False):
     monkeypatch.setattr(zone_target_actor, 'TargetActor', Actor)
     monkeypatch.setattr(zone_study_referee, 'Referee', Referee)
     monkeypatch.setattr(zone_study_integration, 'pose_provider_spec', lambda *a, **kw: {})
+    # Lifecycle serialization only: never claim this fake v2 Host qualifies a
+    # final-v3 controller. Real admission is tested separately and stays shut.
+    monkeypatch.setattr(runner, 'require_execution', lambda cfg: None)
     monkeypatch.setattr(render_profile, 'verify_model', lambda *a: {'fake': True})
     return hosts, actors, bundle
 

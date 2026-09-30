@@ -52,6 +52,8 @@ class TargetView:
 
 class OwnRGBRecognizer:
     def __init__(self, robot_id, static_map):
+        if static_map.get('robot_model', 'masterpi_v2') != 'masterpi_v2':
+            raise ContractViolation('FINAL_V3_TARGET_RGB_PROJECTION_REQUIRED')
         self.robot_id = robot_id
         self.static = copy.deepcopy(static_map)
         self.frame = None

@@ -1,57 +1,38 @@
-# 조정자 실행 인계 — zone-target-v85
+# T13 최종 환경 인계 — zone-target-v86 / 2.19.0
 
-등록 workflow는 `zone-target-checks` **2.18.0**이다.
+**PR #338 의존, draft. 현재 실행 차단(`runnable=false`), 물리 미실행.**
 
-**오프라인 구현만 검증했다. 물리 미실행이며 최종 v3 인수 완료가 아니다.**
-이 후보는 MasterPi v2 + geometry_v2 + vision_zero_tag_v2의 개발 진단이다.
-#320/#329의 최종 MasterPi v3/walls_v3(0.40 m) 요구는 별도 이관·인수 전까지 미충족이다.
-RGB 기반 전체 pickup region의 clear-empty 판정도 미구현이므로 M-U의 absence 항목은
-unknown/미지원으로 남긴다. 이 제한을 해소했다고 보고하지 않는다.
+#338의 `zone-final-environment-v84`에서 최종 MasterPi v3 + geometry_v3,
+walls_v3 0.40 m, 표식0, default render, cargo_noslip_v1, weld OFF, 센서 OFF를
+가져온다. 원본 s5 주문·물건 배치·30초 이동/62.5초 낙하 사건과 공개 시각 catalogue는
+보존한다. 과거 v85 번들은 원본 그대로 남겨 두며 현재 실행용으로 사용하지 않는다.
 
-## 고정 조건
+다음 두 조건이 해결되기 전에는 조정자도 T13 실행을 시작하지 않는다.
 
-- `configs/t13_target_checks.json`의 seed641, 원본 s5의 cyan/red/red/can 배치와 두 사건을 쓴다.
-  I2만 공개 catalogue와 setup에 두 번째 cyan을 추가하고 30초에 반대 이동을 시도한다.
-- 표식0, 원래 카메라/FOV, 640×480 own RGB, floor_light_v1, cargo_noslip_v1, weld OFF,
-  센서 OFF. raw full JPEG는 pose/인식에, target-only PNG는 skill에 사용한다.
-- no_comm 고정 actor, LLM 호출0. H는 사건 전 파지를 **시도**하며 GT staging이 없다.
-  H 불성립은 `branch_not_established`. U의 시작은70초다. 이벤트 시각을 변경하거나
-  재실행으로 실패를 대체하지 않는다. 다른 통신 조건의 결과로 복제하지 않는다.
-- 모든 셀은 setup/settling/관측/이동/대기/복구를 포함해900 SIM초에서 끝난다.
-  T13a 할당2/총1800초, T13b 할당4/총3600초. 아래 두 group은 각각 한 번만 실행한다.
-  셀별 `--cell`은 조정자가 기존 할당에서 한 셀을 분리할 때만 쓰며 추가 반복 예산이 아니다.
+1. v84 계약과 일치하는 v3 카메라·unloaded/loaded/fine 동작 측정 보정 및 출처·해시.
+2. v3 표적 RGB projection/held 판단·조작 skill·host 연결의 별도 이관과 검증.
+   현재 target backend는 v2 기하를 사용하므로 v3 입력을 명시 거절한다.
+   `visual_arm_v3` 파일의 존재나 v3 pose provider만으로 이 조건을 충족하지 않는다.
 
-## 실행 전
+이 작업에서 측정값을 만들거나 v2 보정을 승계하지 않았다. 이관 후 새 소스·번들을
+등록하고 알려진 작은 사례의 물리 인수부터 진행해야 한다. 아래 셀별 판정과 예산은
+미래 인수의 계약이며 현재 실행 승인이 아니다. T13a 2×900=1800초,
+T13b 4×900=3600초의 기존 상한은 늘리지 않는다.
 
-후보 PR의 **검증한 커밋**을 자기 worktree에 둔다. `git status --porcelain`이 빈 결과인지,
-선택 SHA와 번들 검사가 일치하는지 확인한다. source를 고친 경우 새 후보/새 번들을 정한다.
-`python3 scripts/agent_lock.py status`로 공용 잠금을 먼저 확인하고 기존 소유 작업을 중지하지
-않는다. 실행기는 잠금을 직접 acquire/release하므로 바깥에서 중복 acquire하지 않는다.
-10 GiB 이상 여유 공간이 필요하며 load average와 환경을 manifest에 기록한다.
-
-아래 변수의 SHA를 PR의 검증 SHA와 대조한다. `date` suffix는 새 경로를 만드는 용도이며
-실패 결과를 덮어쓰지 않는다. 모델 파일은 `configs/vision_loc_worker.json`의 체크포인트
-SHA와 실행 Python을 사용한다. 모델 파일/환경 누락은 사전 차단으로 기록한다.
+## 실행 없는 확인
 
 ```sh
 cd /Users/changmin/projects/ugrp-wt/integ-target-backend
 T13_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
-T13_SOURCE_SHA="$(git rev-parse HEAD)"
-T13_RUN_STAMP="$(date +%Y%m%dT%H%M%S)"
-T13_OUT="/Users/changmin/projects/ugrp/outputs/t13-target-v85-${T13_SOURCE_SHA}-${T13_RUN_STAMP}"
 "$T13_PY" -m scripts.run_zone_target_checks --group t13a --condition no_comm
 "$T13_PY" -m scripts.run_zone_target_checks --group t13b --condition no_comm
-"$T13_PY" -m scripts.sim_cli workflow plan zone-target-checks --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v85.json -- --group t13a --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --output "$T13_OUT/t13a"
-"$T13_PY" -m scripts.sim_cli workflow plan zone-target-checks --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v85.json -- --group t13b --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --output "$T13_OUT/t13b"
+"$T13_PY" -m scripts.sim_cli workflow plan zone-target-checks --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v86.json -- --group t13a --condition no_comm
 ```
 
-위 plan은 물리를 실행하지 않는다. 실제 실행은 다음 두 명령이다(`--lock-owner claude`는
-실행 조정자의 소유명이며 다른 주체가 실행하면 자기 소유명으로 바꾼다).
-
-```sh
-"$T13_PY" scripts/ugrp_session.py run t13a-target-v85 -- "$T13_PY" -m scripts.sim_cli workflow run zone-target-checks --record "$T13_OUT/managed-t13a" --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v85.json -- --group t13a --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --lock-owner claude --output "$T13_OUT/t13a"
-"$T13_PY" scripts/ugrp_session.py run t13b-target-v85 -- "$T13_PY" -m scripts.sim_cli workflow run zone-target-checks --record "$T13_OUT/managed-t13b" --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v85.json -- --group t13b --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --lock-owner claude --output "$T13_OUT/t13b"
-```
+두 runner plan에는 `runnable=false`와 두 `blocked_on` 항목이 나온다.
+표준 workflow plan의 `execution_started=false`는 명령 계획만 확인한 것이며
+물리 실행 가능/성공을 뜻하지 않는다. `--execute`와 직접 `execute_cell`도 출력 생성,
+호스트 잠금, worker/World 생성 전에 `T13_FINAL_ENVIRONMENT_NOT_READY`로 거부한다.
 
 ## 셀별 판정
 

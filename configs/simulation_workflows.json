@@ -768,22 +768,6 @@
         "--policy"
       ],
       "output_kind": "directory"
-    },
-    {
-      "id": "zone-target-checks",
-      "purpose": "T13a 특정 개체·개수 / T13b 사건 복구: 표적 RGB와 실제 하위 실행 연결의 유한 개발 인수, 최종 v3/E2E 아님",
-      "entry": "scripts/run_zone_target_checks.py",
-      "docs": "experiments/2026-10-01-t13-target-backend/PHYSICS_HANDOFF.md",
-      "requires": "clean exact source SHA; bundle zone-target-v85; own RGB + public visual catalogue + static map + own commands; no GT control; no LLM; vision_zero_tag_v2; 900 SIM s per cell; native execution coordinator only",
-      "version": "2.18.0",
-      "runner": "scripts.run_zone_target_checks",
-      "output_flag": "--output",
-      "side_effect": "local_simulation",
-      "adapter": "managed_legacy_cli",
-      "required_inputs": [
-        "--condition"
-      ],
-      "output_kind": "directory"
     }
   ]
 }

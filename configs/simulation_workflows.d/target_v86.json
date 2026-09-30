@@ -1,0 +1,21 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-target-checks",
+      "purpose": "T13 v86 최종 v3 환경 계약과 identity/recovery 후보; 측정 보정과 v3 표적 인식·조작 이관 전 실행 차단",
+      "entry": "scripts/run_zone_target_checks.py",
+      "docs": "experiments/2026-10-01-t13-target-backend/PHYSICS_HANDOFF.md",
+      "requires": "PR #338 final environment v84; measured v3 calibration and v3 target consumers required; runnable=false until implemented; own RGB + static map + own commands + delivered messages; no GT; 900 SIM s per cell",
+      "version": "2.19.0",
+      "runner": "scripts.run_zone_target_checks",
+      "output_flag": "--output",
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli",
+      "required_inputs": [
+        "--condition"
+      ],
+      "output_kind": "directory"
+    }
+  ]
+}

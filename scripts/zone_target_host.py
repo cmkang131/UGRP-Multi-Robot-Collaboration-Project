@@ -7,6 +7,19 @@ from scripts.run_zone_study_integration import StudyTeamHost
 
 
 class _TargetHost(OwnCamTeamHost):
+    def _capture(self, rid, now):
+        # Periodic, explicit and macro-completion requests can coincide. One
+        # physical instant supplies at most one identity observation per robot.
+        # Keep stale/reordered *frames* fail-closed in IdentityJobs; only merge
+        # equal-time host requests, never a backwards clock or another robot.
+        captured = self.__dict__.setdefault('_target_capture_times', {})
+        if rid in captured and now == captured[rid]:
+            return None
+        result = super()._capture(rid, now)
+        if not self.robots[rid].dead:
+            captured[rid] = now
+        return result
+
     def __init__(self, spec, student, *, root, study_layer, frames_dir=None, scene=None, pose_factory=None):
         from sim.zone_target_scene import TargetScene
         from sim.zone_cargo_contact import base_profile
@@ -36,6 +49,14 @@ class _TargetHost(OwnCamTeamHost):
 
 class TargetStudyHost(StudyTeamHost, _TargetHost):
     """Reuse native stepping, provider lifecycle and original hidden events."""
+
+    def __init__(self, spec, student, **kwargs):
+        # Direct construction must not bypass the runner's v3 admission or
+        # reach a v2 Scene/worker with a newly selected v3 map.
+        from harness.zone_final_environment import registry
+        if spec['map'] in registry()['maps'] or spec.get('robot_model') == 'masterpi_v3':
+            raise ValueError('FINAL_V3_TARGET_HOST_AND_CONSUMERS_REQUIRED')
+        super().__init__(spec, student, **kwargs)
 
     def _physics_until(self, t_end):
         # Call the event injector at each actual physics tick, including setup

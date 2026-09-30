@@ -1,3 +1,38 @@
+# 검토 K 수정 — 최종 환경 연결, 실행 차단 유지
+
+2026-10-01: PR #339는 **#338에 의존**한다. main의 P03 #312·T10a #310과
+`origin/codex/integ-final-env-runnable` `6df8f1ae`를 통합했다.
+현재 후보는 **zone-target-v86 / workflow 2.19.0**이다. 이전 v85 번들 바이트는
+그대로 보존하며 기존 workflow catalog·v6e 등록 pin은 main의 원본으로 복구했다.
+추가 catalog `configs/simulation_workflows.d/target_v86.json`을 사용한다.
+
+- K2: 정기·명시·매크로 완료 촬영이 같은 SIM 시각에 겹치면 로봇별로 한 번만
+  촬영한다. identity의 시간 단조성 검사와 잘못된 입력의 정지 경로는 그대로다.
+- K3: 기존 catalog와 v6e 등록 파일을 원본 바이트로 복구했다. 기존 보존 검사를
+  느슨하게 만들지 않았다. 번호 조회는 [새 예약 기록](review_k_id_reservation.json)에 있다.
+- K4: #338 v84의 MasterPi v3, geometry_v3/walls_v3(0.40 m), 표식0,
+  default render, final-v3 P03 provider·측정 보정 계약·소스 hash를 새 번들에 연결했다.
+  **측정 보정과 v3 표적 RGB/조작 이관이 없으므로 `runnable=false`다.**
+  runner·직접 셀 API는 출력/잠금/워커/World 생성 전에 거부하고, 기존 v2
+  host·recognizer·delivery도 v3 입력을 받지 않는다. 환경 이름만 바꿔 v2 동작을
+  사용하거나 K4의 물리 인수까지 해결했다고 주장하지 않는다.
+
+검토 반례는 `84f672ae`의 #339 검사 네 개를 가져와 xfail 없이 수행한다.
+추가 검사는 active target + arm macro 중복 촬영, 로봇별 격리, 같은 시각 두 관측의
+불인정, 역순 프레임 거부, 보정/모델/프로필 불일치와 모든 실행 진입점의 차단을 다룬다.
+#338의 CI 수집 검사도 정확한 파일 이름을 확인하도록 수정했다. 두 환경 테스트를
+CI에 계속 포함한다. `.github/workflows`와 보호된 source-pinning 테스트는 수정하지 않았다.
+
+[현재 인계](PHYSICS_HANDOFF.md)를 따른다. 물리·렌더·실제 추론·LLM은 실행하지 않았다.
+전체 pickup region의 clear-empty/OWN_PICKUP_ABSENT도 여전히 미구현이다.
+실제 결과가 없어 TensorBoard snapshot은 추가하지 않는다. 검증 수치·명령·해시는
+[검증 기록](review_k_verification.json)에 따로 남긴다.
+
+---
+
+아래는 **검토 이전 v85 개발 후보의 기록**이다. 현재 실행 가능성이나 검증 범위를
+나타내지 않으며, 이전 검증·실패·raw 기록을 새 결과로 합산하지 않는다.
+
 # T13 target-aware backend — 오프라인 구현, 물리 미검증
 
 PR #337에서 확인한 #320/#329의 연결 공백을 새 opt-in 경로로 연결한다. 기준 소스는

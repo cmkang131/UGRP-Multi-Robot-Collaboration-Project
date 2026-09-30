@@ -91,3 +91,10 @@ bash scripts/open_simulation.command workflow run tensorboard -- \
 ## 새 실행 경로 추가
 
 `configs/simulation_workflows.json`에 ID·버전·진입점·출력 규칙·실행 요구사항을 등록하고 관련 테스트를 추가한다. 공통 장면·초기화 구현을 재사용하며, 다른 물리·카메라·명령 조건이 필요하면 명시적 프로필/버전으로 추가한다. 기존 성공 조건의 변경 전후 차이와 검증 범위를 기록한다. 카탈로그 등록이나 자동 검사 통과는 연구 과제 완주 검증을 대신하지 않는다.
+
+기본 catalog가 기존 실행 등록에 고정돼 있으면 같은 schema의
+`configs/simulation_workflows.d/<후보>.json`을 추가한다. `sim_cli workflow list/plan/run`은
+기본 파일과 이 추가 파일들을 함께 읽고 hash에 포함한다. 기존 ID와 같은 ID를 추가해
+실행기를 바꾸는 것은 거부한다. 기본 catalog·등록 번들의 bytes를 보존하는 경로이며,
+별도 실행 관리자나 별도 결과 기록 체계를 만들지 않는다. v84 예시는
+[PHYSICS_HANDOFF](../PHYSICS_HANDOFF.md)에 있다.
