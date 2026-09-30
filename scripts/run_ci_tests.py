@@ -91,6 +91,8 @@ TEST_PATTERNS = (
     "tests/test_unloaded_hammerstein.py",
     "tests/test_unloaded_consumer.py",
     "tests/test_consumer_criterion_b.py",
+    "tests/test_final_environment_measurement_v2.py",
+    "tests/test_review_347.py",
     "tests/test_review_e2e_batch_k.py",  # K1: final environment CI collection regression
     "tests/test_scenario_capabilities_docs.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",
@@ -104,6 +106,16 @@ TEST_PATTERNS = (
     "tests/test_zone_study_llm_driver.py",
     "tests/test_zone_study_pair_delay.py",
     "tests/test_zone_study_referee.py", "tests/test_zone_hidden_events.py",
+    "tests/test_zone_study_evidence.py",
+    "tests/test_zone_study_evidence_join.py",
+    "tests/test_zone_study_evidence_review_a303.py",
+    "tests/test_zone_study_evidence_review_f303.py",
+    "tests/test_review_303c.py",
+    "tests/test_review_303d.py",
+    "tests/test_review_303e.py",
+    "tests/test_zone_referee_ownership.py",
+    "tests/test_zone_referee_replay.py",
+    "tests/test_zone_study_evidence_review_c303.py",
     "tests/test_zone_study_multiturn.py",
     "tests/test_zone_study_review_r8*.py", "tests/test_zone_study_review_r9*.py",
     "tests/test_zone_study_review_r10*.py",
@@ -114,7 +126,7 @@ TEST_PATTERNS = (
     "tests/test_zone_own_perception_v3.py", "tests/test_zone_own_perception_v3_1.py",
     "tests/test_zone_own_executor*.py",
     "tests/test_review_325b.py",  # T03: mandatory independent loss/mode counterexamples
-    "tests/test_review_e2e_batch_i.py",  # T04: issued arm sweep counterexample
+    "tests/test_review_e2e_batch_i.py",  # T04/T09b: issued arm sweep and delayed own capture counterexamples
     "tests/test_zone_pair_executor.py", "tests/test_zone_pair_status.py", "tests/test_zone_pair_review.py",
     "tests/test_zone_pair_role_exchange.py",  # T07: six explicit role assignments; fake ports only
     "tests/test_stall_observation_contract.py",  # P08: synthetic observation/stop contract only
@@ -132,6 +144,7 @@ TEST_PATTERNS = (
     "tests/test_zone_start_dock.py",
     "tests/test_zone_pair_admission.py",
     "tests/test_pair_chain_probe.py",
+    "tests/test_zone_pair_chain_contract.py",  # P04 fake-port transitions; no physics/models
     "tests/test_pair_passage_plan.py",  # 2026-09-29: opt-in corridor/door route planning for the pair carry (static geometry)
     "tests/test_beam_initial_pose_plan.py",  # T08a: static north/south setup sheet and role geometry, no execution
     # 2026-09-29: v6 is audited as history; these guard its receipt and the current v6-family path.

@@ -1,0 +1,136 @@
+{
+ "map_id": "zone_wide_corridor_final_v3",
+ "short": "corridor",
+ "map_hash_consistent": true,
+ "scene_xml_hash_ok": true,
+ "robot_model": "masterpi_v3",
+ "weld": "off",
+ "timestep_s": 0.00025,
+ "noslip_iterations": 10,
+ "contact_profile": "cargo_noslip_v1",
+ "render_profile": "default",
+ "tag_geom_count": 0,
+ "tag_words_in_xml": 0,
+ "wall_height_m": 0.4,
+ "wall_half_z_in_xml": [
+  0.2
+ ],
+ "cameras": {
+  "r1": {
+   "fovy": 42.18818995586325,
+   "size": [
+    640,
+    480
+   ]
+  },
+  "r2": {
+   "fovy": 42.18818995586325,
+   "size": [
+    640,
+    480
+   ]
+  },
+  "r3": {
+   "fovy": 42.18818995586325,
+   "size": [
+    640,
+    480
+   ]
+  }
+ },
+ "unexpected_obstacles": 0,
+ "contact_samples": 601,
+ "nonfloor_contact_rows": 0,
+ "nonfloor_contact_pairs": {},
+ "min_contact_dist_mm": -0.16075060452843543,
+ "min_contact_dist_pair": [
+  1.4000000000000512,
+  "floor",
+  "r1__wheel_fl"
+ ],
+ "robots": {
+  "r1": {
+   "frames": 7,
+   "times": [
+    1.3,
+    6.3,
+    11.3,
+    16.3,
+    21.3,
+    26.3,
+    31.3
+   ],
+   "png_hash_ok": true,
+   "unique_png_hashes": 1,
+   "commands": 1,
+   "base_drift_mm": 1.4008194166048804e-09,
+   "yaw_drift_deg": 3.797646090181448e-12
+  },
+  "r2": {
+   "frames": 7,
+   "times": [
+    1.3,
+    6.3,
+    11.3,
+    16.3,
+    21.3,
+    26.3,
+    31.3
+   ],
+   "png_hash_ok": true,
+   "unique_png_hashes": 1,
+   "commands": 1,
+   "base_drift_mm": 1.4013009630144615e-09,
+   "yaw_drift_deg": 3.755777514931018e-12
+  },
+  "r3": {
+   "frames": 7,
+   "times": [
+    1.3,
+    6.3,
+    11.3,
+    16.3,
+    21.3,
+    26.3,
+    31.3
+   ],
+   "png_hash_ok": true,
+   "unique_png_hashes": 1,
+   "commands": 1,
+   "base_drift_mm": 1.6782190789480668e-09,
+   "yaw_drift_deg": 3.781035617776142e-12
+  }
+ },
+ "png_hash_ok_all": true,
+ "frames_total": 21,
+ "max_base_drift_mm": 1.6782190789480668e-09,
+ "max_yaw_drift_deg": 3.797646090181448e-12,
+ "reset_sim_s": 1.3000000000000178,
+ "check_sim_s": 30.00000000005842,
+ "loadavg_start": [
+  13.638671875,
+  15.94482421875,
+  17.32666015625
+ ],
+ "loadavg_end": [
+  14.7841796875,
+  16.0341796875,
+  17.32470703125
+ ],
+ "model_calls": 0,
+ "student_control": false,
+ "result_status": "COLLECTED_UNQUALIFIED",
+ "criteria": {
+  "identity_hashes_consistent": true,
+  "v3_model_weld_off_noslip": true,
+  "no_tag_geoms_or_textures": true,
+  "wall_height_0p40": true,
+  "reset_le_5s": true,
+  "observation_30s_exact": true,
+  "no_initial_nonfloor_contact": true,
+  "drift_lt_1mm_and_0p1deg": true,
+  "png_hashes_match": true,
+  "student_commands_and_model_calls_zero": true
+ },
+ "mechanical_criteria_pass": true
+}

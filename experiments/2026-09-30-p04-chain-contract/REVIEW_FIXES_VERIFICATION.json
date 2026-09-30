@@ -1,0 +1,143 @@
+{
+  "scope": "offline transition/schema regression only; no physical success claim",
+  "recorded_at_utc": "2026-09-30T13:58:55.055137+00:00",
+  "reviewed_head": "8d755a5a69dd03fd9eb202407665b2b0890ed54d",
+  "merged_main": "892e5ae1550baa0790173380f58764cd44157a7a",
+  "tested_parent_sha": "bb3fdba08703e217aa5e9364250563d501eb3a72",
+  "tested_source_state": "uncommitted fix bytes; committed only after passing; hashes below",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "platform": "macOS-27.2-arm64-arm-64bit",
+  "packages": {
+    "pytest": "9.1.1",
+    "numpy": "2.5.2",
+    "opencv-python-headless": "5.0.0.93",
+    "Pillow": "12.3.0"
+  },
+  "thread_limits": {
+    "OPENBLAS_NUM_THREADS": 1,
+    "OMP_NUM_THREADS": 1
+  },
+  "test_runner": "scripts.run_ci_tests.main with exactly the 11 modules below and the shared lock",
+  "modules_passed": {
+    "tests/test_ci_sharding.py": 66,
+    "tests/test_pair_chain_probe.py": 26,
+    "tests/test_zone_pair_chain_contract.py": 85,
+    "tests/test_zone_pair_executor.py": 40,
+    "tests/test_zone_pair_grasp.py": 56,
+    "tests/test_zone_pair_preclose.py": 23,
+    "tests/test_zone_pair_registered_source.py": 22,
+    "tests/test_zone_pair_review7.py": 2,
+    "tests/test_zone_pair_status.py": 16,
+    "tests/test_zone_study_integration_pair.py": 10,
+    "tests/test_zone_study_source_pinning.py": 33
+  },
+  "passed": 379,
+  "failed": 0,
+  "skipped": 0,
+  "new_regressions": 47,
+  "new_corruption_cases": 46,
+  "junit_time_s": 336.237,
+  "source_and_fixture_hashes_unchanged_across_final_tests": true,
+  "source_and_fixture_sha256": {
+    "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+    "harness/m2_provider_adapter.py": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624",
+    "harness/pair_execution_contract.py": "7e6fdcf3aea98813c3c4a5a2335928a0a947cff46e50baf8170e39c44fa5a358",
+    "harness/zone_own_executor.py": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+    "harness/zone_own_team_host.py": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64",
+    "harness/zone_pair_align.py": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e",
+    "harness/zone_pair_executor.py": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+    "harness/zone_pair_grasp.py": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565",
+    "harness/zone_pair_guards.py": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde",
+    "harness/zone_pair_status.py": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+    "harness/zone_study_pose_delay.py": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894",
+    "maps/zones/zone_wide_door_tags_v2.json": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b",
+    "scripts/run_ci_tests.py": "4af3b1df9eefaffcb3f231eb33ad0e90b3d40dc0da29d67f3ab04820ab8526a2",
+    "scripts/run_m2_pair.py": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+    "scripts/run_zone_study_integration.py": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+    "scripts/study_owncam_pair_beam.py": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00",
+    "scripts/zone_teacher.py": "e84742fe788d80c726d79c0a46f7617a0f237edcaa0a325f2592a25c40acd5e4",
+    "tests/fixtures/m2_pair_door_v3/lift_824_r2_00759.jpg": "f4ab35c932a02238dc5428cccdde32a932322da138a52621217a3468160474cb",
+    "tests/test_ci_sharding.py": "8579a21a960d7891ac55e61824020dab3096ee85b1fc0aedd9dda97670f78430",
+    "tests/test_pair_chain_probe.py": "10d9b3963cfc5c295b395670baf105b13542649e523dd6dcb7f6733d601170f6",
+    "tests/test_zone_pair_chain_contract.py": "510c6461c2440c7fb739cc77c541703c056277b204454de34222ba8b051efca9",
+    "tests/test_zone_pair_executor.py": "e046181fc70fe73c7ccb0f32fb86f010df637fe2fff007c20b7df3acc2fdbc4c",
+    "tests/test_zone_pair_grasp.py": "28a1c927f3b8c6f3aa36db3a8ffda5439be8f622715f9fec73e5b3e837e5278d",
+    "tests/test_zone_pair_preclose.py": "0d1f41c18ea0e8e430afa29b3cd3a7c1d6d169bd7435b73f49a73d0641f59970",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_pair_review7.py": "698cf8213cec891db28e28f7a0b41533896fd045ee35f89edd849ef287f041f0",
+    "tests/test_zone_pair_status.py": "6e39c94da07b30bff6f3289943f5267752ba1e37ffbde33a692d6678542722ca",
+    "tests/test_zone_study_integration_pair.py": "4618cdc93ecf6a19ea43199ceee82bc3b65480a4747753aa27eaf5fb22bbcfb7",
+    "tests/test_zone_study_source_pinning.py": "98b1f59ce0af4c81102612ee9e8d9e1a12912e1635341cb7b439c920738ad1ef"
+  },
+  "pinned_paths_audit": {
+    "base_sha": "892e5ae1550baa0790173380f58764cd44157a7a",
+    "registration_files_checked": 53,
+    "referenced_source_paths": 87,
+    "changed_pinned_paths": [],
+    "changed_registration_paths": []
+  },
+  "earlier_result": {
+    "directory": "review-fixes-01",
+    "passed": 377,
+    "failed": 2,
+    "diagnosis": "missing-end error label was overwritten; pre-capture null fixture changed last_obs after an initial receipt already existed"
+  },
+  "before_fix_reproduction": {
+    "synthetic_positive_control_passed": 1,
+    "corruptions_wrongly_accepted": 8
+  },
+  "raw_root_local_only": "/Users/changmin/projects/ugrp/outputs/p04-chain-contract-20260930",
+  "raw_files": {
+    "review-fixes-01/red-counterexamples.json": {
+      "bytes": 1566,
+      "sha256": "c61bd63ae7e1dcdccaca31e261ac86c10adc523cff50f8fe078632e74e3db623"
+    },
+    "review-fixes-01/pair_execution_contract_before.py": {
+      "bytes": 19027,
+      "sha256": "b1cd5158883329425450a68ee37c112fd93838d422ef53650deb3f98b101089b"
+    },
+    "review-fixes-01/pinned-path-audit.json": {
+      "bytes": 196,
+      "sha256": "32aa19318d3cf71ea521fb62593abf8434f4bf276cd6429530e40fe3ad6138a5"
+    },
+    "review-fixes-01/source-and-fixtures-before.json": {
+      "bytes": 3094,
+      "sha256": "e853681851c4fe053eb88003a60a9e1f2f8d7fc603e038edecd8538eb652595d"
+    },
+    "review-fixes-01/pytest.log": {
+      "bytes": 5504,
+      "sha256": "ee3d7bbbfc6ae0b86a97b4d06b3e76d2e5c11e234171d1e2cd7122e810a84de1"
+    },
+    "review-fixes-01/junit.xml": {
+      "bytes": 78537,
+      "sha256": "fe809175fde8ebf69238d146c358d144debe7a00ecbdea664d8058eaeb2d1376"
+    },
+    "review-fixes-02/source-and-fixtures-before.json": {
+      "bytes": 3094,
+      "sha256": "9355c12ea719569f61e19c024b3941473ebfd1a0b637c2ef37ca4761895e0f32"
+    },
+    "review-fixes-02/pytest.log": {
+      "bytes": 556,
+      "sha256": "d9719b315b35e62402ae64141418a1d8f929163acae401e25bafa1ce6b43983c"
+    },
+    "review-fixes-02/junit.xml": {
+      "bytes": 73973,
+      "sha256": "d21bede6c5547fd164ad34a7554bb3292aad7119341d59aa8f54e90a71b53994"
+    },
+    "review-fixes-02/full_trace.json": {
+      "bytes": 12887887,
+      "sha256": "1ca67bbc09a8dbf887943f0aec1eee85ad408555c0749336f51354965f616b0c"
+    }
+  },
+  "local_physics_steps": 0,
+  "local_render_calls": 0,
+  "real_model_calls": 0,
+  "new_student_starts": 0,
+  "physical_success_verified": false,
+  "remote_ci": "normal PR CI required after push; status is reported on PR, not inferred from local tests",
+  "remaining": [
+    "independent re-review of changes",
+    "opt-in production observer/runner integration",
+    "separately authorized physical acceptance on final integrated source"
+  ]
+}

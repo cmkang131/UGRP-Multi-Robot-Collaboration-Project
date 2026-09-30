@@ -1,0 +1,236 @@
+{
+  "recorded_at": "2026-09-30T19:49:17.092640+00:00",
+  "scope": "PR 303 review F fixes; synthetic offline tests only",
+  "review_sha": "b13c9b972d239cc3da67b8b9909e5708ea482917",
+  "candidate_before": "3782887538db62c4673fe21908d252a3a7616da6",
+  "main_parent": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+  "merge_conflicts": [],
+  "commit_after_tests": true,
+  "runs": {
+    "before": {
+      "argv": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-09-30-e2e-p06-evidence/review_f_offline.py",
+        ".",
+        "tests/test_review_303f.py::test_generated_property_detects_restored_rejected_owner_bug",
+        "tests/test_review_303f.py::test_tensorboard_ci_probe_needs_no_opencv",
+        "--runxfail",
+        "--tb=short",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/before.xml"
+      ],
+      "counts": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 0
+      },
+      "returncode": 1,
+      "log": {
+        "path": "/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/before.log",
+        "sha256": "913633c6850d8b5f9b46c8e31b01d2db86a3ac8bc777fc32d5d1b899475c9201"
+      },
+      "junit": {
+        "path": "/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/before.xml",
+        "sha256": "ca1cc45d661dbba35c3c84f24006d84a220cc9d7cd317a95150f5a25a061a18a"
+      },
+      "failures": [
+        {
+          "test": "test_generated_property_detects_restored_rejected_owner_bug",
+          "message": "AssertionError: All 192 cases survived the mutation that restores wrong rejected-source ownership\nassert []"
+        },
+        {
+          "test": "test_tensorboard_ci_probe_needs_no_opencv",
+          "message": "AssertionError: F                                                                        [100%]\n  =================================== FAILURES ===================================\n  ________________ test_p06_rejected_owners_with_real_tensorboard ________________\n  tests/test_tensorboard_export.py:39: in test_p06_rejected_owners_with_real_tensorboard\n      from tests import test_review_303e as e\n  ../../../Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module\n      exec(co, module.__dict__)\n  tests/test_review_303e.py:19: in <module>\n      from tests.test_zone_referee_replay import claims\n  ../../../Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module\n      exec(co, module.__dict__)\n  tests/test_zone_referee_replay.py:17: in <module>\n      from tests.test_zone_study_referee import MAP, at_zone\n  ../../../Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module\n      exec(co, module.__dict__)\n  tests/test_zone_study_referee.py:24: in <module>\n      from harness import zone_study_integration as zi  # noqa: E402\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  harness/zone_study_integration.py:62: in <module>\n      from harness.zone_own_executor import API_TO_ACTION_KIND, EVENTS as EXECUTOR_EVENTS\n  harness/zone_own_executor.py:53: in <module>\n      from harness import zone_own_guards as guards\n  harness/zone_own_guards.py:39: in <module>\n      from harness.m1_owncam_delivery import LIMITS as M1_LIMITS\n  harness/m1_owncam_delivery.py:38: in <module>\n      from harness.owncam_drive import CARRY_POSTURE, LOOK_P20, SEARCH_POSE, SETTLE_S, WIDE_LOOK_PANS\n  harness/owncam_drive.py:27: in <module>\n      from harness.map_goto import UNLOADED_ENVELOPE, plan_path\n  harness/map_goto.py:21: in <module>\n      import cv2\n  E   ModuleNotFoundError: import of cv2 halted; None in sys.modules\n  =========================== short test summary info ============================\n  FAILED tests/test_tensorboard_export.py::test_p06_rejected_owners_with_real_tensorboard\n  1 failed in 2.41s\n  \nassert 1 == 0\n +  where 1 = CompletedProcess(args=['/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python', '-c', \"\\nimport sys\\nf...ILED tests/test_tensorboard_export.py::test_p06_rejected_owners_with_real_tensorboard\\n1 failed in 2.41s\\n', stderr='').returncode"
+        }
+      ]
+    },
+    "fixed_before_removing_xfail": {
+      "argv": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-09-30-e2e-p06-evidence/review_f_offline.py",
+        ".",
+        "tests/test_review_303f.py",
+        "--runxfail",
+        "--tb=short",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/fixed-review.xml"
+      ],
+      "counts": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 10
+      },
+      "returncode": 0,
+      "log": {
+        "path": "/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/fixed-review.log",
+        "sha256": "fa31780f15d3b12bbdcd4eab3af03b4ad81909f8a264d9a35517d329cf885387"
+      },
+      "junit": {
+        "path": "/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/fixed-review.xml",
+        "sha256": "68113676b15f85e1af9302d6a84d768474172e29887bfc9d5521d376c6abc438"
+      },
+      "failures": []
+    },
+    "generated_property_mutation": {
+      "argv": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-09-30-e2e-p06-evidence/review_f_offline.py",
+        ".",
+        "--mutation",
+        "rejected_owner",
+        "tests/test_zone_referee_ownership.py::test_192_generated_raw_record_transformations_never_increase_success",
+        "--tb=short",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/mutation-property.xml"
+      ],
+      "counts": {
+        "tests": 3,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 2
+      },
+      "returncode": 1,
+      "log": {
+        "path": "/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/mutation-property.log",
+        "sha256": "1547f3f3e9c64074cd95302ad765576b003e8ad465742253b3d36a60469bd925"
+      },
+      "junit": {
+        "path": "/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/mutation-property.xml",
+        "sha256": "1b65d682b7649662004a5192bbab3c78a17b5306a282b4237a89b4c5874a9bb6"
+      },
+      "failures": [
+        {
+          "test": "test_192_generated_raw_record_transformations_never_increase_success[move]",
+          "message": "AssertionError: ('move', 0, 'successes', 0, 1, [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...', 'trial_id': 'trial-2', 'condition': 'no_comm', 'seed': 2, ...}, 'status': 'VALID', 'success': True, 'reasons': []}])\nassert 1 <= 0"
+        }
+      ]
+    },
+    "tensorboard_ci_import_boundary": {
+      "argv": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-09-30-e2e-p06-evidence/review_f_offline.py",
+        ".",
+        "--without-cv2",
+        "tests/test_tensorboard_export.py",
+        "tests/test_offline_audit_export.py",
+        "tests/test_owncam_loop_views.py",
+        "--tb=short",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/optional-no-cv2.xml"
+      ],
+      "counts": {
+        "tests": 96,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 96
+      },
+      "returncode": 0,
+      "log": {
+        "path": "/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/optional-no-cv2.log",
+        "sha256": "61e16ea728291af9a3e4ab3ed9c84972880014a0095fed0c0e9f6a7e8bb73abf"
+      },
+      "junit": {
+        "path": "/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/optional-no-cv2.xml",
+        "sha256": "afe5fbc98efa55339fcd3881e6563c3e10ce5542408602895a6fe36db050736b"
+      },
+      "failures": []
+    },
+    "final_related": {
+      "argv": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py",
+        "--tb=short",
+        "--junitxml=/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/related.xml"
+      ],
+      "counts": {
+        "tests": 681,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 681
+      },
+      "returncode": 0,
+      "log": {
+        "path": "/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/related.log",
+        "sha256": "33978ecf9e1087730c24ccc2adf34e166b04c30eea4f97e06d6419945b9d2a89"
+      },
+      "junit": {
+        "path": "/Users/changmin/projects/ugrp/outputs/p06-review-f-fix/related.xml",
+        "sha256": "a28efded46011ec83a5a2c36f60dc96f33f72cb0b61fcb116f0b87b2e04b7c0a"
+      },
+      "failures": []
+    }
+  },
+  "generated_cases": {
+    "relational": 12000,
+    "replay": 12000,
+    "raw_transformations": 192,
+    "total": 24192,
+    "rejected_directory_renames_within_raw_transformations": 22,
+    "note": "Cases inside pytest items, not additional pytest passes; reruns and the deliberate mutation are not added."
+  },
+  "review_assertions_preserved": 11,
+  "strict_xfail_removed": 2,
+  "workflow_tree": "bc804b64df75a6975dbea1e151b0ecefd2717d59",
+  "workflows_byte_identical_to_main": true,
+  "reviewed_production_unchanged": {
+    "harness/zone_evidence_key.py": "ab75158d6792d155285e5ab965b3d3c1119530e90e9b4bd1b716978943d929ff",
+    "harness/zone_referee_replay.py": "7bff0258953c025ef50652643a505d6979b178d1b010cb947cd0899d1b440b6c",
+    "harness/zone_study_referee.py": "7ab76e9dadb95cea7a7827d5baef392f2c22c1a1cd230a2c0b0382663f590456",
+    "scripts/zone_study_evidence_contract.py": "7fcc29d48360338d3f4373d185adbe32e0606020226dc4c0e7abf5475597a8de",
+    "scripts/zone_study_evidence_cohort.py": "f40adf374a315cb85157614a926a414c93b3065cbde44b6299bda36a7e273e0e",
+    "scripts/tensorboard_tools/zone_study.py": "7743bac6d0c349614f68e288c2f562177ac8d200ca61069464cd03d8f3c82758",
+    "scripts/run_zone_study_integration.py": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd"
+  },
+  "tested_source_sha256": {
+    "harness/zone_evidence_key.py": "ab75158d6792d155285e5ab965b3d3c1119530e90e9b4bd1b716978943d929ff",
+    "harness/zone_referee_replay.py": "7bff0258953c025ef50652643a505d6979b178d1b010cb947cd0899d1b440b6c",
+    "harness/zone_study_referee.py": "7ab76e9dadb95cea7a7827d5baef392f2c22c1a1cd230a2c0b0382663f590456",
+    "scripts/zone_study_evidence_contract.py": "7fcc29d48360338d3f4373d185adbe32e0606020226dc4c0e7abf5475597a8de",
+    "scripts/zone_study_evidence_cohort.py": "f40adf374a315cb85157614a926a414c93b3065cbde44b6299bda36a7e273e0e",
+    "scripts/tensorboard_tools/zone_study.py": "7743bac6d0c349614f68e288c2f562177ac8d200ca61069464cd03d8f3c82758",
+    "scripts/run_zone_study_integration.py": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+    "tests/test_review_303e.py": "521b7defd60612c7fc2bc2009f90c62577b12a2c293813013cc57a329e291062",
+    "tests/test_review_303f.py": "27cf00e662dad238aa998ddc27514559989959c3a987e1516c6042696181f84c",
+    "tests/test_zone_referee_ownership.py": "6d5d002403484a94dcdd9a7b612e68b1e8fb9413f7de5c2e77aac3ec17799172",
+    "tests/test_zone_referee_replay.py": "3ff044cdcc708c68468b8bcfe4103d843758db7b17bd0e25aadd8f36bbc7dc07",
+    "tests/zone_evidence_fixtures.py": "809846e8a3d7fa7123381f685700e646f25727ba9463408751dc77c91023d16c",
+    "experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py": "458c9bccf71db2a276aa7833e8724b79d8e865b143229a8ff898ba7cb722ec88",
+    "experiments/2026-09-30-e2e-p06-evidence/redesign_test_selectors.json": "3a68b99b6f4b1f9b86d0962e0e091a731cbcfecfc70c88de75992088529f01ac",
+    "experiments/2026-09-30-e2e-p06-evidence/review_f_offline.py": "082bc879114f1ea1568a66f1c5ece2049367e86d917a3d4329944704da6ee725",
+    "requirements-observability.txt": "0db8ebb479ce8b188d43fca68a3ece8a57b60f4a19307adda8c50ed0123e9442",
+    ".github/workflows/tests.yml": "4022efd5c8a3e00ded220d205076f1f81d1fac1f3efc99d7d989b0018d3a9d4c"
+  },
+  "environment": {
+    "python": "Python 3.12.13",
+    "package_versions": {
+      "pytest": "9.1.1",
+      "tensorboard": "2.21.0",
+      "Pillow": "12.3.0",
+      "numpy": "2.5.2"
+    },
+    "new_environment_created": false,
+    "host_lock": false,
+    "blocked_imports": [
+      "mujoco",
+      "torch",
+      "sim.multi_masterpi_production"
+    ],
+    "optional_job_additional_blocked_imports": [
+      "cv2"
+    ]
+  },
+  "private_tmp_extraction_directories_created": [],
+  "physics_runs": 0,
+  "model_calls": 0,
+  "shared_tensorboard_modified": false,
+  "drive_used": false,
+  "delivery": {
+    "pr": 303,
+    "keep_draft": true,
+    "merge_pr": false,
+    "github_ci": "Verify separately at the pushed head; local import-boundary tests are not GitHub CI."
+  }
+}
