@@ -1,3 +1,5 @@
+> 최신 응답: 두 차례 BLOCK 이후의 v3 재설계는 [CLASSIFY_NOTES](analysis/CLASSIFY_NOTES.md)와 [redesign_validation](analysis/redesign_validation/README.md)을 따른다. 아래 8a1631b9까지의 응답은 당시 기록으로 보존한다.
+
 # #294 검토 응답 — 분류기·초안 수정 완료 (2026-09-30)
 
 기준 소스 `76e0f9ce793f8cbbff2349b2be2bbaa359250a42`, 작업 브랜치 `codex/v6h-classifier-fixes`, PR 기준 `claude/b-v6h-gain`. 조정자가 이전 집계 불일치 중단 해제를 승인했고 null 실패 항목을 바로잡아 재개했다. 이전 중단 기록은 `analysis/review_fix_interrupted_20260930/PREVIOUS_RESPONSE.md`와 미완성 patch/반례/시험에 그대로 보존한다.

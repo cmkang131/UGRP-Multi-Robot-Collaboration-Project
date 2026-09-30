@@ -156,11 +156,11 @@ PR #286의 `analysis/predict_pass.py`와 `plant_model.py`를 그대로 불러, �
 | FAIL | 그 밖의 실패(끝점 오차, 게이트 정지, 시간 초과 등). 첫 실패 코드(phase/code)를 기록 |
 | FAIL_HARD_LIMIT | **먼저 검사한다.** 연쇄 전체(L0·L1 창 + 내려놓기·재파지 구간)에서 하드 한계 위반. BLOCKED/FAIL보다 우선(PR #288) |
 
-분류 구현은 후속 `analysis/classify_placements.py`의 초안 v2다. 과거 탐색 모드는 끝점·실제 미해결 실패·저장 안전 기록만 대조하며 **확증 성공을 내지 않는다**. 봉인 manifest를 받은 확증 모드만 handover/종료·전체 증거·A와 B를 검사한다. 봉인이나 실행 승인 파일을 이 수정에서 만들지 않았다. GT·접촉은 평가 전용이다. 입력 오류는 exit 2 / NOT_EVALUABLE이고 FAIL로 분모에 억지 변환하지 않는다.
+분류 구현은 후속 `analysis/classify_placements.py`의 초안 v3다. 과거 탐색 모드는 끝점·실제 미해결 실패·저장 안전 기록만 대조하며 **확증 성공을 내지 않는다**. 봉인 manifest를 받은 확증 모드만 handover/종료·전체 증거·A와 B를 검사한다. 봉인이나 실행 승인 파일을 이 수정에서 만들지 않았다. GT·접촉은 평가 전용이다. 입력 오류는 exit 2 / NOT_EVALUABLE이고 FAIL로 분모에 억지 변환하지 않는다.
 
 ### 5.1 봉인 전에 고정할 정의 (definitions fixed before sealing)
 
-`analysis/CLASSIFY_NOTES.md`의 **11개 모호점 순서**와 같다. 아래는 이번 수정에 구현한 초안 정의이며 봉인 승인은 아니다. 6·7의 실행 창과 handover 기준을 명시해 코드·시험과 맞췄다. 독립 검토와 조정자 확정 뒤 문서·분류기·봉인 입력이 같아야 한다.
+`analysis/CLASSIFY_NOTES.md`의 스키마·전이표와 함께 읽는다. 아래는 이번 수정에 구현한 초안 정의이며 봉인 승인은 아니다. 6·7의 실행 창과 handover 기준을 명시해 코드·시험과 맞췄다. 독립 검토와 조정자 확정 뒤 문서·분류기·봉인 입력이 같아야 한다.
 
 1. **접촉 창 겹침:** 닫힌 leg 구간과 접촉 에피소드가 조금이라도 겹치면 포함한다(경계 허용오차 1e-9 s). 에피소드 전체가 창 안에 있을 필요는 없다.
 2. **중단된 leg 창:** `recorded=false`, 끝 시각 null이면 시작→해당 carry leg의 첫 실패 시각을 쓴다. 없으면 stop 시각→마지막 trace 시각 순으로 대체하고 `window_source`를 남긴다. 시작도 없으면 접촉을 그 leg에 귀속하지 않는다.
@@ -171,10 +171,10 @@ PR #286의 `analysis/predict_pass.py`와 `plant_model.py`를 그대로 불러, �
 7. **전체 기록과 종료 경계:** teacher 준비를 포함한 수집 시작→종료 정리까지 저장 trace 전체와 모든 벽 에피소드를 안전 검사한다. leg 시작/끝, stage stop, 종료 시각은 유한·순서 일치가 필요하다. trace는 엄격 증가, 최대 간격 **0.051 SIM s**, 전 창을 덮고 `evaluation_coverage`의 시작/끝/행 수와 일치해야 한다. 접촉 추적도 같은 창의 시작/끝·주기·최대 공백·표본 수를 필수 기록한다(상세는 `analysis/SEALED_INPUT.md`). 완료 L1은 stop=L1 끝, 두 로봇 첫 `wait_lower`, `termination.outcome=STUDY_LAYER_DONE`이어야 한다. 의도된 stage stop의 raw `STAGE_BUDGET_EXHAUSTED` 표시는 실제 timeout으로 세지 않는다. 실제 termination timeout/가드/실패는 PASS를 막는다. 목적지 내려놓기·다른 leg 미실행은 시험 실패로 세지 않는다.
 8. **주 시드와 탐색 strict 분리:** 확증 주 시드는 941, 앞 12곳의 보조 943은 별도 보고하고 통과 분자에 합치지 않는다. 탐색 대조는 911을 명시해 주 시드 통계·케이스 통계·모든 시드 통과(strict)·하나라도 통과를 구분한다.
 9. **보조 시드의 안전 거부:** 주 시드 배치 분류는 그대로 두고 `hard_limit_any_seed`를 별도 표시한다. 보조 시드에서도 위반 1건이면 코호트 전체 성공을 선언하지 않는다.
-10. **HOST_ERROR·누락:** HOST_ERROR와 주 시드 누락은 미분류로 이름·사유를 보존하며 완료/성공 판정을 막는다. 일반 케이스의 trace·접촉 기록 누락은 오류로 분석을 중단한다. 5개 분류 중 FAIL로 억지 변환하거나 분모에서 빼지 않는다. 같은 배치·시드 1회 재실행 시 원 기록과 연결하고 중복 케이스를 한 판정 입력에 합치지 않는다.
-11. **60개 분모와 σ 검사:** ≥48/60은 봉인 파일과 계획·배치·사전분포·소스·정책·번들 해시가 맞고 C01…C60×941 + C01…C12×943의 정확한 72건이 모두 평가 가능할 때만 적용한다(작은 개발 코호트에 비례 적용하지 않음). 전체 시드 하드 한계 0 및 기준 B를 별도로 확인해야 최종 성공 선언을 한다. A와 B 결과 및 전체 성공 판정을 각각 적는다. HOST_ERROR 재시도는 봉인 계획에서 최대 1회 미리 허용하고 동일 설정·시드의 원본/대체 연결을 검사한다. 실제 원본 HOST_ERROR만 대체하며 원본·재시도 둘을 같은 분모에 넣지 않는다.
+10. **HOST_ERROR·누락:** 모든 입장 배치를 분모에 남긴다. 누락·잘림·파싱 실패·모순은 INVALID로 이유를 보존하고 FAIL로 집계한다. 원본의 완전한 기록이 하드 위반 및 확정 과제 실패 없이 HOST_ERROR로 끝났음을 입증한 때에만 봉인에 미리 허용한 같은 설정·시드의 재시도 1회를 적용한다. 확정 FAIL/FAIL_HARD_LIMIT은 종단 상태이며 cleanup 오류나 성공 재시도로 바뀌지 않는다.
+11. **60개 분모와 σ 검사:** C01…C60×941 + C01…C12×943의 입장 슬롯을 고정한다. 원본과 재시도를 이중 계산하지 않고 ≥48/60, 전체 시도 하드 위반 0, B를 별도 보고한다. 입력이 없더라도 분모는 60이다. INVALID 또는 B 미평가가 있으면 최종 판정은 FAIL_A_B_SAFETY다. 작은 개발 코호트에 48/60을 비례 적용하지 않는다.
 
-**10–11의 안전 보존 규칙:** HOST_ERROR 자체의 성공/실패 분류는 미분류로 유지한다. 원 시도의 남아 있는 결과·trace와 cases 행은 해시·안전 검사 대상이며, 재시도 성공으로 이미 관측한 15° 초과/5 mm 초과를 지우지 않는다. 선택 결과 72건과 실제 시도 수는 별도로 보고한다. 파일 부재는 명시하고, 저장된 파일의 잘림·잘못된 값은 조용히 안전으로 간주하지 않는다. 유효한 앞부분에 위반이 있으면 전체 FAIL_A_B_SAFETY, 알려진 위반 없이 저장 증거가 손상됐으면 NOT_EVALUABLE이다. A/B 증거가 불완전해도 이미 알려진 하드 위반의 안전 거부는 우선한다. 이 규칙은 새 물리 결과나 봉인 승인이 아니다.
+**10–11의 안전 보존 규칙:** 저장 안전 요약(row.wall_contact)·끝점·GT·trace·접촉을 합쳐 알려진 위반을 보존한다. 원본·재시도 모두 같은 엄격한 스키마와 coverage/count/시간 검사를 거친다. 읽을 수 있는 양성 위반은 손상된 나머지 기록보다 우선한다. 원본 증거가 없거나 불완전하면 안전한 재시도 자격을 입증할 수 없으므로 원본 INVALID→FAIL을 유지한다. 저장 72개 슬롯·실제 시도 수·배치 분모·실패 이유를 함께 보고한다. CONSORT/ICH 원칙의 프로젝트 적용 범위와 상태 전이는 CLASSIFY_NOTES.md에 있다. 실제 봉인·실행 승인이 아니다.
 
 ## 6. 보고할 부수 분석 (기준 아님)
 
@@ -197,7 +197,7 @@ PR #286의 `analysis/predict_pass.py`와 `plant_model.py`를 그대로 불러, �
 
 ## 8. 운영·보존·TensorBoard
 
-- 실행: `agent_lock`을 잡고(코호트마다 driver PID) SIM 시간, `--render-profile floor_light_v1`, `--workers 4 --omp-threads 1`, 모델 호출 0, weld OFF. 시작·종료 부하 평균 기록. 소스 SHA 고정, `source_changed=False` 확인. 여유 디스크 ≥ 10 GiB(케이스당 약 28 MB로 60+12건 ≈ 2.0 GB 예상). ENOSPC는 HOST_ERROR로 분류하고 성공/실패에 넣지 않는다.
+- 실행: `agent_lock`을 잡고(코호트마다 driver PID) SIM 시간, `--render-profile floor_light_v1`, `--workers 4 --omp-threads 1`, 모델 호출 0, weld OFF. 시작·종료 부하 평균 기록. 소스 SHA 고정, `source_changed=False` 확인. 여유 디스크 ≥ 10 GiB(케이스당 약 28 MB로 60+12건 ≈ 2.0 GB 예상). ENOSPC는 HOST_ERROR로 기록한다. §5.1의 완전한 원본 증거와 사전 허용 재시도 조건을 만족하지 않으면 INVALID→FAIL로 집계하며 분모에서 빼지 않는다.
 - raw는 기본 체크아웃 `outputs/`에 절대 경로로, `cases.jsonl` sha256을 실험 README에 기록. `experiments/`에는 분석 결과(JSON/TXT)만.
 - 케이스 결과는 실패 포함 전부 보고. 중단·호스트 오류 케이스는 별도 표에 사유와 함께 적고 분모에서 조용히 빼지 않는다(재실행은 같은 배치·시드로 1회, 원 실행 기록 보존).
 - TensorBoard: 코호트 종료 뒤 `analysis/build_tb_views.py`(탐색 실험 것)로 파생 뷰를 만들고 `scripts/export_offline_audit.py`로 새 스냅샷(`outputs/tensorboard/<날짜>-b-v6h-confirm`)에 변환, 이벤트를 다시 읽어 통과 수를 분석과 대조, 브라우저에서 고정 카드와 HParams 열을 확인한 뒤 `outputs/tensorboard-view.json`에 자기 키만 추가(쓰기 직전 다시 읽음). 고정 카드: `offline/pass`, `offline/pass_rate`, `result/sim_s`, `result/commands`, `result/model_calls`. 비교 기준으로 탐색 스냅샷 `0930-b-v6h-gain`의 집계를 함께 보이되 코호트는 구분해 표시한다.

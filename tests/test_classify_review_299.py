@@ -2,10 +2,13 @@
 
 Copied from review de16cbc96becf19755f09197b9ef139609f00fe9.
 R1/R2 are mandatory regression assertions (the review xfail markers are removed).
-The JSON builders below are independent of the author's test fixtures.
+Original JSON builders are independent of the author's fixtures. V3 adds the
+required safety summary/receipt and migrates incompatible accounting assertions;
+see analysis/redesign_validation/README.md.
 """
 import copy
 import importlib.util
+import hashlib
 import json
 from pathlib import Path
 
@@ -33,6 +36,7 @@ def record(cell="C01", seed=941):
            "stop_sim_s": 3.01, "category": "STAGE_BUDGET_EXHAUSTED",
            "final_states": {r: "wait_lower" for r in ROBOTS},
            "chain": {"legs": legs, "first_failure": None, "restaging_between_legs": False}}
+    row["wall_contact"] = {"episodes": 0, "max_penetration_m": 0., "max_tilt_deg_stage": 1., "hard_limits": {"max_tilt_deg": 15., "max_penetration_m": .005}}
     trace = []
     for i in range(66):
         t = round(i * .05, 8)
@@ -49,8 +53,19 @@ def record(cell="C01", seed=941):
               "wall_contact": {"episodes": [], "coverage": {
                   "start_sim_s": 0., "end_sim_s": 3.25, "sample_period_s": .05,
                   "max_gap_s": .05, "sample_count": len(trace)}}}
+    record_receipt(row, result, trace)
     # A JSON round-trip ensures fixtures contain only actual JSON types.
     return json.loads(json.dumps([row, result, trace], allow_nan=False))
+
+
+def record_receipt(row, result, trace):
+    """Synthetic recorder fixture: commit evidence before loss/corruption tests.
+
+    Independent canonical serializer; production never fills in absent receipts.
+    """
+    payload = {k: v for k, v in result.items() if k != 'evidence_sha256'}
+    value = {'row': row, 'result': payload, 'trace': trace}
+    result['evidence_sha256'] = hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()).hexdigest()
 
 
 def write_json(path, obj):
@@ -60,7 +75,9 @@ def write_json(path, obj):
 def write_record(raw, row, result, trace, identity):
     directory = cp.ca.dra.case_dir(raw, row["case_id"])
     (directory / "eval_only").mkdir(parents=True, exist_ok=True)
-    write_json(directory / "result.json", dict(result, row=row, execution_identity=identity))
+    stored = dict(result, row=row, execution_identity=identity)
+    record_receipt(row, stored, trace)
+    write_json(directory / "result.json", stored)
     (directory / "eval_only/trace.jsonl").write_text(
         "".join(json.dumps(s, allow_nan=False) + "\n" for s in trace))
 
@@ -236,7 +253,7 @@ def test_host_retry_must_not_erase_known_safety_violation(tmp_path, seed, hard):
     raw, seal, rows, identity = sealed_cohort(tmp_path, retry_seed=seed)
     original_id = add_host_retry(raw, seal, rows, identity, seed, hard)
     s = analyse(raw, seal)
-    assert original_id in s["attempt_case_ids"] and original_id not in s["selected_case_ids"]
+    assert original_id in s["attempt_case_ids"] and original_id in s["selected_case_ids"]
     assert (s["n_cases"], s["n_placements"]) == (72, 60)  # count selected attempt only, retain safety from all
     assert s["full_verdict"] == "FAIL_A_B_SAFETY", s
 
@@ -250,16 +267,17 @@ def test_host_retry_without_hard_violation_counts_once(tmp_path):
 
 
 @pytest.mark.parametrize("seed", [941, 943])
-def test_unreplaced_host_error_blocks_evaluation_and_is_not_a_failure(tmp_path, seed):
+def test_unreplaced_host_error_is_invalid_counted_as_failure(tmp_path, seed):
     raw, seal, rows, identity = sealed_cohort(tmp_path)
     row = next(r for r in rows if r["cell"] == "C01" and r["seed"] == seed)
     row["category"] = "HOST_ERROR:worker_exit_-15"
     write_rows(raw, rows)
     s = analyse(raw, seal)
-    assert s["full_verdict"] == "NOT_EVALUABLE"
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY"
     assert s["n_cases"] == 72 and s["n_placements"] == 60
-    assert s["unclassified_cases"] == [row["case_id"]]
-    assert s["counts"]["FAIL"] == 0
+    assert s["unclassified_cases"] == []
+    assert s["counts"]["FAIL"] == (1 if seed == 941 else 0)
+    assert row["case_id"] in s["invalid_cases"]
 
 
 @pytest.mark.parametrize("mutation", ["missing_primary", "missing_auxiliary", "duplicate", "arbitrary_name"])
@@ -270,12 +288,14 @@ def test_sealed_cohort_rejects_wrong_inventory(tmp_path, mutation):
     if mutation == "duplicate": rows.append(copy.deepcopy(rows[0]))
     if mutation == "arbitrary_name": rows[0]["cell"] = "P0"
     write_rows(raw, rows)
-    with pytest.raises(cp.EvidenceError):
-        analyse(raw, seal)
+    s = analyse(raw, seal)
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY"
+    assert s["invalid_cases"] and s["n_placements"] == s["denominator"] == 60
 
 
 # Follow-up coverage for the same R1/R2 fixes. Original independent builders and
-# 33 review tests above are preserved; only their two xfail decorators were removed.
+# Original 33 review scenarios remain; v3 terminal/invalid accounting expectations
+# and required fixture fields are explicitly migrated in redesign_validation/README.md.
 @pytest.mark.parametrize("source", ["gt_at_entry", "gt_at_stop", "gt_at_end", "teacher",
                                     "leg_start", "leg_end", "done", "exits", "setdown", "maximum"])
 def test_async_gt_safety_observations_are_not_lost(source):
@@ -317,11 +337,11 @@ def test_replaced_host_evidence_is_hashed_and_counted_once(tmp_path, seed):
     report = cp.analyse("review299", raw, sealed_manifest=seal)
     s = report["summary"]
     attempt = next(a for a in report["attempts"] if a["case_id"] == original_id)
-    assert not attempt["selected"] and attempt["host_error"]
+    assert attempt["selected"] and attempt["host_error"]
     assert attempt["hard_limit_chain"]["max_tilt_deg"] == 16.
     assert s["hard_limit_attempt_case_ids"] == [original_id]
     assert s["hard_limit_chain_cases"] == s["hard_limit_chain_placements_any_seed"] == 1
-    assert (s["pass_placements"], s["cases_pass"], s["n_attempts"]) == (60, 72, 73)
+    assert (s["pass_placements"], s["cases_pass"], s["n_attempts"]) == (59 if seed == 941 else 60, 71, 73)
     assert s["full_verdict"] == "FAIL_A_B_SAFETY"
     assert next(p for p in report["placements"] if p["placement"] == "C01")["hard_limit_any_seed"]
     directory = cp.ca.dra.case_dir(raw, original_id)
@@ -361,7 +381,7 @@ def test_partial_host_error_keeps_known_safety_violation(tmp_path, retained):
     s = report["summary"]
     assert s["hard_limit_attempt_case_ids"] == [original_id]
     assert s["full_verdict"] == "FAIL_A_B_SAFETY"
-    assert s["pass_placements"] == 60
+    assert s["pass_placements"] == 59
     if retained in ("truncated_trace", "malformed_metric"):
         assert s["safety_evidence_issues"][original_id]
         assert not s["criterion"]["evaluable"]
@@ -373,10 +393,10 @@ def test_unreplaced_host_violation_dominates_incomplete_A_and_B(tmp_path, hard):
     original_id = add_host_retry(raw, seal, rows, identity, hard=hard)
     write_rows(raw, rows[:-1])  # predeclared retry was never executed
     s = analyse(raw, seal)
-    assert s["unclassified_cases"] == [original_id]
-    assert s["counts"]["FAIL"] == s["counts"]["FAIL_HARD_LIMIT"] == 0
-    assert not s["criterion"]["evaluable"]
-    assert s["sigma_criterion_B"]["verdict"] == "NOT_EVALUABLE"
+    assert s["unclassified_cases"] == []
+    assert s["counts"]["FAIL"] == 0 and s["counts"]["FAIL_HARD_LIMIT"] == 1
+    assert s["pass_placements"] == 59
+    assert s["sigma_criterion_B"]["verdict"] == "PASS"  # complete recorded PF remains available
     assert s["hard_limit_chain_cases"] == 1
     assert s["full_verdict"] == "FAIL_A_B_SAFETY"
 
@@ -404,11 +424,11 @@ def test_unreadable_host_evidence_cannot_be_assumed_safe(tmp_path):
     report = cp.analyse("review299", raw, sealed_manifest=seal)
     s = report["summary"]
     assert s["safety_evidence_issues"][original_id]
-    assert s["full_verdict"] == "NOT_EVALUABLE"
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY"
     assert report["input_sha256"][str(path.relative_to(raw))] == cp.sha256(path)
 
 
-def test_absent_host_files_are_explicit_and_legal_retry_counts_once(tmp_path):
+def test_absent_host_files_are_explicit_and_original_invalid_is_terminal(tmp_path):
     raw, seal, rows, identity = sealed_cohort(tmp_path, retry_seed=941)
     original_id = add_host_retry(raw, seal, rows, identity)
     directory = cp.ca.dra.case_dir(raw, original_id)
@@ -416,8 +436,9 @@ def test_absent_host_files_are_explicit_and_legal_retry_counts_once(tmp_path):
         (directory / name).unlink()
     report = cp.analyse("review299", raw, sealed_manifest=seal)
     assert len(report["missing_host_evidence"]) == 2
-    assert report["summary"]["full_verdict"] == "PASS_A_B_SAFETY"
-    assert report["summary"]["pass_placements"] == 60
+    assert report["summary"]["full_verdict"] == "FAIL_A_B_SAFETY"
+    assert report["summary"]["pass_placements"] == 59
+    assert original_id in report["summary"]["invalid_cases"]
 
 
 def test_changed_replaced_host_file_is_rejected(tmp_path, monkeypatch):
@@ -431,13 +452,14 @@ def test_changed_replaced_host_file_is_rejected(tmp_path, monkeypatch):
         nonlocal reads
         if candidate == path:
             reads += 1
-            if reads == 2:
+            if reads == 1:  # first sha256 call is the stable-input recheck; initial hash uses read bytes
                 return "f" * 64
         return original_sha256(candidate)
 
     monkeypatch.setattr(cp, "sha256", changing_sha256)
-    with pytest.raises(cp.EvidenceError, match="input changed during analysis"):
-        cp.analyse("review299", raw, sealed_manifest=seal)
+    s = cp.analyse("review299", raw, sealed_manifest=seal)["summary"]
+    assert s["full_verdict"] == "FAIL_A_B_SAFETY"
+    assert any("INPUT_CHANGED" in e for e in s["cohort_evidence_issues"])
 
 
 def test_independent_review_regressions_are_in_offline_ci():

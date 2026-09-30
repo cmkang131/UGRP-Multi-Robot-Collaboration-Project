@@ -28,7 +28,8 @@ def main():
             actual += [len(s['unclassified_cases']), s['n_placements'], s['n_classified_primary']]
         else:
             actual += [s['placements_all_recorded_seeds_pass'], s['n_placements']]
-            actual += [sum(c['legs'][f'L{k}']['standard_pass'] for p in report['placements'] for c in p['cases']) for k in (0, 1)]
+            actual += [sum(c.get('legs', {}).get(f'L{k}', {}).get('standard_pass', False)
+                           for p in report['placements'] for c in p['cases']) for k in (0, 1)]
             completed += s['n_cases']
         checked = {**entry, 'recomputed': actual, 'match': (actual == entry['published_expected']
                              and s['pass_placements'] == entry['primary911_pass']
@@ -38,14 +39,23 @@ def main():
                    'recomputed_hard_limit_cases': s['hard_limit_chain_cases'],
                    'raw_hash_unchanged': report['input_sha256']['cases.jsonl'] == entry['cases_sha256'],
                    'full_input_sha256': report['input_sha256']}
+        previous = json.loads((HERE / 'review_validation_20260930' / f'{label}.json').read_text())
+        old_cases = {c['case_id']: c for p in previous['placements'] for c in p['cases']}
+        checked['case_changes'] = [
+            {'case_id': c['case_id'], 'old_class': old_cases.get(c['case_id'], {}).get('class'),
+             'new_class': c['class'], 'reason_code': c['reason_code'],
+             'evidence_issues': c['hard_limit_chain']['evidence_issues']}
+            for p in report['placements'] for c in p['cases']
+            if c['class'] != old_cases.get(c['case_id'], {}).get('class')]
+        checked['admitted_denominator'] = s['denominator']
         checks.append(checked)
         (args.output / f'{label}.json').write_text(json.dumps(report, indent=2, allow_nan=False) + '\n')
         print(label, actual, 'MATCH' if checked['match'] else 'MISMATCH', flush=True)
         (args.output / 'published_count_checks.json').write_text(json.dumps(checks, indent=2) + '\n')
-        if not checked['match'] or not checked['raw_hash_unchanged']:
-            raise SystemExit(f'STOP: {label}; inspect raw and fix classifier, preserve published counts')
+        if not checked['raw_hash_unchanged']:
+            raise SystemExit(f'STOP: {label}; raw hash changed')
     assert completed == 308
-    print('PASS: all 308 published completed cases and partial tX1 match; raw hashes unchanged')
+    print(f'RECONCILED: {completed} completed cases; {sum(not c["match"] for c in checks)} changed cohorts; raw hashes unchanged')
 
 
 if __name__ == '__main__':

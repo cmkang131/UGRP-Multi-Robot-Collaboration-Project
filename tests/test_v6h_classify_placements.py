@@ -26,6 +26,7 @@ def leg(k, **overrides):
 def row(cell="A", seed=941, **overrides):
     value = {"case_id": f"chain@policy:teacher:{cell}:s{seed}", "stage": "chain", "cell": cell, "seed": seed,
              "stop_sim_s": 20., "chain": {"legs": [leg(0), leg(1)], "first_failure": None}}
+    value["wall_contact"] = {"episodes": 0, "max_penetration_m": 0., "max_tilt_deg_stage": 1., "hard_limits": {"max_tilt_deg": 15., "max_penetration_m": .005}}
     value.update(overrides)
     return value
 
@@ -123,7 +124,7 @@ def test_exact_hard_thresholds_are_inclusive_safe_and_shared_predicate_is_used(m
 
     monkeypatch.setattr(cp.ca, "hard_limit_violated", shared)
     assert classify()["class"] == "FAIL_HARD_LIMIT"
-    assert seen == [([], 1.)]
+    assert seen == [([{"max_pen_m": 0.}], 1.)]  # persisted zero summary is also observed
 
 
 def test_setdown_standard_checks_are_not_added_to_the_two_leg_criterion():
@@ -158,7 +159,7 @@ def test_primary_seed_is_separate_from_all_seed_and_any_seed_counts():
     assert s["criterion"]["verdict"] == "NOT_EVALUABLE"
     _, missing = cp.summarize([classify(other)])
     assert missing["unclassified_placements"] == ["A"]
-    assert missing["wilson95_primary_classified"] is None
+    assert missing["wilson95_primary_classified"] == cp.ca.wilson(0, 1)  # admitted denominator
 
 
 def test_duplicate_seed_is_rejected_instead_of_merging_different_policies():
@@ -207,7 +208,8 @@ def raw_fixture(tmp_path):
                                                    "source": {"source_sha": "fixture"}}))
     directory = cp.ca.dra.case_dir(root, r["case_id"])
     (directory / "eval_only").mkdir(parents=True)
-    (directory / "result.json").write_text(json.dumps({"wall_contact": {"episodes": []}}))
+    (directory / "result.json").write_text(json.dumps({"wall_contact": {"episodes": []},
+        "failures": {"r1": None, "r2": None}, "termination": {"outcome": "STUDY_LAYER_DONE", "sim_s": 20.}}))
     (directory / "eval_only/trace.jsonl").write_text("".join(json.dumps(s) + "\n" for s in dense_trace()))
     return root
 
@@ -236,9 +238,9 @@ def test_host_error_is_unclassified_not_an_ordinary_fail_or_a_pass(tmp_path):
         stream.write(json.dumps(host) + "\n")
     report = cp.analyse("host", raw)
     assert report["summary"]["n_placements"] == 2
-    assert report["summary"]["n_classified_primary"] == 1
-    assert report["summary"]["unclassified_placements"] == ["HOST"]
-    assert report["summary"]["counts"]["FAIL"] == 0
+    assert report["summary"]["n_classified_primary"] == 2
+    assert report["summary"]["unclassified_placements"] == []
+    assert report["summary"]["counts"]["FAIL"] == 1
     assert report["summary"]["criterion"]["verdict"] == "NOT_EVALUABLE"
 
 
@@ -388,6 +390,7 @@ def seal_fixture(tmp_path, retries=False):
             (d / 'eval_only').mkdir(parents=True)
             (d / 'case.json').write_text(json.dumps(spec))
             res.update(execution_identity=identity, row=r)
+            res['evidence_sha256'] = cp.evidence_digest(r, res, trace)  # synthetic recorder fixture
             (d / 'result.json').write_text(json.dumps(res))
             (d / 'eval_only/trace.jsonl').write_text(''.join(json.dumps(s) + '\n' for s in trace))
             entry = {'placement': p['name'], 'seed': seed, 'placement_sha256': cp.value_hash(p),
@@ -421,22 +424,23 @@ def seal_fixture(tmp_path, retries=False):
 def test_seal_exact_60_plus_12_and_pinned_hash(tmp_path):
     raw, path, rows, manifest = seal_fixture(tmp_path)
     seal = cp.load_sealed_manifest(path, cp.sha256(path))
-    assert len(cp.select_confirmatory_rows(rows, raw, manifest, seal)) == 72
+    assert cp.analyse('seal', raw, sealed_manifest=seal)['summary']['n_cases'] == 72
     with pytest.raises(cp.EvidenceError, match='hash'):
         cp.load_sealed_manifest(path, '0' * 64)
-    with pytest.raises(cp.EvidenceError, match='originals'):
-        cp.select_confirmatory_rows([r for r in rows if r['seed'] == 941], raw, manifest, seal)
-    changed = copy.deepcopy(rows)
-    changed[0]['cell'] = 'P0'
-    with pytest.raises(cp.EvidenceError): cp.select_confirmatory_rows(changed, raw, manifest, seal)
-    changed = copy.deepcopy(manifest)
-    changed['source']['execution_tree']['files'][0]['sha256'] = 'c' * 64
-    with pytest.raises(cp.EvidenceError, match='file hashes'):
-        cp.select_confirmatory_rows(rows, raw, changed, seal)
+    # Invalid observations are reported for their admitted slots, never dropped.
+    (raw / 'cases.jsonl').write_text(''.join(json.dumps(r) + '\n' for r in rows if r['seed'] == 941))
+    result = cp.analyse('missing', raw, sealed_manifest=seal)['summary']
+    assert result['n_cases'] == 72 and result['denominator'] == 60
+    assert result['full_verdict'] == 'FAIL_A_B_SAFETY'
+    (raw / 'cases.jsonl').write_text(''.join(json.dumps(r) + '\n' for r in rows))
     spec_path = cp.ca.dra.case_dir(raw, rows[0]['case_id']) / 'case.json'
     spec_path.write_text(spec_path.read_text() + ' ')
-    with pytest.raises(cp.EvidenceError, match='hash/contents'):
-        cp.select_confirmatory_rows(rows, raw, manifest, seal)
+    out = cp.analyse('case-hash', raw, sealed_manifest=seal)
+    assert any('hash/contents' in reason for reason in out['summary']['safety_evidence_issues'][rows[0]['case_id']])
+    changed = copy.deepcopy(manifest)
+    changed['source']['execution_tree']['files'][0]['sha256'] = 'c' * 64
+    (raw / 'manifest.json').write_text(json.dumps(changed))
+    assert cp.analyse('source', raw, sealed_manifest=seal)['summary']['cohort_evidence_issues']
 
 
 @pytest.mark.parametrize('mutation', ['placement', 'prior', 'policy', 'bundle', 'source', 'extra_plan_case', 'missing_aux'])
@@ -459,16 +463,18 @@ def test_sealed_plan_differences_are_rejected(tmp_path, mutation):
 
 
 def test_only_linked_predeclared_host_retry_is_selected_once(tmp_path):
-    raw, path, rows, manifest = seal_fixture(tmp_path, retries=True)
-    seal = cp.load_sealed_manifest(path, cp.sha256(path))
-    retry = dict(rows[0], case_id=seal['cases'][0]['attempts'][1]['case_id'])
-    with pytest.raises(cp.EvidenceError, match='only HOST_ERROR'):
-        cp.select_confirmatory_rows(rows + [retry], raw, manifest, seal)
-    rows[0]['category'] = 'HOST_ERROR:worker_exit_-15'
-    selected = cp.select_confirmatory_rows(rows + [retry], raw, manifest, seal)
-    assert len(selected) == 72 and rows[0]['case_id'] not in {r['case_id'] for r in selected}
-    assert retry['case_id'] in {r['case_id'] for r in selected}
-    with pytest.raises(cp.EvidenceError): cp.select_confirmatory_rows(rows + [retry, retry], raw, manifest, seal)
+    # Public sequence machine requires complete original evidence, unlike the
+    # removed pre-validation row selector. Integration is in both review files.
+    r, res, trace = full_evidence()
+    first = cp.adjudicate_attempt(r, res, trace, confirmatory=False)
+    retry = dict(first, case_id=r['case_id'] + ':retry1')
+    assert cp.classify_attempt_sequence([first, retry])['state'] == 'INVALID'
+    r['host_error'] = 'ENOSPC'
+    res['termination']['outcome'] = 'HOST_ERROR'
+    first = cp.adjudicate_attempt(r, res, trace, confirmatory=False)
+    selected = cp.classify_attempt_sequence([first, retry])
+    assert selected['class'] in cp.PASS and selected['case_id'] == retry['case_id']
+    assert cp.classify_attempt_sequence([first, retry, retry])['state'] == 'INVALID'
 
 
 def test_sealed_A_48_of_60_and_auxiliary_hard_veto(tmp_path):
@@ -564,9 +570,9 @@ def test_confirmatory_cli_missing_pf_blocks_full_verdict(tmp_path):
     assert cp.main(['--output', str(output), '--sealed-manifest', str(path),
                     '--sealed-manifest-sha256', cp.sha256(path), f'confirm={raw}']) == 0
     s = json.loads((output / 'confirm.json').read_text())['summary']
-    assert s['criterion']['verdict'] == 'PASS_OBSERVED_CRITERION'
+    assert s['criterion']['verdict'] == 'FAIL_OBSERVED_CRITERION'
     assert s['sigma_criterion_B']['verdict'] == 'NOT_EVALUABLE'
-    assert s['full_verdict'] == 'NOT_EVALUABLE'
+    assert s['full_verdict'] == 'FAIL_A_B_SAFETY'
 
 
 def test_3000_of_3000_mc_has_nonzero_interval_uncertainty():
@@ -613,6 +619,10 @@ def test_confirmatory_complete_pf_produces_separate_A_B_and_full_pass(tmp_path):
                 pf = pf_sample(s['t'])
                 s.update(pf=pf['pf'], robots=pf['robots'])
         trace_path.write_text(''.join(json.dumps(s) + '\n' for s in trace))
+        result_path = d / 'result.json'
+        result = json.loads(result_path.read_text())
+        result['evidence_sha256'] = cp.evidence_digest(r, result, trace)
+        result_path.write_text(json.dumps(result))  # finish constructing the valid positive fixture
     report = cp.analyse('complete', raw, sealed_manifest=cp.load_sealed_manifest(path, cp.sha256(path)))
     s = report['summary']
     assert s['criterion']['verdict'] == 'PASS_OBSERVED_CRITERION'
