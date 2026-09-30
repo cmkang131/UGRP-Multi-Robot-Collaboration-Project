@@ -27,6 +27,60 @@
 
 자동 검사는 설정 누락과 알려진 실행 계약의 변경을 검출한다. 물리적 완주나 일반화 성능을 대신 검증하지 않는다. 적용된 실행 경로 밖의 도구는 별도 검토가 필요하다.
 
+## 새 등록의 의존성 계약 v2 (2026-09-30)
+
+새 등록용 빌더는 `harness.execution_dependency_contract.build_contract`와
+`python -m scripts.build_execution_dependency_contract`를 사용한다. 기본 계약은
+`ugrp.execution_dependency_contract.v2`다. **기존 v6~v6e와 RGB 봉인·검증기는
+바꾸지 않는다.** 기존 등록을 v2로 자동 변환하거나 실행 승인을 승계하지 않는다.
+현재 실행기는 기존 admission을 유지하며, 새 revision의 등록 빌더와 admission에서
+아래 API를 연결한 뒤 v2를 사용한다. #292도 이 연결과 독립 검토가 필요하다.
+
+- 실행 Python은 기존 `harness.python_source_closure.source_closure`의 AST 추적을
+  재사용한다. runner·policy·host/scene·evaluator·subprocess worker를 진입점으로
+  선언하며 함수 안 import, 상대 import, package 초기화, 선택 모듈도 포함한다.
+  도달 가능한 공용 helper는 제외하지 않는다. 실행 한 번에서 관찰되지 않았다는
+  이유로 분기를 빼지 않으므로 이는 보수적 import closure이며 최소 실행 trace가 아니다.
+- `importlib.import_module`/`__import__`의 일반 별칭과 문자열 상수는 추적한다.
+  비상수/상대 동적 import는 해당 파일의 `dynamic_imports` 선언이 없으면 거부한다.
+  선언은 가능한 로컬 모듈을 모두 열거한다. 임의 loader·`eval`/`exec`·C 확장·외부
+  Python 경로를 완전 분석하는 도구가 아니다. 그런 경로의 입력은 별도로 선언하고
+  검토하며 경계가 불명확하면 v2로 줄이지 않는다.
+- `inputs`에는 파일로 읽는 지도·모델·보정·물리/환경 설정·native 소스 등을 넣는다.
+  외부 패키지/환경 identity는 기존 실행 기록과 admission에서 계속 검사한다.
+  읽는 데이터 파일을 AST가 자동 발견한다고 가정하지 않는다.
+- 공용 JSON은 `registries`에 파일과 `keys`를 선언한다. 예:
+  `{"path":"configs/simulation_workflows.json","keys":["workflows",{"id":"zone-study-integration-run"}]}`.
+  선택 행의 **전체 JSON 값**과 최상위 `schema`를 고정한다. 목록 순서, 공백, 다른 행의
+  추가/수정은 무관하며 사용 행의 어떤 값이 바뀌어도 실패한다. 중복 id·중복 JSON key·
+  누락·NaN은 거부한다. 선택 행 밖의 공용 기본값/인터페이스도 읽으면 별도 selector로
+  고정하거나 그 파일 전체를 `inputs`에 둔다. 같은 파일의 전체 pin과 entry pin을
+  동시에 넣으면 거부한다.
+- `workflow_spec(id, ...)`는 선택 workflow의 `entry`와 `runner`를 closure의 필수
+  진입점으로 만든다. 다른 worker·provider·evaluator·자산은 호출자가 추가한다.
+  공용 등록/문서 도구는 실제로 import하거나 실행 입력으로 읽을 때만 실행 closure에
+  넣고, 가설·표본·판정·승인 등 연구 등록 내용은 외부 사전 등록 봉인에 별도로 남긴다.
+
+`build_contract(spec)`가 반환하는 `sha256`은 선언·전이 소스 해시·선택 항목 해시를
+모두 포함한다. Git SHA는 출처로 계속 보관하지만 이 의존성 digest에는 섞지 않는다.
+실행 전 `verify_contract(receipt, expected_sha256=<외부 등록에 고정한 해시>)`를
+호출하면 closure를 다시 생성해 추가/삭제된 import까지 대조한다. receipt 자체에서
+읽은 해시만을 승인 근거로 쓰지 않는다. **기존 HEAD 일치·dirty tree·승인·예산·환경·
+worker case 검사를 끄지 않는다.** 다른 HEAD에서 digest가 같다는 사실만으로 실행이나
+과거 검증 결과 재사용을 허용하지 않는다. 재사용 키에는 테스트·환경·설정도 필요하다.
+
+빌더는 정책을 import/실행하지 않고 기존 파일을 덮어쓰지 않는다.
+
+```sh
+# spec은 schema/entry_points/modules/inputs/registries/dynamic_imports를 포함한다.
+python -m scripts.build_execution_dependency_contract build --spec candidate-spec.json
+python -m scripts.build_execution_dependency_contract build --spec candidate-spec.json --output new-receipt.json
+python -m scripts.build_execution_dependency_contract verify --contract new-receipt.json --expected-sha256 <봉인에_고정한_SHA256>
+```
+
+[설계·검증 기록과 #292 적용 순서](../experiments/2026-09-30-seal-dependency-decouple/README.md)를
+참고한다. 신규 bundle/workflow 번호, 물리 결과, 테스트 캐시, 자동 승인 정책은 추가하지 않는다.
+
 ## 구역 연구 통합 v64
 
 `zone-study-integration-v64-source-closure`는 PR #229 P1/P2 수정 후보다. 로컬 branch/remote refs 259개의 `RUNNABLE_ID` 최대 v63(통합 번들은 v2)을 확인해 다음 번호를 선택했다. 원격 fetch·열린 PR 재조회는 환경 제한으로 실패했으며, 최신 원격 예약까지 확인한 것은 아니다.
