@@ -1,0 +1,102 @@
+{
+  "classifier_head": "f32d5fd9afc54ca57ed49860843f54d6b5ca174d",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "python_executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+  "threads": 1,
+  "offline_lock_policy": "origin/main CONTRIBUTING.md lines 83-85; PR 328 merged 2026-09-30T14:07:12Z; no physics/render/model; existing lock untouched",
+  "runs": [
+    {
+      "name": "related_tests",
+      "argv": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--tb=short",
+        "tests/test_v6h_classify_placements.py",
+        "tests/test_classify_review_299.py",
+        "tests/test_classify_review_299b.py",
+        "tests/test_v6h_classifier_properties.py",
+        "tests/test_ci_sharding.py",
+        "tests/test_chain_analysis_hard_limit.py",
+        "tests/test_pair_chain_probe.py",
+        "tests/test_b_v6h_gain.py",
+        "tests/test_classify_review_299c.py"
+      ],
+      "exit_code": 0,
+      "wall_s": 545.0931122303009,
+      "loadavg_start": [
+        28.34423828125,
+        24.54052734375,
+        20.9189453125
+      ],
+      "loadavg_end": [
+        43.44287109375,
+        47.51318359375,
+        37.25537109375
+      ]
+    },
+    {
+      "name": "counterexamples_unmasked",
+      "argv": [
+        "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--runxfail",
+        "-m",
+        "xfail",
+        "--tb=short",
+        "tests/test_classify_review_299c.py"
+      ],
+      "exit_code": 1,
+      "wall_s": 11.930243015289307,
+      "loadavg_start": [
+        43.44287109375,
+        47.51318359375,
+        37.25537109375
+      ],
+      "loadavg_end": [
+        39.34619140625,
+        46.3701171875,
+        37.02392578125
+      ]
+    }
+  ],
+  "source_sha256": {
+    "tests/test_v6h_classify_placements.py": "27e6e84d736786d2eddb720f76450c3e9878e0b8abaa5b2f261ebe23b133c193",
+    "tests/test_classify_review_299.py": "877dcc21a32e47f4525d8627c51905b4c55b368f5f3debb54f1442d8771cfc7b",
+    "tests/test_classify_review_299b.py": "f369cc59634a26a1a936daf0abe22617db2fc17cdda29412804a857f5dd0c767",
+    "tests/test_v6h_classifier_properties.py": "acf93b3034d5e1cd3b486f07c66a732ea12ba99251b7d7657e6c7297c6a6406a",
+    "tests/test_ci_sharding.py": "19708060b0085d4ed255e08fe2d73abb2318e74bcaa87a15e94bbbddadf629b1",
+    "tests/test_chain_analysis_hard_limit.py": "4e285e6abbd264c73f2f9c6339fb07de309b0fab652f7ee65aa9dc3f8785647a",
+    "tests/test_pair_chain_probe.py": "10d9b3963cfc5c295b395670baf105b13542649e523dd6dcb7f6733d601170f6",
+    "tests/test_b_v6h_gain.py": "ca0a7143901db334df61bda51e1b760708cd422f50899f723215fa64a99d61ce",
+    "tests/test_classify_review_299c.py": "1fe05d4f2f67332aac5b669ff01e8e54dc6eb05db35daf7a7da2df68771a0543",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "b108e036e500807b47d8307285d45c3ed86522bf0835660c5642e64be0a2fb90",
+    "harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+    "experiments/2026-09-30-door-relax-envelope/analysis/chain_analysis.py": "62ff145d9016f61aa2f6f71d588ba7dab5b35d9aabb2b19ca15a934bafc0d2e5",
+    "experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3"
+  },
+  "sources_stable": true,
+  "log_preservation": [
+    {
+      "committed_log": "related_tests.txt",
+      "original_log": "/Users/changmin/projects/ugrp/outputs/review-299c-astra-f32d5fd9/related_tests.txt",
+      "original_sha256": "255793f9c22db2bcbff62a1706962a4dd126aa41170be297ed1ccc4397804497",
+      "committed_sha256": "255793f9c22db2bcbff62a1706962a4dd126aa41170be297ed1ccc4397804497",
+      "normalization": "trailing whitespace only; original bytes preserved locally"
+    },
+    {
+      "committed_log": "counterexamples_unmasked.txt",
+      "original_log": "/Users/changmin/projects/ugrp/outputs/review-299c-astra-f32d5fd9/counterexamples_unmasked.txt",
+      "original_sha256": "8614c8c5c6a42257dd22cda8a0123d496725e433dddd96258e7a0eb7e21460a0",
+      "committed_sha256": "3b385c51278cf873baa23c1682123f14619c2f1a5dedd44b810066bcfad1a7ad",
+      "normalization": "trailing whitespace only; original bytes preserved locally"
+    }
+  ]
+}
