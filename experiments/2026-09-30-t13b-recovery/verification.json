@@ -1,0 +1,217 @@
+{
+  "schema": "ugrp.t13b_verification.v1",
+  "updated_utc": "2026-09-30T14:34:28.555382+00:00",
+  "start_head": "7c2dcead1e96cc113680a0cd28ba95d63e12ddf4",
+  "start_main": "ad496486271f441f00eb7d95fbd44dc454999004",
+  "implementation_commit": "5d1268e8a95cff5506d67d86ddaa6f1948be1908",
+  "source_sha256": {
+    "harness/zone_item_recovery.py": "00078de1d5d57e6f197cd7e5a33a51cca794a62639d191feb62c5f0fec89efa8",
+    "harness/zone_recovery_eval.py": "e544846f7fd9d381ed2956f33c0bba49f55830d82ffe01c9d9a933a9ff63f3fc",
+    "tests/test_zone_own_executor_recovery.py": "fee717771f08fd19cd15ee29274e2331da4aaa6c3e05fe535d6d7814b1027316",
+    "scripts/check_zone_item_recovery_mutations.py": "016e3d6a29a1573b9de480a80a89f5826cf0d2e22ac4fbe6ce2e31500fc654f9"
+  },
+  "invariants": {
+    "conditions": [
+      "no_comm",
+      "peer_ko",
+      "leader_ko",
+      "structured"
+    ],
+    "controller_config": {
+      "recovery_version": "ugrp.zone_item_recovery.v1",
+      "identity_version": "ugrp.zone_identity_jobs.v1",
+      "target_api": "ugrp.own_rgb_target_job.v1",
+      "max_recoveries": 3,
+      "max_relooks": 3,
+      "sensor_profile": "off",
+      "communication_enum": "unchanged",
+      "public_order_source": "OrderSheetSource",
+      "specific_identity": "unsupported_until_visual_grounding"
+    },
+    "controller_config_sha256": "5cb13bbbbb7618866aa5e9ea4810d33570df663e1ab3416e7bd4aa94b7e310b0",
+    "role_assignment": {
+      "test_actor_ids": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "assignment": "fixed by fixture, no host selection",
+      "partner": null
+    },
+    "role_assignment_sha256": "e222f1062a9a837eadb6911119fff73a8986d44d6d3182ec3e34a146e058d7f4",
+    "condition_overrides": false
+  },
+  "physical_runs": 0,
+  "render_calls": 0,
+  "new_model_calls": 0,
+  "tensorboard": "not applicable to fake unit regressions; physical result workflow pending",
+  "related_tests": {
+    "passed": 278,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "wall_seconds_reported": 331.49,
+    "performance_measurement": false,
+    "by_file": {
+      "tests/test_zone_own_executor_recovery.py": 53,
+      "tests/test_zone_identity_jobs.py": 71,
+      "tests/test_zone_study_inputs.py": 45,
+      "tests/test_zone_study_contract.py": 53,
+      "tests/test_zone_pair_registered_source.py": 22,
+      "tests/test_zone_study_source_pinning.py": 34
+    },
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_zone_own_executor_recovery.py",
+      "tests/test_zone_identity_jobs.py",
+      "tests/test_zone_study_inputs.py",
+      "tests/test_zone_study_contract.py",
+      "tests/test_zone_pair_registered_source.py",
+      "tests/test_zone_study_source_pinning.py",
+      "--junitxml",
+      "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/related.xml"
+    ],
+    "log": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/related.log",
+    "log_sha256": "625f308b05e22c769645db4dd22843f2e1815a4cbd07282dda4656f13d8f587f",
+    "junit": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/related.xml",
+    "junit_sha256": "7ffe662952d06f3fcf172ad2541b711c658491f6083ecb63a2123e2fc0398d77"
+  },
+  "mutation": {
+    "schema": "ugrp.t13b_mutation_check.v1",
+    "physics_steps": 0,
+    "model_calls": 0,
+    "method": "in-memory module replacement in isolated pytest subprocess",
+    "host_lock": "not acquired: local offline tests",
+    "source_sha256": {
+      "harness/zone_item_recovery.py": "00078de1d5d57e6f197cd7e5a33a51cca794a62639d191feb62c5f0fec89efa8",
+      "harness/zone_recovery_eval.py": "e544846f7fd9d381ed2956f33c0bba49f55830d82ffe01c9d9a933a9ff63f3fc",
+      "sim/zone_hidden_events.py": "7d05eb722202e49c4b4225986a51fb39c57d390b65b7d5c81cf5563ce8fe51dc"
+    },
+    "sources_unchanged": true,
+    "mutations": [
+      {
+        "name": "backend_fault_barrier_removed",
+        "module": "harness.zone_item_recovery",
+        "test": "test_backend_errors_do_not_fabricate_recovery[cancel]",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/backend_fault_barrier_removed.log",
+        "log_sha256": "129c995897be4366fa39b15580ef50058a2b589bba644d56939b7f4afa5e589b",
+        "junit": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/backend_fault_barrier_removed.xml",
+        "junit_sha256": "73370bd5d2a1aeb7689c4efa2267b244c17f27189263f50adf19fa38de56e664"
+      },
+      {
+        "name": "drop_cancel_removed",
+        "module": "harness.zone_item_recovery",
+        "test": "test_observed_drop_cancels_before_refresh_then_regrasp_needs_new_own_frame",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/drop_cancel_removed.log",
+        "log_sha256": "2933c26fd1871c7c978e087878c24a895b3c3859e3675d9e034e45a77582c554",
+        "junit": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/drop_cancel_removed.xml",
+        "junit_sha256": "32ec918c681c1267a53022ea93a8e1ca03c23372162903682270605e9748d085"
+      },
+      {
+        "name": "absence_decision_removed",
+        "module": "harness.zone_item_recovery",
+        "test": "test_absence_requires_two_contiguous_clear_region_observations",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/absence_decision_removed.log",
+        "log_sha256": "b6c9662cc32e4c24fa6a1f9e33b19c6e4d5d577e986ad705b87734a64aac3839",
+        "junit": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/absence_decision_removed.xml",
+        "junit_sha256": "cc289e2481fe255436ff3f223cb5c014ede8f4edd46298b0aab8f548532454c3"
+      },
+      {
+        "name": "noop_enters_effective_denominator",
+        "module": "harness.zone_recovery_eval",
+        "test": "test_effective_recovery_denominators_keep_noops_caps_unexecuted_and_unknown",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/noop_enters_effective_denominator.log",
+        "log_sha256": "32b674f0c1ea5f49230af69019bb02390e09aaff8a615c995564c4a35c33b58b",
+        "junit": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/noop_enters_effective_denominator.xml",
+        "junit_sha256": "de27f91bf00907268478bbf2c4ea14c90b2ee66bf5aee7da0db04426c6a7fdcb"
+      },
+      {
+        "name": "held_move_noop_removed",
+        "module": "sim.zone_hidden_events",
+        "test": "test_hidden_apply_four_branches_with_arrays_only",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/held_move_noop_removed.log",
+        "log_sha256": "f929a9a295b5354d33dd9f7a16ddd4fb59b4b7a5da112c72a9bb735ac98aa23a",
+        "junit": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/held_move_noop_removed.xml",
+        "junit_sha256": "4d2649085add20165034193cbadd9a651a7314795da60bd97c77c7aeec54cfcc"
+      },
+      {
+        "name": "unheld_drop_noop_removed",
+        "module": "sim.zone_hidden_events",
+        "test": "test_hidden_apply_four_branches_with_arrays_only",
+        "exit_code": 1,
+        "failures": 1,
+        "errors": 0,
+        "killed": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/unheld_drop_noop_removed.log",
+        "log_sha256": "a78ce258c650aa0d68c84360ec53dd3c737c4fb058b76a851a8aaa3ad2281bb0",
+        "junit": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/unheld_drop_noop_removed.xml",
+        "junit_sha256": "ae8ecb8590eab085e29f1cd3415ac742682420d866d51c19fe8b1897d9189805"
+      }
+    ],
+    "all_killed": true,
+    "summary_path": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r2/mutations/summary.json",
+    "summary_sha256": "a12de7239beb1769939c2af62c867d19f8764661527294d1c893caab5c06e7c0"
+  },
+  "protected_files": {
+    "count": 59,
+    "manifest": "protected_sha256.json",
+    "manifest_sha256": "01283128b965181857096cb379b4cc76af2ce217490587157506c75f6e82e3d1",
+    "verified_unchanged": true
+  },
+  "physical_acceptance": "blocked: actual RGB/target backend, specific grounding, red/can support; see SIM_CHECKS.md",
+  "integrated_main": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e",
+  "integration_status": "main including PR #328 merged after 278 related tests passed; PR #320 head unchanged and ancestor of main",
+  "initial_test_result": {
+    "passed": 48,
+    "failed": 1,
+    "seconds": 0.5,
+    "record": "/Users/changmin/projects/ugrp/outputs/t13b-recovery-offline-20260930-r1/first-failure.txt",
+    "fix": "immediate backend fault refusal; rejected frame not used as accepted predecessor",
+    "record_sha256": "c79f0ca03293567a4f82ed6b811f51556c04c55daeeb049fba2e06ae7a2387b5"
+  },
+  "git_delivery": {
+    "implementation_committed": true,
+    "snapshot": "before push and draft PR creation; delivery status is tracked in PR metadata",
+    "merge_requested": false
+  },
+  "integration_commit": "2e58a22d137f2e36fda127277e323e414af985bb",
+  "environment": {
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "pytest": "9.1.1",
+    "numpy": "2.5.2",
+    "pillow": "12.3.0"
+  },
+  "host_lock": "No acquisition/release/modification during resume; offline tests follow merged PR #328",
+  "render_scope": "No MuJoCo world, camera, or native scene renderer; existing input tests draw static-map diagrams with PIL",
+  "ci": {
+    "workflow_and_test_runner_diff_vs_integrated_main": false,
+    "test_in_existing_ci_glob": true,
+    "test_files_collected": 335,
+    "status": "normal PR CI required; consult PR checks for final submission status"
+  }
+}
