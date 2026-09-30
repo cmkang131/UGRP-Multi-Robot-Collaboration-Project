@@ -1,0 +1,282 @@
+{
+  "scope": "transition_contract_and_offline_regressions",
+  "recorded_at_utc": "2026-09-30T12:09:12.599007+00:00",
+  "source": {
+    "state": "source_frozen_before_tests",
+    "recorded_at_utc": "2026-09-30T11:59:08.105729+00:00",
+    "base_sha": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
+    "branch": "codex/chain-contract",
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "loadavg_before_lock": [
+      18.7509765625,
+      24.06005859375,
+      25.7666015625
+    ],
+    "packages": {
+      "pytest": "9.1.1",
+      "numpy": "2.5.2",
+      "opencv-python-headless": "5.0.0.93",
+      "Pillow": "12.3.0"
+    },
+    "source_files": {
+      "harness/pair_execution_contract.py": {
+        "bytes": 19027,
+        "sha256": "b1cd5158883329425450a68ee37c112fd93838d422ef53650deb3f98b101089b"
+      },
+      "tests/test_zone_pair_chain_contract.py": {
+        "bytes": 27902,
+        "sha256": "ad64df4e0e010c78b3cfc1020ca78bcd8fa149e28405db20df84c495c998747e"
+      },
+      "scripts/run_ci_tests.py": {
+        "bytes": 21422,
+        "sha256": "4cdd5544f584d3906935ce15e3f69afc44d9dcd88e7ba0c8cc3f16a83489913d"
+      },
+      "harness/zone_pair_executor.py": {
+        "bytes": 34878,
+        "sha256": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465"
+      },
+      "harness/zone_pair_status.py": {
+        "bytes": 9964,
+        "sha256": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646"
+      },
+      "harness/zone_pair_grasp.py": {
+        "bytes": 20345,
+        "sha256": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565"
+      },
+      "harness/zone_pair_align.py": {
+        "bytes": 15139,
+        "sha256": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e"
+      },
+      "harness/zone_pair_guards.py": {
+        "bytes": 38485,
+        "sha256": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde"
+      },
+      "harness/m2_provider_adapter.py": {
+        "bytes": 884,
+        "sha256": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624"
+      },
+      "harness/zone_own_team_host.py": {
+        "bytes": 31731,
+        "sha256": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64"
+      },
+      "harness/zone_own_executor.py": {
+        "bytes": 44662,
+        "sha256": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5"
+      },
+      "harness/zone_study_pose_delay.py": {
+        "bytes": 5240,
+        "sha256": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894"
+      },
+      "scripts/run_m2_pair.py": {
+        "bytes": 66749,
+        "sha256": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783"
+      },
+      "scripts/study_owncam_pair_beam.py": {
+        "bytes": 41120,
+        "sha256": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00"
+      },
+      "scripts/zone_teacher.py": {
+        "bytes": 35429,
+        "sha256": "e84742fe788d80c726d79c0a46f7617a0f237edcaa0a325f2592a25c40acd5e4"
+      },
+      "scripts/run_zone_study_integration.py": {
+        "bytes": 46050,
+        "sha256": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd"
+      },
+      "tests/fixtures/m2_pair_door_v3/lift_824_r2_00759.jpg": {
+        "bytes": 12652,
+        "sha256": "f4ab35c932a02238dc5428cccdde32a932322da138a52621217a3468160474cb"
+      },
+      "maps/zones/zone_wide_door_tags_v2.json": {
+        "bytes": 28355,
+        "sha256": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b"
+      },
+      "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": {
+        "bytes": 3632,
+        "sha256": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72"
+      }
+    }
+  },
+  "environment": {
+    "recorded_at_utc": "2026-09-30T12:05:20.758765+00:00",
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "loadavg": [
+      119.09423828125,
+      48.224609375,
+      32.98486328125
+    ],
+    "packages": {
+      "pytest": "9.1.1",
+      "numpy": "2.5.2",
+      "opencv-python-headless": "5.0.0.93",
+      "Pillow": "12.3.0"
+    },
+    "source_snapshot_environment_origin": "validation-03; refreshed here for validation-04"
+  },
+  "preliminary_development_check": {
+    "passed": 11,
+    "wall_s": 205.46,
+    "evidence": "terminal only; superseded development source, excluded from final count"
+  },
+  "history": [
+    {
+      "id": "validation-01",
+      "tests": 2,
+      "passed": 1,
+      "failed_or_errors": 1,
+      "skipped": 0,
+      "test_source_sha256": "707f12800d440c2b3d3c37b81e267bd6a5d4f495eecca6343820a2c78266c9f2",
+      "wall_s_test_only": 234.722,
+      "by_module": {
+        "tests.test_zone_pair_chain_contract": 2
+      }
+    },
+    {
+      "id": "validation-02",
+      "tests": 8,
+      "passed": 8,
+      "failed_or_errors": 0,
+      "skipped": 0,
+      "test_source_sha256": "cb7d94e9f9aadd3eb33b9aaf95be886ff558478201ce010e1bad17fd5486dfa5",
+      "wall_s_test_only": 3.78,
+      "by_module": {
+        "tests.test_zone_pair_chain_contract": 8
+      }
+    },
+    {
+      "id": "validation-03",
+      "tests": 274,
+      "passed": 274,
+      "failed_or_errors": 0,
+      "skipped": 0,
+      "test_source_sha256": "cb7d94e9f9aadd3eb33b9aaf95be886ff558478201ce010e1bad17fd5486dfa5",
+      "wall_s_test_only": 337.884,
+      "by_module": {
+        "tests.test_ci_sharding": 66,
+        "tests.test_pair_chain_probe": 26,
+        "tests.test_zone_pair_chain_contract": 35,
+        "tests.test_zone_pair_executor": 40,
+        "tests.test_zone_pair_grasp": 56,
+        "tests.test_zone_pair_preclose": 23,
+        "tests.test_zone_pair_review7": 2,
+        "tests.test_zone_pair_status": 16,
+        "tests.test_zone_study_integration_pair": 10
+      }
+    },
+    {
+      "id": "validation-04",
+      "tests": 277,
+      "passed": 277,
+      "failed_or_errors": 0,
+      "skipped": 0,
+      "test_source_sha256": "ad64df4e0e010c78b3cfc1020ca78bcd8fa149e28405db20df84c495c998747e",
+      "wall_s_test_only": 317.588,
+      "by_module": {
+        "tests.test_ci_sharding": 66,
+        "tests.test_pair_chain_probe": 26,
+        "tests.test_zone_pair_chain_contract": 38,
+        "tests.test_zone_pair_executor": 40,
+        "tests.test_zone_pair_grasp": 56,
+        "tests.test_zone_pair_preclose": 23,
+        "tests.test_zone_pair_review7": 2,
+        "tests.test_zone_pair_status": 16,
+        "tests.test_zone_study_integration_pair": 10
+      }
+    }
+  ],
+  "failed_fixture_diagnosis": "Future host macro suppressed controller/heartbeats before invalid frame. Inject pending queues at first abort and require original fault reason plus positive cancellation count.",
+  "no_start_events": [
+    "runner rejected unsupported -k argument before pytest",
+    "occupied shared lock caused exit 3 before pytest"
+  ],
+  "final_source_hashes_match_before_test_snapshot": true,
+  "raw_root_local_only": "/Users/changmin/projects/ugrp/outputs/p04-chain-contract-20260930",
+  "raw_files": {
+    "validation-01/full_trace.json": {
+      "bytes": 12887887,
+      "sha256": "d9e096a1d0721bebf0ae0fd2d9e13639d43745eb7de7faf3dfc70dbe25ce3e7d"
+    },
+    "validation-01/junit.xml": {
+      "bytes": 3786,
+      "sha256": "ef299d36cca7d17c7550dc75c6f4fad7a98d2da7f5488b5c3ecb8bab2e7cbbcf"
+    },
+    "validation-02/junit.xml": {
+      "bytes": 1849,
+      "sha256": "016965b3f0327aafa452276b6864182c31dc2e2d95d1e259fd77c8bd5805bacb"
+    },
+    "validation-03/full_trace.json": {
+      "bytes": 12887887,
+      "sha256": "1ac4b9743424d433df7df28c249fbe4f5501112e0a5f00956c9cb3cf09043768"
+    },
+    "validation-03/junit.xml": {
+      "bytes": 51817,
+      "sha256": "ed09d3077195faa12e04391e92172300008a482260f5be1c2628574966109e06"
+    },
+    "validation-03/lock.json": {
+      "bytes": 314,
+      "sha256": "dcfe2375fb298398ce8f0fd6f31030917d99367e22067bf4b9b94ee09e9c34fc"
+    },
+    "validation-03/source_before_tests.json": {
+      "bytes": 3498,
+      "sha256": "c950b2aed812c721b876e1026c738b4c13bbc97275e9ce7aae256c267986ecbf"
+    },
+    "validation-04/environment_at_start.json": {
+      "bytes": 491,
+      "sha256": "deb325c309b9e2d6389aca466e9aa5877d24a9cf95fd78a420e52db9d6623426"
+    },
+    "validation-04/full_trace.json": {
+      "bytes": 12887887,
+      "sha256": "943225b657f9289391513864eb4f53671c9c1969bf3749ac113aabeb25898eb9"
+    },
+    "validation-04/junit.xml": {
+      "bytes": 52426,
+      "sha256": "fcd0a74218c5f4b683e2d596e43080020a6052cbfe4fa53d8fe576a2c46f6454"
+    },
+    "validation-04/lock.json": {
+      "bytes": 311,
+      "sha256": "10b8b99e3cd40c4ea7b709f80333bd68ea378d501d86b56976e2a3e2f396028e"
+    },
+    "validation-04/source_before_tests.json": {
+      "bytes": 3498,
+      "sha256": "82edb5001616c76fb5fd97e0cb691cf5853d4914605bb977eb5a275b1f4a8f3a"
+    }
+  },
+  "full_chain": [
+    {
+      "robot_id": "r1",
+      "job_id": "r1-job-001",
+      "n_legs": 8,
+      "provider_changes": 0,
+      "pf_changes": 0,
+      "receipts": 224,
+      "consumed_frame_rows": 551,
+      "commands": 7968,
+      "terminal_outcome": "unconfirmed"
+    },
+    {
+      "robot_id": "r2",
+      "job_id": "r2-job-001",
+      "n_legs": 8,
+      "provider_changes": 0,
+      "pf_changes": 0,
+      "receipts": 224,
+      "consumed_frame_rows": 551,
+      "commands": 7967,
+      "terminal_outcome": "unconfirmed"
+    }
+  ],
+  "physical_or_simulator_steps": 0,
+  "renderer_calls": 0,
+  "real_model_calls": 0,
+  "physical_success_verified": false,
+  "new_actual_starts": 0,
+  "remote_ci": "intentionally skipped with [skip ci]; not a CI pass",
+  "tensorboard": "no new physical/training/evaluation cohort; synthetic tests only, no conversion or viewer",
+  "remaining": [
+    "coordinator/P06 opt-in observer wiring in actual runner and output finalization",
+    "P01/P02/P03/P06 final source and bundle composition, separate review",
+    "separately authorized three fresh actual starts; suggested total cap 2700 scene-SIM s without extending job deadlines"
+  ]
+}

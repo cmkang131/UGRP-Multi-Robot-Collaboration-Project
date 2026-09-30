@@ -1,0 +1,23 @@
+T09b case: none
+....F................................................................... [ 28%]
+........................................................................ [ 56%]
+........................................................................ [ 85%]
+......................................                                   [100%]
+=================================== FAILURES ===================================
+__ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured] ___
+tests/test_zone_own_executor_observed_reroute.py:107: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
+    assert receipt.accepted == (condition != 'no_comm')
+E   AssertionError: assert False == ('structured' != 'no_comm')
+E    +  where False = Receipt(accepted=False, rejection='schema', detail='structured message needs exactly act, item, zone, role, passage, l...state, confidence, observed_at_sim_s, reply_to', envelope=None, deliveries=(), language=None, language_violation=False).accepted
+=============================== warnings summary ===============================
+tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[no_comm]
+tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[peer_ko]
+tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[leader_ko]
+tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[structured]
+  tests/test_zone_own_executor_observed_reroute.py:123: PytestWarning: record_property is incompatible with junit_family 'xunit2' (use 'legacy' or 'xunit1')
+    @pytest.mark.parametrize('condition', CONDITIONS)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured]
+1 failed, 253 passed, 4 warnings in 299.52s (0:04:59)
