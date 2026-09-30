@@ -1,0 +1,20 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_____ test_capable_solo_decides_to_yield_then_reenters_on_own_clear_frames _____
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+
+    def test_capable_solo_decides_to_yield_then_reenters_on_own_clear_frames(static):
+        t = Trace(plan(static))
+        solo_to_junction(t)
+        d = t.tick((.25, 0., 0.), travel='blocked')
+>       assert (d.state, d.reason) == ('RETREAT', 'self_feasible_refuge')
+E       AssertionError: assert ('WAIT_LANE',...d_or_unknown') == ('RETREAT', '...sible_refuge')
+E         
+E         At index 0 diff: 'WAIT_LANE' != 'RETREAT'
+E         Use -v to get more diff
+
+tests/test_zone_own_executor_corridor_control.py:116: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_corridor_control.py::test_capable_solo_decides_to_yield_then_reenters_on_own_clear_frames
+1 failed in 0.23s

@@ -1,0 +1,21 @@
+{
+  "mutation": {
+    "name": "remove_control",
+    "module": "harness.zone_corridor_control",
+    "selected_test": "test_solo_entry_translation_full_exit_not_waypoint_or_delivery",
+    "original_sha256": "04867a8cd1f6b0987a9ee6ee8efc43f21081f43df91fa06c16938a2b49df7736",
+    "mutated_in_memory_sha256": "350f7855936bd52798ef557e0828c57d679f515f6a3373669d14d54af799eaad",
+    "file_bytes_unchanged": true
+  },
+  "pytest_exit_code": 1,
+  "failed_tests": [
+    "tests/test_zone_own_executor_corridor_control.py::test_solo_entry_translation_full_exit_not_waypoint_or_delivery[False]",
+    "tests/test_zone_own_executor_corridor_control.py::test_solo_entry_translation_full_exit_not_waypoint_or_delivery[True]"
+  ],
+  "passed_tests": [],
+  "setup_teardown_errors": [],
+  "original_file_unchanged": true,
+  "mutation_caught": true,
+  "host_lock_required": false,
+  "scope": "fake only; physics/render/model calls 0"
+}
