@@ -1,0 +1,1347 @@
+{
+  "schema": "ugrp.independent_fix_review.v1",
+  "reviewer": "Codex / codex/review-344",
+  "created_utc": "2026-09-30T22:20:29.104554+00:00",
+  "verdict": "MERGE AFTER FIXES",
+  "scope": "45c4ebc4 -> b7bc885a only; no implementation changes, no final model requirement",
+  "no_native_execution": {
+    "physics_steps": 0,
+    "native_model_compiles": 0,
+    "renders": 0,
+    "real_model_calls": 0,
+    "host_lock_acquired": false
+  },
+  "git_snapshot": {
+    "candidate": "b7bc885a27aa5ab242e9f3710a3cd7090efe9f3a",
+    "base": "45c4ebc43daa96542cf298cea6f69964e501ec4a",
+    "main": "2c45b137c480eecff3dac871277cf48914dd5cf4",
+    "ref_snapshots": [
+      {
+        "number": "main",
+        "headRefName": "main",
+        "headRefOid": "2c45b137c480eecff3dac871277cf48914dd5cf4",
+        "declarations_v87_plus": [
+          "2c45b137c480eecff3dac871277cf48914dd5cf4:configs/zone_final_environment_v87.json:3:  \"execution_bundle_id\": \"zone-final-environment-v87\",",
+          "2c45b137c480eecff3dac871277cf48914dd5cf4:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'",
+          "2c45b137c480eecff3dac871277cf48914dd5cf4:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'"
+        ]
+      },
+      {
+        "headRefName": "codex/calib-fit-v87",
+        "headRefOid": "bedcc99d8adcff470eb396c9985e766e76affb3d",
+        "number": 346,
+        "declarations_v87_plus": [
+          "bedcc99d8adcff470eb396c9985e766e76affb3d:configs/zone_final_environment_v87.json:3:  \"execution_bundle_id\": \"zone-final-environment-v87\",",
+          "bedcc99d8adcff470eb396c9985e766e76affb3d:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'"
+        ]
+      },
+      {
+        "headRefName": "codex/v3-pair-adapter",
+        "headRefOid": "b7bc885a27aa5ab242e9f3710a3cd7090efe9f3a",
+        "number": 344,
+        "declarations_v87_plus": [
+          "b7bc885a27aa5ab242e9f3710a3cd7090efe9f3a:configs/zone_final_environment_v87.json:3:  \"execution_bundle_id\": \"zone-final-environment-v87\",",
+          "b7bc885a27aa5ab242e9f3710a3cd7090efe9f3a:configs/zone_final_pair_v88.json:3:  \"execution_bundle_id\": \"zone-final-pair-v88\",",
+          "b7bc885a27aa5ab242e9f3710a3cd7090efe9f3a:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'",
+          "b7bc885a27aa5ab242e9f3710a3cd7090efe9f3a:harness/zone_final_pair_contract.py:18:BUNDLE_ID = 'zone-final-pair-v88'"
+        ]
+      },
+      {
+        "headRefName": "codex/integ-target-backend",
+        "headRefOid": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+        "number": 339,
+        "declarations_v87_plus": []
+      },
+      {
+        "headRefName": "codex/review-e2e-batch-f",
+        "headRefOid": "887b4d5e73823733a39d10060734080e46668548",
+        "number": 327,
+        "declarations_v87_plus": []
+      },
+      {
+        "headRefName": "codex/review-e2e-batch-d",
+        "headRefOid": "cd4a71ab7c7cca801fe6dba163a8bb8a1179aa91",
+        "number": 322,
+        "declarations_v87_plus": []
+      },
+      {
+        "headRefName": "codex/review-e2e-batch-e",
+        "headRefOid": "585cf9c01d4396d6f5f1d94f5a187cd9b71425f4",
+        "number": 321,
+        "declarations_v87_plus": []
+      },
+      {
+        "headRefName": "codex/review-e2e-batch-a",
+        "headRefOid": "933bb1d63f2de7d5df16ede55c4235e4a65cc1f4",
+        "number": 319,
+        "declarations_v87_plus": []
+      },
+      {
+        "headRefName": "codex/review-e2e-batch-c",
+        "headRefOid": "7ee20a048c6b29089dbcd3c332d734bf43cd77c0",
+        "number": 318,
+        "declarations_v87_plus": []
+      },
+      {
+        "headRefName": "codex/review-e2e-batch-b",
+        "headRefOid": "ec0f85807ddb55927a81ac071b407b8ea53802d8",
+        "number": 317,
+        "declarations_v87_plus": []
+      },
+      {
+        "headRefName": "codex/outputs-retention",
+        "headRefOid": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+        "number": 309,
+        "declarations_v87_plus": []
+      },
+      {
+        "headRefName": "codex/stall-d1-prereg",
+        "headRefOid": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+        "number": 293,
+        "declarations_v87_plus": []
+      },
+      {
+        "headRefName": "codex/pair-v6h-register",
+        "headRefOid": "9cb2bf9ba77f56239eaf38ff8043c076e711b920",
+        "number": 292,
+        "declarations_v87_plus": []
+      },
+      {
+        "headRefName": "claude/b-v6h-gain",
+        "headRefOid": "1f0e4eb501a8f1b87077df943382fc1f0777dc69",
+        "number": 285,
+        "declarations_v87_plus": []
+      }
+    ],
+    "preserved_vs_main": {
+      "sim/render_profile.py": {
+        "candidate": "782a531a5a89d23dce2974778e26b7ab1f0b6df8cd60f83df9404079cf7290d5",
+        "main": "782a531a5a89d23dce2974778e26b7ab1f0b6df8cd60f83df9404079cf7290d5"
+      },
+      "sim/zone_final_v3_scene.py": {
+        "candidate": "cf93fc65637c178ee18654edebd891408010e2b4b89a96758a879fbc8ee97b92",
+        "main": "cf93fc65637c178ee18654edebd891408010e2b4b89a96758a879fbc8ee97b92"
+      },
+      "sim/masterpi_model_v3.py": {
+        "candidate": "e2d9ff9224d7f7df01957bdf9ca95f52db9f5c7b54828eaab8185e5422d38fb5",
+        "main": "e2d9ff9224d7f7df01957bdf9ca95f52db9f5c7b54828eaab8185e5422d38fb5"
+      },
+      "sim/masterpi_camera_profile.py": {
+        "candidate": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+        "main": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a"
+      },
+      "sim/camera_robot_port.py": {
+        "candidate": "be94c99a2a597a81e55ab0cbaba44f9340d3c2bbb7a3d14a2078f1d903bc8910",
+        "main": "be94c99a2a597a81e55ab0cbaba44f9340d3c2bbb7a3d14a2078f1d903bc8910"
+      },
+      "harness/zone_final_environment_floor_light.py": {
+        "candidate": "9015e93e977b096e394e293acd918de1f7b330c35bdd1e08899ed4222cc36464",
+        "main": "9015e93e977b096e394e293acd918de1f7b330c35bdd1e08899ed4222cc36464"
+      },
+      "sim/final_environment_floor_light.py": {
+        "candidate": "00655764cf1722792af8dca2de759080bed08a47c2731612776ea747bbf8a294",
+        "main": "00655764cf1722792af8dca2de759080bed08a47c2731612776ea747bbf8a294"
+      },
+      "configs/zone_final_environment_v87.json": {
+        "candidate": "90a93424dfa85d4730a4ab1d6d8b2076a6b2cd7817fd95ca351abfb76f36dba5",
+        "main": "90a93424dfa85d4730a4ab1d6d8b2076a6b2cd7817fd95ca351abfb76f36dba5"
+      },
+      "configs/calibration/zone_final_v3_floor_light_contract.json": {
+        "candidate": "6666b23b72db5e7243af337b85f87ce469c389709e59852d8fa963dd92c0ebb6",
+        "main": "6666b23b72db5e7243af337b85f87ce469c389709e59852d8fa963dd92c0ebb6"
+      },
+      "configs/final_environment_measurement_v1.json": {
+        "candidate": "7d19bcc3e88dac4f906d4f0db9b5aef7fb7969e795b3c709a632ea45962d045e",
+        "main": "7d19bcc3e88dac4f906d4f0db9b5aef7fb7969e795b3c709a632ea45962d045e"
+      },
+      "harness/zone_pair_executor.py": {
+        "candidate": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+        "main": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465"
+      },
+      "harness/zone_pair_grasp.py": {
+        "candidate": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565",
+        "main": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565"
+      },
+      "harness/owncam_localizer.py": {
+        "candidate": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+        "main": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347"
+      },
+      "harness/vision_pose_source_p03.py": {
+        "candidate": "ada0417b35987a1012b1ab9dcb643f137e0201f92039a5d824f7d73b42e76284",
+        "main": "ada0417b35987a1012b1ab9dcb643f137e0201f92039a5d824f7d73b42e76284"
+      },
+      "tests/test_zone_pair_registered_source.py": {
+        "candidate": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+        "main": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb"
+      },
+      "tests/test_zone_study_source_pinning.py": {
+        "candidate": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+        "main": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5"
+      }
+    },
+    "github_workflow_diff_vs_main": [],
+    "pr344": {
+      "headRefOid": "b7bc885a27aa5ab242e9f3710a3cd7090efe9f3a",
+      "isDraft": true,
+      "state": "OPEN",
+      "statusCheckRollup": [
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:02:22Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110117994499",
+          "name": "ci-preflight",
+          "startedAt": "2026-09-30T22:02:00Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:07:39Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118216046",
+          "name": "zone-multiturn-properties (0)",
+          "startedAt": "2026-09-30T22:04:54Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:06:51Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118216010",
+          "name": "zone-multiturn-properties (1)",
+          "startedAt": "2026-09-30T22:04:51Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:07:13Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118216039",
+          "name": "zone-multiturn-properties (2)",
+          "startedAt": "2026-09-30T22:04:38Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:07:00Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118216079",
+          "name": "zone-multiturn-properties (3)",
+          "startedAt": "2026-09-30T22:04:42Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:04:03Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215840",
+          "name": "zone-multiturn-properties (4)",
+          "startedAt": "2026-09-30T22:02:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:05:26Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215894",
+          "name": "zone-multiturn-properties (5)",
+          "startedAt": "2026-09-30T22:02:57Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:05:47Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215891",
+          "name": "zone-multiturn-properties (6)",
+          "startedAt": "2026-09-30T22:03:13Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:06:27Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118216029",
+          "name": "zone-multiturn-properties (7)",
+          "startedAt": "2026-09-30T22:04:11Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:06:10Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215987",
+          "name": "zone-multiturn-properties (8)",
+          "startedAt": "2026-09-30T22:03:46Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:05:02Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215912",
+          "name": "zone-multiturn-properties (9)",
+          "startedAt": "2026-09-30T22:02:28Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:05:45Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215964",
+          "name": "zone-multiturn-properties (10)",
+          "startedAt": "2026-09-30T22:03:47Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:04:47Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215857",
+          "name": "zone-multiturn-properties (11)",
+          "startedAt": "2026-09-30T22:02:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:05:28Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215923",
+          "name": "zone-multiturn-properties (12)",
+          "startedAt": "2026-09-30T22:03:03Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:06:08Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118216005",
+          "name": "zone-multiturn-properties (13)",
+          "startedAt": "2026-09-30T22:03:48Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:06:49Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215962",
+          "name": "zone-multiturn-properties (14)",
+          "startedAt": "2026-09-30T22:04:00Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:06:34Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215965",
+          "name": "zone-multiturn-properties (15)",
+          "startedAt": "2026-09-30T22:04:06Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:03:30Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215571",
+          "name": "tensorboard-export",
+          "startedAt": "2026-09-30T22:02:30Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:04:50Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215719",
+          "name": "reference-act-smoke",
+          "startedAt": "2026-09-30T22:02:27Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:08:25Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215683",
+          "name": "offline-regression-shard (0/8)",
+          "startedAt": "2026-09-30T22:02:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:11:24Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215744",
+          "name": "offline-regression-shard (1/8)",
+          "startedAt": "2026-09-30T22:03:36Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:08:35Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215637",
+          "name": "offline-regression-shard (2/8)",
+          "startedAt": "2026-09-30T22:02:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:09:07Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215655",
+          "name": "offline-regression-shard (3/8)",
+          "startedAt": "2026-09-30T22:02:29Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:09:33Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215691",
+          "name": "offline-regression-shard (4/8)",
+          "startedAt": "2026-09-30T22:03:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:09:56Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215789",
+          "name": "offline-regression-shard (5/8)",
+          "startedAt": "2026-09-30T22:03:30Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:08:38Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215831",
+          "name": "offline-regression-shard (6/8)",
+          "startedAt": "2026-09-30T22:04:13Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:15:01Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215812",
+          "name": "offline-regression-shard (7/8)",
+          "startedAt": "2026-09-30T22:04:09Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:04:29Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215677",
+          "name": "offline-regression-checks",
+          "startedAt": "2026-09-30T22:03:37Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:09:01Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215629",
+          "name": "ubuntu-simulation-runtime",
+          "startedAt": "2026-09-30T22:02:25Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:08:45Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215649",
+          "name": "ubuntu-simulation-scenarios",
+          "startedAt": "2026-09-30T22:03:54Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:04:54Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215693",
+          "name": "multi-object-scenes",
+          "startedAt": "2026-09-30T22:03:32Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:04:53Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110118215737",
+          "name": "individual-proxy-bootstrap",
+          "startedAt": "2026-09-30T22:04:27Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        },
+        {
+          "__typename": "CheckRun",
+          "completedAt": "2026-09-30T22:16:02Z",
+          "conclusion": "SUCCESS",
+          "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36783115352/job/110122383266",
+          "name": "offline-regressions",
+          "startedAt": "2026-09-30T22:15:59Z",
+          "status": "COMPLETED",
+          "workflowName": "Offline regression tests"
+        }
+      ]
+    }
+  },
+  "archive_integrity": {
+    "tracked_files_verified_unchanged": 2310,
+    "paths": [
+      "harness",
+      "sim",
+      "scripts",
+      "configs",
+      "tests"
+    ],
+    "independent_recomputed_report_exact_match": true
+  },
+  "related_suite": {
+    "summary": "355 passed, 1 deselected",
+    "junit": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "355",
+      "time": "275.087",
+      "timestamp": "2026-10-01T07:06:43.110522+09:00",
+      "hostname": "gangchangmin-ui-MacBookAir.local"
+    },
+    "command": "GIT_DIR=/Users/changmin/projects/ugrp/.git PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python offline.py -q -p no:cacheprovider tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_review_344.py tests/test_zone_final_environment_runnable.py tests/test_zone_final_environment_floor_light.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_executor.py tests/test_zone_pair_grasp.py tests/test_pair_passage_plan.py tests/test_simulation_workflow_manager.py tests/test_vision_loc_p03_source_pinning.py -k \"not test_parent_exit_cleans_background_child\"",
+    "offline_guard": "import sys, socket\nsys.path.insert(0, '/private/tmp/ugrp-review344b.kUVKSz')\ndef forbidden(*a, **kw):\n    raise RuntimeError('review forbids native physics/render/network/model')\nsocket.socket.connect=forbidden\nfor name in ('mujoco','torch','torchvision','sim.multi_masterpi_production'):\n    sys.modules[name]=None\nfrom harness.vision_loc_client import VisionWorkerClient\nVisionWorkerClient.__init__=forbidden\nimport pytest\nraise SystemExit(pytest.main(sys.argv[1:]))\n",
+    "deselected_reason": "Existing sandbox ps limitation; native/process test not reclassified as implementation failure"
+  },
+  "review_suite": {
+    "summary": "14 passed, 5 strict xfailed",
+    "junit": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "5",
+      "tests": "19",
+      "time": "16.708",
+      "timestamp": "2026-10-01T07:15:54.668259+09:00",
+      "hostname": "gangchangmin-ui-MacBookAir.local"
+    },
+    "command": "REVIEW_344B_ROOT=<candidate archive> PYTHONDONTWRITEBYTECODE=1 OPENBLAS_NUM_THREADS=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider tests/test_review_344b.py -rx"
+  },
+  "mutations": {
+    "count": 7,
+    "baseline_required_pass": 7,
+    "assertion_failures_after_semantic_reversion": 7,
+    "survivors": 0,
+    "details": [
+      "R1: camera_record returns raw record (no floor composition)",
+      "R2 x3: compile exact old schedule module from 45c4ebc4 for unloaded/fine/loaded",
+      "R2 loaded gain/deadband: same exact old schedule, restores equal target responses",
+      "R3: remove bundle timing declaration",
+      "R4: original verification JSON in temporary fixture"
+    ],
+    "exception_policy": "Unexpected probe exceptions become RuntimeError; only intended AssertionError counts; candidate files never mutated"
+  },
+  "counterexamples": {
+    "B1": {
+      "priority": "P1",
+      "cases": 3,
+      "observed": {
+        "plan_runnable": true,
+        "blocked_on": [],
+        "backend_calls": [
+          "backend reached"
+        ]
+      },
+      "junit_with_xfail_disabled": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "3",
+        "skipped": "0",
+        "tests": "3",
+        "time": "7.867",
+        "timestamp": "2026-10-01T07:12:27.987503+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      },
+      "result": "3 expected assertion failures"
+    },
+    "B2": {
+      "priority": "P2",
+      "cases": 2,
+      "observed": {
+        "reason": null,
+        "held": [],
+        "saved": [],
+        "returned_clearance": 0.45179999999999987
+      },
+      "junit_with_xfail_disabled": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "2",
+        "skipped": "0",
+        "tests": "2",
+        "time": "0.822",
+        "timestamp": "2026-10-01T07:14:31.340363+09:00",
+        "hostname": "gangchangmin-ui-MacBookAir.local"
+      },
+      "result": "2 expected assertion failures"
+    }
+  },
+  "independent_numerics": {
+    "calibration-unloaded": {
+      "forward": {
+        "max_independent_response_difference": 6.140921104957897e-16,
+        "samples": 1681,
+        "independent_rank": 3,
+        "rank_with_stop_nuisance": 4,
+        "condition": 255.71147264894987,
+        "reported_condition": 255.7114726458731,
+        "illustrative_log_sd_1p8mm_AR0p5s": {
+          "gain": 0.004316900802886995,
+          "drive_tau_s": 0.025497246741648924,
+          "stop_tau_s": 0.19952755842340256,
+          "deadband": 0.010594121459047813
+        }
+      },
+      "left": {
+        "max_independent_response_difference": 4.163336342344337e-16,
+        "samples": 1681,
+        "independent_rank": 3,
+        "rank_with_stop_nuisance": 4,
+        "condition": 272.37973161282025,
+        "reported_condition": 272.37973162534576,
+        "illustrative_log_sd_1p8mm_AR0p5s": {
+          "gain": 0.006021232082068924,
+          "drive_tau_s": 0.03711592942244631,
+          "stop_tau_s": 0.28961853484838684,
+          "deadband": 0.010050312720396434
+        }
+      },
+      "turn": {
+        "max_independent_response_difference": 1.1102230246251565e-16,
+        "samples": 1681,
+        "independent_rank": 3,
+        "rank_with_stop_nuisance": 4,
+        "condition": 255.71147261496134,
+        "reported_condition": 255.71147264616093,
+        "illustrative_log_sd_1p8mm_AR0p5s": {
+          "gain": 0.008504294579916919,
+          "drive_tau_s": 0.05022957607396133,
+          "stop_tau_s": 0.3930692901430622,
+          "deadband": 0.020870419274539077
+        }
+      }
+    },
+    "calibration-fine": {
+      "forward": {
+        "max_independent_response_difference": 2.7755575615628914e-16,
+        "samples": 1681,
+        "independent_rank": 3,
+        "rank_with_stop_nuisance": 4,
+        "condition": 265.78388834150724,
+        "reported_condition": 265.78388838657406,
+        "illustrative_log_sd_1p8mm_AR0p5s": {
+          "gain": 0.006354162008848196,
+          "drive_tau_s": 0.030761300263781443,
+          "stop_tau_s": 0.23697232749154426,
+          "deadband": 0.0181736977419491
+        }
+      },
+      "left": {
+        "max_independent_response_difference": 1.1102230246251565e-16,
+        "samples": 1681,
+        "independent_rank": 3,
+        "rank_with_stop_nuisance": 4,
+        "condition": 285.5366374382538,
+        "reported_condition": 285.53663738677494,
+        "illustrative_log_sd_1p8mm_AR0p5s": {
+          "gain": 0.00877373439885039,
+          "drive_tau_s": 0.04514669418989959,
+          "stop_tau_s": 0.3459352006953071,
+          "deadband": 0.017198167624871398
+        }
+      },
+      "turn": {
+        "max_independent_response_difference": 9.020562075079397e-17,
+        "samples": 1681,
+        "independent_rank": 3,
+        "rank_with_stop_nuisance": 4,
+        "condition": 265.7838884020368,
+        "reported_condition": 265.7838883869055,
+        "illustrative_log_sd_1p8mm_AR0p5s": {
+          "gain": 0.01251769916053834,
+          "drive_tau_s": 0.060599761546464674,
+          "stop_tau_s": 0.4668354850275667,
+          "deadband": 0.03580218455141089
+        }
+      }
+    },
+    "calibration-loaded": {
+      "forward": {
+        "max_independent_response_difference": 4.163336342344337e-16,
+        "samples": 2121,
+        "independent_rank": 3,
+        "rank_with_stop_nuisance": 4,
+        "condition": 275.00146496672613,
+        "reported_condition": 275.0014649800676,
+        "illustrative_log_sd_1p8mm_AR0p5s": {
+          "gain": 0.0029789255350596657,
+          "drive_tau_s": 0.020414589733765625,
+          "stop_tau_s": 0.15237195064866713,
+          "deadband": 0.007171973042458823
+        }
+      },
+      "left": {
+        "max_independent_response_difference": 6.661338147750939e-16,
+        "samples": 2121,
+        "independent_rank": 3,
+        "rank_with_stop_nuisance": 4,
+        "condition": 284.58073659426225,
+        "reported_condition": 284.58073662701617,
+        "illustrative_log_sd_1p8mm_AR0p5s": {
+          "gain": 0.004769590920180302,
+          "drive_tau_s": 0.029113660018430892,
+          "stop_tau_s": 0.21669141144787843,
+          "deadband": 0.011203070892978149
+        }
+      },
+      "turn": {
+        "max_independent_response_difference": 5.273559366969494e-16,
+        "samples": 2121,
+        "independent_rank": 3,
+        "rank_with_stop_nuisance": 4,
+        "condition": 275.00146496774653,
+        "reported_condition": 275.0014649803115,
+        "illustrative_log_sd_1p8mm_AR0p5s": {
+          "gain": 0.005868483303784463,
+          "drive_tau_s": 0.0402167417796447,
+          "stop_tau_s": 0.30017274281557355,
+          "deadband": 0.014128786893668921
+        }
+      },
+      "runtime_ramp": {
+        "max_independent_response_difference": 5.551115123125783e-16,
+        "samples": 2121,
+        "independent_rank": 4,
+        "rank_with_stop_nuisance": 5,
+        "condition": 303.9520175038981,
+        "reported_condition": 303.95201752804905,
+        "illustrative_log_sd_1p8mm_AR0p5s": {
+          "gain": 0.005087934773746718,
+          "drive_tau_s": 0.039044653327131765,
+          "stop_tau_s": 0.2875230807786772,
+          "deadband": 0.017073087416954357,
+          "knee": 0.004188762064279224
+        }
+      }
+    }
+  },
+  "numerical_qualifications": [
+    "Nominal synthetic model only; not measured confidence intervals",
+    "Illustrative AR(1) residual sensitivity assumes 0.0018 m or rad and 0.5 s correlation; not a fit of #348 noise",
+    "Full author grid report rerun and JSON-equal to checked-in identifiability_v2.json",
+    "Independent response formula and Fisher also reproduced in tests/test_review_344b.py"
+  ],
+  "full_profile_recomputation": {
+    "status": "SYNTHETIC_DESIGN_ONLY",
+    "method_source_pr": 347,
+    "real_structure_evidence_pr": 348,
+    "profiles": {
+      "calibration-unloaded": {
+        "forward": {
+          "model": "subtractive_deadband_then_lag",
+          "synthetic_parameters": {
+            "gain": 1.576,
+            "drive_tau_s": 0.84,
+            "stop_tau_s": 0.08,
+            "deadband": 0.005
+          },
+          "samples": 1681,
+          "sample_period_s": 0.05,
+          "samples_per_drive_tau": 16.799999999999997,
+          "step_drive_tau_ratio": 11.904761904761905,
+          "residual_floor": 0.0001,
+          "fisher_rank": 3,
+          "parameter_count": 3,
+          "fisher_min_eigenvalue": 12478107.360893426,
+          "fisher_condition": 255.7114726458731,
+          "profiled_20pct_alternative_rms": {
+            "drive_tau": 0.0013999188137263157,
+            "deadband": 0.0035133851145793837,
+            "knee": null
+          },
+          "within_residual_floor": {
+            "gain": [
+              1.5760000000000005,
+              1.5774168490536593
+            ],
+            "drive_tau_s": [
+              0.84,
+              0.8494234006148834
+            ],
+            "stop_tau_s": [
+              0.08,
+              0.08
+            ],
+            "deadband": [
+              0.005,
+              0.005
+            ]
+          },
+          "practically_separated": true
+        },
+        "left": {
+          "model": "subtractive_deadband_then_lag",
+          "synthetic_parameters": {
+            "gain": 1.18,
+            "drive_tau_s": 0.84,
+            "stop_tau_s": 0.08,
+            "deadband": 0.0065
+          },
+          "samples": 1681,
+          "sample_period_s": 0.05,
+          "samples_per_drive_tau": 16.799999999999997,
+          "step_drive_tau_ratio": 11.904761904761905,
+          "residual_floor": 0.0001,
+          "fisher_rank": 3,
+          "parameter_count": 3,
+          "fisher_min_eigenvalue": 5927528.658328181,
+          "fisher_condition": 272.37973162534576,
+          "profiled_20pct_alternative_rms": {
+            "drive_tau": 0.0009625260879469744,
+            "deadband": 0.0036353847426683922,
+            "knee": null
+          },
+          "within_residual_floor": {
+            "gain": [
+              1.1799999999999982,
+              1.1810614112358195
+            ],
+            "drive_tau_s": [
+              0.84,
+              0.8494234006148834
+            ],
+            "stop_tau_s": [
+              0.08,
+              0.08
+            ],
+            "deadband": [
+              0.0065,
+              0.006500000000000001
+            ]
+          },
+          "practically_separated": true
+        },
+        "turn": {
+          "model": "subtractive_deadband_then_lag",
+          "synthetic_parameters": {
+            "gain": 0.8,
+            "drive_tau_s": 0.84,
+            "stop_tau_s": 0.08,
+            "deadband": 0.005
+          },
+          "samples": 1681,
+          "sample_period_s": 0.05,
+          "samples_per_drive_tau": 16.799999999999997,
+          "step_drive_tau_ratio": 11.904761904761905,
+          "residual_floor": 0.0001,
+          "fisher_rank": 3,
+          "parameter_count": 3,
+          "fisher_min_eigenvalue": 3215261.243754983,
+          "fisher_condition": 255.71147264616093,
+          "profiled_20pct_alternative_rms": {
+            "drive_tau": 0.0007106186871707186,
+            "deadband": 0.0017834442205986725,
+            "knee": null
+          },
+          "within_residual_floor": {
+            "gain": [
+              0.7999999999999992,
+              0.800719212717596
+            ],
+            "drive_tau_s": [
+              0.84,
+              0.8494234006148834
+            ],
+            "stop_tau_s": [
+              0.08,
+              0.08
+            ],
+            "deadband": [
+              0.005,
+              0.005
+            ]
+          },
+          "practically_separated": true
+        }
+      },
+      "calibration-fine": {
+        "forward": {
+          "model": "subtractive_deadband_then_lag",
+          "synthetic_parameters": {
+            "gain": 1.576,
+            "drive_tau_s": 0.84,
+            "stop_tau_s": 0.08,
+            "deadband": 0.005
+          },
+          "samples": 1681,
+          "sample_period_s": 0.05,
+          "samples_per_drive_tau": 16.799999999999997,
+          "step_drive_tau_ratio": 11.904761904761905,
+          "residual_floor": 0.0001,
+          "fisher_rank": 3,
+          "parameter_count": 3,
+          "fisher_min_eigenvalue": 8891849.93333091,
+          "fisher_condition": 265.78388838657406,
+          "profiled_20pct_alternative_rms": {
+            "drive_tau": 0.0011669491999705536,
+            "deadband": 0.0020473306556524134,
+            "knee": null
+          },
+          "within_residual_floor": {
+            "gain": [
+              1.5760000000000018,
+              1.5774210143916523
+            ],
+            "drive_tau_s": [
+              0.84,
+              0.8494234006148834
+            ],
+            "stop_tau_s": [
+              0.08,
+              0.08
+            ],
+            "deadband": [
+              0.005,
+              0.005
+            ]
+          },
+          "practically_separated": true
+        },
+        "left": {
+          "model": "subtractive_deadband_then_lag",
+          "synthetic_parameters": {
+            "gain": 1.18,
+            "drive_tau_s": 0.84,
+            "stop_tau_s": 0.08,
+            "deadband": 0.0065
+          },
+          "samples": 1681,
+          "sample_period_s": 0.05,
+          "samples_per_drive_tau": 16.799999999999997,
+          "step_drive_tau_ratio": 11.904761904761905,
+          "residual_floor": 0.0001,
+          "fisher_rank": 3,
+          "parameter_count": 3,
+          "fisher_min_eigenvalue": 4185941.590504495,
+          "fisher_condition": 285.53663738677494,
+          "profiled_20pct_alternative_rms": {
+            "drive_tau": 0.0007965420936973099,
+            "deadband": 0.002120766045517756,
+            "knee": null
+          },
+          "within_residual_floor": {
+            "gain": [
+              1.1800000000000004,
+              1.1810649661591062
+            ],
+            "drive_tau_s": [
+              0.84,
+              0.8494234006148834
+            ],
+            "stop_tau_s": [
+              0.08,
+              0.08
+            ],
+            "deadband": [
+              0.0065,
+              0.006500000000000001
+            ]
+          },
+          "practically_separated": true
+        },
+        "turn": {
+          "model": "subtractive_deadband_then_lag",
+          "synthetic_parameters": {
+            "gain": 0.8,
+            "drive_tau_s": 0.84,
+            "stop_tau_s": 0.08,
+            "deadband": 0.005
+          },
+          "samples": 1681,
+          "sample_period_s": 0.05,
+          "samples_per_drive_tau": 16.799999999999997,
+          "step_drive_tau_ratio": 11.904761904761905,
+          "residual_floor": 0.0001,
+          "fisher_rank": 3,
+          "parameter_count": 3,
+          "fisher_min_eigenvalue": 2291182.440497248,
+          "fisher_condition": 265.7838883869055,
+          "profiled_20pct_alternative_rms": {
+            "drive_tau": 0.0005923599999850523,
+            "deadband": 0.0010392541399250831,
+            "knee": null
+          },
+          "within_residual_floor": {
+            "gain": [
+              0.7999999999999998,
+              0.8007213271023607
+            ],
+            "drive_tau_s": [
+              0.84,
+              0.8494234006148834
+            ],
+            "stop_tau_s": [
+              0.08,
+              0.08
+            ],
+            "deadband": [
+              0.005,
+              0.005
+            ]
+          },
+          "practically_separated": true
+        }
+      },
+      "calibration-loaded": {
+        "forward": {
+          "model": "subtractive_deadband_then_lag",
+          "synthetic_parameters": {
+            "gain": 1.576,
+            "drive_tau_s": 0.84,
+            "stop_tau_s": 0.08,
+            "deadband": 0.005
+          },
+          "samples": 2121,
+          "sample_period_s": 0.05,
+          "samples_per_drive_tau": 16.799999999999997,
+          "step_drive_tau_ratio": 11.904761904761905,
+          "residual_floor": 0.0001,
+          "fisher_rank": 3,
+          "parameter_count": 3,
+          "fisher_min_eigenvalue": 21928152.33689807,
+          "fisher_condition": 275.0014649800676,
+          "profiled_20pct_alternative_rms": {
+            "drive_tau": 0.0015834939628899894,
+            "deadband": 0.004678134936848353,
+            "knee": null
+          },
+          "within_residual_floor": {
+            "gain": [
+              1.5760000000000003,
+              1.5760000000000003
+            ],
+            "drive_tau_s": [
+              0.84,
+              0.84
+            ],
+            "stop_tau_s": [
+              0.08,
+              0.08
+            ],
+            "deadband": [
+              0.005,
+              0.005
+            ]
+          },
+          "practically_separated": true
+        },
+        "left": {
+          "model": "subtractive_deadband_then_lag",
+          "synthetic_parameters": {
+            "gain": 1.18,
+            "drive_tau_s": 0.84,
+            "stop_tau_s": 0.08,
+            "deadband": 0.0065
+          },
+          "samples": 2121,
+          "sample_period_s": 0.05,
+          "samples_per_drive_tau": 16.799999999999997,
+          "step_drive_tau_ratio": 11.904761904761905,
+          "residual_floor": 0.0001,
+          "fisher_rank": 3,
+          "parameter_count": 3,
+          "fisher_min_eigenvalue": 10868331.863819119,
+          "fisher_condition": 284.58073662701617,
+          "profiled_20pct_alternative_rms": {
+            "drive_tau": 0.0011118805194169255,
+            "deadband": 0.0032786498260148123,
+            "knee": null
+          },
+          "within_residual_floor": {
+            "gain": [
+              1.1800000000000015,
+              1.181070163722385
+            ],
+            "drive_tau_s": [
+              0.84,
+              0.8494234006148834
+            ],
+            "stop_tau_s": [
+              0.08,
+              0.08
+            ],
+            "deadband": [
+              0.0065,
+              0.006500000000000001
+            ]
+          },
+          "practically_separated": true
+        },
+        "turn": {
+          "model": "subtractive_deadband_then_lag",
+          "synthetic_parameters": {
+            "gain": 0.8,
+            "drive_tau_s": 0.84,
+            "stop_tau_s": 0.08,
+            "deadband": 0.005
+          },
+          "samples": 2121,
+          "sample_period_s": 0.05,
+          "samples_per_drive_tau": 16.799999999999997,
+          "step_drive_tau_ratio": 11.904761904761905,
+          "residual_floor": 0.0001,
+          "fisher_rank": 3,
+          "parameter_count": 3,
+          "fisher_min_eigenvalue": 5650275.023034697,
+          "fisher_condition": 275.0014649803115,
+          "profiled_20pct_alternative_rms": {
+            "drive_tau": 0.0008038040420761367,
+            "deadband": 0.002374687785202209,
+            "knee": null
+          },
+          "within_residual_floor": {
+            "gain": [
+              0.7999999999999983,
+              0.8007252013385752
+            ],
+            "drive_tau_s": [
+              0.84,
+              0.8494234006148834
+            ],
+            "stop_tau_s": [
+              0.08,
+              0.08
+            ],
+            "deadband": [
+              0.005,
+              0.005
+            ]
+          },
+          "practically_separated": true
+        },
+        "runtime_ramp": {
+          "model": "ramp_deadband_then_lag",
+          "synthetic_parameters": {
+            "gain": 0.8,
+            "drive_tau_s": 0.84,
+            "stop_tau_s": 0.08,
+            "deadband": 0.01,
+            "knee": 0.03
+          },
+          "samples": 2121,
+          "sample_period_s": 0.05,
+          "samples_per_drive_tau": 16.799999999999997,
+          "step_drive_tau_ratio": 11.904761904761905,
+          "residual_floor": 0.0001,
+          "fisher_rank": 4,
+          "parameter_count": 4,
+          "fisher_min_eigenvalue": 6234373.457130126,
+          "fisher_condition": 303.95201752804905,
+          "profiled_20pct_alternative_rms": {
+            "drive_tau": 0.0008330941588262703,
+            "deadband": 0.002305645918474708,
+            "knee": 0.0054221381376916514
+          },
+          "within_residual_floor": {
+            "gain": [
+              0.8000000000000002,
+              0.8007267558971529
+            ],
+            "drive_tau_s": [
+              0.84,
+              0.8494234006148834
+            ],
+            "stop_tau_s": [
+              0.08,
+              0.08
+            ],
+            "deadband": [
+              0.01,
+              0.01
+            ],
+            "knee": [
+              0.03,
+              0.03
+            ]
+          },
+          "practically_separated": true
+        }
+      }
+    },
+    "passed": true,
+    "limitations": [
+      "conditional on Hammerstein structure and the stated synthetic parameters/noise floor",
+      "fine/loaded/turn values are assumptions, not measured fits",
+      "stop tau profiled as nuisance; 20 Hz does not qualify fast stopping",
+      "#348 real residual ~1.8 mm exceeds the assumed 0.1 mm floor; no real identifiability claim",
+      "#348 real PRBS residuals remain; no MEASURED_SIM product or physical acceptance"
+    ],
+    "design_sha256": {
+      "calibration-unloaded": "8f7f8637de7848de60ecf3545e146ab3ec2563075b8f46d39a1c22f2ee858a97",
+      "calibration-fine": "eeed2f11800f4c41e54505b2144b2a999c5cc931fb6ab472390840c170708073",
+      "calibration-loaded": "cd5002d63edb08cce9a97e6347017ae33e88e6284714b6f7e0d8fd1f7d04f79e"
+    },
+    "nominal_clearance": {
+      "calibration-unloaded": {
+        "minimum_m": 0.6249999999999999,
+        "sample_period_s": 0.05,
+        "samples_per_robot": 7401,
+        "scope": "conditional Hammerstein position prediction; beam follows pair midpoint; actual substep abort remains mandatory"
+      },
+      "calibration-fine": {
+        "minimum_m": 0.6249999999999999,
+        "sample_period_s": 0.05,
+        "samples_per_robot": 7401,
+        "scope": "conditional Hammerstein position prediction; beam follows pair midpoint; actual substep abort remains mandatory"
+      },
+      "calibration-loaded": {
+        "minimum_m": 0.4421213331325532,
+        "sample_period_s": 0.05,
+        "samples_per_robot": 7401,
+        "scope": "conditional Hammerstein position prediction; beam follows pair midpoint; actual substep abort remains mandatory"
+      }
+    }
+  },
+  "loaded_path_sensitivity": {
+    "qualification": "hypothetical loaded sensitivity, NOT measured or fitted; demonstrates why absent bounds cannot certify the whole path",
+    "results": [
+      {
+        "forward_gain": 1.576,
+        "robot": "r1",
+        "minimum_m": 0.45179999999999976,
+        "at_s": 0.0,
+        "first_035_s": null
+      },
+      {
+        "forward_gain": 1.576,
+        "robot": "r2",
+        "minimum_m": 0.4421213331325532,
+        "at_s": 89.0,
+        "first_035_s": null
+      },
+      {
+        "forward_gain": 2.0,
+        "robot": "r1",
+        "minimum_m": 0.45179999999999976,
+        "at_s": 0.0,
+        "first_035_s": null
+      },
+      {
+        "forward_gain": 2.0,
+        "robot": "r2",
+        "minimum_m": 0.3049996613357274,
+        "at_s": 89.0,
+        "first_035_s": 87.45
+      },
+      {
+        "forward_gain": 2.5,
+        "robot": "r1",
+        "minimum_m": 0.45179999999999976,
+        "at_s": 0.0,
+        "first_035_s": null
+      },
+      {
+        "forward_gain": 2.5,
+        "robot": "r2",
+        "minimum_m": 0.14329957666965976,
+        "at_s": 89.0,
+        "first_035_s": 85.75
+      },
+      {
+        "forward_gain": 3.0,
+        "robot": "r1",
+        "minimum_m": 0.45179999999999976,
+        "at_s": 0.0,
+        "first_035_s": null
+      },
+      {
+        "forward_gain": 3.0,
+        "robot": "r2",
+        "minimum_m": -0.0184005079964088,
+        "at_s": 89.0,
+        "first_035_s": 84.60000000000001
+      }
+    ]
+  },
+  "local_log_directory": "/Users/changmin/projects/ugrp/outputs/review-344b-b7bc885a-20261001",
+  "local_log_qualification": "Local log preservation, not remote backup; substantive results are in this committed evidence file",
+  "log_sha256": {
+    "counterexamples.txt": "0ae38435de1a74a0aeda45ff0651226dd562495790666a40b6a40030849175db",
+    "counterexamples.xml": "4c6d194482dbab5f9b59ab70d22ae05e3552b3ae63e11e20a8397dafc2702f21",
+    "geometry-unmarked.txt": "bcd72edca4824ad53a7314597f76c95a1d85b6981c72cd58a8b5256a7b8733f7",
+    "geometry-unmarked.xml": "f48f127baf59abed33ef8e7770269a674cb9ba9d9e0d3fa44dadd25010d25b80",
+    "geometry.xml": "e4787d1a31d87633b3cde99bfef133675189f876d2f1db5ffdce5bcba0619eb6",
+    "integrity.json": "4fbea2246a2adc59cdd10b21468b639dd3112fdad0bc28dd7f9229b8b6e05c32",
+    "numerics.json": "8eaf341371810fe2aa5b97bccaa24363a80cb11346ea07b3dfeb7f068bac4958",
+    "numerics.py": "dc0aa212aed78c8c232d5c0c7f9d4277128681696638a85ddeb34818c3b58fa5",
+    "offline.py": "4b59c683c33862687435df13ab7fcc51bba4691c376fdca9ddcfde3c9db6141e",
+    "open-prs.json": "6369dba105a16462e725c021aa8284a047f632c762dc665c65e490a6fcbf9efd",
+    "path_witness.json": "96872460eb3da371001679bedea0393863ca6380dd67e9d0a098e30421e0b3a2",
+    "path_witness.py": "824ec486de78a4ca02b3c207e9fd5b7fca2c7483f358a937bfb0acd3b7190897",
+    "pr344.json": "6710be5bf8fc946c67c363cc5ab554a68e2db31fe355eb5e4d6232f9d2d3fe37",
+    "recomputed-identifiability.json": "84856f5f7459bc80af9045d10952875cf6c90f2a44514b463b4568cf40a43b40",
+    "recomputed-identifiability.txt": "334a79ff963c712a34c48506f2bd362e734f81f5054678a89fd28df75583ab7c",
+    "related.txt": "311e749feff0b88e7b31bd36799cdbc49c95f871b736bd5384e14c41e66d52ef",
+    "related.xml": "4dffa80da1aa52f77f3492cd1fce6accde27075980bf90b50dce6564de4ad6f9",
+    "review-complete.txt": "3cf1c7695f0187ded2fb71fc1b5d646f48c6eaa987506df4714235fcd2c3d0c2",
+    "review-complete.xml": "76fd9b0990de8602701a2ca65b8666ae64f85a9de8dc05a94cfeac6ad0edf63f",
+    "review-final.txt": "f119492c7a7f98c73bf4ba3340ebfeaf4b699cae2c1093c27fdb028f73199715",
+    "review-final.xml": "c9281a4400ed35e1549fcb38dbbda47901c289ed6d8616de80ae15928a7dbabb",
+    "review.txt": "6245a7fca2494c532074b03a43e23d7d1c281a4325d4788c2b8c315458c0fb16",
+    "review.xml": "e893ae474d6fd8de099a1073e61dde78ff7fa2528928891b872db6698c7abbb0",
+    "snapshot.json": "eeb7c1130d979e0e2e81737f1a7efeac748456a632af36b4e29514a29ed11a7c",
+    "snapshot.py": "6134d5ae1e50ea443b799963b860a18613a207d0ce5d3054f4a30d31bae039a1"
+  },
+  "tensorboard": "No new experiment/training/evaluation cohort; existing design/review arithmetic only, no snapshot conversion or viewer changes",
+  "cleanup": {
+    "archive_path": "/private/tmp/ugrp-review344b.kUVKSz",
+    "control_path": "/private/tmp/review344b-control",
+    "verified_absent": true
+  },
+  "review_artifact_sha256": {
+    "tests/test_review_344b.py": "02088179307e1512ce4a2a97aa327eb1a3370acc6f7ae753c6c2a6fdf8ccbba2",
+    "experiments/2026-10-01-v3-pair-adapter/REVIEW_344b.md": "cbb703b9b3e13cffff59647e91440cff334b48eba050fe0fd84ada0c29b0a981"
+  }
+}
