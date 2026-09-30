@@ -1,0 +1,35 @@
+[
+  {
+    "name": "acceptance",
+    "command": [
+      "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/verify_recorder_contract.py",
+      "--output",
+      "/Users/changmin/projects/ugrp-wt/review-299d/experiments/2026-09-30-pair-v6h-carry/analysis/review_299g_validation/acceptance.json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 2.8036680839722976
+  },
+  {
+    "name": "mutations_299d",
+    "command": [
+      "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/check_299d_mutations.py",
+      "--output",
+      "/Users/changmin/projects/ugrp-wt/review-299d/experiments/2026-09-30-pair-v6h-carry/analysis/review_299g_validation/mutations_299d.json"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 2.485914583085105
+  },
+  {
+    "name": "published",
+    "command": [
+      "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+      "experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py",
+      "--output",
+      "/Users/changmin/projects/ugrp/outputs/review-299g-3a136bc8/published"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 24.94477812491823
+  }
+]

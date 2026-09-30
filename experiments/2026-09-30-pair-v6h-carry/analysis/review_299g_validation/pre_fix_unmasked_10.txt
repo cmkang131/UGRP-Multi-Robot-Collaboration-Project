@@ -1,0 +1,569 @@
+FFFFFFFFFF                                                               [100%]
+=================================== FAILURES ===================================
+_ test_ten_original_witnesses_and_their_specific_rejection[end_coordinates-58dc07e7] _
+
+version = '58dc07e7', damage = 'end_coordinates'
+pre_fix = <module 'review_299g_pre_fix_classify_placements' from '/private/tmp/ugrp-review-299g-rc7ueuio/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py'>
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1445/test_ten_original_witnesses_an0')
+
+    @pytest.mark.parametrize("version", ["candidate", PRE_FIX])
+    @pytest.mark.parametrize("damage", WITNESSES)
+    def test_ten_original_witnesses_and_their_specific_rejection(version, damage, pre_fix, tmp_path):
+        classifier = cp if version == "candidate" else pre_fix
+        if damage == "reader_distance":
+            raw, seal, _ = contract.registered_fixture(tmp_path)
+            assert classifier.analyse("clean", raw, sealed_manifest=seal)["summary"]["pass_placements"] == 1
+            cid = seal["cases"][0]["attempts"][0]["case_id"]
+            path = cp.ca.dra.case_dir(raw, cid) / "result.json"
+            result = json.loads(path.read_text())
+            for rid in cp.ROBOTS:
+                result["chain_raw"][rid]["leg_end"]["1"]["gt"]["beam_xyz"][0] += 1.
+            contract.base.write_json(path, result)
+            out = classifier.analyse("contradictory", raw, sealed_manifest=seal)
+            assert out["summary"]["pass_placements"] == 0
+            attempt = next(a for a in out["attempts"] if a["case_id"] == cid)
+            assert any("source/derived" in s and "contradiction" in s for s in attempt["hard_limit_chain"]["evidence_issues"])
+            return
+        data, context = contract.public_record()
+        healthy = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+        assert healthy["class"] == "PASS_CLEAN" and healthy["evidence_valid"]
+        raw = data["result"]["chain_raw"]
+        if damage in ("end_coordinates", "start_coordinates"):
+            boundary = "leg_end" if damage.startswith("end") else "leg_start"
+            for rid in cp.ROBOTS:
+                raw[rid][boundary]["1"]["gt"]["beam_xyz"][0] += 1.
+            expected = "source/derived"
+        elif "_start_" in damage:
+            rid, _, k = damage.split("_")
+            del raw[rid]["leg_start"][k]
+            expected = repr(k)  # KeyError from the required source start, not another validator.
+        elif damage == "start_after_end":
+            for rid in cp.ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = snap["gt"]["t"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+            expected = "outside recorded window"
+        elif damage == "negative_end":
+            rid = min(cp.ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+            expected = "outside recorded window"
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+            expected = "outside recorded window"
+        out = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+>       assert out["state"] == "INVALID" and out["class"] is None, out
+E       AssertionError: {'case_id': 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'placement': 'S01', 'seed': 911, 'class': 'PASS_CLEAN', ...}
+E       assert ('PASS' == 'INVALID'
+E
+E         - INVALID
+E         + PASS)
+
+/private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py:98: AssertionError
+_ test_ten_original_witnesses_and_their_specific_rejection[start_coordinates-58dc07e7] _
+
+version = '58dc07e7', damage = 'start_coordinates'
+pre_fix = <module 'review_299g_pre_fix_classify_placements' from '/private/tmp/ugrp-review-299g-rc7ueuio/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py'>
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1445/test_ten_original_witnesses_an1')
+
+    @pytest.mark.parametrize("version", ["candidate", PRE_FIX])
+    @pytest.mark.parametrize("damage", WITNESSES)
+    def test_ten_original_witnesses_and_their_specific_rejection(version, damage, pre_fix, tmp_path):
+        classifier = cp if version == "candidate" else pre_fix
+        if damage == "reader_distance":
+            raw, seal, _ = contract.registered_fixture(tmp_path)
+            assert classifier.analyse("clean", raw, sealed_manifest=seal)["summary"]["pass_placements"] == 1
+            cid = seal["cases"][0]["attempts"][0]["case_id"]
+            path = cp.ca.dra.case_dir(raw, cid) / "result.json"
+            result = json.loads(path.read_text())
+            for rid in cp.ROBOTS:
+                result["chain_raw"][rid]["leg_end"]["1"]["gt"]["beam_xyz"][0] += 1.
+            contract.base.write_json(path, result)
+            out = classifier.analyse("contradictory", raw, sealed_manifest=seal)
+            assert out["summary"]["pass_placements"] == 0
+            attempt = next(a for a in out["attempts"] if a["case_id"] == cid)
+            assert any("source/derived" in s and "contradiction" in s for s in attempt["hard_limit_chain"]["evidence_issues"])
+            return
+        data, context = contract.public_record()
+        healthy = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+        assert healthy["class"] == "PASS_CLEAN" and healthy["evidence_valid"]
+        raw = data["result"]["chain_raw"]
+        if damage in ("end_coordinates", "start_coordinates"):
+            boundary = "leg_end" if damage.startswith("end") else "leg_start"
+            for rid in cp.ROBOTS:
+                raw[rid][boundary]["1"]["gt"]["beam_xyz"][0] += 1.
+            expected = "source/derived"
+        elif "_start_" in damage:
+            rid, _, k = damage.split("_")
+            del raw[rid]["leg_start"][k]
+            expected = repr(k)  # KeyError from the required source start, not another validator.
+        elif damage == "start_after_end":
+            for rid in cp.ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = snap["gt"]["t"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+            expected = "outside recorded window"
+        elif damage == "negative_end":
+            rid = min(cp.ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+            expected = "outside recorded window"
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+            expected = "outside recorded window"
+        out = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+>       assert out["state"] == "INVALID" and out["class"] is None, out
+E       AssertionError: {'case_id': 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'placement': 'S01', 'seed': 911, 'class': 'PASS_CLEAN', ...}
+E       assert ('PASS' == 'INVALID'
+E
+E         - INVALID
+E         + PASS)
+
+/private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py:98: AssertionError
+_ test_ten_original_witnesses_and_their_specific_rejection[r1_start_0-58dc07e7] _
+
+version = '58dc07e7', damage = 'r1_start_0'
+pre_fix = <module 'review_299g_pre_fix_classify_placements' from '/private/tmp/ugrp-review-299g-rc7ueuio/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py'>
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1445/test_ten_original_witnesses_an2')
+
+    @pytest.mark.parametrize("version", ["candidate", PRE_FIX])
+    @pytest.mark.parametrize("damage", WITNESSES)
+    def test_ten_original_witnesses_and_their_specific_rejection(version, damage, pre_fix, tmp_path):
+        classifier = cp if version == "candidate" else pre_fix
+        if damage == "reader_distance":
+            raw, seal, _ = contract.registered_fixture(tmp_path)
+            assert classifier.analyse("clean", raw, sealed_manifest=seal)["summary"]["pass_placements"] == 1
+            cid = seal["cases"][0]["attempts"][0]["case_id"]
+            path = cp.ca.dra.case_dir(raw, cid) / "result.json"
+            result = json.loads(path.read_text())
+            for rid in cp.ROBOTS:
+                result["chain_raw"][rid]["leg_end"]["1"]["gt"]["beam_xyz"][0] += 1.
+            contract.base.write_json(path, result)
+            out = classifier.analyse("contradictory", raw, sealed_manifest=seal)
+            assert out["summary"]["pass_placements"] == 0
+            attempt = next(a for a in out["attempts"] if a["case_id"] == cid)
+            assert any("source/derived" in s and "contradiction" in s for s in attempt["hard_limit_chain"]["evidence_issues"])
+            return
+        data, context = contract.public_record()
+        healthy = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+        assert healthy["class"] == "PASS_CLEAN" and healthy["evidence_valid"]
+        raw = data["result"]["chain_raw"]
+        if damage in ("end_coordinates", "start_coordinates"):
+            boundary = "leg_end" if damage.startswith("end") else "leg_start"
+            for rid in cp.ROBOTS:
+                raw[rid][boundary]["1"]["gt"]["beam_xyz"][0] += 1.
+            expected = "source/derived"
+        elif "_start_" in damage:
+            rid, _, k = damage.split("_")
+            del raw[rid]["leg_start"][k]
+            expected = repr(k)  # KeyError from the required source start, not another validator.
+        elif damage == "start_after_end":
+            for rid in cp.ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = snap["gt"]["t"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+            expected = "outside recorded window"
+        elif damage == "negative_end":
+            rid = min(cp.ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+            expected = "outside recorded window"
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+            expected = "outside recorded window"
+        out = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+>       assert out["state"] == "INVALID" and out["class"] is None, out
+E       AssertionError: {'case_id': 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'placement': 'S01', 'seed': 911, 'class': 'PASS_CLEAN', ...}
+E       assert ('PASS' == 'INVALID'
+E
+E         - INVALID
+E         + PASS)
+
+/private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py:98: AssertionError
+_ test_ten_original_witnesses_and_their_specific_rejection[r1_start_1-58dc07e7] _
+
+version = '58dc07e7', damage = 'r1_start_1'
+pre_fix = <module 'review_299g_pre_fix_classify_placements' from '/private/tmp/ugrp-review-299g-rc7ueuio/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py'>
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1445/test_ten_original_witnesses_an3')
+
+    @pytest.mark.parametrize("version", ["candidate", PRE_FIX])
+    @pytest.mark.parametrize("damage", WITNESSES)
+    def test_ten_original_witnesses_and_their_specific_rejection(version, damage, pre_fix, tmp_path):
+        classifier = cp if version == "candidate" else pre_fix
+        if damage == "reader_distance":
+            raw, seal, _ = contract.registered_fixture(tmp_path)
+            assert classifier.analyse("clean", raw, sealed_manifest=seal)["summary"]["pass_placements"] == 1
+            cid = seal["cases"][0]["attempts"][0]["case_id"]
+            path = cp.ca.dra.case_dir(raw, cid) / "result.json"
+            result = json.loads(path.read_text())
+            for rid in cp.ROBOTS:
+                result["chain_raw"][rid]["leg_end"]["1"]["gt"]["beam_xyz"][0] += 1.
+            contract.base.write_json(path, result)
+            out = classifier.analyse("contradictory", raw, sealed_manifest=seal)
+            assert out["summary"]["pass_placements"] == 0
+            attempt = next(a for a in out["attempts"] if a["case_id"] == cid)
+            assert any("source/derived" in s and "contradiction" in s for s in attempt["hard_limit_chain"]["evidence_issues"])
+            return
+        data, context = contract.public_record()
+        healthy = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+        assert healthy["class"] == "PASS_CLEAN" and healthy["evidence_valid"]
+        raw = data["result"]["chain_raw"]
+        if damage in ("end_coordinates", "start_coordinates"):
+            boundary = "leg_end" if damage.startswith("end") else "leg_start"
+            for rid in cp.ROBOTS:
+                raw[rid][boundary]["1"]["gt"]["beam_xyz"][0] += 1.
+            expected = "source/derived"
+        elif "_start_" in damage:
+            rid, _, k = damage.split("_")
+            del raw[rid]["leg_start"][k]
+            expected = repr(k)  # KeyError from the required source start, not another validator.
+        elif damage == "start_after_end":
+            for rid in cp.ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = snap["gt"]["t"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+            expected = "outside recorded window"
+        elif damage == "negative_end":
+            rid = min(cp.ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+            expected = "outside recorded window"
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+            expected = "outside recorded window"
+        out = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+>       assert out["state"] == "INVALID" and out["class"] is None, out
+E       AssertionError: {'case_id': 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'placement': 'S01', 'seed': 911, 'class': 'PASS_CLEAN', ...}
+E       assert ('PASS' == 'INVALID'
+E
+E         - INVALID
+E         + PASS)
+
+/private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py:98: AssertionError
+_ test_ten_original_witnesses_and_their_specific_rejection[r2_start_0-58dc07e7] _
+
+version = '58dc07e7', damage = 'r2_start_0'
+pre_fix = <module 'review_299g_pre_fix_classify_placements' from '/private/tmp/ugrp-review-299g-rc7ueuio/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py'>
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1445/test_ten_original_witnesses_an4')
+
+    @pytest.mark.parametrize("version", ["candidate", PRE_FIX])
+    @pytest.mark.parametrize("damage", WITNESSES)
+    def test_ten_original_witnesses_and_their_specific_rejection(version, damage, pre_fix, tmp_path):
+        classifier = cp if version == "candidate" else pre_fix
+        if damage == "reader_distance":
+            raw, seal, _ = contract.registered_fixture(tmp_path)
+            assert classifier.analyse("clean", raw, sealed_manifest=seal)["summary"]["pass_placements"] == 1
+            cid = seal["cases"][0]["attempts"][0]["case_id"]
+            path = cp.ca.dra.case_dir(raw, cid) / "result.json"
+            result = json.loads(path.read_text())
+            for rid in cp.ROBOTS:
+                result["chain_raw"][rid]["leg_end"]["1"]["gt"]["beam_xyz"][0] += 1.
+            contract.base.write_json(path, result)
+            out = classifier.analyse("contradictory", raw, sealed_manifest=seal)
+            assert out["summary"]["pass_placements"] == 0
+            attempt = next(a for a in out["attempts"] if a["case_id"] == cid)
+            assert any("source/derived" in s and "contradiction" in s for s in attempt["hard_limit_chain"]["evidence_issues"])
+            return
+        data, context = contract.public_record()
+        healthy = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+        assert healthy["class"] == "PASS_CLEAN" and healthy["evidence_valid"]
+        raw = data["result"]["chain_raw"]
+        if damage in ("end_coordinates", "start_coordinates"):
+            boundary = "leg_end" if damage.startswith("end") else "leg_start"
+            for rid in cp.ROBOTS:
+                raw[rid][boundary]["1"]["gt"]["beam_xyz"][0] += 1.
+            expected = "source/derived"
+        elif "_start_" in damage:
+            rid, _, k = damage.split("_")
+            del raw[rid]["leg_start"][k]
+            expected = repr(k)  # KeyError from the required source start, not another validator.
+        elif damage == "start_after_end":
+            for rid in cp.ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = snap["gt"]["t"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+            expected = "outside recorded window"
+        elif damage == "negative_end":
+            rid = min(cp.ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+            expected = "outside recorded window"
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+            expected = "outside recorded window"
+        out = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+>       assert out["state"] == "INVALID" and out["class"] is None, out
+E       AssertionError: {'case_id': 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'placement': 'S01', 'seed': 911, 'class': 'PASS_CLEAN', ...}
+E       assert ('PASS' == 'INVALID'
+E
+E         - INVALID
+E         + PASS)
+
+/private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py:98: AssertionError
+_ test_ten_original_witnesses_and_their_specific_rejection[r2_start_1-58dc07e7] _
+
+version = '58dc07e7', damage = 'r2_start_1'
+pre_fix = <module 'review_299g_pre_fix_classify_placements' from '/private/tmp/ugrp-review-299g-rc7ueuio/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py'>
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1445/test_ten_original_witnesses_an5')
+
+    @pytest.mark.parametrize("version", ["candidate", PRE_FIX])
+    @pytest.mark.parametrize("damage", WITNESSES)
+    def test_ten_original_witnesses_and_their_specific_rejection(version, damage, pre_fix, tmp_path):
+        classifier = cp if version == "candidate" else pre_fix
+        if damage == "reader_distance":
+            raw, seal, _ = contract.registered_fixture(tmp_path)
+            assert classifier.analyse("clean", raw, sealed_manifest=seal)["summary"]["pass_placements"] == 1
+            cid = seal["cases"][0]["attempts"][0]["case_id"]
+            path = cp.ca.dra.case_dir(raw, cid) / "result.json"
+            result = json.loads(path.read_text())
+            for rid in cp.ROBOTS:
+                result["chain_raw"][rid]["leg_end"]["1"]["gt"]["beam_xyz"][0] += 1.
+            contract.base.write_json(path, result)
+            out = classifier.analyse("contradictory", raw, sealed_manifest=seal)
+            assert out["summary"]["pass_placements"] == 0
+            attempt = next(a for a in out["attempts"] if a["case_id"] == cid)
+            assert any("source/derived" in s and "contradiction" in s for s in attempt["hard_limit_chain"]["evidence_issues"])
+            return
+        data, context = contract.public_record()
+        healthy = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+        assert healthy["class"] == "PASS_CLEAN" and healthy["evidence_valid"]
+        raw = data["result"]["chain_raw"]
+        if damage in ("end_coordinates", "start_coordinates"):
+            boundary = "leg_end" if damage.startswith("end") else "leg_start"
+            for rid in cp.ROBOTS:
+                raw[rid][boundary]["1"]["gt"]["beam_xyz"][0] += 1.
+            expected = "source/derived"
+        elif "_start_" in damage:
+            rid, _, k = damage.split("_")
+            del raw[rid]["leg_start"][k]
+            expected = repr(k)  # KeyError from the required source start, not another validator.
+        elif damage == "start_after_end":
+            for rid in cp.ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = snap["gt"]["t"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+            expected = "outside recorded window"
+        elif damage == "negative_end":
+            rid = min(cp.ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+            expected = "outside recorded window"
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+            expected = "outside recorded window"
+        out = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+>       assert out["state"] == "INVALID" and out["class"] is None, out
+E       AssertionError: {'case_id': 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'placement': 'S01', 'seed': 911, 'class': 'PASS_CLEAN', ...}
+E       assert ('PASS' == 'INVALID'
+E
+E         - INVALID
+E         + PASS)
+
+/private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py:98: AssertionError
+_ test_ten_original_witnesses_and_their_specific_rejection[start_after_end-58dc07e7] _
+
+version = '58dc07e7', damage = 'start_after_end'
+pre_fix = <module 'review_299g_pre_fix_classify_placements' from '/private/tmp/ugrp-review-299g-rc7ueuio/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py'>
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1445/test_ten_original_witnesses_an6')
+
+    @pytest.mark.parametrize("version", ["candidate", PRE_FIX])
+    @pytest.mark.parametrize("damage", WITNESSES)
+    def test_ten_original_witnesses_and_their_specific_rejection(version, damage, pre_fix, tmp_path):
+        classifier = cp if version == "candidate" else pre_fix
+        if damage == "reader_distance":
+            raw, seal, _ = contract.registered_fixture(tmp_path)
+            assert classifier.analyse("clean", raw, sealed_manifest=seal)["summary"]["pass_placements"] == 1
+            cid = seal["cases"][0]["attempts"][0]["case_id"]
+            path = cp.ca.dra.case_dir(raw, cid) / "result.json"
+            result = json.loads(path.read_text())
+            for rid in cp.ROBOTS:
+                result["chain_raw"][rid]["leg_end"]["1"]["gt"]["beam_xyz"][0] += 1.
+            contract.base.write_json(path, result)
+            out = classifier.analyse("contradictory", raw, sealed_manifest=seal)
+            assert out["summary"]["pass_placements"] == 0
+            attempt = next(a for a in out["attempts"] if a["case_id"] == cid)
+            assert any("source/derived" in s and "contradiction" in s for s in attempt["hard_limit_chain"]["evidence_issues"])
+            return
+        data, context = contract.public_record()
+        healthy = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+        assert healthy["class"] == "PASS_CLEAN" and healthy["evidence_valid"]
+        raw = data["result"]["chain_raw"]
+        if damage in ("end_coordinates", "start_coordinates"):
+            boundary = "leg_end" if damage.startswith("end") else "leg_start"
+            for rid in cp.ROBOTS:
+                raw[rid][boundary]["1"]["gt"]["beam_xyz"][0] += 1.
+            expected = "source/derived"
+        elif "_start_" in damage:
+            rid, _, k = damage.split("_")
+            del raw[rid]["leg_start"][k]
+            expected = repr(k)  # KeyError from the required source start, not another validator.
+        elif damage == "start_after_end":
+            for rid in cp.ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = snap["gt"]["t"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+            expected = "outside recorded window"
+        elif damage == "negative_end":
+            rid = min(cp.ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+            expected = "outside recorded window"
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+            expected = "outside recorded window"
+        out = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+>       assert out["state"] == "INVALID" and out["class"] is None, out
+E       AssertionError: {'case_id': 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'placement': 'S01', 'seed': 911, 'class': 'PASS_CLEAN', ...}
+E       assert ('PASS' == 'INVALID'
+E
+E         - INVALID
+E         + PASS)
+
+/private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py:98: AssertionError
+_ test_ten_original_witnesses_and_their_specific_rejection[negative_end-58dc07e7] _
+
+version = '58dc07e7', damage = 'negative_end'
+pre_fix = <module 'review_299g_pre_fix_classify_placements' from '/private/tmp/ugrp-review-299g-rc7ueuio/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py'>
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1445/test_ten_original_witnesses_an7')
+
+    @pytest.mark.parametrize("version", ["candidate", PRE_FIX])
+    @pytest.mark.parametrize("damage", WITNESSES)
+    def test_ten_original_witnesses_and_their_specific_rejection(version, damage, pre_fix, tmp_path):
+        classifier = cp if version == "candidate" else pre_fix
+        if damage == "reader_distance":
+            raw, seal, _ = contract.registered_fixture(tmp_path)
+            assert classifier.analyse("clean", raw, sealed_manifest=seal)["summary"]["pass_placements"] == 1
+            cid = seal["cases"][0]["attempts"][0]["case_id"]
+            path = cp.ca.dra.case_dir(raw, cid) / "result.json"
+            result = json.loads(path.read_text())
+            for rid in cp.ROBOTS:
+                result["chain_raw"][rid]["leg_end"]["1"]["gt"]["beam_xyz"][0] += 1.
+            contract.base.write_json(path, result)
+            out = classifier.analyse("contradictory", raw, sealed_manifest=seal)
+            assert out["summary"]["pass_placements"] == 0
+            attempt = next(a for a in out["attempts"] if a["case_id"] == cid)
+            assert any("source/derived" in s and "contradiction" in s for s in attempt["hard_limit_chain"]["evidence_issues"])
+            return
+        data, context = contract.public_record()
+        healthy = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+        assert healthy["class"] == "PASS_CLEAN" and healthy["evidence_valid"]
+        raw = data["result"]["chain_raw"]
+        if damage in ("end_coordinates", "start_coordinates"):
+            boundary = "leg_end" if damage.startswith("end") else "leg_start"
+            for rid in cp.ROBOTS:
+                raw[rid][boundary]["1"]["gt"]["beam_xyz"][0] += 1.
+            expected = "source/derived"
+        elif "_start_" in damage:
+            rid, _, k = damage.split("_")
+            del raw[rid]["leg_start"][k]
+            expected = repr(k)  # KeyError from the required source start, not another validator.
+        elif damage == "start_after_end":
+            for rid in cp.ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = snap["gt"]["t"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+            expected = "outside recorded window"
+        elif damage == "negative_end":
+            rid = min(cp.ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+            expected = "outside recorded window"
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+            expected = "outside recorded window"
+        out = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+>       assert out["state"] == "INVALID" and out["class"] is None, out
+E       AssertionError: {'case_id': 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'placement': 'S01', 'seed': 911, 'class': 'PASS_CLEAN', ...}
+E       assert ('PASS' == 'INVALID'
+E
+E         - INVALID
+E         + PASS)
+
+/private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py:98: AssertionError
+_ test_ten_original_witnesses_and_their_specific_rejection[stop_after_trace-58dc07e7] _
+
+version = '58dc07e7', damage = 'stop_after_trace'
+pre_fix = <module 'review_299g_pre_fix_classify_placements' from '/private/tmp/ugrp-review-299g-rc7ueuio/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py'>
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1445/test_ten_original_witnesses_an8')
+
+    @pytest.mark.parametrize("version", ["candidate", PRE_FIX])
+    @pytest.mark.parametrize("damage", WITNESSES)
+    def test_ten_original_witnesses_and_their_specific_rejection(version, damage, pre_fix, tmp_path):
+        classifier = cp if version == "candidate" else pre_fix
+        if damage == "reader_distance":
+            raw, seal, _ = contract.registered_fixture(tmp_path)
+            assert classifier.analyse("clean", raw, sealed_manifest=seal)["summary"]["pass_placements"] == 1
+            cid = seal["cases"][0]["attempts"][0]["case_id"]
+            path = cp.ca.dra.case_dir(raw, cid) / "result.json"
+            result = json.loads(path.read_text())
+            for rid in cp.ROBOTS:
+                result["chain_raw"][rid]["leg_end"]["1"]["gt"]["beam_xyz"][0] += 1.
+            contract.base.write_json(path, result)
+            out = classifier.analyse("contradictory", raw, sealed_manifest=seal)
+            assert out["summary"]["pass_placements"] == 0
+            attempt = next(a for a in out["attempts"] if a["case_id"] == cid)
+            assert any("source/derived" in s and "contradiction" in s for s in attempt["hard_limit_chain"]["evidence_issues"])
+            return
+        data, context = contract.public_record()
+        healthy = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+        assert healthy["class"] == "PASS_CLEAN" and healthy["evidence_valid"]
+        raw = data["result"]["chain_raw"]
+        if damage in ("end_coordinates", "start_coordinates"):
+            boundary = "leg_end" if damage.startswith("end") else "leg_start"
+            for rid in cp.ROBOTS:
+                raw[rid][boundary]["1"]["gt"]["beam_xyz"][0] += 1.
+            expected = "source/derived"
+        elif "_start_" in damage:
+            rid, _, k = damage.split("_")
+            del raw[rid]["leg_start"][k]
+            expected = repr(k)  # KeyError from the required source start, not another validator.
+        elif damage == "start_after_end":
+            for rid in cp.ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = snap["gt"]["t"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+            expected = "outside recorded window"
+        elif damage == "negative_end":
+            rid = min(cp.ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+            expected = "outside recorded window"
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+            expected = "outside recorded window"
+        out = classifier.adjudicate_attempt(data["row"], data["result"], data["trace"], recorder_context=context)
+>       assert out["state"] == "INVALID" and out["class"] is None, out
+E       AssertionError: {'case_id': 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'placement': 'S01', 'seed': 911, 'class': 'PASS_CLEAN', ...}
+E       assert ('PASS' == 'INVALID'
+E
+E         - INVALID
+E         + PASS)
+
+/private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py:98: AssertionError
+_ test_ten_original_witnesses_and_their_specific_rejection[reader_distance-58dc07e7] _
+
+version = '58dc07e7', damage = 'reader_distance'
+pre_fix = <module 'review_299g_pre_fix_classify_placements' from '/private/tmp/ugrp-review-299g-rc7ueuio/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py'>
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1445/test_ten_original_witnesses_an9')
+
+    @pytest.mark.parametrize("version", ["candidate", PRE_FIX])
+    @pytest.mark.parametrize("damage", WITNESSES)
+    def test_ten_original_witnesses_and_their_specific_rejection(version, damage, pre_fix, tmp_path):
+        classifier = cp if version == "candidate" else pre_fix
+        if damage == "reader_distance":
+            raw, seal, _ = contract.registered_fixture(tmp_path)
+            assert classifier.analyse("clean", raw, sealed_manifest=seal)["summary"]["pass_placements"] == 1
+            cid = seal["cases"][0]["attempts"][0]["case_id"]
+            path = cp.ca.dra.case_dir(raw, cid) / "result.json"
+            result = json.loads(path.read_text())
+            for rid in cp.ROBOTS:
+                result["chain_raw"][rid]["leg_end"]["1"]["gt"]["beam_xyz"][0] += 1.
+            contract.base.write_json(path, result)
+            out = classifier.analyse("contradictory", raw, sealed_manifest=seal)
+>           assert out["summary"]["pass_placements"] == 0
+E           assert 1 == 0
+
+/private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py:67: AssertionError
+=========================== short test summary info ============================
+FAILED ../../../../../private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py::test_ten_original_witnesses_and_their_specific_rejection[end_coordinates-58dc07e7]
+FAILED ../../../../../private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py::test_ten_original_witnesses_and_their_specific_rejection[start_coordinates-58dc07e7]
+FAILED ../../../../../private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py::test_ten_original_witnesses_and_their_specific_rejection[r1_start_0-58dc07e7]
+FAILED ../../../../../private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py::test_ten_original_witnesses_and_their_specific_rejection[r1_start_1-58dc07e7]
+FAILED ../../../../../private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py::test_ten_original_witnesses_and_their_specific_rejection[r2_start_0-58dc07e7]
+FAILED ../../../../../private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py::test_ten_original_witnesses_and_their_specific_rejection[r2_start_1-58dc07e7]
+FAILED ../../../../../private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py::test_ten_original_witnesses_and_their_specific_rejection[start_after_end-58dc07e7]
+FAILED ../../../../../private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py::test_ten_original_witnesses_and_their_specific_rejection[negative_end-58dc07e7]
+FAILED ../../../../../private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py::test_ten_original_witnesses_and_their_specific_rejection[stop_after_trace-58dc07e7]
+FAILED ../../../../../private/tmp/ugrp-review-299g-rc7ueuio/tests/test_classify_review_299g.py::test_ten_original_witnesses_and_their_specific_rejection[reader_distance-58dc07e7]
+10 failed, 22 deselected in 2.49s
