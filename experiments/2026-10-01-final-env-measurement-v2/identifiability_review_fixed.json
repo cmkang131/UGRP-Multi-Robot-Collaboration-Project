@@ -1,0 +1,201 @@
+{
+  "status": "SYNTHETIC_DESIGN_ONLY",
+  "model": "dv/dt=(gain*u-v)/tau_drive_or_stop",
+  "residual_floor_m": 0.0001,
+  "v1": {
+    "forward": {
+      "samples": 42,
+      "sample_period_s": 0.2,
+      "independent_windows": 2,
+      "initial_state_per_window": {
+        "position_m": 0.0,
+        "velocity_m_s": 0.0
+      },
+      "samples_per_drive_tau": 7.199999999999999,
+      "fisher_log_gain_log_tau": [
+        [
+          947320.7452964016,
+          -742570.700949274
+        ],
+        [
+          -742570.700949274,
+          582207.8012748428
+        ]
+      ],
+      "fisher_condition": 18523.61547769357,
+      "fisher_min_eigenvalue": 82.56735738526002,
+      "profiled_20pct_tau_alternative": {
+        "gain": 2.0649576251458184,
+        "tau_s": 1.728,
+        "stop_tau_s": 0.08,
+        "rms_m": 3.001459049213028e-05
+      },
+      "within_residual_floor": {
+        "gain_min": 1.2840545296030466,
+        "gain_max": 3.3782185872264874,
+        "tau_min_s": 0.921223134975129,
+        "tau_max_s": 3.069219287046185
+      },
+      "practically_separated": false
+    },
+    "left": {
+      "samples": 42,
+      "sample_period_s": 0.2,
+      "independent_windows": 2,
+      "initial_state_per_window": {
+        "position_m": 0.0,
+        "velocity_m_s": 0.0
+      },
+      "samples_per_drive_tau": 15.0,
+      "fisher_log_gain_log_tau": [
+        [
+          456696.762206014,
+          -407189.08819998236
+        ],
+        [
+          -407189.08819998236,
+          363064.10214931174
+        ]
+      ],
+      "fisher_condition": 92735.10104025665,
+      "fisher_min_eigenvalue": 8.839716735551221,
+      "profiled_20pct_tau_alternative": {
+        "gain": 2.836195440521699,
+        "tau_s": 3.5999999999999996,
+        "stop_tau_s": 0.05,
+        "rms_m": 1.0292069529937535e-05
+      },
+      "within_residual_floor": {
+        "gain_min": 0.9525577597388037,
+        "gain_max": 74.47659978917436,
+        "tau_min_s": 1.0130426057325483,
+        "tau_max_s": 100.0
+      },
+      "practically_separated": false
+    }
+  },
+  "v2": {
+    "forward": {
+      "samples": 2281,
+      "sample_period_s": 0.05,
+      "independent_windows": 1,
+      "initial_state_per_window": {
+        "position_m": 0.0,
+        "velocity_m_s": 0.0
+      },
+      "samples_per_drive_tau": 28.799999999999997,
+      "fisher_log_gain_log_tau": [
+        [
+          18911876150.5222,
+          -1787110315.266624
+        ],
+        [
+          -1787110315.266624,
+          262127987.39573142
+        ]
+      ],
+      "fisher_condition": 206.4601985930422,
+      "fisher_min_eigenvalue": 92422567.16205125,
+      "profiled_20pct_tau_alternative": {
+        "gain": 1.739615907777977,
+        "tau_s": 1.152,
+        "stop_tau_s": 0.2,
+        "rms_m": 0.0032359681646059748
+      },
+      "within_residual_floor": {
+        "gain_min": 1.7840329310931449,
+        "gain_max": 1.784590000000001,
+        "tau_min_s": 1.4352412871185989,
+        "tau_max_s": 1.44
+      },
+      "practically_separated": true
+    },
+    "left": {
+      "samples": 2281,
+      "sample_period_s": 0.05,
+      "independent_windows": 1,
+      "initial_state_per_window": {
+        "position_m": 0.0,
+        "velocity_m_s": 0.0
+      },
+      "samples_per_drive_tau": 60.0,
+      "fisher_log_gain_log_tau": [
+        [
+          27418863781.566578,
+          -6229574059.1468115
+        ],
+        [
+          -6229574059.1468115,
+          1661456006.6948018
+        ]
+      ],
+      "fisher_condition": 123.31935761113463,
+      "fisher_min_eigenvalue": 233916264.90882713,
+      "profiled_20pct_tau_alternative": {
+        "gain": 2.278104615710629,
+        "tau_s": 2.4000000000000004,
+        "stop_tau_s": 0.2,
+        "rms_m": 0.005323245376242982
+      },
+      "within_residual_floor": {
+        "gain_min": 2.4067999999999965,
+        "gain_max": 2.4067999999999965,
+        "tau_min_s": 3.0,
+        "tau_max_s": 3.0
+      },
+      "practically_separated": true
+    }
+  },
+  "limitation": "conditional on first-order model and #346 drive candidates; not physical identification; stop tau is a profiled nuisance, not qualified at 20 Hz",
+  "passed": true,
+  "nominal_clearance": {
+    "minimum_m": 0.6749999999999999,
+    "xy_min_m": [
+      3.25,
+      -0.85
+    ],
+    "xy_max_m": [
+      3.980256391242548,
+      0.021493394831719415
+    ],
+    "scope": "conditional prediction, not safety proof; private abort interlock required"
+  },
+  "clearance_preflight": {
+    "admitted": false,
+    "reason": "MISSING_INDEPENDENT_MOTION_BOUNDS",
+    "unexcluded_v1_witnesses": {
+      "forward": {
+        "minimum_lower_bound_m": 0.06703114709944524,
+        "worst_interval_s": [
+          82.0,
+          82.05000000000001
+        ],
+        "required_clearance_m": 0.35,
+        "satisfies_margin": false,
+        "continuous_path": true,
+        "cells": 4600,
+        "scope": "conditional interval bound, not evidence that the plant lies within these bounds"
+      },
+      "left": {
+        "minimum_lower_bound_m": -0.1824845816300037,
+        "worst_interval_s": [
+          194.95000000000002,
+          195.0
+        ],
+        "required_clearance_m": 0.35,
+        "satisfies_margin": false,
+        "continuous_path": true,
+        "cells": 4600,
+        "scope": "conditional interval bound, not evidence that the plant lies within these bounds"
+      }
+    },
+    "bounded_path": null,
+    "missing_bounds": [
+      "positive and negative gain ranges",
+      "drive and stop tau ranges",
+      "initial position and velocity errors after reset",
+      "world-axis speed error including transverse motion, yaw, slip and model mismatch"
+    ]
+  },
+  "runnable": false
+}

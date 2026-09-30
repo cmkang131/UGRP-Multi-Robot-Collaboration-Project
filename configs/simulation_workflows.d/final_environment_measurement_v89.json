@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-final-environment-floor-light-v2-check",
+      "version": "2.21.0",
+      "purpose": "DRAFT floor-light successor: calibration-motion-v2 (v89); legacy p01/calibration/p03 retain v87",
+      "entry": "scripts/run_final_environment_measurement_v2.py",
+      "runner": "scripts.run_final_environment_measurement_v2",
+      "docs": "PHYSICS_HANDOFF_MEASUREMENT_V2.md",
+      "requires": "Committed expected SHA and live owned lock; unloaded diagnostic only; static-map abort interlock; no student/model; <=235 SIM s including reset",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": ["--check", "--expected-source-sha"],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}
