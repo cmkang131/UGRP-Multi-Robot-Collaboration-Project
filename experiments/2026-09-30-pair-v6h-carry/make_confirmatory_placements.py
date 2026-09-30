@@ -5,7 +5,9 @@
 (``experiments/2026-09-30-b-v6h-gain/placements/held_out_sheet_12.json``): x in [0.92, 1.07] m, y in [-0.03, 0.11] m, yaw in
 [-4.5, 4.5] deg, order sheet = the beam pose rounded to the sheet grid (0.1 m, 10 deg). PF priors are drawn uniformly from the ten
 recorded hR2 approach-end samples. A draw that lands within DISTINCT_XY_M / DISTINCT_YAW_DEG of any placement already used in the
-exploratory cohorts (base-sheet or sheet-consistent) is redrawn, so the confirmatory set contains no exploratory placement.
+exploratory cohorts (base-sheet or sheet-consistent) is redrawn, so the confirmatory set contains no exploratory placement. Accepted confirmatory draws are also added to ``taken``:
+this sequential proximity-rejection design is NOT IID, and its law differs from the original uniform box.
+Count/Wilson/binomial calculations are descriptive/nominal design sensitivities, not population guarantees.
 
 Usage: make_confirmatory_placements.py [--check]     (--check verifies the committed file is what this script draws)
 """
