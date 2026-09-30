@@ -13,6 +13,24 @@ import sys
 ROOT = Path(__file__).resolve().parents[2]
 TEST = 'tests/test_zone_final_environment_runnable.py'
 MUTATIONS = (
+    ('k1-substring-regression', 'tests/test_zone_final_env.py',
+     "    assert 'tests/test_zone_final_env.py' in collect_test_files(ROOT, TEST_PATTERNS)",
+     "    matched = [p for p in TEST_PATTERNS if 'test_zone_final_env' in p]\n"
+     "    assert matched and all(list(ROOT.glob(p)) == [ROOT / 'tests/test_zone_final_env.py'] for p in matched)",
+     'tests/test_review_e2e_batch_k.py::test_pr338_preserves_existing_ci_collection_check'),
+    ('k1-remove-legacy-suite', 'scripts/run_ci_tests.py',
+     '    "tests/test_zone_final_env.py",\n', '',
+     'tests/test_review_e2e_batch_k.py::test_pr338_ci_collects_both_suites_and_counterexample_once'),
+    ('k1-remove-runnable-suite', 'scripts/run_ci_tests.py',
+     '    "tests/test_zone_final_environment_runnable.py",\n', '',
+     'tests/test_review_e2e_batch_k.py::test_pr338_ci_collects_both_suites_and_counterexample_once'),
+    ('k1-remove-counterexample', 'scripts/run_ci_tests.py',
+     '    "tests/test_review_e2e_batch_k.py",  # K1: final environment CI collection regression\n', '',
+     'tests/test_review_e2e_batch_k.py::test_pr338_ci_collects_both_suites_and_counterexample_once'),
+    ('k1-disable-collection-check', 'tests/test_zone_final_env.py',
+     "    assert 'tests/test_zone_final_env.py' in collect_test_files(ROOT, TEST_PATTERNS)",
+     '    assert True',
+     'tests/test_review_e2e_batch_k.py::test_pr338_collection_check_uses_expanded_exact_paths'),
     ('map-file-hash', 'harness/zone_final_environment.py',
      "if sha(path) != row['sha256'] or digest(static) != row['static_map_sha256']:", 'if False:',
      'test_changed_map_parent_or_calibration_contract_is_refused[file]'),
@@ -62,7 +80,8 @@ def main():
             raise RuntimeError(f'{name}: mutation target must occur exactly once')
         try:
             path.write_text(source.replace(before, after, 1))
-            result = subprocess.run([sys.executable, '-B', '-m', 'pytest', '-q', f'{TEST}::{test}'],
+            target = test if test.startswith('tests/') else f'{TEST}::{test}'
+            result = subprocess.run([sys.executable, '-B', '-m', 'pytest', '-q', target],
                                     cwd=ROOT, text=True, capture_output=True,
                                     env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1'}, timeout=180)
             rows.append({'mutation': name, 'path': relative, 'test': test,

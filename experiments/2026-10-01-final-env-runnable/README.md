@@ -97,3 +97,8 @@ PYTHONPATH=.:experiments/2026-09-30-e2e-p03-provider "$PY" -m pytest -q -p offli
 - [P03 #312](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/312) — 의존 PR
 - [물리 큐 #337](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/337)
 - [P01 계획](../2026-09-30-e2e-p01-env/README.md), [실행 버전 관리](../../docs/execution_versioning.md)
+
+## 2026-10-01 Batch K 후속 수정
+
+K1 CI 수집 충돌 수정과 main 병합 뒤 검증은 [REVIEW_K_FIXES.md](REVIEW_K_FIXES.md)에
+별도로 기록한다. 위 최초 후보/검증 기록은 당시 범위 그대로 보존한다.

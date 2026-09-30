@@ -1,7 +1,8 @@
 # 검토 K 수정 — 최종 환경 연결, 실행 차단 유지
 
 2026-10-01: PR #339는 **#338에 의존**한다. main의 P03 #312·T10a #310과
-`origin/codex/integ-final-env-runnable` `6df8f1ae`를 통합했다.
+`origin/codex/integ-final-env-runnable` `6df8f1ae`를 통합한 뒤, #338 최종본
+`eb0b12ed`가 병합된 main `5ba853dd`도 반영했다.
 현재 후보는 **zone-target-v86 / workflow 2.19.0**이다. 이전 v85 번들 바이트는
 그대로 보존하며 기존 workflow catalog·v6e 등록 pin은 main의 원본으로 복구했다.
 추가 catalog `configs/simulation_workflows.d/target_v86.json`을 사용한다.
@@ -20,13 +21,13 @@
 검토 반례는 `84f672ae`의 #339 검사 네 개를 가져와 xfail 없이 수행한다.
 추가 검사는 active target + arm macro 중복 촬영, 로봇별 격리, 같은 시각 두 관측의
 불인정, 역순 프레임 거부, 보정/모델/프로필 불일치와 모든 실행 진입점의 차단을 다룬다.
-#338의 CI 수집 검사도 정확한 파일 이름을 확인하도록 수정했다. 두 환경 테스트를
+#338 최종 CI 수집 검사(확장한 목록에서 정확한 경로 확인)와 추가 반례도 보존했다. 두 환경 테스트를
 CI에 계속 포함한다. `.github/workflows`와 보호된 source-pinning 테스트는 수정하지 않았다.
 
 [현재 인계](PHYSICS_HANDOFF.md)를 따른다. 물리·렌더·실제 추론·LLM은 실행하지 않았다.
 전체 pickup region의 clear-empty/OWN_PICKUP_ABSENT도 여전히 미구현이다.
 실제 결과가 없어 TensorBoard snapshot은 추가하지 않는다. 검증 수치·명령·해시는
-[검증 기록](review_k_verification.json)에 따로 남긴다.
+[첫 수정 검증](review_k_verification.json)과 [최종 main 통합 검증](review_k_final_main_verification.json)에 따로 남긴다.
 
 ---
 

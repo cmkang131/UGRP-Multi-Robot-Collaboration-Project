@@ -3,8 +3,11 @@
 검토 원문: `origin/codex/review-e2e-batch-k` / `84f672ae`,
 `experiments/2026-09-30-e2e-readiness/REVIEW_E2E_BATCH_K.md`.
 후보 출발: `eb46383f3bc435d1801f4917034606a885d1f8b6`.
-main `0d45ef8c2afb55e3e4ac9f8a61ac519f41e92e4f`를 먼저 병합했고,
+main `f3fbbf9a08c0ba96b22858b573ab5d4da52e9011`를 먼저 병합했고,
 #338 `6df8f1ae6ff36b8a779fb36c1cb1c0ab6548e069`를 의존 브랜치로 통합했다.
+작업 중 #338 최종본 `eb0b12ed`가 main에 병합되어 main `5ba853dd`를 추가 통합했다.
+`review_k_verification.json`의 `main_sha=0d45ef8c`는 첫 보존 비교 시점의 원격 ref이며
+최초 병합 부모와 구별한다. 표적 실행 소스·v86 번들 해시는 최종 통합 후에도 같다.
 
 | 지적 | 변경 | 확인 범위·남은 일 |
 |---|---|---|
@@ -22,8 +25,8 @@ K4를 단순히 `robot_model` 문자열만 바꿔 해결했다고 보고하지 �
 다음 번호 **zone-target-v86 / 2.19.0**을 예약했다. 원본 s5 배치·주문·30/62.5초 사건은
 그대로이며 신규 환경과 과거 v2 결과를 혼합하지 않는다.
 
-검토의 #339 테스트 네 개는 xfail을 모두 제거했다. #338의 K1은 부분 문자열 대신
-정확한 테스트 파일 이름을 확인하도록 고쳤으며 두 환경 테스트 모두 CI 수집을 유지한다.
+검토의 #339 테스트 네 개는 xfail을 모두 제거했다. #338의 K1 최종 수정(실제 확장·중복 제거한 파일 목록에서 정확한 경로 확인)과
+추가 회귀검사 9개를 모두 보존했으며 두 환경 테스트 모두 CI 수집을 유지한다.
 두 신규 workflow를 함께 병합한 catalog 검사도 43개와 두 ID 존재를 확인하도록 맞췄다.
 `.github/workflows`는 origin/main과 동일하다. normal CI를 사용하며 병합하지 않는다.
 
@@ -37,7 +40,9 @@ K4를 단순히 `robot_model` 문자열만 바꿔 해결했다고 보고하지 �
 - 안정된 좁은 묶음: 26 passed.
 - 전체 관련 첫 묶음: 577 passed, 1 skipped, 1 failed. 실패는 두 브랜치 통합 뒤
   catalog 개수 기대값(42→43) 하나이며 원 로그를 보존했다.
-- 최종 묶음·mutation·계획·보존 검사는 [review_k_verification.json](review_k_verification.json)에 기록한다.
+- 첫 수정 후보의 최종 묶음: **578 passed, 1 skipped**, mutation **12/12 검출**.
+- 최신 main 통합 뒤 검증은 [review_k_final_main_verification.json](review_k_final_main_verification.json)에 별도로 보존한다.
+- mutation·계획·보존 검사는 [review_k_verification.json](review_k_verification.json)에 기록한다.
   mutation은 기존 8개와 신규 4개를 자식 프로세스 메모리에서만 변경하며 파일을 수정하지 않는다.
 
 전체 pickup region clear-empty/OWN_PICKUP_ABSENT는 아직 미구현이다. 실제 파지·낙하·복구·배송,

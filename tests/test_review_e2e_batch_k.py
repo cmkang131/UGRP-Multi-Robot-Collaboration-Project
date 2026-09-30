@@ -1,7 +1,7 @@
-"""PR #339 counterexamples from independent review 84f672ae, now mandatory.
+"""Batch K counterexamples from independent review 84f672ae, now mandatory.
 
 K2/K3/K4 assertions and the positive scheduler control are preserved; only the
-three strict-xfail markers were removed. K1 belongs to dependency PR #338.
+three strict-xfail markers were removed. The merged #338 K1 tests are retained.
 No physics or inference. The environment-label counterexample alone does not
 qualify execution; test_zone_target_review_k.py checks fail-closed admission.
 """
@@ -122,3 +122,45 @@ def test_pr339_t13_handoff_uses_required_final_environment():
     static = json.loads(maps[0].read_text())
     assert static["wall_profile"]["id"] == "walls_v3"
     assert static["wall_profile"]["height_m"] == .4
+
+
+def test_pr338_preserves_existing_ci_collection_check():
+    result = python_in(candidate(338), """
+import json
+from tests.test_zone_final_env import test_ci_collects_this_file
+try:
+    test_ci_collects_this_file()
+except AssertionError as error:
+    print(json.dumps({'passed': False, 'error': str(error)}))
+else:
+    print(json.dumps({'passed': True}))
+""")
+    assert result["passed"], result
+
+
+@pytest.mark.parametrize('path', [
+    'tests/test_zone_final_env.py',
+    'tests/test_zone_final_environment_runnable.py',
+    'tests/test_review_e2e_batch_k.py',
+])
+def test_pr338_ci_collects_both_suites_and_counterexample_once(path):
+    from scripts.run_ci_tests import TEST_PATTERNS, collect_test_files
+    assert collect_test_files(ROOT, TEST_PATTERNS).count(path) == 1
+
+
+@pytest.mark.parametrize('patterns,accepted', [
+    (('tests/test_zone_final_env*.py',), True),
+    (('tests/test_zone_final_env.py', 'tests/test_zone_final_env*.py'), True),
+    (('tests/test_zone_final_environment_runnable.py',), False),
+    (('tests/test_zone_final_env_missing.py',), False),
+    ((), False),
+])
+def test_pr338_collection_check_uses_expanded_exact_paths(monkeypatch, patterns, accepted):
+    from scripts import run_ci_tests
+    from tests.test_zone_final_env import test_ci_collects_this_file
+    monkeypatch.setattr(run_ci_tests, 'TEST_PATTERNS', patterns)
+    if accepted:
+        test_ci_collects_this_file()
+    else:
+        with pytest.raises(AssertionError):
+            test_ci_collects_this_file()
