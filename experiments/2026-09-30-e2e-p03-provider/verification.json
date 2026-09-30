@@ -1,0 +1,149 @@
+{
+  "schema": "ugrp.p03.contract_verification.v1",
+  "status": "DRAFT_contract_passed_actual_relocalization_unverified",
+  "audit_sha": "a8094cc14e098a55483f53a3c49bf6a0b116043d",
+  "base_sha": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
+  "tested_code_sha": "9cf4322d09eed11e10252601b5c78eabdbb7c727",
+  "tested_files_sha256": {
+    "configs/vision_loc_provider_p03.json": "1fbce18780d09d832e4cd8e7df69a3922cd33c70334a98b689b350e2eab3b1dc",
+    "configs/vision_loc_worker.json": "c92165360bb5385f83894a32bcfe411ab0258c983f38b80b09e700498fefce88",
+    "harness/vision_loc_protocol.py": "1e7634f3282a712f4b279ec09aaebd72702e964c60a5753e11b9ee508c0f1803",
+    "harness/vision_pose_source.py": "f3aee2cb0466acdddd672bf5b1ec6ff2ec7ed1980d3b31e238ce6deab668edc8",
+    "harness/zone_study_pose_delay.py": "af91e01b5862dd93e2b6317a0de030478b8004435a07ea8f7e3bdffae993eaa7",
+    "scripts/run_zone_study_integration.py": "ff1390b2beae9fedc5ffc14076aceb56773062351f2e026ec1fe61117442f467",
+    "tests/test_vision_loc_provider_lifecycle.py": "e59d22aaea81824726f1de73428dd482eb6c0d0fafddc95324aa4dadb87d8242",
+    "tests/test_zone_study_source_pinning.py": "a1d3bbd70f2604746c1e80b73ed562bfe407783402059f224e5e347558edd0e4",
+    "experiments/2026-09-30-e2e-p03-provider/offline_guard.py": "ef740d519b371644e3dedb218f005d0e4532204666d7e85b76cc533deb09648b",
+    "experiments/2026-09-30-e2e-p03-provider/offline_checks.py": "75ef04bfcd69450c6e9e437ebe629246b585bb0e812875f66270e2fef89ccac3"
+  },
+  "env": {
+    "python": "3.13.5",
+    "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+    "numpy": "2.4.4",
+    "pytest": "8.3.4",
+    "python_executable": "/opt/anaconda3/bin/python3"
+  },
+  "final_result": {
+    "passed": 277,
+    "failed": 0,
+    "deselected": 10,
+    "wall_s": 85.59,
+    "junit": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p03-provider-contract-20260930-194957/targeted-tests-final.xml",
+      "bytes": 42923,
+      "sha256": "3015114d2dbb4bc6eff3e20c999f08b4a0ee46a349b44681f95d46ac81707661",
+      "result": {
+        "tests": "277",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "85.450"
+      }
+    }
+  },
+  "excluded": {
+    "render_schematic_matrix": 4,
+    "saved_rgb_tag_pair_delay": 5,
+    "legacy_tag_host_crash": 1
+  },
+  "guard": "offline_guard.py: no MuJoCo/torch/torchvision, real worker, network, schematic render or tag detection",
+  "lock": "scripts.run_ci_tests.run_locked: shared outputs/agent-locks; lock released after child group cleanup",
+  "raw_records": {
+    "bundle-preview-final.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p03-provider-contract-20260930-194957/bundle-preview-final.json",
+      "bytes": 46978,
+      "sha256": "000a50ba37fde0f7d095332cad0b9f658c5655651217e5058718fd349d8f051b"
+    },
+    "bundle-preview.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p03-provider-contract-20260930-194957/bundle-preview.json",
+      "bytes": 46918,
+      "sha256": "5173486a74c8a69c8fa43182c2540823afa5689987c43a94017b40df8d258737"
+    },
+    "contract-tests.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p03-provider-contract-20260930-194957/contract-tests.xml",
+      "bytes": 12007,
+      "sha256": "8db4c9d39cb6628161d47799054c03ed15d07f528d79a9bf413242c151965f7c",
+      "result": {
+        "tests": "58",
+        "failures": "1",
+        "errors": "0",
+        "skipped": "0",
+        "time": "47.695"
+      }
+    },
+    "local-model-hashes.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p03-provider-contract-20260930-194957/local-model-hashes.json",
+      "bytes": 854,
+      "sha256": "671d5a41f7ca04d8484fc34e0b5ce1ea497f4f7a65839bc3d50d2d3be44466ba"
+    },
+    "targeted-tests-final.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p03-provider-contract-20260930-194957/targeted-tests-final.xml",
+      "bytes": 42923,
+      "sha256": "3015114d2dbb4bc6eff3e20c999f08b4a0ee46a349b44681f95d46ac81707661",
+      "result": {
+        "tests": "277",
+        "failures": "0",
+        "errors": "0",
+        "skipped": "0",
+        "time": "85.450"
+      }
+    },
+    "targeted-tests.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/e2e-p03-provider-contract-20260930-194957/targeted-tests.xml",
+      "bytes": 45593,
+      "sha256": "a880b232e6c62098589802057bf1f16da2a53f1d5dc2bc5cace3e50b26dad9ce",
+      "result": {
+        "tests": "277",
+        "failures": "1",
+        "errors": "0",
+        "skipped": "0",
+        "time": "73.400"
+      }
+    }
+  },
+  "local_models": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/vision-loc-20260926/model/seg-v2/seg_lraspp_mbv3.pt",
+      "expected_sha256": "348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9",
+      "expected_bytes": 13071401,
+      "model_loaded": false,
+      "inference_executed": false,
+      "bytes": 13071401,
+      "sha256": "348539030fda962cc5ba64e21c956619bc4db9321a99cd3ae6746611a9939fd9",
+      "matches": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/seg-lightfloor-20260929/model/C_mix_rgb/seg_lraspp_mbv3.pt",
+      "expected_sha256": "0e7a696e7100cc19d84149251456afedc1318ff4f7901b06bd9396590c651c9d",
+      "expected_bytes": 13071657,
+      "model_loaded": false,
+      "inference_executed": false,
+      "bytes": 13071657,
+      "sha256": "0e7a696e7100cc19d84149251456afedc1318ff4f7901b06bd9396590c651c9d",
+      "matches": true
+    }
+  ],
+  "bundle_preview": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e-p03-provider-contract-20260930-194957/bundle-preview-final.json",
+    "sha256": "000a50ba37fde0f7d095332cad0b9f658c5655651217e5058718fd349d8f051b",
+    "bundle_sha256": "347ad3a65095de31ea27be365649acab905d799025523e5f2cfe124990f3745e",
+    "runnable": false
+  },
+  "execution_counts": {
+    "physics": 0,
+    "simulation": 0,
+    "render": 0,
+    "training": 0,
+    "vision_inference": 0,
+    "llm": 0,
+    "model_load": 0,
+    "release_upload": 0
+  },
+  "pending": [
+    "3 checkpoints x 120 SIM seconds after actual preceding legs; retained runtime belief, p20 scan and regrasp",
+    "Release download, archive/full file hashes and loading validation",
+    "final model/robot/render/camera/motion calibration; separate C_mix_rgb opt-in and new bundle identity"
+  ],
+  "drive": "none; UGRP exclusion",
+  "tensorboard": "not applicable to contract regressions; no new experiment/evaluation cohort"
+}
