@@ -16,7 +16,7 @@ from harness.zone_study_contract import MAIN_CONDITIONS, digest
 
 KEY_FIELDS = ('run_id', 'trial_id', 'condition', 'seed', 'order_id', 'attempt')
 TRIAL_SCOPE = '__trial__'
-PLAN_SCHEMA = 'ugrp.zone_study_frozen_evidence_plan.v1'
+PLAN_SCHEMA = 'ugrp.zone_study_frozen_evidence_plan.v2'
 INDEX_SCHEMA = 'ugrp.zone_study_record_index.v1'
 TABLES = ('trial', 'referee', 'order', 'manifest', 'tensorboard')
 
@@ -70,7 +70,8 @@ def admission(identity, orders):
 
 def freeze_plan(admitted):
     """Call before execution, from the planned cohort, never from found results."""
-    plan = {'schema': PLAN_SCHEMA, 'admitted': copy.deepcopy(admitted)}
+    from harness.zone_referee_replay import policy
+    plan = {'schema': PLAN_SCHEMA, 'admitted': copy.deepcopy(admitted), 'referee_policy': policy()}
     validate_plan(plan, digest(plan))
     return plan
 
@@ -78,9 +79,13 @@ def freeze_plan(admitted):
 def validate_plan(plan, expected_sha256):
     if (not isinstance(expected_sha256, str) or len(expected_sha256) != 64
             or digest(plan) != expected_sha256 or not isinstance(plan, dict)
-            or set(plan) != {'schema', 'admitted'} or plan['schema'] != PLAN_SCHEMA
+            or set(plan) != {'schema', 'admitted', 'referee_policy'} or plan['schema'] != PLAN_SCHEMA
             or not isinstance(plan['admitted'], list) or not plan['admitted']):
         raise ValueError('Frozen plan is missing, empty or differs from its external SHA-256 pin')
+    policy = plan['referee_policy']
+    if (not isinstance(policy, dict) or not isinstance(policy.get('sha256'), str)
+            or digest({k: v for k, v in policy.items() if k != 'sha256'}) != policy['sha256']):
+        raise ValueError('Frozen referee policy hash is missing or inconsistent')
     keys, logical, runs = set(), set(), set()
     for row in plan['admitted']:
         if not isinstance(row, dict) or set(row) != {'key', 'identity', 'orders'}:

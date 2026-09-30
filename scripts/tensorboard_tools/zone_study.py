@@ -140,7 +140,8 @@ def export_study(src, w, result, max_images):
     nested = result.get('eval_only', {}).get('referee')
     if nested is not None and digest(nested) != digest(referee):
         raise ValueError('INVALID: embedded referee history conflicts with its source')
-    raw_metrics = verify_referee_derivations(record, evaluation, referee, identity)
+    raw_metrics = verify_referee_derivations(record, evaluation, referee, identity,
+                                              pinned_policy=plan['referee_policy'], bundle=raw['bundle'])
     if digest(raw_metrics) != digest(metrics):
         raise ValueError('INVALID: raw referee outcome conflicts with trial metrics')
     metrics = raw_metrics

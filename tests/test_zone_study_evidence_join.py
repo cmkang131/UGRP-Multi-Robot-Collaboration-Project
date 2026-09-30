@@ -11,18 +11,8 @@ from scripts import zone_study_evidence_join as j
 from scripts import zone_study_evidence_cohort as cohort
 from scripts.zone_study_evidence_contract import identity_for, per_order_evaluation, seal_new_evidence
 from scripts.tensorboard_tools import export as tb
-from tests.test_zone_study_eval import trial as metric_trial
+from tests.zone_evidence_fixtures import planned, put, raw_source
 
-
-def planned(n=3, order_count=2):
-    orders = [{'order_id': f'o{i}', 'item_ids': [f'item-{i}'], 'kind': 'cyan',
-               'count': 1, 'destination_zone': 'A'} for i in range(order_count)]
-    bundle = {'host_spec': {'order_sheet': {'scenario_id': scenario_ref('synthetic'), 'orders': orders}}}
-    identities = [identity_for(run_id=f'run-{i}', trial_id=f'trial-{i}', condition='no_comm', seed=i,
-                               episode_id=f'episode-{i}', scenario='synthetic', attempt=1, bundle=bundle)
-                  for i in range(n)]
-    plan = j.freeze_plan([j.admission(identity, orders) for identity in identities])
-    return plan, bundle
 
 
 def tables_for(plan, flags):
@@ -122,54 +112,6 @@ def test_rehashed_conflicting_records_make_whole_trial_invalid(damage):
     assert result['success_rate'] <= .5
 
 
-def put(root, name, value):
-    path = root / name
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, ensure_ascii=False) + '\n')
-    return path
-
-
-def raw_source(root, plan, bundle, i, success=True):
-    """Direct provisional JSON source. No runtime imports or fabricated calls."""
-    admitted = plan['admitted'][i]
-    identity, orders = admitted['identity'], admitted['orders']
-    src = root / identity['run_id']
-    # A successful publication now requires the independent raw referee too.
-    # Use pure truth samples, never a world or a copied success declaration.
-    from harness import zone_study_referee as zr
-    from tests.test_zone_study_referee import MAP, at_zone, feed
-    referee = zr.Referee(orders, MAP)
-    if success:
-        feed(referee, 2., 4., {o['item_ids'][0]: at_zone('A') for o in orders})
-    deliveries = referee.trial_rows()
-    record = metric_trial(condition='no_comm', scenario='synthetic', seed=i, orders=orders,
-                          deliveries=deliveries, horizon=12., end_sim_s=5., model={}, requests=[], provenance={},
-                          end_reason='orders_complete' if success else 'host_error')
-    record.update(trial_id=identity['trial_id'], evidence_identity=identity, record_complete=True,
-                  failure_class=None if success else 'infra:HOST_ERROR')
-    record['referee']['status'] = 'evaluated'
-    record['referee']['departed_unsettled'] = []
-    metrics = ev.efficiency_metrics(record)
-    assert metrics['success'] is success
-    put(src, 'study/trial_record.json', record)
-    (src / 'study/dispatch.jsonl').write_text('')
-    (src / 'study/inputs.jsonl').write_text('')
-    put(src, 'eval_only/referee.json', referee.record())
-    put(src, 'eval_only/evaluation.json', {**metrics, 'orders': per_order_evaluation(record),
-                                          'evidence_identity': identity})
-    terminal = {'end_reason': record['end_reason'], 'end_sim_s': record['end_sim_s'],
-                'failure_class': record['failure_class'], 'sim_horizon_s': 12., 'record_complete': True}
-    put(src, 'result.json', {'schema': 'ugrp.zone_study_integration_run.v1', 'run_id': identity['run_id'],
-                            'evidence_kind': 'synthetic', 'evidence_identity': identity, 'condition': 'no_comm',
-                            'episode': identity['episode_id'], 'scenario': 'synthetic', 'seed': i,
-                            'bundle_sha256': digest(bundle), 'terminal': True, 'sim_horizon_s': 12.,
-                            'eval_only': {'evaluation': json.loads((src / 'eval_only/evaluation.json').read_text())},
-                            'study': terminal, 'failure_class': record['failure_class']})
-    put(src, 'manifest.json', {'schema': 'ugrp.zone_study_integration_run.v1', 'run_id': identity['run_id'],
-                              'bundle': bundle, 'bundle_sha256': digest(bundle), 'evidence_identity': identity,
-                              'terminal': terminal})
-    seal_new_evidence(src, plan, digest(plan))
-    return src
 
 
 def test_missing_invalid_duplicate_trials_stay_in_frozen_denominator(tmp_path):

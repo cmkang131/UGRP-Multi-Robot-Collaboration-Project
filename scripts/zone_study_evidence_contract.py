@@ -177,12 +177,17 @@ def seal_new_evidence(root, plan, plan_sha256):
     return result
 
 
-def verify_referee_derivations(record, evaluation, referee, identity):
-    """Rebuild the outcome from raw history, independent of optional aggregates.
+def verify_referee_derivations(record, evaluation, referee, identity, *, pinned_policy=None, bundle=None):
+    """Replay the pinned referee, then compare every declared projection.
 
-    Trial/evaluation fields are redundant claims, never the success authority.
-    A pre-referee failure may have no history, but cannot report any delivery.
+    Pure callers may use the current policy; publication always supplies the
+    externally frozen plan and its admitted bundle. No summary drives replay.
     """
+    from harness import zone_referee_replay as replay
+    pin = replay.policy() if pinned_policy is None else pinned_policy
+    replay.validate_policy(pin)
+    if bundle is not None and digest(bundle.get('referee')) != digest(pin['profile']):
+        raise ValueError('INVALID: bundle referee differs from frozen policy')
     if not isinstance(referee, dict):
         metrics = ev.efficiency_metrics(record)
         if (referee is None and not record['referee'].get('deliveries')
@@ -190,77 +195,63 @@ def verify_referee_derivations(record, evaluation, referee, identity):
                 and (record['referee'].get('status') == 'not_evaluated'
                      or record.get('end_reason') in ('host_error', 'api_failure', 'interrupted', 'aborted'))):
             return metrics
-        raise ValueError('INVALID: referee history is missing')
+        raise ValueError('INVALID: referee event log is missing')
     join.validate_envelope(referee, identity, record['orders'])
     if (referee.get('evidence_identity') != identity or referee.get('plan_sha256') != record['plan_sha256']):
-        raise ValueError('INVALID: referee history identity/plan mismatch')
+        raise ValueError('INVALID: referee identity/plan mismatch')
+    if referee.get('policy_sha256') != pin['sha256'] or digest(referee.get('profile')) != digest(pin['profile']):
+        raise ValueError('INVALID: recorded referee policy differs from frozen code/parameters')
+    full = replay.replay(referee.get('events'), record['orders'], pin)
+    rebuilt = full.record()
+    if bundle is not None:
+        context = sorted(referee['events'], key=lambda r: r['seq'])[0]['static_map']
+        if digest(context) != bundle.get('scene_static_map_sha256'):
+            raise ValueError('INVALID: referee static map differs from admitted bundle')
+        if digest(bundle.get('horizon_s')) != digest(record['budget']['sim_horizon_s']):
+            raise ValueError('INVALID: referee horizon differs from admitted bundle')
     required = {'history', 'standing', 'deliveries', 'orders', 'orders_complete',
-                'completion_sim_s', 'departed_unsettled', 'last_sample_sim_s', 'profile'}
+                'completion_sim_s', 'departed_unsettled', 'last_sample_sim_s', 'profile',
+                'events', 'policy_sha256'}
     if not required <= referee.keys() or type(referee['orders_complete']) is not bool:
-        raise ValueError('INVALID: required raw referee outcome fields are missing/invalid')
+        raise ValueError('INVALID: required referee projections are missing/invalid')
     def canonical(rows):
         return join.canonical_referee_rows(rows, identity, record['orders'])
-    history = canonical(referee['history'])
-    seen, last = set(), {}
-    def observed(row):
-        return row['confirmed_sim_s'] if row.get('event') == 'confirmed' else row['sim_s']
-    last_sample = referee['last_sample_sim_s']
-    if (last_sample is not None and (type(last_sample) not in (int, float)
-            or not math.isfinite(last_sample) or last_sample < 0)) or (history and last_sample is None):
-        raise ValueError('INVALID: referee last sample time is missing/invalid')
-    # Chronology determines transitions; canonical full keys break timestamp ties.
-    for row in sorted(history, key=observed):
-        if (row.get('event') not in ('confirmed', 'departed')
-                or any(type(row.get(k)) is not str or not row[k] for k in ('item_id', 'kind'))
-                or type(row.get('sim_s')) not in (float, int) or not math.isfinite(row['sim_s'])
-                or row['sim_s'] < 0 or type(observed(row)) not in (float, int)
-                or not math.isfinite(observed(row))
-                or observed(row) < row['sim_s'] or observed(row) > last_sample):
-            raise ValueError('INVALID: referee event/item/time fields are missing/invalid')
-        pk = (row.get('item_id'), observed(row))
-        if pk in seen:
-            raise ValueError('INVALID: duplicate referee history key')
-        seen.add(pk)
-        previous = last.get(row['item_id'])
-        if previous and previous['kind'] != row['kind']:
-            raise ValueError('INVALID: referee item kind conflict')
-        if row['event'] == 'departed':
-            if (not previous or previous['event'] != 'confirmed' or row.get('zone') is not None
-                    or row.get('from_zone') != previous['zone']):
-                raise ValueError('INVALID: orphan/conflicting referee departure')
-        elif (row.get('zone') not in ('A', 'B', 'C')
-              or (previous and previous['event'] == 'confirmed')):
-            raise ValueError('INVALID: conflicting referee confirmation')
-        last[row['item_id']] = row
-    standing = {item: row for item, row in last.items() if row['event'] == 'confirmed'}
-    confirmations = [row for row in history if row['event'] == 'confirmed']
-    departures = sum(r['event'] == 'departed' for r in history)
-    unsettled = [r for _, r in sorted(last.items()) if r['event'] == 'departed']
-    deliveries = [{k: row[k] for k in ('item_id', 'kind', 'zone', 'sim_s', 'confirmed_sim_s')}
-                  for row in confirmations if row['item_id'] in standing]
-    # Raw referee order counts use the last observed state without the trial's
-    # success backdating or budget window. Evaluation then applies that window.
-    final = {'orders': record['orders'], 't0_sim_s': 0., 'end_sim_s': last_sample or 0.,
-             'referee': {'deliveries': [{k: row[k] for k in ('item_id', 'kind', 'zone', 'sim_s')}
-                                         for row in standing.values()]}}
-    state = ev.delivery_state(final)
-    complete = bool(standing) and state['orders_complete']
-    completion = max(d['sim_s'] for d in state['delivered'].values()) if complete else None
-    checks = [(referee['standing'], standing), (referee['orders'], per_order_evaluation(final)),
-              (referee['orders_complete'], complete), (referee['completion_sim_s'], completion),
-              (canonical(referee['deliveries']), canonical(confirmations)),
-              (canonical(referee['departed_unsettled']), canonical(unsettled)),
-              (canonical(record['referee'].get('deliveries')), canonical(deliveries)),
-              (canonical(record['referee'].get('departed_unsettled')), canonical(unsettled))]
-    # These copies are optional statistics. Their absence never skips the raw
-    # outcome check; if supplied, every value must agree with the derivation.
-    for envelope, values in ((referee, {'departures': departures}), (evaluation, {
-            'departures': departures, 'departed_unsettled_items': len(unsettled),
-            't0_sim_s': record.get('t0_sim_s'), 'end_sim_s': record.get('end_sim_s'),
-            'referee_profile_sha256': referee['profile'].get('sha256')})):
-        checks.extend((envelope[k], v) for k, v in values.items() if k in envelope)
-    if any(digest(actual) != digest(expected) for actual, expected in checks):
-        raise ValueError('INVALID: referee history/trial/derived numbers conflict')
-    raw_record = {**record, 'referee': {**record['referee'], 'deliveries': canonical(deliveries),
-                                      'departed_unsettled': canonical(unsettled)}}
-    return ev.efficiency_metrics(raw_record)
+    relations = {'history', 'deliveries', 'departed_unsettled'}
+    envelope = {'evidence_identity', 'plan_sha256', 'evidence_key', 'order_keys'}
+    # Unknown projections are refused, not silently trusted or ignored. Optional
+    # known statistics may be absent; every supplied statistic must match replay.
+    for key, actual in referee.items():
+        if key in envelope:
+            continue
+        expected = rebuilt.get(key)
+        if key in relations:
+            actual, expected = canonical(actual), canonical(expected)
+        elif key == 'events':
+            actual = sorted(actual, key=lambda r: r['seq'])
+        if key not in rebuilt or digest(actual) != digest(expected):
+            raise ValueError(f'INVALID: referee replay/summary conflict: {key}')
+    observed = record['referee'].get('observed_end_sim_s', record['end_sim_s'])
+    if (type(observed) not in (int, float) or not math.isfinite(observed) or observed < 0
+            or (full.last_t is not None and full.last_t > observed + pin['time_tolerance_s'])):
+        raise ValueError('INVALID: terminal observation end precedes raw referee samples')
+    for field, expected in (('deliveries', full.trial_rows()),
+                            ('departed_unsettled', full.departed_unsettled())):
+        if digest(canonical(record['referee'].get(field))) != digest(canonical(expected)):
+            raise ValueError(f'INVALID: trial/referee replay conflict: {field}')
+    for key, expected in {'departures': rebuilt['departures'],
+                           'departed_unsettled_items': len(full.departed_unsettled()),
+                           't0_sim_s': record.get('t0_sim_s'), 'end_sim_s': record['end_sim_s'],
+                           'referee_profile_sha256': pin['profile']['sha256']}.items():
+        if key in evaluation and digest(evaluation[key]) != digest(expected):
+            raise ValueError(f'INVALID: evaluation/referee replay conflict: {key}')
+    t0 = float(record.get('t0_sim_s') or 0.)
+    cutoff = min(observed, t0 + float(record['budget']['sim_horizon_s']))
+    bounded = replay.replay(referee['events'], record['orders'], pin, cutoff=cutoff)
+    projected = replay.trial_projection(record, bounded)
+    metrics = ev.efficiency_metrics(projected)
+    if digest(metrics) != digest(ev.efficiency_metrics(record)):
+        raise ValueError('INVALID: trial outcome differs from pinned event replay')
+    for key in evaluation.keys() & metrics.keys():
+        if digest(evaluation[key]) != digest(metrics[key]):
+            raise ValueError(f'INVALID: evaluation differs from pinned event replay: {key}')
+    return metrics

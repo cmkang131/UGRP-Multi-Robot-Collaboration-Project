@@ -12,7 +12,7 @@ from tests.test_zone_study_evidence import (completed, export_api, no_runtime,
 
 
 @pytest.mark.parametrize('case', ['foreign_identity', 'foreign_order_ids', 'missing_terminal', 'missing_image_refs'])
-def test_batch_a_counterexample(tmp_path, completed, export_api, case):
+def test_batch_a_counterexample(tmp_path, completed, case):
     path = synthetic_source(tmp_path, 'success', completed)
     record = json.loads((path / 'study/trial_record.json').read_text())
     if case == 'foreign_identity':

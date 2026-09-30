@@ -8,6 +8,46 @@ Refs #223, #224, #226. READINESS S11/S14의 **synthetic 계약 검사**다.
 최초 203개 검사에 빠졌던 식별값 교환·terminal 누락·v6e 고정 소스 검사를 추가했다.
 정상 GitHub CI는 실행하며 생략·취소하지 않는다.
 
+## 4차 검토 뒤: 원시 이벤트 재생과 고정 심판
+
+2026-10-01 수정은 요약의 새 필드마다 예외 검사를 더하던 구조를 교체한다.
+[Fowler Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html)의
+전체 상태 재구성 방식을 사용한다. 세부 검증·초기 실패·변이 검사·CI는
+[EVENT_REPLAY_VERIFICATION.md](EVENT_REPLAY_VERIFICATION.md)에 남긴다.
+
+- `Referee.observe()`는 주문·정적 지도 초기 이벤트와 **모든 원시 평가 표본**을
+  추가 기록한다. 표본은 개체 종류·위치·높이·속도·held를 그대로 보존하며 제어 입력으로
+  전달하지 않는다. `(seq, previous_sha256, sha256)` 사슬을 검증한 뒤 seq 순서로 재생한다.
+  JSON 배열의 저장 순서는 판정에 영향을 주지 않는다. 배송·취소·재배송·정착 이력은
+  이 원시 표본을 기존 심판 전이 함수에 다시 넣어서만 얻는다. 저장된 `history`조차
+  판정의 권위가 아니라 재생 결과와 반드시 같아야 하는 파생 기록이다.
+- 동결 계획 v2는 **코드의 전체 로컬 import closure + 심판 profile/매개변수 + 재생 규칙**을
+  `referee_policy.sha256`으로 고정한다. 시행은 생산 시 같은 `policy_sha256`을 기록한다.
+  게시 코드·시행 정책·bundle의 profile이 다르거나 빠지면 그 시행은 INVALID다.
+  코드가 바뀐 뒤 이전 정책을 현재 코드로 묵시적으로 해석하지 않는다. 예전 계획/원본은
+  수정·승격하지 않으며, 새 실행 전에 새 정책과 계획을 고정해야 한다.
+- 게시 판정은 `min(관측 종료, t0 + SIM cap)`까지 표본을 재생한 결과다. 취소는 앞선 배송을
+  철회하며, cap 뒤 재배송은 철회한 배송을 되살리지 않는다. 정착 중 held·높이·속도·누락이
+  기준을 깨면 창을 새로 시작한다. 2초 전체 창을 충족한 확인만 남는다. raw 마지막 표본이
+  terminal 관측 종료보다 뒤면 INVALID다. 시각 표시의 기존 4자리 반올림을 유지한다.
+- raw referee의 모든 알려진 파생 필드, trial 배송 목록·판정·시각, evaluation 수치를
+  재생 결과와 대조한다. 불일치나 알 수 없는 referee 파생 필드는 INVALID다. 실제 API/host/
+  정책 중단은 lifecycle 실패로 보존하며 성공으로 승격하지 않는다. 심판 시작 전 실패는
+  배송 없는 명시적 미평가 기록만 허용한다.
+- 기존 여섯 열 복합키·사전 지정 attempt·전체 파일 해시·게시 전 재검증·고정 분모를 유지한다.
+  bundle에 고정된 정적 지도 해시와 horizon도 원시 재생 문맥에 연결한다. 성공 요약을 고쳐
+  분자를 높이거나 다른 심판의 자료를 섞을 수 없다. 해시는 전체 원시 입력을 조작한 작성자를
+  인증하거나 실제 물리 상태를 증명하는 장치가 아니다.
+- TensorBoard는 첫 이벤트 기록 시에만 불러온다. 순수 원본 검증/코호트 집계는 선택 의존성
+  없이 실행하며 필수 반례를 skip하지 않는다. 설치된 환경에서는 같은 검사에 실제 event
+  readback을 추가하고, 기존 `tensorboard-export` CI job이 D303의 16개 사례를 모두 읽는다.
+  `.github/workflows` 및 `requirements-test.txt`는 바꾸지 않는다.
+
+새 생성 검사는 관계형 12,000건과 별도로 원시 이벤트·요약 불일치·정렬·재구성 12,000건이다.
+생성 사례 수와 pytest 항목 수를 합산하지 않는다. 원래 A303/F303/C303 검사와 4차 11개
+반례·5개 정상 대조를 유지한다. 모든 자료는 합성 JSON/event이며 물리·provider·공용 UI
+검증으로 확대하지 않는다. 등록 runner와 기존 raw/snapshot을 보존하며 PR #303은 draft다.
+
 ## 두 차례 BLOCK 뒤 재설계
 
 앞선 수정은 F303-1의 내부 시행 혼합 7건을 막지 못했다. 같은 문제를 두 번 만난 뒤에는
@@ -137,6 +177,10 @@ D1 0.1초/1초 비교창은 1 Hz 기록만으로 재현할 수 없다. 실제 �
 이 문서는 S11/S14 전체 또는 E2E 파일럿 완료 선언이 아니다.
 
 ## 참고 자료
+
+- [Martin Fowler: Event Sourcing (2005)](https://martinfowler.com/eaaDev/EventSourcing.html)
+  — 원시 이벤트에서 상태 전체를 재생성하고, 코드 변경 시 판정 정책을 구분한다. 이번 구현은
+  외부 효과 없는 평가 재생이며 실험·메시지·제어 명령을 다시 실행하지 않는다.
 
 - [PostgreSQL: constraints / primary keys / foreign keys](https://www.postgresql.org/docs/current/ddl-constraints.html)
   — NOT NULL·복합 고유키·외래키의 원리를 메모리 내 관계 검증에 적용했다. SQL 서버를 추가한 것은 아니다.

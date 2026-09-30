@@ -102,6 +102,8 @@ TEST_PATTERNS = (
     "tests/test_zone_study_evidence_review_a303.py",
     "tests/test_zone_study_evidence_review_f303.py",
     "tests/test_review_303c.py",
+    "tests/test_review_303d.py",
+    "tests/test_zone_referee_replay.py",
     "tests/test_zone_study_evidence_review_c303.py",
     "tests/test_zone_study_multiturn.py",
     "tests/test_zone_study_review_r8*.py", "tests/test_zone_study_review_r9*.py",

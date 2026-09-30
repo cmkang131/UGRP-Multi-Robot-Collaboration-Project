@@ -13,6 +13,7 @@ import pytest
 j = pytest.importorskip('scripts.zone_study_evidence_join')
 from harness.zone_study_contract import digest
 from scripts import zone_study_evidence_cohort as cohort
+from tests.zone_evidence_assertions import checked_cohort
 from scripts.tensorboard_tools import export as tb
 from scripts.zone_study_evidence_contract import read_auxiliary
 from tests.test_zone_study_evidence import (
@@ -66,7 +67,6 @@ def refresh_receipts(src):
 
 
 def assert_rejected_with_fixed_denominator(src, out):
-    from tensorboard.backend.event_processing.event_accumulator import EventAccumulator
     plan = read(src, 'study/frozen_plan.json')
     try:
         refresh_receipts(src)
@@ -76,15 +76,11 @@ def assert_rejected_with_fixed_denominator(src, out):
         summary = cohort.collect(plan, digest(plan), [src])
         assert (summary['admitted_trials'], summary['successes'], summary['invalid_trials']) == (1, 0, 1)
         return
-    summary = cohort.publish(src / 'study/frozen_plan.json', digest(plan), [src], out,
-                             allow_synthetic=True)
-    event = EventAccumulator(str(out)).Reload()
-    observed = event.Scalars('cohort/success_rate')[0].value
+    summary = checked_cohort(src / 'study/frozen_plan.json', digest(plan), [src], out)
     print({'admitted': summary['admitted_trials'], 'successes': summary['successes'],
-           'invalid': summary['invalid_trials'], 'event_success_rate': observed}, flush=True)
+           'invalid': summary['invalid_trials'], 'success_rate': summary['success_rate']}, flush=True)
     assert summary['admitted_trials'] == 1
     assert summary['successes'] == 0 and summary['invalid_trials'] == 1
-    assert observed == 0.0
 
 
 def failing_referee(src):
@@ -159,8 +155,7 @@ def test_reordered_simultaneous_referee_rows_preserve_valid_success(source, tmp_
     put(source, 'eval_only/referee.json', referee)
     refresh_receipts(source)
     plan = read(source, 'study/frozen_plan.json')
-    summary = cohort.publish(source / 'study/frozen_plan.json', digest(plan), [source],
-                             tmp_path / 'events', allow_synthetic=True)
+    summary = checked_cohort(source / 'study/frozen_plan.json', digest(plan), [source], tmp_path / 'events')
     assert summary['admitted_trials'] == 1
     assert summary['successes'] == 1 and summary['invalid_trials'] == 0, summary['sources']
 
@@ -170,7 +165,11 @@ def test_receipt_recomputation_preserves_normal_source(source, tmp_path):
     refresh_receipts(source)
     assert read(source, 'study/frozen_plan.json') == before
     out = tmp_path / 'normal-events'
-    manifest = tb.convert(source, out, allow_synthetic=True, max_images=0)
-    assert manifest['metadata']['source_metrics']['evaluation/reported_success'] is True
+    from scripts.tensorboard_tools.zone_study import inspect_study
+    assert inspect_study(source)[1]['evaluation/reported_success'] is True
+    from importlib.util import find_spec
+    if find_spec('tensorboard') is not None:
+        manifest = tb.convert(source, out, allow_synthetic=True, max_images=0)
+        assert manifest['metadata']['source_metrics']['evaluation/reported_success'] is True
     summary = cohort.collect(before, digest(before), [source])
     assert (summary['admitted_trials'], summary['successes'], summary['invalid_trials']) == (1, 1, 0)

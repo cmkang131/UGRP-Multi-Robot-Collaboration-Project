@@ -6,7 +6,7 @@ from scripts.tensorboard_tools import export as tb
 
 @pytest.mark.parametrize('group', ['calls', 'actions'])
 @pytest.mark.parametrize('field,value', [('run_id','foreign-trial'),('seed',987654),('condition','peer_ko')])
-def test_reject_foreign_log_row(tmp_path, completed, export_api, group, field, value):
+def test_reject_foreign_log_row(tmp_path, completed, group, field, value):
     src=synthetic_source(tmp_path,'success',completed)
     record=json.loads((src/'study/trial_record.json').read_text())
     assert record[group]
@@ -19,10 +19,9 @@ def test_reject_foreign_log_row(tmp_path, completed, export_api, group, field, v
     except ValueError:
         assert not list(out.glob('events*'))
         return
-    success=export_api(str(out)).Reload().Scalars('evaluation/reported_success')[0].value
-    pytest.fail(f'foreign {group}[0].{field}={value!r} accepted; reported_success={success}')
+    pytest.fail(f'foreign {group}[0].{field}={value!r} accepted')
 
-def test_reject_relabelled_trial_with_original_call_and_action_run_ids(tmp_path, completed, export_api):
+def test_reject_relabelled_trial_with_original_call_and_action_run_ids(tmp_path, completed):
     src=synthetic_source(tmp_path,'success',completed)
     names=['manifest.json','result.json','study/trial_record.json','eval_only/evaluation.json']
     for name in names:
@@ -34,5 +33,4 @@ def test_reject_relabelled_trial_with_original_call_and_action_run_ids(tmp_path,
     out=tmp_path/'events'
     try: tb.convert(src,out,allow_synthetic=True,max_images=0)
     except ValueError: return
-    success=export_api(str(out)).Reload().Scalars('evaluation/reported_success')[0].value
-    pytest.fail(f'relabelled trial retained foreign call/action run IDs; reported_success={success}')
+    pytest.fail(f'relabelled trial retained foreign call/action run IDs')

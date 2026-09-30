@@ -199,13 +199,16 @@ class Source:
 class Writer:
     """Small wrapper over TensorBoard's own event protobufs; no TF/torch install."""
     def __init__(self, path, exported_at):
-        from tensorboard.summary.writer.event_file_writer import EventFileWriter
-        self.writer = EventFileWriter(str(path), max_queue_size=50, flush_secs=5)
+        self.path = path
+        self.writer = None
         self.at = exported_at
         self.counts = {'scalars': 0, 'texts': 0, 'images': 0}
 
     def add(self, summary, step=0):
         from tensorboard.compat.proto.event_pb2 import Event
+        if self.writer is None:
+            from tensorboard.summary.writer.event_file_writer import EventFileWriter
+            self.writer = EventFileWriter(str(self.path), max_queue_size=50, flush_secs=5)
         self.writer.add_event(Event(wall_time=self.at, step=step, summary=summary))
 
     def scalar(self, tag, value, step=0):
@@ -254,7 +257,9 @@ class Writer:
             self.add(Summary(value=[Summary.Value(tag=tag, tensor=make_tensor_proto([], dtype='float32'),
                                                    metadata=metadata.create_summary_metadata(data))]))
 
-    def close(self): self.writer.close()
+    def close(self):
+        if self.writer is not None:
+            self.writer.close()
 
 
 def numeric_leaves(value, prefix=''):
@@ -1030,6 +1035,10 @@ def convert(source, output, *, max_images=8, media_port=6007, allow_synthetic=Fa
     if coverage_provenance is not None:
         manifest['external_coverage_audit'] = coverage_provenance
     try:
+        if kind == 'execution' and obj(data).get('schema') == STUDY_SCHEMA:
+            # Finish the pure check before loading the optional event adapter.
+            from scripts.tensorboard_tools.zone_study import inspect_study
+            inspect_study(source)
         if kind == 'training': meta, metrics = export_training(src, w, data)
         elif kind == 'act-finalization': meta, metrics = export_finalization(src, w, data)
         elif kind == 'act-runtime-benchmark': meta, metrics = export_runtime_benchmark(src, w, data)

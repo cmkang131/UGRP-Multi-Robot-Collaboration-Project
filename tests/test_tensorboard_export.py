@@ -12,6 +12,27 @@ from scripts.tensorboard_tools.export import Source, inside, redact, sample_indi
 from scripts.tensorboard_tools.media import media_registry, make_server
 
 
+def test_p06_adversarial_event_readback_with_real_tensorboard(tmp_path):
+    """The optional-tooling CI job must run all D303 cases with real events."""
+    pytest.importorskip('tensorboard')
+    from tests import test_review_303d as d
+    cases = [
+        (d.test_late_redelivery_cannot_resurrect_a_departed_delivery, (v,)) for v in (10.1, 11.)
+    ] + [(d.test_failed_final_referee_cannot_join_an_earlier_success_window, (v,)) for v in (4., 5.)]
+    cases += [(d.test_other_referee_policy_cannot_use_the_original_frozen_bundle, (field, value))
+              for field, value in [('settle_s', .1), ('on_floor_max_z_m', .5),
+                                   ('settled_speed_m_s', .5), ('held_depart_s', 10.)]]
+    cases += [(d.test_confirmation_cannot_be_shorter_than_its_pinned_settle_window, (v,)) for v in (0., .1, 1.9)]
+    cases += [(d.test_normal_redelivery_at_or_before_cap_and_reordering_remain_valid, (v, reverse))
+              for v in (9., 10.) for reverse in (False, True)]
+    cases += [(d.test_missing_and_duplicate_sources_keep_the_external_denominator, ())]
+    for i, (check, args) in enumerate(cases):
+        root = tmp_path / str(i)
+        root.mkdir()
+        check(root, *args)
+        assert list((root / 'events').glob('events*')), (check.__name__, args)
+
+
 def put(root, name, value):
     p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(value));return p
 
@@ -830,7 +851,8 @@ def test_zone_study_terminal_manifest_readback_without_runtime(tmp_path, export_
               'orders': [{'order_id': 'o1', 'item_ids': ['i1'], 'kind': 'cyan',
                           'count': 1, 'destination_zone': 'A'}],
               'referee': {'status': 'not_evaluated', 'deliveries': []}, 'record_complete': False}
-    bundle = {'host_spec': {'order_sheet': {'scenario_id': scenario_ref(record['scenario']),
+    from harness.zone_study_referee import profile
+    bundle = {'referee': profile(), 'host_spec': {'order_sheet': {'scenario_id': scenario_ref(record['scenario']),
                                           'orders': record['orders']}}}
     identity = identity_for(run_id='fake-host-error', trial_id=record['trial_id'], episode_id='fake',
                             attempt=1, condition='no_comm', scenario='synthetic', seed=1, bundle=bundle)

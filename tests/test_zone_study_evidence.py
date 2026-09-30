@@ -202,9 +202,10 @@ def synthetic_source(tmp_path, outcome, completed, *, attempt=1):
     src.mkdir()
     trial, result = completed
     condition, scenario_id, seed = trial.condition, trial.scenario_id, trial.seed
-    ref = zr.Referee(SCENARIO['orders'], MAP)
+    ref = zr.Referee(trial.sheet['orders'], MAP)
     feed(ref, 2., 4., {'box_00': at_zone('A'), 'box_02': at_zone('B'), 'box_05': at_zone('C')})
-    bundle = {'pose_provider': {'label': {'pose_provider': 'synthetic'}},
+    bundle = {'referee': zr.profile(), 'scene_static_map_sha256': runner.digest(MAP), 'horizon_s': 12.,
+              'pose_provider': {'label': {'pose_provider': 'synthetic'}},
               'host_spec': {'order_sheet': trial.sheet}}
     identity = identity_for(run_id=src.name, trial_id=trial.run_id, episode_id='fake', attempt=attempt,
                             condition=condition, scenario=scenario_id, seed=seed, bundle=bundle)

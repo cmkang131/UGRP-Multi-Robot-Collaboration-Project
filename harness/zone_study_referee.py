@@ -97,6 +97,9 @@ class Referee:
         self.last_t = None
         self.completed_at = None                # SIM time orders_complete first held (chunk boundary)
         self._kinds: dict[str, str] = {}
+        from harness.zone_referee_replay import append_event
+        self._events: list[dict] = []
+        append_event(self._events, {'event': 'orders', 'orders': self.orders, 'static_map': static_map})
 
     # -- judgement ----------------------------------------------------------
     def zone_of(self, row: Mapping):
@@ -143,6 +146,8 @@ class Referee:
                     or not row['kind'] or row['speed'] < 0 or row['z'] < 0
                     or self._kinds.get(item, row['kind']) != row['kind']):
                 raise ContractViolation('invalid item identity, kind, height or speed')
+        from harness.zone_referee_replay import append_event
+        append_event(self._events, {'event': 'sample', 'sim_s': t, 'items': items})
         self.last_t, self.samples = t, self.samples + 1
         new = []
         # A missing truth sample is not evidence of continuous settling/standing.
@@ -234,7 +239,9 @@ class Referee:
 
     def record(self) -> dict:
         """The eval-only referee block (deliveries = confirmations; history also has departures)."""
-        return {'profile': profile(), 'source': 'eval_only simulator truth',
+        from harness.zone_referee_replay import policy
+        return {'profile': profile(), 'policy_sha256': policy()['sha256'],
+                'events': copy.deepcopy(self._events), 'source': 'eval_only simulator truth',
                 'deliveries': [dict(r) for r in self.history if r['event'] == 'confirmed'],
                 'history': [dict(r) for r in self.history], 'standing': copy.deepcopy(self.standing),
                 'departures': sum(r['event'] == 'departed' for r in self.history),
