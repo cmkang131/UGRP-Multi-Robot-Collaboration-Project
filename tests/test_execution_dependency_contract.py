@@ -6,7 +6,7 @@ import shutil
 
 import pytest
 
-from harness.execution_dependency_contract import (ROOT, SCHEMA, SPEC_SCHEMA, VERIFIER_SOURCES,
+from harness.execution_dependency_contract import (ROOT, SCHEMA, SPEC_SCHEMA, VERIFIER_SOURCES, WORKFLOW_SOURCES,
                                                   build_contract, digest, read_json,
                                                   verify_contract, workflow_spec)
 from scripts.build_execution_dependency_contract import main
@@ -24,15 +24,19 @@ def candidate(tmp_path):
         'unused.py': 'VALUE = 3\n',
         'calibration.json': '{"gain": 1}',
         'configs/simulation_workflows.json': json.dumps({
-            'schema': 'workflow.v1', 'workflows': [
+            'schema': 'ugrp.local_workflow_catalog.v1', 'workflows': [
                 {'id': 'used', 'entry': 'entry.py', 'runner': 'entry', 'version': '1', 'args': {'gain': 1}},
                 {'id': 'unrelated', 'entry': 'unused.py', 'runner': 'unused', 'version': '1'}]}),
     }
+    catalog = json.loads(files['configs/simulation_workflows.json'])
+    for row in catalog['workflows']:
+        row.update(output_flag=None, output_kind='directory', required_inputs=[], side_effect='offline_analysis')
+    files['configs/simulation_workflows.json'] = json.dumps(catalog)
     for name, content in files.items():
         path = tmp_path / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content)
-    for name in VERIFIER_SOURCES:
+    for name in (*VERIFIER_SOURCES, *WORKFLOW_SOURCES):
         (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / name, tmp_path / name)
     spec = workflow_spec('used', root=tmp_path, entry_points=['worker.py'], inputs=['calibration.json'])
@@ -55,7 +59,7 @@ def test_new_builder_defaults_to_v2_and_never_executes_sources(candidate):
     root, spec, receipt = candidate
     assert receipt['schema'] == SCHEMA
     assert {'entry.py', 'worker.py', 'pkg/__init__.py', 'pkg/init_dep.py', 'pkg/policy.py',
-            'pkg/helper.py', 'calibration.json', *VERIFIER_SOURCES} == set(receipt['source_sha256'])
+            'pkg/helper.py', 'calibration.json', *VERIFIER_SOURCES, *WORKFLOW_SOURCES} == set(receipt['source_sha256'])
     assert verify(root, receipt)['registry_entries'] == 1
     assert spec['schema'] == SPEC_SCHEMA
 
@@ -64,8 +68,9 @@ def test_unrelated_entry_addition_edit_and_reorder_leave_seal_identical(candidat
     root, spec, receipt = candidate
     def change(value):
         value['workflows'][1]['version'] = '2'
-        value['workflows'].insert(0, {'id': 'brand-new', 'entry': 'new.py', 'version': '1'})
+        value['workflows'].insert(0, {**value['workflows'][1], 'id': 'brand-new', 'entry': 'new.py'})
         value['workflows'].reverse()
+    (root / 'new.py').write_text('NEW = True\n')
     catalog_change(root, change)
     assert build_contract(spec, root=root) == receipt
     assert verify(root, receipt)['sha256'] == receipt['sha256']
@@ -164,7 +169,7 @@ def test_catalog_schema_shared_defaults_and_dict_entries_are_pinned(candidate):
         verify(root, receipt)
     receipt = build_contract(spec, root=root)
     catalog_change(root, lambda c: c.update(schema='workflow.v2'))
-    with pytest.raises(ValueError, match='registry_entries_changed=True'):
+    with pytest.raises(ValueError, match='unsupported workflow catalog schema'):
         verify(root, receipt)
 
 

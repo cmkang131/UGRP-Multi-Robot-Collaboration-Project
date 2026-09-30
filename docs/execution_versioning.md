@@ -36,30 +36,66 @@
 현재 실행기는 기존 admission을 유지하며, 새 revision의 등록 빌더와 admission에서
 아래 API를 연결한 뒤 v2를 사용한다. #292도 이 연결과 독립 검토가 필요하다.
 
-- 실행 Python은 기존 `harness.python_source_closure.source_closure`의 AST 추적을
-  재사용한다. runner·policy·host/scene·evaluator·subprocess worker를 진입점으로
-  선언하며 함수 안 import, 상대 import, package 초기화, 선택 모듈도 포함한다.
-  도달 가능한 공용 helper는 제외하지 않는다. 실행 한 번에서 관찰되지 않았다는
-  이유로 분기를 빼지 않으므로 이는 보수적 import closure이며 최소 실행 trace가 아니다.
-- `importlib.import_module`/`__import__`의 일반 별칭과 문자열 상수는 추적한다.
-  비상수/상대 동적 import는 해당 파일의 `dynamic_imports` 선언이 없으면 거부한다.
-  선언은 가능한 로컬 모듈을 모두 열거한다. 임의 loader·`eval`/`exec`·C 확장·외부
-  Python 경로를 완전 분석하는 도구가 아니다. 그런 경로의 입력은 별도로 선언하고
-  검토하며 경계가 불명확하면 v2로 줄이지 않는다.
-- `inputs`에는 파일로 읽는 지도·모델·보정·물리/환경 설정·native 소스 등을 넣는다.
-  외부 패키지/환경 identity는 기존 실행 기록과 admission에서 계속 검사한다.
-  읽는 데이터 파일을 AST가 자동 발견한다고 가정하지 않는다.
+- 실행 Python은 새 `harness.python_source_closure_v2.source_closure`로 정적으로
+  추적한다. 기존 `python_source_closure.py`와 그 호출자는 바꾸지 않는다.
+  runner·policy·host/scene·evaluator·subprocess worker를 진입점으로 선언하며,
+  함수 안 import·상대 import·package 초기화를 포함한다. `from pkg import *`는
+  `__all__`의 계산 방법과 관계없이 해당 로컬 package 아래 **모든 Python 파일**을
+  고정한다. 사용 여부가 불명확한 파일은 빼지 않는다.
+- 파일 진입점은 `python path.py`와 `python -m package.module` 양쪽을 보수적으로
+  다룬다. 저장소 루트와 선언된 모든 진입점의 부모 폴더에서 찾은 로컬 import 후보를
+  전부 고정하고 전이 의존성도 같은 범위에서 추적한다. 검색 경로를 택해 한 후보만
+  남기지 않는다. 진입점 목록과 이 해석 규칙의 구현도 봉인된다. 별도 `sys.path`/
+  `PYTHONPATH`, 사용자 loader, 외부 경로는 자동 추적 범위가 아니며 별도 선언·검토한다.
+- `importlib.import_module`/`__import__`, import 별칭, 함수·모듈 대입 별칭의 연쇄,
+  `builtins.__import__`, 문자열 `getattr`를 따라간다. 문자열 module 이름은 자동
+  고정한다. 비상수/상대 import와 `__import__`의 fromlist/level은 파일당 **한 호출**에
+  한해 `dynamic_imports`에 가능한 로컬 module 전부를 명시해야 한다. 같은 파일의
+  미해결 호출이 여럿이면 각각 검토 가능한 wrapper로 나눠야 한다. 함수의 객체/컨테이너
+  저장·다른 함수 전달·비상수 loader getattr 등 추적할 수 없는 loader 참조는 선언이
+  있어도 거부한다. 임의 `eval`/`exec`, 외부 Python, native loader를 완전 분석한다는
+  보장은 없으며 이 경계가 불명확한 후보를 축소된 v2만으로 실행 승인하지 않는다.
+- `inputs`에는 실제 읽는 지도·모델·보정·물리/환경 설정·native 소스 등을 넣는다.
+  파일 경로가 Python 문자열에 있다는 이유로 데이터 내용까지 자동 고정되지 않는다.
+  선언에서 빠진 비 import 입력은 아래의 명시적 제외 범위다.
 - 공용 JSON은 `registries`에 파일과 `keys`를 선언한다. 예:
   `{"path":"configs/simulation_workflows.json","keys":["workflows",{"id":"zone-study-integration-run"}]}`.
-  선택 행의 **전체 JSON 값**과 최상위 `schema`를 고정한다. 목록 순서, 공백, 다른 행의
-  추가/수정은 무관하며 사용 행의 어떤 값이 바뀌어도 실패한다. 중복 id·중복 JSON key·
-  누락·NaN은 거부한다. 선택 행 밖의 공용 기본값/인터페이스도 읽으면 별도 selector로
-  고정하거나 그 파일 전체를 `inputs`에 둔다. 같은 파일의 전체 pin과 entry pin을
-  동시에 넣으면 거부한다.
-- `workflow_spec(id, ...)`는 선택 workflow의 `entry`와 `runner`를 closure의 필수
-  진입점으로 만든다. 다른 worker·provider·evaluator·자산은 호출자가 추가한다.
-  공용 등록/문서 도구는 실제로 import하거나 실행 입력으로 읽을 때만 실행 closure에
-  넣고, 가설·표본·판정·승인 등 연구 등록 내용은 외부 사전 등록 봉인에 별도로 남긴다.
+  선택 값 전체와 최상위 `schema`를 고정한다. **선택 값 안의 객체 키 순서와 배열 순서도
+  고정**한다. Python의 순회 순서가 동작에 영향을 줄 수 있기 때문이다. 선택 값의
+  순서 보존 hash를 외부 digest 안에 넣고 receipt의 값/hash도 재검사한다.
+  receipt를 다시 저장할 때도 선택 값의 키 순서를 유지해야 한다(기본 CLI는 유지한다).
+  공백과 선택 행 **밖의** 행 재정렬·유효한 무관 행 편집은 허용한다. 중복 JSON key,
+  선택 id 중복/누락, NaN·overflow는 거부한다. 다른 기본값/참조 행을 읽으면 selector를
+  추가하거나 파일 전체를 `inputs`로 고정한다. 전체 pin과 entry pin의 중복은 거부한다.
+- 표준 `configs/simulation_workflows.json`은 build/verify마다 실제 실행기의
+  `sim.workflow_manager.catalog`를 그대로 호출한다. 선택하지 않은 행도 id 중복,
+  필수 필드, entry 파일 존재, catalog schema 검사를 통과해야 한다. 검증기 소스도
+  고정한다. 실제 소비자가 거부하는 카탈로그를 선택 행이 같다는 이유로 통과시키지 않는다.
+- `workflow_spec(id, ...)`는 선택 행의 `entry`/`runner` 외에도
+  `sim/workflow_manager.py`, `scripts/sim_cli.py`, `scripts/ugrp_session.py`,
+  `scripts/open_simulation.command`와 그 Python 전이 의존성을 필수로 고정한다.
+  누락되면 빌드가 실패한다. 다른 worker·provider·evaluator·자산은 호출자가 추가한다.
+  가설·표본·판정·승인 등 연구 등록 내용은 외부 사전 등록 봉인에 별도로 남긴다.
+
+### 선언·환경의 명시적 제외 범위 (PR #301 B1/B2)
+
+v2는 **선언된 파일/선택 값의 의존성 검사**다. 아래 다섯 항목은 자동 pin 또는 실행
+승인 대상이 아니다. 이 한계를 감춘 채 완전한 동작 봉인이라고 사용하지 않는다.
+`tests/test_seal_v2_review_301.py`에서 제외 시 digest가 그대로인 것과, 파일을 선언한
+양성 대조에서는 변경을 거부하는 것을 일반 테스트로 검사한다. 예상 실패(xfail)는 없다.
+
+| 제외 항목 | 새 등록에서 필요한 선언·별도 검사 | 테스트 |
+|---|---|---|
+| 문자열로 실행되는 subprocess worker | worker와 실제 주입 runner를 `entry_points`에 추가한다. 부모만으로 자식은 고정되지 않는다. | `test_undeclared_subprocess_worker_is_outside_seal` (미선언/선언), `test_runner_monkeypatch_is_pinned_when_runner_is_declared` |
+| MJCF/XML의 include·mesh·texture | 상위 XML뿐 아니라 모든 참조 파일을 `inputs`에 넣는다. 지도/JSON/YAML/NPZ도 실제 읽는 파일 전부를 선언한다. | `test_mjcf_include_requires_transitive_asset_declaration` (미선언/선언), `test_runtime_data_boundary`, `test_npz_runtime_input_boundary` |
+| 선택 registry 행 밖의 공용 defaults·참조 행 | 읽는 defaults/참조 행을 별도 selector로 고정하거나 전체 파일을 고정한다. 표준 workflow의 전체 catalog 유효성 검사는 제외가 아니며 항상 수행한다. | `test_registry_default_outside_selected_row_changes_command` (미선언/선언) |
+| live 환경 변수 | v2가 환경을 캡처하거나 비교하지 않는다. 동작에 쓰는 비밀이 아닌 설정값은 외부 등록과 실제 실행 인자를 대조한다. 인증정보를 봉인/기록에 넣지 않는다. | `test_environment_changes_command_without_invalidating_seal` |
+| Python·NumPy·MuJoCo 등 설치 버전/플랫폼 | 버전은 공통 실행 기록의 `environment` 및 실행 번들의 환경 identity에 기록한다. **v2 digest에 버전을 pin하거나 버전 변경을 거부하지 않는다.** 버전 기록 자체는 실행 승인 검사가 아니다. 환경 적합성은 외부 admission에서 별도로 입증해야 한다. | `test_runtime_environment_identity_changes_without_invalidating_seal` (identity 응답 교체만 수행) |
+
+#292 연결 시 위 선언의 완전성과 환경 대조를 별도 인수 검사로 입증해야 한다.
+이 PR은 그 연결을 구현하거나 승인하지 않는다. 파일이 동작에 영향을 주는지 불명확하면
+고정하는 쪽을 택한다. 제외 범위라는 이유만으로 이미 알고 있는 실제 입력을 누락해도
+된다는 뜻이 아니다.
 
 `build_contract(spec)`가 반환하는 `sha256`은 선언·전이 소스 해시·선택 항목 해시를
 모두 포함한다. Git SHA는 출처로 계속 보관하지만 이 의존성 digest에는 섞지 않는다.

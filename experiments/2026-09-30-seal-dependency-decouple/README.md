@@ -27,13 +27,15 @@ revision을 계속 검증한다. 새 revision은 v2 빌더와 verifier를 명시
 
 ## 구현 경계
 
-- `harness/execution_dependency_contract.py`: 기존 AST closure 재사용, 동적 모듈
-  선언, 데이터 입력, JSON 항목 selector, canonical digest, 승인된 digest와 재대조.
+- `harness/execution_dependency_contract.py`와 `harness/python_source_closure_v2.py`:
+  v2 전용 보수적 import 추적, 동적 모듈 선언, 데이터 입력, 순서 보존 JSON 항목 hash,
+  외부 승인 digest와 재대조. 기존 AST 구현과 기존 봉인은 바꾸지 않는다.
 - `scripts/build_execution_dependency_contract.py`: 새 등록용 v2 build/verify CLI.
   stdout preview 또는 새 파일만 작성하며 승인·실행·등록 번호 발급은 하지 않는다.
-- workflow의 `entry`/`runner`는 `workflow_spec`에서 자동으로 root에 포함한다.
-  목록의 배열 번호 대신 `id`로 행을 선택해 재정렬에도 안정적이다. schema와 선택 행
-  전체는 고정하고, 공용 defaults/interface는 필요한 경우 별도로 선언한다.
+- workflow의 `entry`/`runner`와 공통 manager·CLI·session/shell launcher를 필수로
+  고정한다. 목록의 배열 번호 대신 `id`로 행을 고르며 선택 행 내부 키 순서도 보존한다.
+  전체 카탈로그는 실제 runner의 validator로 검사하므로 유효한 무관 행 편집만 허용한다.
+  공용 defaults/interface는 필요한 경우 별도로 선언한다.
 - import되는 코드·자산·입력에 바뀐 내용이 있으면 새 digest가 필요하다. 비상수 동적
   import 선언 누락·중복/삭제된 registry 행·자기 digest만 바꿔 누락한 소스는 거부한다.
 - Python의 임의 실행/loader를 완전 분석하거나 비선택 분기가 실제로 실행되지 않음을
@@ -56,7 +58,7 @@ revision을 계속 검증한다. 새 revision은 v2 빌더와 verifier를 명시
 4. v6h worker admission이 물리 import/출력 생성 전에 외부 등록에 고정한 digest로
    `verify_contract`를 호출하게 한다. 기존 실행 SHA/승인/72 cases/배치/seed/환경/
    contact trace 검사는 그대로 유지한다. whole-catalog 체크가 남아 있으면 그 새
-   revision 경로에서만 entry 체크로 바꿔 이중 무효화를 없앤다.
+   revision 경로에서만 v2 entry 체크로 바꾸되 전체 catalog 유효성 검사는 유지한다.
 5. #292의 기존 309개 관련 검사와 추가 registry 변조 검사를 수행하고, 최종 classifier
    독립 검토·5건 실제 인수 재생을 별도로 완료한 뒤 조정자가 봉인한다. 이 PR의 오프라인
    pass는 #292 인수 통과나 제어기 성공을 뜻하지 않는다.
@@ -86,7 +88,8 @@ dependency digest가 같은지 기록해야 이 추정을 검증할 수 있다.
 
 ## 검증과 보존
 
-검증 결과는 [VALIDATION.md](VALIDATION.md)에 남긴다. 새 테스트는 기존 CI 목록에
+최초 검증 결과는 [VALIDATION.md](VALIDATION.md), 독립 검토 6건의 수정과 재검증은
+[REVIEW_RESPONSE_301.md](REVIEW_RESPONSE_301.md)에 남긴다. 새 테스트는 기존 CI 목록에
 추가한다. 새 물리·학습·모델/연구 평가 실행이 없으므로 TensorBoard 변환·서버 시작을
 하지 않는다. 프로젝트 예외에 따라 Google Drive는 사용하지 않는다. Git에 남기는
 문서와 코드/테스트 결과만 있으며 raw 실험 증거를 삭제하거나 덮어쓰지 않는다.

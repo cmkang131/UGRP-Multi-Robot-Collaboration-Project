@@ -1,6 +1,6 @@
 """Declared execution dependencies for NEW registrations (v2), stdlib only.
 
-Legacy receipts/builders are deliberately untouched. Reuse the conservative AST
+Legacy receipts/builders are deliberately untouched. Use the v2 conservative AST
 closure: never execute a policy to discover its inputs, and never subtract a
 reachable Python file. Dynamic imports, subprocesses and non-Python inputs need
 reviewed declarations; one observed trace is not proof that other paths are dead.
@@ -8,7 +8,6 @@ This receipt verifies dependencies, not scientific approval or run admission.
 """
 from __future__ import annotations
 
-import ast
 import copy
 import hashlib
 import json
@@ -16,16 +15,20 @@ import math
 from pathlib import Path, PurePosixPath
 import re
 
-from harness.python_source_closure import source_closure
+from harness.python_source_closure_v2 import dynamic_calls, source_closure
+from sim.workflow_manager import catalog as workflow_catalog
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.execution_dependency_contract.v2'
 SPEC_SCHEMA = 'ugrp.execution_dependency_spec.v2'
-VERIFIER_SOURCES = ('harness/execution_dependency_contract.py', 'harness/python_source_closure.py')
+VERIFIER_SOURCES = ('harness/execution_dependency_contract.py', 'harness/python_source_closure.py',
+                    'harness/python_source_closure_v2.py', 'sim/workflow_manager.py')
+WORKFLOW_SOURCES = ('sim/workflow_manager.py', 'scripts/sim_cli.py',
+                    'scripts/ugrp_session.py', 'scripts/open_simulation.command')
 
 
-def digest(value):
-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'),
+def digest(value, *, sort_keys=True):
+    return hashlib.sha256(json.dumps(value, sort_keys=sort_keys, separators=(',', ':'),
                                      ensure_ascii=False, allow_nan=False).encode()).hexdigest()
 
 
@@ -71,6 +74,13 @@ def selected_entry(root, selector):
             or not isinstance(selector['keys'], list) or not selector['keys']):
         raise ValueError('registry selector requires a JSON path and nonempty keys')
     document = read_json(local_file(root, selector['path']))
+    if selector['path'] == 'configs/simulation_workflows.json':
+        # Use the SAME trusted validator as the actual standard runner, including
+        # unselected rows. Do not import or execute code from the candidate root.
+        try:
+            workflow_catalog(root)
+        except (KeyError, TypeError, AttributeError) as exc:
+            raise ValueError(f'invalid workflow catalog: {exc}') from exc
     value = document
     for key in selector['keys']:
         if isinstance(key, str) and isinstance(value, dict) and key in value:
@@ -87,32 +97,10 @@ def selected_entry(root, selector):
             raise ValueError(f'registry entry missing or invalid: {selector}')
     # Catalog schema changes affect interpretation even if the selected row stays.
     schema = document.get('schema') if isinstance(document, dict) else None
+    if schema is not None and not isinstance(schema, str):
+        raise ValueError('catalog schema must be a string or null')
     return {'selector': copy.deepcopy(selector), 'catalog_schema': schema,
-            'value': copy.deepcopy(value), 'sha256': digest(value)}
-
-
-def _dynamic_calls(path):
-    """Recognize ordinary importlib aliases and __import__; no policy imports."""
-    tree = ast.parse(path.read_bytes(), filename=str(path))
-    aliases, functions = {'importlib'}, {'__import__'}
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
-            aliases.update(a.asname or a.name for a in node.names if a.name == 'importlib')
-        elif isinstance(node, ast.ImportFrom) and node.module == 'importlib':
-            functions.update(a.asname or a.name for a in node.names if a.name == 'import_module')
-    for node in ast.walk(tree):
-        if not isinstance(node, ast.Call):
-            continue
-        fn = node.func
-        if (isinstance(fn, ast.Name) and fn.id in functions or
-                isinstance(fn, ast.Attribute) and isinstance(fn.value, ast.Name)
-                and fn.value.id in aliases and fn.attr == 'import_module'):
-            name = node.args[0] if node.args else None
-            yield name.value if isinstance(name, ast.Constant) and isinstance(name.value, str) else None
-            # __import__('pkg', fromlist=['child']) can load another submodule.
-            # Do not silently call the package alone the complete dependency.
-            if isinstance(fn, ast.Name) and fn.id == '__import__' and (len(node.args) > 1 or node.keywords):
-                yield None
+            'value': copy.deepcopy(value), 'sha256': digest(value, sort_keys=False)}
 
 
 def _spec(value):
@@ -157,9 +145,12 @@ def build_contract(spec, *, root=ROOT):
     modules = set(spec['modules'])
     for declared in spec['dynamic_imports'].values():
         modules.update(declared)
+    # Entry paths support both python -m and python path.py: include every
+    # possible repository-local resolution under root and entry directories.
+    script_dirs = {str(Path(p).parent) for p in spec['entry_points']}
     inspected = set()
     while True:
-        closure = source_closure(root, paths, modules=sorted(modules))
+        closure = source_closure(root, paths, modules=sorted(modules), script_dirs=script_dirs)
         pending = set(closure) - inspected
         if not pending:
             break
@@ -167,11 +158,11 @@ def build_contract(spec, *, root=ROOT):
             inspected.add(name)
             if not name.endswith('.py'):
                 continue
-            for module in _dynamic_calls(local_file(root, name)):
+            for module in dynamic_calls(local_file(root, name)):
                 if module is None or module.startswith('.'):
                     if name not in spec['dynamic_imports']:
                         raise ValueError(f'undeclared dynamic import: {name}')
-                elif any((root / p).is_file() for p in
+                elif any((root / prefix / p).is_file() for prefix in {'', *script_dirs} for p in
                          (module.replace('.', '/') + '.py', module.replace('.', '/') + '/__init__.py')):
                     modules.add(module)
     if set(spec['dynamic_imports']) - set(closure):
@@ -200,6 +191,9 @@ def verify_contract(value, *, expected_sha256, root=ROOT):
     body = {k: v for k, v in value.items() if k != 'sha256'}
     if value.get('sha256') != expected_sha256 or digest(body) != expected_sha256:
         raise ValueError('dependency contract seal mismatch')
+    for entry in value.get('registry_entries', []):
+        if entry.get('sha256') != digest(entry.get('value'), sort_keys=False):
+            raise ValueError('registry value order/hash mismatch')
     actual = build_contract(value['declaration'], root=root)
     if actual != value:
         changed = sorted(p for p in set(actual['source_sha256']) | set(value['source_sha256'])
@@ -212,16 +206,20 @@ def verify_contract(value, *, expected_sha256, root=ROOT):
 
 def workflow_spec(workflow_id, *, root=ROOT, entry_points=(), modules=(), inputs=(),
                   registries=(), dynamic_imports=None):
-    """Declare a workflow's runner AND its selected row; extra roots stay explicit.
+    """Declare the standard launcher, CLI, runner and selected row.
 
     This is an offline registration builder, not an alternate workflow executor.
-    The complete row is pinned (including arguments/version), without siblings.
+    The complete row is pinned (including arguments/version). All catalog rows
+    must remain valid under the standard runner; valid sibling edits stay free.
     """
     root = Path(root).resolve()
     selector = {'path': 'configs/simulation_workflows.json', 'keys': ['workflows', {'id': workflow_id}]}
     row = selected_entry(root, selector)['value']
     if not isinstance(row.get('entry'), str) or not isinstance(row.get('runner'), str):
         raise ValueError('workflow requires explicit Python entry and runner')
-    return _spec({'schema': SPEC_SCHEMA, 'entry_points': [row['entry'], *entry_points],
-                  'modules': [row['runner'], *modules], 'inputs': list(inputs),
+    return _spec({'schema': SPEC_SCHEMA,
+                  'entry_points': [row['entry'], *entry_points,
+                                   *(p for p in WORKFLOW_SOURCES if p.endswith('.py'))],
+                  'modules': [row['runner'], *modules],
+                  'inputs': [*inputs, *(p for p in WORKFLOW_SOURCES if not p.endswith('.py'))],
                   'registries': [selector, *registries], 'dynamic_imports': dynamic_imports or {}})
