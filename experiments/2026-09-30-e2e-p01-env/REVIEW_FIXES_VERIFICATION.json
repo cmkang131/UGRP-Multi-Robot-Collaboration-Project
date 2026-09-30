@@ -1,0 +1,92 @@
+{
+  "review_head": "5a852fbfde3b0df836f3a423be29a774a9c54614",
+  "merged_main": "b10907c5f2c84f2712030f48fb38061fd4f51281",
+  "local_checks": {
+    "tests": 339,
+    "failures": 0,
+    "errors": 0,
+    "pytest_elapsed_s": 99.44,
+    "per_module": {
+      "tests.test_zone_environment_registry": 57,
+      "tests.test_zone_final_env": 90,
+      "tests.test_zone_pair_door_relax": 20,
+      "tests.test_zone_pair_registered_source": 22,
+      "tests.test_zone_study_integration_seams": 34,
+      "tests.test_zone_study_scenarios": 83,
+      "tests.test_zone_study_source_pinning": 33
+    },
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python /Users/changmin/projects/ugrp/outputs/e2e-p01-env/review-fixes/run_related.py fixes-wait-172",
+    "lock": "scripts.run_ci_tests.main / run_locked, acquired and released for each child group",
+    "thread_limits": 1,
+    "pytest_plugin_autoload": false
+  },
+  "preserved": {
+    "v6e_current_sources": 85,
+    "masterpi_v3_legacy_sources": 26,
+    "restored_main_bytes": {
+      "scripts/run_zone_study_integration.py": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+      "sim/zone_own_scene_provider.py": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+      "harness/zone_study_scenarios.py": "69a653ca4e262d22fc6266a02c486c0952a96c45034b2719d46bce69e81e0aa5"
+    },
+    "registration_path": "experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json",
+    "registration_sha256": "64c2680781f1b989312c3ac091c6e0458579ced7ed65d9e9730aadbc416f4bfd"
+  },
+  "composition": {
+    "root": "/private/tmp/p305-p292-composition-shfodkif",
+    "p292_sha": "4c6b439f3f7c9a147c901f8b260a1e214d4eb396",
+    "overlays": [
+      "harness/zone_environment_registry.py",
+      "harness/zone_environment_candidate.py",
+      "scripts/zone_environment_bundle.py",
+      "sim/zone_environment_scene_provider.py",
+      "sim/zone_final_scene.py",
+      "configs/zone_final_environment_registry_v1.json"
+    ],
+    "base_sources": 274,
+    "base_imports_environment_registry": false,
+    "legacy_dock_factory_calls": 2,
+    "legacy_dock_survives_registry_mutation": true,
+    "composed_sources": 280,
+    "composed_registry_mutation_rejected": true,
+    "final_dynamic_scene_pinned": true,
+    "final_registry_mutation_rejected": true,
+    "base_contract_preserved": true,
+    "physics": false
+  },
+  "checked_source_sha256": {
+    "configs/zone_final_environment_registry_v1.json": "26bf511ef5929799ee82eefc6143358454178cce82335e1d28cb86fd5b58073e",
+    "harness/zone_environment_registry.py": "36727ef9e3399ca5f1ef940bf896d2889eb504ab88e6aab5ad8b827a2379a46c",
+    "harness/zone_environment_candidate.py": "60f2e17a702dd00d7aa90fba6c7a845c42bffc9d77427a9a04e9247f1d7af76f",
+    "scripts/zone_environment_bundle.py": "022b291a0cb4d15ae7e06ca2b37b69169ddf5653eafc4171114252a1e2b645b3",
+    "sim/zone_environment_scene_provider.py": "2791e92f09f1f3c4249e505883466572cb47d60fa2ec74aa8460db7a2ffb145d",
+    "sim/zone_final_scene.py": "7f51cd9ce7cdfa87610a9fdd1ab75d241d45e8143b015ad928661b9f76e3b285",
+    "tests/test_zone_environment_registry.py": "87595de7d6d23ca0a91b73d52b787b0793c581c384c1e424df93a8c9d88275f6",
+    "scripts/run_ci_tests.py": "8a9bb07051590276bfeef6991d969c7f8519f8153483f2beb9310fb714b3d844",
+    "experiments/2026-09-30-e2e-p01-env/check_p292_composition.py": "fe6c6dab45b4e3e05314dddae9eff9bcb3f3e28a7744fc33415c60c709798ff7"
+  },
+  "raw": {
+    "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/review-fixes/fixes-wait-172.log": {
+      "sha256": "42ad635d1c348014ae682e1da73b2d7e58a0f4b7cd59c759aad54bd888b1a5a0",
+      "bytes": 1614
+    },
+    "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/review-fixes/fixes-wait-172.xml": {
+      "sha256": "8ffdfbaa3d83ba7b5826005301e4bb9aeb9596334feceadf1986b78b0f4e15b8",
+      "bytes": 67254
+    },
+    "/Users/changmin/projects/ugrp/outputs/e2e-p01-env/review-fixes/run_related.py": {
+      "sha256": "e6a4414334e2f04bda1bdd0799b913572801f704406c8058ac08c8e4503719a3",
+      "bytes": 1510
+    }
+  },
+  "blocked_preflight": {
+    "missing_frozen_gzip_fixtures": 3,
+    "action": "restored original tracked bytes with sparse-checkout add"
+  },
+  "busy_lock_attempts": 173,
+  "physics": false,
+  "rendering": false,
+  "model_calls": false,
+  "research_result": false,
+  "new_seal": false,
+  "github_ci": "normal CI required after push; final state recorded in PR comment"
+}
