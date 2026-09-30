@@ -114,7 +114,7 @@ def chain_view(tag, raw, man, r, item):
 
 
 def aggregate(tag, raw, man, rows, verdicts):
-    src = raw / 'summary.json'
+    src = (raw / 'summary.json').resolve()      # a filtered derived raw dir links the original summary; the exporter refuses links
     n, k = len(rows), sum(verdicts)
     lo, hi = ca.wilson(k, n)
     sc = {}
@@ -127,7 +127,9 @@ def aggregate(tag, raw, man, rows, verdicts):
             'model_calls': 0, 'family': 'b_v6h_gain_aggregate', 'policy': f'b-v6h {CONFIG[tag]}', 'case': 'all',
             'condition': f'{COHORT[tag]}, chain L0->L1', 'outcome': f'{k}/{n} pass [{100 * lo:.0f}-{100 * hi:.0f}% Wilson, case level]',
             'source_sha': man['source']['source_sha'], 'run_id': raw.name, 'scope': 'stage_probe_not_e2e',
-            'limits': 'exploratory dev cohort; weld OFF; stage probe', 'texts': {'evaluation/summary': {'raw': str(raw), 'cases': n, 'passed': k}},
+            'limits': 'exploratory dev cohort; weld OFF; stage probe' + (
+                '; the 2 X06 cases of the original raw were killed by SIGTERM (HOST_ERROR, no result) and are excluded here, re-run as tX1b'
+                if raw.name.endswith('12done') else ''), 'texts': {'evaluation/summary': {'raw': str(raw), 'cases': n, 'passed': k}},
             'hparam_metrics': ['offline/pass_rate', 'offline/cases', 'offline/passed']}
 
 
