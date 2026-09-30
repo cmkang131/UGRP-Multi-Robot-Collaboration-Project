@@ -4,6 +4,8 @@ UGRP 작업이다. `/Users/changmin/projects/ugrp`에서 배정된 자기 worktr
 
 **범위:** 새 dev scenario의 cyan1개+long_beam1개,3로봇을 하나의 host에 준비하고 독립 robot API가 같은 주문/개체를 끝까지 가리키게 만드는 계약과 가짜 포트 검사를 구현한다. 물리/시뮬레이션/렌더/모든 모델 호출 금지. 기존 s1–s6를 단순한 임무로 덮어쓰지 않는다. 이것은 전체6시나리오 지원이 아니다.
 
+2026-09-30 명확화: 위 실행 금지는 이 작업의 로컬 실행 범위다. 정상 GitHub CI는 허용되며 기대되는 검증이다. CI를 취소하거나 커밋에 CI 생략 표시를 붙이지 않는다.
+
 읽을 대상:
 
 - `scripts/run_zone_study_integration.py::host_spec/placements_match`

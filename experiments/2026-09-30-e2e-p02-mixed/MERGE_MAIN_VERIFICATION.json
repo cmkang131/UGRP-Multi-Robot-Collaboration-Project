@@ -1,0 +1,113 @@
+{
+  "branch_parent": "1bf7a1cd6352effce0b5619a7e01a3c960068263",
+  "merged_main": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e",
+  "test_patterns_exact_parent_union": true,
+  "preexisting_duplicate_patterns_preserved": {
+    "tests/test_carry_failure_measurement.py": 2,
+    "tests/test_m2_pair_door_v3.py": 2,
+    "tests/test_pair_owncam_approach.py": 2,
+    "tests/test_zone_tagged_cargo_scene.py": 2
+  },
+  "audit_note": "Initial verifier incorrectly prohibited four pre-existing duplicate patterns; both parents have the same duplicates. Final verifier checks exact Counter union; collected files are deduplicated by the existing runner.",
+  "main_configs_and_workflows_byte_identical": 32,
+  "originals_byte_identical": 14,
+  "v6e_sources_byte_identical_to_main_and_pin": 85,
+  "mixed_source_and_test_hashes_unchanged": true,
+  "ci_test_files": 335,
+  "shards": 8,
+  "test_files": [
+    "tests/test_zone_mixed_jobs.py",
+    "tests/test_zone_pair_registered_source.py",
+    "tests/test_zone_study_source_pinning.py",
+    "tests/test_zone_pair_door_relax.py",
+    "tests/test_zone_study_integration.py",
+    "tests/test_zone_study_integration_pair.py",
+    "tests/test_zone_study_integration_seams.py",
+    "tests/test_zone_pair_executor.py",
+    "tests/test_zone_study_inputs.py",
+    "tests/test_zone_own_executor_host.py",
+    "tests/test_zone_pair_v6.py",
+    "tests/test_ci_sharding.py",
+    "tests/test_ci_host_lock.py",
+    "tests/test_agent_lock.py"
+  ],
+  "prereg_json_byte_identical_to_main": 53,
+  "branch_configs_byte_identical": 32,
+  "conflicts_resolved": [
+    "scripts/run_ci_tests.py",
+    "experiments/2026-09-30-process-review/LITERATURE.md"
+  ],
+  "ci_fixtures": {
+    "initial_preflight": "3 tracked gzip fixtures omitted by sparse checkout",
+    "resolution": "materialized with git sparse-checkout add; exact main bytes; final check_ci_fixtures.py exit 0",
+    "sha256": {
+      "experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz": "72e2ccec45cb1bff6ad74fb5ce359cac847616e9c02059c839aec725f1bb31ad",
+      "experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz": "0406d1338503f57f3116068100ca8f1490965edf8882aa89ffe19cb912adf6d0",
+      "experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz": "a5ae31a1d8cb1f2af255bd2f38521a877e83d99a5e1fc25e7a75a8246a9d3201"
+    }
+  },
+  "schema": "ugrp.p02_main_merge_verification.v1",
+  "passed": 448,
+  "skipped": [
+    {
+      "class": "tests.test_zone_own_executor_host",
+      "name": "test_team_host_isolation_abort_and_horizon_on_the_real_world",
+      "reason": "real-world physical steps are outside the explicitly nonphysical suite"
+    }
+  ],
+  "test_counts": {
+    "tests.test_zone_mixed_jobs": 36,
+    "tests.test_zone_pair_registered_source": 22,
+    "tests.test_zone_study_source_pinning": 34,
+    "tests.test_zone_pair_door_relax": 20,
+    "tests.test_zone_study_integration": 66,
+    "tests.test_zone_study_integration_pair": 10,
+    "tests.test_zone_study_integration_seams": 34,
+    "tests.test_zone_pair_executor": 40,
+    "tests.test_zone_study_inputs": 45,
+    "tests.test_zone_own_executor_host": 7,
+    "tests.test_zone_pair_v6": 43,
+    "tests.test_ci_sharding": 66,
+    "tests.test_ci_host_lock": 20,
+    "tests.test_agent_lock": 6
+  },
+  "guards": {
+    "physical_step_attempts": 0,
+    "renderer_attempts": 0,
+    "real_vision_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "raw_directory": "/Users/changmin/projects/ugrp/outputs/e2e-p02-main-merge-20260930T141223Z",
+  "artifacts": {
+    "tests.log": "e8f56ca2a2b39c58ace8b8ef84eded2d1a8d49985a0cf926f002895113190d14",
+    "tests.xml": "8b390a24c42378a23fec86273a390928ad394671b8a5e7b54bc1f7313906c236",
+    "command.json": "64b7a3abdeed36f0447cb7f4b149684cb23ee4e408b13a31c0be4eceffb6a7b2",
+    "audit.json": "c30c965a42e8464c35b336ad4841e3572f212eeaceda23a52ba9cb737523dacb",
+    "p02_no_render.py": "c6628662bcf5b0b433ccc72bb5ae60af051d03ba47379d444386ac3c3c41fb82"
+  },
+  "python": "Python 3.12.13",
+  "workflow_changes": false,
+  "scope": "Merge conflict resolution and guarded offline checks only. No physics, model calls, new cohort, TensorBoard conversion, or Drive operation. Raw evidence is local, not remote-backed.",
+  "tested_sources_sha256": {
+    "tests/test_zone_mixed_jobs.py": "39a6a6d2d934910e1f2747c4b555b36de02388f714511152876014801a0b5271",
+    "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+    "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+    "tests/test_zone_pair_door_relax.py": "c5084fa17686cb444a8857ceef136542b96173155b01ecc70b4d0ba4cc67cc58",
+    "tests/test_zone_study_integration.py": "6f2c66102304ff7295c9a42955368061fdb7b008c982089f1ce4df98aeb65131",
+    "tests/test_zone_study_integration_pair.py": "4618cdc93ecf6a19ea43199ceee82bc3b65480a4747753aa27eaf5fb22bbcfb7",
+    "tests/test_zone_study_integration_seams.py": "79fcb1a8fca41127f523628df4c446b36fcc74fe8eb1065a9ac3a60810782aef",
+    "tests/test_zone_pair_executor.py": "e046181fc70fe73c7ccb0f32fb86f010df637fe2fff007c20b7df3acc2fdbc4c",
+    "tests/test_zone_study_inputs.py": "2c6cdb1f0fe7250934d7384d776321a65ede8b918ee4788f2880da3c6d7f640e",
+    "tests/test_zone_own_executor_host.py": "8768eaefd6264d05b1d9de86444c572adb792765ae3d57a9c6269da8d34d0ab0",
+    "tests/test_zone_pair_v6.py": "ab9c01ad2824e86b31594054f8c2a8afd00abac5237b19dbfb6b5d466e2edb34",
+    "tests/test_ci_sharding.py": "7ce9a79d7bf9cb413169cdf9239014873ba5474b81e2485c8384e0e6ff9cbcca",
+    "tests/test_ci_host_lock.py": "bc903658cdcc4527424ebd87cf51c0601c89618c3b49f00849185d713bc56d2a",
+    "tests/test_agent_lock.py": "aecaaf48ca2687eb6fd501398867c7788f3fe76124a6b6c907d0de4ba57869c7",
+    "scripts/run_ci_tests.py": "77784249088591f5d33dd179d4050a6ea925c5ebb35fca0e691b5ed6845a0c06",
+    "harness/zone_mixed_host.py": "8ecfffa227b4c01993f49224fa95d20903251a6f3235bc10d77789d64c082a32",
+    "harness/zone_mixed_integration.py": "5d15fcdb70934b20b08695980b64f36f73786af08fe52394356a4ea0752cb8e4",
+    "harness/zone_mixed_jobs.py": "731ac2878bf31b128fb8e5cd5783df3af8fa6430c3bc7d9b380f061c8db0f9bc",
+    "scripts/zone_mixed_study_adapter.py": "c42c240dbeaa078489f0615791d07e7ba819834786b14e89fdd47af4ab05da0c",
+    "sim/zone_mixed_inventory.py": "94feb5898caf48d115f314e373e2d045772662425ed6bcd1ca56fe32517f5139"
+  }
+}

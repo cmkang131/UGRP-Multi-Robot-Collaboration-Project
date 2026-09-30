@@ -139,6 +139,27 @@ Python·동시 실행 잠금의 조회값·부하와
 실제 observer·actuator 연결, 새 workflow/번들 등록·독립 검토, 8셀 물리는 남았다.
 정상 GitHub CI는 초안 PR에서 실행하며 원격 결과는 PR checks로 별도 확인한다.
 
+### 초안 제출 후 main 갱신
+
+첫 후보 `2bf509d0611f67060b9391d644b187f3b1cafe3a`를 초안 [#331](https://github.com/kcm0127-dotcom/ugrp/pull/331)로
+push하고 GitHub에서 코드·receipt·인계 문서 등 7개 파일을 다시 내려받아 SHA를 대조했다.
+[CI run 36730637611](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36730637611)은
+첫 시도 32개 통과 후 Ubuntu apt 다운로드 지연으로 runtime job의 10분 제한을 넘겼다.
+GitHub가 자동 종료한 것이며 수동 취소하지 않았다. 해당 job만 재실행한 attempt 2에서
+**33/33 success**, 필수 `offline-regressions`도 통과했다. 원문 로그·주석·최종 CI JSON은
+primary `outputs/2026-09-30-t10b-corridor/delivery-01/`에 보존한다.
+
+최종 fetch에서 #307과 #332가 새로 병합되어 main이
+`26545c2499f94c3f99a5d650f7cc8ea992f24196`로 바뀐 것을 확인했다. #332의 15분 timeout 등
+main 바이트를 그대로 병합하며, T10b의 두 제어 모듈·테스트·T10a/status 의존성은 변경하지 않는다.
+`.github/workflows`와 `scripts/run_ci_tests.py`는 새 main과 동일하다. #310은 여전히
+`5d363335a286247a58d19652771b7ecddb21ef05`, OPEN/draft, main merge SHA null이다.
+새 통합 트리 검사는 `final-main-01`에서 **336 passed + 280 subtests passed**, 변이 **6/6 검출**,
+봉인 **85파일 SHA 불변**이다. 기존 204개에 새 main의 mixed jobs와 CI 회귀를 함께 검사했다.
+로그/receipt는 [별도 SHA 목록](validation/checksums-final-main.json)으로 보존했다.
+잠금 없는 실행의 wall 3313.29초(55분)는 성능 비교 자료가 아니다. 이전 CI 성공을 새 HEAD에
+승계하지 않는다. 통합 커밋의 원격 CI는 #331 checks에서 별도 확인한다.
+
 새 물리/학습/evaluation cohort를 실행하지 않았으므로 TensorBoard 물리 snapshot을 만들지
 않았다. fake 단위검사의 green을 물리 성공률로 표시하지 않는다. 후속 실제 결과는 실패도
 포함해 native TensorBoard snapshot·raw hash·표시 검증이 필요하다.
