@@ -1,16 +1,16 @@
 {
   "schema": "ugrp.t03_offline_verification.v1",
-  "observed_at_utc": "2026-09-30T12:48:42.912003+00:00",
+  "observed_at_utc": "2026-09-30T13:00:25.558225+00:00",
   "base_sha": "c12796676802ab54cad2f0635e3e96e911691c76",
-  "candidate_code_sha": "ae9726a3eb051cc6ef6c22f364216aa7badccca9",
+  "candidate_code_sha": "a4f75f8ad8c610253ea8555cab4c7030f3e985aa",
   "scope": "fake/offline RGB and static checks only; no local physics, renderer, model/provider calls",
   "result": {
-    "passed": 808,
+    "passed": 897,
     "subtests_passed": 291,
-    "deselected": 3,
+    "deselected": 7,
     "failures": 0,
     "new_color_tests": 142,
-    "pytest_wall_s": 83.75
+    "pytest_wall_s": 84.41
   },
   "pytest_argv": [
     "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
@@ -20,7 +20,7 @@
     "offline_guard",
     "-q",
     "--junitxml",
-    "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-wb6etx_d/junit.xml",
+    "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-9rpob6wb/junit.xml",
     "tests/test_zone_own_executor.py",
     "tests/test_zone_own_executor_boundaries.py",
     "tests/test_zone_own_executor_color_boxes.py",
@@ -52,8 +52,10 @@
     "tests/test_owncam_memory_v3_review5.py",
     "tests/test_owncam_memory_v3_review6.py",
     "tests/test_zone_study_source_pinning.py",
+    "tests/test_pose_provider_boundary.py",
+    "tests/test_zone_pair_tag_boundary_matrix.py",
     "-k",
-    "not test_team_host_feeds_each_executor_only_its_own_camera and not test_team_host_isolation_abort_and_horizon_on_the_real_world and not test_contact_log_counts_cargo_wall_every_physics_step"
+    "not test_team_host_feeds_each_executor_only_its_own_camera and not test_team_host_isolation_abort_and_horizon_on_the_real_world and not test_contact_log_counts_cargo_wall_every_physics_step and not test_geometry_scene_and_public_projection_bypass_marker_transforms"
   ],
   "source_unchanged_before_after": true,
   "raw_records": [
@@ -92,7 +94,7 @@
     },
     {
       "path": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-wb6etx_d",
-      "result": "final: 808 passed, 3 deselected, 291 subtests passed",
+      "result": "808 passed, 3 deselected, 291 subtests passed; before legacy constructor/summary compatibility follow-up",
       "files_sha256": {
         "command.txt": "a607462359af0a53a235c0428bab825c9b9ea7d5fe4d97523afcca0db5d3a615",
         "controller-source-closure.json": "ae84ac182baf372feff45cbb9eca530d0d9b15e13d29d019428742220579d620",
@@ -103,11 +105,48 @@
         "pytest.log": "b485b26cc830528ec7f69216d230248062a273b0187bd99f2761e064e833ac81",
         "verified_exit_code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
       }
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-eepnl8rf",
+      "result": "own local waiter interrupted before pytest started; no tests or physics ran; CI was not cancelled",
+      "files_sha256": {
+        "command.txt": "2a96639d9554aaf9218fc47fc95731ad5c2463d79c78c96f3bc4d8a82ba610da",
+        "inputs-before.json": "eccbe75ede76640305c01220fb381999398566fd2efcca16bde3fa34ca6e7ecc",
+        "interruption.txt": "8683ccacaeb9c1bfed5680ac94a9d746d8c58650e6ebba76af6e558926620f6a",
+        "pytest.log": "f16b4e31093915974a4ad1e4e62e147244af21657cd7b1f70eab3f2f2eda9d7e"
+      }
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-9y9zb7ng",
+      "result": "897 passed, 3 deselected, 291 subtests passed; 4 geometry tests blocked at MuJoCo import by offline guard, no physics ran",
+      "files_sha256": {
+        "command.txt": "6ebb77928485b22aca03f21c6d7b08a2c6c126c6c35d3ed8fc7e6ff2da003230",
+        "exit_code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+        "inputs-after.json": "6d312700b2d2ac14c077e04e4f81548c3ffbb0096f80fd24ca62dd32b59bc0fc",
+        "inputs-before.json": "6d312700b2d2ac14c077e04e4f81548c3ffbb0096f80fd24ca62dd32b59bc0fc",
+        "junit.xml": "172cc1582c3d7ae38e3bbaf124015d54331f4e021a4a4d73767357de8ade0c5a",
+        "pytest.log": "fa3351cc0952563930076dfc9fae8ed2c044fec7fe0a63536c5d8e08ba3c07db",
+        "verified_exit_code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+      }
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-9rpob6wb",
+      "result": "final: 897 passed, 7 deselected, 291 subtests passed",
+      "files_sha256": {
+        "command.txt": "3c99a9531615113f0c42fddb1cca78315b609e13c912bee04315b42ffadd96c4",
+        "controller-source-closure.json": "e12a18c48ac0d3c588bcaa93a2fdf400567f8d41eaa198cd498a6b3756528c1a",
+        "exit_code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "inputs-after.json": "6d312700b2d2ac14c077e04e4f81548c3ffbb0096f80fd24ca62dd32b59bc0fc",
+        "inputs-before.json": "6d312700b2d2ac14c077e04e4f81548c3ffbb0096f80fd24ca62dd32b59bc0fc",
+        "junit.xml": "72de8b043e04d3cf789716a03a29f4c9daef2e2e6e1a1eaf57a178f8196f3141",
+        "pytest.log": "1df73872b431f8ba5e3090ae0dcd10a79922be71dd1efcb07f6b895aa19e0e50",
+        "verified_exit_code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      }
     }
   ],
-  "controller_source_manifest": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-wb6etx_d/controller-source-closure.json",
-  "controller_source_manifest_sha256": "ae84ac182baf372feff45cbb9eca530d0d9b15e13d29d019428742220579d620",
-  "controller_code_hash_canonical": "515f9b35e73405cb52999630f5b007663ce1152ccea7d784e25ef913475ea3b2",
+  "controller_source_manifest": "/Users/changmin/projects/ugrp/outputs/cap-t03-redgreen/offline-9rpob6wb/controller-source-closure.json",
+  "controller_source_manifest_sha256": "e12a18c48ac0d3c588bcaa93a2fdf400567f8d41eaa198cd498a6b3756528c1a",
+  "controller_code_hash_canonical": "80c1a36d417e7009dea28d47f497a32b55a1eed744a06894698f84a92d606a9d",
   "controller_source_count": 186,
   "role_assignment": {
     "solo_actor": "r1",
@@ -155,5 +194,6 @@
     "physical negative visibility labels and four-cell execution",
     "new physical TensorBoard snapshot and original hash readback"
   ],
-  "storage": "raw local primary outputs only; not remote backup; no Drive per project exception"
+  "storage": "raw local primary outputs only; not remote backup; no Drive per project exception",
+  "local_deselection": "3 existing world/physics tests plus 4 parametrized geometry/projection tests importing MuJoCo; normal GitHub CI retains all tests"
 }

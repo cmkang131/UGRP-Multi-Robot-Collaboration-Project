@@ -19,7 +19,7 @@
 
 새 검사는 세 요청 kind × 저장 RGB를 대조한다. 다른 kind의 후보/holding/placement, 그림자·가림·저채도·검은 화면, 잘못된 payload, 미지원 kind, 작은 바닥 물체/단색 화면의 holding 거절, 현재 색 근거를 잃었을 때의 과거 방향 표 제거, 네 조건 동일 API/skill, private setup 변경의 공개 입력 비간섭을 포함한다. legacy cyan 회귀와 관련 executor/wrist 검사를 함께 수행한다. 정확한 최종 개수·명령·로그 해시는 `verification.json`에 기록한다.
 
-최종 코드 `ae9726a3eb051cc6ef6c22f364216aa7badccca9`: **808 passed, 291 subtests passed, 3 deselected**, 83.75초. 신규 색 검사 142개가 포함돼 있다. 제외한 3개는 실제 world/physics를 생성하는 기존 host 검사다. 공유 잠금 아래 실행했으며 import guard가 로컬 MuJoCo/Torch와 네트워크를 차단했고 실행 전후 소스·fixture 해시는 동일하다. 현재 v63 bundle 정적 검증, 기준 main 대비 registry 불변성, 필수 CI fixture 3개와 diff 공백 검사도 통과했다. GitHub 정상 CI 결과는 PR에서 별도로 확인한다.
+최종 코드 `a4f75f8ad8c610253ea8555cab4c7030f3e985aa`: **897 passed, 291 subtests passed, 7 deselected**, 84.41초. 신규 색 검사 142개가 포함돼 있다. 제외한 7개는 실제 world/physics를 생성하는 기존 host 검사 3개와 MuJoCo를 import하는 geometry/projection 검사 4개다. 후자는 guard가 import 단계에서 차단한 실패 로그를 보존했으며 물리는 실행되지 않았다. 공유 잠금 아래 실행했으며 import guard가 로컬 MuJoCo/Torch와 네트워크를 차단했고 실행 전후 소스·fixture 해시는 동일하다. 현재 v63 bundle 정적 검증, 기준 main 대비 registry 불변성, 필수 CI fixture 3개와 diff 공백 검사도 통과했다. 기본 legacy cyan의 생성 상태·요약 형식도 보존하며 provider constructor/입력 경계 검사까지 포함했다. GitHub 정상 CI 결과는 PR에서 별도로 확인한다.
 
 색 후보의 공통 S/V 거절은 보수적이다. 밝기·반사·실제 가림과 최종 카메라에서의 recall/정확도는 미측정이다. static 면적/색/형상·공이동이 실제 파지력이나 접촉을 보증하지 않는다. 이전 v4의 cyan-only self-occlusion shortcut은 새 후보에 적용하지 않고 세 색 모두 기존 v3의 정지/재검사 경로를 사용한다. 이 차이도 새 물리 인수 대상이다.
 
