@@ -52,15 +52,19 @@ def contacts_in(episodes, t0, t1):
     return [e for e in episodes if e['t_last'] >= t0 - 1e-9 and e['t_first'] <= t1 + 1e-9]
 
 
+def hard_limit_violated(eps, tilt_max):
+    pen = max((e['max_pen_m'] for e in eps), default=0.)
+    return pen > HARD['max_penetration_m'] or (tilt_max is not None and tilt_max > HARD['max_tilt_deg'])
+
+
 def leg_class(leg, eps, tilt_max):
     if not leg['recorded']:
         return 'FAIL'
-    ok = all(pcp.leg_checks(leg).values())
-    pen = max((e['max_pen_m'] for e in eps), default=0.)
-    if not ok:
-        return 'FAIL'
-    if pen > HARD['max_penetration_m'] or (tilt_max is not None and tilt_max > HARD['max_tilt_deg']):
+    # Hard limits first: any single violation forbids success, even when an ordinary check also failed (prereg).
+    if hard_limit_violated(eps, tilt_max):
         return 'FAIL_HARD_LIMIT'
+    if not all(pcp.leg_checks(leg).values()):
+        return 'FAIL'
     return 'PASS_CONTACT_RECOVERED' if eps else 'PASS_CLEAN'
 
 
@@ -95,6 +99,9 @@ def analyse(label, root, legs_wanted=(0, 1)):
         item = {'case': tag, 'wall_s': r.get('wall_s'), 'first_failure': (chain or {}).get('first_failure'),
                 'localizer_replaced_events': (chain or {}).get('localizer_replaced_events'), 'legs': {},
                 'door_relax_overrides': r.get('door_relax_overrides')}
+        all_tilt = max((x.get('tilt_deg', 0.) for x in trace), default=None)
+        item['hard_limit_chain'] = {'violated': hard_limit_violated(eps, all_tilt), 'max_pen_m': max((e['max_pen_m'] for e in eps), default=0.),
+                                    'max_tilt_deg': all_tilt}
         cells = []
         for k in legs_wanted:
             leg = chain['legs'][k] if chain else {'recorded': False}
@@ -137,6 +144,10 @@ def analyse(label, root, legs_wanted=(0, 1)):
     both = sum(1 for it in out['cases'] if all(it['legs'][k]['class'] in ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED') for k in legs_wanted))
     print(f'chain L0->L1 both legs pass: {fmt_ci(both, n)}')
     out['both_pass'] = both
+    hl = sum(1 for it in out['cases'] if it['hard_limit_chain']['violated'])
+    out['hard_limit_chain_cases'] = hl
+    print(f'hard limit (pen > {1000 * HARD["max_penetration_m"]:.0f} mm or tilt > {HARD["max_tilt_deg"]:.0f} deg) anywhere in the run '
+          f'(all legs, set-down, regrasp): {hl}/{n} cases')
     if honesty:
         out['honesty'] = {}
         for label_, sel in (('all', honesty), *[(f'L{k}', [h for h in honesty if h['leg'] == k]) for k in legs_wanted]):
