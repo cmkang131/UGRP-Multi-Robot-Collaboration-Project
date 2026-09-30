@@ -1,0 +1,150 @@
+[
+  {
+    "revision": "v6b",
+    "policy": "b-v6b",
+    "path": "experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json",
+    "status": "DRAFT",
+    "source_files": 73,
+    "unchanged_common": 0,
+    "changed_common": 0,
+    "added": 73,
+    "removed": 0,
+    "changed_paths": [],
+    "added_paths": [],
+    "file_lines": 581,
+    "first_pin_commit": "e4c5c7c2d5de5e90441aa91825a2a114013f255a",
+    "latest_pin_commit": "15793691b3af136769cdf0b090e722daddf80ab4",
+    "distinct_pin_file_versions": 5,
+    "registration_sha256": "5c687740f43e77f2531d16edc0a2bec88cb0e0544b88110b06e6c7c052c071e9"
+  },
+  {
+    "revision": "v6c",
+    "policy": "b-v6c",
+    "path": "experiments/2026-09-29-pair-v6c/prereg_v6c.json",
+    "status": "DRAFT",
+    "source_files": 77,
+    "unchanged_common": 61,
+    "changed_common": 12,
+    "added": 4,
+    "removed": 0,
+    "changed_paths": [
+      "configs/simulation_workflows.json",
+      "harness/zone_own_team_host.py",
+      "harness/zone_pair_beam_track.py",
+      "harness/zone_pair_executor.py",
+      "harness/zone_pair_grasp.py",
+      "harness/zone_pair_guards.py",
+      "harness/zone_pair_v6_policy.py",
+      "harness/zone_study_integration.py",
+      "scripts/run_zone_pair_dev.py",
+      "scripts/run_zone_study_integration.py",
+      "scripts/zone_pair_v6_contract.py",
+      "sim/zone_own_scene_provider.py"
+    ],
+    "added_paths": [
+      "harness/owncam_recovery_v6c.py",
+      "harness/zone_pair_grasp_entry_v6c.py",
+      "sim/zone_masterpi_v3_scene.py",
+      "sim/zone_model_conventions.py"
+    ],
+    "file_lines": 603,
+    "first_pin_commit": "b5234b7a16c3afb312b024996557efc476859790",
+    "latest_pin_commit": "be95f8b018bb110e2fc97ec5a3c90e357a949449",
+    "distinct_pin_file_versions": 5,
+    "registration_sha256": "96e8ec6897233d5beb3b8581801d9a70e786db3b0f5d3aa0aa42b40402b4d3cb"
+  },
+  {
+    "revision": "v6d",
+    "policy": "b-v6d",
+    "path": "experiments/2026-09-29-pair-v6d-align/prereg_v6d.json",
+    "status": "DRAFT",
+    "source_files": 80,
+    "unchanged_common": 69,
+    "changed_common": 8,
+    "added": 3,
+    "removed": 0,
+    "changed_paths": [
+      "configs/simulation_workflows.json",
+      "harness/zone_pair_align.py",
+      "harness/zone_pair_executor.py",
+      "harness/zone_pair_v6_policy.py",
+      "harness/zone_study_integration.py",
+      "scripts/run_zone_pair_dev.py",
+      "scripts/study_owncam_pair_beam.py",
+      "scripts/zone_pair_v6_contract.py"
+    ],
+    "added_paths": [
+      "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json",
+      "harness/owncam_align_motion_v6d.py",
+      "harness/owncam_pair_beam_v6d.py"
+    ],
+    "file_lines": 636,
+    "first_pin_commit": "4714263a7cce282b5967cd35283265a16505de46",
+    "latest_pin_commit": "48f9872ab5175f1369ff2980b187cd8bc2b1a6b2",
+    "distinct_pin_file_versions": 2,
+    "registration_sha256": "1a1529963a320d6644f5f1f6ff3120c0fbcffb737840772d74dc4530292290e3"
+  },
+  {
+    "revision": "v6e",
+    "policy": "b-v6g",
+    "path": "experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json",
+    "status": "DRAFT",
+    "source_files": 85,
+    "unchanged_common": 68,
+    "changed_common": 12,
+    "added": 5,
+    "removed": 0,
+    "changed_paths": [
+      "configs/simulation_workflows.json",
+      "harness/owncam_localizer.py",
+      "harness/owncam_pose_source.py",
+      "harness/owncam_recovery_v6.py",
+      "harness/zone_pair_executor.py",
+      "harness/zone_pair_grasp.py",
+      "harness/zone_pair_guards.py",
+      "harness/zone_pair_v6_policy.py",
+      "harness/zone_pair_vision.py",
+      "harness/zone_study_integration.py",
+      "scripts/run_zone_pair_dev.py",
+      "scripts/zone_pair_v6_contract.py"
+    ],
+    "added_paths": [
+      "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json",
+      "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json",
+      "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json",
+      "harness/own_beam_edge.py",
+      "harness/owncam_carry_v6e.py"
+    ],
+    "file_lines": 675,
+    "first_pin_commit": "e510779db7be07be2b54493d52a9c754bd59a5bc",
+    "latest_pin_commit": "e510779db7be07be2b54493d52a9c754bd59a5bc",
+    "distinct_pin_file_versions": 1,
+    "registration_sha256": "8b67529b25f39d9cb6f6035a00c7f6853a22fe5d1d3ec58d5251911c91c46b7a"
+  },
+  {
+    "revision": "v6h_unsealed",
+    "commit": {
+      "sha": "52264828daac3dbc637ed8ef8c61f88413cb96fb",
+      "committed_at": "2026-09-30T17:03:14+09:00",
+      "subject": "Implement pre-seal b-v6h1 controller candidate (v83, workflow 2.16.0)"
+    },
+    "sources": 104,
+    "changed_common": 12,
+    "added": 19,
+    "removed": 0,
+    "source_preview_path": "experiments/2026-09-30-pair-v6h-carry/source_changes_UNSEALED.json"
+  },
+  {
+    "revision": "v6h_unsealed",
+    "commit": {
+      "sha": "3afc61b00f2c127ac3fbe2be5e7bb57da989b15a",
+      "committed_at": "2026-09-30T18:44:50+09:00",
+      "subject": "fix(v6h): address confirmatory admission and review test gaps"
+    },
+    "sources": 268,
+    "changed_common": 12,
+    "added": 183,
+    "removed": 0,
+    "source_preview_path": "experiments/2026-09-30-pair-v6h-carry/source_changes_UNSEALED.json"
+  }
+]
