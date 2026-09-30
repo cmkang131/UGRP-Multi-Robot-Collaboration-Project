@@ -93,7 +93,7 @@ class OwnStatusMixin:
         job = self.job
         if job is not None and job.kind == 'deliver':
             return self.orders[job.args['order_id']]['kind']
-        return 'cyan'
+        return self._holding_kind
 
     @property
     def loaded(self) -> bool:
@@ -114,7 +114,8 @@ class OwnStatusMixin:
         if sk is not None:
             phase = sk.phase
             box = getattr(sk, 'box', None)
-            if phase in CARRY_PHASES and box is not None and box.held:
+            if (phase in CARRY_PHASES and box is not None and box.held
+                    and (self.box_profile == 'legacy_cyan_v1' or getattr(box, 'box_kind', None) == self._held_kind())):
                 base = {'answer': 'yes', 'source': 'own_rgb_attachment_check (wrist skill)', 'skill_phase': phase}
             elif phase in ('look_back', 'finished') and any(e.get('event') == 'release_confirmed'
                                                               for e in getattr(sk, 'events', ())):

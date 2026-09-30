@@ -113,6 +113,10 @@ class ZoneOwnExecutor(OwnStatusMixin):
         self.orders = validate_order_sheet(order_sheet, self.map)
         self.slots = pickup_slots(self.map)
         self.skill_factory = skill_factory
+        self.box_profile = getattr(skill_factory, 'box_perception_profile', 'legacy_cyan_v1')
+        from harness.m1_color_contract import validate_box_profile
+        validate_box_profile(self.box_profile, 'cyan', 'own_rgb_bay')
+        self._holding_kind = 'cyan'
         self.pose_estimate_cls = pose_estimate_cls
         self.search_rows_y = tuple(float(y) for y in search_rows_y)
         self.job_sim_limit_s = float(job_sim_limit_s)
@@ -282,7 +286,9 @@ class ZoneOwnExecutor(OwnStatusMixin):
         order = self.orders.get(item_ref) if isinstance(item_ref, str) else None
         if order is None:
             return self._ack('deliver', arguments, False, 'UNKNOWN_ORDER')
-        if order['kind'] != 'cyan':
+        from harness.m1_color_contract import BOX_KINDS
+        supported = BOX_KINDS if self.box_profile == 'm1_color_boxes_v1' else ('cyan',)
+        if order['kind'] not in supported:
             return self._ack('deliver', arguments, False, 'KIND_NOT_SUPPORTED_BY_M1_SKILL')
         if not isinstance(zone_slot_id, str) or not zone_slot_id:
             return self._ack('deliver', arguments, False, 'UNKNOWN_ZONE_SLOT')
@@ -301,8 +307,13 @@ class ZoneOwnExecutor(OwnStatusMixin):
             return self._ack('deliver', arguments, False, 'ORDER_WITHOUT_PICKUP_SLOT')
         if self.holding()['answer'] != 'no':
             return self._ack('deliver', arguments, False, 'NOT_EMPTY_HANDED')
-        return self._start('deliver', 'deliver', arguments, slot_id=slot_id, slot_xy=list(slot['center_m']),
-                           pickup_slot=pickup)
+        ack = self._start('deliver', 'deliver', arguments, slot_id=slot_id, slot_xy=list(slot['center_m']),
+                          pickup_slot=pickup, box_kind=order['kind'])
+        if ack['accepted']:
+            self._holding_kind = order['kind']
+            if self.box_profile == 'm1_color_boxes_v1':
+                self._last_holding_check = None
+        return ack
 
     def pair_readiness(self, now, item_ref=None, target_zone=None):
         """Own admission -> fixed status enum; no private state is sent to a peer."""
@@ -583,7 +594,7 @@ class ZoneOwnExecutor(OwnStatusMixin):
             slot = self.slots[job.args['pickup_slot']]
             rect = (tuple(slot['x_range_m']), tuple(slot['y_range_m']))
             rows = [y for y in self.search_rows_y if slot['y_range_m'][0] <= y < slot['y_range_m'][1]]
-            job.ctl = _DeliverController(self.map, self.params, box_kind='cyan', slot_id=job.args['slot_id'],
+            job.ctl = _DeliverController(self.map, self.params, box_kind=job.args['box_kind'], box_profile=self.box_profile, slot_id=job.args['slot_id'],
                                          slot_xy=job.args['slot_xy'], skill_factory=self._skill_for(job),
                                          pose_estimate_cls=self.pose_estimate_cls, search_rows_y=rows,
                                          robot_id=self.robot_id, seed=self.seed, order_kind='own_rgb_bay',
@@ -599,7 +610,10 @@ class ZoneOwnExecutor(OwnStatusMixin):
         placement = getattr(job.ctl.skill, 'placement', None) or {}
         detail = {'order_id': job.args['order_id'], 'slot_id': job.args['slot_id'],
                   'placement_reason': placement.get('reason'), 'slot_error_m': placement.get('slot_error_m')}
-        if outcome == 'SKILL_OWN_RGB_PLACEMENT_IN_SLOT':
+        if (outcome == 'SKILL_OWN_RGB_PLACEMENT_IN_SLOT' and self.box_profile == 'm1_color_boxes_v1'
+                and placement.get('kind') != job.args['box_kind']):
+            self._fail(now, 'PLACEMENT_KIND_MISMATCH', **detail)
+        elif outcome == 'SKILL_OWN_RGB_PLACEMENT_IN_SLOT':
             zone = job.args['slot_id'][0]
             self._delivered_per_zone[zone] = self._delivered_per_zone.get(zone, 0) + 1
             gate = next((g for g in job.ctl.lookback_gates if g.get('frame_id') == placement.get('frame_id')), None)
@@ -616,7 +630,12 @@ class ZoneOwnExecutor(OwnStatusMixin):
         factory = self.skill_factory
 
         def make(order):
-            return factory(order, robot_id=self.robot_id)
+            skill = factory(order, robot_id=self.robot_id)
+            if self.box_profile == 'm1_color_boxes_v1':
+                if (getattr(skill, 'box_perception_profile', None) != self.box_profile
+                        or getattr(getattr(skill, 'box', None), 'box_kind', None) != order.kind):
+                    raise ExecutorContractError('color-box factory returned a different profile or kind')
+            return skill
         return make
 
     def _step_goto(self, now, job):

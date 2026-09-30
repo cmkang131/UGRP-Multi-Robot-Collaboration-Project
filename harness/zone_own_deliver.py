@@ -38,7 +38,7 @@ LANE_RETREAT_M = .40
 CHASSIS_HALF_M = .15
 
 
-def bottom_clipped_cyan_px(image_b64: str) -> int:
+def bottom_clipped_box_px(image_b64: str, kind: str, *, profile='legacy_cyan_v1') -> int:
     """Cyan pixels (own-RGB zone profile HSV) in the lower image that touch the fisheye image edge below them.
 
     The wrist fisheye leaves black corners/rim; a box too close to fit is cut by that rim, not by the
@@ -47,6 +47,8 @@ def bottom_clipped_cyan_px(image_b64: str) -> int:
     import cv2
 
     from harness.zone_color_boxes import OWN_ZONE_CYAN_HSV
+    from harness.m1_color_contract import validate_box_profile
+    validate_box_profile(profile, kind, 'own_rgb_bay')
     try:
         frame = cv2.imdecode(np.frombuffer(base64.b64decode(image_b64, validate=True), np.uint8), cv2.IMREAD_COLOR)
     except (ValueError, TypeError):
@@ -57,6 +59,9 @@ def bottom_clipped_cyan_px(image_b64: str) -> int:
     cyan = np.zeros(hsv.shape[:2], bool)
     for low, high in OWN_ZONE_CYAN_HSV:
         cyan |= cv2.inRange(hsv, np.asarray(low, np.uint8), np.asarray(high, np.uint8)) > 0
+    if profile == 'm1_color_boxes_v1':
+        from harness.m1_color_perception import color_mask
+        cyan = color_mask(frame, kind) > 0
     outside = frame.max(axis=2) < NEAR_CLIP_DARK_MAX
     rim_below = np.zeros_like(outside)
     for k in range(1, NEAR_CLIP_RIM_PX + 1):
@@ -64,6 +69,11 @@ def bottom_clipped_cyan_px(image_b64: str) -> int:
     hit = cyan & rim_below
     hit[:int(frame.shape[0] * NEAR_CLIP_LOWER_FRACTION)] = False
     return int(np.count_nonzero(hit))
+
+
+def bottom_clipped_cyan_px(image_b64: str) -> int:
+    """Compatibility entry point for recorded cyan fixtures."""
+    return bottom_clipped_box_px(image_b64, 'cyan')
 
 
 class _DeliverController(SharedPoseDelivery):
@@ -201,7 +211,7 @@ class _DeliverController(SharedPoseDelivery):
             ahead = (report.x_m + NEAR_CLIP_AHEAD_M * math.cos(report.yaw_rad + pan),
                      report.y_m + NEAR_CLIP_AHEAD_M * math.sin(report.yaw_rad + pan))
             if self._in_slot(ahead):
-                px = bottom_clipped_cyan_px(obs['image'])
+                px = bottom_clipped_box_px(obs['image'], self.box_kind, profile=self.box_profile)
                 if px >= NEAR_CLIP_MIN_PX:
                     self.near_clipped.append({'t': round(report.t_est, 3), 'frame_id': int(obs['frame_id']), 'px': px})
 
