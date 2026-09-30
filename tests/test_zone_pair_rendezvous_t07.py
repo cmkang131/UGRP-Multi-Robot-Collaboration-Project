@@ -8,9 +8,25 @@ from harness.zone_pair_roles import PairRoles
 from harness.zone_pair_rendezvous import OwnPairRecovery, PairRequest, RoleAwareOwnPairPort
 from harness.zone_pair_status import EPS
 from harness import zone_study_protocol as protocol
+from harness import zone_pair_role_executor as role_executor
 from tests.test_zone_pair_executor import active
 from tests.test_zone_pair_role_exchange import setup
 from tests.test_zone_pair_rendezvous import CONDITIONS, no_physics_or_models  # noqa: F401
+
+
+@pytest.fixture(scope='module')
+def frozen_controller_receipt():
+    # These cases change requests/own ports, never source files. Compute the
+    # real source receipt once instead of rescanning its closure for each host.
+    return role_executor.controller_source_record()
+
+
+@pytest.fixture(autouse=True)
+def reuse_frozen_controller_receipt(monkeypatch, frozen_controller_receipt):
+    # Fresh dicts keep each host independent. The original function is restored
+    # after every case; T07 geometry/provenance and both pin suites stay real.
+    monkeypatch.setattr(role_executor, 'controller_source_record',
+                        lambda: copy.deepcopy(frozen_controller_receipt))
 
 
 def recovery(host, actor):
