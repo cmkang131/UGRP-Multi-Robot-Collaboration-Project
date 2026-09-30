@@ -136,6 +136,7 @@ TEST_PATTERNS = (
     "tests/test_b_v6h_gain.py",  # b-v6h gain-fix tooling: PF forward gain x0.9483, p2f timing rule, k2 identity variant, placement list
     "tests/test_chain_analysis_hard_limit.py",  # chain_analysis leg_class: hard limit takes precedence over ordinary failure
     "tests/test_v6h_classify_placements.py",  # eval-only prereg draft: placement contact classes + whole-chain hard-limit veto
+    "tests/test_v6h_blinded_run_manifest.py",  # committed metadata + synthetic records only; never blinded raw
     "tests/test_classify_review_299.py",
     "tests/test_classify_review_299b.py",
     "tests/test_classify_review_299c.py",

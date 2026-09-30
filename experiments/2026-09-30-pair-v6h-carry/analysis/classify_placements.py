@@ -1151,17 +1151,39 @@ class EvidenceReader:
         return issues
 
 
-def analyse(label, raw, primary_seed=941, sealed_manifest=None):
+def analyse(label, raw, primary_seed=941, sealed_manifest=None, *,
+            recorded_run_manifest=None, recorded_run_manifest_sha256=None):
+    if bool(recorded_run_manifest) != bool(recorded_run_manifest_sha256):
+        raise EvidenceError("supply both recorded run manifest and its pinned hash")
+    if recorded_run_manifest and sealed_manifest:
+        raise EvidenceError("unsealed recorded run cannot acquire a registration receipt retrospectively")
     raw = Path(raw).resolve()
     reader = EvidenceReader(raw)
     for source in (Path(__file__).resolve(), RECORDER_PATH, CHAIN_PATH, SIGMA_PATH, Path(ca.pcp.__file__).resolve(), Path(ca.dra.__file__).resolve()):
         reader.hashes[str(source)] = sha256(source)
-    rows, cohort_issues = reader.read(raw / "cases.jsonl", lines=True)
-    manifest, problems = reader.read(raw / "manifest.json")
+    manifest_path = Path(recorded_run_manifest).resolve() if recorded_run_manifest else raw / "manifest.json"
+    manifest, cohort_issues = reader.read(manifest_path)
+    blinded = recorded_run_manifest is not None
+    if blinded:
+        name = str(manifest_path.relative_to(raw)) if manifest_path.is_relative_to(raw) else str(manifest_path)
+        if cohort_issues or reader.hashes.get(name) != recorded_run_manifest_sha256:
+            raise EvidenceError("recorded run manifest missing, invalid or different from pinned hash")
+    rows, problems = reader.read(raw / "cases.jsonl", lines=True)
     cohort_issues += problems
     seal = sealed_manifest
     runtime_plan = {}
-    if manifest.get("state") != "completed" or manifest.get("source_changed") is not False:
+    if blinded:
+        runtime_plan, problems = reader.read(raw / "plan.json")
+        cohort_issues += problems
+        try:
+            rv.blinded_run_identity(manifest, runtime_plan, reader.hashes.get("plan.json"))
+            if reader.hashes.get("cases.jsonl") != manifest["raw"]["cases_jsonl_sha256"]:
+                raise EvidenceError("blinded cases.jsonl hash mismatch")
+            if primary_seed != 941:
+                raise EvidenceError("blinded run requires primary seed 941")
+        except (KeyError, TypeError, ValueError, AttributeError) as error:
+            cohort_issues.append(f"INVALID_RECORDED_RUN:{error}")
+    elif manifest.get("state") != "completed" or manifest.get("source_changed") is not False:
         cohort_issues.append("INVALID_MANIFEST: requires completed/source_changed=false")
     by_id = defaultdict(list)
     for row in rows:
@@ -1199,6 +1221,19 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
         allowed = set(seal["_attempts"])
         if set(by_id) - allowed:
             cohort_issues.append("UNAUTHORIZED_ATTEMPT: only allowed retries are admitted")
+    elif blinded:
+        # Identities/settings come only from the hash-pinned plan, never rows
+        # or the manifest's outcome-free completion inventory.
+        planned = runtime_plan.get("cases", [])
+        planned = planned if isinstance(planned, list) else []
+        specs = {c["case_id"]: c for c in planned if isinstance(c, dict)
+                 and isinstance(c.get("case_id"), str) and isinstance(c.get("cell"), str)
+                 and type(c.get("seed")) is int}
+        entries = [{"placement": c["cell"], "seed": c["seed"], "attempts": [{"case_id": cid}]}
+                   for cid, c in specs.items()]
+        allowed = set(specs)
+        if set(by_id) - allowed:
+            cohort_issues.append("UNAUTHORIZED_ATTEMPT: outside recorded run plan")
     else:
         # Historical admissions come from the recorded plan, not successful rows.
         planned = manifest.get("cases")
@@ -1248,7 +1283,18 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
             trace, problems = reader.read(directory / "eval_only/trace.jsonl", lines=True)
             local_issues += problems
             recorder_context = None
-            if seal:
+            if blinded:
+                spec, problems = reader.read(directory / "case.json")
+                local_issues += problems
+                commands_path = directory / "commands.json"
+                _, problems = reader.read(commands_path)
+                local_issues += problems
+                recorder_context = {"manifest": manifest, "case": spec, "run_plan": runtime_plan,
+                                    "plan_sha256": reader.hashes.get("plan.json"),
+                                    "commands_sha256": reader.hashes.get(str(commands_path.relative_to(raw)))}
+                if spec.get("case_id") != cid:
+                    local_issues.append("INVALID_CASE_IDENTITY: case outside planned slot")
+            elif seal:
                 spec_path = directory / "case.json"
                 spec, problems = reader.read(spec_path)
                 local_issues += problems
@@ -1266,7 +1312,7 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
                 if ("_registered" not in seal and result.get("execution_identity") != identity) or result.get("row") != row:
                     local_issues.append("INVALID_RESULT_IDENTITY: result identity/row differs from cases record")
             # Duplicate rows are invalid but cannot hide a positive hard observation.
-            evidence = adjudicate_attempt(row, result, trace, confirmatory=bool(seal), issues=local_issues,
+            evidence = adjudicate_attempt(row, result, trace, confirmatory=bool(seal) or blinded, issues=local_issues,
                                           recorder_context=recorder_context)
             for duplicate in candidates[1:]:
                 extra = observed_hard_limits(duplicate, {}, [], partial=True)
@@ -1312,6 +1358,10 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
         summary["criterion"]["evidence_blocker"] = "; ".join(sorted(set(cohort_issues)))
     summary["safety_evidence_issues"] = {a["case_id"]: a["hard_limit_chain"]["evidence_issues"]
         for a in attempts if a["hard_limit_chain"]["evidence_issues"]}
+    if blinded:
+        summary["criterion"].update(mode="unsealed_stage_probe", evaluable=False, verdict="NOT_EVALUABLE",
+                                    scope="Recorded worker contract checked; no sealed cohort admission.")
+        summary["recorded_admission"] = manifest.get("admission")
     if seal:
         summary["sigma_criterion_B"] = summarize_sigma(cases)
         summary["attempt_case_ids"] = sorted(a["case_id"] for a in attempts)
@@ -1325,8 +1375,10 @@ def analyse(label, raw, primary_seed=941, sealed_manifest=None):
             "FAIL_A_B_SAFETY" if summary["hard_limit_chain_cases"] or summary["criterion"]["verdict"] == "FAIL_OBSERVED_CRITERION"
             or summary["sigma_criterion_B"]["verdict"] == "FAIL" else "NOT_EVALUABLE")
     return {"schema": "ugrp.v6h_placement_classification.draft.v4", "label": label, "raw": str(raw),
-            "source_sha": (manifest.get("source") if isinstance(manifest.get("source"), dict) else {}).get("source_sha"), "manifest_state": manifest.get("state"),
-            "source_changed": manifest.get("source_changed"), "input_sha256": reader.hashes,
+            "source_sha": (manifest.get("source") if isinstance(manifest.get("source"), dict) else {}).get("head_sha" if blinded else "source_sha"),
+            "manifest_state": manifest.get("completion") if blinded else manifest.get("state"),
+            "source_changed": (manifest.get("source") or {}).get("source_changed_during_run") if blinded else manifest.get("source_changed"),
+            "input_sha256": reader.hashes,
             "attempts": attempts, "missing_host_evidence": reader.missing,
             "interpretations": "Fail-closed draft v4; unresolved/invalid is unclassified. See CLASSIFY_NOTES.md.",
             "placements": placements, "summary": summary}
@@ -1366,6 +1418,8 @@ def main(argv=None):
     parser.add_argument("--primary-seed", type=int, default=941)
     parser.add_argument("--sealed-manifest", type=Path, help="existing coordinator-owned manifest; required for confirmatory A/B")
     parser.add_argument("--sealed-manifest-sha256", help="independently pinned SHA-256 of that manifest")
+    parser.add_argument("--recorded-run-manifest", type=Path, help="committed blinded RUN_MANIFEST.json (unsealed stage probe)")
+    parser.add_argument("--recorded-run-manifest-sha256", help="independently pinned SHA-256 of recorded run manifest")
     parser.add_argument("raws", nargs="+", help="LABEL=/absolute/cohort-directory")
     args = parser.parse_args(argv)
     specs = [spec.partition("=") for spec in args.raws]
@@ -1380,7 +1434,11 @@ def main(argv=None):
         if bool(args.sealed_manifest) != bool(args.sealed_manifest_sha256):
             raise EvidenceError("supply both sealed manifest and its pinned hash")
         seal = load_sealed_manifest(args.sealed_manifest, args.sealed_manifest_sha256) if args.sealed_manifest else None
-        reports = [analyse(label, Path(path), args.primary_seed, seal) for label, _, path in specs]
+        if args.recorded_run_manifest and len(specs) != 1:
+            raise EvidenceError("recorded run manifest identifies exactly one cohort")
+        reports = [analyse(label, Path(path), args.primary_seed, seal,
+                           recorded_run_manifest=args.recorded_run_manifest,
+                           recorded_run_manifest_sha256=args.recorded_run_manifest_sha256) for label, _, path in specs]
     except (EvidenceError, OSError, KeyError, TypeError, json.JSONDecodeError) as error:
         parser.exit(2, f"incomplete/invalid evidence: {error}\n")
     args.output.mkdir(parents=True)

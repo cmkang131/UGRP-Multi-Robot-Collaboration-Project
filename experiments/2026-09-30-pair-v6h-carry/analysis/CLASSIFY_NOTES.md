@@ -32,6 +32,51 @@ PR #299 세 번째 독립 검토(`d1c64f85`, 검토 대상 `f32d5fd9`)의 R1–R
 기존 synthetic receipt 형식도 명시적으로 지원하되, 그 형식의 해시·coverage 검사는 유지한다.
 등록 형식에 추가 receipt/coverage가 실제 존재하면 모순을 묵인하지 않는다.
 
+### 2026-10-01: 블라인드 실행의 별도 run manifest
+
+72건(941×60곳 + 943×첫 12곳)의 기록은 표준 `run_pair_stage_probes`의
+상위 드라이버가 아니라 **같은 worker 진입점을 호출하는 thin custom driver**에서
+생성됐다. 실행 source는 `4c6b439f3f7c9a147c901f8b260a1e214d4eb396`이다.
+커밋 `e78ef70fb5004fed1dfef1866aaf99bbf0bdda41`의
+`experiments/2026-10-01-v6h1-confirm-blinded/RUN_MANIFEST.json`과 `plan.json`만
+읽고 `tests/fixtures/v6h_blinded_run_metadata/`에 바이트 그대로 복사했다.
+블라인드 raw 경로를 열거하거나 결과·trace·명령 본문을 읽지 않았다.
+
+전달 설명의 `v6h1-confirm-blinded.run.v1`과 달리, 커밋된 `RUN_MANIFEST.json`의
+실제 schema는 **`v6h1-confirm-blinded.manifest.v1`**, 계획은
+`v6h1-confirm-blinded.plan.v1`이다. 이 두 형식만 명시적으로 읽는다.
+열지 않은 raw `manifest.json`의 형식을 추측하거나 표준 러너 형식으로 위장하지 않는다.
+
+| 별도 드라이버의 기록 | 소비자 검사/표시 |
+|---|---|
+| `source.head_sha`, 시작 clean·종료 clean·`source_changed_during_run=false` | 알려진 `4c6b439f…` worker 소스와 무변경 기록 확인 |
+| `raw.driver_py_sha256` | `7a35229e…` 고정 driver 식별; worker fingerprint는 기존 `531c4206…` 유지 |
+| `raw.plan_json_sha256` | 실제 계획 파일 전체 바이트의 SHA-256 `d627f9cd…`와 대조 |
+| `plan.cases` | 모든 작업 설정·case ID·C01…C60×941/C01…C12×943의 72개 식별 목록 |
+| `cases[].commands_json_sha256` | 해당 case의 실제 `commands.json` 바이트와 대조; 경로는 case ID에서 제한적으로 계산 |
+| `raw.cases_jsonl_sha256` | 케이스 목록 파일의 전체 바이트 해시 대조 |
+| `admission=unsealed_stage_probe` | 그대로 유지; 등록 receipt·bundle ID·`registration_run_id`를 새로 만들지 않음 |
+
+`--recorded-run-manifest`와 `--recorded-run-manifest-sha256`를 **함께** 지정해
+해당 커밋 메타데이터를 입력한다(원 manifest 해시 `99723de36d20a55f348ea5b25ca203cf1db910dd9a620d3a8c4a17f27407f210`).
+입력한 raw 디렉터리의 `plan.json`, `cases.jsonl`, 각 case의
+`case.json`·`commands.json`·`result.json`·`eval_only/trace.jsonl`을 검사한다.
+메타데이터 안의 절대 raw 경로를 자동으로 따라가지 않는다. 검증 후 재해시에도
+외부 manifest와 계획·명령을 포함한다. 이번에는 합성 디렉터리에서만 이 경로를 실행했다.
+
+케이스 설정은 계획과 `labels`를 제외하고 정확히 같아야 한다. 같은 worker가 만든
+공개 golden 11건의 **기존 per-case 계약을 그대로** 적용하므로 시작/끝 GT, 거리·시각,
+handover, 종료 창, PF, 양성 안전 위반, HOST 처리와 선택 순서는 바꾸지 않는다.
+72개 식별 목록 중 기록이 없으면 그 슬롯은 미분류로 남고 60곳의 분모를 줄이지 않는다.
+manifest의 `finished`는 파일 완료 메타데이터이며 과제 성공 증거가 아니다.
+
+이 입력 경로는 실행 당시 미봉인 상태를 등록 실행으로 소급 승격하지 않는다.
+per-case 증거 검사는 엄격한 모드로 수행하지만 전체 A/B 확증 판정은
+`NOT_EVALUABLE`로 유지하고, `--sealed-manifest`와의 혼용은 거부한다.
+판정기 정의의 봉인과 실행의 사전 등록은 별개다. 기존 표준 러너의 등록 입력 경로는 유지한다.
+새 테스트는 두 메타데이터 fixture와 새로 생성한 가짜 per-case 기록만 사용한다.
+공개 11건·과거 308건 대조와 실제 블라인드 코호트 판정은 별도 작업이다.
+
 등록 builder의 `ugrp.zone_pair_v6h_confirmatory.DRAFT.v1` + `sealed=true`를
 별도로 읽는다. `runs/cases`의 C01…C60×941 + C01…C12×943, 등록 payload 해시,
 배치 파일 해시와 실행 source contract를 확인한다. 기존 synthetic 평가 봉인
