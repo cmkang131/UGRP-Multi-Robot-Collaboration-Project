@@ -1,0 +1,5 @@
+......xx                                                                 [100%]
+=========================== short test summary info ============================
+XFAIL tests/test_review_seal_v6h1.py::test_missing_acquisition_inventory_must_block_pass - P1: acquisition raw-manifest hash is never checked before analysis
+XFAIL tests/test_review_seal_v6h1.py::test_trace_edit_cannot_flip_failed_B_to_pass_with_same_pinned_inputs - P1: pre-analysis PF trace edits evade the pinned acquisition inventory
+6 passed, 2 xfailed in 21.60s

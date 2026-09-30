@@ -1,0 +1,80 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+______________ test_missing_acquisition_inventory_must_block_pass ______________
+
+checkout = (PosixPath('/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/ugrp-seal-test-lurdqtzq/source'), {'schema': 'ugrp.zone_pair_v6h_confirmatory.DRAFT.v1', 'status': 'DRAFT', 'sealed': True, 'runnable': False, ...})
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="P1: acquisition raw-manifest hash is never checked before analysis")
+    def test_missing_acquisition_inventory_must_block_pass(checkout):
+        result = run_json(checkout, '''
+    import tempfile
+    b = importlib.import_module('tests.test_v6h_blinded_run_manifest')
+    gate = importlib.import_module(PREFIX + 'analysis.apply_sealed_analysis')
+    with tempfile.TemporaryDirectory() as tmp:
+        raw, manifest, _, plan = b.synthetic_run(Path(tmp), 72)
+        report = b.analyse(raw, manifest)
+        assert not (raw / 'raw_manifest.json').exists()
+        summary = gate.apply_gate(report, plan, b.cp)
+        print(json.dumps({'verdict': summary['full_verdict'], 'issues': summary['cohort_evidence_issues']}))
+    ''')
+>       assert result["verdict"] != "PASS_A_B_SAFETY", result
+E       AssertionError: {'verdict': 'PASS_A_B_SAFETY', 'issues': []}
+E       assert 'PASS_A_B_SAFETY' != 'PASS_A_B_SAFETY'
+
+tests/test_review_seal_v6h1.py:235: AssertionError
+---------------------------- Captured stderr setup -----------------------------
+HEAD is now at 266118d2 Seal b-v6h1 blinded analysis with separate execution and analysis pins
+_____ test_trace_edit_cannot_flip_failed_B_to_pass_with_same_pinned_inputs _____
+
+checkout = (PosixPath('/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/ugrp-seal-test-lurdqtzq/source'), {'schema': 'ugrp.zone_pair_v6h_confirmatory.DRAFT.v1', 'status': 'DRAFT', 'sealed': True, 'runnable': False, ...})
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="P1: pre-analysis PF trace edits evade the pinned acquisition inventory")
+    def test_trace_edit_cannot_flip_failed_B_to_pass_with_same_pinned_inputs(checkout):
+        result = run_json(checkout, '''
+    import tempfile
+    b = importlib.import_module('tests.test_v6h_blinded_run_manifest')
+    gate = importlib.import_module(PREFIX + 'analysis.apply_sealed_analysis')
+    with tempfile.TemporaryDirectory() as tmp:
+        raw, manifest_path, manifest, plan = b.synthetic_run(Path(tmp), 72)
+        paths = [b.cp.ca.dra.case_dir(raw, c['case_id'])/'eval_only/trace.jsonl'
+                 for c in plan['cases'] if c['seed'] == 941]
+        def set_x(x):
+            for path in paths:
+                trace = [json.loads(line) for line in path.read_text().splitlines()]
+                for sample in trace:
+                    for robot in b.cp.ROBOTS: sample['pf'][robot]['x'] = x
+                path.write_text(''.join(json.dumps(s)+'\\n' for s in trace))
+        set_x(1.)
+        # Minimal synthetic acquisition inventory, not a guess at the blinded schema.
+        # The current reader ignores this file regardless of its contents or absence.
+        inventory = raw/'raw_manifest.json'
+        b.base.write_json(inventory, {'files': {str(p.relative_to(raw)): b.cp.sha256(p) for p in paths}})
+        manifest['raw']['raw_manifest_json_sha256'] = b.cp.sha256(inventory)
+        b.base.write_json(manifest_path, manifest)
+        pinned = b.cp.sha256(manifest_path)
+        protected = [manifest_path, inventory, raw/'cases.jsonl', raw/'plan.json']
+        protected += [b.cp.ca.dra.case_dir(raw,c['case_id'])/'commands.json' for c in plan['cases']]
+        original = [b.cp.sha256(p) for p in protected]
+        def verdict():
+            report = b.cp.analyse('synthetic', raw, recorded_run_manifest=manifest_path,
+                                 recorded_run_manifest_sha256=pinned)
+            summary = gate.apply_gate(report, plan, b.cp)
+            return {'verdict': summary['full_verdict'], 'issues': summary['cohort_evidence_issues']}
+        before = verdict()
+        set_x(0.)
+        after = verdict()
+        assert [b.cp.sha256(p) for p in protected] == original
+        print(json.dumps({'before': before, 'after': after}))
+    ''')
+        assert result["before"]["verdict"] == "FAIL_A_B_SAFETY", result
+>       assert result["after"]["verdict"] != "PASS_A_B_SAFETY", result
+E       AssertionError: {'before': {'verdict': 'FAIL_A_B_SAFETY', 'issues': []}, 'after': {'verdict': 'PASS_A_B_SAFETY', 'issues': []}}
+E       assert 'PASS_A_B_SAFETY' != 'PASS_A_B_SAFETY'
+
+tests/test_review_seal_v6h1.py:278: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_review_seal_v6h1.py::test_missing_acquisition_inventory_must_block_pass
+FAILED tests/test_review_seal_v6h1.py::test_trace_edit_cannot_flip_failed_B_to_pass_with_same_pinned_inputs
+2 failed, 6 deselected in 3.19s

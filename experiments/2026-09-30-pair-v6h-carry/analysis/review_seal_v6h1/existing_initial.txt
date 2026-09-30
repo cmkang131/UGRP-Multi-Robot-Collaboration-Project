@@ -1,0 +1,242 @@
+..F............F........................................................ [ 15%]
+........................................................................ [ 31%]
+.....................................................FFFF............... [ 47%]
+.........................................................x.x.x.x.x.x.x.x [ 63%]
+.x.x.................................................................... [ 78%]
+........................................................................ [ 94%]
+........................                                                 [100%]
+=================================== FAILURES ===================================
+_______ test_builder_72_cases_match_literal_committed_blinded_plan_bytes _______
+
+    def test_builder_72_cases_match_literal_committed_blinded_plan_bytes():
+        value = sealed()
+>       current = b.build()
+                  ^^^^^^^^^
+
+tests/test_zone_pair_v6h_seal.py:57:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+experiments/2026-09-30-pair-v6h-carry/build_prereg_v6h.py:43: in build
+    verify_v6_historical(revision='v6e')
+scripts/zone_pair_v6_contract.py:341: in verify_v6_historical
+    if Path(path).read_bytes() != blob:
+       ^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('$SCRATCH/seal/experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '$SCRATCH/seal/experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+____________ test_sealed_registration_cannot_execute_from_seal_tree ____________
+
+    def test_sealed_registration_cannot_execute_from_seal_tree():
+        from scripts.zone_pair_v6h_admission import validate_plan
+        with pytest.raises(ValueError, match='source contract/hash mismatch'):
+>           validate_plan(sealed())
+
+tests/test_zone_pair_v6h_seal.py:115:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts/zone_pair_v6h_admission.py:64: in validate_plan
+    expected = builder().build()
+               ^^^^^^^^^^^^^^^^^
+experiments/2026-09-30-pair-v6h-carry/build_prereg_v6h.py:43: in build
+    verify_v6_historical(revision='v6e')
+scripts/zone_pair_v6_contract.py:341: in verify_v6_historical
+    if Path(path).read_bytes() != blob:
+       ^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1019: in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('$SCRATCH/seal/experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json')
+mode = 'rb', buffering = -1, encoding = None, errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '$SCRATCH/seal/experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+__ test_classifier_accepts_registered_recorder_format[result.evidence_sha256] __
+
+field = 'result.evidence_sha256'
+
+    @pytest.mark.parametrize("field", [
+        "result.evidence_sha256", "result.execution_identity", "result.evaluation_coverage",
+        "result.wall_contact.coverage",
+    ])
+    def test_classifier_accepts_registered_recorder_format(field):
+        # D1: the consumer must accept what the pinned producer really wrote.
+        # These projections are compared with all 11 FULL public records by
+        # verify_recorder_contract.py; no missing receipt/coverage is fabricated.
+>       audit = json.loads(AUDIT.read_text())
+                           ^^^^^^^^^^^^^^^^^
+
+tests/test_classify_review_299c.py:140:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('$SCRATCH/seal/experiments/2026-09-30-pair-v6h-carry/analysis/review_299c_validation/recorder_audit.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '$SCRATCH/seal/experiments/2026-09-30-pair-v6h-carry/analysis/review_299c_validation/recorder_audit.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_classifier_accepts_registered_recorder_format[result.execution_identity] _
+
+field = 'result.execution_identity'
+
+    @pytest.mark.parametrize("field", [
+        "result.evidence_sha256", "result.execution_identity", "result.evaluation_coverage",
+        "result.wall_contact.coverage",
+    ])
+    def test_classifier_accepts_registered_recorder_format(field):
+        # D1: the consumer must accept what the pinned producer really wrote.
+        # These projections are compared with all 11 FULL public records by
+        # verify_recorder_contract.py; no missing receipt/coverage is fabricated.
+>       audit = json.loads(AUDIT.read_text())
+                           ^^^^^^^^^^^^^^^^^
+
+tests/test_classify_review_299c.py:140:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('$SCRATCH/seal/experiments/2026-09-30-pair-v6h-carry/analysis/review_299c_validation/recorder_audit.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '$SCRATCH/seal/experiments/2026-09-30-pair-v6h-carry/analysis/review_299c_validation/recorder_audit.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_classifier_accepts_registered_recorder_format[result.evaluation_coverage] _
+
+field = 'result.evaluation_coverage'
+
+    @pytest.mark.parametrize("field", [
+        "result.evidence_sha256", "result.execution_identity", "result.evaluation_coverage",
+        "result.wall_contact.coverage",
+    ])
+    def test_classifier_accepts_registered_recorder_format(field):
+        # D1: the consumer must accept what the pinned producer really wrote.
+        # These projections are compared with all 11 FULL public records by
+        # verify_recorder_contract.py; no missing receipt/coverage is fabricated.
+>       audit = json.loads(AUDIT.read_text())
+                           ^^^^^^^^^^^^^^^^^
+
+tests/test_classify_review_299c.py:140:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('$SCRATCH/seal/experiments/2026-09-30-pair-v6h-carry/analysis/review_299c_validation/recorder_audit.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '$SCRATCH/seal/experiments/2026-09-30-pair-v6h-carry/analysis/review_299c_validation/recorder_audit.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+_ test_classifier_accepts_registered_recorder_format[result.wall_contact.coverage] _
+
+field = 'result.wall_contact.coverage'
+
+    @pytest.mark.parametrize("field", [
+        "result.evidence_sha256", "result.execution_identity", "result.evaluation_coverage",
+        "result.wall_contact.coverage",
+    ])
+    def test_classifier_accepts_registered_recorder_format(field):
+        # D1: the consumer must accept what the pinned producer really wrote.
+        # These projections are compared with all 11 FULL public records by
+        # verify_recorder_contract.py; no missing receipt/coverage is fabricated.
+>       audit = json.loads(AUDIT.read_text())
+                           ^^^^^^^^^^^^^^^^^
+
+tests/test_classify_review_299c.py:140:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('$SCRATCH/seal/experiments/2026-09-30-pair-v6h-carry/analysis/review_299c_validation/recorder_audit.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [Errno 2] No such file or directory: '$SCRATCH/seal/experiments/2026-09-30-pair-v6h-carry/analysis/review_299c_validation/recorder_audit.json'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: FileNotFoundError
+Nonphysical suite guard: {'physical_step_attempts': 0, 'real_vision_worker_attempts': 0, 'network_attempts': 0}
+=========================== short test summary info ============================
+FAILED tests/test_zone_pair_v6h_seal.py::test_builder_72_cases_match_literal_committed_blinded_plan_bytes
+FAILED tests/test_zone_pair_v6h_seal.py::test_sealed_registration_cannot_execute_from_seal_tree
+FAILED tests/test_classify_review_299c.py::test_classifier_accepts_registered_recorder_format[result.evidence_sha256]
+FAILED tests/test_classify_review_299c.py::test_classifier_accepts_registered_recorder_format[result.execution_identity]
+FAILED tests/test_classify_review_299c.py::test_classifier_accepts_registered_recorder_format[result.evaluation_coverage]
+FAILED tests/test_classify_review_299c.py::test_classifier_accepts_registered_recorder_format[result.wall_contact.coverage]
+6 failed, 440 passed, 10 xfailed in 362.73s (0:06:02)
