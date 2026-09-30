@@ -4,6 +4,10 @@
 로컬 물리·SIM·렌더·새 모델 호출은 0회이며, **실제 crate API/물리 지원은 아직 차단**이다.
 GitHub 정상 CI는 별도로 실행하고 취소하거나 건너뛰지 않는다. Draft PR로 인계하며 병합하지 않는다.
 
+2026-10-01 독립 검토 J1의 회귀 검사 공백을 보완했다. 최신 결과는
+[REVIEW_J_FIXES.md](REVIEW_J_FIXES.md)와 [review_j_verification.json](review_j_verification.json)을 따른다.
+관련 361개 검사 통과, 변이 9/9 검출이며 아래 최초 구현·검증 기록은 당시 그대로 보존한다.
+
 ## 변경
 
 - `harness/zone_crate_skill.py`: 900 g heavy_crate의 west/east lug 전용 판단기.

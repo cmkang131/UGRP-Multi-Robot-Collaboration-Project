@@ -21,8 +21,10 @@ TESTS = [
     'tests/test_zone_study_integration.py', 'tests/test_zone_study_integration_pair.py',
     'tests/test_zone_study_integration_seams.py',
     'tests/test_zone_pair_registered_source.py', 'tests/test_zone_study_source_pinning.py',
+    'tests/test_zone_own_executor_crate_review_j.py',
 ]
-GROUPS = {'logic': TESTS[:6], 'integration': TESTS[6:9], 'pinning': TESTS[9:]}
+GROUPS = {'logic': TESTS[:6], 'integration': TESTS[6:9], 'pinning': TESTS[9:11],
+          'review_j': TESTS[11:]}
 
 
 def main():
@@ -32,7 +34,7 @@ def main():
     args = parser.parse_args()
     if args.child:
         sys.path.insert(0, str(ROOT))
-        for module in ('mujoco', 'openai', 'anthropic', 'google.genai'):
+        for module in ('mujoco', 'torch', 'torchvision', 'openai', 'anthropic', 'google.genai'):
             sys.modules[module] = None
         def blocked(*args, **kwargs):
             raise AssertionError('T06 offline: network forbidden')

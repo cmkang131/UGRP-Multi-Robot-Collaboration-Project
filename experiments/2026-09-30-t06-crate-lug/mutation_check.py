@@ -9,6 +9,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import socket
 import subprocess
 import sys
 import types
@@ -30,6 +31,12 @@ MUTANTS = {
     'ignore_holding_loss': (
         "if not lug or ev.holding != 'yes':", 'if False:',
         'test_holding_loss_stops_carry_and_peer_before_any_further_motion'),
+    'ignore_peer_holding': (
+        "if not self._peer_holding(now):", 'if False:',
+        'test_fresh_peer_status_without_holding_stops_carry'),
+    'ignore_peer_missed_go': (
+        "if self.status.grant and now > self.status.grant[1] + EPS:", 'if False:',
+        'test_one_peer_misses_go_stops_before_next_barrier'),
     'ignore_heartbeat_loss': (
         "if not peer['alive'] and (self.peer_seen or peer['age_s'] is not None):", 'if False:',
         'test_heartbeat_break_at_every_phase_terminates'),
@@ -52,6 +59,11 @@ def main():
         before, after, test = MUTANTS[args.child]
         assert original.count(before) == 1, 'mutation anchor must be unique'
         sys.path.insert(0, str(ROOT))
+        for name in ('mujoco', 'torch', 'torchvision', 'google.genai', 'openai', 'anthropic'):
+            sys.modules[name] = None
+        def forbidden(*args, **kwargs):
+            raise AssertionError('T06 mutation check: physics/provider/network forbidden')
+        socket.socket.connect = socket.socket.connect_ex = forbidden
         import harness
         module = types.ModuleType('harness.zone_crate_skill')
         module.__file__ = str(SOURCE)
@@ -73,10 +85,12 @@ def main():
         suites = ET.parse(xml).getroot().findall('testsuite') if xml.exists() else []
         failures = sum(int(s.get('failures', '0')) for s in suites)
         errors = sum(int(s.get('errors', '0')) for s in suites)
+        skipped = sum(int(s.get('skipped', '0')) for s in suites)
         result['mutants'].append({'name': name, 'removed_or_changed': before, 'replacement': after,
                                   'test': TEST + '::' + test, 'exit_code': proc.returncode,
                                   'assertion_failures': failures, 'collection_errors': errors,
-                                  'killed': proc.returncode == 1 and failures > 0 and errors == 0,
+                                  'skipped': skipped,
+                                  'killed': proc.returncode == 1 and failures > 0 and errors == skipped == 0,
                                   'log': str(log), 'log_sha256': hashlib.sha256(log.read_bytes()).hexdigest()})
     result['source_unchanged'] = hashlib.sha256(SOURCE.read_bytes()).hexdigest() == result['source_sha256']
     (args.output / 'summary.json').write_text(json.dumps(result, indent=2) + '\n')

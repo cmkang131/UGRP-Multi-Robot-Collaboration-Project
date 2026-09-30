@@ -197,6 +197,71 @@ def test_holding_loss_stops_carry_and_peer_before_any_further_motion():
     assert rig.skills['r1'].failure == 'PARTNER_ABORT'
 
 
+@pytest.mark.parametrize('actor', ['r1', 'r2'])
+@pytest.mark.parametrize('state', ['not_ready', 'ready', 'busy', 'done'])
+def test_fresh_peer_status_without_holding_stops_carry(actor, state):
+    """A live wire sender can withdraw holding without executing peer.abort()."""
+    rig = Rig()
+    rig.until(lambda: all(s.phase == 'carry' for s in rig.skills.values()))
+    own = rig.skills[actor]
+    peer = own.partner_id
+    now = round(rig.t + .05, 8)
+    previous = rig.bus.latest[peer]
+    assert previous['state'] == 'carry_go_0'
+    # Inject an ordinary delivered enum at the transport boundary. Do not run
+    # the peer controller: its own holding-loss/abort guard must not mask this.
+    row = dict(previous, state=state, seq=previous['seq'] + 1, sent_at_s=now,
+               observed_at_s=None, frame_id=None, ready_until_s=None)
+    assert rig.bus.publish(row, now)
+    assert rig.bus.partner_view(actor, now)[peer]['alive']
+    assert rig.skills[peer].phase == 'carry' and not rig.skills[peer].terminal
+    frame = fixture_frame(own, now, overrides={'at_destination': 'no'})
+    assert json.loads(frame.jpeg)['holding'] == 'yes'
+    before = len(own.intents)
+    intent = own.step(now, frame)
+    assert (intent['kind'], own.failure, own.phase, own.terminal) == (
+        'hold', 'PARTNER_HOLDING_UNCONFIRMED', 'failed', True)
+    assert rig.bus.latest[actor]['state'] == 'abort'
+    own.step(now + .05, fixture_frame(own, now + .05))
+    assert [a['kind'] for a in own.intents[before:]] == ['hold', 'hold']
+
+
+@pytest.mark.parametrize('actor', ['r1', 'r2'])
+@pytest.mark.parametrize('barrier,action,phase', [
+    ('close', 'close_lug', 'grasp'), ('lift', 'lift_lug', 'lift'),
+    ('carry', 'carry_to_zone', 'carry'), ('lower', 'lower_lugs', 'lower'),
+    ('open', 'open_lugs', 'release'),
+])
+def test_one_peer_misses_go_stops_before_next_barrier(actor, barrier, action, phase):
+    """One actor consumes GO; peer heartbeat is still live on the next tick."""
+    rig = Rig()
+    key = barrier + '@0'
+    rig.until(lambda: all(key in s.status.barriers
+                         and s.status.barriers[key].go_at is not None
+                         for s in rig.skills.values()))
+    own = rig.skills[actor]
+    peer = own.partner_id
+    go_at = own.status.barriers[key].go_at
+    assert rig.skills[peer].status.barriers[key].go_at == go_at
+    while rig.t + .05 < go_at - 1e-8:
+        rig.tick()
+    assert all(rig.bus.latest[rid]['state'] == barrier + '_ready_0' for rid in rig.skills)
+    before = len(rig.trace)
+    rig.tick(omit=(peer,))
+    assert rig.t == pytest.approx(go_at)
+    assert rig.trace[-1]['kind'] == action and own.phase == phase
+    assert own.status.grant == (barrier + '_go_0', go_at)
+    assert not any(m['robot_id'] == peer and m['state'] == barrier + '_go_0'
+                   for m in rig.bus.log)
+    rig.tick(omit=(peer,))
+    assert rig.bus.partner_view(actor, rig.t)[peer]['alive']
+    assert not rig.skills[peer].terminal
+    assert (own.failure, own.phase, own.terminal) == ('PARTNER_MISSED_GO', 'failed', True)
+    assert rig.bus.latest[actor]['state'] == 'abort'
+    rig.tick(omit=(peer,))
+    assert [a['kind'] for a in rig.trace[before:]] == [action, 'hold', 'hold']
+
+
 @pytest.mark.parametrize('phase', ['approach', 'grasp', 'lift', 'carry', 'lower', 'release'])
 def test_heartbeat_break_at_every_phase_terminates(phase):
     rig = Rig()
@@ -365,6 +430,8 @@ def test_crate_dependency_is_pinned_and_collected_without_ci_configuration_chang
     paths = source_closure(root, ['harness/zone_crate_dispatch.py'])
     assert 'harness/zone_crate_skill.py' in paths
     assert any(Path(__file__) in root.glob(pattern) for pattern in TEST_PATTERNS)
+    review = root / 'tests/test_zone_own_executor_crate_review_j.py'
+    assert any(review in root.glob(pattern) for pattern in TEST_PATTERNS)
 
 
 def test_sealed_beam_entry_points_remain_byte_identical_and_do_not_enable_crates():
