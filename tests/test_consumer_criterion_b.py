@@ -62,18 +62,22 @@ def raw_case(tmp_path, axis=0):
               'measurement': plan, 'map_id': plan['map_id'], 'source_sha': '1'*40,
               'robot_model': 'masterpi_v3', 'render_profile': 'floor_light_v1',
               'weld': 'off', 'contact_profile': 'cargo_noslip_v1'}
-    result = {'status': 'COLLECTED_UNQUALIFIED', 'protocol_complete': True, 'check_sim_s': len(data['u'])*.05}
+    result = {'status': 'COLLECTED_UNQUALIFIED', 'protocol_complete': True, 'check_sim_s': len(data['u'])*.05,
+              'check': bundle['check'], 'case': {'map_id': plan['map_id']}}
     (folder/'bundle.json').write_text(json.dumps(bundle))
     (folder/'result.json').write_text(json.dumps(result))
     poses = []
     for j, (x, y, yaw) in enumerate(data['pose']):
         co, si = math.cos(yaw), math.sin(yaw)
         poses.append({'t': 1.3+j*.05, 'sample_index': j, 'base_position_m': [x, y, .03],
+                      'requested_check': bundle['check'],
                       'base_rotation': [[co, -si, 0.], [si, co, 0.], [0., 0., 1.]]})
     commands = [{'t': 1.3+j*.05, 'kind': 'mecanum', 'duration_s': .05,
                  **dict(zip(b.COMMAND_AXES, command))} for j, command in enumerate(data['u'])]
     for path, records in ((folder/'eval_only/r1/pose.jsonl', poses), (folder/'robots/r1/commands.jsonl', commands)):
         path.write_text(''.join(json.dumps(row)+'\n' for row in records))
+    (tmp_path/'result.json').write_text(json.dumps({'status': 'COLLECTED_UNQUALIFIED',
+        'denominator': 1, 'unattempted': [], 'source_unchanged': True, 'cases': [result]}))
     return folder, candidate
 
 
@@ -86,13 +90,15 @@ def test_three_parameter_fit_recovers_actual_consumer_method(axis):
 
 
 @pytest.mark.parametrize('axis', [0, 1, 2])
-def test_new_raw_path_scores_signed_axis_and_leaves_others_null(tmp_path, axis):
+def test_new_raw_path_scores_signed_axis_without_claiming_acquisition_proof(tmp_path, axis):
     folder, candidate = raw_case(tmp_path, axis)
     cases = b.load_collection(folder, b.criterion())
     report = b.score(cases, candidate, b.criterion())
-    assert report['axis_pass'][b.AXES[axis]] is True
+    assert report['axis_pass'] == dict.fromkeys(b.AXES)
+    assert report['cases'][0]['axes'][b.AXES[axis]]['numerical_pass'] is True
     assert report['pass'] is None
-    assert report['cases'][0]['scope'] == 'HELD_OUT'
+    assert report['cases'][0]['scope'] == 'INELIGIBLE'
+    assert 'unverified acquisition chronology' in report['cases'][0]['eligibility_reason']
     b.verify_inputs(cases)
 
 
@@ -104,7 +110,9 @@ def test_cli_synthetic_raw_outputs_null_overall_until_other_axes_validated(tmp_p
                                cwd=b.ROOT, capture_output=True, text=True)
     assert completed.returncode == 2, completed.stderr
     result = json.loads(output.read_text())
-    assert result['axis_pass'] == {'forward': True, 'left': None, 'rotate': None}
+    assert result['axis_pass'] == dict.fromkeys(b.AXES)
+    assert result['cases'][0]['axes']['forward']['numerical_pass'] is True
+    assert str(tmp_path/'result.json') in {item['path'] for item in result['input_files']}
     assert result['pass'] is None
     assert result['candidate_status'] == 'CANDIDATE_UNVALIDATED'
 
@@ -177,8 +185,15 @@ def test_failed_case_is_not_hidden_by_success_on_another_map():
     bad['map_id'] = 'zone_wide_door_geometry_v3'
     bad['pose'][:, 0] *= 10
     report = b.score([data, bad], candidate, b.criterion())
-    assert report['cases'][0]['axes']['forward']['pass'] is True
-    assert report['axis_pass']['forward'] is False and report['pass'] is False
+    assert report['cases'][0]['axes']['forward']['numerical_pass'] is True
+    assert report['cases'][1]['axes']['forward']['numerical_pass'] is False
+    assert report['axis_pass'] == dict.fromkeys(b.AXES) and report['pass'] is None
+
+
+@pytest.mark.parametrize('decisions, expected', [([True, False], False), ([True, None], None),
+                                                ([None, False], False), ([True, True], True)])
+def test_decision_aggregation_preserves_failures_and_missing_axes(decisions, expected):
+    assert b.combine(decisions) is expected
 
 
 def test_coverage_nees_and_normalized_p95_rejects_comparing_marginal_quantiles():
@@ -246,6 +261,109 @@ def test_completed_root_cannot_hide_an_unattempted_case(tmp_path):
     (tmp_path/'result.json').write_text(json.dumps({'status': 'COLLECTED_UNQUALIFIED', 'denominator': 2}))
     with pytest.raises(ValueError, match='denominator'):
         b.load_collection(tmp_path, b.criterion())
+
+
+@pytest.mark.parametrize('entry', ['root', 'case'])
+@pytest.mark.parametrize('corruption', ['missing_root', 'missing_source', 'changed_source',
+    'status', 'unattempted', 'missing_cases', 'mismatched_case', 'denominator'])
+def test_collection_completion_is_required_even_for_case_selection(tmp_path, entry, corruption):
+    folder, _ = raw_case(tmp_path)
+    path = tmp_path/'result.json'
+    result = json.loads(path.read_text())
+    if corruption == 'missing_root':
+        path.unlink()
+    else:
+        if corruption == 'missing_source':
+            result.pop('source_unchanged')
+        elif corruption == 'changed_source':
+            result['source_unchanged'] = False
+        elif corruption == 'status':
+            result['status'] = 'RUNNING'
+        elif corruption == 'unattempted':
+            result['unattempted'] = ['missing-case']
+        elif corruption == 'missing_cases':
+            result.pop('cases')
+        elif corruption == 'mismatched_case':
+            result['cases'][0]['check_sim_s'] += 1
+        else:
+            result['denominator'] = 2
+        path.write_text(json.dumps(result))
+    with pytest.raises(ValueError):
+        b.load_collection(folder if entry == 'case' else tmp_path, b.criterion())
+
+
+@pytest.mark.parametrize('corruption', ['measurement_check', 'measurement_map', 'measurement_load',
+    'bundle_case_map', 'result_check', 'result_case_map', 'result_map', 'pose_check', 'pose_map', 'pose_load'])
+def test_case_identity_is_checked_independently_of_root_summary(tmp_path, corruption):
+    folder, _ = raw_case(tmp_path)
+    if corruption.startswith(('measurement', 'bundle')):
+        path = folder/'bundle.json'
+        data = json.loads(path.read_text())
+        if corruption == 'measurement_check':
+            data['measurement']['check'] = 'calibration-loaded'
+        elif corruption == 'measurement_map':
+            data['measurement']['map_id'] = 'wrong-map'
+        elif corruption == 'measurement_load':
+            data['measurement']['load_state'] = 'loaded'
+        else:
+            data['case'] = {'map_id': 'wrong-map'}
+        path.write_text(json.dumps(data))
+    elif corruption.startswith('result'):
+        path = folder/'result.json'
+        data = json.loads(path.read_text())
+        if corruption == 'result_check':
+            data['check'] = 'calibration-loaded'
+        elif corruption == 'result_case_map':
+            data['case']['map_id'] = 'wrong-map'
+        else:
+            data['map_id'] = 'wrong-map'
+        path.write_text(json.dumps(data))
+    else:
+        path = folder/'eval_only/r1/pose.jsonl'
+        data = b.rows(path.read_bytes())
+        if corruption == 'pose_check':
+            data[25].pop('requested_check')
+        elif corruption == 'pose_map':
+            data[25]['map_id'] = 'wrong-map'
+        else:
+            data[25]['load_state'] = 'loaded'
+        path.write_text(''.join(json.dumps(row)+'\n' for row in data))
+    with pytest.raises(ValueError, match='identity|condition'):
+        b.load_case(folder, b.criterion())
+
+
+def test_uncommanded_initial_hold_is_allowed_but_first_coast_tick_is_required(tmp_path):
+    folder, _ = raw_case(tmp_path)
+    path = folder/'robots/r1/commands.jsonl'
+    commands = b.rows(path.read_bytes())[10:]
+    path.write_text(''.join(json.dumps(row)+'\n' for row in commands))
+    b.load_collection(folder, b.criterion())
+    assert commands[80]['forward'] == 0.
+    commands.pop(80)
+    path.write_text(''.join(json.dumps(row)+'\n' for row in commands))
+    with pytest.raises(ValueError, match='missing scheduled command ticks'):
+        b.load_collection(folder, b.criterion())
+
+
+@pytest.mark.parametrize('entry', ['root', 'case'])
+@pytest.mark.parametrize('change', ['modify', 'delete'])
+def test_root_completion_is_in_manifest_and_rechecked(tmp_path, entry, change):
+    folder, _ = raw_case(tmp_path)
+    cases = b.load_collection(folder if entry == 'case' else tmp_path, b.criterion())
+    path = tmp_path/'result.json'
+    items = {item['path']: item for case in cases for item in case['inputs']}
+    assert items[str(path)]['sha256'] == b.sha(path.read_bytes())
+    if change == 'delete':
+        path.unlink()
+    else:
+        path.write_text('{}')
+    with pytest.raises(ValueError, match='input (changed|missing)'):
+        b.verify_inputs(cases)
+
+
+def test_review_counterexamples_are_in_ci_collection():
+    from scripts import run_ci_tests as runner
+    assert 'tests/test_review_346.py' in runner.collect_test_files(runner.ROOT, runner.TEST_PATTERNS)
 
 
 def test_published_freeze_candidate_and_criterion_a_are_preserved():

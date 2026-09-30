@@ -1,10 +1,21 @@
 # v87/v89 무하중 오프라인 보정 — PARTIAL_UNLOADED_SIM
 
+## PR #346 독립 검토 수정 (2026-10-01)
+
+[독립 검토](REVIEW_346.md)의 R1–R4를 검증기에 함께 반영했다.
+수집 시점 확인 기능이 없으므로 새 v88 자료도 수치 진단만 내며 축별 판정은 null이다.
+상위 수집 완료 기록, 조건·지도 신원, 일정상 0 명령의 누락, 입력 변경을 검사한다.
+수정 범위·검사·남은 제한은 [대응 기록](REVIEW_346_FIXES.md)에 있다.
+동결 criterion A/B와 r1–r4 산출물 바이트는 보존했다. 보정값 정정이 없어 r5는 만들지 않았다.
+
 ## r4 / criterion B — 2026-10-01, CANDIDATE_UNVALIDATED
 
 ### r3 이후 코디네이터 결정 (2026-10-01)
 
-**r3 전에 고정한 criterion A는 FAILED이며 계속 실패로 남는다. A를 다시 채점하지 않는다.**
+**criterion A는 FAILED이며 계속 실패로 남는다. A를 다시 채점하지 않는다.**
+코드는 A를 먼저 읽고 해시를 출력한 뒤 r3를 적합한다. 다만 A는 r3 결과와 함께
+`bedcc99d`에 처음 커밋됐고, 독립적으로 시점이 고정된 선행 기록은 확인되지 않았다.
+따라서 적합 전 사전 등록이 독립 입증됐다고 표현하지 않는다.
 소비자는 영상 위치 보정 사이에 추측 항법을 하는 자기 카메라 PF
 (`harness/owncam_localizer.py`)다. 이 용도에서는 덜 모델링된 동역학에 대한 PF의 강건성을 위해
 보수적인 과정 잡음을 쓰는 것이 허용되며 표준적인 접근이다
@@ -90,9 +101,16 @@ PRBS 3.2초(축별 297창)의 구동 성분 p95는 전진 5.829 mm·측면 4.799
 ### 새 raw 검증과 #344 회전 일정 확인
 
 [검증기](../../scripts/validate_consumer_criterion_b.py)는 재적합하지 않는다. 완료된 수집의
-bundle/measurement 일정과 발행 명령·lease·시계·pose 개수/행렬을 대조하고, 입력 해시를 실행 후
-다시 확인한다. 이미 본 pose 바이트·훈련 지도는 held-out에서 제외한다.
-새 자료가 실제 B 고정 뒤 수집됐는지는 수집 기록으로도 확인해야 하며, 해시만으로 시점을 증명하지 않는다.
+bundle/measurement/result/pose의 조건·지도, 일정과 발행 명령·lease·시계·pose 개수/행렬을
+대조한다. 일정의 coast를 포함한 모든 tick에는 실제 명령 기록이 필요하며, 일정 밖 초기 hold는
+명령을 요구하지 않는다. case 폴더를 지정해도 바로 위 수집의 완료·소스 고정·전체 분모와
+각 case 완료 기록을 확인한다. 상위 완료 기록과 동결 기준·후보를 포함한 입력 해시를 실행 후
+다시 확인한다. 원래 상위 기록이 없는 분리된 case 사본은 거부한다.
+
+이미 본 pose 바이트·훈련 지도는 held-out에서 제외한다. **현재 수집 시점 확인 기록의 검증 기능은
+없다.** B·후보·raw 해시와 연결된 선후관계를 확인하는 기능이 마련되기 전에는 다른 지도 v88도
+`INELIGIBLE` 수치 진단이며, 모든 축의 `pass`와 전체 `pass`는 null이다. `numerical_pass`는
+수치 조건만 나타낸다. 소스 SHA·커밋 날짜·파일 날짜를 수집 시점 증거로 대신 쓰지 않는다.
 
 ```sh
 python3 -m scripts.validate_consumer_criterion_b \
@@ -100,7 +118,8 @@ python3 -m scripts.validate_consumer_criterion_b \
   --output /absolute/path/outside-raw/criterion_B_result.json
 ```
 
-종료 코드는 전체 통과 0, 실패 1, 미검증 축/훈련/부적격 2다. 잘못되거나 미완료인 raw는 오류로 거부한다.
+종료 코드의 정의는 전체 통과 0, 실패 1, 미검증 축/훈련/부적격 2다. 현재는 수집 시점 검증이
+구현되지 않아 정상 raw도 2로 종료한다. 잘못되거나 미완료인 raw는 오류로 거부한다.
 v89 실제 raw 스모크는 `TRAINING_SMOKE`, 세 축 판정 null, 종료 2를 확인했다.
 step/PRBS가 없는 축뿐 아니라 **고정 후보가 없는 회전축도 계속 null**이다.
 새 회전 수집으로 회전 평균을 적합하려면 그 자료는 훈련이 되며, 회전 검증에는 다시 독립 자료가 필요하다.
@@ -136,7 +155,7 @@ Chrome `cgWindowNotFound`로 화면 검증은 미완료다. 새 영상/서버는
 기존 [r1](calibration_partial.json)·[r2](calibration_partial_r2.json) 바이트는 유지했다.
 제어기·`.github/workflows`를 변경하거나 물리·렌더·모델 호출을 실행하지 않았다. **draft 유지, 미병합**이다.
 
-### 소비자와 먼저 고정한 기준 A
+### 소비자와 기준 A (선고정 시점의 증거 제한은 위 참조)
 
 검증 전에 [기준 파일](consumer_criterion_r3.json)을 저장하고 해시
 `49b7ffbbc07425dda3d2f2410c480ea6ee1315a1c831f97e75efc6989164391c`를 고정했다.
