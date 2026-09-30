@@ -1,0 +1,208 @@
+{
+  "schema": "ugrp.retention-independent-exclusions.v1",
+  "reviewed_pr": 309,
+  "reviewed_head": "70f2f09c46bdc1e265af70fb44111f5906324dff",
+  "manifest_sha256": "7dae93f5544dba9575048865ccd1ed40e014b30423a949f16f80384976a4a635",
+  "verdict": "DO NOT EXECUTE",
+  "outputs_root": "/Users/changmin/projects/ugrp/outputs",
+  "match_semantics": {
+    "paths": "outputs_root-relative POSIX paths",
+    "folder": "Exact folder or descendants (path == folder or path starts with folder + /).",
+    "glob": "Python fnmatch.fnmatchcase on the entire relative path; * may match /.",
+    "action": "Remove each matching file from delete lists; do not execute the old manifest. Union all groups; do not add group bytes if overlapping.",
+    "scope": "Required conservative exclusions for confirmed counterexamples. This file is not a prune manifest or approval of the residual candidates. Regenerate and review a new manifest with all counts/hashes/reconstruction links."
+  },
+  "exclusions": [
+    {
+      "id": "E1",
+      "reason": "Confirmed learned approach/grasp RGB inputs; realtime family also supplies ACT train/development dataset (1155 deleted training images). Preserve complete run families pending dependency-aware manifest.",
+      "exclude": [
+        {
+          "kind": "folder",
+          "path": "beam-regrasp-20260925"
+        },
+        {
+          "kind": "folder",
+          "path": "dispatch-action-act-20260924"
+        },
+        {
+          "kind": "folder",
+          "path": "dynamic-coordination-20260925"
+        },
+        {
+          "kind": "folder",
+          "path": "dynamic-team-recovery-20260925"
+        },
+        {
+          "kind": "folder",
+          "path": "fine-gain-schedule-20260924"
+        },
+        {
+          "kind": "folder",
+          "path": "fine-gain-schedule-20260924-sync"
+        },
+        {
+          "kind": "folder",
+          "path": "fine-gain-schedule-20260924-sync-v3"
+        },
+        {
+          "kind": "folder",
+          "path": "map-goto-20260925"
+        },
+        {
+          "kind": "folder",
+          "path": "plan-guidance-20260925"
+        },
+        {
+          "kind": "folder",
+          "path": "post-run-replay-20260924"
+        },
+        {
+          "kind": "folder",
+          "path": "simulation-realtime-20260923"
+        }
+      ],
+      "matched_delete_totals": {
+        "files": 173756,
+        "bytes": 10925266596,
+        "allocated_bytes": 11288457216,
+        "allocated_gib": 10.513195
+      },
+      "examples": [
+        "beam-regrasp-20260925/X1-grasp-grasp-models/evaluation-fixture.json",
+        "beam-regrasp-20260925/X1-grasp-grasp-models/r1-model.json",
+        "beam-regrasp-20260925/X1-grasp-grasp-models/r3-model.json"
+      ]
+    },
+    {
+      "id": "E2",
+      "reason": "Confirmed learned vision localization runtime inputs, plus segmentation-model cohort inputs and ground-truth labels.",
+      "exclude": [
+        {
+          "kind": "folder",
+          "path": "vision-worker-closed-loop-20260927"
+        },
+        {
+          "kind": "folder",
+          "path": "carry-relocalization-b1-20260929"
+        }
+      ],
+      "matched_delete_totals": {
+        "files": 5900,
+        "bytes": 77406441,
+        "allocated_bytes": 86736896,
+        "allocated_gib": 0.08078
+      },
+      "examples": [
+        "carry-relocalization-b1-20260929/cohort/render_default/eval_only/labels/cp0_r1_p20_1230.png",
+        "carry-relocalization-b1-20260929/cohort/render_default/eval_only/labels/cp0_r1_p20_1500.png",
+        "carry-relocalization-b1-20260929/cohort/render_default/eval_only/labels/cp0_r1_p20_1770.png"
+      ]
+    },
+    {
+      "id": "E3",
+      "reason": "Published structure-pixel statistics depend on deleted stage-probe images (54594 of 67237 contributing raw frames). Preserve all affected producer family frame directories.",
+      "exclude": [
+        {
+          "kind": "glob",
+          "pattern": "pair-stage-probes-*/cases/*/frames/*"
+        }
+      ],
+      "matched_delete_totals": {
+        "files": 496540,
+        "bytes": 6584779282,
+        "allocated_bytes": 7282229248,
+        "allocated_gib": 6.782104
+      },
+      "examples": [
+        "pair-stage-probes-052e3eba-v6d-bound-e2e/cases/grasp_lift_b-v6d_boundary_corner+++_s911_pE2E/frames/r1/00003.jpg",
+        "pair-stage-probes-052e3eba-v6d-bound-e2e/cases/grasp_lift_b-v6d_boundary_corner+++_s911_pE2E/frames/r1/00004.jpg",
+        "pair-stage-probes-052e3eba-v6d-bound-e2e/cases/grasp_lift_b-v6d_boundary_corner+++_s911_pE2E/frames/r1/00005.jpg"
+      ]
+    },
+    {
+      "id": "E4",
+      "reason": "Published offline localization detection replay, outcome classification, color-detection score, and rendering gate/hash statistics consume raw RGB/label images.",
+      "exclude": [
+        {
+          "kind": "folder",
+          "path": "owncam-loc-20260925"
+        },
+        {
+          "kind": "folder",
+          "path": "zone-rgb-outcome-20260925"
+        },
+        {
+          "kind": "folder",
+          "path": "zone-rgb-outcome-v2-20260925"
+        },
+        {
+          "kind": "folder",
+          "path": "zone-rgb-color-20260925"
+        },
+        {
+          "kind": "folder",
+          "path": "render-profile-ab-20260929"
+        }
+      ],
+      "matched_delete_totals": {
+        "files": 31588,
+        "bytes": 654559532,
+        "allocated_bytes": 714850304,
+        "allocated_gib": 0.665756
+      },
+      "examples": [
+        "owncam-loc-20260925/raw/dev-cl-s11/frames/00004.jpg",
+        "owncam-loc-20260925/raw/dev-cl-s11/frames/00005.jpg",
+        "owncam-loc-20260925/raw/dev-cl-s11/frames/00007.jpg"
+      ]
+    },
+    {
+      "id": "E5",
+      "reason": "Reported full-frame byte equivalence and shorter-window comparisons require both sim-speed runs and their dev-a8 comparison baseline. Retired status does not recreate the lost raw.",
+      "exclude": [
+        {
+          "kind": "folder",
+          "path": "sim-speed-20260926"
+        },
+        {
+          "kind": "folder",
+          "path": "retired-worktrees/codex-sim-speed-fix"
+        },
+        {
+          "kind": "folder",
+          "path": "retired-worktrees/kiro-sim-speed"
+        },
+        {
+          "kind": "folder",
+          "path": "m1-owncam-20260926/dev-a8"
+        }
+      ],
+      "matched_delete_totals": {
+        "files": 16323,
+        "bytes": 226334577,
+        "allocated_bytes": 262598656,
+        "allocated_gib": 0.244564
+      },
+      "examples": [
+        "m1-owncam-20260926/dev-a8/m1dev-s93/frames/00004.jpg",
+        "m1-owncam-20260926/dev-a8/m1dev-s93/frames/00005.jpg",
+        "m1-owncam-20260926/dev-a8/m1dev-s93/frames/00006.jpg"
+      ]
+    }
+  ],
+  "union_delete_totals": {
+    "files": 724107,
+    "bytes": 18468346428,
+    "allocated_bytes": 19634872320,
+    "allocated_gib": 18.2864,
+    "sorted_paths_lf_sha256": "59b4eb61c1f8c8c299913e009fe4730d28aec9734cca3ea7e70b79f8d62986a3"
+  },
+  "residual_candidates_not_approved": {
+    "files": 298446,
+    "bytes": 5204469247,
+    "allocated_bytes": 5861060608,
+    "allocated_gib": 5.458538
+  },
+  "measurement_note": "Actual lstat st_blocks * 512 at review time; excludes already-kept bytes. APFS free-space recovery is not guaranteed."
+}
