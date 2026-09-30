@@ -1,0 +1,253 @@
+FFFFFFFFFF                                                               [100%]
+=================================== FAILURES ===================================
+____ test_source_distance_failure_cannot_be_hidden_by_pass_summary[leg_end] ____
+
+boundary = 'leg_end'
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="299d R1: recorded source beam positions do not constrain derived distance checks")
+    @pytest.mark.parametrize("boundary", ["leg_end", "leg_start"])
+    def test_source_distance_failure_cannot_be_hidden_by_pass_summary(boundary):
+        data, context = contract.public_record()
+        # Mutate a copy, not the public fixture or raw. Both robots' source snapshots
+        # disagree with the stored passing distance. Existing timestamps are kept.
+        for rid in ROBOTS:
+            data["result"]["chain_raw"][rid][boundary]["1"]["gt"]["beam_xyz"][0] += 1.
+        source = metrics(data)
+        assert source["leg_error_m"] > .1
+        if boundary == "leg_end":
+            assert source["end_error_m"] > .1
+        out = contract.adjudicate(data, context)
+>       assert out["class"] not in cp.PASS, {"source_metrics": source, "class": out["class"],
+                                           "issues": out["hard_limit_chain"]["evidence_issues"]}
+E       AssertionError: {'source_metrics': {'end_error_m': 0.9504867167681125, 'leg_error_m': 1.0025570570226798}, 'class': 'PASS_CLEAN', 'issues': []}
+E       assert 'PASS_CLEAN' not in ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED')
+E        +  where ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED') = cp.PASS
+
+tests/test_classify_review_299d.py:67: AssertionError
+___ test_source_distance_failure_cannot_be_hidden_by_pass_summary[leg_start] ___
+
+boundary = 'leg_start'
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="299d R1: recorded source beam positions do not constrain derived distance checks")
+    @pytest.mark.parametrize("boundary", ["leg_end", "leg_start"])
+    def test_source_distance_failure_cannot_be_hidden_by_pass_summary(boundary):
+        data, context = contract.public_record()
+        # Mutate a copy, not the public fixture or raw. Both robots' source snapshots
+        # disagree with the stored passing distance. Existing timestamps are kept.
+        for rid in ROBOTS:
+            data["result"]["chain_raw"][rid][boundary]["1"]["gt"]["beam_xyz"][0] += 1.
+        source = metrics(data)
+        assert source["leg_error_m"] > .1
+        if boundary == "leg_end":
+            assert source["end_error_m"] > .1
+        out = contract.adjudicate(data, context)
+>       assert out["class"] not in cp.PASS, {"source_metrics": source, "class": out["class"],
+                                           "issues": out["hard_limit_chain"]["evidence_issues"]}
+E       AssertionError: {'source_metrics': {'end_error_m': 0.05078407789995169, 'leg_error_m': 0.7011575462139079}, 'class': 'PASS_CLEAN', 'issues': []}
+E       assert 'PASS_CLEAN' not in ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED')
+E        +  where ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED') = cp.PASS
+
+tests/test_classify_review_299d.py:67: AssertionError
+________ test_recorded_leg_requires_the_producers_start_witnesses[r1-0] ________
+
+robot = 'r1', leg = 0
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="299d R2: recorded leg does not require both source starts")
+    @pytest.mark.parametrize("robot,leg", [(r, k) for r in ROBOTS for k in (0, 1)])
+    def test_recorded_leg_requires_the_producers_start_witnesses(robot, leg):
+        data, context = contract.public_record()
+        del data["result"]["chain_raw"][robot]["leg_start"][str(leg)]
+        reconstructed = cp.ca.pcp.chain_legs(data["case"]["route"], data["result"]["chain_raw"])
+        assert reconstructed[leg]["recorded"] is False
+        out = contract.adjudicate(data, context)
+>       assert out["class"] not in cp.PASS, {"class": out["class"],
+                                           "issues": out["hard_limit_chain"]["evidence_issues"]}
+E       AssertionError: {'class': 'PASS_CLEAN', 'issues': []}
+E       assert 'PASS_CLEAN' not in ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED')
+E        +  where ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED') = cp.PASS
+
+tests/test_classify_review_299d.py:80: AssertionError
+________ test_recorded_leg_requires_the_producers_start_witnesses[r1-1] ________
+
+robot = 'r1', leg = 1
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="299d R2: recorded leg does not require both source starts")
+    @pytest.mark.parametrize("robot,leg", [(r, k) for r in ROBOTS for k in (0, 1)])
+    def test_recorded_leg_requires_the_producers_start_witnesses(robot, leg):
+        data, context = contract.public_record()
+        del data["result"]["chain_raw"][robot]["leg_start"][str(leg)]
+        reconstructed = cp.ca.pcp.chain_legs(data["case"]["route"], data["result"]["chain_raw"])
+        assert reconstructed[leg]["recorded"] is False
+        out = contract.adjudicate(data, context)
+>       assert out["class"] not in cp.PASS, {"class": out["class"],
+                                           "issues": out["hard_limit_chain"]["evidence_issues"]}
+E       AssertionError: {'class': 'PASS_CLEAN', 'issues': []}
+E       assert 'PASS_CLEAN' not in ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED')
+E        +  where ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED') = cp.PASS
+
+tests/test_classify_review_299d.py:80: AssertionError
+________ test_recorded_leg_requires_the_producers_start_witnesses[r2-0] ________
+
+robot = 'r2', leg = 0
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="299d R2: recorded leg does not require both source starts")
+    @pytest.mark.parametrize("robot,leg", [(r, k) for r in ROBOTS for k in (0, 1)])
+    def test_recorded_leg_requires_the_producers_start_witnesses(robot, leg):
+        data, context = contract.public_record()
+        del data["result"]["chain_raw"][robot]["leg_start"][str(leg)]
+        reconstructed = cp.ca.pcp.chain_legs(data["case"]["route"], data["result"]["chain_raw"])
+        assert reconstructed[leg]["recorded"] is False
+        out = contract.adjudicate(data, context)
+>       assert out["class"] not in cp.PASS, {"class": out["class"],
+                                           "issues": out["hard_limit_chain"]["evidence_issues"]}
+E       AssertionError: {'class': 'PASS_CLEAN', 'issues': []}
+E       assert 'PASS_CLEAN' not in ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED')
+E        +  where ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED') = cp.PASS
+
+tests/test_classify_review_299d.py:80: AssertionError
+________ test_recorded_leg_requires_the_producers_start_witnesses[r2-1] ________
+
+robot = 'r2', leg = 1
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="299d R2: recorded leg does not require both source starts")
+    @pytest.mark.parametrize("robot,leg", [(r, k) for r in ROBOTS for k in (0, 1)])
+    def test_recorded_leg_requires_the_producers_start_witnesses(robot, leg):
+        data, context = contract.public_record()
+        del data["result"]["chain_raw"][robot]["leg_start"][str(leg)]
+        reconstructed = cp.ca.pcp.chain_legs(data["case"]["route"], data["result"]["chain_raw"])
+        assert reconstructed[leg]["recorded"] is False
+        out = contract.adjudicate(data, context)
+>       assert out["class"] not in cp.PASS, {"class": out["class"],
+                                           "issues": out["hard_limit_chain"]["evidence_issues"]}
+E       AssertionError: {'class': 'PASS_CLEAN', 'issues': []}
+E       assert 'PASS_CLEAN' not in ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED')
+E        +  where ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED') = cp.PASS
+
+tests/test_classify_review_299d.py:80: AssertionError
+________ test_reordered_source_boundaries_cannot_pass[start_after_end] _________
+
+kind = 'start_after_end'
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="299d R2: source boundary chronology is not validated")
+    @pytest.mark.parametrize("kind", ["start_after_end", "negative_earlier_end", "stop_after_trace"])
+    def test_reordered_source_boundaries_cannot_pass(kind):
+        data, context = contract.public_record()
+        raw = data["result"]["chain_raw"]
+        if kind == "start_after_end":
+            for rid in ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+                snap["gt"]["t"] = snap["sim_s"]
+        elif kind == "negative_earlier_end":
+            rid = min(ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+        out = contract.adjudicate(data, context)
+>       assert out["class"] not in cp.PASS, {"kind": kind, "class": out["class"],
+                                           "issues": out["hard_limit_chain"]["evidence_issues"]}
+E       AssertionError: {'kind': 'start_after_end', 'class': 'PASS_CLEAN', 'issues': []}
+E       assert 'PASS_CLEAN' not in ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED')
+E        +  where ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED') = cp.PASS
+
+tests/test_classify_review_299d.py:102: AssertionError
+______ test_reordered_source_boundaries_cannot_pass[negative_earlier_end] ______
+
+kind = 'negative_earlier_end'
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="299d R2: source boundary chronology is not validated")
+    @pytest.mark.parametrize("kind", ["start_after_end", "negative_earlier_end", "stop_after_trace"])
+    def test_reordered_source_boundaries_cannot_pass(kind):
+        data, context = contract.public_record()
+        raw = data["result"]["chain_raw"]
+        if kind == "start_after_end":
+            for rid in ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+                snap["gt"]["t"] = snap["sim_s"]
+        elif kind == "negative_earlier_end":
+            rid = min(ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+        out = contract.adjudicate(data, context)
+>       assert out["class"] not in cp.PASS, {"kind": kind, "class": out["class"],
+                                           "issues": out["hard_limit_chain"]["evidence_issues"]}
+E       AssertionError: {'kind': 'negative_earlier_end', 'class': 'PASS_CLEAN', 'issues': []}
+E       assert 'PASS_CLEAN' not in ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED')
+E        +  where ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED') = cp.PASS
+
+tests/test_classify_review_299d.py:102: AssertionError
+________ test_reordered_source_boundaries_cannot_pass[stop_after_trace] ________
+
+kind = 'stop_after_trace'
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="299d R2: source boundary chronology is not validated")
+    @pytest.mark.parametrize("kind", ["start_after_end", "negative_earlier_end", "stop_after_trace"])
+    def test_reordered_source_boundaries_cannot_pass(kind):
+        data, context = contract.public_record()
+        raw = data["result"]["chain_raw"]
+        if kind == "start_after_end":
+            for rid in ROBOTS:
+                snap = raw[rid]["leg_start"]["1"]
+                snap["sim_s"] = data["row"]["chain"]["legs"][1]["end_sim_s"] + 1.
+                snap["gt"]["t"] = snap["sim_s"]
+        elif kind == "negative_earlier_end":
+            rid = min(ROBOTS, key=lambda r: raw[r]["leg_end"]["1"]["sim_s"])
+            snap = raw[rid]["leg_end"]["1"]
+            snap["sim_s"] = snap["gt"]["t"] = -1.
+        else:
+            data["result"]["gt_at_stop"]["t"] = data["trace"][-1]["t"] + 100.
+        out = contract.adjudicate(data, context)
+>       assert out["class"] not in cp.PASS, {"kind": kind, "class": out["class"],
+                                           "issues": out["hard_limit_chain"]["evidence_issues"]}
+E       AssertionError: {'kind': 'stop_after_trace', 'class': 'PASS_CLEAN', 'issues': []}
+E       assert 'PASS_CLEAN' not in ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED')
+E        +  where ('PASS_CLEAN', 'PASS_CONTACT_RECOVERED') = cp.PASS
+
+tests/test_classify_review_299d.py:102: AssertionError
+_____ test_registered_reader_does_not_count_source_distance_contradiction ______
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1344/test_registered_reader_does_no0')
+
+    @pytest.mark.xfail(strict=True, raises=AssertionError,
+                       reason="299d R1: registered reader admits a source-distance contradiction")
+    def test_registered_reader_does_not_count_source_distance_contradiction(tmp_path):
+        raw, seal, _ = contract.registered_fixture(tmp_path)
+        clean = cp.analyse("registered-clean", raw, sealed_manifest=seal)
+        assert clean["summary"]["pass_placements"] == 1
+        cid = seal["cases"][0]["attempts"][0]["case_id"]
+        result_path = cp.ca.dra.case_dir(raw, cid) / "result.json"
+        result = json.loads(result_path.read_text())
+        for rid in ROBOTS:
+            result["chain_raw"][rid]["leg_end"]["1"]["gt"]["beam_xyz"][0] += 1.
+        contract.base.write_json(result_path, result)
+        out = cp.analyse("registered-contradiction", raw, sealed_manifest=seal)
+>       assert out["summary"]["pass_placements"] == 0, out["summary"]
+E       AssertionError: {'n_cases': 72, 'n_attempts': 1, 'n_adjudicated_attempt_slots': 72, 'n_placements': 60, ...}
+E       assert 1 == 0
+
+tests/test_classify_review_299d.py:119: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_classify_review_299d.py::test_source_distance_failure_cannot_be_hidden_by_pass_summary[leg_end]
+FAILED tests/test_classify_review_299d.py::test_source_distance_failure_cannot_be_hidden_by_pass_summary[leg_start]
+FAILED tests/test_classify_review_299d.py::test_recorded_leg_requires_the_producers_start_witnesses[r1-0]
+FAILED tests/test_classify_review_299d.py::test_recorded_leg_requires_the_producers_start_witnesses[r1-1]
+FAILED tests/test_classify_review_299d.py::test_recorded_leg_requires_the_producers_start_witnesses[r2-0]
+FAILED tests/test_classify_review_299d.py::test_recorded_leg_requires_the_producers_start_witnesses[r2-1]
+FAILED tests/test_classify_review_299d.py::test_reordered_source_boundaries_cannot_pass[start_after_end]
+FAILED tests/test_classify_review_299d.py::test_reordered_source_boundaries_cannot_pass[negative_earlier_end]
+FAILED tests/test_classify_review_299d.py::test_reordered_source_boundaries_cannot_pass[stop_after_trace]
+FAILED tests/test_classify_review_299d.py::test_registered_reader_does_not_count_source_distance_contradiction
+10 failed, 4 deselected in 1.30s
