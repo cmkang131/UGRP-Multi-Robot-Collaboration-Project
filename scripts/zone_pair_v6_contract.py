@@ -33,10 +33,17 @@ sealing commit ``be95f8b0`` (``verify_v6_historical(revision='v6c')``). The curr
 2026-09-29 (coordinator, b-v6g carry stage probes): the v6d DRAFT pins the executor, policy, localizer and
 contract modules the carry flags change. It is historical in the same way as v6c: its bytes stay, and it is
 audited only against the blobs of its last sealing commit ``48f9872a`` (``verify_v6_historical(revision='v6d')``).
-The current DRAFT is v6e (bundle v81, ``REVISION_POLICIES['v6e']``): the opt-in carry policy ``b-v6g`` (dead-reckoning
+The previous DRAFT is v6e (bundle v81, ``REVISION_POLICIES['v6e']``): the opt-in carry policy ``b-v6g`` (dead-reckoning
 PF model with lateral breakaway ramp and cross-axis drift, pair-mean carry yaw, beam-edge relative yaw, optical-black
 image validity, bounded retreat) on top of b-v6d, with v5h and b-only as matched controls. The L7 end-inset policy
 ``b-v6g-l7`` is defined (opt-in route change) but is not part of the registered run set.
+
+2026-09-30 pre-seal v6h: v6e bytes are historical at e510779d. CURRENT_REVISION
+is intentionally left v6e until the coordinator's separate final-seal commit;
+contract/load_config reject the historical record. candidate_contract('v6h')
+is a hash preview only, never current-source admission. No prereg_v6h seal is
+written before independent review.
+
 """
 import copy
 import hashlib
@@ -53,24 +60,37 @@ PREREG_V6B = ROOT/'experiments/2026-09-28-zone-pair-v6b-boot/prereg_v6b.json'
 PREREG_V6C = ROOT/'experiments/2026-09-29-pair-v6c/prereg_v6c.json'
 PREREG_V6D = ROOT/'experiments/2026-09-29-pair-v6d-align/prereg_v6d.json'
 PREREG_V6E = ROOT/'experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json'
+PREREG_V6H = ROOT/'experiments/2026-09-30-pair-v6h-carry/prereg_v6h.json'
 V5H = ROOT/'experiments/2026-09-27-zone-pair-dev/prereg_v5h.json'
 V6_REGISTRATION_COMMIT = '3c26acddec066adcd9164e6d2a6f51c1261c5f66'   # PR #259 REGISTERED conversion
 V6B_DRAFT_COMMIT = '15793691b3af136769cdf0b090e722daddf80ab4'         # PR #261 last v6b DRAFT sealing
 V6C_DRAFT_COMMIT = 'be95f8b018bb110e2fc97ec5a3c90e357a949449'         # PR #263 v6c sealing (merge with #256/#257/#249)
 V6D_DRAFT_COMMIT = '48f9872ab5175f1369ff2980b187cd8bc2b1a6b2'         # PR #265 last v6d DRAFT sealing (review fixes)
+V6E_DRAFT_COMMIT = 'e510779db7be07be2b54493d52a9c754bd59a5bc'
 HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT), 'v6b': (PREREG_V6B, V6B_DRAFT_COMMIT),
-                        'v6c': (PREREG_V6C, V6C_DRAFT_COMMIT), 'v6d': (PREREG_V6D, V6D_DRAFT_COMMIT)}
-HISTORICAL_STATUS = {'v6': 'REGISTERED', 'v6b': 'DRAFT', 'v6c': 'DRAFT', 'v6d': 'DRAFT'}
-CURRENT_REVISION = 'v6e'      # current v6-family DRAFT (b-v6g carry stage probe, bundle v81)
+                        'v6c': (PREREG_V6C, V6C_DRAFT_COMMIT), 'v6d': (PREREG_V6D, V6D_DRAFT_COMMIT),
+                        'v6e': (PREREG_V6E, V6E_DRAFT_COMMIT)}
+HISTORICAL_STATUS = {'v6': 'REGISTERED', 'v6b': 'DRAFT', 'v6c': 'DRAFT', 'v6d': 'DRAFT', 'v6e': 'DRAFT'}
+CURRENT_REVISION = 'v6e'      # intentionally NOT flipped: v6h final seal is a separate coordinator commit
+PENDING_REVISION = 'v6h'      # pre-seal source preview only; no current-source admission
 
 
 def contract(revision=None):
     revision = CURRENT_REVISION if revision is None else revision
+    if revision in HISTORICAL_REVISIONS:
+        raise ValueError(f'{revision} is historical; v6h is pending seal; audit it with verify_v6_historical')
     if revision is None:
         raise ValueError('no current v6-family draft on main (v6 and v6b are historical; '
                          'the next draft sets CURRENT_REVISION)')
     if revision != CURRENT_REVISION:
         raise ValueError(f'{revision} is historical; audit it with verify_v6_historical')
+    return candidate_contract(revision)
+
+
+def candidate_contract(revision='v6h'):
+    """Unsealed current-tree preview. Does not set CURRENT_REVISION or write a seal."""
+    if revision not in REVISION_POLICIES:
+        raise ValueError('unknown candidate revision')
     from scripts.zone_pair_grasp_contract import SOURCE_PATHS
     from scripts.zone_pair_dev_contract import scene_contract
     paths = (*SOURCE_PATHS,*scene_contract()['source_sha256'],
@@ -96,6 +116,24 @@ def contract(revision=None):
              'experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json',
              'experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json',
              'experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json',
+             'experiments/2026-09-30-pair-v6h-carry/proposed_carry_fwd_gain_fit.json',
+             # Confirmatory chain driver and pure setup/evaluation closure, not probe monkeypatch modules.
+             'scripts/run_pair_stage_probes.py', 'harness/pair_stage_probe.py', 'harness/pair_chain_probe.py',
+             'experiments/2026-09-30-door-relax-envelope/analysis/chain_analysis.py',
+             'experiments/2026-09-29-door-guard-relax/analysis/door_relax_analysis.py',
+             # Inputs read by the chain setup, calibrated controller and floor-light renderer.
+             'experiments/2026-09-29-pair-v6e-carry/hR2_samples.json',
+             'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json',
+             'maps/zones/zone_wide_door_tags_v2_dock_v3.json',
+             'maps/zones/zone_wide_door_tags_v2.json', 'sim/render_profile.py',
+             'configs/zone_study_integration/llm_driver.json',
+             'experiments/2026-09-30-pair-v6h-carry/build_prereg_v6h.py',
+             'experiments/2026-09-30-pair-v6h-carry/PREREG_DRAFT.md',
+             'experiments/2026-09-30-pair-v6h-carry/REGISTRATION_PLAN.md',
+             'experiments/2026-09-30-pair-v6h-carry/make_confirmatory_placements.py',
+             'experiments/2026-09-30-pair-v6h-carry/placements_confirmatory_DRAFT.json',
+             'experiments/2026-09-30-b-v6h-gain/placements/held_out_12.json',
+             'experiments/2026-09-30-b-v6h-gain/placements/held_out_sheet_12.json',
              # PR #249: the team host picks the robot model and spawn keepouts through these on
              # every map (v2 maps delegate to the legacy path), so they are in the run closure.
              'sim/zone_masterpi_v3_scene.py','sim/zone_model_conventions.py')
@@ -107,10 +145,18 @@ def contract(revision=None):
     from harness import owncam_recovery_v6c as clock, zone_pair_grasp_entry_v6c as entry
     from harness import owncam_align_motion_v6d as fine, owncam_pair_beam_v6d as wide
     return {'execution_bundle_id':EXECUTION_BUNDLE_ID,'policy_flags':{
-        k:vars(POLICIES[k]) for k in REVISION_POLICIES[revision]},
+        # JSON-normalize tuple-valued flags before both sealing and comparison.
+        k:json.loads(json.dumps(vars(POLICIES[k]))) for k in REVISION_POLICIES[revision]},
         # Review 3: flag semantics are part of the registration. beam_relative
         # (A) now also removes PF convergence from the align stop conditions.
         'flag_definitions':{
+            'carry_fwd_gain':'v6h: loaded PF gain[0][0] x fixed PR #284 kappa; copy, idempotent, hash-pinned fit',
+            'loaded_k_xy':'v6h: loaded pair base-motion margin only; approach and arm sweeps stay 2',
+            'loaded_k_yaw':'v6h: loaded pair base-motion margin only; global/consistency K_SIGMA stays 2',
+            'loaded_gate_yaw_deg':'v6h: instance-scoped loaded HIGH/LOW yaw; unloaded gate unchanged',
+            'progress_arm_on_moved_fix':('v6h p2f: loaded-pair monitor arms only from a finite fix strictly after first move; '
+                                         'fail-open: no reliable stall detection for the loaded pair'),
+            'carry_axial_lag':'v6h: axial lag-model timing with the corrected forward gain; requires carry_fwd_gain',
             'posterior_relook':'B: posterior-preserving relook, observation quality receipts, blocked-pan cancel',
             'beam_relative':('A: own-view beam-relative align/close-in and pre-close shape report; separate '
                              'global safety envelope with planned safety looks; during align/pre-close the PF is '
@@ -253,6 +299,9 @@ def verify_v6_historical(path=None, *, root=ROOT, commit=None, revision='v6'):
 def load_config(args):
     p=json.loads(args.prereg.read_text());old=json.loads(V5H.read_text())
     revision=p.get('registration_revision')
+    if revision in HISTORICAL_REVISIONS:
+        raise ValueError(f'v6 revision {revision!r} is historical: audit it with verify_v6_historical(); '
+                         'it is never prepared or run from the current tree')
     if revision is None or revision!=CURRENT_REVISION:
         if revision in HISTORICAL_REVISIONS:
             raise ValueError(f'v6 revision {revision!r} is historical: audit it with verify_v6_historical(); '

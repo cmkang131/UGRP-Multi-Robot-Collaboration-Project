@@ -1,0 +1,74 @@
+{
+  "scope": "offline unit tests only; no physics/simulation/model calls",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "base_source_sha": "a8094cc14e098a55483f53a3c49bf6a0b116043d",
+  "final": "154 passed",
+  "files": {
+    "tests.test_zone_pair_v6h": 64,
+    "tests.test_zone_pair_registered_source": 24,
+    "tests.test_ci_sharding": 66
+  },
+  "artifacts": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-register-unit-20260930/pytest-02.xml",
+      "sha256": "a8ec3eef9733cd78674aa9f44c2701e9dfe039d697cd1f85c3fc7c9cd8d52176",
+      "tests": 150,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-register-unit-20260930/pytest-03.xml",
+      "sha256": "bbb567128daee21f6263472bc8aedf007df48759f162f6d650ea2bb941cbe7d1",
+      "tests": 150,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-register-unit-20260930/pytest-final-02.xml",
+      "sha256": "8d42e6c38bc1278db2a183eb88210ff85af2dc2db47cec180467b08d744bb483",
+      "tests": 154,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-register-unit-20260930/pytest-final.xml",
+      "sha256": "99ed3721aa973db2e4300451dc648a1b147171228d1e7aae34311d6664407c12",
+      "tests": 1,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-register-unit-20260930/pytest.xml",
+      "sha256": "6ab2c5ce4183f1dbd760ffa7d78b07e38a2dae965979ac618896da8f39495885",
+      "tests": 150,
+      "failures": 5,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "raw_remote_backup": false,
+  "lock_released": true,
+  "builder_verify": {
+    "status": "verified_unsealed",
+    "runs": 72,
+    "sources": 104
+  },
+  "seal_created": false,
+  "current_revision_flipped": false,
+  "acceptance_replay": "NOT RUN; axial-on reference proposal only; coordinator confirmation pending",
+  "diagnostic_sources": [
+    "scripts/run_pair_stage_probes.py:safe_name and finish_result",
+    "harness/pair_chain_probe.py:leg_checks",
+    "scripts/zone_pair_v6_contract.py:JSON normalization"
+  ],
+  "limitations": [
+    "other unit test files not run locally per coordinator restriction",
+    "independent review pending",
+    "no physical replay or confirmatory results",
+    "no new study results for TensorBoard"
+  ]
+}

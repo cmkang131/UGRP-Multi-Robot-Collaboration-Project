@@ -117,7 +117,7 @@ def test_speech_caps_are_registered_per_bundle_and_ad_hoc_limits_are_refused():
         llm.speech_caps('main_pilot_10_30', bundle_id='zone-study-integration-v69-multiturn-landmark-agnostic')
     with pytest.raises(ContractViolation, match='not registered in'):
         llm.speech_caps('v66_default', bundle_id='zone-study-integration-v99-unknown')
-    assert zi.EXECUTION_BUNDLE_ID == 'zone-pair-v81-carry-dr-general'   # b-v6g carry stage probe (v80 + opt-in b-v6g)
+    assert zi.EXECUTION_BUNDLE_ID == 'zone-pair-v83-carry-door-gain'   # b-v6h1 pre-seal candidate (v81 + five opt-in options)
     assert 'zone-study-integration-v69-multiturn-landmark-agnostic' in zi.RETIRED_BUNDLE_IDS
 
 

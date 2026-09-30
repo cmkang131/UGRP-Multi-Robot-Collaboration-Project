@@ -14,7 +14,7 @@ from harness.zone_own_contract import pose_report_fresh
 from harness.owncam_time import report_at_or_after
 from harness.zone_own_driver import GuardedDriver
 from harness.zone_own_guards import (GATE_LOADED, GATE_UNLOADED,
-                                     TRUSTED_FIX_AGE_S, OwnPose, ProgressMonitor, commanded_step_m)
+                                     TRUSTED_FIX_AGE_S, OwnPose, ProgressMonitor, commanded_step_m, loaded_gate_profile)
 from harness.zone_pair_geometry import PairSweepGuard
 from harness.zone_own_sweep import SweepRecheck
 
@@ -25,8 +25,8 @@ class _PairRecheck(SweepRecheck):
     A geometrically clear arm step may run while HIGH, but must not stop the
     uncertainty clock. Overlapping gate/geometry waits count only once.
     """
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *, loaded_profile=None):
+        super().__init__(loaded_profile=loaded_profile)
         self.uncertain = False
         self.sweep_waiting = False
         # Review 3: a planned safety look (envelope growth by issued motion)
@@ -161,6 +161,41 @@ class GuardedPairApproach(GuardedDriver, PairApproachDriverV2):
 
 
 
+class MovedFixMonitor(ProgressMonitor):
+    """p2f, loaded pair only. Fail-open: no reliable stall detection for the loaded pair.
+
+    A stationary/regrasp fix cannot arm the baseline. Without a finite fix
+    strictly newer than the first issued move, needs_check/stalled stay false.
+    The unloaded GuardedDriver retains the registered ProgressMonitor.
+    """
+    def __init__(self, report_source):
+        super().__init__()
+        self.report_source = report_source
+        self.move_t0 = None
+        self.armed_count = 0
+        self.ignored_count = 0
+
+    def note_command(self, row):
+        t = row.get('t')
+        if (self.move_t0 is None and commanded_step_m(row) > 0
+                and isinstance(t, (int, float)) and not isinstance(t, bool) and math.isfinite(t)):
+            self.move_t0 = float(t)
+
+    def reset(self):
+        super().reset()
+        self.move_t0 = None
+
+    def trusted(self, xy, goal_dist):
+        if self.baseline is None:
+            fix_t = getattr(self.report_source(), 'last_fix_t', None)
+            if (self.move_t0 is None or not isinstance(fix_t, (int, float)) or isinstance(fix_t, bool)
+                    or not math.isfinite(fix_t) or fix_t <= self.move_t0):
+                self.ignored_count += 1
+                return None
+            self.armed_count += 1
+        return super().trusted(xy, goal_dist)
+
+
 class PairCommandGuard:
     def __init__(self, execution):
         from harness.zone_pair_beam_track import RestingBeamTrack
@@ -177,12 +212,15 @@ class PairCommandGuard:
         self.global_envelope = GlobalEnvelope()
         self.object_anchor = None
         self.anchor_motion = None
-        self.monitor = ProgressMonitor()
+        policy = getattr(execution, 'policy', None)
+        self.loaded_profile = loaded_gate_profile(getattr(policy, 'loaded_gate_yaw_deg', None))
+        self.monitor = (MovedFixMonitor(lambda: self.ep.own.last_report)
+                        if getattr(policy, 'progress_arm_on_moved_fix', False) else ProgressMonitor())
         self.segment = None
         self.last_evidence = None
         self.stationary_pose = None
         self.motion_until = -math.inf
-        self.recheck = _PairRecheck()
+        self.recheck = _PairRecheck(loaded_profile=self.loaded_profile)
         if isinstance(execution.controller.driver, GuardedPairApproach):
             execution.controller.driver.sweep_recheck = self.recheck
             execution.controller.driver.verified_global_fix = self.approach_fix_ready
@@ -214,7 +252,13 @@ class PairCommandGuard:
     def sweep_guard(self):
         from harness.zone_pair_global import GlobalPairSweepGuard
         cls = GlobalPairSweepGuard if self.relative_enabled else PairSweepGuard
-        return cls(self.ep.own.guard, self.ep.plan['beam_geometry'], self.ep.arguments['role'])
+        if self.relative_enabled:
+            # GlobalPairSweepGuard.K_SIGMA and consistency checks stay 2.
+            return cls(self.ep.own.guard, self.ep.plan['beam_geometry'], self.ep.arguments['role'])
+        policy = getattr(self.ep, 'policy', None)
+        return cls(self.ep.own.guard, self.ep.plan['beam_geometry'], self.ep.arguments['role'],
+                   loaded_k_xy=getattr(policy, 'loaded_k_xy', 2.0),
+                   loaded_k_yaw=getattr(policy, 'loaded_k_yaw', 2.0))
 
     def relative_report(self, now, obs):
         mode = 'attached_hypothesis' if self.carrying_beam else 'resting_hypothesis'
@@ -558,6 +602,8 @@ class PairCommandGuard:
             self.motion_until = row['t']
         if not self.approach:
             self.monitor.drove(commanded_step_m(row))
+            if isinstance(self.monitor, MovedFixMonitor):
+                self.monitor.note_command(row)
 
     def before_control(self, now):
         own = self.ep.own
@@ -565,7 +611,7 @@ class PairCommandGuard:
         if expired(now):
             self.ep.abort(now, 'ALIGN_RELOOK_TIMEOUT')
             return False
-        own.gate.set_profile(GATE_UNLOADED if self.approach else GATE_LOADED)
+        own.gate.set_profile(GATE_UNLOADED if self.approach else self.loaded_profile)
         pose = self._pose(now)
         if self.reobserving:
             return self._stationary_reobserve(now, pose)
@@ -653,7 +699,7 @@ class PairCommandGuard:
     def check(self, now, commands):
         ep, own = self.ep, self.ep.own
         loaded = not self.approach
-        own.gate.set_profile(GATE_LOADED if loaded else GATE_UNLOADED)
+        own.gate.set_profile(self.loaded_profile if loaded else GATE_UNLOADED)
         # The drive -> look transition must apply its hold before testing that
         # the previous base command has ended. Arm/motion batches still need it.
         if not any(c['kind'] in ('arm', 'look', 'mecanum', 'drive') for c in commands):

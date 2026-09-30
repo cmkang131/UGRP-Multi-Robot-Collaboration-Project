@@ -105,8 +105,8 @@ def parser():
     p.add_argument('--execute', action='store_true', help='explicit physical run; coordinator only')
     p.add_argument('--expected-source-sha', help='full clean committed HEAD required for --execute')
     p.add_argument('--lock-owner', choices=('claude', 'codex', 'kiro'))
-    p.add_argument('--pair-policy', choices=('v5h','b-only','a+b','b-boot','a+b-boot','b-v6c','b-v6d','b-v6g'),
-                   help='must match the v6/v6b/v6c/v6d/v6e registered case')
+    p.add_argument('--pair-policy', choices=('v5h','b-only','a+b','b-boot','a+b-boot','b-v6c','b-v6d','b-v6g','b-v6h1'),
+                   help='must match the v6-family registered case (v6h pending seal)')
     return p
 
 

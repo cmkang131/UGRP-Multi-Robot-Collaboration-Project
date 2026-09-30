@@ -17,9 +17,18 @@ MOTION_SAMPLE_S = .05
 
 
 class PairSweepGuard(SweepGuard):
-    def __init__(self, arm_guard, geometry, role):
+    def __init__(self, arm_guard, geometry, role, *, loaded_k_xy=K_SIGMA, loaded_k_yaw=K_SIGMA):
         self.boxes, self.mount, self.residual = arm_guard.boxes, arm_guard.mount, arm_guard.residual
         self.geometry, self.grasp = geometry, geometry['grasps'][role]
+        self.loaded_k_xy, self.loaded_k_yaw = loaded_k_xy, loaded_k_yaw
+        self._loaded_motion = False
+
+    def margin(self, pose, lever_m):
+        # Narrow scope: loaded base motion only. Approach, preclose and arm
+        # sweeps (even while holding the beam) keep the registered 2/2 margin.
+        if not self._loaded_motion or (self.loaded_k_xy == K_SIGMA and self.loaded_k_yaw == K_SIGMA):
+            return super().margin(pose, lever_m)  # unchanged call signature for historical probe wrappers
+        return super().margin(pose, lever_m, loaded=True)
 
     def beam_spheres(self, servo):
         """Conservative covering of the complete 600x40x32 mm bar, in own base coordinates.
@@ -107,7 +116,9 @@ class PairSweepGuard(SweepGuard):
         lever = max(.2, *(math.hypot(x, y) + r for x, y, _, r in spheres))
         pad = (math.hypot(f, l) + abs(w) * lever) * duration / n / 2.
         original_residual = self.residual
+        original_loaded_motion = self._loaded_motion
         self.residual += pad
+        self._loaded_motion = bool(loaded)
         try:
             for omega in sorted({-abs(w), 0., abs(w)}):
                 for i in range(n + 1):
@@ -125,3 +136,4 @@ class PairSweepGuard(SweepGuard):
             return True
         finally:
             self.residual = original_residual
+            self._loaded_motion = original_loaded_motion

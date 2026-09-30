@@ -37,6 +37,7 @@ POLICY_SHORT = {'v5h': '', 'b-only': 'B', 'a+b': 'AB', 'b-v6c': 'C',   # C = v6c
                 'b-v6f-a': 'Fa', 'b-v6f-b': 'Fb', 'b-v6f': 'F',       # v6f: own_image_ob / bounded_retreat / both
                 # b-v6h.<variant> = registered b-v6g + door-guard relaxation (probe-only; harness/zone_pair_door_relax.py)
                 'b-v6h.k1': 'H1', 'b-v6h.k0': 'H0', 'b-v6h.k1g': 'H1g', 'b-v6h.k0g': 'H0g', 'b-v6h.adv': 'Ha'}
+POLICY_SHORT['b-v6h1'] = 'RH'
 
 
 def _run_tag(raw):

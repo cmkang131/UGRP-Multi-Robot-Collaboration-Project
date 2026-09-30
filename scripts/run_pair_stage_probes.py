@@ -680,6 +680,10 @@ def run_case(case, out):
                 result['max_tilt_deg'] = host.max_tilt
                 result['min_lift_after_first_lift_m'] = host.min_lift_after
                 result['door_relax_overrides'] = list(door_relax.EVENTS)
+                if case.get('pair_policy') == 'b-v6h1':
+                    result['progress_moved_fix'] = {r: {'armed': ep.command_guard.monitor.armed_count,
+                                                       'ignored': ep.command_guard.monitor.ignored_count}
+                                                     for s in sessions for r, ep in s['endpoints'].items()}
                 if case.get('contact_track'):
                     close_wall_episodes(wall_track)
                     result['wall_contact'] = {'episodes': wall_track['episodes'], 'steps': wall_track['steps'],
@@ -901,24 +905,40 @@ def envelope_cases(stage, args, policy, leg):
     coarse order sheet fixed at the base sheet, so the controller's route (door axis y = 0.05) does not move with the placement.
     Robots stand at the stations of the true beam. The start prior is the RECORDED PF posterior of one hR2 sample
     (std and error), optionally shifted by a stated bias (--env-bias-y-m / --env-bias-yaw-deg) to test estimator error."""
-    smp = {s['id']: s for s in json.loads(sp.SAMPLE_FILES['hR2'].read_text())['samples']}[args.env_prior]
+    samples = {s['id']: s for s in json.loads(sp.SAMPLE_FILES['hR2'].read_text())['samples']}
+    if getattr(args, 'env_placements', None):
+        entries = [(float(e['y']), float(e['yaw_deg']), e.get('prior', args.env_prior), e.get('name'),
+                    float(e.get('x', args.env_x)), e.get('sheet', 'base'))
+                   for e in json.loads(args.env_placements.read_text())]
+    else:
+        entries = [(float(y), float(yaw), args.env_prior, None, float(args.env_x), 'base')
+                   for y in args.env_y for yaw in args.env_yaw_deg]
     out = []
-    for y in args.env_y:
-        for yaw_deg in args.env_yaw_deg:
-            for by in args.env_bias_y_m:
-                for byaw in args.env_bias_yaw_deg:
-                    prior_err = copy.deepcopy(smp['prior_err'])
-                    for rid in sp.PARTICIPANTS:
-                        e = prior_err[rid]['mean_err_xyyaw']
-                        prior_err[rid]['mean_err_xyyaw'] = [e[0], e[1] + by, e[2] + math.radians(byaw)]
-                    name = f'E_y{y:+.3f}_h{yaw_deg:+.1f}'
-                    if by or byaw:
-                        name += f'_b{by:+.3f}_{byaw:+.1f}'
-                    setup = {'beam_xyyaw': [args.env_x, float(y), math.radians(float(yaw_deg))],
-                             'coarse_order_sheet': copy.deepcopy(sp.BASE_SETUP['coarse_order_sheet']), 'variant': 'ENV'}
-                    out += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds), setup=setup,
-                                            policy=policy, prior_std=args.prior_std, leg=leg, door_relax=args.door_relax, chain_stop_leg=args.chain_stop_leg,
-                                            rows=[(name, (0, 0, 0), (0, 0, 0), prior_err)])
+    for y, yaw_deg, prior_id, given_name, x, sheet in entries:
+        smp = samples[prior_id]
+        if sheet not in ('base', 'coarse'):
+            raise ValueError('envelope placement sheet must be base or coarse')
+        if not all(math.isfinite(v) for v in (x, y, yaw_deg)):
+            raise ValueError('envelope placement must be finite')
+        for by in args.env_bias_y_m:
+            for byaw in args.env_bias_yaw_deg:
+                prior_err = copy.deepcopy(smp['prior_err'])
+                for rid in sp.PARTICIPANTS:
+                    e = prior_err[rid]['mean_err_xyyaw']
+                    prior_err[rid]['mean_err_xyyaw'] = [e[0], e[1] + by, e[2] + math.radians(byaw)]
+                name = given_name or f'E_y{y:+.3f}_h{yaw_deg:+.1f}'
+                if by or byaw:
+                    name += f'_b{by:+.3f}_{byaw:+.1f}'
+                beam = [x, float(y), math.radians(float(yaw_deg))]
+                if sheet == 'coarse':
+                    from harness.pair_owncam_approach import coarse_order_sheet
+                    order_sheet, variant = coarse_order_sheet(beam), 'ENVS'
+                else:
+                    order_sheet, variant = copy.deepcopy(sp.BASE_SETUP['coarse_order_sheet']), 'ENV'
+                setup = {'beam_xyyaw': beam, 'coarse_order_sheet': order_sheet, 'variant': variant}
+                out += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds), setup=setup,
+                                        policy=policy, prior_std=args.prior_std, leg=leg, door_relax=args.door_relax, chain_stop_leg=args.chain_stop_leg,
+                                        rows=[(name, (0, 0, 0), (0, 0, 0), prior_err)])
     return out
 
 
@@ -940,7 +960,7 @@ def build_cases(args):
         for policy in args.policies:
             if 'teacher' in args.sources:
                 for leg in (args.legs or [None]):
-                    if args.env_y:      # opt-in envelope grid (2026-09-30): true beam at (x, y, heading) on the fixed base sheet
+                    if args.env_y or args.env_placements:  # fixed grid or explicitly preserved placement list
                         cases += envelope_cases(stage, args, policy, leg)
                         continue
                     if args.setup_variant in sp.SAMPLE_FILES:      # entries sampled from recorded stage end states
@@ -1140,6 +1160,8 @@ def parser():
                         'name and hash go to manifest.json and every result row.')
     p.add_argument('--policies', nargs='+', default=['v5h'], choices=list(sp.POLICIES) + list(sp.PROBE_ONLY_POLICIES),
                    help='harness.zone_pair_v6_policy policies; there is no A-only policy on main')
+    p.add_argument('--env-placements', type=Path,
+                   help='explicit envelope JSON [{name,x,y,yaw_deg,prior,sheet:base|coarse}]; setup only')
     p.add_argument('--door-relax', choices=sorted(door_relax_variants()),
                    help='with --policies b-v6h: the door-guard relaxation variant (harness/zone_pair_door_relax.py). '
                         'b-v6h is the registered b-v6g plus a process-local relaxation of the loaded-carry inflation; '
