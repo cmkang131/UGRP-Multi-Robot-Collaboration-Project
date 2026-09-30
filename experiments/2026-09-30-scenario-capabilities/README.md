@@ -5,7 +5,7 @@
 - 요청 감사 기준: `a8094cc14e098a55483f53a3c49bf6a0b116043d`.
 - 배정 checkout/branch: `/Users/changmin/projects/ugrp-wt/e2e-p09-caps`, `codex/scenario-capabilities`; 시작 HEAD/main `d17ca4345affef8cf027e121cf1f3197b36c23e0`. 그 사이 변경은 별도 절차 조사 기록이며 이 감사의 입력 코드·지도·시나리오는 기준 SHA와 같다. 파일별 해시는 [manifest](data/manifest.json)의 `input_sha256`, 함수 위치는 `symbols`를 따른다.
 - 후속: [READINESS S01/S04/S13, C6/C7](https://github.com/kcm0127-dotcom/ugrp/blob/codex/e2e-readiness/experiments/2026-09-30-e2e-readiness/READINESS.md), [#298](https://github.com/kcm0127-dotcom/ugrp/pull/298).
-- **문서와 정적 검사만 변경했다.** 기존 s1–s6, 원본 문서·지도·controller·bundle/workflow registry는 바꾸지 않는다. 물리/SIM/렌더/모델 호출 0회, 학생 trial 0회. raw 삭제·Drive·병합 없음. 작은 dev cyan+봉 시험은 C6/C7의 대체가 아니다.
+- **문서와 정적 검사만 변경했다.** 기존 s1–s6, 원본 문서·지도·controller·bundle/workflow registry는 바꾸지 않는다. **로컬 정적 감사**의 물리/SIM/렌더/모델 호출 0회, 학생 trial 0회. 이후 push/PR 자동 CI에서 ACT 테스트 단계가 시작되어 취소했다. 원격까지 모델0으로 주장하지 않는다([범위 이탈 기록](CI_INCIDENT.md)). raw 삭제·Drive·병합 없음. 작은 dev cyan+봉 시험은 C6/C7의 대체가 아니다.
 
 **입력 경계:** 이 폴더의 원본 배치·숨은 사건·정적 해법은 전부 평가 전용이다. robot 프롬프트/제어기에 전달하지 않는다.
 

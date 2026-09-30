@@ -45,3 +45,7 @@ driver는 지정 branch `codex/scenario-capabilities`에서만 실행한다. `ev
 - 정적 계산 기록이며 학생 성공률·실제 SIM초·명령·모델비용은 `null`/미측정이다. 실제 이 작업의 물리/렌더/모델 호출 수만0으로 기록한다.
 - shared registry/기존 문서/시나리오/map/controller diff0을 확인한다. 공용 pytest 보호 실행기를 바꾸지 않았으며 새 보조 검사3건은 이 driver의 명시 pytest 목록에만 포함된다. 전체 CI 목록/공용 registry에는 추가하지 않았다.
 - 커밋·push·draft PR은 로컬 검사 뒤 별도로 확인한다. 사용자 요청에 따라 병합하지 않는다. Drive 업로드와 TensorBoard 성공 scalar 변환은 하지 않는다.
+
+## GitHub 전달 뒤 CI 범위 이탈
+
+커밋 `9040e17bbb7200e34b1c77fe255fb91c7479611b`를 push하고 draft PR #302를 만들었다. 자동 CI가 모델/시뮬레이션 job을 포함해 두 실행을 취소했고, 취소 중 ACT 테스트 단계가 시작되어 force-cancel로 종료했다. 전체 CI 통과가 아니다. 로컬 감사의 모델0과 원격 CI를 구분하며 [CI_INCIDENT.md](CI_INCIDENT.md)에 실패/종료 증거를 보존했다. 후속 문서 커밋에는 `[skip ci]`를 사용한다.
