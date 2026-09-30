@@ -41,8 +41,9 @@ GitHub 정상 CI는 별도로 실행하고 취소하거나 건너뛰지 않는�
 primary main의 소스나 다른 feature worktree를 변경하지 않았다.
 검사 중 선행 PR들이 병합되어 작업 브랜치를 main
 `394f9cda5d67a9d1b94ad1688f39f5616fc00e7b`로 fast-forward했다. 검사한 소스/테스트
-15개 파일의 해시는 전부 동일하다. 구현 커밋은
-`3d79591e8b676ee2516874131bebb4ee47fa771d`이며 뒤 커밋은 이 검증/인계 문서뿐이다.
+15개 파일의 해시는 전부 동일하다. 첫 구현 커밋은
+`3d79591e8b676ee2516874131bebb4ee47fa771d`, 아래 iterator 보완의 최종 소스는
+`b156afa8cfc710d4272d8dac711c5c91afe1150c`이다.
 
 | 선행 | 확인한 상태/SHA | 이번에 사용하는 범위 |
 |---|---|---|
@@ -74,8 +75,10 @@ CI 설정, 가상환경, 시뮬레이션 세션, 잠금을 생성/수정하지 �
 ```
 
 최종 건수·JUnit/log 해시·검사 대상 소스 해시는 [verification.json](verification.json)에 둔다.
-최종 **336 passed / 0 failed / 0 skipped**: logic 170, integration 110, pinning 56.
-새 T06 테스트는 54개다. 최종 mutant **7/7 검출**, 원본 파일 해시 불변을 확인했다.
+첫 전체 회귀 **336 passed / 0 failed / 0 skipped**: logic 170, integration 110, pinning 56.
+이후 iterator 보완은 새 T06 테스트 55개와 study integration을 포함한 **121 passed**로
+재검증했다. 두 집계는 중복되므로 합산하지 않는다. 핵심 skill의 소스는 보완 전후 동일하며
+mutant **7/7 검출**, 원본 파일 해시 불변을 확인했다.
 v6e 고정 소스 **85개**와 원본 시나리오 **12개**의 바이트도 그대로다.
 `offline_checks.py`는 MuJoCo/모델 SDK import와 network connect를 막고 관련 11개 파일을
 실행한다(최종 재검사는 logic/integration/pinning 세 독립 pytest 프로세스).
@@ -100,6 +103,19 @@ heartbeat 단절 무시, body를 파지점으로 변경, fake 통과의 physical
 **원본을 복구한 뒤 새 opt-in 모듈로 옮겼다**. 이 첫 실패의 JUnit/log/당시 소스 해시는
 원본 경로에 보존한다. 최종 검사에서 원본 두 파일의 pin 일치와 기존 crate 거절,
 facade의 crate 거절·실제 beam 위임을 모두 별도로 검사한다.
+
+추가 검토에서 단회 iterator 주문을 facade가 먼저 소비하여 beam 요청을 deliver로
+잘못 위임하는 반례를 확인했다(새 테스트 1 failed). 공개 주문을 tuple로 한 번 고정하는
+1줄 보완 뒤 관련 121건이 통과했다. 원본 두 진입점과 봉인 85개 파일은 계속 그대로다.
+
+첫 GitHub CI(`36740893806`, head `50ca3a53`)는 32 job 통과 뒤 마지막 Ubuntu
+rendering-tool 설치가 **15분 제한**을 초과해 cancelled로 끝났다. 수동 취소는 없었고,
+실제 시뮬레이션 단계에 도달하지 못했다. 최신 소스의 정상 CI는 PR에서 별도로 확인한다.
+
+로컬 Git 공용 `core.worktree`가 다른 T12 경로를 가리켜 Git만 T06의 두 파일을 삭제로
+오인한 일도 있었다. 파일은 남아 있었고 테스트 해시와 같았다. 공용 설정은 건드리지 않고
+T06의 worktree-local 경로만 고정한 뒤, 아직 push하지 않은 제 커밋을 바로잡았다.
+원격에 삭제 커밋을 올리거나 force-push하지 않았다.
 
 ## 보존과 남은 일
 

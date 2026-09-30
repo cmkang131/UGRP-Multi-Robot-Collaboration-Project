@@ -1,7 +1,7 @@
 {
   "recorded_at_utc": "2026-09-30T15:57:45.064079+00:00",
   "task": "T06",
-  "implementation_source_commit": "3d79591e8b676ee2516874131bebb4ee47fa771d",
+  "implementation_source_commit": "b156afa8cfc710d4272d8dac711c5c91afe1150c",
   "updated_base_commit": "394f9cda5d67a9d1b94ad1688f39f5616fc00e7b",
   "tested_source_files_unchanged_after_base_fast_forward": true,
   "offline_final": {
@@ -222,7 +222,7 @@
     "r2": "east"
   },
   "role_assignment_sha256": "60488c082bf90be500865385228374f4349b2625fdb3cc119c1d22279f10a07a",
-  "controller_source_closure_sha256": "e594f28fc97f48a15f246e425e061551ae9c023420acdb0591b3c58cecc9b8ea",
+  "controller_source_closure_sha256": "90c76a88b3311b778bdee4172d25d7ce05868f3d4a5a3475d56cea9068833a9e",
   "controller_source_closure": {
     "harness/__init__.py": "953d3229d4ed66dc30e1ddeab38440397fc01303fcd022fb147d45d4345abdcf",
     "harness/action_queue.py": "98d59281bbe3b67747ccdf928f957df191b9b4b884bd29d92e10279aa50d1eb9",
@@ -309,7 +309,7 @@
     "harness/wrist_zone_skill_v5.py": "9b90dc16468ebce3369a782c3e51306b49ef5eae657e6eb8a6e0763d62b95c64",
     "harness/wrist_zone_skill_v6.py": "47ec5cd0c36d59c9226d283ce062e6e6b133bd68a06c0cde4b30c7d830ca0234",
     "harness/zone_color_boxes.py": "9b38265c27f86a735333b25326a10177ed073cc6c3e0f945ee5c318398813966",
-    "harness/zone_crate_dispatch.py": "04c889c40a65caac9f4be7416bccb2bb2c124a410bc597a52393016450a39973",
+    "harness/zone_crate_dispatch.py": "8554ad69f91e9e89ee2621180e852add60118f0cba946cd028d07972fe6a4f1d",
     "harness/zone_crate_skill.py": "691a6f1d50d4b869dc0c8e0e522c78d25853f8a0514d098678a2e83ffcb13262",
     "harness/zone_dialogue_metrics.py": "87d41518fcea38b98c344cb76fd7e1add46bf1775771d6f0fb5e15cf2ffd7879",
     "harness/zone_event_scheduler.py": "7ab46e47f1c217a9fec56c8f98c5ff61789c00bbda1cf306f4d6272abc1dd25e",
@@ -536,5 +536,49 @@
     "tensorboard_snapshot": null,
     "reason": "no physical result; fake assertions are not experiment success"
   },
-  "raw_storage": "local primary outputs only; not remote backup"
+  "raw_storage": "local primary outputs only; not remote backup",
+  "initial_implementation_source_commit": "3d79591e8b676ee2516874131bebb4ee47fa771d",
+  "post_review_iterator_fix": {
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_zone_own_executor_crate.py",
+      "tests/test_zone_study_integration.py",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/t06-crate-lug/iterator-fix/junit.xml"
+    ],
+    "exit_code": 0,
+    "source_sha256": {
+      "harness/zone_crate_dispatch.py": "8554ad69f91e9e89ee2621180e852add60118f0cba946cd028d07972fe6a4f1d",
+      "harness/zone_crate_skill.py": "691a6f1d50d4b869dc0c8e0e522c78d25853f8a0514d098678a2e83ffcb13262",
+      "tests/test_zone_own_executor_crate.py": "af409972d8e962ebd47aff3a11557263f734090a98d93a51c979f81e0e8cf2b3"
+    },
+    "raw_sha256": {
+      "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/iterator-fix/pytest.log": "ba92e6be303595708a69942ca0fd31d605760bbd668b21e4657c317ede8a618b",
+      "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/iterator-fix/red-reproduction.txt": "b7753b06693ea1ede14ff854fb5d379fac0ee3a27aad7819f0e20b8da1a47cb8",
+      "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/iterator-fix/junit.xml": "5f25e570b5e25e7967ed54e6716d63b7c917def90762b30b25dd83a6e7a0bdd5"
+    },
+    "tests": 121,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "red_before_fix": 1
+  },
+  "github_ci_first_attempt": {
+    "head": "50ca3a53aa2a99eed4540ee700d27c3e5945495e",
+    "run_id": 36740893806,
+    "passed_jobs": 32,
+    "cancelled_jobs": 1,
+    "reason": "Ubuntu rendering-tool installation exceeded the 15-minute job timeout",
+    "manual_cancellation": false,
+    "raw_path": "/Users/changmin/projects/ugrp/outputs/t06-crate-lug/ci-336/final.json"
+  },
+  "local_git_incident": {
+    "reason": "shared core.worktree pointed at cap-t12-r3-delay",
+    "invalid_unpushed_commit": "ccc52c13e5ec6e9127a842369e51cf1e86f1265b",
+    "resolution": "own worktree-local core.worktree override; amend own unpublished commit after checking tested hashes",
+    "corrected_commit": "b156afa8cfc710d4272d8dac711c5c91afe1150c",
+    "remote_affected": false
+  }
 }
