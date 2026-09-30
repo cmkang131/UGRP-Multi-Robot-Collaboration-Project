@@ -640,9 +640,10 @@ def dialogue_scenario():
 class DialogueWire:
     """Fixed proposal/ack script using only the actual request, never executor state."""
 
-    def __init__(self, seed, *, talk=True, fault=None):
+    def __init__(self, seed, *, talk=True, fault=None, usage=USAGE):
         self.sender = zi.ROBOTS[seed % 3]
         self.talk, self.fault = talk, fault
+        self.usage = usage
         self.turns, self.payloads, self.requests, self.responses, self.headers = Counter(), [], [], [], []
         self.targets = {r: f'order-{i + 2}' for i, r in enumerate(r for r in zi.ROBOTS if r != self.sender)}
 
@@ -702,7 +703,7 @@ class DialogueWire:
                          messages=[self.message(payload, payload['channel']['can_send_to'][0], 'order-1')])
         if self.fault == 'stale':
             reply['request_id'] = 'req_old_r1'
-        raw = completion_body(json.dumps(reply, ensure_ascii=False), usage=None if self.fault == 'unknown' else USAGE,
+        raw = completion_body(json.dumps(reply, ensure_ascii=False), usage=None if self.fault == 'unknown' else self.usage,
                               model='fake-effective-model',
                               finish_reason=self.fault if self.fault in ('length', 'content_filter') else 'stop')
         self.responses.append(raw)
@@ -717,9 +718,9 @@ class DialogueWire:
 
 
 def dialogue_trial(tmp_path, condition, seed, *, profile='v66_default', talk=True, fault=None,
-                   scenario=None, per_robot=None, budget=None, run_key='p05#a1', horizon=12.):
+                   scenario=None, per_robot=None, budget=None, run_key='p05#a1', horizon=12., usage=USAGE):
     budget = budget or budget_for(tmp_path, charge=700)
-    wire = DialogueWire(seed, talk=talk, fault=fault)
+    wire = DialogueWire(seed, talk=talk, fault=fault, usage=usage)
     driver = llm.LiveDriver(PROFILE, budget=budget, cohort_id='pilot-A', wire=wire)
     driver.start_run(run_key, bundle_id=zi.EXECUTION_BUNDLE_ID, bundle_sha256='b' * 64,
                      record={'condition': condition, 'seed': seed, 'fake_only': True})
@@ -749,11 +750,12 @@ def dialogue_advance(trial, clock, links, to, *, boundaries=(4., 8.), outcome='j
         trial.step_to(clock[0])
 
 
-def assert_wire_accounting(trial, wire, budget, run_key='p05#a1'):
+def assert_wire_accounting(trial, wire, budget, result, run_key='p05#a1'):
     """Re-open raw bytes and join every layer by call/request ID, not row position alone."""
     rows = llm.call_rows(trial.send_ledger)
     stored = {r['call_id']: r for r in budget.requests(run_key)}
     calls = {c.call_id: c for c in trial.scheduler.calls}
+    recorded = {trial.request_call_ids[c['request_id']]: c for c in result.calls}
     archives = {r['call_id']: r for r in trial.requests}
     assert len(rows) == trial.send_ledger.sends() == len(wire.requests) == len(stored)
     for row, request, response, header in zip(rows, wire.requests, wire.responses, wire.headers, strict=True):
@@ -784,6 +786,10 @@ def assert_wire_accounting(trial, wire, budget, run_key='p05#a1'):
         assert db['id'] == row['budget_request_id'] and db['run_key'] == run_key
         assert row['failure_class'] is None and db['status'] == 'response_received'
         call = calls[row['call_id']]
+        terms = recorded[row['call_id']]['cost_terms']
+        assert call.notes['provider_usage'] == terms['provider_usage'] == USAGE
+        assert call.notes['usage_known'] == terms['usage_known'] == row['usage_known']
+        assert terms['usage_bound'] == 'exact'
         attempt = call.cost.attempts[0]
         text = json.loads(response)['choices'][0]['message']['content']
         assert attempt.input_tokens == archive['billed_tokens']['total_text_billed']
@@ -794,6 +800,63 @@ def assert_wire_accounting(trial, wire, budget, run_key='p05#a1'):
         dispatch = next(d for d in trial.dispatch_log if d['call_id'] == call.call_id)
         assert dispatch['sim_s'] == call.finished_sim_s
     assert budget.usage('pilot-A')['known_tokens'] == 600 * len(rows)
+
+
+@pytest.mark.parametrize('usage,known', [
+    (USAGE, True),
+    (None, False),
+    ({**USAGE, 'total_tokens': 599}, False),
+    ({'prompt_tokens': 0, 'completion_tokens': 0, 'total_tokens': 0}, True),
+    ({'prompt_tokens': 500, 'total_tokens': 600}, False),
+], ids=['known', 'missing', 'inconsistent', 'zero', 'partial'])
+@pytest.mark.parametrize('fault', [None, 'late', 'length', 'stale'])
+def test_p05_usage_agrees_from_raw_through_scheduler_and_result(tmp_path, usage, known, fault):
+    """B2: MappingProxy replies retain the same usage classification as the durable ledger."""
+    horizon = .5 if fault == 'late' else 3.
+    trial, wire, budget, clock, links = dialogue_trial(
+        tmp_path, 'peer_ko', 700, usage=usage, fault=fault, horizon=horizon)
+    dialogue_advance(trial, clock, links, horizon, boundaries=())
+    result = trial.finish(horizon)
+    rows = llm.call_rows(trial.send_ledger)
+    stored = {r['call_id']: r for r in budget.requests('p05#a1')}
+    recorded = {trial.request_call_ids[r['request_id']]: r for r in result.calls}
+    scheduled = ({r['call_id']: r for r in trial.scheduler.censored} if fault == 'late' else
+                 {r.call_id: r.notes for r in trial.scheduler.calls})
+    assert len(rows) == len(stored) == len(recorded) == len(scheduled) == 3
+    for row in rows:
+        db = stored[row['call_id']]
+        raw = json.loads(Path(db['response_path']).read_bytes())
+        assert raw.get('usage') == row['provider_usage'] == db['provider_usage'] == usage
+        assert Path(db['response_path']).read_bytes() == wire.responses[row['seq'] - 1]
+        assert row['usage_known'] == db['usage_known'] == known
+        assert db['total_tokens'] == (usage['total_tokens'] if known else None)
+        call = scheduled[row['call_id']]
+        final = recorded[row['call_id']]
+        terms = final['cost_terms']
+        assert call['provider_usage'] == terms['provider_usage'] == usage
+        assert call['usage_known'] == terms['usage_known'] == known
+        assert terms['usage_bound'] == ('exact' if known else 'lower_bound')
+        assert final['input_tokens']['text'] > 0 and terms['output_tokens'] > 0
+    assert budget.usage('pilot-A')['charged_tokens'] == 3 * (usage['total_tokens'] if known else 700)
+    if fault:
+        assert not result.actions and not result.messages and not trial.dispatch_log
+    else:
+        assert result.actions
+
+
+def test_p05_preserves_current_v6e_source_bytes():
+    """B1: driver usage handling must not rewrite any source pinned by current v6e."""
+    from scripts.zone_pair_v6_contract import PREREG_V6E
+    registration = json.loads(PREREG_V6E.read_bytes())
+    expected = registration['v6_contract']['source_sha256']
+    assert 'harness/zone_study_integration.py' in expected
+    for path, sha in expected.items():
+        assert hashlib.sha256((llm.ROOT / path).read_bytes()).hexdigest() == sha, path
+
+
+def test_p05_callreply_readonly_usage_is_known():
+    from harness.zone_event_scheduler import CallReply
+    assert llm.known_total(CallReply(provider_usage=USAGE).provider_usage) == 600
 
 
 @pytest.mark.parametrize('condition', zi.MAIN_CONDITIONS)
@@ -862,7 +925,7 @@ def test_p05_dialogue_ids_own_boundary_and_wire_accounting(tmp_path, condition, 
         assert all('text' not in m['body'] for m in result.messages)
     else:
         assert len(result.messages) == 4 and all(m['korean_ok'] for m in result.messages)
-    assert_wire_accounting(trial, wire, budget)
+    assert_wire_accounting(trial, wire, budget, result)
     assert zi.zo.cost_checks(trial, result)['ok']
     # Persistent local test evidence alongside the dummy ledger and raw bytes.
     (tmp_path / 'contract_trace.json').write_text(json.dumps({

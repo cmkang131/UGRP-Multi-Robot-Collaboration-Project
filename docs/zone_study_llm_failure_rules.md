@@ -36,6 +36,11 @@
   본연구 호출 기록의 `usage_known`은 false다. DB·send 행과 같은 기준을 사용한다.
   로컬 표준 입력/생성 토큰과 SIM 비용은 보존하고 공급자 사용량 0으로 대체하지 않는다.
   사용량을 보고하지 않는 기존 fixture-only 경로의 동결 기록은 바꾸지 않는다.
+  정상·지연·거절 응답 모두 `zone_main_budget.known_total`로 판정하며, 읽기 전용
+  Mapping도 허용한다. 정상 사용량은 `known/exact`, 누락·부분·불일치는
+  `unknown/lower_bound`로 DB부터 최종 결과까지 맞춘다. 명시적인 0/0/0은 기존 DB
+  규칙대로 known이다. 이 처리는 모델 transport에 두고 v6e가 고정한 integration
+  소스와 기존 등록 바이트는 보존한다.
 
 ## 조건별 API 노출과 분석
 

@@ -22,6 +22,7 @@ Every operation reopens the database, so several processes may share it.
 """
 from __future__ import annotations
 
+from collections.abc import Mapping
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -50,7 +51,7 @@ def now_utc() -> str:
 
 def known_total(usage):
     """Provider ``total_tokens`` when every counter is a consistent non-negative int, else None."""
-    if not isinstance(usage, dict):
+    if not isinstance(usage, Mapping):
         return None
     values = [usage.get(k) for k in ('prompt_tokens', 'completion_tokens', 'total_tokens')]
     if any(type(v) is not int or v < 0 for v in values):
