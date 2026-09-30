@@ -41,8 +41,9 @@ PRIOR_STD = (.15, .15, math.radians(10.))          # VIS3 dock prior (vision_loc
 class FailClosedLoc:
     """The shared localizer seen by the executor's drivers; uninitialised once the provider failed."""
 
-    def __init__(self, pf, provider_id=vp.PROVIDER_ID):
+    def __init__(self, pf, provider_id=vp.PROVIDER_ID, *, on_command=None):
         self._pf = pf
+        self._on_command = on_command or pf.command
         self.provider_id = provider_id
         self.failure: str | None = None
 
@@ -55,6 +56,11 @@ class FailClosedLoc:
 
     def predict_to(self, t: float) -> None:
         self._pf.predict_to(t)
+
+    def command(self, row) -> None:
+        # Legacy M2 calls loc.command; keep the owning source's servo/history
+        # and lifecycle checks on that path as well.
+        self._on_command(row)
 
     def estimate(self) -> dict:
         if self.failure is not None:
@@ -95,6 +101,7 @@ class VisionPoseSource:
             raise ValueError(f'{self.provider_id} is registered for {self.map_ids} (the exact registered map) only, '
                              f'got {static_map.get("map_id")!r}')
         self.cfg = vp.load_config() if cfg is None else cfg
+        self.runtime_contract = vp.provider_runtime_contract(map_id=static_map['map_id'], cfg=self.cfg)
         sel = vp.selected_config()
         cal = vp.load_json(vp.VIS3_DIR / 'calibration_train.json')
         from harness.vision_motion_init import motion_module
@@ -102,9 +109,10 @@ class VisionPoseSource:
                                 sel.get('measurement', {}), sel.get('obs', {}), cal['sag'], seed,
                                 cal.get('pan_base_yaw') if sel.get('pan_coupling', True) else None,
                                 sel.get('robust', {}))
-        self.loc = FailClosedLoc(pf, self.provider_id)
+        self.loc = FailClosedLoc(pf, self.provider_id, on_command=self.on_command)
         self.seed = seed
         identity = {'provider': self.provider_id, 'initialization_version': 2,
+                    'runtime_contract_sha256': vp.sha256_bytes(vp.canonical(self.runtime_contract)),
                     'motion_init_sha256': vp.file_sha256(vp.ROOT / 'harness/vision_motion_init.py'), 'frozen': self.frozen, 'checkpoint_sha256': self.cfg['model']['sha256'],
                     'm1_calibration_sha256': self.m1_calibration['file_sha256'],
                     'map_sha256': vp.sha256_bytes(vp.canonical(dict(static_map)))}
@@ -118,6 +126,10 @@ class VisionPoseSource:
         self.counts = {'frames': 0, 'worker_calls': 0, 'measured': 0, 'unsettled_or_uninitialized': 0,
                        'rejected_frames': 0, 'after_failure': 0}
         self.timing: list[dict] = []
+        self.lifecycle: list[dict] = []
+        self._started = False
+        self._closed = False
+        self._last_frame_t = None
 
     # ------------------------------------------------------------ inputs
     def begin_relocalization(self, now, servo):
@@ -127,10 +139,24 @@ class VisionPoseSource:
         Preserve the predicted belief and its uncertainty; invalidate only the
         previous fix receipt. A new accepted scan and the usual gates are needed.
         """
+        self._check_clock(now)
+        self._started = True
         self.loc.predict_to(now)
+        previous_fix = self.loc._pf.last_scan_t
         self.loc._pf.last_scan_t = None
         self.last_obs = None
-        self.on_command({'t': float(now), 'kind': 'initial_servo_command', 'pulses': dict(servo)})
+        # Servo/command history is already issued at the owning robot's port.
+        # A relocalization request is not a new servo command or a PF reset.
+        self.lifecycle.append({'event': 'begin_relocalization', 't': float(now),
+                               'previous_fix_t': previous_fix, 'belief_preserved': True})
+
+    def _check_clock(self, now):
+        if self._closed:
+            raise RuntimeError('vision pose provider is closed')
+        if not isinstance(now, (int, float)) or isinstance(now, bool) or not math.isfinite(now) or now < 0:
+            raise ValueError('provider time must be finite and nonnegative')
+        if now < self.loc._pf.t - 1e-9:
+            raise ValueError('provider clock must be monotonic')
 
     def expected_observability(self, pose, pan, static_map):
         """Visible static wall/door edge columns, using the frozen camera model.
@@ -150,21 +176,26 @@ class VisionPoseSource:
 
     def init_prior(self, mean: Sequence[float], std: Sequence[float] = PRIOR_STD, *, source: str) -> None:
         """Gaussian start prior from setup-only scenario facts (own dock); once, before the first frame."""
-        if self.prior is not None or self.counts['frames']:
-            raise RuntimeError('the prior is set once, before the first own frame')
+        if self._closed or self.prior is not None or self.counts['frames'] or self._started or self.loc._pf.t > 0:
+            raise RuntimeError('the prior is set once, before the first own frame or runtime input')
         if not _finite_seq(mean, 3) or not _finite_seq(std, 3) or min(std) <= 0:
             raise ValueError('prior mean/std must be three finite numbers (std > 0)')
         if not isinstance(source, str) or not source:
             raise ValueError('prior needs a source description')
         self.loc._pf.init_gaussian(tuple(float(v) for v in mean), tuple(float(v) for v in std))
-        self.prior = {'mean': [float(v) for v in mean], 'std': [float(v) for v in std], 'source': source}
+        self.prior = {'mean': [float(v) for v in mean], 'std': [float(v) for v in std], 'source': source,
+                      'applied_sim_s': float(self.loc._pf.t), 'setup_only': True}
 
     def get_motion_params(self) -> dict:
         return copy.deepcopy(self.loc._pf._motion_params())
 
     def on_command(self, row: Mapping) -> None:
         """One own issued command (time ordered, as logged at the robot's port)."""
+        self._check_clock(row['t'])
+        if row['t'] > 0 or row['kind'] != 'initial_servo_command':
+            self._started = True
         self.loc._pf.command(row)
+        self.lifecycle.append({'event': 'own_command', 'row': copy.deepcopy(dict(row))})
         kind = row['kind']
         if kind == 'initial_servo_command':
             self.servo = {int(k): int(v) for k, v in row['pulses'].items()}
@@ -174,15 +205,25 @@ class VisionPoseSource:
             self.servo[6] = int(row['pan_pulse'])
 
     def set_motion_profile(self, now: float, name: str | None) -> None:
+        self._check_clock(now)
+        self._started = True
         if name != self.loc._pf.motion_profile:
             self.loc._pf.set_motion_profile(now, name)
 
     def on_frame(self, now: float, rgb) -> PoseReport:
         """One own ``robot_cam`` frame (RGB array decoded from the JPEG the robot saw)."""
-        if not isinstance(now, (int, float)) or isinstance(now, bool) or not math.isfinite(now):
+        if not isinstance(now, (int, float)) or isinstance(now, bool) or not math.isfinite(now) or now < 0:
             raise ValueError(f'frame time must be a finite number, got {now!r}')
+        if self._closed:
+            raise RuntimeError('vision pose provider is closed')
         self.counts['frames'] += 1
         pf = self.loc._pf
+        if now < pf.t - 1e-9 or (self._last_frame_t is not None and now <= self._last_frame_t):
+            self.counts['rejected_frames'] += 1
+            self.lifecycle.append({'event': 'rejected_frame', 't': float(now), 'reason': 'stale_or_duplicate'})
+            return self.report(pf.t)
+        self._last_frame_t = float(now)
+        self._started = True
         if self.failure is not None:
             self.counts['after_failure'] += 1
             pf.predict_to(now)
@@ -228,6 +269,8 @@ class VisionPoseSource:
 
     # ------------------------------------------------------------ outputs
     def report(self, now: float) -> PoseReport:
+        self._check_clock(now)
+        self._started |= now > 0
         pf = self.loc._pf
         pf.predict_to(now)
         load = 'loaded' if pf.load.loaded else 'unloaded'
@@ -254,10 +297,18 @@ class VisionPoseSource:
                 'seed': self.seed, 'counts': dict(self.counts), 'failure': self.failure,
                 'worker': self.worker.record(), 'localizer_stats': dict(self.loc._pf.stats),
                 'inference_wall_ms': {'n': len(ms), 'p50': pct(.5), 'p90': pct(.9), 'max': ms[-1] if ms else None},
-                'sim_time_charge': dict(self.cfg['sim_time_charge'])}
+                'sim_time_charge': dict(self.cfg['sim_time_charge']), 'runtime_contract': copy.deepcopy(self.runtime_contract),
+                'applied_perception_delay_s': 0., 'delay_owner': 'outer DelayedPoseSource in StudyTeamHost',
+                'closed': self._closed,
+                'lifecycle': copy.deepcopy(self.lifecycle)}
 
     def close(self) -> None:
-        self.worker.close()
+        if not self._closed:
+            self.loc.failure = self.loc.failure or 'vision pose provider closed'
+            try:
+                self.worker.close()
+            finally:
+                self._closed = True
 
 
 __all__ = ['VisionPoseSource', 'FailClosedLoc', 'InProcessWorker', 'MAPS', 'PRIOR_STD']

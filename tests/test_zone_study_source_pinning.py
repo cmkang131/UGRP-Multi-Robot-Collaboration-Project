@@ -144,3 +144,60 @@ def test_registered_speech_caps_and_llm_driver_are_pinned_in_the_run_bundle(tmp_
     assert live['llm_driver']['min_request_interval_s'] == 2.0
     assert live['study_invariant']['model'] == 'gemini-3.8-flash'
     assert 'configs/zone_study_integration/llm_driver.json' in live['runtime_files_sha256']
+
+
+def vision_bundle():
+    import copy
+    pre = runner.load_prereg('experiments/2026-09-26-zone-study-integration/prereg.json')
+    pre['pose_provider'] = 'vision_zero_tag_v2'
+    episode = copy.deepcopy(pre['episodes'][0])
+    episode.update(map='zone_wide_door_geometry_v2',
+                   scenario='configs/zone_study_integration/i1_cyan_three_slots_geometry_v2.json')
+    return pre, episode
+
+
+def test_vision_bundle_pins_effective_delay_and_model_camera_robot_combination():
+    pre, episode = vision_bundle()
+    bundle = runner.run_bundle(pre, episode)[0]
+    contract = bundle['pose_provider']['runtime_contract']
+    assert contract['active']['robot_model'] == 'masterpi_v2'
+    assert contract['active']['camera']['final_model_calibration_verified'] is False
+    assert contract['delay']['effective_sim_s'] == bundle['perception_delay_s'] == .16
+    assert contract['delay']['worker_inference_sim_s'] == 0.
+    assert contract['delay']['worker_sim_time_charge']['charged'] is False
+    assert contract['candidate_opt_in']['runtime_selectable'] is False
+    assert contract['candidate_opt_in']['release'] is None
+    assert 'configs/vision_loc_provider_p03.json' in bundle['runtime_files_sha256']
+    assert 'configs/model_artifacts.json' in bundle['runtime_files_sha256']
+    assert bundle['pose_provider']['calibration_sha256'] == contract['active']['files_sha256'][pre['student']['calibration']]
+
+
+def test_vision_refuses_unpinned_calibration_before_any_host_or_model(monkeypatch):
+    from harness import vision_loc_protocol as vp
+    pre, episode = vision_bundle()
+    pre['student']['calibration'] = 'experiments/2026-09-26-zone-owncam-loop-v2/calibration_loop_v2.json'
+    monkeypatch.setattr(runner, 'StudyTeamHost', lambda *a, **kw: pytest.fail('host forbidden'))
+    with pytest.raises(vp.ProtocolError, match='combination'):
+        runner.run_bundle(pre, episode)
+
+
+@pytest.mark.parametrize('changed', ['model', 'camera', 'robot', 'render'])
+def test_runtime_combination_mismatch_is_rejected(changed, tmp_path):
+    import json
+    from harness import vision_loc_protocol as vp
+    config = vp.load_config()
+    pin = vp.load_json(vp.PROVIDER_PIN_FILE)
+    root = tmp_path
+    paths = set(pin['active']['files_sha256']) | {'configs/vision_loc_provider_p03.json', 'configs/model_artifacts.json'}
+    for rel in paths:
+        target = root / rel
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / rel).read_bytes())
+    if changed == 'model':
+        config['model']['sha256'] = pin['candidate_opt_in']['local_checkpoint']['sha256']
+    else:
+        rel = {'camera': 'sim/masterpi_camera_profile.py', 'robot': 'sim/masterpi_dynamics_v2.py',
+               'render': 'sim/render_profile.py'}[changed]
+        (root / rel).write_text('# changed\n')
+    with pytest.raises(vp.ProtocolError, match='pin|hash'):
+        vp.provider_runtime_contract(map_id='zone_wide_door_geometry_v2', cfg=config, root=root)

@@ -78,7 +78,11 @@ RUNTIME_ASSETS = ('configs/zone_study_integration/pose_providers.json',
 
 def runtime_files(prereg, provider):
     from harness.python_source_closure import source_closure
-    return source_closure(ROOT, (*RUNTIME_ENTRY_POINTS, *RUNTIME_ASSETS, *provider['source_files']),
+    assets = () if provider['uses_landmark_tags'] else (
+        'configs/vision_loc_provider_p03.json', 'configs/model_artifacts.json', 'configs/vision_loc_worker.json',
+        'experiments/2026-09-26-vision-loc/selected_config_v3.json',
+        'experiments/2026-09-26-vision-loc/calibration_train.json')
+    return source_closure(ROOT, (*RUNTIME_ENTRY_POINTS, *RUNTIME_ASSETS, *assets, *provider['source_files']),
                           modules=(prereg['student']['skill_module'], provider['factory'].partition(':')[0]))
 
 
@@ -149,6 +153,8 @@ class StudyTeamHost(OwnCamTeamHost):
         self.provider_sources = {}
         self.hidden = hidden or zr.HiddenEventSchedule({'eval': {'hidden_events': []}})
         providers = []
+        self._pose_providers = providers
+        self._providers_closed = False
 
         def pose_factory(rid, static, params, seed):
             provider = zi.build_pose_provider(provider_spec, static, params, seed)
@@ -174,24 +180,30 @@ class StudyTeamHost(OwnCamTeamHost):
         try:
             super().__init__(spec, student, root=root, study_layer=self._no_layer, frames_dir=frames_dir,
                              scene=scene, pose_factory=pose_factory)
-        except Exception:
-            for provider in providers:
-                if callable(getattr(provider, 'close', None)):
-                    provider.close()
-            if hasattr(self, 'world'):
-                self.world.close()
+        except Exception as exc:
+            try:
+                self.close()
+            except Exception as close_exc:
+                exc.add_note(f'provider/world cleanup failed: {close_exc}')
             raise
         # scene.setup has finished. Overlay only the evaluation cameras in the
         # world; keep self.static and every executor's own static map untouched.
-        profile = evaluation_top_config(self.static)['profile']['id']
-        self.eval_static = zone_eval_top.eval_static_map(self.static, profile)
-        self.eval_only['top_camera'] = zone_eval_top.apply_to_world(self.world, self.static, profile)
-        self.links = {rid: HostRobotLink(self, rid) for rid in ROBOTS}
-        # Hidden events act on physics only (sim.zone_hidden_events): never a robot
-        # input, command row or wake. No events -> nothing is built or wrapped.
-        self.hidden_physics = (zhe.HiddenEventPhysics(self.world, self.hidden, objects=self.objects,
-                                                      item_geoms=self._box_geom, finger_geoms=self._fingers)
-                               if self.hidden.events else None)
+        try:
+            profile = evaluation_top_config(self.static)['profile']['id']
+            self.eval_static = zone_eval_top.eval_static_map(self.static, profile)
+            self.eval_only['top_camera'] = zone_eval_top.apply_to_world(self.world, self.static, profile)
+            self.links = {rid: HostRobotLink(self, rid) for rid in ROBOTS}
+            # Hidden events act on physics only (sim.zone_hidden_events): never a robot
+            # input, command row or wake. No events -> nothing is built or wrapped.
+            self.hidden_physics = (zhe.HiddenEventPhysics(self.world, self.hidden, objects=self.objects,
+                                                          item_geoms=self._box_geom, finger_geoms=self._fingers)
+                                   if self.hidden.events else None)
+        except Exception as exc:
+            try:
+                self.close()
+            except Exception as close_exc:
+                exc.add_note(f'provider/world cleanup failed: {close_exc}')
+            raise
 
     @property
     def hidden_log(self):
@@ -271,16 +283,20 @@ class StudyTeamHost(OwnCamTeamHost):
             self._physics_until(min(now + float(self.world.model.opt.timestep), t_end))
 
     def close(self):
+        if self._providers_closed:
+            return
+        self._providers_closed = True
         errors = []
-        for slot in self.robots.values():
-            close = getattr(slot.executor.pose, 'close', None)
-            if close is not None:
-                try:
-                    close()
-                except Exception as exc:
-                    errors.append(exc)
+        # Includes providers whose prior/setup failed before an executor slot
+        # was registered; attempt every owned close even after one fails.
+        for provider in self._pose_providers:
+            try:
+                provider.close()
+            except Exception as exc:
+                errors.append(exc)
         try:
-            super().close()
+            if hasattr(self, 'world'):
+                super().close()
         finally:
             if errors:
                 raise errors[0]
@@ -366,6 +382,12 @@ def run_bundle(prereg, episode, *, model_adapter=None, driver=None):
     # Record the calibration actually passed to the executor/provider, including
     # the M2 loop-v2 calibration. Never label it with the registry's M1 default.
     provider['calibration'] = prereg['student']['calibration']
+    provider_row = zi.provider_record(provider)
+    if not provider['uses_landmark_tags']:
+        from harness import vision_loc_protocol as vp
+        provider_row['runtime_contract'] = vp.provider_runtime_contract(
+            map_id=episode['map'], calibration=provider['calibration'])
+        provider_row['record_sha256'] = digest({k: v for k, v in provider_row.items() if k != 'record_sha256'})
     stub = {r: _StubLink(r) for r in ROBOTS}
     limits, caps = llm.speech_caps_for(prereg)
     trial = zi.IntegratedTrial(scenario, condition=MAIN_CONDITIONS[0], seed=episode['trial_seed'], links=stub,
@@ -394,7 +416,7 @@ def run_bundle(prereg, episode, *, model_adapter=None, driver=None):
               'weld': 'off', 'sync_sim': True, 'frame_period_s': OwnCamTeamHost.FRAME_S,
               'executor_tick_s': zi.QUANTUM_S, 'student': dict(prereg['student']),
               'student_calibration_sha256': zi.file_sha256(ROOT / prereg['student']['calibration']),
-              'pose_provider': zi.provider_record(provider),
+              'pose_provider': provider_row,
               'eval_top_camera': evaluation_top_config(static),
               'referee': zr.profile(), 'hidden_events': zr.HiddenEventSchedule(scenario).config(),
               'study_invariant': invariant,
@@ -614,6 +636,10 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
             base = out / 'robots' / rid
             jsonl(base / 'inputs' / 'commands.jsonl', slot.commands)
             jsonl(base / 'inputs' / 'pose_timing.jsonl', getattr(slot.executor.pose, 'timing', []))
+            pose_record = getattr(slot.executor.pose, 'record', None)
+            if pose_record is not None:
+                (base / 'inputs' / 'pose_provider.json').write_text(
+                    json.dumps(pose_record(), indent=2, ensure_ascii=False) + '\n')
             jsonl(base / 'inputs' / 'frames.jsonl', slot.frames)
             jsonl(base / 'executor' / 'events.jsonl', slot.executor.events)
             jsonl(base / 'executor' / 'api.jsonl', slot.executor.api_log)
