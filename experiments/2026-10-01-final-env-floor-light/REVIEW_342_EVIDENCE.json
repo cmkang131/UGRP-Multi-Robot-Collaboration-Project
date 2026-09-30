@@ -1,0 +1,160 @@
+{
+  "reviewed_at_utc": "2026-09-30T19:46:32.217624+00:00",
+  "head_sha": "04eb11c6a001f2a7d2ab916765d59b3661c06efe",
+  "main_sha": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+  "merge_base_sha": "5ba853ddc5b0e300e45f8361e98e7f9f16e08c18",
+  "scope": "offline review only; native physics/model compilation/render/provider/network-model calls 0; no host lock",
+  "verdict": "MERGE AFTER FIXES",
+  "implementation_counterexamples": 0,
+  "strict_xfails": 0,
+  "merge_blocker": "CI offline-regression-shard (4/8) CANCELLED, offline-regressions FAILURE",
+  "core_tests": {
+    "passed_after_targeted_retry": 62,
+    "initial_passed": 60,
+    "initial_failed_missing_archive_git_history": 2,
+    "retry_passed": 2
+  },
+  "related_tests": {
+    "passed_after_targeted_retry": 248,
+    "environment_blocked": 1,
+    "initial_passed": 232,
+    "initial_failed": 17,
+    "history_retry_file_passed": 22,
+    "retry_overlap": 6,
+    "environment_failure": "ps PermissionError EPERM in WorkflowManagerTests.test_parent_exit_cleans_background_child"
+  },
+  "independent_tests": {
+    "passed": 14,
+    "mutation_killed": "verify_model replaced with audit_model; required HOST_ERROR becomes COLLECTED_UNQUALIFIED",
+    "initial_review_test_error": "Two-dot diff counted newer main records as PR deletions; fixed to merge-base diff, then all 14 rerun"
+  },
+  "v84_preservation": {
+    "files": 162,
+    "bundles": 9,
+    "mismatches": 0
+  },
+  "xml_diff": {
+    "maps": 3,
+    "changed_attributes_per_map": [
+      23,
+      23,
+      23
+    ],
+    "definition": "existing sim.render_profile floor_light_v1",
+    "native_model_compiled": false
+  },
+  "open_prs": [
+    {
+      "number": 342,
+      "head": "04eb11c6a001f2a7d2ab916765d59b3661c06efe"
+    },
+    {
+      "number": 341,
+      "head": "339d281e05d80ff19bb1a78a4a9c020c9653eff6"
+    },
+    {
+      "number": 339,
+      "head": "9912bb15bb492bab0f9278fc493feed1547ff8ee"
+    },
+    {
+      "number": 327,
+      "head": "887b4d5e73823733a39d10060734080e46668548"
+    },
+    {
+      "number": 322,
+      "head": "cd4a71ab7c7cca801fe6dba163a8bb8a1179aa91"
+    },
+    {
+      "number": 321,
+      "head": "585cf9c01d4396d6f5f1d94f5a187cd9b71425f4"
+    },
+    {
+      "number": 319,
+      "head": "933bb1d63f2de7d5df16ede55c4235e4a65cc1f4"
+    },
+    {
+      "number": 318,
+      "head": "7ee20a048c6b29089dbcd3c332d734bf43cd77c0"
+    },
+    {
+      "number": 317,
+      "head": "ec0f85807ddb55927a81ac071b407b8ea53802d8"
+    },
+    {
+      "number": 309,
+      "head": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc"
+    },
+    {
+      "number": 303,
+      "head": "3782887538db62c4673fe21908d252a3a7616da6"
+    },
+    {
+      "number": 293,
+      "head": "d86cc82eedbe0c6693eaf808c54ce43387723f1d"
+    },
+    {
+      "number": 292,
+      "head": "266118d2c2337bbf1cff507690da131c63e2db11"
+    },
+    {
+      "number": 285,
+      "head": "1f0e4eb501a8f1b87077df943382fc1f0777dc69"
+    }
+  ],
+  "runtime": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "local_evidence_root": "/Users/changmin/projects/ugrp/outputs/review-342-04eb11c6",
+  "files": {
+    "applied-xml-diff.json": {
+      "bytes": 22003,
+      "sha256": "90da0734cf12eddea866e3ee7a38eeb34c75bef5facf7e32a3ea4f9f9fe9b164"
+    },
+    "ci-run.json": {
+      "bytes": 67186,
+      "sha256": "fc3c8dd91786a8cccd1e0079d0a6b2044ffa244d201f7d1ff6394c877a5e5731"
+    },
+    "core-git-retry.log": {
+      "bytes": 98,
+      "sha256": "44c3f2117349c34b0f124465285c60207deb88d1871285502356aad3bd3c7f1b"
+    },
+    "core-tests.log": {
+      "bytes": 12685,
+      "sha256": "9f94942428b80f5ff0b4984b124905da71b1b2aa45be5ea131dcfa19bfadfa80"
+    },
+    "independent-tests-final.log": {
+      "bytes": 110,
+      "sha256": "5a6950e88ec34fd96d0b74446517d2a41be330cb3dbca7572d2e8954b996f407"
+    },
+    "independent-tests.log": {
+      "bytes": 1876,
+      "sha256": "2c308510ef134e9d468873fa7509d56ae936913312773eb8ef0709bd48ca7e71"
+    },
+    "open-pr-numbering.json": {
+      "bytes": 14485,
+      "sha256": "ec1b71946f967923d5f141c704135d5f14ba1033291747ded0583371afe8e9f4"
+    },
+    "pr-state.json": {
+      "bytes": 11583,
+      "sha256": "b59fdc79dc58363db661bfbac12920679562112afdf33c17bcb2469f424149a2"
+    },
+    "related-tests.log": {
+      "bytes": 89140,
+      "sha256": "339a21840f5dfc3700a845a13ff3aa977ebc0c52264e5c0fe95326029d3ff618"
+    },
+    "source-git-retry.log": {
+      "bytes": 100,
+      "sha256": "0899bdf4be5be83ecfa93b11d2e461d1b3cb1f999296a75fc801b521d98f7641"
+    },
+    "v84-live-byte-audit.json": {
+      "bytes": 49121,
+      "sha256": "561322710880707a479e57424413468be6fc3edbed97aaa32ab986baa9fb8b58"
+    }
+  },
+  "extraction": {
+    "path": "/private/tmp/ugrp-review-342.GBkmG2",
+    "deleted": true,
+    "absence_verified": true
+  },
+  "remote_raw_backup": false,
+  "tensorboard": "not applicable: no new experimental cohort",
+  "drive_used": false
+}
