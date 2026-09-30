@@ -71,21 +71,23 @@ def test_runtime_combination_mismatch_is_rejected(changed, tmp_path):
         vp.provider_runtime_contract(map_id='zone_wide_door_geometry_v2', cfg=config, root=root)
 
 
-def test_candidate_preserves_v6e_bytes_and_prepare_admission(tmp_path):
-    """C312-1: importing/planning P03 must leave the current v6e path usable."""
+def test_candidate_preserves_successor_bytes_and_rejects_historical_admission(tmp_path):
+    """C312-1: P03 cannot change the seal or re-admit historical v6e on v6h."""
     from scripts import run_zone_pair_dev as dev
     from scripts.zone_pair_v6_contract import PREREG_V6E, contract
+    from tests.v6h_successor_pins import successor_pins
 
     pre, episode = vision_bundle()
     candidate = runner.run_bundle(pre, episode)[0]
-    registration = json.loads(PREREG_V6E.read_text())
-    for rel, expected in registration['v6_contract']['source_sha256'].items():
+    for rel, expected in successor_pins().items():
         assert hashlib.sha256((ROOT / rel).read_bytes()).hexdigest() == expected, rel
-    assert contract() == registration['v6_contract']
+    with pytest.raises(ValueError, match='historical'):
+        contract('v6e')
     output = tmp_path / 'never-executed'
     args = dev.parser().parse_args(['--prereg', str(PREREG_V6E), '--run-id', 'v6e-s911-bv6g',
                                    '--output', str(output)])
-    dev.load_config(args)
+    with pytest.raises(ValueError, match='historical'):
+        dev.load_config(args)
     assert not output.exists()
     assert candidate['execution_bundle_id'] is None
     assert candidate['runnable'] is candidate['physical_ready'] is False

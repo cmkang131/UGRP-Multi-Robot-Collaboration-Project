@@ -55,6 +55,10 @@ def checkout():
 
 def run_json(checkout, body):
     root, _ = checkout
+    # Copy test-only import guards into the subprocess, not the historical tree.
+    # Offline CI intentionally has no MuJoCo installation. These checks only
+    # import code / build XML and stop before world construction.
+    stub = (ROOT / 'tests/offline_mujoco.py').read_text()
     prelude = f'''
 import importlib, json, sys, socket
 from pathlib import Path
@@ -67,16 +71,16 @@ sys.addaudithook(no_blinded_access)
 def forbidden(*args, **kwargs):
     raise AssertionError('physics, render and network are forbidden')
 socket.socket.connect = socket.socket.connect_ex = forbidden
-import mujoco
-for name in ('mj_step', 'mj_step1', 'mj_step2', 'mj_forward', 'mj_inverse', 'Renderer'):
-    setattr(mujoco, name, forbidden)
+exec({stub!r})
+sys.modules['mujoco'] = module()
 PREFIX = {PREFIX!r}
 BASE = Path({BASE!r})
 '''
     env = dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
     env.pop("PYTHONPATH", None)
     result = subprocess.run([sys.executable, "-B", "-c", prelude + body], cwd=root, env=env,
-                            text=True, capture_output=True, check=True)
+                            text=True, capture_output=True)
+    assert result.returncode == 0, result.stderr
     return json.loads(result.stdout)
 
 

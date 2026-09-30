@@ -1,5 +1,5 @@
 """b-v6h gain-fix cohort tooling (stage-probe opt-in; no physics): PF forward-gain multiplier, corrected progress-monitor timing rule
-``p2f``, identity door-relax variant ``k2`` and the explicit placement list. The registered sources must stay byte-identical."""
+``p2f`` and the explicit placement list. v6e is historical; v6h1 selects the moved-fix monitor through its policy."""
 import hashlib
 import json
 import math
@@ -33,19 +33,15 @@ def restore(monkeypatch):
     monkeypatch.setattr(v6e, 'leg_duration', v6e.leg_duration)
     monkeypatch.setattr(v6e, 'LAG_AXES', v6e.LAG_AXES)
     axial_lag.LOGGED.clear()
-    for name in ('__init__', 'on_command'):
-        monkeypatch.setattr(pair_guards.PairCommandGuard, name, getattr(pair_guards.PairCommandGuard, name))
-    monkeypatch.setattr(pair_guards.PairCommandGuard, '_p2f', False, raising=False)
     gain_fix.APPLIED.clear()
-    pr.IGNORED.clear()
-    pr.ARMED.clear()
 
 
 # ------------------------------------------------------------------ registered sources
-def test_registered_sources_are_untouched_and_the_new_modules_are_outside_the_seal():
+def test_historical_v6e_and_sealed_successor_sources_remain_pinned():
+    from tests.v6h_successor_pins import successor_pins
     prereg = json.loads((ROOT / 'experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json').read_text())
     sealed = prereg['v6_contract']['source_sha256']
-    for path, expected in sealed.items():
+    for path, expected in successor_pins().items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, path
     for path in ('harness/zone_pair_carry_axial_lag.py', 'harness/zone_pair_carry_gain_fix.py', 'harness/zone_pair_progress_relax.py', 'harness/zone_pair_door_relax.py',
                  'scripts/run_pair_stage_probes.py'):
@@ -113,24 +109,21 @@ def test_the_corrected_pf_travels_kappa_times_the_registered_pf_on_a_forward_leg
     assert travel(b) / reference == pytest.approx(gain_fix.KAPPA, rel=0.02)
 
 
-# ------------------------------------------------------------------ door-relax identity variant
-def test_k2_is_the_registered_margin(restore, monkeypatch):
-    monkeypatch.setattr(guards.SweepGuard, 'margin', guards.SweepGuard.margin)
-    v = relax.variant('k2')
-    assert (v['k_xy'], v['k_yaw'], v['gate_yaw_deg'], v['advisory_s']) == (relax.REGISTERED['k_xy'], relax.REGISTERED['k_yaw'],
-                                                                             None, 0.)
+# ------------------------------------------------------------------ unchanged default door margin
+def test_registered_margin_identity_needs_no_probe_variant(restore):
+    # The execution source no longer exposes the exploratory k2 CLI variant.
+    with pytest.raises(ValueError, match='unknown door-relax'):
+        relax.variant('k2')
+    v = relax.REGISTERED
     pose = guards.OwnPose(2., .05, 0., .043, .038)
-    guard = SimpleNamespace(residual=.015)
+    guard = SimpleNamespace(residual=.015, door_relax_sigma_scope='loaded_only')
     registered = guards.SweepGuard.margin(guard, pose, .18)
     assert relax.relaxed_margin(v['k_xy'], v['k_yaw'])(guard, pose, .18) == pytest.approx(registered)
 
 
 # ------------------------------------------------------------------ p2f timing rule
 def monitor(fix_t_holder):
-    cls = pr.make_moved_fix_monitor(guards.ProgressMonitor)
-    m = cls()
-    m.report_source = lambda: SimpleNamespace(last_fix_t=fix_t_holder[0])
-    return m
+    return pair_guards.MovedFixMonitor(lambda: SimpleNamespace(last_fix_t=fix_t_holder[0]))
 
 
 def drive_row(t):
@@ -141,16 +134,16 @@ def test_p2f_ignores_a_fix_taken_before_the_first_move_even_when_it_is_recent(re
     fix = [9.8]
     m = monitor(fix)
     m.trusted((1., 0.), 1.)                    # no move yet: ignored
-    assert m.baseline is None and pr.IGNORED
+    assert m.baseline is None and m.ignored_count == 1
     m.note_command(drive_row(10.0)); m.drove(.0075)
     m.trusted((1., 0.), 1.)                    # fix at 9.8 is younger than 0.3 s at t=10.05 but predates the move: ignored (p2 armed here)
-    assert m.baseline is None and len(pr.IGNORED) == 2
+    assert m.baseline is None and m.ignored_count == 2
     fix[0] = 10.0
     m.trusted((1., 0.), 1.)                    # a fix at the move-start time is not "later": ignored
     assert m.baseline is None
     fix[0] = 10.05
     m.trusted((1.01, 0.), .99)                 # strictly later than the move start: arms
-    assert m.baseline is not None and len(pr.ARMED) == 1
+    assert m.baseline is not None and m.armed_count == 1
 
 
 def test_p2f_keeps_the_registered_stall_rule_once_armed_and_reset_clears_the_move(restore):
@@ -178,21 +171,22 @@ def test_p2f_zero_or_missing_fix_time_never_arms(restore):
         m.note_command(drive_row(1.))
         m.trusted((1., 0.), 1.)
         assert m.baseline is None
-    m = pr.make_moved_fix_monitor(guards.ProgressMonitor)()
+    m = pair_guards.MovedFixMonitor(lambda: None)
     m.note_command(drive_row(1.))
     m.trusted((1., 0.), 1.)                                # no report source
     assert m.baseline is None
 
 
-def test_p2f_patches_only_the_loaded_pair_guard(restore):
-    from tests.test_zone_pair_grasp import real_pair
+def test_p2f_policy_selects_only_the_loaded_pair_guard(restore, monkeypatch):
+    from tests.test_zone_pair_v6e import _team
+    from tests.test_zone_pair_executor import active
+    from harness.zone_pair_v6_policy import pair_policy
     registered_driver_cls = own_driver.ProgressMonitor
     assert registered_driver_cls is guards.ProgressMonitor
-    info = pr.install('p2f')
-    assert info['variant'] == 'p2f' and info['registered']['stall_commanded_m'] == 0.40
+    flags = {k: v for k, v in vars(pair_policy('b-v6h1')).items() if k != 'name'}
+    host = _team(monkeypatch, 'v6h-gain-fixture', flags)
     assert guards.ProgressMonitor is registered_driver_cls and own_driver.ProgressMonitor is registered_driver_cls
-    _, _, eps = real_pair()
-    ep = eps['r1']
+    ep = active(host)['r1']
     assert type(ep.command_guard.monitor).__name__ == 'MovedFixMonitor'
     assert type(ep.controller.driver.monitor) is guards.ProgressMonitor          # the unloaded GuardedDriver is not patched
     ep.controller.state = 'carry'
@@ -203,12 +197,12 @@ def test_p2f_patches_only_the_loaded_pair_guard(restore):
     ep.controller.state = 'approach'
     ep.command_guard.on_command(drive_row(6.))                                    # approach commands never start the loaded monitor
     assert ep.command_guard.monitor.move_t0 is None
-    with pytest.raises(RuntimeError, match='already installed'):
+    with pytest.raises(ValueError, match='unknown progress-relax'):
         pr.install('p2f')
 
 
 def test_the_old_variants_are_unchanged():
-    assert set(pr.VARIANTS) == {'p1', 'p2', 'p2f'}
+    assert set(pr.VARIANTS) == {'p1', 'p2'}
     assert pr.VARIANTS['p1']['stall_commanded_m'] == 1.2 and pr.VARIANTS['p2']['arm_after_motion']
 
 
@@ -241,13 +235,15 @@ def test_env_placements_make_one_case_each_with_the_listed_pose(restore):
     assert all(abs(c['route'][1][1] - 0.05) < 1e-9 for c in cases)                 # the route stays on the door axis
 
 
-def test_flags_tag_the_case_ids_and_are_refused_for_other_policies(capsys):
-    argv = ['--stage', 'chain', '--sources', 'teacher', '--prior-std', 'e2e', '--policies', 'b-v6h', '--door-relax', 'k1g',
+def test_v6h1_policy_tags_cases_and_retired_probe_flags_are_refused(capsys):
+    argv = ['--stage', 'chain', '--sources', 'teacher', '--prior-std', 'e2e', '--policies', 'b-v6h1',
             '--chain-stop-leg', '1', '--setup-variant', 'hR2', '--cells', 'hR2_01', '--seeds', '911',
-            '--progress-relax', 'p2f', '--carry-gain-fix', 'pf', '--output', '/tmp/never_written_gain']
+            '--output', '/tmp/never_written_gain']
     assert runner.main(argv) == 0
     planned = json.loads(capsys.readouterr().out)
-    assert planned['cases'] == 1 and '.k1g+p2f+gain:' in planned['case_ids'][0]
+    assert planned['cases'] == 1 and '@b-v6h1:' in planned['case_ids'][0]
+    with pytest.raises(SystemExit):
+        runner.main([*argv, '--progress-relax', 'p2f'])
     with pytest.raises(SystemExit):
         runner.main(['--stage', 'carry', '--sources', 'teacher', '--policies', 'b-v6g', '--carry-gain-fix', 'pf',
                      '--output', '/tmp/never_written_gain'])
@@ -340,10 +336,10 @@ def test_axial_lag_runs_only_through_the_registered_lag_flag_of_the_policy():
     assert 'axis in v6e_carry.LAG_AXES' in src
 
 
-def test_axial_lag_flag_tags_the_case_id_and_needs_the_gain_fix():
-    a = args_for('--policies', 'b-v6h', '--door-relax', 'k1g', '--progress-relax', 'p2f', '--carry-gain-fix', 'pf', '--carry-axial-lag', 'axial',
-                 '--setup-variant', 'hR2', '--chain-stop-leg', '1', '--seeds', '911')
-    assert a.carry_axial_lag == 'axial'
+def test_axial_lag_is_bound_to_v6h1_gain_and_retired_cli_flag_is_rejected():
+    from harness.zone_pair_v6_policy import pair_policy
+    policy = pair_policy('b-v6h1')
+    assert policy.carry_axial_lag and policy.carry_fwd_gain == pytest.approx(gain_fix.KAPPA)
     with pytest.raises(SystemExit):
         runner.main(['--stage', 'chain', '--sources', 'teacher', '--policies', 'b-v6h', '--door-relax', 'k1g', '--carry-axial-lag', 'axial',
                      '--setup-variant', 'hR2', '--chain-stop-leg', '1', '--output', '/tmp/never_written_alag'])

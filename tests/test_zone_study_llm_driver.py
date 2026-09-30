@@ -844,11 +844,10 @@ def test_p05_usage_agrees_from_raw_through_scheduler_and_result(tmp_path, usage,
         assert result.actions
 
 
-def test_p05_preserves_current_v6e_source_bytes():
-    """B1: driver usage handling must not rewrite any source pinned by current v6e."""
-    from scripts.zone_pair_v6_contract import PREREG_V6E
-    registration = json.loads(PREREG_V6E.read_bytes())
-    expected = registration['v6_contract']['source_sha256']
+def test_p05_preserves_historical_v6e_and_sealed_successor_source_bytes():
+    """B1: usage handling must preserve both versioned source receipts."""
+    from tests.v6h_successor_pins import successor_pins
+    expected = successor_pins()
     assert 'harness/zone_study_integration.py' in expected
     for path, sha in expected.items():
         assert hashlib.sha256((llm.ROOT / path).read_bytes()).hexdigest() == sha, path

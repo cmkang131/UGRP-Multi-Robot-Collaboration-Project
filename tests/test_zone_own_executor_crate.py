@@ -434,14 +434,15 @@ def test_crate_dependency_is_pinned_and_collected_without_ci_configuration_chang
     assert any(review in root.glob(pattern) for pattern in TEST_PATTERNS)
 
 
-def test_sealed_beam_entry_points_remain_byte_identical_and_do_not_enable_crates():
+def test_sealed_successor_beam_entry_points_do_not_enable_crates():
     from pathlib import Path
     import hashlib
     from harness.zone_study_integration import executor_plan as sealed_plan
     root = Path(__file__).resolve().parents[1]
-    pinned = json.loads((root / 'experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json').read_text())
+    from tests.v6h_successor_pins import successor_pins
+    pinned = successor_pins()
     for name in ('harness/zone_pair_executor.py', 'harness/zone_study_integration.py'):
-        assert hashlib.sha256((root / name).read_bytes()).hexdigest() == pinned['v6_contract']['source_sha256'][name]
+        assert hashlib.sha256((root / name).read_bytes()).hexdigest() == pinned[name]
     action = dict(kind='claim', order_id=ORDER['order_id'], destination_zone='B', role='west')
     assert sealed_plan(action, None, actor='r1', orders=[ORDER]).rejected_reason == 'UNSUPPORTED_TEAM_ORDER'
 

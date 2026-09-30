@@ -131,6 +131,30 @@ def test_literal_dynamic_import_is_followed_without_execution(candidate, stateme
         verify(root, receipt)
 
 
+@pytest.mark.parametrize('package', ['2026-09-30-pair-v6h-carry', '123'])
+def test_literal_dynamic_import_pins_dated_packages_without_executing_them(candidate, package):
+    root, spec, _ = candidate
+    target = root / 'experiments' / package / 'policy.py'
+    target.parent.mkdir(parents=True)
+    target.write_text('raise AssertionError("source audit must not execute experiments")\n')
+    (root / 'pkg/helper.py').write_text(
+        f'import importlib\nimportlib.import_module("experiments.{package}.policy")\n')
+    value = build_contract(spec, root=root)
+    path = target.relative_to(root).as_posix()
+    assert path in value['source_sha256']
+    target.write_text('raise AssertionError("changed experiment source")\n')
+    with pytest.raises(ValueError, match='source'):
+        verify(root, value)
+
+
+@pytest.mark.parametrize('name', ['pkg..policy', '../policy', '/absolute', 'pkg/policy'])
+def test_dynamic_module_names_still_reject_path_separators_and_empty_parts(candidate, name):
+    root, spec, _ = candidate
+    spec['modules'].append(name)
+    with pytest.raises(ValueError, match='invalid module'):
+        build_contract(spec, root=root)
+
+
 def test_unknown_dynamic_import_requires_declaration_and_pins_selected_module(candidate):
     root, spec, _ = candidate
     (root / 'pkg/helper.py').write_text('from importlib import import_module as load\nload(config_module)\n')
@@ -252,6 +276,12 @@ def test_real_pair_runtime_keeps_teacher_arm_and_provider_dependencies():
             'harness/zone_own_team_host.py': ['harness.wrist_zone_skill_v9'],
             'harness/zone_robot_model_runtime.py': ['harness.wrist_zone_skill_v9'],
             'harness/zone_study_integration.py': ['harness.owncam_pose_source'],
+            'harness/zone_pair_door_relax.py': [
+                'harness.zone_own_guards', 'harness.zone_own_driver',
+                'harness.zone_own_sweep', 'harness.zone_pair_guards'],
+            'scripts/run_pair_stage_probes.py': [
+                'harness.zone_own_guards', 'harness.zone_own_driver',
+                'harness.zone_own_sweep', 'harness.zone_pair_guards'],
         })
     value = build_contract(spec)
     assert {'harness/zone_pair_executor.py', 'harness/visual_arm.py', 'scripts/zone_teacher.py',

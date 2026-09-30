@@ -5,6 +5,7 @@ These are admission failures, not claims about measured physical performance.
 """
 import importlib
 import json
+import sys
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -16,6 +17,20 @@ from scripts.zone_pair_authorization import digest, registration_payload
 
 
 BUILDER = importlib.import_module('experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h')
+
+
+@pytest.fixture(autouse=True)
+def no_mujoco_api(monkeypatch):
+    from tests.offline_mujoco import module
+    monkeypatch.setitem(sys.modules, 'mujoco', module())
+
+
+@pytest.mark.parametrize('name', ['MjModel', 'MjData', 'mj_step', 'mj_forward', 'Renderer'])
+def test_static_audit_rejects_mujoco_api_calls(name):
+    import mujoco
+    assert mujoco.__file__ == '<offline-mujoco>'
+    with pytest.raises(AssertionError, match='MuJoCo API use is forbidden'):
+        getattr(mujoco, name)()
 
 
 def sealed_plan(monkeypatch):
