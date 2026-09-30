@@ -1,0 +1,43 @@
+NOTE: 'SELF_POSE_UNCERTAIN gate_not_ok_dwell_or_hysteresis' in the first-failure column is the name the existing classifier (harness/pair_stage_probe.py ~855-868) gives an abort; the raw controller reason in these runs is POSE_UNCERTAIN_PROGRESS (ProgressMonitor no-progress stop), not a pose gate.
+
+== cD: b-v6h-gain-69c2a99a-cD n=24 load start/end=[9.2, 12.1, 14.6]/[11.8, 14.9, 15.6] source=69c2a99a changed=False
+case | L0: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | L1: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | first failure
+  F_hR2_04:s911:pPOST:VENV | PASS_CLEAN, 0.53/2.26, 78, 433.6/162.2 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  F_hR2_04:s913:pPOST:VENV | PASS_CLEAN, 0.57/2.28, 78, 434.1/163.1 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N01:s911:pPOST:VENV | PASS_CLEAN, 0.56/2.24, 18, 389.5/140.7 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N01:s913:pPOST:VENV | PASS_CLEAN, 0.56/2.27, 18, 389.5/140.8 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N02:s911:pPOST:VENV | PASS_CLEAN, 0.57/2.25, 21, 385.7/160.7 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N02:s913:pPOST:VENV | PASS_CLEAN, 0.59/2.26, 22, 385.3/160.0 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N03:s911:pPOST:VENV | FAIL (not reached) | FAIL (not reached) | carry L0 COLLISION_GUARD  (controller)
+  N03:s913:pPOST:VENV | FAIL (not reached) | FAIL (not reached) | carry L0 COLLISION_GUARD  (controller)
+  N04:s911:pPOST:VENV | PASS_CLEAN, 0.59/2.24, 48, 409.3/150.8 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N04:s913:pPOST:VENV | PASS_CLEAN, 0.57/2.28, 47, 410.0/152.1 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N05:s911:pPOST:VENV | PASS_CLEAN, 0.57/2.27, 18, 398.4/163.6 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N05:s913:pPOST:VENV | PASS_CLEAN, 0.56/2.29, 18, 398.4/163.6 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N06:s911:pPOST:VENV | PASS_CLEAN, 0.57/2.24, 35, 427.0/186.4 | PASS_CLEAN, 0.89/3.00, 18, 229.3/159.4 | -
+  N06:s913:pPOST:VENV | PASS_CLEAN, 0.55/2.28, 35, 426.9/186.7 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N07:s911:pPOST:VENV | PASS_CLEAN, 0.56/2.27, 36, 423.9/179.6 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N07:s913:pPOST:VENV | PASS_CLEAN, 0.56/2.27, 37, 423.2/178.2 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N08:s911:pPOST:VENV | PASS_CLEAN, 0.53/2.25, 34, 427.4/182.8 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N08:s913:pPOST:VENV | PASS_CLEAN, 0.56/2.26, 34, 427.1/183.2 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N09:s911:pPOST:VENV | PASS_CLEAN, 0.52/2.26, 49, 432.8/177.3 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N09:s913:pPOST:VENV | PASS_CLEAN, 0.53/2.26, 49, 432.1/175.9 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N10:s911:pPOST:VENV | PASS_CLEAN, 0.55/2.24, 48, 441.1/186.1 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N10:s913:pPOST:VENV | PASS_CLEAN, 0.58/2.26, 48, 441.8/187.4 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N11:s911:pPOST:VENV | PASS_CLEAN, 0.57/2.22, 29, 386.8/130.1 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+  N11:s913:pPOST:VENV | PASS_CLEAN, 0.56/2.27, 29, 386.8/130.1 | FAIL (not reached) | carry L1 COLLISION_GUARD  (controller)
+L0: n=24 PASS_CLEAN=22/24 [74-98%] PASS_any=22/24 [74-98%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=2
+L1: n=24 PASS_CLEAN=1/24 [1-20%] PASS_any=1/24 [1-20%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=23
+chain L0->L1 both legs pass: 1/24 [1-20%]
+hard limit (pen > 5 mm or tilt > 15 deg) anywhere in the run (all legs, set-down, regrasp): 0/24 cases
+PF honesty all at the leg ends (case-robot samples): n=46 meanNEES=0.59 median=0.39 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L0 at the leg ends (case-robot samples): n=44 meanNEES=0.62 median=0.41 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L1 at the leg ends (case-robot samples): n=2 meanNEES=0.09 median=0.09 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+L0: cases pass 22/24 [74-98%] (clean 22); independent units (placements) strict 11/12 [65-99%], any-seed 11/12 [65-99%]; classes {'PASS_CLEAN': 22, 'FAIL': 2}
+L1: cases pass 1/24 [1-20%] (clean 1); independent units (placements) strict 0/12 [0-24%], any-seed 1/12 [1-35%]; classes {'FAIL': 23, 'PASS_CLEAN': 1}
+chain L0->L1: cases 1/24 [1-20%]; units strict 0/12 [0-24%], any 1/12 [1-35%]
+honesty L0 (samples=44, observed placements=11/12): mean e x/y/yaw = -0.8 mm / +8.5 mm / +0.61 deg; mean z^2 x/y/yaw = [0.03, 0.39, 0.25]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 0.62
+  L0 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 11/11 [74-100%] / y 11/11 [74-100%] / yaw 11/11 [74-100%]; UNVERIFIED (검증되지 않음) placements: 1 ['N03']
+honesty L1 (samples=2, observed placements=1/12): mean e x/y/yaw = -2.4 mm / +10.7 mm / +0.60 deg; mean z^2 x/y/yaw = [0.02, 0.07, 0.04]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 0.09
+  L1 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 1/1 [21-100%] / y 1/1 [21-100%] / yaw 1/1 [21-100%]; UNVERIFIED (검증되지 않음) placements: 11 ['F_hR2_04', 'N01', 'N02', 'N03', 'N04', 'N05', 'N07', 'N08', 'N09', 'N10', 'N11']
+contact episodes (both legs): 0; first-failure codes: {'COLLISION_GUARD': 21, 'SELF_POSE_UNCERTAIN': 2}

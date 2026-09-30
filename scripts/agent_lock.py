@@ -37,12 +37,13 @@ def status(root: Path, name: str = 'physics') -> dict | None:
     if not path.is_file():
         return None
     owner = json.loads(path.read_text())
+    owner.setdefault('timing_sensitive', False)
     owner['pid_alive'] = _alive(owner.get('pid'))
     return owner
 
 
 def acquire(root: Path, *, owner: str, branch: str, purpose: str, pid: int,
-            expected_minutes: float, name: str = 'physics') -> dict:
+            expected_minutes: float, name: str = 'physics', timing_sensitive: bool = False) -> dict:
     root.mkdir(parents=True, exist_ok=True)
     lock = root / name
     try:
@@ -52,7 +53,7 @@ def acquire(root: Path, *, owner: str, branch: str, purpose: str, pid: int,
         raise RuntimeError(f'lock held: {json.dumps(held, ensure_ascii=False)}') from None
     value = {'owner': owner, 'branch': branch, 'purpose': purpose, 'pid': pid,
              'acquired_unix': time.time(), 'expected_end_unix': time.time() + 60 * expected_minutes,
-             'loadavg_at_acquire': os.getloadavg()}
+             'loadavg_at_acquire': os.getloadavg(), 'timing_sensitive': timing_sensitive}
     (lock / 'owner.json').write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n')
     return value
 
@@ -82,6 +83,7 @@ def main(argv=None) -> int:
     get.add_argument('--purpose', required=True)
     get.add_argument('--pid', type=int, required=True, help='long-running driver PID that owns the runs')
     get.add_argument('--expected-minutes', type=float, required=True)
+    get.add_argument('--timing-sensitive', action='store_true', help='warn concurrent offline tests about wall-time measurements')
     put = sub.add_parser('release')
     put.add_argument('--owner', required=True)
     put.add_argument('--stale', action='store_true', help='release another owner only if its recorded pid is dead')
@@ -91,7 +93,8 @@ def main(argv=None) -> int:
             value = status(args.root)
         elif args.command == 'acquire':
             value = acquire(args.root, owner=args.owner, branch=args.branch, purpose=args.purpose,
-                            pid=args.pid, expected_minutes=args.expected_minutes)
+                            pid=args.pid, expected_minutes=args.expected_minutes,
+                            timing_sensitive=args.timing_sensitive)
         else:
             value = release(args.root, owner=args.owner, stale=args.stale)
     except RuntimeError as error:

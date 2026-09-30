@@ -1,0 +1,94 @@
+FFFFFFFFFFFFF                                                            [100%]
+=================================== FAILURES ===================================
+___ test_cleanup_host_cannot_replace_completed_handover_failure[no_release] ____
+tests/test_classify_review_299c.py:58: in test_cleanup_host_cannot_replace_completed_handover_failure
+    assert report["summary"]["full_verdict"] != "PASS_A_B_SAFETY", report["summary"]
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_adjudicated_attempt_slots': 73, 'n_placements': 60, ...}
+E   assert 'PASS_A_B_SAFETY' != 'PASS_A_B_SAFETY'
+___ test_cleanup_host_cannot_replace_completed_handover_failure[no_regrasp] ____
+tests/test_classify_review_299c.py:58: in test_cleanup_host_cannot_replace_completed_handover_failure
+    assert report["summary"]["full_verdict"] != "PASS_A_B_SAFETY", report["summary"]
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_adjudicated_attempt_slots': 73, 'n_placements': 60, ...}
+E   assert 'PASS_A_B_SAFETY' != 'PASS_A_B_SAFETY'
+____ test_cleanup_host_cannot_replace_completed_handover_failure[restaging] ____
+tests/test_classify_review_299c.py:58: in test_cleanup_host_cannot_replace_completed_handover_failure
+    assert report["summary"]["full_verdict"] != "PASS_A_B_SAFETY", report["summary"]
+E   AssertionError: {'n_cases': 72, 'n_attempts': 73, 'n_adjudicated_attempt_slots': 73, 'n_placements': 60, ...}
+E   assert 'PASS_A_B_SAFETY' != 'PASS_A_B_SAFETY'
+___ test_contradictory_evidence_cannot_pass_entire_cohort[result_host_error] ___
+tests/test_classify_review_299c.py:99: in test_contradictory_evidence_cannot_pass_entire_cohort
+    assert report["summary"]["full_verdict"] != "PASS_A_B_SAFETY", report["summary"]
+E   AssertionError: {'n_cases': 72, 'n_attempts': 72, 'n_adjudicated_attempt_slots': 72, 'n_placements': 60, ...}
+E   assert 'PASS_A_B_SAFETY' != 'PASS_A_B_SAFETY'
+______ test_contradictory_evidence_cannot_pass_entire_cohort[endpoint_gt] ______
+tests/test_classify_review_299c.py:99: in test_contradictory_evidence_cannot_pass_entire_cohort
+    assert report["summary"]["full_verdict"] != "PASS_A_B_SAFETY", report["summary"]
+E   AssertionError: {'n_cases': 72, 'n_attempts': 72, 'n_adjudicated_attempt_slots': 72, 'n_placements': 60, ...}
+E   assert 'PASS_A_B_SAFETY' != 'PASS_A_B_SAFETY'
+_ test_contradictory_evidence_cannot_pass_entire_cohort[missing_teacher_prefix] _
+tests/test_classify_review_299c.py:99: in test_contradictory_evidence_cannot_pass_entire_cohort
+    assert report["summary"]["full_verdict"] != "PASS_A_B_SAFETY", report["summary"]
+E   AssertionError: {'n_cases': 72, 'n_attempts': 72, 'n_adjudicated_attempt_slots': 72, 'n_placements': 60, ...}
+E   assert 'PASS_A_B_SAFETY' != 'PASS_A_B_SAFETY'
+_ test_contradictory_evidence_cannot_pass_entire_cohort[impossible_contact_coverage] _
+tests/test_classify_review_299c.py:99: in test_contradictory_evidence_cannot_pass_entire_cohort
+    assert report["summary"]["full_verdict"] != "PASS_A_B_SAFETY", report["summary"]
+E   AssertionError: {'n_cases': 72, 'n_attempts': 72, 'n_adjudicated_attempt_slots': 72, 'n_placements': 60, ...}
+E   assert 'PASS_A_B_SAFETY' != 'PASS_A_B_SAFETY'
+______ test_unresolved_host_is_unclassified_under_registered_rule[False] _______
+tests/test_classify_review_299c.py:117: in test_unresolved_host_is_unclassified_under_registered_rule
+    assert selected["class"] is None, selected
+E   AssertionError: {'case_id': 'review299:C01:s941', 'placement': 'C01', 'seed': 941, 'class': 'FAIL', ...}
+E   assert 'FAIL' is None
+_______ test_unresolved_host_is_unclassified_under_registered_rule[True] _______
+tests/test_classify_review_299c.py:117: in test_unresolved_host_is_unclassified_under_registered_rule
+    assert selected["class"] is None, selected
+E   AssertionError: {'case_id': 'review299:C01:s941', 'placement': 'C01', 'seed': 941, 'class': 'FAIL', ...}
+E   assert 'FAIL' is None
+__ test_registered_recorder_produces_required_fields[result.evidence_sha256] ___
+tests/test_classify_review_299c.py:132: in test_registered_recorder_produces_required_fields
+    assert absent == [], absent
+E   AssertionError: ['chain@b-v6h1-lag-off-sanity:teacher:X01:s911:pPOST:VENVS', 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'chain@b-v6h...1:pPOST:VENVS', 'chain@b-v6h1:teacher:S07:s911:pPOST:VENVS', 'chain@b-v6h1:teacher:X00_F_hR2_04:s911:pPOST:VENVS', ...]
+E   assert ['chain@b-v6h...T:VENVS', ...] == []
+E
+E     Left contains 11 more items, first extra item: 'chain@b-v6h1-lag-off-sanity:teacher:X01:s911:pPOST:VENVS'
+E     Use -v to get more diff
+_ test_registered_recorder_produces_required_fields[result.execution_identity] _
+tests/test_classify_review_299c.py:132: in test_registered_recorder_produces_required_fields
+    assert absent == [], absent
+E   AssertionError: ['chain@b-v6h1-lag-off-sanity:teacher:X01:s911:pPOST:VENVS', 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'chain@b-v6h...1:pPOST:VENVS', 'chain@b-v6h1:teacher:S07:s911:pPOST:VENVS', 'chain@b-v6h1:teacher:X00_F_hR2_04:s911:pPOST:VENVS', ...]
+E   assert ['chain@b-v6h...T:VENVS', ...] == []
+E
+E     Left contains 11 more items, first extra item: 'chain@b-v6h1-lag-off-sanity:teacher:X01:s911:pPOST:VENVS'
+E     Use -v to get more diff
+_ test_registered_recorder_produces_required_fields[result.evaluation_coverage] _
+tests/test_classify_review_299c.py:132: in test_registered_recorder_produces_required_fields
+    assert absent == [], absent
+E   AssertionError: ['chain@b-v6h1-lag-off-sanity:teacher:X01:s911:pPOST:VENVS', 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'chain@b-v6h...1:pPOST:VENVS', 'chain@b-v6h1:teacher:S07:s911:pPOST:VENVS', 'chain@b-v6h1:teacher:X00_F_hR2_04:s911:pPOST:VENVS', ...]
+E   assert ['chain@b-v6h...T:VENVS', ...] == []
+E
+E     Left contains 11 more items, first extra item: 'chain@b-v6h1-lag-off-sanity:teacher:X01:s911:pPOST:VENVS'
+E     Use -v to get more diff
+_ test_registered_recorder_produces_required_fields[result.wall_contact.coverage] _
+tests/test_classify_review_299c.py:132: in test_registered_recorder_produces_required_fields
+    assert absent == [], absent
+E   AssertionError: ['chain@b-v6h1-lag-off-sanity:teacher:X01:s911:pPOST:VENVS', 'chain@b-v6h1:teacher:S01:s911:pPOST:VENVS', 'chain@b-v6h...1:pPOST:VENVS', 'chain@b-v6h1:teacher:S07:s911:pPOST:VENVS', 'chain@b-v6h1:teacher:X00_F_hR2_04:s911:pPOST:VENVS', ...]
+E   assert ['chain@b-v6h...T:VENVS', ...] == []
+E
+E     Left contains 11 more items, first extra item: 'chain@b-v6h1-lag-off-sanity:teacher:X01:s911:pPOST:VENVS'
+E     Use -v to get more diff
+=========================== short test summary info ============================
+FAILED tests/test_classify_review_299c.py::test_cleanup_host_cannot_replace_completed_handover_failure[no_release]
+FAILED tests/test_classify_review_299c.py::test_cleanup_host_cannot_replace_completed_handover_failure[no_regrasp]
+FAILED tests/test_classify_review_299c.py::test_cleanup_host_cannot_replace_completed_handover_failure[restaging]
+FAILED tests/test_classify_review_299c.py::test_contradictory_evidence_cannot_pass_entire_cohort[result_host_error]
+FAILED tests/test_classify_review_299c.py::test_contradictory_evidence_cannot_pass_entire_cohort[endpoint_gt]
+FAILED tests/test_classify_review_299c.py::test_contradictory_evidence_cannot_pass_entire_cohort[missing_teacher_prefix]
+FAILED tests/test_classify_review_299c.py::test_contradictory_evidence_cannot_pass_entire_cohort[impossible_contact_coverage]
+FAILED tests/test_classify_review_299c.py::test_unresolved_host_is_unclassified_under_registered_rule[False]
+FAILED tests/test_classify_review_299c.py::test_unresolved_host_is_unclassified_under_registered_rule[True]
+FAILED tests/test_classify_review_299c.py::test_registered_recorder_produces_required_fields[result.evidence_sha256]
+FAILED tests/test_classify_review_299c.py::test_registered_recorder_produces_required_fields[result.execution_identity]
+FAILED tests/test_classify_review_299c.py::test_registered_recorder_produces_required_fields[result.evaluation_coverage]
+FAILED tests/test_classify_review_299c.py::test_registered_recorder_produces_required_fields[result.wall_contact.coverage]
+13 failed, 14 deselected in 11.49s
