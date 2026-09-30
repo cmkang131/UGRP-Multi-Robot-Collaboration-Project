@@ -70,5 +70,20 @@ v6e 고정 소스 85개가 최종 통과 때와 동일함을 다시 대조했다
 함께 들어온 P08 README의 CI skip 지침은 사용자의 정상 CI 실행 지침으로 고쳤다.
 과거 `verification.json`은 덮어쓰지 않고 역사 기록임을 README에서 명시했다.
 
+## CI를 취소하지 않는 후속 push
+
+첫 push 뒤 Git의 `*.log` 제외 규칙으로 복사한 로그 3개가 누락된 것을 확인해
+명시적으로 추적했다. 로그의 공백까지 원본 그대로 보존하며 checksum은 바꾸지 않았다.
+정상 CI가 대기 중인 상태에서 추가 push로 취소되는 것을 막기 위해 workflow의
+concurrency group을 매 실행의 `github.run_id`로 구분하고 `cancel-in-progress: false`로 설정했다.
+같은 PR 그룹의 대기 실행 교체도 피하며 기존 CI job·선택·필수 통과 기준은 유지한다.
+CONTRIBUTING의 자동 취소 설명도 현재 사용자 지침에 맞췄다.
+
+`tests/test_ci_fast_path.py`의 새 취소 방지 검사를 포함해 **11 passed, 280 subtests passed**.
+공용 잠금 아래 물리·모델·네트워크 없는 검사이며 85개 고정 해시도 그대로다.
+별도 raw는 `outputs/2026-09-30-cap-t10a-corridor/ci-preservation/`이고
+`review-fix/ci-*` 3파일을 원본과 대조해 추가했다. 전체 12파일의 해시는 `checksums.json`에 있다.
+이 로컬 결과를 GitHub CI 통과로 세지 않는다. 실제 CI 상태는 PR에서 확인한다.
+
 로컬 정적/fake 코드 검증이므로 새 학습·평가 cohort나 TensorBoard 물리 snapshot은 없다.
 UGRP 예외에 따라 Drive를 사용하지 않는다. 정상 GitHub CI는 실행하며 취소·skip하지 않는다.
