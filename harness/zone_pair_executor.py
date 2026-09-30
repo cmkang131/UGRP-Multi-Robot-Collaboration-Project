@@ -236,6 +236,9 @@ def m2_controller(execution, plan, params):
     own, rid = execution.own, execution.own.robot_id
     from harness.zone_own_guards import loaded_gate_profile
     driver = GuardedPairApproach(own, copy.deepcopy(params),
+                                       door_relax_sigma_scope=execution.policy.door_relax_sigma_scope,
+                                       loaded_k_xy=execution.policy.loaded_k_xy,
+                                       loaded_k_yaw=execution.policy.loaded_k_yaw,
                                        loaded_profile=loaded_gate_profile(execution.policy.loaded_gate_yaw_deg),
                                        goal_xyyaw=plan['prestations'][rid], door_xy=None,
                                        keepouts=plan['keepouts'][rid], initial_servo=dict(own.servo), seed=own.seed)

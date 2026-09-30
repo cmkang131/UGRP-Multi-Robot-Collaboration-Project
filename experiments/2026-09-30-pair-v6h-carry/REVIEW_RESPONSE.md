@@ -45,3 +45,15 @@
 변이(M3)는 수정 전 64 passed로 놓쳤고, 강화 후 3 failed/101 passed로 잡았다. ArmSequence pin 누락은 1 failed/104 deselected, 예전 잘못된 문구 복원도 1 failed/104 deselected다. 모두 저장소 파일을 수정하지 않는 메모리 변이다. 마지막 정상 테스트는 이 변이와 별도 프로세스에서 통과했다.
 
 빌더 `verify(build())`는 **72건 / 268개 pin**을 확인했고 미봉인 해시 변화 목록을 갱신했다. 원본 소스 104개에서 추가한 것은 보수적인 전이 의존성이며, 모든 파일을 변경했다는 뜻이 아니다. 소스 폐쇄 검사는 일반 Python import를 정적으로 따라가고 비 Python/동적 선택 입력은 명시 pin으로 묶는다. `git diff --check` 통과, 과거 prereg 파일 및 `harness/zone_pair_executor.py` 변경 없음.
+
+## 인수 재생 실패와 시그마 범위 수정
+
+위 지적 5의 좁은 σ 범위는 당시 처리 기록이다. 이후 `claude/v6h1-acceptance-run` `68219d91`의 물리 인수 기록에서 등록 head `3afc61b0`는 lag-on 4/10만 일치했고 6건과 lag-off sanity는 leg 1 pregrasp 시야 후보가 사라져 실패했다. 모든 margin을 1/1로 덮어쓴 원인 확인은 7/7 명령 SHA·leg 일치를 회복했다. 이 작업은 그 기록을 읽었으며 제어기의 물리 인수 재생은 하지 않았다. 확장 pytest에 물리 통합 검사 1건을 포함한 실수로 렌더 초기화(`CGLError`)가 실패한 기록은 보존하고, 기존 no_physics 플러그인으로 그 파일을 재검사해 해당 검사를 제외한다.
+
+조정자 결정에 따라 `door_relax_sigma_scope="probe_all_sweeps"`를 b-v6h1에만 등록한다. probe는 짐 없는/든 팔뿐 아니라 접근·후진·차체 이동과 preclose 자기 위치 여유의 모든 margin 호출을 1/1로 바꾼다. 별도 빔 영상 불확실성·GlobalPairSweepGuard·정합 검사의 K_SIGMA는 2다. [정확한 대응 표와 근거](SIGMA_SCOPE_CORRECTION.md)를 따른다. tS/tR/tX 29/29 탐색을 더 좁힌 제어기의 근거로 넘기지 않는다. 접촉 허용은 기존 사용자 결정이고 penetration >5 mm / tilt >15° 하드 한계는 평가 분류기의 우선 검사다(지적 2의 최종 병합/pin은 별도).
+
+접근용 가드는 작업별 복사본으로 적용하고 own executor 가드를 바꾸지 않는다. preclose도 정책 가드를 쓰게 연결했다. 다른 18개 정책의 필드·정확한 2σ margin·PF·명령/monitor/gate 골든을 유지한다. S03 r2 28.2초의 기록 자세로 실제 시야 후보 필터를 검사한다: 2/2는 후보 0개, 1/1은 7개이며 probe와 후보·점수가 정확히 같다. observability는 양의 고정값이며 영상·PF·물리 재생이 아니다.
+
+새 검증은 `analysis/sigma_scope/validation.json`과 JUnit에 기록한다. 소스 해시 변화 목록과 builder의 범위 선언을 갱신했고 운반 일정·정지 tick 골든은 유지한다. `prereg_v6h.json` 없음, CURRENT_REVISION=v6e, PR draft 유지, 봉인·병합 없음. **새 head SHA에서 조정자의 물리 인수 재생이 필요하다.**
+
+이번 수정의 검사: `test_zone_pair_v6h.py` **140 passed**, `test_zone_pair_registered_source.py` **24 passed**. 검색으로 고른 관련 44개 파일은 **1371 passed / 물리 통합 1 failed(CGLError)**였고, 유일한 실패 파일을 기존 no_physics 플러그인으로 재검사한 결과 **14 passed / 물리 1 skipped**다. 제어기 소스는 두 검사 사이에 바뀌지 않았다. 중복을 뺀 오프라인 통과는 **1535개**이며 실패 시도와 제외 확인을 모두 보존했다. 빌더 두 모드는 **미봉인 72건 / 268개 pin**을 확인했다.

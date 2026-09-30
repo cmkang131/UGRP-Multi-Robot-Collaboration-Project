@@ -264,15 +264,19 @@ class SweepGuard:
     """Static-map collision check for own arm/finger/box sweeps and whole-body back-offs."""
 
     def __init__(self, static_map: Mapping, *, mount_xyz_m=BODY_MOUNT_XYZ_M, residual_m=BODY_COVERAGE_RESIDUAL_M,
-                 loaded_k_xy=K_SIGMA, loaded_k_yaw=K_SIGMA):
+                 loaded_k_xy=K_SIGMA, loaded_k_yaw=K_SIGMA, door_relax_sigma_scope='loaded_base_motion'):
         self.boxes = static_boxes(static_map)
         self.mount = tuple(float(v) for v in mount_xyz_m)
         self.residual = float(residual_m)
         self.loaded_k_xy, self.loaded_k_yaw = float(loaded_k_xy), float(loaded_k_yaw)
+        if door_relax_sigma_scope not in ('loaded_base_motion', 'probe_all_sweeps'):
+            raise ValueError('unknown door-relax sigma scope')
+        self.door_relax_sigma_scope = door_relax_sigma_scope
 
     def margin(self, pose: OwnPose, lever_m: float, *, loaded=False) -> float:
         sxy, syaw = min(pose.std_xy, SIGMA_CAP_XY_M), min(pose.std_yaw, SIGMA_CAP_YAW_RAD)
-        kxy, kyaw = (self.loaded_k_xy, self.loaded_k_yaw) if loaded else (K_SIGMA, K_SIGMA)
+        relaxed = loaded or self.door_relax_sigma_scope == 'probe_all_sweeps'
+        kxy, kyaw = (self.loaded_k_xy, self.loaded_k_yaw) if relaxed else (K_SIGMA, K_SIGMA)
         return BASE_MARGIN_M + self.residual + kxy * sxy + kyaw * syaw * lever_m
 
     def arm_clearance(self, servo: Mapping, pose: OwnPose, *, loaded: bool) -> tuple[float, str | None]:

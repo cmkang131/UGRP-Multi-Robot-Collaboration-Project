@@ -18,11 +18,12 @@ from harness.zone_pair_geometry import PairSweepGuard
 from harness.zone_pair_guards import MovedFixMonitor
 from harness.zone_pair_v6_policy import POLICIES, REVISION_POLICIES, PairPolicy, pair_policy
 from tests.test_zone_pair_v6e import V6, cloud, _team, _axial_schedule, _lateral_schedule
+from tests.test_zone_pair_grasp import beam_fit
 
 ROOT = Path(__file__).resolve().parents[1]
 GOLDEN = json.loads((ROOT/'tests/fixtures/zone_pair_v6h/off_golden.json').read_text())
 FLAGS = ('carry_fwd_gain', 'loaded_k_xy', 'loaded_k_yaw', 'loaded_gate_yaw_deg',
-         'progress_arm_on_moved_fix', 'carry_axial_lag')
+         'progress_arm_on_moved_fix', 'carry_axial_lag', 'door_relax_sigma_scope')
 BUILDER = importlib.import_module('experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h')
 
 
@@ -63,13 +64,13 @@ def _off_pf_trace(name, carry_module):
 def test_all_existing_policy_fields_are_unchanged_and_new_flags_default_off(name):
     p = pair_policy(name)
     assert {k: v for k, v in vars(p).items() if k not in FLAGS} == GOLDEN['policies'][name]['flags']
-    assert tuple(getattr(p, k) for k in FLAGS) == (1., 2., 2., None, False, False)
+    assert tuple(getattr(p, k) for k in FLAGS) == (1., 2., 2., None, False, False, 'loaded_base_motion')
 
 
 def test_bv6h1_is_bv6g_plus_exactly_the_five_decided_options():
     g, h = pair_policy('b-v6g'), pair_policy('b-v6h1')
     assert replace(h, name=g.name, **{k: getattr(g, k) for k in FLAGS}) == g
-    assert tuple(getattr(h, k) for k in FLAGS) == (carry.FWD_GAIN, 1., 1., (5., 4.), True, True)
+    assert tuple(getattr(h, k) for k in FLAGS) == (carry.FWD_GAIN, 1., 1., (5., 4.), True, True, 'probe_all_sweeps')
     assert REVISION_POLICIES['v6h'] == ('v5h', 'b-only', 'b-v6h1')
 
 
@@ -155,7 +156,7 @@ def test_flags_off_pair_command_guard_matches_main_command_and_monitor_goldens(m
     assert ep.own.gate.as_dict() == gold['gate']
 
 
-def test_sigma_relaxation_is_only_loaded_motion_not_approach_or_arm_sweeps(monkeypatch):
+def test_default_sigma_scope_preserves_loaded_motion_only_selection(monkeypatch):
     from tests.test_zone_pair_executor import MAP
     from harness.zone_pair_executor import make_plan
     from tests.test_zone_pair_executor import SHEETS
@@ -177,6 +178,145 @@ def test_sigma_relaxation_is_only_loaded_motion_not_approach_or_arm_sweeps(monke
         assert pg.margin(pose, .7) == pytest.approx(.157, abs=1e-9)  # restored after motion
     pg.arm_clearance(servo, pose, loaded=True)
     assert not pg._loaded_motion and guards.K_SIGMA == 2.
+
+
+@pytest.mark.parametrize('operation,loaded', [
+    ('arm_clearance', False), ('arm_clearance', True),
+    ('transition_clear', False), ('transition_clear', True),
+    ('transition_diagnostic', False), ('transition_diagnostic', True),
+    ('plan', False), ('plan', True),
+    ('translation_clear', False), ('translation_clear', True),
+    ('motion_clear', False), ('motion_clear', True),
+    ('chassis_clearance', False), ('stationary_beam_clearance', False),
+])
+def test_bv6h1_every_sweep_margin_matches_probe_exactly(monkeypatch, operation, loaded):
+    from tests.test_zone_pair_executor import active
+    from harness.zone_pair_door_relax import relaxed_margin
+    h = pair_policy('b-v6h1')
+    ep = active(_team(monkeypatch, 'sigma-all', {k: v for k, v in vars(h).items() if k != 'name'}))['r1']
+    pg = ep.command_guard.sweep_guard()
+    # Keep every clearance positive so even full base paths visit every sample.
+    pg.boxes = [{'id': 'far', 'center': (10., 10.), 'half': (.1, .1), 'yaw': 0., 'height': 1.}]
+    pose = guards.OwnPose(0., 0., 0., .04, .03)
+    servo = dict(ep.own.servo); target = {**servo, 6: servo[6] + 20}
+    probe = PairSweepGuard(ep.own.guard, ep.plan['beam_geometry'], ep.arguments['role'])
+    probe.boxes = pg.boxes
+    seen = []
+    registered = pg.margin
+    def checked_margin(at, lever):
+        actual = registered(at, lever)
+        assert actual == relaxed_margin(1., 1.)(pg, at, lever)
+        seen.append(actual)
+        return actual
+    monkeypatch.setattr(pg, 'margin', checked_margin)
+    beam = {'grip_base_m': (.2, 0.), 'axis_heading_rad': 0., 'std_xy_m': .01, 'std_yaw_rad': .02}
+    def evaluate(g):
+        if operation == 'chassis_clearance': return g.chassis_clearance(pose)
+        if operation == 'stationary_beam_clearance': return g.stationary_beam_clearance(beam, pose)
+        if operation == 'arm_clearance': return g.arm_clearance(servo, pose, loaded=loaded)
+        if operation.startswith('transition_'):
+            return getattr(g, operation)(servo, target, pose, loaded=loaded)
+        if operation == 'plan': return g.plan(servo, target, [servo[6]], pose, loaded=loaded)
+        if operation == 'translation_clear': return g.translation_clear(servo, pose, .01, 0., loaded=loaded)
+        return g.motion_clear(servo, pose, {'forward': .01, 'duration_s': .1}, loaded=loaded)
+    actual = evaluate(pg)
+    with monkeypatch.context() as patch:
+        patch.setattr(guards.SweepGuard, 'margin', relaxed_margin(1., 1.))
+        expected = evaluate(probe)
+    assert seen and actual == expected
+    assert not pg._loaded_motion and guards.K_SIGMA == 2.
+    # The inherited probe formula retains the caps as well as the fixed 35 mm.
+    large = guards.OwnPose(0., 0., 0., 9., 9.)
+    assert registered(large, .7) == relaxed_margin(1., 1.)(pg, large, .7)
+
+
+@pytest.mark.parametrize('name', GOLDEN['policies'])
+def test_existing_policy_sweep_margins_keep_exact_2sigma_golden(monkeypatch, name):
+    from tests.test_zone_pair_executor import active
+    p = pair_policy(name)
+    ep = active(_team(monkeypatch, 'sigma-off', {k: v for k, v in vars(p).items() if k != 'name'}))['r1']
+    pg = ep.command_guard.sweep_guard()
+    pose = guards.OwnPose(0., 0., 0., .04, .03)
+    expected = .02 + .015 + 2. * .04 + 2. * .03 * .7
+    assert ep.controller.driver.guard is ep.own.guard
+    assert ep.own.guard.margin(pose, .7) == expected
+    if p.beam_relative:
+        expected = .02 + .015 + 2. * (.04 + .03 * .7)  # historical global arithmetic
+    for moving in (False, True):
+        pg._loaded_motion = moving
+        assert pg.margin(pose, .7) == expected
+
+
+def test_bv6h1_approach_guard_matches_probe_without_leaking_to_own_executor(monkeypatch):
+    from tests.test_zone_pair_executor import active
+    from harness.zone_pair_door_relax import relaxed_margin
+    h = pair_policy('b-v6h1')
+    ep = active(_team(monkeypatch, 'approach-sigma', {k: v for k, v in vars(h).items() if k != 'name'}))['r1']
+    driver = ep.controller.driver
+    pose = guards.OwnPose(0., 0., 0., .04, .03)
+    assert driver.guard is not ep.own.guard
+    assert driver.guard.margin(pose, .7) == relaxed_margin(1., 1.)(driver.guard, pose, .7)
+    assert ep.own.guard.door_relax_sigma_scope == 'loaded_base_motion'
+    assert ep.own.guard.margin(pose, .7) == .02 + .015 + 2. * .04 + 2. * .03 * .7
+    # Exercise the driver's actual arm/backoff checks, not just its field.
+    servo = ep.own.servo
+    def evaluate(g):
+        return (g.plan(servo, servo, [servo[6]], pose, loaded=False, allow_backoff=True),
+                g.translation_clear(servo, pose, .01, 0., loaded=False))
+    actual = evaluate(driver.guard)
+    with monkeypatch.context() as patch:
+        patch.setattr(guards.SweepGuard, 'margin', relaxed_margin(1., 1.))
+        assert actual == evaluate(ep.own.guard)
+
+
+def test_recorded_s03_pregrasp_view_filter_recovers_probe_candidates(monkeypatch):
+    from tests.test_zone_pair_executor import active, MAP
+    from harness.zone_pair_align import ranked_look_pans
+    from harness.zone_pair_door_relax import relaxed_margin
+    saved = json.loads((ROOT/'tests/fixtures/zone_pair_v6h/pregrasp_s03.json').read_text())
+    assert hashlib.sha256((ROOT/saved['map']['path']).read_bytes()).hexdigest() == saved['map']['sha256']
+    r = saved['report']
+    report = SimpleNamespace(initialized=True, x_m=r['xyyaw'][0], y_m=r['xyyaw'][1], yaw_rad=r['xyyaw'][2],
+                             std_xy_m=r['std_xy_m'], std_yaw_rad=r['std_yaw_rad'])
+    servo = {int(k): v for k, v in saved['commanded_servo'].items()}
+    # Isolate collision filtering; no image, localization or physics is run.
+    provider = SimpleNamespace(expected_observability=lambda *args: 1.)
+    h = pair_policy('b-v6h1')
+    ep = active(_team(monkeypatch, 's03-sigma', {k: v for k, v in vars(h).items() if k != 'name'}))['r2']
+    ep.plan['beam_geometry'] = saved['beam_geometry']
+    def candidates(g):
+        return ranked_look_pans(MAP, report, servo, g, provider, recovery_v6=True)
+    old = PairSweepGuard(ep.own.guard, saved['beam_geometry'], ep.arguments['role'])
+    assert candidates(old) == []  # 2/2 reproduces PREGRASP_NO_SAFE_VIEW
+    actual = candidates(ep.command_guard.sweep_guard())
+    assert [r['pan'] for r in actual] == [1500, 1230, 1770, 970, 2030, 700, 2300]
+    with monkeypatch.context() as patch:
+        patch.setattr(guards.SweepGuard, 'margin', relaxed_margin(1., 1.))
+        assert actual == candidates(old)  # exact scores as well as candidate set
+
+
+def test_preclose_uses_the_policy_scope_and_keeps_beam_fit_2sigma(beam_fit, monkeypatch):
+    from tests.test_zone_pair_executor import active
+    from tests.test_zone_pair_grasp import ready_to_close
+    from harness.zone_pair_door_relax import relaxed_margin
+    h = pair_policy('b-v6h1')
+    ep = active(_team(monkeypatch, 'preclose-sigma', {k: v for k, v in vars(h).items() if k != 'name'}))['r1']
+    ready_to_close(ep, 1.)
+    seen = []
+    original = PairSweepGuard.stationary_beam_clearance
+    def capture(g, beam, pose):
+        assert g.door_relax_sigma_scope == 'probe_all_sweeps'
+        assert g.margin(pose, .7) == relaxed_margin(1., 1.)(g, pose, .7)
+        actual = original(g, beam, pose)
+        with monkeypatch.context() as patch:
+            patch.setattr(guards.SweepGuard, 'margin', relaxed_margin(1., 1.))
+            probe = PairSweepGuard(ep.own.guard, ep.plan['beam_geometry'], ep.arguments['role'])
+            assert actual == original(probe, beam, pose)  # extra beam-fit term stays 2
+        seen.append(actual)
+        return actual
+    monkeypatch.setattr(PairSweepGuard, 'stationary_beam_clearance', capture)
+    ep.command_guard.preclose_check(1., ep.own.last_obs)
+    assert seen
 
 
 def test_loaded_gate_5_4_is_scoped_and_preserves_unloaded_and_xy():
@@ -287,6 +427,7 @@ def test_builder_dry_run_verify_and_tamper_rejection_without_final_seal(capsys):
     assert p['confirmatory_plan']['default_A']['pass_at_least'] == 48
     assert p['confirmatory_plan']['default_C'] == 'report-only, not an adoption gate'
     operation = p['confirmatory_plan']['operation']
+    assert p['confirmatory_plan']['coordinator_decisions']['sigma_scope'] == 'probe_all_sweeps'
     assert operation['chain_stop_leg'] == 1 and operation['policy'] == 'b-v6h1'
     assert operation['contact_track'] and operation['pf_track'] and not operation['weld']
     assert p['confirmatory_plan']['text_verbatim'] == (BUILDER.HERE/'PREREG_DRAFT.md').read_text()
@@ -525,7 +666,7 @@ def test_scope_wording_matches_not_approach_gate_and_progress(monkeypatch):
     # Guard-scope documentation is part of the registration, not a grasp-only promise.
     for name in ('REGISTRATION_PLAN.md', 'README.md'):
         text = (BUILDER.HERE/name).read_text()
-        assert 'not approach' in text and 'confirmed grasp' in text
+        assert 'not approach' in text and 'probe_all_sweeps' in text
         assert '접근·팔 스윕 여유의 완화는 한 번도 시험되지 않았다' not in text
 
 

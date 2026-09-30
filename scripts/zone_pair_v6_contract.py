@@ -195,8 +195,12 @@ def candidate_contract(revision='v6h'):
         # (A) now also removes PF convergence from the align stop conditions.
         'flag_definitions':{
             'carry_fwd_gain':'v6h: loaded PF gain[0][0] x fixed PR #284 kappa; copy, idempotent, hash-pinned fit',
-            'loaded_k_xy':'v6h: loaded pair base-motion margin only; approach and arm sweeps stay 2',
-            'loaded_k_yaw':'v6h: loaded pair base-motion margin only; global/consistency K_SIGMA stays 2',
+            'loaded_k_xy':'v6h: xy multiplier selected by door_relax_sigma_scope; fixed margins and caps unchanged',
+            'loaded_k_yaw':'v6h: yaw multiplier selected by door_relax_sigma_scope; global/consistency K_SIGMA stays 2',
+            'door_relax_sigma_scope':('v6h: probe_all_sweeps matches every SweepGuard.margin call in the probe: '
+                                      'unloaded/loaded arm and base motion, approach/backoff, preclose own-pose margin; '
+                                      'beam-fit uncertainty and global/consistency K_SIGMA stay 2; '
+                                      'loaded_base_motion preserves older policies'),
             'loaded_gate_yaw_deg':'v6h: instance-scoped HIGH/LOW yaw in every not-approach phase, including align/regrasp',
             'progress_arm_on_moved_fix':('v6h p2f: pair monitor in every not-approach phase; arms only from a finite fix strictly after first move; '
                                          'fail-open: no reliable stall detection for the loaded pair'),

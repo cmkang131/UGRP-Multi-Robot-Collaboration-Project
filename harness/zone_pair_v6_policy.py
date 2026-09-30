@@ -87,9 +87,11 @@ class PairPolicy:
     bounded_retreat: bool = False
     # v6h: fixed PR #284 calibration multiplier, only loaded gain[0][0].
     carry_fwd_gain: float = 1.0
-    # Only loaded pair base motion; approach and ALL arm sweeps retain 2/2.
+    # Default scope preserves loaded base-motion-only selection. b-v6h1 uses
+    # the probe's ALL margin calls (unloaded/loaded arm, chassis and preclose).
     loaded_k_xy: float = 2.0
     loaded_k_yaw: float = 2.0
+    door_relax_sigma_scope: str = 'loaded_base_motion'
     loaded_gate_yaw_deg: tuple[float, float] | None = None
     # p2f: no reliable stall detection for the loaded pair when no moved fix arrives.
     progress_arm_on_moved_fix: bool = False
@@ -146,6 +148,7 @@ POLICIES = {
 POLICIES['b-v6h1'] = replace(POLICIES['b-v6g'], name='b-v6h1',
                              carry_fwd_gain=0.9483378899463337,
                              loaded_k_xy=1.0, loaded_k_yaw=1.0,
+                             door_relax_sigma_scope='probe_all_sweeps',
                              loaded_gate_yaw_deg=(5.0, 4.0),
                              progress_arm_on_moved_fix=True, carry_axial_lag=True)
 # Registered ablation sets. v6 (historical, PR #246/#259), v6b (historical DRAFT,

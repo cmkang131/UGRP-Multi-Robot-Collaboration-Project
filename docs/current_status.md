@@ -2,7 +2,7 @@
 
 ## 2026-09-30 b-v6h1 구현 후보 — 봉인 전
 
-`codex/pair-v6h-register`: revision v6h / bundle v83 `zone-pair-v83-carry-door-gain` / workflow 2.16.0을 예약했다(실행 설정에서 미사용 확인; v82/2.15.0은 건너뜀). b-v6g + gain 보정·든 이동 σ 여유·든 yaw 게이트·p2f·축 방향 lag이며, 접근·팔 스윕은 2σ를 유지한다. 든 쌍의 신뢰할 만한 정지 검출은 없다(fail-open). v6e 사전 등록의 원본 바이트는 보존하고 `e510779d` 기준 역사 감사만 허용한다. CURRENT_REVISION 전환과 `prereg_v6h.json` 최종 봉인은 아직 하지 않았다. 구현 단위 검증과 coordinator의 물리 인수 재생·확증 결과는 별개다. [구현·인수 절차](../experiments/2026-09-30-pair-v6h-carry/README.md). 아래의 기존 상태는 각 기록 시점이다.
+`codex/pair-v6h-register`: revision v6h / bundle v83 `zone-pair-v83-carry-door-gain` / workflow 2.16.0을 예약했다(실행 설정에서 미사용 확인; v82/2.15.0은 건너뜀). b-v6g + gain 보정·probe 전체 스윕 σ 여유(`probe_all_sweeps`)·든 yaw 게이트·p2f·축 방향 lag이다. `3afc61b0`의 좁은 σ 범위는 인수 재생에서 실패해 접근·팔·차체·preclose의 자기 위치 여유를 probe와 같은 1/1로 맞췄다. 별도 빔 영상 불확실성은 2σ이며 새 SHA의 물리 재생은 남아 있다. 든 쌍의 신뢰할 만한 정지 검출은 없다(fail-open). v6e 사전 등록의 원본 바이트는 보존하고 `e510779d` 기준 역사 감사만 허용한다. CURRENT_REVISION 전환과 `prereg_v6h.json` 최종 봉인은 아직 하지 않았다. 구현 단위 검증과 coordinator의 물리 인수 재생·확증 결과는 별개다. [구현·인수 절차](../experiments/2026-09-30-pair-v6h-carry/README.md). 아래의 기존 상태는 각 기록 시점이다.
 
 
 아래 첫 절은 2026-09-30 진행 요약이고, 그 아래 절은 2026-09-29 진행 요약(그대로 보존)이다. 앞으로의 연구 우선순위와 완료 기준은 [연구 TODO](research_todo.md)(2026-09-26 개정: §0 로드맵, 마일스톤 "E2E 첫 파일럿" 이슈 #216–#226)를 따른다. 통신 효과가 주 질문이며 ACT·Jev·맵 확대는 관련 보조 과제로 구분한다. 아래 검증 수치는 각 기록 당시의 범위를 유지한다.

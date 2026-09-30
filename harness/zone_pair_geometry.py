@@ -17,16 +17,21 @@ MOTION_SAMPLE_S = .05
 
 
 class PairSweepGuard(SweepGuard):
-    def __init__(self, arm_guard, geometry, role, *, loaded_k_xy=K_SIGMA, loaded_k_yaw=K_SIGMA):
+    def __init__(self, arm_guard, geometry, role, *, loaded_k_xy=K_SIGMA, loaded_k_yaw=K_SIGMA,
+                 door_relax_sigma_scope='loaded_base_motion'):
         self.boxes, self.mount, self.residual = arm_guard.boxes, arm_guard.mount, arm_guard.residual
         self.geometry, self.grasp = geometry, geometry['grasps'][role]
         self.loaded_k_xy, self.loaded_k_yaw = loaded_k_xy, loaded_k_yaw
+        if door_relax_sigma_scope not in ('loaded_base_motion', 'probe_all_sweeps'):
+            raise ValueError('unknown door-relax sigma scope')
+        self.door_relax_sigma_scope = door_relax_sigma_scope
         self._loaded_motion = False
 
     def margin(self, pose, lever_m):
-        # Narrow scope: loaded base motion only. Approach, preclose and arm
-        # sweeps (even while holding the beam) keep the registered 2/2 margin.
-        if not self._loaded_motion or (self.loaded_k_xy == K_SIGMA and self.loaded_k_yaw == K_SIGMA):
+        # b-v6h1 matches the probe's process-wide margin replacement in this
+        # policy instance. Older policies keep the original selection/signature.
+        relaxed = self._loaded_motion or self.door_relax_sigma_scope == 'probe_all_sweeps'
+        if not relaxed or (self.loaded_k_xy == K_SIGMA and self.loaded_k_yaw == K_SIGMA):
             return super().margin(pose, lever_m)  # unchanged call signature for historical probe wrappers
         return super().margin(pose, lever_m, loaded=True)
 
