@@ -7,6 +7,8 @@ from harness.m1_owncam_delivery import BAY_HALF_M
 
 
 class ColorBoxDeliveryMixin:
+    box_profile = 'legacy_cyan_v1'
+
     @property
     def target_detections(self):
         # Preserve the inherited storage name used by clustering and memory adapters.
@@ -39,6 +41,8 @@ class ColorBoxDeliveryMixin:
 
     def summary(self):
         result = super().summary()
+        if self.box_profile == 'legacy_cyan_v1':
+            return result
         result.update(box_kind=self.box_kind, box_profile=self.box_profile,
                       target_detections=len(self.target_detections),
                       cyan_detections=len(self.target_detections) if self.box_kind == 'cyan' else 0)

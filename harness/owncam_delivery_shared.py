@@ -42,7 +42,9 @@ class SharedPoseDelivery(ColorBoxDeliveryMixin, M1OwnCamDelivery):
             require_m1_source(getattr(pose_source, 'source', None))
             if not is_own_pose_provider(pose_source):
                 raise ValueError('M1 requires a registered own-camera provider')
-        self.box_profile = validate_box_profile(box_profile, box_kind, order_kind)
+        validate_box_profile(box_profile, box_kind, order_kind)
+        if box_profile != 'legacy_cyan_v1':
+            self.box_profile = box_profile
         if order_kind not in ORDER_KINDS:
             raise ValueError(f'order_kind must be one of {ORDER_KINDS}')
         self.order_kind = order_kind
