@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-final-pair-v3",
+      "version": "3.1.0",
+      "purpose": "DRAFT v88 final v3 pair carry, P03 3x120 SIM s, and unloaded/loaded/fine camera/motion collection",
+      "entry": "scripts/run_final_pair_v3.py",
+      "runner": "scripts.run_final_pair_v3",
+      "docs": "PHYSICS_HANDOFF.md",
+      "requires": "Committed source; owned SIM lock; measured v3 calibration for student; own RGB/map/commands/delivered messages only",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": [
+        "--check",
+        "--expected-source-sha"
+      ],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

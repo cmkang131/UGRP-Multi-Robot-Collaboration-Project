@@ -1,0 +1,59 @@
+............F..F....................................................     [100%]
+=================================== FAILURES ===================================
+__________ test_short_schedule_allowed_and_excessive_schedule_blocked __________
+
+    def test_short_schedule_allowed_and_excessive_schedule_blocked():
+        short = envelope([event(forward=.02)])
+        assert short['admitted']
+        assert short['bodies']['r1']['disc_radius_m'] == pytest.approx(.70262)
+>       long = envelope([event(i*.05, forward=.2) for i in range(200)])
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_review_344_envelope.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_review_344_envelope.py:22: in envelope
+    return clearance.conservative_envelope(
+harness/zone_final_pair_clearance.py:59: in conservative_envelope
+    validate_raw_action(action, allow_reverse=True, allow_mecanum=True)
+sim/camera_robot_port.py:46: in validate_raw_action
+    _bounded_number("forward", action["forward"], -0.05 if allow_reverse else 0.0, 0.15)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'forward', value = 0.2, lower = -0.05, upper = 0.15
+
+    def _bounded_number(name: str, value: Any, lower: float, upper: float) -> float:
+        result = _finite_number(name, value)
+        if not lower <= result <= upper:
+>           raise ValueError(f"{name} must be between {lower} and {upper}")
+E           ValueError: forward must be between -0.05 and 0.15
+
+sim/camera_robot_port.py:290: ValueError
+_________ test_tail_command_is_counted_and_any_yaw_covers_tip_diameter _________
+
+    def test_tail_command_is_counted_and_any_yaw_covers_tip_diameter():
+>       receipt = envelope([event(i*.05, turn=1.) for i in range(100)] +
+                           [event(369.95, forward=.03)])
+
+tests/test_review_344_envelope.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_review_344_envelope.py:22: in envelope
+    return clearance.conservative_envelope(
+harness/zone_final_pair_clearance.py:59: in conservative_envelope
+    validate_raw_action(action, allow_reverse=True, allow_mecanum=True)
+sim/camera_robot_port.py:47: in validate_raw_action
+    _bounded_number("turn", action["turn"], -.15 if kind == "mecanum" else -.2,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = 'turn', value = 1.0, lower = -0.15, upper = 0.15
+
+    def _bounded_number(name: str, value: Any, lower: float, upper: float) -> float:
+        result = _finite_number(name, value)
+        if not lower <= result <= upper:
+>           raise ValueError(f"{name} must be between {lower} and {upper}")
+E           ValueError: turn must be between -0.15 and 0.15
+
+sim/camera_robot_port.py:290: ValueError
+=========================== short test summary info ============================
+FAILED tests/test_review_344_envelope.py::test_short_schedule_allowed_and_excessive_schedule_blocked
+FAILED tests/test_review_344_envelope.py::test_tail_command_is_counted_and_any_yaw_covers_tip_diameter
+2 failed, 66 passed in 20.03s

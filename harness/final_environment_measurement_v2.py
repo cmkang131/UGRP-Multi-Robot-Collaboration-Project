@@ -89,9 +89,24 @@ def action_at(plan, step):
     return action
 
 
-def path_preflight(static, plan, *, root=ROOT):
+def geometry_envelope(position, radius, xy):
+    """Validate original xyz before projecting; shared by v89 and v88 guards."""
+    import numpy as np
+    position = np.asarray(position, float)
+    radius = float(radius)
+    if position.shape != (3,) or not np.all(np.isfinite(position)) or not math.isfinite(radius) or radius < 0:
+        raise ValueError('INVALID_ROBOT_GEOMETRY')
+    distance = float(np.linalg.norm(position[:2] - xy))
+    envelope = distance + radius
+    if not math.isfinite(distance) or not math.isfinite(envelope):
+        raise ValueError('INVALID_ROBOT_GEOMETRY')
+    return envelope
+
+
+def path_preflight(static, plan, *, root=ROOT, review=None):
     """Keep unsafe diagnostic predictions visible without admitting execution."""
-    review = read(local_path(CLEARANCE_REVIEW, root=root))
+    if review is None:
+        review = read(local_path(CLEARANCE_REVIEW, root=root))
     walls = rectangles(static)
     witnesses = {}
     for axis, model in review['unexcluded_v1_models'].items():
