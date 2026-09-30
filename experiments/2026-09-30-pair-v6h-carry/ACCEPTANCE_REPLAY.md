@@ -1,4 +1,57 @@
-# b-v6h1 인수 재생 (실제 물리 재생) — 판정 FAIL (10건 중 4건만 같음)
+# b-v6h1 인수 재생 (실제 물리 재생)
+
+이 문서는 재생 기록 두 개를 담는다. 최신은 PR #292 head `3c4fe30e`(판정 PASS), 이전은 `3afc61b0`(판정 FAIL)이며 이전 기록은 그대로 두었다.
+
+## 재생 2: `3c4fe30e` — 판정 PASS (lag-on 10건 모두 비트 단위로 같음, lag-off 확인도 tX0와 같음)
+
+**판정: PASS. 등록 코드(b-v6h1)를 probe 원본 코호트와 같은 조건으로 다시 돌린 결과, 시험한 lag-on(축방향 지연 보정 켬) 10건 모두 명령 기록(commands.json)의 SHA-256, leg 결과, leg 검사 값이 probe와 비트 단위로 같았다. lag-off sanity(tX0 X01)도 probe tX0와 같다.** 앞선 FAIL의 원인이던 충돌 여유(margin)의 시그마 배수 적용 범위를 이 head가 등록 소스로 probe와 같게 맞췄고, 이번에는 시험용 덮어쓰기·probe 패치 없이 등록 필드(`--policies b-v6h1`)만으로 통과했다.
+
+이 기록은 SIM 시간, 모델 호출 0, weld OFF의 정책 동등성 시험이다. leg 0~1(`--chain-stop-leg 1`)까지만 비교했고 leg 2 이후(측방 이동, 문 통과, 내려놓기)는 비교하지 않았다. 확증·E2E·실물 성공 근거가 아니다.
+
+### 실행 조건
+
+| 항목 | 값 |
+|---|---|
+| 등록 소스 | PR #292 head `3c4fe30e2197518443b195392212b0341507ac59` (branch `codex/pair-v6h-register`, “Match b-v6h1 sigma scope to the exploratory probe”). 작업 트리 깨끗, 실행 내내 SHA 변경 없음 |
+| 번들 / workflow / 봉인 | `zone-pair-v83-carry-door-gain` / 2.16.0 / 봉인 전(pre-seal), 봉인 변경 없음 |
+| 명령 | `--stage chain --sources teacher --policies b-v6h1 --prior-std e2e --chain-stop-leg 1 --render-profile floor_light_v1 --pf-track --contact-track --workers 4 --omp-threads 1` (등록 필드만) |
+| 사례 | 이전 재생과 같은 11건(`plan.json`은 소스 SHA와 raw 경로만 바뀜): tS S01·S02·S03·S07, tR hR2_01·hR2_04(913), tX1b X06, tX1 X01·X03(913)·X00_F_hR2_04, lag-off sanity(tX0 X01) |
+| 환경 | 렌더링 정상, HOST_ERROR 0. Python `.venv-sim-worker-mac`, worker 4, OMP=1. 전원 AC 유지(점검 64회 중 배터리 0), 여유 디스크 충분 |
+| 물리 잠금 | owner claude, branch `claude/v6h1-acceptance-run`, driver PID로 획득(다른 에이전트 잠금이 풀린 뒤 시작, 예상 20분) → 정상 해제. 시작 부하 평균 [17.6, 23.7, 26.7], 종료 [30.5, 25.8, 26.0](다른 작업 CPU 사용 중; SIM 시간 재생이라 결과에 영향 없고 wall 시간 측정으로 쓰지 않는다). driver 총 996.6 s |
+
+### 사례별 비교 (probe 원본 vs 등록 b-v6h1 @ 3c4fe30e)
+
+`commands.json` SHA-256은 앞 12자리(전체는 [acceptance_replay.json](acceptance_replay.json)의 `replay_3c4fe30e`). leg 끝 오차는 mm(L0 / L1). 등록과 probe의 값은 모두 같아 한 번만 적는다.
+
+| 코호트 / 사례 / 시드 | commands SHA (등록 = probe) | 동등성 | 처음 다른 명령 | leg 끝 오차 (L0 / L1) |
+|---|---|---|---|---|
+| tS / S01 / 911 | `70bcb8ce94ff` | 같음 | 없음 | 56.510 / 50.784 |
+| tS / S02 / 911 | `071532a4e2c5` | 같음 | 없음 | 40.982 / 34.659 |
+| tS / S03 / 911 | `0b699a18311d` | 같음 | 없음 | 25.389 / 19.643 |
+| tS / S07 / 911 | `c0c5fcd8dfe2` | 같음 | 없음 | 57.882 / 72.124 |
+| tR / hR2_01 / 911 | `5f9da3641faf` | 같음 | 없음 | 12.898 / 33.174 |
+| tR / hR2_04 / 913 | `cfd6df9a6e7e` | 같음 | 없음 | 70.066 / 67.623 |
+| tX1b / X06 / 911 | `d1ef368a7de5` | 같음 | 없음 | 49.206 / 62.409 |
+| tX1 / X01 / 911 | `2d2f77a4d529` | 같음 | 없음 | 49.055 / 81.911 |
+| tX1 / X03 / 913 | `c28c5a2e5663` | 같음 | 없음 | 34.377 / 28.658 |
+| tX1 / X00_F_hR2_04 / 911 | `2ae150658b67` | 같음 | 없음 | 51.041 / 55.710 |
+| tX0 / X01 / 911 (lag-off sanity) | `f9d3bd1482ff` | 같음 (tX0와) | 없음 | 69.176 / 124.339 |
+
+이전 재생에서 갈라졌던 6건(S03·S07·hR2_04·X01·X03·X00_F_hR2_04)과 lag-off sanity가 모두 같아졌다. 11건 모두 두 로봇의 모든 명령이 probe와 같다(`command_json_equal`), 분류는 probe와 같은 `STAGE_BUDGET_EXHAUSTED`(leg 1까지만 돌리는 시험의 정상 종료).
+
+### 검증·보관
+
+- raw: `/Users/changmin/projects/ugrp/outputs/v6h1-acceptance-3c4fe30e-claude-20260930` (cases.jsonl SHA-256 `6e9437151b158a06975666a6b5be7c1f3013a550a22722740c0d041addbecbaf`, plan.json `0695ece7431de869f0cde089a138781bc5029f4e43e5dccf7424261dda219b5b`, driver.py `2752abed0877b1e2a2a623b2224a3d0c638580c22dd368c6a716215a276f3fea`). 로컬 보관이며 원격 백업이 아니다. Google Drive는 쓰지 않았다.
+- probe 원본 raw는 driver가 실행 전 SHA-256(commands.json, cases.jsonl, plan.json)을 재확인했고 변경 없음.
+- 같은 SHA에서 `tests/test_zone_pair_v6h.py` + `tests/test_zone_pair_registered_source.py`: 164 passed (driver가 재생 뒤 잠금 안에서 실행, exit 0).
+- 남은 범위: leg 2 이후는 비교하지 않았다. 이 PASS는 leg 0~1에서 b-v6h1이 probe b-v6h와 동등하다는 뜻이지 확증 성능이 아니다.
+- TensorBoard 스냅샷 `/Users/changmin/projects/ugrp/outputs/tensorboard/0930-v6h1-acceptance-3c4fe30e-replay`, 설정 키 `v6h1_acceptance_replay_3c4fe30e_claude_20260930`. 생성 스크립트: `analysis/acceptance_3c4fe30e/build_section.py`(JSON 구간), raw 폴더의 `build_tb.py`.
+
+---
+
+## 재생 1: `3afc61b0` — 판정 FAIL (아래는 당시 기록 그대로)
+
+# (재생 1) b-v6h1 인수 재생 — 판정 FAIL (10건 중 4건만 같음)
 
 **판정: FAIL. 시험한 lag-on(축방향 지연 보정 켬) 10건 중 4건만 명령 기록(commands.json)의 SHA-256과 leg 결과가 비트 단위로 같고, 6건은 leg 1의 “집기 전 시야 확인(pregrasp look)”에서 갈라진다. 원인은 시험용 덮어쓰기로 확정했다: probe(b-v6h)는 충돌 여유(margin)의 시그마 배수를 모든 팔 스윕에서 1/1로 낮췄지만, 등록 코드(b-v6h1)는 이를 “짐을 든 채 차체가 움직이는 경우”에만 적용한다. 등록 코드는 수정하지 않았다.**
 
