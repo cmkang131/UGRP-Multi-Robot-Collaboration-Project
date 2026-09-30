@@ -15,7 +15,8 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 PRIMARY = Path('/Users/changmin/projects/ugrp')
 OUTS = PRIMARY / 'outputs'
-GROUPS = {'recheck': OUTS / 'phys-caps-1001-l1-recheck', 'probes6': OUTS / 'phys-caps-1001-l1-probes6'}
+GROUPS = {'recheck': OUTS / 'phys-caps-1001-l1-recheck', 'probes6': OUTS / 'phys-caps-1001-l1-probes6',
+          'probes6_s951': OUTS / 'phys-caps-1001-l1-probes6-s951'}
 ACCEPT = OUTS / 'v6h1-acceptance-3c4fe30e-claude-20260930'
 SRC_SHA = '4c6b439f3f7c9a147c901f8b260a1e214d4eb396'
 GATE_MM = 100.0

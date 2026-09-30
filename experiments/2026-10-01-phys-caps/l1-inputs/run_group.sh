@@ -2,7 +2,7 @@
 # usage: run_group.sh <tag> <placements.json> <expected-min>
 # Waits for the shared physics lock, holds it (owner claude, pid = this shell), runs one frozen-source stage-probe group, releases.
 set -u
-TAG=$1; PLC=$2; MIN=$3
+TAG=$1; PLC=$2; MIN=$3; SEEDS=${4:-911}   # 4th arg (optional): PF/case seed, default 911 (runner default)
 SRC=/Users/changmin/projects/ugrp-wt/phys-caps-1001-src
 PRIMARY=/Users/changmin/projects/ugrp
 PY=/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python
@@ -16,7 +16,7 @@ cd $SRC
 [ -z "$(git status --porcelain --untracked-files=no)" ] || { echo DIRTY; exit 3; }
 export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
 $PY -m scripts.run_pair_stage_probes --stage chain --sources teacher --policies b-v6h1 --prior-std e2e --chain-stop-leg 1 \
-  --render-profile floor_light_v1 --pf-track --contact-track --workers 2 --omp-threads 1 \
+  --render-profile floor_light_v1 --pf-track --contact-track --workers 2 --omp-threads 1 --seeds $SEEDS \
   --env-placements $PLC --output $OUT --execute --lock-owner claude
 RC=$?
 echo "RUNNER_EXIT $RC $(date -u +%FT%TZ) load=$(uptime | sed 's/.*averages: //')"
