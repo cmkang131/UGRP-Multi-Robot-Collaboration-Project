@@ -558,6 +558,8 @@ def run_case(case, out):
     result['progress_relax'] = progress_relax.install(case.get('progress_relax'))     # probe-only diagnostic; None = registered
     from harness import zone_pair_carry_gain_fix as carry_gain_fix
     result['carry_gain_fix'] = carry_gain_fix.install(case.get('carry_gain_fix'))     # b-v6h only; None = registered PF gain
+    from harness import zone_pair_carry_axial_lag as carry_axial_lag
+    result['carry_axial_lag'] = carry_axial_lag.install(case.get('carry_axial_lag'), case.get('carry_gain_fix'))   # needs the gain fix
     result['staging_bypass'] = case.get('staging_bypass')
     result['admission_image_valid_real'] = {}
     install_staging_bypass(case.get('staging_bypass'), result['admission_image_valid_real'])
@@ -683,6 +685,7 @@ def run_case(case, out):
                 result['min_lift_after_first_lift_m'] = host.min_lift_after
                 result['door_relax_overrides'] = list(door_relax.EVENTS)
                 result['carry_gain_fix_applied'] = list(carry_gain_fix.APPLIED)
+                result['carry_axial_lag_legs'] = list(carry_axial_lag.LOGGED)
                 result['progress_relax_p2f'] = ({'armed': list(progress_relax.ARMED), 'ignored': list(progress_relax.IGNORED)}
                                                 if case.get('progress_relax') == 'p2f' else None)
                 if case.get('contact_track'):
@@ -1184,6 +1187,8 @@ def parser():
                    'no-progress check (harness/zone_pair_progress_relax.py); the case id gets +<name>')
     p.add_argument('--carry-gain-fix', choices=['pf'], help='with --policies b-v6h only: probe-only correction of the loaded pair PF forward '
                    'gain x0.9483 (harness/zone_pair_carry_gain_fix.py, PR #284 fit); the case id gets +gain')
+    p.add_argument('--carry-axial-lag', choices=['axial'], help='with --policies b-v6h and --carry-gain-fix only: probe-only lag-model leg length '
+                   'for AXIAL carry legs (harness/zone_pair_carry_axial_lag.py, PR #286 proposal P1b); the case id gets +alag')
     p.add_argument('--env-placements', type=Path, help='envelope grid from an explicit list: JSON [{"name","x"(optional),"y","yaw_deg","prior","sheet":"base"|"coarse"}, ...] '
                    '(one case per entry; replaces --env-y/--env-yaw-deg products; bias flags still apply)')
     p.add_argument('--chain-stop-leg', type=int, help='stage chain only: stop the run when both robots reach the END of this route '
@@ -1229,11 +1234,16 @@ def main(argv=None):
     if args.contact_track:
         for c in cases:
             c['contact_track'] = True
-    if args.progress_relax or args.carry_gain_fix:
+    if args.progress_relax or args.carry_gain_fix or args.carry_axial_lag:
         if args.policies != ['b-v6h']:
-            p.error('--progress-relax / --carry-gain-fix apply to --policies b-v6h only')
-        tag = (f'+{args.progress_relax}' if args.progress_relax else '') + ('+gain' if args.carry_gain_fix else '')
+            p.error('--progress-relax / --carry-gain-fix / --carry-axial-lag apply to --policies b-v6h only')
+        if args.carry_axial_lag and not args.carry_gain_fix:
+            p.error('--carry-axial-lag needs --carry-gain-fix (the axial plan must invert the same plant the corrected PF integrates)')
+        tag = (f'+{args.progress_relax}' if args.progress_relax else '') + ('+gain' if args.carry_gain_fix else '') \
+            + ('+alag' if args.carry_axial_lag else '')
         for c in cases:
+            if args.carry_axial_lag:
+                c['carry_axial_lag'] = args.carry_axial_lag
             if args.progress_relax:
                 c['progress_relax'] = args.progress_relax
             if args.carry_gain_fix:

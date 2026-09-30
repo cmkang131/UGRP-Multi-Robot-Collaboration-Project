@@ -11,6 +11,7 @@ import pytest
 
 import harness.zone_own_driver as own_driver
 import harness.zone_own_guards as guards
+import harness.zone_pair_carry_axial_lag as axial_lag
 import harness.zone_pair_carry_gain_fix as gain_fix
 import harness.zone_pair_door_relax as relax
 import harness.zone_pair_guards as pair_guards
@@ -29,6 +30,9 @@ PLACEMENTS = ROOT / 'experiments/2026-09-30-b-v6h-gain/placements/held_out_12.js
 def restore(monkeypatch):
     """Undo every process-local patch a test installs."""
     monkeypatch.setattr(v6e, 'enable_provider', v6e.enable_provider)
+    monkeypatch.setattr(v6e, 'leg_duration', v6e.leg_duration)
+    monkeypatch.setattr(v6e, 'LAG_AXES', v6e.LAG_AXES)
+    axial_lag.LOGGED.clear()
     for name in ('__init__', 'on_command'):
         monkeypatch.setattr(pair_guards.PairCommandGuard, name, getattr(pair_guards.PairCommandGuard, name))
     monkeypatch.setattr(pair_guards.PairCommandGuard, '_p2f', False, raising=False)
@@ -43,7 +47,7 @@ def test_registered_sources_are_untouched_and_the_new_modules_are_outside_the_se
     sealed = prereg['v6_contract']['source_sha256']
     for path, expected in sealed.items():
         assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, path
-    for path in ('harness/zone_pair_carry_gain_fix.py', 'harness/zone_pair_progress_relax.py', 'harness/zone_pair_door_relax.py',
+    for path in ('harness/zone_pair_carry_axial_lag.py', 'harness/zone_pair_carry_gain_fix.py', 'harness/zone_pair_progress_relax.py', 'harness/zone_pair_door_relax.py',
                  'scripts/run_pair_stage_probes.py'):
         assert path not in sealed
 
@@ -282,3 +286,67 @@ def test_confirmatory_placement_draft_is_reproducible_fresh_and_in_distribution(
     old = mod.used()
     assert not any(math.hypot(r['x'] - a, r['y'] - b) < mod.DISTINCT_XY_M and abs(r['yaw_deg'] - c) < mod.DISTINCT_YAW_DEG
                    for r in rows for a, b, c in old)
+
+
+# ------------------------------------------------------------------ axial lag-model leg length (PR #286 P1b)
+FORWARD_GAIN = 2.2 / 1.4
+AXIAL_CMD = [0.06 / FORWARD_GAIN, 0., 0.]
+
+
+def cal_params():
+    return json.loads(CAL.read_text())['params']
+
+
+def test_axial_lag_refuses_without_the_gain_fix_and_a_second_install(restore):
+    assert axial_lag.install(None, None) is None
+    with pytest.raises(ValueError, match='gain fix'):
+        axial_lag.install('axial', None)
+    with pytest.raises(ValueError):
+        axial_lag.install('nope', 'pf')
+    info = axial_lag.install('axial', 'pf')
+    assert info['lag_axes'] == ['lateral', 'axial'] and info['kappa'] == gain_fix.KAPPA
+    with pytest.raises(RuntimeError, match='already installed'):
+        axial_lag.install('axial', 'pf')
+
+
+def test_axial_legs_use_the_kappa_gain_lag_plant_and_lateral_legs_stay_registered(restore):
+    params = cal_params()
+    registered_axial = v6e.leg_duration(0.85, 'axial', AXIAL_CMD, params)
+    lateral_cmd = [0., 0.06 / (1.65 / 1.4), 0.]
+    registered_lateral = v6e.leg_duration(0.717, 'lateral', lateral_cmd, params)
+    assert v6e.LAG_AXES == ('lateral',)
+    axial_lag.install('axial', 'pf')
+    assert v6e.LAG_AXES == ('lateral', 'axial')
+    assert v6e.leg_duration(0.717, 'lateral', lateral_cmd, params) == registered_lateral      # lateral: untouched
+    seconds = v6e.leg_duration(0.85, 'axial', AXIAL_CMD, params)
+    # the inverse of the plant the corrected PF integrates: forward gain 1.4004 * kappa
+    scaled = {**params, 'motion_loaded': {**params['motion_loaded'], 'gain': gain_fix.scaled_gain(params['motion_loaded']['gain'])}}
+    assert seconds == pytest.approx(v6e.lag_duration(0.85, abs(scaled['motion_loaded']['gain'][0][0] * AXIAL_CMD[0]),
+                                                    params['motion_loaded']['tau_s'], params['motion_loaded']['tau_stop_s']))
+    assert seconds > registered_axial                           # a slower assumed plant gives a longer command
+    assert 17.2 < seconds < 17.8                                # PR #286: L1 command window ~17.5 s
+    # the leg travels the planned distance in the plant it inverts
+    v = gain_fix.KAPPA * 1.4004 * AXIAL_CMD[0]
+    assert v6e.lag_travel(seconds, v, params['motion_loaded']['tau_s'], params['motion_loaded']['tau_stop_s']) == pytest.approx(0.85, abs=1e-6)
+    assert params['motion_loaded']['gain'][0][0] == pytest.approx(1.4004)     # the session params were not mutated
+    assert [e['distance_m'] for e in axial_lag.LOGGED] == [0.85]
+
+
+def test_axial_lag_runs_only_through_the_registered_lag_flag_of_the_policy():
+    """door_schedule reads LAG_AXES from the module at call time and only under policy.carry_lateral_lag (true for b-v6g)."""
+    from harness.zone_pair_v6_policy import pair_policy
+    assert pair_policy('b-v6g').carry_lateral_lag is True
+    src = (ROOT / 'harness/zone_pair_executor.py').read_text()
+    assert 'axis in v6e_carry.LAG_AXES' in src
+
+
+def test_axial_lag_flag_tags_the_case_id_and_needs_the_gain_fix():
+    a = args_for('--policies', 'b-v6h', '--door-relax', 'k1g', '--progress-relax', 'p2f', '--carry-gain-fix', 'pf', '--carry-axial-lag', 'axial',
+                 '--setup-variant', 'hR2', '--chain-stop-leg', '1', '--seeds', '911')
+    assert a.carry_axial_lag == 'axial'
+    with pytest.raises(SystemExit):
+        runner.main(['--stage', 'chain', '--sources', 'teacher', '--policies', 'b-v6h', '--door-relax', 'k1g', '--carry-axial-lag', 'axial',
+                     '--setup-variant', 'hR2', '--chain-stop-leg', '1', '--output', '/tmp/never_written_alag'])
+    with pytest.raises(SystemExit):
+        runner.main(['--stage', 'carry', '--sources', 'teacher', '--policies', 'b-v6g', '--carry-gain-fix', 'pf', '--carry-axial-lag', 'axial',
+                     '--output', '/tmp/never_written_alag'])

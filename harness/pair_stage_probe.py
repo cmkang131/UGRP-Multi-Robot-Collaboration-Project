@@ -30,7 +30,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = 'ugrp.pair_stage_probe.v1'
-PROBE_VERSION = '0.11.2'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
+PROBE_VERSION = '0.11.3'  # 0.2.0: pair_policy axis, align-tolerance boundary set, state checkpoints; 0.3.0: b-v6c;
 #                          0.4.0: carry legs along the route + setdown at the destination, end/cross-track metrics,
 #                                 cause codes, loaded-yaw diagnostic patches
 #                          0.4.1: setdown-at-destination admission image bypass (staging only), OWN_IMAGE_INVALID cause
@@ -60,6 +60,8 @@ PROBE_VERSION = '0.11.2'  # 0.2.0: pair_policy axis, align-tolerance boundary se
 #                          0.11.2: b-v6h gain-fix tooling (probe-only, opt-in): runner --carry-gain-fix pf (PF loaded forward gain x0.9483),
 #                                 --progress-relax p2f (corrected timing rule, loaded pair only), --env-placements (explicit list),
 #                                 door-relax variant k2 (identity); no registered source changes
+#                          0.11.3: b-v6h runner --carry-axial-lag axial (lag-model leg length for axial carry legs, PR #286 P1b; needs --carry-gain-fix);
+#                                 no registered source changes
 #                          0.4.6 (place branch, merged into 0.6.0): b-v6f-a / b-v6f-b / b-v6f policies (own_image_ob, bounded_retreat);
 #                                 image_valid_off also forces valid_frame_ob; run_pair_stage_probes --omp-threads
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
