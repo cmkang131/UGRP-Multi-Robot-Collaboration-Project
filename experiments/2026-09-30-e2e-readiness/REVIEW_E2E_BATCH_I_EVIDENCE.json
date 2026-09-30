@@ -1,0 +1,798 @@
+{
+  "schema": "ugrp.review_e2e_batch_i.v1",
+  "review_base_sha": "394f9cda5d67a9d1b94ad1688f39f5616fc00e7b",
+  "python": "3.12.13",
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i",
+  "scope": "local offline reproducibility only; physics/render/model calls 0; no host lock",
+  "prs": {
+    "330": {
+      "sha": "f5d5af557525c9aa6d7fff043d933d2fc2c67967",
+      "is_draft": true,
+      "ci_success": 33,
+      "ci_total": 33,
+      "functional_and_dependency_tests_passed": 138,
+      "registered_source_tests_passed": 22,
+      "source_pinning_tests_passed": 34,
+      "unique_tests_passed": 194,
+      "archive_without_git_initial_failures": 16,
+      "archive_git_resolution": "isolated bare GIT_DIR with candidate HEAD and read-only alternate object store; unchanged extracted files",
+      "workflow_tree_diff_vs_review_base": [],
+      "workflow_pr_diff_vs_review_base": [],
+      "reviewed_source_sha256": {
+        "harness/zone_observed_door_reroute.py": "54d3fa6079c1b68993104d0b1e106a6120008054e7cb49a1f4101f19debbd824",
+        "harness/zone_static_door_routes.py": "cec5fd95847496d5492b73dba67bf4393eef0c57394510ee7d2a22e597d9d24c",
+        "tests/test_zone_own_executor_door_routes.py": "9d4e213efb6834e72265132f8b6aa94588879fe8945e1fe9713a7f00ac3befd9",
+        "tests/test_zone_own_executor_observed_reroute.py": "8de9c37c9efc0f3d3cb93e956cbb42bb343ef94e0f8d8267373afe85a5e9e1c3",
+        "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+        "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5"
+      },
+      "mutations": [
+        {
+          "pr": "330",
+          "mutation": "ignore_messages",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured]"
+          ],
+          "errors": [],
+          "passed": [
+            "tests/test_zone_own_executor_observed_reroute.py::test_observation_triggers_cancellation_then_wide_from_fresh_pose",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[False]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[True]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_other_door_blockage_does_not_replace_route_and_belief_is_not_mutable",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[running]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[failed]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[reached]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[black]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[wrong_hash]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[pose_uncertain]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[nan]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[unknown_door]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[observer_error]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[peer_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[stale_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[bad_time]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[empty_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[unknown-pose0]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[cyan-pose1]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[cyan-pose2]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[exception]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[failed]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[invented_state]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[false_reached]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_own_estimate_route_end_is_separate_from_delivery_referee",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_heartbeat_timeout_stops_before_motion",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[negated]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[suspected]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[recipient]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[private_extra]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[unknown]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[clear]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_static_snapshot_is_frozen_and_private_container_is_rejected",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[missing]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[private_extra]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[suspected]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[low]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[wrong_act]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_requires_own_endpoint",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants0]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants1]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants2]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_failed_stop_is_retried_without_new_motion",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_announces_abort_even_while_stop_is_pending",
+            "tests/test_zone_own_executor_observed_reroute.py::test_existing_ci_glob_collects_this_file"
+          ],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "330",
+          "mutation": "ignore_observation",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_observed_reroute.py::test_observation_triggers_cancellation_then_wide_from_fresh_pose",
+            "tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[False]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[True]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_other_door_blockage_does_not_replace_route_and_belief_is_not_mutable",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[running]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[failed]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[reached]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_announces_abort_even_while_stop_is_pending"
+          ],
+          "errors": [],
+          "passed": [
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[black]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[wrong_hash]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[pose_uncertain]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[nan]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[unknown_door]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[observer_error]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[peer_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[stale_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[bad_time]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[empty_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[unknown-pose0]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[cyan-pose1]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[cyan-pose2]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[exception]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[failed]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[invented_state]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[false_reached]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_own_estimate_route_end_is_separate_from_delivery_referee",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_heartbeat_timeout_stops_before_motion",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[negated]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[suspected]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[recipient]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[private_extra]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[unknown]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[clear]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_static_snapshot_is_frozen_and_private_container_is_rejected",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[missing]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[private_extra]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[suspected]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[low]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[wrong_act]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_requires_own_endpoint",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants0]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants1]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants2]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_failed_stop_is_retried_without_new_motion",
+            "tests/test_zone_own_executor_observed_reroute.py::test_existing_ci_glob_collects_this_file"
+          ],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "330",
+          "mutation": "ignore_pair_failure",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_heartbeat_timeout_stops_before_motion",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_announces_abort_even_while_stop_is_pending"
+          ],
+          "errors": [],
+          "passed": [
+            "tests/test_zone_own_executor_observed_reroute.py::test_observation_triggers_cancellation_then_wide_from_fresh_pose",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[False]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[True]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_other_door_blockage_does_not_replace_route_and_belief_is_not_mutable",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[running]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[failed]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[reached]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[black]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[wrong_hash]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[pose_uncertain]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[nan]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[unknown_door]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[observer_error]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[peer_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[stale_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[bad_time]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[empty_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[unknown-pose0]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[cyan-pose1]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[cyan-pose2]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[exception]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[failed]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[invented_state]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[false_reached]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_own_estimate_route_end_is_separate_from_delivery_referee",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[negated]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[suspected]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[recipient]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[private_extra]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[unknown]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[clear]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_static_snapshot_is_frozen_and_private_container_is_rejected",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[missing]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[private_extra]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[suspected]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[low]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[wrong_act]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_requires_own_endpoint",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants0]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants1]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants2]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_failed_stop_is_retried_without_new_motion",
+            "tests/test_zone_own_executor_observed_reroute.py::test_existing_ci_glob_collects_this_file"
+          ],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "330",
+          "mutation": "ignore_replan",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_observed_reroute.py::test_observation_triggers_cancellation_then_wide_from_fresh_pose",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[True]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[running]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[failed]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[reached]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_announces_abort_even_while_stop_is_pending"
+          ],
+          "errors": [],
+          "passed": [
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[False]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_other_door_blockage_does_not_replace_route_and_belief_is_not_mutable",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[black]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[wrong_hash]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[pose_uncertain]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[nan]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[unknown_door]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[observer_error]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[peer_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[stale_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[bad_time]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[empty_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[unknown-pose0]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[cyan-pose1]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[cyan-pose2]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[exception]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[failed]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[invented_state]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[false_reached]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_own_estimate_route_end_is_separate_from_delivery_referee",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_heartbeat_timeout_stops_before_motion",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[negated]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[suspected]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[recipient]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[private_extra]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[unknown]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[clear]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_static_snapshot_is_frozen_and_private_container_is_rejected",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[missing]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[private_extra]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[suspected]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[low]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[wrong_act]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_requires_own_endpoint",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants0]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants1]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants2]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_failed_stop_is_retried_without_new_motion",
+            "tests/test_zone_own_executor_observed_reroute.py::test_existing_ci_glob_collects_this_file"
+          ],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "330",
+          "mutation": "skip_stop",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_observed_reroute.py::test_observation_triggers_cancellation_then_wide_from_fresh_pose",
+            "tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[False]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[True]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[running]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[failed]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[reached]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[black]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[wrong_hash]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[pose_uncertain]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[nan]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[unknown_door]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[observer_error]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[exception]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[failed]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[invented_state]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[false_reached]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_own_estimate_route_end_is_separate_from_delivery_referee",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_failed_stop_is_retried_without_new_motion",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_announces_abort_even_while_stop_is_pending"
+          ],
+          "errors": [],
+          "passed": [
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_direct_observation_same_navigation_and_prior_in_every_condition[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[no_comm]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[peer_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[leader_ko]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_private_referee_event_pose_and_peer_truth_do_not_change_decisions[structured]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_other_door_blockage_does_not_replace_route_and_belief_is_not_mutable",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[peer_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[stale_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[bad_time]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_bad_frame_or_own_clock_stops[empty_frame]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[unknown-pose0]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[cyan-pose1]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unsupported_kind_rotation_or_in_door_replan_refuses[cyan-pose2]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_heartbeat_timeout_stops_before_motion",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[negated]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[suspected]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[recipient]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[private_extra]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[unknown]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_message_is_not_blockage_evidence[clear]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_static_snapshot_is_frozen_and_private_container_is_rejected",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[missing]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[private_extra]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[suspected]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[low]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_unusable_structured_message_cannot_close_a_door[wrong_act]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_pair_requires_own_endpoint",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants0]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants1]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_invalid_pair_participants_are_rejected[participants2]",
+            "tests/test_zone_own_executor_observed_reroute.py::test_existing_ci_glob_collects_this_file"
+          ],
+          "collect_errors": [],
+          "caught": true
+        }
+      ]
+    },
+    "331": {
+      "sha": "25beb0694027b2d6d8db646a043de51fabc479dc",
+      "is_draft": true,
+      "ci_success": 33,
+      "ci_total": 33,
+      "functional_and_dependency_tests_passed": 132,
+      "registered_source_tests_passed": 22,
+      "source_pinning_tests_passed": 34,
+      "unique_tests_passed": 188,
+      "archive_without_git_initial_failures": 16,
+      "archive_git_resolution": "isolated bare GIT_DIR with candidate HEAD and read-only alternate object store; unchanged extracted files",
+      "workflow_tree_diff_vs_review_base": [],
+      "workflow_pr_diff_vs_review_base": [],
+      "reviewed_source_sha256": {
+        "harness/zone_corridor_contract.py": "622e66bd5ec757dbab69712b6462575b8f2f877ba76f3f40641ad3783645b757",
+        "harness/zone_corridor_control.py": "04867a8cd1f6b0987a9ee6ee8efc43f21081f43df91fa06c16938a2b49df7736",
+        "harness/zone_corridor_control_plan.py": "5ba80f3aa90be6ea10a2e4b57867edc4323c3d53a77c9a071ea60081b779cf28",
+        "sim/workflow_manager.py": "742353d3afe79f55774593670ba60295915263853bdc7b16cf9c39cce8190a07",
+        "sim/zone_study_admission.py": "d2493e0ec8b56ef01a51b3b046ad9ed4ca411e6cec3eb24f2a66f0d4001f81b7",
+        "tests/test_simulation_workflow_manager.py": "3a5fe4023a83a277c3c9acba0b23edc09338365231f484410661bbed1aded553",
+        "tests/test_zone_own_executor_corridor_contract.py": "26b1f3f825741abc521d8dbd094a1a70385b99c8ceaeb2f885e22dff84d388fc",
+        "tests/test_zone_own_executor_corridor_control.py": "36788a7f03bfa234cd2183104da1e2098af300793e65ff0b4c717070f2955464",
+        "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+        "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5"
+      },
+      "mutations": [
+        {
+          "pr": "331",
+          "mutation": "remove_control",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_corridor_control.py::test_solo_entry_translation_full_exit_not_waypoint_or_delivery[False]",
+            "tests/test_zone_own_executor_corridor_control.py::test_solo_entry_translation_full_exit_not_waypoint_or_delivery[True]"
+          ],
+          "errors": [],
+          "passed": [],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "331",
+          "mutation": "remove_exit_check",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_corridor_control.py::test_waypoint_proximity_cannot_override_full_exit"
+          ],
+          "errors": [],
+          "passed": [],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "331",
+          "mutation": "remove_heartbeat",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_corridor_control.py::test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.15-ABORTED]",
+            "tests/test_zone_own_executor_corridor_control.py::test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.151-ABORTED]"
+          ],
+          "errors": [],
+          "passed": [
+            "tests/test_zone_own_executor_corridor_control.py::test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.149-FOLLOW]"
+          ],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "331",
+          "mutation": "remove_route_refusal",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_corridor_control.py::test_impossible_and_disconnected_routes_refused"
+          ],
+          "errors": [],
+          "passed": [],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "331",
+          "mutation": "remove_wait_timeout",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_corridor_control.py::test_wait_timeout_boundary[0.2-ABORTED]",
+            "tests/test_zone_own_executor_corridor_control.py::test_wait_timeout_boundary[0.201-ABORTED]"
+          ],
+          "errors": [],
+          "passed": [
+            "tests/test_zone_own_executor_corridor_control.py::test_wait_timeout_boundary[0.199-WAIT_LANE]"
+          ],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "331",
+          "mutation": "remove_yield",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_corridor_control.py::test_capable_solo_decides_to_yield_then_reenters_on_own_clear_frames"
+          ],
+          "errors": [],
+          "passed": [],
+          "collect_errors": [],
+          "caught": true
+        }
+      ]
+    },
+    "335": {
+      "sha": "e9665534782811870482086768d2c88d681fd865",
+      "is_draft": true,
+      "ci_success": 33,
+      "ci_total": 33,
+      "functional_and_dependency_tests_passed": 50,
+      "registered_source_tests_passed": 22,
+      "source_pinning_tests_passed": 34,
+      "unique_tests_passed": 106,
+      "archive_without_git_initial_failures": 16,
+      "archive_git_resolution": "isolated bare GIT_DIR with candidate HEAD and read-only alternate object store; unchanged extracted files",
+      "workflow_tree_diff_vs_review_base": [],
+      "workflow_pr_diff_vs_review_base": [],
+      "reviewed_source_sha256": {
+        "harness/can_skill_registry.py": "c78aa57962ac2025903a7e1d98b0c7b59472bbc992088d6992867e8c8fb0918d",
+        "harness/wrist_can.py": "d6614b99fcf68137becf6e591548c7c0ba2198b152f467ab64d4c228670307f2",
+        "harness/zone_can_skill.py": "46e4636500038c21a291dc4cdbd958d4223047d862285e5fc2ce4d278338d505",
+        "tests/test_zone_own_executor_can.py": "e2b4dcba45374b1d690fafad557fba8473315931106cf780718623a6a7284b4a",
+        "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+        "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5"
+      },
+      "mutations": [
+        {
+          "pr": "335",
+          "mutation": "remove_floor_perception",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_can.py::test_cylinder_center_from_own_jpeg[0.4-0-0]",
+            "tests/test_zone_own_executor_can.py::test_cylinder_center_from_own_jpeg[0.35-0.04-0]",
+            "tests/test_zone_own_executor_can.py::test_cylinder_center_from_own_jpeg[0.3--0.03-1]",
+            "tests/test_zone_own_executor_can.py::test_cylinder_center_from_own_jpeg[0.2-0-2]"
+          ],
+          "errors": [],
+          "passed": [],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "335",
+          "mutation": "remove_lift_evidence_gate",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_can.py::test_ungrasped_and_empty_gripper_never_reach_holding_or_release"
+          ],
+          "errors": [],
+          "passed": [],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "335",
+          "mutation": "remove_own_camera_boundary",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_can.py::test_input_and_pose_refusal[top]"
+          ],
+          "errors": [],
+          "passed": [],
+          "collect_errors": [],
+          "caught": true
+        },
+        {
+          "pr": "335",
+          "mutation": "remove_release_evidence_gate",
+          "exit_code": 1,
+          "failed": [
+            "tests/test_zone_own_executor_can.py::test_bad_release_views_cannot_turn_open_gripper_into_completion"
+          ],
+          "errors": [],
+          "passed": [],
+          "collect_errors": [],
+          "caught": true
+        }
+      ]
+    }
+  },
+  "counterexamples": {
+    "strict": "2 xfailed",
+    "unmasked": "2 assertion failures",
+    "file": "tests/test_review_e2e_batch_i.py"
+  },
+  "local_evidence_files": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/pr330-tests.log",
+      "bytes": 79992,
+      "sha256": "730b5e4bb248601f621ef51afa31a3b3431753fbdc7f6e67a3c74e6899886761"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/pr331-tests.log",
+      "bytes": 79992,
+      "sha256": "ccb33f77e41e8ba130bcbeae6316427e7d249295708007e2a3707d46be1ecb6f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/pr335-tests.log",
+      "bytes": 79911,
+      "sha256": "40b64cef668f9b5ff5a1d0e396bb1767c14234094813d38e79e0a4f2c535c277"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/pr330-registered-with-git.log",
+      "bytes": 100,
+      "sha256": "1da7866d3c07299114aa670ecf084f8b91888e975b7ea236161ab916c59769ba"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/pr331-registered-with-git.log",
+      "bytes": 100,
+      "sha256": "a235beddb1f89afd08e259e820215ca073cdd942eb6da31afaf9510f9c5868e6"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/pr335-registered-with-git.log",
+      "bytes": 100,
+      "sha256": "a4fe3049715b377dc2b50db3924a7d9a8873477747e4885e2c62cd733c0ed50d"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/counterexamples-unmasked.log",
+      "bytes": 4643,
+      "sha256": "338254e55bda1d53f709e14effa9ebf6c74b702897eb17ff96ef815d550f0132"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/counterexamples-xfail.log",
+      "bytes": 500,
+      "sha256": "225b28545db7c7fc9ddbdd705c68d2931b2a697172a239aab346ad9f646b9c15"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-330-ignore_messages.log",
+      "bytes": 1818,
+      "sha256": "dea1ff6b5371840285b1373d3e4bd93d2b780aa97b829768b802abf474281a53"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-330-ignore_observation.log",
+      "bytes": 4671,
+      "sha256": "f621e9db2799c13fa25b0fc895e76a4172270a288040e83a3ee4bd1b957d521e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-330-ignore_pair_failure.log",
+      "bytes": 7505,
+      "sha256": "367d3107ad86c78dd004fc339ca647e47a06a3b0c3aa1e809ab6d0fca983a32e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-330-ignore_replan.log",
+      "bytes": 5224,
+      "sha256": "5d437fc83d52e966bfaa4af1c5aa4cd017c22e30005817c6e98d544659999045"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-330-skip_stop.log",
+      "bytes": 16539,
+      "sha256": "e7596b63e7aaaf8ab3bccad34c2c4d883134414b14ccef200dd0c34b49ce791a"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_control.log",
+      "bytes": 2138,
+      "sha256": "4ab9ac55041e3d1ce0cd8400961dfaffc9ec725fe9f78f63759f99bcc0e1c511"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_exit_check.log",
+      "bytes": 777,
+      "sha256": "1949dcf3f356ff85d85609c449b3e63bcd4bdef9de456981e8ae8ab4ed4c6321"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_heartbeat.log",
+      "bytes": 1226,
+      "sha256": "cc8b29347dd515e2e9cc96edc34a64373d1dcfb41db9468c9bc022ef01702ca4"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_route_refusal.log",
+      "bytes": 736,
+      "sha256": "bd90a25d5d1a8d66d240ad9f3350004e6a7cc5ece07be7354f84f5acec68025c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_wait_timeout.log",
+      "bytes": 1114,
+      "sha256": "ca3c82076e099822e45062b07cd21a8fffeee3d11d6dd9ee9f81225f1e0e07ce"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_yield.log",
+      "bytes": 840,
+      "sha256": "9dd429a003c3e27885cadf07cb64a65449eabe2d7e7d860d6c3b220a7996cf65"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-335-remove_floor_perception.log",
+      "bytes": 2340,
+      "sha256": "22a45f6a88adf8a90cbe9fade1882e5af54fcf7801edf6f8052a01213720ae4c"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-335-remove_lift_evidence_gate.log",
+      "bytes": 748,
+      "sha256": "abea9f844b044a8f079402e5145e690eb8a0a3a0c7e2aad0b38af824ffb48575"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-335-remove_own_camera_boundary.log",
+      "bytes": 658,
+      "sha256": "9fbee8e30d05fafa64a05df875d1843ab37c51fecefdfa3372be74fb4bffc8a8"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-335-remove_release_evidence_gate.log",
+      "bytes": 914,
+      "sha256": "8f2fc51ff33a7f8464afa9d49e68d0aaaa902d178943f10c920b2d78c94ba8fe"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-330-ignore_messages.json",
+      "bytes": 7598,
+      "sha256": "7c1ef42124a9889e05b5964e6c1e941c402d9ddf32658f4897daa2cd1f6b8c63"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-330-ignore_observation.json",
+      "bytes": 7601,
+      "sha256": "39a6ea2a4f3195160b2ee0875ad5cf58def3337d35d9800e8e591b35d595183e"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-330-ignore_pair_failure.json",
+      "bytes": 7602,
+      "sha256": "a06b6fc2d5ce9890a4c7a72ca894eb216cd13d4d10238395aa12a603464dd878"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-330-ignore_replan.json",
+      "bytes": 7596,
+      "sha256": "16ee8b81b9537e3a1e58ebaa0f330bde5ce191e97d6d1c5b0a80f090bc35fff6"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-330-skip_stop.json",
+      "bytes": 7592,
+      "sha256": "d73beadf95086e46e00afcbdfff8675231c176d4b2884571050b2cc8548eeeb5"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_control.json",
+      "bytes": 413,
+      "sha256": "14ad9050c04a7e54e561b69072cddb66b795017602ba70641f18998d7c4d5a4b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_exit_check.json",
+      "bytes": 270,
+      "sha256": "9f24fd1e695b1832901a150ad9758b4ff9e90aee406a3919c61f203466f931a9"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_heartbeat.json",
+      "bytes": 591,
+      "sha256": "297a7f2016a9c233504b3f6a8950df74a45700e184b63f3cb217170bcfb8f70b"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_route_refusal.json",
+      "bytes": 271,
+      "sha256": "d34c95e3a9ce12791767c007ae62fcae4d2d5b29038cfd1b81a0452f26e4e261"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_wait_timeout.json",
+      "bytes": 464,
+      "sha256": "45d4de8f733dd33ffc22d02b4a7080413f3c148e2a88df25b20c09acb6b67c74"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-331-remove_yield.json",
+      "bytes": 284,
+      "sha256": "5154c9444f79bb46e8a29a840f7408865b62fb089d75ef94b041a1251de96b7f"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-335-remove_floor_perception.json",
+      "bytes": 529,
+      "sha256": "eb6ea75b0ed1c1dd5b7e90d7d5c45f0f8bafa3c347d19ff1b1ed3b75a6bea1ed"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-335-remove_lift_evidence_gate.json",
+      "bytes": 279,
+      "sha256": "149610a259313f6754724b9a74f35f9b49b6683ee0ffee156c7bc7de3943ecbf"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-335-remove_own_camera_boundary.json",
+      "bytes": 249,
+      "sha256": "34949129d7c8134d991b37f07a1480ddb37165dd75d102e3de2ec387f82d11ae"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation-335-remove_release_evidence_gate.json",
+      "bytes": 282,
+      "sha256": "725af4417357fca7b78c5179b737280fbb21d8c7a423aafb1610cdc46c3b1160"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/mutation_runner.py",
+      "bytes": 3521,
+      "sha256": "983c5e1090d858159b48a4d6230081133c5f24ed0acf5b102ff3a42450415ef2"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-i/cleanup.json",
+      "bytes": 178,
+      "sha256": "82429c1e026a091361cc8660b59fd2a0a989aada0affe99e8c4cfa4df29f2bf7"
+    }
+  ],
+  "cleanup": {
+    "removed": "/private/tmp/ugrp-review-e2e-i-lgq5d8s2",
+    "exists_after": false,
+    "counterexample_extractions_remaining": [],
+    "at_utc": "2026-09-30T16:49:23.340228+00:00"
+  }
+}
