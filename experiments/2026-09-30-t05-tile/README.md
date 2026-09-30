@@ -81,6 +81,9 @@ v3 physical-pad 기준의 grip 예상 영역, 영상 정보량·경계 검사를
 
 ## 검증 기록
 
+2026-10-01 Batch H의 H334-1/H334-2 수정과 dev2 검사 결과는
+[REVIEW_FIXES.md](REVIEW_FIXES.md)에 별도로 남긴다. 아래의 최초 검증 기록은 보존한다.
+
 [VERIFICATION.md](VERIFICATION.md)에 실제 pytest, mutation 결과와 원본 해시를 적는다.
 로컬 테스트에는 공용 잠금·물리·렌더·모델 호출이 없다. 정상 GitHub CI는 별도로
 확인하며 skip/cancel하지 않는다. 구현 PR은 draft로 유지한다.

@@ -34,6 +34,17 @@ MUTATIONS = (
     ('background_boundary_removed', 'tile_own_vision.py',
      'fill >= .60 and containment >= .75 and boundary', 'fill >= .60 and containment >= .75',
      'real_holding_requires_tile_boundary'),
+    ('native_duration_reverted', 'tile_own_skill.py',
+     "('forward', 'left', 'turn', 'duration_s')", "('forward', 'left', 'turn', 'duration')",
+     'overlapping_native_motion_keeps_latest_end'),
+    ('motion_end_gate_removed', 'tile_own_skill.py',
+     ' and self.frame_time >= self.motion_until', '', 'overlapping_native_motion_keeps_latest_end'),
+    ('post_command_capture_gate_removed', 'tile_own_skill.py',
+     'and self.frame_time > self.motion_time', 'and True',
+     'native_motion_waits_for_post_motion_capture'),
+    ('duplicate_capture_accepted', 'tile_own_skill.py',
+     'or t <= self.frame_time', 'or t < self.frame_time',
+     'same_capture_time_with_new_id'),
 )
 
 

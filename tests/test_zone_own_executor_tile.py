@@ -12,6 +12,7 @@ import math
 from pathlib import Path
 import subprocess
 import sys
+from types import SimpleNamespace
 
 import cv2
 import numpy as np
@@ -81,6 +82,126 @@ class Port:
                 return
             self.tick()
         pytest.fail(f'expected {state}, got {self.s.status(self.t)}')
+
+
+def native_motion(p, **changes):
+    """Issued row shape from OwnCamTeamHost._macro_timeline's mecanum branch."""
+    return {'robot_id': 'r1', 't': p.t, 'kind': 'mecanum', 'forward': .05,
+            'left': 0., 'turn': 0., 'duration_s': .1, **changes}
+
+
+def test_native_macro_receipt_can_resume_tile_carry(monkeypatch):
+    from harness.zone_own_team_host import OwnCamTeamHost
+    from sim.camera_robot_port import validate_raw_action
+
+    p = Port(monkeypatch)
+    p.until('holding')
+    # Exercise the real pure macro conversion with no host/world construction.
+    host = SimpleNamespace(robots={'r1': SimpleNamespace(executor=None)})
+    action = {'kind': 'mecanum', 'forward': .05, 'left': 0., 'turn': 0., 'duration': .1}
+    timeline = OwnCamTeamHost._macro_timeline(host, 'r1', action, p.t)
+    t, (issued,) = timeline[0]
+    validate_raw_action(issued, allow_mecanum=True)
+    assert issued['duration_s'] == .1 and 'duration' not in issued
+    # The caller binds its own port identity; this is not native dispatch wiring.
+    p.s.on_command({'robot_id': 'r1', 't': t, **issued})
+    assert p.s.motion_until == pytest.approx(t + .1)
+    assert not p.s.carry_permitted(t)
+    p.tick()
+    assert p.s.carry_permitted(p.t)
+
+
+@pytest.mark.parametrize('duration', [0., .1, .3])
+def test_native_motion_waits_for_post_motion_capture_then_can_release(monkeypatch, duration):
+    p = Port(monkeypatch)
+    p.until('holding')
+    issued = p.t
+    # An upstream action alias must not override the actual port receipt.
+    p.s.on_command(native_motion(p, duration_s=duration, duration=99.))
+    assert p.s.motion_until == pytest.approx(issued + duration)
+    assert not p.s.carry_permitted(issued)
+    with pytest.raises(ValueError, match='RELEASE_REQUIRES'):
+        p.s.request_release(now=issued, destination_zone='C')
+    # Merely advancing time cannot make the old capture post-motion evidence.
+    p.s.step(issued + duration)
+    assert not p.s.carry_permitted(issued + duration)
+    p.t = round(issued + duration, 6)
+    p.tick()
+    assert p.s.carry_permitted(p.t)
+    p.s.request_release(now=p.t, destination_zone='C')
+    p.until('done')
+
+
+def test_overlapping_native_motion_keeps_latest_end_and_waits_for_rgb(monkeypatch):
+    p = Port(monkeypatch)
+    p.until('holding')
+    issued = p.t
+    p.s.on_command(native_motion(p, duration_s=.6))
+    p.tick()  # fresh image during motion cannot authorize another move/release
+    assert not p.s.carry_permitted(p.t)
+    p.s.on_command(native_motion(p, duration_s=.1))
+    assert p.s.motion_until == pytest.approx(issued + .6)
+    p.tick()
+    assert not p.s.carry_permitted(p.t)
+    p.tick()
+    assert p.s.carry_permitted(p.t)
+
+
+@pytest.mark.parametrize('field', ['forward', 'left', 'turn', 'duration_s'])
+@pytest.mark.parametrize('bad', [None, True, '0.1', math.nan, math.inf, -math.inf])
+def test_native_motion_invalid_numbers_do_not_mutate_history(monkeypatch, field, bad):
+    p = Port(monkeypatch)
+    before = copy.deepcopy(vars(p.s))
+    with pytest.raises(ValueError, match='MOTION_COMMAND_INVALID'):
+        p.s.on_command(native_motion(p, **{field: bad}))
+    assert vars(p.s) == before
+
+
+@pytest.mark.parametrize('fault', ['missing', 'action_only', 'negative'])
+def test_native_motion_requires_nonnegative_canonical_duration(monkeypatch, fault):
+    p = Port(monkeypatch)
+    row = native_motion(p)
+    if fault == 'negative':
+        row['duration_s'] = -.1
+    else:
+        row.pop('duration_s')
+        if fault == 'action_only':
+            row['duration'] = .1
+    with pytest.raises(ValueError, match='MOTION_COMMAND_INVALID'):
+        p.s.on_command(row)
+    assert p.s.motion_until == -math.inf and p.s.motion_time == -math.inf
+
+
+@pytest.mark.parametrize('phase', ['search', 'verify_hold', 'holding', 'verify_release'])
+@pytest.mark.parametrize('reencode', [False, True])
+def test_same_capture_time_with_new_id_fails_closed_in_all_confirmation_phases(monkeypatch, phase, reencode):
+    p = Port(monkeypatch)
+    if phase == 'search':
+        p.tick(); p.tick(); p.tick()
+        assert p.s.streak == 1
+    else:
+        p.until('holding' if phase == 'verify_release' else phase)
+        if phase == 'verify_release':
+            p.s.request_release(now=p.t, destination_zone='C')
+            p.until(phase)
+        p.tick()
+        assert p.s.state == phase
+        if phase == 'verify_hold':
+            assert p.s.hold_streak == 1
+        elif phase == 'verify_release':
+            assert p.s.streak == 1
+    # Equal capture time is invalid even if metadata or encoding bytes change.
+    image = floor_image()
+    if reencode:
+        image[:30, :30] = (10, 20, 30)
+    replay = frame(p.fid + 1, p.t, image=image)
+    p.s.on_frame(p.t, replay)
+    out = p.s.step(p.t)
+    assert p.s.reason == 'OWN_IMAGE_INVALID' and p.s.state == 'failed'
+    assert out['commands'] == [{'kind': 'hold'}]
+    assert not p.s.carry_permitted(p.t)
+    assert not p.s.status(p.t)['skill_complete']
+    assert not any(e['event'] == 'skill_complete' for e in p.s.events)
 
 
 def test_normal_low_grasp_hold_and_release_are_not_delivery(monkeypatch):
@@ -316,7 +437,7 @@ def test_peer_command_history_and_mid_grasp_base_motion_refused(monkeypatch):
         p.s.on_command({'robot_id': 'r2', 't': 1., 'kind': 'arm', 'servo_id': 1, 'pulse': 1500})
     p.until('lower')
     p.s.on_command({'robot_id': 'r1', 't': p.t, 'kind': 'mecanum', 'forward': .1,
-                    'left': 0., 'turn': 0., 'duration': .1})
+                    'left': 0., 'turn': 0., 'duration_s': .1})
     assert p.s.reason == 'BASE_MOVED_DURING_MANIPULATION'
 
 

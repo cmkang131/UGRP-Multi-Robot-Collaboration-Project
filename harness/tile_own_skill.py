@@ -25,7 +25,7 @@ from harness import tile_own_vision as vision
 from harness import visual_arm_v3 as arm
 from harness.zone_study_inputs import FORMATIONS
 
-PROFILE = 'tile-west-manipulation-dev1'
+PROFILE = 'tile-west-manipulation-dev2'
 CONDITIONS = ('no_comm', 'peer_ko', 'leader_ko', 'structured')
 STATES = ('search', 'open', 'lower', 'close', 'lift', 'verify_hold', 'holding',
           'lower_release', 'open_release', 'inspect_release', 'verify_release', 'done', 'failed')
@@ -78,6 +78,7 @@ class TileWestSkill:
         self.command_serial, self.pose_serial, self.pose_time = 0, {}, {}
         self.pending_after = 0
         self.arm_time = -math.inf
+        self.motion_time = -math.inf
         self.motion_until = -math.inf
         self.last_frame_id, self.frame_time = -1, -math.inf
         self.frame_command_time = -math.inf
@@ -132,9 +133,12 @@ class TileWestSkill:
                or not 500 <= v <= 2500 for k, v in updates.items()):
             raise ValueError('TILE_PWM_OUT_OF_RANGE')
         if kind == 'mecanum':
-            if not all(_finite(row.get(k)) for k in ('forward', 'left', 'turn', 'duration')) or row['duration'] < 0:
+            # Issued port receipts use duration_s; duration belongs to the
+            # upstream macro action and must not override the actual receipt.
+            if not all(_finite(row.get(k)) for k in ('forward', 'left', 'turn', 'duration_s')) or row['duration_s'] < 0:
                 raise ValueError('TILE_MOTION_COMMAND_INVALID')
-            self.motion_until = max(self.motion_until, t + row['duration'])
+            self.motion_time = t
+            self.motion_until = max(self.motion_until, t + row['duration_s'])
             self.previous_target, self.streak = None, 0
             if self.state not in ('search', 'holding', 'failed', 'done'):
                 self._fail('BASE_MOVED_DURING_MANIPULATION')
@@ -151,10 +155,15 @@ class TileWestSkill:
         self.command_time = t
 
     def on_frame(self, now, obs):
-        """Hash and decode the same own JPEG; ignore all non-camera envelope fields."""
+        """Require a later capture, then hash/decode its own JPEG.
+
+        Frame IDs alone cannot make a replay a new confirmation. Identical
+        pixels at a genuinely later capture remain valid (e.g. a still scene).
+        Ignore all non-camera envelope fields.
+        """
         fid, t = obs.get('frame_id'), obs.get('sim_time')
         if (not _finite(now) or now < self.now or not _finite(t) or not 0 <= now - t <= FRAME_MAX_AGE_S
-                or t < self.frame_time or t < self.command_time or isinstance(fid, bool)
+                or t <= self.frame_time or t < self.command_time or isinstance(fid, bool)
                 or not isinstance(fid, int) or fid <= self.last_frame_id
                 or obs.get('robot_id') != self.robot_id or obs.get('camera') != 'robot_cam'
                 or self.initial_pose is None):
@@ -190,7 +199,8 @@ class TileWestSkill:
 
     def _fresh(self, now):
         return (0 <= now - self.frame_time <= FRAME_MAX_AGE_S and self.frame_command_time == self.arm_time
-                and self.frame_time >= self.arm_time + SETTLE_S and self.frame_time >= self.motion_until)
+                and self.frame_time >= self.arm_time + SETTLE_S and self.frame_time >= self.motion_until
+                and self.frame_time > self.motion_time)
 
     def carry_permitted(self, now):
         return self.state == 'holding' and self._fresh(now) and self.view.holding == 'yes'
