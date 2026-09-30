@@ -1,0 +1,41 @@
+{
+  "schema": "ugrp.final_environment_calibration.v1",
+  "status": "DRAFT_UNMEASURED",
+  "robot_model": "masterpi_v3",
+  "maps": {
+    "zone_wide_door_geometry_v3": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+    "zone_wide_two_doors_final_v3": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+    "zone_wide_corridor_final_v3": "0429b535107feda865a02821e4ceb2b695b58cd0c06c07e2fde96320bd2d9b0e"
+  },
+  "render_profile": "floor_light_v1",
+  "camera": {
+    "name": "robot_cam",
+    "rgb_size": [
+      640,
+      480
+    ],
+    "segmentation_size": [
+      480,
+      360
+    ],
+    "mount_file": "sim/masterpi_camera_profile.py",
+    "mount_sha256": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+    "sag": null,
+    "pan_base_yaw": null,
+    "extrinsics_frame": "optical to actual chassis base; pan yaw offset recorded separately"
+  },
+  "motion": {
+    "unloaded": null,
+    "loaded": null,
+    "fine": null
+  },
+  "static_sources_sha256": {
+    "sim/masterpi_geometry_v3.py": "bed49926f11cba9fe338ee228866771efd29d0a94c5ca3a0c65d67e7e82aa942",
+    "sim/masterpi_model_v3.py": "e2d9ff9224d7f7df01957bdf9ca95f52db9f5c7b54828eaab8185e5422d38fb5",
+    "sim/masterpi_robot_models.py": "ed3115774b8f4bb41f462cf91cc086609491afb21664819e1c482698ac468e11",
+    "sim/masterpi_dynamics_calibration.json": "6d1791939e8fbac5a33a22185aea7ee66c2aeba561757e3f1945207812d07416"
+  },
+  "measurements": null,
+  "qualification": "V3 pair measurement contract. No v2 motion/camera/pair fit inheritance. Collection remains unqualified until offline fitting and review.",
+  "handoff": "PHYSICS_HANDOFF.md"
+}

@@ -1,3 +1,140 @@
+# 최종 v3 공동 운반 v88 인계 — DRAFT, 미봉인
+
+v88은 `floor_light_v1`의 세 최종 v3 지도에 공동 운반과 보정 수집 경로를 추가한다.
+**이번 검증은 fake/offline만 수행했다. 물리·렌더·모델 추론·P03·운반 성공 결과는 없다.**
+학생 실행은 실측 v3 보정 파일의 해시·조합·필수 자세 coverage가 없으면 시작하지 않는다.
+아래 v84 기록은 당시 기본 조명과 reset 전용 결과의 이력으로 그대로 보존한다.
+
+## v88 조합과 검증 경계
+
+- 번들 `zone-final-pair-v88`, workflow `zone-final-pair-v3` **3.1.0**.
+  최초 조회 최댓값은 #339의 v86 / zone workflow 2.19.0이었다. 커밋 전 재조회에서
+  #342/#343의 v87 / 2.20.0을 확인해 이 미실행 후보를 v88로 등록한다.
+  전체 workflow 최댓값 3.0.0 다음인 3.1.0을 사용한다.
+  [최초 조회](experiments/2026-10-01-v3-pair-adapter/reservation_scan.json)와
+  [최종 조회: main + 열린 PR 15개](experiments/2026-10-01-v3-pair-adapter/reservation_final.json)를 보존한다.
+- 표준 `sim_cli`/workflow manager가 `configs/simulation_workflows.d/final_pair_v88.json`을 읽는다.
+  봉인된 기본 catalog·v2 제어기·기존 번들·봉인 검사는 수정하지 않는다.
+  `FinalV3Scene`은 표준 `Scene`의 구성·reset·물체 생성과 v3 robot 변환을 재사용한다.
+- `masterpi_v3`, `cargo_noslip_v1`, weld OFF, 초음파 OFF, `floor_light_v1`.
+  자기 `robot_cam` 640×480만 제어기에 들어간다. 카메라/FOV·로봇·물체 외관은 유지한다.
+  기존 seg-v2 인식망 재사용은 새 밝은 바닥에서의 정확도 검증이 아니다.
+- `b-v6h1-v3-measured`는 등록된 b-v6g skill의 인스턴스 wrapper에 #292 b-v6h1 계열의
+  kxy=kyaw=1 sweep margin, loaded yaw 5°/4° gate, moved-fix p2f, 축/횡 lag 모델을 연결한
+  **새 변형**이다. v2의 0.948 gain 보정·v2 카메라/FK·운동 fit·성공 판정을 승계하지 않는다.
+  p2f는 움직인 뒤 새 fix가 없으면 baseline을 잡지 못하는 기존 한계가 있다.
+- v3 파지 목표는 arm 모델의 정적 station radius 0.2032 m, 정렬 X/Y 허용치는 각각 ±3 mm다.
+  열린 하강/파지/상승 PWM은 유한한 공통 목록 `grasp_postures()`를 사용한다.
+  RGB에서 이 범위를 벗어나면 파지를 거부한다. 허용 오차 내 실제 파지는 물리 인수 대상이다.
+  보정되지 않은 중간 PWM에서 정지하면 provider는 명시적으로 실패하며 v2 FK로 대체하지 않는다.
+- 문 지도 두 개는 정적 빔 배치 `[1,.05,0]`에서 B로, 복도 지도는 `[1,1.2,0]`에서 A로 간다.
+  coarse order는 실행 전에 고정한다. seeded robot→dock row 정보는 학생에게 주지 않으며,
+  초기 PF는 공용 지도에 공개된 dock 영역으로만 한 번 초기화한다.
+
+## 보정 수집 — 모델/기존 loaded fit 없이 실행 가능
+
+세 수집 종류는 각각 **세 지도 × 120 SIM초**, 각 reset은 별도 최대 5 SIM초다.
+`configs/final_environment_measurement_v1.json`은 원본 그대로 두고 새 명시적 schedule로 확장한다.
+
+- `calibration-unloaded`: 원본 24 camera pose/pan 조건과 ±3% 운동 펄스,
+  102초부터 실제 제어기가 쓰는 열린 hover·grasp·p45·inspect·search 자세.
+- `calibration-fine`: 같은 수집에 70초 p45 정렬 자세를 배치하고 ±1.5% 운동 펄스를 발행한다.
+- `calibration-loaded`: **교사 측정 전용**으로 정적 catalogue station에 r1/r2를 배치한다.
+  0초 열린 grasp, 2초 close, 4초 hover, 12–37.75초 양 운반자 대칭 운동 펄스,
+  48–69초 loaded pan 조건, 80초 open. 파지/하중 판정으로 다음 명령을 바꾸지 않는다.
+  pan 동작은 빔을 놓칠 수 있으므로 운동 표본을 먼저 모은다.
+
+교사 위치·카메라 실제 transform·qpos/qvel·빔 궤적·접촉은 `eval_only/`에만 기록한다.
+**요청한 loaded 상태가 실제 하중을 뜻하지 않는다.** 접촉·빔 상승·유지 구간을 오프라인에서
+판정하고, 실패/낙하/정지 표본을 함께 남긴 뒤 적합할 loaded 표본을 선택해야 한다.
+수집 완료 상태는 `COLLECTED_UNQUALIFIED`이며 보정 적합/물리 성공을 뜻하지 않는다.
+각 own JPEG·발행 명령·frame metadata·요청 schedule·전체 artifact hash를 보존한다.
+카메라 label은 optical→실제 chassis base의 origin/rotation이며 pan에 따른 chassis yaw는 따로 적합한다.
+
+```bash
+cd /Users/changmin/projects/ugrp-wt/integ-v3-pair-adapter
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+FINAL_SHA=$(git rev-parse HEAD)
+FINAL_BRANCH=$(git branch --show-current)
+RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v88-NEW-COHORT
+git status --short --untracked-files=all
+"$PY" scripts/disk_report.py
+"$PY" scripts/agent_lock.py status
+
+# 정적 계획: 물리/renderer/model worker를 시작하지 않는다.
+"$PY" -m scripts.sim_cli workflow plan zone-final-pair-v3 -- \
+  --check calibration-loaded --expected-source-sha "$FINAL_SHA" \
+  --output "$RUN_ROOT/calibration-loaded"
+
+# 아래부터는 물리 담당 코디네이터가 수행한다. 기존 잠금이 있으면 실행하지 않는다.
+(
+set -euo pipefail
+"$PY" scripts/agent_lock.py acquire --owner codex --branch "$FINAL_BRANCH" \
+  --purpose 'v88 v3 calibration 3 profiles x 3 maps x 120 SIM s' --pid $$ --expected-minutes 90
+trap '"$PY" scripts/agent_lock.py release --owner codex' EXIT
+for CHECK in calibration-unloaded calibration-loaded calibration-fine; do
+  "$PY" scripts/ugrp_session.py run "final-pair-v88-$CHECK" -- \
+    "$PY" -m scripts.sim_cli workflow run zone-final-pair-v3 -- \
+    --check "$CHECK" --seed 911 --expected-source-sha "$FINAL_SHA" \
+    --execute --lock-owner codex --output "$RUN_ROOT/$CHECK"
+done
+"$PY" scripts/agent_lock.py release --owner codex
+trap - EXIT
+)
+```
+
+`RUN_ROOT`는 매번 새 경로로 바꾼다. 소스는 커밋·고정한 자기 worktree에서 실행한다.
+ENOSPC는 `HOST_ERROR`; 이미 존재하는 출력·raw는 덮어쓰거나 삭제하지 않는다.
+수집/적합 후 승인된 실측 파일은 schema `ugrp.final_environment_measured_calibration.v1`,
+status `MEASURED_SIM`, 새 contract hash, 세 map hash, `floor_light_v1`, source SHA와 measurement
+manifest hash를 포함해야 한다. `params.motion`, `params.motion_loaded`, `params.motion_profiles.fine`의
+3×3 gain·lag·noise·scale, loaded load_transition/deadband/drift/yaw spread,
+`pair_model.slope_to_yaw_ratio`·`b_rad_s` 네 조건, `pan_base_yaw`와 unloaded/loaded
+`camera_models`가 필수다. `required_camera_poses()`의 모든 settled 자세를 실제로 측정한다.
+이 PR은 fitting·정확도 승인·실측 파일 생성을 자동으로 수행하지 않는다.
+
+## P03 — 독립 reset 세 번, 각 120 SIM초
+
+각 사례는 dock에서 같은 실제 pair chain을 시작하며, 목표 checkpoint 도달 전까지 teacher staging,
+PF 교체/재초기화, 빔 순간이동을 하지 않는다. 도달하지 못한 사례도 분모 3에 남긴다.
+checkpoint는 lower→open→정지 재관측→RGB 재정렬→grasp→lift를 실행한다.
+재관측은 같은 PF의 입자·불확실성을 보존하고 이전 fix receipt만 무효화한다.
+새 capture의 pose는 고정 0.16 SIM초 뒤 전달되며 old fix를 새 fix로 사용하지 않는다.
+
+문 지도에서 전체 v3 pair envelope와 5 cm 여유로 계산한 checkpoint는 다음과 같다.
+문 전 x=1.4518(다음 segment 1), 문 후 x=2.9482(segment 3), 목적지 전 x=3.7741/y=-2.1(segment 7).
+판정은 등록된 `checkpoint_segments`와 자기 제어기의 open/relift receipt로 남긴다.
+`SEQUENCE_OBSERVED_UNQUALIFIED`도 실제 파지·위치오차·충돌 없음 또는 E2E 성공을 뜻하지 않는다.
+평가자는 별도의 raw 궤적·접촉·영상으로 물리 판정을 해야 한다.
+
+```bash
+(
+set -euo pipefail
+CALIBRATION=/Users/changmin/projects/ugrp/outputs/REVIEWED-V88-CALIBRATION/measured.json
+CALIBRATION_SHA=$(shasum -a 256 "$CALIBRATION" | cut -d ' ' -f 1)
+"$PY" scripts/agent_lock.py acquire --owner codex --branch "$FINAL_BRANCH" \
+  --purpose 'v88 P03 3 x 120 SIM s' --pid $$ --expected-minutes 90
+trap '"$PY" scripts/agent_lock.py release --owner codex' EXIT
+"$PY" scripts/ugrp_session.py run final-pair-v88-p03 -- \
+  "$PY" -m scripts.sim_cli workflow run zone-final-pair-v3 -- \
+  --check p03 --seed 911 --expected-source-sha "$FINAL_SHA" \
+  --calibration "$CALIBRATION" --calibration-sha256 "$CALIBRATION_SHA" \
+  --execute --lock-owner codex --output "$RUN_ROOT/p03"
+"$PY" scripts/agent_lock.py release --owner codex
+trap - EXIT
+)
+```
+
+세 지도 E2E 시도는 같은 명령의 `--check p03`을 `--check carry`, 출력과 세션 이름을 `carry`로
+바꾼다(세 지도 각 120초). 단일 지도 진단만 할 때 `--map-id`로 선택하며 분모도 1로 기록한다.
+P03는 지도 필터로 세 checkpoint 분모를 줄일 수 없다.
+`plan.json`, case별 `bundle.json`, `student_record.json`, `eval_only/`, `result.json`,
+`artifacts.sha256.json`을 함께 회수한다. host error 뒤 남은 사례는 `unattempted`로 보존한다.
+작업 끝에 자신이 만든 worker/세션 종료와 잠금 해제를 확인한다. 실제 결과 회수 후 코디네이터가
+`docs/tensorboard.md`의 새 snapshot·영상·HParams·고정 카드 표시를 검증한다. Drive는 사용하지 않는다.
+
+---
+
 # 최종 환경 v84 물리 인계 — DRAFT, 미봉인
 
 **P01 3×30 SIM초 reset 경로는 등록했다. P03 3×120 SIM초 연쇄는 아직 실행할 수 없다.**

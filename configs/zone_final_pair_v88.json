@@ -1,0 +1,27 @@
+{
+  "schema": "ugrp.final_pair.v88",
+  "execution_bundle_id": "zone-final-pair-v88",
+  "status": "DRAFT_UNSEALED",
+  "workflow_id": "zone-final-pair-v3",
+  "workflow_version": "3.1.0",
+  "maps": [
+    "zone_wide_door_geometry_v3",
+    "zone_wide_two_doors_final_v3",
+    "zone_wide_corridor_final_v3"
+  ],
+  "p03_map": "zone_wide_door_geometry_v3",
+  "robot_model": "masterpi_v3",
+  "render_profile": "floor_light_v1",
+  "weld": "off",
+  "contact_profile": "cargo_noslip_v1",
+  "sensors": {
+    "ultrasonic_front": "off"
+  },
+  "calibration_contract_sha256": "c834b8d2a32f85824a19999a11d20cf4c4760f8965a40ca06a9b5a6ab2153148",
+  "controller_family": "b-v6h1",
+  "parent_candidate": {
+    "pr": 292,
+    "sha": "266118d2c2337bbf1cff507690da131c63e2db11"
+  },
+  "qualification": "New wrapper, not old source acceptance or E2E success. Measured v3 gain replaces the v2 0.9483378899463337 calibration multiplier."
+}
