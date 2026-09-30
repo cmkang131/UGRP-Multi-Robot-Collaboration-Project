@@ -1,5 +1,7 @@
 # T05 오프라인 검증
 
+제어·인식·최종 테스트 소스 커밋: `157d655a33cf196cdcfc2fd854e1b0cb642d4b97`. 이후 기록 커밋은 문서/JSON만 바꾼다.
+
 물리 step 0, renderer 0, 모델 호출 0. 호스트 잠금을 획득하지 않았다.
 실행 Python은 기존 `/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python`이다.
 환경·source closure·파일별 SHA-256은 [verification.json](verification.json)에 있다.
