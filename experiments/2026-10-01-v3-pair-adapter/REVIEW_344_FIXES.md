@@ -6,7 +6,8 @@
 
 **v88은 한 번도 실행되지 않았으므로 같은 bundle ID/workflow 3.1.0 안에서 개정했다.**
 실행된 v89(#347), 원본 v1 schedule, 봉인된 제어기/등록 검사, `.github/workflows`는 변경하지 않았다.
-최신 main `78ce79162d907d88d38ef3afcfc0c62e4a72aaba`를 반영했다. 물리 step·MuJoCo 컴파일·렌더·모델 추론·host lock은 0회다.
+main `78ce7916`과 #345 `a520d9d8` 반영 뒤, 작업 중 추가 병합된 최신 main
+`a2be72a8381dcc9e58e5206509ad0c64ed7f0fb3`(#303/#342/#341)도 반영했다. 물리 step·MuJoCo 컴파일·렌더·모델 추론·host lock은 0회다.
 
 ## 지적 → 수정
 
@@ -73,10 +74,18 @@ OPENBLAS_NUM_THREADS=1 "$PY" -m scripts.check_pair_v88_identifiability --output 
 
 검사 결과: 관련 **331 passed, 1 deselected**, CI shard **66 passed**, frozen fixture 3개 확인.
 기존 프로세스 자식 정리 검사는 앞선 sandbox `ps` 제한 때문에 로컬에서 제외했고 정상 CI에는 그대로 둔다.
-최신 main이 검사 중 #345로 갱신되어 `a520d9d8` 추가 반영과 영향 검사 결과를 다음 기록에 연결한다.
+main #345 통합 뒤 영향 검사 154개가 통과했다. #303/#342/#341 통합에서는 v87/v88 catalog·검사 목록을
+모두 유지했고 workflow 수를 44개로 맞췄다. PHYSICS_HANDOFF는 v88, main의 v87, 원본 v84 순서로
+각 번들 지침을 보존했다. 최신 main과 `.github/workflows` 바이트가 같다. 최종 재검사 결과는 JSON/로그에 기록한다.
 
 TensorBoard [합성 설계 비교](http://127.0.0.1:6006/?runFilter=%5E1001-v88-review344%2F#timeseries)는
 initial 실패를 포함한 20 runs/100 scalar를 EventAccumulator와 실제 서버 API로 대조했다.
 [고정 카드 링크·HParams 설정·변환 기록](tensorboard_review_fixes.json)에 원본·manifest hash를 보존했다.
 기존 서버의 공용 logdir를 확인하고 서버를 바꾸지 않았다. Chrome CUA `cgWindowNotFound`로
 화면/고정 카드/HParams 열의 실제 표시 검증은 미완료다. 영상은 없다.
+
+최종 main `a2be72a8` 통합 검사: **422 passed, 1 deselected**(576.24초).
+이후 R1의 높이 유효성도 차체 기준 양수 조건을 제거하고 합성된 바닥 기준으로만 판단하도록 보완했다.
+이 마지막 차이의 XML/반례/변환/보정 mutation/provider 검사 **19 passed**(2.17초).
+차체보다 낮지만 바닥 위인 카메라는 허용하고 바닥 아래 카메라는 거부한다.
+통합 중 충돌 정리에서 생긴 두 문법 수집 오류와 복구/재검사 기록도 삭제하지 않고 보존했다.

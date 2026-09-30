@@ -109,6 +109,18 @@ def test_floor_transform_is_required_and_validated(tmp_path,fault):
     with pytest.raises(ValueError): floor_camera(record)
 
 
+def test_camera_height_is_validated_in_floor_frame_not_chassis_frame():
+    from harness.vision_pose_source_final import camera_key
+    record = {'frame': 'optical_to_actual_chassis', 'origin_m': [.15, 0., -.01],
+              'rotation': np.eye(3).tolist(),
+              'chassis_to_floor': {'origin_m': [0., 0., .03236], 'rotation': np.eye(3).tolist()}}
+    cal = {'camera_models': {'unloaded': {camera_key(SERVO): record}}}
+    assert c.camera_record(cal, 'unloaded', SERVO)['origin_m'][2] == pytest.approx(.02236)
+    record['origin_m'][2] = -.04
+    with pytest.raises(ValueError, match='above the floor'):
+        c.camera_record(cal, 'unloaded', SERVO)
+
+
 @pytest.mark.parametrize('check',c.CHECKS[2:])
 def test_actual_schedule_matches_hammerstein_design_and_budget(check):
     from harness.zone_final_pair_calibration import schedule

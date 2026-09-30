@@ -4,7 +4,7 @@
   "review_sha": "17b54de7f7440589fa5cc388a46b61f6c4c20467",
   "bundle": "zone-final-pair-v88",
   "unexecuted_bundle_revised_in_place": true,
-  "merged_main_sha": "a520d9d8a70b9945a6eeb396e0a07c19aa3cb3c4",
+  "merged_main_sha": "a2be72a8381dcc9e58e5206509ad0c64ed7f0fb3",
   "physics_steps": 0,
   "native_model_compiles": 0,
   "render_calls": 0,
@@ -17,7 +17,11 @@
     "ci_sharding": "66 passed in 1.19s",
     "deselected": "test_parent_exit_cleans_background_child: prior sandbox ps PermissionError, unrelated process test remains enabled in normal CI",
     "frozen_fixtures": 3,
-    "xfails_remaining_in_test_review_344": 0
+    "xfails_remaining_in_test_review_344": 0,
+    "final_main_integration": "422 passed, 1 deselected in 576.24s",
+    "final_camera_frame_delta": "19 passed, 59 deselected in 2.17s; final removal of chassis-relative positive-z assumption",
+    "final_camera_delta_scope": "XML chain, 32.36 mm repro, floor frame validation, calibration mutations, real provider fixed-frame setup; no physics",
+    "final_main_command": "python -m pytest -q tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_review_344.py tests/test_zone_final_environment_runnable.py tests/test_zone_final_environment_floor_light.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_executor.py tests/test_zone_pair_grasp.py tests/test_pair_passage_plan.py tests/test_simulation_workflow_manager.py tests/test_vision_loc_p03_source_pinning.py tests/test_ci_sharding.py -k \"not test_parent_exit_cleans_background_child\" --junitxml=experiments/2026-10-01-v3-pair-adapter/final_main_fixed_tests.xml"
   },
   "offline_design": {
     "report": "identifiability_v2.json",
@@ -30,13 +34,16 @@
     "harness/zone_final_pair_clearance.py": "805718e7bc65b587f2d6793f10f05a89afbee65c7eddb0ba4a2187e9bebcbd0f",
     "harness/zone_final_pair_excitation.py": "618da65836acf0bc79e72d71b9e6d9415ad0e85924fb5769b2339f62cca9b258",
     "harness/zone_final_pair_calibration.py": "4a54f79930b0897559cef659c8949ba6ae4aed9b6414e54ed79351cf80dea025",
-    "harness/zone_final_pair_contract.py": "2e2d12b10b73f79c63824e25445016255a747f838c3e862fdea4d7ad3e882a99",
+    "harness/zone_final_pair_contract.py": "29d0660817dc4d3dcdbfbb96b9142bba23fc37285e9f4e72047e62e9e9a6dbbb",
     "scripts/run_final_pair_v3.py": "f43e51a5ec08b141364cd5b701cb32ad945d839f5caaea91e5338efc0ae2a4e6",
     "scripts/check_pair_v88_identifiability.py": "0a8451b2a697a6b61da826b7cfe79f41a9979f9d139452f1d971ac1ef8e04938",
     "sim/final_pair_v3.py": "bcaa984d35494d2c5a2758a9596e63c8520b6b312d4680d38269381d9cc7c3e1",
     "tests/test_review_344.py": "7a696224995b29418a2335182774992cc9160127baf2994909c8397db1daa5ba",
-    "tests/test_zone_final_pair_review_fixes.py": "20fff32938ba31aeeecc23ac10cf70e54ac1d155a793614914b526ed37f3ac2c",
-    "tests/test_zone_final_pair_v3.py": "50168e1ee46799007e42c866b2831719acc7be4690ee6475864e901ec454df95"
+    "tests/test_zone_final_pair_review_fixes.py": "52bdce9d8e2150c5ae64690cc672c91163495fbdfc259ebcfd481ba6e9e1d63e",
+    "tests/test_zone_final_pair_v3.py": "50168e1ee46799007e42c866b2831719acc7be4690ee6475864e901ec454df95",
+    "PHYSICS_HANDOFF.md": "62a4b0b5a9b2cc840e3ca5b129a9096796279f52838de495d249074f654f960e",
+    "scripts/run_ci_tests.py": "33252ec6dac4a6480b120ae0ace2b1300644db0f4ca9a950677c9c67e2acd397",
+    "tests/test_simulation_workflow_manager.py": "5777d5cf296a51834351619f2c5b55f76716e327868fb74ca3697ce8f80350f4"
   },
   "artifacts_sha256": {
     "identifiability_v2_initial.json": "b9c41eb4903a02bf7e06d3b3cc1cf808a99ec5230c078fae97c267c848cf95fa",
@@ -46,7 +53,15 @@
     "identifiability_v2.json": "84856f5f7459bc80af9045d10952875cf6c90f2a44514b463b4568cf40a43b40",
     "REVIEW_344_EVIDENCE.json": "633617e50662a5f7effd6484463cfa08b5a8ace97d1d90db108158530a62f093",
     "review_fixes_ci_sharding.txt": "306057a61d89f2d41074036bb062e051079fc9baceab68965fef974f483377ec",
-    "tensorboard_review_fixes.json": "03fca04ac9950d74a94e744d565468d31b534b59c1545f86bd3d9d16891d2014"
+    "tensorboard_review_fixes.json": "03fca04ac9950d74a94e744d565468d31b534b59c1545f86bd3d9d16891d2014",
+    "final_camera_frame_tests.txt": "29e173987c7fb98fe43b8f1968de8647548b599751f7cf2c3248e9df827a84f0",
+    "final_main_tests.xml": "b37f2d265863562eb3f955ff1b6b12359649c126474070666ad7882ef1b247bb",
+    "final_main_fixed_tests.xml": "93d3d1485fd6ed246561065f99968c474b1a0179a9c099a020cf4c87419131c5",
+    "final_main_tests.txt": "d18719ae7c78db217a57e443ec981273f749c105a08730e9afa0b387f8f82fa0",
+    "final_main_fixed_tests.txt": "18bd7676e262caa7411a830ff1380f2d2f9f7abeadd3b27a5dd9ac9cbdf608fd",
+    "latest_main_tests.txt": "84553d1422a35ad88658bf067a6283592a86a5c2dacada844e1d7eed582749e3",
+    "review_fixes_plans.json": "d334634c2d4f130ea752f487d1c7b09ba93aa8d25c79e10a8835b0a1affe2504",
+    "latest_main_tests.xml": "5d029d361e1961e5d70fc694d072011b6066ecd1dfe6eeb7cba9d5de8dcda698"
   },
   "temp_extraction_dirs_created": [],
   "github_workflow_authored_changes": false,
@@ -61,7 +76,39 @@
         "test_zone_final_pair_review_fixes",
         "test_review_344"
       ]
+    },
+    {
+      "main_sha": "a2be72a8381dcc9e58e5206509ad0c64ed7f0fb3",
+      "result": "422 passed, 1 deselected in 576.24s",
+      "camera_delta": "19 passed, 59 deselected in 2.17s; final removal of chassis-relative positive-z assumption"
     }
   ],
-  "latest_main_followup_pending": "a2be72a8381dcc9e58e5206509ad0c64ed7f0fb3"
+  "main_history": [
+    "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+    "a520d9d8a70b9945a6eeb396e0a07c19aa3cb3c4",
+    "a2be72a8381dcc9e58e5206509ad0c64ed7f0fb3"
+  ],
+  "merge_conflict_resolution": {
+    "PHYSICS_HANDOFF.md": "v88 instructions + exact main v87 document + original v84 historical record",
+    "scripts/run_ci_tests.py": "union v87/v88/P06 tests, no entries dropped",
+    "tests/test_simulation_workflow_manager.py": "both workflow examples retained; expected count 44"
+  },
+  "github_workflows_equal_main": true,
+  "merge_intermediate_failure": {
+    "result": "2 pytest collection SyntaxErrors",
+    "cause": "conflict marker cleanup truncated the tails of run_ci_tests.py and test_simulation_workflow_manager.py",
+    "resolution": "restored exact latest-main files, applied only three v88 test registrations and workflow example/count change; py_compile and shard preflight pass",
+    "log": "final_main_tests.txt"
+  },
+  "ci_shard_preflight": {
+    "total_files": 383,
+    "shard_count": 8,
+    "coverage_verified": true,
+    "balance": "durations"
+  },
+  "temp_auxiliary_files_removed": [
+    "/private/tmp/ugrp-344-shards.txt",
+    "/private/tmp/ugrp-344-shards-latest.txt",
+    "/private/tmp/ugrp-344-shards-final.txt"
+  ]
 }

@@ -85,7 +85,7 @@ def camera_record(calibration, state, servo):
         raise CalibrationError(f'UNMEASURED_V3_CAMERA_POSTURE: {state}:{key}')
     origin, rotation = np.asarray(record['origin_m']), np.asarray(record['rotation'])
     if (origin.shape != (3,) or rotation.shape != (3, 3)
-            or not np.isfinite(origin).all() or not np.isfinite(rotation).all() or origin[2] <= 0
+            or not np.isfinite(origin).all() or not np.isfinite(rotation).all()
             or not np.allclose(rotation.T @ rotation, np.eye(3), atol=1e-5)
             or not np.isclose(np.linalg.det(rotation), 1., atol=1e-5)):
         raise CalibrationError('invalid measured v3 camera transform')

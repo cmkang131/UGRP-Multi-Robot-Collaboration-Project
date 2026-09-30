@@ -124,3 +124,127 @@ HParams의 **session status=success는 이벤트 가져오기 완료**를 뜻한
 이벤트를 TensorBoard EventAccumulator로 다시 읽어 실제 scalar·text·image, HParams 메타데이터, 원본 불변성, 시간·누락값·완료 주장 분리, 영상 Range/경로 제한을 확인한다. launcher 회귀는 여러 export collection이 있을 때 최신 **export snapshot**만 고르는지와 손상·빈 collection을 무시하는지 확인한다. CI의 `tensorboard-export`가 선택 의존성을 설치해 실행하며 일반 회귀 환경에서는 선택 의존성이 필요한 테스트만 건너뛴다. `tests/test_offline_audit_export.py`는 오프라인 감사 파생 뷰의 선언 검사·시계열 표본 전달·원본 해시 거부·변환 중 원본 변경 거부를 확인한다.
 
 설계 참고: [TensorBoard 시작](https://www.tensorflow.org/tensorboard/get_started), [HParams 비교](https://www.tensorflow.org/tensorboard/hyperparameter_tuning_with_hparams), [PyTorch SummaryWriter](https://docs.pytorch.org/docs/stable/tensorboard.html). 실제 변환은 TensorBoard 2.21.0의 event protobuf를 사용한다.
+
+## Zone-study 통합 실행: 평가 → 원본 → event 계약 (P06)
+
+`ugrp.zone_study_integration_run.v1` 실행 폴더를 `--source`로 지정하면 전용 변환기가
+`manifest.json`의 전체 파일 목록·SHA-256과 bundle digest를 검증한다. 필수 파일은
+`result.json`, `study/trial_record.json`, `eval_only/evaluation.json`,
+`study/frozen_plan.json`, `study/record_index.json`이다. 파일 누락,
+미등록 파일, 해시 변조, trial/result/evaluation의 종료 사유·판정·SIM cap 불일치는
+변환 실패이며 이벤트를 게시하지 않는다. 변환 중 파일이 바뀌어도 실패한다.
+
+새 기록 후보는 `scripts/zone_study_evidence_writer.py`다. v6e가 봉인한 기존
+`run_zone_study_integration.py`는 그대로 보존하며 이 후보를 자동으로 호출하지 않는다.
+실제 적용 전 코디네이터가 새 실행기에 연결하고 source/bundle을 고정해야 한다.
+종료·예외·중단을 잡는 실행기 책임과 이미 종료된 자료를 쓰는 함수의 책임은 별개다.
+
+- result/manifest/trial/evaluation에 같은 `evidence_identity`를 저장한다.
+  논리 `trial_id`와 실제 `run_id`/`episode_id`/양의 정수 `attempt`를 구분하며
+  condition·scenario·seed·bundle SHA·order sheet SHA·orders SHA를 연결한다.
+  bundle의 공개 scenario 참조, trial의 주문 전체, 요청 원문의 주문서와 provenance,
+  study config의 seed/condition/주문서 해시, 심판의 주문별 개체·시각·배송 수를 대조한다.
+  모든 파일 해시를 다시 계산해도 다른 시행/주문을 끼워 넣은 자료는 거절한다.
+- result의 `terminal`은 반드시 JSON `true`여야 한다. manifest의 `terminal` 객체에는
+  end_reason·end_sim_s·failure_class·sim_horizon_s·record_complete가 모두 있어야 하며
+  trial/result와 일치해야 한다. `record_complete`는 반드시 boolean이다.
+  **표식 없는 구형 자료의 묵시적 호환 수입은 지원하지 않는다.** 실행 schema가 같아도
+  identity나 terminal 표식이 빠지면 이벤트를 내지 않는다. 기존 원본에 표식을 덧붙이거나
+  다시 봉인하지 않는다. 구형 자료 전환은 별도 출처 검토·버전 명세가 필요하다.
+
+- 시도 1개마다 `cohort/trials=1`이다. 성공·정책실패·API·HOST_ERROR·중단·미평가를
+  개별 시도 화면에 남긴다. 이 값을 모아 연구 성공률의 분모를 만들지 않는다.
+  `scripts/zone_study_evidence_cohort.py --plan … --plan-sha256 … --source … --output …`는
+  실행 전 고정한 admission 수를 분모로 쓰며, 파일이 없거나 거절된 시행도 INVALID/성공 0으로
+  남긴다. 논리 시행당 사전 지정한 attempt 하나를 요구하며 사후 재시도 선택은 지원하지 않는다.
+  [P06 재설계·참고 자료](../experiments/2026-09-30-e2e-p06-evidence/README.md#두-차례-block-뒤-재설계)에
+  복합키·내부 로그 연결·입력 SHA-256·게시 전 수치 재계산과 생성 검사의 범위를 적었다.
+- 원시 심판 이벤트는 첫 기록부터 전체 시행 복합키를 가진다. 이벤트·원본 파일·manifest의
+  `event_sources` 항목·외부 계획이 같은 시행을 가리킬 때만 재생한다. 거절된 원본도
+  원래 소유 시행을 INVALID/성공 0으로 유지한다. 키와 출처가 충돌하면 양쪽 시행 모두
+  INVALID이며, 디렉터리 이름으로 재배정하거나 봉인 중 기존 키를 덮어쓰지 않는다.
+- 성공은 주문별 item ID/종류/목적지 충족과 심판 정착 확인, 종료 사유가 함께 맞아야 한다.
+  `orders_complete` 문자열이나 로봇 완료 주장만으로 성공하지 않는다. 정착 시작 시각과
+  확인 시각을 모두 보존하며 확인이 SIM cap 뒤면 성공으로 소급하지 않는다.
+  심판 v3는 이 판정과 누락 truth 표본의 정착 연속성 끊김을 명시한다. 기존 v2 원본은 보존한다.
+- 실패의 PAR-2는 `2 × sim_horizon_s`이다. 원래 종료 시간은
+  `referee.observed_end_sim_s`, 성공 makespan은 기존 정의인 마지막 정착 창의 시작이다.
+  `failure_class`, `record_complete`, `referee_status`, `missing`을 manifest/Text에 남긴다.
+  미완료 scheduler 로그의 알려진 호출·시도·토큰·SIM 비용 합계는 `*_lower_bound`로
+  남기고 정확한 총계·전체 응답시간 평균은 생략한다. 완전한 모델 정산이 아니다.
+- `usage_unknown_calls`/토큰 하한을 보존하고 미상 전체 토큰·없는 USD 비용·없는 명령수나
+  응답시간은 scalar로 만들지 않는다. provider 원장 요약은 `provider/*`와 Text에 별도로
+  남긴다. 모델 과금 대조는 call ID → 원장 → proxy/upstream/provider의 별도 검사다.
+  미평가의 배송 수/배송률, 계측하지 않은 conflict/deadlock/idle/replan도 0으로 채우지 않는다.
+- `--max-images`는 TensorBoard 미리보기 표본 수만 제한한다. `request_archive`의 **모든**
+  요청 원문과 `study/request_images/<sha256>.jpg`는 보존하고 모두 해시 검증한다.
+  `--max-images 0`에서도 원본 이미지 누락을 거절한다.
+- `evidence_kind=synthetic` 결과는 Python API의 `convert(..., allow_synthetic=True)`와
+  OS 임시 폴더 아래의 새 output을 함께 지정해야 변환된다. 일반 CLI는 이를 허용하지 않는다. 테스트 raw/event는 공용 `outputs/tensorboard`에 게시하지 않는다.
+
+### TOP 설정과 실제 영상
+
+`eval_only/top_camera.json`은 설정·적용값 기록일 뿐 영상 존재 증거가 아니다.
+통합 run의 영상 등록에는 원본을 봉인하기 **전** 다음 별도 선언이 필요하다.
+이미 봉인한 manifest를 편집하거나 기존 snapshot에 영상을 추가하지 않는다.
+
+```json
+{
+  "schema": "ugrp.zone_study_media.v1",
+  "videos": [
+    {"path": "eval_only/overview.mp4", "kind": "top_rgb", "sha256": "<actual-file-sha256>"}
+  ]
+}
+```
+
+파일은 실제로 존재하고 raw manifest 해시와 일치해야 한다. 허용 파일명은
+`overview.mp4`, `execution.mp4`, `motion.mp4`이며 `eval_only/` 아래에 둔다.
+GT 좌표로 만든 그림/영상은 `kind=gt_visualization`으로 선언한다. TOP RGB와 다른
+라벨로 등록하며 `top_rgb_video_registered`를 켜지 않는다. 파일 등록 검사는 디코딩·재생
+검사가 아니다. 코디네이터는 실제 영상의 촬영 출처·화면·SIM 시각 대응도 따로 확인한다.
+
+### D1 캡처 계약
+
+D1의 **0.1초/1초 비교창은 1 Hz 저장만으로 재현할 수 없다**. 결정 시점 프레임을
+추가로 저장해도 모든 비교창의 양 끝이 존재한다는 보장이 없다. D1 검증 실행은
+검출기가 실제 사용한 각 `(t, t-0.1 s)`와 `(t, t-1 s)` 프레임의 원본 바이트·SIM 촬영
+시각·프레임 ID·해시·자기 명령/phase 구간을 남겨야 한다. 필요 표본 간격과 시각 허용
+오차는 D1 사전 등록(#293)과 일치시킨다. 10 Hz 이상 기록도 실제 쌍의 시각 검사를
+대체하지 않는다. 빠진 쌍은 `insufficient_evidence`이며 보간 프레임, 0점, 정상 이동으로
+채우지 않는다. 기존 `dev_1hz_decisions_v1`을 이 용도에 자동 적용하지 않는다.
+모델 요청 이미지 보존 규칙은 D1/일반 캡처 표본 선택과 독립적으로 적용한다.
+
+### 첫 실제 결과에서 코디네이터가 닫을 검증
+
+P06은 아래 절차의 **synthetic 파일/event 계약만** 검사한다. 실제 결과·공용 logdir·
+브라우저 화면·동영상 재생 완료를 주장하지 않는다. 첫 실제 실행에서 다음을 기록한다.
+
+1. terminal attempt 목록을 원장과 대조한다. 성공·실패·중단·미평가의 수, 누락,
+   실제 SIM cap, 실행 SHA/bundle/profile, 원문 요청/응답과 이미지 해시를 확인한다.
+   P06 후보 writer를 명시적으로 연결하고 실제 scenario/cap/attempt를 전달하는 새
+   실행 source/bundle과 전체 admission 계획·해시를 코디네이터가 실행 전에 고정해야 한다.
+   writer의 `frozen_plan`·`plan_sha256` 필수 인자로 전달한다. 기존 runner의 KeyboardInterrupt
+   처리나 trial 생성 전 실패 기록까지 이 PR로 적용됐다고 간주하지 않는다.
+2. 기존 export manifest의 source 경로/해시와 중복 여부를 검사한 뒤, 기본 체크아웃
+   `/Users/changmin/projects/ugrp/outputs/tensorboard/<NEW-ID>`에 새 snapshot을 만든다.
+   원본과 기존 snapshot은 읽기 전용으로 보존한다.
+3. `EventAccumulator(..., size_guidance={'scalars': 0}).Reload()`로 이벤트를 다시 읽는다.
+   trial에서 재계산한 성공·PAR-2·SIM cap·배송 수, raw 명령 행 수, 호출·토큰 하한·미상
+   usage·응답시간과 scalar **태그 존재 여부 및 값**을 대조한다. 누락값이 0으로 생기지
+   않았는지 확인하고 HParams session metadata도 읽는다. 성공/전체 분모를 함께 기록한다.
+4. 현재 서버의 세션 소유자·PID·명령·실제 `--logdir`를 확인한다. 공용 viewing root는
+   기본 체크아웃의 `outputs/tensorboard`다. 다른 작업 서버를 종료하지 않는다.
+   `media_registry(logdir)`에서 새 원본 영상의 경로·종류·해시 등록을 확인한다.
+   TOP 설정만 있는 실행은 영상 미확인으로 남긴다.
+5. `outputs/tensorboard-view.json`을 쓰기 직전에 다시 읽고 자기 실행 키/링크만 추가한다.
+   Chrome `강` 프로필의 기존 TensorBoard 탭에서 snapshot과 비교 baseline/cohort를
+   선택한다. `hparams_visible_columns`를 다시 적용하고 조건·seed·SHA·failure class·
+   SIM cap·record/usage 완전성 열을 확인한다.
+6. 저장된 pin 링크로 성공, SIM makespan/PAR-2, 명령수, 모델 호출수, 응답시간의 **있는
+   태그만** pin하고 smoothing=0에서 source 숫자와 대조한다. 원본 영상 링크를 실제로
+   열어 올바른 run의 영상인지·재생 가능한지·GT 그림을 TOP RGB로 표시하지 않았는지
+   확인한다. source/event/logdir/video/pin/HParams 중 미확인 항목은 각각 남긴다.
+
+검사 기록에는 새 snapshot 절대 경로, raw/export manifest 해시, event readback 비교표,
+서버 logdir/PID, 영상 등록/재생 결과, pin 링크와 HParams 열·화면 확인 범위를 적는다.
+이 절차는 실제 첫 결과가 나왔을 때 수행하며 자동 주기 점검을 만들지 않는다.
