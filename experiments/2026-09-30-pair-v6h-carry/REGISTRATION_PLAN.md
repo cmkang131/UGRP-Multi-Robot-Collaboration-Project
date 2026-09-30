@@ -43,13 +43,13 @@ builder의 `build()['cases']`에서 `registration_run_id`만 뺀 바이트는 �
 ```sh
 export GIT_WORK_TREE=/Users/changmin/projects/ugrp-wt/v6h-register
 V6H_PYTHON=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
-V6H_SEAL_V2_COMMIT=$(git log --diff-filter=A --format=%H -- experiments/2026-09-30-pair-v6h-carry/analysis/seal_v2/prereg_v6h.json)
+V6H_SEAL_V2_COMMIT=5be4330eca9b23d2cbde3657dcbb215ee1923b25
 $V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify
 $V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify-seal --seal-revision v2 --seal-commit "$V6H_SEAL_V2_COMMIT"
 $V6H_PYTHON -m pytest -q -p tests.pose_provider_no_physics tests/test_review_seal_v6h1.py tests/test_v6h_acquisition_reader.py tests/test_zone_pair_v6h_seal.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_v6h.py tests/test_zone_pair_v6h_review_delta.py tests/test_v6h_classify_placements.py tests/test_v6h_classifier_properties.py tests/test_v6h_recorder_contract.py tests/test_v6h_blinded_run_manifest.py
 ```
 
-`V6H_SEAL_V2_COMMIT`은 PR의 새 v2 봉인 커밋 SHA다. 커밋 전에는 `--seal-commit`을 빼고 분석 작업 트리 pin을 검사하며, 커밋 뒤에는 반드시 위처럼 Git blob 감사를 한다. `--seal`은 최초 생성에만 쓰고 기존 파일이 있으면 거절한다. 수정이 필요하면 기존 봉인을 덮어쓰지 않고 새 revision으로 등록한다.
+`V6H_SEAL_V2_COMMIT`은 위에 명시한 v2 봉인 커밋 SHA다. 봉인은 main 병합 커밋에 있으므로 `git log --diff-filter=A`로 찾지 않는다. 이 안내 문서의 후속 수정은 봉인을 바꾸지 않으며, 검증·분석은 반드시 **`5be4330e`를 checkout한 작업 경로**에서 실행한다(최신 PR HEAD로 대체하지 않는다). 커밋 전에는 `--seal-commit`을 빼고 분석 작업 트리 pin을 검사하며, 커밋 뒤에는 반드시 위처럼 Git blob 감사를 한다. `--seal`은 최초 생성에만 쓰고 기존 파일이 있으면 거절한다. 수정이 필요하면 기존 봉인을 덮어쓰지 않고 새 revision으로 등록한다.
 
 ## 독립 검토·개봉 결정 뒤 실행할 분석 명령 (이번 작업에서는 실행하지 않음)
 
