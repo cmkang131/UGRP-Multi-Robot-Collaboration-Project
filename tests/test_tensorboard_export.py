@@ -851,6 +851,10 @@ def test_zone_study_terminal_manifest_readback_without_runtime(tmp_path, export_
                               'bundle_sha256': digest(bundle), 'files': {
                                   str(p.relative_to(src)): hashlib.sha256(p.read_bytes()).hexdigest()
                                   for p in src.rglob('*.json')}})
+    from scripts.zone_study_evidence_contract import seal_new_evidence
+    from scripts.zone_study_evidence_join import admission, freeze_plan
+    plan = freeze_plan([admission(identity, record['orders'])])
+    seal_new_evidence(src, plan, digest(plan))
     manifest = convert(src, tmp_path / 'events', max_images=0, allow_synthetic=True)
     ea = EA(str(tmp_path / 'events')).Reload()
     assert ea.Scalars('evaluation/reported_success')[0].value == 0.

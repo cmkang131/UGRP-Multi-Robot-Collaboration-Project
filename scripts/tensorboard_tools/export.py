@@ -984,8 +984,11 @@ def convert(source, output, *, max_images=8, media_port=6007, allow_synthetic=Fa
     else:
         result = src.read('result.json')
         raw_manifest = src.read('manifest.json')
-        if obj(raw_manifest).get('schema') == STUDY_SCHEMA and obj(result).get('schema') != STUDY_SCHEMA:
-            raise ValueError('Zone-study manifest requires its matching result schema')
+        study_evidence = (obj(raw_manifest).get('schema') == STUDY_SCHEMA
+                          or any((source / p).exists() for p in ('study/trial_record.json',
+                                                                'study/record_index.json', 'study/frozen_plan.json')))
+        if study_evidence and (obj(raw_manifest).get('schema') != STUDY_SCHEMA or obj(result).get('schema') != STUDY_SCHEMA):
+            raise ValueError('Zone-study evidence cannot be downgraded to another exporter')
         if isinstance(result, dict) and result.get('schema') == STUDY_SCHEMA and result.get('evidence_kind') == 'synthetic':
             if not allow_synthetic or not output.is_relative_to(Path(tempfile.gettempdir()).resolve()):
                 raise ValueError('Synthetic zone-study evidence requires explicit temporary-logdir opt-in')
@@ -1076,6 +1079,8 @@ def convert(source, output, *, max_images=8, media_port=6007, allow_synthetic=Fa
                       if p.is_file() and p != src.root / 'manifest.json'}
             if actual != set(src.files) - {'manifest.json'}:
                 raise ValueError('Zone-study file inventory changed during export; no event file published')
+            from scripts.tensorboard_tools.zone_study import verify_publication
+            verify_publication(source, meta)
         if (kind == 'teacher-infrastructure-abort' and
                 (src.root / 'route-teachers-managed/raw/south-train-a/result.json').exists()):
             raise ValueError('Teacher result appeared during infrastructure import; no event file published')

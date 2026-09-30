@@ -17,6 +17,8 @@ from harness import zone_study_eval as ev
 from harness import zone_study_referee as zr
 from scripts import run_zone_study_integration as runner
 from scripts import zone_study_evidence_writer as evidence_writer
+from scripts.zone_study_evidence_contract import identity_for, seal_new_evidence
+from scripts.zone_study_evidence_join import admission, freeze_plan
 from scripts.tensorboard_tools import export as tb
 from scripts.tensorboard_tools.media import media_registry
 from tests.test_zone_study_integration import MAP, SCENARIO, run
@@ -199,10 +201,14 @@ def synthetic_source(tmp_path, outcome, completed, *, attempt=1):
     src = tmp_path / (outcome if attempt == 1 else f'{outcome}-attempt{attempt}')
     src.mkdir()
     trial, result = completed
+    condition, scenario_id, seed = trial.condition, trial.scenario_id, trial.seed
     ref = zr.Referee(SCENARIO['orders'], MAP)
     feed(ref, 2., 4., {'box_00': at_zone('A'), 'box_02': at_zone('B'), 'box_05': at_zone('C')})
     bundle = {'pose_provider': {'label': {'pose_provider': 'synthetic'}},
               'host_spec': {'order_sheet': trial.sheet}}
+    identity = identity_for(run_id=src.name, trial_id=trial.run_id, episode_id='fake', attempt=attempt,
+                            condition=condition, scenario=scenario_id, seed=seed, bundle=bundle)
+    plan = freeze_plan([admission(identity, trial.sheet['orders'])])
     failure_class = {'api_failure': runner.llm.API_ERROR, 'host_error': runner.llm.HOST_ERROR,
                      'policy_failure': runner.llm.OTHER}.get(outcome)
     failure = {'type': 'SyntheticFailure', 'failure_class': failure_class} if failure_class else None
@@ -211,11 +217,12 @@ def synthetic_source(tmp_path, outcome, completed, *, attempt=1):
         trial = result = None
     elif outcome == 'interrupted':
         result = None
-    summary = evidence_writer.write_outputs(src, {'horizon_s': 99.}, {'episode_id': 'fake', 'trial_seed': 700},
-                                   'no_comm', bundle, runner.digest(bundle), None, trial, result, stopped,
+    summary = evidence_writer.write_outputs(src, {'horizon_s': 99.}, {'episode_id': 'fake', 'trial_seed': seed},
+                                   condition, bundle, runner.digest(bundle), None, trial, result, stopped,
                                    failure, {'sha': 'synthetic-no-execution'}, time.time(), (0., 0., 0.), True,
                                    referee=None if outcome == 'not_evaluated' else ref, horizon_s=12.,
-                                   scenario_id=SCENARIO['scenario_id'], attempt=attempt)
+                                   scenario_id=scenario_id, attempt=attempt,
+                                   frozen_plan=plan, plan_sha256=runner.digest(plan))
     summary['evidence_kind'] = 'synthetic'
     put(src, 'result.json', summary)
     reseal(src)
@@ -488,8 +495,11 @@ def test_camera_json_is_not_video_and_gt_is_not_top_rgb(tmp_path, completed, exp
 
 
 def test_unknown_usage_and_unrecorded_metrics_survive_export(tmp_path, completed, export_api):
-    src = synthetic_source(tmp_path, 'api_failure', completed)
-    original = json.loads((src / 'study/trial_record.json').read_text())
+    original_src = synthetic_source(tmp_path, 'api_failure', completed)
+    original = json.loads((original_src / 'study/trial_record.json').read_text())
+    plan = json.loads((original_src / 'study/frozen_plan.json').read_text())
+    # A new provisional failure fixture, not a rewrite of sealed integration logs.
+    src = tmp_path / 'provisional' / 'api_failure'
     rec = metric_trial(condition='no_comm', scenario=original['scenario'], seed=original['seed'],
                        orders=original['orders'], provenance=original['provenance'],
                        deliveries=[], end_reason='api_failure', model={
@@ -508,15 +518,16 @@ def test_unknown_usage_and_unrecorded_metrics_survive_export(tmp_path, completed
     put(src, 'study/trial_record.json', rec)
     put(src, 'eval_only/evaluation.json', {**ev.efficiency_metrics(rec),
         'orders': evidence_writer.per_order_evaluation(rec), 'evidence_identity': rec['evidence_identity']})
-    summary = json.loads((src / 'result.json').read_text())
+    summary = json.loads((original_src / 'result.json').read_text())
+    summary['eval_only'] = {'evaluation': json.loads((src / 'eval_only/evaluation.json').read_text())}
     summary['study'].update(end_sim_s=rec['end_sim_s'])
     summary['sim_horizon_s'] = rec['budget']['sim_horizon_s']
     put(src, 'result.json', summary)
-    manifest = json.loads((src / 'manifest.json').read_text())
+    manifest = json.loads((original_src / 'manifest.json').read_text())
     manifest['terminal']['sim_horizon_s'] = rec['budget']['sim_horizon_s']
     manifest['terminal']['end_sim_s'] = rec['end_sim_s']
     put(src, 'manifest.json', manifest)
-    reseal(src)
+    seal_new_evidence(src, plan, runner.digest(plan))
     out = tmp_path / 'events'
     tb.convert(src, out, max_images=0, allow_synthetic=True)
     ea = export_api(str(out)).Reload()

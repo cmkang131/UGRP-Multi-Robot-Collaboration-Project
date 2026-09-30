@@ -129,7 +129,8 @@ HParams의 **session status=success는 이벤트 가져오기 완료**를 뜻한
 
 `ugrp.zone_study_integration_run.v1` 실행 폴더를 `--source`로 지정하면 전용 변환기가
 `manifest.json`의 전체 파일 목록·SHA-256과 bundle digest를 검증한다. 필수 파일은
-`result.json`, `study/trial_record.json`, `eval_only/evaluation.json`이다. 파일 누락,
+`result.json`, `study/trial_record.json`, `eval_only/evaluation.json`,
+`study/frozen_plan.json`, `study/record_index.json`이다. 파일 누락,
 미등록 파일, 해시 변조, trial/result/evaluation의 종료 사유·판정·SIM cap 불일치는
 변환 실패이며 이벤트를 게시하지 않는다. 변환 중 파일이 바뀌어도 실패한다.
 
@@ -152,8 +153,12 @@ HParams의 **session status=success는 이벤트 가져오기 완료**를 뜻한
   다시 봉인하지 않는다. 구형 자료 전환은 별도 출처 검토·버전 명세가 필요하다.
 
 - 시도 1개마다 `cohort/trials=1`이다. 성공·정책실패·API·HOST_ERROR·중단·미평가를
-  같은 분모에 남긴다. 재시도는 새 run/attempt로 보존하고, 본연구 시행 단위의 재시도
-  집계 규칙은 사전 등록에 따라 별도로 적용한다. 변환기가 실패 시도를 삭제하지 않는다.
+  개별 시도 화면에 남긴다. 이 값을 모아 연구 성공률의 분모를 만들지 않는다.
+  `scripts/zone_study_evidence_cohort.py --plan … --plan-sha256 … --source … --output …`는
+  실행 전 고정한 admission 수를 분모로 쓰며, 파일이 없거나 거절된 시행도 INVALID/성공 0으로
+  남긴다. 논리 시행당 사전 지정한 attempt 하나를 요구하며 사후 재시도 선택은 지원하지 않는다.
+  [P06 재설계·참고 자료](../experiments/2026-09-30-e2e-p06-evidence/README.md#두-차례-block-뒤-재설계)에
+  복합키·내부 로그 연결·입력 SHA-256·게시 전 수치 재계산과 생성 검사의 범위를 적었다.
 - 성공은 주문별 item ID/종류/목적지 충족과 심판 정착 확인, 종료 사유가 함께 맞아야 한다.
   `orders_complete` 문자열이나 로봇 완료 주장만으로 성공하지 않는다. 정착 시작 시각과
   확인 시각을 모두 보존하며 확인이 SIM cap 뒤면 성공으로 소급하지 않는다.
@@ -213,7 +218,8 @@ P06은 아래 절차의 **synthetic 파일/event 계약만** 검사한다. 실�
 1. terminal attempt 목록을 원장과 대조한다. 성공·실패·중단·미평가의 수, 누락,
    실제 SIM cap, 실행 SHA/bundle/profile, 원문 요청/응답과 이미지 해시를 확인한다.
    P06 후보 writer를 명시적으로 연결하고 실제 scenario/cap/attempt를 전달하는 새
-   실행 source/bundle을 코디네이터가 고정해야 한다. 기존 runner의 KeyboardInterrupt
+   실행 source/bundle과 전체 admission 계획·해시를 코디네이터가 실행 전에 고정해야 한다.
+   writer의 `frozen_plan`·`plan_sha256` 필수 인자로 전달한다. 기존 runner의 KeyboardInterrupt
    처리나 trial 생성 전 실패 기록까지 이 PR로 적용됐다고 간주하지 않는다.
 2. 기존 export manifest의 source 경로/해시와 중복 여부를 검사한 뒤, 기본 체크아웃
    `/Users/changmin/projects/ugrp/outputs/tensorboard/<NEW-ID>`에 새 snapshot을 만든다.

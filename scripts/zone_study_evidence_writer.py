@@ -22,13 +22,14 @@ from harness import zone_study_referee as zr
 from harness.zone_study_contract import ROBOTS, digest
 from scripts.run_zone_study_integration import jsonl, robot_eval, SCHEMA
 from scripts.zone_study_evidence_contract import (identity_for, per_order_evaluation,
-                                                 validate_record_identity)
+                                                 validate_record_identity, seal_new_evidence)
+from scripts.zone_study_evidence_join import admitted_trial
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, trial, result, stop, failure, code,
-                  started, load0, dev, *, horizon_s, scenario_id, attempt, referee=None):
+                  started, load0, dev, *, horizon_s, scenario_id, attempt, frozen_plan, plan_sha256, referee=None):
     """Everything that exists, also after an exception; returns the result summary."""
     identity = identity_for(run_id=out.name,
                             trial_id=trial.run_id if trial else f'{condition}-{scenario_id}-s{episode["trial_seed"]}',
@@ -36,6 +37,7 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
                             scenario=scenario_id, seed=episode['trial_seed'], bundle=bundle)
     if bundle_sha != identity['bundle_sha256']:
         raise ValueError('Zone-study writer bundle digest mismatch')
+    admitted_trial(frozen_plan, plan_sha256, identity, bundle['host_spec']['order_sheet']['orders'])
     ledger = getattr(trial, 'send_ledger', None) if trial is not None else None
     summary = {'schema': SCHEMA, 'run_id': out.name, 'condition': condition, 'episode': episode['episode_id'],
                'dev': dev, 'stop': stop, 'failure': failure, 'bundle_sha256': bundle_sha,
@@ -109,7 +111,7 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
     manifest['files'] = {str(q.relative_to(out)): zi.file_sha256(q) for q in sorted(out.rglob('*'))
                          if q.is_file() and q != out / 'manifest.json'}
     (out / 'manifest.json').write_text(json.dumps(manifest, indent=2, ensure_ascii=False, default=str) + '\n')
-    return summary
+    return seal_new_evidence(out, frozen_plan, plan_sha256)
 
 
 def incomplete_record(summary, *, orders, seed, trial=None):
@@ -157,6 +159,8 @@ def save_evaluation(out, record, summary, referee=None):
     evaluation['evidence_identity'] = copy.deepcopy(identity)
     summary.setdefault('eval_only', {})['evaluation'] = evaluation
     (out / 'eval_only').mkdir(parents=True, exist_ok=True)
+    if referee is not None:
+        (out / 'eval_only' / 'referee.json').write_text(json.dumps(referee.record(), indent=1) + '\n')
     (out / 'eval_only' / 'evaluation.json').write_text(json.dumps(evaluation, indent=1, ensure_ascii=False) + '\n')
     summary['study'] = {'end_reason': record['end_reason'], 'end_sim_s': record['end_sim_s'],
                         'record_complete': record.get('record_complete', True),

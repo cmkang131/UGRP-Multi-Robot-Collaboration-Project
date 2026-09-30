@@ -11,11 +11,13 @@ from pathlib import Path
 
 from harness import zone_study_eval as ev
 from harness.zone_study_contract import digest
-from scripts.zone_study_evidence_contract import verify_identity_join
+from scripts.zone_study_evidence_contract import verify_identity_join, read_auxiliary, verify_referee_derivations
+from scripts import zone_study_evidence_join as join
 
 RUN_SCHEMA = 'ugrp.zone_study_integration_run.v1'
 MEDIA_SCHEMA = 'ugrp.zone_study_media.v1'
-REQUIRED = {'result.json', 'study/trial_record.json', 'eval_only/evaluation.json'}
+REQUIRED = {'result.json', 'study/trial_record.json', 'eval_only/evaluation.json',
+            'study/frozen_plan.json', 'study/record_index.json'}
 
 
 def file_digest(path):
@@ -46,11 +48,19 @@ def verify_raw(src, result):
         path = inside(src.root, relative)
         if path is None or file_digest(path) != expected:
             raise ValueError(f'Zone-study raw file missing/hash mismatch: {relative}')
+        if path.suffix == '.json':
+            join.strict_json(path.read_bytes())
+        elif path.suffix == '.jsonl':
+            with path.open() as stream:
+                for line in stream:
+                    if line.strip():
+                        join.strict_json(line)
         st = path.stat()
         old = src.files.get(relative)
         if old and old['sha256'] != expected:
             raise ValueError(f'Zone-study source changed while reading: {relative}')
         src.files[relative] = {'sha256': expected, 'size': st.st_size, 'mtime_s': st.st_mtime}
+    join.strict_json((src.root / 'manifest.json').read_bytes())
     return manifest
 
 
@@ -107,6 +117,30 @@ def export_study(src, w, result, max_images):
     metrics = ev.efficiency_metrics(trial)
     evaluation = src.read('eval_only/evaluation.json', required=True)
     identity = verify_identity_join(raw, result, record, evaluation)
+    plan = src.read('study/frozen_plan.json', required=True)
+    pin = raw.get('plan_sha256')
+    join.admitted_trial(plan, pin, identity, record['orders'])
+    if any(envelope.get('plan_sha256') != pin for envelope in (result, record, evaluation)):
+        raise ValueError('INVALID: conflicting frozen plan pins')
+    auxiliary = read_auxiliary(lambda p: src.read(p, required=True), src.read_jsonl, src.files)
+    index = join.record_index(record, identity, auxiliary)
+    if digest(index) != digest(src.read('study/record_index.json', required=True)):
+        raise ValueError('INVALID: exact input record index mismatch')
+    inputs = {'study/trial_record.json': verified['study/trial_record.json']}
+    if 'eval_only/referee.json' in verified:
+        inputs['eval_only/referee.json'] = verified['eval_only/referee.json']
+    expected_derived = join.derivations({k: v for k, v in evaluation.items() if k != 'derived'}, inputs,
+                                        [record['evidence_key'], *record['order_keys']])
+    if digest(evaluation.get('derived')) != digest(expected_derived):
+        raise ValueError('INVALID: derived evaluation numbers/input hashes disagree')
+    for key in evaluation.keys() & metrics.keys():
+        if digest(evaluation[key]) != digest(metrics[key]):
+            raise ValueError(f'INVALID: re-derived evaluation differs: {key}')
+    referee = src.read('eval_only/referee.json', required=True) if 'eval_only/referee.json' in src.files else None
+    nested = result.get('eval_only', {}).get('referee')
+    if nested is not None and digest(nested) != digest(referee):
+        raise ValueError('INVALID: embedded referee history conflicts with its source')
+    verify_referee_derivations(record, evaluation, referee, identity)
     if 'study/study_config.json' in src.files:
         config = src.read('study/study_config.json', required=True)
         for key in ('seed', 'condition', 'order_sheet_sha256'):
@@ -168,6 +202,8 @@ def export_study(src, w, result, max_images):
     w.text('result/trial_record', record)
     meta = {'family': 'zone-study', 'run_id': result['run_id'], 'condition': record['condition'],
             'evidence_identity': identity,
+            **join.envelope_keys(identity, record['orders']),
+            'plan_sha256': pin,
             'case': record['scenario'], 'seed': record['seed'], 'source_sha': raw.get('code', {}).get('sha'),
             'outcome': record['end_reason'], 'failure_class': record.get('failure_class'),
             'clock': 'SIM', 'sim_horizon_s': metrics['sim_horizon_s'],
@@ -181,6 +217,41 @@ def export_study(src, w, result, max_images):
             'top_rgb_video_registered': any(v['kind'] == 'top_rgb' for v in videos),
             'video_declarations': videos,
             'scope': 'terminal attempt; includes failures/interruptions; missing metrics remain absent'}
+    hashes = {name: row['sha256'] for name, row in src.files.items()}
+    meta['derived'] = join.derivations(values, hashes, [record['evidence_key'], *record['order_keys']])
+    meta['relations'] = join.relation_rows(identity, record['orders'], metrics['success'], hashes, pin)
+    w.text('provenance/derived_numbers', meta['derived'])
+    w.text('provenance/composite_keys', join.envelope_keys(identity, record['orders']))
     if any(row['sha256'] != verified.get(name) for name, row in src.files.items()):
         raise ValueError('Zone-study source changed after manifest verification')
     return meta, values
+
+
+class _ReadOnlySink:
+    def scalar(self, *args, **kwargs):
+        pass
+
+    def text(self, *args, **kwargs):
+        pass
+
+    def image(self, *args, **kwargs):
+        pass
+
+
+def inspect_study(source):
+    """Re-read the originals; never use an exported success as input evidence."""
+    from scripts.tensorboard_tools.export import Source
+    src = Source(Path(source))
+    result = src.read('result.json', required=True)
+    meta, values = export_study(src, _ReadOnlySink(), result, 0)
+    for name, row in src.files.items():
+        if file_digest(src.root / name) != row['sha256']:
+            raise ValueError('Source changed during evidence inspection')
+    return meta, values, src.files
+
+
+def verify_publication(source, metadata):
+    derived, _, _ = inspect_study(source)
+    for field in ('evidence_key', 'order_keys', 'plan_sha256', 'source_metrics', 'derived', 'relations'):
+        if digest(derived[field]) != digest(metadata.get(field)):
+            raise ValueError(f'Published evidence differs from re-derived originals: {field}')
