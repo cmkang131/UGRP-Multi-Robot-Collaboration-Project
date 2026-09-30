@@ -1,0 +1,41 @@
+{
+  "observed_at": "2026-09-30T20:34:31.244288+09:00",
+  "source_checkout_head": "d7de610b0a18121ded3b2f1bf3f7ede22e288d98",
+  "manifest_sha256": "4662ebb7184b0c76b5e07335865a40481f2d4a07ea8e1a6648587b5736443492",
+  "dry_run_sha256": "b579ac9942f66415e7c2d838ae59465d57010839b5d6ed674a954eb81f51bbd9",
+  "dry_run": {
+    "execute": false,
+    "paths": 257,
+    "bytes": 3593677729,
+    "allocated_bytes": 3741364224,
+    "execution_blocker": "active agent_lock: physics, pid=54614"
+  },
+  "unit_tests": {
+    "passed": 38,
+    "junit_sha256": "fd19b4dbbb945fad9064f424d19e9a7849cb59dbf97e880dea0766132df2cfbd",
+    "environment": "existing .venv-sim-worker-mac Python 3.12; copied modules/tests in /private/tmp",
+    "source_copies_sha256": {
+      "scripts/outputs_prune.py": "ac529c897c2b26617d523a02450bc1a601d68ca7f13acf42fcfd1e3a53506a77",
+      "tests/test_outputs_prune.py": "a74df630393151b867b7a6e4e84e6532d198d638c64530edd98716e3eae36d54",
+      "scripts/disk_report.py": "2712ea1383da8155233968b2ceee1276113e91395a99b1f0afcbbb0343a90a9b",
+      "scripts/agent_lock.py": "ef40c56aad22166db241e7441dc58e1b572d0ec0fc1db0f58c910f819e610529",
+      "scripts/agent_worktree.py": "d0872cdd545a5b4fb1bd198770eddafa39c2b4fe93b2e1bfa22a16e46e997ea2",
+      "scripts/tree_manifest.py": "a9beac4a94320e128a909b154cc465a0dc67387c1acfbbcfbdc99c4641a9fe1e",
+      "scripts/worktree_guard.py": "e7b41711bd933327281edf2e34d65c73c1ace14c629efbf23ab690142e2d2f80"
+    }
+  },
+  "checks": {
+    "inventory_additive_totals": true,
+    "all_record_files_under_1MiB": true,
+    "experiment_under_5MiB": true,
+    "selection_and_keep_list_hashes": true,
+    "outputs_execute_called": false,
+    "outputs_prune_receipts_exists": false
+  },
+  "limits": [
+    "Full CI not represented by these 38 tests",
+    "No model/physics experiment executed",
+    "40 GiB target NOT met",
+    "Reference matching and whole-folder protection signals are conservative; uncertain rows remain KEEP"
+  ]
+}

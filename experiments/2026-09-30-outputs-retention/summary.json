@@ -1,0 +1,91 @@
+{
+  "current_allocated_bytes": 82580410368,
+  "delete_allocated_bytes": 3741364224,
+  "projected_allocated_bytes": 78839046144,
+  "tiers": {
+    "small_records": {
+      "units": 174,
+      "allocated_bytes": 3375104,
+      "delete_allocated_bytes": 0,
+      "projected_allocated_bytes": 3375104
+    },
+    "recent_or_unmerged": {
+      "units": 554,
+      "allocated_bytes": 34470666240,
+      "delete_allocated_bytes": 0,
+      "projected_allocated_bytes": 34470666240
+    },
+    "test_or_prereg": {
+      "units": 83,
+      "allocated_bytes": 19759353856,
+      "delete_allocated_bytes": 0,
+      "projected_allocated_bytes": 19759353856
+    },
+    "cache_slim": {
+      "units": 2,
+      "allocated_bytes": 3739078656,
+      "delete_allocated_bytes": 611274752,
+      "projected_allocated_bytes": 3127803904
+    },
+    "infrastructure": {
+      "units": 6,
+      "allocated_bytes": 462888960,
+      "delete_allocated_bytes": 0,
+      "projected_allocated_bytes": 462888960
+    },
+    "model_inputs_or_checkpoints": {
+      "units": 21,
+      "allocated_bytes": 14491369472,
+      "delete_allocated_bytes": 0,
+      "projected_allocated_bytes": 14491369472
+    },
+    "uncertain": {
+      "units": 32,
+      "allocated_bytes": 1045143552,
+      "delete_allocated_bytes": 0,
+      "projected_allocated_bytes": 1045143552
+    },
+    "unique_archive": {
+      "units": 1,
+      "allocated_bytes": 2905923584,
+      "delete_allocated_bytes": 0,
+      "projected_allocated_bytes": 2905923584
+    },
+    "report_media": {
+      "units": 5,
+      "allocated_bytes": 1738342400,
+      "delete_allocated_bytes": 0,
+      "projected_allocated_bytes": 1738342400
+    },
+    "retired_bulk": {
+      "units": 1,
+      "allocated_bytes": 3964268544,
+      "delete_allocated_bytes": 3130089472,
+      "projected_allocated_bytes": 834179072
+    }
+  },
+  "questions": {
+    "Q1": "최근 실행/미병합 분석 또는 실행 날짜가 불명확하다. 분석 종료·대표 case·최소 7일 보존을 확인할 때까지 전체 유지. 40 GiB를 위해 이 대기 규칙을 바꿀지는 배치와 별도 결정 필요.",
+    "Q2": "과거/현재 수치·그림 중 최종 보고서에 실제로 쓸 범위는 무엇인가? raw 필요성을 확정하기 전 전체 유지.",
+    "Q3": "배포 registry와 맞지 않는 체크포인트 중 결과에 사용한 모델과 필수 추론 자산은 무엇인가? 식별·Release 검증 전 유지.",
+    "Q4": "09-07 압축본은 유일 사본이다. 결과를 포기할 명시적 결정이 없는 한 유지. 외부 보관은 계획하지 않음.",
+    "Q5": "참조·종료·모델 입력·SHA/config/seed 연결을 확정하지 못했다. 폐기 가능한 scratch인지 소유 작업의 판단이 필요하며 그 전에는 유지."
+  },
+  "uncertain_units": 587,
+  "tensorboard": {
+    "manifests": 3531,
+    "snapshots_with_scalar_samples": 3529,
+    "scalar_samples_read": 1197721,
+    "errors": 0
+  },
+  "keep_files": 7899,
+  "delete_operations": 257,
+  "delete_files": 63553,
+  "retirement_summary": {
+    "path": "retired-worktrees",
+    "allocated_bytes": 2838650880,
+    "children": 85,
+    "non_additive": true
+  },
+  "protected_signal_scope": "Conservative whole-folder protection; uncertain scope is KEEP, never inferred deletion."
+}
