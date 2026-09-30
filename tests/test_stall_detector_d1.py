@@ -174,7 +174,8 @@ def test_frame_selection_is_causal_and_tolerates_timestamp_jitter():
     shifted = np.round((ts + jitter)[order], 8)
     keep = np.r_[True, np.diff(shifted) > 0]
     r = replay(frames[order[keep]], shifted[keep])
-    assert r.status == "EVALUATED" and r.alarm_times_s
+    assert r.status == "INSUFFICIENT_COVERAGE" and r.alarm_times_s
+    assert not r.sufficient_coverage  # preserve alarms without qualifying observation
 
 
 def test_reference_resets_at_each_command_even_after_an_alarm():
@@ -256,3 +257,171 @@ def test_reference_import_boundary_and_ci_registration():
     files = runner.collect_test_files(ROOT, runner.TEST_PATTERNS)
     assert files.count("tests/test_stall_detector_d1.py") == 1
     runner.validate_shards(files, runner.shard_test_files(files, 8))
+
+
+@pytest.mark.parametrize("end,seed,valid,total", [
+    (60., 93001, 223, 284), (60., 93002, 224, 284), (60., 93003, 231, 284),
+    (90., 93001, 349, 434), (90., 93002, 341, 434), (90., 93003, 350, 434),
+])
+def test_timestamp_jitter_below_95_percent_is_observation_failure(monkeypatch, end, seed, valid, total):
+    # Constant valid scores isolate timestamp selection; no frames or physics.
+    monkeypatch.setattr(d1, "measure_frames", lambda *args: d1.Measurement(1., 0., 1., (10, 469)))
+    ts = np.arange(int(end * 10) + 1) / 10
+    shifted = np.round(ts + np.random.default_rng(seed).choice([-.1, .1], len(ts)), 8)
+    order = np.lexsort((np.arange(len(ts)), shifted))
+    shifted = shifted[order]
+    shifted = shifted[np.r_[True, np.diff(shifted) > 0]]
+    r = d1.detect([None] * len(shifted), shifted, [d1.CommandInterval(0., end)])[0]
+    checks = [c for c in r.checks if c.scheduled_s > 3. + 1e-9]
+    assert (sum(c.measurement is not None for c in checks), len(checks)) == (valid, total)
+    assert r.status == "INSUFFICIENT_COVERAGE"
+    assert r.valid_check_fraction == pytest.approx(valid / total)
+    assert not r.alarm_times_s
+
+
+def test_preregistration_requires_exact_30_and_predata_freeze():
+    text = (HERE / "PREREG_DRAFT.md").read_text()
+    assert "정확히 **5종×6=30개**" in text
+    assert "INCOMPLETE" in text
+    assert "실제 정체 ≥24" not in text
+    assert "예: 24건이면" not in text
+    assert "주 **(ratio=0.4, k=2)**, 보조 **(0.5, 3)**" in text
+    assert "사후 선택 금지" in text
+    assert "사전 제한 범위 가설은 이번 초안에 없음" in text
+    assert "95% 관측 관문을 AND로 요구" in text
+
+
+def evaluation():
+    spec = importlib.util.spec_from_file_location("d1_evaluation", HERE / "d1_evaluation.py")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def labeled_result(alarm_times=(), invalid_times=(), end=8.):
+    # GT labels are passed ONLY to the separate evaluator, never detect().
+    checks = tuple(d1.Check(float(t), float(t),
+                           None if any(abs(t - v) < 1e-9 for v in invalid_times) else
+                           d1.Measurement(1., 0., 1., (10, 469)),
+                           "STALL_SUSPECT" if any(abs(t - v) < 1e-9 for v in alarm_times) else
+                           "NO_STALL_SUSPECT") for t in np.arange(1., end, .2))
+    return d1.IntervalResult(d1.CommandInterval(0., end), d1.PRIMARY, 1., "EVALUATED", checks)
+
+
+def test_alarm_after_recovery_is_false_alarm_not_detection():
+    r = labeled_result(alarm_times=(6.4,))
+    # A sole GT STALL window [4,5); the next check records recovery.
+    labels = ["STALL" if abs(c.scheduled_s - 5.) < 1e-9 else "MOVING" for c in r.checks]
+    s = evaluation().score_interval(r, labels)
+    assert len(s.events) == 1 and s.events[0].alarm_s is None
+    assert s.events[0].start_s == pytest.approx(4.)
+    assert s.events[0].end_s == pytest.approx(5.2)
+    assert s.false_alarm_times_s == pytest.approx((6.4,))
+    assert s.unmatched_alarm_times_s == pytest.approx((6.4,))
+
+
+@pytest.mark.parametrize("missing,expected", [(2, "EVALUATED"), (3, "INSUFFICIENT_COVERAGE")])
+def test_exact_95_percent_boundary_keeps_all_scheduled_checks(monkeypatch, missing, expected):
+    ts = np.arange(113) / 10
+    missing_times = [3.2 + .2 * n for n in range(missing)]
+    def measure(a, b, p):
+        return None if any(abs(b - t) < 1e-9 for t in missing_times) else d1.Measurement(1., 0., 1., (10, 469))
+    monkeypatch.setattr(d1, "measure_frames", measure)
+    r = d1.detect(ts, ts, [d1.CommandInterval(0., 11.2)])[0]
+    assert len(r.detection_checks) == 40
+    assert r.valid_check_fraction == pytest.approx((40 - missing) / 40)
+    assert r.status == expected
+    assert r.sufficient_coverage == (missing == 2)
+
+
+@pytest.mark.parametrize("counts,expected", [
+    ((6, 6, 6, 6, 6), "COMPLETE"), ((6, 6, 6, 6, 0), "INCOMPLETE"),
+    ((6, 6, 6, 6, 5), "INCOMPLETE"), ((7, 6, 6, 6, 5), "INCOMPLETE"),
+    ((7, 6, 6, 6, 6), "INCOMPLETE"),
+])
+def test_cohort_count_gate_requires_all_five_kinds_and_exact_30(counts, expected):
+    e = evaluation()
+    kinds = [kind for kind, count in zip(e.STALL_KINDS, counts) for _ in range(count)]
+    assert e.stall_cohort_status(kinds) == expected
+
+
+def test_other_closes_event_and_later_event_cannot_rescue_first_miss():
+    r = labeled_result(alarm_times=(5., 6.4, 6.6))
+    labels = ["STALL" if 4. - 1e-9 <= c.scheduled_s < 5. - 1e-9 or
+              6. - 1e-9 <= c.scheduled_s < 7. - 1e-9 else
+              "OTHER" if abs(c.scheduled_s - 5.) < 1e-9 else "MOVING" for c in r.checks]
+    s = evaluation().score_interval(r, labels)
+    assert len(s.events) == 2
+    assert s.events[0].end_s == pytest.approx(5.) and s.events[0].alarm_s is None
+    assert s.events[1].alarm_s == pytest.approx(6.4)
+    assert s.events[1].latency_s == pytest.approx(1.4)
+    assert s.unmatched_alarm_times_s == pytest.approx((5.,))
+    assert not s.false_alarm_times_s and s.other_checks == 1
+
+
+def test_early_false_alarm_is_retained_when_later_alarm_matches_event():
+    r = labeled_result(alarm_times=(3.4, 4.4, 4.6, 5.))
+    labels = ["STALL" if 4. - 1e-9 <= c.scheduled_s < 5. - 1e-9 else "MOVING" for c in r.checks]
+    s = evaluation().score_interval(r, labels)
+    assert s.events[0].start_s == pytest.approx(3.)
+    assert s.events[0].alarm_s == pytest.approx(4.4)
+    assert s.events[0].latency_s == pytest.approx(1.4)
+    assert s.false_alarm_times_s == pytest.approx((3.4, 5.))
+
+
+def test_event_persisting_to_command_end_and_no_cross_command_matching():
+    r = labeled_result(alarm_times=(7.8,))
+    labels = ["STALL" if c.scheduled_s >= 4. - 1e-9 else "MOVING" for c in r.checks]
+    s = evaluation().score_interval(r, labels)
+    assert s.events[0].end_s == 8. and s.events[0].alarm_s == pytest.approx(7.8)
+    assert not s.unmatched_alarm_times_s
+    r = labeled_result(alarm_times=(6.4,))
+    s = evaluation().score_interval(r, ["MOVING"] * len(r.checks))
+    assert not s.events and s.false_alarm_times_s == pytest.approx((6.4,))
+
+
+def test_missing_images_remain_in_moving_denominator_and_block_zero_alarm_pass():
+    r = labeled_result(invalid_times=(4., 5.))
+    s = evaluation().score_interval(r, ["MOVING"] * len(r.checks))
+    assert s.moving_checks == 24 and not s.false_alarm_times_s
+    assert s.observation_status == "INSUFFICIENT_COVERAGE" and not s.moving_control_pass
+    s = evaluation().score_interval(labeled_result(), ["MOVING"] * len(r.checks))
+    assert s.moving_control_pass
+
+
+def test_coverage_failure_keeps_raw_alarm_but_scores_stall_as_miss():
+    r = labeled_result(alarm_times=(6.4,), invalid_times=(4., 5.))
+    labels = ["STALL" if c.scheduled_s >= 6. - 1e-9 else "MOVING" for c in r.checks]
+    s = evaluation().score_interval(r, labels)
+    assert r.alarm_times_s == pytest.approx((6.4,))
+    assert s.events[0].alarm_s is None and s.events[0].latency_s is None
+    assert s.unmatched_alarm_times_s == pytest.approx((6.4,))
+
+
+def test_incomplete_gt_labels_check_grid_and_unknown_mechanisms_are_rejected():
+    e, r = evaluation(), labeled_result()
+    with pytest.raises(ValueError, match="every scheduled check"):
+        e.score_interval(r, ["MOVING"] * (len(r.checks) - 1))
+    with pytest.raises(ValueError, match="every scheduled check"):
+        e.score_interval(r, ["MISSING_GT"] * len(r.checks))
+    truncated = d1.IntervalResult(r.command, r.parameters, r.reference, r.status, r.checks[:-1])
+    with pytest.raises(ValueError, match="complete scheduled check grid"):
+        e.score_interval(truncated, ["MOVING"] * len(truncated.checks))
+    with pytest.raises(ValueError, match="unknown stall mechanism"):
+        e.stall_cohort_status(["unknown"])
+    labels = ["OTHER"] + ["MOVING"] * (len(r.checks) - 1)
+    assert not e.score_interval(r, labels).moving_control_pass
+
+
+def test_primary_secondary_order_and_statistics_are_rederived():
+    from statistics import NormalDist
+    assert (d1.PRIMARY.ratio, d1.PRIMARY.consecutive) == (.4, 2)
+    assert (d1.SECONDARY.ratio, d1.SECONDARY.consecutive) == (.5, 3)
+    z = NormalDist().inv_cdf(.975)
+    for x, n, expected in ((22, 24, 74.1512), (27, 30, 74.3789), (24, 30, 62.6943)):
+        p = x / n
+        lower = (p + z*z/(2*n) - z * (p*(1-p)/n + z*z/(4*n*n))**.5) / (1+z*z/n)
+        assert lower * 100 == pytest.approx(expected, abs=.00005)
+    assert 24 / 30 == .8
+    assert (1 - .05**(1 / 60)) * 100 == pytest.approx(4.870291, abs=.0000005)

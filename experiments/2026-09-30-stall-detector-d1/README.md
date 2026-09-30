@@ -8,17 +8,32 @@ Refs #216, 병합 연구 #291, 관련 열린 초안 #285. **DRAFT / 미봉인 / 
 |---|---|
 | [PREREG_DRAFT.md](PREREG_DRAFT.md) | 주 `(0.4,2)`·보조 `(0.5,3)` D1, 5종 정체 30건·이동 60구간 **계획**, 라벨·통계·잡음·시간/디스크·실패/주장 경계 |
 | [d1_detector.py](d1_detector.py) | NumPy만 쓰는 배열/시각/자기 명령 구간 입력, 1초/0.1초 블록 차이·잡음 보정·구간별 기준·연속 경보 |
+| [d1_evaluation.py](d1_evaluation.py) | 검출기와 분리된 평가: 정체 종료/경보 매칭, 이동/OTHER 분모, 30건/5기전 완성 관문 |
 | [STAGING_PLAN.md](STAGING_PLAN.md) | 기존 probe 옵션으로 만들 수 있는 후보와 부족한 장애물·마찰·속도 지원. 후속 수정할 파일/함수만 열거 |
 | [단위 테스트](../../tests/test_stall_detector_d1.py) | 합성 이동/정지/읽기 잡음/노출/시각 지터·기준/결측·명령 경계·입력 경계·기존 작은 표 집계 재계산 |
 | [verification.json](verification.json) | 테스트 수·명령·환경·파일 해시·재현/미검증 범위 |
+| [REVIEW_RESPONSE.md](REVIEW_RESPONSE.md) | 독립 검토 #4/#7/#8과 탐색 후 설정 선택의 재현·수정·남은 문제 |
+| [review_verification.json](review_verification.json) | 이번 후속 수정의 테스트·통계 재계산·시각 지터 반례·파일 해시 |
+| [review_mutations.py](review_mutations.py) | 분모/경보 매칭/관측 문턱/문서 동결 규칙의 변이 검사(mutation test); 파일 수정 없음 |
 
 입력은 호출자가 이미 보유한 `frames`, `timestamps_s`, 자기 이력에서 만든
 `CommandInterval(start_s,end_s,command_id)`이다. 이 모듈을 import할 수 있는 경로에 넣고
 `detect(frames,timestamps_s,commands,PRIMARY)` 또는 `SECONDARY`로 계산한다.
 자기 이력의 병진 방향/속도가 바뀌면 구간을 나눈다. GT로 구간·정체 시작을 고르지 않는다.
-영상 저장/해독·명령 이력 adapter·GT 채점·physics runner는 이 모듈에 없다.
+영상 저장/해독·명령 이력 adapter·GT 창 라벨 생성·physics runner는 이 모듈에 없다.
+이미 생성한 GT 창 라벨은 별도 `d1_evaluation.score_interval(result, labels)`에만 전달한다.
+`INSUFFICIENT_COVERAGE`는 사후 관측 실패이며 남아 있는 경보를 통과 근거로 쓰지 않는다.
 
-## 확인한 것 (2026-09-30)
+## 독립 검토 후 수정 (2026-09-30, 미봉인 유지)
+
+관련 테스트 **120/120 통과(D1 54 + CI 분할 66)**, 고의로 고친 변이 **5/5 검출**.
+정확히 30건/5기전 미달은 INCOMPLETE, 회복 뒤 경보는 FP, 기준 이후 유효 점수 <95%는
+INSUFFICIENT_COVERAGE다. 주 `(0.4,2)`/보조 `(0.5,3)`와 전체 12조합을 고정하며 사후 범위 선택을 금지했다.
+시각 지터만으로 95% 관측 관문을 실패하는 반례와 시작 정체 6건 누락 시 최대 감도 80%는 그대로다.
+통계 수치·실패 재현·검사 명령은 REVIEW_RESPONSE.md와 review_verification.json에 있다.
+새 코호트·원본 영상 재생·물리/SIM/렌더·모델 호출은 없으며 TensorBoard 결과를 새로 만들지 않았다.
+
+## 최초 커밋에서 확인한 것 (2026-09-30, `8ae2237f`)
 
 - 최종 관련 테스트 **98/98 통과**: D1 **32개** + CI 분할 **66개**.
   Python 3.12.13, NumPy 2.5.2, pytest 9.1.1; OMP/BLAS 스레드 1.
@@ -59,9 +74,9 @@ PY
 
 시작부터 막힘은 알려진 기준 획득 실패다. 계획 30건 중 시작 정체 6건을 모두 놓치면 최대 감도는
 **24/30=80%**여서 전체 ≥90% 기준을 실패한다. 이들을 사후 제외하지 않는다.
-봉인 전 전체 범위, 새 조작 지원, 독립 배치/물리 시드, 60셀/예비 셀 manifest,
+봉인 전 고정 전체 설계의 수집 목적, 새 조작 지원/GT adapter, 독립 배치/물리 시드, 60셀/예비 셀 manifest,
 동결 SHA·해시·독립 검토·후속 실행 승인을 결정해야 한다.
-32개 단위 테스트 통과는 30/60 확증·실물·안전·E2E·제어기 성공을 검증하지 않는다.
+단위 테스트 통과는 30/60 확증·실물·안전·E2E·제어기 성공을 검증하지 않는다.
 새 실험 결과가 없어 TensorBoard snapshot 변환·대시보드 재오픈은 하지 않았다.
 
 ## 참고 자료

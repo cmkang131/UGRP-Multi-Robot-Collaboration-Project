@@ -83,6 +83,22 @@ class IntervalResult:
     checks: tuple[Check, ...]
 
     @property
+    def detection_checks(self) -> tuple[Check, ...]:
+        return tuple(c for c in self.checks
+                     if c.scheduled_s > self.command.start_s + REFERENCE_END_S + TIME_EPS)
+
+    @property
+    def valid_check_fraction(self) -> float:
+        checks = self.detection_checks
+        return sum(c.measurement is not None for c in checks) / len(checks) if checks else 0.
+
+    @property
+    def sufficient_coverage(self) -> bool:
+        checks = self.detection_checks
+        # Exact integer comparison at the frozen 95% boundary; keep all gaps.
+        return bool(checks) and 20 * sum(c.measurement is not None for c in checks) >= 19 * len(checks)
+
+    @property
     def alarm_times_s(self) -> tuple[float, ...]:
         # Decision is available at scheduled_s (never before the selected frame).
         return tuple(c.scheduled_s for c in self.checks if c.state == "STALL_SUSPECT")
@@ -205,5 +221,10 @@ def detect(
                 streak = streak + 1 if below else 0
                 state = "STALL_SUSPECT" if streak >= parameters.consecutive else "NO_STALL_SUSPECT"
             checks.append(Check(c.scheduled_s, c.frame_s, c.measurement, state, streak))
-        results.append(IntervalResult(command, parameters, reference, status, tuple(checks)))
+        result = IntervalResult(command, parameters, reference, status, tuple(checks))
+        if status == "EVALUATED" and not result.sufficient_coverage:
+            # Retrospective observation qualification, NOT a future-dependent
+            # alarm rule. Preserve causal alarms and missing checks for scoring.
+            result = IntervalResult(command, parameters, reference, "INSUFFICIENT_COVERAGE", tuple(checks))
+        results.append(result)
     return tuple(results)
