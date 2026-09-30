@@ -1,52 +1,36 @@
 {
-  "schema": "ugrp.final_pair_clearance_review.v1",
-  "review_source": "26534b12:experiments/2026-10-01-v3-pair-adapter/REVIEW_344b.md",
-  "profiles": {
-    "calibration-unloaded": {
-      "status": "BLOCKED_UNBOUNDED_MOTION",
-      "bounds": null,
-      "independent_bound_evidence": null,
-      "missing_bounds": [
-        "positive and negative gain ranges for this load and posture",
-        "drive and stop/coast tau ranges",
-        "initial position and velocity errors after reset",
-        "world-axis speed error including cross-axis motion, yaw, slip and model mismatch",
-        "rotation swept path and arm envelope throughout the complete command window"
-      ],
-      "reason": "No independent motion envelope. Nominal v88 predictions and the single unloaded v89 run cannot admit this collection. The shared translation-only evaluator must reject rotation and multi-body paths until qualified support exists.",
-      "nominal_models": {},
-      "unexcluded_v1_models": {}
+  "schema": "ugrp.final_pair_conservative_envelope.v1",
+  "decision_date": "2026-10-01",
+  "scope": "SIMULATION_ONLY_TEACHER_CALIBRATION",
+  "decision": "Runtime interlocks are primary; a hit invalidates data and holds then aborts HOST_ERROR. Exact rotation/multi-body swept-path proof is not required.",
+  "gain_upper": {
+    "forward": 2.62,
+    "left": 1.86,
+    "turn": 2.299928292866358
+  },
+  "gain_multiplier": 2.0,
+  "v89_translation_source": {
+    "path": "experiments/2026-10-01-calib-motion-v89-physics/README.md",
+    "coordinator_rounded_steady_state_gain": {
+      "forward": 1.31,
+      "left": 0.93
     },
-    "calibration-fine": {
-      "status": "BLOCKED_UNBOUNDED_MOTION",
-      "bounds": null,
-      "independent_bound_evidence": null,
-      "missing_bounds": [
-        "positive and negative gain ranges for this load and posture",
-        "drive and stop/coast tau ranges",
-        "initial position and velocity errors after reset",
-        "world-axis speed error including cross-axis motion, yaw, slip and model mismatch",
-        "rotation swept path and arm envelope throughout the complete command window"
-      ],
-      "reason": "No independent motion envelope. Nominal v88 predictions and the single unloaded v89 run cannot admit this collection. The shared translation-only evaluator must reject rotation and multi-body paths until qualified support exists.",
-      "nominal_models": {},
-      "unexcluded_v1_models": {}
+    "qualification": "Coordinator-specified assumptions, not an independently qualified motion model."
+  },
+  "v87_turn_source": {
+    "commit": "65ce28cf7da3c8c33de97a03b19cd1665b45f831",
+    "path": "experiments/2026-10-01-final-env-v87-calibration-fit/fit_report.json",
+    "sha256": "051c2c3c4ded1eb0dc1170f63418e3451f4ce50889b432856395f49c10688526",
+    "per_map_rotate_gain_rad_s_per_unit": {
+      "zone_wide_door_geometry_v3": 1.149964146433179,
+      "zone_wide_two_doors_final_v3": 1.149964146433179,
+      "zone_wide_corridor_final_v3": 1.149964146433179
     },
-    "calibration-loaded": {
-      "status": "BLOCKED_UNBOUNDED_MOTION",
-      "bounds": null,
-      "independent_bound_evidence": null,
-      "missing_bounds": [
-        "positive and negative gain ranges for this load and posture",
-        "drive and stop/coast tau ranges",
-        "initial position and velocity errors after reset",
-        "world-axis speed error including cross-axis motion, yaw, slip and model mismatch",
-        "rotation swept path and arm envelope throughout the complete command window",
-        "both carriers and beam throughout grasp, transport, coast and release"
-      ],
-      "reason": "No independent motion envelope. Nominal v88 predictions and the single unloaded v89 run cannot admit this collection. The shared translation-only evaluator must reject rotation and multi-body paths until qualified support exists.",
-      "nominal_models": {},
-      "unexcluded_v1_models": {}
-    }
-  }
+    "largest_rotate_gain_rad_s_per_unit": 1.149964146433179
+  },
+  "integration": "All absolute command leases in [0,370] seconds, including steps and PRBS; no sign cancellation anywhere. Initial hold, coasts and camera/arm tail remain in this window.",
+  "geometry": "Robot/arm bound 0.40 m; yaw tip translation <= R*min(total_abs_yaw,2). Loaded: tip radius = max(0.40, chassis-to-beam-centre + beam half-diagonal); add half-diagonal to both carrier discs. Beam-start disc encloses both carrier discs.",
+  "wall_margin_m": 0.3,
+  "runtime_abort_buffer_m": 0.05,
+  "qualification": "Conditional preflight for simulation-only teacher data. Does not qualify loaded/fine/turn calibration, hardware safety, P03, carry, or E2E."
 }

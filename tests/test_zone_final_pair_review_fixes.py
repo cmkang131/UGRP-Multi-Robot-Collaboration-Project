@@ -256,10 +256,12 @@ def test_collection_rejects_all_entry_points_before_output_or_physics(tmp_path, 
     args = ['--check', check, '--expected-source-sha', 'a'*40, '--output', str(tmp_path/'raw')]
     assert run.main(args) == 0
     plan = json.loads(capsys.readouterr().out)
-    assert not plan['runnable'] and plan['blocked_on'] == [
-        'FULL_PATH_CLEARANCE_REJECTED: MISSING_INDEPENDENT_MOTION_BOUNDS']
+    assert not plan['runnable']
+    assert plan['blocked_on'][0].startswith(
+        'FULL_PATH_CLEARANCE_REJECTED: CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS')
+    assert plan['clearance_preflight'][0] == bundle['clearance_preflight']
     # Neither a fake saved PASS nor a direct owner constructor may bypass the
-    # independently re-read evidence. Imports themselves are sentinels.
+    # recomputed envelope. Imports themselves are sentinels.
     bundle['clearance_preflight']['admitted'] = True
     monkeypatch.setitem(sys.modules, 'sim.zone_final_v3_scene', None)
     monkeypatch.setitem(sys.modules, 'sim.final_pair_v3', None)
@@ -276,28 +278,23 @@ def test_collection_rejects_all_entry_points_before_output_or_physics(tmp_path, 
 
 
 @pytest.mark.parametrize('check', c.CHECKS[2:])
-@pytest.mark.parametrize('fault', ['corrupt', 'unsupported'])
-def test_v89_bound_evidence_cannot_certify_v88_rotation_or_pair(tmp_path, monkeypatch, check, fault):
+@pytest.mark.parametrize('fault', ['lower_gain', 'old_exact_path_policy'])
+def test_changed_policy_cannot_replace_coordinator_envelope(tmp_path, monkeypatch, check, fault):
     from harness import zone_final_pair_clearance as clearance
-    from harness.measurement_path_clearance import point_model_bounds
-    from scripts.check_measurement_v2_identifiability import CANDIDATES
-    evidence = tmp_path/'fixture.txt'
-    evidence.write_text('SYNTHETIC UNIT TEST ONLY: not a plant bound')
     review = c.base.read(c.ROOT/clearance.CLEARANCE_REVIEW)
-    review['profiles'][check].update(status='QUALIFIED_BOUNDS', bounds=point_model_bounds(CANDIDATES),
-        independent_bound_evidence={'fixture.txt': c.base.sha(evidence)})
+    if fault == 'lower_gain':
+        review['gain_upper']['forward'] = .01
+    else:
+        review = {'schema': 'ugrp.final_pair_clearance_review.v1', 'profiles': {
+            check: {'status': 'QUALIFIED_BOUNDS', 'bounds': {}, 'independent_bound_evidence': {}}}}
     (tmp_path/'configs').mkdir()
     (tmp_path/clearance.CLEARANCE_REVIEW).write_text(json.dumps(review))
     static = c.resolve(MAP_ID)[0]
     monkeypatch.setattr(c, 'ROOT', tmp_path)
     monkeypatch.setattr(c, 'resolve', lambda _: (static, None, None))
-    if fault == 'corrupt':
-        evidence.write_text('corrupted after qualification')
-        reason = 'BOUND_EVIDENCE_HASH_MISMATCH'
-    else:
-        reason = 'UNSUPPORTED_MULTI_BODY_PATH' if check == 'calibration-loaded' else 'UNSUPPORTED_PATH_AXIS'
-    with pytest.raises(ValueError, match=reason):
-        clearance.path_preflight(check, MAP_ID)
+    receipt = clearance.path_preflight(check, MAP_ID)
+    assert not receipt['admitted']
+    assert receipt['reason'] == 'INVALID_CONSERVATIVE_ENVELOPE_INPUT'
 
 
 @pytest.mark.parametrize('fault', ['robot_z', 'beam_z', 'radius', 'distance', 'computed_gap'])

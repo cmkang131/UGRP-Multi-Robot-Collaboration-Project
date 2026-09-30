@@ -16,7 +16,7 @@ import sys
 
 from harness import zone_final_pair_contract as contract
 from harness.zone_final_pair_calibration import schedule
-from harness.zone_final_pair_clearance import require_collection_clearance
+from harness.zone_final_pair_clearance import require_collection_clearance, rejection_message
 from scripts.run_final_environment_checks import write, check_source
 
 
@@ -146,7 +146,7 @@ def main(argv=None):
     blocked = []
     for bundle in bundles:
         if bundle['clearance_preflight'] is not None and not bundle['clearance_preflight']['admitted']:
-            blocked.append('FULL_PATH_CLEARANCE_REJECTED: ' + bundle['clearance_preflight']['reason'])
+            blocked.append(rejection_message(bundle['clearance_preflight']))
     if args.check in ('p03', 'carry'):
         try:
             for c in cases:
@@ -156,7 +156,8 @@ def main(argv=None):
     plan = {'execution_bundle_id': contract.BUNDLE_ID, 'status': 'DRAFT_UNSEALED', 'check': args.check,
         'execution_started': False, 'cases': cases, 'denominator': len(cases), 'runnable': not blocked,
         'blocked_on': blocked, 'source_sha': args.expected_source_sha, 'seed': args.seed,
-        'bundles_sha256': [contract.base.digest(b) for b in bundles], 'physical_success': None}
+        'bundles_sha256': [contract.base.digest(b) for b in bundles], 'physical_success': None,
+        'clearance_preflight': [b['clearance_preflight'] for b in bundles]}
     if not args.execute:
         print(json.dumps(plan, ensure_ascii=False, indent=2))
         return 0

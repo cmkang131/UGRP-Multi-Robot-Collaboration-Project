@@ -123,7 +123,7 @@ print(json.dumps({{'baseline':baseline, 'mutation':mutation, 'failure':failure}}
 
 
 @pytest.mark.parametrize("check", ["calibration-unloaded", "calibration-fine", "calibration-loaded"])
-def test_collection_requires_qualified_full_path_before_backend(check):
+def test_registered_collection_exceeding_envelope_stops_before_backend(check):
     data = probe(f"""
 import contextlib, io, tempfile
 from pathlib import Path
@@ -149,9 +149,11 @@ with tempfile.TemporaryDirectory() as tmp:
 print(json.dumps({{'plan_runnable':plan['runnable'], 'backend_calls':made,
                   'result':result, 'blocked_on':plan['blocked_on']}}))
 """)
-    # A source hash, nominal design trajectory, or abort after stepping is
-    # not a qualified uncertainty bound for the complete collection path.
+    # 2026-10-01 coordinator decision replaces exact path qualification.
+    # These unchanged schedules still exceed the conservative disc envelope.
     assert not data["plan_runnable"] and not data["backend_calls"], data
+    assert 'CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS' in data['blocked_on'][0]
+    assert 'radius=' in data['blocked_on'][0] and 'wall_distance=' in data['blocked_on'][0]
 
 
 @pytest.mark.parametrize("fault", ["second_nan_xy", "second_nan_radius", "second_negative_radius"])
