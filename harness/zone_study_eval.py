@@ -87,6 +87,7 @@ SUCCESS_END_REASON = 'orders_complete'
 FAILURE_END_REASONS = (
     'sim_horizon', 'budget_exhausted', 'deadlock', 'aborted',
     'api_failure', 'policy_failure', 'orders_incomplete',
+    'host_error', 'interrupted', 'not_evaluated',
 )
 END_REASONS = (SUCCESS_END_REASON,) + FAILURE_END_REASONS
 
@@ -208,10 +209,13 @@ def parse_trial(obj):
     if condition != 'leader_ko' and trial.get('leader_id'):
         raise TrialError(f'leader_id is only valid for leader_ko, not {condition}')
     horizon = _budget(trial).get('sim_horizon_s')
-    if not isinstance(horizon, (int, float)) or horizon <= 0:
+    if type(horizon) not in (int, float) or not math.isfinite(horizon) or horizon <= 0:
         raise TrialError('budget.sim_horizon_s must be a positive number')
     if trial.get('end_sim_s') is None:
         raise TrialError('trial record needs end_sim_s')
+    times = [trial.get('t0_sim_s', 0.), trial['end_sim_s']]
+    if any(type(t) not in (int, float) or not math.isfinite(t) or t < 0 for t in times) or times[1] < times[0]:
+        raise TrialError('trial times must be finite, nonnegative and ordered')
     return trial
 
 
@@ -831,6 +835,12 @@ def _orders(trial):
         out.append({'order_id': order.get('order_id'), 'kind': order.get('kind'),
                     'zone': order.get('destination_zone'), 'count': max(count, len(items)),
                     'item_ids': items, 'identity': identity})
+    ids = [o['order_id'] for o in out]
+    items = [i for o in out for i in o['item_ids']]
+    if any(not isinstance(i, str) or not i for i in ids + items):
+        raise TrialError('order and item IDs must be nonempty strings')
+    if len(set(ids)) != len(ids) or len(set(items)) != len(items):
+        raise TrialError('duplicate order/item ID makes the delivery join ambiguous')
     return out
 
 
@@ -890,12 +900,20 @@ def delivery_state(trial):
     orders = _orders(trial)
     t0 = float(trial.get('t0_sim_s') or 0.0)
     end = float(trial['end_sim_s'])
+    observed_end = float(_referee(trial).get('observed_end_sim_s', end))
+    cap = t0 + float(_budget(trial).get('sim_horizon_s', max(end, observed_end) - t0))
     by_item = {i: o for o in orders for i in o['item_ids']}
     rows = []
     for row in _rows(_referee(trial), 'deliveries'):
         when = row.get('sim_s')
-        when = float(when) if isinstance(when, (int, float)) and not isinstance(when, bool) else None
-        if when is not None and (when < t0 - 1e-9 or when > end + 1e-9):
+        confirmed = row.get('confirmed_sim_s', when)
+        if any(type(v) not in (int, float) or not math.isfinite(v) for v in (when, confirmed)):
+            raise TrialError('delivery and confirmation times must be finite numbers')
+        if confirmed < when:
+            raise TrialError('confirmation precedes delivery window')
+        when = float(when)
+        if (when < t0 - 1e-9 or when > min(end, cap) + 1e-9
+                or confirmed > min(observed_end, cap) + 1e-9):
             rows.append({**row, 'sim_s': when, 'outside_window': True})
             continue
         rows.append({**row, 'sim_s': when, 'outside_window': False})
@@ -927,7 +945,7 @@ def delivery_state(trial):
                     surplus.append(item)        # right zone, quota already filled, or no order
                 continue
             fungible_used[order['order_id']] += 1
-        correct = order['zone'] == zone
+        correct = order['zone'] == zone and row.get('kind', order['kind']) == order['kind']
         (delivered if correct else misdelivered)[item] = {
             'zone': zone, 'sim_s': row.get('sim_s'), 'order_id': order['order_id']}
     for item, row, candidates in wrong_fungible:
@@ -972,16 +990,18 @@ def efficiency_metrics(trial, penalty_factor=DEFAULT_PENALTY_FACTOR):
     horizon = float(budget['sim_horizon_s'])
     t0 = float(trial.get('t0_sim_s') or 0.0)
     end = float(trial['end_sim_s'])
-    success = trial['end_reason'] == SUCCESS_END_REASON
+    state = delivery_state(trial)
+    success = (trial['end_reason'] == SUCCESS_END_REASON and state['orders_complete']
+               and referee.get('status') != 'not_evaluated' and not trial.get('failure_class'))
     elapsed = max(end - t0, 0.0)
     if success and elapsed > horizon:
         raise TrialError(f'{trial["trial_id"]}: success at {elapsed}s exceeds horizon {horizon}s')
     charged = elapsed if success else penalty_factor * horizon
 
     ordered_ids, ordered_count = _ordered_items(trial)
-    state = delivery_state(trial)
     delivered, misdelivered = state['delivered'], state['misdelivered']
     surplus = state['surplus']
+    delivery_known = isinstance(referee.get('deliveries'), list) and referee.get('status') != 'not_evaluated'
 
     idle_raw = trial.get('idle') if isinstance(trial.get('idle'), dict) else {}
     idle_by_reason = collections.Counter()
@@ -1009,7 +1029,8 @@ def efficiency_metrics(trial, penalty_factor=DEFAULT_PENALTY_FACTOR):
     tokens = (model or {}).get('tokens') or {}
     # both aggregation sources now state the marker (fifth review, P2: the
     # summary-only source did not, and this default turned it into "complete")
-    tokens_complete = model is None or model['tokens_complete'] is True
+    record_complete = trial.get('record_complete', True) is True
+    tokens_complete = (model is None or model['tokens_complete'] is True) and record_complete
     # Second review, finding 10: a missing cost source stays None in the FINAL
     # metrics too (it used to become 0 here), and the terms do not overlap:
     # think + utterance == call total; delivery is the transport delay.
@@ -1026,21 +1047,26 @@ def efficiency_metrics(trial, penalty_factor=DEFAULT_PENALTY_FACTOR):
         'scenario': trial['scenario'], 'seed': trial['seed'],
         'leader_id': trial.get('leader_id'),
         'end_reason': trial['end_reason'], 'success': bool(success),
+        'failure_class': trial.get('failure_class'),
+        'referee_status': referee.get('status', 'evaluated'),
         'censored': not success,
         'sim_horizon_s': round(horizon, 4),
         'makespan_sim_s': round(elapsed, 4),
         'makespan_success_only_s': round(elapsed, 4) if success else None,
         'par_makespan_sim_s': round(charged, 4),
         'penalty_factor': penalty_factor,
-        'talk_sim_cost_s': _round4(talk_cost),
-        'think_sim_cost_s': _round4(think_cost),
-        'utterance_sim_cost_s': _round4(utterance_cost),
-        'delivery_sim_cost_s': _round4(delivery_cost),
-        'call_sim_cost_s': _round4(call_cost),
-        'talk_share_of_makespan': None if talk_cost is None else _ratio(talk_cost, elapsed),
+        'talk_sim_cost_s': _round4(talk_cost) if record_complete else None,
+        'think_sim_cost_s': _round4(think_cost) if record_complete else None,
+        'utterance_sim_cost_s': _round4(utterance_cost) if record_complete else None,
+        'delivery_sim_cost_s': _round4(delivery_cost) if record_complete else None,
+        'call_sim_cost_s': _round4(call_cost) if record_complete else None,
+        'talk_sim_cost_s_lower_bound': _round4(talk_cost),
+        'think_sim_cost_s_lower_bound': _round4(think_cost),
+        'call_sim_cost_s_lower_bound': _round4(call_cost),
+        'talk_share_of_makespan': None if talk_cost is None or not record_complete else _ratio(talk_cost, elapsed),
         'ordered_items': ordered_count,
-        'delivered_items': len(delivered),
-        'misdelivered_items': len(misdelivered),
+        'delivered_items': len(delivered) if delivery_known else None,
+        'misdelivered_items': len(misdelivered) if delivery_known else None,
         # distinct ITEMS that were once misplaced and ended delivered (named or
         # fungible); the raw wrong drops are counted apart
         'misdeliveries_recovered': len({row['item_id'] for row in state['misdelivery_history']
@@ -1049,24 +1075,27 @@ def efficiency_metrics(trial, penalty_factor=DEFAULT_PENALTY_FACTOR):
         'deliveries_outside_window': len(state['outside_window']),
         'orders_complete': state['orders_complete'],
         'orders_by_id': state['by_order'],
-        'surplus_items': len(surplus),
-        'undelivered_items': max(ordered_count - len(delivered), 0),
-        'delivery_rate': _ratio(len(delivered), ordered_count),
+        'surplus_items': len(surplus) if delivery_known else None,
+        'undelivered_items': max(ordered_count - len(delivered), 0) if delivery_known else None,
+        'delivery_rate': _ratio(len(delivered), ordered_count) if delivery_known else None,
         'par_sim_s_per_delivered': round(charged / len(delivered), 4) if delivered else None,
-        'idle_robot_s': round(idle_total, 4),
-        'idle_share': _ratio(idle_total, robots * charged),
+        'idle_robot_s': round(idle_total, 4) if 'idle' in trial else None,
+        'idle_share': _ratio(idle_total, robots * charged) if 'idle' in trial else None,
         'idle_by_reason': {k: round(v, 4) for k, v in sorted(idle_by_reason.items())},
         'idle_by_robot': idle_by_robot,
-        'conflicts': len(conflicts),
+        'conflicts': len(conflicts) if 'conflicts' in referee else None,
         'conflicts_by_kind': dict(collections.Counter(c.get('kind', 'other') for c in conflicts)),
-        'deadlocks': len(deadlocks),
-        'deadlock_sim_s': round(sum(float(d.get('duration_s') or 0.0) for d in deadlocks), 4),
-        'replans': len(replans),
+        'deadlocks': len(deadlocks) if 'deadlocks' in referee else None,
+        'deadlock_sim_s': (round(sum(float(d.get('duration_s') or 0.0) for d in deadlocks), 4)
+                           if 'deadlocks' in referee else None),
+        'replans': len(replans) if 'replans' in trial else None,
         'replans_by_kind': dict(collections.Counter(r.get('kind', 'other') for r in replans)),
-        'model_calls': (model or {}).get('logical_calls'),
+        'model_calls': (model or {}).get('logical_calls') if record_complete else None,
+        'model_calls_lower_bound': (model or {}).get('logical_calls'),
         'model_calls_censored': (model or {}).get('censored_calls'),
         'model_cost_source': (model or {}).get('source'),
-        'http_attempts': (model or {}).get('http_attempts'),
+        'http_attempts': (model or {}).get('http_attempts') if record_complete else None,
+        'http_attempts_lower_bound': (model or {}).get('http_attempts'),
         # third review, finding 16: an unknown usage makes the totals None; the
         # counted numbers stay visible as an explicit lower bound.
         'tokens_input': tokens.get('input') if tokens_complete else None,
@@ -1089,7 +1118,7 @@ def efficiency_metrics(trial, penalty_factor=DEFAULT_PENALTY_FACTOR):
         'model_calls_per_delivered': round((model or {}).get('logical_calls') / len(delivered), 4)
                                      if delivered and (model or {}).get('logical_calls') is not None
                                      else None,
-        'wall_latency_ms_mean': round(statistics.mean(latencies), 2) if latencies else None,
+        'wall_latency_ms_mean': round(statistics.mean(latencies), 2) if latencies and record_complete else None,
         'budget_http_attempts': budget.get('http_attempts'),
         'budget_exhausted': trial['end_reason'] == 'budget_exhausted',
     }
@@ -1100,7 +1129,7 @@ def _round4(value):
 
 
 def _ratio(num, den):
-    return None if not den else round(num / den, 9)
+    return None if num is None or not den else round(num / den, 9)
 
 
 # --------------------------------------------------------------------------- #
@@ -1659,7 +1688,11 @@ SUMMARY_METRICS = (
 #: Fourth review, finding 16: a trial with an unknown-usage call has no token
 #: total, and dropping it from the mean printed the KNOWN trials' mean (120) as
 #: the cohort's. These means are None unless every trial's value is known.
-COMPLETE_ONLY_METRICS = ('tokens_total', 'tokens_input', 'tokens_output')
+COMPLETE_ONLY_METRICS = ('tokens_total', 'tokens_input', 'tokens_output', 'delivery_rate',
+                         'delivered_items', 'misdelivered_items', 'undelivered_items',
+                         'idle_robot_s', 'idle_share', 'conflicts', 'deadlocks', 'deadlock_sim_s', 'replans',
+                         'model_calls', 'http_attempts', 'talk_sim_cost_s', 'think_sim_cost_s',
+                         'utterance_sim_cost_s', 'delivery_sim_cost_s', 'call_sim_cost_s')
 #: ... and their lower bounds are averaged over EVERY trial: a trial without a
 #: known count contributes 0, which is a valid lower bound of a token count.
 LOWER_BOUND_METRICS = {'tokens_total': 'tokens_total_lower_bound',
@@ -1694,7 +1727,8 @@ def summarise(trials, penalty_factor=DEFAULT_PENALTY_FACTOR, lookback_s=DEFAULT_
         eff = [r['efficiency'] for r in rows]
         dia = [r['dialogue'] for r in rows]
         charged = sum(e['par_makespan_sim_s'] for e in eff)
-        delivered = sum(e['delivered_items'] for e in eff)
+        delivered = (None if any(e['delivered_items'] is None for e in eff)
+                     else sum(e['delivered_items'] for e in eff))
         ordered = sum(e['ordered_items'] for e in eff)
         conditions[condition] = {
             'label_ko': CONDITION_LABELS_KO[condition],
@@ -1981,6 +2015,11 @@ SCALAR_TAGS = {
     'result/deadlocks': 'deadlocks',
     'result/replans': 'replans',
     'result/model_calls': 'model_calls',
+    'result/model_calls_lower_bound': 'model_calls_lower_bound',
+    'result/http_attempts_lower_bound': 'http_attempts_lower_bound',
+    'result/talk_sim_cost_s_lower_bound': 'talk_sim_cost_s_lower_bound',
+    'result/think_sim_cost_s_lower_bound': 'think_sim_cost_s_lower_bound',
+    'result/call_sim_cost_s_lower_bound': 'call_sim_cost_s_lower_bound',
     'result/tokens_total': 'tokens_total',
     # fourth review, finding 16: the unknown marker and the known lower bound
     # travel into TensorBoard with the (then absent) exact total
