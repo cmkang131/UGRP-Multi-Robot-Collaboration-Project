@@ -1,6 +1,8 @@
 # P09 검증과 재현
 
-최종 재검사 결과와 raw 해시는 이 파일에 기록한다. 실행 범위는 정적 연산/pytest뿐이다.
+초기 정적 감사의 결과와 raw 해시는 아래 실행 기록에 보존한다. 로컬 실행 범위는 정적 연산/pytest뿐이다.
+
+**정상 GitHub CI는 허용되며 필수 검증이다. workflow를 취소하지 않는다. 커밋 지시어로 CI를 건너뛰지 않는다.** B3/B4 수정과 최신 테스트는 [REVIEW_FIXES.md](REVIEW_FIXES.md)를 따른다. 아래 초기 124건을 정정 HEAD의 CI 통과로 대신하지 않는다.
 
 ## import/실행 부작용 사전 확인
 
@@ -39,13 +41,13 @@ driver는 지정 branch `codex/scenario-capabilities`에서만 실행한다. `ev
 - 최종26개 기본 경로의 forward sweep/원본→격자 연결/reverse sweep 모두 true. 정방향 중심선 교차는 서→동, 같은 경로 역순은 동→서다. s2 막힘 뒤4개 event 경로의 중심선 교차는 모두 `door_wide`뿐이다.
 - [validation.log](data/validation.log), [manifest](data/manifest.json), [복사 바이트/해시 대조](data/artifact_checksums.json). 복사본4개는 raw와 SHA-256이 같다. Python 3.12.13; 패키지 버전은 artifact_checksums.json에 기록했다.
 
-## 보존 및 전달 경계
+## 초기 감사의 보존 및 전달 경계
 
 - 최종 `inventory.json`, `feasibility.json`, `manifest.json`, pytest 로그를 Git 문서 기록의 `data/`에 바이트 그대로 복사하고 크기·SHA-256을 대조한다. manifest는 감사 기준·HEAD·입력/source 해시·audit script/test 해시·Python/플랫폼·잠금 PID·금지 import0·원본 불변 여부를 포함한다. 기존 evaluator/입력은 커밋된 HEAD에 고정했고 새 audit driver는 파일 SHA로 고정했다. 요청대로 검증 후 커밋하므로 기록의 `source_head`를 새 driver의 사전 커밋 SHA로 해석하지 않는다.
 - 정적 계산 기록이며 학생 성공률·실제 SIM초·명령·모델비용은 `null`/미측정이다. 실제 이 작업의 물리/렌더/모델 호출 수만0으로 기록한다.
 - shared registry/기존 문서/시나리오/map/controller diff0을 확인한다. 공용 pytest 보호 실행기를 바꾸지 않았으며 새 보조 검사3건은 이 driver의 명시 pytest 목록에만 포함된다. 전체 CI 목록/공용 registry에는 추가하지 않았다.
 - 커밋·push·draft PR은 로컬 검사 뒤 별도로 확인한다. 사용자 요청에 따라 병합하지 않는다. Drive 업로드와 TensorBoard 성공 scalar 변환은 하지 않는다.
 
-## GitHub 전달 뒤 CI 범위 이탈
+## GitHub 전달 뒤 CI 취소 이력과 정정
 
-커밋 `9040e17bbb7200e34b1c77fe255fb91c7479611b`를 push하고 draft PR #302를 만들었다. 자동 CI가 모델/시뮬레이션 job을 포함해 두 실행을 취소했고, 취소 중 ACT 테스트 단계가 시작되어 force-cancel로 종료했다. 전체 CI 통과가 아니다. 로컬 감사의 모델0과 원격 CI를 구분하며 [CI_INCIDENT.md](CI_INCIDENT.md)에 실패/종료 증거를 보존했다. 후속 문서 커밋에는 `[skip ci]`를 사용한다.
+커밋 `9040e17bbb7200e34b1c77fe255fb91c7479611b`를 push하고 draft PR #302를 만들었다. 당시 로컬 실행 금지를 원격 CI에도 적용해 두 실행을 취소했고, 취소 중 ACT 테스트 단계가 시작되어 force-cancel로 종료했다. **정상 CI를 범위 이탈로 본 당시 해석은 잘못됐다.** 과거 문서 커밋 `dec67997815e4cdc564a9848ed6020eede45cbfa`의 skip 사용과 취소된 실행은 통과가 아니다. [CI_INCIDENT.md](CI_INCIDENT.md)에 원본/종료 증거를 보존하고 현재 지침을 정정했다. 재시작 및 정정 HEAD의 정상 CI를 별도로 확인한다.

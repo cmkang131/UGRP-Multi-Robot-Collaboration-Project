@@ -21,8 +21,10 @@ if __name__ == "__main__":
     sys.path.insert(0, str(ROOT))
 
 from scripts import agent_lock
+from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_ci_fast_path.py",
     "tests/test_owncam_memory_v3.py",
     "tests/test_owncam_memory_time.py",
     "tests/test_record_owncam_time.py",
@@ -81,6 +83,7 @@ TEST_PATTERNS = (
     "tests/test_zone_study_contract.py", "tests/test_zone_study_inputs.py",
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py",
+    "tests/test_scenario_capabilities_docs.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",
     "tests/test_zone_study_eval.py", "tests/test_zone_study_offline.py",
     "tests/test_zone_study_review_fixes.py", "tests/test_zone_study_review_r5.py",
@@ -441,6 +444,9 @@ def main(argv: list[str] | None = None) -> int:
     if not tests:
         print(f"Shard {index}/{args.shard_count} has no test files", file=sys.stderr)
         return 2  # Never invoke pytest with no paths: that collects the whole repo.
+
+    if not check_fixtures(ROOT):
+        return 2  # Refuse before pytest or the shared host lock is started.
 
     env = os.environ.copy()
     for name in tuple(env):

@@ -1,10 +1,11 @@
 # P09 후속 task prompts — 한 항목당 한 PR
 
-이 문서는 실행하지 않은 작업 배정안이다. T01/T02는 병렬 진행 중인 P01/P02 소유 작업에 요구/시험을 전달하며 별도 중복 구현하지 않는다. T08–T10은 정적 계약 PR(a)와 하위 제어 PR(b)을 분리한다. 구현 전 열린 PR과 최신 소스를 대조하고 번호/번들은 프로젝트 절차로 새로 예약한다.
+이 문서는 실행하지 않은 작업 배정안이다. T01은 P01 소유 작업에 요구/시험을 전달한다. T02는 P02 이후의 별도 확장 제안이며 범위·담당 합의 전 중복 구현하지 않는다. T08–T10은 정적 계약 PR(a)와 하위 제어 PR(b)을 분리한다. 구현 전 열린 PR과 최신 소스를 대조하고 번호/번들은 프로젝트 절차로 새로 예약한다.
 
 ## 모든 prompt에 적용하는 계약
 
 - AGENTS.md/CONTRIBUTING.md/README.md/docs/current_status.md를 읽고 fetch/열린 PR 확인. 자기 worktree/브랜치와 지정 파일만 수정한다. 선행 PR의 실제 병합 SHA/검증 범위를 기록한다.
+- 정상 GitHub CI는 허용되며 필수 검증이다. workflow를 취소하지 않는다. 커밋 지시어로 CI를 건너뛰지 않는다. 로컬 실행 범위·예산은 원격 CI와 구분한다.
 - 원본 `configs/zone_study_scenarios{,_v2}/s1–s6`, 기존 지도/실험/성공 번들을 보존한다. 새 dev fixture는 원본을 대체하지 않으며 본연구 DRAFT·seed·성공 기준을 몰래 바꾸지 않는다.
 - `no_comm/peer_ko/leader_ko/structured` 모두 **동일한 controller/config/센서/자기 기억 버전/상태 enum 채널**을 쓴다. 조건 차이는 통신 허용 범위뿐이다. role assignment와 제어 코드 해시를 따로 기록한다. 4조건별 override, s6 전용 host 해법, host가 고르는 양보/파트너는 금지한다.
 - 자기 RGB·정적 지도·공개 주문·자기 명령과 허용 수신만 사용한다. 비공개 배치/사건 시각/현재 정답/접촉/심판을 제어에 주지 않는다. setup manifest의 item identity 연결은 평가/장면 전용이다. P09의 inventory/feasibility 경로를 robot 입력으로 쓰지 않는다.
@@ -20,13 +21,15 @@
 - 물리: 최종3지도 각 reset→30초 정지. 초기 겹침·v3 모델/벽·자기 RGB를 평가 기록으로 확인. 통로 통과 판정은 없음.
 - Cap: 정적0, 물리3×30=90 SIM초. **READINESS C1의 동일 셀과 중복 계산하지 않는다.** s2/s4/s6 차단 R0를 닫는다.
 
-## T02 — 혼합 재고 및 order/item/count 어댑터 (P02 소유)
+## T02 — 혼합 재고 및 order/item/count 어댑터 (P02 다음의 별도 확장 과제)
+
+**범위·담당:** 정식 6종의 다색/count/can/tile/crate 확장 제안이며 **담당 미정**이다. 별도 PR 착수 전에 P02 담당과 변경 파일·범위·담당을 합의한다. 기존 P02는 cyan 1개 + 봉 1개의 좁은 혼합 임무다. 아래 요구를 #307의 완료 조건에 소급 추가하지 않는다. #307의 최종 구현과 검증 범위를 확인하고, 봉인된 기존 소스 대신 새 확장 진입점에서 이어 구현한다.
 
 **Prompt:** `host_spec`의 pair-only와 order_id=item_id 결합을 제거하되 `orders`와 setup inventory를 별도 객체로 보존하라. cyan2/red2의 fungible count, specific beam_1/crate_1/can_1, 혼합 solo+team을 모두 표현하는 정적 연결만 구현하라. `sim/zone_geometry_scene._resolve`의 cargo 존재 시 색 상자 삭제를 전체 inventory 보존 계약으로 바꾸고, generic cargo에 solo can/tile도 있는 것을 처리하라. runtime 인식이 성공했다고 표시하지 말라.
 
 - Fake: 정식6 JSON에서 물건 수7/4/4/4/4/3, 주문 수6/3/4/4/3/3, 모든 ID와 목적지 보존. 중복ID·누락/초과 count·잘못된 kind/item 연결 거절. `order-5`를 `beam_1`로 덮는 우회 금지. private pose/event만 바꿔 robot 공개 입력은 동일해야 한다.
 - 물리: 원본 s1 재고로 한 정상 전체 배달과 한 중복/오배정 실패 실행. 현재 미지원 품종은 해당 하위 작업이 닫힌 뒤 실행한다. 물건을 숨기거나 주문을 줄여 정상으로 세지 않는다.
-- Cap: 2×900=1,800초 제안. 경로는 s1 3.30–7.15 m, 실제 동시 배정/완주 시간은 미측정. R1 어댑터 완료와 전체 수행 완료를 구분한다.
+- Cap: 2×900=1,800초 제안. #307의 cyan+봉 인계 4조건×1800=7,200 SIM초와는 **별도 시험**이며 완료 조건·예산을 대체하거나 합산하지 않는다. 경로는 s1 3.30–7.15 m, 실제 동시 배정/완주 시간은 미측정. R1 어댑터 완료와 전체 수행 완료를 구분한다.
 
 ## T03 — red/green 색 상자 M1 확장
 
