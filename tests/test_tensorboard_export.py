@@ -811,3 +811,42 @@ def test_gpu_probe_reports_devices_without_robot_success(tmp_path, export_api):
     assert events.Scalars('hardware/internet_http_status')[0].value == 200
     assert 'evaluation/reported_success' not in events.Tags()['scalars']
     assert manifest['metadata']['outcome'] == 'gpu_available'
+
+
+def test_zone_study_terminal_manifest_readback_without_runtime(tmp_path, export_api):
+    """Optional TensorBoard CI lane: pure JSON evidence, no robot imports."""
+    from harness.zone_study_contract import digest
+    from harness.zone_study_eval import PROVISIONAL_SCHEMA, efficiency_metrics
+    from scripts.tensorboard_tools.zone_study import RUN_SCHEMA
+    convert, EA = export_api
+    src = tmp_path / 'synthetic'
+    record = {'schema': PROVISIONAL_SCHEMA, 'trial_id': 'fake-host-error', 'condition': 'no_comm',
+              'scenario': 'synthetic', 'seed': 1, 'robots': ['r1', 'r2', 'r3'],
+              'budget': {'sim_horizon_s': 120.}, 't0_sim_s': 0., 'end_sim_s': 0.,
+              'end_reason': 'host_error', 'failure_class': 'infra:HOST_ERROR',
+              'orders': [{'order_id': 'o1', 'item_ids': ['i1'], 'kind': 'cyan',
+                          'count': 1, 'destination_zone': 'A'}],
+              'referee': {'status': 'not_evaluated', 'deliveries': []}, 'record_complete': False}
+    put(src, 'study/trial_record.json', record)
+    put(src, 'eval_only/evaluation.json', efficiency_metrics(record))
+    put(src, 'result.json', {'schema': RUN_SCHEMA, 'run_id': 'fake-host-error', 'condition': 'no_comm',
+                            'evidence_kind': 'synthetic', 'terminal': True, 'bundle_sha256': digest({}),
+                            'failure_class': 'infra:HOST_ERROR',
+                            'study': {'end_reason': 'host_error', 'end_sim_s': 0., 'record_complete': False}})
+    put(src, 'manifest.json', {'schema': RUN_SCHEMA, 'run_id': 'fake-host-error', 'bundle': {},
+                              'terminal': {'record_complete': False},
+                              'bundle_sha256': digest({}), 'files': {
+                                  str(p.relative_to(src)): hashlib.sha256(p.read_bytes()).hexdigest()
+                                  for p in src.rglob('*.json')}})
+    manifest = convert(src, tmp_path / 'events', max_images=0, allow_synthetic=True)
+    ea = EA(str(tmp_path / 'events')).Reload()
+    assert ea.Scalars('evaluation/reported_success')[0].value == 0.
+    assert ea.Scalars('result/par_makespan_sim_s')[0].value == 240.
+    assert ea.Scalars('cohort/trials')[0].value == 1.
+    assert 'result/tokens_total' not in ea.Tags()['scalars']
+    assert 'result/delivery_rate' not in ea.Tags()['scalars']
+    assert manifest['metadata']['failure_class'] == 'infra:HOST_ERROR'
+    (src / 'study/trial_record.json').write_text('{}')
+    with pytest.raises(ValueError, match='hash mismatch'):
+        convert(src, tmp_path / 'rejected', max_images=0, allow_synthetic=True)
+    assert not list((tmp_path / 'rejected').glob('events*'))

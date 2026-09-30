@@ -57,7 +57,7 @@ from harness.zone_study_inputs import hidden_events as scenario_hidden_events
 from harness.zone_study_scenarios import EVENT_KINDS
 from sim import zone_hidden_events as realisation
 
-REFEREE_PROFILE = 'zone_study_referee.v2'
+REFEREE_PROFILE = 'zone_study_referee.v3'
 SETTLE_S = 2.0
 ON_FLOOR_MAX_Z_M = .05
 SETTLED_SPEED_M_S = .01
@@ -74,6 +74,8 @@ def profile() -> dict:
            'order_rule': 'harness.zone_study_eval.delivery_state',
            'metrics': 'harness.zone_study_eval.efficiency_metrics',
            'penalty_factor': ev.DEFAULT_PENALTY_FACTOR, 'success_end_reason': ev.SUCCESS_END_REASON,
+           'confirmation_window': 'confirmation must precede observed end and SIM cap',
+           'missing_sample': 'break settling window; invalidate standing delivery',
            'scope': 'evaluation only; stops the episode on orders_complete; never a robot input'}
     return {**row, 'sha256': digest(row)}
 
@@ -85,6 +87,7 @@ class Referee:
         if not orders:
             raise ContractViolation('the referee needs a non-empty order sheet')
         self.orders = [copy.deepcopy(dict(o)) for o in orders]
+        ev._orders({'orders': self.orders})  # reject ambiguous order/item joins before sampling
         self.zones = {z: zone_rect(static_map, z) for z in ZONES if f'zone_{z}' in static_map['regions']}
         self._cand: dict[str, dict] = {}        # item -> {'zone', 'since'} while not yet confirmed
         self._held_since: dict[str, float] = {}  # standing item -> SIM start of its current continuous hold
@@ -93,6 +96,7 @@ class Referee:
         self.samples = 0
         self.last_t = None
         self.completed_at = None                # SIM time orders_complete first held (chunk boundary)
+        self._kinds: dict[str, str] = {}
 
     # -- judgement ----------------------------------------------------------
     def zone_of(self, row: Mapping):
@@ -122,11 +126,11 @@ class Referee:
 
     def observe(self, t: float, items: Mapping[str, Mapping]) -> list[dict]:
         """One truth sample at SIM ``t``. Returns the rows it appended (eval only)."""
+        if isinstance(t, bool) or not isinstance(t, (int, float)) or not math.isfinite(t) or t < 0:
+            raise ContractViolation('referee SIM time must be finite and nonnegative')
         t = float(t)
         if self.last_t is not None and t < self.last_t - 1e-9:
             raise ContractViolation('referee samples must be in SIM order')
-        self.last_t, self.samples = t, self.samples + 1
-        new = []
         for item, row in sorted(items.items()):
             if set(row) != TRUTH_KEYS:
                 raise ContractViolation(f'{item}: truth row keys {sorted(row)} != {sorted(TRUTH_KEYS)}')
@@ -135,6 +139,24 @@ class Referee:
                     for k in ('x', 'y', 'yaw', 'z', 'speed')):
                 raise ContractViolation(f'{item}: truth row needs finite numbers and a bool held (corrupted '
                                         'simulator state is refused, never judged)')
+            if (not isinstance(item, str) or not item or not isinstance(row['kind'], str)
+                    or not row['kind'] or row['speed'] < 0 or row['z'] < 0
+                    or self._kinds.get(item, row['kind']) != row['kind']):
+                raise ContractViolation('invalid item identity, kind, height or speed')
+        self.last_t, self.samples = t, self.samples + 1
+        new = []
+        # A missing truth sample is not evidence of continuous settling/standing.
+        for item in (self._cand.keys() | self.standing.keys()) - items.keys():
+            self._cand.pop(item, None)
+            self._held_since.pop(item, None)
+            done = self.standing.pop(item, None)
+            if done is not None:
+                gone = {**done, 'event': 'departed', 'zone': None, 'from_zone': done['zone'],
+                        'sim_s': t, 'reason': 'missing_truth'}
+                self.history.append(gone)
+                new.append(gone)
+        for item, row in sorted(items.items()):
+            self._kinds[item] = row['kind']
             zone = self._resting_zone(row)
             done = self.standing.get(item)
             if done is not None:
@@ -207,7 +229,7 @@ class Referee:
 
     def trial_rows(self) -> list[dict]:
         """``delivery_state`` rows: every confirmation of each item still standing, in SIM order."""
-        return [{k: r[k] for k in ('item_id', 'kind', 'zone', 'sim_s')} for r in self.history
+        return [{k: r[k] for k in ('item_id', 'kind', 'zone', 'sim_s', 'confirmed_sim_s')} for r in self.history
                 if r['event'] == 'confirmed' and r['item_id'] in self.standing]
 
     def record(self) -> dict:
@@ -225,6 +247,12 @@ class Referee:
 def evaluation_block(record: Mapping, referee: Referee) -> dict:
     """PAR-2 / delivery rate from ``zone_study_eval.efficiency_metrics`` + per-order times."""
     metrics = ev.efficiency_metrics(record)
+    state = ev.delivery_state(record)
+    orders = referee.per_order()
+    for oid, row in orders.items():
+        items = {i: d['sim_s'] for i, d in state['delivered'].items() if d['order_id'] == oid}
+        row.update(state['by_order'][oid], item_delivered_sim_s=items,
+                   completed_sim_s=max(items.values()) if state['by_order'][oid]['complete'] and items else None)
     keys = ('end_reason', 'success', 'par_makespan_sim_s', 'penalty_factor', 'sim_horizon_s', 'makespan_sim_s',
             'delivery_rate', 'delivered_items', 'ordered_items', 'misdelivered_items', 'surplus_items',
             'orders_complete', 'orders_by_id')
@@ -232,16 +260,18 @@ def evaluation_block(record: Mapping, referee: Referee) -> dict:
             'departures': sum(r['event'] == 'departed' for r in referee.history),
             'departed_unsettled_items': len(referee.departed_unsettled()),
             't0_sim_s': record.get('t0_sim_s'), 'end_sim_s': record['end_sim_s'],
-            'orders': referee.per_order(), 'referee_profile_sha256': profile()['sha256'],
+            'orders': orders, 'referee_profile_sha256': profile()['sha256'],
             'note': 'evaluation only; never a robot input'}
 
 
 def apply_to_record(record: dict, referee: Referee) -> dict:
     """Fill a package I trial record's referee block; success only from the referee."""
     record['referee'] = {'deliveries': referee.trial_rows(), 'departed_unsettled': referee.departed_unsettled(),
-                         'profile': REFEREE_PROFILE}
+                         'profile': REFEREE_PROFILE, 'observed_end_sim_s': record['end_sim_s']}
     done = referee.completion_sim_s()
-    if done is not None:
+    eligible = (not record.get('failure_class') and record['end_reason'] in
+                ('sim_horizon', 'orders_incomplete', ev.SUCCESS_END_REASON))
+    if done is not None and eligible and ev.delivery_state(record)['orders_complete']:
         record['end_reason'], record['end_sim_s'] = ev.SUCCESS_END_REASON, done
     return record
 
@@ -250,6 +280,8 @@ def not_evaluated(record: dict) -> dict:
     """The referee block when no referee exists (the run failed before it); the study
     layer never sets ``orders_complete``, so such a record is never a success."""
     record['referee'] = {'deliveries': [], 'status': 'not_evaluated', 'profile': REFEREE_PROFILE}
+    if record.get('end_reason') == ev.SUCCESS_END_REASON:
+        record['end_reason'] = 'not_evaluated'
     return record
 
 

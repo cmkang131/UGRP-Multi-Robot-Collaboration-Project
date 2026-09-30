@@ -563,7 +563,7 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
         for rid in ROBOTS:
             host._hold(rid, float(host.world.data.time))
         result = trial.finish(t)
-    except Exception as exc:                                 # noqa: BLE001 - recorded, then re-raised below
+    except (Exception, KeyboardInterrupt) as exc:             # recorded, then re-raised below
         error = exc
         failure = {'type': type(exc).__name__, 'message': str(exc)[:2000], 'traceback': traceback.format_exc()[-8000:],
                    'sim_s': None if host is None else round(float(host.world.data.time), 3),
@@ -571,7 +571,8 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
         stop = 'exception'
     finally:
         record = write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, trial, result, stop,
-                               failure, code, started, load0, dev, referee=referee)
+                               failure, code, started, load0, dev, referee=referee, horizon_s=horizon_s,
+                               scenario_id=scenario['scenario_id'])
         if host is not None:
             host.close()
     env = {'mujoco': mujoco.__version__, 'opencv': cv2.__version__, 'numpy': np.__version__}
@@ -586,7 +587,7 @@ def run_trial(prereg, episode, condition, out, *, horizon_s, dev=False, model_ad
 
 
 def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, trial, result, stop, failure, code,
-                  started, load0, dev, *, referee=None):
+                  started, load0, dev, *, referee=None, horizon_s=None, scenario_id=None):
     """Everything that exists, also after an exception; returns the result summary."""
     ledger = getattr(trial, 'send_ledger', None) if trial is not None else None
     summary = {'schema': SCHEMA, 'run_id': out.name, 'condition': condition, 'episode': episode['episode_id'],
@@ -598,6 +599,10 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
                'actor': trial.actor if trial else prereg.get('actor', zi.FIXTURE_ACTOR),
                'plumbing_only': trial is None or trial.actor == zi.FIXTURE_ACTOR,
                'note_ko': '통합 dev 경로. 통신 효과·연구 결과가 아니다. ' + zi.TEMPORARY_NOTE_KO}
+    summary['terminal'] = True
+    summary['scenario'] = scenario_id or getattr(trial, 'scenario_id', episode['episode_id'])
+    summary['sim_horizon_s'] = (horizon_s if horizon_s is not None else
+                                getattr(trial, 'horizon_s', prereg['horizon_s']))
     if host is not None:
         summary['sim_s'] = round(float(host.world.data.time), 3)
         ev = host.eval_only
@@ -632,6 +637,10 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
         summary['provider_sources'] = dict(host.provider_sources)
     if trial is not None:
         write_study(out, trial, result, summary, referee)
+    else:
+        record = incomplete_record(summary, orders=bundle['host_spec']['order_sheet']['orders'],
+                                   seed=episode['trial_seed'])
+        save_evaluation(out, record, summary)
     manifest = {'schema': SCHEMA, 'run_id': out.name, 'bundle': bundle, 'bundle_sha256': bundle_sha, 'code': code,
                 'applied_contact_profile': copy.deepcopy(host.contact_record) if host else None,
                 'perception_delay_s': zi.PERCEPTION_DELAY_S,
@@ -642,11 +651,59 @@ def write_outputs(out, prereg, episode, condition, bundle, bundle_sha, host, tri
                                                                    'VECLIB_MAXIMUM_THREADS', 'MKL_NUM_THREADS')}},
                 'load_average': {'start': [round(v, 2) for v in load0], 'end': [round(v, 2) for v in os.getloadavg()]},
                 'wall_s': round(time.time() - started, 1), 'pose_provider': bundle['pose_provider']['label']}
+    manifest['terminal'] = {'end_reason': summary['study']['end_reason'],
+                            'failure_class': summary['failure_class'],
+                            'sim_horizon_s': summary['sim_horizon_s'],
+                            'record_complete': summary['study']['record_complete']}
     (out / 'result.json').write_text(json.dumps(summary, indent=2, ensure_ascii=False, default=str) + '\n')
     manifest['files'] = {str(q.relative_to(out)): zi.file_sha256(q) for q in sorted(out.rglob('*'))
-                         if q.is_file() and q.name not in ('manifest.json',)}
+                         if q.is_file() and q != out / 'manifest.json'}
     (out / 'manifest.json').write_text(json.dumps(manifest, indent=2, ensure_ascii=False, default=str) + '\n')
     return summary
+
+
+def incomplete_record(summary, *, orders, seed, trial=None):
+    """Snapshot available logs without finishing the scheduler or inventing missing usage."""
+    record = {'schema': zr.ev.TRIAL_SCHEMA, 'trial_id': summary['run_id'],
+              'condition': summary['condition'], 'scenario': summary['scenario'], 'seed': seed,
+              'robots': list(ROBOTS), 't0_sim_s': 0., 'end_sim_s': summary.get('sim_s', 0.),
+              'budget': {'sim_horizon_s': summary['sim_horizon_s']}, 'orders': copy.deepcopy(orders),
+              'end_reason': terminal_reason(summary, 'not_evaluated'),
+              'failure_class': summary.get('failure_class'), 'record_complete': False,
+              'missing': ['terminal_result'], 'end_state': {}}
+    if trial is not None:
+        record.update(calls=copy.deepcopy(trial.calls), messages=copy.deepcopy(trial.messages),
+                      actions=copy.deepcopy(trial.actions), request_archive=copy.deepcopy(trial.requests),
+                      provenance=copy.deepcopy(trial.provenance))
+    if summary['condition'] == 'leader_ko':
+        record['leader_id'] = ROBOTS[int(seed) % len(ROBOTS)]
+    return zr.not_evaluated(record)
+
+
+def terminal_reason(summary, default):
+    failure = summary.get('failure') or {}
+    if failure.get('type') in ('KeyboardInterrupt', 'InterruptedError') or summary.get('stop') == 'interrupted':
+        return 'interrupted'
+    return {llm.HOST_ERROR: 'host_error', llm.API_ERROR: 'api_failure',
+            llm.OTHER: 'policy_failure'}.get(summary.get('failure_class'),
+                                           'aborted' if failure else default)
+
+
+def save_evaluation(out, record, summary, referee=None):
+    """Persist the terminal envelope and recomputed verdict, including early failures."""
+    study = out / 'study'
+    study.mkdir(parents=True, exist_ok=True)
+    (study / 'trial_record.json').write_text(json.dumps(record, indent=1, ensure_ascii=False) + '\n')
+    evaluation = (zr.evaluation_block(record, referee) if referee is not None else
+                  {'schema': 'ugrp.zone_study_referee_evaluation.v2', 'status': 'not_evaluated',
+                   **zr.ev.efficiency_metrics(record), 'note': 'no terminal referee evaluation'})
+    summary.setdefault('eval_only', {})['evaluation'] = evaluation
+    (out / 'eval_only').mkdir(parents=True, exist_ok=True)
+    (out / 'eval_only' / 'evaluation.json').write_text(json.dumps(evaluation, indent=1, ensure_ascii=False) + '\n')
+    summary['study'] = {'end_reason': record['end_reason'], 'end_sim_s': record['end_sim_s'],
+                        'record_complete': record.get('record_complete', True),
+                        'end_state': record.get('end_state', {}),
+                        'reopen': zo.reopen_trial_record(study / 'trial_record.json')}
 
 
 def write_study(out, trial, result, summary, referee=None):
@@ -673,27 +730,24 @@ def write_study(out, trial, result, summary, referee=None):
     (study / 'study_config.json').write_text(json.dumps(trial.study_config(), indent=1, ensure_ascii=False) + '\n')
     (study / 'send_ledger.json').write_text(json.dumps(trial.send_ledger.to_dict(), indent=1) + '\n')
     if result is None:
-        return
+        record = incomplete_record(summary, orders=trial.sheet['orders'], seed=trial.seed, trial=trial)
+    else:
+        record = trial.trial_record(result)
     # Always write the trial record (PR #257 review P1-G b). Without a referee
     # (the run failed before it existed) the block says not_evaluated and the
     # record is never a success.
-    record = (zr.apply_to_record(trial.trial_record(result), referee) if referee is not None
-              else zr.not_evaluated(trial.trial_record(result)))
+    record['failure_class'] = summary.get('failure_class')
+    record['end_reason'] = terminal_reason(summary, record['end_reason'])
+    record = (zr.apply_to_record(record, referee) if referee is not None and result is not None
+              else zr.not_evaluated(record))
     if isinstance(trial.send_ledger, llm.MainStudySendLedger):
-        record['failure_class'] = summary.get('failure_class')
         record['model_usage'] = summary['model_usage']
-        if record['failure_class'] == llm.API_ERROR:
-            record['end_reason'] = 'api_failure'
     record['pose_provider'] = dict(summary['pose_provider'])   # A's provenance keys are closed: top level
     record['plumbing_only'] = trial.actor == zi.FIXTURE_ACTOR
-    (study / 'trial_record.json').write_text(json.dumps(record, indent=1, ensure_ascii=False) + '\n')
-    evaluation = (zr.evaluation_block(record, referee) if referee is not None
-                  else {'schema': 'ugrp.zone_study_referee_evaluation.v2', 'status': 'not_evaluated',
-                        'success': False, 'note': 'no referee: the run failed before the referee existed'})
-    summary.setdefault('eval_only', {})['evaluation'] = evaluation
-    (out / 'eval_only').mkdir(parents=True, exist_ok=True)
-    (out / 'eval_only' / 'evaluation.json').write_text(json.dumps(evaluation, indent=1, ensure_ascii=False) + '\n')
-    summary['study'] = {'calls': len(result.calls), 'messages': len(result.messages), 'actions': len(result.actions),
+    save_evaluation(out, record, summary, referee if result is not None else None)
+    if result is None:
+        return
+    summary['study'].update({'calls': len(result.calls), 'messages': len(result.messages), 'actions': len(result.actions),
                         'end_reason': record['end_reason'], 'end_sim_s': record['end_sim_s'],
                         'end_state': record['end_state'],
                         'channel': zo.channel_checks(trial, result), 'cost': zo.cost_checks(trial, result),
@@ -703,7 +757,7 @@ def write_study(out, trial, result, summary, referee=None):
                         'dispatch': collections.Counter(f'{d["api"]}:{(d["ack"] or {}).get("accepted")}'
                                                         for d in trial.dispatch_log),
                         'pair_status_sha256': trial.pair_status.config_sha256(),
-                        'study_config_sha256': digest(trial.study_config())}
+                        'study_config_sha256': digest(trial.study_config())})
 
 
 def llm_driver(prereg, args, *, wire=None):

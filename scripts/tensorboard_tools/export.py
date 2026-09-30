@@ -22,6 +22,7 @@ import subprocess
 from scripts.carry_failure_metrics import issued_command_count
 
 from scripts.tensorboard_tools.rgb_communication import EXTRA_METRICS, RUN_SCHEMA, export_communication
+from scripts.tensorboard_tools.zone_study import RUN_SCHEMA as STUDY_SCHEMA, export_study, file_digest
 
 MAX_BYTES = 64 * 1024 * 1024
 HP_METRICS = ('process/exit_code', 'result/wall_s', 'result/sim_s', 'result/commands', 'result/model_calls',
@@ -555,6 +556,10 @@ def export_runtime_benchmark(src, w, data):
 
 
 def export_execution(src, w, result, max_images, coverage_audit=None):
+    if result.get('schema') == STUDY_SCHEMA:
+        if coverage_audit is not None:
+            raise ValueError('Coverage audit does not apply to zone-study evidence')
+        return export_study(src, w, result, max_images)
     if result.get('schema_version') == RUN_SCHEMA:
         if coverage_audit is not None:
             raise ValueError('Coverage audit applies only to ACT dispatch evidence, not communication runs')
@@ -978,6 +983,12 @@ def convert(source, output, *, max_images=8, media_port=6007, allow_synthetic=Fa
         kind, data = 'teacher-infrastructure-abort', src.read(source.name, required=True)
     else:
         result = src.read('result.json')
+        raw_manifest = src.read('manifest.json')
+        if obj(raw_manifest).get('schema') == STUDY_SCHEMA and obj(result).get('schema') != STUDY_SCHEMA:
+            raise ValueError('Zone-study manifest requires its matching result schema')
+        if isinstance(result, dict) and result.get('schema') == STUDY_SCHEMA and result.get('evidence_kind') == 'synthetic':
+            if not allow_synthetic or not output.is_relative_to(Path(tempfile.gettempdir()).resolve()):
+                raise ValueError('Synthetic zone-study evidence requires explicit temporary-logdir opt-in')
         if isinstance(result, dict) and result.get('schema_version') == RUN_SCHEMA:
             if result.get('evidence_kind') not in {'deterministic_physical_replay', 'live_llm'}:
                 if not allow_synthetic or not output.is_relative_to(Path(tempfile.gettempdir()).resolve()):
@@ -985,7 +996,9 @@ def convert(source, output, *, max_images=8, media_port=6007, allow_synthetic=Fa
         training = src.read('report.json')
         finalization = src.read('artifacts/report.json')
         benchmark = src.read('runtime-benchmark-comparison.json')
-        if finalization_report(finalization):
+        if obj(result).get('schema') == STUDY_SCHEMA:
+            kind, data = 'execution', result
+        elif finalization_report(finalization):
             kind, data = 'act-finalization', finalization
         elif isinstance(benchmark, dict) and benchmark.get('schema') == 'ugrp.act_runtime_benchmark_comparison.v1' and result is None and training is None:
             kind, data = 'act-runtime-benchmark', benchmark
@@ -1024,14 +1037,21 @@ def convert(source, output, *, max_images=8, media_port=6007, allow_synthetic=Fa
         else: meta, metrics = export_execution(src, w, data, max_images, coverage)
         videos = []
         video_names = () if kind == 'teacher-infrastructure-abort' else ('motion.mp4', 'execution.mp4', 'overview.mp4')
+        study_videos = {v['path']: v for v in meta.get('video_declarations', [])}
+        if meta.get('family') == 'zone-study':
+            video_names = tuple(study_videos)
         if isinstance(result, dict) and result.get('schema_version') == RUN_SCHEMA:
             video_names += ('backend/execution.mp4',)
         for name in video_names:
             p = inside(source, name)
             if p:
                 st = p.stat(); ident = sha(str(p).encode())[:20]
-                videos.append({'id': ident, 'path': str(p), 'size': st.st_size, 'mtime_ns': st.st_mtime_ns})
-                w.text('media/' + name, f'[원본 {name} 재생](http://127.0.0.1:{media_port}/video/{ident})\n\n'
+                entry = {'id': ident, 'path': str(p), 'size': st.st_size, 'mtime_ns': st.st_mtime_ns}
+                label = study_videos.get(name, {}).get('kind', 'original')
+                if name in study_videos:
+                    entry.update(kind=label, sha256=study_videos[name]['sha256'])
+                videos.append(entry)
+                w.text('media/' + name, f'[{label}: {name} 재생](http://127.0.0.1:{media_port}/video/{ident})\n\n'
                        '로컬 미디어 서버가 필요합니다. 영상 시간과 SIM 시간의 자동 동기화는 하지 않습니다.', markdown=True)
         w.text('provenance/source', {'source_directory': str(source), 'export_time_s': at,
             'event_wall_time': '변환 시각입니다. 실행 시작·종료 시각이 아닙니다. 가로축은 STEP으로 보세요.',
@@ -1040,13 +1060,22 @@ def convert(source, output, *, max_images=8, media_port=6007, allow_synthetic=Fa
             'limits': '선택한 실행들의 개별 기록입니다. 성공률 집계·조건 동등성·실물 성능을 자동 주장하지 않습니다. 미기록 비용/시각은 0으로 채우지 않습니다.'})
         hp = {k: str(meta.get(k) if meta.get(k) is not None else 'unrecorded') for k in ('family', 'policy', 'case', 'source_sha', 'seed', 'outcome', 'clock', 'setup_sha256', 'run_id', 'condition')}
         hp['condition_fingerprint'] = stable_digest({k: meta.get(k) for k in ('family','case','source_sha','seed','scope','clock','goal','spawn_offset','contact_profile','setup_sha256','limits')})
-        w.hparams(hp, HP_METRICS + tuple(obj(meta.get('offline_scalars')).get('tags') or ()))
+        if meta.get('family') == 'zone-study':
+            hp.update({k: str(meta.get(k)) for k in ('failure_class', 'referee_status', 'record_complete',
+                                                    'sim_horizon_s', 'tokens_complete', 'plumbing_only')})
+        w.hparams(hp, tuple(metrics) if meta.get('family') == 'zone-study' else
+                  HP_METRICS + tuple(obj(meta.get('offline_scalars')).get('tags') or ()))
         manifest.update(metadata=meta, source_files=src.files, warnings=src.warnings, videos=videos, counts=w.counts)
         w.close()
         for relative, record in src.files.items():
             current = inside(src.root, relative)
-            if current is None or sha(current.read_bytes()) != record['sha256']:
+            if current is None or file_digest(current) != record['sha256']:
                 raise ValueError(f'Source changed during export: {relative}; no event file published')
+        if meta.get('family') == 'zone-study':
+            actual = {str(p.relative_to(src.root)) for p in src.root.rglob('*')
+                      if p.is_file() and p != src.root / 'manifest.json'}
+            if actual != set(src.files) - {'manifest.json'}:
+                raise ValueError('Zone-study file inventory changed during export; no event file published')
         if (kind == 'teacher-infrastructure-abort' and
                 (src.root / 'route-teachers-managed/raw/south-train-a/result.json').exists()):
             raise ValueError('Teacher result appeared during infrastructure import; no event file published')
