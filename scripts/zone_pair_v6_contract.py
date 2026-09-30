@@ -80,6 +80,13 @@ PENDING_REVISION = 'v6h'      # pre-seal source preview only; no current-source 
 V6H_EXTRA_SOURCE_PATHS = (
     'scripts/zone_pair_v6h_admission.py',
     'scripts/zone_teacher.py',  # ArmSequence is also used by the student controller.
+    # Runtime data are not discovered by the Python import closure. The scene
+    # has only inline/builtin assets; any future external MJCF inputs need pins.
+    'sim/masterpi_dynamics_calibration.json',
+    'sim/masterpi_scene.xml',
+    'maps/zones/zone_wide_door.json',  # authored base of the tags_v2/dock_v3 scene
+    # OwnCamTeamHost imports the chain runner's skill_module by its string name.
+    'harness/wrist_zone_skill_v9.py',
 )
 
 

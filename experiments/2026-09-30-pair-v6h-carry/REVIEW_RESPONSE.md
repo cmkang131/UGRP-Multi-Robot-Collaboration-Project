@@ -57,3 +57,55 @@
 새 검증은 `analysis/sigma_scope/validation.json`과 JUnit에 기록한다. 소스 해시 변화 목록과 builder의 범위 선언을 갱신했고 운반 일정·정지 tick 골든은 유지한다. `prereg_v6h.json` 없음, CURRENT_REVISION=v6e, PR draft 유지, 봉인·병합 없음. **새 head SHA에서 조정자의 물리 인수 재생이 필요하다.**
 
 이번 수정의 검사: `test_zone_pair_v6h.py` **140 passed**, `test_zone_pair_registered_source.py` **24 passed**. 검색으로 고른 관련 44개 파일은 **1371 passed / 물리 통합 1 failed(CGLError)**였고, 유일한 실패 파일을 기존 no_physics 플러그인으로 재검사한 결과 **14 passed / 물리 1 skipped**다. 제어기 소스는 두 검사 사이에 바뀌지 않았다. 중복을 뺀 오프라인 통과는 **1535개**이며 실패 시도와 제외 확인을 모두 보존했다. 빌더 두 모드는 **미봉인 72건 / 268개 pin**을 확인했다.
+
+
+## Delta 검토 R292-D1/D3 대응 — 2026-09-30, 핀·설명만 수정
+
+대상은 `3c4fe30e2197518443b195392212b0341507ac59`, 독립 검토는
+`origin/codex/review-292b`의 `8f37388b848dec69ee7b5a5389323256e64d0146`이다.
+
+- **R292-D1:** 미봉인 입력 핀에 `sim/masterpi_dynamics_calibration.json`과
+  `sim/masterpi_scene.xml`을 추가했다. 실제 chain runner가 문자열로 선택하여
+  OwnCamTeamHost가 동적으로 import하는 `harness/wrist_zone_skill_v9.py`도 명시했다.
+  전이 import인 v7·v8과 실제 장면의 원본 지도 `maps/zones/zone_wide_door.json`까지 포함해 **268 → 274개**다. 원본 파일 내용은 바꾸지 않았다.
+- 실제 map resolve는 zone_wide_door → tags_v2 → dock_v3 JSON을 읽는다. 마지막에 추가한 원본 지도 외 두 지도와 geometry_v2, 두 제어기 보정 JSON,
+  carry 3종 fit·고정 forward gain fit·hR2 prior·확증 배치는 기존 핀에 있다.
+  카메라 보정은 `sim/masterpi_camera_profile.py`, `floor_light_v1`은
+  `sim/render_profile.py`에 상수로 정의되어 이미 pin된다. 기본 XML과 순수 생성한
+  multi-robot/dock/cargo/profile XML에는 외부 MJCF include·file asset이 없고
+  텍스처·형상은 내장/인라인이다. 이후 외부 asset이 생기면 명시 pin을 추가해야 한다.
+- 리뷰 테스트를 그대로 복사하고 두 `xfail`을 제거했다. 지도·보정·렌더/카메라
+  정의·동적 skill의 바이트 변조와 JSON/XML 파일 누락도 검사한다. CI 목록에 포함했다.
+  누락 시 admission은 예외로 닫히며 dynamics loader의 기본값 fallback으로 진행하지 않는다.
+- **R292-D3:** workflow의 `requires` 설명과 `docs/zone_study_integration.md`의 σ 범위를
+  실제 `probe_all_sweeps`와 맞췄다. 자기 위치 여유는 비적재/적재 pair 팔·차체,
+  접근·후진·preclose에 1σ, 빔-fit·global/정합은 기존 2σ다.
+- **R292-D2 / 기존 지적 2는 유보:** **PR #299가 병합된 뒤** 검토 완료 분류기와
+  `CLASSIFY_NOTES.md`/`SEALED_INPUT.md` 등 평가 입력을 가져와 pin한다. #299의 base는
+  `claude/b-v6h-gain`이므로 그 PR 병합만으로 #292 통합 완료가 되지 않는다.
+  builder/recorder → classifier의 schema·evaluation_coverage·wall_contact.coverage
+  연결과 실제 입력 호환 검사까지 후속으로 확인한다. 이 작업에서는 통합·pin하지 않았다.
+
+제어기·명령 생성·물리·입력 데이터는 `3c4fe30e` 그대로다. 274개 핀 중 계약 목록과
+workflow 설명 두 파일을 뺀 **272개 파일의 Git blob 바이트 일치**를 확인했다.
+계약 모듈은 `V6H_EXTRA_SOURCE_PATHS`를 제외한 AST가 같고, workflow JSON의 유일한
+차이는 `workflows[39].requires` 설명이다. 생성 worker 72건도 기존 검토 해시
+`29c52b8d66aec8a2f8e8dcc1f78890b866615ace1b1cd75a64fd733341f62b97`와 같다.
+이는 명령 스트림을 바꾸지 않는 수정이라는 소스·입력 근거이며 새 물리 재생 결과는 아니다.
+사용자가 전달한 `3c4fe30e`의 11/11 bit-identical 인수 기록은 그 SHA의 별도 증거로 유지한다.
+
+`source_changes_UNSEALED.json`을 갱신했다. `CURRENT_REVISION=v6e`, v83/2.16.0,
+미봉인 상태와 과거 prereg 바이트를 유지하며 최종 봉인·병합·물리 실행은 하지 않는다.
+정적 대조·빌더 receipt는 `analysis/review_292_delta_fixes/`에 보존한다.
+
+첫 검사에서 기존 두 반례는 통과했지만, 추가한 실제 Scene 입력 감사가 원본 지도 누락을 발견했다(**182 passed / 1 failed**). 실패 기록을 보존하고 원본 지도 핀 및 변조 검사를 추가했다. 제어기나 지도 바이트 수정은 없다.
+
+최종 검사는 **250 passed / 실패·skip·xfail 0**(166.30초)이다. 지정한
+`test_zone_pair_v6h.py` 140개 + `test_zone_pair_registered_source.py` 24개 +
+`test_zone_pair_v6h_review_delta.py` 20개 = **184개**, CI 목록 변경 관련
+`test_ci_sharding.py`는 **66개**다. 두 원본 반례도 xfail 없이 통과했다.
+공용 잠금 아래 한 스레드로 실행했고 자기 잠금을 반환했다. 물리 step·실제 vision
+worker·네트워크·렌더 시도 카운터는 모두 0이다. 새 실험 결과가 아니므로 TensorBoard
+변환·서버·Drive 작업은 없다. 최종 결과와 첫 실패의 해시·실행 명령은
+`analysis/review_292_delta_fixes/validation.json`, 원본 로그/JUnit은
+`/Users/changmin/projects/ugrp/outputs/v6h-register-delta-fixes-20260930/`에 있다.
