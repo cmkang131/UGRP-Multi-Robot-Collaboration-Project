@@ -112,6 +112,8 @@ def parser():
 
 def load_config(args):
     prereg = json.loads(args.prereg.read_text())
+    if prereg.get('registration_revision') == 'v6h':
+        raise ValueError('v6h confirmatory chain requires scripts.run_pair_stage_probes --prereg')
     if prereg.get('registration_version') == 6:
         from scripts.zone_pair_v6_contract import load_config as load_v6
         return load_v6(args)

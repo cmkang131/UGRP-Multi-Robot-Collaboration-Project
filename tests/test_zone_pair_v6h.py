@@ -295,3 +295,269 @@ def test_builder_dry_run_verify_and_tamper_rejection_without_final_seal(capsys):
     capsys.readouterr(); p['runs'][0]['seed'] = 911
     with pytest.raises(ValueError, match='differs'):
         BUILDER.verify(p)
+
+
+# Fixed numbers independently calculated by the reviewer's probe+fake-team replay.
+# Extended with a 50-digit Decimal solution of d = v*(T-(.8-.05)*(1-exp(-T/.8))).
+# v = 1.4004 * .9483378899463337 * (.06/(2.2/1.4)); kappa exactly once.
+# Keep these literals: using leg_duration/timing_calibration here would hide M3.
+@pytest.mark.parametrize('seg,length,end,stop', [
+    (0, .25, 22.179622442616015, 22.2),
+    (0, .55, 28.09653105964494, 28.1),
+    (1, .85, 34.01282131543404, 34.1),
+])
+def test_real_two_robot_schedule_and_carry_stop_ticks(monkeypatch, seg, length, end, stop):
+    from tests.test_zone_pair_executor import active
+    h = pair_policy('b-v6h1')
+    host = _team(monkeypatch, 'fixed-timing', {k: v for k, v in vars(h).items() if k != 'name'})
+    endpoints = active(host)
+    # The route is static task input. Different PF x must not change its timing.
+    for rid, x in (('r1', -100.), ('r2', 100.)):
+        from harness.zone_pair_executor import m2_controller
+        from tests.test_zone_pair_executor import CALIB
+        ep = endpoints[rid]
+        ep.plan['route'][seg + 1] = [ep.plan['route'][seg][0] + length, ep.plan['route'][seg][1]]
+        ctl = m2_controller(ep, copy.deepcopy(ep.plan), copy.deepcopy(CALIB['params']))
+        ctl.seg = seg
+        ctl.grasp_estimate = [x, .05, 0. if rid == 'r1' else math.pi]
+        ctl.schedule = ctl.door_schedule(10.)
+        assert len(ctl.schedule) == 2
+        assert ctl.schedule[0] == (10., 16., {'forward': 0., 'left': 0., 'turn': 0.})
+        assert ctl.door_schedule(10.) == ctl.schedule  # repeat does not apply kappa twice
+        start, actual_end, command = ctl.schedule[-1]
+        assert start == 16.5
+        assert actual_end == pytest.approx(end, abs=1e-9, rel=0)
+        assert command == {'forward': (1 if rid == 'r1' else -1)*.06/(2.2/1.4), 'left': 0., 'turn': 0.}
+        emitted = []
+        ctl.port = SimpleNamespace(apply=lambda c, t: emitted.append((t, c)),
+                                   hold=lambda t: emitted.append((t, {'kind': 'hold'})))
+        ctl.state = 'carry'; ctl.next_look = math.inf  # timing-only fake; no image/physics
+        for tick in range(100, int(round(stop * 10)) + 1):
+            ctl._carry(tick / 10., True)
+        assert ctl.state == 'wait_lower'
+        assert ctl.claims['route_done']['sim_time'] == stop
+        assert emitted[-1] == (stop, {'kind': 'hold'})
+        assert emitted[-2] == (pytest.approx(stop - .1), {'kind': 'mecanum', **command, 'duration_s': .15})
+
+
+def _sealed_v6h(tmp_path, monkeypatch):
+    """Synthetic promotion in pytest's scratch only; never create repository prereg_v6h.json."""
+    from scripts import zone_pair_v6_contract as c
+    from scripts.zone_pair_authorization import digest, registration_payload
+    p = BUILDER.build()
+    p['sealed'] = True
+    p['registration_sha256'] = digest(registration_payload(p))
+    path = tmp_path/'sealed-fixture.json'; path.write_text(json.dumps(p))
+    monkeypatch.setattr(c, 'CURRENT_REVISION', 'v6h')
+    return path, p
+
+
+def _confirmatory_args(path, output):
+    from scripts.run_pair_stage_probes import parser
+    return parser().parse_args([
+        '--prereg', str(path), '--output', str(output), '--stage', 'chain',
+        '--policies', 'b-v6h1', '--sources', 'teacher', '--seeds', '941', '--nominal-seeds', '941',
+        '--env-placements', str(BUILDER.HERE/'placements_confirmatory_DRAFT.json'),
+        '--render-profile', 'floor_light_v1', '--chain-stop-leg', '1', '--pf-track', '--contact-track',
+        '--omp-threads', '1'])
+
+
+def test_real_builder_72_case_admission_and_stage_probe_prepare(tmp_path, monkeypatch, capsys):
+    from scripts import zone_pair_v6_contract as c, run_pair_stage_probes as runner
+    path, p = _sealed_v6h(tmp_path, monkeypatch)
+    args = _confirmatory_args(path, tmp_path/'never-created')
+    accepted, case = c.load_config(SimpleNamespace(**{**vars(args), 'run_id': p['runs'][0]['id']}))
+    assert accepted == p and case == p['cases'][0]
+    accepted, cases = runner.prepare_cases(args)
+    assert accepted == p and len(cases) == 72
+    assert [r['seed'] for r in cases] == [941]*60 + [943]*12
+    for actual, frozen in zip(cases, p['cases']):
+        assert actual == frozen
+        assert actual['render_profile'] == 'floor_light_v1'
+        assert actual['chain_stop_leg'] == 1 and actual['pf_track'] and actual['contact_track']
+    assert not args.output.exists()
+    # Exercise the public CLI through the same admission, still prepare-only.
+    argv = ['--prereg', str(path), '--output', str(args.output), '--stage', 'chain',
+            '--policies', 'b-v6h1', '--sources', 'teacher', '--seeds', '941', '--nominal-seeds', '941',
+            '--env-placements', str(args.env_placements), '--render-profile', 'floor_light_v1',
+            '--chain-stop-leg', '1', '--pf-track', '--contact-track', '--omp-threads', '1']
+    assert runner.main(argv) == 0
+    assert json.loads(capsys.readouterr().out)['cases'] == 72
+    assert not args.output.exists()
+    args.execute = True
+    with pytest.raises(ValueError, match='prepare-only'):
+        runner.prepare_cases(args)
+    assert not args.output.exists()
+
+
+@pytest.mark.parametrize('key,value', [
+    ('render_profile', None), ('chain_stop_leg', 0), ('pf_track', False), ('contact_track', False),
+    ('policies', ['b-v6g']), ('seeds', [911]), ('sources', ['e2e']), ('limit', 1),
+    ('workers', 2), ('omp_threads', 2), ('stage', ['carry']), ('diag_patch', 'image_valid_off'),
+    ('env_bias_y_m', [.01]), ('setup_variant', 'hR2'), ('prior_std', 'e2e'),
+])
+def test_confirmatory_stage_options_cannot_override_seal(tmp_path, monkeypatch, key, value):
+    from scripts.run_pair_stage_probes import prepare_cases
+    path, _ = _sealed_v6h(tmp_path, monkeypatch)
+    args = _confirmatory_args(path, tmp_path/'never')
+    setattr(args, key, value)
+    with pytest.raises(ValueError, match='sealed.*option'):
+        prepare_cases(args)
+    assert not args.output.exists()
+
+
+@pytest.mark.parametrize('target', ['run_count', 'seed', 'placement', 'prior', 'case', 'render', 'trace', 'termination', 'source'])
+def test_confirmatory_plan_tamper_rejected_even_with_recomputed_digest(tmp_path, monkeypatch, target):
+    from scripts import zone_pair_v6_contract as c
+    from scripts.zone_pair_authorization import digest, registration_payload
+    path, p = _sealed_v6h(tmp_path, monkeypatch)
+    if target == 'run_count': p['runs'].pop()
+    elif target == 'seed': p['runs'][-1]['seed'] = 945
+    elif target == 'placement': p['runs'][0]['placement']['x'] += .01
+    elif target == 'prior': p['runs'][0]['placement']['prior'] = 'hR2_02'
+    elif target == 'case': p['cases'][0]['beam_xyyaw'][0] += .01
+    elif target == 'render': p['confirmatory_plan']['operation']['render_profile'] = 'baseline'
+    elif target == 'trace': p['confirmatory_plan']['operation']['contact_track'] = False
+    elif target == 'termination': p['confirmatory_plan']['operation']['chain_stop_leg'] = 0
+    else: p['v6_contract']['source_sha256']['scripts/zone_teacher.py'] = '0'*64
+    p['registration_sha256'] = digest(registration_payload(p)); path.write_text(json.dumps(p))
+    args = SimpleNamespace(prereg=path, execute=False, output=tmp_path/'never', run_id=None, pair_policy=None)
+    with pytest.raises(ValueError, match='sealed.*(plan|source)'):
+        c.load_config(args)
+    assert not args.output.exists()
+
+
+@pytest.mark.parametrize('source', ['scripts/zone_teacher.py', 'harness/owncam_pair_hold_v3.py',
+                                    'harness/static_keepouts.py', 'harness/zone_event_scheduler.py'])
+def test_real_chain_source_tamper_rejected(tmp_path, monkeypatch, source):
+    from scripts import zone_pair_v6_contract as c
+    path, p = _sealed_v6h(tmp_path, monkeypatch)
+    original = Path.read_bytes
+    assert source in p['v6_contract']['source_sha256']
+    def changed(file):
+        raw = original(file)
+        if file == ROOT/source:
+            if source == 'scripts/zone_teacher.py':
+                assert b'CONTROL_S = .1' in raw
+                return raw.replace(b'CONTROL_S = .1', b'CONTROL_S = .2')
+            return raw + b'\n# synthetic source tamper\n'
+        return raw
+    monkeypatch.setattr(Path, 'read_bytes', changed)
+    with pytest.raises(ValueError, match='sealed.*source'):
+        c.load_config(SimpleNamespace(prereg=path, execute=False, output=tmp_path/'never', run_id=None))
+
+
+def test_seal_hash_promotion_and_legacy_runtime_cannot_be_bypassed(tmp_path, monkeypatch):
+    from scripts import zone_pair_v6_contract as c, run_zone_pair_dev as dev
+    path, p = _sealed_v6h(tmp_path, monkeypatch)
+    args = SimpleNamespace(prereg=path, execute=False, output=tmp_path/'never', run_id=None)
+    monkeypatch.setattr(c, 'CURRENT_REVISION', 'v6e')
+    with pytest.raises(ValueError, match='pending seal'): c.load_config(args)
+    monkeypatch.setattr(c, 'CURRENT_REVISION', 'v6h')
+    p['registration_sha256'] = '0'*64; path.write_text(json.dumps(p))
+    with pytest.raises(ValueError, match='registration hash'): c.load_config(args)
+    # A six-case payload cannot be promoted as v6h anymore.
+    p = json.loads(c.PREREG_V6E.read_text()); p['registration_revision'] = 'v6h'
+    path.write_text(json.dumps(p))
+    with pytest.raises(ValueError, match='sealed confirmatory plan'): c.load_config(args)
+    with pytest.raises(ValueError, match='run_pair_stage_probes'): dev.load_config(args)
+
+
+@pytest.mark.parametrize('field,value', [('render_profile', 'noshadow_v1'), ('chain_stop_leg', 0),
+                                        ('pf_track', False), ('contact_track', False), ('prior', {})])
+def test_worker_case_tamper_stops_before_physics(tmp_path, monkeypatch, field, value):
+    from scripts import run_pair_stage_probes as runner
+    from scripts import zone_pair_v6h_admission as admission
+    path, p = _sealed_v6h(tmp_path, monkeypatch)
+    case = copy.deepcopy(p['cases'][0]); case[field] = value
+    case['registration'] = {'prereg': str(path), 'registration_sha256': p['registration_sha256'],
+                            'run_id': p['runs'][0]['id'], 'expected_source_sha': 'a'*40, 'lock_owner': 'codex'}
+    monkeypatch.setattr(admission, 'authorize_execution', lambda *a: pytest.fail('must reject before authorization'))
+    with pytest.raises(ValueError, match='worker case differs'):
+        runner.run_case(case, tmp_path/'never')
+    assert not (tmp_path/'never').exists()
+    del case['registration']
+    with pytest.raises(ValueError, match='requires its registration receipt'):
+        runner.run_case(case, tmp_path/'never')
+
+
+def test_registered_execution_requires_source_and_one_bound_run(tmp_path, monkeypatch):
+    from scripts import zone_pair_v6_contract as c
+    from scripts.zone_pair_authorization import digest, registration_payload
+    path, p = _sealed_v6h(tmp_path, monkeypatch)
+    p.update(status='REGISTERED', runnable=True)
+    p['registration_sha256'] = digest(registration_payload(p))
+    args = _confirmatory_args(path, tmp_path/'never')
+    args.execute = True; args.run_id = p['runs'][0]['id']; args.expected_source_sha = 'a'*40
+    path.write_text(json.dumps(p))
+    with pytest.raises(ValueError, match='execution_authorization'): c.load_config(args)
+    auth = {'by': 'coordinator', 'source_sha': 'a'*40, 'registration_sha256': p['registration_sha256'],
+            'run_id': args.run_id, 'ref': 'https://github.com/kcm0127-dotcom/ugrp/issues/216#issuecomment-123'}
+    auth['sha256'] = digest(auth); p['execution_authorization'] = auth; path.write_text(json.dumps(p))
+    _, case = c.load_config(args)
+    assert case == p['cases'][0]
+    args.expected_source_sha = 'b'*40
+    with pytest.raises(ValueError, match='source_sha differs'): c.load_config(args)
+    args.expected_source_sha = 'a'*40; args.run_id = p['runs'][1]['id']
+    with pytest.raises(ValueError, match='run_id differs'): c.load_config(args)
+    args.run_id = None
+    with pytest.raises(ValueError, match='one authorized'): c.load_config(args)
+
+
+def test_scope_wording_matches_not_approach_gate_and_progress(monkeypatch):
+    from tests.test_zone_pair_executor import active
+    h = pair_policy('b-v6h1')
+    host = _team(monkeypatch, 'scope', {k: v for k, v in vars(h).items() if k != 'name'})
+    ep = active(host)['r1']; guard = ep.command_guard
+    for phase in ('align', 'grasp', 'carry', 'lower', 'cp_open'):
+        ep.controller.state = phase
+        assert not getattr(ep.controller, 'beam_grasp_receipt', None)
+        guard.check(0., [{'kind': 'hold'}])
+        assert not guard.approach
+        assert ep.own.gate.profile.high_yaw_rad == pytest.approx(math.radians(5.))
+        guard.monitor.reset()
+        guard.on_command({'t': 0., 'kind': 'mecanum', 'forward': .01, 'duration_s': .1})
+        assert guard.monitor.move_t0 == 0.
+    ep.controller.state = 'approach'; guard.monitor.reset()
+    guard.check(0., [{'kind': 'hold'}])
+    guard.on_command({'t': 0., 'kind': 'mecanum', 'forward': .01, 'duration_s': .1})
+    assert ep.own.gate.profile is guards.GATE_UNLOADED and guard.monitor.move_t0 is None
+    # Guard-scope documentation is part of the registration, not a grasp-only promise.
+    for name in ('REGISTRATION_PLAN.md', 'README.md'):
+        text = (BUILDER.HERE/name).read_text()
+        assert 'not approach' in text and 'confirmed grasp' in text
+        assert '접근·팔 스윕 여유의 완화는 한 번도 시험되지 않았다' not in text
+
+
+def test_valid_registered_worker_rechecks_source_and_live_authorization(tmp_path, monkeypatch):
+    from scripts import zone_pair_v6h_admission as admission, zone_pair_authorization as auth
+    from scripts import run_pair_stage_probes as runner, agent_lock
+    path, p = _sealed_v6h(tmp_path, monkeypatch)
+    p.update(status='REGISTERED', runnable=True)
+    p['registration_sha256'] = auth.digest(auth.registration_payload(p))
+    envelope = {'by': 'coordinator', 'source_sha': 'a'*40, 'registration_sha256': p['registration_sha256'],
+                'run_id': p['runs'][0]['id'],
+                'ref': 'https://github.com/kcm0127-dotcom/ugrp/issues/216#issuecomment-123'}
+    envelope['sha256'] = auth.digest(envelope); p['execution_authorization'] = envelope
+    path.write_text(json.dumps(p))
+    case = copy.deepcopy(p['cases'][0])
+    case['registration'] = {'prereg': str(path), 'registration_sha256': p['registration_sha256'],
+                            'run_id': p['runs'][0]['id'], 'expected_source_sha': 'a'*40, 'lock_owner': 'codex'}
+    seen = []
+    def source(root, prereg_path, plan, sha):
+        assert root == ROOT and prereg_path == path and sha == 'a'*40
+        auth.validate_authorization(plan, execute=True, expected_source_sha=sha, run_id=case['registration_run_id'])
+        seen.append('source')
+    def github(plan, sha, run_id):
+        auth.validate_authorization(plan, execute=True, expected_source_sha=sha, run_id=run_id)
+        seen.append('live-approval'); return {'test_only': True}
+    monkeypatch.setattr(auth, 'verify_source', source)
+    monkeypatch.setattr(auth, 'verify_github_authorization', github)
+    monkeypatch.setattr(runner, 'primary_root', lambda: tmp_path)
+    monkeypatch.setattr(runner, 'git', lambda *a: 'codex/pair-v6h-register')
+    monkeypatch.setattr(agent_lock, 'status', lambda *a: {
+        'pid_alive': True, 'owner': 'codex', 'branch': 'codex/pair-v6h-register'})
+    # Call just the pre-physics worker guard. No worker/simulator starts.
+    admission.validate_worker_case(case, tmp_path/'outputs/case')
+    assert seen == ['source', 'live-approval', 'source']
+    assert not (tmp_path/'outputs').exists()

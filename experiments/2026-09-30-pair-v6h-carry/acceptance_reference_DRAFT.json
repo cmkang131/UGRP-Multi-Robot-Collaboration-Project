@@ -1,6 +1,8 @@
 {
-  "status": "DRAFT proposed matched axial-on references; coordinator to confirm",
-  "scope": "5 cases + 1 axial case, no replay performed; expected fields are evaluation-only and never passed to controller",
+  "status": "DRAFT: matches PR #294 five cases; registered-policy replay NOT RUN by this task",
+  "scope": "gain+p2f+k1g+axial-on; commands bytes/hash, leg outcomes AND whole-record contact/hard limits must agree",
+  "source_list": "analysis/acceptance_replay_DRAFT.json (PR #294)",
+  "source_note": "X01 is tX1 (f5d83fdb); only X06 is tX1b. No tX1b X01 raw directory found. Preserve exact PR #294 provenance.",
   "cases": [
     {
       "case": {
@@ -84,6 +86,7 @@
         "teacher_held": true,
         "staging": "teacher placement from GT beam geometry (setup only)",
         "setup_variant": "ENVS",
+        "policy_id": "b-v6h",
         "contact_track": true,
         "leg": null,
         "route": [
@@ -132,6 +135,8 @@
       "reference_case_id": "chain@b-v6h.k1g+p2f+gain+alag:teacher:S01:s911:pPOST:VENVS",
       "reference_commands_path": "/Users/changmin/projects/ugrp/outputs/b-v6h-gain-5bfd95f0-tS/cases/chain_b-v6h.k1g+p2f+gain+alag_teacher_S01_s911_pPOST_VENVS/commands.json",
       "reference_commands_sha256": "70bcb8ce94ffb9396d79fb8412b1b6c99b75190985af01cd11741610d2655004",
+      "reference_case_sha256": "b0f161fe10cae36bc16ae48793bbe3608c6a424abe0efdf88a7893a709faf40a",
+      "reference_result_sha256": "f4db02065218af4d94fc5969bcaa9729d2c3883f1c2b8aafd2d99ce15dad6190",
       "reference_plan_sha256": "001ccc5a6e35a9cb53bf4e7168e7888aef2910bcb2388624700fc6c4e4580f39",
       "reference_source_commit": "5bfd95f0bddc4d24d3a0a2314eef4b2d5cdf6d20",
       "expected_leg_checks": [
@@ -155,317 +160,8 @@
             "leg_error": true
           }
         }
-      ]
-    },
-    {
-      "case": {
-        "case_id": "chain@b-v6h1:teacher:S02:s911:pPOST:VENVS",
-        "stage": "chain",
-        "source": "teacher_grid",
-        "pair_policy": "b-v6h1",
-        "prior_std": "e2e",
-        "cell": "S02",
-        "seed": 911,
-        "beam_xyyaw": [
-          0.969,
-          0.044,
-          0.006108652381980153
-        ],
-        "coarse_order_sheet": {
-          "beam_xyyaw": [
-            1.0,
-            0.0,
-            0.0
-          ],
-          "grid": {
-            "xy_m": 0.1,
-            "yaw_rad": 0.174533
-          },
-          "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
-        },
-        "placement_xyyaw": {
-          "r1": [
-            0.5440079295475507,
-            0.041403838883961694,
-            0.006108652381980217
-          ],
-          "r2": [
-            1.393992070452449,
-            0.0465961611160383,
-            -3.1354840012078125
-          ]
-        },
-        "r3_xyyaw": null,
-        "offsets": {
-          "r1": [
-            0,
-            0,
-            0
-          ],
-          "r2": [
-            0,
-            0,
-            0
-          ]
-        },
-        "prior": {
-          "r1": {
-            "kind": "gaussian",
-            "mean_xyyaw": [
-              0.5466214961431031,
-              0.044851245453495045,
-              0.011203183590043686
-            ],
-            "std_xy_m": 0.024891298021915052,
-            "std_yaw_rad": 0.012523941576698618,
-            "source": "recorded PF posterior of an earlier stage (weighted particle mean / spread from stage_stop.npz)",
-            "convention": "std_xy_m = sqrt(var_x + var_y) as in PoseReport; per-axis std = std_xy_m / sqrt(2)",
-            "is_fix": false
-          },
-          "r2": {
-            "kind": "gaussian",
-            "mean_xyyaw": [
-              1.3976873969285972,
-              0.05843812509644022,
-              -3.134966356188621
-            ],
-            "std_xy_m": 0.030361575412143012,
-            "std_yaw_rad": 0.011525137533799615,
-            "source": "recorded PF posterior of an earlier stage (weighted particle mean / spread from stage_stop.npz)",
-            "convention": "std_xy_m = sqrt(var_x + var_y) as in PoseReport; per-axis std = std_xy_m / sqrt(2)",
-            "is_fix": false
-          }
-        },
-        "teacher_held": true,
-        "staging": "teacher placement from GT beam geometry (setup only)",
-        "setup_variant": "ENVS",
-        "contact_track": true,
-        "leg": null,
-        "route": [
-          [
-            1.0,
-            0.05
-          ],
-          [
-            1.55,
-            0.05
-          ],
-          [
-            2.4,
-            0.05
-          ],
-          [
-            3.2,
-            0.05
-          ],
-          [
-            3.2,
-            -0.6666666666666666
-          ],
-          [
-            3.2,
-            -1.3833333333333333
-          ],
-          [
-            3.2,
-            -2.1
-          ],
-          [
-            3.9,
-            -2.1
-          ],
-          [
-            4.6,
-            -2.1
-          ]
-        ],
-        "route_note": "controller static route (make_plan); ONE teacher staging at route point 0, the controller then runs legs 0..7 and the destination set-down",
-        "render_profile": "floor_light_v1",
-        "pf_track": true,
-        "chain_stop_leg": 1
-      },
-      "reference_case_id": "chain@b-v6h.k1g+p2f+gain+alag:teacher:S02:s911:pPOST:VENVS",
-      "reference_commands_path": "/Users/changmin/projects/ugrp/outputs/b-v6h-gain-5bfd95f0-tS/cases/chain_b-v6h.k1g+p2f+gain+alag_teacher_S02_s911_pPOST_VENVS/commands.json",
-      "reference_commands_sha256": "071532a4e2c59be92fc827815b6ba2f3c138f83ea657368e7dda65e75c331279",
-      "reference_plan_sha256": "001ccc5a6e35a9cb53bf4e7168e7888aef2910bcb2388624700fc6c4e4580f39",
-      "reference_source_commit": "5bfd95f0bddc4d24d3a0a2314eef4b2d5cdf6d20",
-      "expected_leg_checks": [
-        {
-          "leg": 0,
-          "checks": {
-            "lift": true,
-            "tilt": true,
-            "both_jaws_both_robots": true,
-            "end_error": true,
-            "leg_error": true
-          }
-        },
-        {
-          "leg": 1,
-          "checks": {
-            "lift": true,
-            "tilt": true,
-            "both_jaws_both_robots": true,
-            "end_error": true,
-            "leg_error": true
-          }
-        }
-      ]
-    },
-    {
-      "case": {
-        "case_id": "chain@b-v6h1:teacher:S03:s911:pPOST:VENVS",
-        "stage": "chain",
-        "source": "teacher_grid",
-        "pair_policy": "b-v6h1",
-        "prior_std": "e2e",
-        "cell": "S03",
-        "seed": 911,
-        "beam_xyyaw": [
-          1.016,
-          0.094,
-          0.06544984694978735
-        ],
-        "coarse_order_sheet": {
-          "beam_xyyaw": [
-            1.0,
-            0.1,
-            0.0
-          ],
-          "grid": {
-            "xy_m": 0.1,
-            "yaw_rad": 0.174533
-          },
-          "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
-        },
-        "placement_xyyaw": {
-          "r1": [
-            0.5919099576235936,
-            0.06620367007718919,
-            0.06544984694978728
-          ],
-          "r2": [
-            1.4400900423764065,
-            0.12179632992281081,
-            -3.0761428066400054
-          ]
-        },
-        "r3_xyyaw": null,
-        "offsets": {
-          "r1": [
-            0,
-            0,
-            0
-          ],
-          "r2": [
-            0,
-            0,
-            0
-          ]
-        },
-        "prior": {
-          "r1": {
-            "kind": "gaussian",
-            "mean_xyyaw": [
-              0.5902385203426009,
-              0.06065947451290938,
-              0.07148663341361061
-            ],
-            "std_xy_m": 0.023426521290664085,
-            "std_yaw_rad": 0.01146050099990877,
-            "source": "recorded PF posterior of an earlier stage (weighted particle mean / spread from stage_stop.npz)",
-            "convention": "std_xy_m = sqrt(var_x + var_y) as in PoseReport; per-axis std = std_xy_m / sqrt(2)",
-            "is_fix": false
-          },
-          "r2": {
-            "kind": "gaussian",
-            "mean_xyyaw": [
-              1.4334854451183807,
-              0.13044241852709543,
-              -3.0787258611904704
-            ],
-            "std_xy_m": 0.03196418454733425,
-            "std_yaw_rad": 0.011991718600135924,
-            "source": "recorded PF posterior of an earlier stage (weighted particle mean / spread from stage_stop.npz)",
-            "convention": "std_xy_m = sqrt(var_x + var_y) as in PoseReport; per-axis std = std_xy_m / sqrt(2)",
-            "is_fix": false
-          }
-        },
-        "teacher_held": true,
-        "staging": "teacher placement from GT beam geometry (setup only)",
-        "setup_variant": "ENVS",
-        "contact_track": true,
-        "leg": null,
-        "route": [
-          [
-            1.0,
-            0.05
-          ],
-          [
-            1.55,
-            0.05
-          ],
-          [
-            2.4,
-            0.05
-          ],
-          [
-            3.2,
-            0.05
-          ],
-          [
-            3.2,
-            -0.6666666666666666
-          ],
-          [
-            3.2,
-            -1.3833333333333333
-          ],
-          [
-            3.2,
-            -2.1
-          ],
-          [
-            3.9,
-            -2.1
-          ],
-          [
-            4.6,
-            -2.1
-          ]
-        ],
-        "route_note": "controller static route (make_plan); ONE teacher staging at route point 0, the controller then runs legs 0..7 and the destination set-down",
-        "render_profile": "floor_light_v1",
-        "pf_track": true,
-        "chain_stop_leg": 1
-      },
-      "reference_case_id": "chain@b-v6h.k1g+p2f+gain+alag:teacher:S03:s911:pPOST:VENVS",
-      "reference_commands_path": "/Users/changmin/projects/ugrp/outputs/b-v6h-gain-5bfd95f0-tS/cases/chain_b-v6h.k1g+p2f+gain+alag_teacher_S03_s911_pPOST_VENVS/commands.json",
-      "reference_commands_sha256": "0b699a18311d11a01c53a00f6fb2e5f2ff9fbff430536b612a36c947a529b542",
-      "reference_plan_sha256": "001ccc5a6e35a9cb53bf4e7168e7888aef2910bcb2388624700fc6c4e4580f39",
-      "reference_source_commit": "5bfd95f0bddc4d24d3a0a2314eef4b2d5cdf6d20",
-      "expected_leg_checks": [
-        {
-          "leg": 0,
-          "checks": {
-            "lift": true,
-            "tilt": true,
-            "both_jaws_both_robots": true,
-            "end_error": true,
-            "leg_error": true
-          }
-        },
-        {
-          "leg": 1,
-          "checks": {
-            "lift": true,
-            "tilt": true,
-            "both_jaws_both_robots": true,
-            "end_error": true,
-            "leg_error": true
-          }
-        }
-      ]
+      ],
+      "whole_record_comparison": "Required after classifier fixes land; compare whole trace/contact/hard-limit outcomes, not outcome_class alone."
     },
     {
       "case": {
@@ -549,6 +245,7 @@
         "teacher_held": true,
         "staging": "teacher placement from GT beam geometry (setup only)",
         "setup_variant": "ENVS",
+        "policy_id": "b-v6h",
         "contact_track": true,
         "leg": null,
         "route": [
@@ -597,6 +294,8 @@
       "reference_case_id": "chain@b-v6h.k1g+p2f+gain+alag:teacher:S07:s911:pPOST:VENVS",
       "reference_commands_path": "/Users/changmin/projects/ugrp/outputs/b-v6h-gain-5bfd95f0-tS/cases/chain_b-v6h.k1g+p2f+gain+alag_teacher_S07_s911_pPOST_VENVS/commands.json",
       "reference_commands_sha256": "c0c5fcd8dfe2492f9d312ed7962b08456ec731516f42111aa20d4923648e2872",
+      "reference_case_sha256": "c93a6e47f692bf69500454a7cb0149379433a01e4838b4bccc28ba638a1ced0c",
+      "reference_result_sha256": "c5d2665402c1b0c9cd1e5977074e2830d03f7f404eceb3b7ba4c8bd2b3b20542",
       "reference_plan_sha256": "001ccc5a6e35a9cb53bf4e7168e7888aef2910bcb2388624700fc6c4e4580f39",
       "reference_source_commit": "5bfd95f0bddc4d24d3a0a2314eef4b2d5cdf6d20",
       "expected_leg_checks": [
@@ -620,25 +319,26 @@
             "leg_error": true
           }
         }
-      ]
+      ],
+      "whole_record_comparison": "Required after classifier fixes land; compare whole trace/contact/hard-limit outcomes, not outcome_class alone."
     },
     {
       "case": {
-        "case_id": "chain@b-v6h1:teacher:hR2_01:s911:pPOST:VhR2",
+        "case_id": "chain@b-v6h1:teacher:hR2_04:s911:pPOST:VhR2",
         "stage": "chain",
         "source": "teacher_grid",
         "pair_policy": "b-v6h1",
         "prior_std": "e2e",
-        "cell": "hR2_01",
+        "cell": "hR2_04",
         "seed": 911,
         "beam_xyyaw": [
-          0.9998708824251402,
-          0.04932891297853095,
-          -0.0002972745894516343
+          0.929839164072001,
+          -0.020445400674040437,
+          -0.06809391307124296
         ],
         "coarse_order_sheet": {
           "beam_xyyaw": [
-            1.0,
+            0.9,
             0.0,
             0.0
           ],
@@ -650,39 +350,39 @@
         },
         "placement_xyyaw": {
           "r1": [
-            0.5637532118187676,
-            0.04212164569914918,
-            0.00462792912833887
+            0.49392589482229765,
+            0.0007749248458536525,
+            -0.05525634054233208
           ],
           "r2": [
-            1.4363036679785464,
-            0.04530161544766225,
-            -3.1229080674553273
+            1.365550389173862,
+            -0.04155325789818207,
+            3.0927734836819942
           ]
         },
         "r3_xyyaw": null,
         "offsets": {
           "r1": [
-            -0.011115508798647828,
-            -0.007336913660493392,
-            0.004925203717790705
+            -0.011346901096605841,
+            -0.00848895909540898,
+            0.012837572528910712
           ],
           "r2": [
-            -0.011433963482349978,
-            0.0038975569776804582,
-            0.018981860723917166
+            -0.011137672695694585,
+            -0.008587419399485598,
+            0.019274743163443908
           ]
         },
         "prior": {
           "r1": {
             "kind": "gaussian",
             "mean_xyyaw": [
-              0.5655313931530583,
-              0.044453992426656014,
-              0.010105547017670968
+              0.49238526109249325,
+              -0.008347158959849532,
+              -0.032309870101079774
             ],
-            "std_xy_m": 0.023588524442129347,
-            "std_yaw_rad": 0.012048710721102104,
+            "std_xy_m": 0.023662482487807387,
+            "std_yaw_rad": 0.011148092572455599,
             "source": "recorded PF posterior of an earlier stage (weighted particle mean / spread from stage_stop.npz)",
             "convention": "std_xy_m = sqrt(var_x + var_y) as in PoseReport; per-axis std = std_xy_m / sqrt(2)",
             "is_fix": false
@@ -690,12 +390,12 @@
           "r2": {
             "kind": "gaussian",
             "mean_xyyaw": [
-              1.4385276894357657,
-              0.05688231209313424,
-              -3.1222845677112443
+              1.3607700282742714,
+              -0.03608899746626836,
+              3.108405459318747
             ],
-            "std_xy_m": 0.030863578127115047,
-            "std_yaw_rad": 0.011581820090883379,
+            "std_xy_m": 0.02664295744274481,
+            "std_yaw_rad": 0.010184971120204205,
             "source": "recorded PF posterior of an earlier stage (weighted particle mean / spread from stage_stop.npz)",
             "convention": "std_xy_m = sqrt(var_x + var_y) as in PoseReport; per-axis std = std_xy_m / sqrt(2)",
             "is_fix": false
@@ -704,11 +404,12 @@
         "teacher_held": true,
         "staging": "teacher placement from GT beam geometry (setup only)",
         "setup_variant": "hR2",
+        "policy_id": "b-v6h",
         "contact_track": true,
         "leg": null,
         "route": [
           [
-            1.0,
+            0.9,
             0.05
           ],
           [
@@ -749,9 +450,11 @@
         "pf_track": true,
         "chain_stop_leg": 1
       },
-      "reference_case_id": "chain@b-v6h.k1g+p2f+gain+alag:teacher:hR2_01:s911:pPOST:VhR2",
-      "reference_commands_path": "/Users/changmin/projects/ugrp/outputs/b-v6h-gain-5bfd95f0-tR/cases/chain_b-v6h.k1g+p2f+gain+alag_teacher_hR2_01_s911_pPOST_VhR2/commands.json",
-      "reference_commands_sha256": "5f9da3641faf4a83d3817fc772985aedaba59db13f7ca25a3f1a18e61467d76b",
+      "reference_case_id": "chain@b-v6h.k1g+p2f+gain+alag:teacher:hR2_04:s911:pPOST:VhR2",
+      "reference_commands_path": "/Users/changmin/projects/ugrp/outputs/b-v6h-gain-5bfd95f0-tR/cases/chain_b-v6h.k1g+p2f+gain+alag_teacher_hR2_04_s911_pPOST_VhR2/commands.json",
+      "reference_commands_sha256": "daeedca0e01e287a16a6e7d58493b8cd16df78769d30b45ebf968304a54bce78",
+      "reference_case_sha256": "78b4a9f3bdcc2e50ac0eb580819f732955931284c82864a97d46d760f70725e7",
+      "reference_result_sha256": "e1bdbd634a63ede9c4b0ed6bb205789579307f6e675e31ca26f541bf2fbfbe6e",
       "reference_plan_sha256": "4e85cfc36252449206fa7be88335afe5bb8cecb6c5917f371bdb7b184c380b85",
       "reference_source_commit": "5bfd95f0bddc4d24d3a0a2314eef4b2d5cdf6d20",
       "expected_leg_checks": [
@@ -775,7 +478,167 @@
             "leg_error": true
           }
         }
-      ]
+      ],
+      "whole_record_comparison": "Required after classifier fixes land; compare whole trace/contact/hard-limit outcomes, not outcome_class alone."
+    },
+    {
+      "case": {
+        "case_id": "chain@b-v6h1:teacher:X01:s911:pPOST:VENVS",
+        "stage": "chain",
+        "source": "teacher_grid",
+        "pair_policy": "b-v6h1",
+        "prior_std": "e2e",
+        "cell": "X01",
+        "seed": 911,
+        "beam_xyyaw": [
+          0.94,
+          0.05,
+          -0.061261056745000965
+        ],
+        "coarse_order_sheet": {
+          "beam_xyyaw": [
+            0.9,
+            0.0,
+            0.0
+          ],
+          "grid": {
+            "xy_m": 0.1,
+            "yaw_rad": 0.174533
+          },
+          "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+        },
+        "placement_xyyaw": {
+          "r1": [
+            0.5157972454983083,
+            0.07601966704586131,
+            -0.06126105674500115
+          ],
+          "r2": [
+            1.3642027545016915,
+            0.023980332954138688,
+            3.0803315968447915
+          ]
+        },
+        "r3_xyyaw": null,
+        "offsets": {
+          "r1": [
+            0,
+            0,
+            0
+          ],
+          "r2": [
+            0,
+            0,
+            0
+          ]
+        },
+        "prior": {
+          "r1": {
+            "kind": "gaussian",
+            "mean_xyyaw": [
+              0.5141588952094606,
+              0.07081582939622659,
+              -0.05527705399237082
+            ],
+            "std_xy_m": 0.024445763437240812,
+            "std_yaw_rad": 0.012343233742289553,
+            "source": "recorded PF posterior of an earlier stage (weighted particle mean / spread from stage_stop.npz)",
+            "convention": "std_xy_m = sqrt(var_x + var_y) as in PoseReport; per-axis std = std_xy_m / sqrt(2)",
+            "is_fix": false
+          },
+          "r2": {
+            "kind": "gaussian",
+            "mean_xyyaw": [
+              1.364045882068915,
+              0.037943667016130694,
+              3.08178444541975
+            ],
+            "std_xy_m": 0.029098476182041304,
+            "std_yaw_rad": 0.011381672240422545,
+            "source": "recorded PF posterior of an earlier stage (weighted particle mean / spread from stage_stop.npz)",
+            "convention": "std_xy_m = sqrt(var_x + var_y) as in PoseReport; per-axis std = std_xy_m / sqrt(2)",
+            "is_fix": false
+          }
+        },
+        "teacher_held": true,
+        "staging": "teacher placement from GT beam geometry (setup only)",
+        "setup_variant": "ENVS",
+        "policy_id": "b-v6h",
+        "contact_track": true,
+        "leg": null,
+        "route": [
+          [
+            0.9,
+            0.05
+          ],
+          [
+            1.55,
+            0.05
+          ],
+          [
+            2.4,
+            0.05
+          ],
+          [
+            3.2,
+            0.05
+          ],
+          [
+            3.2,
+            -0.6666666666666666
+          ],
+          [
+            3.2,
+            -1.3833333333333333
+          ],
+          [
+            3.2,
+            -2.1
+          ],
+          [
+            3.9,
+            -2.1
+          ],
+          [
+            4.6,
+            -2.1
+          ]
+        ],
+        "route_note": "controller static route (make_plan); ONE teacher staging at route point 0, the controller then runs legs 0..7 and the destination set-down",
+        "render_profile": "floor_light_v1",
+        "pf_track": true,
+        "chain_stop_leg": 1
+      },
+      "reference_case_id": "chain@b-v6h.k1g+p2f+gain+alag:teacher:X01:s911:pPOST:VENVS",
+      "reference_commands_path": "/Users/changmin/projects/ugrp/outputs/b-v6h-gain-f5d83fdb-tX1/cases/chain_b-v6h.k1g+p2f+gain+alag_teacher_X01_s911_pPOST_VENVS/commands.json",
+      "reference_commands_sha256": "2d2f77a4d529f860a5dc2ac4c98e53ece4df2cee7d2c2c152430db6c7227730c",
+      "reference_case_sha256": "17918c6faa065218e76aa04bb3433b5c6810f8f6f55d74d171ed5a8b553b5e0c",
+      "reference_result_sha256": "1c7b0fba9791d0393d2bdd09b96cd29354d1693ff0738ad6fc6aded4dbafb072",
+      "reference_plan_sha256": "6e276b6b1f3fc84fe0eb6973155892aabd260b462b7acd128fb20ce8fad627fc",
+      "reference_source_commit": "f5d83fdb47777251d8653deaa7ed24ab4bdfb954",
+      "expected_leg_checks": [
+        {
+          "leg": 0,
+          "checks": {
+            "lift": true,
+            "tilt": true,
+            "both_jaws_both_robots": true,
+            "end_error": true,
+            "leg_error": true
+          }
+        },
+        {
+          "leg": 1,
+          "checks": {
+            "lift": true,
+            "tilt": true,
+            "both_jaws_both_robots": true,
+            "end_error": true,
+            "leg_error": true
+          }
+        }
+      ],
+      "whole_record_comparison": "Required after classifier fixes land; compare whole trace/contact/hard-limit outcomes, not outcome_class alone."
     },
     {
       "case": {
@@ -859,6 +722,7 @@
         "teacher_held": true,
         "staging": "teacher placement from GT beam geometry (setup only)",
         "setup_variant": "ENVS",
+        "policy_id": "b-v6h",
         "contact_track": true,
         "leg": null,
         "route": [
@@ -907,6 +771,8 @@
       "reference_case_id": "chain@b-v6h.k1g+p2f+gain+alag:teacher:X06:s911:pPOST:VENVS",
       "reference_commands_path": "/Users/changmin/projects/ugrp/outputs/b-v6h-gain-5bfd95f0-tX1b/cases/chain_b-v6h.k1g+p2f+gain+alag_teacher_X06_s911_pPOST_VENVS/commands.json",
       "reference_commands_sha256": "d1ef368a7de5a6f85a187b710c7a0cf8422f3317290acf2c86422adacbb6a14a",
+      "reference_case_sha256": "1745281aa6da92fbfadccc8ab890c683fe742b1332fb0603eedc4e17322e433d",
+      "reference_result_sha256": "96598112e2b2980d6d94041abd3872edf21140dd4b3120048a84740408e0920b",
       "reference_plan_sha256": "b6b4698a9025e3a9e03c34a100a73b4f918fc6d6d90ae780bf5716e8750cce37",
       "reference_source_commit": "5bfd95f0bddc4d24d3a0a2314eef4b2d5cdf6d20",
       "expected_leg_checks": [
@@ -930,7 +796,8 @@
             "leg_error": true
           }
         }
-      ]
+      ],
+      "whole_record_comparison": "Required after classifier fixes land; compare whole trace/contact/hard-limit outcomes, not outcome_class alone."
     }
   ]
 }

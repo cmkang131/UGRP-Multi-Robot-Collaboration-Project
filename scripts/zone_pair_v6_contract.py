@@ -45,6 +45,7 @@ is a hash preview only, never current-source admission. No prereg_v6h seal is
 written before independent review.
 
 """
+import ast
 import copy
 import hashlib
 import json
@@ -73,6 +74,47 @@ HISTORICAL_REVISIONS = {'v6': (PREREG, V6_REGISTRATION_COMMIT), 'v6b': (PREREG_V
 HISTORICAL_STATUS = {'v6': 'REGISTERED', 'v6b': 'DRAFT', 'v6c': 'DRAFT', 'v6d': 'DRAFT', 'v6e': 'DRAFT'}
 CURRENT_REVISION = 'v6e'      # intentionally NOT flipped: v6h final seal is a separate coordinator commit
 PENDING_REVISION = 'v6h'      # pre-seal source preview only; no current-source admission
+
+# One path per line. After the classifier review lands, add its entry point and
+# CLASSIFY_NOTES here; its Python dependencies are pinned transitively as well.
+V6H_EXTRA_SOURCE_PATHS = (
+    'scripts/zone_pair_v6h_admission.py',
+    'scripts/zone_teacher.py',  # ArmSequence is also used by the student controller.
+)
+
+
+def python_source_closure(paths):
+    """Conservative local import closure, including optional branches; no imports executed.
+
+    Non-Python inputs and dynamically selected entry points remain explicit pins.
+    Package initializers are sources too. A new local import changes the receipt.
+    """
+    seen, pending = set(), list(paths)
+    while pending:
+        path = pending.pop()
+        if path in seen:
+            continue
+        seen.add(path)
+        if not path.endswith('.py'):
+            continue
+        for node in ast.walk(ast.parse((ROOT/path).read_bytes(), filename=path)):
+            modules = []
+            if isinstance(node, ast.Import):
+                modules = [a.name for a in node.names]
+            elif isinstance(node, ast.ImportFrom):
+                prefix = node.module or ''
+                if node.level:
+                    parent = path.removesuffix('.py').split('.') if '/' not in path else path[:-3].split('/')
+                    prefix = '.'.join(parent[:-node.level] + ([prefix] if prefix else []))
+                modules = [prefix, *(prefix + '.' + a.name for a in node.names)]
+            for module in modules:
+                parts = module.split('.')
+                for i in range(1, len(parts) + 1):
+                    base = '/'.join(parts[:i])
+                    for candidate in (base + '.py', base + '/__init__.py'):
+                        if (ROOT/candidate).is_file() and candidate not in seen:
+                            pending.append(candidate)
+    return tuple(sorted(seen))
 
 
 def contract(revision=None):
@@ -138,6 +180,8 @@ def candidate_contract(revision='v6h'):
              # every map (v2 maps delegate to the legacy path), so they are in the run closure.
              'sim/zone_masterpi_v3_scene.py','sim/zone_model_conventions.py')
     paths = tuple(dict.fromkeys(paths))
+    if revision == 'v6h':
+        paths = python_source_closure((*paths, *V6H_EXTRA_SOURCE_PATHS))
     from harness.zone_pair_global import SCHEDULED_REOBSERVE
     from harness.zone_own_sweep import SWEEP_REOBSERVE_S
     from harness.zone_pair_align import MAX_LOOKS, MAX_TOTAL_LOOK_S
@@ -153,8 +197,8 @@ def candidate_contract(revision='v6h'):
             'carry_fwd_gain':'v6h: loaded PF gain[0][0] x fixed PR #284 kappa; copy, idempotent, hash-pinned fit',
             'loaded_k_xy':'v6h: loaded pair base-motion margin only; approach and arm sweeps stay 2',
             'loaded_k_yaw':'v6h: loaded pair base-motion margin only; global/consistency K_SIGMA stays 2',
-            'loaded_gate_yaw_deg':'v6h: instance-scoped loaded HIGH/LOW yaw; unloaded gate unchanged',
-            'progress_arm_on_moved_fix':('v6h p2f: loaded-pair monitor arms only from a finite fix strictly after first move; '
+            'loaded_gate_yaw_deg':'v6h: instance-scoped HIGH/LOW yaw in every not-approach phase, including align/regrasp',
+            'progress_arm_on_moved_fix':('v6h p2f: pair monitor in every not-approach phase; arms only from a finite fix strictly after first move; '
                                          'fail-open: no reliable stall detection for the loaded pair'),
             'carry_axial_lag':'v6h: axial lag-model timing with the corrected forward gain; requires carry_fwd_gain',
             'posterior_relook':'B: posterior-preserving relook, observation quality receipts, blocked-pan cancel',
@@ -299,6 +343,9 @@ def verify_v6_historical(path=None, *, root=ROOT, commit=None, revision='v6'):
 def load_config(args):
     p=json.loads(args.prereg.read_text());old=json.loads(V5H.read_text())
     revision=p.get('registration_revision')
+    if revision == 'v6h':
+        from scripts.zone_pair_v6h_admission import load_config as load_v6h
+        return load_v6h(args)
     if revision in HISTORICAL_REVISIONS:
         raise ValueError(f'v6 revision {revision!r} is historical: audit it with verify_v6_historical(); '
                          'it is never prepared or run from the current tree')

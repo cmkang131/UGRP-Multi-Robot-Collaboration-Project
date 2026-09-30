@@ -320,11 +320,11 @@ def test_replay_stops_consuming_at_first_new_branch():
     with pytest.raises(ValueError):Reader().bytes(Path('/forbidden/eval_only/trace.jsonl'))
 
 
-CURRENT_TEST_REVISION = 'v6h'   # synthetic promoted revision for admission tests only; repository v6h is unsealed
+CURRENT_TEST_REVISION = 'v6test'  # legacy six-case format only; real v6h uses its 72-case builder
 
 
 def _current_v6(tmp_path, monkeypatch, name='current.json', mutate=None):
-    """Exercise legacy dev admission using a synthetic promoted v6h record.
+    """Exercise legacy dev admission using a synthetic six-case revision.
 
     Science fields are copied from historical v6e only for this admission
     regression; the real 60+12 chain plan comes from build_prereg_v6h.py.
@@ -338,6 +338,7 @@ def _current_v6(tmp_path, monkeypatch, name='current.json', mutate=None):
     # Synthetic promoted dev-shaped record tests only the legacy admission machinery.
     # Actual v6h confirmatory science belongs to the chain builder and is NOT sealed here.
     monkeypatch.setattr(c, 'CURRENT_REVISION', CURRENT_TEST_REVISION)
+    monkeypatch.setitem(c.REVISION_POLICIES, CURRENT_TEST_REVISION, c.REVISION_POLICIES['v6h'])
     p['registration_revision'] = CURRENT_TEST_REVISION
     p['execution_bundle_id'] = c.EXECUTION_BUNDLE_ID
     for row in p['runs']:

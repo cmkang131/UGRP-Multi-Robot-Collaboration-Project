@@ -56,7 +56,7 @@ def build():
              'seed': seed, 'placement': r, 'primary': seed == 941}
             for seed, subset in ((941, rows), (943, rows[:12])) for r in subset]
     science = (HERE/'PREREG_DRAFT.md').read_text()
-    return {'schema': 'ugrp.zone_pair_v6h_confirmatory.DRAFT.v1', 'status': 'DRAFT',
+    value = {'schema': 'ugrp.zone_pair_v6h_confirmatory.DRAFT.v1', 'status': 'DRAFT',
             'sealed': False, 'runnable': False, 'registration_revision': 'v6h',
             'registration_sha256': None, 'execution_source_sha': None,
             'execution_authorization': None, 'approval': None, 'execution_status': 'not_run',
@@ -80,11 +80,15 @@ def build():
                               'stage': 'chain', 'chain_stop_leg': 1, 'sources': ['teacher'],
                               'policy': 'b-v6h1', 'pf_track': True, 'contact_track': True,
                               'render_profile': 'floor_light_v1', 'workers': 4, 'omp_threads': 1,
+                              'case_timeout_s': 1500.,
                               'raw_root': '/Users/changmin/projects/ugrp/outputs',
                               'enospc': 'HOST_ERROR', 'minimum_free_gib': 10}},
             'runs': runs,
             'changed_sealed_sources': source_changes(predecessor['v6_contract']['source_sha256'], closure['source_sha256']),
             'qualification': 'UNSEALED preview; no physical replay, confirmatory result or execution admission'}
+    from scripts.zone_pair_v6h_admission import cases_for_plan
+    value['cases'] = cases_for_plan(value)
+    return value
 
 
 def verify(value):
