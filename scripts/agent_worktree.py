@@ -39,23 +39,17 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts import tree_manifest  # noqa: E402
+from scripts.check_ci_fixtures import REQUIRED_FIXTURES  # noqa: E402
+from scripts.check_media_size import HEAVY_SUFFIXES  # noqa: E402
 from scripts.worktree_guard import Refused, refuse_if_in_use  # noqa: E402
 AGENTS = ("kiro", "claude", "codex")
 DEFAULT_CAP = 8
 SPARSE_PROFILE = "agent-media-v1"
-# Heavy file kinds under experiments/: archives, videos, images, rendered reports and
-# arrays. JSON/JSONL/XML/Markdown/Python records stay checked out.
-HEAVY_SUFFIXES = (
-    "zip", "gz", "tgz", "xz", "bz2", "7z", "tar",
-    "mp4", "mov", "m4v", "avi", "webm", "mkv",
-    "gif", "jpg", "jpeg", "png", "webp", "bmp", "tif", "tiff",
-    "pdf", "html", "npz", "npy",
-)
-# Tracked archives that code reads at run time (sim/workflow_manager.py,
-# scripts/sim_dispatch.py, scripts/build_pair_terrain_gallery.py).
+# Tracked archives that code reads at run time, plus small frozen CI fixtures.
 RUNTIME_KEEP = (
     "experiments/dispatch-skill-integration-20260917/models.zip",
     "experiments/2026-09-10-rgb-varied-start/models.zip",
+    *REQUIRED_FIXTURES,
 )
 CACHE_PARTS = {"__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache"}
 CACHE_SUFFIXES = (".pyc", ".pyo")

@@ -1,0 +1,126 @@
+{
+  "window_start": "2026-09-28T04:30:38Z",
+  "window_end": "2026-09-30T09:49:03.434086+00:00",
+  "sessions_with_records": 3,
+  "record_types": {
+    "queue-operation": 1135,
+    "attachment": 5564,
+    "user": 3830,
+    "assistant": 5905,
+    "system": 1297,
+    "pr-link": 377,
+    "file-history-delta": 16
+  },
+  "unique_assistant_message_ids": 875,
+  "effort_per_unique_message": {
+    "high": 732,
+    "unrecorded": 3,
+    "xhigh": 140
+  },
+  "user_or_tool_result_to_first_assistant_event_gap_s": {
+    "high": {
+      "n": 732,
+      "median": 3.5675,
+      "p90_nearest_rank": 9.86,
+      "min": 0.904,
+      "max": 183.943,
+      "sum": 3940.692
+    },
+    "unrecorded": {
+      "n": 3,
+      "median": 1.125,
+      "p90_nearest_rank": 935.89,
+      "min": 0.848,
+      "max": 935.89,
+      "sum": 937.8629999999999
+    },
+    "xhigh": {
+      "n": 140,
+      "median": 2.7285,
+      "p90_nearest_rank": 7.787,
+      "min": 0.942,
+      "max": 41.263,
+      "sum": 592.912
+    }
+  },
+  "tool_request_to_result_elapsed_s": {
+    "Bash": {
+      "n": 482,
+      "median": 1.374,
+      "p90_nearest_rank": 12.569,
+      "min": 0.003,
+      "max": 1076.353,
+      "sum": 5920.1320000000005
+    },
+    "Agent": {
+      "n": 60,
+      "median": 0.0495,
+      "p90_nearest_rank": 0.109,
+      "min": 0.016,
+      "max": 2.607,
+      "sum": 7.557
+    },
+    "other": {
+      "n": 110,
+      "median": 0.0385,
+      "p90_nearest_rank": 0.714,
+      "min": 0.005,
+      "max": 9.753,
+      "sum": 54.603
+    },
+    "Read": {
+      "n": 21,
+      "median": 2.757,
+      "p90_nearest_rank": 44.184,
+      "min": 0.014,
+      "max": 129.26,
+      "sum": 445.129
+    },
+    "Write": {
+      "n": 16,
+      "median": 0.0455,
+      "p90_nearest_rank": 0.161,
+      "min": 0.023,
+      "max": 0.242,
+      "sum": 1.044
+    },
+    "Edit": {
+      "n": 7,
+      "median": 0.068,
+      "p90_nearest_rank": 0.117,
+      "min": 0.038,
+      "max": 0.117,
+      "sum": 0.55
+    },
+    "WebSearch": {
+      "n": 6,
+      "median": 7.225,
+      "p90_nearest_rank": 8.107,
+      "min": 5.648,
+      "max": 8.107,
+      "sum": 42.37
+    },
+    "WebFetch": {
+      "n": 15,
+      "median": 5.083,
+      "p90_nearest_rank": 15.845,
+      "min": 0.314,
+      "max": 16.842,
+      "sum": 74.376
+    }
+  },
+  "logged_retry_delay_ms": {
+    "n": 35,
+    "median": 2479,
+    "p90_nearest_rank": 19167,
+    "min": 501,
+    "max": 38749,
+    "sum": 283538
+  },
+  "limitations": [
+    "local coordinator sessions only; not all Codex/Claude workers",
+    "metadata gaps include scheduling, retries, streaming and pauses, not isolated inference",
+    "concurrent sessions overlap; summed elapsed time is not project critical path",
+    "no prompt, response, tool arguments, session IDs or per-message IDs exported"
+  ]
+}

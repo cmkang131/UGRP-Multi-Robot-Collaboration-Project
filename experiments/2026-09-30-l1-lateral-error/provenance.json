@@ -1,0 +1,239 @@
+{
+  "created_at_utc": "2026-09-30T11:21:41.591055+00:00",
+  "base_source_commit": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
+  "analysis_source_identity": "hashes below; final analysis commit is the containing Git commit, not a new physical execution source",
+  "branch": "codex/l1-lateral-error-model",
+  "environment": {
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "numpy": "2.5.2",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1"
+  },
+  "execution": {
+    "physical_runs": 0,
+    "render_calls": 0,
+    "model_calls": 0,
+    "outputs_access": "read-only",
+    "bootstrap_draws": 2000,
+    "bootstrap_seed": 20260930,
+    "tail_draws": 5000
+  },
+  "input_audit": {
+    "frozen_summary_files": 176,
+    "stage_rows": 2222,
+    "carry_chain_rows": 1484,
+    "duplicate_case_directories": 12,
+    "case_denominator": 1472,
+    "endpoints": 1384,
+    "cohorts_with_endpoints": 90,
+    "raw_files_hashed": 3661,
+    "raw_files_with_recorded_hash": 2898,
+    "hash_mismatches": 0,
+    "case_result_missing": 2,
+    "existing_cases_without_endpoint": 370,
+    "independent_result_summary_path_scan": {
+      "count": 7562,
+      "listing_sha256": "85a55aed1fdde24e26d09bebad712c2ee22de36dc090265a1a744c1c70227760",
+      "scope": "cross-check result.json and summary.json paths; exclude TensorBoard derivative copies; no new unindexed carry/chain endpoint source identified",
+      "list_storage": "transient /tmp listing; frozen cases list and parsed-file receipts are committed"
+    }
+  },
+  "artifact_sha256": [
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/README.md",
+      "bytes": 23585,
+      "sha256": "956e00a3cdc32731521862d8d63916fe8aa50660569ec9f5aaeaabbae9aaa5d9"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/analyze.py",
+      "bytes": 24381,
+      "sha256": "c4d55c4bd735865e99964b3957e6541cb64c4d78ae66ad1c4b93fee71b092223"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/diagnostics.py",
+      "bytes": 6398,
+      "sha256": "8b04b125455027bb9ade9d303681dbcd6559b74866784694e04ff39509148132"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/extract.py",
+      "bytes": 16446,
+      "sha256": "3cf2a597a43593cb5adbda018714d2724322f6ad868ed0611974658bdb0feeb8"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/inputs/proposed_probe_extra_priors.json",
+      "bytes": 236,
+      "sha256": "5fa75a90f0527fec968ec0f36668666754675d630949447f62c1989342a926cf"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/inputs/proposed_probes.json",
+      "bytes": 699,
+      "sha256": "b1a8637ac6214070d8f91df81d53427410bc167ae175e1cc0a42967af34e04e7"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/inputs/recorded_checksums.json",
+      "bytes": 12719,
+      "sha256": "7f156d97faff856c5e86e2eaf34e7f25f06cd118829fbaa4f6d9d426f08b451e"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/inputs/source_list.json",
+      "bytes": 9268,
+      "sha256": "202ee35cd370dec3dae63cc89fdfdaa65e6b3925cea4be9568322575f2b5a3da"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/acceptance_audit.csv",
+      "bytes": 6582,
+      "sha256": "ff94149ae8e6ad2be62673ea3e4045faf1a65875fae59218f911d93ac5a0db03"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/cases.csv",
+      "bytes": 172585,
+      "sha256": "fc3021883cde755316ae9db2fd4055039f85ec36c20b59341eb711b817b32b8a"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/cohort_distributions.csv",
+      "bytes": 73279,
+      "sha256": "c5b16547ef75ba85ccb242389a2d1530bb1bd47f2bfa091feecfbfdf0a4041be"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/dependence.csv",
+      "bytes": 1301,
+      "sha256": "286e10e5895b2c6820e6feee478aad365a80730bb24974cf613af514e529fed6"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/dependence.json",
+      "bytes": 1469,
+      "sha256": "37496df0265ce1ac758d16b3a8c573152c8016b9e85273b81c6fe31fc23a7f62"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/duplicate_units.json",
+      "bytes": 186,
+      "sha256": "5efee5d24d91af73670d639f7abeb41717a468a284020c052db8f4fbda8e80ed"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/endpoints.csv",
+      "bytes": 527653,
+      "sha256": "da4f441908d969e495db563fa00ce463617de46ecfc9b789020e88dd568ba98b"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/input_hashes.csv",
+      "bytes": 781047,
+      "sha256": "ea32bd8864de36d1b577d2a9c446f4e6e637ea9a37e38c3378b9fb2b49f70bac"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/inventory.json",
+      "bytes": 68929,
+      "sha256": "b1247da6f9eb977f784e23a120ab8c50f560ee58ab7aff6126c34a9296aa4ac9"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/loco_predictions.csv",
+      "bytes": 11065,
+      "sha256": "f5fb104d4a677d606a8d2d960cbe0ed047d2610244e079ff8f7d6ff329f9fd45"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/matched_contrasts.csv",
+      "bytes": 1454,
+      "sha256": "e72d3e0a09beffb00052a8983db0e84ac6ce91fef48554ca99eec58d43369286"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/model_units.csv",
+      "bytes": 16814,
+      "sha256": "932daaa065d8f03d307ca202a5647f86100eb8e355d536a4c5f7156af9b4f4df"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/models.json",
+      "bytes": 63672,
+      "sha256": "01d32fe197ee5491f4673271fc4ce9f512bb1774ba35288d597fde44b463cf57"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/placements.csv",
+      "bytes": 4845,
+      "sha256": "9d255d0c5973a96c0a879f3fe8b300487abf5cdae9a9dfdeafa0f693ed367a35"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/predictions.json",
+      "bytes": 12736,
+      "sha256": "5ea99c1c7b1097876c342bafd97b1efd82ded814a629908aa514585ee73d4919"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/strata.csv",
+      "bytes": 7834,
+      "sha256": "0453969f8a0235016720492cb8efbeca9c00093bfd0afe99262820c5df9b0804"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/results/tail_stress.json",
+      "bytes": 247,
+      "sha256": "4a6baea353ff379626c36639dd8f5cf242d86fac3e27cac04ecf9dbea5b68e17"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-lateral-error/verification.json",
+      "bytes": 4347,
+      "sha256": "a6b61077bd948e2c01925f4520b5b8f70e6f8cdccd1c90bb0184559cbf5d25df"
+    },
+    {
+      "path": "tests/test_carry_lateral_error_model.py",
+      "bytes": 7702,
+      "sha256": "d80fb8686da901a32e6e1843d02236b22d9e2787617fda6671c77f24c8ba4a47"
+    },
+    {
+      "path": "scripts/run_ci_tests.py",
+      "bytes": 21448,
+      "sha256": "72c98861112b5205f795d65854a9f92e8f3970c0a97f7088bb8503211b18f9fd"
+    },
+    {
+      "path": "harness/pair_chain_probe.py",
+      "bytes": 20837,
+      "sha256": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4"
+    },
+    {
+      "path": "experiments/2026-09-29-pair-v6e-carry/hR2_samples.json",
+      "bytes": 11037,
+      "sha256": "fcf5d5440a07c007e2e41f4d1f7e862a9000615cac013bbe507facd1dfb81f99"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-axial-offset/analysis/plant_model.py",
+      "bytes": 3859,
+      "sha256": "b98622d83b37c930edb1a272ca5afdec104174559778bc5c226dd7525b1680df"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-axial-offset/analysis/predict_pass.py",
+      "bytes": 16887,
+      "sha256": "1aa90a65b67c8bbf63fec8453da2f0353d70b6d495112ce017476aacc61dfe94"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-axial-offset/inputs/placements_confirmatory_DRAFT.json",
+      "bytes": 6751,
+      "sha256": "bb8044058377d86efc658ce3a7458c8afc141680acfd98542260e0efda018454"
+    }
+  ],
+  "recorded_checksum_source_files": [
+    {
+      "git_object": "76e0f9ce793f8cbbff2349b2be2bbaa359250a42:experiments/2026-09-30-b-v6h-gain/README.md",
+      "bytes": 39715,
+      "sha256": "e0a5ecaf1b4877d61fed84726e61cc1437cea3f41cc115949377f8808f4eb50e"
+    },
+    {
+      "path": "experiments/2026-09-30-carry-x-bias/results/raw_inputs.json",
+      "bytes": 3749,
+      "sha256": "c713e3ac0207b88e5323294bb1216b9b59966832a3ba7a8a12c1a2d658bca5af"
+    },
+    {
+      "path": "experiments/2026-09-30-door-relax-envelope/README.md",
+      "bytes": 29751,
+      "sha256": "3baede1246b62a1e240294d1316703e59ca52471bdd4bf16f239c2b3c7b7c840"
+    },
+    {
+      "path": "experiments/2026-09-30-l1-axial-offset/results/raw_manifest.json",
+      "bytes": 3061,
+      "sha256": "3ae90f09c73aca913e0ff66233fd724368cfe1e32671a181abac8c8f75ceea85"
+    }
+  ],
+  "reproduction": "README commands use frozen CSVs or frozen raw-source list; do not --discover when reproducing this snapshot",
+  "limits": [
+    "Exploratory conditional endpoint gate only, not observed completion or confirmatory evidence.",
+    "Raw metadata and JSON inputs are locally preserved; media/checkpoints were not read or backed up.",
+    "Normal registered guard divergence is outside the conditional lateral forecast.",
+    "No TensorBoard snapshot or UI refresh: user required outputs read-only."
+  ]
+}
