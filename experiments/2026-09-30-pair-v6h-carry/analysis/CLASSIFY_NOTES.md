@@ -1,9 +1,13 @@
-# v6h 판정기 — 등록 recorder 계약 반영 v4
+# v6h 판정기 — 등록 recorder 계약 반영 v5
 
 PR #299 세 번째 독립 검토(`d1c64f85`, 검토 대상 `f32d5fd9`)의 R1–R5와
 조정자의 D1–D5 결정을 반영한다. v3의 **새 필드 소급 필수화와 INVALID→FAIL 대치**를
 폐기한다. 과거 검증 기록은 그대로 보존한다. 이 수정은 제어기·recorder·물리·등록 봉인을
 바꾸지 않으며, 공개 인수 자료의 형식 검증을 새 확증 표본으로 세지 않는다.
+
+4차 검토(`a0903178`, 검토 대상 `58dc07e7`)의 두 P1도 같은 D1–D5 안에서
+보완했다. 등록 recorder가 실제로 저장하는 원 좌표·시작 기록·시각 순서를
+거리/경계 요약과 대조한다. 없는 계측값을 새로 요구하지 않는다.
 
 ## R1 / D1: 실제 생산자와 소비자의 계약
 
@@ -96,6 +100,14 @@ trace가 빠져 실패를 확정할 수 없는 창은 실패로 추정하지 않
   두 source 끝점이 있으면 row 끝 시각도 더 늦은 source 시각과 같아야 한다.
 - 다른 시각의 robot GT 값은 같은 순간의 값처럼 비교하지 않는다. 안전 관측의
   합집합에는 계속 포함한다. SHA 일치는 논리적 일치를 대신하지 않는다.
+- 등록 형식의 각 recorded leg에는 r1/r2의 `leg_start`와 `leg_end` 및 유한한
+  원 `beam_xyz`가 모두 있어야 한다. 양쪽 시작·끝 기록 중 각각 더 늦은 시각을
+  선택하며 동시각은 producer처럼 정렬된 로봇 ID 순서로 고른다. XY 원 좌표와
+  case의 정적 route에서 `end_error_m`, `leg_error_m`, `planned_length_m`,
+  `travel_m`, `step_error_m`, `along_error_m`, `cross_track_m`를 재계산한다.
+  `pair_chain_probe`의 `math.dist`/`math.hypot` 식과 반올림 없는 값을 사용한다.
+  요약과 1e-9 m보다 큰 차이 또는 필수 수치 누락은 INVALID다. 100 mm 과제
+  판정 문턱은 그대로이며 요약값을 덮어쓰거나 모순을 과제 FAIL로 대치하지 않는다.
 
 ## R5 / D5: 관측창과 coverage의 자체 일관성
 
@@ -105,6 +117,17 @@ wall 창을 evaluation 창 길이만으로 검사하지 않는다.
 `include_teacher=true`일 때 저장된 `teacher.gt_after_lift.t`와 `gt_at_entry.t`는
 실제 기록창 안에 있어야 한다. 등록 형식에는 관측된 trace 창을 사용한다.
 원 recorder에 없는 전체 접촉 coverage를 지어 넣어 통과시키지 않는다.
+
+등록 형식에서는 로봇별 `timeline` 배열 순서와 leg 번호에 따른 시작→끝 경계,
+교사→entry→stop→end GT 시각을 각각 검사한다. 각 스트림은 음수가 없고
+비감소해야 한다. raw 시작/끝은 그 로봇 timeline의 첫 해당 상태와 연결하고,
+요약 시작/끝은 양쪽 raw의 최댓값과 연결한다. 같은 경계의 `gt.t`/`sim_s`와
+원 stop/row stop의 허용오차는 1e-9초다. snapshot은 관측 trace 창에서
+한 표본 간격(0.051초) 이내, termination이 있으면 그 시각+1e-9초 이내여야 한다.
+이 차이는 실제 cleanup GT가 마지막 trace보다 약 0.05초 늦게 기록되기 때문이다.
+로봇 간 비동기 시각, 동시각 상태 전이, robot/경계 dict와 요약 leg 배열 순서
+변경은 허용한다. 기존 trace의 엄격 증가·공백 조건은 바꾸지 않는다.
+HOST except 경로의 termination 부재와 아직 시작하지 않은 leg도 계속 허용한다.
 
 ## 검증과 범위
 
@@ -123,6 +146,12 @@ wall 창을 evaluation 창 길이만으로 검사하지 않는다.
   raw의 열거/읽기, 물리·SIM step·렌더·모델 호출은 하지 않는다. 새 실험 결과가 아닌
   오프라인 판정기 회귀이므로 기존 TensorBoard snapshot을 보존하고 재변환하지 않는다.
   원 raw는 로컬이며 테스트 fixture의 GitHub 보존을 raw 원격 백업이라고 표현하지 않는다.
+- 4차 검토의 10개 strict-xfail을 모두 제거했다. 같은 파일에 거리 7항목,
+  raw 좌표 누락/손상, 시간 역전, 비동기/동시각 양성 대조 등을 더해 57개를
+  정상 offline CI에 포함했다. `check_299d_mutations.py`의 거리·시각·start
+  어댑터 계약 삭제 5개와 기존 D1–D5 삭제 7개를 각각 검사한다. start 어댑터
+  mutation은 어댑터 자체의 필수 필드 계약을 검사하고, 나머지는 최종 판정으로
+  검사한다. 결과·명령·파일 해시는 `review_299d_fix_validation/`에 남긴다.
 
 ## 참고 자료
 

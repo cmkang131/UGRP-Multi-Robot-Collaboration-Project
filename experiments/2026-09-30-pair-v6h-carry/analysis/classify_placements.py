@@ -850,6 +850,126 @@ def validate_record_consistency(row, result):
         raise EvidenceError("stored safety summary differs from stage contact episodes")
 
 
+def validate_recorder_distances(row, result, case):
+    """Recompute the registered chain_legs geometry, without repairing evidence.
+
+    The producer selects max(sim_s), breaking ties by sorted robot ID, and uses
+    XY math.dist/hypot without rounding. 1e-9 is serialization tolerance in m;
+    it never changes the 0.10 m task thresholds or compares asynchronous GT.
+    """
+    route = case["route"]
+    for point in route:
+        if not isinstance(point, list) or len(point) != 2:
+            raise EvidenceError("recorder route: require XY points")
+        for value in point:
+            finite(value, "route coordinate")
+    planned = ca.pcp.legs_of(route)
+    if any(finite(p["length_m"], "planned length") <= 0 for p in planned):
+        raise EvidenceError("recorder route: require positive leg lengths")
+    raw = result.get("chain_raw") or {}
+    for leg in row["chain"]["legs"]:
+        if not leg["recorded"]:
+            continue
+        k = leg["leg"]
+        points = []
+        for boundary in ("leg_start", "leg_end"):
+            snapshots = [raw[r][boundary][str(k)] for r in ROBOTS]
+            for snap in snapshots:
+                xyz = snap["gt"]["beam_xyz"]
+                if not isinstance(xyz, list) or len(xyz) != 3:
+                    raise EvidenceError("recorder beam_xyz: require XYZ coordinates")
+                for value in xyz:
+                    finite(value, "beam coordinate")
+            points.append(max(snapshots, key=lambda s: finite(s["sim_s"], "source time"))["gt"]["beam_xyz"][:2])
+        start, end = points
+        p0, p1 = planned[k]["p0"], planned[k]["p1"]
+        travel = math.dist(start, end)
+        step_target = [start[i] + p1[i] - p0[i] for i in (0, 1)]
+        expected = {**ca.pcp.leg_line_metrics(p0, p1, end),
+                    "planned_length_m": planned[k]["length_m"], "travel_m": travel,
+                    "leg_error_m": abs(travel - planned[k]["length_m"]),
+                    "step_error_m": math.dist(end, step_target)}
+        for key, value in expected.items():
+            if abs(finite(leg.get(key), "derived " + key) - finite(value, "computed " + key)) > 1e-9:
+                raise EvidenceError("source/derived " + key + " contradiction")
+
+
+def validate_recorder_chronology(row, result, trace):
+    """Check streams in recorder order, never JSON mapping/list leg order.
+
+    Robot timelines and semantic start/end boundaries are separate streams;
+    equal times and asynchronous robots are valid. Trace samples may bracket
+    snapshots by one sampling interval. Copied GT/boundary times use 1e-9 only.
+    No absent acquisition receipt or HOST except-path termination is invented.
+    """
+    lo, hi = trace[0]["t"] - TRACE_GAP_S, trace[-1]["t"] + TRACE_GAP_S
+    termination = (result.get("termination") or {}).get("sim_s")
+    if termination is not None:
+        hi = min(hi, finite(termination, "termination time") + 1e-9)
+
+    def time(value, name):
+        t = finite(value, name)
+        if t < 0 or not lo <= t <= hi:
+            raise EvidenceError(name + ": outside recorded window")
+        return t
+
+    def ordered(times, name):
+        if any(b < a for a, b in zip(times, times[1:])):
+            raise EvidenceError(name + ": SIM time reversal")
+
+    stage_times = []
+    teacher = result.get("teacher") or {}
+    for name, snap in (("teacher.gt_after_lift", teacher.get("gt_after_lift")),
+                       ("gt_at_entry", result.get("gt_at_entry")),
+                       ("gt_at_stop", result.get("gt_at_stop")),
+                       ("gt_at_end", result.get("gt_at_end"))):
+        if snap is not None:
+            stage_times.append(time(snap.get("t"), name + ".t"))
+    ordered(stage_times, "stage snapshots")
+    if result.get("gt_at_stop") is not None:
+        if abs(time(row.get("stop_sim_s"), "row stop") - result["gt_at_stop"]["t"]) > 1e-9:
+            raise EvidenceError("stop source/derived timestamp contradiction")
+    raw = result.get("chain_raw") or {}
+    for rid, stream in raw.items():
+        if rid not in ROBOTS:
+            raise EvidenceError("recorder: unknown robot stream")
+        timeline = stream["timeline"]
+        times = [time(event[0], rid + " timeline") for event in timeline]
+        ordered(times, rid + " timeline")
+        boundaries = []
+        for kind in ("leg_start", "leg_end"):
+            for key, snap in stream[kind].items():
+                k = int(key)
+                if str(k) != key or k < 0:
+                    raise EvidenceError("recorder: invalid leg index")
+                t = time(snap.get("sim_s"), rid + " " + kind)
+                gt_t = time(snap["gt"].get("t"), rid + " boundary GT")
+                if abs(t - gt_t) > 1e-9:
+                    raise EvidenceError("boundary GT/source timestamp contradiction")
+                boundaries.append((k, 0 if kind == "leg_start" else 1, t))
+                states = ca.pcp.LEG_START_STATES if kind == "leg_start" else (ca.pcp.LEG_END_STATE,)
+                event = next((e for e in timeline if e[1] == k and e[2] in states), None)
+                if event is None or abs(event[0] - t) > 1e-9:
+                    raise EvidenceError("boundary/timeline timestamp contradiction")
+        ordered([t for _, _, t in sorted(boundaries)], rid + " leg boundaries")
+        done = stream.get("done")
+        if done is not None:
+            t = time(done.get("sim_s"), rid + " done")
+            if abs(time(done["gt"].get("t"), rid + " done GT") - t) > 1e-9:
+                raise EvidenceError("done GT/source timestamp contradiction")
+            event = next((e for e in timeline if e[2] == "done"), None)
+            if event is None or abs(event[0] - t) > 1e-9 or any(b[2] > t for b in boundaries):
+                raise EvidenceError("done/boundary timeline contradiction")
+    for leg in row["chain"]["legs"]:
+        for kind, key in (("leg_start", "start_sim_s"), ("leg_end", "end_sim_s")):
+            snapshots = [(raw.get(r, {}).get(kind) or {}).get(str(leg["leg"])) for r in ROBOTS]
+            expected = max((s["sim_s"] for s in snapshots if s is not None), default=None)
+            actual = leg.get(key)
+            if ((actual is None) != (expected is None)
+                    or actual is not None and abs(finite(actual, key) - expected) > 1e-9):
+                raise EvidenceError(kind + " source/derived timestamp contradiction")
+
+
 def adjudicate_attempt(row, result, trace, *, confirmatory=True, issues=(), recorder_context=None):
     """Validate first, then emit one of PASS/FAIL/HARD/INVALID/HOST_SAFE.
 
@@ -880,6 +1000,9 @@ def adjudicate_attempt(row, result, trace, *, confirmatory=True, issues=(), reco
         try:
             validate_record_consistency(row, result)
             validate_source_to_derived(row, result)
+            if recorder is not None:
+                validate_recorder_distances(row, result, recorder_context["case"])
+                validate_recorder_chronology(row, result, trace)
         except (EvidenceError, KeyError, TypeError, ValueError, AttributeError) as error:
             problems.append(str(error))
         if confirmatory and not host and not failed and not hard["violated"]:

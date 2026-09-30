@@ -53,13 +53,14 @@ def adapt(row, result, trace, *, manifest, case, registration=None):
     if case.get("contact_track") is not True or case.get("pf_track") is not True or case.get("chain_stop_leg") != 1:
         raise ValueError("recorder: required recorded tracking/stop configuration differs")
     # These fields ARE written by this producer when the corresponding leg is
-    # completed. Missing raw endpoint witnesses are not optional decorations.
+    # completed. chain_legs requires BOTH robots' start AND end witnesses.
     for leg in row.get("chain", {}).get("legs", []):
         if leg.get("recorded"):
             for robot in ("r1", "r2"):
-                endpoint = result["chain_raw"][robot]["leg_end"][str(leg["leg"])]
-                if not isinstance(endpoint.get("gt"), dict) or not {"t", "lift_m", "tilt_deg", "jaws"} <= endpoint["gt"].keys():
-                    raise ValueError("recorder: incomplete recorded endpoint GT")
+                for boundary in ("leg_start", "leg_end"):
+                    endpoint = result["chain_raw"][robot][boundary][str(leg["leg"])]
+                    if not isinstance(endpoint.get("gt"), dict) or not {"t", "beam_xyz", "lift_m", "tilt_deg", "jaws"} <= endpoint["gt"].keys():
+                        raise ValueError("recorder: incomplete recorded " + boundary + " GT")
     if not result.get("host_error") and case.get("teacher_held") is True:
         if not isinstance(result.get("teacher", {}).get("gt_after_lift"), dict) or not isinstance(result.get("gt_at_entry"), dict):
             raise ValueError("recorder: missing recorded teacher/entry witnesses")
