@@ -6,6 +6,7 @@ import signal
 import subprocess
 import sys
 import time
+from types import SimpleNamespace
 
 import pytest
 
@@ -151,6 +152,42 @@ def test_child_observes_live_lock_and_normal_exit_releases_it(tmp_path, exit_cod
     assert record["timing_sensitive"] is True
     assert agent_lock.status(root) is None
     assert len((root / "released.jsonl").read_text().splitlines()) == 1
+
+
+@pytest.mark.parametrize("exit_code", [0, 7])
+@pytest.mark.parametrize("disappears", [True, False], ids=["delayed", "never-confirmed"])
+def test_group_cleanup_waits_for_confirmation(tmp_path, monkeypatch, exit_code, disappears):
+    """Deterministically reproduce delayed group teardown after leader wait()."""
+    from scripts import ugrp_session
+    root = tmp_path / "locks"
+    now, probes = [0.0], []
+    monkeypatch.setattr(ugrp_session, "stop_group", lambda *a, **k: None)
+
+    def alive(pgid):
+        assert agent_lock.status(root) is not None
+        probes.append(pgid)
+        return not disappears or len(probes) < 3
+
+    def sleep(delay):
+        assert agent_lock.status(root) is not None
+        now[0] += delay
+
+    monkeypatch.setattr(ugrp_session, "process_group_alive", alive)
+    monkeypatch.setattr(runner, "time", SimpleNamespace(monotonic=lambda: now[0], sleep=sleep))
+    command = [sys.executable, "-c", f"raise SystemExit({exit_code})"]
+    if disappears:
+        assert runner.run_locked(command, dict(os.environ), root) == exit_code
+        assert len(probes) == 3
+        assert agent_lock.status(root) is None
+        assert len((root / "released.jsonl").read_text().splitlines()) == 1
+    else:
+        with pytest.raises(RuntimeError, match="cleanup unconfirmed"):
+            runner.run_locked(command, dict(os.environ), root)
+        held = agent_lock.status(root)
+        assert held is not None
+        assert not (root / "released.jsonl").exists()
+        agent_lock.release(root, owner=held["owner"])
+    assert len(set(probes)) == 1
 
 
 def test_spawn_failure_releases_only_unused_lock(tmp_path):
