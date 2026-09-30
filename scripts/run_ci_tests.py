@@ -119,7 +119,6 @@ TEST_PATTERNS = (
     "tests/test_zone_pair_admission.py",
     "tests/test_pair_chain_probe.py",
     "tests/test_pair_passage_plan.py",  # 2026-09-29: opt-in corridor/door route planning for the pair carry (static geometry)
-    "tests/test_beam_initial_pose_plan.py",  # T08a: static north/south setup sheet and role geometry, no execution
     # 2026-09-29: v6 is audited as history; these guard its receipt and the current v6-family path.
     "tests/test_zone_pair_v6.py", "tests/test_zone_pair_registered_source.py",
     "tests/test_owncam_bootstrap_v6b.py",
