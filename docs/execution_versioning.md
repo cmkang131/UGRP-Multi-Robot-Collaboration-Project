@@ -27,6 +27,23 @@
 
 자동 검사는 설정 누락과 알려진 실행 계약의 변경을 검출한다. 물리적 완주나 일반화 성능을 대신 검증하지 않는다. 적용된 실행 경로 밖의 도구는 별도 검토가 필요하다.
 
+## 최종 환경 v87 — 밝은 렌더로 별도 수집 (2026-10-01)
+
+`zone-final-environment-v87` / `zone-final-environment-floor-light-check` **2.20.0**은
+2026-09-29 사용자의 `floor_light_v1` 연구 코호트 결정을 적용한다.
+[P01 #341](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/341)은
+v84/default의 어두운 영상을 기록했다. v87은 기존 지도·물리·카메라·명령·시간 상한을
+유지하면서 기존 `sim.render_profile`을 적용/검사하는 별도 어댑터다.
+P01 3×30초(총 ≤105 SIM초), unloaded 수집 3×120초(총 ≤375 SIM초)를 새 코호트로 실행한다.
+그림자 결과와 합산하지 않으며, P03·실측 보정·학생 성공은 여전히 미검증이다.
+
+번호 선택 전 main + 열린 PR 16개 전체에서 최대 v86 / 통합 2.19.0(#339)을 확인했다.
+[조회 기록](../experiments/2026-10-01-final-env-floor-light/reservation_scan.json),
+[보존 해시](../experiments/2026-10-01-final-env-floor-light/v84_preservation.json),
+[실행 명령](../PHYSICS_HANDOFF.md)을 따른다.
+실행된 v84 JSON·workflow·원래 보정 계약·소스와 생성 번들은 바이트/해시 그대로 남긴다.
+새 workflow ID를 추가하여 v84의 기존 ID를 덮어쓰지 않는다. v84의 과거 결과는 v87로 승계하지 않는다.
+
 ## 최종 환경 v84 — DRAFT 점검 경로
 
 `zone-final-environment-v84` / `zone-final-environment-check` 2.17.0은
