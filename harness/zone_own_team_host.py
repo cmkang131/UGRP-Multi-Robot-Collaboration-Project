@@ -138,8 +138,6 @@ class OwnCamTeamHost:
                 return skill_cls(order, planner=_planner, robot_id=robot_id, mode='m1', static_keepouts=_keepouts,
                                  static_bounds_m=list(_bounds))
 
-            factory.box_perception_profile = getattr(skill_cls, 'box_perception_profile', 'legacy_cyan_v1')
-
             pose_kwargs = {} if runtime is None else {'model_runtime': runtime}
             pose = None if pose_factory is None else pose_factory(rid, own_static, calibration['params'], spec['seed'],
                                                                 **pose_kwargs)

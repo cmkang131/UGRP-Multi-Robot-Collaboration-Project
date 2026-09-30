@@ -15,13 +15,13 @@ import numpy as np
 import pytest
 
 from harness import m1_color_perception as p
-from harness import zone_own_executor as zox
+from harness import zone_color_box_executor as zox
 from harness.m1_color_contract import BOX_KINDS, ColorBoxOrder
 from harness.m1_owncam_delivery import M1OwnCamDelivery
-from harness.owncam_delivery_shared import SharedPoseDelivery
+from harness.m1_color_delivery import ColorSharedPoseDelivery
 from harness.wrist_color_boxes import KindBoxSkill, WristColorBoxDelivery
 from harness.wrist_zone_skill import PoseEstimate
-from harness.zone_own_deliver import bottom_clipped_box_px
+from harness.zone_color_box_delivery import bottom_clipped_box_px
 from tests.test_zone_own_executor import MAP, CALIB, ROWS_Y, SEARCH_POSE
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -48,11 +48,11 @@ def order(kind):
 def executor(kind='red', factory=WristColorBoxDelivery):
     sheet = {'orders': [{'order_id': 'o', 'kind': kind, 'count': 1, 'required_robots': 1,
                         'destination_zone': 'B', 'initial_location': {'pickup_bay': 'P1', 'slot': 'P1-1'}}]}
-    return zox.ZoneOwnExecutor('r1', MAP, CALIB['params'], sheet, skill_factory=factory,
+    return zox.ZoneColorBoxExecutor('r1', MAP, CALIB['params'], sheet, skill_factory=factory,
                               pose_estimate_cls=PoseEstimate, search_rows_y=ROWS_Y, judgments=False)
 
 
-def test_preimplementation_fixture_hashes_and_labels():
+def test_fixed_synthetic_fixture_hashes_and_labels():
     assert hashlib.sha256((FIX/'labels.json').read_bytes()).hexdigest() == \
         '99f74aa7ce7c8565697da8a3d6f621c98677eed542054ddaed72e0bf59e03ff4'
     assert len(FRAMES) == 25
@@ -162,7 +162,7 @@ def test_bottom_clip_uses_ordered_kind(kind, shown):
 
 @pytest.mark.parametrize('kind', BOX_KINDS)
 def test_m1_search_and_coarse_order_keep_kind(kind):
-    ctl = SharedPoseDelivery(MAP, CALIB['params'], box_kind=kind, box_profile=p.PROFILE, slot_id='B1', slot_xy=(.32, 0.),
+    ctl = ColorSharedPoseDelivery(MAP, CALIB['params'], box_kind=kind, box_profile=p.PROFILE, slot_id='B1', slot_xy=(.32, 0.),
               skill_factory=lambda o: None, pose_estimate_cls=PoseEstimate, search_rows_y=ROWS_Y)
     report = SimpleNamespace(initialized=True, yaw_rad=0., x_m=0., y_m=0., t_est=1., std_xy_m=.01)
     wrong = next(k for k in BOX_KINDS if k != kind)
@@ -187,7 +187,7 @@ def test_executor_passes_kind_into_controller_and_skill(kind, monkeypatch):
     def controller(*a, **kw):
         captured.update(kw)
         return SimpleNamespace(decide=lambda now: {'mode': 'tick', 'commands': [{'kind': 'hold'}]})
-    monkeypatch.setattr(zox, '_DeliverController', controller)
+    monkeypatch.setattr(zox, 'ColorDeliverController', controller)
     ex._step_deliver(1., ex.job)
     assert captured['box_kind'] == kind and captured['box_profile'] == p.PROFILE
     made = captured['skill_factory'](order(kind))
@@ -226,7 +226,7 @@ def test_conditions_and_private_changes_do_not_change_local_actions(condition):
         before = copy.deepcopy(counterfactual)
         scenario = {'scenario_id': 't03-dev', 'orders': list(executor().orders.values()), 'eval': counterfactual}
         public = public_part(scenario)
-        ex = zox.ZoneOwnExecutor('r1', MAP, CALIB['params'], public, skill_factory=WristColorBoxDelivery,
+        ex = zox.ZoneColorBoxExecutor('r1', MAP, CALIB['params'], public, skill_factory=WristColorBoxDelivery,
                                  pose_estimate_cls=PoseEstimate, search_rows_y=ROWS_Y, judgments=False)
         accepted = ex.deliver('o', 'B')
         skill = ex._skill_for(ex.job)(order('red'))
@@ -235,13 +235,13 @@ def test_conditions_and_private_changes_do_not_change_local_actions(condition):
         if reference is None:
             reference = result
         assert result == reference and before == counterfactual
-    for cls in (M1OwnCamDelivery, SharedPoseDelivery, WristColorBoxDelivery, KindBoxSkill):
+    for cls in (M1OwnCamDelivery, ColorSharedPoseDelivery, WristColorBoxDelivery, KindBoxSkill):
         assert 'condition' not in inspect.signature(cls).parameters
 
 
 def test_runtime_source_closure_includes_selected_color_skill():
     from harness.python_source_closure import source_closure
-    closure = source_closure(ROOT, ('harness/zone_own_team_host.py',), modules=('harness.wrist_color_boxes',))
+    closure = source_closure(ROOT, ('harness/zone_color_box_executor.py',), modules=('harness.wrist_color_boxes',))
     assert {'harness/wrist_color_boxes.py', 'harness/m1_color_perception.py',
             'harness/m1_color_contract.py', 'harness/zone_own_deliver.py'} <= set(closure)
 
@@ -272,11 +272,14 @@ def test_wrong_kind_placement_cannot_increment_delivered_count(monkeypatch):
     assert ex.deliver('o', 'B')['accepted']
     ex.job.ctl = SimpleNamespace(
         decide=lambda now: {'mode': 'done', 'outcome': 'SKILL_OWN_RGB_PLACEMENT_IN_SLOT'},
-        skill=SimpleNamespace(placement={'kind': 'red', 'reason': 'IN_SLOT'}))
+        skill=SimpleNamespace(placement={'kind': 'red', 'reason': 'IN_SLOT'}), lookback_gates=[])
     failures = []
+    finished = []
     monkeypatch.setattr(ex, '_fail', lambda now, reason, **kw: failures.append(reason))
+    monkeypatch.setattr(ex, '_finish', lambda *a, **kw: finished.append((a, kw)))
     ex._step_deliver(1., ex.job)
     assert failures == ['PLACEMENT_KIND_MISMATCH'] and not ex._delivered_per_zone
+    assert finished == []
 
 
 @pytest.mark.parametrize('bad', ('%%%', '', base64.b64encode(b'not an image').decode()))
@@ -301,3 +304,19 @@ def test_unvalidated_final_v3_geometry_is_still_refused_before_physics():
     from harness.zone_robot_model_runtime import require_v3_consumers
     with pytest.raises(ValueError, match='explicit v3 skill'):
         require_v3_consumers({'skill_module': 'harness.wrist_color_boxes'}, lambda *a: None)
+
+
+@pytest.mark.parametrize('kind', BOX_KINDS)
+def test_expected_kind_placement_increments_count_and_finishes(kind, monkeypatch):
+    ex = executor(kind)
+    assert ex.deliver('o', 'B')['accepted']
+    ex.job.ctl = SimpleNamespace(
+        decide=lambda now: {'mode': 'done', 'outcome': 'SKILL_OWN_RGB_PLACEMENT_IN_SLOT'},
+        skill=SimpleNamespace(placement={'kind': kind, 'reason': 'IN_SLOT'}), lookback_gates=[])
+    finished, failures = [], []
+    monkeypatch.setattr(ex, '_fail', lambda *a, **kw: failures.append((a, kw)))
+    monkeypatch.setattr(ex, '_finish', lambda *a, **kw: finished.append((a, kw)))
+    ex._step_deliver(1., ex.job)
+    assert ex._delivered_per_zone == {'B': 1} and failures == []
+    assert len(finished) == 1
+    assert finished[0][0] == (1., 'own_camera_confirmed', 'SKILL_OWN_RGB_PLACEMENT_IN_SLOT')

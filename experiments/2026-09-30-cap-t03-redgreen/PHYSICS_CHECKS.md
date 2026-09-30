@@ -6,7 +6,7 @@
 
 1. P01 #305, P02 #307, P03 #312, P05 #308, P07 #311의 실제 통합 SHA와 독립 검토를 기록한다. 이 작업 시작 때는 모두 OPEN/DRAFT, merge SHA 없음이었다. P01/P03의 최종 로봇 v3·walls_v3·무표식 provider/카메라/모델 보정 admission은 아직 미지원이다. 이 PR 색 skill도 기존 M1 geometry를 재사용하며 v3 consumer 선언이 없으므로 `require_v3_consumers`가 물리 생성 전에 거절한다. 새 색 skill의 v3 FK/IK/카메라 연결을 독립적으로 고정·검증해야 한다. 이 상태에서 v2/태그로 바꿔 실행하지 않는다.
 2. 최종 로봇 3D 모델, walls_v3, 표식 0, weld OFF, cargo_noslip_v1 및 적용된 timestep/contact/camera/FOV/pose-provider/모델/보정 hash를 고정한다. 정식 s1–s6와 seed·주문·성공 기준 원본을 그대로 두고 **별도 dev fixture**를 등록한다. 새 camera/view 조작이나 GT 재측위·위치 이동으로 준비 단계를 생략하지 않는다.
-3. 새 후보의 세 종류 모두 `student.skill_module=harness.wrist_color_boxes`, `student.skill_class=WristColorBoxDelivery`를 쓴다. factory의 `box_perception_profile=m1_color_boxes_v1`가 M1/검색/clip recovery까지 전달돼야 한다. 기존 `wrist_zone_skill_v9`는 legacy cyan만 허용한다. 새 후보는 N7 단독 cyan 실행의 성공 판정을 승계하지 않는다.
+3. 새 후보의 세 종류 모두 봉인되지 않은 호출자가 `harness.zone_color_box_executor.ZoneColorBoxExecutor`를 명시적으로 생성하고 `harness.wrist_color_boxes.WristColorBoxDelivery` factory를 전달해야 한다. 기존 host의 `student.skill_module`/`skill_class`만 바꾸는 경로는 red/green을 허용하지 않는다. 별도 host/runner 선택과 새 실행 번들 연결을 먼저 검증한다. factory의 `box_perception_profile=m1_color_boxes_v1`가 M1/검색/clip recovery까지 전달돼야 한다. 기존 `wrist_zone_skill_v9`는 legacy cyan만 허용한다. 새 후보는 N7 단독 cyan 실행의 성공 판정을 승계하지 않는다.
 4. no_comm/peer_ko/leader_ko/structured에 같은 student·controller/config·센서·자기 기억·고정 상태 enum을 쓰고 그 hash가 같은지 검사한다. role assignment hash는 따로 기록한다. 아래 4셀을 조건별로 복제해 16회 돌리는 예산이 아니다. 통신 비교 cohort는 별도 사전 등록한다. 모델 호출 예산은 이 작업에 없다.
 5. 새 bundle/workflow 번호는 조정자가 main+열린 PR의 최댓값을 확인해 예약한다. `sim_cli` 공통 기록에 source·설정·입력·결과를 연결한다. 실행 전 code/input/config를 커밋하고 그 SHA 동안 고정한다. 공용 lock, 디스크 10 GiB 이상, 새 primary outputs 경로를 확인한다. 다른 소유자의 실행/서버를 종료하지 않는다.
 

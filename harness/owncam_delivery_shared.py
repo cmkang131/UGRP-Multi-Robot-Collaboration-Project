@@ -1,12 +1,10 @@
-"""Active M1 state/leg adapter with explicit legacy/color profile selection.
+"""Active M1 state/leg adapter; the scored M1 source stays byte-identical.
 
 The constructor mirrors frozen controller fields, but selects the final provider
 before initialization. No temporary provider is constructed for an injected one.
 """
 from collections.abc import Mapping, Sequence
 from harness.m1_owncam_delivery import M1OwnCamDelivery, ORDER_KINDS, DOOR_EXIT_M
-from harness.m1_color_contract import validate_box_profile
-from harness.m1_color_delivery import ColorBoxDeliveryMixin
 from harness.owncam_drive import CARRY_POSTURE
 from harness.owncam_drive_v2 import OwnCamDriverV2
 from harness.owncam_drive_shared import SharedPoseDriver
@@ -31,20 +29,18 @@ class SharedLegDriver(OwnCamDriverV2, SharedPoseDriver):
         raise RuntimeError('feed frames through the owning pose provider exactly once')
 
 
-class SharedPoseDelivery(ColorBoxDeliveryMixin, M1OwnCamDelivery):
+class SharedPoseDelivery(M1OwnCamDelivery):
     def __init__(self, static_map: Mapping, params: Mapping, *, box_kind: str, slot_id: str,
                  slot_xy: Sequence[float], skill_factory, pose_estimate_cls, search_rows_y: Sequence[float],
-                 robot_id: str = 'r1', seed: int = 0, order_kind: str = 'own_rgb_bay', pose_source=None,
-                 box_profile: str = 'legacy_cyan_v1'):
+                 robot_id: str = 'r1', seed: int = 0, order_kind: str = 'own_rgb_bay', pose_source=None):
         if pose_source is not None:
             from harness.pose_provider import is_own_pose_provider
             from harness.m1_owncam_contract import require_m1_source
             require_m1_source(getattr(pose_source, 'source', None))
             if not is_own_pose_provider(pose_source):
                 raise ValueError('M1 requires a registered own-camera provider')
-        validate_box_profile(box_profile, box_kind, order_kind)
-        if box_profile != 'legacy_cyan_v1':
-            self.box_profile = box_profile
+        if box_kind != 'cyan':
+            raise ValueError('M1 v1 delivers the cyan box')
         if order_kind not in ORDER_KINDS:
             raise ValueError(f'order_kind must be one of {ORDER_KINDS}')
         self.order_kind = order_kind
