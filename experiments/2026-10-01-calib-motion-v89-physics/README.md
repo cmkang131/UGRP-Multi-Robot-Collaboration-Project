@@ -11,7 +11,7 @@ Refs #342 #346 #347. 진단 수집이며 보정값 채택, P03, loaded/fine, 학
   HEAD=SHA, 깨끗한 트리, `source_unchanged=true`.
 - 명령: [run_v89.sh](run_v89.sh) (핸드오프와 같은 subshell·`set -euo pipefail`·trap release,
   `ugrp_session.py run measurement-v89`). 정적 계획 확인(`--check` / `workflow plan`)은 먼저 통과.
-  로그 [run_v89.log](run_v89.log). 잠금 owner claude, 종료 후 `agent_lock.py status` = null(해제 확인),
+  로그 [run_v89_log.txt](run_v89_log.txt). 잠금 owner claude, 종료 후 `agent_lock.py status` = null(해제 확인),
   세션 `measurement-v89` stopped, 남은 자식 프로세스 없음.
 - 동기 SIM 모드. wall/속도 결론 없음. 실행 전 `uptime`: load averages 14.35 15.40 15.79(잠금 기록 13.52 15.21 15.72),
   실행 후 16.40 16.12 16.00(`result.json`). 다른 Codex 작업이 동시에 돌고 있었다.
