@@ -1,0 +1,199 @@
+{
+  "verdict": "SEAL OK",
+  "reviewed_delta": {
+    "from": "266118d2c2337bbf1cff507690da131c63e2db11",
+    "to": "9e13c76b0ead36ace257e05cab7cb5e60d42df72"
+  },
+  "analysis_seal_commit": "5be4330eca9b23d2cbde3657dcbb215ee1923b25",
+  "seal_sha256": "9a55365eb9edd7ef1f6291859a41d4c07779fe2d8cee054838353ab99425496a",
+  "pin_verification": {
+    "method": "independent git cat-file batch SHA-256 and Git blob SHA in test_git_pins_preservation_cases_and_metadata",
+    "execution_files": 274,
+    "execution_commit": "4c6b439f3f7c9a147c901f8b260a1e214d4eb396",
+    "analysis_files": 293,
+    "analysis_commit": "5be4330eca9b23d2cbde3657dcbb215ee1923b25",
+    "old_seal_files_unchanged": 19,
+    "case_equality": {
+      "count": 72,
+      "primary": 60,
+      "sensitivity": 12,
+      "serialization": "plan.json literal cases array; original key order and numeric values; only registration_run_id removed",
+      "plan_cases_sha256": "f476c3d3103daa86fcab4553e9e2cfaf3b0abf500b71b6151554de7cbd2a4269",
+      "builder_cases_sha256": "f476c3d3103daa86fcab4553e9e2cfaf3b0abf500b71b6151554de7cbd2a4269"
+    }
+  },
+  "acquisition_pin": {
+    "schema": "ugrp.v6h1.acquisition_inventory.v1",
+    "raw": "/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930",
+    "inventory_sha256": "d7ceca9824d4098956c7bfc5cbd7298ee5b0cfa5dacdb12586d07c2ee07ec03f",
+    "file_count": 104415,
+    "total_bytes": 1916385247,
+    "metadata_commit": "0b77ae4b9a3500de29adad74c7ecd0439ccdf545",
+    "metadata_sha256": {
+      "ACQUISITION_INVENTORY.json": "3e905f5b8186fb03954ac0b5901a5f1f7ea0caaba7d837c5d2f1d91526dad56b",
+      "make_acquisition_inventory.py": "cf7c618c1bcc43c8e737690c6e6b186a217aa5843f7431f439bec4e2ff6452c4",
+      "driver.py": "7a35229e431409904dffec27b5e9572f290cd900f0595c8e0babc5ef92cf3e56",
+      "build_plan.py": "05d1ad87c69482eefc7ca2311e48a02bf0c824c375c20de86297e663681e0f21"
+    }
+  },
+  "real_inventory_rehashed": false,
+  "raw_manifest_digest_from_committed_metadata": "07f623b7b30374da25cd0a8d2df62a70bbfdcae47b80279be6e310d7def27950",
+  "key_source_sha256_at_seal_and_head": {
+    "experiments/2026-09-30-pair-v6h-carry/analysis/apply_sealed_analysis.py": "1d4faaa9d7c2d46040db07f53940f02292f66a5f43f0fe411493618ea6556114",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "07d2b3bb25319861c3d1e6ebb9b34d68050db332d5889e953c9be82ddc8c0868",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/recorder_v4c6b.py": "3ef5ed80d88adc5ff79c8e86edd53ce3cfd8f8af0f734aacfbd62e18fd0b9f61",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/analysis_gate.json": "7b0202604ea99dd878c46920f9e400a1ad2363442bb60181d73ce7636cf47746",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/seal_registration.py": "7303155746d377e025339bd7d8cba33aa02d955f1c7c59494aaae2b31115a144"
+  },
+  "exact_generator": {
+    "commit": "0b77ae4b9a3500de29adad74c7ecd0439ccdf545",
+    "sha256": "cf7c618c1bcc43c8e737690c6e6b186a217aa5843f7431f439bec4e2ff6452c4",
+    "execution": "unchanged source bytes; RAW/OUT frame globals redirected immediately before AST-located first I/O",
+    "synthetic_consumed_unique_raw_files": 291,
+    "raw_open_bypasses": 0
+  },
+  "disclosure": {
+    "inventory_timing": "post-recording, pre-unblinding per committed pointer",
+    "mtime_claim_from_pointer": 0.1016,
+    "generator_late_tolerance_seconds": 1.0,
+    "recording_time_integrity_proven": false
+  },
+  "tests": {
+    "related": {
+      "collected": 746,
+      "passed": 736,
+      "failures": 0,
+      "errors": 0,
+      "xfail": 10,
+      "nonpassing": [
+        {
+          "test": "tests.test_classify_review_299g::test_ten_original_witnesses_and_their_specific_rejection[end_coordinates-58dc07e7]",
+          "message": "Historical 299d P1 witness before d434fba9; current code must pass"
+        },
+        {
+          "test": "tests.test_classify_review_299g::test_ten_original_witnesses_and_their_specific_rejection[start_coordinates-58dc07e7]",
+          "message": "Historical 299d P1 witness before d434fba9; current code must pass"
+        },
+        {
+          "test": "tests.test_classify_review_299g::test_ten_original_witnesses_and_their_specific_rejection[r1_start_0-58dc07e7]",
+          "message": "Historical 299d P1 witness before d434fba9; current code must pass"
+        },
+        {
+          "test": "tests.test_classify_review_299g::test_ten_original_witnesses_and_their_specific_rejection[r1_start_1-58dc07e7]",
+          "message": "Historical 299d P1 witness before d434fba9; current code must pass"
+        },
+        {
+          "test": "tests.test_classify_review_299g::test_ten_original_witnesses_and_their_specific_rejection[r2_start_0-58dc07e7]",
+          "message": "Historical 299d P1 witness before d434fba9; current code must pass"
+        },
+        {
+          "test": "tests.test_classify_review_299g::test_ten_original_witnesses_and_their_specific_rejection[r2_start_1-58dc07e7]",
+          "message": "Historical 299d P1 witness before d434fba9; current code must pass"
+        },
+        {
+          "test": "tests.test_classify_review_299g::test_ten_original_witnesses_and_their_specific_rejection[start_after_end-58dc07e7]",
+          "message": "Historical 299d P1 witness before d434fba9; current code must pass"
+        },
+        {
+          "test": "tests.test_classify_review_299g::test_ten_original_witnesses_and_their_specific_rejection[negative_end-58dc07e7]",
+          "message": "Historical 299d P1 witness before d434fba9; current code must pass"
+        },
+        {
+          "test": "tests.test_classify_review_299g::test_ten_original_witnesses_and_their_specific_rejection[stop_after_trace-58dc07e7]",
+          "message": "Historical 299d P1 witness before d434fba9; current code must pass"
+        },
+        {
+          "test": "tests.test_classify_review_299g::test_ten_original_witnesses_and_their_specific_rejection[reader_distance-58dc07e7]",
+          "message": "Historical 299d P1 witness before d434fba9; current code must pass"
+        }
+      ]
+    },
+    "independent": {
+      "collected": 6,
+      "passed": 4,
+      "failures": 0,
+      "errors": 0,
+      "xfail": 2,
+      "nonpassing": [
+        {
+          "test": "tests.test_review_seal_v6h1b::test_original_counterexamples_exact_generator[missing_inventory-remove-check]",
+          "message": "removing acquisition admission must restore the P1 counterexample"
+        },
+        {
+          "test": "tests.test_review_seal_v6h1b::test_original_counterexamples_exact_generator[trace_edit-remove-check]",
+          "message": "removing acquisition admission must restore the P1 counterexample"
+        }
+      ]
+    },
+    "mutations_unmasked": {
+      "collected": 2,
+      "passed": 0,
+      "failures": 2,
+      "errors": 0,
+      "xfail": 0,
+      "nonpassing": [
+        {
+          "test": "tests.test_review_seal_v6h1b::test_original_counterexamples_exact_generator[missing_inventory-remove-check]",
+          "message": "AssertionError: removed acquisition check emitted PASS_A_B_SAFETY\nassert {'schema': 'ugrp.v6h_placement_classification.draft.v4', 'label': 'v6h1', 'raw': '/private/var/folders/s9/blmccn613zx6.../pytest-1689/test_original_counterexamples_0/synthetic', 'source_sha': '4c6b439f3f7c9a147c901f8b260a1e214d4eb396', ...} is None"
+        },
+        {
+          "test": "tests.test_review_seal_v6h1b::test_original_counterexamples_exact_generator[trace_edit-remove-check]",
+          "message": "AssertionError: removed acquisition check emitted PASS_A_B_SAFETY\nassert {'schema': 'ugrp.v6h_placement_classification.draft.v4', 'label': 'v6h1', 'raw': '/private/var/folders/s9/blmccn613zx6.../pytest-1689/test_original_counterexamples_1/synthetic', 'source_sha': '4c6b439f3f7c9a147c901f8b260a1e214d4eb396', ...} is None"
+        }
+      ]
+    },
+    "initial_reviewer_harness_errors": {
+      "collected": 6,
+      "passed": 0,
+      "failures": 6,
+      "errors": 0,
+      "xfail": 0,
+      "nonpassing": [
+        {
+          "test": "tests.test_review_seal_v6h1b::test_git_pins_preservation_cases_and_metadata",
+          "message": "AssertionError: assert 19 == 7\n +  where 19 = len(['experiments/2026-09-30-pair-v6h-carry/analysis/seal/PR_BODY_DRAFT.md', 'experiments/2026-09-30-pair-v6h-carry/analys...carry/analysis/seal/attempt1_tests.txt', 'experiments/2026-09-30-pair-v6h-carry/analysis/seal/attempt1_tests.xml', ...])"
+        },
+        {
+          "test": "tests.test_review_seal_v6h1b::test_exact_generator_and_all_raw_opens",
+          "message": "FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'"
+        },
+        {
+          "test": "tests.test_review_seal_v6h1b::test_original_counterexamples_exact_generator[missing_inventory-fixed]",
+          "message": "FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'"
+        },
+        {
+          "test": "tests.test_review_seal_v6h1b::test_original_counterexamples_exact_generator[missing_inventory-remove-check]",
+          "message": "FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'"
+        },
+        {
+          "test": "tests.test_review_seal_v6h1b::test_original_counterexamples_exact_generator[trace_edit-fixed]",
+          "message": "FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'"
+        },
+        {
+          "test": "tests.test_review_seal_v6h1b::test_original_counterexamples_exact_generator[trace_edit-remove-check]",
+          "message": "FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'"
+        }
+      ]
+    }
+  },
+  "initial_generator_harness_incident": {
+    "failed_mkdir_calls_to_existing_inventory_directory": 5,
+    "exception": "FileExistsError",
+    "listing_reading_hashing_recorded_paths": false,
+    "successful_mutations": 0,
+    "correction": "AST first-I/O detection plus pre-operation recorded-path audit guard"
+  },
+  "final_guards": {
+    "recorded_open_list_scan_attempts": 0,
+    "physics_render_attempts": 0,
+    "real_model_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "scope": {
+    "physics": false,
+    "rendering": false,
+    "unblinded": false,
+    "github_workflows_authored_changes": false,
+    "github_comment_planned_count": 1
+  }
+}

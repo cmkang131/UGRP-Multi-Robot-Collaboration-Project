@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="2.194" timestamp="2026-10-01T06:32:11.006186+09:00" hostname="gangchangmin-ui-MacBookAir.local"><testcase classname="tests.test_review_seal_v6h1b" name="test_git_pins_preservation_cases_and_metadata" time="0.326"><failure message="AssertionError: assert 19 == 7&#10; +  where 19 = len(['experiments/2026-09-30-pair-v6h-carry/analysis/seal/PR_BODY_DRAFT.md', 'experiments/2026-09-30-pair-v6h-carry/analys...carry/analysis/seal/attempt1_tests.txt', 'experiments/2026-09-30-pair-v6h-carry/analysis/seal/attempt1_tests.xml', ...])">modules = (&lt;module 'experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis' from '/private/tmp/ugrp-seal-v6h1b.5az...ests.test_v6h_blinded_run_manifest' from '/private/tmp/ugrp-seal-v6h1b.5azT0v/tests/test_v6h_blinded_run_manifest.py'&gt;)
+
+    def test_git_pins_preservation_cases_and_metadata(modules):
+        value = json.loads(git("show", SEAL + ":" + BASE + "analysis/seal_v2/prereg_v6h.json"))
+        assert value == json.loads((ROOT / BASE / "analysis/seal_v2/prereg_v6h.json").read_bytes())
+        old = json.loads(git("show", OLD + ":" + BASE + "prereg_v6h.json"))
+        assert value["pin_sets"]["execution"] == old["pin_sets"]["execution"]
+        paths = git("ls-tree", "-r", "--name-only", OLD, "--", BASE + "prereg_v6h.json",
+                    BASE + "analysis/seal/").decode().splitlines()
+&gt;       assert len(paths) == 7
+E       AssertionError: assert 19 == 7
+E        +  where 19 = len(['experiments/2026-09-30-pair-v6h-carry/analysis/seal/PR_BODY_DRAFT.md', 'experiments/2026-09-30-pair-v6h-carry/analys...carry/analysis/seal/attempt1_tests.txt', 'experiments/2026-09-30-pair-v6h-carry/analysis/seal/attempt1_tests.xml', ...])
+
+tests/test_review_seal_v6h1b.py:115: AssertionError</failure></testcase><testcase classname="tests.test_review_seal_v6h1b" name="test_exact_generator_and_all_raw_opens" time="0.291"><failure message="FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'">modules = (&lt;module 'experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis' from '/private/tmp/ugrp-seal-v6h1b.5az...ests.test_v6h_blinded_run_manifest' from '/private/tmp/ugrp-seal-v6h1b.5azT0v/tests/test_v6h_blinded_run_manifest.py'&gt;)
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1686/test_exact_generator_and_all_r0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x1097a0050&gt;
+
+    def test_exact_generator_and_all_raw_opens(modules, tmp_path, monkeypatch):
+        gate, _ = modules
+&gt;       args, _ = setup_raw(tmp_path, modules)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_review_seal_v6h1b.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_review_seal_v6h1b.py:92: in setup_raw
+    inventory, pin = exact_generator(raw, tmp_path / "synthetic-inventory")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_review_seal_v6h1b.py:69: in exact_generator
+    exec(code, {"__name__": "__main__"})
+committed-make_acquisition_inventory.py:6: in &lt;module&gt;
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
+mode = 511, exist_ok = False
+
+&gt;   ???
+E   FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
+
+&lt;frozen os&gt;:225: FileExistsError</failure></testcase><testcase classname="tests.test_review_seal_v6h1b" name="test_original_counterexamples_exact_generator[missing_inventory-fixed]" time="0.279"><failure message="FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'">modules = (&lt;module 'experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis' from '/private/tmp/ugrp-seal-v6h1b.5az...ests.test_v6h_blinded_run_manifest' from '/private/tmp/ugrp-seal-v6h1b.5azT0v/tests/test_v6h_blinded_run_manifest.py'&gt;)
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1686/test_original_counterexamples_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10960cfb0&gt;
+damage = 'missing_inventory', mutant = False
+
+    @pytest.mark.parametrize("mutant", [pytest.param(False, id="fixed"), MUTATION])
+    @pytest.mark.parametrize("damage", ["missing_inventory", "trace_edit"])
+    def test_original_counterexamples_exact_generator(modules, tmp_path, monkeypatch, damage, mutant):
+        gate, _ = modules
+&gt;       args, traces = setup_raw(tmp_path, modules, bad_trace=damage == "trace_edit")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_review_seal_v6h1b.py:195: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_review_seal_v6h1b.py:92: in setup_raw
+    inventory, pin = exact_generator(raw, tmp_path / "synthetic-inventory")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_review_seal_v6h1b.py:69: in exact_generator
+    exec(code, {"__name__": "__main__"})
+committed-make_acquisition_inventory.py:6: in &lt;module&gt;
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
+mode = 511, exist_ok = False
+
+&gt;   ???
+E   FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
+
+&lt;frozen os&gt;:225: FileExistsError</failure></testcase><testcase classname="tests.test_review_seal_v6h1b" name="test_original_counterexamples_exact_generator[missing_inventory-remove-check]" time="0.278"><failure message="FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'">modules = (&lt;module 'experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis' from '/private/tmp/ugrp-seal-v6h1b.5az...ests.test_v6h_blinded_run_manifest' from '/private/tmp/ugrp-seal-v6h1b.5azT0v/tests/test_v6h_blinded_run_manifest.py'&gt;)
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1686/test_original_counterexamples_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x1097aee10&gt;
+damage = 'missing_inventory', mutant = True
+
+    @pytest.mark.parametrize("mutant", [pytest.param(False, id="fixed"), MUTATION])
+    @pytest.mark.parametrize("damage", ["missing_inventory", "trace_edit"])
+    def test_original_counterexamples_exact_generator(modules, tmp_path, monkeypatch, damage, mutant):
+        gate, _ = modules
+&gt;       args, traces = setup_raw(tmp_path, modules, bad_trace=damage == "trace_edit")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_review_seal_v6h1b.py:195: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_review_seal_v6h1b.py:92: in setup_raw
+    inventory, pin = exact_generator(raw, tmp_path / "synthetic-inventory")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_review_seal_v6h1b.py:69: in exact_generator
+    exec(code, {"__name__": "__main__"})
+committed-make_acquisition_inventory.py:6: in &lt;module&gt;
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
+mode = 511, exist_ok = False
+
+&gt;   ???
+E   FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
+
+&lt;frozen os&gt;:225: FileExistsError</failure></testcase><testcase classname="tests.test_review_seal_v6h1b" name="test_original_counterexamples_exact_generator[trace_edit-fixed]" time="0.344"><failure message="FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'">modules = (&lt;module 'experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis' from '/private/tmp/ugrp-seal-v6h1b.5az...ests.test_v6h_blinded_run_manifest' from '/private/tmp/ugrp-seal-v6h1b.5azT0v/tests/test_v6h_blinded_run_manifest.py'&gt;)
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1686/test_original_counterexamples_2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x108dbccb0&gt;
+damage = 'trace_edit', mutant = False
+
+    @pytest.mark.parametrize("mutant", [pytest.param(False, id="fixed"), MUTATION])
+    @pytest.mark.parametrize("damage", ["missing_inventory", "trace_edit"])
+    def test_original_counterexamples_exact_generator(modules, tmp_path, monkeypatch, damage, mutant):
+        gate, _ = modules
+&gt;       args, traces = setup_raw(tmp_path, modules, bad_trace=damage == "trace_edit")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_review_seal_v6h1b.py:195: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_review_seal_v6h1b.py:92: in setup_raw
+    inventory, pin = exact_generator(raw, tmp_path / "synthetic-inventory")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_review_seal_v6h1b.py:69: in exact_generator
+    exec(code, {"__name__": "__main__"})
+committed-make_acquisition_inventory.py:6: in &lt;module&gt;
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
+mode = 511, exist_ok = False
+
+&gt;   ???
+E   FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
+
+&lt;frozen os&gt;:225: FileExistsError</failure></testcase><testcase classname="tests.test_review_seal_v6h1b" name="test_original_counterexamples_exact_generator[trace_edit-remove-check]" time="0.351"><failure message="FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'">modules = (&lt;module 'experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis' from '/private/tmp/ugrp-seal-v6h1b.5az...ests.test_v6h_blinded_run_manifest' from '/private/tmp/ugrp-seal-v6h1b.5azT0v/tests/test_v6h_blinded_run_manifest.py'&gt;)
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1686/test_original_counterexamples_3')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10960f920&gt;
+damage = 'trace_edit', mutant = True
+
+    @pytest.mark.parametrize("mutant", [pytest.param(False, id="fixed"), MUTATION])
+    @pytest.mark.parametrize("damage", ["missing_inventory", "trace_edit"])
+    def test_original_counterexamples_exact_generator(modules, tmp_path, monkeypatch, damage, mutant):
+        gate, _ = modules
+&gt;       args, traces = setup_raw(tmp_path, modules, bad_trace=damage == "trace_edit")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_review_seal_v6h1b.py:195: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_review_seal_v6h1b.py:92: in setup_raw
+    inventory, pin = exact_generator(raw, tmp_path / "synthetic-inventory")
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests/test_review_seal_v6h1b.py:69: in exact_generator
+    exec(code, {"__name__": "__main__"})
+committed-make_acquisition_inventory.py:6: in &lt;module&gt;
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+name = '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
+mode = 511, exist_ok = False
+
+&gt;   ???
+E   FileExistsError: [Errno 17] File exists: '/Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory'
+
+&lt;frozen os&gt;:225: FileExistsError</failure></testcase></testsuite></testsuites>
