@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """b-v6h gain-fix chain cohorts -> offline-audit derived views for TensorBoard (read-only; failures included).
 
-Usage: build_tb_views.py --output <new dir> <tag>=<raw dir> [...]      (tags: cA cB cC cD cF rA rB sA sB)
+Usage: build_tb_views.py --output <new dir> <tag>=<raw dir> [...]      (tags: cA cB cC cD cF rA rB sA sB tX1 tX1b tS tR tX0)
 
 One view per case plus one aggregate per raw. Each view points at the case's original ``result.json`` (aggregate: the raw's
 ``summary.json``) by absolute path + SHA-256; ``scripts/export_offline_audit.py`` refuses changed originals. The verdict
@@ -32,10 +32,15 @@ SCHEMA = 'ugrp.offline_audit_view.v1'
 DEF = ('exploratory chain verdict, NOT E2E success and NOT a registered result: chain L0 and L1 (stopped at the end of leg 1) both '
        'PASS_CLEAN (all standard leg checks incl. the 10 cm end-point check, no wall contact); stage probe, teacher-staged, weld OFF')
 CONFIG = {'cA': 'k1g+p2f', 'cB': 'k1g+p2f+gain', 'cC': 'k1+p2f+gain', 'cD': 'k2+p2f+gain', 'cF': 'k2+p2f',
-          'rA': 'k1g+p2f', 'rB': 'k1g+p2f+gain', 'sA': 'k1g+p2f', 'sB': 'k1g+p2f+gain'}
+          'rA': 'k1g+p2f', 'rB': 'k1g+p2f+gain', 'sA': 'k1g+p2f', 'sB': 'k1g+p2f+gain',
+          # axial-lag physical check (2026-09-30): carry_axial_lag on top of the gain fix (tX0 = same placements without it)
+          'tX1': 'k1g+p2f+gain+alag', 'tX1b': 'k1g+p2f+gain+alag', 'tS': 'k1g+p2f+gain+alag', 'tR': 'k1g+p2f+gain+alag',
+          'tX0': 'k1g+p2f+gain'}
 COHORT = {'cA': 'base sheet, 12 placements', 'cB': 'base sheet, 12 placements', 'cC': 'base sheet, 12 placements',
           'cD': 'base sheet, 12 placements', 'cF': 'base sheet, 12 placements', 'rA': 'recorded hR2 setups (10)',
-          'rB': 'recorded hR2 setups (10)', 'sA': 'sheet-consistent, 12 placements', 'sB': 'sheet-consistent, 12 placements'}
+          'rB': 'recorded hR2 setups (10)', 'sA': 'sheet-consistent, 12 placements', 'sB': 'sheet-consistent, 12 placements',
+          'tX1': 'extra 7 placements (6 done; X06 killed), sheet-rounded', 'tX1b': 'extra placement X06 (re-run of tX1)',
+          'tS': 'sheet-consistent, 12 placements', 'tR': 'recorded hR2 setups (10)', 'tX0': 'extra 7 placements, sheet-rounded'}
 
 
 def sha(path):
