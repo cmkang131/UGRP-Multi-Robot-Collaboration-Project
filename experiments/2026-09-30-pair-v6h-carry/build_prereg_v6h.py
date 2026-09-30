@@ -67,7 +67,7 @@ def build():
             'contact_profile_contract': predecessor['contact_profile_contract'],
             'fit': fit, 'placements': receipt(placements),
             'confirmatory_plan': {'source': receipt(HERE/'PREREG_DRAFT.md'), 'text_verbatim': science,
-                'coordinator_decisions': {'carry_axial_lag': True, 'sigma_scope': 'loaded base motion only; arm sweeps 2/2',
+                'coordinator_decisions': {'carry_axial_lag': True, 'sigma_scope': pair_policy('b-v6h1').door_relax_sigma_scope,
                                           'progress_rule': 'p2f; no reliable stall detection for the loaded pair'},
                 'default_A': {'pass_at_least': 48, 'n_placements': 60,
                               'claim': 'observed fixed-cohort rate, not population >=80%'},

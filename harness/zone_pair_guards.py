@@ -85,9 +85,19 @@ class GuardedPairApproach(GuardedDriver, PairApproachDriverV2):
     also keeps the frozen controller's explicit relocalization assignments local
     to that same source. observe() consumes an already processed own frame.
     """
-    def __init__(self, own, params, **kwargs):
+    def __init__(self, own, params, *, door_relax_sigma_scope='loaded_base_motion',
+                 loaded_k_xy=2.0, loaded_k_yaw=2.0, **kwargs):
         self._shared_pose = None
-        super().__init__(own.pose.loc, own.map, params, gate=own.gate, guard=own.guard, **kwargs)
+        guard = own.guard
+        if door_relax_sigma_scope == 'probe_all_sweeps':
+            # Job-local copy: approach looks/backoffs match the probe without
+            # changing the own executor's later solo jobs or other policies.
+            guard = copy.copy(guard)
+            guard.door_relax_sigma_scope = door_relax_sigma_scope
+            guard.loaded_k_xy, guard.loaded_k_yaw = loaded_k_xy, loaded_k_yaw
+        elif door_relax_sigma_scope != 'loaded_base_motion':
+            raise ValueError('unknown door-relax sigma scope')
+        super().__init__(own.pose.loc, own.map, params, gate=own.gate, guard=guard, **kwargs)
         self._shared_pose = own.pose
 
     @property
@@ -258,7 +268,8 @@ class PairCommandGuard:
         policy = getattr(self.ep, 'policy', None)
         return cls(self.ep.own.guard, self.ep.plan['beam_geometry'], self.ep.arguments['role'],
                    loaded_k_xy=getattr(policy, 'loaded_k_xy', 2.0),
-                   loaded_k_yaw=getattr(policy, 'loaded_k_yaw', 2.0))
+                   loaded_k_yaw=getattr(policy, 'loaded_k_yaw', 2.0),
+                   door_relax_sigma_scope=getattr(policy, 'door_relax_sigma_scope', 'loaded_base_motion'))
 
     def relative_report(self, now, obs):
         mode = 'attached_hypothesis' if self.carrying_beam else 'resting_hypothesis'
@@ -455,7 +466,7 @@ class PairCommandGuard:
         if beam is None:
             self.ep.log(own.robot_id, 'preclose_beam_guard', now, clear=False, reason='BEAM_UNCERTAIN')
             return False
-        guard = PairSweepGuard(own.guard, self.ep.plan['beam_geometry'], self.ep.arguments['role'])
+        guard = self.sweep_guard()
         clearance, wall = guard.stationary_beam_clearance(beam, pose)
         clear = clearance >= 0.  # margin() already includes the unchanged 35 mm
         self.ep.log(own.robot_id, 'preclose_beam_guard', now, clear=clear,

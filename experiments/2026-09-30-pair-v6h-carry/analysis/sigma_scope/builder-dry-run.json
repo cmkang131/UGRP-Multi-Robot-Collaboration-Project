@@ -1,17 +1,12 @@
 {
-  "status": "UNSEALED source preview, not a registration seal",
-  "predecessor": {
-    "path": "experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json",
-    "sha256": "64c2680781f1b989312c3ac091c6e0458579ced7ed65d9e9730aadbc416f4bfd",
-    "sealing_commit": "e510779db7be07be2b54493d52a9c754bd59a5bc"
-  },
+  "status": "UNSEALED",
   "reserved_ids": {
     "revision": "v6h",
     "policy": "b-v6h1",
     "bundle": "zone-pair-v83-carry-door-gain",
     "workflow": "2.16.0"
   },
-  "sources": 268,
+  "runs": 72,
   "changed_sealed_sources": [
     {
       "path": "configs/simulation_workflows.json",
@@ -988,5 +983,6 @@
       "old_sha256": null,
       "new_sha256": "b28d7bf3440054e1230727382da113445600f78bca417d46be5c47271a58f1bf"
     }
-  ]
+  ],
+  "final_steps": "separate coordinator commit: prereg_v6h.json seal + CURRENT_REVISION after independent review"
 }

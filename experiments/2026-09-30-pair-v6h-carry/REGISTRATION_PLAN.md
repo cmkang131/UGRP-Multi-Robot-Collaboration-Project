@@ -21,6 +21,7 @@ Refs #216. 이 문서는 `experiments/2026-09-30-b-v6h-gain`의 탐색 결과를
 |---|---|---|---|---|
 | `carry_fwd_gain` | 1.0 | **0.9483378899463337** | `harness/zone_pair_carry_gain_fix.py`(`scaled_gain`, `enable_provider` 뒤에 한 번) | `harness/owncam_carry_v6e.enable_provider` 안, 든 PF의 `motion_loaded.gain[0][0]` 복사본 |
 | `loaded_k_xy`, `loaded_k_yaw` | 2.0, 2.0 | **1.0, 1.0** | `relaxed_margin`(`SweepGuard.margin`의 σ 배수) | `harness/zone_own_guards.SweepGuard.margin` |
+| `door_relax_sigma_scope` | `loaded_base_motion` | **`probe_all_sweeps`** | probe의 모든 margin 호출과 동일한 범위 | 쌍 가드·접근용 작업별 가드·preclose |
 | `loaded_gate_yaw_deg` | `None`(3.0/2.5) | **(5.0, 4.0)** | `GATE_LOADED` 재바인딩(4개 모듈) | `zone_own_guards`, `zone_own_driver`, `zone_own_sweep`, `zone_pair_guards`의 `GATE_LOADED` 참조 |
 | `progress_arm_on_moved_fix` | False | **True** | `install_p2f`(`MovedFixMonitor`) | 쌍 감시기의 모든 `not approach` 단계 |
 | `carry_axial_lag` | False | **True** | gain 보정 후 axial lag 역산 | `zone_pair_executor.RoutedM2.door_schedule` |
@@ -30,8 +31,8 @@ Refs #216. 이 문서는 `experiments/2026-09-30-b-v6h-gain`의 탐색 결과를
 
 ### 결정이 필요한 점 (검토자에게)
 
-1. **σ 배수 완화의 범위.** 등록 값 1/1은 파지 확인(confirmed grasp)이 있는 쌍의 **base motion**에만 적용한다. 접근·preclose·팔 스윕(든 팔 포함)은 2/2다. 탐색은 `SweepGuard.margin`을 프로세스 전체에서 풀었지만 등록은 이 범위를 좁혔다. 연쇄는 최초 접근을 생략하고 teacher lift에서 시작해도 L0 뒤 **lower → open → 재파지 → lift**의 팔 동작을 실제로 실행한다. 그러므로 2σ arm/preclose 가드로 강화한 것이 원본 명령을 바꾸지 않았는지는 **인수 재생에서 확인해야 한다**. 시작이 loaded라는 이유로 팔 스윕 동등성을 주장하지 않는다.
-   **yaw gate와 p2f는 별도 범위다.** `PairCommandGuard.approach`가 거짓인 모든 단계(`not approach`)에 적용한다. 파지 receipt가 없는 align과 재파지도 포함된다. σ의 confirmed-grasp base-motion 조건과 혼동하지 않는다. 빈 몸 접근 `GuardedDriver`의 감시기는 기존대로다.
+1. **σ 배수 완화의 범위(2026-09-30 인수 실패 뒤 조정자 결정).** `door_relax_sigma_scope="probe_all_sweeps"`에서 1/1은 probe가 교체한 모든 `SweepGuard.margin` 호출에 적용한다. 짐 없는/든 팔 스윕, 접근·후진·차체 이동, preclose의 자기 위치 여유를 포함하며 파지 확인(confirmed grasp)은 조건이 아니다. 별도 빔 영상 불확실성 항은 2σ다. 기존 head `3afc61b0`의 좁은 범위는 lag-on 10건 중 6건과 lag-off sanity의 pregrasp 시야 후보를 막아 인수 재생에 실패했다. 모든 margin을 1/1로 덮어쓴 원인 확인은 7/7 명령·leg 일치를 회복했다. tS/tR/tX 탐색 29/29는 probe 범위에서 나온 기록이므로 좁힌 제어기에 그대로 옮길 수 없다. [정확한 대응 표](SIGMA_SCOPE_CORRECTION.md)를 따른다. 새 소스의 물리 재생은 별도다.
+   **yaw gate와 p2f는 별도 범위다.** `PairCommandGuard.approach`가 거짓인 모든 단계(`not approach`)에 적용한다. 파지 receipt가 없는 align과 재파지도 포함된다. 빈 몸 접근 `GuardedDriver`의 진행 감시기는 기존대로다.
 2. `GlobalPairSweepGuard`의 `K_SIGMA`(빔 상대 모드에서만 사용)와 `zone_pair_guards`의 정합 검사(`K_SIGMA` 309–340줄)는 **바꾸지 않는다.** 탐색도 이것들을 건드리지 않았다(클래스 상수 `K_SIGMA`는 그대로 2).
 3. 진행 감시 규칙 p2f는 실제로는 **무장하지 않았다**(208건 중 0건). 등록하면 "든 쌍에는 사실상 정지 감지가 없다"는 성질을 코드에 굳히는 것이다. 이를 수용하거나(전제: fail-open 명시, 사전 등록에 적음), 정지 감지를 다른 방식으로 복원하기 전까지 등록을 미루는지는 검토자가 정한다. 이 계획은 수용 + 명시를 전제로 쓴다.
 4. **`carry_axial_lag=True`는 2026-09-30 조정자 결정으로 포함했다.** gain 보정을 필수로 하며 같은 plant 복사본으로 축 방향 시간을 역산한다. lateral과 전역 `LAG_AXES`는 보존한다. 과거 탐색 물리 결과는 이 구현의 인수 통과가 아니다.
@@ -44,7 +45,7 @@ Refs #216. 이 문서는 `experiments/2026-09-30-b-v6h-gain`의 탐색 결과를
 |---|---|
 | `harness/zone_pair_v6_policy.py` | `PairPolicy` 다섯 변경군, `b-v6h1` 정책, `REVISION_POLICIES['v6h']`, `EXECUTION_BUNDLE_ID` |
 | `harness/owncam_carry_v6e.py` | `enable_provider`에서 gain 배수 적용, 프로필/입력 해시 기록 |
-| `harness/zone_own_guards.py` | 든 상태 σ 배수 인수, 게이트 프로필 선택 |
+| `harness/zone_own_guards.py` | 정책별 σ 범위·배수 인수, 게이트 프로필 선택 |
 | `harness/zone_pair_guards.py` | 든 쌍 감시기의 fix 시각 규칙(`progress_arm_on_moved_fix`), 게이트 조회 |
 | `harness/zone_pair_geometry.py`, `harness/zone_own_sweep.py`, `harness/zone_own_driver.py`, `harness/zone_own_executor.py`, `harness/zone_pair_executor.py` | 정책 값을 가드에 전달(방식은 위 결정 1에 따름) |
 | `harness/zone_study_integration.py` | 번들 ID, `RETIRED_BUNDLE_IDS`에 v81 추가 |
@@ -68,17 +69,17 @@ Refs #216. 이 문서는 `experiments/2026-09-30-b-v6h-gain`의 탐색 결과를
 
 - 모든 기존 정책(`v5h`, `b-only`, `b-v6c`, `b-v6d`, `b-v6e*`, `b-v6g*`)의 새 필드가 기본값이다. `b-v6h1` = `b-v6g` + 다섯 변경군 외 차이가 없다.
 - 끔 상태에서 든 PF·`SweepGuard.margin`·`GATE_LOADED`·`PairCommandGuard`의 출력이 main의 골든과 `1e-9` 안에서 같다(`test_flags_off_localizer_is_bit_identical_*` 선례).
-- 켜짐 상태: `carry_fwd_gain`은 `gain[0][0]`만 곱하고 다른 항목·다른 PF·원본 dict를 건드리지 않으며 두 번 곱하지 않는다. σ 배수는 confirmed grasp의 base motion에서만 1/1, 접근·팔 스윕은 2/2(결정 1의 권장안). yaw 게이트와 p2f는 모든 not approach 단계(align·재파지 포함)에 적용한다. 진행 감시는 이동 시작 이후의 fix만 기준선을 세우고, 시각이 없거나 NaN이면 세우지 않는다. 빈 몸 `GuardedDriver`의 감시기는 등록 규칙 그대로다.
+- 켜짐 상태: `carry_fwd_gain`은 `gain[0][0]`만 곱하고 다른 항목·다른 PF·원본 dict를 건드리지 않으며 두 번 곱하지 않는다. σ 배수는 `probe_all_sweeps`의 모든 margin 호출에서 1/1이다. 팔/차체/translation/plan/preclose 출력은 probe 수식과 정확히 같아야 하고, 접근 가드 복사본이 own executor에 새지 않아야 한다. S03 기록 자세에서 2/2는 후보 0개, 1/1은 probe와 같은 후보·점수여야 한다. yaw 게이트와 p2f는 모든 not approach 단계(align·재파지 포함)에 적용한다. 진행 감시는 이동 시작 이후의 fix만 기준선을 세우고, 시각이 없거나 NaN이면 세우지 않는다. 빈 몸 `GuardedDriver`의 감시기는 등록 규칙 그대로다.
 - 정책 조합: 등록 정책 목록·번들 ID·workflow 버전·봉인 해시(`test_zone_pair_registered_source.py`)가 서로 일치한다.
 
 ## 6. 인수 시험 (등록 뒤, 확증 코호트 전, 물리 필요)
 
 **bit-for-bit 재생은 필수다.** #294의 같은 gain+p2f+k1g+axial ON 참조 **5건**으로 통일한다: **tS S01·S07, tR hR2_04, tX1 X01, tX1b X06; 모두 seed 911**. 정확한 목록은 `analysis/acceptance_replay_DRAFT.json`, 실행용 case 사본은 `acceptance_reference_DRAFT.json`이다. #294 원문에서 X01의 출처는 tX1이다(tX1b X01 raw는 없다). 요청의 tS/tR/tX1b 약칭으로 출처를 바꾸지 않는다. OFF sB/cA와 과거 PR #292의 6건 목록은 현재 기준이 아니다.
 
-동일 배치·prior·환경·설정·SIM 타이밍으로 다시 실행해 `commands.json` **바이트 및 SHA-256 완전 동일**, leg 판정 동일, **연쇄 전체 접촉/하드 한계 판정 동일**을 모두 요구한다. 정렬/반올림/필드 제거/수치 허용오차로 바이트 비교를 대체하지 않는다. 강화된 2σ arm/preclose 가드의 영향도 이 재생에서 확인한다. 최종 분류기 반영은 `REVIEW_RESPONSE.md`의 지적 2 TODO를 따른다. 하나라도 다르면 원인 검토 전 확증을 시작하지 않는다. 물리 잠금과 실행은 조정자 소관이며 이 수정 작업에서는 실행하지 않았다.
+동일 배치·prior·환경·설정·SIM 타이밍으로 다시 실행해 `commands.json` **바이트 및 SHA-256 완전 동일**, leg 판정 동일, **연쇄 전체 접촉/하드 한계 판정 동일**을 모두 요구한다. 정렬/반올림/필드 제거/수치 허용오차로 바이트 비교를 대체하지 않는다. 수정된 `probe_all_sweeps`의 arm/preclose 가드까지 새 SHA에서 이 재생으로 확인한다. 최종 분류기 반영은 `REVIEW_RESPONSE.md`의 지적 2 TODO를 따른다. 하나라도 다르면 원인 검토 전 확증을 시작하지 않는다. 물리 잠금과 실행은 조정자 소관이며 이 수정 작업에서는 실행하지 않았다.
 
 ## 7. 알려진 위험
 
 - 탐색 통과가 "정지 감시가 없어서"일 수 있다(§2 결정 3). 등록 정책의 든 상태 안전성은 충돌 가드와 σ 게이트에만 의존한다.
 - σ가 x에서 약 6배 보수적이라(gain 패치 뒤 z² 0.03) 게이트·여유는 실제 오차 대비 넉넉하다. 앞으로 σ를 다시 보정하면(보수성을 줄이면) 이 완화가 필요한지가 달라질 수 있다.
-- 등록의 2σ arm/preclose 가드는 탐색보다 강하다. 연쇄에도 팔 동작이 있으므로 인수 재생 전 명령 동등성을 가정하지 않는다.
+- 인수 실패 원인인 좁은 σ 범위는 probe와 맞췄으나 새 SHA의 물리 재생 전에는 명령 동등성을 확정하지 않는다. 접촉 허용은 기존 사용자 결정이며 penetration >5 mm / tilt >15°의 하드 한계는 평가 분류기가 먼저 확인한다(최종 분류기 병합/pin은 별도 TODO).

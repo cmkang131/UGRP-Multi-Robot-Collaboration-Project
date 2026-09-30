@@ -6,10 +6,10 @@ Refs #216. `codex/pair-v6h-register`, base `a8094cc14e098a55483f53a3c49bf6a0b116
 
 ## 변경과 경계
 
-b-v6h1 = b-v6g + 다음 다섯 옵션(σ 옵션은 xy/yaw 두 필드). 다른 18개 정책은 새 필드를 모두 기본값으로 갖는다.
+b-v6h1 = b-v6g + 다음 다섯 옵션(σ 옵션은 xy/yaw 배수와 적용 범위 필드). 다른 18개 정책은 새 필드를 모두 기본값으로 갖는다.
 
 - `carry_fwd_gain=0.9483378899463337`: PF의 loaded `gain[0][0]`만 복사 후 한 번 곱한다. 원본 dict·다른 PF·unloaded 프로필은 보존하고 다른 설정으로 바인딩된 provider 재사용은 거부한다. PR #284 적합 입력을 바이트 그대로 복사했으며 SHA-256은 `02884b59026d34710473e97a154e8ffff6132dd388d36f8c893b0f2a616a2f56`이다.
-- `loaded_k_xy=loaded_k_yaw=1`: 파지 확인(confirmed grasp)이 있는 쌍의 **base motion** 중에만 적용한다. 접근·preclose·팔 스윕(든 상태의 팔 스윕 포함)은 2/2다. GlobalPairSweepGuard와 정합 검사 K_SIGMA는 2로 남는다.
+- `loaded_k_xy=loaded_k_yaw=1`, `door_relax_sigma_scope="probe_all_sweeps"`: probe가 바꾼 모든 margin 호출(짐 없는/든 팔, 접근·후진·차체 이동, preclose의 자기 위치 여유)에 적용한다. 파지 확인(confirmed grasp)을 조건으로 삼지 않는다. 별도 빔 영상 불확실성, GlobalPairSweepGuard와 정합 검사 K_SIGMA는 2로 남는다. 다른 정책은 기본 `loaded_base_motion`/2·2를 유지한다. [정확한 대응 표와 인수 실패 근거](SIGMA_SCOPE_CORRECTION.md).
 - `loaded_gate_yaw_deg=(5,4)`: **모든 not approach 단계**(파지 전 align·재파지 포함)에서 gate·driver·sweep recheck는 인스턴스별 프로필을 쓰며 기존 GATE_LOADED·GATE_UNLOADED 싱글턴을 바꾸지 않는다.
 - `progress_arm_on_moved_fix=True`: p2f를 쌍 감시기의 **모든 not approach 단계**에 적용한다(align·재파지 포함). 첫 이동 명령보다 엄격히 뒤의 finite fix로만 baseline을 세운다. 시각 없음·NaN·infinity는 무장하지 않는다. **no reliable stall detection for the loaded pair**: 새 fix가 없으면 fail-open이며 unloaded GuardedDriver 감시기는 그대로다. 새 정책 raw에 `progress_moved_fix` 무장·무시 수를 기록한다.
 - `carry_axial_lag=True`: 축 방향 시간 역산도 같은 gain을 쓴 복사본의 lag plant로 계산한다. 이 옵션은 carry_fwd_gain 보정을 요구한다. 옆 이동 시간과 전역 LAG_AXES는 바꾸지 않는다.
@@ -33,7 +33,7 @@ python -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify
 
 허용된 파일만 실행했다: `tests/test_zone_pair_v6h.py` **64**, `tests/test_zone_pair_registered_source.py` **24**, `tests/test_ci_sharding.py` **66**, 합계 **154 passed**(14.92초; 성능 측정이 아님). `scripts.run_ci_tests.run_locked`로 공용 잠금을 획득·반환하고 pytest를 실행했다. 마지막 JUnit: `/Users/changmin/projects/ugrp/outputs/v6h-register-unit-20260930/pytest-ci-fix-01.xml`. 모든 이전 시도도 같은 폴더에 보존했다. 첫 5개 실패는 잘못된 테스트 역할명과 JSON tuple/list 계약 차이를 고쳤고, 추가 guard golden 준비 오류도 수정했다. 지정되지 않은 테스트는 로컬에서 실행하지 않았다.
 
-18개 기존 정책의 loaded PF 출력은 main `a8094cc1`의 저장된 평균·표준편차 골든과 1e-9 이내다. 입자 bytes와 난수 상태는 같은 호스트에서 동결된 main carry 모듈을 별도 provider로 실행한 값과 정확히 일치한다. localizer/beam-edge 의존성은 그 commit의 blob과 현재 바이트가 같은지도 확인한다. 저장된 Mac 입자 해시는 참고 기록이며 Linux에 그대로 강제하지 않는다. 4개 대표 정책의 PairCommandGuard 명령·monitor·gate 골든도 일치한다. 각 옵션의 on/off, gain 복사/중복 적용/재사용 방지, loaded-motion 범위, invalid fix, axial 시간, 정책·번들·CI 목록·workflow 조합을 검사했다. 빌더 두 모드와 stage-probe CLI의 `--policies b-v6h1 --stage chain` 계획 모드도 확인했다(새 output 폴더나 물리 생성 없음). `git diff --check` 통과. 단위 검증을 인수 재생·E2E·실물 성공으로 표현하지 않는다. 새 실험 결과가 없으므로 TensorBoard 변환·서버 시작은 하지 않았다.
+18개 기존 정책의 loaded PF 출력은 main `a8094cc1`의 저장된 평균·표준편차 골든과 1e-9 이내다. 입자 bytes와 난수 상태는 같은 호스트에서 동결된 main carry 모듈을 별도 provider로 실행한 값과 정확히 일치한다. localizer/beam-edge 의존성은 그 commit의 blob과 현재 바이트가 같은지도 확인한다. 저장된 Mac 입자 해시는 참고 기록이며 Linux에 그대로 강제하지 않는다. 4개 대표 정책의 PairCommandGuard 명령·monitor·gate 골든도 일치한다. 각 옵션의 on/off, gain 복사/중복 적용/재사용 방지, 당시 loaded-motion 범위, invalid fix, axial 시간, 정책·번들·CI 목록·workflow 조합을 검사했다. 빌더 두 모드와 stage-probe CLI의 `--policies b-v6h1 --stage chain` 계획 모드도 확인했다(새 output 폴더나 물리 생성 없음). `git diff --check` 통과. 단위 검증을 인수 재생·E2E·실물 성공으로 표현하지 않는다. 새 실험 결과가 없으므로 TensorBoard 변환·서버 시작은 하지 않았다.
 
 초기 push CI (`36687347436`)의 shard 3/5/7에서 기존 정책 기본값 표 누락, 역사 봉인의 현재 바이트 검사, Mac/Linux 입자 해시 차이를 발견했다. 앞의 두 테스트는 새 기본값·봉인 commit 감사로 갱신했고, 마지막은 같은 호스트의 이전 소스와 정확한 입자 bytes/난수 상태를 비교하도록 고쳤다(저장된 1e-9 골든 검사는 유지). 실패 로그 3개를 primary outputs에 보존했고 허용된 세 파일 재실행은 154 passed다. 수정 후 CI 결과는 PR에서 별도로 확인한다.
 
@@ -65,15 +65,17 @@ python -m scripts.run_pair_stage_probes \
 
 조정자는 고정된 깨끗한 커밋·SIM 시간·weld OFF·OMP 1·자기 잠금/driver·새 raw 경로에서 이 목록의 `case`만 `run_worker`에 전달한다. `expected_*`는 평가 전용이다. **commands.json 바이트 및 전체 SHA-256 동일**, leg 검사 동일, **연쇄 전체 접촉/하드 한계 판정 동일**을 모두 확인해야 한다. leg 체크만 같은 것은 통과가 아니다. 마지막 판정의 분류기/정의 병합은 지적 2 TODO가 남아 있다.
 
-연쇄는 최초 접근을 생략하지만 L0 뒤 lower/open/재파지/lift를 실행한다. 등록에서 2σ로 강화한 **arm/preclose 가드가 명령을 바꾸는지는 인수 재생에서 확인해야 한다**. 결과를 추정하지 않는다. 불일치가 있으면 독립 검토로 원인을 해결하기 전 확증을 시작하지 않는다. 종료 시 자기 자식·잠금만 정리하고 실제 새 결과는 native TensorBoard에 별도 등록·표시 확인한다.
+연쇄는 최초 접근을 생략하지만 L0 뒤 lower/open/재파지/lift를 실행한다. 기존 head `3afc61b0`의 인수 재생은 10건 중 6건에서 pregrasp 시야 후보가 사라져 실패했다. 이번 σ 범위 수정은 probe와 같은 범위를 등록하지만 **새 SHA의 물리 인수 재생은 조정자가 다시 수행해야 한다**. 결과를 추정하지 않는다. 불일치가 있으면 독립 검토로 원인을 해결하기 전 확증을 시작하지 않는다. 종료 시 자기 자식·잠금만 정리하고 실제 새 결과는 native TensorBoard에 별도 등록·표시 확인한다.
 
 ## 남은 결정과 참고 자료
 
 - 독립 Opus 검토 및 최종 봉인 커밋, 최종 분류기/정의 병합, 통일된 물리 5건 재생, 확증 60+12건은 조정자 소관이다.
-- 초안 A=48/60 유지 또는 B=55/60 선택, 과보수 C를 보고만으로 유지할지는 봉인 전에 결정한다. 접근·팔 스윕 완화와 별도 정지 검출기 구현은 이번 범위가 아니다.
+- 초안 A=48/60 유지 또는 B=55/60 선택, 과보수 C를 보고만으로 유지할지는 봉인 전에 결정한다. 접근·팔 스윕의 σ 범위는 인수 실패 뒤 조정자 결정으로 probe와 맞췄다. 별도 정지 검출기 구현은 이번 범위가 아니다.
 - [#285 탐색 및 등록 계획](https://github.com/kcm0127-dotcom/ugrp/pull/285), [#284 gain 적합](https://github.com/kcm0127-dotcom/ugrp/pull/284), [#286 axial-lag 진단](https://github.com/kcm0127-dotcom/ugrp/pull/286), [#290 분류 보완](https://github.com/kcm0127-dotcom/ugrp/pull/290).
 - [실행 버전 관리](../../docs/execution_versioning.md), [평가 정의 갱신 대기 초안](PREREG_DRAFT.md), [등록 계획](REGISTRATION_PLAN.md), [미봉인 소스 변화 전체](source_changes_UNSEALED.json), [검증 기록](validation.json).
 
 이번 독립 리뷰 대응의 지적별 재현·시험·남은 의존성은 [REVIEW_RESPONSE.md](REVIEW_RESPONSE.md)를 따른다. 위 154 passed는 최초 구현 당시 기록이다.
 
 리뷰 대응 최종 오프라인 검사는 **309 passed**이며 M3 시간 연결 변이는 새 고정 일정 검사 3개가 실패해 검출했다. 소스 pin은 268개다. 지적 2의 분류기/평가 정의 반영과 조정자의 인수 재생·봉인은 여전히 별도다.
+
+인수 실패 뒤 σ 범위 수정과 정확한 대응 표는 [SIGMA_SCOPE_CORRECTION.md](SIGMA_SCOPE_CORRECTION.md)를 따른다. 이번 필수 검사는 **164 passed**(v6h 140 + 등록 소스 24), 관련 검사는 **1371 passed**다. 확장 검사에 잘못 포함된 물리 통합 1건은 렌더 초기화(CGLError)에서 실패했고, 기존 no_physics 플러그인으로 해당 파일을 재검사해 **14 passed / 물리 1 skipped**를 확인했다. 소스 변경 없이 통과한 오프라인 고유 검사는 **1535개**이며 결과를 중복 합산하지 않았다. 원시 실패·재검사·builder 기록은 `analysis/sigma_scope/validation.json`에 있다. 새 SHA의 물리 인수 재생은 조정자가 다시 수행해야 한다.
