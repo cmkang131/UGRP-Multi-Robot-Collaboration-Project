@@ -1,0 +1,267 @@
+{
+  "recorded_utc": "2026-09-30T15:01:25.891570+00:00",
+  "review_head": "f55662896c310509db32e5ea1e451827ab5b40ab",
+  "review_branch": "codex/review-303c",
+  "review_base": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e",
+  "verdict": "BLOCK",
+  "environment": {
+    "python": "3.12.13",
+    "pytest": "9.1.1",
+    "tensorboard": "2.21.0",
+    "host_lock": false,
+    "physics": false,
+    "rendering": false,
+    "real_model_calls": 0
+  },
+  "archive": "/private/tmp/review-303c-f5566289",
+  "raw_verification_outputs": "/Users/changmin/projects/ugrp/outputs/review-303c-20260930",
+  "junit": {
+    "submitted.xml": {
+      "tests": 440,
+      "passed": 440,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xfail": 0,
+      "by_class": {
+        "tests.test_ci_sharding": 66,
+        "tests.test_tensorboard_export": 64,
+        "tests.test_zone_pair_door_relax": 1,
+        "tests.test_zone_pair_registered_source": 22,
+        "tests.test_zone_study_eval.BoundaryTest": 8,
+        "tests.test_zone_study_eval.ChannelTest": 6,
+        "tests.test_zone_study_eval.ComparisonTest": 9,
+        "tests.test_zone_study_eval.DialogueTest": 20,
+        "tests.test_zone_study_eval.EfficiencyTest": 8,
+        "tests.test_zone_study_eval.ParseTest": 9,
+        "tests.test_zone_study_eval.ReportTest": 8,
+        "tests.test_zone_study_eval.SummaryTest": 3,
+        "tests.test_zone_study_evidence": 84,
+        "tests.test_zone_study_evidence_join": 61,
+        "tests.test_zone_study_evidence_review_a303": 4,
+        "tests.test_zone_study_evidence_review_f303": 7,
+        "tests.test_zone_study_referee": 23,
+        "tests.test_zone_study_review_fixes": 3,
+        "tests.test_zone_study_review_r5": 1,
+        "tests.test_zone_study_source_pinning": 33
+      },
+      "junit_sha256": "c4cc4c5ca4c04e302e85f5ceef314bc2b84a8aba3f66ae6926f03104a9489f27",
+      "test_names": null
+    },
+    "independent-final.xml": {
+      "tests": 13,
+      "passed": 2,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xfail": 11,
+      "by_class": {
+        "tests.test_review_303c": 13
+      },
+      "junit_sha256": "dacbf49ed13e4b0fd211f3a96878ab4a03e152b634dd261146b79a4f80fa23c5",
+      "test_names": [
+        "test_failed_referee_cannot_back_a_success_when_counts_are_missing",
+        "test_same_failed_referee_is_rejected_when_counts_exist",
+        "test_foreign_referee_history_row_is_invalid[run_id-foreign-trial]",
+        "test_foreign_referee_history_row_is_invalid[seed-987654]",
+        "test_foreign_referee_history_row_is_invalid[condition-peer_ko]",
+        "test_conflicting_referee_state_is_invalid[standing_zone]",
+        "test_conflicting_referee_state_is_invalid[referee_order_id]",
+        "test_conflicting_referee_state_is_invalid[referee_verdict]",
+        "test_raw_action_and_camera_receipts_must_match_the_call[dispatch_order]",
+        "test_raw_action_and_camera_receipts_must_match_the_call[input_frame]",
+        "test_raw_action_and_camera_receipts_must_match_the_call[missing_dispatch]",
+        "test_reordered_simultaneous_referee_rows_preserve_valid_success",
+        "test_receipt_recomputation_preserves_normal_source"
+      ]
+    },
+    "negative-a303.xml": {
+      "tests": 35,
+      "passed": 1,
+      "failed": 34,
+      "errors": 0,
+      "skipped": 0,
+      "xfail": 0,
+      "by_class": {
+        "tests.test_zone_study_evidence": 35
+      },
+      "junit_sha256": "23f98b72c0b400090981c2a42fd5147873e75a2e39392a03e4d5382a68cbb707",
+      "test_names": null
+    },
+    "negative-a303-runner.xml": {
+      "tests": 1,
+      "passed": 0,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 0,
+      "xfail": 0,
+      "by_class": {
+        "tests.test_zone_study_evidence": 1
+      },
+      "junit_sha256": "884cb333b916df11b687740a72304a1fa344e84776ad51f0b8320a8b54ac907e",
+      "test_names": null
+    },
+    "negative-f303.xml": {
+      "tests": 7,
+      "passed": 0,
+      "failed": 7,
+      "errors": 0,
+      "skipped": 0,
+      "xfail": 0,
+      "by_class": {
+        "tests.test_zone_study_evidence_review_f303": 7
+      },
+      "junit_sha256": "70516bd9c483ce9f8be7277b3769ade43b49062bcd89183659257f0c1b85b92f",
+      "test_names": null
+    }
+  },
+  "generated_cases": {
+    "count": 12000,
+    "seed_base": 30320260930,
+    "operations": [
+      "mix",
+      "duplicate",
+      "drop",
+      "reorder"
+    ],
+    "cases_per_operation": 3000,
+    "scope": "normalized relation tables; not raw source reader fuzzing"
+  },
+  "source_integrity": {
+    "review_sha": "f55662896c310509db32e5ea1e451827ab5b40ab",
+    "current_v6e_pins": 85,
+    "pin_mismatches": [],
+    "prior_prereg_jsons": 53,
+    "changed_prereg_jsons": [],
+    "workflow_diff_two_dot": [],
+    "workflow_diff_three_dot": [],
+    "registered_runner_sha256": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+    "changed_python_source_sha256": {
+      "experiments/2026-09-30-e2e-p06-evidence/redesign_negative_control.py": "5ab61a49fcbf24d31fd52ca8c132058a571c527ac978db381b8e05eb9863e196",
+      "experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py": "458c9bccf71db2a276aa7833e8724b79d8e865b143229a8ff898ba7cb722ec88",
+      "harness/zone_study_eval.py": "3f00d0bacffd5e581b3a11372169d0856f257cbf08db45b353e51de2c592be2f",
+      "harness/zone_study_referee.py": "c44d2881dab6e4bf3e4c0232d46e31065d9fcb4061e49aee9a2ad686dbf96d44",
+      "scripts/run_ci_tests.py": "293133344d619e5e7e02b3964d081fcecebae6a5a28695f2fd664ec227be72cd",
+      "scripts/tensorboard_tools/export.py": "cbeab2d8640d6e89c5f38588e2a55e8c2f5462241c05b4947b02d5e6dac4d98e",
+      "scripts/tensorboard_tools/zone_study.py": "a7e3c00b2c23e0cd1a62af4097acbb8c022957532e6d5cac11e1cecf87635de7",
+      "scripts/zone_study_evidence_cohort.py": "bbec6d223faba008421c80f0129bb1d9e529fcf7fe890694d71747f304ca5d72",
+      "scripts/zone_study_evidence_contract.py": "f611b6a6b20e46541a1b26f3baf202307aca535725bf33650fc657323c4be950",
+      "scripts/zone_study_evidence_join.py": "2422cfa61fa1723b8c49d51857411213b7959d65cf2134dca10e5bca02576210",
+      "scripts/zone_study_evidence_writer.py": "dbc765f2c6546a2d6f9d90d388bdbea5e0ae6aa714657e62be55c0bff7131ae9",
+      "tests/test_tensorboard_export.py": "c4e779fbbeab0b16b7116be3feb7c8a5b0e382727a7903605b82a38a837ec48d",
+      "tests/test_zone_study_eval.py": "3751ec46253c2cf5308a7a3ce08ca934d1964ca5343d06333725167f52d93ea5",
+      "tests/test_zone_study_evidence.py": "9c0a6e69a9a67762103c2d98dab8d961a5d14b1ea714d4498be901f5bb4ed15e",
+      "tests/test_zone_study_evidence_join.py": "3064ed4e9e53114e479a4530bab85ec96c511135dd2f174013c40275e81061f1",
+      "tests/test_zone_study_evidence_review_a303.py": "63639589284b13ecc83eb5b0989bf2d70710a7a82ec3af8d3c81c81b8e88e911",
+      "tests/test_zone_study_evidence_review_f303.py": "bb57515416cf45a7782d0e8b2c0d243c895672fa2a238948c8be627e5c093a0f"
+    },
+    "main_at_integrity_check": "d7ee112e22018055ec08e1098c3f33a7a06cb420",
+    "main_at_start": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e"
+  },
+  "production_files_still_match_review_commit": true,
+  "workflow_final_comparison": {
+    "main_sha": "26545c2499f94c3f99a5d650f7cc8ea992f24196",
+    "two_dot_changed_files": [
+      ".github/workflows/tests.yml"
+    ],
+    "three_dot_changed_files": [],
+    "patch": "diff --git a/.github/workflows/tests.yml b/.github/workflows/tests.yml\nindex 652a1462..22dcdb54 100644\n--- a/.github/workflows/tests.yml\n+++ b/.github/workflows/tests.yml\n@@ -253,7 +253,7 @@ jobs:\n     needs: ci-preflight\n     if: needs.ci-preflight.outputs.full_suite == 'true'\n     runs-on: ubuntu-24.04\n-    timeout-minutes: 15\n+    timeout-minutes: 10\n     env:\n       MUJOCO_GL: osmesa\n       UGRP_SESSION_DIR: ${{ github.workspace }}/outputs/.quickstart-sessions-runtime\n@@ -345,7 +345,7 @@ jobs:\n     needs: ci-preflight\n     if: needs.ci-preflight.outputs.full_suite == 'true'\n     runs-on: ubuntu-24.04\n-    timeout-minutes: 15\n+    timeout-minutes: 10\n     env:\n       MUJOCO_GL: osmesa\n       UGRP_SESSION_DIR: ${{ github.workspace }}/outputs/.quickstart-sessions-scenarios\n"
+  },
+  "github_snapshot": {
+    "headRefOid": "f55662896c310509db32e5ea1e451827ab5b40ab",
+    "isDraft": true,
+    "mergeStateStatus": "UNKNOWN",
+    "state": "OPEN",
+    "statusCheckRollup": []
+  },
+  "negative_controls": {
+    "a303": "cbac1dfca5d0a1d8f18e4ff2633626d4cadf2af8: old exporter and study adapter",
+    "f303": "114349e0adc6d934ceb9a990ee9589aa123b8543: old exporter, study adapter, contract",
+    "a303_runner": "cbac1dfca5d0a1d8f18e4ff2633626d4cadf2af8: exact old runner file read through alternate root",
+    "script": "negative_control.py",
+    "commands_after_python_and_script": [
+      "114349e0 tests/test_zone_study_evidence_review_f303.py",
+      "cbac1dfc tests/test_zone_study_evidence.py -k 'a303_1_resealed or a303_1_all or a303_3'",
+      "old-runner tests/test_zone_study_evidence.py::test_a303_2_evidence_writer_preserves_the_registered_runner_bytes"
+    ]
+  },
+  "independent_test_sha256": "dbffa04c4b3b75ffe5a69c0ff473d1525ae307addf28b99ccd970a62e6884365",
+  "local_artifacts": {
+    "github-303-final.json": {
+      "bytes": 140,
+      "sha256": "8cc896a5f6ff6452f22afaf6ede2cdfb6ee5423fa1fb48a820ac53f1dcb61e53"
+    },
+    "github-303.json": {
+      "bytes": 138,
+      "sha256": "be0f3a530cd29491ef2e2796b57ed7f15394ec57f4ea30080552e3d268710e95"
+    },
+    "independent-final.log": {
+      "bytes": 2733,
+      "sha256": "2f8e79d71d32c72a170d0a4e27fac9ffaa90b2717dd92b64f73be7fa52ef8c50"
+    },
+    "independent-final.xml": {
+      "bytes": 3148,
+      "sha256": "dacbf49ed13e4b0fd211f3a96878ab4a03e152b634dd261146b79a4f80fa23c5"
+    },
+    "independent.log": {
+      "bytes": 2733,
+      "sha256": "5132c419930d098b240745aa4740581238eb251f3ddbf26a1417eb9baf699080"
+    },
+    "independent.xml": {
+      "bytes": 3148,
+      "sha256": "4efe86b28762a9a0b2ea639d24f3bfe8b83473543769295929a7af6cb8710f43"
+    },
+    "negative-a303-runner.log": {
+      "bytes": 1138,
+      "sha256": "26db3758f4d6bc6e1c02bfe8db07d6aaa1418b142e6269ae72c6c675946d3d1b"
+    },
+    "negative-a303-runner.xml": {
+      "bytes": 1374,
+      "sha256": "884cb333b916df11b687740a72304a1fa344e84776ad51f0b8320a8b54ac907e"
+    },
+    "negative-a303.log": {
+      "bytes": 125607,
+      "sha256": "9720acd077c7483184739222c95b3bd41a93d7847587bc7fef24a74da497704f"
+    },
+    "negative-a303.xml": {
+      "bytes": 126939,
+      "sha256": "23f98b72c0b400090981c2a42fd5147873e75a2e39392a03e4d5382a68cbb707"
+    },
+    "negative-f303.log": {
+      "bytes": 12823,
+      "sha256": "1f090034053c30a8697bd22a9d5a32cd2efb7a23217f8a0dfb2fea3d6a1c69a0"
+    },
+    "negative-f303.xml": {
+      "bytes": 13388,
+      "sha256": "70516bd9c483ce9f8be7277b3769ade43b49062bcd89183659257f0c1b85b92f"
+    },
+    "probe.log": {
+      "bytes": 948,
+      "sha256": "c5d6df0bf4b57cef866edd35609b0c8778d4cd358e8c62a8da8e52fa48780b40"
+    },
+    "probe.py": {
+      "bytes": 4278,
+      "sha256": "89cad9901ed67814401e096fbb195d74ad3df2a6b7520191dc8b7a5e7ca51a7f"
+    },
+    "source-integrity-final.json": {
+      "bytes": 2454,
+      "sha256": "86d2172bee7a181f7cb4efe31eb36a08184711a0e2a14fc63ddfda02eda3c86d"
+    },
+    "source-integrity.json": {
+      "bytes": 2381,
+      "sha256": "7c884b1d31d0411250a62ede79a71506ff89fcd369d0498ceb5a02c15db5f82a"
+    },
+    "submitted.log": {
+      "bytes": 593,
+      "sha256": "7192f4badbb464e9462f439d2742b532eb61e38d47a8b7a1e6fbecd3d5043f4e"
+    },
+    "submitted.xml": {
+      "bytes": 61601,
+      "sha256": "c4cc4c5ca4c04e302e85f5ceef314bc2b84a8aba3f66ae6926f03104a9489f27"
+    },
+    "workflow-vs-current-main.patch": {
+      "bytes": 785,
+      "sha256": "00531872b0aaf499e56d09431f8df9ef9917a5c7d2de1e0f804e78226217f191"
+    }
+  }
+}
