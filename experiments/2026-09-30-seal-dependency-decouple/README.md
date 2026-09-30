@@ -1,5 +1,12 @@
 # 새 등록용 실행 의존성 계약 v2
 
+**후속 상태 (PR #301 두 번째 검토 뒤):** 정적 분석 보강을 중단하고
+[오프라인 실행 관측 추적기와 검사 결과](RUNTIME_PROVENANCE.md),
+[native 실행의 후속 설계](../../docs/runtime_provenance.md)로 전환했다.
+아래 적용 순서·절감 추정은 최초 제안 당시 기록이다. 정적 v2 단독 도입이나
+무관한 catalog 편집 허용을 현재 완료 기능으로 해석하지 않는다.
+새 경로의 실제 물리 실행 연결과 독립 재검토는 남아 있다.
+
 기준 main: `d17ca4345affef8cf027e121cf1f3197b36c23e0`.
 읽기 전용으로 조사한 #292 HEAD: `3afc61b00f2c127ac3fbe2be5e7bb57da989b15a`.
 이 작업은 `codex/seal-dependency-decouple`에서만 수정한다. #292 브랜치·봉인·

@@ -29,6 +29,15 @@
 
 ## 새 등록의 의존성 계약 v2 (2026-09-30)
 
+**PR #301 두 차례 BLOCK 이후:** 아래 정적 v2 계약만으로 런타임 의존성 완전성을
+주장하지 않는다. 추가 AST 패치를 중단하고 [실행 관측 기반 봉인](runtime_provenance.md)을
+도입했다. 명시적으로 선택하는 오프라인 Python 추적기는 관측 파일 ∪ 정적 파일을 고정하고
+실행 중 새 파일 읽기를 HOST_ERROR로 거부한다. 환경 비교도 실행 시 수행한다.
+이 경로는 read-only Python prototype이며 native/물리/자식 worker의 OS 추적·강제와
+기존 runner admission 연결은 미완료다. **기존 봉인은 바꾸지 않으며 새 등록도 이
+prototype만으로 물리 승인하지 않는다.** 아래 구현 설명과 제외 테스트는 정적 v2만의
+기록으로 보존한다. 관측 봉인에서 JSON 전체를 읽으면 whole-file pin으로 강화된다.
+
 새 등록용 빌더는 `harness.execution_dependency_contract.build_contract`와
 `python -m scripts.build_execution_dependency_contract`를 사용한다. 기본 계약은
 `ugrp.execution_dependency_contract.v2`다. **기존 v6~v6e와 RGB 봉인·검증기는
