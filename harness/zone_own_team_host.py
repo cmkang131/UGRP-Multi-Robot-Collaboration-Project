@@ -509,7 +509,7 @@ class OwnCamTeamHost:
         elif api == 'pair_carry':
             if getattr(self, 'pairs', None) is None:
                 ack = ex.refuse(api, 'PAIR_NOT_CONFIGURED')
-            elif len(args) != 3:
+            elif len(args) not in (3, 4):
                 ack = ex.refuse(api, 'BAD_PAIR_ARGUMENTS')
             else:
                 ack = self.pairs.start(rid, *args, now=now)

@@ -58,6 +58,10 @@ class PairStatusChannel:
         if not finite(readiness_ttl_s) or not .2 <= readiness_ttl_s <= 1.:
             raise ValueError('readiness TTL must be between 0.2 and 1.0 seconds')
         self.task_id, self.participants = task_id, tuple(participants)
+        if (len(self.participants) != 2
+                or any(not isinstance(r, str) or r not in ('r1', 'r2', 'r3') for r in self.participants)
+                or len(set(self.participants)) != 2):
+            raise ValueError('invalid pair participants')
         self.heartbeat_timeout_s, self.readiness_ttl_s = heartbeat_timeout_s, readiness_ttl_s
         self.latest, self.log, self.rejected = {}, [], []
         self.frames = {}  # evidence identity is immutable even across heartbeat retransmissions
@@ -107,6 +111,8 @@ class PairStatusChannel:
 
 class PairStatusEndpoint:
     def __init__(self, channel, robot_id):
+        if robot_id not in channel.participants:
+            raise ValueError('status endpoint is not a pair participant')
         self.channel, self.robot_id = channel, robot_id
         self.seq, self.sent_at, self.state = 0, -math.inf, None
         self.barriers, self.latched = {}, None
