@@ -78,4 +78,3 @@ def sphere_clearances(static, xy, radii):
         gaps = np.minimum(gaps, np.hypot(np.maximum.reduce((a-x, x-b, np.zeros(len(x)))),
                                         np.maximum.reduce((c-y, y-d, np.zeros(len(y))))))
     return gaps-radii
-

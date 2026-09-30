@@ -4,8 +4,7 @@
   "review_sha": "17b54de7f7440589fa5cc388a46b61f6c4c20467",
   "bundle": "zone-final-pair-v88",
   "unexecuted_bundle_revised_in_place": true,
-  "merged_main_sha": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
-  "latest_main_followup_pending": "a520d9d8a70b9945a6eeb396e0a07c19aa3cb3c4",
+  "merged_main_sha": "a520d9d8a70b9945a6eeb396e0a07c19aa3cb3c4",
   "physics_steps": 0,
   "native_model_compiles": 0,
   "render_calls": 0,
@@ -28,7 +27,7 @@
   },
   "source_sha256": {
     "harness/zone_final_pair_camera.py": "0debca532478d2e08ca3fd5db0ed62f3b8776a95294464a73cef680ce6900770",
-    "harness/zone_final_pair_clearance.py": "6ec2fc8c8d544856976dd080a091c77af19e5a5c796544008a35368415aa6826",
+    "harness/zone_final_pair_clearance.py": "805718e7bc65b587f2d6793f10f05a89afbee65c7eddb0ba4a2187e9bebcbd0f",
     "harness/zone_final_pair_excitation.py": "618da65836acf0bc79e72d71b9e6d9415ad0e85924fb5769b2339f62cca9b258",
     "harness/zone_final_pair_calibration.py": "4a54f79930b0897559cef659c8949ba6ae4aed9b6414e54ed79351cf80dea025",
     "harness/zone_final_pair_contract.py": "2e2d12b10b73f79c63824e25445016255a747f838c3e862fdea4d7ad3e882a99",
@@ -51,5 +50,18 @@
   },
   "temp_extraction_dirs_created": [],
   "github_workflow_authored_changes": false,
-  "test_command": "python -m pytest -q tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_review_344.py tests/test_zone_final_environment_runnable.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_executor.py tests/test_zone_pair_grasp.py tests/test_pair_passage_plan.py tests/test_simulation_workflow_manager.py tests/test_vision_loc_p03_source_pinning.py -k \"not test_parent_exit_cleans_background_child\" --junitxml=experiments/2026-10-01-v3-pair-adapter/review_fixes_tests.xml"
+  "test_command": "python -m pytest -q tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_review_344.py tests/test_zone_final_environment_runnable.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_executor.py tests/test_zone_pair_grasp.py tests/test_pair_passage_plan.py tests/test_simulation_workflow_manager.py tests/test_vision_loc_p03_source_pinning.py -k \"not test_parent_exit_cleans_background_child\" --junitxml=experiments/2026-10-01-v3-pair-adapter/review_fixes_tests.xml",
+  "integration_checks": [
+    {
+      "main_sha": "a520d9d8a70b9945a6eeb396e0a07c19aa3cb3c4",
+      "result": "154 passed in 49.43s",
+      "scope": [
+        "test_ci_sharding",
+        "test_zone_pair_executor",
+        "test_zone_final_pair_review_fixes",
+        "test_review_344"
+      ]
+    }
+  ],
+  "latest_main_followup_pending": "a2be72a8381dcc9e58e5206509ad0c64ed7f0fb3"
 }
