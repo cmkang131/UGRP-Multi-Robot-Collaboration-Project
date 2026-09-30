@@ -1,0 +1,50 @@
+[
+  {
+    "name": "314",
+    "exit": 0,
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/tmp/ugrp-review-e2e-d-20260930/guarded_pytest.py",
+      "normal",
+      "tests/test_zone_own_executor_door_routes.py",
+      "tests/test_pair_passage_plan.py",
+      "tests/test_zone_team_jobs.py",
+      "tests/test_zone_hard_routes.py::test_rect_keepouts_rotated_and_footprint_interface",
+      "tests/test_zone_final_env.py::test_v1_scenarios_and_tag_maps_are_unchanged",
+      "tests/test_zone_final_env.py::test_catalog_matches_the_files_and_pins_every_hash",
+      "-q",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/review-e2e-batch-d-20260930/20260930T211713/314.xml"
+    ]
+  },
+  {
+    "name": "315",
+    "exit": 0,
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/tmp/ugrp-review-e2e-d-20260930/guarded_pytest.py",
+      "normal",
+      "tests/test_beam_initial_pose_plan.py",
+      "tests/test_pair_passage_plan.py::test_default_plan_and_probe_cases_are_byte_identical_to_main",
+      "tests/test_pair_passage_plan.py::test_opt_in_on_the_m2_door_map_returns_the_frozen_plan",
+      "tests/test_pair_passage_plan.py::test_planner_constants_match_the_sources_they_mirror",
+      "tests/test_zone_pair_executor.py::test_destination_route_reaches_zone_b_and_uses_bounded_segments",
+      "-q",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/review-e2e-batch-d-20260930/20260930T211713/315.xml"
+    ]
+  },
+  {
+    "name": "315_drop_carriers",
+    "exit": 0,
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "/tmp/ugrp-review-e2e-d-20260930/guarded_pytest.py",
+      "315_drop_carriers",
+      "tests/test_beam_initial_pose_plan.py",
+      "-q",
+      "--disable-warnings",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/review-e2e-batch-d-20260930/20260930T211713/315_drop_carriers.xml"
+    ]
+  }
+]
