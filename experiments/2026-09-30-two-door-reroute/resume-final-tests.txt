@@ -12,21 +12,21 @@ _______ test_observation_triggers_cancellation_then_wide_from_fresh_pose _______
 tests/test_zone_own_executor_observed_reroute.py:93: in test_observation_triggers_cancellation_then_wide_from_fresh_pose
     assert blocked.state == 'REPLAN_READY' and blocked.route.passage_id == 'door_wide'
 E   AssertionError: assert ('RUNNING' == 'REPLAN_READY'
-E     
+E
 E     - REPLAN_READY
 E     + RUNNING)
 ____________ test_both_blocked_refuses_and_cancels_old_route[False] ____________
 tests/test_zone_own_executor_observed_reroute.py:176: in test_both_blocked_refuses_and_cancels_old_route
     assert result.state == 'REFUSED' and result.reason == 'ALL_DOORS_BLOCKED'
 E   AssertionError: assert ('RUNNING' == 'REFUSED'
-E     
+E
 E     - REFUSED
 E     + RUNNING)
 ____________ test_both_blocked_refuses_and_cancels_old_route[True] _____________
 tests/test_zone_own_executor_observed_reroute.py:176: in test_both_blocked_refuses_and_cancels_old_route
     assert result.state == 'REFUSED' and result.reason == 'ALL_DOORS_BLOCKED'
 E   AssertionError: assert ('RUNNING' == 'REFUSED'
-E     
+E
 E     - REFUSED
 E     + RUNNING)
 __ test_other_door_blockage_does_not_replace_route_and_belief_is_not_mutable ___
@@ -38,35 +38,35 @@ ________ test_never_starts_new_path_before_queue_cancellation[running] _________
 tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
     assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
 E   AssertionError: assert 'RUNNING' == 'STOPPING'
-E     
+E
 E     - STOPPING
 E     + RUNNING
 _________ test_never_starts_new_path_before_queue_cancellation[failed] _________
 tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
     assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
 E   AssertionError: assert 'RUNNING' == 'FAILED'
-E     
+E
 E     - FAILED
 E     + RUNNING
 ________ test_never_starts_new_path_before_queue_cancellation[reached] _________
 tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
     assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
 E   AssertionError: assert 'RUNNING' == 'FAILED'
-E     
+E
 E     - FAILED
 E     + RUNNING
 _____ test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route _____
 tests/test_zone_own_executor_observed_reroute.py:295: in test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route
     assert result.state == 'PAIR_REPLAN_REQUIRED' and result.route.passage_id == 'door_wide'
 E   AssertionError: assert ('RUNNING' == 'PAIR_REPLAN_REQUIRED'
-E     
+E
 E     - PAIR_REPLAN_REQUIRED
 E     + RUNNING)
 _____________ test_pair_announces_abort_even_while_stop_is_pending _____________
 tests/test_zone_own_executor_observed_reroute.py:391: in test_pair_announces_abort_even_while_stop_is_pending
     assert tick(a, 1, 'narrow').state == 'STOPPING'
 E   AssertionError: assert 'RUNNING' == 'STOPPING'
-E     
+E
 E     - STOPPING
 E     + RUNNING
 =========================== short test summary info ============================
@@ -87,70 +87,70 @@ _______ test_observation_triggers_cancellation_then_wide_from_fresh_pose _______
 tests/test_zone_own_executor_observed_reroute.py:93: in test_observation_triggers_cancellation_then_wide_from_fresh_pose
     assert blocked.state == 'REPLAN_READY' and blocked.route.passage_id == 'door_wide'
 E   AssertionError: assert ('RUNNING' == 'REPLAN_READY'
-E     
+E
 E     - REPLAN_READY
 E     + RUNNING)
 ____ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko] ____
 tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
     assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
 E   AssertionError: assert ('door_narrow' == 'door_wide'
-E     
+E
 E     - door_wide
 E     + door_narrow)
 ___ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko] ___
 tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
     assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
 E   AssertionError: assert ('door_narrow' == 'door_wide'
-E     
+E
 E     - door_wide
 E     + door_narrow)
 __ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured] ___
 tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
     assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
 E   AssertionError: assert ('door_narrow' == 'door_wide'
-E     
+E
 E     - door_wide
 E     + door_narrow)
 ____________ test_both_blocked_refuses_and_cancels_old_route[True] _____________
 tests/test_zone_own_executor_observed_reroute.py:176: in test_both_blocked_refuses_and_cancels_old_route
     assert result.state == 'REFUSED' and result.reason == 'ALL_DOORS_BLOCKED'
 E   AssertionError: assert ('RUNNING' == 'REFUSED'
-E     
+E
 E     - REFUSED
 E     + RUNNING)
 ________ test_never_starts_new_path_before_queue_cancellation[running] _________
 tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
     assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
 E   AssertionError: assert 'RUNNING' == 'STOPPING'
-E     
+E
 E     - STOPPING
 E     + RUNNING
 _________ test_never_starts_new_path_before_queue_cancellation[failed] _________
 tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
     assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
 E   AssertionError: assert 'RUNNING' == 'FAILED'
-E     
+E
 E     - FAILED
 E     + RUNNING
 ________ test_never_starts_new_path_before_queue_cancellation[reached] _________
 tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
     assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
 E   AssertionError: assert 'RUNNING' == 'FAILED'
-E     
+E
 E     - FAILED
 E     + RUNNING
 _____ test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route _____
 tests/test_zone_own_executor_observed_reroute.py:295: in test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route
     assert result.state == 'PAIR_REPLAN_REQUIRED' and result.route.passage_id == 'door_wide'
 E   AssertionError: assert ('RUNNING' == 'PAIR_REPLAN_REQUIRED'
-E     
+E
 E     - PAIR_REPLAN_REQUIRED
 E     + RUNNING)
 _____________ test_pair_announces_abort_even_while_stop_is_pending _____________
 tests/test_zone_own_executor_observed_reroute.py:391: in test_pair_announces_abort_even_while_stop_is_pending
     assert tick(a, 1, 'narrow').state == 'STOPPING'
 E   AssertionError: assert 'RUNNING' == 'STOPPING'
-E     
+E
 E     - STOPPING
 E     + RUNNING
 =========================== short test summary info ============================
@@ -195,21 +195,21 @@ ________ test_never_starts_new_path_before_queue_cancellation[running] _________
 tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
     assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
 E   AssertionError: assert 'REPLAN_READY' == 'STOPPING'
-E     
+E
 E     - STOPPING
 E     + REPLAN_READY
 _________ test_never_starts_new_path_before_queue_cancellation[failed] _________
 tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
     assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
 E   AssertionError: assert 'REPLAN_READY' == 'FAILED'
-E     
+E
 E     - FAILED
 E     + REPLAN_READY
 ________ test_never_starts_new_path_before_queue_cancellation[reached] _________
 tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
     assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
 E   AssertionError: assert 'REPLAN_READY' == 'FAILED'
-E     
+E
 E     - FAILED
 E     + REPLAN_READY
 _________________ test_invalid_observation_fails_closed[black] _________________
@@ -306,14 +306,14 @@ ________________ test_failed_stop_is_retried_without_new_motion ________________
 tests/test_zone_own_executor_observed_reroute.py:377: in test_failed_stop_is_retried_without_new_motion
     assert result.state == 'FAILED' and 'STOP_UNCONFIRMED' in result.reason
 E   AssertionError: assert ('FAILED' == 'FAILED'
-E     
+E
 E       FAILED and 'STOP_UNCONFIRMED' in 'INVALID_OWN_OBSERVATION')
 E    +  where 'INVALID_OWN_OBSERVATION' = Decision(state='FAILED', reason='INVALID_OWN_OBSERVATION', route=DoorRoute(passage_id='door_narrow', direction='west_t...5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0, 0.0)), blocked_doors=()).reason
 _____________ test_pair_announces_abort_even_while_stop_is_pending _____________
 tests/test_zone_own_executor_observed_reroute.py:391: in test_pair_announces_abort_even_while_stop_is_pending
     assert tick(a, 1, 'narrow').state == 'STOPPING'
 E   AssertionError: assert 'PAIR_REPLAN_REQUIRED' == 'STOPPING'
-E     
+E
 E     - STOPPING
 E     + PAIR_REPLAN_REQUIRED
 =========================== short test summary info ============================
@@ -348,21 +348,21 @@ ____ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko] ____
 tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
     assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
 E   AssertionError: assert ('door_narrow' == 'door_wide'
-E     
+E
 E     - door_wide
 E     + door_narrow)
 ___ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko] ___
 tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
     assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
 E   AssertionError: assert ('door_narrow' == 'door_wide'
-E     
+E
 E     - door_wide
 E     + door_narrow)
 __ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured] ___
 tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
     assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
 E   AssertionError: assert ('door_narrow' == 'door_wide'
-E     
+E
 E     - door_wide
 E     + door_narrow)
 =========================== short test summary info ============================

@@ -117,8 +117,10 @@ main 통합 뒤 관련 회귀·다섯 제거 변이의 최종 결과는 `verific
 `source_unchanged=true`를 확인했다. 필수 봉인 회귀는 **22+34=56 passed**다.
 관측 제거 9개, 재계획 제거 10개, 정지 제거 23개, 메시지 제거 3개,
 편대 실패 가드 제거 7개 assertion이 실패했다. 변이별 분모는 T09b 62개이며
-독립 물리 사례의 분모가 아니다. 원본 출력은 `resume-final-tests.txt`와
-`resume-final-manifest.json`, 이전 실패는 `resume-baseline-failure.txt`에 보존했다. 네 조건의 JUnit properties에 있는
+독립 물리 사례의 분모가 아니다. Git 표시용 출력은 `resume-final-tests.txt`에
+줄 끝 공백만 제거해 보관했다. 원본 log/JUnit/manifest는 로컬 raw 경로와 해시로
+그대로 보존한다. manifest 복사본은 `resume-final-manifest.json`, 이전 실패는
+`resume-baseline-failure.txt`에도 있다. 네 조건의 JUnit properties에 있는
 map/prior/config/controller/role-assignment 해시가 네 조건에서 각각 같은 것도 확인했다. 이전 검사·변이를
 합쳐 성공률을 만들지 않는다. 소스/설정/테스트 해시는 커밋 직전에 다시 확인한다.
 GitHub CI는 draft PR의 최종 SHA에서 별도로 확인하고 본문에 기록한다.
