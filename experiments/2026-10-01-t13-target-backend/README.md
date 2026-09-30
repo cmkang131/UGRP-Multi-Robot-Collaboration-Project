@@ -30,15 +30,23 @@ PR #337에서 확인한 #320/#329의 연결 공백을 새 opt-in 경로로 연�
 
 ## 실행 등록과 범위
 
-새 번들은 `config/rgb_execution_bundles/zone-target-v84.json`, 표준 workflow는
-`zone-target-checks` v`3.1.0`이다. 별도 서비스/대시보드가 없고 `scripts/sim_cli.py`에서
+새 번들은 `config/rgb_execution_bundles/zone-target-v85.json`, 표준 workflow는
+`zone-target-checks` v`2.18.0`이다. 별도 서비스/대시보드가 없고 `scripts/sim_cli.py`에서
 관리한다. 전이 import closure, 명시 동적 provider, XML/보정/지도/모델 hash,
 명령·관측/접촉 프로필과 config를 고정하고 clean HEAD + 기대 SHA를 실행 시 요구한다.
 기존 RGB dispatcher의 `RUNNABLE_ID`는 바꾸지 않는다.
 
-번호 결정 전에 main과 열린 PR 27개를 조회했다. 필수 `RUNNABLE_ID` 검색의 최댓값은
-v63, 전체 번들 번호의 실제 최댓값은 v83, workflow 버전 최댓값은 3.0.0이었다.
-각 ref/SHA와 검색 결과는 [id_reservation.json](id_reservation.json)에 있다.
+번호 충돌 수정 전 main `fb8ee9fb`를 병합하고 열린 PR **25개 전체**를 다시 조회했다.
+`RUNNABLE_ID` 최댓값은 v63, 전체 번들 최댓값은 v84, 통합 workflow의 2.x 최댓값은
+**2.17.0**이었다. 기본 목록과 `configs/simulation_workflows.d/`를 모두 검사했다.
+조정자 결정에 따라 #338은 `zone-final-environment-v84` / 2.17.0을 유지하고,
+이 PR은 다음 빈 번호 **zone-target-v85 / 2.18.0**을 쓴다. 모든 workflow의 단순
+최댓값은 수정 전 이 PR의 3.1.0이며, 별도 memory workflow의 3.0.0도 존재한다.
+두 버전을 통합 2.x 번호의 최댓값으로 혼동하지 않는다.
+각 ref/SHA와 검색 결과는 [renumber_id_reservation.json](renumber_id_reservation.json)에 있다.
+조정자가 기존 `zone-target-v84`의 실행이 없음을 확인했으므로 이름만 바꾸며
+retired 항목은 만들지 않는다. 최초 조회 [id_reservation.json](id_reservation.json)은
+당시의 기록으로 보존한다.
 #337의 [범위 공유](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/337#issuecomment-5915779686),
 [번호 예약](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/337#issuecomment-5915972264)을 남겼다.
 
@@ -58,7 +66,14 @@ controller/config hash는 별도로 기록한다.
 
 ## 검증과 인계
 
-[verification.json](verification.json)에 오프라인 명령·결과·hash를 기록한다.
+[renumber_verification.json](renumber_verification.json)에 번호 변경 후의 오프라인
+명령·결과·hash를 기록한다. 기존 [verification.json](verification.json)과
+`pytest-offline-acceptance.txt`, `mutations.json`은 변경 전 `e29abdbc`의 기록이며
+v85 검증 결과로 소급 변경하지 않는다.
+번호 변경 후 관련 오프라인 검사는 **224 passed, 1 skipped**다. 건너뛴 항목은 실제
+물리 host 검사이고, guard의 물리 step·실제 vision worker·네트워크 시도는 모두 0이다.
+기존 RGB registry 불변·v63 현재 hash 검사와 T13a/b의 실행 없는 plan도 통과했다.
+동작 소스는 그대로이며 번들 ID·workflow version·이들 입력 hash만 바뀌었다.
 `mutation_checks.py`는 자식 프로세스 메모리에서만 8개 로직을 제거/변경하고 해당 테스트가
 실패하는지 검사한다. worktree 소스·테스트는 바꾸지 않으며 임시 추출 디렉터리는 만들지 않는다.
 저장 RGB fixture의 픽셀과 자기 발행 PWM만 읽었다. 원래 fixture의 GT label은 쓰지 않는다.

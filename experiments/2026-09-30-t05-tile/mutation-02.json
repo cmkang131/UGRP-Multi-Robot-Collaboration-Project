@@ -1,0 +1,74 @@
+{
+  "schema": "t05.offline_mutation.v1",
+  "physical_steps": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "worktree_mutated": false,
+  "source_sha256": {
+    "tile_own_vision.py": "63813b165f73c1c40829e388dddcd5b7760745f42e49a2bdf21cc36e8fe1878a",
+    "tile_own_skill.py": "042f4a8ff0a9ec193e5782c75ad4e97e3633d9480c0751b3fd39b33f6e3ce761"
+  },
+  "mutations": [
+    {
+      "name": "role_guard_removed",
+      "module": "tile_own_skill.py",
+      "before": "if role != 'west' or FORMATIONS['tile'] != ('west',):",
+      "after": "if False:",
+      "test_selector": "wrong_role_rejected",
+      "pytest_exit": 1,
+      "killed": true,
+      "log_sha256": "fe1d4a36b168bcedee2d3d558487d0dd4519c501862a895f7f3a4aac1798ef38"
+    },
+    {
+      "name": "box_height_substituted",
+      "module": "tile_own_skill.py",
+      "before": "height_m=vision.GRASP_HEIGHT_M",
+      "after": "height_m=.024",
+      "test_selector": "normal_low_grasp_hold_and_release",
+      "pytest_exit": 1,
+      "killed": true,
+      "log_sha256": "ce98c9751858382f3c1770376d94c17e8a0e306cd2a19250cd4a794c188af5c4"
+    },
+    {
+      "name": "hold_confirmation_removed",
+      "module": "tile_own_skill.py",
+      "before": "self.state == 'verify_hold' and self.hold_streak >= CONFIRM_FRAMES",
+      "after": "self.state == 'verify_hold'",
+      "test_selector": "hold_and_release_need_two_post_transition_frames",
+      "pytest_exit": 1,
+      "killed": true,
+      "log_sha256": "04ec6644947bf589bec52cde00889dc9bbfac08ae2256ec3ecebc7ada7deed8e"
+    },
+    {
+      "name": "release_evidence_removed",
+      "module": "tile_own_skill.py",
+      "before": "released = (self.view.holding == 'no' and xy is not None and math.dist(xy, self.target_xy) <= .025)",
+      "after": "released = True",
+      "test_selector": "open_command_alone_and_absence_without_visible_floor_tile",
+      "pytest_exit": 1,
+      "killed": true,
+      "log_sha256": "aae4a20ba0d0d0bd6bbf6210ff2c6489d87873d2c497d2ca2e31c8e1818eb98b"
+    },
+    {
+      "name": "own_camera_guard_removed",
+      "module": "tile_own_skill.py",
+      "before": " or obs.get('camera') != 'robot_cam'",
+      "after": "",
+      "test_selector": "bad_camera_input_fails_closed",
+      "pytest_exit": 1,
+      "killed": true,
+      "log_sha256": "6275df3a113b51f6164040ac811011caff2154303efb505cf282790c57a95252"
+    },
+    {
+      "name": "background_boundary_removed",
+      "module": "tile_own_vision.py",
+      "before": "fill >= .60 and containment >= .75 and boundary",
+      "after": "fill >= .60 and containment >= .75",
+      "test_selector": "real_holding_requires_tile_boundary",
+      "pytest_exit": 1,
+      "killed": true,
+      "log_sha256": "ca9a09742cf480ce48c14a61ea3327c2da1d4b20f02066790084c4bcaba0c599"
+    }
+  ],
+  "all_killed": true
+}

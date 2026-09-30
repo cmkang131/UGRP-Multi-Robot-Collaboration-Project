@@ -1,4 +1,6 @@
-# 조정자 실행 인계 — zone-target-v84
+# 조정자 실행 인계 — zone-target-v85
+
+등록 workflow는 `zone-target-checks` **2.18.0**이다.
 
 **오프라인 구현만 검증했다. 물리 미실행이며 최종 v3 인수 완료가 아니다.**
 이 후보는 MasterPi v2 + geometry_v2 + vision_zero_tag_v2의 개발 진단이다.
@@ -36,19 +38,19 @@ cd /Users/changmin/projects/ugrp-wt/integ-target-backend
 T13_PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 T13_SOURCE_SHA="$(git rev-parse HEAD)"
 T13_RUN_STAMP="$(date +%Y%m%dT%H%M%S)"
-T13_OUT="/Users/changmin/projects/ugrp/outputs/t13-target-v84-${T13_SOURCE_SHA}-${T13_RUN_STAMP}"
+T13_OUT="/Users/changmin/projects/ugrp/outputs/t13-target-v85-${T13_SOURCE_SHA}-${T13_RUN_STAMP}"
 "$T13_PY" -m scripts.run_zone_target_checks --group t13a --condition no_comm
 "$T13_PY" -m scripts.run_zone_target_checks --group t13b --condition no_comm
-"$T13_PY" -m scripts.sim_cli workflow plan zone-target-checks --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v84.json -- --group t13a --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --output "$T13_OUT/t13a"
-"$T13_PY" -m scripts.sim_cli workflow plan zone-target-checks --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v84.json -- --group t13b --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --output "$T13_OUT/t13b"
+"$T13_PY" -m scripts.sim_cli workflow plan zone-target-checks --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v85.json -- --group t13a --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --output "$T13_OUT/t13a"
+"$T13_PY" -m scripts.sim_cli workflow plan zone-target-checks --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v85.json -- --group t13b --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --output "$T13_OUT/t13b"
 ```
 
 위 plan은 물리를 실행하지 않는다. 실제 실행은 다음 두 명령이다(`--lock-owner claude`는
 실행 조정자의 소유명이며 다른 주체가 실행하면 자기 소유명으로 바꾼다).
 
 ```sh
-"$T13_PY" scripts/ugrp_session.py run t13a-target-v84 -- "$T13_PY" -m scripts.sim_cli workflow run zone-target-checks --record "$T13_OUT/managed-t13a" --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v84.json -- --group t13a --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --lock-owner claude --output "$T13_OUT/t13a"
-"$T13_PY" scripts/ugrp_session.py run t13b-target-v84 -- "$T13_PY" -m scripts.sim_cli workflow run zone-target-checks --record "$T13_OUT/managed-t13b" --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v84.json -- --group t13b --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --lock-owner claude --output "$T13_OUT/t13b"
+"$T13_PY" scripts/ugrp_session.py run t13a-target-v85 -- "$T13_PY" -m scripts.sim_cli workflow run zone-target-checks --record "$T13_OUT/managed-t13a" --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v85.json -- --group t13a --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --lock-owner claude --output "$T13_OUT/t13a"
+"$T13_PY" scripts/ugrp_session.py run t13b-target-v85 -- "$T13_PY" -m scripts.sim_cli workflow run zone-target-checks --record "$T13_OUT/managed-t13b" --input configs/t13_target_checks.json --input config/rgb_execution_bundles/zone-target-v85.json -- --group t13b --condition no_comm --execute --expected-source-sha "$T13_SOURCE_SHA" --lock-owner claude --output "$T13_OUT/t13b"
 ```
 
 ## 셀별 판정

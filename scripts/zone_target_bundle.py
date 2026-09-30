@@ -11,9 +11,9 @@ from harness.zone_target_identity import PublicVisualCatalogue
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = 'configs/t13_target_checks.json'
-BUNDLE = 'config/rgb_execution_bundles/zone-target-v84.json'
-BUNDLE_ID = 'zone-target-v84'
-WORKFLOW_VERSION = '3.1.0'
+BUNDLE = 'config/rgb_execution_bundles/zone-target-v85.json'
+BUNDLE_ID = 'zone-target-v85'
+WORKFLOW_VERSION = '2.18.0'
 
 
 def load_config(root=ROOT):

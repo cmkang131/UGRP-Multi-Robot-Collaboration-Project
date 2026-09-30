@@ -106,6 +106,7 @@ TEST_PATTERNS = (
     "tests/test_zone_own_perception.py", "tests/test_zone_own_perception_v2.py",
     "tests/test_zone_own_perception_v3.py", "tests/test_zone_own_perception_v3_1.py",
     "tests/test_zone_own_executor*.py",
+    "tests/test_review_325b.py",  # T03: mandatory independent loss/mode counterexamples
     "tests/test_zone_pair_executor.py", "tests/test_zone_pair_status.py", "tests/test_zone_pair_review.py",
     "tests/test_zone_pair_role_exchange.py",  # T07: six explicit role assignments; fake ports only
     "tests/test_stall_observation_contract.py",  # P08: synthetic observation/stop contract only
@@ -122,8 +123,13 @@ TEST_PATTERNS = (
     "tests/test_zone_pair_admission.py",
     "tests/test_pair_chain_probe.py",
     "tests/test_pair_passage_plan.py",  # 2026-09-29: opt-in corridor/door route planning for the pair carry (static geometry)
+    "tests/test_beam_initial_pose_plan.py",  # T08a: static north/south setup sheet and role geometry, no execution
     # 2026-09-29: v6 is audited as history; these guard its receipt and the current v6-family path.
     "tests/test_zone_pair_v6.py", "tests/test_zone_pair_registered_source.py",
+    "tests/test_execution_dependency_contract.py", "tests/test_seal_v2_review_301.py",
+    "tests/test_seal_v2_fail_closed.py", "tests/test_seal_runtime_provenance.py",
+    "tests/test_seal_v2_review_301b.py", "tests/test_seal_v2_review_301c.py",
+    "tests/test_seal_v2_review_301d.py", "tests/test_seal_runtime_outputs.py",
     "tests/test_owncam_bootstrap_v6b.py",
     "tests/test_zone_pair_v6c.py",  # v6c (bundle v76): exact PF fix clock + grasp-range entry
     "tests/test_zone_pair_v6d.py",  # v6d (bundle v80): wide-hue beam heading + M1 fine align motion
@@ -338,7 +344,19 @@ def run_locked(command: list[str], env: dict, lock_root: Path) -> int:
                 except ProcessLookupError:
                     pass
                 child.wait(timeout=5)
-            cleanup_verified = child is None or not ugrp_session.process_group_alive(child.pid)
+                # wait() reaps the leader, not the process group. In particular,
+                # macOS may still report an exiting group (including EPERM),
+                # and stop_group's last SIGKILL is asynchronous. Confirm actual
+                # disappearance with a bound; never unlock on an uncertain probe.
+                deadline = time.monotonic() + 5
+                while ugrp_session.process_group_alive(child.pid):
+                    if time.monotonic() >= deadline:
+                        break
+                    time.sleep(0.02)
+                else:
+                    cleanup_verified = True
+            else:
+                cleanup_verified = True
         finally:
             held = agent_lock.status(lock_root)
             ours = held and all(held.get(key) == acquired[key] for key in ("owner", "pid", "acquired_unix"))

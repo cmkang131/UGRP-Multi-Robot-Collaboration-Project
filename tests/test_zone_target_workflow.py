@@ -18,6 +18,8 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_bundle_freezes_all_new_control_files_config_assets_and_verifies_drift(monkeypatch):
     bundle, sha = registry.verify_bundle()
     assert sha == digest(bundle)
+    assert bundle['bundle_id'] == 'zone-target-v85'
+    assert bundle['workflow_version'] == '2.18.0'
     required = {'harness/zone_target_executor.py', 'harness/zone_target_rgb.py',
                 'harness/zone_target_identity.py', 'harness/zone_target_actor.py',
                 'scripts/run_zone_target_checks.py', 'scripts/zone_target_host.py',
@@ -61,7 +63,7 @@ def test_original_s5_setup_events_orders_and_caps_are_preserved_across_condition
 def test_workflow_plan_is_runnable_module_with_explicit_registration(tmp_path):
     p = plan(ROOT, 'zone-target-checks', ['--group', 't13a', '--condition', 'no_comm',
                                           '--output', str(tmp_path/'new')])
-    assert p['workflow_version'] == '3.1.0'
+    assert p['workflow_version'] == '2.18.0'
     assert 'scripts.run_zone_target_checks' in p['command']
     assert p['runner'] == 'scripts.run_zone_target_checks' and p['execution_started'] is False
 
