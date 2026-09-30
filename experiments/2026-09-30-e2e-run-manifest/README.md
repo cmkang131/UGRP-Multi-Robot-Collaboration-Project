@@ -81,13 +81,20 @@ LLM/발화/호출/예산, 생각·발화 SIM 비용, 평가 profile을 초안 �
 실효 인식 지연은 wrapper0.16 + worker0 = **0.16 SIM초**이며 현재 host 프레임은0.2초다.
 지연과 프레임 주기는 다른 필드다. 모델 해시는 worker가 선언한 자산 해시이며 이 작업은
 가중치 로딩·성능/Release 검증을 수행하지 않는다. GT/TOP/접촉/성공은 평가 전용이다.
+평가 프로필 이름은 [평가 계획 JSON](evaluation_proposal_v1.json)에 선언하고
+파일 해시로 연결한다. 로봇 모듈에 평가 카메라 이름을 넣거나 평가기를 import하지 않는다.
 
 P01/P03 계약이 없거나 지원 조합을 확인하지 못하면 **차단**한다. 현재 시작 main의
 provider allow-list는 문1개 geometry-v2이고, 최종 로봇v3 보정은 선택하지 않았다.
 P01은 `configs/zone_final_environment_registry_v1.json`의 공개된 v1 스키마를
 읽으며 파일이 없으면 `unavailable`이다. P03은 기존
-`configs/zone_study_integration/pose_providers.json`을 읽는다. 새 계약 파일명을
-추측하지 않는다. P01 catalog/보정 hash와 P03 source/보정을 pin하고 지도별 불일치를
+`configs/zone_study_integration/pose_providers.json`과 #312가 공개한
+`configs/vision_loc_provider_p03.json`을 별도로 읽는다. 후자가 없으면
+`combination_pin.status=unavailable`로 기록한다. 합성 시 JSON 자체와
+`active.files_sha256`의 모든 참조 파일을 해시에 넣고, worker·카메라·동작 보정의
+참조 누락과 자산 해시 불일치를 거절한다. 카메라 설정만 바뀌어도 저장된 초안은
+거절한다. `candidate_opt_in`은 미배포 후보의 선언만 보존하며 로컬 가중치를 읽거나
+선택하지 않는다. P01 catalog/보정 hash와 P03 source/보정을 pin하고 지도별 불일치를
 남긴다. 두 등록부의 기존 생성 계약만으로 최종 v3/render/model/camera 조합을
 허용하지 않는다. 지원 목록/새 계약 합성은 코디네이터의 후속 검토 항목이다.
 `pending_p03_final_v3`는 알려진 미해결 표지이며 runtime 기본값으로 해석하지 않는다.
@@ -130,8 +137,14 @@ P02의 작은 혼합 명세도 별도 합성이 필요하다. v2/태그/밝은 �
 
 생성물은 시작 SHA의 referee v2를 명시한다. P06 #303의 referee v3 또는 P01/P03 등
 소스가 합쳐지면 기존 JSON 검사에 실패해야 정상이며, 최종 명세를 검토하고 다시 생성한다.
+기존 `manifest_DRAFT.json`과 `dry_run_DRAFT.json`은 최초 검증 기록으로 그대로 보존한다.
+검토 수정 후 새 초안과 검사 결과는 [REVIEW_FIXES.md](REVIEW_FIXES.md)에 별도로 기록한다.
 #292의 기록된 head도 감사 당시 참고값이다. 이후 `3c4fe30e` 인수 실행/결과는 이
 작업의 검증으로 합산하지 않고 코디네이터가 별도로 대조한다.
+
+로컬 물리·렌더 실행 금지는 GitHub의 정상 CI에 적용하지 않는다. push 후 CI를
+그대로 실행하며 취소하거나 skip 표기를 사용하지 않는다. CI 결과는 실제 확인한
+상태로 따로 보고하고 실행 승인·봉인·물리 성공과 구분한다.
 
 ## 참고 자료
 

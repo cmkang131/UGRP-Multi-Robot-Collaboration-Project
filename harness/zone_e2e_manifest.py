@@ -26,8 +26,10 @@ ROBOTS = ('r1', 'r2', 'r3')
 CLAIMS_PATH = 'configs/zone_e2e_plan/claims_v1.json'
 CATALOG_PATH = 'maps/zones_final/catalog.json'
 P01_PATH = 'configs/zone_final_environment_registry_v1.json'
-# P03 owns this existing registry. Do not invent a future pin-contract path.
+# The allow-list and #312's model/robot/camera pin are separate P03 inputs.
 P03_PATH = 'configs/zone_study_integration/pose_providers.json'
+P03_PIN_PATH = 'configs/vision_loc_provider_p03.json'
+EVALUATION_PATH = 'experiments/2026-09-30-e2e-run-manifest/evaluation_proposal_v1.json'
 CLAIM_IDS = tuple(f'S{i:02}' for i in range(1, 16)) + (
     'PR292_ACCEPTANCE', 'PR293_CONFIRMATION', 'M1_FINAL', 'M2_FINAL',
     'C5A', 'C5B', 'C6', 'C7')
@@ -38,7 +40,7 @@ ENTRY_PATHS = (
     'sim/render_profile.py', 'sim/zone_eval_top.py',
 )
 ASSET_PATHS = (
-    CATALOG_PATH, CLAIMS_PATH, 'configs/simulation_workflows.json',
+    CATALOG_PATH, CLAIMS_PATH, EVALUATION_PATH, 'configs/simulation_workflows.json',
     'requirements-sim.txt', 'requirements-reference-act.txt',
     'configs/zone_study_integration/pose_providers.json',
     'configs/zone_study_integration/llm_driver.json', 'configs/vision_loc_worker.json',
@@ -224,9 +226,7 @@ def _configuration(root, options):
                 'min_request_interval_wall_s': llm['min_request_interval_s']},
         'sim_cost': {'profile': 'zone_sim_cost.v1', 'scale': 1.0, 'provisional': True,
                      'source': pin(root, 'harness/zone_sim_cost.py')},
-        'evaluation': {'referee': 'zone_study_referee.v2', 'top_camera': 'zone_eval_top_v2',
-                       'boundary': 'eval_only', 'false_success_required': 0,
-                       'failures': 'all_failures_unreached_and_HOST_ERROR_remain_in_denominator'},
+        'evaluation': read_json(local_file(root, EVALUATION_PATH)),
         'environment': {'runtime_versions': 'pending_coordinator_final_environment',
                         'python': '3.12', 'omp_blas_threads': 1},
     }
@@ -320,6 +320,43 @@ def _prerequisites():
     ]
 
 
+def _p03_combination_pin(root):
+    """Read #312's declared data dependencies; AST imports cannot discover them.
+
+    The optional contract is unavailable until P03 is composed into this tree.
+    Its presence, bytes, and referenced assets identify a proposal only. Never
+    load the candidate checkpoint or infer final-v3 support from this pin.
+    """
+    path = Path(root) / P03_PIN_PATH
+    if not path.exists() and not path.is_symlink():
+        return {'status': 'unavailable', 'expected_path': P03_PIN_PATH}
+    data = read_json(local_file(root, P03_PIN_PATH))
+    if not isinstance(data, dict) or data.get('schema') != 'ugrp.vision_provider_pin.p03.v1':
+        raise PlanError('P03 unknown combination pin schema')
+    if data.get('status') != 'DRAFT_contract_only_unsealed':
+        raise PlanError('P03 unexpected combination pin status')
+    active = data.get('active')
+    if not isinstance(active, dict) or not isinstance(active.get('files_sha256'), dict):
+        raise PlanError('P03 combination pin requires active files_sha256')
+    camera = active.get('camera')
+    if not isinstance(camera, dict) or not isinstance(data.get('candidate_opt_in'), dict):
+        raise PlanError('P03 malformed camera/candidate contract')
+    hashes = active['files_sha256']
+    for name in ('configs/vision_loc_worker.json', active.get('motion_calibration'),
+                 camera.get('sag_pan_calibration')):
+        if not isinstance(name, str) or name not in hashes:
+            raise PlanError('P03 worker/camera/motion calibration missing from files_sha256')
+    references = {}
+    for name, expected in hashes.items():
+        actual = file_sha(root, name)
+        if actual != expected:
+            raise PlanError(f'P03 combination asset hash mismatch: {name}')
+        references[name] = actual
+    return {'status': 'blocked', 'file': pin(root, P03_PIN_PATH),
+            'reference_files_sha256': references, 'active': active,
+            'candidate_opt_in': data['candidate_opt_in']}
+
+
 def _support_contract(root, path, owner, configuration, map_ids):
     if not (Path(root) / path).exists():
         return {'owner': owner, 'status': 'unavailable', 'expected_path': path,
@@ -399,6 +436,11 @@ def build_draft(options, *, root=ROOT):
         'zone_wide_door_geometry_v3', 'zone_wide_door_geometry_v3_dock_v1'}
     contracts = {owner: _support_contract(root, path, owner, configuration, map_ids)
                  for owner, path in (('P01', P01_PATH), ('P03', P03_PATH))}
+    combination_pin = _p03_combination_pin(root)
+    contracts['P03']['combination_pin'] = combination_pin
+    if 'file' in combination_pin:
+        paths.add(combination_pin['file']['path'])
+        paths.update(combination_pin['reference_files_sha256'])
     for contract in contracts.values():
         if 'file' in contract:
             paths.add(contract['file']['path'])

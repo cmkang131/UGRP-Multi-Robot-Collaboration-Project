@@ -60,10 +60,10 @@ P01 파일이 배정 소스에 없으면 unavailable, 알 수 없는 스키마/�
 sentinel, 거짓 완료/승인, null/enum, 축소 분모, 재해시한 변조, source/map drift,
 P01 catalog·보정 변조, v2/v3 거절과 기존 raw 충돌 반례를 포함한다.
 
-자동 CI의 `ubuntu-simulation-runtime`, `ubuntu-simulation-scenarios`,
-multi-object 장면 작업은 실제 물리/렌더를 시작한다
-([workflow](../../.github/workflows/tests.yml)). 이번 사용자의 실행 금지를 지키기 위해
-커밋에 `[skip ci]`를 사용한다. **전체 GitHub CI 통과 주장은 하지 않는다.**
+최초 제출에서는 로컬 실행 금지를 CI에도 적용해 CI를 건너뛰었다. 이는
+2026-09-30 사용자의 명시적 정정으로 폐기된 해석이다. 정상 GitHub CI는 허용되며
+반드시 실행한다. CI를 취소하거나 커밋에 skip 표기를 사용하지 않는다.
+아래 기록은 최초 로컬 검사 결과이며, 수정 후 CI 상태는 별도로 보고한다.
 이 PR은 draft/미봉인 상태이며 병합 관문을 우회하지 않는다.
 
 ## 보존과 공용 파일

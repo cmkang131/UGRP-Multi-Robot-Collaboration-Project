@@ -5,6 +5,7 @@ import http.client
 import importlib
 import json
 from pathlib import Path
+import shutil
 import socket
 import sqlite3
 import subprocess
@@ -155,7 +156,7 @@ def test_sensor_and_memory_variants_are_separate_hashes_with_common_four_conditi
 
 @pytest.mark.parametrize('target', ['harness/visual_arm.py', 'sim/session_scenes.py',
                                     'configs/vision_loc_worker.json', 'harness/zone_sim_cost.py',
-                                    'harness/zone_e2e_manifest.py'])
+                                    'harness/zone_e2e_manifest.py', p.EVALUATION_PATH])
 def test_changed_runtime_or_planner_source_fails_saved_draft(monkeypatch, draft, target):
     original = p.file_sha
     monkeypatch.setattr(p, 'file_sha', lambda root, name: 'a' * 64 if name == target else original(root, name))
@@ -178,6 +179,13 @@ def test_dynamic_vis3_sources_and_calibrations_are_pinned_without_import(draft):
     assert draft['configuration']['llm']['call_policy']['max_retries'] == 0
 
 
+def test_evaluation_profile_is_pinned_plan_data_not_robot_configuration(draft):
+    assert draft['configuration']['evaluation'] == p.read_json(p.ROOT / p.EVALUATION_PATH)
+    assert draft['configuration']['evaluation']['boundary'] == 'eval_only'
+    assert draft['configuration']['evaluation']['top_camera'] == 'zone_eval_top_v2'
+    assert draft['runtime_files_sha256'][p.EVALUATION_PATH] == p.file_sha(p.ROOT, p.EVALUATION_PATH)
+
+
 def test_existing_provider_allowlist_is_not_final_v3_support(draft):
     contract = draft['support_contracts']['P03']
     assert contract['file']['path'] == p.P03_PATH
@@ -186,6 +194,96 @@ def test_existing_provider_allowlist_is_not_final_v3_support(draft):
     assert 'map outside provider allow-list' in rows['zone_wide_door_geometry_v3']['reasons']
     assert not rows['zone_wide_door_geometry_v2']['supported_for_proposal']
     assert all(not row['supported_for_proposal'] for row in rows.values())
+
+
+P03_PIN = 'configs/vision_loc_provider_p03.json'
+
+
+@pytest.fixture
+def p03_root(tmp_path, template):
+    """Compose P07 with the actual #312 JSON, without importing its runtime."""
+    root = tmp_path / 'composed'
+    fixture = Path(__file__).parent / 'fixtures/zone_e2e/vision_loc_provider_p03.json'
+    data = p.read_json(fixture)
+    paths = set(data['active']['files_sha256'])
+    for group in ('runtime_files_sha256', 'planner_files_sha256', 'evidence_files_sha256'):
+        paths.update(template[group])
+    for name in paths:
+        target = root / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(p.local_file(p.ROOT, name), target)
+    shutil.copyfile(fixture, root / P03_PIN)
+    # #312 also changes the worker's delay-description bytes. Keep the
+    # registered current-tree worker untouched; compose only in this fixture.
+    shutil.copyfile(fixture.with_name('vision_loc_worker_p03.json'),
+                    root / 'configs/vision_loc_worker.json')
+    # A newly declared dependency outside the existing AST/asset closure.
+    extra = root / 'configs/p03_extra_calibration.json'
+    extra.write_text('{"offset": 0}')
+    data['active']['files_sha256'][extra.relative_to(root).as_posix()] = p.file_sha(root, extra.relative_to(root).as_posix())
+    (root / P03_PIN).write_text(json.dumps(data))
+    return root
+
+
+@pytest.mark.parametrize('change', ['camera', 'referenced_asset'])
+def test_p03_combination_and_new_asset_changes_invalidate_saved_draft(p03_root, tmp_path, change):
+    options = p.default_options('p03-composed', raw_root=tmp_path / 'raw')
+    before = p.build_draft(options, root=p03_root)
+    saved = tmp_path / 'saved.json'
+    cli.write_new_draft(saved, before)
+    data = p.read_json(p03_root / P03_PIN)
+    if change == 'camera':
+        data['active']['camera']['intrinsics_mount'] = 'changed-camera-unvalidated'
+    else:
+        name = 'configs/p03_extra_calibration.json'
+        (p03_root / name).write_text('{"offset": 1}')
+        data['active']['files_sha256'][name] = p.file_sha(p03_root, name)
+    (p03_root / P03_PIN).write_text(json.dumps(data))
+    after = p.build_draft(options, root=p03_root)
+    assert before['draft_content_sha256'] != after['draft_content_sha256']
+    with pytest.raises(p.PlanError, match='mismatch'):
+        p.check_draft(p.read_json(saved), root=p03_root, primary_outputs=options['raw_root'])
+    assert after['runnable'] is False and after['physical_ready'] is False
+    assert after['support_contracts']['P03']['admitted_combinations'] == []
+    assert not Path(options['raw_root']).exists()
+
+
+def test_p03_pins_json_and_every_declared_asset_but_never_admits_v3(p03_root, tmp_path):
+    draft = p.build_draft(p.default_options('p03-pins', raw_root=tmp_path / 'raw'), root=p03_root)
+    data = p.read_json(p03_root / P03_PIN)
+    pins = draft['runtime_files_sha256']
+    assert pins[P03_PIN] == p.file_sha(p03_root, P03_PIN)
+    assert data['active']['files_sha256'].items() <= pins.items()
+    contract = draft['support_contracts']['P03']['combination_pin']
+    assert contract['status'] == 'blocked'
+    assert contract['active'] == data['active']
+    assert contract['candidate_opt_in'] == data['candidate_opt_in']
+    assert p.check_draft(draft, root=p03_root, primary_outputs=draft['options']['raw_root'])['unmet_conditions']
+
+
+@pytest.mark.parametrize('fault', ['schema', 'hash', 'unlisted_calibration', 'missing_asset', 'nonlocal_asset'])
+def test_p03_invalid_reference_contract_is_rejected(p03_root, fault):
+    data = p.read_json(p03_root / P03_PIN)
+    if fault == 'schema':
+        data['schema'] = 'unknown'
+    elif fault == 'hash':
+        data['active']['files_sha256']['configs/p03_extra_calibration.json'] = '0' * 64
+    elif fault == 'unlisted_calibration':
+        data['active']['camera']['sag_pan_calibration'] = 'configs/unhashed_camera.json'
+        (p03_root / 'configs/unhashed_camera.json').write_text('{}')
+    else:
+        name = 'configs/missing.json' if fault == 'missing_asset' else '../outside.json'
+        data['active']['files_sha256'][name] = '0' * 64
+    (p03_root / P03_PIN).write_text(json.dumps(data))
+    with pytest.raises(p.PlanError):
+        p.build_draft(p.default_options('p03-invalid'), root=p03_root)
+
+
+def test_p03_pin_removal_invalidates_saved_draft(p03_root, tmp_path):
+    draft = p.build_draft(p.default_options('p03-removal', raw_root=tmp_path / 'raw'), root=p03_root)
+    (p03_root / P03_PIN).unlink()
+    with pytest.raises(p.PlanError, match='mismatch'):
+        p.check_draft(draft, root=p03_root, primary_outputs=draft['options']['raw_root'])
 
 
 @pytest.mark.parametrize('fault', ['none', 'schema', 'catalog_hash', 'calibration_hash'])
@@ -301,7 +399,7 @@ def test_ambiguous_or_nonfinite_json_is_rejected(tmp_path, text):
         p.read_json(path)
 
 
-def test_dry_run_fresh_import_has_no_world_worker_network_process_database_or_write(monkeypatch, template, tmp_path, capsys):
+def test_dry_run_fresh_import_has_no_world_worker_network_process_database_or_write(monkeypatch, template, p03_root, tmp_path, capsys):
     path = tmp_path / 'draft.json'
     path.write_text(json.dumps(template))
     def forbidden(*args, **kwargs):
@@ -341,6 +439,9 @@ def test_dry_run_fresh_import_has_no_world_worker_network_process_database_or_wr
     assert cli.main(['dry-run', str(path)]) == 3
     summary = json.loads(capsys.readouterr().out)
     assert summary['unmet_conditions'] and summary['total_sim_cap_s'] == 212250
+    composed = p.build_draft(p.default_options('p03-sentinel', raw_root=tmp_path / 'raw'), root=p03_root)
+    assert P03_PIN in composed['runtime_files_sha256']
+    assert p.check_draft(composed, root=p03_root, primary_outputs=tmp_path / 'raw')['unmet_conditions']
 
 
 def test_cli_has_no_execute_seal_approval_or_budget_creation_options(capsys):
