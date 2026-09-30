@@ -1,0 +1,131 @@
+{
+  "schema": "ugrp.final_environment_offline_verification.v1",
+  "created_at_utc": "2026-09-30T17:29:05.680338+00:00",
+  "status": "DRAFT_PARTIAL_P03_BLOCKED",
+  "implementation_sha": "38ce3217f9e2f53666ff8a75af0c36a8be373c2c",
+  "depends_on_pr": 312,
+  "dependency_sha": "71563e88e2bd72c6abf90d50e10f5f627fea2a9b",
+  "initial_implementation_sha": "fb58f9773791d814f90c8635abc0b8898db8690d",
+  "dependency_merge_sha": "8ff4efbc8972b38b761f6dfe956cf3e61c968db8",
+  "environment": {
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "platform": "macOS-27.2-arm64-arm-64bit"
+  },
+  "host_lock_used_for_pytest": false,
+  "forbidden_execution_counts": {
+    "physics": 0,
+    "simulation": 0,
+    "render": 0,
+    "real_vision_worker": 0,
+    "training": 0,
+    "llm": 0
+  },
+  "validation": [
+    {
+      "name": "final environment 28 plus manager, P03 lifecycle, evaluation boundary; before 2 CLI regressions",
+      "path": "/Users/changmin/projects/ugrp/outputs/final-env-v84-offline-20261001/postmerge-related.xml",
+      "sha256": "9d89241c06c0f440aa124762c0f1e127da54a7ae8244b7da4d644a8e25e88ab2",
+      "tests": 90,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 11.976,
+      "pytest_summary": {
+        "passed": 86,
+        "deselected": 1,
+        "subtests_passed": 4,
+        "junit_includes_subtests": true
+      }
+    },
+    {
+      "name": "v2 dependency contract consumers of workflow manager",
+      "path": "/Users/changmin/projects/ugrp/outputs/final-env-v84-offline-20261001/catalog-v2-related.xml",
+      "sha256": "de3c449e1734f10984dd8f41f4b564915ddc7e86a0a8b24d108eaf8d5b5ce417",
+      "tests": 103,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 125.105
+    },
+    {
+      "name": "final environment all 30 tests after parent-directory fix",
+      "path": "/Users/changmin/projects/ugrp/outputs/final-env-v84-offline-20261001/final-cli.xml",
+      "sha256": "ac9d996e9b17d12f7f2ffa0a2ef4fcf42f292c801227ea0055d0cf82e2c119d2",
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "time_s": 65.469
+    }
+  ],
+  "earlier_protected_suite": {
+    "passed": 124,
+    "failed": 0,
+    "seconds": 423.55,
+    "source_stage": "before latest dependency remerge; protected/runtime bytes unchanged",
+    "tests": [
+      "tests/test_zone_pair_registered_source.py",
+      "tests/test_zone_study_source_pinning.py",
+      "tests/test_zone_environment_registry.py",
+      "tests/test_vision_loc_p03_source_pinning.py"
+    ],
+    "result_origin": "terminal pytest output"
+  },
+  "local_exclusions": [
+    {
+      "test": "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_parent_exit_cleans_background_child",
+      "reason": "sandbox rejects ps process listing; retained in GitHub CI"
+    }
+  ],
+  "mutations": {
+    "killed": 11,
+    "total": 11,
+    "sources_restored": true,
+    "results_path": "experiments/2026-10-01-final-env-runnable/mutation_results_postmerge.json",
+    "sha256": "28a693c04b0870934f5f3c4b1b73247f3591168bafa999f10d34a7128059fcb6"
+  },
+  "preservation": {
+    "v6e_pinned_files": 85,
+    "hash_mismatches": [],
+    "own_changed_pinned_files": [],
+    "rgb_registry_immutable_against": "fb8ee9fbde4f5a458d1c9c7efa625110dd196edc",
+    "rgb_v63_sha256": "ef4fe391e57c145b6625ba052e651542745bfcb6244d8e25736827ee8122aa01",
+    "modified_github_workflows": false,
+    "modified_protected_test_files": false
+  },
+  "candidate": {
+    "bundle_id": "zone-final-environment-v84",
+    "workflow_version": "2.17.0",
+    "p01_runnable": true,
+    "p03_runnable": false,
+    "p03_blockers": [
+      "measured_final_v3_calibration",
+      "qualified_final_v3_pair_chain_adapter"
+    ],
+    "prior_max_bundle": 83,
+    "prior_max_integration_workflow": "2.16.0"
+  },
+  "own_files_sha256": {
+    "configs/calibration/zone_final_v3_contract.json": "2613d263a86e975ed34c8bb08d4084bfca867168212d5ab507887b024d573d42",
+    "configs/final_environment_measurement_v1.json": "7d19bcc3e88dac4f906d4f0db9b5aef7fb7969e795b3c709a632ea45962d045e",
+    "configs/simulation_workflows.d/final_environment_v84.json": "38e47154c995f60726bae8b53441916a31c0535401a2eed7f414ea4d1412c369",
+    "configs/zone_final_environment_v84.json": "ab25531d0fec6caefd934a22865e372bc2df723aefe25de2d98ed75d3dce697a",
+    "experiments/2026-10-01-final-env-runnable/mutation_check.py": "af2d46acf68b527a9e3c6c6b83c1b2f67c199abf328651b297b8fd31c82c03df",
+    "experiments/2026-10-01-final-env-runnable/mutation_results.json": "6699df97d26cd8c9e3b882b2756a834e7026090688c57a1b2092b40fdf22721d",
+    "experiments/2026-10-01-final-env-runnable/reservation_scan.json": "0a54e9badf1b26f4520261eff7e00b7baf7b597ec8b132ffbc4876d64ef3acd1",
+    "harness/vision_pose_source_final.py": "15be5965211f5c653a8b8264eac36bb44a20e1e8bd262f297d702ecbae524195",
+    "harness/zone_final_environment.py": "a7924468234b4ecc78fb2eb94ea6e21ad9c157f60d6616c68c633e34237bef7d",
+    "maps/zones_final_v3/zone_wide_corridor_final_v3.json": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2",
+    "maps/zones_final_v3/zone_wide_two_doors_final_v3.json": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+    "scripts/run_ci_tests.py": "1976d13d5c2c04c0035a0101994143e51befc5a7721f4044a2fcd477240405d9",
+    "scripts/run_final_environment_checks.py": "d631275737b82f53025f1fe3074155f5f0754133f4bc68a59ae70e70c0a6538d",
+    "scripts/zone_environment_bundle.py": "d3ed940b7b439d2a10e2d6762edd10fa563ce17ad01bc21d171f810a04440193",
+    "sim/final_environment_checks.py": "84f272746c8629297328d6acc5fbf4807c01c318dd01935c1f762020eee3178c",
+    "sim/workflow_manager.py": "063fc04d392ee9344901e6a3d8f46e4c6d07e708a116ca3ea11d4ec13f7bde70",
+    "sim/zone_final_v3_scene.py": "cf93fc65637c178ee18654edebd891408010e2b4b89a96758a879fbc8ee97b92",
+    "tests/test_simulation_workflow_manager.py": "f705f6bea03c0fd52c60d4dfe12f07e95c70b45485c9cb9cb27c989b4c83cbab",
+    "tests/test_zone_final_environment_runnable.py": "94f7451b52e465faaf208a86ad883f2a60d5bc655bfc7acbf35751ebd0c2e14f"
+  },
+  "physics_handoff": "PHYSICS_HANDOFF.md",
+  "tensorboard": "not applicable: no physical, experiment, training or evaluation cohort executed",
+  "drive_used": false,
+  "temporary_extraction_directories_created": []
+}
