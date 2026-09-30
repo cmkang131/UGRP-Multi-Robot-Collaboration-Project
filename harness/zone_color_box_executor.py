@@ -128,6 +128,8 @@ class ZoneColorBoxExecutor(ZoneOwnExecutor):
                 if (getattr(skill, 'box_perception_profile', None) != self.box_profile
                         or getattr(getattr(skill, 'box', None), 'box_kind', None) != order.kind):
                     raise ExecutorContractError('color-box factory returned a different profile or kind')
+                if getattr(skill, 'mode', None) != self.mode:
+                    raise ExecutorContractError('color-box factory returned a different mode')
             return skill
         return make
 

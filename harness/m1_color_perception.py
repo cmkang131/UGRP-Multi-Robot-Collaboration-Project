@@ -391,15 +391,19 @@ class KindEdgeYawAligner:
 
     def reset_window(self) -> None:
         self._fits.clear()
+        self._previous_normal = None
+        self.last_ready = None
 
     def observe(self, box: Mapping[str, Any], target_xy: Sequence[float]) -> dict[str, Any]:
         self.observations += 1
         base = {'ready': False, 'normal_xy': None, 'reason': '', 'evidence': {}}
         try:
             tx, ty = (float(v) for v in target_xy)
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, OverflowError):
+            self.reset_window()
             return {**base, 'reason': 'INVALID_TARGET_XY'}
         if not (math.isfinite(tx) and math.isfinite(ty)) or math.hypot(tx, ty) <= 1e-9:
+            self.reset_window()
             return {**base, 'reason': 'INVALID_TARGET_XY'}
         frame = self.frame
         fit = {'ok': False, 'reason': 'NO_CURRENT_OWN_FRAME'}
@@ -414,7 +418,9 @@ class KindEdgeYawAligner:
             self.edge_accepted += 1
             self._fits.append(float(fit['yaw_mod90_rad']) % edge._PERIOD)
         if not ok:
-            self._fits.clear()
+            # Loss of the current target ends the evidence window. Reacquisition
+            # needs fresh votes, including when target validation returned early.
+            self.reset_window()
         cuboid = (box or {}).get('estimated_yaw_mod_pi_rad') if isinstance(box, Mapping) else None
         fits = list(self._fits)
         tol = math.radians(edge.FACE_INLIER_DEG)
@@ -428,6 +434,7 @@ class KindEdgeYawAligner:
                                                           or not math.isfinite(float(cuboid))
                                                           else round(math.degrees(float(cuboid) % edge._PERIOD), 2))}
         if len(inliers) < edge.FACE_MIN_INLIERS or len(inliers) < edge.FACE_MIN_INLIER_FRACTION * len(fits):
+            self.last_ready = None
             return {**base, 'reason': 'WAITING_FOR_CONSISTENT_OWN_RGB_EDGE_FITS' if ok else
                     'EDGE_YAW_EVIDENCE_NOT_ACCEPTED', 'evidence': evidence}
         s = sum(math.sin(4 * g) for g in inliers)

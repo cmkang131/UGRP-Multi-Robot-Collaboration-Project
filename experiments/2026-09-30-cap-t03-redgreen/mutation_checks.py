@@ -61,6 +61,38 @@ MUTATIONS = (('red_green_dispatch_removed',
   'True',
   'tests/test_zone_own_executor_color_boxes.py::test_kind_survives_job_end_and_wrong_kind_held_flag_is_not_yes'))
 
+MUTATIONS += (
+ ('invalid_target_keeps_old_votes', 'harness.m1_color_perception',
+  'except (TypeError, ValueError, OverflowError):\n            self.reset_window()',
+  'except (TypeError, ValueError, OverflowError):\n            pass',
+  'tests/test_review_325b.py::test_real_kind_loss_requires_fresh_face_votes'),
+ ('nonfinite_target_keeps_old_votes', 'harness.m1_color_perception',
+  'if not (math.isfinite(tx) and math.isfinite(ty)) or math.hypot(tx, ty) <= 1e-9:\n            self.reset_window()',
+  'if not (math.isfinite(tx) and math.isfinite(ty)) or math.hypot(tx, ty) <= 1e-9:\n            pass',
+  'tests/test_review_325b.py::test_invalid_target_ends_all_alignment_evidence[nan]'),
+ ('lost_frame_keeps_old_votes', 'harness.m1_color_perception',
+  'if not ok:', 'if False:',
+  'tests/test_review_325b.py::test_current_evidence_loss_ends_ready_window'),
+ ('reset_keeps_old_ready_metadata', 'harness.m1_color_perception',
+  'self._previous_normal = None\n        self.last_ready = None', 'pass',
+  'tests/test_review_325b.py::test_base_motion_reset_ends_alignment_evidence'),
+ ('expired_vote_keeps_last_ready', 'harness.m1_color_perception',
+  '            self.last_ready = None\n            return {**base,',
+  '            return {**base,',
+  'tests/test_review_325b.py::test_ready_result_expires_when_votes_no_longer_agree'),
+ ('invalid_own_frame_keeps_old_votes', 'harness.wrist_color_boxes',
+  'except ValueError:\n            self._face_aligner.reset_window()',
+  'except ValueError:\n            pass',
+  'tests/test_review_325b.py::test_rejected_own_frame_invalidates_prior_votes'),
+ ('default_mode_reverted_to_diagnostic', 'harness.wrist_color_boxes',
+  "def __init__(self, order, *, mode='m1', **kwargs):",
+  "def __init__(self, order, *, mode='diagnostic', **kwargs):",
+  'tests/test_review_325b.py::test_default_skill_and_placement_require_m1_pose'),
+ ('factory_mode_barrier_removed', 'harness.zone_color_box_executor',
+  "if getattr(skill, 'mode', None) != self.mode:", 'if False:',
+  'tests/test_review_325b.py::test_m1_executor_rejects_factory_mode_mismatch'),
+)
+
 def sha(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 

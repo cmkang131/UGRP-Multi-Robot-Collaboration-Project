@@ -57,7 +57,14 @@ class KindBoxSkill(v9.WristOnlyBoxSkillV9):
         return action
 
     def _decide_color(self, observation: Mapping[str, Any]) -> dict[str, Any]:
-        obs, pose = self._validate_observation(observation)
+        try:
+            obs, pose = self._validate_observation(observation)
+        except ValueError:
+            self._face_aligner.reset_window()
+            self.last_target = None
+            self.last_face_alignment = {'ready': False, 'normal_xy': None,
+                                        'reason': 'INVALID_OWN_FRAME'}
+            raise
         self.last_approach_adjustment = None
         if self.phase != "approach":
             self._rolling_view_lock = None
@@ -249,9 +256,9 @@ class WristColorBoxDelivery(v9.WristZoneDeliveryV9):
     color_profile = PROFILE
     box_perception_profile = perception.PROFILE
 
-    def __init__(self, order, **kwargs):
+    def __init__(self, order, *, mode='m1', **kwargs):
         require_box_kind(order.kind)
-        super().__init__(order, **kwargs)
+        super().__init__(order, mode=mode, **kwargs)
 
     def _new_box(self):
         return KindBoxSkill(box_kind=self.order.kind, robot_id=self.robot_id, cargo_id='small_box_01',
