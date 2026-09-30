@@ -1,0 +1,550 @@
+{
+ "source_sha": "4c6b439f3f7c9a147c901f8b260a1e214d4eb396",
+ "gate_mm": 100.0,
+ "groups": {
+  "recheck": {
+   "raw": "/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-recheck",
+   "manifest_sha256": "e233119c321914572e9e9bbef3e46f7247d547ee3813b857d9c15456d4c27a0b",
+   "cases_jsonl_sha256": "fac7ea9a0aa5f668fc62e48068371b5a8e08e9788b566626b76b56f6cf10de04",
+   "plan_sha256": "44019ab054352be2f46fa4431e6fd706a8311c1f00377ae508d7e00174158790",
+   "state": "completed",
+   "wall_s_total": 779.8,
+   "source_execution_tree": "95aae677901f7a53924b69e26231f2f4b865bcf525d03f9cf799783486659700",
+   "source_changed": false,
+   "loadavg_start_end": [
+    [
+     110.75390625,
+     76.37109375,
+     72.181640625
+    ],
+    [
+     889.53515625,
+     606.1806640625,
+     334.66943359375
+    ]
+   ],
+   "cases": [
+    {
+     "group": "recheck",
+     "case_id": "chain@b-v6h1:teacher:S07:s911:pPOST:VENVS",
+     "cell": "S07",
+     "seed": 911,
+     "place_x": 0.932,
+     "place_y": 0.037,
+     "place_yaw_deg": -4.159999999999996,
+     "prior_id": "hR2_05",
+     "prior_yaw_error_deg": 1.042911062331412,
+     "stage_category": "STAGE_BUDGET_EXHAUSTED",
+     "host_error": null,
+     "entry_sim_s": 6.100000000001709,
+     "stage_sim_s": 56.7,
+     "sim_s_total": 62.80000000000171,
+     "wall_s": 777.62,
+     "loadavg_case": [
+      [
+       110.75390625,
+       76.37109375,
+       72.181640625
+      ],
+      [
+       891.67138671875,
+       601.8115234375,
+       331.5439453125
+      ]
+     ],
+     "command_total": {
+      "r1": 1111,
+      "r2": 1110
+     },
+     "model_calls": 0,
+     "outcome_class": "FAIL",
+     "wall_contact_episodes": 0,
+     "legs_recorded": [
+      0,
+      1
+     ],
+     "pred_lateral_mm": [
+      -38.130241486620235,
+      -60.15802933552576
+     ],
+     "commands_sha256": "c0c5fcd8dfe2492f9d312ed7962b08456ec731516f42111aa20d4923648e2872",
+     "case_dir": "/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-recheck/cases/chain_b-v6h1_teacher_S07_s911_pPOST_VENVS",
+     "result_sha256": "9faca2caa711b13bfdc00de9eff7816c1c653ce14c490efc66595f6cbe805289",
+     "L0_reached": true,
+     "L0_axial_mm": 23.32652723457329,
+     "L0_lateral_mm": -52.97404462496635,
+     "L0_end_mm": 57.882434958743886,
+     "L0_yaw_drift_deg": 0.43187162278002805,
+     "L1_reached": true,
+     "L1_axial_mm": 29.761938719253145,
+     "L1_lateral_mm": -65.69693072953413,
+     "L1_end_mm": 72.12391908104956,
+     "L1_yaw_drift_deg": 2.2089808117919296,
+     "L0_lateral_resid_obs_minus_pred_mm": -14.843803138346118,
+     "L1_lateral_resid_obs_minus_pred_mm": -5.53890139400837,
+     "gate_L0_L1_le_100mm": true,
+     "acceptance_3c4fe30e_commands_sha256": "c0c5fcd8dfe2492f9d312ed7962b08456ec731516f42111aa20d4923648e2872",
+     "commands_identical_to_acceptance_3c4fe30e": true
+    },
+    {
+     "group": "recheck",
+     "case_id": "chain@b-v6h1:teacher:X01:s911:pPOST:VENVS",
+     "cell": "X01",
+     "seed": 911,
+     "place_x": 0.94,
+     "place_y": 0.05,
+     "place_yaw_deg": -3.510000000000011,
+     "prior_id": "hR2_07",
+     "prior_yaw_error_deg": 0.2130500969685463,
+     "stage_category": "STAGE_BUDGET_EXHAUSTED",
+     "host_error": null,
+     "entry_sim_s": 6.100000000001709,
+     "stage_sim_s": 56.7,
+     "sim_s_total": 62.80000000000171,
+     "wall_s": 778.27,
+     "loadavg_case": [
+      [
+       110.75390625,
+       76.37109375,
+       72.181640625
+      ],
+      [
+       889.53515625,
+       606.1806640625,
+       334.66943359375
+      ]
+     ],
+     "command_total": {
+      "r1": 1111,
+      "r2": 1110
+     },
+     "model_calls": 0,
+     "outcome_class": "FAIL",
+     "wall_contact_episodes": 0,
+     "legs_recorded": [
+      0,
+      1
+     ],
+     "pred_lateral_mm": [
+      -19.701509504551705,
+      -37.979969029590826
+     ],
+     "commands_sha256": "2d2f77a4d529f860a5dc2ac4c98e53ece4df2cee7d2c2c152430db6c7227730c",
+     "case_dir": "/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-recheck/cases/chain_b-v6h1_teacher_X01_s911_pPOST_VENVS",
+     "result_sha256": "2d29b75b6c8cf0b1cae0fae3b6b2220f9d1043f12a627a18b6bd3f41b6c5ba82",
+     "L0_reached": true,
+     "L0_axial_mm": 31.47474422109653,
+     "L0_lateral_mm": -37.62656300610091,
+     "L0_end_mm": 49.055252190112434,
+     "L0_yaw_drift_deg": 0.17823353036973122,
+     "L1_reached": true,
+     "L1_axial_mm": 37.378081148084604,
+     "L1_lateral_mm": -72.88599828641357,
+     "L1_end_mm": 81.91147475488326,
+     "L1_yaw_drift_deg": 0.8785705146866872,
+     "L0_lateral_resid_obs_minus_pred_mm": -17.925053501549204,
+     "L1_lateral_resid_obs_minus_pred_mm": -34.90602925682274,
+     "gate_L0_L1_le_100mm": true,
+     "acceptance_3c4fe30e_commands_sha256": "2d2f77a4d529f860a5dc2ac4c98e53ece4df2cee7d2c2c152430db6c7227730c",
+     "commands_identical_to_acceptance_3c4fe30e": true
+    }
+   ]
+  },
+  "probes6": {
+   "raw": "/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-probes6",
+   "manifest_sha256": "afcac1122ea382078ae668648485ad8388200e8d49e1922ef458e9dece3e7c2f",
+   "cases_jsonl_sha256": "8b04e2fbdbcb04e2ba2b723210bd582ad04d3173e6f7cd2fe602d3c7bd2bb85f",
+   "plan_sha256": "85a183e13cd4f84dd86364f7081c89454feeee074a04ee978b0776ff73e4f8e9",
+   "state": "completed",
+   "wall_s_total": 1215.8,
+   "source_execution_tree": "95aae677901f7a53924b69e26231f2f4b865bcf525d03f9cf799783486659700",
+   "source_changed": false,
+   "loadavg_start_end": [
+    [
+     885.02685546875,
+     619.08154296875,
+     344.01708984375
+    ],
+    [
+     226.9384765625,
+     301.49072265625,
+     410.6787109375
+    ]
+   ],
+   "cases": [
+    {
+     "group": "probes6",
+     "case_id": "chain@b-v6h1:teacher:LE_A_04:s911:pPOST:VENVS",
+     "cell": "LE_A_04",
+     "seed": 911,
+     "place_x": 0.951,
+     "place_y": -0.025,
+     "place_yaw_deg": -4.5,
+     "prior_id": "hR2_04",
+     "prior_yaw_error_deg": 1.1051910702213543,
+     "stage_category": "STAGE_BUDGET_EXHAUSTED",
+     "host_error": null,
+     "entry_sim_s": 6.100000000001709,
+     "stage_sim_s": 54.7,
+     "sim_s_total": 60.80000000000171,
+     "wall_s": 448.47,
+     "loadavg_case": [
+      [
+       885.02685546875,
+       619.08154296875,
+       344.01708984375
+      ],
+      [
+       838.3828125,
+       797.15283203125,
+       553.28955078125
+      ]
+     ],
+     "command_total": {
+      "r1": 1091,
+      "r2": 1090
+     },
+     "model_calls": 0,
+     "outcome_class": "FAIL",
+     "wall_contact_episodes": 0,
+     "legs_recorded": [
+      0,
+      1
+     ],
+     "pred_lateral_mm": [
+      -66.53179225196995,
+      -80.35860746692173
+     ],
+     "commands_sha256": "0580d4f4cd8d87bb3f32b6da72c25c52e7a69ab86648c540e4fff381a4003abf",
+     "case_dir": "/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-probes6/cases/chain_b-v6h1_teacher_LE_A_04_s911_pPOST_VENVS",
+     "result_sha256": "45b8571b2e75c58a08193b231b14839187a68c6b1140a1cc0c30c4e221b99791",
+     "L0_reached": true,
+     "L0_axial_mm": -59.58951354864905,
+     "L0_lateral_mm": -40.89800121097264,
+     "L0_end_mm": 72.27417677163365,
+     "L0_yaw_drift_deg": 2.573103518974082,
+     "L1_reached": true,
+     "L1_axial_mm": -53.22739466579263,
+     "L1_lateral_mm": -45.86477604829397,
+     "L1_end_mm": 70.26189027394729,
+     "L1_yaw_drift_deg": 3.3308308842967382,
+     "L0_lateral_resid_obs_minus_pred_mm": 25.63379104099731,
+     "L1_lateral_resid_obs_minus_pred_mm": 34.49383141862776,
+     "gate_L0_L1_le_100mm": true,
+     "acceptance_3c4fe30e_commands_sha256": null,
+     "commands_identical_to_acceptance_3c4fe30e": null
+    },
+    {
+     "group": "probes6",
+     "case_id": "chain@b-v6h1:teacher:LE_A_07:s911:pPOST:VENVS",
+     "cell": "LE_A_07",
+     "seed": 911,
+     "place_x": 0.951,
+     "place_y": -0.025,
+     "place_yaw_deg": -4.5,
+     "prior_id": "hR2_07",
+     "prior_yaw_error_deg": 0.2130500969685463,
+     "stage_category": "STAGE_BUDGET_EXHAUSTED",
+     "host_error": null,
+     "entry_sim_s": 6.100000000001709,
+     "stage_sim_s": 54.7,
+     "sim_s_total": 60.80000000000171,
+     "wall_s": 448.67,
+     "loadavg_case": [
+      [
+       885.02685546875,
+       619.08154296875,
+       344.01708984375
+      ],
+      [
+       838.3828125,
+       797.15283203125,
+       553.28955078125
+      ]
+     ],
+     "command_total": {
+      "r1": 1091,
+      "r2": 1090
+     },
+     "model_calls": 0,
+     "outcome_class": "FAIL",
+     "wall_contact_episodes": 0,
+     "legs_recorded": [
+      0,
+      1
+     ],
+     "pred_lateral_mm": [
+      -55.52933160471094,
+      -64.86901858172376
+     ],
+     "commands_sha256": "ca81809664ad76cdd23eec1bba72d8bdda91212c0bc635910989ee3040841163",
+     "case_dir": "/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-probes6/cases/chain_b-v6h1_teacher_LE_A_07_s911_pPOST_VENVS",
+     "result_sha256": "06841a724f22f5cd9e8eb61a70fe22ced263e211a85d274fe13d0f926591ad7b",
+     "L0_reached": true,
+     "L0_axial_mm": -59.52837623286933,
+     "L0_lateral_mm": -34.137179389761016,
+     "L0_end_mm": 68.62196873895974,
+     "L0_yaw_drift_deg": 3.7624460172664147,
+     "L1_reached": true,
+     "L1_axial_mm": -53.08750144814933,
+     "L1_lateral_mm": -37.7094809596981,
+     "L1_end_mm": 65.11749199913254,
+     "L1_yaw_drift_deg": 3.9857631635569666,
+     "L0_lateral_resid_obs_minus_pred_mm": 21.392152214949924,
+     "L1_lateral_resid_obs_minus_pred_mm": 27.159537622025667,
+     "gate_L0_L1_le_100mm": true,
+     "acceptance_3c4fe30e_commands_sha256": null,
+     "commands_identical_to_acceptance_3c4fe30e": null
+    },
+    {
+     "group": "probes6",
+     "case_id": "chain@b-v6h1:teacher:LE_B_04:s911:pPOST:VENVS",
+     "cell": "LE_B_04",
+     "seed": 911,
+     "place_x": 1.069,
+     "place_y": 0.109,
+     "place_yaw_deg": 4.5,
+     "prior_id": "hR2_04",
+     "prior_yaw_error_deg": 1.1051910702213543,
+     "stage_category": "STAGE_BUDGET_EXHAUSTED",
+     "host_error": null,
+     "entry_sim_s": 6.100000000001709,
+     "stage_sim_s": 52.8,
+     "sim_s_total": 58.900000000001704,
+     "wall_s": 382.23,
+     "loadavg_case": [
+      [
+       838.3828125,
+       797.15283203125,
+       553.28955078125
+      ],
+      [
+       326.427734375,
+       550.63232421875,
+       530.841796875
+      ]
+     ],
+     "command_total": {
+      "r1": 1072,
+      "r2": 1071
+     },
+     "model_calls": 0,
+     "outcome_class": "FAIL",
+     "wall_contact_episodes": 0,
+     "legs_recorded": [
+      0,
+      1
+     ],
+     "pred_lateral_mm": [
+      27.472422414270007,
+      14.677268133470385
+     ],
+     "commands_sha256": "1145bfba47465fa2ac714ef73c0b78c9fd66a8af9a402c746902e6908e76c6ba",
+     "case_dir": "/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-probes6/cases/chain_b-v6h1_teacher_LE_B_04_s911_pPOST_VENVS",
+     "result_sha256": "160a6230d630d6194b5b11867ca574adcc982a56d2d1db7903cd2c8ab8b9960c",
+     "L0_reached": true,
+     "L0_axial_mm": -38.54204121655269,
+     "L0_lateral_mm": 6.402231778291003,
+     "L0_end_mm": 39.07016141355709,
+     "L0_yaw_drift_deg": -5.742954768074364,
+     "L1_reached": true,
+     "L1_axial_mm": -32.54839626507344,
+     "L1_lateral_mm": -12.11266127487421,
+     "L1_end_mm": 34.72916155895624,
+     "L1_yaw_drift_deg": -5.704384455513122,
+     "L0_lateral_resid_obs_minus_pred_mm": -21.070190635979003,
+     "L1_lateral_resid_obs_minus_pred_mm": -26.789929408344594,
+     "gate_L0_L1_le_100mm": true,
+     "acceptance_3c4fe30e_commands_sha256": null,
+     "commands_identical_to_acceptance_3c4fe30e": null
+    },
+    {
+     "group": "probes6",
+     "case_id": "chain@b-v6h1:teacher:LE_B_07:s911:pPOST:VENVS",
+     "cell": "LE_B_07",
+     "seed": 911,
+     "place_x": 1.069,
+     "place_y": 0.109,
+     "place_yaw_deg": 4.5,
+     "prior_id": "hR2_07",
+     "prior_yaw_error_deg": 0.2130500969685463,
+     "stage_category": "STAGE_BUDGET_EXHAUSTED",
+     "host_error": null,
+     "entry_sim_s": 6.100000000001709,
+     "stage_sim_s": 52.8,
+     "sim_s_total": 58.900000000001704,
+     "wall_s": 383.33,
+     "loadavg_case": [
+      [
+       838.3828125,
+       797.15283203125,
+       553.28955078125
+      ],
+      [
+       326.427734375,
+       550.63232421875,
+       530.841796875
+      ]
+     ],
+     "command_total": {
+      "r1": 1072,
+      "r2": 1071
+     },
+     "model_calls": 0,
+     "outcome_class": "FAIL",
+     "wall_contact_episodes": 0,
+     "legs_recorded": [
+      0,
+      1
+     ],
+     "pred_lateral_mm": [
+      38.47488306152901,
+      30.16685701866834
+     ],
+     "commands_sha256": "f67cf248384765e7f6430e07b3ec26449dece302e5fb33c4f6aa6d4a26d814d1",
+     "case_dir": "/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-probes6/cases/chain_b-v6h1_teacher_LE_B_07_s911_pPOST_VENVS",
+     "result_sha256": "d679b673f66e8a91a93b593f0053252a5649a59b46a9da7ad1da2e5b94539db5",
+     "L0_reached": true,
+     "L0_axial_mm": -38.33562923079725,
+     "L0_lateral_mm": 12.710317859908338,
+     "L0_end_mm": 40.38777845612533,
+     "L0_yaw_drift_deg": -5.0337286809769095,
+     "L1_reached": true,
+     "L1_axial_mm": -31.79684160631968,
+     "L1_lateral_mm": 4.723367587515834,
+     "L1_end_mm": 32.145751468960526,
+     "L1_yaw_drift_deg": -4.989249404386462,
+     "L0_lateral_resid_obs_minus_pred_mm": -25.764565201620677,
+     "L1_lateral_resid_obs_minus_pred_mm": -25.443489431152503,
+     "gate_L0_L1_le_100mm": true,
+     "acceptance_3c4fe30e_commands_sha256": null,
+     "commands_identical_to_acceptance_3c4fe30e": null
+    },
+    {
+     "group": "probes6",
+     "case_id": "chain@b-v6h1:teacher:LE_C_04:s911:pPOST:VENVS",
+     "cell": "LE_C_04",
+     "seed": 911,
+     "place_x": 1.069,
+     "place_y": 0.109,
+     "place_yaw_deg": -4.5,
+     "prior_id": "hR2_04",
+     "prior_yaw_error_deg": 1.1051910702213543,
+     "stage_category": "STAGE_BUDGET_EXHAUSTED",
+     "host_error": null,
+     "entry_sim_s": 6.100000000001709,
+     "stage_sim_s": 52.8,
+     "sim_s_total": 58.900000000001704,
+     "wall_s": 379.19,
+     "loadavg_case": [
+      [
+       326.427734375,
+       550.63232421875,
+       530.841796875
+      ],
+      [
+       226.9384765625,
+       301.49072265625,
+       410.6787109375
+      ]
+     ],
+     "command_total": {
+      "r1": 1072,
+      "r2": 1071
+     },
+     "model_calls": 0,
+     "outcome_class": "FAIL",
+     "wall_contact_episodes": 0,
+     "legs_recorded": [
+      0,
+      1
+     ],
+     "pred_lateral_mm": [
+      -9.855621703663166,
+      -43.81191258414634
+     ],
+     "commands_sha256": "581ec2e93082e361744ae04a2aa98e38058964c45355e2b00b705b078553ee94",
+     "case_dir": "/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-probes6/cases/chain_b-v6h1_teacher_LE_C_04_s911_pPOST_VENVS",
+     "result_sha256": "a8f0ba705847d5c0727f8a536375a9c27fe36dadfd56d2e625ca0954725ffa42",
+     "L0_reached": true,
+     "L0_axial_mm": -38.72190227789996,
+     "L0_lateral_mm": 12.483421977106183,
+     "L0_end_mm": 40.684413972401416,
+     "L0_yaw_drift_deg": 2.3026770291551366,
+     "L1_reached": true,
+     "L1_axial_mm": -33.059272200937514,
+     "L1_lateral_mm": -19.1076764268419,
+     "L1_end_mm": 38.184012058564115,
+     "L1_yaw_drift_deg": 2.43203925648494,
+     "L0_lateral_resid_obs_minus_pred_mm": 22.33904368076935,
+     "L1_lateral_resid_obs_minus_pred_mm": 24.704236157304443,
+     "gate_L0_L1_le_100mm": true,
+     "acceptance_3c4fe30e_commands_sha256": null,
+     "commands_identical_to_acceptance_3c4fe30e": null
+    },
+    {
+     "group": "probes6",
+     "case_id": "chain@b-v6h1:teacher:LE_C_07:s911:pPOST:VENVS",
+     "cell": "LE_C_07",
+     "seed": 911,
+     "place_x": 1.069,
+     "place_y": 0.109,
+     "place_yaw_deg": -4.5,
+     "prior_id": "hR2_07",
+     "prior_yaw_error_deg": 0.2130500969685463,
+     "stage_category": "STAGE_BUDGET_EXHAUSTED",
+     "host_error": null,
+     "entry_sim_s": 6.100000000001709,
+     "stage_sim_s": 52.8,
+     "sim_s_total": 58.900000000001704,
+     "wall_s": 379.68,
+     "loadavg_case": [
+      [
+       326.427734375,
+       550.63232421875,
+       530.841796875
+      ],
+      [
+       226.9384765625,
+       301.49072265625,
+       410.6787109375
+      ]
+     ],
+     "command_total": {
+      "r1": 1072,
+      "r2": 1071
+     },
+     "model_calls": 0,
+     "outcome_class": "FAIL",
+     "wall_contact_episodes": 0,
+     "legs_recorded": [
+      0,
+      1
+     ],
+     "pred_lateral_mm": [
+      1.1468389435958395,
+      -28.322323698948388
+     ],
+     "commands_sha256": "48b858c03c341db8fc723526ccc394043baffd9c3b62062ab0361759c978d1de",
+     "case_dir": "/Users/changmin/projects/ugrp/outputs/phys-caps-1001-l1-probes6/cases/chain_b-v6h1_teacher_LE_C_07_s911_pPOST_VENVS",
+     "result_sha256": "4fb1de309d5c21562f73bce0491a03267ceeae91f2bd361bc7c035a99c34e0aa",
+     "L0_reached": true,
+     "L0_axial_mm": -38.36847368528584,
+     "L0_lateral_mm": 15.313628763955602,
+     "L0_end_mm": 41.3115843179455,
+     "L0_yaw_drift_deg": 3.4763871404128137,
+     "L1_reached": true,
+     "L1_axial_mm": -32.264786462095515,
+     "L1_lateral_mm": 0.7256716429185212,
+     "L1_end_mm": 32.27294601950616,
+     "L1_yaw_drift_deg": 3.578305752731135,
+     "L0_lateral_resid_obs_minus_pred_mm": 14.166789820359764,
+     "L1_lateral_resid_obs_minus_pred_mm": 29.04799534186691,
+     "gate_L0_L1_le_100mm": true,
+     "acceptance_3c4fe30e_commands_sha256": null,
+     "commands_identical_to_acceptance_3c4fe30e": null
+    }
+   ]
+  }
+ }
+}
