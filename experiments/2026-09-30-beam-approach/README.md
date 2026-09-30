@@ -96,10 +96,14 @@ T08a가 추가했던 CI 목록 한 행은 이번 사용자 지시(CI 설정 변�
 T08b도 같은 기존 glob으로 정상 CI에 포함된다. `.github/workflows`와 CI 설정은 main과 같다.
 첫 관련 검사에서 발견한 T08a 등록 기대 실패와 bridge 수정 후 결과를 모두 보존한다.
 
-최종 수치·source hash·명령·원본 위치는 `VERIFICATION.json`에 기록한다. 변이는 각 별도
+최종 관련 검사 고유 **239개 통과**(재실행 합집합), 소스 고정 두 파일 **56개 통과**다.
+최신 main 반영 뒤 **128개 통과**, 봉인 v6e 소스 **85/85 해시 동일**, 제거/경계 변이
+**8/8 검출**을 확인했다. 접근 제거25·위치 gate8·상대 정렬17·인계 PF 초기화6·guard10·
+영상 hash1·수신 abort1·SIM cap 경계1개의 실패가 났고, 모두 collection/import error는0이다.
+최종 수치·source hash·명령·원본 위치는 `VERIFICATION.json`에 기록했다. 변이는 각 별도
 프로세스에서만 적용하며 production bytes를 쓰지 않는다. 정상 테스트를 통과한 소스를
 변형한 뒤 navigation/pose gate/상대 정렬/PF 인계/command guard/영상 hash/수신 abort를
-제거하면 실제 테스트 실패가 나오는지 검사한다. 실패 변이를 단순 수집/import error로
+제거하거나 cap 경계를 느슨하게 바꾸면 실제 테스트 실패가 나오는지 검사한다. 실패 변이를 단순 수집/import error로
 세지 않는다. 정상 GitHub CI를 실행하며 취소/skip하지 않는다. draft PR만 만들고 병합하지 않는다.
 
 ## 남은 물리 검사
