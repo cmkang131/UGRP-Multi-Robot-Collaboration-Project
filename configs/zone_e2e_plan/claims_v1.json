@@ -1,0 +1,504 @@
+{
+  "S01": {
+    "sources": [
+      "harness/zone_final_env.py",
+      "maps/zones_final/catalog.json",
+      "sim/zone_masterpi_v3_scene.py"
+    ],
+    "tests": [
+      "tests/test_zone_final_env.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-28-final-map-scenario-v2/README.md"
+    ],
+    "conditions": [
+      "기존 3지도/6시나리오 정적 검사; 로봇 물리 통과 아님"
+    ],
+    "unmeasured": [
+      "P01/P03 최종 v3 map/scene/provider/보정 조합",
+      "3지도 reset 3×30 SIM초/초기 접촉/카메라 검증"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S02": {
+    "sources": [
+      "harness/vision_pose_source.py",
+      "harness/vision_motion_init.py",
+      "configs/vision_loc_worker.json"
+    ],
+    "tests": [
+      "tests/test_zone_pair_provider_init.py",
+      "tests/test_zone_pair_tag_boundary_matrix.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-27-vision-worker-closed-loop/README.md",
+      "experiments/2026-09-26-vision-loc/README_v3.md"
+    ],
+    "conditions": [
+      "태그0/로봇v2/문1개 dev 1회 배송 실패; 저장 영상 위치 평가와 분리"
+    ],
+    "unmeasured": [
+      "최종 v3 모델/카메라/위치 추정 독립 검증",
+      "새 dev 출발 3개 접근; #216 완료 아님"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S03": {
+    "sources": [
+      "harness/m2_provider_adapter.py",
+      "harness/vision_pose_source.py",
+      "scripts/run_m2_pair.py"
+    ],
+    "tests": [
+      "tests/test_zone_study_pair_delay.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-29-carry-relocalization-b1/README.md",
+      "experiments/2026-09-29-seg-lightfloor/README.md"
+    ],
+    "conditions": [
+      "B1은 GT 근처 prior로 새 PF를 만든 정지 영상; runtime predecessor PF 재측위 아님"
+    ],
+    "unmeasured": [
+      "실제 이전 leg 뒤 3체크포인트×120 SIM초: lower/open/p20/fresh fix/re-align/regrasp/lift",
+      "Release 재다운로드/해시/로딩과 최종 보정"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S04": {
+    "sources": [
+      "harness/zone_own_executor.py",
+      "harness/m1_owncam_delivery.py",
+      "harness/pair_owncam_approach.py"
+    ],
+    "tests": [
+      "tests/test_zone_study_integration_seams.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-26-zone-m1-owncam/README.md",
+      "experiments/2026-09-26-zone-m2-pair/README.md"
+    ],
+    "conditions": [
+      "태그가 있던 과거 지도/보정/실행기의 M1/M2 결과; 최종 환경 승계 불가"
+    ],
+    "unmeasured": [
+      "실제 접근 posterior를 정렬로 이관; teacher 준비 자세 치환 금지",
+      "M1_FINAL/M2_FINAL 새 코호트"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S05": {
+    "sources": [
+      "harness/zone_pair_align.py",
+      "harness/owncam_align_motion_v6d.py"
+    ],
+    "tests": [
+      "tests/test_zone_pair_v6d.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-29-pair-v6d-align/README.md"
+    ],
+    "conditions": [
+      "태그 개발 지도/한 단계 격자; 실제 무표식 접근 종료 상태 아님"
+    ],
+    "unmeasured": [
+      "실제 접근 3개→정렬/preclose와 invalid-frame 1개; 새 모델/바닥 검증"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S06": {
+    "sources": [
+      "harness/zone_pair_grasp.py",
+      "harness/zone_pair_grasp_entry_v6c.py"
+    ],
+    "tests": [
+      "tests/test_zone_pair_grasp.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-29-pair-v6c/README.md"
+    ],
+    "conditions": [
+      "teacher staging·dev 경계 격자·weld OFF; 처음부터 E2E 아님"
+    ],
+    "unmeasured": [
+      "정렬 종료 상태에서 close/lift/hold 및 한쪽 파지 실패 전파",
+      "checkpoint 누적 retention/동기 정지"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S07": {
+    "sources": [
+      "harness/zone_pair_executor.py",
+      "harness/owncam_carry_v6e.py",
+      "harness/zone_pair_v6_policy.py"
+    ],
+    "tests": [
+      "tests/test_pair_chain_probe.py",
+      "tests/test_chain_analysis_hard_limit.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-30-door-relax-envelope/README.md",
+      "https://github.com/kcm0127-dotcom/ugrp/pull/285",
+      "https://github.com/kcm0127-dotcom/ugrp/pull/294"
+    ],
+    "conditions": [
+      "#294는 #285 feature에 병합; main/새 확증/최종 무표식 E2E 결과 아님"
+    ],
+    "unmeasured": [
+      "#292 인수 5개 및 classifier/정의 pin",
+      "최종 문/목적지 연쇄와 L0–L7 전체 통과"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S08": {
+    "sources": [
+      "scripts/run_m2_pair.py",
+      "harness/zone_pair_executor.py"
+    ],
+    "tests": [
+      "tests/test_zone_study_integration_pair.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-29-pair-v6c-carry/README.md",
+      "experiments/2026-09-29-pair-v6e-carry/README.md"
+    ],
+    "conditions": [
+      "v6c 단계 probe 0/13 뒤 v6e 목적지 probe 13/13; 계획19셀 중6개 staging 불가 제외, 후진 가드 중단 포함; 최종 b-v6g/실제 predecessor E2E 재확인 아님"
+    ],
+    "unmeasured": [
+      "목적지 접근/lower/open/양손 분리/재측위와 평가 일치",
+      "처음부터 끝까지 단일 run_id 및 상태 유지"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S09": {
+    "sources": [
+      "harness/zone_pair_global.py",
+      "harness/zone_pair_status.py"
+    ],
+    "tests": [
+      "tests/test_chain_analysis_hard_limit.py"
+    ],
+    "existing_results": [
+      "https://github.com/kcm0127-dotcom/ugrp/pull/293"
+    ],
+    "conditions": [
+      "D1 합성/저장 자료 검사만; 새 확증과 제어기 중단 흐름 미측정"
+    ],
+    "unmeasured": [
+      "PR293_CONFIRMATION과 3개 중단 흐름",
+      "결측/시작 정체/느린 정상 동작을 분모에 유지"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S10": {
+    "sources": [
+      "harness/zone_study_llm_driver.py",
+      "harness/zone_study_decisions.py"
+    ],
+    "tests": [
+      "tests/test_zone_study_llm_driver.py",
+      "tests/test_zone_study_multiturn.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-27-zone-study-pilot/README.md"
+    ],
+    "conditions": [
+      "실제 adapter 호출은 물리0회; P05 fake-wire 검사는 실제 provider/배송 성공 아님"
+    ],
+    "unmeasured": [
+      "4조건 실제 다회 한국어/주문 수행; no_comm 송수신0/leader 허브/structured schema",
+      "C5b 실제 호출·응답·시각·정산"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S11": {
+    "sources": [
+      "harness/zone_study_referee.py",
+      "sim/zone_hidden_events.py"
+    ],
+    "tests": [
+      "tests/test_zone_study_referee.py",
+      "tests/test_zone_hidden_events.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-28-main-study-prereg-draft/PREREG_DRAFT.md"
+    ],
+    "conditions": [
+      "심판/사건 계약과 개별 host probe는 최종 6종 전체 검증이 아님"
+    ],
+    "unmeasured": [
+      "최종 s2/s3/s5 사건 실제 발생/관측 도달",
+      "거짓 성공0 및 실패/미도달/HOST_ERROR 보존"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S12": {
+    "sources": [
+      "harness/zone_study_contract.py",
+      "harness/zone_sim_cost.py",
+      "harness/zone_main_budget.py"
+    ],
+    "tests": [
+      "tests/test_zone_study_contract.py",
+      "tests/test_zone_study_source_pinning.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-27-zone-study-pilot/README.md"
+    ],
+    "conditions": [
+      "과거 adapter ledger와 현재 코호트 원장은 별개; 고정 지연/비용은 측정 지연이 아님"
+    ],
+    "unmeasured": [
+      "P05 요청 이미지/텍스트·call_id→ledger→proxy→usage 대조",
+      "실효 모델/토큰 상한/비용 승인; 새 DB는 이 도구에서 만들지 않음"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S13": {
+    "sources": [
+      "harness/zone_own_executor.py",
+      "harness/zone_study_integration.py",
+      "harness/owncam_memory_v3.py"
+    ],
+    "tests": [
+      "tests/test_zone_study_integration_pair.py"
+    ],
+    "existing_results": [
+      "docs/research_todo.md"
+    ],
+    "conditions": [
+      "cyan만 M1 지원, pair 역할 고정; 작은 혼합 시험은 정식 6종 완료 아님"
+    ],
+    "unmeasured": [
+      "P02 cyan1+봉1+r3 계약과 물리 연결",
+      "P09 비청록/heavy_crate/can/tile/재배정/회전/순서·기억 별도 검증"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S14": {
+    "sources": [
+      "scripts/run_zone_study_integration.py",
+      "sim/zone_eval_top.py"
+    ],
+    "tests": [
+      "tests/test_zone_study_referee.py"
+    ],
+    "existing_results": [
+      "docs/tensorboard.md",
+      "experiments/2026-09-27-vision-worker-closed-loop/README.md"
+    ],
+    "conditions": [
+      "기존 snapshot은 이번 E2E 결과가 아님; top_camera.json은 실제 영상 증명이 아님"
+    ],
+    "unmeasured": [
+      "P06 같은 run의 manifest/raw/wire/ledger/eval 해시와 전체 분모",
+      "새 결과의 TensorBoard event 로딩·영상 등록·pin/HParams 화면 대조"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "S15": {
+    "sources": [
+      "harness/pair_stage_probe.py",
+      "harness/pair_chain_probe.py"
+    ],
+    "tests": [
+      "tests/test_pair_chain_probe.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-26-zone-teacher-fix/README.md"
+    ],
+    "conditions": [
+      "GT 교사/첫 teacher staging은 학생 E2E 성공이 아님"
+    ],
+    "unmeasured": [
+      "scenario reset 뒤 teacher mutation/GT PF 초기화/성공 receipt 0",
+      "P04 privileged read/write 금지와 단일 상태 이력"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "PR292_ACCEPTANCE": {
+    "sources": [
+      "scripts/zone_pair_v6_contract.py",
+      "scripts/zone_pair_registered_source.py",
+      "scripts/zone_pair_authorization.py"
+    ],
+    "tests": [
+      "tests/test_zone_pair_authorization.py",
+      "tests/test_zone_pair_registered_source.py"
+    ],
+    "existing_results": [
+      "https://github.com/kcm0127-dotcom/ugrp/pull/292",
+      "https://github.com/kcm0127-dotcom/ugrp/pull/294"
+    ],
+    "conditions": [
+      "#292 head 3afc61b00f2c127ac3fbe2be5e7bb57da989b15a DRAFT; v83/2.16.0는 해당 작업 예약"
+    ],
+    "unmeasured": [
+      "seed911 tS/S01,S07; tR/hR2_04; tX1/X01; tX1b/X06: 명령 bytes/hash·leg·전체 연쇄 접촉/하드 판정 동일",
+      "classifier/정의/일반 setdown/teacher 준비 경계 결정과 독립 검토; 원본 해시만으로 인수 통과 불가"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "PR293_CONFIRMATION": {
+    "sources": [
+      "experiments/2026-09-30-stall-detection-research/README.md"
+    ],
+    "tests": [
+      "https://github.com/kcm0127-dotcom/ugrp/pull/293"
+    ],
+    "existing_results": [
+      "https://github.com/kcm0127-dotcom/ugrp/pull/293"
+    ],
+    "conditions": [
+      "head d86cc82eedbe0c6693eaf808c54ce43387723f1d DRAFT; 합성 단위 검사/기존 요약 재계산"
+    ],
+    "unmeasured": [
+      "새 30정체+60정상 확증, 시작부터 막힌 6건 포함, 주 설정 수용 기준",
+      "독립 배치/시드·staging 성립·분모·검출 지연/오경보와 제어 중단 흐름; 물리 안전 승인 아님"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "M1_FINAL": {
+    "sources": [
+      "harness/m1_owncam_delivery.py"
+    ],
+    "tests": [
+      "tests/test_zone_study_source_pinning.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-26-zone-m1-owncam/README.md"
+    ],
+    "conditions": [
+      "옛 태그 지도 결과/ENOSPC 실패 보존; v3/tag0 결과로 승계 불가"
+    ],
+    "unmeasured": [
+      "같은 최종 v3/tag0/보정 후보 새6회×900 SIM초; ≥5/6 및 거짓 성공0",
+      "초기 접근부터 끝까지 실패·미도달 포함"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "M2_FINAL": {
+    "sources": [
+      "harness/zone_pair_executor.py",
+      "scripts/run_m2_pair.py"
+    ],
+    "tests": [
+      "tests/test_zone_study_integration_pair.py"
+    ],
+    "existing_results": [
+      "experiments/2026-09-26-zone-m2-pair/README.md"
+    ],
+    "conditions": [
+      "옛 태그 지도/고정 pair; stage·연쇄·등록 인수와 전체 임무는 다른 분모"
+    ],
+    "unmeasured": [
+      "같은 최종 후보 새6회×900 SIM초의 접근→L0–L7→방출 전체",
+      "최종 수용 문턱 별도 고정·거짓 성공0·checkpoint 상태 연속성"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "C5A": {
+    "sources": [
+      "experiments/2026-09-28-main-study-prereg-draft/PREREG_DRAFT.md"
+    ],
+    "tests": [
+      "tests/test_zone_e2e_manifest.py"
+    ],
+    "existing_results": [
+      "https://github.com/kcm0127-dotcom/ugrp/pull/298"
+    ],
+    "conditions": [
+      "cyan1+봉1 개발 fixture 4회",
+      "READINESS §4 제안; 실행 결과0/실행 승인 없음"
+    ],
+    "unmeasured": [
+      "고정 r1/r2 pair+r3 solo, 같은 seed×4조건; 중간 재배치 없는 실제 임무",
+      "축소 시나리오·다른 코호트를 합산하여 완료로 표시하지 않음"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "C5B": {
+    "sources": [
+      "experiments/2026-09-28-main-study-prereg-draft/PREREG_DRAFT.md"
+    ],
+    "tests": [
+      "tests/test_zone_e2e_manifest.py"
+    ],
+    "existing_results": [
+      "https://github.com/kcm0127-dotcom/ugrp/pull/298"
+    ],
+    "conditions": [
+      "cyan1+봉1 개발 실제 LLM 4회",
+      "READINESS §4 제안; 실행 결과0/실행 승인 없음"
+    ],
+    "unmeasured": [
+      "C5a 고정 구성 유지; 실제 한국어 왕복/원장/작업 경계와 최대360호출",
+      "축소 시나리오·다른 코호트를 합산하여 완료로 표시하지 않음"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "C6": {
+    "sources": [
+      "experiments/2026-09-28-main-study-prereg-draft/PREREG_DRAFT.md"
+    ],
+    "tests": [
+      "tests/test_zone_e2e_manifest.py"
+    ],
+    "existing_results": [
+      "https://github.com/kcm0127-dotcom/ugrp/pull/298"
+    ],
+    "conditions": [
+      "정식6시나리오 no-LLM24회",
+      "READINESS §4 제안; 실행 결과0/실행 승인 없음"
+    ],
+    "unmeasured": [
+      "P09 모든 능력 + 새 smoke seed 버전 + 사건 성립/거짓 성공0/경계 감사",
+      "축소 시나리오·다른 코호트를 합산하여 완료로 표시하지 않음"
+    ],
+    "execution_approval": null,
+    "completed": false
+  },
+  "C7": {
+    "sources": [
+      "experiments/2026-09-28-main-study-prereg-draft/PREREG_DRAFT.md"
+    ],
+    "tests": [
+      "tests/test_zone_e2e_manifest.py"
+    ],
+    "existing_results": [
+      "https://github.com/kcm0127-dotcom/ugrp/pull/298"
+    ],
+    "conditions": [
+      "정식6시나리오×3seed×4조건 외부파일럿72회",
+      "READINESS §4 제안; 실행 결과0/실행 승인 없음"
+    ],
+    "unmeasured": [
+      "C6 통과 뒤 별도 코호트; 조건 가린 합산 판정/상한/ρ/정산, 확증 H1–H3 제외",
+      "축소 시나리오·다른 코호트를 합산하여 완료로 표시하지 않음"
+    ],
+    "execution_approval": null,
+    "completed": false
+  }
+}

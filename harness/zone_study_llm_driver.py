@@ -242,6 +242,9 @@ class MainStudySendLedger(SendLedger):
     proxy, after checking the proxy process/source identity (read only).
     """
 
+    # The SIM pipeline's local token counts cannot certify provider usage.
+    requires_provider_usage = True
+
     def __init__(self, *, store_dir, budget, run_key, profile, runtime=None, proxy=None, wire=None, pacer=None):
         if store_dir is None:
             raise ValueError('the main study keeps raw request/response bytes: store_dir is required')
@@ -260,6 +263,18 @@ class MainStudySendLedger(SendLedger):
                 return opener.open(request, timeout=timeout)
 
         super().__init__(wire or guarded_wire, store_dir=store_dir)
+
+    def attach(self, authorize, *, owner):
+        # The common scheduler's default retries a failed decision as a NEW
+        # call/POST. That is incompatible with this driver's registered policy:
+        # only run_attempts may retry, before any request, for a HOST_ERROR.
+        # Refuse a contradictory configuration rather than silently rewriting
+        # the call policy recorded in the execution bundle.
+        retries = getattr(getattr(owner, 'policy', None), 'max_retries', None)
+        if type(retries) is not int or retries != 0:
+            raise ContractViolation('main-study driver requires call_policy.max_retries=0; '
+                                    'post-send scheduler retries are forbidden')
+        return super().attach(authorize, owner=owner)
 
     def _host_error(self, row, exc, what):
         err = HostError(f'{what}: {type(exc).__name__}: {exc}', errno_=getattr(exc, 'errno', None))
