@@ -170,7 +170,7 @@ def test_execution_forwards_only_selected_files_and_preserves_failure_code(index
     monkeypatch.setattr(runner.subprocess, "call", execute)
     monkeypatch.setattr(runner, "run_locked", execute_locked)
     argv = [] if index is None else ["--shard-count", "3", "--shard-index", str(index)]
-    assert runner.main([*argv, "--junitxml", "report.xml"]) == 7
+    assert runner.main([*argv, "--host-lock", "--junitxml", "report.xml"]) == 7
     selected = files if index is None else runner.shard_test_files(files, 3)[index]
     assert calls == [[runner.sys.executable, "-m", "pytest", "-q", *selected,
                       "--junitxml=report.xml", "-o", "junit_family=legacy"]]
@@ -193,9 +193,10 @@ def test_required_status_gate_rejects_every_non_success_result(shards, checks):
     workflow = (runner.ROOT / ".github/workflows/tests.yml").read_text()
     gate = workflow.split("  offline-regressions:\n", 1)[1].split("\n  ubuntu-simulation-runtime:", 1)[0]
     assert "    name: offline-regressions\n" in gate
-    assert "    needs: [offline-regression-shards, offline-regression-checks]\n" in gate
+    assert "    needs: [ci-preflight, offline-regression-shards, offline-regression-checks]\n" in gate
     assert "    if: ${{ always() }}\n" in gate
     script = textwrap.dedent(gate.split("        run: |\n", 1)[1])
     result = subprocess.run(["sh", "-eu", "-c", script],
-                            env={"SHARDS_RESULT": shards, "CHECKS_RESULT": checks})
+                            env={"PREFLIGHT_RESULT": "success", "FULL_SUITE": "true",
+                                 "SHARDS_RESULT": shards, "CHECKS_RESULT": checks})
     assert (result.returncode == 0) == (shards == checks == "success")
