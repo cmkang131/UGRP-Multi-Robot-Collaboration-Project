@@ -1,0 +1,16 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______________ test_impossible_and_disconnected_routes_refused ________________
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [{'center_m': [0.3, 0.0], 'half_extent...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+
+    def test_impossible_and_disconnected_routes_refused(static):
+        static['obstacles'] = [{'center_m': [.3, 0.], 'half_extents_m': [.01, .5]}]
+>       with pytest.raises(UnsupportedCorridor, match='PASSAGE_REFUSED'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE UnsupportedCorridor
+
+tests/test_zone_own_executor_corridor_control.py:341: Failed
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_corridor_control.py::test_impossible_and_disconnected_routes_refused
+1 failed in 0.34s

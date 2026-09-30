@@ -388,6 +388,10 @@ def plan(root: Path, workflow_id: str, args: list[str], *, inputs: list[Path] | 
     argv = list(args)
     _validate_args(row, argv)
     _validate_input_paths(root, workflow_id, argv)
+    if workflow_id == "zone-study-integration-run":
+        # Admission precedes records/subprocesses; the sealed host stays intact.
+        from sim.zone_study_admission import require_study_runtime
+        require_study_runtime(root, _at_root(root, _option(argv, "--prereg")), _option(argv, "--episode"))
     if row["id"] == "physical" and not _at_root(root, argv[0]).is_dir():
         raise ValueError("physical trace directory does not exist")
     if row["id"] == "physical" and (root / RECORDS).resolve().is_relative_to(_at_root(root, argv[0])):

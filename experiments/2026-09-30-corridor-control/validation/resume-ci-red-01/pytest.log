@@ -1,0 +1,21 @@
+..uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu [ 27%]
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu [ 27%]
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu [ 27%]
+uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu..uuuuu.uuuu..uuuuuuuuuuuuuuu. [ 72%]
+F..                                                                      [100%]
+=================================== FAILURES ===================================
+________ CiFastPathTests.test_new_push_preserves_queued_and_running_ci _________
+
+self = <test_ci_fast_path.CiFastPathTests testMethod=test_new_push_preserves_queued_and_running_ci>
+
+    def test_new_push_preserves_queued_and_running_ci(self):
+        workflow = (ROOT / ".github/workflows/tests.yml").read_text()
+        concurrency = workflow.split("\nconcurrency:\n", 1)[1].split("\njobs:\n", 1)[0]
+        # A shared PR group can replace even a pending run; every run needs its own group.
+>       self.assertIn("${{ github.run_id }}", concurrency)
+E       AssertionError: '${{ github.run_id }}' not found in "  group: tests-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}\n  cancel-in-progress: ${{ github.event_name == 'pull_request' }}\n"
+
+tests/test_ci_fast_path.py:24: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_ci_fast_path.py::CiFastPathTests::test_new_push_preserves_queued_and_running_ci
+1 failed, 10 passed, 280 subtests passed in 9.40s

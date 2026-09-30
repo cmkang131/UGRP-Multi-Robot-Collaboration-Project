@@ -1,0 +1,60 @@
+{
+  "schema": "ugrp.can_skill_development.v1",
+  "scope": "development checks; not final physics evidence",
+  "history": [
+    {
+      "check": "initial cylinder tests",
+      "result": "14 passed, 1 failed before stop",
+      "failure": "violet cuboid passed cylinder silhouette IoU",
+      "fix": "require cylinder to beat competing cuboid projections"
+    },
+    {
+      "check": "intermediate can suite",
+      "result": "44 passed; later 48 passed after own pose/command refusal additions"
+    },
+    {
+      "check": "lying-can counterexample plus legacy M1/perception",
+      "result": "41 passed, 107 subtests passed, 1 failed",
+      "failure": "sideways cylinder matched upright silhouette",
+      "fix": "competing horizontal cylinder hypotheses and fail-closed ambiguity"
+    },
+    {
+      "check": "can with upright-pose rejection",
+      "result": "49 passed"
+    },
+    {
+      "check": "can with provider input binding",
+      "result": "50 passed"
+    },
+    {
+      "check": "expanded runtime import test",
+      "result": "1 passed; same 50-test file, not an extra independent case"
+    },
+    {
+      "check": "first related regression command (no nonphysical plugin)",
+      "command": "python -m pytest -q tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_own_executor.py tests/test_zone_own_executor_boundaries.py tests/test_zone_own_executor_guards.py",
+      "result": "143 passed, 1 failed",
+      "test": "tests/test_zone_own_executor.py::test_team_host_feeds_each_executor_only_its_own_camera",
+      "error": "mujoco.cgl.cgl.CGLError: invalid CoreGraphics connection",
+      "cause": "scope selection mistake: physical host test included without no-physics plugin",
+      "attempted": "MuJoCo model/data creation and renderer initialization",
+      "not_reached": "host.run(3.); constructor raised during renderer creation",
+      "cleanup": "constructor exception shuts down its render executor; pytest process exited",
+      "followup": "repeat complete related suite with -p tests.pose_provider_no_physics; preserve this failure"
+    },
+    {
+      "check": "mutation v1",
+      "result": "4/4 killed by assertions",
+      "record": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v1/mutation.json"
+    },
+    {
+      "check": "mutation v2 after provider binding",
+      "result": "4/4 killed by assertions",
+      "record": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/mutation.json"
+    }
+  ],
+  "completed_physics_runs": 0,
+  "completed_renders": 0,
+  "render_initialization_attempts": 1,
+  "external_model_calls": 0
+}
