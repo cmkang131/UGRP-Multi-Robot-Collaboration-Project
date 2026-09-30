@@ -1,0 +1,85 @@
+{
+  "schema": "ugrp.t13_review_k_final_main.v1",
+  "checked_at": "2026-09-30T19:09:38.293220+00:00",
+  "before_merge_sha": "e8a7623ee7f89387cb503438239637b11f80dcb1",
+  "merged_main": "5ba853ddc5b0e300e45f8361e98e7f9f16e08c18",
+  "dependency_pr": 338,
+  "dependency_final_sha": "eb0b12eda573a3559f74341b488c88cf29bc9bc8",
+  "dependency_merge_sha": "5ba853ddc5b0e300e45f8361e98e7f9f16e08c18",
+  "pytest": {
+    "command": [
+      "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "tests.pose_provider_no_physics",
+      "tests/test_review_e2e_batch_k.py",
+      "tests/test_zone_target_review_k.py",
+      "tests/test_zone_target_workflow.py",
+      "tests/test_zone_own_executor_target.py",
+      "tests/test_zone_identity_jobs.py",
+      "tests/test_zone_own_executor_recovery.py",
+      "tests/test_zone_own_executor_host.py",
+      "tests/test_zone_pair_registered_source.py",
+      "tests/test_zone_study_source_pinning.py",
+      "tests/test_zone_own_executor_color_seals.py",
+      "tests/test_review_325b.py",
+      "tests/test_seal_v2_review_301.py",
+      "tests/test_zone_final_environment_runnable.py",
+      "tests/test_zone_final_env.py",
+      "tests/test_vision_loc_provider_lifecycle.py",
+      "tests/test_ci_sharding.py",
+      "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_catalog_has_thirty_selectable_workflows_and_distinct_adapters",
+      "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan",
+      "--tb=short",
+      "--junitxml=/Users/changmin/projects/ugrp/outputs/t13-review-k-20260930T185800Z/final-main/junit.xml"
+    ],
+    "exit_code": 0,
+    "host_lock": false,
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "log_sha256": "b6f5351a8d64455aae59ab0d75f7288b54907f46f3d76ad3cba058b9c44c35ad",
+    "passed": 587,
+    "skipped": 1,
+    "guard": {
+      "physical_step_attempts": 0,
+      "real_vision_worker_attempts": 0,
+      "network_attempts": 0
+    }
+  },
+  "bundle_sha256": "7e8b2e1eaadfdc83f539789d979cc609021893cb2d36f8b6e7c7ffea4741c633",
+  "runtime_bundle_unchanged_since_mutation_checks": true,
+  "mutation_evidence": "review_k_verification.json: mutation 12/12; same runtime sources verified",
+  "protected_byte_identical": [
+    ".github/workflows/tests.yml",
+    "tests/test_zone_pair_registered_source.py",
+    "tests/test_zone_study_source_pinning.py",
+    "configs/simulation_workflows.json",
+    "experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json"
+  ],
+  "runnable": false,
+  "blocked_on": [
+    "measured_final_v3_calibration",
+    "final_v3_target_rgb_and_manipulation_adapter"
+  ],
+  "temporary_extraction_directories": [],
+  "T13_physics_run": false,
+  "tensorboard_snapshot": null,
+  "raw_directory": "/Users/changmin/projects/ugrp/outputs/t13-review-k-20260930T185800Z",
+  "raw_is_remote_backup": false,
+  "raw_receipts": {
+    "final-main/junit.xml": {
+      "sha256": "b17a7b503b179cee2828d5a3edad8622fc7f34801eced2e9a12bdf91fa49f717",
+      "bytes": 83021
+    },
+    "final-main/pytest-receipt.json": {
+      "sha256": "a150e9063bcf24a637a03300cc34801ef2463252580a28b07f4dc4621c6ce00d",
+      "bytes": 1525
+    },
+    "final-main/pytest.log": {
+      "sha256": "b6f5351a8d64455aae59ab0d75f7288b54907f46f3d76ad3cba058b9c44c35ad",
+      "bytes": 875
+    }
+  }
+}
