@@ -319,6 +319,5 @@ def test_check_all_is_clean():
 
 
 def test_ci_collects_this_file():
-    from scripts.run_ci_tests import TEST_PATTERNS
-    matched = [p for p in TEST_PATTERNS if 'test_zone_final_env' in p]
-    assert matched and all(list(ROOT.glob(p)) == [ROOT / 'tests/test_zone_final_env.py'] for p in matched)
+    from scripts.run_ci_tests import TEST_PATTERNS, collect_test_files
+    assert 'tests/test_zone_final_env.py' in collect_test_files(ROOT, TEST_PATTERNS)

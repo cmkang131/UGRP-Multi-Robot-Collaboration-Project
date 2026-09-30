@@ -85,6 +85,8 @@ TEST_PATTERNS = (
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py",
     "tests/test_zone_environment_registry.py",
+    "tests/test_zone_final_environment_runnable.py",
+    "tests/test_review_e2e_batch_k.py",  # K1: final environment CI collection regression
     "tests/test_scenario_capabilities_docs.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",
     "tests/test_zone_study_eval.py", "tests/test_zone_study_offline.py",

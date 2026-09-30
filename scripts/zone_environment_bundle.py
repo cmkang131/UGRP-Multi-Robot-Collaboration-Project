@@ -1,8 +1,10 @@
-"""Opt-in static environment bundle preview; no execution entry point or seal.
+"""Legacy static preview plus an explicit v84 environment check bundle CLI.
 
 The v6e runner stays byte-identical. Reuse its non-physical bundle helpers,
 with explicit map routing and environment inputs for a future registration.
 This preview cannot inherit its base runner's execution bundle ID/admission.
+The v84 check bundle is DRAFT and uses its separately registered workflow;
+it does not seal or make a legacy student preregistration runnable.
 """
 import json
 from pathlib import Path
@@ -94,3 +96,17 @@ def run_bundle(prereg, episode, *, model_adapter=None, driver=None):
     if environment is not None:
         bundle['environment_binding'] = environment
     return bundle, scenario, map_bundle, provider
+
+
+def main(argv=None):
+    import argparse
+    from harness.zone_final_environment import bundle
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--map-id', required=True)
+    parser.add_argument('--check', choices=('p01', 'calibration', 'p03'), default='p01')
+    args = parser.parse_args(argv)
+    print(json.dumps(bundle(args.map_id, check=args.check), ensure_ascii=False, indent=2))
+
+
+if __name__ == '__main__':
+    main()
