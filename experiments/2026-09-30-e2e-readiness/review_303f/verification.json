@@ -1,0 +1,720 @@
+{
+  "review": "303F",
+  "verdict": "MERGE AFTER FIXES",
+  "source": {
+    "head": "3782887538db62c4673fe21908d252a3a7616da6",
+    "main_final": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+    "review_base": "f3fbbf9a08c0ba96b22858b573ab5d4da52e9011",
+    "archive": "/private/tmp/ugrp-review-303f-O5JR8Q",
+    "archive_all_fix_files_match_git": {
+      "docs/tensorboard.md": {
+        "sha256": "5d1911077afa664f4cd883ad26bad4a8269459fe1145c171a92a2197394fdaf7",
+        "matches_git": true
+      },
+      "experiments/2026-09-30-e2e-p06-evidence/README.md": {
+        "sha256": "d8c910fce85b0b901f101c87898936549ddcff0d58fbf8ad8ed91080c86c343c",
+        "matches_git": true
+      },
+      "experiments/2026-09-30-e2e-p06-evidence/REVIEW_E_FIXES.md": {
+        "sha256": "5e77d6a9c042ef220070322f69b3d6a563980e93aee2258fd9ca5d7b20fa134f",
+        "matches_git": true
+      },
+      "experiments/2026-09-30-e2e-p06-evidence/event_replay_mutations.py": {
+        "sha256": "c57ba479b901964489cbdc9b3690c735db948e5e458d1271aa07050447d2e712",
+        "matches_git": true
+      },
+      "experiments/2026-09-30-e2e-p06-evidence/redesign_test_selectors.json": {
+        "sha256": "b63c8529c42c40a3ba295619718c7df41dc00cb6a74e499d70bacce77f7a20fe",
+        "matches_git": true
+      },
+      "experiments/2026-09-30-e2e-p06-evidence/review_e_verification.json": {
+        "sha256": "e9c0bb78da702d52becbd0b94f564b3ce189feafc9d20ecc85f35c06f35bca21",
+        "matches_git": true
+      },
+      "harness/zone_evidence_key.py": {
+        "sha256": "ab75158d6792d155285e5ab965b3d3c1119530e90e9b4bd1b716978943d929ff",
+        "matches_git": true
+      },
+      "harness/zone_referee_replay.py": {
+        "sha256": "7bff0258953c025ef50652643a505d6979b178d1b010cb947cd0899d1b440b6c",
+        "matches_git": true
+      },
+      "harness/zone_study_referee.py": {
+        "sha256": "7ab76e9dadb95cea7a7827d5baef392f2c22c1a1cd230a2c0b0382663f590456",
+        "matches_git": true
+      },
+      "scripts/run_ci_tests.py": {
+        "sha256": "292a88a7939a83aa6d9ae6faf74b28716c89039b0a1704a822ca31b12a9d5205",
+        "matches_git": true
+      },
+      "scripts/tensorboard_tools/zone_study.py": {
+        "sha256": "7743bac6d0c349614f68e288c2f562177ac8d200ca61069464cd03d8f3c82758",
+        "matches_git": true
+      },
+      "scripts/zone_study_evidence_cohort.py": {
+        "sha256": "f40adf374a315cb85157614a926a414c93b3065cbde44b6299bda36a7e273e0e",
+        "matches_git": true
+      },
+      "scripts/zone_study_evidence_contract.py": {
+        "sha256": "7fcc29d48360338d3f4373d185adbe32e0606020226dc4c0e7abf5475597a8de",
+        "matches_git": true
+      },
+      "scripts/zone_study_evidence_join.py": {
+        "sha256": "4b6b517c039558c20da1c6c7d88bbb4639763c8f138809a833efccf9a6baaf25",
+        "matches_git": true
+      },
+      "tests/test_review_303c.py": {
+        "sha256": "df3c8775c50708a0f87375f5a2f440e6127e305abc511783e9b9388165c42e26",
+        "matches_git": true
+      },
+      "tests/test_review_303d.py": {
+        "sha256": "84f0ade896d1077ca3e8af9b9fb9a8ac83e07f77d12ea6bf4b0483350b4b584a",
+        "matches_git": true
+      },
+      "tests/test_review_303e.py": {
+        "sha256": "4bd02f0198a1d890c26183c7d978b152559678d62f1aceb66d48d11c4e3d963e",
+        "matches_git": true
+      },
+      "tests/test_tensorboard_export.py": {
+        "sha256": "4fd1b982611be001a6383e2ec1f03d8ab7aac10ec1928b6a8c6e6fd17ddda7ae",
+        "matches_git": true
+      },
+      "tests/test_zone_referee_ownership.py": {
+        "sha256": "5e616ca748e4910d2f4f92968a002f53577af1b692b683ee9dbe160770435fa3",
+        "matches_git": true
+      },
+      "tests/test_zone_referee_replay.py": {
+        "sha256": "82e53ed5789824920a610281387599d5ae6aadcefefd51551f8cc1e0a4a28663",
+        "matches_git": true
+      },
+      "tests/test_zone_study_evidence.py": {
+        "sha256": "bc5226d2e6977a3e9bcaf50976df3a49a50f004d2819ebfc200c9224dc45759c",
+        "matches_git": true
+      },
+      "tests/test_zone_study_evidence_review_c303.py": {
+        "sha256": "af2fde5f35da7ecbbb5f80075450cda2b4580146ac47b914c60de5653dc497d9",
+        "matches_git": true
+      },
+      "tests/zone_evidence_fixtures.py": {
+        "sha256": "d2255dc91902314a42badd9a437c179de880970c097fc035db783ce3e67481a8",
+        "matches_git": true
+      }
+    },
+    "original_assertions": 16,
+    "identical_assertions": true,
+    "workflow_tree_candidate": "d16776ce7b241a0ab49132f65bfa6a5ac17895e7",
+    "workflow_tree_main": "bc804b64df75a6975dbea1e151b0ecefd2717d59",
+    "workflow_two_dot": [
+      ".github/workflows/tests.yml"
+    ],
+    "workflow_three_dot": [],
+    "workflow_requested_delta": []
+  },
+  "environment": {
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "pytest": "9.1.1",
+      "numpy": "2.5.2",
+      "tensorboard": "2.21.0",
+      "Pillow": "12.3.0",
+      "opencv-python-headless": "5.0.0.93"
+    }
+  },
+  "results": {
+    "ci-cv2": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "xfailed": 0,
+      "non_xfail_skipped": 0,
+      "seconds": 1.234
+    },
+    "counterexamples": {
+      "tests": 2,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "xfailed": 0,
+      "non_xfail_skipped": 0,
+      "seconds": 64.476
+    },
+    "e303-mutant": {
+      "tests": 8,
+      "failures": 8,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "xfailed": 0,
+      "non_xfail_skipped": 0,
+      "seconds": 10.41
+    },
+    "independent-initial": {
+      "tests": 10,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 2,
+      "passed": 6,
+      "xfailed": 2,
+      "non_xfail_skipped": 0,
+      "seconds": 74.05
+    },
+    "independent": {
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "passed": 8,
+      "xfailed": 2,
+      "non_xfail_skipped": 0,
+      "seconds": 65.545
+    },
+    "mutation-event_key": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "xfailed": 0,
+      "non_xfail_skipped": 0,
+      "seconds": 1.213
+    },
+    "mutation-manifest_key": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "xfailed": 0,
+      "non_xfail_skipped": 0,
+      "seconds": 1.648
+    },
+    "mutation-owner_union": {
+      "tests": 8,
+      "failures": 8,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "xfailed": 0,
+      "non_xfail_skipped": 0,
+      "seconds": 5.964
+    },
+    "mutation-seal_rekey": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "xfailed": 0,
+      "non_xfail_skipped": 0,
+      "seconds": 1.656
+    },
+    "mutation-source_key": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "xfailed": 0,
+      "non_xfail_skipped": 0,
+      "seconds": 1.168
+    },
+    "property-event_key": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 3,
+      "xfailed": 0,
+      "non_xfail_skipped": 0,
+      "seconds": 48.473
+    },
+    "property-rejected_owner": {
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 3,
+      "xfailed": 0,
+      "non_xfail_skipped": 0,
+      "seconds": 48.619
+    },
+    "related": {
+      "tests": 671,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 671,
+      "xfailed": 0,
+      "non_xfail_skipped": 0,
+      "seconds": 767.059,
+      "per_module": {
+        "tests.test_ci_sharding": 66,
+        "tests.test_review_303c": 13,
+        "tests.test_review_303d": 16,
+        "tests.test_review_303e": 68,
+        "tests.test_tensorboard_export": 66,
+        "tests.test_zone_pair_door_relax": 1,
+        "tests.test_zone_pair_registered_source": 22,
+        "tests.test_zone_referee_ownership": 40,
+        "tests.test_zone_referee_replay": 20,
+        "tests.test_zone_study_eval.BoundaryTest": 8,
+        "tests.test_zone_study_eval.ChannelTest": 6,
+        "tests.test_zone_study_eval.ComparisonTest": 9,
+        "tests.test_zone_study_eval.DialogueTest": 20,
+        "tests.test_zone_study_eval.EfficiencyTest": 8,
+        "tests.test_zone_study_eval.ParseTest": 9,
+        "tests.test_zone_study_eval.ReportTest": 8,
+        "tests.test_zone_study_eval.SummaryTest": 3,
+        "tests.test_zone_study_evidence": 84,
+        "tests.test_zone_study_evidence_join": 61,
+        "tests.test_zone_study_evidence_review_a303": 4,
+        "tests.test_zone_study_evidence_review_c303": 71,
+        "tests.test_zone_study_evidence_review_f303": 7,
+        "tests.test_zone_study_referee": 23,
+        "tests.test_zone_study_review_fixes": 3,
+        "tests.test_zone_study_review_r5": 1,
+        "tests.test_zone_study_source_pinning": 34
+      },
+      "generated_test_nodes": [
+        "tests.test_zone_study_evidence_join::test_12000_seeded_relational_invariants[mix]",
+        "tests.test_zone_study_evidence_join::test_12000_seeded_relational_invariants[duplicate]",
+        "tests.test_zone_study_evidence_join::test_12000_seeded_relational_invariants[drop]",
+        "tests.test_zone_study_evidence_join::test_12000_seeded_relational_invariants[reorder]",
+        "tests.test_zone_referee_replay::test_12000_generated_replay_vs_summary_invariants[rebuild]",
+        "tests.test_zone_referee_replay::test_12000_generated_replay_vs_summary_invariants[summary]",
+        "tests.test_zone_referee_replay::test_12000_generated_replay_vs_summary_invariants[events]",
+        "tests.test_zone_referee_replay::test_12000_generated_replay_vs_summary_invariants[reorder]",
+        "tests.test_zone_referee_ownership::test_192_generated_raw_record_transformations_never_increase_success[permute]",
+        "tests.test_zone_referee_ownership::test_192_generated_raw_record_transformations_never_increase_success[duplicate]",
+        "tests.test_zone_referee_ownership::test_192_generated_raw_record_transformations_never_increase_success[move]"
+      ]
+    }
+  },
+  "unmutated_generated_cases": {
+    "relational": 12000,
+    "replay": 12000,
+    "raw_transformations": 192,
+    "total": 24192,
+    "not_added_to_pytest_item_count": true
+  },
+  "property_mutation_result": "rejected_owner restores the 0/2 -> 1/2 bug in all eight E303 examples, but all 192 generated cases survive",
+  "ci": {
+    "url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36752618220",
+    "checks": [
+      {
+        "conclusion": "SUCCESS",
+        "name": "ci-preflight",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (0)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (1)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (2)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (3)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (4)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (5)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (6)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (7)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (9)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (10)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (11)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (12)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (13)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (14)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "zone-multiturn-properties (15)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "FAILURE",
+        "name": "tensorboard-export",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "reference-act-smoke",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "offline-regression-shard (0/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "offline-regression-shard (1/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "offline-regression-shard (2/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "offline-regression-shard (3/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "offline-regression-shard (4/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "offline-regression-shard (5/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "offline-regression-shard (6/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "offline-regression-shard (7/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "offline-regression-checks",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "ubuntu-simulation-runtime",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "ubuntu-simulation-scenarios",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "multi-object-scenes",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "individual-proxy-bootstrap",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "name": "offline-regressions",
+        "status": "COMPLETED"
+      }
+    ],
+    "head": "3782887538db62c4673fe21908d252a3a7616da6",
+    "isDraft": true,
+    "state": "OPEN"
+  },
+  "commands": {
+    "related": "GIT_DIR=/Users/changmin/projects/ugrp/.git /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python experiments/2026-09-30-e2e-p06-evidence/redesign_test_driver.py --tb=short --junitxml=/Users/changmin/projects/ugrp/outputs/review-303f/related.xml",
+    "independent": "<python> <review-branch>/experiments/2026-09-30-e2e-readiness/review_303f/offline.py <archive> tests/test_review_303f.py -rx --tb=short",
+    "counterexamples": "<python> <review-branch>/experiments/2026-09-30-e2e-readiness/review_303f/offline.py <archive> tests/test_review_303f.py -k \"generated_property or tensorboard_ci\" --runxfail --tb=short",
+    "property_mutants": "<python> <review-branch>/experiments/2026-09-30-e2e-readiness/review_303f/offline.py <archive> --mutation <rejected_owner|event_key> tests/test_zone_referee_ownership.py::test_192_generated_raw_record_transformations_never_increase_success --tb=short",
+    "e303_mutant": "<python> <review-branch>/experiments/2026-09-30-e2e-readiness/review_303f/offline.py <archive> --mutation rejected_owner tests/test_review_303e.py::test_invalidating_duplicate_replay_cannot_increase_cohort_success --tb=short",
+    "direct_mutants": {
+      "event_key": {
+        "returncode": 1,
+        "command": [
+          "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+          "/private/tmp/ugrp-review-303f-O5JR8Q/experiments/2026-09-30-e2e-p06-evidence/event_replay_mutations.py",
+          "event_key",
+          "--tb=short",
+          "--junitxml=/Users/changmin/projects/ugrp/outputs/review-303f/mutation-event_key.xml"
+        ]
+      },
+      "source_key": {
+        "returncode": 1,
+        "command": [
+          "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+          "/private/tmp/ugrp-review-303f-O5JR8Q/experiments/2026-09-30-e2e-p06-evidence/event_replay_mutations.py",
+          "source_key",
+          "--tb=short",
+          "--junitxml=/Users/changmin/projects/ugrp/outputs/review-303f/mutation-source_key.xml"
+        ]
+      },
+      "owner_union": {
+        "returncode": 1,
+        "command": [
+          "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+          "/private/tmp/ugrp-review-303f-O5JR8Q/experiments/2026-09-30-e2e-p06-evidence/event_replay_mutations.py",
+          "owner_union",
+          "--tb=short",
+          "--junitxml=/Users/changmin/projects/ugrp/outputs/review-303f/mutation-owner_union.xml"
+        ]
+      },
+      "manifest_key": {
+        "returncode": 1,
+        "command": [
+          "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+          "/private/tmp/ugrp-review-303f-O5JR8Q/experiments/2026-09-30-e2e-p06-evidence/event_replay_mutations.py",
+          "manifest_key",
+          "--tb=short",
+          "--junitxml=/Users/changmin/projects/ugrp/outputs/review-303f/mutation-manifest_key.xml"
+        ]
+      },
+      "seal_rekey": {
+        "returncode": 1,
+        "command": [
+          "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+          "/private/tmp/ugrp-review-303f-O5JR8Q/experiments/2026-09-30-e2e-p06-evidence/event_replay_mutations.py",
+          "seal_rekey",
+          "--tb=short",
+          "--junitxml=/Users/changmin/projects/ugrp/outputs/review-303f/mutation-seal_rekey.xml"
+        ]
+      }
+    },
+    "ci_reproduction": "<python> <review-branch>/experiments/2026-09-30-e2e-readiness/review_303f/offline.py <archive> --without-cv2 tests/test_tensorboard_export.py::test_p06_rejected_owners_with_real_tensorboard --tb=short"
+  },
+  "review_source_sha256": {
+    "tests/test_review_303f.py": "6cb3c2a3d9809f5526b5be22efd78ca03b2666fc9e514ae2d4fc0c9bcc7b2850",
+    "experiments/2026-09-30-e2e-readiness/review_303f/offline.py": "23bdf3339abe3cbe58849e7f254cfc2b6b9e789fa3eeb6d17ba13186f13adef0"
+  },
+  "artifacts": {
+    "ci-cv2.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/ci-cv2.txt",
+      "bytes": 2140,
+      "sha256": "6139ca705d06d9ef340ecda1157d90a2166900d79e41c7853e507f5df2e5b54b"
+    },
+    "ci-cv2.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/ci-cv2.xml",
+      "bytes": 2254,
+      "sha256": "82c33a7f8ac11cca337edfa6c073e03820bc5d72423f33fab89d21472715e14d"
+    },
+    "ci-failed.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/ci-failed.txt",
+      "bytes": 45668,
+      "sha256": "eed74fd567dbfd2e3ebbd98b0c212aabdceac6c1168995679fb0cbc5c9881400"
+    },
+    "collection.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/collection.txt",
+      "bytes": 67643,
+      "sha256": "bb24b9bed59112bd5d9e3577ad795a3c19ca364ad69e92e8c99f99a2769a9ed2"
+    },
+    "counterexamples.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/counterexamples.txt",
+      "bytes": 3702,
+      "sha256": "b67c97180861298b53e8e45dc36b73a94aaf8817643336c2b31248ee562ab9eb"
+    },
+    "counterexamples.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/counterexamples.xml",
+      "bytes": 6539,
+      "sha256": "e909f5782a5b9640e18a9d68282baa7ca1e9524b77ed22cd7c0fe986c9a71401"
+    },
+    "e303-mutant.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/e303-mutant.txt",
+      "bytes": 12305,
+      "sha256": "f11d4b07769427e14fb88ed98c156e1f8096b401e30e25b9057786d2ea6e0f7e"
+    },
+    "e303-mutant.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/e303-mutant.xml",
+      "bytes": 7615,
+      "sha256": "e0a7baae2862a6064653fa6c0d6c6c827359a1e6aefdba76b291fb763b66e8cb"
+    },
+    "environment.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/environment.json",
+      "bytes": 383,
+      "sha256": "1006705156e169088830bd120f227cf104bf9975ab0d10c88c3b5948a0d2b6e5"
+    },
+    "independent-initial.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/independent-initial.txt",
+      "bytes": 1534,
+      "sha256": "98a75d4a724b8f7575884a0fef2a5da60f475ce0edab5130d6badf34024700ed"
+    },
+    "independent-initial.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/independent-initial.xml",
+      "bytes": 3292,
+      "sha256": "02c43fe7c2a9a8690ff749f071698b70c574d37de6644be18a48b9af0e13e651"
+    },
+    "independent.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/independent.txt",
+      "bytes": 532,
+      "sha256": "b8150135f8b3e6fce8c77bcca8f15a4fa38f6f63de3388b3766bf1b292abbfbe"
+    },
+    "independent.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/independent.xml",
+      "bytes": 2102,
+      "sha256": "aaf4f94ee1f41673019c4fa71612c68cba4d4201235fb776b563e2de1d5dbb87"
+    },
+    "mutation-event_key.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/mutation-event_key.txt",
+      "bytes": 804,
+      "sha256": "6d83f8c8d1e65160b184c31e657433f8b765f6527897767fe07d15fed648b297"
+    },
+    "mutation-event_key.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/mutation-event_key.xml",
+      "bytes": 709,
+      "sha256": "cabff4d60a8dd300cb86186ea030e4afca30f752d9770093e141af0b0a767f21"
+    },
+    "mutation-manifest_key.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/mutation-manifest_key.txt",
+      "bytes": 835,
+      "sha256": "03d9821f45fecd3bf048f92f9917d1279a005727bc473a922fd29e001a9f57c6"
+    },
+    "mutation-manifest_key.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/mutation-manifest_key.xml",
+      "bytes": 725,
+      "sha256": "1bd4d0faf115cb1455f113496345b4e92f5054c15fa0e66e831f4005a2ab3271"
+    },
+    "mutation-owner_union.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/mutation-owner_union.txt",
+      "bytes": 4781,
+      "sha256": "fe519613d93900a44b2a23677237e0a4a5c1326306bd430d263808a5b1f24fd7"
+    },
+    "mutation-owner_union.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/mutation-owner_union.xml",
+      "bytes": 5922,
+      "sha256": "40821240c200c83e71af6761f4becd35caae353dc97f5bd2affb66452cd2008c"
+    },
+    "mutation-seal_rekey.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/mutation-seal_rekey.txt",
+      "bytes": 1135,
+      "sha256": "84561fd5b5573defb295625ae003416a34c909edc0fc6327e6f2e47e005ad571"
+    },
+    "mutation-seal_rekey.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/mutation-seal_rekey.xml",
+      "bytes": 1413,
+      "sha256": "be8c280b077bd7c3ad9745a0906e3860f1cd8df1f9adbd0ff6bfe2814cedc0f0"
+    },
+    "mutation-source_key.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/mutation-source_key.txt",
+      "bytes": 807,
+      "sha256": "d528689332cf92d55858311f05c711268998e1962975b24e39887478ac231ac5"
+    },
+    "mutation-source_key.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/mutation-source_key.xml",
+      "bytes": 710,
+      "sha256": "7f799d4314c1c673155e0a04c927ed14cb00aab45b4bc0f8d1c2aaaff93ebef1"
+    },
+    "mutations.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/mutations.json",
+      "bytes": 1924,
+      "sha256": "18ee1bda178db3b33cc78f0850b8270e40b23fe485c8bd67949adb035b647d6d"
+    },
+    "pr-final.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/pr-final.json",
+      "bytes": 2841,
+      "sha256": "f92123a4071238d6a6f252f0c07e2e0c638affb7dbf4a2a1fc4a022f21218216"
+    },
+    "property-event_key.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/property-event_key.txt",
+      "bytes": 345,
+      "sha256": "c9627fa4758a84d04e7511675cb136a5990c11d29f8b64ff54df55cdf6f5627b"
+    },
+    "property-event_key.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/property-event_key.xml",
+      "bytes": 739,
+      "sha256": "ce695b6546143d49d1f049c71966680664d65c5934d87dc35ad506bade493e13"
+    },
+    "property-rejected_owner.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/property-rejected_owner.txt",
+      "bytes": 355,
+      "sha256": "c20d0903277c13e518618e29e0f54512646ef2865ae140f2cc3e8148984f759d"
+    },
+    "property-rejected_owner.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/property-rejected_owner.xml",
+      "bytes": 739,
+      "sha256": "b25b6ae4143bed4c14bccb73cbeddcfc8e417b84fc0f18016d540fbea2247b80"
+    },
+    "related.txt": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/related.txt",
+      "bytes": 832,
+      "sha256": "593ae302b141a48b776338e055dd026cf9689a6bc343731ce9b6c777196d6574"
+    },
+    "related.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/related.xml",
+      "bytes": 94672,
+      "sha256": "d2481ba0819fbd9f38f50522fac5f451ef98ec2d6f0a8988a99cc6ae6136ad18"
+    },
+    "source-verification.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/review-303f/source-verification.json",
+      "bytes": 4391,
+      "sha256": "fd1917c77e7f17b1f2a81bf0dd8699697945250707a1d15ce668a7b47e111f26"
+    }
+  },
+  "reviewer_initial_error": "2 summary-message regex mismatches; corrected in reviewer tests only. Initial results and logs preserved, excluded from candidate failures.",
+  "scope": {
+    "physics": 0,
+    "simulator_render": 0,
+    "training": 0,
+    "provider_calls": 0,
+    "host_lock_used": false,
+    "workflow_edits": false,
+    "production_file_edits": false,
+    "shared_tensorboard_changes": false,
+    "google_drive_used": false,
+    "raw_logs_remote_backup": false
+  },
+  "scratch_removed": true,
+  "scratch_absence_verified": true
+}
