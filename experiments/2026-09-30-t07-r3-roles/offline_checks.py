@@ -1,4 +1,4 @@
-"""Run only offline tests under the shared host lock; preserve every attempt."""
+"""Run only offline tests; optional host lock, preserving every attempt."""
 import json
 import hashlib
 import os
@@ -22,6 +22,8 @@ DEFAULT = [
     'tests/test_zone_pair_review7.py',
     'tests/test_zone_pair_v6e.py', 'tests/test_zone_pair_v6e_yaw.py',
     'tests/test_zone_study_integration.py', 'tests/test_zone_study_integration_pair.py',
+    'tests/test_zone_pair_registered_source.py', 'tests/test_zone_study_source_pinning.py',
+    'tests/test_zone_pair_door_relax.py',
 ]
 
 if __name__ == '__main__':
@@ -36,12 +38,13 @@ if __name__ == '__main__':
                f'--basetemp={out / "tmp"}']
     (out / 'command.json').write_text(json.dumps(command, indent=2) + '\n')
     sources = set(subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines())
+    sources.update(subprocess.check_output(['git', 'diff', '--cached', '--name-only'], text=True).splitlines())
     sources.update(subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard'], text=True).splitlines())
     hashes = {name: hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
               for name in sorted(sources) if (ROOT / name).is_file()}
     (out / 'source_sha256.json').write_text(json.dumps(hashes, indent=2) + '\n')
     print(out, flush=True)
-    lock_root = local_lock_root()
+    lock_root = local_lock_root() if os.environ.get('UGRP_TEST_HOST_LOCK') == '1' else None
     waits, deadline = [], time.monotonic() + 60
     while lock_root and agent_lock.status(lock_root) and time.monotonic() < deadline:
         if not waits:
@@ -49,7 +52,7 @@ if __name__ == '__main__':
         waits.append({'at': time.time(), 'lock': agent_lock.status(lock_root)})
         time.sleep(1)
     (out / 'lock_waits.json').write_text(json.dumps(waits, indent=2) + '\n')
-    code = run_locked(command, env, lock_root)
+    code = run_locked(command, env, lock_root) if lock_root else subprocess.call(command, cwd=ROOT, env=env)
     (out / 'result.json').write_text(json.dumps({'exit_code': code, 'python': sys.version,
                                                'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()},
                                               indent=2) + '\n')

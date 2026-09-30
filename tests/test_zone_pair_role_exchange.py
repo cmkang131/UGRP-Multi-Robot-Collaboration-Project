@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import itertools
 import json
 import math
@@ -12,19 +13,32 @@ from pathlib import Path
 
 import pytest
 
-from harness import zone_study_integration as zi
-from harness.zone_pair_executor import make_plan, m2_controller, role_door_schedule
+from harness import zone_pair_role_integration as zi
+from harness.zone_pair_role_executor import make_plan, m2_controller, role_door_schedule, PairStatusChannel, PairStatusEndpoint
+from harness.zone_pair_role_host import RoleAwareHostMixin
 from harness.zone_pair_roles import LEGACY_ROLES, PairRoles, requested_roles
-from harness.zone_pair_status import FIELDS, STATES, PairStatusChannel, PairStatusEndpoint
+from harness.zone_pair_status import FIELDS, STATES
 from harness.zone_study_protocol import validate_action
 from harness.zone_study_scenarios import bundle_for
-from tests.test_zone_pair_executor import ORDER, SHEETS, active, ends, setup
-from tests.test_zone_own_executor import MAP
+from tests.test_zone_pair_executor import ORDER, SHEETS, active, ends, robot, PairFakeHost, FakeM2
+from tests.test_zone_own_executor import MAP, CALIB
 from scripts import run_m2_pair as m2
 
 ASSIGNMENTS = tuple(PairRoles(*pair) for pair in itertools.permutations(zi.ROBOTS, 2))
 SCENARIO = json.loads((Path(__file__).resolve().parents[1] /
                       'configs/zone_study_integration/i2_pair_long_beam.json').read_text())
+
+
+class RoleFakeHost(RoleAwareHostMixin, PairFakeHost):
+    pass
+
+
+def setup(*, factory=FakeM2, limit=720):
+    exs = {r: robot(r, limit=limit) for r in zi.ROBOTS}
+    host = RoleFakeHost(exs, lambda *a: None)
+    host.contact_record = {'profile': 'cargo_noslip_v1'}
+    host.enable_pair_carry(SHEETS, CALIB['params'], controller_factory=factory)
+    return host, exs
 
 
 @pytest.fixture(autouse=True)
@@ -116,13 +130,9 @@ def test_actual_controller_uses_role_geometry_and_own_identity(roles, first_inde
     order = roles.participants[first_index:] + roles.participants[:first_index]
     for rid in order:
         assert submit(host, roles, rid)['accepted']
-    legacy = make_plan(MAP, SHEETS['cargoX'], 'B')
     for rid, ep in active(host).items():
-        alias = LEGACY_ROLES.mapping()[roles.role(rid)]
         ctl = ep.controller
         assert ctl.rid == ep.status.robot_id == ep.port.own.robot_id == rid
-        assert ep.plan['prestations'][rid] == legacy['prestations'][alias]
-        assert ep.plan['keepouts'][rid] == legacy['keepouts'][alias]
         ctl.grasp_estimate = (1., .06, 0. if roles.role(rid) == 'end_neg' else math.pi)
         ctl.seg = 0
         schedule = ctl.door_schedule(0.)
@@ -133,6 +143,78 @@ def test_actual_controller_uses_role_geometry_and_own_identity(roles, first_inde
         assert schedule[-1][2]['left'] * roles.sign(rid) < 0  # zone B is south
     assert m2.ROLES == {'r1': 'end_neg', 'r2': 'end_pos'}
     assert m2.DOOR_PLAN['headings_rad'] == {'r1': 0., 'r2': math.pi}
+
+
+# Independent, numeric oracle for the authored [1.0, 0.0, 0] sheet:
+# beam half-length .30, half-width .02, grid padding .06;
+# grip offset .27 + base standoff .155 = .425; prestation backs off .30.
+# Do not compute these expectations with make_plan/beam_keepout/prestation.
+ROLE_GEOMETRY = {
+    'end_neg': {'pre': [.275, 0., 0.], 'peer_station': [1.425, 0.], 'peer_pre': [1.725, 0.]},
+    'end_pos': {'pre': [1.725, 0., -math.pi], 'peer_station': [.575, 0.], 'peer_pre': [.275, 0.]},
+}
+
+
+def assert_role_geometry(prestation, keepouts, role):
+    expected = ROLE_GEOMETRY[role]
+    assert prestation == pytest.approx(expected['pre'])
+    assert [k['id'] for k in keepouts] == ['order_sheet_beam', 'partner_station', 'partner_prestation']
+    assert keepouts[0]['center_m'] == pytest.approx([1., 0.])
+    assert keepouts[0]['half_extents_m'] == pytest.approx([.36, .08])
+    assert keepouts[0]['source'] == 'order-sheet beam footprint + sheet grid error pad (static), not a live pose'
+    for keepout, center in zip(keepouts[1:], (expected['peer_station'], expected['peer_pre'])):
+        assert keepout['center_m'] == pytest.approx(center)
+        assert keepout['half_extents_m'] == pytest.approx([.17, .17])
+        assert keepout['source'] == 'static order sheet'
+
+
+@pytest.mark.parametrize('roles', ASSIGNMENTS)
+def test_plan_keeps_fixed_beam_and_partner_exclusion_geometry(roles):
+    assert SHEETS['cargoX']['beam_xyyaw'] == [1., 0., 0.]
+    plan = make_plan(MAP, SHEETS['cargoX'], 'B', role_to_robot=roles.mapping())
+    assert set(plan['keepouts']) == set(roles.participants)
+    for rid in roles.participants:
+        assert_role_geometry(plan['prestations'][rid], plan['keepouts'][rid], roles.role(rid))
+
+
+@pytest.mark.parametrize('roles', ASSIGNMENTS)
+def test_actual_approach_receives_fixed_role_exclusion_geometry(roles):
+    from harness.zone_pair_guards import GuardedPairApproach
+    host, _ = setup(factory=m2_controller)
+    for rid, ep in both(host, roles).items():
+        driver = ep.controller.driver
+        assert isinstance(driver, GuardedPairApproach)
+        assert_role_geometry([*driver.goal, driver.goal_yaw], driver.keepouts, roles.role(rid))
+
+
+@pytest.mark.parametrize('name', ['zone_own_team_host', 'zone_own_executor', 'zone_pair_executor',
+                                 'zone_pair_status', 'zone_study_integration'])
+def test_role_adapter_preserves_each_registered_source(name):
+    root = Path(__file__).resolve().parents[1]
+    sealed = json.loads((root / 'experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json').read_text())
+    path = f'harness/{name}.py'
+    assert hashlib.sha256((root / path).read_bytes()).hexdigest() == sealed['v6_contract']['source_sha256'][path]
+
+
+def test_opt_in_host_and_study_leave_legacy_dispatch_available():
+    from harness import zone_pair_executor as legacy_pair, zone_study_integration as legacy_study
+    from tests.test_zone_pair_executor import setup as legacy_setup
+    roles = PairRoles('r3', 'r1')
+    role_host, _ = setup()
+    both(role_host, roles)
+    old_host, _ = legacy_setup()
+    assert type(old_host.pairs) is legacy_pair.PairTeam
+    assert not old_host.call('r3', 'pair_carry', 'cargoX', 'B', 'r1', 'end_neg')['accepted']
+    for rid, partner in (('r1', 'r2'), ('r2', 'r1')):
+        assert old_host.call(rid, 'pair_carry', 'cargoX', 'B', partner)['accepted']
+    action = dict(kind='claim', order_id='cargoX', destination_zone='B', role='end_neg')
+    assert legacy_study.executor_plan(action, None, actor='r1', orders=ORDER['orders']).args == ('cargoX', 'B', 'r2')
+    assert legacy_study.executor_plan(action, None, actor='r3', orders=ORDER['orders']).api is None
+    from harness.zone_pair_role_executor import controller_source_record
+    record = controller_source_record()
+    assert {'harness/zone_pair_role_executor.py', 'harness/zone_pair_role_host.py',
+            'harness/zone_pair_role_integration.py', 'harness/zone_pair_roles.py'} <= set(record['controller_source_files'])
+    assert 'role_to_robot' not in legacy_pair.make_plan(MAP, SHEETS['cargoX'], 'B')
 
 
 @pytest.mark.parametrize('roles', ASSIGNMENTS)

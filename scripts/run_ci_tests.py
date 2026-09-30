@@ -81,8 +81,10 @@ TEST_PATTERNS = (
     "tests/test_zone_teacher_fix.py",
     "tests/test_zone_cargo_perception_v2.py",
     "tests/test_zone_study_contract.py", "tests/test_zone_study_inputs.py",
+    "tests/test_zone_identity_jobs.py",  # T13a: own-RGB identity/count and target-job seam (fake only)
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py",
+    "tests/test_scenario_capabilities_docs.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",
     "tests/test_zone_study_eval.py", "tests/test_zone_study_offline.py",
     "tests/test_zone_study_review_fixes.py", "tests/test_zone_study_review_r5.py",
@@ -103,6 +105,7 @@ TEST_PATTERNS = (
     "tests/test_zone_own_executor*.py",
     "tests/test_zone_pair_executor.py", "tests/test_zone_pair_status.py", "tests/test_zone_pair_review.py",
     "tests/test_zone_pair_role_exchange.py",  # T07: six explicit role assignments; fake ports only
+    "tests/test_stall_observation_contract.py",  # P08: synthetic observation/stop contract only
     "tests/test_zone_pair_review2.py",
     "tests/test_zone_pair_review3.py",
     "tests/test_zone_pair_review4.py",
@@ -131,6 +134,7 @@ TEST_PATTERNS = (
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)
+    "tests/test_carry_lateral_error_model.py",  # offline endpoint extraction, grouped validation and paired prediction
     "tests/test_m2_pair_door_v3.py", "tests/test_pair_owncam_approach.py", "tests/test_zone_tagged_cargo_scene.py",
     "tests/test_owncam_localizer.py", "tests/test_zone_landmarks_sim.py",
     "tests/test_zone_eval_top.py",

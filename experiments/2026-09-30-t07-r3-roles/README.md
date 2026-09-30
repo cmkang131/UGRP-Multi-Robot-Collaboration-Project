@@ -4,6 +4,10 @@
 기존 상태 채널로 시작한다. **로컬 검증의 물리·SIM·렌더·실제 모델 호출은 0회다.**
 최종 환경에서의 접근·파지·운반·방출 성공과 정식 s3 지연 의미는 아직 미검증이다.
 
+**Batch F 수정:** 현재 사용 경로·소스 봉인·변이 검사와 #324 이관은
+[REVIEW_FIXES.md](REVIEW_FIXES.md)를 따른다. 아래 최초 검증 442개는 당시의
+부분 검사이며, 현재 v6e 소스 보존을 입증하지 못했다. 이 한계와 원본 기록은 보존한다.
+
 ## 공개 요청과 호환 범위
 
 `harness.zone_pair_roles.PairRoles`의 입력은 `end_neg`와 `end_pos`에 배정한
@@ -14,6 +18,10 @@
 명시된 역할과 대조하고 partner 및 role을 자기 API에 전달한다.
 
 ```python
+from harness.zone_pair_role_integration import executor_plan, IntegratedTrial
+from harness.zone_pair_role_host import OwnCamTeamHost
+
+# host는 위 opt-in 클래스로 구성한다. 기존 host/study의 API는 그대로다.
 assignment = {'end_neg': 'r3', 'end_pos': 'r1'}
 plan = executor_plan(
     {'kind': 'claim', 'order_id': 'cargoX', 'destination_zone': 'B', 'role': 'end_neg'},
@@ -45,7 +53,7 @@ module 전역 ROLES, 기존 DOOR_PLAN과 controller의 rid는 바꾸지 않는�
 
 - 새 세션은 `role_to_robot`, `role_assignment_sha256`과
   `controller_source_sha256`/`controller_source_files`를 따로 남긴다.
-  코드 해시는 pair/own executor의 정적 Python import closure다. 동적 provider,
+  코드 해시는 새 role executor/host/study adapter의 정적 Python import closure다. 동적 provider,
   모델·보정·지도·센서·메모리는 별도의 전체 실행 bundle로 고정해야 한다.
 - `PairStatusChannel`의 FIELDS/STATES/heartbeat/readiness/GO 규칙은 유지한다.
   역할·좌표·이유·고수준 task 내용을 상태 메시지에 더하지 않는다.
@@ -78,7 +86,7 @@ usage 경로는 이 diff와 별도 hunk다. P03 provider·P01 resolver·P07 mani
 
 ## 로컬 검사와 인계
 
-최종 14개 파일 회귀는 **442 passed / 0 failed / 0 skipped**, 128.85초다.
+최초 제출 당시 14개 파일 회귀는 **442 passed / 0 failed / 0 skipped**, 128.85초다.
 새 T07 검사 127개를 포함한다. 여섯 배정×네 조건의 실제 action validator→
 IntegratedTrial dispatch→host API를 fake 호출로 검사하고, 모든 배정의 정적
 geometry·실제 M2 schedule 계산식·불일치·timeout/재시도·private 변조·한쪽 실패를
@@ -91,8 +99,8 @@ geometry·실제 M2 schedule 계산식·불일치·timeout/재시도·private �
 커밋 전 작업 트리에서 검사한 코드/테스트 해시는 `verification.json`에 남긴다.
 최종 검사 뒤에는 이 설명과 검증 기록만 추가했다.
 
-`offline_checks.py`는 공용 잠금을 획득하고 thread 1로 fake/저장 RGB 검사를
-수행한다. guard가 MuJoCo/torch/network/render/실제 vision worker를 차단한다.
+`offline_checks.py`는 thread 1로 fake/저장 RGB 검사를 수행한다. main #328에
+따라 공용 잠금은 기본 off이며 `UGRP_TEST_HOST_LOCK=1`일 때만 획득한다. guard가 MuJoCo/torch/network/render/실제 vision worker를 차단한다.
 실행마다 primary `outputs/t07-r3-roles/offline-*`에 새 JUnit과 명령·종료코드를
 남긴다. 잠금 경합·실패도 보존한다. 최종 수치/원본 해시는 `verification.json`에
 기록한다. raw는 로컬 보관이며 원격 백업이 아니다.

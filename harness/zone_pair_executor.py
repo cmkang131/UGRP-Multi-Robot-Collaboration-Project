@@ -14,11 +14,10 @@ import uuid
 from collections.abc import Mapping
 
 from harness.zone_own_contract import finite_number
-from harness.zone_pair_roles import LEGACY_ROLES, PairRoles, requested_roles
 from harness.zone_pair_status import MAX_SEGMENTS, ARM_S, CONTROL_S, EPS, PROFILE as STATUS_PROFILE, PairStatusChannel, PairStatusEndpoint
 
 PROFILE = 'zone_pair_executor_v7_dev'
-PAIR = LEGACY_ROLES.participants   # compatibility only; active jobs use requested roles
+PAIR = ('r1', 'r2')                 # frozen M2 roles: end_neg / end_pos
 CONTACT_PROFILE = 'cargo_noslip_v1'
 
 
@@ -26,17 +25,7 @@ def _digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()).hexdigest()
 
 
-def controller_source_record():
-    """Audit-only code closure, separate from role/config/model/environment hashes."""
-    from pathlib import Path
-    from harness.python_source_closure import source_closure
-    root = Path(__file__).resolve().parents[1]
-    files = source_closure(root, ('harness/zone_pair_executor.py', 'harness/zone_own_executor.py'))
-    hashes = {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in files}
-    return {'controller_source_sha256': _digest(hashes), 'controller_source_files': hashes}
-
-
-def make_plan(static_map, sheet, target_zone, end_inset_m=0., *, role_to_robot=None):
+def make_plan(static_map, sheet, target_zone, end_inset_m=0.):
     """Static coarse work order -> M2 approach + axis-aligned route to a zone.
 
     Sheet is authored BEFORE execution, never reconstructed from world state.
@@ -99,29 +88,23 @@ def make_plan(static_map, sheet, target_zone, end_inset_m=0., *, role_to_robot=N
                 raise ValueError('PAIR_ROUTE_BLOCKED_BY_STATIC_MAP')
     item = instances([{'item_id': 'ordered_beam', 'kind': 'long_beam', 'pose': list(pose)}])[0]
     grasps = world_grasps(item, pose=pose)       # explicit STATIC sheet pose, no world
-    roles = LEGACY_ROLES if role_to_robot is None else PairRoles.from_mapping(role_to_robot)
-    stations = {r: list(grasps[roles.role(r)]['base_xyyaw']) for r in roles.participants}
-    pre = {r: m2.pa.prestation(stations[r], m2.study.PRESTATION_BACK_M) for r in roles.participants}
+    stations = {r: list(grasps[role]['base_xyyaw']) for r, role in m2.ROLES.items()}
+    pre = {r: m2.pa.prestation(stations[r], m2.study.PRESTATION_BACK_M) for r in PAIR}
     bar = next(p for p in item.spec().parts if p.name == 'bar')
     keepouts = {}
-    for r in roles.participants:
-        peer = roles.partner(r)
+    for r in PAIR:
+        peer = next(p for p in PAIR if p != r)
         keepouts[r] = [m2.pa.beam_keepout(pose, 2 * bar.size[0], 2 * bar.size[1], m2.KEEPOUT_PAD_M)]
         for label, station in (('station', stations[peer]), ('prestation', pre[peer])):
             keepouts[r].append({'id': 'partner_' + label, 'center_m': station[:2],
                                 'half_extents_m': [m2.PARTNER_KEEPOUT_HALF_M] * 2,
                                 'source': 'static order sheet'})
-    door_plan = copy.deepcopy(m2.DOOR_PLAN)
-    door_plan['headings_rad'] = {r: (0. if roles.role(r) == 'end_neg' else math.pi)
-                                 for r in roles.participants}
     return {'sheet': copy.deepcopy(sheet), 'route': route, 'prestations': pre, 'keepouts': keepouts,
             'beam_geometry': {'center_m': list(bar.center), 'half_extents_m': list(bar.size),
                               'grasps': {g.role: {'xyz_m': list(g.grip_xyz), 'yaw_rad': g.approach_yaw}
                                          for g in item.spec().grasps}},
-            'target_zone': target_zone, 'door_plan': door_plan,
+            'target_zone': target_zone, 'door_plan': copy.deepcopy(m2.DOOR_PLAN),
             'map_sha256': _digest(static_map), 'sheet_sha256': _digest(sheet),
-            **({'role_to_robot': roles.mapping(), 'role_assignment_sha256': roles.sha256()}
-               if role_to_robot is not None else {}),
             **({'end_inset_m': float(end_inset_m)} if end_inset_m else {})}
 
 
@@ -143,26 +126,9 @@ class _OwnPort:
         return copy.deepcopy(obs)
 
 
-def carry_role_sign(rid, roles=LEGACY_ROLES):
+def carry_role_sign(rid):
     """Direction sign of a robot's carry command (the two ends of the beam drive mirrored commands)."""
-    return roles.sign(rid)
-
-
-def role_door_schedule(controller, t0, roles):
-    """Reuse frozen M2 schedule arithmetic with a local role-indexed view.
-
-    The frozen pure method reads only these fields. Its legacy ID indexes the
-    role's constants, never a port, camera, status endpoint or robot. Neither
-    the live controller identity nor frozen module globals are changed.
-    """
-    from types import SimpleNamespace
-    from scripts import run_m2_pair as m2
-    legacy_id = LEGACY_ROLES.mapping()[roles.role(controller.rid)]
-    door = copy.deepcopy(controller.door_plan)
-    door['headings_rad'] = {legacy_id: door['headings_rad'][controller.rid]}
-    view = SimpleNamespace(rid=legacy_id, door_plan=door, grasp_estimate=controller.grasp_estimate,
-                           segments=controller.segments, seg=controller.seg, claims=controller.claims)
-    return m2.M2DoorStudent.door_schedule(view, t0)
+    return 1. if rid == 'r1' else -1.
 
 
 def m2_controller(execution, plan, params):
@@ -233,7 +199,7 @@ def m2_controller(execution, plan, params):
         def door_schedule(self, t0):
             a, b = plan['route'][self.seg:self.seg + 2]
             self.door_plan['axis_y_m'] = a[1]
-            schedule = role_door_schedule(self, t0, execution.roles)
+            schedule = super().door_schedule(t0)  # reuse M2 own-estimate alignment and timing
             start, _, _ = schedule[-1]
             dx, dy = b[0] - a[0], b[1] - a[1]
             lateral = abs(dy) > 1e-6
@@ -245,7 +211,7 @@ def m2_controller(execution, plan, params):
                         if not lateral else 0.,
                         'left': sign * math.copysign(m2.study.SPEED_M_S, dy) / m2.study.LEFT_GAIN
                         if lateral else 0., 'turn': 0.}
-            sign = carry_role_sign(self.rid, execution.roles)
+            sign = carry_role_sign(self.rid)
             command = leg_command(sign)
             if self.policy.carry_lateral_lag and axis in v6e_carry.LAG_AXES:
                 # v6e: invert the calibrated loaded first-order-lag plant (harness/owncam_carry_v6e.py)
@@ -255,7 +221,7 @@ def m2_controller(execution, plan, params):
             if self.policy.carry_pair_yaw:
                 # v6e carry_pair_yaw: the partner's command of this leg is the SAME plan function with the partner's
                 # role sign (route leg from the static plan, roles fixed by the order sheet); nothing is received.
-                partner = leg_command(carry_role_sign(execution.partner_id, execution.roles))
+                partner = leg_command(carry_role_sign(execution.partner_id))
                 v6e_carry.set_partner_plan(execution.own.pose, start, start + duration, own=command, partner=partner)
             claim = self.claims['segments'][-1]
             claim.pop('axial_m', None)
@@ -286,13 +252,7 @@ class PairExecution:
         from harness.zone_pair_v6_policy import pair_policy
         self.policy = pair_policy(policy)
         self.own, self.status = own, status
-        self.roles = (PairRoles.from_mapping(plan['role_to_robot'])
-                      if 'role_to_robot' in plan else LEGACY_ROLES)
-        self.partner_id = self.roles.partner(own.robot_id)
-        if (arguments['role'] != self.roles.role(own.robot_id)
-                or status.robot_id != own.robot_id
-                or tuple(status.channel.participants) != self.roles.participants):
-            raise ValueError('PAIR_SUBMISSION_MISMATCH')
+        self.partner_id = next(r for r in PAIR if r != own.robot_id)
         self.poll_s = ARM_S
         self.plan, self.calibration_sha256 = copy.deepcopy(plan), _digest(params)
         self.arguments, self.port = dict(arguments), _OwnPort(own)
@@ -475,7 +435,7 @@ class PairTeam:
 
     Task equality is a dispatch admission check. Motion starts only when BOTH
     locally submitted endpoints publish start_ready on their shared status wire.
-    Each endpoint computes its own plan from the public, explicitly requested roles.
+    Each endpoint computes its own plan and deterministic geometry/ID role.
     """
     def __init__(self, executors, sheets, params, *, cancel_scheduled, contact_profile, weld=False,
                  controller_factory=m2_controller, rendezvous_timeout_s=5., heartbeat_timeout_s=.15,
@@ -537,13 +497,12 @@ class PairTeam:
         self.factory = controller_factory
         self.rendezvous_timeout_s, self.heartbeat_timeout_s = rendezvous_timeout_s, heartbeat_timeout_s
         self.sessions = []
-        self._role_source_record = None
 
-    def start(self, rid, item_ref=None, target_zone=None, partner_id=None, role=None, *, now):
+    def start(self, rid, item_ref=None, target_zone=None, partner_id=None, *, now):
         ex = self.executors[rid]
         ex.now = now
         args = {'order_id': ex._token(item_ref), 'target_ref': ex._token(target_zone),
-                'role': role if role is not None else dict(zip(PAIR, ('end_neg', 'end_pos'))).get(rid)}
+                'role': 'end_neg' if rid == 'r1' else 'end_pos'}
         def refuse(reason):
             # Only this API caller can receive a refusal event. There is no
             # host notification API addressed to an arbitrary partner.
@@ -557,31 +516,9 @@ class PairTeam:
             return refuse('SELF_BUSY')
         if ex.stopped is not None:
             return refuse('SELF_STOPPED')
-        # Preserve the legacy API's mismatch outcome for the already addressed
-        # r1/r2 request. Explicit role requests select only their own pair.
-        if role is None:
-            legacy_pending = next((s for s in reversed(self.sessions)
-                                   if not s['closed'] and len(s['endpoints']) == 1
-                                   and 'role_to_robot' not in s['plan']
-                                   and rid in s['channel'].participants and rid not in s['endpoints']), None)
-            if legacy_pending:
-                first = next(iter(legacy_pending['endpoints'].values()))
-                if now < first.rendezvous_deadline - EPS and partner_id != first.own.robot_id:
-                    legacy_pending['submissions'][rid] = (item_ref, target_zone, partner_id)
-                    first.abort(now, 'PAIR_SUBMISSION_MISMATCH')
-                    legacy_pending['closed'] = True
-                    self.poll(now)
-                    return refuse('PAIR_SUBMISSION_MISMATCH')
-        try:
-            roles = requested_roles(rid, partner_id, role)
-        except ValueError as exc:
-            return refuse(str(exc))
-        if partner_id not in self.executors:
-            return refuse('UNSUPPORTED_PAIR')
         # Inspect submitted requests, never the other robot's private state.
         pending = next((s for s in reversed(self.sessions) if len(s['endpoints']) == 1
-                        and set(s['channel'].participants) == set(roles.participants)
-                        and rid not in s['endpoints'] and not s['closed']), None)
+                        and rid in PAIR and rid not in s['endpoints'] and not s['closed']), None)
         if pending:
             first = next(iter(pending['endpoints'].values()))
             if now >= first.rendezvous_deadline - EPS:
@@ -591,13 +528,14 @@ class PairTeam:
                 pending = None  # own fresh request is independent of a peer's expired attempt
         if pending:
             expected = pending['submissions'][first.own.robot_id]
-            if ((item_ref, target_zone, partner_id) != (expected[0], expected[1], first.own.robot_id)
-                    or roles != first.roles):
+            if (item_ref, target_zone, partner_id) != (expected[0], expected[1], first.own.robot_id):
                 pending['submissions'][rid] = (item_ref, target_zone, partner_id)
                 first.abort(now, 'PAIR_SUBMISSION_MISMATCH')
                 pending['closed'] = True
                 self.poll(now)
                 return refuse('PAIR_SUBMISSION_MISMATCH')
+        if rid not in PAIR or partner_id not in PAIR or rid == partner_id or partner_id not in self.executors:
+            return refuse('UNSUPPORTED_PAIR')
         if self.contact_profile != CONTACT_PROFILE or self.weld is not False:
             return refuse('PAIR_REQUIRES_NOSLIP_WELD_OFF')
         if _digest(ex.params) != _digest(self.params):
@@ -614,9 +552,8 @@ class PairTeam:
             return refuse('SELF_' + state.upper())
         try:
             # Both actors compute from their own configured static inputs.
-            plan_kw = {'role_to_robot': roles.mapping()} if role is not None else {}
-            plan = (make_plan(ex.map, self.sheets.get(item_ref), target_zone, self.policy.carry_end_inset_m, **plan_kw)
-                    if self.policy.carry_end_inset_m else make_plan(ex.map, self.sheets.get(item_ref), target_zone, **plan_kw))
+            plan = (make_plan(ex.map, self.sheets.get(item_ref), target_zone, self.policy.carry_end_inset_m)
+                    if self.policy.carry_end_inset_m else make_plan(ex.map, self.sheets.get(item_ref), target_zone))
             if pending and _digest(plan) != _digest(first.plan):
                 pending['submissions'][rid] = (item_ref, target_zone, partner_id)
                 first.abort(now, 'PAIR_STATIC_INPUT_MISMATCH')
@@ -625,10 +562,7 @@ class PairTeam:
                 return refuse('PAIR_STATIC_INPUT_MISMATCH')
             if pending is None:
                 # No host-wide sequence number exposing another actor's past attempts.
-                channel = PairStatusChannel('pair-' + uuid.uuid4().hex, participants=roles.participants,
-                                            heartbeat_timeout_s=self.heartbeat_timeout_s)
-                if role is not None and self._role_source_record is None:
-                    self._role_source_record = controller_source_record()
+                channel = PairStatusChannel('pair-' + uuid.uuid4().hex, heartbeat_timeout_s=self.heartbeat_timeout_s)
                 session = {'channel': channel, 'endpoints': {}, 'submissions': {}, 'acks': {},
                            'plan': copy.deepcopy(plan), 'calibration_sha256': _digest(self.params),
                            'closed': False}
@@ -640,7 +574,7 @@ class PairTeam:
             return refuse('INVALID_PAIR_PLAN')
         ep.rendezvous_deadline = now + self.rendezvous_timeout_s
         ex._pair = ep
-        ack = ex.pair_carry(item_ref, target_zone, partner_id, role)  # ONLY the caller's job
+        ack = ex.pair_carry(item_ref, target_zone, partner_id)  # ONLY the caller's job
         if not ack['accepted']:
             ex._pair = None
             return ack
@@ -681,11 +615,6 @@ class PairTeam:
 
     def records(self):
         return [{'profile': PROFILE, 'status_profile': STATUS_PROFILE, 'pair_policy': self.policy.name,
-                 **({'role_profile': 'zone_pair_roles_v1',
-                     'role_to_robot': s['plan']['role_to_robot'],
-                     'role_assignment_sha256': s['plan']['role_assignment_sha256'],
-                     **copy.deepcopy(self._role_source_record)}
-                    if 'role_to_robot' in s['plan'] else {}),
                  **({'align_motion_v6d': copy.deepcopy(self.align_motion)} if self.align_motion else {}),
                  **({'carry_dr_v6e': copy.deepcopy(self.carry_dr)} if self.carry_dr else {}),
                  **({'carry_yaw_v6e': self._carry_yaw_record()}
