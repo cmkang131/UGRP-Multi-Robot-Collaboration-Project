@@ -316,6 +316,13 @@ def test_beam_and_unsupported_team_dispatch_remain_separate():
     assert executor_plan(action, None, actor='r1', orders=[other]).rejected_reason == 'UNSUPPORTED_TEAM_ORDER'
 
 
+def test_beam_dispatch_preserves_single_pass_order_iterators():
+    beam = {**ORDER, 'kind': 'long_beam'}
+    action = dict(kind='claim', order_id=ORDER['order_id'], destination_zone='B', role='end_neg')
+    plan = executor_plan(action, None, actor='r1', orders=iter([beam]))
+    assert (plan.api, plan.args) == ('pair_carry', ('order-crate', 'B', 'r2'))
+
+
 def test_wrong_destination_foreign_history_and_malformed_provider_fail_closed():
     with pytest.raises(ValueError, match='WRONG_CRATE_DESTINATION'):
         crate.validate_request(ORDER, 'r1', 'west', 'r2', 'A')

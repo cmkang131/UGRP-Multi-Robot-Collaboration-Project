@@ -13,6 +13,7 @@ from harness.zone_study_integration import Plan, executor_plan as beam_executor_
 
 def executor_plan(action, job, *, actor=None, orders=()):
     if isinstance(action, Mapping) and action.get('kind') == 'claim':
+        orders = tuple(orders)  # Probe and delegation must see the same public order rows.
         row = next((o for o in orders if o.get('order_id') == action.get('order_id')), None)
         if row and row.get('kind') == 'heavy_crate':
             try:
