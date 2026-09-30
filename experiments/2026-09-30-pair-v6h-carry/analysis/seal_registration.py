@@ -15,6 +15,13 @@ SOURCE = '4c6b439f3f7c9a147c901f8b260a1e214d4eb396'
 CLASSIFIER_COMMIT = '1f0e4eb501a8f1b87077df943382fc1f0777dc69'
 METADATA_COMMIT = 'e78ef70fb5004fed1dfef1866aaf99bbf0bdda41'
 METADATA_DIR = 'experiments/2026-10-01-v6h1-confirm-blinded'
+ACQUISITION_COMMIT = '0b77ae4b9a3500de29adad74c7ecd0439ccdf545'
+ACQUISITION_HASHES = {
+    'ACQUISITION_INVENTORY.json': '3e905f5b8186fb03954ac0b5901a5f1f7ea0caaba7d837c5d2f1d91526dad56b',
+    'make_acquisition_inventory.py': 'cf7c618c1bcc43c8e737690c6e6b186a217aa5843f7431f439bec4e2ff6452c4',
+    'driver.py': '7a35229e431409904dffec27b5e9572f290cd900f0595c8e0babc5ef92cf3e56',
+    'build_plan.py': '05d1ad87c69482eefc7ca2311e48a02bf0c824c375c20de86297e663681e0f21',
+}
 PREVIEW_SHA256 = 'a1f9d74d9417afe89a33eb90a4e00a0ebb8da7504aa4da734209869119ad1beb'
 METADATA_HASHES = {
     'RUN_MANIFEST.json': '99723de36d20a55f348ea5b25ca203cf1db910dd9a620d3a8c4a17f27407f210',
@@ -76,6 +83,23 @@ def case_bytes(cases):
     return json.dumps(clean, indent=2, allow_nan=False).encode()
 
 
+def acquisition_pin():
+    """Only committed code/pointer metadata; NEVER follow inventory_path or raw."""
+    values = {}
+    for name, expected in ACQUISITION_HASHES.items():
+        data = git('show', ACQUISITION_COMMIT + ':' + METADATA_DIR + '/' + name)
+        if sha(data) != expected or (HERE/'analysis/seal_v2'/name).read_bytes() != data:
+            raise ValueError('committed acquisition metadata mismatch: ' + name)
+        values[name] = data
+    pointer = json.loads(values['ACQUISITION_INVENTORY.json'])
+    raw = metadata()['RUN_MANIFEST.json']['raw']
+    if any(pointer[k] != raw[k] for k in ('file_count', 'total_bytes')):
+        raise ValueError('acquisition aggregate differs from recorded manifest')
+    return {'schema': 'ugrp.v6h1.acquisition_inventory.v1', 'raw': raw['path'],
+            **{k: pointer[k] for k in ('inventory_sha256', 'file_count', 'total_bytes')},
+            'metadata_commit': ACQUISITION_COMMIT, 'metadata_sha256': ACQUISITION_HASHES}
+
+
 def verify_cases(cases):
     plan_raw = git('show', METADATA_COMMIT + ':' + METADATA_DIR + '/plan.json')
     text = plan_raw.decode()
@@ -128,16 +152,26 @@ def source_closure(paths, commit=None):
     return seen
 
 
-def analysis_paths(commit=None):
+def registration_path(revision='v1'):
+    if revision not in ('v1', 'v2'):
+        raise ValueError('unsupported seal revision')
+    return HERE / ('prereg_v6h.json' if revision == 'v1' else 'analysis/seal_v2/prereg_v6h.json')
+
+
+def analysis_paths(commit=None, revision='v1'):
     # Conservative superset: all execution dependencies are pinned again at
     # analysis time, plus dynamic imports, definitions and the analysis gate.
     paths = set(frozen_preview()['v6_contract']['source_sha256'])
     paths.update(str((HERE/p).relative_to(ROOT)) for p in ANALYSIS_EXTRA)
+    if revision == 'v2':
+        paths.add(str((HERE/'analysis/seal_v2/disclosure.json').relative_to(ROOT)))
+        paths.update(str((HERE/'analysis/seal_v2'/name).relative_to(ROOT)) for name in ACQUISITION_HASHES)
     paths.add('experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py')
     return source_closure(paths, commit)
 
 
-def build_seal(preview):
+def build_seal(preview, revision='v1'):
+    registration_path(revision)  # reject unsupported revisions before reading inputs
     old = frozen_preview()
     execution = pins(old['v6_contract']['source_sha256'], SOURCE)
     if len(execution) != 274 or not set(EXTRA) <= execution.keys():
@@ -153,15 +187,19 @@ def build_seal(preview):
     value.update(state='sealed', sealed=True, status='DRAFT', runnable=False,
                  execution_source_sha=SOURCE, execution_status='recorded_blinded_before_seal',
                  execution_authorization=None, approval=None)
+    if revision != 'v1':
+        value['analysis_seal_revision'] = revision
+        value['acquisition_inventory'] = acquisition_pin()
     value['pin_sets'] = {
         'execution': {'commit': SOURCE, 'verification': 'git show <commit>:<path>',
                       'extra_source_paths': list(EXTRA), 'files': execution},
         'analysis': {'commit_binding': 'commit containing these prereg_v6h.json bytes; pass --seal-commit',
-                     'verification': 'git show <seal-commit>:<path>', 'files': pins(analysis_paths())},
+                     'verification': 'git show <seal-commit>:<path>', 'files': pins(analysis_paths(revision=revision))},
     }
     value['analysis_gate'] = json.loads((HERE/'analysis/analysis_gate.json').read_text())
     value['case_equality'] = case_receipt
-    value['notes'] = json.loads((HERE/'analysis/seal/disclosure.json').read_text())
+    disclosure = 'analysis/seal/disclosure.json' if revision == 'v1' else 'analysis/seal_v2/disclosure.json'
+    value['notes'] = json.loads((HERE/disclosure).read_text())
     value['notes']['metadata'] = {'commit': METADATA_COMMIT, 'directory': METADATA_DIR,
                                  'sha256': METADATA_HASHES, 'cases_jsonl_sha256': meta['RUN_MANIFEST.json']['raw']['cases_jsonl_sha256'],
                                  'driver_sha256': meta['RUN_MANIFEST.json']['raw']['driver_py_sha256']}
@@ -176,14 +214,16 @@ def build_seal(preview):
     return value
 
 
-def recorded_seal_commit():
-    path = str((HERE/'prereg_v6h.json').relative_to(ROOT))
+def recorded_seal_commit(revision='v1'):
+    path = str(registration_path(revision).relative_to(ROOT))
     history = git('log', '--format=%H', 'HEAD', '--', path).decode().splitlines()
     return history[-1] if history else None
 
 
 def verify_seal(value, seal_commit=None):
-    seal_commit = seal_commit or recorded_seal_commit()
+    revision = value.get('analysis_seal_revision', 'v1')
+    path = str(registration_path(revision).relative_to(ROOT))
+    seal_commit = seal_commit or recorded_seal_commit(revision)
     from scripts.zone_pair_authorization import digest, registration_payload
     if value.get('state') != 'sealed' or value.get('sealed') is not True:
         raise ValueError('registration is not sealed')
@@ -192,7 +232,7 @@ def verify_seal(value, seal_commit=None):
     if value.get('runnable') is not False or value.get('execution_authorization') is not None:
         raise ValueError('analysis seal does not authorize current-tree execution')
     if seal_commit:
-        committed = json.loads(git('show', seal_commit + ':' + str((HERE/'prereg_v6h.json').relative_to(ROOT))))
+        committed = json.loads(git('show', seal_commit + ':' + path))
         if committed != value:
             raise ValueError('sealed state differs from seal commit')
     old = frozen_preview()
@@ -205,9 +245,11 @@ def verify_seal(value, seal_commit=None):
     if value['v6_contract'] != old['v6_contract'] or value['scene_contract'] != old['scene_contract']:
         raise ValueError('recorded execution contract changed')
     analysis = value['pin_sets']['analysis']['files']
-    if set(analysis) != analysis_paths(seal_commit) or analysis != pins(analysis, seal_commit):
+    if set(analysis) != analysis_paths(seal_commit, revision) or analysis != pins(analysis, seal_commit):
         raise ValueError('analysis pin set incomplete or git blob/sha256 mismatch')
     metadata()
+    if revision == 'v2' and value.get('acquisition_inventory') != acquisition_pin():
+        raise ValueError('sealed acquisition pin changed')
     if value['case_equality'] != verify_cases(value['cases']):
         raise ValueError('case equality receipt changed')
     gate_path = str((HERE/'analysis/analysis_gate.json').relative_to(ROOT))

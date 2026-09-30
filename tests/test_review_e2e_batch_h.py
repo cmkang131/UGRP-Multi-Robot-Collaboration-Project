@@ -1,8 +1,7 @@
-"""PR #334 counterexamples imported from review batch H, d17327ae.
+"""PR #333/#334 counterexamples imported from review batch H, d17327ae.
 
-The original assertion bodies are unchanged; xfail is removed. Test the current
-candidate by default so CI and mutation overlays cannot silently test old blobs.
-The unrelated #333 counterexample remains owned by its beam PR.
+The original assertion bodies are unchanged; xfail is removed. Always test the
+current candidate, without a historical blob fallback.
 """
 import pytest
 
@@ -48,3 +47,25 @@ def test_tile_same_capture_cannot_supply_two_holding_confirmations(tile, monkeyp
         f"carry_permitted={port.s.carry_permitted(port.t)}"
     )
     assert not port.s.carry_permitted(port.t)
+
+
+@pytest.fixture
+def beam():
+    from harness import beam_approach
+    return beam_approach
+
+
+def test_beam_accepts_native_issued_search_history_without_rescaling(beam):
+    from harness.owncam_drive import SEARCH_POSE
+    if SEARCH_POSE != {1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500}:
+        pytest.fail("Native search fixture changed; re-audit the counterexample")
+    history = [{"kind": "initial_servo_command", "t": 0., "pulses": dict(SEARCH_POSE)}]
+    provider = object()  # memory construction must not need a new pose estimate
+    memory, error = None, None
+    try:
+        memory = beam.OwnApproachMemory(provider, history)
+    except ValueError as exc:
+        error = str(exc)
+    assert error is None, f"Native issued PWM cannot enter continuous handoff: {error}"
+    assert memory.provider is provider and memory.history is history
+    assert memory.servo == SEARCH_POSE

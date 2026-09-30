@@ -1,0 +1,29 @@
+{
+  "mutation": "remove inventory admission; replace AcquisitionReader with EvidenceReader",
+  "source_sha256": "1d4faaa9d7c2d46040db07f53940f02292f66a5f43f0fe411493618ea6556114",
+  "source_unchanged": true,
+  "expected_pytest_exit": 1,
+  "pytest_exit": 1,
+  "failed_regressions": [
+    "test_missing_acquisition_inventory_must_block_pass",
+    "test_trace_edit_cannot_flip_failed_B_to_pass_with_same_pinned_inputs"
+  ],
+  "raw_or_real_inventory_access": false,
+  "physics_or_render": false,
+  "temporary_extraction_created": false,
+  "status": "MUTATION_DETECTED",
+  "artifacts": {
+    "mutation.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-seal-v2-validation-20261001/mutation-fixed/mutation.log",
+      "sha256": "b88a5f25d19bbf513321e86ddfba5b859c2c5f4eae0580f3f55518e18c2f3404"
+    },
+    "mutation.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-seal-v2-validation-20261001/mutation-fixed/mutation.xml",
+      "sha256": "555d5fb83d336537925a006e437d3438158a5984c1732d295e77085e93ef93c9"
+    },
+    "receipt.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h-seal-v2-validation-20261001/mutation-fixed/receipt.json",
+      "sha256": "74577d8c6052709c69a4d1f689c7b52c1ea82cfc95a2a4a517527536b85d3644"
+    }
+  }
+}

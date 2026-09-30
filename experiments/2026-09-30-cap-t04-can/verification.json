@@ -1,0 +1,151 @@
+{
+  "schema": "ugrp.can_skill_offline_verification.v1",
+  "recorded_at": "2026-10-01T00:55:30.521319+09:00",
+  "base_main_sha": "26545c2499f94c3f99a5d650f7cc8ea992f24196",
+  "local_execution": "offline only, no host lock; no performance inference",
+  "final_suite": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_own_executor.py tests/test_zone_own_executor_boundaries.py tests/test_zone_own_executor_guards.py tests/test_zone_own_executor_can.py tests/test_m1_owncam.py tests/test_zone_own_perception.py --junitxml=/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-final-20260930/pytest.xml",
+    "exit_code": 0,
+    "passed": 234,
+    "skipped": 1,
+    "subtests_passed": 107,
+    "can_cases": 50,
+    "skip_reason": "physical host test excluded by explicitly nonphysical plugin",
+    "guard_counts": {
+      "physical_step_attempts": 0,
+      "real_vision_worker_attempts": 0,
+      "network_attempts": 0
+    },
+    "tested_before_base_refresh": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e",
+    "all_runtime_and_test_input_hashes_match_after_base_refresh": true,
+    "junit_attributes": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "1",
+      "tests": "342",
+      "time": "362.978",
+      "timestamp": "2026-09-30T23:58:05.435746+09:00",
+      "hostname": "gangchangmin-ui-MacBookAir.local"
+    },
+    "junit_classes": {
+      "tests.test_zone_pair_registered_source": {
+        "cases": 22,
+        "skipped": 0
+      },
+      "tests.test_zone_study_source_pinning": {
+        "cases": 34,
+        "skipped": 0
+      },
+      "tests.test_zone_own_executor": {
+        "cases": 15,
+        "skipped": 1
+      },
+      "tests.test_zone_own_executor_boundaries": {
+        "cases": 54,
+        "skipped": 0
+      },
+      "tests.test_zone_own_executor_guards": {
+        "cases": 19,
+        "skipped": 0
+      },
+      "tests.test_zone_own_executor_can": {
+        "cases": 50,
+        "skipped": 0
+      },
+      "tests.test_m1_owncam.BoundaryTests": {
+        "cases": 3,
+        "skipped": 0
+      },
+      "tests.test_m1_owncam.ContractTests": {
+        "cases": 4,
+        "skipped": 0
+      },
+      "tests.test_m1_owncam.PoseLimitTests": {
+        "cases": 2,
+        "skipped": 0
+      },
+      "tests.test_m1_owncam.M1LocalizerTests": {
+        "cases": 3,
+        "skipped": 0
+      },
+      "tests.test_m1_owncam.ControllerTests": {
+        "cases": 4,
+        "skipped": 0
+      },
+      "tests.test_m1_owncam.PreReviewTests": {
+        "cases": 5,
+        "skipped": 0
+      },
+      "tests.test_zone_own_perception": {
+        "cases": 20,
+        "skipped": 0
+      }
+    },
+    "artifacts": {
+      "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-final-20260930/pytest.log": "e0ea27c5064d75afac9539ffebb79307d372f2c6588a3f0c481ebc2749df5b62",
+      "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-final-20260930/pytest.xml": "8f8424913820c14e453f9a47c21a2ed224f47753f9be4560a5ba9ef8c006d829"
+    }
+  },
+  "post_refresh_check": {
+    "command": "python -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_own_executor_can.py::test_ci_collects_can_tests_without_ci_configuration_changes",
+    "passed": 1,
+    "scope": "run_ci_tests.py gained unrelated P02 entry; T04 glob still collected"
+  },
+  "mutation_check": {
+    "schema": "ugrp.can_skill_mutation.v1",
+    "physics_runs": 0,
+    "model_calls": 0,
+    "all_killed": true,
+    "mutations": [
+      {
+        "mutation": "remove_floor_perception",
+        "test": "tests/test_zone_own_executor_can.py::test_cylinder_center_from_own_jpeg",
+        "exit_code": 1,
+        "killed_by_assertion": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_floor_perception.log",
+        "log_sha256": "1a96ad20ef11d2024bcbc4e4d970dfd02ff1609c6eaae1511a3710f0f266cd20"
+      },
+      {
+        "mutation": "remove_lift_evidence_gate",
+        "test": "tests/test_zone_own_executor_can.py::test_ungrasped_and_empty_gripper_never_reach_holding_or_release",
+        "exit_code": 1,
+        "killed_by_assertion": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_lift_evidence_gate.log",
+        "log_sha256": "87c4e50a1f87e95b48238d86da805188f544023f287d10153eff66e6b858a1a3"
+      },
+      {
+        "mutation": "remove_release_evidence_gate",
+        "test": "tests/test_zone_own_executor_can.py::test_bad_release_views_cannot_turn_open_gripper_into_completion",
+        "exit_code": 1,
+        "killed_by_assertion": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_release_evidence_gate.log",
+        "log_sha256": "847ba6b4e415e2be753c31a43de5dcacc7f84d2ab90098c0f71be8e1884888cf"
+      },
+      {
+        "mutation": "remove_own_camera_boundary",
+        "test": "tests/test_zone_own_executor_can.py::test_input_and_pose_refusal[top]",
+        "exit_code": 1,
+        "killed_by_assertion": true,
+        "log": "/Users/changmin/projects/ugrp/outputs/cap-t04-can/offline-mutation-20260930-v2/remove_own_camera_boundary.log",
+        "log_sha256": "642d2c3edb4079ea74e9f03e9d5f5d37d055e4d8b09f650e04bd414d36bbd799"
+      }
+    ]
+  },
+  "mutation_manifest_sha256": "9a5e78064058a9c7bd38db80ef96f1e7d0706a8543c4b051b7928b42af8aa73a",
+  "initial_render_initialization_failure": "development_history.json (143 passed, 1 failed; host.run not reached)",
+  "completed_physics_runs": 0,
+  "completed_renders": 0,
+  "render_initialization_attempts_before_guard": 1,
+  "model_calls": 0,
+  "source_manifest": "dependencies.json",
+  "source_manifest_sha256": "5b20cba8cab8c0a73be3260e2ecc7addedb396eaab99f9f6698a91adcad7859c",
+  "git_checks": {
+    "existing_registered_files_modified": [],
+    "original_scenarios_modified": [],
+    "workflow_diff_vs_origin_main": []
+  },
+  "physics_status": "NOT_RUN; 2 x 900 SIM seconds proposed in PHYSICS_HANDOFF.md",
+  "tensorboard_status": "No new experiment/evaluation result; physical conversion/display deferred to handoff",
+  "github_ci": "normal PR CI to be checked at the final pushed commit; no cancellation or skip directive"
+}

@@ -113,14 +113,15 @@ def main(argv=None):
     mode.add_argument('--seal', action='store_true', help='write coordinator-authorized seal once; never overwrite')
     mode.add_argument('--verify-seal', action='store_true', help='audit separate execution/analysis pins; no raw')
     parser.add_argument('--seal-commit', help='commit containing this seal (analysis git-blob verification)')
+    parser.add_argument('--seal-revision', choices=('v1', 'v2'), default='v1')
     args = parser.parse_args(argv)
     if args.seal or args.verify_seal:
         module = importlib.import_module('experiments.2026-09-30-pair-v6h-carry.analysis.seal_registration')
-        path = HERE/'prereg_v6h.json'
+        path = HERE/('prereg_v6h.json' if args.seal_revision == 'v1' else 'analysis/seal_v2/prereg_v6h.json')
         if args.seal:
             if path.exists():
                 raise FileExistsError('sealed registration is immutable; write a new revision')
-            value = module.build_seal(build())
+            value = module.build_seal(build(), args.seal_revision)
             module.verify_seal(value)
             with path.open('x') as stream:
                 stream.write(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False) + '\n')

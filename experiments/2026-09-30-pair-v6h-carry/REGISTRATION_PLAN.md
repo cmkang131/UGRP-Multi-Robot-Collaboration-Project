@@ -1,6 +1,18 @@
 # b-v6h1 봉인 절차와 재현 경계 (2026-10-01)
 
-조정자의 재개 결정에 따른 **분석 봉인**이다. 실행 revision v6h / bundle `zone-pair-v83-carry-door-gain` / workflow 2.16.0을 유지한다. `prereg_v6h.json`의 두 pin 집합과 [PREREG_DRAFT.md](PREREG_DRAFT.md)의 공개 사항이 기준이다. PR #292는 **봉인 — 독립 검토 필요**, 병합하지 않는다.
+조정자의 재개 결정에 따른 **분석 봉인**이다. 실행 revision v6h / bundle `zone-pair-v83-carry-door-gain` / workflow 2.16.0을 유지한다. `analysis/seal_v2/prereg_v6h.json`의 두 pin 집합과 [PREREG_DRAFT.md](PREREG_DRAFT.md)의 공개 사항이 기준이다. PR #292는 **봉인 — 독립 검토 필요**, 병합하지 않는다.
+
+## 분석 봉인 v2 — P1 수정, 아직 개봉하지 않음
+
+독립 검토 `77b6b94c`의 P1(분석 시작 전 result/trace 변조를 잡지 못함)을 수정했다. 기존 `prereg_v6h.json`과 `analysis/seal/` 전체는 `266118d2` 바이트 그대로 보존한다. 새 `analysis/seal_v2/prereg_v6h.json`에 새 분석 pin 집합을 기록하며 실행 pin 274개는 계속 `4c6b439f`와 같다. 분류 기준·recorder·gate 수식은 바꾸지 않고 EvidenceReader 주입 및 필수 acquisition 검사를 추가한다.
+
+기록기는 파일별 해시 없이 run-status `manifest.json`만 썼다. 조정자가 **기록 후, 개봉 전** inventory를 별도로 만들었다. 커밋된 `0b77ae4b`의 pointer·generator·driver·build_plan만 읽고, 실제 inventory와 raw는 목록·내용·해시에 접근하지 않았다. 따라서 기록 당시 바이트를 소급 증명하지 않는다. 파일 수 **104415**, 총 **1916385247 bytes**가 RUN_MANIFEST와 같고, mtime이 driver 종료 +0.11초 이내라는 진술(최대 +0.1016초)은 **보조 근거이지 증명이 아니다**. generator의 late counter는 +1.0초 기준이므로 0.11초 진술과 혼동하지 않는다.
+
+- inventory SHA-256: `d7ceca9824d4098956c7bfc5cbd7298ee5b0cfa5dacdb12586d07c2ee07ec03f`.
+- raw `manifest.json` SHA-256: `07f623b7b30374da25cd0a8d2df62a70bbfdcae47b80279be6e310d7def27950`.
+- 적용 시 inventory 바이트·schema·raw 경로·파일 수·총 바이트를 먼저 확인한다. result, trace, cases, case, plan, commands, raw manifest 및 이후 추가되는 모든 소비 입력은 같은 EvidenceReader의 목록·해시 검사를 통과해야 한다.
+- 누락·미등록·해시 불일치·분석 도중 변경은 종료 코드 2, `INVALID / NOT_ANALYSED`와 이유만 기록하며 classifier 보고서나 gate 판정을 내지 않는다. 정상 입력에만 기존 gate를 적용한다.
+- 개봉·물리·렌더는 실행하지 않았다. 새 검증은 합성 자료와 Git blob 검사이며, 독립 재검토가 남아 있다. 아래 기존 봉인 설명의 기록 시점·실행 pin·판정 기준은 유지한다.
 
 ## 실행 소스와 분석 소스
 
@@ -31,12 +43,13 @@ builder의 `build()['cases']`에서 `registration_run_id`만 뺀 바이트는 �
 ```sh
 export GIT_WORK_TREE=/Users/changmin/projects/ugrp-wt/v6h-register
 V6H_PYTHON=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+V6H_SEAL_V2_COMMIT=$(git log --diff-filter=A --format=%H -- experiments/2026-09-30-pair-v6h-carry/analysis/seal_v2/prereg_v6h.json)
 $V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify
-$V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify-seal --seal-commit "$V6H_SEAL_COMMIT"
-$V6H_PYTHON -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair_v6h_seal.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_v6h.py tests/test_zone_pair_v6h_review_delta.py tests/test_v6h_classify_placements.py tests/test_v6h_classifier_properties.py tests/test_v6h_recorder_contract.py tests/test_v6h_blinded_run_manifest.py
+$V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify-seal --seal-revision v2 --seal-commit "$V6H_SEAL_V2_COMMIT"
+$V6H_PYTHON -m pytest -q -p tests.pose_provider_no_physics tests/test_review_seal_v6h1.py tests/test_v6h_acquisition_reader.py tests/test_zone_pair_v6h_seal.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_v6h.py tests/test_zone_pair_v6h_review_delta.py tests/test_v6h_classify_placements.py tests/test_v6h_classifier_properties.py tests/test_v6h_recorder_contract.py tests/test_v6h_blinded_run_manifest.py
 ```
 
-`V6H_SEAL_COMMIT`은 PR의 실제 봉인 커밋 SHA다. 커밋 전에는 `--seal-commit`을 빼고 분석 작업 트리 pin을 검사하며, 커밋 뒤에는 반드시 위처럼 Git blob 감사를 한다. `--seal`은 최초 생성에만 쓰고 기존 파일이 있으면 거절한다. 수정이 필요하면 기존 봉인을 덮어쓰지 않고 새 revision으로 등록한다.
+`V6H_SEAL_V2_COMMIT`은 PR의 새 v2 봉인 커밋 SHA다. 커밋 전에는 `--seal-commit`을 빼고 분석 작업 트리 pin을 검사하며, 커밋 뒤에는 반드시 위처럼 Git blob 감사를 한다. `--seal`은 최초 생성에만 쓰고 기존 파일이 있으면 거절한다. 수정이 필요하면 기존 봉인을 덮어쓰지 않고 새 revision으로 등록한다.
 
 ## 독립 검토·개봉 결정 뒤 실행할 분석 명령 (이번 작업에서는 실행하지 않음)
 
@@ -44,13 +57,14 @@ $V6H_PYTHON -m pytest -q -p tests.pose_provider_no_physics tests/test_zone_pair_
 
 ```sh
 $V6H_PYTHON -m experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis \
-  --seal-commit "$V6H_SEAL_COMMIT" \
-  --prereg experiments/2026-09-30-pair-v6h-carry/prereg_v6h.json \
+  --seal-commit "$V6H_SEAL_V2_COMMIT" \
+  --prereg experiments/2026-09-30-pair-v6h-carry/analysis/seal_v2/prereg_v6h.json \
   --raw /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 \
-  --output /Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-NEW
+  --inventory /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory/acquisition_inventory.json \
+  --output /Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-v2-NEW
 ```
 
-이 명령은 내부에서 고정된 `classify_placements.analyse`를 `--recorded-run-manifest`와 그 고정 해시로 적용한다. 실행이 미봉인이었다는 classifier 원보고서를 보존한 뒤, 별도 봉인 gate로 941×60의 48/60·전체 안전·B를 판정하고 943×12를 민감도로 구분한다. HOST_ERROR/ENOSPC/누락은 UNCLASSIFIED이며 분모를 줄이지 않고 통과를 막는다. 원본 분류기는 `--sealed-manifest`와 recorded-run manifest의 혼용을 계속 거절한다.
+이 명령은 필수 inventory 검사를 통과한 뒤 내부에서 고정된 `classify_placements.analyse`를 `--recorded-run-manifest`와 그 고정 해시로 적용한다. 실행이 미봉인이었다는 classifier 원보고서를 보존한 뒤, 별도 봉인 gate로 941×60의 48/60·전체 안전·B를 판정하고 943×12를 민감도로 구분한다. HOST_ERROR/ENOSPC/누락은 UNCLASSIFIED이며 분모를 줄이지 않고 통과를 막는다. 원본 분류기는 `--sealed-manifest`와 recorded-run manifest의 혼용을 계속 거절한다.
 
 새 결과의 native TensorBoard 변환·데이터 로딩·뷰 검증은 개봉 뒤 결과 전달 작업에서 한다. 이번 봉인은 raw 분석·물리·렌더·모델 호출·TensorBoard 결과 검증이 아니다.
 

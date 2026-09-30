@@ -1170,13 +1170,15 @@ class EvidenceReader:
 
 
 def analyse(label, raw, primary_seed=941, sealed_manifest=None, *,
-            recorded_run_manifest=None, recorded_run_manifest_sha256=None):
+            recorded_run_manifest=None, recorded_run_manifest_sha256=None, evidence_reader=None):
     if bool(recorded_run_manifest) != bool(recorded_run_manifest_sha256):
         raise EvidenceError("supply both recorded run manifest and its pinned hash")
     if recorded_run_manifest and sealed_manifest:
         raise EvidenceError("unsealed recorded run cannot acquire a registration receipt retrospectively")
     raw = Path(raw).resolve()
-    reader = EvidenceReader(raw)
+    reader = evidence_reader if evidence_reader is not None else EvidenceReader(raw)
+    if reader.raw != raw:
+        raise EvidenceError("evidence reader root differs from raw")
     for source in (Path(__file__).resolve(), RECORDER_PATH, CHAIN_PATH, SIGMA_PATH, Path(ca.pcp.__file__).resolve(), Path(ca.dra.__file__).resolve()):
         reader.hashes[str(source)] = sha256(source)
     manifest_path = Path(recorded_run_manifest).resolve() if recorded_run_manifest else raw / "manifest.json"

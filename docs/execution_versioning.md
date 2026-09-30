@@ -27,6 +27,25 @@
 
 자동 검사는 설정 누락과 알려진 실행 계약의 변경을 검출한다. 물리적 완주나 일반화 성능을 대신 검증하지 않는다. 적용된 실행 경로 밖의 도구는 별도 검토가 필요하다.
 
+## 최종 환경 v84 — DRAFT 점검 경로
+
+`zone-final-environment-v84` / `zone-final-environment-check` 2.17.0은
+P01 최종 v3 지도 3종의 reset·정지 관찰과 unloaded 보정 자료 수집을 위한 새 후보다.
+등록 당시 main+열린 PR 조회에서 번들 최대 v83(#292), 통합 workflow 최대 2.16.0을
+확인했다. [조회 기록](../experiments/2026-10-01-final-env-runnable/reservation_scan.json)과
+[물리 인계](../PHYSICS_HANDOFF.md)를 따른다. P03 #312에 의존하며 병합/봉인하지 않는다.
+
+v6e가 고정한 기본 workflow catalog는 바이트 그대로 두고
+`configs/simulation_workflows.d/final_environment_v84.json`에 추가 등록했다.
+표준 관리자는 기본 catalog와 추가 파일의 hash를 함께 기록하고 중복 ID를 거부한다.
+기존 등록 번들·지도·보정 파일을 은퇴/덮어쓰기할 이유가 없어 그대로 보존했다.
+
+`scripts.zone_environment_bundle --map-id <등록된 v3 지도> --check p01`은
+새 ID·`runnable:true`·`DRAFT_UNSEALED`를 반환한다. 이것은 P01 수집 경로의 실행 가능
+표시다. 보정 측정값은 null이며 학생 실행에 v2 값을 승계하지 않는다.
+P03 3×120초 연쇄는 실측 보정과 v3 pair adapter가 없어 `runnable:false`로
+별도 보고한다. 환경 등록만으로 봉인·파지·재측위·연쇄 성공을 주장하지 않는다.
+
 ## 새 등록의 의존성 계약 v2 (2026-09-30)
 
 **PR #301 두 차례 BLOCK 이후:** 아래 정적 v2 계약만으로 런타임 의존성 완전성을
