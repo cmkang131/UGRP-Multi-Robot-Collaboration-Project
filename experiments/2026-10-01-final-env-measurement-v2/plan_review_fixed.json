@@ -1,0 +1,67 @@
+{
+  "execution_bundle_id": "zone-final-environment-v89",
+  "workflow_id": "zone-final-environment-floor-light-v2-check",
+  "workflow_version": "2.21.0",
+  "status": "DRAFT_UNSEALED",
+  "execution_started": false,
+  "runnable": false,
+  "physical_ready": false,
+  "expected_source_sha": "eaeaaff05553ea02c649b4db9ff82470fe6372b5",
+  "check": "calibration-motion-v2",
+  "bundle_sha256": "f9225ba10e9b5643f872795ae6aa0b4c680a6580eac20950ae8395bd02f6d3cb",
+  "caps": {
+    "cases": 1,
+    "per_case_sim_cap_s": 230.0,
+    "total_sim_cap_s": 230.0,
+    "total_including_reset_cap_s": 235.0,
+    "student_control": false
+  },
+  "measurement_sha256": "bda01f670febea5d5d298ac0e707515f956d25d2cc1c412c8690047bf86ed402",
+  "clearance_preflight": {
+    "free_floor_area_m2": {
+      "zone_wide_door_geometry_v3": 28.9175,
+      "zone_wide_two_doors_final_v3": 28.967499999999998,
+      "zone_wide_corridor_final_v3": 28.7775
+    },
+    "spawn_wall_clearance_m": 0.6749999999999999,
+    "pose_samples_including_initial": 4601,
+    "full_path": {
+      "admitted": false,
+      "reason": "MISSING_INDEPENDENT_MOTION_BOUNDS",
+      "unexcluded_v1_witnesses": {
+        "forward": {
+          "minimum_lower_bound_m": 0.06703114709944524,
+          "worst_interval_s": [
+            82.0,
+            82.05000000000001
+          ],
+          "required_clearance_m": 0.35,
+          "satisfies_margin": false,
+          "continuous_path": true,
+          "cells": 4600,
+          "scope": "conditional interval bound, not evidence that the plant lies within these bounds"
+        },
+        "left": {
+          "minimum_lower_bound_m": -0.1824845816300037,
+          "worst_interval_s": [
+            194.95000000000002,
+            195.0
+          ],
+          "required_clearance_m": 0.35,
+          "satisfies_margin": false,
+          "continuous_path": true,
+          "cells": 4600,
+          "scope": "conditional interval bound, not evidence that the plant lies within these bounds"
+        }
+      },
+      "bounded_path": null,
+      "missing_bounds": [
+        "positive and negative gain ranges",
+        "drive and stop tau ranges",
+        "initial position and velocity errors after reset",
+        "world-axis speed error including transverse motion, yaw, slip and model mismatch"
+      ]
+    }
+  },
+  "seed": 911
+}
