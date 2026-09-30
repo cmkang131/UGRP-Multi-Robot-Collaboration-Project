@@ -1,0 +1,101 @@
+{
+  "verified_at": "2026-09-30T19:27:38.787140+00:00",
+  "base_sha": "5ba853ddc5b0e300e45f8361e98e7f9f16e08c18",
+  "branch": "codex/final-env-floor-light",
+  "scope": "fake/offline; no native physics/render/worker/model/learning; no host lock",
+  "runtime": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "tests": [
+    {
+      "suite": [
+        "tests/test_zone_final_environment_floor_light.py",
+        "tests/test_zone_final_environment_runnable.py",
+        "tests/test_review_e2e_batch_k.py"
+      ],
+      "exit_code": 0,
+      "passed": 62
+    },
+    {
+      "suite": [
+        "tests/test_zone_final_environment_floor_light.py",
+        "tests/test_simulation_workflow_manager.py",
+        "tests/test_zone_pair_registered_source.py",
+        "tests/test_zone_study_source_pinning.py",
+        "tests/test_zone_final_env.py",
+        "tests/test_vision_loc_p03_source_pinning.py",
+        "tests/test_ci_sharding.py"
+      ],
+      "additional_render_nodes": [
+        "test_profile_hashes_are_pinned_and_default_equals_shadows_v1",
+        "test_unknown_profile_name_fails_closed",
+        "test_default_and_shadows_v1_return_the_same_string_object",
+        "test_noshadow_v1_xml_edit_touches_only_castshadow_and_reflectance",
+        "test_noshadow_bright_v1_xml_edit_scales_light_colours_and_makes_point_lights",
+        "test_floor_light_v1_edits_only_the_named_floor_texture_on_top_of_noshadow_bright_v1",
+        "test_install_is_noop_without_a_name_and_records_after_the_inner_manifest_rebuild",
+        "test_probe_plan_mode_with_the_flag_stays_simulator_free"
+      ],
+      "exit_code": 1,
+      "passed": 271,
+      "failed": 1,
+      "failure_node": "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_parent_exit_cleans_background_child",
+      "failure": "PermissionError: [Errno 1] Operation not permitted: 'ps'",
+      "qualification": "Local sandbox limitation; unchanged test remains enabled in normal CI"
+    },
+    {
+      "suite": [
+        "tests/test_simulation_workflow_manager.py"
+      ],
+      "selector": "not test_parent_exit_cleans_background_child",
+      "exit_code": 0,
+      "passed": 17,
+      "deselected": 1
+    }
+  ],
+  "mutation_check": {
+    "total": 11,
+    "detected": 11,
+    "all_sources_restored": true
+  },
+  "v84_preservation": {
+    "file_count": 162,
+    "bundle_count": 9,
+    "file_mismatches": 0,
+    "bundle_mismatches": 0,
+    "method": "test_v84_bundles_sources_and_protected_tests_stay_byte_identical passed in both suites"
+  },
+  "ci_collection": {
+    "frozen_fixtures_present": 3,
+    "shard_count": 8,
+    "new_test_occurrences": 1
+  },
+  "handoff_bash_n": {
+    "blocks": 5,
+    "executed": false,
+    "passed": true
+  },
+  "files_sha256": {
+    "harness/zone_final_environment_floor_light.py": "9015e93e977b096e394e293acd918de1f7b330c35bdd1e08899ed4222cc36464",
+    "scripts/run_final_environment_floor_light.py": "b519d3a701139a175833ac5aeba3da9e65f9cdd20105c3c314ff3717234e0891",
+    "sim/final_environment_floor_light.py": "00655764cf1722792af8dca2de759080bed08a47c2731612776ea747bbf8a294",
+    "sim/render_profile.py": "782a531a5a89d23dce2974778e26b7ab1f0b6df8cd60f83df9404079cf7290d5",
+    "scripts/run_ci_tests.py": "ec1b6d1320b38a2228de5ea4499bd2cb7a52b4ac6d7eac9f10f5d7eded79402d",
+    "tests/test_zone_final_environment_floor_light.py": "246f5f3d6a6cd5181c785e3262d041739bbe282e035c4da0cec1f84fc0e86339",
+    "tests/test_simulation_workflow_manager.py": "c5656de8fe090296c94b9a82af818a2e9f93d9843df30e685162ed8da77ad59c",
+    "configs/zone_final_environment_v87.json": "90a93424dfa85d4730a4ab1d6d8b2076a6b2cd7817fd95ca351abfb76f36dba5",
+    "configs/simulation_workflows.d/final_environment_v87.json": "259401ab497eeb2929330e4789843d6547eb3d72086102f288d6dce8dc656b22",
+    "configs/calibration/zone_final_v3_floor_light_contract.json": "6666b23b72db5e7243af337b85f87ce469c389709e59852d8fa963dd92c0ebb6",
+    "configs/final_environment_measurement_v1.json": "7d19bcc3e88dac4f906d4f0db9b5aef7fb7969e795b3c709a632ea45962d045e"
+  },
+  "native_execution_count": 0,
+  "tensorboard": "No new experiment cohort; no conversion. Coordinator creates a new snapshot after actual acquisition.",
+  "environment": {
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "pytest": "9.1.1",
+      "numpy": "2.5.2",
+      "mujoco": "3.12.0",
+      "Pillow": "12.3.0"
+    }
+  }
+}

@@ -96,5 +96,5 @@ bash scripts/open_simulation.command workflow run tensorboard -- \
 `configs/simulation_workflows.d/<후보>.json`을 추가한다. `sim_cli workflow list/plan/run`은
 기본 파일과 이 추가 파일들을 함께 읽고 hash에 포함한다. 기존 ID와 같은 ID를 추가해
 실행기를 바꾸는 것은 거부한다. 기본 catalog·등록 번들의 bytes를 보존하는 경로이며,
-별도 실행 관리자나 별도 결과 기록 체계를 만들지 않는다. v84 예시는
+별도 실행 관리자나 별도 결과 기록 체계를 만들지 않는다. v84를 보존한 v87 예시는
 [PHYSICS_HANDOFF](../PHYSICS_HANDOFF.md)에 있다.
