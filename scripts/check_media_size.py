@@ -21,15 +21,17 @@ warning); the existing hook still rejects single files over 20 MiB.
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 import subprocess
 import sys
 
-ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
-
-from scripts.agent_worktree import HEAVY_SUFFIXES  # noqa: E402  (same media kinds as the sparse profile)
+# Shared with agent_worktree's sparse profile. Keep this checker standalone so
+# the pre-commit hook does not depend on worktree tooling or CI fixture modules.
+HEAVY_SUFFIXES = (
+    "zip", "gz", "tgz", "xz", "bz2", "7z", "tar",
+    "mp4", "mov", "m4v", "avi", "webm", "mkv",
+    "gif", "jpg", "jpeg", "png", "webp", "bmp", "tif", "tiff",
+    "pdf", "html", "npz", "npy",
+)
 
 MIB = 1 << 20
 EXPERIMENT_FILE_LIMIT = 1 * MIB
