@@ -1,0 +1,270 @@
+{
+  "schema": "ugrp.review_e2e_batch_k.v1",
+  "checked_at_utc": "2026-09-30T18:15:20.049905+00:00",
+  "review_branch": "codex/review-e2e-batch-k",
+  "review_base_sha": "55609ed1be4e770019e0640f47c7a2f7f0403f37",
+  "comparison_main_sha": "55609ed1be4e770019e0640f47c7a2f7f0403f37",
+  "final_fetched_main_sha": "f5cd3a2b7754236a7b416cca1e1f9fe76fe8dd14",
+  "reviewed_heads": {
+    "338": "6df8f1ae6ff36b8a779fb36c1cb1c0ab6548e069",
+    "339": "eb46383f3bc435d1801f4917034606a885d1f8b6"
+  },
+  "physics_runs": 0,
+  "render_runs": 0,
+  "real_model_calls": 0,
+  "host_lock_used": false,
+  "mutations": {
+    "338": {
+      "killed": 11,
+      "total": 11,
+      "restored": true
+    },
+    "339": {
+      "killed": 8,
+      "total": 8,
+      "restored": true
+    }
+  },
+  "counterexamples": {
+    "strict_xfail": 4,
+    "passed_positive": 1,
+    "runxfail_failures": 4
+  },
+  "byte_checks": {
+    "338": {
+      "merge_base": "71563e88e2bd72c6abf90d50e10f5f627fea2a9b",
+      "old_rgb_bundles_checked": 65,
+      "old_rgb_bundles_changed": [],
+      "v6e_sources_checked": 85,
+      "v6e_sources_changed_against_base_pin": [],
+      "workflows_tree_diff": [],
+      "protected_tests_diff": [],
+      "registration_changed": []
+    },
+    "339": {
+      "merge_base": "fb8ee9fbde4f5a458d1c9c7efa625110dd196edc",
+      "old_rgb_bundles_checked": 65,
+      "old_rgb_bundles_changed": [],
+      "v6e_sources_checked": 85,
+      "v6e_sources_changed_against_base_pin": [
+        "configs/simulation_workflows.json"
+      ],
+      "workflows_tree_diff": [],
+      "protected_tests_diff": [],
+      "registration_changed": [
+        "experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json"
+      ]
+    }
+  },
+  "final_reservation_scan": {
+    "refs": 22,
+    "open_prs": 21,
+    "duplicate_v84_v85_or_2_17_2_18": false
+  },
+  "ci": {
+    "338": {
+      "run_id": 36751911961,
+      "failure": "test_zone_final_env.py::test_ci_collects_this_file",
+      "kind": "assertion regression; not install timeout"
+    },
+    "339": {
+      "run_id": 36754371662,
+      "failure": "13 assertions in three existing registration preservation suites",
+      "kind": "changed prereg_v6e bytes; not install timeout"
+    }
+  },
+  "environment": {
+    "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+    "python_executable": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python"
+  },
+  "raw_directory": "/Users/changmin/projects/ugrp/outputs/review-e2e-batch-k",
+  "raw_is_remote_backup": false,
+  "temporary_extraction_cleanup": {
+    "removed": "/private/tmp/ugrp-review-e2e-k-bwbc55kq",
+    "verified_absent": true,
+    "checked_at_utc": "2026-09-30T18:19:46.016428+00:00"
+  },
+  "artifacts": {
+    "counterexamples-unmarked.log": {
+      "bytes": 4039,
+      "sha256": "3db6d22bf311ff184ff5d278405fc9b9b56ea8c8bab1eba453a431621160bc77"
+    },
+    "counterexamples-unmarked.xml": {
+      "bytes": 4677,
+      "sha256": "b98187db8c1673f33287b244991921c2b1483d438b77fc001427995cc650d809"
+    },
+    "counterexamples.log": {
+      "bytes": 855,
+      "sha256": "fc40b7b40c5ce9686351baf03009e32d224e9083243babad1b0c6e10639233ac"
+    },
+    "counterexamples.xml": {
+      "bytes": 1378,
+      "sha256": "23f42144f17f1ef2e7e5bc88b588d0e5ab4ca11d39b6dca7da4a52a77074c4e1"
+    },
+    "meta.json": {
+      "bytes": 427,
+      "sha256": "b5eca99e50e45252c970b53342b7a2c2ce2811973f74cd924c4b72f36b472f30"
+    },
+    "open-prs-start.json": {
+      "bytes": 8282,
+      "sha256": "a534ba7dfc91c4d354c75db03082a4b638b6e66d7911e6b8b9b4bad4605464e4"
+    },
+    "pr-338-finish.json": {
+      "bytes": 14012,
+      "sha256": "4e53936090fe66c5c463042d553b92828596a6b81e6708bacd8371986c9b1f13"
+    },
+    "pr-338-start.json": {
+      "bytes": 21653,
+      "sha256": "c5790deeacc8b87ff5ffe3a40fdb272c8991a492040037ebdbc943e6f4cb51ce"
+    },
+    "pr-339-finish.json": {
+      "bytes": 14012,
+      "sha256": "988722d855ff2a127b06e0a50a39ba9aae8b4c18c356bc9ea4e7ec9594a7357e"
+    },
+    "pr-339-start.json": {
+      "bytes": 22701,
+      "sha256": "31e6de7580ef1f6de7abdc0657c59d6d8f2047f5ab73fc12c6eb52cee3cf49c1"
+    },
+    "pr338-ci-failed.log": {
+      "bytes": 65543,
+      "sha256": "238e6ec2c869b2f49d8cf632cffd06164e5f1edc6af1a4283cfee8a7f00d267d"
+    },
+    "pr338-followup.log": {
+      "bytes": 998,
+      "sha256": "8843843a6da890ffe920677c97a5de8dc42a6b9591d074ac33f2762108842505"
+    },
+    "pr338-followup.xml": {
+      "bytes": 1407,
+      "sha256": "7844efd3524012e6c4de8b992f7f4f7e65edbb6611995c6cfe97b031e22fb404"
+    },
+    "pr338-managed-plan.json": {
+      "bytes": 1099,
+      "sha256": "0a73e991ba4ec5c874ee1c5e8c49a1fc2cefc40d8d259cbefe661702cd5f1d98"
+    },
+    "pr338-mutations.json": {
+      "bytes": 29508,
+      "sha256": "624114c92f8de2a4206c5d7650b40730fe2654737443489d296108568eebcfe6"
+    },
+    "pr338-mutations.log": {
+      "bytes": 58,
+      "sha256": "5444e0ab48cbe6f466b8635ad5de8c9c48a5a542b2701d5f2f9e7b914eff515a"
+    },
+    "pr338-offline.log": {
+      "bytes": 5590,
+      "sha256": "87e9c71f0dc1f2f802783df709a5b5b29ee427dd3ec54d4f99802dfaa5890fdb"
+    },
+    "pr338-offline.xml": {
+      "bytes": 25642,
+      "sha256": "47b3aefec9968250549a09064ea7d583e9e2bec5e766a9f1f51d20a165ba539f"
+    },
+    "pr338-p03-plan.json": {
+      "bytes": 871,
+      "sha256": "4c2e76b2c5ac2b9668579bd8409d235dffe877545b831c7f59d51b3112a20022"
+    },
+    "pr338-pins-manager-isolated.log": {
+      "bytes": 204,
+      "sha256": "9b2f9f7200dc09f97e97f0e491a5e05f3139f3f10192fa71a71416b1f37c82a5"
+    },
+    "pr338-pins-manager-isolated.xml": {
+      "bytes": 11653,
+      "sha256": "4037ade17e8f0a247c50e900e9b7b08b777fe4549659a455844609fa9a5b6058"
+    },
+    "pr339-ci-failed.log": {
+      "bytes": 1627493,
+      "sha256": "fd2f0ef2ec1eac46656cb22eb59f0250e80f29f11592e11af71586c7aa959c8d"
+    },
+    "pr339-existing-preservation.log": {
+      "bytes": 8039,
+      "sha256": "7789ba61a5446fd18cfdab24df64f73203f201051a1cc015e097eac019b6cc4e"
+    },
+    "pr339-existing-preservation.xml": {
+      "bytes": 10423,
+      "sha256": "cf1acd38b0c99e0ecbe0489d9c2018d193ac980f0259fe0e625bf27c356788cc"
+    },
+    "pr339-managed-plan.json": {
+      "bytes": 2028,
+      "sha256": "1500fdf2160b06bd85ea2605c2eadd63ec5e1b899413d654af94c2ee9e009070"
+    },
+    "pr339-mutations/active_ambiguity_cancel_removed.log": {
+      "bytes": 849,
+      "sha256": "ec056a1955b24a7fe8e35f6924381ce164d3125dafcdd6b1205d4fb05662a1a1"
+    },
+    "pr339-mutations/bundle_drift_gate_removed.log": {
+      "bytes": 885,
+      "sha256": "a3ae681ef667cb14211c1625b6d1974472000e68681bfbd1ab684c98269999f2"
+    },
+    "pr339-mutations/explicit_target_removed.log": {
+      "bytes": 1169,
+      "sha256": "ee6635b8efeddea101976c77eedbe30287b0488d8374f1476f30bf24ff4f9f3b"
+    },
+    "pr339-mutations/host_queue_cancel_removed.log": {
+      "bytes": 916,
+      "sha256": "aeae6b4b39ce0aa33a63f5e59191272c9331f81e7013e3ce7c0226b6b3c49873"
+    },
+    "pr339-mutations/public_ambiguity_removed.log": {
+      "bytes": 883,
+      "sha256": "d88144d575b5471d9b3c62718832c4704de4ee7a325e25e4847616d6f00b32a6"
+    },
+    "pr339-mutations/results.json": {
+      "bytes": 4099,
+      "sha256": "a5a8cf45c196e989acda49d467aaf308471f8af6ade97da12880e50205f927ef"
+    },
+    "pr339-mutations/rgb_recognizer_removed.log": {
+      "bytes": 765,
+      "sha256": "a80f3f7fed1e800b85387c833258651bf5ab543510e42faf783c7b75c1a322f8"
+    },
+    "pr339-mutations/target_freshness_relaxed.log": {
+      "bytes": 1132,
+      "sha256": "57c016e87dd05a8e6da42afe7affd78397e98901eb9b4c8bf549e5a11af533d1"
+    },
+    "pr339-mutations/target_mask_removed.log": {
+      "bytes": 1189,
+      "sha256": "5f0fb7e842bc2c4fca22fab659db8851f4b73635195e3f20d3298a3bf21ff0dc"
+    },
+    "pr339-mutations.log": {
+      "bytes": 4099,
+      "sha256": "a5a8cf45c196e989acda49d467aaf308471f8af6ade97da12880e50205f927ef"
+    },
+    "pr339-offline-corrected.log": {
+      "bytes": 474,
+      "sha256": "9033225abe5c74aa621e48b3eda4c84ad2f068f54e9f82d1d43e74da73aa8873"
+    },
+    "pr339-offline.log": {
+      "bytes": 5158,
+      "sha256": "551b819b043e6fa7d159ae63735dc561003aadab7f3953207f3df94363201fe1"
+    },
+    "pr339-offline.xml": {
+      "bytes": 33660,
+      "sha256": "b2da1b7d4132f56badc0d9d61d659e40d7b6df35d9f08554727aafcecadd76fc"
+    },
+    "pr339-pins-isolated.log": {
+      "bytes": 222,
+      "sha256": "ed9c3d632904c299bf046b44a6911d439e4ecf011c79c708a95400728cc1bdfe"
+    },
+    "pr339-pins-isolated.xml": {
+      "bytes": 8951,
+      "sha256": "d16ebe68c3ca627f0219d8e019c1a284db9c851076a355158c1864256f2c0de8"
+    },
+    "pr339-t13a-plan.json": {
+      "bytes": 487,
+      "sha256": "98dac862640ac10703dd758cf7a636b058febc0337e85c20b126c9d14e26c0ee"
+    },
+    "pr339-t13b-plan.json": {
+      "bytes": 511,
+      "sha256": "abe1b654dff28a42fc5c3546d75e8795aa177e687fb02e5e100d2b42dae28b45"
+    },
+    "registry-byte-audit.json": {
+      "bytes": 11499,
+      "sha256": "723b405b32219202a30029a4269f0a958cec64dba3175f24f748f1d9ba235ef0"
+    },
+    "registry-final.json": {
+      "bytes": 13860,
+      "sha256": "3d13784449003434fcc83de6d919bd0818847c5aba753fe35e744ddf6e71abf5"
+    }
+  },
+  "sources_restored_after_mutations": true,
+  "final_workflows_tree_diff": {
+    "338": [],
+    "339": []
+  }
+}
