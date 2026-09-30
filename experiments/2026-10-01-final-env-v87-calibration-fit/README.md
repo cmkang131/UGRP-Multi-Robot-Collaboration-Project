@@ -1,5 +1,133 @@
 # v87/v89 무하중 오프라인 보정 — PARTIAL_UNLOADED_SIM
 
+## r4 / criterion B — 2026-10-01, CANDIDATE_UNVALIDATED
+
+### r3 이후 코디네이터 결정 (2026-10-01)
+
+**r3 전에 고정한 criterion A는 FAILED이며 계속 실패로 남는다. A를 다시 채점하지 않는다.**
+소비자는 영상 위치 보정 사이에 추측 항법을 하는 자기 카메라 PF
+(`harness/owncam_localizer.py`)다. 이 용도에서는 덜 모델링된 동역학에 대한 PF의 강건성을 위해
+보수적인 과정 잡음을 쓰는 것이 허용되며 표준적인 접근이다
+([Thrun·Burgard·Fox, 2005, ch. 4–5; noise inflation](https://robots.stanford.edu/probabilistic-robotics/)).
+따라서 **r3를 본 뒤, 새 자료를 얻기 전인 지금 새로운 criterion B를 정의한다.**
+B는 앞으로 #344에서 수집할 **다른 지도의 새로운 v88 무하중 held-out 자료로만 검증**한다.
+그 수집에서 어느 축에 계단/PRBS 운동이 없으면 그 축은 미검증이다.
+
+- 평균은 기존 소비자 필드로 표현할 수 있는 부호 공통 gain·주행 tau·정지 tau의 단순 3파라미터
+  모델이다. v89의 계단과 PRBS 모두로 적합한다. **모든 v89 자료는 이제 훈련 자료다.**
+- 잡음은 기존 `sigma_velocity = noise_rel*|v| + noise_abs` 형식을 쓴다.
+  M1 PF 예산 이상인 가장 작은 값으로, v89 훈련의 0.2–3.2초 모든 예측 시간·성분에서
+  2σ 포함률 95% 이상을 맞춘다. 잡음 확대는 허용하고 포함률 상한은 두지 않으며 NEES를 보고한다.
+- 새로운 held-out 자료에서 모든 시간·성분의 `p95 |error| <= 2σ` 및 2σ 포함률 90% 이상일 때만
+  통과다. 1σ 포함률과 NEES는 참고로 보고한다. **미검증 축의 판정/적용값은 null이다.**
+
+[고정 criterion B](consumer_criterion_B.json)의 SHA-256:
+`74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f`.
+수치 판정은 0.2/0.5/1/2/3/3.2초에서 지도·축·계단/PRBS·성분을 각각 검사한다.
+σ가 창마다 다르므로 p95 조건은 `p95(|error_i|/sigma_i) <= 2`로 고정했다.
+오차 p95와 σ p95를 따로 비교하지 않는다. 모든 시작점을 포함하고 잔차 평균을 빼지 않는다.
+서로 겹치는 창의 포함률은 독립 표본의 통계적 보증이 아니다.
+
+### 훈련 후보와 잡음의 최소값
+
+[r4 후보](calibration_candidate_r4.json)는 **CANDIDATE_UNVALIDATED**이며 `MEASURED_SIM`이 아니다.
+전진·측면 숫자는 `candidate_axes`에만 있고, 회전 후보·세 축 `axis_validation`·활성
+`params.motion`은 null이다. r1/r2/r3 파일과 criterion A는 바이트 그대로 보존했다.
+후보 SHA-256: `fa7d3aa2e791086a9e73280b2dd4122bff5186d82503b56e17d5be27ca9bf071`.
+
+| v89 전체로 적합한 축 | gain | 주행 tau (s) | 정지 tau (s) | 모든 훈련 그룹 중 최저 2σ 포함률 |
+|---|---:|---:|---:|---:|
+| 전진 | 1.23714309 | 0.79779096 | 0.08897856 | 100% |
+| 측면 | 0.85096032 | 0.78771022 | 0.08846192 | 95.0065% |
+| 회전 | null | null | null | null |
+
+기존 PF와 같은 0.05초 **끝 속도 Euler 적분**을 적합·채점했다. r3의 연속시간 정확 적분과 다르다.
+시작 pose만 이상적인 영상 보정 기준으로 사용하고, 숨은 속도는 기록 처음부터 발행 명령으로만
+누적한다. 실제 속도·접촉·미래 pose는 예측 입력이 아니다. 공분산은 heading 결합을 포함하는
+선형화된 white process 예산이며, 위치 보정/scale/roughening 잡음으로 통과를 보충하지 않았다.
+
+두 축 후보가 공유하는 `[forward,left,yaw]` 잡음은 다음과 같다.
+
+| 필드 | M1 하한 | r4 후보 |
+|---|---|---|
+| `noise_rel` | [0.3176, 0.4438, 0.1116] | 동일 |
+| `noise_abs` (m/s, m/s, rad/s) | [0.01538, 0.00504, 0.01406] | [0.01538, **0.012767691858458299**, 0.01406] |
+
+relative/absolute 사이에는 교환관계가 있어 유일한 성분별 최솟값이 일반적으로 존재하지 않는다.
+이를 숨기지 않고 B에 **relative 세 값 → yaw absolute → forward absolute → left absolute**의
+사전식 최소화 순서를 명시했다. relative는 M1 하한을 유지하고, 각 창의 이차 분산식에서 필요한
+absolute 하한을 풀어 그룹별 `ceil(0.95*n)`번째 순서통계량의 최댓값을 택한다.
+확대한 값에만 수치 오차 여유 `1e-12`를 더했다. 이 순서에서의 정확한 최소값이며 Pareto 최소값이다.
+다른 relative/absolute 조합보다 모든 계수가 동시에 작다는 주장은 아니다.
+
+제약을 결정한 것은 측면 계단 3.2초의 **1,542창 중 1,465창**이다.
+확대 전 M1 하한은 이 그룹에서 66.67%였다. 확대 후 모든 그룹·성분이 95% 이상이다.
+PRBS 3.2초(축별 297창)의 구동 성분 p95는 전진 5.829 mm·측면 4.799 mm이고,
+1σ/2σ 포함률은 두 축 모두 100/100%, 구동 성분 평균 NEES는 0.2152/0.1952다.
+**이것은 훈련 결과이며 B의 held-out 통과가 아니다.** 각 성분의 NEES·공동 NEES·σ 범위와
+모든 시간/구간 수치는 [전체 훈련/스모크 보고서](consumer_report_r4.json)에 있다.
+
+### 기존 로더가 받아들여야 하는 것 — 이번에는 수정하지 않음
+
+후보의 `loader_requirements`에 정확한 요구사항을 저장했다. 현재 로더의 r4 거부도 회귀로 확인한다.
+
+1. schema v1의 새 `CANDIDATE_UNVALIDATED` 상태를 명시적인 무하중 후보 경로에서만 인정하고,
+   B/후보 해시와 미검증 상태를 보존해야 한다. `MEASURED_SIM`으로 이름만 바꿔서는 안 된다.
+2. null인 `params.motion` 대신 `candidate_axes.<axis>.consumer_fields`를 선택해야 한다.
+   그 안의 `gain`, `tau_s`, `tau_stop_s`, `noise_rel`, `noise_abs`, `scale_std`, `scale_walk`,
+   `use_scale`, `rest_noise`는 기존 소비자 필드다. 선택 축 이외 gain은 구조적 0이며 미측정 축을
+   보정한 값이 아니다. 특이 gain 행렬을 허용하되 **그 축의 단독 명령만 허용**해야 한다.
+3. 정지 tau는 축마다 다르지만 현재 소비자는 스칼라 `tau_stop_s`만 처리한다.
+   축별 프로필 선택 없이 벡터 stop tau나 혼합 명령을 넣을 수 없다. 회전은 null이고
+   M1/v87 값을 몰래 채워 넣지 않는다. 전체 3축 프로필 적용은 별도 문제다.
+4. 채점과 같은 0.05초 끝 속도 적분·기존 잡음식·`rest_noise=true`, `use_scale=false`,
+   `scale_std=scale_walk=0`를 사용해야 한다.
+5. 기존 최종환경/P03 및 #344의 pair 로더는 완전한 loaded/fine/카메라/pair `MEASURED_SIM`
+   산출물을 요구한다. 제한된 무하중 후보 경로만 누락을 허용할 수 있으며 P03/carry 승인은 아니다.
+   상속한 v87 카메라/pan·계약 해시와 v89 운동 훈련·향후 v88 검증 출처를 분리해야 한다.
+   계약 해시를 v88 값으로 단순 치환해서도 안 된다.
+
+### 새 raw 검증과 #344 회전 일정 확인
+
+[검증기](../../scripts/validate_consumer_criterion_b.py)는 재적합하지 않는다. 완료된 수집의
+bundle/measurement 일정과 발행 명령·lease·시계·pose 개수/행렬을 대조하고, 입력 해시를 실행 후
+다시 확인한다. 이미 본 pose 바이트·훈련 지도는 held-out에서 제외한다.
+새 자료가 실제 B 고정 뒤 수집됐는지는 수집 기록으로도 확인해야 하며, 해시만으로 시점을 증명하지 않는다.
+
+```sh
+python3 -m scripts.validate_consumer_criterion_b \
+  --raw /absolute/path/to/NEW-v88-unloaded-collection \
+  --output /absolute/path/outside-raw/criterion_B_result.json
+```
+
+종료 코드는 전체 통과 0, 실패 1, 미검증 축/훈련/부적격 2다. 잘못되거나 미완료인 raw는 오류로 거부한다.
+v89 실제 raw 스모크는 `TRAINING_SMOKE`, 세 축 판정 null, 종료 2를 확인했다.
+step/PRBS가 없는 축뿐 아니라 **고정 후보가 없는 회전축도 계속 null**이다.
+새 회전 수집으로 회전 평균을 적합하려면 그 자료는 훈련이 되며, 회전 검증에는 다시 독립 자료가 필요하다.
+
+`origin/codex/v3-pair-adapter`의 지정 SHA `b7bc885a27aa5ab242e9f3710a3cd7090efe9f3a`를
+직접 확인했다. `harness/zone_final_pair_excitation.py`의 `AXES`에는 turn이 있으며,
+무하중 일정은 ±.01/±.02/±.03 각각 10초 계단+1초 coast, ±.02 PRBS 31칩×0.5초,
+마지막 2.5초 coast를 포함한다. 회전 구간은 242–326초다.
+**이미 회전 입력이 있으므로 50초 회전안을 추가하라는 #344 댓글은 쓰지 않았다.**
+다만 현재 #344는 `zone_wide_two_doors_final_v3` 한 지도만 수집하도록 제한되어 있어
+**그대로 수집하면 B의 ‘다른 지도’ held-out 조건을 충족하지 못한다.** 수집 측의 별도 변경이 필요하다.
+
+재현용 [적합기](../../scripts/fit_consumer_criterion_b.py), [입력/소스 해시](input_manifest_r4.json),
+[검사](../../tests/test_consumer_criterion_b.py), [검증 기록](validation_r4.json),
+[TensorBoard 기록](tensorboard_record_r4.json)을 함께 남긴다. 원본과 스모크 JSON은
+로컬 `outputs/v89-consumer-r4-final-20261001`에 보존한다. 원격 raw 백업은 아니다.
+물리·렌더·모델 호출은 0회이며 제어기·`.github/workflows`를 수정하지 않았다. draft를 유지한다.
+
+관련 오프라인 검사 **중복 제외 284개**가 통과했다(새 검증기 파일 33개).
+합성 raw의 CLI 판정, 실제 consumer 메서드에서 생성한 3파라미터 복원, 잡음 최소값을 조금 낮춘
+실패 반례, 누락/변조 입력 거부, A 바이트 보존과 기존 로더 거부를 포함한다.
+[TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1001-v89-consumer-%28r3%7Cr4-final%29%2F#timeseries)에
+새 훈련 결과 24 runs·실제 scalar 288개·HParams 이벤트 24개를 등록하고 서버 값과 대조했다.
+r3는 실패한 A의 별도 기준선으로 유지한다. [고정 카드·열 설정](tensorboard_record_r4.json)은 저장했지만
+Chrome `cgWindowNotFound`로 화면 검증은 미완료다. 새 영상/서버는 없고 기존 서버는 변경하지 않았다.
+`/private/tmp`에 이 작업의 extraction 디렉터리를 만들지 않았고 잔여 디렉터리도 없다.
+
 ## r3: 짧은 예측은 개선, 잡음 검증 실패로 적용값 null
 
 **기준 A 미통과.** [r3 교정](calibration_partial_r3.json)의 전진·측면·회전 적용 모델은 모두 null이다.
