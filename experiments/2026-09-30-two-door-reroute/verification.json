@@ -1,0 +1,284 @@
+{
+  "status": "OFFLINE_VERIFIED_DRAFT_ONLY",
+  "qualification": "Fake decisions and static geometry only; real observer/navigation wiring, E2E and physics remain unverified.",
+  "prerequisite_pr": 314,
+  "prerequisite_head": "994b269d97d05dd2159c1a78f2b9eae9955790f9",
+  "prerequisite_main_merge_sha": null,
+  "main_integration_target": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e",
+  "audit_pr_302_merge_sha": "09081b3c46f0d51e02ef625e4be8c7d6f6e67963",
+  "baseline_pytest_passed": 356,
+  "baseline_subtests_passed": 280,
+  "baseline_results_by_class": {
+    "tests.test_zone_own_executor_observed_reroute": 62,
+    "tests.test_zone_own_executor_door_routes": 76,
+    "tests.test_pair_passage_plan": 44,
+    "tests.test_zone_model_conventions": 6,
+    "tests.test_zone_pair_status": 16,
+    "tests.test_zone_pair_registered_source": 22,
+    "tests.test_zone_study_source_pinning": 34,
+    "tests.test_zone_study_protocol": 86,
+    "tests.test_ci_fast_path.CiFastPathTests": 10
+  },
+  "required_pinning_passed": 56,
+  "runs": {
+    "none": {
+      "tests": 636,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "failed_tests": []
+    },
+    "ignore_observation": {
+      "tests": 62,
+      "errors": 0,
+      "failures": 9,
+      "skipped": 0,
+      "exit_code": 1,
+      "failed_tests": [
+        "tests.test_zone_own_executor_observed_reroute::test_observation_triggers_cancellation_then_wide_from_fresh_pose",
+        "tests.test_zone_own_executor_observed_reroute::test_both_blocked_refuses_and_cancels_old_route[False]",
+        "tests.test_zone_own_executor_observed_reroute::test_both_blocked_refuses_and_cancels_old_route[True]",
+        "tests.test_zone_own_executor_observed_reroute::test_other_door_blockage_does_not_replace_route_and_belief_is_not_mutable",
+        "tests.test_zone_own_executor_observed_reroute::test_never_starts_new_path_before_queue_cancellation[running]",
+        "tests.test_zone_own_executor_observed_reroute::test_never_starts_new_path_before_queue_cancellation[failed]",
+        "tests.test_zone_own_executor_observed_reroute::test_never_starts_new_path_before_queue_cancellation[reached]",
+        "tests.test_zone_own_executor_observed_reroute::test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route",
+        "tests.test_zone_own_executor_observed_reroute::test_pair_announces_abort_even_while_stop_is_pending"
+      ]
+    },
+    "ignore_replan": {
+      "tests": 62,
+      "errors": 0,
+      "failures": 10,
+      "skipped": 0,
+      "exit_code": 1,
+      "failed_tests": [
+        "tests.test_zone_own_executor_observed_reroute::test_observation_triggers_cancellation_then_wide_from_fresh_pose",
+        "tests.test_zone_own_executor_observed_reroute::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko]",
+        "tests.test_zone_own_executor_observed_reroute::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko]",
+        "tests.test_zone_own_executor_observed_reroute::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured]",
+        "tests.test_zone_own_executor_observed_reroute::test_both_blocked_refuses_and_cancels_old_route[True]",
+        "tests.test_zone_own_executor_observed_reroute::test_never_starts_new_path_before_queue_cancellation[running]",
+        "tests.test_zone_own_executor_observed_reroute::test_never_starts_new_path_before_queue_cancellation[failed]",
+        "tests.test_zone_own_executor_observed_reroute::test_never_starts_new_path_before_queue_cancellation[reached]",
+        "tests.test_zone_own_executor_observed_reroute::test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route",
+        "tests.test_zone_own_executor_observed_reroute::test_pair_announces_abort_even_while_stop_is_pending"
+      ]
+    },
+    "skip_stop": {
+      "tests": 62,
+      "errors": 0,
+      "failures": 23,
+      "skipped": 0,
+      "exit_code": 1,
+      "failed_tests": [
+        "tests.test_zone_own_executor_observed_reroute::test_observation_triggers_cancellation_then_wide_from_fresh_pose",
+        "tests.test_zone_own_executor_observed_reroute::test_both_blocked_refuses_and_cancels_old_route[False]",
+        "tests.test_zone_own_executor_observed_reroute::test_both_blocked_refuses_and_cancels_old_route[True]",
+        "tests.test_zone_own_executor_observed_reroute::test_never_starts_new_path_before_queue_cancellation[running]",
+        "tests.test_zone_own_executor_observed_reroute::test_never_starts_new_path_before_queue_cancellation[failed]",
+        "tests.test_zone_own_executor_observed_reroute::test_never_starts_new_path_before_queue_cancellation[reached]",
+        "tests.test_zone_own_executor_observed_reroute::test_invalid_observation_fails_closed[black]",
+        "tests.test_zone_own_executor_observed_reroute::test_invalid_observation_fails_closed[wrong_hash]",
+        "tests.test_zone_own_executor_observed_reroute::test_invalid_observation_fails_closed[pose_uncertain]",
+        "tests.test_zone_own_executor_observed_reroute::test_invalid_observation_fails_closed[nan]",
+        "tests.test_zone_own_executor_observed_reroute::test_invalid_observation_fails_closed[unknown_door]",
+        "tests.test_zone_own_executor_observed_reroute::test_invalid_observation_fails_closed[observer_error]",
+        "tests.test_zone_own_executor_observed_reroute::test_lower_navigation_failure_and_false_completion_are_not_success[exception]",
+        "tests.test_zone_own_executor_observed_reroute::test_lower_navigation_failure_and_false_completion_are_not_success[failed]",
+        "tests.test_zone_own_executor_observed_reroute::test_lower_navigation_failure_and_false_completion_are_not_success[invented_state]",
+        "tests.test_zone_own_executor_observed_reroute::test_lower_navigation_failure_and_false_completion_are_not_success[false_reached]",
+        "tests.test_zone_own_executor_observed_reroute::test_own_estimate_route_end_is_separate_from_delivery_referee",
+        "tests.test_zone_own_executor_observed_reroute::test_one_pair_side_failure_propagates_existing_abort_enum[no_comm]",
+        "tests.test_zone_own_executor_observed_reroute::test_one_pair_side_failure_propagates_existing_abort_enum[peer_ko]",
+        "tests.test_zone_own_executor_observed_reroute::test_one_pair_side_failure_propagates_existing_abort_enum[leader_ko]",
+        "tests.test_zone_own_executor_observed_reroute::test_one_pair_side_failure_propagates_existing_abort_enum[structured]",
+        "tests.test_zone_own_executor_observed_reroute::test_failed_stop_is_retried_without_new_motion",
+        "tests.test_zone_own_executor_observed_reroute::test_pair_announces_abort_even_while_stop_is_pending"
+      ]
+    },
+    "ignore_messages": {
+      "tests": 62,
+      "errors": 0,
+      "failures": 3,
+      "skipped": 0,
+      "exit_code": 1,
+      "failed_tests": [
+        "tests.test_zone_own_executor_observed_reroute::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko]",
+        "tests.test_zone_own_executor_observed_reroute::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko]",
+        "tests.test_zone_own_executor_observed_reroute::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured]"
+      ]
+    },
+    "ignore_pair_failure": {
+      "tests": 62,
+      "errors": 0,
+      "failures": 7,
+      "skipped": 0,
+      "exit_code": 1,
+      "failed_tests": [
+        "tests.test_zone_own_executor_observed_reroute::test_one_pair_side_failure_propagates_existing_abort_enum[no_comm]",
+        "tests.test_zone_own_executor_observed_reroute::test_one_pair_side_failure_propagates_existing_abort_enum[peer_ko]",
+        "tests.test_zone_own_executor_observed_reroute::test_one_pair_side_failure_propagates_existing_abort_enum[leader_ko]",
+        "tests.test_zone_own_executor_observed_reroute::test_one_pair_side_failure_propagates_existing_abort_enum[structured]",
+        "tests.test_zone_own_executor_observed_reroute::test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route",
+        "tests.test_zone_own_executor_observed_reroute::test_pair_heartbeat_timeout_stops_before_motion",
+        "tests.test_zone_own_executor_observed_reroute::test_pair_announces_abort_even_while_stop_is_pending"
+      ]
+    }
+  },
+  "four_condition_properties": [
+    {
+      "condition": "no_comm",
+      "common_config_sha256": "0e3fcb0e449a0bbeae8c24175a786550b1c2f6274af96d0d6dc894a0da8715ad",
+      "map_sha256": "ad23533a1edd778eb42d4a5c62b5f8ec641b91616539f5204a482a020514846c",
+      "prior_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "controller_sha256": "54d3fa6079c1b68993104d0b1e106a6120008054e7cb49a1f4101f19debbd824",
+      "role_assignment_sha256": "5a02a876745ca9b8ef2c27591ca1b4df9e7e3307be7d2eef8e7d27d35eb9768a"
+    },
+    {
+      "condition": "peer_ko",
+      "common_config_sha256": "0e3fcb0e449a0bbeae8c24175a786550b1c2f6274af96d0d6dc894a0da8715ad",
+      "map_sha256": "ad23533a1edd778eb42d4a5c62b5f8ec641b91616539f5204a482a020514846c",
+      "prior_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "controller_sha256": "54d3fa6079c1b68993104d0b1e106a6120008054e7cb49a1f4101f19debbd824",
+      "role_assignment_sha256": "5a02a876745ca9b8ef2c27591ca1b4df9e7e3307be7d2eef8e7d27d35eb9768a"
+    },
+    {
+      "condition": "leader_ko",
+      "common_config_sha256": "0e3fcb0e449a0bbeae8c24175a786550b1c2f6274af96d0d6dc894a0da8715ad",
+      "map_sha256": "ad23533a1edd778eb42d4a5c62b5f8ec641b91616539f5204a482a020514846c",
+      "prior_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "controller_sha256": "54d3fa6079c1b68993104d0b1e106a6120008054e7cb49a1f4101f19debbd824",
+      "role_assignment_sha256": "5a02a876745ca9b8ef2c27591ca1b4df9e7e3307be7d2eef8e7d27d35eb9768a"
+    },
+    {
+      "condition": "structured",
+      "common_config_sha256": "0e3fcb0e449a0bbeae8c24175a786550b1c2f6274af96d0d6dc894a0da8715ad",
+      "map_sha256": "ad23533a1edd778eb42d4a5c62b5f8ec641b91616539f5204a482a020514846c",
+      "prior_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "controller_sha256": "54d3fa6079c1b68993104d0b1e106a6120008054e7cb49a1f4101f19debbd824",
+      "role_assignment_sha256": "5a02a876745ca9b8ef2c27591ca1b4df9e7e3307be7d2eef8e7d27d35eb9768a"
+    }
+  ],
+  "validation_manifest": {
+    "mutation": "suite",
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "head": "99e4b23c8030560a89ed4242dd506291233514c9",
+    "load_start": [
+      118.82080078125,
+      73.130859375,
+      51.71728515625
+    ],
+    "physics_steps": 0,
+    "render_calls": 0,
+    "model_calls": 0,
+    "pending_merge_head": "6a57435e6e24f7f7a3f082d9458d3d9f4ebc010e",
+    "host_lock_acquired": false,
+    "timing_sensitive_lock_seen": false,
+    "source_sha256": {
+      "harness/zone_observed_door_reroute.py": "54d3fa6079c1b68993104d0b1e106a6120008054e7cb49a1f4101f19debbd824",
+      "harness/zone_static_door_routes.py": "cec5fd95847496d5492b73dba67bf4393eef0c57394510ee7d2a22e597d9d24c",
+      "harness/zone_pair_status.py": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+      "harness/zone_study_protocol.py": "07e315ca26a94333d15d67ebf2446019987cf00dde92b2756be17dd4178c4890",
+      "harness/zone_study_contract.py": "f6e4c5fef3bdb7e332d2871b309bec1a46e3d1d98533050e723094200dc460f6",
+      "scripts/run_ci_tests.py": "d1bdce2bce4ba58541f4d9a7269591110b0d73fb8674f61c5ff7c74ca8b2aea5",
+      "tests/test_zone_own_executor_observed_reroute.py": "8de9c37c9efc0f3d3cb93e956cbb42bb343ef94e0f8d8267373afe85a5e9e1c3",
+      "tests/test_zone_own_executor_door_routes.py": "9d4e213efb6834e72265132f8b6aa94588879fe8945e1fe9713a7f00ac3befd9",
+      "tests/test_pair_passage_plan.py": "ceb5572bb8299f90b237598ab629f4d3b8beb62c9ebe14a310ebbe59c3a06866",
+      "tests/test_zone_model_conventions.py": "3fe1828c05cf3cba72ab41e62bde04f8939a11838e8589e7143072c3af2ed3a6",
+      "tests/test_zone_pair_status.py": "6e39c94da07b30bff6f3289943f5267752ba1e37ffbde33a692d6678542722ca",
+      "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+      "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+      "tests/test_zone_study_protocol.py": "f59b9c624178814acc2b4c9ff39236efdd7a905376989b4f08d37105ed70190e",
+      "tests/test_ci_fast_path.py": "7cbce2fb52492b6adf3e5d53f5e98c3f7928b98bbdc6d5fa387c424ade570aab",
+      "experiments/2026-09-30-two-door-reroute/run_checks.py": "1370577eea53bd6ecce5d7365bf2235664e627138a74410bf27006fd42cbaaa7"
+    },
+    "runs": [
+      {
+        "mutation": "none",
+        "exit_code": 0
+      },
+      {
+        "mutation": "ignore_observation",
+        "exit_code": 1
+      },
+      {
+        "mutation": "ignore_replan",
+        "exit_code": 1
+      },
+      {
+        "mutation": "skip_stop",
+        "exit_code": 1
+      },
+      {
+        "mutation": "ignore_messages",
+        "exit_code": 1
+      },
+      {
+        "mutation": "ignore_pair_failure",
+        "exit_code": 1
+      }
+    ],
+    "exit_code": 0,
+    "source_unchanged": true,
+    "load_end": [
+      164.00048828125,
+      130.09619140625,
+      84.81396484375
+    ]
+  },
+  "protected_main_blobs": 921,
+  "workflow_matches_main": true,
+  "previous_failures": {
+    "handoff": "verification_handoff.json",
+    "resume_baseline_06": "253 passed, 1 structured fixture failure; immutable source",
+    "structured_fix_07": "62 passed"
+  },
+  "raw_local_only": {
+    "/Users/changmin/projects/ugrp/outputs/2026-09-30-two-door-reroute/resume-final-08/ignore_messages.xml": {
+      "bytes": 17731,
+      "sha256": "b8ab2bd3fa91c700baf46c6bd4a8cb42749599b89740c1cb9d6504f2bd3c926e"
+    },
+    "/Users/changmin/projects/ugrp/outputs/2026-09-30-two-door-reroute/resume-final-08/ignore_replan.xml": {
+      "bytes": 20641,
+      "sha256": "03545acc7d6da74fa310c59d49653a9f30ed2f3daf6d65f2ab6caa4d2203f360"
+    },
+    "/Users/changmin/projects/ugrp/outputs/2026-09-30-two-door-reroute/resume-final-08/manifest.json": {
+      "bytes": 2809,
+      "sha256": "3883bd829fc2481b6f7303490ab29869cc082ac4533f53044756150a71cf3fa6"
+    },
+    "/Users/changmin/projects/ugrp/outputs/2026-09-30-two-door-reroute/resume-final-08/ignore_pair_failure.xml": {
+      "bytes": 27227,
+      "sha256": "185699c6ad78371f8a8739e1dc7c852c4a408fa4551fb159841286798fac4a3c"
+    },
+    "/Users/changmin/projects/ugrp/outputs/2026-09-30-two-door-reroute/resume-final-08/ignore_observation.xml": {
+      "bytes": 20226,
+      "sha256": "eaf862738e54c57782f4090f292cc913ebde546634ba3dd1f42dd4e4eb1b2692"
+    },
+    "/Users/changmin/projects/ugrp/outputs/2026-09-30-two-door-reroute/resume-final-08/none.xml": {
+      "bytes": 74189,
+      "sha256": "b61a2a86eaf113dfc1cb92e723774e74a3732e4af929f6d77394069d1f7d9631"
+    },
+    "/Users/changmin/projects/ugrp/outputs/2026-09-30-two-door-reroute/resume-final-08/skip_stop.xml": {
+      "bytes": 37147,
+      "sha256": "a684e00a7af209eee0a39d04b3c8f8dd92ebaf9a0ac455b7803efbc65e07218f"
+    },
+    "/Users/changmin/projects/ugrp/outputs/t09b-resume-final-08.log": {
+      "bytes": 36368,
+      "sha256": "353e83386a612f253cf6d22e707801f30b2eb6d352ad719a5a037fd362e0d6c6"
+    },
+    "/Users/changmin/projects/ugrp/outputs/t09b-resume-baseline-06.log": {
+      "bytes": 2157,
+      "sha256": "7cc955284305e69667b533a15077cd383f2c7c27a561549c0a7871dd4b449aae"
+    },
+    "/Users/changmin/projects/ugrp/outputs/t09b-structured-fix-07.log": {
+      "bytes": 99,
+      "sha256": "97f14271912e9224cfdbff4b22ae6845ccf1a49d176bf6d420cd95c03090dc6b"
+    }
+  },
+  "proposed_physics_sim_cap_s": 3600,
+  "tensorboard": "No experiment/evaluation run; unit regression counts are not robot result snapshots.",
+  "github_ci": "To be recorded for the final draft PR SHA in PR body; no skip/cancel/merge.",
+  "main_integration_commit": "ae0aa5db27aff483eb5c40d75f29ae197e48ac6a"
+}

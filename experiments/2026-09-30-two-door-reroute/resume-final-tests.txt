@@ -1,0 +1,426 @@
+T09b case: none
+........................................................................ [ 20%]
+........................................................................ [ 40%]
+........................................................................ [ 60%]
+........................................................................ [ 80%]
+....................................................................             [100%]
+356 passed, 280 subtests passed in 327.15s (0:05:27)
+T09b case: ignore_observation
+F............FFFFFF......................F..................F.           [100%]
+=================================== FAILURES ===================================
+_______ test_observation_triggers_cancellation_then_wide_from_fresh_pose _______
+tests/test_zone_own_executor_observed_reroute.py:93: in test_observation_triggers_cancellation_then_wide_from_fresh_pose
+    assert blocked.state == 'REPLAN_READY' and blocked.route.passage_id == 'door_wide'
+E   AssertionError: assert ('RUNNING' == 'REPLAN_READY'
+E     
+E     - REPLAN_READY
+E     + RUNNING)
+____________ test_both_blocked_refuses_and_cancels_old_route[False] ____________
+tests/test_zone_own_executor_observed_reroute.py:176: in test_both_blocked_refuses_and_cancels_old_route
+    assert result.state == 'REFUSED' and result.reason == 'ALL_DOORS_BLOCKED'
+E   AssertionError: assert ('RUNNING' == 'REFUSED'
+E     
+E     - REFUSED
+E     + RUNNING)
+____________ test_both_blocked_refuses_and_cancels_old_route[True] _____________
+tests/test_zone_own_executor_observed_reroute.py:176: in test_both_blocked_refuses_and_cancels_old_route
+    assert result.state == 'REFUSED' and result.reason == 'ALL_DOORS_BLOCKED'
+E   AssertionError: assert ('RUNNING' == 'REFUSED'
+E     
+E     - REFUSED
+E     + RUNNING)
+__ test_other_door_blockage_does_not_replace_route_and_belief_is_not_mutable ___
+tests/test_zone_own_executor_observed_reroute.py:188: in test_other_door_blockage_does_not_replace_route_and_belief_is_not_mutable
+    assert 'door_wide' in c.belief
+E   AssertionError: assert 'door_wide' in {}
+E    +  where {} = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115a23320>.belief
+________ test_never_starts_new_path_before_queue_cancellation[running] _________
+tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
+    assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
+E   AssertionError: assert 'RUNNING' == 'STOPPING'
+E     
+E     - STOPPING
+E     + RUNNING
+_________ test_never_starts_new_path_before_queue_cancellation[failed] _________
+tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
+    assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
+E   AssertionError: assert 'RUNNING' == 'FAILED'
+E     
+E     - FAILED
+E     + RUNNING
+________ test_never_starts_new_path_before_queue_cancellation[reached] _________
+tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
+    assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
+E   AssertionError: assert 'RUNNING' == 'FAILED'
+E     
+E     - FAILED
+E     + RUNNING
+_____ test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route _____
+tests/test_zone_own_executor_observed_reroute.py:295: in test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route
+    assert result.state == 'PAIR_REPLAN_REQUIRED' and result.route.passage_id == 'door_wide'
+E   AssertionError: assert ('RUNNING' == 'PAIR_REPLAN_REQUIRED'
+E     
+E     - PAIR_REPLAN_REQUIRED
+E     + RUNNING)
+_____________ test_pair_announces_abort_even_while_stop_is_pending _____________
+tests/test_zone_own_executor_observed_reroute.py:391: in test_pair_announces_abort_even_while_stop_is_pending
+    assert tick(a, 1, 'narrow').state == 'STOPPING'
+E   AssertionError: assert 'RUNNING' == 'STOPPING'
+E     
+E     - STOPPING
+E     + RUNNING
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_observation_triggers_cancellation_then_wide_from_fresh_pose
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[False]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[True]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_other_door_blockage_does_not_replace_route_and_belief_is_not_mutable
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[running]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[failed]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[reached]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_pair_announces_abort_even_while_stop_is_pending
+9 failed, 53 passed in 0.70s
+T09b case: ignore_replan
+F.FFF.........F.FFF......................F..................F.           [100%]
+=================================== FAILURES ===================================
+_______ test_observation_triggers_cancellation_then_wide_from_fresh_pose _______
+tests/test_zone_own_executor_observed_reroute.py:93: in test_observation_triggers_cancellation_then_wide_from_fresh_pose
+    assert blocked.state == 'REPLAN_READY' and blocked.route.passage_id == 'door_wide'
+E   AssertionError: assert ('RUNNING' == 'REPLAN_READY'
+E     
+E     - REPLAN_READY
+E     + RUNNING)
+____ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko] ____
+tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
+    assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
+E   AssertionError: assert ('door_narrow' == 'door_wide'
+E     
+E     - door_wide
+E     + door_narrow)
+___ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko] ___
+tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
+    assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
+E   AssertionError: assert ('door_narrow' == 'door_wide'
+E     
+E     - door_wide
+E     + door_narrow)
+__ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured] ___
+tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
+    assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
+E   AssertionError: assert ('door_narrow' == 'door_wide'
+E     
+E     - door_wide
+E     + door_narrow)
+____________ test_both_blocked_refuses_and_cancels_old_route[True] _____________
+tests/test_zone_own_executor_observed_reroute.py:176: in test_both_blocked_refuses_and_cancels_old_route
+    assert result.state == 'REFUSED' and result.reason == 'ALL_DOORS_BLOCKED'
+E   AssertionError: assert ('RUNNING' == 'REFUSED'
+E     
+E     - REFUSED
+E     + RUNNING)
+________ test_never_starts_new_path_before_queue_cancellation[running] _________
+tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
+    assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
+E   AssertionError: assert 'RUNNING' == 'STOPPING'
+E     
+E     - STOPPING
+E     + RUNNING
+_________ test_never_starts_new_path_before_queue_cancellation[failed] _________
+tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
+    assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
+E   AssertionError: assert 'RUNNING' == 'FAILED'
+E     
+E     - FAILED
+E     + RUNNING
+________ test_never_starts_new_path_before_queue_cancellation[reached] _________
+tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
+    assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
+E   AssertionError: assert 'RUNNING' == 'FAILED'
+E     
+E     - FAILED
+E     + RUNNING
+_____ test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route _____
+tests/test_zone_own_executor_observed_reroute.py:295: in test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route
+    assert result.state == 'PAIR_REPLAN_REQUIRED' and result.route.passage_id == 'door_wide'
+E   AssertionError: assert ('RUNNING' == 'PAIR_REPLAN_REQUIRED'
+E     
+E     - PAIR_REPLAN_REQUIRED
+E     + RUNNING)
+_____________ test_pair_announces_abort_even_while_stop_is_pending _____________
+tests/test_zone_own_executor_observed_reroute.py:391: in test_pair_announces_abort_even_while_stop_is_pending
+    assert tick(a, 1, 'narrow').state == 'STOPPING'
+E   AssertionError: assert 'RUNNING' == 'STOPPING'
+E     
+E     - STOPPING
+E     + RUNNING
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_observation_triggers_cancellation_then_wide_from_fresh_pose
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[True]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[running]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[failed]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[reached]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_pair_announces_abort_even_while_stop_is_pending
+10 failed, 52 passed in 0.55s
+T09b case: skip_stop
+F............FF.FFFFFFFFF.......FFFFFFFFF..................FF.           [100%]
+=================================== FAILURES ===================================
+_______ test_observation_triggers_cancellation_then_wide_from_fresh_pose _______
+tests/test_zone_own_executor_observed_reroute.py:94: in test_observation_triggers_cancellation_then_wide_from_fresh_pose
+    assert len(c.navigation.calls) == 2 and c.navigation.cancelled == 1
+E   AssertionError: assert (2 == 2 and 0 == 1)
+E    +  where 2 = len([(DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad=((1.0, -1.2, 0.0), (1.0, -0.575, 0.0), (1....se_m_rad=(1.0, -1.2, 0.0), blocked_doors=(), image_valid=True), (IssuedCommand(name='drive', arguments=(0.02, 0.0)),))])
+E    +    where [(DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad=((1.0, -1.2, 0.0), (1.0, -0.575, 0.0), (1....se_m_rad=(1.0, -1.2, 0.0), blocked_doors=(), image_valid=True), (IssuedCommand(name='drive', arguments=(0.02, 0.0)),))] = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115be39b0>.calls
+E    +      where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115be39b0> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115be3a10>.navigation
+E    +  and   0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115be39b0>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115be39b0> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115be3a10>.navigation
+____________ test_both_blocked_refuses_and_cancels_old_route[False] ____________
+tests/test_zone_own_executor_observed_reroute.py:177: in test_both_blocked_refuses_and_cancels_old_route
+    assert result.route is None and c.navigation.cancelled == 1
+E   AssertionError: assert (None is None and 0 == 1)
+E    +  where None = Decision(state='REFUSED', reason='ALL_DOORS_BLOCKED', route=None, blocked_doors=('door_narrow', 'door_wide')).route
+E    +  and   0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115b875f0>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115b875f0> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115b85100>.navigation
+____________ test_both_blocked_refuses_and_cancels_old_route[True] _____________
+tests/test_zone_own_executor_observed_reroute.py:177: in test_both_blocked_refuses_and_cancels_old_route
+    assert result.route is None and c.navigation.cancelled == 1
+E   AssertionError: assert (None is None and 0 == 1)
+E    +  where None = Decision(state='REFUSED', reason='ALL_DOORS_BLOCKED', route=None, blocked_doors=('door_narrow', 'door_wide')).route
+E    +  and   0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115b99af0>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115b99af0> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115b99ac0>.navigation
+________ test_never_starts_new_path_before_queue_cancellation[running] _________
+tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
+    assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
+E   AssertionError: assert 'REPLAN_READY' == 'STOPPING'
+E     
+E     - STOPPING
+E     + REPLAN_READY
+_________ test_never_starts_new_path_before_queue_cancellation[failed] _________
+tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
+    assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
+E   AssertionError: assert 'REPLAN_READY' == 'FAILED'
+E     
+E     - FAILED
+E     + REPLAN_READY
+________ test_never_starts_new_path_before_queue_cancellation[reached] _________
+tests/test_zone_own_executor_observed_reroute.py:197: in test_never_starts_new_path_before_queue_cancellation
+    assert result.state == ('STOPPING' if stop_result == 'running' else 'FAILED')
+E   AssertionError: assert 'REPLAN_READY' == 'FAILED'
+E     
+E     - FAILED
+E     + REPLAN_READY
+_________________ test_invalid_observation_fails_closed[black] _________________
+tests/test_zone_own_executor_observed_reroute.py:220: in test_invalid_observation_fails_closed
+    assert c.navigation.cancelled == 1 and not c.navigation.calls and not c.belief
+E   assert (0 == 1)
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115b9bc80>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115b9bc80> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115b9aab0>.navigation
+______________ test_invalid_observation_fails_closed[wrong_hash] _______________
+tests/test_zone_own_executor_observed_reroute.py:220: in test_invalid_observation_fails_closed
+    assert c.navigation.cancelled == 1 and not c.navigation.calls and not c.belief
+E   assert (0 == 1)
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x10a584290>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x10a584290> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x10a584650>.navigation
+____________ test_invalid_observation_fails_closed[pose_uncertain] _____________
+tests/test_zone_own_executor_observed_reroute.py:220: in test_invalid_observation_fails_closed
+    assert c.navigation.cancelled == 1 and not c.navigation.calls and not c.belief
+E   assert (0 == 1)
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115be1be0>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115be1be0> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115be0380>.navigation
+__________________ test_invalid_observation_fails_closed[nan] __________________
+tests/test_zone_own_executor_observed_reroute.py:220: in test_invalid_observation_fails_closed
+    assert c.navigation.cancelled == 1 and not c.navigation.calls and not c.belief
+E   assert (0 == 1)
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115c31f10>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115c31f10> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115c316d0>.navigation
+_____________ test_invalid_observation_fails_closed[unknown_door] ______________
+tests/test_zone_own_executor_observed_reroute.py:220: in test_invalid_observation_fails_closed
+    assert c.navigation.cancelled == 1 and not c.navigation.calls and not c.belief
+E   assert (0 == 1)
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115c31970>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115c31970> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115c31dc0>.navigation
+____________ test_invalid_observation_fails_closed[observer_error] _____________
+tests/test_zone_own_executor_observed_reroute.py:220: in test_invalid_observation_fails_closed
+    assert c.navigation.cancelled == 1 and not c.navigation.calls and not c.belief
+E   assert (0 == 1)
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x1159e15b0>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x1159e15b0> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x1159e0ef0>.navigation
+_ test_lower_navigation_failure_and_false_completion_are_not_success[exception] _
+tests/test_zone_own_executor_observed_reroute.py:258: in test_lower_navigation_failure_and_false_completion_are_not_success
+    assert c.navigation.cancelled == 1
+E   assert 0 == 1
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef5520>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef5520> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115ef46e0>.navigation
+__ test_lower_navigation_failure_and_false_completion_are_not_success[failed] __
+tests/test_zone_own_executor_observed_reroute.py:258: in test_lower_navigation_failure_and_false_completion_are_not_success
+    assert c.navigation.cancelled == 1
+E   assert 0 == 1
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef72f0>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef72f0> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115ef5490>.navigation
+_ test_lower_navigation_failure_and_false_completion_are_not_success[invented_state] _
+tests/test_zone_own_executor_observed_reroute.py:258: in test_lower_navigation_failure_and_false_completion_are_not_success
+    assert c.navigation.cancelled == 1
+E   assert 0 == 1
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef5700>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef5700> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115ef78c0>.navigation
+_ test_lower_navigation_failure_and_false_completion_are_not_success[false_reached] _
+tests/test_zone_own_executor_observed_reroute.py:258: in test_lower_navigation_failure_and_false_completion_are_not_success
+    assert c.navigation.cancelled == 1
+E   assert 0 == 1
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef7980>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef7980> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115ef66f0>.navigation
+________ test_own_estimate_route_end_is_separate_from_delivery_referee _________
+tests/test_zone_own_executor_observed_reroute.py:268: in test_own_estimate_route_end_is_separate_from_delivery_referee
+    assert c.navigation.cancelled == 1
+E   assert 0 == 1
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115f07d40>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115f07d40> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115f05880>.navigation
+______ test_one_pair_side_failure_propagates_existing_abort_enum[no_comm] ______
+tests/test_zone_own_executor_observed_reroute.py:281: in test_one_pair_side_failure_propagates_existing_abort_enum
+    assert a.navigation.cancelled == b.navigation.cancelled == 1
+E   assert 0 == 1
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115f062d0>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115f062d0> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115f055b0>.navigation
+______ test_one_pair_side_failure_propagates_existing_abort_enum[peer_ko] ______
+tests/test_zone_own_executor_observed_reroute.py:281: in test_one_pair_side_failure_propagates_existing_abort_enum
+    assert a.navigation.cancelled == b.navigation.cancelled == 1
+E   assert 0 == 1
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef4e30>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef4e30> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115ef7020>.navigation
+_____ test_one_pair_side_failure_propagates_existing_abort_enum[leader_ko] _____
+tests/test_zone_own_executor_observed_reroute.py:281: in test_one_pair_side_failure_propagates_existing_abort_enum
+    assert a.navigation.cancelled == b.navigation.cancelled == 1
+E   assert 0 == 1
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef5790>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115ef5790> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115ef6810>.navigation
+____ test_one_pair_side_failure_propagates_existing_abort_enum[structured] _____
+tests/test_zone_own_executor_observed_reroute.py:281: in test_one_pair_side_failure_propagates_existing_abort_enum
+    assert a.navigation.cancelled == b.navigation.cancelled == 1
+E   assert 0 == 1
+E    +  where 0 = <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115c33ad0>.cancelled
+E    +    where <test_zone_own_executor_observed_reroute.FakeNavigation object at 0x115c33ad0> = <harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115c32270>.navigation
+________________ test_failed_stop_is_retried_without_new_motion ________________
+tests/test_zone_own_executor_observed_reroute.py:377: in test_failed_stop_is_retried_without_new_motion
+    assert result.state == 'FAILED' and 'STOP_UNCONFIRMED' in result.reason
+E   AssertionError: assert ('FAILED' == 'FAILED'
+E     
+E       FAILED and 'STOP_UNCONFIRMED' in 'INVALID_OWN_OBSERVATION')
+E    +  where 'INVALID_OWN_OBSERVATION' = Decision(state='FAILED', reason='INVALID_OWN_OBSERVATION', route=DoorRoute(passage_id='door_narrow', direction='west_t...5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0, 0.0)), blocked_doors=()).reason
+_____________ test_pair_announces_abort_even_while_stop_is_pending _____________
+tests/test_zone_own_executor_observed_reroute.py:391: in test_pair_announces_abort_even_while_stop_is_pending
+    assert tick(a, 1, 'narrow').state == 'STOPPING'
+E   AssertionError: assert 'PAIR_REPLAN_REQUIRED' == 'STOPPING'
+E     
+E     - STOPPING
+E     + PAIR_REPLAN_REQUIRED
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_observation_triggers_cancellation_then_wide_from_fresh_pose
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[False]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_both_blocked_refuses_and_cancels_old_route[True]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[running]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[failed]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_never_starts_new_path_before_queue_cancellation[reached]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[black]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[wrong_hash]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[pose_uncertain]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[nan]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[unknown_door]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_invalid_observation_fails_closed[observer_error]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[exception]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[failed]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[invented_state]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_lower_navigation_failure_and_false_completion_are_not_success[false_reached]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_own_estimate_route_end_is_separate_from_delivery_referee
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[no_comm]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[peer_ko]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[leader_ko]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[structured]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_failed_stop_is_retried_without_new_motion
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_pair_announces_abort_even_while_stop_is_pending
+23 failed, 39 passed in 0.81s
+T09b case: ignore_messages
+..FFF.........................................................           [100%]
+=================================== FAILURES ===================================
+____ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko] ____
+tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
+    assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
+E   AssertionError: assert ('door_narrow' == 'door_wide'
+E     
+E     - door_wide
+E     + door_narrow)
+___ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko] ___
+tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
+    assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
+E   AssertionError: assert ('door_narrow' == 'door_wide'
+E     
+E     - door_wide
+E     + door_narrow)
+__ test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured] ___
+tests/test_zone_own_executor_observed_reroute.py:120: in test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate
+    assert after.route.passage_id == 'door_wide' and after.state == 'REPLAN_READY'
+E   AssertionError: assert ('door_narrow' == 'door_wide'
+E     
+E     - door_wide
+E     + door_narrow)
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[peer_ko]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[leader_ko]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_actual_inbox_delivery_only_and_no_comm_cannot_anticipate[structured]
+3 failed, 59 passed in 0.52s
+T09b case: ignore_pair_failure
+.....................................FFFFFF.................F.           [100%]
+=================================== FAILURES ===================================
+______ test_one_pair_side_failure_propagates_existing_abort_enum[no_comm] ______
+tests/test_zone_own_executor_observed_reroute.py:280: in test_one_pair_side_failure_propagates_existing_abort_enum
+    assert tick(b, 1).reason == 'PAIR_NOT_SAFE'
+E   AssertionError: assert None == 'PAIR_NOT_SAFE'
+E    +  where None = Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()).reason
+E    +    where Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()) = tick(<harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115bdc770>, 1)
+______ test_one_pair_side_failure_propagates_existing_abort_enum[peer_ko] ______
+tests/test_zone_own_executor_observed_reroute.py:280: in test_one_pair_side_failure_propagates_existing_abort_enum
+    assert tick(b, 1).reason == 'PAIR_NOT_SAFE'
+E   AssertionError: assert None == 'PAIR_NOT_SAFE'
+E    +  where None = Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()).reason
+E    +    where Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()) = tick(<harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115bdc290>, 1)
+_____ test_one_pair_side_failure_propagates_existing_abort_enum[leader_ko] _____
+tests/test_zone_own_executor_observed_reroute.py:280: in test_one_pair_side_failure_propagates_existing_abort_enum
+    assert tick(b, 1).reason == 'PAIR_NOT_SAFE'
+E   AssertionError: assert None == 'PAIR_NOT_SAFE'
+E    +  where None = Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()).reason
+E    +    where Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()) = tick(<harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115bdc8f0>, 1)
+____ test_one_pair_side_failure_propagates_existing_abort_enum[structured] _____
+tests/test_zone_own_executor_observed_reroute.py:280: in test_one_pair_side_failure_propagates_existing_abort_enum
+    assert tick(b, 1).reason == 'PAIR_NOT_SAFE'
+E   AssertionError: assert None == 'PAIR_NOT_SAFE'
+E    +  where None = Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()).reason
+E    +    where Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()) = tick(<harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115bde330>, 1)
+_____ test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route _____
+tests/test_zone_own_executor_observed_reroute.py:296: in test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route
+    assert tick(b, 1).reason == 'PAIR_NOT_SAFE'
+E   AssertionError: assert None == 'PAIR_NOT_SAFE'
+E    +  where None = Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()).reason
+E    +    where Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()) = tick(<harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115e6ce60>, 1)
+_______________ test_pair_heartbeat_timeout_stops_before_motion ________________
+tests/test_zone_own_executor_observed_reroute.py:306: in test_pair_heartbeat_timeout_stops_before_motion
+    assert tick(a, 1, now=.15).reason == 'PAIR_NOT_SAFE'
+E   AssertionError: assert None == 'PAIR_NOT_SAFE'
+E    +  where None = Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()).reason
+E    +    where Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()) = tick(<harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115eb7f50>, 1, now=0.15)
+_____________ test_pair_announces_abort_even_while_stop_is_pending _____________
+tests/test_zone_own_executor_observed_reroute.py:393: in test_pair_announces_abort_even_while_stop_is_pending
+    assert tick(b, 1).reason == 'PAIR_NOT_SAFE'
+E   AssertionError: assert None == 'PAIR_NOT_SAFE'
+E    +  where None = Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()).reason
+E    +    where Decision(state='RUNNING', reason=None, route=DoorRoute(passage_id='door_narrow', direction='west_to_east', poses_m_rad...d=(1.5707963267948966, 1.5707963267948966, 0.0, 0.0, -1.5707963267948966, -1.5707963267948966, 0.0)), blocked_doors=()) = tick(<harness.zone_observed_door_reroute.ObservedDoorReroute object at 0x115e9c5c0>, 1)
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[no_comm]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[peer_ko]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[leader_ko]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_one_pair_side_failure_propagates_existing_abort_enum[structured]
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_pair_blockage_stops_job_and_never_unilaterally_drives_new_route
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_pair_heartbeat_timeout_stops_before_motion
+FAILED tests/test_zone_own_executor_observed_reroute.py::test_pair_announces_abort_even_while_stop_is_pending
+7 failed, 55 passed in 0.59s
