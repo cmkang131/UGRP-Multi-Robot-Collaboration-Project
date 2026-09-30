@@ -1,7 +1,7 @@
 """Simulation-only teacher envelope; runtime interlocks remain primary.
 
-2026-10-01 coordinator decision: a conditional disc bound is sufficient here,
-not an exact rotation/multi-body swept-path proof or a student calibration.
+2026-10-01 coordinator decision 2: envelopes are advisory; finite geometry,
+start clearance and the mandatory runtime interlock remain blocking checks.
 """
 import math
 
@@ -12,13 +12,23 @@ from harness.final_environment_measurement_v2 import (  # compatibility for diag
 CLEARANCE_REVIEW = 'configs/zone_final_pair_v88_clearance.json'
 
 
+def runtime_interlock():
+    """Required declaration, not an enable/disable option."""
+    return {'required': True, 'minimum_m': .30, 'abort_buffer_m': .05,
+            'robot_radius_bound_m': .40, 'max_substep_displacement_m': .01,
+            'checks': ['before_substep', 'after_substep', 'before_command', 'eval_0.05_s'],
+            'invalid_geometry': 'hold_then_HOST_ERROR',
+            'trip': 'hold_then_HOST_ERROR_keep_partial_invalid'}
+
+
 def _finite(value, *, positive=False):
     if not math.isfinite(value) or (positive and value <= 0):
         raise ValueError('non-finite or non-positive envelope input')
     return value
 
 
-def conservative_envelope(static, events, starts, gain_upper, *, sim_cap_s=370., beam=None):
+def conservative_envelope(static, events, starts, gain_upper, *, sim_cap_s=370., beam=None,
+                          pair_cancellation=False):
     """Sum every |command| lease, with NO sign cancellation, even in step pairs.
 
     Translation <= Kf*integral(|forward|) + Kl*integral(|left|), regardless
@@ -27,7 +37,13 @@ def conservative_envelope(static, events, starts, gain_upper, *, sim_cap_s=370.,
     is retained as well, deliberately overbounding articulated posture changes.
     For loaded, add the beam half-diagonal (>= half-length) to EACH carrier;
     a third disc at the beam start contains BOTH carrier discs. No rigid-pair
-    or equal/opposite command cancellation is assumed.
+    or equal/opposite command cancellation is assumed by default.
+
+    The optional estimate uses the peak absolute signed step integral on each
+    axis, plus every non-step absolute lease (including PRBS). Thus opposite
+    step pairs cancel but their outbound excursion is retained. It assumes
+    symmetric response in fixed axes; yaw, lag and load can invalidate it.
+    Never cancel commands BETWEEN carriers or use this estimate as a gate.
     """
     from sim.camera_robot_port import validate_raw_action
     axes = ('forward', 'left', 'turn')
@@ -49,6 +65,8 @@ def conservative_envelope(static, events, starts, gain_upper, *, sim_cap_s=370.,
         beam_radius = math.hypot(_finite(half_length, positive=True),
                                  _finite(half_width, positive=True))
     integrals = {rid: {axis: [] for axis in axes} for rid in starts}
+    step_position = {rid: dict.fromkeys(axes, 0.) for rid in starts}
+    step_peak = {rid: dict.fromkeys(axes, 0.) for rid in starts}
     lease_end = dict.fromkeys(starts, 0.)
     previous_t = 0.
     for event in events:
@@ -66,10 +84,15 @@ def conservative_envelope(static, events, starts, gain_upper, *, sim_cap_s=370.,
             raise ValueError('overlapping/out-of-window drive lease')
         lease_end[rid] = t+duration
         for axis in axes:
-            integrals[rid][axis].append(abs(_finite(action[axis]))*duration)
+            impulse = _finite(action[axis])*duration
+            if pair_cancellation and event.get('phase', '').split('_')[-1] == 'step':
+                step_position[rid][axis] += impulse
+                step_peak[rid][axis] = max(step_peak[rid][axis], abs(step_position[rid][axis]))
+            else:
+                integrals[rid][axis].append(abs(impulse))
     bodies = {}
     for rid, start in starts.items():
-        absolute = {axis: math.fsum(integrals[rid][axis]) for axis in axes}
+        absolute = {axis: math.fsum(integrals[rid][axis])+step_peak[rid][axis] for axis in axes}
         translation = math.fsum(gains[a]*absolute[a] for a in ('forward', 'left'))
         yaw = _finite(gains['turn']*absolute['turn'])
         offset = math.dist(start[:2], beam['pose'][:2]) if beam is not None else 0.
@@ -81,6 +104,10 @@ def conservative_envelope(static, events, starts, gain_upper, *, sim_cap_s=370.,
             'tip_radius_from_chassis_m': tip_radius, 'yaw_tip_excursion_bound_m': tip_excursion,
             'excursion_bound_m': translation+tip_excursion,
             'beam_radius_added_m': beam_radius, 'disc_radius_m': _finite(disc, positive=True)}
+        if pair_cancellation:
+            bodies[rid]['estimated_excursion_integral_s'] = bodies[rid].pop('absolute_command_integral_s')
+            bodies[rid]['step_peak_integral_s'] = step_peak[rid]
+            bodies[rid]['step_net_integral_s'] = step_position[rid]
     if beam is not None:
         start = beam['pose']
         disc = max(math.dist(start[:2], starts[rid][:2])+row['disc_radius_m']
@@ -97,10 +124,31 @@ def conservative_envelope(static, events, starts, gain_upper, *, sim_cap_s=370.,
     admitted = all(row['wall_free'] for row in bodies.values())
     return {'admitted': admitted,
         'reason': 'CONSERVATIVE_ENVELOPE_CLEAR' if admitted else 'CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS',
-        'method': 'whole_schedule_absolute_command_integral', 'sign_cancellation': 'none',
+        'method': ('peak_signed_steps_plus_absolute_prbs' if pair_cancellation
+                   else 'whole_schedule_absolute_command_integral'),
+        'sign_cancellation': 'within_robot_step_pairs_only' if pair_cancellation else 'none',
+        'qualification': ('ADVISORY_ESTIMATE_NOT_A_MOTION_BOUND; symmetric fixed-axis step response assumed'
+                          if pair_cancellation else 'ADVISORY_CONDITIONAL_NO_CANCELLATION_BOUND'),
         'sim_window_s': [0., sim_cap_s], 'gain_upper': gains,
         'robot_radius_bound_m': radius, 'wall_margin_m': margin,
         'numeric_guard_m': 1e-10, 'bodies': bodies}
+
+
+def start_pose_check(static, starts, *, beam=None):
+    """Explicit static start gate: 0.30 m plus each body's geometric bound."""
+    bodies = {}
+    for name, pose in {**starts, **({'beam': beam['pose']} if beam else {})}.items():
+        if len(pose) != 3 or not all(math.isfinite(v) for v in pose):
+            raise ValueError('invalid start xy/yaw')
+        radius = math.hypot(*beam['half_extents_m']) if name == 'beam' else .40
+        required = _finite(radius, positive=True)+.30
+        slack = _finite(clearance(static, pose[:2], required))
+        bodies[name] = {'start_xy_yaw': list(pose), 'body_radius_bound_m': radius,
+                        'required_wall_distance_m': required,
+                        'wall_distance_from_start_m': slack+required,
+                        'remaining_clearance_m': slack, 'admitted': slack > 1e-10}
+    return {'admitted': bool(bodies) and all(row['admitted'] for row in bodies.values()),
+            'wall_margin_m': .30, 'numeric_guard_m': 1e-10, 'bodies': bodies}
 
 
 def path_preflight(check, map_id):
@@ -110,13 +158,19 @@ def path_preflight(check, map_id):
     plan = design(check)
     if map_id != plan['map_id']:
         raise ValueError('collection clearance map differs from registered design')
-    static = contract.resolve(map_id)[0]
     try:
+        static = contract.resolve(map_id)[0]
         policy = contract.base.read(contract.ROOT / CLEARANCE_REVIEW)
         # These are coordinator assumptions, not qualified plant/model bounds.
-        if (policy['schema'] != 'ugrp.final_pair_conservative_envelope.v1'
+        if (policy['schema'] != 'ugrp.final_pair_conservative_envelope.v2'
                 or policy['scope'] != 'SIMULATION_ONLY_TEACHER_CALIBRATION'
+                or policy['envelope_policy'] != 'ADVISORY'
+                or policy['runtime_interlock'] != runtime_interlock()
+                or policy['wall_margin_m'] != .30 or policy['runtime_abort_buffer_m'] != .05
                 or policy['gain_upper'] != {'forward': 2.62, 'left': 1.86, 'turn': 2*1.149964146433179}
+                or plan['clearance'] != {k: runtime_interlock()[k] for k in
+                                        ('minimum_m', 'abort_buffer_m', 'robot_radius_bound_m',
+                                         'max_substep_displacement_m')}
                 or plan['sim_cap_s'] != 370.):
             raise ValueError('coordinator envelope policy differs from registered assumptions')
         loaded = check == 'calibration-loaded'
@@ -126,18 +180,25 @@ def path_preflight(check, map_id):
             beam = {'pose': LOADED_BEAM_POSE,
                     'half_extents_m': CATALOGUE['long_beam'].landing_half_extents_m}
         starts = teacher_stations(static) if loaded else {'r1': UNLOADED_POSE}
-        return conservative_envelope(static, schedule(check), starts, policy['gain_upper'],
-                                     sim_cap_s=plan['sim_cap_s'], beam=beam)
+        events = schedule(check)
+        bounds = {key: conservative_envelope(static, events, starts, policy['gain_upper'],
+                  sim_cap_s=plan['sim_cap_s'], beam=beam, pair_cancellation=paired)
+                  for key, paired in [('no_cancellation_bound', False), ('pair_cancellation_estimate', True)]}
+        start = start_pose_check(static, starts, beam=beam)
+        return {'admitted': start['admitted'], 'envelope_policy': 'ADVISORY',
+                'scope': policy['scope'], 'decision': '2026-10-01 coordinator decision 2',
+                'reason': 'START_POSE_CLEAR_INTERLOCK_REQUIRED' if start['admitted'] else 'START_POSE_TOO_CLOSE_TO_WALL',
+                'start_pose_check': start, 'runtime_interlock': runtime_interlock(), **bounds}
     except (ValueError, KeyError, TypeError, OverflowError, OSError) as exc:
         return {'admitted': False, 'reason': 'INVALID_CONSERVATIVE_ENVELOPE_INPUT', 'detail': str(exc)}
 
 
 def rejection_message(receipt):
-    numbers = '; '.join(f"{name}: radius={row['disc_radius_m']:.6f} m, "
+    numbers = '; '.join(f"{name}: required={row['required_wall_distance_m']:.6f} m, "
                        f"wall_distance={row['wall_distance_from_start_m']:.6f} m, "
                        f"remaining={row['remaining_clearance_m']:.6f} m"
-                       for name, row in receipt.get('bodies', {}).items())
-    return 'FULL_PATH_CLEARANCE_REJECTED: ' + receipt['reason'] + ' — ' + (numbers or receipt.get('detail', ''))
+                       for name, row in receipt.get('start_pose_check', {}).get('bodies', {}).items())
+    return 'COLLECTION_PREFLIGHT_REJECTED: ' + receipt['reason'] + ' — ' + (numbers or receipt.get('detail', ''))
 
 
 def require_collection_clearance(bundle):
@@ -147,9 +208,12 @@ def require_collection_clearance(bundle):
         return
     if bundle.get('measurement') != design(bundle['check']):
         raise ValueError('collection measurement differs from registered design')
+    if bundle.get('runtime_interlock') != runtime_interlock():
+        raise ValueError('MANDATORY_COLLECTION_INTERLOCK_REQUIRED')
     receipt = path_preflight(bundle['check'], bundle['map_id'])
     if not receipt['admitted']:
         raise ValueError(rejection_message(receipt))
+    return receipt
 
 
 def sphere_clearances(static, xyz, radii):

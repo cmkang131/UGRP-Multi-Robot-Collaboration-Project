@@ -200,8 +200,7 @@ def test_no_clearance_truth_channel_for_student(monkeypatch):
 
 def test_bundle_clocks_are_exactly_the_applied_loop_values(tmp_path, monkeypatch):
     from scripts import run_final_pair_v3 as run
-    # Isolate fake clock behavior after hypothetical admission.
-    monkeypatch.setattr(run, 'require_collection_clearance', lambda bundle: None)
+    # Fake clocks with real collection admission.
     run_case = run.run_case
     from tests.test_zone_final_pair_v3 import FakePhysics,FakeRuntime
     for check,period,cap in [('p03',.05,120.),('calibration-fine',.2,370.)]:
@@ -245,10 +244,17 @@ def test_offline_hammerstein_evidence_and_actual_schedule_have_same_design():
 
 
 @pytest.mark.parametrize('check', c.CHECKS[2:])
-def test_collection_rejects_all_entry_points_before_output_or_physics(tmp_path, monkeypatch, capsys, check):
+def test_unsafe_start_rejects_all_entry_points_before_output_or_physics(tmp_path, monkeypatch, capsys, check):
     from scripts import run_final_pair_v3 as run
     from sim.final_pair_v3 import PhysicsBackend
     from harness.zone_final_pair_clearance import CLEARANCE_REVIEW
+    from harness import zone_final_pair_calibration as cal, zone_final_pair_excitation as excitation
+    if check == 'calibration-loaded':
+        starts = cal.teacher_stations(c.resolve(MAP_ID)[0])
+        starts['r1'][0] = 2.3
+        monkeypatch.setattr(cal, 'teacher_stations', lambda _: starts)
+    else:
+        monkeypatch.setattr(excitation, 'UNLOADED_POSE', [2.3, -.85, 0.])
     row = c.cases(check)[0]
     bundle = {**c.bundle(row['map_id'], check), 'case': row}
     assert CLEARANCE_REVIEW in bundle['source_sha256']
@@ -258,21 +264,21 @@ def test_collection_rejects_all_entry_points_before_output_or_physics(tmp_path, 
     plan = json.loads(capsys.readouterr().out)
     assert not plan['runnable']
     assert plan['blocked_on'][0].startswith(
-        'FULL_PATH_CLEARANCE_REJECTED: CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS')
+        'COLLECTION_PREFLIGHT_REJECTED: START_POSE_TOO_CLOSE_TO_WALL')
     assert plan['clearance_preflight'][0] == bundle['clearance_preflight']
     # Neither a fake saved PASS nor a direct owner constructor may bypass the
-    # recomputed envelope. Imports themselves are sentinels.
+    # recomputed start check. Imports themselves are sentinels.
     bundle['clearance_preflight']['admitted'] = True
     monkeypatch.setitem(sys.modules, 'sim.zone_final_v3_scene', None)
     monkeypatch.setitem(sys.modules, 'sim.final_pair_v3', None)
     def forbidden(*args, **kwargs):
         pytest.fail('reached source/lock/backend work before clearance rejection')
     monkeypatch.setattr(run, 'check_source', forbidden)
-    with pytest.raises(ValueError, match='FULL_PATH_CLEARANCE_REJECTED'):
+    with pytest.raises(ValueError, match='COLLECTION_PREFLIGHT_REJECTED'):
         run.main(args + ['--execute'])
-    with pytest.raises(ValueError, match='FULL_PATH_CLEARANCE_REJECTED'):
+    with pytest.raises(ValueError, match='COLLECTION_PREFLIGHT_REJECTED'):
         run.run_case(bundle, tmp_path/'case', seed=911, backend_factory=forbidden)
-    with pytest.raises(ValueError, match='FULL_PATH_CLEARANCE_REJECTED'):
+    with pytest.raises(ValueError, match='COLLECTION_PREFLIGHT_REJECTED'):
         PhysicsBackend(bundle, tmp_path/'native', seed=911)
     assert not list(tmp_path.iterdir())
 

@@ -190,9 +190,7 @@ from harness import zone_final_pair_contract as c
 from scripts import run_final_pair_v3 as run
 from sim.final_pair_v3 import make_scene
 from tests.test_zone_final_pair_v3 import FakePhysics, FakeRuntime
-# Fake clocks only, conditional on hypothetical admission. REVIEW_344b tests
-# production rejection independently without this patch.
-run.require_collection_clearance = lambda bundle: None
+# Fake clocks only, with the real collection preflight.
 check = CHECK
 made, students = [], []
 class Physics(FakePhysics):
@@ -237,8 +235,7 @@ from pathlib import Path
 from harness import zone_final_pair_contract as c
 from scripts import run_final_pair_v3 as run
 from tests.test_zone_final_pair_v3 import FakePhysics
-# Fake lifecycle/reset test only; production clearance remains blocked.
-run.require_collection_clearance = lambda bundle: None
+# Fake lifecycle/reset test with real collection admission.
 made=[]
 class Physics(FakePhysics):
     def __init__(self,*a,**kw): super().__init__(*a,**kw); made.append(self)
@@ -293,9 +290,7 @@ from scripts import run_final_pair_v3 as run
 from sim.final_pair_v3 import PhysicsBackend
 from sim.final_environment_checks import PhysicsBackend as Base
 from sim import render_profile as rp
-# Fake render-profile owner only; isolate this downstream rejection from the
-# now-required preflight rejection (tested without patches in REVIEW_344b).
-run.require_collection_clearance = lambda bundle: None
+# Fake render-profile owner only; the real collection preflight remains enabled.
 audit={'light_castshadow':[0]*4, 'materials_with_reflectance':{}, 'light_cutoff':[180.]*4,
        'ground_texture_mean_rgb':[125.,122.,118.]}
 fault=FAULT

@@ -161,12 +161,20 @@ def test_nan_and_missing_geometry_are_rejected(fault):
     ('calibration-fine', 1.208, 5.41184, 6.91184),
     ('calibration-loaded', 1.9525, 8.7472, 11.295597782702377),
 ])
-def test_registered_schedules_block_with_numbers_in_plan(capsys, check, integral, translation, disc):
+def test_registered_schedules_advisory_with_both_estimates_in_plan(capsys, check, integral, translation, disc):
     from scripts.run_final_pair_v3 import main
     assert main(['--check', check, '--expected-source-sha', 'a'*40, '--output', '/unused']) == 0
     plan = json.loads(capsys.readouterr().out)
     receipt = plan['clearance_preflight'][0]
-    assert not plan['runnable'] and not receipt['admitted']
+    assert plan['runnable'] and receipt['admitted'] and not plan['blocked_on']
+    assert receipt['envelope_policy'] == 'ADVISORY'
+    assert receipt['start_pose_check']['admitted']
+    assert receipt['runtime_interlock']['required'] is True
+    estimate = receipt['pair_cancellation_estimate']
+    assert estimate['sign_cancellation'] == 'within_robot_step_pairs_only'
+    assert estimate['bodies']['r1']['disc_radius_m'] < disc
+    receipt = receipt['no_cancellation_bound']
+    assert not receipt['admitted']
     assert receipt['sim_window_s'] == [0., 370.]
     assert receipt['gain_upper'] == GAINS
     assert receipt['reason'] == 'CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS'
@@ -174,10 +182,142 @@ def test_registered_schedules_block_with_numbers_in_plan(capsys, check, integral
     assert row['absolute_command_integral_s'] == pytest.approx(dict.fromkeys(GAINS, integral))
     assert row['translation_bound_m'] == pytest.approx(translation)
     assert row['disc_radius_m'] == pytest.approx(disc)
-    assert f'radius={disc:.6f}' in plan['blocked_on'][0]
     if check == 'calibration-loaded':
         assert receipt['bodies']['r2']['disc_radius_m'] == pytest.approx(disc)
         assert receipt['bodies']['beam']['disc_radius_m'] == pytest.approx(disc+.4732)
         assert [receipt['bodies'][name]['wall_distance_from_start_m'] for name in ('r1', 'r2', 'beam')] == pytest.approx([.8518, 1.3518, 1.325])
     else:
         assert row['wall_distance_from_start_m'] == pytest.approx(1.025)
+
+
+def test_pair_estimate_retains_outbound_peak_and_does_not_cancel_prbs():
+    events = [*[event(i*.05, forward=.03) for i in range(200)],
+              *[event(11.+i*.05, forward=-.03) for i in range(200)],
+              event(22., forward=.02, duration=.5, phase='prbs'),
+              event(22.5, forward=-.02, duration=.5, phase='prbs')]
+    result = clearance.conservative_envelope(c.resolve(MAP_ID)[0], events,
+        {'r1': UNLOADED_POSE}, GAINS, pair_cancellation=True)
+    row = result['bodies']['r1']
+    assert row['step_peak_integral_s']['forward'] == pytest.approx(.3)
+    assert row['step_net_integral_s']['forward'] == pytest.approx(0.)
+    assert row['estimated_excursion_integral_s']['forward'] == pytest.approx(.32)
+    assert row['translation_bound_m'] == pytest.approx(.32*2.62)
+    assert 'NOT_A_MOTION_BOUND' in result['qualification']
+
+
+@pytest.mark.parametrize('distance,admitted', [(.69, False), (.70, False), (.71, True)])
+@pytest.mark.parametrize('wall', [False, True])
+def test_explicit_start_gate_uses_robot_bound_plus_30cm(distance, admitted, wall):
+    static = {'bounds_m': [0., 20., -10., 10.],
+              'obstacles': [{'kind': 'wall', 'center_m': [10., 0.], 'half_extents_m': [1., 1.]}]}
+    pose = [9.-distance if wall else distance, 0., 0.]
+    receipt = clearance.start_pose_check(static, {'r1': pose})
+    assert receipt['admitted'] is admitted
+    assert receipt['bodies']['r1']['required_wall_distance_m'] == pytest.approx(.70)
+
+
+@pytest.mark.parametrize('fault', ['missing', 'disabled', 'buffer', 'cadence'])
+def test_bundle_cannot_disable_interlock_at_either_entry(tmp_path, monkeypatch, fault):
+    import sys
+    from scripts import run_final_pair_v3 as run
+    from sim.final_pair_v3 import PhysicsBackend
+    case = c.cases('calibration-loaded')[0]
+    bundle = {**c.bundle(MAP_ID, 'calibration-loaded'), 'case': case}
+    if fault == 'missing': del bundle['runtime_interlock']
+    elif fault == 'disabled': bundle['runtime_interlock']['required'] = False
+    elif fault == 'buffer': bundle['runtime_interlock']['abort_buffer_m'] = 0.
+    else: bundle['runtime_interlock']['checks'].remove('before_substep')
+    monkeypatch.setitem(sys.modules, 'sim.zone_final_v3_scene', None)
+    def forbidden(*a, **kw): pytest.fail('backend must not be reached')
+    with pytest.raises(ValueError, match='MANDATORY_COLLECTION_INTERLOCK_REQUIRED'):
+        run.run_case(bundle, tmp_path/'case', seed=911, backend_factory=forbidden)
+    with pytest.raises(ValueError, match='MANDATORY_COLLECTION_INTERLOCK_REQUIRED'):
+        PhysicsBackend(bundle, tmp_path/'native', seed=911)
+    assert not list(tmp_path.iterdir())
+
+
+@pytest.mark.parametrize('fault', ['missing_interlock', 'disabled', 'buffer', 'nan_wall', 'missing_walls', 'nan_start'])
+def test_invalid_geometry_or_interlock_blocks_cli_before_execution(monkeypatch, capsys, fault):
+    from scripts import run_final_pair_v3 as run
+    from harness import zone_final_pair_excitation as excitation
+    original_read, original_resolve = c.base.read, c.resolve
+    policy = original_read(c.ROOT/clearance.CLEARANCE_REVIEW)
+    static, row, contract = original_resolve(MAP_ID)
+    static = copy.deepcopy(static)
+    if fault == 'missing_interlock': del policy['runtime_interlock']
+    elif fault == 'disabled': policy['runtime_interlock']['required'] = False
+    elif fault == 'buffer': policy['runtime_interlock']['abort_buffer_m'] = 0.
+    elif fault == 'nan_wall': static['obstacles'][0]['center_m'][0] = float('nan')
+    elif fault == 'missing_walls': static['obstacles'] = []
+    else: monkeypatch.setattr(excitation, 'UNLOADED_POSE', [3.25, -.85, float('nan')])
+    monkeypatch.setattr(c, 'resolve', lambda _: (static, row, contract))
+    monkeypatch.setattr(c.base, 'read', lambda p: policy if p == c.ROOT/clearance.CLEARANCE_REVIEW else original_read(p))
+    args = ['--check', 'calibration-unloaded', '--expected-source-sha', 'a'*40, '--output', '/unused']
+    receipt = clearance.path_preflight('calibration-unloaded', MAP_ID)
+    assert not receipt['admitted']
+    if fault == 'nan_wall':
+        # The map hash rejects NaN even earlier than CLI plan serialization.
+        with pytest.raises(ValueError, match='Out of range float'):
+            run.main(args)
+        with pytest.raises(ValueError, match='Out of range float'):
+            run.main(args+['--execute'])
+        return
+    assert run.main(args) == 0
+    plan = json.loads(capsys.readouterr().out)
+    assert not plan['runnable']
+    json.dumps(plan['clearance_preflight'], allow_nan=False)
+    monkeypatch.setattr(run, 'check_source', lambda *a: pytest.fail('source/physics gate reached'))
+    with pytest.raises(ValueError, match='INVALID_CONSERVATIVE_ENVELOPE_INPUT'):
+        run.main(args+['--execute'])
+
+
+@pytest.mark.parametrize('fault', ['wall', 'nan', 'missing'])
+def test_interlock_trip_ends_fake_collection_and_labels_kept_partial_data(tmp_path, monkeypatch, fault):
+    from scripts import run_final_pair_v3 as run
+    from tests.test_zone_final_pair_review_fixes import fake_guard
+    from tests.test_zone_final_pair_v3 import FakePhysics
+    guard = fake_guard(monkeypatch, True)
+    out = tmp_path/'case'
+    guard._append = lambda path, row: run.write(out/path, row)
+    made = []
+    class Physics(FakePhysics):
+        def eval_sample(self):
+            super().eval_sample()
+            if len(self.samples) == 2:
+                if fault == 'wall': guard.world.data.geom_xpos[1, 0] = 2.3
+                elif fault == 'nan': guard.world.data.geom_xpos[2, 2] = float('nan')
+                else: guard.world.model.ngeom = 0
+            guard.collection_guard()
+            run.write(out/'eval_only/partial.json', {'sample_time': self.now})
+    def factory(*a, **kw):
+        obj = Physics(*a, **kw)
+        made.append(obj)
+        return obj
+    case = c.cases('calibration-loaded')[0]
+    bundle = {**c.bundle(MAP_ID, 'calibration-loaded'), 'case': case}
+    result = run.run_case(bundle, out, seed=911, backend_factory=factory)
+    assert result['status'] == 'HOST_ERROR' and not result['protocol_complete']
+    assert result['collection_data_status'] == 'PARTIAL_INVALID_HOST_ERROR'
+    assert result['partial_data_retained'] and made[0].closed
+    assert len(made[0].samples) == 2 and guard.held == ['r1', 'r2']
+    hashes = json.loads((out/'artifacts.sha256.json').read_text())
+    for path in ('eval_only/partial.json', 'eval_only/clearance_abort.jsonl'):
+        assert hashes[path] == c.base.sha(out/path)
+    assert result['clearance_preflight'] == bundle['clearance_preflight']
+    saved = json.loads((out/'result.json').read_text())
+    assert saved['clearance_preflight']['no_cancellation_bound']['bodies']
+    assert saved['clearance_preflight']['pair_cancellation_estimate']['bodies']
+
+
+@pytest.mark.parametrize('entry', ['issue', 'eval_sample'])
+def test_command_and_50ms_eval_cannot_skip_guard(monkeypatch, entry):
+    from tests.test_zone_final_pair_review_fixes import fake_guard
+    from sim.final_environment_checks import PhysicsBackend as Base
+    obj = fake_guard(monkeypatch, True)
+    obj.world.data.geom_xpos[2, 2] = float('nan')
+    monkeypatch.setattr(Base, 'eval_sample', lambda _: None)
+    with pytest.raises(ValueError):
+        if entry == 'issue': obj.issue('r1', {'kind': 'hold'})
+        else: obj.eval_sample()
+    assert obj.held == ['r1', 'r2']
+    assert obj.saved[0][0] == 'eval_only/clearance_abort.jsonl'

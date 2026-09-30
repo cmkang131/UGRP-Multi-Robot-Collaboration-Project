@@ -1,8 +1,8 @@
 {
-  "schema": "ugrp.final_pair_conservative_envelope.v1",
+  "schema": "ugrp.final_pair_conservative_envelope.v2",
   "decision_date": "2026-10-01",
   "scope": "SIMULATION_ONLY_TEACHER_CALIBRATION",
-  "decision": "Runtime interlocks are primary; a hit invalidates data and holds then aborts HOST_ERROR. Exact rotation/multi-body swept-path proof is not required.",
+  "decision": "Coordinator decision 2: SIMULATION-ONLY teacher collection envelopes are ADVISORY. Record both estimates, never block on their size. Finite geometry, explicit start clearance and the mandatory interlock still block; trips hold then end as HOST_ERROR, retaining and labelling partial invalid data.",
   "gain_upper": {
     "forward": 2.62,
     "left": 1.86,
@@ -32,5 +32,24 @@
   "geometry": "Robot/arm bound 0.40 m; yaw tip translation <= R*min(total_abs_yaw,2). Loaded: tip radius = max(0.40, chassis-to-beam-centre + beam half-diagonal); add half-diagonal to both carrier discs. Beam-start disc encloses both carrier discs.",
   "wall_margin_m": 0.3,
   "runtime_abort_buffer_m": 0.05,
-  "qualification": "Conditional preflight for simulation-only teacher data. Does not qualify loaded/fine/turn calibration, hardware safety, P03, carry, or E2E."
+  "qualification": "Advisory estimates for simulation-only teacher data; not qualified motion bounds, hardware safety, P03/carry/E2E evidence.",
+  "decision_number": 2,
+  "envelope_policy": "ADVISORY",
+  "runtime_interlock": {
+    "required": true,
+    "minimum_m": 0.3,
+    "abort_buffer_m": 0.05,
+    "robot_radius_bound_m": 0.4,
+    "max_substep_displacement_m": 0.01,
+    "checks": [
+      "before_substep",
+      "after_substep",
+      "before_command",
+      "eval_0.05_s"
+    ],
+    "invalid_geometry": "hold_then_HOST_ERROR",
+    "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+  },
+  "pair_cancellation_estimate": "Peak absolute signed step integral per robot/axis plus all absolute non-step leases including PRBS; outbound pair excursion is retained. Assumes symmetric fixed-axis response, ignores lag and yaw coupling. Never cancels between carriers; not a motion bound.",
+  "start_pose_check": "Block at wall distance <= 0.30 m + robot bound 0.40 m (numeric guard 1e-10 m). Also check beam start with its half-diagonal + 0.30 m. Missing/NaN geometry blocks."
 }

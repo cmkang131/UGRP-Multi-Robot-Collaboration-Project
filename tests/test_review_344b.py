@@ -123,7 +123,7 @@ print(json.dumps({{'baseline':baseline, 'mutation':mutation, 'failure':failure}}
 
 
 @pytest.mark.parametrize("check", ["calibration-unloaded", "calibration-fine", "calibration-loaded"])
-def test_registered_collection_exceeding_envelope_stops_before_backend(check):
+def test_registered_collection_advisory_reaches_fake_backend(check):
     data = probe(f"""
 import contextlib, io, tempfile
 from pathlib import Path
@@ -149,11 +149,17 @@ with tempfile.TemporaryDirectory() as tmp:
 print(json.dumps({{'plan_runnable':plan['runnable'], 'backend_calls':made,
                   'result':result, 'blocked_on':plan['blocked_on']}}))
 """)
-    # 2026-10-01 coordinator decision replaces exact path qualification.
-    # These unchanged schedules still exceed the conservative disc envelope.
-    assert not data["plan_runnable"] and not data["backend_calls"], data
-    assert 'CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS' in data['blocked_on'][0]
-    assert 'radius=' in data['blocked_on'][0] and 'wall_distance=' in data['blocked_on'][0]
+    # Decision 2: envelopes are advisory; the sentinel never executes physics.
+    assert data["plan_runnable"] and data["backend_calls"] == ['backend reached'], data
+    assert not data['blocked_on']
+    result = data['result']
+    assert result['status'] == 'HOST_ERROR'
+    assert result['failure']['message'] == 'REVIEW_SENTINEL_NO_PHYSICS'
+    assert result['collection_data_status'] == 'PARTIAL_INVALID_HOST_ERROR'
+    assert result['partial_data_retained']
+    assert result['clearance_preflight']['envelope_policy'] == 'ADVISORY'
+    assert set(result['clearance_preflight']) >= {'no_cancellation_bound', 'pair_cancellation_estimate'}
+
 
 
 @pytest.mark.parametrize("fault", ["second_nan_xy", "second_nan_radius", "second_negative_radius"])

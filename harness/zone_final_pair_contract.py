@@ -196,7 +196,7 @@ def bundle(map_id, check):
     paths.update((REGISTRY, WORKFLOW, CALIBRATION_CONTRACT,
                   'configs/final_environment_measurement_v1.json'))
     from harness.zone_final_pair_excitation import design
-    from harness.zone_final_pair_clearance import CLEARANCE_REVIEW, path_preflight
+    from harness.zone_final_pair_clearance import CLEARANCE_REVIEW, path_preflight, runtime_interlock
     collection = check.startswith('calibration-')
     if collection:
         cases(check, map_id)  # never label another map as this acquisition cohort
@@ -213,6 +213,7 @@ def bundle(map_id, check):
             'caps': {'reset_per_case_s': 5., 'per_case_s': 370. if collection else 120.,
                      'default_cases': 1 if collection else 3, 'total_including_reset_s': 375.},
             'measurement': design(check) if collection else None,
+            'runtime_interlock': runtime_interlock() if collection else None,
             'clearance_preflight': path_preflight(check, map_id) if collection else None,
             'calibration_selection': 'v88 contract hash; per-load/per-posture optical->chassis->floor; no v2 fallback',
             'calibration_contract': contract, 'physical_ready': False,

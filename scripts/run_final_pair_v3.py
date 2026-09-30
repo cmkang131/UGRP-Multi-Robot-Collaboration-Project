@@ -40,7 +40,7 @@ def checkpoint_record(runtime_record, checkpoint):
 
 
 def run_case(bundle, out, *, seed, backend_factory, runtime_factory=None, calibration=None, calibration_sha=None):
-    require_collection_clearance(bundle)
+    preflight = require_collection_clearance(bundle)
     out = Path(out)
     out.mkdir(parents=True, exist_ok=False)
     write(out / 'bundle.json', bundle)
@@ -55,6 +55,7 @@ def run_case(bundle, out, *, seed, backend_factory, runtime_factory=None, calibr
               'protocol_complete': False, 'physical_success': None, 'research_result': False,
               'student_control': not collection, 'reset_sim_cap_s': 5., 'check_sim_cap_s': cap,
               'timing': bundle['timing'],
+              'clearance_preflight': preflight,
               'loadavg_start': list(os.getloadavg()), 'failure': None}
     try:
         backend = backend_factory(bundle, out, seed=seed)
@@ -118,6 +119,10 @@ def run_case(bundle, out, *, seed, backend_factory, runtime_factory=None, calibr
                 except Exception as exc:
                     result.update(status='HOST_ERROR', cleanup_error=str(exc))
         result['loadavg_end'] = list(os.getloadavg())
+        if collection:
+            failed = result['status'] == 'HOST_ERROR'
+            result['collection_data_status'] = 'PARTIAL_INVALID_HOST_ERROR' if failed else 'UNQUALIFIED'
+            result['partial_data_retained'] = failed
         write(out / 'result.json', result)
         write(out / 'artifacts.sha256.json', {str(p.relative_to(out)): contract.base.sha(p)
             for p in sorted(out.rglob('*')) if p.is_file() and p.name != 'artifacts.sha256.json'})

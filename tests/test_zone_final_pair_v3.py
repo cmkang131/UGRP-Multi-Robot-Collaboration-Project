@@ -214,9 +214,7 @@ class FakeRuntime:
 
 @pytest.mark.parametrize('check', c.CHECKS)
 def test_fake_full_protocol_preserves_120_second_caps_and_ignores_truth(tmp_path, check, monkeypatch):
-    # Exercise only the fake scheduler after hypothetical admission; production
-    # rejection is required separately by test_review_344b.
-    monkeypatch.setattr(run, 'require_collection_clearance', lambda bundle: None)
+    # Fake scheduler with the real mandatory collection preflight.
     case = c.cases(check)[0]
     b = {**c.bundle(case['map_id'], check), 'case': case}
     receipts = []
@@ -240,8 +238,7 @@ def test_fake_full_protocol_preserves_120_second_caps_and_ignores_truth(tmp_path
 
 @pytest.mark.parametrize('failure', [RuntimeError('camera failed'), OSError(errno.ENOSPC, 'full')])
 def test_failure_keeps_partial_record_and_closes_owner(tmp_path, failure, monkeypatch):
-    # Fake owner lifecycle after hypothetical admission, never a physics gate.
-    monkeypatch.setattr(run, 'require_collection_clearance', lambda bundle: None)
+    # Fake owner lifecycle with real collection admission.
     case = c.cases('calibration-fine')[0]
     b = {**c.bundle(case['map_id'], 'calibration-fine'), 'case': case}
     owners = []
