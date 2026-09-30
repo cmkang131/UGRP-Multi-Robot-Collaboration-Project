@@ -1,0 +1,819 @@
+{
+  "review_head": "567038c2563d3d6fb4c653ebc7f797b7e35fe79f",
+  "verdict": "BLOCK",
+  "finding": "E303-1",
+  "new_counterexamples": {
+    "operation": [
+      "policy_hash",
+      "profile",
+      "events",
+      "summary"
+    ],
+    "source_order": [
+      "forward",
+      "reverse"
+    ],
+    "before_successes": 0,
+    "after_successes": 1,
+    "admitted_trials": 2,
+    "event_success_rate_before": 0.0,
+    "event_success_rate_after": 0.5,
+    "strict_xfail": 8
+  },
+  "suites": {
+    "fixture-restored": {
+      "counts": {
+        "passed": 17,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 17,
+      "by_class": {
+        "tests.test_zone_study_evidence": {
+          "passed": 17
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/fixture-restored.xml",
+      "junit_sha256": "f7d4f1589d2e5c28ad02af3ea0a6d77c03874c2508eedd8482db367b5774b150",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/fixture-restored.log",
+      "log_sha256": "18d2c3981ac89cecd8c9b0c54dedd476bcad7f244d3d8d310056de424c2dd785",
+      "failures": []
+    },
+    "generalization": {
+      "counts": {
+        "passed": 58,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 58,
+      "by_class": {
+        "tests.test_review_303e": {
+          "passed": 58
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/generalization.xml",
+      "junit_sha256": "92a4ab792d53e7892889aba624aa1fa9840376b2840ad55f60c9829381c21c9c",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/generalization.log",
+      "log_sha256": "e0e131e4cdfb5e5753be70cfc296a701bdc39dc65201c54fac45b8955a717688",
+      "failures": []
+    },
+    "mutation-code_pin": {
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 1,
+      "by_class": {
+        "tests.test_zone_referee_replay": {
+          "failed": 1
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-code_pin.xml",
+      "junit_sha256": "ce70d00f509a66bff59f5c5e32eebcce94780ada347995ea3a43d2ced291d5f0",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-code_pin.log",
+      "log_sha256": "e3685d07e2307c322bd79b91591677ccec744e7a4b60733e39fb6a7522db00f5",
+      "failures": [
+        {
+          "test": "tests.test_zone_referee_replay::test_changed_code_hash_requires_a_new_plan",
+          "message": "Failed: DID NOT RAISE ValueError"
+        }
+      ]
+    },
+    "mutation-eager_tensorboard": {
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 1,
+      "by_class": {
+        "tests.test_zone_referee_replay": {
+          "failed": 1
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-eager_tensorboard.xml",
+      "junit_sha256": "0312f426677510f1e787c3291249bf54dc15d4273eb938ebf72fb13a08aa251c",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-eager_tensorboard.log",
+      "log_sha256": "104430fae7901eb0bc860cd2553a0a9601d4cb6b6d4b073561098f6eedd8a6d2",
+      "failures": [
+        {
+          "test": "tests.test_zone_referee_replay::test_lazy_writer_needs_no_tensorboard_until_an_event",
+          "message": "ModuleNotFoundError: import of tensorboard halted; None in sys.modules"
+        }
+      ]
+    },
+    "mutation-late_prefix": {
+      "counts": {
+        "passed": 0,
+        "failed": 2,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 2,
+      "by_class": {
+        "tests.test_review_303d": {
+          "failed": 2
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-late_prefix.xml",
+      "junit_sha256": "62a113101148c01ae52fc6d98149eacdd20fb8302fb86f5999db416ad4e18e39",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-late_prefix.log",
+      "log_sha256": "802e729f39c0fea49e908a412d2f4250cedc42230059c45e7e20c1b5acdccba7",
+      "failures": [
+        {
+          "test": "tests.test_review_303d::test_late_redelivery_cannot_resurrect_a_departed_delivery[10.1]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert 2 <= 1"
+        },
+        {
+          "test": "tests.test_review_303d::test_late_redelivery_cannot_resurrect_a_departed_delivery[11.0]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert 2 <= 1"
+        }
+      ]
+    },
+    "mutation-policy_pin": {
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 1,
+      "by_class": {
+        "tests.test_zone_referee_replay": {
+          "failed": 1
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-policy_pin.xml",
+      "junit_sha256": "e752948c34753588b6646a5ec96c7986026c20c1b728fb84779780c02f7239c0",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-policy_pin.log",
+      "log_sha256": "352fefd846edfcbaf646fa5d7bdb203b02d992e88f2de1dfd5389cb74d1c5cbd",
+      "failures": [
+        {
+          "test": "tests.test_zone_referee_replay::test_changed_loaded_policy_is_refused_not_silently_reinterpreted",
+          "message": "Failed: DID NOT RAISE ValueError"
+        }
+      ]
+    },
+    "mutation-settle_window": {
+      "counts": {
+        "passed": 0,
+        "failed": 4,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 4,
+      "by_class": {
+        "tests.test_zone_referee_replay": {
+          "failed": 4
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-settle_window.xml",
+      "junit_sha256": "5b51bb80c0e4fc8b9e695d103ba98ea0fdc72655e7ded344c93508ed2d1524d8",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-settle_window.log",
+      "log_sha256": "a95d31914ab1f737b416fd5f6b56bb12fcd20d058a3a5bc839e82ba87c4bf997",
+      "failures": [
+        {
+          "test": "tests.test_zone_referee_replay::test_full_settle_window_restarts_on_interruptions[missing]",
+          "message": "AssertionError: assert not True\n +  where True = orders_complete()\n +    where orders_complete = <harness.zone_study_referee.Referee object at 0x10a195f40>.orders_complete\n +      where <harness.zone_study_referee.Referee object at 0x10a195f40> = <function replay at 0x10a6f8f40>([{'seq': 0, 'previous_sha256': None, 'event': 'orders', 'orders': [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': ...ous_sha256': 'a92daf7c6cac9fc6274e736f6d8e148b9e95b9dbc3da14203396d1a9f7e6e9ef', 'event': 'sample', 'sim_s': 3.9, ...}], [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': 'cyan', 'count': 1, ...}], {'schema': 'ugrp.zone_referee_policy.v1', 'profile': {'profile': 'zone_study_referee.v3', 'settle_s': 2.0, 'on_floor_m...946c138beb8746a9128509aa4564efa4bf5002597532434bc8852895694', ...}, 'event_schema': 'ugrp.zone_referee_events.v1', ...})\n +        where <function replay at 0x10a6f8f40> = replay.replay\n +        and   [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': 'cyan', 'count': 1, ...}] = <harness.zone_study_referee.Referee object at 0x10c50d400>.orders"
+        },
+        {
+          "test": "tests.test_zone_referee_replay::test_full_settle_window_restarts_on_interruptions[moving]",
+          "message": "AssertionError: assert not True\n +  where True = orders_complete()\n +    where orders_complete = <harness.zone_study_referee.Referee object at 0x10c23d5b0>.orders_complete\n +      where <harness.zone_study_referee.Referee object at 0x10c23d5b0> = <function replay at 0x10a6f8f40>([{'seq': 0, 'previous_sha256': None, 'event': 'orders', 'orders': [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': ...ous_sha256': '419240f1a9f18a83e8c2384178072435f90878cb5464578c28e344994cc21b61', 'event': 'sample', 'sim_s': 3.9, ...}], [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': 'cyan', 'count': 1, ...}], {'schema': 'ugrp.zone_referee_policy.v1', 'profile': {'profile': 'zone_study_referee.v3', 'settle_s': 2.0, 'on_floor_m...946c138beb8746a9128509aa4564efa4bf5002597532434bc8852895694', ...}, 'event_schema': 'ugrp.zone_referee_events.v1', ...})\n +        where <function replay at 0x10a6f8f40> = replay.replay\n +        and   [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': 'cyan', 'count': 1, ...}] = <harness.zone_study_referee.Referee object at 0x10c5056d0>.orders"
+        },
+        {
+          "test": "tests.test_zone_referee_replay::test_full_settle_window_restarts_on_interruptions[held]",
+          "message": "AssertionError: assert not True\n +  where True = orders_complete()\n +    where orders_complete = <harness.zone_study_referee.Referee object at 0x10c506cf0>.orders_complete\n +      where <harness.zone_study_referee.Referee object at 0x10c506cf0> = <function replay at 0x10a6f8f40>([{'seq': 0, 'previous_sha256': None, 'event': 'orders', 'orders': [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': ...ous_sha256': 'd1b31183e23896aa4cee2463988cda47b49d0ac5eb7bd193d2ab3bad5e5eb149', 'event': 'sample', 'sim_s': 3.9, ...}], [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': 'cyan', 'count': 1, ...}], {'schema': 'ugrp.zone_referee_policy.v1', 'profile': {'profile': 'zone_study_referee.v3', 'settle_s': 2.0, 'on_floor_m...946c138beb8746a9128509aa4564efa4bf5002597532434bc8852895694', ...}, 'event_schema': 'ugrp.zone_referee_events.v1', ...})\n +        where <function replay at 0x10a6f8f40> = replay.replay\n +        and   [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': 'cyan', 'count': 1, ...}] = <harness.zone_study_referee.Referee object at 0x10c4ed2b0>.orders"
+        },
+        {
+          "test": "tests.test_zone_referee_replay::test_full_settle_window_restarts_on_interruptions[lifted]",
+          "message": "AssertionError: assert not True\n +  where True = orders_complete()\n +    where orders_complete = <harness.zone_study_referee.Referee object at 0x10c4ae480>.orders_complete\n +      where <harness.zone_study_referee.Referee object at 0x10c4ae480> = <function replay at 0x10a6f8f40>([{'seq': 0, 'previous_sha256': None, 'event': 'orders', 'orders': [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': ...ous_sha256': '079a85289dccce22bbeb06982ecdf9303540755e09de0dbae451c938467eb79c', 'event': 'sample', 'sim_s': 3.9, ...}], [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': 'cyan', 'count': 1, ...}], {'schema': 'ugrp.zone_referee_policy.v1', 'profile': {'profile': 'zone_study_referee.v3', 'settle_s': 2.0, 'on_floor_m...946c138beb8746a9128509aa4564efa4bf5002597532434bc8852895694', ...}, 'event_schema': 'ugrp.zone_referee_events.v1', ...})\n +        where <function replay at 0x10a6f8f40> = replay.replay\n +        and   [{'order_id': 'o0', 'item_ids': ['item-0'], 'kind': 'cyan', 'count': 1, ...}] = <harness.zone_study_referee.Referee object at 0x10c4ae6c0>.orders"
+        }
+      ]
+    },
+    "mutation-summary_trust": {
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 1,
+      "by_class": {
+        "tests.test_review_303c": {
+          "failed": 1
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-summary_trust.xml",
+      "junit_sha256": "bf34c129f3a12c5785bc66aec024327a96727279a5f69489a1505ddaaa4c0c0b",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/mutation-summary_trust.log",
+      "log_sha256": "e4a0df68c630ef8c90053c71226e79035ed032725a45f02ec66b420f20e2d510",
+      "failures": [
+        {
+          "test": "tests.test_review_303c::test_conflicting_referee_state_is_invalid[referee_verdict]",
+          "message": "assert (1 == 0)"
+        }
+      ]
+    },
+    "negative-a303": {
+      "counts": {
+        "passed": 1,
+        "failed": 34,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 35,
+      "by_class": {
+        "tests.test_zone_study_evidence": {
+          "failed": 34,
+          "passed": 1
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/negative-a303.xml",
+      "junit_sha256": "844dc0b85bd7d0fcbc627f0e90546b9d5af0c8576b8110026dbb6f6668cb51e1",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/negative-a303.log",
+      "log_sha256": "ce4e0ff33a5372a819a27a8f4131e88a4438140959ffabf0a3f22c130aaf3fa2",
+      "failures": [
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[trial_id]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[scenario]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[seed]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_resealed_foreign_trial_or_orders_publish_no_events[order_ids]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_identity]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[manifest_identity]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_identity]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_scenario]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_seed]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_episode]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[result_attempt_bool]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[attempt_type]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[attempt_zero]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[bundle_scenario]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[bundle_orders]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_order_id]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_item_id]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_time]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_order_counts]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[evaluation_count_type]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[study_config_seed]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[request_sheet]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_1_all_evidence_joins_reject_rehashed_content[legacy]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_3_missing_terminal_marker_publishes_no_events[result]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_3_missing_terminal_marker_publishes_no_events[manifest]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_3_missing_terminal_marker_publishes_no_events[both]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[integer]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[string]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[null]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[empty_manifest]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[partial_manifest]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[incomplete_type]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[missing_complete]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        },
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_3_invalid_terminal_marker_publishes_no_events[end_time]",
+          "message": "Failed: DID NOT RAISE ValueError"
+        }
+      ]
+    },
+    "negative-c303": {
+      "counts": {
+        "passed": 2,
+        "failed": 11,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 13,
+      "by_class": {
+        "tests.test_review_303c": {
+          "failed": 11,
+          "passed": 2
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/negative-c303.xml",
+      "junit_sha256": "43e14c579ca306796e26000bbb6f7ab5a202590a9c13f2467ee1424f64004bcc",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/negative-c303.log",
+      "log_sha256": "216f06c619a5a28380f8a1a150378911fbcd4de6fe637548f907580d4db4cec1",
+      "failures": [
+        {
+          "test": "tests.test_review_303c::test_failed_referee_cannot_back_a_success_when_counts_are_missing",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "test": "tests.test_review_303c::test_foreign_referee_history_row_is_invalid[run_id-foreign-trial]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "test": "tests.test_review_303c::test_foreign_referee_history_row_is_invalid[seed-987654]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "test": "tests.test_review_303c::test_foreign_referee_history_row_is_invalid[condition-peer_ko]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "test": "tests.test_review_303c::test_conflicting_referee_state_is_invalid[standing_zone]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "test": "tests.test_review_303c::test_conflicting_referee_state_is_invalid[referee_order_id]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "test": "tests.test_review_303c::test_conflicting_referee_state_is_invalid[referee_verdict]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "test": "tests.test_review_303c::test_raw_action_and_camera_receipts_must_match_the_call[dispatch_order]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "test": "tests.test_review_303c::test_raw_action_and_camera_receipts_must_match_the_call[input_frame]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "test": "tests.test_review_303c::test_raw_action_and_camera_receipts_must_match_the_call[missing_dispatch]",
+          "message": "assert (1 == 0)"
+        },
+        {
+          "test": "tests.test_review_303c::test_reordered_simultaneous_referee_rows_preserve_valid_success",
+          "message": "AssertionError: [{'source': '/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1451/test_reordered_si...d9986cb67992693fd022af930c0d83241eac8156d4a3bc026efb88c841', ...}, 'unavailable_inputs': {}, 'status': 'INVALID', ...}]\nassert (0 == 1)"
+        }
+      ]
+    },
+    "negative-d303": {
+      "counts": {
+        "passed": 5,
+        "failed": 11,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 16,
+      "by_class": {
+        "tests.test_review_303d": {
+          "failed": 11,
+          "passed": 5
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/negative-d303.xml",
+      "junit_sha256": "10f8adfef4fdc35640826e2b5ef49f3418be740869bcdeeb74b0c95a3890a282",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/negative-d303.log",
+      "log_sha256": "a800550d92246afc31e8523f1de615865cf5f9783db9eefc64c8fa59e4307d6e",
+      "failures": [
+        {
+          "test": "tests.test_review_303d::test_late_redelivery_cannot_resurrect_a_departed_delivery[10.1]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert 2 <= 1"
+        },
+        {
+          "test": "tests.test_review_303d::test_late_redelivery_cannot_resurrect_a_departed_delivery[11.0]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert 2 <= 1"
+        },
+        {
+          "test": "tests.test_review_303d::test_failed_final_referee_cannot_join_an_earlier_success_window[4.0]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert 2 <= 1"
+        },
+        {
+          "test": "tests.test_review_303d::test_failed_final_referee_cannot_join_an_earlier_success_window[5.0]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert 2 <= 1"
+        },
+        {
+          "test": "tests.test_review_303d::test_other_referee_policy_cannot_use_the_original_frozen_bundle[settle_s-0.1]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "test": "tests.test_review_303d::test_other_referee_policy_cannot_use_the_original_frozen_bundle[on_floor_max_z_m-0.5]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "test": "tests.test_review_303d::test_other_referee_policy_cannot_use_the_original_frozen_bundle[settled_speed_m_s-0.5]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "test": "tests.test_review_303d::test_other_referee_policy_cannot_use_the_original_frozen_bundle[held_depart_s-10.0]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "test": "tests.test_review_303d::test_confirmation_cannot_be_shorter_than_its_pinned_settle_window[0.0]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "test": "tests.test_review_303d::test_confirmation_cannot_be_shorter_than_its_pinned_settle_window[0.1]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        },
+        {
+          "test": "tests.test_review_303d::test_confirmation_cannot_be_shorter_than_its_pinned_settle_window[1.9]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe...1', 'trial_id': 'trial-1', 'condition': 'no_comm', 'seed': 1, ...}, 'status': 'VALID', 'success': True, 'reasons': []}]\nassert (2 <= 1)"
+        }
+      ]
+    },
+    "negative-f303": {
+      "counts": {
+        "passed": 0,
+        "failed": 7,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 7,
+      "by_class": {
+        "tests.test_zone_study_evidence_review_f303": {
+          "failed": 7
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/negative-f303.xml",
+      "junit_sha256": "25d7460df89de9d67ca229674c74f13551f2badfa6ce96145d90c52617160bc6",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/negative-f303.log",
+      "log_sha256": "751b87ddfa39996d536c387667ec6cbd540618e9430bd408b1ec9fe797c5c988",
+      "failures": [
+        {
+          "test": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[run_id-foreign-trial-calls]",
+          "message": "Failed: foreign calls[0].run_id='foreign-trial' accepted"
+        },
+        {
+          "test": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[run_id-foreign-trial-actions]",
+          "message": "Failed: foreign actions[0].run_id='foreign-trial' accepted"
+        },
+        {
+          "test": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[seed-987654-calls]",
+          "message": "Failed: foreign calls[0].seed=987654 accepted"
+        },
+        {
+          "test": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[seed-987654-actions]",
+          "message": "Failed: foreign actions[0].seed=987654 accepted"
+        },
+        {
+          "test": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[condition-peer_ko-calls]",
+          "message": "Failed: foreign calls[0].condition='peer_ko' accepted"
+        },
+        {
+          "test": "tests.test_zone_study_evidence_review_f303::test_reject_foreign_log_row[condition-peer_ko-actions]",
+          "message": "Failed: foreign actions[0].condition='peer_ko' accepted"
+        },
+        {
+          "test": "tests.test_zone_study_evidence_review_f303::test_reject_relabelled_trial_with_original_call_and_action_run_ids",
+          "message": "Failed: relabelled trial retained foreign call/action run IDs"
+        }
+      ]
+    },
+    "negative-runner": {
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 1,
+      "by_class": {
+        "tests.test_zone_study_evidence": {
+          "failed": 1
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/negative-runner.xml",
+      "junit_sha256": "843ac854f5fa4f8f57d87a4980bf1cca4a1c807e2fd95a889cb15399775c682f",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/negative-runner.log",
+      "log_sha256": "53c0c908cf832f0fd8d89bff356fc798fa0aa22c80a39c5840e8bb26a8e9c408",
+      "failures": [
+        {
+          "test": "tests.test_zone_study_evidence::test_a303_2_evidence_writer_preserves_the_registered_runner_bytes",
+          "message": "AssertionError: assert '84e90031d0c3...572a859071fe0' == '85508cc58e1c...3dbaa64a99edd'\n  \n  - 85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd\n  + 84e90031d0c31b67a43719585687b386b8973873a2e8932f670572a859071fe0"
+        }
+      ]
+    },
+    "new-counterexamples": {
+      "counts": {
+        "passed": 2,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 8
+      },
+      "test_items": 10,
+      "by_class": {
+        "tests.test_review_303e": {
+          "xfail": 8,
+          "passed": 2
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/new-counterexamples.xml",
+      "junit_sha256": "a8091f3b059fa75534d6c3b2791cadd132052918c9a3f9645d5bae47b2346643",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/new-counterexamples.log",
+      "log_sha256": "183632b196b5b386558296019fb4a78ccb2aea5990917ce13e3c7532b1eecb7e",
+      "failures": []
+    },
+    "new-runxfail": {
+      "counts": {
+        "passed": 0,
+        "failed": 8,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 8,
+      "by_class": {
+        "tests.test_review_303e": {
+          "failed": 8
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/new-runxfail.xml",
+      "junit_sha256": "584e7e5fcce61ea36d0c1ffd7088dc346090190cb251eb488bb750e1a38b4145",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/new-runxfail.log",
+      "log_sha256": "55c93351727e3f35815842301d44045009d6cb33218daea0a74f301df4dd90f0",
+      "failures": [
+        {
+          "test": "tests.test_review_303e::test_invalidating_duplicate_replay_cannot_increase_cohort_success[False-policy_hash]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe.../s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1460/test_invalidating_duplicate_re0/duplicate/run-1']}]\nassert 1 <= 0"
+        },
+        {
+          "test": "tests.test_review_303e::test_invalidating_duplicate_replay_cannot_increase_cohort_success[False-profile]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe.../s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1460/test_invalidating_duplicate_re1/duplicate/run-1']}]\nassert 1 <= 0"
+        },
+        {
+          "test": "tests.test_review_303e::test_invalidating_duplicate_replay_cannot_increase_cohort_success[False-events]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe.../s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1460/test_invalidating_duplicate_re2/duplicate/run-1']}]\nassert 1 <= 0"
+        },
+        {
+          "test": "tests.test_review_303e::test_invalidating_duplicate_replay_cannot_increase_cohort_success[False-summary]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe.../s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1460/test_invalidating_duplicate_re3/duplicate/run-1']}]\nassert 1 <= 0"
+        },
+        {
+          "test": "tests.test_review_303e::test_invalidating_duplicate_replay_cannot_increase_cohort_success[True-policy_hash]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe.../s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1460/test_invalidating_duplicate_re4/duplicate/run-1']}]\nassert 1 <= 0"
+        },
+        {
+          "test": "tests.test_review_303e::test_invalidating_duplicate_replay_cannot_increase_cohort_success[True-profile]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe.../s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1460/test_invalidating_duplicate_re5/duplicate/run-1']}]\nassert 1 <= 0"
+        },
+        {
+          "test": "tests.test_review_303e::test_invalidating_duplicate_replay_cannot_increase_cohort_success[True-events]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe.../s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1460/test_invalidating_duplicate_re6/duplicate/run-1']}]\nassert 1 <= 0"
+        },
+        {
+          "test": "tests.test_review_303e::test_invalidating_duplicate_replay_cannot_increase_cohort_success[True-summary]",
+          "message": "AssertionError: [{'key': {'run_id': 'run-0', 'trial_id': 'trial-0', 'condition': 'no_comm', 'seed': 0, ...}, 'status': 'VALID', 'succe.../s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1460/test_invalidating_duplicate_re7/duplicate/run-1']}]\nassert 1 <= 0"
+        }
+      ]
+    },
+    "review-final": {
+      "counts": {
+        "passed": 60,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 8
+      },
+      "test_items": 68,
+      "by_class": {
+        "tests.test_review_303e": {
+          "passed": 60,
+          "xfail": 8
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/review-final.xml",
+      "junit_sha256": "cccdf01c13c88d18fe0ce4a44b3eeef9a2101a956eb078043df13c97a7e8dfb1",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/review-final.log",
+      "log_sha256": "f2b8b75771ce5f96b2283eda91b15098f19ee5cba16f5b7f1f23d5b1c51a2870",
+      "failures": []
+    },
+    "submitted-final": {
+      "counts": {
+        "passed": 562,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "xfail": 0
+      },
+      "test_items": 562,
+      "by_class": {
+        "tests.test_zone_study_evidence": {
+          "passed": 84
+        },
+        "tests.test_zone_study_eval.ParseTest": {
+          "passed": 9
+        },
+        "tests.test_zone_study_eval.EfficiencyTest": {
+          "passed": 8
+        },
+        "tests.test_zone_study_eval.BoundaryTest": {
+          "passed": 8
+        },
+        "tests.test_zone_study_eval.ChannelTest": {
+          "passed": 6
+        },
+        "tests.test_zone_study_eval.DialogueTest": {
+          "passed": 20
+        },
+        "tests.test_zone_study_eval.ComparisonTest": {
+          "passed": 9
+        },
+        "tests.test_zone_study_eval.SummaryTest": {
+          "passed": 3
+        },
+        "tests.test_zone_study_eval.ReportTest": {
+          "passed": 8
+        },
+        "tests.test_tensorboard_export": {
+          "passed": 65
+        },
+        "tests.test_zone_pair_registered_source": {
+          "passed": 22
+        },
+        "tests.test_zone_study_source_pinning": {
+          "passed": 34
+        },
+        "tests.test_zone_pair_door_relax": {
+          "passed": 1
+        },
+        "tests.test_zone_study_referee": {
+          "passed": 23
+        },
+        "tests.test_zone_study_review_fixes": {
+          "passed": 3
+        },
+        "tests.test_zone_study_review_r5": {
+          "passed": 1
+        },
+        "tests.test_zone_study_evidence_join": {
+          "passed": 61
+        },
+        "tests.test_zone_study_evidence_review_a303": {
+          "passed": 4
+        },
+        "tests.test_zone_study_evidence_review_f303": {
+          "passed": 7
+        },
+        "tests.test_ci_sharding": {
+          "passed": 66
+        },
+        "tests.test_review_303c": {
+          "passed": 13
+        },
+        "tests.test_zone_study_evidence_review_c303": {
+          "passed": 71
+        },
+        "tests.test_review_303d": {
+          "passed": 16
+        },
+        "tests.test_zone_referee_replay": {
+          "passed": 20
+        }
+      },
+      "junit_path": "/Users/changmin/projects/ugrp/outputs/review-303e/submitted-final.xml",
+      "junit_sha256": "67622b6b9cadf3d5ffff571cfe7f0bb021bba99c34f17aa79a1958a9a4a380c1",
+      "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/submitted-final.log",
+      "log_sha256": "cc4baa368dab1780d3242234271371775cb82645569fd29bee8dcb6f11a5baab",
+      "failures": []
+    }
+  },
+  "initial_incomplete_run": {
+    "completed": false,
+    "passed": 252,
+    "failed": 6,
+    "reason": "Reviewer excluded JPEG fixtures while extracting; stopped run after restoration. Interrupted JUnit testcase is not counted as a pass.",
+    "log_path": "/Users/changmin/projects/ugrp/outputs/review-303e/submitted.log",
+    "log_sha256": "2cc0fc6dfef880ed052fb17d3fcca00bd993e5c70a5b2f3dbc2e8cede2c98230",
+    "junit_sha256": "775f04c64cbd18adbf206e7525b5d4df465011db14b7f20396040bed75439880"
+  },
+  "generated_cases": {
+    "relational": 12000,
+    "event_replay": 12000,
+    "additional_independent_permutations": 128,
+    "cases_are_not_added_to_pytest_totals": true
+  },
+  "ci": {
+    "head": "567038c2563d3d6fb4c653ebc7f797b7e35fe79f",
+    "state": "OPEN",
+    "isDraft": true,
+    "mergeStateStatus": "UNKNOWN",
+    "checks": {
+      "SUCCESS": 33
+    },
+    "run_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/36743836479",
+    "local_snapshot": "/Users/changmin/projects/ugrp/outputs/review-303e/ci.json",
+    "snapshot_sha256": "5d710ec436e97fa3d529d36c18115301f75333a258b46280aafc2ba8ab25f5f5"
+  },
+  "local_outputs_are_not_full_remote_backup": true,
+  "physics": false,
+  "host_lock": false,
+  "review_tests_sha256": "efeb6ebe36f3d5351a5fcfdf4378ab9911b6dbfc7b13348edcdddf931abfaa78",
+  "temporary_extraction_cleanup": {
+    "removed": [
+      "/private/tmp/ugrp-review-303e-FulwqV",
+      "/private/tmp/ugrp-review-303e-FulwqV/old-c",
+      "/private/tmp/ugrp-review-303e-FulwqV/old-d"
+    ],
+    "verified_absent": true,
+    "new_git_worktrees_created": 0
+  }
+}
