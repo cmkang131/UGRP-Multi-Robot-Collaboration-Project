@@ -5,7 +5,7 @@
 
 - 검토 HEAD: `e9ee23ea89bc8e1c971f0b719cd8971942a14779`
 - 수정 전에 병합한 최신 main: `b10907c5f2c84f2712030f48fb38061fd4f51281`
-- main 병합 충돌 없음. 병합과 보완을 테스트 후 하나의 merge commit으로 기록한다.
+- main 병합 충돌 없음. 첫 main 병합과 D1 보완은 검증 뒤 `9738a3d2` merge commit으로 기록했다.
 - 근거: [독립 리뷰 댓글](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/314#issuecomment-5911363097),
   [리뷰 #322](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/322).
 
@@ -86,3 +86,28 @@ CI 회귀는 `--mutation ci_before`와
   종료 코드 2였다. Git에 있는 원본만 복원한 뒤 3/3 통과했다. 재생성하지 않았다.
 - 모든 검사 프로세스가 끝나고 각 검사 소유 잠금을 반환했다. 다른 작업은 중단하지 않았다.
 - GitHub CI 완료·후속 T09b 연결·실제 통과·E2E 인수는 위 정적 검증과 별개다.
+
+
+## 추가 main 통합 — 최종 검사
+
+작업 중 main에 #304와 #313이 병합되어, `9738a3d2`에
+`ad496486271f441f00eb7d95fbd44dc454999004`를 추가로 병합했다. 충돌은 없었고,
+#314 계산 코드·검사·workflow와 보호 대상 549개는 위 변이 검증 때와 같다.
+
+최종 결과는 **283 passed, 280 subtests passed, 실패/skip 0 (71.99초)**다.
+위 230개에 main에서 들어온 P08 검사 40개와 s6 감사 검사 13개를 추가했다.
+[최종 출력](integrated-04.txt)과 [명령·해시·잠금 반환 기록](verification_integration.json)을 따른다.
+T09a 76개 및 두 소스 고정 검사 55개도 다시 통과했다.
+
+처음 통합 명령은 importlib 모드에서 s6의 `audit` 검색 경로를 빠뜨려 수집 오류로
+끝났다([출력](integrated-02.txt)). 소스 수정 없이
+`PYTHONPATH=experiments/2026-09-30-s6-order-design`을 지정해 해결했다.
+다음 시도는 테스트 시작 전 공용 잠금 대기만 중단했고([출력](integrated-03.txt)),
+자기 대기 실행기의 잠금 확인 간격을 1초에서 0.1초로 줄여 재시작했다.
+다른 작업과 CI는 중단하지 않았다. 최종 정상 실행 뒤 자기 잠금을 반환했다.
+
+새 main 문서에서 남아 있던 CI 건너뛰기 지침도 사용자 요청대로 수정했다:
+`experiments/2026-09-30-p08-stall-contract/README.md`와
+`experiments/2026-09-30-process-review/LITERATURE.md`.
+정상 GitHub CI의 완료 여부는 최종 PR head의 checks에서 별도로 확인해야 한다.
+로컬 물리·렌더·모델 호출은 계속 0회이며 원래 변이 실패 근거도 그대로 유효하다.

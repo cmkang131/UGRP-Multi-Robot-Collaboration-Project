@@ -59,7 +59,7 @@ def main():
             if time.monotonic() >= next_notice:
                 print('Host lock occupied; no tests started', flush=True)
                 next_notice = time.monotonic() + 30
-            time.sleep(1)
+            time.sleep(.1)
     record = {'mutation': args.mutation, 'python': sys.version, 'lock': lock,
               'pytest_args': pytest_args, 'before_tests': str(args.before_tests) if args.before_tests else None,
               'source_sha256': {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
