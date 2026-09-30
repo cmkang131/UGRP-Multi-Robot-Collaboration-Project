@@ -41,6 +41,10 @@ def beam_fit(monkeypatch):
     separate observation here, rather than silently assuming attachment.
     """
     from harness import owncam_pair_beam_v2 as ob2
+    # Lazy importers bind `observe_beam` by name; if one is first imported while
+    # the fake is installed it keeps the fake for the whole process and breaks
+    # later real-M2 tests that happen to share a CI shard. Import it first.
+    import harness.zone_pair_beam_track  # noqa: F401
     beam = dict(visible=True, end_visible=True, grip_source='band_centre',
                 grip_base_m=[.162, 0.], axis_heading_rad=0.,
                 lateral_spread_m=.001, visible_length_m=.5)
