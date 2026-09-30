@@ -64,5 +64,11 @@ raw receipt의 `head`는 커밋 전 브랜치 HEAD이고 실제 검사 bytes는 
 `merged_main` 필드는 driver가 검사 종료 때 관측한 `origin/main`이다. 실제 첫 병합 입력은
 위의 `c1279667`이며 검사 대기 중 원격 main이 움직인 것을 병합 완료로 해석하지 않는다.
 
+최종 통과 후 main `ad496486271f441f00eb7d95fbd44dc454999004`도 충돌 없이 병합했다.
+추가된 #306/#304/#313은 별도 분석·fake 계약·설계 기록이다. `files_sha256`의 검사 소스 전부와
+v6e 고정 소스 85개가 최종 통과 때와 동일함을 다시 대조했다.
+함께 들어온 P08 README의 CI skip 지침은 사용자의 정상 CI 실행 지침으로 고쳤다.
+과거 `verification.json`은 덮어쓰지 않고 역사 기록임을 README에서 명시했다.
+
 로컬 정적/fake 코드 검증이므로 새 학습·평가 cohort나 TensorBoard 물리 snapshot은 없다.
 UGRP 예외에 따라 Drive를 사용하지 않는다. 정상 GitHub CI는 실행하며 취소·skip하지 않는다.
