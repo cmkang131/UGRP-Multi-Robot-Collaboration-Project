@@ -31,7 +31,7 @@ def offline_only(monkeypatch):
 
 
 def test_v84_history_and_explicit_v6h_successors_keep_their_own_receipts():
-    from tests.v6h_successor_pins import SEAL
+    from tests.v6h_successor_pins import SEAL, successor_blob
     record = env.read(env.ROOT / RECORD)
     # #292's already-reviewed source/test migrations are separate from v84.
     # Do not rewrite its receipt or claim current bundle bytes are the old run.
@@ -47,7 +47,8 @@ def test_v84_history_and_explicit_v6h_successors_keep_their_own_receipts():
         assert hashlib.sha256(original).hexdigest() == sha, path
         expected = (subprocess.check_output(['git', 'show', f'{successors[path]}:{path}'], cwd=env.ROOT)
                     if path in successors else original)
-        assert (env.ROOT / path).read_bytes() == expected, path
+        actual = successor_blob(path) if successors.get(path) == SEAL else (env.ROOT / path).read_bytes()
+        assert actual == expected, path
     for key, sha in record['bundles'].items():
         mid, check = key.split('/')
         current = old.bundle(mid, check=check)

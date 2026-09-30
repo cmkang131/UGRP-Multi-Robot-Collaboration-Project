@@ -1,0 +1,50 @@
+{
+  "scene_xml_sha256": "23f2e8c0cdb55da6586b67166c22bc90288f626c85a17b7356b7aef76474d35a",
+  "robot_xml_sha256": {
+    "r1__robot": "d76d7ca12c17aaf33a797d54b4de75a5b0263b376cb7ea5e393e6677045171cb",
+    "r2__robot": "e6031f18b98cfed85c2a5bbf879801e8cc77a62c35cc128bca7ce06cb6115c44",
+    "r3__robot": "bbbf00ae878e551d121bb60d942398e2e516be1d9f01bdafca0d1189b937b324"
+  },
+  "static_map_sha256": "0429b535107feda865a02821e4ceb2b695b58cd0c06c07e2fde96320bd2d9b0e",
+  "box_prototype_signature": "6806dd458235f884035d05b8e46d79f11a74932a1ae966c5878b3f431fa3c03c",
+  "box_replicas": {
+    "box_00": {
+      "body_name": "cargo_box_00",
+      "kind": "red"
+    },
+    "box_01": {
+      "body_name": "cargo_box_01",
+      "kind": "red"
+    },
+    "box_02": {
+      "body_name": "cargo_box_02",
+      "kind": "green"
+    },
+    "box_03": {
+      "body_name": "cargo_box_03",
+      "kind": "red"
+    },
+    "box_04": {
+      "body_name": "cargo_box_04",
+      "kind": "cyan"
+    }
+  },
+  "weld": "off",
+  "appearance_change": "box paint colour only (kinds); shape, mass, friction unchanged",
+  "contact_solver_profile": "local_contact_fine",
+  "replica_finger_contact_pairs": 30,
+  "geometry_map_id": "zone_wide_corridor_final_v3",
+  "wall_profile": {
+    "id": "walls_v3",
+    "version": 3,
+    "height_m": 0.4,
+    "rule": "smallest 0.05 m step >= max(kinematic max wrist-camera z + 0.05 m, highest robot geom z + 0.03 m)",
+    "kinematic_max_camera_z_m": 0.321,
+    "max_work_posture_camera_z_m": 0.239,
+    "robot_top_max_z_m": 0.367,
+    "evidence": "experiments/2026-09-26-zone-env-v3/camera_height.json",
+    "sha256": "27300b0067d2d46d68498b8fddeaf7c19f8c489ed9bdaa3f5d47f5aacb6e833d"
+  },
+  "robot_model": "masterpi_v3",
+  "scene_version": "zones/zone_wide_corridor_final_v3"
+}

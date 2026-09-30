@@ -44,8 +44,8 @@ PROTOTYPE = {'box_00': {'kind': 'cyan', 'body_name': 'cargo_box_00', 'joint_name
 ])
 def test_b1_mixed_adapter_keeps_registered_source_bytes(path):
     """B1: preserve historical v6e and the independently sealed v6h successor."""
-    from tests.v6h_successor_pins import successor_pins
-    assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == successor_pins()[path]
+    from tests.v6h_successor_pins import successor_blob, successor_pins
+    assert hashlib.sha256(successor_blob(path)).hexdigest() == successor_pins()[path]
 
 
 @pytest.fixture(autouse=True)

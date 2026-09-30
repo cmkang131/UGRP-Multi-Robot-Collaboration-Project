@@ -298,7 +298,7 @@ def test_real_old_registration_bytes_are_unchanged_and_v2_refuses_them(path):
 
 
 def test_old_rgb_registry_and_versioned_legacy_verifiers_are_unchanged():
-    from tests.v6h_successor_pins import SEAL
+    from tests.v6h_successor_pins import SEAL, successor_blob
     paths = subprocess.check_output(
         ['git', 'ls-tree', '-r', '--name-only', PR_BASE, 'config/rgb_execution_bundles'],
         cwd=ROOT, text=True).splitlines()
@@ -310,7 +310,8 @@ def test_old_rgb_registry_and_versioned_legacy_verifiers_are_unchanged():
         # #292 explicitly sealed the v6e -> v6h admission revision change.
         # Keep every other legacy verifier and registry bound to the old base.
         source = SEAL if path in ('scripts/zone_pair_v6_contract.py', 'scripts/run_zone_pair_dev.py') else PR_BASE
-        assert (ROOT / path).read_bytes() == subprocess.check_output(
+        actual = successor_blob(path) if source == SEAL else (ROOT / path).read_bytes()
+        assert actual == subprocess.check_output(
             ['git', 'show', f'{source}:{path}'], cwd=ROOT), path
 
 

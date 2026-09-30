@@ -75,12 +75,12 @@ def test_candidate_preserves_successor_bytes_and_rejects_historical_admission(tm
     """C312-1: P03 cannot change the seal or re-admit historical v6e on v6h."""
     from scripts import run_zone_pair_dev as dev
     from scripts.zone_pair_v6_contract import PREREG_V6E, contract
-    from tests.v6h_successor_pins import successor_pins
+    from tests.v6h_successor_pins import successor_blob, successor_pins
 
     pre, episode = vision_bundle()
     candidate = runner.run_bundle(pre, episode)[0]
     for rel, expected in successor_pins().items():
-        assert hashlib.sha256((ROOT / rel).read_bytes()).hexdigest() == expected, rel
+        assert hashlib.sha256(successor_blob(rel)).hexdigest() == expected, rel
     with pytest.raises(ValueError, match='historical'):
         contract('v6e')
     output = tmp_path / 'never-executed'

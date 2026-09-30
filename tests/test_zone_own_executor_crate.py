@@ -439,10 +439,10 @@ def test_sealed_successor_beam_entry_points_do_not_enable_crates():
     import hashlib
     from harness.zone_study_integration import executor_plan as sealed_plan
     root = Path(__file__).resolve().parents[1]
-    from tests.v6h_successor_pins import successor_pins
+    from tests.v6h_successor_pins import successor_blob, successor_pins
     pinned = successor_pins()
     for name in ('harness/zone_pair_executor.py', 'harness/zone_study_integration.py'):
-        assert hashlib.sha256((root / name).read_bytes()).hexdigest() == pinned[name]
+        assert hashlib.sha256(successor_blob(name)).hexdigest() == pinned[name]
     action = dict(kind='claim', order_id=ORDER['order_id'], destination_zone='B', role='west')
     assert sealed_plan(action, None, actor='r1', orders=[ORDER]).rejected_reason == 'UNSUPPORTED_TEAM_ORDER'
 

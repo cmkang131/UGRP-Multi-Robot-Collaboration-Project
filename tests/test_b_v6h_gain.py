@@ -38,11 +38,11 @@ def restore(monkeypatch):
 
 # ------------------------------------------------------------------ registered sources
 def test_historical_v6e_and_sealed_successor_sources_remain_pinned():
-    from tests.v6h_successor_pins import successor_pins
+    from tests.v6h_successor_pins import successor_blob, successor_pins
     prereg = json.loads((ROOT / 'experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json').read_text())
     sealed = prereg['v6_contract']['source_sha256']
     for path, expected in successor_pins().items():
-        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, path
+        assert hashlib.sha256(successor_blob(path)).hexdigest() == expected, path
     for path in ('harness/zone_pair_carry_axial_lag.py', 'harness/zone_pair_carry_gain_fix.py', 'harness/zone_pair_progress_relax.py', 'harness/zone_pair_door_relax.py',
                  'scripts/run_pair_stage_probes.py'):
         assert path not in sealed

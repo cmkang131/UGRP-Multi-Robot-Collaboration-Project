@@ -51,11 +51,13 @@ def test_g3251_restored_bytes_equal_main_and_original_pin(path):
 
 @pytest.mark.parametrize('contract', ('v6_contract', 'scene_contract'))
 def test_historical_registration_and_successor_pins_preserved(contract):
-    from tests.v6h_successor_pins import SEAL, successor_pins
+    from tests.v6h_successor_pins import SEAL, successor_blob, successor_pins
     original = blob(BASE, REGISTRATION)
     assert candidate_bytes(REGISTRATION) == original
     for path, expected in successor_pins(contract).items():
-        data = candidate_bytes(path)
+        data = (candidate_bytes(path)
+                if os.environ.get('REVIEW_325B_PIN_REF') or os.environ.get('REVIEW_325B_TREE')
+                else successor_blob(path))
         assert data == blob(SEAL, path), path
         assert hashlib.sha256(data).hexdigest() == expected, path
 

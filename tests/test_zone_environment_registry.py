@@ -33,7 +33,7 @@ CALIBRATION = 'experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json'
 def registered_sources():
     """Read historical Git objects before the per-test runtime subprocess guard."""
     from scripts.zone_pair_registered_source import committed_blob
-    from tests.v6h_successor_pins import successor_pins
+    from tests.v6h_successor_pins import successor_blob, successor_pins
     successor = successor_pins()
     legacy = json.loads((ROOT / 'configs/masterpi_v3_scenes.json').read_text())
     for name, expected in legacy['legacy_files_sha256'].items():
@@ -41,7 +41,10 @@ def registered_sources():
         assert hashlib.sha256(raw).hexdigest() == expected, name
     current = {name: successor.get(name, expected)
                for name, expected in legacy['legacy_files_sha256'].items()}
-    return successor, current
+    # Read Git objects before no_runtime_side_effects forbids subprocesses.
+    sources = {name: successor_blob(name) for name in successor}
+    sources.update({name: (ROOT / name).read_bytes() for name in current if name not in successor})
+    return successor, current, sources
 
 
 @pytest.fixture(autouse=True)
@@ -196,9 +199,9 @@ def test_tagged_map_cannot_enter_tagfree_provider_even_if_allowlist_claims_suppo
 
 
 def test_legacy_tag_inputs_and_frozen_sources_follow_their_sealed_versions(registered_sources):
-    _, expected_sources = registered_sources
+    _, expected_sources, sources = registered_sources
     for name, expected in expected_sources.items():
-        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == expected, name
+        assert hashlib.sha256(sources[name]).hexdigest() == expected, name
     scenario = json.loads((ROOT / 'configs/zone_study_integration/i1_cyan_three_slots.json').read_text())
     before = map_bundle(scenario['map_id'], landmark_detail=scenario['landmark_detail'], schematic=False)
     after = scenarios.bundle_for(scenario)
@@ -305,9 +308,9 @@ def test_review_a305_1_dock_reaches_existing_factory(monkeypatch, use_adapter):
 
 def test_review_a305_2_successor_pins_and_legacy_closure_remain_unchanged(registered_sources):
     from harness.python_source_closure import source_closure
-    successor, _ = registered_sources
+    successor, _, sources = registered_sources
     for name, expected in successor.items():
-        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == expected, name
+        assert hashlib.sha256(sources[name]).hexdigest() == expected, name
     # A305-3's hidden #292 dependency disappears from the legacy import graph.
     closure = source_closure(ROOT, legacy_runner.RUNTIME_ENTRY_POINTS)
     assert 'harness/zone_environment_registry.py' not in closure

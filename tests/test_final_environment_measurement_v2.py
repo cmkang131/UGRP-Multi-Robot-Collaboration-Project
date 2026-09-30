@@ -43,7 +43,7 @@ def fake_path_admission(monkeypatch):
 
 
 def test_v1_and_v87_history_remain_separate_from_sealed_v6h_successors():
-    from tests.v6h_successor_pins import SEAL
+    from tests.v6h_successor_pins import SEAL, successor_blob
     record = env.read(env.ROOT / 'experiments/2026-10-01-final-env-measurement-v2/v87_preservation.json')
     history = '04eb11c6a001f2a7d2ab916765d59b3661c06efe'
     successors = {'harness/owncam_carry_v6e.py', 'harness/zone_own_guards.py'}
@@ -53,7 +53,8 @@ def test_v1_and_v87_history_remain_separate_from_sealed_v6h_successors():
         assert hashlib.sha256(original).hexdigest() == sha, path
         expected = (subprocess.check_output(['git', 'show', f'{SEAL}:{path}'], cwd=env.ROOT)
                     if path in successors else original)
-        assert (env.ROOT / path).read_bytes() == expected, path
+        actual = successor_blob(path) if path in successors else (env.ROOT / path).read_bytes()
+        assert actual == expected, path
     for key, sha in record['bundles'].items():
         mid, check = key.split('/')
         current = env.parent.bundle(mid, check=check)

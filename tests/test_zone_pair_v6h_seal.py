@@ -169,3 +169,43 @@ def test_analysis_pin_set_covers_main_added_transitive_admission():
     for path in ('sim/zone_study_admission.py', 'harness/zone_corridor_admission.py'):
         assert path in value['pin_sets']['analysis']['files']
         assert path not in value['pin_sets']['execution']['files']
+
+
+def test_v2_audit_ignores_later_harness_bytes_but_rejects_changed_git_objects(monkeypatch):
+    from tests.v6h_successor_pins import REGISTRATION, SEAL, successor_blob
+    value = json.loads((s.ROOT / REGISTRATION).read_bytes())
+    paths = ('harness/zone_study_eval.py', 'harness/zone_study_referee.py')
+    read = Path.read_bytes
+
+    def no_later_harness(path):
+        if path in {s.ROOT / rel for rel in paths}:
+            pytest.fail('historical seal audit read later main harness: ' + str(path))
+        return read(path)
+
+    monkeypatch.setattr(Path, 'read_bytes', no_later_harness)
+    assert s.verify_seal(value, SEAL)['analysis_files'] == 293
+    for path in paths:
+        raw = successor_blob(path)
+        assert s.sha(raw) == value['pin_sets']['analysis']['files'][path]['sha256']
+    git = s.git
+    for path in paths:
+        def changed_git(*args):
+            raw = git(*args)
+            return raw + b'\n' if args == ('show', SEAL + ':' + path) else raw
+        monkeypatch.setattr(s, 'git', changed_git)
+        with pytest.raises(ValueError, match='analysis pin set incomplete or git blob/sha256 mismatch'):
+            s.verify_seal(value, SEAL)
+
+
+def test_all_existing_seal_records_stay_byte_identical_after_unblinding():
+    from tests.v6h_successor_pins import REGISTRATION, SEAL, successor_blob
+    value = json.loads(successor_blob(REGISTRATION))
+    base = s.HERE.relative_to(s.ROOT).as_posix() + '/'
+    records = {path for path in value['pin_sets']['analysis']['files'] if path.startswith(base)}
+    records.add(base + 'prereg_v6h.json')
+    records.update(s.git('ls-tree', '-r', '--name-only', SEAL, '--',
+                         base + 'analysis/seal', base + 'analysis/seal_v2').decode().splitlines())
+    assert base + 'REGISTRATION_PLAN.md' in records
+    assert base + 'NOTE_AFTER_UNBLINDING.md' not in records
+    for path in sorted(records):
+        assert (s.ROOT / path).read_bytes() == successor_blob(path), path

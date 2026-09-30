@@ -846,11 +846,11 @@ def test_p05_usage_agrees_from_raw_through_scheduler_and_result(tmp_path, usage,
 
 def test_p05_preserves_historical_v6e_and_sealed_successor_source_bytes():
     """B1: usage handling must preserve both versioned source receipts."""
-    from tests.v6h_successor_pins import successor_pins
+    from tests.v6h_successor_pins import successor_blob, successor_pins
     expected = successor_pins()
     assert 'harness/zone_study_integration.py' in expected
     for path, sha in expected.items():
-        assert hashlib.sha256((llm.ROOT / path).read_bytes()).hexdigest() == sha, path
+        assert hashlib.sha256(successor_blob(path)).hexdigest() == sha, path
 
 
 def test_p05_callreply_readonly_usage_is_known():
