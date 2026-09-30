@@ -1,6 +1,7 @@
 # P02 — cyan와 공동 봉의 정적 혼합 연결
 
-상태: DRAFT, 물리/시뮬레이션/렌더/모델/교사 실행 없음. 전체 s1–s6 지원이나
+상태: DRAFT, 임무 물리 실행·모델/교사 호출 결과 없음. B1 후속 검사에서 잘못 선택한
+native 테스트 1개가 렌더러 생성 중 sandbox 오류로 차단된 기록은 `FIX_B1.md`에 남긴다. 전체 s1–s6 지원이나
 자율 파트너 선택의 결과가 아니다. 시작 source는 `d17ca4345affef8cf027e121cf1f3197b36c23e0`,
 작업은 `codex/mixed-jobs`와 배정 worktree `e2e-p02-mixed`에서만 수행했다.
 
@@ -29,6 +30,13 @@ GT/TOP 평가 자료 변이는 네 조건에서 공개 자기 요청/명령을 �
 
 ## 검증과 증거
 
+독립 검토 B1 수정은 [후속 기록](FIX_B1.md)을 따른다. 기존 공용 소스 3개는 v6e의
+등록 해시와 같은 바이트로 복원하고, 혼합 연결은 `scripts.zone_mixed_study_adapter`와
+`harness.zone_mixed_host/zone_mixed_integration`으로 분리했다. 기존 등록·검사는 그대로다.
+이후 합성은 [새 진입점](COORDINATOR_HANDOFF.md#b1-이후-진입점-2026-09-30)을 사용한다.
+기존 integration CLI가 혼합 주문을 직접 실행하는 경로는 제공하지 않는다.
+
+아래 254건은 수정 전의 검사 기록이며 B1 소스 고정 검사를 포함하지 않았다.
 코드 source `c76e67dbc8c4d97cd96447ed7d9d4b344c2dd869`의 최종 관련 회귀 **254 passed** (신규 혼합 26건 포함),
 `git diff --check`, Python 7파일 구문 검사, 원본 14파일 바이트 보존 확인이 통과했다.
 exact source/환경/해시와 실패한 초기 검사도 `VERIFICATION.json`에 기록했다.

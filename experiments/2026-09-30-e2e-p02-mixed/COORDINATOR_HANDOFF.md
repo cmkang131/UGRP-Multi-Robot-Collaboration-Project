@@ -10,7 +10,8 @@
 - 준비 명세: `configs/zone_study_integration/mixed_jobs_dev_spec.json`,
   `ugrp.zone_mixed_jobs_dev_spec.v1`, `DRAFT_CONTRACT_ONLY`, source/bundle/실행 ID는 null.
   러너의 prereg 파일이 아니며 실행·등록·봉인 승인이 아니다.
-- `runner.host_spec(scenario, dev_spec['episode'], bundle_for(scenario))`에서
+- `from scripts import zone_mixed_study_adapter as runner` 뒤
+  `runner.host_spec(scenario, dev_spec['episode'], bundle_for(scenario))`에서
   `mixed_cyan_beam_fixed_r12_r3_v1` opt-in 계약을 만든다. 공개 OrderSheetSource에는
   초기 slot·종류·수량·정적 개체 ID만 남고 setup pose와 bindings는 host/eval 쪽에 둔다.
 - `beam-order → beam_dev`: r1/end_neg·r2/end_pos가 각각 자기 API로 claim해야 한다.
@@ -23,6 +24,25 @@
   정식 s1–s6는 그대로 보존했으며 전체 6시나리오 지원·파트너 자유 선택이 아니다.
 - 별도 `MixedGeometryCargoZoneScene` 표준 Scene subclass가 setup의 cyan과 봉을
   함께 유지한다. #249의 기존 geometry Scene 파일은 바꾸지 않았다.
+
+## B1 이후 진입점 (2026-09-30)
+
+독립 검토 B1에 따라 기존 `zone_own_team_host.py`, `zone_study_integration.py`,
+`run_zone_study_integration.py`는 v6e 등록 해시의 원본 바이트로 복원했다. 등록 JSON이나
+해시 검사 자체는 변경하지 않았다. 기존 integration CLI는 계속 혼합 주문을 거절한다.
+
+새 `scripts.zone_mixed_study_adapter`의 `host_spec`, `placements_match`, `StudyTeamHost`,
+`IntegratedTrial`, `HostRobotLink`를 함께 사용하는 명시적 Python 합성 경로다.
+`StudyTeamHost`는 기존 provider 수명/시계를 상속하고, `MixedOwnCamTeamHost`에서
+정적 inventory를 검사한 뒤 기존 solo 초기화와 order ID 기반 pair 연결을 순서대로 수행한다.
+`MixedIntegratedTrial`은 기존 scheduler와 원장 처리를 상속하고 혼합 주문의 계획 거절만
+자기 dispatch 메서드에서 적용한다. 공용 모듈의 전역 함수·클래스는 교체하지 않는다.
+
+이 어댑터는 새 standalone CLI나 등록된 runnable이 아니다. 기존 `run_bundle/run_trial`을
+그대로 호출하여 혼합 실행으로 인정하면 안 된다. 코디네이터는 새 어댑터, 두 mixed host/
+integration 모듈, inventory/helper를 포함하는 의존성 closure와 구성/Scene을 새 workflow에
+고정해야 한다. 어댑터 constructor는 World 소유 부분만 fake로 치환하여 검사하며 물리 실행은 없다.
+정상 GitHub CI는 허용하며 취소하거나 CI 생략 표시를 사용하지 않는다.
 
 ## 선행 조건과 합성 경계
 

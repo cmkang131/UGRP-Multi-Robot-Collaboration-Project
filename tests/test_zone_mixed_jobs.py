@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import socket
 import sys
@@ -11,12 +12,16 @@ from types import MethodType, SimpleNamespace
 import pytest
 
 from harness import zone_mixed_jobs as mixed
+from harness import zone_mixed_integration as mixed_zi
 from harness import zone_study_integration as zi
+from harness.zone_mixed_host import MixedOwnCamTeamHost
+from harness.zone_own_team_host import OwnCamTeamHost
 from harness.zone_own_executor import ZoneOwnExecutor
 from harness.owncam_pose_source import OwnCamPoseSource, PoseReport
 from harness.zone_study_inputs import OrderSheetSource
 from harness.zone_study_scenarios import bundle_for
-from scripts import run_zone_study_integration as runner
+from scripts import run_zone_study_integration as legacy_runner
+from scripts import zone_mixed_study_adapter as runner
 from sim.zone_geometry_scene import GeometryCargoZoneScene
 from sim.zone_mixed_inventory import MixedGeometryCargoZoneScene, check_scene_inventory, prepare_inventory
 from tests.test_zone_pair_executor import FakeM2, PairFakeHost, pair_obs
@@ -30,6 +35,17 @@ BUNDLE = bundle_for(SCENARIO)
 STATIC = json.loads((ROOT / BUNDLE['map_file']).read_text())
 PROTOTYPE = {'box_00': {'kind': 'cyan', 'body_name': 'cargo_box_00', 'joint_name': 'cargo_box_00_free',
                          'position_m': [.4, -.85, .016], 'half_extents_m': [.02, .02, .016]}}
+
+
+@pytest.mark.parametrize('path', [
+    'harness/zone_own_team_host.py',
+    'harness/zone_study_integration.py',
+    'scripts/run_zone_study_integration.py',
+])
+def test_b1_mixed_adapter_keeps_registered_source_bytes(path):
+    """B1: opt-in additions must not rewrite the current v6e source pins."""
+    prereg = json.loads((ROOT / 'experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json').read_text())
+    assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == prereg['v6_contract']['source_sha256'][path]
 
 
 @pytest.fixture(autouse=True)
@@ -73,13 +89,17 @@ class FakePose(OwnCamPoseSource):
     def on_frame(self, t, rgb): return self.report(t)
 
 
+class MixedPairFakeHost(PairFakeHost, MixedOwnCamTeamHost):
+    """Fake world/ports with the production mixed API admission in the MRO."""
+
+
 def fake_host(factory=DoneM2):
     host_spec = spec()
     exs = {r: SoloExecutor(r, STATIC, CALIB['params'], host_spec['order_sheet'],
                           skill_factory=lambda *a, **k: pytest.fail('real skill forbidden'),
                           pose_estimate_cls=tuple, search_rows_y=ROWS_Y, judgments=False,
                           seed=host_spec['seed'], pose_source=FakePose()) for r in zi.ROBOTS}
-    host = PairFakeHost(exs, lambda *a: None)
+    host = MixedPairFakeHost(exs, lambda *a: None)
     host.spec = host_spec
     host.contact_record = {'profile': 'cargo_noslip_v1'}
     host.enable_pair_carry(host_spec['pair_order_sheets'], CALIB['params'], controller_factory=factory)
@@ -108,7 +128,7 @@ def fake_host(factory=DoneM2):
 
 
 def claim(actor, oid, zone, role):
-    return zi.executor_plan({'kind': 'claim', 'order_id': oid, 'destination_zone': zone, 'role': role},
+    return mixed_zi.executor_plan({'kind': 'claim', 'order_id': oid, 'destination_zone': zone, 'role': role},
                             None, actor=actor, orders=SCENARIO['orders'])
 
 
@@ -129,6 +149,79 @@ def test_static_bindings_and_public_sheet_have_distinct_ids_and_no_setup_pose():
     assert [o['initial_location']['slot'] for o in sheet['orders']] == ['P2-3', 'P1-1']
     mixed.validate_host_spec(host_spec)
     assert DEV['source_sha'] is DEV['execution_bundle_id'] is DEV['bundle_sha256'] is None
+
+
+def test_b1_legacy_admission_and_source_closure_are_not_rebound():
+    from harness.python_source_closure import source_closure
+    with pytest.raises(zi.ContractViolation, match='pair-only'):
+        legacy_runner.host_spec(SCENARIO, DEV['episode'], BUNDLE)
+    legacy = set(source_closure(ROOT, ['scripts/run_zone_study_integration.py']))
+    added = set(source_closure(ROOT, ['scripts/zone_mixed_study_adapter.py']))
+    for name in ('harness/zone_mixed_host.py', 'harness/zone_mixed_integration.py',
+                 'harness/zone_mixed_jobs.py', 'sim/zone_mixed_inventory.py'):
+        assert name in added and name not in legacy
+    assert legacy_runner.StudyTeamHost is not runner.StudyTeamHost
+    assert zi.IntegratedTrial is not runner.IntegratedTrial
+    assert legacy_runner.zi.executor_plan is zi.executor_plan
+
+
+def test_mixed_study_constructor_uses_static_scene_then_attaches_order_keyed_pair(monkeypatch, tmp_path):
+    """Exercise the real cooperative constructors with only the World owner faked."""
+    from sim.zone_own_scene_provider import own_scene
+    host_spec = spec()
+    original = copy.deepcopy(host_spec)
+    calls = []
+    def init_base(host, base_spec, student, **kw):
+        calls.append(('base', copy.deepcopy(base_spec)))
+        assert base_spec['pair_order_sheets'] == {}
+        scene = own_scene(base_spec, base_spec['contact_profile'], kw['scene'])
+        assert isinstance(scene, MixedGeometryCargoZoneScene)
+        check_scene_inventory(scene.config['setup_only']['objects'],
+                              scene.config['cargo_set']['items'], original['mixed_jobs'])
+        host.spec = base_spec
+        host.static, host.eval_only = scene.config['static_map'], {}
+        host.world = SimpleNamespace(close=lambda: None)
+        host.robots = {r: SimpleNamespace(port=SimpleNamespace(capture=lambda *a: None)) for r in zi.ROBOTS}
+    def attach(host, sheets, params, **kw):
+        assert host.spec == original
+        calls.append(('pair', copy.deepcopy(sheets), kw))
+    monkeypatch.setattr(OwnCamTeamHost, '__init__', init_base)
+    monkeypatch.setattr(OwnCamTeamHost, 'enable_pair_carry', attach)
+    monkeypatch.setattr(legacy_runner.zone_eval_top, 'apply_to_world', lambda *a: {'fake': True})
+    host = runner.StudyTeamHost(host_spec, {}, root=ROOT, provider_spec={'uses_landmark_tags': False},
+                               frames_dir=tmp_path)
+    assert host_spec == original and host.spec == original
+    assert [row[0] for row in calls] == ['base', 'pair']
+    assert calls[1][1] == original['pair_order_sheets']
+    assert calls[1][2] == {'policy': 'v5h'}
+    assert set(host.links) == set(zi.ROBOTS)
+
+
+@pytest.mark.parametrize('damage', ['frames_missing', 'inventory_missing', 'contract_changed'])
+def test_mixed_constructor_refuses_before_world_owner(monkeypatch, tmp_path, damage):
+    host_spec = spec()
+    scene = MixedGeometryCargoZoneScene.from_spec(host_spec, 'local_contact_fine')
+    frames = tmp_path
+    if damage == 'frames_missing':
+        frames = None
+    elif damage == 'inventory_missing':
+        scene.config['setup_only']['objects'].clear()
+    else:
+        host_spec['pair_order_sheets']['beam-order']['beam_xyyaw'][0] = 10.
+    monkeypatch.setattr(OwnCamTeamHost, '__init__', lambda *a, **k: pytest.fail('World owner reached'))
+    with pytest.raises((ValueError, zi.ContractViolation)):
+        MixedOwnCamTeamHost(host_spec, {}, root=ROOT, study_layer=None, frames_dir=frames, scene=scene)
+
+
+@pytest.mark.parametrize('closed,dead,reason', [
+    (True, False, 'EPISODE_ENDED'), (False, True, 'ROBOT_STOPPED'),
+])
+def test_mixed_refusals_keep_shutdown_precedence(closed, dead, reason):
+    host, _ = fake_host()
+    host.closed, host.robots['r3'].dead = closed, dead
+    ack = host.links['r3'].call('pair_carry', 'beam-order', 'B', 'r1')
+    assert not ack['accepted'] and ack['rejected_reason'] == reason
+    assert host.api_calls[-1] is ack
 
 
 def test_one_to_many_static_binding_for_fungible_order():
@@ -234,7 +327,7 @@ def test_wrong_api_kind_and_destination_fail_closed():
     assert claim('r3', 'cyan-order', 'B', 'west').rejected_reason == 'WRONG_ORDER_DESTINATION'
     orders = [{**SCENARIO['orders'][1], 'kind': 'red'}]
     action = {'kind': 'claim', 'order_id': 'cyan-order', 'destination_zone': 'A', 'role': 'west'}
-    assert zi.executor_plan(action, None, actor='r3', orders=orders).rejected_reason == 'UNSUPPORTED_SOLO_ORDER'
+    assert mixed_zi.executor_plan(action, None, actor='r3', orders=orders).rejected_reason == 'UNSUPPORTED_SOLO_ORDER'
 
 
 def test_independent_claims_no_auto_peer_and_pair_failure_does_not_stop_r3():
@@ -292,7 +385,7 @@ def run_fake(condition, *, mutate_eval=False):
         scenario['eval']['gt'] = {'robots': {'r3': [-99., 99.]}}
         scenario['eval']['top_rgb'] = 'different evaluation-only frame'
         host.eval_only.update(gt={'r1': 'different'}, top_rgb='different')
-    trial = zi.IntegratedTrial(scenario, condition=condition, seed=700, links=host.links, horizon_s=25.,
+    trial = runner.IntegratedTrial(scenario, condition=condition, seed=700, links=host.links, horizon_s=25.,
                                map_bundle=BUNDLE, pair_records=host.pairs.records)
     trial.fixtures = {r: Scripted(decision) for r in zi.ROBOTS}
     trial.begin(0.)

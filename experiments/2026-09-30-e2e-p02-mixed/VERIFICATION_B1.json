@@ -1,0 +1,134 @@
+{
+  "schema": "ugrp.p02_b1_fix_verification.v1",
+  "reviewed_sha": "6bb522b14aa28fcaa3ff30f988aebca4ab3aee15",
+  "merged_main": "c12796676802ab54cad2f0635e3e96e911691c76",
+  "review": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/307#issuecomment-5911113048",
+  "finding": "B1: three changed current-v6e registered source files",
+  "before_hashes": [
+    {
+      "path": "harness/zone_own_team_host.py",
+      "expected": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64",
+      "before": "43402dd94ae925c15b687182c20c630a77615507f434e83ec72881c3a1877c83",
+      "main_matches_pin": true
+    },
+    {
+      "path": "harness/zone_study_integration.py",
+      "expected": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06",
+      "before": "c8dcb2e8e351ce6abfe46c3e75ac21560f4b1d5972be865672332c2859ea65a8",
+      "main_matches_pin": true
+    },
+    {
+      "path": "scripts/run_zone_study_integration.py",
+      "expected": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+      "before": "4a61c2920d298c7640e633bad3af38ad542719486c1cde452b5ed9d6ec8d5cb1",
+      "main_matches_pin": true
+    }
+  ],
+  "candidate_source_files_sha256": {
+    "harness/zone_mixed_host.py": "8ecfffa227b4c01993f49224fa95d20903251a6f3235bc10d77789d64c082a32",
+    "harness/zone_mixed_integration.py": "5d15fcdb70934b20b08695980b64f36f73786af08fe52394356a4ea0752cb8e4",
+    "scripts/zone_mixed_study_adapter.py": "c42c240dbeaa078489f0615791d07e7ba819834786b14e89fdd47af4ab05da0c",
+    "tests/test_zone_mixed_jobs.py": "39a6a6d2d934910e1f2747c4b555b36de02388f714511152876014801a0b5271",
+    "harness/zone_mixed_jobs.py": "731ac2878bf31b128fb8e5cd5783df3af8fa6430c3bc7d9b380f061c8db0f9bc",
+    "sim/zone_mixed_inventory.py": "94feb5898caf48d115f314e373e2d045772662425ed6bcd1ca56fe32517f5139",
+    "scripts/run_ci_tests.py": "c0c0769979e179cf7f343fe9eac85f54b0fedfeccf284d61b59212bc87b2ae34"
+  },
+  "source_identity_note": "These tested file bytes are committed with this record; final commit SHA is reported on PR #307.",
+  "v6e_registered_sources": {
+    "count": 85,
+    "all_match": true,
+    "registration_sha256": "64c2680781f1b989312c3ac091c6e0458579ced7ed65d9e9730aadbc416f4bfd"
+  },
+  "preserved_originals": {
+    "sim/zone_geometry_scene.py": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+    "sim/zone_cargo_scene.py": "84d1075c3422b0e2c9aa3db6d9b842e042ee780b1989a90146ea854d3ff94c19",
+    "harness/zone_pair_executor.py": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+    "harness/zone_own_executor.py": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+    "harness/zone_study_inputs.py": "179489a24bc76e73a52bebec1f5918b1a1ac0d128480864ae35debf57c007e0a",
+    "harness/rgb_execution_bundle.py": "93c0d91880b23b1f00d7b0bd3a7491e79ef785ea4dbf2dc561cb3ee89e2b996a",
+    "configs/simulation_workflows.json": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140",
+    "configs/zone_study_integration/i2_pair_long_beam.json": "e6282a18068bc8633c0193ddbfc7f343ea8232869cdf242f31543242e95a401f",
+    "configs/zone_study_scenarios_v2/s1_normal_mixed_v2.json": "8e1e98d936cb1e06c8dbd38fb8cb8bbea08c66f0963ca7a96f5aebe07dc0bd04",
+    "configs/zone_study_scenarios_v2/s2_unmapped_blockage_v2.json": "59828ecf8c56918dbd52e72cb2deaee3b469c755dd7d1373a821ccc99c2fb6de",
+    "configs/zone_study_scenarios_v2/s3_late_rendezvous_v2.json": "d49cd32bfaa4446be50d0366c231fb39c4ad801ee3f4e5be080021b0f7c494ce",
+    "configs/zone_study_scenarios_v2/s4_narrow_door_standoff_v2.json": "eb7fd21d856b8db5673f150754e6d27a0d643d8c07f6263f349ee13bb307793a",
+    "configs/zone_study_scenarios_v2/s5_moved_dropped_item_v2.json": "6aa1171c158a830bfe2fb4c4958dabe2522144175c40465009c52d77ec9d8e5a",
+    "configs/zone_study_scenarios_v2/s6_novel_relation_v2.json": "c5930160d4cfff2e6f7e20c1222697dd865498a6c16e01796e8ef6e7132165f1"
+  },
+  "runs": [
+    {
+      "file": "/Users/changmin/projects/ugrp/outputs/e2e-p02-b1-fix-20260930/before.xml",
+      "sha256": "0601ec84dc40f674e07f1c06945288b14939b1b06295be2a36dc345f63fdd89a",
+      "meaning": "same new regression against reviewed pre-fix bytes: expected 3 failures",
+      "tests": 3,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp/outputs/e2e-p02-b1-fix-20260930/focused-01.xml",
+      "sha256": "8b1fcf5b4307c2d3de2d5ed0b2b68a58c7e04b5a503aff175868d1a15b70a0a7",
+      "meaning": "mixed and source-pinning focused checks",
+      "tests": 111,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp/outputs/e2e-p02-b1-fix-20260930/related-01.xml",
+      "sha256": "a2b8bb7e669614a6175bcf1f9ff8a7e57735668d736a843f8078651ba51ef91f",
+      "meaning": "selection mistake: native renderer creation blocked by sandbox; 244 other tests passed",
+      "tests": 245,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "file": "/Users/changmin/projects/ugrp/outputs/e2e-p02-b1-fix-20260930/final.xml",
+      "sha256": "4501defbd2ea8607e130b701e9848f4cb4fe2ffdc19d9f266ecfd3a806dfaec4",
+      "meaning": "final guarded nonphysical suite",
+      "tests": 356,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    }
+  ],
+  "final_passed": 355,
+  "final_skipped": 1,
+  "new_regression_cases": 10,
+  "final_guards": {
+    "physical_step_attempts": 0,
+    "renderer_attempts": 0,
+    "real_vision_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "local_renderer_incident": "The initial related suite accidentally selected test_team_host_isolation_abort_and_horizon_on_the_real_world. Renderer construction failed with invalid CoreGraphics connection before host.run; the subprocess ended. This attempted construction is not described as zero attempts. The final guarded invocation skips that native test and has zero guard attempts.",
+  "test_runner": "scripts.run_ci_tests.run_locked; waited while other jobs held the shared lock; no foreign lock/process changed",
+  "pytest_flags": [
+    "-p",
+    "no:cacheprovider",
+    "-p",
+    "tests.pose_provider_no_physics",
+    "-p",
+    "p02_no_render"
+  ],
+  "test_files": [
+    "tests/test_zone_mixed_jobs.py",
+    "tests/test_zone_pair_registered_source.py",
+    "tests/test_zone_study_source_pinning.py",
+    "tests/test_zone_pair_door_relax.py",
+    "tests/test_zone_study_integration.py",
+    "tests/test_zone_study_integration_pair.py",
+    "tests/test_zone_study_integration_seams.py",
+    "tests/test_zone_pair_executor.py",
+    "tests/test_zone_study_inputs.py",
+    "tests/test_zone_own_executor_host.py",
+    "tests/test_zone_pair_v6.py"
+  ],
+  "local_renderer_guard": {
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e-p02-b1-fix-20260930/p02_no_render.py",
+    "sha256": "c6628662bcf5b0b433ccc72bb5ae60af051d03ba47379d444386ac3c3c41fb82"
+  },
+  "github_ci": "Normal CI required after push; not cancelled or skipped. Check the final SHA on PR #307.",
+  "scope": "No mission execution or physical success claim. No new registration/workflow/bundle. No TensorBoard cohort; no Drive work. Raw files are local, not remote backups."
+}
