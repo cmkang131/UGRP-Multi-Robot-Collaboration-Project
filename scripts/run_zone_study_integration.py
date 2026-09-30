@@ -326,11 +326,22 @@ def host_spec(scenario, episode, map_bundle):
     spec = {k: copy.deepcopy(episode[k]) for k in
             ('map', 'goal', 'extra_boxes', 'contact_profile', 'job_sim_limit_s')}
     spec['seed'] = episode['layout_seed']
+    if episode.get('mixed_jobs_profile') is not None:
+        from harness.zone_mixed_jobs import order_bindings
+        order_bindings(scenario['orders'], setup['placements'])
     spec['order_sheet'] = OrderSheetSource(scenario, map_bundle).sheet()
     team_orders = [o for o in spec['order_sheet']['orders'] if o['required_robots'] > 1]
     sheets = copy.deepcopy(episode.get('pair_order_sheets', {}))
     cargo = copy.deepcopy(episode.get('team_cargo', []))
-    if team_orders:
+    if episode.get('mixed_jobs_profile') is not None:
+        from harness.zone_mixed_jobs import mixed_contract
+        contract = mixed_contract(scenario, episode, spec['order_sheet'])
+        static = json.loads((ROOT / map_bundle['map_file']).read_text())
+        for order in team_orders:
+            make_plan(static, sheets[order['order_id']], order['destination_zone'])
+        spec['mixed_jobs'] = contract
+        spec['pair_policy'] = contract['constraints']['pair_policy']
+    elif team_orders:
         if (len(spec['order_sheet']['orders']) != 1 or len(team_orders) != 1 or team_orders[0]['kind'] != 'long_beam'
                 or team_orders[0]['required_robots'] != 2 or team_orders[0]['count'] != 1
                 or set(sheets) != {team_orders[0]['order_id']}
@@ -405,6 +416,17 @@ def run_bundle(prereg, episode, *, model_adapter=None, driver=None):
 
 def placements_match(scenario, host):
     """The scenario's declared setup placements are the physical episode's."""
+    if host.spec.get('mixed_jobs'):
+        from harness.zone_mixed_jobs import order_bindings, validate_contract, validate_inventory
+        record = host.spec['mixed_jobs']
+        validate_contract(record)
+        bindings = order_bindings(host.spec['order_sheet']['orders'], scenario['eval']['setup']['placements'])
+        if bindings != record['bindings'] or scenario['eval']['setup']['placements'] != record['setup_placements']:
+            raise zi.ContractViolation('mixed scenario differs from host contract')
+        rows = [{'item_id': oid, 'kind': o['kind'], 'pose_m': [*o['position_m'][:2], 0.]}
+                for oid, o in host.objects.items() if 'position_m' in o]
+        validate_inventory(record, [*rows, *host.spec['team_cargo']])
+        return
     want = {p['item_id']: [round(v, 4) for v in p['pose_m'][:2]] for p in scenario['eval']['setup']['placements']}
     got = {oid: [round(v, 4) for v in o['position_m'][:2]] for oid, o in host.objects.items()
            if 'position_m' in o}

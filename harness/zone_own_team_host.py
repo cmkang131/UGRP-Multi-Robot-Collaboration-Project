@@ -63,16 +63,26 @@ class OwnCamTeamHost:
         from sim.zone_cargo_contact import CARGO_PROFILES, apply as apply_cargo_profile, base_profile, profile_record
 
         self.spec, self.student, self.root = dict(spec), dict(student), Path(root)
+        if spec.get('mixed_jobs'):
+            from harness.zone_mixed_jobs import validate_host_spec
+            validate_host_spec(spec)
         if spec.get('pair_order_sheets'):
             cargo = spec.get('team_cargo', [])
-            if (len(cargo) != 1 or cargo[0].get('kind') != 'long_beam'
+            if not spec.get('mixed_jobs') and (len(cargo) != 1 or cargo[0].get('kind') != 'long_beam'
                     or set(spec['pair_order_sheets']) != {cargo[0].get('item_id')}):
                 raise ValueError('M2 requires one long_beam; item_id, order_id and static sheet key must match')
             if frames_dir is None:
                 raise ValueError('M2 requires frames_dir to preserve every own-camera input')
         profile = spec['contact_profile']
         from sim.zone_own_scene_provider import own_scene
+        if spec.get('mixed_jobs') and scene is None:
+            from sim.zone_mixed_inventory import MixedGeometryCargoZoneScene
+            scene = MixedGeometryCargoZoneScene.from_spec(spec, base_profile(profile))
         self.scene = own_scene(spec, profile, scene)
+        if spec.get('mixed_jobs'):
+            from sim.zone_mixed_inventory import check_scene_inventory
+            check_scene_inventory(self.scene.config['setup_only']['objects'],
+                                  self.scene.config['cargo_set']['items'], spec['mixed_jobs'])
         xml_transform = ((lambda xml: apply_cargo_profile(self.scene.transform(xml), profile))
                          if profile in CARGO_PROFILES else self.scene.transform)
         from sim.zone_masterpi_v3_scene import scene_robot_model, build_world
@@ -502,10 +512,18 @@ class OwnCamTeamHost:
         ex = slot.executor
         now = float(self.world.data.time)
         ex.now = now
+        mixed = getattr(self, 'spec', {}).get('mixed_jobs')
+        if mixed:
+            from harness.zone_mixed_jobs import dispatch_refusal
+            refusal = dispatch_refusal(mixed, rid, api, args)
+        else:
+            refusal = None
         if self.closed:
             ack = ex.refuse(api, 'EPISODE_ENDED')
         elif slot.dead:
             ack = ex.refuse(api, 'ROBOT_STOPPED')
+        elif refusal:
+            ack = ex.refuse(api, refusal)
         elif api == 'pair_carry':
             if getattr(self, 'pairs', None) is None:
                 ack = ex.refuse(api, 'PAIR_NOT_CONFIGURED')

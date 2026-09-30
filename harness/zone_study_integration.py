@@ -272,6 +272,10 @@ def executor_plan(action, job, *, actor=None, orders=()) -> Plan:
         if not isinstance(order, str) or not isinstance(zone, str):
             return Plan(None, rejected_reason='BAD_CLAIM')
         row = next((o for o in orders if o['order_id'] == order), None)
+        if orders and row is None:
+            return Plan(None, rejected_reason='UNKNOWN_ORDER')
+        if row and zone != row['destination_zone']:
+            return Plan(None, rejected_reason='WRONG_ORDER_DESTINATION')
         if row and row['required_robots'] > 1:
             if row['kind'] != 'long_beam' or row['required_robots'] != 2 or row['count'] != 1:
                 return Plan(None, rejected_reason='UNSUPPORTED_TEAM_ORDER')
@@ -280,6 +284,8 @@ def executor_plan(action, job, *, actor=None, orders=()) -> Plan:
                 return Plan(None, rejected_reason='UNSUPPORTED_PAIR_ROLE')
             partner = next(r for r in roles if r != actor)
             return Plan('pair_carry', (order, zone, partner))
+        if row and row['kind'] != 'cyan':
+            return Plan(None, rejected_reason='UNSUPPORTED_SOLO_ORDER')
         return Plan('deliver', (order, zone))
     if kind == 'continue':
         return Plan(None)

@@ -87,6 +87,7 @@ TEST_PATTERNS = (
     "tests/test_zone_study_review_r6*.py", "tests/test_zone_study_review_r7*.py",
     "tests/test_zone_study_integration.py", "tests/test_zone_study_integration_seams.py",
     "tests/test_zone_study_integration_pair.py", "tests/test_zone_study_source_pinning.py",
+    "tests/test_zone_mixed_jobs.py",  # P02: pure inventory and independent fake-port mixed jobs
     "tests/test_zone_study_llm_driver.py",
     "tests/test_zone_study_pair_delay.py",
     "tests/test_zone_study_referee.py", "tests/test_zone_hidden_events.py",
