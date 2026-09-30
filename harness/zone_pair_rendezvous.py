@@ -3,7 +3,8 @@
 The caller chooses a partner/role using its allowed inputs. This module only
 waits on the existing enum wire, cancels the caller's job, and fences obsolete
 requests. It does not detect a physical hold or choose a replacement partner.
-T07 must supply the role-aware dispatch port before r3 can run in a real host.
+Bind RoleAwareOwnPairPort to zone_pair_role_host.OwnCamTeamHost for r3.
+The sealed zone_own_team_host.OwnCamTeamHost retains its r1/r2-only API.
 """
 from __future__ import annotations
 
@@ -83,9 +84,9 @@ class LegacyOwnPairPort:
 
 
 class RoleAwareOwnPairPort(LegacyOwnPairPort):
-    """T07's explicit fourth-argument API; never retry via the legacy default.
+    """zone_pair_role_host's fourth-argument API; no legacy fallback.
 
-    On pre-T07 hosts the call is refused as BAD_PAIR_ARGUMENTS. A host that
+    The sealed legacy host refuses the call as BAD_PAIR_ARGUMENTS. A host that
     silently ignores role is also rejected by the recovery ack validation.
     """
     def submit(self, request):

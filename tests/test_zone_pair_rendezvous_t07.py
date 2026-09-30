@@ -8,7 +8,8 @@ from harness.zone_pair_roles import PairRoles
 from harness.zone_pair_rendezvous import OwnPairRecovery, PairRequest, RoleAwareOwnPairPort
 from harness.zone_pair_status import EPS
 from harness import zone_study_protocol as protocol
-from tests.test_zone_pair_executor import active, setup
+from tests.test_zone_pair_executor import active
+from tests.test_zone_pair_role_exchange import setup
 from tests.test_zone_pair_rendezvous import CONDITIONS, no_physics_or_models  # noqa: F401
 
 

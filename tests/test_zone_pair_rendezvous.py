@@ -358,6 +358,19 @@ def test_role_aware_port_forwards_role_without_legacy_fallback():
     assert calls == [('pair_carry', 'x', 'B', 'r1', 'end_neg')]
 
 
+@pytest.mark.parametrize('actor,partner', [('r3', 'r1'), ('r1', 'r2')])
+def test_role_aware_port_on_sealed_host_is_refused_without_legacy_retry(actor, partner):
+    from tests.test_zone_pair_executor import setup
+    host, exs = setup()
+    own = exs[actor]
+    port = RoleAwareOwnPairPort(actor, call=lambda api, *args: host.call(actor, api, *args),
+                               status=own.status, endpoint=lambda: own._pair.status if own._pair else None)
+    result = OwnPairRecovery(actor, port).submit(PairRequest('cargoX', 'B', partner, 'end_neg'), now=0.)
+    assert result.state == 'refused' and result.reason == 'BAD_PAIR_ARGUMENTS'
+    assert len(host.api_calls) == 1
+    assert not host.pairs.sessions and all(ex.job is None for ex in exs.values())
+
+
 @pytest.mark.parametrize('condition', CONDITIONS)
 def test_real_peer_private_mutation_does_not_affect_wait_or_cancel(condition):
     from tests.test_zone_pair_executor import setup, active

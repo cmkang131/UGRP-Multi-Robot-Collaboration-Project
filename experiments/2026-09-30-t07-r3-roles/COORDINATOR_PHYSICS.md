@@ -2,6 +2,10 @@
 
 이 문서는 최소 진단 제안이다. 정상·실패 어느 셀도 아직 실행하지 않았다.
 고정 r1/r2의 과거 성공은 다른 배정의 성공 근거로 사용하지 않는다.
+Batch F 이후에는 `harness.zone_pair_role_host.OwnCamTeamHost`와
+`harness.zone_pair_role_integration.IntegratedTrial`을 명시적으로 선택해야 한다.
+기존 host/study/executor는 v6e 봉인 바이트를 유지하며 새 역할을 받지 않는다.
+새 역할 실행에는 별도 bundle/admission이 필요하다. [수정 기록](REVIEW_FIXES.md).
 
 ## 실행 전 관문
 
