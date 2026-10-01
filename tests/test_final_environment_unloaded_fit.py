@@ -1,5 +1,6 @@
 """Offline calibration regressions; physics/render/model/network forbidden."""
 import copy
+import hashlib
 import json
 import socket
 import sys
@@ -10,6 +11,7 @@ import pytest
 from scripts import fit_final_environment_unloaded as fit
 
 RECORD = fit.ROOT / 'experiments/2026-10-01-final-env-v87-calibration-fit'
+FIT_RECORD_COMMIT = 'a5cc1402049a249253893762e1ca347e448a5f3f'
 
 
 @pytest.fixture(autouse=True)
@@ -147,10 +149,17 @@ def test_v87_p03_refuses_actual_partial_before_physics_or_factory(tmp_path, monk
 
 
 def test_partial_artifact_provenance_unknowns_and_proper_rotations():
+    from scripts.zone_pair_registered_source import committed_blob
+    def recorded_blob(path):
+        return committed_blob(str(fit.ROOT), FIT_RECORD_COMMIT, path)
+
+    for name in ('calibration_partial.json', 'input_manifest.tsv'):
+        path = RECORD / name
+        assert path.read_bytes() == recorded_blob(path.relative_to(fit.ROOT).as_posix())
     value = fit.read(RECORD / 'calibration_partial.json')
     assert value['status'] == 'PARTIAL_UNLOADED_SIM'
     assert value['measurement_manifest_sha256'] == fit.sha(RECORD / 'input_manifest.tsv')
-    assert value['contract_sha256'] == fit.sha(fit.ROOT / fit.CONTRACT)
+    assert value['contract_sha256'] == hashlib.sha256(recorded_blob(fit.CONTRACT)).hexdigest()
     assert value['source_sha'] == fit.SOURCE_SHA
     assert value['params']['motion_loaded'] is None
     assert value['params']['motion_profiles']['fine'] is None
@@ -164,12 +173,15 @@ def test_partial_artifact_provenance_unknowns_and_proper_rotations():
         r = np.array(record['rotation'])
         np.testing.assert_allclose(r.T @ r, np.eye(3), atol=1e-8)
         assert np.linalg.det(r) == pytest.approx(1.)
-    # Raw remains optional for CI; source hashes and the committed manifest are checked.
+    # Audit the fit record's Git objects, not later main (notably PHYSICS_HANDOFF).
+    # The fitter was added after the measurement SOURCE_SHA, so use its own
+    # recorded commit. Raw remains optional for CI.
     for line in (RECORD / 'input_manifest.tsv').read_text().splitlines()[1:]:
         scope, path, sha, size = line.split('\t')
         if scope == 'repo':
-            assert fit.sha(fit.ROOT / path) == sha
-            assert (fit.ROOT / path).stat().st_size == int(size)
+            data = recorded_blob(path)
+            assert hashlib.sha256(data).hexdigest() == sha, path
+            assert len(data) == int(size), path
 
 
 def test_ci_collects_offline_fit_once():
