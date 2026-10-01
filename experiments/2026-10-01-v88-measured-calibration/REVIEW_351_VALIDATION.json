@@ -1,0 +1,363 @@
+{
+  "schema": "ugrp.review_351.offline_evidence.v1",
+  "reviewed_head": "87aa99c337f700586f01039e40c6ad4dce410afa",
+  "resumed_at": "2026-10-01T12:41:48.052513+09:00",
+  "recovery": "Preserved completed runs from the interrupted review. Counts and failures read from original JUnit XML and logs; no duplicate physics or tests were run.",
+  "source_audit": {
+    "checked_count": 2365,
+    "mismatches": [],
+    "method": "Recomputed Git blob SHA-1 for archived source/test/config/map files against git ls-tree at reviewed_head; includes B and B-prime records.",
+    "selected_files": [
+      {
+        "path": "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json",
+        "git_blob": "42cf706054a8641c140cc79d92768f8a9a34c1e4",
+        "sha256": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f"
+      },
+      {
+        "path": "experiments/2026-10-01-v88-measured-calibration/criterion_B_prime.json",
+        "git_blob": "27151da721482a6e5a82905a1e589af8ca03df2d",
+        "sha256": "3f863f81bea8b4401d980e1c39ec8438b75b34d8f80792d41dbfbcd331f66b33"
+      },
+      {
+        "path": "scripts/assemble_final_pair_calibration.py",
+        "git_blob": "6a0fc9be72f01cafb6280e05b6b443939437a7cf",
+        "sha256": "d18317e573ab0ad01011f6f65dcecb3ed2e8f11716f8215a89223814193b63ac"
+      },
+      {
+        "path": "scripts/final_pair_calibration_camera.py",
+        "git_blob": "40fa62c20f2de5ddfc0caab5812689ff76dcff23",
+        "sha256": "1969525830d622bce197838413bb89f8f85d57eb7cab387d174f7ad9e7b351e3"
+      },
+      {
+        "path": "scripts/final_pair_calibration_io.py",
+        "git_blob": "21950c6b88acc5aab23cf71da807abbf86f80e06",
+        "sha256": "89e31ee93e3c1fa09f25b5b452a564425f004ebc7a933202cd267cec29c3d63e"
+      },
+      {
+        "path": "scripts/final_pair_calibration_motion.py",
+        "git_blob": "4dd6a35eebc71f7fdcfb1cead5256396337001f9",
+        "sha256": "80bed1477beb71f72126cce17ebe38e65441102a80e731a980b0e40750f3de4a"
+      },
+      {
+        "path": "tests/test_final_pair_calibration_assembly.py",
+        "git_blob": "150679be17971f05043a275e817b216b4318a7f6",
+        "sha256": "bb21c37436efbe39e5183a3d8854b0b1d8bcb3a9e347103f169d0b58e90416ae"
+      }
+    ]
+  },
+  "baseline": {
+    "counts": {
+      "tests": 283,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "timestamps": [
+      "2026-10-01T10:36:24.095461+09:00"
+    ]
+  },
+  "review_tests": {
+    "counts": {
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 4
+    },
+    "timestamps": [
+      "2026-10-01T10:46:45.730060+09:00"
+    ]
+  },
+  "review_test_sha256": "587df0aeeadd6717fae6379abeb21765fbd5ed111ef3ce1308f7cdd1b33dce29",
+  "counterexamples": {
+    "test_loaded_deadband_requires_0": {
+      "accepted": true,
+      "observed_magnitudes": {
+        "forward": [
+          0.015,
+          0.025,
+          0.04
+        ],
+        "left": [
+          0.015,
+          0.025,
+          0.04
+        ],
+        "rotate": [
+          0.015,
+          0.025,
+          0.04
+        ]
+      },
+      "detail": {
+        "deadband": {
+          "c0": [
+            0.010000000000000004,
+            0.010000000000000005,
+            0.009999999999999966
+          ],
+          "u1": [
+            0.032,
+            0.031999999999999994,
+            0.031999999999999224
+          ]
+        },
+        "optimizer": {
+          "rank": 13,
+          "success": true,
+          "rmse": 5.900718804369314e-15,
+          "nfev": 7
+        }
+      }
+    },
+    "test_loaded_evidence_requires_0": {
+      "accepted": true,
+      "detail": {
+        "lifted": 1
+      },
+      "record": "trajectory.jsonl"
+    },
+    "test_loaded_evidence_requires_1": {
+      "accepted": true,
+      "detail": {
+        "lifted": 1
+      },
+      "record": "contacts.jsonl"
+    },
+    "test_output_cannot_be_inside_a0": {
+      "rejected": false,
+      "reason": null,
+      "status": "PARTIAL",
+      "raw_modified": true,
+      "output_files": [
+        "calibration.json",
+        "fit_report.json",
+        "input_manifest.json"
+      ]
+    },
+    "test_pipeline_rechecks_input_a0": {
+      "rejected": true,
+      "reason": "input changed: /private/tmp/ugrp-review-351.aOlx8W/review-final-tmp/test_pipeline_rechecks_input_a0/actual/calibration-unloaded/result.json",
+      "output_created": false
+    },
+    "test_validation_pose_contamina0": {
+      "same_noise": true,
+      "clean_noise": [
+        0.01538,
+        0.00504,
+        0.01406
+      ],
+      "dirty_noise": [
+        0.01538,
+        0.00504,
+        0.01406
+      ],
+      "clean_accepted": true,
+      "dirty_accepted": false
+    }
+  },
+  "mutations": [
+    {
+      "id": "M1_fit_includes_validation",
+      "path": "scripts/final_pair_calibration_motion.py",
+      "replace": "for axis, _, _, s, k in window_groups(split_data(data, 'steps'), gate)]",
+      "with": "for axis, _, _, s, k in window_groups(data, gate)]",
+      "tests": [
+        "tests/test_final_pair_calibration_assembly.py::test_b_prime_motion_fit_and_heldout_independence"
+      ],
+      "returncode": 1,
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "elapsed_s": 16.04,
+      "status": "KILLED"
+    },
+    {
+      "id": "M2_omit_bilateral_contact",
+      "path": "scripts/final_pair_calibration_io.py",
+      "replace": "valid_contacts = all(rid+'__'+side+'_finger' in touched for rid in contract.ROBOTS for side in ('left', 'right'))",
+      "with": "valid_contacts = True",
+      "tests": [
+        "tests/test_final_pair_calibration_assembly.py::test_loaded_contact_height_and_weld_selection"
+      ],
+      "returncode": 1,
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "elapsed_s": 9.98,
+      "status": "KILLED"
+    },
+    {
+      "id": "M3_omit_artifact_hash",
+      "path": "scripts/final_pair_calibration_io.py",
+      "replace": "if inputs.files[str(path.resolve())]['sha256'] != digest:",
+      "with": "if False:  # review mutation: omit digest comparison",
+      "tests": [
+        "tests/test_final_pair_calibration_assembly.py::test_raw_audit_rejects_tampering[bad_image_hash]"
+      ],
+      "returncode": 1,
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "elapsed_s": 8.31,
+      "status": "KILLED"
+    },
+    {
+      "id": "M4_omit_output_rechecks",
+      "path": "scripts/assemble_final_pair_calibration.py",
+      "replace": "    inputs.verify()\n",
+      "with": "    pass  # review mutation: no input recheck\n",
+      "tests": [
+        "tests/test_final_pair_calibration_assembly.py"
+      ],
+      "returncode": 0,
+      "counts": {
+        "tests": 134,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "elapsed_s": 129.24,
+      "status": "SURVIVED"
+    },
+    {
+      "id": "M5_noise_includes_validation",
+      "path": "scripts/final_pair_calibration_motion.py",
+      "replace": "for g in budget_groups(split_data(data, 'steps'), profile, gate)]",
+      "with": "for g in budget_groups(data, profile, gate)]",
+      "tests": [
+        "tests/test_final_pair_calibration_assembly.py"
+      ],
+      "returncode": 0,
+      "counts": {
+        "tests": 134,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "elapsed_s": 82.31,
+      "status": "SURVIVED"
+    }
+  ],
+  "review_controls": [
+    {
+      "id": "M4_omit_output_rechecks",
+      "test": "test_pipeline_rechecks_input_after_assembly_before_creating_output",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "timestamps": [
+        "2026-10-01T11:17:46.390212+09:00"
+      ],
+      "probe_results": [
+        {
+          "rejected": false,
+          "reason": null,
+          "output_created": true
+        }
+      ]
+    },
+    {
+      "id": "M5_noise_includes_validation",
+      "test": "test_validation_pose_contamination_cannot_select_training_noise",
+      "counts": {
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "timestamps": [
+        "2026-10-01T11:18:42.600920+09:00"
+      ],
+      "probe_results": [
+        {
+          "same_noise": false,
+          "clean_noise": [
+            0.01538,
+            0.00504,
+            0.01406
+          ],
+          "dirty_noise": [
+            0.2643142022351636,
+            0.01203414492036843,
+            0.01406
+          ],
+          "clean_accepted": true,
+          "dirty_accepted": true
+        }
+      ]
+    }
+  ],
+  "preserved_evidence": [
+    {
+      "path": "review-351-evidence/baseline.xml",
+      "sha256": "e30a4d5c584d8bb30b9902f7558b52bca864a2c1ee97238b7efe5f2ffb025cc4",
+      "bytes": 45158
+    },
+    {
+      "path": "review-351-evidence/review-final.xml",
+      "sha256": "9705a50bbfece2d3196cc3c8a4a175f8a086d231ebf704ec167b8af93d42e987",
+      "bytes": 1469
+    },
+    {
+      "path": "review-351-evidence/M1_fit_includes_validation.txt",
+      "sha256": "b1c7dacd2db72f374ead72a7d170bf7c86d6ba213f02d0f699a038146c03621b",
+      "bytes": 2124,
+      "original_sha256": "7d934ea74ffcf6362d0725074469107829e1af95677f3c0ab014750205fc03c1",
+      "normalization": "Trailing ASCII spaces/tabs only; assertion and failure text unchanged."
+    },
+    {
+      "path": "review-351-evidence/M2_omit_bilateral_contact.txt",
+      "sha256": "b06071737d8b4bbc1b5c5e5d008c07304fe6a6ea3f31d351b33597bcd2d5b4d4",
+      "bytes": 1779
+    },
+    {
+      "path": "review-351-evidence/M3_omit_artifact_hash.txt",
+      "sha256": "6065eab09cfc89195c2a242055940dbc2dc66ea3fa87f9826bb1e97d58b468ae",
+      "bytes": 2064
+    },
+    {
+      "path": "review-351-evidence/M4_omit_output_rechecks.txt",
+      "sha256": "1576bd308dbabf4b8ed4686cadf1f4491fd8c485deb7910066d25f9aafa79573",
+      "bytes": 280
+    },
+    {
+      "path": "review-351-evidence/M5_noise_includes_validation.txt",
+      "sha256": "9975ab144970973522add606468afad3fb11f548c1b4e3df84e2ac65f60f34e0",
+      "bytes": 284
+    },
+    {
+      "path": "review-351-evidence/M4_omit_output_rechecks-review-control.txt",
+      "sha256": "bb82ae0c155ccefe880ee631fdaf7e4d4e62a37a7a947d71be3341fcdf03ce3f",
+      "bytes": 1734
+    },
+    {
+      "path": "review-351-evidence/M5_noise_includes_validation-review-control.txt",
+      "sha256": "e14dae16e65689439d3f6eb24d05b7f242248c43a603f47a9760127c950072fb",
+      "bytes": 2000
+    }
+  ],
+  "limits": [
+    "Synthetic arrays/files only",
+    "No physics, rendering or model calls",
+    "No access to primary outputs",
+    "Python 3.13.5 existing Anaconda; not a Python 3.12 CI claim",
+    "Known CI durations coverage excluded by request"
+  ],
+  "scratch_cleanup": {
+    "path": "/private/tmp/ugrp-review-351.aOlx8W",
+    "deleted": true,
+    "absence_verified": true
+  }
+}

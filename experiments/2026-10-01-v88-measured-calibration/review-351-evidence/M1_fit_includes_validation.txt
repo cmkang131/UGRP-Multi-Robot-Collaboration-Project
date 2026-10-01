@@ -1,0 +1,43 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______________ test_b_prime_motion_fit_and_heldout_independence _______________
+
+    def test_b_prime_motion_fit_and_heldout_independence():
+        data, actual = synthetic_data()
+        profile, report = motion.fit_profile([data], b.criterion())
+        assert report['accepted']
+        for key in ('gain', 'tau_axis_s', 'tau_stop_s'):
+            np.testing.assert_allclose(profile[key], actual[key], atol=2e-6)
+        contaminated = copy.deepcopy(data)
+        for split in data['segments'].values():
+            for start, end in split['prbs']:
+                contaminated['pose'][start:end+1, 0] += np.linspace(0, 1., end-start+1)
+>       fitted, optimizer = motion.fit_shared([contaminated], b.criterion())
+
+tests/test_final_pair_calibration_assembly.py:212:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts/final_pair_calibration_motion.py:100: in fit_shared
+    report = verify_fit(opt, len(initial))
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+opt =      message: `ftol` termination condition is satisfied.
+     success: True
+      status: 2
+         fun: [-2.080e-04 ...10  5.618e-06]
+  optimality: 1.296468406601335e-07
+ active_mask: [ 0  0  0  1  0  0 -1]
+        nfev: 9
+        njev: 9
+count = 7
+
+    def verify_fit(opt, count):
+        rank = int(np.linalg.matrix_rank(opt.jac))
+        if not opt.success or rank != count or np.any(opt.active_mask):
+>           raise ValueError(f'fit convergence/rank/boundary failure: rank {rank}/{count}')
+E           ValueError: fit convergence/rank/boundary failure: rank 7/7
+
+scripts/final_pair_calibration_motion.py:51: ValueError
+- generated xml file: /private/tmp/ugrp-review-351.aOlx8W/M1_fit_includes_validation.xml -
+=========================== short test summary info ============================
+FAILED tests/test_final_pair_calibration_assembly.py::test_b_prime_motion_fit_and_heldout_independence
+1 failed in 15.32s

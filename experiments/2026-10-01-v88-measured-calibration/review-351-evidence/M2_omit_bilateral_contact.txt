@@ -1,0 +1,29 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+________________ test_loaded_contact_height_and_weld_selection _________________
+
+unloaded_raw = PosixPath('/private/tmp/ugrp-review-351.aOlx8W/M2_omit_bilateral_contact-tmp/v88-synthetic-raw0/calibration-unloaded')
+tmp_path = PosixPath('/private/tmp/ugrp-review-351.aOlx8W/M2_omit_bilateral_contact-tmp/test_loaded_contact_height_and0')
+
+    def test_loaded_contact_height_and_weld_selection(unloaded_raw, tmp_path):
+        inputs = raw.Inputs()
+        data = raw.load_collection(unloaded_raw, 'unloaded', inputs)
+        gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+        valid, counts = raw.loaded_mask(data, inputs, gate)
+        assert valid.all() and counts == {'lifted': 7401}
+        # Change only in-memory read results, preserving fixture bytes.
+        class Modified(raw.Inputs):
+            def rows(self, path):
+                rs = super().rows(path)
+                if path.name == 'trajectory.jsonl': rs[10]['beam_xyz_m'][2] = 0.
+                if path.name == 'contacts.jsonl': rs[20]['contacts'] = rs[20]['contacts'][:-1]
+                return rs
+        valid, counts = raw.loaded_mask(data, Modified(), gate)
+>       assert not valid[10] and not valid[20] and valid[9]
+E       assert (not np.False_ and not np.True_)
+
+tests/test_final_pair_calibration_assembly.py:290: AssertionError
+- generated xml file: /private/tmp/ugrp-review-351.aOlx8W/M2_omit_bilateral_contact.xml -
+=========================== short test summary info ============================
+FAILED tests/test_final_pair_calibration_assembly.py::test_loaded_contact_height_and_weld_selection
+1 failed in 9.32s

@@ -1,0 +1,35 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______________ test_raw_audit_rejects_tampering[bad_image_hash] _______________
+
+unloaded_raw = PosixPath('/private/tmp/ugrp-review-351.aOlx8W/M3_omit_artifact_hash-tmp/v88-synthetic-raw0/calibration-unloaded')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1274a88a0>
+mutation = 'bad_image_hash'
+
+    @pytest.mark.parametrize('mutation', ['missing_coast', 'bad_image_hash', 'source_changed', 'bad_schedule'])
+    def test_raw_audit_rejects_tampering(unloaded_raw, monkeypatch, mutation):
+        class Tampered(raw.Inputs):
+            def json(self, path):
+                value = super().json(path)
+                if mutation == 'source_changed' and path == unloaded_raw/'result.json':
+                    value['source_unchanged'] = False
+                if mutation == 'bad_image_hash' and path.name == 'artifacts.sha256.json':
+                    key = next(k for k in value if k.endswith('.jpg'))
+                    value[key] = '0'*64
+                if mutation == 'bad_schedule' and path.name == 'schedule.json':
+                    value[-1]['t'] += .05
+                return value
+            def rows(self, path):
+                value = super().rows(path)
+                if mutation == 'missing_coast' and path.name == 'commands.jsonl':
+                    i = next(i for i, row in enumerate(value) if row['kind'] == 'mecanum' and not any(row[k] for k in b.COMMAND_AXES))
+                    del value[i]
+                return value
+>       with pytest.raises(ValueError):
+E       Failed: DID NOT RAISE <class 'ValueError'>
+
+tests/test_final_pair_calibration_assembly.py:450: Failed
+- generated xml file: /private/tmp/ugrp-review-351.aOlx8W/M3_omit_artifact_hash.xml -
+=========================== short test summary info ============================
+FAILED tests/test_final_pair_calibration_assembly.py::test_raw_audit_rejects_tampering[bad_image_hash]
+1 failed in 7.88s
