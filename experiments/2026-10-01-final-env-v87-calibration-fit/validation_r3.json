@@ -1,0 +1,100 @@
+{
+  "schema": "ugrp.offline_consumer_validation.v1",
+  "scope": "Offline code, command-only numerical predictors and recorded-data analysis. No physics, rendering, external model, PF measurement inference or robot task execution.",
+  "base_head": "8feab5788141ce47418012a2bf458dece908e50c",
+  "tests": {
+    "unique_passed": 251,
+    "new_test_count": 17,
+    "runs": [
+      {
+        "files": [
+          "tests/test_unloaded_consumer.py",
+          "tests/test_unloaded_hammerstein.py",
+          "tests/test_final_environment_unloaded_fit.py",
+          "tests/test_zone_final_environment_floor_light.py",
+          "tests/test_zone_final_environment_runnable.py",
+          "tests/test_vision_pose_source.py",
+          "tests/test_owncam_localizer.py"
+        ],
+        "passed": 184,
+        "failed": 1,
+        "elapsed_s": 306.23,
+        "failure": "test_revision_artifact_and_p03_admission compared the historical r2 input manifest against the new CI registry bytes",
+        "expected_r2_runner_sha256": "4bc8a6859a04acf890dd196c2ccc2092b1497c69738bfba80273515034554ba6",
+        "actual_r3_runner_sha256": "2e524f9be5ffe5b3a8e4b7d4e2ed84404062197f101168ed45a0e0f93db2e827"
+      },
+      {
+        "files": [
+          "tests/test_unloaded_consumer.py",
+          "tests/test_unloaded_hammerstein.py",
+          "tests/test_final_environment_unloaded_fit.py",
+          "tests/test_zone_final_environment_floor_light.py",
+          "tests/test_zone_final_environment_runnable.py",
+          "tests/test_ci_sharding.py"
+        ],
+        "passed": 168,
+        "failed": 0,
+        "elapsed_s": 268.31
+      },
+      {
+        "node": "tests/test_unloaded_hammerstein.py::test_revision_artifact_and_p03_admission",
+        "passed": 1,
+        "failed": 0,
+        "elapsed_s": 1.2
+      }
+    ],
+    "count_rule": "Final changed-scope run 168 (including 66 shard tests), plus 83 unchanged own-camera/vision-provider tests that passed in the initial run. Repeated tests are counted once.",
+    "fix": "Historical r2 source hashes are checked against immutable reviewed commit 8feab578, not future working-tree versions. r1/r2 record bytes unchanged."
+  },
+  "criterion_sha256": "49b7ffbbc07425dda3d2f2410c480ea6ee1315a1c831f97e75efc6989164391c",
+  "inputs": {
+    "local_files_hash_verified_after_run": 182,
+    "frozen_git_blobs": 4,
+    "frozen_plan_blobs": 1,
+    "v89_raw_files": 162,
+    "local_inputs_unchanged": true,
+    "r1_r2_bytes_identical_to_base": true,
+    "manifest": "input_manifest_r3.json"
+  },
+  "result": {
+    "criterion_A": "FAILED for both translation candidates on both axes; rotation unidentifiable",
+    "active_motion": null,
+    "consumer_unchanged_usable": false,
+    "status": "PARTIAL_UNLOADED_SIM"
+  },
+  "rotation_proposal": {
+    "executed": false,
+    "sim_s": 50,
+    "including_reset_cap_s": 55,
+    "chip_count": 31,
+    "pose_count_including_start": 1001
+  },
+  "tensorboard": {
+    "record": "tensorboard_record_r3.json",
+    "runs": 24,
+    "live_scalars_verified": 264,
+    "hparams_events": 24,
+    "ui_verified": false,
+    "ui_blocker": "cgWindowNotFound"
+  },
+  "boundaries": {
+    "controllers_modified": false,
+    "github_workflows_modified": false,
+    "physics_runs": 0,
+    "rendering_runs": 0,
+    "external_model_calls": 0,
+    "merged": false,
+    "draft": true,
+    "private_tmp_extraction_dirs_created": [],
+    "private_tmp_task_extraction_dirs_remaining": []
+  },
+  "code_sha256": {
+    "scripts/fit_unloaded_consumer.py": "63c7e1298ae6ccf63d2552e23f9fcb2cef09b26d55092f3a6c92ed0fadd5c350",
+    "scripts/run_ci_tests.py": "2e524f9be5ffe5b3a8e4b7d4e2ed84404062197f101168ed45a0e0f93db2e827",
+    "tests/test_unloaded_consumer.py": "2e4a8b7ce93dbdfd353a6fb260fcb2aecf0cb31141e433d4a66a9dc206bbd525",
+    "tests/test_unloaded_hammerstein.py": "db80f1456910ee3b0b50624db0ac3b79fdbd8b0adf6e1dee5bff0490b720be72"
+  },
+  "local_work_record": "/Users/changmin/projects/ugrp/outputs/v89-consumer-r3-final-20261001",
+  "raw_backup": "local only; not uploaded or remotely backed up",
+  "prepush_ci": "pending new commit/push; local checks are not remote CI"
+}

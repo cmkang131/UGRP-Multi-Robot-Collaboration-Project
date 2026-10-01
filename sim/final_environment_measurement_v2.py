@@ -104,14 +104,7 @@ class PhysicsBackend(PreviousBackend):
                 if not ids:
                     raise ValueError('MISSING_ROBOT_GEOMETRY')
                 for i in ids:
-                    position = np.asarray(d.geom_xpos[i], float)
-                    radius = float(m.geom_rbound[i])
-                    if position.shape != (3,) or not np.all(np.isfinite(position)) or not math.isfinite(radius) or radius < 0:
-                        raise ValueError('INVALID_ROBOT_GEOMETRY')
-                    distance = float(np.linalg.norm(position[:2] - xy))
-                    envelope = distance + radius
-                    if not math.isfinite(distance) or not math.isfinite(envelope):
-                        raise ValueError('INVALID_ROBOT_GEOMETRY')
+                    envelope = env.geometry_envelope(d.geom_xpos[i], m.geom_rbound[i], xy)
                     if envelope > self.plan['clearance']['robot_radius_bound_m']:
                         raise ValueError('ROBOT_ENVELOPE_BOUND_EXCEEDED')
             if self._last_guard_xy is not None and np.linalg.norm(xy - self._last_guard_xy) > self.plan['clearance']['max_substep_displacement_m']:

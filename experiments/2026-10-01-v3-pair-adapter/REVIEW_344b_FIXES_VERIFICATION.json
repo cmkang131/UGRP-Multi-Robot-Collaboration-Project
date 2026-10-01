@@ -1,0 +1,110 @@
+{
+  "schema": "ugrp.review_fix_verification.v1",
+  "candidate_parent_sha": "b7bc885a27aa5ab242e9f3710a3cd7090efe9f3a",
+  "merged_main_sha": "2c45b137c480eecff3dac871277cf48914dd5cf4",
+  "review_sha": "26534b1217a27ac9f7d7623fc03cd7e6b91f068e",
+  "bundle": "zone-final-pair-v88",
+  "unexecuted_bundle_revised_in_place": true,
+  "physics_steps": 0,
+  "native_model_compiles": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "host_lock_used": false,
+  "review_status": "author fixes only; independent rereview of this candidate pending",
+  "tests": {
+    "unique_latest_passed": 520,
+    "results_in_order": [
+      {
+        "report": "review344b_targeted_tests.xml",
+        "tests": 175,
+        "failures": 5,
+        "errors": 0,
+        "skips": 0
+      },
+      {
+        "report": "review344b_dependencies.xml",
+        "tests": 345,
+        "failures": 1,
+        "errors": 0,
+        "skips": 0
+      },
+      {
+        "report": "review344b_final_delta.xml",
+        "tests": 29,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0
+      },
+      {
+        "report": "review344b_workflow_final.xml",
+        "tests": 17,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0
+      }
+    ],
+    "strict_xfails_converted_to_pass": 5,
+    "review344b_all_passed": 19,
+    "deselected": [
+      "test_parent_exit_cleans_background_child: existing sandbox ps restriction; normal CI test retained"
+    ],
+    "initial_failures": "five fake render tests reached the new preflight first; one merged workflow count still expected 44 instead of 45. Downstream fake test gates and expected count fixed, 29+17 tests rerun successfully. Latest result per test counts once.",
+    "environment": "Python 3.12.13, existing .venv-sim-worker-mac, OPENBLAS_NUM_THREADS=1, PYTHONDONTWRITEBYTECODE=1",
+    "commands": [
+      "python -m pytest -q tests/test_review_344b.py tests/test_review_344.py tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_final_environment_measurement_v2.py tests/test_review_347.py",
+      "python -m pytest -q tests/test_zone_final_environment_runnable.py tests/test_zone_final_environment_floor_light.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_executor.py tests/test_zone_pair_grasp.py tests/test_pair_passage_plan.py tests/test_simulation_workflow_manager.py tests/test_vision_loc_p03_source_pinning.py tests/test_ci_sharding.py -k 'not test_parent_exit_cleans_background_child'",
+      "python -m pytest -q tests/test_review_344.py::test_floor_light_enforcement_rejects_bad_model_and_closes_backend tests/test_zone_final_pair_review_fixes.py::test_collection_validates_original_xyz_and_computed_geometry tests/test_review_344b.py",
+      "python -m pytest -q tests/test_simulation_workflow_manager.py -k 'not test_parent_exit_cleans_background_child'"
+    ]
+  },
+  "checks": {
+    "frozen_fixtures": 3,
+    "rgb_v63_current": "PASS",
+    "registry_immutable_against": "origin/main",
+    "media_size": "PASS",
+    "ci_shard_coverage": {
+      "files": 386,
+      "shards": 8,
+      "verified": true
+    },
+    "github_workflows_equal_main": true,
+    "git_diff_check": "PASS against origin/main; existing trailing whitespace in merged #348 fit_check_v89.py preserved unchanged"
+  },
+  "unchanged_schedules": [
+    "harness/zone_final_pair_excitation.py",
+    "harness/zone_final_pair_calibration.py",
+    "configs/final_environment_measurement_v1.json",
+    "configs/final_environment_measurement_v2.json"
+  ],
+  "temp_extraction_dirs_created": [],
+  "source_sha256": {
+    "harness/final_environment_measurement_v2.py": "0d971eeaf9c0bc9051bf90cbbc2f424fd77831b09037cd706535d3c00e693822",
+    "harness/measurement_path_clearance.py": "48eb8687709721c09592db56bed5813d316b6274a7bec75eb89d479c3fe8f013",
+    "harness/zone_final_pair_clearance.py": "61e6b883359559c2c8129e5d6febd2d965fa17cee377ca7e8c6b5e9602d0b11d",
+    "harness/zone_final_pair_contract.py": "efcaa6e7f11a78b89a48a1ea1c229d840626b80c190eb4ecd1ed190d4a211fbe",
+    "sim/final_environment_measurement_v2.py": "0a9acf0c7246314eaa3b5b5d9cc775874c97e474c2e8effe99595c5bb3f1b784",
+    "sim/final_pair_v3.py": "5d5b9097ec041559276688fd9f851457d86ae2df09c527ab305f8b00a6925477",
+    "scripts/run_final_pair_v3.py": "64bab9f9bca3371b0613a60adb631559cadd1642f3299c5b5c392ae08a872a89",
+    "scripts/check_pair_v88_identifiability.py": "bd733fffe712a00d2b7be2923e96ce48f06c2fcf46d65553a66e9dcf16dc8e83",
+    "scripts/run_ci_tests.py": "b34f007e6f2a7be9b9301b6f15337b16875682a37df497d8cfa3a1d08b360059",
+    "tests/test_review_344.py": "75a40b6206d92c373677cc65f39577fd5750863a25f5de7a550b369ae1b19751",
+    "tests/test_review_344b.py": "a32966019dbeddc16b79f1cbbb68d38fc8144eb656e4bce0b4309a040cb52a7b",
+    "tests/test_zone_final_pair_v3.py": "0647d7686a50915b008710359cdf05b70327175721e2447e73a600593a68ed2d",
+    "tests/test_zone_final_pair_review_fixes.py": "2e4269d6ac608fdbf9591bc5e7fa5fa49a3e1e08d45fa02a8f1600fc7346daf1",
+    "tests/test_simulation_workflow_manager.py": "42a33de3a75d30020894ab7a6408365e844076e5cf59127df63a68da6b90ba76",
+    "configs/zone_final_pair_v88_clearance.json": "95888d60656f52488b9a68f23369cd738fb2acf96f40a17f53ff4d6478396da4",
+    "PHYSICS_HANDOFF.md": "ddcc5da72d18dc3163ff85821fd390ff10900b4203b9855ea06cca4285daf7ee"
+  },
+  "artifact_sha256": {
+    "review344b_dependencies.txt": "abc5a79b05482efc59de06fa017239cf96f41f35d2f7fd2824e033a9398affdc",
+    "review344b_dependencies.xml": "95c18c0903070346b0bffdf1622b21edefdb1df6cf10b78aafbb8c5ddd4aeb97",
+    "review344b_final_delta.txt": "f299f9f5a044c8887d25529ee6d578037c3280cda61342707b0a075a4201bec9",
+    "review344b_final_delta.xml": "1e9652bc9de2a742c466600c220e08fa0b92597ddc7d1179ebc809e07887a3fb",
+    "review344b_plans.json": "f318b47ad01914e0a45a1c9998a47496d9772040d6bab78fa612349b6c42a07a",
+    "review344b_shards.json": "6a5e521720816378a708a0a12669768b35f3bb32b41603ffa3a816b593299d01",
+    "review344b_targeted_tests.txt": "1f586f3686fd768d3cf76d3fd3bd511eea29e58faf31729616eb9ff74a0e69db",
+    "review344b_targeted_tests.xml": "6f321a1f87d76a98169eee3970ea3aeb4c79f7401e0915385d4825c3113cbc13",
+    "review344b_workflow_final.txt": "76d25bfee0c409c55a3bdfc74f3884fabc55589f1f02b6ef2c18e63d60027b32",
+    "review344b_workflow_final.xml": "ae87ee4ba7f8df251fe90f98f2466dc7f06be659bf15c623cd35dd527a003868"
+  }
+}

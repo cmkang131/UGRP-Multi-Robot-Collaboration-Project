@@ -72,6 +72,12 @@ def full_path_clearance(static, walls, plan, bounds):
     if not isinstance(bounds, dict) or set(bounds) != {'forward', 'left'}:
         raise ValueError('MISSING_MOTION_BOUNDS')
     axes = ('forward', 'left')
+    # This evaluator only bounds a single translating robot. Never discard a
+    # turn command or substitute a midpoint for two carriers and their beam.
+    if plan.get('path_bodies', ['r1']) != ['r1']:
+        raise ValueError('UNSUPPORTED_MULTI_BODY_PATH')
+    if any(segment['axis'] not in axes for segment in plan['segments']):
+        raise ValueError('UNSUPPORTED_PATH_AXIS')
     for axis in axes:
         row = bounds[axis]
         for key in ('positive_gain', 'negative_gain', 'drive_tau_s', 'stop_tau_s'):

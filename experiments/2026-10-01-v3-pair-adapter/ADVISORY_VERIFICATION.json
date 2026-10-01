@@ -1,0 +1,85 @@
+{
+  "schema": "ugrp.v88_advisory_verification.v1",
+  "date": "2026-10-01",
+  "candidate_parent_sha": "2e53b58eb4a0746409ff02fb12cb50baa2125589",
+  "bundle": "zone-final-pair-v88",
+  "unexecuted_bundle_revised_in_place": true,
+  "coordinator_decision_number": 2,
+  "coordinator_decision": "SIMULATION_ONLY_TEACHER_CALIBRATION: both no-cancellation bound and within-robot +/- step-pair estimate are ADVISORY; finite geometry, explicit start clearance and mandatory runtime interlock still block. Trips hold then HOST_ERROR, retaining partial invalid data.",
+  "physics_steps": 0,
+  "native_model_compiles": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "host_lock_used": false,
+  "preflight_receipts": "advisory_plans.json",
+  "registered_collections_runnable": {
+    "unloaded": true,
+    "fine": true,
+    "loaded": true
+  },
+  "collection_map": "zone_wide_two_doors_final_v3",
+  "per_collection_cap_with_reset_sim_s": 375.0,
+  "student_p03_carry": "MEASURED_V3_CALIBRATION_REQUIRED; not runnable without measured v3 asset",
+  "tests": {
+    "status": "PASS",
+    "commands": [
+      "OPENBLAS_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_review_344.py tests/test_review_344b.py tests/test_review_344_envelope.py tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_final_environment_measurement_v2.py tests/test_review_347.py tests/test_zone_final_environment_runnable.py tests/test_zone_final_environment_floor_light.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_executor.py tests/test_zone_pair_grasp.py tests/test_pair_passage_plan.py tests/test_simulation_workflow_manager.py tests/test_vision_loc_p03_source_pinning.py tests/test_ci_sharding.py -k \"not test_parent_exit_cleans_background_child\" --junitxml=experiments/2026-10-01-v3-pair-adapter/advisory_offline_tests.xml"
+    ],
+    "excluded": [
+      "test_parent_exit_cleans_background_child: ps denied in this sandbox (verified this turn); test retained in normal CI"
+    ],
+    "initial_failures": "90 passed / 2 failed: synthetic estimate test used an illegal 10s lease (fixed to 50ms leases); NaN-map test expected a plan but existing allow_nan=False hash rejects earlier (assert early rejection). Production interlock unchanged.",
+    "passed": 575,
+    "failed": 0,
+    "deselected": 1,
+    "report": "advisory_offline_tests.xml",
+    "log": "advisory_offline_tests.txt",
+    "environment": "Existing /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python 3.12.13; OPENBLAS_NUM_THREADS=1; PYTHONDONTWRITEBYTECODE=1",
+    "initial_report": "advisory_initial_tests.xml"
+  },
+  "checks": {
+    "frozen_fixtures": 3,
+    "ci_shard_files": 387,
+    "ci_shards": 8,
+    "ci_coverage_verified": true,
+    "v63_manifest_and_registry": "PASS against origin/main 2c45b137",
+    "no_cancellation_receipts_equal_previous": true,
+    "runtime_files_unchanged": {
+      "sim/final_pair_v3.py": "5d5b9097ec041559276688fd9f851457d86ae2df09c527ab305f8b00a6925477",
+      "harness/final_environment_measurement_v2.py": "0d971eeaf9c0bc9051bf90cbbc2f424fd77831b09037cd706535d3c00e693822",
+      "sim/final_environment_measurement_v2.py": "0a9acf0c7246314eaa3b5b5d9cc775874c97e474c2e8effe99595c5bb3f1b784",
+      "harness/zone_final_pair_excitation.py": "618da65836acf0bc79e72d71b9e6d9415ad0e85924fb5769b2339f62cca9b258",
+      "harness/zone_final_pair_calibration.py": "4a54f79930b0897559cef659c8949ba6ae4aed9b6414e54ed79351cf80dea025"
+    },
+    "runtime_sphere_clearances_ast_unchanged": true,
+    "github_workflows_unchanged": true,
+    "media_size": "PASS",
+    "git_diff_check": "PASS excluding byte-preserved initial pytest failure traces (trailing whitespace in original traceback lines)."
+  },
+  "temp_extraction_dirs_created": [],
+  "temp_extraction_dirs_remaining": [],
+  "tensorboard": "No new physics/training/evaluation cohort; no conversion or viewer started.",
+  "review_status": "Author implementation only; independent rereview pending.",
+  "publication_scope": "Keep draft; do not merge; commit/push/comment/CI checked separately.",
+  "source_sha256": {
+    "PHYSICS_HANDOFF.md": "baa14781d95517eea576c2365a378a94dfcf64c9bc7264b5407169df33d7242d",
+    "configs/zone_final_pair_v88_clearance.json": "720a216cf7b58c7d26fdea8ae210b678437a2e8801300eff7686318ecddddf13",
+    "experiments/2026-10-01-v3-pair-adapter/README.md": "cdffec05a9a6dcc393c637ee62ac0f7b20a0d30f173521dca7b18ff6bbe3adef",
+    "harness/zone_final_pair_clearance.py": "6a2beb3e39d1e7870388368f28748ebf848cd76ea8cdbcadf218640ce78979bf",
+    "harness/zone_final_pair_contract.py": "c0c6a81cf40ba8221d644c39deafb5ec29d92410f4a897af3f51ed68380a7987",
+    "scripts/run_final_pair_v3.py": "f3519aa956e24df39697adafe607af3e8aebc3e45bccd77200f7877a31782f5c",
+    "tests/test_review_344.py": "63b402d4e9aca8c68fbea509ce29fbb1bb517734a5833b3cc62014bd35c7ee7b",
+    "tests/test_review_344_envelope.py": "94aab9de29f5a3471e1d879fd1e51a879f0407a77cf97d11b8582ce78ee5f046",
+    "tests/test_review_344b.py": "0735ae53bf19ec8751faffafc7d45e3895891f9dc1a785114ae736bf38a0d09a",
+    "tests/test_zone_final_pair_review_fixes.py": "e7bb6973580124124a02fa8a75eb6fce167457c4a2839220e23b5a6d07bcc41f",
+    "tests/test_zone_final_pair_v3.py": "a327f626f3a544416ef867e8581b7b682fc533e33f7a070803b422099b80f180"
+  },
+  "artifact_sha256": {
+    "advisory_initial_tests.txt": "fc8e4089363ef82073e8cc5a91156505f2ac4b377c4868b099e0b24faddb6804",
+    "advisory_initial_tests.xml": "849cde2bf95f5deff3f9f3f050415c3369ee8c6c973ab03ac850bc72785c1ec7",
+    "advisory_offline_tests.txt": "a027ef0fee6ce584c3b560e53418b49138aa567d537b346c3b765d39915b2341",
+    "advisory_offline_tests.xml": "b62d8fe2945118a7284550d212e725ad75290103a4427d9148c463f0c2ddad43",
+    "advisory_plans.json": "fe6f662f9400eafa91d705070cab250104342a8d977ebbf22a660777ef1b638f",
+    "advisory_shards.json": "a366506c8e28a8b668bfadd924b2ef934c8101ed087492ee3266244026b5f241"
+  }
+}

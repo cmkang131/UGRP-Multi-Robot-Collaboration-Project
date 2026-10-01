@@ -1,0 +1,116 @@
+{
+  "schema": "ugrp.consumer_B_offline_verification.v1",
+  "date": "2026-10-01",
+  "base_head": "bedcc99d8adcff470eb396c9985e766e76affb3d",
+  "scope": "Offline v89 TRAINING fit, synthetic validator tests, v89 training smoke; no new collection or B held-out validation",
+  "criterion_A": "FAILED_NOT_RESCORED",
+  "criterion_B_sha256": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
+  "candidate_sha256": "fa7d3aa2e791086a9e73280b2dd4122bff5186d82503b56e17d5be27ca9bf071",
+  "candidate_status": "CANDIDATE_UNVALIDATED",
+  "tests": {
+    "unique_passed": 284,
+    "new_file_passed": 33,
+    "runs": [
+      {
+        "junit": "/Users/changmin/projects/ugrp/outputs/v89-consumer-r4-final-20261001/offline-tests.xml",
+        "junit_sha256": "fae9453c710678ff18b7fabadccf41104566fbd7d3ae99cfe3f652b02a2fb756",
+        "tests": 282,
+        "failures": 0,
+        "errors": 0,
+        "elapsed_s": 111.879
+      },
+      {
+        "junit": "/Users/changmin/projects/ugrp/outputs/v89-consumer-r4-final-20261001/final-b-tests.xml",
+        "junit_sha256": "1561e3472c8b04c49ee787f2f8a1c7eeaf47046a0cac82d1910ad839cbdb285c",
+        "tests": 33,
+        "failures": 0,
+        "errors": 0,
+        "elapsed_s": 1.777
+      }
+    ],
+    "count_rule": "282 in related suite including first 31 new tests, then final B file 33; two additions counted once, total 284."
+  },
+  "v89_cli_smoke": {
+    "exit_code": 2,
+    "scope": "TRAINING_SMOKE",
+    "axis_pass": {
+      "forward": null,
+      "left": null,
+      "rotate": null
+    },
+    "path": "/Users/changmin/projects/ugrp/outputs/v89-consumer-r4-final-20261001/v89_smoke.json",
+    "sha256": "6f493956fb68d115a57207079c546e05312bbd8da4644d26ac9b5d82bfc4c765"
+  },
+  "minimization": {
+    "relative_floor": [
+      0.3176,
+      0.4438,
+      0.1116
+    ],
+    "absolute_result": [
+      0.01538,
+      0.012767691858458299,
+      0.01406
+    ],
+    "method": "Frozen lexicographic exact order-statistic minimum; not a unique componentwise least pair",
+    "limiting_case": "left / steps / 3.2s, 1465 of 1542 covered",
+    "initial_floor_probe": "Existing M1 floor infeasible on lateral steps: 3.2s coverage 2/3. No new held-out data used."
+  },
+  "rotation_schedule_check": {
+    "pr": 344,
+    "sha": "b7bc885a27aa5ab242e9f3710a3cd7090efe9f3a",
+    "source": "harness/zone_final_pair_excitation.py",
+    "turn_steps": true,
+    "turn_prbs": true,
+    "turn_interval_s": [
+      242,
+      326
+    ],
+    "extra_50s_comment_required": false,
+    "heldout_map_blocker": "Current v88 acquisition only permits the v89 training map zone_wide_two_doors_final_v3; B requires another map."
+  },
+  "inputs": {
+    "used_files_rehashed": 4,
+    "sources_rehashed": 5,
+    "previous_records_byte_identical": [
+      "calibration_partial.json",
+      "calibration_partial_r2.json",
+      "calibration_partial_r3.json",
+      "consumer_criterion_r3.json",
+      "consumer_report_r3.json",
+      "input_manifest_r3.json",
+      "validation_r3.json",
+      "tensorboard_record_r3.json"
+    ]
+  },
+  "source_sha256": {
+    "scripts/fit_consumer_criterion_b.py": "dc45b1069b61b36bca7e9218be4c132ffb38b368704a88c5e0f6d4be37c9cbad",
+    "scripts/validate_consumer_criterion_b.py": "e2bcbdb9139f0027afc82f41372252be062ac34dc3623a80ef74a9497aaeac0b",
+    "scripts/run_ci_tests.py": "4c56f05c57776f0a20f154cccfe1963f8bbf925b12038a63557ef35d6131b672",
+    "tests/test_consumer_criterion_b.py": "165971e53fd5ced61c57ad6cf86f8a649444272bc00ad660a19ddec58c08753e"
+  },
+  "tensorboard": {
+    "record": "tensorboard_record_r4.json",
+    "runs": 24,
+    "live_scalars": 288,
+    "hparams_session_events": 24,
+    "url": "http://127.0.0.1:6006/?pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fdriven_p95_mm%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Falong_2sigma_percent%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Falong_1sigma_percent%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fmean_nees_3d%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22gate%2Fcriterion_B_validated%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%5D&smoothing=0&runFilter=%5E1001-v89-consumer-%28r3%7Cr4-final%29%2F#timeseries",
+    "ui_verified": false,
+    "ui_blocker": "cgWindowNotFound"
+  },
+  "boundaries": {
+    "controllers_modified": false,
+    "github_workflows_modified": false,
+    "physics_runs": 0,
+    "rendering_runs": 0,
+    "model_calls": 0,
+    "merged": false,
+    "draft": true,
+    "private_tmp_extraction_dirs_created": [],
+    "private_tmp_extraction_dirs_remaining": []
+  },
+  "environment_note": "Fit/tests use existing /opt/anaconda3/bin/python3 with SciPy; TensorBoard export uses existing .venv-sim-worker-mac. No new environment.",
+  "local_work_record": "/Users/changmin/projects/ugrp/outputs/v89-consumer-r4-final-20261001",
+  "raw_backup": "local only",
+  "remote_CI": "not yet run for new commit"
+}

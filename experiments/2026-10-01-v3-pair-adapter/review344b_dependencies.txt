@@ -1,0 +1,13 @@
+........................................................................ [ 20%]
+........................................................................ [ 41%]
+........................................................................ [ 62%]
+...................................F.................................... [ 83%]
+.........................................................                [100%]
+=================================== FAILURES ===================================
+_ WorkflowManagerTests.test_catalog_has_thirty_selectable_workflows_and_distinct_adapters _
+tests/test_simulation_workflow_manager.py:188: in test_catalog_has_thirty_selectable_workflows_and_distinct_adapters
+    self.assertEqual(len(data["workflows"]), 45)
+E   AssertionError: 45 != 44
+=========================== short test summary info ============================
+FAILED tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_catalog_has_thirty_selectable_workflows_and_distinct_adapters
+1 failed, 344 passed, 1 deselected in 198.72s (0:03:18)

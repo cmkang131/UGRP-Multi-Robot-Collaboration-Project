@@ -19,9 +19,9 @@ python -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h \
   --seal-commit 5be4330eca9b23d2cbde3657dcbb215ee1923b25
 ```
 
-병합 검증: `origin/main=2c45b137`의 공용 harness 4개를 그대로 반영했다.
+병합 검증: `origin/main=dce9700f`의 공용 harness 18개를 그대로 반영했다.
 기존 봉인 관련 50파일의 바이트 보존, 실행 274개·분석 293개 Git pin을 확인했다.
 seal/v6h·영향받은 pin 검사와 `tests/test_ci_sharding.py`를 포함한 30파일에서
 **1,430 passed / 기존 13 xfailed / 실제 실패 0**이다. 물리·렌더·모델 워커·
 네트워크 호출 시도는 0회이며 workflow 변경은 없다. 원본 로그는 로컬
-`outputs/pr292-historical-merge-20261001/`에 보존한다.
+`outputs/pr292-historical-merge-20261001/latest_main/`에 보존한다.
