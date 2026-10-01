@@ -105,13 +105,15 @@ def parser():
     p.add_argument('--execute', action='store_true', help='explicit physical run; coordinator only')
     p.add_argument('--expected-source-sha', help='full clean committed HEAD required for --execute')
     p.add_argument('--lock-owner', choices=('claude', 'codex', 'kiro'))
-    p.add_argument('--pair-policy', choices=('v5h','b-only','a+b','b-boot','a+b-boot','b-v6c','b-v6d','b-v6g'),
-                   help='must match the v6/v6b/v6c/v6d/v6e registered case')
+    p.add_argument('--pair-policy', choices=('v5h','b-only','a+b','b-boot','a+b-boot','b-v6c','b-v6d','b-v6g','b-v6h1'),
+                   help='must match the v6-family registered case (v6h pending seal)')
     return p
 
 
 def load_config(args):
     prereg = json.loads(args.prereg.read_text())
+    if prereg.get('registration_revision') == 'v6h':
+        raise ValueError('v6h confirmatory chain requires scripts.run_pair_stage_probes --prereg')
     if prereg.get('registration_version') == 6:
         from scripts.zone_pair_v6_contract import load_config as load_v6
         return load_v6(args)

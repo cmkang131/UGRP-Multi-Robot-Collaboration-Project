@@ -213,10 +213,13 @@ def m2_controller(execution, plan, params):
                         if lateral else 0., 'turn': 0.}
             sign = carry_role_sign(self.rid)
             command = leg_command(sign)
-            if self.policy.carry_lateral_lag and axis in v6e_carry.LAG_AXES:
+            if ((self.policy.carry_lateral_lag and axis in v6e_carry.LAG_AXES)
+                    or (self.policy.carry_axial_lag and axis == 'axial')):
                 # v6e: invert the calibrated loaded first-order-lag plant (harness/owncam_carry_v6e.py)
                 duration = v6e_carry.leg_duration(math.hypot(dx, dy), axis,
-                                                  [command['forward'], command['left'], command['turn']], params)
+                                                  [command['forward'], command['left'], command['turn']],
+                                                  v6e_carry.timing_calibration(params, axis, self.policy.carry_fwd_gain)
+                                                  if self.policy.carry_axial_lag else params)
             schedule[-1] = (start, start + duration, command)
             if self.policy.carry_pair_yaw:
                 # v6e carry_pair_yaw: the partner's command of this leg is the SAME plan function with the partner's
@@ -231,7 +234,12 @@ def m2_controller(execution, plan, params):
             return schedule
 
     own, rid = execution.own, execution.own.robot_id
+    from harness.zone_own_guards import loaded_gate_profile
     driver = GuardedPairApproach(own, copy.deepcopy(params),
+                                       door_relax_sigma_scope=execution.policy.door_relax_sigma_scope,
+                                       loaded_k_xy=execution.policy.loaded_k_xy,
+                                       loaded_k_yaw=execution.policy.loaded_k_yaw,
+                                       loaded_profile=loaded_gate_profile(execution.policy.loaded_gate_yaw_deg),
                                        goal_xyyaw=plan['prestations'][rid], door_xy=None,
                                        keepouts=plan['keepouts'][rid], initial_servo=dict(own.servo), seed=own.seed)
     driver.on_command({'t': own.now, 'kind': 'initial_servo_command', 'pulses': dict(own.servo)})
@@ -464,6 +472,10 @@ class PairTeam:
                              'needs a fresh provider')
         from harness import owncam_carry_v6e as v6e_carry
         self.carry_dr = {}
+        if self.policy.carry_axial_lag and self.policy.carry_fwd_gain == 1.0:
+            raise ValueError('carry_axial_lag requires carry_fwd_gain (fixed PR #284 correction)')
+        if self.policy.carry_fwd_gain != 1.0 and not self.policy.carry_dr_model:
+            raise ValueError('carry_fwd_gain requires carry_dr_model')
         if (self.policy.carry_pair_yaw or self.policy.carry_beam_edge or self.policy.carry_dr_general) \
                 and not self.policy.carry_dr_model:
             raise ValueError('carry_pair_yaw / carry_beam_edge / carry_dr_general re-parameterise the carry_dr_model '
@@ -474,11 +486,12 @@ class PairTeam:
             for rid, executor in self.executors.items():
                 self.carry_dr[rid] = v6e_carry.enable_provider(executor.pose, pair_yaw=self.policy.carry_pair_yaw,
                                                                beam_edge=self.policy.carry_beam_edge,
-                                                               general=self.policy.carry_dr_general)
+                                                               general=self.policy.carry_dr_general,
+                                                               carry_fwd_gain=self.policy.carry_fwd_gain)
         elif any(v6e_carry.bound(getattr(executor, 'pose', None)) for executor in self.executors.values()):
             raise ValueError(f'pose provider is bound to carry_dr_model (b-v6e); {self.policy.name} '
                              'needs a fresh provider')
-        if self.policy.carry_lateral_lag and 'motion_loaded' not in params:
+        if (self.policy.carry_lateral_lag or self.policy.carry_axial_lag) and 'motion_loaded' not in params:
             raise ValueError('carry_lateral_lag needs the calibrated loaded motion model (params.motion_loaded)')
         if self.policy.posterior_relook:
             if self.policy.exact_fix_clock:

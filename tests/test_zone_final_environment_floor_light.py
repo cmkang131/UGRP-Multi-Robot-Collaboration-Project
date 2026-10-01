@@ -1,7 +1,9 @@
 """v87 fake/offline checks, including v84 byte preservation; no native imports."""
 import copy
+import hashlib
 import json
 import socket
+import subprocess
 import sys
 from types import SimpleNamespace
 import xml.etree.ElementTree as ET
@@ -28,13 +30,36 @@ def offline_only(monkeypatch):
     monkeypatch.setattr(VisionWorkerClient, '__init__', lambda *a, **k: pytest.fail('worker forbidden'))
 
 
-def test_v84_bundles_sources_and_protected_tests_stay_byte_identical():
+def test_v84_history_and_explicit_v6h_successors_keep_their_own_receipts():
+    from tests.v6h_successor_pins import SEAL, successor_blob
     record = env.read(env.ROOT / RECORD)
+    # #292's already-reviewed source/test migrations are separate from v84.
+    # Do not rewrite its receipt or claim current bundle bytes are the old run.
+    successors = {
+        'harness/owncam_carry_v6e.py': SEAL,
+        'harness/zone_own_guards.py': SEAL,
+        'tests/test_zone_pair_registered_source.py': '9e13c76b0ead36ace257e05cab7cb5e60d42df72',
+        'tests/test_zone_study_source_pinning.py': '9e13c76b0ead36ace257e05cab7cb5e60d42df72',
+    }
+    assert successors.keys() <= record['files_sha256'].keys()
     for path, sha in record['files_sha256'].items():
-        assert env.sha(env.ROOT / path) == sha, path
+        original = subprocess.check_output(['git', 'show', f'{record["source_sha"]}:{path}'], cwd=env.ROOT)
+        assert hashlib.sha256(original).hexdigest() == sha, path
+        expected = (subprocess.check_output(['git', 'show', f'{successors[path]}:{path}'], cwd=env.ROOT)
+                    if path in successors else original)
+        actual = successor_blob(path) if successors.get(path) == SEAL else (env.ROOT / path).read_bytes()
+        assert actual == expected, path
     for key, sha in record['bundles'].items():
         mid, check = key.split('/')
-        assert env.digest(old.bundle(mid, check=check)) == sha, key
+        current = old.bundle(mid, check=check)
+        assert env.digest(current) != sha, 'a successor must not inherit the historical bundle identity'
+        historical = copy.deepcopy(current)
+        assert historical['source_sha256'].keys() <= record['files_sha256'].keys()
+        # All non-source bundle fields and the source closure remain exact;
+        # only substitute the independently checked historical Git hashes.
+        historical['source_sha256'] = {path: record['files_sha256'][path]
+                                       for path in current['source_sha256']}
+        assert env.digest(historical) == sha, key
 
 
 @pytest.mark.parametrize('mid', MAPS)

@@ -17,9 +17,23 @@ MOTION_SAMPLE_S = .05
 
 
 class PairSweepGuard(SweepGuard):
-    def __init__(self, arm_guard, geometry, role):
+    def __init__(self, arm_guard, geometry, role, *, loaded_k_xy=K_SIGMA, loaded_k_yaw=K_SIGMA,
+                 door_relax_sigma_scope='loaded_base_motion'):
         self.boxes, self.mount, self.residual = arm_guard.boxes, arm_guard.mount, arm_guard.residual
         self.geometry, self.grasp = geometry, geometry['grasps'][role]
+        self.loaded_k_xy, self.loaded_k_yaw = loaded_k_xy, loaded_k_yaw
+        if door_relax_sigma_scope not in ('loaded_base_motion', 'probe_all_sweeps'):
+            raise ValueError('unknown door-relax sigma scope')
+        self.door_relax_sigma_scope = door_relax_sigma_scope
+        self._loaded_motion = False
+
+    def margin(self, pose, lever_m):
+        # b-v6h1 matches the probe's process-wide margin replacement in this
+        # policy instance. Older policies keep the original selection/signature.
+        relaxed = self._loaded_motion or self.door_relax_sigma_scope == 'probe_all_sweeps'
+        if not relaxed or (self.loaded_k_xy == K_SIGMA and self.loaded_k_yaw == K_SIGMA):
+            return super().margin(pose, lever_m)  # unchanged call signature for historical probe wrappers
+        return super().margin(pose, lever_m, loaded=True)
 
     def beam_spheres(self, servo):
         """Conservative covering of the complete 600x40x32 mm bar, in own base coordinates.
@@ -107,7 +121,9 @@ class PairSweepGuard(SweepGuard):
         lever = max(.2, *(math.hypot(x, y) + r for x, y, _, r in spheres))
         pad = (math.hypot(f, l) + abs(w) * lever) * duration / n / 2.
         original_residual = self.residual
+        original_loaded_motion = self._loaded_motion
         self.residual += pad
+        self._loaded_motion = bool(loaded)
         try:
             for omega in sorted({-abs(w), 0., abs(w)}):
                 for i in range(n + 1):
@@ -125,3 +141,4 @@ class PairSweepGuard(SweepGuard):
             return True
         finally:
             self.residual = original_residual
+            self._loaded_motion = original_loaded_motion

@@ -163,10 +163,25 @@ TEST_PATTERNS = (
     "tests/test_zone_pair_v6e.py",  # v6e carry flags (dead-reckoning model, lateral lag); flags off = v6c
     "tests/test_zone_pair_v6f.py",  # v6f place flags (optical-black dark reference, bounded retreat); flags off = v6c
     "tests/test_zone_pair_v6e_yaw.py",  # v6e yaw flags (pair-mean plant yaw, beam-edge relative yaw); flags off = v6e
+    "tests/test_zone_pair_v6h.py",  # registered v6h flags: no physics/models
+    "tests/test_zone_pair_v6h_seal.py",  # separate commit pins, immutable seal, synthetic gate
+    "tests/test_review_seal_v6h1.py",  # independent review regressions; synthetic acquisition inputs
+    "tests/test_v6h_acquisition_reader.py",  # mandatory inventory byte boundary; no recorded raw
+    "tests/test_zone_pair_v6h_review_delta.py",  # sealed runtime data and dynamic-import pins
     "tests/test_zone_pair_v6g.py",  # v6g carry_dr_general (lateral breakaway ramp, cross-axis drift) + route end inset; flags off = v6e
     "tests/test_zone_pair_door_relax.py",  # b-v6h stage-probe door-guard relaxation (process-local; registered sources untouched)
     "tests/test_door_relax_envelope.py",  # envelope grid + chain early stop of the stage-probe runner (opt-in flags)
+    "tests/test_b_v6h_gain.py",  # b-v6h gain-fix tooling: PF forward gain x0.9483, p2f timing rule, k2 identity variant, placement list
     "tests/test_chain_analysis_hard_limit.py",  # chain_analysis leg_class: hard limit takes precedence over ordinary failure
+    "tests/test_v6h_classify_placements.py",  # eval-only prereg draft: placement contact classes + whole-chain hard-limit veto
+    "tests/test_v6h_blinded_run_manifest.py",  # committed metadata + synthetic records only; never blinded raw
+    "tests/test_classify_review_299.py",
+    "tests/test_classify_review_299b.py",
+    "tests/test_classify_review_299c.py",
+    "tests/test_classify_review_299d.py",
+    "tests/test_classify_review_299g.py",  # public/synthetic chronology; no blinded raw
+    "tests/test_v6h_recorder_contract.py",  # pinned recorder consumer contract; JSON only
+    "tests/test_v6h_classifier_properties.py",  # 10,000 seeded evidence chains; no physics
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)

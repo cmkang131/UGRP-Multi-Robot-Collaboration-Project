@@ -1,0 +1,21 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______ test_real_chain_source_tamper_rejected[scripts/zone_teacher.py] ________
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1154/test_real_chain_source_tamper_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106bb5ac0>
+source = 'scripts/zone_teacher.py'
+
+    @pytest.mark.parametrize('source', ['scripts/zone_teacher.py', 'harness/owncam_pair_hold_v3.py',
+                                        'harness/static_keepouts.py', 'harness/zone_event_scheduler.py'])
+    def test_real_chain_source_tamper_rejected(tmp_path, monkeypatch, source):
+        from scripts import zone_pair_v6_contract as c
+        path, p = _sealed_v6h(tmp_path, monkeypatch)
+        original = Path.read_bytes
+>       assert source in p['v6_contract']['source_sha256']
+E       AssertionError: assert 'scripts/zone_teacher.py' in {'configs/simulation_workflows.json': '2486343200ccb3d14268c9aa47fd8f1a802aa6ed921470408c32e860a7de7b53', 'configs/zon...s/zone_study_integration/pose_providers.json': '7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d', ...}
+
+tests/test_zone_pair_v6h.py:436: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_pair_v6h.py::test_real_chain_source_tamper_rejected[scripts/zone_teacher.py]
+1 failed, 104 deselected in 3.06s

@@ -1,0 +1,56 @@
+{
+  "source_sha256": {
+    "classifier": "601c30ab0bc950c75b12c7967032b2ec071fe2b185c10336acde73a0822b78b4",
+    "adapter": "3f0e67c2042d2e6c95516468df0aea002440774d08e20650cf9805d9630f6eb5"
+  },
+  "source_unchanged": true,
+  "killed": 5,
+  "survived": 0,
+  "results": [
+    {
+      "mutation": "R1_end_coordinates",
+      "target": "classifier",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "contradiction must be INVALID",
+      "deleted": "                validate_recorder_distances(row, result, recorder_context[\"case\"])",
+      "replacement": "                pass"
+    },
+    {
+      "mutation": "R1_start_coordinates",
+      "target": "classifier",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "contradiction must be INVALID",
+      "deleted": "                validate_recorder_distances(row, result, recorder_context[\"case\"])",
+      "replacement": "                pass"
+    },
+    {
+      "mutation": "R2_stream_order",
+      "target": "classifier",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "contradiction must be INVALID",
+      "deleted": "                validate_recorder_chronology(row, result, trace)",
+      "replacement": "                pass"
+    },
+    {
+      "mutation": "R2_stop_window",
+      "target": "classifier",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "contradiction must be INVALID",
+      "deleted": "                validate_recorder_chronology(row, result, trace)",
+      "replacement": "                pass"
+    },
+    {
+      "mutation": "R2_adapter_start_contract",
+      "target": "adapter",
+      "baseline_pass": true,
+      "mutant": "KILLED",
+      "failure": "registered producer contract must require both starts",
+      "deleted": "for boundary in (\"leg_start\", \"leg_end\"):",
+      "replacement": "for boundary in (\"leg_end\",):"
+    }
+  ]
+}

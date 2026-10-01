@@ -27,7 +27,7 @@ BASE = dict(posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
 # ------------------------------------------------------------ policies
 def test_yaw_flags_are_off_everywhere_except_the_three_b_v6e_yaw_policies():
     on = {name for name, p in POLICIES.items() if any(getattr(p, f) for f in YAW)}
-    assert on == {'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6g', 'b-v6g-l7'}
+    assert on == {'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6g', 'b-v6g-l7', 'b-v6h1'}
     base, full, pm, edge = (pair_policy(n) for n in ('b-v6e-base', 'b-v6e', 'b-v6e-pm', 'b-v6e-edge'))
     assert [getattr(full, f) for f in YAW] == [True, True]
     assert [getattr(pm, f) for f in YAW] == [True, False] and [getattr(edge, f) for f in YAW] == [False, True]

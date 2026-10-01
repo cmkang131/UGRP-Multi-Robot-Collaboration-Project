@@ -1,0 +1,49 @@
+{
+  "created_utc": "2026-09-30T12:09:27.512970+00:00",
+  "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+  "file_sha256": {
+    "experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "3e9cc53e0a1b5f2b971362e24478103a1d6a5ed330535b79008312dc6156aa62",
+    "scripts/run_ci_tests.py": "09f5ef8ea4e5a0bba91d10cd8c0c233ed6e6ff625bb774e0b03f2b892fcdad38",
+    "tests/test_classify_review_299.py": "0fe79fcc25dfdbfc1f75a8be7d14aeec7a86d218652263de8c1d1e3aabe307a2",
+    "tests/test_v6h_classify_placements.py": "12f19030ae38333d34010ed7ff9fe021cffb089dc8478f3c0b3f4b7c91c7b27a"
+  },
+  "no_physics": true,
+  "old_regression_nodeids": [
+    "tests/test_v6h_classify_placements.py::test_observed_criterion_48_of_60_and_safety_veto_even_for_auxiliary_seed",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[one_row]",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[cut_tail]",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[cut_head]",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[gap]",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[reverse]",
+    "tests/test_v6h_classify_placements.py::test_truncated_or_unordered_trace_is_rejected[duplicate]",
+    "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws0]",
+    "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws1]",
+    "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws2]",
+    "tests/test_v6h_classify_placements.py::test_missing_or_nonboolean_jaws_cannot_pass[jaws3]",
+    "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[lift_m-inf]",
+    "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[end_error_m--0.01]",
+    "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[tilt_deg-181.0]",
+    "tests/test_v6h_classify_placements.py::test_invalid_leg_metrics_cannot_pass[leg_error_m-nan]",
+    "tests/test_v6h_classify_placements.py::test_null_failures_mean_no_failure_and_nonnull_failure_vetoes_good_endpoints",
+    "tests/test_v6h_classify_placements.py::test_actual_timeout_cannot_be_relabelled_from_good_endpoints"
+  ],
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "raw_output": "/Users/changmin/projects/ugrp/outputs/v6h-fixcls-review299-20260930/final",
+  "review_tests_sha": "de16cbc96becf19755f09197b9ef139609f00fe9",
+  "reviewed_sha": "c86d9bac62036904ecc641db5e59e79edb58dec2",
+  "source_head_before_commit": "c86d9bac62036904ecc641db5e59e79edb58dec2",
+  "git_log_copies": {
+    "reviewed_counterexamples.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/v6h-fixcls-review299-20260930/final/reviewed_counterexamples.txt",
+      "raw_sha256": "5df1111e89b09fc2806e4e030b584f48758c435ff6adc631b52a9e4db2cc5516",
+      "git_copy_sha256": "9b5d175c2b912430ba1cf6d88cb58bc00638807def1a2e5dea779f4e22e888db",
+      "normalization": "strip trailing whitespace only; raw unchanged"
+    },
+    "initial_test_expectation_failure.txt": {
+      "raw_path": "/Users/changmin/projects/ugrp/outputs/v6h-fixcls-review299-20260930/related_tests.txt",
+      "raw_sha256": "6c444467a6288d38b880609cd8eb21d22368242c16ea473416110c4e45a0eb65",
+      "git_copy_sha256": "15da60ae8436c3e203dc5af0602eaed9ebae55568e63d4ad5d3143ae98b54ead",
+      "normalization": "strip trailing whitespace only; raw unchanged"
+    }
+  }
+}

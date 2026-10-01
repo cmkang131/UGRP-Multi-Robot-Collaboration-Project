@@ -190,10 +190,10 @@ def test_actual_approach_receives_fixed_role_exclusion_geometry(roles):
 @pytest.mark.parametrize('name', ['zone_own_team_host', 'zone_own_executor', 'zone_pair_executor',
                                  'zone_pair_status', 'zone_study_integration'])
 def test_role_adapter_preserves_each_registered_source(name):
+    from tests.v6h_successor_pins import successor_blob, successor_pins
     root = Path(__file__).resolve().parents[1]
-    sealed = json.loads((root / 'experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json').read_text())
     path = f'harness/{name}.py'
-    assert hashlib.sha256((root / path).read_bytes()).hexdigest() == sealed['v6_contract']['source_sha256'][path]
+    assert hashlib.sha256(successor_blob(path)).hexdigest() == successor_pins()[path]
 
 
 def test_opt_in_host_and_study_leave_legacy_dispatch_available():
