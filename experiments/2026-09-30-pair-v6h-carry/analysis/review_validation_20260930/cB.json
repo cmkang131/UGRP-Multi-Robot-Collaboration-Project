@@ -1,0 +1,1611 @@
+{
+  "schema": "ugrp.v6h_placement_classification.draft.v2",
+  "label": "cB",
+  "raw": "/Users/changmin/projects/ugrp/outputs/b-v6h-gain-69c2a99a-cB",
+  "source_sha": "69c2a99ac1fe6babd49c562786a0ba2ff4a7f662",
+  "manifest_state": "completed",
+  "source_changed": false,
+  "input_sha256": {
+    "cases.jsonl": "571e61d524790ca9e5800432cd2b7e3ba3ce7fd5014bb18e0f913a9041e857e0",
+    "manifest.json": "895180d4844bcfc0ad6adc9334057bf63866d67a8853cb0d6be72ce4a1929380",
+    "chain_analysis.py": "62ff145d9016f61aa2f6f71d588ba7dab5b35d9aabb2b19ca15a934bafc0d2e5",
+    "/Users/changmin/projects/ugrp-wt/v6h-fixcls/experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3",
+    "/Users/changmin/projects/ugrp-wt/v6h-fixcls/experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "cd7dc24d245e7e674cef6b986e594c506b2bbedb015aad8946c9b6f10ce60950",
+    "/Users/changmin/projects/ugrp-wt/v6h-fixcls/harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+    "/Users/changmin/projects/ugrp-wt/v6h-fixcls/experiments/2026-09-29-door-guard-relax/analysis/door_relax_analysis.py": "5add0c7ac29c94e13cf65ffe0f95abbf96a7c80e125194a20a485cd8dca6186f",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_F_hR2_04_s913_pPOST_VENV/result.json": "3c880ad5b9da6f6d26bcf50172606e4ff827dbe3f40c529a96ebf95e8e7fbea3",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_F_hR2_04_s913_pPOST_VENV/eval_only/trace.jsonl": "dde81aefac240e139ac1b660a60b3146b3f70e6f343da6958f73268da837bf95",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_F_hR2_04_s911_pPOST_VENV/result.json": "f3265af970c17d5515ddf5c37357518a93f46370ae66c9e88ec8c494dd3f2a40",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_F_hR2_04_s911_pPOST_VENV/eval_only/trace.jsonl": "0258b78aaf4163f017c9fbefa9623ed91a46eda961f8aa60cb7f22e2929e5c86",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N01_s911_pPOST_VENV/result.json": "ca8e9bec1004c5f244ba38a6632d80f99aa7cfe3bea4a15497d34b453e08c27e",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N01_s911_pPOST_VENV/eval_only/trace.jsonl": "55e82a890f8e0305d778f1e18c3606493c68aee58bc0c47036ff465707ed7501",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N01_s913_pPOST_VENV/result.json": "cb4b5de216ac33660170d0a4285d2093b46213cb05f298b4c60e6ffebe6ad41c",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N01_s913_pPOST_VENV/eval_only/trace.jsonl": "69da971b23746b459b31e46b00e31752c727782b6b7ec87bb3b5f8d79a474cf9",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N02_s911_pPOST_VENV/result.json": "65e46a77b01b18230e641bab51419eaca2c1bf767652359a9ce9f3da1057de7f",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N02_s911_pPOST_VENV/eval_only/trace.jsonl": "48e36d841f1a5b1e77fff9725d1dbe910d45a938b1c49af35bbca7ed2052dbb0",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N02_s913_pPOST_VENV/result.json": "ddee43d06137a2d61f29b9eb9fe1ce7fec61036a5f6492e91c33d6ebde4427db",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N02_s913_pPOST_VENV/eval_only/trace.jsonl": "aaa1e30999adbf7a31b3636386331fb580fad184fa28996102db9c28f2dc953b",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N03_s913_pPOST_VENV/result.json": "c826e307204ff2458505345d25f16ba29320ed39e284ae50cfeb3bd45c4cd90c",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N03_s913_pPOST_VENV/eval_only/trace.jsonl": "17b8ce2ea1f147328a71da9aec38f0e746d3e4fd26a87c4c7b88aa149db53208",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N03_s911_pPOST_VENV/result.json": "b56e4f0bf979429d5749703b0384d190805af6f87f83af27f7eec5569c8d04ea",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N03_s911_pPOST_VENV/eval_only/trace.jsonl": "49317ef23dc11a8030e46dcc064776df7aab2e70501a1f6bbc06b8996f25f99a",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N04_s911_pPOST_VENV/result.json": "fab74ac22898c14508d168408685f204ec0bf786c988e4033634ade7d252b37a",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N04_s911_pPOST_VENV/eval_only/trace.jsonl": "6fd9b8e327d1685e5c8779ccd76f8cb69d3da4728af39eafb86a7c18d6d64073",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N04_s913_pPOST_VENV/result.json": "2877d78322a31d6082c260ed1000411528c8311c9b8305ed881a88b7295d415f",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N04_s913_pPOST_VENV/eval_only/trace.jsonl": "ebc6c0efc055e80216b5ac44303601d31d30afbeab0c45f4456d6c642a851849",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N05_s911_pPOST_VENV/result.json": "b0b82f6f1f35837e871e8737cb43906649be11ffd906a2e9fc970e3319d5ec52",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N05_s911_pPOST_VENV/eval_only/trace.jsonl": "eca66861b7df46da6038a9303498c1d333d939fc67ba22704577b4bf73993e8b",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N05_s913_pPOST_VENV/result.json": "38fdcd2f52e511a44af2f21c7c540adeca3c6813ecfe1931e548805cac0d239f",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N05_s913_pPOST_VENV/eval_only/trace.jsonl": "e4fdc00609f2e595bbc482ef938bd5e3eaad618b6bffb3232d25f87edef043cb",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N06_s911_pPOST_VENV/result.json": "7ecab52c7c9cdf6bb2ae0c6697299a3fab800948826cc88af09d8d6dd4db60ae",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N06_s911_pPOST_VENV/eval_only/trace.jsonl": "e32f90f8340bf078d6b6859212c6b1d1b9a1da462f6c4e78280726f3f8b7db95",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N06_s913_pPOST_VENV/result.json": "0572371973521d3c33964969e5860be23a2a8e10e389120b7f6df634bb4a97d2",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N06_s913_pPOST_VENV/eval_only/trace.jsonl": "c385ac7bd5116dc584dbb054f7c70363175240e314622ea6bf3dee58f69de167",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N07_s911_pPOST_VENV/result.json": "56162d0559f41a0c5c47541045fe8420245a3ce4d5fb0552736b24c95b2242f5",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N07_s911_pPOST_VENV/eval_only/trace.jsonl": "f8a50bc413628632cafb34dc8ce87ae11beefe15672fef8155bb51c8bc7b255e",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N07_s913_pPOST_VENV/result.json": "30809ceea444652b60053105c6b3d843353f07822c92bb0f1691852e5132e006",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N07_s913_pPOST_VENV/eval_only/trace.jsonl": "6cd12b4c1bcdd222c77667be99ed8b125294c0a649c50d06dc93427133d29b27",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N08_s911_pPOST_VENV/result.json": "2796fc2a70f2b079a6c129c5f9a0416e57bf99c9f505457c9c969ca9c5f22107",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N08_s911_pPOST_VENV/eval_only/trace.jsonl": "64a868aebf846048e1960789a1b18dc945a8e38a380d79b2f85c0b8ae2dfe0ba",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N08_s913_pPOST_VENV/result.json": "abecbea0fbf7ee5e6f4c4f53b8f9ceb65f6fe01ac170f4900957fa2eee14634c",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N08_s913_pPOST_VENV/eval_only/trace.jsonl": "6c8ab06ddab35d90d38121e68f0bdc7b9fb9122d8962f277c31376828bcef859",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N09_s911_pPOST_VENV/result.json": "858a38b0fa0dca1191ff7f9c636ba0d6e461d54003424fdfc286ad13316efda7",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N09_s911_pPOST_VENV/eval_only/trace.jsonl": "cb98e02df668a164f3d90c0f0b1765119a7416ca6772d7b7f0fdd42c614723f7",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N09_s913_pPOST_VENV/result.json": "fb3cf541a0828b9fbd24f8d48da7d02c984e7be699886034403737a1eab74e57",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N09_s913_pPOST_VENV/eval_only/trace.jsonl": "315f00bf5bcf03b831edb39a6c703e0845508e9bf3e957c1fc8d252d02c73a16",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N10_s911_pPOST_VENV/result.json": "670ef8a7f668a54c33f038b280bbccd2114ca94887213d5ffaccf8c2afe10adf",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N10_s911_pPOST_VENV/eval_only/trace.jsonl": "ef4cc2c5720baa6efd4168fa3fd69699eaccf2c11061bbfa0c34ccd23570a8b7",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N10_s913_pPOST_VENV/result.json": "609cdc60570c13c346a0ab51820c5103d3f0cc7e50b682f78fa53b220bbf4809",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N10_s913_pPOST_VENV/eval_only/trace.jsonl": "afceebea92248ecd11e03e154fd97a65d57d4566bb5680d16b3fa3137b0de857",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N11_s913_pPOST_VENV/result.json": "51d1f499c66f7c81770ae41d2f4a1abef4f2fb59068d1619f32d205bd71b80c8",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N11_s913_pPOST_VENV/eval_only/trace.jsonl": "ef22d98ca318094e1936484ade08fa779bcdbd4e230662a38842ed09b7a0d87a",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N11_s911_pPOST_VENV/result.json": "32f4d8671baf21a47fe07e6aa9f05a368c02a5aa0230a594c1e935df8bdd3ea4",
+    "cases/chain_b-v6h.k1g+p2f+gain_teacher_N11_s911_pPOST_VENV/eval_only/trace.jsonl": "39b875a4562219f70a555908592b750e96b08875b7131b2a35a0ced14bfcd629"
+  },
+  "interpretations": "Provisional pre-seal interpretations in analysis/CLASSIFY_NOTES.md; not an approved preregistration.",
+  "placements": [
+    {
+      "placement": "F_hR2_04",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:F_hR2_04:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:F_hR2_04:s911:pPOST:VENV",
+          "placement": "F_hR2_04",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018037295945966637,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:F_hR2_04:s913:pPOST:VENV",
+          "placement": "F_hR2_04",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018040604524615433,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N01",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N01:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N01:s911:pPOST:VENV",
+          "placement": "N01",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01847581245721874,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N01:s913:pPOST:VENV",
+          "placement": "N01",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01846039782634123,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N02",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N02:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N02:s911:pPOST:VENV",
+          "placement": "N02",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.019099715658285592,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N02:s913:pPOST:VENV",
+          "placement": "N02",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.0191522666711172,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N03",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N03:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N03:s911:pPOST:VENV",
+          "placement": "N03",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018398766571261188,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N03:s913:pPOST:VENV",
+          "placement": "N03",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018404255018807283,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N04",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N04:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N04:s911:pPOST:VENV",
+          "placement": "N04",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018222823160049393,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N04:s913:pPOST:VENV",
+          "placement": "N04",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018232053651576915,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N05",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N05:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N05:s911:pPOST:VENV",
+          "placement": "N05",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018566100603963406,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N05:s913:pPOST:VENV",
+          "placement": "N05",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018535234656908612,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N06",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N06:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N06:s911:pPOST:VENV",
+          "placement": "N06",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.019077698894181965,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N06:s913:pPOST:VENV",
+          "placement": "N06",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01912685226929116,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N07",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N07:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N07:s911:pPOST:VENV",
+          "placement": "N07",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.017571989488151706,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N07:s913:pPOST:VENV",
+          "placement": "N07",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01760511714560921,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N08",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N08:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N08:s911:pPOST:VENV",
+          "placement": "N08",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.0180041843305381,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N08:s913:pPOST:VENV",
+          "placement": "N08",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018051738204303818,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N09",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N09:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N09:s911:pPOST:VENV",
+          "placement": "N09",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018918591131267756,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N09:s913:pPOST:VENV",
+          "placement": "N09",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018933132293974538,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N10",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N10:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N10:s911:pPOST:VENV",
+          "placement": "N10",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018421975102681266,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N10:s913:pPOST:VENV",
+          "placement": "N10",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.018421271917900783,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    },
+    {
+      "placement": "N11",
+      "primary_seed": 911,
+      "class": "PASS_CLEAN",
+      "first_failure": null,
+      "unclassified_reason": null,
+      "primary_case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N11:s911:pPOST:VENV",
+      "hard_limit_any_seed": false,
+      "cases": [
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N11:s911:pPOST:VENV",
+          "placement": "N11",
+          "seed": 911,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01818100340677863,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        },
+        {
+          "case_id": "chain@b-v6h.k1g+p2f+gain:teacher:N11:s913:pPOST:VENV",
+          "placement": "N11",
+          "seed": 913,
+          "class": "PASS_CLEAN",
+          "first_failure": null,
+          "raw_first_failure": null,
+          "failed_legs": [],
+          "legs": {
+            "L0": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                6.100000000001709,
+                24.700000000026925
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            },
+            "L1": {
+              "standard_pass": true,
+              "recorded": true,
+              "checks": {
+                "lift": true,
+                "tilt": true,
+                "both_jaws_both_robots": true,
+                "end_error": true,
+                "leg_error": true
+              },
+              "window_sim_s": [
+                36.30000000008231,
+                61.50000000020264
+              ],
+              "window_source": "recorded_leg_end",
+              "contact_episodes": 0
+            }
+          },
+          "hard_limit_chain": {
+            "violated": false,
+            "max_tilt_deg": 0.01813339351686979,
+            "max_pen_m": 0.0
+          },
+          "contact_episodes_whole_chain": 0,
+          "unclassified_reason": null,
+          "unresolved_failure_records": [],
+          "handover": null,
+          "end_window": null,
+          "unresolved_failure": false,
+          "confirmatory_evidence_checked": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "n_cases": 24,
+    "n_placements": 12,
+    "n_classified_primary": 12,
+    "primary_seed": 911,
+    "counts": {
+      "PASS_CLEAN": 12,
+      "PASS_CONTACT_RECOVERED": 0,
+      "BLOCKED_BY_CONTACT": 0,
+      "FAIL": 0,
+      "FAIL_HARD_LIMIT": 0
+    },
+    "pass_placements": 12,
+    "wilson95_primary_classified": [
+      0.7574992425007574,
+      1.0
+    ],
+    "unclassified_cases": [],
+    "unclassified_placements": [],
+    "hard_limit_chain_cases": 0,
+    "hard_limit_chain_placements_any_seed": 0,
+    "case_counts": {
+      "PASS_CLEAN": 24
+    },
+    "cases_pass": 24,
+    "placements_all_recorded_seeds_pass": 12,
+    "placements_any_recorded_seed_pass": 12,
+    "criterion": {
+      "minimum_pass": 48,
+      "required_placements": 60,
+      "maximum_hard_limit_cases": 0,
+      "evaluable": false,
+      "verdict": "NOT_EVALUABLE",
+      "mode": "historical_endpoints",
+      "scope": "Observed criterion A + whole-chain safety; see separate sigma_criterion_B in confirmatory mode."
+    },
+    "probability_observed_count_criterion_n60": {
+      "0.7": 0.056770682002336884,
+      "0.75": 0.23155763368805587,
+      "0.8": 0.5764403014458759,
+      "0.85": 0.8937539990224598
+    }
+  }
+}

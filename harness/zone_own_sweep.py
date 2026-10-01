@@ -14,9 +14,10 @@ SWEEP_REOBSERVE_S = 10.
 
 
 class SweepRecheck:
-    def __init__(self):
+    def __init__(self, *, loaded_profile=None):
         self.waited_s = 0.
         self.last_wait = None
+        self.loaded_profile = GATE_LOADED if loaded_profile is None else loaded_profile
 
     def _account_wait(self, now):
         if self.last_wait is not None:
@@ -38,7 +39,7 @@ class SweepRecheck:
         self._account_wait(now)
         if guard.transition_clear(current, target, pose, loaded=loaded):
             return 'clear'
-        profile = GATE_LOADED if loaded else GATE_UNLOADED
+        profile = self.loaded_profile if loaded else GATE_UNLOADED
         # The zero-sigma query ONLY decides whether to wait, never whether to issue motion.
         nominal = OwnPose(pose.x, pose.y, pose.yaw, 0., 0.)
         uncertain = pose.std_xy > profile.low_xy_m or pose.std_yaw > profile.low_yaw_rad

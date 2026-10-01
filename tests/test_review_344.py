@@ -70,7 +70,14 @@ def test_sealed_sources_and_v87_shared_definitions_have_identical_bytes():
     )
     for path in paths:
         recorded = EVIDENCE['source_preservation'][path]
-        assert hashlib.sha256((candidate()/path).read_bytes()).hexdigest() == recorded[BASE] == recorded[FLOOR], path
+        # Audit the three recorded review trees. Post-unblinding main includes
+        # the separately sealed v6h successor; it is not the old v87 checkout.
+        for ref in (BASE, HEAD, FLOOR):
+            assert hashlib.sha256(blob(ref, path)).hexdigest() == recorded[ref], (ref, path)
+        assert recorded[BASE] == recorded[HEAD] == recorded[FLOOR], path
+        if os.environ.get('REVIEW_344_ROOT'):
+            # Preserve explicit historical-candidate negative controls.
+            assert hashlib.sha256((candidate()/path).read_bytes()).hexdigest() == recorded[HEAD], path
     changed = subprocess.check_output(["git", "diff", "--name-only", BASE, HEAD,
                                        "--", ".github/workflows"], cwd=ROOT)
     assert not changed

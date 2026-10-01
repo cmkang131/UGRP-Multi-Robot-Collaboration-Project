@@ -1,0 +1,27 @@
+== chBase: /Users/changmin/projects/ugrp/outputs/door-relax-envelope-fdd35cee-chBase
+DRAFT / eval-only; 고정 60곳의 관측 통과율 기준이며 모집단 80 %를 입증하지 않는다.
+Primary seed=911; cases=10; placements=10; classified primary=10
+placement | primary class | first failure phase/code | per-seed classes | hard any seed
+hR2_01 | FAIL | carry/SELF_POSE_UNCERTAIN | 911:FAIL | False
+hR2_02 | FAIL | carry/COLLISION_GUARD | 911:FAIL | False
+hR2_03 | FAIL | carry/COLLISION_GUARD | 911:FAIL | False
+hR2_04 | FAIL | carry/COLLISION_GUARD | 911:FAIL | False
+hR2_05 | FAIL | carry/COLLISION_GUARD | 911:FAIL | False
+hR2_06 | FAIL | carry/COLLISION_GUARD | 911:FAIL | False
+hR2_07 | FAIL | carry/SELF_POSE_UNCERTAIN | 911:FAIL | False
+hR2_08 | FAIL | carry/SELF_POSE_UNCERTAIN | 911:FAIL | False
+hR2_09 | FAIL | carry/SELF_POSE_UNCERTAIN | 911:FAIL | False
+hR2_10 | FAIL | carry/COLLISION_GUARD | 911:FAIL | False
+Primary counts: {"PASS_CLEAN": 0, "PASS_CONTACT_RECOVERED": 0, "BLOCKED_BY_CONTACT": 0, "FAIL": 10, "FAIL_HARD_LIMIT": 0}
+Primary pass: 0/10 classified; total placements=10
+Wilson 95% (classified primary placements only): 0.00-27.75%
+All recorded cases pass: 0/10; placements all/any recorded seeds pass: 0/0
+Whole-chain hard limits: 0 cases, 0 placements (all seeds)
+Unclassified primary placements: []; unclassified cases: []
+Observed criterion: >=48/60 AND zero whole-chain hard violations; NOT_EVALUABLE
+Sigma criterion B NOT evaluated; this is not the prereg's full success declaration.
+P(X>=48 | n=60, true pass rate), count criterion only (no safety/sigma probability):
+  p=0.7: 0.056770682
+  p=0.75: 0.231557634
+  p=0.8: 0.576440301
+  p=0.85: 0.893753999

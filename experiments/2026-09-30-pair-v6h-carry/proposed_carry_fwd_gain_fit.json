@@ -1,0 +1,37 @@
+{
+ "status": "PROPOSED, NOT APPLIED. Not read by any harness file. Fitted offline (fit_forward_model.py) on the fit set only.",
+ "what": "multiplier on the LOADED forward gain motion_loaded.gain[0][0] of the pair carry particle filter (registered 1.4004)",
+ "kappa_M1": 0.9483378899463337,
+ "forward_gain_M1": 1.3280523810808458,
+ "tau_s_M1": 0.8,
+ "optional_M2": {
+  "kappa": 0.9607100581816862,
+  "forward_gain": 1.3453783654776335,
+  "tau_s": 1.0000000000000004,
+  "warning": "tau_s is one scalar shared by every axis of motion_loaded and read by leg_duration(); lateral/turn response with tau 1.0 was NOT checked"
+ },
+ "fit_set": "door-relax-envelope-77fde5f6-chK1gP2 seed 911 (chain L0,L1; 10 cases) + pair-stage-probes-3f6ca985-ghR2 leg 0 (10 cases); 60 axial robot-leg windows",
+ "holdout_endpoint_error_mm": {
+  "registered": {
+   "bias": -39.27704946380474,
+   "rms": 39.87169266304036
+  },
+  "M1": {
+   "bias": -0.6133721525397569,
+   "rms": 4.331849867063388,
+   "max": 18.649214373605894
+  },
+  "M2": {
+   "bias": 0.38869040286176176,
+   "rms": 3.7744927269718453,
+   "max": 15.334499231802745
+  }
+ },
+ "holdout_windows": 694,
+ "loco_M1_endpoint_rms_mm": {
+  "mean": 4.485588338149573,
+  "max": 7.316950474939431,
+  "n": 20
+ },
+ "provenance": "experiments/2026-09-30-carry-x-bias/README.md; raw hashes in results/raw_inputs.json"
+}

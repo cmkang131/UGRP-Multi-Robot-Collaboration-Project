@@ -1,0 +1,827 @@
+{
+  "source_commit": "a8094cc14e098a55483f53a3c49bf6a0b116043d",
+  "policies": {
+    "v5h": {
+      "flags": {
+        "name": "v5h",
+        "posterior_relook": false,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": false,
+        "grasp_range_entry": false,
+        "beam_wide_hue": false,
+        "align_fine_motion": false,
+        "carry_dr_model": false,
+        "carry_lateral_lag": false,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": false,
+        "bounded_retreat": false
+      },
+      "mean": [
+        0.7584469273293488,
+        0.0612410881432312,
+        0.012307424036398862
+      ],
+      "std": [
+        0.04779840136625171,
+        0.034160945951636205,
+        0.08891865444234762
+      ],
+      "particle_sha256": "e1bcb47d8dbc5bd6af26b18b1ede1689f4911641e57e29be8919d73e3a565c0e",
+      "rng_next": 0.5231313069821611,
+      "info": null
+    },
+    "b-only": {
+      "flags": {
+        "name": "b-only",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": false,
+        "grasp_range_entry": false,
+        "beam_wide_hue": false,
+        "align_fine_motion": false,
+        "carry_dr_model": false,
+        "carry_lateral_lag": false,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": false,
+        "bounded_retreat": false
+      },
+      "mean": [
+        0.7584469273293488,
+        0.0612410881432312,
+        0.012307424036398862
+      ],
+      "std": [
+        0.04779840136625171,
+        0.034160945951636205,
+        0.08891865444234762
+      ],
+      "particle_sha256": "e1bcb47d8dbc5bd6af26b18b1ede1689f4911641e57e29be8919d73e3a565c0e",
+      "rng_next": 0.5231313069821611,
+      "info": null
+    },
+    "a+b": {
+      "flags": {
+        "name": "a+b",
+        "posterior_relook": true,
+        "beam_relative": true,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": false,
+        "grasp_range_entry": false,
+        "beam_wide_hue": false,
+        "align_fine_motion": false,
+        "carry_dr_model": false,
+        "carry_lateral_lag": false,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": false,
+        "bounded_retreat": false
+      },
+      "mean": [
+        0.7584469273293488,
+        0.0612410881432312,
+        0.012307424036398862
+      ],
+      "std": [
+        0.04779840136625171,
+        0.034160945951636205,
+        0.08891865444234762
+      ],
+      "particle_sha256": "e1bcb47d8dbc5bd6af26b18b1ede1689f4911641e57e29be8919d73e3a565c0e",
+      "rng_next": 0.5231313069821611,
+      "info": null
+    },
+    "b-boot": {
+      "flags": {
+        "name": "b-boot",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": true,
+        "exact_fix_clock": false,
+        "grasp_range_entry": false,
+        "beam_wide_hue": false,
+        "align_fine_motion": false,
+        "carry_dr_model": false,
+        "carry_lateral_lag": false,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": false,
+        "bounded_retreat": false
+      },
+      "mean": [
+        0.7584469273293488,
+        0.0612410881432312,
+        0.012307424036398862
+      ],
+      "std": [
+        0.04779840136625171,
+        0.034160945951636205,
+        0.08891865444234762
+      ],
+      "particle_sha256": "e1bcb47d8dbc5bd6af26b18b1ede1689f4911641e57e29be8919d73e3a565c0e",
+      "rng_next": 0.5231313069821611,
+      "info": null
+    },
+    "a+b-boot": {
+      "flags": {
+        "name": "a+b-boot",
+        "posterior_relook": true,
+        "beam_relative": true,
+        "stationary_bootstrap": true,
+        "exact_fix_clock": false,
+        "grasp_range_entry": false,
+        "beam_wide_hue": false,
+        "align_fine_motion": false,
+        "carry_dr_model": false,
+        "carry_lateral_lag": false,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": false,
+        "bounded_retreat": false
+      },
+      "mean": [
+        0.7584469273293488,
+        0.0612410881432312,
+        0.012307424036398862
+      ],
+      "std": [
+        0.04779840136625171,
+        0.034160945951636205,
+        0.08891865444234762
+      ],
+      "particle_sha256": "e1bcb47d8dbc5bd6af26b18b1ede1689f4911641e57e29be8919d73e3a565c0e",
+      "rng_next": 0.5231313069821611,
+      "info": null
+    },
+    "b-v6c": {
+      "flags": {
+        "name": "b-v6c",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": false,
+        "align_fine_motion": false,
+        "carry_dr_model": false,
+        "carry_lateral_lag": false,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": false,
+        "bounded_retreat": false
+      },
+      "mean": [
+        0.7584469273293488,
+        0.0612410881432312,
+        0.012307424036398862
+      ],
+      "std": [
+        0.04779840136625171,
+        0.034160945951636205,
+        0.08891865444234762
+      ],
+      "particle_sha256": "e1bcb47d8dbc5bd6af26b18b1ede1689f4911641e57e29be8919d73e3a565c0e",
+      "rng_next": 0.5231313069821611,
+      "info": null
+    },
+    "b-v6d": {
+      "flags": {
+        "name": "b-v6d",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": true,
+        "align_fine_motion": true,
+        "carry_dr_model": false,
+        "carry_lateral_lag": false,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": false,
+        "bounded_retreat": false
+      },
+      "mean": [
+        0.7584469273293488,
+        0.0612410881432312,
+        0.012307424036398862
+      ],
+      "std": [
+        0.04779840136625171,
+        0.034160945951636205,
+        0.08891865444234762
+      ],
+      "particle_sha256": "e1bcb47d8dbc5bd6af26b18b1ede1689f4911641e57e29be8919d73e3a565c0e",
+      "rng_next": 0.5231313069821611,
+      "info": null
+    },
+    "b-v6e-dr": {
+      "flags": {
+        "name": "b-v6e-dr",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": true,
+        "align_fine_motion": true,
+        "carry_dr_model": true,
+        "carry_lateral_lag": false,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": false,
+        "bounded_retreat": false
+      },
+      "mean": [
+        0.7590007119239892,
+        0.06093269965184931,
+        0.012114238773699756
+      ],
+      "std": [
+        0.03167409756240396,
+        0.03128383178458645,
+        0.05226530701877188
+      ],
+      "particle_sha256": "b0239d15feaf7de830f3dd73c011d0701031e0014ccc14c19b41d4697a98fa15",
+      "rng_next": 0.9860986668489958,
+      "info": {
+        "source": "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json",
+        "file_sha256": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+        "profile_sha256": "d9a883921cbb203baa06fba8de620de20e048947461742f82aafa8e915f68a46"
+      }
+    },
+    "b-v6e-lag": {
+      "flags": {
+        "name": "b-v6e-lag",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": true,
+        "align_fine_motion": true,
+        "carry_dr_model": false,
+        "carry_lateral_lag": true,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": false,
+        "bounded_retreat": false
+      },
+      "mean": [
+        0.7584469273293488,
+        0.0612410881432312,
+        0.012307424036398862
+      ],
+      "std": [
+        0.04779840136625171,
+        0.034160945951636205,
+        0.08891865444234762
+      ],
+      "particle_sha256": "e1bcb47d8dbc5bd6af26b18b1ede1689f4911641e57e29be8919d73e3a565c0e",
+      "rng_next": 0.5231313069821611,
+      "info": null
+    },
+    "b-v6e-base": {
+      "flags": {
+        "name": "b-v6e-base",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": true,
+        "align_fine_motion": true,
+        "carry_dr_model": true,
+        "carry_lateral_lag": true,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": true,
+        "bounded_retreat": true
+      },
+      "mean": [
+        0.7590007119239892,
+        0.06093269965184931,
+        0.012114238773699756
+      ],
+      "std": [
+        0.03167409756240396,
+        0.03128383178458645,
+        0.05226530701877188
+      ],
+      "particle_sha256": "b0239d15feaf7de830f3dd73c011d0701031e0014ccc14c19b41d4697a98fa15",
+      "rng_next": 0.9860986668489958,
+      "info": {
+        "source": "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json",
+        "file_sha256": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+        "profile_sha256": "d9a883921cbb203baa06fba8de620de20e048947461742f82aafa8e915f68a46"
+      }
+    },
+    "b-v6e": {
+      "flags": {
+        "name": "b-v6e",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": true,
+        "align_fine_motion": true,
+        "carry_dr_model": true,
+        "carry_lateral_lag": true,
+        "carry_pair_yaw": true,
+        "carry_beam_edge": true,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": true,
+        "bounded_retreat": true
+      },
+      "mean": [
+        0.7589936536522789,
+        0.06094388121129491,
+        0.012291533518457765
+      ],
+      "std": [
+        0.031660723196402465,
+        0.03127484144637955,
+        0.050705335375646046
+      ],
+      "particle_sha256": "859cd9557c02495900d73712f9397819df91d2f2cff87b593b77366774b8b603",
+      "rng_next": 0.9860986668489958,
+      "info": {
+        "source": "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json",
+        "file_sha256": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+        "profile_sha256": "5ea1751207a3783e35e5233f3269159ba3812218d1cd6b73bd8d521f3738c706",
+        "variant": "pm+edge",
+        "pair_fit": {
+          "source": "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json",
+          "file_sha256": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b"
+        },
+        "yaw_bias_std_rad_s": 0.0015597537798802067,
+        "slope_to_yaw_ratio": 1.0079613827806073,
+        "fallback_b_rad_s": {
+          "": 0.002331418995960997,
+          "pm": 0.0019030395629542583,
+          "edge": 0.0018509167520632144,
+          "pm+edge": 0.0015597537798802067
+        }
+      }
+    },
+    "b-v6e-pm": {
+      "flags": {
+        "name": "b-v6e-pm",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": true,
+        "align_fine_motion": true,
+        "carry_dr_model": true,
+        "carry_lateral_lag": true,
+        "carry_pair_yaw": true,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": true,
+        "bounded_retreat": true
+      },
+      "mean": [
+        0.7589968625112785,
+        0.06093904942838248,
+        0.012212661536125418
+      ],
+      "std": [
+        0.03166641574888622,
+        0.03127855471676168,
+        0.05133468772383841
+      ],
+      "particle_sha256": "da599e37106f608fb4c2c9985683d14672cd1142c7095d5514653c5b99745c49",
+      "rng_next": 0.9860986668489958,
+      "info": {
+        "source": "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json",
+        "file_sha256": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+        "profile_sha256": "7e9986673cd984de30e0011c05f1b0b11b8f3e717fe344a341b8bb77fbba92f2",
+        "variant": "pm",
+        "pair_fit": {
+          "source": "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json",
+          "file_sha256": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b"
+        },
+        "yaw_bias_std_rad_s": 0.0019030395629542583,
+        "fallback_b_rad_s": {
+          "": 0.002331418995960997,
+          "pm": 0.0019030395629542583,
+          "edge": 0.0018509167520632144,
+          "pm+edge": 0.0015597537798802067
+        }
+      }
+    },
+    "b-v6e-edge": {
+      "flags": {
+        "name": "b-v6e-edge",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": true,
+        "align_fine_motion": true,
+        "carry_dr_model": true,
+        "carry_lateral_lag": true,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": true,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": true,
+        "bounded_retreat": true
+      },
+      "mean": [
+        0.7589963824025069,
+        0.060939797767547994,
+        0.012224637066783565
+      ],
+      "std": [
+        0.03166552486355076,
+        0.03127796137440853,
+        0.05123233640780268
+      ],
+      "particle_sha256": "8b5f2280e215c4a7ce03a5f4db840d8ea9aabef175316b326e0258ae95a7f4b7",
+      "rng_next": 0.9860986668489958,
+      "info": {
+        "source": "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json",
+        "file_sha256": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+        "profile_sha256": "5657cfdac829d7e217d8acbd9f46f93f50a1dd41c79bc170356db3f1c5317936",
+        "variant": "edge",
+        "pair_fit": {
+          "source": "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json",
+          "file_sha256": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b"
+        },
+        "yaw_bias_std_rad_s": 0.0018509167520632144,
+        "slope_to_yaw_ratio": 1.0079613827806073,
+        "fallback_b_rad_s": {
+          "": 0.002331418995960997,
+          "pm": 0.0019030395629542583,
+          "edge": 0.0018509167520632144,
+          "pm+edge": 0.0015597537798802067
+        }
+      }
+    },
+    "b-v6g": {
+      "flags": {
+        "name": "b-v6g",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": true,
+        "align_fine_motion": true,
+        "carry_dr_model": true,
+        "carry_lateral_lag": true,
+        "carry_pair_yaw": true,
+        "carry_beam_edge": true,
+        "carry_dr_general": true,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": true,
+        "bounded_retreat": true
+      },
+      "mean": [
+        0.7587886787061519,
+        0.052884641066074205,
+        0.012601419952039289
+      ],
+      "std": [
+        0.03177424867618838,
+        0.03174303650420568,
+        0.051622742797065475
+      ],
+      "particle_sha256": "5bb30c38d52c201a5b058f8bab9a3fb1fc518556210837f6524df2182bf259b5",
+      "rng_next": 0.9821790576000965,
+      "info": {
+        "source": "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json",
+        "file_sha256": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+        "profile_sha256": "c52a543da75afc4a09cc8d63d92b9b75c5a87dfe54e45dc70395041e2537d6ea",
+        "general_fit": {
+          "source": "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json",
+          "file_sha256": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b"
+        },
+        "deadband_cmd": {
+          "c0": [
+            0.0,
+            0.0002,
+            0.0
+          ],
+          "u1": [
+            0.0,
+            0.0292,
+            0.0
+          ]
+        },
+        "drift_ratio_std": 0.01586462697204749,
+        "variant": "pm+edge",
+        "pair_fit": {
+          "source": "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json",
+          "file_sha256": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b"
+        },
+        "yaw_bias_std_rad_s": 0.0020436654285428957,
+        "slope_to_yaw_ratio": 1.0056026743977224,
+        "fallback_b_rad_s": {
+          "": 0.002331418995960997,
+          "pm": 0.0022820207984445367,
+          "edge": 0.0022587183209880155,
+          "pm+edge": 0.0020436654285428957
+        }
+      }
+    },
+    "b-v6g-l7": {
+      "flags": {
+        "name": "b-v6g-l7",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": true,
+        "align_fine_motion": true,
+        "carry_dr_model": true,
+        "carry_lateral_lag": true,
+        "carry_pair_yaw": true,
+        "carry_beam_edge": true,
+        "carry_dr_general": true,
+        "carry_end_inset_m": 0.1,
+        "own_image_ob": true,
+        "bounded_retreat": true
+      },
+      "mean": [
+        0.7587886787061519,
+        0.052884641066074205,
+        0.012601419952039289
+      ],
+      "std": [
+        0.03177424867618838,
+        0.03174303650420568,
+        0.051622742797065475
+      ],
+      "particle_sha256": "5bb30c38d52c201a5b058f8bab9a3fb1fc518556210837f6524df2182bf259b5",
+      "rng_next": 0.9821790576000965,
+      "info": {
+        "source": "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json",
+        "file_sha256": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+        "profile_sha256": "c52a543da75afc4a09cc8d63d92b9b75c5a87dfe54e45dc70395041e2537d6ea",
+        "general_fit": {
+          "source": "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json",
+          "file_sha256": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b"
+        },
+        "deadband_cmd": {
+          "c0": [
+            0.0,
+            0.0002,
+            0.0
+          ],
+          "u1": [
+            0.0,
+            0.0292,
+            0.0
+          ]
+        },
+        "drift_ratio_std": 0.01586462697204749,
+        "variant": "pm+edge",
+        "pair_fit": {
+          "source": "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json",
+          "file_sha256": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b"
+        },
+        "yaw_bias_std_rad_s": 0.0020436654285428957,
+        "slope_to_yaw_ratio": 1.0056026743977224,
+        "fallback_b_rad_s": {
+          "": 0.002331418995960997,
+          "pm": 0.0022820207984445367,
+          "edge": 0.0022587183209880155,
+          "pm+edge": 0.0020436654285428957
+        }
+      }
+    },
+    "b-v6f-a": {
+      "flags": {
+        "name": "b-v6f-a",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": false,
+        "align_fine_motion": false,
+        "carry_dr_model": false,
+        "carry_lateral_lag": false,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": true,
+        "bounded_retreat": false
+      },
+      "mean": [
+        0.7584469273293488,
+        0.0612410881432312,
+        0.012307424036398862
+      ],
+      "std": [
+        0.04779840136625171,
+        0.034160945951636205,
+        0.08891865444234762
+      ],
+      "particle_sha256": "e1bcb47d8dbc5bd6af26b18b1ede1689f4911641e57e29be8919d73e3a565c0e",
+      "rng_next": 0.5231313069821611,
+      "info": null
+    },
+    "b-v6f-b": {
+      "flags": {
+        "name": "b-v6f-b",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": false,
+        "align_fine_motion": false,
+        "carry_dr_model": false,
+        "carry_lateral_lag": false,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": false,
+        "bounded_retreat": true
+      },
+      "mean": [
+        0.7584469273293488,
+        0.0612410881432312,
+        0.012307424036398862
+      ],
+      "std": [
+        0.04779840136625171,
+        0.034160945951636205,
+        0.08891865444234762
+      ],
+      "particle_sha256": "e1bcb47d8dbc5bd6af26b18b1ede1689f4911641e57e29be8919d73e3a565c0e",
+      "rng_next": 0.5231313069821611,
+      "info": null
+    },
+    "b-v6f": {
+      "flags": {
+        "name": "b-v6f",
+        "posterior_relook": true,
+        "beam_relative": false,
+        "stationary_bootstrap": false,
+        "exact_fix_clock": true,
+        "grasp_range_entry": true,
+        "beam_wide_hue": false,
+        "align_fine_motion": false,
+        "carry_dr_model": false,
+        "carry_lateral_lag": false,
+        "carry_pair_yaw": false,
+        "carry_beam_edge": false,
+        "carry_dr_general": false,
+        "carry_end_inset_m": 0.0,
+        "own_image_ob": true,
+        "bounded_retreat": true
+      },
+      "mean": [
+        0.7584469273293488,
+        0.0612410881432312,
+        0.012307424036398862
+      ],
+      "std": [
+        0.04779840136625171,
+        0.034160945951636205,
+        0.08891865444234762
+      ],
+      "particle_sha256": "e1bcb47d8dbc5bd6af26b18b1ede1689f4911641e57e29be8919d73e3a565c0e",
+      "rng_next": 0.5231313069821611,
+      "info": null
+    }
+  },
+  "pair_guard": {
+    "v5h": {
+      "commands": [
+        {
+          "kind": "mecanum",
+          "forward": 0.01,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        }
+      ],
+      "baseline": [
+        0.0,
+        0.0,
+        1.5508062419270823,
+        0.0
+      ],
+      "commanded_m": 0.001,
+      "gate": {
+        "state": "ok",
+        "profile": "loaded",
+        "since_sim_s": null,
+        "transitions": 0
+      },
+      "failure": null
+    },
+    "b-only": {
+      "commands": [
+        {
+          "kind": "mecanum",
+          "forward": 0.01,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        }
+      ],
+      "baseline": [
+        0.0,
+        0.0,
+        1.5508062419270823,
+        0.0
+      ],
+      "commanded_m": 0.001,
+      "gate": {
+        "state": "ok",
+        "profile": "loaded",
+        "since_sim_s": null,
+        "transitions": 0
+      },
+      "failure": null
+    },
+    "b-v6d": {
+      "commands": [
+        {
+          "kind": "mecanum",
+          "forward": 0.01,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        }
+      ],
+      "baseline": [
+        0.0,
+        0.0,
+        1.5508062419270823,
+        0.0
+      ],
+      "commanded_m": 0.001,
+      "gate": {
+        "state": "ok",
+        "profile": "loaded",
+        "since_sim_s": null,
+        "transitions": 0
+      },
+      "failure": null
+    },
+    "b-v6g": {
+      "commands": [
+        {
+          "kind": "mecanum",
+          "forward": 0.01,
+          "left": 0.0,
+          "turn": 0.0,
+          "duration_s": 0.1
+        }
+      ],
+      "baseline": [
+        0.0,
+        0.0,
+        1.5508062419270823,
+        0.0
+      ],
+      "commanded_m": 0.001,
+      "gate": {
+        "state": "ok",
+        "profile": "loaded",
+        "since_sim_s": null,
+        "transitions": 0
+      },
+      "failure": null
+    }
+  }
+}

@@ -1,5 +1,5 @@
 """Explicit pair ablations; the frozen v5h path remains the default."""
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 # v68 = pre-merge v6 draft (retired, offline replay only); v70 = v6 on main v69
 # (retired: recorded by the 2026-09-28 v6 dev cohort, PR #259). v75 = v70 plus
@@ -23,7 +23,9 @@ from dataclasses import dataclass
 # opt-in v6e/v6f/v6g pair flags (carry dead-reckoning model, pair-mean yaw, beam-edge relative yaw, general lateral
 # breakaway + cross-axis drift model, end inset, own-image validity by optical black, bounded retreat); the b-v6g policy
 # is the registered v6e-revision policy. v80 is retired. The other pair policies are unchanged.
-EXECUTION_BUNDLE_ID = 'zone-pair-v81-carry-dr-general'
+# v83 / workflow 2.16.0: b-v6h1 candidate; v82 / 2.15.0 remain unused.
+# Pre-seal implementation only. No v6h registration or execution admission yet.
+EXECUTION_BUNDLE_ID = 'zone-pair-v83-carry-door-gain'
 
 
 @dataclass(frozen=True)
@@ -83,6 +85,18 @@ class PairPolicy:
     # the unchanged sweep guard: a vetoed reverse command is not issued and the robot holds (MoveIt
     # Task Constructor MoveRelative min_distance 0), instead of failing the whole job.
     bounded_retreat: bool = False
+    # v6h: fixed PR #284 calibration multiplier, only loaded gain[0][0].
+    carry_fwd_gain: float = 1.0
+    # Default scope preserves loaded base-motion-only selection. b-v6h1 uses
+    # the probe's ALL margin calls (unloaded/loaded arm, chassis and preclose).
+    loaded_k_xy: float = 2.0
+    loaded_k_yaw: float = 2.0
+    door_relax_sigma_scope: str = 'loaded_base_motion'
+    loaded_gate_yaw_deg: tuple[float, float] | None = None
+    # p2f: no reliable stall detection for the loaded pair when no moved fix arrives.
+    progress_arm_on_moved_fix: bool = False
+    # Axial timing also inverts the lag plant, with the SAME fixed forward gain.
+    carry_axial_lag: bool = False
 
 
 POLICIES = {
@@ -131,12 +145,19 @@ POLICIES = {
     'b-v6f': PairPolicy('b-v6f', posterior_relook=True, exact_fix_clock=True, grasp_range_entry=True,
                         own_image_ob=True, bounded_retreat=True),
 }
+POLICIES['b-v6h1'] = replace(POLICIES['b-v6g'], name='b-v6h1',
+                             carry_fwd_gain=0.9483378899463337,
+                             loaded_k_xy=1.0, loaded_k_yaw=1.0,
+                             door_relax_sigma_scope='probe_all_sweeps',
+                             loaded_gate_yaw_deg=(5.0, 4.0),
+                             progress_arm_on_moved_fix=True, carry_axial_lag=True)
 # Registered ablation sets. v6 (historical, PR #246/#259), v6b (historical DRAFT,
 # PR #261, bundle v75), v6c (PR #263, bundle v76; sealed, now historical) and
 # v6d (PR #265, bundle v80; now historical) and v6e (current carry stage-probe DRAFT, bundle v81; b-v6g).
 REVISION_POLICIES = {'v6': ('v5h', 'b-only', 'a+b'), 'v6b': ('v5h', 'b-boot', 'a+b-boot'),
                      'v6c': ('v5h', 'b-only', 'b-v6c'), 'v6d': ('v5h', 'b-only', 'b-v6d'),
-                     'v6e': ('v5h', 'b-only', 'b-v6g')}
+                     'v6e': ('v5h', 'b-only', 'b-v6g'),
+                     'v6h': ('v5h', 'b-only', 'b-v6h1')}
 # Beam postures in which the b-v6d wide hue range applies (search keeps the v1 lime range: the far
 # view of the beam is lime, and the partner robot's yellow parts enter it; replay, README).
 WIDE_HUE_LO = 25

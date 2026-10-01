@@ -1,9 +1,9 @@
 """b-v6h door-guard relaxation (stage-probe opt-in; no physics, no models).
 
-The registered b-v6e / b-v6g sources must stay byte-identical: the relaxation lives in
-``harness/zone_pair_door_relax.py`` and is applied to the running probe process only.
+The exploratory relaxation lives in ``harness/zone_pair_door_relax.py`` and is
+applied to the running probe process only. The historical v6e receipt is audited
+at its sealing commit; the opt-in v6h successor now changes registered sources.
 """
-import hashlib
 import math
 from pathlib import Path
 
@@ -42,12 +42,13 @@ def pair_guard():
     return ep, geometry.PairSweepGuard(ep.own.guard, ep.plan['beam_geometry'], ep.arguments['role'])
 
 
-def test_registered_sources_are_not_touched_by_this_change():
-    """The relaxation adds files only; none of the sealed closure is modified (the sealing test checks the bytes)."""
+def test_exploratory_relaxation_is_not_in_historical_v6e_source_closure():
+    """Keep the original v6e closure intact at its commit after the v6h successor."""
     import json
+    from scripts.zone_pair_v6_contract import verify_v6_historical
     prereg = json.loads((ROOT / 'experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json').read_text())
-    for path, expected in prereg['v6_contract']['source_sha256'].items():
-        assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == expected, path
+    receipt = verify_v6_historical(revision='v6e')
+    assert receipt['sources'] == len(prereg['v6_contract']['source_sha256'])
     assert 'harness/zone_pair_door_relax.py' not in prereg['v6_contract']['source_sha256']
 
 

@@ -1,7 +1,9 @@
 """Offline design, fake acquisition and abort tests. Never run native physics."""
 import copy
+import hashlib
 import json
 import socket
+import subprocess
 import sys
 from types import SimpleNamespace
 
@@ -40,13 +42,37 @@ def fake_path_admission(monkeypatch):
         'admitted': True, 'reason': 'TEST_FAKE_ONLY'})
 
 
-def test_v1_and_all_v87_pinned_sources_and_nine_bundles_preserved():
+def test_v1_and_v87_history_remain_separate_from_sealed_v6h_successors():
+    from tests.v6h_successor_pins import SEAL, successor_blob
     record = env.read(env.ROOT / 'experiments/2026-10-01-final-env-measurement-v2/v87_preservation.json')
+    history = '04eb11c6a001f2a7d2ab916765d59b3661c06efe'
+    successors = {'harness/owncam_carry_v6e.py', 'harness/zone_own_guards.py'}
+    assert successors <= record['files_sha256'].keys()
     for path, sha in record['files_sha256'].items():
-        assert env.sha(env.ROOT / path) == sha, path
+        original = subprocess.check_output(['git', 'show', f'{history}:{path}'], cwd=env.ROOT)
+        assert hashlib.sha256(original).hexdigest() == sha, path
+        expected = (subprocess.check_output(['git', 'show', f'{SEAL}:{path}'], cwd=env.ROOT)
+                    if path in successors else original)
+        actual = successor_blob(path) if path in successors else (env.ROOT / path).read_bytes()
+        assert actual == expected, path
     for key, sha in record['bundles'].items():
         mid, check = key.split('/')
-        assert env.digest(env.parent.bundle(mid, check=check)) == sha, key
+        current = env.parent.bundle(mid, check=check)
+        assert env.digest(current) != sha, 'a successor must not inherit the historical bundle identity'
+        historical = copy.deepcopy(current)
+        assert historical['source_sha256'].keys() <= record['files_sha256'].keys()
+        # Rebuild only historical source hashes and their derived parent digest.
+        # Independently match the parent to its original v84 receipt as well.
+        historical['source_sha256'] = {path: record['files_sha256'][path]
+                                       for path in current['source_sha256']}
+        parent = env.parent.previous.bundle(mid, check=check)
+        assert parent['source_sha256'].keys() <= record['files_sha256'].keys()
+        parent['source_sha256'] = {path: record['files_sha256'][path]
+                                   for path in parent['source_sha256']}
+        previous = env.read(env.ROOT / 'experiments/2026-10-01-final-env-floor-light/v84_preservation.json')
+        assert env.digest(parent) == previous['bundles'][key], key
+        historical['parent_bundle_sha256'] = env.digest(parent)
+        assert env.digest(historical) == sha, key
 
 
 def test_single_most_free_map_caps_excitation_and_sampling(bundle):

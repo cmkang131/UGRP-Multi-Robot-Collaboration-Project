@@ -25,7 +25,10 @@ def source_closure(root, paths, *, modules=(), script_dirs=()):
 
     def add_module(module, *, required=False, wildcard=False, absolute=True):
         parts = module.split('.')
-        if not all(part.isidentifier() for part in parts):
+        # importlib accepts dated/hyphenated package directories even though
+        # they cannot appear in an ``import`` statement. Keep separators and
+        # empty components forbidden; add_path still enforces the root boundary.
+        if not all(part and ('_' + part.replace('-', '_')).isidentifier() for part in parts):
             raise ValueError(f'invalid module: {module!r}')
         exists = False
         for prefix in search if absolute else ['']:

@@ -106,48 +106,55 @@ def test_v6d_records_sealed_scene_and_full_source_closure_at_its_commit():
         assert hashlib.sha256(committed_blob(str(dev.ROOT), V6D_DRAFT_COMMIT, path)).hexdigest() == expected
 
 
-def test_v6e_records_current_scene_and_full_source_closure():
-    """v6e is the current v6-family revision (bundle v81): its DRAFT pins the current tree and cites the sealed v6d."""
-    from scripts.zone_pair_v6_contract import CURRENT_REVISION, PREREG_V6D, PREREG_V6E, V6D_DRAFT_COMMIT, contract
+def test_v6e_is_historical_and_pins_its_unchanged_sealing_commit():
+    """Pre-seal v6h changes must not re-seal the historical v6e bytes."""
+    from scripts.zone_pair_v6_contract import PREREG_V6E, V6E_DRAFT_COMMIT, verify_v6_historical
+    from scripts.zone_pair_registered_source import committed_blob
     p = json.loads(PREREG_V6E.read_text())
-    assert CURRENT_REVISION == p['registration_revision'] == 'v6e' and p['status'] == 'DRAFT'
-    assert {'harness/owncam_carry_v6e.py', 'harness/own_beam_edge.py',
-            'experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json',
-            'experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json',
-            'experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json'} <= set(p['v6_contract']['source_sha256'])
-    assert p['scene_contract'] == dev.scene_contract() and p['v6_contract'] == contract()
-    assert p['predecessor'] == {'path': str(PREREG_V6D.relative_to(dev.ROOT)),
-                                'sha256': hashlib.sha256(PREREG_V6D.read_bytes()).hexdigest(),
-                                'sealing_commit': V6D_DRAFT_COMMIT}
-    assert sorted(r['pair_policy'] for r in p['runs']) == ['b-only', 'b-only', 'b-v6g', 'b-v6g', 'v5h', 'v5h']
+    receipt = verify_v6_historical(revision='v6e')
+    assert receipt['commit'] == V6E_DRAFT_COMMIT == 'e510779db7be07be2b54493d52a9c754bd59a5bc'
+    assert receipt['sources'] == len(p['v6_contract']['source_sha256']) == 85
+    assert p['registration_revision'] == 'v6e' and p['status'] == 'DRAFT'
+    for path, expected in p['v6_contract']['source_sha256'].items():
+        assert hashlib.sha256(committed_blob(str(dev.ROOT), V6E_DRAFT_COMMIT, path)).hexdigest() == expected
 
 
 def test_current_tree_v6_family_contract_closes_over_the_scene_sources():
-    from scripts.zone_pair_v6_contract import contract
-    for historical in ('v6', 'v6b', 'v6c', 'v6d'):
+    from scripts.zone_pair_v6_contract import candidate_contract, contract
+    for historical in ('v6', 'v6b', 'v6c', 'v6d', 'v6e'):
         with pytest.raises(ValueError, match='historical'):
             contract(historical)
-    current = contract()
+    current = candidate_contract()
     assert dev.scene_contract()['source_sha256'].items() <= current['source_sha256'].items()
     for path, expected in current['source_sha256'].items():
         assert hashlib.sha256((dev.ROOT/path).read_bytes()).hexdigest() == expected
 
 
+@pytest.mark.parametrize('execute', [False, True])
+def test_preseal_v6e_is_never_prepared_or_executed_from_modified_sources(tmp_path, execute):
+    from scripts.zone_pair_v6_contract import PREREG_V6E
+    args = dev.parser().parse_args(['--prereg', str(PREREG_V6E), '--run-id', 'v6e-s911-bv6g',
+                                    '--output', str(tmp_path/'never-prepared')])
+    args.execute = execute
+    with pytest.raises(ValueError, match='historical'):
+        dev.load_config(args)
+    assert not args.output.exists()
+
+
 @pytest.mark.parametrize('fault', ['source', 'scene', 'inherited_grasp', 'baseline'])
-def test_v6_rejects_stale_or_inherited_source_contracts(tmp_path, fault):
-    """On the current v6-family registration (v6e DRAFT, as committed), each fault alone is rejected."""
-    from scripts.zone_pair_v6_contract import PREREG_V6E, V5H
-    p = json.loads(PREREG_V6E.read_text()); old = json.loads(V5H.read_text())
-    assert p['registration_revision'] == 'v6e' and p['status'] == 'DRAFT'
-    clean = tmp_path/'clean.json'; clean.write_text(json.dumps(p))
-    dev.load_config(dev.parser().parse_args(['--prereg', str(clean), '--run-id', 'v6e-s911-bv6g',
+def test_v6_rejects_stale_or_inherited_source_contracts(tmp_path, monkeypatch, fault):
+    """Generic admission regression on a synthetic promoted revision, NEVER a repository seal."""
+    from tests.test_zone_pair_v6 import _current_v6
+    clean, p = _current_v6(tmp_path, monkeypatch)
+    old = json.loads(dev.PREREG_V5H.read_text())
+    dev.load_config(dev.parser().parse_args(['--prereg', str(clean), '--run-id', 'v6h-s911-bv6h1',
                                              '--output', str(tmp_path/'clean-never')]))
     if fault == 'source': p['v6_contract']['source_sha256']['harness/zone_own_team_host.py'] = '0'*64
     elif fault == 'scene': p['scene_contract'] = old['scene_contract']
     elif fault == 'inherited_grasp': p['grasp_contract'] = old['grasp_contract']
     else: p['baseline_registration']['sha256'] = '0'*64
     altered = tmp_path/'altered.json'; altered.write_text(json.dumps(p))
-    args = dev.parser().parse_args(['--prereg', str(altered), '--run-id', 'v6e-s911-bv6g',
+    args = dev.parser().parse_args(['--prereg', str(altered), '--run-id', 'v6h-s911-bv6h1',
                                     '--output', str(tmp_path/'never-prepared')])
     expected = {'source': 'source contract/hash mismatch', 'scene': 'scene contract/hash mismatch',
                 'inherited_grasp': 'frozen v5h baseline', 'baseline': 'frozen v5h baseline'}[fault]

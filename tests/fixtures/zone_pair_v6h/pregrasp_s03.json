@@ -1,0 +1,69 @@
+{
+  "scope": "offline candidate filtering only; saved own estimate is rounded by robots.json; constant positive observability score, no PF/image/physics replay",
+  "registered_source_sha": "3afc61b00f2c127ac3fbe2be5e7bb57da989b15a",
+  "case": "tS S03 seed 911, leg 1 pregrasp at 28.2 s, r2",
+  "source_files": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h1-acceptance-3afc61b0-claude-20260930/cases/chain_b-v6h1_teacher_S03_s911_pPOST_VENVS/robots.json",
+      "sha256": "a1b70e85dd3d8c8c4f47431a5cd78a4c8ca5dfc8897131a865387b721f1d3d18"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h1-acceptance-3afc61b0-claude-20260930/cases/chain_b-v6h1_teacher_S03_s911_pPOST_VENVS/pair_records.json",
+      "sha256": "4760cb81462a8ee6f9fb65df3b7d60f3daf6a67cf71d350f12d3ea6db79d7787"
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/v6h1-acceptance-3afc61b0-claude-20260930/cases/chain_b-v6h1_teacher_S03_s911_pPOST_VENVS/case.json",
+      "sha256": "90a959956da2610e9b0a8f436ede39ca94bdf9dfa4115320e28b71d23526ffe7"
+    }
+  ],
+  "map": {
+    "path": "maps/zones/zone_wide_door_tags_v2.json",
+    "sha256": "f9b0ef0d9f35457b34711c0ec5d11688af3130238560195c982660137ad3e73b"
+  },
+  "commanded_servo": {
+    "1": 2000,
+    "3": 700,
+    "4": 1764,
+    "5": 2191,
+    "6": 1500
+  },
+  "report": {
+    "xyyaw": [
+      1.97605,
+      0.1062,
+      -3.107373
+    ],
+    "std_xy_m": 0.04215,
+    "std_yaw_rad": 0.03875
+  },
+  "beam_geometry": {
+    "center_m": [
+      0.0,
+      0.0,
+      0.016
+    ],
+    "half_extents_m": [
+      0.3,
+      0.02,
+      0.016
+    ],
+    "grasps": {
+      "end_neg": {
+        "xyz_m": [
+          -0.27,
+          0.0,
+          0.024
+        ],
+        "yaw_rad": 0.0
+      },
+      "end_pos": {
+        "xyz_m": [
+          0.27,
+          0.0,
+          0.024
+        ],
+        "yaw_rad": 3.141592653589793
+      }
+    }
+  }
+}

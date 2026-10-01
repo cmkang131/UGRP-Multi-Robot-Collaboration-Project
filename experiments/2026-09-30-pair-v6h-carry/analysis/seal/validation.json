@@ -1,0 +1,59 @@
+{
+  "status": "PASS_OFFLINE_SEAL_VALIDATION",
+  "seal_commit_binding": "containing commit of prereg_v6h.json",
+  "execution_source_sha": "4c6b439f3f7c9a147c901f8b260a1e214d4eb396",
+  "classifier_tip": "1f0e4eb501a8f1b87077df943382fc1f0777dc69",
+  "classifier_merge_commit": "3918de41",
+  "main_merge_parent": "f5cd3a2b7754236a7b416cca1e1f9fe76fe8dd14",
+  "execution_pin_count": 274,
+  "analysis_pin_count": 288,
+  "cases": 72,
+  "case_bytes_sha256": "f476c3d3103daa86fcab4553e9e2cfaf3b0abf500b71b6151554de7cbd2a4269",
+  "final_pytest": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "555",
+    "time": "423.418",
+    "timestamp": "2026-10-01T03:28:33.308282+09:00",
+    "hostname": "gangchangmin-ui-MacBookAir.local"
+  },
+  "initial_attempt": {
+    "passed": 545,
+    "failed": 8,
+    "reason": "three sparse historical JSON.gz fixtures absent; original Git bytes restored"
+  },
+  "nonphysical_guard": {
+    "physical_step_attempts": 0,
+    "real_vision_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "blinded_raw_listed_or_read": false,
+  "outcomes_computed_or_viewed": false,
+  "physics_or_render_executed": false,
+  "host_lock_acquired": false,
+  "workflow_edits": false,
+  "temporary_extraction_directories_created": [],
+  "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "ci": "normal CI requested on push; final status recorded separately",
+  "artifacts": {
+    "experiments/2026-09-30-pair-v6h-carry/prereg_v6h.json": {
+      "bytes": 473449,
+      "sha256": "337f12055230a7401b4285d99a977bfc7f5fe9a1f4c3f5514879e81af3ec83b3"
+    },
+    "experiments/2026-09-30-pair-v6h-carry/analysis/seal/final_tests.txt": {
+      "bytes": 784,
+      "sha256": "43e89bdc64208f3c9b79348eaa14b140b07f1865f3028f0c23548e3cb254d563"
+    },
+    "experiments/2026-09-30-pair-v6h-carry/analysis/seal/final_tests.xml": {
+      "bytes": 78911,
+      "sha256": "6a5e0690c283e4fb10d9a43450c88819349c3905addf2d58337281955ae284fc"
+    },
+    "experiments/2026-09-30-pair-v6h-carry/analysis/seal/source_audit.json": {
+      "bytes": 1111,
+      "sha256": "d5a50f4f6a3e34e5e68d42642ee8dd5dbea966d51d89c8b2d1080404ffe1616c"
+    }
+  }
+}
