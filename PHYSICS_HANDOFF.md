@@ -1,3 +1,83 @@
+# v90 다른 두 지도 무하중 검증 수집 — DRAFT, 미실행
+
+번들 `zone-final-pair-v90`, 새 workflow `zone-final-pair-heldout-v90` **3.2.0**.
+main과 열린 PR 전체 조회에서 번들 최댓값 v89(#347, 현재 main), workflow 최댓값 3.1.0을
+확인했다. 기존 v88 두 문 수집·등록 JSON·workflow는 보존하며 새 번호를 추가한다.
+[등록·검증 기록](experiments/2026-10-01-calib-heldout-maps/README.md).
+
+`zone_wide_corridor_final_v3`와 `zone_wide_door_geometry_v3`에서 **unloaded만**, seed **911**로
+새로 수집한다. 각 지도 **370 SIM초 + reset 최대 5초**, 예상 wall 시간 약 **10분**이다.
+계단·PRBS와 카메라 자세를 포함한 `inputs/schedule.json`은 기존 v88 unloaded와 바이트가 같다.
+v88이 채택한 #347/v89 계단·PRBS 설계를 그대로 사용하며, v89 원래의 5초 RGB 주기를
+승계하지 않는다. v88과 같은 **pose 0.05초(7,401개), RGB 0.2초(대당 1,851장)**를 유지한다.
+시작점 `[3.25, -0.85, 0]`, teacher 전용, `masterpi_v3`, `cargo_noslip_v1`,
+`floor_light_v1`, weld OFF, 초음파 OFF다. fine/loaded는 계속 두 문 지도 전용이다.
+
+계획·bundle·사례 및 전체 결과에 `collection_role=HELD_OUT_VALIDATION`,
+`training_eligible=false`, `teacher_only=true`를 기록한다. **수집 용도 표시이며 검증 통과가 아니다.**
+완료는 여전히 `COLLECTED_UNQUALIFIED`/`UNQUALIFIED`다. 새 자료를 적합·튜닝에 쓰지 않는다.
+기존 0.30 m + 0.05 m buffer 인터록, substep 전후·명령 전·0.05초 검사, NaN/누락 시
+전체 port hold → HOST_ERROR, 부분 raw 보존·무효 표시를 그대로 적용한다.
+시작 자세·유한 기하 검사는 차단 조건이며 전체 운동 범위 두 계산은 ADVISORY다.
+
+**이 구현 작업에서는 물리·렌더·모델을 실행하지 않았다.** 아래 명령은 물리 담당자 인계용이다.
+자기 worktree의 커밋 SHA를 고정하고 `RUN_ROOT`를 새로운 경로로 바꾼 뒤 지도별로 실행한다.
+
+```bash
+cd /Users/changmin/projects/ugrp-wt/calib-heldout-maps
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+FINAL_SHA=$(git rev-parse HEAD)
+FINAL_BRANCH=$(git branch --show-current)
+RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v90-heldout-NEW-COHORT
+git status --short --untracked-files=all
+"$PY" scripts/disk_report.py
+"$PY" scripts/agent_lock.py status
+
+# 복도 지도: 무하중 검증 수집 370 SIM초, reset 포함 최대 375초.
+(
+set -euo pipefail
+"$PY" scripts/agent_lock.py acquire --owner codex --branch "$FINAL_BRANCH" \
+  --purpose 'v90 corridor held-out unloaded 370 SIM s, teacher only' --pid $$ --expected-minutes 10
+trap '"$PY" scripts/agent_lock.py release --owner codex' EXIT
+"$PY" scripts/ugrp_session.py run final-pair-v90-heldout-corridor -- \
+  "$PY" -m scripts.sim_cli workflow run zone-final-pair-heldout-v90 -- \
+  --check calibration-unloaded --map-id zone_wide_corridor_final_v3 --seed 911 \
+  --expected-source-sha "$FINAL_SHA" --execute --lock-owner codex \
+  --output "$RUN_ROOT/zone_wide_corridor_final_v3"
+"$PY" scripts/agent_lock.py release --owner codex
+trap - EXIT
+)
+
+# 문 형상 지도: 별도 새 무하중 검증 수집, 같은 일정·표본 주기.
+(
+set -euo pipefail
+"$PY" scripts/agent_lock.py acquire --owner codex --branch "$FINAL_BRANCH" \
+  --purpose 'v90 door geometry held-out unloaded 370 SIM s, teacher only' --pid $$ --expected-minutes 10
+trap '"$PY" scripts/agent_lock.py release --owner codex' EXIT
+"$PY" scripts/ugrp_session.py run final-pair-v90-heldout-door -- \
+  "$PY" -m scripts.sim_cli workflow run zone-final-pair-heldout-v90 -- \
+  --check calibration-unloaded --map-id zone_wide_door_geometry_v3 --seed 911 \
+  --expected-source-sha "$FINAL_SHA" --execute --lock-owner codex \
+  --output "$RUN_ROOT/zone_wide_door_geometry_v3"
+"$PY" scripts/agent_lock.py release --owner codex
+trap - EXIT
+)
+```
+
+`run_final_pair_v3 --check calibration-unloaded --map-id <위 두 지도>`의 직접 계획도 v90으로
+표시한다. 실행 기록의 workflow 버전을 일치시키려면 위 새 workflow를 사용한다.
+ENOSPC·인터록 중단은 HOST_ERROR다. 기존 출력은 덮어쓰지 않는다.
+회수할 자료는 plan, bundle, inputs/schedule, 발행 명령, own JPEG, eval_only pose/camera,
+result, artifacts.sha256이며 실제 회수 후 TensorBoard에 새 코호트를 등록한다.
+이번에는 새 물리/학습/평가 코호트가 없어 TensorBoard 변환·뷰어를 시작하지 않았다.
+
+**남은 연결:** 동결 [criterion B](experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json)와
+`validate_consumer_criterion_b.py`는 아직 v88 ID만 허용한다. v90 raw를 v88로 바꿔 표시하지 않는다.
+v90 수용의 명시적인 후속 검토·연결 전에는 현 검증기로 B 통과를 판정할 수 없다.
+동결 기준·후보 적합·검증기·실측 보정 파일은 이번 변경 범위에 넣지 않았다.
+
+---
+
 # 최종 v3 공동 운반 v88 인계 — DRAFT, 미봉인
 
 v88은 `floor_light_v1`의 세 최종 v3 지도에 공동 운반을 연결한다. 보정 수집은 두 문 지도 한 곳이다.

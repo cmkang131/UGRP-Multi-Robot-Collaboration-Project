@@ -155,7 +155,10 @@ def path_preflight(check, map_id):
     from harness import zone_final_pair_contract as contract
     from harness.zone_final_pair_excitation import design, UNLOADED_POSE, LOADED_BEAM_POSE
     from harness.zone_final_pair_calibration import schedule, teacher_stations
+    from harness import zone_final_pair_heldout as heldout
     plan = design(check)
+    if heldout.selected(check, map_id):
+        plan = heldout.design(check, map_id)
     if map_id != plan['map_id']:
         raise ValueError('collection clearance map differs from registered design')
     try:
@@ -204,9 +207,16 @@ def rejection_message(receipt):
 def require_collection_clearance(bundle):
     """Recompute admission even for direct callers; never trust a saved PASS."""
     from harness.zone_final_pair_excitation import design
+    from harness import zone_final_pair_heldout as heldout
+    if bundle.get('execution_bundle_id') == heldout.BUNDLE_ID:
+        heldout.validate_bundle(bundle)
     if not bundle['check'].startswith('calibration-'):
         return
-    if bundle.get('measurement') != design(bundle['check']):
+    expected = design(bundle['check'])
+    if bundle.get('execution_bundle_id') == heldout.BUNDLE_ID or bundle['map_id'] in heldout.MAPS:
+        heldout.validate_bundle(bundle)
+        expected = heldout.design(bundle['check'], bundle['map_id'])
+    if bundle.get('measurement') != expected:
         raise ValueError('collection measurement differs from registered design')
     if bundle.get('runtime_interlock') != runtime_interlock():
         raise ValueError('MANDATORY_COLLECTION_INTERLOCK_REQUIRED')

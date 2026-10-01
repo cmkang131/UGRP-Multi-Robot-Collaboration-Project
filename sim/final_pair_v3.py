@@ -42,6 +42,8 @@ def make_scene(bundle, seed):
 
 class PhysicsBackend(BaseBackend):
     def __init__(self, bundle, out, *, seed):
+        from harness.zone_final_pair_heldout import require_seed
+        require_seed(bundle, seed)
         from harness.zone_final_pair_clearance import require_collection_clearance
         require_collection_clearance(bundle)
         from sim.zone_final_v3_scene import build_world
