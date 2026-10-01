@@ -1,0 +1,28 @@
+ERROR: found no collectors for /private/tmp/ugrp-review-e2e-d-20260930/315/tests/test_zone_pair_executor.py::test_destination_route_reaches_zone_b_and_uses_bounded_segments
+
+
+==================================== ERRORS ====================================
+______________ ERROR collecting tests/test_zone_pair_executor.py _______________
+tests/test_zone_pair_executor.py:26: in <module>
+    from tests.test_zone_own_executor import CALIB, MAP, ROWS_Y, SEARCH_POSE, obs
+<frozen importlib._bootstrap>:1360: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:935: in _load_unlocked
+    ???
+/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/lib/python3.12/site-packages/_pytest/assertion/rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests/test_zone_own_executor.py:30: in <module>
+    CALIB = json.loads((ROOT / 'experiments' / '2026-09-26-zone-m1-owncam' / 'calibration_m1_dev.json').read_text())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-e2e-d-20260930/315/experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json'
+=========================== short test summary info ============================
+ERROR tests/test_zone_pair_executor.py - FileNotFoundError: [Errno 2] No such...
+1 error in 0.46s
