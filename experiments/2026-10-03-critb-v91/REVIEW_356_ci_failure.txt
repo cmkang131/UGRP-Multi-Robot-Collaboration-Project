@@ -1,0 +1,74 @@
+2026-10-02T18:41:13.6306765Z =================================== FAILURES ===================================
+2026-10-02T18:41:13.6307633Z ________________ test_concurrent_admissions_cannot_both_succeed ________________
+2026-10-02T18:41:13.6308197Z
+2026-10-02T18:41:13.6308619Z tmp_path = PosixPath('/tmp/pytest-of-runner/pytest-0/test_concurrent_admissions_can0')
+2026-10-02T18:41:13.6309261Z
+2026-10-02T18:41:13.6309551Z     def test_concurrent_admissions_cannot_both_succeed(tmp_path):
+2026-10-02T18:41:13.6310163Z         barrier = threading.Barrier(2)
+2026-10-02T18:41:13.6310611Z         def attempt(fn):
+2026-10-02T18:41:13.6311018Z             barrier.wait()
+2026-10-02T18:41:13.6311383Z             try:
+2026-10-02T18:41:13.6311725Z                 fn(tmp_path)
+2026-10-02T18:41:13.6312102Z                 return True
+2026-10-02T18:41:13.6312477Z             except RuntimeError:
+2026-10-02T18:41:13.6313600Z                 return False
+2026-10-02T18:41:13.6314058Z         with ThreadPoolExecutor(2) as pool:
+2026-10-02T18:41:13.6314612Z             futures = [pool.submit(attempt, fn) for fn in (physics, slot)]
+2026-10-02T18:41:13.6315208Z >           assert sum(f.result() for f in futures) == 1
+2026-10-02T18:41:13.6315681Z                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-02T18:41:13.6315977Z
+2026-10-02T18:41:13.6316139Z tests/test_agent_sim_slots.py:76:
+2026-10-02T18:41:13.6316617Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+2026-10-02T18:41:13.6317155Z tests/test_agent_sim_slots.py:76: in <genexpr>
+2026-10-02T18:41:13.6317635Z     assert sum(f.result() for f in futures) == 1
+2026-10-02T18:41:13.6318341Z                ^^^^^^^^^^
+2026-10-02T18:41:13.6318961Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/concurrent/futures/_base.py:449: in result
+2026-10-02T18:41:13.6319648Z     return self.__get_result()
+2026-10-02T18:41:13.6319991Z            ^^^^^^^^^^^^^^^^^^^
+2026-10-02T18:41:13.6320632Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+2026-10-02T18:41:13.6321347Z     raise self._exception
+2026-10-02T18:41:13.6321934Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/concurrent/futures/thread.py:59: in run
+2026-10-02T18:41:13.6322633Z     result = self.fn(*self.args, **self.kwargs)
+2026-10-02T18:41:13.6323068Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-02T18:41:13.6323703Z tests/test_agent_sim_slots.py:70: in attempt
+2026-10-02T18:41:13.6324107Z     fn(tmp_path)
+2026-10-02T18:41:13.6324427Z tests/test_agent_sim_slots.py:14: in slot
+2026-10-02T18:41:13.6325003Z     return lock.acquire_sim_slot(root, slot=name, owner='codex', branch=branch,
+2026-10-02T18:41:13.6325671Z scripts/agent_sim_slots.py:104: in acquire_sim_slot
+2026-10-02T18:41:13.6326171Z     held = _require_physics(root, owner, pid)
+2026-10-02T18:41:13.6326610Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-02T18:41:13.6327069Z scripts/agent_sim_slots.py:72: in _require_physics
+2026-10-02T18:41:13.6327534Z     held = legacy.status(root)
+2026-10-02T18:41:13.6327887Z            ^^^^^^^^^^^^^^^^^^^
+2026-10-02T18:41:13.6328267Z scripts/agent_lock.py:39: in status
+2026-10-02T18:41:13.6328686Z     owner = json.loads(path.read_text())
+2026-10-02T18:41:13.6329092Z             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-02T18:41:13.6329669Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py:346: in loads
+2026-10-02T18:41:13.6330285Z     return _default_decoder.decode(s)
+2026-10-02T18:41:13.6330670Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-02T18:41:13.6331234Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py:338: in decode
+2026-10-02T18:41:13.6331901Z     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+2026-10-02T18:41:13.6332336Z                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-02T18:41:13.6332810Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+2026-10-02T18:41:13.6333170Z
+2026-10-02T18:41:13.6333650Z self = <json.decoder.JSONDecoder object at 0x7f541b581760>, s = '', idx = 0
+2026-10-02T18:41:13.6334088Z
+2026-10-02T18:41:13.6334227Z     def raw_decode(self, s, idx=0):
+2026-10-02T18:41:13.6334708Z         """Decode a JSON document from ``s`` (a ``str`` beginning with
+2026-10-02T18:41:13.6335282Z         a JSON document) and return a 2-tuple of the Python
+2026-10-02T18:41:13.6335879Z         representation and the index in ``s`` where the document ended.
+2026-10-02T18:41:13.6336393Z
+2026-10-02T18:41:13.6336800Z         This can be used to decode a JSON document from a string that may
+2026-10-02T18:41:13.6337352Z         have extraneous data at the end.
+2026-10-02T18:41:13.6337739Z
+2026-10-02T18:41:13.6338005Z         """
+2026-10-02T18:41:13.6338285Z         try:
+2026-10-02T18:41:13.6338611Z             obj, end = self.scan_once(s, idx)
+2026-10-02T18:41:13.6339055Z         except StopIteration as err:
+2026-10-02T18:41:13.6339826Z >           raise JSONDecodeError("Expecting value", s, err.value) from None
+2026-10-02T18:41:13.6340605Z E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-10-02T18:41:13.6341089Z
+2026-10-02T18:41:13.6341483Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py:356: JSONDecodeError
+2026-10-02T18:41:13.6342258Z =========================== short test summary info ============================
+2026-10-02T18:41:13.6343784Z FAILED tests/test_agent_sim_slots.py::test_concurrent_admissions_cannot_both_succeed - json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+2026-10-02T18:41:13.6344976Z 1 failed, 1183 passed, 10 skipped, 140 subtests passed in 732.87s (0:12:12)

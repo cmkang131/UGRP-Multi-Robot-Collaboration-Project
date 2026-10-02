@@ -1,0 +1,504 @@
+{
+  "reviewed_head": "1dd9f0e7d0dcf1864cbe6b23dee76b99af1335cf",
+  "main": "0bf41800272ec4c4bfa035cfc5609af8850e3e48",
+  "recorded_utc": "2026-10-02T18:56:23.042984+00:00",
+  "validator_sha256": "65eb7d4c2c70533c8e8399f94bcffdff62508ff0dfef5cec948f809642ac953b",
+  "frozen_main_files": {
+    "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_candidate_r4.json": "fa7d3aa2e791086a9e73280b2dd4122bff5186d82503b56e17d5be27ca9bf071",
+    "scripts/validate_consumer_criterion_b.py": "8d2a693a6e3bbca79a8214fd388bff79a0609400f07de831ad9be3cf22e85a88",
+    "configs/zone_final_pair_v91.json": "a07d412ced2e5e301c327a07f61ca5ab6bc4cfe1f2c8b7b7f33740e4b3a29307",
+    "configs/zone_final_pair_v88.json": "de531087350712a29b17dbab94767622d070cd4bf4bb6bed193968f1e7e09354",
+    "configs/zone_final_pair_v88_clearance.json": "720a216cf7b58c7d26fdea8ae210b678437a2e8801300eff7686318ecddddf13",
+    "configs/zone_final_pair_v90.json": "7eb3112d30e7b4bc1769849071577a0edc7c37aede2f1f3b7c6c84a77b8c9972",
+    "configs/calibration/zone_final_pair_v88_contract.json": "06b86ea6ed357e2e8eb0fef41a0cf8f8ffd3abd29d900f4079575ced9970b3a1",
+    "configs/simulation_workflows.json": "fc5bdf913a9f672bb3adb9597e1925b88a163a7ce1a1b30fb4fed9cf7ad0c813",
+    "configs/simulation_workflows.d/final_pair_v88.json": "c6abe92e9996e2115bc8e072d80910a47eef503b91080b1aacff549b8f0f3429",
+    "configs/simulation_workflows.d/final_pair_v90.json": "d603750fcb19fd2c2c07681b8a3c56ff5a2b0680a04f84a9ccc50b1438614d8b",
+    "configs/simulation_workflows.d/final_pair_v91.json": "dbaf9a21f988a52d324db0c89b5013594e8c12eeaedcd549d9ee537d75697737",
+    "harness/rgb_execution_bundle.py": "93c0d91880b23b1f00d7b0bd3a7491e79ef785ea4dbf2dc561cb3ee89e2b996a",
+    "harness/zone_final_pair_contract.py": "c0c6a81cf40ba8221d644c39deafb5ec29d92410f4a897af3f51ed68380a7987",
+    "harness/zone_final_pair_heldout.py": "8e3398346148314a5bb1b20b5be5512a06390c6d3e4a72902d80b016deef6279",
+    "harness/zone_final_pair_fast.py": "1c81b0f3b4987222532773b35db120d21761c668ee9e21c3703b8062946d1da8",
+    "scripts/run_final_pair_v3.py": "f3519aa956e24df39697adafe607af3e8aebc3e45bccd77200f7877a31782f5c",
+    "scripts/run_final_pair_heldout.py": "e3ce5517074abae556513b964bf93fe7d4ccdcd1d67c553f46c9d88c224bcb24",
+    "scripts/run_final_pair_fast.py": "c4b973f6a40ec397e8912e00aaed2a223d8ec9507a056dec307723e3d7747842",
+    "harness/zone_final_pair_excitation.py": "618da65836acf0bc79e72d71b9e6d9415ad0e85924fb5769b2339f62cca9b258",
+    "harness/zone_final_pair_calibration.py": "4a54f79930b0897559cef659c8949ba6ae4aed9b6414e54ed79351cf80dea025",
+    "scripts/fit_unloaded_consumer.py": "63c7e1298ae6ccf63d2552e23f9fcb2cef09b26d55092f3a6c92ed0fadd5c350",
+    "scripts/fit_unloaded_hammerstein.py": "fe1a327ad060a9bbac8b9c25292e823e0b2b73319e16559d876e9d1a4dbc7677"
+  },
+  "live_commitment": {
+    "id": 5958329647,
+    "html_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5958329647",
+    "created_at": "2026-10-02T18:04:39Z",
+    "updated_at": "2026-10-02T18:04:39Z",
+    "body_sha256": "4eb9ed300edc242d1c04051fcb11ce661e9ade2e83372cef4d011c75a2407e77",
+    "listed_sha256": {
+      "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
+      "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_candidate_r4.json": "fa7d3aa2e791086a9e73280b2dd4122bff5186d82503b56e17d5be27ca9bf071",
+      "scripts/validate_consumer_criterion_b.py": "8d2a693a6e3bbca79a8214fd388bff79a0609400f07de831ad9be3cf22e85a88",
+      "configs/zone_final_pair_v91.json": "a07d412ced2e5e301c327a07f61ca5ab6bc4cfe1f2c8b7b7f33740e4b3a29307"
+    }
+  },
+  "real_raw_root": "/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003",
+  "raw_scope": "Metadata and first-row key names only; no validator/loader/scorer call on real raw, no trajectory/command/camera values inspected. Pose/command/camera file hashes were not recomputed.",
+  "maps": {
+    "zone_wide_door_geometry_v3": {
+      "identity": {
+        "execution_bundle_id": "zone-final-pair-v91",
+        "workflow_id": "zone-final-pair-heldout-v91",
+        "workflow_version": "3.3.0",
+        "source_sha": "04043e274af7351f3d35cb6be77d948cac1b8c6a",
+        "map_id": "zone_wide_door_geometry_v3",
+        "seed": 911,
+        "collection_role": "HELD_OUT_VALIDATION",
+        "training_eligible": false,
+        "teacher_only": true
+      },
+      "canonical_bundle_sha256": "b8871bb860faa2e4d180c81430d9fa58ee73b32a42c9d19611f252462e68900d",
+      "bundle_contract_matches": true,
+      "plan_bundle_binding_matches": true,
+      "root_case_completion_matches": true,
+      "status": "COLLECTED_UNQUALIFIED",
+      "protocol_complete": true,
+      "source_unchanged": true,
+      "source_entries_verified": 253,
+      "metadata_receipts_match": true,
+      "schedule_manifest_hash_matches_contract": true,
+      "precollection_stamps": [
+        {
+          "metadata_file": "plan.json",
+          "field": "host_start.physics_holder.acquired_unix",
+          "unix": 1790966027.819724,
+          "utc": "2026-10-02T18:33:47.819724+00:00"
+        },
+        {
+          "metadata_file": "plan.json",
+          "field": "host_start.concurrent_holders[0].acquired_unix",
+          "unix": 1790966027.8539891,
+          "utc": "2026-10-02T18:33:47.853989+00:00"
+        },
+        {
+          "metadata_file": "plan.json",
+          "field": "host_start.concurrent_holders[1].acquired_unix",
+          "unix": 1790966027.882921,
+          "utc": "2026-10-02T18:33:47.882921+00:00"
+        },
+        {
+          "metadata_file": "result.json",
+          "field": "host_start.physics_holder.acquired_unix",
+          "unix": 1790966027.819724,
+          "utc": "2026-10-02T18:33:47.819724+00:00"
+        },
+        {
+          "metadata_file": "result.json",
+          "field": "host_start.concurrent_holders[0].acquired_unix",
+          "unix": 1790966027.8539891,
+          "utc": "2026-10-02T18:33:47.853989+00:00"
+        },
+        {
+          "metadata_file": "result.json",
+          "field": "host_start.concurrent_holders[1].acquired_unix",
+          "unix": 1790966027.882921,
+          "utc": "2026-10-02T18:33:47.882921+00:00"
+        },
+        {
+          "metadata_file": "zone_wide_door_geometry_v3/result.json",
+          "field": "host_start.physics_holder.acquired_unix",
+          "unix": 1790966027.819724,
+          "utc": "2026-10-02T18:33:47.819724+00:00"
+        },
+        {
+          "metadata_file": "zone_wide_door_geometry_v3/result.json",
+          "field": "host_start.concurrent_holders[0].acquired_unix",
+          "unix": 1790966027.8539891,
+          "utc": "2026-10-02T18:33:47.853989+00:00"
+        },
+        {
+          "metadata_file": "zone_wide_door_geometry_v3/result.json",
+          "field": "host_start.concurrent_holders[1].acquired_unix",
+          "unix": 1790966027.882921,
+          "utc": "2026-10-02T18:33:47.882921+00:00"
+        }
+      ],
+      "first_row_keys_only": {
+        "eval_only/r1/pose.jsonl": [
+          "base_position_m",
+          "base_rotation",
+          "qualification",
+          "requested_check",
+          "sample_index",
+          "t",
+          "wall_clearance_lower_bound_m"
+        ],
+        "robots/r1/commands.jsonl": [
+          "kind",
+          "pulses",
+          "t"
+        ],
+        "robots/r1/frames.jsonl": [
+          "actuator_state",
+          "camera",
+          "commanded_servo",
+          "frame_id",
+          "path",
+          "robot_id",
+          "sha256",
+          "sim_time"
+        ]
+      },
+      "metadata_sha256": {
+        "plan.json": "f17645440464fcf79f8f9ba33d108d8cb07257abf2c0b3d45d24f3440f8e8562",
+        "result.json": "0c40e1e6fb42f4a09487b521e23a778780e4c4aacd5345c8335c59fd2a5e8619",
+        "zone_wide_door_geometry_v3/bundle.json": "5e5c1af971bca7a87107bd2b9ea5febcfa7687d3822d3685a4fa5a0397f5b698",
+        "zone_wide_door_geometry_v3/result.json": "c50f95825936b1c76887fc4297e64a8985a37ddaeb57111186811e2aabf44ce2",
+        "zone_wide_door_geometry_v3/artifacts.sha256.json": "541b56600dfb8d99eeb4ef3f19881cbf8fb3af064be7856f4036a846f6510e07"
+      }
+    },
+    "zone_wide_corridor_final_v3": {
+      "identity": {
+        "execution_bundle_id": "zone-final-pair-v91",
+        "workflow_id": "zone-final-pair-heldout-v91",
+        "workflow_version": "3.3.0",
+        "source_sha": "04043e274af7351f3d35cb6be77d948cac1b8c6a",
+        "map_id": "zone_wide_corridor_final_v3",
+        "seed": 911,
+        "collection_role": "HELD_OUT_VALIDATION",
+        "training_eligible": false,
+        "teacher_only": true
+      },
+      "canonical_bundle_sha256": "c52a72bf25253b9dfa37be275d718c6ad5fb4ecc43c0656413cda78506c9dad2",
+      "bundle_contract_matches": true,
+      "plan_bundle_binding_matches": true,
+      "root_case_completion_matches": true,
+      "status": "COLLECTED_UNQUALIFIED",
+      "protocol_complete": true,
+      "source_unchanged": true,
+      "source_entries_verified": 254,
+      "metadata_receipts_match": true,
+      "schedule_manifest_hash_matches_contract": true,
+      "precollection_stamps": [
+        {
+          "metadata_file": "plan.json",
+          "field": "host_start.physics_holder.acquired_unix",
+          "unix": 1790966027.819724,
+          "utc": "2026-10-02T18:33:47.819724+00:00"
+        },
+        {
+          "metadata_file": "plan.json",
+          "field": "host_start.concurrent_holders[0].acquired_unix",
+          "unix": 1790966027.8539891,
+          "utc": "2026-10-02T18:33:47.853989+00:00"
+        },
+        {
+          "metadata_file": "plan.json",
+          "field": "host_start.concurrent_holders[1].acquired_unix",
+          "unix": 1790966027.882921,
+          "utc": "2026-10-02T18:33:47.882921+00:00"
+        },
+        {
+          "metadata_file": "result.json",
+          "field": "host_start.physics_holder.acquired_unix",
+          "unix": 1790966027.819724,
+          "utc": "2026-10-02T18:33:47.819724+00:00"
+        },
+        {
+          "metadata_file": "result.json",
+          "field": "host_start.concurrent_holders[0].acquired_unix",
+          "unix": 1790966027.8539891,
+          "utc": "2026-10-02T18:33:47.853989+00:00"
+        },
+        {
+          "metadata_file": "result.json",
+          "field": "host_start.concurrent_holders[1].acquired_unix",
+          "unix": 1790966027.882921,
+          "utc": "2026-10-02T18:33:47.882921+00:00"
+        },
+        {
+          "metadata_file": "zone_wide_corridor_final_v3/result.json",
+          "field": "host_start.physics_holder.acquired_unix",
+          "unix": 1790966027.819724,
+          "utc": "2026-10-02T18:33:47.819724+00:00"
+        },
+        {
+          "metadata_file": "zone_wide_corridor_final_v3/result.json",
+          "field": "host_start.concurrent_holders[0].acquired_unix",
+          "unix": 1790966027.8539891,
+          "utc": "2026-10-02T18:33:47.853989+00:00"
+        },
+        {
+          "metadata_file": "zone_wide_corridor_final_v3/result.json",
+          "field": "host_start.concurrent_holders[1].acquired_unix",
+          "unix": 1790966027.882921,
+          "utc": "2026-10-02T18:33:47.882921+00:00"
+        }
+      ],
+      "first_row_keys_only": {
+        "eval_only/r1/pose.jsonl": [
+          "base_position_m",
+          "base_rotation",
+          "qualification",
+          "requested_check",
+          "sample_index",
+          "t",
+          "wall_clearance_lower_bound_m"
+        ],
+        "robots/r1/commands.jsonl": [
+          "kind",
+          "pulses",
+          "t"
+        ],
+        "robots/r1/frames.jsonl": [
+          "actuator_state",
+          "camera",
+          "commanded_servo",
+          "frame_id",
+          "path",
+          "robot_id",
+          "sha256",
+          "sim_time"
+        ]
+      },
+      "metadata_sha256": {
+        "plan.json": "6afba91bd729c6645e42497276f2ac93993f615ae2ee1f8c6fa1235d8ed14770",
+        "result.json": "6a8587613e4ea51bf224f6828d3a3746585c7db7e19f1af73928effd7fa81bf3",
+        "zone_wide_corridor_final_v3/bundle.json": "52b160ef278bde39b75883a27752b6f6dca27c725b8fd81f82f753546d75b3b2",
+        "zone_wide_corridor_final_v3/result.json": "184d81995ebe54d68aa065a2bd75f9084f06123fa794f4e8603a0c780cba7e99",
+        "zone_wide_corridor_final_v3/artifacts.sha256.json": "a8bf5d0642d115106979baced1207f0d321a97b967d5f6d971dd756a03998b60"
+      }
+    }
+  },
+  "scope": {
+    "physics": false,
+    "rendering": false,
+    "model_calls": false,
+    "real_raw_scored": false,
+    "processes_modified": false,
+    "tensorboard_updated": false,
+    "workflow_files_modified": false
+  },
+  "driver_start_line": "=== start both maps 2026-10-02T18:33:47Z load: { 7.87 10.29 10.06 }",
+  "ci": {
+    "checks": [
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972742786",
+        "name": "ci-preflight",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947411",
+        "name": "zone-multiturn-properties (0)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947333",
+        "name": "zone-multiturn-properties (1)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947448",
+        "name": "zone-multiturn-properties (2)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947552",
+        "name": "zone-multiturn-properties (3)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947423",
+        "name": "zone-multiturn-properties (4)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947296",
+        "name": "zone-multiturn-properties (5)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947317",
+        "name": "zone-multiturn-properties (6)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947306",
+        "name": "zone-multiturn-properties (7)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947310",
+        "name": "zone-multiturn-properties (8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947342",
+        "name": "zone-multiturn-properties (9)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947413",
+        "name": "zone-multiturn-properties (10)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947324",
+        "name": "zone-multiturn-properties (11)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947347",
+        "name": "zone-multiturn-properties (12)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947507",
+        "name": "zone-multiturn-properties (13)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947374",
+        "name": "zone-multiturn-properties (14)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947389",
+        "name": "zone-multiturn-properties (15)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972946912",
+        "name": "tensorboard-export",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972946689",
+        "name": "reference-act-smoke",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947105",
+        "name": "offline-regression-shard (0/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947007",
+        "name": "offline-regression-shard (1/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972946948",
+        "name": "offline-regression-shard (2/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972946981",
+        "name": "offline-regression-shard (3/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972946936",
+        "name": "offline-regression-shard (4/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947078",
+        "name": "offline-regression-shard (5/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947200",
+        "name": "offline-regression-shard (6/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972947036",
+        "name": "offline-regression-shard (7/8)",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972946803",
+        "name": "offline-regression-checks",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972946664",
+        "name": "ubuntu-simulation-runtime",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972946715",
+        "name": "ubuntu-simulation-scenarios",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972946672",
+        "name": "multi-object-scenes",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110972946888",
+        "name": "individual-proxy-bootstrap",
+        "status": "COMPLETED"
+      },
+      {
+        "conclusion": "FAILURE",
+        "detailsUrl": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/job/110979414718",
+        "name": "offline-regressions",
+        "status": "COMPLETED"
+      }
+    ],
+    "headRefOid": "1dd9f0e7d0dcf1864cbe6b23dee76b99af1335cf",
+    "isDraft": true
+  },
+  "tests": {
+    "related": "224 passed in 156.14s",
+    "review": "304 passed in 7.24s",
+    "python": "/opt/anaconda3/bin/python3 3.13.5",
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "pytest": "8.3.4",
+    "initial_attempt": "Archive cwd resolved python3 to Homebrew 3.14 without pytest; rerun using explicit existing Anaconda executable. No installation."
+  },
+  "cleanup": {
+    "verified_utc": "2026-10-02T19:01:23.363866+00:00",
+    "removed_disposable_paths": [
+      "/private/tmp/ugrp-review356.VOZscv",
+      "/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1816",
+      "/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1818"
+    ],
+    "real_raw_modified": false
+  }
+}
