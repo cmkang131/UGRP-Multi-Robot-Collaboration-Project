@@ -1,0 +1,4146 @@
+{
+  "source_sha": "2523269857596ffdd1a8cda9814a6e92f399f1da",
+  "checks": {
+    "calibration-unloaded": {
+      "plan_without_source_dependent_bundle_hashes": {
+        "execution_bundle_id": "zone-final-pair-v88",
+        "status": "DRAFT_UNSEALED",
+        "check": "calibration-unloaded",
+        "execution_started": false,
+        "cases": [
+          {
+            "id": "zone_wide_two_doors_final_v3",
+            "map_id": "zone_wide_two_doors_final_v3",
+            "checkpoint": null,
+            "sim_cap_s": 370.0
+          }
+        ],
+        "denominator": 1,
+        "runnable": true,
+        "blocked_on": [],
+        "source_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "seed": 911,
+        "physical_success": null,
+        "clearance_preflight": [
+          {
+            "admitted": true,
+            "envelope_policy": "ADVISORY",
+            "scope": "SIMULATION_ONLY_TEACHER_CALIBRATION",
+            "decision": "2026-10-01 coordinator decision 2",
+            "reason": "START_POSE_CLEAR_INTERLOCK_REQUIRED",
+            "start_pose_check": {
+              "admitted": true,
+              "wall_margin_m": 0.3,
+              "numeric_guard_m": 1e-10,
+              "bodies": {
+                "r1": {
+                  "start_xy_yaw": [
+                    3.25,
+                    -0.85,
+                    0.0
+                  ],
+                  "body_radius_bound_m": 0.4,
+                  "required_wall_distance_m": 0.7,
+                  "wall_distance_from_start_m": 1.025,
+                  "remaining_clearance_m": 0.32499999999999996,
+                  "admitted": true
+                }
+              }
+            },
+            "runtime_interlock": {
+              "required": true,
+              "minimum_m": 0.3,
+              "abort_buffer_m": 0.05,
+              "robot_radius_bound_m": 0.4,
+              "max_substep_displacement_m": 0.01,
+              "checks": [
+                "before_substep",
+                "after_substep",
+                "before_command",
+                "eval_0.05_s"
+              ],
+              "invalid_geometry": "hold_then_HOST_ERROR",
+              "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+            },
+            "no_cancellation_bound": {
+              "admitted": false,
+              "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+              "method": "whole_schedule_absolute_command_integral",
+              "sign_cancellation": "none",
+              "qualification": "ADVISORY_CONDITIONAL_NO_CANCELLATION_BOUND",
+              "sim_window_s": [
+                0.0,
+                370.0
+              ],
+              "gain_upper": {
+                "forward": 2.62,
+                "left": 1.86,
+                "turn": 2.299928292866358
+              },
+              "robot_radius_bound_m": 0.4,
+              "wall_margin_m": 0.3,
+              "numeric_guard_m": 1e-10,
+              "bodies": {
+                "r1": {
+                  "start_xy_yaw": [
+                    3.25,
+                    -0.85,
+                    0.0
+                  ],
+                  "absolute_command_integral_s": {
+                    "forward": 1.51,
+                    "left": 1.51,
+                    "turn": 1.51
+                  },
+                  "translation_bound_m": 6.764800000000001,
+                  "absolute_yaw_bound_rad": 3.4728917222282,
+                  "tip_radius_from_chassis_m": 0.4,
+                  "yaw_tip_excursion_bound_m": 0.8,
+                  "excursion_bound_m": 7.564800000000001,
+                  "beam_radius_added_m": 0.0,
+                  "disc_radius_m": 8.264800000000001,
+                  "wall_distance_from_start_m": 1.0250000000000004,
+                  "remaining_clearance_m": -7.239800000000001,
+                  "wall_free": false
+                }
+              }
+            },
+            "pair_cancellation_estimate": {
+              "admitted": false,
+              "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+              "method": "peak_signed_steps_plus_absolute_prbs",
+              "sign_cancellation": "within_robot_step_pairs_only",
+              "qualification": "ADVISORY_ESTIMATE_NOT_A_MOTION_BOUND; symmetric fixed-axis step response assumed",
+              "sim_window_s": [
+                0.0,
+                370.0
+              ],
+              "gain_upper": {
+                "forward": 2.62,
+                "left": 1.86,
+                "turn": 2.299928292866358
+              },
+              "robot_radius_bound_m": 0.4,
+              "wall_margin_m": 0.3,
+              "numeric_guard_m": 1e-10,
+              "bodies": {
+                "r1": {
+                  "start_xy_yaw": [
+                    3.25,
+                    -0.85,
+                    0.0
+                  ],
+                  "translation_bound_m": 2.732800000000001,
+                  "absolute_yaw_bound_rad": 1.4029562586484787,
+                  "tip_radius_from_chassis_m": 0.4,
+                  "yaw_tip_excursion_bound_m": 0.5611825034593915,
+                  "excursion_bound_m": 3.2939825034593926,
+                  "beam_radius_added_m": 0.0,
+                  "disc_radius_m": 3.9939825034593923,
+                  "estimated_excursion_integral_s": {
+                    "forward": 0.6100000000000002,
+                    "left": 0.6100000000000002,
+                    "turn": 0.6100000000000002
+                  },
+                  "step_peak_integral_s": {
+                    "forward": 0.3000000000000002,
+                    "left": 0.3000000000000002,
+                    "turn": 0.3000000000000002
+                  },
+                  "step_net_integral_s": {
+                    "forward": -3.7730235602495554e-17,
+                    "left": -3.7730235602495554e-17,
+                    "turn": -3.7730235602495554e-17
+                  },
+                  "wall_distance_from_start_m": 1.025,
+                  "remaining_clearance_m": -2.9689825034593924,
+                  "wall_free": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "bundle_without_source_hashes": {
+        "schema": "ugrp.final_pair_bundle.v88",
+        "execution_bundle_id": "zone-final-pair-v88",
+        "status": "DRAFT_UNSEALED",
+        "check": "calibration-unloaded",
+        "map_id": "zone_wide_two_doors_final_v3",
+        "map_sha256": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+        "robot_model": "masterpi_v3",
+        "render_profile": "floor_light_v1",
+        "contact_profile": "cargo_noslip_v1",
+        "weld": "off",
+        "sensors": {
+          "ultrasonic_front": "off"
+        },
+        "controller_family": "b-v6h1",
+        "controller_variant": "b-v6h1-v3-measured",
+        "controller_inputs": [
+          "own_rgb",
+          "static_map",
+          "own_command_history",
+          "delivered_messages"
+        ],
+        "revision": "v88 unexecuted; revised in place for REVIEW_344; no old run is relabelled",
+        "timing": {
+          "phase_origin": "end of standard Scene reset; t_start=backend.now",
+          "scheduler_period_s": 0.05,
+          "eval_pose_period_s": 0.05,
+          "rgb_capture_period_s": 0.2,
+          "provider_delivery_period_s": null,
+          "capture_at_start_and_end": true,
+          "capture_before_commands": true,
+          "provider_inference": "on each delivered settled frame; uninitialized/unsettled frames skipped",
+          "control_gate_s": null,
+          "look_every_s": null,
+          "arm_dispatch_period_s": null,
+          "arm_dispatch_phase": "t_start+n*0.05, after Runtime.step; no physics-step now+0.05 gate",
+          "pose_delay_s": null,
+          "reset_cap_s": 5.0,
+          "stabilization": {
+            "scene_setup": "standard constructor 0.30s + Scene.setup within reset cap",
+            "hover_s": 1.0,
+            "descent_steps": 7,
+            "descent_step_s": 0.12,
+            "final_descent_settle_s": 0.3,
+            "other_arm_settles": "inherited frozen per-command queues; dispatched on reset grid"
+          },
+          "parent_differences": [
+            "sealed host background RGB 0.2s plus fresh control captures -> fixed 0.05s student RGB/provider",
+            "sealed physics-step arm now>=next_arm, next_arm=now+0.05 -> reset-relative 0.05s grid",
+            "collection camera 0.2s retained; independent pose/qpos/qvel every 0.05s",
+            "collection v1 0.25s leases -> v2 0.05s leases, multi-amplitude 10s steps + PRBS",
+            "P03 delay 0.16s and control 0.1s retained; not a sealed trajectory replay"
+          ]
+        },
+        "caps": {
+          "reset_per_case_s": 5.0,
+          "per_case_s": 370.0,
+          "default_cases": 1,
+          "total_including_reset_s": 375.0
+        },
+        "measurement": {
+          "schema": "ugrp.final_pair_measurement.v2",
+          "check": "calibration-unloaded",
+          "method_source": "PR #347 eaeaaff05553ea02c649b4db9ff82470fe6372b5",
+          "model_evidence": "PR #348 dba873d4b0e77e017373e5539ac077abb7c6f4b1",
+          "qualification": "Hammerstein input design only; no fitted calibration",
+          "map_id": "zone_wide_two_doors_final_v3",
+          "magnitudes": [
+            0.01,
+            0.02,
+            0.03
+          ],
+          "step_duration_s": 10.0,
+          "prbs": {
+            "polynomial": "x^5+x^2+1",
+            "bits": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              -1,
+              1,
+              1,
+              -1,
+              1,
+              1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1,
+              -1,
+              -1,
+              1,
+              -1,
+              1,
+              1,
+              -1,
+              -1
+            ],
+            "chip_s": 0.5
+          },
+          "motion_start_s": 74.0,
+          "control_period_s": 0.05,
+          "eval_pose_period_s": 0.05,
+          "camera_period_s": 0.2,
+          "command_lease_s": 0.05,
+          "sim_cap_s": 370.0,
+          "reset_cap_s": 5.0,
+          "total_including_reset_cap_s": 375.0,
+          "clearance": {
+            "minimum_m": 0.3,
+            "abort_buffer_m": 0.05,
+            "robot_radius_bound_m": 0.4,
+            "max_substep_displacement_m": 0.01
+          },
+          "segments": [
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": 0.01,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": -0.01,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": 0.02,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": -0.02,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": 0.03,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": -0.03,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 2.5,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": 0.01,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": -0.01,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": 0.02,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": -0.02,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": 0.03,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": -0.03,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 2.5,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": 0.01,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": -0.01,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": 0.02,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": -0.02,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": 0.03,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": -0.03,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.02,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 2.5,
+              "value": 0.0,
+              "phase": "coast"
+            }
+          ]
+        },
+        "runtime_interlock": {
+          "required": true,
+          "minimum_m": 0.3,
+          "abort_buffer_m": 0.05,
+          "robot_radius_bound_m": 0.4,
+          "max_substep_displacement_m": 0.01,
+          "checks": [
+            "before_substep",
+            "after_substep",
+            "before_command",
+            "eval_0.05_s"
+          ],
+          "invalid_geometry": "hold_then_HOST_ERROR",
+          "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+        },
+        "clearance_preflight": {
+          "admitted": true,
+          "envelope_policy": "ADVISORY",
+          "scope": "SIMULATION_ONLY_TEACHER_CALIBRATION",
+          "decision": "2026-10-01 coordinator decision 2",
+          "reason": "START_POSE_CLEAR_INTERLOCK_REQUIRED",
+          "start_pose_check": {
+            "admitted": true,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "body_radius_bound_m": 0.4,
+                "required_wall_distance_m": 0.7,
+                "wall_distance_from_start_m": 1.025,
+                "remaining_clearance_m": 0.32499999999999996,
+                "admitted": true
+              }
+            }
+          },
+          "runtime_interlock": {
+            "required": true,
+            "minimum_m": 0.3,
+            "abort_buffer_m": 0.05,
+            "robot_radius_bound_m": 0.4,
+            "max_substep_displacement_m": 0.01,
+            "checks": [
+              "before_substep",
+              "after_substep",
+              "before_command",
+              "eval_0.05_s"
+            ],
+            "invalid_geometry": "hold_then_HOST_ERROR",
+            "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+          },
+          "no_cancellation_bound": {
+            "admitted": false,
+            "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+            "method": "whole_schedule_absolute_command_integral",
+            "sign_cancellation": "none",
+            "qualification": "ADVISORY_CONDITIONAL_NO_CANCELLATION_BOUND",
+            "sim_window_s": [
+              0.0,
+              370.0
+            ],
+            "gain_upper": {
+              "forward": 2.62,
+              "left": 1.86,
+              "turn": 2.299928292866358
+            },
+            "robot_radius_bound_m": 0.4,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "absolute_command_integral_s": {
+                  "forward": 1.51,
+                  "left": 1.51,
+                  "turn": 1.51
+                },
+                "translation_bound_m": 6.764800000000001,
+                "absolute_yaw_bound_rad": 3.4728917222282,
+                "tip_radius_from_chassis_m": 0.4,
+                "yaw_tip_excursion_bound_m": 0.8,
+                "excursion_bound_m": 7.564800000000001,
+                "beam_radius_added_m": 0.0,
+                "disc_radius_m": 8.264800000000001,
+                "wall_distance_from_start_m": 1.0250000000000004,
+                "remaining_clearance_m": -7.239800000000001,
+                "wall_free": false
+              }
+            }
+          },
+          "pair_cancellation_estimate": {
+            "admitted": false,
+            "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+            "method": "peak_signed_steps_plus_absolute_prbs",
+            "sign_cancellation": "within_robot_step_pairs_only",
+            "qualification": "ADVISORY_ESTIMATE_NOT_A_MOTION_BOUND; symmetric fixed-axis step response assumed",
+            "sim_window_s": [
+              0.0,
+              370.0
+            ],
+            "gain_upper": {
+              "forward": 2.62,
+              "left": 1.86,
+              "turn": 2.299928292866358
+            },
+            "robot_radius_bound_m": 0.4,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "translation_bound_m": 2.732800000000001,
+                "absolute_yaw_bound_rad": 1.4029562586484787,
+                "tip_radius_from_chassis_m": 0.4,
+                "yaw_tip_excursion_bound_m": 0.5611825034593915,
+                "excursion_bound_m": 3.2939825034593926,
+                "beam_radius_added_m": 0.0,
+                "disc_radius_m": 3.9939825034593923,
+                "estimated_excursion_integral_s": {
+                  "forward": 0.6100000000000002,
+                  "left": 0.6100000000000002,
+                  "turn": 0.6100000000000002
+                },
+                "step_peak_integral_s": {
+                  "forward": 0.3000000000000002,
+                  "left": 0.3000000000000002,
+                  "turn": 0.3000000000000002
+                },
+                "step_net_integral_s": {
+                  "forward": -3.7730235602495554e-17,
+                  "left": -3.7730235602495554e-17,
+                  "turn": -3.7730235602495554e-17
+                },
+                "wall_distance_from_start_m": 1.025,
+                "remaining_clearance_m": -2.9689825034593924,
+                "wall_free": false
+              }
+            }
+          }
+        },
+        "calibration_selection": "v88 contract hash; per-load/per-posture optical->chassis->floor; no v2 fallback",
+        "calibration_contract": {
+          "schema": "ugrp.final_environment_calibration.v1",
+          "status": "DRAFT_UNMEASURED",
+          "robot_model": "masterpi_v3",
+          "maps": {
+            "zone_wide_door_geometry_v3": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+            "zone_wide_two_doors_final_v3": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+            "zone_wide_corridor_final_v3": "0429b535107feda865a02821e4ceb2b695b58cd0c06c07e2fde96320bd2d9b0e"
+          },
+          "render_profile": "floor_light_v1",
+          "camera": {
+            "name": "robot_cam",
+            "rgb_size": [
+              640,
+              480
+            ],
+            "segmentation_size": [
+              480,
+              360
+            ],
+            "mount_file": "sim/masterpi_camera_profile.py",
+            "mount_sha256": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+            "sag": null,
+            "pan_base_yaw": null,
+            "extrinsics_frame": "optical -> actual chassis -> floor-heading; per-posture/load measured chassis_to_floor is mandatory; world xy/yaw removed offline",
+            "floor_transform_policy": "fit height/roll/pitch from eval_only settled samples offline, never runtime GT or nominal wheel radius"
+          },
+          "motion": {
+            "unloaded": null,
+            "loaded": null,
+            "fine": null
+          },
+          "static_sources_sha256": {
+            "sim/masterpi_geometry_v3.py": "bed49926f11cba9fe338ee228866771efd29d0a94c5ca3a0c65d67e7e82aa942",
+            "sim/masterpi_model_v3.py": "e2d9ff9224d7f7df01957bdf9ca95f52db9f5c7b54828eaab8185e5422d38fb5",
+            "sim/masterpi_robot_models.py": "ed3115774b8f4bb41f462cf91cc086609491afb21664819e1c482698ac468e11",
+            "sim/masterpi_dynamics_calibration.json": "6d1791939e8fbac5a33a22185aea7ee66c2aeba561757e3f1945207812d07416"
+          },
+          "measurements": null,
+          "qualification": "V3 pair measurement contract. No v2 motion/camera/pair fit inheritance. Collection remains unqualified until offline fitting and review. v88 never executed; revised in place for REVIEW_344. No calibration fit is delivered.",
+          "handoff": "PHYSICS_HANDOFF.md"
+        },
+        "physical_ready": false,
+        "research_result": false
+      },
+      "schedule_file_sha256": "8e9a126cfdcbc5961cacac4165b76ac65da3310aa40b758f0590d999917813db",
+      "schedule_bytes": 1084638
+    },
+    "calibration-loaded": {
+      "plan_without_source_dependent_bundle_hashes": {
+        "execution_bundle_id": "zone-final-pair-v88",
+        "status": "DRAFT_UNSEALED",
+        "check": "calibration-loaded",
+        "execution_started": false,
+        "cases": [
+          {
+            "id": "zone_wide_two_doors_final_v3",
+            "map_id": "zone_wide_two_doors_final_v3",
+            "checkpoint": null,
+            "sim_cap_s": 370.0
+          }
+        ],
+        "denominator": 1,
+        "runnable": true,
+        "blocked_on": [],
+        "source_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "seed": 911,
+        "physical_success": null,
+        "clearance_preflight": [
+          {
+            "admitted": true,
+            "envelope_policy": "ADVISORY",
+            "scope": "SIMULATION_ONLY_TEACHER_CALIBRATION",
+            "decision": "2026-10-01 coordinator decision 2",
+            "reason": "START_POSE_CLEAR_INTERLOCK_REQUIRED",
+            "start_pose_check": {
+              "admitted": true,
+              "wall_margin_m": 0.3,
+              "numeric_guard_m": 1e-10,
+              "bodies": {
+                "r1": {
+                  "start_xy_yaw": [
+                    3.0768,
+                    -0.85,
+                    0.0
+                  ],
+                  "body_radius_bound_m": 0.4,
+                  "required_wall_distance_m": 0.7,
+                  "wall_distance_from_start_m": 0.8517999999999999,
+                  "remaining_clearance_m": 0.15179999999999993,
+                  "admitted": true
+                },
+                "r2": {
+                  "start_xy_yaw": [
+                    4.0232,
+                    -0.85,
+                    3.141592653589793
+                  ],
+                  "body_radius_bound_m": 0.4,
+                  "required_wall_distance_m": 0.7,
+                  "wall_distance_from_start_m": 1.3518,
+                  "remaining_clearance_m": 0.6517999999999999,
+                  "admitted": true
+                },
+                "beam": {
+                  "start_xy_yaw": [
+                    3.55,
+                    -0.85,
+                    0.0
+                  ],
+                  "body_radius_bound_m": 0.30066592756745814,
+                  "required_wall_distance_m": 0.6006659275674582,
+                  "wall_distance_from_start_m": 1.3249999999999997,
+                  "remaining_clearance_m": 0.7243340724325416,
+                  "admitted": true
+                }
+              }
+            },
+            "runtime_interlock": {
+              "required": true,
+              "minimum_m": 0.3,
+              "abort_buffer_m": 0.05,
+              "robot_radius_bound_m": 0.4,
+              "max_substep_displacement_m": 0.01,
+              "checks": [
+                "before_substep",
+                "after_substep",
+                "before_command",
+                "eval_0.05_s"
+              ],
+              "invalid_geometry": "hold_then_HOST_ERROR",
+              "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+            },
+            "no_cancellation_bound": {
+              "admitted": false,
+              "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+              "method": "whole_schedule_absolute_command_integral",
+              "sign_cancellation": "none",
+              "qualification": "ADVISORY_CONDITIONAL_NO_CANCELLATION_BOUND",
+              "sim_window_s": [
+                0.0,
+                370.0
+              ],
+              "gain_upper": {
+                "forward": 2.62,
+                "left": 1.86,
+                "turn": 2.299928292866358
+              },
+              "robot_radius_bound_m": 0.4,
+              "wall_margin_m": 0.3,
+              "numeric_guard_m": 1e-10,
+              "bodies": {
+                "r1": {
+                  "start_xy_yaw": [
+                    3.0768,
+                    -0.85,
+                    0.0
+                  ],
+                  "absolute_command_integral_s": {
+                    "forward": 1.9525000000000001,
+                    "left": 1.9525000000000001,
+                    "turn": 1.9525000000000001
+                  },
+                  "translation_bound_m": 8.747200000000001,
+                  "absolute_yaw_bound_rad": 4.490609991821564,
+                  "tip_radius_from_chassis_m": 0.773865927567458,
+                  "yaw_tip_excursion_bound_m": 1.547731855134916,
+                  "excursion_bound_m": 10.294931855134918,
+                  "beam_radius_added_m": 0.30066592756745814,
+                  "disc_radius_m": 11.295597782702377,
+                  "wall_distance_from_start_m": 0.8518000000000008,
+                  "remaining_clearance_m": -10.443797782702376,
+                  "wall_free": false
+                },
+                "r2": {
+                  "start_xy_yaw": [
+                    4.0232,
+                    -0.85,
+                    3.141592653589793
+                  ],
+                  "absolute_command_integral_s": {
+                    "forward": 1.9525000000000001,
+                    "left": 1.9525000000000001,
+                    "turn": 1.9525000000000001
+                  },
+                  "translation_bound_m": 8.747200000000001,
+                  "absolute_yaw_bound_rad": 4.490609991821564,
+                  "tip_radius_from_chassis_m": 0.7738659275674584,
+                  "yaw_tip_excursion_bound_m": 1.5477318551349168,
+                  "excursion_bound_m": 10.294931855134918,
+                  "beam_radius_added_m": 0.30066592756745814,
+                  "disc_radius_m": 11.295597782702377,
+                  "wall_distance_from_start_m": 1.3518000000000008,
+                  "remaining_clearance_m": -9.943797782702376,
+                  "wall_free": false
+                },
+                "beam": {
+                  "start_xy_yaw": [
+                    3.55,
+                    -0.85,
+                    0.0
+                  ],
+                  "disc_radius_m": 11.768797782702377,
+                  "excursion_bound_m": 10.768131855134918,
+                  "contains_carrier_discs": [
+                    "r1",
+                    "r2"
+                  ],
+                  "half_length_m": 0.3,
+                  "half_diagonal_m": 0.30066592756745814,
+                  "wall_distance_from_start_m": 1.3249999999999993,
+                  "remaining_clearance_m": -10.443797782702378,
+                  "wall_free": false
+                }
+              }
+            },
+            "pair_cancellation_estimate": {
+              "admitted": false,
+              "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+              "method": "peak_signed_steps_plus_absolute_prbs",
+              "sign_cancellation": "within_robot_step_pairs_only",
+              "qualification": "ADVISORY_ESTIMATE_NOT_A_MOTION_BOUND; symmetric fixed-axis step response assumed",
+              "sim_window_s": [
+                0.0,
+                370.0
+              ],
+              "gain_upper": {
+                "forward": 2.62,
+                "left": 1.86,
+                "turn": 2.299928292866358
+              },
+              "robot_radius_bound_m": 0.4,
+              "wall_margin_m": 0.3,
+              "numeric_guard_m": 1e-10,
+              "bodies": {
+                "r1": {
+                  "start_xy_yaw": [
+                    3.0768,
+                    -0.85,
+                    0.0
+                  ],
+                  "translation_bound_m": 2.8336000000000015,
+                  "absolute_yaw_bound_rad": 1.454704645237972,
+                  "tip_radius_from_chassis_m": 0.773865927567458,
+                  "yaw_tip_excursion_bound_m": 1.1257463596237731,
+                  "excursion_bound_m": 3.9593463596237743,
+                  "beam_radius_added_m": 0.30066592756745814,
+                  "disc_radius_m": 4.960012287191232,
+                  "estimated_excursion_integral_s": {
+                    "forward": 0.6325000000000003,
+                    "left": 0.6325000000000003,
+                    "turn": 0.6325000000000003
+                  },
+                  "step_peak_integral_s": {
+                    "forward": 0.40000000000000024,
+                    "left": 0.40000000000000024,
+                    "turn": 0.40000000000000024
+                  },
+                  "step_net_integral_s": {
+                    "forward": -9.71445146547012e-17,
+                    "left": -9.71445146547012e-17,
+                    "turn": -9.71445146547012e-17
+                  },
+                  "wall_distance_from_start_m": 0.8517999999999999,
+                  "remaining_clearance_m": -4.1082122871912325,
+                  "wall_free": false
+                },
+                "r2": {
+                  "start_xy_yaw": [
+                    4.0232,
+                    -0.85,
+                    3.141592653589793
+                  ],
+                  "translation_bound_m": 2.8336000000000015,
+                  "absolute_yaw_bound_rad": 1.454704645237972,
+                  "tip_radius_from_chassis_m": 0.7738659275674584,
+                  "yaw_tip_excursion_bound_m": 1.1257463596237738,
+                  "excursion_bound_m": 3.9593463596237752,
+                  "beam_radius_added_m": 0.30066592756745814,
+                  "disc_radius_m": 4.960012287191233,
+                  "estimated_excursion_integral_s": {
+                    "forward": 0.6325000000000003,
+                    "left": 0.6325000000000003,
+                    "turn": 0.6325000000000003
+                  },
+                  "step_peak_integral_s": {
+                    "forward": 0.40000000000000024,
+                    "left": 0.40000000000000024,
+                    "turn": 0.40000000000000024
+                  },
+                  "step_net_integral_s": {
+                    "forward": 9.71445146547012e-17,
+                    "left": 9.71445146547012e-17,
+                    "turn": 9.71445146547012e-17
+                  },
+                  "wall_distance_from_start_m": 1.3518,
+                  "remaining_clearance_m": -3.6082122871912334,
+                  "wall_free": false
+                },
+                "beam": {
+                  "start_xy_yaw": [
+                    3.55,
+                    -0.85,
+                    0.0
+                  ],
+                  "disc_radius_m": 5.433212287191234,
+                  "excursion_bound_m": 4.4325463596237755,
+                  "contains_carrier_discs": [
+                    "r1",
+                    "r2"
+                  ],
+                  "half_length_m": 0.3,
+                  "half_diagonal_m": 0.30066592756745814,
+                  "wall_distance_from_start_m": 1.3249999999999993,
+                  "remaining_clearance_m": -4.108212287191234,
+                  "wall_free": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "bundle_without_source_hashes": {
+        "schema": "ugrp.final_pair_bundle.v88",
+        "execution_bundle_id": "zone-final-pair-v88",
+        "status": "DRAFT_UNSEALED",
+        "check": "calibration-loaded",
+        "map_id": "zone_wide_two_doors_final_v3",
+        "map_sha256": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+        "robot_model": "masterpi_v3",
+        "render_profile": "floor_light_v1",
+        "contact_profile": "cargo_noslip_v1",
+        "weld": "off",
+        "sensors": {
+          "ultrasonic_front": "off"
+        },
+        "controller_family": "b-v6h1",
+        "controller_variant": "b-v6h1-v3-measured",
+        "controller_inputs": [
+          "own_rgb",
+          "static_map",
+          "own_command_history",
+          "delivered_messages"
+        ],
+        "revision": "v88 unexecuted; revised in place for REVIEW_344; no old run is relabelled",
+        "timing": {
+          "phase_origin": "end of standard Scene reset; t_start=backend.now",
+          "scheduler_period_s": 0.05,
+          "eval_pose_period_s": 0.05,
+          "rgb_capture_period_s": 0.2,
+          "provider_delivery_period_s": null,
+          "capture_at_start_and_end": true,
+          "capture_before_commands": true,
+          "provider_inference": "on each delivered settled frame; uninitialized/unsettled frames skipped",
+          "control_gate_s": null,
+          "look_every_s": null,
+          "arm_dispatch_period_s": null,
+          "arm_dispatch_phase": "t_start+n*0.05, after Runtime.step; no physics-step now+0.05 gate",
+          "pose_delay_s": null,
+          "reset_cap_s": 5.0,
+          "stabilization": {
+            "scene_setup": "standard constructor 0.30s + Scene.setup within reset cap",
+            "hover_s": 1.0,
+            "descent_steps": 7,
+            "descent_step_s": 0.12,
+            "final_descent_settle_s": 0.3,
+            "other_arm_settles": "inherited frozen per-command queues; dispatched on reset grid"
+          },
+          "parent_differences": [
+            "sealed host background RGB 0.2s plus fresh control captures -> fixed 0.05s student RGB/provider",
+            "sealed physics-step arm now>=next_arm, next_arm=now+0.05 -> reset-relative 0.05s grid",
+            "collection camera 0.2s retained; independent pose/qpos/qvel every 0.05s",
+            "collection v1 0.25s leases -> v2 0.05s leases, multi-amplitude 10s steps + PRBS",
+            "P03 delay 0.16s and control 0.1s retained; not a sealed trajectory replay"
+          ]
+        },
+        "caps": {
+          "reset_per_case_s": 5.0,
+          "per_case_s": 370.0,
+          "default_cases": 1,
+          "total_including_reset_s": 375.0
+        },
+        "measurement": {
+          "schema": "ugrp.final_pair_measurement.v2",
+          "check": "calibration-loaded",
+          "method_source": "PR #347 eaeaaff05553ea02c649b4db9ff82470fe6372b5",
+          "model_evidence": "PR #348 dba873d4b0e77e017373e5539ac077abb7c6f4b1",
+          "qualification": "Hammerstein input design only; no fitted calibration",
+          "map_id": "zone_wide_two_doors_final_v3",
+          "magnitudes": [
+            0.006,
+            0.015,
+            0.025,
+            0.04
+          ],
+          "step_duration_s": 10.0,
+          "prbs": {
+            "polynomial": "x^5+x^2+1",
+            "bits": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              -1,
+              1,
+              1,
+              -1,
+              1,
+              1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1,
+              -1,
+              -1,
+              1,
+              -1,
+              1,
+              1,
+              -1,
+              -1
+            ],
+            "chip_s": 0.5
+          },
+          "motion_start_s": 12.0,
+          "control_period_s": 0.05,
+          "eval_pose_period_s": 0.05,
+          "camera_period_s": 0.2,
+          "command_lease_s": 0.05,
+          "sim_cap_s": 370.0,
+          "reset_cap_s": 5.0,
+          "total_including_reset_cap_s": 375.0,
+          "clearance": {
+            "minimum_m": 0.3,
+            "abort_buffer_m": 0.05,
+            "robot_radius_bound_m": 0.4,
+            "max_substep_displacement_m": 0.01
+          },
+          "segments": [
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": 0.006,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": -0.006,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": 0.015,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": -0.015,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": 0.025,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": -0.025,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": 0.04,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": -0.04,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 2.5,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": 0.006,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": -0.006,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": 0.015,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": -0.015,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": 0.025,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": -0.025,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": 0.04,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": -0.04,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 2.5,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": 0.006,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": -0.006,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": 0.015,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": -0.015,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": 0.025,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": -0.025,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": 0.04,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": -0.04,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.015,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 2.5,
+              "value": 0.0,
+              "phase": "coast"
+            }
+          ]
+        },
+        "runtime_interlock": {
+          "required": true,
+          "minimum_m": 0.3,
+          "abort_buffer_m": 0.05,
+          "robot_radius_bound_m": 0.4,
+          "max_substep_displacement_m": 0.01,
+          "checks": [
+            "before_substep",
+            "after_substep",
+            "before_command",
+            "eval_0.05_s"
+          ],
+          "invalid_geometry": "hold_then_HOST_ERROR",
+          "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+        },
+        "clearance_preflight": {
+          "admitted": true,
+          "envelope_policy": "ADVISORY",
+          "scope": "SIMULATION_ONLY_TEACHER_CALIBRATION",
+          "decision": "2026-10-01 coordinator decision 2",
+          "reason": "START_POSE_CLEAR_INTERLOCK_REQUIRED",
+          "start_pose_check": {
+            "admitted": true,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.0768,
+                  -0.85,
+                  0.0
+                ],
+                "body_radius_bound_m": 0.4,
+                "required_wall_distance_m": 0.7,
+                "wall_distance_from_start_m": 0.8517999999999999,
+                "remaining_clearance_m": 0.15179999999999993,
+                "admitted": true
+              },
+              "r2": {
+                "start_xy_yaw": [
+                  4.0232,
+                  -0.85,
+                  3.141592653589793
+                ],
+                "body_radius_bound_m": 0.4,
+                "required_wall_distance_m": 0.7,
+                "wall_distance_from_start_m": 1.3518,
+                "remaining_clearance_m": 0.6517999999999999,
+                "admitted": true
+              },
+              "beam": {
+                "start_xy_yaw": [
+                  3.55,
+                  -0.85,
+                  0.0
+                ],
+                "body_radius_bound_m": 0.30066592756745814,
+                "required_wall_distance_m": 0.6006659275674582,
+                "wall_distance_from_start_m": 1.3249999999999997,
+                "remaining_clearance_m": 0.7243340724325416,
+                "admitted": true
+              }
+            }
+          },
+          "runtime_interlock": {
+            "required": true,
+            "minimum_m": 0.3,
+            "abort_buffer_m": 0.05,
+            "robot_radius_bound_m": 0.4,
+            "max_substep_displacement_m": 0.01,
+            "checks": [
+              "before_substep",
+              "after_substep",
+              "before_command",
+              "eval_0.05_s"
+            ],
+            "invalid_geometry": "hold_then_HOST_ERROR",
+            "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+          },
+          "no_cancellation_bound": {
+            "admitted": false,
+            "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+            "method": "whole_schedule_absolute_command_integral",
+            "sign_cancellation": "none",
+            "qualification": "ADVISORY_CONDITIONAL_NO_CANCELLATION_BOUND",
+            "sim_window_s": [
+              0.0,
+              370.0
+            ],
+            "gain_upper": {
+              "forward": 2.62,
+              "left": 1.86,
+              "turn": 2.299928292866358
+            },
+            "robot_radius_bound_m": 0.4,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.0768,
+                  -0.85,
+                  0.0
+                ],
+                "absolute_command_integral_s": {
+                  "forward": 1.9525000000000001,
+                  "left": 1.9525000000000001,
+                  "turn": 1.9525000000000001
+                },
+                "translation_bound_m": 8.747200000000001,
+                "absolute_yaw_bound_rad": 4.490609991821564,
+                "tip_radius_from_chassis_m": 0.773865927567458,
+                "yaw_tip_excursion_bound_m": 1.547731855134916,
+                "excursion_bound_m": 10.294931855134918,
+                "beam_radius_added_m": 0.30066592756745814,
+                "disc_radius_m": 11.295597782702377,
+                "wall_distance_from_start_m": 0.8518000000000008,
+                "remaining_clearance_m": -10.443797782702376,
+                "wall_free": false
+              },
+              "r2": {
+                "start_xy_yaw": [
+                  4.0232,
+                  -0.85,
+                  3.141592653589793
+                ],
+                "absolute_command_integral_s": {
+                  "forward": 1.9525000000000001,
+                  "left": 1.9525000000000001,
+                  "turn": 1.9525000000000001
+                },
+                "translation_bound_m": 8.747200000000001,
+                "absolute_yaw_bound_rad": 4.490609991821564,
+                "tip_radius_from_chassis_m": 0.7738659275674584,
+                "yaw_tip_excursion_bound_m": 1.5477318551349168,
+                "excursion_bound_m": 10.294931855134918,
+                "beam_radius_added_m": 0.30066592756745814,
+                "disc_radius_m": 11.295597782702377,
+                "wall_distance_from_start_m": 1.3518000000000008,
+                "remaining_clearance_m": -9.943797782702376,
+                "wall_free": false
+              },
+              "beam": {
+                "start_xy_yaw": [
+                  3.55,
+                  -0.85,
+                  0.0
+                ],
+                "disc_radius_m": 11.768797782702377,
+                "excursion_bound_m": 10.768131855134918,
+                "contains_carrier_discs": [
+                  "r1",
+                  "r2"
+                ],
+                "half_length_m": 0.3,
+                "half_diagonal_m": 0.30066592756745814,
+                "wall_distance_from_start_m": 1.3249999999999993,
+                "remaining_clearance_m": -10.443797782702378,
+                "wall_free": false
+              }
+            }
+          },
+          "pair_cancellation_estimate": {
+            "admitted": false,
+            "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+            "method": "peak_signed_steps_plus_absolute_prbs",
+            "sign_cancellation": "within_robot_step_pairs_only",
+            "qualification": "ADVISORY_ESTIMATE_NOT_A_MOTION_BOUND; symmetric fixed-axis step response assumed",
+            "sim_window_s": [
+              0.0,
+              370.0
+            ],
+            "gain_upper": {
+              "forward": 2.62,
+              "left": 1.86,
+              "turn": 2.299928292866358
+            },
+            "robot_radius_bound_m": 0.4,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.0768,
+                  -0.85,
+                  0.0
+                ],
+                "translation_bound_m": 2.8336000000000015,
+                "absolute_yaw_bound_rad": 1.454704645237972,
+                "tip_radius_from_chassis_m": 0.773865927567458,
+                "yaw_tip_excursion_bound_m": 1.1257463596237731,
+                "excursion_bound_m": 3.9593463596237743,
+                "beam_radius_added_m": 0.30066592756745814,
+                "disc_radius_m": 4.960012287191232,
+                "estimated_excursion_integral_s": {
+                  "forward": 0.6325000000000003,
+                  "left": 0.6325000000000003,
+                  "turn": 0.6325000000000003
+                },
+                "step_peak_integral_s": {
+                  "forward": 0.40000000000000024,
+                  "left": 0.40000000000000024,
+                  "turn": 0.40000000000000024
+                },
+                "step_net_integral_s": {
+                  "forward": -9.71445146547012e-17,
+                  "left": -9.71445146547012e-17,
+                  "turn": -9.71445146547012e-17
+                },
+                "wall_distance_from_start_m": 0.8517999999999999,
+                "remaining_clearance_m": -4.1082122871912325,
+                "wall_free": false
+              },
+              "r2": {
+                "start_xy_yaw": [
+                  4.0232,
+                  -0.85,
+                  3.141592653589793
+                ],
+                "translation_bound_m": 2.8336000000000015,
+                "absolute_yaw_bound_rad": 1.454704645237972,
+                "tip_radius_from_chassis_m": 0.7738659275674584,
+                "yaw_tip_excursion_bound_m": 1.1257463596237738,
+                "excursion_bound_m": 3.9593463596237752,
+                "beam_radius_added_m": 0.30066592756745814,
+                "disc_radius_m": 4.960012287191233,
+                "estimated_excursion_integral_s": {
+                  "forward": 0.6325000000000003,
+                  "left": 0.6325000000000003,
+                  "turn": 0.6325000000000003
+                },
+                "step_peak_integral_s": {
+                  "forward": 0.40000000000000024,
+                  "left": 0.40000000000000024,
+                  "turn": 0.40000000000000024
+                },
+                "step_net_integral_s": {
+                  "forward": 9.71445146547012e-17,
+                  "left": 9.71445146547012e-17,
+                  "turn": 9.71445146547012e-17
+                },
+                "wall_distance_from_start_m": 1.3518,
+                "remaining_clearance_m": -3.6082122871912334,
+                "wall_free": false
+              },
+              "beam": {
+                "start_xy_yaw": [
+                  3.55,
+                  -0.85,
+                  0.0
+                ],
+                "disc_radius_m": 5.433212287191234,
+                "excursion_bound_m": 4.4325463596237755,
+                "contains_carrier_discs": [
+                  "r1",
+                  "r2"
+                ],
+                "half_length_m": 0.3,
+                "half_diagonal_m": 0.30066592756745814,
+                "wall_distance_from_start_m": 1.3249999999999993,
+                "remaining_clearance_m": -4.108212287191234,
+                "wall_free": false
+              }
+            }
+          }
+        },
+        "calibration_selection": "v88 contract hash; per-load/per-posture optical->chassis->floor; no v2 fallback",
+        "calibration_contract": {
+          "schema": "ugrp.final_environment_calibration.v1",
+          "status": "DRAFT_UNMEASURED",
+          "robot_model": "masterpi_v3",
+          "maps": {
+            "zone_wide_door_geometry_v3": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+            "zone_wide_two_doors_final_v3": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+            "zone_wide_corridor_final_v3": "0429b535107feda865a02821e4ceb2b695b58cd0c06c07e2fde96320bd2d9b0e"
+          },
+          "render_profile": "floor_light_v1",
+          "camera": {
+            "name": "robot_cam",
+            "rgb_size": [
+              640,
+              480
+            ],
+            "segmentation_size": [
+              480,
+              360
+            ],
+            "mount_file": "sim/masterpi_camera_profile.py",
+            "mount_sha256": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+            "sag": null,
+            "pan_base_yaw": null,
+            "extrinsics_frame": "optical -> actual chassis -> floor-heading; per-posture/load measured chassis_to_floor is mandatory; world xy/yaw removed offline",
+            "floor_transform_policy": "fit height/roll/pitch from eval_only settled samples offline, never runtime GT or nominal wheel radius"
+          },
+          "motion": {
+            "unloaded": null,
+            "loaded": null,
+            "fine": null
+          },
+          "static_sources_sha256": {
+            "sim/masterpi_geometry_v3.py": "bed49926f11cba9fe338ee228866771efd29d0a94c5ca3a0c65d67e7e82aa942",
+            "sim/masterpi_model_v3.py": "e2d9ff9224d7f7df01957bdf9ca95f52db9f5c7b54828eaab8185e5422d38fb5",
+            "sim/masterpi_robot_models.py": "ed3115774b8f4bb41f462cf91cc086609491afb21664819e1c482698ac468e11",
+            "sim/masterpi_dynamics_calibration.json": "6d1791939e8fbac5a33a22185aea7ee66c2aeba561757e3f1945207812d07416"
+          },
+          "measurements": null,
+          "qualification": "V3 pair measurement contract. No v2 motion/camera/pair fit inheritance. Collection remains unqualified until offline fitting and review. v88 never executed; revised in place for REVIEW_344. No calibration fit is delivered.",
+          "handoff": "PHYSICS_HANDOFF.md"
+        },
+        "physical_ready": false,
+        "research_result": false
+      },
+      "schedule_file_sha256": "84fae1230095fb24e78bad6aba146b8184209cc8c83628e89b7efd573d73d7b8",
+      "schedule_bytes": 2669941
+    },
+    "calibration-fine": {
+      "plan_without_source_dependent_bundle_hashes": {
+        "execution_bundle_id": "zone-final-pair-v88",
+        "status": "DRAFT_UNSEALED",
+        "check": "calibration-fine",
+        "execution_started": false,
+        "cases": [
+          {
+            "id": "zone_wide_two_doors_final_v3",
+            "map_id": "zone_wide_two_doors_final_v3",
+            "checkpoint": null,
+            "sim_cap_s": 370.0
+          }
+        ],
+        "denominator": 1,
+        "runnable": true,
+        "blocked_on": [],
+        "source_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "seed": 911,
+        "physical_success": null,
+        "clearance_preflight": [
+          {
+            "admitted": true,
+            "envelope_policy": "ADVISORY",
+            "scope": "SIMULATION_ONLY_TEACHER_CALIBRATION",
+            "decision": "2026-10-01 coordinator decision 2",
+            "reason": "START_POSE_CLEAR_INTERLOCK_REQUIRED",
+            "start_pose_check": {
+              "admitted": true,
+              "wall_margin_m": 0.3,
+              "numeric_guard_m": 1e-10,
+              "bodies": {
+                "r1": {
+                  "start_xy_yaw": [
+                    3.25,
+                    -0.85,
+                    0.0
+                  ],
+                  "body_radius_bound_m": 0.4,
+                  "required_wall_distance_m": 0.7,
+                  "wall_distance_from_start_m": 1.025,
+                  "remaining_clearance_m": 0.32499999999999996,
+                  "admitted": true
+                }
+              }
+            },
+            "runtime_interlock": {
+              "required": true,
+              "minimum_m": 0.3,
+              "abort_buffer_m": 0.05,
+              "robot_radius_bound_m": 0.4,
+              "max_substep_displacement_m": 0.01,
+              "checks": [
+                "before_substep",
+                "after_substep",
+                "before_command",
+                "eval_0.05_s"
+              ],
+              "invalid_geometry": "hold_then_HOST_ERROR",
+              "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+            },
+            "no_cancellation_bound": {
+              "admitted": false,
+              "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+              "method": "whole_schedule_absolute_command_integral",
+              "sign_cancellation": "none",
+              "qualification": "ADVISORY_CONDITIONAL_NO_CANCELLATION_BOUND",
+              "sim_window_s": [
+                0.0,
+                370.0
+              ],
+              "gain_upper": {
+                "forward": 2.62,
+                "left": 1.86,
+                "turn": 2.299928292866358
+              },
+              "robot_radius_bound_m": 0.4,
+              "wall_margin_m": 0.3,
+              "numeric_guard_m": 1e-10,
+              "bodies": {
+                "r1": {
+                  "start_xy_yaw": [
+                    3.25,
+                    -0.85,
+                    0.0
+                  ],
+                  "absolute_command_integral_s": {
+                    "forward": 1.2080000000000002,
+                    "left": 1.2080000000000002,
+                    "turn": 1.2080000000000002
+                  },
+                  "translation_bound_m": 5.4118400000000015,
+                  "absolute_yaw_bound_rad": 2.7783133777825606,
+                  "tip_radius_from_chassis_m": 0.4,
+                  "yaw_tip_excursion_bound_m": 0.8,
+                  "excursion_bound_m": 6.211840000000001,
+                  "beam_radius_added_m": 0.0,
+                  "disc_radius_m": 6.9118400000000015,
+                  "wall_distance_from_start_m": 1.0250000000000004,
+                  "remaining_clearance_m": -5.886840000000001,
+                  "wall_free": false
+                }
+              }
+            },
+            "pair_cancellation_estimate": {
+              "admitted": false,
+              "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+              "method": "peak_signed_steps_plus_absolute_prbs",
+              "sign_cancellation": "within_robot_step_pairs_only",
+              "qualification": "ADVISORY_ESTIMATE_NOT_A_MOTION_BOUND; symmetric fixed-axis step response assumed",
+              "sim_window_s": [
+                0.0,
+                370.0
+              ],
+              "gain_upper": {
+                "forward": 2.62,
+                "left": 1.86,
+                "turn": 2.299928292866358
+              },
+              "robot_radius_bound_m": 0.4,
+              "wall_margin_m": 0.3,
+              "numeric_guard_m": 1e-10,
+              "bodies": {
+                "r1": {
+                  "start_xy_yaw": [
+                    3.25,
+                    -0.85,
+                    0.0
+                  ],
+                  "translation_bound_m": 2.3654400000000058,
+                  "absolute_yaw_bound_rad": 1.2143621386334398,
+                  "tip_radius_from_chassis_m": 0.4,
+                  "yaw_tip_excursion_bound_m": 0.4857448554533759,
+                  "excursion_bound_m": 2.851184855453382,
+                  "beam_radius_added_m": 0.0,
+                  "disc_radius_m": 3.5511848554533816,
+                  "estimated_excursion_integral_s": {
+                    "forward": 0.5280000000000012,
+                    "left": 0.5280000000000012,
+                    "turn": 0.5280000000000012
+                  },
+                  "step_peak_integral_s": {
+                    "forward": 0.28000000000000125,
+                    "left": 0.28000000000000125,
+                    "turn": 0.28000000000000125
+                  },
+                  "step_net_integral_s": {
+                    "forward": 6.938893903907228e-18,
+                    "left": 6.938893903907228e-18,
+                    "turn": 6.938893903907228e-18
+                  },
+                  "wall_distance_from_start_m": 1.025,
+                  "remaining_clearance_m": -2.5261848554533817,
+                  "wall_free": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "bundle_without_source_hashes": {
+        "schema": "ugrp.final_pair_bundle.v88",
+        "execution_bundle_id": "zone-final-pair-v88",
+        "status": "DRAFT_UNSEALED",
+        "check": "calibration-fine",
+        "map_id": "zone_wide_two_doors_final_v3",
+        "map_sha256": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+        "robot_model": "masterpi_v3",
+        "render_profile": "floor_light_v1",
+        "contact_profile": "cargo_noslip_v1",
+        "weld": "off",
+        "sensors": {
+          "ultrasonic_front": "off"
+        },
+        "controller_family": "b-v6h1",
+        "controller_variant": "b-v6h1-v3-measured",
+        "controller_inputs": [
+          "own_rgb",
+          "static_map",
+          "own_command_history",
+          "delivered_messages"
+        ],
+        "revision": "v88 unexecuted; revised in place for REVIEW_344; no old run is relabelled",
+        "timing": {
+          "phase_origin": "end of standard Scene reset; t_start=backend.now",
+          "scheduler_period_s": 0.05,
+          "eval_pose_period_s": 0.05,
+          "rgb_capture_period_s": 0.2,
+          "provider_delivery_period_s": null,
+          "capture_at_start_and_end": true,
+          "capture_before_commands": true,
+          "provider_inference": "on each delivered settled frame; uninitialized/unsettled frames skipped",
+          "control_gate_s": null,
+          "look_every_s": null,
+          "arm_dispatch_period_s": null,
+          "arm_dispatch_phase": "t_start+n*0.05, after Runtime.step; no physics-step now+0.05 gate",
+          "pose_delay_s": null,
+          "reset_cap_s": 5.0,
+          "stabilization": {
+            "scene_setup": "standard constructor 0.30s + Scene.setup within reset cap",
+            "hover_s": 1.0,
+            "descent_steps": 7,
+            "descent_step_s": 0.12,
+            "final_descent_settle_s": 0.3,
+            "other_arm_settles": "inherited frozen per-command queues; dispatched on reset grid"
+          },
+          "parent_differences": [
+            "sealed host background RGB 0.2s plus fresh control captures -> fixed 0.05s student RGB/provider",
+            "sealed physics-step arm now>=next_arm, next_arm=now+0.05 -> reset-relative 0.05s grid",
+            "collection camera 0.2s retained; independent pose/qpos/qvel every 0.05s",
+            "collection v1 0.25s leases -> v2 0.05s leases, multi-amplitude 10s steps + PRBS",
+            "P03 delay 0.16s and control 0.1s retained; not a sealed trajectory replay"
+          ]
+        },
+        "caps": {
+          "reset_per_case_s": 5.0,
+          "per_case_s": 370.0,
+          "default_cases": 1,
+          "total_including_reset_s": 375.0
+        },
+        "measurement": {
+          "schema": "ugrp.final_pair_measurement.v2",
+          "check": "calibration-fine",
+          "method_source": "PR #347 eaeaaff05553ea02c649b4db9ff82470fe6372b5",
+          "model_evidence": "PR #348 dba873d4b0e77e017373e5539ac077abb7c6f4b1",
+          "qualification": "Hammerstein input design only; no fitted calibration",
+          "map_id": "zone_wide_two_doors_final_v3",
+          "magnitudes": [
+            0.004,
+            0.016,
+            0.028
+          ],
+          "step_duration_s": 10.0,
+          "prbs": {
+            "polynomial": "x^5+x^2+1",
+            "bits": [
+              1,
+              1,
+              1,
+              1,
+              1,
+              -1,
+              -1,
+              -1,
+              1,
+              1,
+              -1,
+              1,
+              1,
+              1,
+              -1,
+              1,
+              -1,
+              1,
+              -1,
+              -1,
+              -1,
+              -1,
+              1,
+              -1,
+              -1,
+              1,
+              -1,
+              1,
+              1,
+              -1,
+              -1
+            ],
+            "chip_s": 0.5
+          },
+          "motion_start_s": 74.0,
+          "control_period_s": 0.05,
+          "eval_pose_period_s": 0.05,
+          "camera_period_s": 0.2,
+          "command_lease_s": 0.05,
+          "sim_cap_s": 370.0,
+          "reset_cap_s": 5.0,
+          "total_including_reset_cap_s": 375.0,
+          "clearance": {
+            "minimum_m": 0.3,
+            "abort_buffer_m": 0.05,
+            "robot_radius_bound_m": 0.4,
+            "max_substep_displacement_m": 0.01
+          },
+          "segments": [
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": 0.004,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": -0.004,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": 0.016,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": -0.016,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": 0.028,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 10.0,
+              "value": -0.028,
+              "phase": "step"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "forward",
+              "duration_s": 2.5,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": 0.004,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": -0.004,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": 0.016,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": -0.016,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": 0.028,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 10.0,
+              "value": -0.028,
+              "phase": "step"
+            },
+            {
+              "axis": "left",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "left",
+              "duration_s": 2.5,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": 0.004,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": -0.004,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": 0.016,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": -0.016,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": 0.028,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 10.0,
+              "value": -0.028,
+              "phase": "step"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 1.0,
+              "value": 0.0,
+              "phase": "coast"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": 0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 0.5,
+              "value": -0.016,
+              "phase": "prbs"
+            },
+            {
+              "axis": "turn",
+              "duration_s": 2.5,
+              "value": 0.0,
+              "phase": "coast"
+            }
+          ]
+        },
+        "runtime_interlock": {
+          "required": true,
+          "minimum_m": 0.3,
+          "abort_buffer_m": 0.05,
+          "robot_radius_bound_m": 0.4,
+          "max_substep_displacement_m": 0.01,
+          "checks": [
+            "before_substep",
+            "after_substep",
+            "before_command",
+            "eval_0.05_s"
+          ],
+          "invalid_geometry": "hold_then_HOST_ERROR",
+          "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+        },
+        "clearance_preflight": {
+          "admitted": true,
+          "envelope_policy": "ADVISORY",
+          "scope": "SIMULATION_ONLY_TEACHER_CALIBRATION",
+          "decision": "2026-10-01 coordinator decision 2",
+          "reason": "START_POSE_CLEAR_INTERLOCK_REQUIRED",
+          "start_pose_check": {
+            "admitted": true,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "body_radius_bound_m": 0.4,
+                "required_wall_distance_m": 0.7,
+                "wall_distance_from_start_m": 1.025,
+                "remaining_clearance_m": 0.32499999999999996,
+                "admitted": true
+              }
+            }
+          },
+          "runtime_interlock": {
+            "required": true,
+            "minimum_m": 0.3,
+            "abort_buffer_m": 0.05,
+            "robot_radius_bound_m": 0.4,
+            "max_substep_displacement_m": 0.01,
+            "checks": [
+              "before_substep",
+              "after_substep",
+              "before_command",
+              "eval_0.05_s"
+            ],
+            "invalid_geometry": "hold_then_HOST_ERROR",
+            "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+          },
+          "no_cancellation_bound": {
+            "admitted": false,
+            "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+            "method": "whole_schedule_absolute_command_integral",
+            "sign_cancellation": "none",
+            "qualification": "ADVISORY_CONDITIONAL_NO_CANCELLATION_BOUND",
+            "sim_window_s": [
+              0.0,
+              370.0
+            ],
+            "gain_upper": {
+              "forward": 2.62,
+              "left": 1.86,
+              "turn": 2.299928292866358
+            },
+            "robot_radius_bound_m": 0.4,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "absolute_command_integral_s": {
+                  "forward": 1.2080000000000002,
+                  "left": 1.2080000000000002,
+                  "turn": 1.2080000000000002
+                },
+                "translation_bound_m": 5.4118400000000015,
+                "absolute_yaw_bound_rad": 2.7783133777825606,
+                "tip_radius_from_chassis_m": 0.4,
+                "yaw_tip_excursion_bound_m": 0.8,
+                "excursion_bound_m": 6.211840000000001,
+                "beam_radius_added_m": 0.0,
+                "disc_radius_m": 6.9118400000000015,
+                "wall_distance_from_start_m": 1.0250000000000004,
+                "remaining_clearance_m": -5.886840000000001,
+                "wall_free": false
+              }
+            }
+          },
+          "pair_cancellation_estimate": {
+            "admitted": false,
+            "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+            "method": "peak_signed_steps_plus_absolute_prbs",
+            "sign_cancellation": "within_robot_step_pairs_only",
+            "qualification": "ADVISORY_ESTIMATE_NOT_A_MOTION_BOUND; symmetric fixed-axis step response assumed",
+            "sim_window_s": [
+              0.0,
+              370.0
+            ],
+            "gain_upper": {
+              "forward": 2.62,
+              "left": 1.86,
+              "turn": 2.299928292866358
+            },
+            "robot_radius_bound_m": 0.4,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "translation_bound_m": 2.3654400000000058,
+                "absolute_yaw_bound_rad": 1.2143621386334398,
+                "tip_radius_from_chassis_m": 0.4,
+                "yaw_tip_excursion_bound_m": 0.4857448554533759,
+                "excursion_bound_m": 2.851184855453382,
+                "beam_radius_added_m": 0.0,
+                "disc_radius_m": 3.5511848554533816,
+                "estimated_excursion_integral_s": {
+                  "forward": 0.5280000000000012,
+                  "left": 0.5280000000000012,
+                  "turn": 0.5280000000000012
+                },
+                "step_peak_integral_s": {
+                  "forward": 0.28000000000000125,
+                  "left": 0.28000000000000125,
+                  "turn": 0.28000000000000125
+                },
+                "step_net_integral_s": {
+                  "forward": 6.938893903907228e-18,
+                  "left": 6.938893903907228e-18,
+                  "turn": 6.938893903907228e-18
+                },
+                "wall_distance_from_start_m": 1.025,
+                "remaining_clearance_m": -2.5261848554533817,
+                "wall_free": false
+              }
+            }
+          }
+        },
+        "calibration_selection": "v88 contract hash; per-load/per-posture optical->chassis->floor; no v2 fallback",
+        "calibration_contract": {
+          "schema": "ugrp.final_environment_calibration.v1",
+          "status": "DRAFT_UNMEASURED",
+          "robot_model": "masterpi_v3",
+          "maps": {
+            "zone_wide_door_geometry_v3": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+            "zone_wide_two_doors_final_v3": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+            "zone_wide_corridor_final_v3": "0429b535107feda865a02821e4ceb2b695b58cd0c06c07e2fde96320bd2d9b0e"
+          },
+          "render_profile": "floor_light_v1",
+          "camera": {
+            "name": "robot_cam",
+            "rgb_size": [
+              640,
+              480
+            ],
+            "segmentation_size": [
+              480,
+              360
+            ],
+            "mount_file": "sim/masterpi_camera_profile.py",
+            "mount_sha256": "ec224a88f07b7f1e30b9f306951818ec3907c27554daab1361db6cc8b00f3a1a",
+            "sag": null,
+            "pan_base_yaw": null,
+            "extrinsics_frame": "optical -> actual chassis -> floor-heading; per-posture/load measured chassis_to_floor is mandatory; world xy/yaw removed offline",
+            "floor_transform_policy": "fit height/roll/pitch from eval_only settled samples offline, never runtime GT or nominal wheel radius"
+          },
+          "motion": {
+            "unloaded": null,
+            "loaded": null,
+            "fine": null
+          },
+          "static_sources_sha256": {
+            "sim/masterpi_geometry_v3.py": "bed49926f11cba9fe338ee228866771efd29d0a94c5ca3a0c65d67e7e82aa942",
+            "sim/masterpi_model_v3.py": "e2d9ff9224d7f7df01957bdf9ca95f52db9f5c7b54828eaab8185e5422d38fb5",
+            "sim/masterpi_robot_models.py": "ed3115774b8f4bb41f462cf91cc086609491afb21664819e1c482698ac468e11",
+            "sim/masterpi_dynamics_calibration.json": "6d1791939e8fbac5a33a22185aea7ee66c2aeba561757e3f1945207812d07416"
+          },
+          "measurements": null,
+          "qualification": "V3 pair measurement contract. No v2 motion/camera/pair fit inheritance. Collection remains unqualified until offline fitting and review. v88 never executed; revised in place for REVIEW_344. No calibration fit is delivered.",
+          "handoff": "PHYSICS_HANDOFF.md"
+        },
+        "physical_ready": false,
+        "research_result": false
+      },
+      "schedule_file_sha256": "f62b11e2f6651781fc1739fdc31070540aca848c17d1020dd6d128497df474c1",
+      "schedule_bytes": 1069821
+    }
+  }
+}
