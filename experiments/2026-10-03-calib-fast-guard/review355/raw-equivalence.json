@@ -1,0 +1,72 @@
+{
+  "python": "3.12.13",
+  "platform": "macOS-27.2-arm64-arm-64bit",
+  "numpy": "2.5.2",
+  "mujoco": "3.12.0",
+  "cases": [
+    {
+      "case": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3",
+      "check": "calibration-unloaded",
+      "rows": 7401,
+      "nq": 114,
+      "nv": 102,
+      "ngeom": 1276,
+      "exact_guard_matches": 7401,
+      "mismatches": 0,
+      "abort_counts": {},
+      "clearance_min_series_sha256": "4e3ec3e31658c7fab81d0b629711bc35eb73581ae1106953f47dc733e4c17a99",
+      "sequential_guard_matches": 7401,
+      "sequential_abort_counts": {
+        "SUBSTEP_DISPLACEMENT_BOUND_EXCEEDED": 7286
+      },
+      "trajectory_sha256": "f5c027d476bbf295e24b26248d74696f135a91d2e987dc5aa16dd78da4b4045e",
+      "bundle_sha256": "6dad8384ccb74ed76dd7e8d85c9eab0fec02b198f6a59f1f5b94ccb767556104",
+      "result_sha256": "0ce6e0a9530524e85031029758ebb8e4036cf5b225d56262c0a67cd42a83f970",
+      "render": false,
+      "loadavg_start": [
+        8.03955078125,
+        9.4794921875,
+        9.58544921875
+      ],
+      "scope": "each full row independently, plus separate sequential state; no intermediate substep reconstruction",
+      "sequential_caveat": "50 ms samples can exceed 0.25 ms displacement bound; post-abort history stays frozen, so trips cascade. These are synthetic comparisons, not collection failures.",
+      "loadavg_end": [
+        11.5498046875,
+        10.28515625,
+        9.8779296875
+      ]
+    },
+    {
+      "case": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001-r6/calibration-fine/zone_wide_two_doors_final_v3",
+      "check": "calibration-fine",
+      "rows": 7401,
+      "nq": 114,
+      "nv": 102,
+      "ngeom": 1276,
+      "exact_guard_matches": 7401,
+      "mismatches": 0,
+      "abort_counts": {},
+      "clearance_min_series_sha256": "5d2422ad095b00e735f7ef6e66f083969cd38b790ee6b8fe84cae22404ce99bd",
+      "sequential_guard_matches": 7401,
+      "sequential_abort_counts": {
+        "SUBSTEP_DISPLACEMENT_BOUND_EXCEEDED": 7286
+      },
+      "trajectory_sha256": "e99738831515808de7ee8bd18757a6c7262c05b25e4a1a0b38b0202521d93fb8",
+      "bundle_sha256": "81079e116ac2b6538e5c4674934be0cff60269b99c680407f98cb6069429d19b",
+      "result_sha256": "f9a59d8b09ca5085de9ec91daaf5adb8292cf5a96ac1b610e8a1d59379893e50",
+      "render": false,
+      "loadavg_start": [
+        11.5498046875,
+        10.28515625,
+        9.8779296875
+      ],
+      "scope": "each full row independently, plus separate sequential state; no intermediate substep reconstruction",
+      "sequential_caveat": "50 ms samples can exceed 0.25 ms displacement bound; post-abort history stays frozen, so trips cascade. These are synthetic comparisons, not collection failures.",
+      "loadavg_end": [
+        10.86767578125,
+        10.36572265625,
+        9.92919921875
+      ]
+    }
+  ]
+}

@@ -1,0 +1,326 @@
+{
+  "checked_at": "2026-10-02T16:40:07.623586+00:00",
+  "refs": [
+    {
+      "number": null,
+      "headRefName": "main",
+      "headRefOid": "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f",
+      "matching_declarations": [
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/zone_final_pair_contract.py:18:BUNDLE_ID = 'zone-final-pair-v88'",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/zone_final_pair_heldout.py:9:BUNDLE_ID = 'zone-final-pair-v90'",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/zone_pair_v6_policy.py:28:EXECUTION_BUNDLE_ID = 'zone-pair-v83-carry-door-gain'",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/zone_study_integration.py:103:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'"
+      ],
+      "v91_or_3_3_0": [],
+      "max_python_bundle_id": 90,
+      "latest_workflow_versions": [
+        [
+          "zone-final-pair-heldout-v90",
+          "3.2.0",
+          "configs/simulation_workflows.d/final_pair_v90.json"
+        ],
+        [
+          "zone-final-pair-v3",
+          "3.1.0",
+          "configs/simulation_workflows.d/final_pair_v88.json"
+        ],
+        [
+          "zone-m1-owncam-memory-v3-run",
+          "3.0.0",
+          "configs/simulation_workflows.json"
+        ]
+      ],
+      "max_bundle_id_in_configs_and_harness": 90,
+      "max_bundle_declarations": [
+        {
+          "id": "zone-final-pair-v90",
+          "line": "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:configs/zone_final_pair_v90.json:3:  \"execution_bundle_id\": \"zone-final-pair-v90\","
+        },
+        {
+          "id": "zone-final-pair-v90",
+          "line": "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f:harness/zone_final_pair_heldout.py:9:BUNDLE_ID = 'zone-final-pair-v90'"
+        }
+      ]
+    },
+    {
+      "headRefName": "codex/calib-fast-guard",
+      "headRefOid": "54d5e28b3439a4ba3624d7fee01d02b083ac33ae",
+      "number": 355,
+      "title": "보정: v91 다른 두 지도 검증 수집 — 빠른 검사·동시 실행 (#344 후속)",
+      "matching_declarations": [
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/simulation_workflows.d/final_pair_v91.json:5:      \"id\": \"zone-final-pair-heldout-v91\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/simulation_workflows.d/final_pair_v91.json:6:      \"version\": \"3.3.0\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/simulation_workflows.d/final_pair_v91.json:7:      \"purpose\": \"DRAFT v91 teacher-only held-out unloaded collection; two other final v3 maps, seed 911, 370 SIM s per map; never training\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/simulation_workflows.d/final_pair_v91.json:11:      \"requires\": \"Committed source; owned non-exclusive --sim-slot or exclusive host lock; equivalent fast v91 clearance interlock; unloaded only; floor_light_v1; weld OFF\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/zone_final_pair_v91.json:2:  \"schema\": \"ugrp.final_pair_heldout.v91\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/zone_final_pair_v91.json:3:  \"execution_bundle_id\": \"zone-final-pair-v91\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/zone_final_pair_v91.json:5:  \"workflow_id\": \"zone-final-pair-heldout-v91\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/zone_final_pair_v91.json:6:  \"workflow_version\": \"3.3.0\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_contract.py:18:BUNDLE_ID = 'zone-final-pair-v88'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:1:\"\"\"Registered v91 held-out acquisition; v88 commands and safety are reused.",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:9:BUNDLE_ID = 'zone-final-pair-v91'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:10:REGISTRY = 'configs/zone_final_pair_v91.json'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:11:WORKFLOW = 'configs/simulation_workflows.d/final_pair_v91.json'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:12:WORKFLOW_ID = 'zone-final-pair-heldout-v91'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:13:WORKFLOW_VERSION = '3.3.0'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:27:    expected = {'schema': 'ugrp.final_pair_heldout.v91', 'execution_bundle_id': BUNDLE_ID,",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:35:        raise ValueError('v91 held-out registry differs from the registered collection')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:41:        raise ValueError('v91 requires unloaded collection on a registered held-out map')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:58:        raise ValueError('v91 held-out collection requires seed 911')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:69:            raise ValueError(f'v91 held-out collection mismatch: {key}')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:72:        raise ValueError('v91 held-out map/timing mismatch')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:74:        raise ValueError('v91 held-out case mismatch')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:87:    value.update(schema='ugrp.final_pair_bundle.v91', execution_bundle_id=BUNDLE_ID,",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:93:        revision='v91 vectorized abort guard and named SIM slots; v90 physics/schedule preserved',",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_heldout.py:9:BUNDLE_ID = 'zone-final-pair-v90'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_pair_v6_policy.py:28:EXECUTION_BUNDLE_ID = 'zone-pair-v83-carry-door-gain'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_study_integration.py:103:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'"
+      ],
+      "v91_or_3_3_0": [
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/simulation_workflows.d/final_pair_v91.json:5:      \"id\": \"zone-final-pair-heldout-v91\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/simulation_workflows.d/final_pair_v91.json:6:      \"version\": \"3.3.0\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/simulation_workflows.d/final_pair_v91.json:7:      \"purpose\": \"DRAFT v91 teacher-only held-out unloaded collection; two other final v3 maps, seed 911, 370 SIM s per map; never training\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/simulation_workflows.d/final_pair_v91.json:11:      \"requires\": \"Committed source; owned non-exclusive --sim-slot or exclusive host lock; equivalent fast v91 clearance interlock; unloaded only; floor_light_v1; weld OFF\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/zone_final_pair_v91.json:2:  \"schema\": \"ugrp.final_pair_heldout.v91\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/zone_final_pair_v91.json:3:  \"execution_bundle_id\": \"zone-final-pair-v91\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/zone_final_pair_v91.json:5:  \"workflow_id\": \"zone-final-pair-heldout-v91\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/zone_final_pair_v91.json:6:  \"workflow_version\": \"3.3.0\",",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:1:\"\"\"Registered v91 held-out acquisition; v88 commands and safety are reused.",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:9:BUNDLE_ID = 'zone-final-pair-v91'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:10:REGISTRY = 'configs/zone_final_pair_v91.json'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:11:WORKFLOW = 'configs/simulation_workflows.d/final_pair_v91.json'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:12:WORKFLOW_ID = 'zone-final-pair-heldout-v91'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:13:WORKFLOW_VERSION = '3.3.0'",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:27:    expected = {'schema': 'ugrp.final_pair_heldout.v91', 'execution_bundle_id': BUNDLE_ID,",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:35:        raise ValueError('v91 held-out registry differs from the registered collection')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:41:        raise ValueError('v91 requires unloaded collection on a registered held-out map')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:58:        raise ValueError('v91 held-out collection requires seed 911')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:69:            raise ValueError(f'v91 held-out collection mismatch: {key}')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:72:        raise ValueError('v91 held-out map/timing mismatch')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:74:        raise ValueError('v91 held-out case mismatch')",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:87:    value.update(schema='ugrp.final_pair_bundle.v91', execution_bundle_id=BUNDLE_ID,",
+        "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:93:        revision='v91 vectorized abort guard and named SIM slots; v90 physics/schedule preserved',"
+      ],
+      "max_python_bundle_id": 91,
+      "latest_workflow_versions": [
+        [
+          "zone-final-pair-heldout-v91",
+          "3.3.0",
+          "configs/simulation_workflows.d/final_pair_v91.json"
+        ],
+        [
+          "zone-final-pair-heldout-v90",
+          "3.2.0",
+          "configs/simulation_workflows.d/final_pair_v90.json"
+        ],
+        [
+          "zone-final-pair-v3",
+          "3.1.0",
+          "configs/simulation_workflows.d/final_pair_v88.json"
+        ]
+      ],
+      "max_bundle_id_in_configs_and_harness": 91,
+      "max_bundle_declarations": [
+        {
+          "id": "zone-final-pair-v91",
+          "line": "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:configs/zone_final_pair_v91.json:3:  \"execution_bundle_id\": \"zone-final-pair-v91\","
+        },
+        {
+          "id": "zone-final-pair-v91",
+          "line": "54d5e28b3439a4ba3624d7fee01d02b083ac33ae:harness/zone_final_pair_fast.py:9:BUNDLE_ID = 'zone-final-pair-v91'"
+        }
+      ]
+    },
+    {
+      "headRefName": "claude/frame-storage-policy",
+      "headRefOid": "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f",
+      "number": 353,
+      "title": "disk: 원본 프레임 보존 규칙 삭제 + 프레임 비저장 기본·실행당 쓰기 상한 (정책 PR, 독립 검토 필요)",
+      "matching_declarations": [
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'",
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:",
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/zone_final_environment_floor_light.py:17:BUNDLE_ID = 'zone-final-environment-v87'",
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/zone_final_pair_contract.py:18:BUNDLE_ID = 'zone-final-pair-v88'",
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/zone_pair_v6_policy.py:28:EXECUTION_BUNDLE_ID = 'zone-pair-v83-carry-door-gain'",
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/zone_study_integration.py:103:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'"
+      ],
+      "v91_or_3_3_0": [],
+      "max_python_bundle_id": 89,
+      "latest_workflow_versions": [
+        [
+          "zone-final-pair-v3",
+          "3.1.0",
+          "configs/simulation_workflows.d/final_pair_v88.json"
+        ],
+        [
+          "zone-m1-owncam-memory-v3-run",
+          "3.0.0",
+          "configs/simulation_workflows.json"
+        ],
+        [
+          "zone-final-environment-floor-light-v2-check",
+          "2.21.0",
+          "configs/simulation_workflows.d/final_environment_measurement_v89.json"
+        ]
+      ],
+      "max_bundle_id_in_configs_and_harness": 89,
+      "max_bundle_declarations": [
+        {
+          "id": "zone-final-environment-v89",
+          "line": "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f:harness/final_environment_measurement_v2.py:16:BUNDLE_ID = 'zone-final-environment-v89'"
+        }
+      ]
+    },
+    {
+      "headRefName": "codex/integ-target-backend",
+      "headRefOid": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+      "number": 339,
+      "title": "T13: 표적 backend 검토 수정·최종 v3 환경 계약 (v86, 실행 차단)",
+      "matching_declarations": [
+        "9912bb15bb492bab0f9278fc493feed1547ff8ee:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "9912bb15bb492bab0f9278fc493feed1547ff8ee:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "9912bb15bb492bab0f9278fc493feed1547ff8ee:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "9912bb15bb492bab0f9278fc493feed1547ff8ee:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "9912bb15bb492bab0f9278fc493feed1547ff8ee:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:",
+        "9912bb15bb492bab0f9278fc493feed1547ff8ee:harness/zone_final_environment.py:16:BUNDLE_ID = 'zone-final-environment-v84'",
+        "9912bb15bb492bab0f9278fc493feed1547ff8ee:harness/zone_pair_v6_policy.py:26:EXECUTION_BUNDLE_ID = 'zone-pair-v81-carry-dr-general'",
+        "9912bb15bb492bab0f9278fc493feed1547ff8ee:harness/zone_study_integration.py:102:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "9912bb15bb492bab0f9278fc493feed1547ff8ee:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'"
+      ],
+      "v91_or_3_3_0": [],
+      "max_python_bundle_id": 84,
+      "latest_workflow_versions": [
+        [
+          "zone-m1-owncam-memory-v3-run",
+          "3.0.0",
+          "configs/simulation_workflows.json"
+        ],
+        [
+          "zone-target-checks",
+          "2.19.0",
+          "configs/simulation_workflows.d/target_v86.json"
+        ],
+        [
+          "zone-final-environment-check",
+          "2.17.0",
+          "configs/simulation_workflows.d/final_environment_v84.json"
+        ]
+      ],
+      "max_bundle_id_in_configs_and_harness": 86,
+      "max_bundle_declarations": [
+        {
+          "id": "zone-target-v86",
+          "line": "9912bb15bb492bab0f9278fc493feed1547ff8ee:configs/t13_target_checks.json:5:  \"execution_bundle_id\": \"zone-target-v86\","
+        }
+      ]
+    },
+    {
+      "headRefName": "codex/outputs-retention",
+      "headRefOid": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+      "number": 309,
+      "title": "feat: outputs 보존 3차·참조 보호와 0.568 GiB 캐시 후보",
+      "matching_declarations": [
+        "c8379bbe16492687af9d7b2d04f85e4ae4c610cc:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "c8379bbe16492687af9d7b2d04f85e4ae4c610cc:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "c8379bbe16492687af9d7b2d04f85e4ae4c610cc:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "c8379bbe16492687af9d7b2d04f85e4ae4c610cc:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "c8379bbe16492687af9d7b2d04f85e4ae4c610cc:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:",
+        "c8379bbe16492687af9d7b2d04f85e4ae4c610cc:harness/zone_pair_v6_policy.py:26:EXECUTION_BUNDLE_ID = 'zone-pair-v81-carry-dr-general'",
+        "c8379bbe16492687af9d7b2d04f85e4ae4c610cc:harness/zone_study_integration.py:102:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "c8379bbe16492687af9d7b2d04f85e4ae4c610cc:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'"
+      ],
+      "v91_or_3_3_0": [],
+      "max_python_bundle_id": 81,
+      "latest_workflow_versions": [
+        [
+          "zone-m1-owncam-memory-v3-run",
+          "3.0.0",
+          "configs/simulation_workflows.json"
+        ],
+        [
+          "zone-study-integration-run",
+          "2.14.0",
+          "configs/simulation_workflows.json"
+        ],
+        [
+          "zone-rgb-outcome-eval",
+          "2.0.0",
+          "configs/simulation_workflows.json"
+        ]
+      ],
+      "max_bundle_id_in_configs_and_harness": 81,
+      "max_bundle_declarations": [
+        {
+          "id": "zone-pair-v81",
+          "line": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc:harness/zone_pair_v6_policy.py:26:EXECUTION_BUNDLE_ID = 'zone-pair-v81-carry-dr-general'"
+        }
+      ]
+    },
+    {
+      "headRefName": "codex/stall-d1-prereg",
+      "headRefOid": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+      "number": 293,
+      "title": "D1 정체 검출 사전 등록 초안과 NumPy 오프라인 참조",
+      "matching_declarations": [
+        "d86cc82eedbe0c6693eaf808c54ce43387723f1d:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "d86cc82eedbe0c6693eaf808c54ce43387723f1d:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "d86cc82eedbe0c6693eaf808c54ce43387723f1d:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "d86cc82eedbe0c6693eaf808c54ce43387723f1d:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "d86cc82eedbe0c6693eaf808c54ce43387723f1d:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:",
+        "d86cc82eedbe0c6693eaf808c54ce43387723f1d:harness/zone_pair_v6_policy.py:26:EXECUTION_BUNDLE_ID = 'zone-pair-v81-carry-dr-general'",
+        "d86cc82eedbe0c6693eaf808c54ce43387723f1d:harness/zone_study_integration.py:102:RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',",
+        "d86cc82eedbe0c6693eaf808c54ce43387723f1d:harness/zone_study_offline.py:69:EXECUTION_BUNDLE_ID = 'zone_study_offline_v3'"
+      ],
+      "v91_or_3_3_0": [],
+      "max_python_bundle_id": 81,
+      "latest_workflow_versions": [
+        [
+          "zone-m1-owncam-memory-v3-run",
+          "3.0.0",
+          "configs/simulation_workflows.json"
+        ],
+        [
+          "zone-study-integration-run",
+          "2.14.0",
+          "configs/simulation_workflows.json"
+        ],
+        [
+          "zone-rgb-outcome-eval",
+          "2.0.0",
+          "configs/simulation_workflows.json"
+        ]
+      ],
+      "max_bundle_id_in_configs_and_harness": 81,
+      "max_bundle_declarations": [
+        {
+          "id": "zone-pair-v81",
+          "line": "d86cc82eedbe0c6693eaf808c54ce43387723f1d:harness/zone_pair_v6_policy.py:26:EXECUTION_BUNDLE_ID = 'zone-pair-v81-carry-dr-general'"
+        }
+      ]
+    }
+  ]
+}

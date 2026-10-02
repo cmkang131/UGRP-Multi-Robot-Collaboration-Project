@@ -1,0 +1,134 @@
+{
+  "reviewed_head": "54d5e28b3439a4ba3624d7fee01d02b083ac33ae",
+  "base_sha": "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f",
+  "review_branch": "codex/review-355",
+  "verdict": "MERGE AFTER FIXES",
+  "finished_at": "2026-10-02T16:51:15.374252+00:00",
+  "environments": {
+    "raw_replay": {
+      "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+      "version": "3.12.13",
+      "numpy": "2.5.2",
+      "mujoco": "3.12.0"
+    },
+    "offline_tests": {
+      "python": "/opt/anaconda3/bin/python3",
+      "version": "3.13.5",
+      "numpy": "2.4.4",
+      "scipy": "1.17.1",
+      "pytest": "8.3.4"
+    }
+  },
+  "junit": {
+    "related": {
+      "tests": 358,
+      "passed": 358,
+      "failures": 0,
+      "errors": 0,
+      "skipped_or_xfailed": 0,
+      "sha256": "08e91c0632d10cd837f62a4db43bddc55b6add5b4b9bbb44a439c88fdf28989d"
+    },
+    "counterexamples": {
+      "tests": 39,
+      "passed": 21,
+      "failures": 0,
+      "errors": 0,
+      "skipped_or_xfailed": 18,
+      "sha256": "f01657a072719e3b3b7b187dcf75a21ddff3fb5b18f9e2f6ffab249fd1f5e336"
+    },
+    "unmasked": {
+      "tests": 18,
+      "passed": 0,
+      "failures": 18,
+      "errors": 0,
+      "skipped_or_xfailed": 0,
+      "sha256": "4f632b0b679cb0badbfb9ff4ae30c954539c29512e452537217374f9d0624f60"
+    },
+    "workflow": {
+      "tests": 3,
+      "passed": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped_or_xfailed": 0,
+      "sha256": "8e1de3683e671f96b306b7f669e7fd5524c3cfc03fbb4dc2e360a57ce638c387"
+    },
+    "counterexamples-missing-scipy": {
+      "tests": 39,
+      "passed": 18,
+      "failures": 3,
+      "errors": 0,
+      "skipped_or_xfailed": 18,
+      "sha256": "a625f898926a181cce13a9c62ac9f440e4096cc1187ab95910425a689f0d42d7"
+    },
+    "counterexamples-fixture-error": {
+      "tests": 39,
+      "passed": 20,
+      "failures": 1,
+      "errors": 0,
+      "skipped_or_xfailed": 18,
+      "sha256": "88506417f1e839c6c660cf15dde8a32702f1c5e27be550c602441a13e2817663"
+    },
+    "workflow-inherited-gitdir": {
+      "tests": 3,
+      "passed": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped_or_xfailed": 0,
+      "sha256": "8f10845ea9affb4e193d34c7cce5f824e47264f6ddd9da4665bdb0ac649c19cf"
+    }
+  },
+  "counts": {
+    "passed_unique_final": 382,
+    "unresolved_strict_xfails": 18,
+    "unmasked_reproduced_failures": 18,
+    "raw_rows": 14802,
+    "raw_mismatches": 0,
+    "new_physical_collections": 0,
+    "model_calls": 0,
+    "rendering": false
+  },
+  "commands": [
+    "git fetch origin",
+    "git archive origin/codex/calib-fast-guard | tar -x -C /private/tmp/ugrp-review355.rvwkdn",
+    "python review355/audit_hashes.py --root <base-or-head-tree> --output <base-or-head-hashes.json>",
+    "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.verify_final_pair_fast_guard --output <review355/raw-equivalence.json>",
+    "GIT_DIR=/Users/changmin/projects/ugrp/.git /opt/anaconda3/bin/python3 -B -m pytest -q tests/test_review_355.py --junitxml=<review355/counterexamples.xml>",
+    "GIT_DIR=/Users/changmin/projects/ugrp/.git /opt/anaconda3/bin/python3 -B -m pytest -q tests/test_review_355.py --runxfail -k 'legacy_registered_source or legacy_writer_bytes or exclusive_lock_excludes or pinned_legacy_timing' --tb=short --junitxml=<review355/unmasked.xml>",
+    "GIT_DIR=/Users/changmin/projects/ugrp/.git /opt/anaconda3/bin/python3 -B -m pytest -q tests/test_agent_lock.py tests/test_agent_sim_slots.py tests/test_final_pair_fast_guard.py tests/test_zone_final_pair_fast.py tests/test_zone_final_pair_heldout.py tests/test_review_352.py tests/test_zone_final_pair_review_fixes.py tests/test_zone_final_pair_v3.py tests/test_final_environment_measurement_v2.py tests/test_zone_final_environment_floor_light.py tests/test_consumer_criterion_b.py --junitxml=<review355/related.xml>",
+    "/opt/anaconda3/bin/python3 -B -m pytest -q tests/test_simulation_workflow_manager.py -k 'catalog_has or every_catalog or source_fingerprint' --junitxml=<review355/workflow.xml>"
+  ],
+  "raw_hashes_and_outcomes_match_PR_record": true,
+  "evidence_sha256": {
+    "audit_hashes.py": "12510beb958d3690905eb5a9fa01fae5db59eeda172ab80f6988d4ca40ca9f03",
+    "base-hashes.json": "5adf03aa6f7f9278dd5dc5c5f010ef0792a788a7735dfcaa02836fc5aa874402",
+    "counterexamples-fixture-error.xml": "88506417f1e839c6c660cf15dde8a32702f1c5e27be550c602441a13e2817663",
+    "counterexamples-missing-scipy.xml": "a625f898926a181cce13a9c62ac9f440e4096cc1187ab95910425a689f0d42d7",
+    "counterexamples.txt": "a3d3ee43da0adb4c96125a97722f5c94864f073d6ac26c9cfe91b3d794d2a819",
+    "counterexamples.xml": "f01657a072719e3b3b7b187dcf75a21ddff3fb5b18f9e2f6ffab249fd1f5e336",
+    "hash-diff.json": "4599383ec40369ef3f9ec7a5c2d87b5ad9c46db734a46e04e1881cc8f8c23181",
+    "head-hashes.json": "0287bc7b418bc7fa04238135bf1ccc93b5e08b1c6b2d81a54187a853e961e762",
+    "numbering.json": "1afc86608b94331d7df0ba6493164f49f66d4f01d1ec74251669994054b67469",
+    "pr-checks.json": "7794919ab2dd72bca836c4751a0019a6c8b459e63e82475ab0550d69af9cd874",
+    "raw-equivalence.json": "492e06965e7ab885b29072661a00a11e6b75089f58e17581d0e54371d32c9fbe",
+    "raw-source-hashes.json": "838209c2536a977495d868195786c0d57ab1a1e715273e62cac5fd081e116609",
+    "related.txt": "8b2dfaeb76dc872b46c0f05b53fb9c22c28b49c5e0d852465a4e9b431cbcfd06",
+    "related.xml": "08e91c0632d10cd837f62a4db43bddc55b6add5b4b9bbb44a439c88fdf28989d",
+    "unmasked.txt": "c213ac177c6f369e701c51b157fe648aeca48fcd21d4633cd3a8beb75d530463",
+    "unmasked.xml": "4f632b0b679cb0badbfb9ff4ae30c954539c29512e452537217374f9d0624f60",
+    "workflow-inherited-gitdir.txt": "5829a95444cde68840818c724550f339d545041fc342792a73507afa12262cdd",
+    "workflow-inherited-gitdir.xml": "8f10845ea9affb4e193d34c7cce5f824e47264f6ddd9da4665bdb0ac649c19cf",
+    "workflow.txt": "9e05fc97a2a041d0a1bdf9a6aae639b8ac8466dfdbfe99cda85a85894b6e6438",
+    "workflow.xml": "8e1de3683e671f96b306b7f669e7fd5524c3cfc03fbb4dc2e360a57ce638c387"
+  },
+  "review_test_sha256": "100cdd42187d82ad7336fd85cb5bdc203749ab3e03d85d94e32064abbed293e8",
+  "archive_PR_changed_files_unmodified": 31,
+  "scratch_cleanup": {
+    "path": "/private/tmp/ugrp-review355.rvwkdn",
+    "removed": true,
+    "absence_verified": true
+  },
+  "primary_checkout_at_end": {
+    "head": "2523269857596ffdd1a8cda9814a6e92f399f1da",
+    "status_porcelain": ""
+  }
+}
