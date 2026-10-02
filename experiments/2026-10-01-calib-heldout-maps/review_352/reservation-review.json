@@ -1,0 +1,135 @@
+[
+  {
+    "number": "main",
+    "headRefName": "main",
+    "remote_sha": "2523269857596ffdd1a8cda9814a6e92f399f1da",
+    "runnable_id_grep": "origin/main:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/main:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/main:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/main:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/main:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "",
+    "all_bundle_max_v": 89,
+    "v90_all_matches": []
+  },
+  {
+    "headRefName": "codex/calib-heldout-maps",
+    "headRefOid": "d92efd8d7381a270ff266c01d7534dc8ab1c89f8",
+    "number": 352,
+    "remote_sha": "d92efd8d7381a270ff266c01d7534dc8ab1c89f8",
+    "runnable_id_grep": "origin/codex/calib-heldout-maps:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/codex/calib-heldout-maps:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/codex/calib-heldout-maps:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/codex/calib-heldout-maps:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/codex/calib-heldout-maps:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "origin/codex/calib-heldout-maps:configs/simulation_workflows.d/final_pair_v90.json:5:      \"id\": \"zone-final-pair-heldout-v90\",\norigin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:3:  \"execution_bundle_id\": \"zone-final-pair-v90\",\norigin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:5:  \"workflow_id\": \"zone-final-pair-heldout-v90\",\norigin/codex/calib-heldout-maps:harness/zone_final_pair_heldout.py:9:BUNDLE_ID = 'zone-final-pair-v90'\norigin/codex/calib-heldout-maps:harness/zone_final_pair_heldout.py:12:WORKFLOW_ID = 'zone-final-pair-heldout-v90'\n",
+    "all_bundle_max_v": 90,
+    "v90_all_matches": [
+      "origin/codex/calib-heldout-maps:configs/simulation_workflows.d/final_pair_v90.json:2:  \"schema\": \"ugrp.local_workflow_catalog.v1\",",
+      "origin/codex/calib-heldout-maps:configs/simulation_workflows.d/final_pair_v90.json:5:      \"id\": \"zone-final-pair-heldout-v90\",",
+      "origin/codex/calib-heldout-maps:configs/simulation_workflows.d/final_pair_v90.json:7:      \"purpose\": \"DRAFT v90 teacher-only held-out unloaded collection; two other final v3 maps, seed 911, 370 SIM s per map; never training\",",
+      "origin/codex/calib-heldout-maps:configs/simulation_workflows.d/final_pair_v90.json:11:      \"requires\": \"Committed source; owned SIM lock; mandatory v88 clearance interlock; unloaded only; floor_light_v1; weld OFF\",",
+      "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:2:  \"schema\": \"ugrp.final_pair_heldout.v90\",",
+      "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:3:  \"execution_bundle_id\": \"zone-final-pair-v90\",",
+      "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:5:  \"workflow_id\": \"zone-final-pair-heldout-v90\",",
+      "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:8:  \"maps\": [\"zone_wide_door_geometry_v3\", \"zone_wide_corridor_final_v3\"],",
+      "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:13:  \"training_map\": \"zone_wide_two_doors_final_v3\",",
+      "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:14:  \"schedule_source\": \"zone-final-pair-v88\",",
+      "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:15:  \"robot_model\": \"masterpi_v3\",",
+      "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:16:  \"render_profile\": \"floor_light_v1\",",
+      "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:17:  \"contact_profile\": \"cargo_noslip_v1\","
+    ]
+  },
+  {
+    "headRefName": "codex/calib-measured-v88",
+    "headRefOid": "87aa99c337f700586f01039e40c6ad4dce410afa",
+    "number": 351,
+    "remote_sha": "87aa99c337f700586f01039e40c6ad4dce410afa",
+    "runnable_id_grep": "origin/codex/calib-measured-v88:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/codex/calib-measured-v88:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/codex/calib-measured-v88:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/codex/calib-measured-v88:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/codex/calib-measured-v88:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "",
+    "all_bundle_max_v": 89,
+    "v90_all_matches": []
+  },
+  {
+    "headRefName": "codex/integ-target-backend",
+    "headRefOid": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+    "number": 339,
+    "remote_sha": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+    "runnable_id_grep": "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/codex/integ-target-backend:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/codex/integ-target-backend:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/codex/integ-target-backend:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/codex/integ-target-backend:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "",
+    "all_bundle_max_v": 86,
+    "v90_all_matches": []
+  },
+  {
+    "headRefName": "codex/review-e2e-batch-f",
+    "headRefOid": "887b4d5e73823733a39d10060734080e46668548",
+    "number": 327,
+    "remote_sha": "887b4d5e73823733a39d10060734080e46668548",
+    "runnable_id_grep": "origin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/codex/review-e2e-batch-f:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "",
+    "all_bundle_max_v": 81,
+    "v90_all_matches": []
+  },
+  {
+    "headRefName": "codex/review-e2e-batch-d",
+    "headRefOid": "cd4a71ab7c7cca801fe6dba163a8bb8a1179aa91",
+    "number": 322,
+    "remote_sha": "cd4a71ab7c7cca801fe6dba163a8bb8a1179aa91",
+    "runnable_id_grep": "origin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/codex/review-e2e-batch-d:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "",
+    "all_bundle_max_v": 81,
+    "v90_all_matches": []
+  },
+  {
+    "headRefName": "codex/review-e2e-batch-e",
+    "headRefOid": "585cf9c01d4396d6f5f1d94f5a187cd9b71425f4",
+    "number": 321,
+    "remote_sha": "585cf9c01d4396d6f5f1d94f5a187cd9b71425f4",
+    "runnable_id_grep": "origin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/codex/review-e2e-batch-e:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "",
+    "all_bundle_max_v": 81,
+    "v90_all_matches": []
+  },
+  {
+    "headRefName": "codex/review-e2e-batch-a",
+    "headRefOid": "933bb1d63f2de7d5df16ede55c4235e4a65cc1f4",
+    "number": 319,
+    "remote_sha": "933bb1d63f2de7d5df16ede55c4235e4a65cc1f4",
+    "runnable_id_grep": "origin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/codex/review-e2e-batch-a:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "",
+    "all_bundle_max_v": 81,
+    "v90_all_matches": []
+  },
+  {
+    "headRefName": "codex/review-e2e-batch-c",
+    "headRefOid": "7ee20a048c6b29089dbcd3c332d734bf43cd77c0",
+    "number": 318,
+    "remote_sha": "7ee20a048c6b29089dbcd3c332d734bf43cd77c0",
+    "runnable_id_grep": "origin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/codex/review-e2e-batch-c:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "",
+    "all_bundle_max_v": 81,
+    "v90_all_matches": []
+  },
+  {
+    "headRefName": "codex/review-e2e-batch-b",
+    "headRefOid": "ec0f85807ddb55927a81ac071b407b8ea53802d8",
+    "number": 317,
+    "remote_sha": "ec0f85807ddb55927a81ac071b407b8ea53802d8",
+    "runnable_id_grep": "origin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/codex/review-e2e-batch-b:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "",
+    "all_bundle_max_v": 81,
+    "v90_all_matches": []
+  },
+  {
+    "headRefName": "codex/outputs-retention",
+    "headRefOid": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+    "number": 309,
+    "remote_sha": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+    "runnable_id_grep": "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/codex/outputs-retention:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/codex/outputs-retention:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/codex/outputs-retention:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/codex/outputs-retention:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "",
+    "all_bundle_max_v": 81,
+    "v90_all_matches": []
+  },
+  {
+    "headRefName": "codex/stall-d1-prereg",
+    "headRefOid": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+    "number": 293,
+    "remote_sha": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+    "runnable_id_grep": "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"\norigin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:\norigin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):\norigin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:\norigin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:\n",
+    "v90_grep": "",
+    "all_bundle_max_v": 81,
+    "v90_all_matches": []
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "scope": "Independent static/fake review only; no physics, rendering, real models or shared outputs access in resumed work.",
+  "preserved_run_date": "2026-10-01",
+  "resumed_run_date": "2026-10-02",
+  "preserved_related_junit": "previous/related-corrected.xml",
+  "preserved_workflow_junit": "previous/workflow.xml",
+  "preserved_mutations": "previous/mutations.json",
+  "resumed_source_identity": "archive-source-verification.json",
+  "resumed_base": "base-consistency.json",
+  "new_runs": "resume/resume-runs.json",
+  "prior_interruption": "Stopped during fifth mutation, which changed HELD_OUT_VALIDATION to TRAINING in two scratch files; those exact two changes were restored from candidate archive before resumed tests.",
+  "exclusions": [
+    "Primary checkout updates blocked by running physics and preexisting AD calibration/important.json; no stash/reset attempted.",
+    "No .github/workflows edits.",
+    "No CI or physical-readiness approval.",
+    "No Drive or TensorBoard operations."
+  ]
+}

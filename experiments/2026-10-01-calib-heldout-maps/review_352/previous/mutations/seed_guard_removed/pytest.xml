@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="28.764" timestamp="2026-10-01T13:41:20.773787+09:00" hostname="gangchangmin-ui-MacBookAir.local"><testcase classname="tests.test_zone_final_pair_heldout" name="test_seed_is_fixed_at_cli_case_and_direct_backend[zone_wide_door_geometry_v3]" time="16.884"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/seed_guard_removed/tmp/test_seed_is_fixed_at_cli_case0')
+map_id = 'zone_wide_door_geometry_v3'
+
+    @pytest.mark.parametrize('map_id', heldout.MAPS)
+    def test_seed_is_fixed_at_cli_case_and_direct_backend(tmp_path, map_id):
+        from sim.final_pair_v3 import PhysicsBackend
+&gt;       with pytest.raises(ValueError, match='seed 911'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_zone_final_pair_heldout.py:70: Failed</failure></testcase><testcase classname="tests.test_zone_final_pair_heldout" name="test_seed_is_fixed_at_cli_case_and_direct_backend[zone_wide_corridor_final_v3]" time="8.038"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/seed_guard_removed/tmp/test_seed_is_fixed_at_cli_case1')
+map_id = 'zone_wide_corridor_final_v3'
+
+    @pytest.mark.parametrize('map_id', heldout.MAPS)
+    def test_seed_is_fixed_at_cli_case_and_direct_backend(tmp_path, map_id):
+        from sim.final_pair_v3 import PhysicsBackend
+&gt;       with pytest.raises(ValueError, match='seed 911'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_zone_final_pair_heldout.py:70: Failed</failure></testcase></testsuite></testsuites>

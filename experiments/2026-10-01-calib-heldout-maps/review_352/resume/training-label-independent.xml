@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="17.506" timestamp="2026-10-02T14:06:08.802575+09:00" hostname="gangchangmin-ui-MacBookAir.local"><testcase classname="tests.test_review_352" name="test_literal_heldout_role_in_plan_bundle_and_fake_result[zone_wide_corridor_final_v3]" time="8.398"><failure message="AssertionError: assert {'collection_...r_only': True} == {'collection_...r_only': True}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'collection_role': 'TRAINING'} != {'collection_role': 'HELD_OUT_VALIDATION'}&#10;  Use -v to get more diff">tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/resume-tmp/training-label-independent/test_literal_heldout_role_in_p0')
+map_id = 'zone_wide_corridor_final_v3'
+
+    @pytest.mark.parametrize("map_id", MAPS)
+    def test_literal_heldout_role_in_plan_bundle_and_fake_result(tmp_path, map_id):
+        value = plan(args(tmp_path, map_id), managed.main)
+        bundle = {**c.bundle(map_id, "calibration-unloaded"),
+                  "case": c.cases("calibration-unloaded", map_id)[0]}
+        result = run.run_case(bundle, tmp_path / "fake", seed=911, backend_factory=FakePhysics)
+        for record in (value, bundle, result):
+&gt;           assert {key: record[key] for key in ROLE} == ROLE
+E           AssertionError: assert {'collection_...r_only': True} == {'collection_...r_only': True}
+E             
+E             Omitting 2 identical items, use -vv to show
+E             Differing items:
+E             {'collection_role': 'TRAINING'} != {'collection_role': 'HELD_OUT_VALIDATION'}
+E             Use -v to get more diff
+
+tests/test_review_352.py:97: AssertionError</failure></testcase><testcase classname="tests.test_review_352" name="test_literal_heldout_role_in_plan_bundle_and_fake_result[zone_wide_door_geometry_v3]" time="8.458"><failure message="AssertionError: assert {'collection_...r_only': True} == {'collection_...r_only': True}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'collection_role': 'TRAINING'} != {'collection_role': 'HELD_OUT_VALIDATION'}&#10;  Use -v to get more diff">tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/resume-tmp/training-label-independent/test_literal_heldout_role_in_p1')
+map_id = 'zone_wide_door_geometry_v3'
+
+    @pytest.mark.parametrize("map_id", MAPS)
+    def test_literal_heldout_role_in_plan_bundle_and_fake_result(tmp_path, map_id):
+        value = plan(args(tmp_path, map_id), managed.main)
+        bundle = {**c.bundle(map_id, "calibration-unloaded"),
+                  "case": c.cases("calibration-unloaded", map_id)[0]}
+        result = run.run_case(bundle, tmp_path / "fake", seed=911, backend_factory=FakePhysics)
+        for record in (value, bundle, result):
+&gt;           assert {key: record[key] for key in ROLE} == ROLE
+E           AssertionError: assert {'collection_...r_only': True} == {'collection_...r_only': True}
+E             
+E             Omitting 2 identical items, use -vv to show
+E             Differing items:
+E             {'collection_role': 'TRAINING'} != {'collection_role': 'HELD_OUT_VALIDATION'}
+E             Use -v to get more diff
+
+tests/test_review_352.py:97: AssertionError</failure></testcase></testsuite></testsuites>

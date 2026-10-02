@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="6.523" timestamp="2026-10-01T13:41:50.032529+09:00" hostname="gangchangmin-ui-MacBookAir.local"><testcase classname="tests.test_zone_final_pair_heldout" name="test_new_workflow_cannot_select_training_or_student[p03]" time="0.010"><failure message="AssertionError: Regex pattern did not match.&#10;  Expected regex: 'held-out map'&#10;  Actual message: 'P03 checkpoints require the registered one-door map'">tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/heldout_workflow_guard_removed/tmp/test_new_workflow_cannot_selec0')
+check = 'p03'
+
+    @pytest.mark.parametrize('check', ['p03', 'carry', 'calibration-unloaded'])
+    def test_new_workflow_cannot_select_training_or_student(tmp_path, check):
+&gt;       with pytest.raises(ValueError, match='held-out map'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'held-out map'
+E         Actual message: 'P03 checkpoints require the registered one-door map'
+
+tests/test_zone_final_pair_heldout.py:63: AssertionError</failure></testcase><testcase classname="tests.test_zone_final_pair_heldout" name="test_new_workflow_cannot_select_training_or_student[carry]" time="2.636"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/heldout_workflow_guard_removed/tmp/test_new_workflow_cannot_selec1')
+check = 'carry'
+
+    @pytest.mark.parametrize('check', ['p03', 'carry', 'calibration-unloaded'])
+    def test_new_workflow_cannot_select_training_or_student(tmp_path, check):
+&gt;       with pytest.raises(ValueError, match='held-out map'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_zone_final_pair_heldout.py:63: Failed</failure></testcase><testcase classname="tests.test_zone_final_pair_heldout" name="test_new_workflow_cannot_select_training_or_student[calibration-unloaded]" time="2.552"><failure message="Failed: DID NOT RAISE ValueError">tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/heldout_workflow_guard_removed/tmp/test_new_workflow_cannot_selec2')
+check = 'calibration-unloaded'
+
+    @pytest.mark.parametrize('check', ['p03', 'carry', 'calibration-unloaded'])
+    def test_new_workflow_cannot_select_training_or_student(tmp_path, check):
+&gt;       with pytest.raises(ValueError, match='held-out map'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_zone_final_pair_heldout.py:63: Failed</failure></testcase></testsuite></testsuites>

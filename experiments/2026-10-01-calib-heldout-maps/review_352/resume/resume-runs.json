@@ -1,0 +1,30 @@
+[
+  {
+    "name": "candidate",
+    "tests": [
+      "tests/test_zone_final_pair_heldout.py",
+      "tests/test_review_352.py"
+    ],
+    "exit_code": 0,
+    "summary": "53 passed, 7 xfailed in 289.29s (0:04:49)",
+    "log_sha256": "9830a70536e5ad670e6d09488a326f7b86240a80b5f8a0d2fd694009b66c0bb8"
+  },
+  {
+    "name": "training-label-mutation",
+    "tests": [
+      "tests/test_zone_final_pair_heldout.py"
+    ],
+    "exit_code": 0,
+    "summary": "38 passed in 148.99s (0:02:28)",
+    "log_sha256": "8a5d4611ff71774d9cf73f26a81621d881c5055475453c3b520a83776446cf1a"
+  },
+  {
+    "name": "training-label-independent",
+    "tests": [
+      "tests/test_review_352.py::test_literal_heldout_role_in_plan_bundle_and_fake_result"
+    ],
+    "exit_code": 1,
+    "summary": "2 failed in 17.51s",
+    "log_sha256": "efb400e37e92fcefc286776ce3d753e299cbd01cee2166a90535cd48c0dbd2b7"
+  }
+]

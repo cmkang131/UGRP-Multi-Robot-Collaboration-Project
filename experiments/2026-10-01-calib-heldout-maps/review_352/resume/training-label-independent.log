@@ -1,0 +1,45 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+_ test_literal_heldout_role_in_plan_bundle_and_fake_result[zone_wide_corridor_final_v3] _
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/resume-tmp/training-label-independent/test_literal_heldout_role_in_p0')
+map_id = 'zone_wide_corridor_final_v3'
+
+    @pytest.mark.parametrize("map_id", MAPS)
+    def test_literal_heldout_role_in_plan_bundle_and_fake_result(tmp_path, map_id):
+        value = plan(args(tmp_path, map_id), managed.main)
+        bundle = {**c.bundle(map_id, "calibration-unloaded"),
+                  "case": c.cases("calibration-unloaded", map_id)[0]}
+        result = run.run_case(bundle, tmp_path / "fake", seed=911, backend_factory=FakePhysics)
+        for record in (value, bundle, result):
+>           assert {key: record[key] for key in ROLE} == ROLE
+E           AssertionError: assert {'collection_...r_only': True} == {'collection_...r_only': True}
+E             
+E             Omitting 2 identical items, use -vv to show
+E             Differing items:
+E             {'collection_role': 'TRAINING'} != {'collection_role': 'HELD_OUT_VALIDATION'}
+E             Use -v to get more diff
+
+tests/test_review_352.py:97: AssertionError
+_ test_literal_heldout_role_in_plan_bundle_and_fake_result[zone_wide_door_geometry_v3] _
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/resume-tmp/training-label-independent/test_literal_heldout_role_in_p1')
+map_id = 'zone_wide_door_geometry_v3'
+
+    @pytest.mark.parametrize("map_id", MAPS)
+    def test_literal_heldout_role_in_plan_bundle_and_fake_result(tmp_path, map_id):
+        value = plan(args(tmp_path, map_id), managed.main)
+        bundle = {**c.bundle(map_id, "calibration-unloaded"),
+                  "case": c.cases("calibration-unloaded", map_id)[0]}
+        result = run.run_case(bundle, tmp_path / "fake", seed=911, backend_factory=FakePhysics)
+        for record in (value, bundle, result):
+>           assert {key: record[key] for key in ROLE} == ROLE
+E           AssertionError: assert {'collection_...r_only': True} == {'collection_...r_only': True}
+E             
+E             Omitting 2 identical items, use -vv to show
+E             Differing items:
+E             {'collection_role': 'TRAINING'} != {'collection_role': 'HELD_OUT_VALIDATION'}
+E             Use -v to get more diff
+
+tests/test_review_352.py:97: AssertionError
+2 failed in 17.51s

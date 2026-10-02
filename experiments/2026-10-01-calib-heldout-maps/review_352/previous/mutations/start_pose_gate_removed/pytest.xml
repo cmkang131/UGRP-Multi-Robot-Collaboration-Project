@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="13.897" timestamp="2026-10-01T13:43:04.718661+09:00" hostname="gangchangmin-ui-MacBookAir.local"><testcase classname="tests.test_zone_final_pair_review_fixes" name="test_unsafe_start_rejects_all_entry_points_before_output_or_physics[calibration-unloaded]" time="3.219"><failure message="assert not True">tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/start_pose_gate_removed/tmp/test_unsafe_start_rejects_all_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10b05ba40&gt;
+capsys = &lt;_pytest.capture.CaptureFixture object at 0x10b041640&gt;
+check = 'calibration-unloaded'
+
+    @pytest.mark.parametrize('check', c.CHECKS[2:])
+    def test_unsafe_start_rejects_all_entry_points_before_output_or_physics(tmp_path, monkeypatch, capsys, check):
+        from scripts import run_final_pair_v3 as run
+        from sim.final_pair_v3 import PhysicsBackend
+        from harness.zone_final_pair_clearance import CLEARANCE_REVIEW
+        from harness import zone_final_pair_calibration as cal, zone_final_pair_excitation as excitation
+        if check == 'calibration-loaded':
+            starts = cal.teacher_stations(c.resolve(MAP_ID)[0])
+            starts['r1'][0] = 2.3
+            monkeypatch.setattr(cal, 'teacher_stations', lambda _: starts)
+        else:
+            monkeypatch.setattr(excitation, 'UNLOADED_POSE', [2.3, -.85, 0.])
+        row = c.cases(check)[0]
+        bundle = {**c.bundle(row['map_id'], check), 'case': row}
+        assert CLEARANCE_REVIEW in bundle['source_sha256']
+&gt;       assert not bundle['clearance_preflight']['admitted']
+E       assert not True
+
+tests/test_zone_final_pair_review_fixes.py:262: AssertionError</failure></testcase><testcase classname="tests.test_zone_final_pair_review_fixes" name="test_unsafe_start_rejects_all_entry_points_before_output_or_physics[calibration-loaded]" time="4.543"><failure message="assert not True">tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/start_pose_gate_removed/tmp/test_unsafe_start_rejects_all_1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10a9e7440&gt;
+capsys = &lt;_pytest.capture.CaptureFixture object at 0x10a9e6090&gt;
+check = 'calibration-loaded'
+
+    @pytest.mark.parametrize('check', c.CHECKS[2:])
+    def test_unsafe_start_rejects_all_entry_points_before_output_or_physics(tmp_path, monkeypatch, capsys, check):
+        from scripts import run_final_pair_v3 as run
+        from sim.final_pair_v3 import PhysicsBackend
+        from harness.zone_final_pair_clearance import CLEARANCE_REVIEW
+        from harness import zone_final_pair_calibration as cal, zone_final_pair_excitation as excitation
+        if check == 'calibration-loaded':
+            starts = cal.teacher_stations(c.resolve(MAP_ID)[0])
+            starts['r1'][0] = 2.3
+            monkeypatch.setattr(cal, 'teacher_stations', lambda _: starts)
+        else:
+            monkeypatch.setattr(excitation, 'UNLOADED_POSE', [2.3, -.85, 0.])
+        row = c.cases(check)[0]
+        bundle = {**c.bundle(row['map_id'], check), 'case': row}
+        assert CLEARANCE_REVIEW in bundle['source_sha256']
+&gt;       assert not bundle['clearance_preflight']['admitted']
+E       assert not True
+
+tests/test_zone_final_pair_review_fixes.py:262: AssertionError</failure></testcase><testcase classname="tests.test_zone_final_pair_review_fixes" name="test_unsafe_start_rejects_all_entry_points_before_output_or_physics[calibration-fine]" time="4.640"><failure message="assert not True">tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/start_pose_gate_removed/tmp/test_unsafe_start_rejects_all_2')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x10a9bb560&gt;
+capsys = &lt;_pytest.capture.CaptureFixture object at 0x10a9b8d10&gt;
+check = 'calibration-fine'
+
+    @pytest.mark.parametrize('check', c.CHECKS[2:])
+    def test_unsafe_start_rejects_all_entry_points_before_output_or_physics(tmp_path, monkeypatch, capsys, check):
+        from scripts import run_final_pair_v3 as run
+        from sim.final_pair_v3 import PhysicsBackend
+        from harness.zone_final_pair_clearance import CLEARANCE_REVIEW
+        from harness import zone_final_pair_calibration as cal, zone_final_pair_excitation as excitation
+        if check == 'calibration-loaded':
+            starts = cal.teacher_stations(c.resolve(MAP_ID)[0])
+            starts['r1'][0] = 2.3
+            monkeypatch.setattr(cal, 'teacher_stations', lambda _: starts)
+        else:
+            monkeypatch.setattr(excitation, 'UNLOADED_POSE', [2.3, -.85, 0.])
+        row = c.cases(check)[0]
+        bundle = {**c.bundle(row['map_id'], check), 'case': row}
+        assert CLEARANCE_REVIEW in bundle['source_sha256']
+&gt;       assert not bundle['clearance_preflight']['admitted']
+E       assert not True
+
+tests/test_zone_final_pair_review_fixes.py:262: AssertionError</failure></testcase></testsuite></testsuites>

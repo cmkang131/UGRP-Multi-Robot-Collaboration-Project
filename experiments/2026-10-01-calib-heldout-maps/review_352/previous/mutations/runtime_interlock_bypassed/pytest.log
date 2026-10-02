@@ -1,0 +1,232 @@
+FFFFFF                                                                   [100%]
+=================================== FAILURES ===================================
+_ test_same_abort_interlock_preserves_partial_invalid_heldout[wall-zone_wide_door_geometry_v3] _
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/runtime_interlock_bypassed/tmp/test_same_abort_interlock_pres0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x112bde210>
+map_id = 'zone_wide_door_geometry_v3', fault = 'wall'
+
+    @pytest.mark.parametrize('map_id', heldout.MAPS)
+    @pytest.mark.parametrize('fault', ['wall', 'nan', 'missing'])
+    def test_same_abort_interlock_preserves_partial_invalid_heldout(tmp_path, monkeypatch, map_id, fault):
+        from tests.test_zone_final_pair_review_fixes import fake_guard
+        bundle = case_bundle(map_id)
+        guard = fake_guard(monkeypatch)
+        guard.bundle = bundle
+        guard.scene.config['static_map'] = c.resolve(map_id)[0]
+        out = tmp_path/'case'
+        guard._append = lambda path, row: run.write(out/path, row)
+        made = []
+        class Physics(FakePhysics):
+            def eval_sample(self):
+                super().eval_sample()
+                if len(self.samples) == 2:
+                    if fault == 'wall': guard.world.data.geom_xpos[0, 0] = 10.
+                    elif fault == 'nan': guard.world.data.geom_xpos[0, 2] = float('nan')
+                    else: guard.world.model.ngeom = 0
+                guard.collection_guard()
+                run.write(out/'eval_only/partial.json', {'t': self.now})
+        def factory(*a, **kw):
+            made.append(Physics(*a, **kw))
+            return made[-1]
+        result = run.run_case(bundle, out, seed=911, backend_factory=factory)
+>       assert result['status'] == 'HOST_ERROR' and not result['protocol_complete']
+E       AssertionError: assert ('COLLECTED_UNQUALIFIED' == 'HOST_ERROR'
+E         
+E         - HOST_ERROR
+E         + COLLECTED_UNQUALIFIED)
+
+tests/test_zone_final_pair_heldout.py:184: AssertionError
+_ test_same_abort_interlock_preserves_partial_invalid_heldout[wall-zone_wide_corridor_final_v3] _
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/runtime_interlock_bypassed/tmp/test_same_abort_interlock_pres1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10856fe00>
+map_id = 'zone_wide_corridor_final_v3', fault = 'wall'
+
+    @pytest.mark.parametrize('map_id', heldout.MAPS)
+    @pytest.mark.parametrize('fault', ['wall', 'nan', 'missing'])
+    def test_same_abort_interlock_preserves_partial_invalid_heldout(tmp_path, monkeypatch, map_id, fault):
+        from tests.test_zone_final_pair_review_fixes import fake_guard
+        bundle = case_bundle(map_id)
+        guard = fake_guard(monkeypatch)
+        guard.bundle = bundle
+        guard.scene.config['static_map'] = c.resolve(map_id)[0]
+        out = tmp_path/'case'
+        guard._append = lambda path, row: run.write(out/path, row)
+        made = []
+        class Physics(FakePhysics):
+            def eval_sample(self):
+                super().eval_sample()
+                if len(self.samples) == 2:
+                    if fault == 'wall': guard.world.data.geom_xpos[0, 0] = 10.
+                    elif fault == 'nan': guard.world.data.geom_xpos[0, 2] = float('nan')
+                    else: guard.world.model.ngeom = 0
+                guard.collection_guard()
+                run.write(out/'eval_only/partial.json', {'t': self.now})
+        def factory(*a, **kw):
+            made.append(Physics(*a, **kw))
+            return made[-1]
+        result = run.run_case(bundle, out, seed=911, backend_factory=factory)
+>       assert result['status'] == 'HOST_ERROR' and not result['protocol_complete']
+E       AssertionError: assert ('COLLECTED_UNQUALIFIED' == 'HOST_ERROR'
+E         
+E         - HOST_ERROR
+E         + COLLECTED_UNQUALIFIED)
+
+tests/test_zone_final_pair_heldout.py:184: AssertionError
+_ test_same_abort_interlock_preserves_partial_invalid_heldout[nan-zone_wide_door_geometry_v3] _
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/runtime_interlock_bypassed/tmp/test_same_abort_interlock_pres2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10854af90>
+map_id = 'zone_wide_door_geometry_v3', fault = 'nan'
+
+    @pytest.mark.parametrize('map_id', heldout.MAPS)
+    @pytest.mark.parametrize('fault', ['wall', 'nan', 'missing'])
+    def test_same_abort_interlock_preserves_partial_invalid_heldout(tmp_path, monkeypatch, map_id, fault):
+        from tests.test_zone_final_pair_review_fixes import fake_guard
+        bundle = case_bundle(map_id)
+        guard = fake_guard(monkeypatch)
+        guard.bundle = bundle
+        guard.scene.config['static_map'] = c.resolve(map_id)[0]
+        out = tmp_path/'case'
+        guard._append = lambda path, row: run.write(out/path, row)
+        made = []
+        class Physics(FakePhysics):
+            def eval_sample(self):
+                super().eval_sample()
+                if len(self.samples) == 2:
+                    if fault == 'wall': guard.world.data.geom_xpos[0, 0] = 10.
+                    elif fault == 'nan': guard.world.data.geom_xpos[0, 2] = float('nan')
+                    else: guard.world.model.ngeom = 0
+                guard.collection_guard()
+                run.write(out/'eval_only/partial.json', {'t': self.now})
+        def factory(*a, **kw):
+            made.append(Physics(*a, **kw))
+            return made[-1]
+        result = run.run_case(bundle, out, seed=911, backend_factory=factory)
+>       assert result['status'] == 'HOST_ERROR' and not result['protocol_complete']
+E       AssertionError: assert ('COLLECTED_UNQUALIFIED' == 'HOST_ERROR'
+E         
+E         - HOST_ERROR
+E         + COLLECTED_UNQUALIFIED)
+
+tests/test_zone_final_pair_heldout.py:184: AssertionError
+_ test_same_abort_interlock_preserves_partial_invalid_heldout[nan-zone_wide_corridor_final_v3] _
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/runtime_interlock_bypassed/tmp/test_same_abort_interlock_pres3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x112be8e00>
+map_id = 'zone_wide_corridor_final_v3', fault = 'nan'
+
+    @pytest.mark.parametrize('map_id', heldout.MAPS)
+    @pytest.mark.parametrize('fault', ['wall', 'nan', 'missing'])
+    def test_same_abort_interlock_preserves_partial_invalid_heldout(tmp_path, monkeypatch, map_id, fault):
+        from tests.test_zone_final_pair_review_fixes import fake_guard
+        bundle = case_bundle(map_id)
+        guard = fake_guard(monkeypatch)
+        guard.bundle = bundle
+        guard.scene.config['static_map'] = c.resolve(map_id)[0]
+        out = tmp_path/'case'
+        guard._append = lambda path, row: run.write(out/path, row)
+        made = []
+        class Physics(FakePhysics):
+            def eval_sample(self):
+                super().eval_sample()
+                if len(self.samples) == 2:
+                    if fault == 'wall': guard.world.data.geom_xpos[0, 0] = 10.
+                    elif fault == 'nan': guard.world.data.geom_xpos[0, 2] = float('nan')
+                    else: guard.world.model.ngeom = 0
+                guard.collection_guard()
+                run.write(out/'eval_only/partial.json', {'t': self.now})
+        def factory(*a, **kw):
+            made.append(Physics(*a, **kw))
+            return made[-1]
+        result = run.run_case(bundle, out, seed=911, backend_factory=factory)
+>       assert result['status'] == 'HOST_ERROR' and not result['protocol_complete']
+E       AssertionError: assert ('COLLECTED_UNQUALIFIED' == 'HOST_ERROR'
+E         
+E         - HOST_ERROR
+E         + COLLECTED_UNQUALIFIED)
+
+tests/test_zone_final_pair_heldout.py:184: AssertionError
+_ test_same_abort_interlock_preserves_partial_invalid_heldout[missing-zone_wide_door_geometry_v3] _
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/runtime_interlock_bypassed/tmp/test_same_abort_interlock_pres4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x1084f2b40>
+map_id = 'zone_wide_door_geometry_v3', fault = 'missing'
+
+    @pytest.mark.parametrize('map_id', heldout.MAPS)
+    @pytest.mark.parametrize('fault', ['wall', 'nan', 'missing'])
+    def test_same_abort_interlock_preserves_partial_invalid_heldout(tmp_path, monkeypatch, map_id, fault):
+        from tests.test_zone_final_pair_review_fixes import fake_guard
+        bundle = case_bundle(map_id)
+        guard = fake_guard(monkeypatch)
+        guard.bundle = bundle
+        guard.scene.config['static_map'] = c.resolve(map_id)[0]
+        out = tmp_path/'case'
+        guard._append = lambda path, row: run.write(out/path, row)
+        made = []
+        class Physics(FakePhysics):
+            def eval_sample(self):
+                super().eval_sample()
+                if len(self.samples) == 2:
+                    if fault == 'wall': guard.world.data.geom_xpos[0, 0] = 10.
+                    elif fault == 'nan': guard.world.data.geom_xpos[0, 2] = float('nan')
+                    else: guard.world.model.ngeom = 0
+                guard.collection_guard()
+                run.write(out/'eval_only/partial.json', {'t': self.now})
+        def factory(*a, **kw):
+            made.append(Physics(*a, **kw))
+            return made[-1]
+        result = run.run_case(bundle, out, seed=911, backend_factory=factory)
+>       assert result['status'] == 'HOST_ERROR' and not result['protocol_complete']
+E       AssertionError: assert ('COLLECTED_UNQUALIFIED' == 'HOST_ERROR'
+E         
+E         - HOST_ERROR
+E         + COLLECTED_UNQUALIFIED)
+
+tests/test_zone_final_pair_heldout.py:184: AssertionError
+_ test_same_abort_interlock_preserves_partial_invalid_heldout[missing-zone_wide_corridor_final_v3] _
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/runtime_interlock_bypassed/tmp/test_same_abort_interlock_pres5')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x108593b60>
+map_id = 'zone_wide_corridor_final_v3', fault = 'missing'
+
+    @pytest.mark.parametrize('map_id', heldout.MAPS)
+    @pytest.mark.parametrize('fault', ['wall', 'nan', 'missing'])
+    def test_same_abort_interlock_preserves_partial_invalid_heldout(tmp_path, monkeypatch, map_id, fault):
+        from tests.test_zone_final_pair_review_fixes import fake_guard
+        bundle = case_bundle(map_id)
+        guard = fake_guard(monkeypatch)
+        guard.bundle = bundle
+        guard.scene.config['static_map'] = c.resolve(map_id)[0]
+        out = tmp_path/'case'
+        guard._append = lambda path, row: run.write(out/path, row)
+        made = []
+        class Physics(FakePhysics):
+            def eval_sample(self):
+                super().eval_sample()
+                if len(self.samples) == 2:
+                    if fault == 'wall': guard.world.data.geom_xpos[0, 0] = 10.
+                    elif fault == 'nan': guard.world.data.geom_xpos[0, 2] = float('nan')
+                    else: guard.world.model.ngeom = 0
+                guard.collection_guard()
+                run.write(out/'eval_only/partial.json', {'t': self.now})
+        def factory(*a, **kw):
+            made.append(Physics(*a, **kw))
+            return made[-1]
+        result = run.run_case(bundle, out, seed=911, backend_factory=factory)
+>       assert result['status'] == 'HOST_ERROR' and not result['protocol_complete']
+E       AssertionError: assert ('COLLECTED_UNQUALIFIED' == 'HOST_ERROR'
+E         
+E         - HOST_ERROR
+E         + COLLECTED_UNQUALIFIED)
+
+tests/test_zone_final_pair_heldout.py:184: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_final_pair_heldout.py::test_same_abort_interlock_preserves_partial_invalid_heldout[wall-zone_wide_door_geometry_v3]
+FAILED tests/test_zone_final_pair_heldout.py::test_same_abort_interlock_preserves_partial_invalid_heldout[wall-zone_wide_corridor_final_v3]
+FAILED tests/test_zone_final_pair_heldout.py::test_same_abort_interlock_preserves_partial_invalid_heldout[nan-zone_wide_door_geometry_v3]
+FAILED tests/test_zone_final_pair_heldout.py::test_same_abort_interlock_preserves_partial_invalid_heldout[nan-zone_wide_corridor_final_v3]
+FAILED tests/test_zone_final_pair_heldout.py::test_same_abort_interlock_preserves_partial_invalid_heldout[missing-zone_wide_door_geometry_v3]
+FAILED tests/test_zone_final_pair_heldout.py::test_same_abort_interlock_preserves_partial_invalid_heldout[missing-zone_wide_corridor_final_v3]
+6 failed in 67.35s (0:01:07)

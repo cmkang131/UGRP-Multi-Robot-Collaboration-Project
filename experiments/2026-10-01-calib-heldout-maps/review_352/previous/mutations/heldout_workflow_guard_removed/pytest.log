@@ -1,0 +1,237 @@
+FFF                                                                      [100%]
+=================================== FAILURES ===================================
+___________ test_new_workflow_cannot_select_training_or_student[p03] ___________
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/heldout_workflow_guard_removed/tmp/test_new_workflow_cannot_selec0')
+check = 'p03'
+
+    @pytest.mark.parametrize('check', ['p03', 'carry', 'calibration-unloaded'])
+    def test_new_workflow_cannot_select_training_or_student(tmp_path, check):
+>       with pytest.raises(ValueError, match='held-out map'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'held-out map'
+E         Actual message: 'P03 checkpoints require the registered one-door map'
+
+tests/test_zone_final_pair_heldout.py:63: AssertionError
+__________ test_new_workflow_cannot_select_training_or_student[carry] __________
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/heldout_workflow_guard_removed/tmp/test_new_workflow_cannot_selec1')
+check = 'carry'
+
+    @pytest.mark.parametrize('check', ['p03', 'carry', 'calibration-unloaded'])
+    def test_new_workflow_cannot_select_training_or_student(tmp_path, check):
+>       with pytest.raises(ValueError, match='held-out map'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_zone_final_pair_heldout.py:63: Failed
+----------------------------- Captured stdout call -----------------------------
+{
+  "execution_bundle_id": "zone-final-pair-v88",
+  "status": "DRAFT_UNSEALED",
+  "check": "carry",
+  "execution_started": false,
+  "cases": [
+    {
+      "id": "zone_wide_two_doors_final_v3",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "checkpoint": null,
+      "sim_cap_s": 120.0
+    }
+  ],
+  "denominator": 1,
+  "runnable": false,
+  "blocked_on": [
+    "MEASURED_V3_CALIBRATION_REQUIRED"
+  ],
+  "source_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "seed": 911,
+  "bundles_sha256": [
+    "2fd44bcd3c21fdbdc4a7af7fc38f1d30e6db74c5ce4071b590d3808128b0498f"
+  ],
+  "physical_success": null,
+  "clearance_preflight": [
+    null
+  ]
+}
+__ test_new_workflow_cannot_select_training_or_student[calibration-unloaded] ___
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352.tCrih6/review-evidence/mutations/heldout_workflow_guard_removed/tmp/test_new_workflow_cannot_selec2')
+check = 'calibration-unloaded'
+
+    @pytest.mark.parametrize('check', ['p03', 'carry', 'calibration-unloaded'])
+    def test_new_workflow_cannot_select_training_or_student(tmp_path, check):
+>       with pytest.raises(ValueError, match='held-out map'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests/test_zone_final_pair_heldout.py:63: Failed
+----------------------------- Captured stdout call -----------------------------
+{
+  "execution_bundle_id": "zone-final-pair-v88",
+  "status": "DRAFT_UNSEALED",
+  "check": "calibration-unloaded",
+  "execution_started": false,
+  "cases": [
+    {
+      "id": "zone_wide_two_doors_final_v3",
+      "map_id": "zone_wide_two_doors_final_v3",
+      "checkpoint": null,
+      "sim_cap_s": 370.0
+    }
+  ],
+  "denominator": 1,
+  "runnable": true,
+  "blocked_on": [],
+  "source_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "seed": 911,
+  "bundles_sha256": [
+    "08367395abf79b25b1026c609ed96d0dccf3d0cf2bcca0ec80b72be957286f7a"
+  ],
+  "physical_success": null,
+  "clearance_preflight": [
+    {
+      "admitted": true,
+      "envelope_policy": "ADVISORY",
+      "scope": "SIMULATION_ONLY_TEACHER_CALIBRATION",
+      "decision": "2026-10-01 coordinator decision 2",
+      "reason": "START_POSE_CLEAR_INTERLOCK_REQUIRED",
+      "start_pose_check": {
+        "admitted": true,
+        "wall_margin_m": 0.3,
+        "numeric_guard_m": 1e-10,
+        "bodies": {
+          "r1": {
+            "start_xy_yaw": [
+              3.25,
+              -0.85,
+              0.0
+            ],
+            "body_radius_bound_m": 0.4,
+            "required_wall_distance_m": 0.7,
+            "wall_distance_from_start_m": 1.025,
+            "remaining_clearance_m": 0.32499999999999996,
+            "admitted": true
+          }
+        }
+      },
+      "runtime_interlock": {
+        "required": true,
+        "minimum_m": 0.3,
+        "abort_buffer_m": 0.05,
+        "robot_radius_bound_m": 0.4,
+        "max_substep_displacement_m": 0.01,
+        "checks": [
+          "before_substep",
+          "after_substep",
+          "before_command",
+          "eval_0.05_s"
+        ],
+        "invalid_geometry": "hold_then_HOST_ERROR",
+        "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+      },
+      "no_cancellation_bound": {
+        "admitted": false,
+        "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+        "method": "whole_schedule_absolute_command_integral",
+        "sign_cancellation": "none",
+        "qualification": "ADVISORY_CONDITIONAL_NO_CANCELLATION_BOUND",
+        "sim_window_s": [
+          0.0,
+          370.0
+        ],
+        "gain_upper": {
+          "forward": 2.62,
+          "left": 1.86,
+          "turn": 2.299928292866358
+        },
+        "robot_radius_bound_m": 0.4,
+        "wall_margin_m": 0.3,
+        "numeric_guard_m": 1e-10,
+        "bodies": {
+          "r1": {
+            "start_xy_yaw": [
+              3.25,
+              -0.85,
+              0.0
+            ],
+            "absolute_command_integral_s": {
+              "forward": 1.51,
+              "left": 1.51,
+              "turn": 1.51
+            },
+            "translation_bound_m": 6.764800000000001,
+            "absolute_yaw_bound_rad": 3.4728917222282,
+            "tip_radius_from_chassis_m": 0.4,
+            "yaw_tip_excursion_bound_m": 0.8,
+            "excursion_bound_m": 7.564800000000001,
+            "beam_radius_added_m": 0.0,
+            "disc_radius_m": 8.264800000000001,
+            "wall_distance_from_start_m": 1.0250000000000004,
+            "remaining_clearance_m": -7.239800000000001,
+            "wall_free": false
+          }
+        }
+      },
+      "pair_cancellation_estimate": {
+        "admitted": false,
+        "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+        "method": "peak_signed_steps_plus_absolute_prbs",
+        "sign_cancellation": "within_robot_step_pairs_only",
+        "qualification": "ADVISORY_ESTIMATE_NOT_A_MOTION_BOUND; symmetric fixed-axis step response assumed",
+        "sim_window_s": [
+          0.0,
+          370.0
+        ],
+        "gain_upper": {
+          "forward": 2.62,
+          "left": 1.86,
+          "turn": 2.299928292866358
+        },
+        "robot_radius_bound_m": 0.4,
+        "wall_margin_m": 0.3,
+        "numeric_guard_m": 1e-10,
+        "bodies": {
+          "r1": {
+            "start_xy_yaw": [
+              3.25,
+              -0.85,
+              0.0
+            ],
+            "translation_bound_m": 2.732800000000001,
+            "absolute_yaw_bound_rad": 1.4029562586484787,
+            "tip_radius_from_chassis_m": 0.4,
+            "yaw_tip_excursion_bound_m": 0.5611825034593915,
+            "excursion_bound_m": 3.2939825034593926,
+            "beam_radius_added_m": 0.0,
+            "disc_radius_m": 3.9939825034593923,
+            "estimated_excursion_integral_s": {
+              "forward": 0.6100000000000002,
+              "left": 0.6100000000000002,
+              "turn": 0.6100000000000002
+            },
+            "step_peak_integral_s": {
+              "forward": 0.3000000000000002,
+              "left": 0.3000000000000002,
+              "turn": 0.3000000000000002
+            },
+            "step_net_integral_s": {
+              "forward": -3.7730235602495554e-17,
+              "left": -3.7730235602495554e-17,
+              "turn": -3.7730235602495554e-17
+            },
+            "wall_distance_from_start_m": 1.025,
+            "remaining_clearance_m": -2.9689825034593924,
+            "wall_free": false
+          }
+        }
+      }
+    }
+  ]
+}
+=========================== short test summary info ============================
+FAILED tests/test_zone_final_pair_heldout.py::test_new_workflow_cannot_select_training_or_student[p03]
+FAILED tests/test_zone_final_pair_heldout.py::test_new_workflow_cannot_select_training_or_student[carry]
+FAILED tests/test_zone_final_pair_heldout.py::test_new_workflow_cannot_select_training_or_student[calibration-unloaded]
+3 failed in 6.52s
