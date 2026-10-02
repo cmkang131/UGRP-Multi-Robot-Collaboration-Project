@@ -1,0 +1,46 @@
+..FF................................xx                                   [100%]
+=================================== FAILURES ===================================
+_ test_all_saved_roles_in_both_maps_and_host_error[True-zone_wide_corridor_final_v3] _
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352b.gMhh6q/review-extra-temp/test_all_saved_roles_in_both_m2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10ae28710>
+map_id = 'zone_wide_corridor_final_v3', failed = True
+
+    @pytest.mark.parametrize('map_id', MAPS)
+    @pytest.mark.parametrize('failed', (False, True))
+    def test_all_saved_roles_in_both_maps_and_host_error(tmp_path, monkeypatch, map_id, failed):
+        class Backend(FakePhysics):
+            failure = RuntimeError('synthetic acquisition fault') if failed else None
+        fake_host(tmp_path, monkeypatch, Backend)
+        out = tmp_path / 'outputs' / map_id
+>       assert run.main(argv(out, map_id) + ['--execute', '--lock-owner', 'codex']) == (2 if failed else 0)
+E       AssertionError: assert 1 == 2
+E        +  where 1 = <function main at 0x114f12480>((['--check', 'calibration-unloaded', '--map-id', 'zone_wide_corridor_final_v3', '--seed', '911', ...] + ['--execute', '--lock-owner', 'codex']))
+E        +    where <function main at 0x114f12480> = run.main
+E        +    and   ['--check', 'calibration-unloaded', '--map-id', 'zone_wide_corridor_final_v3', '--seed', '911', ...] = argv(PosixPath('/private/tmp/ugrp-review-352b.gMhh6q/review-extra-temp/test_all_saved_roles_in_both_m2/outputs/zone_wide_corridor_final_v3'), 'zone_wide_corridor_final_v3')
+
+/private/tmp/ugrp-review-352b.gMhh6q/tests/test_review_352b.py:81: AssertionError
+_ test_all_saved_roles_in_both_maps_and_host_error[True-zone_wide_door_geometry_v3] _
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-352b.gMhh6q/review-extra-temp/test_all_saved_roles_in_both_m3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x10ad5d100>
+map_id = 'zone_wide_door_geometry_v3', failed = True
+
+    @pytest.mark.parametrize('map_id', MAPS)
+    @pytest.mark.parametrize('failed', (False, True))
+    def test_all_saved_roles_in_both_maps_and_host_error(tmp_path, monkeypatch, map_id, failed):
+        class Backend(FakePhysics):
+            failure = RuntimeError('synthetic acquisition fault') if failed else None
+        fake_host(tmp_path, monkeypatch, Backend)
+        out = tmp_path / 'outputs' / map_id
+>       assert run.main(argv(out, map_id) + ['--execute', '--lock-owner', 'codex']) == (2 if failed else 0)
+E       AssertionError: assert 1 == 2
+E        +  where 1 = <function main at 0x114f12480>((['--check', 'calibration-unloaded', '--map-id', 'zone_wide_door_geometry_v3', '--seed', '911', ...] + ['--execute', '--lock-owner', 'codex']))
+E        +    where <function main at 0x114f12480> = run.main
+E        +    and   ['--check', 'calibration-unloaded', '--map-id', 'zone_wide_door_geometry_v3', '--seed', '911', ...] = argv(PosixPath('/private/tmp/ugrp-review-352b.gMhh6q/review-extra-temp/test_all_saved_roles_in_both_m3/outputs/zone_wide_door_geometry_v3'), 'zone_wide_door_geometry_v3')
+
+/private/tmp/ugrp-review-352b.gMhh6q/tests/test_review_352b.py:81: AssertionError
+=========================== short test summary info ============================
+XFAIL ../../../../../private/tmp/ugrp-review-352b.gMhh6q/tests/test_review_352b.py::test_documented_direct_preview_actually_accepts_both_maps[zone_wide_corridor_final_v3] - R3: PHYSICS_HANDOFF.md:66 still advertises the rejected v88 direct preview
+XFAIL ../../../../../private/tmp/ugrp-review-352b.gMhh6q/tests/test_review_352b.py::test_documented_direct_preview_actually_accepts_both_maps[zone_wide_door_geometry_v3] - R3: PHYSICS_HANDOFF.md:66 still advertises the rejected v88 direct preview
+2 failed, 34 passed, 2 xfailed in 249.18s (0:04:09)

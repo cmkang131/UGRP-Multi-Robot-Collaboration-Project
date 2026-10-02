@@ -1,0 +1,41 @@
+{
+  "head": "fa2119ca6926a66a317a455701cbc389d7d3fb58",
+  "review_base": "f5eb5636343525f41728ce6c4932c25e6ec3a273",
+  "runs": [
+    {
+      "file": "related.xml",
+      "counts": {
+        "passed": 204
+      }
+    },
+    {
+      "file": "variants.xml",
+      "counts": {
+        "passed": 34,
+        "failed": 2,
+        "xfail": 2
+      }
+    },
+    {
+      "file": "corrected.xml",
+      "counts": {
+        "passed": 5,
+        "xfail": 2
+      }
+    }
+  ],
+  "final_unique_counts": {
+    "passed": 241,
+    "xfail": 2
+  },
+  "test_harness_correction": "Initial HOST_ERROR main() return assertion expected 2; actual documented API returns int(failed)=1. Corrected assertion, reran all four success/error cases; not a production defect.",
+  "deliberate_mutations": {
+    "code_plus_registry_role_fields_both_maps": 6,
+    "isolated_plan_case_result_total_result_nested_case": 12,
+    "detected": 18
+  },
+  "scope": "Offline Python, fake acquisition, static Scene setup only; no physics/render/model, shared outputs, or real locks.",
+  "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "candidate_guard": "experiments/2026-10-01-calib-heldout-maps/review_fixes/guarded_pytest.py",
+  "final_test_sha256": "4a7aa970d32f4aed168479cadc5a38227a612d60cc124c9b41dc6fdc41eb2415"
+}
