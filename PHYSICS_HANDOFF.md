@@ -755,3 +755,81 @@ v84에서 빈 adapter를 성공으로 처리하는 경로는 없다.
 - [P01 계획](experiments/2026-09-30-e2e-p01-env/README.md), [P03 #312](https://github.com/kcm0127-dotcom/ugrp/pull/312)
 - [차단을 발견한 물리 큐 #337](https://github.com/kcm0127-dotcom/ugrp/pull/337)
 - [실행 버전 관리](docs/execution_versioning.md), [정적 등록부](configs/zone_final_environment_v84.json)
+
+
+# v91 빠른 검사·동시 SIM 수집 — DRAFT, 새 수집 미실행 (2026-10-03)
+
+번들 `zone-final-pair-v91`, workflow `zone-final-pair-heldout-v91` **3.3.0**.
+Refs #344. [번호·동등성·속도 기록](experiments/2026-10-03-calib-fast-guard/README.md).
+기존 v88/v90 및 위의 인계 절은 그대로 보존한다. 각 지도 370 SIM초 + reset 최대 5초,
+seed 911, pose 0.05초/RGB 0.2초, floor_light_v1/cargo_noslip_v1, weld OFF다.
+수집 역할은 HELD_OUT_VALIDATION, training_eligible=false, teacher_only=true이며,
+기존 frozen criterion B의 허용 번들을 변경하지 않는다.
+
+아래 두 명령은 **서로 다른 터미널에서 동시에** 실행할 수 있다. 새 SIM 슬롯은
+동기 SIM 수집용이며 wall 시간 비교용이 아니다. timing_sensitive=true인 physics 잠금은
+SIM 슬롯과 양방향 배타적이다. 기존 non-timing physics 잠금은 그대로 공존하며 건드리지 않는다.
+plan의 host_start와 result의 host_start/host_end에 부하 평균·SIM 동시 점유자·physics 점유자를 기록한다.
+기존 기본 실행기는 계속 physics 잠금을 요구한다.
+
+예상 소스는 이 DRAFT PR의 최종 인계에 기록한 **전체 40자리 SHA**로 고정한다.
+두 터미널에서 먼저 `export V91_SOURCE_SHA=<인계의 전체 SHA>`를 실행한다.
+명령은 현재 HEAD가 그 SHA와 다르거나 작업 트리가 더러우면 실행을 거부한다.
+아래 출력 루트는 새 코호트 전용이다. 이미 있으면 다른 새 접미사를 정하고, 지우거나 덮어쓰지 않는다.
+실제 수집은 렌더링 가능한 호스트의 물리 담당자가 실행한다. 이 구현 작업에서는 실행하지 않았다.
+
+## corridor — 터미널 1
+
+```bash
+bash <<'BASH'
+set -eu
+cd /Users/changmin/projects/ugrp-wt/calib-fast-guard
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+FINAL_SHA="${V91_SOURCE_SHA:?Set the exact 40-character source SHA from the final handoff}"
+FINAL_BRANCH=codex/calib-fast-guard
+RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-${FINAL_SHA:0:8}-20261003
+SLOT=sim-codex-v91-corridor
+test "$(git rev-parse HEAD)" = "$FINAL_SHA"
+test "$(git branch --show-current)" = "$FINAL_BRANCH"
+test -z "$(git status --porcelain --untracked-files=all)"
+"$PY" scripts/agent_lock.py acquire --owner codex --branch "$FINAL_BRANCH" \
+  --purpose 'v91 corridor held-out unloaded 370 SIM s, teacher only' \
+  --pid $$ --expected-minutes 20 --sim-slot "$SLOT"
+trap '"$PY" scripts/agent_lock.py release --owner codex --sim-slot "$SLOT"' EXIT
+"$PY" scripts/ugrp_session.py run final-pair-v91-heldout-corridor -- \
+  "$PY" -m scripts.sim_cli workflow run zone-final-pair-heldout-v91 -- \
+  --check calibration-unloaded --map-id zone_wide_corridor_final_v3 --seed 911 \
+  --expected-source-sha "$FINAL_SHA" --lock-owner codex --sim-slot "$SLOT" \
+  --output "$RUN_ROOT/zone_wide_corridor_final_v3" --execute
+BASH
+```
+
+## door geometry — 터미널 2
+
+```bash
+bash <<'BASH'
+set -eu
+cd /Users/changmin/projects/ugrp-wt/calib-fast-guard
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+FINAL_SHA="${V91_SOURCE_SHA:?Set the exact 40-character source SHA from the final handoff}"
+FINAL_BRANCH=codex/calib-fast-guard
+RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-${FINAL_SHA:0:8}-20261003
+SLOT=sim-codex-v91-door
+test "$(git rev-parse HEAD)" = "$FINAL_SHA"
+test "$(git branch --show-current)" = "$FINAL_BRANCH"
+test -z "$(git status --porcelain --untracked-files=all)"
+"$PY" scripts/agent_lock.py acquire --owner codex --branch "$FINAL_BRANCH" \
+  --purpose 'v91 door geometry held-out unloaded 370 SIM s, teacher only' \
+  --pid $$ --expected-minutes 20 --sim-slot "$SLOT"
+trap '"$PY" scripts/agent_lock.py release --owner codex --sim-slot "$SLOT"' EXIT
+"$PY" scripts/ugrp_session.py run final-pair-v91-heldout-door -- \
+  "$PY" -m scripts.sim_cli workflow run zone-final-pair-heldout-v91 -- \
+  --check calibration-unloaded --map-id zone_wide_door_geometry_v3 --seed 911 \
+  --expected-source-sha "$FINAL_SHA" --lock-owner codex --sim-slot "$SLOT" \
+  --output "$RUN_ROOT/zone_wide_door_geometry_v3" --execute
+BASH
+```
+
+완료·실패 raw와 부분 자료를 모두 보존하고 새 결과 회수 뒤 TensorBoard를 별도 등록한다.
+위 expected-minutes는 잠금의 예상 시각 메타데이터이며 측정한 처리 시간이나 실행 제한이 아니다.
+실제 두 지도 완주·동시 수집 throughput·criterion B 통과·학생/실물 성공은 아직 검증하지 않았다.

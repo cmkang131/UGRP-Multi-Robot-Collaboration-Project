@@ -30,7 +30,7 @@ def offline_only(monkeypatch):
     monkeypatch.setattr(VisionWorkerClient, '__init__', lambda *a, **k: pytest.fail('worker forbidden'))
 
 
-def test_v84_history_and_explicit_v6h_successors_keep_their_own_receipts():
+def test_v84_history_and_explicit_v6h_successors_keep_their_own_receipts(tmp_path):
     from tests.v6h_successor_pins import SEAL, successor_blob
     record = env.read(env.ROOT / RECORD)
     # #292's already-reviewed source/test migrations are separate from v84.
@@ -45,6 +45,12 @@ def test_v84_history_and_explicit_v6h_successors_keep_their_own_receipts():
     for path, sha in record['files_sha256'].items():
         original = subprocess.check_output(['git', 'show', f'{record["source_sha"]}:{path}'], cwd=env.ROOT)
         assert hashlib.sha256(original).hexdigest() == sha, path
+        if path == 'scripts/agent_lock.py':
+            # Only the new SIM-slot API is exempt from byte equality. Check
+            # historical/default admission, errors, receipts and release.
+            from tests.agent_lock_successor import assert_default_lock_compatibility
+            assert_default_lock_compatibility(original, tmp_path/'lock')
+            continue
         expected = (subprocess.check_output(['git', 'show', f'{successors[path]}:{path}'], cwd=env.ROOT)
                     if path in successors else original)
         actual = successor_blob(path) if successors.get(path) == SEAL else (env.ROOT / path).read_bytes()

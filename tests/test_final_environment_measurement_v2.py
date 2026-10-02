@@ -42,7 +42,7 @@ def fake_path_admission(monkeypatch):
         'admitted': True, 'reason': 'TEST_FAKE_ONLY'})
 
 
-def test_v1_and_v87_history_remain_separate_from_sealed_v6h_successors():
+def test_v1_and_v87_history_remain_separate_from_sealed_v6h_successors(tmp_path):
     from tests.v6h_successor_pins import SEAL, successor_blob
     record = env.read(env.ROOT / 'experiments/2026-10-01-final-env-measurement-v2/v87_preservation.json')
     history = '04eb11c6a001f2a7d2ab916765d59b3661c06efe'
@@ -51,6 +51,12 @@ def test_v1_and_v87_history_remain_separate_from_sealed_v6h_successors():
     for path, sha in record['files_sha256'].items():
         original = subprocess.check_output(['git', 'show', f'{history}:{path}'], cwd=env.ROOT)
         assert hashlib.sha256(original).hexdigest() == sha, path
+        if path == 'scripts/agent_lock.py':
+            # V91 adds an explicit SIM-slot API; preserve this historical
+            # receipt and prove the default lock API still matches it.
+            from tests.agent_lock_successor import assert_default_lock_compatibility
+            assert_default_lock_compatibility(original, tmp_path/'lock')
+            continue
         expected = (subprocess.check_output(['git', 'show', f'{SEAL}:{path}'], cwd=env.ROOT)
                     if path in successors else original)
         actual = successor_blob(path) if path in successors else (env.ROOT / path).read_bytes()
