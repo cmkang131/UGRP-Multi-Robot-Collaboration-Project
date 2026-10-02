@@ -25,9 +25,26 @@ class Inputs:
     def __init__(self):
         self.files = {}
         self.trees = {}
+        self.paths = set()
+
+    def protect(self, path):
+        """Keep both aliases and targets, including incomplete collection roots."""
+        path = Path(path).absolute()
+        resolved = path.resolve()
+        self.paths.update((path, resolved))
+        return resolved
+
+    def reject_output_overlap(self, *outputs):
+        # Resolve again at the write boundary, including any retargeted links.
+        inputs = {p.resolve() for p in self.paths}
+        for output in outputs:
+            output = Path(output).resolve()
+            for path in inputs:
+                if output.is_relative_to(path) or path.is_relative_to(output):
+                    raise ValueError(f'output must be separate from every input: {output} overlaps {path}')
 
     def add(self, path):
-        path = Path(path).resolve(strict=True)
+        path = self.protect(path).resolve(strict=True)
         row = {'path': str(path), 'sha256': file_sha(path), 'bytes': path.stat().st_size}
         old = self.files.setdefault(str(path), row)
         if old != row:
@@ -73,7 +90,8 @@ def plan_arrays(plan):
 
 
 def load_collection(root, profile, inputs):
-    root = Path(root).resolve()
+    root = inputs.protect(root)
+    folder = inputs.protect(root/MAP_ID)
     if not (root/'result.json').is_file():
         raise ValueError('collection completion record missing (not read while running)')
     result = inputs.json(root/'result.json')
@@ -85,8 +103,10 @@ def load_collection(root, profile, inputs):
     for path in root.iterdir():
         if path.is_file():
             inputs.add(path)
-    inputs.trees[root] = {str(p.relative_to(root)) for p in root.rglob('*') if p.is_file()}
-    folder = root/MAP_ID
+    paths = list(root.rglob('*'))
+    for path in paths:
+        inputs.protect(path)
+    inputs.trees[root] = {str(p.relative_to(root)) for p in paths if p.is_file()}
     manifest = inputs.json(folder/'artifacts.sha256.json')
     actual = {str(p.relative_to(folder)) for p in folder.rglob('*')
               if p.is_file() and p.name != 'artifacts.sha256.json'}
@@ -215,6 +235,10 @@ def loaded_mask(data, inputs, gate):
     rotation = rotation_matrices([np.asarray(r['beam_rotation']).reshape(3, 3) for r in trace], len(t))
     mask, reasons = [], Counter()
     for i, (tr, cr) in enumerate(zip(trace, contact)):
+        for record in (tr, cr):
+            time = record.get('t')
+            if isinstance(time, bool) or not isinstance(time, (int, float)) or not np.isfinite(time):
+                raise ValueError('contact/beam clock must be a finite numeric time')
         xyz = np.asarray(tr['beam_xyz_m'], float)
         if (xyz.shape != (3,) or not np.isfinite(xyz).all() or abs(tr['t']-t[i]) > 1e-7
                 or abs(cr['t']-t[i]) > 1e-7 or 'active_weld_ids' not in cr):

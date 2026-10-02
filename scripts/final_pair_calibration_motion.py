@@ -7,6 +7,7 @@ from __future__ import annotations
 import numpy as np
 from scipy.optimize import least_squares, nnls
 
+from harness.zone_final_pair_excitation import design
 from scripts import fit_consumer_criterion_b as r4
 from scripts import validate_consumer_criterion_b as b
 
@@ -52,17 +53,44 @@ def verify_fit(opt, count):
     return {'rank': rank, 'success': True, 'rmse': float(np.sqrt(np.mean(opt.fun**2))), 'nfev': opt.nfev}
 
 
+def deadband_support(data, gate):
+    """Require the four signed plateaus in the surviving step-fit windows.
+
+    Zero-command coast and PRBS cannot stand in for the below-breakaway
+    command. Check every horizon after load selection, separately per robot.
+    """
+    levels = design('calibration-loaded')['magnitudes']
+    support = {}
+    for axis, name in enumerate(b.AXES):
+        rows = []
+        for h in gate['horizons_s']:
+            starts, k = b.c.windows(data['segments'][name]['steps'], h, data['dt'])
+            for role, magnitude in zip(('stop', 'ramp_low', 'ramp_high', 'saturation'), levels):
+                for sign in (-1, 1):
+                    command = sign*magnitude
+                    outside = np.r_[0, np.cumsum(data['u'][:, axis] != command)]
+                    count = int(np.count_nonzero(outside[starts+k] == outside[starts]))
+                    if not count:
+                        raise ValueError(f'{name}: loaded deadband support missing signed {role} '
+                                         f'level {command:+g} in valid {h:g}s fit windows')
+                    rows.append({'role': role, 'command': command, 'horizon_s': h, 'windows': count})
+        support[name] = rows
+    return support
+
+
 def fit_shared(data_list, gate, *, deadband=False):
     """Restriction of r4 family to the loader's one scalar stopping tau.
 
     Optimize this restriction; never average independently fitted stop taus.
     Loaded adds the v6g ramp with measured breakaway and saturation support.
     """
-    cached = []
+    cached, support = [], []
     for data in data_list:
         for axis, name in enumerate(b.AXES):
             if not b.axis_supported(data, axis, gate):
                 raise ValueError(f'{name}: both signed steps/PRBS and complete horizons required')
+        if deadband:
+            support.append(deadband_support(data, gate))
         groups = [(axis, s, k, b.c.endpoint_targets(data['pose'], s, k)[:, axis])
                   for axis, _, _, s, k in window_groups(split_data(data, 'steps'), gate)]
         cached.append((data, groups))
@@ -101,7 +129,15 @@ def fit_shared(data_list, gate, *, deadband=False):
     distance = np.minimum(opt.x-np.asarray(lower), np.asarray(upper)-opt.x)
     if np.any(distance < 1e-6):
         raise ValueError('shared fit touches parameter bounds')
-    return profile(opt.x), report
+    fitted = profile(opt.x)
+    if deadband:
+        stop, ramp_low, ramp_high, saturation = design('calibration-loaded')['magnitudes']
+        c0, u1 = np.asarray(fitted['deadband']['c0']), np.asarray(fitted['deadband']['u1'])
+        if not np.all((stop < c0) & (c0 < ramp_low) & (ramp_low < ramp_high)
+                      & (ramp_high < u1) & (u1 <= saturation)):
+            raise ValueError('observed loaded levels do not bracket stop, two ramps and saturation')
+        report['deadband_support'] = support
+    return fitted, report
 
 
 def budget_groups(data, profile, gate):

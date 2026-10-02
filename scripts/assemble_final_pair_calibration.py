@@ -119,11 +119,11 @@ def assemble(metadata, sections):
 
 def run(raw_root, output):
     raw_root, output = Path(raw_root).resolve(), Path(output).resolve()
-    if output == raw_root or output.is_relative_to(raw_root) or raw_root.is_relative_to(output):
-        raise ValueError('output must be separate from raw')
+    inputs = Inputs()
+    inputs.protect(raw_root)
+    inputs.reject_output_overlap(output)
     if output.exists():
         raise FileExistsError(output)
-    inputs = Inputs()
     bp_blob = inputs.read(CRITERION)
     if hashlib.sha256(bp_blob).hexdigest() != CRITERION_SHA256:
         raise ValueError('frozen B-prime hash mismatch')
@@ -234,6 +234,7 @@ def run(raw_root, output):
     except (ValueError, KeyError, TypeError) as exc:
         diagnostics['camera'] = {'error': str(exc)}
         sections[('camera_models',)] = sections[('pan_base_yaw',)] = {'accepted': False, 'reason': str(exc)}
+    inputs.reject_output_overlap(output)
     inputs.verify()
     manifest = {'schema': 'ugrp.v88_calibration_inputs.v1', 'files': sorted(inputs.files.values(), key=lambda row: row['path']),
         'criterion_B_prime_sha256': CRITERION_SHA256, 'criterion_B_sha256': b.CRITERION_SHA256,
@@ -251,6 +252,7 @@ def run(raw_root, output):
         'criterion_B_prime_sha256': CRITERION_SHA256, 'criterion_B_sha256': b.CRITERION_SHA256,
         'collection_sources': {k: d['bundle']['source_sha'] for k, d in data.items()}}
     cal = assemble(metadata, sections)
+    inputs.reject_output_overlap(output)
     inputs.verify()
     output.mkdir(parents=True, exist_ok=False)
     (output/'input_manifest.json').write_text(manifest_blob)

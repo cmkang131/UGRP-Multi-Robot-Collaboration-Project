@@ -199,6 +199,57 @@ def test_input_changes_fail_closed(tmp_path):
         inputs.verify()
 
 
+@pytest.mark.parametrize('kind', ['collection', 'case', 'file'])
+@pytest.mark.parametrize('relation', ['same', 'child', 'parent'])
+def test_all_resolved_input_paths_reject_overlapping_outputs(tmp_path, kind, relation):
+    target = tmp_path/'external'/kind
+    target.parent.mkdir()
+    if kind == 'file':
+        target.write_text('input bytes')
+    else:
+        target.mkdir()
+    alias = tmp_path/'link'
+    alias.symlink_to(target, target_is_directory=kind != 'file')
+    inputs = raw.Inputs()
+    if kind == 'file':
+        inputs.read(alias)
+    else:
+        inputs.protect(alias)
+    output = {'same': target, 'child': target/'new', 'parent': target.parent}[relation]
+    with pytest.raises(ValueError, match='separate from every input'):
+        inputs.reject_output_overlap(output)
+    inputs.reject_output_overlap(tmp_path/'unrelated-new-output')
+
+
+def test_output_check_resolves_retargeted_input_alias(tmp_path):
+    original, moved = tmp_path/'original', tmp_path/'moved'
+    original.mkdir()
+    moved.mkdir()
+    alias = tmp_path/'alias'
+    alias.symlink_to(original, target_is_directory=True)
+    inputs = raw.Inputs()
+    inputs.protect(alias)
+    alias.unlink()
+    alias.symlink_to(moved, target_is_directory=True)
+    for target in (original, moved):
+        with pytest.raises(ValueError, match='overlaps'):
+            inputs.reject_output_overlap(target/'new')
+
+
+def test_incomplete_collection_and_case_links_are_protected_before_output(tmp_path):
+    root, target = tmp_path/'collection', tmp_path/'external-case'
+    root.mkdir()
+    target.mkdir()
+    (root/MAP_ID).symlink_to(target, target_is_directory=True)
+    inputs = raw.Inputs()
+    with pytest.raises(ValueError, match='completion record'):
+        raw.load_collection(root, 'loaded', inputs)
+    for output in (root/'new', target/'new'):
+        with pytest.raises(ValueError, match='overlaps'):
+            inputs.reject_output_overlap(output)
+        assert not output.exists()
+
+
 def test_b_prime_motion_fit_and_heldout_independence():
     data, actual = synthetic_data()
     profile, report = motion.fit_profile([data], b.criterion())
@@ -236,12 +287,59 @@ def test_loaded_ramp_fit_recovers_measured_parameters():
     data, actual = synthetic_data('loaded', loaded=True)
     profile, report = motion.fit_shared([data], b.criterion(), deadband=True)
     assert report['success']
+    assert len(report['deadband_support']) == 1
     for key in ('gain', 'tau_axis_s', 'tau_stop_s', 'deadband'):
         if key == 'deadband':
             for sub in ('c0', 'u1'):
                 np.testing.assert_allclose(profile[key][sub], actual[key][sub], atol=2e-6)
         else:
             np.testing.assert_allclose(profile[key], actual[key], atol=2e-6)
+
+
+@pytest.mark.parametrize('axis', range(3))
+@pytest.mark.parametrize('command', [-.006, .006, -.015, .015, -.025, .025, -.04, .04])
+def test_loaded_fit_rejects_each_missing_signed_level_after_load_selection(axis, command):
+    data, _ = synthetic_data('loaded', loaded=True)
+    valid = np.ones(len(data['pose']), bool)
+    for start, end in data['segments'][b.AXES[axis]]['steps']:
+        removed = np.flatnonzero(data['u'][start:end, axis] == command) + start
+        valid[removed] = False
+    data['segments'] = raw.selected_segments(data['segments'], valid)
+    # Other magnitudes/signs and PRBS survive; neither rank nor coast is support.
+    with pytest.raises(ValueError, match='loaded deadband support missing signed'):
+        motion.fit_shared([data], b.criterion(), deadband=True)
+
+
+def test_loaded_support_requires_real_fit_windows_and_each_robot():
+    data, _ = synthetic_data('loaded', loaded=True)
+    damaged = copy.deepcopy(data)
+    valid = np.ones(len(data['pose']), bool)
+    for start, end in damaged['segments']['forward']['steps']:
+        if damaged['u'][start, 0] == .006:
+            valid[start+1:end] = False
+    damaged['segments'] = raw.selected_segments(damaged['segments'], valid)
+    with pytest.raises(ValueError, match='forward: loaded deadband support'):
+        motion.fit_shared([data, damaged], b.criterion(), deadband=True)
+
+
+@pytest.mark.parametrize('record', ['trajectory.jsonl', 'contacts.jsonl'])
+@pytest.mark.parametrize('time', [float('nan'), float('inf'), -float('inf'), '1.3', None, True])
+def test_loaded_clock_requires_finite_numbers(unloaded_raw, record, time):
+    data = raw.load_collection(unloaded_raw, 'unloaded', raw.Inputs())
+    class InvalidTime(raw.Inputs):
+        def rows(self, path):
+            rows = super().rows(path)
+            if path.name == record:
+                rows[0]['t'] = time
+            return rows
+    with pytest.raises(ValueError, match='finite numeric time'):
+        raw.loaded_mask(data, InvalidTime(), json.loads(a.CRITERION.read_text())['loaded_selection'])
+
+
+def test_review_351_regressions_are_in_ci_once():
+    from scripts import run_ci_tests as runner
+    files = runner.collect_test_files(runner.ROOT, runner.TEST_PATTERNS)
+    assert files.count('tests/test_review_351.py') == 1
 
 
 def test_noise_inflation_covers_training_and_lower_value_fails():
