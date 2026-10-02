@@ -1,0 +1,52 @@
+{
+  "head": "f476e61ff0bbfc264533aa01248314601a705118",
+  "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "python_version": "3.12.13",
+  "counts": {
+    "passed": 219,
+    "failed": 0,
+    "skipped": 0,
+    "xfail": 0
+  },
+  "modules": {
+    "tests.test_review_352c": 12,
+    "tests.test_review_352": 25,
+    "tests.test_zone_final_pair_heldout": 43,
+    "tests.test_zone_final_pair_v3": 31,
+    "tests.test_zone_final_pair_review_fixes": 37,
+    "tests.test_ci_sharding": 68,
+    "tests.test_simulation_workflow_manager.WorkflowManagerTests": 3
+  },
+  "review_test": "tests/test_review_352c.py",
+  "prior_test_copied_without_edits": "tests/test_review_352b.py at 3a6070b30dd3e2608b7ffb6cf6ad95d460452a6c",
+  "runner": "experiments/2026-10-01-calib-heldout-maps/review_fixes/guarded_pytest.py",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "pytest_flags": [
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=<scratch>/test-tmp"
+  ],
+  "scope": "Offline documentation/parser/plan/fake-backend/static checks only; no native physics/render/model calls or shared outputs access. Fake host bypasses real source/disk/lock admission.",
+  "file_sha256": {
+    "tests/test_review_352c.py": "f1c6ee5320fdd5de593d4c82609e132875d45aa4c8f816bec1f29fcd44eddb9d",
+    "tests/test_review_352b.py": "4a7aa970d32f4aed168479cadc5a38227a612d60cc124c9b41dc6fdc41eb2415",
+    "experiments/2026-10-01-calib-heldout-maps/review_352c/related.log": "0602f7a1c79d1f9dea27ef1b2dfda822560f281de634eaf9388fa976bbf16944",
+    "experiments/2026-10-01-calib-heldout-maps/review_352c/related.xml": "ccc2576d340f41bdf8e4bf093f68e596b17037e43d22dc360dc5876f93af755b",
+    "experiments/2026-10-01-calib-heldout-maps/review_352c/static.json": "29f602d0861a99a700eaab3183b3c72df2e0dbb938bc93f3f09883841847f895",
+    "experiments/2026-10-01-calib-heldout-maps/review_352c/verify_static.py": "4bdbdffebfe40f5712d8ed875694a2bb477064b5b20bcb33cdf6627bd7dda3fa"
+  },
+  "test_selection": [
+    "tests/test_review_352c.py",
+    "tests/test_review_352.py",
+    "tests/test_zone_final_pair_heldout.py",
+    "tests/test_zone_final_pair_v3.py",
+    "tests/test_zone_final_pair_review_fixes.py",
+    "tests/test_ci_sharding.py",
+    "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_catalog_has_thirty_selectable_workflows_and_distinct_adapters",
+    "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan",
+    "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_plan_is_read_only_and_resolves_default_artifact"
+  ]
+}

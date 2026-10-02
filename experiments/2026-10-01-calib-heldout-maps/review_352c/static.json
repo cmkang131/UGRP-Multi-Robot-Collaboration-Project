@@ -1,0 +1,68 @@
+{
+  "base": "fa2119ca6926a66a317a455701cbc389d7d3fb58",
+  "fix": "6b1ba45bb4ded61161cab3891925526ff5c42b12",
+  "head": "f476e61ff0bbfc264533aa01248314601a705118",
+  "archive_files_verified": 9128,
+  "changed_files": [
+    "PHYSICS_HANDOFF.md",
+    "experiments/2026-10-01-calib-heldout-maps/handoff_fix/README.md",
+    "experiments/2026-10-01-calib-heldout-maps/handoff_fix/before.log",
+    "experiments/2026-10-01-calib-heldout-maps/handoff_fix/preservation.json",
+    "experiments/2026-10-01-calib-heldout-maps/handoff_fix/related.log",
+    "experiments/2026-10-01-calib-heldout-maps/handoff_fix/related.xml",
+    "experiments/2026-10-01-calib-heldout-maps/handoff_fix/review.log",
+    "experiments/2026-10-01-calib-heldout-maps/handoff_fix/review.xml",
+    "experiments/2026-10-01-calib-heldout-maps/handoff_fix/verification.json",
+    "experiments/2026-10-01-calib-heldout-maps/handoff_fix/verify_preservation.py",
+    "tests/test_review_352.py"
+  ],
+  "merge_changed_files": [
+    ".github/workflows/tests.yml",
+    "CONTRIBUTING.md"
+  ],
+  "frozen_files_verified": 29,
+  "preserved_files": {
+    "configs/zone_final_pair_v88.json": "de531087350712a29b17dbab94767622d070cd4bf4bb6bed193968f1e7e09354",
+    "configs/zone_final_pair_v88_clearance.json": "720a216cf7b58c7d26fdea8ae210b678437a2e8801300eff7686318ecddddf13",
+    "configs/final_environment_measurement_v1.json": "7d19bcc3e88dac4f906d4f0db9b5aef7fb7969e795b3c709a632ea45962d045e",
+    "harness/zone_final_pair_calibration.py": "4a54f79930b0897559cef659c8949ba6ae4aed9b6414e54ed79351cf80dea025",
+    "harness/zone_final_pair_excitation.py": "618da65836acf0bc79e72d71b9e6d9415ad0e85924fb5769b2339f62cca9b258",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
+    "scripts/validate_consumer_criterion_b.py": "8d2a693a6e3bbca79a8214fd388bff79a0609400f07de831ad9be3cf22e85a88",
+    "configs/simulation_workflows.d/final_environment_measurement_v89.json": "44e48591bad779e50ecb67432febd8d415f2afc4d7b4ff2d61ca08b42c7d8a15",
+    "configs/simulation_workflows.d/final_environment_v84.json": "38e47154c995f60726bae8b53441916a31c0535401a2eed7f414ea4d1412c369",
+    "configs/simulation_workflows.d/final_environment_v87.json": "259401ab497eeb2929330e4789843d6547eb3d72086102f288d6dce8dc656b22",
+    "configs/simulation_workflows.d/final_pair_v88.json": "c6abe92e9996e2115bc8e072d80910a47eef503b91080b1aacff549b8f0f3429",
+    "configs/simulation_workflows.json": "fc5bdf913a9f672bb3adb9597e1925b88a163a7ce1a1b30fb4fed9cf7ad0c813"
+  },
+  "v88": {
+    "calibration-unloaded": {
+      "bundle": "1f4685fe5240ab91bb1982b6db8e3ec63b5689959e9afc787b2c38f55aaf3d94",
+      "plan": "7f6d665104d953ce3ea8751b652963c31ab902ac33574d7acdcd86e54e8d8d36",
+      "identical_source_files": 239
+    },
+    "calibration-loaded": {
+      "bundle": "10605b2b433f8acb923e6802b490cb32c19d9c7222324b9ebe74f470ca7721d3",
+      "plan": "ac640e5b194da11d1b58df676630aee058b0b8c9f0a89eff8e42984fd7b8c5dd",
+      "identical_source_files": 239
+    },
+    "calibration-fine": {
+      "bundle": "ab0bb9a4ba91a88ba316906ffc59e01b42ed882b676101ccda5019f71fae6bd5",
+      "plan": "fea4037700fa0a67305968fdef1f653e24321358fb13babf2fe8280848a8c176",
+      "identical_source_files": 239
+    }
+  },
+  "v90": {
+    "zone_wide_door_geometry_v3": {
+      "bundle": "5945a4cc618131e712e95e0786e6cc6e0ad159bd766544eb634a5868bccfda81",
+      "identical_source_files": 247
+    },
+    "zone_wide_corridor_final_v3": {
+      "bundle": "1a2e7cad42fa9ec8b7f9a2114236fd325ea94ac99b247ccaae9c4c2d6b4f9601",
+      "identical_source_files": 248
+    }
+  },
+  "bundle_numbers_unchanged": true,
+  "collection_shell_bytes_unchanged": true,
+  "old_handoff_sections_unchanged": true
+}
