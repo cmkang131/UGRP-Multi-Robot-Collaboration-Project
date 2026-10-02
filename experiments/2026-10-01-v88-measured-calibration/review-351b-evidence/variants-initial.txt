@@ -1,0 +1,96 @@
+.......F....xxx.                                                         [100%]
+=================================== FAILURES ===================================
+_______ test_nonfinite_times_in_each_sample_record_fail_closed[command] ________
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_nonfinite_times_in_each_s1')
+record = 'command'
+
+    @pytest.mark.parametrize('record', ['pose', 'command', 'frame', 'label', 'beam', 'contact'])
+    def test_nonfinite_times_in_each_sample_record_fail_closed(tmp_path, record):
+>       result = probe("""
+    collection = fixture.synthetic_collection(tmp/'actual', 'unloaded')
+    record = """ + repr(record) + """
+    rejections = []
+    for rid in ('r1','r2'):
+        for value in (float('nan'),float('inf'),-float('inf')):
+            class BadTime(raw.Inputs):
+                def rows(self,path):
+                    rows = super().rows(path)
+                    paths = {'pose':f'eval_only/{rid}/pose.jsonl',
+                             'command':f'robots/{rid}/commands.jsonl',
+                             'frame':f'robots/{rid}/frames.jsonl',
+                             'label':f'eval_only/{rid}/camera_labels.jsonl',
+                             'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl'}
+                    if path == collection/raw.MAP_ID/paths[record]:
+                        rows[1 if record == 'command' else 0]['t'] = value
+                    return rows
+            try:
+                inputs = BadTime()
+                data = raw.load_collection(collection,'unloaded',inputs)
+                if record in ('beam','contact'):
+                    raw.loaded_mask(data,inputs,json.loads(a.CRITERION.read_text())['loaded_selection'])
+            except ValueError as exc:
+                rejections.append({'robot':rid,'time':str(value),'rejected':True,'reason':str(exc)})
+            else:
+                rejections.append({'robot':rid,'time':str(value),'rejected':False})
+    print(json.dumps({'record':record,'cases':rejections}))
+    """, tmp_path)
+
+tests/test_review_351b.py:93:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+source = "\ncollection = fixture.synthetic_collection(tmp/'actual', 'unloaded')\nrecord = 'command'\nrejections = []\nfor rid i...ns.append({'robot':rid,'time':str(value),'rejected':False})\nprint(json.dumps({'record':record,'cases':rejections}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_nonfinite_times_in_each_s1')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+>           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "<string>", line 36, in <module>
+E               data = raw.load_collection(collection,'unloaded',inputs)
+E             File "/private/tmp/ugrp-review-351b.r28ot662/scripts/final_pair_calibration_io.py", line 166, in load_collection
+E               commands = inputs.rows(folder/f'robots/{rid}/commands.jsonl')
+E             File "<string>", line 32, in rows
+E               rows[1 if record == 'command' else 0]['t'] = value
+E               ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           IndexError: list index out of range
+
+tests/test_review_351.py:55: RuntimeError
+- generated xml file: /Users/changmin/projects/ugrp-wt/review-351/experiments/2026-10-01-v88-measured-calibration/review-351b-evidence/variants.xml -
+=========================== short test summary info ============================
+XFAIL tests/test_review_351b.py::test_initial_command_nan_is_rejected_from_real_jsonl[unloaded] - R3b: initial_servo_command NaN still bypasses the clock check
+XFAIL tests/test_review_351b.py::test_initial_command_nan_is_rejected_from_real_jsonl[fine] - R3b: initial_servo_command NaN still bypasses the clock check
+XFAIL tests/test_review_351b.py::test_initial_command_nan_is_rejected_from_real_jsonl[loaded] - R3b: initial_servo_command NaN still bypasses the clock check
+1 failed, 12 passed, 3 xfailed in 215.48s (0:03:35)

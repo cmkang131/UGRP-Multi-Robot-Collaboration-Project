@@ -1,0 +1,33 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+______ test_pipeline_rechecks_input_after_assembly_before_creating_output ______
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-351b.r28ot662/M4/test_pipeline_rechecks_input_a0')
+
+    def test_pipeline_rechecks_input_after_assembly_before_creating_output(tmp_path):
+        result = probe("""
+    collection = fixture.synthetic_collection(tmp/'actual', 'unloaded')
+    original_assemble = a.assemble
+    def change_input_during_assembly(metadata, sections):
+        path = collection/'result.json'
+        path.write_text(path.read_text()+'\\n')
+        return original_assemble(metadata, sections)
+    a.assemble = change_input_during_assembly
+    output = tmp/'new-output'
+    try:
+        a.run(collection.parent, output)
+    except ValueError as exc:
+        rejected, reason = True, str(exc)
+    else:
+        rejected, reason = False, None
+    print(json.dumps({'rejected': rejected, 'reason': reason, 'output_created': output.exists()}))
+    """, tmp_path)
+>       assert result["rejected"] and "input changed" in result["reason"] and not result["output_created"], result
+E       AssertionError: {'output_created': True, 'reason': None, 'rejected': False}
+E       assert (False)
+
+tests/test_review_351.py:160: AssertionError
+- generated xml file: /Users/changmin/projects/ugrp-wt/review-351/experiments/2026-10-01-v88-measured-calibration/review-351b-evidence/M4.xml -
+=========================== short test summary info ============================
+FAILED tests/test_review_351.py::test_pipeline_rechecks_input_after_assembly_before_creating_output
+1 failed in 11.88s

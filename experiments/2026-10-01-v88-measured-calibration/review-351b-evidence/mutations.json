@@ -1,0 +1,24 @@
+[
+  {
+    "id": "M4",
+    "path": "scripts/assemble_final_pair_calibration.py",
+    "before": "    inputs.verify()\n",
+    "after": "",
+    "replacements": 2,
+    "returncode": 1,
+    "assertion_failure": true,
+    "test": "test_pipeline_rechecks_input_after_assembly_before_creating_output",
+    "restored_sha256": "b70f8dd23e4e5372ad33c638ebb4e13e2ea4c644bcf355c8d51d5fe03b9b6fba"
+  },
+  {
+    "id": "M5",
+    "path": "scripts/final_pair_calibration_motion.py",
+    "before": "budget_groups(split_data(data, 'steps'), profile, gate)",
+    "after": "budget_groups(data, profile, gate)",
+    "replacements": 1,
+    "returncode": 1,
+    "assertion_failure": true,
+    "test": "test_validation_pose_contamination_cannot_select_training_noise",
+    "restored_sha256": "24acced13f296d7805536a2bd3d790a9186a61906d86de79fa0412e213b9e925"
+  }
+]

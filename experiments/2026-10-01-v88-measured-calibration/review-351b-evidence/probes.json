@@ -1,0 +1,511 @@
+{
+  "original-tests/test_loaded_deadband_requires_0": {
+    "accepted": false,
+    "observed_magnitudes": {
+      "forward": [
+        0.015,
+        0.025,
+        0.04
+      ],
+      "left": [
+        0.015,
+        0.025,
+        0.04
+      ],
+      "rotate": [
+        0.015,
+        0.025,
+        0.04
+      ]
+    },
+    "detail": "forward: loaded deadband support missing signed stop level -0.006 in valid 0.2s fit windows"
+  },
+  "original-tests/test_loaded_evidence_requires_0": {
+    "accepted": false,
+    "detail": "contact/beam clock must be a finite numeric time",
+    "record": "trajectory.jsonl"
+  },
+  "original-tests/test_loaded_evidence_requires_1": {
+    "accepted": false,
+    "detail": "contact/beam clock must be a finite numeric time",
+    "record": "contacts.jsonl"
+  },
+  "original-tests/test_output_cannot_be_inside_a0": {
+    "rejected": true,
+    "reason": "output must be separate from every input: /private/tmp/ugrp-review-351b.r28ot662/original-tests/test_output_cannot_be_inside_a0/actual/calibration-unloaded/review-output-must-not-exist overlaps /private/tmp/ugrp-review-351b.r28ot662/original-tests/test_output_cannot_be_inside_a0/actual/calibration-unloaded",
+    "status": null,
+    "raw_modified": false,
+    "output_files": []
+  },
+  "original-tests/test_pipeline_rechecks_input_a0": {
+    "rejected": true,
+    "reason": "input changed: /private/tmp/ugrp-review-351b.r28ot662/original-tests/test_pipeline_rechecks_input_a0/actual/calibration-unloaded/result.json",
+    "output_created": false
+  },
+  "original-tests/test_validation_pose_contamina0": {
+    "same_noise": true,
+    "clean_noise": [
+      0.01538,
+      0.00504,
+      0.01406
+    ],
+    "dirty_noise": [
+      0.01538,
+      0.00504,
+      0.01406
+    ],
+    "clean_accepted": true,
+    "dirty_accepted": false
+  },
+  "variant-tests/test_all_three_two_door_collec0": {
+    "status": "PARTIAL",
+    "audits": {
+      "unloaded": "PASS",
+      "fine": "PASS",
+      "loaded": "PASS"
+    },
+    "axis_pass": {
+      "forward": null,
+      "left": null,
+      "rotate": null
+    },
+    "missing_unloaded": [
+      {
+        "field": "params.motion.gain",
+        "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+      },
+      {
+        "field": "params.motion.tau_s",
+        "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+      },
+      {
+        "field": "params.motion.tau_axis_s",
+        "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+      },
+      {
+        "field": "params.motion.tau_stop_s",
+        "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+      },
+      {
+        "field": "params.motion.noise_rel",
+        "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+      },
+      {
+        "field": "params.motion.noise_abs",
+        "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+      },
+      {
+        "field": "params.motion.scale_std",
+        "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+      },
+      {
+        "field": "params.motion.scale_walk",
+        "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+      },
+      {
+        "field": "params.motion.use_scale",
+        "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+      },
+      {
+        "field": "params.motion.rest_noise",
+        "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+      }
+    ]
+  },
+  "variant-tests/test_deadband_variants_need_bo0": {
+    "control": true,
+    "cases": [
+      {
+        "case": "one_robot",
+        "rejected": true,
+        "reason": "forward: loaded deadband support missing signed stop level +0.006 in valid 0.2s fit windows"
+      },
+      {
+        "case": "long_horizon",
+        "rejected": true,
+        "reason": "forward: loaded deadband support missing signed stop level +0.006 in valid 3s fit windows"
+      },
+      {
+        "case": "coast_only",
+        "rejected": true,
+        "reason": "forward: loaded deadband support missing signed stop level +0.006 in valid 0.2s fit windows"
+      },
+      {
+        "case": "fine_commands",
+        "rejected": true,
+        "reason": "forward: loaded deadband support missing signed stop level -0.006 in valid 0.2s fit windows"
+      },
+      {
+        "case": "unloaded_commands",
+        "rejected": true,
+        "reason": "forward: loaded deadband support missing signed stop level -0.006 in valid 0.2s fit windows"
+      }
+    ]
+  },
+  "variant-tests/test_initial_command_nan_is_re0": {
+    "profile": "unloaded",
+    "cases": [
+      {
+        "robot": "r1",
+        "rejected": false,
+        "initial_time_finite": false
+      },
+      {
+        "robot": "r2",
+        "rejected": false,
+        "initial_time_finite": false
+      }
+    ]
+  },
+  "variant-tests/test_initial_command_nan_is_re1": {
+    "profile": "fine",
+    "cases": [
+      {
+        "robot": "r1",
+        "rejected": false,
+        "initial_time_finite": false
+      },
+      {
+        "robot": "r2",
+        "rejected": false,
+        "initial_time_finite": false
+      }
+    ]
+  },
+  "variant-tests/test_initial_command_nan_is_re2": {
+    "profile": "loaded",
+    "cases": [
+      {
+        "robot": "r1",
+        "rejected": false,
+        "initial_time_finite": false
+      },
+      {
+        "robot": "r2",
+        "rejected": false,
+        "initial_time_finite": false
+      }
+    ]
+  },
+  "variant-tests/test_nonfinite_times_in_each_s0": {
+    "record": "pose",
+    "cases": [
+      {
+        "robot": "r1",
+        "time": "nan",
+        "rejected": true,
+        "reason": "missing/invalid pose or pose clock"
+      },
+      {
+        "robot": "r1",
+        "time": "inf",
+        "rejected": true,
+        "reason": "missing/invalid pose or pose clock"
+      },
+      {
+        "robot": "r1",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "missing/invalid pose or pose clock"
+      },
+      {
+        "robot": "r2",
+        "time": "nan",
+        "rejected": true,
+        "reason": "missing/invalid pose or pose clock"
+      },
+      {
+        "robot": "r2",
+        "time": "inf",
+        "rejected": true,
+        "reason": "missing/invalid pose or pose clock"
+      },
+      {
+        "robot": "r2",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "missing/invalid pose or pose clock"
+      }
+    ]
+  },
+  "variant-tests/test_nonfinite_times_in_each_s2": {
+    "record": "frame",
+    "cases": [
+      {
+        "robot": "r1",
+        "time": "nan",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      },
+      {
+        "robot": "r1",
+        "time": "inf",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      },
+      {
+        "robot": "r1",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      },
+      {
+        "robot": "r2",
+        "time": "nan",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      },
+      {
+        "robot": "r2",
+        "time": "inf",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      },
+      {
+        "robot": "r2",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      }
+    ]
+  },
+  "variant-tests/test_nonfinite_times_in_each_s3": {
+    "record": "label",
+    "cases": [
+      {
+        "robot": "r1",
+        "time": "nan",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      },
+      {
+        "robot": "r1",
+        "time": "inf",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      },
+      {
+        "robot": "r1",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      },
+      {
+        "robot": "r2",
+        "time": "nan",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      },
+      {
+        "robot": "r2",
+        "time": "inf",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      },
+      {
+        "robot": "r2",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "frame/label/command clock or identity mismatch"
+      }
+    ]
+  },
+  "variant-tests/test_nonfinite_times_in_each_s4": {
+    "record": "beam",
+    "cases": [
+      {
+        "robot": "r1",
+        "time": "nan",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      },
+      {
+        "robot": "r1",
+        "time": "inf",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      },
+      {
+        "robot": "r1",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      },
+      {
+        "robot": "r2",
+        "time": "nan",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      },
+      {
+        "robot": "r2",
+        "time": "inf",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      },
+      {
+        "robot": "r2",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      }
+    ]
+  },
+  "variant-tests/test_nonfinite_times_in_each_s5": {
+    "record": "contact",
+    "cases": [
+      {
+        "robot": "r1",
+        "time": "nan",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      },
+      {
+        "robot": "r1",
+        "time": "inf",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      },
+      {
+        "robot": "r1",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      },
+      {
+        "robot": "r2",
+        "time": "nan",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      },
+      {
+        "robot": "r2",
+        "time": "inf",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      },
+      {
+        "robot": "r2",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "contact/beam clock must be a finite numeric time"
+      }
+    ]
+  },
+  "variant-tests/test_resolved_relative_input_a0": {
+    "rejected": true,
+    "reason": "output must be separate from every input: /private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_resolved_relative_input_a0/actual/calibration-unloaded/new-output overlaps /private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_resolved_relative_input_a0/actual",
+    "created": false
+  },
+  "variant-tests/test_resolved_relative_input_a1": {
+    "rejected": true,
+    "reason": "output must be separate from every input: /private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_resolved_relative_input_a1/actual/calibration-unloaded/new-output overlaps /private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_resolved_relative_input_a1/actual/calibration-unloaded",
+    "created": false
+  },
+  "variant-tests/test_resolved_relative_input_a2": {
+    "rejected": true,
+    "reason": "output must be separate from every input: /private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_resolved_relative_input_a2/actual/calibration-unloaded/zone_wide_two_doors_final_v3/new-output overlaps /private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_resolved_relative_input_a2/actual/calibration-unloaded/zone_wide_two_doors_final_v3",
+    "created": false
+  },
+  "variant-tests/test_resolved_relative_input_a3": {
+    "rejected": true,
+    "reason": "output must be separate from every input: /private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_resolved_relative_input_a3/external-evidence/new-output overlaps /private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_resolved_relative_input_a3/external-evidence",
+    "created": false
+  },
+  "variant-tests/test_resolved_relative_input_a4": {
+    "rejected": true,
+    "reason": "output must be separate from every input: /private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_resolved_relative_input_a4/actual/calibration-unloaded/new-output overlaps /private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_resolved_relative_input_a4/actual/calibration-unloaded",
+    "created": false
+  },
+  "command-variant-tests/test_nonfinite_times_in_each_s0": {
+    "record": "command",
+    "cases": [
+      {
+        "robot": "r1",
+        "time": "nan",
+        "rejected": true,
+        "reason": "issued commands/arm/leases differ from frozen schedule"
+      },
+      {
+        "robot": "r1",
+        "time": "inf",
+        "rejected": true,
+        "reason": "issued commands/arm/leases differ from frozen schedule"
+      },
+      {
+        "robot": "r1",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "issued commands/arm/leases differ from frozen schedule"
+      },
+      {
+        "robot": "r2",
+        "time": "nan",
+        "rejected": true,
+        "reason": "issued commands/arm/leases differ from frozen schedule"
+      },
+      {
+        "robot": "r2",
+        "time": "inf",
+        "rejected": true,
+        "reason": "issued commands/arm/leases differ from frozen schedule"
+      },
+      {
+        "robot": "r2",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "issued commands/arm/leases differ from frozen schedule"
+      }
+    ]
+  },
+  "initial-extra-tests/test_initial_command_infinitie0": {
+    "cases": [
+      {
+        "robot": "r1",
+        "time": "inf",
+        "rejected": true,
+        "reason": "missing initial issued servo state"
+      },
+      {
+        "robot": "r1",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "missing initial issued servo state"
+      },
+      {
+        "robot": "r2",
+        "time": "inf",
+        "rejected": true,
+        "reason": "missing initial issued servo state"
+      },
+      {
+        "robot": "r2",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "missing initial issued servo state"
+      }
+    ]
+  },
+  "initial-extra-tests/test_initial_nan_cannot_produc0": {
+    "status": "PARTIAL",
+    "fine_audit": "PASS",
+    "fine_motion_accepted": true,
+    "fine_gain": [
+      [
+        1.200000000000001,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.8500000000000011,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.4000000000000439
+      ]
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="3" tests="16" time="215.477" timestamp="2026-10-02T17:38:22.055109+09:00" hostname="gangchangmin-ui-MacBookAir.local"><testcase classname="tests.test_review_351b" name="test_resolved_relative_input_and_output_aliases_do_not_overlap[root]" time="3.576" /><testcase classname="tests.test_review_351b" name="test_resolved_relative_input_and_output_aliases_do_not_overlap[collection]" time="7.011" /><testcase classname="tests.test_review_351b" name="test_resolved_relative_input_and_output_aliases_do_not_overlap[case]" time="4.257" /><testcase classname="tests.test_review_351b" name="test_resolved_relative_input_and_output_aliases_do_not_overlap[nested]" time="7.146" /><testcase classname="tests.test_review_351b" name="test_resolved_relative_input_and_output_aliases_do_not_overlap[incomplete]" time="4.291" /><testcase classname="tests.test_review_351b" name="test_deadband_variants_need_both_robots_and_full_horizons" time="8.934" /><testcase classname="tests.test_review_351b" name="test_nonfinite_times_in_each_sample_record_fail_closed[pose]" time="13.841" /><testcase classname="tests.test_review_351b" name="test_nonfinite_times_in_each_sample_record_fail_closed[command]" time="10.259"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 36, in &lt;module&gt;&#10;    data = raw.load_collection(collection,'unloaded',inputs)&#10;  File &quot;/private/tmp/ugrp-review-351b.r28ot662/scripts/final_pair_calibration_io.py&quot;, line 166, in load_collection&#10;    commands = inputs.rows(folder/f'robots/{rid}/commands.jsonl')&#10;  File &quot;&lt;string&gt;&quot;, line 32, in rows&#10;    rows[1 if record == 'command' else 0]['t'] = value&#10;    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^&#10;IndexError: list index out of range">tmp_path = PosixPath('/private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_nonfinite_times_in_each_s1')
+record = 'command'
+
+    @pytest.mark.parametrize('record', ['pose', 'command', 'frame', 'label', 'beam', 'contact'])
+    def test_nonfinite_times_in_each_sample_record_fail_closed(tmp_path, record):
+&gt;       result = probe("""
+    collection = fixture.synthetic_collection(tmp/'actual', 'unloaded')
+    record = """ + repr(record) + """
+    rejections = []
+    for rid in ('r1','r2'):
+        for value in (float('nan'),float('inf'),-float('inf')):
+            class BadTime(raw.Inputs):
+                def rows(self,path):
+                    rows = super().rows(path)
+                    paths = {'pose':f'eval_only/{rid}/pose.jsonl',
+                             'command':f'robots/{rid}/commands.jsonl',
+                             'frame':f'robots/{rid}/frames.jsonl',
+                             'label':f'eval_only/{rid}/camera_labels.jsonl',
+                             'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl'}
+                    if path == collection/raw.MAP_ID/paths[record]:
+                        rows[1 if record == 'command' else 0]['t'] = value
+                    return rows
+            try:
+                inputs = BadTime()
+                data = raw.load_collection(collection,'unloaded',inputs)
+                if record in ('beam','contact'):
+                    raw.loaded_mask(data,inputs,json.loads(a.CRITERION.read_text())['loaded_selection'])
+            except ValueError as exc:
+                rejections.append({'robot':rid,'time':str(value),'rejected':True,'reason':str(exc)})
+            else:
+                rejections.append({'robot':rid,'time':str(value),'rejected':False})
+    print(json.dumps({'record':record,'cases':rejections}))
+    """, tmp_path)
+
+tests/test_review_351b.py:93:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+source = "\ncollection = fixture.synthetic_collection(tmp/'actual', 'unloaded')\nrecord = 'command'\nrejections = []\nfor rid i...ns.append({'robot':rid,'time':str(value),'rejected':False})\nprint(json.dumps({'record':record,'cases':rejections}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351b.r28ot662/variant-tests/test_nonfinite_times_in_each_s1')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 36, in &lt;module&gt;
+E               data = raw.load_collection(collection,'unloaded',inputs)
+E             File "/private/tmp/ugrp-review-351b.r28ot662/scripts/final_pair_calibration_io.py", line 166, in load_collection
+E               commands = inputs.rows(folder/f'robots/{rid}/commands.jsonl')
+E             File "&lt;string&gt;", line 32, in rows
+E               rows[1 if record == 'command' else 0]['t'] = value
+E               ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           IndexError: list index out of range
+
+tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="tests.test_review_351b" name="test_nonfinite_times_in_each_sample_record_fail_closed[frame]" time="14.140" /><testcase classname="tests.test_review_351b" name="test_nonfinite_times_in_each_sample_record_fail_closed[label]" time="14.134" /><testcase classname="tests.test_review_351b" name="test_nonfinite_times_in_each_sample_record_fail_closed[beam]" time="16.795" /><testcase classname="tests.test_review_351b" name="test_nonfinite_times_in_each_sample_record_fail_closed[contact]" time="16.533" /><testcase classname="tests.test_review_351b" name="test_initial_command_nan_is_rejected_from_real_jsonl[unloaded]" time="10.580"><skipped type="pytest.xfail" message="R3b: initial_servo_command NaN still bypasses the clock check" /></testcase><testcase classname="tests.test_review_351b" name="test_initial_command_nan_is_rejected_from_real_jsonl[fine]" time="10.627"><skipped type="pytest.xfail" message="R3b: initial_servo_command NaN still bypasses the clock check" /></testcase><testcase classname="tests.test_review_351b" name="test_initial_command_nan_is_rejected_from_real_jsonl[loaded]" time="11.855"><skipped type="pytest.xfail" message="R3b: initial_servo_command NaN still bypasses the clock check" /></testcase><testcase classname="tests.test_review_351b" name="test_all_three_two_door_collections_remain_partial" time="61.417" /></testsuite></testsuites>

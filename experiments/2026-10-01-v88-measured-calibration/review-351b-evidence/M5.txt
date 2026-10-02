@@ -1,0 +1,30 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______ test_validation_pose_contamination_cannot_select_training_noise ________
+
+tmp_path = PosixPath('/private/tmp/ugrp-review-351b.r28ot662/M5/test_validation_pose_contamina0')
+
+    def test_validation_pose_contamination_cannot_select_training_noise(tmp_path):
+        result = probe("""
+    import copy
+    data, _ = fixture.synthetic_data()
+    clean, clean_report = motion.fit_profile([data], b.criterion())
+    changed = copy.deepcopy(data)
+    for split in data['segments'].values():
+        for start, end in split['prbs']:
+            # Shared boundary poses are unchanged: ONLY validation interiors move.
+            changed['pose'][start+1:end, 0] += .4*np.sin(np.linspace(0., np.pi, end-start+1)[1:-1])**2
+    dirty, dirty_report = motion.fit_profile([changed], b.criterion())
+    print(json.dumps({'same_noise': bool(np.allclose(clean['noise_abs'], dirty['noise_abs'], atol=1e-12, rtol=0)),
+                      'clean_noise': clean['noise_abs'], 'dirty_noise': dirty['noise_abs'],
+                      'clean_accepted': clean_report['accepted'], 'dirty_accepted': dirty_report['accepted']}))
+    """, tmp_path)
+>       assert result["same_noise"] and result["clean_accepted"] and not result["dirty_accepted"], result
+E       AssertionError: {'clean_accepted': True, 'clean_noise': [0.01538, 0.00504, 0.01406], 'dirty_accepted': True, 'dirty_noise': [0.2643142022351636, 0.01203414492036843, 0.01406], ...}
+E       assert (False)
+
+tests/test_review_351.py:139: AssertionError
+- generated xml file: /Users/changmin/projects/ugrp-wt/review-351/experiments/2026-10-01-v88-measured-calibration/review-351b-evidence/M5.xml -
+=========================== short test summary info ============================
+FAILED tests/test_review_351.py::test_validation_pose_contamination_cannot_select_training_noise
+1 failed in 11.07s
