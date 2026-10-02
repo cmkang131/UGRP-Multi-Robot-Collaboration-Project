@@ -1,0 +1,1263 @@
+{
+  "original": {
+    "test_all_three_two_door_collec0": {
+      "status": "PARTIAL",
+      "audits": {
+        "unloaded": "PASS",
+        "fine": "PASS",
+        "loaded": "PASS"
+      },
+      "axis_pass": {
+        "forward": null,
+        "left": null,
+        "rotate": null
+      },
+      "missing_unloaded": [
+        {
+          "field": "params.motion.gain",
+          "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+        },
+        {
+          "field": "params.motion.tau_s",
+          "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+        },
+        {
+          "field": "params.motion.tau_axis_s",
+          "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+        },
+        {
+          "field": "params.motion.tau_stop_s",
+          "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+        },
+        {
+          "field": "params.motion.noise_rel",
+          "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+        },
+        {
+          "field": "params.motion.noise_abs",
+          "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+        },
+        {
+          "field": "params.motion.scale_std",
+          "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+        },
+        {
+          "field": "params.motion.scale_walk",
+          "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+        },
+        {
+          "field": "params.motion.use_scale",
+          "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+        },
+        {
+          "field": "params.motion.rest_noise",
+          "reason": "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile"
+        }
+      ]
+    },
+    "test_deadband_variants_need_bo0": {
+      "control": true,
+      "cases": [
+        {
+          "case": "one_robot",
+          "rejected": true,
+          "reason": "forward: loaded deadband support missing signed stop level +0.006 in valid 0.2s fit windows"
+        },
+        {
+          "case": "long_horizon",
+          "rejected": true,
+          "reason": "forward: loaded deadband support missing signed stop level +0.006 in valid 3s fit windows"
+        },
+        {
+          "case": "coast_only",
+          "rejected": true,
+          "reason": "forward: loaded deadband support missing signed stop level +0.006 in valid 0.2s fit windows"
+        },
+        {
+          "case": "fine_commands",
+          "rejected": true,
+          "reason": "forward: loaded deadband support missing signed stop level -0.006 in valid 0.2s fit windows"
+        },
+        {
+          "case": "unloaded_commands",
+          "rejected": true,
+          "reason": "forward: loaded deadband support missing signed stop level -0.006 in valid 0.2s fit windows"
+        }
+      ]
+    },
+    "test_initial_command_infinitie0": {
+      "cases": [
+        {
+          "robot": "r1",
+          "time": "inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "inf",
+          "rejected": true,
+          "reason": "r2 command clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "r2 command clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_initial_command_nan_is_re0": {
+      "profile": "unloaded",
+      "cases": [
+        {
+          "robot": "r1",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "rejected": true,
+          "reason": "r2 command clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_initial_command_nan_is_re1": {
+      "profile": "fine",
+      "cases": [
+        {
+          "robot": "r1",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "rejected": true,
+          "reason": "r2 command clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_initial_command_nan_is_re2": {
+      "profile": "loaded",
+      "cases": [
+        {
+          "robot": "r1",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "rejected": true,
+          "reason": "r2 command clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_initial_nan_cannot_produc0": {
+      "status": "PARTIAL",
+      "fine_audit": "FAIL",
+      "fine_motion_accepted": false,
+      "fine_gain": null
+    },
+    "test_loaded_deadband_requires_0": {
+      "accepted": false,
+      "observed_magnitudes": {
+        "forward": [
+          0.015,
+          0.025,
+          0.04
+        ],
+        "left": [
+          0.015,
+          0.025,
+          0.04
+        ],
+        "rotate": [
+          0.015,
+          0.025,
+          0.04
+        ]
+      },
+      "detail": "forward: loaded deadband support missing signed stop level -0.006 in valid 0.2s fit windows"
+    },
+    "test_loaded_evidence_requires_0": {
+      "accepted": false,
+      "detail": "beam clock must be a finite numeric time",
+      "record": "trajectory.jsonl"
+    },
+    "test_loaded_evidence_requires_1": {
+      "accepted": false,
+      "detail": "contact clock must be a finite numeric time",
+      "record": "contacts.jsonl"
+    },
+    "test_nonfinite_times_in_each_s0": {
+      "record": "pose",
+      "cases": [
+        {
+          "robot": "r1",
+          "time": "nan",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "inf",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "nan",
+          "rejected": true,
+          "reason": "r2 pose clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "inf",
+          "rejected": true,
+          "reason": "r2 pose clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "r2 pose clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_nonfinite_times_in_each_s1": {
+      "record": "command",
+      "cases": [
+        {
+          "robot": "r1",
+          "time": "nan",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "nan",
+          "rejected": true,
+          "reason": "r2 command clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "inf",
+          "rejected": true,
+          "reason": "r2 command clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "r2 command clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_nonfinite_times_in_each_s2": {
+      "record": "frame",
+      "cases": [
+        {
+          "robot": "r1",
+          "time": "nan",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "inf",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "nan",
+          "rejected": true,
+          "reason": "r2 frame clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "inf",
+          "rejected": true,
+          "reason": "r2 frame clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "r2 frame clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_nonfinite_times_in_each_s3": {
+      "record": "label",
+      "cases": [
+        {
+          "robot": "r1",
+          "time": "nan",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "inf",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "nan",
+          "rejected": true,
+          "reason": "r2 camera label clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "inf",
+          "rejected": true,
+          "reason": "r2 camera label clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "r2 camera label clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_nonfinite_times_in_each_s4": {
+      "record": "beam",
+      "cases": [
+        {
+          "robot": "r1",
+          "time": "nan",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "inf",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "nan",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "inf",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_nonfinite_times_in_each_s5": {
+      "record": "contact",
+      "cases": [
+        {
+          "robot": "r1",
+          "time": "nan",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "inf",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "robot": "r1",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "nan",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "inf",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "robot": "r2",
+          "time": "-inf",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_output_cannot_be_inside_a0": {
+      "rejected": true,
+      "reason": "output must be separate from every input: /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_output_cannot_be_inside_a0/actual/calibration-unloaded/review-output-must-not-exist overlaps /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_output_cannot_be_inside_a0/actual/calibration-unloaded",
+      "status": null,
+      "raw_modified": false,
+      "output_files": []
+    },
+    "test_pipeline_rechecks_input_a0": {
+      "rejected": true,
+      "reason": "input changed: /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_pipeline_rechecks_input_a0/actual/calibration-unloaded/result.json",
+      "output_created": false
+    },
+    "test_resolved_relative_input_a0": {
+      "rejected": true,
+      "reason": "output must be separate from every input: /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_resolved_relative_input_a0/actual/calibration-unloaded/new-output overlaps /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_resolved_relative_input_a0/actual",
+      "created": false
+    },
+    "test_resolved_relative_input_a1": {
+      "rejected": true,
+      "reason": "output must be separate from every input: /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_resolved_relative_input_a1/actual/calibration-unloaded/new-output overlaps /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_resolved_relative_input_a1/actual/calibration-unloaded",
+      "created": false
+    },
+    "test_resolved_relative_input_a2": {
+      "rejected": true,
+      "reason": "output must be separate from every input: /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_resolved_relative_input_a2/actual/calibration-unloaded/zone_wide_two_doors_final_v3/new-output overlaps /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_resolved_relative_input_a2/actual/calibration-unloaded/zone_wide_two_doors_final_v3",
+      "created": false
+    },
+    "test_resolved_relative_input_a3": {
+      "rejected": true,
+      "reason": "output must be separate from every input: /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_resolved_relative_input_a3/external-evidence/new-output overlaps /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_resolved_relative_input_a3/external-evidence",
+      "created": false
+    },
+    "test_resolved_relative_input_a4": {
+      "rejected": true,
+      "reason": "output must be separate from every input: /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_resolved_relative_input_a4/actual/calibration-unloaded/new-output overlaps /private/tmp/ugrp-review-351c.7oc93yvr/original-tmp/test_resolved_relative_input_a4/actual/calibration-unloaded",
+      "created": false
+    },
+    "test_validation_pose_contamina0": {
+      "same_noise": true,
+      "clean_noise": [
+        0.01538,
+        0.00504,
+        0.01406
+      ],
+      "dirty_noise": [
+        0.01538,
+        0.00504,
+        0.01406
+      ],
+      "clean_accepted": true,
+      "dirty_accepted": false
+    }
+  },
+  "variants": {
+    "test_finite_initial_clock_offs0": {
+      "profile": "unloaded",
+      "restored_control": true,
+      "cases": [
+        {
+          "robot": "r1",
+          "offset": -0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        },
+        {
+          "robot": "r1",
+          "offset": 0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        },
+        {
+          "robot": "r2",
+          "offset": -0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        },
+        {
+          "robot": "r2",
+          "offset": 0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        }
+      ]
+    },
+    "test_finite_initial_clock_offs1": {
+      "profile": "fine",
+      "restored_control": true,
+      "cases": [
+        {
+          "robot": "r1",
+          "offset": -0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        },
+        {
+          "robot": "r1",
+          "offset": 0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        },
+        {
+          "robot": "r2",
+          "offset": -0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        },
+        {
+          "robot": "r2",
+          "offset": 0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        }
+      ]
+    },
+    "test_finite_initial_clock_offs2": {
+      "profile": "loaded",
+      "restored_control": true,
+      "cases": [
+        {
+          "robot": "r1",
+          "offset": -0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        },
+        {
+          "robot": "r1",
+          "offset": 0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        },
+        {
+          "robot": "r2",
+          "offset": -0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        },
+        {
+          "robot": "r2",
+          "offset": 0.05,
+          "rejected": true,
+          "reason": "missing initial issued servo state"
+        }
+      ]
+    },
+    "test_real_jsonl_clock_types_fa0": {
+      "record": "pose",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "numeric_string",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        },
+        {
+          "case": "nan_string",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        },
+        {
+          "case": "true",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        },
+        {
+          "case": "false",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        },
+        {
+          "case": "null",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        },
+        {
+          "case": "nan",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        },
+        {
+          "case": "inf",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        },
+        {
+          "case": "negative_inf",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        },
+        {
+          "case": "missing",
+          "rejected": true,
+          "reason": "r1 pose clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_real_jsonl_clock_types_fa1": {
+      "record": "frame",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "numeric_string",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        },
+        {
+          "case": "nan_string",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        },
+        {
+          "case": "true",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        },
+        {
+          "case": "false",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        },
+        {
+          "case": "null",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        },
+        {
+          "case": "nan",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        },
+        {
+          "case": "inf",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        },
+        {
+          "case": "negative_inf",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        },
+        {
+          "case": "missing",
+          "rejected": true,
+          "reason": "r1 frame clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_real_jsonl_clock_types_fa2": {
+      "record": "label",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "numeric_string",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        },
+        {
+          "case": "nan_string",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        },
+        {
+          "case": "true",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        },
+        {
+          "case": "false",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        },
+        {
+          "case": "null",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        },
+        {
+          "case": "nan",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        },
+        {
+          "case": "inf",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        },
+        {
+          "case": "negative_inf",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        },
+        {
+          "case": "missing",
+          "rejected": true,
+          "reason": "r1 camera label clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_real_jsonl_clock_types_fa3": {
+      "record": "initial_servo_command",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "numeric_string",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "nan_string",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "true",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "false",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "null",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "nan",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "negative_inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "missing",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_real_jsonl_clock_types_fa4": {
+      "record": "arm",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "numeric_string",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "nan_string",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "true",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "false",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "null",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "nan",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "negative_inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "missing",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_real_jsonl_clock_types_fa5": {
+      "record": "look",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "numeric_string",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "nan_string",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "true",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "false",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "null",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "nan",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "negative_inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "missing",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_real_jsonl_clock_types_fa6": {
+      "record": "mecanum",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "numeric_string",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "nan_string",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "true",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "false",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "null",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "nan",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "negative_inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "missing",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_real_jsonl_clock_types_fa7": {
+      "record": "beam",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "numeric_string",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "case": "nan_string",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "case": "true",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "case": "false",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "case": "null",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "case": "nan",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "case": "inf",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "case": "negative_inf",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        },
+        {
+          "case": "missing",
+          "rejected": true,
+          "reason": "beam clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_real_jsonl_clock_types_fa8": {
+      "record": "contact",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "numeric_string",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "case": "nan_string",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "case": "true",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "case": "false",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "case": "null",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "case": "nan",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "case": "inf",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "case": "negative_inf",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        },
+        {
+          "case": "missing",
+          "rejected": true,
+          "reason": "contact clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_real_jsonl_clock_types_fa9": {
+      "record": "unknown_command",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "numeric_string",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "nan_string",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "true",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "false",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "null",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "nan",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "negative_inf",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        },
+        {
+          "case": "missing",
+          "rejected": true,
+          "reason": "r1 command clock must be a finite numeric time"
+        }
+      ]
+    },
+    "test_reversed_and_duplicate_sa0": {
+      "record": "pose",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "reverse_times",
+          "rejected": true,
+          "reason": "missing/invalid pose or pose clock"
+        },
+        {
+          "case": "duplicate_time",
+          "rejected": true,
+          "reason": "missing/invalid pose or pose clock"
+        },
+        {
+          "case": "reverse_rows",
+          "rejected": true,
+          "reason": "missing/invalid pose or pose clock"
+        }
+      ]
+    },
+    "test_reversed_and_duplicate_sa1": {
+      "record": "frame",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "reverse_times",
+          "rejected": true,
+          "reason": "frame/label/command clock or identity mismatch"
+        },
+        {
+          "case": "duplicate_time",
+          "rejected": true,
+          "reason": "frame/label/command clock or identity mismatch"
+        },
+        {
+          "case": "reverse_rows",
+          "rejected": true,
+          "reason": "frame/label/command clock or identity mismatch"
+        }
+      ]
+    },
+    "test_reversed_and_duplicate_sa2": {
+      "record": "label",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "reverse_times",
+          "rejected": true,
+          "reason": "frame/label/command clock or identity mismatch"
+        },
+        {
+          "case": "duplicate_time",
+          "rejected": true,
+          "reason": "frame/label/command clock or identity mismatch"
+        },
+        {
+          "case": "reverse_rows",
+          "rejected": true,
+          "reason": "frame/label/command clock or identity mismatch"
+        }
+      ]
+    },
+    "test_reversed_and_duplicate_sa3": {
+      "record": "command",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "reverse_times",
+          "rejected": true,
+          "reason": "issued commands/arm/leases differ from frozen schedule"
+        },
+        {
+          "case": "duplicate_time",
+          "rejected": true,
+          "reason": "issued commands/arm/leases differ from frozen schedule"
+        },
+        {
+          "case": "reverse_rows",
+          "rejected": true,
+          "reason": "issued commands/arm/leases differ from frozen schedule"
+        }
+      ]
+    },
+    "test_reversed_and_duplicate_sa4": {
+      "record": "beam",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "reverse_times",
+          "rejected": true,
+          "reason": "invalid contact/beam clock or geometry"
+        },
+        {
+          "case": "duplicate_time",
+          "rejected": true,
+          "reason": "invalid contact/beam clock or geometry"
+        },
+        {
+          "case": "reverse_rows",
+          "rejected": true,
+          "reason": "invalid contact/beam clock or geometry"
+        }
+      ]
+    },
+    "test_reversed_and_duplicate_sa5": {
+      "record": "contact",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "reverse_times",
+          "rejected": true,
+          "reason": "invalid contact/beam clock or geometry"
+        },
+        {
+          "case": "duplicate_time",
+          "rejected": true,
+          "reason": "invalid contact/beam clock or geometry"
+        },
+        {
+          "case": "reverse_rows",
+          "rejected": true,
+          "reason": "invalid contact/beam clock or geometry"
+        }
+      ]
+    },
+    "test_reversed_and_duplicate_sa6": {
+      "record": "schedule",
+      "control": true,
+      "restored_control": true,
+      "cases": [
+        {
+          "case": "reverse_times",
+          "rejected": true,
+          "reason": "recorded schedule differs from v88 source"
+        },
+        {
+          "case": "duplicate_time",
+          "rejected": true,
+          "reason": "recorded schedule differs from v88 source"
+        },
+        {
+          "case": "reverse_rows",
+          "rejected": true,
+          "reason": "recorded schedule differs from v88 source"
+        }
+      ]
+    }
+  }
+}

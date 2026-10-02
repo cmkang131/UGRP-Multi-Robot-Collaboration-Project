@@ -1,0 +1,49 @@
+........................................................................ [ 11%]
+........................................................................ [ 23%]
+........................................................................ [ 35%]
+........................................................................ [ 47%]
+........................................................................ [ 59%]
+........................................................................ [ 71%]
+........................................................................ [ 83%]
+................F....................................................... [ 95%]
+............................                                             [100%]
+=================================== FAILURES ===================================
+____ test_offline_hammerstein_evidence_and_actual_schedule_have_same_design ____
+
+    def test_offline_hammerstein_evidence_and_actual_schedule_have_same_design():
+        from scripts.check_pair_v88_identifiability import response
+        # Exact first-order integral with subtractive deadband: a command below
+        # threshold never moves; analytical step displacement is independent proof.
+        times=np.arange(201)*.05
+        np.testing.assert_allclose(response([(10.,.02)],.05,.84,.08,.005),
+                                   .015*(times-.84*(1-np.exp(-times/.84))),atol=1e-12)
+        assert not response([(10.,.004)],.05,.84,.08,.005).any()
+>       evidence=json.loads((c.ROOT/'experiments/2026-10-01-v3-pair-adapter/identifiability_v2.json').read_text())
+
+tests/test_zone_final_pair_review_fixes.py:236: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/anaconda3/lib/python3.13/pathlib/_local.py:546: in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+/opt/anaconda3/lib/python3.13/pathlib/_abc.py:632: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-10-01-v3-pair-adapter/identifiability_v2.json')
+mode = 'r', buffering = -1, encoding = 'locale', errors = None, newline = None
+
+    def open(self, mode='r', buffering=-1, encoding=None,
+             errors=None, newline=None):
+        """
+        Open the file pointed to by this path and return a file object, as
+        the built-in open() function does.
+        """
+        if "b" not in mode:
+            encoding = io.text_encoding(encoding)
+>       return io.open(self, mode, buffering, encoding, errors, newline)
+E       FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-10-01-v3-pair-adapter/identifiability_v2.json'
+
+/opt/anaconda3/lib/python3.13/pathlib/_local.py:537: FileNotFoundError
+---- generated xml file: /private/tmp/ugrp-review-351c.7oc93yvr/related.xml ----
+=========================== short test summary info ============================
+FAILED tests/test_zone_final_pair_review_fixes.py::test_offline_hammerstein_evidence_and_actual_schedule_have_same_design
+1 failed, 603 passed in 901.08s (0:15:01)

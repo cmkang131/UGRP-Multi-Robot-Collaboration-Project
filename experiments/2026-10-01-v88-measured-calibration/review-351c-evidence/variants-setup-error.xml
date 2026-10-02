@@ -1,0 +1,2225 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="20" skipped="0" tests="20" time="12.858" timestamp="2026-10-02T18:55:02.730612+09:00" hostname="gangchangmin-ui-MacBookAir.local"><testcase classname="test_review_351c" name="test_real_jsonl_clock_types_fail_closed_with_current_manifest[pose]" time="0.895"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa0')
+record = 'pose'
+
+    @pytest.mark.parametrize('record', [
+        'pose', 'frame', 'label', 'initial_servo_command', 'arm', 'look',
+        'mecanum', 'beam', 'contact', 'unknown_command',
+    ])
+    def test_real_jsonl_clock_types_fail_closed_with_current_manifest(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r1/pose.jsonl', 'frame':'robots/r1/frames.jsonl',
+             'label':'eval_only/r1/camera_labels.jsonl', 'beam':'eval_only/trajectory.jsonl',
+             'contact':'eval_only/contacts.jsonl'}
+    path = folder/paths.get(record, 'robots/r1/commands.jsonl')
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    values = [('numeric_string','1.3'), ('nan_string','NaN'), ('true',True),
+              ('false',False), ('null',None), ('nan',float('nan')),
+              ('inf',float('inf')), ('negative_inf',-float('inf')), ('missing',None)]
+    for name,value in values:
+        rows = [json.loads(line) for line in original.splitlines()]
+        if record == 'unknown_command':
+            target = {'kind':'unknown_command', 't':1.3}
+            rows.append(target)
+        else:
+            selected = rows if record in paths else [r for r in rows if r['kind'] == record]
+            target = selected[len(selected)//2]
+        if name == 'missing':
+            target.pop('t')
+        else:
+            target['t'] = value
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':name, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':name, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'pose'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_ID\...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa0')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_real_jsonl_clock_types_fail_closed_with_current_manifest[frame]" time="0.626"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa1')
+record = 'frame'
+
+    @pytest.mark.parametrize('record', [
+        'pose', 'frame', 'label', 'initial_servo_command', 'arm', 'look',
+        'mecanum', 'beam', 'contact', 'unknown_command',
+    ])
+    def test_real_jsonl_clock_types_fail_closed_with_current_manifest(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r1/pose.jsonl', 'frame':'robots/r1/frames.jsonl',
+             'label':'eval_only/r1/camera_labels.jsonl', 'beam':'eval_only/trajectory.jsonl',
+             'contact':'eval_only/contacts.jsonl'}
+    path = folder/paths.get(record, 'robots/r1/commands.jsonl')
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    values = [('numeric_string','1.3'), ('nan_string','NaN'), ('true',True),
+              ('false',False), ('null',None), ('nan',float('nan')),
+              ('inf',float('inf')), ('negative_inf',-float('inf')), ('missing',None)]
+    for name,value in values:
+        rows = [json.loads(line) for line in original.splitlines()]
+        if record == 'unknown_command':
+            target = {'kind':'unknown_command', 't':1.3}
+            rows.append(target)
+        else:
+            selected = rows if record in paths else [r for r in rows if r['kind'] == record]
+            target = selected[len(selected)//2]
+        if name == 'missing':
+            target.pop('t')
+        else:
+            target['t'] = value
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':name, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':name, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'frame'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_ID...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa1')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_real_jsonl_clock_types_fail_closed_with_current_manifest[label]" time="0.621"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa2')
+record = 'label'
+
+    @pytest.mark.parametrize('record', [
+        'pose', 'frame', 'label', 'initial_servo_command', 'arm', 'look',
+        'mecanum', 'beam', 'contact', 'unknown_command',
+    ])
+    def test_real_jsonl_clock_types_fail_closed_with_current_manifest(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r1/pose.jsonl', 'frame':'robots/r1/frames.jsonl',
+             'label':'eval_only/r1/camera_labels.jsonl', 'beam':'eval_only/trajectory.jsonl',
+             'contact':'eval_only/contacts.jsonl'}
+    path = folder/paths.get(record, 'robots/r1/commands.jsonl')
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    values = [('numeric_string','1.3'), ('nan_string','NaN'), ('true',True),
+              ('false',False), ('null',None), ('nan',float('nan')),
+              ('inf',float('inf')), ('negative_inf',-float('inf')), ('missing',None)]
+    for name,value in values:
+        rows = [json.loads(line) for line in original.splitlines()]
+        if record == 'unknown_command':
+            target = {'kind':'unknown_command', 't':1.3}
+            rows.append(target)
+        else:
+            selected = rows if record in paths else [r for r in rows if r['kind'] == record]
+            target = selected[len(selected)//2]
+        if name == 'missing':
+            target.pop('t')
+        else:
+            target['t'] = value
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':name, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':name, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'label'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_ID...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa2')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_real_jsonl_clock_types_fail_closed_with_current_manifest[initial_servo_command]" time="0.622"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa3')
+record = 'initial_servo_command'
+
+    @pytest.mark.parametrize('record', [
+        'pose', 'frame', 'label', 'initial_servo_command', 'arm', 'look',
+        'mecanum', 'beam', 'contact', 'unknown_command',
+    ])
+    def test_real_jsonl_clock_types_fail_closed_with_current_manifest(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r1/pose.jsonl', 'frame':'robots/r1/frames.jsonl',
+             'label':'eval_only/r1/camera_labels.jsonl', 'beam':'eval_only/trajectory.jsonl',
+             'contact':'eval_only/contacts.jsonl'}
+    path = folder/paths.get(record, 'robots/r1/commands.jsonl')
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    values = [('numeric_string','1.3'), ('nan_string','NaN'), ('true',True),
+              ('false',False), ('null',None), ('nan',float('nan')),
+              ('inf',float('inf')), ('negative_inf',-float('inf')), ('missing',None)]
+    for name,value in values:
+        rows = [json.loads(line) for line in original.splitlines()]
+        if record == 'unknown_command':
+            target = {'kind':'unknown_command', 't':1.3}
+            rows.append(target)
+        else:
+            selected = rows if record in paths else [r for r in rows if r['kind'] == record]
+            target = selected[len(selected)//2]
+        if name == 'missing':
+            target.pop('t')
+        else:
+            target['t'] = value
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':name, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':name, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'initial_servo_command'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = colle...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa3')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_real_jsonl_clock_types_fail_closed_with_current_manifest[arm]" time="0.636"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa4')
+record = 'arm'
+
+    @pytest.mark.parametrize('record', [
+        'pose', 'frame', 'label', 'initial_servo_command', 'arm', 'look',
+        'mecanum', 'beam', 'contact', 'unknown_command',
+    ])
+    def test_real_jsonl_clock_types_fail_closed_with_current_manifest(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r1/pose.jsonl', 'frame':'robots/r1/frames.jsonl',
+             'label':'eval_only/r1/camera_labels.jsonl', 'beam':'eval_only/trajectory.jsonl',
+             'contact':'eval_only/contacts.jsonl'}
+    path = folder/paths.get(record, 'robots/r1/commands.jsonl')
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    values = [('numeric_string','1.3'), ('nan_string','NaN'), ('true',True),
+              ('false',False), ('null',None), ('nan',float('nan')),
+              ('inf',float('inf')), ('negative_inf',-float('inf')), ('missing',None)]
+    for name,value in values:
+        rows = [json.loads(line) for line in original.splitlines()]
+        if record == 'unknown_command':
+            target = {'kind':'unknown_command', 't':1.3}
+            rows.append(target)
+        else:
+            selected = rows if record in paths else [r for r in rows if r['kind'] == record]
+            target = selected[len(selected)//2]
+        if name == 'missing':
+            target.pop('t')
+        else:
+            target['t'] = value
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':name, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':name, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'arm'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_ID\n...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa4')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_real_jsonl_clock_types_fail_closed_with_current_manifest[look]" time="0.625"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa5')
+record = 'look'
+
+    @pytest.mark.parametrize('record', [
+        'pose', 'frame', 'label', 'initial_servo_command', 'arm', 'look',
+        'mecanum', 'beam', 'contact', 'unknown_command',
+    ])
+    def test_real_jsonl_clock_types_fail_closed_with_current_manifest(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r1/pose.jsonl', 'frame':'robots/r1/frames.jsonl',
+             'label':'eval_only/r1/camera_labels.jsonl', 'beam':'eval_only/trajectory.jsonl',
+             'contact':'eval_only/contacts.jsonl'}
+    path = folder/paths.get(record, 'robots/r1/commands.jsonl')
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    values = [('numeric_string','1.3'), ('nan_string','NaN'), ('true',True),
+              ('false',False), ('null',None), ('nan',float('nan')),
+              ('inf',float('inf')), ('negative_inf',-float('inf')), ('missing',None)]
+    for name,value in values:
+        rows = [json.loads(line) for line in original.splitlines()]
+        if record == 'unknown_command':
+            target = {'kind':'unknown_command', 't':1.3}
+            rows.append(target)
+        else:
+            selected = rows if record in paths else [r for r in rows if r['kind'] == record]
+            target = selected[len(selected)//2]
+        if name == 'missing':
+            target.pop('t')
+        else:
+            target['t'] = value
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':name, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':name, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'look'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_ID\...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa5')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_real_jsonl_clock_types_fail_closed_with_current_manifest[mecanum]" time="0.632"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa6')
+record = 'mecanum'
+
+    @pytest.mark.parametrize('record', [
+        'pose', 'frame', 'label', 'initial_servo_command', 'arm', 'look',
+        'mecanum', 'beam', 'contact', 'unknown_command',
+    ])
+    def test_real_jsonl_clock_types_fail_closed_with_current_manifest(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r1/pose.jsonl', 'frame':'robots/r1/frames.jsonl',
+             'label':'eval_only/r1/camera_labels.jsonl', 'beam':'eval_only/trajectory.jsonl',
+             'contact':'eval_only/contacts.jsonl'}
+    path = folder/paths.get(record, 'robots/r1/commands.jsonl')
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    values = [('numeric_string','1.3'), ('nan_string','NaN'), ('true',True),
+              ('false',False), ('null',None), ('nan',float('nan')),
+              ('inf',float('inf')), ('negative_inf',-float('inf')), ('missing',None)]
+    for name,value in values:
+        rows = [json.loads(line) for line in original.splitlines()]
+        if record == 'unknown_command':
+            target = {'kind':'unknown_command', 't':1.3}
+            rows.append(target)
+        else:
+            selected = rows if record in paths else [r for r in rows if r['kind'] == record]
+            target = selected[len(selected)//2]
+        if name == 'missing':
+            target.pop('t')
+        else:
+            target['t'] = value
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':name, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':name, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'mecanum'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa6')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_real_jsonl_clock_types_fail_closed_with_current_manifest[beam]" time="0.634"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa7')
+record = 'beam'
+
+    @pytest.mark.parametrize('record', [
+        'pose', 'frame', 'label', 'initial_servo_command', 'arm', 'look',
+        'mecanum', 'beam', 'contact', 'unknown_command',
+    ])
+    def test_real_jsonl_clock_types_fail_closed_with_current_manifest(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r1/pose.jsonl', 'frame':'robots/r1/frames.jsonl',
+             'label':'eval_only/r1/camera_labels.jsonl', 'beam':'eval_only/trajectory.jsonl',
+             'contact':'eval_only/contacts.jsonl'}
+    path = folder/paths.get(record, 'robots/r1/commands.jsonl')
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    values = [('numeric_string','1.3'), ('nan_string','NaN'), ('true',True),
+              ('false',False), ('null',None), ('nan',float('nan')),
+              ('inf',float('inf')), ('negative_inf',-float('inf')), ('missing',None)]
+    for name,value in values:
+        rows = [json.loads(line) for line in original.splitlines()]
+        if record == 'unknown_command':
+            target = {'kind':'unknown_command', 't':1.3}
+            rows.append(target)
+        else:
+            selected = rows if record in paths else [r for r in rows if r['kind'] == record]
+            target = selected[len(selected)//2]
+        if name == 'missing':
+            target.pop('t')
+        else:
+            target['t'] = value
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':name, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':name, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'beam'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_ID\...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa7')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_real_jsonl_clock_types_fail_closed_with_current_manifest[contact]" time="0.628"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa8')
+record = 'contact'
+
+    @pytest.mark.parametrize('record', [
+        'pose', 'frame', 'label', 'initial_servo_command', 'arm', 'look',
+        'mecanum', 'beam', 'contact', 'unknown_command',
+    ])
+    def test_real_jsonl_clock_types_fail_closed_with_current_manifest(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r1/pose.jsonl', 'frame':'robots/r1/frames.jsonl',
+             'label':'eval_only/r1/camera_labels.jsonl', 'beam':'eval_only/trajectory.jsonl',
+             'contact':'eval_only/contacts.jsonl'}
+    path = folder/paths.get(record, 'robots/r1/commands.jsonl')
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    values = [('numeric_string','1.3'), ('nan_string','NaN'), ('true',True),
+              ('false',False), ('null',None), ('nan',float('nan')),
+              ('inf',float('inf')), ('negative_inf',-float('inf')), ('missing',None)]
+    for name,value in values:
+        rows = [json.loads(line) for line in original.splitlines()]
+        if record == 'unknown_command':
+            target = {'kind':'unknown_command', 't':1.3}
+            rows.append(target)
+        else:
+            selected = rows if record in paths else [r for r in rows if r['kind'] == record]
+            target = selected[len(selected)//2]
+        if name == 'missing':
+            target.pop('t')
+        else:
+            target['t'] = value
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':name, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':name, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'contact'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa8')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_real_jsonl_clock_types_fail_closed_with_current_manifest[unknown_command]" time="0.634"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa9')
+record = 'unknown_command'
+
+    @pytest.mark.parametrize('record', [
+        'pose', 'frame', 'label', 'initial_servo_command', 'arm', 'look',
+        'mecanum', 'beam', 'contact', 'unknown_command',
+    ])
+    def test_real_jsonl_clock_types_fail_closed_with_current_manifest(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r1/pose.jsonl', 'frame':'robots/r1/frames.jsonl',
+             'label':'eval_only/r1/camera_labels.jsonl', 'beam':'eval_only/trajectory.jsonl',
+             'contact':'eval_only/contacts.jsonl'}
+    path = folder/paths.get(record, 'robots/r1/commands.jsonl')
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    values = [('numeric_string','1.3'), ('nan_string','NaN'), ('true',True),
+              ('false',False), ('null',None), ('nan',float('nan')),
+              ('inf',float('inf')), ('negative_inf',-float('inf')), ('missing',None)]
+    for name,value in values:
+        rows = [json.loads(line) for line in original.splitlines()]
+        if record == 'unknown_command':
+            target = {'kind':'unknown_command', 't':1.3}
+            rows.append(target)
+        else:
+            selected = rows if record in paths else [r for r in rows if r['kind'] == record]
+            target = selected[len(selected)//2]
+        if name == 'missing':
+            target.pop('t')
+        else:
+            target['t'] = value
+        path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':name, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':name, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'unknown_command'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_real_jsonl_clock_types_fa9')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_reversed_and_duplicate_sample_clocks_fail_closed[pose]" time="0.618"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa0')
+record = 'pose'
+
+    @pytest.mark.parametrize('record', ['pose', 'frame', 'label', 'command', 'beam', 'contact', 'schedule'])
+    def test_reversed_and_duplicate_sample_clocks_fail_closed(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r2/pose.jsonl', 'frame':'robots/r2/frames.jsonl',
+             'label':'eval_only/r2/camera_labels.jsonl', 'command':'robots/r2/commands.jsonl',
+             'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl',
+             'schedule':'inputs/schedule.json'}
+    path = folder/paths[record]
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    for mode in ('reverse_times', 'duplicate_time', 'reverse_rows'):
+        rows = json.loads(original) if record == 'schedule' else [json.loads(line) for line in original.splitlines()]
+        i = next(i for i in range(1, len(rows)-1) if rows[i]['t'] &lt; rows[i+1]['t'])
+        if mode == 'reverse_times':
+            rows[i]['t'], rows[i+1]['t'] = rows[i+1]['t'], rows[i]['t']
+        elif mode == 'duplicate_time':
+            rows[i+1]['t'] = rows[i]['t']
+        else:
+            rows[i], rows[i+1] = rows[i+1], rows[i]
+        path.write_text(json.dumps(rows) if record == 'schedule' else ''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':mode, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':mode, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'pose'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_ID\...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa0')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_reversed_and_duplicate_sample_clocks_fail_closed[frame]" time="0.617"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa1')
+record = 'frame'
+
+    @pytest.mark.parametrize('record', ['pose', 'frame', 'label', 'command', 'beam', 'contact', 'schedule'])
+    def test_reversed_and_duplicate_sample_clocks_fail_closed(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r2/pose.jsonl', 'frame':'robots/r2/frames.jsonl',
+             'label':'eval_only/r2/camera_labels.jsonl', 'command':'robots/r2/commands.jsonl',
+             'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl',
+             'schedule':'inputs/schedule.json'}
+    path = folder/paths[record]
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    for mode in ('reverse_times', 'duplicate_time', 'reverse_rows'):
+        rows = json.loads(original) if record == 'schedule' else [json.loads(line) for line in original.splitlines()]
+        i = next(i for i in range(1, len(rows)-1) if rows[i]['t'] &lt; rows[i+1]['t'])
+        if mode == 'reverse_times':
+            rows[i]['t'], rows[i+1]['t'] = rows[i+1]['t'], rows[i]['t']
+        elif mode == 'duplicate_time':
+            rows[i+1]['t'] = rows[i]['t']
+        else:
+            rows[i], rows[i+1] = rows[i+1], rows[i]
+        path.write_text(json.dumps(rows) if record == 'schedule' else ''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':mode, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':mode, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'frame'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_ID...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa1')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_reversed_and_duplicate_sample_clocks_fail_closed[label]" time="0.619"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa2')
+record = 'label'
+
+    @pytest.mark.parametrize('record', ['pose', 'frame', 'label', 'command', 'beam', 'contact', 'schedule'])
+    def test_reversed_and_duplicate_sample_clocks_fail_closed(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r2/pose.jsonl', 'frame':'robots/r2/frames.jsonl',
+             'label':'eval_only/r2/camera_labels.jsonl', 'command':'robots/r2/commands.jsonl',
+             'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl',
+             'schedule':'inputs/schedule.json'}
+    path = folder/paths[record]
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    for mode in ('reverse_times', 'duplicate_time', 'reverse_rows'):
+        rows = json.loads(original) if record == 'schedule' else [json.loads(line) for line in original.splitlines()]
+        i = next(i for i in range(1, len(rows)-1) if rows[i]['t'] &lt; rows[i+1]['t'])
+        if mode == 'reverse_times':
+            rows[i]['t'], rows[i+1]['t'] = rows[i+1]['t'], rows[i]['t']
+        elif mode == 'duplicate_time':
+            rows[i+1]['t'] = rows[i]['t']
+        else:
+            rows[i], rows[i+1] = rows[i+1], rows[i]
+        path.write_text(json.dumps(rows) if record == 'schedule' else ''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':mode, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':mode, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'label'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_ID...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa2')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_reversed_and_duplicate_sample_clocks_fail_closed[command]" time="0.623"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa3')
+record = 'command'
+
+    @pytest.mark.parametrize('record', ['pose', 'frame', 'label', 'command', 'beam', 'contact', 'schedule'])
+    def test_reversed_and_duplicate_sample_clocks_fail_closed(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r2/pose.jsonl', 'frame':'robots/r2/frames.jsonl',
+             'label':'eval_only/r2/camera_labels.jsonl', 'command':'robots/r2/commands.jsonl',
+             'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl',
+             'schedule':'inputs/schedule.json'}
+    path = folder/paths[record]
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    for mode in ('reverse_times', 'duplicate_time', 'reverse_rows'):
+        rows = json.loads(original) if record == 'schedule' else [json.loads(line) for line in original.splitlines()]
+        i = next(i for i in range(1, len(rows)-1) if rows[i]['t'] &lt; rows[i+1]['t'])
+        if mode == 'reverse_times':
+            rows[i]['t'], rows[i+1]['t'] = rows[i+1]['t'], rows[i]['t']
+        elif mode == 'duplicate_time':
+            rows[i+1]['t'] = rows[i]['t']
+        else:
+            rows[i], rows[i+1] = rows[i+1], rows[i]
+        path.write_text(json.dumps(rows) if record == 'schedule' else ''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':mode, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':mode, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'command'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa3')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_reversed_and_duplicate_sample_clocks_fail_closed[beam]" time="0.619"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa4')
+record = 'beam'
+
+    @pytest.mark.parametrize('record', ['pose', 'frame', 'label', 'command', 'beam', 'contact', 'schedule'])
+    def test_reversed_and_duplicate_sample_clocks_fail_closed(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r2/pose.jsonl', 'frame':'robots/r2/frames.jsonl',
+             'label':'eval_only/r2/camera_labels.jsonl', 'command':'robots/r2/commands.jsonl',
+             'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl',
+             'schedule':'inputs/schedule.json'}
+    path = folder/paths[record]
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    for mode in ('reverse_times', 'duplicate_time', 'reverse_rows'):
+        rows = json.loads(original) if record == 'schedule' else [json.loads(line) for line in original.splitlines()]
+        i = next(i for i in range(1, len(rows)-1) if rows[i]['t'] &lt; rows[i+1]['t'])
+        if mode == 'reverse_times':
+            rows[i]['t'], rows[i+1]['t'] = rows[i+1]['t'], rows[i]['t']
+        elif mode == 'duplicate_time':
+            rows[i+1]['t'] = rows[i]['t']
+        else:
+            rows[i], rows[i+1] = rows[i+1], rows[i]
+        path.write_text(json.dumps(rows) if record == 'schedule' else ''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':mode, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':mode, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'beam'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_ID\...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa4')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_reversed_and_duplicate_sample_clocks_fail_closed[contact]" time="0.628"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa5')
+record = 'contact'
+
+    @pytest.mark.parametrize('record', ['pose', 'frame', 'label', 'command', 'beam', 'contact', 'schedule'])
+    def test_reversed_and_duplicate_sample_clocks_fail_closed(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r2/pose.jsonl', 'frame':'robots/r2/frames.jsonl',
+             'label':'eval_only/r2/camera_labels.jsonl', 'command':'robots/r2/commands.jsonl',
+             'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl',
+             'schedule':'inputs/schedule.json'}
+    path = folder/paths[record]
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    for mode in ('reverse_times', 'duplicate_time', 'reverse_rows'):
+        rows = json.loads(original) if record == 'schedule' else [json.loads(line) for line in original.splitlines()]
+        i = next(i for i in range(1, len(rows)-1) if rows[i]['t'] &lt; rows[i+1]['t'])
+        if mode == 'reverse_times':
+            rows[i]['t'], rows[i+1]['t'] = rows[i+1]['t'], rows[i]['t']
+        elif mode == 'duplicate_time':
+            rows[i+1]['t'] = rows[i]['t']
+        else:
+            rows[i], rows[i+1] = rows[i+1], rows[i]
+        path.write_text(json.dumps(rows) if record == 'schedule' else ''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':mode, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':mode, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'contact'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP_...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa5')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_reversed_and_duplicate_sample_clocks_fail_closed[schedule]" time="0.618"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa6')
+record = 'schedule'
+
+    @pytest.mark.parametrize('record', ['pose', 'frame', 'label', 'command', 'beam', 'contact', 'schedule'])
+    def test_reversed_and_duplicate_sample_clocks_fail_closed(tmp_path, record):
+&gt;       result = probe("""
+    record = """ + repr(record) + """
+    collection = fixture.synthetic_collection(tmp/'actual', 'loaded')
+    folder = collection/raw.MAP_ID
+    paths = {'pose':'eval_only/r2/pose.jsonl', 'frame':'robots/r2/frames.jsonl',
+             'label':'eval_only/r2/camera_labels.jsonl', 'command':'robots/r2/commands.jsonl',
+             'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl',
+             'schedule':'inputs/schedule.json'}
+    path = folder/paths[record]
+    original = path.read_bytes()
+    gate = json.loads(a.CRITERION.read_text())['loaded_selection']
+    def audit():
+        inputs = raw.Inputs()
+        data = raw.load_collection(collection, 'loaded', inputs)
+        valid, _ = raw.loaded_mask(data, inputs, gate)
+        inputs.verify()
+        return bool(valid.all())
+    control = audit()
+    cases = []
+    for mode in ('reverse_times', 'duplicate_time', 'reverse_rows'):
+        rows = json.loads(original) if record == 'schedule' else [json.loads(line) for line in original.splitlines()]
+        i = next(i for i in range(1, len(rows)-1) if rows[i]['t'] &lt; rows[i+1]['t'])
+        if mode == 'reverse_times':
+            rows[i]['t'], rows[i+1]['t'] = rows[i+1]['t'], rows[i]['t']
+        elif mode == 'duplicate_time':
+            rows[i+1]['t'] = rows[i]['t']
+        else:
+            rows[i], rows[i+1] = rows[i+1], rows[i]
+        path.write_text(json.dumps(rows) if record == 'schedule' else ''.join(json.dumps(row)+'\\n' for row in rows))
+        fixture.refresh_manifest(folder)
+        try:
+            audit()
+        except ValueError as exc:
+            cases.append({'case':mode, 'rejected':True, 'reason':str(exc)})
+        else:
+            cases.append({'case':mode, 'rejected':False})
+    path.write_bytes(original)
+    fixture.refresh_manifest(folder)
+    print(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:70: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nrecord = 'schedule'\ncollection = fixture.synthetic_collection(tmp/'actual', 'loaded')\nfolder = collection/raw.MAP...manifest(folder)\nprint(json.dumps({'record':record, 'control':control, 'restored_control':audit(), 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_reversed_and_duplicate_sa6')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_finite_initial_clock_offsets_fail_closed[unloaded]" time="0.622"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_finite_initial_clock_offs0')
+profile = 'unloaded'
+
+    @pytest.mark.parametrize('profile', ['unloaded', 'fine', 'loaded'])
+    def test_finite_initial_clock_offsets_fail_closed(tmp_path, profile):
+&gt;       result = probe("""
+    profile = """ + repr(profile) + """
+    collection = fixture.synthetic_collection(tmp/'actual', profile)
+    folder = collection/raw.MAP_ID
+    cases = []
+    for rid in ('r1','r2'):
+        path = folder/f'robots/{rid}/commands.jsonl'
+        original = path.read_bytes()
+        for offset in (-.05, .05):
+            rows = [json.loads(line) for line in original.splitlines()]
+            rows[0]['t'] += offset
+            path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+            fixture.refresh_manifest(folder)
+            try:
+                inputs = raw.Inputs()
+                raw.load_collection(collection, profile, inputs)
+                inputs.verify()
+            except ValueError as exc:
+                cases.append({'robot':rid, 'offset':offset, 'rejected':True, 'reason':str(exc)})
+            else:
+                cases.append({'robot':rid, 'offset':offset, 'rejected':False})
+        path.write_bytes(original)
+        fixture.refresh_manifest(folder)
+    inputs = raw.Inputs()
+    raw.load_collection(collection, profile, inputs)
+    inputs.verify()
+    print(json.dumps({'profile':profile, 'restored_control':True, 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nprofile = 'unloaded'\ncollection = fixture.synthetic_collection(tmp/'actual', profile)\nfolder = collection/raw.MAP...n, profile, inputs)\ninputs.verify()\nprint(json.dumps({'profile':profile, 'restored_control':True, 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_finite_initial_clock_offs0')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_finite_initial_clock_offsets_fail_closed[fine]" time="0.618"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_finite_initial_clock_offs1')
+profile = 'fine'
+
+    @pytest.mark.parametrize('profile', ['unloaded', 'fine', 'loaded'])
+    def test_finite_initial_clock_offsets_fail_closed(tmp_path, profile):
+&gt;       result = probe("""
+    profile = """ + repr(profile) + """
+    collection = fixture.synthetic_collection(tmp/'actual', profile)
+    folder = collection/raw.MAP_ID
+    cases = []
+    for rid in ('r1','r2'):
+        path = folder/f'robots/{rid}/commands.jsonl'
+        original = path.read_bytes()
+        for offset in (-.05, .05):
+            rows = [json.loads(line) for line in original.splitlines()]
+            rows[0]['t'] += offset
+            path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+            fixture.refresh_manifest(folder)
+            try:
+                inputs = raw.Inputs()
+                raw.load_collection(collection, profile, inputs)
+                inputs.verify()
+            except ValueError as exc:
+                cases.append({'robot':rid, 'offset':offset, 'rejected':True, 'reason':str(exc)})
+            else:
+                cases.append({'robot':rid, 'offset':offset, 'rejected':False})
+        path.write_bytes(original)
+        fixture.refresh_manifest(folder)
+    inputs = raw.Inputs()
+    raw.load_collection(collection, profile, inputs)
+    inputs.verify()
+    print(json.dumps({'profile':profile, 'restored_control':True, 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nprofile = 'fine'\ncollection = fixture.synthetic_collection(tmp/'actual', profile)\nfolder = collection/raw.MAP_ID\...n, profile, inputs)\ninputs.verify()\nprint(json.dumps({'profile':profile, 'restored_control':True, 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_finite_initial_clock_offs1')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase><testcase classname="test_review_351c" name="test_finite_initial_clock_offsets_fail_closed[loaded]" time="0.620"><failure message="RuntimeError: Traceback (most recent call last):&#10;  File &quot;&lt;string&gt;&quot;, line 14, in &lt;module&gt;&#10;    spec.loader.exec_module(fixture)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1026, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap&gt;&quot;, line 488, in _call_with_frames_removed&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py&quot;, line 19, in &lt;module&gt;&#10;    from scripts import assemble_final_pair_calibration as a&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py&quot;, line 29, in &lt;module&gt;&#10;    from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py&quot;, line 14, in &lt;module&gt;&#10;    from scripts.fit_final_environment_unloaded import camera_summary, wrap&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 67, in &lt;module&gt;&#10;    lag_integral = load_integral()&#10;  File &quot;/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py&quot;, line 63, in load_integral&#10;    spec.loader.exec_module(module)&#10;    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1022, in exec_module&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1159, in get_code&#10;  File &quot;&lt;frozen importlib._bootstrap_external&gt;&quot;, line 1217, in get_data&#10;FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'">tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_finite_initial_clock_offs2')
+profile = 'loaded'
+
+    @pytest.mark.parametrize('profile', ['unloaded', 'fine', 'loaded'])
+    def test_finite_initial_clock_offsets_fail_closed(tmp_path, profile):
+&gt;       result = probe("""
+    profile = """ + repr(profile) + """
+    collection = fixture.synthetic_collection(tmp/'actual', profile)
+    folder = collection/raw.MAP_ID
+    cases = []
+    for rid in ('r1','r2'):
+        path = folder/f'robots/{rid}/commands.jsonl'
+        original = path.read_bytes()
+        for offset in (-.05, .05):
+            rows = [json.loads(line) for line in original.splitlines()]
+            rows[0]['t'] += offset
+            path.write_text(''.join(json.dumps(row)+'\\n' for row in rows))
+            fixture.refresh_manifest(folder)
+            try:
+                inputs = raw.Inputs()
+                raw.load_collection(collection, profile, inputs)
+                inputs.verify()
+            except ValueError as exc:
+                cases.append({'robot':rid, 'offset':offset, 'rejected':True, 'reason':str(exc)})
+            else:
+                cases.append({'robot':rid, 'offset':offset, 'rejected':False})
+        path.write_bytes(original)
+        fixture.refresh_manifest(folder)
+    inputs = raw.Inputs()
+    raw.load_collection(collection, profile, inputs)
+    inputs.verify()
+    print(json.dumps({'profile':profile, 'restored_control':True, 'cases':cases}))
+    """, tmp_path)
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351c.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+source = "\nprofile = 'loaded'\ncollection = fixture.synthetic_collection(tmp/'actual', profile)\nfolder = collection/raw.MAP_I...n, profile, inputs)\ninputs.verify()\nprint(json.dumps({'profile':profile, 'restored_control':True, 'cases':cases}))\n"
+tmp_path = PosixPath('/private/tmp/ugrp-review-351c.7oc93yvr/variants-tmp/test_finite_initial_clock_offs2')
+
+    def probe(source, tmp_path):
+        candidate = Path(os.environ.get("REVIEW_351_ROOT", ROOT)).resolve()
+        if not (candidate / "scripts/assemble_final_pair_calibration.py").is_file():
+            pytest.skip("Set REVIEW_351_ROOT to the archived PR #351 candidate")
+        env = dict(os.environ)
+        env.pop("PYTEST_ADDOPTS", None)
+        env.update(PYTHONPATH=str(candidate), PYTHONDONTWRITEBYTECODE="1",
+                   OPENBLAS_NUM_THREADS="1", OMP_NUM_THREADS="1", GIT_OPTIONAL_LOCKS="0")
+        # An archive lacks .git; use this review worktree's object store only for
+        # the assembler's read-only provenance queries, with the archive as tree.
+        if not (candidate / ".git").exists():
+            env["GIT_DIR"] = subprocess.check_output(
+                ["git", "rev-parse", "--absolute-git-dir"], cwd=ROOT, text=True).strip()
+            env["GIT_WORK_TREE"] = str(candidate)
+        guard = """
+    import importlib.util, json, socket, sys
+    from pathlib import Path
+    import numpy as np
+    def forbidden(*args, **kwargs):
+        raise RuntimeError('review forbids physics/render/network/model calls')
+    socket.socket.connect = forbidden
+    for module in ('mujoco', 'torch', 'torchvision', 'sim.multi_masterpi_production'):
+        sys.modules[module] = None
+    from harness.vision_loc_client import VisionWorkerClient
+    VisionWorkerClient.__init__ = forbidden
+    spec = importlib.util.spec_from_file_location('fixture351', 'tests/test_final_pair_calibration_assembly.py')
+    fixture = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fixture)
+    a, raw, motion, b = fixture.a, fixture.raw, fixture.motion, fixture.b
+    tmp = Path(sys.argv[1])
+    """
+        result = subprocess.run([sys.executable, "-B", "-c", guard + source, str(tmp_path)],
+                                cwd=candidate, env=env, text=True, capture_output=True, timeout=300)
+        if result.returncode:
+&gt;           raise RuntimeError(result.stdout + result.stderr)
+E           RuntimeError: Traceback (most recent call last):
+E             File "&lt;string&gt;", line 14, in &lt;module&gt;
+E               spec.loader.exec_module(fixture)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1026, in exec_module
+E             File "&lt;frozen importlib._bootstrap&gt;", line 488, in _call_with_frames_removed
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/tests/test_final_pair_calibration_assembly.py", line 19, in &lt;module&gt;
+E               from scripts import assemble_final_pair_calibration as a
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/assemble_final_pair_calibration.py", line 29, in &lt;module&gt;
+E               from scripts.final_pair_calibration_camera import fit_cameras, pair_rows, fit_pair
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/final_pair_calibration_camera.py", line 14, in &lt;module&gt;
+E               from scripts.fit_final_environment_unloaded import camera_summary, wrap
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 67, in &lt;module&gt;
+E               lag_integral = load_integral()
+E             File "/private/tmp/ugrp-review-351c.7oc93yvr/candidate/scripts/fit_final_environment_unloaded.py", line 63, in load_integral
+E               spec.loader.exec_module(module)
+E               ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1022, in exec_module
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1159, in get_code
+E             File "&lt;frozen importlib._bootstrap_external&gt;", line 1217, in get_data
+E           FileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/ugrp-review-351c.7oc93yvr/candidate/experiments/2026-09-26-vision-loc/vision_motion.py'
+
+/Users/changmin/projects/ugrp-wt/review-351/tests/test_review_351.py:55: RuntimeError</failure></testcase></testsuite></testsuites>

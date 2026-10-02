@@ -1,0 +1,112 @@
+{
+  "original": {
+    "tests": 24,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "variants": {
+    "tests": 20,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "related": {
+    "tests": 604,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "related-fixture": {
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "original-setup-error": {
+    "tests": 24,
+    "failures": 24,
+    "errors": 0,
+    "skipped": 0
+  },
+  "variants-setup-error": {
+    "tests": 20,
+    "failures": 20,
+    "errors": 0,
+    "skipped": 0
+  },
+  "verdict": "MERGE",
+  "target": "3149a138acb2d362c088e861d31f38530f48efe3",
+  "previous_target": "9134d7e12de1d4748a85904dee63c12b682f2dca",
+  "fix": "8034f410b58538901ec6377dc0b461b97d0a6a71",
+  "resumed_from_review_commit": "a1ed666f212f81ba77a6f5987c5ffb4f1d50a02a",
+  "archive": {
+    "files_verified_after_tests": 2693,
+    "mismatches": []
+  },
+  "new_test_sha256": "c6b98f276e9e808cd6202b6977d28d8766287f6b84f40111938240795ce48067",
+  "environment": {
+    "executable": "/opt/anaconda3/bin/python3",
+    "python": "3.13.5",
+    "numpy": "2.4.4",
+    "scipy": "1.17.1",
+    "pytest": "8.3.4"
+  },
+  "setup_failures": [
+    "The first original/variants attempts failed before probe bodies because the partial archive omitted experiments/2026-09-26-vision-loc/vision_motion.py. Dependencies were restored from the same candidate archive; the saved subsequent runs passed.",
+    "The related run had 603 passes and one FileNotFoundError for experiments/2026-10-01-v3-pair-adapter/identifiability_v2.json. On resume that exact fixture was archived from 3149a138; only the failed test was rerun and passed."
+  ],
+  "resumed_actions": "Preserved prior completed tests and unchanged untracked test_review_351c.py; verified archive Git blob identities; restored one fixture; reran only the failed related test; independently rechecked frozen bytes and PR checks.",
+  "related_latest_per_case": {
+    "passed": 604,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "single_all_green_run": false
+  },
+  "distinct_latest_test_cases": 624,
+  "original_replay_duplicates_related": true,
+  "new_adversarial_subcases": 123,
+  "durations_coverage": {
+    "measured": 407,
+    "total": 410,
+    "fraction": 0.9926829268292683
+  },
+  "ci": {
+    "checks": 33,
+    "success": 33,
+    "state": "OPEN",
+    "isDraft": true,
+    "mergeable": "MERGEABLE",
+    "mergeStateStatus": "BLOCKED"
+  },
+  "scratch_path": "/private/tmp/ugrp-review-351c.7oc93yvr",
+  "boundaries": {
+    "physics_render_model_calls": 0,
+    "shared_outputs_access": false,
+    "workflow_edits": false,
+    "merge_performed": false
+  },
+  "evidence_sha256": {
+    "archive-files.json": "ee55d7bfe55e42340968b6414b572594f111ef3abf7e2eb7e5c160672e2827c0",
+    "fixtures.txt": "588f529af41c33591232794d31d3820b17e58faa201d9a5cc93a4d521128a4ea",
+    "guard.py": "aac02261bec49d4804b8b0690f81665f61c9c8edeaca35b5311f27f023499863",
+    "original-setup-error.txt": "da56bf7c4d7d5fd9b96eae3ee461138552ee967a1a195b59adc229e424703216",
+    "original-setup-error.xml": "d0f9f233df8fc0bac2b7a2a1d5d7c239bf735bc72814dc2ee3c06ace6ea4aec9",
+    "original.txt": "a61def9f4935ad883871d4a2db0f97fcb20f31de4908b4c07850ac523960b23e",
+    "original.xml": "c9a53b00df7bfa6c9f62af0b8b42414e51e35e93593a2cee2c08e8864847e2e5",
+    "pr-ci.json": "b52aef89f5b597198eafc1f98167eaf86c5fc07eda7b65e852feb892e933184e",
+    "probes.json": "42fd129b1dbeb73fbe8e512dece06dfca6fcfe19fa9452d53b3a762258ba0cc9",
+    "related-fixture.txt": "f7733ec4e0a7b574e3d13433b0da23bcd3f8dbc5c1b50bd933ccc648a3ad6756",
+    "related-fixture.xml": "6532dae3dd06c046cbae5e47c9c00c51c78ad18e37d4ab035de8511702886641",
+    "related.txt": "b4b0afec2841da218776f0e8af0227949744539af15651eb13b2945e5a91f595",
+    "related.xml": "74a474ab0094e4734e41e735338d69a8185f668e71788e9c18fc7de033ee03ec",
+    "run_tests.py": "573eccb07e9505e4242d2aa548688d8955cd9bd240ac6be5329dd84dea4359de",
+    "shards.txt": "41caa8aeb4282afff05b566c7d57b9e504bcacd44632827e0f1337cacbd24c58",
+    "static.json": "34aa1ea55cacc8b8284626e9ae939d02cd04b4f6e189f1230c499e733df27bdd",
+    "variants-setup-error.txt": "6b256f0c43b837a958d10c62dd256eef8b24b42f595e0c602320bb12b653cb77",
+    "variants-setup-error.xml": "855e33307bd7b74402fbc09642dd439e723159238a6025a88a4d8157d66a0551",
+    "variants.txt": "b2bc4213f1eea151aeceac2796288186932fc5baca9effd8fa71b2aa7ae8c83b",
+    "variants.xml": "51220e4e9ba93d79aafd533787bf6a7e69265c61b03728ab4d071e2786a23f94"
+  }
+}
