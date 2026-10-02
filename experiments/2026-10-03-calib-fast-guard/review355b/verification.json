@@ -1,0 +1,51 @@
+{
+  "target": "04043e274af7351f3d35cb6be77d948cac1b8c6a",
+  "main": "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f",
+  "timestamp_utc": "2026-10-02T17:40:05.580837+00:00",
+  "verdict": "MERGE",
+  "tests": {
+    "original18": {
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "groups": {
+        "tests.test_review_355b_original": 18
+      }
+    },
+    "scoped": {
+      "tests": 154,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "groups": {
+        "tests.test_review_355": 39,
+        "tests.test_agent_sim_slots": 27,
+        "tests.test_agent_lock": 6,
+        "tests.test_zone_final_pair_fast": 20,
+        "tests.test_final_pair_fast_guard": 31,
+        "tests.test_final_pair_fast_replay": 2,
+        "tests.test_review_355b_variants": 29
+      }
+    }
+  },
+  "deduplication": "18 original cases overlap the 18 ported cases in scoped; not summed",
+  "independent_nearby_variants": 29,
+  "legacy_combinations_equal": 9,
+  "guard_rows": 14802,
+  "guard_matches": 14802,
+  "guard_mismatches": 0,
+  "ci": {
+    "state": "BLOCKED",
+    "draft": true,
+    "mergeable": "MERGEABLE",
+    "checks": {
+      "SUCCESS": 33
+    }
+  },
+  "no_rendering": true,
+  "no_model_calls": true,
+  "no_existing_process_actions": true,
+  "no_shared_lock_writes": true,
+  "scratch_deleted": true
+}

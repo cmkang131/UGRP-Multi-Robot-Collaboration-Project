@@ -1,0 +1,86 @@
+{
+  "target": "04043e274af7351f3d35cb6be77d948cac1b8c6a",
+  "main": "6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f",
+  "bytes": {
+    "scripts/agent_lock.py": {
+      "same": true,
+      "sha256": "709db3d87e4d2369171aba10ce3c64b7c8be254e2de7115ae608a022b1783dce"
+    },
+    "tests/test_review_352.py": {
+      "same": true,
+      "sha256": "c54366b03508867786e54e5079e55e3e69b3bdcdf21f7f2b8fdf3e960837e0bd"
+    },
+    "tests/test_zone_final_pair_heldout.py": {
+      "same": true,
+      "sha256": "3245d6142f22e560cd73827ff847ba8aaedb2de4083ea2e4f1b6eab438a8c79c"
+    },
+    "tests/test_final_environment_measurement_v2.py": {
+      "same": true,
+      "sha256": "40efd394046c352e309595fd29b4110b6a5c067320049ff7c923696ff64d286a"
+    },
+    "tests/test_zone_final_environment_floor_light.py": {
+      "same": true,
+      "sha256": "261c8cd97f05d66b44b88842bec16e1a5348ae5fca7ab21cfb431836641be7c3"
+    }
+  },
+  "workflow_diff": "",
+  "legacy_changed_files": [],
+  "old_helper_removed": true,
+  "hash_substitution_scan": "",
+  "live_lock_before": {
+    "sha256": "e8f2d6230bd0e90d659890484fca0b1688c9ef590002f62a760dc01eed512cef",
+    "record": {
+      "owner": "claude",
+      "branch": "claude/phys-v88-cal",
+      "purpose": "v88 calibration loaded-only rerun r8 (#344), teacher only",
+      "pid": 27572,
+      "acquired_unix": 1790953169.30377,
+      "expected_end_unix": 1790971169.30377,
+      "loadavg_at_acquire": [
+        51.5908203125,
+        27.41162109375,
+        18.7412109375
+      ],
+      "timing_sensitive": false
+    }
+  },
+  "legacy_preserved": {
+    "zone-final-pair-v88/zone_wide_door_geometry_v3/p03": {
+      "source_files": 237,
+      "source_and_writer_and_digest_equal": true
+    },
+    "zone-final-pair-v88/zone_wide_corridor_final_v3/carry": {
+      "source_files": 238,
+      "source_and_writer_and_digest_equal": true
+    },
+    "zone-final-pair-v88/zone_wide_door_geometry_v3/carry": {
+      "source_files": 237,
+      "source_and_writer_and_digest_equal": true
+    },
+    "zone-final-pair-v88/zone_wide_two_doors_final_v3/carry": {
+      "source_files": 238,
+      "source_and_writer_and_digest_equal": true
+    },
+    "zone-final-pair-v88/zone_wide_two_doors_final_v3/calibration-unloaded": {
+      "source_files": 239,
+      "source_and_writer_and_digest_equal": true
+    },
+    "zone-final-pair-v88/zone_wide_two_doors_final_v3/calibration-loaded": {
+      "source_files": 239,
+      "source_and_writer_and_digest_equal": true
+    },
+    "zone-final-pair-v88/zone_wide_two_doors_final_v3/calibration-fine": {
+      "source_files": 239,
+      "source_and_writer_and_digest_equal": true
+    },
+    "zone-final-pair-v90/zone_wide_door_geometry_v3/calibration-unloaded": {
+      "source_files": 247,
+      "source_and_writer_and_digest_equal": true
+    },
+    "zone-final-pair-v90/zone_wide_corridor_final_v3/calibration-unloaded": {
+      "source_files": 248,
+      "source_and_writer_and_digest_equal": true
+    }
+  },
+  "original18_api_adaptation": "fd1e82d2 tests copied unchanged except importing agent_sim_slots and routing slot() acquisition to it; --runxfail used"
+}
