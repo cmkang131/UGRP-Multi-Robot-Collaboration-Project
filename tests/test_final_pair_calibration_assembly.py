@@ -110,7 +110,7 @@ def synthetic_collection(tmp_path, profile):
                   'wall_clearance_lower_bound_m': .8, 'qualification': 'synthetic eval_only'}
                  for j, (x, y, yaw) in enumerate(pose)]
         rows(folder/f'eval_only/{rid}/pose.jsonl', poses)
-        initial = {1: 2000, 2: 1500, 3: 740, 4: 2320, 5: 1320, 6: 1500}
+        initial = {1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500}  # real writer has no servo 2
         commands = [{'t': 1.3, 'kind': 'initial_servo_command', 'pulses': initial}]
         commands += [{'t': round(1.3+e['t'], 8), **e['action']} for e in events if e['robot_id'] == rid]
         rows(folder/f'robots/{rid}/commands.jsonl', commands)
@@ -132,8 +132,12 @@ def synthetic_collection(tmp_path, profile):
             else:
                 os.link(first_image, image_path)
             commanded = {str(k): v for k, v in servo.items()}
-            frame = {'t': t, 'frame_id': f'{rid}:{j}', 'sha256': image_hash, 'path': path,
-                     'commanded_servo': commanded, 'width': 640, 'height': 480}
+            # Exactly sim/camera_robot_port.capture() minus 'image', plus the
+            # path/commanded_servo keys sim/final_pair_v3.capture() appends.
+            frame = {'robot_id': rid, 'frame_id': j+1, 'sim_time': t, 'sha256': image_hash,
+                     'camera': 'robot_cam', 'actuator_state': {'motor_commands': [0., 0., 0., 0.],
+                         'servo_pulses': dict(commanded)},
+                     'path': path, 'commanded_servo': commanded}
             base = poses[j*4]
             rb = np.asarray(base['base_rotation'])
             pc = np.asarray(base['base_position_m'])+rb @ np.array([.15, 0., .2])
@@ -190,7 +194,7 @@ def test_every_record_clock_rejects_malformed_times(loaded_raw, record, time):
              'label': 'eval_only/r2/camera_labels.jsonl',
              'beam': 'eval_only/trajectory.jsonl', 'contact': 'eval_only/contacts.jsonl'}
     relative = paths.get(record, 'robots/r2/commands.jsonl')
-    key = 'duration_s' if record == 'command_duration' else 't'
+    key = 'duration_s' if record == 'command_duration' else 'sim_time' if record == 'frame' else 't'
     kind = 'mecanum' if record == 'command_duration' else record
 
     class InvalidTime(raw.Inputs):
@@ -646,3 +650,102 @@ def test_raw_audit_rejects_tampering(unloaded_raw, monkeypatch, mutation):
             return value
     with pytest.raises(ValueError):
         raw.load_collection(unloaded_raw, 'unloaded', Tampered())
+
+
+# --- #351 follow-up: the fixture must be the real writer schema -------------
+# The first real v88 run rejected every collection because the assembler read
+# frames.jsonl['t'] while the runner writes 'sim_time'. These tests derive the
+# expected keys from the writer source so a fixture/reader guess cannot hide it.
+def writer_dict_keys(source, relative_marker, function=None):
+    """Literal keys of the dict passed to self._append(<path containing marker>, {...})."""
+    import ast
+    from pathlib import Path
+    tree = ast.parse((Path(contract.ROOT)/source).read_text())
+    found = []
+    for node in ast.walk(tree):
+        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == '_append'
+                and len(node.args) == 2 and isinstance(node.args[1], ast.Dict)
+                and relative_marker in ast.unparse(node.args[0])):
+            found.append(node.args[1])
+    assert len(found) == 1, (source, relative_marker, len(found))
+    return {k.value for k in found[0].keys if isinstance(k, ast.Constant)}, any(k is None for k in found[0].keys)
+
+
+def port_capture_keys():
+    import ast
+    from pathlib import Path
+    tree = ast.parse((Path(contract.ROOT)/'sim/camera_robot_port.py').read_text())
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef) and node.name == 'capture':
+            returns = [n.value for n in ast.walk(node) if isinstance(n, ast.Return) and isinstance(n.value, ast.Dict)]
+            assert len(returns) == 1
+            return {k.value for k in returns[0].keys}
+    raise AssertionError('capture() not found')
+
+
+def fixture_rows(root, relative):
+    return [json.loads(line) for line in (root/MAP_ID/relative).read_text().splitlines()]
+
+
+def test_fixture_row_keys_equal_the_real_writer_schema(loaded_raw):
+    frame_keys, spread = writer_dict_keys('sim/final_pair_v3.py', 'frames.jsonl')
+    assert spread  # frame row = port observation (minus image) plus the literal keys
+    expected_frame = (port_capture_keys()-{'image'})|frame_keys
+    assert 'sim_time' in expected_frame and 't' not in expected_frame
+    for rid in contract.ROBOTS:
+        for row in fixture_rows(loaded_raw, f'robots/{rid}/frames.jsonl'):
+            assert set(row) == expected_frame
+    label_keys, spread = writer_dict_keys('sim/final_pair_v3.py', 'camera_labels.jsonl')
+    label_fields = set(measurement_label([0, 0, 0], np.eye(3), [0, 0, 0], np.eye(3)))
+    for rid in contract.ROBOTS:
+        for row in fixture_rows(loaded_raw, f'eval_only/{rid}/camera_labels.jsonl'):
+            assert set(row) == label_keys|label_fields
+    pose_keys, _ = writer_dict_keys('sim/final_pair_v3.py', 'pose.jsonl')
+    beam_keys, _ = writer_dict_keys('sim/final_pair_v3.py', 'trajectory.jsonl')
+    contact_keys, _ = writer_dict_keys('sim/final_environment_checks.py', 'contacts.jsonl')
+    for rid in contract.ROBOTS:
+        assert all(set(r) == pose_keys for r in fixture_rows(loaded_raw, f'eval_only/{rid}/pose.jsonl'))
+    assert all(set(r) == beam_keys for r in fixture_rows(loaded_raw, 'eval_only/trajectory.jsonl'))
+    assert all(set(r) == contact_keys for r in fixture_rows(loaded_raw, 'eval_only/contacts.jsonl'))
+
+
+def test_fixture_command_and_servo_vocabulary_matches_real_raw(loaded_raw):
+    # Observed in the real v88 raw: no servo 2 anywhere, pulses keyed by string id.
+    kinds = {}
+    for row in fixture_rows(loaded_raw, 'robots/r1/commands.jsonl'):
+        kinds.setdefault(row['kind'], set(row))
+    assert kinds['initial_servo_command'] == {'t', 'kind', 'pulses'}
+    assert kinds['arm'] == {'t', 'kind', 'servo_id', 'pulse'}
+    assert kinds['look'] == {'t', 'kind', 'pan_pulse'}
+    assert kinds['mecanum'] == {'t', 'kind', 'forward', 'left', 'turn', 'duration_s'}
+    frames = fixture_rows(loaded_raw, 'robots/r1/frames.jsonl')
+    assert set(frames[0]['commanded_servo']) == {'1', '3', '4', '5', '6'}
+    assert frames[0]['actuator_state']['servo_pulses'] == frames[0]['commanded_servo']
+    assert isinstance(frames[0]['frame_id'], int) and frames[0]['camera'] == 'robot_cam'
+
+
+def test_old_frame_clock_key_t_is_rejected_not_accepted(loaded_raw):
+    class OldSchema(raw.Inputs):
+        def rows(self, path):
+            values = super().rows(path)
+            if path == loaded_raw/MAP_ID/'robots/r1/frames.jsonl':
+                for row in values:
+                    row['t'] = row.pop('sim_time')
+            return values
+    with pytest.raises(ValueError, match='r1 frame clock must be a finite numeric time'):
+        raw.load_collection(loaded_raw, 'loaded', OldSchema())
+
+
+def test_label_pose_tolerance_accepts_recorded_substep_lag_not_a_neighbouring_sample(loaded_raw):
+    def run(shift):
+        class Shifted(raw.Inputs):
+            def rows(self, path):
+                values = super().rows(path)
+                if path == loaded_raw/MAP_ID/'eval_only/r1/camera_labels.jsonl':
+                    for row in values:
+                        row['base_position_m'][0] += shift
+                return values
+        return raw.load_collection(loaded_raw, 'loaded', Shifted())
+    run(5e-5)  # real raw differs by up to 4.7e-5 m between label and pose.jsonl
+    with pytest.raises(ValueError, match='camera label chassis pose differs'):
+        run(1e-3)  # real adjacent 50 ms samples differ by millimetres

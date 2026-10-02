@@ -17,6 +17,16 @@ from harness.zone_final_pair_excitation import design, MAP_ID
 from scripts import validate_consumer_criterion_b as b
 
 
+# The camera label is read from the body pose after the renderer refreshed
+# kinematics, while pose.jsonl is sampled without a refresh at the same SIM
+# time. The real v88 raw differs by up to 4.7e-5 m / 6.9e-4 (matrix element)
+# for that reason (a sub-step lag, not a different sample: the neighbouring
+# 50 ms sample differs by millimetres). Keep a bound that still separates a
+# neighbouring sample but accepts that recorded lag.
+LABEL_POSE_ATOL_M = 1e-4
+LABEL_ROTATION_ATOL = 2e-3
+
+
 def file_sha(path):
     with Path(path).open('rb') as stream:
         return hashlib.file_digest(stream, 'sha256').hexdigest()
@@ -204,7 +214,7 @@ def load_collection(root, profile, inputs):
         yaw = np.unwrap(np.arctan2(rot[:, 1, 0], rot[:, 0, 0]))
         frames = inputs.rows(folder/f'robots/{rid}/frames.jsonl')
         labels = inputs.rows(folder/f'eval_only/{rid}/camera_labels.jsonl')
-        record_times(frames, rid+' frame clock')
+        record_times(frames, rid+' frame clock', 'sim_time')
         record_times(labels, rid+' camera label clock')
         if len(frames) != 1851 or len(labels) != len(frames):
             raise ValueError('missing frame/camera labels')
@@ -212,7 +222,7 @@ def load_collection(root, profile, inputs):
         last_change = t[0]
         for j, (f, label) in enumerate(zip(frames, labels)):
             # Runner captures before commands at a tick, including tick zero.
-            while command_i < len(recorded_events) and recorded_events[command_i]['t'] < f['t']-1e-7:
+            while command_i < len(recorded_events) and recorded_events[command_i]['t'] < f['sim_time']-1e-7:
                 command = recorded_events[command_i]
                 sid = str(command['servo_id']) if command['kind'] == 'arm' else ('6' if command['kind'] == 'look' else None)
                 if sid is not None:
@@ -221,20 +231,20 @@ def load_collection(root, profile, inputs):
                         last_change = command['t']
                     servo[sid] = pulse
                 command_i += 1
-            if (abs(f['t']-t[4*j]) > 1e-7 or label['t'] != f['t'] or label['frame_id'] != f['frame_id']
+            if (abs(f['sim_time']-t[4*j]) > 1e-7 or label['t'] != f['sim_time'] or label['frame_id'] != f['frame_id']
                     or label['sha256'] != f['sha256'] or label.get('requested_check') != check
                     or f['commanded_servo'] != servo or label['commanded_servo'] != servo):
                 raise ValueError('frame/label/command clock or identity mismatch')
             label_position = np.asarray(label['base_position_m'], float)
             label_rotation = np.asarray(label['base_rotation'], float)
             if (label_position.shape != (3,) or label_rotation.shape != (3, 3)
-                    or not np.allclose(label_position, xyz[4*j], atol=1e-8, rtol=0)
-                    or not np.allclose(label_rotation, rot[4*j], atol=1e-8, rtol=0)):
+                    or not np.allclose(label_position, xyz[4*j], atol=LABEL_POSE_ATOL_M, rtol=0)
+                    or not np.allclose(label_rotation, rot[4*j], atol=LABEL_ROTATION_ATOL, rtol=0)):
                 raise ValueError('camera label chassis pose differs from simultaneous pose sample')
             image = folder/f['path']
             if str(image.resolve()) not in inputs.files or inputs.files[str(image.resolve())]['sha256'] != f['sha256']:
                 raise ValueError('frame image hash/path mismatch')
-            f['_still_s'] = f['t']-last_change
+            f['_still_s'] = f['sim_time']-last_change
         data['robots'][rid] = {'u': u, 'pose': np.column_stack((xyz[:, :2], yaw)), 't': t,
             'dt': .05, 'segments': segments, 'frames': frames, 'labels': labels, 'commands': commands,
             'map_id': MAP_ID, 'folder': str(folder), 'training': False, 'inputs': [],
