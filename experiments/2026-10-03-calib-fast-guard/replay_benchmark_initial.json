@@ -1,0 +1,128 @@
+{
+  "python": "3.12.13",
+  "platform": "macOS-27.2-arm64-arm-64bit",
+  "numpy": "2.5.2",
+  "mujoco": "3.12.0",
+  "cases": [
+    {
+      "case": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3",
+      "check": "calibration-unloaded",
+      "rows": 7401,
+      "nq": 114,
+      "nv": 102,
+      "ngeom": 1276,
+      "exact_guard_matches": 7401,
+      "mismatches": 0,
+      "abort_counts": {
+        "SUBSTEP_DISPLACEMENT_BOUND_EXCEEDED": 7286
+      },
+      "trajectory_sha256": "f5c027d476bbf295e24b26248d74696f135a91d2e987dc5aa16dd78da4b4045e",
+      "bundle_sha256": "6dad8384ccb74ed76dd7e8d85c9eab0fec02b198f6a59f1f5b94ccb767556104",
+      "result_sha256": "0ce6e0a9530524e85031029758ebb8e4036cf5b225d56262c0a67cd42a83f970",
+      "render": false,
+      "loadavg_start": [
+        15.33056640625,
+        11.02978515625,
+        10.53564453125
+      ],
+      "scope": "full recorded rows plus sequential displacement state; no intermediate substep reconstruction",
+      "benchmark": {
+        "clock": "process_time_ns",
+        "calls_per_repeat": 300,
+        "repeats": 7,
+        "ns_per_call": {
+          "old": [
+            2036930.0,
+            2032453.3333333333,
+            2024403.3333333333,
+            2027210.0,
+            2021683.3333333333,
+            2017976.6666666667,
+            2010283.3333333333
+          ],
+          "new": [
+            83280.0,
+            83026.66666666667,
+            83176.66666666667,
+            83010.0,
+            83170.0,
+            83013.33333333333,
+            83113.33333333333
+          ]
+        },
+        "median_ns_per_call": {
+          "old": 2024403.3333333333,
+          "new": 83113.33333333333
+        },
+        "speedup": 24.357142857142858,
+        "qualification": "offline CPU microbenchmark; no exclusive wall-time or collection throughput claim"
+      },
+      "loadavg_end": [
+        15.01806640625,
+        11.28857421875,
+        10.642578125
+      ]
+    },
+    {
+      "case": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001-r6/calibration-fine/zone_wide_two_doors_final_v3",
+      "check": "calibration-fine",
+      "rows": 7401,
+      "nq": 114,
+      "nv": 102,
+      "ngeom": 1276,
+      "exact_guard_matches": 7401,
+      "mismatches": 0,
+      "abort_counts": {
+        "SUBSTEP_DISPLACEMENT_BOUND_EXCEEDED": 7286
+      },
+      "trajectory_sha256": "e99738831515808de7ee8bd18757a6c7262c05b25e4a1a0b38b0202521d93fb8",
+      "bundle_sha256": "81079e116ac2b6538e5c4674934be0cff60269b99c680407f98cb6069429d19b",
+      "result_sha256": "f9a59d8b09ca5085de9ec91daaf5adb8292cf5a96ac1b610e8a1d59379893e50",
+      "render": false,
+      "loadavg_start": [
+        15.01806640625,
+        11.28857421875,
+        10.642578125
+      ],
+      "scope": "full recorded rows plus sequential displacement state; no intermediate substep reconstruction",
+      "benchmark": {
+        "clock": "process_time_ns",
+        "calls_per_repeat": 300,
+        "repeats": 7,
+        "ns_per_call": {
+          "old": [
+            2169313.3333333335,
+            2160640.0,
+            2150480.0,
+            2145340.0,
+            2146136.6666666665,
+            2146870.0,
+            2134066.6666666665
+          ],
+          "new": [
+            87190.0,
+            87490.0,
+            87603.33333333333,
+            87690.0,
+            86963.33333333333,
+            87780.0,
+            83423.33333333333
+          ]
+        },
+        "median_ns_per_call": {
+          "old": 2146870.0,
+          "new": 87490.0
+        },
+        "speedup": 24.53846153846154,
+        "qualification": "offline CPU microbenchmark; no exclusive wall-time or collection throughput claim"
+      },
+      "loadavg_end": [
+        11.00146484375,
+        10.638671875,
+        10.42578125
+      ]
+    }
+  ],
+  "source_sha": "fb3f23b5077d8be29d1c87832c9a0d1ba3595c32",
+  "qualification": "Initial sequential-only raw comparison. Most 50 ms rows trip the substep displacement check after the first trip; use replay_benchmark.json final per-row evidence instead."
+}
