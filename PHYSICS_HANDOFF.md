@@ -64,8 +64,24 @@ trap - EXIT
 )
 ```
 
-`run_final_pair_v3 --check calibration-unloaded --map-id <위 두 지도>`의 직접 계획도 v90으로
-표시한다. 실행 기록의 workflow 버전을 일치시키려면 위 새 workflow를 사용한다.
+`run_final_pair_heldout --check calibration-unloaded --map-id <위 두 지도>`의 직접 계획도 v90으로
+표시한다. 물리 없이 계획만 확인하려면 아래 명령을 사용한다. `--execute`가 없으므로
+잠금·수집·출력 폴더를 생성하지 않는다. 실제 수집은 위의 잠금·세션·표준 workflow 경로를 사용한다.
+기존 `scripts.run_final_pair_v3`의 calibration 진입점은 두 문 지도 전용이다.
+
+```bash
+cd /Users/changmin/projects/ugrp-wt/calib-heldout-maps
+PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
+FINAL_SHA=$(git rev-parse HEAD)
+RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v90-heldout-NEW-COHORT
+"$PY" -m scripts.run_final_pair_heldout \
+  --check calibration-unloaded --map-id zone_wide_corridor_final_v3 --seed 911 \
+  --expected-source-sha "$FINAL_SHA" --output "$RUN_ROOT/zone_wide_corridor_final_v3"
+"$PY" -m scripts.run_final_pair_heldout \
+  --check calibration-unloaded --map-id zone_wide_door_geometry_v3 --seed 911 \
+  --expected-source-sha "$FINAL_SHA" --output "$RUN_ROOT/zone_wide_door_geometry_v3"
+```
+
 ENOSPC·인터록 중단은 HOST_ERROR다. 기존 출력은 덮어쓰지 않는다.
 회수할 자료는 plan, bundle, inputs/schedule, 발행 명령, own JPEG, eval_only pose/camera,
 result, artifacts.sha256이며 실제 회수 후 TensorBoard에 새 코호트를 등록한다.
