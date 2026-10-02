@@ -51,3 +51,36 @@ push 뒤 이 PR의 `offline-shard-*` JUnit만 받아 `scripts/refresh_ci_duratio
 - [검사 요약과 파일 해시](fix-351-evidence/verification.json)
 
 `git diff --check`, 필수 frozen fixture 3개와 shard 합집합 409파일도 확인했다.
+
+## 재개 후 최신 기준 검증
+
+`61a965f913fff879b965dfc4c120e2284dc6ba16`은 수정 커밋 `41e14559`와
+최신 main `11e9aa26954d3f1ce58c5116ddd14ec2b2738037`을 포함한다.
+위 관련 검사 명령을 이 상태에서 다시 실행해 **338 passed, 실패·skip 0건**을
+단일 실행으로 확인했다. 리뷰 여섯 검사도 포함한다.
+[최종 JUnit](fix-351-evidence/related-final.xml)과
+[재개 검증 기록](fix-351-evidence/resume-verification.json)에 소스 SHA와 파일 해시를 남겼다.
+동결 B·B′, 리뷰 원본 사본, `.github/workflows`의 불변성도 다시 확인했다.
+
+## CI 시간 자료 갱신
+
+위 head를 push한 PR CI [36967231516](https://github.com/kcm0127-dotcom/ugrp/actions/runs/36967231516)의
+`offline-shard-0`–`offline-shard-7` JUnit 8개를 모두 다운로드했다. 각 shard는 통과했고,
+공통 검사와 그 집계만 기존 시간 자료의 부족으로 실패했다.
+
+```sh
+gh run download 36967231516 -D /private/tmp/ugrp-fix-351-ci-36967231516 -p 'offline-shard-*'
+PYTHONDONTWRITEBYTECODE=1 /opt/anaconda3/bin/python3 scripts/refresh_ci_durations.py \
+  /private/tmp/ugrp-fix-351-ci-36967231516 --output configs/ci_test_durations.json
+```
+
+스크립트를 수정하지 않고 측정값으로 갱신해 포함 범위가 **367/409(89.73%) →
+407/409(99.51%)**가 됐다. 기준 90%는 유지한다. JUnit에 직접 시간이 없는
+`tests/test_zone_own_executor_crate_review_j.py`와
+`tests/test_zone_own_executor_tile_review_h.py`는 다른 모듈의 검사를 가져오는 wrapper다.
+그 두 경로의 값을 만들지 않았고 기존 중앙값 처리를 유지한다.
+
+갱신 후 `tests/test_ci_sharding.py` **68 passed**, shard 합집합 409파일과
+`git diff --check`를 확인했다. [최종 샤딩 JUnit](fix-351-evidence/sharding-after.xml)과
+[CI 출처·artifact/JUnit 해시·시간 자료 해시](fix-351-evidence/ci-durations-refresh.json)를 보존했다.
+시간 자료 변경 뒤 새 PR CI는 별도 실행이며 위 실행의 성공을 승계하지 않는다.
