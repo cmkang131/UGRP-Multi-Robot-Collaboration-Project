@@ -12,3 +12,5 @@ def test_every_recorded_full_qpos_row_matches_old_guard(case):
     report = replay(case)
     assert report['rows'] == 7401
     assert report['mismatches'] == 0
+    assert report['abort_counts'] == {}
+    assert report['sequential_guard_matches'] == report['rows']

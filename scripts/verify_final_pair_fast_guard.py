@@ -86,7 +86,9 @@ def replay(case, *, measure=False):
     world = build_world(scene, bundle['contact_profile'], seed=911, render=False,
         warehouse_layout=scene.engine_layout, warehouse_cargo_ids=None)
     old, new = [observer(cls, bundle, scene, world) for cls in (Old, New)]
-    count, aborts, first = 0, {}, None
+    sequential = [observer(cls, bundle, scene, world) for cls in (Old, New)]
+    count, aborts, sequential_aborts, first = 0, {}, {}, None
+    minima = hashlib.sha256()
     try:
         assert world.renderer is None
         with trajectory.open() as stream:
@@ -97,21 +99,36 @@ def replay(case, *, measure=False):
                 world.data.qvel[:] = row['qvel']
                 world.data.time = row['t']
                 mujoco.mj_kinematics(world.model, world.data)
+                # There is no previous 0.25 ms substep in this 50 ms log. Clear
+                # only displacement history to compare each row's full wall /
+                # envelope / recorded-minimum output, not stale minima after
+                # the first downsample-induced displacement trip.
+                old._last_guard_xy.clear()
+                new._last_guard_xy.clear()
                 a, b = outcome(old), outcome(new)
                 assert a == b, (count, a, b)
+                minima.update((str(a['minimum_hex'])+'\n').encode())
                 if a['exception']:
                     reason = a['exception'][1]
                     aborts[reason] = aborts.get(reason, 0)+1
+                sa, sb = [outcome(obj) for obj in sequential]
+                assert sa == sb, (count, sa, sb)
+                if sa['exception']:
+                    reason = sa['exception'][1]
+                    sequential_aborts[reason] = sequential_aborts.get(reason, 0)+1
                 first = first or row
                 count += 1
         assert count > 0
         result = {'case': str(case), 'check': bundle['check'], 'rows': count,
                   'nq': world.model.nq, 'nv': world.model.nv, 'ngeom': world.model.ngeom,
                   'exact_guard_matches': count, 'mismatches': 0, 'abort_counts': aborts,
+                  'clearance_min_series_sha256': minima.hexdigest(),
+                  'sequential_guard_matches': count, 'sequential_abort_counts': sequential_aborts,
                   'trajectory_sha256': digest(trajectory), 'bundle_sha256': digest(case/'bundle.json'),
                   'result_sha256': digest(case/'result.json'),
                   'render': False, 'loadavg_start': load_start,
-                  'scope': 'full recorded rows plus sequential displacement state; no intermediate substep reconstruction'}
+                  'scope': 'each full row independently, plus separate sequential state; no intermediate substep reconstruction',
+                  'sequential_caveat': '50 ms samples can exceed 0.25 ms displacement bound; post-abort history stays frozen, so trips cascade. These are synthetic comparisons, not collection failures.'}
         if measure:
             world.data.qpos[:] = first['qpos']
             world.data.qvel[:] = first['qvel']
