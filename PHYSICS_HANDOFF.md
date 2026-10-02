@@ -772,6 +772,7 @@ SIM 슬롯과 양방향 배타적이다. 기존 non-timing physics 잠금은 그
 plan의 host_start와 result의 host_start/host_end에 부하 평균·SIM 동시 점유자·physics 점유자를 기록한다.
 기존 기본 실행기는 계속 physics 잠금을 요구한다.
 
+검증·CPU 측정 소스: `1cbb1ad4f0a38c1b08f0c559419f5339612eb8ed`. 이후 변경은 기록 문서뿐이다.
 예상 소스는 이 DRAFT PR의 최종 인계에 기록한 **전체 40자리 SHA**로 고정한다.
 두 터미널에서 먼저 `export V91_SOURCE_SHA=<인계의 전체 SHA>`를 실행한다.
 명령은 현재 HEAD가 그 SHA와 다르거나 작업 트리가 더러우면 실행을 거부한다.
