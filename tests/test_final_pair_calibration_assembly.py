@@ -159,6 +159,105 @@ def unloaded_raw(tmp_path_factory):
     return synthetic_collection(tmp_path_factory.mktemp('v88-synthetic-raw'), 'unloaded')
 
 
+@pytest.fixture(scope='module')
+def loaded_raw(tmp_path_factory):
+    return synthetic_collection(tmp_path_factory.mktemp('v88-synthetic-loaded'), 'loaded')
+
+
+INVALID_TIMES = [
+    pytest.param(float('nan'), id='nan'),
+    pytest.param(float('inf'), id='positive-infinity'),
+    pytest.param(-float('inf'), id='negative-infinity'),
+    pytest.param('1.3', id='numeric-string'),
+    pytest.param('NaN', id='nan-string'),
+    pytest.param(None, id='null'),
+    pytest.param(True, id='true'),
+    pytest.param(False, id='false'),
+    pytest.param([], id='array'),
+    pytest.param({}, id='object'),
+    pytest.param(10**400, id='overflowing-integer'),
+    pytest.param('missing', id='missing'),
+]
+
+
+@pytest.mark.parametrize('time', INVALID_TIMES)
+@pytest.mark.parametrize('record', [
+    'pose', 'frame', 'label', 'initial_servo_command', 'arm', 'look',
+    'mecanum', 'command_duration', 'beam', 'contact',
+])
+def test_every_record_clock_rejects_malformed_times(loaded_raw, record, time):
+    paths = {'pose': 'eval_only/r2/pose.jsonl', 'frame': 'robots/r2/frames.jsonl',
+             'label': 'eval_only/r2/camera_labels.jsonl',
+             'beam': 'eval_only/trajectory.jsonl', 'contact': 'eval_only/contacts.jsonl'}
+    relative = paths.get(record, 'robots/r2/commands.jsonl')
+    key = 'duration_s' if record == 'command_duration' else 't'
+    kind = 'mecanum' if record == 'command_duration' else record
+
+    class InvalidTime(raw.Inputs):
+        def rows(self, path):
+            values = super().rows(path)
+            if path == loaded_raw/MAP_ID/relative:
+                selected = values if record in paths else [r for r in values if r['kind'] == kind]
+                # Corrupt the last row of each kind, not just the first sample.
+                if time == 'missing':
+                    selected[-1].pop(key)
+                else:
+                    selected[-1][key] = time
+            return values
+
+    inputs = InvalidTime()
+    with pytest.raises(ValueError, match='finite numeric time'):
+        data = raw.load_collection(loaded_raw, 'loaded', inputs)
+        if record in ('beam', 'contact'):
+            raw.loaded_mask(data, inputs, json.loads(a.CRITERION.read_text())['loaded_selection'])
+
+
+@pytest.mark.parametrize('time', INVALID_TIMES)
+@pytest.mark.parametrize('record', ['completion', 'schedule', 'schedule_duration'])
+def test_metadata_clocks_reject_malformed_times(loaded_raw, record, time):
+    class InvalidTime(raw.Inputs):
+        def json(self, path):
+            value = super().json(path)
+            target = None
+            if record == 'completion' and path == loaded_raw/MAP_ID/'result.json':
+                target, key = value, 'check_sim_s'
+            elif record.startswith('schedule') and path == loaded_raw/MAP_ID/'inputs/schedule.json':
+                target, key = value[-1], 't'
+                if record == 'schedule_duration':
+                    target = next(e['action'] for e in reversed(value) if e['action']['kind'] == 'mecanum')
+                    key = 'duration_s'
+            if target is not None:
+                if time == 'missing':
+                    target.pop(key)
+                else:
+                    target[key] = time
+            return value
+
+    with pytest.raises(ValueError, match='finite numeric time'):
+        raw.load_collection(loaded_raw, 'loaded', InvalidTime())
+
+
+@pytest.mark.parametrize('time', INVALID_TIMES)
+@pytest.mark.parametrize('field', ['motion_start_s', 'segment_duration'])
+def test_motion_plan_times_reject_malformed_values(field, time):
+    from harness.zone_final_pair_excitation import design
+    plan = design('calibration-loaded')
+    if field == 'segment_duration':
+        target, key = plan['segments'][-1], 'duration_s'
+    else:
+        target, key = plan, field
+    # motion_start_s is optional for the shared plan reader; absence means zero.
+    if time == 'missing' and field == 'motion_start_s':
+        target, key = plan, 'initial_hold_s'
+        target[key] = None
+    elif time == 'missing':
+        target.pop(key)
+    else:
+        target[key] = time
+    with pytest.raises(ValueError, match='finite numeric time'):
+        raw.plan_arrays(plan)
+
+
 def test_frozen_prime_contains_exact_B_and_predeclared_split():
     assert raw.file_sha(a.CRITERION) == a.CRITERION_SHA256
     prime = json.loads(a.CRITERION.read_text())

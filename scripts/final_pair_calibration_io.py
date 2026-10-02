@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import re
 from collections import Counter
 from pathlib import Path
@@ -72,6 +73,22 @@ class Inputs:
                 raise ValueError('raw artifact file set changed: '+str(folder))
 
 
+def finite_time(value, context):
+    """Reject malformed JSON clocks before coercion, rounding or comparison."""
+    try:
+        valid = (not isinstance(value, bool) and isinstance(value, (int, float))
+                 and math.isfinite(value))
+    except OverflowError:
+        valid = False
+    if not valid:
+        raise ValueError(context+' must be a finite numeric time')
+
+
+def record_times(records, context, key='t'):
+    for record in records:
+        finite_time(record.get(key), context)
+
+
 def rotation_matrices(value, n):
     a = np.asarray(value, float)
     if (a.shape != (n, 3, 3) or not np.isfinite(a).all()
@@ -84,6 +101,8 @@ def rotation_matrices(value, n):
 def plan_arrays(plan):
     # Reuse B's exact partition/audit. Only its unloaded amplitude cap needs
     # adapting to the registered .04 loaded command, without editing B.
+    finite_time(plan.get('initial_hold_s', plan.get('motion_start_s', 0.)), 'motion start')
+    record_times(plan['segments'], 'motion segment duration', 'duration_s')
     scaled = {**plan, 'segments': [{**s, 'value': s['value']/2} for s in plan['segments']]}
     u, spans, ticks = b.plan_arrays(scaled, 7400, .05, include_required_ticks=True)
     return u*2, spans, ticks
@@ -123,6 +142,7 @@ def load_collection(root, profile, inputs):
     bundle = inputs.json(folder/'bundle.json')
     case_result = inputs.json(folder/'result.json')
     check = 'calibration-'+profile
+    finite_time(case_result.get('check_sim_s'), 'case completion clock')
     if (case_result != result['cases'][0] or case_result.get('protocol_complete') is not True
             or case_result.get('status') != 'COLLECTED_UNQUALIFIED'
             or case_result.get('collection_data_status') != 'UNQUALIFIED'
@@ -146,6 +166,9 @@ def load_collection(root, profile, inputs):
             or bundle.get('calibration_contract') != contract.base.read(contract.ROOT/contract.CALIBRATION_CONTRACT)):
         raise ValueError('static map/calibration contract mismatch')
     events = inputs.json(folder/'inputs/schedule.json')
+    record_times(events, 'schedule clock')
+    record_times([e['action'] for e in events if e['action']['kind'] == 'mecanum'],
+                 'schedule command duration', 'duration_s')
     if events != schedule(check):
         raise ValueError('recorded schedule differs from v88 source')
     expected, segments, required = plan_arrays(bundle['measurement'])
@@ -153,6 +176,7 @@ def load_collection(root, profile, inputs):
             'segments': segments, 'robots': {}}
     for rid in contract.ROBOTS:
         poses = inputs.rows(folder/f'eval_only/{rid}/pose.jsonl')
+        record_times(poses, rid+' pose clock')
         t = np.asarray([r['t'] for r in poses], float)
         xyz = np.asarray([r['base_position_m'] for r in poses], float)
         rot = rotation_matrices([r['base_rotation'] for r in poses], 7401)
@@ -164,6 +188,11 @@ def load_collection(root, profile, inputs):
         if rid == 'r2' and not np.allclose(t, data['robots']['r1']['t'], atol=1e-8, rtol=0):
             raise ValueError('robot clocks differ')
         commands = inputs.rows(folder/f'robots/{rid}/commands.jsonl')
+        # Check every kind, especially initial_servo_command which is excluded
+        # from the frozen schedule comparison below.
+        record_times(commands, rid+' command clock')
+        record_times([r for r in commands if r['kind'] == 'mecanum'],
+                     rid+' command duration', 'duration_s')
         expected_events = [{'t': round(t[0]+e['t'], 7), **e['action']} for e in events if e['robot_id'] == rid]
         recorded_events = [{**r, 't': round(r['t'], 7)} for r in commands if r['kind'] != 'initial_servo_command']
         if recorded_events != expected_events:
@@ -175,6 +204,8 @@ def load_collection(root, profile, inputs):
         yaw = np.unwrap(np.arctan2(rot[:, 1, 0], rot[:, 0, 0]))
         frames = inputs.rows(folder/f'robots/{rid}/frames.jsonl')
         labels = inputs.rows(folder/f'eval_only/{rid}/camera_labels.jsonl')
+        record_times(frames, rid+' frame clock')
+        record_times(labels, rid+' camera label clock')
         if len(frames) != 1851 or len(labels) != len(frames):
             raise ValueError('missing frame/camera labels')
         servo, command_i = {str(k): int(v) for k, v in initial[0]['pulses'].items()}, 0
@@ -216,6 +247,8 @@ def loaded_mask(data, inputs, gate):
     folder = data['folder']
     trace = inputs.rows(folder/'eval_only/trajectory.jsonl')
     contact = inputs.rows(folder/'eval_only/contacts.jsonl')
+    record_times(trace, 'beam clock')
+    record_times(contact, 'contact clock')
     t = data['robots']['r1']['t']
     if len(trace) != len(t) or len(contact) != len(t):
         raise ValueError('loaded contact/beam sample count mismatch')
@@ -235,10 +268,6 @@ def loaded_mask(data, inputs, gate):
     rotation = rotation_matrices([np.asarray(r['beam_rotation']).reshape(3, 3) for r in trace], len(t))
     mask, reasons = [], Counter()
     for i, (tr, cr) in enumerate(zip(trace, contact)):
-        for record in (tr, cr):
-            time = record.get('t')
-            if isinstance(time, bool) or not isinstance(time, (int, float)) or not np.isfinite(time):
-                raise ValueError('contact/beam clock must be a finite numeric time')
         xyz = np.asarray(tr['beam_xyz_m'], float)
         if (xyz.shape != (3,) or not np.isfinite(xyz).all() or abs(tr['t']-t[i]) > 1e-7
                 or abs(cr['t']-t[i]) > 1e-7 or 'active_weld_ids' not in cr):

@@ -96,6 +96,7 @@ TEST_PATTERNS = (
     "tests/test_consumer_criterion_b.py",
     "tests/test_final_pair_calibration_assembly.py",
     "tests/test_review_351.py",
+    "tests/test_review_351b.py",
     "tests/test_review_346.py",
     "tests/test_final_environment_measurement_v2.py",
     "tests/test_review_347.py",
