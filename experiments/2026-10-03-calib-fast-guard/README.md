@@ -1,5 +1,9 @@
 # v91 빠른 검사·동시 SIM 슬롯 — DRAFT
 
+PR #355의 P1 두 건을 수정했다. 최신 잠금 계약·바이트 보존·검증은
+[리뷰 수정 기록](fixes/README.md), 실행 명령은 [v91 인계](../../PHYSICS_HANDOFF.md)의 마지막 절을 따른다.
+아래 CPU/최초 검증 수치는 당시 소스 기록이며 새 수집 결과가 아니다.
+
 Refs #344. 기준 `origin/main=6f8460ad61ed858025a9e1d5d6ce77d7b92d9b1f`,
 작업 브랜치 `codex/calib-fast-guard`. 번들 `zone-final-pair-v91`,
 workflow `zone-final-pair-heldout-v91` **3.3.0**. 이 PR은 병합하지 않는다.
@@ -21,10 +25,10 @@ Fake 전체 수집에서 두 지도 모두 v90과 명령 순서·pose 7,401개·
 `.github/workflows`, v88/v90 등록, 동결 consumer criterion B와 validator를 수정하지 않았다.
 
 v91은 전용 contract·runner·backend로 분리했다. 기존 v88/v90 물리/수집 메서드는 유지한다.
-공용 `agent_lock.py`는 새 API가 추가되어 실제 소스 해시가 달라진다. 과거 기록의 해시는
-변경하지 않으며 현재 production bundle에는 실제 새 해시를 기록한다. 역사 보존 검사는
-이 한 파일을 명시적으로 구분하고 기본 잠금의 acquire/status/release 결과·오류·해제 기록을
-과거 구현과 직접 비교한다. 나머지 v88 bundle/plan의 과거 writer 바이트도 확인한다.
+초기 구현의 공용 `agent_lock.py` 변경은 리뷰 P1a에서 기존 등록 해시 회귀로 확인됐다.
+리뷰 수정에서는 이 파일을 origin/main과 바이트 동일하게 복구하고 새 `scripts/agent_sim_slots.py`로
+분리했다. 옛 해시 치환 fixture와 source 비교 예외를 제거했다. 전체 v88/v90 9개 조합의
+파일별 source hash·bundle/plan writer 바이트·파생 digest를 리뷰의 main 기준값과 직접 비교한다.
 
 ## Guard 동등성
 
@@ -58,18 +62,19 @@ NaN/Inf/누락/잘못된 반경, cache 무효화와 substep 중단을 비교한�
 
 ## 동시 실행
 
-기존 agent_lock CLI에 `--sim-slot sim-<이름>`과 `status --sim-slots`를 추가했다.
-서로 다른 owner/branch의 슬롯은 공존한다. `timing_sensitive=true` physics 잠금과는
-양쪽 획득 순서 모두 차단하며 flock으로 획득 경쟁을 직렬화한다. 기본 physics 잠금과
-기존 실행기의 owner/branch 요구는 그대로다. 불완전/죽은 점유자는 자동 정리하지 않는다.
+v91 전용 `python -m scripts.agent_sim_slots`를 사용한다. 첫 슬롯은 공용 physics 잠금을
+원자적으로 획득하고 마지막 슬롯이 해제한다. 슬롯은 같은 owner·살아 있는 같은 coordinator
+PID를 공유한다. 기존 physics 잠금을 빌릴 때도 같은 owner·PID와 non-timing 조건을 요구하며
+빌린 잠금을 해제하지 않는다. 다른 owner, timing-sensitive, dead/incomplete, orphan 점유는 거부한다.
+옛 SHA의 도구도 기존 physics 디렉터리 때문에 역순 배타 획득이 차단된다.
 
-실행기는 동일 owner/branch의 살아 있는 슬롯과 배타 잠금 부재를 시작 직전에 검사한다.
-plan에 host_start, 사례/전체 result에 host_start/host_end를 기록한다. 각 snapshot에는
-loadavg, concurrent_holders, physics_holder가 있다. 중단 시에도 부분 raw와 해시를 보존한다.
-두 지도 실행 명령·새 출력 루트·SHA 요구는 [PHYSICS_HANDOFF](../../PHYSICS_HANDOFF.md)의
-맨 끝 v91 절에 있다. 새 수집·렌더링은 이 작업에서 실행하지 않는다.
+coordinator는 두 지도 자식이 모두 끝날 때까지 기다린다. 그 전에 legacy release/--stale로
+physics를 제거하지 않는다. 프로세스가 죽으면 자식 종료 확인 뒤 명시적 stale 복구가 필요하다.
+plan의 host_start와 사례/전체 result의 host_start/host_end에는 loadavg·concurrent_holders·
+physics_holder를 남긴다. 부분 raw 보존과 출력 경로 원자적 생성은 유지한다.
+구체적인 명령은 [PHYSICS_HANDOFF](../../PHYSICS_HANDOFF.md)의 마지막 v91 절에 있다.
 
-## 검증 기록
+## 최초 구현 검증 기록 (리뷰 수정 전)
 
 로컬 JUnit 원본은 `/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/`에
 보존한다. `scripts/refresh_ci_durations.py`로 새 4개 파일의 로컬 시간을 추출하고 기존
@@ -82,7 +87,7 @@ CI 측정값은 그대로 유지했다. 시간 자료 coverage는 **413/416 = 99
 이번 관련 회귀에서 제외하며 CI 등록은 유지한다.
 
 초기 실패도 보존한다. 공용 lock 소스 변경으로 역사적 바이트 기대 검사가 실패했고,
-위의 명시적 successor 비교로 고쳤다. 새 인계 파서 테스트는 ugrp_session wrapper의
+당시 successor 비교로 우회했으나 리뷰가 결함 은폐로 지적했고, 이번 수정에서 제거했다. 새 인계 파서 테스트는 ugrp_session wrapper의
 토큰 위치를 잘못 가정해 1회 실패했으며 scripts.sim_cli 토큰을 찾아 파싱하도록 고쳤다.
 이는 테스트 기대 수정이며 guard 수치 동등성 실패는 없었다.
 
@@ -91,7 +96,7 @@ CI 측정값은 그대로 유지했다. 시간 자료 coverage는 **413/416 = 99
 실행 소스 **`1cbb1ad4f0a38c1b08f0c559419f5339612eb8ed`**에서
 [최종 전체 raw 재생·CPU 보고서](replay_benchmark.json)를 생성했다. Guard 구현은
 첫 구현 커밋 `fb3f23b5077d8be29d1c87832c9a0d1ba3595c32` 이후 바이트 동일하다.
-이후 커밋은 실험 기록·인계 문서만 추가하며, 실행할 때는 PR 최종 인계의 실제 전체 HEAD를
+CPU 측정 뒤의 리뷰 수정은 잠금 모듈과 runner를 변경했다. guard 소스는 동일하다. 실행할 때는 PR 최종 인계의 실제 전체 HEAD를
 `V91_SOURCE_SHA`와 `--expected-source-sha`로 사용한다.
 
 | raw | 비교 행 / 불일치 | 기존 guard 중앙 CPU/호출 | 새 guard 중앙 CPU/호출 | 배수 |

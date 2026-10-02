@@ -81,15 +81,9 @@ def test_seed_is_fixed_at_cli_case_and_direct_backend(tmp_path, map_id):
 
 
 @pytest.mark.parametrize('check', c.CHECKS[2:])
-def test_two_door_plan_bundle_and_schedule_preserved(tmp_path, capsys, check, monkeypatch):
+def test_two_door_plan_bundle_and_schedule_preserved(tmp_path, capsys, check):
     frozen = json.loads(BASELINE.read_text())['checks'][check]
     from tests.test_review_352 import BASE_BYTES
-    # V91 changed only host-lock admission in the old source closure. Compare
-    # the historical bundle bytes with that one receipt explicitly normalized.
-    original_sha = c.base.sha
-    monkeypatch.setattr(c.base, 'sha', lambda path:
-        '709db3d87e4d2369171aba10ce3c64b7c8be254e2de7115ae608a022b1783dce'
-        if path == c.ROOT/'scripts/agent_lock.py' else original_sha(path))
     assert legacy_run.main(args(tmp_path, MAP_ID, check)) == 0
     plan_bytes = capsys.readouterr().out.encode()
     bundle_bytes = (json.dumps(c.bundle(MAP_ID, check), ensure_ascii=False,

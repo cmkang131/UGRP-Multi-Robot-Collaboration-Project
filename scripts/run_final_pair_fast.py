@@ -98,7 +98,7 @@ def parser():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--execute', action='store_true')
     p.add_argument('--lock-owner', choices=('codex', 'claude', 'kiro'))
-    p.add_argument('--sim-slot', help='owned non-exclusive sim-* slot; omitted uses legacy physics lock')
+    p.add_argument('--sim-slot', help='owned sim-* slot under a non-timing SIM coordinator; omitted uses exclusive physics lock')
     p.add_argument('--calibration', type=Path)
     p.add_argument('--calibration-sha256')
     p.add_argument('--seed', type=int, default=911)
@@ -119,7 +119,8 @@ def main(argv=None):
         heldout.require_seed(bundle, args.seed)
         if bundle['clearance_preflight'] is not None and not bundle['clearance_preflight']['admitted']:
             blocked.append(rejection_message(bundle['clearance_preflight']))
-    from scripts.agent_lock import DEFAULT_ROOT, status, require_sim_slot, sim_snapshot
+    from scripts.agent_lock import DEFAULT_ROOT, status
+    from scripts.agent_sim_slots import require_sim_slot, sim_snapshot, sim_holders
     snapshot = lambda: sim_snapshot(DEFAULT_ROOT)
     plan = {'execution_bundle_id': bundles[0]['execution_bundle_id'], 'status': 'DRAFT_UNSEALED', 'check': args.check,
         **heldout.record(bundles[0]),
@@ -148,7 +149,8 @@ def main(argv=None):
         require_sim_slot(DEFAULT_ROOT, slot=args.sim_slot, owner=args.lock_owner, branch=branch)
     else:
         held = status(DEFAULT_ROOT)
-        if not held or not held['pid_alive'] or held['owner'] != args.lock_owner or held['branch'] != branch:
+        if (not held or not held['pid_alive'] or held['owner'] != args.lock_owner
+                or held['branch'] != branch or sim_holders(DEFAULT_ROOT)):
             raise ValueError('live owned host lock for this branch required')
     from sim.final_pair_fast import PhysicsBackend
     args.output.mkdir(parents=True)

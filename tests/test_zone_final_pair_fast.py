@@ -13,7 +13,7 @@ from harness import zone_final_pair_contract as c
 from harness import zone_final_pair_heldout as v90
 from harness import zone_final_pair_fast as v91
 from scripts import run_final_pair_fast as run
-from scripts import agent_lock
+from scripts import agent_lock, agent_sim_slots
 from tests.test_zone_final_pair_v3 import FakePhysics, offline_only
 
 ROLE = {'collection_role': 'HELD_OUT_VALIDATION', 'training_eligible': False, 'teacher_only': True}
@@ -90,10 +90,10 @@ def fake_host(tmp_path, monkeypatch):
     monkeypatch.setattr(run.shutil, 'disk_usage', lambda _: SimpleNamespace(free=20*1024**3))
     monkeypatch.setattr(agent_lock, 'DEFAULT_ROOT', tmp_path/'locks')
     monkeypatch.setitem(sys.modules, 'sim.final_pair_fast', SimpleNamespace(PhysicsBackend=FakePhysics))
-    agent_lock.acquire_sim_slot(tmp_path/'locks', slot='sim-first', owner='codex',
+    agent_sim_slots.acquire_sim_slot(tmp_path/'locks', slot='sim-first', owner='codex',
         branch='codex/fast-test', purpose='fake', pid=os.getpid(), expected_minutes=1)
-    agent_lock.acquire_sim_slot(tmp_path/'locks', slot='sim-second', owner='claude',
-        branch='claude/other', purpose='fake', pid=os.getpid(), expected_minutes=1)
+    agent_sim_slots.acquire_sim_slot(tmp_path/'locks', slot='sim-second', owner='codex',
+        branch='codex/other', purpose='fake', pid=os.getpid(), expected_minutes=1)
 
 
 @pytest.mark.parametrize('failure', [False, True])
@@ -135,7 +135,7 @@ def test_v91_source_closure_and_workflow():
     from sim import workflow_manager as wm
     from scripts.run_ci_tests import TEST_PATTERNS, collect_test_files
     value = bundle(v91.MAPS[0])
-    for path in ('sim/final_pair_fast_guard.py', 'scripts/agent_lock.py', v91.REGISTRY, v91.WORKFLOW,
+    for path in ('sim/final_pair_fast_guard.py', 'scripts/agent_lock.py', 'scripts/agent_sim_slots.py', v91.REGISTRY, v91.WORKFLOW,
                  v90.REGISTRY, v90.WORKFLOW):
         assert value['source_sha256'][path] == c.base.sha(c.ROOT/path)
     row, _ = wm._row(c.ROOT, v91.WORKFLOW_ID)
@@ -144,7 +144,7 @@ def test_v91_source_closure_and_workflow():
     assert planned['command'][1:3] == ['-m', 'scripts.run_final_pair_fast']
     assert not planned['execution_started']
     for path in ('tests/test_zone_final_pair_fast.py', 'tests/test_final_pair_fast_guard.py',
-                 'tests/test_final_pair_fast_replay.py', 'tests/test_agent_sim_slots.py'):
+                 'tests/test_final_pair_fast_replay.py', 'tests/test_agent_sim_slots.py', 'tests/test_review_355.py'):
         assert collect_test_files(c.ROOT, TEST_PATTERNS).count(path) == 1
 
 
@@ -156,19 +156,22 @@ def test_frozen_sources_and_handoff_prefix_preserved_and_new_commands_parse():
     size = receipt['handoff_prefix']['bytes']
     assert hashlib.sha256(data[:size]).hexdigest() == receipt['handoff_prefix']['sha256']
     blocks = re.findall(r'```bash\n(.*?)\n```', data[size:].decode(), re.S)
-    assert len(blocks) == 2
+    assert len(blocks) == 1
+    block = blocks[0]
+    subprocess.run(['bash', '-n'], input=block, text=True, check=True)
+    assert '--pid $$' in block and 'wait "$CORRIDOR_PID"' in block and 'wait "$DOOR_PID"' in block
+    assert 'trap cleanup EXIT' in block
     maps = []
-    for block in blocks:
-        subprocess.run(['bash', '-n'], input=block, text=True, check=True)
-        assert '--pid $$' in block and '--sim-slot "$SLOT"' in block
-        assert 'trap' in block and '--sim-slot "$SLOT"\' EXIT' in block
-        command = next(line for line in block.replace('\\\n', ' ').splitlines()
-                       if 'scripts.sim_cli workflow run' in line)
+    for command in block.replace('\\\n', ' ').splitlines():
+        if 'scripts.sim_cli workflow run' not in command:
+            continue
         words = shlex.split(command)
+        if words[-1] == '&':
+            words.pop()
         start = words.index('scripts.sim_cli')
         assert words[start+1:start+5] == ['workflow', 'run', 'zone-final-pair-heldout-v91', '--']
         parsed = run.parser().parse_args(words[start+5:])
         assert parsed.execute and parsed.seed == 911 and parsed.lock_owner == 'codex'
-        assert parsed.sim_slot == '$SLOT' and parsed.expected_source_sha == '$FINAL_SHA'
+        assert parsed.sim_slot.startswith('sim-codex-v91-') and parsed.expected_source_sha == '$FINAL_SHA'
         maps.append(parsed.map_id)
     assert set(maps) == set(v91.MAPS)

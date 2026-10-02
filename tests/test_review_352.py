@@ -30,9 +30,7 @@ MAPS = ("zone_wide_corridor_final_v3", "zone_wide_door_geometry_v3")
 ROLE = {"collection_role": "HELD_OUT_VALIDATION", "training_eligible": False,
         "teacher_only": True}
 # Actual writer bytes generated independently at main 2523269857596ffdd1a8cda9814a6e92f399f1da.
-# No source-dependent fields are removed from these expectations. V91 adds
-# agent_lock SIM-slot admission; only that tool's historical hash is substituted
-# in the byte-preservation checks below, never in production bundles.
+# No source-dependent fields are removed from these expectations.
 BASE_BYTES = {
     "calibration-unloaded": {
         "bundle": "1f4685fe5240ab91bb1982b6db8e3ec63b5689959e9afc787b2c38f55aaf3d94",
@@ -44,16 +42,6 @@ BASE_BYTES = {
         "bundle": "ab0bb9a4ba91a88ba316906ffc59e01b42ed882b676101ccda5019f71fae6bd5",
         "plan": "fea4037700fa0a67305968fdef1f653e24321358fb13babf2fe8280848a8c176"},
 }
-
-
-@pytest.fixture
-def historical_lock_receipt(monkeypatch):
-    original = c.base.sha
-    def historical(path):
-        if Path(path) == c.ROOT/'scripts/agent_lock.py':
-            return '709db3d87e4d2369171aba10ce3c64b7c8be254e2de7115ae608a022b1783dce'
-        return original(path)
-    monkeypatch.setattr(c.base, 'sha', historical)
 
 
 def args(tmp_path, map_id, check="calibration-unloaded"):
@@ -70,7 +58,7 @@ def plan(argv, entry=run.main):
 
 @pytest.mark.parametrize("check", tuple(BASE_BYTES))
 @pytest.mark.parametrize("artifact", ("bundle", "plan"))
-def test_v88_full_bytes_are_preserved(tmp_path, check, artifact, historical_lock_receipt):
+def test_v88_full_bytes_are_preserved(tmp_path, check, artifact):
     value = (c.bundle(excitation.MAP_ID, check) if artifact == "bundle"
              else plan(args(tmp_path, excitation.MAP_ID, check)))
     raw = (json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False) + "\n").encode()

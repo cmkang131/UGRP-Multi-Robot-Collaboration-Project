@@ -93,6 +93,7 @@ TEST_PATTERNS = (
     "tests/test_zone_final_pair_v3.py",
     "tests/test_zone_final_pair_heldout.py",
     "tests/test_review_352.py",
+    "tests/test_review_355.py",
     "tests/test_zone_final_pair_review_fixes.py",
     "tests/test_review_344*.py",
     "tests/test_zone_final_environment_floor_light.py",
