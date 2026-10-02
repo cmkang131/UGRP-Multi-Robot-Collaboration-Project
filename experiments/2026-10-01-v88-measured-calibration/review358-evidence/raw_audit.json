@@ -1,0 +1,2136 @@
+{
+  "definitions": {
+    "norms": "componentwise maximum absolute position and 3x3 rotation difference, same as np.allclose(rtol=0)",
+    "active_command": "nonzero mecanum command on the interval to the neighbouring pose sample; does not assert physical displacement",
+    "stationary_command_1s": "zero own drive commands throughout the preceding 1s and the interval to the neighbour; arm motion may exist",
+    "coast_transition": "zero interval command but a nonzero own drive command in preceding 1s",
+    "neighbour_label": "label at frame j versus pose[4*j-1] and pose[4*j+1], valid boundaries only",
+    "neighbour_pose": "pose[i] versus pose[i+1] over all 50ms intervals",
+    "inverse_step": "xyz_prev=qpos_xyz-dt*qvel_xyz; R_prev=R(qpos_quat)*Exp(-dt*qvel_local_angular)"
+  },
+  "collections": {
+    "unloaded": {
+      "folder": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3",
+      "source_sha": "747d2b9f1eb43e21804ccef58fff4db241d1a844",
+      "timestep_s": 0.00025,
+      "initial_hold_missing": true,
+      "motion_start_s": 74.0,
+      "fallback_equivalent": true,
+      "robots": {
+        "r1": {
+          "timing": {
+            "same_timestamp_max": [
+              9.85871776437719e-06,
+              1.10735688345727e-05
+            ],
+            "label_vs_qpos_max": [
+              0.0,
+              2.3314683517128287e-15
+            ],
+            "pose_vs_inverse_substep_max_excluding_t0": [
+              0.0,
+              2.4424906541753444e-15
+            ],
+            "pose_vs_inverse_substep_t0": [
+              1.9095836023552692e-14,
+              1.159563626333055e-13
+            ]
+          },
+          "pose_neighbours": {
+            "all": {
+              "n": 7400,
+              "pass": 4355,
+              "position_min_m": 0.0,
+              "rotation_min_element": 1.0164395367051604e-20,
+              "position_max_m": 0.001971743342011667,
+              "rotation_max_element": 0.004077479554653109,
+              "joint_min_normalized": 5.082197683525802e-18,
+              "joint_min_pair": [
+                0.0,
+                1.0164395367051604e-20
+              ]
+            },
+            "active_command": {
+              "n": 4530,
+              "pass": 1645,
+              "position_min_m": 1.5997035918147162e-09,
+              "rotation_min_element": 3.148685369176259e-11,
+              "position_max_m": 0.001971743342011667,
+              "rotation_max_element": 0.0017248487017081137,
+              "joint_min_normalized": 0.00020801299409345386,
+              "joint_min_pair": [
+                1.5997035918147162e-09,
+                4.160259881869077e-07
+              ]
+            },
+            "stationary_command_1s": {
+              "n": 2450,
+              "pass": 2327,
+              "position_min_m": 0.0,
+              "rotation_min_element": 1.0164395367051604e-20,
+              "position_max_m": 0.0009834831676651667,
+              "rotation_max_element": 0.004077479554653109,
+              "joint_min_normalized": 5.082197683525802e-18,
+              "joint_min_pair": [
+                0.0,
+                1.0164395367051604e-20
+              ]
+            },
+            "coast_transition": {
+              "n": 420,
+              "pass": 383,
+              "position_min_m": 4.650058116340006e-12,
+              "rotation_min_element": 8.786040367469994e-10,
+              "position_max_m": 0.0013835878643377875,
+              "rotation_max_element": 0.0004526399543767142,
+              "joint_min_normalized": 4.393020183734997e-07,
+              "joint_min_pair": [
+                2.598221637839515e-11,
+                8.786040367469994e-10
+              ]
+            }
+          },
+          "label_neighbours": {
+            "-1": {
+              "all": {
+                "n": 1850,
+                "pass": 1093,
+                "position_min_m": 0.0,
+                "rotation_min_element": 2.473336205982557e-19,
+                "position_max_m": 0.001981602059776044,
+                "rotation_max_element": 0.0025652251402683555,
+                "joint_min_normalized": 1.2366681029912785e-16,
+                "joint_min_pair": [
+                  0.0,
+                  2.473336205982557e-19
+                ]
+              },
+              "active_command": {
+                "n": 1131,
+                "pass": 405,
+                "position_min_m": 2.2879670791287054e-06,
+                "rotation_min_element": 7.710299687112419e-11,
+                "position_max_m": 0.001981602059776044,
+                "rotation_max_element": 0.001733472945820148,
+                "joint_min_normalized": 0.07329491065299898,
+                "joint_min_pair": [
+                  7.329491065299898e-06,
+                  0.00011205011175763227
+                ]
+              },
+              "stationary_command_1s": {
+                "n": 614,
+                "pass": 587,
+                "position_min_m": 0.0,
+                "rotation_min_element": 2.473336205982557e-19,
+                "position_max_m": 0.0005727340510939261,
+                "rotation_max_element": 0.0025652251402683555,
+                "joint_min_normalized": 1.2366681029912785e-16,
+                "joint_min_pair": [
+                  0.0,
+                  2.473336205982557e-19
+                ]
+              },
+              "coast_transition": {
+                "n": 105,
+                "pass": 101,
+                "position_min_m": 1.1956657886003086e-11,
+                "rotation_min_element": 8.818349939154757e-10,
+                "position_max_m": 0.00024024521619248063,
+                "rotation_max_element": 7.135025855522885e-05,
+                "joint_min_normalized": 4.4091749695773785e-07,
+                "joint_min_pair": [
+                  2.6086910409617303e-11,
+                  8.818349939154757e-10
+                ]
+              }
+            },
+            "1": {
+              "all": {
+                "n": 1850,
+                "pass": 1073,
+                "position_min_m": 0.0,
+                "rotation_min_element": 5.421010862427522e-20,
+                "position_max_m": 0.0019618832327910063,
+                "rotation_max_element": 0.004077519234713833,
+                "joint_min_normalized": 2.710505431213761e-17,
+                "joint_min_pair": [
+                  0.0,
+                  5.421010862427522e-20
+                ]
+              },
+              "active_command": {
+                "n": 1134,
+                "pass": 416,
+                "position_min_m": 1.599598897783494e-09,
+                "rotation_min_element": 1.1059403823692319e-10,
+                "position_max_m": 0.0019618832327910063,
+                "rotation_max_element": 0.0017161921101866455,
+                "joint_min_normalized": 0.00020801460947489359,
+                "joint_min_pair": [
+                  1.599598897783494e-09,
+                  4.1602921894978717e-07
+                ]
+              },
+              "stationary_command_1s": {
+                "n": 611,
+                "pass": 565,
+                "position_min_m": 0.0,
+                "rotation_min_element": 5.421010862427522e-20,
+                "position_max_m": 0.0009834831676651667,
+                "rotation_max_element": 0.004077519234713833,
+                "joint_min_normalized": 2.710505431213761e-17,
+                "joint_min_pair": [
+                  0.0,
+                  5.421010862427522e-20
+                ]
+              },
+              "coast_transition": {
+                "n": 105,
+                "pass": 92,
+                "position_min_m": 1.9489743152689698e-11,
+                "rotation_min_element": 3.1484149922572646e-09,
+                "position_max_m": 0.0013737291465734103,
+                "rotation_max_element": 0.00044401571026468,
+                "joint_min_normalized": 1.5742074961286323e-06,
+                "joint_min_pair": [
+                  6.712441713574435e-11,
+                  3.1484149922572646e-09
+                ]
+              }
+            }
+          },
+          "accepted_examples": {
+            "-1/all": {
+              "label_index": 182,
+              "pose_index": 727,
+              "label_t": 37.700000000089,
+              "pose_t": 37.65000000008876,
+              "position_error_m": 9.883732944881984e-05,
+              "rotation_error_element": 2.2889768540703748e-05
+            },
+            "-1/active_command": {
+              "label_index": 1194,
+              "pose_index": 4775,
+              "label_t": 240.09999999605037,
+              "pose_t": 240.04999999605155,
+              "position_error_m": 9.603348965825376e-05,
+              "rotation_error_element": 0.00014560596347924695
+            },
+            "-1/stationary_command_1s": {
+              "label_index": 182,
+              "pose_index": 727,
+              "label_t": 37.700000000089,
+              "pose_t": 37.65000000008876,
+              "position_error_m": 9.883732944881984e-05,
+              "rotation_error_element": 2.2889768540703748e-05
+            },
+            "-1/coast_transition": {
+              "label_index": 1116,
+              "pose_index": 4463,
+              "label_t": 224.49999999641926,
+              "pose_t": 224.44999999642044,
+              "position_error_m": 8.900251755483701e-05,
+              "rotation_error_element": 2.1017146498540602e-05
+            },
+            "1/all": {
+              "label_index": 1710,
+              "pose_index": 6841,
+              "label_t": 343.29999999361,
+              "pose_t": 343.34999999360883,
+              "position_error_m": 9.690788966398856e-05,
+              "rotation_error_element": 0.00017854742215563888
+            },
+            "1/active_command": {
+              "label_index": 764,
+              "pose_index": 3057,
+              "label_t": 154.099999998084,
+              "pose_t": 154.14999999808282,
+              "position_error_m": 9.504199933196844e-05,
+              "rotation_error_element": 4.400475096973371e-08
+            },
+            "1/stationary_command_1s": {
+              "label_index": 1710,
+              "pose_index": 6841,
+              "label_t": 343.29999999361,
+              "pose_t": 343.34999999360883,
+              "position_error_m": 9.690788966398856e-05,
+              "rotation_error_element": 0.00017854742215563888
+            },
+            "1/coast_transition": {
+              "label_index": 1198,
+              "pose_index": 4793,
+              "label_t": 240.89999999603145,
+              "pose_t": 240.94999999603027,
+              "position_error_m": 7.128196256089847e-05,
+              "rotation_error_element": 1.672870223043589e-05
+            }
+          }
+        },
+        "r2": {
+          "timing": {
+            "same_timestamp_max": [
+              8.104628079763643e-15,
+              1.8600977922010363e-13
+            ],
+            "label_vs_qpos_max": [
+              0.0,
+              3.3306690738754696e-16
+            ],
+            "pose_vs_inverse_substep_max_excluding_t0": [
+              0.0,
+              1.4432899320127035e-15
+            ],
+            "pose_vs_inverse_substep_t0": [
+              1.9206858326015208e-14,
+              1.1596824391151707e-13
+            ]
+          },
+          "pose_neighbours": {
+            "all": {
+              "n": 7400,
+              "pass": 7400,
+              "position_min_m": 0.0,
+              "rotation_min_element": 1.953575613723637e-17,
+              "position_max_m": 1.4636070133633439e-12,
+              "rotation_max_element": 1.9840329392344258e-11,
+              "joint_min_normalized": 1.891911615163524e-14,
+              "joint_min_pair": [
+                0.0,
+                3.783823230327048e-17
+              ]
+            },
+            "active_command": {
+              "n": 0
+            },
+            "stationary_command_1s": {
+              "n": 7400,
+              "pass": 7400,
+              "position_min_m": 0.0,
+              "rotation_min_element": 1.953575613723637e-17,
+              "position_max_m": 1.4636070133633439e-12,
+              "rotation_max_element": 1.9840329392344258e-11,
+              "joint_min_normalized": 1.891911615163524e-14,
+              "joint_min_pair": [
+                0.0,
+                3.783823230327048e-17
+              ]
+            },
+            "coast_transition": {
+              "n": 0
+            }
+          },
+          "label_neighbours": {
+            "-1": {
+              "all": {
+                "n": 1850,
+                "pass": 1850,
+                "position_min_m": 0.0,
+                "rotation_min_element": 1.2782268811932492e-16,
+                "position_max_m": 7.354117315117037e-13,
+                "rotation_max_element": 1.2978173038945772e-11,
+                "joint_min_normalized": 1.0604393248947751e-13,
+                "joint_min_pair": [
+                  0.0,
+                  2.1208786497895502e-16
+                ]
+              },
+              "active_command": {
+                "n": 0
+              },
+              "stationary_command_1s": {
+                "n": 1850,
+                "pass": 1850,
+                "position_min_m": 0.0,
+                "rotation_min_element": 1.2782268811932492e-16,
+                "position_max_m": 7.354117315117037e-13,
+                "rotation_max_element": 1.2978173038945772e-11,
+                "joint_min_normalized": 1.0604393248947751e-13,
+                "joint_min_pair": [
+                  0.0,
+                  2.1208786497895502e-16
+                ]
+              },
+              "coast_transition": {
+                "n": 0
+              }
+            },
+            "1": {
+              "all": {
+                "n": 1850,
+                "pass": 1850,
+                "position_min_m": 0.0,
+                "rotation_min_element": 3.617723543529052e-17,
+                "position_max_m": 4.766187444715797e-13,
+                "rotation_max_element": 1.662402717247814e-11,
+                "joint_min_normalized": 6.769573548035227e-14,
+                "joint_min_pair": [
+                  0.0,
+                  1.3539147096070454e-16
+                ]
+              },
+              "active_command": {
+                "n": 0
+              },
+              "stationary_command_1s": {
+                "n": 1850,
+                "pass": 1850,
+                "position_min_m": 0.0,
+                "rotation_min_element": 3.617723543529052e-17,
+                "position_max_m": 4.766187444715797e-13,
+                "rotation_max_element": 1.662402717247814e-11,
+                "joint_min_normalized": 6.769573548035227e-14,
+                "joint_min_pair": [
+                  0.0,
+                  1.3539147096070454e-16
+                ]
+              },
+              "coast_transition": {
+                "n": 0
+              }
+            }
+          },
+          "accepted_examples": {
+            "-1/all": {
+              "label_index": 2,
+              "pose_index": 7,
+              "label_t": 1.7000000000001514,
+              "pose_t": 1.6500000000001347,
+              "position_error_m": 7.354117315117037e-13,
+              "rotation_error_element": 1.1114815001128295e-11
+            },
+            "-1/stationary_command_1s": {
+              "label_index": 2,
+              "pose_index": 7,
+              "label_t": 1.7000000000001514,
+              "pose_t": 1.6500000000001347,
+              "position_error_m": 7.354117315117037e-13,
+              "rotation_error_element": 1.1114815001128295e-11
+            },
+            "1/all": {
+              "label_index": 0,
+              "pose_index": 1,
+              "label_t": 1.3000000000000178,
+              "pose_t": 1.3500000000000345,
+              "position_error_m": 4.766187444715797e-13,
+              "rotation_error_element": 1.662402717247814e-11
+            },
+            "1/stationary_command_1s": {
+              "label_index": 0,
+              "pose_index": 1,
+              "label_t": 1.3000000000000178,
+              "pose_t": 1.3500000000000345,
+              "position_error_m": 4.766187444715797e-13,
+              "rotation_error_element": 1.662402717247814e-11
+            }
+          }
+        }
+      },
+      "schema": {
+        "bundle.json": [
+          "calibration_contract",
+          "calibration_selection",
+          "caps",
+          "case",
+          "check",
+          "clearance_preflight",
+          "contact_profile",
+          "controller_family",
+          "controller_inputs",
+          "controller_variant",
+          "execution_bundle_id",
+          "map_id",
+          "map_sha256",
+          "measurement",
+          "physical_ready",
+          "render_profile",
+          "research_result",
+          "revision",
+          "robot_model",
+          "runtime_interlock",
+          "schema",
+          "sensors",
+          "source_sha",
+          "source_sha256",
+          "status",
+          "timing",
+          "weld"
+        ],
+        "result.json": [
+          "case",
+          "check",
+          "check_sim_cap_s",
+          "check_sim_s",
+          "clearance_preflight",
+          "collection_data_status",
+          "failure",
+          "loadavg_end",
+          "loadavg_start",
+          "partial_data_retained",
+          "physical_success",
+          "protocol_complete",
+          "research_result",
+          "reset_sim_cap_s",
+          "reset_sim_s",
+          "status",
+          "student_control",
+          "timing"
+        ],
+        "inputs/static_map.json": [
+          "approach_convention",
+          "base_map",
+          "bounds_m",
+          "box_kinds",
+          "frame",
+          "map_id",
+          "obstacles",
+          "parent_scene",
+          "passages",
+          "regions",
+          "robot_model",
+          "schema",
+          "terrain",
+          "top_cameras",
+          "version",
+          "wall_profile",
+          "zone_slots"
+        ],
+        "inputs/schedule.json": [
+          "action",
+          "phase",
+          "robot_id",
+          "t"
+        ],
+        "artifacts.sha256.json": "relative artifact path -> SHA256",
+        "../plan.json": [
+          "blocked_on",
+          "bundles_sha256",
+          "cases",
+          "check",
+          "clearance_preflight",
+          "denominator",
+          "execution_bundle_id",
+          "execution_started",
+          "physical_success",
+          "runnable",
+          "seed",
+          "source_sha",
+          "status"
+        ],
+        "../result.json": [
+          "cases",
+          "denominator",
+          "physical_success",
+          "research_result",
+          "source_unchanged",
+          "status",
+          "unattempted"
+        ],
+        "eval_only/contacts.jsonl": [
+          "active_weld_ids",
+          "contacts",
+          "t"
+        ],
+        "eval_only/trajectory.jsonl": [
+          "beam_rotation",
+          "beam_xyz_m",
+          "physical_success",
+          "qpos",
+          "qvel",
+          "t"
+        ],
+        "r1/pose": [
+          "base_position_m",
+          "base_rotation",
+          "qualification",
+          "requested_check",
+          "sample_index",
+          "t",
+          "wall_clearance_lower_bound_m"
+        ],
+        "r1/label": [
+          "base_position_m",
+          "base_rotation",
+          "chassis_to_floor",
+          "commanded_servo",
+          "frame",
+          "frame_id",
+          "load_validity",
+          "origin_m",
+          "requested_check",
+          "rotation",
+          "sha256",
+          "t"
+        ],
+        "r1/frames": [
+          "actuator_state",
+          "camera",
+          "commanded_servo",
+          "frame_id",
+          "path",
+          "robot_id",
+          "sha256",
+          "sim_time"
+        ],
+        "r1/commands": {
+          "initial_servo_command": [
+            "kind",
+            "pulses",
+            "t"
+          ],
+          "arm": [
+            "kind",
+            "pulse",
+            "servo_id",
+            "t"
+          ],
+          "look": [
+            "kind",
+            "pan_pulse",
+            "t"
+          ],
+          "mecanum": [
+            "duration_s",
+            "forward",
+            "kind",
+            "left",
+            "t",
+            "turn"
+          ]
+        },
+        "r2/pose": [
+          "base_position_m",
+          "base_rotation",
+          "qualification",
+          "requested_check",
+          "sample_index",
+          "t",
+          "wall_clearance_lower_bound_m"
+        ],
+        "r2/label": [
+          "base_position_m",
+          "base_rotation",
+          "chassis_to_floor",
+          "commanded_servo",
+          "frame",
+          "frame_id",
+          "load_validity",
+          "origin_m",
+          "requested_check",
+          "rotation",
+          "sha256",
+          "t"
+        ],
+        "r2/frames": [
+          "actuator_state",
+          "camera",
+          "commanded_servo",
+          "frame_id",
+          "path",
+          "robot_id",
+          "sha256",
+          "sim_time"
+        ],
+        "r2/commands": {
+          "initial_servo_command": [
+            "kind",
+            "pulses",
+            "t"
+          ]
+        }
+      }
+    },
+    "fine": {
+      "folder": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001-r6/calibration-fine/zone_wide_two_doors_final_v3",
+      "source_sha": "747d2b9f1eb43e21804ccef58fff4db241d1a844",
+      "timestep_s": 0.00025,
+      "initial_hold_missing": true,
+      "motion_start_s": 74.0,
+      "fallback_equivalent": true,
+      "robots": {
+        "r1": {
+          "timing": {
+            "same_timestamp_max": [
+              9.07300608732342e-06,
+              1.10735688345727e-05
+            ],
+            "label_vs_qpos_max": [
+              0.0,
+              2.3314683517128287e-15
+            ],
+            "pose_vs_inverse_substep_max_excluding_t0": [
+              0.0,
+              2.4424906541753444e-15
+            ],
+            "pose_vs_inverse_substep_t0": [
+              1.9095836023552692e-14,
+              1.159563626333055e-13
+            ]
+          },
+          "pose_neighbours": {
+            "all": {
+              "n": 7400,
+              "pass": 5157,
+              "position_min_m": 0.0,
+              "rotation_min_element": 2.8866882842426556e-18,
+              "position_max_m": 0.0018146010241157917,
+              "rotation_max_element": 0.004077479554653109,
+              "joint_min_normalized": 1.4433441421213278e-15,
+              "joint_min_pair": [
+                0.0,
+                2.8866882842426556e-18
+              ]
+            },
+            "active_command": {
+              "n": 4530,
+              "pass": 2440,
+              "position_min_m": 2.817484023864836e-10,
+              "rotation_min_element": 4.95801551915127e-11,
+              "position_max_m": 0.0018146010241157917,
+              "rotation_max_element": 0.0015802087445976234,
+              "joint_min_normalized": 8.470846388783718e-05,
+              "joint_min_pair": [
+                2.9402136281220237e-10,
+                1.6941692777567435e-07
+              ]
+            },
+            "stationary_command_1s": {
+              "n": 2450,
+              "pass": 2325,
+              "position_min_m": 0.0,
+              "rotation_min_element": 2.8866882842426556e-18,
+              "position_max_m": 0.0009834831676651667,
+              "rotation_max_element": 0.004077479554653109,
+              "joint_min_normalized": 1.4433441421213278e-15,
+              "joint_min_pair": [
+                0.0,
+                2.8866882842426556e-18
+              ]
+            },
+            "coast_transition": {
+              "n": 420,
+              "pass": 392,
+              "position_min_m": 1.3061995929319892e-11,
+              "rotation_min_element": 3.5232025305011183e-10,
+              "position_max_m": 0.0012745033321732713,
+              "rotation_max_element": 0.0004406239809099693,
+              "joint_min_normalized": 1.7616012652505592e-07,
+              "joint_min_pair": [
+                1.3061995929319892e-11,
+                3.5232025305011183e-10
+              ]
+            }
+          },
+          "label_neighbours": {
+            "-1": {
+              "all": {
+                "n": 1850,
+                "pass": 1289,
+                "position_min_m": 0.0,
+                "rotation_min_element": 1.0137290312739466e-17,
+                "position_max_m": 0.0018236740302031151,
+                "rotation_max_element": 0.0025652251402683555,
+                "joint_min_normalized": 5.068645156369733e-15,
+                "joint_min_pair": [
+                  0.0,
+                  1.0137290312739466e-17
+                ]
+              },
+              "active_command": {
+                "n": 1131,
+                "pass": 602,
+                "position_min_m": 2.5213813259483686e-09,
+                "rotation_min_element": 5.2216425326578505e-11,
+                "position_max_m": 0.0018236740302031151,
+                "rotation_max_element": 0.0015881097936592428,
+                "joint_min_normalized": 0.0004308225288567058,
+                "joint_min_pair": [
+                  2.5213813259483686e-09,
+                  8.616450577134116e-07
+                ]
+              },
+              "stationary_command_1s": {
+                "n": 614,
+                "pass": 586,
+                "position_min_m": 0.0,
+                "rotation_min_element": 1.0137290312739466e-17,
+                "position_max_m": 0.0005727340510939261,
+                "rotation_max_element": 0.0025652251402683555,
+                "joint_min_normalized": 5.068645156369733e-15,
+                "joint_min_pair": [
+                  0.0,
+                  1.0137290312739466e-17
+                ]
+              },
+              "coast_transition": {
+                "n": 105,
+                "pass": 101,
+                "position_min_m": 1.311573072371175e-11,
+                "rotation_min_element": 3.536542667872608e-10,
+                "position_max_m": 0.00017921166597467675,
+                "rotation_max_element": 4.588270166771061e-05,
+                "joint_min_normalized": 1.768271333936304e-07,
+                "joint_min_pair": [
+                  1.311573072371175e-11,
+                  3.536542667872608e-10
+                ]
+              }
+            },
+            "1": {
+              "all": {
+                "n": 1850,
+                "pass": 1277,
+                "position_min_m": 0.0,
+                "rotation_min_element": 1.1248597539537109e-17,
+                "position_max_m": 0.001805526739405039,
+                "rotation_max_element": 0.004077519234713833,
+                "joint_min_normalized": 5.624298769768554e-15,
+                "joint_min_pair": [
+                  0.0,
+                  1.1248597539537109e-17
+                ]
+              },
+              "active_command": {
+                "n": 1134,
+                "pass": 616,
+                "position_min_m": 2.816905597669006e-10,
+                "rotation_min_element": 7.261259905555394e-11,
+                "position_max_m": 0.001805526739405039,
+                "rotation_max_element": 0.0015722855321329441,
+                "joint_min_normalized": 8.47084638879456e-05,
+                "joint_min_pair": [
+                  2.9402136281220237e-10,
+                  1.694169277758912e-07
+                ]
+              },
+              "stationary_command_1s": {
+                "n": 611,
+                "pass": 564,
+                "position_min_m": 0.0,
+                "rotation_min_element": 1.1248597539537109e-17,
+                "position_max_m": 0.0009834831676651667,
+                "rotation_max_element": 0.004077519234713833,
+                "joint_min_normalized": 5.624298769768554e-15,
+                "joint_min_pair": [
+                  0.0,
+                  1.1248597539537109e-17
+                ]
+              },
+              "coast_transition": {
+                "n": 105,
+                "pass": 97,
+                "position_min_m": 1.3403611553997052e-11,
+                "rotation_min_element": 2.1075928633611588e-09,
+                "position_max_m": 0.0012654303260859479,
+                "rotation_max_element": 0.0004327229318483499,
+                "joint_min_normalized": 1.0537964316805794e-06,
+                "joint_min_pair": [
+                  5.86241055700043e-11,
+                  2.1075928633611588e-09
+                ]
+              }
+            }
+          },
+          "accepted_examples": {
+            "-1/all": {
+              "label_index": 182,
+              "pose_index": 727,
+              "label_t": 37.700000000089,
+              "pose_t": 37.65000000008876,
+              "position_error_m": 9.883732944881984e-05,
+              "rotation_error_element": 2.2889768540703748e-05
+            },
+            "-1/active_command": {
+              "label_index": 1178,
+              "pose_index": 4711,
+              "label_t": 236.89999999612604,
+              "pose_t": 236.84999999612722,
+              "position_error_m": 9.396019292362556e-05,
+              "rotation_error_element": 2.329614015117139e-05
+            },
+            "-1/stationary_command_1s": {
+              "label_index": 182,
+              "pose_index": 727,
+              "label_t": 37.700000000089,
+              "pose_t": 37.65000000008876,
+              "position_error_m": 9.883732944881984e-05,
+              "rotation_error_element": 2.2889768540703748e-05
+            },
+            "-1/coast_transition": {
+              "label_index": 1116,
+              "pose_index": 4463,
+              "label_t": 224.49999999641926,
+              "pose_t": 224.44999999642044,
+              "position_error_m": 8.025946225354019e-05,
+              "rotation_error_element": 2.3079448937266333e-05
+            },
+            "1/all": {
+              "label_index": 1710,
+              "pose_index": 6841,
+              "label_t": 343.29999999361,
+              "pose_t": 343.34999999360883,
+              "position_error_m": 9.691129384403752e-05,
+              "rotation_error_element": 0.00017854742078406637
+            },
+            "1/active_command": {
+              "label_index": 738,
+              "pose_index": 2953,
+              "label_t": 148.89999999820697,
+              "pose_t": 148.94999999820578,
+              "position_error_m": 9.605520059885464e-05,
+              "rotation_error_element": 1.6687429413623188e-07
+            },
+            "1/stationary_command_1s": {
+              "label_index": 1710,
+              "pose_index": 6841,
+              "label_t": 343.29999999361,
+              "pose_t": 343.34999999360883,
+              "position_error_m": 9.691129384403752e-05,
+              "rotation_error_element": 0.00017854742078406637
+            },
+            "1/coast_transition": {
+              "label_index": 778,
+              "pose_index": 3113,
+              "label_t": 156.8999999980178,
+              "pose_t": 156.9499999980166,
+              "position_error_m": 8.16987685672288e-05,
+              "rotation_error_element": 1.5200098300372552e-06
+            }
+          }
+        },
+        "r2": {
+          "timing": {
+            "same_timestamp_max": [
+              8.104628079763643e-15,
+              1.8600977922010363e-13
+            ],
+            "label_vs_qpos_max": [
+              0.0,
+              3.3306690738754696e-16
+            ],
+            "pose_vs_inverse_substep_max_excluding_t0": [
+              0.0,
+              1.4432899320127035e-15
+            ],
+            "pose_vs_inverse_substep_t0": [
+              1.9206858326015208e-14,
+              1.1596824391151707e-13
+            ]
+          },
+          "pose_neighbours": {
+            "all": {
+              "n": 7400,
+              "pass": 7400,
+              "position_min_m": 0.0,
+              "rotation_min_element": 1.953575613723637e-17,
+              "position_max_m": 1.4636070133633439e-12,
+              "rotation_max_element": 1.9840329392344258e-11,
+              "joint_min_normalized": 1.891911615163524e-14,
+              "joint_min_pair": [
+                0.0,
+                3.783823230327048e-17
+              ]
+            },
+            "active_command": {
+              "n": 0
+            },
+            "stationary_command_1s": {
+              "n": 7400,
+              "pass": 7400,
+              "position_min_m": 0.0,
+              "rotation_min_element": 1.953575613723637e-17,
+              "position_max_m": 1.4636070133633439e-12,
+              "rotation_max_element": 1.9840329392344258e-11,
+              "joint_min_normalized": 1.891911615163524e-14,
+              "joint_min_pair": [
+                0.0,
+                3.783823230327048e-17
+              ]
+            },
+            "coast_transition": {
+              "n": 0
+            }
+          },
+          "label_neighbours": {
+            "-1": {
+              "all": {
+                "n": 1850,
+                "pass": 1850,
+                "position_min_m": 0.0,
+                "rotation_min_element": 1.2782268811932492e-16,
+                "position_max_m": 7.354117315117037e-13,
+                "rotation_max_element": 1.2978173038945772e-11,
+                "joint_min_normalized": 1.0604393248947751e-13,
+                "joint_min_pair": [
+                  0.0,
+                  2.1208786497895502e-16
+                ]
+              },
+              "active_command": {
+                "n": 0
+              },
+              "stationary_command_1s": {
+                "n": 1850,
+                "pass": 1850,
+                "position_min_m": 0.0,
+                "rotation_min_element": 1.2782268811932492e-16,
+                "position_max_m": 7.354117315117037e-13,
+                "rotation_max_element": 1.2978173038945772e-11,
+                "joint_min_normalized": 1.0604393248947751e-13,
+                "joint_min_pair": [
+                  0.0,
+                  2.1208786497895502e-16
+                ]
+              },
+              "coast_transition": {
+                "n": 0
+              }
+            },
+            "1": {
+              "all": {
+                "n": 1850,
+                "pass": 1850,
+                "position_min_m": 0.0,
+                "rotation_min_element": 3.617723543529052e-17,
+                "position_max_m": 4.766187444715797e-13,
+                "rotation_max_element": 1.662402717247814e-11,
+                "joint_min_normalized": 6.769573548035227e-14,
+                "joint_min_pair": [
+                  0.0,
+                  1.3539147096070454e-16
+                ]
+              },
+              "active_command": {
+                "n": 0
+              },
+              "stationary_command_1s": {
+                "n": 1850,
+                "pass": 1850,
+                "position_min_m": 0.0,
+                "rotation_min_element": 3.617723543529052e-17,
+                "position_max_m": 4.766187444715797e-13,
+                "rotation_max_element": 1.662402717247814e-11,
+                "joint_min_normalized": 6.769573548035227e-14,
+                "joint_min_pair": [
+                  0.0,
+                  1.3539147096070454e-16
+                ]
+              },
+              "coast_transition": {
+                "n": 0
+              }
+            }
+          },
+          "accepted_examples": {
+            "-1/all": {
+              "label_index": 2,
+              "pose_index": 7,
+              "label_t": 1.7000000000001514,
+              "pose_t": 1.6500000000001347,
+              "position_error_m": 7.354117315117037e-13,
+              "rotation_error_element": 1.1114815001128295e-11
+            },
+            "-1/stationary_command_1s": {
+              "label_index": 2,
+              "pose_index": 7,
+              "label_t": 1.7000000000001514,
+              "pose_t": 1.6500000000001347,
+              "position_error_m": 7.354117315117037e-13,
+              "rotation_error_element": 1.1114815001128295e-11
+            },
+            "1/all": {
+              "label_index": 0,
+              "pose_index": 1,
+              "label_t": 1.3000000000000178,
+              "pose_t": 1.3500000000000345,
+              "position_error_m": 4.766187444715797e-13,
+              "rotation_error_element": 1.662402717247814e-11
+            },
+            "1/stationary_command_1s": {
+              "label_index": 0,
+              "pose_index": 1,
+              "label_t": 1.3000000000000178,
+              "pose_t": 1.3500000000000345,
+              "position_error_m": 4.766187444715797e-13,
+              "rotation_error_element": 1.662402717247814e-11
+            }
+          }
+        }
+      },
+      "schema": {
+        "bundle.json": [
+          "calibration_contract",
+          "calibration_selection",
+          "caps",
+          "case",
+          "check",
+          "clearance_preflight",
+          "contact_profile",
+          "controller_family",
+          "controller_inputs",
+          "controller_variant",
+          "execution_bundle_id",
+          "map_id",
+          "map_sha256",
+          "measurement",
+          "physical_ready",
+          "render_profile",
+          "research_result",
+          "revision",
+          "robot_model",
+          "runtime_interlock",
+          "schema",
+          "sensors",
+          "source_sha",
+          "source_sha256",
+          "status",
+          "timing",
+          "weld"
+        ],
+        "result.json": [
+          "case",
+          "check",
+          "check_sim_cap_s",
+          "check_sim_s",
+          "clearance_preflight",
+          "collection_data_status",
+          "failure",
+          "loadavg_end",
+          "loadavg_start",
+          "partial_data_retained",
+          "physical_success",
+          "protocol_complete",
+          "research_result",
+          "reset_sim_cap_s",
+          "reset_sim_s",
+          "status",
+          "student_control",
+          "timing"
+        ],
+        "inputs/static_map.json": [
+          "approach_convention",
+          "base_map",
+          "bounds_m",
+          "box_kinds",
+          "frame",
+          "map_id",
+          "obstacles",
+          "parent_scene",
+          "passages",
+          "regions",
+          "robot_model",
+          "schema",
+          "terrain",
+          "top_cameras",
+          "version",
+          "wall_profile",
+          "zone_slots"
+        ],
+        "inputs/schedule.json": [
+          "action",
+          "phase",
+          "robot_id",
+          "t"
+        ],
+        "artifacts.sha256.json": "relative artifact path -> SHA256",
+        "../plan.json": [
+          "blocked_on",
+          "bundles_sha256",
+          "cases",
+          "check",
+          "clearance_preflight",
+          "denominator",
+          "execution_bundle_id",
+          "execution_started",
+          "physical_success",
+          "runnable",
+          "seed",
+          "source_sha",
+          "status"
+        ],
+        "../result.json": [
+          "cases",
+          "denominator",
+          "physical_success",
+          "research_result",
+          "source_unchanged",
+          "status",
+          "unattempted"
+        ],
+        "eval_only/contacts.jsonl": [
+          "active_weld_ids",
+          "contacts",
+          "t"
+        ],
+        "eval_only/trajectory.jsonl": [
+          "beam_rotation",
+          "beam_xyz_m",
+          "physical_success",
+          "qpos",
+          "qvel",
+          "t"
+        ],
+        "r1/pose": [
+          "base_position_m",
+          "base_rotation",
+          "qualification",
+          "requested_check",
+          "sample_index",
+          "t",
+          "wall_clearance_lower_bound_m"
+        ],
+        "r1/label": [
+          "base_position_m",
+          "base_rotation",
+          "chassis_to_floor",
+          "commanded_servo",
+          "frame",
+          "frame_id",
+          "load_validity",
+          "origin_m",
+          "requested_check",
+          "rotation",
+          "sha256",
+          "t"
+        ],
+        "r1/frames": [
+          "actuator_state",
+          "camera",
+          "commanded_servo",
+          "frame_id",
+          "path",
+          "robot_id",
+          "sha256",
+          "sim_time"
+        ],
+        "r1/commands": {
+          "initial_servo_command": [
+            "kind",
+            "pulses",
+            "t"
+          ],
+          "arm": [
+            "kind",
+            "pulse",
+            "servo_id",
+            "t"
+          ],
+          "look": [
+            "kind",
+            "pan_pulse",
+            "t"
+          ],
+          "mecanum": [
+            "duration_s",
+            "forward",
+            "kind",
+            "left",
+            "t",
+            "turn"
+          ]
+        },
+        "r2/pose": [
+          "base_position_m",
+          "base_rotation",
+          "qualification",
+          "requested_check",
+          "sample_index",
+          "t",
+          "wall_clearance_lower_bound_m"
+        ],
+        "r2/label": [
+          "base_position_m",
+          "base_rotation",
+          "chassis_to_floor",
+          "commanded_servo",
+          "frame",
+          "frame_id",
+          "load_validity",
+          "origin_m",
+          "requested_check",
+          "rotation",
+          "sha256",
+          "t"
+        ],
+        "r2/frames": [
+          "actuator_state",
+          "camera",
+          "commanded_servo",
+          "frame_id",
+          "path",
+          "robot_id",
+          "sha256",
+          "sim_time"
+        ],
+        "r2/commands": {
+          "initial_servo_command": [
+            "kind",
+            "pulses",
+            "t"
+          ]
+        }
+      }
+    },
+    "loaded": {
+      "folder": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001-r8/calibration-loaded/zone_wide_two_doors_final_v3",
+      "source_sha": "747d2b9f1eb43e21804ccef58fff4db241d1a844",
+      "timestep_s": 0.00025,
+      "initial_hold_missing": true,
+      "motion_start_s": 12.0,
+      "fallback_equivalent": true,
+      "robots": {
+        "r1": {
+          "timing": {
+            "same_timestamp_max": [
+              2.9722139710419704e-05,
+              0.0006864506247279654
+            ],
+            "label_vs_qpos_max": [
+              0.0,
+              2.3314683517128287e-15
+            ],
+            "pose_vs_inverse_substep_max_excluding_t0": [
+              0.0,
+              2.4424906541753444e-15
+            ],
+            "pose_vs_inverse_substep_t0": [
+              1.9095836023552692e-14,
+              1.1595917962666004e-13
+            ]
+          },
+          "pose_neighbours": {
+            "all": {
+              "n": 7400,
+              "pass": 4001,
+              "position_min_m": 0.0,
+              "rotation_min_element": 5.141828803012505e-17,
+              "position_max_m": 0.007597641311084091,
+              "rotation_max_element": 0.06634038560775174,
+              "joint_min_normalized": 2.5709144015062524e-14,
+              "joint_min_pair": [
+                0.0,
+                5.141828803012505e-17
+              ]
+            },
+            "active_command": {
+              "n": 5730,
+              "pass": 2500,
+              "position_min_m": 6.142176911527741e-08,
+              "rotation_min_element": 5.767267497250317e-08,
+              "position_max_m": 0.0027048214397513703,
+              "rotation_max_element": 0.0006245683575840447,
+              "joint_min_normalized": 0.0016933936297647278,
+              "joint_min_pair": [
+                1.6933936297647278e-07,
+                1.7516755837497882e-06
+              ]
+            },
+            "stationary_command_1s": {
+              "n": 1130,
+              "pass": 1007,
+              "position_min_m": 0.0,
+              "rotation_min_element": 5.141828803012505e-17,
+              "position_max_m": 0.007597641311084091,
+              "rotation_max_element": 0.06634038560775174,
+              "joint_min_normalized": 2.5709144015062524e-14,
+              "joint_min_pair": [
+                0.0,
+                5.141828803012505e-17
+              ]
+            },
+            "coast_transition": {
+              "n": 540,
+              "pass": 494,
+              "position_min_m": 2.164251666769701e-09,
+              "rotation_min_element": 8.246945835781172e-08,
+              "position_max_m": 0.001970659748490089,
+              "rotation_max_element": 0.00029410326289651054,
+              "joint_min_normalized": 0.00012899021406553857,
+              "joint_min_pair": [
+                1.2899021406553857e-08,
+                1.992650626442063e-07
+              ]
+            }
+          },
+          "label_neighbours": {
+            "-1": {
+              "all": {
+                "n": 1850,
+                "pass": 1001,
+                "position_min_m": 0.0,
+                "rotation_min_element": 3.2677853478713104e-16,
+                "position_max_m": 0.006861202906397912,
+                "rotation_max_element": 0.0667045035014543,
+                "joint_min_normalized": 1.6338926739356552e-13,
+                "joint_min_pair": [
+                  0.0,
+                  3.2677853478713104e-16
+                ]
+              },
+              "active_command": {
+                "n": 1431,
+                "pass": 618,
+                "position_min_m": 8.08400838492318e-08,
+                "rotation_min_element": 8.551378296017165e-08,
+                "position_max_m": 0.0027183455526484934,
+                "rotation_max_element": 0.00032435386373271674,
+                "joint_min_normalized": 0.008933741017869493,
+                "joint_min_pair": [
+                  8.08400838492318e-08,
+                  1.7867482035738985e-05
+                ]
+              },
+              "stationary_command_1s": {
+                "n": 284,
+                "pass": 256,
+                "position_min_m": 0.0,
+                "rotation_min_element": 3.2677853478713104e-16,
+                "position_max_m": 0.006861202906397912,
+                "rotation_max_element": 0.0667045035014543,
+                "joint_min_normalized": 1.6338926739356552e-13,
+                "joint_min_pair": [
+                  0.0,
+                  3.2677853478713104e-16
+                ]
+              },
+              "coast_transition": {
+                "n": 135,
+                "pass": 127,
+                "position_min_m": 5.376102674148342e-09,
+                "rotation_min_element": 8.275422975264485e-08,
+                "position_max_m": 0.00025411333155966886,
+                "rotation_max_element": 0.00011473096707585381,
+                "joint_min_normalized": 0.0001441039265692723,
+                "joint_min_pair": [
+                  1.4410392656927229e-08,
+                  2.6364695597611704e-07
+                ]
+              }
+            },
+            "1": {
+              "all": {
+                "n": 1850,
+                "pass": 1000,
+                "position_min_m": 0.0,
+                "rotation_min_element": 5.0334085857639543e-17,
+                "position_max_m": 0.007597098023892523,
+                "rotation_max_element": 0.05477279317986028,
+                "joint_min_normalized": 2.5167042928819772e-14,
+                "joint_min_pair": [
+                  0.0,
+                  5.0334085857639543e-17
+                ]
+              },
+              "active_command": {
+                "n": 1434,
+                "pass": 632,
+                "position_min_m": 6.055602397303517e-08,
+                "rotation_min_element": 5.777920695365646e-08,
+                "position_max_m": 0.002691289891912696,
+                "rotation_max_element": 0.0003567161952334613,
+                "joint_min_normalized": 0.0016934996560635796,
+                "joint_min_pair": [
+                  1.6934996560635796e-07,
+                  1.7517621490438582e-06
+                ]
+              },
+              "stationary_command_1s": {
+                "n": 281,
+                "pass": 247,
+                "position_min_m": 0.0,
+                "rotation_min_element": 5.0334085857639543e-17,
+                "position_max_m": 0.007597098023892523,
+                "rotation_max_element": 0.05477279317986028,
+                "joint_min_normalized": 2.5167042928819772e-14,
+                "joint_min_pair": [
+                  0.0,
+                  5.0334085857639543e-17
+                ]
+              },
+              "coast_transition": {
+                "n": 135,
+                "pass": 121,
+                "position_min_m": 2.4403394860428307e-09,
+                "rotation_min_element": 1.97921349790256e-07,
+                "position_max_m": 0.001957135635592966,
+                "rotation_max_element": 0.00029411177174045074,
+                "joint_min_normalized": 0.00017489344953308363,
+                "joint_min_pair": [
+                  9.60445556419387e-09,
+                  3.497868990661673e-07
+                ]
+              }
+            }
+          },
+          "accepted_examples": {
+            "-1/all": {
+              "label_index": 1044,
+              "pose_index": 4175,
+              "label_t": 210.09999999675978,
+              "pose_t": 210.04999999676096,
+              "position_error_m": 9.963045953043093e-05,
+              "rotation_error_element": 1.2103497485675338e-05
+            },
+            "-1/active_command": {
+              "label_index": 1044,
+              "pose_index": 4175,
+              "label_t": 210.09999999675978,
+              "pose_t": 210.04999999676096,
+              "position_error_m": 9.963045953043093e-05,
+              "rotation_error_element": 1.2103497485675338e-05
+            },
+            "-1/stationary_command_1s": {
+              "label_index": 1704,
+              "pose_index": 6815,
+              "label_t": 342.0999999936384,
+              "pose_t": 342.0499999936396,
+              "position_error_m": 9.763382577887558e-05,
+              "rotation_error_element": 0.0007217562117680654
+            },
+            "-1/coast_transition": {
+              "label_index": 916,
+              "pose_index": 3663,
+              "label_t": 184.49999999736514,
+              "pose_t": 184.44999999736632,
+              "position_error_m": 8.55752278140498e-05,
+              "rotation_error_element": 2.302978270660222e-05
+            },
+            "1/all": {
+              "label_index": 522,
+              "pose_index": 2089,
+              "label_t": 105.6999999992285,
+              "pose_t": 105.74999999922731,
+              "position_error_m": 9.967249728859429e-05,
+              "rotation_error_element": 5.1156940142132665e-06
+            },
+            "1/active_command": {
+              "label_index": 522,
+              "pose_index": 2089,
+              "label_t": 105.6999999992285,
+              "pose_t": 105.74999999922731,
+              "position_error_m": 9.967249728859429e-05,
+              "rotation_error_element": 5.1156940142132665e-06
+            },
+            "1/stationary_command_1s": {
+              "label_index": 27,
+              "pose_index": 109,
+              "label_t": 6.700000000002443,
+              "pose_t": 6.750000000002504,
+              "position_error_m": 9.798748501355092e-05,
+              "rotation_error_element": 2.933117399001083e-05
+            },
+            "1/coast_transition": {
+              "label_index": 165,
+              "pose_index": 661,
+              "label_t": 34.300000000072764,
+              "pose_t": 34.350000000073,
+              "position_error_m": 9.386745769957017e-05,
+              "rotation_error_element": 8.55275075268289e-06
+            }
+          }
+        },
+        "r2": {
+          "timing": {
+            "same_timestamp_max": [
+              4.675398294318178e-05,
+              0.0004021579719088453
+            ],
+            "label_vs_qpos_max": [
+              0.0,
+              2.3314683517128287e-15
+            ],
+            "pose_vs_inverse_substep_max_excluding_t0": [
+              1.1102230246251565e-16,
+              2.3314683517128287e-15
+            ],
+            "pose_vs_inverse_substep_t0": [
+              1.9539925233402755e-14,
+              1.1598259887004176e-13
+            ]
+          },
+          "pose_neighbours": {
+            "all": {
+              "n": 7400,
+              "pass": 4002,
+              "position_min_m": 0.0,
+              "rotation_min_element": 1.0842021724855044e-19,
+              "position_max_m": 0.008911108392952949,
+              "rotation_max_element": 0.0721181974242614,
+              "joint_min_normalized": 5.421010862427522e-17,
+              "joint_min_pair": [
+                0.0,
+                1.0842021724855044e-19
+              ]
+            },
+            "active_command": {
+              "n": 5730,
+              "pass": 2501,
+              "position_min_m": 1.0648062254148272e-07,
+              "rotation_min_element": 9.874076347478924e-08,
+              "position_max_m": 0.002704815073437672,
+              "rotation_max_element": 0.0006447195317196112,
+              "joint_min_normalized": 0.002563950065106721,
+              "joint_min_pair": [
+                2.105236287519574e-07,
+                5.127900130213442e-06
+              ]
+            },
+            "stationary_command_1s": {
+              "n": 1130,
+              "pass": 1007,
+              "position_min_m": 0.0,
+              "rotation_min_element": 1.0842021724855044e-19,
+              "position_max_m": 0.008911108392952949,
+              "rotation_max_element": 0.0721181974242614,
+              "joint_min_normalized": 5.421010862427522e-17,
+              "joint_min_pair": [
+                0.0,
+                1.0842021724855044e-19
+              ]
+            },
+            "coast_transition": {
+              "n": 540,
+              "pass": 494,
+              "position_min_m": 4.36901836931014e-09,
+              "rotation_min_element": 2.0347349724925357e-07,
+              "position_max_m": 0.001970621089445679,
+              "rotation_max_element": 0.0002941206006398297,
+              "joint_min_normalized": 0.00014599106701318476,
+              "joint_min_pair": [
+                1.4599106701318476e-08,
+                2.0347349724925357e-07
+              ]
+            }
+          },
+          "label_neighbours": {
+            "-1": {
+              "all": {
+                "n": 1850,
+                "pass": 1001,
+                "position_min_m": 0.0,
+                "rotation_min_element": 9.486769009248164e-20,
+                "position_max_m": 0.006823419561740707,
+                "rotation_max_element": 0.06803629452179738,
+                "joint_min_normalized": 4.743384504624082e-17,
+                "joint_min_pair": [
+                  0.0,
+                  9.486769009248164e-20
+                ]
+              },
+              "active_command": {
+                "n": 1431,
+                "pass": 618,
+                "position_min_m": 1.461101831745637e-07,
+                "rotation_min_element": 9.992457739669284e-08,
+                "position_max_m": 0.0027183391545078095,
+                "rotation_max_element": 0.00032382584493731784,
+                "joint_min_normalized": 0.0037558531843987137,
+                "joint_min_pair": [
+                  3.519916079719465e-07,
+                  7.511706368797428e-06
+                ]
+              },
+              "stationary_command_1s": {
+                "n": 284,
+                "pass": 256,
+                "position_min_m": 0.0,
+                "rotation_min_element": 9.486769009248164e-20,
+                "position_max_m": 0.006823419561740707,
+                "rotation_max_element": 0.06803629452179738,
+                "joint_min_normalized": 4.743384504624082e-17,
+                "joint_min_pair": [
+                  0.0,
+                  9.486769009248164e-20
+                ]
+              },
+              "coast_transition": {
+                "n": 135,
+                "pass": 127,
+                "position_min_m": 4.327251001967625e-09,
+                "rotation_min_element": 2.1852521206272118e-07,
+                "position_max_m": 0.00025410803859227116,
+                "rotation_max_element": 0.00011630454808036345,
+                "joint_min_normalized": 0.0001954822015370894,
+                "joint_min_pair": [
+                  1.954822015370894e-08,
+                  2.1852521206272118e-07
+                ]
+              }
+            },
+            "1": {
+              "all": {
+                "n": 1850,
+                "pass": 1001,
+                "position_min_m": 0.0,
+                "rotation_min_element": 8.131516293641283e-20,
+                "position_max_m": 0.008864354410009767,
+                "rotation_max_element": 0.07171609806679963,
+                "joint_min_normalized": 4.0657581468206416e-17,
+                "joint_min_pair": [
+                  0.0,
+                  8.131516293641283e-20
+                ]
+              },
+              "active_command": {
+                "n": 1434,
+                "pass": 633,
+                "position_min_m": 1.1704260782785525e-07,
+                "rotation_min_element": 9.870186797610351e-08,
+                "position_max_m": 0.0026912835521315515,
+                "rotation_max_element": 0.00035179630954157784,
+                "joint_min_normalized": 0.0025640257991364963,
+                "joint_min_pair": [
+                  2.1056178756140298e-07,
+                  5.128051598272993e-06
+                ]
+              },
+              "stationary_command_1s": {
+                "n": 281,
+                "pass": 247,
+                "position_min_m": 0.0,
+                "rotation_min_element": 8.131516293641283e-20,
+                "position_max_m": 0.008864354410009767,
+                "rotation_max_element": 0.07171609806679963,
+                "joint_min_normalized": 4.0657581468206416e-17,
+                "joint_min_pair": [
+                  0.0,
+                  8.131516293641283e-20
+                ]
+              },
+              "coast_transition": {
+                "n": 135,
+                "pass": 121,
+                "position_min_m": 1.2320883535643645e-08,
+                "rotation_min_element": 3.044834965357929e-07,
+                "position_max_m": 0.0019570970083755412,
+                "rotation_max_element": 0.0002941285075236718,
+                "joint_min_normalized": 0.00018796193107311907,
+                "joint_min_pair": [
+                  1.2320883535643645e-08,
+                  3.7592386214623815e-07
+                ]
+              }
+            }
+          },
+          "accepted_examples": {
+            "-1/all": {
+              "label_index": 527,
+              "pose_index": 2107,
+              "label_t": 106.69999999920485,
+              "pose_t": 106.64999999920603,
+              "position_error_m": 9.906394062753066e-05,
+              "rotation_error_element": 5.676629330213408e-06
+            },
+            "-1/active_command": {
+              "label_index": 527,
+              "pose_index": 2107,
+              "label_t": 106.69999999920485,
+              "pose_t": 106.64999999920603,
+              "position_error_m": 9.906394062753066e-05,
+              "rotation_error_element": 5.676629330213408e-06
+            },
+            "-1/stationary_command_1s": {
+              "label_index": 1704,
+              "pose_index": 6815,
+              "label_t": 342.0999999936384,
+              "pose_t": 342.0499999936396,
+              "position_error_m": 9.783458609591289e-05,
+              "rotation_error_element": 0.0005003370858960299
+            },
+            "-1/coast_transition": {
+              "label_index": 861,
+              "pose_index": 3443,
+              "label_t": 173.49999999762525,
+              "pose_t": 173.44999999762643,
+              "position_error_m": 8.557375019657698e-05,
+              "rotation_error_element": 2.3042817438610068e-05
+            },
+            "1/all": {
+              "label_index": 522,
+              "pose_index": 2089,
+              "label_t": 105.6999999992285,
+              "pose_t": 105.74999999922731,
+              "position_error_m": 9.972233054522661e-05,
+              "rotation_error_element": 4.7354813002805154e-06
+            },
+            "1/active_command": {
+              "label_index": 522,
+              "pose_index": 2089,
+              "label_t": 105.6999999992285,
+              "pose_t": 105.74999999922731,
+              "position_error_m": 9.972233054522661e-05,
+              "rotation_error_element": 4.7354813002805154e-06
+            },
+            "1/stationary_command_1s": {
+              "label_index": 27,
+              "pose_index": 109,
+              "label_t": 6.700000000002443,
+              "pose_t": 6.750000000002504,
+              "position_error_m": 9.800389667269371e-05,
+              "rotation_error_element": 2.937973248746473e-05
+            },
+            "1/coast_transition": {
+              "label_index": 110,
+              "pose_index": 441,
+              "label_t": 23.30000000002024,
+              "pose_t": 23.35000000002048,
+              "position_error_m": 9.384485561803046e-05,
+              "rotation_error_element": 5.991079474396794e-06
+            }
+          }
+        }
+      },
+      "schema": {
+        "bundle.json": [
+          "calibration_contract",
+          "calibration_selection",
+          "caps",
+          "case",
+          "check",
+          "clearance_preflight",
+          "contact_profile",
+          "controller_family",
+          "controller_inputs",
+          "controller_variant",
+          "execution_bundle_id",
+          "map_id",
+          "map_sha256",
+          "measurement",
+          "physical_ready",
+          "render_profile",
+          "research_result",
+          "revision",
+          "robot_model",
+          "runtime_interlock",
+          "schema",
+          "sensors",
+          "source_sha",
+          "source_sha256",
+          "status",
+          "timing",
+          "weld"
+        ],
+        "result.json": [
+          "case",
+          "check",
+          "check_sim_cap_s",
+          "check_sim_s",
+          "clearance_preflight",
+          "collection_data_status",
+          "failure",
+          "loadavg_end",
+          "loadavg_start",
+          "partial_data_retained",
+          "physical_success",
+          "protocol_complete",
+          "research_result",
+          "reset_sim_cap_s",
+          "reset_sim_s",
+          "status",
+          "student_control",
+          "timing"
+        ],
+        "inputs/static_map.json": [
+          "approach_convention",
+          "base_map",
+          "bounds_m",
+          "box_kinds",
+          "frame",
+          "map_id",
+          "obstacles",
+          "parent_scene",
+          "passages",
+          "regions",
+          "robot_model",
+          "schema",
+          "terrain",
+          "top_cameras",
+          "version",
+          "wall_profile",
+          "zone_slots"
+        ],
+        "inputs/schedule.json": [
+          "action",
+          "phase",
+          "robot_id",
+          "t"
+        ],
+        "artifacts.sha256.json": "relative artifact path -> SHA256",
+        "../plan.json": [
+          "blocked_on",
+          "bundles_sha256",
+          "cases",
+          "check",
+          "clearance_preflight",
+          "denominator",
+          "execution_bundle_id",
+          "execution_started",
+          "physical_success",
+          "runnable",
+          "seed",
+          "source_sha",
+          "status"
+        ],
+        "../result.json": [
+          "cases",
+          "denominator",
+          "physical_success",
+          "research_result",
+          "source_unchanged",
+          "status",
+          "unattempted"
+        ],
+        "eval_only/contacts.jsonl": [
+          "active_weld_ids",
+          "contacts",
+          "t"
+        ],
+        "eval_only/trajectory.jsonl": [
+          "beam_rotation",
+          "beam_xyz_m",
+          "physical_success",
+          "qpos",
+          "qvel",
+          "t"
+        ],
+        "r1/pose": [
+          "base_position_m",
+          "base_rotation",
+          "qualification",
+          "requested_check",
+          "sample_index",
+          "t",
+          "wall_clearance_lower_bound_m"
+        ],
+        "r1/label": [
+          "base_position_m",
+          "base_rotation",
+          "chassis_to_floor",
+          "commanded_servo",
+          "frame",
+          "frame_id",
+          "load_validity",
+          "origin_m",
+          "requested_check",
+          "rotation",
+          "sha256",
+          "t"
+        ],
+        "r1/frames": [
+          "actuator_state",
+          "camera",
+          "commanded_servo",
+          "frame_id",
+          "path",
+          "robot_id",
+          "sha256",
+          "sim_time"
+        ],
+        "r1/commands": {
+          "initial_servo_command": [
+            "kind",
+            "pulses",
+            "t"
+          ],
+          "arm": [
+            "kind",
+            "pulse",
+            "servo_id",
+            "t"
+          ],
+          "look": [
+            "kind",
+            "pan_pulse",
+            "t"
+          ],
+          "mecanum": [
+            "duration_s",
+            "forward",
+            "kind",
+            "left",
+            "t",
+            "turn"
+          ]
+        },
+        "r2/pose": [
+          "base_position_m",
+          "base_rotation",
+          "qualification",
+          "requested_check",
+          "sample_index",
+          "t",
+          "wall_clearance_lower_bound_m"
+        ],
+        "r2/label": [
+          "base_position_m",
+          "base_rotation",
+          "chassis_to_floor",
+          "commanded_servo",
+          "frame",
+          "frame_id",
+          "load_validity",
+          "origin_m",
+          "requested_check",
+          "rotation",
+          "sha256",
+          "t"
+        ],
+        "r2/frames": [
+          "actuator_state",
+          "camera",
+          "commanded_servo",
+          "frame_id",
+          "path",
+          "robot_id",
+          "sha256",
+          "sim_time"
+        ],
+        "r2/commands": {
+          "initial_servo_command": [
+            "kind",
+            "pulses",
+            "t"
+          ],
+          "arm": [
+            "kind",
+            "pulse",
+            "servo_id",
+            "t"
+          ],
+          "look": [
+            "kind",
+            "pan_pulse",
+            "t"
+          ],
+          "mecanum": [
+            "duration_s",
+            "forward",
+            "kind",
+            "left",
+            "t",
+            "turn"
+          ]
+        }
+      }
+    }
+  },
+  "byte_comparisons": {
+    "scripts/assemble_final_pair_calibration.py": {
+      "equal": true,
+      "sha256": "b70f8dd23e4e5372ad33c638ebb4e13e2ea4c644bcf355c8d51d5fe03b9b6fba"
+    },
+    "scripts/final_pair_calibration_motion.py": {
+      "equal": true,
+      "sha256": "24acced13f296d7805536a2bd3d790a9186a61906d86de79fa0412e213b9e925"
+    },
+    "scripts/fit_consumer_criterion_b.py": {
+      "equal": true,
+      "sha256": "dc45b1069b61b36bca7e9218be4c132ffb38b368704a88c5e0f6d4be37c9cbad"
+    },
+    "scripts/fit_unloaded_consumer.py": {
+      "equal": true,
+      "sha256": "63c7e1298ae6ccf63d2552e23f9fcb2cef09b26d55092f3a6c92ed0fadd5c350"
+    },
+    "scripts/fit_unloaded_hammerstein.py": {
+      "equal": true,
+      "sha256": "fe1a327ad060a9bbac8b9c25292e823e0b2b73319e16559d876e9d1a4dbc7677"
+    },
+    "scripts/fit_final_environment_unloaded.py": {
+      "equal": true,
+      "sha256": "8c2def2a3025aca3e63abfeb6258c08d3824905bf60c37ed3d43667007963a06"
+    },
+    "scripts/validate_consumer_criterion_b.py": {
+      "equal": true,
+      "sha256": "8d2a693a6e3bbca79a8214fd388bff79a0609400f07de831ad9be3cf22e85a88"
+    },
+    "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json": {
+      "equal": true,
+      "sha256": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f"
+    },
+    "experiments/2026-10-01-v88-measured-calibration/criterion_B_prime.json": {
+      "equal": true,
+      "sha256": "3f863f81bea8b4401d980e1c39ec8438b75b34d8f80792d41dbfbcd331f66b33"
+    },
+    "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_candidate_r4.json": {
+      "equal": true,
+      "sha256": "fa7d3aa2e791086a9e73280b2dd4122bff5186d82503b56e17d5be27ca9bf071"
+    },
+    "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_report_r4.json": {
+      "equal": true,
+      "sha256": "31212635a8c16fff78e0dbd6966fd0d2d3d94e3ea12f07e3e1ca883cd7441e85"
+    },
+    "harness/rgb_execution_bundle.py": {
+      "equal": true,
+      "sha256": "93c0d91880b23b1f00d7b0bd3a7491e79ef785ea4dbf2dc561cb3ee89e2b996a"
+    },
+    "configs/simulation_workflows.json": {
+      "equal": true,
+      "sha256": "fc5bdf913a9f672bb3adb9597e1925b88a163a7ce1a1b30fb4fed9cf7ad0c813"
+    },
+    "harness/zone_final_pair_contract.py": {
+      "equal": true,
+      "sha256": "c0c6a81cf40ba8221d644c39deafb5ec29d92410f4a897af3f51ed68380a7987"
+    },
+    "harness/zone_final_pair_excitation.py": {
+      "equal": true,
+      "sha256": "618da65836acf0bc79e72d71b9e6d9415ad0e85924fb5769b2339f62cca9b258"
+    },
+    "harness/zone_final_pair_calibration.py": {
+      "equal": true,
+      "sha256": "4a54f79930b0897559cef659c8949ba6ae4aed9b6414e54ed79351cf80dea025"
+    },
+    "configs/calibration/zone_final_v3_floor_light_contract.json": {
+      "equal": true,
+      "sha256": "6666b23b72db5e7243af337b85f87ce469c389709e59852d8fa963dd92c0ebb6"
+    }
+  },
+  "changed_paths": [
+    "experiments/2026-10-01-v88-measured-calibration/ASSEMBLY_CLOCK_FIX_20261003.md",
+    "scripts/final_pair_calibration_camera.py",
+    "scripts/final_pair_calibration_io.py",
+    "tests/test_final_pair_calibration_assembly.py"
+  ],
+  "workflows_unchanged": true,
+  "writer_matches_acquisition_source": {
+    "sim/final_pair_v3.py": true,
+    "sim/final_environment_checks.py": true,
+    "sim/camera_robot_port.py": true,
+    "sim/multi_masterpi_production.py": true,
+    "sim/masterpi_dynamics_v2.py": true,
+    "scripts/run_final_pair_v3.py": true,
+    "harness/zone_final_pair_camera.py": true,
+    "harness/zone_final_pair_contract.py": true,
+    "harness/zone_final_pair_excitation.py": true,
+    "harness/zone_final_pair_calibration.py": true
+  },
+  "camera_equal_except_clock_key": true,
+  "head": "9b8a89c45b94264ff83708e062df04403344b7a0",
+  "base": "0bf41800272ec4c4bfa035cfc5609af8850e3e48",
+  "assembly": {
+    "status": "PARTIAL",
+    "missing_count": 42,
+    "missing_groups": {
+      "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile": 10,
+      "motion identification: fit convergence/rank/boundary failure: rank 13/13": 16,
+      "measurement not available": 5,
+      "insufficient both-sign stationary pan samples with same-arm center reference": 1,
+      "no measured stationary settled pose with lifted bilateral grip": 5,
+      "settled transform rejected by residual/count gate": 5
+    },
+    "audits": {
+      "unloaded": "PASS",
+      "fine": "PASS",
+      "loaded": "PASS"
+    },
+    "load_selection": {
+      "not_lifted": 553,
+      "lifted": 6839,
+      "missing_bilateral_grip": 9
+    },
+    "artifact_hashes": {
+      "fit_report.json": "121b870fa52c7357fdfa946aa0f5999c8c209c3cee5830406888fc50685d03b7",
+      "input_manifest.json": "ff914a3aab07477002d1b10bf52e2d18312908321b51216dc17d4ee555725364",
+      "calibration.json": "849371b718f89c9119b152163cf2ea12ceaf69d69f8b07ebab3e0214351c9b58"
+    }
+  }
+}
