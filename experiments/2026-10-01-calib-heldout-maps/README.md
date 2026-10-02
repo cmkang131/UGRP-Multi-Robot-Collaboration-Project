@@ -1,5 +1,26 @@
 # 다른 두 지도 무하중 검증 수집 — v90
 
+## 2026-10-02 검토 수정
+
+PR #352의 P1/P2 수정으로 v90 실행 경로를 v88 소스 의존성에서 분리했다.
+v88의 contract·clearance·runner·backend 네 파일은 main `11e9aa26`과 바이트 동일하다.
+v90은 `scripts.run_final_pair_heldout`과 별도 clearance/backend를 사용하며,
+기존 `scripts.run_final_pair_v3`는 held-out 수집을 거부한다. 관리 workflow와 인계 명령은 같다.
+v88의 세 profile plan/bundle은 소스 해시 필드를 포함한 전체 JSON 바이트를
+리뷰어가 main에서 독립 생성한 SHA-256 여섯 개와 비교한다.
+
+plan/bundle/사례 result/전체 result의 역할 기대값은 생산 코드 상수에서 분리한
+`HELD_OUT_VALIDATION`, `training_eligible=false`, `teacher_only=true` 리터럴이다.
+코드 상수와 등록 JSON을 함께 바꾸는 변이도 회귀검사가 탐지해야 한다.
+리뷰 `f5eb5636`의 strict xfail 일곱 개는 필수 통과 검사로 옮겼다.
+이번 수정의 검증·번호 조회·소스 해시는 [review_fixes](review_fixes/)에 별도 보존한다.
+
+아래 내용과 기존 JSON 기록은 수정 전 `d92efd8d` 당시의 기록이다.
+당시의 공용 진입점과 소스 해시 제외 비교는 위 수정으로 대체되었으며,
+과거 테스트 수치를 이번 실행의 결과에 합산하지 않는다.
+
+## d92efd8d 구현 기록
+
 Refs #344. 구현 기준 main: `2523269857596ffdd1a8cda9814a6e92f399f1da`.
 번들 `zone-final-pair-v90`, 새 workflow `zone-final-pair-heldout-v90` **3.2.0**.
 DRAFT_UNSEALED이며 물리·렌더·모델 호출을 실행하지 않은 구현/회귀 기록이다.

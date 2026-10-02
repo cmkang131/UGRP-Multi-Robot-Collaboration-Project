@@ -15,7 +15,6 @@ import subprocess
 import sys
 
 from harness import zone_final_pair_contract as contract
-from harness import zone_final_pair_heldout as heldout
 from harness.zone_final_pair_calibration import schedule
 from harness.zone_final_pair_clearance import require_collection_clearance, rejection_message
 from scripts.run_final_environment_checks import write, check_source
@@ -41,7 +40,6 @@ def checkpoint_record(runtime_record, checkpoint):
 
 
 def run_case(bundle, out, *, seed, backend_factory, runtime_factory=None, calibration=None, calibration_sha=None):
-    heldout.require_seed(bundle, seed)
     preflight = require_collection_clearance(bundle)
     out = Path(out)
     out.mkdir(parents=True, exist_ok=False)
@@ -56,7 +54,6 @@ def run_case(bundle, out, *, seed, backend_factory, runtime_factory=None, calibr
     result = {'check': bundle['check'], 'case': bundle['case'], 'status': 'HOST_ERROR',
               'protocol_complete': False, 'physical_success': None, 'research_result': False,
               'student_control': not collection, 'reset_sim_cap_s': 5., 'check_sim_cap_s': cap,
-              **heldout.record(bundle),
               'timing': bundle['timing'],
               'clearance_preflight': preflight,
               'loadavg_start': list(os.getloadavg()), 'failure': None}
@@ -146,16 +143,13 @@ def parser():
     return p
 
 
-def main(argv=None, *, heldout_only=False):
+def main(argv=None):
     args = parser().parse_args(argv)
-    if heldout_only and not heldout.selected(args.check, args.map_id):
-        raise ValueError('v90 requires unloaded collection on a registered held-out map')
     cases = contract.cases(args.check, args.map_id)
     bundles = [{**contract.bundle(c['map_id'], args.check), 'case': c,
                 'source_sha': args.expected_source_sha} for c in cases]
     blocked = []
     for bundle in bundles:
-        heldout.require_seed(bundle, args.seed)
         if bundle['clearance_preflight'] is not None and not bundle['clearance_preflight']['admitted']:
             blocked.append(rejection_message(bundle['clearance_preflight']))
     if args.check in ('p03', 'carry'):
@@ -164,8 +158,7 @@ def main(argv=None, *, heldout_only=False):
                 contract.measured_calibration(args.calibration, args.calibration_sha256, c['map_id'])
         except (ValueError, OSError, KeyError) as exc:
             blocked.append(str(exc))
-    plan = {'execution_bundle_id': bundles[0]['execution_bundle_id'], 'status': 'DRAFT_UNSEALED', 'check': args.check,
-        **heldout.record(bundles[0]),
+    plan = {'execution_bundle_id': contract.BUNDLE_ID, 'status': 'DRAFT_UNSEALED', 'check': args.check,
         'execution_started': False, 'cases': cases, 'denominator': len(cases), 'runnable': not blocked,
         'blocked_on': blocked, 'source_sha': args.expected_source_sha, 'seed': args.seed,
         'bundles_sha256': [contract.base.digest(b) for b in bundles], 'physical_success': None,
@@ -205,7 +198,6 @@ def main(argv=None, *, heldout_only=False):
                      'source_sha': args.expected_source_sha} == b for b in bundles)
     failed = bool(unattempted) or not unchanged or any(r['status'] == 'HOST_ERROR' for r in results)
     write(args.output/'result.json', {'status': 'HOST_ERROR' if failed else 'COLLECTED_UNQUALIFIED',
-        **heldout.record(bundles[0]),
         'cases': results, 'unattempted': unattempted, 'denominator': len(cases),
         'source_unchanged': unchanged, 'physical_success': None, 'research_result': False})
     return int(failed)

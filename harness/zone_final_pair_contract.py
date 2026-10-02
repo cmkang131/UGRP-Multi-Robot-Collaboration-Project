@@ -171,9 +171,6 @@ def cases(check, map_id=None):
         raise ValueError('unknown final v3 map')
     if check.startswith('calibration-'):
         from harness.zone_final_pair_excitation import MAP_ID, COLLECTION_S
-        from harness.zone_final_pair_heldout import selected
-        if selected(check, map_id):
-            return [{'id': map_id, 'map_id': map_id, 'checkpoint': None, 'sim_cap_s': COLLECTION_S}]
         if map_id not in (None, MAP_ID):
             raise ValueError('v88 motion identification requires the registered two-door collection map')
         return [{'id': MAP_ID, 'map_id': MAP_ID, 'checkpoint': None, 'sim_cap_s': COLLECTION_S}]
@@ -187,9 +184,6 @@ def cases(check, map_id=None):
 
 
 def bundle(map_id, check):
-    from harness import zone_final_pair_heldout as heldout
-    if heldout.selected(check, map_id):
-        return heldout.bundle(map_id, check)
     from harness.python_source_closure import source_closure
     static, row, contract = resolve(map_id)
     if check not in CHECKS:

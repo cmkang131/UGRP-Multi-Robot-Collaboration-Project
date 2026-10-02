@@ -43,6 +43,12 @@ def design(check, map_id):
     return {**training_design(check), 'map_id': map_id}
 
 
+def cases(check, map_id):
+    measurement = design(check, map_id)
+    return [{'id': map_id, 'map_id': map_id, 'checkpoint': None,
+             'sim_cap_s': measurement['sim_cap_s']}]
+
+
 def record(bundle):
     return dict(ROLE) if bundle['execution_bundle_id'] == BUNDLE_ID else {}
 
@@ -64,12 +70,12 @@ def validate_bundle(bundle):
     if (bundle.get('map_sha256') != previous.base.digest(static)
             or bundle.get('timing') != previous.execution_timing(CHECK)):
         raise ValueError('v90 held-out map/timing mismatch')
-    if 'case' in bundle and bundle['case'] != previous.cases(CHECK, bundle['map_id'])[0]:
+    if 'case' in bundle and bundle['case'] != cases(CHECK, bundle['map_id'])[0]:
         raise ValueError('v90 held-out case mismatch')
 
 
 def bundle(map_id, check):
-    from harness.zone_final_pair_clearance import path_preflight
+    from harness.zone_final_pair_heldout_clearance import path_preflight
     from harness.python_source_closure import source_closure
     reg = registry()
     measurement = design(check, map_id)
@@ -85,7 +91,8 @@ def bundle(map_id, check):
         clearance_preflight=path_preflight(check, map_id),
         revision='v90 new held-out acquisition; v88 two-door protocol preserved',
         training_map=reg['training_map'])
-    entries = ['harness/zone_final_pair_heldout.py', 'scripts/run_final_pair_heldout.py']
+    entries = ['harness/zone_final_pair_heldout.py', 'scripts/run_final_pair_heldout.py',
+               'sim/final_pair_heldout.py']
     files = (set(value['source_sha256']) | set(previous.base.bundle(map_id)['source_sha256'])
              | set(source_closure(previous.ROOT, entries)) | {REGISTRY, WORKFLOW})
     value['source_sha256'] = {p: previous.base.sha(previous.ROOT / p) for p in sorted(files)}
