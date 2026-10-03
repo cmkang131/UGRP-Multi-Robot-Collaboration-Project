@@ -1,0 +1,109 @@
+{
+  "reviewed_head": "1dd9f0e7d0dcf1864cbe6b23dee76b99af1335cf",
+  "review_ref": "05b3c845bf7e0bf40a6136eea1bbd565f419278e",
+  "review_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/356#issuecomment-5959437915",
+  "merged_main": "7cd729416fc04dfc4633cb4da5c4cd9435dd582d",
+  "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+  "scope": "offline synthetic/fake regression only; no real held-out files read, no scoring, physics, rendering, model calls or shared lock changes",
+  "changed_and_legacy_source_sha256": {
+    "scripts/agent_sim_slots.py": "a30295bf4332942825af8ec973b024d6bd786268c6570ae4d15df9dbc7aaade2",
+    "scripts/agent_lock.py": "709db3d87e4d2369171aba10ce3c64b7c8be254e2de7115ae608a022b1783dce",
+    "scripts/validate_consumer_criterion_b_v91.py": "d166d76900480ae47dcea0b0e3c2ad854288953aa9e0d1cab19606d5db2ea3b9",
+    "tests/test_agent_sim_slots.py": "3ea8805bb2696eb8b55c14988d10afd85960f6495162c9570cd0cc34fd6de8f1",
+    "tests/test_consumer_criterion_b_v91.py": "12d1b21aa32a0ad80e8cfb0bed4627309ef9839b6a86f03a2d1c3e53ae0f9a0f",
+    "experiments/2026-10-03-critb-v91/acquisition_contract.json": "a947308083a03fcb5af3bc6d7155e0727317acb98084027d051bd93f9161c2eb"
+  },
+  "independent_test_source": {
+    "ref": "05b3c845bf7e0bf40a6136eea1bbd565f419278e",
+    "path": "tests/test_review_356.py",
+    "sha256": "1e6386051fd3caebd17532d8883b93dbb08345048497db1c4af7176955585425"
+  },
+  "before_fix": {
+    "result": "5 failed, 27 deselected in 0.12s",
+    "log": "before-tests.txt"
+  },
+  "local_tests": {
+    "related": {
+      "suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "303",
+          "time": "205.109",
+          "timestamp": "2026-10-03T13:59:51.142330+09:00",
+          "hostname": "gangchangmin-ui-MacBookAir.local"
+        }
+      ],
+      "pass_line": "303 passed in 205.11s (0:03:25)",
+      "log": "related-tests.txt",
+      "junit": "related-tests.xml"
+    },
+    "review": {
+      "suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "304",
+          "time": "7.406",
+          "timestamp": "2026-10-03T14:00:17.542767+09:00",
+          "hostname": "gangchangmin-ui-MacBookAir.local"
+        }
+      ],
+      "pass_line": "304 passed in 7.41s",
+      "log": "review-tests.txt",
+      "junit": "review-tests.xml"
+    },
+    "ci": {
+      "suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "78",
+          "time": "1.948",
+          "timestamp": "2026-10-03T14:02:44.791434+09:00",
+          "hostname": "gangchangmin-ui-MacBookAir.local"
+        }
+      ],
+      "pass_line": "78 passed in 1.95s",
+      "log": "ci-tests.txt",
+      "junit": "ci-tests.xml"
+    }
+  },
+  "verification": [
+    "23 frozen files match preservation.json and origin/main",
+    "legacy scripts/agent_lock.py unchanged: 709db3d87e4d2369171aba10ce3c64b7c8be254e2de7115ae608a022b1783dce",
+    "live GitHub commitment 5958329647 matches snapshot; created_at 2026-10-02T18:04:39Z",
+    "acquisition contract PINNED a947308083a03fcb5af3bc6d7155e0727317acb98084027d051bd93f9161c2eb matches bytes",
+    "synthetic bundles reconstructed from pinned Git source have 254 corridor / 253 door source entries and unchanged canonical hashes",
+    "CI preflight: 3 frozen fixtures present",
+    "rgb-standard-dispatch-v63 verify-current passed (static manifest only)",
+    "verify-registry --base origin/main passed",
+    "check_media_size.py --base origin/main passed",
+    "git diff --check passed; no .github/workflows, configs, harness or sim changes"
+  ],
+  "ci_previous_failure": {
+    "run": 37047591093,
+    "job": 110972947200,
+    "log": "ci-before.txt"
+  },
+  "remote_checks": "new commit CI must be checked after push; local results do not assert GitHub CI completion",
+  "remaining": "independent review of changed scope; actual held-out scoring and evaluation TensorBoard were not performed",
+  "log_normalization": {
+    "before-tests.txt": {
+      "original_path": "/Users/changmin/projects/ugrp/outputs/critb-v91-review-fixes-20261003-impl/log-originals/before-tests.txt",
+      "original_sha256": "dbc93dfc95937bd87c1abdcd703c9b3b4dc8e4da9c6ee30b9cb930ad69efa47e",
+      "display_change": "trailing whitespace removed only"
+    },
+    "ci-before.txt": {
+      "original_path": "/Users/changmin/projects/ugrp/outputs/critb-v91-review-fixes-20261003-impl/log-originals/ci-before.txt",
+      "original_sha256": "af2f5d4bf1633d450ed05454251a06f86a185cfb0d7037b9b0f9df6826779928",
+      "display_change": "trailing whitespace removed only"
+    }
+  }
+}
