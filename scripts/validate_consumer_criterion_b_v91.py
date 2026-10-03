@@ -33,7 +33,7 @@ FROZEN_HASHES = {
 }
 PINNED = {
     SNAPSHOT: '7c4238238f4e7d660841abf50975b27492fd7beec461a4f08da9e72ae88a35b8',
-    CONTRACT: 'a60ff44849d296e334dd60ff00f81ed91da3b259fd2521636f9243faa74640e8',
+    CONTRACT: 'a947308083a03fcb5af3bc6d7155e0727317acb98084027d051bd93f9161c2eb',
     ROOT / 'scripts/fit_unloaded_consumer.py': '63c7e1298ae6ccf63d2552e23f9fcb2cef09b26d55092f3a6c92ed0fadd5c350',
     ROOT / 'scripts/fit_unloaded_hammerstein.py': 'fe1a327ad060a9bbac8b9c25292e823e0b2b73319e16559d876e9d1a4dbc7677',
 }

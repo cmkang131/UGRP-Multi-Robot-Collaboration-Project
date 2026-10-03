@@ -1,4 +1,4 @@
-# v91 새 무하중 자료에 고정 기준 B 연결 — DRAFT
+# v91 새 무하중 자료에 고정 기준 B 연결 — PR #356 리뷰 수정
 
 기존 기준 B와 r4 후보를 바꾸지 않고, v91 수집 자료의 신원과 수집 전 약속의
 선후관계를 검사하는 [별도 검증기](../../scripts/validate_consumer_criterion_b_v91.py)를 추가했다.
@@ -21,8 +21,8 @@
 소스 불변, 일정, 발행 명령, 명령 유효시간(lease), pose 간격·행렬은 기존 검증기로 검사한다.
 plan이 가리키는 전체 bundle 내용과 `inputs/schedule.json`도
 [고정 수집 계약](acquisition_contract.json)의 지문과 일치해야 한다.
-bundle 지문을 만들 때 각 지도 bundle의 `source_sha256` 253개를 지정 수집 SHA의
-실제 Git 파일 바이트와 모두 비교했다. 전체 bundle 비교에는 지도 해시, source 파일별 해시,
+bundle 지문을 만들 때 `source_sha256` 항목을 corridor 254개, door geometry 253개 각각
+지정 수집 SHA의 실제 Git 파일 바이트와 모두 비교했다. 전체 bundle 비교에는 지도 해시, source 파일별 해시,
 측정 일정, 설정, 버전이 포함된다. v88/v90의 ID·용도·소스 문자열만 바꿔도 통과하지 않는다.
 case의 `artifacts.sha256.json`은 실제 읽은 bundle/result/schedule/명령/pose와 비교한다.
 영상이나 아직 읽지 않은 다른 artifact까지 검증했다고 주장하지 않는다.
@@ -135,8 +135,9 @@ NumPy·SciPy가 필요하다. 이 Mac의 기존 `python3`에서 관련 검사를
 GitHub 댓글도 실제로 다시 조회해 저장된 스냅샷과 일치함을 확인했다.
 물리·렌더·모델 호출·실제 held-out 채점은 수행하지 않았다. 공용 `outputs/`와 실행 중인
 프로세스·잠금·서버를 변경하지 않았고 Drive도 사용하지 않았다. 새로운 실험 결과가 없는
-합성 회귀검사이므로 TensorBoard 변환/서버/화면을 만들지 않았다. 실제 두 지도 결과 회수,
-이 검증기의 독립 검토, 실제 채점과 TensorBoard 결과 등록은 후속 작업이다. PR은 draft로 유지한다.
+합성 회귀검사이므로 TensorBoard 변환/서버/화면을 만들지 않았다. 위 수치와 draft 상태는 초기 구현 당시의
+기록이다. 이후 독립 검토의 P1/P2 수정과 로컬 재검증은 [리뷰 대응 기록](fixes/README.md)에 남긴다.
+실제 held-out 채점과 TensorBoard 평가 결과 등록은 이번 수정에서도 수행하지 않았다.
 
 ## 참고 자료
 

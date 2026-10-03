@@ -1,6 +1,8 @@
 """Synthetic-only v91 identity, chronology, scoring parity and byte preservation."""
 import copy
 from datetime import datetime, timezone
+from functools import lru_cache
+import io
 import json
 import os
 from pathlib import Path
@@ -8,6 +10,7 @@ import shutil
 import socket
 import subprocess
 import sys
+import tarfile
 
 import numpy as np
 import pytest
@@ -48,9 +51,18 @@ def receipts(root):
         for p in folder.rglob('*') if p.is_file() and p.name != 'artifacts.sha256.json'})
 
 
+@lru_cache(maxsize=2)
+def acquisition_source_hashes(paths):
+    """Synthetic receipts describe the pinned acquisition, not today's checkout."""
+    archive = subprocess.check_output(['git', 'archive', new.SOURCE, '--', *paths], cwd=new.ROOT)
+    with tarfile.open(fileobj=io.BytesIO(archive)) as tree:
+        return {path: old.sha(tree.extractfile(path).read()) for path in paths}
+
+
 def make_raw(root, map_id):
     bundle = {**acquisition.bundle(map_id, acquisition.CHECK),
               'case': acquisition.cases(acquisition.CHECK, map_id)[0], 'source_sha': new.SOURCE}
+    bundle['source_sha256'] = dict(acquisition_source_hashes(tuple(sorted(bundle['source_sha256']))))
     folder = root / map_id
     put(folder / 'bundle.json', bundle)
     put(folder / 'inputs/schedule.json', schedule(acquisition.CHECK))
@@ -159,6 +171,28 @@ def test_two_complete_synthetic_maps_use_frozen_candidate_and_keep_rotation_null
     assert report['ordering_evidence']['earliest']['kind'] == 'lock_acquisition_lower_bound'
     for root in templates:
         assert str(root / 'plan.json') in {i['path'] for i in report['input_files']}
+
+
+def test_synthetic_bundles_match_acquisition_source_counts_and_pinned_digests(templates):
+    counts = {'zone_wide_corridor_final_v3': 254, 'zone_wide_door_geometry_v3': 253}
+    contract = get(new.CONTRACT)
+    for root in templates:
+        bundle = get(root / root.name / 'bundle.json')
+        assert len(bundle['source_sha256']) == counts[root.name]
+        assert new.canonical_sha(bundle) == contract['bundle_canonical_sha256'][root.name]
+
+
+def test_new_slot_source_cannot_relabel_the_pinned_acquisition(raw):
+    path = raw / MAPS[0] / 'bundle.json'
+    bundle = get(path)
+    bundle['source_sha256']['scripts/agent_sim_slots.py'] = old.sha(
+        (new.ROOT / 'scripts/agent_sim_slots.py').read_bytes())
+    put(path, bundle)
+    plan = get(raw / 'plan.json')
+    plan['bundles_sha256'] = [new.canonical_sha(bundle)]
+    put(raw / 'plan.json', plan)
+    receipts(raw)
+    assert_ineligible(new.validate([raw]))
 
 
 @pytest.mark.parametrize('scope', ['plan', 'bundle', 'case', 'root'])
