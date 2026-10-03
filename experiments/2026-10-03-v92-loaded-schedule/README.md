@@ -61,7 +61,7 @@ D4는 loaded 카메라만 사전에 명시한 **8초 준비+8초 측정**, 반�
 
 [TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1003-v92-%28high-d1d4%7Cloaded-design-r2%29%2F&tagFilter=%5E%28result%2F%28sim_s%7Ccommands%7Cmodel_calls%29%7Coffline%2F%28lifted_selected_samples%7Ccontroller_edge_columns%7Ccandidate_edge_columns%29%29%24&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flifted_selected_samples%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcontroller_edge_columns%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcandidate_edge_columns%22%7D%5D&scalarSmoothing=0#timeseries)의 새 `1003-v92-high-d1d4/high-prefix`를 기존 두 짧은 검사와 함께 표시했다. 이벤트·서버 API·Chrome 강의 실제 카드 값과 6개 pin을 대조하고 HParams 기본 네 열을 다시 적용했다. 개별 새 HParams 행은 미확인이다. 새 영상은 0개다. [표시 기록](revision_d1_d4/tensorboard_verification.json). 전체 720초, 실제 RGB 추적, 모형 적합·승인, 학생 운반 성공은 조정자의 후속 검증이다. 금지된 v91 held-out 원본은 읽지 않는다.
 
-수집 전 조정자는 D5의 v92 전용 조립기(assembler)와 D2 로더 계약을 준비하고 **B″·일정·조립기 해시를 #219에 공개 고정**해야 한다. 이번 PR의 두 해시만으로 D5가 완료된 것은 아니다. 독립 검토의 변경분 재검토와 렌더 수집은 남아 있다.
+수집 전 조정자는 D5의 v92 전용 조립기(assembler)와 D2 로더 계약을 준비하고 **B″·일정·조립기 해시를 #219에 공개 고정**해야 한다. 이번 PR의 두 해시만으로 D5가 완료된 것은 아니다. review-361의 적용 가능한 P1(카탈로그 개수와 v92 plan 누락)을 수정했고 관련 계획 테스트 **4 passed, 14 deselected in 0.22s**를 확인했다. [모든 지적·권고 답변](revision_d1_d4/REVIEW_361_RESPONSE.md)에 반영 범위와 남은 조건을 나눴다. HIGH/B″ 변경분 독립 재검토·새 SHA 원격 CI·렌더 수집은 남아 있다.
 
 SIM 슬롯 수집 명령은 다음과 같다. 정확한 검토 소스 SHA를 사용하고 새 출력 경로가 필요하다. 스크립트는 HEAD·브랜치·clean tree·디스크·슬롯을 확인하며, 같은 조정자의 슬롯만 함께 사용할 수 있다.
 
