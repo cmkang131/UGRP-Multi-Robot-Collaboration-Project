@@ -1,0 +1,170 @@
+{
+  "schema": "ugrp.offline_audit_view.v1",
+  "derived_view_only": true,
+  "run_id": "v92-assembly",
+  "family": "calibration-assembly",
+  "policy": "v92-d5",
+  "case": "three_collections",
+  "condition": "frozen-Bpp-257953ec",
+  "split": "calibration",
+  "seed": 911,
+  "outcome": "PARTIAL",
+  "source_sha": "257953ec",
+  "offline_source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v92-measured-20261003T091812Z/assembly/calibration.json",
+    "sha256": "852426d2efbe4400516fc6227279923c4a1b7747e0f2b48a6df6131d7ade4109"
+  },
+  "offline_scalar_scope": "Single assembler run at 257953ec (pinned hashes verified): loader status and missing-field counts from calibration.json.",
+  "offline_scalars": {
+    "offline/fields_missing": 31.0,
+    "offline/missing_unloaded_by_design": 10.0,
+    "offline/missing_loaded_motion": 16.0,
+    "offline/missing_pair_model": 5.0,
+    "gate/measured_sim": 0.0
+  },
+  "wall_s": 125.0,
+  "model_calls": 0.0,
+  "success": false,
+  "success_definition": "calibration.json status == MEASURED_SIM (all required loader fields accepted + loader acceptance). Not a robot task success.",
+  "hparam_metrics": [
+    "evaluation/reported_success",
+    "offline/fields_missing",
+    "result/wall_s",
+    "result/model_calls"
+  ],
+  "scope": "offline calibration assembly; no student/P03/carry or physical task acceptance",
+  "texts": {
+    "notes/missing": [
+      {
+        "field": "params.motion.gain",
+        "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+      },
+      {
+        "field": "params.motion.tau_s",
+        "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+      },
+      {
+        "field": "params.motion.tau_axis_s",
+        "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+      },
+      {
+        "field": "params.motion.tau_stop_s",
+        "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+      },
+      {
+        "field": "params.motion.noise_rel",
+        "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+      },
+      {
+        "field": "params.motion.noise_abs",
+        "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+      },
+      {
+        "field": "params.motion.scale_std",
+        "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+      },
+      {
+        "field": "params.motion.scale_walk",
+        "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+      },
+      {
+        "field": "params.motion.use_scale",
+        "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+      },
+      {
+        "field": "params.motion.rest_noise",
+        "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+      },
+      {
+        "field": "params.motion_loaded.gain",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.tau_s",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.tau_axis_s",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.tau_stop_s",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.noise_rel",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.noise_abs",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.scale_std",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.scale_walk",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.use_scale",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.rest_noise",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.load_transition.scale_std",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.load_transition.unloaded_scale_std",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.deadband.c0",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.deadband.u1",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.drift_ratio_std",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "params.motion_loaded.yaw_bias_std_rad_s",
+        "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+      },
+      {
+        "field": "pair_model.slope_to_yaw_ratio",
+        "reason": "measurement not available"
+      },
+      {
+        "field": "pair_model.b_rad_s[\"\"]",
+        "reason": "measurement not available"
+      },
+      {
+        "field": "pair_model.b_rad_s.pm",
+        "reason": "measurement not available"
+      },
+      {
+        "field": "pair_model.b_rad_s.edge",
+        "reason": "measurement not available"
+      },
+      {
+        "field": "pair_model.b_rad_s.pm+edge",
+        "reason": "measurement not available"
+      }
+    ],
+    "notes/run": {
+      "rc": "2",
+      "started_utc": "2026-10-03T09:18:16Z",
+      "finished_utc": "2026-10-03T09:20:21Z",
+      "command": "cd /Users/changmin/projects/ugrp-wt/v92-assembly  # detached HEAD 257953ec36353c37acc61c4cb86563db7c937de2, clean\n/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.assemble_final_pair_calibration_v92 \\\n  --unloaded-root /Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded \\\n  --fine-root /Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001-r6/calibration-fine \\\n  --loaded-root /Users/changmin/projects/ugrp/outputs/final-pair-v92-loaded-257953ec-20261003 \\\n  --yaw-candidate /Users/changmin/projects/ugrp/experiments/2026-10-03-critb-rotation/calibration_candidate_r5_yaw.json \\\n  --criterion-b-result /Users/changmin/projects/ugrp/outputs/criterion-b-v91-score-20261003/criterion_B_v91_with_yaw.json \\\n  --criterion-b-result /Users/changmin/projects/ugrp/outputs/criterion-b-v91-score-r2-20261003/criterion_B_v91_with_yaw.json \\\n  --output /Users/changmin/projects/ugrp/outputs/final-pair-v92-measured-20261003T091812Z/assembly\n"
+    }
+  }
+}
