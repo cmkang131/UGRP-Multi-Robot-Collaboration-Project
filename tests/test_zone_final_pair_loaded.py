@@ -42,7 +42,12 @@ def test_schedule_archive_and_preserved_sources():
     frozen = json.loads((c.ROOT/'experiments/2026-10-03-v92-loaded-schedule/preservation.json').read_text())
     imported = json.loads((c.ROOT/'experiments/2026-10-03-v92-loaded-schedule/review_r2_response/main_import.json').read_text())
     assert set(imported['imported_sha256']) == {'PHYSICS_HANDOFF.md'}
-    for path, digest in {**frozen['unchanged_sha256'], **imported['imported_sha256']}.items():
+    imported_358 = json.loads((c.ROOT/'experiments/2026-10-03-v92-loaded-schedule/review_r2_response/main_import_358.json').read_text())
+    assert set(imported_358['imported_sha256']) == {'scripts/final_pair_calibration_camera.py'}
+    assert imported_358['supersedes_unchanged_sha256'] == {
+        path: frozen['unchanged_sha256'][path] for path in imported_358['imported_sha256']}
+    for path, digest in {**frozen['unchanged_sha256'], **imported['imported_sha256'],
+                         **imported_358['imported_sha256']}.items():
         assert c.base.sha(c.ROOT/path) == digest, path
 
 

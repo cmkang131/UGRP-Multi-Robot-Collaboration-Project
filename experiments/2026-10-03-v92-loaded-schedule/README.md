@@ -96,3 +96,7 @@ R2의 남은 조건 두 개를 닫았다. 필수 CI 실패(SIM 슬롯 경쟁)는
 - [B′](../2026-10-01-v88-measured-calibration/criterion_B_prime.json), [기존 운동 적합기](../../scripts/final_pair_calibration_motion.py)
 - [새 일정](../../harness/zone_final_pair_loaded_schedule.py), [등록](../../harness/zone_final_pair_loaded.py), [조정자 명령](collect.sh)
 - [무렌더 검사](probe_headless.py), [실행 버전 관리](../../docs/execution_versioning.md)
+
+## main #358 보존 해시 재정렬 (2026-10-03)
+
+main #358(독립 검토 완료)이 `scripts/final_pair_calibration_camera.py`에서 v88 프레임 시계 키를 `t`에서 `sim_time`으로 바꿨다. v92 수집(257953ec)은 이 변경에 의존하지 않았고 수집 때 소스는 바뀌지 않았다(`source_unchanged=true`). 보존 기준을 main d00208ba로 다시 맞춘다. 원본 `preservation.json`과 `review_r2_response/main_import.json`은 바꾸지 않고 `review_r2_response/main_import_358.json`에 새 해시(`3922a4db…`)를 기록했다. 보존 목록 전체를 origin/main(cc8364e2)과 대조했을 때 어긋난 파일은 이것 하나뿐이다(`PHYSICS_HANDOFF.md`는 기존 가져오기 기록으로 처리됨).
