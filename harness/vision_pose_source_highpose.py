@@ -1,4 +1,4 @@
-"""V93 OpenCV observations + existing P03 PF/clock and BeamEdgeTracker.
+"""V94 OpenCV observations + existing P03 PF/clock and BeamEdgeTracker.
 
 No v2/v88 measured values or segmentation checkpoint are instantiated. Static
 camera calibration, own RGB, own commands and the public map are the inputs.
@@ -20,13 +20,14 @@ from harness.opencv_wall_observation import OpenCVObserver, DETECTOR
 
 class HighPoseSource(PairVisionPoseSource):
     provider_id = contract.PROVIDER_ID
-    source_prefix = 'owncam_pf_opencv_final_pair_highpose_v93'
+    source_prefix = 'owncam_pf_opencv_final_pair_highpose_v96'
 
     def __init__(self, static_map, calibration, calibration_sha256, seed=0, *, worker=None):
         static, _, _ = contract.resolve(static_map['map_id'])
         if static != static_map:
             raise ValueError('provider requires exact final static map')
-        self.calibration = cal = contract.measured_calibration(calibration, calibration_sha256, static['map_id'])
+        self.calibration = cal = contract.student_calibration(
+            contract.measured_calibration(calibration, calibration_sha256, static['map_id']))
         self.cfg = {'sim_time_charge': {'charged': False, 'reason': 'fixed P03 delay is external'}}
         self.runtime_contract = {'provider_id': self.provider_id, 'calibration_sha256': calibration_sha256,
             'detector': DETECTOR, 'learned_segmentation': False, 'robot_model': 'masterpi_v3',

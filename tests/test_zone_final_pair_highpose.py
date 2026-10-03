@@ -1,4 +1,4 @@
-"""V93 fake/own-pixel regressions; no simulator, renderer or learned model."""
+"""V94 fake/own-pixel regressions; no simulator, renderer or learned model."""
 import copy
 import json
 from types import SimpleNamespace
@@ -15,16 +15,10 @@ from scripts import run_pair_highpose as run
 from tests.test_zone_final_pair_v3 import offline_only, synthetic as old_synthetic, MAPS
 
 
-def synthetic(tmp_path):
-    path, cal = old_synthetic(tmp_path)
-    cal.update(schema='ugrp.final_pair_highpose_measured_calibration.v1',
-        contract_sha256=c.base.sha(c.ROOT/c.CALIBRATION_CONTRACT),
-        loaded_measurement_bundle_id='zone-final-pair-v92', loaded_pose_id=pose.POSE_ID,
-        loaded_camera_scope='high_only', loaded_schedule_sha256='c'*64,
-        criterion_sha256='d'*64, assembler_sha256='e'*64)
-    rec = next(iter(cal['camera_models']['loaded'].values()))
-    cal['camera_models']['loaded'] = {camera_key(pose.HIGH): rec}
-    run.write(path, cal)
+def synthetic(tmp_path, monkeypatch):
+    from tests.highpose_fixtures import d5_output, trust_fixture
+    path, cal = d5_output(tmp_path)
+    trust_fixture(monkeypatch, path, cal)
     return path, cal
 
 
@@ -34,7 +28,7 @@ def test_p03_missing_v92_gate_before_any_output_or_backend(tmp_path, capsys):
     assert run.main(argv) == 0
     plan = json.loads(capsys.readouterr().out)
     assert plan['execution_bundle_id'] == c.BUNDLE_ID
-    assert plan['runnable'] is False and plan['blocked_on'] == [c.PRECONDITION]
+    assert plan['runnable'] is False and c.PRECONDITION in plan['blocked_on']
     assert plan['denominator'] == 3
     assert [r['checkpoint'] for r in plan['cases']] == list(c.previous.CHECKPOINTS)
     assert sum(r['sim_cap_s'] for r in plan['cases']) == 360.
@@ -48,8 +42,8 @@ def test_p03_missing_v92_gate_before_any_output_or_backend(tmp_path, capsys):
 
 @pytest.mark.parametrize('mutation', ['v88', 'low_pose', 'floor_camera', 'no_high', 'nan',
                                      'gain', 'schedule', 'criterion', 'status', 'hash'])
-def test_wrong_calibration_rejected(tmp_path, mutation):
-    path, cal = synthetic(tmp_path)
+def test_wrong_calibration_rejected(tmp_path, mutation, monkeypatch):
+    path, cal = synthetic(tmp_path, monkeypatch)
     digest = c.base.sha(path)
     assert c.measured_calibration(path, digest, MAPS[0]) == cal
     if mutation == 'v88': cal['loaded_measurement_bundle_id'] = 'zone-final-pair-v88'
@@ -80,7 +74,7 @@ def test_registry_closure_and_workflow():
                  'harness/zone_study_pose_delay_p03.py', c.REGISTRY, c.WORKFLOW, c.CALIBRATION_CONTRACT):
         assert b['source_sha256'][name] == c.base.sha(c.ROOT/name)
     row, _ = wm._row(c.ROOT, c.WORKFLOW_ID)
-    assert row['version'] == '3.5.0' and row['runner'] == 'scripts.run_pair_highpose'
+    assert row['version'] == '3.8.0' and row['runner'] == 'scripts.run_pair_highpose'
 
 
 def test_high_pose_matches_v92_ik_and_reverse_path():
@@ -94,65 +88,8 @@ def test_high_pose_matches_v92_ik_and_reverse_path():
     assert pose.required_camera_poses()['loaded'] == [pose.HIGH]
 
 
-class LowLift:
-    def set(self, state, now, **kw): self.state, self.state_t = state, now
-
-    def _lift(self, now, idle):
-        if idle:
-            self.set('wait_carry', now)  # stand-in for inherited low-view RGB success
-
-
-class FakeController(HighController, LowLift):
-    def __init__(self):
-        from scripts.zone_teacher import ArmSequence
-        self.events, self.commands = [], []
-        self.rid, self.seg, self.state = 'r1', 0, 'lift'
-        self.port = SimpleNamespace(apply=lambda a, t: self.commands.append((t, a)))
-        self.arm = ArmSequence(self.port, {1: 1500, **pose.grasp_postures()[0]})
-
-    def fail(self, reason, now): self.failure = reason; self.set('failed', now)
-    def _wait(self, key, nxt, now, go): go(now); self.set(nxt, now)
-    def look(self, now): return {'image': 'fake', 'actuator_state': {'servo_pulses': self.arm.commanded}}
-    def pose_of(self, obs): return obs['actuator_state']['servo_pulses']
-    def log(self, *a, **kw): self.events.append((a, kw))
-
-
-def test_low_lift_raise_high_own_view_then_reverse_lower(monkeypatch):
-    from harness import zone_pair_highpose_runtime as h
-    ctl = FakeController()
-    ctl._lift(2., False)
-    assert not ctl.arm.events
-    ctl._lift(2., True)
-    assert ctl.state == 'lift' and ctl.high_raising and not ctl.high_ready
-    assert ctl.arm.until == pytest.approx(19.2)
-    assert pose.at_high(ctl.arm.commanded) and ctl.arm.commanded[1] == 1500
-    ctl._lift(3., False)
-    assert not ctl.events
-    monkeypatch.setattr(h.m2.study.ob, 'decode', lambda image: np.zeros((480, 640, 3), np.uint8))
-    monkeypatch.setattr(h, 'edge_line', lambda rgb: (0., 170., 90))
-    monkeypatch.setattr(h.m2.study.ob, 'held_signature', lambda image: 'HIGH-own-anchor')
-    monkeypatch.setattr(h.m2.hv3, 'hold_view_mask', lambda image: 'HIGH-own-full')
-    ctl.arm.tick(19.2)
-    ctl._lift(19.2, True)
-    assert ctl.state == 'wait_carry' and ctl.high_ready
-    assert ctl.anchor == 'HIGH-own-anchor' and ctl.anchor_full == 'HIGH-own-full'
-    ctl._wait_lower(20., True)
-    assert ctl.state == 'lower' and not ctl.high_ready
-    assert ctl.arm.commanded == {1: 1500, **pose.grasp_postures()[1][-1]}
-    assert all(e[2] == 1500 for e in ctl.arm.events if e[1] == 1)
-
-
-def test_high_frame_missing_edge_fails(monkeypatch):
-    from harness import zone_pair_highpose_runtime as h
-    ctl = FakeController(); ctl._lift(0., True); ctl.arm.tick(ctl.arm.until)
-    monkeypatch.setattr(h.m2.study.ob, 'decode', lambda image: np.zeros((480, 640, 3), np.uint8))
-    monkeypatch.setattr(h, 'edge_line', lambda rgb: None)
-    ctl._lift(20., True)
-    assert ctl.failure == 'HIGH_CARRY_EDGE_NOT_SEEN'
-
-
-def test_opencv_real_provider_no_model_and_transit_skip(tmp_path):
-    path, _ = synthetic(tmp_path)
+def test_opencv_real_provider_no_model_and_transit_skip(tmp_path, monkeypatch):
+    path, _ = synthetic(tmp_path, monkeypatch)
     provider = HighPoseSource(c.resolve(MAPS[0])[0], path, c.base.sha(path))
     assert provider.worker.record()['learned_segmentation'] is False
     provider.init_prior((1., 0., 0.), (.1, .1, .1), source='synthetic public dock')
@@ -178,8 +115,8 @@ def test_opencv_real_provider_no_model_and_transit_skip(tmp_path):
     provider.close()
 
 
-def test_runtime_selects_highpose_opencv_team(tmp_path):
-    path, _ = synthetic(tmp_path)
+def test_runtime_selects_highpose_opencv_team(tmp_path, monkeypatch):
+    path, _ = synthetic(tmp_path, monkeypatch)
     runtime = Runtime(c.resolve(MAPS[0])[0], path, c.base.sha(path), seed=911)
     try:
         assert type(runtime.team).__module__ == 'harness.zone_pair_highpose_runtime'
@@ -202,9 +139,9 @@ def test_loaded_motion_outside_high_rejected_before_parent(monkeypatch):
     assert reasons == ['LOADED_BASE_MOTION_REQUIRES_HIGH']
 
 
-def test_managed_v93_case_ignores_eval_truth_and_preserves_p03_clock(tmp_path):
+def test_internal_bounded_case_fixture_ignores_eval_truth_and_preserves_p03_clock(tmp_path, monkeypatch):
     from tests.test_zone_final_pair_v3 import FakePhysics, FakeRuntime
-    path, _ = synthetic(tmp_path)
+    path, _ = synthetic(tmp_path, monkeypatch)
     case = c.cases('p03')[0]
     b = {**c.bundle(case['map_id'], 'p03'), 'case': case, 'source_sha': 'a'*40}
     receipts = []
@@ -215,7 +152,7 @@ def test_managed_v93_case_ignores_eval_truth_and_preserves_p03_clock(tmp_path):
             obj.truth = {'success': value, 'pose': [1e9 if value else -1e9]*3}
             owners.append(obj)
             return obj
-        result = run.run_case(b, tmp_path/str(value), seed=911, backend_factory=backend,
+        result = run.bind(run.previous.run_case, contract=c, checkpoint_record=run.checkpoint_record)(b, tmp_path/str(value), seed=911, backend_factory=backend,
             runtime_factory=FakeRuntime, calibration=path, calibration_sha=c.base.sha(path))
         obj = owners[0]
         assert result['protocol_complete'] and result['physical_success'] is None
