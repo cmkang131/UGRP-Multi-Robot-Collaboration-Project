@@ -14,6 +14,7 @@ import pytest
 
 from harness import zone_pair_grasp as grasp
 from harness import zone_pair_highpose_contract as c
+from harness import zone_pair_highpose_frame_gate as frame_gate
 from harness import zone_pair_highpose_grip as grip
 from harness import zone_pair_highpose_runtime as rt
 from harness.m2_provider_adapter import ProviderM2DoorStudent
@@ -82,6 +83,8 @@ class Fake:
 def unseen(monkeypatch):
     monkeypatch.setattr(m2, 'grip_view_m2', lambda image: dict(UNSEEN))
     monkeypatch.setattr(grasp, 'valid_frame', lambda obs, rid, now: True)
+    # v98 close uses the v98 frame gate (zone_pair_highpose_frame_gate), not zone_pair_grasp's.
+    monkeypatch.setattr(frame_gate, 'gate', lambda: SimpleNamespace(controller_gate=lambda ctl: lambda o, r, n: True))
     monkeypatch.setattr(m2.ob2, 'grip_view', lambda image: {'dark_fraction': .91})
     monkeypatch.setattr(m2.lv3, 'co_motion_signature', lambda image: 'signature')
 

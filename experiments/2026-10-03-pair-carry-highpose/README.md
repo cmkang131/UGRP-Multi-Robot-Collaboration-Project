@@ -16,8 +16,8 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   그대로 넣었다. 벽 띠 채도 상한 80→140, 벽 경계 단차 최소 10(새 검사), 프레임 대비 폭 15→1.0, 표준편차 3→0.22.
   값 파일은 `configs/calibration/own_image_gates_floor_light_v1.json`(sha256 `e71bbe4d…`)이고 v98 등록 파일과
   제공자 runtime_contract에 해시로 고정했다. 절차·합격 기준은 [보정 절차](../../docs/own_image_gate_calibration.md)에 있다.
-  정적 단계 실행기(`StagedRuntime`)가 부모 초기화를 우회해 새 프레임 문턱을 설치하지 않던 빈틈을 함께 고쳤다.
-  두 실행기 모두 같은 함수로 설치하고 `record()`에 적용 값을 남기며 `close()`에서 이전 값으로 되돌린다.
+  프레임 문턱은 4차 검토 뒤 v98 전용 모듈로 옮겼다(아래 "REVIEW_363 4차 대응"). 공용 `zone_pair_vision.py`는
+  main과 바이트가 같고, 프로세스 전역 값(`use_gates`/`_CONTRAST`)은 없앴다.
   주의: 평가 분할에 이 PR의 DEV 탐침(`v96-dev-probe-raise_high-323fe3f9`) 영상이 들어 있다. v98은 DEV·승격 불가이므로
   막지는 않지만, 이 값으로 얻은 결과를 확증 자료로 쓰면 안 된다.
 - **파지 시점 집게 시야 → 기록만:** 바닥 파지 자세에서 빔 점 18개 중 0개가 masterpi_v3 카메라 시야에 들어온다는
@@ -27,6 +27,37 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   판단한다. 자기 위치 확인·자기 집게 열림 명령·프레임 유효성·정지 빔 간격·닫기 barrier·시간 초과와
   `GRIP_NOT_CONFIRMED`는 그대로다. 공유 동결 파일(`zone_pair_grasp.py`, `run_m2_pair.py`)은 바꾸지 않았다.
 - **복구 동작은 아직 넣지 않았다**(관측기 수정이 폐루프에서 확인된 뒤).
+
+### REVIEW_363 4차 대응 (검토 BLOCK 5970668877, 2026-10-04)
+
+- **공용 동결 파일 복구:** `harness/zone_pair_vision.py`를 origin/main 바이트 그대로 되돌렸다(sha256 `cce72504…`).
+  7623c4dc는 이 파일에 프로세스 전역 대비 문턱을 넣어 이전 번들의 고정 바이트(#352/#355 검사 21개)를 깨뜨렸다.
+- **v98 전용 프레임 문턱:** `harness/zone_pair_highpose_frame_gate.py`. 얼린 규칙(신선도·JPEG·크기·어안 테두리·두 어두움
+  규칙)은 그대로 옮기고 대비 폭·표준편차 두 값만 등록 파일 값(1.0, 0.22)을 쓴다. `FrameGate(15, 3)`이 기록 프레임 68개와
+  합성 프레임에서 얼린 판정과 모두 같고, 등록 값과의 차이는 대비 때문에 거부되던 신선한 프레임에서만 난다(시험).
+  적용 위치는 v98 클래스의 얼린 메서드 코드를 그대로 쓰되 개인 builtins로 묶어 그 안의
+  `from harness.zone_pair_vision import ...`/`from harness.zone_pair_admission import readiness_snapshot`만 v98 값으로
+  답한다(`PairExecution.step/arm_step`, `CommandGuard.preclose_check`, `PairCommandGuard.observe_standoff`,
+  `PairGraspRelook._grasp`, `HighController._wait_close`, `ZoneOwnExecutor._ack/pair_readiness`). 모듈 전역·import 훅·
+  `sys.modules`는 바꾸지 않는다. 입장 검사는 원래대로 `valid_frame`(ob 아님)을 쓴다. 등록 `frame_gate.profile`
+  (`zone_pair_frame_gate_floor_light_v1_v98`)과 번들 소스 해시에 고정했다. 모든 MRO를 훑어 얼린 문턱 참조가 남지 않았는지,
+  얼린 문턱을 호출하면 터지는 장치 아래에서 v98 경로가 동작하는지 시험한다. `run_pair_stage_probes.py`의 `image_valid_off`
+  같은 모듈 패치는 v98에 닿지 않는다(이전 번들용 도구).
+- **이름:** `PROVIDER_ID`와 PF source 접두사를 `…_v98`로 바꿨다. v96 DEV 기록(`v96-dev-probe-*-323fe3f9`)은 git SHA
+  `323fe3f9`에서만 재현된다.
+- **시험 준비 정답 표시:** 정적 사전분포 평균(실제 생성 위치)과 HIGH 진입의 `gripped`/`lifted` 주장·HIGH 기준 영상은
+  교사 준비에서 온 정답이다. 코드(`TEST_SETUP_GT`), 제어기 기록(`stage_probe_entry`), `stage_probe_staging.json`에
+  `test_setup_ground_truth: true`와 "정적 DEV 단계 검사 전용, E2E·코호트·사례 결과에 쓰지 않음"을 남긴다. align 진입은
+  평소 둘러보기와 짝 입장(실제 자기 카메라 추정) 뒤 첫 제어기 틱에서만 일어나며 입장 문턱은 그대로다.
+- **파지 시점 범위 정정:** 기록만으로 바뀐 것은 `grip_view_m2` 두 항(닫기 전 준비 항, 닫은 뒤 `GRIP_NOT_SEEN`)뿐이다.
+  프레임 유효성 검사, `preclose_check`(정지 빔 간격, `BEAM_UNCERTAIN`), `GRIP_NOT_CONFIRMED`는 계속 동작한다. 바닥 자세에서
+  `beam_track.estimate`가 무엇을 내는지는 아직 확인하지 않았다(닫기에 도달한 검사가 없다).
+- **알려진 한계(추가 조정 없음):** 검토자의 오프라인 측정에서 프레임 수준 문턱(대비 폭·표준편차)은 옛 값·새 값 모두
+  흐림(σ3/8/16), 가로 움직임 흐림 31/81 px, 세로 41 px, 열 폭 30/50 % 가림을 100 % 통과시켰다. 이 문턱은 흐림·가림
+  탐지기가 아니며 원래도 아니었다. 30 % 이상 검은 가림을 거르는 것은 바뀌지 않은 어두움 비율 규칙이다. 열 수준에서는 새
+  단계 검사가 옛 규칙보다 오답이 적지만(σ3 96 대 794, σ8 409 대 2734, 가로 31 px 245 대 902, 가로 81 px 781 대 1096),
+  강한 흐림에서는 새 문턱도 오답이 많다: σ8에서 남은 592열 중 409열 오답, 가로 81 px 19 %, 흐림 없음 0.4 %.
+  옛 규칙과 공유하는 남은 위험으로 기록만 하고 문턱은 더 바꾸지 않는다.
 
 ### v98 DEV 단계 검사 결과 (`7623c4dc`, 2026-10-04)
 
@@ -43,6 +74,12 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
 - **관측기 수정의 폐루프 효과:** 접근을 포함한 실행에서 r1 측정 갱신이 0에서 139로 늘었고, 두 로봇 모두 둘러보기 결과가 LOOKED_POSE_UNCERTAIN에서 LOOKED로 바뀌었다. 새 막힘은 r2 둘러보기의 늦은 시작이다(Track A 영역이라 손대지 않았다).
 - **정적 진입 검사는 구조적으로 막혀 있다.** 시작 사전분포 정의, 둘러보기 생략, 입장 완화 금지를 함께 지키면 입장 문턱(std ≤ 0.05)을 넘을 수 없다. HIGH 진입은 적재 상태도 넣어야 한다. 어느 쪽으로 바꿀지는 조정자가 정한다.
 - 차단 실패가 있어 P03 3×300은 시작하지 않았다. TensorBoard는 `outputs/tensorboard/1004-v98-dev-probes`(5개 실행, 기준선 v96 raise_high)에 넣었다. raw 위치는 `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-<검사>-7623c4dc`(로컬 보관, 원격 백업 아님)이고 파생 뷰는 `outputs/v98-dev-probe-tbviews-1004/gen_views.py`다.
+
+### 단계 검사 설계 수정 (조정자 결정 2026-10-04, 시험 준비만)
+
+- **바닥 진입 2개 폐기(`DROPPED`):** `raise_high_staged`와 `raise_high_closed`는 시작 사전분포 std 0.15 m, 둘러보기 생략, 바닥 자세 측정 0 때문에 짝 입장(std ≤ 0.05)을 끝까지 넘지 못했다(`7623c4dc`, 각 1800번 거부). 입장을 완화하지 않고 진입점을 버렸다.
+- **새 `raise_high_align`:** 계획의 전위치(pre-station, 파지 위치에서 0.30 m 뒤)에 세우고, 평소의 시작 둘러보기를 그대로 둔다. 진입 상태는 실제 접근이 도착할 때 들어가는 `wait_approach`다. 자기 PF 추정으로 `at_prestation`을 기록하고 사전 동작은 없다. 그다음은 제어기 자신의 접근 barrier → align → 열린 하강 → 닫기 barrier → 파지 → 낮은 lift → HIGH로 이어진다. 둘러보기가 끝나는 시점을 맞춰야 하므로 Track A의 r2 수정 뒤에 돌린다.
+- **HIGH 진입의 적재 상태:** 정적 사전 동작을 제어기의 자기 명령 이력으로 차례대로 넘긴다. 먼저 닫기 전 자세를 `initial_servo_command`로 넣고, 이어서 닫기·들기 행을 넣는다. 그러면 LoadState가 실제 닫기 뒤와 같은 규칙(파지 높이에서 집게 닫기 명령)으로 `loaded`를 켠다. 이전 방식(최종 펄스 한 줄)은 `loaded=false`로 남아 HIGH 자세에서 `UNMEASURED_V3_CAMERA_POSTURE unloaded`가 났다. 규칙으로 계산한 값을 `staging.own_history`에 기록한다. HIGH 진입은 빔을 든 팔을 움직이지 않도록 시작 둘러보기를 계속 생략하고, 이를 기록한다.
 
 ## REVIEW_363 2차 대응 (2026-10-03, Claude) — 이력
 

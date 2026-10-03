@@ -14,14 +14,35 @@ Boundary (same convention as harness/pair_stage_probe.py):
   issued commands. The staged pre-roll pulses become its initial own command
   history (initial_servo_command), exactly what it would have issued itself.
 * Its localizer starts from the CASE START prior definition applied to the
-  staged station (region mean, std 0.15 / max(0.15, row span) / 0.174533;
-  is_fix false: it sets no fix time). The station is the one GT-derived
-  staging input, as in every earlier stage probe. The opening look_around job
-  is skipped (it would move the staged arm) and recorded.
+  staged spawn pose (region mean, std 0.15 / max(0.15, row span) / 0.174533;
+  is_fix false: it sets no fix time). The spawn pose is the one GT-derived
+  staging input, as in every earlier stage probe.
+* ``raise_high_align`` (coordinator 2026-10-04): spawn at the plan pre-station
+  (approach end), keep the controller's normal opening look_around, and enter
+  ``wait_approach`` -- what the real approach sets on arrival -- so the
+  controller's own approach barrier leads it into align -> grasp -> raise.
+* HIGH entries (``high_hold_staged``, ``carry_leg_staged``) skip the opening
+  look_around (it would move the arm holding the beam; recorded). Their staged
+  pre-roll is handed to the controller as its own ordered command history
+  (pre-close posture, then the close and raise rows), so the localizer's
+  loaded state comes from the same own-command rule as after a real close.
+* The floor entries ``raise_high_staged``/``raise_high_closed`` are dropped
+  (``DROPPED``): with the case-start prior, no look_around and 0 measurements
+  at the floor pose they can never pass pair admission (std <= 0.05).
+* TEST-SETUP GROUND TRUTH (``TEST_SETUP_GT``, reviewer 2026-10-04): the staged
+  prior mean is the true staged spawn pose (station or plan pre-station), and the
+  HIGH entries' ``gripped``/``lifted`` claims and HIGH anchor come from the
+  teacher pre-roll, not from the controller's own perception. Both are labelled
+  in the code, the controller log (``stage_probe_entry``) and
+  ``stage_probe_staging.json``. They exist only in these staged DEV probes and
+  must never be used by an E2E run, a cohort or as a case result.
+* The align entry keeps the normal opening look_around: the pair admission
+  then decides from the controller's real own-camera estimate (no gate is
+  loosened), and the entry runs only after it, at the first controller tick.
 * No controller, endpoint or admission gate is relaxed.
 * The staged entry sets the controller fields its own skipped states would
-  have set (grasp postures, grip epoch, pregrasp/close receipts), logged as
-  ``stage_probe_entry``. Controller logic and gates are unchanged.
+  have set, logged as ``stage_probe_entry``. Controller logic and gates are
+  unchanged.
 """
 from __future__ import annotations
 
@@ -42,6 +63,9 @@ ROLES = {'r1': 'end_neg', 'r2': 'end_pos'}
 # staged start the region is the one staged station, so the row span is 0.
 # Coordinator ruling 2026-10-03: no gate-driven value.
 CASE_START_STD_X_M, CASE_START_STD_Y_MIN_M, CASE_START_STD_YAW_RAD = .15, .15, .174533
+# Label on every staged value derived from the simulator's true state (spawn pose, teacher-staged grip/lift).
+TEST_SETUP_GT = {'test_setup_ground_truth': True,
+                 'scope': 'staged DEV stage probes only; never E2E, cohort or a case result'}
 
 _FLOOR = {**grasp_postures()[1][-1]}
 if any(_FLOOR[k] != POSES['floor_grasp'][k] for k in (3, 4, 5)):
@@ -49,6 +73,7 @@ if any(_FLOOR[k] != POSES['floor_grasp'][k] for k in (3, 4, 5)):
 
 # Teacher pre-roll (t relative to reset end, pulses per servo; 6 = pan look).
 PREROLLS = {
+    'none': {'end_s': 0., 'visits': []},
     'floor_open': {'end_s': 3., 'visits': [(0., 'stage_floor_grasp_open', {**_FLOOR, 1: OPEN})]},
     'floor_closed': {'end_s': 3.5, 'visits': [(0., 'stage_floor_grasp_open', {**_FLOOR, 1: OPEN}),
                                               (2., 'stage_close', {1: CLOSED})]},
@@ -66,18 +91,26 @@ if POSES['edge_view_150'] != pose.HIGH:
 
 # entry: controller state at stage entry; terminal: event that ends the stage.
 PROBE_SPECS = {
-    'raise_high_staged': {'preroll': 'floor_open', 'entry': 'pregrasp_descend', 'cap_s': 90.,
+    'raise_high_align': {'preroll': 'none', 'spawn': 'prestation', 'opening_look_around': True,
+        'entry': 'wait_approach', 'cap_s': 150.,
         'terminal_event': 'high_carry_pose', 'barrier': None,
-        'covers': 'staged pre-grasp (arm at floor grasp, gripper open) -> close barrier -> GRIP check -> low lift -> raise to HIGH'},
-    'raise_high_closed': {'preroll': 'floor_closed', 'entry': 'grasp', 'cap_s': 90.,
-        'terminal_event': 'high_carry_pose', 'barrier': None,
-        'covers': 'staged closed grip (close BARRIER BYPASSED: harness-issued close) -> own-RGB GRIP check -> low lift -> raise to HIGH'},
-    'high_hold_staged': {'preroll': 'high_held', 'entry': 'wait_carry', 'cap_s': 60.,
+        'covers': 'staged approach end (plan pre-station) + normal opening look_around -> own approach barrier -> '
+                  'own-RGB align -> open descent -> close barrier -> grasp -> low lift -> raise to HIGH'},
+    'high_hold_staged': {'preroll': 'high_held', 'spawn': 'station', 'opening_look_around': False,
+        'entry': 'wait_carry', 'cap_s': 60.,
         'terminal_event': 'barrier_go', 'barrier': 'carry',
         'covers': 'staged teacher-held beam at HIGH -> carry barrier GO from own command history + partner status'},
-    'carry_leg_staged': {'preroll': 'high_held', 'entry': 'wait_carry', 'cap_s': 150.,
+    'carry_leg_staged': {'preroll': 'high_held', 'spawn': 'station', 'opening_look_around': False,
+        'entry': 'wait_carry', 'cap_s': 150.,
         'terminal_event': 'checkpoint_high_reobserved', 'barrier': None,
         'covers': 'staged teacher-held beam at HIGH -> carry leg to the first checkpoint -> HIGH stop + re-observe (needs localization)'},
+}
+
+# Dropped 2026-10-04 (coordinator): structurally unable to pass pair admission.
+DROPPED = {
+    'raise_high_staged': 'floor entry: case-start prior std 0.15 m, opening look_around skipped and 0 measured updates '
+                         'at the floor pose -> pair admission gate_ok false for the whole cap (7623c4dc, 1800 tries)',
+    'raise_high_closed': 'floor entry: same admission block as raise_high_staged (7623c4dc, 1800 tries)',
 }
 
 
@@ -85,6 +118,43 @@ def stations(static, beam_xyyaw):
     from sim.zone_model_conventions import station_offset
     return {rid: [float(beam_xyyaw[0])+off[0], float(beam_xyyaw[1])+off[1], float(off[2])]
             for rid, role in ROLES.items() for off in [station_offset(static, 'long_beam', role)]}
+
+
+def spawn_poses(static, beam_xyyaw, stage):
+    """Staged spawn per robot: the grasp station, or the plan pre-station (approach end) for an align entry."""
+    st = stations(static, beam_xyyaw)
+    if PROBE_SPECS[stage]['spawn'] == 'station':
+        return st
+    from scripts import run_m2_pair as m2
+    return {rid: [float(v) for v in m2.pa.prestation(pose_, m2.study.PRESTATION_BACK_M)] for rid, pose_ in st.items()}
+
+
+def own_history(name, final):
+    """Ordered own command rows that hand a staged pre-roll to the controller.
+
+    No close in the pre-roll: one initial_servo_command with the final pulses (as before). With a close: the
+    pre-close posture as initial_servo_command, then the close and later rows in order, so LoadState sets
+    'loaded' by its own rule (gripper commanded closed at grasp height) exactly as after a real close. The last
+    row leaves the same pulses as ``final``.
+    """
+    visits = PREROLLS[name]['visits']
+    close = [i for i, (_, _, pulses) in enumerate(visits) if pulses.get(1) == CLOSED]
+    if not close:
+        return [{'kind': 'initial_servo_command', 'pulses': dict(final)}]
+    key = type(next(iter(final)))
+    before = dict(final)
+    for _, _, pulses in visits[:close[0]]:
+        before.update({key(k): v for k, v in pulses.items()})
+    rows = [{'kind': 'initial_servo_command', 'pulses': before}]
+    end = dict(before)
+    for _, _, pulses in visits[close[0]:]:
+        for sid, pulse in pulses.items():
+            rows.append({'kind': 'look', 'pan_pulse': pulse} if sid == 6 else
+                        {'kind': 'arm', 'servo_id': sid, 'pulse': pulse})
+            end[key(sid)] = pulse
+    if end != dict(final):
+        raise ValueError('staged own history does not end at the staged pulses')
+    return rows
 
 
 def preroll_actions(name):
@@ -121,7 +191,8 @@ def stated_prior(station):
     return {'kind': 'gaussian', 'mean_xyyaw': list(station), 'std_per_axis': std, 'is_fix': False,
             'definition': 'case start prior (zone_final_pair_runtime.Runtime: public start region mean, '
                           'std (0.15, max(0.15, row span), 0.174533)); staged region = one station',
-            'source': 'staged start: case-start prior definition at the staged station (staging input)'}
+            'source': 'staged start: case-start prior definition at the staged station (staging input)',
+            'mean_is': 'true staged spawn pose', **TEST_SETUP_GT}
 
 
 def enter(ctl, execution, stage, staging, now):
@@ -133,6 +204,17 @@ def enter(ctl, execution, stage, staging, now):
     if driver is not None:
         driver.outcome = 'arrived'
     ctl.arm.commanded.update({k: v for k, v in own.servo.items() if k in ctl.arm.commanded})
+    if spec['entry'] == 'wait_approach':
+        # What the real approach records on arrival (run_m2_pair M2Student._approach): own PF estimate.
+        est = driver.loc.estimate()
+        ctl.claims['at_prestation'] = {'estimate': [round(est['x'], 4), round(est['y'], 4), round(est['yaw'], 4)],
+                                       'std_xy_m': round(est['std_xy_m'], 4), 'looks': 0, 'sim_time': now,
+                                       'source': 'stage probe entry: own PF estimate at the staged pre-station'}
+        ctl.log(ctl.rid, 'stage_probe_entry', now, stage=stage, entry_state=spec['entry'],
+                issued_servo=dict(own.servo), own_report=None if report is None else report.as_dict(),
+                source='staged test setup; controller logic unchanged',
+                ground_truth_inputs=['prior mean = true staged spawn pose (plan pre-station)'], **TEST_SETUP_GT)
+        return ctl.set('wait_approach', now, stage_probe_entry=True)
     from harness.zone_final_pair_vision import GRASP_RADIUS_M
     ctl.grip_base = [float(GRASP_RADIUS_M), 0.]      # the fixed v3 aligned posture (static constant)
     ctl.hover, path = grasp_postures()
@@ -151,8 +233,10 @@ def enter(ctl, execution, stage, staging, now):
         ctl.close_started_at = ctl.close_issued_at = close_t
     if spec['entry'] == 'wait_carry':
         ctl.grip_closed_epoch = ctl.grip_epoch
-        ctl.claims['gripped'] = {'source': 'stage probe entry: teacher-staged close (own issued history)', 'sim_time': close_t}
-        ctl.claims['lifted'] = {'decided_by': 'stage probe entry: teacher-staged HIGH', 'sim_time': now}
+        ctl.claims['gripped'] = {'source': 'stage probe entry: teacher-staged close (own issued history)',
+                                 'sim_time': close_t, **TEST_SETUP_GT}
+        ctl.claims['lifted'] = {'decided_by': 'stage probe entry: teacher-staged HIGH', 'sim_time': now,
+                                **TEST_SETUP_GT}
         obs = ctl.look(now)
         ctl.anchor = rt.m2.study.ob.held_signature(obs['image'])
         ctl.anchor_kind = 'lime_v1'
@@ -162,7 +246,10 @@ def enter(ctl, execution, stage, staging, now):
     ctl.log(ctl.rid, 'stage_probe_entry', now, stage=stage, entry_state=spec['entry'],
             staged_close_issued_at_s=close_t, issued_servo=dict(own.servo),
             own_report=None if report is None else report.as_dict(),
-            source='staged test setup; controller logic unchanged')
+            source='staged test setup; controller logic unchanged',
+            ground_truth_inputs=['prior mean = true staged spawn pose']+(
+                ['gripped/lifted claims and HIGH anchor = teacher pre-roll'] if spec['entry'] == 'wait_carry' else []),
+            **TEST_SETUP_GT)
     return ctl.set(spec['entry'], now, stage_probe_entry=True)
 
 
@@ -179,19 +266,6 @@ def install(ctl, execution, stage, staging):
         return orig(now)
 
     ctl.tick = tick
-    if PROBE_SPECS[stage]['entry'] == 'pregrasp_descend':
-        orig_close = ctl._wait_close
-
-        def wait_close(now, arm_idle):
-            # Read-only: the controller's own pre-close inputs (own frame + issued
-            # PWM). The decision is still made by the original method.
-            if arm_idle and ctl.state == 'wait_close' and execution.own.last_obs is not None:
-                view = rt.m2.grip_view_m2(execution.own.last_obs['image'])
-                ctl.log(ctl.rid, 'stage_probe_close_view', now, grip_view_m2=view,
-                        servo_open=execution.own.servo.get(1) == OPEN,
-                        checks=ctl._grasp_pose_checks(now), source='own RGB + issued PWM (diagnostic only)')
-            return orig_close(now, arm_idle)
-        ctl._wait_close = wait_close
     return ctl
 
 
@@ -212,8 +286,6 @@ class StagedRuntime(rt.Runtime):
     def __init__(self, static, calibration_path, calibration_sha, *, seed, stage, staging, provider_factory=None):
         from harness.vision_pose_source_highpose import build_provider
         from harness.zone_pair_highpose_contract import CASE_CAP_S
-        # Same registered own-image frame gate as rt.Runtime (this class bypasses rt.Runtime.__init__).
-        self.own_image_gates = rt.install_own_image_gates()
         team = functools.partial(StagedTeam, stage=stage, staging=staging)
         initialize = rt.bind(rt.PreviousRuntime.__init__, Team=team)
         order = iter(ROLES)
@@ -233,11 +305,32 @@ class StagedRuntime(rt.Runtime):
         self.job_sim_limit_s = CASE_CAP_S
         for actor in self.actors.values():
             actor.job_sim_limit_s = CASE_CAP_S
+        # Same v98 frame gate as rt.Runtime (this class bypasses rt.Runtime.__init__).
+        self.own_image_gates = rt.adopt_v98_frame_gate(self)
         self.stage, self.staging = stage, staging
-        # Coordinator ruling: skipping the opening look_around is part of the
-        # staged setup (it pans/moves the arm away from the staged pose).
-        staging['skipped_opening_look_around'] = True
-        self.started = True
+        # HIGH entries skip the opening look_around (it would move the arm holding the beam); the align entry
+        # keeps the normal one (coordinator 2026-10-04).
+        look = PROBE_SPECS[stage]['opening_look_around']
+        staging['skipped_opening_look_around'] = not look
+        if not look:
+            self.started = True
+
+    def initial_commands(self, now, commands):
+        """Hand the staged pre-roll to each robot as its own ordered command history (``own_history``)."""
+        name = PROBE_SPECS[self.stage]['preroll']
+        handed = {}
+        for rid in ROLES:
+            rows = own_history(name, commands[rid])
+            for row in rows:
+                self.actors[rid].on_command({'t': now, **row})
+            # The provider applies commands after its fixed delay; record what its own LoadState rule gives for
+            # these rows (a fresh instance of the same class), not a premature read of the live localizer.
+            rule = type(self.providers[rid].provider.loc.load)()
+            for row in rows:
+                rule.command(row)
+            handed[rid] = {'rows': len(rows), 'loaded_by_rule': bool(rule.loaded)}
+        self.staging['own_history'] = {'preroll': name, 'robots': handed,
+                                       'rule': 'LoadState own-command rule (close at grasp height)'}
 
     def record(self):
         value = super().record()

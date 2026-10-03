@@ -70,7 +70,8 @@ def test_registry_closure_and_workflow():
     assert b['provider_id'] == c.PROVIDER_ID
     for name in ('harness/zone_pair_highpose_runtime.py', 'harness/zone_pair_highpose.py',
                  'harness/vision_pose_source_highpose.py', 'harness/opencv_wall_observation.py',
-                 'harness/own_beam_edge.py', 'harness/zone_final_pair_skill.py',
+                 'harness/own_beam_edge.py', 'harness/zone_final_pair_skill.py', 'harness/zone_pair_highpose_frame_gate.py',
+                 'harness/zone_pair_vision.py',
                  'harness/zone_study_pose_delay_p03.py', c.REGISTRY, c.WORKFLOW, c.CALIBRATION_CONTRACT):
         assert b['source_sha256'][name] == c.base.sha(c.ROOT/name)
     row, _ = wm._row(c.ROOT, c.WORKFLOW_ID)
@@ -193,5 +194,6 @@ def test_v96_registry_retired_byte_identical_and_v98_differs_only_by_ids():
     assert old['execution_bundle_id'] == 'zone-final-pair-highpose-v96' and old['workflow_version'] == '3.8.0'
     changed = {k for k in set(old) | set(new) if old.get(k) != new.get(k)}
     assert changed == {'schema', 'execution_bundle_id', 'workflow_id', 'workflow_version', 'dev_pilot',
-                       'supersedes', 'stage_probes', 'own_image_gates', 'grip_monitor'}
+                       'supersedes', 'stage_probes', 'own_image_gates', 'grip_monitor',
+                       'provider_id', 'frame_gate'}
     assert {k for k in old['dev_pilot'] if old['dev_pilot'][k] != new['dev_pilot'][k]} == {'tensorboard_cohort'}

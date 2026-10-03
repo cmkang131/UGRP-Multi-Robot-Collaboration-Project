@@ -12,7 +12,7 @@
     "zone_wide_corridor_final_v3"
   ],
   "p03_map": "zone_wide_door_geometry_v3",
-  "provider_id": "opencv_owncam_final_pair_highpose_v96",
+  "provider_id": "opencv_owncam_final_pair_highpose_v98",
   "calibration_contract_sha256": "4ad461c3b980d885b9743f32cb763fb14f2b1d46a695c3acacae6b4a8e3c8e78",
   "own_image_gates": {
     "path": "configs/calibration/own_image_gates_floor_light_v1.json",
@@ -20,6 +20,20 @@
     "status": "DEV_CALIBRATED",
     "procedure": "docs/own_image_gate_calibration.md",
     "decision": "user 2026-10-03: recalibrate the own-image gates for floor_light_v1 by a documented formal procedure"
+  },
+  "frame_gate": {
+    "profile": "zone_pair_frame_gate_floor_light_v1_v98",
+    "module": "harness/zone_pair_highpose_frame_gate.py",
+    "values_from": "own_image_gates (frame_contrast_spread_min, frame_value_std_min)",
+    "frozen_module": "harness/zone_pair_vision.py (byte-identical to main; earlier bundles keep the v1 dev values 15/3)",
+    "sites": [
+      "PairExecution.step / arm_step (INVALID_OWN_IMAGE)",
+      "CommandGuard.preclose_check (zone_final_pair_guards) / PairCommandGuard.observe_standoff",
+      "PairGraspRelook._grasp (GRIP_NOT_CONFIRMED fresh valid frame) / HighController._wait_close",
+      "ZoneOwnExecutor._ack / pair_readiness -> zone_pair_admission.readiness_snapshot image_valid (valid_frame)"
+    ],
+    "process_global_state": false,
+    "decision": "reviewer BLOCK 5970668877 (2026-10-04): restore the frozen file; apply the values through a v98-only module"
   },
   "case_cap": {
     "sim_cap_s": 300.0,
@@ -146,7 +160,8 @@
   "stage_probes": {
     "scope": "DEV_PILOT FUNCTIONAL_DEV diagnostics only; never a case result, never promotable",
     "staging": "sim harness places robots at the catalogue grasp stations of the case beam pose and runs a fixed teacher arm pre-roll (v92 loaded schedule poses) BEFORE the controller exists; recorded in eval_only/staging.json",
-    "controller_inputs": "own RGB, static map, own issued commands (staged pre-roll commands become its initial own command history); localizer starts from the CASE START prior definition (zone_final_pair_runtime.Runtime: region mean, std 0.15/max(0.15,row span)/0.174533) applied to the staged station, is_fix false; the opening look_around job is skipped and recorded. No controller/admission gate is relaxed.",
+    "controller_inputs": "own RGB, static map, own issued commands (staged pre-roll handed over as the robot's own ordered command history: pre-close posture, then close/raise rows, so LoadState sets loaded by its own rule); localizer starts from the CASE START prior definition (zone_final_pair_runtime.Runtime: region mean, std 0.15/max(0.15,row span)/0.174533) applied to the staged spawn pose, is_fix false. raise_high_align: spawn at the plan pre-station, normal opening look_around kept, entry wait_approach (own approach barrier -> align). HIGH entries: opening look_around skipped (it would move the arm holding the beam) and recorded. Dropped: raise_high_staged/raise_high_closed (floor entries can never pass pair admission without a look_around). No controller/admission gate is relaxed.",
+    "design": "coordinator 2026-10-04: align entry with normal look_around; loaded state via own history; floor entries dropped",
     "status": "RUNNABLE_DEV: own-image gates recalibrated for floor_light_v1 (own_image_gates) and grasp-time grip view log-only (grip_monitor.grasp_time_view), coordinator 2026-10-04"
   }
 }

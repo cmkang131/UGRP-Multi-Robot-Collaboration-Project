@@ -6,10 +6,15 @@ import numpy as np
 
 from harness import zone_final_pair_skill as previous
 from harness import zone_pair_highpose as pose
+from harness import zone_pair_highpose_frame_gate as frame_gate
 from harness import zone_pair_highpose_grip as grip
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_runtime import Runtime as PreviousRuntime
 from harness.zone_final_pair_guards import CommandGuard as PreviousGuard
+from harness.zone_own_executor import ZoneOwnExecutor
+from harness.zone_pair_executor import PairExecution
+from harness.zone_pair_grasp import PairGraspRelook
+from harness.zone_pair_guards import PairCommandGuard
 from harness.own_beam_edge import edge_line
 from scripts import run_m2_pair as m2
 
@@ -68,9 +73,10 @@ class HighController:
         the field of view), so ``grip_view_m2`` cannot see it there. Under the user's log-only grip decision
         the view is recorded with ``applied=False`` and is not a readiness term. Every other term is the
         parent's: own fix checks, own servo commanded open at the grasp pose, valid own frame, stationary
-        beam clearance, then the fixed-enum close barrier with its timeout.
+        beam clearance, then the fixed-enum close barrier with its timeout. The valid-frame check is the v98
+        gate (``zone_pair_highpose_frame_gate``, floor_light_v1 values); it still acts.
         """
-        from harness.zone_pair_grasp import CLOSE_WAIT_S, _frame_gate
+        from harness.zone_pair_grasp import CLOSE_WAIT_S
 
         if not arm_idle:
             return
@@ -81,7 +87,7 @@ class HighController:
         ready = (self.pregrasp_done and self._grasp_pose_ready(now)
                  and own.servo.get(1) == m2.study.OPEN
                  and all(own.servo.get(k) == v for k, v in self.grasp_pose.items() if k != 1)
-                 and _frame_gate(self)(obs, self.rid, now)
+                 and frame_gate.controller_gate(self)(obs, self.rid, now)
                  and self.preclose_check(now, obs))
         self.report('close', obs, now, ready=ready,
                     reason='own relook + issued open grip + stationary beam clearance (grip view log-only)')
@@ -105,9 +111,11 @@ class HighController:
             self.set('grasp', now)
 
     def _grasp(self, now, arm_idle):
-        # PairGraspRelook: GRIP_NOT_CONFIRMED (issued close + fresh valid own frame after it), unchanged;
-        # then GraspViewLogOnly (v98): the post-close own grip view is logged, not applied.
-        super()._grasp(now, arm_idle)
+        # PairGraspRelook: GRIP_NOT_CONFIRMED (issued close + fresh valid own frame after it), unchanged
+        # except that the valid-frame check is the v98 gate; its super()._grasp then reaches GraspViewLogOnly
+        # (v98): the post-close own grip view is logged, not applied. Nothing between HighController and
+        # PairGraspRelook defines _grasp (tests/test_highpose_frame_gate.py).
+        _RELOOK_GRASP(self, now, arm_idle)
         if self.state == 'wait_lift':
             self.grip_closed_epoch = self.grip_epoch
             if 'floor' not in self.pose_anchors:
@@ -313,7 +321,14 @@ class HighController:
             return self._transit_abort('FINAL_FLOOR_RELEASE_REQUIRED', now)
         return super()._wait_open(now, arm_idle)
 
+# Frozen code objects run with the v98 frame gate (zone_pair_highpose_frame_gate.gated); none calls super().
+_RELOOK_GRASP = frame_gate.gated(PairGraspRelook._grasp, _frame_gate=frame_gate.controller_gate)
+
+
 class CommandGuard(PreviousGuard):
+    preclose_check = frame_gate.gated(PreviousGuard.preclose_check)
+    observe_standoff = frame_gate.gated(PairCommandGuard.observe_standoff)
+
     def check(self, now, commands):
         moving = any(c['kind'] == 'mecanum' and any(c.get(k, 0.) != 0.
                      for k in ('forward', 'left', 'turn')) for c in commands)
@@ -352,6 +367,10 @@ def controller_class(base):
 
 
 class Execution(previous.Execution):
+    # Per-step own-image gate (INVALID_OWN_IMAGE) with the v98 values.
+    step = frame_gate.gated(PairExecution.step)
+    arm_step = frame_gate.gated(PairExecution.arm_step)
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         ctl = self.controller
@@ -385,23 +404,27 @@ class Team(previous.Team):
         return rows
 
 
-def install_own_image_gates():
-    """Install the registered floor_light_v1 own-image frame gate for this process; return what was installed.
+class OwnExecutor(ZoneOwnExecutor):
+    """ZoneOwnExecutor whose pair admission (readiness_snapshot image_valid) uses the v98 frame gate."""
+    _ack = frame_gate.gated(ZoneOwnExecutor._ack)
+    pair_readiness = frame_gate.gated(ZoneOwnExecutor.pair_readiness)
 
-    The per-step/admission frame gate is a process-level value; one bundle runs per process. Every v98
-    runtime (measured, DEV and the staged probe runtime) must call this before its parent initializer.
-    """
-    from harness import zone_pair_vision
+
+def adopt_v98_frame_gate(runtime):
+    """Give every actor the v98 admission gate; return the record. Every v98 runtime calls this after init."""
+    for rid, actor in runtime.actors.items():
+        if type(actor) is not ZoneOwnExecutor:
+            raise TypeError(f'v98 frame gate expects ZoneOwnExecutor actors, {rid} is {type(actor).__name__}')
+        actor.__class__ = OwnExecutor
     from harness.zone_pair_highpose_contract import own_image_gates
     gates = own_image_gates()
-    zone_pair_vision.use_gates(gates['values'])
-    return {'path': gates['path'], 'sha256': gates['sha256'], 'values': dict(gates['values'])}
+    return {'path': gates['path'], 'sha256': gates['sha256'], 'values': dict(gates['values']),
+            'frame_gate': frame_gate.record()}
 
 
 class Runtime(PreviousRuntime):
     def __init__(self, static, calibration_path, calibration_sha, *, seed, provider_factory=None):
         from harness.vision_pose_source_highpose import build_provider
-        self.own_image_gates = install_own_image_gates()
         initialize = bind(PreviousRuntime.__init__, Team=Team)
         initialize(self, static, calibration_path, calibration_sha, seed=seed,
                    provider_factory=provider_factory or build_provider)
@@ -413,17 +436,10 @@ class Runtime(PreviousRuntime):
         self.job_sim_limit_s = CASE_CAP_S
         for actor in self.actors.values():
             actor.job_sim_limit_s = CASE_CAP_S
+        self.own_image_gates = adopt_v98_frame_gate(self)
 
     def record(self):
         value = super().record()
         value['executor_job_sim_limit_s'] = self.job_sim_limit_s
         value['own_image_gates'] = copy.deepcopy(self.own_image_gates)
         return value
-
-    def close(self):
-        # The installed frame gate lives as long as this runtime; restore the v1 values on close.
-        from harness import zone_pair_vision
-        try:
-            return super().close()
-        finally:
-            zone_pair_vision.use_gates(None)

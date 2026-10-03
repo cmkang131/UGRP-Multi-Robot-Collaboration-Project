@@ -11,19 +11,12 @@ import pytest
 
 from harness import own_image_gates as gates_module
 from harness import zone_pair_highpose_contract as c
+from harness import zone_pair_highpose_frame_gate as fg
 from harness import zone_pair_vision as vision
 from harness.opencv_wall_observation import observations
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT/'tests/fixtures/highpose_recorded_frames'
-
-
-@pytest.fixture(autouse=True)
-def legacy_frame_gate_around_test():
-    # Runtime construction elsewhere installs the process-level gate; start and end from the v1 values.
-    vision.use_gates(None)
-    yield
-    vision.use_gates(None)
 
 
 def recorded():
@@ -71,11 +64,10 @@ def test_frame_gate_accepts_recorded_flat_floor_views_that_the_v1_dev_values_rej
     frames = [(FIXTURES/row['file']).read_bytes() for row in json.loads((FIXTURES/'manifest.json').read_text())['frames']]
     assert len(frames) == 68
     legacy = [vision.valid_frame_ob(obs_from_jpeg(f), 'r1', 10.) for f in frames]
-    vision.use_gates(c.own_image_gates()['values'])
-    new = [vision.valid_frame_ob(obs_from_jpeg(f), 'r1', 10.) for f in frames]
+    new = [fg.gate().valid_frame_ob(obs_from_jpeg(f), 'r1', 10.) for f in frames]      # v98-only gate module
     assert sum(not ok for ok in legacy) >= 20        # recorded: 22 of 68 valid views were rejected as invalid
     assert all(new)
-    for admit in (vision.valid_frame, vision.valid_frame_ob):
+    for admit in (fg.gate().valid_frame, fg.gate().valid_frame_ob):
         for level in (0, 128):                         # blank/covered views stay invalid
             flat = cv2.imencode('.jpg', np.full((480, 640, 3), level, np.uint8))[1].tobytes()
             assert admit(obs_from_jpeg(flat), 'r1', 10.) is False

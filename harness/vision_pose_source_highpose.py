@@ -20,7 +20,7 @@ from harness.opencv_wall_observation import OpenCVObserver, DETECTOR
 
 class HighPoseSource(PairVisionPoseSource):
     provider_id = contract.PROVIDER_ID
-    source_prefix = 'owncam_pf_opencv_final_pair_highpose_v96'
+    source_prefix = 'owncam_pf_opencv_final_pair_highpose_v98'
 
     def __init__(self, static_map, calibration, calibration_sha256, seed=0, *, worker=None):
         static, _, _ = contract.resolve(static_map['map_id'])

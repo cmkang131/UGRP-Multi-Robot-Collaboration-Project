@@ -12,7 +12,7 @@
 | --- | --- | --- | --- |
 | 벽 띠 채색 한도 S | `harness/opencv_wall_observation.py:23` | 140 (80) | 이전 값 2026-10-03 a19e232a |
 | 벽 경계 단차 하한 | 같은 파일 `edge_step` | 10 (없음) | 새로 추가 |
-| 화면 대비 폭(1~99 백분위) | `harness/zone_pair_vision.py:39, 84` | 1.0 (15) | 2026-09-27 9fd4cf14 |
+| 화면 대비 폭(1~99 백분위) | v98: `harness/zone_pair_highpose_frame_gate.py` (얼린 원본 `harness/zone_pair_vision.py:39, 84`는 그대로) | 1.0 (15) | 2026-09-27 9fd4cf14 |
 | 화면 밝기 표준편차 | 같은 위치 | 0.22 (3) | 2026-09-27 9fd4cf14 |
 
 검토했으나 바꾸지 않은 기준과 이유:
@@ -37,7 +37,8 @@
    - A3 높은 자세(벽이 안 보이고 빔과 바닥뿐인 화면) 열 통과율이 옛 기준을 넘지 않는다
    - A4 확인 자료 유효 프레임 거짓 거부율 ≤ 0.5 %
    - A5 나쁜 프레임 거짓 수락률이 옛 기준을 넘지 않고, 단색 프레임은 모두 거부
-5. **기록.** `configs/calibration/own_image_gates_floor_light_v1.json`에 값, 규칙, 자료 sha256, 백분위 표, 결과, 합격 여부를 둔다. 이 파일의 sha256을 번들 레지스트리(`configs/zone_pair_highpose_v98.json`의 `own_image_gates`)에 고정하고, 제공자의 `runtime_contract`에 경로와 해시를 넣어 실행 식별자(`identity_sha256`)가 값에 따라 바뀌게 한다. 기준을 바꾸려면 새 파일, 새 해시, 새 번들 ID로 낸다.
+5. **적용 범위.** 화면 대비 두 값은 공용 파일 `harness/zone_pair_vision.py`를 고치지 않고 v98 전용 모듈 `harness/zone_pair_highpose_frame_gate.py`로만 적용한다. 공용 파일은 이전 번들이 바이트로 고정하므로 main과 같아야 한다. v98 클래스는 얼린 메서드 코드를 그대로 쓰되, 그 안의 `from harness.zone_pair_vision import ...`가 v98 값을 받도록 개인 builtins로 묶는다(프로세스 전역 상태 없음). 레지스트리 `frame_gate`에 프로필 ID를 고정한다.
+6. **기록.** `configs/calibration/own_image_gates_floor_light_v1.json`에 값, 규칙, 자료 sha256, 백분위 표, 결과, 합격 여부를 둔다. 이 파일의 sha256을 번들 레지스트리(`configs/zone_pair_highpose_v98.json`의 `own_image_gates`)에 고정하고, 제공자의 `runtime_contract`에 경로와 해시를 넣어 실행 식별자(`identity_sha256`)가 값에 따라 바뀌게 한다. 기준을 바꾸려면 새 파일, 새 해시, 새 번들 ID로 낸다.
 
 ## 4. 결과 (2026-10-03, `scripts/calibrate_own_image_gates.py`)
 

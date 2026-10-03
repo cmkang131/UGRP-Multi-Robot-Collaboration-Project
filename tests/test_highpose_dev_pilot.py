@@ -188,28 +188,21 @@ def test_runtime_job_limit_matches_case_cap_under_dev_pilot(tmp_path, monkeypatc
         runtime.close()
 
 
-@pytest.fixture
-def frame_gate_reset():
-    from harness import zone_pair_vision
-    zone_pair_vision.use_gates(None)
-    yield zone_pair_vision
-    zone_pair_vision.use_gates(None)
-
-
-def test_runtime_installs_and_records_the_registered_own_image_gates(tmp_path, monkeypatch, frame_gate_reset):
-    from harness.zone_pair_highpose_runtime import Runtime
+def test_runtime_adopts_and_records_the_registered_v98_frame_gate(tmp_path, monkeypatch):
+    from harness import zone_pair_highpose_frame_gate as fg
+    from harness.zone_pair_highpose_runtime import OwnExecutor, Runtime
     path, _ = dev_file(tmp_path)
     sha = c.base.sha(path)
     admit(monkeypatch, sha)
     gates = c.own_image_gates()
-    assert frame_gate_reset._CONTRAST == (15., 3.)
     runtime = Runtime(c.resolve(MAPS[0])[0], path, sha, seed=911)
     try:
-        assert frame_gate_reset._CONTRAST == (gates['values']['frame_contrast_spread_min'],
-                                              gates['values']['frame_value_std_min']) == (1., .22)
+        assert all(type(actor) is OwnExecutor for actor in runtime.actors.values())
         rec = runtime.record()['own_image_gates']
         assert rec['sha256'] == gates['sha256'] == c.registry()['own_image_gates']['sha256']
         assert rec['values'] == gates['values']
+        assert rec['frame_gate'] == fg.record() and rec['frame_gate']['profile'] == c.FRAME_GATE_PROFILE
+        assert (rec['frame_gate']['frame_contrast_spread_min'], rec['frame_gate']['frame_value_std_min']) == (1., .22)
         for provider in runtime.providers.values():
             assert provider.provider.runtime_contract['own_image_gates']['sha256'] == gates['sha256']
             assert provider.provider.worker.gates == gates['values']
@@ -217,24 +210,23 @@ def test_runtime_installs_and_records_the_registered_own_image_gates(tmp_path, m
         runtime.close()
 
 
-def test_staged_runtime_installs_the_same_own_image_gates(tmp_path, monkeypatch, frame_gate_reset):
+def test_staged_runtime_adopts_the_same_v98_frame_gate(tmp_path, monkeypatch):
     from harness import zone_pair_highpose_staging as st
     from harness.zone_final_pair_skill import task
+    from harness.zone_pair_highpose_runtime import OwnExecutor
     path, _ = dev_file(tmp_path)
     sha = c.base.sha(path)
     admit(monkeypatch, sha)
     static = c.resolve(MAPS[0])[0]
-    stations = st.stations(static, task(static)['beam_pose'])
-    staging = {'stage': 'raise_high_staged', 'stations_xyyaw': stations,
+    stations = st.spawn_poses(static, task(static)['beam_pose'], 'high_hold_staged')
+    staging = {'stage': 'high_hold_staged', 'stations_xyyaw': stations,
                'priors': {rid: st.stated_prior(station) for rid, station in stations.items()}}
-    runtime = st.StagedRuntime(static, path, sha, seed=911, stage='raise_high_staged', staging=staging)
+    runtime = st.StagedRuntime(static, path, sha, seed=911, stage='high_hold_staged', staging=staging)
     try:
-        gates = c.own_image_gates()
-        assert frame_gate_reset._CONTRAST == (1., .22)
-        assert runtime.record()['own_image_gates']['sha256'] == gates['sha256']
+        assert all(type(actor) is OwnExecutor for actor in runtime.actors.values())
+        assert runtime.record()['own_image_gates']['sha256'] == c.own_image_gates()['sha256']
     finally:
         runtime.close()
-    assert frame_gate_reset._CONTRAST == (15., 3.)      # restored when the runtime closes
 
 
 @pytest.mark.skipif(not REAL.exists(), reason='local DEV_PILOT artifact (PR #369) not present')
@@ -487,7 +479,7 @@ def test_staged_geometry_preroll_and_prior_are_static_and_recorded():
     assert prior['mean_xyyaw'] == stations['r1']
 
 
-@pytest.mark.parametrize('probe', ['raise_high_staged', 'raise_high_closed', 'high_hold_staged'])
+@pytest.mark.parametrize('probe', ['raise_high_align', 'high_hold_staged', 'carry_leg_staged'])
 def test_staged_probe_preroll_runs_before_controller_clock_and_is_recorded(tmp_path, monkeypatch, probe):
     from tests.test_zone_final_pair_v3 import FakePhysics
     from harness import zone_pair_highpose_staging as st
@@ -510,8 +502,114 @@ def test_staged_probe_preroll_runs_before_controller_clock_and_is_recorded(tmp_p
     assert rec['preroll'] == spec['preroll'] and rec['end_sim_s'] == pytest.approx(1.+st.PREROLLS[spec['preroll']]['end_s'])
     assert rec['priors']['r1']['is_fix'] is False and result['staging']['stage'] == probe
     closed = rec['close_issued_at_s']
-    assert (closed is None) == (spec['preroll'] == 'floor_open')
+    assert (closed is None) == (spec['preroll'] == 'none')
     assert result['status'] == 'STAGE_PROBE_NOT_REACHED' and result['stage_probe']['staged'] is True
     assert result['check_sim_s'] == pytest.approx(spec['cap_s'])
     with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
         c.require_promotable(result)
+
+
+def _staged_runtime(tmp_path, monkeypatch, stage):
+    from harness import zone_pair_highpose_staging as st
+    from harness.zone_final_pair_skill import task
+    path, _ = dev_file(tmp_path)
+    sha = c.base.sha(path)
+    admit(monkeypatch, sha)
+    static = c.resolve(MAPS[0])[0]
+    spawn = st.spawn_poses(static, task(static)['beam_pose'], stage)
+    staging = {'stage': stage, 'stations_xyyaw': spawn,
+               'priors': {rid: st.stated_prior(pose_) for rid, pose_ in spawn.items()}}
+    return st, st.StagedRuntime(static, path, sha, seed=911, stage=stage, staging=staging), staging
+
+
+def test_floor_entries_are_dropped_and_recorded():
+    from harness import zone_pair_highpose_staging as st
+    assert set(st.DROPPED) == {'raise_high_staged', 'raise_high_closed'}
+    assert not set(st.DROPPED) & set(st.PROBE_SPECS) and not set(st.DROPPED) & set(run.STAGE_PROBES)
+    assert all('admission' in why for why in st.DROPPED.values())
+    assert set(st.PROBE_SPECS) == {'raise_high_align', 'high_hold_staged', 'carry_leg_staged'}
+
+
+def test_align_entry_spawns_at_the_plan_prestation_and_keeps_the_opening_look_around(tmp_path, monkeypatch):
+    import math
+    from scripts import run_m2_pair as m2
+    st, runtime, staging = _staged_runtime(tmp_path, monkeypatch, 'raise_high_align')
+    try:
+        static = c.resolve(MAPS[0])[0]
+        from harness.zone_final_pair_skill import task
+        station = st.stations(static, task(static)['beam_pose'])
+        for rid, (x, y, yaw) in staging['stations_xyyaw'].items():
+            sx, sy, syaw = station[rid]
+            back = m2.study.PRESTATION_BACK_M
+            assert (x, y, yaw) == pytest.approx((sx-back*math.cos(syaw), sy-back*math.sin(syaw), syaw))
+        assert runtime.started is False and staging['skipped_opening_look_around'] is False
+    finally:
+        runtime.close()
+    st, runtime, staging = _staged_runtime(tmp_path/'high', monkeypatch, 'high_hold_staged')
+    try:
+        assert runtime.started is True and staging['skipped_opening_look_around'] is True
+    finally:
+        runtime.close()
+
+
+def test_staged_high_history_sets_loaded_by_the_own_command_rule(tmp_path, monkeypatch):
+    from harness import zone_pair_highpose as pose
+    st, runtime, staging = _staged_runtime(tmp_path, monkeypatch, 'high_hold_staged')
+    try:
+        final = {k: v for k, v in pose.HIGH.items()}
+        final[1] = st.CLOSED
+        rows = st.own_history('high_held', final)
+        assert rows[0]['kind'] == 'initial_servo_command' and rows[0]['pulses'][1] == st.OPEN
+        assert [r for r in rows if r.get('servo_id') == 1] == [{'kind': 'arm', 'servo_id': 1, 'pulse': st.CLOSED}]
+        assert st.own_history('none', final) == [{'kind': 'initial_servo_command', 'pulses': final}]
+        runtime.initial_commands(33., {rid: dict(final) for rid in ('r1', 'r2')})
+        for rid in ('r1', 'r2'):
+            assert staging['own_history']['robots'][rid] == {'rows': len(rows), 'loaded_by_rule': True}
+            runtime.providers[rid].report(33.2)          # past the fixed 0.16 s delay: queued commands applied
+            provider = runtime.providers[rid].provider
+            assert provider.loc.load.loaded is True
+            assert provider.servo == {k: v for k, v in final.items()}
+    finally:
+        runtime.close()
+    # The single-row hand-off (the 7623c4dc staging) leaves the localizer unloaded at HIGH.
+    from harness.zone_pair_highpose_runtime import Runtime
+    path, _ = dev_file(tmp_path/'plain')
+    sha = c.base.sha(path)
+    admit(monkeypatch, sha)
+    plain = Runtime(c.resolve(MAPS[0])[0], path, sha, seed=911)
+    try:
+        plain.initial_commands(33., {rid: dict(final) for rid in ('r1', 'r2')})
+        plain.providers['r1'].report(33.2)
+        assert plain.providers['r1'].provider.loc.load.loaded is False
+    finally:
+        plain.close()
+
+
+def test_align_entry_records_what_the_real_arrival_records():
+    from types import SimpleNamespace
+    from harness import zone_pair_highpose_staging as st
+    logs, states = [], []
+    est = {'x': .2, 'y': .05, 'yaw': .01, 'std_xy_m': .006}
+    ctl = SimpleNamespace(rid='r1', claims={}, arm=SimpleNamespace(commanded={3: 1, 4: 2}),
+                          driver=SimpleNamespace(outcome=None, loc=SimpleNamespace(estimate=lambda: est)),
+                          log=lambda *a, **k: logs.append((a, k)), set=lambda state, now, **k: states.append((state, k)))
+    execution = SimpleNamespace(own=SimpleNamespace(last_report=None, servo={3: 740, 4: 2320, 5: 1320}))
+    st.enter(ctl, execution, 'raise_high_align', {}, 9.)
+    assert ctl.driver.outcome == 'arrived' and states == [('wait_approach', {'stage_probe_entry': True})]
+    assert ctl.claims['at_prestation']['estimate'] == [.2, .05, .01] and ctl.claims['at_prestation']['std_xy_m'] == .006
+    assert ctl.arm.commanded == {3: 740, 4: 2320}
+    assert not hasattr(ctl, 'grasp_pose') and not hasattr(ctl, 'pregrasp_done')
+
+
+def test_staged_ground_truth_inputs_are_labelled_test_setup_only():
+    """Reviewer 2026-10-04: the staged prior mean (true spawn pose) and the HIGH entries' grip/lift claims are
+    test-setup ground truth, labelled in the code, the controller log and the staging record."""
+    import inspect
+    from harness import zone_pair_highpose_staging as st
+    from scripts import run_pair_highpose as runner
+    assert st.TEST_SETUP_GT['test_setup_ground_truth'] is True and 'never E2E' in st.TEST_SETUP_GT['scope']
+    prior = st.stated_prior([1., 2., 0.])
+    assert prior['test_setup_ground_truth'] is True and prior['mean_is'] == 'true staged spawn pose'
+    enter = inspect.getsource(st.enter)
+    assert enter.count('**TEST_SETUP_GT') == 4            # gripped, lifted, both stage_probe_entry logs
+    assert 'ground_truth_inputs' in inspect.getsource(runner) and '**staging.TEST_SETUP_GT' in inspect.getsource(runner)

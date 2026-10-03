@@ -21,8 +21,10 @@ WORKFLOW = 'configs/simulation_workflows.d/pair_highpose_v98.json'
 CALIBRATION_CONTRACT = d5.CALIBRATION_CONTRACT
 D5_ADMISSION = 'configs/calibration/zone_pair_highpose_d5_admission.json'
 OWN_IMAGE_GATES = own_image_gates_module.PATH   # floor_light_v1 own-image gates, sha256 pinned in the registry
+# v98-only frame gate (harness/zone_pair_highpose_frame_gate.PROFILE); harness/zone_pair_vision.py stays frozen.
+FRAME_GATE_PROFILE = 'zone_pair_frame_gate_floor_light_v1_v98'
 REGISTRY_BLOCK = 'HIGHPOSE_BUNDLE_RUNNABLE_FALSE'
-PROVIDER_ID = 'opencv_owncam_final_pair_highpose_v96'
+PROVIDER_ID = 'opencv_owncam_final_pair_highpose_v98'   # v96 DEV records reproduce only at 323fe3f9
 PRECONDITION = 'V92_MEASURED_SIM_HIGHPOSE_CALIBRATION_REQUIRED'
 CHECKS, ROBOTS = ('p03', 'carry'), previous.ROBOTS
 RESET_CAP_S, TICK_S, COLLECTION_FRAME_S = previous.RESET_CAP_S, previous.TICK_S, previous.COLLECTION_FRAME_S
@@ -57,8 +59,10 @@ def registry():
             or reg.get('grip_monitor', {}).get('scope') != grip.MONITOR_SCOPE
             or reg['grip_monitor'].get('in_run_grip_loss_detection') is not False
             or reg['grip_monitor'].get('grasp_time_view') != grip.GRASP_TIME_VIEW
-            or reg.get('own_image_gates', {}).get('path') != OWN_IMAGE_GATES):
-        raise ValueError('v96 registry mismatch')
+            or reg.get('own_image_gates', {}).get('path') != OWN_IMAGE_GATES
+            or reg.get('frame_gate', {}).get('profile') != FRAME_GATE_PROFILE
+            or reg['frame_gate'].get('process_global_state') is not False):
+        raise ValueError('v98 registry mismatch')
     dev = reg.get('dev_pilot', {})
     if (dev.get('calibration_status') != DEV_PILOT or dev.get('rule') != DEV_PILOT_RULE
             or dev.get('rule_key') != 'dev_rule' or 'unloaded_motion_fill' not in dev

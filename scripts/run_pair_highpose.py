@@ -154,10 +154,15 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
         static_, _, _ = contract.resolve(bundle['map_id'])
         from harness.zone_final_pair_skill import task
         beam = task(static_)['beam_pose']
-        stations = staging.stations(static_, beam)
+        stations = staging.spawn_poses(static_, beam, probe)
         staging_record = {'stage': probe, 'beam_xyyaw_staging': list(beam), 'stations_xyyaw': stations,
                           'priors': {rid: staging.stated_prior(st) for rid, st in stations.items()},
-                          'qualification': 'TEST SETUP before the controller exists (DEV stage probe)'}
+                          'qualification': 'TEST SETUP before the controller exists (DEV stage probe)',
+                          'ground_truth_inputs': {
+                              'priors.*.mean_xyyaw': 'true staged spawn pose',
+                              'stations_xyyaw': 'true staged spawn pose (sim harness)',
+                              'teacher_commands': 'teacher pre-roll (HIGH entries: gripped/lifted claims)'},
+                          **staging.TEST_SETUP_GT}
         real_backend = backend_factory
         from sim.final_pair_v3 import PhysicsBackend as _V3
         if real_backend is _V3:
