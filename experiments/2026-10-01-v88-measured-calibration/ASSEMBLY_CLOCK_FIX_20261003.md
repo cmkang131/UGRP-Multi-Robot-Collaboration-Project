@@ -2,6 +2,8 @@
 
 범위: #351에서 병합한 `scripts/assemble_final_pair_calibration.py`(입출력은 `scripts/final_pair_calibration_io.py`)를 실제 v88 raw에 처음 돌렸을 때 세 수집이 모두 거부된 원인을 찾아 고친다. 보정 방법, 임계값, 고정된 기준 B/B′ 파일, 후보 r4, 번들, 워크플로는 바꾸지 않았다. 물리 시뮬레이션, 렌더링, TensorBoard는 쓰지 않았다. raw는 읽기만 했다.
 
+독립 검토 후 엄격 감사 수정과 새 실행 결과는 [P2 수정 기록](FIX_358_STRICT_AUDIT_20261003.md)에 있다. 아래 최초 실행의 결과는 당시 기록으로 보존한다.
+
 ## 무엇이 틀렸나
 
 1. 프레임 시계 키 (치명적).
