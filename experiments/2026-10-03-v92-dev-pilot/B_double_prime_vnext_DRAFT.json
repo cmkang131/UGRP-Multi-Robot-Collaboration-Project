@@ -1,0 +1,44 @@
+{
+  "schema": "ugrp.criterion_B_double_prime_vnext_draft.v0",
+  "status": "DRAFT_NOT_FROZEN",
+  "parent_sha256": "5f7d8905c49625a7125647eaf713575e4e659ca658274b8734fd2a4952da4d4a",
+  "proposed_changes": {
+    "loaded_motion_bounds.c0_lower": {
+      "from": [
+        0.0,
+        0.0,
+        0.006
+      ],
+      "to": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "loaded_motion_bounds.zero_c0_rule": "c0_j at exactly 0 (active_mask=-1 on c0_j only) means no deadband; refit with c0_j fixed 0, same optimizer settings; accept only if converged, full rank on free parameters, no active bound, interior distance >= 1e-6 on every free parameter; any other active bound still fails",
+    "loaded_spread.deadband": "if c0_j>0 unchanged; if c0_j=0 no stop level required; always two signed ramp magnitudes (0<|u|<u1) and one signed saturated magnitude (|u|>=u1) at every horizon",
+    "acquisition.additional_turn_magnitudes": [
+      0.001,
+      0.002,
+      0.004
+    ]
+  },
+  "unchanged": [
+    "horizons_s",
+    "components",
+    "mean law",
+    "noise floor/selection",
+    "training coverage 0.95",
+    "PRBS validation coverage_2sigma_min 0.9 and p95<=2",
+    "pair_model",
+    "camera",
+    "loaded_selection",
+    "loaded_camera_selection",
+    "promotion",
+    "c0_upper",
+    "u1 bounds",
+    "interior_distance_min"
+  ],
+  "v92_data_role": "EXPLORATORY under v-next (inspected before the rule); confirmation requires a new loaded re-collection after freezing",
+  "does_not_resolve": "unloaded combined profile params.motion.* (no accepted candidate)"
+}
