@@ -28,6 +28,22 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `GRIP_NOT_CONFIRMED`는 그대로다. 공유 동결 파일(`zone_pair_grasp.py`, `run_m2_pair.py`)은 바꾸지 않았다.
 - **복구 동작은 아직 넣지 않았다**(관측기 수정이 폐루프에서 확인된 뒤).
 
+### v98 DEV 단계 검사 결과 (`7623c4dc`, 2026-10-04)
+
+조건은 seed 911, `zone_wide_door_geometry_v3` before_door, DEV_PILOT, floor_light_v1, weld OFF이며 SIM 슬롯을 따로 썼다(조정 PID 94817). 다섯 개 모두 단계에 도달하지 못했다. 단계 검사 결과는 사례 결과가 아니다.
+
+| 검사 | 상태 | 멈춘 곳·이유 | SIM초 | 명령 r1/r2 | 측정 갱신 r1/r2 | 집게 기록 |
+|---|---|---|---|---|---|---|
+| raise_high(접근 포함) | FAILED | r1이 8.3초에 둘러보기를 끝냈다(LOOKED, std 0.0066 m). r2의 둘러보기는 1.95–8초에 정지 명령만 두 배 속도로 내다가 약 6초 늦게 패닝을 시작했고 끝나지 않았다. r1은 13.35초에 `PAIR_RENDEZVOUS_TIMEOUT`으로 끝났다. | 12.1 | 303/417 | **139/23** (323fe3f9: 0/4) | 파지 전이라 없음 |
+| raise_high_staged | NOT_REACHED | 짝 작업 입장에서 `gate_ok=false`가 50 ms마다 1800번 나왔다. 시작 사전분포 std 0.15 > 0.05이고, 둘러보기를 생략했으며, 바닥 자세에서 측정이 0이다. 명령 0. | 90.0 | 0/0 | 0/0 | 없음 |
+| raise_high_closed | NOT_REACHED | 위와 같다. | 90.0 | 0/0 | 0/0 | 없음 |
+| high_hold_staged | NOT_REACHED | 33.5초에 제공자가 `UNMEASURED_V3_CAMERA_POSTURE unloaded:896,2035,1894,1500`로 실패했다. 정적 준비가 적재 상태를 넣지 않았다(시험 준비 누락). 입장 `gate_ok=false`도 함께 나왔다. | 60.0 | 0/0 | 0/0 | 없음 |
+| carry_leg_staged | NOT_REACHED | 위와 같다. | 150.0 | 0/0 | 0/0 | 없음 |
+
+- **관측기 수정의 폐루프 효과:** 접근을 포함한 실행에서 r1 측정 갱신이 0에서 139로 늘었고, 두 로봇 모두 둘러보기 결과가 LOOKED_POSE_UNCERTAIN에서 LOOKED로 바뀌었다. 새 막힘은 r2 둘러보기의 늦은 시작이다(Track A 영역이라 손대지 않았다).
+- **정적 진입 검사는 구조적으로 막혀 있다.** 시작 사전분포 정의, 둘러보기 생략, 입장 완화 금지를 함께 지키면 입장 문턱(std ≤ 0.05)을 넘을 수 없다. HIGH 진입은 적재 상태도 넣어야 한다. 어느 쪽으로 바꿀지는 조정자가 정한다.
+- 차단 실패가 있어 P03 3×300은 시작하지 않았다. TensorBoard는 `outputs/tensorboard/1004-v98-dev-probes`(5개 실행, 기준선 v96 raise_high)에 넣었다. raw 위치는 `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-<검사>-7623c4dc`(로컬 보관, 원격 백업 아님)이고 파생 뷰는 `outputs/v98-dev-probe-tbviews-1004/gen_views.py`다.
+
 ## REVIEW_363 2차 대응 (2026-10-03, Claude) — 이력
 
 2차 BLOCK(리뷰 코멘트 5967979217)과 코디네이터·사용자 결정을 반영했다. 결정 근거와 출처는
