@@ -284,3 +284,103 @@ def test_headless_nominal_replay_with_c0_zero_carry_leg(tmp_path, monkeypatch):
     finally:
         backend.close()
         provider.close()
+
+
+class _Ep:
+    def __init__(self):
+        self.events, self.controller = [], type('C', (), {'failure': None, 'state': 'align'})()
+
+
+class _ProbeRuntime:
+    """FakeRuntime with live endpoints: the stage-terminal event (or a failure) at t_event."""
+    def __init__(self, *a, t_event=7., failure=None, **kw):
+        from tests.test_zone_final_pair_v3 import FakeRuntime
+        self.inner, self.t_event, self.failure = FakeRuntime(), t_event, failure
+        self.eps = {'r1': _Ep(), 'r2': _Ep()}
+        self.team = type('T', (), {'sessions': [{'endpoints': self.eps}]})()
+        self.actors = {r: type('A', (), {'jobs_done': []})() for r in self.eps}
+    def __getattr__(self, name):
+        return getattr(self.inner, name)
+    def step(self, now):
+        if now >= self.t_event and not self.eps['r1'].events:
+            for ep in self.eps.values():
+                if self.failure:
+                    ep.controller.failure = self.failure
+                else:
+                    ep.events.append({'event': 'high_carry_pose', 't': now})
+        return self.inner.step(now)
+
+
+@pytest.mark.parametrize('failure', [None, 'GRIP_NOT_SEEN'])
+def test_stage_probe_stops_at_stage_end_with_its_own_status(tmp_path, monkeypatch, failure):
+    from tests.test_zone_final_pair_v3 import FakePhysics
+    path, _ = dev_file(tmp_path)
+    sha = c.base.sha(path)
+    admit(monkeypatch, sha)
+    case = c.cases('p03')[0]
+    bundle = {**c.bundle(case['map_id'], 'p03', c.DEV_PILOT), 'case': case, 'source_sha': 'a'*40}
+    result = run.student_run_case(bundle, tmp_path/'probe', seed=911, backend_factory=FakePhysics,
+        runtime_factory=lambda *a, **k: _ProbeRuntime(*a, failure=failure, **k),
+        calibration=path, calibration_sha=sha, probe='raise_high')
+    assert result['status'] == ('STAGE_PROBE_FAILED' if failure else 'STAGE_PROBE_REACHED')
+    assert result['protocol_complete'] is False and 'checkpoint' not in result
+    assert 6. <= result['check_sim_s'] < 7. and result['commands_issued']['r1'] > 0
+    assert result['stage_probe']['stage'] == 'raise_high' and result['stage_probe']['case_result'] is False
+    assert result['controller_outcome']['r1']['failure'] == failure
+    assert {k: result[k] for k in c.DEV_PILOT_LABELS} == c.DEV_PILOT_LABELS
+    with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
+        c.require_promotable(result)
+    measured = {**c.bundle(case['map_id'], 'p03'), 'case': case, 'source_sha': 'a'*40}
+    with pytest.raises(ValueError, match='DEV_PILOT'):
+        run.student_run_case(measured, tmp_path/'probe2', seed=911, backend_factory=FakePhysics,
+                             probe='raise_high')
+    assert not (tmp_path/'probe2').exists()
+
+
+@pytest.mark.parametrize('probe', [None, 'high_hold'])
+def test_cli_execute_dev_pilot_one_case_on_a_sim_slot_is_not_host_error(tmp_path, monkeypatch, probe):
+    """main --execute under DEV_PILOT: the source-unchanged check uses the DEV bundle."""
+    import subprocess
+    from tests.test_zone_final_pair_v3 import FakePhysics, FakeRuntime
+    import sim.final_pair_v3 as backend_module
+    import scripts.agent_sim_slots as slots
+    path, _ = dev_file(tmp_path)
+    sha = c.base.sha(path)
+    admit(monkeypatch, sha)
+    primary = tmp_path/'primary'
+    (primary/'outputs').mkdir(parents=True)
+    real_check_output = subprocess.check_output
+    def check_output(cmd, *a, **k):
+        if cmd[:2] == ['git', 'rev-parse']:
+            return str(primary/'.git')+'\n'
+        if cmd[:2] == ['git', 'branch']:
+            return 'codex/pair-carry-highpose\n'
+        return real_check_output(cmd, *a, **k)
+    slot_calls = []
+    monkeypatch.setattr(run.subprocess, 'check_output', check_output)
+    monkeypatch.setattr(run, 'check_source', lambda sha_: None)
+    monkeypatch.setattr(slots, 'require_sim_slot', lambda root, **k: slot_calls.append(k))
+    monkeypatch.setattr(slots, 'sim_snapshot', lambda root: {'loadavg': [1., 1., 1.]})
+    monkeypatch.setattr(backend_module, 'PhysicsBackend', FakePhysics)
+    real_case, real_student = run.run_case, run.student_run_case
+    monkeypatch.setattr(run, 'run_case', lambda b, o, **k: real_case(b, o, runtime_factory=FakeRuntime, **k))
+    monkeypatch.setattr(run, 'student_run_case', lambda b, o, **k: real_student(
+        b, o, **{'runtime_factory': lambda *a, **kw: _ProbeRuntime(*a, **kw), **k}))
+    out = primary/'outputs'/'v96-dev'
+    argv = ['--check', 'p03', '--map-id', c.cases('p03')[0]['map_id'], '--case-id', 'after_door',
+            '--expected-source-sha', 'a'*40, '--output', str(out), '--execute', '--lock-owner', 'claude',
+            '--sim-slot', 'sim-claude-test', '--calibration', str(path), '--calibration-sha256', sha,
+            '--admission', 'dev-pilot'] + (['--stage-probe', probe] if probe else [])
+    assert run.main(argv) == 0
+    top = json.loads((out/'result.json').read_text())
+    assert top['source_unchanged'] is True and top['unattempted'] == []
+    assert top['status'] == ('STAGE_PROBE_COLLECTED' if probe else 'COLLECTED_UNQUALIFIED')
+    assert top['denominator'] == 1 and top['registered_denominator'] == 3 and top['case_selection'] == 'after_door'
+    assert top['lock_mode'] == 'sim_slot' and slot_calls == [{'slot': 'sim-claude-test', 'owner': 'claude',
+                                                               'branch': 'codex/pair-carry-highpose'}]
+    assert top['run_status'] == 'FUNCTIONAL_DEV' and top['promotable'] is False
+    assert [r['case']['id'] for r in top['cases']] == ['after_door']
+    with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
+        c.require_promotable(top)
+    with pytest.raises(ValueError, match='exactly one'):
+        run.main(argv[:5]+['nope']+argv[6:])

@@ -45,6 +45,53 @@ def checkpoint_record(runtime_record, checkpoint):
             'physical_success': None, 'cohort_role': 'FUNCTIONAL_DEV_REPLAY', 'confirmation_sample': False}
 
 
+# Stage probes (FUNCTIONAL_DEV diagnostics, never a case result). v96 starts
+# from the public dock, so the only short stages are prefixes of the registered
+# route: the run stops when BOTH robots log the stage-terminal event, or on the
+# first controller failure / job end, or at the probe cap. Carry to the first
+# checkpoint, checkpoint to checkpoint and lower+open are the P03 cases and the
+# full carry case themselves (no mid-carry controller-state staging exists).
+STAGE_PROBES = {
+    'raise_high': {'terminal_event': 'high_carry_pose', 'barrier': None, 'cap_s': 150.,
+                   'covers': 'dock -> RGB align/grasp -> low lift -> raise to HIGH'},
+    'high_hold': {'terminal_event': 'barrier_go', 'barrier': 'carry', 'cap_s': 150.,
+                  'covers': 'raise_high + 8 s HIGH settle + carry barrier GO from command history/status'},
+}
+STAGE_STATUS = ('STAGE_PROBE_REACHED', 'STAGE_PROBE_FAILED', 'STAGE_PROBE_NOT_REACHED')
+
+
+def stage_progress(runtime, probe):
+    """Live controller events/failures (control-side objects only; no eval labels)."""
+    spec = STAGE_PROBES[probe]
+    reached, failures, jobs = {}, {}, {}
+    for session in getattr(getattr(runtime, 'team', None), 'sessions', None) or []:
+        for rid, ep in session['endpoints'].items():
+            hits = [e for e in ep.events if e.get('event') == spec['terminal_event']
+                    and (spec['barrier'] is None or e.get('barrier') == spec['barrier'])]
+            reached[rid] = reached.get(rid) or bool(hits)
+            if ep.controller.failure is not None:
+                failures[rid] = ep.controller.failure
+    for rid, own in (getattr(runtime, 'actors', None) or {}).items():
+        if own.jobs_done:
+            jobs[rid] = [dict(j) for j in own.jobs_done]
+    done = set(reached) >= set(contract.ROBOTS) and all(reached.get(r) for r in contract.ROBOTS)
+    return {'reached': reached, 'failures': failures, 'jobs_ended': jobs, 'done': done,
+            'stop': done or bool(failures) or bool(jobs)}
+
+
+def controller_outcome(runtime):
+    """Per-robot final controller state/failure and job ends (report only)."""
+    rows = {}
+    for session in getattr(getattr(runtime, 'team', None), 'sessions', None) or []:
+        for rid, ep in session['endpoints'].items():
+            rows[rid] = {'state': ep.controller.state, 'failure': ep.controller.failure,
+                         'high_carry_pose': any(e.get('event') == 'high_carry_pose' for e in ep.events),
+                         'carry_go': sum(e.get('event') == 'barrier_go' and e.get('barrier') == 'carry' for e in ep.events)}
+    for rid, own in (getattr(runtime, 'actors', None) or {}).items():
+        rows.setdefault(rid, {})['jobs_ended'] = [{k: j.get(k) for k in ('kind', 'outcome')} for j in own.jobs_done]
+    return rows
+
+
 def time_case(case, check):
     return case['checkpoint'] if check == 'p03' else 'carry_full_route'
 
@@ -68,13 +115,15 @@ def run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runtime,
 
 
 def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runtime,
-                     calibration=None, calibration_sha=None):
+                     calibration=None, calibration_sha=None, probe=None):
     """Student-only copy of scripts/run_final_pair_v3.run_case with the v96 cap.
 
     The parent hard-codes the v88 120 SIM s student cap. v96 uses the
     coordinator's a-priori amendment (contract.CASE_CAP_S = 300 per case).
     Loop, clock, eval_sample/capture order and records are otherwise the
     parent's; no collection branch (v96 has no calibration checks).
+    probe (STAGE_PROBES key): same loop, stops at the stage end/failure or the
+    probe cap and reports a STAGE_PROBE_* status, never COLLECTED_UNQUALIFIED.
     """
     import os
     out = Path(out)
@@ -82,12 +131,19 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
     if (bundle['check'] not in contract.CHECKS or bundle['case']['sim_cap_s'] != cap
             or bundle['timing'] != contract.execution_timing(bundle['check'])):
         raise ValueError('v96 case cap/timing differs from the registered student protocol')
+    if probe is not None:
+        if bundle.get('admission_mode') != contract.DEV_PILOT or probe not in STAGE_PROBES:
+            raise ValueError('v96 stage probes are DEV_PILOT FUNCTIONAL_DEV diagnostics only')
+        cap = STAGE_PROBES[probe]['cap_s']
     out.mkdir(parents=True, exist_ok=False)
     write(out/'bundle.json', bundle)
     write(out/'inputs/schedule.json', [])
     backend = runtime = None
     labels = ({k: bundle[k] for k in contract.DEV_PILOT_LABELS}
               if bundle.get('admission_mode') == contract.DEV_PILOT else {})
+    if probe is not None:
+        labels['stage_probe'] = {'stage': probe, **STAGE_PROBES[probe], 'case_result': False}
+    commands = {rid: 0 for rid in contract.ROBOTS}
     result = {**labels, 'check': bundle['check'], 'case': bundle['case'], 'status': 'HOST_ERROR',
               'protocol_complete': False, 'physical_success': None, 'research_result': False,
               'student_control': True, 'reset_sim_cap_s': contract.RESET_CAP_S, 'check_sim_cap_s': cap,
@@ -114,13 +170,26 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
             for rid, action in runtime.step(backend.now):
                 backend.issue(rid, action)
                 runtime.on_command(rid, backend.now, action)
+                commands[rid] += 1
             for rid, action in runtime.arm_step(backend.now):
                 backend.issue(rid, action)
                 runtime.on_command(rid, backend.now, action)
+                commands[rid] += 1
             backend.advance_to(start+(i+1)*contract.TICK_S)
-        if abs(backend.now-start-cap) > 1e-7:
-            raise RuntimeError('INCOMPLETE_BOUNDED_PROTOCOL')
-        result.update(protocol_complete=True, status='COLLECTED_UNQUALIFIED', check_sim_s=backend.now-start)
+            if probe is not None:
+                progress = stage_progress(runtime, probe)
+                if progress['stop']:
+                    break
+        if probe is not None:
+            progress = stage_progress(runtime, probe)
+            status = ('STAGE_PROBE_REACHED' if progress['done'] and not progress['failures'] else
+                      'STAGE_PROBE_FAILED' if progress['failures'] or progress['jobs_ended'] else
+                      'STAGE_PROBE_NOT_REACHED')
+            result.update(status=status, stage_progress=progress, check_sim_s=backend.now-start)
+        else:
+            if abs(backend.now-start-cap) > 1e-7:
+                raise RuntimeError('INCOMPLETE_BOUNDED_PROTOCOL')
+            result.update(protocol_complete=True, status='COLLECTED_UNQUALIFIED', check_sim_s=backend.now-start)
     except Exception as exc:
         result.update(status='HOST_ERROR', failure={'type': type(exc).__name__, 'message': str(exc),
             'class': 'ENOSPC' if getattr(exc, 'errno', None) == errno.ENOSPC else 'HOST_ERROR'})
@@ -129,7 +198,9 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
             try:
                 record = runtime.record()
                 write(out/'student_record.json', record)
-                if bundle['check'] == 'p03':
+                result['commands_issued'] = commands
+                result['controller_outcome'] = controller_outcome(runtime)
+                if bundle['check'] == 'p03' and probe is None:
                     result['checkpoint'] = {**checkpoint_record(record, bundle['case']['checkpoint']), **labels}
             except Exception as exc:
                 result.update(status='HOST_ERROR', record_error=str(exc))
@@ -159,6 +230,10 @@ def parser():
     p.add_argument('--seed', type=int, default=911)
     p.add_argument('--admission', choices=('measured-sim', 'dev-pilot'), default='measured-sim',
                    help='dev-pilot: exact registered sha256 only; FUNCTIONAL_DEV, never promotable')
+    p.add_argument('--sim-slot', help='owned sim-* slot under a non-timing SIM coordinator; omitted uses exclusive physics lock')
+    p.add_argument('--case-id', help='run one registered case of --check/--map-id in this process')
+    p.add_argument('--stage-probe', choices=sorted(STAGE_PROBES),
+                   help='DEV_PILOT prefix stage probe on one case; STAGE_PROBE_* status, never a case result')
     return p
 
 
@@ -170,7 +245,13 @@ def plan(args):
     starts.require_dev_seed(args.seed)
     starts.registration()
     cases = contract.cases(args.check, args.map_id)
+    if args.case_id is not None:
+        cases = [c for c in cases if c['id'] == args.case_id]
+        if len(cases) != 1:
+            raise ValueError('--case-id must name exactly one registered case of this check/map')
     mode = admission_mode(args)
+    if args.stage_probe is not None and (mode != contract.DEV_PILOT or args.case_id is None):
+        raise ValueError('--stage-probe needs --admission dev-pilot and one --case-id')
     bundles = [{**contract.bundle(c['map_id'], args.check, mode), 'case': c,
                 'source_sha': args.expected_source_sha} for c in cases]
     blocked = []
@@ -195,6 +276,10 @@ def plan(args):
         'precondition': contract.DEV_PILOT_PRECONDITION if mode == contract.DEV_PILOT else contract.PRECONDITION,
         'calibration_sha256': args.calibration_sha256, 'source_sha': args.expected_source_sha,
         'seed': args.seed, 'bundles_sha256': [contract.base.digest(b) for b in bundles],
+        'case_selection': args.case_id, 'registered_denominator': len(contract.cases(args.check, args.map_id)),
+        'stage_probe': ({'stage': args.stage_probe, **STAGE_PROBES[args.stage_probe], 'case_result': False}
+                        if args.stage_probe else None),
+        'lock_mode': 'sim_slot' if args.sim_slot else 'exclusive', 'sim_slot': args.sim_slot,
         'physical_success': None, 'research_result': False}
     return value, bundles
 
@@ -217,28 +302,43 @@ def main(argv=None):
     if shutil.disk_usage(primary).free < 10*1024**3:
         raise OSError(errno.ENOSPC, 'less than 10 GiB free')
     from scripts.agent_lock import DEFAULT_ROOT, status
-    held = status(DEFAULT_ROOT)
+    from scripts.agent_sim_slots import require_sim_slot, sim_snapshot, sim_holders
     branch = subprocess.check_output(['git', 'branch', '--show-current'], cwd=contract.ROOT, text=True).strip()
-    if not held or not held['pid_alive'] or held['owner'] != args.lock_owner or held['branch'] != branch:
-        raise ValueError('live owned host lock for this branch required')
+    if args.sim_slot:
+        require_sim_slot(DEFAULT_ROOT, slot=args.sim_slot, owner=args.lock_owner, branch=branch)
+    else:
+        held = status(DEFAULT_ROOT)
+        if (not held or not held['pid_alive'] or held['owner'] != args.lock_owner
+                or held['branch'] != branch or sim_holders(DEFAULT_ROOT)):
+            raise ValueError('live owned host lock for this branch required')
     from sim.final_pair_v3 import PhysicsBackend
     args.output.mkdir(parents=True)
+    admission.update(execution_started=True, host_start=sim_snapshot(DEFAULT_ROOT))
     write(args.output/'plan.json', admission)
     shutil.copyfile(args.calibration, args.output/('dev_pilot_calibration.json' if admission_mode(args) == contract.DEV_PILOT
                                                    else 'measured_calibration.json'))
     results = []
     for bundle in bundles:
         results.append(run_case(bundle, args.output/bundle['case']['id'], seed=args.seed,
-            backend_factory=PhysicsBackend, calibration=args.calibration, calibration_sha=args.calibration_sha256))
+            backend_factory=PhysicsBackend, calibration=args.calibration, calibration_sha=args.calibration_sha256)
+            if args.stage_probe is None else
+            student_run_case(bundle, args.output/bundle['case']['id'], seed=args.seed, backend_factory=PhysicsBackend,
+                             calibration=args.calibration, calibration_sha=args.calibration_sha256,
+                             probe=args.stage_probe))
         if results[-1]['status'] == 'HOST_ERROR':
             break
     unattempted = [c['id'] for c in admission['cases'][len(results):]]
-    unchanged = all({**contract.bundle(b['map_id'], args.check), 'case': b['case'],
+    mode = admission_mode(args)
+    unchanged = all({**contract.bundle(b['map_id'], args.check, mode), 'case': b['case'],
                      'source_sha': args.expected_source_sha} == b for b in bundles)
     failed = bool(unattempted) or not unchanged or any(r['status'] == 'HOST_ERROR' for r in results)
-    labels = contract.DEV_PILOT_LABELS if admission_mode(args) == contract.DEV_PILOT else {}
-    write(args.output/'result.json', {**labels, 'status': 'HOST_ERROR' if failed else 'COLLECTED_UNQUALIFIED',
+    labels = contract.DEV_PILOT_LABELS if mode == contract.DEV_PILOT else {}
+    status_ = ('HOST_ERROR' if failed else 'STAGE_PROBE_COLLECTED' if args.stage_probe else 'COLLECTED_UNQUALIFIED')
+    write(args.output/'result.json', {**labels, 'status': status_, 'stage_probe': admission['stage_probe'],
         'cases': results, 'unattempted': unattempted, 'denominator': len(admission['cases']),
+        'case_selection': args.case_id, 'registered_denominator': admission['registered_denominator'],
+        'lock_mode': admission['lock_mode'], 'sim_slot': args.sim_slot,
+        'host_start': admission['host_start'], 'host_end': sim_snapshot(DEFAULT_ROOT),
         'source_unchanged': unchanged, 'physical_success': None, 'research_result': False})
     return int(failed)
 
