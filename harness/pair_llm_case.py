@@ -140,17 +140,27 @@ def write_llm_artifacts(out, trial, adapter_wire, runtime, links) -> dict:
     write(study / 'study_config.json', trial.study_config())
     write(study / 'send_ledger.json', trial.send_ledger.to_dict())
     write(study / 'channel.json', trial.channel_summary())
-    return {'archived_request_problems': problems, 'requests': len(trial.requests),
-            'images': len(trial.request_images)}
+    summary = {'archived_request_problems': problems, 'requests': len(trial.requests),
+               'images': len(trial.request_images), 'live': None}
+    from harness import pair_llm_live as live
+    records = live.live_records(trial.send_ledger)
+    if records is not None:                       # a live ledger: per-POST rows (tokens, latency, hashes, failures)
+        jsonl(study / 'model_calls.jsonl', records['rows'])
+        summary['live'] = {'posts': records['usage']['requests'], 'model_usage': records['usage']}
+    return summary
 
 
 def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration, calibration_sha,
                   provider_factory=None, adapter_factory=None, cap_s=contract.CAP_S, kind='stub',
-                  runtime_factory=None, trial_class=None, source_sha='unknown', root=contract.ROOT):
+                  runtime_factory=None, trial_class=None, source_sha='unknown', root=contract.ROOT, health=None,
+                  finalize=None):
     """Run one arm. Returns the result row (also written to ``result.json``).
 
     ``adapter_factory(out) -> (ModelAdapter, wire_recorder)`` supplies the model path of the LLM arms; the
-    ``rule`` arm needs none. ``runtime_factory`` replaces the runtime class (tests only).
+    ``rule`` arm needs none. ``runtime_factory`` replaces the runtime class (tests only). ``health(trial,
+    final=False)`` is the live driver's per-tick stop check (rate limit, fatal error, cohort cap); it raises to
+    end the case, and the artifacts are still written. ``finalize(out, result)`` runs after the LLM artifacts and
+    before the artifact hashes, so a driver can add its own record to the hashed set.
     """
     from harness.pair_llm_dispatch import PairLink, PairTrial
     from harness.pair_llm_eval import judge, read_trajectory, trial_metrics
@@ -175,7 +185,8 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
               'research_result': False, 'model_kind': bundle['model']['kind'], 'reset_sim_cap_s': skill_layer.RESET_CAP_S,
               'case_sim_cap_s': float(cap_s), 'registered_case_cap_s': contract.CAP_S,
               'bundle_sha256': digest(bundle), 'physics_bundle_sha256': digest(physics),
-              'loadavg_start': list(os.getloadavg()), 'failure': None}
+              'loadavg_start': list(os.getloadavg()), 'failure': None,
+              'failure_class': None}
     backend = runtime = trial = static = None
     links, wire, adapter, counts = {}, None, None, {r: {} for r in PAIR_ROBOTS}
     started_wall = time.time()
@@ -223,6 +234,8 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
                         for event in runtime.actors[rid].drain_events():
                             trial.on_executor_event(event, at_s=elapsed)
                     trial.step_to(elapsed)
+                if health is not None:
+                    health(trial)
             if i == steps:
                 break
             for rid, action in runtime.step(backend.now):
@@ -238,14 +251,19 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
             raise RuntimeError('INCOMPLETE_BOUNDED_PROTOCOL')
         result.update(protocol_complete=True, status='COLLECTED_UNQUALIFIED', case_sim_s=backend.now - start)
         if llm:
+            if health is not None:
+                health(trial, final=True)
             trial_result = trial.finish(float(cap_s))
             result['trial'] = {'calls': len(trial_result.calls), 'messages': len(trial_result.messages),
                                'actions': len(trial_result.actions), 'end_reason': trial_result.end_reason,
                                'end_state': trial_result.end_state}
+            result['failure_class'] = _trial_failure_class(trial)
     except Exception as exc:                          # noqa: BLE001 - recorded, never swallowed silently
         result.update(status='HOST_ERROR', failure={
             'type': type(exc).__name__, 'message': str(exc)[:2000],
-            'class': 'ENOSPC' if getattr(exc, 'errno', None) == errno.ENOSPC else 'HOST_ERROR'})
+            'class': getattr(exc, 'failure_label', None)
+            or ('ENOSPC' if getattr(exc, 'errno', None) == errno.ENOSPC else 'HOST_ERROR')},
+            failure_class=_study_failure_class(exc))
     finally:
         if runtime is not None:
             try:
@@ -257,6 +275,11 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
                 result['llm_artifacts'] = write_llm_artifacts(out, trial, wire, runtime, links)
             except Exception as exc:                  # noqa: BLE001
                 result.update(status='HOST_ERROR', llm_record_error=str(exc))
+        if finalize is not None:
+            try:
+                finalize(out, result)
+            except Exception as exc:                  # noqa: BLE001
+                result.update(status='HOST_ERROR', finalize_error=str(exc))
         for owner in (runtime, backend):
             if owner is not None:
                 try:
@@ -266,13 +289,34 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
         result['loadavg_end'] = list(os.getloadavg())
         result['wall_s'] = round(time.time() - started_wall, 3)
         result['command_counts'] = counts
-        result['metrics'] = _evaluate(out, result, condition, static, target,
-                                      trial, wire, links, runtime, cap_s, judge, read_trajectory, trial_metrics)
+        from harness.pair_llm_live import live_records, live_walls
+        walls = list(wire.walls) if wire is not None else live_walls(trial)
+        result['metrics'] = _evaluate(out, result, condition, static, target, trial, walls, links, runtime, cap_s,
+                                      judge, read_trajectory, trial_metrics)
+        usage = live_records(getattr(trial, 'send_ledger', None))
+        if usage is not None:
+            result['metrics']['model_usage'] = usage['usage']
+        result['metrics']['failure_class'] = result.get('failure_class')
         write(out / 'metrics.json', result['metrics'])
         write(out / 'result.json', result)
         write(out / 'artifacts.sha256.json', {str(p.relative_to(out)): sha(p) for p in sorted(out.rglob('*'))
                                               if p.is_file() and p.name != 'artifacts.sha256.json'})
     return result
+
+
+def _study_failure_class(exc):
+    """The study's failure class of an exception (``infra:HOST_ERROR`` / ``infra:API`` / ``other``)."""
+    from harness import zone_study_llm_driver as llm
+    return llm.classify_exception(exc)
+
+
+def _trial_failure_class(trial):
+    """Trial-level class of a COMPLETED live case: any API error / cap / no normal reply is ``infra:API``."""
+    from harness import zone_study_llm_driver as llm
+    ledger = getattr(trial, 'send_ledger', None)
+    if not isinstance(ledger, llm.MainStudySendLedger):
+        return None
+    return llm.trial_failure_class(None, ledger, transport=trial.transport)
 
 
 def _model_settings(adapter, bundle) -> dict:
@@ -281,7 +325,7 @@ def _model_settings(adapter, bundle) -> dict:
     return settings
 
 
-def _evaluate(out, result, condition, static, target, trial, wire, links, runtime, cap_s, judge, read_trajectory,
+def _evaluate(out, result, condition, static, target, trial, walls, links, runtime, cap_s, judge, read_trajectory,
               trial_metrics) -> dict:
     """The separate evaluator, run after the loop. Its verdict is written under ``eval_only/`` only."""
     trajectory = Path(out) / 'eval_only' / 'trajectory.jsonl'
@@ -295,7 +339,7 @@ def _evaluate(out, result, condition, static, target, trial, wire, links, runtim
     sabotage = sabotage_events(links, runtime.gate) if (links and runtime is not None
                                                       and hasattr(runtime, 'gate')) else []
     row = trial_metrics(condition=condition, verdict=verdict, command_counts=counts, trial=trial,
-                        ledger_walls=(wire.walls if wire is not None else ()), sabotage=sabotage,
+                        ledger_walls=walls, sabotage=sabotage,
                         end_sim_s=result.get('case_sim_s'))
     if runtime is not None and hasattr(runtime, 'gate'):
         row['claims'] = claim_counts(runtime.gate)

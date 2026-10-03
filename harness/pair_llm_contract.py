@@ -119,6 +119,7 @@ def model_record(condition, *, kind, root=ROOT) -> dict:
                 'note': 'deterministic stub behind FixtureWire; no network, no provider; plumbing only'}
     if kind != 'live':
         raise ValueError(f'unknown model kind {kind!r}')
+    from harness.zone_pilot_budget import PROXY_SHA256
     profile = driver_profile(root=root)
     model = profile['model']
     return {'kind': 'live', 'model': model['model'], 'temperature': model['temperature'],
@@ -126,6 +127,22 @@ def model_record(condition, *, kind, root=ROOT) -> dict:
             'timeout_s': model['timeout'], 'proxy_url': profile['proxy_url'],
             'driver_profile': {'profile_id': profile['profile_id'], 'sha256': profile['sha256']},
             'min_request_interval_s': profile['min_request_interval_s'],
+            'proxy_source': profile['proxy_source'], 'audited_proxy_sha256': PROXY_SHA256,
+            'transport': 'GeminiProxyCompleter -> MainStudySendLedger (durable budget row before the wire, raw '
+                         'request/response bytes + sha256, provider usage, wall latency) -> loopback proxy under '
+                         'NetworkFence; the proxy is checked read-only (audited source hash + PID listener) and '
+                         'never started or edited',
+            'retry_layers': {
+                'scheduler': 'CallPolicy.max_retries=0: a failed call is never re-sent as a new POST',
+                'run': {'policy': profile['retry_policy'], 'max_attempts': 2,
+                        'note': 'once, in place, only for a host error before the first model request; a 429, an '
+                                'API error or a host error after the first request is never retried'},
+                'proxy_internal': {'internal_429_retry': True, 'upstream_attempts_per_post_bound': 2,
+                                   'note': 'the audited proxy retries an upstream 429 inside one POST'}},
+            'rate_limit_rule': 'HTTP 429, or quota / rate-limit / resource-exhausted wording in an error body, is '
+                               'failure label RATE_LIMIT (study class infra:API); the run stops at the next tick '
+                               'and is invalid; nothing retries it',
+            'api_failure_trial_rule': profile['api_failure_trial_rule'],
             'seed': None, 'seed_statement': reg['seed_statement']}
 
 
