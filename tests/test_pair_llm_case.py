@@ -3,7 +3,6 @@ No physics, network or real model; every model reply comes from a stub behind th
 import hashlib
 import json
 import re
-import sys
 from pathlib import Path
 
 import pytest
@@ -12,7 +11,7 @@ from harness import pair_llm_contract as contract
 from harness import pair_llm_inputs as pi
 from harness import zone_final_pair_contract as c
 from harness import zone_study_prompts_ko as pk
-from harness.pair_llm_stub import StubModel, cooperative, claim_action, scripted
+from harness.pair_llm_stub import StubModel, claim_action, scripted
 from tests.pair_llm_fakes import (FakeBackend, FakeRuntime, ReadyRuntime, delivered_beam, offline_only,  # noqa: F401
                                   run_arm)
 
