@@ -72,8 +72,11 @@ def stage_progress(runtime, probe):
             if ep.controller.failure is not None:
                 failures[rid] = ep.controller.failure
     for rid, own in (getattr(runtime, 'actors', None) or {}).items():
-        if own.jobs_done:
-            jobs[rid] = [dict(j) for j in own.jobs_done]
+        # The opening look_around job always ends before the pair job is
+        # submitted; only an ended pair/carry job stops a probe.
+        ended = [dict(j) for j in own.jobs_done if j.get('kind') != 'look_around']
+        if ended:
+            jobs[rid] = ended
     done = set(reached) >= set(contract.ROBOTS) and all(reached.get(r) for r in contract.ROBOTS)
     return {'reached': reached, 'failures': failures, 'jobs_ended': jobs, 'done': done,
             'stop': done or bool(failures) or bool(jobs)}
@@ -126,6 +129,12 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
     probe cap and reports a STAGE_PROBE_* status, never COLLECTED_UNQUALIFIED.
     """
     import os
+    # Direct callers get the same admission as run_case (REVIEW_363 re-review
+    # #2): the calibration must match the bundle's own admission mode, so a DEV
+    # file can never run inside a MEASURED_SIM (unlabelled) bundle.
+    mode = bundle.get('admission_mode', contract.MEASURED_SIM)
+    contract.calibration_for(mode, calibration, calibration_sha, bundle['map_id'])
+    contract.require_runnable(bundle)
     out = Path(out)
     cap = contract.CASE_CAP_S
     if (bundle['check'] not in contract.CHECKS or bundle['case']['sim_cap_s'] != cap
@@ -147,7 +156,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
     result = {**labels, 'check': bundle['check'], 'case': bundle['case'], 'status': 'HOST_ERROR',
               'protocol_complete': False, 'physical_success': None, 'research_result': False,
               'student_control': True, 'reset_sim_cap_s': contract.RESET_CAP_S, 'check_sim_cap_s': cap,
-              'timing': bundle['timing'], 'clearance_preflight': None,
+              'timing': bundle['timing'], 'clearance_preflight': None, 'calibration_sha256': calibration_sha,
               'loadavg_start': list(os.getloadavg()), 'failure': None}
     try:
         backend = backend_factory(bundle, out, seed=seed)

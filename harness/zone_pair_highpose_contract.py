@@ -157,8 +157,27 @@ def calibration_for(mode, path, expected_sha, map_id):
     return measured_calibration(path, expected_sha, map_id)
 
 
+def _strings(value):
+    if isinstance(value, str):
+        yield value
+    elif isinstance(value, dict):
+        for item in value.values():
+            yield from _strings(item)
+    elif isinstance(value, (list, tuple)):
+        for item in value:
+            yield from _strings(item)
+
+
 def require_promotable(record):
-    """Confirmatory/MEASURED_SIM consumers call this first; DEV_PILOT never passes."""
+    """Confirmatory/MEASURED_SIM consumers call this first; DEV_PILOT never passes.
+
+    Labels alone are not trusted (REVIEW_363 re-review #2): any record that
+    carries a DEV-admitted calibration sha256 anywhere is refused, so a
+    relabelled or label-stripped DEV record cannot be promoted either.
+    """
+    dev = set(dev_pilot_admission().get('admitted_calibration_sha256') or [])
+    if dev & set(_strings(record)):
+        raise ValueError(NOT_PROMOTABLE)
     if (record.get('admission_mode', MEASURED_SIM) != MEASURED_SIM or record.get('promotable') is False
             or record.get('run_status') == DEV_PILOT_LABELS['run_status']
             or record.get('cohort_role') == DEV_PILOT_LABELS['cohort_role']

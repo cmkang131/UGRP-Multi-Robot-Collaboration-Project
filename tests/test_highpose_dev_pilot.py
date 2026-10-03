@@ -298,7 +298,9 @@ class _ProbeRuntime:
         self.inner, self.t_event, self.failure = FakeRuntime(), t_event, failure
         self.eps = {'r1': _Ep(), 'r2': _Ep()}
         self.team = type('T', (), {'sessions': [{'endpoints': self.eps}]})()
-        self.actors = {r: type('A', (), {'jobs_done': []})() for r in self.eps}
+        # The opening look_around job has already ended (as in the real runtime).
+        self.actors = {r: type('A', (), {'jobs_done': [{'kind': 'look_around', 'outcome': 'LOOKED_POSE_UNCERTAIN'}]})()
+                       for r in self.eps}
     def __getattr__(self, name):
         return getattr(self.inner, name)
     def step(self, now):
@@ -331,10 +333,42 @@ def test_stage_probe_stops_at_stage_end_with_its_own_status(tmp_path, monkeypatc
     with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
         c.require_promotable(result)
     measured = {**c.bundle(case['map_id'], 'p03'), 'case': case, 'source_sha': 'a'*40}
-    with pytest.raises(ValueError, match='DEV_PILOT'):
+    with pytest.raises(ValueError):
         run.student_run_case(measured, tmp_path/'probe2', seed=911, backend_factory=FakePhysics,
-                             probe='raise_high')
+                             calibration=path, calibration_sha=sha, probe='raise_high')
     assert not (tmp_path/'probe2').exists()
+
+
+def test_direct_student_run_case_refuses_dev_file_in_measured_bundle(tmp_path, monkeypatch):
+    """Re-review #2: a public direct call cannot make an unlabelled DEV-calibrated run."""
+    from tests.test_zone_final_pair_v3 import FakePhysics, FakeRuntime
+    path, _ = dev_file(tmp_path)
+    sha = c.base.sha(path)
+    admit(monkeypatch, sha)
+    case = c.cases('p03')[0]
+    measured = {**c.bundle(case['map_id'], 'p03'), 'case': case, 'source_sha': 'a'*40}
+    runnable = {**measured, 'runnable': True, 'blocked_on': []}   # even a forged runnable flag
+    for bundle in (measured, runnable):
+        with pytest.raises(ValueError):
+            run.student_run_case(bundle, tmp_path/'direct', seed=911, backend_factory=FakePhysics,
+                                 runtime_factory=FakeRuntime, calibration=path, calibration_sha=sha)
+        assert not (tmp_path/'direct').exists()
+
+
+def test_require_promotable_refuses_any_record_carrying_a_dev_sha(tmp_path, monkeypatch):
+    path, _ = dev_file(tmp_path)
+    sha = c.base.sha(path)
+    admit(monkeypatch, sha)
+    stripped = {'status': 'COLLECTED_UNQUALIFIED', 'calibration_sha256': sha}
+    nested = {'status': 'COLLECTED_UNQUALIFIED', 'pair': [{'robots': {'r1': {'provider': {'sha256': sha}}}}]}
+    relabelled = {**stripped, 'admission_mode': 'MEASURED_SIM', 'promotable': True}
+    for record in (stripped, nested, relabelled, {'cases': [stripped]}):
+        with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
+            c.require_promotable(record)
+    with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
+        starts.qualify_run(stripped, {'id': 'confirm-01'}, {}, [])
+    clean = {'status': 'COLLECTED_UNQUALIFIED', 'calibration_sha256': 'e'*64}
+    assert c.require_promotable(clean) is clean
 
 
 @pytest.mark.parametrize('probe', [None, 'high_hold'])
