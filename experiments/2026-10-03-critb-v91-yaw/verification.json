@@ -1,0 +1,83 @@
+{
+  "recorded_utc": "2026-10-03T06:27:09.653163+00:00",
+  "implementation_sha": "e0c8944965d956cd937659a698d5abc7ba47a5a0",
+  "base_sha": "d4694309d13da8fd562d62ce809a22eeb5bdc065",
+  "branch": "codex/critb-v91-yaw",
+  "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+  "numpy": "2.4.4",
+  "scipy": "1.17.1",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "source_sha256": {
+    "scripts/validate_consumer_criterion_b_v91.py": "dd670c32bf56f78ed6360a05dfaa5c425cec18a40d4ca57e8f2b7732002373eb",
+    "scripts/run_ci_tests.py": "f15d215a20161d4b08dc75406eb934fa5d893f4f4b6a1b8310adc6a5b82bdb69",
+    "tests/test_consumer_criterion_b_v91_yaw.py": "c7e77160d3a11a8133fb106d4c31a5751aefd0aebf93332625a8bdea1c0789be"
+  },
+  "commands": {
+    "related": [
+      "python3",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_consumer_criterion_b_v91_yaw.py",
+      "tests/test_consumer_criterion_b_v91.py",
+      "tests/test_consumer_criterion_b_rotation.py",
+      "tests/test_consumer_criterion_b.py",
+      "tests/test_unloaded_consumer.py",
+      "tests/test_unloaded_hammerstein.py",
+      "tests/test_review_346.py",
+      "--junitxml=experiments/2026-10-03-critb-v91-yaw/related-tests.xml"
+    ],
+    "ci": [
+      "python3",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/test_ci_sharding.py",
+      "tests/test_ci_fast_path.py",
+      "tests/test_ci_host_lock.py",
+      "--junitxml=experiments/2026-10-03-critb-v91-yaw/ci-tests.xml"
+    ]
+  },
+  "results": {
+    "related": {
+      "tests": 289,
+      "failures": 0,
+      "errors": 0,
+      "pass_line": "289 passed in 37.30s"
+    },
+    "ci": {
+      "tests": 102,
+      "failures": 0,
+      "errors": 0,
+      "pass_line": "102 passed in 8.36s"
+    }
+  },
+  "initial_yaw_suite": "60 passed in 15.50s",
+  "initial_profile_probe": "Map arrays had the same elements in a different order; changed validation to set equality before tests. No real raw accessed.",
+  "real_v91_raw_opened": false,
+  "real_v91_raw_hashed": false,
+  "real_v91_scored": false,
+  "physics_runs": 0,
+  "render_runs": 0,
+  "model_calls": 0,
+  "public_commitments_live_refetched_and_matched": [
+    5958329647,
+    5966135675
+  ],
+  "tensorboard": "Not applicable to synthetic regression tests; held-out scoring and subsequent result registration remain with coordinator.",
+  "remaining": [
+    "Independent review of this PR",
+    "GitHub CI",
+    "Merge prerequisite #356",
+    "Coordinator single held-out score after review"
+  ],
+  "artifacts_sha256": {
+    "commitment.json": "cad257ab12c41b786e36a1688ef522ee512551460ec91dc8e1b44a162fe450ca",
+    "preservation.json": "4f136627a8f0dbaf16ff886e094a5bd8938a188b6f17413f09151889490b0d1e",
+    "README.md": "1712024a93d63f928b8156cfca63895226603da306ca923108d2c999cddb4282",
+    "ci-tests.xml": "073337e5e7657a6a6ffa861851adfe3955a286d10b47c0d4b60d772abe0407b2",
+    "related-tests.txt": "fca1f3830ff919c3821f7ea83c74defbf9835d038a584417b6a4f8dec4c7cda5",
+    "ci-tests.txt": "ea88c35af449ec734f19f73cb922bd309d2a0c1a643bda2c42234a1e2caac97b",
+    "related-tests.xml": "f51a44cbf5963d81a0069a855796de4510fcfbb968409025ec999775326cd12f"
+  }
+}

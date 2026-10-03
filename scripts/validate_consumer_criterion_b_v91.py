@@ -13,6 +13,8 @@ import math
 from pathlib import Path
 import subprocess
 
+import numpy as np
+
 from scripts import validate_consumer_criterion_b as frozen
 
 ROOT = frozen.ROOT
@@ -37,6 +39,143 @@ PINNED = {
     ROOT / 'scripts/fit_unloaded_consumer.py': '63c7e1298ae6ccf63d2552e23f9fcb2cef09b26d55092f3a6c92ed0fadd5c350',
     ROOT / 'scripts/fit_unloaded_hammerstein.py': 'fe1a327ad060a9bbac8b9c25292e823e0b2b73319e16559d876e9d1a4dbc7677',
 }
+ROTATION_RECORD = ROOT / 'experiments/2026-10-03-critb-rotation'
+ROTATION_ADDENDUM = ROTATION_RECORD / 'consumer_criterion_B_rotation.json'
+ROTATION_CANDIDATE = ROTATION_RECORD / 'calibration_candidate_r5_yaw.json'
+ROTATION_MANIFEST = ROTATION_RECORD / 'input_manifest_r5_yaw.json'
+ROTATION_SNAPSHOT = ROOT / 'experiments/2026-10-03-critb-v91-yaw/commitment.json'
+ROTATION_SNAPSHOT_SHA256 = 'cad257ab12c41b786e36a1688ef522ee512551460ec91dc8e1b44a162fe450ca'
+ROTATION_HASHES = {
+    str(ROTATION_ADDENDUM.relative_to(ROOT)): '6129f144c840510535de053ffcce325ef934e8192c6adf777b2df8d976f5da08',
+    str(ROTATION_CANDIDATE.relative_to(ROOT)): '978727fcacc5e368efe2a0fdf6d9d8dc3756573c41e896e06ba11d78cf86fb97',
+}
+ROTATION_COMMENT_API = 'repos/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/comments/5966135675'
+INVALID = (ValueError, OSError, KeyError, TypeError, IndexError, AttributeError, OverflowError)
+
+
+def now_utc():
+    return datetime.now(timezone.utc).isoformat()
+
+
+def rotation_profile(addendum, candidate, r4, gate):
+    """Check the axis-only offline contract; never admit r5 to a runtime loader."""
+    require_fields(addendum, {'status': 'FROZEN_CANDIDATE_BEFORE_V91_SCORING'}, 'rotation addendum')
+    require_fields(candidate, {'status': 'CANDIDATE_UNVALIDATED',
+                               'criterion_sha256': frozen.CRITERION_SHA256}, 'rotation candidate')
+    if (addendum['original_criterion']['sha256'] != frozen.CRITERION_SHA256
+            or addendum['original_r4']['sha256'] != FROZEN_HASHES[str(frozen.CANDIDATE.relative_to(ROOT))]
+            or addendum['candidate']['sha256'] != ROTATION_HASHES[str(ROTATION_CANDIDATE.relative_to(ROOT))]
+            or candidate['axis_validation'] != dict.fromkeys(frozen.AXES)
+            or candidate['params']['motion'] is not None):
+        raise ValueError('rotation criterion/candidate validation state mismatch')
+    for axis in ('forward', 'left'):
+        if candidate['candidate_axes'][axis] != r4['candidate_axes'][axis]:
+            raise ValueError('r5 changed r4 '+axis+' profile')
+    if (addendum['fit']['pf_step_s'] != .05 or gate['pf_step_s'] != .05
+            or addendum['held_out']['horizons_s'] != gate['horizons_s']
+            or addendum['held_out']['acceptance'] != gate['acceptance']
+            or set(addendum['held_out']['allowed_maps']) != set(gate['held_out']['allowed_maps'])):
+        raise ValueError('rotation changed frozen B rules')
+    model = candidate['candidate_axes']['rotate']
+    if model is None:
+        return None
+    require_fields(model, {'allowed_command_axis': 'turn', 'validation': None}, 'rotation axis')
+    profile = model['consumer_fields']
+    require_fields(profile, {'rest_noise': True, 'use_scale': False}, 'rotation profile')
+    for key in ('tau_s', 'tau_stop_s', 'scale_std', 'scale_walk'):
+        value = profile[key]
+        if (type(value) not in (float, int) or not math.isfinite(value)
+                or (value <= 0 if key.startswith('tau') else value != 0)):
+            raise ValueError('invalid rotation scalar '+key)
+    gain = np.asarray(profile['gain'], dtype=float)
+    if (gain.shape != (3, 3) or not np.isfinite(gain).all() or gain[2, 2] <= 0
+            or np.count_nonzero(gain) != 1):
+        raise ValueError('rotation requires positive turn-only gain')
+    for name in ('noise_rel', 'noise_abs'):
+        noise = np.asarray(profile[name], dtype=float)
+        if (noise.shape != (3,) or not np.isfinite(noise).all()
+                or np.any(noise < gate['noise']['floor_'+name])):
+            raise ValueError('rotation noise below M1 floor or malformed')
+    return profile
+
+
+def prepare_rotation(inputs, *, refetch=False):
+    """Snapshot and public hashes are checked before this invocation reads raw."""
+    blob = frozen.read_input(ROTATION_SNAPSHOT, inputs)
+    if frozen.sha(blob) != ROTATION_SNAPSHOT_SHA256:
+        raise ValueError('rotation commitment snapshot hash mismatch')
+    snapshot = json.loads(blob)
+    expected_url = ('https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/'
+                    'issues/219#issuecomment-5966135675')
+    if (snapshot['id'] != 5966135675 or snapshot['html_url'] != expected_url
+            or snapshot['created_at'] != snapshot['updated_at']
+            or snapshot['listed_sha256'] != ROTATION_HASHES
+            or frozen.sha(snapshot['body'].encode()) != snapshot['body_sha256']):
+        raise ValueError('rotation commitment identity/body/edit mismatch')
+    for name, expected in ROTATION_HASHES.items():
+        if expected not in snapshot['body'] or frozen.sha(frozen.read_input(ROOT / name, inputs)) != expected:
+            raise ValueError('rotation commitment actual byte hash mismatch: '+name)
+    if refetch:
+        try:
+            remote = json.loads(subprocess.check_output(
+                ['gh', 'api', ROTATION_COMMENT_API], text=True, timeout=30, stderr=subprocess.PIPE))
+        except (OSError, subprocess.SubprocessError, ValueError) as exc:
+            raise ValueError('requested rotation GitHub re-fetch unavailable') from exc
+        for key in ('id', 'html_url', 'created_at', 'updated_at', 'body'):
+            if remote.get(key) != snapshot[key]:
+                raise ValueError('GitHub rotation commitment changed: '+key)
+    utc(snapshot['created_at'])
+    addendum = read_json(ROTATION_ADDENDUM, inputs)
+    candidate = read_json(ROTATION_CANDIDATE, inputs)
+    manifest_blob = frozen.read_input(ROTATION_MANIFEST, inputs)
+    if (frozen.sha(manifest_blob) != addendum['training']['manifest']['sha256']
+            or candidate['yaw_measurement_manifest_sha256'] != frozen.sha(manifest_blob)):
+        raise ValueError('rotation training manifest hash mismatch')
+    manifest = json.loads(manifest_blob)
+    if manifest['files'] != addendum['training']['inputs']:
+        raise ValueError('rotation training manifest inputs mismatch')
+    # Read only the committed manifest, never reopen its training raw paths.
+    prior = set(candidate['previously_seen_pose_sha256'])
+    prior.update(item['sha256'] for item in manifest['files'] if item['path'].endswith('/pose.jsonl'))
+    source_path = Path(__file__).resolve()
+    source = {'path': str(source_path), 'sha256': frozen.sha(frozen.read_input(source_path, inputs))}
+    return {'snapshot': snapshot, 'addendum': addendum, 'candidate': candidate,
+            'prior': prior, 'scoring_source': source}
+
+
+def rotation_ineligible(reason):
+    return {'schema': 'ugrp.consumer_B_validation.v91.rotation_addendum.v1',
+            'scope': 'INELIGIBLE', 'eligibility_reason': reason, 'cases': [], 'pass': None,
+            'candidate_status': 'CANDIDATE_UNVALIDATED', 'criterion_A': 'FAILED_NOT_RESCORED'}
+
+
+def score_rotation(cases, profile, prior, gate):
+    """The frozen evaluator is the only numerical implementation for yaw."""
+    if not cases:
+        raise ValueError('no rotation raw cases')
+    maps = [case['map_id'] for case in cases]
+    if len(maps) != len(set(maps)):
+        raise ValueError('duplicate rotation map')
+    for case in cases:
+        if (case['training'] or case['map_id'] not in gate['held_out']['allowed_maps']
+                or case['pose_sha256'] in prior or case['dt'] != .05):
+            raise ValueError('rotation training/prior pose, map or sample interval ineligible')
+    results = []
+    for case in cases:
+        result = {'raw': case['folder'], 'map_id': case['map_id'], 'pass': None,
+                  'metrics': None, 'reason': 'no frozen candidate or missing signed steps/PRBS/horizon support'}
+        if profile is not None and frozen.axis_supported(case, 2, gate):
+            summary = frozen.evaluate_axis(case, 2, profile, gate)
+            passed = all(row['numerical_pass'] for row in frozen.all_rows(summary))
+            result.update({'metrics': summary, 'numerical_pass': passed, 'pass': passed, 'reason': None})
+        results.append(result)
+    missing = sorted(set(gate['held_out']['allowed_maps']) - set(maps))
+    decisions = [r['pass'] for r in results] + [None for _ in missing]
+    return {'schema': 'ugrp.consumer_B_validation.v91.rotation_addendum.v1',
+            'scope': 'HELD_OUT_VALIDATION' if not missing else 'PARTIAL_HELD_OUT_VALIDATION',
+            'cases': results, 'maps_observed': maps, 'maps_not_supplied': missing,
+            'pass': frozen.combine(decisions), 'candidate_status': 'CANDIDATE_UNVALIDATED',
+            'criterion_A': 'FAILED_NOT_RESCORED'}
 
 
 def canonical_sha(value):
@@ -210,9 +349,31 @@ def ineligible(reason):
             'axis_pass': dict.fromkeys(frozen.AXES), 'pass': None}
 
 
-def validate(raws, *, refetch=False):
+def validate(raws, *, refetch=False, rotation_addendum=False):
     inputs, cases, stamps = [], [], []
     evidence = {'verified': False, 'github_check': 'requested' if refetch else 'snapshot_only'}
+    rotation_inputs, prepared, raw_read_started = [], None, None
+    if rotation_addendum:
+        rotation_evidence = {
+            'verified': False, 'kind': 'PRE_SCORING_AND_READING_NOT_PRE_COLLECTION',
+            'original_B_ordering_kind': 'PRE_COLLECTION', 'pre_collection_claim': False,
+            'v91_collection_precedes_commitment': True,
+            'github_check': 'requested' if refetch else 'snapshot_only',
+            'prior_access_declaration': 'Public commitment body and implementation work record; '
+                'not cryptographic proof of all participants historical non-access.',
+            'work_record': 'experiments/2026-10-03-critb-v91-yaw/README.md',
+            'clock_limit': 'GitHub server UTC versus scoring host UTC; clock synchronization is not proven.',
+        }
+        try:
+            prepared = prepare_rotation(rotation_inputs, refetch=refetch)
+            rotation_evidence.update(commitment=prepared['snapshot'],
+                                     github_check='matched' if refetch else 'snapshot_only')
+            if not utc(prepared['snapshot']['created_at']) < utc(now_utc()):
+                raise ValueError('rotation commitment is not strictly before raw reading/scoring')
+            rotation_report = None
+        except INVALID as exc:
+            prepared = None
+            rotation_report = rotation_ineligible(str(exc))
     try:
         snapshot = verify_commitment(inputs, refetch=refetch)
         evidence.update(comment_id=snapshot['id'], html_url=snapshot['html_url'],
@@ -223,6 +384,8 @@ def validate(raws, *, refetch=False):
         candidate = read_json(frozen.CANDIDATE, inputs)
         if not raws:
             raise ValueError('no raw collections')
+        if rotation_addendum:
+            raw_read_started = now_utc()
         for raw in raws:
             loaded, recorded = load_collection(raw, gate, contract, inputs)
             cases.extend(loaded)
@@ -245,9 +408,49 @@ def validate(raws, *, refetch=False):
         report['maps_observed'] = maps
         report['maps_not_supplied'] = sorted(set(gate['held_out']['allowed_maps']) - set(maps))
         report['candidate_sha256'] = FROZEN_HASHES[str(frozen.CANDIDATE.relative_to(ROOT))]
-    except (ValueError, OSError, KeyError, TypeError, IndexError, AttributeError, OverflowError) as exc:
+    except INVALID as exc:
         report = ineligible(str(exc))
         evidence['verified'] = False
+    if rotation_addendum:
+        if prepared is not None:
+            try:
+                if report['scope'] != 'HELD_OUT_VALIDATION':
+                    raise ValueError('original v91 input/commitment audit ineligible: '+str(report.get('eligibility_reason')))
+                scoring_started = now_utc()
+                rotation_evidence.update(raw_read_started_at=raw_read_started, scoring_started_at=scoring_started)
+                committed = utc(prepared['snapshot']['created_at'])
+                if not (committed < utc(raw_read_started) <= utc(scoring_started)):
+                    raise ValueError('rotation commitment is not strictly before raw reading/scoring')
+                profile = rotation_profile(prepared['addendum'], prepared['candidate'], candidate, gate)
+                prior = prepared['prior'] | set(candidate['previously_seen_pose_sha256'])
+                rotation_report = score_rotation(cases, profile, prior, gate)
+                frozen.verify_inputs([{'inputs': rotation_inputs}])
+                rotation_evidence['verified'] = True
+            except INVALID as exc:
+                rotation_report = rotation_ineligible(str(exc))
+            rotation_report.update(
+                addendum_sha256=ROTATION_HASHES[str(ROTATION_ADDENDUM.relative_to(ROOT))],
+                candidate_sha256=ROTATION_HASHES[str(ROTATION_CANDIDATE.relative_to(ROOT))],
+                scoring_source=prepared['scoring_source'])
+        # A raw/B-evidence mutation during yaw invalidates BOTH reports.
+        try:
+            frozen.verify_inputs([{'inputs': inputs}])
+        except INVALID as exc:
+            report = ineligible(str(exc))
+            evidence['verified'] = False
+            rotation_report = rotation_ineligible(str(exc))
+            rotation_evidence['verified'] = False
+        rotation_report['ordering_evidence'] = rotation_evidence
+        rotation_report['input_files'] = list({(i['path'], i['sha256']): i
+                                              for i in inputs + rotation_inputs}.values())
+        report['rotation_addendum'] = rotation_report
+        report['with_rotation_addendum'] = {
+            'axis_pass': {**report['axis_pass'], 'rotate': rotation_report['pass']},
+            'pass': frozen.combine([report['axis_pass']['forward'], report['axis_pass']['left'],
+                                    rotation_report['pass']]),
+            'scope_note': 'Separate B+r5 summary; forward/left PRE_COLLECTION, yaw '
+                'PRE_SCORING_AND_READING_NOT_PRE_COLLECTION. Original B/r4 rotation remains null.',
+        }
     report['ordering_evidence'] = evidence
     report['input_files'] = list({(i['path'], i['sha256']): i for i in inputs}.values())
     return report
@@ -259,14 +462,19 @@ def main(argv=None):
                         help='one completed map collection (repeat for both maps)')
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--refetch-commitment', action='store_true')
+    parser.add_argument('--rotation-addendum', action='store_true',
+                        help='also score the frozen r5 yaw addendum, with separate pre-scoring ordering')
     args = parser.parse_args(argv)
     output = args.output.resolve()
     if any(output.is_relative_to(collection_root(raw)) for raw in args.raw):
         raise ValueError('output must be outside every raw collection, including case parents')
-    report = validate(args.raw, refetch=args.refetch_commitment)
+    report = validate(args.raw, refetch=args.refetch_commitment, rotation_addendum=args.rotation_addendum)
     frozen.write(output, report)  # exclusive create; never overwrite
     print(json.dumps({k: report[k] for k in ('scope', 'axis_pass', 'pass')}))
-    return 1 if report['pass'] is False else (0 if report['pass'] is True else 2)
+    if args.rotation_addendum:
+        print(json.dumps({'with_rotation_addendum': report['with_rotation_addendum']}))
+    passed = report['with_rotation_addendum']['pass'] if args.rotation_addendum else report['pass']
+    return 1 if passed is False else (0 if passed is True else 2)
 
 
 if __name__ == '__main__':
