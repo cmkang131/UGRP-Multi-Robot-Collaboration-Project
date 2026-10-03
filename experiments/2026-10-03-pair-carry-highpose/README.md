@@ -59,6 +59,20 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   강한 흐림에서는 새 문턱도 오답이 많다: σ8에서 남은 592열 중 409열 오답, 가로 81 px 19 %, 흐림 없음 0.4 %.
   옛 규칙과 공유하는 남은 위험으로 기록만 하고 문턱은 더 바꾸지 않는다.
 
+### v98 DEV 단계 검사 재실행 (`b37c9270`, 2026-10-04)
+
+조건은 앞과 같다(seed 911, before_door, DEV_PILOT, floor_light_v1, weld OFF, SIM 슬롯 따로, 조정 PID 16310, 시작 부하 18.6/15.1). 둘러보기 합류에 기대지 않는 두 HIGH 검사만 돌렸다. `raise_high`·`raise_high_align`은 Track A의 r2 둘러보기 수정을 기다린다.
+
+| 검사 | 상태 | 멈춘 곳·이유 | SIM초 | 명령 r1/r2 | 측정 갱신 r1/r2 | 입장 거부 r1/r2 |
+|---|---|---|---|---|---|---|
+| high_hold_staged | NOT_REACHED | 제공자 실패가 사라졌다(`own_history` 18행, 두 로봇 `loaded_by_rule=true`). 그러나 짝 입장이 끝까지 `gate_ok=false`다(std_xy 0.21–0.22 > 0.05). | 60.0 | 0/0 | 0/0 | 1200/1200 |
+| carry_leg_staged | NOT_REACHED | 위와 같다. | 150.0 | 0/0 | 0/0 | 3000/3000 |
+
+- **적재 상태 수정은 동작했다.** 7623c4dc의 `UNMEASURED_V3_CAMERA_POSTURE unloaded` 실패가 없어졌다.
+- **HIGH 진입도 바닥 진입과 같은 이유로 입장에서 구조적으로 막힌다.** 시작 사전분포 std 0.15 m를 쓰고, 빔을 든 팔을 움직이지 않으려고 둘러보기를 생략한다. HIGH 자세에서는 벽이 보이지 않아 측정 갱신이 0이다. 입장 문턱(std ≤ 0.05)을 완화하지 않는 한 넘을 수 없다. 어떻게 진입할지는 조정자가 정한다. 예를 들어 HIGH 진입도 폐기하고 `raise_high_align` 연속 실행으로 대신할 수 있다. 문턱은 바꾸지 않았다.
+- 닫기에 도달한 검사가 없어 `preclose_beam_guard`·`beam_track.estimate` 기록은 아직 없다.
+- TensorBoard: `outputs/tensorboard/1004b-v98-dev-probes-b37c9270`(2개 실행, 기준선은 같은 검사의 7623c4dc 실행), 보기 설정 키 `v98_dev_probes_b37c9270_20261004`. raw는 `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-<검사>-b37c9270`(로컬 보관, 원격 백업 아님)이다.
+
 ### v98 DEV 단계 검사 결과 (`7623c4dc`, 2026-10-04)
 
 조건은 seed 911, `zone_wide_door_geometry_v3` before_door, DEV_PILOT, floor_light_v1, weld OFF이며 SIM 슬롯을 따로 썼다(조정 PID 94817). 다섯 개 모두 단계에 도달하지 못했다. 단계 검사 결과는 사례 결과가 아니다.
