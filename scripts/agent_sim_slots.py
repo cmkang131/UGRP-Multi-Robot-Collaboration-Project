@@ -17,6 +17,7 @@ import os
 from pathlib import Path
 import re
 import sys
+import time
 import uuid
 
 from scripts import agent_lock as legacy
@@ -39,15 +40,24 @@ def _slot_name(slot):
     return slot
 
 
+def _status(root, name='physics'):
+    # The frozen legacy writer publishes directly to owner.json after mkdir.
+    # Its directory already excludes contenders even while JSON is incomplete.
+    try:
+        return legacy.status(root, name)
+    except (json.JSONDecodeError, UnicodeDecodeError, FileNotFoundError) as exc:
+        raise RuntimeError(f'lock owner metadata incomplete or unreadable: {name}') from exc
+
+
 def sim_holders(root):
     """Dead/incomplete slots remain visible until explicit recovery."""
-    return [{'name': path.name, **(legacy.status(root, path.name) or {'incomplete': True})}
+    return [{'name': path.name, **(_status(root, path.name) or {'incomplete': True})}
             for path in sorted(root.glob('sim-*')) if path.is_dir()]
 
 
 def _snapshot(root):
     return {'loadavg': list(os.getloadavg()), 'concurrent_holders': sim_holders(root),
-            'physics_holder': legacy.status(root)}
+            'physics_holder': _status(root)}
 
 
 def sim_snapshot(root):
@@ -69,7 +79,7 @@ def _identity(held):
 
 
 def _require_physics(root, owner, pid=None):
-    held = legacy.status(root)
+    held = _status(root)
     if (not held or not held['pid_alive'] or held['timing_sensitive']
             or held['owner'] != owner):
         raise RuntimeError('live same-owner non-timing-sensitive physics coordinator required')
@@ -85,6 +95,20 @@ def _write_owner(root, name, value):
     temporary.replace(target)
 
 
+def _acquire(root, *, name, owner, branch, purpose, pid, expected_minutes):
+    # Keep legacy mkdir arbitration, but publish complete JSON atomically so an
+    # unmodified legacy contender cannot observe our empty/partial owner file.
+    try:
+        (root / name).mkdir()
+    except FileExistsError:
+        raise RuntimeError(f'lock held: {name}') from None
+    value = {'owner': owner, 'branch': branch, 'purpose': purpose, 'pid': pid,
+             'acquired_unix': time.time(), 'expected_end_unix': time.time() + 60 * expected_minutes,
+             'loadavg_at_acquire': os.getloadavg(), 'timing_sensitive': False}
+    _write_owner(root, name, value)
+    return value
+
+
 def acquire_sim_slot(root, *, slot, owner, branch, purpose, pid, expected_minutes):
     name = _slot_name(slot)
     with _admission(root):
@@ -96,17 +120,16 @@ def acquire_sim_slot(root, *, slot, owner, branch, purpose, pid, expected_minute
         if not (root / 'physics').exists():
             if holders:
                 raise RuntimeError('orphan SIM slots held; explicit recovery required')
-            # Atomic mkdir in the UNCHANGED legacy API arbitrates with old tools.
-            held = legacy.acquire(root, owner=owner, branch=branch, purpose=purpose,
-                                  pid=pid, expected_minutes=expected_minutes)
+            held = _acquire(root, name='physics', owner=owner, branch=branch, purpose=purpose,
+                            pid=pid, expected_minutes=expected_minutes)
             held['v91_group'] = uuid.uuid4().hex
             _write_owner(root, 'physics', held)
         held = _require_physics(root, owner, pid)
         for other in holders:
             if (not other.get('pid_alive') or other.get('physics_identity') != _identity(held)):
                 raise RuntimeError('stale or foreign SIM slot held; explicit recovery required')
-        value = legacy.acquire(root, name=name, owner=owner, branch=branch, purpose=purpose,
-                               pid=pid, expected_minutes=expected_minutes)
+        value = _acquire(root, name=name, owner=owner, branch=branch, purpose=purpose,
+                         pid=pid, expected_minutes=expected_minutes)
         value['physics_identity'] = _identity(held)
         _write_owner(root, name, value)
         return value
@@ -114,7 +137,7 @@ def acquire_sim_slot(root, *, slot, owner, branch, purpose, pid, expected_minute
 
 def require_sim_slot(root, *, slot, owner, branch):
     with _admission(root):
-        slot_record = legacy.status(root, _slot_name(slot))
+        slot_record = _status(root, _slot_name(slot))
         if (not slot_record or not slot_record['pid_alive']
                 or slot_record['owner'] != owner or slot_record['branch'] != branch):
             raise ValueError('live owned SIM slot for this branch required')
@@ -127,11 +150,11 @@ def require_sim_slot(root, *, slot, owner, branch):
 def release(root, *, owner, name, stale=False):
     name = _slot_name(name)
     with _admission(root):
-        held = legacy.status(root, name)
+        held = _status(root, name)
         if stale and held and held['pid_alive']:
             raise RuntimeError('--stale requires a dead recorded pid')
         released = legacy.release(root, owner=owner, name=name, stale=stale)
-        physics = legacy.status(root)
+        physics = _status(root)
         # Never release a borrowed, replaced or incomplete physics lock.
         if (not sim_holders(root) and physics and physics.get('v91_group')
                 and released.get('physics_identity') == _identity(physics)):
@@ -159,7 +182,7 @@ def main(argv=None):
     args = p.parse_args(argv)
     try:
         if args.command == 'status':
-            result = (legacy.status(args.root, _slot_name(args.sim_slot)) if args.sim_slot
+            result = (_status(args.root, _slot_name(args.sim_slot)) if args.sim_slot
                       else sim_snapshot(args.root))
         elif args.command == 'acquire':
             result = acquire_sim_slot(args.root, slot=args.sim_slot, owner=args.owner,

@@ -106,7 +106,7 @@ for rid in ('r1','r2'):
                          'label':f'eval_only/{rid}/camera_labels.jsonl',
                          'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl'}
                 if path == collection/raw.MAP_ID/paths[record]:
-                    rows[1 if record == 'command' else 0]['t'] = value
+                    rows[1 if record == 'command' else 0]['sim_time' if record == 'frame' else 't'] = value
                 return rows
         try:
             inputs = BadTime()
