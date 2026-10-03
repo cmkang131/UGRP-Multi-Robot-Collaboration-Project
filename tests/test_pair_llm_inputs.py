@@ -48,7 +48,7 @@ def test_prompt_reuses_study_blocks_with_the_three_robot_text_rewritten_and_the_
     # the study text that carries the language rule is untouched; the pair does not use it
     assert '한국어' in pk.KO_LANGUAGE and '한국어' in pk.KO_MESSAGES_KO
     assert all('한국어' not in text for slot in prompts.PAIR_CHANNEL_SLOTS.values() for text in slot.values())
-    assert prompts.PROMPT_VERSION == 'ugrp.pair_llm_prompts_ko.v2'
+    assert prompts.PROMPT_VERSION == 'ugrp.pair_llm_prompts_ko.v3'
     assert prompts.study_spec('peer_nl') == 'peer_ko' and prompts.study_spec('no_comm') == 'no_comm'
     digest = prompts.prompt_template_sha256()
     assert re.fullmatch('[0-9a-f]{64}', digest) and digest == prompts.prompt_template_sha256()
@@ -230,7 +230,7 @@ def test_bundle_records_everything_a_result_depends_on():
         assert row['caps']['per_case_s'] == 300. and row['cost_model']['version'] == 'zone_sim_cost.v1'
         assert row['skill_layer']['bundle_id'] == 'zone-final-pair-v88'
         assert row['controller_inputs'] == ['own_rgb', 'static_map', 'order_sheet', 'own_command_history',
-                                            'delivered_messages']
+                                            'own_status', 'delivered_messages']
         assert 'harness/pair_llm_eval.py' in row['eval_source_sha256']
         assert row['model']['seed'] is None
         if condition == 'rule':
@@ -260,6 +260,6 @@ def test_the_bundle_records_the_arm_name_the_sealed_spec_name_and_that_language_
     row = contract.bundle('peer_nl')
     assert row['condition'] == 'peer_nl' and row['arm'] == 'C-llm-nl'
     assert row['prompt']['study_spec'] == 'peer_ko' and 'no language requirement' in row['prompt']['language']
-    assert row['execution_bundle_id'] == 'zone-pair-llm-v99' and row['workflow_version'] == '3.11.0'
+    assert row['execution_bundle_id'] == 'zone-pair-llm-v100' and row['workflow_version'] == '3.12.0'
     assert row['inter_robot_channels'] == ['dialogue', 'pair_status']
     assert 'peer_ko' not in contract.CONDITIONS and contract.CONDITIONS == ('rule', 'no_comm', 'peer_nl')

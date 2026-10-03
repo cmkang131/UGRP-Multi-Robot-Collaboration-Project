@@ -318,3 +318,84 @@ def test_the_live_modules_never_import_the_evaluator_or_a_simulator():
     import re
     source = (contract.ROOT / 'harness' / 'pair_llm_live.py').read_text()
     assert not re.search(r'pair_llm_eval|mujoco|import sim|from sim', source)
+
+
+# --------------------------------------------------------------------------- reply format: fences are counted, not failed
+
+def fenced(model, how):
+    """A model whose valid JSON reply is wrapped the way real models do (the wire sees the wrapped text)."""
+    def wrap(system, user):
+        text = model(system, user)
+        return {'fence': f'```json\n{text}\n```', 'bare_fence': f'```\n{text}\n```',
+                'prose': f'다음은 결정입니다.\n```json\n{text}\n```', 'oneline': f'```json {text}```',
+                'plain': text}[how]
+    return wrap
+
+
+def format_run(tmp_path, how):
+    record, _, out, _ = run_live(tmp_path, LiveShapedWire(fenced(cooperative_model(), how)), name=f'fmt-{how}')
+    return record, out
+
+
+def test_a_whole_reply_fence_is_stripped_once_and_counted_and_the_run_is_not_failed(tmp_path):
+    record, out = format_run(tmp_path, 'fence')
+    fmt = record['metrics']['reply_format']
+    assert fmt['schema'] == live.REPLY_FORMAT_VERSION and fmt['replies'] > 0
+    assert fmt['fence_removed_calls'] == fmt['fenced_calls'] == fmt['replies'] and fmt['plain_json_calls'] == 0
+    assert fmt['fence_not_removed_calls'] == 0 and fmt['fence_marker_lines_total'] == 2 * fmt['replies']
+    assert record['status'] == 'COLLECTED_UNQUALIFIED' and record['failure_class'] is None
+    by_status = record['metrics']['model_calls_by_status']                            # every fenced reply was accepted
+    assert set(by_status) <= {'ok', 'censored'} and sum(by_status.values()) == fmt['replies']
+    assert record['metrics']['model_usage']['api_clean'] is True
+
+
+def test_a_bare_triple_backtick_fence_is_also_one_removed_fence(tmp_path):
+    fmt = format_run(tmp_path, 'bare_fence')[0]['metrics']['reply_format']
+    assert fmt['fence_removed_calls'] == fmt['replies'] > 0 and fmt['fence_not_removed_calls'] == 0
+
+
+def test_a_plain_json_reply_counts_no_fence(tmp_path):
+    fmt = format_run(tmp_path, 'plain')[0]['metrics']['reply_format']
+    assert fmt['replies'] > 0 and fmt['plain_json_calls'] == fmt['replies']
+    assert fmt['fenced_calls'] == fmt['fence_removed_calls'] == fmt['fence_marker_lines_total'] == 0
+
+
+def first_r1_call_wrapped(model, how):
+    """Only robot r1's FIRST reply is wrapped the way ``how`` says; every other reply is plain JSON."""
+    seen = []
+
+    def wrap(system, user):
+        text = model(system, user)
+        if json.loads(user)['robot_id'] != 'r1' or seen:
+            return text
+        seen.append(1)
+        return fenced(lambda *_: text, how)(system, user)
+    return wrap
+
+
+@pytest.mark.parametrize('how', ['prose', 'oneline'])
+def test_a_fence_the_study_cannot_unwrap_is_counted_as_not_removed_and_does_not_fail_a_run_that_has_replies(
+        tmp_path, how):
+    """The sealed study strips ONE fence that wraps the whole reply on its own lines and nothing else: a fence
+    with prose around it (or on one line) is not unwrapped and that reply is rejected by the study as non-JSON
+    (``model_output_rejected``). The metric makes it visible; the parser is not loosened and a run that also has
+    normal replies is not failed."""
+    record, _, out, _ = run_live(tmp_path, LiveShapedWire(first_r1_call_wrapped(cooperative_model(), how)),
+                                 name=f'mixed-{how}', cap_s=30.)
+    fmt = record['metrics']['reply_format']
+    assert fmt['fenced_calls'] == fmt['fence_not_removed_calls'] == 1 and fmt['fence_removed_calls'] == 0
+    assert fmt['plain_json_calls'] == fmt['replies'] - 1 > 0
+    assert record['failure_class'] is None and record['status'] == 'COLLECTED_UNQUALIFIED'
+    rejected = [c for c in rows(out / 'llm' / 'model_calls.jsonl') if c['failure_class'] == 'model_output_rejected']
+    assert len(rejected) == 1 and rejected[0]['completion']['json_fence_removed'] is False
+    assert rejected[0]['completion']['rejection_reasons'] == ['study_reply_incomplete_or_non_json']
+    assert record['metrics']['model_calls_by_status']['ok'] > 0
+
+
+def test_when_every_reply_is_an_unwrappable_fence_the_studys_zero_normal_reply_rule_stops_the_run(tmp_path):
+    """Not a fence rule: the sealed study stops any run with no normal model reply at all (class infra:API). The
+    fence metric is still written, so the cause is visible in the record."""
+    record, out = format_run(tmp_path, 'prose')
+    fmt = record['metrics']['reply_format']
+    assert fmt['fence_not_removed_calls'] == fmt['replies'] > 0 and fmt['fence_removed_calls'] == 0
+    assert record['failure_class'] == 'infra:API' and record['failure']['message'] == 'no successful model response'

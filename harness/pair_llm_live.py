@@ -1,4 +1,4 @@
-"""Live model path of the pair LLM layer (v99): the study's own live driver behind the pair trial.
+"""Live model path of the pair LLM layer (v100): the study's own live driver behind the pair trial.
 
 Nothing here is a new transport. A real model call goes through exactly the chain the zone study uses:
 ``GeminiProxyCompleter`` -> ``MainStudySendLedger`` (durable budget row BEFORE the wire, raw request and response
@@ -27,6 +27,7 @@ A rate-limit or quota answer is therefore explicit and final for the run: failur
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import re
 from pathlib import Path
@@ -139,8 +140,50 @@ def live_adapter(profile, *, budget, run_key, store_dir, proxy_pid=None, wire=No
     return zi.ModelAdapter(llm.client_factory(profile), ledger), None
 
 
+#: A code fence marker line (three or more backticks at the start of a line, optional indent).
+FENCE_LINE = re.compile(r'(?m)^[ \t]*`{3,}')
+REPLY_FORMAT_VERSION = 'ugrp.pair_llm_reply_format.v1'
+
+
+def fence_marker_lines(text) -> int:
+    """How many fence marker lines a model reply holds (0 for plain JSON, 2 for one fenced block)."""
+    return len(FENCE_LINE.findall(text)) if isinstance(text, str) else 0
+
+
+def _reply_text(ledger, row):
+    """The assistant text of one stored response, or None (blocked / error / unreadable)."""
+    if not row.get('response_path') or getattr(ledger, 'store_dir', None) is None:
+        return None
+    try:
+        body = json.loads((Path(ledger.store_dir) / row['response_path']).read_bytes())
+        content = body['choices'][0]['message']['content']
+    except (OSError, ValueError, KeyError, IndexError, TypeError):
+        return None
+    return content if isinstance(content, str) else None
+
+
+def reply_format(rows) -> dict:
+    """Fence counts over the POSTs that got a reply. A metric only: it never fails or retries a call.
+
+    The study's strict parser (``three_robot_plan.unwrap_json_fence``) removes exactly ONE complete json /
+    unlabelled fence that is the whole reply and records that as ``completion.json_fence_removed``. Anything
+    else with fence markers (prose around the block, two blocks, one-line fences) is NOT unwrapped and the study
+    then rejects the reply as non-JSON; it is counted here as ``fence_not_removed_calls``.
+    """
+    sent = [r for r in rows if r['status'] == 'sent' and r.get('fence_marker_lines') is not None]
+    removed = [r for r in sent if (r.get('completion') or {}).get('json_fence_removed') is True]
+    marked = [r for r in sent if r['fence_marker_lines']]
+    return {'schema': REPLY_FORMAT_VERSION, 'replies': len(sent),
+            'fence_removed_calls': len(removed),
+            'fence_marker_lines_total': sum(r['fence_marker_lines'] for r in sent),
+            'fenced_calls': len(marked),
+            'fence_not_removed_calls': sum(1 for r in marked if r not in removed),
+            'plain_json_calls': len(sent) - len(marked),
+            'rule': 'strip exactly one whole-reply json fence; count fence marker lines; never fail on a fence'}
+
+
 def live_records(ledger) -> dict | None:
-    """Per-POST rows and the usage summary of a live ledger, or None for a stub ledger."""
+    """Per-POST rows, the usage summary and the reply-format counts of a live ledger (None for a stub ledger)."""
     if not isinstance(ledger, llm.MainStudySendLedger):
         return None
     rows = llm.call_rows(ledger)
@@ -150,7 +193,9 @@ def live_records(ledger) -> dict | None:
         for key in ('error_response', 'rate_limit', 'sent_at_ns'):
             if key in entry:
                 row[key] = entry[key]
-    return {'rows': rows, 'usage': llm.usage_summary(rows)}
+        text = _reply_text(ledger, row)
+        row['fence_marker_lines'] = None if text is None else fence_marker_lines(text)
+    return {'rows': rows, 'usage': llm.usage_summary(rows), 'reply_format': reply_format(rows)}
 
 
 def live_walls(trial) -> list:
@@ -227,5 +272,5 @@ def run_pair_live(out_root, *, condition, seed, cap_s, profile, budget, cohort_i
 
 
 __all__ = ['LIVE_VERSION', 'RATE_LIMIT', 'LIVE_MAX_CAP_S', 'RateLimited', 'PairLiveLedger', 'is_rate_limit',
-           'rate_limited_rows', 'check_health', 'live_adapter', 'live_records', 'live_walls', 'driver_record',
+           'REPLY_FORMAT_VERSION', 'fence_marker_lines', 'reply_format', 'rate_limited_rows', 'check_health', 'live_adapter', 'live_records', 'live_walls', 'driver_record',
            'run_pair_live']

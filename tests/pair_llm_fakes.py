@@ -110,11 +110,19 @@ def offline_only(monkeypatch):
     monkeypatch.setattr(VisionWorkerClient, '__init__', lambda *a, **kw: pytest.fail('real worker forbidden'))
 
 
+def quiet_status():
+    """The own status of a robot that has not claimed anything yet."""
+    from harness import pair_llm_status as status
+    return status.build(now=0., claim_issued_s=None, view={'permit_released_at_sim_s': None, 'last_event': None},
+                        job_kind=None, last_end=None, refusals_since_last_call=0)
+
+
 def map_bundle():
     return ms.map_bundle(contract.read_registry()['map_id'], landmark_detail='none')
 
 
-def make_inputs(condition='peer_nl', rid='r1', *, request_id='req_t1', inbox=None, history=(), t=0., frame_no=1):
+def make_inputs(condition='peer_nl', rid='r1', *, request_id='req_t1', inbox=None, history=(), t=0., frame_no=1,
+                own_status=None):
     """A validated ``PairInputs`` from the real scenario, map bundle and a fake own frame."""
     from harness.pair_llm_dispatch import map_figure
     bundle = map_bundle()
@@ -127,7 +135,7 @@ def make_inputs(condition='peer_nl', rid='r1', *, request_id='req_t1', inbox=Non
         robot_id=rid, condition=condition, request_id=request_id, sim_time_s=t,
         static_map=static_map_for_call(bundle), order_sheet=source.sheet(),
         own_rgb_refs=[pi.own_rgb_ref(rid, frame_no, t, obs['sha256'])], own_command_history=list(history),
-        self_belief=belief_skeleton(), inbox=inbox, pinned=source.pinned)
+        self_belief=belief_skeleton(), own_status=own_status or quiet_status(), inbox=inbox, pinned=source.pinned)
     png, _ = map_figure(bundle)
     return pi.PairInputs(payload, jpeg, png, source.pinned), source, bundle
 

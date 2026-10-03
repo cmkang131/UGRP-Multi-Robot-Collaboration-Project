@@ -304,7 +304,7 @@ def test_sim_cost_is_charged_and_wall_time_is_recorded_apart(peer_run):
     study = json.loads((out / 'llm' / 'study_config.json').read_text())
     assert study['cost_params']['version'] == 'zone_sim_cost.v1' and study['cost_params']['provisional'] is True
     assert study['model_settings']['model'] == 'stub-pair-llm-v1' and study['model_settings']['temperature'] == 0.
-    assert study['prompt_version'] == 'ugrp.pair_llm_prompts_ko.v2' and study['robots'] == ['r1', 'r2']
+    assert study['prompt_version'] == 'ugrp.pair_llm_prompts_ko.v3' and study['robots'] == ['r1', 'r2']
     # the thinking charge moves the SIM clock; wall latency never does (the stub's wall latency is ~0 but nonzero)
     scheduler = rows(out / 'llm' / 'scheduler_events.jsonl')
     starts = [e for e in scheduler if e.get('kind') == 'call_start']
@@ -365,7 +365,7 @@ def test_cli_plans_without_running_and_refuses_missing_calibration_and_unfrozen_
     assert cli.main(args) == 0
     plan = json.loads(capsys.readouterr().out)
     assert plan['execution_started'] is False and plan['model_kind'] == 'stub' and plan['research_result'] is False
-    assert plan['execution_bundle_id'] == 'zone-pair-llm-v99' and plan['workflow_version'] == '3.11.0'
+    assert plan['execution_bundle_id'] == 'zone-pair-llm-v100' and plan['workflow_version'] == '3.12.0'
     assert not Path('/Users/changmin/projects/ugrp/outputs/never-created').exists()
     assert cli.main(args + ['--live', '--cap-s', '60']) == 0       # a live PLAN touches no network and no proxy
     assert json.loads(capsys.readouterr().out)['model_kind'] == 'live'
@@ -380,8 +380,8 @@ def test_cli_plans_without_running_and_refuses_missing_calibration_and_unfrozen_
 def test_workflow_is_registered_in_the_managed_catalog():
     from sim import workflow_manager as wm
     row, _ = wm._row(contract.ROOT, contract.WORKFLOW_ID)
-    assert row['version'] == '3.11.0' and row['entry'] == 'scripts/run_pair_llm.py'
+    assert row['version'] == '3.12.0' and row['entry'] == 'scripts/run_pair_llm.py'
     plan = wm.plan(contract.ROOT, contract.WORKFLOW_ID, ['--condition', 'no_comm', '--expected-source-sha', 'a' * 40])
     assert not plan['execution_started'] and plan['command'][1:3] == ['-m', 'scripts.run_pair_llm']
-    assert contract.WORKFLOW == 'configs/simulation_workflows.d/pair_llm_v99.json'
+    assert contract.WORKFLOW == 'configs/simulation_workflows.d/pair_llm_v100.json'
     assert 'stub' in json.dumps(json.loads((contract.ROOT / contract.WORKFLOW).read_text()))

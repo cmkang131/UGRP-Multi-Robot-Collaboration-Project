@@ -22,8 +22,11 @@ import copy
 import hashlib
 import json
 import types
+from collections.abc import Mapping
 
+from harness import pair_llm_billing as billing
 from harness import pair_llm_inputs as pi
+from harness import pair_llm_status as status
 from harness import zone_map_schematic as ms
 from harness import zone_study_integration as zi
 from harness import zone_study_offline as zo
@@ -33,18 +36,60 @@ from harness.llm_completion import generated_utterances  # noqa: F401  (re-expor
 from harness.pair_llm_prompts_ko import PAIR_CONDITIONS, PAIR_ROBOTS, PAIR_ROLES, PROMPT_VERSION, study_spec
 from harness.zone_event_scheduler import CallPolicy, CallReply, EventScheduler  # noqa: F401
 from harness.zone_sim_cost import Attempt, call_cost, delivery_delay_s, params
-from harness.zone_study_contract import ContractViolation, digest
+from harness.zone_study_contract import ContractViolation, digest, validate_log_record
 from harness.zone_study_decisions import DECISION_POLICY, DecisionLimits, DecisionScheduler
-from harness.zone_study_inputs import (belief_skeleton, command_entry, provenance, static_map_for_call)
+from harness.zone_study_inputs import (action_log_record, belief_skeleton, command_entry, provenance,
+                                       static_map_for_call)
 
 DISPATCH_VERSION = 'ugrp.pair_llm_dispatch.v1'
-BUNDLE_ID = 'zone-pair-llm-v99'
+BUNDLE_ID = 'zone-pair-llm-v100'
 TAP_FRAMES = 64
 #: LLM-arm call policy of the viability test: the study defaults except the call cap (about 5 busy re-asks
 #: in a 300 SIM s case plus start and event wakes) and no post-send retry (the registered live driver
 #: refuses scheduler retries).
 PAIR_POLICY = CallPolicy(max_calls_per_actor=12, max_http_attempts_per_actor=12, max_attempts_total=24,
                          max_retries=0)
+
+
+#: The one action kind the pair adds to the sealed study vocabulary (``zp.ROBOT_ACTION_KINDS``): the robot's own
+#: executor already exposes ``look_around()`` (a guarded wide own-camera look sweep that re-estimates the pose).
+LOOK_AROUND = 'look_around'
+PAIR_ACTION_KINDS = tuple(zp.ROBOT_ACTION_KINDS) + (LOOK_AROUND,)
+
+
+def validate_reply(raw, **kwargs) -> dict:
+    """``zp.validate_reply`` plus ``{"kind": "look_around"}``, without editing the sealed study validator.
+
+    A look_around reply is checked by the sealed validator with a placeholder ``continue`` action (so the id,
+    sources, messages and every other rule apply unchanged) and the real action is put back afterwards.
+    Anything else goes to the sealed validator exactly as before.
+    """
+    try:
+        value = zp.parse(raw) if isinstance(raw, str) else copy.deepcopy(raw)
+    except Exception:                                        # noqa: BLE001 - the sealed validator reports it
+        return zp.validate_reply(raw, **kwargs)
+    action = value.get('action') if isinstance(value, dict) else None
+    if not (isinstance(action, dict) and action.get('kind') == LOOK_AROUND):
+        return zp.validate_reply(raw, **kwargs)
+    if set(action) != {'kind'}:
+        raise zp.ProtocolError(f'{LOOK_AROUND} takes no other field')
+    checked = zp.validate_reply({**value, 'action': {'kind': 'continue'}}, **kwargs)
+    checked['action'] = {'kind': LOOK_AROUND}
+    return checked
+
+
+def pair_executor_plan(action, job, *, actor, orders) -> zi.Plan:
+    """The study's action -> executor-call map, plus ``look_around`` -> the robot's own ``look_around()``."""
+    if isinstance(action, Mapping) and action.get('kind') == LOOK_AROUND:
+        return zi.Plan(LOOK_AROUND, ())
+    return zi.executor_plan(action, job, actor=actor, orders=orders)
+
+
+def pair_action_row(action):
+    """Model action -> (package A action kind, arguments, order_id, role); ``look_around`` is an ``observe``."""
+    if action['kind'] == LOOK_AROUND:
+        return ('observe', {}, None, None)
+    return zo._action_row(action)
 
 
 def map_figure(bundle) -> tuple[bytes, dict]:
@@ -110,6 +155,10 @@ class PairLink:
         return None if job is None else {'kind': job.kind, 'order_id': job.args.get('order_id'),
                                          'job_id': job.job_id}
 
+    def gate_view(self) -> dict:
+        """The robot's OWN claim bookkeeping (permit, latest start outcome, refusal total); nothing of the partner."""
+        return self._rt.gate.status_view(self.robot_id)
+
     # -- own job API -----------------------------------------------------------------------
     def _ack(self, api, arguments, accepted, reason=None, job_id=None):
         self._counter += 1
@@ -133,6 +182,10 @@ class PairLink:
                 return self._ack(api, arguments, False, f'BUSY:{job.kind}:{job.job_id}')
             self._rt.grant(self.robot_id, order_id, zone, partner, now=self._abs_now, call_ref=self.call_ref)
             return self._ack(api, arguments, True)
+        if api == LOOK_AROUND:
+            ack = ex.look_around()                      # refused (BUSY:...) while any own job runs
+            self.api_calls.append(copy.deepcopy(ack))
+            return ack
         if api in ('abort', 'hold'):
             job = ex.job
             ack = getattr(ex, api)(*args)
@@ -154,13 +207,11 @@ class PairTrial(zo.OfflineTrial):
     # Robot-count-free methods of the three-robot trial, shared by reference (same code, same clock rules).
     begin = zi.IntegratedTrial.begin
     step_to = zi.IntegratedTrial.step_to
-    on_executor_event = zi.IntegratedTrial.on_executor_event
     decision_budget_spent = zi.IntegratedTrial.decision_budget_spent
     quiescent = zi.IntegratedTrial.quiescent
     decision_end_reason = zi.IntegratedTrial.decision_end_reason
     end_state = zi.IntegratedTrial.end_state
     finish = zi.IntegratedTrial.finish
-    snapshot = zi.IntegratedTrial.snapshot
     _remember_command = zi.IntegratedTrial._remember_command
     _arm_reask = zi.IntegratedTrial._arm_reask
     wakeups = zi.IntegratedTrial.wakeups
@@ -235,9 +286,35 @@ class PairTrial(zo.OfflineTrial):
         self.request_images: dict[str, bytes] = {}
         self.input_log, self.dispatch_log, self.executor_events = [], [], []
         self.language_rows, self.claim_results = [], []
+        self._last_end = {a: None for a in PAIR_ROBOTS}      # latest own job end (class only, never the detail)
+        self._refusal_mark = {a: 0 for a in PAIR_ROBOTS}      # refusal total at this robot's previous call start
         self.clock_drift_s = 0.0
 
     # -- inputs -----------------------------------------------------------------------------
+    def snapshot(self, call):
+        """The caller's OWN inputs at the call start: the study's snapshot plus the closed own-status record."""
+        zi.IntegratedTrial.snapshot(self, call)
+        actor, t = call.actor, float(call.started_sim_s)
+        snap = self._snapshots[(actor, round(t, 6))]
+        link = self.links[actor]
+        view = link.gate_view()
+        since = view['refusal_total'] - self._refusal_mark[actor]
+        self._refusal_mark[actor] = view['refusal_total']
+        claim = next((e for e in reversed(snap['history']) if e['kind'] == 'claim_order'), None)
+        job = link.job()
+        snap['status'] = status.build(
+            now=t, claim_issued_s=None if claim is None else claim['issued_at_sim_s'], view=view,
+            job_kind=None if job is None else job['kind'], last_end=self._last_end[actor],
+            refusals_since_last_call=since)
+
+    def on_executor_event(self, event, *, at_s):
+        """The study's own-event handling, plus the class of the robot's latest finished job (own status)."""
+        zi.IntegratedTrial.on_executor_event(self, event, at_s=at_s)
+        if event['event'] in ('job_done', 'job_failed') and event.get('job_kind') in ('pair_carry', LOOK_AROUND):
+            reason = (event.get('detail') or {}).get('reason')
+            self._last_end[event['robot_id']] = {'job_kind': event['job_kind'], 'sim_s': float(at_s),
+                                                 'reason_class': status.end_class(reason)}
+
     def build_inputs(self, actor, *, sim_time_s, request_id):
         snap = self._snapshots.pop((actor, round(float(sim_time_s), 6)), None)
         if snap is None:
@@ -247,12 +324,12 @@ class PairTrial(zo.OfflineTrial):
             robot_id=actor, condition=self.arm, request_id=request_id, sim_time_s=sim_time_s,
             static_map=self.static_map, order_sheet=self.source.sheet(),
             own_rgb_refs=[pi.own_rgb_ref(actor, frame.index, frame.t, frame.sha256)],
-            own_command_history=snap['history'], self_belief=snap['belief'], inbox=snap['inbox'],
-            pinned=self.source.pinned)
+            own_command_history=snap['history'], self_belief=snap['belief'], own_status=snap['status'],
+            inbox=snap['inbox'], pinned=self.source.pinned)
         self.request_images[frame.sha256] = frame.jpeg
         self.input_log.append({'request_id': request_id, 'robot': actor, 'sim_s': sim_time_s,
                                'frame_index': frame.index, 'frame_t': frame.t, 'frame_sha256': frame.sha256,
-                               'history_entries': len(snap['history']),
+                               'history_entries': len(snap['history']), 'own_status': dict(snap['status']),
                                'inbox_ids': [m['message_id'] for m in snap['inbox'] or ()]})
         return pi.PairInputs(payload, frame.jpeg, self.map_png, self.source.pinned)
 
@@ -267,9 +344,9 @@ class PairTrial(zo.OfflineTrial):
     def finish_call(self, call, prepared, raw, *, provider_usage=None) -> CallReply:
         """Reply text -> validation -> relay -> costed attempts. ``zo.OfflineTrial.finish_call`` with the pair."""
         actor, bundled, request, request_id = call.actor, prepared.bundled, prepared.request, prepared.request_id
-        input_tokens = request['billed_tokens']['total_text_billed']
+        input_tokens = request['billed_tokens']['total_billed']       # text bill + fixed image charge (v2)
         try:
-            value = zp.validate_reply(raw, request_id=request_id, condition=self.condition, actor=actor,
+            value = validate_reply(raw, request_id=request_id, condition=self.condition, actor=actor,
                                       order_ids=bundled.order_ids(), item_ids=bundled.item_ids(),
                                       roles_by_order=bundled.roles_by_order(), vocabulary=bundled.vocabulary(),
                                       passages=bundled.passages(), location_refs=bundled.location_refs(),
@@ -322,9 +399,29 @@ class PairTrial(zo.OfflineTrial):
         row.update(condition=self.arm, study_spec=self.condition)
         return row
 
+    def _collect(self):
+        """Call rows as the study builds them, then the image part of the input bill moved to its own field.
+
+        ``Attempt.input_tokens`` carries the whole bill (text + images) so the SIM cost includes the images; the
+        study's call row would file all of it under ``input_tokens.text``. Rows whose bill is known from the
+        archived request are split ``{text, image, cached}`` (the contract's own field names).
+        """
+        zo.OfflineTrial._collect(self)
+        bills = {row['request_id']: row['billed_tokens'] for row in self.requests}
+        for row in self.calls:
+            bill = bills.get(row['request_id'])
+            tokens = row.get('input_tokens')
+            if bill and isinstance(tokens, dict) and tokens.get('text') == bill['total_billed']:
+                row['input_tokens'] = {'text': bill['total_text_billed'], 'image': bill['image_tokens_billed'],
+                                       'cached': tokens.get('cached', 0)}
+                validate_log_record(row)
+
     def cost_summary(self):
         row = zo.OfflineTrial.cost_summary(self)
-        row.update(wire_requests=None, wire_requests_basis='requires_provider_reconciliation')
+        image = sum(c['input_tokens'].get('image', 0) for c in self.calls)
+        row.update(wire_requests=None, wire_requests_basis='requires_provider_reconciliation',
+                   input_tokens_image=image, input_tokens_charged=row['input_tokens'] + image,
+                   image_billing=billing.record()['version'])
         return row
 
     def literals(self) -> tuple:
@@ -332,10 +429,36 @@ class PairTrial(zo.OfflineTrial):
         return tuple(i for i in dict.fromkeys(ids) if i != 'r3')
 
     # -- actions ----------------------------------------------------------------------------
+    def _release_action(self, actor, action, sim_s, call_id):
+        """``zi.IntegratedTrial._on_action`` with the pair's action plan (``look_around`` added); otherwise identical."""
+        extra = getattr(self, '_pending', {}).get(call_id)
+        if extra is None or self.scheduler.calls[-1].actor != actor:
+            raise AssertionError(f'released action of {actor} has no recorded call')
+        link = self.links[actor]
+        plan = pair_executor_plan(action, link.job(), actor=actor, orders=self.sheet['orders'])
+        kind, arguments, order_id, role = pair_action_row(action)
+        ack = link.call(plan.api, *plan.args) if plan.api else None
+        self.dispatch_log.append({'call_id': call_id, 'actor': actor, 'sim_s': sim_s, 'action': action,
+                                  'api': plan.api, 'args': list(plan.args), 'ack': ack,
+                                  'rejected_reason': plan.rejected_reason})
+        accepted = ack['accepted'] if ack else plan.rejected_reason is None
+        reason = ack['rejected_reason'] if ack else plan.rejected_reason
+        local = ack['local_state'] if ack else ('command_rejected' if reason else
+                                                'command_issued' if link.job() else 'queue_empty')
+        self.actions.append(action_log_record(
+            run_id=self.run_id, condition_name=self.condition, seed=self.seed, actor=actor,
+            action_id=extra['action_id'], request_id=extra['request_id'], submitted_at_sim_s=sim_s, kind=kind,
+            arguments=arguments, accepted=accepted, order_id=order_id, role=role, rejected_reason=reason,
+            local_state=local))
+        if ack or reason:
+            self._remember_command(actor, call_id, sim_s, plan, ack, kind, arguments, local)
+        if self.scheduler.call_causes[call_id]['cause'] == 'common':
+            self._arm_reask(actor, sim_s)
+
     def _on_action(self, actor, action, sim_s):
         call_id = self.scheduler.calls[-1].call_id
         self.links[actor].call_ref = call_id
-        zi.IntegratedTrial._on_action(self, actor, action, sim_s)
+        self._release_action(actor, action, sim_s, call_id)
         self.links[actor].call_ref = None
         row = self.dispatch_log[-1]
         if row['api'] == 'pair_carry' and row['ack'] and row['ack']['accepted']:
@@ -363,6 +486,8 @@ class PairTrial(zo.OfflineTrial):
                 'prompt_version': PROMPT_VERSION, 'prompt_template_sha256': self.prompt_template_sha256,
                 'cost_params': {'version': self.params.version, 'digest': self.params.digest(),
                                 'provisional': self.params.provisional},
+                'input_billing': billing.record(), 'own_status': status.record(),
+                'action_kinds': list(PAIR_ACTION_KINDS),
                 'call_policy': policy, 'quantum_s': zi.QUANTUM_S, 'think_hold_policy': zi.THINK_HOLD_POLICY,
                 'action_map': {'version': zi.ACTION_MAP_VERSION, 'wait_hold_s': zi.WAIT_HOLD_S},
                 'decision_policy': DECISION_POLICY, 'decision_limits': {

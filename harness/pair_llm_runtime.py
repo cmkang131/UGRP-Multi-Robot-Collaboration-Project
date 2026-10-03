@@ -26,7 +26,7 @@ from __future__ import annotations
 from harness.zone_final_pair_contract import ROBOTS
 from harness.zone_final_pair_runtime import Runtime
 
-GATE_VERSION = 'ugrp.pair_llm_claim_gate.v1'
+GATE_VERSION = 'ugrp.pair_llm_claim_gate.v2'     # v2: + refusal_total / last_event (own status source)
 NOT_RELEASED = 'CLAIM_NOT_RELEASED'
 #: Refusals of ``Team.start`` that waiting can resolve; the permit stays and the next idle tick retries
 #: (the scripted Runtime retries every tick as well). Everything else consumes the permit.
@@ -49,6 +49,8 @@ class ClaimGate:
         self.refused_without_permit = {rid: 0 for rid in self.robots}
         self.retries = {rid: 0 for rid in self.robots}
         self.refusals = {rid: {} for rid in self.robots}      # reason -> count, every refused submission
+        self.refusal_total = {rid: 0 for rid in self.robots}  # every refused submission, all reasons
+        self.last_event = {rid: None for rid in self.robots}  # the latest submission outcome of the robot
         self.listeners: list = []
         self._raw = None
 
@@ -80,6 +82,14 @@ class ClaimGate:
     def pending(self, rid) -> bool:
         return rid in self.permits
 
+    def status_view(self, rid) -> dict:
+        """This robot's own bookkeeping for ``pair_llm_status.build``: nothing about the partner, no raw detail."""
+        permit = self.permits.get(rid)
+        event = self.last_event.get(rid)
+        return {'permit_released_at_sim_s': None if permit is None else permit['released_at_sim_s'],
+                'last_event': None if event is None else dict(event),
+                'refusal_total': self.refusal_total.get(rid, 0)}
+
     # -- the runtime side ----------------------------------------------------------
     def start(self, rid, item_ref=None, target_zone=None, partner_id=None, *, now):
         """Drop-in for ``Team.start``: refuse without a permit, else submit the claim's own arguments."""
@@ -91,9 +101,14 @@ class ClaimGate:
             return {'robot_id': rid, 'api': 'pair_carry', 'accepted': False, 'rejected_reason': NOT_RELEASED,
                     'job_id': None, 'local_state': 'command_rejected'}
         ack = self._raw(rid, permit['order_id'], permit['zone'], permit['partner'], now=now)
-        if not ack['accepted']:
+        if ack['accepted']:
+            self.last_event[rid] = {'kind': 'accepted', 'reason': None, 'sim_s': float(now), 'retryable': False}
+        else:
             reason = str(ack.get('rejected_reason'))
             self.refusals[rid][reason] = self.refusals[rid].get(reason, 0) + 1
+            self.refusal_total[rid] += 1
+            self.last_event[rid] = {'kind': 'refused', 'reason': reason, 'sim_s': float(now),
+                                    'retryable': retryable(reason)}
         if not ack['accepted'] and retryable(ack.get('rejected_reason')):
             self.retries[rid] += 1
             return ack
@@ -113,6 +128,7 @@ class ClaimGate:
         return {'version': GATE_VERSION, 'log': [dict(r) for r in self.log],
                 'refused_without_permit': dict(self.refused_without_permit),
                 'refusals': {rid: dict(rows) for rid, rows in self.refusals.items()},
+                'refusal_total': dict(self.refusal_total),
                 'pending': {rid: dict(p) for rid, p in self.permits.items()}}
 
 

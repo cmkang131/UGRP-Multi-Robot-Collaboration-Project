@@ -6,7 +6,7 @@ robots: ``channel_section`` lists r3, ``allowed_edges`` is a 3-mesh, ``_build_sh
 two-robot payload therefore cannot pass ``validate_robot_payload`` and the study code is
 frozen and hashed into earlier bundles. This module is the thin pair layer instead:
 
-* its own payload schema (``ugrp.pair_llm_call_input.v1``), pair channel section
+* its own payload schema (``ugrp.pair_llm_call_input.v2``), pair channel section
   (``can_send_to`` is the partner only) and ``team_size = 2`` order sheet;
 * its validator REUSES the study's closed-schema checks (forbidden keys, non-ASCII keys,
   evaluation-only values, static-map / order-sheet / history / inbox / rgb-ref shapes, pinned
@@ -16,7 +16,9 @@ frozen and hashed into earlier bundles. This module is the thin pair layer inste
   ``verify_archived_request`` and the send ledger work unchanged.
 
 Input boundary (AGENTS.md): own robot_cam RGB (one JPEG), the static map (projection + schematic
-figure), the order sheet, own command history, own belief, and delivered messages. Nothing from
+figure), the order sheet, own command history, own belief, own status (the robot's own start
+acknowledgement and job-end class as a closed record, ``harness.pair_llm_status``; v100), and delivered
+messages. Nothing from
 the simulator, no measured joint, no contact/success flag, no shared top camera, no partner
 status (the fixed-enum pair status stays between the two controllers and is not a model input).
 """
@@ -29,6 +31,8 @@ import json
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 
+from harness import pair_llm_billing as billing
+from harness import pair_llm_status as status
 from harness import zone_study_contract as zc
 from harness import zone_study_prompts_ko as pk
 from harness import zone_study_protocol as zp
@@ -37,12 +41,12 @@ from harness.pair_llm_prompts_ko import (PAIR_CONDITIONS, PAIR_ROBOTS, PAIR_ROLE
 from harness.zone_map_schematic import digest
 from harness.zone_study_inputs import INPUT_PROFILE, OrderSheetSource, vocabulary
 
-PAYLOAD_SCHEMA = 'ugrp.pair_llm_call_input.v1'
-REQUEST_SCHEMA = 'ugrp.pair_llm_request.v1'
+PAYLOAD_SCHEMA = 'ugrp.pair_llm_call_input.v2'      # v2: + own_status (closed own skill/claim status)
+REQUEST_SCHEMA = 'ugrp.pair_llm_request.v2'         # v2: billed_tokens carries the image bill
 BASE_KEYS = ('schema', 'request_id', 'robot_id', 'condition', 'sim_time_s', 'static_map', 'order_sheet',
-             'own_rgb_refs', 'own_command_history', 'self_belief', 'channel')
+             'own_rgb_refs', 'own_command_history', 'self_belief', 'own_status', 'channel')
 REQUIRED_KEYS = ('schema', 'request_id', 'robot_id', 'condition', 'sim_time_s', 'static_map', 'order_sheet',
-                 'own_rgb_refs', 'own_command_history', 'channel')
+                 'own_rgb_refs', 'own_command_history', 'own_status', 'channel')
 IMAGE_OWN, IMAGE_MAP = pk.IMAGE_OWN, pk.IMAGE_MAP
 JPEG, PNG = 'image/jpeg', 'image/png'
 
@@ -126,8 +130,8 @@ def _trim(values: Sequence | None, limit: int) -> list:
 
 def build_payload(*, robot_id: str, condition: str, request_id: str, sim_time_s: float, static_map: Mapping,
                   order_sheet: Mapping, own_rgb_refs: Sequence[Mapping], own_command_history: Sequence[Mapping],
-                  self_belief: Mapping, inbox: Sequence[Mapping] | None = None, pinned: Mapping | None = None,
-                  profile: Mapping = INPUT_PROFILE) -> dict:
+                  self_belief: Mapping, own_status: Mapping, inbox: Sequence[Mapping] | None = None,
+                  pinned: Mapping | None = None, profile: Mapping = INPUT_PROFILE) -> dict:
     """One per-call payload of a pair robot, validated before it is returned."""
     _check_condition(condition)
     if robot_id not in PAIR_ROBOTS:
@@ -137,7 +141,7 @@ def build_payload(*, robot_id: str, condition: str, request_id: str, sim_time_s:
                'order_sheet': copy.deepcopy(dict(order_sheet)),
                'own_rgb_refs': _trim(own_rgb_refs, int(profile['own_rgb_frames'])),
                'own_command_history': _trim(own_command_history, int(profile['command_history_entries'])),
-               'self_belief': copy.deepcopy(dict(self_belief)),
+               'self_belief': copy.deepcopy(dict(self_belief)), 'own_status': copy.deepcopy(dict(own_status)),
                'channel': pair_channel_section(condition, robot_id)}
     if zp.spec(study_spec(condition)).channel_open:
         payload['inbox'] = _trim(inbox, int(profile['inbox_messages']))
@@ -191,6 +195,8 @@ def payload_violations(payload: object, *, pinned: Mapping | None = None) -> lis
     if 'self_belief' in payload:
         out.extend(zc._closed(payload['self_belief'], zc.BELIEF_KEYS, 'self_belief'))
         out.extend(zc._typed(payload['self_belief'], 'self_belief', types=zc.BELIEF_TYPES))
+    if 'own_status' in payload:
+        out.extend(status.status_violations(payload['own_status']))
     out.extend(_pair_inbox_hits(payload, now))
     channel = payload.get('channel')
     out.extend(zc._closed(channel, zc.CHANNEL_KEYS, 'channel', required=zc.CHANNEL_KEYS))
@@ -354,10 +360,8 @@ def request_images(inputs: PairInputs) -> list:
 
 
 def billed_tokens(tokens: Mapping) -> dict:
-    reference = fixed_prompt_reference_tokens()
-    return {'policy': pk.FIXED_PROMPT_POLICY, 'tokenizer': tokens['tokenizer'],
-            'system_actual': tokens['system'], 'system_billed': reference, 'user': tokens['user'],
-            'images': tokens['images'], 'total_text_billed': reference + tokens['user']}
+    """The SIM bill of one request: the study's text bill (unchanged) plus a fixed charge per attached image."""
+    return billing.billed_tokens(tokens, system_billed=fixed_prompt_reference_tokens())
 
 
 def build_request(inputs: PairInputs, *, window=None) -> dict:

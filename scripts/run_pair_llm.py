@@ -1,4 +1,4 @@
-"""Managed DRAFT v99: one arm of the pair LLM viability test (Refs #219).
+"""Managed DRAFT v100: one arm of the pair LLM viability test (Refs #219).
 
 ``--condition rule | no_comm | peer_nl`` is C-rule / C-llm-nocomm / C-llm-nl. Without ``--execute`` this only
 prints a plan. The default model path is the STUB (plumbing only). ``--live`` sends real requests through the
