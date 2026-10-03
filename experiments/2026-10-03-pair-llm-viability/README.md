@@ -262,6 +262,11 @@ peer_ko `306ca258f6fa…`. 번들 해시: rule `9de77e7fb751…`, no_comm `b7cbb
    `continue`만 골랐다. v100은 자기 시작 거절의 닫힌 기록을 모델에 알린다. 알린 뒤 모델이 달라지는지는 실제 실행으로 아직 보지 못했다.
 8. 공용 파일 충돌 가능: `scripts/run_ci_tests.py`(패턴 1줄), `tests/test_simulation_workflow_manager.py`
    (카탈로그 개수 +1, 샘플 1줄). 번들 번호는 v100 / 3.12.0(위 4번). 병합 순서에 따라 다시 정해질 수 있다.
+9. **조건 이름표가 모델에 보인다**: 모델은 요청 본문의 `condition`(`no_comm` / `peer_nl`, 최상위와 `channel.condition` 두 곳)을 본다. 봉인된 스터디 계약이
+   `condition`을 필수 키로 두므로 그 설계를 따른 것이다. 이름표가 더하는 **상태 정보는 없다**(같은 정보가 이미 `channel.can_send_to`와 시스템 프롬프트의
+   `channel`·`messages` 블록에 있고, 정답·접촉·성공·상대 상태와 무관하다). 다만 `peer_nl`이라는 이름이 "대화를 많이 하라"는 신호로 읽히는 **작은 단서
+   효과(실험자 기대 효과)** 가 있을 수 있고, 이는 처치(말할 수 있음)와 떼어 낼 수 없다. 가능성 시험(`research_result=false`)에서는 무시하고, 본 연구를 사전
+   등록할 때 중립 이름표(예: `channel_a` / `channel_b`)를 쓸지 정한다(독립 재검토 2차의 권고).
 
 ## 재현
 
