@@ -15,7 +15,7 @@
 
 v88 경로는 심볼릭 링크 묶음(`…-assembly-links`)이 아니라 실제 폴더를 넣었다. v92 조립기는 세 경로를 따로 받고 별칭을 스스로 해석한다. 실행 명령은 [assembly_command.sh](assembly_command.sh)에 있다.
 
-**#358 주의 사항은 이번 실행에 해당하지 않았다.** v92 경로의 `fit_cameras`·`pair_rows`는 처음부터 프레임 시계로 `sim_time`을 읽는다. v88 파일에서 가져오는 함수는 `fit_pair` 하나뿐이고, #358은 이 함수를 바꾸지 않았다. 그래서 main을 병합하지 않고 257953ec 그대로 실행했다.
+**#358 주의 사항은 이번 실행에 해당하지 않았다.** v92 경로의 `fit_cameras`·`pair_rows`는 처음부터 프레임 시계로 `sim_time`을 읽는다. v88 파일에서 가져오는 함수는 `fit_pair` 하나뿐이고, #358은 이 함수를 바꾸지 않았다. 그래서 main을 병합하지 않고 257953ec 그대로 실행했다. 실행 뒤 #361이 main(`00eafd63`)에 병합됐다. 확인해 보니 고정 파일 7개는 main에서도 같은 바이트였다. #358 때문에 달라진 v88 `final_pair_calibration_io.py`·`final_pair_calibration_camera.py`에서도, v92 경로가 가져오는 `loaded_mask`, `selected_segments`, `file_sha`, `Inputs`, `fit_pair`의 소스는 두 커밋에서 같다. 바뀐 곳은 v92가 쓰지 않는 기존 `load_collection`과 새 보조 함수뿐이다.
 
 사전 검사: 관련 테스트 `tests/test_final_pair_calibration_v92.py`와 `tests/test_final_pair_calibration_assembly.py`가 257953ec에서 **407 passed in 1416.52s**였다 ([pretests_stdout.txt](pretests_stdout.txt)). 다른 작업 때문에 호스트 부하가 높았다(부하 평균 15~31).
 
