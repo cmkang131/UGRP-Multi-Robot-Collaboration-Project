@@ -41,6 +41,7 @@ TEST_PATTERNS = (
     "tests/test_final_pair_fast_guard.py",
     "tests/test_final_pair_fast_replay.py",
     "tests/test_zone_final_pair_fast.py",
+    "tests/test_zone_final_pair_loaded.py",
     "tests/test_ci_host_lock.py",
     "tests/test_simulation_console.py",
     "tests/test_simulation_dispatch.py",

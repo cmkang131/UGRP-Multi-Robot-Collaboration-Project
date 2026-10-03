@@ -100,7 +100,7 @@ def geometry(model, data, rid):
             'colour_depth_min_m': float(depths[colour].min()) if colour.any() else None}
 
 
-def commands():
+def commands(mode='posture'):
     hover, descent = grasp_postures()
     high = solve_grip_ik(.2032, 0., .15, -40.)
     visits = [(0., 'floor_grasp', {**descent[-1], 1: 2000}),
@@ -110,6 +110,12 @@ def commands():
               (24., 'high_view', high), (34., 'pan_minus', {6: 1480}),
               (42., 'center', {6: 1500}), (50., 'pan_plus', {6: 1520}),
               (58., 'center_return', {6: 1500})]
+    if mode == 'motion':
+        from harness.zone_final_pair_loaded_schedule import action_vector
+        visits = visits[:3] + [(38., 'hover_pan_minus', {6: 1480}),
+                              (46., 'hover_center', {6: 1500}),
+                              (54., 'hover_pan_plus', {6: 1520}),
+                              (62., 'hover_center_return', {6: 1500})]
     events = []
     for t, phase, pose in visits:
         for rid in c.ROBOTS:
@@ -117,7 +123,14 @@ def commands():
                 action = ({'kind': 'look', 'pan_pulse': pulse} if sid == 6 else
                           {'kind': 'arm', 'servo_id': sid, 'pulse': pulse})
                 events.append({'t': t, 'phase': phase, 'robot_id': rid, 'action': action})
-    return events
+    if mode == 'motion':
+        for start, duration, value in ((16., 10., .04), (26., 1., 0.), (27., 10., -.04), (37., 1., 0.)):
+            for i in range(round(duration/.05)):
+                for rid in c.ROBOTS:
+                    u = action_vector({'mode': 'common_orbit', 'value': value}, rid)
+                    events.append({'t': round(start+i*.05, 8), 'phase': 'common_orbit_check',
+                                   'robot_id': rid, 'action': {'kind': 'mecanum', **u, 'duration_s': .05}})
+    return sorted(events, key=lambda e: e['t'])
 
 
 def main():
@@ -125,6 +138,7 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--source-sha', required=True)
     p.add_argument('--sim-slot', required=True)
+    p.add_argument('--mode', choices=('posture', 'motion'), default='posture')
     args = p.parse_args()
     check_source(args.source_sha)
     from scripts.agent_lock import DEFAULT_ROOT
@@ -132,26 +146,29 @@ def main():
     branch = subprocess.check_output(['git', 'branch', '--show-current'], text=True).strip()
     require_sim_slot(DEFAULT_ROOT, slot=args.sim_slot, owner='codex', branch=branch)
     args.output.mkdir(parents=True, exist_ok=False)
-    events = commands()
+    events = commands(args.mode)
+    cap = 66. if args.mode == 'posture' else 70.
+    snapshots = (14., 32., 40., 48., 56., 64.) if args.mode == 'posture' else (14., 24., 36., 44., 52., 60., 68.)
     write(args.output/'commands.json', events)
     bundle = c.bundle('zone_wide_two_doors_final_v3', 'calibration-loaded')
     result = {'source_sha': args.source_sha, 'loadavg_start': list(os.getloadavg()),
-              'method': '66 SIM s headless posture check; no RGB/calibration acceptance',
+              'method': f'{cap} SIM s headless {args.mode} check; no RGB/calibration acceptance',
               'geometry': [], 'status': 'HOST_ERROR'}
     b = None
     try:
         b = Headless(bundle, args.output, seed=911)
         b.reset(5.)
         start = b.now
-        b.set_deadline(start+66.)
+        b.set_deadline(start+cap)
         j = 0
-        for i in range(1321):
+        steps = round(cap/.05)
+        for i in range(steps+1):
             t = round(i*.05, 8)
             b.eval_sample()
-            if t in (14., 32., 40., 48., 56., 64.):
+            if t in snapshots:
                 result['geometry'].append({'relative_s': t, 'robots': {
                     rid: geometry(b.world.model, b.world.data, rid) for rid in c.ROBOTS}})
-            if i == 1320:
+            if i == steps:
                 break
             while j < len(events) and events[j]['t'] <= t+1e-8:
                 e = events[j]

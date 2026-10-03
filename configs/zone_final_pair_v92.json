@@ -1,0 +1,32 @@
+{
+  "schema": "ugrp.final_pair_loaded.v92",
+  "execution_bundle_id": "zone-final-pair-v92",
+  "status": "DRAFT_UNSEALED",
+  "workflow_id": "zone-final-pair-loaded-v92",
+  "workflow_version": "3.4.0",
+  "check": "calibration-loaded",
+  "maps": [
+    "zone_wide_two_doors_final_v3"
+  ],
+  "seed": 911,
+  "collection_role": "CALIBRATION_TRAINING",
+  "training_eligible": true,
+  "teacher_only": true,
+  "robot_model": "masterpi_v3",
+  "render_profile": "floor_light_v1",
+  "contact_profile": "cargo_noslip_v1",
+  "weld": "off",
+  "sensors": {
+    "ultrasonic_front": "off"
+  },
+  "sim_cap_s": 720.0,
+  "reset_cap_s": 5.0,
+  "schedule": {
+    "path": "configs/zone_final_pair_v92_schedule.json.gz",
+    "encoding": "gzip of UTF-8 JSON, indent=2, trailing LF",
+    "sha256": "a4754dec4f55b7b43fcfc15fa59371b544101c609ed7d079e1343d1bcfe14e3d",
+    "bytes": 5055083,
+    "archive_sha256": "8acf31c0b544e3d4488579167543a502fc8608bd3b8e19dde5b0a11a14b7f507",
+    "archive_bytes": 62445
+  }
+}
