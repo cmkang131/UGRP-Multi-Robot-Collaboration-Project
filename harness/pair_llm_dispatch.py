@@ -52,9 +52,20 @@ PAIR_POLICY = CallPolicy(max_calls_per_actor=12, max_http_attempts_per_actor=12,
 
 
 #: The one action kind the pair adds to the sealed study vocabulary (``zp.ROBOT_ACTION_KINDS``): the robot's own
-#: executor already exposes ``look_around()`` (a guarded wide own-camera look sweep that re-estimates the pose).
+#: executor already exposes ``look_around()`` (a guarded wide own-camera look sweep; whether it recovers the pose is NOT
+#: verified, see the experiment README).
 LOOK_AROUND = 'look_around'
 PAIR_ACTION_KINDS = tuple(zp.ROBOT_ACTION_KINDS) + (LOOK_AROUND,)
+#: The two SIM clocks of one run's records. The harness (calls, decisions, caps, ``sim_s``) counts SIM seconds
+#: since the case reset; the backend and the robot executors count absolute SIM seconds, so the same instant reads
+#: ``reset_sim_s`` higher there (1.3 SIM s in the v99 smoke1, ``result.json`` ``reset_sim_s``).
+CLOCKS = {
+    'sim_s': 'harness clock: SIM seconds since the case reset (alias of sim_s_since_reset in dispatch rows)',
+    'sim_s_since_reset': 'harness clock: calls, decisions, scheduler, caps, own_status.since_claim_s',
+    'sim_s_absolute': 'backend / executor clock = sim_s_since_reset + reset_sim_s (ack.sim_s, executor event sim_s)',
+    'delivered_at_sim_s_since_reset': 'executor events only: harness clock when the harness received the event '
+                                      '(one observation tick after the event happened; own_status uses this time)',
+    'reset_offset_s': 'sim_s_absolute - sim_s_since_reset of one dispatch row (equals result.json reset_sim_s)'}
 
 
 def validate_reply(raw, **kwargs) -> dict:
@@ -310,6 +321,7 @@ class PairTrial(zo.OfflineTrial):
     def on_executor_event(self, event, *, at_s):
         """The study's own-event handling, plus the class of the robot's latest finished job (own status)."""
         zi.IntegratedTrial.on_executor_event(self, event, at_s=at_s)
+        self.executor_events[-1].update(delivered_at_sim_s_since_reset=float(at_s), sim_s_absolute=event.get('sim_s'))
         if event['event'] in ('job_done', 'job_failed') and event.get('job_kind') in ('pair_carry', LOOK_AROUND):
             reason = (event.get('detail') or {}).get('reason')
             self._last_end[event['robot_id']] = {'job_kind': event['job_kind'], 'sim_s': float(at_s),
@@ -438,9 +450,12 @@ class PairTrial(zo.OfflineTrial):
         plan = pair_executor_plan(action, link.job(), actor=actor, orders=self.sheet['orders'])
         kind, arguments, order_id, role = pair_action_row(action)
         ack = link.call(plan.api, *plan.args) if plan.api else None
+        absolute = None if ack is None else ack['sim_s']
         self.dispatch_log.append({'call_id': call_id, 'actor': actor, 'sim_s': sim_s, 'action': action,
                                   'api': plan.api, 'args': list(plan.args), 'ack': ack,
-                                  'rejected_reason': plan.rejected_reason})
+                                  'rejected_reason': plan.rejected_reason,
+                                  'sim_s_since_reset': sim_s, 'sim_s_absolute': absolute,
+                                  'reset_offset_s': None if absolute is None else round(absolute - sim_s, 6)})
         accepted = ack['accepted'] if ack else plan.rejected_reason is None
         reason = ack['rejected_reason'] if ack else plan.rejected_reason
         local = ack['local_state'] if ack else ('command_rejected' if reason else
@@ -487,7 +502,7 @@ class PairTrial(zo.OfflineTrial):
                 'cost_params': {'version': self.params.version, 'digest': self.params.digest(),
                                 'provisional': self.params.provisional},
                 'input_billing': billing.record(), 'own_status': status.record(),
-                'action_kinds': list(PAIR_ACTION_KINDS),
+                'action_kinds': list(PAIR_ACTION_KINDS), 'clocks': dict(CLOCKS),
                 'call_policy': policy, 'quantum_s': zi.QUANTUM_S, 'think_hold_policy': zi.THINK_HOLD_POLICY,
                 'action_map': {'version': zi.ACTION_MAP_VERSION, 'wait_hold_s': zi.WAIT_HOLD_S},
                 'decision_policy': DECISION_POLICY, 'decision_limits': {

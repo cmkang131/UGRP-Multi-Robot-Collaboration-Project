@@ -1,8 +1,8 @@
 """Own status (refusal feedback), the look_around option and the image bill of the pair LLM layer (v100).
 
 The status is the robot's OWN software state told to its model; these tests pin what it may contain (a closed
-record, no raw reason, nothing partner-derived, no ground truth) and that the refusal reaches the model in the real
-loop. No physics, network or real model: replies come from stubs behind the real proxy completer.
+record, no raw reason, no name of a partner-caused reason, no ground truth) and that the refusal reaches the model
+in the real loop, identically in both LLM arms. No physics, network or real model: replies come from stubs behind the real proxy completer.
 """
 import json
 import random
@@ -68,14 +68,28 @@ def test_a_pending_permit_without_a_refusal_yet_is_claim_released():
 @pytest.mark.parametrize('reason, token', [
     ('WRONG_PAIR_DESTINATION', 'WRONG_PAIR_DESTINATION'), ('UNKNOWN_ORDER', 'UNKNOWN_ORDER'),
     ('SELF_STOPPED', 'SELF_STOPPED'),
-    # partner-derived refusals must not reach the model: no_comm would learn the partner's submission
+    # the NAME of a partner-caused refusal is folded (the refused-claim event itself stays visible, in both arms)
     ('PAIR_SUBMISSION_MISMATCH', 'other'), ('PAIR_STATIC_INPUT_MISMATCH', 'other'),
-    ('PAIR_RENDEZVOUS_TIMEOUT', 'other'), ('PAIR_REQUIRES_NOSLIP_WELD_OFF', 'other'),
-    ('PAIR_CALIBRATION_MISMATCH', 'other')])
-def test_a_non_retryable_refusal_is_claim_rejected_and_partner_derived_reasons_become_other(reason, token):
+    ('PAIR_REQUIRES_NOSLIP_WELD_OFF', 'other'), ('PAIR_CALIBRATION_MISMATCH', 'other'),
+    ('INVALID_PAIR_PLAN', 'other')])
+def test_a_non_retryable_refusal_is_claim_rejected_and_partner_caused_names_become_other(reason, token):
     row = build(view=gate_view(event=refused(reason, 9., retryable=False), total=1))
     assert row['last_outcome'] == 'claim_rejected' and row['reason'] == token
     assert st.status_violations(row) == []
+
+
+@pytest.mark.parametrize('reason', ['PAIR_RENDEZVOUS_TIMEOUT', 'PAIR_SUBMISSION_MISMATCH',
+                                    'PAIR_STATIC_INPUT_MISMATCH', 'PARTNER_ABORT', 'PARTNER_SILENT',
+                                    'PARTNER_MISSED_GO', 'PAIR_JOB_LOST', 'M2_FAILED'])
+def test_a_partner_caused_job_end_is_a_job_end_reason_that_becomes_queue_empty(reason):
+    """``PAIR_RENDEZVOUS_TIMEOUT`` is not a start refusal: ``PairTeam.start`` hands it to ``first.abort`` only, so it
+    reaches the waiting robot as the reason of its own job end. Any end that is not a local timeout is
+    ``queue_empty`` (the study's own classification, ``on_executor_event``)."""
+    assert st.end_class(reason) == 'queue_empty'
+    row = build(last_end={'job_kind': 'pair_carry', 'sim_s': 30., 'reason_class': st.end_class(reason)})
+    assert row['last_outcome'] == 'pair_job_ended' and row['reason'] == 'queue_empty'
+    assert reason not in json.dumps(row) and st.status_violations(row) == []
+    assert st.end_class('LOCAL_TIMEOUT') == 'local_timeout'
 
 
 def test_running_jobs_and_ended_jobs_are_reported_by_class_only():
@@ -384,3 +398,181 @@ def test_the_bundle_records_the_bill_the_status_and_the_actions():
     for needed in ('harness/pair_llm_billing.py', 'harness/pair_llm_status.py', 'harness/pair_llm_live.py'):
         assert needed in row['source_sha256']
     assert contract.bundle('rule')['cost_model']['input_billing'] is None
+
+
+# --------------------------------------------------------------------------- partner events: identical in both LLM arms
+
+def partner_run(tmp_path, arm, *, r2):
+    """r1 claims the real order; r2 claims ``r2`` (a mismatching submission) or does not claim at all."""
+    from tests.pair_llm_fakes import ReadyRuntime
+    table = {('r1', 0): (claim_action('r1', ORDER), [])}
+    if r2 is not None:
+        table[('r2', 0)] = (claim_action('r2', r2), [])
+    model = StubModel(scripted(table, default=lambda rid, i, body, sys_text: ({'kind': 'continue'}, [])))
+    return run_arm(tmp_path, arm, model, cap_s=40., runtime_factory=ReadyRuntime, name=f'{arm}-{bool(r2)}')
+
+
+def status_trace(out):
+    return [(r['robot'], r['sim_s'], r['own_status']) for r in rows(out / 'llm' / 'inputs.jsonl')]
+
+
+def test_a_partner_submission_mismatch_gives_identical_own_status_in_both_llm_arms(tmp_path):
+    """M1 of the #371 review (accepted design): a partner-caused refusal reveals ONE bit through the robot's own
+    command outcome (my claim was not accepted / the pair job ended), identically in no_comm and peer_nl; the NAME of
+    the reason is folded to ``other``."""
+    wrong = {'order_id': ORDER['order_id'], 'destination_zone': 'A'}              # a different submission than r1's
+    traces, outs = {}, {}
+    for arm in ('no_comm', 'peer_nl'):
+        _, out, _ = partner_run(tmp_path, arm, r2=wrong)
+        traces[arm], outs[arm] = status_trace(out), out
+        gate = json.loads((out / 'llm' / 'claim_gate.json').read_text())['log']
+        submitted = {r['robot_id']: r for r in gate if r['event'] == 'claim_submitted'}
+        assert submitted['r1']['accepted'] is True and submitted['r2']['accepted'] is False
+        assert submitted['r2']['reason'] == 'PAIR_SUBMISSION_MISMATCH'          # the gate (own log) keeps the real name
+    assert traces['no_comm'] == traces['peer_nl']                                # identical, call by call
+    last = {rid: [s for r, _, s in traces['no_comm'] if r == rid][-1] for rid in ('r1', 'r2')}
+    assert last['r2']['last_outcome'] == 'claim_rejected' and last['r2']['reason'] == 'other'
+    assert last['r1']['last_outcome'] == 'pair_job_ended' and last['r1']['reason'] == 'queue_empty'
+    for arm, out in outs.items():                                                # the name never reaches the model
+        wire = ' '.join(r['system'] + r['user'] for r in rows(out / 'llm' / 'requests.jsonl'))
+        assert 'PAIR_SUBMISSION_MISMATCH' not in wire and 'SUBMISSION' not in wire.upper().replace('SUBMITTED', '')
+
+
+def test_a_waiting_robots_job_that_ends_without_a_partner_submission_is_queue_empty_in_both_arms(tmp_path):
+    """r2 never claims, so r1's job ends without a partner. On the fake physics the end reason is
+    ``INVALID_OWN_IMAGE`` (its synthetic frames fail the pair job's own-image check before the 5 s window runs out);
+    the real ``PAIR_RENDEZVOUS_TIMEOUT`` is a job-end reason too and is pinned as ``queue_empty`` by
+    ``test_a_partner_caused_job_end_is_a_job_end_reason_that_becomes_queue_empty``. Whatever the reason, the model
+    sees only the class, the same in both arms."""
+    traces = {}
+    for arm in ('no_comm', 'peer_nl'):
+        _, out, _ = partner_run(tmp_path, arm, r2=None)
+        traces[arm] = status_trace(out)
+        failed = [e for e in rows(out / 'llm' / 'executor_events.jsonl')
+                  if e['robot_id'] == 'r1' and e['event'] == 'job_failed' and e['job_kind'] == 'pair_carry']
+        assert failed
+        reason = failed[0]['detail']['reason']
+        wire = ' '.join(r['system'] + r['user'] for r in rows(out / 'llm' / 'requests.jsonl'))
+        assert reason not in wire                                                  # the raw reason never reaches the model
+    assert traces['no_comm'] == traces['peer_nl']
+    final = [s for r, _, s in traces['no_comm'] if r == 'r1'][-1]
+    assert final['last_outcome'] == 'pair_job_ended' and final['reason'] == 'queue_empty'
+
+
+# --------------------------------------------------------------------------- the stored image_policy decides the check
+
+SMOKE1_V1_BILLS = (   # billed_tokens of v99 smoke1 request rows (call 1, a later call): no image keys, images billed 0
+    {'policy': 'fixed_prompt_equalized.v1', 'tokenizer': 'ugrp.zone_study_tokens.v1', 'system_actual': 914,
+     'system_billed': 914, 'user': 2100, 'images': 2, 'total_text_billed': 3014},
+    {'policy': 'fixed_prompt_equalized.v1', 'tokenizer': 'ugrp.zone_study_tokens.v1', 'system_actual': 914,
+     'system_billed': 914, 'user': 2259, 'images': 2, 'total_text_billed': 3173})
+SMOKE1_REQUESTS = Path('/Users/changmin/projects/ugrp/outputs/pair-llm-v99-live/smoke1/peer_nl/llm/requests.jsonl')
+
+
+def test_v1_rows_have_no_image_keys_and_are_checked_as_zero_tokens_per_image():
+    for bill in SMOKE1_V1_BILLS:
+        row = {'request_id': 'req_smoke1', 'billed_tokens': dict(bill)}
+        assert billing.billing_problems(row) == []                                 # v1: absent policy = v1
+        assert billing.billing_problems(
+            {'request_id': 'r', 'billed_tokens': dict(bill, image_policy=billing.IMAGE_BILLING_V1)}) == []
+        # a run of the CURRENT bundle must have used v2: a v1-shaped row cannot be passed off as one
+        assert billing.billing_problems(row, require=billing.IMAGE_BILLING_VERSION)
+    assert billing.IMAGE_TOKENS_BY_POLICY == {'ugrp.pair_image_billing.v1': 0, 'ugrp.pair_image_billing.v2': 1490}
+
+
+def test_a_v1_row_that_states_image_keys_must_state_zero_and_an_unknown_policy_is_refused():
+    base = dict(SMOKE1_V1_BILLS[0])
+    ok = dict(base, image_policy=billing.IMAGE_BILLING_V1, image_tokens_per_image=0, image_tokens_billed=0,
+              total_billed=base['total_text_billed'])
+    assert billing.billing_problems({'request_id': 'r', 'billed_tokens': ok}) == []
+    for key, value in (('image_tokens_per_image', 1490), ('image_tokens_billed', 2980), ('total_billed', 6000)):
+        assert billing.billing_problems({'request_id': 'r', 'billed_tokens': dict(ok, **{key: value})}), key
+    assert billing.billing_problems({'request_id': 'r', 'billed_tokens': dict(base, image_policy='ugrp.x.v3')})
+    inputs, _, _ = make_inputs('no_comm', 'r1')
+    v2 = pk.archive_request(pi.build_request(inputs))
+    assert billing.billing_problems(v2, require=billing.IMAGE_BILLING_VERSION) == []
+    stripped = json.loads(json.dumps(v2))
+    for key in ('image_policy', 'image_tokens_per_image', 'image_tokens_billed', 'total_billed'):
+        del stripped['billed_tokens'][key]
+    assert billing.billing_problems(stripped) == []                              # reads as a v1 row (images 0) ...
+    assert billing.billing_problems(stripped, require=billing.IMAGE_BILLING_VERSION)   # ... which a v2 run may not be
+
+
+@pytest.mark.skipif(not SMOKE1_REQUESTS.is_file(), reason='the preserved v99 smoke1 archive is local evidence only')
+def test_the_preserved_v99_smoke1_request_rows_verify_under_v1_with_zero_problems():
+    smoke = rows(SMOKE1_REQUESTS)
+    assert len(smoke) == 12 and all('image_policy' not in r['billed_tokens'] for r in smoke)
+    assert [p for r in smoke for p in billing.billing_problems(r)] == []
+    assert all(billing.billing_problems(r, require=billing.IMAGE_BILLING_VERSION) for r in smoke)
+
+
+# --------------------------------------------------------------------------- the two clocks are named
+
+def test_dispatch_rows_and_executor_events_name_both_clocks_and_the_reset_offset(tmp_path):
+    table = {('r1', 0): (claim_action('r1', ORDER), []), ('r2', 0): (claim_action('r2', ORDER), [])}
+    result, out, _ = run_arm(tmp_path, 'no_comm', StubModel(scripted(table)), cap_s=14.)
+    claims = [d for d in rows(out / 'llm' / 'dispatch.jsonl') if d['ack']]
+    assert claims
+    for d in claims:
+        assert d['sim_s'] == d['sim_s_since_reset'] and d['sim_s_absolute'] == d['ack']['sim_s']
+        assert d['reset_offset_s'] == pytest.approx(result['reset_sim_s'])         # 1.0 on the fake, 1.3 in smoke1
+    others = [d for d in rows(out / 'llm' / 'dispatch.jsonl') if not d['ack']]
+    assert all(d['sim_s_absolute'] is None and d['reset_offset_s'] is None for d in others)
+    events = rows(out / 'llm' / 'executor_events.jsonl')
+    assert events and all(e['sim_s_absolute'] == e['sim_s'] for e in events)
+    for e in events:           # received by the harness at or after the event time on the harness clock (one tick later)
+        late = e['delivered_at_sim_s_since_reset'] - (e['sim_s'] - result['reset_sim_s'])
+        assert -1e-6 <= late <= 0.1 + 1e-6
+    study = json.loads((out / 'llm' / 'study_config.json').read_text())
+    assert set(study['clocks']) == {'sim_s', 'sim_s_since_reset', 'sim_s_absolute', 'reset_offset_s',
+                                    'delivered_at_sim_s_since_reset'}
+
+
+# --------------------------------------------------------------------------- the arms differ only in the channel
+
+def test_the_prompts_of_the_two_llm_arms_differ_only_in_the_channel_and_messages_blocks():
+    from harness import pair_llm_prompts_ko as prompts
+    for rid in ('r1', 'r2'):
+        a, b = prompts.prompt_parts('no_comm', rid), prompts.prompt_parts('peer_nl', rid)
+        assert list(a) == list(b)
+        assert sorted(k for k in a if a[k] != b[k]) == ['channel', 'messages']
+        rest = [k for k in a if k not in ('channel', 'messages')]
+        assert '\n\n'.join(a[k] for k in rest) == '\n\n'.join(b[k] for k in rest)
+        assert prompts.system_prompt('no_comm', rid) != prompts.system_prompt('peer_nl', rid)
+    # the request body differs only in the condition label, the channel description and the inbox
+    for rid in ('r1', 'r2'):
+        one, _, _ = make_inputs('no_comm', rid)
+        two, _, _ = make_inputs('peer_nl', rid)
+        pa, pb = one.payload_dict(), two.payload_dict()
+        assert sorted(k for k in set(pa) | set(pb) if pa.get(k) != pb.get(k)) == ['channel', 'condition', 'inbox']
+
+
+def test_the_prompt_does_not_state_that_a_look_around_recovers_the_position():
+    from harness import pair_llm_prompts_ko as prompts
+    text = prompts.system_prompt('no_comm', 'r1')
+    assert '제자리에서 돌며' in text and '도움이 될 수' in text and '보장되지는 않습니다' in text
+    assert '다시 추정할 수 있습니다' not in text and '풀리지 않습니다' not in text
+
+
+# --------------------------------------------------------------------------- retired (run-recorded) bundles
+
+RETIRED = Path(__file__).resolve().parents[1] / 'experiments' / '2026-10-03-pair-llm-viability' / 'retired-bundle'
+RETIRED_SHA256 = {   # bytes of the files at the commits that ran them (v97 stub smoke b201f777, v99 smoke1 ad1dda73)
+    'v97/configs/pair_llm_v97.json': 'ca0c34b2f7acf904376584ebb2f595b1278275c447e827292666b2e14f01b808',
+    'v97/configs/simulation_workflows.d/pair_llm_v97.json':
+        '9077a7dd83bda8123ef6c844827f66c689227465315f99cd4206878d98587eb6',
+    'v99/configs/pair_llm_v99.json': '284232e5955eb4c0b753497c8e59f81a072506b08d33ff8ad1e9183c496137b4',
+    'v99/configs/simulation_workflows.d/pair_llm_v99.json':
+        'a0d8a41eebd04d2656acdfe622cec5ba3ef5af5baa547192f339fb61900719c3'}
+
+
+def test_the_run_recorded_v97_and_v99_bundle_files_are_kept_byte_identical_and_not_registered():
+    import hashlib
+    for rel, digest in RETIRED_SHA256.items():
+        assert hashlib.sha256((RETIRED / rel).read_bytes()).hexdigest() == digest, rel
+    repo = RETIRED.parents[2]
+    assert not list((repo / 'configs').glob('pair_llm_v97.json')) and not list((repo / 'configs').glob('pair_llm_v99.json'))
+    catalog = json.loads((RETIRED / 'v99/configs/simulation_workflows.d/pair_llm_v99.json').read_text())
+    assert catalog['workflows'][0]['id'] == 'zone-pair-llm-v99' and catalog['workflows'][0]['version'] == '3.11.0'
+    live = json.loads((repo / 'configs' / 'pair_llm_v100.json').read_text())
+    assert live['execution_bundle_id'] == 'zone-pair-llm-v100' and live['workflow_version'] == '3.12.0'

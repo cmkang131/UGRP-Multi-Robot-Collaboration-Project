@@ -16,12 +16,21 @@ What it contains (all of it is the robot's own bookkeeping):
   model call started.
 
 What it never contains: a pose, a joint, a contact, a delivery or success flag, a partner's state, a raw
-reason string or any executor ``detail``. Partner-derived refusals are deliberately mapped to ``other`` so
-the ``no_comm`` arm cannot learn a partner's submission through the status (the study compares what
-communication adds): ``PAIR_SUBMISSION_MISMATCH`` / ``PAIR_STATIC_INPUT_MISMATCH`` compare against the partner's
-pending submission, ``PAIR_RENDEZVOUS_TIMEOUT`` comes from the partner's missing start signal.
-A job that ended is reported as the study's own two classes only (``queue_empty`` / ``local_timeout``,
-``zone_study_contract.LOCAL_STATES``). It is not a success flag: the end of a job is not a carried beam.
+reason string or any executor ``detail``. A job that ended is reported as the study's own two classes only
+(``queue_empty`` / ``local_timeout``, ``zone_study_contract.LOCAL_STATES``). It is not a success flag: the end of
+a job is not a carried beam.
+
+What partner-caused events reveal (the reviewed and accepted design, M1 of the #371 review): the robot's own
+command outcome. ``PAIR_SUBMISSION_MISMATCH`` and ``PAIR_STATIC_INPUT_MISMATCH`` (the partner's pending submission
+differs) reach THIS robot as a refused claim (``claim_rejected``), and reach the robot that was waiting as the end of
+its job (``pair_job_ended``); ``PAIR_RENDEZVOUS_TIMEOUT`` (the partner never started) is also a job-end reason of
+the waiting robot, not a start refusal, and becomes ``queue_empty``. So a partner-caused refusal or job end reveals
+ONE bit through the robot's own command outcome: "my claim was not accepted" / "the pair job ended", with the time.
+That bit is the robot's own acknowledgement and job event (a real robot gets it too; since v99
+``own_command_history`` already turns a rejected claim into ``command_rejected`` and a finished job into
+``queue_empty`` / ``local_timeout``), and it is identical in ``no_comm`` and ``peer_nl``, so the arms still differ
+only in the dialogue channel. What the status does NOT carry is the NAME of the partner-caused reason: such a
+refusal is folded to ``other``. This module does not claim that ``no_comm`` learns nothing about the partner.
 """
 from __future__ import annotations
 
@@ -136,7 +145,8 @@ def record() -> dict:
             'reasons': {k: list(v) for k, v in REASONS_BY_OUTCOME.items() if v},
             'source': 'the robot\'s own start acknowledgement (ClaimGate) and its own executor job events',
             'excluded': 'pose, joints, contact, delivery/success flags, partner state, raw reasons, executor detail; '
-                        'partner-derived refusals map to "other"'}
+                        'the name of a partner-caused refusal folds to "other" (the refused-claim / job-end event itself stays '
+                        'visible, identically in no_comm and peer_nl)'}
 
 
 __all__ = ['STATUS_VERSION', 'STATUS_KEYS', 'OUTCOMES', 'SELF_REASONS', 'TASK_REASONS', 'END_REASONS',

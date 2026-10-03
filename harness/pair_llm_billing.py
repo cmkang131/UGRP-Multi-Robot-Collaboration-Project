@@ -80,9 +80,21 @@ def billed_tokens(tokens: Mapping, *, system_billed: int) -> dict:
             'image_tokens_billed': image_part, 'total_billed': text_total + image_part}
 
 
-def billing_problems(row: Mapping) -> list:
+IMAGE_BILLING_V1 = 'ugrp.pair_image_billing.v1'
+#: The per-image charge of every policy version ever applied (the history above, as numbers). A stored row is
+#: re-checked under the policy IT names, so the v97 stub smoke and the v99 smoke1 archives stay verifiable.
+IMAGE_TOKENS_BY_POLICY = {IMAGE_BILLING_V1: 0, IMAGE_BILLING_VERSION: IMAGE_TOKENS_PER_IMAGE}
+
+
+def billing_problems(row: Mapping, *, require: str | None = None) -> list:
     """The image part of an archived request's bill re-derives from its stored counts (mirror of the study's
-    recount of the text part, which only knows the text keys)."""
+    recount of the text part, which only knows the text keys).
+
+    The check branches on the STORED ``image_policy``: v2 means 1,490 tokens per image and every image key must be
+    present; v1 (or no ``image_policy`` key at all, which is how v97 and the v99 smoke1 rows look) means 0 tokens
+    per image, and any image key that is present must say 0. ``require`` pins the policy a run must have used
+    (the current bundle passes v2), so a v2 run can never be passed off as a v1 row.
+    """
     rid = row.get('request_id')
     billed = row.get('billed_tokens')
     if not isinstance(billed, Mapping):
@@ -90,11 +102,21 @@ def billing_problems(row: Mapping) -> list:
     images, text_total = billed.get('images'), billed.get('total_text_billed')
     if type(images) is not int or type(text_total) is not int or images < 0:
         return [f'archived request {rid!r}: billed_tokens.images / total_text_billed are not counts']
-    want = {'image_policy': IMAGE_BILLING_VERSION, 'image_tokens_per_image': IMAGE_TOKENS_PER_IMAGE,
-            'image_tokens_billed': IMAGE_TOKENS_PER_IMAGE * images,
-            'total_billed': text_total + IMAGE_TOKENS_PER_IMAGE * images}
-    return [f'archived request {rid!r}: billed_tokens.{key} {billed.get(key)!r} != {value!r}'
-            for key, value in want.items() if billed.get(key) != value]
+    policy = billed.get('image_policy', IMAGE_BILLING_V1)
+    if policy not in IMAGE_TOKENS_BY_POLICY:
+        return [f'archived request {rid!r}: billed_tokens.image_policy {policy!r} is not a known image billing policy']
+    problems = []
+    if require is not None and policy != require:
+        problems.append(f'archived request {rid!r}: billed_tokens.image_policy {policy!r} != required {require!r}')
+    per_image = IMAGE_TOKENS_BY_POLICY[policy]
+    want = {'image_policy': policy, 'image_tokens_per_image': per_image,
+            'image_tokens_billed': per_image * images, 'total_billed': text_total + per_image * images}
+    for key, value in want.items():
+        if key not in billed and policy == IMAGE_BILLING_V1:
+            continue                                  # a v1 row carries no image keys: images were billed 0
+        if billed.get(key) != value:
+            problems.append(f'archived request {rid!r}: billed_tokens.{key} {billed.get(key)!r} != {value!r}')
+    return problems
 
 
 def record() -> dict:
@@ -106,5 +128,5 @@ def record() -> dict:
             'calibration': dict(CALIBRATION), 'history': [dict(row) for row in IMAGE_BILLING_HISTORY]}
 
 
-__all__ = ['IMAGE_BILLING_VERSION', 'IMAGE_TOKENS_PER_IMAGE', 'IMAGE_BILLING_HISTORY', 'CALIBRATION',
-           'image_tokens', 'billed_tokens', 'billing_problems', 'record']
+__all__ = ['IMAGE_BILLING_VERSION', 'IMAGE_BILLING_V1', 'IMAGE_TOKENS_PER_IMAGE', 'IMAGE_TOKENS_BY_POLICY',
+           'IMAGE_BILLING_HISTORY', 'CALIBRATION', 'image_tokens', 'billed_tokens', 'billing_problems', 'record']

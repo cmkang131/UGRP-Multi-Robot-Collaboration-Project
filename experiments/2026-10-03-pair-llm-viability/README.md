@@ -2,7 +2,7 @@
 
 번들 `zone-pair-llm-v100`, 워크플로 3.12.0, 상태 `DRAFT_UNSEALED`, `research_result=false`. 이슈 #219 참조.
 **병합 금지 — #363 새 SHA 위로 리베이스 대기 중.** v100은 아직 어떤 실행도 기록하지 않았다. v99(3.11.0)는 3단계 스모크 1회의
-번들이므로 그대로 얼려 두었고(소스 `ad1dda73`, 번들 해시 `a8e11294…`), 이 문서의 3단계 숫자는 v99 기록이다.
+번들이므로 그대로 얼려 두었고(소스 `ad1dda73`, 번들 해시 `a8e11294…`; 바이트 그대로 `retired-bundle/v99/`, v97은 `retired-bundle/v97/`에 보존, 아래 5번), 이 문서의 3단계 숫자는 v99 기록이다.
 2026-10-03 사용자 결정("일단 지금 상황에서, llm을 쓰고 되는지를 보자 그 다음에 고도화를 해나가자")의
 첫 단계다. **이 문서의 어떤 숫자도 운반 성공·모델 성능·조건 간 효율에 대한 결과가 아니다.** 1·2단계는
 가짜 모델만 썼다. 3단계(아래 "3단계: 실제 모델 스모크 1회")에서 실제 모델을 한 번의 60 SIM초 실행으로 12번 불렀고,
@@ -52,10 +52,17 @@ smoke1에서 블라인드 제어기가 두 로봇의 시작을 로봇당 1,069�
 | `since_claim_s` | 이 로봇이 마지막 `claim`을 낸 뒤 흐른 SIM초(자기 결정 시각), 없으면 `null` |
 | `refusals_since_last_call` | 이 로봇의 지난 모델 호출 시작 이후 자기 시작이 거절된 횟수 |
 
-- **넣지 않은 것**: 자세·관절·접촉·성공/배달 플래그·상대 상태·원문 이유 문자열·실행기 `detail`. 상대에서 비롯된 거절
-  (`PAIR_SUBMISSION_MISMATCH`, `PAIR_STATIC_INPUT_MISMATCH`, `PAIR_RENDEZVOUS_TIMEOUT` 등)은 `other`로 접는다. 이를 그대로 보이면 `no_comm`
-  조건 모델이 상대의 제출을 알게 되어 통신이 더하는 것을 흐리기 때문이다. 작업이 끝났다는 사실도 성공 신호가 아니다
+- **넣지 않은 것**: 자세·관절·접촉·성공/배달 플래그·상대 상태·원문 이유 문자열·실행기 `detail`. 작업이 끝났다는 사실도 성공 신호가 아니다
   (스터디의 두 부류 `queue_empty`/`local_timeout`만).
+- **상대에서 비롯된 사건이 드러내는 것(독립 검토 M1, 조정자가 설계를 받아들임)**: 상대의 대기 중 제출과 다르면(`PAIR_SUBMISSION_MISMATCH`,
+  `PAIR_STATIC_INPUT_MISMATCH`) 이 로봇은 거절된 청구(`claim_rejected`)를, 먼저 기다리던 로봇은 자기 작업의 끝(`pair_job_ended`)을 본다.
+  `PAIR_RENDEZVOUS_TIMEOUT`(상대가 시작하지 않음)은 시작 거절이 아니라 **기다리던 로봇의 작업 종료 이유**이며 `queue_empty`가 된다. 따라서
+  상대에서 비롯된 거절·작업 종료는 **자기 명령 결과를 통해 1비트**(내 청구가 받아들여지지 않았다 / 짝 작업이 끝났다, 그 시각 포함)를 드러낸다.
+  이 1비트는 로봇 자기 시작 응답과 자기 작업 이벤트이며(실제 로봇도 받는다; v99부터 `own_command_history`가 이미 거절된 청구를
+  `command_rejected`로, 끝난 작업을 `queue_empty`/`local_timeout`으로 바꿔 보였다), **`no_comm`과 `peer_nl`에 똑같이** 적용되므로 두 조건은
+  대화 채널만 다르다. 접은 것은 **이유의 이름**뿐이다(상대 때문에 생긴 거절은 `other`). 이 문서·코드 어디서도 "`no_comm`은 상대에 대해
+  아무것도 알지 못한다"고 주장하지 않는다. 루프 안 시험(`test_a_partner_submission_mismatch_gives_identical_own_status_in_both_llm_arms`)이 같은
+  불일치에서 두 조건의 `own_status`가 호출마다 같음을, 이유 이름이 모델 요청 어디에도 없음을 고정한다.
 - **경계**: 입력 페이로드 스키마 v2의 필수 키(`pi.payload_violations`가 닫힌 기록·결과별 어휘·음수/불리언/비유한 값을 거절). 봉인된
   스터디 금지 키와 겹치지 않는 이름만 쓴다. 누수 시험: 적대적 문자열 21종(`GT_CONTACT_SUCCESS`, `SELF_CONTACT`, 공백·대소문자 변형,
   5,000자, `None`/숫자/리스트/dict/bytes)이 빌더를 통과하지 못함, 200회 무작위 입력에도 출력은 항상 닫힌 기록, 빌더 시그니처에 상대 자세·접촉·성공
@@ -67,7 +74,7 @@ smoke1에서 블라인드 제어기가 두 로봇의 시작을 로봇당 1,069�
   (`claim/continue/release/wait`)만 알므로 짝 층의 `pair_llm_dispatch.validate_reply`가 `look_around`를 안전한 자리표시자(`continue`)로 바꿔
   봉인 검증기에 통과시키고 되돌린다(다른 모든 봉인 규칙·오류 문구는 그대로, 시험으로 고정). 이 선택지는 **효과를 검증하지 않았다**:
   블라인드 작업자는 훑은 뒤에도 `LOOKED_POSE_UNCERTAIN`이고(가짜 물리 시험에서 확인), 실제로 위치를 회복시키는 동작은 #363의 회복 동작이
-  들어간 뒤에 다시 시험해야 한다. 그때까지 이 선택지는 "배선과 상태 표시만 확인됨"이다. 끝난 둘러보기는 성공 신호가 아니며, 청구 허가가 남아
+  들어간 뒤에 다시 시험해야 한다. 그때까지 이 선택지는 "배선과 상태 표시만 확인됨"이다. 프롬프트도 사실로 말하지 않는다: "제자리에서 돌며 주변을 둘러보는 동작이며 위치를 다시 추정하는 데 도움이 될 수 있지만 보장되지 않는다"(독립 검토 사소 2; 같은 claim을 반복해도 풀리지 않는다는 단정도 뺐다. v100은 아직 실행 전이라 `PROMPT_VERSION`은 v3 그대로이고 프롬프트 템플릿 해시만 `a1487266` 때와 달라졌다). 끝난 둘러보기는 성공 신호가 아니며, 청구 허가가 남아
   있으면 거절이 계속되므로 한 호출 동안 `look_around_ended` 뒤에 다시 `start_refused`가 나온다.
 
 ### 2. 비용 모델: 이미지를 청구한다 (결정적 · 버전 고정)
@@ -87,7 +94,7 @@ smoke1에서 블라인드 제어기가 두 로봇의 시작을 로봇당 1,069�
   모두 일치(합 30.1 SIM초 확인)하고, v2는 호출당 +0.6 → **합 36.1 SIM초(+6.0, +20퍼센트)**. 첫 두 호출 4.8/4.7, 나머지 3.3~3.4.
 - **버전 이력**: `ugrp.pair_image_billing.v1`(이미지 0)은 v97 가짜 모델 스모크와 v99 smoke1이 썼다. `IMAGE_BILLING_HISTORY`에 남기고
   다시 적용하지 않는다. 요청 기록에는 `image_policy/image_tokens_per_image/image_tokens_billed/total_billed`가 남고
-  `billing_problems`가 보관된 요청의 이미지 청구를 다시 계산해 검증한다. 호출 행의 `input_tokens`는 텍스트/이미지로 나뉘고, 실행 지표에
+  `billing_problems`가 보관된 요청의 이미지 청구를 **저장된 `image_policy`에 따라** 다시 계산해 검증한다(v2는 장당 1,490이고 이미지 키가 모두 있어야 하며, v1 또는 `image_policy` 키 없음은 장당 0이고 이미지 키가 있으면 0이어야 한다). 현재 번들의 실행은 v2를 요구한다(`require`). 보존된 v99 smoke1 요청 12행이 v1 청구로 문제 0건임을 시험으로 고정했다(보존본이 있을 때). 호출 행의 `input_tokens`는 텍스트/이미지로 나뉘고, 실행 지표에
   `input_tokens_image`, `input_tokens_charged`, `image_billing`이 생긴다. 번들 `cost_model.input_billing`에 도출 근거와 이력 전체를 기록한다.
 
 ### 3. ` ```json ` 울타리: 한 번 벗기고, 횟수를 지표로 센다
@@ -110,6 +117,45 @@ smoke1에서 블라인드 제어기가 두 로봇의 시작을 로봇당 1,069�
   청구 정책을 바꾸므로 실행 기록이 있는 번들을 고치지 않고 `docs/execution_versioning.md` 2번(설정을 바꾸면 새 버전)에 따라 새 번들로 올렸다.
   `configs/pair_llm_v99.json`은 `pair_llm_v100.json`으로 이름을 바꿨고 v99 기록(smoke1 요약·해시·원본)은 그대로다.
   병합 순서에 따라 #363(v98)이 먼저 들어가도 v100과 겹치지 않는다. 사용한 ID: `zone-pair-llm-v100`, 워크플로 3.12.0.
+
+### 5. 독립 검토 BLOCK(`a1487266`)에 대한 수정 한 묶음
+
+검토: https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/pull/371#issuecomment-5971079195 (판정 BLOCK: B1, 주요 2, 사소 5).
+
+- **B1 실행 기록이 있는 번들 복원(해결)**: v97(가짜 모델 스모크)·v99(실제 모델 smoke1) 번들 파일이 v100으로 이름만 바뀌어 있었다. 실행한 커밋의
+  바이트 그대로 `experiments/2026-10-03-pair-llm-viability/retired-bundle/`에 되살렸다(저장소 경로를 그대로 따른 하위 폴더, 등록된 `configs/`에는
+  두지 않음). `docs/execution_versioning.md` 2번과 전례(`retired-bundle/`)를 따른다. v100은 새 파일 `configs/pair_llm_v100.json`이다. 시험
+  (`test_the_run_recorded_v97_and_v99_bundle_files_are_kept_byte_identical_and_not_registered`)이 바이트를 고정한다.
+
+| 파일(`retired-bundle/` 아래) | 가져온 커밋 | sha256 |
+|---|---|---|
+| `v97/configs/pair_llm_v97.json` | `0646677c`(v97 스모크 소스 `b201f777`와 같은 바이트) | `ca0c34b2f7acf904376584ebb2f595b1278275c447e827292666b2e14f01b808` |
+| `v97/configs/simulation_workflows.d/pair_llm_v97.json` | `0646677c` | `9077a7dd83bda8123ef6c844827f66c689227465315f99cd4206878d98587eb6` |
+| `v99/configs/pair_llm_v99.json` | `ad1dda73`(smoke1 소스) | `284232e5955eb4c0b753497c8e59f81a072506b08d33ff8ad1e9183c496137b4` |
+| `v99/configs/simulation_workflows.d/pair_llm_v99.json` | `ad1dda73`(`cf82bc73`의 같은 이름 파일과 바이트가 다르다. smoke1이 쓴 쪽) | `a0d8a41eebd04d2656acdfe622cec5ba3ef5af5baa547192f339fb61900719c3` |
+
+  재현은 기록된 소스 SHA에서만 한다(v97 `b201f777`, v99 `ad1dda73`). **무엇이 실행 기록의 원본인가**: 실행이 낸 `bundle.json`(smoke1은 기본 체크아웃
+  `outputs/pair-llm-v99-live/smoke1/peer_nl/bundle.json`, 파일 sha256 `990015876cee0ece369f69dd3bfd79c8d750dc70387a21bca2d2f212f0b6fa35`,
+  `result.json`의 `bundle_sha256` `a8e112945fbad67840cb8a2c1495e6268c78a8a92ec80813f7aeaea9c05ea621`)이 그 실행의 기록이고, 되살린 `configs`
+  JSON은 그 번들을 만든 등록 입력이다. 둘이 어긋나면 실행 산출물이 우선한다.
+- **M1(해결)**: 설계를 받아들임. 위 1번의 문구를 "이유 이름은 숨기지만 사건 자체는 자기 명령 결과로 남는다, 두 조건에 똑같다"로 고쳤고
+  루프 안 시험을 더했다.
+- **M2(해결)**: `billing_problems`가 저장된 `image_policy`로 분기(위 2번). v99 smoke1 12행은 v1 청구로 문제 0건.
+- **사소 1**: `PAIR_RENDEZVOUS_TIMEOUT` 설명과 시험을 실제 경로(작업 종료 이유 → `queue_empty`)로 고쳤다. **사소 2**: 프롬프트 표현(위 1번).
+- **사소 3 보존 분류(AGENTS.md "디스크 사용 / 보존", #374)**: 모델 요청·응답 **텍스트**, 원장, 결과·trace 로그, sha256 목록은 항상 보존한다.
+  `llm/wire/*-request.json`·`*-response.json`(요청 본문 텍스트 포함)은 통째로 보존한다. 단 요청 본문 안에 base64로 박힌 이미지와
+  `llm/request_images/*.jpg`(sha 기준 중복 제거, smoke1은 6장), 바뀌지 않은 v88 실행기가 쓰는 `robots/r*/rgb/`(로봇당 1,201장)는 **이미지 원본**이다.
+  이것들은 나중에 10/4 정리처럼 제거할 수 있다: 본문의 이미지를 `{sha256, bytes, removed}`로 바꾼 본문으로 대체하고, 원래 본문·제거한 파일의
+  sha256을 `outputs/cleanup-records/`의 매니페스트에 모두 남기며 원본은 휴지통으로 옮긴다(`body_sha256`은 원래 본문의 해시로 보존). 지금은 열린 PR이고
+  3일 안의 실행이라 규칙상 남겨 둔다. `llm/map_figure.png`는 고정 입력 자산(요청마다 같은 지도 그림)이라 **보존한다**(제거 대상 아님).
+  smoke1은 버전 대표 자료로 지정하지 않았다(플랫폼 개발 과정의 스모크; 대표로 남길지는 조정자 결정).
+- **사소 4 두 시계**: 한 기록에 두 시계가 섞여 있었다(smoke1 `dispatch.jsonl`의 `sim_s` 4.1은 시행 기준이고 `ack.sim_s` 5.4는 절대 시간; 차이는 reset
+  1.3 SIM초 = `result.json`의 `reset_sim_s`). v100은 `dispatch.jsonl`에 `sim_s_since_reset`(= `sim_s`, 호출·결정·한도의 시계), `sim_s_absolute`
+  (= `ack.sim_s`, 백엔드·실행기 시계), `reset_offset_s`를 명시한다. `executor_events.jsonl`에는 `sim_s_absolute`(= 사건 `sim_s`)와
+  `delivered_at_sim_s_since_reset`(하네스가 사건을 받은 시각, 사건 뒤 관측 한 틱 이내)을 더했다. 정의는 `llm/study_config.json`의 `clocks`에 있다.
+  `own_status.since_claim_s`와 작업 종료 시각은 시행 시계다.
+- **사소 5 시험 공백(해결)**: 루프 안 불일치 시험(M1), 두 조건의 프롬프트가 `channel`·`messages` 블록만 다르다는 시험(요청 본문은 `channel`·`condition`·
+  `inbox`만 다름), v1 기록 재검증 시험(M2)을 더했다.
 
 ## 무엇을 만들었나
 
