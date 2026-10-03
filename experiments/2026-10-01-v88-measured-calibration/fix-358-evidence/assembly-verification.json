@@ -1,0 +1,53 @@
+{
+  "output": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-measured-fix358-20261003-140522",
+  "source_sha": "d36ffc3f9a34749770b995bc8f92d5aa5c97091d",
+  "status": "PARTIAL",
+  "missing_count": 42,
+  "missing_reasons": {
+    "frozen criterion B axis_pass={\"forward\": null, \"left\": null, \"rotate\": null}; no accepted complete 3-axis/scalar-stop unloaded profile": 10,
+    "motion identification: fit convergence/rank/boundary failure: rank 13/13": 16,
+    "measurement not available": 5,
+    "insufficient both-sign stationary pan samples with same-arm center reference": 1,
+    "no measured stationary settled pose with lifted bilateral grip": 5,
+    "settled transform rejected by residual/count gate": 5
+  },
+  "collection_audit": {
+    "unloaded": "PASS",
+    "fine": "PASS",
+    "loaded": "PASS"
+  },
+  "load_selection": {
+    "not_lifted": 553,
+    "lifted": 6839,
+    "missing_bilateral_grip": 9
+  },
+  "raw_unchanged": true,
+  "working_tree_dirty": false,
+  "input_file_count": 11360,
+  "python": "3.12.13",
+  "numpy": "2.5.2",
+  "compared_to": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-measured-review358-20261003-035937",
+  "identical_calibration_fields": [
+    "status",
+    "params",
+    "pair_model",
+    "pan_base_yaw",
+    "camera_models",
+    "missing"
+  ],
+  "fit_report_byte_identical": true,
+  "files": {
+    "calibration.json": {
+      "sha256": "7ad491338ef32dc94c6a73bc4e02f50f92a1324c48ab083ab02194d342c40843",
+      "bytes": 25019
+    },
+    "fit_report.json": {
+      "sha256": "121b870fa52c7357fdfa946aa0f5999c8c209c3cee5830406888fc50685d03b7",
+      "bytes": 163988
+    },
+    "input_manifest.json": {
+      "sha256": "3eae04111646078363caabc5c07cb7e16bba166698bc43c5f10bcc93bd5baf7e",
+      "bytes": 3209883
+    }
+  }
+}

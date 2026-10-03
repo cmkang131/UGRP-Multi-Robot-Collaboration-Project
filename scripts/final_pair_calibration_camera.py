@@ -24,7 +24,7 @@ def fit_cameras(collections, gate):
             for rid, robot in data['robots'].items():
                 group_id, previous_arm, moving_before = 0, None, True
                 for f, label in zip(robot['frames'], robot['labels']):
-                    i = round((f['t']-robot['t'][0])/.05)
+                    i = round((f['sim_time']-robot['t'][0])/.05)
                     arm = tuple(f['commanded_servo'][str(j)] for j in (3, 4, 5))
                     # No movement/pan-regression contamination from drive drift.
                     lo = max(0, i-round(gate['settled_s']/.05))
@@ -113,10 +113,10 @@ def pair_rows(data, profile, valid, inputs, gate):
                     tracker = BeamEdgeTracker(1.)
                     t0, t1 = robot['t'][[a, z]]
                     for frame in robot['frames']:
-                        if t0 <= frame['t'] <= t1:
+                        if t0 <= frame['sim_time'] <= t1:
                             image = Image.open(io.BytesIO(inputs.read(data['folder']/frame['path']))).convert('RGB')
                             servo = {int(k): int(v) for k, v in frame['commanded_servo'].items()}
-                            tracker.observe(frame['t'], np.asarray(image), servo, servo.get(1, 2000) < 1700)
+                            tracker.observe(frame['sim_time'], np.asarray(image), servo, servo.get(1, 2000) < 1700)
                     if (tracker.ref_t is None or tracker.eff_t is None or tracker.eff_t <= tracker.ref_t
                             or not tracker.available(t1)):
                         unavailable.append({'robot': rid, 'axis': axis, 'split': split, 'block': index, 'reason': 'edge not observable/available at endpoint', 'stats': tracker.stats})

@@ -85,6 +85,9 @@ def test_two_maps_pass_separate_yaw_and_original_B_bytes_unchanged(yaw_templates
     assert rotation['pass'] is True, rotation.get('eligibility_reason')
     assert rotation['scope'] == 'HELD_OUT_VALIDATION'
     assert rotation['maps_not_supplied'] == []
+    assert rotation['maps_scored'] == list(MAPS)
+    assert rotation['maps_not_scored'] == []
+    assert summary['rotation_scope'] == 'HELD_OUT_VALIDATION'
     assert summary['pass'] is True
     ordering = rotation['ordering_evidence']
     assert ordering['verified'] is True
@@ -138,8 +141,74 @@ def test_missing_map_cannot_pass_but_does_not_hide_failure(failure):
         data['pose'][:, 2] *= 10
     report = v.score_rotation([data], profile, set(), b.criterion())
     assert report['pass'] is (False if failure else None)
-    assert report['scope'] == 'PARTIAL_HELD_OUT_VALIDATION'
+    assert report['scope'] == 'PARTIAL_MAPS'
     assert len(report['maps_not_supplied']) == 1
+    assert report['maps_scored'] == [data['map_id']]
+    assert report['maps_not_scored'] == report['maps_not_supplied']
+
+
+@pytest.mark.parametrize('excluded_index', [0, 1])
+@pytest.mark.parametrize('failure', [False, True])
+def test_prior_bytes_excluded_per_case_remaining_map_uses_frozen_metrics(monkeypatch, excluded_index, failure):
+    data, profile = yaw_case()
+    cases = [copy.deepcopy(data) for _ in MAPS]
+    for i, case in enumerate(cases):
+        case.update(map_id=MAPS[i], pose_sha256=f'synthetic-pose-{i}')
+    remaining_index = 1-excluded_index
+    if failure:
+        cases[remaining_index]['pose'][:, 2] *= 10
+    prior = {cases[excluded_index]['pose_sha256']}
+    evaluate = b.evaluate_axis
+    calls = []
+    def checked(case, *args):
+        assert case['pose_sha256'] not in prior, 'excluded pose must not be scored'
+        calls.append(case['map_id'])
+        return evaluate(case, *args)
+    monkeypatch.setattr(b, 'evaluate_axis', checked)
+    report = v.score_rotation(cases, profile, prior, b.criterion())
+    assert calls == [MAPS[remaining_index]]
+    excluded, remaining = report['cases'][excluded_index], report['cases'][remaining_index]
+    assert excluded['reason'] == 'PREVIOUSLY_SEEN_POSE_BYTES'
+    assert excluded['pose_sha256'] in prior
+    assert excluded['metrics'] is excluded['pass'] is None
+    assert 'numerical_pass' not in excluded
+    assert remaining['pass'] is (not failure)
+    assert serialized(remaining['metrics']) == serialized(evaluate(cases[remaining_index], 2, profile, b.criterion()))
+    assert report['scope'] == 'PARTIAL_MAPS'
+    assert report['maps_observed'] == list(MAPS)
+    assert report['maps_not_supplied'] == []
+    assert report['maps_scored'] == [MAPS[remaining_index]]
+    assert report['maps_not_scored'] == [MAPS[excluded_index]]
+    assert report['pass'] is (False if failure else None)
+
+
+def test_all_prior_cases_are_null_without_vacuous_pass(monkeypatch):
+    data, profile = yaw_case()
+    cases = [dict(data, map_id=m) for m in MAPS]
+    monkeypatch.setattr(b, 'evaluate_axis', lambda *a: pytest.fail('excluded pose evaluated'))
+    report = v.score_rotation(cases, profile, {data['pose_sha256']}, b.criterion())
+    assert report['scope'] == 'PARTIAL_MAPS'
+    assert report['maps_scored'] == []
+    assert report['maps_not_scored'] == list(MAPS)
+    assert report['pass'] is None
+    assert all(r['reason'] == 'PREVIOUSLY_SEEN_POSE_BYTES' for r in report['cases'])
+
+
+@pytest.mark.parametrize('prior_bytes', [False, True])
+@pytest.mark.parametrize('invalid', ['training', 'training_map', 'unknown_map', 'dt', 'duplicate_map'])
+def test_rotation_hard_failures_survive_prior_exclusion(monkeypatch, prior_bytes, invalid):
+    data, profile = yaw_case()
+    gate = b.criterion()
+    cases = [dict(data, map_id=m) for m in MAPS]
+    if invalid == 'training': cases[1]['training'] = True
+    elif invalid == 'training_map': cases[1]['map_id'] = gate['held_out']['training_map']
+    elif invalid == 'unknown_map': cases[1]['map_id'] = 'unregistered'
+    elif invalid == 'dt': cases[1]['dt'] = .1
+    else: cases[1]['map_id'] = cases[0]['map_id']
+    prior = {data['pose_sha256']} if prior_bytes else set()
+    monkeypatch.setattr(b, 'evaluate_axis', lambda *a: pytest.fail('hard audit must finish before scoring'))
+    with pytest.raises(ValueError, match='rotation training, map or sample interval|duplicate rotation map'):
+        v.score_rotation(cases, profile, prior, gate)
 
 
 @pytest.mark.parametrize('missing', ['candidate', 'steps', 'prbs', 'positive_step', 'negative_step',
@@ -154,7 +223,11 @@ def test_missing_yaw_support_stays_null(missing):
         for start, end in data['segments']['rotate']['steps' if split == 'step' else 'prbs']:
             u = data['u'][start:end, 2]
             u[u > 0 if sign == 'positive' else u < 0] = 0
-    assert v.score_rotation([data], profile, set(), b.criterion())['cases'][0]['pass'] is None
+    report = v.score_rotation([data], profile, set(), b.criterion())
+    assert report['cases'][0]['pass'] is None
+    assert report['scope'] == 'PARTIAL_MAPS'
+    assert report['maps_scored'] == []
+    assert report['maps_not_scored'] == list(MAPS)
 
 
 @pytest.mark.parametrize('side', [-1, 1])
@@ -262,18 +335,64 @@ def test_snapshot_semantic_checks_even_if_digest_is_replaced(monkeypatch, field,
         v.prepare_rotation([])
 
 
-def test_training_pose_from_manifest_is_rejected_without_reopening_training(yaw_templates, monkeypatch):
+def test_training_pose_from_manifest_is_excluded_without_reopening_training(yaw_templates, monkeypatch):
     load = v.load_collection
     prior = get(v.ROTATION_MANIFEST)['files'][6]['sha256']
     assert prior not in get(b.CANDIDATE)['previously_seen_pose_sha256']
     def previously_seen(*args):
         cases, stamps = load(*args)
-        cases[0]['pose_sha256'] = prior
+        if cases[0]['map_id'] == MAPS[1]:
+            cases[0]['pose_sha256'] = prior
         return cases, stamps
     monkeypatch.setattr(v, 'load_collection', previously_seen)
+    original = v.validate(yaw_templates)
     report = v.validate(yaw_templates, rotation_addendum=True)
     assert report['axis_pass']['forward'] is True
-    assert 'prior pose' in report['rotation_addendum']['eligibility_reason']
+    rotation = report.pop('rotation_addendum')
+    summary = report.pop('with_rotation_addendum')
+    assert serialized(report) == serialized(original)
+    assert rotation['scope'] == summary['rotation_scope'] == 'PARTIAL_MAPS'
+    assert rotation['maps_scored'] == [MAPS[0]]
+    assert rotation['maps_not_scored'] == [MAPS[1]]
+    assert rotation['cases'][0]['pass'] is True
+    assert rotation['cases'][1]['reason'] == 'PREVIOUSLY_SEEN_POSE_BYTES'
+    assert rotation['pass'] is summary['pass'] is None
+
+
+def test_duplicate_synthetic_pose_bytes_excluded_in_cli(yaw_templates, tmp_path, monkeypatch, capsys):
+    # A fabricated training copy has exactly the second map's pose bytes.
+    # All paths are pytest temporaries; no real training/held-out raw is opened.
+    pose = yaw_templates[1]/MAPS[1]/'eval_only/r1/pose.jsonl'
+    training_pose = tmp_path/'synthetic_training_pose.jsonl'
+    training_pose.write_bytes(pose.read_bytes())
+    prior_sha = b.sha(training_pose.read_bytes())
+    assert prior_sha == b.sha(pose.read_bytes())
+    assert prior_sha != b.sha((yaw_templates[0]/MAPS[0]/'eval_only/r1/pose.jsonl').read_bytes())
+    prepare = v.prepare_rotation
+    def with_synthetic_prior(*args, **kwargs):
+        prepared = prepare(*args, **kwargs)
+        prepared['prior'].add(prior_sha)
+        return prepared
+    monkeypatch.setattr(v, 'prepare_rotation', with_synthetic_prior)
+    args = [a for root in yaw_templates for a in ('--raw', str(root))]
+    output = tmp_path/'partial-duplicate.json'
+    original = v.validate(yaw_templates)
+    assert v.main([*args, '--rotation-addendum', '--output', str(output)]) == 2
+    report = get(output)
+    rotation = report.pop('rotation_addendum')
+    summary = report.pop('with_rotation_addendum')
+    assert serialized(report) == serialized(original)
+    assert rotation['cases'][0]['pass'] is True
+    assert rotation['cases'][1]['reason'] == 'PREVIOUSLY_SEEN_POSE_BYTES'
+    assert rotation['cases'][1]['pose_sha256'] == prior_sha
+    assert rotation['cases'][1]['metrics'] is rotation['cases'][1]['pass'] is None
+    assert rotation['scope'] == summary['rotation_scope'] == 'PARTIAL_MAPS'
+    assert rotation['maps_scored'] == summary['rotation_maps_scored'] == [MAPS[0]]
+    assert rotation['maps_not_scored'] == summary['rotation_maps_not_scored'] == [MAPS[1]]
+    assert rotation['maps_not_supplied'] == []
+    assert rotation['pass'] is summary['pass'] is None
+    printed = [json.loads(line) for line in capsys.readouterr().out.splitlines()]
+    assert printed[1]['with_rotation_addendum'] == summary
 
 
 @pytest.mark.parametrize('corruption', ['lease', 'command_clock', 'pose_clock', 'receipt'])
