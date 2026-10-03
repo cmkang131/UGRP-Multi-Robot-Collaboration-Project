@@ -1,0 +1,36 @@
+{
+  "checked_at_utc": "2026-10-03T05:41:45.256047+00:00",
+  "execution_source_sha": "17ebce06b3a2edffb73ab82d7d2e43205758d74d",
+  "scope": "Related offline regression and two short headless development probes only; full collection/render/fit not run",
+  "pytest": {
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_agent_sim_slots.py tests/test_final_pair_fast_guard.py tests/test_review_344_envelope.py tests/test_review_344b.py tests/test_review_355.py tests/test_zone_final_pair_fast.py tests/test_zone_final_pair_heldout.py tests/test_zone_final_pair_loaded.py tests/test_zone_final_pair_review_fixes.py tests/test_zone_final_pair_v3.py",
+    "pass_line": "327 passed in 372.62s (0:06:12)",
+    "counts": {
+      "tests": 327,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "log": "/Users/changmin/projects/ugrp/outputs/v92-loaded-offline-20261003/related-final.log",
+    "log_sha256": "108d257123de86a79f8b2fdd6ff7bbcbaa6a42ff748d5a964740dfa56cc3a3a2",
+    "junit": "/Users/changmin/projects/ugrp/outputs/v92-loaded-offline-20261003/related-final.xml",
+    "junit_sha256": "6a6103f450915a998f15774457b3876e2e9e4dff6a398604d05501b8cfde76cb"
+  },
+  "protected_files_verified": 29,
+  "checks": {
+    "git_diff_check": "PASS",
+    "collect_shell_syntax": "PASS",
+    "ci_frozen_fixture_preflight": "PASS: 3 frozen fixtures present",
+    "sim_cli_plan_only": "PASS; no simulator started",
+    "schedule_bytes": 5055083,
+    "schedule_sha256": "a4754dec4f55b7b43fcfc15fa59371b544101c609ed7d079e1343d1bcfe14e3d",
+    "gzip_sha256": "8acf31c0b544e3d4488579167543a502fc8608bd3b8e19dde5b0a11a14b7f507"
+  },
+  "limits": [
+    "No v91 held-out raw read",
+    "No rendered RGB",
+    "No 720 SIM s collection",
+    "No frozen motion/camera criteria change",
+    "No calibration acceptance or student carry success claim"
+  ]
+}

@@ -24,7 +24,8 @@
 main과 열린 PR 7개의 원격 브랜치에서 `git grep RUNNABLE_ID origin/<branch> --
 harness/rgb_execution_bundle.py`, `zone-final-pair-v*`, 기본·추가 실행 목록을 모두 조회했다.
 최댓값은 v91 / 3.3.0이었다. 브랜치별 SHA와 실제 조회 출력은
-[번호 조회](reservation_scan.json)에 있다. 원격 PR 생성 직전에도 충돌을 재확인한다.
+[번호 조회](reservation_scan.json)에 있다. PR 생성 전 main과 열린 PR **8개**를
+[재조회](reservation_rescan.json)했으며, v91 / 3.3.0으로 같아 예약 번호 충돌이 없었다.
 
 설정은 [v92 JSON](../../configs/zone_final_pair_v92.json), 실행 경로는
 [추가 목록](../../configs/simulation_workflows.d/final_pair_v92.json), 일정은
@@ -137,12 +138,28 @@ ENOSPC·인터록·누락/비정상 기하는 HOST_ERROR이며 부분 raw와 해
 ## 오프라인 확인과 조정자 실행 명령
 
 새 가짜 실행기·등록 회귀는 첫 실행에서 **25 passed**였다.
-기존 관련 회귀와 최종 소스 검사 결과는 최종 검증 기록에 추가한다.
+최종 실행 소스 `17ebce06b3a2edffb73ab82d7d2e43205758d74d`의 관련 테스트 10개 파일은
+**`327 passed in 372.62s (0:06:12)`**였다. 이후 변경은 결과 요약·검증 기록이다.
+[최종 검증](final_validation.json)에 실행 명령, 로그·JUnit 위치와 해시를 남겼다.
+등록 계획만 출력하는 호출(plan-only), 셸 문법, CI 고정 자료 3개, `git diff --check`와
+기존 파일 **29개**의 시작 소스·현재 SHA-256 일치도 확인했다. 원격 CI 통과를 뜻하지 않는다.
 [무렌더 자세 검사](headless_posture_check.json)는 소스
 `e518a476f3d27d3e31a73e19410bb03adab8e48f`, 별도 고정 일정 66 SIM초다.
 8–66초의 지정 구간 **1,160/1,160** 표본이 상승·네 집게 접촉·외부 지지 없음·weld 없음이었다.
 높은 후보와 ±20 팬 전이를 확인했으며, 전체 v92 수집이나 실제 RGB 검증으로 합산하지 않는다.
+[무렌더 운동 검사](headless_motion_check.json)는 소스 `17ebce06`의 별도 70 SIM초 검사다.
+선택 구간 **1,240/1,240** 표본이 같은 상승·접촉 조건을 만족했다. 공동 회전 `.04`와
+`−.04`의 끝 5초에서 두 로봇·빔이 같은 방향으로 회전했고 빔의 평균 각속도는 각각
+약 **+.03632 / −.03629 rad/s**였다. 13개 계수 적합이나 전체 일정 통과 판정은 아니다.
 원본·해시는 기본 체크아웃의 `outputs/v92-loaded-offline-20261003/`에 로컬 보존한다.
+
+두 짧은 검사를 공용 TensorBoard의 `1003-v92-loaded-design-r2/{posture,motion}`에 추가했다.
+이벤트·실행 중 서버의 수치 읽기와 Chrome `강`의 카드 값을 대조했고, 명령 수·SIM초·모델 호출·
+기존/후보 관측 열·공동 회전 카드 6개를 고정했다. HParams 기본 네 열도 적용했다.
+새 HParams 행의 개별 화면 확인은 남아 있으며, 마지막 화면 복귀는 Chrome 창 연결 실패로
+완료하지 못했다. 새 영상은 0개이며, wall 시간·모델 응답 시간·운반 성공 수치는 만들지 않았다.
+대시보드 링크와 세부 확인 범위는 [TensorBoard 기록](tensorboard_verification.json)의 `url`,
+공용 `outputs/tensorboard-view.json`의 `v92_loaded_design_20261003`에 저장했다.
 
 전체 수집은 조정자가 아래 명령으로 실행한다. PR 최종 인계의 **40자리 소스 SHA**를
 `V92_SOURCE_SHA`에 먼저 지정한다. [collect.sh](collect.sh)는 HEAD·브랜치·clean tree·새 출력,
