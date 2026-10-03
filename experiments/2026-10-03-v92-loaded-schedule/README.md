@@ -53,7 +53,13 @@ D4는 loaded 카메라만 사전에 명시한 **8초 준비+8초 측정**, 반�
 
 ## 검증과 인계
 
-관련 회귀검사와 개정 일정의 정확한 0–70초 접두 구간(prefix)을 무렌더로 검사한다. 검사 결과는 `revision_d1_d4/`에 별도 저장한다. 전체 720초, 실제 RGB 추적, 모형 적합·승인, 학생 운반 성공은 조정자의 후속 검증이다. 금지된 v91 held-out 원본은 읽지 않는다.
+소스 `83032b6d62e0addff51c441e22f6b1e38885961c`에서 새 v92 테스트 **27 passed in 84.76s**, 관련 실행기·인터록·슬롯 테스트 **89 passed in 22.81s**를 확인했다. [커밋 전 검증](revision_d1_d4/precommit_validation.json)에 로그/JUnit 해시를 남겼다. 보호 파일 29개, plan-only, 셸 문법, 고정 fixture 3개, `git diff --check`도 통과했다.
+
+[70초 무렌더 검사](revision_d1_d4/headless_revised_check.json)는 개정 일정의 정확한 0–70초 접두 구간(prefix), **1,244개 명령**을 실행했다. 전체 1,401표본 중 들기 전 82표본은 not_lifted, 나머지 1,319표본은 lifted였다. 사전 지정한 [8,70)초의 **1,240/1,240표본**이 빔 바닥 1 cm 이상·네 집게 접촉·외부 지지 없음·weld 없음이었다. HIGH의 32/38/48/60/68초에서 두 로봇 모두 기하 경계와 가림 없는 중간점 90열이었다. 기존 hover의 14초는 0열이다. HIGH 첫 측정 [32,40)초의 빔 바닥 최솟값은 약 114.816 mm였다. 이는 렌더 검출 수치가 아니다.
+
+표준 세션 래퍼는 `/bin/ps` 차단으로 물리 시작 전에 종료됐다. 자식·잠금 정리 확인 뒤 같은 소스를 자식 없는 단일 프로세스로 실행하고 종료 후 SIM 슬롯/공용 잠금 해제를 확인했다. 시작/종료 부하 평균과 원본은 `/Users/changmin/projects/ugrp/outputs/v92-loaded-d1-d4-20261003/`에 보존했다. [최종 검증](revision_d1_d4/validation.json).
+
+[TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1003-v92-%28high-d1d4%7Cloaded-design-r2%29%2F&tagFilter=%5E%28result%2F%28sim_s%7Ccommands%7Cmodel_calls%29%7Coffline%2F%28lifted_selected_samples%7Ccontroller_edge_columns%7Ccandidate_edge_columns%29%29%24&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flifted_selected_samples%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcontroller_edge_columns%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcandidate_edge_columns%22%7D%5D&scalarSmoothing=0#timeseries)의 새 `1003-v92-high-d1d4/high-prefix`를 기존 두 짧은 검사와 함께 표시했다. 이벤트·서버 API·Chrome 강의 실제 카드 값과 6개 pin을 대조하고 HParams 기본 네 열을 다시 적용했다. 개별 새 HParams 행은 미확인이다. 새 영상은 0개다. [표시 기록](revision_d1_d4/tensorboard_verification.json). 전체 720초, 실제 RGB 추적, 모형 적합·승인, 학생 운반 성공은 조정자의 후속 검증이다. 금지된 v91 held-out 원본은 읽지 않는다.
 
 수집 전 조정자는 D5의 v92 전용 조립기(assembler)와 D2 로더 계약을 준비하고 **B″·일정·조립기 해시를 #219에 공개 고정**해야 한다. 이번 PR의 두 해시만으로 D5가 완료된 것은 아니다. 독립 검토의 변경분 재검토와 렌더 수집은 남아 있다.
 
