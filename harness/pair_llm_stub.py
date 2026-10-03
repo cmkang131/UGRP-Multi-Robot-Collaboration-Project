@@ -6,8 +6,8 @@ A stub is a function ``respond(system_text, user_text) -> reply text`` behind
 proxy would see (the system text and the user JSON), never the host.
 
 ``cooperative`` is a deterministic script, not a model: the first call of a robot claims the order sheet's
-pair order with its own fixed role, every later call says ``continue``; in ``peer_ko`` the first call also
-greets the partner in Korean and the first call after a delivered message answers it. It is used to prove
+pair order with its own fixed role, every later call says ``continue``; in ``peer_nl`` the first call also
+greets the partner (in Korean here; the pair has no language rule) and the first call after a delivered message answers it. It is used to prove
 plumbing (routing, gating, ledger, cost, language flags) and is never a result about any model.
 ``scripted`` replays an explicit per-(robot, call index) table for the failure-mode tests.
 """

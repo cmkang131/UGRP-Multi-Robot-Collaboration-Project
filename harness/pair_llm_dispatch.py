@@ -30,7 +30,7 @@ from harness import zone_study_offline as zo
 from harness import zone_study_prompts_ko as pk
 from harness import zone_study_protocol as zp
 from harness.llm_completion import generated_utterances  # noqa: F401  (re-exported for callers)
-from harness.pair_llm_prompts_ko import PAIR_CONDITIONS, PAIR_ROBOTS, PAIR_ROLES, PROMPT_VERSION
+from harness.pair_llm_prompts_ko import PAIR_CONDITIONS, PAIR_ROBOTS, PAIR_ROLES, PROMPT_VERSION, study_spec
 from harness.zone_event_scheduler import CallPolicy, CallReply, EventScheduler  # noqa: F401
 from harness.zone_sim_cost import Attempt, call_cost, delivery_delay_s, params
 from harness.zone_study_contract import ContractViolation, digest
@@ -38,7 +38,7 @@ from harness.zone_study_decisions import DECISION_POLICY, DecisionLimits, Decisi
 from harness.zone_study_inputs import (belief_skeleton, command_entry, provenance, static_map_for_call)
 
 DISPATCH_VERSION = 'ugrp.pair_llm_dispatch.v1'
-BUNDLE_ID = 'zone-pair-llm-v97'
+BUNDLE_ID = 'zone-pair-llm-v99'
 TAP_FRAMES = 64
 #: LLM-arm call policy of the viability test: the study defaults except the call cap (about 5 busy re-asks
 #: in a 300 SIM s case plus start and event wakes) and no post-send retry (the registered live driver
@@ -180,8 +180,10 @@ class PairTrial(zo.OfflineTrial):
             raise ContractViolation('pair decisions require one outstanding call per robot')
         self.links = dict(links)
         self.decision_limits = decision_limits or DecisionLimits()
-        self.spec = zp.spec(condition)
-        self.condition, self.seed = condition, int(seed)
+        # ``arm`` is the pair's own name (peer_nl); ``condition`` is the sealed study name the borrowed
+        # study methods validate against (``study_spec``). Everything the pair writes carries ``arm``.
+        self.arm, self.condition, self.seed = condition, study_spec(condition), int(seed)
+        self.spec = zp.spec(self.condition)
         self.params = cost_params or params()
         self.library = zi._NoStoredFrames()
         self.horizon_s, self.code_sha, self.bundle_id = float(horizon_s), code_sha, bundle_id
@@ -193,7 +195,7 @@ class PairTrial(zo.OfflineTrial):
         self.sheet = self.source.sheet()
         self.leader_id = None
         self.actors = PAIR_ROBOTS
-        self.run_id = run_id or f'{condition}-{self.scenario_id}-s{self.seed}'
+        self.run_id = run_id or f'{self.arm}-{self.scenario_id}-s{self.seed}'
         self.client_factory, self.send_ledger = model_adapter.client_factory, model_adapter.send_ledger
         # ``OfflineTrial.cost_summary`` reads ``wire.requests``; the pair never uses the fixture wire (the
         # real count is reconciled from the send ledger), so this is a zero placeholder reported as None.
@@ -207,7 +209,7 @@ class PairTrial(zo.OfflineTrial):
                                      model_settings_sha256=digest(self.client_factory.settings),
                                      prompt_template_sha256=self.prompt_template_sha256,
                                      cost_profile_id=self.params.version)
-        self.channel = zp.Transport(condition, seed=self.seed, robots=PAIR_ROBOTS,
+        self.channel = zp.Transport(self.condition, seed=self.seed, robots=PAIR_ROBOTS,
                                     vocabulary=zo._vocabulary(self.sheet, self.bundle), delivery_owner=zo.BUS_OWNER,
                                     delivery_delay_sim_s=delivery_delay_s(1, self.params))
         self.channel.open_window('w1', at_sim_s=0.)
@@ -242,7 +244,7 @@ class PairTrial(zo.OfflineTrial):
             raise ContractViolation(f'no own-input snapshot of {actor} at {sim_time_s}')
         frame = snap['frame']
         payload = pi.build_payload(
-            robot_id=actor, condition=self.condition, request_id=request_id, sim_time_s=sim_time_s,
+            robot_id=actor, condition=self.arm, request_id=request_id, sim_time_s=sim_time_s,
             static_map=self.static_map, order_sheet=self.source.sheet(),
             own_rgb_refs=[pi.own_rgb_ref(actor, frame.index, frame.t, frame.sha256)],
             own_command_history=snap['history'], self_belief=snap['belief'], inbox=snap['inbox'],
@@ -315,6 +317,11 @@ class PairTrial(zo.OfflineTrial):
     def sim_output_tokens(self, raw, utterances):
         return pk.count_tokens(raw)
 
+    def channel_summary(self):
+        row = zo.OfflineTrial.channel_summary(self)
+        row.update(condition=self.arm, study_spec=self.condition)
+        return row
+
     def cost_summary(self):
         row = zo.OfflineTrial.cost_summary(self)
         row.update(wire_requests=None, wire_requests_basis='requires_provider_reconciliation')
@@ -349,7 +356,8 @@ class PairTrial(zo.OfflineTrial):
     # -- records ----------------------------------------------------------------------------
     def study_config(self) -> dict:
         policy = {k: getattr(self.policy, k) for k in self.policy.__dataclass_fields__}
-        return {'schema': DISPATCH_VERSION, 'execution_bundle_id': self.bundle_id, 'condition': self.condition,
+        return {'schema': DISPATCH_VERSION, 'execution_bundle_id': self.bundle_id, 'condition': self.arm,
+                'study_spec': self.condition,
                 'topology': self.spec.topology, 'encoding': self.spec.encoding, 'robots': list(PAIR_ROBOTS),
                 'roles': dict(PAIR_ROLES), 'seed': self.seed, 'model_settings': dict(self.model_settings),
                 'prompt_version': PROMPT_VERSION, 'prompt_template_sha256': self.prompt_template_sha256,

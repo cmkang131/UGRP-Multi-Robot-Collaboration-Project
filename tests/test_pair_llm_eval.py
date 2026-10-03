@@ -49,5 +49,5 @@ def test_trial_metrics_without_a_trial_is_the_rule_row():
     row = ev.trial_metrics(condition='rule', verdict={'success_provisional': True, 'judge_status': ev.JUDGE_STATUS},
                            command_counts={'r1': 4, 'r2': 6}, end_sim_s=12.)
     assert row['success'] is True and row['command_count_total'] == 10 and row['model_calls'] == 0
-    assert row['self_sabotage'] == {'events': 0, 'rows': []} and row['korean']['share'] is None
+    assert row['self_sabotage'] == {'events': 0, 'rows': []} and row['language']['share'] is None and row['language']['gate'] is False
     assert math.isclose(row['end_sim_s'], 12.)

@@ -30,9 +30,9 @@ def user(row):
 
 @pytest.fixture(scope='module')
 def peer_run(tmp_path_factory):
-    """One cooperative peer_ko run on the real GatedRuntime (blind provider): shared by the read-only tests."""
+    """One cooperative peer_nl run on the real GatedRuntime (blind provider): shared by the read-only tests."""
     tmp = tmp_path_factory.mktemp('peer')
-    result, out, model = run_arm(tmp, 'peer_ko', cap_s=12.)
+    result, out, model = run_arm(tmp, 'peer_nl', cap_s=12.)
     return result, out, model
 
 
@@ -65,11 +65,11 @@ def test_messages_route_between_r1_and_r2_and_only_to_the_partner(peer_run):
     assert all(first_seen[mid] > created[mid] for mid in created)
 
 
-def test_the_korean_message_check_is_recorded_and_all_stub_messages_are_korean(peer_run):
+def test_the_language_report_is_recorded_for_every_message_and_is_not_a_gate(peer_run):
     result, out, _ = peer_run
-    korean = result['metrics']['korean']
-    assert korean['messages'] == 4 and korean['korean'] == 4 and korean['share'] == 1.0
-    assert korean['threshold_hangul_ratio'] == .9
+    language = result['metrics']['language']
+    assert language['messages'] == 4 and language['hangul_ratio_ge_0_9'] == 4 and language['share'] == 1.0
+    assert language['gate'] is False and 'korean' not in result['metrics']
     assert all(r['hangul_ratio'] >= .9 and r['flags'] == [] for r in rows(out / 'llm' / 'language.jsonl'))
     assert result['metrics']['messages'] == {'sent': 4, 'accepted': 4, 'rejected': 0}
 
@@ -78,14 +78,17 @@ def test_an_english_message_is_delivered_but_flagged(tmp_path):
     english = {'recipients': ['r2'], 'reply_to': None, 'text': 'Starting the carry now, please follow me.'}
     model = StubModel(scripted({('r1', 0): (claim_action('r1', {'order_id': 'cargoX', 'destination_zone': 'B'}),
                                             [english])}))
-    result, out, _ = run_arm(tmp_path, 'peer_ko', model, cap_s=12.)
+    result, out, _ = run_arm(tmp_path, 'peer_nl', model, cap_s=12.)
     flagged = [r for r in rows(out / 'llm' / 'language.jsonl') if r['sender'] == 'r1']
     assert flagged[0]['accepted'] is True and flagged[0]['korean'] is False and flagged[0]['flags']
     assert flagged[0]['hangul_ratio'] < .9
     inbox = [m for row in requests_of(out) for m in user(row).get('inbox', ()) if m['sender'] == 'r1']
     assert inbox and inbox[0]['body']['text'] == english['text']
-    assert result['metrics']['korean']['korean'] < result['metrics']['korean']['messages']
-    assert result['metrics']['korean']['flagged'] >= 1
+    language = result['metrics']['language']
+    assert language['hangul_ratio_ge_0_9'] < language['messages'] and language['flagged'] >= 1
+    assert language['gate'] is False
+    # delivered, costed, never rejected for its language
+    assert result['metrics']['messages']['rejected'] == 0 and flagged[0]['rejection'] is None
 
 
 def test_no_comm_has_no_channel_and_a_message_is_refused_at_validation(tmp_path):
@@ -277,7 +280,7 @@ def test_audit_c_the_wire_carries_exactly_two_images_own_frame_and_map_figure(pe
         seen_requests += 1
     assert seen_requests == result['metrics']['http_attempts']
     assert map_sha == user(requests_of(out)[0])['static_map']['schematic_ref']['png_sha256']
-    assert registered['condition'] == 'peer_ko'
+    assert registered['condition'] == 'peer_nl'
 
 
 def test_each_request_image_is_the_senders_own_camera(peer_run):
@@ -301,14 +304,14 @@ def test_sim_cost_is_charged_and_wall_time_is_recorded_apart(peer_run):
     study = json.loads((out / 'llm' / 'study_config.json').read_text())
     assert study['cost_params']['version'] == 'zone_sim_cost.v1' and study['cost_params']['provisional'] is True
     assert study['model_settings']['model'] == 'stub-pair-llm-v1' and study['model_settings']['temperature'] == 0.
-    assert study['prompt_version'] == 'ugrp.pair_llm_prompts_ko.v1' and study['robots'] == ['r1', 'r2']
+    assert study['prompt_version'] == 'ugrp.pair_llm_prompts_ko.v2' and study['robots'] == ['r1', 'r2']
     # the thinking charge moves the SIM clock; wall latency never does (the stub's wall latency is ~0 but nonzero)
     scheduler = rows(out / 'llm' / 'scheduler_events.jsonl')
     starts = [e for e in scheduler if e.get('kind') == 'call_start']
     assert len(starts) == len(calls) and result['trial']['calls'] == len(calls) == metrics['model_calls']
     assert metrics['command_count_total'] == sum(metrics['command_count'].values()) > 0
     assert set(metrics) >= {'success', 'end_sim_s', 'command_count', 'model_calls', 'response_wall_s', 'input_tokens',
-                            'output_tokens', 'korean', 'messages', 'self_sabotage', 'claims', 'model_cost_sim_s'}
+                            'output_tokens', 'language', 'messages', 'self_sabotage', 'claims', 'model_cost_sim_s'}
 
 
 def test_rule_arm_pays_no_model_cost_and_records_the_same_metric_keys(tmp_path):
@@ -332,7 +335,7 @@ def test_success_comes_only_from_the_separate_evaluator(tmp_path):
         assert win['metrics']['success_source'] == 'pair_llm_eval.judge'
     assert set(results.values()) == {(True, False)}
     # no model request ever contained a verdict, a success flag or a beam position
-    for condition in ('no_comm', 'peer_ko'):
+    for condition in ('no_comm', 'peer_nl'):
         text = ''.join(row['user'] + row['system'] for row in requests_of(tmp_path / f'win-{condition}'))
         assert not re.search(r'success|verdict|beam_xyz|trajectory|physical', text)
 
@@ -357,12 +360,12 @@ def test_a_host_error_keeps_partial_records_and_classifies_enospc(tmp_path):
 
 def test_cli_plans_without_running_and_refuses_live_and_missing_calibration(capsys):
     from scripts import run_pair_llm as cli
-    args = ['--condition', 'peer_ko', '--expected-source-sha', 'a' * 40, '--output',
+    args = ['--condition', 'peer_nl', '--expected-source-sha', 'a' * 40, '--output',
             '/Users/changmin/projects/ugrp/outputs/never-created', '--synthetic-plumbing-calibration']
     assert cli.main(args) == 0
     plan = json.loads(capsys.readouterr().out)
     assert plan['execution_started'] is False and plan['model_kind'] == 'stub' and plan['research_result'] is False
-    assert plan['execution_bundle_id'] == 'zone-pair-llm-v97' and plan['workflow_version'] == '3.9.0'
+    assert plan['execution_bundle_id'] == 'zone-pair-llm-v99' and plan['workflow_version'] == '3.11.0'
     assert not Path('/Users/changmin/projects/ugrp/outputs/never-created').exists()
     with pytest.raises(ValueError, match='live model calls are disabled'):
         cli.main(args + ['--live'])
@@ -377,8 +380,8 @@ def test_cli_plans_without_running_and_refuses_live_and_missing_calibration(caps
 def test_workflow_is_registered_in_the_managed_catalog():
     from sim import workflow_manager as wm
     row, _ = wm._row(contract.ROOT, contract.WORKFLOW_ID)
-    assert row['version'] == '3.9.0' and row['entry'] == 'scripts/run_pair_llm.py'
+    assert row['version'] == '3.11.0' and row['entry'] == 'scripts/run_pair_llm.py'
     plan = wm.plan(contract.ROOT, contract.WORKFLOW_ID, ['--condition', 'no_comm', '--expected-source-sha', 'a' * 40])
     assert not plan['execution_started'] and plan['command'][1:3] == ['-m', 'scripts.run_pair_llm']
-    assert contract.WORKFLOW == 'configs/simulation_workflows.d/pair_llm_v97.json'
+    assert contract.WORKFLOW == 'configs/simulation_workflows.d/pair_llm_v99.json'
     assert 'stub' in json.dumps(json.loads((contract.ROOT / contract.WORKFLOW).read_text()))

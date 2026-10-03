@@ -19,29 +19,37 @@ ROOT = contract.ROOT
 HANGUL = re.compile('[가-힣]')
 
 
-# --------------------------------------------------------------------------- two-robot Korean prompt
+# --------------------------------------------------------------------------- two-robot prompt (no language rule)
 
 @pytest.mark.parametrize('condition', prompts.PAIR_CONDITIONS)
 @pytest.mark.parametrize('rid', prompts.PAIR_ROBOTS)
-def test_prompt_is_two_robot_korean_and_names_no_third_robot(condition, rid):
+def test_prompt_is_two_robot_and_names_no_third_robot(condition, rid):
     text = prompts.system_prompt(condition, rid, cap_window=6, cap_robot=3)
     assert 'r3' not in text and '세 로봇' not in text and '세 대' not in text
     partner = prompts.partner_of(rid)
     assert f'로봇 {rid}입니다' in text and partner in text
     assert prompts.PAIR_ROLES[rid] in text and prompts.PAIR_ROLES[partner] in text
     assert len(HANGUL.findall(text)) / len(text) > .2
-    if condition == 'peer_ko':
-        assert '한국어' in text                      # the study KO_LANGUAGE rule is part of the prompt
+    # User decision 2026-10-03: NO language requirement anywhere in the prompt (the instruction text is Korean).
+    assert '한국어' not in text
+    assert 'free_ko' not in text
+    if condition == 'peer_nl':
+        assert '정해져 있지 않습니다' in text and '영어도 됩니다' in text
     else:
         assert '메시지' in text                       # no_comm states that there is no channel
 
 
-def test_prompt_reuses_study_language_block_with_the_three_robot_text_rewritten():
+def test_prompt_reuses_study_blocks_with_the_three_robot_text_rewritten_and_the_language_rule_dropped():
     from harness import zone_study_prompts_ko as pk
     assert 'r3' in pk.KO_ROLE_LINE['peer'] and '세 로봇' in pk.KO_ROLE_LINE['peer']   # the study text is untouched
-    assert 'r3' not in prompts.system_prompt('peer_ko', 'r1') and '세 로봇' not in prompts.system_prompt('peer_ko', 'r1')
-    assert 'r3' not in prompts.KO_PAIR_LANGUAGE and 'r3' not in prompts.KO_PAIR_MESSAGES
-    assert '세 로봇' not in prompts.KO_PAIR_LANGUAGE and '세 로봇' not in prompts.KO_PAIR_MESSAGES
+    assert 'r3' not in prompts.system_prompt('peer_nl', 'r1') and '세 로봇' not in prompts.system_prompt('peer_nl', 'r1')
+    assert 'r3' not in prompts.KO_PAIR_LITERALS and 'r3' not in prompts.KO_PAIR_MESSAGES
+    assert '세 로봇' not in prompts.KO_PAIR_LITERALS and '세 로봇' not in prompts.KO_PAIR_MESSAGES
+    # the study text that carries the language rule is untouched; the pair does not use it
+    assert '한국어' in pk.KO_LANGUAGE and '한국어' in pk.KO_MESSAGES_KO
+    assert all('한국어' not in text for slot in prompts.PAIR_CHANNEL_SLOTS.values() for text in slot.values())
+    assert prompts.PROMPT_VERSION == 'ugrp.pair_llm_prompts_ko.v2'
+    assert prompts.study_spec('peer_nl') == 'peer_ko' and prompts.study_spec('no_comm') == 'no_comm'
     digest = prompts.prompt_template_sha256()
     assert re.fullmatch('[0-9a-f]{64}', digest) and digest == prompts.prompt_template_sha256()
 
@@ -49,10 +57,10 @@ def test_prompt_reuses_study_language_block_with_the_three_robot_text_rewritten(
 # --------------------------------------------------------------------------- closed payload
 
 def test_payload_is_closed_and_pair_shaped():
-    inputs, source, _ = make_inputs('peer_ko', 'r2')
+    inputs, source, _ = make_inputs('peer_nl', 'r2')
     payload = inputs.payload_dict()
     assert pi.payload_violations(payload, pinned=source.pinned) == []
-    assert set(payload) <= pi.allowlist('peer_ko')
+    assert set(payload) <= pi.allowlist('peer_nl')
     assert payload['order_sheet']['team_size'] == 2
     assert payload['channel']['can_send_to'] == ['r1']
     assert 'r3' not in json.dumps(payload)
@@ -63,7 +71,7 @@ def test_payload_is_closed_and_pair_shaped():
 @pytest.mark.parametrize('key', ['gt_pose', 'peer_status', 'contact', 'success', 'qpos', 'beam_xyz_m',
                                  'top_camera', 'robot_poses', 'physical_success'])
 def test_forbidden_or_unknown_keys_are_refused(key):
-    inputs, source, _ = make_inputs('peer_ko', 'r1')
+    inputs, source, _ = make_inputs('peer_nl', 'r1')
     payload = inputs.payload_dict()
     payload[key] = [0., 0., 0.]
     assert pi.payload_violations(payload, pinned=source.pinned)
@@ -73,11 +81,11 @@ def test_partner_envelope_only_and_no_inbox_in_no_comm():
     envelope = {'schema': 'ugrp.zone_study_message.v1', 'message_id': 'w1-r2-1', 'sender': 'r2',
                 'recipients': ['r1'], 'created_at_sim_s': 1., 'encoding': 'free_ko', 'reply_to': None,
                 'body': {'text': '시작하겠습니다.'}}
-    inputs, source, _ = make_inputs('peer_ko', 'r1', inbox=[envelope], t=3.)
+    inputs, source, _ = make_inputs('peer_nl', 'r1', inbox=[envelope], t=3.)
     assert pi.payload_violations(inputs.payload_dict(), pinned=source.pinned) == []
     wrong = dict(envelope, sender='r1')
     with pytest.raises(ContractViolation):
-        make_inputs('peer_ko', 'r1', inbox=[wrong], t=3.)
+        make_inputs('peer_nl', 'r1', inbox=[wrong], t=3.)
     with pytest.raises(ContractViolation):
         make_inputs('no_comm', 'r1', inbox=[envelope], t=3.)
 
@@ -85,7 +93,7 @@ def test_partner_envelope_only_and_no_inbox_in_no_comm():
 # --------------------------------------------------------------------------- exactly two images
 
 def test_request_carries_exactly_two_images_own_frame_and_map_figure():
-    inputs, _, bundle = make_inputs('peer_ko', 'r1')
+    inputs, _, bundle = make_inputs('peer_nl', 'r1')
     request = pi.build_request(inputs, window={'window_id': 'w1', 'max_utterances': 6, 'max_your_utterances': 3})
     assert len(request['images']) == 2 and len(request['image_refs']) == 2
     labels = [row['label'] for row in request['image_refs']]
@@ -133,7 +141,7 @@ def test_audit_b_public_map_projection_has_no_landmark_tag_or_pose_keys():
         text = json.dumps(projection)
         assert not re.search(r'tag_?\d|aruco|apriltag', text, re.I)
     # the payload's static_map is exactly this projection plus its hashes
-    inputs, _, bundle = make_inputs('peer_ko', 'r1')
+    inputs, _, bundle = make_inputs('peer_nl', 'r1')
     assert inputs.payload_dict()['static_map']['public_map'] == bundle['public_map']
 
 
@@ -231,6 +239,27 @@ def test_bundle_records_everything_a_result_depends_on():
             assert row['model']['model'] == 'stub-pair-llm-v1' and row['model']['temperature'] == 0.
             assert 'No seed' in row['model']['seed_statement']
             assert re.fullmatch('[0-9a-f]{64}', row['prompt']['template_sha256'])
-    live = contract.bundle('peer_ko', kind='live')['model']
+    live = contract.bundle('peer_nl', kind='live')['model']
     assert live['model'] == 'gemini-3.8-flash' and live['temperature'] == .2
     assert live['proxy_url'].startswith('http://127.0.0.1:') and live['driver_profile']['sha256']
+
+
+# --------------------------------------------------------------------------- peer_nl naming (user decision 2026-10-03)
+
+def test_the_robot_is_told_peer_nl_and_free_text_never_the_sealed_korean_names():
+    inputs, _, _ = make_inputs('peer_nl', 'r1')
+    request = pi.build_request(inputs, window={'window_id': 'w1'})
+    system, user = (m['content'] for m in request['messages'])
+    assert '"condition": "peer_nl"' in user and request['condition'] == 'peer_nl'
+    assert pi.pair_channel_section('peer_nl', 'r1')['encoding'] == 'free_text'
+    assert 'peer_ko' not in system + user and 'free_ko' not in system + user
+
+
+def test_the_bundle_records_the_arm_name_the_sealed_spec_name_and_that_language_is_not_required():
+    from harness import pair_llm_contract as contract
+    row = contract.bundle('peer_nl')
+    assert row['condition'] == 'peer_nl' and row['arm'] == 'C-llm-nl'
+    assert row['prompt']['study_spec'] == 'peer_ko' and 'no language requirement' in row['prompt']['language']
+    assert row['execution_bundle_id'] == 'zone-pair-llm-v99' and row['workflow_version'] == '3.11.0'
+    assert row['inter_robot_channels'] == ['dialogue', 'pair_status']
+    assert 'peer_ko' not in contract.CONDITIONS and contract.CONDITIONS == ('rule', 'no_comm', 'peer_nl')

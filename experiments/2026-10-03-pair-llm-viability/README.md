@@ -1,9 +1,35 @@
-# v97 두 로봇 짝 운반 LLM 판단 층 — 가능성 시험 (배관 단계, 연구 결과 아님)
+# v99 두 로봇 짝 운반 LLM 판단 층 — 가능성 시험 (배관 단계, 연구 결과 아님)
 
-번들 `zone-pair-llm-v97`, 워크플로 3.9.0, 상태 `DRAFT_UNSEALED`, `research_result=false`. 이슈 #219 참조.
+번들 `zone-pair-llm-v99`, 워크플로 3.11.0, 상태 `DRAFT_UNSEALED`, `research_result=false`. 이슈 #219 참조.
 2026-10-03 사용자 결정("일단 지금 상황에서, llm을 쓰고 되는지를 보자 그 다음에 고도화를 해나가자")의
-첫 단계다. **이 문서의 어떤 숫자도 운반 성공·모델 성능·조건 간 효율에 대한 결과가 아니다.** 모델 호출은
-한 번도 하지 않았다(가짜 모델만 사용). 첫 실제 호출 시험은 조정자(coordinator)가 따로 승인한다.
+첫 단계다. **이 문서의 어떤 숫자도 운반 성공·모델 성능·조건 간 효율에 대한 결과가 아니다.** 이 문서가
+기록하는 실행에서 모델 호출은 한 번도 하지 않았다(가짜 모델만 사용).
+
+## 2026-10-03 사용자 결정 (두 건) — 이 문서의 변경 이력
+
+사용자 말: **"걍 한국어 조건 뺴주라. 그리고, llm 실제로 연결해서 써도 돼"** (조정자 전달).
+
+1. **한국어 요구 조건을 뺀다.** 조정자의 해석(사용자에게 알려 정정 가능): 한국어 *언어 요구*를 없애고
+   자연어 동료 대화를 통신 조건으로 유지한다. 이에 따라
+   - 조건 이름 `peer_ko` → **`peer_nl`**(`rule` / `no_comm` / `peer_nl`);
+   - 프롬프트에서 `KO_LANGUAGE`와 "한국어 발화" 요구를 뺐다. 메시지 언어는 자유이며 영어도 된다
+     (`harness/pair_llm_prompts_ko.py`, `PROMPT_VERSION=...v2`). 지시문 자체는 재사용한 스터디 한국어 문장이라
+     한국어로 남는다(영어 프롬프트는 별도 결정거리);
+   - `language_report`(한글 비율·표시)는 **기록용 지표**로만 남긴다(`metrics.language`, `gate=false`).
+     어느 메시지도 언어 때문에 거절·재작성되지 않는다(봉인된 스터디 전송 코드가 이미 "전달하고 표시만" 한다).
+     게이트가 아니고 통과/실패 필드도 아니다;
+   - 봉인된 스터디 코드는 열린 자유 대화 채널을 `peer_ko`라는 이름으로 등록해 두었다. 그래서 `pair_llm_prompts_ko.STUDY_SPEC`
+     한 곳에서 `peer_nl → peer_ko`로 옮겨 봉인 코드(`zp.spec`·`zp.Transport`·`validate_reply`·`zc.condition`)를 부르고,
+     짝 층의 기록·번들·CLI·프롬프트·로봇이 보는 `condition`/`encoding`(`free_text`)은 `peer_nl`을 쓴다. 받은 메시지
+     봉투의 `encoding` 필드만 봉인된 값 `free_ko`로 남는다(봉인 검증기가 요구).
+2. **실제 LLM 호출 허용.** 이 커밋은 호출 경로를 아직 켜지 않았다(`--live`는 여전히 거절). 사용자 요청으로
+   작업이 일시 중지되었다(아래 "다음 단계").
+
+**번들 번호**: 기존 v97 가짜 모델 스모크(소스 `b201f777`, 한국어 `peer_ko` 조건)가 이미 `bundle.json`과 해시를
+남겼으므로 실행 기록이 있는 번들로 보고 `docs/execution_versioning.md` 2번(설정을 바꾸면 새 버전)에 따라
+**v99 / 워크플로 3.11.0**으로 올렸다. 조회: main + 열린 PR에서 최댓값은 v98 / 3.10.0(#363)이며 v99·3.11.0은 비어 있었다.
+v97은 폐기된 가짜 모델 배관 초안이다. `outputs/pair-llm-v97-smoke/` 원본은 그대로 두었다. 아래 2단계 표는 v97
+기록이며 v99의 증거가 아니다.
 
 ## 무엇을 만들었나
 
@@ -14,7 +40,7 @@
 | --- | --- | --- |
 | `rule` | C-rule | 모델 없음. 두 로봇이 한가해지면 곧바로 같은 청구(claim)를 낸다(기존 `Runtime`, 수정 없음) |
 | `no_comm` | C-llm-nocomm | 각 로봇의 모델이 자기 RGB·정적 지도·주문서·자기 명령 이력만 보고 판단. 메시지 없음 |
-| `peer_ko` | C-llm-nl | 위와 같고 r1↔r2 한국어 자유 대화 채널이 추가됨 |
+| `peer_nl` | C-llm-nl | 위와 같고 r1↔r2 자연어 자유 대화 채널이 추가됨(언어 요구 없음) |
 
 세 조건 모두 고정 열거형 짝 상태(스크립트 기술 내부)는 켜져 있고, 지도·주문·300 SIM초 한도·평가기가 같다.
 
@@ -28,8 +54,8 @@
   조건도 매 틱 재시도). 수락·되돌릴 수 없는 거절이면 소진한다. 허가 대기 중 `abort`/`hold`가 받아들여지면
   허가를 취소한다. 짝 작업 도중 중복 청구는 `BUSY:pair_carry:<job>`로 거절한다.
 - **재사용**: 존-스터디의 `DecisionScheduler`/`EventScheduler`, SIM 비용 모델 `zone_sim_cost.v1`(잠정),
-  `SendLedger`(요청·응답 원문 보존), `GeminiProxyCompleter`, 메시지 전송·`language_report`(한글 비율
-  0.9 미만은 전달하되 표시). 스터디 계약이 세 로봇(`ROBOTS`, `team_size=3`)에 고정되어 있어 봉인된 코드를
+  `SendLedger`(요청·응답 원문 보존), `GeminiProxyCompleter`, 메시지 전송·`language_report`(기록만 하고
+  전달·표시한다). 스터디 계약이 세 로봇(`ROBOTS`, `team_size=3`)에 고정되어 있어 봉인된 코드를
   고치지 않고 **두 로봇용 프롬프트·입력·시도(trial)를 따로** 두었다(`harness/pair_llm_*.py`).
   "세 로봇 r1, r2, r3" 문구는 두 로봇 문구로 바꾸고 `r3`/`세 로봇`이 남지 않음을 시험으로 고정했다.
 - **입력 경계**: 자기 `robot_cam` RGB 1장 + 정적 지도 그림 1장(요청당 정확히 2장), 정적 지도 투영, 주문서,
@@ -51,7 +77,7 @@
 
 ## 1단계: 배관 시험 (가짜 모델, 물리 없음)
 
-`tests/test_pair_llm_{inputs,runtime,case,eval}.py` 58개. 핵심:
+`tests/test_pair_llm_{inputs,runtime,case,eval}.py` 60개(v97에서 58개 + `peer_nl` 이름·번들 기록 2개). 핵심:
 
 - 메시지가 r1↔r2로만 흐르고 전달은 보낸 호출의 SIM 비용 뒤에 일어난다. 영어 메시지는 전달하되 표시한다.
   `no_comm`에서 `messages`가 있으면 검증 단계에서 거절한다.
@@ -63,13 +89,13 @@
 - 성공은 별도 평가기에서만 나온다. 같은 가짜 빔 궤적에서 세 조건이 같은 판정을 받는다.
 - ENOSPC는 `HOST_ERROR`(`failure.class=ENOSPC`)로 분류하고 부분 기록을 남긴다.
 
-## 2단계: 짧은 SIM 스모크 (렌더링 물리, 가짜 모델, 실제 모델 호출 없음)
+## 2단계: 짧은 SIM 스모크 — v97 기록 (렌더링 물리, 가짜 모델, 실제 모델 호출 없음)
 
 소스 `b201f777`(커밋·깨끗한 트리), SIM 슬롯 `sim-claude-pair-llm-v97`(owner claude, 비타이밍), `nice +10`,
 조건마다 60 SIM초, 시드 911, 지도 `zone_wide_door_geometry_v3`. 원본은 기본 체크아웃
 `outputs/pair-llm-v97-smoke/<조건>-60s/`(로컬 보관이며 원격 백업이 아님).
 
-| 조건 | 결과 상태 | 명령(r1+r2) | 모델 호출 | 모델 SIM 비용 | 입력/출력 토큰 | 메시지 | 한국어 | 청구 허가 | wall(s) | 평가기 |
+| 조건(v97 이름) | 결과 상태 | 명령(r1+r2) | 모델 호출 | 모델 SIM 비용 | 입력/출력 토큰 | 메시지 | 한국어 | 청구 허가 | wall(s) | 평가기 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | rule | COLLECTED_UNQUALIFIED | 191+191 | 0 | 0 | 0/0 | 0 | - | - | 93.8 | NOT_IN_ZONE |
 | no_comm | COLLECTED_UNQUALIFIED | 191+191 | 12 | 30.8 s | 35970/528 | 0 | - | 2 | 84.2 | NOT_IN_ZONE |
@@ -103,23 +129,31 @@ peer_ko `306ca258f6fa…`. 번들 해시: rule `9de77e7fb751…`, no_comm `b7cbb
    실행은 비트 단위 재현 불가, 요청·응답 원문과 해시가 재생 기록), 프록시 할당량 미확인.
 6. 허가 규칙(위)은 이 층의 설계 결정이다. 다른 규칙(예: 대기 중 허가 만료)은 비교하지 않았다.
 7. 공용 파일 충돌 가능: `scripts/run_ci_tests.py`(패턴 1줄), `tests/test_simulation_workflow_manager.py`
-   (카탈로그 개수 +1, 샘플 1줄). 번들 번호 v97은 v94 소각·v95=#365·v96=#363 이후 번호다.
+   (카탈로그 개수 +1, 샘플 1줄). 번들 번호는 v99 / 3.11.0(위 설명). 병합 순서에 따라 다시 정해질 수 있다.
 
 ## 재현
 
 ```
-python3 -m scripts.run_pair_llm --condition peer_ko --expected-source-sha <커밋 SHA> --output <기본 체크아웃 outputs/ 절대 경로> \
+python3 -m scripts.run_pair_llm --condition peer_nl --expected-source-sha <커밋 SHA> --output <기본 체크아웃 outputs/ 절대 경로> \
     --cap-s 60 --synthetic-plumbing-calibration --sim-slot <슬롯> --lock-owner claude --execute
 python3 -m pytest tests/test_pair_llm_inputs.py tests/test_pair_llm_runtime.py tests/test_pair_llm_case.py tests/test_pair_llm_eval.py
 ```
 
-`--live`는 이 변경에서 거절한다.
+`--live`는 이 커밋에서 거절한다.
+
+## 다음 단계 (일시 중지 시점의 상태)
+
+실제 호출 경로는 아직 없다. 계획(구현 전): 기존 `harness/zone_study_llm_driver.MainStudySendLedger`(요청·응답 원문,
+토큰, 지연, 실패 분류, 예산 원장)와 읽기 전용 프록시 확인(`live_proxy`, 감사된 소스 해시 + PID)을 `stub_adapter`와 같은
+모양의 `live_adapter`로 연결하고, 429/쿼터 오류는 `RATE_LIMIT`로 명시 기록하며, 재시도는 스터디의 문서화된 규칙(스케줄러
+`max_retries=0`, 실행 단위 "첫 모델 요청 전 HOST_ERROR만 제자리 1회", 감사된 프록시의 내부 429 재시도 최대 2회)만 따른다.
+그다음 `peer_nl` 60 SIM초 실제 모델 스모크 1회(시드 911, 합성 보정이라 운반은 기대하지 않음)를 한다.
 
 ## 참고 자료
 
 - 같은 저장소: `harness/zone_study_integration.py`(`IntegratedTrial`), `zone_study_offline.py`(`OfflineTrial`),
   `zone_event_scheduler.py`, `zone_study_decisions.py`, `zone_send_ledger.py`, `zone_study_llm_transport.py`,
-  `zone_study_prompts_ko.py`(KO_LANGUAGE), `zone_study_protocol.py`(`language_report`),
+  `zone_study_prompts_ko.py`(채널·메시지 블록 재사용, `KO_LANGUAGE`는 사용하지 않음), `zone_study_protocol.py`(`language_report`),
   `zone_final_pair_runtime.py`/`zone_final_pair_skill.py`(v88), `scripts/run_final_pair_v3.py`(`run_case`).
 - 설계 기록: 이 세션의 `llm_pair_design.md`(옵션 A: 얇은 두 로봇 층, 기존 스케줄러·비용·원장 재사용).
 - #363(v96) 실험 README `experiments/2026-10-03-pair-carry-highpose/README.md`: "`run_camera_pair_transport.py`는
