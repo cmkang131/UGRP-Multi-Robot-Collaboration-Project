@@ -1,6 +1,6 @@
 # 실험 인덱스
 
-- [2026-10-03 높은 자세 공동 운반 후보 v96](2026-10-03-pair-carry-highpose/README.md): 기존 beam-relative 학생·OpenCV 위치 추정, #361 D5 실측 보정·승인 목록 관문, 중간 HIGH 유지·시간 하한(목적지 전 체크포인트·전체 운반 120초 불가 → 결정 요청), 자기 RGB grip 감시는 실제 기하에서 정상 100% 실패로 미해결(재설계 결정 요청), 개발/확증 시작점 분리. v93은 미실행 은퇴.
+- [2026-10-03 높은 자세 공동 운반 후보 v96](2026-10-03-pair-carry-highpose/README.md): 기존 beam-relative 학생·OpenCV 위치 추정, #361 D5 실측 보정·승인 목록 관문(MEASURED_SIM 승인 비어 있음) + 정확한 sha256 하나만 받는 DEV_PILOT(FUNCTIONAL_DEV, 승격 불가), 중간 HIGH 유지, P03 cap 3×300 SIM초(사전 등록 개정, 하한 63.8/104.2/184.6초), grip 감시는 사용자 결정으로 첫 E2E에서 기록 전용(실행 중 놓침 감지·통보 없음, 실제 렌더 영상 테스트), 개발/확증 시작점 분리. v93은 미실행 은퇴.
 - [2026-10-03 v92 적재 보정 일정](2026-10-03-v92-loaded-schedule/README.md): D1–D4에 따라 높은 운반 후보에서 loaded 측정, 새 B″·8초 구간 동결; [D2/D5 전용 조립기·HIGH 로더 계약](2026-10-03-v92-loaded-schedule/assembly/README.md), 실제 렌더 수집·인수는 조정자 범위.
 
 - [2026-10-03 v91 빠른 guard·동시 SIM 슬롯](2026-10-03-calib-fast-guard/README.md): v90 일정·물리 보존, 완료 raw 무렌더링 동등성 및 오프라인 CPU 검사; 두 지도 새 수집은 별도.

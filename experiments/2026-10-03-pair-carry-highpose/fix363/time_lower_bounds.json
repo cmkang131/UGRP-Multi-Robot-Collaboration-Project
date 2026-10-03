@@ -1,13 +1,13 @@
 {
  "calibration": "none (measured lag counted as 0)",
- "cap_s": 120.0,
+ "cap_s": 300.0,
+ "cap_source": "configs/zone_pair_highpose_v96.json case_cap (v96-cap-2)",
  "module": "harness/zone_pair_highpose_timing.py",
  "rows": [
   {
    "approach_straight_m": 2.7274306517306726,
    "calibration_lag": "zero (no measured D5 lag yet)",
-   "cap_s": 120.0,
-   "carry_only_floor_s": 7.530000000000004,
+   "cap_s": 300.0,
    "case": "before_door",
    "checkpoint": "before_door",
    "distance_m": 0.4518000000000002,
@@ -32,7 +32,6 @@
    },
    "scope": "unavoidable-duration floor from controller constants; not a completion forecast; no stage teleport",
    "segment": 1,
-   "without_raise_and_align_s": 40.133647395541445,
    "zero_counted": [
     "turns",
     "detours",
@@ -45,8 +44,7 @@
   {
    "approach_straight_m": 2.7274306517306726,
    "calibration_lag": "zero (no measured D5 lag yet)",
-   "cap_s": 120.0,
-   "carry_only_floor_s": 32.47,
+   "cap_s": 300.0,
    "case": "after_door",
    "checkpoint": "after_door",
    "distance_m": 1.9482,
@@ -71,7 +69,6 @@
    },
    "scope": "unavoidable-duration floor from controller constants; not a completion forecast; no stage teleport",
    "segment": 3,
-   "without_raise_and_align_s": 67.47364739554143,
    "zero_counted": [
     "turns",
     "detours",
@@ -84,12 +81,11 @@
   {
    "approach_straight_m": 2.7274306517306726,
    "calibration_lag": "zero (no measured D5 lag yet)",
-   "cap_s": 120.0,
-   "carry_only_floor_s": 82.06833333333334,
+   "cap_s": 300.0,
    "case": "before_destination",
    "checkpoint": "before_destination",
    "distance_m": 4.9241,
-   "feasible": false,
+   "feasible": true,
    "lower_bound_s": 184.5719807288748,
    "map_id": "zone_wide_door_geometry_v3",
    "parts_s": {
@@ -110,7 +106,6 @@
    },
    "scope": "unavoidable-duration floor from controller constants; not a completion forecast; no stage teleport",
    "segment": 7,
-   "without_raise_and_align_s": 121.8719807288748,
    "zero_counted": [
     "turns",
     "detours",
@@ -123,12 +118,11 @@
   {
    "approach_straight_m": 2.7274306517306726,
    "calibration_lag": "zero (no measured D5 lag yet)",
-   "cap_s": 120.0,
-   "carry_only_floor_s": 95.83333333333334,
+   "cap_s": 300.0,
    "case": "carry_full_route",
    "checkpoint": null,
    "distance_m": 5.75,
-   "feasible": false,
+   "feasible": true,
    "lower_bound_s": 219.33698072887478,
    "map_id": "zone_wide_door_geometry_v3",
    "parts_s": {
@@ -151,7 +145,6 @@
    },
    "scope": "unavoidable-duration floor from controller constants; not a completion forecast; no stage teleport",
    "segment": 8,
-   "without_raise_and_align_s": 150.1369807288748,
    "zero_counted": [
     "turns",
     "detours",
@@ -164,12 +157,11 @@
   {
    "approach_straight_m": 2.7274306517306726,
    "calibration_lag": "zero (no measured D5 lag yet)",
-   "cap_s": 120.0,
-   "carry_only_floor_s": 95.83333333333334,
+   "cap_s": 300.0,
    "case": "carry_full_route",
    "checkpoint": null,
    "distance_m": 5.75,
-   "feasible": false,
+   "feasible": true,
    "lower_bound_s": 219.33698072887478,
    "map_id": "zone_wide_two_doors_final_v3",
    "parts_s": {
@@ -192,7 +184,6 @@
    },
    "scope": "unavoidable-duration floor from controller constants; not a completion forecast; no stage teleport",
    "segment": 8,
-   "without_raise_and_align_s": 150.1369807288748,
    "zero_counted": [
     "turns",
     "detours",
@@ -205,12 +196,11 @@
   {
    "approach_straight_m": 2.749341368400803,
    "calibration_lag": "zero (no measured D5 lag yet)",
-   "cap_s": 120.0,
-   "carry_only_floor_s": 74.52333333333335,
+   "cap_s": 300.0,
    "case": "carry_full_route",
    "checkpoint": null,
    "distance_m": 4.471400000000001,
-   "feasible": false,
+   "feasible": true,
    "lower_bound_s": 190.4431739233376,
    "map_id": "zone_wide_corridor_final_v3",
    "parts_s": {
@@ -233,7 +223,6 @@
    },
    "scope": "unavoidable-duration floor from controller constants; not a completion forecast; no stage teleport",
    "segment": 7,
-   "without_raise_and_align_s": 127.74317392333762,
    "zero_counted": [
     "turns",
     "detours",
@@ -244,6 +233,6 @@
    ]
   }
  ],
- "schema": "ugrp.pr363_time_lower_bounds.v1",
- "source_sha": "255a4401b7521ef418a075a81c21209221ce8af9"
+ "schema": "ugrp.pr363_time_lower_bounds.v2",
+ "source_sha": "0f438eb865d2fbca61ec7306c88c5820b576d351"
 }
