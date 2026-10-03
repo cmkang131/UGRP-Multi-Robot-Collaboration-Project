@@ -1,7 +1,7 @@
 # v95 새 시작점 held-out 준비 (수집 전)
 
 Refs #219 #364. 기준 B·r4·r5·회전 부록·기존 v91 검증기는 `frozen.json`의 바이트를 유지한다.
-번호: `zone-final-pair-v95` / workflow `zone-final-pair-heldout-v95` 3.7.0. main과 열린 PR 7개 head 전체를 다시 조회했고 최댓값은 #363의 v93 / 3.5.0이다. v94 / 3.6.0은 #363이 이어서 쓸 수 있어 비워 둔다(`reservation.json`). 이 브랜치의 첫 초안(Codex 중단본 `0bc0857d`)은 v94를 썼고, 병합·수집 전에 v95로 바꿨다.
+번호: `zone-final-pair-v95` / workflow `zone-final-pair-heldout-v95` 3.7.0. 예약 당시(main `cc8364e2`) 조회한 최댓값은 #363의 v93 / 3.5.0이었다. 그래서 #363이 이어 쓸 수 있게 v94 / 3.6.0을 비워 두었다. **갱신(검토 지적 3):** 그 뒤 #361(v92 / 3.4.0)이 병합되었고 #363은 v96 / 3.8.0으로 옮겼다. v94 / 3.6.0은 아무도 쓰지 않는 빈 번호이고, v95 / 3.7.0은 이 PR만 쓴다(`reservation.json`의 `refresh_2026_10_03`). 이 브랜치의 Codex 중단본은 v94를 썼고, 병합·수집 전에 v95로 바꿨다.
 
 ## 변경 범위
 
@@ -61,3 +61,34 @@ Codex 중단본 두 커밋(`2686f38c`, `0bc0857d`)을 검토했다. 운동 필�
 - 겹침 검사는 절대 위치를 비교한다. 학습과 같은 명령 구간을 정지 상태에서 시작하면 몸체 기준 반응은 학습과 거의 같을 수 있다. 이 held-out의 새로움은 세계 좌표의 위치, 구간 순서, 구간 사이 전이에 있다. 새로운 명령 동역학은 아니다.
 - 회전(yaw)은 실제 수집과 채점 전까지 미검증(NOT_VALIDATED)이다. 전진·옆의 v91 PASS는 v88과 같은 궤적에서 나온 결과다.
 - 사전검사는 수집 결과가 아니어서 TensorBoard 스냅샷을 만들지 않았다.
+
+## 수집 결과 (렌더링 수집, 채점 전)
+
+- 약속 게시: #219 comment [5968608872](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5968608872)(11:12:35Z, 수정 없음). 본문은 `COMMITMENT.md`(sha256 `164ccaaa…`)와 바이트까지 같다. 수집 시작은 그 뒤인 11:13:06Z다.
+- 실행: 소스 `2fe14826fc6b79f0121cfe6d7e6d8b4a1722957b`, `collect.sh`를 `nice -n 10`으로 실행했다. SIM 슬롯 `sim-claude-v95-heldout`(owner claude)은 끝난 뒤 해제했다. 2026-10-03 11:13:06Z → 11:38:40Z, 종료 코드 0. 부하 평균은 시작 16.28 / 15.42 / 16.87, 끝 12.60 / 15.42 / 16.14였다.
+- 결과 폴더: `/Users/changmin/projects/ugrp/outputs/final-pair-v95-heldout-2fe14826-20261003T111306Z` (238 MB, 로컬 보관이며 원격 백업 아님).
+
+| 지도 | 상태 | 프로토콜 완료 | reset / 확인 SIM s | 파일·해시 | `result.json` sha256 | `artifacts.sha256.json` sha256 |
+|---|---|---|---|---|---|---|
+| 문 `zone_wide_door_geometry_v3` | `COLLECTED_UNQUALIFIED` | 예 | 1.3 / 370.0 | 3,722개 모두 일치 | `7967daa86089f75bf1008a19829e8d891da1df227a945731463383d4beb9452a` | `ad0bd5df8d6983f292c9b4377d5cb8ffcedd2d24f81f85590cd1667ee6e2a938` |
+| 복도 `zone_wide_corridor_final_v3` | `COLLECTED_UNQUALIFIED` | 예 | 1.3 / 370.0 | 3,722개 모두 일치 | `a7437ce0f36233848fcfde25bf54c9de5bb083375308855f01402a94e5373851` | `020f01ab4b8527a108cd24155f42dcae408165a53b22ca33c6eeeb7183f916b8` |
+
+- 지도별 최상위 파일: 문 `plan.json` `5104b79d…`, `result.json` `5199d0fa…`; 복도 `plan.json` `e8f2ceaf…`, `result.json` `171ff197…`. `source_unchanged` true, 시도하지 못한 사례 없음.
+
+### 운동 관문 (채점 전, 운동 필드만 사용)
+
+- 폴더: `/Users/changmin/projects/ugrp/outputs/heldout-v95-gate-20261003T113908Z`.
+- 고정 검증기 `scripts/validate_consumer_criterion_b_v95.py --pose`(4개): 이전 자료 38개와 비교 152건 모두 `DISJOINT`, B 판정 null. `kinematic_gate.json` sha256 `8b19208449a43023e384589d4b011ab24ca6df45a688d3d1055a5d994502688c`.
+- 새 궤적끼리 비교(검토 지적 1, 6쌍): 고정 검증기는 이전 자료와의 비교만 한다. 그런데 약속 문구는 "또는 서로와"라고 썼다. 그래서 검증기는 바꾸지 않고 `harness.kinematic_overlap.overlap()`을 6쌍에 따로 돌렸다. 6쌍 모두 `DISJOINT`. `within_collection_overlap.json` sha256 `c936df73ca6a9bcf8e7239029324d0632f812ccd2f4978317d1d21df6ef3b4c2`.
+- 렌더링 수집본의 운동 해시 4개는 사전검사 해시와 같다(예: 문 r1 `4f94796d…`). 렌더링 유무가 운동을 바꾸지 않았고, 사전검사가 실제 수집 궤적을 그대로 검사했다는 뜻이다.
+- 이 결과는 #219에 채점 전에 기록해야 한다(초안: `gate_comment.md`).
+
+### 채점 전 남은 순서
+
+1. 채점 어댑터 PR을 만든다. 고정 `score()`의 수집 시점 증명(null)을 #219 약속 댓글 검증으로 채운다. r2 읽기는 새 코드다. 적재 시기의 r2 부호 반전은 다시 적용하지 않는다.
+2. 독립 검토를 받고, 어댑터 해시를 #219에 게시한다.
+3. 그 뒤에만 raw를 채점한다. 결과 문구는 "새 시작점 검증(new-start validation)"이고, "지도 일반화"라고 쓰지 않는다.
+
+### 운영 메모 (검토 지적 4)
+
+`collect.sh`는 worktree 경로 `/Users/changmin/projects/ugrp-wt/critb-heldout-v94`(이름은 v94)를 고정한다. 재실행 가능성이 남아 있는 동안 이 worktree를 retire하지 않는다. worktree 안의 무시된 `outputs/simulation-runs/20261003-20{1403,2425}-zone-final-pair-heldout-v95-*` 수집 기록도 retire할 때 `agent_worktree.py retire`로 옮겨 보존한다.
