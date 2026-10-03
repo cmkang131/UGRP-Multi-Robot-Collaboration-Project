@@ -1,0 +1,49 @@
+{
+ "snapshot": "1003-v92-dev-pilot-r2",
+ "api_values": {
+  "dev-fit": {
+   "gate/dev_motion_accepted": 1.0,
+   "offline/opt_rank": 10.0,
+   "offline/opt_rmse": 0.001869147177785635,
+   "offline/opt_nfev": 8.0,
+   "offline/train_rows_pass": 36.0,
+   "offline/train_rows": 36.0,
+   "offline/val_rows_pass": 36.0,
+   "offline/val_rows": 36.0,
+   "offline/tau_stop_s": 0.08517977595329285,
+   "gate/spread_accepted": 1.0,
+   "gate/pair_accepted": 1.0,
+   "offline/pair_ratio": 1.106680989265442,
+   "offline/pair_rows": 18.0,
+   "offline/u1_forward": 0.0265567097812891,
+   "offline/gain_forward": 1.3550710678100586,
+   "offline/u1_left": 0.028235672041773796,
+   "offline/gain_left": 0.9642052054405212,
+   "offline/u1_turn": 0.03190918639302254,
+   "offline/gain_turn": 0.9073154330253601,
+   "result/model_calls": 0.0
+  },
+  "dev-calibration": {
+   "offline/fields_filled": 98.0,
+   "offline/fields_missing": 10.0,
+   "offline/fields_from_dev_refit": 21.0,
+   "offline/fields_copied_measured": 77.0,
+   "result/model_calls": 0.0,
+   "evaluation/reported_success": 0.0
+  }
+ },
+ "scalars_checked": 26,
+ "mismatches": 0,
+ "url": "http://127.0.0.1:6006/?runFilter=%5E1003-v92-dev-pilot-r2%2F&tagFilter=%5E%28gate%5C%2Fdev_motion_accepted%7Coffline%5C%2Fval_rows_pass%7Coffline%5C%2Ftrain_rows_pass%7Cgate%5C%2Fpair_accepted%7Coffline%5C%2Ffields_missing%7Cevaluation%5C%2Freported_success%7Cresult%5C%2Fmodel_calls%7Coffline%5C%2Fopt_rmse%29%24&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22gate%2Fdev_motion_accepted%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fval_rows_pass%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ftrain_rows_pass%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22gate%2Fpair_accepted%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Ffields_missing%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22evaluation%2Freported_success%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fopt_rmse%22%7D%5D&smoothing=0#timeseries",
+ "pins": [
+  "gate/dev_motion_accepted",
+  "offline/val_rows_pass",
+  "offline/train_rows_pass",
+  "gate/pair_accepted",
+  "offline/fields_missing",
+  "evaluation/reported_success",
+  "result/model_calls",
+  "offline/opt_rmse"
+ ],
+ "superseded_failed_snapshot": "1003-v92-dev-pilot (dev-calibration view lacked offline_scalar_scope; export failed; kept)"
+}
