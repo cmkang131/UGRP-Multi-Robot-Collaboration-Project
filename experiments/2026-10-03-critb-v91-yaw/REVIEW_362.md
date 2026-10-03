@@ -72,7 +72,7 @@ id·URL·본문·생성/수정 시각 일치를 확인했다. yaw 생성/수정 
 
 - 실제 `/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-*`는 **열람·해시·채점 모두 0회**. 허용된 identity 필드도 필요 없어 읽지 않았다. 훈련 원본도 열지 않았다.
 - 렌더링·물리 실행·모델 호출·기존 실행 프로세스 조작 0회. 합성 회귀검사에는 held-out 파일 열기, 네트워크 연결, 물리/모델 모듈 import를 거부하는 가드를 적용했다. 공개 댓글 조회는 별도 read-only GitHub 호출이다.
-- 06:34 UTC 원격 상태는 `ci-preflight`/`offline-regression-checks` 등 성공, 8개 offline shard 및 `ubuntu-simulation-runtime` 실행 중이었다. **전체 CI 통과나 실제 PR 병합을 주장하지 않는다.** 필요한 base 갱신/필수 검사 완료 후 코디네이터가 병합할 수 있는 코드 검토 판정 `MERGE`다.
+- 06:34 UTC에는 원격 CI 일부가 실행 중이었으나, 최종 재조회에서 동일 head의 **33개 검사 모두 SUCCESS**와 필수 `offline-regressions` 성공을 확인했다. 상세 시각·검사 URL은 evidence의 `final_github_check`에 저장했다. 코드 검토 판정은 `MERGE`; 실제 PR 병합은 코디네이터에게 인계한다.
 - 실제 v91의 한 번 채점과 그 결과·TensorBoard 등록은 코디네이터의 후속 작업이다. 이번 결과는 합성 코드 검증이므로 TensorBoard 변환·뷰어 실행은 하지 않았다. 프로젝트 지침에 따라 Drive는 사용하지 않았다.
 
 이 한 묶음의 검토로 요청한 다섯 항목을 모두 확인했다. 새 코드가 올라오면 변경 범위는 다시 검토해야 한다.
