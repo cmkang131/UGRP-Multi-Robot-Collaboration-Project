@@ -1,0 +1,76 @@
+{
+  "schema": "ugrp.offline_audit_view.v1",
+  "derived_view_only": true,
+  "family": "calibration-assembly",
+  "policy": "v92-dev-pilot",
+  "case": "loaded",
+  "condition": "DEV_PILOT_C0_ZERO_v1",
+  "split": "calibration",
+  "seed": 911,
+  "source_sha": "6a91737c",
+  "scope": "NON-CONFIRMATORY dev pilot; not MEASURED_SIM; no task success",
+  "run_id": "dev-calibration",
+  "outcome": "DEV_PILOT",
+  "offline_source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
+    "sha256": "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"
+  },
+  "offline_scalars": {
+    "offline/fields_filled": 98.0,
+    "offline/fields_missing": 10.0,
+    "offline/fields_from_dev_refit": 21.0,
+    "offline/fields_copied_measured": 77.0
+  },
+  "offline_scalar_scope": "Field counts of calibration_dev_pilot.json (DEV_PILOT, non-confirmatory): filled = dev refit + copied measured fields; missing = unloaded combined profile.",
+  "success": false,
+  "success_definition": "status == MEASURED_SIM (always false for DEV_PILOT). Not a robot task success.",
+  "model_calls": 0.0,
+  "hparam_metrics": [
+    "evaluation/reported_success",
+    "offline/fields_missing"
+  ],
+  "texts": {
+    "notes/missing": [
+      {
+        "field": "params.motion.gain",
+        "reason": "no legitimate unloaded combined candidate: r4 (forward/left) and r5 (rotate) are axis-only with different stop taus (0.0890/0.0885/0.0374 s) while the loader needs one scalar tau_stop_s; frozen B overall pass is null (rotate PARTIAL_MAPS, door map excluded); the v92 assembler has no acceptance path. Needs a new shared-stop fit plus held-out B validation (new rotation data) or an explicit rule change."
+      },
+      {
+        "field": "params.motion.tau_s",
+        "reason": "no legitimate unloaded combined candidate: r4 (forward/left) and r5 (rotate) are axis-only with different stop taus (0.0890/0.0885/0.0374 s) while the loader needs one scalar tau_stop_s; frozen B overall pass is null (rotate PARTIAL_MAPS, door map excluded); the v92 assembler has no acceptance path. Needs a new shared-stop fit plus held-out B validation (new rotation data) or an explicit rule change."
+      },
+      {
+        "field": "params.motion.tau_axis_s",
+        "reason": "no legitimate unloaded combined candidate: r4 (forward/left) and r5 (rotate) are axis-only with different stop taus (0.0890/0.0885/0.0374 s) while the loader needs one scalar tau_stop_s; frozen B overall pass is null (rotate PARTIAL_MAPS, door map excluded); the v92 assembler has no acceptance path. Needs a new shared-stop fit plus held-out B validation (new rotation data) or an explicit rule change."
+      },
+      {
+        "field": "params.motion.tau_stop_s",
+        "reason": "no legitimate unloaded combined candidate: r4 (forward/left) and r5 (rotate) are axis-only with different stop taus (0.0890/0.0885/0.0374 s) while the loader needs one scalar tau_stop_s; frozen B overall pass is null (rotate PARTIAL_MAPS, door map excluded); the v92 assembler has no acceptance path. Needs a new shared-stop fit plus held-out B validation (new rotation data) or an explicit rule change."
+      },
+      {
+        "field": "params.motion.noise_rel",
+        "reason": "no legitimate unloaded combined candidate: r4 (forward/left) and r5 (rotate) are axis-only with different stop taus (0.0890/0.0885/0.0374 s) while the loader needs one scalar tau_stop_s; frozen B overall pass is null (rotate PARTIAL_MAPS, door map excluded); the v92 assembler has no acceptance path. Needs a new shared-stop fit plus held-out B validation (new rotation data) or an explicit rule change."
+      },
+      {
+        "field": "params.motion.noise_abs",
+        "reason": "no legitimate unloaded combined candidate: r4 (forward/left) and r5 (rotate) are axis-only with different stop taus (0.0890/0.0885/0.0374 s) while the loader needs one scalar tau_stop_s; frozen B overall pass is null (rotate PARTIAL_MAPS, door map excluded); the v92 assembler has no acceptance path. Needs a new shared-stop fit plus held-out B validation (new rotation data) or an explicit rule change."
+      },
+      {
+        "field": "params.motion.scale_std",
+        "reason": "no legitimate unloaded combined candidate: r4 (forward/left) and r5 (rotate) are axis-only with different stop taus (0.0890/0.0885/0.0374 s) while the loader needs one scalar tau_stop_s; frozen B overall pass is null (rotate PARTIAL_MAPS, door map excluded); the v92 assembler has no acceptance path. Needs a new shared-stop fit plus held-out B validation (new rotation data) or an explicit rule change."
+      },
+      {
+        "field": "params.motion.scale_walk",
+        "reason": "no legitimate unloaded combined candidate: r4 (forward/left) and r5 (rotate) are axis-only with different stop taus (0.0890/0.0885/0.0374 s) while the loader needs one scalar tau_stop_s; frozen B overall pass is null (rotate PARTIAL_MAPS, door map excluded); the v92 assembler has no acceptance path. Needs a new shared-stop fit plus held-out B validation (new rotation data) or an explicit rule change."
+      },
+      {
+        "field": "params.motion.use_scale",
+        "reason": "no legitimate unloaded combined candidate: r4 (forward/left) and r5 (rotate) are axis-only with different stop taus (0.0890/0.0885/0.0374 s) while the loader needs one scalar tau_stop_s; frozen B overall pass is null (rotate PARTIAL_MAPS, door map excluded); the v92 assembler has no acceptance path. Needs a new shared-stop fit plus held-out B validation (new rotation data) or an explicit rule change."
+      },
+      {
+        "field": "params.motion.rest_noise",
+        "reason": "no legitimate unloaded combined candidate: r4 (forward/left) and r5 (rotate) are axis-only with different stop taus (0.0890/0.0885/0.0374 s) while the loader needs one scalar tau_stop_s; frozen B overall pass is null (rotate PARTIAL_MAPS, door map excluded); the v92 assembler has no acceptance path. Needs a new shared-stop fit plus held-out B validation (new rotation data) or an explicit rule change."
+      }
+    ]
+  }
+}
