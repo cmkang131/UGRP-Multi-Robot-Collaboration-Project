@@ -14,38 +14,58 @@ from scripts import run_m2_pair as m2
 
 
 class HighController:
-    def set(self, state, now, **detail):
-        if state == 'wait_carry' and getattr(self, '_checking_low_lift', False):
-            self.low_lift_confirmed = True
-            return
-        return super().set(state, now, **detail)
+    """v96 HIGH carry. Grip monitor is LOG-ONLY (first-E2E scope, user 2026-10-03).
+
+    Phase progress and barrier readiness come from this robot's own command
+    history (gripper commanded closed in this grasp epoch, queued pose path
+    reached) plus the existing fixed-enum partner status. Own-RGB grip values
+    (low-lift co-motion IoU, transit relation()/stability, HIGH/floor anchor
+    IoU, edge line) go to ``self.grip_monitor`` (write-only) and are exported
+    only in the evaluation records. A dropped beam is not detected or
+    signalled in-run in this version; success is judged only by evaluation.
+    """
 
     def _issued(self):
         # ArmSequence.commanded is the future queue endpoint, NOT issued PWM.
         return dict(self.port.own.servo)
 
+    def _monitor(self, kind, now, **values):
+        self.grip_monitor.record(self.rid, kind, now, epoch=getattr(self, 'grip_epoch', None),
+                                 seg=getattr(self, 'seg', None), state=self.state, **values)
+
+    def held_by_command(self):
+        """Own command history only: closed in this epoch and still commanded closed."""
+        return (getattr(self, 'grip_closed_epoch', None) == getattr(self, 'grip_epoch', None)
+                and self._issued().get(1) == m2.study.CLOSED and self.state != 'failed')
+
     def _queue_open_descent(self, now):
         self.high_raising, self.high_ready = False, False
-        self.low_lift_confirmed = False
         self.grip_epoch = getattr(self, 'grip_epoch', 0)+1
         self.pose_anchors = {}
         self.transit = None
-        self.floor_return_verified, self.floor_check_until = False, None
+        self.floor_return_verified = False
         return super()._queue_open_descent(now)
 
     def _anchor(self, name, obs, now):
+        # Monitor reference only (eval log); never a readiness input.
         key = grip.pose_key(self.pose_of(obs))
         self.pose_anchors[name] = grip.Anchor(self.grip_epoch, key,
             m2.hv3.hold_view_mask(obs['image']).copy(), obs['frame_id'], now)
-        self.log(self.rid, 'pose_anchor', now, pose=name, epoch=self.grip_epoch,
-                 frame_id=obs['frame_id'], lifetime='same grasp epoch and exact posture; no refresh')
+        self._monitor('anchor', now, pose=name, frame_id=obs['frame_id'],
+                      mask_px=int(self.pose_anchors[name].mask.sum()))
 
     def _grasp(self, now, arm_idle):
+        # Unchanged grasp-time checks (issued close + own grip view, v88/v92).
         super()._grasp(now, arm_idle)
-        if self.state == 'wait_lift' and 'floor' not in self.pose_anchors:
-            # The original floor grip check already passed. This image is not
-            # recaptured/replaced at the end of lowering.
-            self._anchor('floor', self.look(now), now)
+        if self.state == 'wait_lift':
+            self.grip_closed_epoch = self.grip_epoch
+            if 'floor' not in self.pose_anchors:
+                self._anchor('floor', self.look(now), now)
+
+    def report(self, key, obs, now, ready=True, reason=''):
+        if key in ('lift', 'carry', 'lower', 'open') and str(reason).startswith('hold_ratio='):
+            reason = 'grip by own command history (v96 grip monitor log-only)'
+        return super().report(key, obs, now, ready=ready, reason=reason)
 
     def _partner_transit_ok(self, now, phase):
         if self.status is None:
@@ -63,7 +83,6 @@ class HighController:
         self.arm.until = now
         self.arm.commanded = self._issued()
         self.high_ready = self.floor_return_verified = False
-        self.floor_check_until = None
         self.anchor_full = None
         self.pose_anchors = {}
         self.port.hold(now)
@@ -72,8 +91,8 @@ class HighController:
     def _start_transit(self, phase, path, now):
         servo = self._issued()
         pose.queue_path(self.arm, now, path)
-        self.transit = grip.TransitMonitor(phase, now, servo, self.arm.events,
-                                           self.arm.until, self.grip_epoch)
+        self.transit = grip.TransitMonitor(phase, now, servo, self.arm.events, self.arm.until,
+                                           self.grip_epoch, sink=self.grip_monitor, rid=self.rid)
         self.next_transit_look = now
         return self._monitor_transit(now)
 
@@ -84,64 +103,82 @@ class HighController:
         obs, servo = self.look(now), self._issued()
         ok = self.transit.observe(now, obs, servo,
                     self._partner_transit_ok(now, self.transit.phase))
-        self.log(self.rid, 'transit_grip', now, phase=self.transit.phase,
-                 ok=ok, reason=self.transit.failure, evidence=self.transit.last,
-                 epoch=self.grip_epoch, frame_id=obs['frame_id'])
+        self.log(self.rid, 'transit_progress', now, phase=self.transit.phase,
+                 ok=ok, reason=self.transit.failure, epoch=self.grip_epoch,
+                 decided_by='own_command_history+partner_status')
         if not ok:
             self._transit_abort(self.transit.failure, now)
         return ok
 
+    def _low_lift(self, now, arm_idle):
+        # Low lift (hover, closed) reached by own command; the legacy co-motion
+        # check LOAD_NOT_HELD_AFTER_LIFT is logged, never applied.
+        if not arm_idle:
+            return
+        if not self.held_by_command():
+            return self.fail('LIFT_GRIP_NOT_COMMANDED_CLOSED', now)
+        obs = self.look(now)
+        from harness import owncam_pair_lift_v3 as lv3
+        iou = (m2.study.ob.signature_iou(self.anchor, self._signature(obs['image']))
+               if getattr(self, 'anchor', None) is not None else None)
+        self._monitor('low_lift_view', now, frame_id=obs['frame_id'], frame_sha256=obs.get('sha256'),
+                      co_motion_iou=iou, legacy_min_iou=lv3.HOLD_MIN_IOU,
+                      legacy_check='LOAD_NOT_HELD_AFTER_LIFT',
+                      legacy_would_fail=None if iou is None else bool(iou < lv3.HOLD_MIN_IOU))
+        self.anchor, self.anchor_kind = m2.study.ob.held_signature(obs['image']), 'lime_v1'
+        self.anchor_full = m2.hv3.hold_view_mask(obs['image'])
+        self.claims.setdefault('lifts', []).append({'seg': self.seg, 'decided_by': 'own_command_history',
+                                                    'sim_time': now})
+        self.claims['lifted'] = {'decided_by': 'own_command_history', 'sim_time': now}
+        self.high_raising, self.high_ready = True, False
+        self.set('lift', now, subphase='raise_to_high', pose_id=pose.POSE_ID)
+        self._start_transit('raise', pose.raise_path(), now)
+
     def _lift(self, now, arm_idle):
         if not getattr(self, 'high_raising', False):
-            self._checking_low_lift = True
-            try:
-                super()._lift(now, arm_idle)
-            finally:
-                self._checking_low_lift = False
-            if getattr(self, 'low_lift_confirmed', False):
-                self.high_raising, self.high_ready = True, False
-                self.set('lift', now, subphase='raise_to_high', pose_id=pose.POSE_ID)
-                self._start_transit('raise', pose.raise_path(), now)
-            return
+            return self._low_lift(now, arm_idle)
         if not self._monitor_transit(now) or not arm_idle:
             return
-        if not self.transit.evidence_ok(now):
-            return self._transit_abort('HIGH_TRANSIT_EVIDENCE_INCOMPLETE', now)
         if not self.transit.complete(now):
-            return   # own HIGH view still moving; monitor bounds this wait
+            return self._transit_abort('HIGH_TRANSIT_EVIDENCE_INCOMPLETE', now)
+        if not pose.at_high(self._issued()) or not self.held_by_command():
+            return self._transit_abort('HIGH_POSE_NOT_COMMANDED', now)
         obs = self.look(now)
         rgb = m2.study.ob.decode(obs['image'])[..., ::-1]
         line = edge_line(np.ascontiguousarray(rgb))
-        if not pose.at_high(self._issued()) or line is None:
-            return self._transit_abort('HIGH_CARRY_EDGE_NOT_SEEN', now)
-        # Only a continuous validated held relation can mint the HIGH anchor.
         self._anchor('high', obs, now)
+        self._monitor('high_view', now, frame_id=obs['frame_id'], frame_sha256=obs.get('sha256'),
+                      edge_seen=line is not None, edge_columns=None if line is None else line[2],
+                      edge_slope=None if line is None else line[0], relation=grip.relation(obs['image'], self._issued()))
         self.anchor = m2.study.ob.held_signature(obs['image'])
         self.anchor_kind = 'lime_v1'
         self.anchor_full = self.pose_anchors['high'].mask.copy()
         self.high_ready = True
-        self.log(self.rid, 'high_carry_view', now, edge_columns=line[2], slope=line[0],
-                 pose_id=pose.POSE_ID, physical_success=None)
+        self.log(self.rid, 'high_carry_pose', now, pose_id=pose.POSE_ID,
+                 decided_by='own_command_history', physical_success=None)
         self.set('wait_carry', now)
 
     def hold_state(self, obs):
-        # Before raising, keep the original floor/low grip checks. After HIGH
-        # admission, anchors live until release/abort, and only at their pose.
-        if not getattr(self, 'high_raising', False):
-            return super().hold_state(obs)
+        """Readiness = own command history. Visual values are logged only."""
         servo = self.pose_of(obs)
-        name = 'high' if pose.at_high(servo) else 'floor'
-        anchor = self.pose_anchors.get(name)
-        eligible = (anchor is not None and anchor.epoch == self.grip_epoch
-                    and anchor.pose == grip.pose_key(servo)
-                    and (self.high_ready if name == 'high' else self.floor_return_verified)
-                    and servo.get(1) == 1500)
-        iou = m2.hv3.hold_iou(anchor.mask, obs['image']) if eligible else 0.
-        # HIGH: commanded-geometry held relation AND the HIGH anchor. Floor:
-        # the original floor-grasp anchor only (the same pre-lift check type).
-        relation = (grip.relation(obs['image'], servo) if name == 'high' else {'ok': True}) if eligible else {'ok': False}
-        return {'ok': bool(eligible and relation['ok'] and iou >= m2.hv3.HOLD_MIN_IOU),
-                'v1_ratio': 0., 'v3_iou': iou, 'decided_by': 'pose_epoch_anchor:'+name}
+        values = {'frame_id': obs['frame_id'], 'frame_sha256': obs.get('sha256')}
+        try:
+            if not getattr(self, 'high_raising', False):
+                legacy = super().hold_state(obs)
+                values.update(legacy_ok=legacy['ok'], v1_ratio=legacy['v1_ratio'],
+                              v3_iou=legacy['v3_iou'], legacy_decided_by=legacy['decided_by'])
+            else:
+                name = 'high' if pose.at_high(servo) else 'floor'
+                anchor = self.pose_anchors.get(name)
+                values.update(anchor=name, anchor_iou=(m2.hv3.hold_iou(anchor.mask, obs['image'])
+                                                       if anchor is not None else None))
+                if name == 'high':
+                    values['relation'] = grip.relation(obs['image'], servo)
+        except Exception as exc:          # noqa: BLE001 - logged, never gates
+            values['monitor_error'] = type(exc).__name__
+        self._monitor('hold_view', now=float(obs['sim_time']), **values)
+        return {'ok': self.held_by_command(), 'v1_ratio': 0., 'v3_iou': None,
+                'decided_by': 'own_command_history_v96'}
 
     def _wait_carry(self, now, arm_idle):
         if not getattr(self, 'high_ready', False):
@@ -154,13 +191,13 @@ class HighController:
                      and report.initialized and report.last_fix_t is not None
                      and report.last_fix_t > self.checkpoint_fix_after
                      and report.std_xy_m <= .05 and report.std_yaw_rad <= np.deg2rad(3.))
+            # Localization re-observe (navigation) keeps its bounded timeout.
             if now-self.checkpoint_started > 8.:
                 return self._transit_abort('HIGH_CHECKPOINT_REOBSERVE_TIMEOUT', now)
             if now >= self.next_look:
                 self.next_look = now+m2.study.LOOK_EVERY_S
                 obs = self.look(now)
-                if not self.hold_state(obs)['ok']:
-                    return self._transit_abort('HIGH_CHECKPOINT_GRIP_CHANGED', now)
+                self.hold_state(obs)      # grip values logged only
                 self.report('carry', obs, now, ready=False, reason='HIGH stop/reobserve pending')
             if not fresh or now-self.checkpoint_started < CHECKPOINT_REOBSERVE_S:
                 return
@@ -204,38 +241,25 @@ class HighController:
             self._transit_abort(self.transit.failure, now)
 
     def _lower(self, now, arm_idle):
-        if getattr(self, 'floor_check_until', None) is None:
-            if not self._monitor_transit(now) or not arm_idle:
-                return
-            if not self.transit.evidence_ok(now):
-                return self._transit_abort('LOWER_TRANSIT_EVIDENCE_INCOMPLETE', now)
-            # Anchor lifetime: the floor anchor was taken at this exact closed
-            # floor pose in this grasp epoch, before any lift. A lagging partner
-            # may still be lowering, so allow a bounded re-check; a slipped
-            # beam never returns to the grasp-time view and is refused.
-            self.floor_check_until = now+grip.SAMPLE_S+grip.FLOOR_CONFIRM_MAX_S
-            return   # first floor view on the next control sample
-        if now < self.next_transit_look-1e-8:
+        if not self._monitor_transit(now) or not arm_idle:
             return
-        self.next_transit_look = now+grip.SAMPLE_S
+        if not self.transit.complete(now):
+            return self._transit_abort('LOWER_TRANSIT_EVIDENCE_INCOMPLETE', now)
+        floor = self.pose_anchors.get('floor')
+        at_floor = all(self._issued().get(k) == v for k, v in self.grasp_pose.items() if k != 1)
+        if not at_floor or not self.held_by_command():
+            return self._transit_abort('FLOOR_POSE_NOT_COMMANDED', now)
         obs = self.look(now)
-        anchor = self.pose_anchors.get('floor')
-        valid = (anchor is not None and anchor.epoch == self.grip_epoch
-                 and anchor.pose == grip.pose_key(self._issued()) and self._issued().get(1) == 1500)
-        iou = m2.hv3.hold_iou(anchor.mask, obs['image']) if valid else 0.
-        self.log(self.rid, 'floor_return_view', now, iou=iou, epoch=self.grip_epoch,
-                 frame_id=obs['frame_id'], anchor_frame_id=None if anchor is None else anchor.frame_id)
-        if valid and iou >= m2.hv3.HOLD_MIN_IOU:
-            self.floor_check_until = None
-            self.floor_return_verified = True
-            return self.set('wait_open', now)
-        if not valid or now >= self.floor_check_until-1e-8:
-            self.floor_check_until = None
-            return self._transit_abort('FLOOR_RETURN_GRIP_CHANGED', now)
+        self._monitor('floor_return_view', now, frame_id=obs['frame_id'], frame_sha256=obs.get('sha256'),
+                      anchor_iou=None if floor is None else m2.hv3.hold_iou(floor.mask, obs['image']),
+                      anchor_mask_px=None if floor is None else int(floor.mask.sum()),
+                      legacy_min_iou=m2.hv3.HOLD_MIN_IOU, legacy_check='FLOOR_RETURN_GRIP_CHANGED')
+        self.floor_return_verified = True     # commanded floor pose reached, still closed
+        return self.set('wait_open', now)
 
     def _wait_open(self, now, arm_idle):
         if self.seg+1 < len(self.segments) or not self.floor_return_verified:
-            return self._transit_abort('FINAL_VERIFIED_FLOOR_RELEASE_REQUIRED', now)
+            return self._transit_abort('FINAL_FLOOR_RELEASE_REQUIRED', now)
         return super()._wait_open(now, arm_idle)
 
 class CommandGuard(PreviousGuard):
@@ -255,7 +279,8 @@ class Execution(previous.Execution):
         ctl.__class__ = type('HighPairController', (HighController, type(ctl)), {})
         ctl.high_raising, ctl.high_ready = False, False
         ctl.grip_epoch, ctl.pose_anchors, ctl.transit = 0, {}, None
-        ctl.floor_return_verified, ctl.floor_check_until = False, None
+        ctl.floor_return_verified = False
+        ctl.grip_monitor, ctl.grip_closed_epoch = grip.GripMonitorLog(), None
         self.command_guard = CommandGuard(self, self.vision)
 
 
@@ -272,6 +297,11 @@ class Team(previous.Team):
         for row in rows:
             row.update(pair_policy='b-v6h1-v3-highpose-opencv', high_pose=pose.record(),
                        previous_acceptance_inherited=False)
+        for row, session in zip(rows, self.sessions):
+            # Evaluation/audit output only; the controller never reads it.
+            row['grip_monitor'] = {'scope': grip.MONITOR_SCOPE, 'in_run_grip_loss_detection': False,
+                                   'rows': {r: ep.controller.grip_monitor.export()
+                                            for r, ep in session['endpoints'].items()}}
         return rows
 
 

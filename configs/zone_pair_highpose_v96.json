@@ -23,5 +23,20 @@
     "decided_before_p03_data": true,
     "derivation": "lower bounds 63.8/104.2/184.6 s per checkpoint, 190.4-219.3 s full carry (distance/0.06 m/s dominant); 300 s ~ 1.4x largest"
   },
+  "grip_monitor": {
+    "scope": "log_only_v96",
+    "in_run_grip_loss_detection": false,
+    "gates": "own command history (gripper commanded closed in this grasp epoch, queued pose path) + fixed-enum partner status zone_pair_status_v5",
+    "logged_only": [
+      "low-lift co-motion IoU (legacy LOAD_NOT_HELD_AFTER_LIFT)",
+      "transit relation()/view stability/frame freshness",
+      "HIGH edge line and anchor",
+      "carry/checkpoint hold IoU (legacy LOAD_CHANGED_IN_CARRY, HIGH_CHECKPOINT_GRIP_CHANGED)",
+      "floor-return IoU (legacy FLOOR_RETURN_GRIP_CHANGED)"
+    ],
+    "unchanged_grasp_checks": "GRIP_NOT_CONFIRMED (issued close + fresh frame) and GRIP_NOT_SEEN (own grip view after close, v88/v92)",
+    "deferred": "own-grip-loss detection + partner signal (NL: LLM message; structured: fixed status) + audit timing, after the first E2E",
+    "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md"
+  },
   "qualification": "자기 RGB·정적 지도·자기 명령 기반 새 높은 운반 자세 후보. 인수 미완료."
 }

@@ -6,6 +6,7 @@ from harness import zone_final_pair_calibration_v92_contract as d5
 
 from harness import zone_final_pair_contract as previous
 from harness import zone_pair_highpose as pose
+from harness import zone_pair_highpose_grip as grip
 
 base, ROOT = previous.base, previous.ROOT
 BUNDLE_ID = 'zone-final-pair-highpose-v96'
@@ -36,7 +37,9 @@ def registry():
             or reg['calibration_contract_sha256'] != base.sha(ROOT / CALIBRATION_CONTRACT)
             or reg.get('case_cap', {}).get('sim_cap_s') != CASE_CAP_S
             or reg['case_cap'].get('decision') != CAP_DECISION
-            or reg['case_cap'].get('decided_before_p03_data') is not True):
+            or reg['case_cap'].get('decided_before_p03_data') is not True
+            or reg.get('grip_monitor', {}).get('scope') != grip.MONITOR_SCOPE
+            or reg['grip_monitor'].get('in_run_grip_loss_detection') is not False):
         raise ValueError('v96 registry mismatch')
     return reg
 
@@ -166,7 +169,6 @@ def execution_timing(check):
     timing = previous.execution_timing(check)
     timing['stabilization']['high_pose'] = pose.record()
     timing['high_checkpoint_policy'] = {'remain_high': True, 'open': False, 'reobserve_min_s': 1.2}
-    from harness import zone_pair_highpose_grip as grip
     # look_every_s (0.4) is the inherited carry/hold look cadence. Arm transits
     # (raise/lower) observe own RGB every SAMPLE_S with a frame-age limit.
     timing['observation'] = {'carry_hold_look_every_s': timing.get('look_every_s'),

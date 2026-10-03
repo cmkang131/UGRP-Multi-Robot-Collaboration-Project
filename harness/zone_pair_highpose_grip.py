@@ -1,9 +1,17 @@
-"""Conservative HIGH transit hypothesis from own RGB + issued PWM only.
+"""HIGH raise/lower progress (gating) and own-RGB grip values (LOG-ONLY).
 
-The box/rays below are COMMAND geometry, not measured loaded extrinsics or a
-map pose update. No simulator import, joint measurement or contact is used.
-It can refuse an unobservable view; physical RGB acceptance is still required.
-An edge somewhere in the frame never establishes a held relationship.
+v96 first-E2E scope (user decision 2026-10-03, "ㅇㅇ 그렇게 하자"): the grip
+monitor never gates, aborts or blocks a phase. Raise/lower progress is gated
+only by the robot's own command history (gripper commanded closed, the queued
+pose path) and the existing fixed-enum partner status. The own-RGB values
+(relation(), view stability, frame freshness) are written to a write-only
+GripMonitorLog that the evaluation output exports; no controller code reads it.
+So a dropped beam is NOT detected or signalled in-run in this version.
+
+relation() below projects COMMAND geometry (no measured loaded extrinsics).
+On recorded floor_light_v1 renders it is unreliable (REVIEW_363 round 2,
+experiments/2026-10-03-pair-carry-highpose/fix363), which is why it is
+log-only. No simulator import, joint measurement or contact is used.
 """
 from __future__ import annotations
 
@@ -24,13 +32,39 @@ MIN_SUPPORT = 120                 # 4-pixel grid; positive beam colour only
 MIN_COVERAGE = .65
 MIN_IOU = .50
 MAX_EDGE_SLOPE_DELTA = .015        # conservative desync refusal, not a measured bound
-# HIGH anchor lifetime starts only after the own view has held still against
-# itself (existing carry hold IoU, owncam_pair_hold_v3.HOLD_MIN_IOU) over the
-# last STABLE_S of the 8 s HIGH settle. A partner still moving changes the own
-# view (beam pivots in the jaws) and delays/aborts the mint; no message added.
+# Log-only view stability: own view vs itself (carry hold IoU) over the last
+# STABLE_S of the 8 s HIGH settle. Recorded for evaluation; never gates.
 STABLE_S = 2.
-STABLE_WAIT_MAX_S = 3.             # bounded extra wait after the queue ends
-FLOOR_CONFIRM_MAX_S = 3.           # same bound for the floor-return check
+MONITOR_SCOPE = 'log_only_v96'
+
+
+def _plain(value):
+    if isinstance(value, dict):
+        return {str(k): _plain(v) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_plain(v) for v in value]
+    if isinstance(value, (np.bool_, bool)):
+        return bool(value)
+    if isinstance(value, (np.integer,)):
+        return int(value)
+    if isinstance(value, (float, np.floating)):
+        value = float(value)
+        return value if math.isfinite(value) else None
+    return value
+
+
+class GripMonitorLog:
+    """Write-only eval/audit sink. Controllers append; only records() exports."""
+
+    def __init__(self):
+        self._rows = []
+
+    def record(self, rid, kind, now, **values):
+        self._rows.append({'robot_id': rid, 'kind': kind, 'sim_s': float(now),
+                           'scope': MONITOR_SCOPE, **_plain(values)})
+
+    def export(self):
+        return [dict(row) for row in self._rows]
 
 
 def support(servo):
@@ -117,15 +151,18 @@ def pose_key(servo):
 
 
 class TransitMonitor:
-    def __init__(self, phase, started_at, initial_servo, events, until, epoch):
+    """Gates: own command history + partner status. Own RGB: log only."""
+
+    def __init__(self, phase, started_at, initial_servo, events, until, epoch, *, sink=None, rid=None):
         self.phase, self.started_at, self.until, self.epoch = phase, started_at, until, epoch
         self.initial = dict(initial_servo)
         self.events = tuple(sorted(events))
-        self.last_frame = None
-        self.good_frames = 0
+        self.samples = 0                   # command/status checks at the control cadence
+        self.last_sample = None
         self.failure = None
-        self.last = None
-        self.stable_ref = None             # (t, full-view mask) of the stability window
+        self.sink, self.rid = sink if sink is not None else GripMonitorLog(), rid
+        self.last_frame = None
+        self.stable_ref = None
         self.stable_since = None
 
     def expected(self, now):
@@ -156,26 +193,26 @@ class TransitMonitor:
         if not partner_ok:
             self.failure = 'TRANSIT_PARTNER_DESYNC'
             return False
-        identity = (obs['sim_time'], obs['frame_id'])
-        if (not 0 <= now-obs['sim_time'] <= MAX_FRAME_AGE_S+1e-8
-                or self.last_frame is not None and (identity[0] <= self.last_frame[0]
-                                                     or identity[1] <= self.last_frame[1])):
-            self.failure = 'TRANSIT_FRESH_RGB_REQUIRED'
-            return False
-        if {int(k): v for k, v in obs['actuator_state']['servo_pulses'].items()} != servo:
-            self.failure = 'TRANSIT_IMAGE_COMMAND_MISMATCH'
-            return False
-        self.last_frame = identity
-        self.last = relation(obs['image'], servo)
-        if not self.last['ok']:
-            self.failure = self.last['reason']
-            return False
-        self.good_frames += 1
-        self._stability(now, obs, servo)
-        if now > self.until+STABLE_WAIT_MAX_S+1e-8 and not self.stable(now):
-            self.failure = 'TRANSIT_VIEW_UNSTABLE_PARTNER_DESYNC'
-            return False
+        self.samples += 1
+        self.last_sample = now
+        self._log(now, obs, servo)
         return True
+
+    def _log(self, now, obs, servo):
+        identity = (obs['sim_time'], obs['frame_id'])
+        fresh = (0 <= now-obs['sim_time'] <= MAX_FRAME_AGE_S+1e-8
+                 and (self.last_frame is None or (identity[0] > self.last_frame[0]
+                                                  and identity[1] > self.last_frame[1])))
+        self.last_frame = identity
+        image_servo = {int(k): v for k, v in obs['actuator_state']['servo_pulses'].items()}
+        try:
+            rel = relation(obs['image'], servo)
+        except Exception as exc:          # noqa: BLE001 - logged, never gates
+            rel = {'ok': None, 'reason': f'RELATION_ERROR:{type(exc).__name__}'}
+        self.sink.record(self.rid, 'transit_view', now, phase=self.phase, epoch=self.epoch,
+                         frame_id=obs['frame_id'], frame_sha256=obs.get('sha256'),
+                         frame_fresh=fresh, image_servo_matches_command=image_servo == servo,
+                         relation=rel, view_stable=self._stability(now, obs, servo))
 
     def _stability(self, now, obs, servo):
         from harness import owncam_pair_hold_v3 as hv3
@@ -183,21 +220,17 @@ class TransitMonitor:
         at_final = all(servo.get(sid) == final.get(sid) for sid in (3, 4, 5, 6))
         if not at_final or now < self.until-STABLE_S-1e-8:
             self.stable_ref = self.stable_since = None
-            return
-        if self.stable_ref is not None and hv3.hold_iou(self.stable_ref, obs['image']) >= hv3.HOLD_MIN_IOU:
-            return
-        # Restart the window at this frame: the own view moved (or first frame).
-        self.stable_ref, self.stable_since = hv3.hold_view_mask(obs['image']).copy(), now
-
-    def stable(self, now):
-        return self.stable_since is not None and now-self.stable_since >= STABLE_S-1e-8
+            return None
+        if self.stable_ref is None or hv3.hold_iou(self.stable_ref, obs['image']) < hv3.HOLD_MIN_IOU:
+            self.stable_ref, self.stable_since = hv3.hold_view_mask(obs['image']).copy(), now
+        return now-self.stable_since >= STABLE_S-1e-8
 
     def evidence_ok(self, now):
-        # No endpoint-only jump may create an anchor: the full transition must
-        # have fresh successful observations at the control cadence.
+        # No endpoint-only jump: own command/partner-status checks ran at the
+        # control cadence over the whole queued path. Images do not count.
         required = max(2, math.floor((self.until-self.started_at)/SAMPLE_S)-1)
-        return (self.failure is None and now >= self.until-1e-8 and self.good_frames >= required
-                and self.last_frame is not None and now-self.last_frame[0] <= MAX_FRAME_AGE_S+1e-8)
+        return (self.failure is None and now >= self.until-1e-8 and self.samples >= required
+                and self.last_sample is not None and now-self.last_sample <= SAMPLE_S+1e-8)
 
     def complete(self, now):
-        return self.evidence_ok(now) and (self.phase != 'raise' or self.stable(now))
+        return self.evidence_ok(now)
