@@ -1,0 +1,75 @@
+{
+  "base_sha": "7cd729416fc04dfc4633cb4da5c4cd9435dd582d",
+  "scope": "관련 오프라인 회귀. 렌더·실모델·학생 물리 미실행.",
+  "tests": {
+    "command": "python -m pytest -q tests/test_zone_final_pair_highpose.py tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_zone_pair_v6e_yaw.py tests/test_vision_loc_provider_lifecycle.py -k \"not test_tracker_on_recorded_frames_matches_the_recorded_replay_rows\"",
+    "confirmed_pass_line": "138 passed, 1 deselected in 70.08s (0:01:10)",
+    "new_highpose_tests": 20,
+    "excluded": "test_tracker_on_recorded_frames_matches_the_recorded_replay_rows: 과거 v6e cal raw r2/00025.jpg 누락. 첫 실행 138 pass/1 fail 원본 보존.",
+    "initial_attempt": "잘못된 기존 테스트 경로로 수집 전 종료; 0 tests. 경로를 확인해 수정."
+  },
+  "environment": {
+    "python": "3.12.13",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "packages": {
+      "mujoco": "3.12.0",
+      "numpy": "2.5.2",
+      "pytest": "9.1.1",
+      "Pillow": "12.3.0"
+    },
+    "opencv": "5.0.0"
+  },
+  "checks": {
+    "py_compile": true,
+    "git_diff_check": true,
+    "ci_preflight": "3 frozen fixtures present",
+    "workflow_plan_only": true,
+    "measured_calibration_missing": "runnable:false; V92_MEASURED_SIM_HIGHPOSE_CALIBRATION_REQUIRED"
+  },
+  "artifacts": {
+    "tests-related-r2.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-related-r2.xml",
+      "sha256": "35375c7d96b4a0083f3f5e37424bfe1bcc8cbc5e3cf889b61bae672741dff8d3"
+    },
+    "tests-related-r3.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-related-r3.xml",
+      "sha256": "0458e57ad75e903e3463d02d217b36debeb3bc7f29943ada377c88b5de653ce9"
+    },
+    "tests-first.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-first.log",
+      "sha256": "8598cb2ac248421f7964191f585f1820985f1522dcc0f74f6820fc1b73fc79f9"
+    },
+    "tests-related.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-related.xml",
+      "sha256": "508e95dba7db2e8480fc56b06f09fbf68bddd48f7ed292446f918ca8715b47c2"
+    },
+    "tests-first.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-first.xml",
+      "sha256": "cfd2e4e06ed5019b9d2541f9df573f871eb602ac833f9334bc63addbdce08234"
+    },
+    "tests-related.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-related.log",
+      "sha256": "244076708796e7691dea84683f1fef96d1502c89dc3b10ef3111e778e25a5745"
+    },
+    "workflow-plan.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/workflow-plan.json",
+      "sha256": "c6cdcf87313da9957498807a343918cef387aa7e666534af4d6eb72a1bb5058a"
+    },
+    "disk-before.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/disk-before.json",
+      "sha256": "a89a8d8f12900f8257d81203a993e46f363fa9333cefe23dcddab80f65ed7480"
+    },
+    "tests-related-r2.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-related-r2.log",
+      "sha256": "7f9b260a97f13c335d66119240f5c376bfb2230b84dc4ca4fde9cf898fb8369e"
+    },
+    "environment.json": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/environment.json",
+      "sha256": "a867f98ecc3464e0219bc61f4ca54ed7836dcb2dfde526cea8ef6273309759eb"
+    },
+    "tests-related-r3.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-related-r3.log",
+      "sha256": "f4cb5e99c17bb08b101f26b96018331031564e27881d6952341dda1abb99242f"
+    }
+  }
+}
