@@ -835,3 +835,18 @@ BASH
 완료·실패 raw와 부분 자료를 모두 보존하고 새 결과 회수 뒤 TensorBoard를 별도 등록한다.
 expected-minutes는 잠금 예상 시각이며 측정한 처리 시간이나 실행 제한이 아니다.
 실제 두 지도 완주·동시 수집 throughput·criterion B 통과·학생/실물 성공은 아직 검증하지 않았다.
+
+---
+
+# v91 수집 후 고정 criterion B 채점 연결 — DRAFT (2026-10-03)
+
+별도 `scripts.validate_consumer_criterion_b_v91`을 추가했다.
+[사용 명령·시간 근거·검증 범위](experiments/2026-10-03-critb-v91/README.md)를 따른다.
+위 v88/v90/v91 등록과 수집 소스, 고정 B·r4·기존 검증기는 바꾸지 않았다.
+소스 `04043e274af7351f3d35cb6be77d948cac1b8c6a`에서 수집한 두 지도 완료 raw만 대상이다.
+plan/result의 `host_start` 잠금 획득 UTC 하한 중 최솟값과
+GitHub 댓글 5958329647의 서버 생성 시각을 비교한다. 직접적인 시작 UTC가 함께 있으면
+그것도 포함한다. 시계 동기화를 증명하는 것은 아니며 누락·동시각·불일치는 INELIGIBLE/null이다.
+전체 bundle 지문과 입력 해시를 검사하고 기존 B 채점 함수를 재사용한다.
+회전 후보와 판정은 계속 null이다. 이 작업은 합성 회귀검사만 했으며 실제 수집/채점,
+학생·실물 성공, TensorBoard 새 결과 등록을 완료했다고 주장하지 않는다. 독립 검토 전 draft 유지.
