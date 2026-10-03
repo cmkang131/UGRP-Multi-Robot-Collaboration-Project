@@ -101,6 +101,10 @@ def geometry(model, data, rid):
 
 
 def commands(mode='posture'):
+    if mode == 'revised':
+        from harness.zone_final_pair_loaded_schedule import schedule
+        # Exact prefix, including the new lift path and HIGH forward commands.
+        return [e for e in schedule() if e['t'] < 70.]
     hover, descent = grasp_postures()
     high = solve_grip_ik(.2032, 0., .15, -40.)
     visits = [(0., 'floor_grasp', {**descent[-1], 1: 2000}),
@@ -138,7 +142,7 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--source-sha', required=True)
     p.add_argument('--sim-slot', required=True)
-    p.add_argument('--mode', choices=('posture', 'motion'), default='posture')
+    p.add_argument('--mode', choices=('posture', 'motion', 'revised'), default='posture')
     args = p.parse_args()
     check_source(args.source_sha)
     from scripts.agent_lock import DEFAULT_ROOT
@@ -148,9 +152,16 @@ def main():
     args.output.mkdir(parents=True, exist_ok=False)
     events = commands(args.mode)
     cap = 66. if args.mode == 'posture' else 70.
-    snapshots = (14., 32., 40., 48., 56., 64.) if args.mode == 'posture' else (14., 24., 36., 44., 52., 60., 68.)
+    snapshots = ((14., 32., 40., 48., 56., 64.) if args.mode == 'posture' else
+                 (14., 24., 36., 44., 52., 60., 68.) if args.mode == 'motion' else
+                 (14., 32., 38., 48., 60., 68.))
     write(args.output/'commands.json', events)
-    bundle = c.bundle('zone_wide_two_doors_final_v3', 'calibration-loaded')
+    if args.mode == 'revised':
+        from harness import zone_final_pair_loaded as loaded
+        bundle = loaded.bundle(loaded.MAP_ID, loaded.CHECK)
+        write(args.output/'bundle.json', bundle)
+    else:
+        bundle = c.bundle('zone_wide_two_doors_final_v3', 'calibration-loaded')
     result = {'source_sha': args.source_sha, 'loadavg_start': list(os.getloadavg()),
               'method': f'{cap} SIM s headless {args.mode} check; no RGB/calibration acceptance',
               'geometry': [], 'status': 'HOST_ERROR'}

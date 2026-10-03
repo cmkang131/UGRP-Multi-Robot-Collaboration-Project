@@ -1,8 +1,8 @@
 """V92 fixed loaded measurement design. No simulator or outcome input.
 
-The controller's real carry posture is retained for motion/extrinsics. An
-additional, explicitly non-controller posture measures beam-edge visibility.
-Neither its geometry nor its calibration is silently adopted by the student.
+All loaded measurements use the HIGH carry candidate (D1-D4, issue #219).
+Floor grasp and intermediate arm poses are preparation only. Student adoption
+still needs its own versioned loader/controller and rendered acceptance.
 """
 from __future__ import annotations
 
@@ -49,29 +49,28 @@ def _segments(start, axis, levels, mode, pose):
 def design(check=CHECK, map_id=MAP_ID):
     if check != CHECK or map_id != MAP_ID:
         raise ValueError('v92 requires loaded training collection on the two-door map')
-    t, segments = 20., []
+    t, segments = 40., []
     for axis in AXES:
         levels = FROZEN_LEVELS if axis == 'turn' else (*LOW_LEVELS, *FROZEN_LEVELS)
         mode = 'common_orbit' if axis == 'turn' else 'world_translation'
-        t, block = _segments(t, axis, levels, mode, 'controller_hover')
+        t, block = _segments(t, axis, levels, mode, 'edge_view_150')
         segments.extend(block)
-    assert t == 470.
+    assert t == 490.
     end, pair = _segments(570., 'turn', FROZEN_LEVELS, 'relative_yaw', 'edge_view_150')
     assert end == 676.
     segments.extend(pair)
-    # These are prospective measurement windows, not a change to B-prime's
-    # one-second selection rule. All preparation/transition raw is retained.
+    # B-double-prime selects these half-open windows after eight seconds of
+    # preparation. B-prime remains unchanged. All transition raw is retained.
     windows = [{'start_s': a, 'end_s': z, 'pose': pose, 'pan_pwm': pan,
                 'purpose': purpose, 'requires_offline_lifted_bilateral_grip': True}
                for a, z, pose, pan, purpose in (
-                   (12., 20., 'controller_hover', 1500, 'controller_extrinsics'),
-                   (478., 482., 'controller_hover', 1500, 'pan_center_reference'),
-                   (490., 498., 'controller_hover', 1480, 'pan_minus'),
-                   (506., 514., 'controller_hover', 1500, 'pan_center_reference'),
-                   (522., 530., 'controller_hover', 1520, 'pan_plus'),
-                   (538., 546., 'controller_hover', 1500, 'pan_center_reference'),
-                   (562., 570., 'edge_view_150', 1500, 'candidate_extrinsics'),
-                   (692., 700., 'controller_hover', 1500, 'controller_return_extrinsics'))]
+                   (32., 40., 'edge_view_150', 1500, 'high_extrinsics'),
+                   (498., 506., 'edge_view_150', 1500, 'pan_center_reference'),
+                   (514., 522., 'edge_view_150', 1480, 'pan_minus'),
+                   (530., 538., 'edge_view_150', 1500, 'pan_center_reference'),
+                   (546., 554., 'edge_view_150', 1520, 'pan_plus'),
+                   (562., 570., 'edge_view_150', 1500, 'pan_center_reference'),
+                   (684., 692., 'edge_view_150', 1500, 'high_return_extrinsics'))]
     return {'schema': 'ugrp.final_pair_loaded_measurement.v92', 'check': check,
             'map_id': map_id, 'basis': 'PR #359 f2fc0cc3d2315e8b4441028a1713a1ba5af23175',
             'control_period_s': PERIOD_S, 'eval_pose_period_s': PERIOD_S,
@@ -86,12 +85,10 @@ def design(check=CHECK, map_id=MAP_ID):
             'poses': {name: {str(k): v for k, v in pose.items()} for name, pose in POSES.items()},
             'camera_windows': windows, 'camera_warmup_s': 8.,
             'segments': segments,
-            'unsupported_controller_requirements': {
-                'floor_grasp_loaded': '24 mm pad height is floor-supported; cannot claim >=10 mm beam clearance',
-                'controller_hover_edge': 'real 95 mm carry pose has no visible beam edge in headless geometry check',
-                'edge_view_150': 'not used by current student; separate candidate, no calibration transfer',
-                'transition_extrinsics': 'transition_110/130 are preparation only, not student measured poses'},
-            'qualification': 'COLLECTION DESIGN ONLY; B/B-prime and assembler unchanged; no promotion'}
+            'loaded_pose_scope': {'measurement': ['edge_view_150'],
+                'preparation_only': ['floor_grasp', 'controller_hover', 'transition_110', 'transition_130'],
+                'student_adoption': 'D1/D2 require new loader/controller bundle and acceptance; no transfer to old student'},
+            'qualification': 'COLLECTION DESIGN ONLY; B-double-prime frozen separately; v92 assembler pending; no promotion'}
 
 
 def action_vector(segment, rid):
@@ -112,16 +109,13 @@ def schedule(check=CHECK):
     plan = design(check)
     visits = [(0., 'prepare_floor_grasp', {**POSES['floor_grasp'], 1: 2000}),
               (2., 'prepare_close', {1: 1500}), (4., 'prepare_controller_hover', POSES['controller_hover']),
-              (482., 'controller_pan_minus', {6: 1480}),
-              (498., 'controller_pan_center', {6: 1500}),
-              (514., 'controller_pan_plus', {6: 1520}),
-              (530., 'controller_pan_center_return', {6: 1500}),
-              (546., 'prepare_transition_110', POSES['transition_110']),
-              (550., 'prepare_transition_130', POSES['transition_130']),
-              (554., 'prepare_edge_view_150', POSES['edge_view_150']),
-              (676., 'return_transition_130', POSES['transition_130']),
-              (680., 'return_transition_110', POSES['transition_110']),
-              (684., 'return_controller_hover', POSES['controller_hover']),
+              (16., 'prepare_transition_110', POSES['transition_110']),
+              (20., 'prepare_transition_130', POSES['transition_130']),
+              (24., 'prepare_edge_view_150', POSES['edge_view_150']),
+              (506., 'high_pan_minus', {6: 1480}),
+              (522., 'high_pan_center', {6: 1500}),
+              (538., 'high_pan_plus', {6: 1520}),
+              (554., 'high_pan_center_return', {6: 1500}),
               (700., 'post_measurement_lower', POSES['floor_grasp']),
               (714., 'post_measurement_open', {1: 2000})]
     events = []
