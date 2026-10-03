@@ -11,7 +11,14 @@ So a dropped beam is NOT detected or signalled in-run in this version.
 relation() below projects COMMAND geometry (no measured loaded extrinsics).
 On recorded floor_light_v1 renders it is unreliable (REVIEW_363 round 2,
 experiments/2026-10-03-pair-carry-highpose/fix363), which is why it is
-log-only. No simulator import, joint measurement or contact is used.
+log-only.
+
+Static inputs only (REVIEW_363 round 2, P3 #7): relation() imports the fixed
+catalogue beam spec (sim.zone_cargo.kind('long_beam'): part boxes, grip point)
+and uses a fixed near-clip constant near_m = znear 0.002 x model extent
+(~11.112 m) copied once from v93's headless scene record of the registered
+scene profile. Both are fixed task spec / static camera calibration. No live simulator state, joint measurement or
+contact is read.
 """
 from __future__ import annotations
 
