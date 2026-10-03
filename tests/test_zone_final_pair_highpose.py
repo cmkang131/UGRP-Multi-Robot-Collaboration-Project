@@ -31,7 +31,7 @@ def test_p03_missing_v92_gate_before_any_output_or_backend(tmp_path, capsys):
     assert plan['runnable'] is False and c.PRECONDITION in plan['blocked_on']
     assert plan['denominator'] == 3
     assert [r['checkpoint'] for r in plan['cases']] == list(c.previous.CHECKPOINTS)
-    assert sum(r['sim_cap_s'] for r in plan['cases']) == 360.
+    assert sum(r['sim_cap_s'] for r in plan['cases']) == 900.
     with pytest.raises(ValueError, match=c.PRECONDITION):
         run.main(argv+['--execute'])
     b = {**c.bundle(MAPS[0], 'p03'), 'source_sha': 'a'*40, 'case': c.cases('p03')[0]}
@@ -152,13 +152,14 @@ def test_internal_bounded_case_fixture_ignores_eval_truth_and_preserves_p03_cloc
             obj.truth = {'success': value, 'pose': [1e9 if value else -1e9]*3}
             owners.append(obj)
             return obj
-        result = run.bind(run.previous.run_case, contract=c, checkpoint_record=run.checkpoint_record)(b, tmp_path/str(value), seed=911, backend_factory=backend,
+        result = run.student_run_case(b, tmp_path/str(value), seed=911, backend_factory=backend,
             runtime_factory=FakeRuntime, calibration=path, calibration_sha=c.base.sha(path))
         obj = owners[0]
         assert result['protocol_complete'] and result['physical_success'] is None
         assert result['checkpoint']['status'] == 'NOT_REACHED'
-        assert len(obj.frames) == len(obj.samples) == 2401
-        assert obj.now == obj.deadline == 121. and obj.closed
+        assert len(obj.frames) == len(obj.samples) == 6001
+        assert obj.now == obj.deadline == 301. and obj.closed
+        assert result['check_sim_cap_s'] == 300.
         receipts.append(obj.actions)
     assert receipts[0] == receipts[1]
 

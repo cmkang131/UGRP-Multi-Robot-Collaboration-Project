@@ -1,4 +1,4 @@
-"""Managed v96 student candidate. Plan-only until v92 measured calibration."""
+"""Managed v96 student candidate. Plan-only until an approved v92 measured calibration and runnable bundle."""
 from __future__ import annotations
 
 import argparse
@@ -10,9 +10,7 @@ import subprocess
 import sys
 
 from harness import zone_pair_highpose_contract as contract
-from harness.zone_final_pair_binding import bind
 from harness.zone_pair_highpose_runtime import Runtime
-from scripts import run_final_pair_v3 as previous
 from harness import zone_pair_highpose_timing as time_budget
 from harness import zone_pair_highpose_starts as starts
 from scripts.run_final_environment_checks import write, check_source
@@ -58,9 +56,85 @@ def run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runtime,
     if (contract.base.digest(bundle) != contract.base.digest(expected)
             or bundle['case'] not in contract.cases(bundle['check'], bundle['map_id'])):
         raise ValueError('v96 bundle/case mismatch')
-    run = bind(previous.run_case, contract=contract, checkpoint_record=checkpoint_record)
-    return run(bundle, out, seed=seed, backend_factory=backend_factory,
-               runtime_factory=runtime_factory, calibration=calibration, calibration_sha=calibration_sha)
+    return student_run_case(bundle, out, seed=seed, backend_factory=backend_factory,
+        runtime_factory=runtime_factory, calibration=calibration, calibration_sha=calibration_sha)
+
+
+def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runtime,
+                     calibration=None, calibration_sha=None):
+    """Student-only copy of scripts/run_final_pair_v3.run_case with the v96 cap.
+
+    The parent hard-codes the v88 120 SIM s student cap. v96 uses the
+    coordinator's a-priori amendment (contract.CASE_CAP_S = 300 per case).
+    Loop, clock, eval_sample/capture order and records are otherwise the
+    parent's; no collection branch (v96 has no calibration checks).
+    """
+    import os
+    out = Path(out)
+    cap = contract.CASE_CAP_S
+    if (bundle['check'] not in contract.CHECKS or bundle['case']['sim_cap_s'] != cap
+            or bundle['timing'] != contract.execution_timing(bundle['check'])):
+        raise ValueError('v96 case cap/timing differs from the registered student protocol')
+    out.mkdir(parents=True, exist_ok=False)
+    write(out/'bundle.json', bundle)
+    write(out/'inputs/schedule.json', [])
+    backend = runtime = None
+    result = {'check': bundle['check'], 'case': bundle['case'], 'status': 'HOST_ERROR',
+              'protocol_complete': False, 'physical_success': None, 'research_result': False,
+              'student_control': True, 'reset_sim_cap_s': contract.RESET_CAP_S, 'check_sim_cap_s': cap,
+              'timing': bundle['timing'], 'clearance_preflight': None,
+              'loadavg_start': list(os.getloadavg()), 'failure': None}
+    try:
+        backend = backend_factory(bundle, out, seed=seed)
+        reset = backend.reset(contract.RESET_CAP_S)
+        if not 0 <= reset <= contract.RESET_CAP_S+1e-8:
+            raise RuntimeError('RESET_SIM_CAP_EXCEEDED')
+        start = backend.now
+        backend.set_deadline(start+cap)
+        result['reset_sim_s'] = reset
+        static, _, _ = contract.resolve(bundle['map_id'])
+        runtime = runtime_factory(static, calibration, calibration_sha, seed=seed)
+        runtime.initial_commands(start, backend.commands)
+        steps = round(cap/contract.TICK_S)
+        for i in range(steps+1):
+            # Raw labels have no return channel into the command selector.
+            backend.eval_sample()
+            runtime.on_frames(backend.now, backend.capture())
+            if i == steps:
+                break
+            for rid, action in runtime.step(backend.now):
+                backend.issue(rid, action)
+                runtime.on_command(rid, backend.now, action)
+            for rid, action in runtime.arm_step(backend.now):
+                backend.issue(rid, action)
+                runtime.on_command(rid, backend.now, action)
+            backend.advance_to(start+(i+1)*contract.TICK_S)
+        if abs(backend.now-start-cap) > 1e-7:
+            raise RuntimeError('INCOMPLETE_BOUNDED_PROTOCOL')
+        result.update(protocol_complete=True, status='COLLECTED_UNQUALIFIED', check_sim_s=backend.now-start)
+    except Exception as exc:
+        result.update(status='HOST_ERROR', failure={'type': type(exc).__name__, 'message': str(exc),
+            'class': 'ENOSPC' if getattr(exc, 'errno', None) == errno.ENOSPC else 'HOST_ERROR'})
+    finally:
+        if runtime is not None:
+            try:
+                record = runtime.record()
+                write(out/'student_record.json', record)
+                if bundle['check'] == 'p03':
+                    result['checkpoint'] = checkpoint_record(record, bundle['case']['checkpoint'])
+            except Exception as exc:
+                result.update(status='HOST_ERROR', record_error=str(exc))
+        for owner in (runtime, backend):
+            if owner is not None:
+                try:
+                    owner.close()
+                except Exception as exc:
+                    result.update(status='HOST_ERROR', cleanup_error=str(exc))
+        result['loadavg_end'] = list(os.getloadavg())
+        write(out/'result.json', result)
+        write(out/'artifacts.sha256.json', {str(p.relative_to(out)): contract.base.sha(p)
+            for p in sorted(out.rglob('*')) if p.is_file() and p.name != 'artifacts.sha256.json'})
+    return result
 
 
 def parser():
@@ -93,7 +167,7 @@ def plan(args):
         blocked.append(contract.REGISTRY_BLOCK)
     lower_bounds = [row for c in cases for row in time_budget.bounds(contract.resolve(c['map_id'])[0], args.check)
                     if row['case'] == time_case(c, args.check)]
-    blocked.extend('TIME_LOWER_BOUND_EXCEEDS_CAP_120: '+r['map_id']+'/'+r['case'] for r in lower_bounds if not r['feasible'])
+    blocked.extend('TIME_LOWER_BOUND_EXCEEDS_CASE_CAP: '+r['map_id']+'/'+r['case'] for r in lower_bounds if not r['feasible'])
     value = {'time_lower_bounds': lower_bounds, 'cohort_role': 'FUNCTIONAL_DEV_REPLAY',
         'confirmation_sample': False, 'execution_bundle_id': contract.BUNDLE_ID, 'status': 'DRAFT_UNSEALED',
         'check': args.check, 'execution_started': False, 'cases': cases, 'denominator': len(cases),

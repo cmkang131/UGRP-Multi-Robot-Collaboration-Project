@@ -14,5 +14,14 @@
   "p03_map": "zone_wide_door_geometry_v3",
   "provider_id": "opencv_owncam_final_pair_highpose_v96",
   "calibration_contract_sha256": "4ad461c3b980d885b9743f32cb763fb14f2b1d46a695c3acacae6b4a8e3c8e78",
+  "case_cap": {
+    "sim_cap_s": 300.0,
+    "cases": "p03 3 checkpoints and carry, per case",
+    "prereg_version": "v96-cap-2",
+    "supersedes": "inherited v88 student cap 120 SIM s per case (3x120 P03)",
+    "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md",
+    "decided_before_p03_data": true,
+    "derivation": "lower bounds 63.8/104.2/184.6 s per checkpoint, 190.4-219.3 s full carry (distance/0.06 m/s dominant); 300 s ~ 1.4x largest"
+  },
   "qualification": "자기 RGB·정적 지도·자기 명령 기반 새 높은 운반 자세 후보. 인수 미완료."
 }

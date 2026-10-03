@@ -20,6 +20,12 @@ PRECONDITION = 'V92_MEASURED_SIM_HIGHPOSE_CALIBRATION_REQUIRED'
 CHECKS, ROBOTS = ('p03', 'carry'), previous.ROBOTS
 RESET_CAP_S, TICK_S, COLLECTION_FRAME_S = previous.RESET_CAP_S, previous.TICK_S, previous.COLLECTION_FRAME_S
 camera_record = previous.camera_record
+# Coordinator amendment (decided a priori from physics before any P03 run):
+# per-case student cap 300 SIM s replaces the inherited 3x120 (fix363
+# COORDINATOR_DECISION.md). Lower bounds 63.8/104.2/184.6 s per checkpoint and
+# 190-219 s full carry; 300 s ~ 1.4x the largest bound.
+CASE_CAP_S = 300.
+CAP_DECISION = 'experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md'
 
 
 def registry():
@@ -27,7 +33,10 @@ def registry():
     if (reg['execution_bundle_id'] != BUNDLE_ID or reg['workflow_id'] != WORKFLOW_ID
             or reg['workflow_version'] != WORKFLOW_VERSION or reg['runnable'] is not False
             or reg['precondition'] != PRECONDITION or reg['provider_id'] != PROVIDER_ID
-            or reg['calibration_contract_sha256'] != base.sha(ROOT / CALIBRATION_CONTRACT)):
+            or reg['calibration_contract_sha256'] != base.sha(ROOT / CALIBRATION_CONTRACT)
+            or reg.get('case_cap', {}).get('sim_cap_s') != CASE_CAP_S
+            or reg['case_cap'].get('decision') != CAP_DECISION
+            or reg['case_cap'].get('decided_before_p03_data') is not True):
         raise ValueError('v96 registry mismatch')
     return reg
 
@@ -146,7 +155,10 @@ def require_runnable(value):
 def cases(check, map_id=None):
     if check not in CHECKS:
         raise ValueError('v96 supports student P03/carry only')
-    return previous.cases(check, map_id)
+    rows = copy.deepcopy(previous.cases(check, map_id))
+    for row in rows:
+        row['sim_cap_s'] = CASE_CAP_S
+    return rows
 
 
 def execution_timing(check):
@@ -154,6 +166,13 @@ def execution_timing(check):
     timing = previous.execution_timing(check)
     timing['stabilization']['high_pose'] = pose.record()
     timing['high_checkpoint_policy'] = {'remain_high': True, 'open': False, 'reobserve_min_s': 1.2}
+    from harness import zone_pair_highpose_grip as grip
+    # look_every_s (0.4) is the inherited carry/hold look cadence. Arm transits
+    # (raise/lower) observe own RGB every SAMPLE_S with a frame-age limit.
+    timing['observation'] = {'carry_hold_look_every_s': timing.get('look_every_s'),
+        'transit_rgb_sample_s': grip.SAMPLE_S, 'transit_max_frame_age_s': grip.MAX_FRAME_AGE_S,
+        'transit_max_command_lag_s': grip.MAX_COMMAND_LAG_S}
+    timing['case_sim_cap_s'] = CASE_CAP_S
     timing['parent_differences'].append('single low lift/HIGH raise; stay HIGH at intermediate stop/reobserve; lower/open only at final release')
     return timing
 
@@ -172,7 +191,7 @@ def bundle(map_id, check):
         calibration_selection='D5 v92 loader v2 + registered complete measurement evidence; HIGH only')
     entries = ['scripts/run_pair_highpose.py', 'harness/zone_pair_highpose_runtime.py',
                'harness/vision_pose_source_highpose.py']
-    paths = set(value['source_sha256']) | set(source_closure(ROOT, entries)) | {REGISTRY, WORKFLOW, CALIBRATION_CONTRACT, D5_ADMISSION,
+    paths = set(value['source_sha256']) | set(source_closure(ROOT, entries)) | {REGISTRY, WORKFLOW, CALIBRATION_CONTRACT, D5_ADMISSION, CAP_DECISION,
         'configs/zone_final_pair_v92_schedule.json.gz',
         'configs/zone_pair_highpose_confirmation_v96.json',
         'experiments/2026-10-03-v92-loaded-schedule/criterion_B_double_prime.json',

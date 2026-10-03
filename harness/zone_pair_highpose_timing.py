@@ -1,4 +1,4 @@
-"""Frozen 120 SIM s per-case admission: an automatic time LOWER bound.
+"""Per-case SIM cap admission: an automatic time LOWER bound.
 
 Every term is a duration the v96 controller cannot avoid, taken from the code
 constants it actually runs (no invented speeds). Turns, obstacle detours,
@@ -6,18 +6,21 @@ barrier waits, extra look sweeps, relocalization retries, reapproaches and
 servo tracking lag are counted as 0, so failing this bound proves the case is
 impossible within the cap; passing it is NOT a completion forecast.
 
-REVIEW_363 P1-2 (coordinator): cap 120 s and the dock start / carried-prefix
-P03 protocol are frozen; no staged teleport; HIGH is kept through
-intermediate checkpoints (stop + re-observe, no lower/open/re-raise).
+REVIEW_363 P1-2: dock start / carried-prefix P03 protocol, no staged
+teleport; HIGH is kept through intermediate checkpoints (stop + re-observe,
+no lower/open/re-raise). The cap is the coordinator's a-priori amendment
+(contract.CASE_CAP_S = 300 SIM s per case, replacing the inherited 3x120,
+decided from these bounds before any P03 data).
 """
 import math
 
 from harness import zone_pair_highpose as pose
+from harness.zone_pair_highpose_contract import CASE_CAP_S
 from harness import zone_final_pair_skill as skill
 from scripts import run_m2_pair as m2
 from sim.zone_model_conventions import spawn_layout
 
-CAP_S = 120.                       # coordinator-frozen, per case
+CAP_S = CASE_CAP_S                 # coordinator amendment, per case (was 120)
 CHECKPOINT_REOBSERVE_S = 1.2       # runtime-enforced minimum HIGH stop (0.16 s pose delay + fresh fix + rendezvous)
 
 # --- approach (harness/pair_owncam_approach.py PairApproachDriver.tick) -----
@@ -120,6 +123,6 @@ def require_feasible(static, case=None, check='p03', calibration=None):
         raise ValueError('unknown time-bound case')
     failed = [r for r in rows if not r['feasible']]
     if failed:
-        raise ValueError('TIME_LOWER_BOUND_EXCEEDS_CAP_120: '+', '.join(
+        raise ValueError('TIME_LOWER_BOUND_EXCEEDS_CASE_CAP: '+', '.join(
             f"{r['case']}={r['lower_bound_s']:.3f}s" for r in failed))
     return rows
