@@ -246,7 +246,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-final-environment-check": ["--check", "p01", "--expected-source-sha", "0" * 40],
             "zone-final-environment-floor-light-check": ["--check", "p01", "--expected-source-sha", "0" * 40],
             "zone-final-pair-v3": ["--check", "calibration-loaded", "--expected-source-sha", "0" * 40],
-            "zone-final-pair-highpose-v96": ["--check", "p03", "--expected-source-sha", "0" * 40],
+            "zone-final-pair-highpose-v98": ["--check", "p03", "--expected-source-sha", "0" * 40],
             "zone-final-pair-heldout-v90": ["--check", "calibration-unloaded", "--map-id", "zone_wide_corridor_final_v3", "--expected-source-sha", "0" * 40],
             "zone-final-pair-heldout-v91": ["--check", "calibration-unloaded", "--map-id", "zone_wide_corridor_final_v3", "--expected-source-sha", "0" * 40],
             "zone-final-pair-loaded-v92": ["--check", "calibration-loaded", "--map-id", "zone_wide_two_doors_final_v3", "--expected-source-sha", "0" * 40],

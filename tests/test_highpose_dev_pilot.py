@@ -132,7 +132,7 @@ def test_dev_run_is_functional_dev_and_can_never_be_promoted(tmp_path, monkeypat
     for record in (result, result['checkpoint']):
         assert {k: record[k] for k in c.DEV_PILOT_LABELS} == c.DEV_PILOT_LABELS
     stored = json.loads((tmp_path/'run'/'result.json').read_text())
-    assert stored['run_status'] == 'FUNCTIONAL_DEV' and stored['tensorboard_cohort'] == 'v96-dev-pilot-functional'
+    assert stored['run_status'] == 'FUNCTIONAL_DEV' and stored['tensorboard_cohort'] == 'v98-dev-pilot-functional'
     # Promotion: every confirmatory entry refuses; relabelling also fails.
     for record in (result, stored, result['checkpoint'], {'cases': [stored]}):
         with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
@@ -418,3 +418,51 @@ def test_cli_execute_dev_pilot_one_case_on_a_sim_slot_is_not_host_error(tmp_path
         c.require_promotable(top)
     with pytest.raises(ValueError, match='exactly one'):
         run.main(argv[:5]+['nope']+argv[6:])
+
+
+def test_staged_geometry_preroll_and_prior_are_static_and_recorded():
+    from harness import zone_pair_highpose_staging as st
+    from harness import zone_pair_highpose as pose
+    from sim.zone_model_conventions import station_offset
+    static, _, _ = c.resolve(c.cases('p03')[0]['map_id'])
+    stations = st.stations(static, [1.0, .05, 0.])
+    off = station_offset(static, 'long_beam', 'end_neg')
+    assert stations['r1'] == [1.0+off[0], .05+off[1], off[2]] and abs(stations['r2'][2]) > 3.
+    high = [r for r in st.preroll_actions('high_held') if r['phase'] == 'stage_high']
+    assert {(r['robot_id'], r['action'].get('servo_id', 6)) for r in high} == {(r, s) for r in ('r1', 'r2') for s in (3, 4, 5, 6)}
+    assert all(r['action'].get('pulse', r['action'].get('pan_pulse')) == pose.HIGH[r['action'].get('servo_id', 6)] for r in high)
+    open_rows = st.preroll_actions('floor_open')
+    assert not any(r['action'].get('servo_id') == 1 and r['action']['pulse'] == st.CLOSED for r in open_rows)
+    prior = st.stated_prior(stations['r1'])
+    assert prior['is_fix'] is False and prior['std_per_axis'] == [.15, .15, .174533]
+    assert prior['mean_xyyaw'] == stations['r1']
+
+
+@pytest.mark.parametrize('probe', ['raise_high_staged', 'raise_high_closed', 'high_hold_staged'])
+def test_staged_probe_preroll_runs_before_controller_clock_and_is_recorded(tmp_path, monkeypatch, probe):
+    from tests.test_zone_final_pair_v3 import FakePhysics
+    from harness import zone_pair_highpose_staging as st
+    path, _ = dev_file(tmp_path)
+    sha = c.base.sha(path)
+    admit(monkeypatch, sha)
+    case = c.cases('p03')[0]
+    bundle = {**c.bundle(case['map_id'], 'p03', c.DEV_PILOT), 'case': case, 'source_sha': 'a'*40}
+    backends = []
+    def factory(*a, **k):
+        backends.append(FakePhysics(*a, **k))
+        return backends[-1]
+    result = run.student_run_case(bundle, tmp_path/probe, seed=911, backend_factory=factory,
+        runtime_factory=lambda *a, **k: _ProbeRuntime(*a, t_event=1e9, **k),
+        calibration=path, calibration_sha=sha, probe=probe)
+    spec = st.STAGED[probe]
+    pre = [a for t, rid, a in backends[0].actions if t <= 1.+st.PREROLLS[spec['preroll']]['end_s']]
+    assert len(pre) >= len(st.preroll_actions(spec['preroll']))
+    rec = json.loads((tmp_path/probe/'stage_probe_staging.json').read_text())
+    assert rec['preroll'] == spec['preroll'] and rec['end_sim_s'] == pytest.approx(1.+st.PREROLLS[spec['preroll']]['end_s'])
+    assert rec['priors']['r1']['is_fix'] is False and result['staging']['stage'] == probe
+    closed = rec['close_issued_at_s']
+    assert (closed is None) == (spec['preroll'] == 'floor_open')
+    assert result['status'] == 'STAGE_PROBE_NOT_REACHED' and result['stage_probe']['staged'] is True
+    assert result['check_sim_s'] == pytest.approx(spec['cap_s'])
+    with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
+        c.require_promotable(result)

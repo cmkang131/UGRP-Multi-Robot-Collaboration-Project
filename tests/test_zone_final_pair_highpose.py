@@ -74,7 +74,7 @@ def test_registry_closure_and_workflow():
                  'harness/zone_study_pose_delay_p03.py', c.REGISTRY, c.WORKFLOW, c.CALIBRATION_CONTRACT):
         assert b['source_sha256'][name] == c.base.sha(c.ROOT/name)
     row, _ = wm._row(c.ROOT, c.WORKFLOW_ID)
-    assert row['version'] == '3.8.0' and row['runner'] == 'scripts.run_pair_highpose'
+    assert row['version'] == '3.10.0' and row['runner'] == 'scripts.run_pair_highpose'
 
 
 def test_high_pose_matches_v92_ik_and_reverse_path():
@@ -141,9 +141,13 @@ def test_loaded_motion_outside_high_rejected_before_parent(monkeypatch):
 
 def test_internal_bounded_case_fixture_ignores_eval_truth_and_preserves_p03_clock(tmp_path, monkeypatch):
     from tests.test_zone_final_pair_v3 import FakePhysics, FakeRuntime
-    path, _ = synthetic(tmp_path, monkeypatch)
+    from tests.test_highpose_dev_pilot import dev_file, admit
+    # student_run_case requires a runnable, admission-matched bundle (re-review
+    # #2). MEASURED_SIM is never runnable, so the clock fixture uses DEV_PILOT.
+    path, _ = dev_file(tmp_path)
+    admit(monkeypatch, c.base.sha(path))
     case = c.cases('p03')[0]
-    b = {**c.bundle(case['map_id'], 'p03'), 'case': case, 'source_sha': 'a'*40}
+    b = {**c.bundle(case['map_id'], 'p03', c.DEV_PILOT), 'case': case, 'source_sha': 'a'*40}
     receipts = []
     for value in (False, True):
         owners = []
@@ -178,3 +182,16 @@ def test_classical_opencv_observation_rejects_multiple_bands_and_coloured_occlus
     obs = observations(proxy, bgr, object())
     assert obs.informative.tolist() == [True, False, False]
     assert obs.b_lo[0] == obs.b_hi[0] == 250.
+
+
+def test_v96_registry_retired_byte_identical_and_v98_differs_only_by_ids():
+    """v96 has DEV run records (9d7c70e8/323fe3f9): its registry stays byte-identical."""
+    assert c.RETIRED_REGISTRIES == ('configs/zone_pair_highpose_v96.json',)
+    assert c.base.sha(c.ROOT/c.RETIRED_REGISTRIES[0]) == '91e89ccc3b0c2b47c8d631db4d963afb68518f96fb70d4608e0263a56f055aba'
+    old, new = (json.loads((c.ROOT/p).read_text()) for p in (c.RETIRED_REGISTRIES[0], c.REGISTRY))
+    assert (new['execution_bundle_id'], new['workflow_version']) == ('zone-final-pair-highpose-v98', '3.10.0')
+    assert old['execution_bundle_id'] == 'zone-final-pair-highpose-v96' and old['workflow_version'] == '3.8.0'
+    changed = {k for k in set(old) | set(new) if old.get(k) != new.get(k)}
+    assert changed == {'schema', 'execution_bundle_id', 'workflow_id', 'workflow_version', 'dev_pilot',
+                       'supersedes', 'stage_probes'}
+    assert {k for k in old['dev_pilot'] if old['dev_pilot'][k] != new['dev_pilot'][k]} == {'tensorboard_cohort'}

@@ -57,6 +57,10 @@ STAGE_PROBES = {
     'high_hold': {'terminal_event': 'barrier_go', 'barrier': 'carry', 'cap_s': 150.,
                   'covers': 'raise_high + 8 s HIGH settle + carry barrier GO from command history/status'},
 }
+# v98 STAGED probes (harness/zone_pair_highpose_staging.py): staged test setup
+# before the controller exists, so stages after approach run without it.
+from harness import zone_pair_highpose_staging as staging  # noqa: E402
+STAGE_PROBES.update({k: {**v, 'staged': True} for k, v in staging.STAGED.items()})
 STAGE_STATUS = ('STAGE_PROBE_REACHED', 'STAGE_PROBE_FAILED', 'STAGE_PROBE_NOT_REACHED')
 
 
@@ -144,6 +148,24 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
         if bundle.get('admission_mode') != contract.DEV_PILOT or probe not in STAGE_PROBES:
             raise ValueError('v96 stage probes are DEV_PILOT FUNCTIONAL_DEV diagnostics only')
         cap = STAGE_PROBES[probe]['cap_s']
+    staged = probe is not None and STAGE_PROBES[probe].get('staged', False)
+    staging_record = None
+    if staged:
+        static_, _, _ = contract.resolve(bundle['map_id'])
+        from harness.zone_final_pair_skill import task
+        beam = task(static_)['beam_pose']
+        stations = staging.stations(static_, beam)
+        staging_record = {'stage': probe, 'beam_xyyaw_staging': list(beam), 'stations_xyyaw': stations,
+                          'priors': {rid: staging.stated_prior(st) for rid, st in stations.items()},
+                          'qualification': 'TEST SETUP before the controller exists (DEV stage probe)'}
+        real_backend = backend_factory
+        from sim.final_pair_v3 import PhysicsBackend as _V3
+        if real_backend is _V3:
+            from sim.final_pair_highpose_staged import StagedBackend
+            backend_factory = lambda b, o, *, seed: StagedBackend(b, o, seed=seed, stations=stations)
+        if runtime_factory is Runtime:
+            runtime_factory = lambda st, cal, sha, *, seed: staging.StagedRuntime(
+                st, cal, sha, seed=seed, stage=probe, staging=staging_record)
     out.mkdir(parents=True, exist_ok=False)
     write(out/'bundle.json', bundle)
     write(out/'inputs/schedule.json', [])
@@ -163,6 +185,10 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
         reset = backend.reset(contract.RESET_CAP_S)
         if not 0 <= reset <= contract.RESET_CAP_S+1e-8:
             raise RuntimeError('RESET_SIM_CAP_EXCEEDED')
+        if staged:
+            staging_record.update(staging.run_preroll(backend, STAGE_PROBES[probe]['preroll']))
+            write(out/'stage_probe_staging.json', staging_record)
+            result['staging'] = staging_record
         start = backend.now
         backend.set_deadline(start+cap)
         result['reset_sim_s'] = reset

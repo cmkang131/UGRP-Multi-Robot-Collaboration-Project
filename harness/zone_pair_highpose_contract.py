@@ -1,4 +1,7 @@
-"""New v96 admission: v92 measured HIGH calibration, no v88 relabelling."""
+"""v98 (was v96) admission: v92 measured HIGH calibration, no v88 relabelling.
+
+v98 = v96 controller + staged DEV stage probes + re-review fixes; v96 had DEV
+run records, so the bundle id moved (v97 is reserved by the LLM layer)."""
 from __future__ import annotations
 
 import copy
@@ -9,10 +12,11 @@ from harness import zone_pair_highpose as pose
 from harness import zone_pair_highpose_grip as grip
 
 base, ROOT = previous.base, previous.ROOT
-BUNDLE_ID = 'zone-final-pair-highpose-v96'
-WORKFLOW_ID, WORKFLOW_VERSION = 'zone-final-pair-highpose-v96', '3.8.0'
-REGISTRY = 'configs/zone_pair_highpose_v96.json'
-WORKFLOW = 'configs/simulation_workflows.d/pair_highpose_v96.json'
+BUNDLE_ID = 'zone-final-pair-highpose-v98'
+WORKFLOW_ID, WORKFLOW_VERSION = 'zone-final-pair-highpose-v98', '3.10.0'
+REGISTRY = 'configs/zone_pair_highpose_v98.json'
+RETIRED_REGISTRIES = ('configs/zone_pair_highpose_v96.json',)   # byte-identical; v96 DEV run records
+WORKFLOW = 'configs/simulation_workflows.d/pair_highpose_v98.json'
 CALIBRATION_CONTRACT = d5.CALIBRATION_CONTRACT
 D5_ADMISSION = 'configs/calibration/zone_pair_highpose_d5_admission.json'
 REGISTRY_BLOCK = 'HIGHPOSE_BUNDLE_RUNNABLE_FALSE'
@@ -34,7 +38,7 @@ MEASURED_SIM, DEV_PILOT = 'MEASURED_SIM', 'DEV_PILOT'
 DEV_PILOT_RULE = 'DEV_PILOT_C0_ZERO_v1'
 DEV_PILOT_PRECONDITION = 'V96_DEV_PILOT_CALIBRATION_REQUIRED'
 DEV_PILOT_LABELS = {'admission_mode': DEV_PILOT, 'run_status': 'FUNCTIONAL_DEV',
-                    'cohort_role': 'DEV_PILOT_FUNCTIONAL_DEV', 'tensorboard_cohort': 'v96-dev-pilot-functional',
+                    'cohort_role': 'DEV_PILOT_FUNCTIONAL_DEV', 'tensorboard_cohort': 'v98-dev-pilot-functional',
                     'confirmation_sample': False, 'promotable': False, 'measured_sim_evidence': False}
 NOT_PROMOTABLE = 'DEV_PILOT_RESULT_NOT_PROMOTABLE'
 
@@ -337,7 +341,7 @@ def bundle(map_id, check, admission=MEASURED_SIM):
     static, _, contract = resolve(map_id)
     cases(check, map_id)
     value = copy.deepcopy(previous.bundle(map_id, check))
-    value.update(schema='ugrp.final_pair_bundle.v96', execution_bundle_id=BUNDLE_ID,
+    value.update(schema='ugrp.final_pair_bundle.v98', execution_bundle_id=BUNDLE_ID,
         workflow_id=WORKFLOW_ID, workflow_version=WORKFLOW_VERSION, runnable=False,
         blocked_on=[PRECONDITION], provider_id=PROVIDER_ID,
         controller_variant='b-v6h1-v3-highpose-opencv', revision='D1 new candidate; no inherited acceptance',
@@ -345,7 +349,8 @@ def bundle(map_id, check, admission=MEASURED_SIM):
         timing=execution_timing(check), high_pose=pose.record(), calibration_contract=contract,
         calibration_selection='D5 v92 loader v2 + registered complete measurement evidence; HIGH only')
     entries = ['scripts/run_pair_highpose.py', 'harness/zone_pair_highpose_runtime.py',
-               'harness/vision_pose_source_highpose.py']
+               'harness/vision_pose_source_highpose.py', 'harness/zone_pair_highpose_staging.py',
+               'sim/final_pair_highpose_staged.py']
     paths = set(value['source_sha256']) | set(source_closure(ROOT, entries)) | {REGISTRY, WORKFLOW, CALIBRATION_CONTRACT, D5_ADMISSION, CAP_DECISION,
         'configs/zone_final_pair_v92_schedule.json.gz',
         'configs/zone_pair_highpose_confirmation_v96.json',

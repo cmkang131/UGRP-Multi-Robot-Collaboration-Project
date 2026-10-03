@@ -1,0 +1,141 @@
+{
+  "schema": "ugrp.final_pair_highpose.v98",
+  "execution_bundle_id": "zone-final-pair-highpose-v98",
+  "status": "DRAFT_UNSEALED",
+  "workflow_id": "zone-final-pair-highpose-v98",
+  "workflow_version": "3.10.0",
+  "runnable": false,
+  "precondition": "V92_MEASURED_SIM_HIGHPOSE_CALIBRATION_REQUIRED",
+  "maps": [
+    "zone_wide_door_geometry_v3",
+    "zone_wide_two_doors_final_v3",
+    "zone_wide_corridor_final_v3"
+  ],
+  "p03_map": "zone_wide_door_geometry_v3",
+  "provider_id": "opencv_owncam_final_pair_highpose_v96",
+  "calibration_contract_sha256": "4ad461c3b980d885b9743f32cb763fb14f2b1d46a695c3acacae6b4a8e3c8e78",
+  "case_cap": {
+    "sim_cap_s": 300.0,
+    "cases": "p03 3 checkpoints and carry, per case",
+    "prereg_version": "v96-cap-2",
+    "supersedes": "inherited v88 student cap 120 SIM s per case (3x120 P03)",
+    "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md",
+    "decided_before_p03_data": true,
+    "derivation": "lower bounds 63.8/104.2/184.6 s per checkpoint, 190.4-219.3 s full carry (distance/0.06 m/s dominant); 300 s ~ 1.4x largest"
+  },
+  "grip_monitor": {
+    "scope": "log_only_v96",
+    "in_run_grip_loss_detection": false,
+    "gates": "own command history (gripper commanded closed in this grasp epoch, queued pose path) + fixed-enum partner status zone_pair_status_v5",
+    "logged_only": [
+      "low-lift co-motion IoU (legacy LOAD_NOT_HELD_AFTER_LIFT)",
+      "transit relation()/view stability/frame freshness",
+      "HIGH edge line and anchor",
+      "carry/checkpoint hold IoU (legacy LOAD_CHANGED_IN_CARRY, HIGH_CHECKPOINT_GRIP_CHANGED)",
+      "floor-return IoU (legacy FLOOR_RETURN_GRIP_CHANGED)"
+    ],
+    "unchanged_grasp_checks": "GRIP_NOT_CONFIRMED (issued close + fresh frame) and GRIP_NOT_SEEN (own grip view after close, v88/v92)",
+    "deferred": "own-grip-loss detection + partner signal (NL: LLM message; structured: fixed status) + audit timing, after the first E2E",
+    "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md"
+  },
+  "dev_pilot": {
+    "admission_mode": "DEV_PILOT",
+    "calibration_status": "DEV_PILOT",
+    "rule": "DEV_PILOT_C0_ZERO_v1",
+    "admitted_calibration_sha256": [
+      "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"
+    ],
+    "runnable": true,
+    "run_status": "FUNCTIONAL_DEV",
+    "cohort_role": "DEV_PILOT_FUNCTIONAL_DEV",
+    "tensorboard_cohort": "v98-dev-pilot-functional",
+    "confirmation_sample": false,
+    "promotable": false,
+    "measured_sim_evidence": false,
+    "required_calibration": "v92 loader-v2 structure (schema, contract, maps, provenance, loaded/fine motion, pair model, cameras, pan); status DEV_PILOT; dev_rule DEV_PILOT_C0_ZERO_v1; confirmatory false; params.motion_loaded.deadband.c0 == [0,0,0], u1 > 0; missing == exactly the 10 unloaded params.motion fields (all null), filled only by unloaded_motion_fill",
+    "scope": "non-confirmatory functional pilot; never confirmatory or MEASURED_SIM evidence",
+    "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md",
+    "rule_key": "dev_rule",
+    "unloaded_motion_fill": {
+      "label": "DEV",
+      "fields": [
+        "params.motion.gain",
+        "params.motion.tau_s",
+        "params.motion.tau_axis_s",
+        "params.motion.tau_stop_s",
+        "params.motion.noise_rel",
+        "params.motion.noise_abs",
+        "params.motion.scale_std",
+        "params.motion.scale_walk",
+        "params.motion.use_scale",
+        "params.motion.rest_noise"
+      ],
+      "source": "harness/owncam_localizer.py DEFAULT_PARAMS[\"motion\"] (frozen static localizer default the runtime merges under measured fields)",
+      "source_sha256": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+      "values": {
+        "gain": [
+          [
+            1.15,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.94,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.4
+          ]
+        ],
+        "tau_s": 0.12,
+        "noise_rel": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "noise_abs": [
+          0.004,
+          0.004,
+          0.01
+        ],
+        "scale_std": 0.05,
+        "scale_walk": 0.01,
+        "tau_stop_s": 0.12
+      },
+      "derived": {
+        "tau_stop_s": "= tau_s, the predictor fallback when tau_stop_s is absent (owncam_localizer.predict_to)"
+      },
+      "absent_keys_use_code_defaults": {
+        "tau_axis_s": "absent -> scalar tau_s spin-up",
+        "use_scale": "absent -> True",
+        "rest_noise": "absent -> True"
+      },
+      "why": "coordinator option 1 (per-axis stop taus r4/r5) is not supported: predict_to uses a scalar tau_stop_s; option 2 premise does not hold: no v88 runtime calibration on main has an unloaded profile (latest pinned v88 file 7ad49133... is PARTIAL with params.motion all null). No axis taus are averaged.",
+      "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md"
+    },
+    "admitted_source": {
+      "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5": {
+        "path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
+        "pr": 369,
+        "rule": "DEV_PILOT_C0_ZERO_v1",
+        "admitted_by": "coordinator message 2026-10-03"
+      }
+    }
+  },
+  "qualification": "자기 RGB·정적 지도·자기 명령 기반 새 높은 운반 자세 후보. 인수 미완료.",
+  "supersedes": {
+    "bundle": "zone-final-pair-highpose-v96",
+    "workflow_version": "3.8.0",
+    "registry_file": "configs/zone_pair_highpose_v96.json (byte-identical, retired; has DEV run records at 9d7c70e8/323fe3f9)",
+    "reason": "staged DEV stage probes (test setup before the controller starts) + re-review fixes after v96 run records; v97/3.9.0 reserved by claude/llm-pair-e2e (zone-pair-llm-v97)"
+  },
+  "stage_probes": {
+    "scope": "DEV_PILOT FUNCTIONAL_DEV diagnostics only; never a case result, never promotable",
+    "staging": "sim harness places robots at the catalogue grasp stations of the case beam pose and runs a fixed teacher arm pre-roll (v92 loaded schedule poses) BEFORE the controller exists; recorded in eval_only/staging.json",
+    "controller_inputs": "own RGB, static map, own issued commands (staged pre-roll commands become its initial own command history); localizer starts from the CASE START prior definition (zone_final_pair_runtime.Runtime: region mean, std 0.15/max(0.15,row span)/0.174533) applied to the staged station, is_fix false; the opening look_around job is skipped and recorded. No controller/admission gate is relaxed.",
+    "status": "HELD: staged physics probes wait for the own-image gate diagnosis (coordinator 2026-10-03)"
+  }
+}
