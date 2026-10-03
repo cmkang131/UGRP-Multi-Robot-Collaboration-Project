@@ -16,7 +16,11 @@ from harness import zone_final_pair_loaded as v92
 from harness import zone_final_pair_loaded_schedule as s
 from scripts import run_final_pair_loaded as run
 from scripts import agent_lock, agent_sim_slots
-from tests.test_zone_final_pair_v3 import FakePhysics, offline_only
+from tests.test_zone_final_pair_v3 import FakePhysics as V88FakePhysics, offline_only
+
+
+class FakePhysics(V88FakePhysics):
+    dt = .00025
 
 
 def bundle():
@@ -157,6 +161,65 @@ def test_headless_support_does_not_substitute_relative_yaw_or_other_levels():
         support_cells(mask[:-1], s.design(), criterion)
 
 
+def test_720s_clock_roundoff_reproducer_keeps_exact_substeps_and_hard_cap():
+    from sim.final_pair_fast_guard import FastGuard
+    from sim.zone_final_v3_scene import cap_world_steps
+    start = 0.
+    for _ in range(5200):
+        start += .00025
+    targets = run.physics_tick_targets(start, 720., .00025)
+    assert len(targets) == 14401
+    nominal = start+np.arange(14401)*.05
+    assert np.max(np.abs(np.asarray(targets)-nominal)) < 1e-7
+    failing_tick = next(i for i in range(1, len(targets)) if targets[i]-nominal[i] > 1e-8)
+    assert 610. < failing_tick*.05 < 612.
+
+    class Clock(FastGuard):
+        dt = .00025
+        ports = {}
+        def __init__(self, now, deadline):
+            self.deadline, self.steps, self.checks = deadline, 0, 0
+            self.world = SimpleNamespace(data=SimpleNamespace(time=now),
+                model=SimpleNamespace(opt=SimpleNamespace(timestep=self.dt)), robot=lambda _: None)
+            def step(_):
+                self.steps += 1
+                self.world.data.time += self.dt
+            self.world._physics_step_for = step
+            cap_world_steps(self.world, deadline)
+        @property
+        def now(self): return self.world.data.time
+        def collection_guard(self): self.checks += 1
+        def _same_post_state(self, _): return False
+        def _post_state(self): return None
+
+    old = Clock(targets[failing_tick-1], targets[-1])
+    with pytest.raises(RuntimeError, match='inexact SIM advance'):
+        old.advance_to(nominal[failing_tick])
+    assert old.steps == 199
+    for tick in (failing_tick, 14400):
+        fixed = Clock(targets[tick-1], targets[tick])
+        fixed.advance_to(targets[tick])
+        assert fixed.steps == 200 and fixed.checks == 400
+        with pytest.raises(RuntimeError, match='SIM_CAP_EXCEEDED'):
+            fixed.world._physics_step_for(None)
+        assert fixed.steps == 200
+
+
+def test_headless_camera_boundary_syncs_both_cameras_without_rendering():
+    import importlib.util
+    path = c.ROOT/'experiments/2026-10-03-v92-loaded-schedule/probe_headless.py'
+    spec = importlib.util.spec_from_file_location('v92_headless_probe_test', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    calls = []
+    def robot(rid):
+        return SimpleNamespace(_sync_real_camera_mount=lambda: calls.append(rid))
+    backend = module.Headless.__new__(module.Headless)
+    backend.world = SimpleNamespace(robot=robot)
+    backend.camera_boundary_without_render()
+    assert calls == ['r1', 'r2']
+
+
 def test_motion_split_long_steps_coasts_prbs_and_visible_relative_yaw_separate():
     plan = s.design()
     for mode, axis in [('world_translation', 'forward'), ('world_translation', 'left'),
@@ -279,7 +342,7 @@ def test_runner_exact_samples_schedule_and_retained_failure(tmp_path, failure):
         assert result['status'] == 'COLLECTED_UNQUALIFIED'
         assert len(made[0].samples) == 14401 and len(made[0].frames) == 3601
         assert len(made[0].actions) == len(s.schedule())
-        assert result['check_sim_s'] == 720.
+        assert result['check_sim_s'] == pytest.approx(720., abs=1e-7)
     assert made[0].closed
     hashes = json.loads((tmp_path/'case/artifacts.sha256.json').read_text())
     assert hashes['result.json'] == c.base.sha(tmp_path/'case/result.json')

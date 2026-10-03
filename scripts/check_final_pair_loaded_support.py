@@ -69,7 +69,9 @@ def audit(root):
     result = inputs.json(root/'summary.json')
     if (result['status'] != 'HEADLESS_CHECK_COMPLETE' or result.get('collection') is not False
             or result.get('check_sim_s', -1) < schedule.CAP_S-1e-7
-            or result.get('source_unchanged') is not True or result.get('render_calls') != 0):
+            or result.get('source_unchanged') is not True or result.get('render_calls') != 0
+            or result.get('camera_boundary_calls') != 2*(round(schedule.CAP_S/.2)+1)
+            or result.get('training_eligible') is not False):
         raise ValueError('complete render-free pre-check required')
     manifest = inputs.json(root/'artifacts.sha256.json')
     for name, digest in manifest.items():

@@ -24,6 +24,12 @@ from sim.final_pair_fast_guard import FastGuard
 
 
 class Headless(FastGuard, Base):
+    def camera_boundary_without_render(self):
+        # Production capture calls this immediately before each camera image.
+        # Preserve the rigid camera + mj_forward side effects, without pixels.
+        for rid in c.ROBOTS:
+            self.world.robot(rid)._sync_real_camera_mount()
+
     def __init__(self, bundle, out, *, seed):
         from sim.zone_final_v3_scene import build_world
         from sim.camera_robot_port import CameraRobotPort
@@ -180,14 +186,21 @@ def main():
     b = None
     try:
         b = Headless(bundle, args.output, seed=911)
-        b.reset(5.)
+        result['reset_sim_s'] = b.reset(5.)
         start = b.now
-        b.set_deadline(start+cap)
+        from scripts.run_final_pair_loaded import physics_tick_targets
+        targets = physics_tick_targets(start, cap, b.dt)
+        b.set_deadline(targets[-1])
+        result['clock'] = {'method': 'fixed_substep_float_targets', 'timestep_s': b.dt,
+                          'substeps': round(cap/b.dt), 'deadline': targets[-1],
+                          'roundoff_s': targets[-1]-start-cap}
         j = 0
         steps = round(cap/.05)
         for i in range(steps+1):
             t = round(i*.05, 8)
             b.eval_sample()
+            if args.mode == 'full' and i % 4 == 0:
+                b.camera_boundary_without_render()
             if t in snapshots:
                 result['geometry'].append({'relative_s': t, 'robots': {
                     rid: geometry(b.world.model, b.world.data, rid) for rid in c.ROBOTS}})
@@ -197,14 +210,15 @@ def main():
                 e = events[j]
                 b.issue(e['robot_id'], e['action'])
                 j += 1
-            b.advance_to(start+(i+1)*.05)
+            b.advance_to(targets[i+1])
             if args.mode == 'full' and (i+1) % 1200 == 0:
                 print(f'headless pre-check: {(i+1)*.05:g}/{cap:g} SIM s', flush=True)
         if j != len(events) or abs(b.now-start-cap) > 1e-7:
             raise RuntimeError('INCOMPLETE_HEADLESS_PRECHECK')
         check_source(args.source_sha)
         result.update(check_sim_s=b.now-start, commands=j, timestep_s=b.dt,
-                      source_unchanged=True)
+                      source_unchanged=True,
+                      camera_boundary_calls=(steps//4+1)*len(c.ROBOTS) if args.mode == 'full' else 0)
         result['status'] = 'HEADLESS_CHECK_COMPLETE'
     except Exception as exc:
         result['failure'] = repr(exc)

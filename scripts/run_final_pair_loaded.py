@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import errno
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -19,6 +20,29 @@ from harness import zone_final_pair_loaded as loaded
 from harness.zone_final_pair_loaded_schedule import schedule, CAP_S
 from harness.zone_final_pair_loaded_clearance import require_collection_clearance, rejection_message
 from scripts.run_final_environment_checks import write, check_source
+
+
+def physics_tick_targets(start, cap, dt):
+    """Precompute the exact float clock of the fixed MuJoCo substep count.
+
+    Repeated dt addition crosses the old absolute 1e-8 target tolerance after
+    ~611 s. Match that arithmetic, without changing dt, any guard, or any
+    command/observation tick. The deadline permits exactly the planned steps.
+    """
+    if not all(math.isfinite(x) for x in (start, cap, dt)) or cap <= 0 or dt <= 0:
+        raise ValueError('invalid fixed physics clock')
+    ticks, substeps = round(cap/contract.TICK_S), round(contract.TICK_S/dt)
+    if (substeps < 1 or abs(substeps*dt-contract.TICK_S) > 1e-12
+            or abs(ticks*contract.TICK_S-cap) > 1e-12):
+        raise ValueError('clock must contain complete acquisition ticks/substeps')
+    now, targets = start, [start]
+    for _ in range(ticks):
+        for _ in range(substeps):
+            now += dt
+        targets.append(now)
+    if abs(now-start-cap) > 1e-7:
+        raise ValueError('float clock exceeds existing completion tolerance')
+    return targets
 
 
 def run_case(bundle, out, *, seed, backend_factory, host_snapshot=None):
@@ -51,7 +75,11 @@ def run_case(bundle, out, *, seed, backend_factory, host_snapshot=None):
         if not 0 <= reset <= contract.RESET_CAP_S+1e-8:
             raise RuntimeError('RESET_SIM_CAP_EXCEEDED')
         start = backend.now
-        backend.set_deadline(start+cap)
+        targets = physics_tick_targets(start, cap, backend.dt)
+        backend.set_deadline(targets[-1])
+        result['clock'] = {'method': 'fixed_substep_float_targets', 'timestep_s': backend.dt,
+                           'substeps': round(cap/backend.dt), 'deadline': targets[-1],
+                           'roundoff_s': targets[-1]-start-cap}
         result['reset_sim_s'] = reset
         event_i = 0
         steps = round(cap/contract.TICK_S)
@@ -68,7 +96,7 @@ def run_case(bundle, out, *, seed, backend_factory, host_snapshot=None):
                 e = events[event_i]
                 backend.issue(e['robot_id'], e['action'])
                 event_i += 1
-            backend.advance_to(start+(i+1)*contract.TICK_S)
+            backend.advance_to(targets[i+1])
         if event_i != len(events) or abs(backend.now-start-cap) > 1e-7:
             raise RuntimeError('INCOMPLETE_BOUNDED_PROTOCOL')
         result.update(protocol_complete=True, status='COLLECTED_UNQUALIFIED', check_sim_s=backend.now-start)
