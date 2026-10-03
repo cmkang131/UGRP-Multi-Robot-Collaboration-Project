@@ -52,7 +52,8 @@
 - **worktree:** `python3 scripts/agent_worktree.py new <이름> --branch <에이전트>/<주제>`로 만든다. `experiments/`의 무거운 미디어를 뺀 sparse checkout이며, 에이전트당 등록 worktree는 8개까지다.
 - **병합 뒤 정리:** `python3 scripts/agent_worktree.py retire <경로> --execute`만 쓴다. 이 명령은 무시된 `outputs/<이름>`을 기본 체크아웃의 같은 상대 경로로(이미 있으면 `outputs/retired-worktrees/<이름>/`으로) 옮기고, 모든 파일의 개수·바이트·sha256을 확인한 뒤 제거한다. 사용 중(프로세스 cwd·열린 파일·명령줄)이거나 60분 안에 바뀐 worktree는 거부한다. 미병합 작업은 HEAD를 원격 보관 브랜치에 올리고 `--archive-ref`로 SHA가 같은지 확인한 뒤에만 정리한다. `git worktree remove`를 직접 쓰거나 `git status --porcelain`만 보고 지우지 않는다. 무시 파일이 보이지 않아 raw가 함께 지워진다(2026-09-26 사고). Codex-app worktree도 같다.
 - **raw 위치:** 실행 raw는 기본 체크아웃 `outputs/`에 절대 경로로 쓴다. `experiments/`에는 파일당 1 MiB, 실험당 5 MiB를 넘는 미디어를 커밋하지 않는다. raw 프레임·영상은 `outputs/`에 두고 sha256을 기록한다.
-- **보존:** raw의 삭제·솎기·압축·외부 이동은 등급별 사용자 결정이다. 모델 요청 이미지·텍스트는 dev 실행에서도 그대로 보존한다.
+- **보존:** [디스크 관리 v2](docs/disk_management.md)의 로컬 유지·부분 정리·삭제 기준을 따른다. raw 삭제는 경로·바이트·보존 해시를 고정한 manifest 배치마다 사용자 승인 뒤 `scripts/outputs_prune.py --execute`로만 한다. 모호한 자료와 모델 요청 이미지·텍스트는 dev에서도 유지한다.
+- **새 dev 캡처:** `dev_1hz_decisions_v1`(1 SIM초 1장 + 모든 결정/단계 전환)을 기준으로 하고 모델 입력은 전부 저장한다. 미연결 러너는 연결·실측 전 절감 완료로 보고하지 않으며 test/봉인 실행의 `all_v1`은 바꾸지 않는다.
 - **실행 전:** `ugrp_session.py run`은 여유 공간이 10 GiB 미만이면 시작하지 않는다. 사용량은 `python3 scripts/disk_report.py`로 확인한다. 사전 등록에는 디스크 부족(ENOSPC)을 HOST_ERROR로 분류하는 규칙을 넣는다.
 
 ## 빠른 진행 규칙 (2026-09-30)

@@ -1,0 +1,395 @@
+{
+  "schema": "ugrp.retention-evidence-graph.v1",
+  "round": 3,
+  "audit_code": [
+    {
+      "path": "experiments/2026-09-30-outputs-retention/audit/round3_graph.py",
+      "sha256": "8b04d8d3447704bd7290ffe82fa35b6b0b0a2897ab33c9f0b3c7f42717ddd1c5"
+    },
+    {
+      "path": "scripts/outputs_retention_graph.py",
+      "sha256": "53bc423a860ec15e951c2e63987dc0129759f212b77f49e30f135f6492d0f6c2"
+    }
+  ],
+  "measured": {
+    "started_unix": 1790775816.382142,
+    "finished_unix": 1790776390.939486,
+    "entries": 2743706,
+    "round2_manifest_sha256": "7dae93f5544dba9575048865ccd1ed40e014b30423a949f16f80384976a4a635",
+    "root": "/Users/changmin/projects/ugrp/outputs",
+    "cutoff_unix": 1790683918.5392919
+  },
+  "reviewer_match": {
+    "files": 724107,
+    "bytes": 18468346428,
+    "allocated_bytes": 19634872320,
+    "sorted_paths_lf_sha256": "59b4eb61c1f8c8c299913e009fe4730d28aec9734cca3ea7e70b79f8d62986a3"
+  },
+  "source_count": 212184,
+  "reference_counts": {
+    "image": 3338883,
+    "output": 1708618,
+    "sha256": 1957870
+  },
+  "source_errors": [
+    {
+      "source": "70f2f09c46bdc1e265af70fb44111f5906324dff:experiments/2026-09-25-zone-dialogue-ko-pilot/calls.jsonl",
+      "kind": "ValueError"
+    },
+    {
+      "source": "outputs/agent-locks/physics/owner.json",
+      "kind": "ValueError"
+    },
+    {
+      "source": "outputs/agent-locks/released.jsonl",
+      "kind": "ValueError"
+    },
+    {
+      "source": "outputs/e2e-p05-dialogue/regressions-icl2cruy/raw/test_existing_output_refused_b2/no_comm-e1.attempts.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/e2e-p05-dialogue/regressions-ysxi0fte/raw/test_existing_output_refused_b2/no_comm-e1.attempts.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z/fixed/raw/test_existing_output_refused_b2/no_comm-e1.attempts.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/e2e-p05-dialogue/review-fixes-20260930T122615Z/regressions/raw/test_existing_output_refused_b2/no_comm-e1.attempts.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/p04-chain-contract-20260930/review-fixes-01/pytest-event.log",
+      "kind": "ValueError"
+    },
+    {
+      "source": "outputs/p04-chain-contract-20260930/review-fixes-01/pytest.log",
+      "kind": "ValueError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-r8/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-r8/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-r8/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-r8/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-regression/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-regression/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-regression/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-regression/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-targeted/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-targeted/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-targeted/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/final-targeted/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/full-after/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/full-after/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/full-after/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/full-after/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/regression/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/regression/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/regression/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/regression/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/runner-after/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/runner-after/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/runner-after/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/runner-after/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r8/workflow-plan.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/failure-final/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/failure-final/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/failure-final/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/failure-final/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/failures-verified/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/failures-verified/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/failures-verified/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/failures-verified/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/final-focused/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/final-focused/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/final-focused/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/final-focused/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/final-regression/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/final-regression/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/final-regression/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/final-regression/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/first-pass/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/first-pass/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/first-pass/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/first-pass/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/regression/test_failed_requests_remain_sp12/run/no_comm/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/regression/test_failed_requests_remain_sp13/run/peer_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/regression/test_failed_requests_remain_sp14/run/leader_ko/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/retired-worktrees/kiro-study-core/.tmp/r9/regression/test_failed_requests_remain_sp15/run/structured/wire/000001-call-0001-r1-response.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/review-299b-astra-8a1631b9/baseline-fixtures/test_invalid_duration_file_fai1/durations.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/review-299b-astra-8a1631b9/baseline-fixtures/test_partial_host_error_keeps_3/raw/cases/review299_C01_s941/eval_only/trace.jsonl",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/review-299b-astra-8a1631b9/baseline-fixtures/test_partial_host_error_keeps_3/raw/cases/review299_C01_s941/result.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/review-299b-astra-8a1631b9/baseline-fixtures/test_unreadable_host_evidence_0/raw/cases/review299_C01_s941/result.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/review-299b-astra-8a1631b9/final-fixtures/test_invalid_duration_file_fai1/durations.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/review-299b-astra-8a1631b9/final-fixtures/test_partial_host_error_keeps_3/raw/cases/review299_C01_s941/eval_only/trace.jsonl",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/review-299b-astra-8a1631b9/final-fixtures/test_partial_host_error_keeps_3/raw/cases/review299_C01_s941/result.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/review-299b-astra-8a1631b9/final-fixtures/test_unreadable_host_evidence_0/raw/cases/review299_C01_s941/result.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/review-e2e-b-20260930/pr308-r2/test_existing_output_refused_b2/no_comm-e1.attempts.json",
+      "kind": "JSONDecodeError"
+    },
+    {
+      "source": "outputs/t09b-checks-03.log",
+      "kind": "ValueError"
+    },
+    {
+      "source": "outputs/v6h-classifier-redesign-20260930/validation-final-queued.txt",
+      "kind": "ValueError"
+    },
+    {
+      "source": "primary/experiments/2026-09-25-zone-dialogue-ko-pilot/calls.jsonl",
+      "kind": "ValueError"
+    },
+    {
+      "source": "worktree/experiments/2026-09-25-zone-dialogue-ko-pilot/calls.jsonl",
+      "kind": "ValueError"
+    }
+  ],
+  "folder_edges": 25302,
+  "round2_reclassification": {
+    "analysis_script_input_directory": {
+      "files": 83,
+      "bytes": 1384538,
+      "allocated_bytes": 1560576
+    },
+    "candidate:D3": {
+      "files": 13794,
+      "bytes": 569695537,
+      "allocated_bytes": 609755136
+    },
+    "content_sha256_reference": {
+      "files": 284392,
+      "bytes": 4630164567,
+      "allocated_bytes": 5246091264
+    },
+    "image_path_reference": {
+      "files": 151,
+      "bytes": 2314361,
+      "allocated_bytes": 2674688
+    },
+    "referenced_input_directory": {
+      "files": 23,
+      "bytes": 855024,
+      "allocated_bytes": 917504
+    },
+    "reviewer:E1": {
+      "files": 173756,
+      "bytes": 10925266596,
+      "allocated_bytes": 11288457216
+    },
+    "reviewer:E2": {
+      "files": 5900,
+      "bytes": 77406441,
+      "allocated_bytes": 86736896
+    },
+    "reviewer:E3": {
+      "files": 496540,
+      "bytes": 6584779282,
+      "allocated_bytes": 7282229248
+    },
+    "reviewer:E4": {
+      "files": 31588,
+      "bytes": 654559532,
+      "allocated_bytes": 714850304
+    },
+    "reviewer:E5": {
+      "files": 16323,
+      "bytes": 226334577,
+      "allocated_bytes": 262598656
+    },
+    "unresolved_producer_consumer": {
+      "files": 3,
+      "bytes": 55220,
+      "allocated_bytes": 61440
+    }
+  },
+  "delete_totals": {
+    "files": 13794,
+    "bytes": 569695537,
+    "allocated_bytes": 609755136
+  },
+  "keep_totals": {
+    "files": 1775068,
+    "bytes": 62807977442,
+    "allocated_bytes": 66229477376
+  },
+  "inventory_allocated_bytes": 84017451008,
+  "projected_allocated_bytes": 83407695872,
+  "reference_scope": "all regular JSON/JSONL/CSV/TSV/log/txt (also gzip) in outputs, both local experiments trees, and experiments HEAD/main/open PR blobs; all keys and string values; inline images; report/script directory closure; symlinks not followed",
+  "uncertainty": "unresolved D1/D2 media/bulk and unreadable/changing producer families remain protected",
+  "hash_scope": "all round2 delete+keep files verified in full; incoming records from all scopes scanned; unlisted/live/recent files protected regardless of whether a content hash was frozen",
+  "actual_deleted_files": 0,
+  "d5_reconstruction_rows": 0
+}
