@@ -1,0 +1,49 @@
+{
+  "checked_at_utc": "2026-10-03T06:10:47.534594+00:00",
+  "previous_head": "a9481446d9c7c503bdbc53941d3538cd5ec5ee12",
+  "scope": "개정 v92 관련 오프라인 테스트. 전체 수집·렌더·적합 인수 아님.",
+  "pytest": [
+    {
+      "files": [
+        "tests/test_zone_final_pair_loaded.py"
+      ],
+      "pass_line": "27 passed in 84.76s (0:01:24)",
+      "log": "/Users/changmin/projects/ugrp/outputs/v92-loaded-d1-d4-20261003/related-initial.log",
+      "log_sha256": "e5b7b9c27bb42fa3e5fd92fa0cccf97439deb37a6e6e1d606a6e9c3a72f6bba3",
+      "junit_sha256": "2e8bb08890ce782e80b4cbac2b4cee5c7642f6e2718e73284d6616f230dc2a54"
+    },
+    {
+      "files": [
+        "tests/test_zone_final_pair_v3.py",
+        "tests/test_final_pair_fast_guard.py",
+        "tests/test_agent_sim_slots.py"
+      ],
+      "pass_line": "89 passed in 22.81s",
+      "log": "/Users/changmin/projects/ugrp/outputs/v92-loaded-d1-d4-20261003/related-dependencies.log",
+      "log_sha256": "c6b14297fc73c78641c2d2dfd218925de4bea0838ee65cf876c9ab8c7e68ed03",
+      "junit_sha256": "0a3bf1f85a7a75dbe8881b7cf8aac79fa685afc7b1f0cca53425b91a57cadc6b"
+    }
+  ],
+  "protected_files": 29,
+  "plan_only_execution_started": false,
+  "static_checks": [
+    "bash -n collect.sh PASS",
+    "3 frozen fixtures present",
+    "git diff --check PASS"
+  ],
+  "new_criterion_and_schedule": {
+    "path": "configs/zone_final_pair_v92_schedule.json.gz",
+    "encoding": "gzip of UTF-8 JSON, indent=2, trailing LF",
+    "sha256": "b6ebf872ac1f47bb6f13c336ca49c74343ffe592c5cb1bbd0916449a6208bcbe",
+    "bytes": 5051841,
+    "archive_sha256": "47b0e1f3fc52ed94fb737e5b7a90c1f75035c74d198b8bcce3036890fc9d8b62",
+    "archive_bytes": 62247
+  },
+  "implementation_sha256": {
+    "harness/zone_final_pair_loaded.py": "aaaec7bfc038aa3682b597e1e0b112d0b7c1748604c6eefd722105c0bd6a0a69",
+    "harness/zone_final_pair_loaded_schedule.py": "500bd808e8a7ff36423601b44b76ad7d951ce72c1129b624ae46506993b11d2a",
+    "tests/test_zone_final_pair_loaded.py": "30e31f61e9dd8898bbc571a7847b194367936633d724b13cd94c2598e2407bd2",
+    "experiments/2026-10-03-v92-loaded-schedule/probe_headless.py": "2fbe1d3dd4afa7b700a4477e3210c69335f813275731529b230d0411ce317680",
+    "experiments/2026-10-03-v92-loaded-schedule/summarize_headless.py": "d25ee4a5d35e606fe52f927bd011937bef4f9a0c0af60cb3434de8c051f8f88b"
+  }
+}

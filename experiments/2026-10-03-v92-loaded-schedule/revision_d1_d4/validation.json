@@ -1,0 +1,46 @@
+{
+  "at_utc": "2026-10-03T06:18:31.409596+00:00",
+  "tested_and_physics_source_sha": "83032b6d62e0addff51c441e22f6b1e38885961c",
+  "source_scope": "이 SHA 이후 결과 기록/문서만 추가. 실행 소스 해시를 precommit_validation과 다시 대조.",
+  "headless": {
+    "sim_s": 70.0,
+    "schedule_prefix_commands": 1244,
+    "all_samples": 1401,
+    "all_reasons": {
+      "not_lifted": 82,
+      "lifted": 1319
+    },
+    "selected_interval_s": [
+      8.0,
+      70.0
+    ],
+    "selected_lifted_samples": 1240,
+    "selected_samples": 1240,
+    "high_geometry_snapshots": 5,
+    "high_unoccluded_columns_per_robot": 90,
+    "rendered_frames": 0,
+    "model_calls": 0,
+    "slot_released": true
+  },
+  "launcher_attempt": {
+    "ugrp_session": "HOST_ERROR: /bin/ps PermissionError, 물리 시작 전 자식 종료/잠금 없음 확인. headless-run.log 보존.",
+    "completed_runner": "동일 커밋 probe를 자식 없는 단일 프로세스로 실행, signal/finally로 세계/스트림/슬롯 정리.",
+    "runner_path": "/Users/changmin/projects/ugrp/outputs/v92-loaded-d1-d4-20261003/headless_single_process_driver.py",
+    "runner_sha256": "734e5565b7d4bbf5e3988c7ac2bed570a0840de5563cebd25b4b600443e77b8d"
+  },
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/v92-loaded-d1-d4-20261003",
+  "record_sha256": {
+    "experiments/2026-10-03-v92-loaded-schedule/revision_d1_d4/headless_revised_check.json": "73ad6a22eca3dbaa308241466f6850fcce5f4caafd650e210339396476378d60",
+    "experiments/2026-10-03-v92-loaded-schedule/revision_d1_d4/precommit_validation.json": "53714cefd2c3a15caab47498884afcdf84e4c24bdbd85b15f1331345bacc5ce7",
+    "experiments/2026-10-03-v92-loaded-schedule/revision_d1_d4/schedule_receipt.json": "ada39f841e83ed50884876485bcbf8c1058f9bb5f67fc0927a6d58b1934b18b9",
+    "experiments/2026-10-03-v92-loaded-schedule/revision_d1_d4/tensorboard_verification.json": "53a95ba060d5041a1ad12915a8f63e0ec0716a5287d24966e331ec079e7d0ed8",
+    "experiments/2026-10-03-v92-loaded-schedule/revision_d1_d4/v88_c0_basis.json": "44b1f048bc6328f9d7dad54e0f619ce318d5bd38f18af6d30b094728af0f8d51"
+  },
+  "limits": [
+    "720 SIM초 전체 수집 미실행",
+    "실제 RGB 추적/모형 적합/학생 운반 인수 미완료",
+    "D5 새 분석기/조립기와 D2 새 로더/학생 번들은 별도",
+    "금지된 v91 held-out 원본 열람 없음",
+    "로컬 raw 보존이며 원격 전체 백업 아님"
+  ]
+}
