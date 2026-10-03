@@ -11,6 +11,7 @@ from harness import own_image_gates as own_image_gates_module
 from harness import zone_final_pair_contract as previous
 from harness import zone_pair_highpose as pose
 from harness import zone_pair_highpose_grip as grip
+from harness import zone_pair_highpose_blind_close as blind
 
 base, ROOT = previous.base, previous.ROOT
 BUNDLE_ID = 'zone-final-pair-highpose-v98'
@@ -61,7 +62,8 @@ def registry():
             or reg['grip_monitor'].get('grasp_time_view') != grip.GRASP_TIME_VIEW
             or reg.get('own_image_gates', {}).get('path') != OWN_IMAGE_GATES
             or reg.get('frame_gate', {}).get('profile') != FRAME_GATE_PROFILE
-            or reg['frame_gate'].get('process_global_state') is not False):
+            or reg['frame_gate'].get('process_global_state') is not False
+            or reg.get('blind_final_approach', {}).get('profile') != blind.PROFILE):
         raise ValueError('v98 registry mismatch')
     dev = reg.get('dev_pilot', {})
     if (dev.get('calibration_status') != DEV_PILOT or dev.get('rule') != DEV_PILOT_RULE
@@ -346,6 +348,9 @@ def execution_timing(check):
     timing['case_sim_cap_s'] = CASE_CAP_S
     timing['executor_job_sim_limit_s'] = CASE_CAP_S   # overrides the parent runtime's 120 s
     timing['parent_differences'].append('single low lift/HIGH raise; stay HIGH at intermediate stop/reobserve; lower/open only at final release')
+    timing['blind_final_approach'] = blind.record()
+    timing['parent_differences'].append('open descent pauses at the hover for the pre-close beam check; '
+                                        'hover -> grasp descent and close run blind from that confirmation')
     return timing
 
 

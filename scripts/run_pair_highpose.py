@@ -86,12 +86,35 @@ def stage_progress(runtime, probe):
             'stop': done or bool(failures) or bool(jobs)}
 
 
+# v98 evaluation-side cause labels. harness/pair_stage_probe.py (hash-pinned by older review records) is left
+# unchanged; its map is extended here with the blind final approach refusal names.
+FAILURE_CAUSE_TEXT = {
+    'HOVER_NOT_CONFIRMED': 'own-RGB hover check refused the blind descent (pre-close check / band / posture)',
+    'BLIND_WINDOW_CLOSED': 'blind final approach refused at the grasp posture (window not armed or closed by a command,'
+                           ' time, distance or track limit)'}
+
+
+def failure_cause(reason):
+    """Cause label for one controller failure name (labelled, not a proof of cause)."""
+    from harness import pair_stage_probe as sp
+    from harness import zone_pair_highpose_blind_close as blind
+    if reason is None:
+        return None
+    if reason in blind.HOVER_CODES:
+        return {'code': 'HOVER_NOT_CONFIRMED', 'sub': reason}
+    if reason in blind.BLIND_CODES:
+        return {'code': 'BLIND_WINDOW_CLOSED', 'sub': reason}
+    code = sp.FAILURE_TO_CAUSE.get(reason) or ('PARTNER_ABORT' if str(reason).startswith('PARTNER') else 'UNCLASSIFIED')
+    return {'code': code, 'sub': reason}
+
+
 def controller_outcome(runtime):
     """Per-robot final controller state/failure and job ends (report only)."""
     rows = {}
     for session in getattr(getattr(runtime, 'team', None), 'sessions', None) or []:
         for rid, ep in session['endpoints'].items():
             rows[rid] = {'state': ep.controller.state, 'failure': ep.controller.failure,
+                         'failure_cause': failure_cause(ep.controller.failure),
                          'high_carry_pose': any(e.get('event') == 'high_carry_pose' for e in ep.events),
                          'carry_go': sum(e.get('event') == 'barrier_go' and e.get('barrier') == 'carry' for e in ep.events)}
     for rid, own in (getattr(runtime, 'actors', None) or {}).items():

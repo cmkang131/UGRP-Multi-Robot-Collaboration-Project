@@ -63,6 +63,17 @@
     "deferred": "own-grip-loss detection + partner signal (NL: LLM message; structured: fixed status) + audit timing, after the first E2E",
     "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md"
   },
+  "blind_final_approach": {
+    "profile": "zone_pair_blind_final_approach_v98",
+    "module": "harness/zone_pair_highpose_blind_close.py",
+    "why": "at the fixed floor grasp posture the own camera sees 0 beam pixels, so the pre-close beam track estimate is None there (BEAM_UNCERTAIN -> PREGRASP_NOT_READY, DEV probe raise_high_align 3358372e r1); camera placement and field of view unchanged",
+    "method": "look-then-move: the unchanged pre-close check (visual beam track + stationary clearance) runs at the hover, the last calibrated posture where the beam is visible, plus the band's lateral centre on the fixed station line within the align tolerance; then the fixed hover -> grasp descent (71 mm vertical, no base motion) and the unchanged close barrier run blind from that confirmation and own issued commands",
+    "limits": "blind window <= fixed descent + CLOSE_WAIT_S + close ramp + 0.5 s slack; issued commands inside the fixed path envelope (no base motion, no pan change, no gripper reopen); drop <= 0.075 m, horizontal <= 0.002 m; resting track age <= 30 s and sigma <= 50 mm / 3 degrees",
+    "abort_codes": ["PREGRASP_HOVER_UNCONFIRMED", "PREGRASP_HOVER_NOT_VISUAL", "PREGRASP_HOVER_POSE_NOT_COMMANDED", "PREGRASP_HOVER_LATERAL_SHIFT", "PREGRASP_BLIND_NOT_CONFIRMED", "PREGRASP_BLIND_BASE_MOVED", "PREGRASP_BLIND_PAN_MOVED", "PREGRASP_BLIND_ARM_OFF_PATH", "PREGRASP_BLIND_GRIPPER_REOPENED", "PREGRASP_BLIND_UNKNOWN_COMMAND", "PREGRASP_BLIND_SEGMENT_CHANGED", "PREGRASP_BLIND_WINDOW_EXPIRED", "PREGRASP_BLIND_DISTANCE_EXCEEDED", "PREGRASP_BLIND_TRACK_UNCERTAIN", "PREGRASP_BEAM_UNSAFE (unchanged close-PWM guard)"],
+    "inputs": "own RGB at the hover, measured hover camera model, own issued commands; no ground truth, contact/success flag or shared camera",
+    "residual": "a partner nudge of the resting beam during the blind window is not detected before the close; post-close own-grip detection + partner signal stays deferred (grip_monitor log-only)",
+    "status": "DESIGN_DRAFT: offline replay of one recorded descent (r1); no closed-loop run"
+  },
   "dev_pilot": {
     "admission_mode": "DEV_PILOT",
     "calibration_status": "DEV_PILOT",

@@ -6,6 +6,7 @@ import numpy as np
 
 from harness import zone_final_pair_skill as previous
 from harness import zone_pair_highpose as pose
+from harness import zone_pair_highpose_blind_close as blind
 from harness import zone_pair_highpose_frame_gate as frame_gate
 from harness import zone_pair_highpose_grip as grip
 from harness import zone_pair_highpose_lookaround as lookaround
@@ -83,6 +84,9 @@ class HighController:
             return
         obs = self.look(now)
         own = self.port.own
+        track = getattr(self, 'blind_track', None)     # v98 blind final approach (zone_pair_highpose_blind_close)
+        if track is not None:
+            track.blind_code = None
         view = m2.grip_view_m2(obs['image'])
         self._monitor('close_grip_view', now, frame_id=obs['frame_id'], applied=False, **view)
         ready = (self.pregrasp_done and self._grasp_pose_ready(now)
@@ -97,7 +101,10 @@ class HighController:
             self.log(self.rid, 'pregrasp_fix_rejected', now, checks=checks,
                      failed_checks=[k for k, v in checks.items() if not v],
                      last_fix_t=own.last_report.last_fix_t, report_t=own.last_report.t_est)
-            return self.fail('PREGRASP_NOT_READY', now)
+            code = getattr(track, 'blind_code', None)
+            if code is not None:
+                self.log(self.rid, 'blind_final_approach_refused', now, code=code, window=track.window_record())
+            return self.fail('PREGRASP_NOT_READY' if code is None else 'PREGRASP_'+code, now)
         if now - self.state_t > CLOSE_WAIT_S:
             return self.fail('BARRIER_CLOSE_TIMEOUT', now)
         decision = self.sync_for('close').authorize(now)
@@ -364,7 +371,8 @@ class GraspViewLogOnly(m2.M2DoorStudent):
 
 
 def controller_class(base):
-    return type('HighPairController', (HighController, base, GraspViewLogOnly), {})
+    # blind.HoverConfirm sits between HighController and V3Controller: hover check, then the blind descent (v98).
+    return type('HighPairController', (HighController, blind.HoverConfirm, base, GraspViewLogOnly), {})
 
 
 class Execution(previous.Execution):
@@ -381,6 +389,7 @@ class Execution(previous.Execution):
         ctl.floor_return_verified = False
         ctl.grip_monitor, ctl.grip_closed_epoch = grip.GripMonitorLog(), None
         self.command_guard = CommandGuard(self, self.vision)
+        blind.adopt(self.command_guard, ctl)
 
 
 class Team(previous.Team):
@@ -448,4 +457,5 @@ class Runtime(PreviousRuntime):
         value = super().record()
         value['executor_job_sim_limit_s'] = self.job_sim_limit_s
         value['own_image_gates'] = copy.deepcopy(self.own_image_gates)
+        value['blind_final_approach'] = blind.record()
         return value

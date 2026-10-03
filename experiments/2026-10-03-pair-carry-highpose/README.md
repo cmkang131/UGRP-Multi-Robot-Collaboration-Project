@@ -59,6 +59,43 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   강한 흐림에서는 새 문턱도 오답이 많다: σ8에서 남은 592열 중 409열 오답, 가로 81 px 19 %, 흐림 없음 0.4 %.
   옛 규칙과 공유하는 남은 위험으로 기록만 하고 문턱은 더 바꾸지 않는다.
 
+### 보지 않는 마지막 접근 (blind final approach, v98 초안, 2026-10-04)
+
+- **문제:** 바닥 잡기 자세에서는 자기 손목 카메라에 빔이 한 픽셀도 보이지 않아(아래 `3358372e` 결과) 닫기 전 빔 추정이
+  구조적으로 `None`이다. 카메라 위치·시야는 바꾸지 않는다.
+- **방법(보고 나서 움직이기, look-then-move):** 열린 하강을 호버 자세(서보 807/1897/2187, 공구 높이 95 mm)에서 멈추고
+  0.3초 안정화한다. 그 자리에서 바꾸지 않은 `preclose_check`와 새 가로 검사(빔 띠 가로 중심이 고정 잡기 선에서 3 mm 이내)를
+  한다. 통과하면 정지 빔 추적에 "보지 않는 구간"을 열고, 고정 경로(7단계 × 0.12초, 수직 71 mm, 차체 이동 없음)와 0.3초
+  안정화를 큐에 넣는다. 잡기 자세에서는 구간이 유지되는 동안만 확인 때의 빔 가설을 그대로 쓴다. 구간은 다음 중 하나면
+  닫힌다: 시간 22.14초 초과, 내려간 거리 0.075 m 초과·수평 0.002 m 초과, 차체 이동, 시선(pan) 변경, 경로 밖 팔 명령,
+  집게 다시 열기, 모르는 명령 종류, 구간 변경, 추적 불확실성(동결 한도 30초·50 mm·3°) 초과. 입력은 자기 RGB·자기 명령
+  이력·측정된 호버 카메라 모델뿐이다. 새 모듈 `harness/zone_pair_highpose_blind_close.py`, 등록 키
+  `blind_final_approach.profile = zone_pair_blind_final_approach_v98`, 번들 `timing.blind_final_approach`.
+  설계 원문은 [blind_final_approach_design_ko.md](blind_final_approach_design_ko.md), 조사 전문은
+  [blind_final_approach_survey.md](blind_final_approach_survey.md), 오프라인 재생 스크립트는 `blind_final_approach_replay/`.
+- **조정자 결정(2026-10-04)과 적용:**
+  1. 번들 ID는 초안 v98을 유지하고 DEV 기록은 SHA로 구분한다. 검토자가 동결 전에 새 번호를 요구하면 모든 브랜치를 확인해 다음 빈 번호를 쓴다.
+  2. 보지 않는 구간 22.14초를 유지한다(알려진 한계 아래).
+  3. 호버 가로 검사(3 mm)를 바로 적용한다. 측정값은 0.06 mm지만 표본이 하나다.
+  4. 호버 확인은 정렬 단계(`aligned_streak >= 2`)처럼 **연속 2개의 서로 다른 자기 프레임**이 통과해야 한다. 실패 프레임이 오면 0으로
+     되돌리고, 같은 프레임을 다시 보면 세지 않는다. 구간은 마지막 통과 프레임에서 열린다. 재시도 상한 1.0초(`HOVER_CONFIRM_MAX_S`)는
+     그대로이며, 상한을 넘긴 실패 프레임에서 `PREGRASP_HOVER_*`로 멈춘다(`HOVER_CONFIRM_FRAMES = 2`, `limits()`에 기록).
+  5. 모르는 명령 종류는 구간을 닫는다(fail-closed, 유지).
+  6. 실패 분류: `PREGRASP_HOVER_*` 4개 → `HOVER_NOT_CONFIRMED`, `PREGRASP_BLIND_*` 10개 → `BLIND_WINDOW_CLOSED`.
+     공용 `harness/pair_stage_probe.py`의 분류표는 이전 검토 기록(`tests/fixtures/review_355_legacy.json`)이 바이트 해시로 고정하고
+     있어 바꾸지 않았다. 대신 v98 실행기 `scripts/run_pair_highpose.py`에 `failure_cause()`를 두어 공용 표를 그대로 쓰고 새
+     이름만 더한다. 결과 `controller_outcome.<로봇>.failure_cause`에 남는다(평가 쪽 표시, 원인 증명이 아님).
+  7. 더 낮은 하강 자세의 카메라 보정은 미룬다.
+  8. 시간 하한 표(`zone_pair_highpose_timing._grasp_s`)는 호버 정지(0.3초와 검사 틱)를 넣지 않았다. 여전히 하한이지만 약 0.4초
+     작다. 300초 상한에는 영향이 없다. 표는 바꾸지 않았다(알려진 차이로 기록).
+  9. `scripts/run_ci_tests.py`에 v98 시험 목록이 있어 `tests/test_highpose_blind_close.py`를 더했다.
+  10. `raise_high_align` 폐루프 재실행 결과는 아래 절에 적는다.
+- **알려진 한계:**
+  - 짝 로봇 밀림: 보지 않는 22.14초 동안 짝 로봇이 늦게 닿아 빔을 밀어도 이 구간은 알아채지 못한다. 짧은 상한(예: 3초)과
+    호버 재확인은 대안으로만 남겼다(결정 2).
+  - 호버 가로 검사 허용치(3 mm)는 정렬 허용치를 그대로 쓴 것이고, 측정 근거는 한 표본(0.06 mm)이다.
+  - 닫은 뒤 자기 집게 감시는 여전히 기록만이다(`grip_loss_after_close: log-only`).
+
 ### 둘러보기 수정 뒤 폐루프 단계 검사 (`3358372e`, 2026-10-04)
 
 조건은 앞과 같다(seed 911, before_door, DEV_PILOT, floor_light_v1, weld OFF, SIM 슬롯 따로, 조정 PID 24124, 시작 부하 24.6/23.0).
@@ -357,6 +394,29 @@ TensorBoard 새 스냅샷 `1003-pair-highpose-v93/high-hold`에 같은 진단의
 0으로 채우지 않는다. [대시보드 검증과 고정 링크](tensorboard_verification.json)를 따른다.
 
 ## 참고 자료
+
+### 보지 않는 마지막 접근 (v98, 설계 작업자 조사, 출처 표기 그대로)
+
+"확인"은 해당 절이나 코드를 직접 읽었다는 뜻이고 "미확인"은 초록이나 2차 언급만 봤다는 뜻이다. 조사 전문은
+[blind_final_approach_survey.md](blind_final_approach_survey.md).
+
+- Hutchinson, Hager, Corke, "A tutorial on visual servo control", IEEE T-RA 12(5), 1996. 확인. 보고 나서 움직이기와 끝점 개루프·폐루프 구분.
+- Chaumette, Hutchinson, "Visual servo control Part I/II", IEEE RAM 2006/2007. 확인. 시야 유지 기법.
+- Kragic, Christensen, "Survey on visual servoing for manipulation", KTH/CVAP 2002. 확인. "정렬 뒤 수직으로 몇 cm 내려가 잡기" 사례.
+- Folio, Cadenat, "A sensor-based controller able to treat total image loss", IROS 2008 (hal-00603686). 확인. 마지막 측정과 자기 속도 명령으로 특징 예측.
+- Morrison, Corke, Leitner, "Closing the loop for robotic grasping" (GG-CNN), RSS 2018, arXiv 1804.05172. 확인(IJRR 2020판 미확인). 코드 github.com/dougsm/ggcnn_kinova_grasping: 150 mm보다 가까우면 목표 고정 후 약 70 mm 개루프, 3샘플 평균.
+- Haviland, Dayoub, Corke, "Control of the final-phase of closed-loop visual grasping using IBVS", arXiv 2001.05650. 확인.
+- Viereck, ten Pas, Saenko, Platt, CoRL 2017, arXiv 1706.04652. 확인. 14 cm 안에서는 정해진 동작으로 닫음.
+- Levine 외, "Learning hand-eye coordination for robotic grasping", IJRR 2018, arXiv 1603.02199. 확인.
+- Kalashnikov 외, "QT-Opt", CoRL 2018, arXiv 1806.10293. 확인.
+- Burgess-Limerick, Lehnert, Leitner, Corke, "DGBench", arXiv 2204.13879. 확인. 마지막 단계 개루프가 일반적.
+- Burgess-Limerick 외, "An architecture for reactive mobile manipulation on-the-move", ICRA 2023, arXiv 2212.06991. 확인.
+- hello-robot/stretch_ros(`stretch_demos/nodes/grasp_object`), hello-robot/stretch_visual_servoing. 확인(코드). 한 번 관찰 뒤 고정 접근(반례: 잡기 확인 없음).
+- HomeRobot/OVMM arXiv 2306.11565, OK-Robot arXiv 2401.12202. 확인. 개루프 경유점 접근, 오류 감지·재시도 없음을 한계로 적음.
+- Boston Dynamics Spot SDK `manipulation_api.proto`. 확인(proto 주석). 내부 제어기는 비공개.
+- Will, Grossman, "An experimental system for computer controlled mechanical assembly", IEEE Trans. Computers C-24(9), 1975. 확인. 경계 이동(guarded move).
+- 미확인(초록만): Mezouar·Chaumette 2002 (inria-00352101), Garcia-Aracil 외 2005 (hal-04654343), Cherubini·Chaumette 2013 (hal-00750623).
+- 우리 적용: 정렬 단계의 연속 2프레임 규칙과 GG-CNN의 "가까우면 목표 고정 후 짧은 개루프"를 따르고, 개루프 구간을 자기 명령 범위·시간·거리로 묶었다(경계 이동). 카메라 기하 때문에 확인 위치를 측정된 호버 자세로 정한 것만 바꿨다.
 
 ### r2 둘러보기 guard 여유 (v98, Track A)
 

@@ -97,6 +97,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_starts.py",
     "tests/test_highpose_timing.py",
     "tests/test_highpose_transit.py",
+    "tests/test_highpose_blind_close.py",  # v98 blind final approach (recorded own frames, no simulator)
     "tests/test_zone_final_pair_heldout.py",
     "tests/test_review_352.py",
     "tests/test_review_355.py",
