@@ -97,7 +97,7 @@ def trial_metrics(*, condition, verdict, command_counts, trial=None, ledger_wall
            'command_count': dict(command_counts), 'command_count_total': _sum(command_counts.values()),
            'model_calls': 0, 'http_attempts': 0, 'model_cost_sim_s': 0., 'input_tokens': 0, 'output_tokens': 0,
            'provider_usage': None, 'response_wall_s': None, 'messages': {'sent': 0, 'accepted': 0, 'rejected': 0},
-           'korean': {'messages': 0, 'korean': 0, 'share': None, 'flagged': 0},
+           'language': {'messages': 0, 'hangul_ratio_ge_0_9': 0, 'share': None, 'flagged': 0, 'gate': False},
            'self_sabotage': {'events': len(sabotage), 'rows': [dict(r) for r in sabotage]},
            'claims': {'released': 0, 'submitted': 0, 'accepted': 0, 'rejected': 0, 'not_released_ticks': None}}
     if trial is None:
@@ -119,10 +119,13 @@ def trial_metrics(*, condition, verdict, command_counts, trial=None, ledger_wall
     row['messages'] = {'sent': channel['sent'] + channel['rejected'], 'accepted': channel['accepted_messages'],
                        'rejected': channel['rejected']}
     rows = [r for r in trial.language_rows if r['accepted']]
-    korean = sum(1 for r in rows if r['korean'])
-    row['korean'] = {'messages': len(rows), 'korean': korean, 'share': None if not rows else korean / len(rows),
-                     'flagged': sum(1 for r in rows if r['flags']),
-                     'threshold_hangul_ratio': 0.9}
+    # User decision 2026-10-03: no language requirement. ``language_report`` is a RECORD (the share of
+    # messages with hangul ratio >= 0.9 and the flag count), never a gate and never a pass/fail field.
+    hangul = sum(1 for r in rows if r['korean'])
+    row['language'] = {'messages': len(rows), 'hangul_ratio_ge_0_9': hangul,
+                       'share': None if not rows else hangul / len(rows),
+                       'flagged': sum(1 for r in rows if r['flags']), 'gate': False,
+                       'note': 'record only: no language is required of the messages'}
     row['actions'] = _count(a['kind'] for a in trial.actions)
     return row
 

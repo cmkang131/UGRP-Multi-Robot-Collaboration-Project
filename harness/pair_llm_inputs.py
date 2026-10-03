@@ -33,7 +33,7 @@ from harness import zone_study_contract as zc
 from harness import zone_study_prompts_ko as pk
 from harness import zone_study_protocol as zp
 from harness.pair_llm_prompts_ko import (PAIR_CONDITIONS, PAIR_ROBOTS, PAIR_ROLES, PROMPT_VERSION,
-                                         fixed_prompt_reference_tokens, partner_of, system_prompt)
+                                         fixed_prompt_reference_tokens, partner_of, study_spec, system_prompt)
 from harness.zone_map_schematic import digest
 from harness.zone_study_inputs import INPUT_PROFILE, OrderSheetSource, vocabulary
 
@@ -49,7 +49,7 @@ JPEG, PNG = 'image/jpeg', 'image/png'
 
 def allowlist(condition: str) -> frozenset:
     _check_condition(condition)
-    return frozenset(BASE_KEYS) | ({'inbox'} if zp.spec(condition).channel_open else frozenset())
+    return frozenset(BASE_KEYS) | ({'inbox'} if zp.spec(study_spec(condition)).channel_open else frozenset())
 
 
 def _check_condition(condition):
@@ -61,9 +61,12 @@ def pair_channel_section(condition: str, actor: str) -> dict:
     """The robot-facing description of its own channel: the partner is the only recipient."""
     _check_condition(condition)
     partner = partner_of(actor)
-    spec = zp.spec(condition)
+    spec = zp.spec(study_spec(condition))
     peers = [partner] if spec.channel_open else []
-    return {'condition': condition, 'topology': spec.topology, 'encoding': spec.encoding,
+    # The study's wire enum ``free_ko`` names a Korean free-text channel; the pair has no language rule,
+    # so the robot is told ``free_text`` (inbox envelopes keep the sealed enum, see ``_pair_inbox_hits``).
+    return {'condition': condition, 'topology': spec.topology,
+            'encoding': 'free_text' if spec.encoding == 'free_ko' else spec.encoding,
             'free_text_allowed': spec.encoding == 'free_ko', 'can_send_to': list(peers),
             'can_receive_from': list(peers), 'role': 'peer'}
 
@@ -136,7 +139,7 @@ def build_payload(*, robot_id: str, condition: str, request_id: str, sim_time_s:
                'own_command_history': _trim(own_command_history, int(profile['command_history_entries'])),
                'self_belief': copy.deepcopy(dict(self_belief)),
                'channel': pair_channel_section(condition, robot_id)}
-    if zp.spec(condition).channel_open:
+    if zp.spec(study_spec(condition)).channel_open:
         payload['inbox'] = _trim(inbox, int(profile['inbox_messages']))
     elif inbox:
         raise zc.ContractViolation(f'{condition} delivers no messages, so an inbox is not allowed')
@@ -205,7 +208,7 @@ def _pair_inbox_hits(payload: Mapping, now) -> list[str]:
     inbox = payload.get('inbox')
     if inbox is None:
         return []
-    spec = zc.condition(payload['condition'])        # the study row: topology / encoding of the message
+    spec = zc.condition(study_spec(payload['condition']))   # the study row: topology / encoding of the message
     hits = zc._inbox_hits(payload, spec, None, now)
     robot = payload.get('robot_id')
     for envelope in inbox if isinstance(inbox, Sequence) and not isinstance(inbox, str) else ():
@@ -358,7 +361,7 @@ def billed_tokens(tokens: Mapping) -> dict:
 
 
 def build_request(inputs: PairInputs, *, window=None) -> dict:
-    """One model request: Korean pair system text, the payload JSON, and the two labelled images.
+    """One model request: the pair system text, the payload JSON, and the two labelled images.
 
     ``window`` is ``Transport.window_context`` (the transport's real budget). The user message is the
     validated payload verbatim plus ``dialogue_window`` when the channel is open (the budget only, never
@@ -367,7 +370,7 @@ def build_request(inputs: PairInputs, *, window=None) -> dict:
     if not isinstance(inputs, PairInputs):
         raise zp.ProtocolError('inputs must be a PairInputs wrapping a validated pair payload')
     condition, rid = inputs.condition, inputs.robot_id
-    spec = zp.spec(condition)
+    spec = zp.spec(study_spec(condition))
     window = dict(window or {})
     window.pop('received', None)                  # the inbox is the payload's, never sent twice
     issued = list(window.pop('sent', None) or ())

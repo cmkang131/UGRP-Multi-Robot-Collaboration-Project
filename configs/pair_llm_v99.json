@@ -1,16 +1,16 @@
 {
-  "schema": "ugrp.pair_llm.v97",
-  "execution_bundle_id": "zone-pair-llm-v97",
-  "workflow_id": "zone-pair-llm-v97",
-  "workflow_version": "3.9.0",
+  "schema": "ugrp.pair_llm.v99",
+  "execution_bundle_id": "zone-pair-llm-v99",
+  "workflow_id": "zone-pair-llm-v99",
+  "workflow_version": "3.11.0",
   "status": "DRAFT_UNSEALED",
   "research_result": false,
-  "note_ko": "두 로봇 짝 운반의 LLM 판단 층 첫 가능성 시험(Refs #219). 스크립트 기술(v88)은 그대로 두고 LLM이 그 위에서 청구(claim)·메시지·계속/중단을 결정한다. 연구 결과가 아니며 봉인·사전 등록·학생 승인과 무관하다.",
+  "note_ko": "두 로봇 짝 운반의 LLM 판단 층 첫 가능성 시험(Refs #219). 2026-10-03 사용자 결정(\"걍 한국어 조건 뺴주라\")으로 한국어 요구 조건은 없고 통신 조건은 자연어 대화(peer_nl)이다. 스크립트 기술(v88)은 그대로 두고 LLM이 그 위에서 청구(claim)·메시지·계속/중단을 결정한다. 연구 결과가 아니며 봉인·사전 등록·학생 승인과 무관하다.",
   "map_id": "zone_wide_door_geometry_v3",
   "conditions": {
     "rule": {"arm": "C-rule", "llm": false, "channel": "none"},
     "no_comm": {"arm": "C-llm-nocomm", "llm": true, "channel": "closed"},
-    "peer_ko": {"arm": "C-llm-nl", "llm": true, "channel": "korean_peer_dialogue"}
+    "peer_nl": {"arm": "C-llm-nl", "llm": true, "channel": "natural_language_peer_dialogue"}
   },
   "caps": {"per_case_s": 300.0, "reset_per_case_s": 5.0},
   "decision_limits": {"max_calls_total": 24, "max_utterances_per_actor": 3, "max_utterances_total": 6},

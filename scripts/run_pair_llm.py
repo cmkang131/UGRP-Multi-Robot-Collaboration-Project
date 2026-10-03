@@ -1,6 +1,6 @@
-"""Managed DRAFT v97: one arm of the pair LLM viability test (Refs #219).
+"""Managed DRAFT v99: one arm of the pair LLM viability test (Refs #219).
 
-``--condition rule | no_comm | peer_ko`` is C-rule / C-llm-nocomm / C-llm-nl. Without ``--execute`` this only
+``--condition rule | no_comm | peer_nl`` is C-rule / C-llm-nocomm / C-llm-nl. Without ``--execute`` this only
 prints a plan. This PR ships the STUB model path only: ``--live`` is refused here, and a real model call needs
 the coordinator's separate approval and a live driver wired in a later change. Physics is lazy, requires
 committed source, an owned SIM slot and 10 GiB free before it starts, and writes raw output under the primary

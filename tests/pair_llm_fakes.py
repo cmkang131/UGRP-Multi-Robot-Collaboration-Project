@@ -114,7 +114,7 @@ def map_bundle():
     return ms.map_bundle(contract.read_registry()['map_id'], landmark_detail='none')
 
 
-def make_inputs(condition='peer_ko', rid='r1', *, request_id='req_t1', inbox=None, history=(), t=0., frame_no=1):
+def make_inputs(condition='peer_nl', rid='r1', *, request_id='req_t1', inbox=None, history=(), t=0., frame_no=1):
     """A validated ``PairInputs`` from the real scenario, map bundle and a fake own frame."""
     from harness.pair_llm_dispatch import map_figure
     bundle = map_bundle()

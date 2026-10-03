@@ -1,11 +1,12 @@
-"""Execution bundle of the pair LLM viability test (v97). Static: never imports a simulator or a model client.
+"""Execution bundle of the pair LLM viability test (v99). Static: never imports a simulator or a model client.
 
-``zone-pair-llm-v97`` (workflow 3.9.0) puts an LLM decision layer on top of the v88 scripted two-robot pair
+``zone-pair-llm-v99`` (workflow 3.11.0) puts an LLM decision layer on top of the v88 scripted two-robot pair
 skill and compares three arms on the SAME map, order, 300 SIM s cap and evaluator:
 
 * ``rule``     C-rule         both robots submit the scripted claim as soon as they are idle (no model);
 * ``no_comm``  C-llm-nocomm   each robot's model decides on its own RGB, the map and the order sheet; no messages;
-* ``peer_ko``  C-llm-nl       the same plus a Korean peer channel between r1 and r2.
+* ``peer_nl``  C-llm-nl       the same plus a natural-language peer channel between r1 and r2 (no language
+                               requirement: user decision 2026-10-03, "걍 한국어 조건 뺴주라").
 
 The fixed-enum pair status wire stays on in every arm. This bundle records what a result of a run depends
 on (model id, prompt template hash, temperature, the absence of a seed, the cost model, the condition, the v88
@@ -24,16 +25,16 @@ from harness import zone_final_pair_contract as skill_layer
 from harness import zone_final_pair_skill as skill
 
 ROOT = base.ROOT
-REGISTRY = 'configs/pair_llm_v97.json'
+REGISTRY = 'configs/pair_llm_v99.json'
 SCENARIO = 'configs/pair_llm_scenario_v3.json'
-WORKFLOW = 'configs/simulation_workflows.d/pair_llm_v97.json'
-BUNDLE_ID = 'zone-pair-llm-v97'
-WORKFLOW_ID = 'zone-pair-llm-v97'
-WORKFLOW_VERSION = '3.9.0'
-BUNDLE_SCHEMA = 'ugrp.pair_llm_bundle.v97'
-REGISTRY_SCHEMA = 'ugrp.pair_llm.v97'
-CONDITIONS = ('rule', 'no_comm', 'peer_ko')
-ARMS = {'rule': 'C-rule', 'no_comm': 'C-llm-nocomm', 'peer_ko': 'C-llm-nl'}
+WORKFLOW = 'configs/simulation_workflows.d/pair_llm_v99.json'
+BUNDLE_ID = 'zone-pair-llm-v99'
+WORKFLOW_ID = 'zone-pair-llm-v99'
+WORKFLOW_VERSION = '3.11.0'
+BUNDLE_SCHEMA = 'ugrp.pair_llm_bundle.v99'
+REGISTRY_SCHEMA = 'ugrp.pair_llm.v99'
+CONDITIONS = ('rule', 'no_comm', 'peer_nl')
+ARMS = {'rule': 'C-rule', 'no_comm': 'C-llm-nocomm', 'peer_nl': 'C-llm-nl'}
 CAP_S = 300.
 RESET_CAP_S = skill_layer.RESET_CAP_S
 SMOKE_MAX_S = 60.
@@ -132,7 +133,8 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
            root=ROOT) -> dict:
     """The run bundle of one arm. ``calibration`` is ``{'path', 'sha256'}`` or None (plan only)."""
     from harness.pair_llm_dispatch import PAIR_POLICY
-    from harness.pair_llm_prompts_ko import PROMPT_VERSION, fixed_prompt_reference_tokens, prompt_template_sha256
+    from harness.pair_llm_prompts_ko import (PROMPT_VERSION, STUDY_SPEC, fixed_prompt_reference_tokens,
+                                             prompt_template_sha256)
     from harness.zone_sim_cost import params as cost_params
     if condition not in CONDITIONS:
         raise ValueError(f'{condition!r} is not one of {CONDITIONS}')
@@ -164,14 +166,18 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
         'prompt': None if not llm else {
             'version': PROMPT_VERSION, 'template_sha256': prompt_template_sha256(),
             'fixed_reference_tokens': fixed_prompt_reference_tokens(),
-            'language': 'Korean; hangul ratio >= 0.9 else flagged, never blocked'},
+            'language': 'no language requirement; language_report is recorded per message, never a gate',
+            'instruction_text_language': 'ko (reused study text)',
+            'study_spec': STUDY_SPEC[condition],
+            'study_spec_note': 'sealed study name of the open free-text peer channel (wire encoding free_ko); '
+                               'its language check only flags'},
         'cost_model': {'version': cost.version, 'digest': cost.digest(), 'provisional': cost.provisional,
                        'charged': 'deterministic token-based SIM seconds; wall latency recorded, not charged',
                        'applies_to': 'LLM arms only (the rule arm makes no call)'},
         'call_policy': {k: getattr(PAIR_POLICY, k) for k in PAIR_POLICY.__dataclass_fields__} if llm else None,
         'decision_limits': dict(limits) if llm else None,
         'channel': reg['conditions'][condition]['channel'],
-        'inter_robot_channels': (['dialogue'] if condition == 'peer_ko' else []) + ['pair_status'],
+        'inter_robot_channels': (['dialogue'] if condition == 'peer_nl' else []) + ['pair_status'],
         'caps': {'per_case_s': CAP_S, 'reset_per_case_s': RESET_CAP_S,
                  'smoke_max_per_case_s': SMOKE_MAX_S, 'same_in_all_arms': True},
         'timing': physics['timing'],
