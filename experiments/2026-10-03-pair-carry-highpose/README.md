@@ -59,6 +59,24 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   강한 흐림에서는 새 문턱도 오답이 많다: σ8에서 남은 592열 중 409열 오답, 가로 81 px 19 %, 흐림 없음 0.4 %.
   옛 규칙과 공유하는 남은 위험으로 기록만 하고 문턱은 더 바꾸지 않는다.
 
+### 둘러보기 수정 뒤 폐루프 단계 검사 (`3358372e`, 2026-10-04)
+
+조건은 앞과 같다(seed 911, before_door, DEV_PILOT, floor_light_v1, weld OFF, SIM 슬롯 따로, 조정 PID 24124, 시작 부하 24.6/23.0).
+
+| 검사 | 상태 | 도달한 곳 | SIM초 | 명령 r1/r2 | 측정 갱신 r1/r2 | 실패 |
+|---|---|---|---|---|---|---|
+| raise_high(접근 포함) | FAILED | 두 로봇의 둘러보기가 7.8초에 함께 끝났다(LOOKED, r1 std 0.0072 m). 합류를 통과해 7.85초에 짝 작업을 시작했고 approach에 들어갔다. | 7.45 | 200/199 | 53/27 | r1 `PAIR_COLLISION_GUARD` 8.7초(approach 0.85초째), r2 `PARTNER_ABORT` |
+| raise_high_align | FAILED | 평소 둘러보기(7.8초, LOOKED)와 입장을 마쳤다. 그 뒤 자기 접근 → align → standoff(빔 9968점 관측) → 열린 하강까지 가서 54.1초에 `wait_close`에 **도달**했다. | 52.85 | 1443/1261 | 200/147 | r1 `preclose_beam_guard` `BEAM_UNCERTAIN` → `PREGRASP_NOT_READY`, r2 `PARTNER_ABORT` |
+
+- **둘러보기 수정은 폐루프에서 확인했다.** 7623c4dc에서는 r2가 끝나지 않아 `PAIR_RENDEZVOUS_TIMEOUT`이 났다. 이번에는 두 로봇이 같은 시각(7.8초)에 끝났고 합류를 통과했다. 5초 합류 시계는 바꾸지 않았다.
+- **raise_high의 새 막힘:** approach 0.85초째에 명령 guard가 `PAIR_COLLISION_GUARD`로 멈췄다. 이 guard는 막은 명령을 기록하지 않아(`zone_pair_guards.py` 772–789) 팔·시선 계획과 이동 간격 중 어느 쪽인지 raw로는 가릴 수 없다. 이 검사 경로가 실행된 것은 v98에서 처음이다(앞 실행은 합류 전에 끝났다). 새 둘러보기 guard는 둘러보기 틱 밖에서는 부모와 같이 계산한다(hint 없음 → `PairArmGuard`). 원인 진단은 아직 하지 않았다.
+- **raise_high_align의 닫기 거부(조정자 지시 4번 조건에 해당, 여기서 멈춤):** 닫기 시점의 r1 상태를 자기 RGB와 자기 명령 이력만으로 오프라인 재생했다(`replay_preclose_3358372e.py`, 검사 출력의 frames·commands).
+  - 빔 추적의 불확실성은 한도 안이었다: std 0.019 m(한도 0.05), 0.024 rad(한도 0.052), 나이 2.3초(한도 30).
+  - 바닥 파지 자세(서보 3/4/5 = 1269/2052/2494)의 자기 영상(frame 1057)에는 빔 색 점이 **0개**였다(필요 60). 영상 전체가 바닥이고, `close_grip_view`도 빔 비율 0이었다.
+  - 그래서 `beam_track.estimate`는 "보이는 조각 일치 검사"에서 None을 냈다. 직전 standoff 영상(frame 1011)에서는 9911점이 보였다.
+  - 즉 `preclose_check`는 바닥 파지 자세에서 구조적으로 통과할 수 없다(카메라 기하, 문턱 문제 아님). 지시대로 고치지 않았다. 조사와 v98 전용 설계("보일 때 확인 후 자기 명령으로 마지막 접근")는 조정자가 다른 작업자에게 맡겼다. `PAIR_COLLISION_GUARD` 진단(막은 명령 기록 포함)은 Track A가 맡는다.
+- 닫기에 도달하지 못해 P03 3×300은 시작하지 않았다. TensorBoard: `outputs/tensorboard/1004c-v98-dev-probes-3358372e`(기준선 7623c4dc raise_high), 보기 설정 키 `v98_dev_probes_3358372e_20261004`. raw는 `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-<검사>-3358372e`(로컬 보관)이다.
+
 ### r2 늦은 둘러보기 수정 (Track A, v98 전용, 조정자 승인 2026-10-04)
 
 - **원인(7623c4dc raise_high):** r2의 시작 둘러보기는 1.95–8.2초 동안 팔을 움직이지 못했다. 공용 팔 guard가 위치 불확실성을 방향 없이 `std_xy = √(trace Σ)`(2.0초에 0.47 m, 거의 모두 y축)로 계산해 `wall_west`와의 간격에서 뺐기 때문이다. 동쪽을 보는 r2는 y를 관측하지 못하지만, 이 벽의 법선은 x이고 그 방향 σ는 0.048 m였다. 기다리는 틱마다 `hold`가 두 번 나가는 문제도 있었다(`[hold] + [hold]`).
