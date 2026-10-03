@@ -27,6 +27,16 @@ camera_record = previous.camera_record
 # 190-219 s full carry; 300 s ~ 1.4x the largest bound.
 CASE_CAP_S = 300.
 CAP_DECISION = 'experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md'
+# Coordinator DEV_PILOT admission (2026-10-03): a non-confirmatory functional
+# pilot on one exact-sha256 calibration while the v92 MEASURED_SIM assembly is
+# PARTIAL. The MEASURED_SIM path below is unchanged and its list stays empty.
+MEASURED_SIM, DEV_PILOT = 'MEASURED_SIM', 'DEV_PILOT'
+DEV_PILOT_RULE = 'DEV_PILOT_C0_ZERO_v1'
+DEV_PILOT_PRECONDITION = 'V96_DEV_PILOT_CALIBRATION_REQUIRED'
+DEV_PILOT_LABELS = {'admission_mode': DEV_PILOT, 'run_status': 'FUNCTIONAL_DEV',
+                    'cohort_role': 'DEV_PILOT_FUNCTIONAL_DEV', 'tensorboard_cohort': 'v96-dev-pilot-functional',
+                    'confirmation_sample': False, 'promotable': False, 'measured_sim_evidence': False}
+NOT_PROMOTABLE = 'DEV_PILOT_RESULT_NOT_PROMOTABLE'
 
 
 def registry():
@@ -41,7 +51,124 @@ def registry():
             or reg.get('grip_monitor', {}).get('scope') != grip.MONITOR_SCOPE
             or reg['grip_monitor'].get('in_run_grip_loss_detection') is not False):
         raise ValueError('v96 registry mismatch')
+    dev = reg.get('dev_pilot', {})
+    if (dev.get('calibration_status') != DEV_PILOT or dev.get('rule') != DEV_PILOT_RULE
+            or dev.get('rule_key') != 'dev_rule' or 'unloaded_motion_fill' not in dev
+            or any(dev.get(k) != v for k, v in DEV_PILOT_LABELS.items())
+            or not isinstance(dev.get('admitted_calibration_sha256'), list)):
+        raise ValueError('v96 DEV_PILOT registry mismatch')
     return reg
+
+
+def dev_pilot_admission():
+    """Registered DEV_PILOT trust root (exact sha256 list); tests monkeypatch it."""
+    return registry()['dev_pilot']
+
+
+def dev_pilot_calibration(path, expected_sha, map_id):
+    """Exact-sha DEV_PILOT calibration: v92 output structure, c0 = 0. Never MEASURED_SIM.
+
+    The only permitted gap is the 10 unloaded params.motion fields (no approved
+    unloaded three-axis profile); they are filled from the registered DEV
+    source (registry dev_pilot.unloaded_motion_fill, pinned by file sha256).
+    Structural checks are the unchanged v92 loader run on a copy whose status
+    alone is normalized. The returned calibration records the fill.
+    """
+    import json
+    import math
+    import tempfile
+    from pathlib import Path
+    if path is None or expected_sha is None:
+        raise ValueError(DEV_PILOT_PRECONDITION)
+    resolve(map_id)
+    dev = dev_pilot_admission()
+    if expected_sha not in dev['admitted_calibration_sha256']:
+        raise ValueError(DEV_PILOT_PRECONDITION+': calibration sha256 not admitted')
+    if base.sha(path) != expected_sha:
+        raise ValueError('DEV_PILOT calibration hash mismatch')
+    cal = base.read(path)
+    if (cal.get('status') != DEV_PILOT or cal.get(dev['rule_key']) != DEV_PILOT_RULE
+            or cal.get('confirmatory') is not False):
+        raise ValueError('DEV_PILOT calibration status/rule mismatch')
+    deadband = cal.get('params', {}).get('motion_loaded', {}).get('deadband', {})
+    c0, u1 = deadband.get('c0'), deadband.get('u1')
+    if (not isinstance(c0, list) or [float(v) for v in c0] != [0., 0., 0.]
+            or not isinstance(u1, list) or len(u1) != 3
+            or not all(math.isfinite(float(v)) and float(v) > 0 for v in u1)):
+        raise ValueError('DEV_PILOT_C0_ZERO_v1 requires c0 == [0,0,0] and u1 > 0')
+    fill = dev['unloaded_motion_fill']
+    missing = [row['field'] if isinstance(row, dict) else row for row in cal.get('missing', [])]
+    motion = cal['params'].get('motion') or {}
+    if missing:
+        from harness.owncam_localizer import DEFAULT_PARAMS
+        if (sorted(missing) != sorted(fill['fields'])
+                or any(motion.get(f.rsplit('.', 1)[1]) is not None for f in fill['fields'])):
+            raise ValueError('DEV_PILOT calibration may miss only the registered unloaded motion fields')
+        if (base.sha(ROOT/fill['source'].split()[0]) != fill['source_sha256']
+                or fill['values'] != {**DEFAULT_PARAMS['motion'], 'tau_stop_s': DEFAULT_PARAMS['motion']['tau_s']}):
+            raise ValueError('DEV_PILOT unloaded motion fill source changed')
+        cal = copy.deepcopy(cal)
+        cal['params']['motion'] = copy.deepcopy(fill['values'])   # null keys dropped -> code defaults
+        cal['missing'] = []
+        cal['dev_pilot_fill'] = {'fields': fill['fields'], 'source': fill['source'],
+                                 'source_sha256': fill['source_sha256'], 'label': 'DEV'}
+    # DEV provenance (not the MEASURED assembler): sibling dev manifest, clean
+    # source, script hash and the PARTIAL measured parent it was derived from.
+    import re
+    manifest_path = Path(path).parent/'input_manifest_dev.json'
+    manifest = base.read(manifest_path)
+    parent = cal.get('measured_parent', {})
+    if (not re.fullmatch('[0-9a-f]{40}', str(cal.get('source_sha', '')))
+            or base.sha(manifest_path) != cal.get('dev_manifest_sha256')
+            or manifest.get('schema') != 'ugrp.v92_dev_pilot_inputs.v1'
+            or manifest.get('execution_source_sha') != cal['source_sha']
+            or manifest.get('working_tree_dirty') is not False
+            or not re.fullmatch('[0-9a-f]{64}', str(manifest.get('script_sha256', '')))
+            or parent.get('status') != 'PARTIAL'
+            or not re.fullmatch('[0-9a-f]{64}', str(parent.get('sha256', '')))):
+        raise ValueError('DEV_PILOT provenance mismatch')
+    cal = copy.deepcopy(cal)
+    cal['dev_pilot_provenance'] = {'dev_manifest_sha256': cal['dev_manifest_sha256'],
+                                   'dev_script_sha256': manifest['script_sha256'],
+                                   'measured_parent': copy.deepcopy(parent), 'source_sha': cal['source_sha']}
+    # Structure-only probe through the unchanged v92 loader. Its MEASURED
+    # provenance slots carry the DEV hashes above; nothing is invented.
+    with tempfile.TemporaryDirectory() as tmp:
+        probe = Path(tmp)/'structure.json'
+        probe.write_text(json.dumps({**cal, 'status': MEASURED_SIM,
+                                     'measurement_manifest_sha256': cal['dev_manifest_sha256'],
+                                     'assembler_sha256': manifest['script_sha256']}))
+        d5.measured_calibration(probe, base.sha(probe), map_id)
+    return cal
+
+
+def admitted_calibration(path, expected_sha, map_id):
+    """Provider entry: DEV_PILOT only by exact admitted sha256, else MEASURED_SIM."""
+    if expected_sha is not None and expected_sha in dev_pilot_admission()['admitted_calibration_sha256']:
+        return dev_pilot_calibration(path, expected_sha, map_id)
+    return measured_calibration(path, expected_sha, map_id)
+
+
+def calibration_for(mode, path, expected_sha, map_id):
+    if mode == DEV_PILOT:
+        return dev_pilot_calibration(path, expected_sha, map_id)
+    if mode != MEASURED_SIM:
+        raise ValueError('unknown admission mode')
+    return measured_calibration(path, expected_sha, map_id)
+
+
+def require_promotable(record):
+    """Confirmatory/MEASURED_SIM consumers call this first; DEV_PILOT never passes."""
+    if (record.get('admission_mode', MEASURED_SIM) != MEASURED_SIM or record.get('promotable') is False
+            or record.get('run_status') == DEV_PILOT_LABELS['run_status']
+            or record.get('cohort_role') == DEV_PILOT_LABELS['cohort_role']
+            or record.get('measured_sim_evidence') is False):
+        raise ValueError(NOT_PROMOTABLE)
+    for row in record.get('cases', []):          # multi-case result wrappers
+        require_promotable(row)
+    if isinstance(record.get('checkpoint'), dict):
+        require_promotable(record['checkpoint'])
+    return record
 
 
 def resolve(map_id):
@@ -151,6 +278,12 @@ def student_calibration(cal):
 
 
 def require_runnable(value):
+    if value.get('admission_mode', MEASURED_SIM) == DEV_PILOT:
+        dev = dev_pilot_admission()
+        if (dev.get('runnable') is not True or value.get('runnable') is not True
+                or any(value.get(k) != v for k, v in DEV_PILOT_LABELS.items())):
+            raise ValueError(REGISTRY_BLOCK+':DEV_PILOT')
+        return
     if registry()['runnable'] is not True or value.get('runnable') is not True:
         raise ValueError(REGISTRY_BLOCK)
 
@@ -175,11 +308,12 @@ def execution_timing(check):
         'transit_rgb_sample_s': grip.SAMPLE_S, 'transit_max_frame_age_s': grip.MAX_FRAME_AGE_S,
         'transit_max_command_lag_s': grip.MAX_COMMAND_LAG_S}
     timing['case_sim_cap_s'] = CASE_CAP_S
+    timing['executor_job_sim_limit_s'] = CASE_CAP_S   # overrides the parent runtime's 120 s
     timing['parent_differences'].append('single low lift/HIGH raise; stay HIGH at intermediate stop/reobserve; lower/open only at final release')
     return timing
 
 
-def bundle(map_id, check):
+def bundle(map_id, check, admission=MEASURED_SIM):
     from harness.python_source_closure import source_closure
     static, _, contract = resolve(map_id)
     cases(check, map_id)
@@ -199,4 +333,12 @@ def bundle(map_id, check):
         'experiments/2026-10-03-v92-loaded-schedule/criterion_B_double_prime.json',
         'experiments/2026-10-03-v92-loaded-schedule/assembly/registration.json'}
     value['source_sha256'] = {p: base.sha(ROOT / p) for p in sorted(paths)}
+    if admission == DEV_PILOT:
+        dev = dev_pilot_admission()
+        value.update(DEV_PILOT_LABELS, runnable=dev['runnable'] is True, blocked_on=[],
+                     dev_pilot_rule=DEV_PILOT_RULE,
+                     dev_pilot_unloaded_motion_fill=copy.deepcopy(dev['unloaded_motion_fill']),
+                     calibration_selection='DEV_PILOT: one exact registered sha256 (c0 = 0); non-confirmatory')
+    elif admission != MEASURED_SIM:
+        raise ValueError('unknown admission mode')
     return value

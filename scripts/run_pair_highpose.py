@@ -1,4 +1,10 @@
-"""Managed v96 student candidate. Plan-only until an approved v92 measured calibration and runnable bundle."""
+"""Managed v96 student candidate.
+
+MEASURED_SIM (default): plan-only until an approved v92 measured calibration
+and a runnable bundle. DEV_PILOT (``--admission dev-pilot``): one exact
+registered calibration sha256 (c0 = 0); every result is FUNCTIONAL_DEV with
+its own cohort and can never be promoted to confirmatory/MEASURED_SIM evidence.
+"""
 from __future__ import annotations
 
 import argparse
@@ -47,11 +53,12 @@ def run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runtime,
              calibration=None, calibration_sha=None):
     # Check even a direct caller before creating output/backend/provider.
     starts.require_dev_seed(seed)
-    cal = contract.measured_calibration(calibration, calibration_sha, bundle['map_id'])
+    mode = bundle.get('admission_mode', contract.MEASURED_SIM)
+    cal = contract.calibration_for(mode, calibration, calibration_sha, bundle['map_id'])
     contract.require_runnable(bundle)
     time_budget.require_feasible(contract.resolve(bundle['map_id'])[0], time_case(bundle['case'], bundle['check']),
                                  bundle['check'], calibration=cal)
-    expected = {**contract.bundle(bundle['map_id'], bundle['check']),
+    expected = {**contract.bundle(bundle['map_id'], bundle['check'], mode),
                 'source_sha': bundle['source_sha'], 'case': bundle['case']}
     if (contract.base.digest(bundle) != contract.base.digest(expected)
             or bundle['case'] not in contract.cases(bundle['check'], bundle['map_id'])):
@@ -79,7 +86,9 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
     write(out/'bundle.json', bundle)
     write(out/'inputs/schedule.json', [])
     backend = runtime = None
-    result = {'check': bundle['check'], 'case': bundle['case'], 'status': 'HOST_ERROR',
+    labels = ({k: bundle[k] for k in contract.DEV_PILOT_LABELS}
+              if bundle.get('admission_mode') == contract.DEV_PILOT else {})
+    result = {**labels, 'check': bundle['check'], 'case': bundle['case'], 'status': 'HOST_ERROR',
               'protocol_complete': False, 'physical_success': None, 'research_result': False,
               'student_control': True, 'reset_sim_cap_s': contract.RESET_CAP_S, 'check_sim_cap_s': cap,
               'timing': bundle['timing'], 'clearance_preflight': None,
@@ -121,7 +130,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
                 record = runtime.record()
                 write(out/'student_record.json', record)
                 if bundle['check'] == 'p03':
-                    result['checkpoint'] = checkpoint_record(record, bundle['case']['checkpoint'])
+                    result['checkpoint'] = {**checkpoint_record(record, bundle['case']['checkpoint']), **labels}
             except Exception as exc:
                 result.update(status='HOST_ERROR', record_error=str(exc))
         for owner in (runtime, backend):
@@ -148,30 +157,42 @@ def parser():
     p.add_argument('--calibration', type=Path)
     p.add_argument('--calibration-sha256')
     p.add_argument('--seed', type=int, default=911)
+    p.add_argument('--admission', choices=('measured-sim', 'dev-pilot'), default='measured-sim',
+                   help='dev-pilot: exact registered sha256 only; FUNCTIONAL_DEV, never promotable')
     return p
+
+
+def admission_mode(args):
+    return contract.DEV_PILOT if args.admission == 'dev-pilot' else contract.MEASURED_SIM
 
 
 def plan(args):
     starts.require_dev_seed(args.seed)
     starts.registration()
     cases = contract.cases(args.check, args.map_id)
-    bundles = [{**contract.bundle(c['map_id'], args.check), 'case': c,
+    mode = admission_mode(args)
+    bundles = [{**contract.bundle(c['map_id'], args.check, mode), 'case': c,
                 'source_sha': args.expected_source_sha} for c in cases]
     blocked = []
     try:
         for c in cases:
-            contract.measured_calibration(args.calibration, args.calibration_sha256, c['map_id'])
+            contract.calibration_for(mode, args.calibration, args.calibration_sha256, c['map_id'])
     except (ValueError, OSError, KeyError, TypeError) as exc:
         blocked.append(str(exc))
-    if any(b['runnable'] is not True for b in bundles) or contract.registry()['runnable'] is not True:
-        blocked.append(contract.REGISTRY_BLOCK)
+    try:
+        for b in bundles:
+            contract.require_runnable(b)
+    except ValueError as exc:
+        blocked.append(str(exc))
     lower_bounds = [row for c in cases for row in time_budget.bounds(contract.resolve(c['map_id'])[0], args.check)
                     if row['case'] == time_case(c, args.check)]
     blocked.extend('TIME_LOWER_BOUND_EXCEEDS_CASE_CAP: '+r['map_id']+'/'+r['case'] for r in lower_bounds if not r['feasible'])
     value = {'time_lower_bounds': lower_bounds, 'cohort_role': 'FUNCTIONAL_DEV_REPLAY',
-        'confirmation_sample': False, 'execution_bundle_id': contract.BUNDLE_ID, 'status': 'DRAFT_UNSEALED',
+        'confirmation_sample': False, 'admission_mode': mode,
+        **(contract.DEV_PILOT_LABELS if mode == contract.DEV_PILOT else {}), 'execution_bundle_id': contract.BUNDLE_ID, 'status': 'DRAFT_UNSEALED',
         'check': args.check, 'execution_started': False, 'cases': cases, 'denominator': len(cases),
-        'runnable': not blocked, 'blocked_on': blocked, 'precondition': contract.PRECONDITION,
+        'runnable': not blocked, 'blocked_on': blocked,
+        'precondition': contract.DEV_PILOT_PRECONDITION if mode == contract.DEV_PILOT else contract.PRECONDITION,
         'calibration_sha256': args.calibration_sha256, 'source_sha': args.expected_source_sha,
         'seed': args.seed, 'bundles_sha256': [contract.base.digest(b) for b in bundles],
         'physical_success': None, 'research_result': False}
@@ -203,7 +224,8 @@ def main(argv=None):
     from sim.final_pair_v3 import PhysicsBackend
     args.output.mkdir(parents=True)
     write(args.output/'plan.json', admission)
-    shutil.copyfile(args.calibration, args.output/'measured_calibration.json')
+    shutil.copyfile(args.calibration, args.output/('dev_pilot_calibration.json' if admission_mode(args) == contract.DEV_PILOT
+                                                   else 'measured_calibration.json'))
     results = []
     for bundle in bundles:
         results.append(run_case(bundle, args.output/bundle['case']['id'], seed=args.seed,
@@ -214,7 +236,8 @@ def main(argv=None):
     unchanged = all({**contract.bundle(b['map_id'], args.check), 'case': b['case'],
                      'source_sha': args.expected_source_sha} == b for b in bundles)
     failed = bool(unattempted) or not unchanged or any(r['status'] == 'HOST_ERROR' for r in results)
-    write(args.output/'result.json', {'status': 'HOST_ERROR' if failed else 'COLLECTED_UNQUALIFIED',
+    labels = contract.DEV_PILOT_LABELS if admission_mode(args) == contract.DEV_PILOT else {}
+    write(args.output/'result.json', {**labels, 'status': 'HOST_ERROR' if failed else 'COLLECTED_UNQUALIFIED',
         'cases': results, 'unattempted': unattempted, 'denominator': len(admission['cases']),
         'source_unchanged': unchanged, 'physical_success': None, 'research_result': False})
     return int(failed)

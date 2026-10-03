@@ -27,7 +27,7 @@ class HighPoseSource(PairVisionPoseSource):
         if static != static_map:
             raise ValueError('provider requires exact final static map')
         self.calibration = cal = contract.student_calibration(
-            contract.measured_calibration(calibration, calibration_sha256, static['map_id']))
+            contract.admitted_calibration(calibration, calibration_sha256, static['map_id']))
         self.cfg = {'sim_time_charge': {'charged': False, 'reason': 'fixed P03 delay is external'}}
         self.runtime_contract = {'provider_id': self.provider_id, 'calibration_sha256': calibration_sha256,
             'detector': DETECTOR, 'learned_segmentation': False, 'robot_model': 'masterpi_v3',

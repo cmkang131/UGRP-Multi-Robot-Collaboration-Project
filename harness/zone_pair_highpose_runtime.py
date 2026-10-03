@@ -311,3 +311,16 @@ class Runtime(PreviousRuntime):
         initialize = bind(PreviousRuntime.__init__, Team=Team)
         initialize(self, static, calibration_path, calibration_sha, seed=seed,
                    provider_factory=provider_factory or build_provider)
+        # The parent hard-codes job_sim_limit_s=120 for every executor, which
+        # would expire the pair job before the registered per-case cap (lower
+        # bounds 184.6 s / 190-219 s). Align it with the bundle's case cap
+        # before any job exists; recorded in execution_timing and record().
+        from harness.zone_pair_highpose_contract import CASE_CAP_S
+        self.job_sim_limit_s = CASE_CAP_S
+        for actor in self.actors.values():
+            actor.job_sim_limit_s = CASE_CAP_S
+
+    def record(self):
+        value = super().record()
+        value['executor_job_sim_limit_s'] = self.job_sim_limit_s
+        return value

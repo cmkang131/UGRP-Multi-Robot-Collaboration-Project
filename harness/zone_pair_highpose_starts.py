@@ -79,6 +79,13 @@ def read_trace(path):
     return ko.read_trace(path)
 
 
+def qualify_run(result, candidate, traces, prior, reg=None):
+    """Confirmatory entry for a finished run: DEV_PILOT results never qualify."""
+    from harness.zone_pair_highpose_contract import require_promotable
+    require_promotable(result)                   # recurses into cases/checkpoint
+    return qualify_confirmation(candidate, traces, prior, reg)
+
+
 def qualify_confirmation(candidate, traces, prior, reg=None):
     """traces: {'r1': Trace, 'r2': Trace} of the NEW run; prior: list[Trace]."""
     reg = registration() if reg is None else reg
