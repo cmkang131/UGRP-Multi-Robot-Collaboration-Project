@@ -1,0 +1,48 @@
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6108408Z =================================== FAILURES ===================================
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6108978Z ________ test_nonfinite_times_in_each_sample_record_fail_closed[frame] _________
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6109298Z
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6109529Z tmp_path = PosixPath('/tmp/pytest-of-runner/pytest-0/test_nonfinite_times_in_each_s2')
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6109897Z record = 'frame'
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6110010Z
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6110238Z     @pytest.mark.parametrize('record', ['pose', 'command', 'frame', 'label', 'beam', 'contact'])
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6111201Z     def test_nonfinite_times_in_each_sample_record_fail_closed(tmp_path, record):
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6111546Z         result = probe("""
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6111758Z     record = """ + repr(record) + """
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6112039Z     profile = 'loaded' if record == 'command' else 'unloaded'
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6112386Z     collection = fixture.synthetic_collection(tmp/'actual', profile)
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6112683Z     rejections = []
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6112864Z     for rid in ('r1','r2'):
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6113142Z         for value in (float('nan'),float('inf'),-float('inf')):
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6113421Z             class BadTime(raw.Inputs):
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6113827Z                 def rows(self,path):
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6114058Z                     rows = super().rows(path)
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6114338Z                     paths = {'pose':f'eval_only/{rid}/pose.jsonl',
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6114640Z                              'command':f'robots/{rid}/commands.jsonl',
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6114942Z                              'frame':f'robots/{rid}/frames.jsonl',
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6115245Z                              'label':f'eval_only/{rid}/camera_labels.jsonl',
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6115644Z                              'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl'}
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6116032Z                     if path == collection/raw.MAP_ID/paths[record]:
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6116349Z                         rows[1 if record == 'command' else 0]['t'] = value
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6116627Z                     return rows
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6116825Z             try:
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6117177Z                 inputs = BadTime()
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6117456Z                 data = raw.load_collection(collection,profile,inputs)
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6117760Z                 if record in ('beam','contact'):
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6118153Z                     raw.loaded_mask(data,inputs,json.loads(a.CRITERION.read_text())['loaded_selection'])
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6118540Z             except ValueError as exc:
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6118884Z                 rejections.append({'robot':rid,'time':str(value),'rejected':True,'reason':str(exc)})
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6119224Z             else:
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6119496Z                 rejections.append({'robot':rid,'time':str(value),'rejected':False})
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6119862Z     print(json.dumps({'record':record,'cases':rejections}))
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6120127Z     """, tmp_path)
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6120366Z >       assert all(row['rejected'] for row in result['cases']), result
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6121125Z E       AssertionError: {'record': 'frame', 'cases': [{'robot': 'r1', 'time': 'nan', 'rejected': False}, {'robot': 'r1', 'time': 'inf', 'rejec...ected': False}, {'robot': 'r2', 'time': 'inf', 'rejected': False}, {'robot': 'r2', 'time': '-inf', 'rejected': False}]}
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6121871Z E       assert False
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6122336Z E        +  where False = all(<generator object test_nonfinite_times_in_each_sample_record_fail_closed.<locals>.<genexpr> at 0x7fb25acb46c0>)
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6122760Z
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6122862Z tests/test_review_351b.py:122: AssertionError
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6123161Z =========================== short test summary info ============================
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6124353Z FAILED tests/test_review_351b.py::test_nonfinite_times_in_each_sample_record_fail_closed[frame] - AssertionError: {'record': 'frame', 'cases': [{'robot': 'r1', 'time': 'nan', 'rejected': False}, {'robot': 'r1', 'time': 'inf', 'rejec...ected': False}, {'robot': 'r2', 'time': 'inf', 'rejected': False}, {'robot': 'r2', 'time': '-inf', 'rejected': False}]}
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6125307Z assert False
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6125721Z  +  where False = all(<generator object test_nonfinite_times_in_each_sample_record_fail_closed.<locals>.<genexpr> at 0x7fb25acb46c0>)
+offline-regression-shard (0/8)	UNKNOWN STEP	2026-10-03T05:25:29.6126306Z 1 failed, 1340 passed, 18 skipped, 13 xfailed, 7 subtests passed in 633.30s (0:10:33)

@@ -1,0 +1,47 @@
+..F...                                                                   [100%]
+=================================== FAILURES ===================================
+________ test_nonfinite_times_in_each_sample_record_fail_closed[frame] _________
+
+tmp_path = PosixPath('/private/var/folders/s9/blmccn613zx6k7fdfcczknrm0000gn/T/pytest-of-changmin/pytest-1836/test_nonfinite_times_in_each_s2')
+record = 'frame'
+
+    @pytest.mark.parametrize('record', ['pose', 'command', 'frame', 'label', 'beam', 'contact'])
+    def test_nonfinite_times_in_each_sample_record_fail_closed(tmp_path, record):
+        result = probe("""
+    record = """ + repr(record) + """
+    profile = 'loaded' if record == 'command' else 'unloaded'
+    collection = fixture.synthetic_collection(tmp/'actual', profile)
+    rejections = []
+    for rid in ('r1','r2'):
+        for value in (float('nan'),float('inf'),-float('inf')):
+            class BadTime(raw.Inputs):
+                def rows(self,path):
+                    rows = super().rows(path)
+                    paths = {'pose':f'eval_only/{rid}/pose.jsonl',
+                             'command':f'robots/{rid}/commands.jsonl',
+                             'frame':f'robots/{rid}/frames.jsonl',
+                             'label':f'eval_only/{rid}/camera_labels.jsonl',
+                             'beam':'eval_only/trajectory.jsonl', 'contact':'eval_only/contacts.jsonl'}
+                    if path == collection/raw.MAP_ID/paths[record]:
+                        rows[1 if record == 'command' else 0]['t'] = value
+                    return rows
+            try:
+                inputs = BadTime()
+                data = raw.load_collection(collection,profile,inputs)
+                if record in ('beam','contact'):
+                    raw.loaded_mask(data,inputs,json.loads(a.CRITERION.read_text())['loaded_selection'])
+            except ValueError as exc:
+                rejections.append({'robot':rid,'time':str(value),'rejected':True,'reason':str(exc)})
+            else:
+                rejections.append({'robot':rid,'time':str(value),'rejected':False})
+    print(json.dumps({'record':record,'cases':rejections}))
+    """, tmp_path)
+>       assert all(row['rejected'] for row in result['cases']), result
+E       AssertionError: {'record': 'frame', 'cases': [{'robot': 'r1', 'time': 'nan', 'rejected': False}, {'robot': 'r1', 'time': 'inf', 'rejec...ected': False}, {'robot': 'r2', 'time': 'inf', 'rejected': False}, {'robot': 'r2', 'time': '-inf', 'rejected': False}]}
+E       assert False
+E        +  where False = all(<generator object test_nonfinite_times_in_each_sample_record_fail_closed.<locals>.<genexpr> at 0x1080bf2a0>)
+
+tests/test_review_351b.py:122: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_review_351b.py::test_nonfinite_times_in_each_sample_record_fail_closed[frame]
+1 failed, 5 passed in 172.43s (0:02:52)

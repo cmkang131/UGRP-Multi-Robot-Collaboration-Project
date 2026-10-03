@@ -1,0 +1,159 @@
+{
+  "pr_head": "576bf4dad2d1fa1d6d8613564929d0f4b7b455bf",
+  "execution_source": "4447e389f5a00aa436c35eb50002cf64da29c7d1",
+  "fixture_full_rows_and_source_hashes_match": true,
+  "collections": {
+    "unloaded": {
+      "collection_audit": "PASS",
+      "root": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded",
+      "addresses": {
+        "r1": [
+          0,
+          0
+        ],
+        "r2": [
+          17,
+          16
+        ]
+      },
+      "robots": {
+        "r1": {
+          "label_position_m": 0.0,
+          "label_rotation_element": 2.3314683517128287e-15,
+          "pose_position_m": 0.0,
+          "pose_rotation_element": 2.4424906541753444e-15,
+          "fit_pose_exactly_original": true,
+          "pose_count": 7401,
+          "label_count": 1851
+        },
+        "r2": {
+          "label_position_m": 0.0,
+          "label_rotation_element": 3.3306690738754696e-16,
+          "pose_position_m": 0.0,
+          "pose_rotation_element": 1.4432899320127035e-15,
+          "fit_pose_exactly_original": true,
+          "pose_count": 7401,
+          "label_count": 1851
+        }
+      },
+      "raw_reverified": true
+    },
+    "fine": {
+      "collection_audit": "PASS",
+      "root": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001-r6/calibration-fine",
+      "addresses": {
+        "r1": [
+          0,
+          0
+        ],
+        "r2": [
+          17,
+          16
+        ]
+      },
+      "robots": {
+        "r1": {
+          "label_position_m": 0.0,
+          "label_rotation_element": 2.3314683517128287e-15,
+          "pose_position_m": 0.0,
+          "pose_rotation_element": 2.4424906541753444e-15,
+          "fit_pose_exactly_original": true,
+          "pose_count": 7401,
+          "label_count": 1851
+        },
+        "r2": {
+          "label_position_m": 0.0,
+          "label_rotation_element": 3.3306690738754696e-16,
+          "pose_position_m": 0.0,
+          "pose_rotation_element": 1.4432899320127035e-15,
+          "fit_pose_exactly_original": true,
+          "pose_count": 7401,
+          "label_count": 1851
+        }
+      },
+      "raw_reverified": true
+    },
+    "loaded": {
+      "collection_audit": "PASS",
+      "root": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001-r8/calibration-loaded",
+      "addresses": {
+        "r1": [
+          0,
+          0
+        ],
+        "r2": [
+          17,
+          16
+        ]
+      },
+      "robots": {
+        "r1": {
+          "label_position_m": 0.0,
+          "label_rotation_element": 2.3314683517128287e-15,
+          "pose_position_m": 0.0,
+          "pose_rotation_element": 2.4424906541753444e-15,
+          "fit_pose_exactly_original": true,
+          "pose_count": 7401,
+          "label_count": 1851
+        },
+        "r2": {
+          "label_position_m": 0.0,
+          "label_rotation_element": 2.3314683517128287e-15,
+          "pose_position_m": 1.1102230246251565e-16,
+          "pose_rotation_element": 2.3314683517128287e-15,
+          "fit_pose_exactly_original": true,
+          "pose_count": 7401,
+          "label_count": 1851
+        }
+      },
+      "raw_reverified": true
+    }
+  },
+  "counterexamples": [
+    {
+      "target": "pose",
+      "components": "position",
+      "old": {
+        "accepted": true
+      },
+      "new": {
+        "accepted": false,
+        "reason": "recorded chassis pose differs from trajectory pre-substep state"
+      }
+    },
+    {
+      "target": "pose",
+      "components": "rotation",
+      "old": {
+        "accepted": true
+      },
+      "new": {
+        "accepted": false,
+        "reason": "recorded chassis pose differs from trajectory pre-substep state"
+      }
+    },
+    {
+      "target": "pose",
+      "components": "both",
+      "old": {
+        "accepted": true
+      },
+      "new": {
+        "accepted": false,
+        "reason": "recorded chassis pose differs from trajectory pre-substep state"
+      }
+    },
+    {
+      "target": "label",
+      "components": "rotation",
+      "old": {
+        "accepted": true
+      },
+      "new": {
+        "accepted": false,
+        "reason": "camera label chassis pose differs from simultaneous trajectory qpos"
+      }
+    }
+  ],
+  "all_raw_hashes_reverified": true
+}

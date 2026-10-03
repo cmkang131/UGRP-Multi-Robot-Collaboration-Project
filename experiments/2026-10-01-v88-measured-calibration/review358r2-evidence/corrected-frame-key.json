@@ -1,0 +1,48 @@
+{
+  "scope": "diagnostic in-memory source substitution only; repository test remains unchanged",
+  "original_file_sha256": "0c467b218f9d524d3c37bf714f8f88bd8826b952db55e9de364f4152d008393a",
+  "old": "rows[1 if record == 'command' else 0]['t'] = value",
+  "new": "rows[1 if record == 'command' else 0]['sim_time' if record == 'frame' else 't'] = value",
+  "result": {
+    "record": "frame",
+    "cases": [
+      {
+        "robot": "r1",
+        "time": "nan",
+        "rejected": true,
+        "reason": "r1 frame clock must be a finite numeric time"
+      },
+      {
+        "robot": "r1",
+        "time": "inf",
+        "rejected": true,
+        "reason": "r1 frame clock must be a finite numeric time"
+      },
+      {
+        "robot": "r1",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "r1 frame clock must be a finite numeric time"
+      },
+      {
+        "robot": "r2",
+        "time": "nan",
+        "rejected": true,
+        "reason": "r2 frame clock must be a finite numeric time"
+      },
+      {
+        "robot": "r2",
+        "time": "inf",
+        "rejected": true,
+        "reason": "r2 frame clock must be a finite numeric time"
+      },
+      {
+        "robot": "r2",
+        "time": "-inf",
+        "rejected": true,
+        "reason": "r2 frame clock must be a finite numeric time"
+      }
+    ]
+  },
+  "diagnostic_setup_note": "Initial /tmp alias path did not match loader-resolved /private/tmp path; discarded injection run and reran with resolved fixture root."
+}
