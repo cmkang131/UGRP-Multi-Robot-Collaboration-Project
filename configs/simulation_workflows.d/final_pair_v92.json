@@ -4,14 +4,18 @@
     {
       "id": "zone-final-pair-loaded-v92",
       "version": "3.4.0",
-      "purpose": "V92 teacher loaded schedule: 720 SIM s, controller carry pose plus separate edge-view candidate; unqualified training raw",
+      "purpose": "V92 teacher loaded HIGH carry schedule: 720 SIM s; B-double-prime 8s windows; unqualified training raw",
       "entry": "scripts/run_final_pair_loaded.py",
       "runner": "scripts.run_final_pair_loaded",
       "docs": "experiments/2026-10-03-v92-loaded-schedule/README.md",
       "requires": "Committed source; owned non-exclusive SIM slot or exclusive host lock; unchanged v91 fast guard; floor_light_v1/cargo_noslip_v1; weld OFF",
       "output_flag": "--output",
       "output_kind": "directory",
-      "required_inputs": ["--check", "--map-id", "--expected-source-sha"],
+      "required_inputs": [
+        "--check",
+        "--map-id",
+        "--expected-source-sha"
+      ],
       "side_effect": "local_simulation",
       "adapter": "managed_legacy_cli"
     }

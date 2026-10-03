@@ -40,7 +40,7 @@ def test_schedule_archive_and_preserved_sources():
         assert c.base.sha(c.ROOT/path) == digest, path
 
 
-def test_controller_pose_not_replaced_by_visible_candidate_or_floor_loaded_claim():
+def test_high_carry_only_measurement_with_floor_and_old_hover_preparation_only():
     from harness.zone_final_pair_vision import grasp_postures
     from harness.visual_arm_v3 import tool_pose
     hover, path = grasp_postures()
@@ -49,10 +49,42 @@ def test_controller_pose_not_replaced_by_visible_candidate_or_floor_loaded_claim
     assert abs(tool_pose(s.POSES['edge_view_150']).z_m-.15) < .0002
     assert s.POSES['edge_view_150'] != hover
     plan = s.design()
-    assert set(plan['unsupported_controller_requirements']) == {
-        'floor_grasp_loaded', 'controller_hover_edge', 'edge_view_150', 'transition_extrinsics'}
-    assert all(seg['pose'] == 'controller_hover' for seg in plan['segments'] if seg['mode'] != 'relative_yaw')
-    assert all(seg['pose'] == 'edge_view_150' for seg in plan['segments'] if seg['mode'] == 'relative_yaw')
+    assert plan['loaded_pose_scope']['measurement'] == ['edge_view_150']
+    assert set(plan['loaded_pose_scope']['preparation_only']) == {
+        'floor_grasp', 'controller_hover', 'transition_110', 'transition_130'}
+    assert all(seg['pose'] == 'edge_view_150' for seg in plan['segments'])
+    assert all(w['pose'] == 'edge_view_150' for w in plan['camera_windows'])
+    # Replay the issued servo state, rather than trusting segment pose labels.
+    for rid in ('r1', 'r2'):
+        servo = {}
+        for e in s.schedule():
+            if e['robot_id'] != rid:
+                continue
+            a = e['action']
+            if a['kind'] == 'arm': servo[a['servo_id']] = a['pulse']
+            if a['kind'] == 'look': servo[6] = a['pan_pulse']
+            if a['kind'] == 'mecanum':
+                assert {k: servo[k] for k in (3, 4, 5, 6)} == s.POSES['edge_view_150']
+
+
+def test_double_prime_preserves_parent_gates_and_freezes_only_declared_changes():
+    parent_path = c.ROOT/'experiments/2026-10-01-v88-measured-calibration/criterion_B_prime.json'
+    old = json.loads(parent_path.read_text())
+    new = json.loads((c.ROOT/v92.CRITERION).read_text())
+    metadata = {'schema', 'criterion', 'frozen_at', 'freeze_scope'}
+    for key in old.keys()-metadata:
+        assert new[key] == old[key], key
+    assert new['parent_B_prime_sha256'] == c.base.sha(parent_path)
+    bounds = new['loaded_motion_bounds']
+    assert bounds['c0_lower'] == [0., 0., .006]
+    assert bounds['c0_upper'] == [.015]*3
+    assert bounds['u1_lower'] == [.025]*3 and bounds['u1_upper'] == [.04]*3
+    assert c.base.sha(c.ROOT/bounds['basis_path']) == bounds['basis_sha256']
+    assert c.base.sha(c.ROOT/bounds['unchanged_fitter_path']) == bounds['unchanged_fitter_sha256']
+    camera = new['loaded_camera_selection']
+    assert camera['settled_s'] == camera['measurement_window_s'] == 8.
+    assert new['camera']['settled_s'] == 1.  # fine / old B-prime not revised
+    assert v92.criterion_registration()['sha256'] == c.base.sha(c.ROOT/v92.CRITERION)
 
 
 def test_every_original_288_command_cell_has_full_horizons_and_orbit_not_opposed():
@@ -124,7 +156,11 @@ def test_fixed_schedule_valid_leases_grip_pan_and_prospective_settled_windows():
         for window in s.design()['camera_windows']:
             before = [e for e in own if e['t'] < window['start_s'] and e['action']['kind'] in ('arm', 'look')]
             assert window['start_s']-max(e['t'] for e in before) >= 8.
-            assert (window['end_s']-window['start_s'])/.2 >= 5
+            assert window['end_s']-window['start_s'] == 8.
+            prior_drive = [e for e in own if e['t'] < window['start_s'] and e['action']['kind'] == 'mecanum'
+                           and any(e['action'][axis] for axis in s.AXES)]
+            if prior_drive:
+                assert window['start_s']-max(e['t']+e['action']['duration_s'] for e in prior_drive) >= 8.-1e-8
             assert not any(window['start_s'] <= e['t'] < window['end_s'] for e in own)
         drives = [e for e in own if e['action']['kind'] == 'mecanum']
         assert all(e['action']['duration_s'] == .05 for e in drives)
@@ -142,7 +178,7 @@ def test_registration_workflow_source_closure_and_new_cap():
     assert b['clearance_preflight']['admitted']
     assert b['timing']['eval_pose_period_s'] == .05
     assert b['timing']['rgb_capture_period_s'] == .2
-    for path in (v92.SCHEDULE, v92.REGISTRY, v92.WORKFLOW, 'sim/final_pair_fast_guard.py',
+    for path in (v92.SCHEDULE, v92.REGISTRY, v92.WORKFLOW, v92.CRITERION, 'sim/final_pair_fast_guard.py',
                  'sim/masterpi_camera_profile.py', 'scripts/agent_sim_slots.py', 'sim/masterpi_dynamics_v2.py'):
         assert b['source_sha256'][path] == c.base.sha(c.ROOT/path)
     row, _ = wm._row(c.ROOT, v92.WORKFLOW_ID)
@@ -154,7 +190,7 @@ def test_registration_workflow_source_closure_and_new_cap():
 
 
 @pytest.mark.parametrize('mutation', ['id', 'unloaded', 'map', 'weld', 'contact', 'render', 'seed',
-                                     'role', 'teacher', 'training', 'timing', 'interlock', 'measurement', 'cap', 'schedule'])
+                                     'role', 'teacher', 'training', 'timing', 'interlock', 'measurement', 'cap', 'schedule', 'criterion'])
 def test_mutation_refused_before_backend_and_output(tmp_path, mutation):
     b = bundle()
     edits = {'id': ('execution_bundle_id', 'zone-final-pair-v88'), 'unloaded': ('check', 'calibration-unloaded'),
@@ -170,6 +206,7 @@ def test_mutation_refused_before_backend_and_output(tmp_path, mutation):
     if mutation == 'measurement': b['measurement']['clearance']['minimum_m'] = .1
     if mutation == 'cap': b['caps']['per_case_s'] = 370.
     if mutation == 'schedule': b['schedule']['sha256'] = '0'*64
+    if mutation == 'criterion': b['criterion']['sha256'] = '0'*64
     with pytest.raises(ValueError):
         run.run_case(b, tmp_path/'case', seed=911, backend_factory=lambda *a, **kw: pytest.fail('backend reached'))
     from sim.final_pair_loaded import PhysicsBackend

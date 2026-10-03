@@ -11,6 +11,8 @@ SCHEDULE = 'configs/zone_final_pair_v92_schedule.json.gz'
 WORKFLOW = 'configs/simulation_workflows.d/final_pair_v92.json'
 WORKFLOW_ID = 'zone-final-pair-loaded-v92'
 WORKFLOW_VERSION = '3.4.0'
+CRITERION = 'experiments/2026-10-03-v92-loaded-schedule/criterion_B_double_prime.json'
+CRITERION_SHA256 = '5f7d8905c49625a7125647eaf713575e4e659ca658274b8734fd2a4952da4d4a'
 CHECK, MAP_ID, SEED = acquisition.CHECK, acquisition.MAP_ID, 911
 ROLE = {'collection_role': 'CALIBRATION_TRAINING', 'training_eligible': True, 'teacher_only': True}
 
@@ -29,6 +31,12 @@ def schedule_registration():
             'archive_sha256': hashlib.sha256(archive).hexdigest(), 'archive_bytes': len(archive)}
 
 
+def criterion_registration():
+    if previous.base.sha(previous.ROOT/CRITERION) != CRITERION_SHA256:
+        raise ValueError('v92 frozen B-double-prime bytes changed')
+    return {'path': CRITERION, 'sha256': CRITERION_SHA256}
+
+
 def registry():
     value = previous.base.read(previous.ROOT/REGISTRY)
     expected = {'schema': 'ugrp.final_pair_loaded.v92', 'execution_bundle_id': BUNDLE_ID,
@@ -36,7 +44,8 @@ def registry():
         'check': CHECK, 'maps': [MAP_ID], 'seed': SEED, **ROLE,
         'robot_model': 'masterpi_v3', 'render_profile': 'floor_light_v1',
         'contact_profile': 'cargo_noslip_v1', 'weld': 'off', 'sensors': {'ultrasonic_front': 'off'},
-        'sim_cap_s': acquisition.CAP_S, 'reset_cap_s': 5., 'schedule': schedule_registration()}
+        'sim_cap_s': acquisition.CAP_S, 'reset_cap_s': 5., 'schedule': schedule_registration(),
+        'criterion': criterion_registration()}
     if value != expected:
         raise ValueError('v92 registry differs from registered collection')
     return value
@@ -52,7 +61,7 @@ def timing():
     value['stabilization'] = {
         'scene_setup': 'standard constructor 0.30s + Scene.setup within reset cap',
         'loaded_measurement_warmup_s': 8.,
-        'selection': 'prospective camera_windows; all preparation raw retained; frozen B-prime unchanged'}
+        'selection': 'B-double-prime loaded camera_windows: 8s warmup and 8s measurement; B-prime unchanged'}
     return value
 
 
@@ -62,7 +71,7 @@ def cases(check, map_id):
 
 
 def record(bundle):
-    return {**ROLE, 'schedule': schedule_registration()} if bundle['execution_bundle_id'] == BUNDLE_ID else {}
+    return {**ROLE, 'schedule': schedule_registration(), 'criterion': criterion_registration()} if bundle['execution_bundle_id'] == BUNDLE_ID else {}
 
 
 def require_seed(bundle, seed):
@@ -76,7 +85,7 @@ def validate_bundle(bundle):
         raise ValueError('v92 requires loaded training collection on the two-door map')
     static = previous.resolve(MAP_ID)[0]
     for key in ('execution_bundle_id', 'check', 'seed', *ROLE, 'robot_model', 'render_profile',
-                'contact_profile', 'weld', 'sensors', 'workflow_id', 'workflow_version', 'schedule'):
+                'contact_profile', 'weld', 'sensors', 'workflow_id', 'workflow_version', 'schedule', 'criterion'):
         if bundle.get(key) != reg[key]:
             raise ValueError(f'v92 collection mismatch: {key}')
     if bundle.get('map_sha256') != previous.base.digest(static) or bundle.get('timing') != timing():
@@ -100,12 +109,12 @@ def bundle(map_id, check):
         controller_inputs=[], measurement=measurement, timing=timing(),
         caps={'reset_per_case_s': 5., 'per_case_s': acquisition.CAP_S, 'default_cases': 1,
               'total_including_reset_s': acquisition.CAP_S+5.},
-        schedule=reg['schedule'], clearance_preflight=path_preflight(check, map_id),
-        revision='v92 schedule only; v91 fast guard/SIM slots; old registrations and criteria unchanged',
+        schedule=reg['schedule'], criterion=reg['criterion'], clearance_preflight=path_preflight(check, map_id),
+        revision='v92 D1-D4 HIGH carry revision before first collection; B-double-prime; v91 fast guard/SIM slots unchanged',
         calibration_selection='none: raw teacher collection, unsupported by frozen v88 assembler')
     entries = ['harness/zone_final_pair_loaded.py', 'scripts/run_final_pair_loaded.py',
                'sim/final_pair_loaded.py']
-    paths = set(value['source_sha256']) | set(source_closure(previous.ROOT, entries)) | {REGISTRY, WORKFLOW, SCHEDULE}
+    paths = set(value['source_sha256']) | set(source_closure(previous.ROOT, entries)) | {REGISTRY, WORKFLOW, SCHEDULE, CRITERION}
     value['source_sha256'] = {p: previous.base.sha(previous.ROOT/p) for p in sorted(paths)}
     validate_bundle(value)
     return value

@@ -40,8 +40,11 @@ def summary(root):
                   'external_support' if touched-wanted else 'missing_bilateral_grip' if not wanted <= touched else 'lifted')
         rows.append({'t': round(tr['t']-trace[0]['t'], 6), 'bottom_m': float(bottom), 'reason': reason})
     motion = 'motion check' in result['method']
+    revised = 'revised check' in result['method']
     intervals = [(8., 16.), (16., 27.), (27., 38.), (38., 46.), (46., 54.), (54., 62.), (62., 70.)] if motion else [
         (8., 16.), (16., 24.), (24., 34.), (34., 42.), (42., 50.), (50., 58.), (58., 66.)]
+    if revised:
+        intervals = [(8., 16.), (16., 20.), (20., 24.), (24., 32.), (32., 40.), (40., 70.)]
     reports = []
     for a, z in intervals:
         selected = [r for r in rows if a <= r['t'] < z]

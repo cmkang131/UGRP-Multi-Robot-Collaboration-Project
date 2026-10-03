@@ -1,0 +1,2365 @@
+{
+  "previous_head": "a9481446d9c7c503bdbc53941d3538cd5ec5ee12",
+  "in_place_reason": "조정자 #219 D1-D5 및 사용자 확인: v92/3.4.0 전체 수집 실행 기록이 아직 없다. 별도 짧은 진단은 v92 전체 수집이 아니다.",
+  "old_schedule": {
+    "path": "configs/zone_final_pair_v92_schedule.json.gz",
+    "encoding": "gzip of UTF-8 JSON, indent=2, trailing LF",
+    "sha256": "a4754dec4f55b7b43fcfc15fa59371b544101c609ed7d079e1343d1bcfe14e3d",
+    "bytes": 5055083,
+    "archive_sha256": "8acf31c0b544e3d4488579167543a502fc8608bd3b8e19dde5b0a11a14b7f507",
+    "archive_bytes": 62445
+  },
+  "schedule": {
+    "path": "configs/zone_final_pair_v92_schedule.json.gz",
+    "encoding": "gzip of UTF-8 JSON, indent=2, trailing LF",
+    "sha256": "b6ebf872ac1f47bb6f13c336ca49c74343ffe592c5cb1bbd0916449a6208bcbe",
+    "bytes": 5051841,
+    "archive_sha256": "47b0e1f3fc52ed94fb737e5b7a90c1f75035c74d198b8bcce3036890fc9d8b62",
+    "archive_bytes": 62247
+  },
+  "criterion": {
+    "path": "experiments/2026-10-03-v92-loaded-schedule/criterion_B_double_prime.json",
+    "sha256": "5f7d8905c49625a7125647eaf713575e4e659ca658274b8734fd2a4952da4d4a"
+  },
+  "commands": 22302,
+  "measurement": {
+    "schema": "ugrp.final_pair_loaded_measurement.v92",
+    "check": "calibration-loaded",
+    "map_id": "zone_wide_two_doors_final_v3",
+    "basis": "PR #359 f2fc0cc3d2315e8b4441028a1713a1ba5af23175",
+    "control_period_s": 0.05,
+    "eval_pose_period_s": 0.05,
+    "camera_period_s": 0.2,
+    "command_lease_s": 0.05,
+    "sim_cap_s": 720.0,
+    "reset_cap_s": 5.0,
+    "total_including_reset_cap_s": 725.0,
+    "clearance": {
+      "minimum_m": 0.3,
+      "abort_buffer_m": 0.05,
+      "robot_radius_bound_m": 0.4,
+      "max_substep_displacement_m": 0.01
+    },
+    "step_duration_s": 10.0,
+    "frozen_magnitudes": [
+      0.006,
+      0.015,
+      0.025,
+      0.04
+    ],
+    "additional_translation_magnitudes": [
+      0.001,
+      0.002,
+      0.004
+    ],
+    "prbs": {
+      "polynomial": "x^5+x^2+1",
+      "bits": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        1,
+        1,
+        -1,
+        1,
+        1,
+        1,
+        -1,
+        1,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1,
+        -1,
+        1,
+        -1,
+        1,
+        1,
+        -1,
+        -1
+      ],
+      "chip_s": 0.5,
+      "magnitude": 0.015
+    },
+    "orbit_companion": {
+      "left_per_turn": -0.4732,
+      "source": "static formation radius only; raw commands, not calibrated SI velocity",
+      "r2_rule": "same turn AND same companion left; translations outside orbit are opposite"
+    },
+    "poses": {
+      "floor_grasp": {
+        "3": 1269,
+        "4": 2052,
+        "5": 2494,
+        "6": 1500
+      },
+      "controller_hover": {
+        "3": 807,
+        "4": 1897,
+        "5": 2187,
+        "6": 1500
+      },
+      "transition_110": {
+        "3": 891,
+        "4": 2036,
+        "5": 2054,
+        "6": 1500
+      },
+      "transition_130": {
+        "3": 981,
+        "4": 2152,
+        "5": 1917,
+        "6": 1500
+      },
+      "edge_view_150": {
+        "3": 896,
+        "4": 2035,
+        "5": 1894,
+        "6": 1500
+      }
+    },
+    "camera_windows": [
+      {
+        "start_s": 32.0,
+        "end_s": 40.0,
+        "pose": "edge_view_150",
+        "pan_pwm": 1500,
+        "purpose": "high_extrinsics",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 498.0,
+        "end_s": 506.0,
+        "pose": "edge_view_150",
+        "pan_pwm": 1500,
+        "purpose": "pan_center_reference",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 514.0,
+        "end_s": 522.0,
+        "pose": "edge_view_150",
+        "pan_pwm": 1480,
+        "purpose": "pan_minus",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 530.0,
+        "end_s": 538.0,
+        "pose": "edge_view_150",
+        "pan_pwm": 1500,
+        "purpose": "pan_center_reference",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 546.0,
+        "end_s": 554.0,
+        "pose": "edge_view_150",
+        "pan_pwm": 1520,
+        "purpose": "pan_plus",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 562.0,
+        "end_s": 570.0,
+        "pose": "edge_view_150",
+        "pan_pwm": 1500,
+        "purpose": "pan_center_reference",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 684.0,
+        "end_s": 692.0,
+        "pose": "edge_view_150",
+        "pan_pwm": 1500,
+        "purpose": "high_return_extrinsics",
+        "requires_offline_lifted_bilateral_grip": true
+      }
+    ],
+    "camera_warmup_s": 8.0,
+    "segments": [
+      {
+        "start_s": 40.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.001,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 50.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 51.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.001,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 61.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 62.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.002,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 72.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 73.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.002,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 83.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 84.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.004,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 94.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 95.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.004,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 105.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 106.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.006,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 116.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 117.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.006,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 127.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 128.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 138.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 139.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 149.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 150.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.025,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 160.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 161.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.025,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 171.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 172.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.04,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 182.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 183.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.04,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 193.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 194.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 194.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 195.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 195.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 196.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 196.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 197.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 197.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 198.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 198.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 199.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 199.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 200.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 200.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 201.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 201.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 202.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 202.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 203.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 203.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 204.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 204.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 205.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 205.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 206.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 206.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 207.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 207.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 208.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 208.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 209.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 209.5,
+        "duration_s": 2.5,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 212.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.001,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 222.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 223.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.001,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 233.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 234.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.002,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 244.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 245.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.002,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 255.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 256.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.004,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 266.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 267.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.004,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 277.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 278.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.006,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 288.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 289.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.006,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 299.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 300.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 310.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 311.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 321.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 322.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.025,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 332.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 333.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.025,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 343.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 344.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.04,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 354.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 355.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.04,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 365.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 366.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 366.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 367.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 367.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 368.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 368.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 369.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 369.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 370.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 370.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 371.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 371.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 372.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 372.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 373.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 373.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 374.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 374.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 375.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 375.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 376.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 376.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 377.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 377.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 378.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 378.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 379.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 379.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 380.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 380.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 381.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 381.5,
+        "duration_s": 2.5,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 384.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.006,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 394.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 395.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.006,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 405.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 406.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 416.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 417.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 427.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 428.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.025,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 438.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 439.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.025,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 449.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 450.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.04,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 460.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 461.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.04,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 471.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 472.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 472.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 473.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 473.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 474.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 474.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 475.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 475.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 476.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 476.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 477.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 477.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 478.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 478.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 479.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 479.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 480.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 480.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 481.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 481.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 482.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 482.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 483.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 483.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 484.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 484.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 485.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 485.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 486.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 486.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 487.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 487.5,
+        "duration_s": 2.5,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 570.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.006,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 580.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 581.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.006,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 591.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 592.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 602.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 603.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 613.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 614.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.025,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 624.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 625.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.025,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 635.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 636.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.04,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 646.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 647.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.04,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 657.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 658.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 658.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 659.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 659.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 660.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 660.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 661.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 661.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 662.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 662.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 663.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 663.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 664.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 664.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 665.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 665.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 666.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 666.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 667.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 667.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 668.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 668.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 669.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 669.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 670.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 670.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 671.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 671.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 672.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 672.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 673.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 673.5,
+        "duration_s": 2.5,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      }
+    ],
+    "loaded_pose_scope": {
+      "measurement": [
+        "edge_view_150"
+      ],
+      "preparation_only": [
+        "floor_grasp",
+        "controller_hover",
+        "transition_110",
+        "transition_130"
+      ],
+      "student_adoption": "D1/D2 require new loader/controller bundle and acceptance; no transfer to old student"
+    },
+    "qualification": "COLLECTION DESIGN ONLY; B-double-prime frozen separately; v92 assembler pending; no promotion"
+  }
+}
