@@ -17,14 +17,12 @@ from harness.zone_final_pair_excitation import design, MAP_ID
 from scripts import validate_consumer_criterion_b as b
 
 
-# The camera label is read from the body pose after the renderer refreshed
-# kinematics, while pose.jsonl is sampled without a refresh at the same SIM
-# time. The real v88 raw differs by up to 4.7e-5 m / 6.9e-4 (matrix element)
-# for that reason (a sub-step lag, not a different sample: the neighbouring
-# 50 ms sample differs by millimetres). Keep a bound that still separates a
-# neighbouring sample but accepts that recorded lag.
-LABEL_POSE_ATOL_M = 1e-4
-LABEL_ROTATION_ATOL = 2e-3
+# Labels use refreshed kinematics at trajectory.qpos, whereas pose.jsonl
+# records pre-integration kinematics. Compare each to its own instant with
+# tight componentwise tolerances (rotation is a matrix element, not radians).
+# Equal stationary states cannot prove timing; retain clock/ID/hash checks.
+LABEL_POSE_ATOL_M = 1e-8
+LABEL_ROTATION_ATOL = 1e-8
 
 
 def file_sha(path):
@@ -118,6 +116,73 @@ def plan_arrays(plan):
     return u*2, spans, ticks
 
 
+def quaternion_matrices(quat):
+    """MuJoCo's scalar-first unit quaternions, using only NumPy."""
+    quat = np.asarray(quat, float)
+    norm = np.linalg.norm(quat, axis=1)
+    if (quat.shape[1:] != (4,) or not np.isfinite(quat).all()
+            or not np.allclose(norm, 1., atol=1e-8, rtol=0)):
+        raise ValueError('invalid recorded chassis quaternion')
+    w, x, y, z = (quat/norm[:, None]).T
+    return np.stack((1-2*(y*y+z*z), 2*(x*y-w*z), 2*(x*z+w*y),
+                     2*(x*y+w*z), 1-2*(x*x+z*z), 2*(y*z-w*x),
+                     2*(x*z-w*y), 2*(y*z+w*x), 1-2*(x*x+y*y)), axis=1).reshape(-1, 3, 3)
+
+
+def trajectory_chassis(folder, inputs):
+    """Audit-only current and pre-substep poses from saved arrays; no engine.
+
+    Resolve free-joint addresses from the recorded scene's joint order, not
+    hardcoded robot offsets. v88's implicitfast last substep integrates the
+    saved qvel: p_prev = p - dt*v, R_prev = R @ Exp(-dt*w_local).
+    Neither reconstructed pose is passed to a fit or substituted for raw.
+    """
+    scene = ET.fromstring(inputs.read(folder/'scene.xml'))
+    option, world = scene.find('option'), scene.find('worldbody')
+    if option is None or world is None or option.get('integrator') != 'implicitfast':
+        raise ValueError('unsupported recorded trajectory integrator/scene')
+    dt = float(option.get('timestep', 'nan'))
+    if not np.isfinite(dt) or dt != .00025:
+        raise ValueError('unsupported recorded trajectory timestep')
+    nq, nv, addresses = 0, 0, {}
+    for node in world.iter():
+        if node.tag not in ('joint', 'freejoint'):
+            continue
+        kind = node.get('type', 'free' if node.tag == 'freejoint' else 'hinge')
+        if kind not in ('free', 'ball', 'hinge', 'slide'):
+            raise ValueError('unsupported recorded joint type')
+        name = node.get('name')
+        if name in {rid+'__base_free' for rid in contract.ROBOTS}:
+            if kind != 'free' or name in addresses:
+                raise ValueError('invalid recorded chassis free joint')
+            addresses[name] = (nq, nv)
+        nq += {'free': 7, 'ball': 4}.get(kind, 1)
+        nv += {'free': 6, 'ball': 3}.get(kind, 1)
+    if set(addresses) != {rid+'__base_free' for rid in contract.ROBOTS}:
+        raise ValueError('missing recorded chassis free joint')
+    trace = inputs.rows(folder/'eval_only/trajectory.jsonl')
+    record_times(trace, 'trajectory clock')
+    qpos = np.asarray([r['qpos'] for r in trace], float)
+    qvel = np.asarray([r['qvel'] for r in trace], float)
+    if (qpos.shape != (7401, nq) or qvel.shape != (7401, nv)
+            or not np.isfinite(qpos).all() or not np.isfinite(qvel).all()):
+        raise ValueError('invalid recorded trajectory qpos/qvel')
+    states = {}
+    for rid in contract.ROBOTS:
+        qa, va = addresses[rid+'__base_free']
+        xyz, quat = qpos[:, qa:qa+3], qpos[:, qa+3:qa+7]
+        rotation = quaternion_matrices(quat)
+        previous_xyz = xyz-dt*qvel[:, va:va+3]
+        angle = -dt*qvel[:, va+3:va+6]
+        half = np.linalg.norm(angle, axis=1)/2
+        step_quat = np.column_stack((np.cos(half), angle*(.5*np.sinc(half/np.pi))[:, None]))
+        previous_rotation = rotation @ quaternion_matrices(step_quat)
+        # Reset's first sample can already have refreshed kinematics.
+        previous_xyz[0], previous_rotation[0] = xyz[0], rotation[0]
+        states[rid] = (xyz, rotation, previous_xyz, previous_rotation)
+    return np.asarray([r['t'] for r in trace]), states
+
+
 def load_collection(root, profile, inputs):
     root = inputs.protect(root)
     folder = inputs.protect(root/MAP_ID)
@@ -184,6 +249,7 @@ def load_collection(root, profile, inputs):
     expected, segments, required = plan_arrays(bundle['measurement'])
     data = {'root': root, 'folder': folder, 'bundle': bundle, 'profile': profile,
             'segments': segments, 'robots': {}}
+    trajectory_t, chassis = trajectory_chassis(folder, inputs)
     for rid in contract.ROBOTS:
         poses = inputs.rows(folder/f'eval_only/{rid}/pose.jsonl')
         record_times(poses, rid+' pose clock')
@@ -197,6 +263,12 @@ def load_collection(root, profile, inputs):
             raise ValueError('missing/invalid pose or pose clock')
         if rid == 'r2' and not np.allclose(t, data['robots']['r1']['t'], atol=1e-8, rtol=0):
             raise ValueError('robot clocks differ')
+        if not np.array_equal(t, trajectory_t):
+            raise ValueError('trajectory/pose clocks differ')
+        current_xyz, current_rot, previous_xyz, previous_rot = chassis[rid]
+        if (not np.allclose(xyz, previous_xyz, atol=LABEL_POSE_ATOL_M, rtol=0)
+                or not np.allclose(rot, previous_rot, atol=LABEL_ROTATION_ATOL, rtol=0)):
+            raise ValueError('recorded chassis pose differs from trajectory pre-substep state')
         commands = inputs.rows(folder/f'robots/{rid}/commands.jsonl')
         # Check every kind, especially initial_servo_command which is excluded
         # from the frozen schedule comparison below.
@@ -231,16 +303,17 @@ def load_collection(root, profile, inputs):
                         last_change = command['t']
                     servo[sid] = pulse
                 command_i += 1
-            if (abs(f['sim_time']-t[4*j]) > 1e-7 or label['t'] != f['sim_time'] or label['frame_id'] != f['frame_id']
+            if (abs(f['sim_time']-t[4*j]) > 1e-7 or label['t'] != trajectory_t[4*j]
+                    or label['t'] != f['sim_time'] or label['frame_id'] != f['frame_id']
                     or label['sha256'] != f['sha256'] or label.get('requested_check') != check
                     or f['commanded_servo'] != servo or label['commanded_servo'] != servo):
                 raise ValueError('frame/label/command clock or identity mismatch')
             label_position = np.asarray(label['base_position_m'], float)
             label_rotation = np.asarray(label['base_rotation'], float)
             if (label_position.shape != (3,) or label_rotation.shape != (3, 3)
-                    or not np.allclose(label_position, xyz[4*j], atol=LABEL_POSE_ATOL_M, rtol=0)
-                    or not np.allclose(label_rotation, rot[4*j], atol=LABEL_ROTATION_ATOL, rtol=0)):
-                raise ValueError('camera label chassis pose differs from simultaneous pose sample')
+                    or not np.allclose(label_position, current_xyz[4*j], atol=LABEL_POSE_ATOL_M, rtol=0)
+                    or not np.allclose(label_rotation, current_rot[4*j], atol=LABEL_ROTATION_ATOL, rtol=0)):
+                raise ValueError('camera label chassis pose differs from simultaneous trajectory qpos')
             image = folder/f['path']
             if str(image.resolve()) not in inputs.files or inputs.files[str(image.resolve())]['sha256'] != f['sha256']:
                 raise ValueError('frame image hash/path mismatch')

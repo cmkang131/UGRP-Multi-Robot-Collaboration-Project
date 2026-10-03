@@ -93,12 +93,16 @@ def synthetic_collection(tmp_path, profile):
     events = schedule(bundle['check'])
     write(folder/'inputs/schedule.json', events)
     # Record the beam box's body-local offset, as real cargo XML does.
-    (folder/'scene.xml').write_text('<mujoco><worldbody><body name="cargo_beam"><geom name="cargo_beam_bar" type="box" size=".3 .02 .02" pos="0 0 .02"/></body></worldbody></mujoco>')
+    (folder/'scene.xml').write_text('<mujoco><option timestep=".00025" integrator="implicitfast"/>'
+        '<worldbody><body name="r1__robot"><freejoint name="r1__base_free"/></body>'
+        '<body name="r2__robot"><freejoint name="r2__base_free"/></body>'
+        '<body name="cargo_beam"><geom name="cargo_beam_bar" type="box" size=".3 .02 .02" pos="0 0 .02"/></body></worldbody></mujoco>')
     jpeg = io.BytesIO()
     Image.fromarray(np.full((480, 640, 3), 200, np.uint8)).save(jpeg, format='JPEG')
     image_bytes = jpeg.getvalue()
     image_hash = hashlib.sha256(image_bytes).hexdigest()
-    for rid in contract.ROBOTS:
+    qpos = np.zeros((7401, 14))
+    for ri, rid in enumerate(contract.ROBOTS):
         u = data['u'].copy() if rid == 'r1' else (-data['u'] if profile == 'loaded' else np.zeros_like(data['u']))
         pose = motion.path_of(motion.increments({**data, 'u': u}, fields))
         if rid == 'r2':
@@ -110,6 +114,9 @@ def synthetic_collection(tmp_path, profile):
                   'wall_clearance_lower_bound_m': .8, 'qualification': 'synthetic eval_only'}
                  for j, (x, y, yaw) in enumerate(pose)]
         rows(folder/f'eval_only/{rid}/pose.jsonl', poses)
+        qpos[:, ri*7:ri*7+3] = [[*p[:2], .033] for p in pose]
+        qpos[:, ri*7+3] = np.cos(pose[:, 2]/2)
+        qpos[:, ri*7+6] = np.sin(pose[:, 2]/2)
         initial = {1: 2000, 3: 740, 4: 2320, 5: 1320, 6: 1500}  # real writer has no servo 2
         commands = [{'t': 1.3, 'kind': 'initial_servo_command', 'pulses': initial}]
         commands += [{'t': round(1.3+e['t'], 8), **e['action']} for e in events if e['robot_id'] == rid]
@@ -153,7 +160,8 @@ def synthetic_collection(tmp_path, profile):
     rows(folder/'eval_only/contacts.jsonl', [{'t': round(1.3+j*.05, 8), 'contacts': contacts,
         'active_weld_ids': []} for j in range(7401)])
     rows(folder/'eval_only/trajectory.jsonl', [{'t': round(1.3+j*.05, 8), 'beam_xyz_m': [3.55, -.85, .1],
-        'beam_rotation': np.eye(3).ravel().tolist(), 'qpos': [], 'qvel': [], 'physical_success': None} for j in range(7401)])
+        'beam_rotation': np.eye(3).ravel().tolist(), 'qpos': qpos[j].tolist(),
+        'qvel': [0.]*12, 'physical_success': None} for j in range(7401)])
     refresh_manifest(folder)
     return root
 
@@ -736,16 +744,83 @@ def test_old_frame_clock_key_t_is_rejected_not_accepted(loaded_raw):
         raw.load_collection(loaded_raw, 'loaded', OldSchema())
 
 
-def test_label_pose_tolerance_accepts_recorded_substep_lag_not_a_neighbouring_sample(loaded_raw):
-    def run(shift):
-        class Shifted(raw.Inputs):
-            def rows(self, path):
-                values = super().rows(path)
-                if path == loaded_raw/MAP_ID/'eval_only/r1/camera_labels.jsonl':
-                    for row in values:
-                        row['base_position_m'][0] += shift
-                return values
-        return raw.load_collection(loaded_raw, 'loaded', Shifted())
-    run(5e-5)  # real raw differs by up to 4.7e-5 m between label and pose.jsonl
-    with pytest.raises(ValueError, match='camera label chassis pose differs'):
-        run(1e-3)  # real adjacent 50 ms samples differ by millimetres
+@pytest.mark.parametrize('target', ['pose', 'label', 'qpos'])
+@pytest.mark.parametrize('components', ['position', 'rotation', 'both'])
+def test_real_50ms_neighbour_is_rejected_with_original_clock_and_index(loaded_raw, target, components):
+    """Actual loaded r1 2088/2089 values, including the review's counterexample.
+
+    Inject only numeric chassis fields into the synthetic full collection;
+    retain its clocks/IDs/hashes. Source clocks/hashes are in the fixture.
+    Rotation-only corruption must fail even with a correct position.
+    """
+    fixture = json.loads((contract.ROOT/'tests/fixtures/review_358_chassis.json').read_text())
+    first, neighbour = fixture['samples']
+    assert neighbour['pose']['t']-first['pose']['t'] == pytest.approx(.05, abs=1e-10)
+    for key, old_tolerance in [('base_position_m', 1e-4), ('base_rotation', 2e-3)]:
+        difference = np.max(np.abs(np.asarray(fixture['label'][key])-neighbour['pose'][key]))
+        assert 1e-8 < difference < old_tolerance
+    keys = (['base_position_m'] if components == 'position' else
+            ['base_rotation'] if components == 'rotation' else ['base_position_m', 'base_rotation'])
+
+    class Recorded(raw.Inputs):
+        corrupt = False
+
+        def rows(self, path):
+            values = super().rows(path)
+            if path == loaded_raw/MAP_ID/'eval_only/trajectory.jsonl':
+                for sample in fixture['samples']:
+                    i = sample['pose']['sample_index']
+                    values[i]['qpos'][:7] = sample['qpos'][:7]
+                    values[i]['qvel'][:6] = sample['qvel'][:6]
+                if self.corrupt and target == 'qpos':
+                    section = slice(0, 3) if components == 'position' else slice(3, 7) if components == 'rotation' else slice(0, 7)
+                    values[2088]['qpos'][section] = values[2089]['qpos'][section]
+            if path == loaded_raw/MAP_ID/'eval_only/r1/pose.jsonl':
+                for sample in fixture['samples']:
+                    i = sample['pose']['sample_index']
+                    for key in ('base_position_m', 'base_rotation'):
+                        values[i][key] = sample['pose'][key]
+                if self.corrupt and target == 'pose':
+                    for key in keys:
+                        values[2088][key] = values[2089][key]
+            if path == loaded_raw/MAP_ID/'eval_only/r1/camera_labels.jsonl':
+                for key in ('base_position_m', 'base_rotation'):
+                    values[522][key] = fixture['label'][key]
+                if self.corrupt and target == 'label':
+                    for key in keys:
+                        values[522][key] = neighbour['pose'][key]
+            return values
+
+    inputs = Recorded()
+    data = raw.load_collection(loaded_raw, 'loaded', inputs)
+    # The audit never replaces the fit's recorded pose with refreshed qpos.
+    assert np.array_equal(data['robots']['r1']['pose'][2088, :2], first['pose']['base_position_m'][:2])
+    inputs.corrupt = True
+    with pytest.raises(ValueError, match=('camera label chassis pose differs' if target == 'label'
+                                          else 'recorded chassis pose differs')):
+        raw.load_collection(loaded_raw, 'loaded', inputs)
+
+
+@pytest.mark.parametrize('fault', ['qpos_missing', 'qvel_missing', 'qpos_shape', 'qvel_shape',
+                                  'qpos_nan', 'qvel_inf', 'quaternion_zero', 'quaternion_scaled', 'clock'])
+def test_trajectory_chassis_fails_closed(loaded_raw, fault):
+    class Corrupt(raw.Inputs):
+        def rows(self, path):
+            values = super().rows(path)
+            if path == loaded_raw/MAP_ID/'eval_only/trajectory.jsonl':
+                row = values[-1]
+                if fault.endswith('_missing'):
+                    row.pop(fault.split('_')[0])
+                elif fault.endswith('_shape'):
+                    row[fault.split('_')[0]].pop()
+                elif fault == 'qpos_nan':
+                    row['qpos'][0] = float('nan')
+                elif fault == 'qvel_inf':
+                    row['qvel'][0] = float('inf')
+                elif fault.startswith('quaternion'):
+                    row['qpos'][3:7] = [0., 0., 0., 0.] if fault.endswith('zero') else [2., 0., 0., 0.]
+                else:
+                    row['t'] += 1e-9  # the same instant is exact, not a nearby timestamp
+            return values
+    with pytest.raises((ValueError, KeyError)):
+        raw.load_collection(loaded_raw, 'loaded', Corrupt())
