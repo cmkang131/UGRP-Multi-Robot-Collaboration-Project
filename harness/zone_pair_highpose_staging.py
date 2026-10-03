@@ -212,6 +212,8 @@ class StagedRuntime(rt.Runtime):
     def __init__(self, static, calibration_path, calibration_sha, *, seed, stage, staging, provider_factory=None):
         from harness.vision_pose_source_highpose import build_provider
         from harness.zone_pair_highpose_contract import CASE_CAP_S
+        # Same registered own-image frame gate as rt.Runtime (this class bypasses rt.Runtime.__init__).
+        self.own_image_gates = rt.install_own_image_gates()
         team = functools.partial(StagedTeam, stage=stage, staging=staging)
         initialize = rt.bind(rt.PreviousRuntime.__init__, Team=team)
         order = iter(ROLES)

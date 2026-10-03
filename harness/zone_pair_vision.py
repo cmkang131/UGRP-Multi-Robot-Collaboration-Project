@@ -18,6 +18,22 @@ PROFILE = 'zone_pair_frame_gate_v1_dev'
 OB_EDGE_PX = 10
 OB_MARGIN_LSB = 2
 LEGACY_DARK_MAX = 7
+# 1-99 percentile spread and std of the valid view's V channel. The v1 dev values (15, 3) rejected valid flat
+# floor views under floor_light_v1 (std 0.43, spread 2); use_gates() installs the recalibrated values from
+# harness/own_image_gates.py. Earlier bundles never call it and keep (15, 3).
+_CONTRAST = (15., 3.)
+
+
+def use_gates(values=None):
+    """Set the contrast gate for this process from own_image_gates ``values``; None restores the v1 dev values."""
+    global _CONTRAST
+    _CONTRAST = (15., 3.) if values is None else (
+        float(values['frame_contrast_spread_min']), float(values['frame_value_std_min']))
+
+
+def _contrast_ok(value):
+    low, high = np.percentile(value, [1, 99])
+    return bool(high - low >= _CONTRAST[0] and value.std() >= _CONTRAST[1])
 
 
 def valid_frame(obs, rid, now):
@@ -35,8 +51,7 @@ def valid_frame(obs, rid, now):
         # Ignore the calibrated fisheye rim; the dark grip band is valid when
         # the remaining view retains contrast (including the dark-floor v3 fixtures).
         value = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)[..., 2][_valid()]
-        low, high = np.percentile(value, [1, 99])
-        return bool((value < 8).mean() < .25 and high - low >= 15 and value.std() >= 3)
+        return bool((value < 8).mean() < .25 and _contrast_ok(value))
     except (ValueError, TypeError, KeyError, AttributeError, RuntimeError, cv2.error):
         return False
 
@@ -63,8 +78,8 @@ def dark_level(v_channel):
 def valid_frame_ob(obs, rid, now):
     """``valid_frame`` with the dark fraction measured against the optical-black reference.
 
-    Every other rule (freshness, JPEG, shape, 1-99 percentile contrast >= 15, std >= 3, dark fraction < 25 %)
-    is the same. A wholly black or covered view has its interior at the optical-black level and still fails;
+    Every other rule (freshness, JPEG, shape, 1-99 percentile contrast and std at the _CONTRAST gate, dark
+    fraction < 25 %) is the same. A wholly black or covered view has its interior at the optical-black level and still fails;
     a floor in shadow (V 5-9, well above the reference) is a low-light view, not a blocked one.
     """
     try:
@@ -80,8 +95,7 @@ def valid_frame_ob(obs, rid, now):
             return False
         v_channel = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)[..., 2]
         value = v_channel[_valid()]
-        low, high = np.percentile(value, [1, 99])
-        return bool((value <= dark_level(v_channel)).mean() < .25 and high - low >= 15 and value.std() >= 3)
+        return bool((value <= dark_level(v_channel)).mean() < .25 and _contrast_ok(value))
     except (ValueError, TypeError, KeyError, AttributeError, RuntimeError, cv2.error):
         return False
 

@@ -188,6 +188,55 @@ def test_runtime_job_limit_matches_case_cap_under_dev_pilot(tmp_path, monkeypatc
         runtime.close()
 
 
+@pytest.fixture
+def frame_gate_reset():
+    from harness import zone_pair_vision
+    zone_pair_vision.use_gates(None)
+    yield zone_pair_vision
+    zone_pair_vision.use_gates(None)
+
+
+def test_runtime_installs_and_records_the_registered_own_image_gates(tmp_path, monkeypatch, frame_gate_reset):
+    from harness.zone_pair_highpose_runtime import Runtime
+    path, _ = dev_file(tmp_path)
+    sha = c.base.sha(path)
+    admit(monkeypatch, sha)
+    gates = c.own_image_gates()
+    assert frame_gate_reset._CONTRAST == (15., 3.)
+    runtime = Runtime(c.resolve(MAPS[0])[0], path, sha, seed=911)
+    try:
+        assert frame_gate_reset._CONTRAST == (gates['values']['frame_contrast_spread_min'],
+                                              gates['values']['frame_value_std_min']) == (1., .22)
+        rec = runtime.record()['own_image_gates']
+        assert rec['sha256'] == gates['sha256'] == c.registry()['own_image_gates']['sha256']
+        assert rec['values'] == gates['values']
+        for provider in runtime.providers.values():
+            assert provider.provider.runtime_contract['own_image_gates']['sha256'] == gates['sha256']
+            assert provider.provider.worker.gates == gates['values']
+    finally:
+        runtime.close()
+
+
+def test_staged_runtime_installs_the_same_own_image_gates(tmp_path, monkeypatch, frame_gate_reset):
+    from harness import zone_pair_highpose_staging as st
+    from harness.zone_final_pair_skill import task
+    path, _ = dev_file(tmp_path)
+    sha = c.base.sha(path)
+    admit(monkeypatch, sha)
+    static = c.resolve(MAPS[0])[0]
+    stations = st.stations(static, task(static)['beam_pose'])
+    staging = {'stage': 'raise_high_staged', 'stations_xyyaw': stations,
+               'priors': {rid: st.stated_prior(station) for rid, station in stations.items()}}
+    runtime = st.StagedRuntime(static, path, sha, seed=911, stage='raise_high_staged', staging=staging)
+    try:
+        gates = c.own_image_gates()
+        assert frame_gate_reset._CONTRAST == (1., .22)
+        assert runtime.record()['own_image_gates']['sha256'] == gates['sha256']
+    finally:
+        runtime.close()
+    assert frame_gate_reset._CONTRAST == (15., 3.)      # restored when the runtime closes
+
+
 @pytest.mark.skipif(not REAL.exists(), reason='local DEV_PILOT artifact (PR #369) not present')
 def test_real_dev_pilot_file_validates_on_every_map():
     assert c.base.sha(REAL) == REAL_SHA

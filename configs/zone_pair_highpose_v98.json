@@ -14,6 +14,13 @@
   "p03_map": "zone_wide_door_geometry_v3",
   "provider_id": "opencv_owncam_final_pair_highpose_v96",
   "calibration_contract_sha256": "4ad461c3b980d885b9743f32cb763fb14f2b1d46a695c3acacae6b4a8e3c8e78",
+  "own_image_gates": {
+    "path": "configs/calibration/own_image_gates_floor_light_v1.json",
+    "sha256": "e71bbe4d80ba371075c0d836d69772a498c9d8b7e360421e55702958e4eb130e",
+    "status": "DEV_CALIBRATED",
+    "procedure": "docs/own_image_gate_calibration.md",
+    "decision": "user 2026-10-03: recalibrate the own-image gates for floor_light_v1 by a documented formal procedure"
+  },
   "case_cap": {
     "sim_cap_s": 300.0,
     "cases": "p03 3 checkpoints and carry, per case",
@@ -32,9 +39,13 @@
       "transit relation()/view stability/frame freshness",
       "HIGH edge line and anchor",
       "carry/checkpoint hold IoU (legacy LOAD_CHANGED_IN_CARRY, HIGH_CHECKPOINT_GRIP_CHANGED)",
-      "floor-return IoU (legacy FLOOR_RETURN_GRIP_CHANGED)"
+      "floor-return IoU (legacy FLOOR_RETURN_GRIP_CHANGED)",
+      "pre-close open-grip view grip_view_m2 (legacy close-readiness term, v98)",
+      "post-close grip view grip_view_m2 (legacy GRIP_NOT_SEEN, v98)"
     ],
-    "unchanged_grasp_checks": "GRIP_NOT_CONFIRMED (issued close + fresh frame) and GRIP_NOT_SEEN (own grip view after close, v88/v92)",
+    "grasp_time_view": "log_only_v98",
+    "grasp_time_view_reason": "at the floor grasp pose 0 of 18 beam points are inside the masterpi_v3 camera field of view (own-image gate diagnosis, 2026-10-04), so the grip view cannot see the beam there; a geometry limit, not a threshold. Coordinator decision 2026-10-04 under the user's log-only grip decision for the first E2E: grasp readiness = own command history (issued close) + fixed-enum partner status; the view values stay in the evaluation output.",
+    "unchanged_grasp_checks": "GRIP_NOT_CONFIRMED (issued close in this barrier, own servo commanded closed, fresh valid own frame after the close)",
     "deferred": "own-grip-loss detection + partner signal (NL: LLM message; structured: fixed status) + audit timing, after the first E2E",
     "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md"
   },
@@ -136,6 +147,6 @@
     "scope": "DEV_PILOT FUNCTIONAL_DEV diagnostics only; never a case result, never promotable",
     "staging": "sim harness places robots at the catalogue grasp stations of the case beam pose and runs a fixed teacher arm pre-roll (v92 loaded schedule poses) BEFORE the controller exists; recorded in eval_only/staging.json",
     "controller_inputs": "own RGB, static map, own issued commands (staged pre-roll commands become its initial own command history); localizer starts from the CASE START prior definition (zone_final_pair_runtime.Runtime: region mean, std 0.15/max(0.15,row span)/0.174533) applied to the staged station, is_fix false; the opening look_around job is skipped and recorded. No controller/admission gate is relaxed.",
-    "status": "HELD: staged physics probes wait for the own-image gate diagnosis (coordinator 2026-10-03)"
+    "status": "RUNNABLE_DEV: own-image gates recalibrated for floor_light_v1 (own_image_gates) and grasp-time grip view log-only (grip_monitor.grasp_time_view), coordinator 2026-10-04"
   }
 }

@@ -7,6 +7,7 @@ from __future__ import annotations
 import copy
 from harness import zone_final_pair_calibration_v92_contract as d5
 
+from harness import own_image_gates as own_image_gates_module
 from harness import zone_final_pair_contract as previous
 from harness import zone_pair_highpose as pose
 from harness import zone_pair_highpose_grip as grip
@@ -19,6 +20,7 @@ RETIRED_REGISTRIES = ('configs/zone_pair_highpose_v96.json',)   # byte-identical
 WORKFLOW = 'configs/simulation_workflows.d/pair_highpose_v98.json'
 CALIBRATION_CONTRACT = d5.CALIBRATION_CONTRACT
 D5_ADMISSION = 'configs/calibration/zone_pair_highpose_d5_admission.json'
+OWN_IMAGE_GATES = own_image_gates_module.PATH   # floor_light_v1 own-image gates, sha256 pinned in the registry
 REGISTRY_BLOCK = 'HIGHPOSE_BUNDLE_RUNNABLE_FALSE'
 PROVIDER_ID = 'opencv_owncam_final_pair_highpose_v96'
 PRECONDITION = 'V92_MEASURED_SIM_HIGHPOSE_CALIBRATION_REQUIRED'
@@ -53,7 +55,9 @@ def registry():
             or reg['case_cap'].get('decision') != CAP_DECISION
             or reg['case_cap'].get('decided_before_p03_data') is not True
             or reg.get('grip_monitor', {}).get('scope') != grip.MONITOR_SCOPE
-            or reg['grip_monitor'].get('in_run_grip_loss_detection') is not False):
+            or reg['grip_monitor'].get('in_run_grip_loss_detection') is not False
+            or reg['grip_monitor'].get('grasp_time_view') != grip.GRASP_TIME_VIEW
+            or reg.get('own_image_gates', {}).get('path') != OWN_IMAGE_GATES):
         raise ValueError('v96 registry mismatch')
     dev = reg.get('dev_pilot', {})
     if (dev.get('calibration_status') != DEV_PILOT or dev.get('rule') != DEV_PILOT_RULE
@@ -62,6 +66,11 @@ def registry():
             or not isinstance(dev.get('admitted_calibration_sha256'), list)):
         raise ValueError('v96 DEV_PILOT registry mismatch')
     return reg
+
+
+def own_image_gates():
+    """The registered own-image gate values; the registry pins the file's sha256."""
+    return own_image_gates_module.load(ROOT/OWN_IMAGE_GATES, registry()['own_image_gates']['sha256'])
 
 
 def dev_pilot_admission():
@@ -351,7 +360,7 @@ def bundle(map_id, check, admission=MEASURED_SIM):
     entries = ['scripts/run_pair_highpose.py', 'harness/zone_pair_highpose_runtime.py',
                'harness/vision_pose_source_highpose.py', 'harness/zone_pair_highpose_staging.py',
                'sim/final_pair_highpose_staged.py']
-    paths = set(value['source_sha256']) | set(source_closure(ROOT, entries)) | {REGISTRY, WORKFLOW, CALIBRATION_CONTRACT, D5_ADMISSION, CAP_DECISION,
+    paths = set(value['source_sha256']) | set(source_closure(ROOT, entries)) | {REGISTRY, WORKFLOW, CALIBRATION_CONTRACT, D5_ADMISSION, OWN_IMAGE_GATES, CAP_DECISION,
         'configs/zone_final_pair_v92_schedule.json.gz',
         'configs/zone_pair_highpose_confirmation_v96.json',
         'experiments/2026-10-03-v92-loaded-schedule/criterion_B_double_prime.json',

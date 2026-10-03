@@ -29,9 +29,12 @@ class HighPoseSource(PairVisionPoseSource):
         self.calibration = cal = contract.student_calibration(
             contract.admitted_calibration(calibration, calibration_sha256, static['map_id']))
         self.cfg = {'sim_time_charge': {'charged': False, 'reason': 'fixed P03 delay is external'}}
+        # Registered own-image gate values for floor_light_v1 (registry own_image_gates, pinned by sha256).
+        self.gates = contract.own_image_gates()
         self.runtime_contract = {'provider_id': self.provider_id, 'calibration_sha256': calibration_sha256,
             'detector': DETECTOR, 'learned_segmentation': False, 'robot_model': 'masterpi_v3',
-            'render_profile': 'floor_light_v1', 'qualification': 'unqualified OpenCV/HIGH candidate'}
+            'render_profile': 'floor_light_v1', 'qualification': 'unqualified OpenCV/HIGH candidate',
+            'own_image_gates': {'path': self.gates['path'], 'sha256': self.gates['sha256']}}
         # These frozen modules supply only column geometry, likelihood and PF.
         # load_vis3 never imports seg_model/torch or opens a checkpoint.
         vl, vpf = vp.load_vis3()
@@ -74,7 +77,8 @@ class HighPoseSource(PairVisionPoseSource):
         self.carry_yaw_fallback = {'pair': True, 'edge': True,
             'b_full': float(cal['params']['motion_loaded']['yaw_bias_std_rad_s']),
             'b': copy.deepcopy(pair['b_rad_s']), 'level_frames': {}, 'pm_bad_until': -1.}
-        self.worker = worker if worker is not None else OpenCVObserver(vl, lambda: pf.column_model_for(self.servo))
+        self.worker = worker if worker is not None else OpenCVObserver(
+            vl, lambda: pf.column_model_for(self.servo), self.gates['values'])
 
     def on_command(self, row):
         super().on_command(row)

@@ -1,4 +1,5 @@
 """Instance-only pose adaptation of the existing v3 beam-relative student."""
+import copy
 from types import MethodType
 
 import numpy as np
@@ -12,6 +13,9 @@ from harness.zone_final_pair_guards import CommandGuard as PreviousGuard
 from harness.own_beam_edge import edge_line
 from scripts import run_m2_pair as m2
 
+# Grasp-time own grip view (close readiness + GRIP_NOT_SEEN): LOG-ONLY in v98 (registry grip_monitor).
+GRASP_TIME_VIEW = grip.GRASP_TIME_VIEW
+
 
 class HighController:
     """v96 HIGH carry. Grip monitor is LOG-ONLY (first-E2E scope, user 2026-10-03).
@@ -23,6 +27,9 @@ class HighController:
     IoU, edge line) go to ``self.grip_monitor`` (write-only) and are exported
     only in the evaluation records. A dropped beam is not detected or
     signalled in-run in this version; success is judged only by evaluation.
+    v98: the grasp-time grip view (pre-close readiness term and post-close
+    GRIP_NOT_SEEN) is log-only as well; see ``_wait_close`` and
+    ``GraspViewLogOnly``.
     """
 
     def _issued(self):
@@ -54,8 +61,52 @@ class HighController:
         self._monitor('anchor', now, pose=name, frame_id=obs['frame_id'],
                       mask_px=int(self.pose_anchors[name].mask.sum()))
 
+    def _wait_close(self, now, arm_idle):
+        """``PairGraspRelook._wait_close`` with the open-grip view LOG-ONLY (v98).
+
+        At the floor grasp pose the beam is outside the masterpi_v3 camera view (0 of 18 beam points in
+        the field of view), so ``grip_view_m2`` cannot see it there. Under the user's log-only grip decision
+        the view is recorded with ``applied=False`` and is not a readiness term. Every other term is the
+        parent's: own fix checks, own servo commanded open at the grasp pose, valid own frame, stationary
+        beam clearance, then the fixed-enum close barrier with its timeout.
+        """
+        from harness.zone_pair_grasp import CLOSE_WAIT_S, _frame_gate
+
+        if not arm_idle:
+            return
+        obs = self.look(now)
+        own = self.port.own
+        view = m2.grip_view_m2(obs['image'])
+        self._monitor('close_grip_view', now, frame_id=obs['frame_id'], applied=False, **view)
+        ready = (self.pregrasp_done and self._grasp_pose_ready(now)
+                 and own.servo.get(1) == m2.study.OPEN
+                 and all(own.servo.get(k) == v for k, v in self.grasp_pose.items() if k != 1)
+                 and _frame_gate(self)(obs, self.rid, now)
+                 and self.preclose_check(now, obs))
+        self.report('close', obs, now, ready=ready,
+                    reason='own relook + issued open grip + stationary beam clearance (grip view log-only)')
+        if not ready:
+            checks = self._grasp_pose_checks(now)
+            self.log(self.rid, 'pregrasp_fix_rejected', now, checks=checks,
+                     failed_checks=[k for k, v in checks.items() if not v],
+                     last_fix_t=own.last_report.last_fix_t, report_t=own.last_report.t_est)
+            return self.fail('PREGRASP_NOT_READY', now)
+        if now - self.state_t > CLOSE_WAIT_S:
+            return self.fail('BARRIER_CLOSE_TIMEOUT', now)
+        decision = self.sync_for('close').authorize(now)
+        if decision['phase'] == 'ABORT':
+            return self.fail('BARRIER_CLOSE_ABORT', now)
+        if decision['phase'] == 'GO':
+            at = decision['go_at_s']
+            self.close_started_at = at
+            self.close_issued_at = None
+            self.log(self.rid, 'barrier_go', now, barrier='close')
+            self.arm.queue({1: m2.study.CLOSED}, at, duration=.5, settle=.4)
+            self.set('grasp', now)
+
     def _grasp(self, now, arm_idle):
-        # Unchanged grasp-time checks (issued close + own grip view, v88/v92).
+        # PairGraspRelook: GRIP_NOT_CONFIRMED (issued close + fresh valid own frame after it), unchanged;
+        # then GraspViewLogOnly (v98): the post-close own grip view is logged, not applied.
         super()._grasp(now, arm_idle)
         if self.state == 'wait_lift':
             self.grip_closed_epoch = self.grip_epoch
@@ -272,11 +323,39 @@ class CommandGuard(PreviousGuard):
         return super().check(now, commands)
 
 
+class GraspViewLogOnly(m2.M2DoorStudent):
+    """``M2DoorStudent._grasp`` (door v3) with GRIP_NOT_SEEN LOG-ONLY (v98, see HighController._wait_close).
+
+    Placed by C3 right before ``M2DoorStudent`` (after ``PairGraspRelook``), so the parent's issued-close
+    check still runs first and its receipt follows. The co-motion anchor stays a monitor reference only.
+    """
+    def _grasp(self, now, arm_idle):
+        if self.version != 'v3':
+            raise RuntimeError('v98 grasp adapter covers door v3 only')
+        if not arm_idle:
+            return
+        obs = self.look(now)
+        view = m2.ob2.grip_view(obs['image'])
+        seen = m2.grip_view_m2(obs['image'])
+        self.log(self.rid, 'grip_view', now, **view, m2=seen, applied=False)
+        self._monitor('grasp_grip_view', now, frame_id=obs['frame_id'], applied=False, **seen)
+        self.anchor = m2.lv3.co_motion_signature(obs['image'])
+        self.anchor_kind = 'co_motion_v3'
+        self.claims['gripped'] = {'grip_view': view, 'grip_view_m2': seen, 'sim_time': now,
+                                  'decided_by': 'own command history (issued close) + partner status',
+                                  'grip_view_applied': False}
+        self.set('wait_lift', now)
+
+
+def controller_class(base):
+    return type('HighPairController', (HighController, base, GraspViewLogOnly), {})
+
+
 class Execution(previous.Execution):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         ctl = self.controller
-        ctl.__class__ = type('HighPairController', (HighController, type(ctl)), {})
+        ctl.__class__ = controller_class(type(ctl))
         ctl.high_raising, ctl.high_ready = False, False
         ctl.grip_epoch, ctl.pose_anchors, ctl.transit = 0, {}, None
         ctl.floor_return_verified = False
@@ -300,14 +379,29 @@ class Team(previous.Team):
         for row, session in zip(rows, self.sessions):
             # Evaluation/audit output only; the controller never reads it.
             row['grip_monitor'] = {'scope': grip.MONITOR_SCOPE, 'in_run_grip_loss_detection': False,
+                                   'grasp_time_view': GRASP_TIME_VIEW,
                                    'rows': {r: ep.controller.grip_monitor.export()
                                             for r, ep in session['endpoints'].items()}}
         return rows
 
 
+def install_own_image_gates():
+    """Install the registered floor_light_v1 own-image frame gate for this process; return what was installed.
+
+    The per-step/admission frame gate is a process-level value; one bundle runs per process. Every v98
+    runtime (measured, DEV and the staged probe runtime) must call this before its parent initializer.
+    """
+    from harness import zone_pair_vision
+    from harness.zone_pair_highpose_contract import own_image_gates
+    gates = own_image_gates()
+    zone_pair_vision.use_gates(gates['values'])
+    return {'path': gates['path'], 'sha256': gates['sha256'], 'values': dict(gates['values'])}
+
+
 class Runtime(PreviousRuntime):
     def __init__(self, static, calibration_path, calibration_sha, *, seed, provider_factory=None):
         from harness.vision_pose_source_highpose import build_provider
+        self.own_image_gates = install_own_image_gates()
         initialize = bind(PreviousRuntime.__init__, Team=Team)
         initialize(self, static, calibration_path, calibration_sha, seed=seed,
                    provider_factory=provider_factory or build_provider)
@@ -323,4 +417,13 @@ class Runtime(PreviousRuntime):
     def record(self):
         value = super().record()
         value['executor_job_sim_limit_s'] = self.job_sim_limit_s
+        value['own_image_gates'] = copy.deepcopy(self.own_image_gates)
         return value
+
+    def close(self):
+        # The installed frame gate lives as long as this runtime; restore the v1 values on close.
+        from harness import zone_pair_vision
+        try:
+            return super().close()
+        finally:
+            zone_pair_vision.use_gates(None)

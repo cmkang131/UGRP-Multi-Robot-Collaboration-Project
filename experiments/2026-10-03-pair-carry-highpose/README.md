@@ -8,7 +8,27 @@
 현재 P03(seed 911, dock 시작 세 체크포인트)은 **기능 확인용 개발 재생(FUNCTIONAL_DEV_REPLAY)**이며
 독립 표본 3개나 확증 자료가 아니다. 확증용 시작점은 별도 등록 파일에 고정했다(아래 P2-1).
 
-## REVIEW_363 2차 대응 (2026-10-03, Claude) — 현재 상태
+## v98 통합 (2026-10-04, Claude) — 현재 상태
+
+v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다. v98 실행 기록은 이 통합 전까지 없었다.
+
+- **자기 영상 문턱 재보정(floor_light_v1):** 별도 진단 작업(Track A)이 사용자가 고른 절차로 다시 정한 값을
+  그대로 넣었다. 벽 띠 채도 상한 80→140, 벽 경계 단차 최소 10(새 검사), 프레임 대비 폭 15→1.0, 표준편차 3→0.22.
+  값 파일은 `configs/calibration/own_image_gates_floor_light_v1.json`(sha256 `e71bbe4d…`)이고 v98 등록 파일과
+  제공자 runtime_contract에 해시로 고정했다. 절차·합격 기준은 [보정 절차](../../docs/own_image_gate_calibration.md)에 있다.
+  정적 단계 실행기(`StagedRuntime`)가 부모 초기화를 우회해 새 프레임 문턱을 설치하지 않던 빈틈을 함께 고쳤다.
+  두 실행기 모두 같은 함수로 설치하고 `record()`에 적용 값을 남기며 `close()`에서 이전 값으로 되돌린다.
+  주의: 평가 분할에 이 PR의 DEV 탐침(`v96-dev-probe-raise_high-323fe3f9`) 영상이 들어 있다. v98은 DEV·승격 불가이므로
+  막지는 않지만, 이 값으로 얻은 결과를 확증 자료로 쓰면 안 된다.
+- **파지 시점 집게 시야 → 기록만:** 바닥 파지 자세에서 빔 점 18개 중 0개가 masterpi_v3 카메라 시야에 들어온다는
+  진단에 따라(문턱이 아니라 기하 문제), 사용자의 "첫 E2E 집게 감시는 기록만" 결정 아래 코디네이터가 결정했다.
+  닫기 전 준비 조건의 `grip_view_m2` 항과 닫은 뒤의 `GRIP_NOT_SEEN`을 v98에서만 기록만 한다(`applied=false`,
+  등록 `grip_monitor.grasp_time_view=log_only_v98`). 파지 준비는 자기 명령 이력(닫기 명령 발행)과 고정 상태 채널로
+  판단한다. 자기 위치 확인·자기 집게 열림 명령·프레임 유효성·정지 빔 간격·닫기 barrier·시간 초과와
+  `GRIP_NOT_CONFIRMED`는 그대로다. 공유 동결 파일(`zone_pair_grasp.py`, `run_m2_pair.py`)은 바꾸지 않았다.
+- **복구 동작은 아직 넣지 않았다**(관측기 수정이 폐루프에서 확인된 뒤).
+
+## REVIEW_363 2차 대응 (2026-10-03, Claude) — 이력
 
 2차 BLOCK(리뷰 코멘트 5967979217)과 코디네이터·사용자 결정을 반영했다. 결정 근거와 출처는
 [COORDINATOR_DECISION.md](fix363/COORDINATOR_DECISION.md)에 있다.
@@ -239,6 +259,45 @@ TensorBoard 새 스냅샷 `1003-pair-highpose-v93/high-hold`에 같은 진단의
 0으로 채우지 않는다. [대시보드 검증과 고정 링크](tensorboard_verification.json)를 따른다.
 
 ## 참고 자료
+
+### 자기 영상 문턱 재보정 조사 (v98, Track A, 출처 표기 그대로)
+
+2026-10-03 조사, 모든 문제에 고전·최신 해결법 조사 선행 규칙.
+
+표시: [F] 원문/소스를 열어 읽음, [S] 검색 요약만 확인, [K] 배경지식(재확인 안 함). 접근이 막혀 못 읽은 곳은 아래 "한계"에 적었다.
+
+#### 가. 길을 잃었을 때: 멈춰서 둘러보기, 복구, 측정이 안 들어올 때
+- ROS move_base `rotate_recovery` (`ros-planning/navigation` noetic-devel `rotate_recovery.cpp`, `move_base.cpp`) [F 소스]: 계획이 실패하면 값싼 복구(지도 초기화) 뒤에 360도 회전, 충돌 위험이면 중단. 가져온 것: "실패 시 한 바퀴 둘러보기, 충돌 위험이면 중단". 안 가져온 것: 위치 추정이 좋아졌는지 확인하지 않는다.
+- Nav2 `Spin`/기본 행동 트리 (`nav2_behaviors/plugins/spin.cpp`, 문서 api.nav2.org) [F 문서·소스, 기본 time_allowance 10 s는 S]: 90도(1.57 rad) 회전 → 5 s 대기 → 후진 0.30 m, 재시도 6회. 가져온 것: 짧은 회전, 시간 제한, 재시도 전 대기. 안 가져온 것: 맹목 회전.
+- Burgard, Fox, Thrun, "Active Mobile Robot Localization", IJCAI-97 [F]: 센서 방향과 움직임을 기대 엔트로피 감소로 고른다. 가져온 것: 지도를 아니 팬 각도별 정보량을 점수로 고를 수 있다는 점(후속 과제). 안 가져온 것: 격자 신념, 초음파.
+- Fox, Burgard, Thrun, "Active Markov Localization for Mobile Robots", Robotics and Autonomous Systems 25(3-4):195-207, 1998 [S].
+- Fox, Burgard, Thrun, Cremers, "Position Estimation for Mobile Robots in Dynamic Environments", AAAI-98 [F]: 엔트로피 문턱은 "현재 신념을 맞든 틀리든 확인하려는" 경향이 있다. **이번 사고와 직접 같은 구조**: 믿음이 틀리면 증거를 받는 문이 닫힌다. 그래서 "측정이 한 번도 안 들어오는 상태"를 별도 복구 시작 조건으로 둔다.
+- Fox, Burgard, Thrun, "Markov Localization for Mobile Robots in Dynamic Environments", JAIR 11:391-427, 1999 [F]: 평평한 사전분포에서 전역 재위치 추정이 받아들여진 마지막 수단.
+- Thrun, Burgard, Fox, Probabilistic Robotics (MIT Press, 2005) 증강 MCL(표 8.3, 약 218쪽) [S]/[K], Nav2 AMCL 소스의 `recovery_alpha_fast/slow` 기본값 0 [F 소스]: 단기/장기 평균 가중치 비율로 입자를 주입. 안 가져온 것: 이 방식은 **측정이 0개이면 아무 신호도 못 본다**(우리 사고와 같다). 그래서 "T초 동안 받아들인 갱신 없음"을 따로 시작 조건으로 둔다.
+- Thrun, Fox, Burgard, Dellaert, "Robust Monte Carlo Localization for Mobile Robots", Artificial Intelligence 128 (2001) [F]: 센서가 너무 정확하다고 가정하면 입자 필터가 쉽게 길을 잃는다. 처방은 잡음 가정을 키우기, 균일 입자, 혼합. 가져온 것: 입자 주입 전에 잡음부터 키운다.
+- Davison, Murray, "Simultaneous Localization and Map-Building Using Active Vision", IEEE TPAMI 24(7):865-880, 2002 [F]: 머리 회전 시간을 비용으로 세어 가장 불확실성을 줄이는 곳을 본다. 가져온 것: 둘러보기 시간을 비용으로 기록.
+- Chaplot, Parisotto, Salakhutdinov, "Active Neural Localization", ICLR 2018 [F]: 신념 최대값/엔트로피를 종료 기준, 단계 수를 예산으로. 학습 기반이라 가져오지 않음.
+- Mur-Artal, Montiel, Tardós, "ORB-SLAM", IEEE T-RO 2015 [F]: "추적 상실"을 명시적 상태로 두고, 후보 생성은 싸게 검증은 엄격하게, 복구 뒤에는 20프레임 동안 새 키프레임을 막는 완충. 가져온 것: 상실 상태, 복구 뒤 완충. 폴백으로 검출 문턱을 몰래 낮추는 방식은 가져오지 않음.
+- 최근 연구(2022~2026): ActLoc, Li 외, arXiv 2508.20981 [F 초록] / "When to Localize? A POMDP Approach", Williams 외, SSRR 2024, arXiv 2411.08281 [F 초록] / Active Particle Filter Networks, Honerkamp 외, arXiv 2209.09646 [F 초록] / F3Loc, Chen 외, CVPR 2024, arXiv 2403.03370 [F 초록] / Semantic Rays, Grader, Averbuch-Elor, ICCV 2025, arXiv 2507.09291 [F 초록] / Sparse Feasible Hypothesis Sampling, Zhang 외, arXiv 2511.01219 [F 초록] / GALoc, Han 외, arXiv 2609.08385 [F 초록만, 2026-09 논문이라 인용 전 재확인 필요]. 가져온 것: 시점별 정보량이 다르다(요에 따라 다름), 실현 가능한 위치만 후보로 주입, 거친 것에서 세밀한 것으로. 모두 학습 깊이/LiDAR가 필요해 그대로는 못 쓴다.
+- Boniardi 외, "Robot Localization in Floor Plans Using a Room Layout Edge Extraction Network", IROS 2019, arXiv 1903.01804 [F]: 열마다 **잘라낸(saturated) 잔차**를 쓰고 쓴 열 수로 나눈다. 측정을 다 거절하는 우도에 대한 가장 직접적인 처방 패턴(후속 과제).
+
+#### 나. 멈춤 후 안정화, 번짐 게이트
+- Canon, "Robot with camera", US8352076B2 [F 특허]: 옛 방식은 약 1초 고정 안정화 대기, 새 방식은 위치 오차와 속도가 모두 문턱 아래일 때 촬영. 우리는 관절 속도를 못 쓰므로 마지막 자기 명령 뒤 0.2 s 고정 대기를 유지(MuJoCo 렌더는 움직임 번짐이 없다).
+- Intrinsic, "Reducing motion blur for robot-mounted cameras", US11472036B2 [F 특허]: 프레임을 팔 움직임 자료와 맞춰 번짐을 본다.
+- Pertuz, Puig, Garcia, Pattern Recognition 46(5):1415-1432, 2013 [서지 F, 내용 K]: 라플라시안 분산 등 초점 측정은 상대 비교용이다. Pech-Pacheco 외, ICPR 2000 [S]. Unblur-SLAM, arXiv 2603.26810 [S]. LOVON, arXiv 2507.06747 [S]. 가져온 것: 번짐 점수는 같은 시퀀스의 백분위로 판정(우리 렌더에는 번짐이 없어 쓰지 않음).
+
+#### 다. 광도 강건성과 문턱 재정
+- Engel, Usenko, Cremers, "A Photometrically Calibrated Benchmark for Monocular Visual Odometry", arXiv 1607.02555 [F 초록]: 광도 보정을 한 번 하고 문서화.
+- Engel, Koltun, Cremers, "Direct Sparse Odometry", arXiv 1607.02565, TPAMI 2018 [F 본문]: 블록별 문턱 = 중앙값 기울기 + 상수. 가져온 것: 문턱을 지역/대상 자료 기준선에 상대화.
+- Ulrich, Nourbakhsh, "Appearance-Based Obstacle Detection with Monocular Color Vision", AAAI-2000 [F]: 바닥 기준 영역 분포를 배워 그 분포 대비 이탈로 판정, 조명이 바뀌면 정적 모델은 거짓 양성이 늘고 적응 모델이 줄인다. 가져온 것: 문턱을 대상 프로파일의 기준 프레임 분포에서 정하는 방식.
+- Horswill, "Polly: A Vision-Based Artificial Agent", AAAI-93 [F]: 질감 없는 바닥에서는 기울기 문턱 에지 검출이면 충분, 그림자와 약한 바닥-벽 경계가 실패 원인. 가져온 것: 경계에 실제 단차가 있어야 한다는 검사(그림자 그라데이션 거르기).
+- Maddern 외, "Illumination Invariant Imaging", ICRA 2014 Workshop on Visual Place Recognition in Changing Environments [F]: 로그 색 조합. 햇빛 가정이라 MuJoCo 렌더와 푸른 바닥 채도 문제에는 안 맞는다. 채도 절대 문턱은 후보가 아니라는 근거로만 사용.
+- Lorigo, Brooks, Grimson, IROS 1997:373-379 [S, 2차 인용만]; Lenser, Veloso, IROS 2003:886-891 [S]; OpenCV Canny/CLAHE 튜토리얼(`opencv/opencv` markdown) [F]; Rosebrock, PyImageSearch 2015 자동 Canny [F, 블로그]; Zhang, Forster, Scaramuzza, ICRA 2017 [F 본문]; Shim, Lee, Kweon, IROS 2014 [F 일부]; Tobin 외, IROS 2017, arXiv 1703.06907 [F 일부, 간접 근거]; ORB-SLAM 문턱 기본값 20→7 [S].
+
+#### 라. 우리에게 적용한 것과 바꾼 것
+- 적용: (1) 문턱을 조명에 맞춰 **대상 프로파일 기준 프레임의 백분위 + 명시한 여유폭**으로 다시 정함(Ulrich의 기준 영역 학습, DSO의 중앙값+여유폭의 취지). 정확한 이식이 아니라 취지만 빌렸다. (2) 벽 경계 후보에 **단차 검사** 추가(Horswill, Canny의 취지). (3) 문턱을 몰래 낮추는 폴백은 쓰지 않았고 값과 근거를 번들에 고정했다(ORB-SLAM의 폴백을 일부러 안 씀).
+- 바꾼 것: 우리는 관절 속도를 못 쓰므로 Canon 특허의 위치/속도 문턱 대신 0.2 s 고정 대기를 유지. 복구 동작은 "T초 동안 받아들인 갱신 없음"을 따로 시작 조건으로 둔다(Fox 1998의 경고, 증강 MCL이 침묵한 필터를 못 보는 점).
+- 한계: 렌더 조명이 바뀔 때 고정 광도 문턱이 실패함을 직접 보이고 대상 프레임 보정을 권하는 논문은 찾지 못했다(Tobin 2017은 간접 근거). Pertuz(내용), Lorigo(원문), Horswill 박사논문, Lenser는 원문을 읽지 못했으니 인용 전 확인이 필요하다. wiki.ros.org(봇 차단), Probabilistic Robotics PDF(링크 끊김), ScienceDirect/SAGE(403)는 열지 못했다.
 
 ### 집게 감시 조사 (2차 대응, 출처 표기 그대로)
 

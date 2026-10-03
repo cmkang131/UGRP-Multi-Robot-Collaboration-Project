@@ -47,6 +47,8 @@ MAX_EDGE_SLOPE_DELTA = .015        # conservative desync refusal, not a measured
 # STABLE_S of the 8 s HIGH settle. Recorded for evaluation; never gates.
 STABLE_S = 2.
 MONITOR_SCOPE = 'log_only_v96'
+# v98: the grasp-time own grip view (pre-close readiness term and post-close GRIP_NOT_SEEN) is log-only too.
+GRASP_TIME_VIEW = 'log_only_v98'
 
 
 def _plain(value):

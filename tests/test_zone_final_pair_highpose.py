@@ -193,5 +193,5 @@ def test_v96_registry_retired_byte_identical_and_v98_differs_only_by_ids():
     assert old['execution_bundle_id'] == 'zone-final-pair-highpose-v96' and old['workflow_version'] == '3.8.0'
     changed = {k for k in set(old) | set(new) if old.get(k) != new.get(k)}
     assert changed == {'schema', 'execution_bundle_id', 'workflow_id', 'workflow_version', 'dev_pilot',
-                       'supersedes', 'stage_probes'}
+                       'supersedes', 'stage_probes', 'own_image_gates', 'grip_monitor'}
     assert {k for k in old['dev_pilot'] if old['dev_pilot'][k] != new['dev_pilot'][k]} == {'tensorboard_cohort'}
