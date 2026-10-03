@@ -1,6 +1,8 @@
-# v99 두 로봇 짝 운반 LLM 판단 층 — 가능성 시험 (배관 단계, 연구 결과 아님)
+# v100 두 로봇 짝 운반 LLM 판단 층 — 가능성 시험 (배관 단계, 연구 결과 아님)
 
-번들 `zone-pair-llm-v99`, 워크플로 3.11.0, 상태 `DRAFT_UNSEALED`, `research_result=false`. 이슈 #219 참조.
+번들 `zone-pair-llm-v100`, 워크플로 3.12.0, 상태 `DRAFT_UNSEALED`, `research_result=false`. 이슈 #219 참조.
+**병합 금지 — #363 새 SHA 위로 리베이스 대기 중.** v100은 아직 어떤 실행도 기록하지 않았다. v99(3.11.0)는 3단계 스모크 1회의
+번들이므로 그대로 얼려 두었고(소스 `ad1dda73`, 번들 해시 `a8e11294…`), 이 문서의 3단계 숫자는 v99 기록이다.
 2026-10-03 사용자 결정("일단 지금 상황에서, llm을 쓰고 되는지를 보자 그 다음에 고도화를 해나가자")의
 첫 단계다. **이 문서의 어떤 숫자도 운반 성공·모델 성능·조건 간 효율에 대한 결과가 아니다.** 1·2단계는
 가짜 모델만 썼다. 3단계(아래 "3단계: 실제 모델 스모크 1회")에서 실제 모델을 한 번의 60 SIM초 실행으로 12번 불렀고,
@@ -31,6 +33,83 @@
 **v99 / 워크플로 3.11.0**으로 올렸다. 조회: main + 열린 PR에서 최댓값은 v98 / 3.10.0(#363)이며 v99·3.11.0은 비어 있었다.
 v97은 폐기된 가짜 모델 배관 초안이다. `outputs/pair-llm-v97-smoke/` 원본은 그대로 두었다. 아래 2단계 표는 v97
 기록이며 v99의 증거가 아니다.
+
+## v100 변경 (2026-10-04 조정자 지시 5건; 아직 실행 기록 없음)
+
+smoke1(v99)에서 드러난 문제를 고친 코드 변경이다. **이 변경 뒤의 실제 모델 실행은 아직 없다**(조정자: #363 새 SHA 준비 전에는 새 실제
+호출 없음. 사용자의 실제 호출 승인은 유지되어 있어 그때 다시 묻지 않는다).
+
+### 1. 자기 상태(`own_status`)를 모델 입력에 추가 — 거절이 모델에 보이게 함
+
+smoke1에서 블라인드 제어기가 두 로봇의 시작을 로봇당 1,069회 `SELF_UNCERTAIN`으로 거절했지만 모델은 `command_issued`와
+낮은 `self_belief`만 보고 계속 `continue`를 골랐다. 거절은 로봇 **자기 소프트웨어의 응답**(자기 `Team.start` 호출의 확인, 자기 실행기의 작업
+이벤트)이지 시뮬레이터 정답이 아니므로 모델에 알려도 입력 경계 안이다. `harness/pair_llm_status.py`가 닫힌 기록 하나를 만든다.
+
+| 필드 | 내용 |
+|---|---|
+| `last_outcome` | 닫힌 열거: `no_claim`, `claim_released`, `start_refused`, `claim_rejected`, `pair_job_running`, `pair_job_ended`, `look_around_running`, `look_around_ended` (가장 최근 사실이 이긴다) |
+| `reason` | 결과별 닫힌 어휘 하나 또는 `null`. `start_refused`: `SELF_STOPPED/BUSY/INCOMPATIBLE/UNCERTAIN/INVALID_IMAGE/OCCUPIED`, `claim_rejected`: 청구 인자 거절 어휘, 끝난 작업: `queue_empty`/`local_timeout`. 어휘 밖은 모두 `other` |
+| `since_claim_s` | 이 로봇이 마지막 `claim`을 낸 뒤 흐른 SIM초(자기 결정 시각), 없으면 `null` |
+| `refusals_since_last_call` | 이 로봇의 지난 모델 호출 시작 이후 자기 시작이 거절된 횟수 |
+
+- **넣지 않은 것**: 자세·관절·접촉·성공/배달 플래그·상대 상태·원문 이유 문자열·실행기 `detail`. 상대에서 비롯된 거절
+  (`PAIR_SUBMISSION_MISMATCH`, `PAIR_STATIC_INPUT_MISMATCH`, `PAIR_RENDEZVOUS_TIMEOUT` 등)은 `other`로 접는다. 이를 그대로 보이면 `no_comm`
+  조건 모델이 상대의 제출을 알게 되어 통신이 더하는 것을 흐리기 때문이다. 작업이 끝났다는 사실도 성공 신호가 아니다
+  (스터디의 두 부류 `queue_empty`/`local_timeout`만).
+- **경계**: 입력 페이로드 스키마 v2의 필수 키(`pi.payload_violations`가 닫힌 기록·결과별 어휘·음수/불리언/비유한 값을 거절). 봉인된
+  스터디 금지 키와 겹치지 않는 이름만 쓴다. 누수 시험: 적대적 문자열 21종(`GT_CONTACT_SUCCESS`, `SELF_CONTACT`, 공백·대소문자 변형,
+  5,000자, `None`/숫자/리스트/dict/bytes)이 빌더를 통과하지 못함, 200회 무작위 입력에도 출력은 항상 닫힌 기록, 빌더 시그니처에 상대 자세·접촉·성공
+  입력이 없음.
+- **모델이 인용할 결정 근거**: 봉인된 `DECISION_SOURCES`에 `own_status`가 없으므로 프롬프트가 "`own_status`를 근거로 삼았으면
+  `own_commands`로 적는다"고 안내한다(PROMPT_VERSION v3).
+- **둘러보기/재위치추정 선택지**: 스킬 층에 이미 있다. `ZoneOwnExecutor.look_around()`(자기 카메라 넓은 훑기, 작업 종류 `look_around`;
+  자기 작업이 돌고 있으면 `BUSY:<종류>:<id>`로 거절). 행동 `{"kind":"look_around"}`를 더했다. 봉인된 `validate_reply`는 열거형 4종
+  (`claim/continue/release/wait`)만 알므로 짝 층의 `pair_llm_dispatch.validate_reply`가 `look_around`를 안전한 자리표시자(`continue`)로 바꿔
+  봉인 검증기에 통과시키고 되돌린다(다른 모든 봉인 규칙·오류 문구는 그대로, 시험으로 고정). 이 선택지는 **효과를 검증하지 않았다**:
+  블라인드 작업자는 훑은 뒤에도 `LOOKED_POSE_UNCERTAIN`이고(가짜 물리 시험에서 확인), 실제로 위치를 회복시키는 동작은 #363의 회복 동작이
+  들어간 뒤에 다시 시험해야 한다. 그때까지 이 선택지는 "배선과 상태 표시만 확인됨"이다. 끝난 둘러보기는 성공 신호가 아니며, 청구 허가가 남아
+  있으면 거절이 계속되므로 한 호출 동안 `look_around_ended` 뒤에 다시 `start_refused`가 나온다.
+
+### 2. 비용 모델: 이미지를 청구한다 (결정적 · 버전 고정)
+
+스터디 규칙(`fixed_prompt_equalized.v1`)은 텍스트 토큰만 `Attempt.input_tokens`에 채워 요청당 이미지 2장이 0토큰이었다. 새 모듈
+`harness/pair_llm_billing.py`가 텍스트 청구를 **바이트 그대로 두고** 이미지 몫을 더한다:
+`total_billed = total_text_billed + images × 1,490` (`ugrp.pair_image_billing.v2`). 상수는 실행 중 측정이 아니라 고정값이므로 청구는 요청
+모양(첨부한 이미지 수)만의 함수다. 비용 모델 `zone_sim_cost.v1`의 계수는 그대로다.
+
+- **도출(smoke1, 실제 12회)**: 감사된 프록시는 `prompt/completion/total_tokens`만 알려주고 제공자의 모달리티별 수는 버린다.
+  제공자 입력 5,978~6,169(평균 6,134.5) − 로컬 텍스트 청구 평균 3,147.3 = 요청당 잔차 2,987.2, ÷ 이미지 2장 = 1,493.6 → 10 단위
+  반올림 **1,490**. 이미지 2장일 때 SIM 입력 청구가 제공자 입력과 호출마다 약 0.3퍼센트 안에서 맞는다(5,994 대 5,980 등).
+- **한계**: 제공자 요율이 아니라 이 요청 모양(손목 JPEG 640x480 + 지도 PNG 757x599, 모델 `gemini-3.8-flash-low`)의 보정이다. 잔차에는
+  로컬 토크나이저가 텍스트를 적게 센 몫도 섞여 있고, 적합에 쓴 텍스트 크기 묶음은 두 개뿐이다. 모델·이미지 크기·미디어 해상도 설정이 바뀌거나
+  제공자의 모달리티별 수가 생기면 새 버전으로 다시 맞춘다.
+- **영향(분석 재계산, 실행 아님)**: smoke1의 호출 10회를 보존된 응답 원문과 요청 청구로 다시 계산하면 v1은 기록된 호출별 비용 10개와
+  모두 일치(합 30.1 SIM초 확인)하고, v2는 호출당 +0.6 → **합 36.1 SIM초(+6.0, +20퍼센트)**. 첫 두 호출 4.8/4.7, 나머지 3.3~3.4.
+- **버전 이력**: `ugrp.pair_image_billing.v1`(이미지 0)은 v97 가짜 모델 스모크와 v99 smoke1이 썼다. `IMAGE_BILLING_HISTORY`에 남기고
+  다시 적용하지 않는다. 요청 기록에는 `image_policy/image_tokens_per_image/image_tokens_billed/total_billed`가 남고
+  `billing_problems`가 보관된 요청의 이미지 청구를 다시 계산해 검증한다. 호출 행의 `input_tokens`는 텍스트/이미지로 나뉘고, 실행 지표에
+  `input_tokens_image`, `input_tokens_charged`, `image_billing`이 생긴다. 번들 `cost_model.input_billing`에 도출 근거와 이력 전체를 기록한다.
+
+### 3. ` ```json ` 울타리: 한 번 벗기고, 횟수를 지표로 센다
+
+봉인된 스터디 파서는 이미 응답 **전체**를 감싼 울타리 하나(json 또는 무표시, 각각 별도 줄)만 벗기고 `completion.json_fence_removed`로
+표시한다. 이 규칙은 느슨하게 하지 않았다. 더한 것은 지표뿐이다: `metrics.reply_format`(`harness/pair_llm_live.py`)이 응답이 온 POST마다
+울타리 표지 줄 수(`fence_marker_lines`)를 세어 `replies`, `fence_removed_calls`, `fenced_calls`, `fence_not_removed_calls`,
+`plain_json_calls`, `fence_marker_lines_total`을 낸다. 울타리는 어떤 호출도 실패시키지 않는다.
+
+- **벗길 수 없는 울타리**(앞뒤에 산문이 붙은 경우, 한 줄 울타리, 블록 둘)는 스터디 파서가 그대로 비-JSON으로 거절한다(`model_output_rejected`,
+  스터디 호출 표에서는 `http_error`). 그 호출만 거절되고 다음 호출은 이어지며, 다른 정상 응답이 있는 실행은 실패가 아니다(시험: 로봇 하나의 첫 응답만
+  산문+울타리/한 줄 울타리). 첫 응답 묶음에서 정상 응답이 하나도 없으면 스터디의 "정상 응답 0" 규칙이 실행을 멈춘다(`infra:API`). 이는 울타리 규칙이
+  아니라 봉인된 건강 검사이며, 이때도 울타리 지표는 기록에 남아 원인이 보인다.
+
+### 4. 번들 번호 판단: v100 / 3.12.0
+
+- **재조회(2026-10-04, main과 열린 PR 헤드 전부)**: main 최댓값 v92/3.4.0. 열린 PR: #365와 #372는 v95/3.7.0, #363은 v98/3.10.0, 나머지는 3.0.0~3.1.0.
+  v100과 3.12.0은 어디에도 없다(v99/3.11.0은 이 PR의 smoke1 번들).
+- **판단**: v99 번들은 소스 `ad1dda73`·번들 해시 `a8e11294…`로 smoke1(실제 호출 12회)을 기록했다. 이번 변경은 프롬프트·입력 스키마·행동 어휘·비용
+  청구 정책을 바꾸므로 실행 기록이 있는 번들을 고치지 않고 `docs/execution_versioning.md` 2번(설정을 바꾸면 새 버전)에 따라 새 번들로 올렸다.
+  `configs/pair_llm_v99.json`은 `pair_llm_v100.json`으로 이름을 바꿨고 v99 기록(smoke1 요약·해시·원본)은 그대로다.
+  병합 순서에 따라 #363(v98)이 먼저 들어가도 v100과 겹치지 않는다. 사용한 ID: `zone-pair-llm-v100`, 워크플로 3.12.0.
 
 ## 무엇을 만들었나
 
@@ -128,21 +207,22 @@ peer_ko `306ca258f6fa…`. 번들 해시: rule `9de77e7fb751…`, no_comm `b7cbb
    있다(가짜 모델 30초 시험에서 확인). 스터디 스케줄러 규칙이라 고치지 않았고, 실제 모델 시험 전에 정할 일이다.
 5. **비용 모델 잠정**(`zone_sim_cost.v1` provisional), **시드 없음**(프록시 요청에 seed 필드 없음 → 실제 모델
    실행은 비트 단위 재현 불가, 요청·응답 원문과 해시가 재생 기록). 프록시 할당량은 스모크 12회에서 429가 없었다는 것만
-   확인했다(한도 자체는 모른다). SIM 비용은 스터디의 `fixed_prompt_equalized.v1`(텍스트 토큰만, 이미지 0)로 계산해
-   호출당 2.7~4.2 SIM초이며, 제공자가 센 실제 입력 토큰(약 6,000/호출, 이미지 2장 포함)의 약 절반만 반영한다.
+   확인했다(한도 자체는 모른다). **v99 smoke1의** SIM 비용은 스터디의 `fixed_prompt_equalized.v1`(텍스트 토큰만, 이미지 0)로 계산해
+   호출당 2.7~4.2 SIM초이며, 제공자가 센 실제 입력 토큰(약 6,000/호출, 이미지 2장 포함)의 약 절반만 반영했다.
+   v100은 이미지 몫(장당 1,490, 위 2번)을 더해 이를 고쳤다.
 6. 허가 규칙(위)은 이 층의 설계 결정이다. 다른 규칙(예: 대기 중 허가 만료)은 비교하지 않았다.
-7. **거절이 모델에 보이지 않음**: 블라인드 제어기는 두 로봇의 `Team.start`를 매 틱 `SELF_UNCERTAIN`으로 거절했지만(로봇당
+7. **(v100에서 해결: 위 1번 `own_status`)** smoke1에서 거절이 모델에 보이지 않았다. 블라인드 제어기는 두 로봇의 `Team.start`를 매 틱 `SELF_UNCERTAIN`으로 거절했지만(로봇당
    1,069회), 모델 입력에는 자기 명령 이력의 `command_issued`와 `self_belief`(confidence low)만 있어 모델은 이후 줄곧
-   `continue`만 골랐다. 제어기 내부 거절을 모델에 알릴지는 별도 결정거리다(현재 입력 경계는 그대로 둠).
+   `continue`만 골랐다. v100은 자기 시작 거절의 닫힌 기록을 모델에 알린다. 알린 뒤 모델이 달라지는지는 실제 실행으로 아직 보지 못했다.
 8. 공용 파일 충돌 가능: `scripts/run_ci_tests.py`(패턴 1줄), `tests/test_simulation_workflow_manager.py`
-   (카탈로그 개수 +1, 샘플 1줄). 번들 번호는 v99 / 3.11.0(위 설명). 병합 순서에 따라 다시 정해질 수 있다.
+   (카탈로그 개수 +1, 샘플 1줄). 번들 번호는 v100 / 3.12.0(위 4번). 병합 순서에 따라 다시 정해질 수 있다.
 
 ## 재현
 
 ```
 python3 -m scripts.run_pair_llm --condition peer_nl --expected-source-sha <커밋 SHA> --output <기본 체크아웃 outputs/ 절대 경로> \
     --cap-s 60 --synthetic-plumbing-calibration --sim-slot <슬롯> --lock-owner claude --execute
-python3 -m pytest tests/test_pair_llm_inputs.py tests/test_pair_llm_runtime.py tests/test_pair_llm_case.py tests/test_pair_llm_eval.py tests/test_pair_llm_live.py
+python3 -m pytest tests/test_pair_llm_inputs.py tests/test_pair_llm_runtime.py tests/test_pair_llm_case.py tests/test_pair_llm_eval.py tests/test_pair_llm_live.py tests/test_pair_llm_status.py
 ```
 
 실제 모델 스모크(조정자 승인 뒤): 위 명령에 `--live --proxy-pid <프록시 PID> --budget-db <절대 경로>/budget.sqlite --create-budget \

@@ -25,7 +25,7 @@ import json
 from harness import zone_study_prompts_ko as pk
 from harness import zone_study_protocol as zp
 
-PROMPT_VERSION = 'ugrp.pair_llm_prompts_ko.v2'
+PROMPT_VERSION = 'ugrp.pair_llm_prompts_ko.v3'
 PAIR_ROBOTS = ('r1', 'r2')
 PAIR_ROLES = {'r1': 'end_neg', 'r2': 'end_pos'}
 PAIR_CONDITIONS = ('no_comm', 'peer_nl')
@@ -49,7 +49,7 @@ order_sheet의 주문은 로봇 두 대가 함께 들어야 하는 물건입니�
 
 매 호출 제공되는 static_map, 정적 지도 그림 1장, order_sheet는 초기 계획 정보입니다.
 현재 위치, 현재 물건 상태, 운반 완료를 보장하지 않습니다.
-현재 상황의 근거는 자기 wrist RGB 1장, own_commands, own_belief와
+현재 상황의 근거는 자기 wrist RGB 1장, own_commands, own_belief, own_status와
 이 조건에서 실제로 받은 수신 메시지뿐입니다.
 공용 TOP 카메라, 동료 로봇의 영상·명령 기록, 시뮬레이터 상태, 정답 좌표,
 성공·완료 판정은 제공되지 않습니다.
@@ -67,14 +67,23 @@ claim의 role은 자기 역할 이름으로, destination_zone은 order_sheet의 
 자기 wrist RGB에서 대상이 보이지 않아도 order_sheet의 주문이 계획입니다. 보이지 않는다는 이유만으로 \
 중단하거나 미루지 마십시오.
 같은 자리에서 같은 명령을 반복하지 마십시오.
-각 로봇은 자기 행동을 스스로 결정합니다.''' % {'window': RENDEZVOUS_S}
+각 로봇은 자기 행동을 스스로 결정합니다.
+own_status는 당신 자신의 로봇 소프트웨어 상태입니다. last_outcome은 당신의 claim 뒤 마지막 결과입니다:
+claim_released(허가는 났지만 아직 시작하지 않음), start_refused(로봇이 시작을 거절함, reason에 이유),
+claim_rejected(claim이 받아들여지지 않음), pair_job_running(운반 절차 진행 중),
+pair_job_ended(절차가 끝남, 운반 성공을 뜻하지 않음), look_around_running, look_around_ended입니다.
+since_claim_s는 claim 뒤 지난 SIM초, refusals_since_last_call은 지난 호출 뒤 시작이 거절된 횟수입니다.
+start_refused의 reason SELF_UNCERTAIN은 로봇이 자기 위치를 확신하지 못한다는 뜻이며, 같은 claim을
+반복해도 풀리지 않습니다. 이때는 {"kind": "look_around"}로 주변을 둘러보며 위치를 다시 추정할 수 있습니다.
+own_status를 근거로 쓰면 decision_sources에는 own_commands로 적습니다.''' % {'window': RENDEZVOUS_S}
 
 KO_PAIR_ACTION = '''- action: 당신 자신의 행동 하나입니다. 다음 중 하나를 씁니다.
   {"kind": "claim", "order_id": order_sheet의 order_id, "role": order_sheet.kinds의 roles 중 당신의 역할 이름,
    "destination_zone": order_sheet의 destination_zone}
   {"kind": "continue"}
   {"kind": "wait"}
-  {"kind": "release", "order_id": 놓아줄 order_id}'''
+  {"kind": "release", "order_id": 놓아줄 order_id}
+  {"kind": "look_around"}  (자기 위치를 다시 추정하는 둘러보기, 실행 중인 작업이 없을 때만 시작됩니다)'''
 
 
 def _pair_only(text: str) -> str:

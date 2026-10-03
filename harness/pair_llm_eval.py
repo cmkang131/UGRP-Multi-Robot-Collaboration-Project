@@ -96,6 +96,7 @@ def trial_metrics(*, condition, verdict, command_counts, trial=None, ledger_wall
            'end_sim_s': end_sim_s if end_sim_s is not None else verdict.get('end_s'),
            'command_count': dict(command_counts), 'command_count_total': _sum(command_counts.values()),
            'model_calls': 0, 'http_attempts': 0, 'model_cost_sim_s': 0., 'input_tokens': 0, 'output_tokens': 0,
+           'input_tokens_image': 0, 'input_tokens_charged': 0, 'image_billing': None,
            'provider_usage': None, 'response_wall_s': None, 'messages': {'sent': 0, 'accepted': 0, 'rejected': 0},
            'language': {'messages': 0, 'hangul_ratio_ge_0_9': 0, 'share': None, 'flagged': 0, 'gate': False},
            'self_sabotage': {'events': len(sabotage), 'rows': [dict(r) for r in sabotage]},
@@ -105,7 +106,8 @@ def trial_metrics(*, condition, verdict, command_counts, trial=None, ledger_wall
     cost = trial.cost_summary()
     row.update(model_calls=len(trial.calls), http_attempts=cost['http_attempts'],
                model_cost_sim_s=cost['call_sim_s'], input_tokens=cost['input_tokens'],
-               output_tokens=cost['output_tokens'], model_calls_by_status=_count(c['status'] for c in trial.calls),
+               input_tokens_image=cost['input_tokens_image'], input_tokens_charged=cost['input_tokens_charged'],
+               image_billing=cost['image_billing'], output_tokens=cost['output_tokens'], model_calls_by_status=_count(c['status'] for c in trial.calls),
                model_calls_by_actor=_count(c['actor'] for c in trial.calls), censored_calls=cost['censored_calls'])
     walls = [float(w) for w in ledger_walls if w is not None]
     if walls:

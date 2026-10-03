@@ -26,6 +26,7 @@ import os
 import time
 from pathlib import Path
 
+from harness import pair_llm_billing as billing
 from harness import pair_llm_contract as contract
 from harness import zone_final_pair_contract as skill_layer
 from harness import zone_map_schematic as ms
@@ -128,6 +129,7 @@ def write_llm_artifacts(out, trial, adapter_wire, runtime, links) -> dict:
     (study / 'map_figure.png').write_bytes(trial.map_png)
     jsonl(study / 'requests.jsonl', trial.requests)
     problems = [p for row in trial.requests for p in pk.verify_archived_request(row)]
+    problems += [p for row in trial.requests for p in billing.billing_problems(row)]
     jsonl(study / 'dispatch.jsonl', trial.dispatch_log)
     jsonl(study / 'inputs.jsonl', trial.input_log)
     jsonl(study / 'executor_events.jsonl', trial.executor_events)
@@ -146,7 +148,8 @@ def write_llm_artifacts(out, trial, adapter_wire, runtime, links) -> dict:
     records = live.live_records(trial.send_ledger)
     if records is not None:                       # a live ledger: per-POST rows (tokens, latency, hashes, failures)
         jsonl(study / 'model_calls.jsonl', records['rows'])
-        summary['live'] = {'posts': records['usage']['requests'], 'model_usage': records['usage']}
+        summary['live'] = {'posts': records['usage']['requests'], 'model_usage': records['usage'],
+                           'reply_format': records['reply_format']}
     return summary
 
 
@@ -296,6 +299,7 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
         usage = live_records(getattr(trial, 'send_ledger', None))
         if usage is not None:
             result['metrics']['model_usage'] = usage['usage']
+            result['metrics']['reply_format'] = usage['reply_format']
         result['metrics']['failure_class'] = result.get('failure_class')
         write(out / 'metrics.json', result['metrics'])
         write(out / 'result.json', result)

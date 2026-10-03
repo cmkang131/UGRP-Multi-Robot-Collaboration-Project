@@ -1,6 +1,6 @@
-"""Execution bundle of the pair LLM viability test (v99). Static: never imports a simulator or a model client.
+"""Execution bundle of the pair LLM viability test (v100). Static: never imports a simulator or a model client.
 
-``zone-pair-llm-v99`` (workflow 3.11.0) puts an LLM decision layer on top of the v88 scripted two-robot pair
+``zone-pair-llm-v100`` (workflow 3.12.0) puts an LLM decision layer on top of the v88 scripted two-robot pair
 skill and compares three arms on the SAME map, order, 300 SIM s cap and evaluator:
 
 * ``rule``     C-rule         both robots submit the scripted claim as soon as they are idle (no model);
@@ -20,19 +20,21 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
+from harness import pair_llm_billing as billing
+from harness import pair_llm_status as status
 from harness import zone_final_environment as base
 from harness import zone_final_pair_contract as skill_layer
 from harness import zone_final_pair_skill as skill
 
 ROOT = base.ROOT
-REGISTRY = 'configs/pair_llm_v99.json'
+REGISTRY = 'configs/pair_llm_v100.json'
 SCENARIO = 'configs/pair_llm_scenario_v3.json'
-WORKFLOW = 'configs/simulation_workflows.d/pair_llm_v99.json'
-BUNDLE_ID = 'zone-pair-llm-v99'
-WORKFLOW_ID = 'zone-pair-llm-v99'
-WORKFLOW_VERSION = '3.11.0'
-BUNDLE_SCHEMA = 'ugrp.pair_llm_bundle.v99'
-REGISTRY_SCHEMA = 'ugrp.pair_llm.v99'
+WORKFLOW = 'configs/simulation_workflows.d/pair_llm_v100.json'
+BUNDLE_ID = 'zone-pair-llm-v100'
+WORKFLOW_ID = 'zone-pair-llm-v100'
+WORKFLOW_VERSION = '3.12.0'
+BUNDLE_SCHEMA = 'ugrp.pair_llm_bundle.v100'
+REGISTRY_SCHEMA = 'ugrp.pair_llm.v100'
 CONDITIONS = ('rule', 'no_comm', 'peer_nl')
 ARMS = {'rule': 'C-rule', 'no_comm': 'C-llm-nocomm', 'peer_nl': 'C-llm-nl'}
 CAP_S = 300.
@@ -149,7 +151,7 @@ def model_record(condition, *, kind, root=ROOT) -> dict:
 def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=False, source_sha=None,
            root=ROOT) -> dict:
     """The run bundle of one arm. ``calibration`` is ``{'path', 'sha256'}`` or None (plan only)."""
-    from harness.pair_llm_dispatch import PAIR_POLICY
+    from harness.pair_llm_dispatch import PAIR_ACTION_KINDS, PAIR_POLICY
     from harness.pair_llm_prompts_ko import (PROMPT_VERSION, STUDY_SPEC, fixed_prompt_reference_tokens,
                                              prompt_template_sha256)
     from harness.zone_sim_cost import params as cost_params
@@ -187,10 +189,18 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
             'instruction_text_language': 'ko (reused study text)',
             'study_spec': STUDY_SPEC[condition],
             'study_spec_note': 'sealed study name of the open free-text peer channel (wire encoding free_ko); '
-                               'its language check only flags'},
+                               'its language check only flags',
+            'action_kinds': list(PAIR_ACTION_KINDS),
+            'look_around': 'pair-owned action kind over the robot\'s own executor look_around() (a guarded wide '
+                           'own-camera look sweep; refused while any own job runs). The sealed study vocabulary '
+                           'does not list it: harness.pair_llm_dispatch.validate_reply checks such a reply with a '
+                           'placeholder continue and restores the action. Whether it helps depends on the pose '
+                           'provider; with the blind plumbing worker it ends LOOKED_POSE_UNCERTAIN',
+            'own_status': status.record()},
         'cost_model': {'version': cost.version, 'digest': cost.digest(), 'provisional': cost.provisional,
                        'charged': 'deterministic token-based SIM seconds; wall latency recorded, not charged',
-                       'applies_to': 'LLM arms only (the rule arm makes no call)'},
+                       'applies_to': 'LLM arms only (the rule arm makes no call)',
+                       'input_billing': billing.record() if llm else None},
         'call_policy': {k: getattr(PAIR_POLICY, k) for k in PAIR_POLICY.__dataclass_fields__} if llm else None,
         'decision_limits': dict(limits) if llm else None,
         'channel': reg['conditions'][condition]['channel'],
@@ -200,7 +210,8 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
         'timing': physics['timing'],
         'render_profile': 'floor_light_v1', 'contact_profile': 'cargo_noslip_v1', 'weld': 'off',
         'sensors': {'ultrasonic_front': 'off'}, 'shared_top_camera': False,
-        'controller_inputs': ['own_rgb', 'static_map', 'order_sheet', 'own_command_history', 'delivered_messages'],
+        'controller_inputs': ['own_rgb', 'static_map', 'order_sheet', 'own_command_history', 'own_status',
+                              'delivered_messages'],
         'evaluation': {'judge': 'harness/pair_llm_eval.py', 'status': 'PROVISIONAL_GEOMETRIC_JUDGE_NOT_THE_363_JUDGE',
                        'success_source': 'separate evaluator over eval_only/trajectory.jsonl; never a robot input'},
         'rule_arm_runtime': 'harness.zone_final_pair_runtime.Runtime (unmodified)',
