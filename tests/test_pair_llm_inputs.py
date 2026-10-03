@@ -13,7 +13,7 @@ from harness import pair_llm_prompts_ko as prompts
 from harness import zone_map_schematic as ms
 from harness import zone_study_protocol as zp
 from harness.zone_study_contract import ContractViolation
-from tests.pair_llm_fakes import make_inputs, map_bundle, offline_only  # noqa: F401  (autouse fixture)
+from tests.pair_llm_fakes import make_inputs, offline_only  # noqa: F401  (autouse fixture)
 
 ROOT = contract.ROOT
 HANGUL = re.compile('[가-힣]')

@@ -7,7 +7,7 @@ from harness.pair_llm_case import claim_counts, sabotage_events
 from harness.pair_llm_dispatch import PairLink
 from harness.pair_llm_runtime import GatedRuntime, NOT_RELEASED, ClaimGate, retryable
 from harness.zone_study_contract import ContractViolation
-from tests.pair_llm_fakes import SERVO, gated_runtime, offline_only, ready  # noqa: F401  (autouse fixture)
+from tests.pair_llm_fakes import gated_runtime, offline_only, ready  # noqa: F401  (autouse fixture)
 
 ORDER, ZONE = 'cargoX', 'B'
 
