@@ -1,0 +1,61 @@
+{
+  "checked_utc": "2026-10-03T06:34:03.716132+00:00",
+  "candidate_sha": "edcb4d3c0a001b4c5fa7bf5c61a7ae6be3177bb2",
+  "base_sha": "36a7dfceb767437f29f469fc860fc02f8a349654",
+  "matched_comment_ids": [
+    5958329647,
+    5966135675
+  ],
+  "rotation_created_at": "2026-10-03T05:56:19Z",
+  "rotation_updated_at": "2026-10-03T05:56:19Z",
+  "rotation_body_sha256": "a878f54a20b27db812bac783b82545bcb0047c0dc0c26b9b4390728ba784dbc7",
+  "rotation_snapshot_sha256": "cad257ab12c41b786e36a1688ef522ee512551460ec91dc8e1b44a162fe450ca",
+  "rotation_artifacts_sha256": {
+    "experiments/2026-10-03-critb-rotation/consumer_criterion_B_rotation.json": "6129f144c840510535de053ffcce325ef934e8192c6adf777b2df8d976f5da08",
+    "experiments/2026-10-03-critb-rotation/calibration_candidate_r5_yaw.json": "978727fcacc5e368efe2a0fdf6d9d8dc3756573c41e896e06ba11d78cf86fb97"
+  },
+  "main_candidate_merge_tree": "57ed868379152950ad17790104ef7fee9ce2c802",
+  "candidate_tree": "57ed868379152950ad17790104ef7fee9ce2c802",
+  "real_v91_raw_opened": false,
+  "real_v91_raw_hashed": false,
+  "real_v91_scored": false,
+  "physics_runs": 0,
+  "render_runs": 0,
+  "model_calls": 0,
+  "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+  "numpy": "2.4.4",
+  "scipy": "1.17.1",
+  "pytest": "8.3.4",
+  "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+  "tests": {
+    "passed": 306,
+    "failed": 0,
+    "author_related_regressions": 289,
+    "independent_checks": 17,
+    "log": "review_362_tests.txt",
+    "junit": "review_362_tests.xml"
+  },
+  "yaw_boundary": {
+    "just_pass_target_p95": 1.9999998,
+    "just_fail_target_p95": 2.0000002,
+    "independent_max_abs_agreement": 2e-12
+  },
+  "preservation": {
+    "files": 64,
+    "compared_against": [
+      "36a7dfceb767437f29f469fc860fc02f8a349654",
+      "edcb4d3c0a001b4c5fa7bf5c61a7ae6be3177bb2"
+    ],
+    "all_equal": true
+  },
+  "commands": [
+    "PYTHONPATH=/private/tmp/ugrp-review-362-safety:. python3 -m pytest -q tests/test_consumer_criterion_b_v91_yaw.py tests/test_consumer_criterion_b_v91.py tests/test_consumer_criterion_b_rotation.py tests/test_consumer_criterion_b.py tests/test_unloaded_consumer.py tests/test_unloaded_hammerstein.py tests/test_review_346.py experiments/2026-10-03-critb-v91-yaw/review_362_checks.py --junitxml=experiments/2026-10-03-critb-v91-yaw/review_362_tests.xml"
+  ],
+  "repro_guard_path": "experiments/2026-10-03-critb-v91-yaw/review_362_safety/sitecustomize.py",
+  "artifact_sha256": {
+    "review_362_safety/sitecustomize.py": "7a0ab21130b147c6c49192956dac98ba4371070ec87ef48e4ea6cf2b8bf0ebdd",
+    "review_362_checks.py": "b2778ecc25c33d2e2b4ab88a933ffa4fbb7131c2092b05ace152f2b1c3663105",
+    "review_362_tests.txt": "5c178b81641f5e69385ac8b9bb7da3a4a32665cea12dd088726016f297da6994",
+    "review_362_tests.xml": "9e3b4c6536dad57a7dfc8fd9aab2d2a5dad3eef94dd565ad676b5013e3cd3d00"
+  }
+}
