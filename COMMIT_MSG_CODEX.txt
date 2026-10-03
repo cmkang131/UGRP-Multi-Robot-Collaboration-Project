@@ -1,0 +1,8 @@
+ci: 오프라인 회귀 검사를 파일 단위 8개 shard로 분할
+
+- 기존 302개 파일 목록을 유지하고 결정적 분할과 누락·중복 검사를 추가
+- 기록된 파일별 시간 입력을 지원하고 기본은 파일 수 기준으로 분배
+- 공통 bundle·registry·fixture 검사는 한 번 실행하고 offline-regressions 집계 이름 유지
+- 분할·CLI·matrix 범위·집계 실패 전파 단위 테스트 66개 통과
+
+Co-Authored-By: Codex <noreply@openai.com>
