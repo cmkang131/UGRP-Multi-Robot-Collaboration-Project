@@ -125,11 +125,11 @@ AGENTS.md에 따라 raw 삭제·압축·이동은 사용자가 정한다. 크기
 
 ## 5. 캡처 설정 (앞으로의 실행)
 
-AGENTS.md는 **실제 모델 요청의 이미지·텍스트 보존**을 요구한다. 그래서 먼저 프레임의 용도를 나눈다.
+AGENTS.md는 모델 요청·응답 **텍스트와 제거한 이미지의 sha256 목록을 항상** 보존하고, 이미지 원본은 보존 규칙 4가지(보류·확증 자료와 test 코호트, 인용·TensorBoard 등록·버전 대표 실행, 진행 중 작업·테스트가 쓰는 자료, 최근 3일 실행)에 해당할 때만 둔다고 정한다(2026-10-04 사용자 결정. 이전의 "모델 요청 이미지 전부 보존" 규칙은 폐기). 해당하지 않는 이미지 원본은 목록을 쓴 뒤 휴지통으로 옮기고 `outputs/cleanup-records/`에 기록한다. 아래 표는 러너가 **쓰는 시점**의 기준이고, 쓴 뒤의 정리는 이 규칙을 따른다. 먼저 프레임의 용도를 나눈다.
 
 | 종류 | 예 | test 코호트 | dev·진단 |
 |---|---|---|---|
-| 모델 요청 입력 (LLM·ACT·학습 학생) | `team/*-request.json`, ACT 입력 | 바이트 그대로 전부 | 바이트 그대로 전부 |
+| 모델 요청 입력 (LLM·ACT·학습 학생) | `team/*-request.json`, ACT 입력 | 바이트 그대로 전부(보존 규칙 1) | 쓰는 시점엔 전부. 텍스트·해시는 항상 보존하고 이미지 원본은 보존 규칙에 따라 정리 |
 | 규칙 기반 제어 입력 프레임 | 자기 카메라 추정기·RGB 스킬의 5 Hz JPEG | 전부 | 1 Hz 표본 + 결정·단계 전환 프레임. 나머지는 해시만 |
 | 평가 전용 추가 캡처 | TOP·개관 이미지, `eval_only/` 렌더 | 저해상도 영상 1개 + 요약 프레임 | 영상만 |
 | 실행 영상 | `execution.mp4` | 유지(약 2 MB) | 유지 |
@@ -149,7 +149,7 @@ AGENTS.md는 **실제 모델 요청의 이미지·텍스트 보존**을 요구�
 
 - 결정 프레임은 세 가지다: 제어기가 요청한 capture, macro 뒤의 capture, 제어기가 이벤트를 내거나 단계를 바꾼 프레임. 결정 프레임은 주기 시계를 움직이지 않는다.
 - 파일을 쓰지 않은 프레임도 러너의 프레임 로그에 SIM 시간·sha256을 남긴다.
-- 모델 요청 이미지(LLM·ACT·학습 학생)는 이 정책 대상이 아니며, 항상 바이트 그대로 보존한다.
+- 모델 요청 이미지(LLM·ACT·학습 학생)는 이 프로필의 솎기 대상이 아니다. 쓴 뒤의 정리는 AGENTS.md 보존 규칙(텍스트·해시 항상, 이미지 원본은 4가지 조건)을 따른다.
 - 러너는 실행 기록(manifest)에 `FrameStoragePolicy.record()`를 넣는다. 프로필 이름이 실행 번들 조건의 일부가 된다([실행 버전 관리](execution_versioning.md)).
 - 예: `policy = FrameStoragePolicy('dev_1hz_decisions_v1', split='dev')`로 만든 뒤 프레임마다 `policy.decide(rid, now, decision=..., reason=...)['saved']`가 참일 때만 JPEG를 쓴다.
 
@@ -161,8 +161,8 @@ AGENTS.md는 **실제 모델 요청의 이미지·텍스트 보존**을 요구�
 | `scripts/run_m1_owncam.py` (`frames/NNNNN.jpg`) | M1 1대 배달 dev·test | `--frame-profile`(기본 `all_v1`)과 `--split`. test 사전 등록 명령은 바꾸지 않는다 | 미연결 |
 | `scripts/run_zone_pair_dev.py`, `zone_pair_dev_runtime.py` (Codex 브랜치) | M2 공동 운반 dev | 위 host와 같은 방식 | **이번에 수정 금지**(Codex가 `ugrp-wt/codex-pair-grasp`에서 수정 중). 목록에만 남긴다 |
 | `harness/rgb_skill_execution.py` (`rgb/<oid>-<label>.jpg`) | 3대 dispatch RGB 스킬(`plan-guidance` 등) | 관측 id를 스트림으로 쓴다. 스킬 단계 전환·LLM 결정 직전 관측은 결정 프레임 | 미연결 |
-| `harness/task_stage_execution.py` (`rgb/<request>-<label>.jpg`) | 단계 요청 실행 | 요청마다 쓰는 이미지는 모델 요청 입력이라 **전부 유지**(정책 대상 아님) | 해당 없음 |
-| `harness/rgb_communication_runtime.py`, `harness/camera_runtime.py` | RGB 대화·카메라 런타임(모델 요청) | 모델 요청 이미지라 **전부 유지** | 해당 없음 |
+| `harness/task_stage_execution.py` (`rgb/<request>-<label>.jpg`) | 단계 요청 실행 | 요청마다 쓰는 이미지는 모델 요청 입력이라 **전부 쓴다**(프로필 대상 아님. 쓴 뒤 정리는 보존 규칙) | 해당 없음 |
+| `harness/rgb_communication_runtime.py`, `harness/camera_runtime.py` | RGB 대화·카메라 런타임(모델 요청) | 모델 요청 이미지라 **전부 쓴다**(쓴 뒤 정리는 보존 규칙) | 해당 없음 |
 | `scripts/record_owncam_localization.py`, `experiments/2026-09-26-vision-loc/run_vl_teacher_render.py` | 위치 추정 학습·평가 데이터 | 학습 표본이라 **전부 유지** | 해당 없음 |
 | `scripts/eval_zone_*`, `probe_*` | 인식 평가 렌더·진단 | 평가 표본은 전부 유지. 진단 probe는 러너 주인이 판단한다 | 미연결 |
 
