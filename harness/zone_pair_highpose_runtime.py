@@ -9,7 +9,9 @@ from harness import zone_pair_highpose as pose
 from harness import zone_pair_highpose_blind_close as blind
 from harness import zone_pair_highpose_frame_gate as frame_gate
 from harness import zone_pair_highpose_grip as grip
+from harness import zone_pair_highpose_guardlog as guardlog
 from harness import zone_pair_highpose_lookaround as lookaround
+from harness import zone_pair_highpose_start_relief as start_relief
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_runtime import Runtime as PreviousRuntime
 from harness.zone_final_pair_guards import CommandGuard as PreviousGuard
@@ -337,13 +339,26 @@ class CommandGuard(PreviousGuard):
     preclose_check = frame_gate.gated(PreviousGuard.preclose_check)
     observe_standoff = frame_gate.gated(PairCommandGuard.observe_standoff)
 
+    veto_trace = None                    # v98 evidence log + start-state relief (guardlog, start_relief): set only in check()
+
+    def sweep_guard(self):
+        return start_relief.install(super().sweep_guard(), self.veto_trace)
+
     def check(self, now, commands):
         moving = any(c['kind'] == 'mecanum' and any(c.get(k, 0.) != 0.
                      for k in ('forward', 'left', 'turn')) for c in commands)
         if moving and self.carrying_beam and not pose.at_high(self.ep.own.servo):
             self.ep.abort(now, 'LOADED_BASE_MOTION_REQUIRES_HIGH')
             return [{'kind': 'hold'}]
-        return super().check(now, commands)
+        before, issued = len(self.ep.own.events), copy.deepcopy(commands)
+        self.veto_trace = trace = guardlog.Trace()
+        try:
+            out = super().check(now, commands)
+        finally:
+            self.veto_trace = None
+        start_relief.log_reliefs(self, now, trace)
+        guardlog.log_veto(self, now, issued, before, trace)
+        return out
 
 
 class GraspViewLogOnly(m2.M2DoorStudent):
@@ -434,7 +449,8 @@ def adopt_v98_frame_gate(runtime):
     from harness.zone_pair_highpose_contract import own_image_gates
     gates = own_image_gates()
     return {'path': gates['path'], 'sha256': gates['sha256'], 'values': dict(gates['values']),
-            'frame_gate': frame_gate.record(), 'look_around': lookaround.record()}
+            'frame_gate': frame_gate.record(), 'look_around': lookaround.record(),
+            'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record()}
 
 
 class Runtime(PreviousRuntime):
