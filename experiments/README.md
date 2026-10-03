@@ -1,6 +1,7 @@
 # 실험 인덱스
 
 - [2026-10-03 높은 자세 공동 운반 후보 v93](2026-10-03-pair-carry-highpose/README.md): 기존 beam-relative 학생·OpenCV 위치 추정, v92 실측 보정 전 실행 차단, 단계/P03 인수 계획.
+- [2026-10-03 v92 적재 보정 일정](2026-10-03-v92-loaded-schedule/README.md): D1–D4에 따라 높은 운반 후보에서 loaded 측정, 새 B″·8초 구간 동결; [D2/D5 전용 조립기·HIGH 로더 계약](2026-10-03-v92-loaded-schedule/assembly/README.md), 실제 렌더 수집·인수는 조정자 범위.
 
 - [2026-10-03 v91 빠른 guard·동시 SIM 슬롯](2026-10-03-calib-fast-guard/README.md): v90 일정·물리 보존, 완료 raw 무렌더링 동등성 및 오프라인 CPU 검사; 두 지도 새 수집은 별도.
 

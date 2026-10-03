@@ -1,0 +1,98 @@
+# v92 높은 운반 자세의 적재 보정 수집
+
+2026-10-03. 조정자 D1–D4에 따라 **하중(loaded) 운동·카메라·쌍 측정을 높은 운반 후보 자세로 통일**했다. 24 mm 바닥 자세는 파지·들기에만 사용한다. 전체 수집은 아직 실행하지 않았다. v92 / 3.4.0에 실행 기록이 없다는 사용자·조정자 확인에 따라 같은 번들을 개정했다. 이전 두 짧은 무렌더 진단은 별도 일정이며 전체 v92 수집 기록이 아니다.
+
+후속 D2·D5 구현은 [v92 전용 조립기·HIGH 로더 계약](assembly/README.md)에 기록했다. 별도 원본 감사·8초 창·B″ 적합과 선택적인 r5/v91 결과 JSON 입력을 추가했다. 아래 D1–D4 인계의 조립기 미완료 표현은 당시 상태다. 실제 수집·보정 승인·학생 연결/인수는 계속 별도다.
+
+이전 소스는 `a9481446d9c7c503bdbc53941d3538cd5ec5ee12`다. 이전 일정 원본 SHA-256은 `a4754dec4f55b7b43fcfc15fa59371b544101c609ed7d079e1343d1bcfe14e3d` (5,055,083 bytes), gzip SHA-256은 `8acf31c0b544e3d4488579167543a502fc8608bd3b8e19dde5b0a11a14b7f507`이다. 이전 [일정 기록](schedule_receipt.json), [검증 기록](final_validation.json), 두 무렌더 검사 기록은 그대로 보존한다. 이 문서는 새 설계를 설명하며 과거 검증을 새 일정의 인수로 승계하지 않는다.
+
+## 새 등록과 일정
+
+| 항목 | 값 |
+|---|---|
+| 번들 / 실행 경로(workflow) | `zone-final-pair-v92` / `zone-final-pair-loaded-v92`, 3.4.0 |
+| 지도 / 시드 | `zone_wide_two_doors_final_v3` / 911 |
+| 용도 | 교사 전용 보정 훈련(CALIBRATION_TRAINING), 승인 전 자료(UNQUALIFIED) |
+| 상한 | 720 SIM초 + reset 최대 5초 = 725초 |
+| 표본 | 위치 0.05초, 자기 RGB 0.2초, 명령 lease 0.05초 |
+| 일정 | 22,302개 명령, JSON 5,051,841 bytes |
+| 일정 SHA-256 | `b6ebf872ac1f47bb6f13c336ca49c74343ffe592c5cb1bbd0916449a6208bcbe` |
+| gzip SHA-256 | `47b0e1f3fc52ed94fb737e5b7a90c1f75035c74d198b8bcce3036890fc9d8b62` (62,247 bytes) |
+| B″ SHA-256 | `5f7d8905c49625a7125647eaf713575e4e659ca658274b8734fd2a4952da4d4a` |
+
+[새 일정 기록](revision_d1_d4/schedule_receipt.json)에 이전/새 해시와 측정 구간을 함께 보존한다. 생성한 일정과 등록 gzip의 해제 바이트를 실행 전에 대조하고, 수집 폴더의 `inputs/schedule.json`도 같은 해시인지 검사한다. B″ 바이트와 해시는 등록·번들·소스 목록·결과에 연결한다.
+
+| 상대 SIM초 | 명령과 측정 |
+|---|---|
+| 0–32 | 0초 바닥 자세/열기, 2초 닫기, 4초 기존 hover, 16초 110 mm, 20초 130 mm, 24초 HIGH. 8초 준비 |
+| 32–40 | HIGH 중앙 카메라 측정 8초 |
+| 40–212 | HIGH 전진 계단·PRBS |
+| 212–384 | HIGH 옆 이동 계단·PRBS |
+| 384–490 | HIGH 공동 회전 계단·PRBS |
+| 490–506 | 이동 종료 후 8초 준비, 498–506초 중앙 측정 |
+| 506–570 | 팬 1480→1500→1520→1500. 각 전이 후 8초 준비·8초 측정 |
+| 570–676 | HIGH 상대 회전 계단·PRBS. 공동 운동 적합과 구분한 쌍(pair) 측정 |
+| 676–700 | 정지 뒤 684–692초 HIGH 중앙 재측정, 나머지 원본도 보존 |
+| 700–720 | 측정 종료 뒤 바닥으로 내림, 714초 열기 |
+
+HIGH 서보 3·4·5·6은 `896,2035,1894,1500` (150 mm/약 −40°)이다. 준비용 기존 hover는 `807,1897,2187,1500`, 경유는 `891,2036,2054,1500`과 `981,2152,1917,1500`, 바닥 파지는 `1269,2052,2494,1500`이다. HIGH의 과거 기하 진단은 로봇당 약 90열이었으며 실제 RGB 검출 성공을 뜻하지 않는다. 기존 학생 코드는 바꾸지 않는다. D1/D2의 새 학생 운반 제어기·로더 계약·번들과 렌더 인수는 별도 작업이다.
+
+기존 네 명령 크기 `.006/.015/.025/.04`의 양·음 10초 계단+1초 정지, 전진/옆 `.001/.002/.004` 추가 계단, PRBS31의 다항식·0.5초 chip·크기 .015·뒤 2.5초 정지를 보존한다. 공동 회전은 두 로봇 모두 `turn=u, left=−0.4732u`, 상대 회전은 반대 turn이다. 0.4732는 정적 기하값이며 실측 위치로 명령을 보정하지 않는다. 추가 낮은 명령도 사전에 정지로 분류하지 않는다.
+
+카메라 위치/FOV·로봇/빔 외형·물리·접촉·`cargo_noslip_v1`·`floor_light_v1`·weld OFF·초음파 OFF·샘플링·v91 FastGuard·SIM 슬롯·인터록을 유지한다. 네 집게 접촉·빔 바닥 1 cm 이상·외부 지지 없음·weld 없음은 사후 선별이며 명령 피드백이 아니다. ENOSPC/인터록/비정상 기하는 HOST_ERROR이고 부분 원본을 보존한다. [기존 보존 목록](preservation.json)의 29개 파일도 대조한다.
+
+## 새 기준 B″와 하한의 근거
+
+[동결 B″](criterion_B_double_prime.json)는 B′ 전체 판정 내용을 보존하고 D3/D4 차이를 별도 필드로 명시한다. 기존 B/B′/r4/r5 파일, v88/v90/v91 등록과 조립기는 수정하지 않는다.
+
+D3의 근거는 이미 공개된 v88 loaded 진단 `f2fc0cc3d2315e8b4441028a1713a1ba5af23175`의 `motion.json`이다. [탐색 근거](revision_d1_d4/v88_c0_basis.json)는 그 파일의 SHA-256, 원본 수집 출처, 전진·옆 32개 로봇별 계단 결과를 보존한다. 각 10초 계단의 끝 5초 변위를 5초로 나누며 두 로봇·양 부호를 모두 사용한다. 최소 비영 명령 `.006`의 속도 절댓값은 전진 2.536432–2.541771 mm/s, 옆 0.076775–0.173733 mm/s다.
+
+`.006`이 완전 정지라는 기존 전진 가정은 자료와 충돌한다. 더 작은 비영 명령이 관측되지 않았으므로 이 자료에서 양수 c0 하한은 식별할 수 없다. 따라서 비음수 정지 경계의 정의 **c0≥0**만 사용해 전진/옆 탐색 하한을 **0**으로 고정한다. 임의의 축소 계수나 새 정지 허용 오차를 만들지 않는다. 이는 측정한 c0나 통계적 신뢰하한이 아니다. 옆 이동의 작은 잔류를 임의로 정지라고 단정하지 않는다.
+
+회전 하한 `.006`, c0 상한 `.015`, u1 범위 `.025–.04`, 나머지 이득·시간상수·초깃값·수렴/계수(rank)·경계 거리 검사는 그대로다. 관측으로 확인한 양수 정지 수준, 두 램프 수준, 포화 수준과 내부해 요구도 유지한다. 작은 새 수준에서 그 지지가 없거나 최적해가 경계에 닿으면 계속 PARTIAL이며, v92를 본 뒤 이 하한을 다시 맞추지 않는다. 기존 `.006`을 자동 정지 수준으로 두는 v88 분석기는 그대로 두고 D5의 새 분석기가 실제 지지를 감사해야 한다.
+
+D4는 loaded 카메라만 사전에 명시한 **8초 준비+8초 측정**, 반열린 구간 `[start_s,end_s)`로 선택한다. 마지막 팔/팬 변경 또는 마지막 비영 이동 lease 종료 뒤 최소 8초를 기다린다. fine은 기존 1초 기준이다. 프레임 수·광학/바닥 변환 잔차·팬 잔차·접촉·운동 창·PRBS 판정은 B′와 같다. 바닥 파지와 경유 자세는 loaded 카메라 요구에서 제외하는 D2 로더 계약의 준비 구간이다. 준비·전이 원본을 버리거나 보간하지 않는다.
+
+## 검증과 인계
+
+소스 `83032b6d62e0addff51c441e22f6b1e38885961c`에서 새 v92 테스트 **27 passed in 84.76s**, 관련 실행기·인터록·슬롯 테스트 **89 passed in 22.81s**를 확인했다. [커밋 전 검증](revision_d1_d4/precommit_validation.json)에 로그/JUnit 해시를 남겼다. 보호 파일 29개, plan-only, 셸 문법, 고정 fixture 3개, `git diff --check`도 통과했다.
+
+[70초 무렌더 검사](revision_d1_d4/headless_revised_check.json)는 개정 일정의 정확한 0–70초 접두 구간(prefix), **1,244개 명령**을 실행했다. 전체 1,401표본 중 들기 전 82표본은 not_lifted, 나머지 1,319표본은 lifted였다. 사전 지정한 [8,70)초의 **1,240/1,240표본**이 빔 바닥 1 cm 이상·네 집게 접촉·외부 지지 없음·weld 없음이었다. HIGH의 32/38/48/60/68초에서 두 로봇 모두 기하 경계와 가림 없는 중간점 90열이었다. 기존 hover의 14초는 0열이다. HIGH 첫 측정 [32,40)초의 빔 바닥 최솟값은 약 114.816 mm였다. 이는 렌더 검출 수치가 아니다.
+
+표준 세션 래퍼는 `/bin/ps` 차단으로 물리 시작 전에 종료됐다. 자식·잠금 정리 확인 뒤 같은 소스를 자식 없는 단일 프로세스로 실행하고 종료 후 SIM 슬롯/공용 잠금 해제를 확인했다. 시작/종료 부하 평균과 원본은 `/Users/changmin/projects/ugrp/outputs/v92-loaded-d1-d4-20261003/`에 보존했다. [최종 검증](revision_d1_d4/validation.json).
+
+[TensorBoard](http://127.0.0.1:6006/?runFilter=%5E1003-v92-%28high-d1d4%7Cloaded-design-r2%29%2F&tagFilter=%5E%28result%2F%28sim_s%7Ccommands%7Cmodel_calls%29%7Coffline%2F%28lifted_selected_samples%7Ccontroller_edge_columns%7Ccandidate_edge_columns%29%29%24&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Flifted_selected_samples%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcontroller_edge_columns%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcandidate_edge_columns%22%7D%5D&scalarSmoothing=0#timeseries)의 새 `1003-v92-high-d1d4/high-prefix`를 기존 두 짧은 검사와 함께 표시했다. 이벤트·서버 API·Chrome 강의 실제 카드 값과 6개 pin을 대조하고 HParams 기본 네 열을 다시 적용했다. 개별 새 HParams 행은 미확인이다. 새 영상은 0개다. [표시 기록](revision_d1_d4/tensorboard_verification.json). 전체 720초, 실제 RGB 추적, 모형 적합·승인, 학생 운반 성공은 조정자의 후속 검증이다. 금지된 v91 held-out 원본은 읽지 않는다.
+
+수집 전 조정자는 D5의 v92 전용 조립기(assembler)와 D2 로더 계약을 준비하고 **B″·일정·조립기 해시를 #219에 공개 고정**해야 한다. 이번 PR의 두 해시만으로 D5가 완료된 것은 아니다. review-361의 적용 가능한 P1(카탈로그 개수와 v92 plan 누락)을 수정했고 관련 계획 테스트 **4 passed, 14 deselected in 0.22s**를 확인했다. [모든 지적·권고 답변](revision_d1_d4/REVIEW_361_RESPONSE.md)에 반영 범위와 남은 조건을 나눴다. HIGH/B″ 변경분 독립 재검토·새 SHA 원격 CI·렌더 수집은 남아 있다.
+
+SIM 슬롯 수집 명령은 다음과 같다. 정확한 검토 소스 SHA를 사용하고 새 출력 경로가 필요하다. 스크립트는 HEAD·브랜치·clean tree·디스크·슬롯을 확인하며, 같은 조정자의 슬롯만 함께 사용할 수 있다.
+
+```bash
+cd /Users/changmin/projects/ugrp-wt/v92-loaded
+V92_SOURCE_SHA=<최종 PR 댓글의 40자리 SHA> \
+  bash experiments/2026-10-03-v92-loaded-schedule/collect.sh
+```
+
+슬롯은 `sim-claude-v92-loaded`다. 표준 `sim_cli workflow run zone-final-pair-loaded-v92`를 사용하며 90분은 잠금 예상 메타데이터다. 수집·렌더·적합 결과의 회수 뒤 TensorBoard를 갱신하고 별도로 인수한다.
+
+## 전체 720초 무렌더 사전 점검 (R2 남은 조건, 2026-10-03)
+
+R2의 남은 조건 두 개를 닫았다. 필수 CI 실패(SIM 슬롯 경쟁)는 #356 수정이 든 main 병합(`0ccbb9f9`)으로 해결했다. 288칸 지지는 실제 무렌더 실행으로 확인했다.
+
+- 소스 `0d9ad122`, `probe_headless.py --mode full`, 720.0 SIM s, 명령 22,302개, 렌더 0, 모델 호출 0, 카메라 경계 호출 7,202회. 시계는 고정 substep 누적값으로 맞췄다([CLOCK_FIX](review_r2_response/CLOCK_FIX.md)). 학습 자료가 아니다(`training_eligible=false`).
+- `scripts/check_final_pair_loaded_support.py`로 동결 B″ loaded 선별(빔 들림·네 집게 접촉·외부 지지 없음·weld 없음)을 적용했다. 유효 표본 **13,926/14,401**(제외 475개는 모두 `not_lifted`, 들기 전·내린 뒤). **288/288칸 통과**, 칸별 완전 창 최솟값 **137**(기준 100). 13모수 식별성은 별도이며 이 검사로 주장하지 않는다.
+- 출력: `/Users/changmin/projects/ugrp/outputs/v92-headless-check-20261003T074418Z/` — `raw/artifacts.sha256.json` sha256 `a3c23c88…`, `raw/summary.json` `6e69187d…`, `verification/support_audit.json` `177be499…`. 사본: [요약](review_r2_response/full_headless_summary.json), [288칸 감사](review_r2_response/full_headless_support_audit.json).
+- 실패한 앞선 두 시도도 보존했다: `…T071647Z`(시계 누적 오차로 `inexact SIM advance`, 위 수정의 원인), `…T071802Z`(sandbox의 `/bin/ps` 차단).
+- 관련 테스트(로더·v92 조립기·SIM 슬롯·fast guard) **138 passed in 312s**.
+
+**속도 진단(같은 날, 배타 잠금, 60 SIM s 프로파일):** 26.8 SIM s/분(부하 5–8). 프로파일 124초 중 MuJoCo `mj_step` 56초(45%), fast guard의 구(sphere) 간격 검사 약 26초, 나머지 Python 처리. v91 무하중 수집(약 59 SIM s/분)보다 느린 주원인은 빔을 쥔 접촉 계산 자체다. 결과를 바꾸지 않는 범위에서 줄일 수 있는 부분은 guard 쪽 약 20–25%뿐이라 이번 수집에는 적용하지 않는다.
+
+수집 주체가 Codex에서 Claude 조정자로 바뀌어 `collect.sh`의 잠금 소유자·슬롯 이름만 `claude`로 바꿨다. 일정·B″·실행 코드는 그대로다.
+
+## 참고 자료
+
+- [조정자 D1–D5 결정](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5966171204)
+- [v88 loaded 진단 고정 소스](https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/blob/f2fc0cc3d2315e8b4441028a1713a1ba5af23175/experiments/2026-10-03-v88-loaded-diagnosis/README.md)
+- [B′](../2026-10-01-v88-measured-calibration/criterion_B_prime.json), [기존 운동 적합기](../../scripts/final_pair_calibration_motion.py)
+- [새 일정](../../harness/zone_final_pair_loaded_schedule.py), [등록](../../harness/zone_final_pair_loaded.py), [조정자 명령](collect.sh)
+- [무렌더 검사](probe_headless.py), [실행 버전 관리](../../docs/execution_versioning.md)
