@@ -1,4 +1,4 @@
-"""v98 DEV stage probes from STAGED states (test setup, never a case result).
+"""v98 DEV stage probes from staged states (test setup, never a case result).
 
 Project stage-probe rule (2026-09-28): test each skill stage from a staged
 state in short runs, so the stages after approach can be checked without the
@@ -65,7 +65,7 @@ if POSES['edge_view_150'] != pose.HIGH:
     raise ValueError('teacher HIGH differs from the v98 HIGH carry pose')
 
 # entry: controller state at stage entry; terminal: event that ends the stage.
-STAGED = {
+PROBE_SPECS = {
     'raise_high_staged': {'preroll': 'floor_open', 'entry': 'pregrasp_descend', 'cap_s': 90.,
         'terminal_event': 'high_carry_pose', 'barrier': None,
         'covers': 'staged pre-grasp (arm at floor grasp, gripper open) -> close barrier -> GRIP check -> low lift -> raise to HIGH'},
@@ -126,7 +126,7 @@ def stated_prior(station):
 
 def enter(ctl, execution, stage, staging, now):
     """Set what the skipped states would have set, then enter the stage state."""
-    spec = STAGED[stage]
+    spec = PROBE_SPECS[stage]
     own = execution.own
     report = own.last_report
     driver = getattr(ctl, 'driver', None)
@@ -179,7 +179,7 @@ def install(ctl, execution, stage, staging):
         return orig(now)
 
     ctl.tick = tick
-    if STAGED[stage]['entry'] == 'pregrasp_descend':
+    if PROBE_SPECS[stage]['entry'] == 'pregrasp_descend':
         orig_close = ctl._wait_close
 
         def wait_close(now, arm_idle):

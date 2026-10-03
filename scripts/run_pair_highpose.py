@@ -57,10 +57,10 @@ STAGE_PROBES = {
     'high_hold': {'terminal_event': 'barrier_go', 'barrier': 'carry', 'cap_s': 150.,
                   'covers': 'raise_high + 8 s HIGH settle + carry barrier GO from command history/status'},
 }
-# v98 STAGED probes (harness/zone_pair_highpose_staging.py): staged test setup
+# v98 staged probes (harness/zone_pair_highpose_staging.py): staged test setup
 # before the controller exists, so stages after approach run without it.
 from harness import zone_pair_highpose_staging as staging  # noqa: E402
-STAGE_PROBES.update({k: {**v, 'staged': True} for k, v in staging.STAGED.items()})
+STAGE_PROBES.update({k: {**v, 'staged': True} for k, v in staging.PROBE_SPECS.items()})
 STAGE_STATUS = ('STAGE_PROBE_REACHED', 'STAGE_PROBE_FAILED', 'STAGE_PROBE_NOT_REACHED')
 
 

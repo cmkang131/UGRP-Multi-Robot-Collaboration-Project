@@ -454,7 +454,7 @@ def test_staged_probe_preroll_runs_before_controller_clock_and_is_recorded(tmp_p
     result = run.student_run_case(bundle, tmp_path/probe, seed=911, backend_factory=factory,
         runtime_factory=lambda *a, **k: _ProbeRuntime(*a, t_event=1e9, **k),
         calibration=path, calibration_sha=sha, probe=probe)
-    spec = st.STAGED[probe]
+    spec = st.PROBE_SPECS[probe]
     pre = [a for t, rid, a in backends[0].actions if t <= 1.+st.PREROLLS[spec['preroll']]['end_s']]
     assert len(pre) >= len(st.preroll_actions(spec['preroll']))
     rec = json.loads((tmp_path/probe/'stage_probe_staging.json').read_text())
