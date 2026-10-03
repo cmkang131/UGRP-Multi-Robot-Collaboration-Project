@@ -1,0 +1,550 @@
+{
+ "schema": "ugrp.v92_required_fields_check.v1",
+ "code": "257953ec36353c37acc61c4cb86563db7c937de2 scripts/assemble_final_pair_calibration_v92.py required_fields()",
+ "calibration_sha256": "852426d2efbe4400516fc6227279923c4a1b7747e0f2b48a6df6131d7ade4109",
+ "required": 108,
+ "measured": 77,
+ "missing": 31,
+ "fields": [
+  {
+   "field": "params.motion.gain",
+   "measured": false,
+   "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+  },
+  {
+   "field": "params.motion.tau_s",
+   "measured": false,
+   "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+  },
+  {
+   "field": "params.motion.tau_axis_s",
+   "measured": false,
+   "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+  },
+  {
+   "field": "params.motion.tau_stop_s",
+   "measured": false,
+   "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+  },
+  {
+   "field": "params.motion.noise_rel",
+   "measured": false,
+   "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+  },
+  {
+   "field": "params.motion.noise_abs",
+   "measured": false,
+   "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+  },
+  {
+   "field": "params.motion.scale_std",
+   "measured": false,
+   "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+  },
+  {
+   "field": "params.motion.scale_walk",
+   "measured": false,
+   "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+  },
+  {
+   "field": "params.motion.use_scale",
+   "measured": false,
+   "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+  },
+  {
+   "field": "params.motion.rest_noise",
+   "measured": false,
+   "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+  },
+  {
+   "field": "params.motion_profiles.fine.gain",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "params.motion_profiles.fine.tau_s",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "params.motion_profiles.fine.tau_axis_s",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "params.motion_profiles.fine.tau_stop_s",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "params.motion_profiles.fine.noise_rel",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "params.motion_profiles.fine.noise_abs",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "params.motion_profiles.fine.scale_std",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "params.motion_profiles.fine.scale_walk",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "params.motion_profiles.fine.use_scale",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "params.motion_profiles.fine.rest_noise",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "params.motion_loaded.gain",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.tau_s",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.tau_axis_s",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.tau_stop_s",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.noise_rel",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.noise_abs",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.scale_std",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.scale_walk",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.use_scale",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.rest_noise",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.load_transition.scale_std",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.load_transition.unloaded_scale_std",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.deadband.c0",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.deadband.u1",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.drift_ratio_std",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "params.motion_loaded.yaw_bias_std_rad_s",
+   "measured": false,
+   "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+  },
+  {
+   "field": "pair_model.slope_to_yaw_ratio",
+   "measured": false,
+   "reason": "measurement not available"
+  },
+  {
+   "field": "pair_model.b_rad_s[\"\"]",
+   "measured": false,
+   "reason": "measurement not available"
+  },
+  {
+   "field": "pair_model.b_rad_s.pm",
+   "measured": false,
+   "reason": "measurement not available"
+  },
+  {
+   "field": "pair_model.b_rad_s.edge",
+   "measured": false,
+   "reason": "measurement not available"
+  },
+  {
+   "field": "pair_model.b_rad_s.pm+edge",
+   "measured": false,
+   "reason": "measurement not available"
+  },
+  {
+   "field": "pan_base_yaw.unloaded",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1230.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1230.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1230.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1230.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1230.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1500.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1500.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1500.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1500.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1500.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1770.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1770.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1770.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1770.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,1770.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,2030.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,2030.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,2030.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,2030.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,2030.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,2300.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,2300.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,2300.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,2300.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,2300.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,700.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,700.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,700.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,700.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,700.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,970.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,970.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,970.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,970.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1072,2400,1482,970.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1269,2052,2494,1500.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1269,2052,2494,1500.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1269,2052,2494,1500.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1269,2052,2494,1500.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.1269,2052,2494,1500.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.508,2432,1320,1500.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.508,2432,1320,1500.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.508,2432,1320,1500.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.508,2432,1320,1500.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.508,2432,1320,1500.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.740,2320,1320,1500.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.740,2320,1320,1500.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.740,2320,1320,1500.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.740,2320,1320,1500.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.740,2320,1320,1500.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.770,1982,1876,1500.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.770,1982,1876,1500.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.770,1982,1876,1500.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.770,1982,1876,1500.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.770,1982,1876,1500.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.807,1897,2187,1500.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.807,1897,2187,1500.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.807,1897,2187,1500.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.807,1897,2187,1500.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.unloaded.807,1897,2187,1500.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "pan_base_yaw.loaded",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.loaded.896,2035,1894,1500.frame",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.loaded.896,2035,1894,1500.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.loaded.896,2035,1894,1500.rotation",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.loaded.896,2035,1894,1500.chassis_to_floor.origin_m",
+   "measured": true,
+   "reason": null
+  },
+  {
+   "field": "camera_models.loaded.896,2035,1894,1500.chassis_to_floor.rotation",
+   "measured": true,
+   "reason": null
+  }
+ ]
+}
