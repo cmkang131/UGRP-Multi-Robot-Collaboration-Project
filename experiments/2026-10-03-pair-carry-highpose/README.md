@@ -31,7 +31,8 @@ PF에 벽 경계를 전달한다. 기존 PF 수명·운동·관측 품질 검사
 - 기준 소스: `7cd729416fc04dfc4633cb4da5c4cd9435dd582d`, 브랜치 `codex/pair-carry-highpose`.
 - 새 번들·실행 경로: **`zone-final-pair-highpose-v93`**, 버전 **3.5.0**.
 - main+열린 PR 9개 총 10 refs를 조회해 v92/3.4.0 최댓값과 원격 HEAD 일치를 확인했다.
-  [조회 원본](reservation_scan.json)을 보존한다.
+  [조회 원본](reservation_scan.json)을 보존한다. 게시 직전 main+열린 PR 7개 총 8 refs를
+  [다시 조회](reservation_scan_final.json)했고 최댓값 v92/3.4.0과 v93 미사용을 재확인했다.
 - 새 [등록](../../configs/zone_pair_highpose_v93.json)과 [보정 계약](../../configs/calibration/zone_pair_highpose_v93_contract.json).
   v88/v90/v91 등록과 동결 B/B′/r4/r5는 수정하지 않는다. v91 held-out raw는 읽지 않는다.
 
@@ -43,8 +44,11 @@ camera_models 형식은 재사용한다. loaded 카메라 키는 HIGH 하나이�
 닫기부터 HIGH 정착 전, 하강 중에는 자기 영상의 grip/hold 검사만 유지하고 절대 위치 관측은
 건너뛴다. 발행 명령 기반 예측과 불확실성은 유지한다. 이 구간에 임의 카메라 보정값을 채우지 않는다.
 
-이 계약은 D2–D5 담당자의 v92 조립 결과가 충족할 인터페이스다. 실제 보정 파일을 생성하거나,
-기준 B″·조립기를 승인하거나, v92를 이미 측정한 것으로 표시하지 않는다.
+이 계약은 D1의 임시 소비자 인터페이스다. D5 담당자는 별도
+`ugrp.final_environment_measured_calibration` 계열 HIGH 계약을 만들고 있어 **최종 D5
+산출물과의 schema/필드/hash 호환 확인이 남았다**. 정확한 D5 원격 소스가 공개되면 새
+로더에 연결하고 관련 회귀를 다시 검증해야 한다. 현재 로더의 synthetic 보정 수락 검사는
+D5 호환 완료가 아니다. 실제 보정 파일·기준 B″·조립기 승인이나 v92 측정 완료를 만들지 않는다.
 
 ## 코디네이터 인수 계획
 
@@ -95,9 +99,40 @@ zone-final-pair-highpose-v93 -- --check p03 --expected-source-sha "$FINAL_SHA"
 컴파일, `git diff --check`, 고정 CI 자료 3개, 표준 workflow 계획 출력도 확인했다.
 이는 로컬 결과이며 원격 CI·독립 검토·렌더/P03 인수는 별도다.
 
-짧은 무렌더 검사는 [고정 진단 명령](probe_headless.py)으로 source 커밋 후 수행한다.
-52 SIM초, teacher station 시작에서 실제 학생의 ArmSequence 상승/하강 경로를 재사용한다.
-기하·관절 목표·접촉은 평가 출력에만 기록한다. 이 검사는 자기 RGB 제어기 실행이나 v92 보정 수집이 아니다.
+추가 workflow 카탈로그 검사는 **`17 passed, 1 deselected in 1.00s`**다.
+전체 파일의 첫 실행은 17 pass/1 fail이며, 프로세스 정리 검사의 `/bin/ps`가 샌드박스에서
+거부되어 그 검사만 제외했다. 로컬 프로세스 정리 검증 완료로 보고하지 않는다.
+
+[고정 진단 명령](probe_headless.py)을 커밋 **`a19e232a3a2576832a145a0435e9450da017f759`**로
+고정하고 52 SIM초 실행했다. teacher station 시작에서 실제 학생의 ArmSequence 상승/하강
+경로를 재사용했다. [전체 집계](headless_check.json)와 [집계 코드](summarize_headless.py)를 보존한다.
+
+| 구간/검사 | 실제 결과 |
+|---|---|
+| 낮은 lift 정착 [8,10)초 | 40/40 표본 상승·네 집게 접촉·외부 지지 없음 |
+| HIGH 상승 [10,27.2)초 | 344/344 같은 조건 |
+| HIGH 유지 [27.2,34)초 | 136/136 같은 조건, 빔 바닥 최소 114.849 mm |
+| 하강 [34,47.6)초 | 257 lifted / 15 not_lifted; 전부 보존 |
+| 전체 1,041표본 | 849 lifted / 192 not_lifted; 초기·바닥·release 포함 |
+| 목표 관절 2,352개 | 제한 위반 0, 팔 최소 여유 0.2992 rad, 집게 0 m |
+| HIGH 순기구학 | 높이 149.857 mm, pitch −40.05° |
+| 자기 카메라 기하 | 낮은 자세 양쪽 0열, HIGH 30/32초 양쪽 90열 |
+| 비용/환경 | 1,948명령, 모델 호출 0, weld OFF, 렌더 0 |
+
+`lifted`는 빔 바닥≥10 mm·네 집게 접촉·외부 지지 없음·weld 없음의 평가 전용 판정이다.
+기하 가시성은 RGB 검출 성공이 아니다. 이 결과는 운반 base 주행·자기 RGB 학생·v92 보정·
+P03 인수를 포함하지 않는다. raw manifest의 모든 파일 hash를 대조했으며 원본 위치는
+`/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/headless-a19e232a`다.
+원본은 로컬 보관이며 원격 백업으로 표현하지 않는다.
+
+첫 관리 세션은 샌드박스 `/bin/ps` 거부로 물리 시작 전에 종료되었다. 별도 자식/렌더가 없는
+고정 종료 진단을 직접 실행했고 종료 코드 0·소유 잠금 해제를 확인했다. 시작/끝 부하 평균은
+집계 JSON에 보존했다. 다른 작업의 세션/서버는 변경하지 않았다.
+
+TensorBoard 새 스냅샷 `1003-pair-highpose-v93/high-hold`에 같은 진단의 low 0열/HIGH 90열,
+유지 136/136, 상승 344/344, SIM 52초·명령 1,948·모델 호출 0을 등록했다. 이벤트와
+서버 API를 원본과 대조했다. 새 영상 등록은 0개이며 없는 wall/model 지연·임무 성공을
+0으로 채우지 않는다. [대시보드 검증과 고정 링크](tensorboard_verification.json)를 따른다.
 
 ## 참고 자료
 

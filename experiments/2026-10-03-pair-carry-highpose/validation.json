@@ -70,6 +70,35 @@
     "tests-related-r3.log": {
       "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-related-r3.log",
       "sha256": "f4cb5e99c17bb08b101f26b96018331031564e27881d6952341dda1abb99242f"
+    },
+    "tests-workflow-r2.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-workflow-r2.log",
+      "sha256": "4e001b39ce70ace33bcdfc4ea72988e2dbb988420db733066f6529767ac577b4"
+    },
+    "tests-workflow-r2.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-workflow-r2.xml",
+      "sha256": "7814222540837a8cac1bad669a0d16a858ebea5f653d55e32c5128e065df97ed"
+    },
+    "tests-workflow.log": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-workflow.log",
+      "sha256": "045157383dd7e47084e1cdee2f0432f8848de69db64ef166da9516854edd2f71"
+    },
+    "tests-workflow.xml": {
+      "path": "/Users/changmin/projects/ugrp/outputs/pair-highpose-offline-20261003/tests-workflow.xml",
+      "sha256": "6e8ac5fdbca241aa3f11d44913d06f1f2cf79557a74769d622cc7a66b5241268"
     }
+  },
+  "workflow_tests": {
+    "command": "python -m pytest -q tests/test_simulation_workflow_manager.py -k \"not test_parent_exit_cleans_background_child\"",
+    "confirmed_pass_line": "17 passed, 1 deselected in 1.00s",
+    "excluded": "/bin/ps sandbox EPERM; first full-file run 17 passed / 1 failed"
+  },
+  "headless": {
+    "source_sha": "a19e232a3a2576832a145a0435e9450da017f759",
+    "summary": "headless_check.json",
+    "renderer": false,
+    "student_controller_run": false,
+    "lock_released": true,
+    "exit_code": 0
   }
 }
