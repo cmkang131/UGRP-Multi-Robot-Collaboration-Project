@@ -1,0 +1,2352 @@
+{
+  "path": "configs/zone_final_pair_v92_schedule.json.gz",
+  "encoding": "gzip of UTF-8 JSON, indent=2, trailing LF",
+  "sha256": "a4754dec4f55b7b43fcfc15fa59371b544101c609ed7d079e1343d1bcfe14e3d",
+  "bytes": 5055083,
+  "archive_sha256": "8acf31c0b544e3d4488579167543a502fc8608bd3b8e19dde5b0a11a14b7f507",
+  "archive_bytes": 62445,
+  "events": 22326,
+  "raw_local_path": "/Users/changmin/projects/ugrp/outputs/v92-loaded-offline-20261003/schedule.json",
+  "measurement_design": {
+    "schema": "ugrp.final_pair_loaded_measurement.v92",
+    "check": "calibration-loaded",
+    "map_id": "zone_wide_two_doors_final_v3",
+    "basis": "PR #359 f2fc0cc3d2315e8b4441028a1713a1ba5af23175",
+    "control_period_s": 0.05,
+    "eval_pose_period_s": 0.05,
+    "camera_period_s": 0.2,
+    "command_lease_s": 0.05,
+    "sim_cap_s": 720.0,
+    "reset_cap_s": 5.0,
+    "total_including_reset_cap_s": 725.0,
+    "clearance": {
+      "minimum_m": 0.3,
+      "abort_buffer_m": 0.05,
+      "robot_radius_bound_m": 0.4,
+      "max_substep_displacement_m": 0.01
+    },
+    "step_duration_s": 10.0,
+    "frozen_magnitudes": [
+      0.006,
+      0.015,
+      0.025,
+      0.04
+    ],
+    "additional_translation_magnitudes": [
+      0.001,
+      0.002,
+      0.004
+    ],
+    "prbs": {
+      "polynomial": "x^5+x^2+1",
+      "bits": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        -1,
+        -1,
+        -1,
+        1,
+        1,
+        -1,
+        1,
+        1,
+        1,
+        -1,
+        1,
+        -1,
+        1,
+        -1,
+        -1,
+        -1,
+        -1,
+        1,
+        -1,
+        -1,
+        1,
+        -1,
+        1,
+        1,
+        -1,
+        -1
+      ],
+      "chip_s": 0.5,
+      "magnitude": 0.015
+    },
+    "orbit_companion": {
+      "left_per_turn": -0.4732,
+      "source": "static formation radius only; raw commands, not calibrated SI velocity",
+      "r2_rule": "same turn AND same companion left; translations outside orbit are opposite"
+    },
+    "poses": {
+      "floor_grasp": {
+        "3": 1269,
+        "4": 2052,
+        "5": 2494,
+        "6": 1500
+      },
+      "controller_hover": {
+        "3": 807,
+        "4": 1897,
+        "5": 2187,
+        "6": 1500
+      },
+      "transition_110": {
+        "3": 891,
+        "4": 2036,
+        "5": 2054,
+        "6": 1500
+      },
+      "transition_130": {
+        "3": 981,
+        "4": 2152,
+        "5": 1917,
+        "6": 1500
+      },
+      "edge_view_150": {
+        "3": 896,
+        "4": 2035,
+        "5": 1894,
+        "6": 1500
+      }
+    },
+    "camera_windows": [
+      {
+        "start_s": 12.0,
+        "end_s": 20.0,
+        "pose": "controller_hover",
+        "pan_pwm": 1500,
+        "purpose": "controller_extrinsics",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 478.0,
+        "end_s": 482.0,
+        "pose": "controller_hover",
+        "pan_pwm": 1500,
+        "purpose": "pan_center_reference",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 490.0,
+        "end_s": 498.0,
+        "pose": "controller_hover",
+        "pan_pwm": 1480,
+        "purpose": "pan_minus",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 506.0,
+        "end_s": 514.0,
+        "pose": "controller_hover",
+        "pan_pwm": 1500,
+        "purpose": "pan_center_reference",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 522.0,
+        "end_s": 530.0,
+        "pose": "controller_hover",
+        "pan_pwm": 1520,
+        "purpose": "pan_plus",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 538.0,
+        "end_s": 546.0,
+        "pose": "controller_hover",
+        "pan_pwm": 1500,
+        "purpose": "pan_center_reference",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 562.0,
+        "end_s": 570.0,
+        "pose": "edge_view_150",
+        "pan_pwm": 1500,
+        "purpose": "candidate_extrinsics",
+        "requires_offline_lifted_bilateral_grip": true
+      },
+      {
+        "start_s": 692.0,
+        "end_s": 700.0,
+        "pose": "controller_hover",
+        "pan_pwm": 1500,
+        "purpose": "controller_return_extrinsics",
+        "requires_offline_lifted_bilateral_grip": true
+      }
+    ],
+    "camera_warmup_s": 8.0,
+    "segments": [
+      {
+        "start_s": 20.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.001,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 30.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 31.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.001,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 41.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 42.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.002,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 52.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 53.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.002,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 63.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 64.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.004,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 74.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 75.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.004,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 85.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 86.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.006,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 96.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 97.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.006,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 107.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 108.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 118.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 119.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 129.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 130.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.025,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 140.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 141.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.025,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 151.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 152.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": 0.04,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 162.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 163.0,
+        "duration_s": 10.0,
+        "axis": "forward",
+        "value": -0.04,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 173.0,
+        "duration_s": 1.0,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 174.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 174.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 175.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 175.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 176.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 176.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 177.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 177.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 178.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 178.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 179.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 179.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 180.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 180.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 181.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 181.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 182.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 182.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 183.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 183.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 184.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 184.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 185.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 185.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 186.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 186.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 187.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 187.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 188.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 188.5,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 189.0,
+        "duration_s": 0.5,
+        "axis": "forward",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 189.5,
+        "duration_s": 2.5,
+        "axis": "forward",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 192.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.001,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 202.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 203.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.001,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 213.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 214.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.002,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 224.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 225.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.002,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 235.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 236.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.004,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 246.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 247.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.004,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 257.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "low_command_diagnostic"
+      },
+      {
+        "start_s": 258.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.006,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 268.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 269.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.006,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 279.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 280.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 290.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 291.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 301.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 302.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.025,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 312.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 313.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.025,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 323.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 324.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": 0.04,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 334.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 335.0,
+        "duration_s": 10.0,
+        "axis": "left",
+        "value": -0.04,
+        "phase": "step",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 345.0,
+        "duration_s": 1.0,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 346.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 346.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 347.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 347.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 348.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 348.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 349.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 349.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 350.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 350.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 351.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 351.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 352.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 352.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 353.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 353.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 354.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 354.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 355.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 355.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 356.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 356.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 357.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 357.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 358.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 358.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 359.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 359.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 360.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 360.5,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 361.0,
+        "duration_s": 0.5,
+        "axis": "left",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 361.5,
+        "duration_s": 2.5,
+        "axis": "left",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "world_translation",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 364.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.006,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 374.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 375.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.006,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 385.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 386.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 396.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 397.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 407.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 408.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.025,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 418.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 419.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.025,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 429.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 430.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.04,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 440.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 441.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.04,
+        "phase": "step",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 451.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 452.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 452.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 453.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 453.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 454.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 454.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 455.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 455.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 456.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 456.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 457.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 457.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 458.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 458.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 459.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 459.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 460.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 460.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 461.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 461.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 462.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 462.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 463.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 463.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 464.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 464.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 465.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 465.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 466.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 466.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 467.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 467.5,
+        "duration_s": 2.5,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "common_orbit",
+        "pose": "controller_hover",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 570.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.006,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 580.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 581.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.006,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 591.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 592.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 602.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 603.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 613.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 614.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.025,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 624.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 625.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.025,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 635.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 636.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": 0.04,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 646.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 647.0,
+        "duration_s": 10.0,
+        "axis": "turn",
+        "value": -0.04,
+        "phase": "step",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 657.0,
+        "duration_s": 1.0,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "fit_steps"
+      },
+      {
+        "start_s": 658.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 658.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 659.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 659.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 660.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 660.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 661.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 661.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 662.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 662.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 663.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 663.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 664.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 664.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 665.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 665.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 666.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 666.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 667.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 667.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 668.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 668.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 669.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 669.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 670.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 670.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 671.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 671.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 672.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": 0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 672.5,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 673.0,
+        "duration_s": 0.5,
+        "axis": "turn",
+        "value": -0.015,
+        "phase": "prbs",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      },
+      {
+        "start_s": 673.5,
+        "duration_s": 2.5,
+        "axis": "turn",
+        "value": 0.0,
+        "phase": "coast",
+        "mode": "relative_yaw",
+        "pose": "edge_view_150",
+        "analysis_role": "validate_prbs"
+      }
+    ],
+    "unsupported_controller_requirements": {
+      "floor_grasp_loaded": "24 mm pad height is floor-supported; cannot claim >=10 mm beam clearance",
+      "controller_hover_edge": "real 95 mm carry pose has no visible beam edge in headless geometry check",
+      "edge_view_150": "not used by current student; separate candidate, no calibration transfer",
+      "transition_extrinsics": "transition_110/130 are preparation only, not student measured poses"
+    },
+    "qualification": "COLLECTION DESIGN ONLY; B/B-prime and assembler unchanged; no promotion"
+  }
+}
