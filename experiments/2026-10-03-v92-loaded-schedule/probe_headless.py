@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 from pathlib import Path
 import subprocess
@@ -36,6 +37,8 @@ class Headless(FastGuard, Base):
                 width=640, height=480, render=False,
                 warehouse_layout=self.scene.engine_layout, warehouse_cargo_ids=None)
             self.dt = float(self.world.model.opt.timestep)
+            if not math.isfinite(self.dt) or self.dt <= 0 or abs(.05/self.dt-round(.05/self.dt)) > 1e-7:
+                raise ValueError('SIM timestep must divide 0.05 s')
             for rid in ('r1', 'r2', 'r3'):
                 self.ports[rid] = CameraRobotPort(self.world, rid, allow_reverse=True, allow_mecanum=True)
         except Exception:
@@ -101,6 +104,9 @@ def geometry(model, data, rid):
 
 
 def commands(mode='posture'):
+    if mode == 'full':
+        from harness.zone_final_pair_loaded_schedule import schedule
+        return schedule()
     if mode == 'revised':
         from harness.zone_final_pair_loaded_schedule import schedule
         # Exact prefix, including the new lift path and HIGH forward commands.
@@ -142,7 +148,7 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--source-sha', required=True)
     p.add_argument('--sim-slot', required=True)
-    p.add_argument('--mode', choices=('posture', 'motion', 'revised'), default='posture')
+    p.add_argument('--mode', choices=('posture', 'motion', 'revised', 'full'), default='posture')
     args = p.parse_args()
     check_source(args.source_sha)
     from scripts.agent_lock import DEFAULT_ROOT
@@ -151,19 +157,25 @@ def main():
     require_sim_slot(DEFAULT_ROOT, slot=args.sim_slot, owner='codex', branch=branch)
     args.output.mkdir(parents=True, exist_ok=False)
     events = commands(args.mode)
-    cap = 66. if args.mode == 'posture' else 70.
+    from harness.zone_final_pair_loaded_schedule import CAP_S
+    cap = CAP_S if args.mode == 'full' else 66. if args.mode == 'posture' else 70.
     snapshots = ((14., 32., 40., 48., 56., 64.) if args.mode == 'posture' else
                  (14., 24., 36., 44., 52., 60., 68.) if args.mode == 'motion' else
                  (14., 32., 38., 48., 60., 68.))
     write(args.output/'commands.json', events)
-    if args.mode == 'revised':
+    if args.mode in ('revised', 'full'):
         from harness import zone_final_pair_loaded as loaded
-        bundle = loaded.bundle(loaded.MAP_ID, loaded.CHECK)
+        bundle = {**loaded.bundle(loaded.MAP_ID, loaded.CHECK), 'source_sha': args.source_sha}
+        from harness.zone_final_pair_loaded_clearance import require_collection_clearance
+        require_collection_clearance(bundle)
+        loaded.require_seed(bundle, 911)
         write(args.output/'bundle.json', bundle)
     else:
         bundle = c.bundle('zone_wide_two_doors_final_v3', 'calibration-loaded')
     result = {'source_sha': args.source_sha, 'loadavg_start': list(os.getloadavg()),
               'method': f'{cap} SIM s headless {args.mode} check; no RGB/calibration acceptance',
+              'collection': False, 'render_calls': 0, 'model_calls': 0,
+              'training_eligible': False,
               'geometry': [], 'status': 'HOST_ERROR'}
     b = None
     try:
@@ -186,6 +198,13 @@ def main():
                 b.issue(e['robot_id'], e['action'])
                 j += 1
             b.advance_to(start+(i+1)*.05)
+            if args.mode == 'full' and (i+1) % 1200 == 0:
+                print(f'headless pre-check: {(i+1)*.05:g}/{cap:g} SIM s', flush=True)
+        if j != len(events) or abs(b.now-start-cap) > 1e-7:
+            raise RuntimeError('INCOMPLETE_HEADLESS_PRECHECK')
+        check_source(args.source_sha)
+        result.update(check_sim_s=b.now-start, commands=j, timestep_s=b.dt,
+                      source_unchanged=True)
         result['status'] = 'HEADLESS_CHECK_COMPLETE'
     except Exception as exc:
         result['failure'] = repr(exc)

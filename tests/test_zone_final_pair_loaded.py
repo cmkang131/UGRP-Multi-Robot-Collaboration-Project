@@ -36,7 +36,9 @@ def test_schedule_archive_and_preserved_sources():
     assert hashlib.sha256(raw).hexdigest() == record['sha256']
     assert json.loads(raw) == s.schedule()
     frozen = json.loads((c.ROOT/'experiments/2026-10-03-v92-loaded-schedule/preservation.json').read_text())
-    for path, digest in frozen['unchanged_sha256'].items():
+    imported = json.loads((c.ROOT/'experiments/2026-10-03-v92-loaded-schedule/review_r2_response/main_import.json').read_text())
+    assert set(imported['imported_sha256']) == {'PHYSICS_HANDOFF.md'}
+    for path, digest in {**frozen['unchanged_sha256'], **imported['imported_sha256']}.items():
         assert c.base.sha(c.ROOT/path) == digest, path
 
 
@@ -116,6 +118,43 @@ def test_every_original_288_command_cell_has_full_horizons_and_orbit_not_opposed
         low = [seg for seg in primary if seg['axis'] == axis and seg['analysis_role'] == 'low_command_diagnostic'
                and seg['phase'] == 'step']
         assert sorted(seg['value'] for seg in low) == [-.004, -.002, -.001, .001, .002, .004]
+
+
+def test_headless_support_counts_all_endpoints_and_never_bridges_one_bad_sample():
+    from scripts.check_final_pair_loaded_support import support_cells
+    criterion = json.loads((c.ROOT/v92.CRITERION).read_text())
+    mask = np.ones(round(s.CAP_S/.05)+1, dtype=bool)
+    rows = support_cells(mask, s.design(), criterion)
+    assert len(rows) == 288 and all(row['pass'] for row in rows)
+    assert min(row['complete_windows'] for row in rows) == 137
+    segment = next(seg for seg in s.design()['segments'] if seg['axis'] == 'forward'
+                   and seg['phase'] == 'step' and seg['value'] == .006)
+    middle = round((segment['start_s']+5)/.05)
+    mask[middle] = False
+    damaged = support_cells(mask, s.design(), criterion)
+    for old, new in zip(rows, damaged):
+        if new['axis'] == 'forward' and new['level'] == .006 and new['sign'] == (1 if new['robot'] == 'r1' else -1):
+            # A k-step window has k+1 load-state samples, including both ends.
+            assert new['complete_windows'] == old['complete_windows']-round(new['horizon_s']/.05)-1
+        else:
+            assert new == old
+    assert sum(not row['pass'] for row in damaged) == 4
+
+
+def test_headless_support_does_not_substitute_relative_yaw_or_other_levels():
+    from scripts.check_final_pair_loaded_support import support_cells
+    criterion = json.loads((c.ROOT/v92.CRITERION).read_text())
+    mask = np.ones(round(s.CAP_S/.05)+1, dtype=bool)
+    for seg in s.design()['segments']:
+        if seg['mode'] == 'common_orbit':
+            a, z = round(seg['start_s']/.05), round((seg['start_s']+seg['duration_s'])/.05)
+            mask[a:z+1] = False
+    rows = support_cells(mask, s.design(), criterion)
+    assert len(rows) == 288
+    assert all(row['complete_windows'] == 0 for row in rows if row['axis'] == 'turn')
+    assert all(row['pass'] for row in rows if row['axis'] != 'turn')
+    with pytest.raises(ValueError, match='full boolean'):
+        support_cells(mask[:-1], s.design(), criterion)
 
 
 def test_motion_split_long_steps_coasts_prbs_and_visible_relative_yaw_separate():
