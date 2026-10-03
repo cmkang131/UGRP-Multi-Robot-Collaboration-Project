@@ -2,6 +2,7 @@
 from concurrent.futures import ThreadPoolExecutor
 import json
 import os
+from pathlib import Path
 import threading
 
 import pytest
@@ -74,6 +75,66 @@ def test_concurrent_admissions_cannot_both_succeed(tmp_path):
     with ThreadPoolExecutor(2) as pool:
         futures = [pool.submit(attempt, fn) for fn in (physics, slot)]
         assert sum(f.result() for f in futures) == 1
+
+
+@pytest.mark.parametrize('first', [physics, slot], ids=['legacy-first', 'slot-first'])
+def test_admission_while_winner_is_publishing_owner(tmp_path, monkeypatch, first):
+    """Pause after creating an empty owner file, before writing any JSON."""
+    publishing, finish = threading.Event(), threading.Event()
+    write_text = Path.write_text
+
+    def paused_write(path, data, *args, **kwargs):
+        if path.parent == tmp_path / 'physics' and not publishing.is_set():
+            write_text(path, '', *args, **kwargs)
+            publishing.set()
+            assert finish.wait(5), 'test did not release the owner writer'
+        return write_text(path, data, *args, **kwargs)
+
+    monkeypatch.setattr(Path, 'write_text', paused_write)
+    second = slot if first is physics else physics
+    with ThreadPoolExecutor(1) as pool:
+        winner = pool.submit(first, tmp_path)
+        try:
+            assert publishing.wait(5), 'owner writer was not reached'
+            with pytest.raises(RuntimeError):
+                second(tmp_path)
+        finally:
+            finish.set()
+        winner.result()
+    assert legacy.status(tmp_path)['owner'] == ('claude' if first is physics else 'codex')
+    assert (tmp_path / 'sim-one').exists() is (first is slot)
+
+
+@pytest.mark.parametrize('partial', ['', '{"owner":'])
+def test_partial_legacy_owner_refuses_slot_and_snapshot_without_mutation(tmp_path, partial):
+    (tmp_path / 'physics').mkdir()
+    path = tmp_path / 'physics/owner.json'
+    path.write_text(partial)
+    for operation in (slot, lock.sim_snapshot):
+        with pytest.raises(RuntimeError, match='owner metadata'):
+            operation(tmp_path)
+    assert path.read_text() == partial
+    assert not (tmp_path / 'sim-one').exists()
+
+
+def test_legacy_wins_between_slot_existence_check_and_mkdir(tmp_path, monkeypatch):
+    mkdir = Path.mkdir
+    raced = False
+
+    def race(path, *args, **kwargs):
+        nonlocal raced
+        if path == tmp_path / 'physics' and not raced:
+            raced = True
+            mkdir(path)
+            (path / 'owner.json').write_text('')
+        return mkdir(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, 'mkdir', race)
+    with pytest.raises(RuntimeError, match='lock held'):
+        slot(tmp_path)
+    assert raced
+    assert (tmp_path / 'physics/owner.json').read_text() == ''
+    assert not (tmp_path / 'sim-one').exists()
 
 
 @pytest.mark.parametrize('mismatch', ['owner', 'branch', 'dead', 'missing', 'exclusive'])
