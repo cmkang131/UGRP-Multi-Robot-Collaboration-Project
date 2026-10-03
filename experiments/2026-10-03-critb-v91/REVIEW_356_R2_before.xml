@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="0.193" timestamp="2026-10-03T15:02:23.926663+09:00" hostname="gangchangmin-ui-MacBookAir.local"><testcase classname="tests.test_agent_sim_slots" name="test_admission_while_winner_is_publishing_owner[legacy-first]" time="0.004"><failure message="json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)">tmp_path = PosixPath('/private/tmp/ugrp-review356-r2-s7d2ksnh/before-tmp/test_admission_while_winner_is0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x102ec48a0&gt;
+first = &lt;function physics at 0x1027d1580&gt;
+
+    @pytest.mark.parametrize('first', [physics, slot], ids=['legacy-first', 'slot-first'])
+    def test_admission_while_winner_is_publishing_owner(tmp_path, monkeypatch, first):
+        """Pause after creating an empty owner file, before writing any JSON."""
+        publishing, finish = threading.Event(), threading.Event()
+        write_text = Path.write_text
+
+        def paused_write(path, data, *args, **kwargs):
+            if path.parent == tmp_path / 'physics' and not publishing.is_set():
+                write_text(path, '', *args, **kwargs)
+                publishing.set()
+                assert finish.wait(5), 'test did not release the owner writer'
+            return write_text(path, data, *args, **kwargs)
+
+        monkeypatch.setattr(Path, 'write_text', paused_write)
+        second = slot if first is physics else physics
+        with ThreadPoolExecutor(1) as pool:
+            winner = pool.submit(first, tmp_path)
+            try:
+                assert publishing.wait(5), 'owner writer was not reached'
+                with pytest.raises(RuntimeError):
+&gt;                   second(tmp_path)
+
+tests/test_agent_sim_slots.py:100:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_agent_sim_slots.py:15: in slot
+    return lock.acquire_sim_slot(root, slot=name, owner='codex', branch=branch,
+&lt;1dd9f0e7:scripts/agent_sim_slots.py&gt;:104: in acquire_sim_slot
+    ???
+&lt;1dd9f0e7:scripts/agent_sim_slots.py&gt;:72: in _require_physics
+    ???
+scripts/agent_lock.py:39: in status
+    owner = json.loads(path.read_text())
+/opt/anaconda3/lib/python3.13/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+/opt/anaconda3/lib/python3.13/json/decoder.py:345: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;json.decoder.JSONDecoder object at 0x101d0dd30&gt;, s = '', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+
+        """
+        try:
+            obj, end = self.scan_once(s, idx)
+        except StopIteration as err:
+&gt;           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+/opt/anaconda3/lib/python3.13/json/decoder.py:363: JSONDecodeError</failure></testcase><testcase classname="tests.test_agent_sim_slots" name="test_admission_while_winner_is_publishing_owner[slot-first]" time="0.005"><failure message="json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)">tmp_path = PosixPath('/private/tmp/ugrp-review356-r2-s7d2ksnh/before-tmp/test_admission_while_winner_is1')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x102ec49d0&gt;
+first = &lt;function slot at 0x1027d13a0&gt;
+
+    @pytest.mark.parametrize('first', [physics, slot], ids=['legacy-first', 'slot-first'])
+    def test_admission_while_winner_is_publishing_owner(tmp_path, monkeypatch, first):
+        """Pause after creating an empty owner file, before writing any JSON."""
+        publishing, finish = threading.Event(), threading.Event()
+        write_text = Path.write_text
+
+        def paused_write(path, data, *args, **kwargs):
+            if path.parent == tmp_path / 'physics' and not publishing.is_set():
+                write_text(path, '', *args, **kwargs)
+                publishing.set()
+                assert finish.wait(5), 'test did not release the owner writer'
+            return write_text(path, data, *args, **kwargs)
+
+        monkeypatch.setattr(Path, 'write_text', paused_write)
+        second = slot if first is physics else physics
+        with ThreadPoolExecutor(1) as pool:
+            winner = pool.submit(first, tmp_path)
+            try:
+                assert publishing.wait(5), 'owner writer was not reached'
+                with pytest.raises(RuntimeError):
+&gt;                   second(tmp_path)
+
+tests/test_agent_sim_slots.py:100:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_agent_sim_slots.py:20: in physics
+    return legacy.acquire(root, owner=owner, branch=owner+'/physics', purpose='timing',
+scripts/agent_lock.py:52: in acquire
+    held = status(root, name)
+scripts/agent_lock.py:39: in status
+    owner = json.loads(path.read_text())
+/opt/anaconda3/lib/python3.13/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+/opt/anaconda3/lib/python3.13/json/decoder.py:345: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;json.decoder.JSONDecoder object at 0x101d0dd30&gt;, s = '', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+
+        """
+        try:
+            obj, end = self.scan_once(s, idx)
+        except StopIteration as err:
+&gt;           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+/opt/anaconda3/lib/python3.13/json/decoder.py:363: JSONDecodeError</failure></testcase><testcase classname="tests.test_agent_sim_slots" name="test_partial_legacy_owner_refuses_slot_and_snapshot_without_mutation[]" time="0.001"><failure message="json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)">tmp_path = PosixPath('/private/tmp/ugrp-review356-r2-s7d2ksnh/before-tmp/test_partial_legacy_owner_refu0')
+partial = ''
+
+    @pytest.mark.parametrize('partial', ['', '{"owner":'])
+    def test_partial_legacy_owner_refuses_slot_and_snapshot_without_mutation(tmp_path, partial):
+        (tmp_path / 'physics').mkdir()
+        path = tmp_path / 'physics/owner.json'
+        path.write_text(partial)
+        for operation in (slot, lock.sim_snapshot):
+            with pytest.raises(RuntimeError, match='owner metadata'):
+&gt;               operation(tmp_path)
+
+tests/test_agent_sim_slots.py:115:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_agent_sim_slots.py:15: in slot
+    return lock.acquire_sim_slot(root, slot=name, owner='codex', branch=branch,
+&lt;1dd9f0e7:scripts/agent_sim_slots.py&gt;:104: in acquire_sim_slot
+    ???
+&lt;1dd9f0e7:scripts/agent_sim_slots.py&gt;:72: in _require_physics
+    ???
+scripts/agent_lock.py:39: in status
+    owner = json.loads(path.read_text())
+/opt/anaconda3/lib/python3.13/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+/opt/anaconda3/lib/python3.13/json/decoder.py:345: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;json.decoder.JSONDecoder object at 0x101d0dd30&gt;, s = '', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+
+        """
+        try:
+            obj, end = self.scan_once(s, idx)
+        except StopIteration as err:
+&gt;           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+/opt/anaconda3/lib/python3.13/json/decoder.py:363: JSONDecodeError</failure></testcase><testcase classname="tests.test_agent_sim_slots" name="test_partial_legacy_owner_refuses_slot_and_snapshot_without_mutation[{&quot;owner&quot;:]" time="0.001"><failure message="json.decoder.JSONDecodeError: Expecting value: line 1 column 10 (char 9)">tmp_path = PosixPath('/private/tmp/ugrp-review356-r2-s7d2ksnh/before-tmp/test_partial_legacy_owner_refu1')
+partial = '{"owner":'
+
+    @pytest.mark.parametrize('partial', ['', '{"owner":'])
+    def test_partial_legacy_owner_refuses_slot_and_snapshot_without_mutation(tmp_path, partial):
+        (tmp_path / 'physics').mkdir()
+        path = tmp_path / 'physics/owner.json'
+        path.write_text(partial)
+        for operation in (slot, lock.sim_snapshot):
+            with pytest.raises(RuntimeError, match='owner metadata'):
+&gt;               operation(tmp_path)
+
+tests/test_agent_sim_slots.py:115:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_agent_sim_slots.py:15: in slot
+    return lock.acquire_sim_slot(root, slot=name, owner='codex', branch=branch,
+&lt;1dd9f0e7:scripts/agent_sim_slots.py&gt;:104: in acquire_sim_slot
+    ???
+&lt;1dd9f0e7:scripts/agent_sim_slots.py&gt;:72: in _require_physics
+    ???
+scripts/agent_lock.py:39: in status
+    owner = json.loads(path.read_text())
+/opt/anaconda3/lib/python3.13/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+/opt/anaconda3/lib/python3.13/json/decoder.py:345: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;json.decoder.JSONDecoder object at 0x101d0dd30&gt;, s = '{"owner":'
+idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+
+        """
+        try:
+            obj, end = self.scan_once(s, idx)
+        except StopIteration as err:
+&gt;           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 10 (char 9)
+
+/opt/anaconda3/lib/python3.13/json/decoder.py:363: JSONDecodeError</failure></testcase><testcase classname="tests.test_agent_sim_slots" name="test_legacy_wins_between_slot_existence_check_and_mkdir" time="0.002"><failure message="json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)">tmp_path = PosixPath('/private/tmp/ugrp-review356-r2-s7d2ksnh/before-tmp/test_legacy_wins_between_slot_0')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x102d2deb0&gt;
+
+    def test_legacy_wins_between_slot_existence_check_and_mkdir(tmp_path, monkeypatch):
+        mkdir = Path.mkdir
+        raced = False
+
+        def race(path, *args, **kwargs):
+            nonlocal raced
+            if path == tmp_path / 'physics' and not raced:
+                raced = True
+                mkdir(path)
+                (path / 'owner.json').write_text('')
+            return mkdir(path, *args, **kwargs)
+
+        monkeypatch.setattr(Path, 'mkdir', race)
+        with pytest.raises(RuntimeError, match='lock held'):
+&gt;           slot(tmp_path)
+
+tests/test_agent_sim_slots.py:134:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/test_agent_sim_slots.py:15: in slot
+    return lock.acquire_sim_slot(root, slot=name, owner='codex', branch=branch,
+&lt;1dd9f0e7:scripts/agent_sim_slots.py&gt;:100: in acquire_sim_slot
+    ???
+scripts/agent_lock.py:52: in acquire
+    held = status(root, name)
+scripts/agent_lock.py:39: in status
+    owner = json.loads(path.read_text())
+/opt/anaconda3/lib/python3.13/json/__init__.py:346: in loads
+    return _default_decoder.decode(s)
+/opt/anaconda3/lib/python3.13/json/decoder.py:345: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;json.decoder.JSONDecoder object at 0x101d0dd30&gt;, s = '', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+
+        """
+        try:
+            obj, end = self.scan_once(s, idx)
+        except StopIteration as err:
+&gt;           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+/opt/anaconda3/lib/python3.13/json/decoder.py:363: JSONDecodeError</failure></testcase></testsuite></testsuites>
