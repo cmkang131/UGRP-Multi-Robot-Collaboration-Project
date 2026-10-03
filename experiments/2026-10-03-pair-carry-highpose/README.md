@@ -59,6 +59,19 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   강한 흐림에서는 새 문턱도 오답이 많다: σ8에서 남은 592열 중 409열 오답, 가로 81 px 19 %, 흐림 없음 0.4 %.
   옛 규칙과 공유하는 남은 위험으로 기록만 하고 문턱은 더 바꾸지 않는다.
 
+### r2 늦은 둘러보기 수정 (Track A, v98 전용, 조정자 승인 2026-10-04)
+
+- **원인(7623c4dc raise_high):** r2의 시작 둘러보기는 1.95–8.2초 동안 팔을 움직이지 못했다. 공용 팔 guard가 위치 불확실성을 방향 없이 `std_xy = √(trace Σ)`(2.0초에 0.47 m, 거의 모두 y축)로 계산해 `wall_west`와의 간격에서 뺐기 때문이다. 동쪽을 보는 r2는 y를 관측하지 못하지만, 이 벽의 법선은 x이고 그 방향 σ는 0.048 m였다. 기다리는 틱마다 `hold`가 두 번 나가는 문제도 있었다(`[hold] + [hold]`).
+- **수정:** `harness/zone_pair_highpose_lookaround.py`.
+  - `LookAroundGuard(PairArmGuard)`는 팔 간격의 위치 항을 장애물 법선 방향 σ로 계산한다: `min(std_xy, √2·√(nᵀΣn))`. Σ는 그 틱의 자기 추정 공분산이다.
+  - 둘러보기 틱의 첫 `hold` 중복을 없앤다.
+  - 공용 `zone_own_executor.py`·`zone_own_guards.py`·`zone_final_pair_guards.py`는 바꾸지 않았다. `adopt_v98_frame_gate`가 행위자 클래스와 guard 클래스를 바꾸고, `record()['own_image_gates']['look_around']`에 남긴다.
+- **guard 의미 변경(명시):** 둥근 추정과 법선 방향으로 긴 추정은 공용 guard와 비트 단위로 같게 계산한다. 법선을 가로지르는 방향으로 긴 타원일 때만 여유를 덜 뺀다. 공용 guard보다 더 빼는 경우는 없다. yaw 항, 기본 여유, residual, 0.15 m 상한, 차체 간격, 후진 이동 검사는 그대로다. 조정자는 이것을 표준 기회 제약 여유로 보고 승인했다(사용자 9/29 guard 완화 허용). 정답 위치는 쓰지 않는다.
+- **오프라인 확인(Track A, 폐루프 아님):** 기록된 r1/r2 추정을 지연 제공자로 재생했다.
+  - 공용 guard는 r1을 2.00–2.05초(2틱), r2를 1.95–8.20초(126틱) 동안 막았다.
+  - 새 guard는 1.95–9.0초의 모든 틱을 통과시켰다. 최소 여유 포함 간격은 r1 28 mm, r2 20 mm이다.
+- 5초 합류 시계는 바꾸지 않았다. 폐루프 확인은 `raise_high` 재실행으로 한다.
+
 ### v98 DEV 단계 검사 재실행 (`b37c9270`, 2026-10-04)
 
 조건은 앞과 같다(seed 911, before_door, DEV_PILOT, floor_light_v1, weld OFF, SIM 슬롯 따로, 조정 PID 16310, 시작 부하 18.6/15.1). 둘러보기 합류에 기대지 않는 두 HIGH 검사만 돌렸다. `raise_high`·`raise_high_align`은 Track A의 r2 둘러보기 수정을 기다린다.
@@ -326,6 +339,10 @@ TensorBoard 새 스냅샷 `1003-pair-highpose-v93/high-hold`에 같은 진단의
 0으로 채우지 않는다. [대시보드 검증과 고정 링크](tensorboard_verification.json)를 따른다.
 
 ## 참고 자료
+
+### r2 둘러보기 guard 여유 (v98, Track A)
+
+- Blackmore, Ono, Williams, "Chance-Constrained Optimal Path Planning With Obstacles", IEEE Transactions on Robotics 27(6), 2011. 가우시안 위치 오차에 대한 선형 기회 제약에서 여유를 `k·√(nᵀΣn)`(장애물 법선 n 방향 표준편차)로 줄이는 방법이다. **미확인:** 본문을 아직 읽지 않았다(조정자 지시). 우리 적용: k = 1(`PairArmGuard`)을 쓰고, `std_xy` 척도(√2 배)를 유지하며, 공용 값보다 커지지 않게 했다.
 
 ### 자기 영상 문턱 재보정 조사 (v98, Track A, 출처 표기 그대로)
 

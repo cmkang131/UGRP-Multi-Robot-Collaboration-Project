@@ -8,6 +8,7 @@ from harness import zone_final_pair_skill as previous
 from harness import zone_pair_highpose as pose
 from harness import zone_pair_highpose_frame_gate as frame_gate
 from harness import zone_pair_highpose_grip as grip
+from harness import zone_pair_highpose_lookaround as lookaround
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_runtime import Runtime as PreviousRuntime
 from harness.zone_final_pair_guards import CommandGuard as PreviousGuard
@@ -408,6 +409,10 @@ class OwnExecutor(ZoneOwnExecutor):
     """ZoneOwnExecutor whose pair admission (readiness_snapshot image_valid) uses the v98 frame gate."""
     _ack = frame_gate.gated(ZoneOwnExecutor._ack)
     pair_readiness = frame_gate.gated(ZoneOwnExecutor.pair_readiness)
+    # v98 look-around: the guard gets the tick's covariance (guard half: lookaround.LookAroundGuard, installed in
+    # adopt_v98_frame_gate) and a held look-around tick carries one hold, not [hold, hold].
+    _sweep_steps = lookaround.sweep_steps(ZoneOwnExecutor._sweep_steps)
+    _tick_sweep = lookaround.tick_sweep(ZoneOwnExecutor._tick_sweep)
 
 
 def adopt_v98_frame_gate(runtime):
@@ -415,11 +420,12 @@ def adopt_v98_frame_gate(runtime):
     for rid, actor in runtime.actors.items():
         if type(actor) is not ZoneOwnExecutor:
             raise TypeError(f'v98 frame gate expects ZoneOwnExecutor actors, {rid} is {type(actor).__name__}')
+        lookaround.adopt_guard(rid, actor)
         actor.__class__ = OwnExecutor
     from harness.zone_pair_highpose_contract import own_image_gates
     gates = own_image_gates()
     return {'path': gates['path'], 'sha256': gates['sha256'], 'values': dict(gates['values']),
-            'frame_gate': frame_gate.record()}
+            'frame_gate': frame_gate.record(), 'look_around': lookaround.record()}
 
 
 class Runtime(PreviousRuntime):
