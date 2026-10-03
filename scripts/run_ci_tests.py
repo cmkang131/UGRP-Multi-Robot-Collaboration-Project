@@ -92,6 +92,14 @@ TEST_PATTERNS = (
     "tests/test_zone_environment_registry.py",
     "tests/test_zone_final_environment_runnable.py",
     "tests/test_zone_final_pair_v3.py",
+    "tests/test_zone_final_pair_highpose.py",
+    "tests/test_highpose_d5_gate.py",
+    "tests/test_highpose_starts.py",
+    "tests/test_highpose_timing.py",
+    "tests/test_highpose_transit.py",
+    "tests/test_highpose_blind_close.py",  # v98 blind final approach (recorded own frames, no simulator)
+    "tests/test_highpose_guard_veto_log.py",  # v98 pair-guard veto log (observation only)
+    "tests/test_highpose_start_relief.py",  # v98 start-state relief after a frozen sweep veto
     "tests/test_zone_final_pair_heldout.py",
     "tests/test_review_352.py",
     "tests/test_review_355.py",

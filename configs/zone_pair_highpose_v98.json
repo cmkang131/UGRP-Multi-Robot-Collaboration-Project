@@ -1,0 +1,178 @@
+{
+  "schema": "ugrp.final_pair_highpose.v98",
+  "execution_bundle_id": "zone-final-pair-highpose-v98",
+  "status": "DRAFT_UNSEALED",
+  "workflow_id": "zone-final-pair-highpose-v98",
+  "workflow_version": "3.10.0",
+  "runnable": false,
+  "precondition": "V92_MEASURED_SIM_HIGHPOSE_CALIBRATION_REQUIRED",
+  "maps": [
+    "zone_wide_door_geometry_v3",
+    "zone_wide_two_doors_final_v3",
+    "zone_wide_corridor_final_v3"
+  ],
+  "p03_map": "zone_wide_door_geometry_v3",
+  "provider_id": "opencv_owncam_final_pair_highpose_v98",
+  "calibration_contract_sha256": "4ad461c3b980d885b9743f32cb763fb14f2b1d46a695c3acacae6b4a8e3c8e78",
+  "own_image_gates": {
+    "path": "configs/calibration/own_image_gates_floor_light_v1.json",
+    "sha256": "e71bbe4d80ba371075c0d836d69772a498c9d8b7e360421e55702958e4eb130e",
+    "status": "DEV_CALIBRATED",
+    "procedure": "docs/own_image_gate_calibration.md",
+    "decision": "user 2026-10-03: recalibrate the own-image gates for floor_light_v1 by a documented formal procedure"
+  },
+  "frame_gate": {
+    "profile": "zone_pair_frame_gate_floor_light_v1_v98",
+    "module": "harness/zone_pair_highpose_frame_gate.py",
+    "values_from": "own_image_gates (frame_contrast_spread_min, frame_value_std_min)",
+    "frozen_module": "harness/zone_pair_vision.py (byte-identical to main; earlier bundles keep the v1 dev values 15/3)",
+    "sites": [
+      "PairExecution.step / arm_step (INVALID_OWN_IMAGE)",
+      "CommandGuard.preclose_check (zone_final_pair_guards) / PairCommandGuard.observe_standoff",
+      "PairGraspRelook._grasp (GRIP_NOT_CONFIRMED fresh valid frame) / HighController._wait_close",
+      "ZoneOwnExecutor._ack / pair_readiness -> zone_pair_admission.readiness_snapshot image_valid (valid_frame)"
+    ],
+    "process_global_state": false,
+    "decision": "reviewer BLOCK 5970668877 (2026-10-04): restore the frozen file; apply the values through a v98-only module"
+  },
+  "case_cap": {
+    "sim_cap_s": 300.0,
+    "cases": "p03 3 checkpoints and carry, per case",
+    "prereg_version": "v96-cap-2",
+    "supersedes": "inherited v88 student cap 120 SIM s per case (3x120 P03)",
+    "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md",
+    "decided_before_p03_data": true,
+    "derivation": "lower bounds 63.8/104.2/184.6 s per checkpoint, 190.4-219.3 s full carry (distance/0.06 m/s dominant); 300 s ~ 1.4x largest"
+  },
+  "grip_monitor": {
+    "scope": "log_only_v96",
+    "in_run_grip_loss_detection": false,
+    "gates": "own command history (gripper commanded closed in this grasp epoch, queued pose path) + fixed-enum partner status zone_pair_status_v5",
+    "logged_only": [
+      "low-lift co-motion IoU (legacy LOAD_NOT_HELD_AFTER_LIFT)",
+      "transit relation()/view stability/frame freshness",
+      "HIGH edge line and anchor",
+      "carry/checkpoint hold IoU (legacy LOAD_CHANGED_IN_CARRY, HIGH_CHECKPOINT_GRIP_CHANGED)",
+      "floor-return IoU (legacy FLOOR_RETURN_GRIP_CHANGED)",
+      "pre-close open-grip view grip_view_m2 (legacy close-readiness term, v98)",
+      "post-close grip view grip_view_m2 (legacy GRIP_NOT_SEEN, v98)"
+    ],
+    "grasp_time_view": "log_only_v98",
+    "grasp_time_view_reason": "at the floor grasp pose 0 of 18 beam points are inside the masterpi_v3 camera field of view (own-image gate diagnosis, 2026-10-04), so the grip view cannot see the beam there; a geometry limit, not a threshold. Coordinator decision 2026-10-04 under the user's log-only grip decision for the first E2E: grasp readiness = own command history (issued close) + fixed-enum partner status; the view values stay in the evaluation output.",
+    "unchanged_grasp_checks": "GRIP_NOT_CONFIRMED (issued close in this barrier, own servo commanded closed, fresh valid own frame after the close)",
+    "deferred": "own-grip-loss detection + partner signal (NL: LLM message; structured: fixed status) + audit timing, after the first E2E",
+    "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md"
+  },
+  "blind_final_approach": {
+    "profile": "zone_pair_blind_final_approach_v98",
+    "module": "harness/zone_pair_highpose_blind_close.py",
+    "why": "at the fixed floor grasp posture the own camera sees 0 beam pixels, so the pre-close beam track estimate is None there (BEAM_UNCERTAIN -> PREGRASP_NOT_READY, DEV probe raise_high_align 3358372e r1); camera placement and field of view unchanged",
+    "method": "look-then-move: the unchanged pre-close check (visual beam track + stationary clearance) runs at the hover, the last calibrated posture where the beam is visible, plus the band's lateral centre on the fixed station line within the align tolerance; then the fixed hover -> grasp descent (71 mm vertical, no base motion) and the unchanged close barrier run blind from that confirmation and own issued commands",
+    "limits": "blind window <= fixed descent + CLOSE_WAIT_S + close ramp + 0.5 s slack; issued commands inside the fixed path envelope (no base motion, no pan change, no gripper reopen); drop <= 0.075 m, horizontal <= 0.002 m; resting track age <= 30 s and sigma <= 50 mm / 3 degrees",
+    "abort_codes": ["PREGRASP_HOVER_UNCONFIRMED", "PREGRASP_HOVER_NOT_VISUAL", "PREGRASP_HOVER_POSE_NOT_COMMANDED", "PREGRASP_HOVER_LATERAL_SHIFT", "PREGRASP_BLIND_NOT_CONFIRMED", "PREGRASP_BLIND_BASE_MOVED", "PREGRASP_BLIND_PAN_MOVED", "PREGRASP_BLIND_ARM_OFF_PATH", "PREGRASP_BLIND_GRIPPER_REOPENED", "PREGRASP_BLIND_UNKNOWN_COMMAND", "PREGRASP_BLIND_SEGMENT_CHANGED", "PREGRASP_BLIND_WINDOW_EXPIRED", "PREGRASP_BLIND_DISTANCE_EXCEEDED", "PREGRASP_BLIND_TRACK_UNCERTAIN", "PREGRASP_BEAM_UNSAFE (unchanged close-PWM guard)"],
+    "inputs": "own RGB at the hover, measured hover camera model, own issued commands; no ground truth, contact/success flag or shared camera",
+    "residual": "a partner nudge of the resting beam during the blind window is not detected before the close; post-close own-grip detection + partner signal stays deferred (grip_monitor log-only)",
+    "status": "DESIGN_DRAFT: offline replay of one recorded descent (r1); no closed-loop run"
+  },
+  "dev_pilot": {
+    "admission_mode": "DEV_PILOT",
+    "calibration_status": "DEV_PILOT",
+    "rule": "DEV_PILOT_C0_ZERO_v1",
+    "admitted_calibration_sha256": [
+      "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"
+    ],
+    "runnable": true,
+    "run_status": "FUNCTIONAL_DEV",
+    "cohort_role": "DEV_PILOT_FUNCTIONAL_DEV",
+    "tensorboard_cohort": "v98-dev-pilot-functional",
+    "confirmation_sample": false,
+    "promotable": false,
+    "measured_sim_evidence": false,
+    "required_calibration": "v92 loader-v2 structure (schema, contract, maps, provenance, loaded/fine motion, pair model, cameras, pan); status DEV_PILOT; dev_rule DEV_PILOT_C0_ZERO_v1; confirmatory false; params.motion_loaded.deadband.c0 == [0,0,0], u1 > 0; missing == exactly the 10 unloaded params.motion fields (all null), filled only by unloaded_motion_fill",
+    "scope": "non-confirmatory functional pilot; never confirmatory or MEASURED_SIM evidence",
+    "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md",
+    "rule_key": "dev_rule",
+    "unloaded_motion_fill": {
+      "label": "DEV",
+      "fields": [
+        "params.motion.gain",
+        "params.motion.tau_s",
+        "params.motion.tau_axis_s",
+        "params.motion.tau_stop_s",
+        "params.motion.noise_rel",
+        "params.motion.noise_abs",
+        "params.motion.scale_std",
+        "params.motion.scale_walk",
+        "params.motion.use_scale",
+        "params.motion.rest_noise"
+      ],
+      "source": "harness/owncam_localizer.py DEFAULT_PARAMS[\"motion\"] (frozen static localizer default the runtime merges under measured fields)",
+      "source_sha256": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+      "values": {
+        "gain": [
+          [
+            1.15,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.94,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.4
+          ]
+        ],
+        "tau_s": 0.12,
+        "noise_rel": [
+          0.1,
+          0.1,
+          0.1
+        ],
+        "noise_abs": [
+          0.004,
+          0.004,
+          0.01
+        ],
+        "scale_std": 0.05,
+        "scale_walk": 0.01,
+        "tau_stop_s": 0.12
+      },
+      "derived": {
+        "tau_stop_s": "= tau_s, the predictor fallback when tau_stop_s is absent (owncam_localizer.predict_to)"
+      },
+      "absent_keys_use_code_defaults": {
+        "tau_axis_s": "absent -> scalar tau_s spin-up",
+        "use_scale": "absent -> True",
+        "rest_noise": "absent -> True"
+      },
+      "why": "coordinator option 1 (per-axis stop taus r4/r5) is not supported: predict_to uses a scalar tau_stop_s; option 2 premise does not hold: no v88 runtime calibration on main has an unloaded profile (latest pinned v88 file 7ad49133... is PARTIAL with params.motion all null). No axis taus are averaged.",
+      "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md"
+    },
+    "admitted_source": {
+      "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5": {
+        "path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
+        "pr": 369,
+        "rule": "DEV_PILOT_C0_ZERO_v1",
+        "admitted_by": "coordinator message 2026-10-03"
+      }
+    }
+  },
+  "qualification": "자기 RGB·정적 지도·자기 명령 기반 새 높은 운반 자세 후보. 인수 미완료.",
+  "supersedes": {
+    "bundle": "zone-final-pair-highpose-v96",
+    "workflow_version": "3.8.0",
+    "registry_file": "configs/zone_pair_highpose_v96.json (byte-identical, retired; has DEV run records at 9d7c70e8/323fe3f9)",
+    "reason": "staged DEV stage probes (test setup before the controller starts) + re-review fixes after v96 run records; v97/3.9.0 reserved by claude/llm-pair-e2e (zone-pair-llm-v97)"
+  },
+  "stage_probes": {
+    "scope": "DEV_PILOT FUNCTIONAL_DEV diagnostics only; never a case result, never promotable",
+    "staging": "sim harness places robots at the catalogue grasp stations of the case beam pose and runs a fixed teacher arm pre-roll (v92 loaded schedule poses) BEFORE the controller exists; recorded in eval_only/staging.json",
+    "controller_inputs": "own RGB, static map, own issued commands (staged pre-roll handed over as the robot's own ordered command history: pre-close posture, then close/raise rows, so LoadState sets loaded by its own rule); localizer starts from the CASE START prior definition (zone_final_pair_runtime.Runtime: region mean, std 0.15/max(0.15,row span)/0.174533) applied to the staged spawn pose, is_fix false. raise_high_align: spawn at the plan pre-station, normal opening look_around kept, entry wait_approach (own approach barrier -> align). HIGH entries: opening look_around skipped (it would move the arm holding the beam) and recorded. Dropped: raise_high_staged/raise_high_closed (floor entries can never pass pair admission without a look_around). No controller/admission gate is relaxed.",
+    "design": "coordinator 2026-10-04: align entry with normal look_around; loaded state via own history; floor entries dropped",
+    "status": "RUNNABLE_DEV: own-image gates recalibrated for floor_light_v1 (own_image_gates) and grasp-time grip view log-only (grip_monitor.grasp_time_view), coordinator 2026-10-04"
+  }
+}
