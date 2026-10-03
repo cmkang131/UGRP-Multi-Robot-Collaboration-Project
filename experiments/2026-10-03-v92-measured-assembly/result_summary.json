@@ -1,0 +1,341 @@
+{
+  "schema": "ugrp.v92_measured_assembly_summary.v1",
+  "status": "PARTIAL",
+  "rc": 2,
+  "execution": {
+    "source_sha": "257953ec36353c37acc61c4cb86563db7c937de2",
+    "working_tree_dirty": false,
+    "python": "3.12.13",
+    "numpy": "2.5.2",
+    "started_utc": "2026-10-03T09:18:16Z",
+    "finished_utc": "2026-10-03T09:20:21Z",
+    "input_files_hashed": 14871
+  },
+  "pinned_hashes_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5967154276",
+  "pinned_hash_check": {
+    "scripts/assemble_final_pair_calibration_v92.py": {
+      "committed": "a61ac39db76661c6bfb489e2835784fd9628dd324d4ce93db89b593f823cc5b9",
+      "in_input_manifest": "a61ac39db76661c6bfb489e2835784fd9628dd324d4ce93db89b593f823cc5b9",
+      "match": true
+    },
+    "scripts/final_pair_calibration_v92_io.py": {
+      "committed": "18bfc0c4acd7a2b25d993ae0528952643a4dc67b5b0cf5668bc05a834c183b5f",
+      "in_input_manifest": "18bfc0c4acd7a2b25d993ae0528952643a4dc67b5b0cf5668bc05a834c183b5f",
+      "match": true
+    },
+    "scripts/final_pair_calibration_v92_motion.py": {
+      "committed": "20532aec09988cd9a8ca1eb61d9346a9226db71b2fe1633707b3fc334eaffaf9",
+      "in_input_manifest": "20532aec09988cd9a8ca1eb61d9346a9226db71b2fe1633707b3fc334eaffaf9",
+      "match": true
+    },
+    "scripts/final_pair_calibration_v92_camera.py": {
+      "committed": "d66cc6ebb248ad5b37875d25a6e9e44b3cefdf1b82435cb6bc36057ce7a8530b",
+      "in_input_manifest": "d66cc6ebb248ad5b37875d25a6e9e44b3cefdf1b82435cb6bc36057ce7a8530b",
+      "match": true
+    },
+    "harness/zone_final_pair_calibration_v92_contract.py": {
+      "committed": "164f3212706fc6505d1dd38db74e519c40bcc986f0b8200a6c4fb10d94a7a68e",
+      "in_input_manifest": "164f3212706fc6505d1dd38db74e519c40bcc986f0b8200a6c4fb10d94a7a68e",
+      "match": true
+    },
+    "experiments/2026-10-03-v92-loaded-schedule/criterion_B_double_prime.json": {
+      "committed": "5f7d8905c49625a7125647eaf713575e4e659ca658274b8734fd2a4952da4d4a",
+      "in_input_manifest": "5f7d8905c49625a7125647eaf713575e4e659ca658274b8734fd2a4952da4d4a",
+      "match": true
+    },
+    "configs/zone_final_pair_v92_schedule.json.gz": {
+      "committed": "47b0e1f3fc52ed94fb737e5b7a90c1f75035c74d198b8bcce3036890fc9d8b62",
+      "in_input_manifest": "47b0e1f3fc52ed94fb737e5b7a90c1f75035c74d198b8bcce3036890fc9d8b62",
+      "match": true
+    }
+  },
+  "collection_sources": {
+    "unloaded": "747d2b9f1eb43e21804ccef58fff4db241d1a844",
+    "fine": "747d2b9f1eb43e21804ccef58fff4db241d1a844",
+    "loaded": "257953ec36353c37acc61c4cb86563db7c937de2"
+  },
+  "outputs": {
+    "calibration.json": "852426d2efbe4400516fc6227279923c4a1b7747e0f2b48a6df6131d7ade4109",
+    "fit_report.json": "1b4ff5593f6e7558b71f17548d00f5e4ddaded7567f0fe74fd7e2d3d765fc74d",
+    "input_manifest.json": "fee2cea5330704c338085a7fb03903ce2312c7049ff7c4b2987aded29324ee23"
+  },
+  "missing": [
+    {
+      "field": "params.motion.gain",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.tau_s",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.tau_axis_s",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.tau_stop_s",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.noise_rel",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.noise_abs",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.scale_std",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.scale_walk",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.use_scale",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion.rest_noise",
+      "reason": "r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile."
+    },
+    {
+      "field": "params.motion_loaded.gain",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.tau_s",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.tau_axis_s",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.tau_stop_s",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.noise_rel",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.noise_abs",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.scale_std",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.scale_walk",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.use_scale",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.rest_noise",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.load_transition.scale_std",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.load_transition.unloaded_scale_std",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.deadband.c0",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.deadband.u1",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.drift_ratio_std",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "params.motion_loaded.yaw_bias_std_rad_s",
+      "reason": "motion identification: fit convergence/rank/boundary failure: rank 13/13"
+    },
+    {
+      "field": "pair_model.slope_to_yaw_ratio",
+      "reason": "measurement not available"
+    },
+    {
+      "field": "pair_model.b_rad_s[\"\"]",
+      "reason": "measurement not available"
+    },
+    {
+      "field": "pair_model.b_rad_s.pm",
+      "reason": "measurement not available"
+    },
+    {
+      "field": "pair_model.b_rad_s.edge",
+      "reason": "measurement not available"
+    },
+    {
+      "field": "pair_model.b_rad_s.pm+edge",
+      "reason": "measurement not available"
+    }
+  ],
+  "missing_groups": {
+    "unloaded_by_design": 10,
+    "loaded_motion_rejected": 16,
+    "pair_model_not_evaluated": 5
+  },
+  "fine_profile": {
+    "gain": [
+      [
+        1.2343633830421075,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.8465206614876801,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.057962354519254
+      ]
+    ],
+    "tau_s": 0.858834228876382,
+    "tau_axis_s": [
+      0.858834228876382,
+      0.8554046876918863,
+      0.1634521669854569
+    ],
+    "tau_stop_s": 0.06965110936636022,
+    "noise_rel": [
+      0.3176,
+      0.4438,
+      0.1116
+    ],
+    "noise_abs": [
+      0.01538,
+      0.012017159467223952,
+      0.016568425019454016
+    ],
+    "scale_std": 0.0,
+    "scale_walk": 0.0,
+    "use_scale": false,
+    "rest_noise": true
+  },
+  "pan_base_yaw": {
+    "unloaded": 1.5303380175179718e-08,
+    "loaded": -0.0011782219763573187
+  },
+  "camera_accepted": {
+    "unloaded": 25,
+    "loaded": 3
+  },
+  "loaded_selection": {
+    "not_lifted": 475,
+    "lifted": 13926
+  },
+  "loaded_optimizer_diagnostic": {
+    "reproduces_recorded_run": true,
+    "status": 2,
+    "message": "`ftol` termination condition is satisfied.",
+    "nfev": 11,
+    "rank": 13,
+    "rmse": 0.001889263699984933,
+    "params": {
+      "gain_forward": {
+        "value": 1.3550681616484304,
+        "lower": 0.05000000000000001,
+        "upper": 4.0,
+        "at_bound": 0
+      },
+      "gain_left": {
+        "value": 0.9642031198357787,
+        "lower": 0.05000000000000001,
+        "upper": 4.0,
+        "at_bound": 0
+      },
+      "gain_turn": {
+        "value": 0.907346713452843,
+        "lower": 0.05000000000000001,
+        "upper": 4.0,
+        "at_bound": 0
+      },
+      "tau_axis_forward": {
+        "value": 0.9658997652239405,
+        "lower": 0.010000000000000005,
+        "upper": 4.0,
+        "at_bound": 0
+      },
+      "tau_axis_left": {
+        "value": 0.967780232151017,
+        "lower": 0.010000000000000005,
+        "upper": 4.0,
+        "at_bound": 0
+      },
+      "tau_axis_turn": {
+        "value": 0.6561678477566076,
+        "lower": 0.010000000000000005,
+        "upper": 4.0,
+        "at_bound": 0
+      },
+      "tau_stop": {
+        "value": 0.08522320483050172,
+        "lower": 0.005000000000000002,
+        "upper": 0.5,
+        "at_bound": 0
+      },
+      "c0_forward": {
+        "value": 4.0517232641155646e-33,
+        "lower": 0.0,
+        "upper": 0.015,
+        "at_bound": -1
+      },
+      "c0_left": {
+        "value": 3.388536352230367e-20,
+        "lower": 0.0,
+        "upper": 0.015,
+        "at_bound": -1
+      },
+      "c0_turn": {
+        "value": 0.006000000000000001,
+        "lower": 0.006,
+        "upper": 0.015,
+        "at_bound": -1
+      },
+      "u1_forward": {
+        "value": 0.026556708946871406,
+        "lower": 0.025,
+        "upper": 0.04,
+        "at_bound": 0
+      },
+      "u1_left": {
+        "value": 0.028235672588055663,
+        "lower": 0.025,
+        "upper": 0.04,
+        "at_bound": 0
+      },
+      "u1_turn": {
+        "value": 0.029699927687659257,
+        "lower": 0.025,
+        "upper": 0.04,
+        "at_bound": 0
+      }
+    }
+  },
+  "optional_evidence": {
+    "yaw_candidate_r5": "978727fcacc5e368efe2a0fdf6d9d8dc3756573c41e896e06ba11d78cf86fb97",
+    "criterion_B_results": [
+      "e58e64571cbf6f095f55474a72206f6ddc51ad090b917f9b10f1ca46b66ae8d9",
+      "8e452f25a3151b3b2b3263d6b7fec4bd197d64cc0d9dc849b9e7a894e07cdd9f"
+    ],
+    "qualify_full_profile": false
+  }
+}
