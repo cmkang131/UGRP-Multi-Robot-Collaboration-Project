@@ -235,6 +235,7 @@ def test_intermediate_high_checkpoint_stops_reobserves_and_resumes_without_lower
         stop, end, moves = _servo_high_whole_checkpoint(c)
         assert end is not None and end-stop >= CHECKPOINT_REOBSERVE_S-1e-8
         assert moves == []                                   # no lower/open/raise at the checkpoint
+        assert not [a for t, a in c.issued_log if stop <= t <= end and a.get('servo_id') == 1]
         assert any(e['event'] == 'relocalize' and e['t'] == stop for e in c.events)
         assert any(e['event'] == 'barrier_go' and e['barrier'] == 'carry' and e['t'] > end for e in c.events)
         assert opened(c)                                     # only after the final lowering

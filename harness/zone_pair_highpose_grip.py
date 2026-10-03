@@ -16,8 +16,12 @@ log-only.
 Static inputs only (REVIEW_363 round 2, P3 #7): relation() imports the fixed
 catalogue beam spec (sim.zone_cargo.kind('long_beam'): part boxes, grip point)
 and uses a fixed near-clip constant near_m = znear 0.002 x model extent
-(~11.112 m) copied once from v93's headless scene record of the registered
-scene profile. Both are fixed task spec / static camera calibration. No live simulator state, joint measurement or
+(~11.112 m) copied once from v93's headless scene record
+experiments/2026-10-03-pair-carry-highpose/headless_check.json (sha256
+b99b38af71fa12f8d4151f60cc38da5b42da5af70e4c5cdd9b31bd009641f269, scene source
+a19e232a, raw manifest 38549a80...). It is a model constant (stat.extent x
+vis.map.znear), independent of the lighting/render profile. Both are fixed
+task spec / static camera calibration. No live simulator state, joint measurement or
 contact is read.
 """
 from __future__ import annotations
