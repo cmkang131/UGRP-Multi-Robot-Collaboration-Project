@@ -63,13 +63,13 @@ def window(t, shift):
     return 'floor' if t < 10. else 'other'
 
 
-def main(out_root, sha):
+def main(out_root, sha, seed=911, only=None):
     check_source(sha)
     p = hg.probe()
     Backend = rendered(p)
     out_root.mkdir(parents=True, exist_ok=False)
     index = []
-    for name, delay, slip in CONDITIONS:
+    for name, delay, slip in [row for row in CONDITIONS if only is None or row[0] in only]:
         out = out_root/name
         (out/'frames').mkdir(parents=True)
         events = copy.deepcopy(p.commands())
@@ -83,7 +83,7 @@ def main(out_root, sha):
         events.sort(key=lambda row: row['t'])
         write(out/'commands.json', events)
         bundle = c.bundle('zone_wide_two_doors_final_v3', 'calibration-loaded')
-        backend = Backend(bundle, out/'raw', seed=911)
+        backend = Backend(bundle, out/'raw', seed=seed)
         rows = []
         try:
             backend.reset(5.)
@@ -123,15 +123,17 @@ def main(out_root, sha):
         index += rows
         print(json.dumps({'condition': name, 'frames': len(rows)}), flush=True)
     write(out_root/'index.json', {'source_sha': sha, 'driver_sha256': c.base.sha(Path(__file__)),
-        'step_s': STEP_S, 'render': True, 'controller': None, 'model_calls': 0, 'weld': False,
+        'step_s': STEP_S, 'seed': seed, 'render': True, 'controller': None, 'model_calls': 0, 'weld': False,
         'loadavg_end': list(os.getloadavg()), 'frames': index})
 
 
 if __name__ == '__main__':
     out_root, sha = Path(sys.argv[1]), sys.argv[2]
+    seed = int(sys.argv[3]) if len(sys.argv) > 3 else 911
+    only = set(sys.argv[4].split(',')) if len(sys.argv) > 4 else None
     primary = Path('/Users/changmin/projects/ugrp/outputs')
     if not out_root.is_absolute() or not out_root.resolve().is_relative_to(primary):
         raise SystemExit('raw output must be absolute under primary outputs')
     if shutil.disk_usage(primary).free < 10*1024**3:
         raise SystemExit('HOST_ERROR: ENOSPC (<10 GiB free)')
-    main(out_root, sha)
+    main(out_root, sha, seed, only)
