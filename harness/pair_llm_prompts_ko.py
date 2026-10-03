@@ -73,8 +73,9 @@ claim_released(허가는 났지만 아직 시작하지 않음), start_refused(�
 claim_rejected(claim이 받아들여지지 않음), pair_job_running(운반 절차 진행 중),
 pair_job_ended(절차가 끝남, 운반 성공을 뜻하지 않음), look_around_running, look_around_ended입니다.
 since_claim_s는 claim 뒤 지난 SIM초, refusals_since_last_call은 지난 호출 뒤 시작이 거절된 횟수입니다.
-start_refused의 reason SELF_UNCERTAIN은 로봇이 자기 위치를 확신하지 못한다는 뜻이며, 같은 claim을
-반복해도 풀리지 않습니다. 이때는 {"kind": "look_around"}로 주변을 둘러보며 위치를 다시 추정할 수 있습니다.
+start_refused의 reason SELF_UNCERTAIN은 로봇이 자기 위치를 확신하지 못해 시작을 거절했다는 뜻입니다.
+{"kind": "look_around"}는 제자리에서 돌며 주변을 둘러보는 동작입니다. 위치를 다시 추정하는 데 도움이 될 수
+있지만 보장되지는 않습니다.
 own_status를 근거로 쓰면 decision_sources에는 own_commands로 적습니다.''' % {'window': RENDEZVOUS_S}
 
 KO_PAIR_ACTION = '''- action: 당신 자신의 행동 하나입니다. 다음 중 하나를 씁니다.
@@ -83,7 +84,7 @@ KO_PAIR_ACTION = '''- action: 당신 자신의 행동 하나입니다. 다음 �
   {"kind": "continue"}
   {"kind": "wait"}
   {"kind": "release", "order_id": 놓아줄 order_id}
-  {"kind": "look_around"}  (자기 위치를 다시 추정하는 둘러보기, 실행 중인 작업이 없을 때만 시작됩니다)'''
+  {"kind": "look_around"}  (제자리에서 돌며 둘러봅니다. 위치를 다시 추정하는 데 도움이 될 수 있습니다. 실행 중인 작업이 없을 때만 시작됩니다)'''
 
 
 def _pair_only(text: str) -> str:

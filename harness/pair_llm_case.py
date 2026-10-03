@@ -129,7 +129,8 @@ def write_llm_artifacts(out, trial, adapter_wire, runtime, links) -> dict:
     (study / 'map_figure.png').write_bytes(trial.map_png)
     jsonl(study / 'requests.jsonl', trial.requests)
     problems = [p for row in trial.requests for p in pk.verify_archived_request(row)]
-    problems += [p for row in trial.requests for p in billing.billing_problems(row)]
+    problems += [p for row in trial.requests
+                 for p in billing.billing_problems(row, require=billing.IMAGE_BILLING_VERSION)]
     jsonl(study / 'dispatch.jsonl', trial.dispatch_log)
     jsonl(study / 'inputs.jsonl', trial.input_log)
     jsonl(study / 'executor_events.jsonl', trial.executor_events)
