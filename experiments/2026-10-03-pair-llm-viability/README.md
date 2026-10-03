@@ -22,8 +22,8 @@
      한 곳에서 `peer_nl → peer_ko`로 옮겨 봉인 코드(`zp.spec`·`zp.Transport`·`validate_reply`·`zc.condition`)를 부르고,
      짝 층의 기록·번들·CLI·프롬프트·로봇이 보는 `condition`/`encoding`(`free_text`)은 `peer_nl`을 쓴다. 받은 메시지
      봉투의 `encoding` 필드만 봉인된 값 `free_ko`로 남는다(봉인 검증기가 요구).
-2. **실제 LLM 호출 허용.** 이 커밋은 호출 경로를 아직 켜지 않았다(`--live`는 여전히 거절). 사용자 요청으로
-   작업이 일시 중지되었다(아래 "다음 단계").
+2. **실제 LLM 호출 허용.** 조정자 지시(2026-10-04 재개): 기존 프록시 경로로 켠다. 아래 "실제 모델 경로(`--live`)"에
+   구현을 적는다. 한 번의 짧은 스모크만 허용되었고(peer_nl, 60 SIM초, 시드 911), 코호트 토큰 상한은 300,000이다.
 
 **번들 번호**: 기존 v97 가짜 모델 스모크(소스 `b201f777`, 한국어 `peer_ko` 조건)가 이미 `bundle.json`과 해시를
 남겼으므로 실행 기록이 있는 번들로 보고 `docs/execution_versioning.md` 2번(설정을 바꾸면 새 버전)에 따라
@@ -136,18 +136,37 @@ peer_ko `306ca258f6fa…`. 번들 해시: rule `9de77e7fb751…`, no_comm `b7cbb
 ```
 python3 -m scripts.run_pair_llm --condition peer_nl --expected-source-sha <커밋 SHA> --output <기본 체크아웃 outputs/ 절대 경로> \
     --cap-s 60 --synthetic-plumbing-calibration --sim-slot <슬롯> --lock-owner claude --execute
-python3 -m pytest tests/test_pair_llm_inputs.py tests/test_pair_llm_runtime.py tests/test_pair_llm_case.py tests/test_pair_llm_eval.py
+python3 -m pytest tests/test_pair_llm_inputs.py tests/test_pair_llm_runtime.py tests/test_pair_llm_case.py tests/test_pair_llm_eval.py tests/test_pair_llm_live.py
 ```
 
-`--live`는 이 커밋에서 거절한다.
+실제 모델 스모크(조정자 승인 뒤): 위 명령에 `--live --proxy-pid <프록시 PID> --budget-db <절대 경로>/budget.sqlite --create-budget \
+--cohort-id <이름> --cohort-token-cap 300000`을 더한다.
 
-## 다음 단계 (일시 중지 시점의 상태)
+## 실제 모델 경로 (`--live`)
 
-실제 호출 경로는 아직 없다. 계획(구현 전): 기존 `harness/zone_study_llm_driver.MainStudySendLedger`(요청·응답 원문,
-토큰, 지연, 실패 분류, 예산 원장)와 읽기 전용 프록시 확인(`live_proxy`, 감사된 소스 해시 + PID)을 `stub_adapter`와 같은
-모양의 `live_adapter`로 연결하고, 429/쿼터 오류는 `RATE_LIMIT`로 명시 기록하며, 재시도는 스터디의 문서화된 규칙(스케줄러
-`max_retries=0`, 실행 단위 "첫 모델 요청 전 HOST_ERROR만 제자리 1회", 감사된 프록시의 내부 429 재시도 최대 2회)만 따른다.
-그다음 `peer_nl` 60 SIM초 실제 모델 스모크 1회(시드 911, 합성 보정이라 운반은 기대하지 않음)를 한다.
+새 전송 계층이 아니다. 스터디의 실제 모델 경로를 그대로 쓴다: `GeminiProxyCompleter` → `MainStudySendLedger`(요청을 보내기
+**전에** 내구성 예산 행을 쓰고, 요청·응답 원문 바이트와 sha256, 제공자 토큰 사용량, wall 지연, 실패 분류를 남김) → 감사된 로컬
+구독 프록시(`127.0.0.1:8391`, 읽기 전용 확인: 감사된 소스 해시 + PID 수신 소켓, 프록시를 시작·수정하지 않음) → 리다이렉트를
+거부하는 전용 opener(`NetworkFence`). 이 PR이 더한 것은 `harness/pair_llm_live.py` 한 모듈이다.
+
+- `--live`: LLM 조건만(`rule`은 모델이 없어 거절), 한 케이스 60 SIM초 이하, `--proxy-pid`, 절대 경로 `--budget-db`
+  (`--create-budget`으로만 생성), `--cohort-id`, 명시적 `--cohort-token-cap`이 모두 필요하다. 더 긴 실제 케이스는 별도 결정거리다.
+- **예산 원장**(`harness/zone_main_budget.py`, SQLite): 요청마다 보내기 전 행, 응답 뒤 정산. 코호트 상한(스모크 300,000 토큰,
+  사용량을 모르는 요청은 12,000 토큰으로 계산)에 닿으면 다음 요청 전에 멈춘다.
+- **재시도 층(전부 문서화된 기존 규칙, 새 규칙 없음)**: (1) 스케줄러 `max_retries=0`: 실패한 호출을 새 POST로 다시 보내지
+  않는다. (2) 실행 단위: `llm_driver.json`의 `once_in_place_only_if_host_error_before_first_model_request`
+  (`llm.run_attempts`): 첫 모델 요청 전의 HOST_ERROR만 제자리에서 1회. 429·API 오류·첫 요청 뒤의 호스트 오류는 재시도하지 않는다.
+  (3) 감사된 프록시: 한 POST 안에서 업스트림 429를 내부 재시도(업스트림 시도 최대 2회). 번들(`model.retry_layers`)에 기록한다.
+- **429 / 쿼터**: HTTP 429, 또는 오류 본문에 quota / rate limit / resource exhausted 문구가 있으면 실패 라벨 `RATE_LIMIT`
+  (스터디 분류 `infra:API`)로 **명시 기록**하고 다음 틱에 실행을 멈춘다. 그 실행은 무효이며 어떤 것도 재시도하지 않는다.
+  오류 응답의 본문 해시·발췌·`Retry-After`를 원장 행과 `llm/wire/*-error.json`에 보존한다(스터디 원장은 이를 버린다).
+  그 밖의 API 오류(500·시간 초과 등)는 스터디 규칙대로 기록하고 실행은 이어가되 시행은 `infra:API`(무효)다. 응답이 한 번도
+  정상이 아니면 멈춘다.
+- **기록**: 요청 본문(텍스트 + 이미지 2장)·응답 바이트는 `llm/wire/`, POST별 행(토큰, 지연, 모델, 완료 사유, 실패 분류, 해시)은
+  `llm/model_calls.jsonl`, 사용량 요약은 `metrics.model_usage`, 프록시 신원·예산 원장·코호트 사용량은 `llm/live_driver.json`,
+  시도 목록은 `attempts.json`에 있다. 모두 `artifacts.sha256.json`에 해시된다.
+- 시험 25개(`tests/test_pair_llm_live.py`): 네트워크만 가짜 프록시로 바꾸고 나머지는 실제 live 사슬이다(제공자 모양 응답,
+  429·403·503 쿼터, 500, 전부 실패, 코호트 상한, 재시도 규칙, CLI 거절).
 
 ## 참고 자료
 

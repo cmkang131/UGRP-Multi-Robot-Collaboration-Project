@@ -358,7 +358,7 @@ def test_a_host_error_keeps_partial_records_and_classifies_enospc(tmp_path):
 
 # --------------------------------------------------------------------------- CLI and registration
 
-def test_cli_plans_without_running_and_refuses_live_and_missing_calibration(capsys):
+def test_cli_plans_without_running_and_refuses_missing_calibration_and_unfrozen_source(capsys):
     from scripts import run_pair_llm as cli
     args = ['--condition', 'peer_nl', '--expected-source-sha', 'a' * 40, '--output',
             '/Users/changmin/projects/ugrp/outputs/never-created', '--synthetic-plumbing-calibration']
@@ -367,8 +367,8 @@ def test_cli_plans_without_running_and_refuses_live_and_missing_calibration(caps
     assert plan['execution_started'] is False and plan['model_kind'] == 'stub' and plan['research_result'] is False
     assert plan['execution_bundle_id'] == 'zone-pair-llm-v99' and plan['workflow_version'] == '3.11.0'
     assert not Path('/Users/changmin/projects/ugrp/outputs/never-created').exists()
-    with pytest.raises(ValueError, match='live model calls are disabled'):
-        cli.main(args + ['--live'])
+    assert cli.main(args + ['--live', '--cap-s', '60']) == 0       # a live PLAN touches no network and no proxy
+    assert json.loads(capsys.readouterr().out)['model_kind'] == 'live'
     with pytest.raises(ValueError):
         cli.main(['--condition', 'rule', '--expected-source-sha', 'a' * 40, '--output', '/x'])
     with pytest.raises(ValueError):

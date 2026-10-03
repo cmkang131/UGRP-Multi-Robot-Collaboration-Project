@@ -4,11 +4,11 @@
     {
       "id": "zone-pair-llm-v99",
       "version": "3.11.0",
-      "purpose": "DRAFT v99 pair carry with an LLM decision layer over the v88 scripted skill: rule / no_comm / peer_nl arms, 300 SIM s cap, stub model only until a live smoke is approved (Refs #219)",
+      "purpose": "DRAFT v99 pair carry with an LLM decision layer over the v88 scripted skill: rule / no_comm / peer_nl arms, 300 SIM s cap; stub model by default, --live smoke (<= 60 SIM s) through the study live driver and the audited local proxy (Refs #219)",
       "entry": "scripts/run_pair_llm.py",
       "runner": "scripts.run_pair_llm",
       "docs": "experiments/2026-10-03-pair-llm-viability/README.md",
-      "requires": "Committed source; owned SIM slot; calibration (synthetic plumbing-only unless a measured v88 calibration is given); own RGB/map/order sheet/commands/delivered messages only; no real model call without coordinator approval",
+      "requires": "Committed source; owned SIM slot; calibration (synthetic plumbing-only unless a measured v88 calibration is given); own RGB/map/order sheet/commands/delivered messages only; --live additionally needs --proxy-pid, --budget-db, --cohort-id and --cohort-token-cap and runs at most 60 SIM s",
       "output_flag": "--output",
       "output_kind": "directory",
       "required_inputs": [
