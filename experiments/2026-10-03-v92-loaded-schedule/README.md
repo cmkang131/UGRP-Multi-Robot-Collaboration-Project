@@ -73,7 +73,21 @@ V92_SOURCE_SHA=<최종 PR 댓글의 40자리 SHA> \
   bash experiments/2026-10-03-v92-loaded-schedule/collect.sh
 ```
 
-슬롯은 `sim-codex-v92-loaded`다. 표준 `sim_cli workflow run zone-final-pair-loaded-v92`를 사용하며 90분은 잠금 예상 메타데이터다. 수집·렌더·적합 결과의 회수 뒤 TensorBoard를 갱신하고 별도로 인수한다.
+슬롯은 `sim-claude-v92-loaded`다. 표준 `sim_cli workflow run zone-final-pair-loaded-v92`를 사용하며 90분은 잠금 예상 메타데이터다. 수집·렌더·적합 결과의 회수 뒤 TensorBoard를 갱신하고 별도로 인수한다.
+
+## 전체 720초 무렌더 사전 점검 (R2 남은 조건, 2026-10-03)
+
+R2의 남은 조건 두 개를 닫았다. 필수 CI 실패(SIM 슬롯 경쟁)는 #356 수정이 든 main 병합(`0ccbb9f9`)으로 해결했다. 288칸 지지는 실제 무렌더 실행으로 확인했다.
+
+- 소스 `0d9ad122`, `probe_headless.py --mode full`, 720.0 SIM s, 명령 22,302개, 렌더 0, 모델 호출 0, 카메라 경계 호출 7,202회. 시계는 고정 substep 누적값으로 맞췄다([CLOCK_FIX](review_r2_response/CLOCK_FIX.md)). 학습 자료가 아니다(`training_eligible=false`).
+- `scripts/check_final_pair_loaded_support.py`로 동결 B″ loaded 선별(빔 들림·네 집게 접촉·외부 지지 없음·weld 없음)을 적용했다. 유효 표본 **13,926/14,401**(제외 475개는 모두 `not_lifted`, 들기 전·내린 뒤). **288/288칸 통과**, 칸별 완전 창 최솟값 **137**(기준 100). 13모수 식별성은 별도이며 이 검사로 주장하지 않는다.
+- 출력: `/Users/changmin/projects/ugrp/outputs/v92-headless-check-20261003T074418Z/` — `raw/artifacts.sha256.json` sha256 `a3c23c88…`, `raw/summary.json` `6e69187d…`, `verification/support_audit.json` `177be499…`. 사본: [요약](review_r2_response/full_headless_summary.json), [288칸 감사](review_r2_response/full_headless_support_audit.json).
+- 실패한 앞선 두 시도도 보존했다: `…T071647Z`(시계 누적 오차로 `inexact SIM advance`, 위 수정의 원인), `…T071802Z`(sandbox의 `/bin/ps` 차단).
+- 관련 테스트(로더·v92 조립기·SIM 슬롯·fast guard) **138 passed in 312s**.
+
+**속도 진단(같은 날, 배타 잠금, 60 SIM s 프로파일):** 26.8 SIM s/분(부하 5–8). 프로파일 124초 중 MuJoCo `mj_step` 56초(45%), fast guard의 구(sphere) 간격 검사 약 26초, 나머지 Python 처리. v91 무하중 수집(약 59 SIM s/분)보다 느린 주원인은 빔을 쥔 접촉 계산 자체다. 결과를 바꾸지 않는 범위에서 줄일 수 있는 부분은 guard 쪽 약 20–25%뿐이라 이번 수집에는 적용하지 않는다.
+
+수집 주체가 Codex에서 Claude 조정자로 바뀌어 `collect.sh`의 잠금 소유자·슬롯 이름만 `claude`로 바꿨다. 일정·B″·실행 코드는 그대로다.
 
 ## 참고 자료
 

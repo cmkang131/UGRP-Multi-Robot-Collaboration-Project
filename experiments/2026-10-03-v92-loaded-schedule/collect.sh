@@ -6,7 +6,7 @@ PY=/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python
 FINAL_SHA="${V92_SOURCE_SHA:?Set the exact 40-character SHA from this PR handoff}"
 FINAL_BRANCH=codex/v92-loaded-schedule
 RUN_ROOT=/Users/changmin/projects/ugrp/outputs/final-pair-v92-loaded-${FINAL_SHA:0:8}-20261003
-SLOT=sim-codex-v92-loaded
+SLOT=sim-claude-v92-loaded
 CHILD_PID=""
 ACQUIRED=0
 test "${#FINAL_SHA}" -eq 40
@@ -21,20 +21,20 @@ cleanup() {
   # Keep the coordinator/physics reservation alive until its child is finished.
   if [ -n "$CHILD_PID" ]; then wait "$CHILD_PID" || :; fi
   if [ "$ACQUIRED" -eq 1 ]; then
-    "$PY" -m scripts.agent_sim_slots release --owner codex --sim-slot "$SLOT"
+    "$PY" -m scripts.agent_sim_slots release --owner claude --sim-slot "$SLOT"
   fi
 }
 trap cleanup EXIT
 trap 'exit 130' INT
 trap 'exit 143' TERM
-"$PY" -m scripts.agent_sim_slots acquire --owner codex --branch "$FINAL_BRANCH" \
+"$PY" -m scripts.agent_sim_slots acquire --owner claude --branch "$FINAL_BRANCH" \
   --purpose 'v92 loaded training 720 SIM s; not a timing benchmark' \
   --pid $$ --expected-minutes 90 --sim-slot "$SLOT"
 ACQUIRED=1
 "$PY" scripts/ugrp_session.py run final-pair-v92-loaded -- \
   "$PY" -m scripts.sim_cli workflow run zone-final-pair-loaded-v92 -- \
   --check calibration-loaded --map-id zone_wide_two_doors_final_v3 --seed 911 \
-  --expected-source-sha "$FINAL_SHA" --lock-owner codex --sim-slot "$SLOT" \
+  --expected-source-sha "$FINAL_SHA" --lock-owner claude --sim-slot "$SLOT" \
   --output "$RUN_ROOT" --execute &
 CHILD_PID=$!
 RC=0
