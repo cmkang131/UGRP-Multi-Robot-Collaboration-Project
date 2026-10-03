@@ -158,22 +158,30 @@ def score_rotation(cases, profile, prior, gate):
         raise ValueError('duplicate rotation map')
     for case in cases:
         if (case['training'] or case['map_id'] not in gate['held_out']['allowed_maps']
-                or case['pose_sha256'] in prior or case['dt'] != .05):
-            raise ValueError('rotation training/prior pose, map or sample interval ineligible')
+                or case['dt'] != .05):
+            raise ValueError('rotation training, map or sample interval ineligible')
     results = []
     for case in cases:
         result = {'raw': case['folder'], 'map_id': case['map_id'], 'pass': None,
                   'metrics': None, 'reason': 'no frozen candidate or missing signed steps/PRBS/horizon support'}
-        if profile is not None and frozen.axis_supported(case, 2, gate):
+        # Frozen B excludes prior bytes per case with a null validation decision.
+        # Do not let an excluded case suppress another map's yaw evaluation.
+        if case['pose_sha256'] in prior:
+            result.update(reason='PREVIOUSLY_SEEN_POSE_BYTES', pose_sha256=case['pose_sha256'])
+        elif profile is not None and frozen.axis_supported(case, 2, gate):
             summary = frozen.evaluate_axis(case, 2, profile, gate)
             passed = all(row['numerical_pass'] for row in frozen.all_rows(summary))
             result.update({'metrics': summary, 'numerical_pass': passed, 'pass': passed, 'reason': None})
         results.append(result)
     missing = sorted(set(gate['held_out']['allowed_maps']) - set(maps))
+    scored = [r['map_id'] for r in results if r['metrics'] is not None]
+    not_scored = sorted(set(gate['held_out']['allowed_maps']) - set(scored))
+    # Preserve the two-map gate: a remaining-map pass cannot fill an exclusion.
     decisions = [r['pass'] for r in results] + [None for _ in missing]
     return {'schema': 'ugrp.consumer_B_validation.v91.rotation_addendum.v1',
-            'scope': 'HELD_OUT_VALIDATION' if not missing else 'PARTIAL_HELD_OUT_VALIDATION',
+            'scope': 'HELD_OUT_VALIDATION' if not not_scored else 'PARTIAL_MAPS',
             'cases': results, 'maps_observed': maps, 'maps_not_supplied': missing,
+            'maps_scored': scored, 'maps_not_scored': not_scored,
             'pass': frozen.combine(decisions), 'candidate_status': 'CANDIDATE_UNVALIDATED',
             'criterion_A': 'FAILED_NOT_RESCORED'}
 
@@ -448,6 +456,9 @@ def validate(raws, *, refetch=False, rotation_addendum=False):
             'axis_pass': {**report['axis_pass'], 'rotate': rotation_report['pass']},
             'pass': frozen.combine([report['axis_pass']['forward'], report['axis_pass']['left'],
                                     rotation_report['pass']]),
+            'rotation_scope': rotation_report['scope'],
+            'rotation_maps_scored': rotation_report.get('maps_scored', []),
+            'rotation_maps_not_scored': rotation_report.get('maps_not_scored', []),
             'scope_note': 'Separate B+r5 summary; forward/left PRE_COLLECTION, yaw '
                 'PRE_SCORING_AND_READING_NOT_PRE_COLLECTION. Original B/r4 rotation remains null.',
         }

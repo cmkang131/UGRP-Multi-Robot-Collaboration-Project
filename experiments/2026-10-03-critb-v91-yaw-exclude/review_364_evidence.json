@@ -1,0 +1,40 @@
+{
+  "recorded_utc": "2026-10-03T07:15:53.754520+00:00",
+  "reviewed_head": "5b61d5b21f0107ed38a9d404ad2c2c877a42469b",
+  "base_sha": "89ea80d536b3d2406848ba6e85ead4150ac06bd6",
+  "review_start_head": "c25be095e4b8d7215fe6eb7cd44c4752e5d904b3",
+  "review_branch": "codex/review-362",
+  "candidate_locally_merged_into_review_branch": true,
+  "candidate_implementation_modified_by_reviewer": false,
+  "test_command": "PYTHONPATH=experiments/2026-10-03-critb-v91-yaw-exclude/review_364_safety:. /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_consumer_criterion_b_v91_yaw.py tests/test_consumer_criterion_b_v91.py tests/test_consumer_criterion_b_rotation.py tests/test_consumer_criterion_b.py tests/test_unloaded_consumer.py tests/test_unloaded_hammerstein.py tests/test_review_346.py experiments/2026-10-03-critb-v91-yaw-exclude/review_364_checks.py --junitxml=experiments/2026-10-03-critb-v91-yaw-exclude/review_364_tests.xml > experiments/2026-10-03-critb-v91-yaw-exclude/review_364_tests.txt 2>&1",
+  "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+  "numpy": "2.5.2",
+  "scipy": "1.17.1",
+  "platform": "macOS-27.2-arm64-arm-64bit",
+  "tests": {
+    "tests": 321,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "pass_line": "321 passed in 71.73s (0:01:11)",
+  "existing_tests": 305,
+  "independent_tests": 16,
+  "raw_access": "6 explicit pose files streamed for size/SHA-256 only: v88 training r1/r2 and v91 two-map r1/r2. No parsing or display of rows. No command/camera data or score-result file opened.",
+  "coordinator_issue_comment": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5966536405",
+  "real_v91_scoring_runs": 0,
+  "physics_runs": 0,
+  "render_runs": 0,
+  "model_calls": 0,
+  "existing_processes_modified": false,
+  "artifacts_sha256": {
+    "review_364_checks.py": "28667e49329cd90ace6666ab01b662cb6beab4b147d165b064c0467dfdd9b17b",
+    "review_364_github.json": "9f2c8bf61da2dfdd691be97b1038cda83c5181e788e09b6fea7ea60ae2273f4e",
+    "review_364_identity.json": "984686c2c294ffc0cb8548d8ebaf9ef295101518ce4332925a6b6eb323474af7",
+    "review_364_static.json": "a9e728c52816989168822d67fe74901d92b1b06a4e8995492ee909ea6596534c",
+    "review_364_tests.txt": "64fc93ec08e868c9917426c66b956313200c2de5dc8793aa98454968ebb82643",
+    "review_364_tests.xml": "9a9019d4fc7195f33c87a8431d82913a7185c90c9690a9434caa5397a904de85"
+  },
+  "test_access_guard_sha256": "7c29c71bcf0302056e3380b4e3d40313eb0bf4e920e808b6c502ae2068de2f51"
+}
