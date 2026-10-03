@@ -1,4 +1,4 @@
-"""Headless v94 admission evidence, explicitly NOT a rendered collection.
+"""Headless v95 admission evidence, explicitly NOT a rendered collection.
 
 Run only committed source under an owned SIM slot/physics lock. The production
 Scene, reset, schedule, ports, timestep and abort guard are shared with collection.
@@ -22,7 +22,7 @@ import numpy as np
 from harness import zone_final_pair_new_starts as v
 from harness.kinematic_overlap import audit, digest, overlap, read_trace
 from scripts import validate_consumer_criterion_b as frozen
-from scripts.validate_consumer_criterion_b_v94 import CORPUS, ROOT, load_prior, sha, verify_frozen
+from scripts.validate_consumer_criterion_b_v95 import CORPUS, ROOT, load_prior, sha, verify_frozen
 from scripts.run_final_environment_checks import check_source, write
 
 
@@ -50,7 +50,7 @@ def support(map_id):
             k = round(e['t']/.05)
             if (k in seen or not 0 <= k < len(u) or abs(e['t']-k*.05) > 1e-9
                     or a['duration_s'] != .05):
-                raise ValueError('invalid v94 schedule tick/lease')
+                raise ValueError('invalid v95 schedule tick/lease')
             observed[k] = [a[name] for name in frozen.COMMAND_AXES]
             seen.add(k)
         if seen != required or not np.array_equal(observed, u):
@@ -80,10 +80,10 @@ def binding():
     import hashlib
     bundles = {mid: v.bundle(mid) for mid in v.MAPS}
     files = set().union(*(set(b['source_sha256']) for b in bundles.values()))
-    files.update(('scripts/precheck_heldout_v94.py', 'scripts/validate_consumer_criterion_b_v94.py',
+    files.update(('scripts/precheck_heldout_v95.py', 'scripts/validate_consumer_criterion_b_v95.py',
                   'harness/kinematic_overlap.py', str(CORPUS.relative_to(ROOT)),
-                  'experiments/2026-10-03-critb-heldout-v94/frozen.json'))
-    return {'schema': 'ugrp.heldout_v94_binding.v1',
+                  'experiments/2026-10-03-critb-heldout-v95/frozen.json'))
+    return {'schema': 'ugrp.heldout_v95_binding.v1',
             'bundle_sha256': {m: digest(b) for m, b in bundles.items()},
             'schedule_sha256': {m: hashlib.sha256(json_bytes(v.schedule(v.CHECK, m))).hexdigest() for m in v.MAPS},
             'source_sha256': {p: sha(ROOT/p) for p in sorted(files)},
@@ -94,10 +94,10 @@ def verify_receipt(directory, bundles=None):
     directory = Path(directory).resolve()
     receipt = json.loads((directory/'precheck.json').read_text())
     manifest = json.loads((directory/'SHA256SUMS.json').read_text())
-    if (receipt.get('schema') != 'ugrp.heldout_v94_precheck.v1' or receipt.get('status') != 'PRECHECK_PASS'
+    if (receipt.get('schema') != 'ugrp.heldout_v95_precheck.v1' or receipt.get('status') != 'PRECHECK_PASS'
             or receipt.get('collection') is not False or receipt.get('rendering') is not False
             or receipt.get('criterion_B_pass') is not None):
-        raise ValueError('not a successful headless v94 precheck receipt')
+        raise ValueError('not a successful headless v95 precheck receipt')
     for name, expected in manifest.items():
         path = (directory/name).resolve()
         if not path.is_relative_to(directory) or not path.is_file() or sha(path) != expected:
@@ -108,7 +108,7 @@ def verify_receipt(directory, bundles=None):
         raise ValueError('precheck manifest not exhaustive')
     expected_binding = binding()
     if json.loads((directory/'binding.json').read_text()) != expected_binding:
-        raise ValueError('v94 precheck source/bundle/schedule/corpus changed; rerun required')
+        raise ValueError('v95 precheck source/bundle/schedule/corpus changed; rerun required')
     if receipt['binding_sha256'] != sha(directory/'binding.json'):
         raise ValueError('precheck binding hash mismatch')
     if set(receipt['maps']) != set(v.MAPS) or receipt['denominator'] != 4:
@@ -130,8 +130,50 @@ def commitment_hashes(directory):
             **{'bundle '+mid: value for mid, value in b['bundle_sha256'].items()},
             **{'schedule '+mid: value for mid, value in b['schedule_sha256'].items()},
             **{name: b['source_sha256'][name] for name in (
-                'scripts/validate_consumer_criterion_b_v94.py', 'harness/kinematic_overlap.py',
-                'scripts/precheck_heldout_v94.py', str(CORPUS.relative_to(ROOT)))}}
+                'scripts/validate_consumer_criterion_b_v95.py', 'harness/kinematic_overlap.py',
+                'scripts/precheck_heldout_v95.py', str(CORPUS.relative_to(ROOT)))}}
+
+
+def nearest_prior(traces, prior):
+    """Report-only spatial distance of each new trace from every prior sample.
+
+    Not an admission gate: overlap() is the gate. This only states how far the
+    new world-frame positions are from anything already seen (planar xy, m).
+    """
+    from scipy.spatial import cKDTree
+    xy = np.concatenate([p.states[:, :2] for p in prior])
+    owner = np.concatenate([np.full(len(p.t), i) for i, p in enumerate(prior)])
+    tree = cKDTree(xy)
+    out = {}
+    for t in traces:
+        distance, index = tree.query(t.states[:, :2])
+        k = int(np.argmin(distance))
+        out[t.source] = {'min_xy_distance_m': float(distance[k]),
+                         'median_xy_distance_m': float(np.median(distance)),
+                         'nearest_prior': prior[int(owner[index[k]])].source,
+                         'samples_within_0p05m': int(np.count_nonzero(distance <= .05)),
+                         'gate': False}
+    return out
+
+
+COMMITMENT_MARKER = 'V95_PRE_COLLECTION_COMMITMENT'
+
+
+def commitment_text(directory):
+    """Markdown for the coordinator to post on #219 BEFORE collection."""
+    directory = Path(directory).resolve()
+    receipt = verify_receipt(directory)
+    hashes = commitment_hashes(directory)
+    lines = [f'## {COMMITMENT_MARKER} — v95 held-out 수집 전 고정 (수집 시작 전 게시)', '',
+             f'- 사전검사(precheck, 렌더링 없음·수집 아님) 소스 SHA: `{receipt["source_sha"]}`',
+             f'- 사전검사 폴더: `{directory}` (로컬 보관, 원격 백업 아님)',
+             f'- 상태: `{receipt["status"]}`, 지도 {len(receipt["maps"])}개 × 로봇 2대, 기준 B 판정 없음(null)',
+             '- 수집 SHA는 이 글 뒤의 브랜치 head다. 실행기는 binding.json(실행 소스·번들·일정·검증기 해시)이 아래 값과 같을 때만 수집한다.',
+             '- 고정(변경 금지): 기준 B `74c312b5…`, r4 `fa7d3aa2…`, r5 yaw `978727fc…`, 회전 부록 `6129f144…`.',
+             '', '| 항목 | sha256 |', '|---|---|']
+    lines += [f'| `{name}` | `{value}` |' for name, value in hashes.items()]
+    lines += ['', '수집 결과를 본 뒤 위 파일을 바꾸면 그 사실·diff·이유를 따로 기록한다. 기준 B는 바꾸지 않는다.']
+    return '\n'.join(lines)+'\n'
 
 
 def verify_public_commitment(comment_id, directory, receipt):
@@ -140,7 +182,7 @@ def verify_public_commitment(comment_id, directory, receipt):
         text=True, timeout=30))
     if (remote.get('id') != comment_id or not remote.get('issue_url', '').endswith('/issues/219')
             or remote.get('created_at') != remote.get('updated_at')
-            or 'V94_PRE_COLLECTION_COMMITMENT' not in remote.get('body', '')
+            or COMMITMENT_MARKER not in remote.get('body', '')
             or not all(h in remote['body'] for h in commitment_hashes(directory).values())):
         raise ValueError('missing/edited/wrong #219 pre-collection commitment or hashes')
     committed = datetime.fromisoformat(remote['created_at'].replace('Z', '+00:00'))
@@ -158,7 +200,7 @@ def run(output, expected_sha, *, host_snapshot):
     frozen_hashes = verify_frozen()
     output.mkdir(parents=True, exist_ok=False)
     write(output/'binding.json', binding())
-    report = {'schema': 'ugrp.heldout_v94_precheck.v1', 'status': 'PRECHECK_FAILED',
+    report = {'schema': 'ugrp.heldout_v95_precheck.v1', 'status': 'PRECHECK_FAILED',
               'collection': False, 'rendering': False, 'criterion_B_pass': None,
               'source_sha': expected_sha, 'started_utc': datetime.now(timezone.utc).isoformat(),
               'binding_sha256': sha(output/'binding.json'), 'frozen_sha256': frozen_hashes,
@@ -210,8 +252,13 @@ def run(output, expected_sha, *, host_snapshot):
             write(output/mid/'support.json', supported)
             write(output/mid/'overlap.json', novelty)
             new.extend(traces)
+            nearest = nearest_prior(traces, prior)
+            write(output/mid/'nearest_prior.json', nearest)
             report['maps'][mid] = {'support_cells': supported['cell_count'], 'support': True,
-                'disjoint': True, 'motion': motion, 'minimum_wall_clearance_m': result['minimum_wall_clearance_m']}
+                'disjoint': True, 'comparisons': len(novelty['comparisons']), 'motion': motion,
+                'minimum_wall_clearance_m': result['minimum_wall_clearance_m'],
+                'nearest_prior_min_xy_m': {rid: nearest[t.source]['min_xy_distance_m']
+                                           for rid, t in zip(v.ROBOTS, traces)}}
         within = [{'a': a.source, 'b': b.source, 'overlap': overlap(a, b)}
                   for i, a in enumerate(new) for b in new[i+1:]]
         write(output/'within_cohort.json', within)
@@ -237,12 +284,19 @@ def run(output, expected_sha, *, host_snapshot):
 
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--output', type=Path, required=True)
-    p.add_argument('--expected-source-sha', required=True)
+    p.add_argument('--output', type=Path)
+    p.add_argument('--expected-source-sha')
     p.add_argument('--execute', action='store_true')
-    p.add_argument('--lock-owner', choices=('codex', 'claude', 'kiro'), default='codex')
-    p.add_argument('--sim-slot', required=True)
+    p.add_argument('--lock-owner', choices=('codex', 'claude', 'kiro'), default='claude')
+    p.add_argument('--sim-slot')
+    p.add_argument('--render-commitment', type=Path, metavar='PRECHECK_DIR',
+                   help='print the #219 commitment text for a verified PASS receipt (no physics)')
     args = p.parse_args(argv)
+    if args.render_commitment is not None:
+        sys.stdout.write(commitment_text(args.render_commitment))
+        return 0
+    if args.execute and not (args.output and args.expected_source_sha and args.sim_slot):
+        p.error('--execute requires --output, --expected-source-sha and --sim-slot')
     if not args.execute:
         print(json.dumps({'status': 'PLAN_ONLY', 'maps': list(v.MAPS), 'rendering': False,
                           'support_cells': {mid: support(mid)['cell_count'] for mid in v.MAPS}}))
@@ -254,8 +308,8 @@ def main(argv=None):
     primary = Path(subprocess.check_output(['git', 'rev-parse', '--path-format=absolute', '--git-common-dir'],
                                           text=True).strip()).parent
     if (not args.output.is_absolute() or not args.output.resolve().is_relative_to(primary/'outputs')
-            or not args.output.name.startswith('heldout-v94-precheck-')):
-        raise ValueError('precheck output must be a fresh primary outputs/heldout-v94-precheck-* directory')
+            or not args.output.name.startswith('heldout-v95-precheck-')):
+        raise ValueError('precheck output must be a fresh primary outputs/heldout-v95-precheck-* directory')
     if shutil.disk_usage(primary).free < 10*1024**3:
         raise OSError(errno.ENOSPC, 'less than 10 GiB free')
     report = run(args.output, args.expected_source_sha, host_snapshot=lambda: sim_snapshot(DEFAULT_ROOT))

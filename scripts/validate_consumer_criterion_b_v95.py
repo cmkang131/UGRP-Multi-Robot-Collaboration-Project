@@ -1,4 +1,4 @@
-"""Kinematic eligibility gate v94; frozen v91 outputs remain reproducible.
+"""Kinematic eligibility gate v95; frozen v91 outputs remain reproducible.
 
 --pose audits only position/rotation/time, before any scoring or result reads.
 --v91-raw applies this mandatory gate before the historical v91 scorer. The
@@ -15,8 +15,8 @@ from pathlib import Path
 from harness.kinematic_overlap import POLICY, audit, read_trace
 
 ROOT = Path(__file__).resolve().parents[1]
-CORPUS = ROOT / 'configs/criterion_b_prior_kinematics_v94.json'
-FROZEN = ROOT / 'experiments/2026-10-03-critb-heldout-v94/frozen.json'
+CORPUS = ROOT / 'configs/criterion_b_prior_kinematics_v95.json'
+FROZEN = ROOT / 'experiments/2026-10-03-critb-heldout-v95/frozen.json'
 
 
 def sha(path):
@@ -33,7 +33,7 @@ def verify_frozen():
 
 def load_prior(manifest=CORPUS):
     record = json.loads(Path(manifest).read_text())
-    if record['schema'] != 'ugrp.criterion_B_prior_kinematics.v94' or record['policy'] != POLICY:
+    if record['schema'] != 'ugrp.criterion_B_prior_kinematics.v95' or record['policy'] != POLICY:
         raise ValueError('exclusion corpus/policy mismatch')
     if not record['files'] or len({r['path'] for r in record['files']}) != len(record['files']):
         raise ValueError('empty/duplicate exclusion corpus')
@@ -64,7 +64,7 @@ def validate_poses(paths, *, prior=None):
     candidates = [read_trace(p) for p in paths]
     prior = load_prior() if prior is None else prior
     result = audit(candidates, prior)
-    result.update(schema='ugrp.consumer_B_kinematic_eligibility.v94',
+    result.update(schema='ugrp.consumer_B_kinematic_eligibility.v95',
                   scope='KINEMATIC_ELIGIBILITY_ONLY', criterion_B_pass=None,
                   previously_seen=result['status'] == 'PREVIOUSLY_SEEN',
                   note='DISJOINT is not scoring, acquisition chronology or collection success')
@@ -88,7 +88,7 @@ def validate_v91(raws, *, rotation_addendum=False, refetch=False):
         report = old.ineligible('PREVIOUSLY_SEEN_KINEMATICS')
     else:
         report = old.validate(raws, refetch=refetch, rotation_addendum=rotation_addendum)
-    report['schema'] = 'ugrp.consumer_B_validation.v94.v91_compatibility'
+    report['schema'] = 'ugrp.consumer_B_validation.v95.v91_compatibility'
     report['kinematic_eligibility'] = novelty
     return report
 

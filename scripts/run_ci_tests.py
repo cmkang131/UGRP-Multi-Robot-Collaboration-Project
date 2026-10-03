@@ -103,7 +103,7 @@ TEST_PATTERNS = (
     "tests/test_consumer_criterion_b.py",
     "tests/test_consumer_criterion_b_v91.py",
     "tests/test_consumer_criterion_b_v91_yaw.py",
-    "tests/test_consumer_criterion_b_v94.py",
+    "tests/test_consumer_criterion_b_v95.py",
     "tests/test_zone_final_pair_new_starts.py",
     "tests/test_consumer_criterion_b_rotation.py",
     "tests/test_final_pair_calibration_assembly.py",

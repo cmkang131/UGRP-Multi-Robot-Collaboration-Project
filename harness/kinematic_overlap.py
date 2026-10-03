@@ -5,6 +5,15 @@ JSON fields never enter identity. No image, residual, score or control code is
 read. A match needs >= window_s of consecutive, common-grid samples, including
 both endpoints. The default 0.2 s is B's shortest horizon. Coarser historical
 logs use their native common lattice (no interpolation or invented samples).
+
+Tolerance (policy v1): 1e-6 m per position component, 1e-6 per rotation-matrix
+element and 1e-6 s relative clock. This is ~1e5 times below the >=0.4 m start
+offsets that make a trajectory new, but far above JSON float64 round-trip (exact)
+and cross-build MuJoCo drift over a 0.2 s window, so a re-run of an already seen
+trajectory cannot slip through on last-bit float noise (the v91 failure mode was
+exact equality; an earlier 1e-9 draft would miss a 1e-8 m reproduction).
+Rigid re-placements of the same relative motion are NOT detected (by design: the
+held-out set reuses training command levels from different world poses).
 """
 from __future__ import annotations
 
@@ -16,8 +25,8 @@ from pathlib import Path
 import numpy as np
 
 POLICY = {'schema': 'ugrp.kinematic_overlap.v1', 'window_s': .2,
-          'position_atol_m': 1e-9, 'rotation_element_atol': 1e-9,
-          'time_atol_s': 1e-9, 'rtol': 0., 'clock_origin': 'free_constant_shift',
+          'position_atol_m': 1e-6, 'rotation_element_atol': 1e-6,
+          'time_atol_s': 1e-6, 'rtol': 0., 'clock_origin': 'free_constant_shift',
           'sampling': 'consecutive common lattice; integer-multiple periods; no interpolation',
           'short_prior': 'also exclude an entire shorter trace with at least two common samples',
           'identity_fields': ['t', 'base_position_m', 'base_rotation']}

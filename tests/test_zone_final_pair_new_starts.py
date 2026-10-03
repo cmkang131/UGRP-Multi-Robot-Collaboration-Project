@@ -1,4 +1,4 @@
-"""V94 fake-physics admission, schedule/support and precheck isolation."""
+"""V95 fake-physics admission, schedule/support and precheck isolation."""
 import copy
 import json
 from types import SimpleNamespace
@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 from harness import zone_final_pair_new_starts as v
-from scripts import precheck_heldout_v94 as checker
+from scripts import precheck_heldout_v95 as checker
 from scripts import run_final_pair_new_starts as runner
 from tests.test_zone_final_pair_v3 import FakePhysics
 
@@ -113,10 +113,10 @@ def test_workflow_routes_new_runner_and_binding_includes_all_gates():
     from sim import workflow_manager as wm
     row, _ = wm._row(v.previous.ROOT, v.WORKFLOW_ID)
     assert row['runner'] == 'scripts.run_final_pair_new_starts'
-    assert row['version'] == '3.6.0'
+    assert row['version'] == '3.7.0'
     b = checker.binding()
-    for path in ('harness/kinematic_overlap.py', 'scripts/precheck_heldout_v94.py',
-                 'scripts/validate_consumer_criterion_b_v94.py', 'sim/final_pair_new_starts.py'):
+    for path in ('harness/kinematic_overlap.py', 'scripts/precheck_heldout_v95.py',
+                 'scripts/validate_consumer_criterion_b_v95.py', 'sim/final_pair_new_starts.py'):
         assert b['source_sha256'][path] == checker.sha(v.previous.ROOT/path)
 
 
@@ -125,12 +125,40 @@ def test_public_commitment_fails_closed(monkeypatch, tmp_path, fault):
     remote = {'id': 123, 'issue_url': 'https://api.github.com/repos/a/b/issues/219',
               'html_url': 'https://github.com/a/b/issues/219#issuecomment-123',
               'created_at': '2026-01-01T00:00:00Z', 'updated_at': '2026-01-01T00:00:00Z',
-              'body': 'V94_PRE_COLLECTION_COMMITMENT '+('a'*64)}
+              'body': 'V95_PRE_COLLECTION_COMMITMENT '+('a'*64)}
     if fault == 'edited': remote['updated_at'] = '2026-01-02T00:00:00Z'
     if fault == 'other_issue': remote['issue_url'] = remote['issue_url'].replace('219', '218')
-    if fault == 'missing_hash': remote['body'] = 'V94_PRE_COLLECTION_COMMITMENT'
+    if fault == 'missing_hash': remote['body'] = 'V95_PRE_COLLECTION_COMMITMENT'
     if fault == 'future': remote['created_at'] = remote['updated_at'] = '2999-01-01T00:00:00Z'
     monkeypatch.setattr(checker, 'commitment_hashes', lambda _: {'receipt': 'a'*64})
     monkeypatch.setattr(checker.subprocess, 'check_output', lambda *a, **kw: json.dumps(remote))
     with pytest.raises(ValueError):
         checker.verify_public_commitment(123, tmp_path, {})
+
+
+def test_rendered_commitment_satisfies_the_collection_gate(monkeypatch, tmp_path):
+    hashes = {'precheck.json': 'b'*64, 'bundle zone_wide_door_geometry_v3': 'c'*64,
+              'harness/kinematic_overlap.py': 'd'*64}
+    monkeypatch.setattr(checker, 'verify_receipt', lambda d, b=None: {
+        'source_sha': 'e'*40, 'status': 'PRECHECK_PASS', 'maps': dict.fromkeys(v.MAPS)})
+    monkeypatch.setattr(checker, 'commitment_hashes', lambda _: hashes)
+    body = checker.commitment_text(tmp_path)
+    assert checker.COMMITMENT_MARKER in body and 'e'*40 in body
+    remote = {'id': 7, 'issue_url': 'https://api.github.com/repos/a/b/issues/219',
+              'html_url': 'x', 'created_at': '2026-01-01T00:00:00Z',
+              'updated_at': '2026-01-01T00:00:00Z', 'body': body}
+    monkeypatch.setattr(checker.subprocess, 'check_output', lambda *a, **kw: json.dumps(remote))
+    assert checker.verify_public_commitment(7, tmp_path, {})['id'] == 7
+    remote['body'] = body.replace('d'*64, 'f'*64)
+    with pytest.raises(ValueError):
+        checker.verify_public_commitment(7, tmp_path, {})
+
+
+def test_nearest_prior_is_report_only_distance():
+    from harness.kinematic_overlap import trace
+    def rows(x0):
+        return [{'t': i*.05, 'base_position_m': [x0+i*.001, 0., .03],
+                 'base_rotation': np.eye(3).tolist()} for i in range(10)]
+    near = checker.nearest_prior([trace(rows(1.0), 'new')], [trace(rows(0.), 'old')])
+    assert near['new']['min_xy_distance_m'] == pytest.approx(1.0-.009)
+    assert near['new']['nearest_prior'] == 'old' and near['new']['gate'] is False

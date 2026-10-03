@@ -1,4 +1,4 @@
-"""Managed DRAFT v94 held-out teacher acquisition, isolated from v88.
+"""Managed DRAFT v95 held-out teacher acquisition, isolated from v88.
 
 Without --execute this only prints a plan. Physics/model workers are lazy and
 require committed source, an owned host lock and 10 GiB free before starting.
@@ -30,7 +30,7 @@ def run_case(bundle, out, *, seed, backend_factory, host_snapshot=None, precheck
     write(out / 'bundle.json', bundle)
     cap = 370.
     if bundle['case']['sim_cap_s'] != cap or bundle['timing'] != contract.execution_timing(bundle['check']):
-        raise ValueError('v94 case cap/timing differs from registered acquisition')
+        raise ValueError('v95 case cap/timing differs from registered acquisition')
     events = schedule(bundle['check'], bundle['map_id'])
     write(out / 'inputs/schedule.json', events)
     backend = None
@@ -108,7 +108,7 @@ def parser():
     p.add_argument('--execute', action='store_true')
     p.add_argument('--lock-owner', choices=('codex', 'claude', 'kiro'))
     p.add_argument('--sim-slot', help='owned sim-* slot under a non-timing SIM coordinator; omitted uses exclusive physics lock')
-    p.add_argument('--precheck', type=Path, help='verified v94 precheck directory')
+    p.add_argument('--precheck', type=Path, help='verified v95 precheck directory')
     p.add_argument('--commitment-comment', type=int, help='coordinator-posted #219 comment ID')
     p.add_argument('--calibration', type=Path)
     p.add_argument('--calibration-sha256')
@@ -119,9 +119,9 @@ def parser():
 def main(argv=None):
     args = parser().parse_args(argv)
     if not heldout.selected(args.check, args.map_id):
-        raise ValueError('v94 requires unloaded collection on a registered held-out map')
+        raise ValueError('v95 requires unloaded collection on a registered held-out map')
     if args.calibration is not None or args.calibration_sha256 is not None:
-        raise ValueError('v94 unloaded collection does not consume a fitted calibration')
+        raise ValueError('v95 unloaded collection does not consume a fitted calibration')
     cases = heldout.cases(args.check, args.map_id)
     bundles = [{**heldout.bundle(c['map_id'], args.check), 'case': c,
                 'source_sha': args.expected_source_sha} for c in cases]
@@ -163,9 +163,9 @@ def main(argv=None):
         if (not held or not held['pid_alive'] or held['owner'] != args.lock_owner
                 or held['branch'] != branch or sim_holders(DEFAULT_ROOT)):
             raise ValueError('live owned host lock for this branch required')
-    from scripts.precheck_heldout_v94 import verify_receipt, verify_public_commitment
+    from scripts.precheck_heldout_v95 import verify_receipt, verify_public_commitment
     if args.precheck is None or args.commitment_comment is None:
-        raise ValueError('v94 requires precheck and public pre-collection commitment')
+        raise ValueError('v95 requires precheck and public pre-collection commitment')
     receipt = verify_receipt(args.precheck, bundles)
     commitment = verify_public_commitment(args.commitment_comment, args.precheck, receipt)
     from sim.final_pair_new_starts import PhysicsBackend

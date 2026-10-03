@@ -1,4 +1,4 @@
-"""V94 shared physics owner; rendering is the only precheck/collection switch."""
+"""V95 shared physics owner; rendering is the only precheck/collection switch."""
 import math
 from pathlib import Path
 
@@ -18,7 +18,7 @@ def make_scene(bundle, seed):
         scene.config['setup_only']['spawns'][rid] = [x, y, z, yaw]
     scene.config['setup_only']['measurement_reset'] = {
         'authored_xy_yaw': bundle['start_xy_yaw'],
-        'qualification': 'v94 teacher-only new starts; not student arrival'}
+        'qualification': 'v95 teacher-only new starts; not student arrival'}
     return scene
 
 

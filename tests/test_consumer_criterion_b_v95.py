@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 from harness.kinematic_overlap import POLICY, audit, overlap, read_trace, trace
-from scripts import validate_consumer_criterion_b_v94 as validator
+from scripts import validate_consumer_criterion_b_v95 as validator
 
 
 def rows(n=40):
@@ -74,7 +74,7 @@ def test_genuinely_different_trajectory_is_disjoint():
     assert overlap(trace(a), trace(b)) is None
 
 
-@pytest.mark.parametrize('delta,seen', [(0.5e-9, True), (2e-9, False)])
+@pytest.mark.parametrize('delta,seen', [(0.5e-6, True), (2e-6, False)])
 def test_absolute_tolerance_no_relative_scaling(delta, seen):
     a, b = rows(), rows()
     for r in b:
@@ -136,5 +136,5 @@ def test_frozen_hashes_unchanged_and_tests_registered():
     from scripts.run_ci_tests import TEST_PATTERNS, collect_test_files
     frozen = validator.verify_frozen()
     assert frozen['experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json'].startswith('74c312b5')
-    for name in ('tests/test_consumer_criterion_b_v94.py', 'tests/test_zone_final_pair_new_starts.py'):
+    for name in ('tests/test_consumer_criterion_b_v95.py', 'tests/test_zone_final_pair_new_starts.py'):
         assert collect_test_files(validator.ROOT, TEST_PATTERNS).count(name) == 1
