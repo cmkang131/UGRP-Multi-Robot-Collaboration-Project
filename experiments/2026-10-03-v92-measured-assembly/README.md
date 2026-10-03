@@ -23,7 +23,19 @@ v88 경로는 심볼릭 링크 묶음(`…-assembly-links`)이 아니라 실제 
 
 조립 시간은 09:18:16~09:20:21 UTC(125초)였다. 출력은 `outputs/final-pair-v92-measured-20261003T091812Z/assembly/`에 있고, 모든 파일의 sha256은 [outputs_measured.SHA256SUMS](outputs_measured.SHA256SUMS)에 있다. `calibration.json`(`852426d2…`)의 사본은 [calibration.json](calibration.json)이다. `fit_report.json`(`1b4ff559…`, 0.7 MB)과 `input_manifest.json`(`fee2cea5…`, 4 MB, 입력 14,871개)은 실험 폴더 용량 기준 때문에 outputs에만 두었다.
 
-### 빠진 31개 항목: 원인은 두 가지
+### 필수 108개 중 77개 측정, 31개 빠짐
+
+257953ec의 `required_fields()` 기준으로 필수 항목은 108개다. 이 중 77개가 측정·수락됐다(fine 운동 10, 팬 2, 카메라 13자세 × 5 하위 항목 = 65). 항목별 표는 [required_fields_257953ec.json](required_fields_257953ec.json)에 있다.
+
+빠진 31개 항목 전체와 이유는 다음과 같다.
+
+| 항목 | 개수 | 조립기가 기록한 이유 |
+|---|---|---|
+| `params.motion.{gain, tau_s, tau_axis_s, tau_stop_s, noise_rel, noise_abs, scale_std, scale_walk, use_scale, rest_noise}` | 10 | `r4/r5 are axis-only candidates; no accepted complete three-axis/scalar-stop unloaded product. Supplied v91 results do not validate a new combined profile.` |
+| `params.motion_loaded.{gain, tau_s, tau_axis_s, tau_stop_s, noise_rel, noise_abs, scale_std, scale_walk, use_scale, rest_noise}`, `params.motion_loaded.load_transition.{scale_std, unloaded_scale_std}`, `params.motion_loaded.deadband.{c0, u1}`, `params.motion_loaded.{drift_ratio_std, yaw_bias_std_rad_s}` | 16 | `motion identification: fit convergence/rank/boundary failure: rank 13/13` |
+| `pair_model.slope_to_yaw_ratio`, `pair_model.b_rad_s.{"", pm, edge, pm+edge}` | 5 | `measurement not available` |
+
+### 원인은 두 가지
 
 1. **무하중 운동 프로필 `params.motion.*` 10개: 설계상 미충족.** r4/r5는 축별 후보일 뿐이고, 승인된 세 축 공통 정지 시간상수(scalar stop tau) 통합 프로필이 없다. #361 README가 미리 밝힌 대로 현재 조립기는 이 항목을 항상 PARTIAL로 둔다.
 2. **하중 공통 적합(shared fit) 거부: 1건이 21개 항목으로 번졌다.**
@@ -33,7 +45,9 @@ v88 경로는 심볼릭 링크 묶음(`…-assembly-links`)이 아니라 실제 
 조립기 보고서에는 오류 문자열 `fit convergence/rank/boundary failure: rank 13/13`만 남았다. 그래서 **같은 설정 그대로** 하중 경로만 다시 돌리는 진단(diagnostic)을 따로 실행했다([diag_loaded_optimizer.py](diag_loaded_optimizer.py), [diagnostic.json](diagnostic.json)). `verify_fit`을 감싸 최적화 상태만 기록했고 범위·반복 한도·기준은 바꾸지 않았다. 이 진단은 같은 오류 문자열과 같은 선별 수(13,926/475)를 재현했다. **보정 결과가 아니다.**
 
 - 최적화는 수렴했다(`ftol` 조건 충족, success, 평가 11회, 계수 13/13, RMSE 0.00189).
-- **세 축의 불감대 시작값(c0)이 모두 탐색 하한에 붙었다.** 전진 0, 옆 0, 회전 0.006이다. `verify_fit`은 경계에 닿은 해(`active_mask≠0`)를 거부한다. 다시 말해 고정된 B″ 범위 안에서는 하중 HIGH 자료가 **양수 정지 수준을 지지하지 않았다**. B″는 전진/옆 c0 하한을 이미 0까지 낮췄지만 해가 그 경계에 붙었다.
+- **세 축의 불감대 시작값(c0)이 모두 탐색 하한에 붙었다.** 전진 0, 옆 0, 회전 0.006이다. `verify_fit`은 경계에 닿은 해(`active_mask≠0`)를 거부한다.
+  - **전진·옆:** B″는 c0 하한을 이미 0까지 낮췄는데도 해가 0에 붙었다. 이 두 축에서는 하중 HIGH 자료가 **양수 정지 수준을 지지하지 않는다**. 더 낮출 하한도 없다.
+  - **회전:** 하한은 고정값 0.006 그대로였다. 적합은 **0.006보다 작은 값을 원한다**는 것까지만 알 수 있다. 그 값이 양수인지 0인지는 이번 고정 규칙으로는 판단할 수 없다.
 - 나머지 값은 내부해였다(진단 전용, 승인 아님): 이득(gain) 1.355/0.964/0.907, 축 시간상수 0.966/0.968/0.656 s, 공통 정지 시간상수 0.0852 s, u1 0.0266/0.0282/0.0297.
 
 ### 실제로 평가된 B″/B′ 검사
@@ -49,7 +63,7 @@ v88 경로는 심볼릭 링크 묶음(`…-assembly-links`)이 아니라 실제 
 
 ## TensorBoard
 
-새 스냅샷은 `outputs/tensorboard/1003-v92-measured`이고 실행(run)은 4개다. `v92-collection`(수집 요약·영상 경로), `v92-assembly`(상태·빠진 항목 수), `v92-fit-gates`(실제 평가된 검사만), `v92-loaded-diag`(진단 전용)이다. 생성기는 [gen_tb_views.py](gen_tb_views.py), 파생 뷰는 [tb_views/](tb_views/)에 있다. 기존 뷰어 `tb-calib-v91`(PID 54924, logdir `outputs/tensorboard`)은 재시작하지 않았다. HTTP API로 4개 실행과 35개 스칼라를 원본과 대조해 **불일치 0**을 확인했다([tensorboard_api_values.json](tensorboard_api_values.json)). `outputs/tensorboard-view.json`에는 자기 키 `v92_measured_assembly_20261003`만 추가했다.
+기준 스냅샷은 **`outputs/tensorboard/1003-v92-measured-r2`**이고 실행(run)은 4개다. `v92-collection`(수집 요약·영상 경로), `v92-assembly`(상태, 필수 108·측정 77·빠짐 31), `v92-fit-gates`(실제 평가된 검사만), `v92-loaded-diag`(진단 전용)이다. 생성기는 [gen_tb_views.py](gen_tb_views.py), 파생 뷰는 [tb_views_r2/](tb_views_r2/)에 있다. 처음 만든 `1003-v92-measured`([tb_views/](tb_views/))에는 필수·측정 항목 수가 없어서 대체됐다. 변환기가 기존 스냅샷에 덧붙이지 않으므로 새 ID로 다시 변환했고, 첫 스냅샷은 지우지 않았다. 기존 뷰어 `tb-calib-v91`(PID 54924, logdir `outputs/tensorboard`)은 재시작하지 않았다. HTTP API로 r2의 4개 실행과 37개 스칼라를 원본과 대조해 **불일치 0**을 확인했다([tensorboard_api_values.json](tensorboard_api_values.json)). 고정 링크에서 4개 실행과 12개 고정 카드가 열리는 것도 확인했다. `outputs/tensorboard-view.json`에는 자기 키 `v92_measured_assembly_20261003`만 추가·수정했다.
 
 제약: 공용 logdir의 HParams 표는 기존 9개 열과 14개 지표만 보여준다. 새 실행은 세션 그룹에 있지만 새 지표는 열로 나오지 않으므로 Time Series 고정 카드로 본다. 오프라인 감사 변환기는 영상 등록을 지원하지 않는다. 그래서 영상 경로와 해시는 `v92-collection`의 `media/videos` 텍스트 카드에 적었다.
 
@@ -62,7 +76,7 @@ v88 경로는 심볼릭 링크 묶음(`…-assembly-links`)이 아니라 실제 
 
 ## 결정이 필요한 것
 
-- #219 고정 문구에 따라 결과를 본 뒤 B″를 바꾸지 않는다. 하중 c0 하한·경계 판정·적합 범위를 바꾸면 이번 v92 자료는 그 새 규칙에 대해 **탐색 자료**가 된다. 승격하려면 새로 고정한 규칙 아래에서 새 수집이 필요하다.
+- #219 고정 문구에 따라 결과를 본 뒤 B″를 바꾸지 않는다. 하중 c0 하한·경계 판정·적합 범위를 바꾸면 이번 v92 자료는 그 새 규칙에 대해 **탐색 자료**가 된다. 승격하려면 새로 고정한 규칙 아래에서 새 수집이 필요하다. 선택지는 축마다 다르다. 회전은 하한을 0.006 아래로 내리면 내부해가 나올 수도 있다. 전진·옆은 이미 0에 붙었으므로 하한을 더 내릴 수 없고, "정지 구간 없음(c0=0)을 허용하는 모델" 같은 다른 규칙이 필요하다.
 - 무하중 통합 프로필 미승인은 이와 **별개인** 두 번째 차단 요인이다.
 
 ## 참고 자료

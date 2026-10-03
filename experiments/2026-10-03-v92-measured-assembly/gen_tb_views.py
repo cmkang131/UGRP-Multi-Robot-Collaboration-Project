@@ -71,14 +71,19 @@ groups = {'unloaded_by_design': sum(f.startswith('params.motion.') for f in miss
           'loaded_motion': sum(f.startswith('params.motion_loaded.') for f in miss),
           'pair_model': sum(f.startswith('pair_model.') for f in miss)}
 assert sum(groups.values()) == len(miss), miss
+# required/measured counts from 257953ec required_fields() (see required_fields_257953ec.json)
+req = json.loads((Path(__file__).resolve().parent / 'required_fields_257953ec.json').read_text())
+assert req['calibration_sha256'] == sha(cal_path) and req['missing'] == len(miss)
+assert {r['field'] for r in req['fields'] if not r['measured']} == set(miss)
 started = (MEAS / 'started_utc.txt').read_text().strip(); finished = (MEAS / 'finished_utc.txt').read_text().strip()
 from datetime import datetime
 wall = (datetime.fromisoformat(finished.replace('Z', '+00:00')) - datetime.fromisoformat(started.replace('Z', '+00:00'))).total_seconds()
 v = base('v92-assembly', cal['status'], 'three_collections', 'frozen-Bpp-257953ec', '257953ec')
 v.update({
     'offline_source': src(cal_path),
-    'offline_scalar_scope': 'Single assembler run at 257953ec (pinned hashes verified): loader status and missing-field counts from calibration.json.',
-    'offline_scalars': {'offline/fields_missing': float(len(miss)),
+    'offline_scalar_scope': 'Single assembler run at 257953ec (pinned hashes verified): loader status and missing-field counts from calibration.json; required/measured counts from 257953ec required_fields() checked against it (required_fields_257953ec.json).',
+    'offline_scalars': {'offline/fields_required': float(req['required']), 'offline/fields_measured': float(req['measured']),
+                        'offline/fields_missing': float(len(miss)),
                         'offline/missing_unloaded_by_design': float(groups['unloaded_by_design']),
                         'offline/missing_loaded_motion': float(groups['loaded_motion']),
                         'offline/missing_pair_model': float(groups['pair_model']),
@@ -86,7 +91,7 @@ v.update({
     'wall_s': wall, 'model_calls': 0.0,
     'success': cal['status'] == 'MEASURED_SIM',
     'success_definition': 'calibration.json status == MEASURED_SIM (all required loader fields accepted + loader acceptance). Not a robot task success.',
-    'hparam_metrics': ['evaluation/reported_success', 'offline/fields_missing', 'result/wall_s', 'result/model_calls'],
+    'hparam_metrics': ['evaluation/reported_success', 'offline/fields_measured', 'offline/fields_missing', 'result/wall_s', 'result/model_calls'],
     'scope': 'offline calibration assembly; no student/P03/carry or physical task acceptance',
     'texts': {'notes/missing': cal['missing'],
               'notes/run': {'rc': (MEAS / 'rc.txt').read_text().strip(), 'started_utc': started, 'finished_utc': finished,
