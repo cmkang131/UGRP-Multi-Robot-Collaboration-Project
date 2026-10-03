@@ -18,8 +18,13 @@ Fail-closed provenance chain, all checked BEFORE any residual is computed:
    ``result.json`` and ``artifacts.sha256.json`` bytes are listed in the gate record.
 4. Chronology: commitment created before the earliest recorded collection
    start (including lock-acquisition lower bounds); gate record and the
-   adapter-hash comment (whose body must contain this file's sha256) created
-   before raw reading starts.
+   adapter-hash comment created before raw reading starts. The adapter-hash
+   comment must be written by the repository owner and carry exactly one
+   marker line ``V95_SCORING_ADAPTER_SHA256: <sha256 of this file>``.
+4b. Every source file recorded in ``binding.source_sha256`` (271 files: the
+   overlap module, v95 gate validator, exclusion list, v91 adapter,
+   fit_unloaded_consumer, ...) is re-hashed against current bytes; the
+   scoring checkout HEAD and ``git status --porcelain`` are recorded.
 5. The frozen v95 kinematic gate (vs 38 priors) and the 6 mutual pairs are
    re-run in-process; any overlap is ineligible.
 
@@ -79,6 +84,12 @@ FROZEN_FULL = {
     'scripts/validate_consumer_criterion_b.py':
         '8d2a693a6e3bbca79a8214fd388bff79a0609400f07de831ad9be3cf22e85a88',
 }
+OWNER_LOGIN = 'cmkang131'
+ADAPTER_MARKER = 'V95_SCORING_ADAPTER_SHA256:'
+REQUIRED_SOURCES = ('harness/kinematic_overlap.py', 'scripts/validate_consumer_criterion_b_v95.py',
+                    'configs/criterion_b_prior_kinematics_v95.json', 'scripts/validate_consumer_criterion_b_v91.py',
+                    'scripts/fit_unloaded_consumer.py', 'scripts/fit_unloaded_hammerstein.py',
+                    'scripts/validate_consumer_criterion_b.py')
 UNVERIFIED = 'unverified acquisition chronology: no proof bound to criterion B, candidate and raw hashes'
 INVALID = v91.INVALID
 
@@ -117,17 +128,50 @@ def verify_snapshot(role, inputs, fetch):
     for key in ('id', 'html_url', 'issue_url', 'created_at', 'updated_at', 'body'):
         if remote.get(key) != snap[key]:
             raise ValueError(f'GitHub {role} comment changed: {key}')
+    check_owner(remote, role)
     return snap
 
 
+def check_owner(value, label):
+    if (value.get('author_association') != 'OWNER'
+            or (value.get('user') or {}).get('login') != OWNER_LOGIN):
+        raise ValueError(f'{label} comment is not by the repository owner')
+
+
 def verify_adapter_comment(comment_id, fetch):
-    """The coordinator posts this file's sha256 on #219 before any scoring."""
+    """The owner posts ``V95_SCORING_ADAPTER_SHA256: <sha>`` on #219 before scoring."""
     remote = fetch(comment_id)
     check_comment(remote, comment_id, 'adapter')
+    check_owner(remote, 'adapter')
     own = frozen.sha(Path(__file__).resolve().read_bytes())
-    if own not in remote['body']:
-        raise ValueError('adapter comment does not list this adapter sha256')
-    return {k: remote[k] for k in ('id', 'html_url', 'created_at', 'updated_at')} | {'adapter_sha256': own}
+    markers = [line.strip() for line in remote['body'].splitlines()
+               if line.strip().startswith(ADAPTER_MARKER)]
+    if markers != [f'{ADAPTER_MARKER} {own}']:
+        raise ValueError('adapter comment needs exactly one marker line with this adapter sha256')
+    return ({k: remote[k] for k in ('id', 'html_url', 'created_at', 'updated_at', 'author_association')}
+            | {'author': remote['user']['login'], 'adapter_sha256': own})
+
+
+def verify_sources(binding, inputs):
+    """Re-hash every committed binding source; any drift refuses scoring."""
+    recorded = binding.get('source_sha256')
+    if not isinstance(recorded, dict) or not set(REQUIRED_SOURCES) <= set(recorded):
+        raise ValueError('committed binding lacks required source hashes')
+    changed = [name for name, expected in sorted(recorded.items())
+               if frozen.sha(frozen.read_input(ROOT / name, inputs)) != expected]
+    if changed:
+        raise ValueError('source changed since the committed precheck: '+', '.join(changed[:5]))
+    return len(recorded)
+
+
+def checkout_state():
+    def git(*args):
+        return subprocess.check_output(['git', *args], cwd=ROOT, text=True, timeout=30)
+    try:
+        return {'head': git('rev-parse', 'HEAD').strip(),
+                'status_porcelain': git('status', '--porcelain', '--untracked-files=all').splitlines()}
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise ValueError('scoring checkout state unavailable') from exc
 
 
 def verify_precheck(directory, commitment_body, inputs):
@@ -386,6 +430,8 @@ def validate(raws, precheck_dir, adapter_comment_id, *, fetch=fetch_comment):
         gate_record = verify_snapshot('gate', inputs, fetch)
         adapter = verify_adapter_comment(adapter_comment_id, fetch)
         precheck, binding, precheck_hashes = verify_precheck(precheck_dir, commitment['body'], inputs)
+        source_count = verify_sources(binding, inputs)
+        checkout = checkout_state()
         gate = frozen.criterion()
         candidate = v91.read_json(frozen.CANDIDATE, inputs)
         r5 = v91.read_json(ROOT / 'experiments/2026-10-03-critb-rotation/calibration_candidate_r5_yaw.json', inputs)
@@ -421,6 +467,7 @@ def validate(raws, precheck_dir, adapter_comment_id, *, fetch=fetch_comment):
                         adapter_comment=adapter, precheck_sha256=precheck_hashes,
                         raw_read_started=raw_read_started, recorded_starts=stamps, earliest=earliest,
                         kinematic_gate=kinematics, rotation_ordering='PRE_COLLECTION',
+                        sources_rehashed=source_count, scoring_checkout=checkout,
                         clock_limit='GitHub server UTC versus runner/scoring host UTC; not signed raw.')
         report = score(cases, candidate, gate, chronology_verified=True)
         rotation = score_rotation(cases, profile, prior, gate)
@@ -438,7 +485,9 @@ def validate(raws, precheck_dir, adapter_comment_id, *, fetch=fetch_comment):
                       scope_note=('Frozen B offline process-budget coverage on four new-start trajectories '
                                   '(2 maps x 2 robots), decided per (map, robot) and per split/horizon, never pooled. '
                                   'Both maps share one command schedule and are not independent samples; command '
-                                  'levels equal training. Not PF posterior, student control or physical success.'))
+                                  'levels equal training. r5 (yaw) was fitted on v88 unloaded r1, so yaw는 새 명령이 '
+                                  '아니라 새 세계 좌표·시작 yaw·순서·위상의 검증이다. Not PF posterior, student control '
+                                  'or physical success.'))
     except INVALID as exc:
         report = ineligible(str(exc))
         evidence['verified'] = False

@@ -13,7 +13,9 @@ Refs #219 #365. 이 PR은 **채점 코드만** 추가한다. v95 수집 raw는 �
 1. #219 약속 댓글 5968608872와 관문 기록 5968809408: 저장소 스냅샷(`commitment_comment.json`, `gate_comment.json`)의 sha256을 코드에 고정했다. GitHub에서 실시간으로 다시 읽어 같아야 하고, 수정 이력이 없어야 한다(created = updated).
 2. 약속 본문에 사전검사 `precheck.json`·`binding.json`·`SHA256SUMS.json`의 전체 sha256이 있어야 하고, 실제 파일 바이트와 같아야 한다. `binding.json`의 `frozen_sha256`에 있는 B·r4·r5·부록·고정 검증기 전체 해시가 현재 파일과 같아야 한다. 약속 본문에는 해시 앞 8자리만 있어서, 전체 해시는 이 경로로 확인한다. 현재 소스로 `binding()`을 다시 계산하지 않는다(기록된 바이트만 사용).
 3. 지도마다 raw `bundle.json`(source_sha·case 제외) digest와 `inputs/schedule.json` 바이트가 binding과 같아야 한다. 4개 궤적의 운동 해시는 사전검사의 값과 같아야 한다. 사례 `result.json`과 `artifacts.sha256.json`의 해시는 관문 기록 본문에 있어야 한다. `plan.json`은 약속 댓글 id·시각과 사전검사 해시를 기록하고 있어야 한다.
-4. 선후 관계: 약속 댓글은 가장 이른 수집 시작 기록(잠금 획득 시각 하한 포함)보다 먼저여야 한다. 관문 기록과 어댑터 해시 댓글(`--adapter-comment`, 본문에 이 파일의 sha256 포함)은 raw 읽기 시작보다 먼저여야 한다. 회전도 r5가 수집 전에 고정되었으므로 PRE_COLLECTION이다.
+4. 선후 관계: 약속 댓글은 가장 이른 수집 시작 기록(잠금 획득 시각 하한 포함)보다 먼저여야 한다. 관문 기록과 어댑터 해시 댓글(`--adapter-comment`)은 raw 읽기 시작보다 먼저여야 한다.
+   - **어댑터 해시 댓글 형식(검토 #372 지적 1):** 작성자는 저장소 소유자여야 한다(`author_association == OWNER`, login `cmkang131`). 본문에는 정확히 한 줄의 표지 줄 `V95_SCORING_ADAPTER_SHA256: <이 파일의 sha256>`이 있어야 한다. 다른 사람의 댓글은 거부한다. 해시만 적힌 "REJECTED … <sha>" 같은 문장도, 표지 줄이 두 줄인 댓글도 거부한다. 약속·관문 댓글도 실시간 조회에서 소유자 작성이어야 한다.
+4b. **의존 소스 재해시(검토 #372 지적 2):** 사전검사 `binding.json`의 `source_sha256`에 기록된 271개 파일을 모두 현재 바이트로 다시 해시한다. 대상에는 `kinematic_overlap.py`, v95 관문 검증기, 제외 목록, v91 어댑터, `fit_unloaded_consumer.py`, `fit_unloaded_hammerstein.py`, 고정 검증기가 포함되며, 하나라도 다르면 채점하지 않는다. 채점한 체크아웃의 `git rev-parse HEAD`와 `git status --porcelain`을 보고서에 남긴다. 따라서 채점은 271개 파일이 binding과 같은 체크아웃(예: 이 PR head)에서 해야 한다. 이 PR head에서 271/271 일치를 확인했다. 회전도 r5가 수집 전에 고정되었으므로 PRE_COLLECTION이다.
 5. 고정 v95 운동 관문(이전 자료 38개)과 새 궤적 6쌍 상호 비교를 프로세스 안에서 다시 실행한다. 겹치면 채점하지 않는다.
 
 ## r2와 부호
@@ -23,16 +25,20 @@ Refs #219 #365. 이 PR은 **채점 코드만** 추가한다. v95 수집 raw는 �
 
 ## 시험 (v95 raw 없음)
 
-- `tests/test_score_consumer_criterion_b_v95.py`(21개):
+- `tests/test_score_consumer_criterion_b_v95.py`(29개):
   - 합성 2지도×2로봇 수집·사전검사·#219 댓글 모의로 전체 사슬과 4칸 채점 구조를 확인한다.
-  - 사슬 고리마다 하나씩 변조 13종을 넣고, 각각 의도한 고리에서 채점 전에 거부되는지 사유 문자열로 확인한다.
+  - 사슬 고리마다 하나씩 변조 19종을 넣고(소유자 아님, 표지 줄 없음·중복, 관문 댓글 작성자, binding 소스 불일치·누락 포함), 각각 의도한 고리에서 채점 전에 거부되는지 사유 문자열로 확인한다.
   - r1 읽기가 고정 `load_case`와 같은지, r2가 자기 파일·계획을 쓰는지 확인한다. 부호 반전 거부와 문구도 확인한다.
+  - 복사한 체크아웃에서 `kinematic_overlap.py` 바이트를 실제로 바꾸면, 겹침·잔차 통계를 하나도 계산하기 전에 거부된다.
+  - 보고서에 체크아웃 HEAD·상태, 재해시 파일 수, 어댑터 댓글 작성자가 기록되는지 확인한다.
   - v88 학습 자료(이미 본 자료, 로컬에만 있음, 없으면 건너뜀)로 r1·r2 경로가 고정 읽기와 같은지 확인한다.
 - 모든 테스트에 v95 raw 경로를 열면 실패하는 보호 장치를 걸었다.
 
 ## 채점 명령 (어댑터 해시가 #219에 게시된 뒤, 조정자만)
 
 ```bash
+# #219에 소유자가 아래 한 줄을 포함한 댓글을 올린 뒤, 시계 차이를 피하려고 1분쯤 지나서 실행한다:
+# V95_SCORING_ADAPTER_SHA256: <scripts/score_consumer_criterion_b_v95.py 의 sha256>
 cd <이 PR head worktree>
 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m scripts.score_consumer_criterion_b_v95 \
   --raw /Users/changmin/projects/ugrp/outputs/final-pair-v95-heldout-2fe14826-20261003T111306Z/zone_wide_door_geometry_v3 \

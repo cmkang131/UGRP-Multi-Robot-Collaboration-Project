@@ -137,8 +137,9 @@ class World:
             motion[mid] = {'motion': {rid: {'kinematic_sha256': ko.read_trace(
                 case / f'eval_only/{rid}/pose.jsonl').sha256} for rid in v.ROBOTS}}
         pre = tmp / 'heldout-v95-precheck-x'
+        sources = {name: sha((s.ROOT / name).read_bytes()) for name in s.REQUIRED_SOURCES}
         binding = dump(pre / 'binding.json', {'bundle_sha256': bundles, 'schedule_sha256': schedules,
-                                              'frozen_sha256': dict(s.FROZEN_FULL)})
+                                              'frozen_sha256': dict(s.FROZEN_FULL), 'source_sha256': sources})
         precheck = dump(pre / 'precheck.json', {
             'schema': 'ugrp.heldout_v95_precheck.v1', 'status': 'PRECHECK_PASS', 'collection': False,
             'rendering': False, 'criterion_B_pass': None, 'maps': motion,
@@ -157,7 +158,9 @@ class World:
         self.snap('commitment', 101, commit_body, '2026-10-03T11:12:35Z')
         self.snap('gate', 102, gate_body, '2026-10-03T11:40:41Z')
         own = sha(Path(s.__file__).resolve().read_bytes())
-        self.comments[103] = self.comment(103, 'adapter ' + own, '2026-10-03T12:00:00Z')
+        self.own = own
+        self.comments[103] = self.comment(103, f'v95 adapter approved\n{s.ADAPTER_MARKER} {own}\n',
+                                          '2026-10-03T12:00:00Z')
         far = ko.trace([{'t': i*.05, 'base_position_m': [50.+i*.01, 50., .03],
                          'base_rotation': np.eye(3).tolist()} for i in range(10)], 'far-prior')
         monkeypatch.setattr(s.gate95, 'load_prior', lambda: [far])
@@ -167,10 +170,13 @@ class World:
     def comment(cid, body, created):
         return {'id': cid, 'html_url': f'https://github.com/x/issues/219#issuecomment-{cid}',
                 'issue_url': 'https://api.github.com' + s.ISSUE_SUFFIX, 'created_at': created,
-                'updated_at': created, 'body': body}
+                'updated_at': created, 'body': body, 'author_association': 'OWNER',
+                'user': {'login': s.OWNER_LOGIN}}
 
     def snap(self, role, cid, body, created):
-        value = {**self.comment(cid, body, created), 'body_sha256': sha(body.encode())}
+        value = {k: x for k, x in self.comment(cid, body, created).items()
+                 if k not in ('author_association', 'user')}
+        value['body_sha256'] = sha(body.encode())
         path = dump(self.tmp / f'{role}_comment.json', value)
         self.comments[cid] = self.comment(cid, body, created)
         snaps = dict(s.SNAPSHOTS)
@@ -261,18 +267,25 @@ def test_no_r2_sign_flip_negated_commands_rejected(tmp_path, monkeypatch):
 EXPECTED = {
     'edited_commitment': 'GitHub commitment comment changed', 'other_issue': 'GitHub gate comment changed',
     'gate_missing_hash': 'not in #219 gate record', 'late_commitment': 'commitment is not strictly before',
-    'adapter_hash_missing': 'does not list this adapter', 'adapter_after_read': 'adapter comment is not strictly',
+    'adapter_hash_missing': 'exactly one marker line with this adapter sha256', 'adapter_after_read': 'adapter comment is not strictly',
     'github_unavailable': 'unavailable', 'bundle_altered': 'raw bundle differs',
     'trace_mismatch': 'trajectory differs from the committed precheck', 'previously_seen': 'PREVIOUSLY_SEEN_KINEMATICS',
     'one_map_only': 'both v95 map collections', 'precheck_hash_missing': 'not in #219 commitment',
-    'frozen_hash_missing': 'committed binding lacks frozen hash'}
+    'frozen_hash_missing': 'committed binding lacks frozen hash',
+    'adapter_not_owner': 'adapter comment is not by the repository owner',
+    'adapter_rejected_text': 'exactly one marker line', 'adapter_two_markers': 'exactly one marker line',
+    'gate_not_owner': 'gate comment is not by the repository owner',
+    'binding_source_drift': 'source changed since the committed precheck: harness/kinematic_overlap.py',
+    'binding_lacks_sources': 'lacks required source hashes'}
 
 
 @pytest.mark.parametrize('fault', ['edited_commitment', 'other_issue', 'gate_missing_hash',
                                    'late_commitment', 'adapter_hash_missing', 'adapter_after_read',
                                    'github_unavailable', 'bundle_altered', 'trace_mismatch',
                                    'previously_seen', 'one_map_only', 'precheck_hash_missing',
-                                   'frozen_hash_missing'])
+                                   'frozen_hash_missing', 'adapter_not_owner', 'adapter_rejected_text',
+                                   'adapter_two_markers', 'gate_not_owner', 'binding_source_drift',
+                                   'binding_lacks_sources'])
 def test_each_provenance_link_fails_closed_before_scoring(world, monkeypatch, fault):
     forbid_scoring(monkeypatch)
     raws = None
@@ -290,7 +303,7 @@ def test_each_provenance_link_fails_closed_before_scoring(world, monkeypatch, fa
             p['commitment']['created_at'] = '2026-10-03T11:14:00Z'
             dump(raw / 'plan.json', p)
     if fault == 'adapter_hash_missing':
-        world.comments[103]['body'] = 'adapter ' + 'f'*64
+        world.comments[103]['body'] = f'{s.ADAPTER_MARKER} {"f"*64}\n'  # marker, wrong sha
     if fault == 'adapter_after_read':
         world.comments[103]['created_at'] = world.comments[103]['updated_at'] = '2999-01-01T00:00:00Z'
     if fault == 'github_unavailable':
@@ -317,11 +330,56 @@ def test_each_provenance_link_fails_closed_before_scoring(world, monkeypatch, fa
         b['frozen_sha256'].pop('scripts/validate_consumer_criterion_b.py')
         dump(world.precheck / 'binding.json', b)
         world.recommit()
+    if fault == 'adapter_not_owner':  # valid marker, but anyone can comment on a public repo
+        world.comments[103].update(author_association='NONE', user={'login': 'someone-else'})
+    if fault == 'adapter_rejected_text':
+        world.comments[103]['body'] = f'REJECTED, do not use adapter {world.own}'
+    if fault == 'adapter_two_markers':
+        world.comments[103]['body'] += f'{s.ADAPTER_MARKER} {"0"*64}\n'
+    if fault == 'gate_not_owner':
+        world.comments[102].update(author_association='CONTRIBUTOR', user={'login': 'someone-else'})
+    if fault in ('binding_source_drift', 'binding_lacks_sources'):
+        b = json.loads((world.precheck / 'binding.json').read_text())
+        if fault == 'binding_source_drift':
+            b['source_sha256']['harness/kinematic_overlap.py'] = '0'*64
+        else:
+            b['source_sha256'].pop('scripts/fit_unloaded_consumer.py')
+        dump(world.precheck / 'binding.json', b)
+        world.recommit()
     report = world.run(raws)
     assert EXPECTED[fault] in report['eligibility_reason']
     assert report['scope'] == 'INELIGIBLE' and report['pass'] is None
     assert report['with_rotation_addendum']['pass'] is None
     assert report['ordering_evidence']['verified'] is False
+
+
+def test_tampered_overlap_module_bytes_refused_before_any_statistic(world, monkeypatch, tmp_path):
+    """Real byte tamper in a copied checkout; no overlap/residual statistic may run."""
+    forbid_scoring(monkeypatch)
+    monkeypatch.setattr(s.ko, 'audit', lambda *a, **k: pytest.fail('overlap statistic reached'))
+    monkeypatch.setattr(s.ko, 'overlap', lambda *a, **k: pytest.fail('overlap statistic reached'))
+    fake = tmp_path / 'checkout'
+    for name in (*s.REQUIRED_SOURCES, *s.FROZEN_FULL):
+        dest = fake / name
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes((s.ROOT / name).read_bytes())
+    target = fake / 'harness/kinematic_overlap.py'
+    target.write_bytes(target.read_bytes().replace(b"'position_atol_m': 1e-6", b"'position_atol_m': 1e+6"))
+    assert target.read_bytes() != (s.ROOT / 'harness/kinematic_overlap.py').read_bytes()
+    monkeypatch.setattr(s, 'ROOT', fake)
+    report = world.run()
+    assert report['eligibility_reason'] == ('source changed since the committed precheck: '
+                                            'harness/kinematic_overlap.py')
+    assert report['pass'] is None and report['ordering_evidence']['verified'] is False
+
+
+def test_report_records_checkout_and_rehash_count(world):
+    report = world.run()
+    checkout = report['ordering_evidence']['scoring_checkout']
+    assert len(checkout['head']) == 40 and isinstance(checkout['status_porcelain'], list)
+    assert report['ordering_evidence']['sources_rehashed'] == len(s.REQUIRED_SOURCES)
+    assert report['ordering_evidence']['adapter_comment']['author'] == s.OWNER_LOGIN
+    assert '새 세계 좌표·시작 yaw·순서·위상의 검증' in report['scope_note']
 
 
 def test_mutual_overlap_between_new_traces_is_ineligible(world, monkeypatch):
