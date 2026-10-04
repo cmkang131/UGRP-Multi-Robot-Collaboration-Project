@@ -77,6 +77,10 @@ def end_class(reason) -> str:
 def build(*, now, claim_issued_s, view: Mapping, job_kind, last_end, refusals_since_last_call) -> dict:
     """One status record. All inputs are the robot's OWN bookkeeping.
 
+    ALL times (``now``, ``claim_issued_s``, ``view``'s permit and event times, ``last_end['sim_s']``) must be on ONE
+    clock, the harness clock (SIM seconds since the case reset), because the latest fact is chosen by comparing them.
+    ``PairLink.gate_view`` converts the gate's absolute times; a result must not depend on the reset origin.
+
     ``view`` is the claim gate's record of this robot (``ClaimGate.status_view``): ``permit_released_at_sim_s``
     (the pending permit or None), ``last_event`` (the latest submission outcome or None) and nothing else.
     ``job_kind`` is the kind of the robot's own running job (or None); ``last_end`` the robot's latest own job

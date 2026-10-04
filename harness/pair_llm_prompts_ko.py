@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 
 from harness import zone_study_prompts_ko as pk
 from harness import zone_study_protocol as zp
@@ -116,6 +117,11 @@ KO_PAIR_MESSAGES = '''
   입니다. 보낼 말이 없으면 빈 배열 []을 씁니다. text는 __CHARS__자 이내로 씁니다.
   reply_to에는 당신이 실제로 받은 메시지의 message_id만 씁니다.'''
 
+#: The study substitutes this placeholder with its own prompt value ``zp.PROMPT_TEXT_CHARS`` (240, the length the
+#: prompt asks for; the transport rejects only text longer than ``zp.MAX_TEXT_CHARS``, 600). The pair prompt uses
+#: the SAME study value, no new policy; ``system_prompt`` refuses any text that still holds a ``__X__`` placeholder.
+CHARS_PLACEHOLDER = '__CHARS__'
+
 #: Literal tokens stay literal (this is the study's literal list); no message-language rule.
 KO_PAIR_LITERALS = '''
 표기: 메시지 본문의 언어는 정해져 있지 않습니다. 로봇 ID(r1, r2), 구역 문자(A, B, C),
@@ -162,14 +168,21 @@ def prompt_parts(condition: str, rid: str, *, cap_window=None, cap_robot=None) -
             'output': _REUSED['output'].strip('\n'),
             'action': KO_PAIR_ACTION,
             'sources': _REUSED['sources'].strip('\n'),
-            'messages': (KO_PAIR_MESSAGES if spec.channel_open else _REUSED['messages_none']).strip('\n'),
+            'messages': (KO_PAIR_MESSAGES.replace(CHARS_PLACEHOLDER, str(zp.PROMPT_TEXT_CHARS))
+                         if spec.channel_open else _REUSED['messages_none']).strip('\n'),
             'separation': _REUSED['separation'].strip('\n'),
             'language': KO_PAIR_LITERALS.strip('\n')}
+
+
+_PLACEHOLDER = re.compile(r'__[A-Za-z0-9_]+__')
 
 
 def system_prompt(condition: str, rid: str, *, cap_window=None, cap_robot=None) -> str:
     parts = prompt_parts(condition, rid, cap_window=cap_window, cap_robot=cap_robot)
     text = '\n\n'.join(parts[name] for name in pk.PROMPT_BLOCKS)
+    left = _PLACEHOLDER.findall(text)
+    if left:                                     # fail closed: a template slot reached the model (peer_nl, v99 smoke1)
+        raise zp.ProtocolError(f'the {condition} system prompt of {rid} still holds placeholder(s) {sorted(set(left))}')
     return text
 
 
@@ -191,6 +204,6 @@ def prompt_template_sha256() -> str:
     return hashlib.sha256(json.dumps(value, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
 
-__all__ = ['PROMPT_VERSION', 'PAIR_ROBOTS', 'PAIR_ROLES', 'PAIR_CONDITIONS', 'STUDY_SPEC', 'RENDEZVOUS_S',
+__all__ = ['PROMPT_VERSION', 'CHARS_PLACEHOLDER', 'PAIR_ROBOTS', 'PAIR_ROLES', 'PAIR_CONDITIONS', 'STUDY_SPEC', 'RENDEZVOUS_S',
            'study_spec', 'partner_of',
            'prompt_parts', 'system_prompt', 'fixed_prompt_reference_tokens', 'prompt_template_sha256']

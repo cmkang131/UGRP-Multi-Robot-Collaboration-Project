@@ -64,7 +64,10 @@ CLOCKS = {
     'sim_s_since_reset': 'harness clock: calls, decisions, scheduler, caps, own_status.since_claim_s',
     'sim_s_absolute': 'backend / executor clock = sim_s_since_reset + reset_sim_s (ack.sim_s, executor event sim_s)',
     'delivered_at_sim_s_since_reset': 'executor events only: harness clock when the harness received the event '
-                                      '(one observation tick after the event happened; own_status uses this time)',
+                                      '(one observation tick after the event happened; informational, own_status dates a '
+                                      'job end by the event\'s own time minus the reset origin)',
+    'claim_gate_log': 'claim_gate.json rows (claim_released / claim_submitted / ...) use sim_s_absolute; '
+                      'own_status reads them converted to the harness clock (PairLink.gate_view)',
     'reset_offset_s': 'sim_s_absolute - sim_s_since_reset of one dispatch row (equals result.json reset_sim_s)'}
 
 
@@ -167,8 +170,21 @@ class PairLink:
                                          'job_id': job.job_id}
 
     def gate_view(self) -> dict:
-        """The robot's OWN claim bookkeeping (permit, latest start outcome, refusal total); nothing of the partner."""
-        return self._rt.gate.status_view(self.robot_id)
+        """The robot's OWN claim bookkeeping (permit, latest start outcome, refusal total); nothing of the partner.
+
+        The gate records the executor / backend clock (absolute SIM seconds). Every model-facing time is on the
+        harness clock (SIM seconds since the case reset: call starts, ``claim_issued_s``, job-end delivery), and
+        ``pair_llm_status.build`` compares them with each other, so the gate's times are converted here, once and
+        explicitly: ``harness = absolute - origin_s``. (Before this, a permit at relative 10.0 and a job end at
+        relative 10.5 compared as 11.3 vs 10.5 at origin 1.3 and picked the older fact.)
+        """
+        view = self._rt.gate.status_view(self.robot_id)
+        origin = self.origin_s
+        if view['permit_released_at_sim_s'] is not None:
+            view['permit_released_at_sim_s'] = round(view['permit_released_at_sim_s'] - origin, 6)
+        if view['last_event'] is not None:
+            view['last_event']['sim_s'] = round(view['last_event']['sim_s'] - origin, 6)
+        return view
 
     # -- own job API -----------------------------------------------------------------------
     def _ack(self, api, arguments, accepted, reason=None, job_id=None):
@@ -324,7 +340,12 @@ class PairTrial(zo.OfflineTrial):
         self.executor_events[-1].update(delivered_at_sim_s_since_reset=float(at_s), sim_s_absolute=event.get('sim_s'))
         if event['event'] in ('job_done', 'job_failed') and event.get('job_kind') in ('pair_carry', LOOK_AROUND):
             reason = (event.get('detail') or {}).get('reason')
-            self._last_end[event['robot_id']] = {'job_kind': event['job_kind'], 'sim_s': float(at_s),
+            # The end is dated by the event's own backend time on the harness clock (backend time - reset origin),
+            # the same axis and the same kind of stamp as the gate's submission events. The delivery time ``at_s``
+            # is up to one tick later and would tie with, or pass, a refusal that really came after the end.
+            happened = event.get('sim_s')
+            ended_s = float(at_s) if happened is None else float(happened) - self.links[event['robot_id']].origin_s
+            self._last_end[event['robot_id']] = {'job_kind': event['job_kind'], 'sim_s': round(ended_s, 6),
                                                  'reason_class': status.end_class(reason)}
 
     def build_inputs(self, actor, *, sim_time_s, request_id):

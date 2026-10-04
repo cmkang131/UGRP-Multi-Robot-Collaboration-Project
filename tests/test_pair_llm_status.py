@@ -525,7 +525,7 @@ def test_dispatch_rows_and_executor_events_name_both_clocks_and_the_reset_offset
         assert -1e-6 <= late <= 0.1 + 1e-6
     study = json.loads((out / 'llm' / 'study_config.json').read_text())
     assert set(study['clocks']) == {'sim_s', 'sim_s_since_reset', 'sim_s_absolute', 'reset_offset_s',
-                                    'delivered_at_sim_s_since_reset'}
+                                    'delivered_at_sim_s_since_reset', 'claim_gate_log'}
 
 
 # --------------------------------------------------------------------------- the arms differ only in the channel
@@ -576,3 +576,135 @@ def test_the_run_recorded_v97_and_v99_bundle_files_are_kept_byte_identical_and_n
     assert catalog['workflows'][0]['id'] == 'zone-pair-llm-v99' and catalog['workflows'][0]['version'] == '3.11.0'
     live = json.loads((repo / 'configs' / 'pair_llm_v100.json').read_text())
     assert live['execution_bundle_id'] == 'zone-pair-llm-v100' and live['workflow_version'] == '3.12.0'
+
+
+# --------------------------------------------------------------------------- the prompt holds no unfilled placeholder
+
+def test_the_final_system_text_of_every_arm_and_robot_has_no_placeholder_and_the_enforced_message_cap():
+    """v99 smoke1 showed the literal ``__CHARS__`` to the peer_nl model. The slot now holds the study's own prompt
+    value ``zp.PROMPT_TEXT_CHARS`` (no new policy), which the transport enforces as a hard limit at
+    ``zp.MAX_TEXT_CHARS``; the final text of both conditions x both robots must hold no ``__X__`` slot."""
+    import re
+    from harness import pair_llm_prompts_ko as prompts
+    cap = zp.PROMPT_TEXT_CHARS
+    assert cap == 240 and cap <= zp.MAX_TEXT_CHARS
+    for condition in ('no_comm', 'peer_nl'):
+        for rid in ('r1', 'r2'):
+            text = prompts.system_prompt(condition, rid)
+            assert '__' not in text and not re.findall(r'__[A-Za-z0-9_]+__', text), (condition, rid)
+            inputs, _, _ = make_inputs(condition, rid)
+            wire = pi.build_request(inputs, window={'window_id': 'w1'} if condition == 'peer_nl' else None
+                                    )['messages'][0]['content']
+            assert '__' not in wire and wire == text                          # what the model receives is this text
+            asked = re.findall(r'text는 (\d+)자 이내', text)
+            assert asked == ([str(cap)] if condition == 'peer_nl' else []), (condition, rid, asked)
+    # the number the prompt gives is a length the sealed validator accepts; the hard limit is the study's 600
+    inputs, _, _ = make_inputs('peer_nl', 'r1')
+    kw = dict(request_id='req_t1', condition=dispatch.study_spec('peer_nl'), actor='r1', order_ids=inputs.order_ids(),
+              item_ids=inputs.item_ids(), roles_by_order=inputs.roles_by_order(), vocabulary=inputs.vocabulary(),
+              passages=inputs.passages(), location_refs=inputs.location_refs(), robots=('r1', 'r2'))
+    say = lambda n: [{'recipients': ['r2'], 'reply_to': None, 'text': 'x' * n}]
+    assert dispatch.validate_reply(reply({'kind': 'continue'}, messages=say(cap)), **kw)['messages']
+    with pytest.raises(zp.ProtocolError, match='longer than'):
+        dispatch.validate_reply(reply({'kind': 'continue'}, messages=say(zp.MAX_TEXT_CHARS + 1)), **kw)
+
+
+def test_system_prompt_fails_closed_when_a_template_slot_is_left_unfilled(monkeypatch):
+    from harness import pair_llm_prompts_ko as prompts
+    monkeypatch.setattr(prompts, 'KO_PAIR_MESSAGES', prompts.KO_PAIR_MESSAGES + '\n- limit: __LIMIT__')
+    with pytest.raises(zp.ProtocolError, match='__LIMIT__'):
+        prompts.system_prompt('peer_nl', 'r1')
+    assert 'limit' not in prompts.system_prompt('no_comm', 'r1')                 # no_comm has no messages schema
+
+
+# --------------------------------------------------------------------------- own_status does not depend on the reset origin
+
+def link_at(origin):
+    """A ``PairLink`` over a real ``ClaimGate`` whose backend clock runs ``origin`` SIM seconds ahead of the harness."""
+    import types
+    from harness.pair_llm_runtime import ClaimGate
+    gate = ClaimGate(('r1', 'r2'))
+    gate.bind(lambda rid, order, zone, partner, *, now: {'robot_id': rid, 'accepted': False,
+                                                         'rejected_reason': 'SELF_UNCERTAIN', 'job_id': None})
+    runtime = types.SimpleNamespace(actors={'r1': object(), 'r2': object()}, gate=gate)
+    return gate, dispatch.PairLink(runtime, 'r1', origin_s=origin)
+
+
+def relative_story(origin, *, refused_at=None):
+    """The same RELATIVE facts (permit 10.0, own look-around end 10.5, optional refusal) at one backend origin."""
+    gate, link = link_at(origin)
+    gate.grant('r1', 'cargoX', 'B', 'r2', now=10.0 + origin, call_ref='call-1')          # absolute, as the gate stores it
+    if refused_at is not None:
+        gate.start('r1', now=refused_at + origin)
+    last_end = {'job_kind': 'look_around', 'sim_s': 10.5, 'reason_class': 'queue_empty'}   # harness clock, as delivered
+    view = link.gate_view()
+    row = st.build(now=11.0, claim_issued_s=9.0, view=view, job_kind=None, last_end=last_end,
+                   refusals_since_last_call=2)
+    return row, view, gate
+
+
+ORIGINS = (0., 1.3, 2.6, 7.0)
+
+
+@pytest.mark.parametrize('refused_at, outcome, reason', [
+    (None, 'look_around_ended', 'queue_empty'),            # permit 10.0 < end 10.5: the end is the latest fact
+    (10.3, 'look_around_ended', 'queue_empty'),            # a refusal before the end
+    (10.7, 'start_refused', 'SELF_UNCERTAIN')])            # a refusal after the end
+def test_own_status_is_identical_for_the_same_relative_events_at_every_reset_origin(refused_at, outcome, reason):
+    """Codex review (#375) P2: a permit at relative 10.0 and a look-around end at relative 10.5 picked the older
+    ``claim_released`` at origin 1.3 because the gate's absolute time was compared with the harness clock."""
+    rows = {origin: relative_story(origin, refused_at=refused_at)[0] for origin in ORIGINS}
+    assert len({json.dumps(r, sort_keys=True) for r in rows.values()}) == 1, rows
+    assert rows[0.]['last_outcome'] == outcome and rows[0.]['reason'] == reason
+
+
+def test_the_gate_view_is_on_the_harness_clock_and_leaves_the_gates_own_record_absolute():
+    for origin in ORIGINS:
+        row, view, gate = relative_story(origin, refused_at=10.7)
+        assert view['permit_released_at_sim_s'] == pytest.approx(10.0)
+        assert view['last_event']['sim_s'] == pytest.approx(10.7) and view['refusal_total'] == 1
+        assert gate.status_view('r1')['permit_released_at_sim_s'] == pytest.approx(10.0 + origin)   # untouched
+        assert gate.log[0]['sim_s'] == pytest.approx(10.0 + origin)
+
+
+def test_without_the_conversion_the_origin_would_change_the_status():
+    """Documents the defect the conversion fixes: feeding the gate's absolute view to the builder is origin-dependent."""
+    picked = {}
+    for origin in (0., 1.3):
+        gate, _ = link_at(origin)
+        gate.grant('r1', 'cargoX', 'B', 'r2', now=10.0 + origin)
+        row = st.build(now=11.0, claim_issued_s=9.0, view=gate.status_view('r1'), job_kind=None,
+                       last_end={'job_kind': 'look_around', 'sim_s': 10.5, 'reason_class': 'queue_empty'},
+                       refusals_since_last_call=0)
+        picked[origin] = row['last_outcome']
+    assert picked == {0.: 'look_around_ended', 1.3: 'claim_released'}
+
+
+def backend_with_origin(origin):
+    from tests.pair_llm_fakes import FakeBackend
+
+    class Backend(FakeBackend):
+        def reset(self, cap):
+            self.now = origin
+            return self.now
+    return Backend
+
+
+def test_in_the_loop_the_outcome_sequence_of_own_status_is_the_same_at_every_reset_origin(tmp_path):
+    """Whole loop, same scripted model, fake physics reset at 0.0 / 1.3 / 4.9 SIM s (the case runner refuses a reset
+    longer than 5 s, so 7.0 is covered by the unit test above). The tick grid shifts a call by 0.1 SIM s, so the
+    comparison is on outcomes, reasons and refusal counts; ``since_claim_s`` must be the harness-clock difference."""
+    traces = {}
+    for origin in (0., 1.3, 4.9):
+        result, out, _ = run_arm(tmp_path, 'no_comm', cap_s=30., backend=backend_with_origin(origin),
+                                 name=f'origin-{origin}')
+        assert result['status'] == 'COLLECTED_UNQUALIFIED' and result['reset_sim_s'] == pytest.approx(origin)
+        traces[origin] = rows(out / 'llm' / 'inputs.jsonl')
+    shape = lambda trace: [(r['robot'], r['own_status']['last_outcome'], r['own_status']['reason'],
+                            r['own_status']['refusals_since_last_call']) for r in trace]
+    assert shape(traces[1.3]) == shape(traces[0.]) == shape(traces[4.9])
+    assert any(s[1] == 'look_around_ended' for s in shape(traces[4.9]))        # the case the old mixed clocks lost
+    for origin, trace in traces.items():
+        for r in trace:
+            since = r['own_status']['since_claim_s']
+            assert since is None or 0 <= since <= r['sim_s'] + 1e-6              # a harness-clock age, never absolute
