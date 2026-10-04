@@ -28,6 +28,40 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `GRIP_NOT_CONFIRMED`는 그대로다. 공유 동결 파일(`zone_pair_grasp.py`, `run_m2_pair.py`)은 바꾸지 않았다.
 - **복구 동작은 아직 넣지 않았다**(관측기 수정이 폐루프에서 확인된 뒤).
 
+### 운반 다리 묶음 뒤 단계 검사 3개 (`af2f7c2a`, 2026-10-04)
+
+거칠게 하기(K 0.2) → 같은 틱 최종 거부 → 도크 둘러보기 8방향·재둘러보기·30초 만남 대기 → carry-align(z 1.96)을 모두
+넣은 머리(`af2f7c2a`)에서 조정자가 요청한 3개를 돌렸다. seed 911, before_door, DEV_PILOT(FUNCTIONAL_DEV, 승격 불가),
+floor_light_v1, weld OFF, 모델 호출 0. SIM 시간 병렬 실행(부하 평균 시작 9.1–13.3, 끝 7.3–9.1). 원본
+`outputs/v98-dev-probe-<단계>-af2f7c2a`. 물리 값은 평가 전용이다. SIM 초는 결과 파일의 검사 시각이고, 사건 시각은 제어기 시계다.
+
+| 단계 | 결과 | SIM 초 | 명령 r1/r2 | 실패·멈춘 이유 | 6727751b 대비 |
+|---|---|---|---|---|---|
+| raise_high(도크 시작) | FAILED | 9.65 | 263/263 | 두 로봇 둘러보기 `LOOKED`(10.05초); r2 `PAIR_COLLISION_GUARD`(10.9초), r1 `PARTNER_ABORT` | 이전: r2 `LOOKED_POSE_UNCERTAIN`, 입장 못 함, r1 `PAIR_RENDEZVOUS_TIMEOUT`. 이번: 둘 다 둘러보기 통과, r2가 출발하다 guard 거부 |
+| raise_high_align | FAILED | 27.35 | 737/646 | r2 `ALIGN_RELOOK_NO_FIX`(28.6초), r1 `PARTNER_ABORT` | 이전 REACHED(83.55초). **퇴행** |
+| align_to_carry | FAILED | 27.35 | 737/646 | raise_high_align과 같은 궤적, 정렬 단계 파지 전에 멈춤 | 이전: 운반 barrier 89.1초 통과 뒤 r1 적재 gate. **퇴행**(운반 다리에 닿지 못함) |
+
+- **raise_high:** r1 `LOOKED`(수준 low, σ_xy 30.7 mm), r2 `LOOKED`(medium, 44.5 mm). r2가 mecanum 앞 0.12를 보내려다
+  10.9초에 거부됐다. 차체 대 `wall_west` 여유 −85.1 mm는 전부 여유 항(기본 20 + 잔차 15 + 이동 4.8 + σ_xy 42.7 + yaw 2.6 mm)이고
+  원 거리 0 mm다(시작부터 벽 여유 띠 안). 시작 상태 완화는 `inside_pair_deeper`로 거절(시작 −13.3 mm → 표본 1에서 −22.9 mm,
+  들어간 쌍이 더 깊어짐). 조정자 결정(무진입 규칙)대로 동작했다.
+- **정렬 퇴행의 원인(진단, 고치지 않음):** 두 정렬 검사의 r2 기록이 같다. 20.2초 p45 → 24.9초 `inspect`(`band_clipped`)로
+  팔 자세를 바꾸는 중 25.0초에 `fix_gap` 재둘러보기(위치 고정 나이 5.89초)가 걸렸다. 재둘러보기 정지가 팔을 중간 자세
+  765/1991/1865(+look 1500)에 세웠고, 이 자세는 측정한 카메라 모델이 없어 25.25초에 제공자가
+  `UNMEASURED_V3_CAMERA_POSTURE: unloaded:765,1991,1865,1500`으로 닫혔다(fail-closed, 이후 초기화 안 됨). 재둘러보기 고정
+  확인은 26.6·27.6·28.6초 모두 거절(`initialized` false)됐고 28.6초에 `ALIGN_RELOOK_NO_FIX`. r1은 같은 `inspect` 전환을
+  했지만 재둘러보기가 26.1초에 걸렸고 그때 멈춘 자세는 측정된 자세였다(제공자 실패 없음). 27.7초에 고정을 얻었다. 6727751b에서는 r2 `fix_gap`이 22.4초(p45
+  자세 중), `inspect` 진입이 28.2초라 겹치지 않았다. 8방향 둘러보기로 정렬 진입 시각이 바뀌어(10.1초, 이전 7.9초) 겹침이 생겼다.
+  측정 위치 수 r2 134(이전 173), r1 79(이전 87). 고칠 방법(자세 전환 중 재둘러보기를 미루기 등)은 조정자 결정 전이라 넣지 않았다.
+- **새 사건:** `look_recovery`(도크 재둘러보기) 시도 0회(두 로봇 모두 처음 둘러보기에서 통과). `final_veto` 0회.
+  `loaded_gate_check`는 align_to_carry에서 r1 108회·r2 99회, 모두 통과. 10.75초부터(아직 적재 전) 프로필 `loaded`로 기록됐고,
+  r2는 실패한 재둘러보기 중 16회가 `uncertain`/high였지만 움직이지 않아 통과로 남았다(기록만).
+  예상했던 다음 막힘 `HIGH_CHECKPOINT_REOBSERVE_TIMEOUT`까지는 가지 못했다.
+- TensorBoard: `outputs/tensorboard/1004h-v98-dev-probes-af2f7c2a`, 보기 키 `v98_dev_probes_af2f7c2a_20261004`,
+  기준 실행 1004g(6727751b). 첫 내보내기는 상위 폴더를 원천으로 줘서 0개였고, 휴지통으로 옮긴 뒤
+  (`outputs/cleanup-records/2026-10-04-1004h-tb-export-retry.json`) 실행별 원천으로 다시 만들었다. 서버 API와 화면의 timeSeries
+  값이 원본과 같음을 확인했다.
+
 ### REVIEW_363 5차 대응 (검토 APPROVE `2745f1fb` 뒤 병합 전 후속, 2026-10-04)
 
 - **상태(먼저 읽기):** 둘러보기의 σ 완화와 시작 상태 완화는 위치 추정 공분산이 일관적이라는 가정에 기대고 있다. 위치 추정
