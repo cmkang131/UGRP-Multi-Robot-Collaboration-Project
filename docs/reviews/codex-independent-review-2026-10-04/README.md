@@ -12,9 +12,9 @@
 | 기존 beam ROI 문제의 현재성 | [17차 source 확인](round17/beam-currentness.md): 현재 wrapper도 공유 detector의 수락을 보존; 현재 RGB 발생은 미확인 |
 | 고쳐진 기존 문제 | [final veto](round15/fixed.md): 확인한 control/arm 두 caller에서 수정됨 |
 
-[22차 검토](round22/README.md)는 #3 원격 보관·복구의 문서 계약과 아직 확인하지 않은 운영 증거를 구분합니다. 선별 보존 승인은 존중하며 프로젝트 원자료의 복구 완료를 주장하지 않습니다. 새 결함 0개입니다. [21차 그림자·teacher TOP](round21/README.md), [20차 CI·랜덤화](round20/README.md), [19차 우선순위](round19/README.md)도 유지합니다. **이 리뷰의 Git/Mac 전달 hash 검증은 프로젝트 원본의 별도 환경 복구 검증과 다릅니다.** [다음 source 조사](round22/backlog.md)를 이어갑니다.
+[23차 요약](round23/README.md)은 [#217 기억 비교](round23/memory.md)가 전체 기억 제거가 아닌 재관측 결정의 비교임을 확인하고, [#371 final tick](round23/case.md)의 기존 own-event 소비를 8개 저작 대조로 검증합니다. 실제 scheduler/finish는 기록 대역이며 메시지 분모 표는 source-only입니다. 09:43:57 UTC에 직접 main/#363/#371의 같은 SHA를 재확인했고 새 결함 0개입니다. 추가 문헌은 현재 실행 provenance의 공백을 메우지 못하므로 새 논문을 더하지 않았습니다. [22차 복구 증거](round22/README.md), [21차 그림자·teacher](round21/README.md), [20차 CI·랜덤화](round20/README.md), [19차 우선순위](round19/README.md)를 유지하며 [다음 질문](round23/backlog.md)을 이어갑니다.
 
-이전 체크포인트: [21차](round21/README.md) · [20차](round20/README.md) · [19차](round19/README.md) · [18차](round18/README.md) · [17차](round17/README.md) · [16차](round16/README.md) · [15차](round15/README.md) · [14차](round14/README.md) · [13차](round13/README.md) · [12차](round12/README.md) · [11차](round11/README.md) · [10차](round10/README.md) · [9차](round9/README.md) · [8차](round8/README.md) · [1–7차](publication/final-index-issue.md). 이전 본문·원고 13개·출처와 각 판정의 SHA·시점을 보존합니다.
+이전 체크포인트: [22차](round22/README.md) · [21차](round21/README.md) · [20차](round20/README.md) · [19차](round19/README.md) · [18차](round18/README.md) · [17차](round17/README.md) · [16차](round16/README.md) · [15차](round15/README.md) · [14차](round14/README.md) · [13차](round13/README.md) · [12차](round12/README.md) · [11차](round11/README.md) · [10차](round10/README.md) · [9차](round9/README.md) · [8차](round8/README.md) · [1–7차](publication/final-index-issue.md). 이전 본문·원고 13개·출처와 각 판정의 SHA·시점을 보존합니다.
 
 소스 검토와 합성 대조이며 실제 physics/render/model/학습/cloud 실행, 구현 변경 또는 전체 CI 통과 보고가 아닙니다. Public map·admitted calibration·합성 입력을 구별하고 raw/heldout outcome을 의도적으로 열어 분석하지 않았습니다. 부수적인 fixture 출처 검색줄은 근거에서 제외했습니다.
 
