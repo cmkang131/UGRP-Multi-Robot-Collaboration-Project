@@ -355,3 +355,4 @@ def test_real_v98_runtime_drivers_are_configured_with_the_derived_bands(admitted
         assert drv.arrival_view.bands_px == expect.bands_px and drv.arrival_view.sheet == tuple(plan['sheet']['beam_xyyaw'])
         assert ac.camera_key(drv.drive_pose) == KEY
     assert runtime.own_image_gates['arrival_confirm'] == ac.record()
+    assert runtime.own_image_gates['high_edge_informative'] is False      # review #363 P2-2: the flag is in the record

@@ -28,6 +28,36 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `GRIP_NOT_CONFIRMED`는 그대로다. 공유 동결 파일(`zone_pair_grasp.py`, `run_m2_pair.py`)은 바꾸지 않았다.
 - **복구 동작은 아직 넣지 않았다**(관측기 수정이 폐루프에서 확인된 뒤).
 
+### 독립 검토(Claude Opus) 대응 — 검토 범위 66ff0978..7bce304a + edge + 도착 확인 (2026-10-05)
+
+검토 보고서 `outputs/review-363-delta-20261005/report.md`(sha256 `b972f916…`). 물리 실행 0회 검토다. 처리:
+
+| 항목 | 내용 | 처리 |
+|---|---|---|
+| P0-1 | ada1d204 DR 영수증은 실제 실행에서 닿을 수 없음(`begin_relocalization`이 고정 영수증을 지워 `decide()`가 늘 기다림) | 제안 diff `64244540…`와 기록 기반 시험 적용, 커밋 메시지·README 서술 정정. 물리로 그 경로를 지난 적은 아직 없음 |
+| P1-1 | 도착 확인 대기 창이 판정 때만 지워져, 경계에서 작은 보정 뒤 진짜 도크를 거절 | 자기 명령마다 창 재시작 + 순서 재현 시험·변이 시험 |
+| P1-2 | 거절 뒤 재접근은 믿음·σ를 유지(설명은 "새 localizer") | 조정자 결정대로 문서·`record()` 정정. 과신 PF 회복은 별도 설계(PF 일관성 결과와 함께) |
+| P1-3 | 영수증 σ는 정확도 증거가 아님 | "σ 예산 영수증"으로 부르고, 영수증마다 평가 전용 NEES 기록(제어 미사용) |
+| P1-4 | 번들 `caps` 120이 900 개정에서 빠짐 | `bundle()`에서 덮어쓰기 + 확인 시험, "모두 바꿈" 정정 |
+| P2-2 일부 | `HIGH_EDGE_INFORMATIVE`가 런타임 기록에 없음 | 기록에 넣음 |
+| P2-7 | `registry()`가 `prereg_version`을 확인하지 않음 | 확인 추가 |
+
+**남은 문제(이 묶음에서 고치지 않음):**
+- P2-1 시작 상태 완화 v2의 대각선 경우: 문 기둥(`wall_divider_1/2`, 두께 50 mm) 끝면이 골라지면 두께 방향 가로지름을 못 잡는다.
+  제안은 기준점→점 선분이 지나는 면을 쓰거나 대각선이면 v1/거절. relief v2 밖의 guard 변경은 하지 않는다는 제약이 있어 설계
+  담당과 정한다. 기록 기반 시험이 r2 하나뿐이다.
+- P2-2 나머지: edge를 끈 뒤 yaw 편향 퍼짐이 약 30 % 커진다(추가 약 1.94e-4 rad/s). 다리별 σ 예측(42/59/79 … mm)과 900초
+  유도(351–517초)를 edge를 끈 상태로 다시 계산해야 한다.
+- P2-3 프레임 시각: `observe(now, rgb)`는 캡처 시각 대신 `now`를 쓴다. `FRAME_SETTLE_S`의 "캡처 주기 하나"는 0.05초인데
+  접근 프레임 주기는 0.2초다. 정착 창 0.65초와 대기 창 1.0초의 차이가 0.35초뿐이다. 값 변경은 근거 조사 뒤에 한다.
+- P2-4 도착 확인이 `GuardedDriver._arrive`의 고정·gate 확인보다 먼저 돌아 recheck 때 이벤트가 겹칠 수 있다. 실제 드라이버로
+  끝까지 도는 시험이 없다(다음 단계 검사 `dock_approach`가 첫 물리 확인).
+- P2-5 여유 픽셀 근거 프레임이 곧 시험 자료다. 다른 seed·다른 정지 장면의 hold-out 프레임과 짝 로봇이 빔을 가리는 경우가 없다.
+- P2-6 체크포인트에서 σ가 예산을 넘는 진짜 고정이 오면 예산 초과가 아니라 8초 시간 초과로 끝난다(사유 표기만 다름).
+- P2-8 2d285ec4 이후 제어기 동작이 여러 번 바뀌었는데 `BUNDLE_ID`·workflow 3.10.0이 그대로다. DEV에서는 SHA·`source_sha256`으로
+  구분되지만 확증 코호트 전에 새 버전 번호를 받아야 한다.
+- P2-9 351–517초 추정은 아직 없는 내려놓기 재고정을 전제로 한다(재고정 v3/v4는 설계 담당이 다듬는 중, 여기 통합하지 않음).
+
 ### 네 묶음 뒤 단계 검사 3개, 전체 경로 (`1f7fb800`, 2026-10-04)
 
 재둘러보기 미루기(2d285ec4) → DR 체크포인트 영수증(ada1d204) → 사례 상한 900초(f38e2eba) → 시작 상태 완화 v2(1f7fb800)를 넣은
@@ -155,8 +185,8 @@ raise_high_align@1f7fb800과 @6727751b의 파지와 HIGH는 물리적으로 실�
      `GRIP_VIEW_NOT_BAND`(seen=false)라 제어기의 파지 판단은 영상 근거가 없다. 내려놓은 뒤 다시 잡을 때 중요하다.
   2. 준비된(staged) 검사는 PF 사전 평균을 실제 시작 자세에 둔다(`test_setup_ground_truth: true`). 그래서 과신·거짓 도착 문제를
      드러낼 수 없다. 정렬·파지·들기는 PF 절대 자세를 쓰지 않는다.
-  3. 단계 진입 뒤 PF 절대 자세가 표본마다 기록되지 않는다. `loaded_gate_check`에 자기 보고의 x·y·yaw를 기록만 하도록
-     추가한다(행동 변화 없음, 별도 커밋).
+  3. 단계 진입 뒤 PF 절대 자세가 표본마다 기록되지 않았다. `loaded_gate_check`에 자기 보고의 `report_x_m`·`report_y_m`·
+     `report_yaw_rad`를 기록만 하도록 추가했다(행동 변화 없음, 2026-10-05 커밋). 이 필드가 있는 실행부터 평가에서 정답과 비교할 수 있다.
   4. 잡는 힘은 재지 않았고 매개변수로 어림했다(턱 한계 약 18 N, 마찰 3.4).
 
 #### #371 걸이(hook) 12항 반영 계획
@@ -227,6 +257,13 @@ PR 코멘트에 표로 적었다(`issuecomment-5980026688`에 대한 답). 요�
   사용자 말); 작업 흐름 `configs/simulation_workflows.d/pair_highpose_v98.json` 설명(3×900); `scripts/run_pair_highpose.py` 설명;
   기록 전용 경계 맞춤 행 상한 `FIT_ROWS_MAX` 5000 → 15000(설명이 300초 기준이었고 900초면 잘림). 시험 기대값(dev_pilot,
   timing, zone_final_pair_highpose, final_veto 가짜 실행기).
+- **정정(독립 검토 #363 P1-4, 2026-10-05): "모두 바꿈"은 틀렸다.** 부모 번들에서 물려받은 기록 `caps`
+  (`zone_final_pair_contract.py` 213행, `per_case_s` 120, `total_including_reset_s` 375)가 v98 `bundle()`의 deepcopy 뒤 그대로
+  남아, 번들 기록이 `caps` 120과 `timing.case_sim_cap_s` 900으로 서로 모순됐다. 실행기는 `caps`를 읽지 않아 동작은 900이었다.
+  고침: v98 `bundle()`이 `caps.per_case_s = CASE_CAP_S`, `total_including_reset_s = reset + CASE_CAP_S`,
+  `cap_prereg_version = v98-cap-3`으로 덮어쓰고, 두 검사(p03·carry)에서 이를 확인하는 시험을 넣었다. 같은 묶음에서
+  `registry()`가 등록 파일 `case_cap.prereg_version`도 확인한다(P2-7, 전에는 시험에서만 확인). 결정 기록 1a절의 "모두 바꿈"
+  서술은 조정자 기록이라 이 README 정정으로 대신한다.
 - **그대로 둔 것:** 은퇴한 v96 등록 파일(바이트 고정, 300), 다른 단계 검사 cap(raise_high·high_hold 150, raise_high_align 150,
   high_hold_staged 60, carry_leg_staged 150), 하한 자동 검사. v98 결과는 계속 DEV이고 SHA로 구분해 기록한다.
 

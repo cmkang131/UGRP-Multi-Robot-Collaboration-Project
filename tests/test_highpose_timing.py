@@ -57,6 +57,10 @@ def test_cap_amendment_is_registered_prereg_and_hashed_in_bundle():
     b = c.bundle('zone_wide_door_geometry_v3', 'p03')
     assert c.CAP_DECISION in b['source_sha256'] and c.REGISTRY in b['source_sha256']
     assert b['timing']['case_sim_cap_s'] == 900.
+    for check in c.CHECKS:      # review #363 P1-4: the bundle's caps record states the applied cap, not the parent's 120
+        caps = c.bundle('zone_wide_door_geometry_v3', check)['caps']
+        assert caps['per_case_s'] == c.CASE_CAP_S == 900. and caps['cap_prereg_version'] == c.CAP_PREREG_VERSION
+        assert caps['total_including_reset_s'] == caps['reset_per_case_s'] + c.CASE_CAP_S
     obs = b['timing']['observation']
     assert obs['carry_hold_look_every_s'] == .4 and obs['transit_rgb_sample_s'] == .1
     bad = copy.deepcopy(reg)
@@ -65,6 +69,10 @@ def test_cap_amendment_is_registered_prereg_and_hashed_in_bundle():
     orig = mod.base.read
     try:
         mod.base.read = lambda path: bad if str(path).endswith(c.REGISTRY) else orig(path)
+        with pytest.raises(ValueError, match='registry mismatch'):
+            c.registry()
+        bad = copy.deepcopy(reg)       # review #363 P2-7: the cap prereg version is checked, not only in tests
+        bad['case_cap']['prereg_version'] = 'v96-cap-2'
         with pytest.raises(ValueError, match='registry mismatch'):
             c.registry()
     finally:

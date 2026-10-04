@@ -482,7 +482,8 @@ def adopt_v98_frame_gate(runtime):
             'frame_gate': frame_gate.record(), 'look_around': lookaround.record(),
             'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record(), 'dock_look': relook.record(),
             'carry_align': carry_align.record(), 'relook_posture_defer': posture_defer.record(),
-            'dr_checkpoint': dr_checkpoint.record(), 'approach_looks': approach_looks.record(), 'arrival_confirm': arrival_confirm.record()}
+            'dr_checkpoint': dr_checkpoint.record(), 'approach_looks': approach_looks.record(), 'arrival_confirm': arrival_confirm.record(),
+            'high_edge_informative': HIGH_EDGE_INFORMATIVE}
 
 
 def adopt_look_recovery(runtime):

@@ -56,6 +56,7 @@ def registry():
             or reg['precondition'] != PRECONDITION or reg['provider_id'] != PROVIDER_ID
             or reg['calibration_contract_sha256'] != base.sha(ROOT / CALIBRATION_CONTRACT)
             or reg.get('case_cap', {}).get('sim_cap_s') != CASE_CAP_S
+            or reg['case_cap'].get('prereg_version') != CAP_PREREG_VERSION
             or reg['case_cap'].get('decision') != CAP_DECISION
             or reg['case_cap'].get('decided_before_p03_data') is not True
             or reg.get('grip_monitor', {}).get('scope') != grip.MONITOR_SCOPE
@@ -367,6 +368,11 @@ def bundle(map_id, check, admission=MEASURED_SIM):
         localization='OpenCV wall-band detector + static map particle filter; no learned segmentation',
         timing=execution_timing(check), high_pose=pose.record(), calibration_contract=contract,
         calibration_selection='D5 v92 loader v2 + registered complete measurement evidence; HIGH only')
+    # Independent review #363 P1-4: the inherited parent ``caps`` (per_case_s 120) contradicted the applied
+    # v98-cap-3 case cap; the executor reads ``timing``, but the record must state the applied value.
+    reset_s = value['caps']['reset_per_case_s']
+    value['caps'] = {**value['caps'], 'per_case_s': CASE_CAP_S, 'total_including_reset_s': reset_s+CASE_CAP_S,
+                     'cap_prereg_version': CAP_PREREG_VERSION}
     entries = ['scripts/run_pair_highpose.py', 'harness/zone_pair_highpose_runtime.py',
                'harness/vision_pose_source_highpose.py', 'harness/zone_pair_highpose_staging.py',
                'sim/final_pair_highpose_staged.py']
