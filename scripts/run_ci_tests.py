@@ -101,6 +101,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_guard_veto_log.py",  # v98 pair-guard veto log (observation only)
     "tests/test_highpose_start_relief.py",  # v98 start-state relief after a frozen sweep veto
     "tests/test_highpose_edge_fit.py",  # v98 HIGH beam-edge consensus fit (recorded own frames)
+    "tests/test_highpose_final_veto.py",  # v98 same-tick final veto of terminal endpoints' motion (real runner, fake backend)
     "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
     "tests/test_zone_final_pair_heldout.py",
     "tests/test_review_352.py",

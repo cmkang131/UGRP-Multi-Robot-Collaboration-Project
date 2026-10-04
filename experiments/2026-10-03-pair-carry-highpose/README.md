@@ -57,6 +57,19 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `outputs/pair-stage-probes-ece38792-cal/` 사례 프레임이 10/1 16:40 이전 outputs 정리로 없어져 실패한다. 시험은 `cases.jsonl`이
   없을 때만 건너뛰고 프레임이 없을 때는 건너뛰지 않는다. 어떤 diff와도 무관하며 조정자가 따로 추적한다.
 
+### 같은 틱 최종 거부 (same-tick final veto, Codex #375 검토 지적, 2026-10-04)
+
+- **문제(Codex #375 검토, 확인된 누설):** 부모 `Runtime.step`은 로봇을 차례로 불러 명령을 모은다. 같은 틱에서 나중에 처리된 로봇이
+  중단(abort)하면, 먼저 처리된 로봇이 이미 낸 이동 명령이 목록에 남아 실행기로 나갔다(그 로봇은 이미 `PARTNER_ABORT`로 끝난 상태).
+  `arm_step`에는 중단 전파(poll)가 아예 없었다.
+- **변경(diff `final_veto_v98_on_6727751b.diff`, sha256 `bc954868…`, 기준 `6727751b`; 시험한 쌍둥이는 `36d0f34e` 기준
+  `final_veto_v98.diff`):** 새 모듈 `harness/zone_pair_highpose_final_veto.py`와 v98 `Runtime`의 `step`·`arm_step` 재정의. 모든 상태를
+  전파한 뒤, 끝난(terminal) endpoint의 hold가 아닌 명령을 같은 틱의 hold 하나로 바꾸고, 지운 명령을 `record()['final_veto']`에 남긴다.
+  각 endpoint 자신의 `terminal` 표시만 읽는다(짝의 제어기 상태·위치·평가 자료는 읽지 않음).
+- **동작 변화:** `arm_step`이 이제 팀을 poll한다(부모는 하지 않았음). 중단이 없는 경로는 바이트 단위로 같다.
+- 작성자 결과: 새 시험 24개, 돌연변이 8개 모두 잡힘, 관련 460 passed. 이것만으로는 탐침을 돌리지 않고, 팬/재둘러보기·운반 다리 diff 뒤
+  다음 탐침에 함께 확인한다.
+
 ### 재표집 뒤 거칠게 하기 (PF roughening, 다른 작업자 diff, 2026-10-04)
 
 - **원인(작성자 오프라인 재생, 정답은 채점에만):** r2의 도크 출발 오차 50–60 mm는 카메라 모델이 아니라 입자 고갈(particle

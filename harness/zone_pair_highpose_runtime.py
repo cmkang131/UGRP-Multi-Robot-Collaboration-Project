@@ -7,6 +7,7 @@ import numpy as np
 from harness import zone_final_pair_skill as previous
 from harness import zone_pair_highpose as pose
 from harness import zone_pair_highpose_blind_close as blind
+from harness import zone_pair_highpose_final_veto as final_veto
 from harness import zone_pair_highpose_frame_gate as frame_gate
 from harness import zone_pair_highpose_grip as grip
 from harness import zone_pair_highpose_guardlog as guardlog
@@ -471,8 +472,31 @@ class Runtime(PreviousRuntime):
             actor.job_sim_limit_s = CASE_CAP_S
         self.own_image_gates = adopt_v98_frame_gate(self)
 
+    def _vetoed(self, phase, now, call, propagate):
+        """Run the parent's collection for one tick, then veto terminal endpoints' motion.
+
+        The parent collects each actor's commands in sequence, so motion returned before a later actor
+        aborted in the same tick is still in its list. All state is propagated first (``propagate``);
+        only then are terminal endpoints reduced to a single hold. See ``zone_pair_highpose_final_veto``.
+        """
+        before = final_veto.terminal_robots(self.team, self.actors)
+        issued = call(now)
+        propagate(now)
+        after = final_veto.terminal_robots(self.team, self.actors)
+        return final_veto.final_veto(issued, now, phase, before, after, self.team, final_veto.log_of(self))
+
+    def step(self, now):
+        # The parent already polls the team after collecting, so state is propagated before the veto.
+        return self._vetoed('step', now, super().step, lambda t: None)
+
+    def arm_step(self, now):
+        # The parent's arm_step never polls: a peer abort raised by a later actor was not even
+        # propagated before the list went out. Propagate the same way step does.
+        return self._vetoed('arm_step', now, super().arm_step, self.team.poll)
+
     def record(self):
         value = super().record()
+        value['final_veto'] = final_veto.record(self)
         value['executor_job_sim_limit_s'] = self.job_sim_limit_s
         value['own_image_gates'] = copy.deepcopy(self.own_image_gates)
         value['blind_final_approach'] = blind.record()
