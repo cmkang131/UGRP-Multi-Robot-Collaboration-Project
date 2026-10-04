@@ -18,6 +18,7 @@ from harness import zone_pair_highpose_carry_align as carry_align
 from harness import zone_pair_highpose_posture_defer as posture_defer
 from harness import zone_pair_highpose_dr_checkpoint as dr_checkpoint
 from harness import zone_pair_highpose_approach_looks as approach_looks
+from harness import zone_pair_highpose_arrival_confirm as arrival_confirm
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_runtime import Runtime as PreviousRuntime
 from harness.zone_final_pair_guards import CommandGuard as PreviousGuard
@@ -422,6 +423,8 @@ class Execution(previous.Execution):
         ctl = self.controller
         ctl.__class__ = controller_class(type(ctl))
         ctl.driver.__class__ = approach_looks.adopt(type(ctl.driver))   # v98: no in-place no_fix re-look
+        ctl.driver.__class__ = arrival_confirm.adopt(type(ctl.driver))  # v98: arrival needs the beam seen where the dock says
+        arrival_confirm.configure(ctl.driver, self.plan, kwargs['calibration'])
         ctl.high_raising, ctl.high_ready = False, False
         ctl.grip_epoch, ctl.pose_anchors, ctl.transit = 0, {}, None
         ctl.floor_return_verified = False
@@ -478,7 +481,7 @@ def adopt_v98_frame_gate(runtime):
             'frame_gate': frame_gate.record(), 'look_around': lookaround.record(),
             'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record(), 'dock_look': relook.record(),
             'carry_align': carry_align.record(), 'relook_posture_defer': posture_defer.record(),
-            'dr_checkpoint': dr_checkpoint.record(), 'approach_looks': approach_looks.record()}
+            'dr_checkpoint': dr_checkpoint.record(), 'approach_looks': approach_looks.record(), 'arrival_confirm': arrival_confirm.record()}
 
 
 def adopt_look_recovery(runtime):

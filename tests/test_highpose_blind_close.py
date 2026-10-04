@@ -378,6 +378,6 @@ def test_every_refusal_name_is_listed_and_classified():
         assert runner.failure_cause(code) == {'code': 'HOVER_NOT_CONFIRMED', 'sub': code}
     for code in blind.BLIND_CODES:
         assert runner.failure_cause(code) == {'code': 'BLIND_WINDOW_CLOSED', 'sub': code}
-    assert set(runner.FAILURE_CAUSE_TEXT) == {'HOVER_NOT_CONFIRMED', 'BLIND_WINDOW_CLOSED'}
+    assert set(runner.FAILURE_CAUSE_TEXT) == {'HOVER_NOT_CONFIRMED', 'BLIND_WINDOW_CLOSED', 'ARRIVAL_VIEW_NOT_CONFIRMED'}
     assert runner.failure_cause('PAIR_COLLISION_GUARD')['code'] == 'COLLISION_GUARD'
     assert runner.failure_cause('PREGRASP_NOT_READY')['code'] == 'UNCLASSIFIED' and runner.failure_cause(None) is None

@@ -99,19 +99,24 @@ def stage_progress(runtime, probe):
 FAILURE_CAUSE_TEXT = {
     'HOVER_NOT_CONFIRMED': 'own-RGB hover check refused the blind descent (pre-close check / band / posture)',
     'BLIND_WINDOW_CLOSED': 'blind final approach refused at the grasp posture (window not armed or closed by a command,'
-                           ' time, distance or track limit)'}
+                           ' time, distance or track limit)',
+    'ARRIVAL_VIEW_NOT_CONFIRMED': 'approach arrival refused: the own frame did not show the beam inside the image bands'
+                                  ' of the arrival tolerance (rejected after the bounded relocalize + approach-again)'}
 
 
 def failure_cause(reason):
     """Cause label for one controller failure name (labelled, not a proof of cause)."""
     from harness import pair_stage_probe as sp
     from harness import zone_pair_highpose_blind_close as blind
+    from harness import zone_pair_highpose_arrival_confirm as arrival
     if reason is None:
         return None
     if reason in blind.HOVER_CODES:
         return {'code': 'HOVER_NOT_CONFIRMED', 'sub': reason}
     if reason in blind.BLIND_CODES:
         return {'code': 'BLIND_WINDOW_CLOSED', 'sub': reason}
+    if reason == arrival.FAILURE:
+        return {'code': arrival.CAUSE, 'sub': reason}
     code = sp.FAILURE_TO_CAUSE.get(reason) or ('PARTNER_ABORT' if str(reason).startswith('PARTNER') else 'UNCLASSIFIED')
     return {'code': code, 'sub': reason}
 

@@ -111,6 +111,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_carry_align.py",  # v98 door-align significance rule + loaded-gate check log
     "tests/test_highpose_relook_posture_defer.py",  # v98 align re-look never starts mid arm transition (af2f7c2a replay)
     "tests/test_highpose_dr_checkpoint.py",  # v98 HIGH checkpoint own-DR budget receipt
+    "tests/test_highpose_arrival_confirm.py",  # v98 arrival needs the beam in the expected image bands (1f7fb800 false/true arrival frames)
     "tests/test_highpose_approach_looks.py",  # v98 unloaded approach no_fix look gated on own travel (r2 1f7fb800 record)
     "tests/test_highpose_edge_uninformative.py",  # v98 HIGH edge = render near-clip trace: not used (znear live check)
     "tests/test_zone_final_pair_review_fixes.py",
