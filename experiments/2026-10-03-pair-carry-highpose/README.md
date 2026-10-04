@@ -57,6 +57,33 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `outputs/pair-stage-probes-ece38792-cal/` 사례 프레임이 10/1 16:40 이전 outputs 정리로 없어져 실패한다. 시험은 `cases.jsonl`이
   없을 때만 건너뛰고 프레임이 없을 때는 건너뛰지 않는다. 어떤 diff와도 무관하며 조정자가 따로 추적한다.
 
+### 5차 묶음 최종 단계 검사 3개 (`6727751b`, 2026-10-04)
+
+seed 911, before_door, DEV_PILOT(FUNCTIONAL_DEV, 승격 불가), floor_light_v1, weld OFF, 모델 호출 0. SIM 시간 병렬 실행(부하 평균
+시작 36–64, 끝 60–140). 원본 `outputs/v98-dev-probe-<단계>-6727751b`. 물리 값(빔 높이·이동·접촉)은 평가 전용이다.
+
+| 단계 | 결과 | SIM 초 | 명령 r1/r2 | 실패·멈춘 이유 | 0865a788/d5ca2ec3 대비 |
+|---|---|---|---|---|---|
+| raise_high(도크 시작) | FAILED | 11.6 | 291/191 | r2 둘러보기 `LOOKED_POSE_UNCERTAIN`(7.8초), 입장 101회 모두 `SELF_UNCERTAIN`; r1 `PAIR_RENDEZVOUS_TIMEOUT`(12.85초) | 이전: 9.0초 r2 guard 거부(`inside_pair_deeper`), 완화 r1×4·r2×3. 이번: r2가 입장하지 못해 움직이지 않음, 거부·완화 0 |
+| raise_high_align | REACHED | 83.55 | 1923/2213 | — | 닫기 64.7·들기 65.9·HIGH 84.8초 같음. r2 명령 바이트 동일, r1은 1932 → 1923(위치 추정 변화) |
+| align_to_carry | FAILED | 90.95 | 1954/2244 | 운반 barrier 89.1초 통과 뒤 r1 `POSE_UNCERTAIN`(적재 gate, 92.2초), r2 `PARTNER_ABORT` | 이전: `HIGH_CARRY_EDGE_REFERENCE_TIMEOUT`(99.9초). 이번: 경계 기준점 88.9초, 운반 단계 진입 |
+
+- **raise_high 입장(정직한 σ):** r1 둘러보기는 `LOOKED`(σ_xy 13.4 mm). r2 둘러보기는 1.3–7.8초에 한 번 돌고
+  `LOOKED_POSE_UNCERTAIN`(수준 medium)으로 끝났다. 그 뒤 r2는 다시 둘러보지 않고 0.05초마다 입장을 요청만 했다(7.85–12.85초,
+  101회, 모두 `SELF_UNCERTAIN`). 그동안 r2 σ_xy는 65.2 → 78.5 mm, σ_yaw 1.1 → 1.7°로 커졌다(한도 50 mm). r1은 5초 기다린 뒤
+  `PAIR_RENDEZVOUS_TIMEOUT`. PF 작업자의 예상(r2 실제 오차 50–60 mm라 정직한 σ로는 통과 못 함)과 같다. 입장 0.05 m는 그대로다.
+- **raise_high_align:** 호버 확인 두 로봇 모두 2프레임(r1 1013→1015, 가로 0.07 mm; r2 1239→1241, 0.43 mm). 닫기 때 보지 않은 시간
+  r1 12.7초(이전 11.4초), r2 1.4초. r1 위치 측정 수 87(이전 200), r2 173(이전 167). 손가락 4개 접촉, 빔 높이 0.115 m, 기울기 0.04°.
+- **align_to_carry:** HIGH 84.8초 → 경계 기준점 준비 88.9초 → 운반 barrier 89.1초. 경계 맞춤: r1은 9/9 프레임 `shared_ols`(90열),
+  r2는 9/9 `consensus`(80열). `_lift` 기록의 `edge_fit`도 r1 `shared_ols`, r2 `consensus`. 맞춘 행 y320은 r1 170.54–170.58,
+  r2 175.05–175.06 px로 위·아래 띠 뒤집힘 없음. 운반 단계에서 두 로봇은 같은 작은 mecanum 명령 30회(앞 거의 0, 옆 -4.8/-7.4 mm/s)를
+  보냈고 92.2초에 r1 적재 gate(σ_xy > 70 mm 또는 yaw > 3°)가 풀려 멈췄다. 이때 r1의 σ 값은 기록에 없다. 빔은 0.7 mm 움직였고
+  운반 완료 아님(평가 전용).
+- TensorBoard: `outputs/tensorboard/1004g-v98-dev-probes-6727751b`(collection sha256 `39e51f74…`), 보기 키
+  `v98_dev_probes_6727751b_20261004`, 기준 실행 0865a788 raise_high·raise_high_align, d5ca2ec3 align_to_carry.
+  첫 내보내기는 `hparam_metrics`가 내보내지 않는 태그를 적어 실패했고, 휴지통으로 옮긴 뒤(`outputs/cleanup-records/2026-10-04-1004g-tb-export-retry.json`) 다시 만들었다.
+- 시험(커밋 전): `test_review_*` 412 passed, highpose·경계 227 passed, 경계 맞춤·PF·둘러보기·blind·완화·CI·heldout 280 passed.
+
 ### 위치 추정 일관성 수정 (PF consistency, 다른 작업자 diff, 조정자 결정 2026-10-04)
 
 - **원인(작성자 오프라인 재생, 정답은 채점에만 사용):** 멈춘 채 같은 팔·팬 자세로 본 프레임이 매번 새 측정으로 곱해졌다(적용된
