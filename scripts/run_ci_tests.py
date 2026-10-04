@@ -113,6 +113,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_dr_checkpoint.py",  # v98 HIGH checkpoint own-DR budget receipt
     "tests/test_highpose_refix.py",  # v98 sigma-triggered set-down re-fix (prediction, pair decision, v3 path)
     "tests/test_highpose_refix_hooks.py",  # v98 re-fix LLM hooks (#371): events, latched commands, rule default
+    "tests/test_highpose_hover_barrier.py",  # v98 re-fix hover@k+1 pair barrier before the blind descent (delta2 P1-1)
     "tests/test_highpose_arrival_confirm.py",  # v98 arrival needs the beam in the expected image bands (1f7fb800 false/true arrival frames)
     "tests/test_highpose_approach_looks.py",  # v98 unloaded approach no_fix look gated on own travel (r2 1f7fb800 record)
     "tests/test_highpose_edge_uninformative.py",  # v98 HIGH edge = render near-clip trace: not used (znear live check)

@@ -30,6 +30,8 @@ from scripts import study_owncam_pair_beam as legacy
 from tests import test_highpose_transit as tr
 from tests.test_highpose_transit import short_route  # noqa: F401  (autouse fixture)
 
+from harness.zone_pair_grasp import CLOSE_WAIT_S  # noqa: E402  (real close barrier limit, 20 s)
+
 C = rf.confirm_window_s()                                        # echo window (CHECKPOINT_REOBSERVE_S)
 D = rf.decide_window_s()                                         # 8 s decision window (decision v4-1)
 PASSAGE = {'id': 'door_1', 'axis_y_m': .05, 'x_range_m': [2.175, 2.225],
@@ -67,12 +69,33 @@ class M2Stub(legacy.PairStudent):
         self.high_raising = self.high_ready = False
         self.pose_anchors, self.transit = {}, None
         self.sigma, self.fix_t = self.sigma_after_look, now   # the stub look gives a fresh own fix
-        self.arm.queue({**self.grasp_pose, 1: legacy.OPEN}, now, duration=.6)
+        self.arm.queue({**self.hover, 1: legacy.OPEN}, now, duration=.6)
+        self.set('stub_hover', now)
+
+    def _stub_hover(self, now, arm_idle):
+        # STUB of HoverConfirm's hover check (2 distinct passing own frames) + the REAL re-fix hover@k+1 gate
+        # (SigmaRefix.hover_barrier_gate); ``stub_look_s`` delays the own hover readiness (a longer own look).
+        if not arm_idle or now < self.state_t+getattr(self, 'stub_look_s', 0.)-1e-9:
+            return
+        obs = self.look(now)
+        if obs['frame_id'] != getattr(self, 'blind_hover_last_frame', None):
+            self.blind_hover_streak = getattr(self, 'blind_hover_streak', 0)+1
+        self.blind_hover_last_frame = obs['frame_id']
+        if self.blind_hover_streak < 2 or not self.hover_barrier_gate(now, obs):
+            return
+        self.blind_hover_streak = 0
+        self.arm.queue({**self.grasp_pose, 1: legacy.OPEN}, now, duration=.6)     # the fixed descent
         self.set('stub_wait_close', now)
 
     def _stub_wait_close(self, now, arm_idle):
-        if not arm_idle or now < self.state_t+getattr(self, 'stub_look_s', 0.)-1e-9:
+        ready_at = self.state_t
+        if not arm_idle:
             return
+        # = HighController._wait_close (runtime): the inherited close barrier limit CLOSE_WAIT_S (20 s), counted from
+        # the own close readiness (review delta2 P1-1: the stub used to wait forever, so tests passed what the real
+        # controller cannot do)
+        if now-ready_at > CLOSE_WAIT_S:
+            return self.fail('BARRIER_CLOSE_TIMEOUT', now)
         decision = self.sync_for('close').authorize(now)
         if decision['phase'] == 'GO':
             self.log(self.rid, 'barrier_go', now, barrier='close')
@@ -100,6 +123,7 @@ def stub_states(monkeypatch):
     monkeypatch.setitem(legacy.STATUS_OF, 'cp_open', 'put_down')         # = run_m2_pair.STATUS_OF
     monkeypatch.setitem(legacy.STATUS_OF, 'stub_regrasp', 'aligning')
     monkeypatch.setitem(legacy.STATUS_OF, 'stub_wait_close', 'aligning')
+    monkeypatch.setitem(legacy.STATUS_OF, 'stub_hover', 'aligning')
 
 
 def pred(over, sxy=.06):
@@ -188,7 +212,8 @@ def test_predicted_over_budget_triggers_one_pair_refix_and_resets_sigma():
         assert up[0]['sigma_after']['std_xy_m'] == pytest.approx(.025)                     # reset by the look
         assert len(opens(c)) == 2 and opens(c)[0] < up[0]['t']           # released at the stop and at delivery
         assert pose.at_high(c.port.own.servo) is False                     # delivered on the floor
-        assert set(c.ep.barriers) == {'carry@0', 'lower@0', 'open@0', 'close@1', 'lift@1', 'carry@1', 'lower@1',
+        # approach@1 = the hover@k+1 pair barrier on the existing wire values (review delta2 P1-1, decision A)
+        assert set(c.ep.barriers) == {'carry@0', 'lower@0', 'open@0', 'approach@1', 'close@1', 'lift@1', 'carry@1', 'lower@1',
                                       'open@1'}
         assert max(int(k.split('@')[1]) for k in c.ep.barriers) == 1 < MAX_SEGMENTS
         assert not ev(c, 'checkpoint_high_stop')                          # the HIGH stop path was not taken
@@ -348,17 +373,50 @@ def test_post_refix_horizon_still_over_budget_aborts_at_high_before_the_leg():
     assert 'carry@1' not in r2.ep.barriers and pose.at_high(r2.port.own.servo)
 
 
-def test_a_longer_own_look_delays_the_pair_close_and_lift_together():
-    # v6-1: both look; the pair re-grasps together at the close@1 barrier, set by the longer look (r1 +25 s)
+def test_a_longer_own_look_within_the_close_limit_delays_the_pair_close_and_lift_together():
+    # v6-1: both look; the pair re-grasps together at the close@1 barrier, set by the longer look (r1 +15 s < 20 s)
     _, ctls = team(BEFORE_DOOR, over={'r1': True})
-    ctls[0].stub_look_s = 25.
+    ctls[0].stub_look_s = 15.
     run(ctls, 170.)
     for c in ctls:
         assert c.failure is None and c.state == 'released', (c.rid, c.failure)
         assert len(ev(c, 'refix_released')) == 1 and len(opens(c)) == 2
     go = {c.rid: [e['t'] for e in ev(c, 'barrier_go') if e['barrier'] in ('close', 'lift')] for c in ctls}
     assert go['r1'] == go['r2'] and len(go['r1']) == 2
-    assert go['r1'][0]-ev(ctls[0], 'refix_released')[0]['t'] >= 25.
+    assert go['r1'][0]-ev(ctls[0], 'refix_released')[0]['t'] >= 15.
+
+
+def test_a_look_more_than_20s_longer_waits_at_the_hover_barrier_and_the_pair_closes_together():
+    # Review delta2 P1-1 fixed by decision (A): r1 looks 25 s longer (> CLOSE_WAIT_S). r2 waits at the hover@k+1 barrier
+    # (before the blind descent), both pass a fresh hover confirmation after the GO, and the pair closes and lifts
+    # together; close@1 arrival skew is the descent difference only.
+    _, ctls = team(BEFORE_DOOR, over={'r1': True})
+    ctls[0].stub_look_s = 25.
+    run(ctls, 200.)
+    for c in ctls:
+        assert c.failure is None and c.state == 'released', (c.rid, c.failure)
+    hover = {c.rid: [e for e in ev(c, 'barrier_go') if e['barrier'] == rf.HOVER_BARRIER] for c in ctls}
+    assert len(hover['r1']) == len(hover['r2']) == 1 and hover['r1'][0]['t'] == hover['r2'][0]['t']
+    assert hover['r2'][0]['waited_s'] >= 25.-1. and hover['r1'][0]['wire'] == 'approach@1'
+    go = {c.rid: [e['t'] for e in ev(c, 'barrier_go') if e['barrier'] in ('close', 'lift')] for c in ctls}
+    assert go['r1'] == go['r2'] and len(go['r1']) == 2
+    for c in ctls:
+        assert len(ev(c, 'refix_hover_reconfirmed')) == 1
+        assert ev(c, 'refix_hover_reconfirmed')[0]['t'] > hover[c.rid][0]['t']        # fresh confirmation after GO
+
+
+def test_a_partner_slower_than_the_derived_hover_limit_stops_the_pair_cleanly():
+    # hover@k+1 limit = the partner's own limits from the open GO to its close readiness (123.94 s, recorded terms)
+    assert rf.hover_barrier_limit_s() == pytest.approx(123.94)
+    _, ctls = team(BEFORE_DOOR, over={'r1': True})
+    ctls[0].stub_look_s = rf.hover_barrier_limit_s()+10.
+    run(ctls, 320.)
+    r1, r2 = ctls
+    assert r2.failure == rf.HOVER_TIMEOUT and r1.failure == 'PARTNER_ABORT'
+    t = ev(r2, 'refix_hover_barrier_timeout')[0]
+    assert t['waited_s'] > rf.hover_barrier_limit_s() and t['limit_s'] == rf.hover_barrier_limit_s()
+    for c in ctls:                       # both released the beam at the stop, none descended or closed again
+        assert len(ev(c, 'refix_released')) == 1 and not [e for e in ev(c, 'barrier_go') if e['barrier'] == 'close']
 
 
 def test_keep_hold_is_withdrawn_and_recorded():
@@ -641,3 +699,16 @@ def test_p03_checkpoint_record_counts_a_floor_refix_with_its_own_kind():
                                    'before_door')
     assert out['status'] == 'SEQUENCE_OBSERVED_UNQUALIFIED' and out['physical_success'] is None
     assert all(r['high_reobserved'][0]['receipt'] == 'floor_refix' for r in out['robots'].values())
+
+
+def test_floor_refix_receipt_logs_the_own_estimate_for_the_eval_only_scorer():
+    # Review delta2 P2-6: refix_resumed_high (the floor re-fix receipt) carries the own mean, covariance field and report
+    # time like the DR receipts. Log only: the stub report has no covariance, so cov is None (scorer: NO_ESTIMATE).
+    _, ctls = team(BEFORE_DOOR, over={'r1': True})
+    run(ctls, 170.)
+    for c in ctls:
+        up = ev(c, 'refix_resumed_high')
+        assert len(up) == 1
+        e = up[0]
+        assert (e['x_m'], e['y_m'], e['yaw_rad']) == (1.2, .05, 0.) and e['cov'] is None
+        assert e['report_t_est'] == pytest.approx(e['t']) and e['std_xy_m'] == pytest.approx(c.sigma[0])

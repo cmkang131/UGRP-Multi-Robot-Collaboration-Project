@@ -206,6 +206,10 @@ def test_an_llm_set_down_is_recorded_when_applied_and_executed_at_the_window_end
 
 
 # ---------------------------------------------------------------- post-look window
+STUB_LOOK_S = 8.6                     # one full dock look (note V6: eight pans measured 8.4 s)
+STUB_REFRESH_LOOK_S = .8+.6+.6+.3     # = zone_pair_highpose_timing.ALIGN_ENTRY_RELOOK_S (one direction)
+
+
 class LookStub(M2Stub):
     """TEST STUB: cp_open -> an instant own look with a fresh fix -> ``align_relook_return`` -> align -> close@k+1.
     The fix checks are age-based like the real ``_align_fix_checks`` (fix gap < MAX_FIX_GAP_S = 6 s)."""
@@ -220,9 +224,23 @@ class LookStub(M2Stub):
         self._stub_look(now)
 
     def _stub_look(self, now):
+        # Review delta2 P1-1: a look takes time (it used to be instant, so a look_again added only the 10 s window).
+        # Full dock look STUB_LOOK_S (measured eight-pan dock look 8.4 s + return), the one-direction post-look
+        # refresh STUB_REFRESH_LOOK_S (= timing.ALIGN_ENTRY_RELOOK_S, one pan move+settle and return). The fix
+        # arrives at the end of the look. ``stub_first_look_s`` overrides the first look of a robot.
         self.looks = getattr(self, 'looks', 0)+1
-        self.sigma, self.fix_t = self.sigma_after_look, now
+        if self.looks == 1 and getattr(self, 'stub_first_look_s', None) is not None:
+            look_s = self.stub_first_look_s
+        else:
+            look_s = STUB_REFRESH_LOOK_S if getattr(self, 'refix_refresh_look', False) else STUB_LOOK_S
         self.align_look_started_at = now
+        self.stub_look_until = now+look_s
+        self.set('stub_looking', now)
+
+    def _stub_looking(self, now, arm_idle):
+        if now < self.stub_look_until-1e-9:
+            return
+        self.sigma, self.fix_t = self.sigma_after_look, now
         self.set('align_relook_return', now)
 
     def _align_fix_checks(self, now):
@@ -237,8 +255,8 @@ class LookStub(M2Stub):
         self._stub_look(now)
 
     def _align(self, now, arm_idle):
-        self.arm.queue({**self.grasp_pose, 1: legacy.OPEN}, now, duration=.6)
-        self.set('stub_wait_close', now)                                     # close@k+1 barrier, then the close
+        self.arm.queue({**self.hover, 1: legacy.OPEN}, now, duration=.6)
+        self.set('stub_hover', now)                 # hover@k+1 barrier (real gate), descent, close@k+1, then the close
 
 
 class LookCtl(rf.SigmaRefix, HighController, LookStub):
@@ -249,6 +267,7 @@ class LookCtl(rf.SigmaRefix, HighController, LookStub):
 @pytest.fixture
 def look_team(monkeypatch):
     monkeypatch.setitem(legacy.STATUS_OF, 'align_relook_return', 'aligning')
+    monkeypatch.setitem(legacy.STATUS_OF, 'stub_looking', 'aligning')
     monkeypatch.setattr(base, 'Ctl', LookCtl)
 
     def make(attached=True, **kw):
@@ -324,6 +343,31 @@ def test_look_again_once_then_refused(look_team):
     assert [p['choice'] for p in post(r1)] == ['look_again', 'regrasp']
     assert [r['level'] for r in hooks(r1, 'relook_result')] == ['fix', 'fix']
     assert r1.failure is None and r1.state == 'released'
+
+
+def test_look_again_plus_a_shorter_partner_look_waits_at_the_hover_and_the_pair_closes_together(look_team):
+    # Review delta2 P1-1 (fixed by decision A). r1: full first look (8.6 s), window, look_again (8.6 s), window, refresh;
+    # r2: first look finds the fix in one direction (2.3 s), window, refresh. The skew 6.3 + 8.6 + 10 = 24.9 s exceeds
+    # CLOSE_WAIT_S; r2 now waits at the hover@k+1 barrier and the pair closes and lifts together.
+    from harness.zone_pair_grasp import CLOSE_WAIT_S
+    _, ctls = look_team()
+    r1, r2 = ctls
+    r2.stub_first_look_s = STUB_REFRESH_LOOK_S
+    got = []
+
+    def fn(c, now):
+        if in_window(c, now) and not got:
+            got.append(c.post_look_decision('look_again', now))
+    on_tick(r1, fn)
+    run(ctls, 220.)
+    assert got[0]['own_status'] == 'LATCHED'
+    assert (STUB_LOOK_S-STUB_REFRESH_LOOK_S)+STUB_LOOK_S+rf.POST_LOOK_WINDOW_S > CLOSE_WAIT_S
+    for c in ctls:
+        assert c.failure is None and c.state == 'released', (c.rid, c.failure)
+    hover = [e for e in ev(r2, 'barrier_go') if e['barrier'] == rf.HOVER_BARRIER]
+    assert len(hover) == 1 and hover[0]['waited_s'] > CLOSE_WAIT_S
+    go = {c.rid: [e['t'] for e in ev(c, 'barrier_go') if e['barrier'] in ('close', 'lift')] for c in ctls}
+    assert go['r1'] == go['r2'] and len(go['r1']) == 2
 
 
 def test_look_again_is_refused_after_one_per_robot_per_case():

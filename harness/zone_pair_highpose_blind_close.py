@@ -326,6 +326,9 @@ class HoverConfirm:
             return self.fail(code, now)
         if self.blind_hover_streak < HOVER_CONFIRM_FRAMES:
             return                          # the window stays armed from the latest passing frame; next frame decides
+        gate = getattr(self, 'hover_barrier_gate', None)
+        if gate is not None and not gate(now, obs):
+            return                          # v98 re-fix re-grasp: hover@k+1 pair barrier (zone_pair_highpose_refix)
         for pose in self.blind_path:
             self.arm.queue(pose, now, duration=DESCENT_STEP_S, settle=0.)
         self.arm.until += FINAL_DESCENT_SETTLE_S

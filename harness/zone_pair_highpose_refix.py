@@ -126,6 +126,42 @@ LOOK_MOVE_CLEAR_STEP_M = .01            # clearance scan resolution along the pa
 LOOK_MOVE_FAIL = 'REFIX_LOOK_MOVE_NO_VIEW'
 EVENTS = ('refix_decision', 'refix_set_down', 'refix_released', 'refix_resumed_high')
 
+# ---- hover@k+1 pair barrier (review delta2 P1-1; coordinator decision (A), 2026-10-05: 고정 상태 관례 추가, 조정자 승인).
+# In the re-fix re-grasp each robot waits at the hover, after its own hover confirmation (HoverConfirm: 2 distinct
+# passing own frames, 3 mm) and BEFORE the blind descent arms the 22.14 s blind window, until both robots are hover
+# ready. Then each robot passes a FRESH hover confirmation and descends, so the close@k+1 arrival skew is the
+# re-confirmation/descent difference only (the descent is the same fixed path) and fits the blind window. Before
+# this, a look_again or a longer own look could exceed CLOSE_WAIT_S at close@k+1 (BARRIER_CLOSE_TIMEOUT).
+# Wire: the existing fixed-enum approach_{ready,go}_{seg} states at seg = k+1 (zone_pair_status_v5 unchanged; the
+# approach barrier is used only at seg 0, and its phase is 'aligning' like every other state of this stretch).
+# Identical in all four communication conditions; no natural language.
+HOVER_BARRIER = 'hover'
+HOVER_BARRIER_WIRE = 'approach'
+HOVER_TIMEOUT = 'REFIX_HOVER_BARRIER_TIMEOUT'
+HOVER_ABORT = 'REFIX_HOVER_BARRIER_ABORT'
+HOVER_MOVE_S = 1.                       # HoverConfirm._queue_open_descent: hover posture queue duration
+HOVER_EVENTS = ('refix_hover_barrier_wait', 'refix_hover_reconfirmed', 'refix_hover_barrier_timeout')
+
+
+def hover_barrier_limit_terms():
+    """The partner's own limits from the open GO to its close readiness (each phase ends by its own limit, so the sum
+    bounds how long the partner can keep the pair waiting while it is alive and not aborted). Conservative sum: looks
+    inside the align limit are counted again in the look budget, and the descent term is kept although the partner
+    is hover ready before its descent (coordinator decision: 123.94 s)."""
+    from harness import zone_pair_highpose_blind_close as blind
+    from harness.zone_pair_align import MAX_TOTAL_LOOK_S
+    from scripts.study_owncam_pair_beam import STATE_LIMIT_S
+    return {'align_state_limit_s': float(STATE_LIMIT_S['align']),
+            'post_look_windows_s': POST_LOOK_WINDOW_S*(1+LOOK_AGAIN_PER_STOP),
+            'look_budget_s': float(MAX_TOTAL_LOOK_S), 'hover_move_s': HOVER_MOVE_S,
+            'hover_settle_s': float(blind.HOVER_SETTLE_S), 'hover_confirm_max_s': float(blind.HOVER_CONFIRM_MAX_S),
+            'descent_s': float(blind.limits()['blind_max_s_terms']['descent_s']),
+            'grid_slack_s': float(blind.GRID_SLACK_S)}
+
+
+def hover_barrier_limit_s():
+    return round(sum(hover_barrier_limit_terms().values()), 6)
+
 # ---- LLM decision hooks (#371, coordinator 2026-10-04). Own robot only; identical in all four conditions.
 # Events go to the own ``refix_hook_events`` list (and the run log). Commands are latched one-shot requests that the
 # controller reads on its next tick; it never waits inside a tick. Without a latched command the rule default (the
@@ -198,6 +234,22 @@ def own_belief(report, now):
         age = 'lt_6s' if a < 6. else 'lt_60s' if a < 60. else 'ge_60s'
     return {'sigma_xy_band': sigma_band(report), 'sigma_yaw_band': yaw_band, 'fix_age_bucket': age,
             'dr_budget_remaining_bucket': left, 'over_budget': over}
+
+
+def _receipt_estimate(report):
+    """Log-only own estimate for the floor re-fix receipt (same fields as the DR receipt detail); never raises."""
+    out = dict(dr_checkpoint._own_estimate(report))
+    for key in ('std_xy_m', 'std_yaw_rad'):
+        try:
+            v = float(getattr(report, key))
+            out[key] = v if math.isfinite(v) else None
+        except Exception:  # noqa: BLE001 - log only
+            out[key] = None
+    try:
+        out['report_t_est'] = float(report.t_est)
+    except Exception:  # noqa: BLE001 - log only
+        out['report_t_est'] = None
+    return out
 
 
 def decide_window_s():
@@ -469,7 +521,10 @@ def record() -> dict:
                                  'high_reobserve_timeout_8s': 'starts at checkpoint_started, after the lower barrier '
                                                               'that follows a continue decision: disjoint',
                                  'close_wait_20s': 'starts at wait_close; the post-look hold and the refresh look come '
-                                                   'before it in both robots'},
+                                                   'before it in each robot; the pair is aligned before the blind '
+                                                   'descent by the hover@k+1 barrier (review delta2 P1-1, decision A), '
+                                                   'so the close@k+1 arrival skew is the re-confirmation/descent '
+                                                   'difference only'},
             'stop_tail_s': STOP_TAIL_S, 'lead_hold': 'prediction starts with the rest of the current stop '
                                                       '(t_end + D - now + STOP_TAIL_S)',
             'stop_hold_s': STOP_HOLD_S, 'dr_receipt_budget_xy_m': dr_checkpoint.BUDGET_XY_M,
@@ -505,6 +560,17 @@ def record() -> dict:
                                   'no camera grip check at the floor pose (beam outside the view; contract pins '
                                   'in-run grip-loss detection off)', 'sigma growth while holding'],
                 'path': 'both robots release, look (dock eight directions) and re-grasp (v4)'},
+            'hover_barrier': {
+                'name': 'hover@k+1', 'wire': 'approach_{ready,go}_{k+1} (existing zone_pair_status_v5 values)',
+                'decision': '고정 상태 관례 추가 (조정자 승인 2026-10-05, review delta2 P1-1 option A)',
+                'where': 'after the own hover confirmation, before the blind descent (re-fix re-grasp only)',
+                'limit_s': hover_barrier_limit_s(), 'limit_terms': hover_barrier_limit_terms(),
+                'codes': [HOVER_TIMEOUT, HOVER_ABORT], 'events': list(HOVER_EVENTS),
+                'reconfirm': 'after the GO a fresh hover confirmation (2 new passing own frames, unchanged bounded '
+                             'retries) is required before the descent',
+                'while_waiting': 'hover checks continue on every own frame (fresh report, window re-armed); a failing '
+                                 'check withdraws the readiness and fails closed after HOVER_CONFIRM_MAX_S from the '
+                                 'last passing frame'},
             'refresh_look': {'max_directions': REFRESH_MAX_DIRECTIONS,
                              'order': 'the pan that gave the look fix first, then dock order (guard-clear only)',
                              'look_again': 'full dock look (up to 7 directions)'},
@@ -629,7 +695,7 @@ class SigmaRefix:
     def post_look_decision(self, choice, now):
         """LLM command after the own look that follows a re-fix set-down. Rejections (closed): NOT_AFTER_LOOK,
         UNKNOWN_CHOICE, ALREADY_LATCHED, LOOK_OVER_BUDGET (regrasp while the own sigma is over the derived DR budget),
-        LOOK_AGAIN_USED (one extra look per stop), LOOK_AGAIN_CASE_LIMIT (two per robot per case, decision v5-3)."""
+        LOOK_AGAIN_USED (one extra look per stop), LOOK_AGAIN_CASE_LIMIT (one per robot per case, decision v6-2; v5-3 allowed two)."""
         w = self._post_look_window()
         if w is None or w.get('resolved'):
             return self._hook_verdict('post_look_decision', choice, now, NOT_AFTER_LOOK)
@@ -904,6 +970,45 @@ class SigmaRefix:
         self.set(DECIDE_STATE, now)
         return self._refix_decide(now)
 
+    def hover_barrier_gate(self, now, obs):
+        """Called by HoverConfirm with a passing hover confirmation; True = descend now (see HOVER_BARRIER above)."""
+        if not self.__dict__.get('refix_resume'):
+            return True                                     # not a re-fix re-grasp: the unchanged path
+        h = self.__dict__.get('refix_hover')
+        if h is None or h['seg'] != self.seg:
+            h = self.refix_hover = {'seg': self.seg, 'started_s': float(now), 'go_s': None, 'last_frame': None,
+                                    'limit_s': hover_barrier_limit_s(), 'reports': 0}
+            self.log(self.rid, 'refix_hover_barrier_wait', now, seg=self.seg, limit_s=h['limit_s'],
+                     wire=f'{HOVER_BARRIER_WIRE}@{self.seg}')
+        if h['go_s'] is not None:
+            h['descend_s'] = round(float(now), 4)
+            self.log(self.rid, 'refix_hover_reconfirmed', now, seg=self.seg, go_s=h['go_s'],
+                     after_go_s=round(float(now)-h['go_s'], 4), frame_id=obs.get('frame_id'))
+            return True
+        self.blind_hover_started = now      # bounded hover retries count from the last passing frame while waiting
+        waited = float(now)-h['started_s']
+        if waited > h['limit_s']+1e-9:
+            self.log(self.rid, 'refix_hover_barrier_timeout', now, seg=self.seg, waited_s=round(waited, 4),
+                     limit_s=h['limit_s'])
+            self.fail(HOVER_TIMEOUT, now)
+            return False
+        if obs.get('frame_id') != h['last_frame']:
+            h['last_frame'] = obs.get('frame_id')
+            h['reports'] += 1
+            self.report(HOVER_BARRIER_WIRE, obs, now, ready=True, reason='own hover confirmation (re-fix hover@k+1)')
+        decision = self.sync_for(HOVER_BARRIER_WIRE).authorize(now)
+        if decision['phase'] == 'ABORT':
+            self.fail(HOVER_ABORT, now)
+            return False
+        if decision['phase'] == 'GO':
+            h['go_s'], h['waited_s'] = round(float(now), 4), round(waited, 4)
+            self.log(self.rid, 'barrier_go', now, barrier=HOVER_BARRIER, wire=f'{HOVER_BARRIER_WIRE}@{self.seg}',
+                     waited_s=h['waited_s'])
+            # A fresh confirmation after the GO: the count restarts, this frame does not count, unchanged retries.
+            self.blind_hover_streak, self.blind_hover_last_frame = 0, obs.get('frame_id')
+            self.blind_hover_started = now
+        return False
+
     def _cp_open(self, now, arm_idle):
         if arm_idle and getattr(self, 'refix_active', False):
             self.refix_active = self.refix_lowering = False
@@ -981,7 +1086,11 @@ class SigmaRefix:
             if plan is not None and self.seg < len(self.segments):
                 legs = horizon(plan, self.seg)
                 check = {'horizon_legs': legs, 'prediction': self._refix_predict(legs, now)}
-            self._refix_log('refix_resumed_high', now, sigma_after=self._refix_sigma(), horizon_check=check)
+            # Log only (review delta2 P2-6): the floor re-fix receipt carries the own report mean, covariance and
+            # report time like the DR receipts, so the evaluation-only NEES scorer can score it. Never a decision input.
+            report = self.port.own.last_report
+            self._refix_log('refix_resumed_high', now, sigma_after=self._refix_sigma(), horizon_check=check,
+                            **_receipt_estimate(report))
             self.refix_phase = None
             if check is not None and check['prediction']['over']:
                 return self._transit_abort(INFEASIBLE, now)

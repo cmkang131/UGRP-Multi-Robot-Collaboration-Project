@@ -580,7 +580,7 @@ GO 수준 σ0 모드: 둘러본 뒤 σ를 GO 시점 퍼짐(33/30 mm)으로 둔�
 1. **결정이 엇갈릴 때(교착 걱정).** 이 설계의 결정 교환은 정지 약속(barrier, `zone_pair_status.py:174-200`의 `authorize`)이 아니라 그 **앞의** 고정 창에서 한다.
    - 다리 끝 t_end부터 W 동안 각 로봇은 상태 채널에 `'carry'`(계속) 또는 `'uncertain'`(내려놓기 요청)을 낸다. 새 상태값은 없다.
    - t_end + W에 각자 "내 비트 OR 상대 비트"로 정한다. **set_down 우선**이다. 둘이 같은 신호를 보므로 같은 결론이 난다.
-   - 내려놓기로 정한 로봇은 W 동안 `'uncertain'`을 계속 내고(echo), t_end + 2W까지 상대의 `'uncertain'`을 봐야 한다. 못 보면 `REFIX_DISAGREEMENT`로 멈추고(짐은 HIGH, 아무것도 내리지 않음) 상대는 `PARTNER_ABORT`로 멈춘다. **번복은 없다**(한 번 정하면 끝). 기다림은 2W로 끝나므로 교착이 없다(시험 `test_window_skew_fails_closed_with_the_beam_at_high`).
+   - (이력, v4 이전 규칙 — 지금은 위 179행: echo·어긋남 검사는 결정 뒤 1.2 s, 어긋나면 t_end + 11.2 s에 `REFIX_DISAGREEMENT`. 독립 재검토 2차 P2-3) 내려놓기로 정한 로봇은 W 동안 `'uncertain'`을 계속 내고(echo), t_end + 2W까지 상대의 `'uncertain'`을 봐야 한다. 못 보면 `REFIX_DISAGREEMENT`로 멈추고(짐은 HIGH, 아무것도 내리지 않음) 상대는 `PARTNER_ABORT`로 멈춘다. **번복은 없다**(한 번 정하면 끝). 기다림은 2W로 끝나므로 교착이 없다(시험 `test_window_skew_fails_closed_with_the_beam_at_high`).
    - 그 뒤에야 두 로봇이 같은 길로 정지 약속 `lower@k`에 들어간다. 그래서 `carry_ready`와 `open_ready`가 섞이는 일이 없다.
    - LLM의 set_down도 같은 OR로 들어간다. 마감 여유 2·CONTROL_S가 상대에게 닿는 것을 보장한다(두 틱 순서 시험, 여유 0 변이 검사).
    - 기본값: 명령이 없으면 σ 규칙.

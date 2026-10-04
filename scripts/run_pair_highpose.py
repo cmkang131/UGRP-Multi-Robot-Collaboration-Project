@@ -111,6 +111,20 @@ FAILURE_CAUSE_TEXT = {
                            ' time, distance or track limit)',
     'ARRIVAL_VIEW_NOT_CONFIRMED': 'approach arrival refused: the own frame did not show the beam inside the image bands'
                                   ' of the arrival tolerance (rejected after the bounded relocalize + approach-again)'}
+# v98 controller failure names absent from the frozen map (review delta2 P2-4). DR over budget and an infeasible
+# horizon after a re-fix are own-pose uncertainty (the existing cause); the decision-exchange failures get their own
+# label so a pair-coordination stop is not counted as pose uncertainty.
+FAILURE_CAUSE_TEXT['PAIR_DECISION_EXCHANGE'] = ('re-fix decision exchange failed at a carry stop (partner status '
+                                                'never seen in the window, or the re-fix echo did not come)')
+FAILURE_CAUSE_TEXT['PAIR_BARRIER_WAIT'] = ('re-fix hover@k+1 pair barrier: the partner did not become hover ready within '
+                                           'its own derived limits, or the barrier aborted')
+V98_FAILURE_TO_CAUSE = {
+    'REFIX_HOVER_BARRIER_TIMEOUT': 'PAIR_BARRIER_WAIT',
+    'REFIX_HOVER_BARRIER_ABORT': 'PAIR_BARRIER_WAIT',
+    'HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED': 'SELF_POSE_UNCERTAIN',
+    'REFIX_HORIZON_INFEASIBLE': 'SELF_POSE_UNCERTAIN',
+    'REFIX_DISAGREEMENT': 'PAIR_DECISION_EXCHANGE',
+    'REFIX_PARTNER_STATUS_UNSEEN': 'PAIR_DECISION_EXCHANGE'}
 
 
 def failure_cause(reason):
@@ -126,7 +140,7 @@ def failure_cause(reason):
         return {'code': 'BLIND_WINDOW_CLOSED', 'sub': reason}
     if reason == arrival.FAILURE:
         return {'code': arrival.CAUSE, 'sub': reason}
-    code = sp.FAILURE_TO_CAUSE.get(reason) or ('PARTNER_ABORT' if str(reason).startswith('PARTNER') else 'UNCLASSIFIED')
+    code = sp.FAILURE_TO_CAUSE.get(reason) or V98_FAILURE_TO_CAUSE.get(reason) or ('PARTNER_ABORT' if str(reason).startswith('PARTNER') else 'UNCLASSIFIED')
     return {'code': code, 'sub': reason}
 
 

@@ -181,7 +181,7 @@ def test_fix_dr_and_over_receipts_are_all_scored_per_robot(mk):
     assert all(r['status'] == 'SCORED' for r in res['receipts'])
     s = res['summary']
     assert s['receipt_count'] == 3 and s['scored_count'] == 3 and s['skipped_count'] == 0
-    assert s['by_receipt'] == {'dr_budget': 1, 'fix': 1, 'over_budget': 1}
+    assert s['by_receipt'] == {'dr_budget': 1, 'fix': 1, 'over_budget': 1, 'floor_refix': 0}
     assert math.isclose(s['max_nees_xy_2dof'], 100., rel_tol=1e-9)                # r2: 0.1 m at 0.01 m sigma
     assert set(res['truth_files']) == {'r1', 'r2'} and len(res['source']['student_record_sha256']) == 64
     assert all(len(v['sha256']) == 64 for v in res['truth_files'].values())
@@ -464,3 +464,14 @@ def test_runner_hook_is_skipped_without_a_student_record(tmp_path, monkeypatch):
     result = _probe_run(tmp_path, monkeypatch, 'probe', runtime_cls=NoRecord)
     assert result['status'] == 'HOST_ERROR' and 'record_error' in result            # the run's own failure, unchanged
     assert 'receipt_nees_eval_only' not in result
+
+
+def test_floor_refix_receipt_is_scored(mk):
+    # Review delta2 P2-6: the floor re-fix receipt (refix_resumed_high) is a receipt kind of its own.
+    assert sc.KINDS['refix_resumed_high'] == 'floor_refix'
+    out = mk({'r1': [receipt('refix_resumed_high', x=1., y=.5, yaw=.1)]}, {'r1': truth_grid(1.01, .5, .1)})
+    res = sc.receipt_nees(out)
+    row = res['receipts'][0]
+    assert row['receipt'] == 'floor_refix' and row['status'] == 'SCORED'
+    assert row['nees_xy_2dof'] == pytest.approx(1.)
+    assert res['summary']['by_receipt']['floor_refix'] == 1

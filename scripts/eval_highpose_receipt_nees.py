@@ -54,7 +54,8 @@ RECEIPT_NAME_EN = 'sigma-budget receipt'
 NOTE = ('EVALUATION ONLY. Never fed to control; computed after the run from eval-only truth. Receipts are named '
         '"σ 예산 영수증" (sigma-budget receipt): the filter reported sigma inside the budget. They are NOT accuracy '
         'evidence; the particle filter was measured over-confident (sigma 3.5-8 mm at 147-178 mm error).')
-KINDS = {FIX_EVENT: 'fix', DR_EVENT: 'dr_budget', OVER_EVENT: 'over_budget'}
+# 'refix_resumed_high' = the floor re-fix receipt (zone_pair_highpose_refix, raised again to HIGH; review delta2 P2-6)
+KINDS = {FIX_EVENT: 'fix', DR_EVENT: 'dr_budget', OVER_EVENT: 'over_budget', 'refix_resumed_high': 'floor_refix'}
 # chi-square upper quantiles, 95 % / 99.9 %. df=2 closed form -2 ln(1-p); df=3 tabulated (verified against scipy in the test).
 CHI2 = {2: {'p95': 5.99146454710798, 'p999': 13.815510557964274},
         3: {'p95': 7.8147279032511765, 'p999': 16.26623619623813}}
@@ -117,7 +118,7 @@ def nearest(rows, t):
 
 
 def receipts(record):
-    """(robot id, event) of every FIX / DR / OVER receipt event in the pair controller events of a student record."""
+    """(robot id, event) of every FIX / DR / OVER / floor re-fix receipt event in the pair controller events of a student record."""
     for session in (record or {}).get('pair') or []:
         for rid, robot in sorted((session.get('robots') or {}).items()):
             for event in robot.get('events') or []:
