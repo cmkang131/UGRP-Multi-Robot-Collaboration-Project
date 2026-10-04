@@ -25,7 +25,9 @@ exactly as before (and can still trip the gate; that limit is recorded, not hidd
 The loaded-gate log (``loaded_gate_check``) records, at every ``CommandGuard.check`` that runs under the loaded
 profile and evaluates arm/look/motion commands, the own report time (the guard sees a 0.16 s delayed report), its
 ``std_xy_m`` and ``std_yaw_rad``, the gate state and profile thresholds, the gate classification and whether the
-check stopped the pair. It only observes.
+check stopped the pair. Since 2026-10-05 (task B caveat 3) it also records the own report mean ``report_x_m``,
+``report_y_m``, ``report_yaw_rad``, so an evaluation can compare the own estimate with the truth at each check. It only
+observes.
 
 Inputs: own report (own RGB + own commands), own grasp estimate, static plan, fixed calibration. No peer pose,
 no world state, no ground truth. Shared/frozen modules are not modified.
@@ -136,7 +138,9 @@ def log_gate_check(guard, now, commands, out):
         sxy, syaw = getattr(report, 'std_xy_m', None), getattr(report, 'std_yaw_rad', None)
         ep.log(own.robot_id, GATE_EVENT, now,
                state=getattr(ep.controller, 'state', None), seg=getattr(ep.controller, 'seg', None),
-               report_t_est=_r(getattr(report, 't_est', None)), std_xy_m=_r(sxy, nd=5),
+               report_t_est=_r(getattr(report, 't_est', None)),
+               report_x_m=_r(getattr(report, 'x_m', None), nd=5), report_y_m=_r(getattr(report, 'y_m', None), nd=5),
+               report_yaw_rad=_r(getattr(report, 'yaw_rad', None), nd=6), std_xy_m=_r(sxy, nd=5),
                std_yaw_rad=_r(syaw, nd=6), std_yaw_deg=_r(syaw, 180./math.pi, 3),
                fix_age_s=_r(getattr(report, 'fix_age_s', None), nd=3),
                gate_state=gate.state, gate_ok=bool(gate.ok), profile=p.name,

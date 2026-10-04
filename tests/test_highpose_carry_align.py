@@ -168,6 +168,8 @@ def test_gate_log_records_sigmas_thresholds_and_classification():
     ca.log_gate_check(guard_for(ep), 92.2, MOVE, [{'kind': 'hold'}])
     (row,) = ep.events
     assert row['event'] == ca.GATE_EVENT and row['report_t_est'] == 92.04
+    # task B caveat 3: the own report mean is logged with every check (log only)
+    assert (row['report_x_m'], row['report_y_m'], row['report_yaw_rad']) == (.5163, .0527, 0.)
     assert row['std_xy_m'] == pytest.approx(.03393) and row['std_yaw_deg'] == pytest.approx(3.02)
     assert (row['high_xy_m'], row['low_xy_m'], row['high_yaw_rad'], row['low_yaw_rad']) == (
         g.GATE_LOADED.high_xy_m, g.GATE_LOADED.low_xy_m, g.GATE_LOADED.high_yaw_rad, g.GATE_LOADED.low_yaw_rad)
