@@ -57,6 +57,26 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `outputs/pair-stage-probes-ece38792-cal/` 사례 프레임이 10/1 16:40 이전 outputs 정리로 없어져 실패한다. 시험은 `cases.jsonl`이
   없을 때만 건너뛰고 프레임이 없을 때는 건너뛰지 않는다. 어떤 diff와도 무관하며 조정자가 따로 추적한다.
 
+### 위치 추정 일관성 수정 (PF consistency, 다른 작업자 diff, 조정자 결정 2026-10-04)
+
+- **원인(작성자 오프라인 재생, 정답은 채점에만 사용):** 멈춘 채 같은 팔·팬 자세로 본 프레임이 매번 새 측정으로 곱해졌다(적용된
+  스캔의 91–97 %가 반복, 뷰당 평균 11, 최대 144). 한 프레임 안의 열도 서로 상관이 있다(유효 열 5–8개). 입자 고갈은 아니었다.
+- **변경(diff `pf_consistency_v98.diff`, sha256 `7b334429…`):** 새 모듈 `harness/zone_pair_highpose_pf_consistency.py`와 제공자
+  3줄. 한 장면(view)은 한 번 센다: 같은 뷰의 k번째 스캔은 설계 효과 c_k − c_{k−1}(c_K = K/(1+(K−1)ρ), ρ = 0.5)만큼만 반영한다.
+  뷰는 자기 입력으로만 정한다(서보 펄스·적재 상태 변화, 0이 아닌 자기 구동 명령, 자기 명령 속도 적분 2 cm/0.035 rad).
+  프레임 가중치의 유효 열 수는 4(기존 8)다. `pf.measurement`와 informative 판정 식은 그대로이고, 난수를 더 쓰지 않는다.
+- **조정자 결정:** v98에 그대로 넣고 자기 커밋으로 둔다. 제공자 `runtime_contract`에 `pf_consistency` 기록(설정·해시)이 더해진다.
+  번들 원천 해시(source closure)도 새 모듈을 포함한다. 입장 기준 0.05 m는 **느슨하게 하지 않는다**.
+- **보류 구간 결과(작성자, 오프라인):** NEES(2자유도, 평균) rh-3358 r2 1064 → 0.99, r1 235 → 60, rh-7623 r1 169 → 67,
+  r2 2482 → 0.33(잘못된 모드, σ는 정직해졌지만 위치는 더 나빠짐). r1에 남은 과신은 팬 끝 새 뷰 한 장의 yaw–위치 결합으로 보이며
+  가중치 조절로는 고칠 수 없다(작성자 열린 결정 3).
+- **예상 영향:** r2의 실제 오차는 50–60 mm라서 정직한 σ(약 100 mm)로는 도크 시작에서 입장(σ ≤ 5 cm)을 통과하지 못할 가능성이
+  크다. 이전 통과는 거짓 확신에 기댄 것이었다. 왜 r2 오차가 그렇게 큰지는 PF 작업자가 조사 중이다.
+- **참고 자료(작성자 표기 그대로):** Bar-Shalom·Li·Kirubarajan 2001 NEES/ANEES — 미확인; Thrun·Burgard·Fox 2005 6장 빔 독립 가정 —
+  미확인, UW CSE571 센서 모델 강의 자료 — 확인; Nav2 `amcl_node.cpp` `shouldUpdateFilter`(update_min_d 0.25 m, update_min_a
+  0.2 rad)·`likelihood_field_model.cpp` — 확인; Kish 1965 설계 효과 — 미확인; Gordon·Salmond·Smith 1993, Fox 2003 KLD,
+  증강 MCL — 미확인; Anderson & Anderson 1999 공분산 부풀리기 — 미확인; Loc-NeRF arXiv 2209.09050 — 확인.
+
 ### HIGH 운반 빔 경계 강건 맞춤 (Track A diff, 조정자 결정 2026-10-04)
 
 - **문제(`d5ca2ec3` align_to_carry):** HIGH에서 두 로봇 모두 90열 중 85(r1)/80(r2)열이 아래 빔 띠의 경계(행 169–176)를 봤지만,
