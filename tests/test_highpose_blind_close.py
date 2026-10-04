@@ -157,6 +157,49 @@ def test_window_time_segment_and_posture_limits():
     assert track.blind_code is None
 
 
+def test_reopening_the_closed_gripper_through_the_issued_command_disarms_the_window():
+    track, servo, t_confirm = confirmed()
+    obs, grasp_servo = obs_of('grasp')
+    feed(track, servo, obs['sim_time'], t_confirm)
+    closed = {**grasp_servo, 1: 1500}                                    # the close ramp already reached 1500
+    track.command({'t': obs['sim_time']-.02, 'kind': 'arm', 'servo_id': 1, 'pulse': 1600}, dict(closed))
+    assert track.blind_window['disarmed'] is None                      # a further close step keeps the window
+    track.command({'t': obs['sim_time']-.01, 'kind': 'arm', 'servo_id': 1, 'pulse': blind.OPEN_PWM}, dict(closed))
+    assert track.blind_window['disarmed']['code'] == 'BLIND_GRIPPER_REOPENED'
+    assert track.estimate(obs['sim_time'], obs, closed, 0) is None and track.blind_code == 'BLIND_GRIPPER_REOPENED'
+
+
+@pytest.mark.parametrize('key, value', [('drop_m', blind.BLIND_MAX_DROP_M+.001), ('xy_m', blind.BLIND_MAX_XY_M+.001)])
+def test_a_window_longer_than_the_configured_descent_is_refused(key, value):
+    # Configuration sanity check only: the window distances come from the fixed hover/grasp postures, which the
+    # command envelope and the exact grasp-posture match already pin; this guards a mis-set posture table.
+    track, servo, t_confirm = confirmed()
+    obs, grasp_servo = obs_of('grasp')
+    feed(track, servo, obs['sim_time'], t_confirm)
+    track.blind_window[key] = value
+    assert track.estimate(obs['sim_time'], obs, grasp_servo, 0) is None
+    assert track.blind_code == 'BLIND_DISTANCE_EXCEEDED'
+
+
+@pytest.mark.parametrize('limit', ['FIX_STD_XY_M', 'FIX_STD_YAW_RAD'])
+def test_a_propagated_track_wider_than_the_fix_limit_is_refused(monkeypatch, limit):
+    track, servo, t_confirm = confirmed()
+    obs, grasp_servo = obs_of('grasp')
+    feed(track, servo, obs['sim_time'], t_confirm)
+    monkeypatch.setattr(blind, limit, 1e-9)                            # any real track sigma is now too wide
+    assert track.estimate(obs['sim_time'], obs, grasp_servo, 0) is None
+    assert track.blind_code == 'BLIND_TRACK_UNCERTAIN'
+
+
+def test_a_stale_anchor_is_refused_as_track_uncertain():
+    track, servo, t_confirm = confirmed()
+    obs, grasp_servo = obs_of('grasp')
+    feed(track, servo, obs['sim_time'], t_confirm)
+    assert track.estimate(obs['sim_time'], obs, grasp_servo, 0) is not None   # advances the frozen track to now
+    track.beam['anchor_time_s'] = obs['sim_time']-blind.resting.MAX_AGE_S-1.
+    assert track._blind(obs['sim_time'], 0) == ('BLIND_TRACK_UNCERTAIN', None)
+
+
 def test_new_standoff_anchor_or_hover_restart_clears_the_window():
     track, servo, _ = confirmed()
     obs, s = obs_of('standoff')
