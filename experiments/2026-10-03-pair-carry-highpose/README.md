@@ -51,6 +51,33 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
 - **보지 않는 구간과 짝 로봇 밀림:** `ace8b257` 폐루프에서 r1은 11.4초 동안 보지 않았고, 그동안 추적 σ_xy는 17.4 → 24.2 mm였다
   (한도 50 mm). 짝 로봇이 그 사이 빔을 밀어도 이 구간은 알지 못한다(평가 전용으로 그 구간 빔 xy 이동 0.0).
 - **보정 문서:** [보정 절차](../../docs/own_image_gate_calibration.md) 5절 한계에 4차 흐림·가림 수치를 옮겼다.
+- **시험 결과(`0d7c5eb3` 전, 작업 트리):** `test_review_*` 412 passed, highpose·경계 227 passed, 둘러보기·blind·완화·거부 기록·CI·heldout
+  220 passed, `test_highpose_dev_pilot` 37 passed(문서 수정 뒤 재실행). 커밋 `d41465a2`(완화), `0d7c5eb3`(blind 시험·문서).
+  이미 있던 실패(이 PR 범위 밖): `test_zone_pair_v6e_yaw::test_tracker_on_recorded_frames_matches_the_recorded_replay_rows`는
+  `outputs/pair-stage-probes-ece38792-cal/` 사례 프레임이 10/1 16:40 이전 outputs 정리로 없어져 실패한다. 시험은 `cases.jsonl`이
+  없을 때만 건너뛰고 프레임이 없을 때는 건너뛰지 않는다. 어떤 diff와도 무관하며 조정자가 따로 추적한다.
+
+### HIGH 운반 빔 경계 강건 맞춤 (Track A diff, 조정자 결정 2026-10-04)
+
+- **문제(`d5ca2ec3` align_to_carry):** HIGH에서 두 로봇 모두 90열 중 85(r1)/80(r2)열이 아래 빔 띠의 경계(행 169–176)를 봤지만,
+  오른쪽 끝 5/10열이 위 띠의 경계(행 79–80)를 읽어 공용 `edge_line`의 한 번 최소제곱이 기울었다(기울기 -0.078/-0.157).
+  4 px 띠 안에 25/13열만 남아 모든 HIGH 프레임이 거부됐고 `HIGH_CARRY_EDGE_REFERENCE_TIMEOUT`이 났다.
+- **변경(diff `robust_edge_fit_v98.diff`, sha256 `21decf28…`):** 새 모듈 `harness/zone_pair_highpose_edge.py`. 공용
+  `edge_line`을 먼저 돌리고, 그 결과를 그대로 쓴다. 공용 함수가 None일 때만 같은 열 표본에 결정론적 최대 합의(consensus) 직선
+  (두 열을 지나는 모든 가설, LO-RANSAC식 재맞춤)을 맞춘다. 받아들이는 규칙(4 px 띠, 60 % 열, RMS)은 공용 모듈 값 그대로다.
+  공용 `own_beam_edge.py`는 바꾸지 않았다. `_lift` 기록에 `edge_fit`(`shared_ols`/`consensus`)을 남긴다. 시험 50개+고정 자료
+  216 KB(`tests/fixtures/highpose_edge/`, 파일당 1 MiB 미만).
+- **조정자 결정:**
+  1. `cv2.fitLine`(Huber 등 M-추정)이 아니라 합의 직선을 쓴다. 이유는 붕괴점(breakdown point)이다. Track A의 오프라인 사다리에서
+     Huber는 90열 중 한쪽 이상치 26열에서 무너지지만 받아들이는 규칙은 36열까지 견딘다. 공용 우선(shared-first)은 유지한다.
+  2. 기울기→yaw 비율은 1.1067을 유지한다. 아래 경계로 다시 맞추면 1.085(-2 %)지만, 상대 yaw 범위가 최대 0.116°뿐이라 식별이 약하다
+     (신뢰구간 0.63–1.49). **알려진 한계로 기록**한다. ±2–3° 흔들어 재는 측정은 미루며 DEV에는 막는 요인이 아니다.
+  3. 경계 뒤집힘 위험: 붙잡고 있는 동안 이기는 경계가 위·아래 띠 사이에서 바뀌면 3–4 mrad 계단이 생긴다. 새 논리는 넣지 않고
+     기록만 더했다. `_lift` 기록에 `edge_y320_px`(320열에서의 직선 행)를, 추적기 `stats`(`student_record.json`의
+     `carry_yaw_v6e.<로봇>.beam_edge`)에 맞춘 프레임마다 `fit_rows` [t, fit, y320, 기울기, 열 수]와 `fit_shared_ols`/`fit_consensus`
+     개수를 남긴다. 뒤집힘은 y320이 약 90 px 뛰는 것으로 보인다. 답은 바뀌지 않는다(시험: 기록 경로와 동결 경로가 같은 답).
+- **작성자 결과:** 로봇마다 HIGH 프레임 303/303 맞춤, 재생에서 추적기 기준점 88.35초. `test_review_*` 412 passed, 관련 429 passed
+  (실패 1개는 이미 있던 ece38792 프레임 시험).
 
 ### REVIEW_363 4차 대응 (검토 BLOCK 5970668877, 2026-10-04)
 
@@ -537,7 +564,10 @@ TensorBoard 새 스냅샷 `1003-pair-highpose-v93/high-hold`에 같은 진단의
 - Fischler, Bolles, "Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis and Automated
   Cartography", CACM 24(6), 1981. 이상치가 섞인 자료에서 직선 등 모델을 맞추는 RANSAC. **미확인**(이번 작업에서 원문을 다시 읽지 않음).
 - OpenCV `cv::fitLine`(M-estimator 거리 `DIST_HUBER` 등). **미확인**(문서를 이번 작업에서 다시 읽지 않음).
-- 이 출처는 조정자 결정용 제안이며 코드에는 넣지 않았다.
+- Chum, Matas, Kittler, "Locally Optimized RANSAC", DAGM 2003. 합의 집합으로 다시 맞추는 국소 최적화. **미확인**(Track A 모듈
+  설명의 출처, 이번 작업에서 원문을 다시 읽지 않음).
+- 적용: Track A diff(`21decf28…`)가 RANSAC을 모든 두 열 가설로 결정론적으로 돌리고 LO 재맞춤을 쓴다. `cv2.fitLine` M-추정은
+  붕괴점(한쪽 이상치 26/90열) 때문에 쓰지 않았다(조정자 결정 1).
 
 ### 짝 guard 시작 상태 완화 (v98, 작성자 모듈 설명의 출처)
 

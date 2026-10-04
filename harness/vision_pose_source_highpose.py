@@ -14,7 +14,7 @@ from harness.vision_pose_source_pair_v3 import PairVisionPoseSource, pair_motion
 from harness.vision_pose_source_p03 import VisionPoseSource, FailClosedLoc
 from harness.vision_pose_source_final import CalibrationError, measured_column_model
 from harness.zone_final_pair_scan import install, resample
-from harness.own_beam_edge import BeamEdgeTracker
+from harness.zone_pair_highpose_edge import HighBeamEdgeTracker
 from harness.opencv_wall_observation import OpenCVObserver, DETECTOR
 
 
@@ -73,7 +73,7 @@ class HighPoseSource(PairVisionPoseSource):
         self.timing, self.lifecycle = [], []
         self._started, self._closed, self._last_frame_t = False, False, None
         pair = cal['pair_model']
-        self.beam_edge = BeamEdgeTracker(float(pair['slope_to_yaw_ratio']))
+        self.beam_edge = HighBeamEdgeTracker(float(pair['slope_to_yaw_ratio']))
         self.carry_yaw_fallback = {'pair': True, 'edge': True,
             'b_full': float(cal['params']['motion_loaded']['yaw_bias_std_rad_s']),
             'b': copy.deepcopy(pair['b_rad_s']), 'level_frames': {}, 'pm_bad_until': -1.}

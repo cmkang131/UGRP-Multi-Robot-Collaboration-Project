@@ -19,7 +19,7 @@ from harness.zone_own_executor import ZoneOwnExecutor
 from harness.zone_pair_executor import PairExecution
 from harness.zone_pair_grasp import PairGraspRelook
 from harness.zone_pair_guards import PairCommandGuard
-from harness.own_beam_edge import edge_line
+from harness.zone_pair_highpose_edge import robust_edge_line as edge_line
 from scripts import run_m2_pair as m2
 
 # Grasp-time own grip view (close readiness + GRIP_NOT_SEEN): LOG-ONLY in v98 (registry grip_monitor).
@@ -218,7 +218,9 @@ class HighController:
         self._anchor('high', obs, now)
         self._monitor('high_view', now, frame_id=obs['frame_id'], frame_sha256=obs.get('sha256'),
                       edge_seen=line is not None, edge_columns=None if line is None else line[2],
-                      edge_slope=None if line is None else line[0], relation=grip.relation(obs['image'], self._issued()))
+                      edge_slope=None if line is None else line[0], edge_fit=getattr(line, 'fit', None),
+                      edge_y320_px=None if line is None else line[1],
+                      relation=grip.relation(obs['image'], self._issued()))
         self.anchor = m2.study.ob.held_signature(obs['image'])
         self.anchor_kind = 'lime_v1'
         self.anchor_full = self.pose_anchors['high'].mask.copy()
