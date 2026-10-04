@@ -214,5 +214,5 @@ Refs #363. 조정자 결정(2026-10-05): 잡음으로 계통 오차를 덮지 �
 2. 하중(적재) 구간 보정(`motion_loaded`)과 긴 DR 구간의 σ는 이번에 쟀거나 고치지 않았다. σ 문턱 재검증(§8-4)은 #363 작성자의 새 번들 실행에서 한다.
 3. 잡음 B는 등록된 r4/r5 값을 그대로 썼다. 이 SIM 평면은 거의 결정적이어서(반복 퍼짐 5.8e-8) 이 보정만으로는 물리 잡음을 잴 수 없다. 이 보정에서 잰 잔차 잡음(C2)은 포함 비율 조건을 못 채웠다.
 4. 이 보정 값(이득 1.56 / 1.10 / 1.37)은 임시 wrench 구동 모델(마찰 0.001)의 값이다. 실물 로봇에는 따로 측정해야 한다.
-5. TensorBoard 스냅샷 등록은 하지 않았다(`docs/tensorboard.md`의 내보내기는 로봇 실행 result.json 형식을 전제하고, 보정 수집·오프라인 재생에 대한 형식은 정해져 있지 않다). 필요하면 조정자가 형식을 정해 주면 한다.
+5. TensorBoard: 조정자 요청(2026-10-05)으로 `docs/tensorboard.md`의 오프라인 감사 진입점(`scripts/export_offline_audit.py`)에 맞춰 파생 뷰 31개를 만들어 새 스냅샷 `outputs/tensorboard/1005b-gaincal-v101`로 등록했다(수집 6건, 적합·보류 요약 1건, 재생 선택 HEAD/B/C/C2 × 5시드 20건 + 설정별 앙상블 4건). 생성기는 `analysis/gen_tb_views.py`이며 값은 해시된 원본·`sel_summary.json`·`heldout.json`에서 그대로 옮겼다(재계산 없음). 공용 서버 6006에서 실행 31개가 읽혔고 scalar 576개를 API로 되읽어 모두 일치했다. 공용 HParams 표는 오래된 실험이 정한 14개 지표 열만 등록하므로 이 세션의 `offline/*` 값은 Time Series 고정 카드로 본다. 링크·고정 카드는 `outputs/tensorboard-view.json`의 `gaincal_v101_20261005` 키에 있다.
 6. diff C·통합 diff의 적용·커밋은 #363 작성자가 한다. 적용 뒤 새 번들 번호 예약과 README NEES 표 재생성이 남아 있다(§8).
