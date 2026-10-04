@@ -1,3 +1,5 @@
+**2026-10-04 추가 검토:** [8차 요약·현재 우선순위](../round8/README.md). 아래는 1–7차의 보존 근거 목록입니다.
+
 # 선별한 7차 근거 Markdown
 
 [처음으로](../README.md) · [확정 원고 13개](../publication/README.md)
