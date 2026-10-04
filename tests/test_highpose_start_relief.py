@@ -60,24 +60,60 @@ def test_recorded_r1_first_command_is_admitted_and_never_gets_worse(arm):
     json.dumps(verdict)
 
 
-def test_recorded_r2_is_admitted_with_start_inside_raw_and_vetoed_by_the_literal_per_pair_reading(arm):
+def test_recorded_r2_is_now_vetoed_because_a_pair_that_starts_outside_the_wall_box_enters_it(arm):
+    # Review 5 finding 1: the group floor admitted this tick at 0865a788 (group -42.62 -> -42.71 mm), but a chassis corner
+    # that starts 9.64 mm OUTSIDE the west wall box enters it (-9.40 mm at sample 2, -18.9 mm deepest). Not loosened.
     pose = g.OwnPose(*R2['pose'])
     assert PairGeometry(arm, BEAM, R2['role']).motion_clear(SERVO, pose, R2['cmd'], loaded=False) is False
     geo, trace = relief_geometry(arm, R2['role'])
-    assert geo.motion_clear(SERVO, pose, R2['cmd'], loaded=False) is True
-    [verdict] = trace.reliefs
-    group = verdict['groups']['chassis:wall_west']
-    assert group['start_worst_mm'] == pytest.approx(-42.61665190012048, abs=1e-9)
-    assert group['swept_worst_mm'] == pytest.approx(-42.70989317, abs=1e-6)                 # 0.09 mm: yaw-lever margin term
-    assert group['start_worst_mm'] - group['swept_worst_mm'] < sr.EPS_M * 1000.
-    assert verdict['start_inside_raw'] is True and any(p['start_inside_raw'] for p in verdict['pairs'])
-    # Literal "each pair never worse": the estimated rear corners start BEYOND the wall's far face and enter the box.
+    assert geo.motion_clear(SERVO, pose, R2['cmd'], loaded=False) is False
+    assert trace.reliefs == [] and trace.first is not None                                   # the frozen veto stays
+    refusal = trace.relief_refusal['refusal']
+    assert refusal['why'] == 'start_outside_pair_enters' and refusal['pair'] == ['chassis', 0, 'wall_west']
+    assert refusal['sample'] == 2
+    assert refusal['start_signed_mm'] == pytest.approx(9.642188250576964, abs=1e-6)
+    assert refusal['signed_mm'] == pytest.approx(-9.395921079858518, abs=1e-6)
+    # Literal "each pair never worse" also refuses it (as before).
     strict, strict_trace = relief_geometry(arm, R2['role'], scope='pair')
     assert strict.motion_clear(SERVO, pose, R2['cmd'], loaded=False) is False
-    refusal = strict_trace.relief_refusal['refusal']
-    assert refusal['why'] == 'pair_worse_than_floor' and refusal['pair'][0] == 'chassis' and refusal['pair'][2] == 'wall_west'
-    assert refusal['start_clearance_mm'] > -42.6 and refusal['clearance_mm'] < refusal['floor_mm']
-    assert strict_trace.reliefs == []
+    assert strict_trace.relief_refusal['refusal']['why'] == 'pair_worse_than_floor' and strict_trace.reliefs == []
+
+
+REVIEWER_ENTRY = dict(forward=.2, left=.2, turn=-.3, duration_s=.15)
+
+
+def test_the_reviewers_entry_command_is_vetoed_at_the_r2_pose(arm):
+    # forward .2 / left .2 / turn -.3 for .15 s took a start-outside pair to -25.0 mm under the group floor alone.
+    geo, trace = relief_geometry(arm, R2['role'])
+    assert geo.motion_clear(SERVO, g.OwnPose(*R2['pose']), drive(**REVIEWER_ENTRY), loaded=False) is False
+    refusal = trace.relief_refusal['refusal']
+    assert refusal['why'] == 'start_outside_pair_enters' and refusal['start_signed_mm'] >= 0. > refusal['signed_mm']
+    assert trace.reliefs == []
+
+
+def test_mutation_without_the_entry_rule_the_reviewers_command_is_admitted_again(arm, monkeypatch):
+    monkeypatch.setattr(sr, 'enters', lambda start_pair, pair: False)
+    geo, trace = relief_geometry(arm, R2['role'])
+    assert geo.motion_clear(SERVO, g.OwnPose(*R2['pose']), drive(**REVIEWER_ENTRY), loaded=False) is True
+    assert len(trace.reliefs) == 1
+
+
+def test_no_admitted_relief_lets_a_start_outside_pair_enter_a_box_on_the_reviewers_grid(arm):
+    seen = 0
+    for R in (R1, R2):
+        pose = g.OwnPose(*R['pose'])
+        for f, l, w in itertools.product((-.2, 0., .2), (-.2, 0., .2), (-.3, 0., .3)):
+            cmd = drive(forward=f, left=l, turn=w)
+            geo, trace = relief_geometry(arm, R['role'])
+            if not (geo.motion_clear(SERVO, pose, cmd, loaded=False) and trace.reliefs):
+                continue
+            seen += 1
+            start = None
+            for _, _, moved in sr._poses(pose, sr.sample_plan(cmd)):
+                pairs = {sr._pair_key(p): p for p in sr._all_pairs(geo, SERVO, moved, False)}
+                start = start or pairs
+                assert all(p.signed >= 0. for k, p in pairs.items() if start[k].signed >= 0.), (R['role'], cmd)
+    assert seen > 0
 
 
 # ------------------------------------------------------------------ what must still be vetoed

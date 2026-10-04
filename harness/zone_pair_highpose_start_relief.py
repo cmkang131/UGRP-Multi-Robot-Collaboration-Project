@@ -16,6 +16,9 @@ guard said "not clear" and only when some pair is already negative at the unmove
 * a pair that starts inside the margin must not get worse than its floor at any swept sample (floor below);
 * a pair whose point starts inside the wall box (``start_inside_raw``: ``_rect_distance`` clamps to 0 there) must also
   not get deeper (its signed distance must not drop), because the clamp cannot show depth;
+* a pair whose point starts OUTSIDE the box (raw signed distance >= 0) must stay outside (signed >= 0) at every swept
+  sample, with no slack: relief never admits a new entry into an obstacle box (review 5 finding 1, coordinator
+  2026-10-04; without it the group floor let r2's command forward .2 / left .2 / turn -.3 enter to -25 mm);
 * nothing else changes: arm and transition checks, the margin, the pad, the gain and every answer for a start with no
   negative pair are the frozen guard's (tests compare bit for bit). Mirror disagreement fails closed.
 
@@ -64,7 +67,8 @@ def record() -> dict:
     return {'id': ID, 'event': EVENT, 'scope': SCOPE, 'eps_m': EPS_M, 'applies_to': 'PairSweepGuard.motion_clear (base motion)',
             'arm_and_transition_checks_changed': False, 'shared_sources_modified': False,
             'rule': 'after a frozen veto, admit when start-clear pairs stay >= 0 and start-negative pairs do not fall '
-                    'below their (group) start worst - eps; pairs starting inside the wall box also do not get deeper',
+                    'below their (group) start worst - eps; pairs starting inside the wall box also do not get deeper; '
+                    'pairs starting outside the wall box never enter it (signed distance stays >= 0)',
             'known_issue': 'estimate over-confidence (r2 15 sigma at 8.7 s of probe 3358372e) is not addressed here'}
 
 
@@ -134,6 +138,13 @@ def floors(start, scope=SCOPE, eps=EPS_M):
     return out
 
 
+def enters(start_pair, pair) -> bool:
+    """True when a pair that starts outside the obstacle box (raw signed distance >= 0) is inside it at this sample.
+
+    Relief never admits a new entry: no slack, no floor (review 5 finding 1, coordinator ruling 2026-10-04)."""
+    return start_pair.signed >= 0. and pair.signed < 0.
+
+
 def relief(geo, servo, pose, cmd, loaded, *, scope=SCOPE, eps=EPS_M):
     """Evaluate the start-state rule. None: not applicable (frozen answer stands). Else a dict with ``admitted``."""
     plan = sample_plan(cmd)
@@ -171,6 +182,11 @@ def relief(geo, servo, pose, cmd, loaded, *, scope=SCOPE, eps=EPS_M):
                 if refusal is None and key in inside and p.signed < start[key].signed - eps:
                     refusal = {'why': 'inside_pair_deeper', 'pair': [p.kind, p.index, p.wall], 'sample': i, 'omega': omega,
                                'signed_mm': p.signed * 1000., 'start_signed_mm': start[key].signed * 1000.}
+                # Review 5 finding 1: relief never admits a NEW entry into an obstacle box. A pair whose raw signed
+                # distance is >= 0 at the start must keep it >= 0 at every swept sample (no slack).
+                if refusal is None and enters(start[key], p):
+                    refusal = {'why': 'start_outside_pair_enters', 'pair': [p.kind, p.index, p.wall], 'sample': i,
+                               'omega': omega, 'signed_mm': p.signed * 1000., 'start_signed_mm': start[key].signed * 1000.}
         if start is None:
             return None
         negatives = sorted((k for k, p in start.items() if p.clearance < 0.), key=lambda k: start[k].clearance)
