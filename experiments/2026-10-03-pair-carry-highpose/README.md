@@ -28,6 +28,39 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `GRIP_NOT_CONFIRMED`는 그대로다. 공유 동결 파일(`zone_pair_grasp.py`, `run_m2_pair.py`)은 바꾸지 않았다.
 - **복구 동작은 아직 넣지 않았다**(관측기 수정이 폐루프에서 확인된 뒤).
 
+### 팔 자세 전환 중 재둘러보기 미루기 (조정자 결정 2026-10-04, v98 전용)
+
+- **원인(`af2f7c2a` 정렬 퇴행):** r2가 24.9초에 p45 → `inspect`로 팔을 옮기기 시작했고(0.6초 보간), 25.0초 `fix_gap` 재둘러보기가
+  공용 `_begin_align_relook`에서 팔 대기열을 지우고 발행된 PWM을 목표로 삼았다. 팔은 첫 보간 한 칸(765/1991/1865)에서 멈췄고,
+  측정한 카메라 모델이 없는 자세라 0.3초 뒤(PF `settle_s`) 제공자가 닫혔다.
+- **조정자 결정:** 안전 이유가 아닌 조건으로 진행 중인 동작을 끊지 않는다(행동 트리 표준 의미). 재둘러보기·sweep은 팔 전환이
+  끝나 목표 자세에 닿고 그 자세에 측정 모델이 있을 때만 시작한다. 다른 원인으로 전환이 끊겨 측정 안 된 자세에 섰으면, 관측 전에
+  전환을 끝내거나 마지막 측정 자세로 돌아간다.
+- **변경:** 새 v98 모듈 `harness/zone_pair_highpose_posture_defer.py`의 `DeferRelook`을 v98 제어기 클래스 맨 앞에 둔다(공용
+  `zone_pair_align.py`는 그대로).
+  - 정렬 재둘러보기 요청(이유 무관: `align_entry`, `fix_gap`, `sigma_reserve`, `pose_missing`, 직접 호출)은 팔 보간 사건이 남아
+    있으면 대기열에 넣는다(`align_relook_deferred`). 팔이 목표에 닿고 발행 자세의 `camera_key`가 정적 보정의 측정 모델
+    집합(제공자 자기 보고의 `load_state` 기준)에 있으면 그때 시작한다(`align_relook_defer_end`).
+  - 기다리는 동안: 처음에 차체 hold 한 번(팔이 움직이는 동안 정렬 처리기도 차체를 움직이지 않음), 매 틱 고정 상태 `aligning`과
+    짝 중단 확인(재둘러보기 상태와 같음). 상한은 기존 한 번 보기 허용 시간 `MAX_LOOK_S` 8초(새 문턱 없음, `ALIGN_RELOOK_DEFER_TIMEOUT`).
+  - `align`에서 팔이 측정 안 된 자세에 멈춰 있으면(다른 원인의 중단) 바로 마지막 측정 자세로 되돌린다(`align_posture_restore`).
+    측정 자세를 모르면 `ALIGN_RELOOK_UNMEASURED_POSTURE`. 재둘러보기 상태 안의 팬 대기열(공용 재계획)과 적재 운반 자세는
+    이 규칙 밖이다.
+  - 입력: 발행 PWM, 자기 팔 대기열, 자기 제공자 보고의 `load_state`, 정적 보정의 측정 모델 키. 실물 상태·짝 위치는 쓰지 않는다.
+- **동작 변화(통과 경로):** 정렬 진입(`align_entry`) 재둘러보기는 이제 `search` 자세 대기열(0.8초)이 끝난 뒤 시작한다(이전에는 같은
+  틱에 대기열을 지움). 팔이 쉬고 있을 때의 재둘러보기는 이전과 같다.
+- **범위 밖(기록):** 명령 guard가 팔 명령을 막아 실행기가 보간을 미룰 때(`arm_wait_at`) 팔이 중간 자세에 서는 경우는 이 규칙으로
+  고치지 않는다(대기 상한으로만 끝남). 실행기 sweep 작업(`look_around`)은 짝 작업 밖에서 팔이 쉬는 상태로 시작한다.
+- **시험(`tests/test_highpose_relook_posture_defer.py`, 12개):** 실제 `ArmSequence`·공용 `PairAlignRelook`·`relook_reason`·측정
+  모델 키로 af2f7c2a r2 시간선을 재생한다. 미루기를 끄면 기록과 같게 25.25초 `UNMEASURED_V3_CAMERA_POSTURE: unloaded:765,1991,1865,1500`.
+  켜면 25.0초 미룸 → 25.5초 `inspect` 마지막 보간 → 25.55초 재둘러보기 → 제공자 초기화 유지, 고정 확인 통과, 정렬 계속.
+  돌연변이 2개(전환 검사 제거, 되돌리기 제거)는 모두 제공자 실패로 잡힌다. 중단 뒤 되돌리기, 측정 자세 모름, 기다리는 중 짝 중단,
+  상한, 정렬 진입, 연결 기록도 확인한다.
+- **참고 자료:** BehaviorTree.CPP `Sequence`/`ReactiveSequence` 문서(진행 중 자식은 `Sequence`에서 다음 틱에 이어지고,
+  `ReactiveSequence`만 앞 조건으로 끊는다) — 확인(문서); BehaviorTree.CPP 비동기 동작 `halt()`/`onHalted()` 문서(끊긴 동작은
+  스스로 빨리 멈춰 정리해야 함) — 확인(문서); Colledanchise·Ögren, Behavior Trees in Robotics and AI, CRC 2018 — 미확인;
+  Colledanchise·Ögren, How Behavior Trees Modularize Robustness and Safety in Hybrid Systems, IROS 2014 — 미확인.
+
 ### 운반 다리 묶음 뒤 단계 검사 3개 (`af2f7c2a`, 2026-10-04)
 
 거칠게 하기(K 0.2) → 같은 틱 최종 거부 → 도크 둘러보기 8방향·재둘러보기·30초 만남 대기 → carry-align(z 1.96)을 모두

@@ -15,6 +15,7 @@ from harness import zone_pair_highpose_lookaround as lookaround
 from harness import zone_pair_highpose_relook as relook
 from harness import zone_pair_highpose_start_relief as start_relief
 from harness import zone_pair_highpose_carry_align as carry_align
+from harness import zone_pair_highpose_posture_defer as posture_defer
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_runtime import Runtime as PreviousRuntime
 from harness.zone_final_pair_guards import CommandGuard as PreviousGuard
@@ -398,7 +399,9 @@ class GraspViewLogOnly(m2.M2DoorStudent):
 
 def controller_class(base):
     # blind.HoverConfirm sits between HighController and V3Controller: hover check, then the blind descent (v98).
-    return type('HighPairController', (HighController, blind.HoverConfirm, base, GraspViewLogOnly), {})
+    # posture_defer.DeferRelook goes first: an align re-look never starts mid arm transition (v98).
+    return type('HighPairController', (posture_defer.DeferRelook, HighController, blind.HoverConfirm, base,
+                                       GraspViewLogOnly), {})
 
 
 class Execution(previous.Execution):
@@ -414,6 +417,7 @@ class Execution(previous.Execution):
         ctl.grip_epoch, ctl.pose_anchors, ctl.transit = 0, {}, None
         ctl.floor_return_verified = False
         ctl.grip_monitor, ctl.grip_closed_epoch = grip.GripMonitorLog(), None
+        ctl.v98_measured_camera_keys = posture_defer.measured_keys(kwargs['calibration'])  # static calibration
         self.command_guard = CommandGuard(self, self.vision)
         blind.adopt(self.command_guard, ctl)
 
@@ -464,7 +468,7 @@ def adopt_v98_frame_gate(runtime):
     return {'path': gates['path'], 'sha256': gates['sha256'], 'values': dict(gates['values']),
             'frame_gate': frame_gate.record(), 'look_around': lookaround.record(),
             'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record(), 'dock_look': relook.record(),
-            'carry_align': carry_align.record()}
+            'carry_align': carry_align.record(), 'relook_posture_defer': posture_defer.record()}
 
 
 def adopt_look_recovery(runtime):
