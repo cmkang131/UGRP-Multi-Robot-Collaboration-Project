@@ -12,9 +12,9 @@
 | 기존 beam ROI 문제의 현재성 | [17차 source 확인](round17/beam-currentness.md): 현재 wrapper도 공유 detector의 수락을 보존; 현재 RGB 발생은 미확인 |
 | 고쳐진 기존 문제 | [final veto](round15/fixed.md): 확인한 control/arm 두 caller에서 수정됨 |
 
-[23차 요약](round23/README.md)은 [#217 기억 비교](round23/memory.md)가 전체 기억 제거가 아닌 재관측 결정의 비교임을 확인하고, [#371 final tick](round23/case.md)의 기존 own-event 소비를 8개 저작 대조로 검증합니다. 실제 scheduler/finish는 기록 대역이며 메시지 분모 표는 source-only입니다. 09:43:57 UTC에 직접 main/#363/#371의 같은 SHA를 재확인했고 새 결함 0개입니다. 추가 문헌은 현재 실행 provenance의 공백을 메우지 못하므로 새 논문을 더하지 않았습니다. [22차 복구 증거](round22/README.md), [21차 그림자·teacher](round21/README.md), [20차 CI·랜덤화](round20/README.md), [19차 우선순위](round19/README.md)를 유지하며 [다음 질문](round23/backlog.md)을 이어갑니다.
+[25차 요약](round25/README.md)은 지원 REAL trace에서 **조건부 P2 한 건**을 추가합니다. Pi wall clock이 host보다 충분히 앞서면 [실패 진단 summary의 마지막 증거 선택](round25/clock.md)이 달라집니다. 원본 event 7개와 `FAILED`는 보존되며 실제 장비 skew·archive 손실은 확인하지 않았습니다. [독립 QA](round25/validation.md)는 원래 writer/분석기 4조건 재실행과 source 범위를 확인했습니다. [남은16이슈 인수표](round25/acceptance.md)는 source 검토로 대신할 수 없는 실제 인수 증거를 구분합니다. 24차 이론 triage는 [23차 요약](round23/README.md)에 통합했고 별도 문헌을 추가하지 않았습니다.
 
-이전 체크포인트: [22차](round22/README.md) · [21차](round21/README.md) · [20차](round20/README.md) · [19차](round19/README.md) · [18차](round18/README.md) · [17차](round17/README.md) · [16차](round16/README.md) · [15차](round15/README.md) · [14차](round14/README.md) · [13차](round13/README.md) · [12차](round12/README.md) · [11차](round11/README.md) · [10차](round10/README.md) · [9차](round9/README.md) · [8차](round8/README.md) · [1–7차](publication/final-index-issue.md). 이전 본문·원고 13개·출처와 각 판정의 SHA·시점을 보존합니다.
+이전 체크포인트: [23차](round23/README.md) · [22차](round22/README.md) · [21차](round21/README.md) · [20차](round20/README.md) · [19차](round19/README.md) · [18차](round18/README.md) · [17차](round17/README.md) · [16차](round16/README.md) · [15차](round15/README.md) · [14차](round14/README.md) · [13차](round13/README.md) · [12차](round12/README.md) · [11차](round11/README.md) · [10차](round10/README.md) · [9차](round9/README.md) · [8차](round8/README.md) · [1–7차](publication/final-index-issue.md). 이전 본문·원고 13개·출처와 각 판정의 SHA·시점을 보존합니다.
 
 소스 검토와 합성 대조이며 실제 physics/render/model/학습/cloud 실행, 구현 변경 또는 전체 CI 통과 보고가 아닙니다. Public map·admitted calibration·합성 입력을 구별하고 raw/heldout outcome을 의도적으로 열어 분석하지 않았습니다. 부수적인 fixture 출처 검색줄은 근거에서 제외했습니다.
 
