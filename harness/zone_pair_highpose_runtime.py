@@ -283,8 +283,9 @@ class HighController:
                 return
             self.grasp_estimate = [float(report.x_m), float(report.y_m), float(report.yaw_rad)]
             if kind == 'fix':
+                # detail carries fix_t (= report.last_fix_t) and the log-only own mean/cov (eval-only NEES scorer).
                 self.log(self.rid, dr_checkpoint.FIX_EVENT, now, seg=self.seg,
-                         fix_t=report.last_fix_t, high=True, opened=False, epoch=self.grip_epoch)
+                         high=True, opened=False, epoch=self.grip_epoch, **detail)
             else:
                 self.log(self.rid, dr_checkpoint.DR_EVENT, now, seg=self.seg, high=True, opened=False,
                          epoch=self.grip_epoch, **detail)

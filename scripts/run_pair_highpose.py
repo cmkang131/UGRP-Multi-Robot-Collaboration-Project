@@ -286,6 +286,14 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
                     owner.close()
                 except Exception as exc:
                     result.update(status='HOST_ERROR', cleanup_error=str(exc))
+        if (out/'student_record.json').is_file():
+            # Evaluation only (v98 receipts are "σ 예산 영수증", not accuracy evidence): after the loop has ended, NEES of
+            # every HIGH checkpoint receipt against the eval-only truth. No return channel; never changes the status.
+            try:
+                from scripts import eval_highpose_receipt_nees as receipt_nees
+                result['receipt_nees_eval_only'] = receipt_nees.write_for_run(out)
+            except Exception as exc:  # noqa: BLE001 - evaluation only, recorded, never touches status
+                result['receipt_nees_eval_only'] = {'error': f'{type(exc).__name__}: {exc}'[:300]}
         result['loadavg_end'] = list(os.getloadavg())
         write(out/'result.json', result)
         write(out/'artifacts.sha256.json', {str(p.relative_to(out)): contract.base.sha(p)

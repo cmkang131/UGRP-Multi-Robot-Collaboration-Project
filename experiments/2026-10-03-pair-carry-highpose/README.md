@@ -242,6 +242,22 @@ PR 코멘트에 표로 적었다(`issuecomment-5980026688`에 대한 답). 요�
   `checkpoint_high_reobserved`, 아니면 `checkpoint_high_dr_receipt`로 따로 기록한다(재관측으로 섞지 않음). 문턱을 넘으면
   바로 `HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED`(`checkpoint_high_dr_over_budget`). 보고가 없으면 기존 8초 시간 초과.
   `run_pair_highpose.checkpoint_record`는 두 영수증을 받고 행마다 `receipt`(`fix`/`dr_budget`)를 남긴다.
+- **정정(독립 검토 #363 P0-1, 2026-10-05): 위 변경은 커밋 `ada1d204` 당시 실제 실행에서 작동하지 않았다.** 커밋 메시지와 이 절의
+  "받는다" 서술은 틀렸다. 정지할 때 런타임이 `begin_relocalization`을 부르고(`zone_pair_highpose_runtime.py` 318행, 검토 당시 317행), 이것이
+  `vision_pose_source_p03.py` 148행에서 `last_scan_t = None`으로 바꿔 정지 뒤 모든 보고의 `last_fix_t`가 `None`이 된다.
+  `decide()`는 그런 보고에 늘 `'wait'`를 돌려줬고, 출구는 8초 시간 초과뿐이었다. 시험의 가짜 보고가 이 재설정을 흉내 내지
+  않아 잡지 못했다. 고침: a54a26ab에서 진단한 제안 diff `fix363/dr_voided_receipt_v98.proposal.diff`(sha256 `64244540…`)와 기록
+  기반 시험을 적용했다(아래 커밋). **고치기 전의 어떤 실행도 "DR 영수증 경로 검증"이 아니다.** 고친 뒤에도 물리 실행으로 영수증
+  경로를 지난 적은 아직 없다.
+- **이름과 해석(독립 검토 P1-3):** 이 영수증은 **σ 예산 영수증**이다. 보고된 σ가 50 mm / 3° 안에 머물렀다는 기록일 뿐, 위치가
+  정확했다는 증거가 아니다. 같은 PR에서 PF 과신이 확인됐다(r2 σ 7 mm에 오차 147 mm, r1 σ 3.5–8 mm에 오차 178 mm). 그래서 영수증
+  행에 자기 보고 평균·공분산(`x_m`, `y_m`, `yaw_rad`, `cov`, 기록 전용)을 남기고, 실행이 끝난 뒤 평가 전용 채점기
+  `scripts/eval_highpose_receipt_nees.py`가 `eval_only/<로봇>/camera_labels.jsonl` 정답과 비교해 영수증마다 xy(2자유도)·자세(3자유도)
+  NEES와 χ² 95 %/99.9 % 경계를 `eval_only/dr_receipt_nees.json`에 쓴다. 채점기는 harness가 import하지 않고(AST 시험) 제어에
+  돌아가는 길이 없다. 좌표 규약: 1f7fb800 기록에서 r1 자기 보고–정답 19.5 mm(σ 22 mm), yaw 원점은 r1 0·r2 π로 일치했다. **작은
+  회전의 yaw 부호는 수치로 확인하지 못했다**(기록에 0·π가 아닌 yaw의 자기 평균이 없음). MuJoCo `xmat`의 표준 오른손 규약
+  `atan2(R[1][0], R[0][0])`을 따른다. 참고 자료: Bar-Shalom·Li·Kirubarajan, Estimation with Applications to Tracking and
+  Navigation(Wiley 2001) NEES 일관성 검정(5.4절, 절·쪽 **미확인**).
 - **조정자 결정(사용자 정정 반영):** 경로는 **배달까지 전체**다(문 앞으로 줄이지 않음). DR 영수증은 예산이 버티는 동안의 영수증이고,
   `HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED`는 설계 중인 "내려놓기 → 열기 → 둘러보기 → 다시 잡기 → 들기" 재고정의 시작점이 된다
   (다른 작업자 diff 예정, 여기서 만들지 않음).
