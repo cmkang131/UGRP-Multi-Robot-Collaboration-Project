@@ -356,3 +356,10 @@ def test_real_v98_runtime_drivers_are_configured_with_the_derived_bands(admitted
         assert ac.camera_key(drv.drive_pose) == KEY
     assert runtime.own_image_gates['arrival_confirm'] == ac.record()
     assert runtime.own_image_gates['high_edge_informative'] is False      # review #363 P2-2: the flag is in the record
+    # the pair approach driver's own log (looks, relocalizations, arrival view verdicts) is saved in the record
+    for rid, ep in endpoints.items():
+        ep.controller.driver._event(20., 'record_marker', rid=rid)      # base OwnCamDriver._event appends to .log
+    row = runtime.team.records()[0]
+    for rid, ep in endpoints.items():
+        assert row['approach_driver_log'][rid] == [dict(e) for e in ep.controller.driver.log]
+        assert row['approach_driver_log'][rid][-1]['event'] == 'record_marker' and row['approach_driver_log'][rid][-1]['rid'] == rid

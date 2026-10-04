@@ -456,6 +456,12 @@ class Team(previous.Team):
                                    'grasp_time_view': GRASP_TIME_VIEW,
                                    'rows': {r: ep.controller.grip_monitor.export()
                                             for r, ep in session['endpoints'].items()}}
+            # Log only (2026-10-05): the pair approach driver's own event log (looks, relocalizations, the
+            # arrival view verdicts). Executor jobs already keep their driver_log; this driver's log was not saved,
+            # so the dock_approach probe 1236c63d had no record of its arrival_view_* events.
+            row['approach_driver_log'] = {r: [dict(e) for e in (getattr(getattr(ep.controller, 'driver', None),
+                                                                        'log', None) or [])]
+                                          for r, ep in session['endpoints'].items()}
         return rows
 
 
