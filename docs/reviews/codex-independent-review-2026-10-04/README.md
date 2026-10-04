@@ -12,9 +12,9 @@
 | 기존 beam ROI 문제의 현재성 | [17차 source 확인](round17/beam-currentness.md): 현재 wrapper도 공유 detector의 수락을 보존; 현재 RGB 발생은 미확인 |
 | 고쳐진 기존 문제 | [final veto](round15/fixed.md): 확인한 control/arm 두 caller에서 수정됨 |
 
-[21차 검토](round21/README.md)는 #220 그림자·가림 평가의 S1 gate/A3 보고 경계와 #225 teacher 전용 TOP 인식을 실제 source/caller로 구별합니다. 새 결함 0개이며 실제 영상 인수·teacher 수정 완료는 미확인입니다. [독립 QA](round21/validation.md)는 36개 Git object와 읽기 전용 source-check의 출력 보존을 확인했습니다. [20차 CI·랜덤화](round20/README.md), [19차 우선순위와 이슈 탐색](round19/README.md), [optional replay source 누락](round18/replay.md)도 유지합니다. [후속 인수 질문](round21/backlog.md)을 이어갑니다.
+[22차 검토](round22/README.md)는 #3 원격 보관·복구의 문서 계약과 아직 확인하지 않은 운영 증거를 구분합니다. 선별 보존 승인은 존중하며 프로젝트 원자료의 복구 완료를 주장하지 않습니다. 새 결함 0개입니다. [21차 그림자·teacher TOP](round21/README.md), [20차 CI·랜덤화](round20/README.md), [19차 우선순위](round19/README.md)도 유지합니다. **이 리뷰의 Git/Mac 전달 hash 검증은 프로젝트 원본의 별도 환경 복구 검증과 다릅니다.** [다음 source 조사](round22/backlog.md)를 이어갑니다.
 
-이전 체크포인트: [20차](round20/README.md) · [19차](round19/README.md) · [18차](round18/README.md) · [17차](round17/README.md) · [16차](round16/README.md) · [15차](round15/README.md) · [14차](round14/README.md) · [13차](round13/README.md) · [12차](round12/README.md) · [11차](round11/README.md) · [10차](round10/README.md) · [9차](round9/README.md) · [8차](round8/README.md) · [1–7차](publication/final-index-issue.md). 이전 본문·원고 13개·출처와 각 판정의 SHA·시점을 보존합니다.
+이전 체크포인트: [21차](round21/README.md) · [20차](round20/README.md) · [19차](round19/README.md) · [18차](round18/README.md) · [17차](round17/README.md) · [16차](round16/README.md) · [15차](round15/README.md) · [14차](round14/README.md) · [13차](round13/README.md) · [12차](round12/README.md) · [11차](round11/README.md) · [10차](round10/README.md) · [9차](round9/README.md) · [8차](round8/README.md) · [1–7차](publication/final-index-issue.md). 이전 본문·원고 13개·출처와 각 판정의 SHA·시점을 보존합니다.
 
 소스 검토와 합성 대조이며 실제 physics/render/model/학습/cloud 실행, 구현 변경 또는 전체 CI 통과 보고가 아닙니다. Public map·admitted calibration·합성 입력을 구별하고 raw/heldout outcome을 의도적으로 열어 분석하지 않았습니다. 부수적인 fixture 출처 검색줄은 근거에서 제외했습니다.
 
