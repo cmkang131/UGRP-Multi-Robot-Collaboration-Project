@@ -225,6 +225,8 @@ def test_staged_runtime_adopts_the_same_v98_frame_gate(tmp_path, monkeypatch):
     try:
         assert all(type(actor) is OwnExecutor for actor in runtime.actors.values())
         assert runtime.record()['own_image_gates']['sha256'] == c.own_image_gates()['sha256']
+        assert runtime.record()['look_recovery']['id'] == 'v98_dock_look_relook_v1'
+        assert runtime.team.rendezvous_timeout_s == 30.
     finally:
         runtime.close()
 

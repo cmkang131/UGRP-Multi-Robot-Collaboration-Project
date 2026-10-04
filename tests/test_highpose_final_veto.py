@@ -9,6 +9,7 @@ real pair endpoints (fake M2 controllers, fake backend) and read the commands at
 (``FakePhysics.actions``), i.e. at the command receipt, for both actor orders and both aborters.
 """
 import json
+from pathlib import Path
 import re
 import types
 
@@ -73,6 +74,7 @@ class Rig(v98.Runtime):
         self.team, self.started, self.submitted, self.task = self.host.pairs, True, set(order), {'target': 'B'}
         self.job_sim_limit_s, self.own_image_gates = 300., {}
         self.fid, self.base_obs = 0, {r: pair_obs(r, 1, 0., SEARCH_POSE) for r in ROBOTS}
+        self.look_recovery = v98.adopt_look_recovery(self)        # as Runtime/StagedRuntime do (dock/re-look diff)
 
     def initial_commands(self, now, commands):
         self.host.world.data.time = now
@@ -356,3 +358,34 @@ def test_endpoint_lookup_uses_the_latest_session_and_never_the_peer():
     team = types.SimpleNamespace(sessions=[{'endpoints': {'r1': old, 'r2': old}}, {'endpoints': {'r1': new}}])
     assert fv.endpoint(team, 'r1') is new and fv.endpoint(team, 'r2') is old and fv.endpoint(team, 'r3') is None
     assert fv.terminal_robots(team, ['r1', 'r2', 'r3']) == {'r2'}
+
+
+class SpyRig(Rig):
+    """Rig that counts the look-recovery hooks the production ``step`` must call."""
+    calls = None
+
+    def __init__(self, *args):
+        super().__init__(*args)
+        type(self).calls = calls = {'pre_step': 0, 'filter': 0}
+        rec = self.look_recovery
+        pre, flt = rec.pre_step, rec.filter
+
+        def pre_step(runtime, now):
+            calls['pre_step'] += 1
+            return pre(runtime, now)
+
+        def filter_(runtime, now, issued):
+            calls['filter'] += 1
+            return flt(runtime, now, issued)
+        rec.pre_step, rec.filter = pre_step, filter_
+
+
+def test_step_runs_the_look_recovery_hooks_and_the_final_veto_in_one_override(tmp_path, dev_bundle, first_motion_s):
+    # The dock/re-look diff and this diff each defined ``Runtime.step``; a second ``def step`` would silently
+    # shadow the first. One override must run both: look-recovery bookkeeping/filter, then the final veto.
+    assert sum(1 for line in Path(v98.__file__).read_text().splitlines() if line.startswith('    def step(')) == 1
+    order, aborter = ('r1', 'r2'), 'r2'
+    _, rt, physics = drive(dev_bundle, tmp_path, 'spy', SpyRig, order, FakeM2, abort_plan('step', aborter, first_motion_s))
+    assert SpyRig.calls['pre_step'] > 0 and SpyRig.calls['pre_step'] == SpyRig.calls['filter']
+    assert all(a == {'kind': 'hold'} for _, a in at(physics, first_motion_s))          # the veto still ran last
+    assert rt.final_veto_log and 'look_recovery' in rt.record()

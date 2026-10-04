@@ -95,9 +95,11 @@ def test_look_around_finishes_in_bounded_time_with_one_hold_per_tick(rid):
     ex = pair_executor(rid)
     d, end = look_around(ex)
     assert end['event'] == 'job_done' and end['detail']['outcome'] in ('LOOKED', 'LOOKED_POSE_UNCERTAIN'), end
-    # 6 pans x (0.6 s settle + pan) + arm/restore at this driver's 0.1 s tick: 9.0 s for both robots. The probe's
-    # r1 (0.05 s tick) took 7.0 s; r2 never finished.
-    assert end['sim_s'] <= 9.5, end['sim_s']
+    # v98 dock look (relook.DOCK_LOOK_PANS): 8 pans x 0.6 s settle + 3200 PWM of pan travel at 60 PWM per 0.1 s tick
+    # + arm/restore: 12.3 s for both robots (was 9.0 s with the 6 WIDE_LOOK_PANS). The probe's r1 (0.05 s tick)
+    # took 7.0 s with the old pans; r2 never finished.
+    assert end['sim_s'] <= 12.5, end['sim_s']
+    assert end['sim_s'] > 9.5, end['sim_s']                       # the two extra pans are visited
     assert first_pan_s(d) <= 2.0, first_pan_s(d)
     assert all(kinds.count('hold') <= 1 for _, kinds in kinds_per_tick(d))
 
@@ -111,7 +113,7 @@ def test_shared_pair_guard_waits_for_r2_until_sigma_y_falls():
     """Control: adopted executor but the shared PairArmGuard (isotropic): the probe's wait, now one hold per tick."""
     ex = pair_executor('r2')
     ex.guard.__class__ = PairArmGuard
-    d, end = look_around(ex)
+    d, end = look_around(ex, limit_s=40.)
     assert first_pan_s(d) >= 6.5, first_pan_s(d)
     assert end['event'] == 'job_failed' or end['sim_s'] > 12., end   # the 10 s wait budget is spent on the way
     waits = [kinds for t, kinds in kinds_per_tick(d) if 1. <= t < 6.]

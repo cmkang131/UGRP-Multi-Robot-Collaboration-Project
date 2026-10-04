@@ -57,6 +57,29 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `outputs/pair-stage-probes-ece38792-cal/` 사례 프레임이 10/1 16:40 이전 outputs 정리로 없어져 실패한다. 시험은 `cases.jsonl`이
   없을 때만 건너뛰고 프레임이 없을 때는 건너뛰지 않는다. 어떤 diff와도 무관하며 조정자가 따로 추적한다.
 
+### 도크 둘러보기 넓히기와 정해진 횟수의 재둘러보기 (PF 작업자 diff, 조정자 결정 2026-10-04)
+
+- **원인:** 다섯 팬(1500, 1230, 970, 1770, 2030)만으로는 도크 출발 r2의 y 정보가 부족해 σ_y가 54–57 mm로 남는다(거칠게 하기 절).
+  제어기는 한 번 둘러본 뒤 `LOOKED_POSE_UNCERTAIN`이어도 다시 보지 않고 입장 요청만 반복했다(`6727751b` raise_high).
+- **변경(diff `dock_relook_v98_incremental.diff`, sha256 `07f2eb87…`):**
+  - 여는 둘러보기와 재둘러보기의 팬: 1500, 1230, 970, 700, 1770, 2030, 2300, 1500(6.2초 → 8.4초). 배달·접근 sweep은
+    `WIDE_LOOK_PANS` 그대로이고 공용 실행기는 바꾸지 않았다.
+  - **정해진 횟수의 재둘러보기:** 둘러보기가 끝나고 1초(`RELOOK_GRACE_S`) 뒤에도 `SELF_UNCERTAIN` 거절이 오고, 로봇이 쉬는 중이며
+    빈손일 때만. 팬만 움직인다(guard `pans_only`, 차체 후진 제안 없음). 차체 명령이 나오면 작업을 `LOOK_RECOVERY_BASE_MOTION`으로
+    끝낸다. 최대 2회, 그다음 거절은 `LOOK_RECOVERY_EXHAUSTED`. 시도마다 `look_recovery`에 전후 σ를 남긴다. Nav2의 정해진 횟수
+    회복(RecoveryNode)과 같은 구조다.
+  - v98 Team의 짝 만남 대기 5초 → 30초. 단계 탐침 실행기(staged runtime, `Runtime.__init__`을 건너뜀)에도 같은 회복을 설치한다.
+- **조정자 결정:** 만남 대기 30초는 v98에 승인. 고정 열거 상태 채널에 `RELOOKING` 상태가 없고 새로 넣으면 공용 프로토콜 변경이라서다.
+  **이 대기는 네 통신 조건에서 똑같다.** 기존 둘러보기 시험의 시간 한도 9.5초 → 12.5초(여덟 팬 때문, 측정 12.3초)도 승인.
+- **병합 메모(이 작업 트리):** 같은 틱 최종 거부 diff와 이 diff가 각각 `Runtime.step`을 정의했다. 글자로는 충돌 없이 합쳐지지만 두 번째
+  `def step`이 첫 번째를 가려 재둘러보기 훅이 꺼진다(두 diff의 시험이 함께 돌면 11개 실패로 드러남). `step` 하나로 합쳤다: 재둘러보기
+  정리(`pre_step`) → 부모 수집(팀 poll 포함) → 재둘러보기 팬 전용 거르기(`filter`) → 같은 틱 최종 거부(마지막). 최종 거부 시험의 `Rig`
+  고정 장치도 `StagedRuntime`처럼 `adopt_look_recovery`를 부르게 고쳤고, 한 override가 두 단계를 모두 돈다는 회귀 시험을 더했다.
+- **작성자 합성 폐루프 결과:** 여덟 팬이면 r2는 여는 둘러보기 뒤 바로 입장(std_xy 42 mm, 오차 3 mm), 재둘러보기 없음. 다섯 팬 + 회복이면
+  재둘러보기 1회(std_xy 63 → 46 mm) 뒤 입장.
+- **참고 자료(작성자 표기 그대로):** Nav2 `navigate_to_pose_w_replanning_and_recovery.xml`(RecoveryNode 재시도 횟수, Spin·Wait·BackUp)
+  — 확인; Fox·Burgard·Thrun 1998 능동 위치 추정 — 미확인; 우리 코드 `zone_pair_status.py`·`zone_pair_executor.py`·`zone_final_pair_runtime.py` — 확인.
+
 ### 같은 틱 최종 거부 (same-tick final veto, Codex #375 검토 지적, 2026-10-04)
 
 - **문제(Codex #375 검토, 확인된 누설):** 부모 `Runtime.step`은 로봇을 차례로 불러 명령을 모은다. 같은 틱에서 나중에 처리된 로봇이

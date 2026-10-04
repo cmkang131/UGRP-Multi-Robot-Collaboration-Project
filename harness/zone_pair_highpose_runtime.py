@@ -12,6 +12,7 @@ from harness import zone_pair_highpose_frame_gate as frame_gate
 from harness import zone_pair_highpose_grip as grip
 from harness import zone_pair_highpose_guardlog as guardlog
 from harness import zone_pair_highpose_lookaround as lookaround
+from harness import zone_pair_highpose_relook as relook
 from harness import zone_pair_highpose_start_relief as start_relief
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_runtime import Runtime as PreviousRuntime
@@ -413,6 +414,8 @@ class Execution(previous.Execution):
 class Team(previous.Team):
     def __init__(self, executors, calibration, static_task):
         super().__init__(executors, calibration, static_task)
+        # v98 look recovery: the admitted partner waits for a bounded re-look of the other robot (relook module).
+        self.rendezvous_timeout_s = relook.RENDEZVOUS_TIMEOUT_S
         def make_execution(own, status, arguments, plan, params, factory, *, policy):
             return Execution(own, status, arguments, plan, params, calibration=calibration)
         self.start = MethodType(bind(previous.pair.PairTeam.start,
@@ -437,9 +440,9 @@ class OwnExecutor(ZoneOwnExecutor):
     _ack = frame_gate.gated(ZoneOwnExecutor._ack)
     pair_readiness = frame_gate.gated(ZoneOwnExecutor.pair_readiness)
     # v98 look-around: the guard gets the tick's covariance (guard half: lookaround.LookAroundGuard, installed in
-    # adopt_v98_frame_gate) and a held look-around tick carries one hold, not [hold, hold].
-    _sweep_steps = lookaround.sweep_steps(ZoneOwnExecutor._sweep_steps)
-    _tick_sweep = lookaround.tick_sweep(ZoneOwnExecutor._tick_sweep)
+    # adopt_v98_frame_gate) and a held look-around tick carries one hold, not [hold, hold]. The look_around job
+    # (opening look and re-looks) pans over relook.DOCK_LOOK_PANS; other sweeps keep WIDE_LOOK_PANS.
+    _tick_sweep, _sweep_steps = relook.dock_sweep(ZoneOwnExecutor._tick_sweep, ZoneOwnExecutor._sweep_steps)
 
 
 def adopt_v98_frame_gate(runtime):
@@ -453,7 +456,12 @@ def adopt_v98_frame_gate(runtime):
     gates = own_image_gates()
     return {'path': gates['path'], 'sha256': gates['sha256'], 'values': dict(gates['values']),
             'frame_gate': frame_gate.record(), 'look_around': lookaround.record(),
-            'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record()}
+            'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record(), 'dock_look': relook.record()}
+
+
+def adopt_look_recovery(runtime):
+    """v98 bounded look recovery on ``runtime.team.start``; every v98 runtime calls this after its team exists."""
+    return relook.install(runtime, relook.LookRecovery(tuple(runtime.actors)))
 
 
 class Runtime(PreviousRuntime):
@@ -471,6 +479,7 @@ class Runtime(PreviousRuntime):
         for actor in self.actors.values():
             actor.job_sim_limit_s = CASE_CAP_S
         self.own_image_gates = adopt_v98_frame_gate(self)
+        self.look_recovery = adopt_look_recovery(self)
 
     def _vetoed(self, phase, now, call, propagate):
         """Run the parent's collection for one tick, then veto terminal endpoints' motion.
@@ -486,8 +495,16 @@ class Runtime(PreviousRuntime):
         return final_veto.final_veto(issued, now, phase, before, after, self.team, final_veto.log_of(self))
 
     def step(self, now):
-        # The parent already polls the team after collecting, so state is propagated before the veto.
-        return self._vetoed('step', now, super().step, lambda t: None)
+        # One override for both v98 stages (they arrived as separate diffs that each defined ``step``; a
+        # second ``def step`` would silently shadow the first). Order: look-recovery bookkeeping, the parent
+        # collection (it already polls the team), the look-recovery pans-only filter, and the same-tick final
+        # veto last, so nothing reaches the backend after a terminal endpoint.
+        parent = super().step
+
+        def collect(t):
+            self.look_recovery.pre_step(self, t)
+            return self.look_recovery.filter(self, t, parent(t))
+        return self._vetoed('step', now, collect, lambda t: None)
 
     def arm_step(self, now):
         # The parent's arm_step never polls: a peer abort raised by a later actor was not even
@@ -497,6 +514,7 @@ class Runtime(PreviousRuntime):
     def record(self):
         value = super().record()
         value['final_veto'] = final_veto.record(self)
+        value['look_recovery'] = self.look_recovery.record()
         value['executor_job_sim_limit_s'] = self.job_sim_limit_s
         value['own_image_gates'] = copy.deepcopy(self.own_image_gates)
         value['blind_final_approach'] = blind.record()
