@@ -80,7 +80,8 @@
     "calibration_status": "DEV_PILOT",
     "rule": "DEV_PILOT_C0_ZERO_v1",
     "admitted_calibration_sha256": [
-      "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"
+      "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5",
+      "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4"
     ],
     "runnable": true,
     "run_status": "FUNCTIONAL_DEV",
@@ -159,6 +160,20 @@
         "pr": 369,
         "rule": "DEV_PILOT_C0_ZERO_v1",
         "admitted_by": "coordinator message 2026-10-03"
+      },
+      "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4": {
+        "path": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json",
+        "pr": 363,
+        "rule": "DEV_PILOT_C0_ZERO_v1",
+        "admitted_by": "coordinator decision 2026-10-05 (classic calibrate-then-correct, Borenstein and Feng 1996)",
+        "calibration_bundle": "zone-final-environment-gaincal-v101",
+        "calibration_variant": "C (measured unloaded gain/lag, registered r4/r5 measured noise)",
+        "fills": "all ten unloaded params.motion fields (missing == []); the DEV code-default fill is not used",
+        "heldout_status": "VALIDATED_DEV (mean model only; not MEASURED_SIM, not a confirmation sample)",
+        "fit": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/fit/fit.json",
+        "heldout": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json",
+        "parent": {"path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
+                   "sha256": "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"}
       }
     }
   },

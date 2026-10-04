@@ -24,6 +24,10 @@ UNLOADED = ['gain', 'tau_s', 'tau_axis_s', 'tau_stop_s', 'noise_rel', 'noise_abs
             'scale_std', 'scale_walk', 'use_scale', 'rest_noise']
 REAL = Path('/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json')
 REAL_SHA = '398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5'
+C_SHA = 'aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4'
+V101 = Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-unloaded-gain-calibration-v101'/'products'
+C_PATH = V101/'C'/'calibration_dev_pilot_unloaded_v101.json'
+BASE_COPY = Path(__file__).resolve().parents[1]/'experiments'/'2026-10-03-v92-dev-pilot'/'calibration_dev_pilot.json'
 
 
 def dev_file(tmp_path, *, mutate=None):
@@ -57,7 +61,7 @@ def test_registry_keeps_measured_list_empty_and_admits_one_exact_dev_sha():
     adm, _ = c.d5_admission()
     assert adm['completed_measurements'] == [] and c.registry()['runnable'] is False
     dev = c.registry()['dev_pilot']
-    assert dev['admitted_calibration_sha256'] == [REAL_SHA]
+    assert dev['admitted_calibration_sha256'] == [REAL_SHA, C_SHA]
     assert dev['promotable'] is False and dev['run_status'] == 'FUNCTIONAL_DEV'
     assert dev['tensorboard_cohort'] != 'FUNCTIONAL_DEV_REPLAY' and dev['cohort_role'] != 'FUNCTIONAL_DEV_REPLAY'
 
@@ -648,3 +652,43 @@ def test_staged_ground_truth_inputs_are_labelled_test_setup_only():
     enter = inspect.getsource(st.enter)
     assert enter.count('**TEST_SETUP_GT') == 4            # gripped, lifted, both stage_probe_entry logs
     assert 'ground_truth_inputs' in inspect.getsource(runner) and '**staging.TEST_SETUP_GT' in inspect.getsource(runner)
+
+
+# ---- measured unloaded calibration C (zone-final-environment-gaincal-v101, coordinator decision 2026-10-05)
+def test_measured_unloaded_calibration_c_is_admitted_by_its_exact_sha_and_fills_every_missing_field():
+    dev = c.registry()['dev_pilot']
+    source = dev['admitted_source'][C_SHA]
+    assert (Path(__file__).resolve().parents[1]/source['path']) == C_PATH and c.base.sha(C_PATH) == C_SHA
+    assert source['heldout_status'].startswith('VALIDATED_DEV') and 'not MEASURED_SIM' in source['heldout_status']
+    cal = c.admitted_calibration(str(C_PATH), C_SHA, MAPS[0])
+    assert cal['missing'] == [] and 'dev_pilot_fill' not in cal and cal['status'] == c.DEV_PILOT
+    motion = cal['params']['motion']
+    assert all(motion.get(k) is not None for k in UNLOADED)
+    assert dev['unloaded_motion_fill']['values'] != {k: motion[k] for k in dev['unloaded_motion_fill']['values']}   # not the DEV code defaults
+    with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
+        c.require_promotable({'calibration_sha256': C_SHA})
+
+
+def test_measured_unloaded_calibration_c_differs_from_its_parent_only_in_the_registered_fields():
+    cal, base = json.loads(C_PATH.read_text()), json.loads(BASE_COPY.read_text())
+    assert c.base.sha(BASE_COPY) == REAL_SHA and cal['parent_calibration']['sha256'] == REAL_SHA
+    changed = {k for k in set(cal) | set(base) if cal.get(k) != base.get(k)}
+    assert changed == {'params', 'missing', 'field_provenance', 'source_sha', 'dev_manifest_sha256',
+                       'unloaded_gain_calibration', 'parent_calibration'}
+    assert {k for k in cal['params'] if cal['params'][k] != base['params'][k]} == {'motion'}
+    assert cal['params']['motion_loaded'] == base['params']['motion_loaded']            # loaded model untouched
+    motion = cal['params']['motion']
+    assert set(UNLOADED) <= set(motion) and all(motion[k] is not None for k in UNLOADED)
+    prov = cal['field_provenance']
+    assert all(prov['params.motion.' + k] in ('measured_unloaded_gain_calibration_v101', 'registered_r4_r5_measured_noise')
+               for k in UNLOADED)
+    assert prov['params.motion.noise_rel'] == prov['params.motion.noise_abs'] == 'registered_r4_r5_measured_noise'
+
+
+def test_measured_unloaded_calibration_c_pins_its_fit_and_heldout_records():
+    cal = json.loads(C_PATH.read_text())['unloaded_gain_calibration']
+    assert c.base.sha(V101/'fit'/'fit.json') == cal['fit_sha256'] and c.base.sha(V101/'heldout'/'heldout.json') == cal['heldout_sha256']
+    held = json.loads((V101/'heldout'/'heldout.json').read_text())
+    assert held['status'] == cal['heldout_status'] == 'VALIDATED_DEV' and held['fit_sha256'] == cal['fit_sha256']
+    assert cal['bundle_id'] == 'zone-final-environment-gaincal-v101' and cal['variant'] == 'C'
+    assert 'NOT MEASURED_SIM' in cal['qualification']
