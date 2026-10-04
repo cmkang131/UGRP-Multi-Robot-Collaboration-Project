@@ -73,6 +73,98 @@ highpose 227, 나머지 382 통과. CI 37198572206 33개 작업 모두 성공.
 - TensorBoard: `outputs/tensorboard/1004i-v98-dev-probes-1f7fb800`, 보기 키 `v98_dev_probes_1f7fb800_20261004`,
   기준 실행 1004h(af2f7c2a)·1004g(6727751b). 서버 API와 화면 timeSeries 값이 원본과 같음을 확인했다.
 
+#### HIGH '빔 가장자리'는 렌더러 근접 절단면 흔적이다 (타당성 문제, 2026-10-04)
+
+- **판정: 확인됨(CONFIRMED).** 원본 `outputs/v98-znear-live-check-20261004/`(MANIFEST.sha256, 작성자가 전체 해시 확인).
+  - align_to_carry@1f7fb800의 HIGH 기록 프레임 72장을 기록된 상태에서 다시 그렸더니 72장 모두 비트 단위로 같았다.
+  - 근접 절단면(near-clip plane)만 1.1 cm나 4.4 cm로 바꾸면 v98 경계 맞춤이 0개가 된다.
+  - 1227 프레임에서 맞춘 선과 해석적 절단면 궤적의 중앙 잔차는 1.1 px 미만이다.
+  - 빔 yaw를 쓸어 보면 기울기 이득은 0.013/rad이다. 트래커가 가정한 값 1.1067의 약 1/85이다.
+  - 실행 중 트래커가 r1 +1.16, r2 −1.59 mrad의 가짜 상대 yaw를 넣었다. 같은 구간 실제 상대 yaw 변화는 0.67–0.78 mrad였다(평가 전용).
+- **장면 값:** `scene.xml` 4행과 `sim/masterpi_scene_v2.xml` 4행에 `znear=".002"`가 있다. MuJoCo의 znear는 장면 크기(extent 11.1125 m)에 대한
+  비율이라 실제 절단면은 22.2 mm다. HIGH에서 카메라는 빔 윗면 약 13 mm 위, 빔 앞 끝보다 23 mm 뒤에 있다.
+  - 따로 발견한 것(고치지 않음): `harness/zone_own_perception_v3.py` 76–79행의 `RENDER_NEAR_CLIP_M = .0297`은 extent 14.86 m에서 나온 값이다.
+    장면에 따라 달라지는 값이라 이 장면에서는 틀리다.
+- **실제 카메라:** `sim/masterpi_camera_profile.py`에는 최소 초점 거리나 근접 거리가 적혀 있지 않다. 장착 위치도 `UNVALIDATED`라고
+  적혀 있다. 실제 모듈이 무엇인지부터 저장소 안에서 정해지지 않았다(`sim/masterpi_geometry_v3.py`: Hiwonder HBVCAM-V2101 또는
+  icspring 어안). 사양 출처:
+  - Hiwonder MasterPi 제품·문서 페이지: "HD wide-angle camera, 480P" 문구만 확인. 초점·화각 표는 없다.
+  - 170° 렌즈(GC0308, f 약 1.7 mm, F2.0)의 값은 판매처 검색 요약에서만 봤다(미확인).
+  - 최소 초점 "30 cm~"는 50° HBVCAM-V2101 V11 판매 목록의 문구다(alexnld.com). 다른 렌즈라 ugrp1에 적용하면 안 된다.
+  - 실제 렌즈의 최소 초점과 피사계 심도는 미확인이다.
+  - 추정(측정 아님): 초점이 무한대이고 위 미확인 값을 쓰면, 13 mm 거리에서 흐림이 약 38 px다. 실제 렌즈는 날카로운 경계 대신
+    흐린 면을 볼 것이고, 빔의 물리적 끝 모서리는 렌즈 평면보다 뒤에 있다.
+- **제안 → 적용(조정자 지시, 별도 커밋):** `HIGH_EDGE_INFORMATIVE = False`
+  (`outputs/v98-probe-tools/high_edge_uninformative_v98.diff`, sha256 `998fb664…`).
+  - HIGH 경계 관측과 yaw 주입(`vision_pose_source_highpose.py`), `_wait_carry`의 경계 대기(`HIGH_CARRY_EDGE_REFERENCE_TIMEOUT`)를 끈다.
+  - `owncam_carry_v6e.py`의 yaw σ 키우기는 그대로라, 경계가 없으면 `pm`(자기 명령 동기) 변형을 쓴다. 추가 σ는 약 1.9e-4 rad/s로,
+    한 다리에 몇 mrad이고 3° gate(52 mrad)보다 훨씬 작다.
+  - DR 분해 결과(`outputs/dr-error-decomposition-20261004/`): 적재 운반 452 mm의 물리 DR 오차는 앞뒤 약 4.8 mm, 옆 0.7 mm 이하,
+    yaw 1 mrad 이하다.
+  - 보정 때에도 경계 변형의 yaw 편향(0.0174)은 경계 없는 변형(0.0173)과 같았다.
+  - `_lift`의 `high_view` 감시는 기록만 하므로 그대로 둔다.
+  - 독립 검토가 필요하다.
+
+#### r2 접근 멈춤 진단과 수정 (raise_high@1f7fb800, 2026-10-04)
+
+- **원인(제어기 재생 + 평가 전용 정답):** 첫 주행(10.9–22.3초) 동안 위치 추정(PF)이 틀린 자세로 수렴했다. 오차는 65→147 mm로
+  커졌는데 σ는 30→7 mm로 줄었다(NEES 약 370, 추정 이동 1.67 m 대 실제 1.80 m). 그래서 σ 기준 둘러보기
+  (`LOOK_IF_STD_XY_M` 0.05)가 걸리지 않았다. 대신 고정 나이 3초 규칙(`LOOK_IF_NO_FIX_S`, `zone_own_driver.py` 25·91–92행)이
+  제자리 둘러보기를 되풀이했다. 9번의 no_fix 둘러보기 가운데 첫 번째를 뺀 8번 중 7번이 직전 둘러보기 뒤 0–0.077 m만
+  움직인 상태였다. 둘러보기 13번이 141초 가운데 113초를 썼고, 150초 단계 상한에 먼저 닿았다. 적재 주행은 같은 문제를
+  이동 거리 규칙(`travel`)으로 이미 고쳤는데, 비적재 접근에는 그 규칙이 없었다. guard 거부·도크 재둘러보기·제공자 실패·완화 정리는 원인이 아니다.
+- **재생 충실도:** 실제 v98 제공자와 실제 `GuardedPairApproach`를 기록된 r2 프레임·명령에 다시 돌렸더니 10.1–151.2초의
+  모든 기록 명령과 같았다(151.3초 1건만 단계 상한 뒤). 작성자가 원본 명령의 둘러보기 구간(13개)과 이동 거리를 다시 확인했다.
+- **수정(이 PR, v98 전용):** `harness/zone_pair_highpose_approach_looks.py`. 비적재 접근의 no_fix 둘러보기만, 직전 둘러보기 뒤
+  등록된 이동 거리(`_travel_look_m()` = 0.35 m, 새 문턱 아님) 이상 움직였을 때 하게 한다. 첫 둘러보기, σ·초기화·문 정지점·진행 확인·
+  재위치 잡기·횟수 상한은 그대로다. 시험: 단위 + 기록에서 가져온 시험(r2 no_fix 9번 중 22.4·80.8초만 남고 7번은 건너뜀) + 변이 시험.
+- **참고 자료:** ROS AMCL `update_min_d`(이동한 뒤에만 관측 갱신, amcl_node.cpp, 확인); Nav2 BT RecoveryNode/RoundRobin(재시도는
+  무언가를 바꿔야 함, 확인); Roy & Thrun, Coastal Navigation, NIPS 2000(확인); ActLoc arXiv 2508.20981, "When to Localize?"
+  arXiv 2411.08281(초록만 확인); Fox·Burgard·Thrun 능동 위치 추정, 증강 MCL, move_base 회복, Nav2 progress_checker 기본값(미확인).
+
+#### r1 거짓 도착과 자기 카메라 도착 확인 제안 (항목 A, 적용 안 함)
+
+- **문제:** raise_high@1f7fb800에서 r1은 자기 추정으로 목표 0.030 m 안이라 도착을 선언했지만(118.5초), 실제로는 0.179 m
+  떨어져 있었다(평가 전용; σ 3.5–8 mm, NEES 1000–6000). 도착 판단이 PF σ만 믿는다.
+- **제안:** `outputs/v98-probe-tools/arrival_confirm_v98.diff`(sha256 `e433db9e…`, 하위 작업자 작성, r2 수정 위에 적용).
+  도착 자세(주행 자세 `740,2320,1320,1500`, 측정 카메라 모델 있음)에서 자기 RGB의 빔 윤곽 네 경계가 도착 허용 범위
+  (`ARRIVE_TOL_M` 0.03 m, 0.06 rad + 주문서 칸 절반)의 729개 자세를 측정 모델로 투영한 띠 안에 있어야 도착으로 센다.
+  아니면 한 번 다시 위치를 잡고 다시 접근하고, 두 번째도 아니면 `APPROACH_ARRIVAL_NOT_CONFIRMED_BY_VIEW`로 끝낸다.
+  네 통신 조건에서 같다. PF σ는 쓰지 않는다.
+- **기록 판정:** r1 거짓 도착(아래 경계 460행, 띠 상한 407) 거절, r1·r2 실제 도착 받음. 전제 점검: 빔은 렌즈에서 0.316 m
+  이상 떨어져 있어 근접 절단면(near-clip)과 무관하다. 측정 모델은 기록 정지 프레임 5장에서 경계를 0.3 px 안으로 맞혔다.
+- **한계:** 위쪽 경계 여유가 약 3 px로 얇다(아래 경계 52 px가 주 근거). 경계마다 따로 보는 검사라 허용 범위 안의 오차는
+  못 보고 자세를 고치지도 않는다. PF 오차가 계통적이면 다시 잡아도 같을 수 있고, 그때는 두 번째에서 정직하게 중단한다.
+  실제 물리 실행에서 거절·재시도 경로는 아직 돌려 보지 않았다.
+- **참고 자료:** Chaumette & Hutchinson, Visual servo control Part I, IEEE RAM 2006(검색 확인); Nav2 opennav_docking 준비 자세 +
+  감지 + `max_retries`(검색 확인, `isDocked` 세부는 미확인); Nav2 SimpleGoalChecker·SimpleProgressChecker(인자 이름만 확인);
+  Thrun·Fox·Burgard·Dellaert, Robust MCL, AI 2001(검색 확인, 원문 미열람).
+
+#### 앞선 REACHED 재확인 (항목 B, 평가 전용 정답)
+
+raise_high_align@1f7fb800과 @6727751b의 파지와 HIGH는 물리적으로 실제였다(하위 작업자 분석, 작성자가 1f7fb800 원본에서
+빔 높이·기울기·손가락 접촉·weld를 다시 확인).
+
+- 도크 오차(hover 때) 앞뒤 2.2 mm 이하, 옆 0.4 mm 이하, yaw 0.1° 미만. 잡은 점은 띠 가운데에서 빔 끝 쪽으로 약 5 mm.
+- 손가락 4개가 닫기부터 HIGH까지 모든 표본에서 빔에 닿음(1f7fb800 재확인: 63초 뒤 383/383). 빔 높이 115.0 mm, 기울기 0.03° 이하,
+  weld off(번들 `weld: off`). 들어 올리는 동안 빔을 따라 약 2 mm 미끄러짐.
+- 여유: 옆 4% 이하 사용, 빔 방향 약 17 mm, 세로가 가장 얇다(약 4.0 mm, 보지 않고 내리는 71 mm 열린 고리 하강이 정함).
+- align_to_carry는 HIGH까지 raise_high_align과 비트 단위로 같아서 따로 세지 않는다. 표본은 seed 911, 같은 준비로 2개뿐이다.
+- **주의:**
+  1. REACHED(`high_carry_pose`)는 자기 명령 이력으로 정한다(`physical_success` null). 파지 시야는 모든 닫기 행에서
+     `GRIP_VIEW_NOT_BAND`(seen=false)라 제어기의 파지 판단은 영상 근거가 없다. 내려놓은 뒤 다시 잡을 때 중요하다.
+  2. 준비된(staged) 검사는 PF 사전 평균을 실제 시작 자세에 둔다(`test_setup_ground_truth: true`). 그래서 과신·거짓 도착 문제를
+     드러낼 수 없다. 정렬·파지·들기는 PF 절대 자세를 쓰지 않는다.
+  3. 단계 진입 뒤 PF 절대 자세가 표본마다 기록되지 않는다. `loaded_gate_check`에 자기 보고의 x·y·yaw를 기록만 하도록
+     추가한다(행동 변화 없음, 별도 커밋).
+  4. 잡는 힘은 재지 않았고 매개변수로 어림했다(턱 한계 약 18 N, 마찰 3.4).
+
+#### #371 걸이(hook) 12항 반영 계획
+
+PR 코멘트에 표로 적었다(`issuecomment-5980026688`에 대한 답). 요약: 1·3·4·5·6·8·9·10·11·12는 받는다. 2는 대기 시간을 고쳐서 받는다.
+`CHECKPOINT_REOBSERVE_S`는 8초가 아니라 1.2초다. 7은 `continue`/`set_down`만 받고 `wait`는 보류한다. HIGH에서는 고정이 오지 않아
+기다려도 σ만 늘기 때문이다. 걸이는 내려놓기 재고정이 이 PR에 들어간 뒤 따로 붙이고, 규칙 조건의 명령 궤적이 바뀌지 않음을 시험한다.
+
 #### 전제 점검표 1차 (1f7fb800, 2026-10-04, 하위 작업자 읽기 전용 점검 + 작성자 확인)
 
 자기 카메라가 무엇을 본다고 가정하는 물려받은 규칙을 v98 경로에서 모았다. 근거는 DEV 보정의 측정 카메라 모델
