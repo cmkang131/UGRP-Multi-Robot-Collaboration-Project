@@ -72,7 +72,7 @@ class Rig(v98.Runtime):
         self.abort_plan = abort_plan
         self.actors = {r: self.exs[r] for r in order}
         self.team, self.started, self.submitted, self.task = self.host.pairs, True, set(order), {'target': 'B'}
-        self.job_sim_limit_s, self.own_image_gates = 300., {}
+        self.job_sim_limit_s, self.own_image_gates = c.CASE_CAP_S, {}
         self.fid, self.base_obs = 0, {r: pair_obs(r, 1, 0., SEARCH_POSE) for r in ROBOTS}
         self.look_recovery = v98.adopt_look_recovery(self)        # as Runtime/StagedRuntime do (dock/re-look diff)
 
@@ -143,7 +143,7 @@ def dev_bundle(dev_artifacts, monkeypatch):
 
 
 class HorizonPhysics(FakePhysics):
-    """FakePhysics that ends the (otherwise 300 SIM s) loop deliberately after HORIZON_S."""
+    """FakePhysics that ends the (otherwise case-cap long) loop deliberately after HORIZON_S."""
     def advance_to(self, t):
         if t > START_S + HORIZON_S + 1e-9:
             raise RuntimeError('TEST_HORIZON')

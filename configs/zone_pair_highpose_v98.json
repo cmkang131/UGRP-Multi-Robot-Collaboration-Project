@@ -36,13 +36,14 @@
     "decision": "reviewer BLOCK 5970668877 (2026-10-04): restore the frozen file; apply the values through a v98-only module"
   },
   "case_cap": {
-    "sim_cap_s": 300.0,
+    "sim_cap_s": 900.0,
     "cases": "p03 3 checkpoints and carry, per case",
-    "prereg_version": "v96-cap-2",
-    "supersedes": "inherited v88 student cap 120 SIM s per case (3x120 P03)",
+    "prereg_version": "v98-cap-3",
+    "supersedes": "v96-cap-2 per-case cap 300 SIM s (3x300 P03), itself replacing the inherited v88 3x120",
     "decision": "experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md",
     "decided_before_p03_data": true,
-    "derivation": "lower bounds 63.8/104.2/184.6 s per checkpoint, 190.4-219.3 s full carry (distance/0.06 m/s dominant); 300 s ~ 1.4x largest"
+    "user_decision": "2026-10-04 \"시간 상한도 늘리셈\"",
+    "derivation": "DEV ceiling, not a target: full route with sigma-triggered set-down re-fixes estimated 351-517 s (>= 41.4 s per re-fix); 900 s ~ 1.75x the upper estimate. Earlier v96-cap-2 bounds: 63.8/104.2/184.6 s per checkpoint, 190.4-219.3 s full carry"
   },
   "grip_monitor": {
     "scope": "log_only_v96",

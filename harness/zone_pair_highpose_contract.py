@@ -30,11 +30,12 @@ PRECONDITION = 'V92_MEASURED_SIM_HIGHPOSE_CALIBRATION_REQUIRED'
 CHECKS, ROBOTS = ('p03', 'carry'), previous.ROBOTS
 RESET_CAP_S, TICK_S, COLLECTION_FRAME_S = previous.RESET_CAP_S, previous.TICK_S, previous.COLLECTION_FRAME_S
 camera_record = previous.camera_record
-# Coordinator amendment (decided a priori from physics before any P03 run):
-# per-case student cap 300 SIM s replaces the inherited 3x120 (fix363
-# COORDINATOR_DECISION.md). Lower bounds 63.8/104.2/184.6 s per checkpoint and
-# 190-219 s full carry; 300 s ~ 1.4x the largest bound.
-CASE_CAP_S = 300.
+# Coordinator amendments, each decided before any P03 run (fix363 COORDINATOR_DECISION.md):
+# v96-cap-2: 3x120 -> 3x300 from the time lower bounds (63.8/104.2/184.6 s per checkpoint, 190-219 s full carry).
+# v98-cap-3 (user 2026-10-04 "시간 상한도 늘리셈"): 3x300 -> 3x900 DEV ceiling, not a target. The full route with
+# sigma-triggered set-down re-fixes is estimated at 351-517 s (>= 41.4 s per re-fix); 900 s ~ 1.75x the upper estimate.
+CASE_CAP_S = 900.
+CAP_PREREG_VERSION = 'v98-cap-3'
 CAP_DECISION = 'experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md'
 # Coordinator DEV_PILOT admission (2026-10-03): a non-confirmatory functional
 # pilot on one exact-sha256 calibration while the v92 MEASURED_SIM assembly is

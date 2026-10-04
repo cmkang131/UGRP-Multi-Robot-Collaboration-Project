@@ -172,18 +172,18 @@ def test_runtime_job_limit_matches_case_cap_under_dev_pilot(tmp_path, monkeypatc
     admit(monkeypatch, sha)
     runtime = Runtime(c.resolve(MAPS[0])[0], path, sha, seed=911)
     try:
-        assert runtime.job_sim_limit_s == c.CASE_CAP_S == 300.
-        assert c.execution_timing('p03')['executor_job_sim_limit_s'] == 300.
+        assert runtime.job_sim_limit_s == c.CASE_CAP_S == 900.
+        assert c.execution_timing('p03')['executor_job_sim_limit_s'] == 900.
         actor = runtime.actors['r1']
-        assert actor.job_sim_limit_s == 300.
+        assert actor.job_sim_limit_s == 900.
         actor.now = 5.
         actor._start('test', 'pair', {})
         largest = max(r['lower_bound_s'] for m in MAPS for r in
                       __import__('harness.zone_pair_highpose_timing', fromlist=['bounds']).bounds(c.resolve(m)[0], 'carry'))
         assert largest > 120.
-        assert not actor.expire_if_due(5.+largest) and not actor.expire_if_due(5.+300.)
-        assert actor.expire_if_due(5.+300.1)
-        assert runtime.record()['executor_job_sim_limit_s'] == 300.
+        assert not actor.expire_if_due(5.+largest) and not actor.expire_if_due(5.+900.)
+        assert actor.expire_if_due(5.+900.1)
+        assert runtime.record()['executor_job_sim_limit_s'] == 900.
     finally:
         runtime.close()
 
@@ -538,7 +538,8 @@ def test_align_to_carry_continues_from_the_align_entry_until_both_robots_are_don
     a, b = st.PROBE_SPECS['raise_high_align'], st.PROBE_SPECS['align_to_carry']
     same = ('preroll', 'spawn', 'opening_look_around', 'entry')
     assert {k: a[k] for k in same} == {k: b[k] for k in same}
-    assert (b['cap_s'], b['terminal_event'], b['terminal_state'], b['barrier']) == (300., 'state', 'done', None)
+    assert (b['cap_s'], b['terminal_event'], b['terminal_state'], b['barrier']) == (900., 'state', 'done', None)
+    assert b['cap_s'] == c.CASE_CAP_S
     assert run.STAGE_PROBES['align_to_carry']['staged'] is True
     ev = lambda *states: type('E', (), {'events': [{'event': 'state', 'state': x} for x in states],
                                         'controller': type('C', (), {'failure': None})()})()

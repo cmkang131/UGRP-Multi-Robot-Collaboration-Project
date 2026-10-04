@@ -46,7 +46,7 @@ from harness.zone_final_pair_binding import bind
 
 FIT_SHARED = 'shared_ols'
 FIT_CONSENSUS = 'consensus'
-FIT_ROWS_MAX = 5000                 # per tracker; a 300 SIM s run samples far fewer frames
+FIT_ROWS_MAX = 15000                # per tracker, log only; covers a 900 SIM s case cap at 10 frames/s with margin
 
 
 class EdgeLine(tuple):

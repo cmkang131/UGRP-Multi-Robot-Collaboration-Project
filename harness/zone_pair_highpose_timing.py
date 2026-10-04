@@ -9,7 +9,7 @@ impossible within the cap; passing it is NOT a completion forecast.
 REVIEW_363 P1-2: dock start / carried-prefix P03 protocol, no staged
 teleport; HIGH is kept through intermediate checkpoints (stop + re-observe,
 no lower/open/re-raise). The cap is the coordinator's a-priori amendment
-(contract.CASE_CAP_S = 300 SIM s per case, replacing the inherited 3x120,
+(contract.CASE_CAP_S = 900 SIM s per case since v98-cap-3, earlier 300 replacing the inherited 3x120,
 decided from these bounds before any P03 data).
 """
 import math
@@ -20,7 +20,7 @@ from harness import zone_final_pair_skill as skill
 from scripts import run_m2_pair as m2
 from sim.zone_model_conventions import spawn_layout
 
-CAP_S = CASE_CAP_S                 # coordinator amendment, per case (was 120)
+CAP_S = CASE_CAP_S                 # coordinator amendments, per case (120 -> 300 -> 900)
 CHECKPOINT_REOBSERVE_S = 1.2       # runtime-enforced minimum HIGH stop (0.16 s pose delay + fresh fix + rendezvous)
 
 # --- approach (harness/pair_owncam_approach.py PairApproachDriver.tick) -----

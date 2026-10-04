@@ -157,7 +157,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
     """Student-only copy of scripts/run_final_pair_v3.run_case with the v96 cap.
 
     The parent hard-codes the v88 120 SIM s student cap. v96 uses the
-    coordinator's a-priori amendment (contract.CASE_CAP_S = 300 per case).
+    coordinator's a-priori amendment (contract.CASE_CAP_S per case: 300, v98-cap-3 900).
     Loop, clock, eval_sample/capture order and records are otherwise the
     parent's; no collection branch (v96 has no calibration checks).
     probe (STAGE_PROBES key): same loop, stops at the stage end/failure or the

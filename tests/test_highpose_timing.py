@@ -1,4 +1,4 @@
-"""v96 per-case cap (coordinator amendment 300 SIM s) and its automatic time lower bound."""
+"""v98 per-case cap (coordinator amendments: v96-cap-2 300 SIM s, v98-cap-3 900 SIM s) and its automatic time lower bound."""
 import copy
 import pytest
 from harness import zone_pair_highpose_timing as t
@@ -12,10 +12,10 @@ def test_bounds_from_controller_constants_and_amended_cap():
     rows = t.bounds(static, 'p03')
     assert [r['segment'] for r in rows] == [1, 3, 7]
     assert [r['lower_bound_s'] for r in rows] == pytest.approx([63.83, 104.17, 184.57], abs=.01)
-    assert t.CAP_S == c.CASE_CAP_S == 300. and [r['feasible'] for r in rows] == [True, True, True]
+    assert t.CAP_S == c.CASE_CAP_S == 900. and [r['feasible'] for r in rows] == [True, True, True]
     for r in rows:
         p = r['parts_s']
-        assert r['cap_s'] == 300 and p['raise_to_high_s'] == 17.2 and p['low_lift_s'] == 1.5
+        assert r['cap_s'] == 900 and p['raise_to_high_s'] == 17.2 and p['low_lift_s'] == 1.5
         assert p['intermediate_lower_open_raise_s'] == 0 and 'final_lower_s' not in p
         assert p['leg_align_s'] == pytest.approx(6.5*r['segment'])
         assert p['checkpoint_reobserve_s'] == pytest.approx(1.2*r['segment'])
@@ -26,13 +26,15 @@ def test_bounds_from_controller_constants_and_amended_cap():
     last = rows[-1]['parts_s']
     assert rows[-1]['lower_bound_s']-last['raise_to_high_s']-last['leg_align_s'] > 120
     assert len(t.require_feasible(static)) == 3
-    assert [row['sim_cap_s'] for row in c.cases('p03')] == [300.]*3
+    assert [row['sim_cap_s'] for row in c.cases('p03')] == [900.]*3
     assert sum(d+s for _, d, s in pose.lower_path()) == pytest.approx(13.6)
     carry = [t.bounds(c.resolve(m)[0], 'carry')[0] for m in c.registry()['maps']]
     assert [r['lower_bound_s'] for r in carry] == pytest.approx([219.34, 219.34, 190.44], abs=.01)
     assert all(r['feasible'] and r['parts_s']['final_lower_s'] == pytest.approx(13.6) for r in carry)
-    # 300 s was set a priori at ~1.4x the largest bound (full carry 219.3 s).
-    assert 1.3 < c.CASE_CAP_S/max(r['lower_bound_s'] for r in carry) < 1.45
+    # v98-cap-3 (user 2026-10-04): 900 s ~ 1.75x the upper re-fix route estimate 517 s (earlier v96-cap-2: 300 s
+    # ~ 1.4x the full-carry lower bound 219.3 s). A DEV ceiling, not a target.
+    assert c.CAP_PREREG_VERSION == 'v98-cap-3' and 1.7 < c.CASE_CAP_S/517. < 1.8
+    assert c.CASE_CAP_S/max(r['lower_bound_s'] for r in carry) > 4
 
 
 def test_automatic_bound_still_rejects_a_cap_below_the_bound(monkeypatch):
@@ -48,11 +50,13 @@ def test_automatic_bound_still_rejects_a_cap_below_the_bound(monkeypatch):
 def test_cap_amendment_is_registered_prereg_and_hashed_in_bundle():
     reg = c.registry()
     cap = reg['case_cap']
-    assert cap['sim_cap_s'] == 300. and cap['decided_before_p03_data'] is True
+    assert cap['sim_cap_s'] == 900. and cap['decided_before_p03_data'] is True
+    assert cap['prereg_version'] == c.CAP_PREREG_VERSION and 'v96-cap-2' in cap['supersedes']
+    assert '시간 상한도 늘리셈' in cap['user_decision']
     assert cap['decision'] == c.CAP_DECISION and 'v88' in cap['supersedes']
     b = c.bundle('zone_wide_door_geometry_v3', 'p03')
     assert c.CAP_DECISION in b['source_sha256'] and c.REGISTRY in b['source_sha256']
-    assert b['timing']['case_sim_cap_s'] == 300.
+    assert b['timing']['case_sim_cap_s'] == 900.
     obs = b['timing']['observation']
     assert obs['carry_hold_look_every_s'] == .4 and obs['transit_rgb_sample_s'] == .1
     bad = copy.deepcopy(reg)

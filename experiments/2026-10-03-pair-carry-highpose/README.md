@@ -28,6 +28,22 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `GRIP_NOT_CONFIRMED`는 그대로다. 공유 동결 파일(`zone_pair_grasp.py`, `run_m2_pair.py`)은 바꾸지 않았다.
 - **복구 동작은 아직 넣지 않았다**(관측기 수정이 폐루프에서 확인된 뒤).
 
+### 사례 시간 상한 300 → 900 SIM초 (사전 등록 개정 v98-cap-3, 사용자 결정 2026-10-04)
+
+- **결정:** 사용자 "시간 상한도 늘리셈". 조정자가 v98 사례 cap을 900 SIM초로 정했다(모든 집행기 같은 값, v98만).
+  P03은 한 번도 실행하지 않았다. 개정과 이유를 [결정 기록](fix363/COORDINATOR_DECISION.md) 1a절에 P03 실행 전에 적었다.
+- **유도:** σ가 커지면 내려놓고 둘러보는 재고정을 넣은 전체 경로는 351–517초로 추정된다(재고정 1회 하한 약 41.4초). 900초는
+  위 추정의 약 1.75배다. 재고정·재둘러보기가 더 생길 여유를 둔 **DEV 상한이지 목표가 아니다.**
+- **300을 하드코딩했던 v98 자리(모두 바꿈):** `harness/zone_pair_highpose_contract.py`의 `CASE_CAP_S`(새 `CAP_PREREG_VERSION`);
+  이 값을 쓰는 `Runtime`·`StagedRuntime`의 `job_sim_limit_s`와 번들 `timing.case_sim_cap_s`·`executor_job_sim_limit_s`(같은 상수,
+  코드 변경 없이 따라감); `zone_pair_highpose_timing.CAP_S`(같은 상수, 설명 고침); 단계 검사 `align_to_carry` cap
+  (`zone_pair_highpose_staging.py`, 300 → 900); 등록 파일 `configs/zone_pair_highpose_v98.json`의 `case_cap`(900, `v98-cap-3`,
+  사용자 말); 작업 흐름 `configs/simulation_workflows.d/pair_highpose_v98.json` 설명(3×900); `scripts/run_pair_highpose.py` 설명;
+  기록 전용 경계 맞춤 행 상한 `FIT_ROWS_MAX` 5000 → 15000(설명이 300초 기준이었고 900초면 잘림). 시험 기대값(dev_pilot,
+  timing, zone_final_pair_highpose, final_veto 가짜 실행기).
+- **그대로 둔 것:** 은퇴한 v96 등록 파일(바이트 고정, 300), 다른 단계 검사 cap(raise_high·high_hold 150, raise_high_align 150,
+  high_hold_staged 60, carry_leg_staged 150), 하한 자동 검사. v98 결과는 계속 DEV이고 SHA로 구분해 기록한다.
+
 ### HIGH 중간 체크포인트의 추측 항법 영수증 (DR checkpoint, 다른 작업자 diff, 조정자 결정 2026-10-04)
 
 - **원인(오프라인, 정답은 평가에만):** HIGH에서 쥔 빔이 자기 영상 위쪽을 r1 약 170행, r2 약 175행까지 덮고, 그 아래에는 차체 앞

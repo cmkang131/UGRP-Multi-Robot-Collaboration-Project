@@ -100,7 +100,7 @@ PROBE_SPECS = {
     # HIGH hold and carry leg until delivery (both robots reach state 'done') or a failure. No harness-injected
     # loaded state: hold and carry start from the state the controller itself reached.
     'align_to_carry': {'preroll': 'none', 'spawn': 'prestation', 'opening_look_around': True,
-        'entry': 'wait_approach', 'cap_s': 300.,
+        'entry': 'wait_approach', 'cap_s': 900.,       # = CASE_CAP_S (v98-cap-3, user 2026-10-04)
         'terminal_event': 'state', 'terminal_state': 'done', 'barrier': None,
         'covers': 'raise_high_align entry -> align -> blind final approach -> close -> lift -> raise to HIGH -> '
                   'HIGH hold -> carry barrier -> carry leg -> lower -> release -> done (delivery or failure)'},

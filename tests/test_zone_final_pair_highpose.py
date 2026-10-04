@@ -31,7 +31,7 @@ def test_p03_missing_v92_gate_before_any_output_or_backend(tmp_path, capsys):
     assert plan['runnable'] is False and c.PRECONDITION in plan['blocked_on']
     assert plan['denominator'] == 3
     assert [r['checkpoint'] for r in plan['cases']] == list(c.previous.CHECKPOINTS)
-    assert sum(r['sim_cap_s'] for r in plan['cases']) == 900.
+    assert sum(r['sim_cap_s'] for r in plan['cases']) == 2700.      # 3x900 (v98-cap-3)
     with pytest.raises(ValueError, match=c.PRECONDITION):
         run.main(argv+['--execute'])
     b = {**c.bundle(MAPS[0], 'p03'), 'source_sha': 'a'*40, 'case': c.cases('p03')[0]}
@@ -165,9 +165,9 @@ def test_internal_bounded_case_fixture_ignores_eval_truth_and_preserves_p03_cloc
         obj = owners[0]
         assert result['protocol_complete'] and result['physical_success'] is None
         assert result['checkpoint']['status'] == 'NOT_REACHED'
-        assert len(obj.frames) == len(obj.samples) == 6001
-        assert obj.now == obj.deadline == 301. and obj.closed
-        assert result['check_sim_cap_s'] == 300.
+        assert len(obj.frames) == len(obj.samples) == 18001
+        assert obj.now == obj.deadline == 901. and obj.closed
+        assert result['check_sim_cap_s'] == 900.
         receipts.append(obj.actions)
     assert receipts[0] == receipts[1]
 
@@ -198,5 +198,7 @@ def test_v96_registry_retired_byte_identical_and_v98_differs_only_by_ids():
     changed = {k for k in set(old) | set(new) if old.get(k) != new.get(k)}
     assert changed == {'schema', 'execution_bundle_id', 'workflow_id', 'workflow_version', 'dev_pilot',
                        'supersedes', 'stage_probes', 'own_image_gates', 'grip_monitor',
-                       'provider_id', 'frame_gate', 'blind_final_approach'}
+                       'provider_id', 'frame_gate', 'blind_final_approach', 'case_cap'}
+    # case_cap: v98-cap-3 (user 2026-10-04) 3x300 -> 3x900; the v96 record keeps v96-cap-2.
+    assert (old['case_cap']['sim_cap_s'], new['case_cap']['sim_cap_s']) == (300., 900.)
     assert {k for k in old['dev_pilot'] if old['dev_pilot'][k] != new['dev_pilot'][k]} == {'tensorboard_cohort'}

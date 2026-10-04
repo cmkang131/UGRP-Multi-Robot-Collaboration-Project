@@ -33,6 +33,25 @@
 실행 대상으로 계획하며, 하한이 cap을 넘으면 `TIME_LOWER_BOUND_EXCEEDS_CASE_CAP`로 실행 전에 거부한다.
 실측 지연(lag)이 승인되면 하한에 더해져 더 엄격해질 수 있다.
 
+### 1a. 사전 등록 개정 v98-cap-3: 3×300 → 3×900 SIM초 (2026-10-04, P03 실행 전)
+
+**결정:** 사용자(2026-10-04) "시간 상한도 늘리셈". 조정자가 v98 사례 cap을 900 SIM초로 정했다(모든 집행기 같은 값).
+v98 전용이다. 은퇴한 v96 등록 파일(`configs/zone_pair_highpose_v96.json`)은 바이트 그대로 300초다.
+
+**결정 시점:** v98로 P03을 한 번도 실행하지 않았다(지금까지 v98 실행은 DEV 단계 검사뿐이고, 결과는 SHA로 구분해 기록한다).
+등록 파일 `case_cap`에 `prereg_version: v98-cap-3`, `decided_before_p03_data: true`, 사용자 말을 기록했다.
+
+**유도:** 사용자 정정(2026-10-04 "끝까지 옮기는 게 E2E지. 짐작해서 가는 게 맞아. 근데 어느정도 모르겠으면, 짐을 두고 주변을
+둘러보면 되는 거잖아")에 따라 E2E는 배달까지의 전체 경로다. 운반은 추측 항법(dead reckoning)으로 가고, σ가 예산을 넘으면
+(`HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED`) 짐을 내려놓고 둘러본 뒤 다시 든다. 이 재고정을 넣은 전체 경로는 351–517초로
+추정된다(재고정 1회 하한 약 41.4초, 오프라인 DR 예산 분석). 900초는 위 추정의 약 1.75배로, 재고정·재둘러보기가 더 생길 여유를
+둔다. **목표가 아니라 DEV 상한이다.** 하한 자동 검사(`TIME_LOWER_BOUND_EXCEEDS_CASE_CAP`)는 그대로다.
+
+**코드(v98만):** `contract.CASE_CAP_S = 900`(`CAP_PREREG_VERSION = 'v98-cap-3'`); 같은 값을 쓰는 집행기 작업 제한
+(`Runtime`·`StagedRuntime`의 `job_sim_limit_s`, 번들 `timing.executor_job_sim_limit_s`); 단계 검사 `align_to_carry` cap
+300 → 900; 등록 파일 `configs/zone_pair_highpose_v98.json`의 `case_cap`; 작업 흐름 설명(3×900). 기록 전용 경계 맞춤 행 상한
+`FIT_ROWS_MAX` 5000 → 15000(900초에서 잘리지 않게). 다른 단계 검사 cap(150·60초)은 바꾸지 않았다.
+
 ## 2. 집게 감시(grip monitor): 첫 E2E에서는 기록만 한다 (리뷰 P1-4)
 
 ### 사용자 결정
@@ -99,6 +118,8 @@
    정착 시간을 줄이면 다시 검증해야 한다. 운반 중(차체 이동) 영상은 아직 없다.
 
 ## 3. 집행기 작업 제한(job_sim_limit_s) 120 → 300초
+
+(2026-10-04 v98-cap-3: 같은 정렬 규칙으로 900초가 된다. 1a절.)
 
 부모 실행기(`harness/zone_final_pair_runtime.py:36`)는 모든 로봇 집행기에 `job_sim_limit_s=120.`을 고정으로 넣는다.
 v96은 이 부모 생성자를 그대로 써서 120초를 물려받았고, 그대로면 `expire_if_due`가 120 SIM초에 공동 작업을
