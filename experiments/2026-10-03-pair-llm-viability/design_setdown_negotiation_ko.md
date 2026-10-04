@@ -1,183 +1,373 @@
-# 설계 노트: 짐으로 이어진 구간의 내려놓기·재고정을 LLM 대화로 풀기
+# 설계 노트: 짐으로 이어진 구간의 내려놓기·재고정을 LLM 대화로 풀기 (개정 v3)
 
-상태: **설계만, 코드 없음, 실행 없음.** 작성 2026-10-04(Claude Sonnet 5.5, #371 담당). 조정자가 같은 날 설계를 승인했고
-아래 "결정 기록"의 네 가지를 정했다. 이 문서는 #371(`experiments/2026-10-03-pair-llm-viability/`)의 일부이며 연구 결과가 아니다.
+상태: **설계만, 코드 없음, 실행 없음.** 연구 결과가 아니다. 작성은 2026-10-04(Claude Sonnet 5.5, #371 담당), 개정은 2026-10-05.
+
+- v1(`42b9025a`, 2026-10-04): 조정자가 설계를 승인하고 결정 (a)~(d)를 정했다.
+- v2(2026-10-05): 독립 검토(Claude, `outputs/review-371-setdown-design-20261005/report.md`, 대상 `42b9025a`)의 P0 2건·P1 7건 반영.
+- **v3(이 문서, 2026-10-05):** 조정자의 내려놓기·재고정 v3 기준 결정 5개와 내려놓기 설계 담당의 연결점(hook) 기록
+  (`/Users/changmin/projects/ugrp-wt/carry-ckpt/experiments/2026-10-03-pair-carry-highpose/fix363/sigma_refix_v98_note_ko.md`,
+  7b·7c절, 미커밋 작업 트리 상태)을 반영했다. 그 기록의 코드는 아직 #363 head에 없고 저자의 `aa449796`/`a54a26ab` 위에 얹히는 제안이다.
+  코드 구현은 여전히 #363 새 SHA 뒤다.
 
 사용자 결정(2026-10-04): "두 로봇이 짐으로 이어져 있는 부분은 실제 llm을 써서 해결하는 게 어떨까? 지금 상황에서도 llm통신을 써도 돼."
 
-## 결정 기록 (조정자, 2026-10-04 — 사용자 결정이 아니라 조정자 선택)
+## 0. v2에서 v3로 바뀐 것 (한눈에)
 
-- **(a)** 정지 대기는 기존 값 `CHECKPOINT_REOBSERVE_S`(8초)를 그대로 쓴다. 새 문턱은 만들지 않는다.
-- **(b)** NL 발화 상한을 로봇당 3 / 전체 6에서 **6 / 12로 올린다. peer_nl에만 적용**한다(no_comm은 글 통로가 닫혀 있어 상한이 의미 없다).
-  이유: 정지가 많은 경로에서 3/6이 먼저 닿고, 글 자체가 이 연구가 재는 행동이라 상한이 연구 대상을 깎으면 안 된다.
-  이 변경은 레지스트리 `decision_limits`와 번들 해시가 바뀌므로, 조정자가 정한 900초 실제 호출 상한·호출 한도 36/72와 **같은 리베이스 커밋**에서 적용하고
-  README·번들에 이유와 함께 적는다. 코호트 토큰 상한(약 1.1M)은 그대로이며 6/12 기준 최악치는 6절에 다시 계산했다.
-- **(c)** `grip_event`는 첫 E2E에서 **기록만** 한다(사용자 10/3 결정 "첫 E2E에서 grip 감시는 기록만"). 인터페이스 자리(slot)는 남기되
-  제어·LLM 입력으로 승격하지 않는다. 자기 감지 후 신호는 E2E 이후다.
-- **(d)** 시험 균형 점검의 규칙 조건 성공률 범위 **5~95%**는 파일럿 기준으로 받아들였다(조정자 선택). 벗어나면 **환경 난이도(경로·문 여유 같은
-  사전 등록 값)만** 조정하고, 조건별로 손대지 않는다.
+| v2의 설계 | v3 | 이유 |
+|---|---|---|
+| 정지 때 호출하지 않고 다리 시작에 미리 정해 둠(pre-latch), `rule_default`는 정지 1.2초 뒤 | **모든 조건·모든 정지점의 판단 창을 8 SIM초로 통일.** LLM은 정지 시점의 새 σ로 창 안에서 결정하고, 결정이 없으면 규칙 기본값을 **창 끝에** 실행한다(세 조건 같은 시각) | 조정자 결정 (e1) |
+| peer_nl의 글은 상대의 다음 호출에서 읽힘(≥1호출 늦음) | 창 안에서 글이 호출을 깨우도록 **창 범위 수신 깨움**을 쓴다(3.2절). 호출 1회가 약 3.3–4.6 SIM초라 창 안 왕복은 1회가 한계 | (e1), 검토 P0-2 |
+| 정지 약속 위의 결정 교환 + 철회 | **정지 약속 앞의 고정 창, set_down 우선, 번복 없음.** 상태 채널의 기존 `uncertain`을 운반 중 "내려놓기 요청"으로 읽음 | (e3), 설계 담당 7c절 |
+| `uncertain`을 쓰지 않음 | 운반 단계의 정지 창에서는 쓴다(뜻은 단계로 구분, 새 상태값은 없음). 4절·11절에 검증 항목 | (e3) |
+| `wait`를 바닥 단계 후보로 남김 | **첫 코호트 어휘에서 제외** | (e2) |
+| 재고정은 모든 정지 로봇이 둘러봄 | 함께 내려놓을 때 **자기 σ가 예산 안인 로봇은 둘러보지 않고 재파지** | (e4) |
+| 둘러보기 방향 수 미정 | **8방향** | (e5) |
+| 이벤트 이름: `leg_started`, `stop_reached` 등 | 설계 담당 사건 7개: `carry_leg_started`, `carry_stop_reached`, `setdown_started`, `setdown_completed`, `relook_result`, `regrasp_result`, `carry_resumed` | 설계 담당 7b절 |
+| NL이 바꿀 결정이 불분명 | 창 안 결정(내려놓을지·다시 볼지·재개)과 이상 알림으로 구체화, 한계도 명시(6절) | 조정자 지시 |
 
-## 0. 먼저 확인한 사실
-- **현재 규칙 조건의 성공률은 0%다.** #363 단계 검사에서 두 로봇이 운반 첫 다리 끝 정지에서 멈춘다. σ 예산(50 mm / 3°)을 넘은 뒤에 이어질
-  내려놓기→열기→둘러보기→다시 잡기→들기 재고정이 아직 없기 때문이다(다른 작업자가 만들 예정). 이 문서는 그 상태기계 **위에 얹는 결정 층**이다.
-  상태기계를 다시 만들지 않고 걸이(hook)만 요청한다.
-- 운반은 최대 8개 다리(`MAX_SEGMENTS`=8)다. 다리 끝은 두 로봇이 같이 서는 정지 약속(barrier)이고 고정 상태 채널(20 Hz)로 맞춘다.
-- 이 채널의 열거 상태(`uncertain`, `stopped`, `put_down`, `done`, `abort` 등)에는 `RELOOKING`이 없다. 새 상태는 공용 프로토콜 변경이므로
-  **새 상태는 만들지 않는 것**을 전제로 한다.
-- 봉인된 스터디의 결정 근거에 이미 `own_belief`(자기 위치 추정)가 있다. 자기 σ 요약을 모델에 주는 것은 새 허용이 아니다.
-- 기존 LLM 층의 `ClaimGate` 패턴(모델이 요청 → 게이트가 검사 → 거절 이유는 닫힌 `own_status`로 회신)을 새 결정에도 쓴다.
+v1→v2에서 이미 바로잡은 것(1.2초 정지, `uncertain` OR 설명 철회, k=3~7, 호출·토큰 정직한 표기, 분류표)은 유지한다. 세부는 2절에 남겼다.
 
-## 1. 조건별 메커니즘 (번들에 명시)
+## 1. 결정 기록 (조정자, 사용자 결정이 아니라 조정자 선택)
 
-| 조건 | 내려놓기·재고정 결정 | 상대에게 알리는 길 | LLM 호출 |
+2026-10-04
+- **(a)** 정지 대기에 `CHECKPOINT_REOBSERVE_S`를 쓴다 → 2026-10-05 정정: 이 값은 8초가 아니라 **1.2초**(최소 정지)였다
+  (`harness/zone_pair_highpose_timing.py:24`). 8초는 무보고 중단 시한(`HIGH_CHECKPOINT_REOBSERVE_TIMEOUT`)이다. → **v3: 판단 창을 8 SIM초로 통일(아래 (e1))**.
+- **(b)** NL 발화 상한 6 / 12(peer_nl에만 적용). 레지스트리 `decision_limits`의 한 값이지만 no_comm은 글 통로가 닫혀 있어 실효는 peer_nl뿐이다.
+  900초·호출 한도와 같은 리베이스 커밋에서 적용한다.
+- **(c)** `grip_event`는 첫 E2E에서 기록만 한다(사용자 10/3 결정). 자리는 남기되 승격하지 않는다.
+- **(d)** 규칙 조건 성공률 5~95%는 파일럿 기준(조정자 선택)이다. 벗어나면 환경 난이도(사전 등록 값)만 조정하고 조건별로 손대지 않는다.
+
+2026-10-05 (내려놓기·재고정 v3 기준, 조정자)
+- **(e1)** 모든 조건·정지점의 판단 창을 **8 SIM초**로 통일한다. LLM이 정지 시점의 새 σ로 결정하고, peer_nl은 그 창 안에서 대화한다
+  (LLM 호출 1회 ≈ 3–4 SIM초라 창 안 왕복은 1회 정도가 현실적). 결정이 없으면 규칙 기본값을 창 끝에 실행한다(모든 조건 같은 시각).
+- **(e2)** `wait`는 첫 코호트 어휘에서 제외한다.
+- **(e3)** 결정 교환은 정지 약속 앞의 고정 창에서 하고, set_down을 우선하며, 번복은 없다.
+- **(e4)** 함께 내려놓을 때 자기 σ가 예산 안인 로봇은 둘러보지 않고 재파지한다.
+- **(e5)** 재고정 둘러보기는 8방향이다.
+
+## 2. 검토 지적의 사실 확인 (코드를 열어 대조, v2 기록 유지)
+
+| 지적 | 확인한 곳 | 결과 | v3에서 |
 |---|---|---|---|
-| rule | 제어기가 σ 규칙으로 결정(예산 초과면 내려놓기, 둘러본 뒤 σ 안이면 다시 잡기, 아니면 다시 둘러보기, 최대 2회) | 고정 상태 채널(`uncertain` 등) | 0 |
-| no_comm | 로봇마다 LLM이 정지 지점에서 자기 σ 요약·자기 영상·자기 `own_status`로 결정 | 고정 상태 채널만, 같은 열거 상태, 글 없음 | 있음 |
-| peer_nl | no_comm과 같고 상대에게 글(≤240자, 로봇당 6 / 전체 12)도 보냄 | 고정 상태 채널 + 글 | 있음 |
+| P0-1 `uncertain` OR가 없다 | `zone_pair_executor.py:336-340`은 `abort`·`PARTNER_SILENT`만 읽음. `zone_corridor_control.py:186`은 `uncertain`을 `PAIR_MEMBER_FAILED`로 처리. `zone_pair_status.py:174-200`의 `authorize`는 모든 참가자의 최신 상태가 같을 때만 GO | 사실 | 설계 담당 7c: 약속 앞의 고정 창에서 `uncertain`을 요청 비트로 읽는 새 동작을 정의했다(4절) |
+| P0-2 작업 중 글은 호출을 깨우지 않는다 | `zone_study_decisions.py:28-30`: 글은 자기 작업이 있으면 가용 시각 무한대 | 사실 | 창 범위 수신 깨움(3.2절) |
+| P0-2 새 이벤트가 봉인 목록에 없다 | `zone_own_contract.py:24`의 `EVENTS` 7개, `zone_study_integration.py:444-448`이 모르는 이벤트를 `ContractViolation` | 사실 | 사건 7개는 `pair_progress.detail.kind`로 싣고 깨움 라벨은 우리 쪽에서 매김(3.3절) |
+| P1-1 정지 대기 1.2초 | `zone_pair_highpose_timing.py:24` | 사실 | 8 s 통일(e1), 값 충돌 확인 항목(3.4절) |
+| P1-3 k=3~7 | 351 = 227 + 3×41.4, 517 = 227 + 7×41.4 | 산술 일치 | 설계 담당 모델로 대체(8절) |
+| P1-4 `text_token_budget` 미사용 | `zone_study_inputs.py:59` 정의 1곳 | 사실 | 9절 |
+| P1-5 라벨 | `CALL_BUDGET_EXHAUSTED`는 `rgb_communication_*`에만 있다 | 사실 | 9.5절 |
+| P2 `look_around` 중복 | v100에 이미 `look_around` 행동이 있다 | 사실 | 5절 |
 
-- **중앙집중(central) 조건**을 넣는다면 조건 하나가 두 로봇의 같은 명령을 내리고 인터페이스는 같다. 이 PR의 세 조건에는 해당 없다.
-- 번들에 `carry_decision_mechanism` 필드로 `sigma_rule` / `llm_own_status_fixed_wire` / `llm_own_status_fixed_wire_plus_nl`을 적는다.
-- 모든 조건에서 정지마다 "누가 결정했나"(`decided_by`: `llm` 또는 `rule_default`)와, 모델에는 보이지 않는 그림자 규칙의 결정(`rule_would_do`)을 남긴다.
+## 3. 판단 창, 작업 경계, 호출
 
-## 2. 시간 규모 (LLM이 닫지 않는 것)
-- 50 ms 힘·속도 루프, 100 ms 제어 틱, 50 ms 상태 심장박동은 전부 제어기 몫이다.
-- 한 번의 LLM 호출은 SIM 시간으로 약 3.8~4.2초이고, 호출 사이클은 놀 때 약 13.8초, 작업 중 약 64초다(다시 묻기 10초 / 60초 + 호출 비용).
-- LLM 결정은 **네 곳에서만** 일어난다.
-  - (A) 청구.
-  - (B) 다리 시작(GO) 때 "다음 정지에서 내려놓을지 계속할지"를 미리 정해 보관(latch)한다. 정지에서 호출이 막 시작되면 답이 8초 안에 못 오는 문제를 피하기 위해서다.
-  - (C) 정지에서 그 결정을 확인하고, 중간에 상대 글이 왔으면 한 번 더 묻는다. 정지 대기는 8초이며 시간이 지나면 `rule_default`가 적용된다.
-  - (D) 내려놓고 둘러본 뒤 다시 잡기·다시 둘러보기·포기를 고른다.
-- **긴급 정지는 제어기 몫**이다. 중간에 미끄러짐·밀림이 생기면 기존 `abort`/`stopped` 상태가 즉시 처리한다. 글은 "왜 멈췄나"를 알리는 설명일 뿐 정지 수단이 아니다.
+### 3.1 작업 경계
+짝 운반(`pair_carry`)은 청구부터 배달까지 **한 작업**이다. 설계 담당 구조도 재고정(내려놓기·둘러보기·재파지)을 그 작업 안의 상태기계로 둔다(검토의 옵션 A).
+작업을 쪼개는 옵션 B는 쓰지 않는다. 창 안 대화는 3.2절의 창 범위 수신 깨움으로 푼다.
 
-## 3. 결정 어휘 (닫힘, 위치 값 없음)
-- **정지에서**: `continue` / `set_down` / `wait`
-  - `set_down`은 정지에서만 받아들인다. `wait`는 정지당 한 번만 허용한다.
-  - 예산 초과면 `continue`는 거절(`OVER_BUDGET`)하고 제어기가 규칙대로 내려놓는다.
-- **둘러본 뒤**: `regrasp` / `look_again` / `give_up`
-  - `regrasp`는 자기 둘러보기 σ가 예산 안일 때만 제어기가 받는다.
-  - `give_up`은 청구를 풀어 작업을 끝낸다.
-- **합치기 규칙(OR)**: 둘 중 한 로봇이라도 `set_down`을 내면 같이 내려놓는다. 규칙 조건의 `uncertain`과 같은 동작이다.
-- 기존 `ClaimGate`처럼 한 번 쓰는 보관식(latch) 명령이며 거절 이유는 닫힌 어휘로 `own_status`에 돌려준다.
+### 3.2 창 안 시간선과 창 범위 수신 깨움
 
-## 4. NL로 위치 추정 공유: 보수적 사용 규칙
+봉인된 스케줄러는 **작업 중인 로봇을 수신 글로 깨우지 않는다**(`zone_study_decisions.py:28-30`: 자기 작업이 있으면 글의 가용 시각이 무한대, 작업이 끝나야 `available()`이 시각을 줌).
+짝 운반은 한 작업이라 그대로 두면 창 안에서 받은 글은 읽히지 못한다. 그런데 이 가용 시각은 **우리 쪽이 넘기는 `own_job(actor)` 콜백**(`pair_llm_dispatch.py:305`,
+`own_job=lambda actor: self.links[actor].job()`)이 정한다. 봉인 코드(`DecisionScheduler`, `EventScheduler`)는 건드리지 않고, 짝 층의 콜백만 이렇게 바꾼다.
+
+> 창 범위 수신 깨움: `carry_stop_reached`(또는 둘러본 뒤 창)가 열려 있는 동안, 그 로봇에 대해서만 `own_job()`이 `None`을 돌려준다.
+> 창은 사건이 알려 준 마감 시각(`decide_at_s`)에서 닫힌다. 닫힌 뒤에는 원래대로(작업이 끝나야 글이 깨움)다.
+
+- `own_job`은 `DecisionScheduler`의 글 가용 시각 계산에만 쓰인다(`zone_event_scheduler.py`에서는 쓰지 않음, 직접 확인). no_comm·rule에는 글이 없으므로 이 변경이 아무 효과도 없어야 한다
+  (시험: 두 조건의 명령 궤적이 변경 전과 비트 단위로 같음).
+- 봉인 의미(글은 작업이 끝난 뒤에 읽는다)에서 벗어나는 변경이므로 **조정자 승인이 필요**하다(12절). 번들에 `message_wake_scope: stop_window`로 적는다.
+- 창 시각은 설계 담당 기록의 `latch_until_s`·`decide_at_s`다. 이 값이 어느 시계인지 정해야 한다(하네스 시계 vs 실행기 시계). 우리는 하네스 시계로 환산하고(원점 `origin_s` 빼기)
+  원점 0 / 1.3 / 2.6 / 7.0 불변 시험을 추가한다(기존 own_status와 같은 방식).
+
+**창 안 시간선 (조정자 (e1)).** 비용은 `zone_sim_cost.v1` 잠정 값(`provisional=True`)으로, 호출 1.0 s + 입력 0.0002 s/토큰 + 출력 0.02 s/토큰 + 글 1개 0.3 s, 배달 0.1 s, 0.1 s 단위 올림이다.
+
+| 시각(창 시작 = `carry_stop_reached` = 0) | 사건 |
+|---|---|
+| 0 | 두 로봇이 `carry_stop_reached` 때문에 호출 1을 시작(라벨 `idle`). 입력은 그 시점의 새 σ 띠 |
+| ≈3.3–4.6 | 호출 1 답: (가) 바로 결정(`carry_decision` 보관), 또는 (나) 글만 보내고 결정을 미룸. 글은 +0.1 s 뒤 상대에게 배달 |
+| 배달 직후 | peer_nl에서만: 글을 받은 로봇이 창 범위 수신 깨움으로 호출 2를 시작 |
+| ≈6.8–9.9 | 호출 2 답(결정만, 출력 짧음) |
+| **7.8** | **보관 마감**(`decide_at_s` − 2·CONTROL_S = 8 − 0.2 s, 설계 담당의 `DEADLINE_PASSED` 기준) |
+| 8 | 창 끝: 두 로봇이 "내 비트 OR 상대 비트"로 정함. 결정이 없었으면 규칙 기본값 |
+
+왕복 1회가 마감 7.8 s 안에 들어가는지는 호출 비용에 달려 있다(`call_cost`를 직접 실행해 계산한 값, 호출 2의 입력은 호출 1보다 300토큰 많다고 가정).
+
+| 호출 1 입력 토큰 | 호출 1 출력(글 개수) | 호출 2 출력 | 호출 1 | 호출 2 | 왕복(+배달 0.1) | 마감 7.8 s |
+|---|---|---|---|---|---|---|
+| 6,500 | 60 (1) | 40 | 3.8 | 3.2 | 7.1 | 안 |
+| 7,500 | 40 (0, 결정만) | 40 | 3.3 | 3.4 | 6.8 | 안 |
+| 7,500 | 90 (1) | 50 | 4.6 | 3.6 | 8.3 | **넘김** |
+| 6,500 | 100 (2) | 40 | 4.9 | 3.2 | 8.2 | **넘김** |
+| 8,500 | 140 (1) | 60 | 5.8 | 4.0 | 9.9 | **넘김** |
+
+- **8 s 창은 왕복 1회에 빠듯하다.** 한국어 글 한 줄(약 30–40토큰)과 결정 JSON 한 줄까지 합쳐 호출 1 출력이 약 60토큰, 입력이 7k 이하일 때만 들어간다.
+  호출 1 하나(결정만)는 창 안에 충분히 들어간다(3.3–4.6 s).
+- 그래서 peer_nl의 창 안 글은 짧아야 한다(프롬프트 규칙). **마감을 놓친 호출은 결정이 아니다**(`DEADLINE_PASSED`, 규칙 기본값). 마감 놓친 비율을 1차 지표로 기록한다(6.3절).
+- 호출 시간은 **SIM 비용 모델**이라 실제 응답 지연과 무관하다. 위 표는 잠정 파라미터 기준이고, 출력 토큰을 실제 응답으로 재서 갱신한다.
+- 호출 중에 도착한 글이 그 호출이 끝난 뒤에 처리되는지(대기열) 가짜 제어기 시험으로 확인한다(미확인).
+
+### 3.3 이벤트·깨움 표
+
+새 이벤트 이름은 만들지 않는다. 설계 담당의 사건 7개는 기존 `pair_progress`의 `detail.kind`로 싣는다.
+**깨움 라벨은 `PairTrial.on_executor_event`(우리 코드)가 `detail.kind`로 매긴다.** 봉인된 `EVENTS`·`EVENT_TO_TRIGGER`·`scheduler_trigger()`는 바꾸지 않는다.
+
+| 사건(`detail.kind`) | 깨움 | 라벨 → 계약 라벨 | 용도 |
+|---|---|---|---|
+| `carry_leg_started {seg, n_segs, planned_leg_s}` | 깨우지 않음 | - | 기록. 정지 창 밖에서는 `carry_decision`을 받지 않으므로 호출할 이유가 없다 |
+| `carry_stop_reached {seg, stop, high, over_budget, sigma_band, receipt, rule_default, options, latch_until_s, decide_at_s}` | **깨움 + 창 열기** | `idle` → `idle_review` | 호출 1 시작, 창 범위 수신 깨움 시작 |
+| `setdown_started`, `setdown_completed` | 깨우지 않음 | - | 기록 |
+| `relook_result {level, sigma_band}` | 둘러본 뒤 창이 열렸으면 깨움 + 창 열기 | `idle` → `idle_review` | 둘러본 뒤 결정(`post_look_decision`) |
+| `regrasp_result {ok, post_look_offered / code}` | 깨우지 않음 | - | 기록 |
+| `carry_resumed {seg, sigma_band}` | 깨우지 않음 | - | 기록 |
+| `pose_uncertain`(기존) | 깨움 | `failure` → `own_view_change` | 기존 동작 |
+| 타이머(작업 중 60초 다시 묻기) | 깨움 | `timer` → `own_timer` | 기존 동작. 정지 창이 25–45 s마다 오므로 거의 오지 않는다(추정) |
+
+- `report` 라벨은 계약에서 `message_received`로 대응되므로 진행 사건에 쓰지 않는다.
+- 호출 시작이 사건 즉시인지(10 s 다시 묻기 간격이 아니라) 가짜 제어기 시험으로 확인한다(1순위 시험).
+- **다리 시작 pre-latch는 없앤다.** 설계 담당 hook은 `carry_decision`을 정지점 판단 창에서만 받는다(`NOT_AT_STOP`).
+
+### 3.4 창 길이 8 s에 대해 #363 쪽에서 확인할 것 (우리가 결정할 수 없음)
+1. **무보고 중단 시한과 같은 값이다.** `HIGH_CHECKPOINT_REOBSERVE_TIMEOUT`도 8 s다. 8 s 창 안에서 같은 틱에 둘 다 닿지 않는지, 창 동안 자기 보고(DR)가 계속 오는지 확인.
+2. **어긋남 검사 길이.** 설계 담당 구현은 내려놓기로 정한 로봇이 `t_end + 2W`까지 상대의 `uncertain`을 봐야 하고(`REFIX_DISAGREEMENT`) 한 창 더 echo한다.
+   W를 8 s로 키우면 echo·검사가 16 s가 되는지, 결정 창(8 s)과 별개의 짧은 여유로 둘지 정해야 한다(우리 쪽 요구는 "보관 마감 = 결정 시각 − 0.2 s"뿐).
+3. **정지 8 s 동안 σ 증가.** HIGH 정지 중 적재 프로필의 정지 잡음으로 σ가 커진다. 세 조건에 같게 들어가지만 재고정 횟수 k와 시간 모델은 W=1.2 s 기준이므로 재계산이 필요하다(8절).
+4. **둘러본 뒤 창.** 조정자 메시지는 "정지점 판단 창"만 8 s로 정했다. 설계 담당 구현은 둘러본 뒤 창을 **LLM이 붙은 실행에서만** 연다(`refix_llm_attached`). 그러면 규칙 조건이 재고정마다 그 창만큼 빨라져 세 조건 시간이 달라진다.
+   **둘러본 뒤 창도 모든 조건에서 같은 길이로 열고 규칙 기본값을 창 끝에 실행**해야 (e1)의 "모든 조건 같은 시각"이 성립한다. 8 s로 할지 확인 필요.
+
+## 4. 결정 교환 규칙 (조정자 (e3), 설계 담당 7c절 채택)
+
+정지 약속(barrier)은 같은 준비 상태를 낸 로봇들이 모여야 GO가 나므로(`authorize`) 약속 안에서 한쪽만 내려놓기를 말하면 교착이거나 `LATE_OR_EXPIRED_GO`다. 그래서 교환은 **약속 앞의 고정 창**에서 한다.
+
+1. 다리의 예정된 끝 `t_end`부터 창 길이 동안 각 로봇은 상태 채널에 `carry`(계속) 또는 `uncertain`(내려놓기 요청)을 낸다. **새 상태값은 없다.**
+2. 각자 자기 비트 = `σ 규칙(R_i)` OR `LLM set_down(L_i)`. **LLM은 set_down을 더할 수만 있다.** 규칙이 set_down인데 `continue`를 내면 `OVER_BUDGET`으로 거절(규칙보다 대담한 선택 금지).
+3. 창 끝에 각자 "내 비트 OR 상대 비트"로 정한다. **set_down 우선.** 두 로봇이 같은 신호를 보므로 같은 결론이 난다. **번복은 없다.**
+4. 내려놓기로 정한 로봇은 `uncertain`을 계속 내고(echo), 정해진 시한 안에 상대의 `uncertain`을 못 보면 `REFIX_DISAGREEMENT`로 멈추고 상대는 `PARTNER_ABORT`다(짐은 HIGH에 둠). 세 조건 공통의 제어기 실패다.
+5. 그 뒤 두 로봇이 같은 길로 정지 약속 `lower@k`에 들어간다. `carry_ready`와 `open_ready`가 섞이는 일이 없다.
+6. LLM의 set_down은 보관 마감(창 끝 − 2·CONTROL_S 0.2 s)까지만 받는다. 이후는 `DEADLINE_PASSED`. 이 여유가 상대의 틱 순서와 상관없이 set_down이 상대에게 닿게 한다는 것이 설계 담당의 변이 검사 결과다.
+7. 결정이 없으면 σ 규칙의 결정을 **창 끝에** 실행한다(세 조건 같은 시각).
+
+**`uncertain`의 두 가지 뜻.** `zone_corridor_control.py:186`은 `uncertain`을 실패(`PAIR_MEMBER_FAILED`)로 읽는다. 운반 단계의 정지 창에서는 재고정 요청이다. 이것을 단계 조건으로 가르는 시험이 있는지는
+설계 담당 기록에는 적혀 있으나 **우리가 코드로 확인하지 못했다**(미커밋 작업 트리). #363 병합 후 확인 항목(11절).
+
+**가짜 제어기 시험(명세)**: (1) 둘 다 continue, (2) 한쪽 set_down(두 틱 순서), (3) 둘 다 set_down, (4) 마감 직전 set_down이 상대에 닿음, (5) 마감 뒤 set_down 거절,
+(6) LLM이 항상 `continue`면 명령 궤적이 규칙 조건과 **비트 단위로 같다**(모든 조건에 8 s 창이 있으므로 성립), (7) 세 조건에 같은 σ 궤적을 줬을 때 정지별 결정 기록 형식이 같다.
+
+## 5. 조건별 메커니즘과 어휘 (번들에 명시)
+
+| 조건 | 정지 창에서의 결정 | 상대에게 알리는 길 | LLM 호출 |
+|---|---|---|---|
+| rule | 제어기가 σ 규칙으로 결정, 창 끝(8 s)에 실행 | 4절 교환(고정 상태만) | 0 |
+| no_comm | LLM이 창 안에서 `carry_decision`, 없으면 규칙 기본값을 창 끝에 | 4절과 같음, 글 없음 | 창당 1회 |
+| peer_nl | no_comm과 같고 글(≤240자, 로봇당 6 / 전체 12)을 호출에 실어 보냄. 받은 글은 창 범위 깨움으로 호출 2에서 읽음 | 4절 + 글 | 창당 1~2회 |
+
+- 번들에 `carry_decision_mechanism`: `sigma_rule` / `llm_own_status_fixed_wire` / `llm_own_status_fixed_wire_plus_nl`, `decision_window_s: 8`, `message_wake_scope: stop_window`.
+- **어휘(닫힘, 위치 값 없음)** — 첫 코호트에서 우리 층이 제공하는 것:
+  - 정지 창 `carry_decision`: **`continue` / `set_down`**. (`wait`: (e2)로 제외. 설계 담당 hook은 `wait`를 받지만 우리 층은 제안하지 않는다.)
+  - 둘러본 뒤 창 `post_look_decision`: **`regrasp` / `look_again`**. **`give_up`은 제공하지 않는다**(우리 제안, 12절 확인): 규칙은 fix 검사를 통과한 뒤에는 멈추지 않으므로 `give_up`은 규칙보다 덜 보수적인 행동이고
+    한 로봇의 `give_up`이 상대의 `PARTNER_ABORT`로 짝 전체를 끝낸다(검토 P1-6). 설계 담당 hook은 받아 주지만 우리가 제안하지 않아 첫 코호트에서는 쓰이지 않는다.
+- 모든 조건에서 정지마다 `decided_by`(`llm` / `rule_default`)와, 모델에 보이지 않는 그림자 규칙의 결정 `rule_would_do`, `refix_from`(own_rule/own_llm/partner), `latency_s`를 남긴다(설계 담당 `refix_hook_decisions`와 같은 필드).
+- **(e4) 함께 내려놓을 때** 자기 σ 띠가 예산 안(`fix` 또는 `budget`)인 로봇은 둘러보지 않고 재파지한다. 이 로봇은 둘러본 뒤 창이 없으므로 호출이 한 번 줄어든다.
+  이때의 `relook_result.level` 값(예: `skipped_in_budget`)이 설계 담당 열거(fix/no_fix/no_safe_view/timeout/expired/limit/closed)에 없다 → 요청(10절).
+- `look_again` 상한 = 규칙 상한을 코드로 강제(설계 담당: 정지점마다 1회 `LOOK_AGAIN_USED`)하고 번들에 적는다. `look_again`은 컨트롤러 안의 `_begin_align_relook`을 한 번 더 부르는 결정이고, 실행기의 `look_around` 작업과는 별개다
+  (v100 `look_around`은 작업이 없을 때만 시작하는 일반 행동).
+- **(e5) 8방향 둘러보기**: 현재 설계 담당 구현은 기존 정렬 진입 재둘러보기(최대 3방향)다. 8방향은 둘러보기 시간·순위 규칙이 바뀌므로 #363 담당이 바꾼다. 우리 쪽 영향은 사이클 시간과 8절 시간 모델의 재계산뿐이다.
+
+## 6. NL이 실제로 바꿀 수 있는 결정 (검토 P1-2, 조정자 지시로 구체화)
+
+### 6.1 정직한 구조 분석
+
+쌍의 결과 = **set_down iff {R_A, R_B, L_A, L_B} 중 하나가 set_down** (OR, 번복 없음, LLM은 더하기만). 따라서:
+- 글이 결과를 바꾸려면 상대의 **재량적 set_down(L)** 만 건드릴 수 있다. 규칙이 정한 set_down(R)은 글로 바뀌지 않는다.
+- 상대가 이미 set_down을 정하면 OR이라 내 결정은 결과에 영향이 없다. 글이 "나는 내려놓겠다"를 전해도 고정 채널의 `uncertain`이 이미 같은 일을 한다.
+- 그래서 정지 창에서 NL이 만들 수 있는 효과는 ① 상대가 좋다고 알려 준 덕에 **불필요한 재량적 set_down을 줄이는** 것, ② 고정 채널로는 전달되지 않는 **이상 알림**(시야 가림, 그립 소음, 미끄러짐 느낌)으로 재량적 set_down을 늘리는 것, 둘뿐이다.
+
+### 6.2 창 안 결정별 표
+
+| 결정 | 정해지는 곳 | NL이 바꿀 수 있나 | 바꾸는 방식 | 측정 |
+|---|---|---|---|---|
+| 내려놓을지 (`carry_decision`: continue / set_down) | 정지 창, 쌍 OR | 가능, 좁다 | ①불필요한 L set_down 감소, ②이상 알림 후 L set_down 증가 | 재량적 set_down 비율(규칙이 아닌 set_down), 글 유무별 결정 분포 |
+| 다시 볼지 (`post_look_decision`: regrasp / look_again) | 둘러본 뒤 창, 로봇별 | 거의 없다 | `look_again`은 자기 일이고 상대는 약속(barrier)에서 기다린다. 글은 "한 번 더 본다"를 전할 뿐 상대 행동을 바꾸지 않는다 | `look_again` 비율, 약속 대기 시간 |
+| 재개 (`regrasp` → `carry_resumed`) | 둘러본 뒤 창 | 없다 | 준비 신호는 고정 채널이 이미 한다 | 재개까지 시간 |
+| 이상 알림 (미끄러짐·파지 이상·시야 가림) | 글 | 가능 | 글을 읽은 상대가 재량적 set_down을 고른다. `grip_event` 자체는 (c)로 기록만, 제어 입력 아님 | 알림 글 수, 알림 뒤 set_down 비율 |
+
+핵심 한계: **글이 바꿀 수 있는 결정은 재량적 set_down뿐**이고 첫 코호트는 조건당 seed 1개라 이 효과를 검정할 수 없다.
+"대화는 효율을 해친다/돕는다"는 결론은 이 설계 구조(OR·보수만 허용·8 s 창·왕복 1회)의 산물일 수 있으므로 해석 때 구조 한계를 함께 적는다.
+
+### 6.3 첫 코호트의 성격과 1차 지표
+
+**첫 코호트는 생존 가능성(viability) 확인이며 NL 효과의 검정이 아니다.** 사전 기재하는 1차 지표(가설 검정이 아니라 배관·생존 확인용):
+1. 정지별 LLM 결정과 `rule_would_do`의 **일치율**.
+2. **재량적 set_down 수**(`set_down`이 규칙과 달랐던 정지)와 불필요했던 것의 수.
+3. `decided_by = rule_default` 비율. **50%를 넘으면 `LLM_INERT`로 분류해 LLM 조건 증거에서 뺀다**(50%는 검토의 예시값, 확정은 조정자).
+4. 호출 수·토큰·SIM 시간(통신 비용 지표, CoELA·Chen 외 2024가 쓰는 통신·토큰 효율 정의와 연결).
+5. **창 안 왕복 지표**(peer_nl): 호출 2가 일어난 창의 비율, **마감 놓침 비율**(`DEADLINE_PASSED`), 호출 2가 글을 읽은 뒤 내린 결정 분포 vs 호출 1에서 결정한 분포.
+6. 글 중 고정 채널로 알 수 없는 내용을 담은 비율(정보량), `uncertain` echo 실패(`REFIX_DISAGREEMENT`)와 `DEADLINE_PASSED` 횟수.
+
+선택 후속(첫 코호트 밖): 같은 입력에서 글만 지운 **반사실 재생**으로 글이 결정을 바꾼 비율을 직접 잰다(호출 비용이 든다).
+
+## 7. 상대 정보와 NL 위치 공유
 
 **근거**
-- 두 로봇은 같은 첫 고정, 같은 명령 경로, 같은 미끄러짐으로 오차가 상관된다. 교차 공분산을 모르는 채 상대 추정을 독립 측정으로 합치면 이중 계산(data incest)이 되고 결과는 과신(inconsistent)이다(Bahr·Walter·Leonard 2009).
-- 정석 해법은 교차 공분산을 장부로 관리하는 방식(Roumeliotis·Bekey 2002, Kia 외 2016, Luft 외 2018)이다. 상관을 모를 때는 공분산 교차(CI) 같은 보수적 합치기를 쓴다(Julier·Uhlmann 1997, Li·Nashashibi 2013, Carrillo-Arce 외 2013, Chang 외 2022).
-- 글에는 공분산이 없고 출처를 장부로 관리할 수도 없으므로 모델이 말하는 "확실하다"를 σ로 쓸 수 없다. LLM 확신은 과신하기 쉽다는 점은 KnowNo(Ren 외 2023)가 보였다.
+- 두 로봇은 같은 첫 고정, 같은 명령 경로, 같은 미끄러짐으로 오차가 상관된다. 교차 공분산을 모르는 채 상대 추정을 독립 측정으로 합치면 이중 계산(data incest)이다(Bahr·Walter·Leonard 2009).
+- 정석 해법은 교차 공분산 장부(Roumeliotis·Bekey 2002 2차 인용, Kia 외 2016, Luft 외 2018)이거나 상관을 모를 때의 보수적 합치기(CI 계열)다. 글에는 공분산이 없고 출처를 장부로 관리할 수도 없어서 모델이 말하는 "확실하다"를 σ로 쓸 수 없다.
+  LLM 확신이 과신하기 쉽다는 점은 KnowNo가 보인 것으로 알려져 있다(**요약만 확인, 본문 미확인**).
 
 **규칙**
-1. **합치기 금지**: NL 경로는 LLM 결정에서 끝난다. 추정기(PF)에는 상대 글에서 온 값이 들어가지 않는다. 결정 어휘에 위치 값이 없어서 구조적으로 막힌다.
-2. **보수 방향만**: 상대 글은 더 보기·더 기다리기·더 일찍 내려놓기 쪽으로만 행동을 바꿀 수 있다. 확인을 건너뛰는 쪽은 없다. 예산 초과 `continue` 거절과 `regrasp`의 σ 검사가 제어기에 있어서 글이 이를 못 뚫는다.
-3. **재확인 계기로만 사용**: 상대 글이 자기 믿음과 어긋나 보이면 `look_again`이나 `set_down`을 고른다. 평균을 내지 않는다.
-4. **감사**: 모든 글을 그 시점의 자기 σ 요약과 함께 남긴다. 평가 전용 정답과 나중에 비교해 오보율을 센다. 이 값은 제어로 되돌리지 않는다.
-5. **프롬프트**: 구체 숫자보다 "무엇이 보이는지·σ가 어느 수준인지"를 말하게 한다.
+1. **합치기 금지**: NL 경로는 LLM 결정에서 끝난다. 추정기에는 상대 글에서 온 값이 들어가지 않는다. 결정 어휘에 위치 값이 없어서 구조적으로 막힌다.
+2. **불변식**: 제어기가 받아 주는 LLM 행동은 *같은 σ에서 규칙이 할 수 있는 행동이거나 그보다 보수적인(더 보고·더 일찍 내려놓는) 행동*이다. 규칙이 set_down인데 `continue`는 거절(`OVER_BUDGET`), 예산 초과 `regrasp`는 거절(`LOOK_OVER_BUDGET`).
+   글은 `continue`로도 이끌 수 있다(모델 혼자라면 재량적 set_down을 골랐을 자리에서 상대가 괜찮다고 해서 `continue`). 그 경우에도 규칙이 허용하는 범위 안이다. "글은 보수 방향으로만 바꾼다"는 v1 문장은 철회한다.
+3. **재확인 계기로만**: 상대 글이 자기 믿음과 어긋나 보이면 `look_again`이나 `set_down`을 고른다. 평균을 내지 않는다.
+4. **감사**: 모든 글을 그 시점의 자기 σ 띠와 함께 남긴다. 평가 전용 정답과 나중에 비교해 오보율을 센다. 제어로 되돌리지 않는다.
 
-**한계(정직하게)**: 이 규칙에서 NL은 정확도를 높일 수 없고 **조율(기다림·재확인 시점)만** 돕는다. 구조화된 위치+σ+출처 ID 메시지를 CI로 합치는 별도 조건은 첫 E2E 이후 과제다.
+**명시**
+- **프롬프트에 상대의 고정 채널 상태(`partner_view`)는 보이지 않는다.** 모델은 자기 σ 띠·자기 영상·자기 `own_status`·자기 `own_belief`·자기가 받은 글만 본다. 누수 시험에 넣는다(상대 게시 상태가 요청 바이트에 없음).
+- 규칙은 수치 σ, LLM은 띠를 쓴다. 띠 경계(`fix` ≤ 50 mm/3°, `budget` ≤ 67.4 mm/2.89°, `over`)와 `over_budget`은 **같은 임계에서 나오고** 기록한다.
+- 호출의 SIM 비용(약 3.3–4.6초)은 LLM 조건만 낸다. **창을 8 s로 통일했으므로 이 비용이 창 안에 들어가는 한 조건 사이 시간 차이는 만들지 않는다.** 창을 넘기는 호출은 결정이 아니다.
+- 조건 이름표(`no_comm`/`peer_nl`)가 모델에 보이는 문제(README 위험 9)는 새 프롬프트에도 이어진다.
 
-## 5. 천장·바닥(ceiling/floor) 균형
+## 8. 천장·바닥(ceiling/floor) 균형
 
-**분석적 추정 (측정 아님)**
-- 규칙 조건은 재고정 사이클 k번을 모두 성공해야 한다. #363 작성자는 전체 경로를 351–517초, 재고정 1회 하한을 약 41.4초로 추정했다(README "사례 시간 상한 300 → 900"). 이를 바탕으로 한 저자(Claude)의 환산은 k≈3–5다.
-- 사이클당 성공률 q를 가정한 q^k:
+**v3에서는 k·시간을 설계 담당 모델로 읽는다**(`sigma_refix_v98_note_ko.md` 1·7·7c절, **W = 1.2 s 기준**, 합성 둘러보기·모델 가정 포함, 실제 프레임 아님):
 
-| q | k=3 | k=4 | k=5 | k=7 |
-|---|---|---|---|---|
-| 0.80 | 0.51 | 0.41 | 0.33 | 0.21 |
-| 0.90 | 0.73 | 0.66 | 0.59 | 0.48 |
-| 0.95 | 0.86 | 0.82 | 0.77 | 0.70 |
+| 잡음 모델 | 재고정 정지점 수 k | 첫 막힘 | 시작부터 시간(GO σ0 모드) |
+|---|---|---|---|
+| (i) 현재 보정 | 6(GO σ0) / 5(합성 둘러보기) | 정지점 4 r1 볼 곳 없음 | 약 510 s |
+| (ii′) 정지 잡음만 끔 | 4 / 5 | 같음 | 약 428 s |
+| (ii) 운동 비례(가설) | 1 / 2 | 같음 | 약 305 s |
 
-- q가 0.8~0.95이면 규칙 조건이 중간대(약 33~82%)에 놓인다. **q 실측이 없어서 확정은 불가능하다.** 재고정 상태기계가 생긴 뒤 단계 검사로 재야 한다.
+- 재고정 1회 ≈ 41.4 s(+판단 창). 설계 담당의 k=7 상한 계산은 247 + 7 × 43.84 ≈ 554 s, 현실 보정 13 s/회 포함 약 645 s, `look_again`까지 약 709 s다.
+- **8 s 창으로 통일하면 이 값이 바뀐다(이번 개정의 새 위험).** 우리가 거칠게 비례 환산하면: 정지 7곳 × (8 − 1.2) = +약 48 s(바탕 약 295 s), 재고정 1회마다 둘러본 뒤 창 +8 s 정도 → k=7이면 약 640 s,
+  현실 보정 포함 약 730–790 s로 **900 s 상한 여유가 100–170 s로 줄어든다**. 정지 8 s 동안 σ 증가(3.4절 3항)와 8방향 둘러보기(e5)가 더해지면 더 줄 수 있다. **설계 담당의 재계산 필요**(미계산).
+- **가장 큰 불확실성은 q^k가 아니라 모델 가정이다**: 둘러보기·재파지·정지점 2–7의 hover 확인이 도크에서만 측정이고 경로 중간은 가정(`sigma_refix` 3절 표), 첫 막힘이 (e4)로 풀리는지는 모델로 다시 확인되지 않았다.
 
-**바닥이 구조적으로 0이 되지 않게 하는 장치**
-- LLM이 침묵하거나 틀려도 정지 대기(8초) 끝에 `rule_default`가 실행된다.
-- 예산 초과는 제어기가 강제로 내려놓는다.
-- 상대에게 알리는 길(고정 상태 채널)이 규칙 조건과 같다.
-- no_comm이 규칙보다 낮아지는 경로는 LLM이 실제로 해를 끼치는 경우뿐이다. 불필요한 선제 내려놓기로 시간·재고정 위험을 늘리거나, 호출 36회를 소진해 `CALL_BUDGET_EXHAUSTED`가 되는 경우다.
+**분석적 q^k(참고, 상한)**: k=3~7, 사이클당 성공률 q=0.80~0.95이면 21~86%(사이클 밖 실패는 곱하지 않은 상한). v1의 단계 검사 q는 PF를 정답으로 초기화해(`test_setup_ground_truth: true`) 낙관적이므로 q는 도크 시작 전체 경로 실행에서 재야 한다.
+재고정 뒤 파지가 실제로 잡혔는지 보는 감시는 UNRESOLVED(명령 이력으로만 판정)이고 σ 정직성(NEES)은 미검증이다.
 
-**천장 위험**
-- 정지 결정은 σ의 함수에 가까워서 LLM이 규칙을 이길 여지가 작다. 성공률은 세 조건이 비슷하고 시간·호출에서 갈릴 가능성이 크다.
-- LLM에게 실제 재량이 남는 곳은 세 곳뿐이다.
-  - σ 예산 안의 정지에서 선제 내려놓기를 할지(σ 추세·위치 고정 나이·바닥 영상·상대 글).
-  - 둘러보기 결과가 애매할 때 `look_again`과 `give_up` 중 고르기.
-  - 한쪽 둘러보기만 실패했을 때 상대를 기다릴지.
+**바닥이 구조적으로 0이 되지 않게 하는 장치**: LLM이 침묵하거나 틀려도 보관값이 없으면 규칙이 결정한다(창 끝, 세 조건 같은 시각). 규칙이 정한 set_down은 LLM이 뒤집지 못한다.
+no_comm이 규칙보다 낮아지는 경로는 LLM이 실제로 해를 끼치는 경우(불필요한 재량적 set_down, 호출 한도 소진)뿐이다.
+**천장 위험**: 정지 결정은 σ의 함수에 가까워 LLM이 규칙을 이길 여지가 작고(6절), 성공률은 세 조건이 비슷하고 시간·호출에서 갈릴 가능성이 크다.
 
-**파일럿 기준과 절차(조정자 선택 (d))**
-- 단계 검사(재고정 단계, SIM 시간 병렬 격자, seed 20개 안팎)로 규칙 성공률과 q를 먼저 잰다.
-- 규칙 성공률이 **5% 미만이거나 95%를 넘으면** 환경 난이도(경로·문 여유 같은 사전 등록 값)만 조정한다. 조건별로 손대지 않는다.
-- 첫 E2E(조건당 seed 1개)로는 비율을 알 수 없고 생존 가능성(viability)만 본다.
+**파일럿 기준(조정자 선택 (d))**: 규칙 성공률이 5% 미만이거나 95%를 넘으면 환경 난이도(사전 등록 값)만 조정한다. 조건별로 손대지 않는다.
 
-## 6. 호출·토큰 예산 (Plan A 36회/로봇, 72회/케이스; 발화 상한 6/12 반영)
+## 9. 호출·토큰 예산, 상한 위치, 종료 분류
 
-**로봇당 호출 수 추정**
-- 청구 2, 정지 결정 7(다리 8개 기준 정지 최대 7), 재고정 사이클 x2 (기대 4회 = 8, 최악 5회 = 10), 작업 중 60초 다시 묻기 약 8.
-- peer_nl은 상대 글 하나가 받는 쪽 호출을 한 번 깨운다(보내는 쪽은 같은 답에 글을 실어 보내므로 추가 호출 없음). 상한 6/12이면 받는 글 최대 6 → 호출 최대 +6(기대 약 +4).
-- 합계: no_comm 기대 25 / 최악 27(=2+7+10+8), peer_nl 기대 29 / 최악 33(=2+7+10+8+6). 36 안이지만 peer_nl 최악의 여유는 3회뿐이다.
+### 9.1 상한이 코드에서 정해지는 곳 (일치시켜야 함)
+- `harness/pair_llm_dispatch.py:50`의 `PAIR_POLICY`: 지금 `max_calls_per_actor=12`, `max_http_attempts_per_actor=12`, `max_attempts_total=24` → **36 / 36 / 72**.
+- `configs/pair_llm_v100.json:16`의 `decision_limits.max_calls_total`: 지금 24 → **72**. 두 값이 다르면 `episode_call_cap`이라는 별도 라벨이 된다(`zone_event_scheduler.py:1236-1247`).
+- 발화 상한 6/12: `decision_limits`와 채널 설정(열린 채널만 사용). 번들 변경 외 장소에 3/6이 남지 않았는지 구현 때 확인한다.
+- **"케이스당 토큰 상한 약 500k"는 코드에 없다.** 시행되는 토큰 상한은 코호트 상한뿐이다(`zone_main_budget.py`, `scripts/run_pair_llm.py`). 500k는 사전 계산 참고치다.
 
-**케이스·코호트 토큰** (호출당: 기대 6.5k, no_comm 최악 7.0k; peer_nl 최악은 받은 글이 프롬프트에 쌓여 7.5k로 잡음)
+### 9.2 호출 수 (로봇당, 새 모델: 정지 창마다 호출, 글은 창 안에서만 깨움)
 
-| | 호출/케이스 | 토큰 |
+| 구성 | no_comm | peer_nl |
 |---|---|---|
-| no_comm 기대 | 약 50 | 약 325k |
-| peer_nl 기대 | 약 58 | 약 400k (6.9k/호출) |
-| no_comm 최악 | 54 | 약 378k |
-| peer_nl 최악(받은 글 6) | 66 | 약 495k |
-| 두 LLM 조건 기대 합계 | | **약 0.73M** |
-| 두 LLM 조건 최악 합계 | | **약 0.87M** (코호트 상한 1.1M의 79%) |
-| 호출 상한(72)에서 7.5k/호출 | 72 | 540k/케이스, 두 조건 1.08M (상한의 98%) |
+| 청구 | 2 | 2 |
+| 정지 창 호출(정지 최대 7곳) | 7 × 1 | 7 × 1~2(받은 글이 있으면 +1) |
+| 둘러본 뒤 창(둘러본 로봇만, 재고정 사이클당) | 1 × k | 1~2 × k |
+| 타이머(정지 창 사이 60초 넘기는 경우) | 0–4 | 0–4 |
+| `failure` 깨움(`pose_uncertain` 등, 미측정) | 0–6 | 0–6 |
+| **기대**(k=4, 타이머 2) | 2 + 7 + 4 + 2 = **15** | 2 + 10 + 6 + 2 = **20** |
+| **높은 예상**(k=7, 타이머 4, failure 6) | 2 + 7 + 7 + 4 + 6 = **26** | 2 + 14 + 14 + 4 + 6 = **40** |
 
-- 코호트 상한 1.1M은 호출당 약 7.6k까지 호출 상한에서도 버틴다. 이를 넘으면(약 8k/호출) 1.15M이 되어 상한을 넘는다. 상한은 바꾸지 않는다(조정자 결정).
-- 케이스당 토큰 상한 약 500k(72 x 7,000)는 호출 상한 도달 + 최대 프롬프트(540k)보다 약간 낮아, 극단 경우에는 호출 한도보다 토큰 상한이 먼저 닫힐 수 있다. 기록에 남기고 값은 바꾸지 않았다.
-- 정지 결정 대기로 SIM 시간이 늘어난다(최대 7정지 x 8초 = 약 56초). 경로 추정(351–517초)에 더해도 900초 안에 들어간다.
-- 위 추정은 smoke1 실측(호출 12회, 평균 6,252 토큰, 6,130–6,432)에서 외삽한 것이며 새 설계의 실측이 아니다.
+- 발화 상한이 로봇당 6이므로 peer_nl의 +1 호출은 최대 6곳에서만 생긴다(높은 예상 값을 그만큼 낮출 수 있음).
+- **peer_nl 높은 예상 40이 36을 넘으므로 호출 한도가 먼저 닫히는 경우가 있다.** (e4)로 둘러본 뒤 창이 일부 로봇에서 빠지므로 실제 k당 호출은 이보다 적을 수 있다.
+- no_comm 높은 예상은 v2 추정(로봇당 46)보다 크게 줄었다. 글이 호출을 깨우던 v2 모델이 아니라 창마다 한 번 부르는 모델이기 때문이다. **모두 미측정 추정**이며 가짜 제어기 실행으로 실제 호출 수를 센다.
 
-## 7. #363 제어기가 노출해야 할 인터페이스 목록
+### 9.3 호출당 토큰 (3단계, v2와 같음)
+- **기대 6.5k**: smoke1의 12회 실측 평균 6,252(6,130–6,432, 이미지 2장 포함)에 v100 추가분을 얹은 값.
+- **peer_nl 후반 8.0~9.5k**: 받은 글·보낸 글이 입력에 쌓이면 약 2,880자가 더해진다. 연구용 로컬 토크나이저는 한국어를 두 음절당 1토큰으로 세므로(약 1.4k), 제공자가 1글자당 1토큰이면 약 2.9k다(**미측정**).
+- **선언 상한 11.7k**: `text_token_budget` 8,000 + 이미지 2장 2,980 + 출력 768. `text_token_budget`은 **시행되지 않는 선언값**이라 참고 천장이다.
+- **창이 입력 크기에 압력을 준다**: 입력이 클수록 호출이 길어 창 안 왕복이 마감을 넘긴다(3.2절 표). 입력 7k 이하가 왕복 1회의 조건이다.
 
-**이벤트(제어기→LLM 층, 자기 것만, 실행기 이벤트로 `scheduler_trigger` 지정)**
-1. `carry_leg_started {seg, n_segs, planned_leg_s}`: 결정 지점 (B)에서 호출을 깨운다.
-2. `carry_stop_reached {seg, high, over_budget, sigma_band, receipt}`: 두 로봇이 정지 약속에 선 시점에 발행하고, 보관된 결정을 최대 `CHECKPOINT_REOBSERVE_S`(8초)까지 기다린다.
-3. `setdown_started/completed {seg}`, `relook_result {level, sigma_band}`, `regrasp_result`, `carry_resumed`: 재고정 진행 상황.
-4. `pose_uncertain`(이미 있음): 닫힌 σ 띠를 같이 준다.
-5. `grip_event`(자기 영상으로 감지한 파지 손실): **자리만 둔다.** 첫 E2E에서는 기록만 하고 제어·LLM 입력으로 승격하지 않는다((c)).
+### 9.4 케이스·코호트 토큰 (양 로봇 합, 호출 수 9.2절 기준, 미측정 추정)
 
-**읽기(자기 것만, `own_belief`)**
-6. 닫힌 요약 `{sigma_xy_band, sigma_yaw_band, fix_age_bucket, dr_budget_remaining_bucket, over_budget}`: 띠로 준다. 수치 위치·정확한 임계값은 주지 않는다.
+| 조건 | 호출 수(2대) | 호출당 | 케이스 |
+|---|---|---|---|
+| no_comm 기대 / 높은 예상 | 30 / 52 | 6.5k | 0.20M / 0.34M |
+| peer_nl 기대 / 높은 예상 | 40 / 72(한도) | 7.5k / 9.0k | 0.30M / 0.65M |
+| **두 조건 합** 기대 / 높은 예상 | | | **0.50M / 0.99M** |
 
-**명령(LLM 층→제어기, 한 번 쓰는 보관식, 거절 가능)**
-7. 정지에서 `carry_decision(continue|set_down|wait)`.
-8. 둘러본 뒤 `post_look_decision(regrasp|look_again|give_up)`.
-9. 시간 초과 기본값은 규칙이다(`rule_default`, 기록에 남김).
+- 높은 예상 합 0.99M은 코호트 상한 1.1M 안이다(여유 약 10%). 선언 천장 11.7k × 양 로봇 한도 144회는 1.7M으로 넘지만 선언값은 시행되지 않는 값이다.
+- 토큰 상한이 닫히면 `BudgetExceeded`(`infra:API`)로 **그 사례가 채점에서 빠진다.** 가장 비싸고 마지막에 도는 peer_nl이 사라지면 핵심 칸이 비게 된다.
 
-**상대 알림**
-10. 새 상태 없이 기존 `uncertain`·`not_ready`·`stopped`·`put_down`·`done`/`abort`만 쓴다. 두 로봇의 요청은 OR로 합친다.
+**선택지(조정자 결정)**
+- (M1) **조건별 코호트**를 따로 등록해 한 조건의 초과가 다른 조건을 막지 못하게 한다(예: no_comm 0.5M, peer_nl 0.8M).
+- (M2) 가짜 제어기 + 실제 요청 본문 토큰 수 세기로 **호출당 토큰과 호출 수를 실측**해 코호트 상한을 정한다.
+- (M3) 짝 전용 입력 프로필(받은 글 8→4, 이력 12→6; 봉인 프로필은 건드리지 않음)로 입력을 줄인다. 3.2절의 왕복 마감에도 도움이 된다.
+- **권고**: M1 + M2. 실행 순서에서 peer_nl을 마지막에 두지 않거나, 앞 조건 뒤에도 peer_nl 높은 예상이 들어갈 여유를 보장한다.
 
-**기록(평가 전용 포함)**
-11. 정지마다 `{조건, decided_by, 결정, σ 띠, rule_would_do, 지연, 본 글 ID}`를 남긴다.
-12. 오차는 평가 전용 정답으로 정지마다 따로 기록한다. 모델이나 제어기에는 되돌리지 않는다.
+### 9.5 종료·분류표 (짝 경로 라벨 기준)
 
-**불변 조건**
-- 제어기는 LLM 응답을 기다리며 틱을 멈추지 않는다(한 번 쓰는 보관식).
-- 접촉·성공·시뮬레이터 상태는 전달하지 않는다.
-- 네 조건의 고정 상태 채널은 동일하다.
+| 상황 | 짝 경로의 실제 기록 | 분류(우리) | LLM 조건 1차 성공률에 | 비고 |
+|---|---|---|---|---|
+| 호출 한도 소진 | 스케줄러 거절(`episode_call_cap`/`budget`/`http_budget`), 종료 라벨 `budget_exhausted` | `LLM_CALL_CAP_REACHED` | **성공으로 세지 않는다**(완주해도 `completed_by_rule_default` 칸) | 이후 정지는 규칙 기본값으로 이어진다. 실패가 아니라 비용 지표 |
+| 코호트 토큰 상한 | `BudgetExceeded` → `infra:API`(`pilot_budget_exhausted`) | 사례 탈락(채점 제외) | 포함 안 함 | 새 코호트 ID로 그 조건만 다시 돌린다. 같은 코호트 재시도는 호스트 오류에만 허용 |
+| 규칙 기본값 비율 > 50% | 정지 기록 | `LLM_INERT` | 제외 | 모델이 대부분 침묵·실패. 규칙 성능이 LLM 증거에 섞이지 않게 한다 |
+| 창 마감 놓침 | `DEADLINE_PASSED` | 결정 아님(규칙 기본값) | 지표로 집계 | 3.2절. 놓침이 많으면 `LLM_INERT`로 이어진다 |
+| `REFIX_DISAGREEMENT`, `PARTNER_*`, `HIGH_CHECKPOINT_*`, `LATE_OR_EXPIRED_GO` | 제어기 | 제어기 실패 | 모든 조건 공통 | 조건 차이가 아니다 |
+| 정상 답이 하나도 없음 | 기존 규칙 | `infra:API` | 제외 | 기존 `trial_failure_class` |
 
-## 8. 위험·남은 결정
-- #363의 재고정 상태기계가 없으면 LLM 층을 시험할 수 없다. HIGH 내려놓기 작업자가 1f7fb800 이후로 diff를 옮기는 중이다.
-- 번들 번호: 리베이스 때 main과 열린 PR 전체에서 최댓값을 다시 확인해 새 ID를 쓴다(AGENTS.md 번호 예약).
-- 이 설계의 코드(정지 결정 어댑터, 가짜 제어기 시험)는 #363 새 SHA 리베이스 뒤에 별도 커밋으로 만든다. 지금 이 PR에는 설계 문서만 있다.
-- 조건 이름표(`no_comm`/`peer_nl`)가 모델에 보이는 문제는 README 위험 9에 이미 적었다.
+- 기존 `trial_failure_class`는 정상 답이 하나라도 있으면 통과시키므로, 모델이 거의 침묵해도 규칙이 운반해 "성공"으로 기록될 수 있다. 그래서 `LLM_INERT` 규칙이 필요하다.
+  사례 기록에 `decisions_total`, `decided_by` 분포, 마지막 LLM 결정 시각을 남긴다.
+
+## 10. 인터페이스 목록 v3 (설계 담당 7b절 hook과 우리 층의 대응)
+
+**작업 경계**: 옵션 A(한 작업 안 상태기계) 확정. 창 안 대화는 창 범위 수신 깨움(3.2절).
+
+**사건(제어기 → LLM 층, 자기 것만)** — 설계 담당 7개, `pair_progress.detail.kind`로 싣고 깨움 라벨은 우리 쪽에서 매김(3.3절).
+1. `carry_leg_started`, 2. `carry_stop_reached`(창 열기, 필드: seg, stop, high, over_budget, sigma_band, receipt, rule_default, options, latch_until_s, decide_at_s), 3. `setdown_started`, 4. `setdown_completed`,
+5. `relook_result {level, sigma_band}`(levels: fix/no_fix/no_safe_view/timeout/expired/limit/closed — **(e4)용 `skipped_in_budget` 요청**), 6. `regrasp_result`, 7. `carry_resumed`.
+`pose_uncertain`(기존, `failure`)과 `grip_event`(자리만, 기록만, (c))는 이 모듈 밖이다.
+
+**읽기(자기 것만, `own_belief`)**: `{sigma_xy_band(fix/budget/over/unknown), sigma_yaw_band(within/over/unknown), fix_age_bucket(none/lt_6s/lt_60s/ge_60s), dr_budget_remaining_bucket(gt_50pct/25_50pct/lt_25pct/none/unknown), over_budget}` 숫자 없음.
+
+**명령(LLM 층 → 제어기, 보관식 one-shot, 거절 가능, 닫힌 거절 이유)**
+- `carry_decision(continue | set_down)`(우리 층이 제안하는 값; hook은 `wait`도 받지만 제안 안 함). 거절 이유: `OVER_BUDGET`, `NOT_AT_STOP`, `UNKNOWN_CHOICE`, `ALREADY_LATCHED`, `DEADLINE_PASSED`.
+- `post_look_decision(regrasp | look_again)`(`give_up`은 제안 안 함). 거절 이유: `LOOK_OVER_BUDGET`, `LOOK_AGAIN_USED`, `NOT_AFTER_LOOK` 등.
+- 제어기는 LLM 응답을 기다리며 틱을 멈추지 않는다. 명령이 없으면 창 끝에 규칙 기본값.
+
+**우리 층이 #363(설계 담당)에 요청하는 것**
+- 8 s 창과 무보고 중단 8 s의 값 충돌·echo 길이 확인(3.4절 1·2항).
+- **둘러본 뒤 창을 LLM 유무와 관계없이 모든 조건에서 열기**(3.4절 4항).
+- `relook_result.level`에 (e4)의 "둘러보지 않음"을 위한 값 추가.
+- 창 시각(`latch_until_s`, `decide_at_s`)의 시계 명시.
+- W=8 s(과 8방향 둘러보기)로 σ 모델·시간·k 재계산.
+
+**기록(평가 전용 포함)**: 정지마다 `{조건, decided_by, llm_choice, 결정, σ 띠, rule_would_do, refix_from, latency_s}`. 평가 전용 오차와 `rule_would_do`는 모델 요청 생성기와 같은 함수·레코드에서 나오지 않는다.
+
+**불변 조건**: 접촉·성공·시뮬레이터 상태·짝 상태는 전달하지 않는다. 네 조건의 고정 상태 채널은 동일하다. 상대 글은 추정기에 들어가지 않는다.
+
+## 11. 시험 계획 (구현 때)
+- 가짜 제어기 시험 7종(4절).
+- **창 범위 수신 깨움 시험**: (1) 창 안에서 받은 글이 호출 2를 시작함, (2) 창 밖(작업 중)에는 시작하지 않음, (3) no_comm·rule은 변경 전후 명령 궤적 비트 동일, (4) 호출 중 도착한 글의 처리, (5) 창 시각 시계 불변(원점 0/1.3/2.6/7.0).
+- 깨움 시험: `pair_progress.detail.kind`별 라벨 표(3.3절)와 "호출 시작이 사건 즉시"(1순위).
+- 누수 시험: 기존 `own_status` 누수 시험(21종 문자열·200회 무작위·시그니처)에 새 필드(`sigma_band`, `relook_result`, `rule_would_do`, `own_belief`)를 더한다. 모델 요청 바이트에 평가 전용 키·상대 게시 상태가 없음을 확인한다.
+- 상한 일치 시험: `PAIR_POLICY`·`decision_limits`·번들 값이 같고 발화 상한 6/12가 peer_nl에서만 효력을 가진다.
+- 토큰·호출 실측: 새 프롬프트의 요청 본문으로 호출당 토큰(기대·후반), 호출 수, 창 안 왕복 마감 통과율을 계산해 3.2·9절을 갱신한다.
+- #363 병합 후 확인: `uncertain` 두 뜻의 단계 구분(4절).
+
+## 12. 남은 결정 (조정자)
+1. **창 범위 수신 깨움**(3.2절): 짝 층의 `own_job` 콜백으로 정지 창 동안 글이 작업 중 로봇을 깨우게 한다. 봉인 의미(글은 작업 뒤)와 다르다. 승인 필요.
+2. **둘러본 뒤 창**(3.4절 4항): 모든 조건에서 열고 길이를 8 s로 할지.
+3. **`give_up` 제외**(5절, 우리 제안): 첫 코호트 어휘에서 뺀다.
+4. 창 8 s와 무보고 중단 8 s의 값 충돌·echo 길이: #363 확인 후 필요하면 창 길이 재고려. 8 s 창의 왕복 마감(3.2절 표)이 빠듯하다는 점을 알림.
+5. 토큰 상한 선택지 M1/M2/M3(9.4절).
+6. `LLM_INERT` 임계 50%와 분류표(9.5절) 승인, `LLM_CALL_CAP_REACHED` 이름.
+7. 규칙 조건의 비대칭 σ(한쪽만 예산 초과) 동작은 4절 OR로 정의됨. 설계 담당이 같은 해석인지 확인.
 
 ## 참고 자료 (확인 단계 표기)
 - 확인(서지, 검색 결과 대조): Bahr·Walter·Leonard, "Consistent cooperative localization", ICRA 2009, pp. 3415–3422. 초록 요지는 검색 요약으로 확인했고 PDF는 읽지 못했다(본문 미열람).
-- 확인(서지): Kia·Rounds·Martinez, "Cooperative Localization for Mobile Agents: A Recursive Decentralized Algorithm Based on Kalman-Filter Decoupling", IEEE Control Systems Magazine 36(2):86–101, 2016. arXiv 1505.05908.
-- 확인(서지): Luft·Schubert·Roumeliotis·Burgard, "Recursive decentralized localization for multi-robot systems with asynchronous pairwise communication", IJRR 37(10):1152–1167, 2018, doi 10.1177/0278364918760698. 본문 미열람.
-- 확인(서지): Julier·Uhlmann, "A non-divergent estimation algorithm in the presence of unknown correlations", ACC 1997, pp. 2369–2373.
-- 확인(서지): Li·Nashashibi, "Cooperative multi-vehicle localization using split covariance intersection filter", IEEE ITS Magazine 5(2), 2013, doi 10.1109/MITS.2012.2232967.
-- 확인(서지): Carrillo-Arce·Nerurkar·Gordillo·Roumeliotis, "Decentralized multi-robot cooperative localization using covariance intersection", IROS 2013, pp. 1412–1417, doi 10.1109/IROS.2013.6696534.
-- 확인(서지): Chang·Chen·Mehta, "Resilient and consistent multirobot cooperative localization with covariance intersection", IEEE T-RO 38(1):197–208, 2022(IEEE 온라인 게재 2021). arXiv 2108.08789.
-- 확인(서지): Fox·Burgard·Kruppa·Thrun, "A probabilistic approach to collaborative multi-robot localization", Autonomous Robots 8(3):325–344, 2000. Fox·Burgard·Thrun, "Active Markov localization for mobile robots", Robotics and Autonomous Systems 25:195–207, 1998. Howard·Matarić·Sukhatme, "Putting the 'I' in 'team': an ego-centric approach to cooperative localization", ICRA 2003, pp. 868–874.
-- 확인(서지): Roumeliotis·Bekey, "Distributed multirobot localization", IEEE T-RA 18(5), 2002(#363 작성자가 확인한 표기를 인용).
-- 확인(서지, 요지는 검색 요약): Ren 외, "Robots That Ask For Help: Uncertainty Alignment for Large Language Model Planners"(KnowNo), CoRL 2023, arXiv 2307.01928. Huang 외, "Inner Monologue", CoRL 2022, PMLR 205:1769–1782. Mandi·Jain·Song, "RoCo: Dialectic Multi-Robot Collaboration with Large Language Models", ICRA 2024. Zhang 외, "Building Cooperative Embodied Agents Modularly with Large Language Models"(CoELA), ICLR 2024.
-- 제목만 확인(가정에 쓰지 않음): "Large Language Models for Multi-Robot Systems: A Survey", arXiv 2502.03814. "Multirobot cooperative localization based on event-triggered mechanism", Intelligent Service Robotics 2025(Springer).
+- 확인(서지): Kia·Rounds·Martinez, IEEE Control Systems Magazine 36(2):86–101, 2016. arXiv 1505.05908. 본문 미열람.
+- 확인(서지): Luft·Schubert·Roumeliotis·Burgard, IJRR 37(10):1152–1167, 2018, doi 10.1177/0278364918760698. 본문 미열람.
+- 확인(서지): Julier·Uhlmann, ACC 1997, pp. 2369–2373. Li·Nashashibi, IEEE ITS Magazine 5(2), 2013, doi 10.1109/MITS.2012.2232967. Carrillo-Arce 외, IROS 2013, pp. 1412–1417. Chang·Chen·Mehta, IEEE T-RO 38(1):197–208, 2022, arXiv 2108.08789.
+- 확인(서지): Fox·Burgard·Kruppa·Thrun, Autonomous Robots 8(3):325–344, 2000. Fox·Burgard·Thrun, "Active Markov localization for mobile robots", Robotics and Autonomous Systems 25:195–207, 1998. Howard·Matarić·Sukhatme, ICRA 2003, pp. 868–874.
+- **2차 인용(미확인)**: Roumeliotis·Bekey, "Distributed multirobot localization", IEEE T-RA 18(5), 2002. #363 작성자가 확인했다고 적은 표기를 그대로 받았고 이번에 직접 확인하지 못했다.
+- 서지 확인, **요지는 검색 요약뿐(본문 미확인)**: Ren 외, KnowNo, CoRL 2023, arXiv 2307.01928. Huang 외, Inner Monologue, CoRL 2022, PMLR 205:1769–1782. Mandi·Jain·Song, RoCo, ICRA 2024. Zhang 외, CoELA, ICLR 2024.
+- 서지 확인·본문 미확인: Chen·Arkin·Zhang·Roy·Fan, "Scalable Multi-Robot Collaboration with Large Language Models: Centralized or Decentralized Systems?", ICRA 2024, pp. 4311–4317, arXiv 2309.15943 — 성공률과 토큰 효율로 통신 구조를 비교(6.3절 통신 비용 지표 정의에 연결; 수치는 읽지 못함).
+- 서지 확인·본문 미확인, 구조 비유로만 사용: Alshiekh 외, "Safe Reinforcement Learning via Shielding", AAAI 2018(제어기가 안전 경계를 쥐고 학습·언어 층은 그 안에서만 고르게 하는 차폐 구조 — `OVER_BUDGET` 거절·`LOOK_OVER_BUDGET`·규칙 기본값과 같은 모양). Sha, "Using simplicity to control complexity", IEEE Software 18(4):20–28, 2001, doi 10.1109/MS.2001.936213(Simplex). 제목만 확인: "The Black-Box Simplex Architecture for Runtime Assurance of Autonomous CPS", arXiv 2102.12981.
+- 서지 확인·본문 미확인: Shi 외, "Hi Robot: Open-Ended Instruction Following with Hierarchical Vision-Language-Action Models", arXiv 2502.19417 — 느린 상위 모델과 빠른 하위 정책을 다른 주기로 운영(느린 LLM / 빠른 제어기 구조). 창을 두고 마감에 규칙 기본값을 실행하는 이 설계의 시간 분리 선례로 인용하나 세부 구조는 직접 확인하지 못했다.
+- 제목만 확인(가정에 쓰지 않음): "Large Language Models for Multi-Robot Systems: A Survey", arXiv 2502.03814. "Multirobot cooperative localization based on event-triggered mechanism", Intelligent Service Robotics 2025.
 - 확인 불가: scite 연구 도구는 유료라 쓰지 못했고, 위 서지는 웹 검색 결과로만 대조했다.
-- 미확인(인용 안 함): Bar-Shalom 외 2001의 NEES 일관성 검정. 이 설계는 NEES 검정에 의존하지 않는다.
-- 우리 코드·기록: `harness/zone_pair_status.py`(고정 상태 열거), `harness/zone_event_scheduler.py`(다시 묻기 10·60초), `harness/zone_study_protocol.py`(결정 근거 `own_belief`), `harness/pair_llm_runtime.py`(`ClaimGate`), #363 `harness/zone_pair_highpose_runtime.py`와 `experiments/2026-10-03-pair-carry-highpose/README.md`(DR 영수증·사례 상한 900초·재고정 추정치), 이 실험의 v99 smoke1 기록.
+- 미확인(인용 안 함): Bar-Shalom 외 2001의 NEES 일관성 검정. 이 설계는 σ의 정직성에 **의존한다**(NEES 미검증).
+- 내부 기록(직접 열어 확인): `sigma_refix_v98_note_ko.md`(설계 담당, 2026-10-04, 미커밋 작업 트리), `harness/zone_pair_highpose_refix.py` 헤더 주석(창·echo·마감 설명), `harness/zone_sim_cost.py`(`params()`와 `call_cost`를 직접 실행해 3.2절 표 작성).
+- 우리 코드(이번 개정에서 직접 열어 확인): `harness/zone_pair_executor.py:336-340`, `harness/zone_corridor_control.py:186`, `harness/zone_pair_status.py:174-200`, `harness/zone_study_decisions.py:28-30`, `harness/pair_llm_dispatch.py:305`(`own_job` 콜백), `harness/zone_event_scheduler.py`(676-686, 1196-1260, 1570-1584), `harness/zone_own_contract.py:24-33,113-117`, `harness/zone_study_integration.py:443-460`, `harness/zone_study_inputs.py:58-59`, `harness/zone_study_llm_driver.py:150-165`, `harness/zone_pair_highpose_timing.py:24`(#363), `experiments/2026-10-03-pair-carry-highpose/README.md` 162–166행과 `fix363/COORDINATOR_DECISION.md` 46–47행(#363), 이 실험의 v99 smoke1 기록.
