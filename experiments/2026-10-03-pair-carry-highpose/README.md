@@ -28,6 +28,27 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `GRIP_NOT_CONFIRMED`는 그대로다. 공유 동결 파일(`zone_pair_grasp.py`, `run_m2_pair.py`)은 바꾸지 않았다.
 - **복구 동작은 아직 넣지 않았다**(관측기 수정이 폐루프에서 확인된 뒤).
 
+### 시작 상태 완화 v2: 빠져나갈 벽 면 기준 깊이 (Track A diff, 조정자 결정 2026-10-04)
+
+- **원인(`af2f7c2a` raise_high r2 10.9초 거부, 오프라인 평가 전용 정답):** 추정 오차 16.7 mm(벽 쪽 13.8 mm, 정직한 σ에서 NEES 0.42)
+  때문에 차체 뒤 모서리(-0.15, -0.09)가 50 mm 벽 상자의 가운데 면 바깥쪽으로 옮겨졌다. "가장 가까운 면까지의 깊이"가 바깥 면을
+  가리키게 되어, 벽에서 멀어지는 동쪽 이동이 "더 깊어짐"(`inside_pair_deeper`, -13.3 → -22.9 mm)으로 셈해졌다. 실제 차체는 벽
+  안쪽 면에서 34.6 mm 떨어져 있었다. 가장 가까운 면 깊이는 벽의 가운데 축(medial axis)에서 끊어진다.
+- **변경(diff `relief_exit_face_v98.diff`, sha256 `80daa894…`, +436/−9, 3 파일):** `harness/zone_pair_highpose_start_relief.py`만
+  바꾼다. 시작부터 벽 상자 안에 있는 쌍의 깊이를, 시작 표본에서 고정한 "로봇 자기 추정 기준점이 바라보는 벽 면"까지 잰다
+  (`DEPTH = 'exit_face'`, 완화 ID `v98_start_state_relief_v2`). 빈 쪽으로 가는 이동은 더 깊어짐으로 세지 않고, 먼 면 쪽 이동은
+  더 깊어짐으로 센다(v1이 받아들이던 후진 134개를 v2는 거절). 무진입 규칙(`start_outside_pair_enters`), 바닥값, 묶음 범위
+  `SCOPE='group'`(이미 결정), `zone_own_guards`·`zone_pair_geometry`·`zone_final_pair_guards`는 그대로. `DEPTH='nearest_face'`는
+  v1 규칙(재생·돌연변이 시험용). 새 시험 `tests/test_highpose_start_exit_face.py`와 CI 목록 한 줄.
+- **작성자 결과(오프라인):** 운전 속도(앞 0.05–0.2)에서 v1은 0개, v2는 800개 명령을 받아들인다. 평가 전용 정답으로 실제 차체 최소
+  여유 21.2 → 33.6 mm, 관통 없음. 알려진 한계(의도): 벽 쪽 추정 오차가 약 27 mm(약 1.3σ)를 넘으면 여전히 거절한다.
+- **guard 규칙의 의미가 바뀌므로** #363 독립 재검토 범위에 들어간다. 그 검토 없이 병합하지 않는다.
+- Track A의 관련 시험(522개)과 `test_review_*`(412개)는 `66ff0978`+diff에서 돌았다. 이 head에서 venv로 다시 돌린 결과는 아래 단계
+  검사 절에 적는다.
+- **참고 자료(Track A 표기 그대로):** [F] MoveIt `fix_start_state_collision`(humble에만 있음, main은 거절만 함); [F] Nav2
+  BackUp/DriveOnHeading의 `isCollisionFree` 앞질러 모의(simulate-ahead); [K] Weidemaier 외 arXiv 2604.16512(가운데 축에서 부호 거리
+  기울기가 뛰는 문제) — 검색 요약에서만 확인, **미확인**; [S] 시간 연속성으로 쪽을 고르는 방법 — 다시 읽지 않음, **미확인**.
+
 ### 사례 시간 상한 300 → 900 SIM초 (사전 등록 개정 v98-cap-3, 사용자 결정 2026-10-04)
 
 - **결정:** 사용자 "시간 상한도 늘리셈". 조정자가 v98 사례 cap을 900 SIM초로 정했다(모든 집행기 같은 값, v98만).
