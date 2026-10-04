@@ -33,6 +33,37 @@ from scripts import run_m2_pair as m2
 GRASP_TIME_VIEW = grip.GRASP_TIME_VIEW
 
 
+GRASP_RECEIPT_CARRIED_EVENT = 'beam_grasp_receipt_carried'
+
+
+def carry_grasp_receipt(ctl, t):
+    """Keep the own grasp receipt across an intermediate HIGH stop (v98 keeps the beam closed at HIGH).
+
+    The parent's ``PairGraspRelook.beam_grasp_confirmed`` (zone_pair_grasp.py, frozen) is true only while the
+    receipt's ``segment`` equals the current ``seg``; it was written for the inherited route, which lowered, opened
+    and re-grasped at every checkpoint. v96/v98 stop at HIGH and only advance ``seg``, so from leg 1 on the
+    controller read "not carrying" while holding the beam, and the pair guard computed its sweep certificates with
+    ``loaded=False`` (beam not in the swept volume) on exactly the door legs. Recorded: align_to_carry@1236c63d,
+    receipt segment 0, checkpoint stops seg 1 and 2 with the gripper closed (tests/fixtures/
+    v98_grasp_receipt_segments_1236c63d.json).
+
+    The receipt moves to the new segment only when it belonged to the previous segment; the parent already clears it
+    on any issued open (``on_issued_command``, pulse >= 2000), and the property still requires the issued gripper
+    pulse < 2000, so the carried receipt rests on the own issued-command history only (the v98 grip decision). The
+    attached-object convention is the standard one (MoveIt attached collision objects stay attached across motions
+    until an explicit detach; 미확인: not re-read for this change).
+    """
+    receipt = getattr(ctl, 'beam_grasp_receipt', None)
+    if not receipt or receipt.get('segment') != ctl.seg-1:
+        return False
+    minted = receipt.get('minted_segment', receipt['segment'])
+    ctl.beam_grasp_receipt = {**receipt, 'segment': ctl.seg, 'minted_segment': minted,
+                              'carried_from_segment': ctl.seg-1, 'carried_at_s': t,
+                              'carried_by': 'own issued commands: closed at HIGH through the stop, no open issued'}
+    ctl.log(ctl.rid, GRASP_RECEIPT_CARRIED_EVENT, t, segment=ctl.seg, from_segment=ctl.seg-1, minted_segment=minted)
+    return True
+
+
 class HighController:
     """v96 HIGH carry. Grip monitor is LOG-ONLY (first-E2E scope, user 2026-10-03).
 
@@ -311,6 +342,7 @@ class HighController:
             # queues lower/open/raise. Change segment keys after both stop.
             def checkpoint(t):
                 self.seg += 1
+                carry_grasp_receipt(self, t)
                 self.checkpoint_started = t
                 self.checkpoint_fix_after = t
                 self.grasp_estimate = None

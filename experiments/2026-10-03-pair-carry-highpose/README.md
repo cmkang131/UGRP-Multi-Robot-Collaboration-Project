@@ -65,6 +65,28 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   **그 뒤에는:** (1) 이전 v98 기록과 결과를 합산하지 않는다(SHA로 구분). (2) 이 README의 오프라인 NEES 표를 다시 만든다.
   (3) σ 문턱(짝 입장 0.05 m, 도착 확인의 허용 오차 경계)을 다시 검증한다. σ가 정직해지면 같은 문턱의 의미가 바뀌기 때문이다.
 
+### HIGH 정지 뒤 파지 영수증 이어주기 (내려놓기 설계 담당 관찰, 코드·기록으로 확인, 2026-10-05)
+
+- **결함:** 동결 파일 `zone_pair_grasp.py`의 `beam_grasp_confirmed`는 `receipt['segment'] == self.seg`이고 집게 명령이
+  2000 미만일 때만 참이다. v96/v98은 중간 HIGH 정지(`checkpoint()`)에서 빔을 닫은 채 `seg`만 1 올리므로, 다리 1부터
+  제어기와 짝 guard의 `carrying_beam`이 "들고 있지 않음"으로 읽었다. 기록 확인: `align_to_carry@1236c63d`
+  (`student_record.json` sha256 `366f72cf…`)에서 두 로봇 모두 영수증은 구간 0에서 만들어졌고, 정지 `seg` 1·2에서 열림
+  명령이 없었다.
+- **영향(이전 v98 실행 전부, 다리 1 이상):** guard가 `loaded=False`로 판정해 `arm_clearance`·`motion_clear`에 빔 구(sphere)를
+  넣지 않았다. 즉 문 다리에서 들고 있는 빔 자체의 벽 충돌 여유는 확인되지 않았다(덜 보수적). 문 축 완화
+  advisory(등록된 경우, `loaded`일 때만 작동)와 `LOADED_BASE_MOTION_REQUIRES_HIGH`도 그 다리에서 꺼져 있었고, guard 거부·시작 상태 완화
+  기록의 `loaded` 값도 거짓이었다. 이전 v98 결과의 문 다리 통과는 빔 여유 확인 없이 얻은 것이므로 이 수정 뒤 결과와 합산하지
+  않는다. 이 수정으로 guard가 더 엄격해져 문 다리 거부가 늘 수 있다(다음 단계 검사에서 확인).
+- **수정(v98 런타임만, 동결 파일 불변):** `checkpoint()`가 `seg`를 올린 직후 `carry_grasp_receipt()`가 직전 구간의 영수증만
+  새 구간으로 옮긴다(`minted_segment`·`carried_from_segment` 보존, 이벤트 `beam_grasp_receipt_carried`). 근거는 자기 명령
+  이력뿐이다(HIGH에서 닫은 채 정지, 열림 명령 없음). 열림 명령 때 부모가 영수증을 지우는 것과 동결 속성의 집게 명령 확인은
+  그대로라, 열린 집게는 여전히 "들고 있지 않음"이다. 구간을 건너뛴 오래된 영수증은 옮기지 않는다. 정답 정보는 쓰지 않는다.
+- **시험:** `tests/test_highpose_grasp_receipt_carry.py`(기록 발췌 `tests/fixtures/v98_grasp_receipt_segments_1236c63d.json`).
+  수정 전 속성이 기록의 seg 1·2에서 거짓이 되는 것, 수정 뒤 guard `carrying_beam`이 참인 것, 영수증 없음·오래된 영수증·열린
+  집게의 음성 경우, 실제 `checkpoint()` 경로에서 정지마다 한 번 옮겨지는 것을 확인한다.
+- **내려놓기 재고정(v6)과의 관계:** 이어주기는 `checkpoint()` 안에서 일어난다. 내려놓기 뒤 다시 잡는 경로는 영수증을 새로
+  만들거나(열림 명령이 있으면 지워진다) 이어주기를 보존해야 한다.
+
 ### 검토 대응 뒤 단계 검사 3개 (`1236c63d`, 2026-10-05)
 
 DEV_PILOT·FUNCTIONAL_DEV, seed 911, `zone_wide_door_geometry_v3`, 보정 `398372ae…`, weld off, floor_light_v1, LLM 호출 0.
