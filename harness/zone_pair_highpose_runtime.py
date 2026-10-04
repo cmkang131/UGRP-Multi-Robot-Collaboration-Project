@@ -19,6 +19,7 @@ from harness import zone_pair_highpose_posture_defer as posture_defer
 from harness import zone_pair_highpose_dr_checkpoint as dr_checkpoint
 from harness import zone_pair_highpose_approach_looks as approach_looks
 from harness import zone_pair_highpose_arrival_confirm as arrival_confirm
+from harness import zone_pair_highpose_refix as refix
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_runtime import Runtime as PreviousRuntime
 from harness.zone_final_pair_guards import CommandGuard as PreviousGuard
@@ -296,7 +297,8 @@ class HighController:
             from harness.zone_pair_highpose_timing import CHECKPOINT_REOBSERVE_S
             report = self.port.own.last_report
             # v98 (zone_pair_highpose_dr_checkpoint): no wall is visible at HIGH, so a fresh fix cannot come;
-            # an own DR report inside the unchanged 50 mm / 3 deg budget is the receipt, over budget aborts now.
+            # an own DR report inside the derived budget (67.4 mm / 2.89 deg, decision 5) is the receipt, over budget
+            # aborts now (with the sigma re-fix mixin an over-budget report was already turned into a re-fix before the barrier).
             kind, detail = dr_checkpoint.decide(report, now, self.checkpoint_started, self.checkpoint_fix_after,
                                                 CHECKPOINT_REOBSERVE_S)
             if kind == 'over':
@@ -337,7 +339,8 @@ class HighController:
         return carry_align.gate_schedule(self, super().door_schedule(t0), t0)
 
     def _wait_lower(self, now, arm_idle):
-        if self.seg+1 < len(self.segments):
+        # v98 (zone_pair_highpose_refix): a decided sigma re-fix takes the final set-down path at this stop.
+        if self.seg+1 < len(self.segments) and not getattr(self, 'refix_active', False):
             # Same end-of-leg lower barrier is a STOP rendezvous only. It never
             # queues lower/open/raise. Change segment keys after both stop.
             def checkpoint(t):
@@ -380,7 +383,9 @@ class HighController:
         return self.set('wait_open', now)
 
     def _wait_open(self, now, arm_idle):
-        if self.seg+1 < len(self.segments) or not self.floor_return_verified:
+        # An intermediate release only for a decided re-fix; the parent then opens to the v3 ``cp_open`` path.
+        intermediate = self.seg+1 < len(self.segments)
+        if (intermediate and not getattr(self, 'refix_active', False)) or not self.floor_return_verified:
             return self._transit_abort('FINAL_FLOOR_RELEASE_REQUIRED', now)
         return super()._wait_open(now, arm_idle)
 
@@ -442,7 +447,7 @@ class GraspViewLogOnly(m2.M2DoorStudent):
 def controller_class(base):
     # blind.HoverConfirm sits between HighController and V3Controller: hover check, then the blind descent (v98).
     # posture_defer.DeferRelook goes first: an align re-look never starts mid arm transition (v98).
-    return type('HighPairController', (posture_defer.DeferRelook, HighController, blind.HoverConfirm, base,
+    return type('HighPairController', (posture_defer.DeferRelook, refix.SigmaRefix, HighController, blind.HoverConfirm, base,
                                        GraspViewLogOnly), {})
 
 
@@ -465,6 +470,8 @@ class Execution(previous.Execution):
         ctl.v98_measured_camera_keys = posture_defer.measured_keys(kwargs['calibration'])  # static calibration
         self.command_guard = CommandGuard(self, self.vision)
         blind.adopt(self.command_guard, ctl)
+        # v98 sigma re-fix look (refix.SigmaRefix.align_look_choices): the same sweep guard the align re-look uses.
+        ctl.refix_sweep_guard = self.command_guard.sweep_guard
 
 
 class Team(previous.Team):
@@ -521,7 +528,8 @@ def adopt_v98_frame_gate(runtime):
             'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record(), 'dock_look': relook.record(),
             'carry_align': carry_align.record(), 'relook_posture_defer': posture_defer.record(),
             'dr_checkpoint': dr_checkpoint.record(), 'approach_looks': approach_looks.record(), 'arrival_confirm': arrival_confirm.record(),
-            'high_edge_informative': HIGH_EDGE_INFORMATIVE}
+            'high_edge_informative': HIGH_EDGE_INFORMATIVE,
+            'sigma_refix': refix.record()}
 
 
 def adopt_look_recovery(runtime):

@@ -75,6 +75,7 @@ def test_registry_closure_and_workflow():
                  'harness/zone_pair_highpose_final_veto.py', 'harness/zone_pair_highpose_pf_consistency.py', 'harness/zone_pair_highpose_relook.py', 'harness/zone_pair_highpose_carry_align.py',
                  'harness/zone_pair_highpose_posture_defer.py', 'harness/zone_pair_highpose_dr_checkpoint.py',
                  'harness/zone_pair_highpose_approach_looks.py', 'harness/zone_pair_highpose_arrival_confirm.py',
+                 'harness/zone_pair_highpose_refix.py',
                  'harness/zone_pair_vision.py',
                  'harness/zone_study_pose_delay_p03.py', c.REGISTRY, c.WORKFLOW, c.CALIBRATION_CONTRACT):
         assert b['source_sha256'][name] == c.base.sha(c.ROOT/name)

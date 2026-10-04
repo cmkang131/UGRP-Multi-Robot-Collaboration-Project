@@ -39,19 +39,28 @@ def test_decide_waits_for_the_unchanged_minimum_stop():
 def test_decide_accepts_own_dr_within_the_same_budget():
     kind, detail = dc.decide(rep(11.3, fix_t=2., sxy=.0424, syaw_deg=1.38), 11.3, 10., 10., MIN)
     assert kind == 'dr' and math.isclose(detail['fix_age_s'], 9.3)
-    assert dc.BUDGET_XY_M == .05 and math.isclose(dc.BUDGET_YAW_RAD, math.radians(3.))   # nothing widened
+    # decision 5 (2026-10-04): the DR receipt budget is the derived one, the fix thresholds stay 50 mm / 3 deg
+    assert math.isclose(dc.BUDGET_XY_M, .07*(1-1.645/math.sqrt(2000)))
+    assert math.isclose(dc.BUDGET_YAW_RAD, math.radians(3.)*(1-1.645/math.sqrt(2000)))
+    assert dc.FIX_XY_M == .05 and math.isclose(dc.FIX_YAW_RAD, math.radians(3.))
+    assert dc.decide(rep(11.3, fix_t=2., sxy=.0591, syaw_deg=1.63), 11.3, 10., 10., MIN)[0] == 'dr'   # was 'over' at 50 mm
 
 
 def test_decide_over_budget_aborts_instead_of_waiting():
-    assert dc.decide(rep(11.3, fix_t=2., sxy=.0591, syaw_deg=1.63), 11.3, 10., 10., MIN)[0] == 'over'
-    assert dc.decide(rep(11.3, fix_t=2., sxy=.03, syaw_deg=3.1), 11.3, 10., 10., MIN)[0] == 'over'
+    assert dc.decide(rep(11.3, fix_t=2., sxy=.0675, syaw_deg=1.63), 11.3, 10., 10., MIN)[0] == 'over'
+    assert dc.decide(rep(11.3, fix_t=2., sxy=.03, syaw_deg=2.9), 11.3, 10., 10., MIN)[0] == 'over'
     assert dc.decide(rep(11.3, fix_t=2., sxy=float('nan'), syaw_deg=1.), 11.3, 10., 10., MIN)[0] == 'over'
 
 
 def test_decide_keeps_the_fresh_fix_receipt():
     assert dc.decide(rep(11.3, fix_t=10.6, sxy=.01, syaw_deg=.5), 11.3, 10., 10., MIN)[0] == 'fix'
-    # a fresh fix that is still wide waits for a better one (old behaviour, bounded by the 8 s timeout)
-    assert dc.decide(rep(11.3, fix_t=10.6, sxy=.08, syaw_deg=.5), 11.3, 10., 10., MIN)[0] == 'wait'
+    # the fix threshold did not move with the DR budget (decision 5 covers the DR receipt only); a fresh fix over it
+    # is judged as a DR report against the budget: one abort boundary (decision v6-3, #363 issuecomment-5983294916)
+    assert dc.decide(rep(11.3, fix_t=10.6, sxy=.06, syaw_deg=.5), 11.3, 10., 10., MIN)[0] == 'dr'
+    assert dc.decide(rep(11.3, fix_t=10.6, sxy=.0675, syaw_deg=.5), 11.3, 10., 10., MIN)[0] == 'over'
+    assert dc.decide(rep(11.3, fix_t=10.6, sxy=.08, syaw_deg=.5), 11.3, 10., 10., MIN)[0] == 'over'
+    # a fresh fix inside the unchanged fix thresholds stays a fix receipt even between the budget and 3 deg
+    assert dc.decide(rep(11.3, fix_t=10.6, sxy=.01, syaw_deg=2.95), 11.3, 10., 10., MIN)[0] == 'fix'
 
 
 def test_decide_without_a_usable_report_waits():
@@ -66,7 +75,7 @@ def test_decide_treats_a_voided_receipt_as_dr_not_wait():
     # (1f7fb800 align_to_carry r1: sigma 36 mm / 1.15 deg, HIGH_CHECKPOINT_REOBSERVE_TIMEOUT at +8.1 s).
     kind, detail = dc.decide(rep(11.3, fix_t=None, sxy=.0364, syaw_deg=1.15), 11.3, 10., 10., MIN)
     assert kind == 'dr' and detail['fix_receipt_voided'] and detail['fix_t'] is None
-    assert dc.decide(rep(11.3, fix_t=None, sxy=.0591, syaw_deg=1.), 11.3, 10., 10., MIN)[0] == 'over'
+    assert dc.decide(rep(11.3, fix_t=None, sxy=.0675, syaw_deg=1.), 11.3, 10., 10., MIN)[0] == 'over'
     assert dc.decide(rep(10.5, fix_t=None, sxy=.01, syaw_deg=.5), 10.5, 10., 10., MIN)[0] == 'wait'
 
 
@@ -118,7 +127,7 @@ def test_dr_receipt_resumes_at_high_without_lowering_or_a_reobserve_event(voided
 
 def test_over_budget_aborts_at_the_minimum_stop_and_partner_stops():
     _, ctls = pair(segments=(.1, .1))
-    run_dr(ctls, until=60., sxy={'r1': .0424, 'r2': .0599}, syaw_deg={'r1': 1.38, 'r2': 1.46})
+    run_dr(ctls, until=60., sxy={'r1': .0424, 'r2': .0700}, syaw_deg={'r1': 1.38, 'r2': 1.46})
     r1, r2 = ctls
     assert r2.failure == dc.OVER_REASON
     stop = next(e['t'] for e in r2.events if e['event'] == 'checkpoint_high_stop')
@@ -152,7 +161,7 @@ def test_decide_logs_the_own_mean_and_covariance_for_every_receipt_kind():
     # 2026-10-05 (independent review P1-3): the sigma-budget receipt must also record WHAT the filter believed, so an
     # evaluation-only scorer can compute the NEES after the run. Log only: the kind never depends on these fields.
     cov = ((4e-4, 1e-5, 2e-6), (1e-5, 5e-4, -3e-6), (2e-6, -3e-6, 3e-4))
-    for fix_t, sxy, kind in ((2., .03, 'dr'), (None, .03, 'dr'), (10.6, .01, 'fix'), (2., .06, 'over')):
+    for fix_t, sxy, kind in ((2., .03, 'dr'), (None, .03, 'dr'), (10.6, .01, 'fix'), (2., .0675, 'over')):
         report = rep(11.3, fix_t=fix_t, sxy=sxy, syaw_deg=1., cov=cov)
         got, detail = dc.decide(report, 11.3, 10., 10., MIN)
         assert got == kind
@@ -218,14 +227,15 @@ def test_every_receipt_event_in_the_controller_log_carries_the_own_estimate(mode
 
 def test_over_event_carries_the_own_estimate():
     _, ctls = pair(segments=(.1, .1))
-    run_dr(ctls, until=60., sxy={'r1': .0424, 'r2': .0599}, syaw_deg={'r1': 1.38, 'r2': 1.46})
+    run_dr(ctls, until=60., sxy={'r1': .0424, 'r2': .0675}, syaw_deg={'r1': 1.38, 'r2': 1.46})
     over = next(e for e in ctls[1].events if e['event'] == dc.OVER_EVENT)
     assert over['cov'] is not None and (over['x_m'], over['y_m'], over['yaw_rad']) == (1.2, .03, .01)
 
 
-def test_record_names_the_unchanged_thresholds():
+def test_record_names_the_derived_budget_and_the_unchanged_fix_thresholds():
     r = dc.record()
-    assert r['budget_xy_m'] == .05 and math.isclose(r['budget_yaw_rad'], math.radians(3.))
+    assert math.isclose(r['budget_xy_m'], .0674252, abs_tol=1e-7) and math.isclose(r['budget_yaw_rad'], math.radians(2.88965), abs_tol=1e-6)
+    assert r['fix_xy_m'] == .05 and math.isclose(r['fix_yaw_rad'], math.radians(3.)) and r['n_particles'] == 2000
     assert r['events'] == [dc.FIX_EVENT, dc.DR_EVENT, dc.OVER_EVENT]
 
 
