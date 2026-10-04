@@ -12,9 +12,9 @@
 | 기존 beam ROI 문제의 현재성 | [17차 source 확인](round17/beam-currentness.md): 현재 wrapper도 공유 detector의 수락을 보존; 현재 RGB 발생은 미확인 |
 | 고쳐진 기존 문제 | [final veto](round15/fixed.md): 확인한 control/arm 두 caller에서 수정됨 |
 
-[18차 요약](round18/README.md)은 optional Gemini replay의 [물리 source 검사 누락](round18/replay.md) 1건을 추가합니다. 실제 다른 물리 궤적의 통과를 입증한 것은 아닙니다. [Reference 자산 비교](round18/research.md)는 좁은 identity 검증이며 full admission·실행·학습 미노출로 확대하지 않습니다. Optional V2 [보정 두 결함](round13/README.md), [carry-align 통계 계약](round16/research.md), [공개 작성자 보고](round15/currentness.md)는 각각의 경로와 증거 수준을 유지합니다. [후속 독립 재도전](round18/backlog.md)을 계속합니다.
+[19차 독립 재도전](round19/README.md)은 현재 우선순위를 유지하며 R12 lower port와 R16 upper queue를 별도 회귀로 구분했습니다. [열린 이슈 16개 탐색표](round19/issues.md)는 근거의 위치와 미확인 완료 조건을 연결하며 이슈 해결 판정이 아닙니다. [최근 연구 세 편](round19/research.md)은 관측·메시지 내용·동기화의 효과를 분리하는 미실행 진단 제안입니다. Optional [replay source 누락](round18/replay.md), [V2 보정 두 결함](round13/README.md)도 해당 경로의 수용 경계로 유지합니다. [다음 검토](round19/backlog.md)를 계속합니다.
 
-이전 체크포인트: [17차](round17/README.md) · [16차](round16/README.md) · [15차](round15/README.md) · [14차](round14/README.md) · [13차](round13/README.md) · [12차](round12/README.md) · [11차](round11/README.md) · [10차](round10/README.md) · [9차](round9/README.md) · [8차](round8/README.md) · [1–7차](publication/final-index-issue.md). 이전 본문·원고 13개·출처와 각 판정의 SHA·시점을 보존합니다.
+이전 체크포인트: [18차](round18/README.md) · [17차](round17/README.md) · [16차](round16/README.md) · [15차](round15/README.md) · [14차](round14/README.md) · [13차](round13/README.md) · [12차](round12/README.md) · [11차](round11/README.md) · [10차](round10/README.md) · [9차](round9/README.md) · [8차](round8/README.md) · [1–7차](publication/final-index-issue.md). 이전 본문·원고 13개·출처와 각 판정의 SHA·시점을 보존합니다.
 
 소스 검토와 합성 대조이며 실제 physics/render/model/학습/cloud 실행, 구현 변경 또는 전체 CI 통과 보고가 아닙니다. Public map·admitted calibration·합성 입력을 구별하고 raw/heldout outcome을 의도적으로 열어 분석하지 않았습니다. 부수적인 fixture 출처 검색줄은 근거에서 제외했습니다.
 
