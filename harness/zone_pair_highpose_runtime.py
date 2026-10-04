@@ -14,6 +14,7 @@ from harness import zone_pair_highpose_guardlog as guardlog
 from harness import zone_pair_highpose_lookaround as lookaround
 from harness import zone_pair_highpose_relook as relook
 from harness import zone_pair_highpose_start_relief as start_relief
+from harness import zone_pair_highpose_carry_align as carry_align
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_runtime import Runtime as PreviousRuntime
 from harness.zone_final_pair_guards import CommandGuard as PreviousGuard
@@ -288,6 +289,11 @@ class HighController:
             return
         return super()._wait_carry(now, arm_idle)
 
+    def door_schedule(self, t0):
+        # v98 (zone_pair_highpose_carry_align): the parent's schedule with the door-axis align components whose own
+        # estimated correction is not significant (two-sided 95 %) set to zero; timing and pair_plan unchanged.
+        return carry_align.gate_schedule(self, super().door_schedule(t0), t0)
+
     def _wait_lower(self, now, arm_idle):
         if self.seg+1 < len(self.segments):
             # Same end-of-leg lower barrier is a STOP rendezvous only. It never
@@ -362,6 +368,7 @@ class CommandGuard(PreviousGuard):
             self.veto_trace = None
         start_relief.log_reliefs(self, now, trace)
         guardlog.log_veto(self, now, issued, before, trace)
+        carry_align.log_gate_check(self, now, issued, out)     # observation only (sigma, yaw sigma, gate values)
         return out
 
 
@@ -456,7 +463,8 @@ def adopt_v98_frame_gate(runtime):
     gates = own_image_gates()
     return {'path': gates['path'], 'sha256': gates['sha256'], 'values': dict(gates['values']),
             'frame_gate': frame_gate.record(), 'look_around': lookaround.record(),
-            'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record(), 'dock_look': relook.record()}
+            'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record(), 'dock_look': relook.record(),
+            'carry_align': carry_align.record()}
 
 
 def adopt_look_recovery(runtime):

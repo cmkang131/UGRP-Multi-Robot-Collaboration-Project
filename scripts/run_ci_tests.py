@@ -107,6 +107,7 @@ TEST_PATTERNS = (
     "tests/test_zone_final_pair_heldout.py",
     "tests/test_review_352.py",
     "tests/test_review_355.py",
+    "tests/test_highpose_carry_align.py",  # v98 door-align significance rule + loaded-gate check log
     "tests/test_zone_final_pair_review_fixes.py",
     "tests/test_review_344*.py",
     "tests/test_zone_final_environment_floor_light.py",

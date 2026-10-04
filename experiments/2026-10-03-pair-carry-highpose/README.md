@@ -57,6 +57,28 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `outputs/pair-stage-probes-ece38792-cal/` 사례 프레임이 10/1 16:40 이전 outputs 정리로 없어져 실패한다. 시험은 `cases.jsonl`이
   없을 때만 건너뛰고 프레임이 없을 때는 건너뛰지 않는다. 어떤 diff와도 무관하며 조정자가 따로 추적한다.
 
+### 운반 다리 문 축 정렬 유의성 규칙 (carry-align, 다른 작업자 diff, 조정자 결정 2026-10-04)
+
+- **원인(`6727751b` align_to_carry):** 운반 다리는 시작도 하지 않았다. `carry`의 처음 6초는 문 축 정렬이고, 두 로봇이 낸 정렬 보정은
+  자기 σ의 0.2–0.4배(잡음 수준)였다. 0이 아닌 명령이 하나라도 나가면 yaw 대체 증가율이 0.0174 rad/s(76배)로 바뀌어 약 2.9초 만에
+  σ_yaw가 적재 gate 3°에 닿았다. 들어 올린 뒤에는 위치 측정이 하나도 없었다(HIGH 화면에 벽 열 0개).
+- **변경(diff `carry_leg_v98.diff`, sha256 `c4fecd53…`):** 새 모듈 `harness/zone_pair_highpose_carry_align.py`.
+  `HighController.door_schedule`이 부모 일정을 그대로 받되, 정렬 두 성분은 자기 σ에 견주어 유의할 때만 남긴다(|dy| > 1.96σ_y,
+  |e_yaw| > 1.96σ_yaw). 아니면 0으로 둔다. 시간표·0.5초 쉼·운반 다리·`pair_plan`은 부모와 같다. `CommandGuard.check` 뒤에
+  `loaded_gate_check`를 매번 기록한다(관찰만). **gate 값(70/60 mm, 3°/2.5°)은 바꾸지 않았다.**
+- **조정자 결정:** z = 1.96(표준 양측 95 %, 조정하지 않은 값).
+- **예상되는 다음 막힘(코드에서 예측, 관찰 아님):** leg 0 checkpoint에서 8초 안에 σ ≤ 0.05 m인 새 위치를 얻는 것이 HIGH에서는
+  불가능해 `HIGH_CHECKPOINT_REOBSERVE_TIMEOUT`으로 끝날 것이다. 조정자가 설계 중이며 여기서 바꾸지 않는다.
+- **병합 메모:** `adopt_v98_frame_gate` 기록 줄에서 dock/relook의 `dock_look`과 이 diff의 `carry_align`을 둘 다 남겼다. 원천 폐쇄 시험
+  목록에 새 모듈을 더했다.
+- **작성자 결과:** 새 시험 17개, 관련 359 passed, `test_review_*` 412 passed.
+- **참고 자료(작성자 표기 그대로; 확인(본문)/확인(서지)/미확인):** Kosuge·Oosumi IROS 1996, Kosuge·Sato IROS 1999 — 확인(서지);
+  Wang·Schwager Force-ANTS IJRR 2016 — 확인(본문); Tuci 외 Front. Robot. AI 2018 리뷰 — 확인(본문); Culbertson·Schwager ICRA 2018 —
+  확인(본문); CoLF arXiv 2602.07776 — 확인(초록); Ghosh 외 arXiv 2305.01614 — 확인(초록); Fox·Burgard·Thrun 1998 — 확인(서지);
+  Roy·Thrun 해안 항법 NIPS 2000 — 확인(본문); Prentice·Roy BRM 2009, Bry·Roy RRBT 2011 — 확인(서지); Nav2 AMCL 설정 문서 — 확인(본문);
+  Bar-Shalom 외 2001, Huang 외 IJRR 2010, Julier·Uhlmann 1997 — 확인(서지); Reid 외 SAE 2019(alert limit/protection level) — 확인(본문);
+  Probabilistic Robotics 5.4절, Borenstein·Feng 1996 — 미확인. 화물이 자기 카메라를 가리는 운반을 다룬 검증된 논문은 찾지 못했다(우리 설계).
+
 ### 도크 둘러보기 넓히기와 정해진 횟수의 재둘러보기 (PF 작업자 diff, 조정자 결정 2026-10-04)
 
 - **원인:** 다섯 팬(1500, 1230, 970, 1770, 2030)만으로는 도크 출발 r2의 y 정보가 부족해 σ_y가 54–57 mm로 남는다(거칠게 하기 절).
