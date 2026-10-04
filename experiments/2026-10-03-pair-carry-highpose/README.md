@@ -57,6 +57,29 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `outputs/pair-stage-probes-ece38792-cal/` 사례 프레임이 10/1 16:40 이전 outputs 정리로 없어져 실패한다. 시험은 `cases.jsonl`이
   없을 때만 건너뛰고 프레임이 없을 때는 건너뛰지 않는다. 어떤 diff와도 무관하며 조정자가 따로 추적한다.
 
+### 재표집 뒤 거칠게 하기 (PF roughening, 다른 작업자 diff, 2026-10-04)
+
+- **원인(작성자 오프라인 재생, 정답은 채점에만):** r2의 도크 출발 오차 50–60 mm는 카메라 모델이 아니라 입자 고갈(particle
+  deprivation)이다. 도크 사전분포가 세 공개 출발 줄을 가우시안 하나(y 표준편차 2.8 m)로 덮고 입자 2000개로 뽑으며 거칠게
+  하기가 없다. 처음 몇 번 재표집 뒤 참 위치 근처에 서로 다른 입자가 거의 남지 않는다. r2 참 자세의 잡음 없는 합성 관측을 넣어도
+  둘러보기 뒤 179 mm(동결 가중, σ 2 mm), 78 mm(v2 가중, σ 95 mm)가 남았다. 먼 팬의 yaw–위치 결합은 원인이 아니었다.
+- **변경(diff `pf_roughen_v98_incremental.diff`, sha256 `7b75ce4c…`):** `harness/zone_pair_highpose_pf_consistency.py`만 바꾼다.
+  재표집 직후 재표집된 입자에 0 평균 가우시안 흔들기를 더한다. 차원마다 σ = K·범위·N^(−1/3), K = 0.2(Gordon·Salmond·Smith
+  1993의 제안값, 조정 없음). yaw 범위는 펼친 각도로 잰다. 주입 입자는 건드리지 않는다. 스키마가 v2 → v3이 되고 `roughen_k`가
+  더해져 제공자 `runtime_contract`와 `identity_sha256`이 바뀐다(이전 `6727751b` 탐침과 기록으로 구분된다). 흔들기는 `pf.rng`에서
+  난수를 더 뽑으므로 같은 seed에서도 이전과 난수 흐름이 달라진다(모듈 설명의 "no extra random draws"는 v2까지의 설명).
+- **작성자 결과:** 둘러보기 끝 r2 오차가 50–103 mm에서 7–17 mm로 줄었다. 그러나 다섯 팬만으로는 y 정보가 부족해 σ_y가 54–57 mm
+  (완벽한 합성 관측에서도 56 mm)로 남아 **r2는 도크에서 여전히 입장하지 못한다(정직한 거절, 예상됨)**. 입장 0.05 m는 그대로다.
+  공개 사항: 검증 분할 결과를 보정 분할보다 먼저 봤으므로 검증 수치는 독립 확증이 아니다. 보정 분할은 회귀 없음 확인에만 썼다.
+- **다음(조정자):** PF 작업자의 v98 전용 diff(도크 둘러보기에 팬 2300·700 추가, 입장 거절 때 정해진 횟수의 재둘러보기)가 들어온 뒤에
+  단계 검사를 한다. 거칠게 하기만으로는 예상된 거절이므로 탐침을 돌리지 않는다.
+- **발견(바꾸지 않음, 공용 파일):** `harness/zone_final_pair_guards.py:19`의 `LOADED_GATE`(yaw 5°/4°)는 쓰이지 않는다. 95·108·109행이
+  묶는 세 함수(`SweepRecheck.check`, `PairCommandGuard.before_control`·`check`)는 `GATE_LOADED`를 읽지 않는다. 실제 적재 한도는
+  `zone_own_guards.GATE_LOADED`의 yaw 3°/2.5°, σ_xy 70/60 mm다.
+- **참고 자료(작성자 표기 그대로):** Gordon·Salmond·Smith, IEE Proc. F 140(2), 1993 거칠게 하기 — 미확인(2차 자료의 식);
+  Thrun·Burgard·Fox 2005 4.3절 입자 고갈 — 미확인; Fox·Burgard·Thrun 1998 능동 위치 추정 — 미확인; Nav2 `nav2_bt_navigator`
+  회복 행동 트리 — 확인; Censi ICRA 2007 — 미확인; MuJoCo/OpenCV 화소 중심 규약 — 우리 코드에서 확인.
+
 ### 5차 묶음 최종 단계 검사 3개 (`6727751b`, 2026-10-04)
 
 seed 911, before_door, DEV_PILOT(FUNCTIONAL_DEV, 승격 불가), floor_light_v1, weld OFF, 모델 호출 0. SIM 시간 병렬 실행(부하 평균

@@ -34,6 +34,18 @@ Method (no frozen file changes, no extra random draws):
 
 Both numbers come from the calibration split only (``CALIBRATION`` below records which runs); the held-out
 runs are scored separately. Ground truth never enters this module.
+
+v3 (2026-10-04): roughening after resampling. From the dock the case-start prior is one Gaussian over three public
+spawn rows (y std 2.8 m) sampled by 2000 particles, and the PF has no roughening (``params['roughen']`` absent).
+Offline, with noise-free synthetic observations of r2's true dock pose fed through this provider (five-pan look),
+r2 still ended 179 mm off with sigma 2 mm under the frozen weighting and 78 mm off (sigma 95 mm) under the v2
+weighting: after the first resamples only a few distinct particles near the true pose survive and the cloud cannot
+move to it (particle deprivation / sample impoverishment). The standard remedy is the roughening of Gordon, Salmond and Smith
+(1993): after each resample add zero-mean Gaussian jitter with per-dimension sigma ``K * range_k * N^(-1/d)``
+(``range_k`` = spread of the resampled set in dimension k, ``d`` = 3, ``K`` = 0.2 is their suggested constant; yaw
+range on the unwrapped angles). Only the resampled particles are jittered and only their spread sets the sigma
+(random injected particles, if any, are left alone). No constant was tuned; the calibration split (staged starts)
+was a non-regression check only.
 """
 from __future__ import annotations
 
@@ -42,14 +54,14 @@ import math
 
 import numpy as np
 
-SCHEMA = 'ugrp.pf_consistency.v98.v2'
+SCHEMA = 'ugrp.pf_consistency.v98.v3'
 # Calibrated on the calibration split (raise_high_align ace8b257 r1/r2) by
 # experiments/2026-10-03-pair-carry-highpose/pf_consistency/; held-out = raise_high 3358372e and 7623c4dc.
 DEFAULT = {'schema': SCHEMA, 'repeat_rho': .5, 'effective_columns': 4.0,
-           'update_min_d': .02, 'update_min_a': .035}
+           'update_min_d': .02, 'update_min_a': .035, 'roughen_k': .2}
 # Frozen behaviour (bit-identical PF): every scan counted fully, frozen column cap.
 NEUTRAL = {'schema': SCHEMA, 'repeat_rho': 0.0, 'effective_columns': 8.0,
-           'update_min_d': .02, 'update_min_a': .035}
+           'update_min_d': .02, 'update_min_a': .035, 'roughen_k': 0.0}
 CONFIG = DEFAULT
 
 
@@ -58,7 +70,7 @@ def validate(cfg):
     if set(cfg) != set(DEFAULT) or cfg['schema'] != SCHEMA:
         raise ValueError('unknown pf_consistency keys or schema')
     for key, lo, hi in (('repeat_rho', 0., 1.), ('effective_columns', .5, 1e3),
-                        ('update_min_d', 0., 1.), ('update_min_a', 0., math.pi)):
+                        ('update_min_d', 0., 1.), ('update_min_a', 0., math.pi), ('roughen_k', 0., 1.)):
         v = cfg[key]
         if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) or not lo <= v <= hi:
             raise ValueError(f'pf_consistency.{key}={v!r} outside [{lo}, {hi}]')
@@ -73,6 +85,17 @@ def cumulative(k, rho):
 def exponent(k, rho):
     """Likelihood exponent of the k-th applied scan of one view (k >= 1)."""
     return cumulative(k, rho) - cumulative(k - 1, rho)
+
+
+def roughen_sigma(px, k):
+    """Gordon et al. (1993) roughening sigma per dimension: K * range * N^(-1/d), yaw range on unwrapped angles."""
+    px = np.asarray(px, float)
+    n, d = px.shape
+    if n < 2 or k <= 0.:
+        return np.zeros(d)
+    spread = np.ptp(px, axis=0)
+    spread[2] = np.ptp(np.unwrap(px[:, 2]))
+    return k*spread*n**(-1./d)
 
 
 def install(pf, cfg=None):
@@ -131,8 +154,26 @@ def install(pf, cfg=None):
         columns = min(1., target_e/n)/min(1., frozen_e/n)
         return ll*(state['alpha']*columns), n_terms
 
+    def roughened_resample():
+        before = pf.stats['resamples']
+        out = normalize_and_resample()
+        if k_rough > 0. and pf.stats['resamples'] > before:
+            m = pf.n - int(pf.diag.get('injected', 0) or 0)       # resampled particles come first
+            if m >= 2:
+                sigma = roughen_sigma(pf.px[:m], k_rough)
+                pf.px[:m] = pf.px[:m] + pf.rng.normal(size=(m, pf.px.shape[1]))*sigma
+                pf.px[:m, 2] = pf.wrap(pf.px[:m, 2])
+                pf.stats['roughened'] += 1
+                pf.diag['roughen_sigma'] = [round(float(v), 6) for v in sigma]
+        return out
+
+    k_rough = float(cfg['roughen_k'])
     pf.predict_to, pf.apply_scan, pf.scan_loglik = odometry_predict, view_apply, tempered_loglik
     pf.command, pf.init_gaussian = own_command, reinit
+    if k_rough > 0.:                                  # roughen_k = 0 leaves the resampler (and stats) untouched
+        normalize_and_resample = pf._normalize_and_resample
+        pf.stats['roughened'] = 0
+        pf._normalize_and_resample = roughened_resample
     return pf.pf_consistency
 
 
