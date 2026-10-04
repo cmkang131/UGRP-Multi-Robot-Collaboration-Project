@@ -1,19 +1,19 @@
 # UGRP 연속 독립 검토 — 2026-10-04
 
-**최신 [15차 체크포인트](round15/README.md): 현재 경로 문제1건과 기존 문제 수정 확인을 분리했습니다.** HIGH checkpoint에서 집게를 열지 않고 segment만 바꾸면 receipt identity가 어긋나 attached beam 형상이 command guard 검사에서 빠집니다. 최신66ff 실제 메서드와 geometry를 독립 재현했습니다.
+**현재 수정·진단의 두 출발점은 [HIGH checkpoint attachment](round15/attachment.md)와 [inspect 중단 뒤 camera/provider 실패](round16/posture.md)입니다.** 전자는 최신66ff의 새 부착물 검사 결함이고, 후자는 명령 취소 계열의 현재 caller·영향 범위를 추가 확인한 증거입니다. 같은 원인을 새 버그로 중복 집계하지 않습니다.
 
-| 우선 읽을 내용 | 문서와 범위 |
+| 읽을 목적 | 문서 |
 |---|---|
-| 새 현재 경로 문제 · P2 | [checkpoint attachment](round15/attachment.md). 실제 물리 충돌·현재 첫 실패 원인 주장은 아님 |
-| 기존 문제 수정 확인 | [same-tick final veto](round15/fixed.md). 두 caller의 old/new 회귀 및 no-abort 대조 통과 |
-| 현재 보고와 독립 증거 구분 | [최신 source·저자 보고](round15/currentness.md). 새 stage는 carry 미도달; de03 결과를 현재 성공으로 승계하지 않음 |
-| 연구와 진단 | [절차 완료·관측 확인·task predicate](round15/research.md), [row 지원·M1 probe 경계](round15/diagnostics.md) |
-| 검증·남은 일 | [15차 QA](round15/validation.md), [backlog](round15/backlog.md), [coverage](round13/coverage.md) |
+| 중간 정지 뒤 beam 검사 가정 유지 | [15차 attachment](round15/attachment.md), [독립 근거](round15/validation.md) |
+| 재관측 stop 뒤 왜 frame/fix가 회복되지 않을 수 있나 | [16차 current posture](round16/posture.md). Actual issued key/settle/failure latch; raw stage replay 아님 |
+| 보정 보류가 무엇을 인증하는가 | [carry-align 통계 계약](round16/research.md). Skip≠small error,95%≠task safety |
+| 새 기능에서 배제한 설명 | [PF/recovery/column 경계](round16/boundaries.md), [QA](round16/validation.md) |
+| 고쳐진 기존 문제 | [같은-tick terminal final veto](round15/fixed.md), 확인한 control/arm caller에서 수정됨 |
 
-#371 source의 [worker 초기화 정리](round12/runtime.md), [image SIM·failure 분류](round8/runtime.md), optional V2 [보정 두 결함](round13/README.md)은 별도 경로다. de03의 [relook command-only 증거](round12/control.md)와 최신 inspect/relook 저자 진단은 같은 실행의 인과 증거로 합치지 않는다. [14차 판단 메모](round14/decision.md)의 증거 단계 구분은 참고하되 당시 공개 실패 숫자는 역사적으로 읽는다.
+#371 [worker 초기화 정리](round12/runtime.md)·[image SIM/failure 분류](round8/runtime.md), optional V2 [보정 두 결함](round13/README.md)은 다른 source 경로로 구분합니다. 최신 [공개 작성자 보고](round15/currentness.md)와 source 합성 증거, 실제 물리 결과를 합산하지 않습니다.16차 신규 버그 집계0개이며[다음 검토](round16/backlog.md)를 계속합니다.
 
-이전 체크포인트: [14차](round14/README.md) · [13차](round13/README.md) · [12차](round12/README.md) · [11차](round11/README.md) · [10차](round10/README.md) · [9차](round9/README.md) · [8차](round8/README.md) · [1–7차](publication/final-index-issue.md). 각 판정은 해당 source SHA·시점에 한정하며 이전 본문·원고13개·출처를 보존한다.
+이전 체크포인트: [16차](round16/README.md) · [15차](round15/README.md) · [14차](round14/README.md) · [13차](round13/README.md) · [12차](round12/README.md) · [11차](round11/README.md) · [10차](round10/README.md) · [9차](round9/README.md) · [8차](round8/README.md) · [1–7차](publication/final-index-issue.md). 이전 본문·원고13개·출처를 보존하고 각 판정의 SHA·시점을 유지합니다.
 
-Source·합성 검토이며 실제 physics/render/학습/model/cloud 실행, 구현 변경, 전체 CI 통과 보고가 아니다. Public map·admitted calibration 제품·합성 입력을 구별하고 raw/heldout outcome을 의도적으로 열어 분석하지 않았다. 부수적인 fixture 출처 검색줄은 근거에서 제외했다.
+Source·합성 검토이며 실제 physics/render/model/학습/cloud 실행, 구현 변경 또는 전체 CI 통과 보고가 아닙니다. Public map·admitted calibration 제품·합성 입력을 구별하고 raw/heldout outcome을 의도적으로 열어 분석하지 않았습니다. 부수적인 fixture 출처 검색줄은 근거에서 제외했습니다.
 
-GitHub는 Markdown만, 상세 source 원고·script·작은 결과는 Mac 전달본에 보존한다. [증거 탐색](evidence/README.md). 후속 검토는 다음 체크포인트로 계속한다.
+GitHub는 Markdown만, Mac은 상세 원고·작은 script/result·선택된 exact source를 보존합니다. [증거 탐색](evidence/README.md).
