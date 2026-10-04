@@ -32,7 +32,10 @@ def checkpoint_record(runtime_record, checkpoint):
     for rid, robot in session['robots'].items():
         events = robot['events']
         stopped = [e for e in events if e['event'] == 'checkpoint_high_stop' and e['seg'] == wanted]
-        observed = [e for e in events if e['event'] == 'checkpoint_high_reobserved' and e['seg'] == wanted]
+        # v98: a fresh fix after the stop, or the own DR receipt within the unchanged budget (kind kept per row).
+        from harness.zone_pair_highpose_dr_checkpoint import RECEIPT_EVENTS
+        observed = [{**e, 'receipt': RECEIPT_EVENTS[e['event']]} for e in events
+                    if e['event'] in RECEIPT_EVENTS and e['seg'] == wanted]
         # Every preceding leg must have started under a carry GO. A receipt
         # name alone cannot stand in for carrying the route from the dock.
         carried = {e.get('seg') for e in events if e['event'] == 'state' and e.get('state') == 'carry'}

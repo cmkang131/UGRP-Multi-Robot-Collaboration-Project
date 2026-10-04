@@ -16,6 +16,7 @@ from harness import zone_pair_highpose_relook as relook
 from harness import zone_pair_highpose_start_relief as start_relief
 from harness import zone_pair_highpose_carry_align as carry_align
 from harness import zone_pair_highpose_posture_defer as posture_defer
+from harness import zone_pair_highpose_dr_checkpoint as dr_checkpoint
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_runtime import Runtime as PreviousRuntime
 from harness.zone_final_pair_guards import CommandGuard as PreviousGuard
@@ -259,13 +260,15 @@ class HighController:
         if not getattr(self, 'high_ready', False):
             return self.fail('HIGH_CARRY_VIEW_REQUIRED', now)
         if getattr(self, 'checkpoint_fix_after', None) is not None:
-            from harness.zone_own_contract import pose_report_fresh
             from harness.zone_pair_highpose_timing import CHECKPOINT_REOBSERVE_S
             report = self.port.own.last_report
-            fresh = (report is not None and pose_report_fresh(report, now)
-                     and report.initialized and report.last_fix_t is not None
-                     and report.last_fix_t > self.checkpoint_fix_after
-                     and report.std_xy_m <= .05 and report.std_yaw_rad <= np.deg2rad(3.))
+            # v98 (zone_pair_highpose_dr_checkpoint): no wall is visible at HIGH, so a fresh fix cannot come;
+            # an own DR report inside the unchanged 50 mm / 3 deg budget is the receipt, over budget aborts now.
+            kind, detail = dr_checkpoint.decide(report, now, self.checkpoint_started, self.checkpoint_fix_after,
+                                                CHECKPOINT_REOBSERVE_S)
+            if kind == 'over':
+                self.log(self.rid, dr_checkpoint.OVER_EVENT, now, seg=self.seg, high=True, **detail)
+                return self._transit_abort(dr_checkpoint.OVER_REASON, now)
             # Localization re-observe (navigation) keeps its bounded timeout.
             if now-self.checkpoint_started > 8.:
                 return self._transit_abort('HIGH_CHECKPOINT_REOBSERVE_TIMEOUT', now)
@@ -274,11 +277,15 @@ class HighController:
                 obs = self.look(now)
                 self.hold_state(obs)      # grip values logged only
                 self.report('carry', obs, now, ready=False, reason='HIGH stop/reobserve pending')
-            if not fresh or now-self.checkpoint_started < CHECKPOINT_REOBSERVE_S:
+            if kind == 'wait':
                 return
             self.grasp_estimate = [float(report.x_m), float(report.y_m), float(report.yaw_rad)]
-            self.log(self.rid, 'checkpoint_high_reobserved', now, seg=self.seg,
-                     fix_t=report.last_fix_t, high=True, opened=False, epoch=self.grip_epoch)
+            if kind == 'fix':
+                self.log(self.rid, dr_checkpoint.FIX_EVENT, now, seg=self.seg,
+                         fix_t=report.last_fix_t, high=True, opened=False, epoch=self.grip_epoch)
+            else:
+                self.log(self.rid, dr_checkpoint.DR_EVENT, now, seg=self.seg, high=True, opened=False,
+                         epoch=self.grip_epoch, **detail)
             self.checkpoint_fix_after = None
         provider = self.port.own.pose.provider
         if not provider.beam_edge.available(now):
@@ -468,7 +475,8 @@ def adopt_v98_frame_gate(runtime):
     return {'path': gates['path'], 'sha256': gates['sha256'], 'values': dict(gates['values']),
             'frame_gate': frame_gate.record(), 'look_around': lookaround.record(),
             'guard_veto_log': guardlog.record(), 'start_relief': start_relief.record(), 'dock_look': relook.record(),
-            'carry_align': carry_align.record(), 'relook_posture_defer': posture_defer.record()}
+            'carry_align': carry_align.record(), 'relook_posture_defer': posture_defer.record(),
+            'dr_checkpoint': dr_checkpoint.record()}
 
 
 def adopt_look_recovery(runtime):

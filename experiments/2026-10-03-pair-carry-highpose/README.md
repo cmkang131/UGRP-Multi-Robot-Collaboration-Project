@@ -28,6 +28,30 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `GRIP_NOT_CONFIRMED`는 그대로다. 공유 동결 파일(`zone_pair_grasp.py`, `run_m2_pair.py`)은 바꾸지 않았다.
 - **복구 동작은 아직 넣지 않았다**(관측기 수정이 폐루프에서 확인된 뒤).
 
+### HIGH 중간 체크포인트의 추측 항법 영수증 (DR checkpoint, 다른 작업자 diff, 조정자 결정 2026-10-04)
+
+- **원인(오프라인, 정답은 평가에만):** HIGH에서 쥔 빔이 자기 영상 위쪽을 r1 약 170행, r2 약 175행까지 덮고, 그 아래에는 차체 앞
+  0.285–0.42 m 바닥(두 로봇 사이, 벽이 있을 수 없는 자리)만 보인다. 경로 288자세 모두 벽 열 예측 0개, 녹화 HIGH 영상 964장도
+  검출 0개였다. 팬을 돌려도 차체가 반대로 돌아 카메라는 세계 기준 0.45°만 돌고, 적재 카메라 모델은 팬 1500 하나뿐이며, 쥔 채
+  재관측은 guard가 막는다. 그래서 "멈춘 뒤 새 고정" 조건은 만족될 수 없고 항상 `HIGH_CHECKPOINT_REOBSERVE_TIMEOUT`이었다.
+- **변경(diff `high_checkpoint_dr_v98.diff`, sha256 `a87325c7…`, 기준 `af2f7c2a`, 이 트리에 3-way 적용):** 새 모듈
+  `harness/zone_pair_highpose_dr_checkpoint.py`의 순수 함수 `decide()`. 기존 최소 정지(1.2초) 뒤, 같은 문턱(σ_xy ≤ 50 mm,
+  σ_yaw ≤ 3°, 넓히지 않음) 안의 신선한 자기 보고를 영수증으로 받는다. 멈춘 뒤 진짜 고정이 오면 예전처럼
+  `checkpoint_high_reobserved`, 아니면 `checkpoint_high_dr_receipt`로 따로 기록한다(재관측으로 섞지 않음). 문턱을 넘으면
+  바로 `HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED`(`checkpoint_high_dr_over_budget`). 보고가 없으면 기존 8초 시간 초과.
+  `run_pair_highpose.checkpoint_record`는 두 영수증을 받고 행마다 `receipt`(`fix`/`dr_budget`)를 남긴다.
+- **조정자 결정(사용자 정정 반영):** 경로는 **배달까지 전체**다(문 앞으로 줄이지 않음). DR 영수증은 예산이 버티는 동안의 영수증이고,
+  `HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED`는 설계 중인 "내려놓기 → 열기 → 둘러보기 → 다시 잡기 → 들기" 재고정의 시작점이 된다
+  (다른 작업자 diff 예정, 여기서 만들지 않음).
+- **작성자 DR 예산 예측(모델 예측, NEES 미검증):** 다리 끝 σ_xy r1 42.4 / 59.1 / 79.3 … 164.6 mm(다리 0/1/2 … 7), r2도 비슷하다.
+  50 mm는 GO 뒤 약 29초(다리 1)에 넘는다. 그래서 align_to_carry는 다리 1 체크포인트에서 예산 초과로 멈출 것으로 예상된다.
+- **병합 메모:** `adopt_v98_frame_gate` 기록에 `relook_posture_defer`와 `dr_checkpoint`를 둘 다 남겼다. CI 목록도 둘 다.
+- **참고 자료(작성자 표기 그대로):** Reid 외, Localization Requirements for Autonomous Vehicles, SAE Int. J. CAV 2(3), 2019 — 확인;
+  Roy·Burgard·Fox·Thrun, Coastal Navigation, ICRA 1999 — 확인; Prentice·Roy BRM, IJRR 2009 — 서지 확인; Bry·Roy RRBT, ICRA 2011 —
+  서지 확인; Kosuge·Oosumi IROS 1996, Wang·Schwager Force-ANTS IJRR 2016 — 서지 확인; CoLF arXiv 2602.07776 — 요약 확인;
+  Roumeliotis·Bekey IEEE TRA 18(5) 2002 — 서지 확인; arXiv 2305.01614 — 제목만 확인(이전 표기 "Stop-and-Sync, Ghosh 2023" 정정);
+  Burgard·Fox·Thrun 1997, Bar-Shalom 외 2001, Huang·Mourikis·Roumeliotis — 미확인.
+
 ### 팔 자세 전환 중 재둘러보기 미루기 (조정자 결정 2026-10-04, v98 전용)
 
 - **원인(`af2f7c2a` 정렬 퇴행):** r2가 24.9초에 p45 → `inspect`로 팔을 옮기기 시작했고(0.6초 보간), 25.0초 `fix_gap` 재둘러보기가
