@@ -44,6 +44,13 @@ from harness import own_beam_edge as be
 from harness.own_beam_edge import BeamEdgeTracker
 from harness.zone_final_pair_binding import bind
 
+# v98 finding (outputs/v98-znear-live-check-20261004): in the HIGH carry view the camera sits ~13 mm above the beam's top
+# face, 23 mm behind its near end, so the 'lower band edge' is the renderer's near-clip-plane trace on the top face
+# (znear 0.0020 x extent 11.11 m = 22.2 mm), not a physical edge. It tracks the near-plane distance, not the beam yaw
+# (d slope / d relative yaw ~0.013, the tracker assumes 1.1). False: the tracker is never fed in the HIGH view, so it
+# never applies a yaw increment and never reports itself available; carry yaw then relies on own command sync + DR.
+HIGH_EDGE_INFORMATIVE = False
+
 FIT_SHARED = 'shared_ols'
 FIT_CONSENSUS = 'consensus'
 FIT_ROWS_MAX = 15000                # per tracker, log only; covers a 900 SIM s case cap at 10 frames/s with margin

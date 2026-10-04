@@ -25,7 +25,7 @@ from harness.zone_own_executor import ZoneOwnExecutor
 from harness.zone_pair_executor import PairExecution
 from harness.zone_pair_grasp import PairGraspRelook
 from harness.zone_pair_guards import PairCommandGuard
-from harness.zone_pair_highpose_edge import robust_edge_line as edge_line
+from harness.zone_pair_highpose_edge import HIGH_EDGE_INFORMATIVE, robust_edge_line as edge_line
 from scripts import run_m2_pair as m2
 
 # Grasp-time own grip view (close readiness + GRIP_NOT_SEEN): LOG-ONLY in v98 (registry grip_monitor).
@@ -289,7 +289,7 @@ class HighController:
                          epoch=self.grip_epoch, **detail)
             self.checkpoint_fix_after = None
         provider = self.port.own.pose.provider
-        if not provider.beam_edge.available(now):
+        if HIGH_EDGE_INFORMATIVE and not provider.beam_edge.available(now):     # v98: no edge reference to wait for otherwise
             if now-self.state_t > m2.study.STATE_LIMIT_S['wait_carry']:
                 return self.fail('HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', now)
             if now >= self.next_look:

@@ -14,7 +14,7 @@ from harness.vision_pose_source_pair_v3 import PairVisionPoseSource, pair_motion
 from harness.vision_pose_source_p03 import VisionPoseSource, FailClosedLoc
 from harness.vision_pose_source_final import CalibrationError, measured_column_model
 from harness.zone_final_pair_scan import install, resample
-from harness.zone_pair_highpose_edge import HighBeamEdgeTracker
+from harness.zone_pair_highpose_edge import HIGH_EDGE_INFORMATIVE, HighBeamEdgeTracker
 from harness.opencv_wall_observation import OpenCVObserver, DETECTOR
 from harness import zone_pair_highpose_pf_consistency as pf_consistency
 
@@ -78,7 +78,7 @@ class HighPoseSource(PairVisionPoseSource):
         self._started, self._closed, self._last_frame_t = False, False, None
         pair = cal['pair_model']
         self.beam_edge = HighBeamEdgeTracker(float(pair['slope_to_yaw_ratio']))
-        self.carry_yaw_fallback = {'pair': True, 'edge': True,
+        self.carry_yaw_fallback = {'pair': True, 'edge': HIGH_EDGE_INFORMATIVE,
             'b_full': float(cal['params']['motion_loaded']['yaw_bias_std_rad_s']),
             'b': copy.deepcopy(pair['b_rad_s']), 'level_frames': {}, 'pm_bad_until': -1.}
         self.worker = worker if worker is not None else OpenCVObserver(
@@ -99,9 +99,10 @@ class HighPoseSource(PairVisionPoseSource):
                 if self.loc._pf.settled(now):
                     contract.camera_record(self.calibration, 'loaded' if loaded else 'unloaded', self.servo)
                 enabled = loaded and self.loc._pf.settled(now) and pose.at_high(self.servo)
-                dyaw = self.beam_edge.observe(now, rgb, self.servo, enabled)
-                if dyaw:
-                    self.loc.apply_relative_yaw(now, dyaw)
+                if HIGH_EDGE_INFORMATIVE:      # v98: the HIGH edge is the near-clip trace, not a beam edge (see zone_pair_highpose_edge)
+                    dyaw = self.beam_edge.observe(now, rgb, self.servo, enabled)
+                    if dyaw:
+                        self.loc.apply_relative_yaw(now, dyaw)
                 from harness.owncam_carry_v6e import update_availability
                 update_availability(self, now)
             except CalibrationError as exc:
