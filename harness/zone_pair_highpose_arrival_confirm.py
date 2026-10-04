@@ -24,13 +24,20 @@ must be consistent with the beam seen from some pose inside the stated tolerance
   fall inside its band, and a silhouette must exist. Where a feature depends on whether a small lime piece (the 12 mm
   tails beyond the bands, the end faces) reaches the pixel threshold, the band spans both cases.
 
-On a rejection the driver relocalizes and approaches again (the ``run_m2_pair._start_reapproach`` pattern: fresh
-localizer + wide look, ``arrival_checked``/``rotated``/``hold_yaw`` reset), at most ``MAX_VIEW_RETRIES`` times
-(= ``run_m2_pair.MAX_REAPPROACH``); the next rejection ends the approach with outcome ``arrival_not_confirmed_by_view``
-(controller failure ``APPROACH_ARRIVAL_NOT_CONFIRMED_BY_VIEW``). The decision waits at most ``CONFIRM_WAIT_S``
-(= ``blind_close.HOVER_CONFIRM_MAX_S``) for a frame captured after the arm and base settled; none inside the window
-counts as a rejection (fail closed). Total SIM time stays under the existing ``APPROACH_LIMIT_S`` of the approach
-state. The check sits below the communication layer (before the approach barrier, no status or message change), so
+On a rejection the driver relocalizes and approaches again, at most ``MAX_VIEW_RETRIES`` times. In v98 the
+relocalization is ``GuardedPairApproach._relocalize`` -> provider ``begin_relocalization``: it voids only the fix
+receipt and KEEPS the particle belief and its sigma (it is not ``run_m2_pair._start_reapproach``'s fresh localizer),
+then runs the look; ``arrival_checked``/``rotated``/``hold_yaw`` are reset. An over-confident wrong belief is
+therefore usually not corrected by the look, and the second arrival is rejected on the same view: the check ends a
+false arrival cleanly, it does not recover from it (independent review #363 P1-2; recovering an over-confident PF,
+e.g. a wide static-map prior re-initialisation or augmented-MCL particle injection, is a separate design). The retry
+count ``MAX_VIEW_RETRIES`` = ``run_m2_pair.MAX_REAPPROACH``; the next rejection ends the approach with outcome
+``arrival_not_confirmed_by_view`` (controller failure ``APPROACH_ARRIVAL_NOT_CONFIRMED_BY_VIEW``).
+The decision waits at most ``CONFIRM_WAIT_S`` (= ``blind_close.HOVER_CONFIRM_MAX_S``) for a frame captured after
+the arm and base settled; none inside the window counts as a rejection (fail closed). The window restarts at every
+own arm/look/drive command (review #363 P1-1: a small correction issued while the estimate sits on the tolerance
+edge must not use up the window of the earlier hold). Total SIM time stays under the existing ``APPROACH_LIMIT_S``
+of the approach state. The check sits below the communication layer (before the approach barrier, no status or message change), so
 all four communication conditions behave identically.
 
 Inputs: own RGB frame, own issued commands (settle timing), the static order sheet / beam spec / driver goal, the
@@ -232,6 +239,7 @@ class ViewConfirmedArrival:
         if kind in ('arm', 'look', 'initial_servo_command') or (
                 kind == 'mecanum' and any(row.get(k, 0.) != 0. for k in ('forward', 'left', 'turn'))):
             self._av_changed = float(row['t'])
+            self._av_wait_since = None        # the settle wait restarts with the new command (review #363 P1-1)
         return super().on_command(row)
 
     def _av_settled_frame(self, now):
@@ -270,7 +278,7 @@ class ViewConfirmedArrival:
         self._event(now, 'arrival_view_rejected', **detail)
         if self.view_rejections > MAX_VIEW_RETRIES:
             return self._finish(now, OUTCOME)
-        # approach again, as run_m2_pair._start_reapproach: fresh localizer + wide look, redo the final approach
+        # approach again: v98 relocalization voids the fix receipt only (belief and sigma kept), then looks
         self.arrival_checked, self.rotated, self.hold_yaw = False, False, None
         self.arrival_rechecks, self.path, self.last_look = 0, None, None
         return self._relocalize(now)
@@ -300,6 +308,9 @@ def record() -> dict:
             'min_component_px': v1.MIN_POINTS, 'max_view_retries': MAX_VIEW_RETRIES,
             'max_view_retries_source': 'run_m2_pair.MAX_REAPPROACH', 'confirm_wait_s': CONFIRM_WAIT_S,
             'confirm_wait_source': 'blind_close.HOVER_CONFIRM_MAX_S', 'frame_settle_s': FRAME_SETTLE_S,
+            'wait_restarts_on_own_command': True,
+            'retry_relocalization': 'begin_relocalization: fix receipt voided, particle belief and sigma kept '
+                                    '(not a fresh localizer); ends a false arrival, does not recover from it',
             'outcome': OUTCOME, 'failure': FAILURE, 'cause': CAUSE, 'band_half_len_m': BAND_HALF_LEN_M,
             'inputs': 'own RGB + measured camera model of the drive posture + static order sheet / beam spec',
             'not_inputs': 'ground truth, simulator state, PF sigma, partner pose, shared top camera',

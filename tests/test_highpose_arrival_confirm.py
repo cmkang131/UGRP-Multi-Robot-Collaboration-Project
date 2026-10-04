@@ -271,6 +271,49 @@ def test_mutation_unbounded_retries_never_ends(monkeypatch):
 
 
 # ------------------------------------------------------------------ record + wiring
+def test_own_command_restarts_the_wait_window_review_p1_1():
+    # Independent review #363 P1-1 sequence: the wait opens at 10.4 s on an unsettled frame, the estimate on the
+    # tolerance edge issues a small base correction at 11.0 s, the next frame (11.4 s) is not yet settled. Before the
+    # fix the window of the 10.4 s hold had run out at 11.45 s and the true dock was rejected as NO_SETTLED_FRAME.
+    d = driver(t_obs=10.3)
+    assert d._arrive(10.4) == [{'kind': 'hold'}]
+    d.on_command({'t': 11.0, 'kind': 'mecanum', 'forward': .02, 'left': 0., 'turn': 0.})
+    d.observe(11.4, cv2.cvtColor(frame('dock_r1_t10p20'), cv2.COLOR_BGR2RGB))
+    assert d._arrive(11.45) == [{'kind': 'hold'}] and not d.log and d.relocalized == 0
+    d.observe(11.7, cv2.cvtColor(frame('dock_r1_t10p20'), cv2.COLOR_BGR2RGB))      # 0.7 s after the command: settled
+    assert d._arrive(11.75) == [{'kind': 'arrived'}] and d.log[0][0] == 'arrival_view_confirmed'
+    # the restarted window still fails closed when no settled frame follows
+    d2 = driver(t_obs=10.3)
+    d2._arrive(10.4)
+    d2.on_command({'t': 11.0, 'kind': 'mecanum', 'forward': .02, 'left': 0., 'turn': 0.})
+    assert d2._arrive(11.1) == [{'kind': 'hold'}]
+    d2._arrive(11.1+ac.CONFIRM_WAIT_S+.05)
+    assert d2.log[0][1]['reasons'] == ['NO_SETTLED_FRAME'] and d2.relocalized == 1
+
+
+def test_mutation_wait_not_restarted_by_a_command_rejects_the_true_dock(monkeypatch):
+    def old_on_command(self, row):                  # the pre-fix rule: the window is cleared only by a verdict
+        kind = row.get('kind')
+        if kind in ('arm', 'look', 'initial_servo_command') or (
+                kind == 'mecanum' and any(row.get(k, 0.) != 0. for k in ('forward', 'left', 'turn'))):
+            self._av_changed = float(row['t'])
+        return super(ac.ViewConfirmedArrival, self).on_command(row)
+    monkeypatch.setattr(ac.ViewConfirmedArrival, 'on_command', old_on_command)
+    d = driver(t_obs=10.3)
+    d._arrive(10.4)
+    d.on_command({'t': 11.0, 'kind': 'mecanum', 'forward': .02, 'left': 0., 'turn': 0.})
+    d.observe(11.4, cv2.cvtColor(frame('dock_r1_t10p20'), cv2.COLOR_BGR2RGB))
+    d._arrive(11.45)
+    assert d.log[0][1]['reasons'] == ['NO_SETTLED_FRAME']
+
+
+def test_record_states_the_relocalization_keeps_the_belief_review_p1_2():
+    r = ac.record()
+    assert r['wait_restarts_on_own_command'] is True
+    assert 'belief and sigma kept' in r['retry_relocalization'] and 'not a fresh localizer' in r['retry_relocalization']
+    assert 'fresh localizer + wide look' not in (ac.__doc__ or '')
+
+
 def test_record_entry():
     r = ac.record()
     assert r['id'] == ac.ID and r['new_threshold'] is False and r['max_view_retries'] == 1
