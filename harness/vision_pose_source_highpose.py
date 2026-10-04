@@ -26,6 +26,12 @@ from harness import zone_pair_highpose_pf_consistency as pf_consistency
 # DEV candidate: constants come from the sources, not tuned; not validated closed-loop.
 PF_RECOVERY = {'alpha_slow': 0.001, 'alpha_fast': 0.1, 'max_fraction': 1.0, 'uniform_share': 0.0, 'local_std': [0.1, 0.1, 0.2]}
 
+# Expansion resetting (Ueda, Arai & Sakamoto, IROS 2004; emcl2 defaults expansion_radius_position 0.1 m / expansion_radius_orientation 0.2 rad):
+# an own arrival rejection says belief and view disagree, so keeping belief and sigma (what begin_relocalization does) repeats the rejected view.
+# The belief is expanded ONLY when the arrival-rejection path arms it (zone_pair_highpose_arrival_confirm.request_belief_expansion); the DR
+# checkpoint and every other relocalization keep their belief. Radii are the emcl2 defaults: DEV candidate, not tuned.
+EXPANSION_RADIUS = (0.1, 0.1, 0.2)
+
 
 class HighPoseSource(PairVisionPoseSource):
     provider_id = contract.PROVIDER_ID
@@ -45,7 +51,8 @@ class HighPoseSource(PairVisionPoseSource):
             'render_profile': 'floor_light_v1', 'qualification': 'unqualified OpenCV/HIGH candidate',
             'own_image_gates': {'path': self.gates['path'], 'sha256': self.gates['sha256']},
             'pf_consistency': pf_consistency.record(pf_consistency.CONFIG),
-            'pf_recovery': copy.deepcopy(PF_RECOVERY)}
+            'pf_recovery': copy.deepcopy(PF_RECOVERY),
+            'pf_expansion': {'radius': list(EXPANSION_RADIUS), 'trigger': 'own arrival-view rejection only (one shot)'}}
         # These frozen modules supply only column geometry, likelihood and PF.
         # load_vis3 never imports seg_model/torch or opens a checkpoint.
         vl, vpf = vp.load_vis3()
@@ -85,6 +92,7 @@ class HighPoseSource(PairVisionPoseSource):
                        'rejected_frames': 0, 'after_failure': 0}
         self.timing, self.lifecycle = [], []
         self._started, self._closed, self._last_frame_t = False, False, None
+        self._expand_next = False
         pair = cal['pair_model']
         self.beam_edge = HighBeamEdgeTracker(float(pair['slope_to_yaw_ratio']))
         self.carry_yaw_fallback = {'pair': True, 'edge': HIGH_EDGE_INFORMATIVE,
@@ -92,6 +100,28 @@ class HighPoseSource(PairVisionPoseSource):
             'b': copy.deepcopy(pair['b_rad_s']), 'level_frames': {}, 'pm_bad_until': -1.}
         self.worker = worker if worker is not None else OpenCVObserver(
             vl, lambda: pf.column_model_for(self.servo), self.gates['values'])
+
+    def arm_expansion(self):
+        """One shot: the next begin_relocalization also expands the belief. Only the arrival-rejection path arms it."""
+        self._expand_next = True
+
+    def disarm_expansion(self):
+        self._expand_next = False
+
+    def begin_relocalization(self, now, servo):
+        expand, self._expand_next = self._expand_next, False
+        super().begin_relocalization(now, servo)
+        if expand:
+            self._expand_belief()
+
+    def _expand_belief(self):
+        """Expansion resetting at the (already predicted) relocalization time: uniform +-radius per particle, weights reset."""
+        pf = self.loc._pf
+        pf.px = pf.px + pf.rng.uniform(-1., 1., size=pf.px.shape)*np.asarray(EXPANSION_RADIUS, float)
+        pf.px[:, 2] = pf.wrap(pf.px[:, 2])
+        pf.logw = np.zeros(pf.n)
+        self.lifecycle[-1].update(expansion_radius=list(EXPANSION_RADIUS), belief_preserved=False,
+                                  particles_sha256_after_expansion=contract.base.digest(pf.px.tolist()))
 
     def on_command(self, row):
         super().on_command(row)

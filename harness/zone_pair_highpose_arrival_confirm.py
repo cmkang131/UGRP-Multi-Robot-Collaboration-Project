@@ -26,11 +26,12 @@ must be consistent with the beam seen from some pose inside the stated tolerance
 
 On a rejection the driver relocalizes and approaches again, at most ``MAX_VIEW_RETRIES`` times. In v98 the
 relocalization is ``GuardedPairApproach._relocalize`` -> provider ``begin_relocalization``: it voids only the fix
-receipt and KEEPS the particle belief and its sigma (it is not ``run_m2_pair._start_reapproach``'s fresh localizer),
-then runs the look; ``arrival_checked``/``rotated``/``hold_yaw`` are reset. An over-confident wrong belief is
-therefore usually not corrected by the look, and the second arrival is rejected on the same view: the check ends a
-false arrival cleanly, it does not recover from it (independent review #363 P1-2; recovering an over-confident PF,
-e.g. a wide static-map prior re-initialisation or augmented-MCL particle injection, is a separate design). The retry
+receipt and keeps the particle belief and its sigma (it is not ``run_m2_pair._start_reapproach``'s fresh localizer),
+then runs the look; ``arrival_checked``/``rotated``/``hold_yaw`` are reset. Kept alone, an over-confident wrong belief
+is not corrected by the look and the second arrival is rejected on the same view (independent review #363 P1-2). The
+rejection path therefore first arms the provider's one-shot belief expansion (``request_belief_expansion``; expansion
+resetting, Ueda et al. 2004, radii 0.1 m / 0.1 m / 0.2 rad as in emcl2) so the look starts from a belief wide enough to
+reach the view; no other relocalization (DR checkpoint, look-around) expands. The retry
 count ``MAX_VIEW_RETRIES`` = ``run_m2_pair.MAX_REAPPROACH``; the next rejection ends the approach with outcome
 ``arrival_not_confirmed_by_view`` (controller failure ``APPROACH_ARRIVAL_NOT_CONFIRMED_BY_VIEW``).
 The decision waits at most ``CONFIRM_WAIT_S`` (= ``blind_close.HOVER_CONFIRM_MAX_S``) for a frame captured after
@@ -278,10 +279,36 @@ class ViewConfirmedArrival:
         self._event(now, 'arrival_view_rejected', **detail)
         if self.view_rejections > MAX_VIEW_RETRIES:
             return self._finish(now, OUTCOME)
-        # approach again: v98 relocalization voids the fix receipt only (belief and sigma kept), then looks
+        # approach again: relocalization voids the fix receipt, after a one-shot belief expansion (expansion resetting), then looks
         self.arrival_checked, self.rotated, self.hold_yaw = False, False, None
         self.arrival_rechecks, self.path, self.last_look = 0, None, None
-        return self._relocalize(now)
+        pose = getattr(self, '_shared_pose', None)
+        request_belief_expansion(pose)
+        try:
+            return self._relocalize(now)
+        finally:
+            clear_belief_expansion(pose)             # the request never outlives this relocalization (e.g. a delayed-provider branch)
+
+
+def request_belief_expansion(pose) -> bool:
+    """Arrival-rejection path only: arm the own provider's one-shot belief expansion for the coming relocalization.
+
+    ``pose`` is the driver's shared pose source (the delayed wrapper exposes the provider as ``.provider``); a source without
+    the hook (fakes, older providers) is left unchanged and False is returned. Nothing else (DR checkpoint, look-around) arms it.
+    """
+    provider = getattr(pose, 'provider', pose)
+    arm = getattr(provider, 'arm_expansion', None)
+    if arm is None:
+        return False
+    arm()
+    return True
+
+
+def clear_belief_expansion(pose) -> None:
+    provider = getattr(pose, 'provider', pose)
+    disarm = getattr(provider, 'disarm_expansion', None)
+    if disarm is not None:
+        disarm()
 
 
 _CACHE: dict = {}
@@ -309,8 +336,9 @@ def record() -> dict:
             'max_view_retries_source': 'run_m2_pair.MAX_REAPPROACH', 'confirm_wait_s': CONFIRM_WAIT_S,
             'confirm_wait_source': 'blind_close.HOVER_CONFIRM_MAX_S', 'frame_settle_s': FRAME_SETTLE_S,
             'wait_restarts_on_own_command': True,
-            'retry_relocalization': 'begin_relocalization: fix receipt voided, particle belief and sigma kept '
-                                    '(not a fresh localizer); ends a false arrival, does not recover from it',
+            'retry_relocalization': 'one-shot belief expansion (expansion resetting: particles displaced uniformly by +-(0.1 m, 0.1 m, '
+                                    '0.2 rad), weights reset; Ueda 2004 / emcl2 defaults) then begin_relocalization (fix receipt voided); '
+                                    'sigma is widened by the expansion, not a fresh localizer; no ground truth, no PF sigma input',
             'outcome': OUTCOME, 'failure': FAILURE, 'cause': CAUSE, 'band_half_len_m': BAND_HALF_LEN_M,
             'inputs': 'own RGB + measured camera model of the drive posture + static order sheet / beam spec',
             'not_inputs': 'ground truth, simulator state, PF sigma, partner pose, shared top camera',

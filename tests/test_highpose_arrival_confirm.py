@@ -307,11 +307,86 @@ def test_mutation_wait_not_restarted_by_a_command_rejects_the_true_dock(monkeypa
     assert d.log[0][1]['reasons'] == ['NO_SETTLED_FRAME']
 
 
-def test_record_states_the_relocalization_keeps_the_belief_review_p1_2():
+def test_record_states_the_one_shot_expansion_before_the_relocalization_review_p1_2():
     r = ac.record()
     assert r['wait_restarts_on_own_command'] is True
-    assert 'belief and sigma kept' in r['retry_relocalization'] and 'not a fresh localizer' in r['retry_relocalization']
+    assert 'expansion' in r['retry_relocalization'] and 'not a fresh localizer' in r['retry_relocalization']
+    assert 'no ground truth' in r['retry_relocalization']
     assert 'fresh localizer + wide look' not in (ac.__doc__ or '')
+
+
+class FakeProvider:
+    def __init__(self):
+        self.armed, self.arms, self.disarms = False, 0, 0
+
+    def arm_expansion(self):
+        self.armed = True
+        self.arms += 1
+
+    def disarm_expansion(self):
+        self.armed = False
+        self.disarms += 1
+
+
+class FakePose:
+    def __init__(self):
+        self.provider = FakeProvider()
+
+
+class ExpandingBase(Base):
+    """The relocalization consumes the armed request exactly as ``HighPoseSource.begin_relocalization`` does."""
+    consumed = None
+
+    def _relocalize(self, now):
+        provider = self._shared_pose.provider
+        self.consumed = provider.armed
+        provider.armed = False
+        return super()._relocalize(now)
+
+
+ExpandingDriver = ac.adopt(ExpandingBase)
+
+
+def expanding_driver(name):
+    d = ExpandingDriver()
+    d._shared_pose = FakePose()
+    d.arrival_view = view('r1')
+    d.on_command({'t': 10., 'kind': 'arm', 'servo_id': 3, 'pulse': 740})
+    d.observe(20., cv2.cvtColor(frame(name), cv2.COLOR_BGR2RGB))
+    return d
+
+
+def test_rejected_arrival_arms_the_one_shot_expansion_for_its_relocalization_only():
+    d = expanding_driver('false_arrival_r1_t118p50')
+    assert d._arrive(20.2) == [{'kind': 'look'}]
+    assert d.consumed is True and d.relocalized == 1                  # armed when begin_relocalization ran
+    assert d._shared_pose.provider.arms == 1 and d._shared_pose.provider.armed is False
+    d.observe(40., cv2.cvtColor(frame('false_arrival_r1_t118p50'), cv2.COLOR_BGR2RGB))
+    d._arrive(40.2)                                                   # second rejection ends the approach: no new request
+    assert d.outcome == ac.OUTCOME and d._shared_pose.provider.arms == 1
+
+
+def test_confirmed_arrival_never_arms_the_expansion():
+    d = expanding_driver('dock_r1_t10p20')
+    assert d._arrive(20.2) == [{'kind': 'arrived'}]
+    assert d._shared_pose.provider.arms == 0 and d.consumed is None
+
+
+def test_unconsumed_request_is_cleared_after_the_relocalization():
+    d = expanding_driver('false_arrival_r1_t118p50')
+    d._relocalize = lambda now: [{'kind': 'look'}]                    # a path that never reaches the provider hook
+    d._arrive(20.2)
+    assert d._shared_pose.provider.arms == 1 and d._shared_pose.provider.disarms >= 1 and d._shared_pose.provider.armed is False
+
+
+def test_pose_source_without_the_hook_is_left_alone():
+    assert ac.request_belief_expansion(None) is False
+    assert ac.request_belief_expansion(object()) is False
+    ac.clear_belief_expansion(None)
+    d = driver('false_arrival_r1_t118p50')                            # stub base has no _shared_pose
+    assert d._arrive(20.2) == [{'kind': 'look'}] and d.relocalized == 1
+    wrapped = FakePose()
+    assert ac.request_belief_expansion(wrapped) is True and wrapped.provider.armed is True   # delayed wrapper: provider attribute
 
 
 def test_record_entry():
@@ -354,6 +429,12 @@ def test_real_v98_runtime_drivers_are_configured_with_the_derived_bands(admitted
         expect = ac.ArrivalView(CALIBRATION, KEY, (*drv.goal, drv.goal_yaw), plan)
         assert drv.arrival_view.bands_px == expect.bands_px and drv.arrival_view.sheet == tuple(plan['sheet']['beam_xyyaw'])
         assert ac.camera_key(drv.drive_pose) == KEY
+        # R2: the real driver's shared pose source reaches the real HIGH provider's one-shot expansion hook (no silent no-op)
+        provider = runtime.providers[rid].provider
+        assert drv._shared_pose is not None and getattr(drv._shared_pose, 'provider', drv._shared_pose) is provider
+        assert ac.request_belief_expansion(drv._shared_pose) is True and provider._expand_next is True
+        ac.clear_belief_expansion(drv._shared_pose)
+        assert provider._expand_next is False
     assert runtime.own_image_gates['arrival_confirm'] == ac.record()
     assert runtime.own_image_gates['high_edge_informative'] is False      # review #363 P2-2: the flag is in the record
     # the pair approach driver's own log (looks, relocalizations, arrival view verdicts) is saved in the record
