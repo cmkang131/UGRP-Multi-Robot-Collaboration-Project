@@ -551,6 +551,20 @@ def test_align_to_carry_continues_from_the_align_entry_until_both_robots_are_don
     assert got['done'] and got['stop'] and got['reached'] == {'r1': True, 'r2': True}
 
 
+def test_dock_approach_probe_ends_when_both_robots_entered_wait_approach():
+    spec = run.STAGE_PROBES['dock_approach']
+    assert (spec['terminal_event'], spec['terminal_state'], spec['barrier']) == ('state', 'wait_approach', None)
+    assert 200. <= spec['cap_s'] <= c.CASE_CAP_S and not spec.get('staged')      # real dock start, real PF prior
+    ev = lambda *states: type('E', (), {'events': [{'event': 'state', 'state': x} for x in states],
+                                        'controller': type('C', (), {'failure': None})()})()
+    def progress(r1, r2):
+        rt = type('R', (), {'team': type('T', (), {'sessions': [{'endpoints': {'r1': r1, 'r2': r2}}]})(), 'actors': {}})()
+        return run.stage_progress(rt, 'dock_approach')
+    assert not progress(ev('approach', 'wait_approach'), ev('approach'))['done']     # r2 still approaching
+    got = progress(ev('approach', 'wait_approach', 'align'), ev('reapproach', 'wait_approach'))
+    assert got['done'] and got['stop'] and got['reached'] == {'r1': True, 'r2': True}
+
+
 def test_align_entry_spawns_at_the_plan_prestation_and_keeps_the_opening_look_around(tmp_path, monkeypatch):
     import math
     from scripts import run_m2_pair as m2

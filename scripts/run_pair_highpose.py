@@ -59,6 +59,11 @@ STAGE_PROBES = {
                    'covers': 'dock -> RGB align/grasp -> low lift -> raise to HIGH'},
     'high_hold': {'terminal_event': 'barrier_go', 'barrier': 'carry', 'cap_s': 150.,
                   'covers': 'raise_high + 8 s HIGH settle + carry barrier GO from command history/status'},
+    # 2026-10-05 (coordinator): the unloaded approach alone, from the real dock and the real PF prior (not staged),
+    # so the r2 no_fix look gate and the own-RGB arrival check meet physics before the grasp. Ends when both robots
+    # have entered wait_approach (after the arrival view check); cap >= 200 SIM s as ordered.
+    'dock_approach': {'terminal_event': 'state', 'terminal_state': 'wait_approach', 'barrier': None, 'cap_s': 240.,
+                      'covers': 'dock -> look_around -> pair approach -> arrival view check -> wait_approach (both)'},
 }
 # v98 staged probes (harness/zone_pair_highpose_staging.py): staged test setup
 # before the controller exists, so stages after approach run without it.
