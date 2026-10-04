@@ -71,7 +71,8 @@ def stage_progress(runtime, probe):
     for session in getattr(getattr(runtime, 'team', None), 'sessions', None) or []:
         for rid, ep in session['endpoints'].items():
             hits = [e for e in ep.events if e.get('event') == spec['terminal_event']
-                    and (spec['barrier'] is None or e.get('barrier') == spec['barrier'])]
+                    and (spec['barrier'] is None or e.get('barrier') == spec['barrier'])
+                    and (spec.get('terminal_state') is None or e.get('state') == spec['terminal_state'])]
             reached[rid] = reached.get(rid) or bool(hits)
             if ep.controller.failure is not None:
                 failures[rid] = ep.controller.failure

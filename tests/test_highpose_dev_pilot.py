@@ -479,7 +479,7 @@ def test_staged_geometry_preroll_and_prior_are_static_and_recorded():
     assert prior['mean_xyyaw'] == stations['r1']
 
 
-@pytest.mark.parametrize('probe', ['raise_high_align', 'high_hold_staged', 'carry_leg_staged'])
+@pytest.mark.parametrize('probe', ['raise_high_align', 'align_to_carry', 'high_hold_staged', 'carry_leg_staged'])
 def test_staged_probe_preroll_runs_before_controller_clock_and_is_recorded(tmp_path, monkeypatch, probe):
     from tests.test_zone_final_pair_v3 import FakePhysics
     from harness import zone_pair_highpose_staging as st
@@ -527,7 +527,25 @@ def test_floor_entries_are_dropped_and_recorded():
     assert set(st.DROPPED) == {'raise_high_staged', 'raise_high_closed'}
     assert not set(st.DROPPED) & set(st.PROBE_SPECS) and not set(st.DROPPED) & set(run.STAGE_PROBES)
     assert all('admission' in why for why in st.DROPPED.values())
-    assert set(st.PROBE_SPECS) == {'raise_high_align', 'high_hold_staged', 'carry_leg_staged'}
+    assert set(st.PROBE_SPECS) == {'raise_high_align', 'align_to_carry', 'high_hold_staged', 'carry_leg_staged'}
+    assert set(st.PARKED) == {'high_hold_staged', 'carry_leg_staged'} and set(st.PARKED) <= set(st.PROBE_SPECS)
+
+
+def test_align_to_carry_continues_from_the_align_entry_until_both_robots_are_done():
+    from harness import zone_pair_highpose_staging as st
+    a, b = st.PROBE_SPECS['raise_high_align'], st.PROBE_SPECS['align_to_carry']
+    same = ('preroll', 'spawn', 'opening_look_around', 'entry')
+    assert {k: a[k] for k in same} == {k: b[k] for k in same}
+    assert (b['cap_s'], b['terminal_event'], b['terminal_state'], b['barrier']) == (300., 'state', 'done', None)
+    assert run.STAGE_PROBES['align_to_carry']['staged'] is True
+    ev = lambda *states: type('E', (), {'events': [{'event': 'state', 'state': x} for x in states],
+                                        'controller': type('C', (), {'failure': None})()})()
+    def progress(r1, r2):
+        rt = type('R', (), {'team': type('T', (), {'sessions': [{'endpoints': {'r1': r1, 'r2': r2}}]})(), 'actors': {}})()
+        return run.stage_progress(rt, 'align_to_carry')
+    assert not progress(ev('wait_carry', 'carry', 'lower'), ev('released'))['done']   # other states do not end it
+    got = progress(ev('carry', 'done'), ev('released', 'done'))
+    assert got['done'] and got['stop'] and got['reached'] == {'r1': True, 'r2': True}
 
 
 def test_align_entry_spawns_at_the_plan_prestation_and_keeps_the_opening_look_around(tmp_path, monkeypatch):

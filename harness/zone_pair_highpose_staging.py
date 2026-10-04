@@ -96,6 +96,14 @@ PROBE_SPECS = {
         'terminal_event': 'high_carry_pose', 'barrier': None,
         'covers': 'staged approach end (plan pre-station) + normal opening look_around -> own approach barrier -> '
                   'own-RGB align -> open descent -> close barrier -> grasp -> low lift -> raise to HIGH'},
+    # Coordinator 2026-10-04: continuation probe. Same entry as raise_high_align, then the controller's own
+    # HIGH hold and carry leg until delivery (both robots reach state 'done') or a failure. No harness-injected
+    # loaded state: hold and carry start from the state the controller itself reached.
+    'align_to_carry': {'preroll': 'none', 'spawn': 'prestation', 'opening_look_around': True,
+        'entry': 'wait_approach', 'cap_s': 300.,
+        'terminal_event': 'state', 'terminal_state': 'done', 'barrier': None,
+        'covers': 'raise_high_align entry -> align -> blind final approach -> close -> lift -> raise to HIGH -> '
+                  'HIGH hold -> carry barrier -> carry leg -> lower -> release -> done (delivery or failure)'},
     'high_hold_staged': {'preroll': 'high_held', 'spawn': 'station', 'opening_look_around': False,
         'entry': 'wait_carry', 'cap_s': 60.,
         'terminal_event': 'barrier_go', 'barrier': 'carry',
@@ -104,6 +112,14 @@ PROBE_SPECS = {
         'entry': 'wait_carry', 'cap_s': 150.,
         'terminal_event': 'checkpoint_high_reobserved', 'barrier': None,
         'covers': 'staged teacher-held beam at HIGH -> carry leg to the first checkpoint -> HIGH stop + re-observe (needs localization)'},
+}
+
+# Parked 2026-10-04 (coordinator): code kept, not run and not counted. A HIGH entry would need a look_around in a
+# loaded pose, i.e. more test-setup ground truth; align_to_carry covers hold/carry from a reached state instead.
+PARKED = {
+    'high_hold_staged': 'HIGH staged entry: no measurement at HIGH (look_around skipped) -> pair admission gate_ok false '
+                        '(b37c9270 x1200, 0865a788 x1200); a loaded-pose look_around would add test-setup ground truth',
+    'carry_leg_staged': 'same as high_hold_staged (b37c9270 x3000, 0865a788 x3000)',
 }
 
 # Dropped 2026-10-04 (coordinator): structurally unable to pass pair admission.
