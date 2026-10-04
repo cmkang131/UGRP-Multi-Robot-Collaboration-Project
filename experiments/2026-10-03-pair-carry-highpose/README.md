@@ -96,6 +96,35 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   - 호버 가로 검사 허용치(3 mm)는 정렬 허용치를 그대로 쓴 것이고, 측정 근거는 한 표본(0.06 mm)이다.
   - 닫은 뒤 자기 집게 감시는 여전히 기록만이다(`grip_loss_after_close: log-only`).
 
+### 이어가기 단계 검사 `align_to_carry` (`d5ca2ec3`, 2026-10-04)
+
+조정자 결정(2026-10-04): HIGH staged 진입(`high_hold_staged`, `carry_leg_staged`)은 **보류(parked)**한다. 코드는 두되 실행하지 않고
+집계하지 않는다(`staging.PARKED`). 적재 자세에서 둘러보기를 넣으면 시험 준비 정답이 더 늘어나기 때문이다. 대신 raise_high_align과
+같은 진입에서 HIGH 유지와 운반 구간까지 이어가는 `align_to_carry`를 더했다. 상한은 SIM 300초이고, 두 로봇이 `done` 상태에 이르면
+끝난다(실행기 `terminal_state`). 운반은 제어기가 실제로 도달한 상태에서 시작하며 하네스가 넣은 적재 상태가 없다.
+
+조건은 앞과 같다(seed 911, before_door, DEV_PILOT, floor_light_v1, weld OFF, 모델 호출 0, 조정 PID 60799, 부하 8.2 → 20.3).
+
+| 검사 | 상태 | SIM초 | 명령 r1/r2 | 실패 | 닫기/들기/HIGH | 운반 | 배달(평가 전용) |
+|---|---|---|---|---|---|---|---|
+| align_to_carry | FAILED | 98.65 | 1933/2214 | r1 `HIGH_CARRY_EDGE_REFERENCE_TIMEOUT` 99.9초, r2 `PARTNER_ABORT` | 64.7초 / 65.9초 / 84.8초 | 운반 barrier 미준비, 이동 없음 | 아니오(빔 0.115 m에 들린 채 제자리, 손가락 4개 접촉) |
+
+- 닫기·들기·HIGH까지는 raise_high_align과 같다(호버 2프레임, 닫기 때 보지 않은 시간 r1 11.4초·r2 1.4초, 완화·거부 0).
+- **새 막힘:** `wait_carry`에서 두 로봇 모두 15초 동안 `barrier_report carry ready=false, reason="HIGH edge reference pending"`만
+  보냈다. 제공자의 `beam_edge.available()`이 한 번도 참이 되지 않았다(`harness/zone_pair_highpose_runtime.py` 276–282).
+- **원인(자기 RGB만으로 오프라인 재생):** `harness/own_beam_edge.edge_line()`이 HIGH 자세의 모든 프레임(r1·r2 각 302장)에서
+  None을 냈다. 빔 띠의 아래 경계는 r1 90열 중 85열(r2 80열)이 한 직선 위(169–171행)에 있다. 그런데 오른쪽 끝 5열(r2 10열)은
+  첫 띠 구간이 79–80행에서 끝난다. 함수는 모든 열로 최소제곱 직선을 한 번 맞춘 뒤 4 px 안의 열만 남긴다. 이 이상치 열이 직선을
+  기울여(기울기 −0.078) 남는 열이 25개뿐이고, 필요한 54개에 못 미친다. 남는 85열로 다시 맞추면 잔차 RMS가 0.5 px이다.
+  즉 영상에는 경계가 분명하지만, 한 번만 하는 최소제곱 정리가 이상치에 약해서 실패한다.
+- `own_beam_edge.py`는 v6e 공용 모듈이라 고치지 않았다. 처방과 적용 범위는 조정자 결정 사항이다. 표준 방법은 이상치에 강한 직선
+  맞춤(RANSAC, 중앙값 기반 맞춤 등)이다. 또 기울기→상대 yaw 비율(`slope_to_yaw_ratio`)은 v6e 낮은 운반 자세의 기록에서 정한
+  값이므로, HIGH 자세에 그대로 맞는지도 따로 확인해야 한다.
+- TensorBoard: `outputs/tensorboard/1004f-v98-dev-probe-align-to-carry-d5ca2ec3`(기준선 `1004d…/raise_high_align-ace`), 보기 설정 키
+  `v98_dev_probe_align_to_carry_d5ca2ec3_20261004`. raw는 `/Users/changmin/projects/ugrp/outputs/v98-dev-probe-align_to_carry-d5ca2ec3`
+  (로컬 보관, 원격 백업 아님).
+- raise_high(처음부터)는 위치 추정 과신 수정이 들어온 뒤 다시 돌린다(조정자 결정, guard는 그대로).
+
 ### 시작 상태 완화 뒤 단계 검사 4개 (`0865a788`, 2026-10-04)
 
 둘러보기 수정 + 보지 않는 마지막 접근 + 시작 상태 완화(+ 거부 기록)를 모두 넣은 코드다. 조건은 앞과 같다(seed 911, before_door,
@@ -106,8 +135,8 @@ DEV_PILOT `398372ae…82f5`, floor_light_v1, weld OFF, 모델 호출 0, SIM 슬�
 |---|---|---|---|---|---|---|---|
 | raise_high(처음부터) | FAILED | 7.75 | 203/202 | 59/33 | r2 `PAIR_COLLISION_GUARD` 9.0초, r1 `PARTNER_ABORT` | 없음 | 완화 r1 4회·r2 3회(8.7–8.9초), 거부 r2 1회 |
 | raise_high_align | **REACHED** | 83.55 | 1932/2213 | 200/167 | 없음 | 닫기 64.7초, 들기 65.9초, HIGH 84.8초 | 없음(0/0) |
-| high_hold_staged | NOT_REACHED | 60.0 | 0/0 | 0/0 | 없음(입장 실패) | 없음 | 없음 |
-| carry_leg_staged | NOT_REACHED | 150.0 | 0/0 | 0/0 | 없음(입장 실패) | 없음 | 없음 |
+| high_hold_staged (보류, 집계 안 함) | NOT_REACHED | 60.0 | 0/0 | 0/0 | 없음(입장 실패) | 없음 | 없음 |
+| carry_leg_staged (보류, 집계 안 함) | NOT_REACHED | 150.0 | 0/0 | 0/0 | 없음(입장 실패) | 없음 | 없음 |
 
 - **raise_high:** 시작 상태 완화가 8.7초의 첫 접근 명령을 두 로봇 모두에 허용했다(작성자 반사실 재생과 같다). 0.3초 뒤 9.0초에
   r2의 전진 명령(forward 0.119, 0.15초)이 다시 막혔다. 완화 거부 이유는 `inside_pair_deeper`이다. r2의 추정 뒤 왼쪽 차체 모서리
@@ -476,6 +505,13 @@ TensorBoard 새 스냅샷 `1003-pair-highpose-v93/high-hold`에 같은 진단의
 0으로 채우지 않는다. [대시보드 검증과 고정 링크](tensorboard_verification.json)를 따른다.
 
 ## 참고 자료
+
+### HIGH 운반 빔 경계 맞춤 (v98, 처방 제안의 출처)
+
+- Fischler, Bolles, "Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis and Automated
+  Cartography", CACM 24(6), 1981. 이상치가 섞인 자료에서 직선 등 모델을 맞추는 RANSAC. **미확인**(이번 작업에서 원문을 다시 읽지 않음).
+- OpenCV `cv::fitLine`(M-estimator 거리 `DIST_HUBER` 등). **미확인**(문서를 이번 작업에서 다시 읽지 않음).
+- 이 출처는 조정자 결정용 제안이며 코드에는 넣지 않았다.
 
 ### 짝 guard 시작 상태 완화 (v98, 작성자 모듈 설명의 출처)
 
