@@ -28,6 +28,39 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   `GRIP_NOT_CONFIRMED`는 그대로다. 공유 동결 파일(`zone_pair_grasp.py`, `run_m2_pair.py`)은 바꾸지 않았다.
 - **복구 동작은 아직 넣지 않았다**(관측기 수정이 폐루프에서 확인된 뒤).
 
+### 네 묶음 뒤 단계 검사 3개, 전체 경로 (`1f7fb800`, 2026-10-04)
+
+재둘러보기 미루기(2d285ec4) → DR 체크포인트 영수증(ada1d204) → 사례 상한 900초(f38e2eba) → 시작 상태 완화 v2(1f7fb800)를 넣은
+머리에서 돌렸다. 확인 범위 `carry`(전체 경로, before_door로 줄이지 않음), 지도 `zone_wide_door_geometry_v3`, seed 911,
+DEV_PILOT(FUNCTIONAL_DEV, 승격 불가), floor_light_v1, weld OFF, 모델 호출 0. SIM 시간 병렬 실행(부하 평균 시작 15.8–20.5,
+끝 11.7–21.2). 원본 `outputs/v98-dev-probe-<단계>-1f7fb800`. 물리 값은 평가 전용이다. 관련 시험(가상 환경): 검토 412,
+highpose 227, 나머지 382 통과. CI 37198572206 33개 작업 모두 성공.
+
+| 단계 | 결과 | SIM 초(검사 상한) | 명령 r1/r2 | 끝·멈춘 이유 | af2f7c2a 대비 |
+|---|---|---|---|---|---|
+| raise_high(도크 시작) | NOT_REACHED | 150.0 (150) | 1939/2403 | 두 로봇 `LOOKED`(10.05초). 완화 v2가 r2의 첫 틱(10.9초) 명령을 받아들였고 r2는 1.2초 동안 동쪽으로 10.7 cm 움직였다(추정). 완화 사건은 r2 12.1초, r1 11.9초에 끝남(guard 정상 판정으로 돌아옴), guard 거부 0. r1 118.5초 `wait_approach` 도착, r2는 148.4초까지 접근 주행 중에 단계 상한 150초에 닿음 | 이전 r2 10.9초 `PAIR_COLLISION_GUARD`. 이번 시작 막힘 풀림. 접근이 느림(상한 150은 이 단계 검사의 값, 사례 상한 900과 별개) |
+| raise_high_align | REACHED | 80.85 (900) | 2057/2154 | 두 로봇 HIGH에서 `wait_carry`. 재둘러보기 미루기 r1·r2 각 1회, 제공자 실패 0 | 이전 27.35초 `ALIGN_RELOOK_NO_FIX` 퇴행이 사라짐 |
+| align_to_carry | FAILED | 108.75 (900) | 2203/2300 | 파지 62.0, HIGH 64.8, 운반 barrier 86.4초 통과, 첫 다리 운반 86.4–101.4초, 101.9초 `checkpoint_high_stop`(seg 1). r1 `HIGH_CHECKPOINT_REOBSERVE_TIMEOUT`(110.0초), r2 `PARTNER_ABORT` | 이전에는 운반 다리에 닿지 못함. 이번 첫 다리 완료 |
+
+- **체크포인트 σ(정지 직전 마지막 적재 gate 기록, 101.3초):** r1 36.4 mm / 1.15°, r2 38.8 mm / 1.13°(위치 고정 나이 49.2·43.1초).
+  둘 다 DR 예산 50 mm / 3° 안인데 영수증(`checkpoint_high_dr_receipt`)도 예산 초과(`..._over_budget`)도 기록되지 않았다.
+- **원인(코드 확인):** 체크포인트에서 런타임이 `begin_relocalization`을 부른다(`zone_pair_highpose_runtime.py` 315행, 48c18dd1부터).
+  v98 제공자(`HighPoseSource` ← `PairVisionPoseSource` ← `VisionPoseSource`)의 이 함수는 믿음과 σ는 그대로 두고
+  `_pf.last_scan_t = None`으로 이전 고정 영수증만 지운다(`vision_pose_source_p03.py` 137–153행). `estimate()`가
+  `last_fix_t`를 이 값으로 채우므로(같은 파일 71–75행) 정지 뒤 모든 보고가 `last_fix_t=None`이고, DR diff(a87325c7)의
+  `decide()`는 이를 '쓸 보고 없음'으로 보고 계속 기다려 8초 시간 초과가 났다. diff의 시험은 가짜 보고에 `fix_t`를 넣어
+  이 재설정을 흉내 내지 않았다. 병합 실수는 아니다.
+- **HIGH 재관측은 성공할 수 없다(제어기 자기 기록):** 마지막 고정 시각이 r1 51.95초, r2 58.05초로 둘 다 HIGH 도착(64.8초)
+  전이다(제공자 `begin_relocalization` 기록의 `previous_fix_t`, 적재 gate의 고정 나이). HIGH에 적재한 채 45 SIM초 동안 측정 고정이 0번이다.
+  DR 모듈의 오프라인 확인(적재 HIGH 프레임 964장에서 벽 열 0개)과 같다. 101.9초 정지는 등록 경로 다리 0의 끝에서 다음 다리가
+  남아 있어 내리지 않고 HIGH에서 멈추는 중간 체크포인트다. 옛 규칙은 정지 뒤 새 고정을 요구하므로 8초 시간 초과가 유일한 출구다.
+  이것이 σ 재고정(set-down re-fix)이 대신할 계기다.
+- **제안(적용 안 함, 조정자 결정 대기):** `fix363/dr_voided_receipt_v98.proposal.diff`(sha256 `e4c30dfb…`). 초기화된 새 보고의
+  `last_fix_t=None`을 '정지 뒤 고정 없음 = DR 보고'로 본다. 예산(50 mm / 3°)은 그대로다. 시험 13개 통과, 옛 규칙으로 되돌리는
+  변이에서 2개 실패.
+- TensorBoard: `outputs/tensorboard/1004i-v98-dev-probes-1f7fb800`, 보기 키 `v98_dev_probes_1f7fb800_20261004`,
+  기준 실행 1004h(af2f7c2a)·1004g(6727751b). 서버 API와 화면 timeSeries 값이 원본과 같음을 확인했다.
+
 ### 시작 상태 완화 v2: 빠져나갈 벽 면 기준 깊이 (Track A diff, 조정자 결정 2026-10-04)
 
 - **원인(`af2f7c2a` raise_high r2 10.9초 거부, 오프라인 평가 전용 정답):** 추정 오차 16.7 mm(벽 쪽 13.8 mm, 정직한 σ에서 NEES 0.42)

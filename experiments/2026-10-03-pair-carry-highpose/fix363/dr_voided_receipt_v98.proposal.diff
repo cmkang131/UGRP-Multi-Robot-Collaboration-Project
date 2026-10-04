@@ -1,0 +1,101 @@
+diff -ru a/harness/zone_pair_highpose_dr_checkpoint.py b/harness/zone_pair_highpose_dr_checkpoint.py
+--- a/harness/zone_pair_highpose_dr_checkpoint.py	2026-10-04 20:38:21
++++ b/harness/zone_pair_highpose_dr_checkpoint.py	2026-10-04 20:38:41
+@@ -41,18 +41,24 @@
+ 
+ 
+ def decide(report, now, started, fix_after, min_stop_s):
+-    """('wait' | 'fix' | 'dr' | 'over', detail). Pure; ``detail`` is None without a usable report."""
+-    if not (report is not None and pose_report_fresh(report, now) and report.initialized
+-            and report.last_fix_t is not None):
++    """('wait' | 'fix' | 'dr' | 'over', detail). Pure; ``detail`` is None without a usable report.
++
++    ``last_fix_t is None`` on an initialized fresh report means "no fix since the stop": the runtime's
++    checkpoint calls ``begin_relocalization`` (vision_pose_source_p03), which keeps the predicted belief and
++    its sigma but sets ``_pf.last_scan_t = None`` to void the previous fix receipt. That is a DR report.
++    """
++    if not (report is not None and pose_report_fresh(report, now) and report.initialized):
+         return 'wait', None
++    fix_t = report.last_fix_t
+     sxy, syaw = float(report.std_xy_m), float(report.std_yaw_rad)
+-    detail = {'std_xy_m': sxy, 'std_yaw_rad': syaw, 'fix_t': float(report.last_fix_t),
+-              'fix_age_s': float(now)-float(report.last_fix_t), 'report_t_est': float(report.t_est),
++    detail = {'std_xy_m': sxy, 'std_yaw_rad': syaw, 'fix_t': None if fix_t is None else float(fix_t),
++              'fix_age_s': None if fix_t is None else float(now)-float(fix_t),
++              'fix_receipt_voided': fix_t is None, 'report_t_est': float(report.t_est),
+               'stop_s': float(now)-float(started)}
+     within = (math.isfinite(sxy) and math.isfinite(syaw)
+               and sxy <= BUDGET_XY_M and syaw <= BUDGET_YAW_RAD)
+     if float(now)-float(started) < min_stop_s:
+         return 'wait', detail
+-    if report.last_fix_t > fix_after:
++    if fix_t is not None and fix_t > fix_after:
+         return ('fix' if within else 'wait'), detail
+     return ('dr' if within else 'over'), detail
+diff -ru a/tests/test_highpose_dr_checkpoint.py b/tests/test_highpose_dr_checkpoint.py
+--- a/tests/test_highpose_dr_checkpoint.py	2026-10-04 20:38:21
++++ b/tests/test_highpose_dr_checkpoint.py	2026-10-04 20:39:37
+@@ -50,17 +50,36 @@
+ def test_decide_without_a_usable_report_waits():
+     assert dc.decide(None, 11.3, 10., 10., MIN) == ('wait', None)
+     assert dc.decide(rep(10.0, fix_t=2., sxy=.01, syaw_deg=.5), 11.3, 10., 10., MIN) == ('wait', None)  # stale
+-    assert dc.decide(rep(11.3, fix_t=None, sxy=.01, syaw_deg=.5), 11.3, 10., 10., MIN) == ('wait', None)
+     assert dc.decide(rep(11.3, fix_t=2., sxy=.01, syaw_deg=.5, initialized=False), 11.3, 10., 10., MIN) == ('wait', None)
+ 
+ 
+-def run_dr(ctls, *, until, sxy, syaw_deg, only=None):
++def test_decide_treats_a_voided_receipt_as_dr_not_wait():
++    # vision_pose_source_p03.begin_relocalization (called at checkpoint_high_stop) keeps the belief and sigma
++    # but sets last_scan_t -> last_fix_t to None. Before this rule decide() waited 8 s and timed out
++    # (1f7fb800 align_to_carry r1: sigma 36 mm / 1.15 deg, HIGH_CHECKPOINT_REOBSERVE_TIMEOUT at +8.1 s).
++    kind, detail = dc.decide(rep(11.3, fix_t=None, sxy=.0364, syaw_deg=1.15), 11.3, 10., 10., MIN)
++    assert kind == 'dr' and detail['fix_receipt_voided'] and detail['fix_t'] is None
++    assert dc.decide(rep(11.3, fix_t=None, sxy=.0591, syaw_deg=1.), 11.3, 10., 10., MIN)[0] == 'over'
++    assert dc.decide(rep(10.5, fix_t=None, sxy=.01, syaw_deg=.5), 10.5, 10., 10., MIN)[0] == 'wait'
++
++
++def test_real_provider_reset_voids_last_fix_t():
++    # The real p03 provider path the v98 HighPoseSource inherits: begin_relocalization sets last_scan_t None.
++    import inspect
++    from harness import vision_pose_source_p03 as p03
++    from harness.vision_pose_source_highpose import HighPoseSource
++    assert issubclass(HighPoseSource, p03.VisionPoseSource)
++    src = inspect.getsource(p03.VisionPoseSource.begin_relocalization)
++    assert 'self.loc._pf.last_scan_t = None' in src
++
++
++def run_dr(ctls, *, until, sxy, syaw_deg, only=None, voided=False):
+     """Real tick() + arm ticks; from each checkpoint stop on, the own report is DR only (last fix before the stop)."""
+     for i in range(int(round(until/.1))+1):
+         now = round(i*.1, 8)
+         for c in ctls:
+             if getattr(c, 'checkpoint_fix_after', None) is not None and (only is None or c.rid in only):
+-                c.port.own.last_report = rep(now, fix_t=c.checkpoint_fix_after-30., sxy=sxy[c.rid],
++                c.port.own.last_report = rep(now, fix_t=None if voided else c.checkpoint_fix_after-30., sxy=sxy[c.rid],
+                                              syaw_deg=syaw_deg[c.rid])
+             if c.state not in ('failed', 'released', 'done'):
+                 c.tick(now)
+@@ -70,15 +89,20 @@
+     return ctls
+ 
+ 
+-def test_dr_receipt_resumes_at_high_without_lowering_or_a_reobserve_event():
++import pytest
++
++
++@pytest.mark.parametrize('voided', [False, True])
++def test_dr_receipt_resumes_at_high_without_lowering_or_a_reobserve_event(voided):
+     _, ctls = pair(segments=(.1, .1))
+-    run_dr(ctls, until=60., sxy={'r1': .0424, 'r2': .0423}, syaw_deg={'r1': 1.38, 'r2': 1.22})
++    run_dr(ctls, until=60., sxy={'r1': .0424, 'r2': .0423}, syaw_deg={'r1': 1.38, 'r2': 1.22}, voided=voided)
+     for c in ctls:
+         assert c.failure is None and c.state == 'released'
+         stop = next(e['t'] for e in c.events if e['event'] == 'checkpoint_high_stop')
+         got = [e for e in c.events if e['event'] == dc.DR_EVENT]
+         assert len(got) == 1 and got[0]['seg'] == 1 and got[0]['t']-stop >= MIN-1e-8
+-        assert got[0]['std_xy_m'] <= dc.BUDGET_XY_M and got[0]['fix_age_s'] > 30.
++        assert got[0]['std_xy_m'] <= dc.BUDGET_XY_M
++        assert (got[0]['fix_age_s'] is None and got[0]['fix_receipt_voided']) if voided else got[0]['fix_age_s'] > 30.
+         assert not [e for e in c.events if e['event'] == dc.FIX_EVENT]      # never labelled as a re-observation
+         assert not [a for t, a in c.issued_log if stop <= t <= got[0]['t'] and a['kind'] == 'arm']
+         assert any(e['event'] == 'barrier_go' and e['barrier'] == 'carry' and e['t'] > got[0]['t'] for e in c.events)
