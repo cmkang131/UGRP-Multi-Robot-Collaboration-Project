@@ -144,6 +144,8 @@ TEST_PATTERNS = (
     "tests/test_review_346.py",
     "tests/test_final_environment_measurement_v2.py",
     "tests/test_final_environment_gain_calibration_v101.py",
+    "tests/test_final_pair_loaded_gain_v102.py",
+    "tests/test_fit_loaded_gain_calibration.py",
     "tests/test_review_347.py",
     "tests/test_review_e2e_batch_k.py",  # K1: final environment CI collection regression
     "tests/test_scenario_capabilities_docs.py",
@@ -233,6 +235,7 @@ TEST_PATTERNS = (
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)
+    "tests/test_stall_detector_d1.py",  # offline D1 draft reference: NumPy frames only, no controller/simulator
     "tests/test_carry_lateral_error_model.py",  # offline endpoint extraction, grouped validation and paired prediction
     "tests/test_m2_pair_door_v3.py", "tests/test_pair_owncam_approach.py", "tests/test_zone_tagged_cargo_scene.py",
     "tests/test_owncam_localizer.py", "tests/test_zone_landmarks_sim.py",
