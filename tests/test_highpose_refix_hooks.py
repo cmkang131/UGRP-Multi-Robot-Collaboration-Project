@@ -437,8 +437,10 @@ def test_production_class_routes_the_hooked_methods_through_sigma_refix_to_the_r
     from tests.test_highpose_grasp_view import representative_class
     mro = representative_class().__mro__
 
-    def owners(name):
-        return [k for k in mro if name in k.__dict__]
+    from harness.zone_pair_highpose_runtime import LightFail
+
+    def owners(name):      # v105 DEV light: LightFail.fail only filters soft reasons and delegates to super()
+        return [k for k in mro if name in k.__dict__ and k is not LightFail]
     for name in ('_align_relook_return', 'align_relook_expired', '_cp_open', '_wait_lower', '_lift', 'fail',
                  '_align_relook_stop', '_align_relook', 'align_look_choices'):
         assert owners(name)[0] is rf.SigmaRefix, (name, owners(name)[:3])

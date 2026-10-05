@@ -35,6 +35,38 @@ camera_record = previous.camera_record
 # v98-cap-3 (user 2026-10-04 "시간 상한도 늘리셈"): 3x300 -> 3x900 DEV ceiling, not a target. The full route with
 # sigma-triggered set-down re-fixes is estimated at 351-517 s (>= 41.4 s per re-fix); 900 s ~ 1.75x the upper estimate.
 CASE_CAP_S = 900.
+# User decision 2026-10-05 17:2x KST ("걍 충돌 방지를 빼. 충돌 하면 다시 생각하면 되잖아"): PAIR_COLLISION_GUARD is
+# log-only (harness/zone_pair_highpose_guard_log_only). 'enforce' restores the earlier behaviour. Runs with
+# 'log_only' carry bundle label v105 and are never pooled with earlier runs.
+COLLISION_GUARD_MODE = 'log_only'
+COLLISION_GUARD_BUNDLE_LABEL = 'zone-final-pair-highpose-v105-collision-log-only'
+# DEV light mode (user 2026-10-05 17:3x KST "다 라이트 하게 줄여"): conservative stops in CommandGuard.check and the
+# re-fix horizon check are logged ('dev_light_would_stop') instead of stopping. GO barrier mismatches and execution
+# errors still stop. Drop, tilt and grip loss are NOT detected during the run in this version (independent review #383
+# P2-b): they are evaluation-only judgements written after the run, never an in-run stop. DEV_PILOT only; a formal
+# (non-DEV_PILOT) run is refused while it is on (require_dev_only_flags). Runs carry COLLISION_GUARD_BUNDLE_LABEL + dev_light and are never pooled with earlier runs.
+DEV_LIGHT = True
+DEV_LIGHT_SOFT_STOPS = frozenset({'PAIR_COLLISION_GUARD', 'POSE_UNCERTAIN', 'POSE_UNCERTAIN_PROGRESS',
+                                  'SELF_POSE_UNCERTAIN', 'GLOBAL_ENVELOPE_BLOCKED', 'REFIX_HORIZON_INFEASIBLE',
+                                  # light v2 (coordinator 2026-10-05 17:4x): re-observe limits/timeouts in
+                                  # before_control and conservative controller timeouts/uncertainty
+                                  'ALIGN_RELOOK_TIMEOUT', 'PAIR_SCHEDULED_REOBSERVE_LIMIT', 'PAIR_REOBSERVE_TIMEOUT',
+                                  'HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED', 'HIGH_CHECKPOINT_REOBSERVE_TIMEOUT',
+                                  'HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', 'APPROACH_TIMEOUT',
+                                  # light v3: an align re-look without an accepted fix resumes on the own estimate
+                                  'ALIGN_RELOOK_NO_FIX', 'ALIGN_RELOOK_FIX_EXPIRED',
+                                  'ALIGN_TIMEOUT'})
+# Not softened (impossible to continue): GO barrier mismatch (BARRIER_*), PARTNER_ABORT, own command/clock/provider errors, LOADED_BASE_MOTION_REQUIRES_HIGH,
+# PAIR_RELOOK_WHILE_GRIPPED, HIGH_CARRY_VIEW_REQUIRED, frozen approach-driver failures (APPROACH_* from the driver,
+# DOOR_POSE_NOT_LOCALIZED: the frozen driver is already in its failed phase, so a retry cannot proceed).
+DEV_LIGHT_VERSION = 'dev_light_v6'
+DEV_LIGHT_REPEAT_LIMIT = 20          # same soft controller reason more than 20 times for one robot -> real failure (#383 P2-a)
+DEV_LIGHT_LOG_EVERY = 50              # a soft stop repeated every tick is logged at its 1st, 51st, ... occurrence
+DEV_LIGHT_EVENT = 'dev_light_would_stop'
+# Partial-fix provider (claude/llm-eye ec0215f3, harness/zone_pair_highpose_partial_fix: fix receipt needs the SECOND
+# eigenvalue of the information matrix > 1 instead of the smallest; Zhang, Kaess & Singh 2016). On with DEV light
+# (coordinator 2026-10-05 18:1x); formal runs need a separate decision.
+PARTIAL_FIX = DEV_LIGHT
 CAP_PREREG_VERSION = 'v98-cap-3'
 CAP_DECISION = 'experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md'
 # Coordinator DEV_PILOT admission (2026-10-03): a non-confirmatory functional
@@ -117,6 +149,10 @@ def dev_pilot_calibration(path, expected_sha, map_id):
             or not isinstance(u1, list) or len(u1) != 3
             or not all(math.isfinite(float(v)) and float(v) > 0 for v in u1)):
         raise ValueError('DEV_PILOT_C0_ZERO_v1 requires c0 == [0,0,0] and u1 > 0')
+    u0 = deadband.get('u0')                  # optional v102 affine dead zone; absent == identity (all earlier calibrations)
+    if u0 is not None and (not isinstance(u0, list) or len(u0) != 3
+                           or not all(math.isfinite(float(v)) and float(v) >= 0 for v in u0)):
+        raise ValueError('deadband.u0 must be three finite nonnegative values')
     fill = dev['unloaded_motion_fill']
     missing = [row['field'] if isinstance(row, dict) else row for row in cal.get('missing', [])]
     motion = cal['params'].get('motion') or {}
@@ -326,6 +362,29 @@ def require_runnable(value):
         return
     if registry()['runnable'] is not True or value.get('runnable') is not True:
         raise ValueError(REGISTRY_BLOCK)
+    require_dev_only_flags(value.get('admission_mode', MEASURED_SIM))   # #383 P1 (after the registry block)
+
+
+DEV_ONLY_FLAGS_BLOCK = 'DEV_ONLY_FLAGS_IN_FORMAL_MODE'
+
+
+def dev_only_flags():
+    """The DEV-only switches that are on (module defaults are DEV values; independent review #383 P1)."""
+    on = []
+    if DEV_LIGHT:
+        on.append('DEV_LIGHT')
+    if PARTIAL_FIX:
+        on.append('PARTIAL_FIX')
+    if COLLISION_GUARD_MODE != 'enforce':
+        on.append(f'COLLISION_GUARD_MODE={COLLISION_GUARD_MODE}')
+    return on
+
+
+def require_dev_only_flags(mode):
+    """Refuse a formal (non-DEV_PILOT) run while any DEV-only switch is on."""
+    on = dev_only_flags()
+    if mode != DEV_PILOT and on:
+        raise ValueError(f'{DEV_ONLY_FLAGS_BLOCK}:{mode}:{",".join(on)}')
 
 
 def cases(check, map_id=None):
@@ -356,6 +415,11 @@ def execution_timing(check):
     return timing
 
 
+def _nearclip_record():
+    from sim import final_pair_highpose_nearclip as nearclip   # no MuJoCo import at module load
+    return nearclip.record()
+
+
 def bundle(map_id, check, admission=MEASURED_SIM):
     from harness.python_source_closure import source_closure
     static, _, contract = resolve(map_id)
@@ -367,7 +431,16 @@ def bundle(map_id, check, admission=MEASURED_SIM):
         controller_variant='b-v6h1-v3-highpose-opencv', revision='D1 new candidate; no inherited acceptance',
         localization='OpenCV wall-band detector + static map particle filter; no learned segmentation',
         timing=execution_timing(check), high_pose=pose.record(), calibration_contract=contract,
-        calibration_selection='D5 v92 loader v2 + registered complete measurement evidence; HIGH only')
+        calibration_selection='D5 v92 loader v2 + registered complete measurement evidence; HIGH only',
+        collision_guard={'mode': COLLISION_GUARD_MODE, 'bundle_label': COLLISION_GUARD_BUNDLE_LABEL},
+        render_nearclip=_nearclip_record(),
+        dev_only_flags={'on': dev_only_flags(), 'formal_runs': 'refused while any is on (require_dev_only_flags)'},
+        partial_fix={'enabled': PARTIAL_FIX, 'module': 'harness/zone_pair_highpose_partial_fix.py'},
+        dev_light={'enabled': DEV_LIGHT, 'version': DEV_LIGHT_VERSION, 'soft_stops': sorted(DEV_LIGHT_SOFT_STOPS),
+                   'event': DEV_LIGHT_EVENT, 'repeat_limit': DEV_LIGHT_REPEAT_LIMIT,
+                   'scope': 'CommandGuard.check/before_control/_stationary_reobserve aborts, refix horizon check, '
+                            'HIGH checkpoint DR budget/timeout (proceed as DR), edge reference timeout (proceed), '
+                            'controller fail() of the listed reasons (retry next tick)'})
     # Independent review #363 P1-4: the inherited parent ``caps`` (per_case_s 120) contradicted the applied
     # v98-cap-3 case cap; the executor reads ``timing``, but the record must state the applied value.
     reset_s = value['caps']['reset_per_case_s']
@@ -375,7 +448,8 @@ def bundle(map_id, check, admission=MEASURED_SIM):
                      'cap_prereg_version': CAP_PREREG_VERSION}
     entries = ['scripts/run_pair_highpose.py', 'harness/zone_pair_highpose_runtime.py',
                'harness/vision_pose_source_highpose.py', 'harness/zone_pair_highpose_staging.py',
-               'sim/final_pair_highpose_staged.py']
+               'sim/final_pair_highpose_staged.py', 'harness/zone_pair_highpose_partial_fix.py',
+               'sim/final_pair_highpose_nearclip.py']
     paths = set(value['source_sha256']) | set(source_closure(ROOT, entries)) | {REGISTRY, WORKFLOW, CALIBRATION_CONTRACT, D5_ADMISSION, OWN_IMAGE_GATES, CAP_DECISION,
         'configs/zone_final_pair_v92_schedule.json.gz',
         'configs/zone_pair_highpose_confirmation_v96.json',

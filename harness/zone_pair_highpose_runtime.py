@@ -14,6 +14,8 @@ from harness import zone_pair_highpose_guardlog as guardlog
 from harness import zone_pair_highpose_lookaround as lookaround
 from harness import zone_pair_highpose_relook as relook
 from harness import zone_pair_highpose_start_relief as start_relief
+from harness import zone_pair_highpose_guard_log_only as guard_log_only
+from harness import zone_pair_highpose_contract as hp_contract
 from harness import zone_pair_highpose_carry_align as carry_align
 from harness import zone_pair_highpose_posture_defer as posture_defer
 from harness import zone_pair_highpose_dr_checkpoint as dr_checkpoint
@@ -304,10 +306,15 @@ class HighController:
                                                 CHECKPOINT_REOBSERVE_S)
             if kind == 'over':
                 self.log(self.rid, dr_checkpoint.OVER_EVENT, now, seg=self.seg, high=True, **detail)
-                return self._transit_abort(dr_checkpoint.OVER_REASON, now)
+                if not light_soft(self, dr_checkpoint.OVER_REASON, now, 'wait_carry.dr_checkpoint'):
+                    return self._transit_abort(dr_checkpoint.OVER_REASON, now)
+                kind = 'dr'                         # DEV light: continue on the DR estimate (logged above)
             # Localization re-observe (navigation) keeps its bounded timeout.
             if now-self.checkpoint_started > 8.:
-                return self._transit_abort('HIGH_CHECKPOINT_REOBSERVE_TIMEOUT', now)
+                if not light_soft(self, 'HIGH_CHECKPOINT_REOBSERVE_TIMEOUT', now, 'wait_carry.dr_checkpoint'):
+                    return self._transit_abort('HIGH_CHECKPOINT_REOBSERVE_TIMEOUT', now)
+                if kind == 'wait':
+                    kind = 'dr'                     # DEV light: continue on the DR estimate
             if now >= self.next_look:
                 self.next_look = now+m2.study.LOOK_EVERY_S
                 obs = self.look(now)
@@ -325,9 +332,13 @@ class HighController:
                          epoch=self.grip_epoch, **detail)
             self.checkpoint_fix_after = None
         provider = self.port.own.pose.provider
-        if HIGH_EDGE_INFORMATIVE and not provider.beam_edge.available(now):     # v98: no edge reference to wait for otherwise
+        if (HIGH_EDGE_INFORMATIVE and not provider.beam_edge.available(now)
+                and self.__dict__.get('dev_light_skip_edge_wait') != self.state_t):     # v98: no edge reference to wait for otherwise
             if now-self.state_t > m2.study.STATE_LIMIT_S['wait_carry']:
-                return self.fail('HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', now)
+                if not light_soft(self, 'HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', now, 'wait_carry.edge'):
+                    return self.fail('HIGH_CARRY_EDGE_REFERENCE_TIMEOUT', now)
+                self.dev_light_skip_edge_wait = self.state_t   # DEV light: this wait only, carry on without the edge
+                return super()._wait_carry(now, arm_idle)
             if now >= self.next_look:
                 self.next_look = now+m2.study.LOOK_EVERY_S
                 self.report('carry', self.look(now), now, ready=False, reason='HIGH edge reference pending')
@@ -339,7 +350,10 @@ class HighController:
         # command ALWAYS zero for BOTH robots (no lateral/yaw correction while loaded). The own significance test
         # (two-sided 95 %) and the command it would have issued are only logged (would_*); timing and pair_plan are
         # the parent's, unchanged. (v1, per-robot significance, is superseded: see the carry_align history note.)
-        return carry_align.gate_schedule(self, super().door_schedule(t0), t0)
+        from harness.zone_pair_highpose_motion_v102 import shared_motor_command
+        with shared_motor_command():     # v102 affine dead zone without editing the hash-pinned shared skill
+            schedule = super().door_schedule(t0)
+        return carry_align.gate_schedule(self, schedule, t0)
 
     def _wait_lower(self, now, arm_idle):
         # v98 (zone_pair_highpose_refix): a decided sigma re-fix takes the final set-down path at this stop.
@@ -396,6 +410,144 @@ class HighController:
 _RELOOK_GRASP = frame_gate.gated(PairGraspRelook._grasp, _frame_gate=frame_gate.controller_gate)
 
 
+class light_aborts:
+    """DEV light (user 2026-10-05 "다 라이트 하게 줄여"): inside the block, ``ep.abort`` with a soft reason is recorded
+    in ``soft`` instead of aborting. Hard reasons abort as before. No-op when DEV_LIGHT is off."""
+
+    def __init__(self, ep, soft):
+        self.ep, self.soft = ep, soft
+
+    def __enter__(self):
+        ep = self.ep
+        self.shadowed, self.real = 'abort' in vars(ep), getattr(ep, 'abort', None)
+        self.on = hp_contract.DEV_LIGHT and self.real is not None
+        if self.on:
+            real, soft = self.real, self.soft
+            def abort(t, reason):
+                if reason in hp_contract.DEV_LIGHT_SOFT_STOPS:
+                    soft.append(reason)
+                    return None
+                return real(t, reason)
+            ep.abort = abort
+        return self
+
+    def __exit__(self, *exc):
+        if self.on:
+            if self.shadowed:
+                self.ep.abort = self.real
+            else:
+                del self.ep.abort
+        return False
+
+
+def _light_due(holder, key):
+    counts = holder.__dict__.setdefault('dev_light_counts', {})
+    counts[key] = counts.get(key, 0) + 1
+    return counts[key], (counts[key] - 1) % hp_contract.DEV_LIGHT_LOG_EVERY == 0
+
+
+def light_log(guard, now, soft, site, **detail):
+    """One ``dev_light_would_stop`` event (deduplicated per site/reason/moving). Never raises into the run."""
+    ep = guard.ep
+    count, due = _light_due(guard, (site, soft[0], detail.get('moving')))
+    if not due:
+        return
+    try:
+        report = guardlog._report(ep.own.last_report)
+    except Exception as exc:
+        report = {'error': repr(exc)}
+    try:
+        ep.log(ep.own.robot_id, hp_contract.DEV_LIGHT_EVENT, now, would_reason=soft[0], reasons=list(soft), site=site,
+               occurrence=count, estimate=report, loaded=bool(getattr(guard, 'carrying_beam', False)),
+               light_version=hp_contract.DEV_LIGHT_VERSION, **detail)
+    except Exception as exc:
+        ep.log(ep.own.robot_id, hp_contract.DEV_LIGHT_EVENT, now, would_reason=soft[0], log_error=repr(exc))
+
+
+def light_soft(ctl, reason, now, site):
+    """True (and one deduplicated ``dev_light_would_stop`` event) when DEV light turns this controller stop into a log."""
+    if not (hp_contract.DEV_LIGHT and reason in hp_contract.DEV_LIGHT_SOFT_STOPS):
+        return False
+    count, due = _light_due(ctl, (site, reason))
+    if due:
+        ctl.log(ctl.rid, hp_contract.DEV_LIGHT_EVENT, now, would_reason=reason, site=site, state=ctl.state,
+                seg=getattr(ctl, 'seg', None), occurrence=count, light_version=hp_contract.DEV_LIGHT_VERSION)
+    return True
+
+
+class LightFail:
+    """Controller side of DEV light: ``fail``/``_transit_abort`` with a soft reason log and resume the state instead
+    of failing. Hard reasons are unchanged.
+
+    Independent review #383 P2-a: a soft reason that only returned left some states holding to the case cap (light5:
+    ALIGN_RELOOK_TIMEOUT x751). Every soft controller reason now either resumes explicitly (the window or state is
+    restarted so the next tick makes progress) or is hard here (CONTROLLER_HARD), and the same reason repeated more
+    than hp_contract.DEV_LIGHT_REPEAT_LIMIT times for one robot becomes a real failure ('dev_light_repeat_limit')."""
+
+    # No state to resume into at this site (the align tick cannot continue without the re-observe); stays soft in
+    # CommandGuard.before_control.
+    CONTROLLER_HARD = frozenset({'PAIR_SCHEDULED_REOBSERVE_LIMIT'})
+
+    def _light_soft(self, reason, now, site):
+        return light_soft(self, reason, now, site)
+
+    def _light_setter(self):
+        from harness.zone_pair_align import PairAlignRelook
+        return super(PairAlignRelook, self) if isinstance(self, PairAlignRelook) else super(LightFail, self)
+
+    def _light_resume_align(self, now):
+        """The accepted-fix branch of zone_pair_align._align_relook_return (own estimate as it is)."""
+        self.align_look_total_s = getattr(self, 'align_look_total_s', 0.) + now - getattr(self, 'align_look_started_at', now)
+        self.relative_views_tried = {}
+        reset = getattr(self, 'reset_object_anchor', None)
+        if reset is not None:
+            reset()
+        self.next_look = now
+        self._light_setter().set('align', now, resumed=True)
+        self.state_t = getattr(self, 'align_started_at', now)
+
+    def _light_return_from_relook(self, now):
+        """Pan back to the align pose, then align_relook_return resumes (as the accepted-fix branch of _align_relook)."""
+        from harness.owncam_pair_beam_v2 import pose_of
+        self.arm.queue(pose_of(self.align_resume_name), now, duration=.6, settle=.3)
+        return self._light_setter().set('align_relook_return', now)
+
+    def _light_repeat_exceeded(self, reason, now):
+        counts = self.__dict__.setdefault('dev_light_soft_counts', {})
+        counts[reason] = counts.get(reason, 0) + 1
+        if counts[reason] <= hp_contract.DEV_LIGHT_REPEAT_LIMIT:
+            return False
+        self.log(self.rid, 'dev_light_repeat_limit', now, would_reason=reason, occurrences=counts[reason],
+                 limit=hp_contract.DEV_LIGHT_REPEAT_LIMIT, state=self.state, light_version=hp_contract.DEV_LIGHT_VERSION)
+        return True
+
+    def fail(self, reason, now):
+        if reason not in self.CONTROLLER_HARD and self._light_soft(reason, now, 'controller.fail'):
+            if self._light_repeat_exceeded(reason, now):
+                return super().fail(reason, now)
+            if reason in ('ALIGN_RELOOK_NO_FIX', 'ALIGN_RELOOK_TIMEOUT') and self.state == 'align_relook':
+                # Retrying would stay in align_relook with no pans/time left: pan back and resume.
+                return self._light_return_from_relook(now)
+            if reason in ('ALIGN_RELOOK_FIX_EXPIRED', 'ALIGN_RELOOK_TIMEOUT') and self.state in (
+                    'align_relook_return', 'align_relook_stop'):
+                return self._light_resume_align(now)
+            if reason == 'ALIGN_TIMEOUT' and self.state == 'align':
+                # A time limit only: start a new align window from now (the alignment itself is unchanged).
+                self.state_t = self.align_started_at = now
+                return None
+            if reason == 'APPROACH_TIMEOUT' and self.state == 'approach':
+                # A time limit only: a new approach window from now (state_t is the approach start).
+                self.state_t = now
+                return None
+            return None
+        return super().fail(reason, now)
+
+    def _transit_abort(self, reason, now):
+        if self._light_soft(reason, now, 'controller._transit_abort'):
+            return None
+        return super()._transit_abort(reason, now)
+
+
 class CommandGuard(PreviousGuard):
     preclose_check = frame_gate.gated(PreviousGuard.preclose_check)
     observe_standoff = frame_gate.gated(PairCommandGuard.observe_standoff)
@@ -406,7 +558,27 @@ class CommandGuard(PreviousGuard):
         super().__init__(execution, vision)
         progress.install(self)           # v98: loaded no-progress check, motion = REQUIRED_MOVEMENT_M commanded (B)
 
+    def before_control(self, now):
+        soft = []
+        with light_aborts(self.ep, soft):
+            out = super().before_control(now)
+        if soft and out is False:
+            light_log(self, now, soft, 'CommandGuard.before_control')
+            return True
+        return out
+
+    def _stationary_reobserve(self, now, pose):
+        soft = []
+        with light_aborts(self.ep, soft):
+            out = super()._stationary_reobserve(now, pose)
+        if soft and out is False:
+            light_log(self, now, soft, 'CommandGuard._stationary_reobserve')
+            return True
+        return out
+
     def sweep_guard(self):
+        if hp_contract.COLLISION_GUARD_MODE == 'log_only':     # user 2026-10-05: PAIR_COLLISION_GUARD log only
+            return guard_log_only.install(super().sweep_guard(), self.veto_trace)
         return start_relief.install(super().sweep_guard(), self.veto_trace)
 
     def check(self, now, commands):
@@ -418,12 +590,22 @@ class CommandGuard(PreviousGuard):
         progress.leg_reset(self, now)    # v98: reset the loaded no-progress check at each carry leg start (A)
         before, issued = len(self.ep.own.events), copy.deepcopy(commands)
         self.veto_trace = trace = guardlog.Trace()
+        soft = []
         try:
-            out = super().check(now, commands)
+            with light_aborts(self.ep, soft):
+                out = super().check(now, commands)
         finally:
             self.veto_trace = None
+        if soft:
+            # #383 P3: a softened stop lets the issued commands through. 'moving' marks a base motion command sent
+            # where the guard would have held or re-observed (parent_commands), so motion during a would-be
+            # re-observe is counted apart from holds (own dedup key).
+            light_log(self, now, soft, 'CommandGuard.check', commands=issued, moving=moving,
+                      parent_commands=copy.deepcopy(out))
+            out = commands
         start_relief.log_reliefs(self, now, trace)
         guardlog.log_veto(self, now, issued, before, trace)
+        guard_log_only.log_would_veto(self, now, issued, trace)
         carry_align.log_gate_check(self, now, issued, out)     # observation only (sigma, yaw sigma, gate values)
         return out
 
@@ -455,7 +637,7 @@ class GraspViewLogOnly(m2.M2DoorStudent):
 def controller_class(base):
     # blind.HoverConfirm sits between HighController and V3Controller: hover check, then the blind descent (v98).
     # posture_defer.DeferRelook goes first: an align re-look never starts mid arm transition (v98).
-    return type('HighPairController', (posture_defer.DeferRelook, refix.SigmaRefix, HighController, blind.HoverConfirm, base,
+    return type('HighPairController', (LightFail, posture_defer.DeferRelook, refix.SigmaRefix, HighController, blind.HoverConfirm, base,
                                        GraspViewLogOnly), {})
 
 
@@ -545,12 +727,20 @@ def adopt_look_recovery(runtime):
     return relook.install(runtime, relook.LookRecovery(tuple(runtime.actors)))
 
 
+def provider_builder():
+    """The pose provider the bundle records (``partial_fix``): one choice for Runtime and StagedRuntime (#383 P2-c)."""
+    if hp_contract.PARTIAL_FIX:      # DEV light: second-eigenvalue fix receipt (zone_pair_highpose_partial_fix)
+        from harness.zone_pair_highpose_partial_fix import build_provider
+    else:
+        from harness.vision_pose_source_highpose import build_provider
+    return build_provider
+
+
 class Runtime(PreviousRuntime):
     def __init__(self, static, calibration_path, calibration_sha, *, seed, provider_factory=None):
-        from harness.vision_pose_source_highpose import build_provider
         initialize = bind(PreviousRuntime.__init__, Team=Team)
         initialize(self, static, calibration_path, calibration_sha, seed=seed,
-                   provider_factory=provider_factory or build_provider)
+                   provider_factory=provider_factory or provider_builder())
         # The parent hard-codes job_sim_limit_s=120 for every executor, which
         # would expire the pair job before the registered per-case cap (lower
         # bounds 184.6 s / 190-219 s). Align it with the bundle's case cap

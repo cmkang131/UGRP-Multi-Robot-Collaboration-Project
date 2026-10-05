@@ -10,7 +10,8 @@ import numpy as np
 from harness import vision_loc_protocol as vp
 from harness import zone_pair_highpose_contract as contract
 from harness import zone_pair_highpose as pose
-from harness.vision_pose_source_pair_v3 import PairVisionPoseSource, pair_motion_module
+from harness.vision_pose_source_pair_v3 import PairVisionPoseSource, pair_motion_module  # noqa: F401
+from harness import zone_pair_highpose_motion_v102 as motion_v102
 from harness.vision_pose_source_p03 import VisionPoseSource, FailClosedLoc
 from harness.vision_pose_source_final import CalibrationError, measured_column_model
 from harness.zone_final_pair_scan import install, resample
@@ -62,7 +63,7 @@ class HighPoseSource(PairVisionPoseSource):
         vl, vpf = vp.load_vis3()
         self.frozen = vp.check_frozen()
         selected = vp.selected_config()
-        pf = vpf.make_robust_pf(pair_motion_module(), copy.deepcopy(static), copy.deepcopy(cal['params']),
+        pf = vpf.make_robust_pf(motion_v102.motion_module(), copy.deepcopy(static), copy.deepcopy(cal['params']),
             selected.get('measurement', {}), {**selected.get('obs', {}), 'columns': DETECTOR['columns'],
             'strip_half_px': DETECTOR['strip_half_px']}, {}, seed, cal['pan_base_yaw'],
             {**selected.get('robust', {}), 'loaded_scale_reinit': False, 'recovery': copy.deepcopy(PF_RECOVERY)})

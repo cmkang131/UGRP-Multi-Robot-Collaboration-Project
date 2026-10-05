@@ -66,6 +66,125 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   **그 뒤에는:** (1) 이전 v98 기록과 결과를 합산하지 않는다(SHA로 구분). (2) 이 README의 오프라인 NEES 표를 다시 만든다.
   (3) σ 문턱(짝 입장 0.05 m, 도착 확인의 허용 오차 경계)을 다시 검증한다. σ가 정직해지면 같은 문턱의 의미가 바뀌기 때문이다.
 
+### 렌더 근거리 절단면 floor_light_nearclip_v1 (사용자 발견, 2026-10-05)
+
+- 발견(사용자): HIGH로 들면 자기 카메라 화면에서 짐이 뚫려 바닥이 보인다. 원인: 카메라가 빔 윗면에서 약 13 mm 위인데
+  렌더의 근거리 절단면(near clipping plane)이 `vis.map.znear 0.002 × extent 11.11 m = 22.2 mm`라 22 mm 안쪽 빔이 잘렸다.
+  실제 카메라라면 빔이 화면을 가린다. 즉 시뮬레이터가 실물보다 많이 보여 줬다(sim2real 차이).
+- 수정: 새 렌더 프로필 `floor_light_nearclip_v1` = floor_light_v1 + `<visual><map znear="0.0004">`(0.0004 × 11.112 m = 4.44 mm,
+  목표 5 mm 이하). 모듈 `sim/final_pair_highpose_nearclip.py`, 프로필 sha256 `1b1edce2…`(번들 `render_nearclip`에 이름·해시 기록).
+  v98 호스트(`PhysicsBackend`, `StagedBackend`)만 생성자 동안 `make_scene`을 감싸 floor_light_v1 다음에 적용한다.
+  `sim/render_profile.py`·`sim/final_pair_v3.py`와 기존 번들·과거 장면 바이트는 그대로다. 실행마다 `eval_only/render_nearclip.json`에
+  실제 컴파일 값(float32 znear, extent, near_m)을 기록하고 5 mm를 넘으면 시작하지 않는다.
+- 검증(렌더 전용, 물리 진행 없음, `outputs/v105-nearclip-check-20261005/`): light6 t=301.8 r1. 수정 전 렌더가 기록 프레임과
+  바이트 단위로 같다(`1b0f2362…`). 수정 후 빔 윗면이 화면을 거의 채운다(`cc430af3…`, 감싼 장면을 실제 컴파일해 다시 그려도 같은 해시).
+  깊이 정밀도 문제(z-fighting)는 눈으로 보이지 않았다. 전후 비교 그림: `r1_t301.80_before_after.jpg`, `r1_t250.00_before_after.jpg`.
+- 위치 추정 영향(같은 OpenCV 벽 관측기, light6 상태): HIGH 자세(896/2035/1894)에서는 수정 전에도 벽 열이 0/96이라 바뀌지 않는다
+  (짐 든 동안 위치는 원래 자기 명령+DR). 짐 내려놓기 전 먼 시야(t=20·60·100)는 벽 열 수가 같다(r1 61·62·68, r2 84·58·33),
+  화소 차이 최대 2~40 수준. 다른 짐 든 자세(981/891/807/1269 등)는 보정이 없어 관측기가 측정하지 않는다.
+- 남은 위험: 빔 위 잡기 자세(t≥180, 짐 들기 전)와 운반 전체에서 화면의 약 19만/30.7만 화소가 바뀐다. 잘린 화면에서 맞춘 잡기 전
+  확인(pregrasp hover)·빔 색 마스크·기록 전용 grip 관계(`zone_pair_highpose_grip`의 고정 near_m 22.2 mm)는 새 화면에서 다르게 동작할 수
+  있다. light7(39919479)·light8(seed 912)은 이전 렌더 그대로이고, 이 프로필은 그다음 실행부터 적용한다. 이전 결과와 합산하지 않는다.
+- grip 관계와의 관계(#383 P3): `harness/zone_pair_highpose_grip.relation()`은 근거리 절단면을 상수 `near_m` = 0.002 × 11.112 m
+  = 22.2 mm로 v93 장면 기록에서 한 번 복사해 쓴다. 이 프로필에서는 실제 절단면이 4.44 mm라 그 상수가 렌더와 맞지 않는다.
+  relation()은 기록 전용(어떤 제어기도 읽지 않음)이라 동작은 바뀌지 않지만, nearclip 실행의 grip 관계 기록은 잘린 화면 기준
+  예측이므로 해석하지 않는다. 고치려면 near_m을 프로필 기록(`render_nearclip.near_m`)에서 읽는 새 버전이 필요하다.
+
+### v105 DEV 라이트: 보수적 정지를 기록 전용으로 (사용자 결정, 2026-10-05)
+
+- **사용자 결정 원문:**
+  - 17:2x "걍 충돌 방지를 빼. 충돌 하면 다시 생각하면 되잖아"
+  - 17:3x "다 라이트 하게 줄여"(조정자 전달)
+- **바꾼 것:**
+  - `COLLISION_GUARD_MODE='log_only'`: 충돌 가드(PAIR_COLLISION_GUARD)는 막지 않고 `pair_collision_guard_log_only`에 여유·σ항·부족분만 남긴다.
+  - `DEV_LIGHT=True`: 목록에 있는 보수적 정지는 멈추지 않고 `dev_light_would_stop`만 남긴다.
+  - 두 값 모두 `harness/zone_pair_highpose_contract.py`에 있다.
+- **v1 `a6fec250`:** `CommandGuard.check` 안의 정지와 재고정 지평 검사(REFIX_HORIZON_INFEASIBLE)만 바꿨다.
+- **v2(이 커밋):** 아래를 더 넣었다.
+  - 재관측 경로의 정지: before_control·_stationary_reobserve의 재관측 한도·시한.
+  - HIGH 정지점 DR 예산 초과와 재관측 시한: DR 추정으로 계속 간다.
+  - 모서리 기준 시한: 그 대기만 건너뛴다.
+  - 제어기 fail의 시한·불확실 계열: 다음 틱에 다시 시도한다.
+- **그대로 멈추는 것:**
+  - GO 상호 확인과 BARRIER_* 계열, PARTNER_ABORT.
+  - (정정, #383 독립 검토 P2-b) 짐 낙하·기울어짐·집게 이탈은 **실행 중에 감지하지 않는다.** 이 버전에서는 실행이 끝난 뒤
+    평가 전용 판정으로만 기록된다. 그래서 "멈춘다"는 이전 문구는 틀렸다.
+  - 실행 불가 오류: 명령·시계·공급자 오류.
+  - 동결된 접근 구동기의 APPROACH_*·DOOR_POSE_NOT_LOCALIZED: 구동기가 이미 실패 상태라 다시 시도해도 진행할 수 없다.
+- **물리 접촉은 정상 그대로다.** 평가 전용 접촉 요약은 `scripts/v98_light_summary.py`(`outputs/v98-probe-tools/light_summary.py`의
+  복사본, #383 P3로 PR에 포함)가 `light_summary.json`으로 만든다.
+- **#383 독립 검토 수정 묶음 (dev_light_v6, 2026-10-05):**
+  - P1: 세 값(DEV_LIGHT, PARTIAL_FIX, COLLISION_GUARD_MODE='log_only')의 모듈 기본값이 DEV 값이다. 그래서 정식(MEASURED_SIM 등
+    DEV_PILOT이 아닌) 실행은 셋 중 하나라도 켜져 있으면 `require_runnable`과 `student_run_case`에서 `DEV_ONLY_FLAGS_IN_FORMAL_MODE`로
+    시작하지 않는다. 번들에는 `dev_only_flags`(켜진 목록, 정식 거부)를 남긴다.
+  - P2-a: 제어기 소프트 사유가 그냥 돌아가기만 하면 영구 hold가 됐다(light5의 ALIGN_RELOOK_TIMEOUT 751회). 이제 각 사유를 이렇게 처리한다.
+    - APPROACH_TIMEOUT: 새 접근 시간 창을 연다.
+    - ALIGN_RELOOK_TIMEOUT: NO_FIX·FIX_EXPIRED와 같은 재개 경로로 정렬에 돌아간다.
+    - PAIR_SCHEDULED_REOBSERVE_LIMIT: 제어기에서는 돌아갈 상태가 없어 실제 실패로 둔다(가드 쪽은 여전히 기록 전용).
+    - 같은 사유가 한 로봇에서 20회를 넘으면 `dev_light_repeat_limit`를 남기고 실제 실패로 기록한다.
+  - P2-c: `StagedRuntime`도 `rt.provider_builder()`를 써서, 번들의 partial_fix 기록과 실제 공급자가 같다.
+  - P3:
+    - 보고의 `observation_quality`에 `partial`·`observed_rank`·약한 방향을 붙인다. 부분 고정은 fix_age만 0으로 만들고 약한 방향의
+      σ는 줄이지 않는다(시험).
+    - 소프트 정지에서 통과한 명령에 `moving`과 가드가 원래 내려 했던 명령을 남긴다. 그래서 재관측 대신 움직인 경우를 구분한다.
+- **번들 표시:** `zone-final-pair-highpose-v105-collision-log-only` + dev_light.
+  - 브랜치 전체에서 가장 큰 번호가 v104라서 그다음인 v105를 썼다.
+  - 정식 E2E와 본 실험에서는 반드시 끈다.
+  - 이전 실행과 합산하지 않는다.
+- **첫 실행:** case-carry `a6fec250`(v1), 보정은 v103b 잡음 `a75fc932…`, 17:25:06 시작.
+  - 바꾼 것 두 가지(라이트 모드, 잡음 값)를 함께 넣었으므로 결과의 원인을 하나로 나누지 않는다.
+  - 출력: `outputs/v98-dev-case-carry-a6fec250-s911-v105light/`.
+
+- **부분 고정(light6부터, 2026-10-05 조정자):**
+  - claude/llm-eye `ec0215f3`의 `harness/zone_pair_highpose_partial_fix.py`를 병합했다. 고정 수락 조건이 정보행렬의 가장 작은 고유값 > 1에서 두 번째 고유값 > 1로 바뀐다(Zhang·Kaess·Singh 2016).
+  - `PARTIAL_FIX = DEV_LIGHT`로 연결했다. 정식 실행에 쓸지는 따로 정한다.
+  - 원인: 직선 벽 하나만 보이면 고정이 항상 거절되던 문제(light2~4의 r1 정렬 재관측 NO_FIX).
+  - 오프라인 확인(그 작업자): 수용률 0.23 → 0.64, 오차 악화 0~1 %.
+  - **기록만 남기는 후속 후보:** 바닥 파지 자세에서 카메라가 바닥을 볼 때, 바닥 타일선을 벽 밑단으로 잘못 본 열이 77개 있었다. 자세 게이트 후보이며 이번에는 고치지 않는다.
+
+### v103a 결과 → 적재 과정 잡음 측정 규칙 적용 (2026-10-05)
+
+- **v103a 실행** (`f2a426e7`, 보정 `a04371f6…`, 가속 `v98-exact-v6`, nice 0): `STAGE_PROBE_FAILED`, 477.1 SIM초. 원본 `outputs/v98-dev-align_to_carry-f2a426e7-s911-v103a/`.
+  - wtX-n0b(4정지, 383.9초)보다 더 가서 6정지까지 갔고 문도 통과했다.
+  - 정지 6에서 내려놓은 뒤 정렬하다가 r1의 자세 고정 후진(-0.05, 0.6초)이 칸막이 1에 막혔다. 충돌 가드(PAIR_COLLISION_GUARD)의 여유 83.8 mm 가운데 σ항이 43.8 mm였고, 1.1 mm가 모자랐다.
+  - 평가 전용 정답으로 본 실제 오차는 5.8 mm였다. 영수증 10개의 최대 오차는 31 mm, NEES 최대는 1.6이다. `local_redraw_exhausted`는 0이다.
+- **분류:** 보고 σ가 과대해서 가드 여유가 모자랐다(σ 예산 계열). 가드의 문턱과 여유는 바꾸지 않는다.
+- **조치(조정자 사전 결정):** 적재 noise_abs·noise_rel을 #376 `fit_noise` 규칙으로 v102 FIT 분할에서 정했다.
+  - 앞·옆 abs는 0.002 / 0.002(하한), rel은 0.0156 / 0.0166이다. 회전은 그대로 둔다.
+  - 2σ 포함률은 유보 0.977로 수락 기준 0.90을 넘는다.
+  - 규칙과 코드: `claude/loaded-rest-v104` `8ee4a2c4`, `experiments/2026-10-05-loaded-rest-calibration-v104/noise_rule/`.
+  - 보정 사본 `products_noise/calibration_dev_pilot_loaded_v102_rest_noise.json`(sha256 `a75fc932…`)을 admitted에 넣었다. 부모 `a04371f6`와 다른 것은 앞·옆 잡음 두 키와 출처 기록뿐이다.
+  - 다음 실행 v103b는 이 보정을 쓴다. v103a와 합산하지 않는다.
+
+### v103 묶음: 적재 정지 잡음 끄기(측정 규칙) + #378 v102 적재 보정 (조정자 결정 (가), 2026-10-05)
+
+빠른 진행 방식(사용자 10/5 "최대한 검토하지 말고 진행"): DEV 실행 전 별도 검토는 없다. 병합 직전에 독립 검토를 한 번 받는다.
+
+- **#378 v102 적재 보정 diff를 그대로 적용했다.**
+  - 대상 diff 두 개: `diff_v102_code_config_tests_on_7194637e.patch` sha256 `3df8eb73…`, `diff_v102_calibration_file_on_7194637e.patch` sha256 `97d61d0f…`. 둘 다 #378 SHA256SUMS와 같다.
+  - 내용은 적재 이득, 시간상수, 앞·옆 축의 아핀 데드존(affine dead zone, `harness/zone_pair_deadband.py`)이다.
+  - 충돌은 `tests/test_highpose_dev_pilot.py` 끝부분 한 곳뿐이었고, 양쪽 시험을 모두 남겼다.
+- **적재 `rest_noise`를 정했다.**
+  - v101(#376)의 비적재 규칙(`rest_rms`, 정지 RMS 1 mm 이상이면 true)을 문턱까지 그대로 썼다.
+  - v102 원본은 정지 구간이 1.5초뿐이라 엄격 규칙을 적용할 창이 0개였다. 그래서 정지 전용 수집 v104를 새로 했다.
+    - 브랜치 `claude/loaded-rest-v104`, 소스 `835c8fcd`, 번들 `zone-final-pair-loaded-restcal-v104`.
+    - restL·restF 두 run, 각 58 SIM초, nice 0.
+    - 원본: `outputs/calib-loaded-rest-v104-835c8fcd-20261005T0736Z`.
+  - 결과: 정지 중 1초 변위 RMS r1 1.08 µm, r2 1.10 µm(창 각 420개). 문턱의 약 1/900이므로 **`rest_noise = false`**.
+  - wtX-n0b의 정답과 결과는 쓰지 않았다.
+  - 보정 사본 `experiments/2026-10-05-loaded-rest-calibration-v104/products/calibration_dev_pilot_loaded_v102_rest_v104.json`(sha256 `a04371f6…`)을 admitted 목록에 넣었다. 부모 v102 `ce447ada…`와 다른 것은 이 키 하나와 그 출처 기록뿐이며, 시험으로 확인한다.
+- **적재 noise_abs·noise_rel은 이번 묶음에 넣지 않았다.**
+  - 비적재에는 측정 규칙(`fit_noise`, 2σ 포함률 0.90)이 있지만 v101에서도 채택하지 않았고, 적재에는 정해진 규칙이 없다(#378 `fit_loaded_gain_calibration.py`에 잡음 적합 없음).
+  - 유보 NEES 평균이 0.002–0.004로, 적재 잡음이 넓어 σ가 과대한 상태는 남아 있다.
+- **이 묶음의 실행 기록에 들어가는 것:**
+  - 코드 SHA(이 커밋), 보정 `a04371f6…`, 호스트 시계 v2, 가속 세트 `v98-exact-v6`(바이트 동등 실행 기반만, 가속 담당 `a19a9474`).
+  - 이전 v98 실행(보정 `398372ae…`)과 합산하지 않는다. wtX-n0b와 비교만 한다.
+- **B1/B2/B7 판정:** B2(정지 중 PF 갱신 생략)는 (가)와 묶어 판정했고 **보류**한다.
+  - 정지 중 σ 확산은 `rest_noise = false`로 이미 멈춘다.
+  - 갱신을 생략하면 차체가 서 있는 채 시선만 바꾸는 둘러보기 고정과 충돌한다.
+  - 같은 시야를 반복해 보는 문제는 `pf_consistency`가 이미 다룬다.
+  - B1·B7은 설계 검토가 끝나는 대로 다음 묶음에서 판정한다.
+
 ### `align_to_carry` wtX-n0b 실패 원인 분류 — 재보정 시한 안 불가(REFIX_HORIZON_INFEASIBLE) (2026-10-05, 오프라인 분석만)
 
 **실행:** 가속 담당이 돌림. 코드 `a3415342`, 시드 911, `v98-exact-v1` 가속(같은 명령·프레임·사건을 내는 실행 기반만 바꿈), 호스트 시계 v2,
@@ -108,7 +227,10 @@ REFIX_HORIZON_INFEASIBLE. r1은 짝 중단(PARTNER_ABORT, 2차 결과). 명령 �
 3. **보고 σ가 보수적이다(평가 전용).** 영수증 8개의 xy NEES 합은 2.105, 평균은 0.263이다(기대값 2, χ²(16) 양측 95 % 하한 6.91).
    실제 오차 7–26 mm에 보고 σ 31–50 mm다. 마지막 재개 때 실제 오차는 26 mm로 예산 안이었다. 즉 실패는 실제 위치가 틀려서가 아니라
    *σ가 커서* 생겼다. 같은 실행의 영수증끼리는 상관이 있어 참고용이다(DEV, 시드 1개). 1번이 이 보수성의 큰 몫을 설명한다.
-   덧붙여 NEES 파일의 고정 문구("PF는 과신: σ 3.5–8 mm에 오차 147–178 mm")는 PF 통합 전 상태를 적은 것이라 이 실행과 맞지 않는다.
+   **낡음 주석:** NEES 파일(`eval_only/dr_receipt_nees.json`)의 `note` 고정 문구("PF는 과신: σ 3.5–8 mm에 오차 147–178 mm")는
+   PF 통합(C·R1·R2) 전 측정을 적은 것으로 **낡았다**. 이 실행의 값과 맞지 않는다. 문구는 실행 소스의 문자열이다
+   (`scripts/eval_highpose_receipt_nees.py`, `harness/zone_pair_highpose_dr_checkpoint.py`). 조정자 결정(2026-10-05)에 따라
+   지금은 고치지 않고 이 주석으로만 표시한다. 영수증 수치 자체는 정상 계산값이다.
 4. 구조: 다리별 예측 증가(제곱합 0.036–0.050)와 고정 바닥(0.04)을 합치면 예산 0.0674에 여유가 없다. 다리·체크포인트를 계획할 때
    공분산 증가를 미리 보지 않고 정지에서야 판정하기 때문에, 매 정지 내려놓기가 반복되다가 시한 안 불가로 끝났다.
 
@@ -136,7 +258,16 @@ REFIX_HORIZON_INFEASIBLE. r1은 짝 중단(PARTNER_ABORT, 2차 결과). 명령 �
   예측은 √(0.0424² + 0.0504²) ≈ 0.066이다. 이것은 크기 감각일 뿐이며 목표값이 아니다.
 - (나) 2번: 기록 프레임·명령으로 r1·r2 PF만 오프라인 재생해, 둘러보기마다 정보량을 나눈다(측정 스캔 수, 유효 열, 반복 감쇠 지수).
   시뮬은 쓰지 않는다.
-- (다) 4번: 다리 길이·체크포인트를 예측 공분산으로 미리 정하는 계획(믿음 공간 계획)은 E2E 뒤 후보로 남긴다.
+- (다) 4번: 다리 길이·체크포인트를 예측 공분산으로 미리 정하는 계획(믿음 공간 계획)은 E2E 뒤 후보로 남긴다. 이슈 #379에만 기록(조정자 결정).
+- **(나) 결과(오프라인 PF 재생, 2026-10-05).**
+  - 재생: 실행 당시 코드 `a3415342`로 r1·r2 PF를 다시 돌렸다. `loaded_gate_check` r1 2239건, r2 2285건 모두 σ·위치가 기록의 반올림 한계 안에서 같다(최대 차 5 µm). 재추출 입자 해시도 같다.
+  - x≈3.45에서 둘러보기가 약했던 원인:
+    1. **기하.** 가까운 칸막이가 x≈2.70에서는 0.45 m 앞이라 44열이 보였다. x≈3.45에서는 1.1–1.5 m 앞이라 1–7열뿐이다. 쓰인 pan 1500은 정면 벽만 보므로 y 정보가 없다(퇴화).
+    2. **검출 수율.** 모서리 단차 게이트를 통과한 열은 정지 3에서 54열 중 7열, 정지 4에서 85열 중 3열이다.
+  - 같은 시야 반복 감쇠(tempering)는 두 위치에서 비슷해 원인이 아니다.
+  - 둘러보기가 정보가 더 많은 pan(1770·2030)을 보기 전에 수락해 멈췄다(조기 수락). refix·pregrasp는 같은 pan을 반복했다.
+  - 표준 방법으로는 정보 이득 기반 시야 선택, 퇴화 방향을 보는 수락 검사(Censi 2007 CRB)가 있다. 이 둘은 다음 실패 원인이 같으면 그때 다룬다.
+  - 출력 `outputs/v98-look-info-replay-20261005/`(analysis/SHA256SUMS.txt). 한 실행, 한 시드다.
 - 예산·문턱·σ·잡음 수치는 바꾸지 않았다. 탐침 통과용 조정은 하지 않는다.
 
 ### 독립 재검토 4차 대응 — 검토 범위 1e0476ba..a3415342 (아스트라, 2026-10-05)
@@ -1531,6 +1662,15 @@ TensorBoard 새 스냅샷 `1003-pair-highpose-v93/high-hold`에 같은 진단의
 0으로 채우지 않는다. [대시보드 검증과 고정 링크](tensorboard_verification.json)를 따른다.
 
 ## 참고 자료
+
+### 렌더 근거리 절단면 (floor_light_nearclip_v1)
+
+- MuJoCo XML reference, `visual/map` `znear`/`zfar`: 근거리 절단면 거리 = model extent × znear. 너무 가까우면 깊이 버퍼 해상도가 크게
+  떨어지고, 너무 멀면 가까운 물체가 잘린다(2026-10-05 Context7로 문서 확인).
+- MuJoCo changelog: reversed-Z 렌더링으로 깊이 정밀도 개선(`mjtDepthMap`, PR #978, Levi Burner). 확인(같은 경로). 이번 4.44 mm에서
+  눈으로 z-fighting 없음.
+- Reed, "Depth Precision Visualized", NVIDIA Developer Blog, 2015. reversed-Z + 부동소수 깊이가 가까운 near plane에서도 정밀도를
+  유지한다는 설명. **미확인**(이번 작업에서 원문을 다시 읽지 않음).
 
 ### HIGH 운반 빔 경계 맞춤 (v98, 처방 제안의 출처)
 

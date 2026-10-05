@@ -76,6 +76,16 @@ STAGE_PROBES.update({k: {**v, 'staged': True} for k, v in staging.PROBE_SPECS.it
 STAGE_STATUS = ('STAGE_PROBE_REACHED', 'STAGE_PROBE_FAILED', 'STAGE_PROBE_NOT_REACHED')
 
 
+CASE_END_SETTLE_S = 3.
+
+
+def jobs_ended_all(runtime):
+    """True when every robot has an ended non-look_around (pair/carry) job."""
+    actors = getattr(runtime, 'actors', None) or {}
+    return bool(actors) and all(any(j.get('kind') != 'look_around' for j in actors[r].jobs_done)
+                                for r in contract.ROBOTS if r in actors) and all(r in actors for r in contract.ROBOTS)
+
+
 def stage_progress(runtime, probe):
     """Live controller events/failures (control-side objects only; no eval labels)."""
     spec = STAGE_PROBES[probe]
@@ -170,9 +180,10 @@ def time_case(case, check):
 
 def run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runtime,
              calibration=None, calibration_sha=None):
-    # Check even a direct caller before creating output/backend/provider.
-    starts.require_dev_seed(seed)
+    # Check even a direct caller before creating output/backend/provider (the one shared seed rule; 2026-10-05 light8
+    # was refused here because this entry point still called require_dev_seed directly).
     mode = bundle.get('admission_mode', contract.MEASURED_SIM)
+    seed_admission(seed, None, mode)
     cal = contract.calibration_for(mode, calibration, calibration_sha, bundle['map_id'])
     contract.require_runnable(bundle)
     time_budget.require_feasible(contract.resolve(bundle['map_id'])[0], time_case(bundle['case'], bundle['check']),
@@ -209,6 +220,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
     seed_record = seed_admission(seed, probe, mode)    # before the output folder and the backend (delta4 P1-1)
     contract.calibration_for(mode, calibration, calibration_sha, bundle['map_id'])
     contract.require_runnable(bundle)
+    contract.require_dev_only_flags(mode)              # DEV light/partial fix/log-only guard: DEV_PILOT only (#383 P1)
     out = Path(out)
     cap = contract.CASE_CAP_S
     if (bundle['check'] not in contract.CHECKS or bundle['case']['sim_cap_s'] != cap
@@ -280,6 +292,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
             runtime = runtime_factory(static, calibration, calibration_sha, seed=seed)
             runtime.initial_commands(start, backend.commands)
         steps = round(cap/contract.TICK_S)
+        case_end_at = None
         for i in range(first, steps+1):
             if dev_checkpoint is not None and dev_checkpoint.at_tick(
                     i, backend=backend, runtime=runtime, start=start, commands=commands, result=result):
@@ -302,6 +315,17 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
                 progress = stage_progress(runtime, probe)
                 if progress['stop']:
                     break
+            elif contract.DEV_LIGHT:
+                # DEV light (2026-10-05): a full case used to run to the 900 s cap after both pair jobs had ended
+                # (v105light a6fec250: jobs ended at 138.85 s, ~25 min of idle SIM). Stop CASE_END_SETTLE_S after both
+                # robots' pair/carry jobs have ended (control-side job records only, no eval labels).
+                ended = jobs_ended_all(runtime)
+                if ended and case_end_at is None:
+                    case_end_at = backend.now
+                    result['case_end'] = {'rule': 'dev_light_both_jobs_ended', 'jobs_ended_sim_s': backend.now-start,
+                                          'settle_s': CASE_END_SETTLE_S}
+                if case_end_at is not None and backend.now-case_end_at >= CASE_END_SETTLE_S-1e-9:
+                    break
         if probe is not None:
             progress = stage_progress(runtime, probe)
             status = ('STAGE_PROBE_REACHED' if progress['done'] and not progress['failures'] else
@@ -309,7 +333,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
                       'STAGE_PROBE_NOT_REACHED')
             result.update(status=status, stage_progress=progress, check_sim_s=backend.now-start)
         else:
-            if abs(backend.now-start-cap) > 1e-7:
+            if abs(backend.now-start-cap) > 1e-7 and result.get('case_end') is None:
                 raise RuntimeError('INCOMPLETE_BOUNDED_PROTOCOL')
             result.update(protocol_complete=True, status='COLLECTED_UNQUALIFIED', check_sim_s=backend.now-start)
     except Exception as exc:
@@ -385,8 +409,10 @@ def seed_admission(seed, probe, mode):
     confirmation = {row['seed'] for row in starts.registration()['confirmation_starts']}
     if set(STAGE_PROBE_DEV_EXTRA_SEEDS) & (confirmation | {starts.DEV_SEED}):
         raise ValueError('extra DEV seeds must differ from the dev and confirmation seeds')
-    extra = (seed != starts.DEV_SEED and seed in STAGE_PROBE_DEV_EXTRA_SEEDS
-             and probe is not None and mode == contract.DEV_PILOT)
+    # DEV light (coordinator 2026-10-05 18:5x): the same extra DEV seeds also for a full case while DEV_LIGHT is on
+    # (never confirmation seeds; never pooled; formal runs keep the stage-probe-only rule).
+    extra = (seed != starts.DEV_SEED and seed in STAGE_PROBE_DEV_EXTRA_SEEDS and mode == contract.DEV_PILOT
+             and (probe is not None or contract.DEV_LIGHT))
     if not extra:
         starts.require_dev_seed(seed)
     return {'seed': seed, 'extra_dev_seed': ({'seeds': list(STAGE_PROBE_DEV_EXTRA_SEEDS), 'evidence': False,

@@ -95,7 +95,8 @@ def align_command(motion_loaded, yaw, dy, e_yaw):
     tau_axis = np.asarray(mp.get('tau_axis_s', [mp['tau_s']]*3), float)
     effective_s = np.array([lag_travel(skill.m2.DOOR_ALIGN_S, 1., tau, mp['tau_stop_s']) for tau in tau_axis])
     v = np.array([math.sin(yaw)*dy, math.cos(yaw)*dy, e_yaw]) / effective_s
-    u = skill.motor_command(mp, v)
+    from harness.zone_pair_highpose_motion_v102 import motor_command
+    u = motor_command(mp, v)
     return dict(zip(('forward', 'left', 'turn'), map(float, u)))
 
 
