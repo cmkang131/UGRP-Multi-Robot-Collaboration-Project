@@ -94,38 +94,114 @@ def test_recorded_case_insignificant_align_is_zero_and_rest_unchanged(rid):
     assert ctl.pf.pair_plan['t0'] == ref_ctl.pf.pair_plan['t0'] and ctl.pf.pair_plan['t1'] == ref_ctl.pf.pair_plan['t1']
     assert np.array_equal(ctl.pf.pair_plan['own'], ref_ctl.pf.pair_plan['own'])
     sig = ctl.claims['door_align']['significance']
-    assert sig['applied'] and not sig['keep_lateral'] and not sig['keep_yaw'] and sig['sigma_source'] == 'cov_yy'
-    assert sig['parent_cmd'] == ref[0][2]
+    assert sig['applied'] and not sig['would_keep_lateral'] and not sig['would_keep_yaw'] and sig['sigma_source'] == 'cov_yy'
+    assert sig['parent_cmd'] == ref[0][2] and sig['would_cmd'] == ca.ZERO and sig['pair_neutral']
     assert [e['event'] for e in ctl.events] == [ca.ALIGN_EVENT]
 
 
-def test_significant_offset_keeps_parent_command_bit_identical():
+def test_significant_offset_is_logged_but_loaded_align_stays_zero():
+    """v2 pair neutral (2026-10-05, leg 6 @fcc5215f): a significant own offset no longer moves the loaded beam alone."""
     est = [0.5163, 0.0541 - .08, 0.02]                                 # 80 mm, 1.1 deg off the axis
-    ref, _ = parent('r1', est)
+    ref, ref_ctl = parent('r1', est)
     ctl = Ctl('r1', est, report(.02, math.radians(.3)))
     out = ctl.door_schedule(89.1)
-    assert out == ref
-    assert out[0][2] is not ca.ZERO and ctl.claims['door_align']['significance']['keep_lateral']
+    assert out[0][:2] == ref[0][:2] and out[0][2] == ca.ZERO and out[1:] == ref[1:]
+    assert ctl.pf.pair_plan['t0'] == ref_ctl.pf.pair_plan['t0'] and ctl.pf.pair_plan['t1'] == ref_ctl.pf.pair_plan['t1']
+    sig = ctl.claims['door_align']['significance']
+    assert sig['would_keep_lateral'] and sig['would_keep_yaw'] and sig['would_cmd'] == ref[0][2] and sig['cmd'] == ca.ZERO
 
 
-def test_partial_component_equals_parent_formula_with_that_component_zero():
+def test_partial_component_would_command_equals_parent_formula_with_that_component_zero():
     est = [0.5163, 0.0541, 0.03]                                       # dy -4 mm (noise), e_yaw -1.7 deg (significant)
     ctl = Ctl('r1', est, report(.024, math.radians(.5)))
     out = ctl.door_schedule(89.1)
     ref_yaw_only, _ = parent('r1', [est[0], ROUTE[0][1], est[2]])      # parent with dy = 0 exactly
-    assert out[0][2] == ref_yaw_only[0][2]
-    assert out[0][2]['turn'] != 0. and out[0][2]['left'] == 0. and out[0][2]['forward'] == 0.
     sig = ctl.claims['door_align']['significance']
-    assert not sig['keep_lateral'] and sig['keep_yaw']
+    assert out[0][2] == ca.ZERO and sig['would_cmd'] == ref_yaw_only[0][2]
+    assert sig['would_cmd']['turn'] != 0. and sig['would_cmd']['left'] == 0. and sig['would_cmd']['forward'] == 0.
+    assert not sig['would_keep_lateral'] and sig['would_keep_yaw']
+
+
+# align_to_carry@fcc5215f leg 6 (seg 5, 419.5 s): the recorded own inputs of each robot's door_align_gate event (v1).
+LEG6 = {'r1': dict(dy=0.07577193165194451, e_yaw=0.0023991808351042643, sigma_y=0.034389678684163365,
+                   sigma_yaw=0.020899771200884605, keep_lateral=True, keep_yaw=False,
+                   parent={'forward': -0.0008340894005443194, 'left': 0.02081937187065634, 'turn': 0.003942040416305804}),
+        'r2': dict(dy=0.04426164305041169, e_yaw=-0.014286002203427017, sigma_y=0.03911649268531114,
+                   sigma_yaw=0.02097544993162596, keep_lateral=False, keep_yaw=False,
+                   parent={'forward': -0.0015555675509619084, 'left': -0.015911300367500346, 'turn': -0.00961933251092436})}
+
+
+def test_leg6_recorded_inputs_both_robots_zero_and_leg_unchanged():
+    """(a) The two ends decided differently in v1 (r1 z 2.20 kept lateral, r2 z 1.13 zero); v2 commands 0 at both ends."""
+    leg = (425.5, 444.8, {'forward': 0., 'left': 0.0622, 'turn': 0.})
+    outs = {}
+    for rid, c in LEG6.items():
+        ctl = Ctl(rid, CASE[rid]['est'], report(c['sigma_y'], c['sigma_yaw']))
+        ctl.claims['door_align'] = {'dy_m': c['dy'], 'e_yaw_rad': c['e_yaw']}
+        sched = [(419.5, 425.5, dict(c['parent'])), leg]
+        out = ca.gate_schedule(ctl, sched, 419.5)
+        sig = ctl.claims['door_align']['significance']
+        assert (sig['would_keep_lateral'], sig['would_keep_yaw']) == (c['keep_lateral'], c['keep_yaw'])
+        assert abs(c['dy']) / c['sigma_y'] == pytest.approx({'r1': 2.20, 'r2': 1.13}[rid], abs=.01)
+        assert out[0][:2] == (419.5, 425.5) and out[1] == leg and sig['cmd'] == ca.ZERO
+        outs[rid] = out[0][2]
+        assert [e['event'] for e in ctl.events] == [ca.ALIGN_EVENT] and ctl.events[0]['schema'] == ca.SCHEMA
+    assert outs['r1'] == outs['r2'] == ca.ZERO
+
+
+def _pf_micro():
+    """Own localizer as the v98 provider builds it (calibration C motion/pair model, registered static map)."""
+    import json
+    from pathlib import Path
+    from harness import owncam_localizer as m
+    root = Path(__file__).resolve().parents[1]
+    cal = json.loads((root/'experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/'
+                      'calibration_dev_pilot_unloaded_v101.json').read_text())
+    sm = json.loads((root/'maps/zones/zone_wide_door_geometry_v3.json').read_text())
+    sm.setdefault('landmarks', {'tags': []})
+    params = {**copy.deepcopy(m.DEFAULT_PARAMS), **copy.deepcopy(cal['params'])}
+    b, bfull = cal['pair_model']['b_rad_s'], cal['params']['motion_loaded']['yaw_bias_std_rad_s']
+
+    def run(cmd, key, seconds=3.0, seed=3):
+        loc = m.OwnCamLocalizer(sm, params, seed=seed)
+        loc.load.loaded, loc.initialized = True, True
+        r = np.random.default_rng(seed + 100)
+        loc.px = np.array((2.5092, -1.46, -0.0025)) + r.normal(size=(loc.n, 3))*np.array((0.0272, 0.0344, 0.0209))
+        loc.logw, loc.t = np.zeros(loc.n), 419.04
+        loc._draw_plant_state(True)
+        t = 419.5
+        loc.predict_to(t)
+        loc.set_extra_yaw_std(t, math.sqrt(max(b[key]**2 - bfull**2, 0.)))
+        while t < 419.5 + seconds - 1e-9:
+            loc.command({'t': t, 'kind': 'mecanum', 'forward': cmd[0], 'left': cmd[1], 'turn': cmd[2], 'duration_s': .15})
+            t = round(t + .1, 6)
+            loc.predict_to(t)
+        d = (loc.px[:, 2] - loc.px[:, 2].mean() + math.pi) % (2*math.pi) - math.pi
+        return math.degrees(d.std())
+    return run
+
+
+def test_pf_micro_zero_align_stays_small_one_sided_align_trips_gate():
+    """(b) PF micro control (diagnosis pfmicro.py): with the leg-6 start belief, the one-sided r1 align under the provider
+    fallback yaw rate (outside pair_plan, key '') passes the 3 deg loaded gate within 3 s; the v2 zero align does not
+    (~1.23 deg; the prediction model's hold assumption gives ~1.44 deg at the end of the leg)."""
+    run = _pf_micro()
+    one_sided = (LEG6['r1']['parent']['forward'], 0.02081937187065634, 0.)    # recorded r1 command (turn zeroed in v1)
+    assert run(one_sided, '') > 3.0
+    zero_fallback, zero_pair = run((0., 0., 0.), ''), run((0., 0., 0.), 'pm')
+    assert zero_fallback < 1.5 and zero_pair < 1.5
+    assert math.degrees(g.GATE_LOADED.high_yaw_rad) == pytest.approx(3.0)
 
 
 @pytest.mark.parametrize('rep', [None, report(.02, .01, initialized=False),
                                  report(.02, float('inf')), report(.02, float('nan'))])
-def test_no_own_sigma_keeps_parent(rep):
+def test_no_own_sigma_still_pair_neutral(rep):
     ref, _ = parent('r1', CASE['r1']['est'])
     ctl = Ctl('r1', CASE['r1']['est'], rep)
-    assert ctl.door_schedule(89.1) == ref
-    assert ctl.claims['door_align']['significance']['reason'] == 'NO_OWN_SIGMA'
+    out = ctl.door_schedule(89.1)
+    assert out[0][2] == ca.ZERO and out[1:] == ref[1:]
+    sig = ctl.claims['door_align']['significance']
+    assert sig['reason'] == 'NO_OWN_SIGMA' and sig['would_cmd'] == ref[0][2]
 
 
 def test_unusable_covariance_falls_back_to_std_xy():
@@ -210,3 +286,5 @@ def test_command_guard_check_logs_after_the_unchanged_decision(monkeypatch):
 
 def test_runtime_records_the_rule():
     assert ca.record()['gate_thresholds_changed'] is False and ca.record()['z'] == ca.Z
+    assert ca.record()['pair_neutral'] is True and ca.record()['lateral_correction_while_loaded'] is False
+    assert ca.ID == 'v98_carry_align_pair_neutral_v2' and ca.SCHEMA.endswith('.v2')

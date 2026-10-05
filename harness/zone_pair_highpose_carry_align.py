@@ -31,6 +31,18 @@ observes.
 
 Inputs: own report (own RGB + own commands), own grasp estimate, static plan, fixed calibration. No peer pose,
 no world state, no ground truth. Shared/frozen modules are not modified.
+
+v2 pair-neutral (coordinator decision 2026-10-05, after align_to_carry@fcc5215f leg 6; diagnosis
+``outputs/v98-leg6-yaw-diag-20261005``): the significance rule above is decided by each robot from its OWN estimate, so
+the two ends of the rigid beam can disagree. At leg 6 r1 had z = 2.20 (kept its lateral push) and r2 z = 1.13 (zero);
+r1 alone pushed the loaded beam sideways (beam turned 1.23 deg, eval-only), the align window is outside ``pair_plan`` so
+the provider used its fallback yaw rate, and r1's yaw sigma reached 3 deg in 2.9 s -> ``POSE_UNCERTAIN``. Cooperative
+carrying uses one common motion authority (Kosuge & Oosumi line of work), and a one-sided correction of a held beam has
+none. So during loaded carry the align command is ALWAYS all-zero for both robots (pair neutral). The significance test
+and the command it would have issued are still computed and logged as ``would_keep_lateral``, ``would_keep_yaw``,
+``would_cmd`` (log only). The window length, the leg, ``pair_plan``, ``Z`` and the 3 deg gate are unchanged.
+Stated as a fact: there is no lateral correction while loaded; the remaining cross-track error is left to the door
+protection-level check (PL) and the set-down re-fix.
 """
 from __future__ import annotations
 
@@ -38,8 +50,8 @@ import math
 
 import numpy as np
 
-ID = 'v98_carry_align_significance_v1'
-SCHEMA = 'ugrp.highpose_carry_align.v98.v1'
+ID = 'v98_carry_align_pair_neutral_v2'          # v1 = v98_carry_align_significance_v1 (per-robot significance)
+SCHEMA = 'ugrp.highpose_carry_align.v98.v2'
 Z = 1.959963984540054          # standard normal 0.975 quantile (two-sided 95 %); not tuned
 ALIGN_EVENT = 'door_align_gate'
 GATE_EVENT = 'loaded_gate_check'
@@ -48,7 +60,9 @@ ZERO = {'forward': 0., 'left': 0., 'turn': 0.}
 
 def record() -> dict:
     return {'id': ID, 'schema': SCHEMA, 'z': Z, 'events': [ALIGN_EVENT, GATE_EVENT],
-            'rule': '|dy| > z*sigma_y and |e_yaw| > z*sigma_yaw per component, else 0; timing/pair_plan unchanged',
+            'rule': 'loaded align command always 0 for both robots (pair neutral); significance '
+                    '|dy| > z*sigma_y, |e_yaw| > z*sigma_yaw logged only as would_*; timing/pair_plan unchanged',
+            'pair_neutral': True, 'lateral_correction_while_loaded': False,
             'gate_thresholds_changed': False, 'shared_sources_modified': False}
 
 
@@ -89,7 +103,7 @@ def align_command(motion_loaded, yaw, dy, e_yaw):
 
 
 def gate_schedule(ctl, schedule, t0):
-    """Return the parent's schedule with insignificant align components zeroed (decision logged and claimed)."""
+    """Return the parent's schedule with an all-zero align command (pair neutral, v2); the would-be decision is logged."""
     claim = ctl.claims.get('door_align') or {}
     if not schedule or not _finite(claim.get('dy_m'), claim.get('e_yaw_rad')):
         return schedule
@@ -98,28 +112,25 @@ def gate_schedule(ctl, schedule, t0):
     report = ctl.port.own.last_report
     sig = own_sigmas(report)
     decision = {'schema': SCHEMA, 'z': Z, 'dy_m': dy, 'e_yaw_rad': e_yaw, 'parent_cmd': dict(align),
-                'report_t_est': None if report is None else round(float(report.t_est), 4)}
+                'report_t_est': None if report is None else round(float(report.t_est), 4),
+                'applied': True, 'pair_neutral': True, 'cmd': dict(ZERO)}
     if sig is None:
-        decision.update(applied=False, reason='NO_OWN_SIGMA', cmd=dict(align))
-        new = align
+        decision.update(reason='NO_OWN_SIGMA', would_cmd=dict(align))
     else:
         sigma_y, sigma_yaw, source = sig
         keep_lat, keep_yaw = abs(dy) > Z*sigma_y, abs(e_yaw) > Z*sigma_yaw
         if keep_lat and keep_yaw:
-            new = align
+            would = dict(align)
         elif not keep_lat and not keep_yaw:
-            new = dict(ZERO)
+            would = dict(ZERO)
         else:
-            new = align_command(ctl.v3_params['motion_loaded'], float(ctl.grasp_estimate[2]),
-                                dy if keep_lat else 0., e_yaw if keep_yaw else 0.)
-        decision.update(applied=True, sigma_y_m=sigma_y, sigma_yaw_rad=sigma_yaw, sigma_source=source,
-                        keep_lateral=keep_lat, keep_yaw=keep_yaw, cmd=dict(new))
-    if new is not align:
-        from sim.camera_robot_port import validate_raw_action
-        validate_raw_action({'kind': 'mecanum', **new, 'duration_s': .15}, allow_reverse=True, allow_mecanum=True)
+            would = align_command(ctl.v3_params['motion_loaded'], float(ctl.grasp_estimate[2]),
+                                  dy if keep_lat else 0., e_yaw if keep_yaw else 0.)
+        decision.update(sigma_y_m=sigma_y, sigma_yaw_rad=sigma_yaw, sigma_source=source,
+                        would_keep_lateral=keep_lat, would_keep_yaw=keep_yaw, would_cmd=dict(would))
     claim['significance'] = decision
     ctl.log(ctl.rid, ALIGN_EVENT, t0, **decision)
-    return [(a0, a1, new), *rest]
+    return [(a0, a1, dict(ZERO)), *rest]
 
 
 def _r(value, scale=1., nd=4):
