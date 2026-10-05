@@ -220,6 +220,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
     seed_record = seed_admission(seed, probe, mode)    # before the output folder and the backend (delta4 P1-1)
     contract.calibration_for(mode, calibration, calibration_sha, bundle['map_id'])
     contract.require_runnable(bundle)
+    contract.require_dev_only_flags(mode)              # DEV light/partial fix/log-only guard: DEV_PILOT only (#383 P1)
     out = Path(out)
     cap = contract.CASE_CAP_S
     if (bundle['check'] not in contract.CHECKS or bundle['case']['sim_cap_s'] != cap
