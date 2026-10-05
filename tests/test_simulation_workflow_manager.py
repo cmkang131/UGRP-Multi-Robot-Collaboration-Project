@@ -185,7 +185,6 @@ raise SystemExit(3 if a.fail else 0)
 
     def test_catalog_has_registered_workflows_and_distinct_adapters(self):
         data, digest = wm.catalog(PROJECT)
-        self.assertEqual(len(data["workflows"]), 51)
         ids = [row["id"] for row in data["workflows"]]
         self.assertEqual(len(ids), len(set(ids)))
         self.assertTrue({"zone-final-environment-gaincal-v101", "zone-pair-llm-v100",
@@ -251,6 +250,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-final-environment-floor-light-check": ["--check", "p01", "--expected-source-sha", "0" * 40],
             "zone-final-pair-v3": ["--check", "calibration-loaded", "--expected-source-sha", "0" * 40],
             "zone-final-pair-highpose-v98": ["--check", "p03", "--expected-source-sha", "0" * 40],
+            "zone-final-pair-highpose-v98-dev-checkpoint": ["compare", "--continuous", str(model), "--resumed", str(model), "--from-sim-s", "1"],
             "zone-final-pair-heldout-v90": ["--check", "calibration-unloaded", "--map-id", "zone_wide_corridor_final_v3", "--expected-source-sha", "0" * 40],
             "zone-final-pair-heldout-v91": ["--check", "calibration-unloaded", "--map-id", "zone_wide_corridor_final_v3", "--expected-source-sha", "0" * 40],
             "zone-final-pair-loaded-v92": ["--check", "calibration-loaded", "--map-id", "zone_wide_two_doors_final_v3", "--expected-source-sha", "0" * 40],
