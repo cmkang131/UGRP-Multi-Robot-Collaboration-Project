@@ -13,7 +13,7 @@ from tests.pair_llm_fakes import FakeBackend, FakeRuntime, offline_only, run_arm
 
 @pytest.mark.parametrize('condition,live', [('rule', False), ('no_comm', False), ('peer_nl', False),
                                             ('no_comm', True), ('peer_nl', True)])
-@pytest.mark.parametrize('dev', [False, True])
+@pytest.mark.parametrize('dev', [False, True, 'loaded_rest_v104'])
 def test_cli_routes_every_arm_to_integer_clock_and_records_it(tmp_path, monkeypatch, condition, live, dev):
     primary = tmp_path / 'primary'
     out = primary / 'outputs' / 'case'
@@ -28,6 +28,9 @@ def test_cli_routes_every_arm_to_integer_clock_and_records_it(tmp_path, monkeypa
     def result_for(kwargs):
         seen.append(kwargs['backend_factory'])
         assert kwargs['backend_factory'] is clock.PhysicsBackend
+        if dev:
+            assert kwargs['calibration'] == cal and kwargs['calibration_sha'] == cal_sha
+            assert kwargs['provider_factory'] is None
         if live:
             assert kwargs['admission_mode'] == ('DEV_PILOT' if dev else 'MEASURED_SIM')
         return {'status': 'COLLECTED_UNQUALIFIED', 'protocol_complete': True,
@@ -40,9 +43,14 @@ def test_cli_routes_every_arm_to_integer_clock_and_records_it(tmp_path, monkeypa
     if dev:
         from tests.test_highpose_dev_pilot import dev_file, admit
         from harness import zone_pair_highpose_contract as high
-        cal, _ = dev_file(tmp_path)
-        cal_sha = high.base.sha(cal)
-        admit(monkeypatch, cal_sha)
+        if dev == 'loaded_rest_v104':
+            from tests.test_highpose_dev_pilot import V104_PATH, V104_SHA
+            cal, cal_sha = V104_PATH, V104_SHA
+            assert high.base.sha(cal) == cal_sha
+        else:
+            cal, _ = dev_file(tmp_path)
+            cal_sha = high.base.sha(cal)
+            admit(monkeypatch, cal_sha)
         argv.remove('--synthetic-plumbing-calibration')
         argv += ['--admission', 'dev-pilot', '--calibration', str(cal), '--calibration-sha256', cal_sha]
     if live:
@@ -57,6 +65,8 @@ def test_cli_routes_every_arm_to_integer_clock_and_records_it(tmp_path, monkeypa
         assert completion['status'] == 'completed' and completion['rule_success'] is True
     assert seen == [clock.PhysicsBackend]
     assert clock.PhysicsBackend.__mro__[1] is clock.IntegerClock
+    from sim.final_pair_v3 import PhysicsBackend as V3Backend
+    assert clock.PhysicsBackend.__bases__ == (clock.IntegerClock, V3Backend)  # no acceleration wrapper
     for filename in ('plan.json', 'result.json'):
         row = json.loads((out/filename).read_text())
         assert row['host_clock'] == clock.record()
@@ -64,6 +74,33 @@ def test_cli_routes_every_arm_to_integer_clock_and_records_it(tmp_path, monkeypa
         if dev:
             assert row['run_status'] == 'FUNCTIONAL_DEV' and row['promotable'] is False
             assert row['confirmation_sample'] is False and row['measured_sim_evidence'] is False
+
+
+@pytest.mark.parametrize('condition', ['rule', 'no_comm', 'peer_nl'])
+def test_v103_loaded_calibration_reaches_both_runtime_providers_without_overrides(condition):
+    """Construct the actual controller/PF only; do not step, render, or request a model."""
+    from harness import pair_llm_contract as contract
+    from harness import zone_pair_highpose_contract as high
+    from harness.pair_llm_runtime import GatedHighRuntime
+    from harness.zone_pair_highpose_runtime import Runtime
+    from tests.test_highpose_dev_pilot import V104_PATH, V104_SHA
+    bundle = contract.bundle(condition, admission_mode=high.DEV_PILOT,
+                             calibration={'path': V104_PATH, 'sha256': V104_SHA})
+    expected = high.student_calibration(high.calibration_for(high.DEV_PILOT, V104_PATH, V104_SHA, bundle['map_id']))
+    static = high.resolve(bundle['map_id'])[0]
+    runtime = (Runtime if condition == 'rule' else GatedHighRuntime)(static, V104_PATH, V104_SHA, seed=911)
+    try:
+        for port in runtime.providers.values():
+            provider = port.provider
+            assert provider.runtime_contract['calibration_sha256'] == V104_SHA
+            assert provider.calibration['params'] == expected['params']
+            assert provider.loc.params['motion_loaded'] == expected['params']['motion_loaded']
+            assert provider.loc.params['motion_loaded']['rest_noise'] is False
+            assert all(v > 0 for v in provider.loc.params['motion_loaded']['deadband']['u0'][:2])
+        assert bundle['timing'] == contract.physics_bundle(admission_mode=high.DEV_PILOT)['timing']
+        assert bundle['shared_top_camera'] is False and bundle['weld'] == 'off'
+    finally:
+        runtime.close()
 
 
 @pytest.mark.parametrize('clock_id', [None, clock.ID])

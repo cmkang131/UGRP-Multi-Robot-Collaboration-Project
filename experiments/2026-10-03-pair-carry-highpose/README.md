@@ -66,6 +66,120 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   **그 뒤에는:** (1) 이전 v98 기록과 결과를 합산하지 않는다(SHA로 구분). (2) 이 README의 오프라인 NEES 표를 다시 만든다.
   (3) σ 문턱(짝 입장 0.05 m, 도착 확인의 허용 오차 경계)을 다시 검증한다. σ가 정직해지면 같은 문턱의 의미가 바뀌기 때문이다.
 
+### v103 묶음: 적재 정지 잡음 끄기(측정 규칙) + #378 v102 적재 보정 (조정자 결정 (가), 2026-10-05)
+
+빠른 진행 방식(사용자 10/5 "최대한 검토하지 말고 진행"): DEV 실행 전 별도 검토는 없다. 병합 직전에 독립 검토를 한 번 받는다.
+
+- **#378 v102 적재 보정 diff를 그대로 적용했다.**
+  - 대상 diff 두 개: `diff_v102_code_config_tests_on_7194637e.patch` sha256 `3df8eb73…`, `diff_v102_calibration_file_on_7194637e.patch` sha256 `97d61d0f…`. 둘 다 #378 SHA256SUMS와 같다.
+  - 내용은 적재 이득, 시간상수, 앞·옆 축의 아핀 데드존(affine dead zone, `harness/zone_pair_deadband.py`)이다.
+  - 충돌은 `tests/test_highpose_dev_pilot.py` 끝부분 한 곳뿐이었고, 양쪽 시험을 모두 남겼다.
+- **적재 `rest_noise`를 정했다.**
+  - v101(#376)의 비적재 규칙(`rest_rms`, 정지 RMS 1 mm 이상이면 true)을 문턱까지 그대로 썼다.
+  - v102 원본은 정지 구간이 1.5초뿐이라 엄격 규칙을 적용할 창이 0개였다. 그래서 정지 전용 수집 v104를 새로 했다.
+    - 브랜치 `claude/loaded-rest-v104`, 소스 `835c8fcd`, 번들 `zone-final-pair-loaded-restcal-v104`.
+    - restL·restF 두 run, 각 58 SIM초, nice 0.
+    - 원본: `outputs/calib-loaded-rest-v104-835c8fcd-20261005T0736Z`.
+  - 결과: 정지 중 1초 변위 RMS r1 1.08 µm, r2 1.10 µm(창 각 420개). 문턱의 약 1/900이므로 **`rest_noise = false`**.
+  - wtX-n0b의 정답과 결과는 쓰지 않았다.
+  - 보정 사본 `experiments/2026-10-05-loaded-rest-calibration-v104/products/calibration_dev_pilot_loaded_v102_rest_v104.json`(sha256 `a04371f6…`)을 admitted 목록에 넣었다. 부모 v102 `ce447ada…`와 다른 것은 이 키 하나와 그 출처 기록뿐이며, 시험으로 확인한다.
+- **적재 noise_abs·noise_rel은 이번 묶음에 넣지 않았다.**
+  - 비적재에는 측정 규칙(`fit_noise`, 2σ 포함률 0.90)이 있지만 v101에서도 채택하지 않았고, 적재에는 정해진 규칙이 없다(#378 `fit_loaded_gain_calibration.py`에 잡음 적합 없음).
+  - 유보 NEES 평균이 0.002–0.004로, 적재 잡음이 넓어 σ가 과대한 상태는 남아 있다.
+- **이 묶음의 실행 기록에 들어가는 것:**
+  - 코드 SHA(이 커밋), 보정 `a04371f6…`, 호스트 시계 v2, 가속 세트 `v98-exact-v6`(바이트 동등 실행 기반만, 가속 담당 `a19a9474`).
+  - 이전 v98 실행(보정 `398372ae…`)과 합산하지 않는다. wtX-n0b와 비교만 한다.
+- **B1/B2/B7 판정:** B2(정지 중 PF 갱신 생략)는 (가)와 묶어 판정했고 **보류**한다.
+  - 정지 중 σ 확산은 `rest_noise = false`로 이미 멈춘다.
+  - 갱신을 생략하면 차체가 서 있는 채 시선만 바꾸는 둘러보기 고정과 충돌한다.
+  - 같은 시야를 반복해 보는 문제는 `pf_consistency`가 이미 다룬다.
+  - B1·B7은 설계 검토가 끝나는 대로 다음 묶음에서 판정한다.
+
+### `align_to_carry` wtX-n0b 실패 원인 분류 — 재보정 시한 안 불가(REFIX_HORIZON_INFEASIBLE) (2026-10-05, 오프라인 분석만)
+
+**실행:** 가속 담당이 돌림. 코드 `a3415342`, 시드 911, `v98-exact-v1` 가속(같은 명령·프레임·사건을 내는 실행 기반만 바꿈), 호스트 시계 v2,
+DEV_PILOT / FUNCTIONAL_DEV. 원본 `outputs/v98-dev-align_to_carry-a3415342-s911-wtX-n0b/`(student_record sha256 `681b6705…`).
+결과 `STAGE_PROBE_FAILED`, 종료 383.9 SIM초. r2가 `pair_carry`(10.2→383.9초) 중 실패, 원인 코드 SELF_POSE_UNCERTAIN /
+REFIX_HORIZON_INFEASIBLE. r1은 짝 중단(PARTNER_ABORT, 2차 결과). 명령 수 r1 8933 / r2 9135. **증거 아님, 합산하지 않음.**
+분석 도구 `outputs/v98-probe-tools/analyze_refix_horizon_wtX_n0b.py`(sha256 `7b62d853…`), 출력
+`outputs/v98-refix-horizon-analysis-20261005/analysis.json`(`06cc7db1…`). 정답 위치는 아래 "평가 전용" 표시 항목에만 썼고 제어에는 들어가지 않는다.
+
+**확인한 것:**
+- **내려놓고 둘러보기 경로는 세 번 다 실행됐다**(정지 2·3·4). 각 회차 모두 내려놓기 → 둘러보기(`relook_result` level=fix) → 다시 잡기(ok) →
+  높이 올림 → 재개 순서였다. 경로가 안 돈 것이 아니다.
+- **PF 국소 재추출 소진(`local_redraw_exhausted`) = 0**(r1·r2 모두). 호출 자체도 0회다. 4차 검토 P2-2의 표준 규칙 제안은 발동 조건이 아니다.
+- **r2 운반 다리별 σ(xy, m)** — 예산 0.0674, 다음 다리 끝 예측이 예산을 넘으면 내려놓는다.
+
+  | 다리 | 시작 σ (직전 고정 σ) | 정지 때 σ | 다음 다리 끝 예측 | 결정 |
+  |---|---|---|---|---|
+  | 0 | 0.0286 (0.0225, 60.7초) | 0.0382 | 0.0596 | 계속 |
+  | 1 | 0.0408 (고정 없음) | 0.0561 | 0.0785 (초과) | 내려놓기(자기+짝) |
+  | 2 | 0.0307 (0.0246, 176.5초) | 0.0475 | 0.0660 | 짝(r1 0.0718) 요청으로 내려놓기 |
+  | 3 | 0.0429 (0.0391, 265.3초) | 0.0602 | 0.0847 (초과) | 내려놓기(자기+짝) |
+  | 4 | 0.0463 (0.0424, 356.5초) | — | **0.0684 > 0.0674** | **재보정 시한 안 불가 → 실패** |
+
+  r1: 직전 고정 σ 0.0218 / 0.0454 / 0.0438 / 0.0462, 재개 σ 0.0484 / 0.0477 / 0.0497, 다음 다리 끝 예측 0.0605 / 0.0596 / 0.0634(통과).
+  둘째 정지부터는 매번 한 로봇 이상이 예산을 넘었다. 다리 하나마다 내려놓기 한 바퀴(약 90초)가 붙고, 여유 없이 1.5 % 차로 끝났다.
+
+**원인 분류(정도 순):**
+1. **정지 중 σ 확산(과정 잡음, process noise)이 실제 움직임보다 약 10배 크다.** 적재 운동 모델(`motion_loaded`)은 `rest_noise: true`라서
+   명령이 없어도 0.05초마다 `noise_abs`(약 0.015 m/s)를 더한다(`harness/owncam_localizer.py:300-306`). 그래서 다시 잡기·높이 올림
+   (고정 뒤 재개까지 24–27초)과 내려놓기 동안 σ가 계속 커진다. 11–13초 정지 구간마다 PF σ는 제곱합 기준 12–15 mm 커졌다.
+   같은 구간의 실제 차체 이동(평가 전용)은 내려놓기 1.1–1.2 mm, 올림 3.6 mm다. 마지막 정지에서 고정 σ 0.0424가 재개 때 0.0463이 된 것이
+   이 확산이다. 비적재 모델은 #376(v101)에서 정지 잡음을 측정해 끄는 규칙(정지 RMS ≥ 1 mm일 때만 켬)을 거쳤다. 반면 적재 모델의
+   `rest_noise`는 측정한 적 없는 DEV 재적합값(`dev_refit_DEV_PILOT_C0_ZERO_v1`)이다. **#378(v102) diff도 적재 `rest_noise`는 `true`로 둔다.**
+   그래서 그 diff를 받아도 이 원인은 그대로다.
+2. **둘러보기 고정의 정보량이 위치에 따라 줄어든다.** 둘러보기 한 번을 가우스 측정으로 보면(1/σ_m² = 1/사후² − 1/사전²), r2의 측정 σ는
+   다음과 같다. x≈2.70(정지 2)에서는 0.043 → 0.035였다. x≈3.45(정지 3·4)에서는 0.075 → 0.102, 그리고 0.054 → 0.42(둘째 둘러보기는
+   거의 정보 없음)였다. r1은 정지 2부터 0.08–0.18로 약하다. 그래서 둘러보기 직후 σ의 바닥이 0.023에서 0.040–0.046으로 올라갔다.
+   왜 그 자리에서 약한지(보이는 벽 띠·열 수, 같은 시야 반복 감쇠 `pf_consistency` rho 0.5·유효 열 4)는 아직 나누지 않았다.
+   기록된 프레임으로 PF만 다시 돌리는 오프라인 재생이 필요하다(아래 다음 단계).
+3. **보고 σ가 보수적이다(평가 전용).** 영수증 8개의 xy NEES 합은 2.105, 평균은 0.263이다(기대값 2, χ²(16) 양측 95 % 하한 6.91).
+   실제 오차 7–26 mm에 보고 σ 31–50 mm다. 마지막 재개 때 실제 오차는 26 mm로 예산 안이었다. 즉 실패는 실제 위치가 틀려서가 아니라
+   *σ가 커서* 생겼다. 같은 실행의 영수증끼리는 상관이 있어 참고용이다(DEV, 시드 1개). 1번이 이 보수성의 큰 몫을 설명한다.
+   **낡음 주석:** NEES 파일(`eval_only/dr_receipt_nees.json`)의 `note` 고정 문구("PF는 과신: σ 3.5–8 mm에 오차 147–178 mm")는
+   PF 통합(C·R1·R2) 전 측정을 적은 것으로 **낡았다**. 이 실행의 값과 맞지 않는다. 문구는 실행 소스의 문자열이다
+   (`scripts/eval_highpose_receipt_nees.py`, `harness/zone_pair_highpose_dr_checkpoint.py`). 조정자 결정(2026-10-05)에 따라
+   지금은 고치지 않고 이 주석으로만 표시한다. 영수증 수치 자체는 정상 계산값이다.
+4. 구조: 다리별 예측 증가(제곱합 0.036–0.050)와 고정 바닥(0.04)을 합치면 예산 0.0674에 여유가 없다. 다리·체크포인트를 계획할 때
+   공분산 증가를 미리 보지 않고 정지에서야 판정하기 때문에, 매 정지 내려놓기가 반복되다가 시한 안 불가로 끝났다.
+
+**고전·최신 방법 조사(참고 자료):**
+- Thrun, Burgard, Fox, *Probabilistic Robotics* (MIT Press 2005) 5장 운동 모델: 잡음이 움직임 크기에 비례(α1–α4)하므로 움직임이 0이면
+  잡음도 0이다(절 번호는 U). Nav2 AMCL `update_min_d`/`update_min_a`: 움직이지 않으면 필터를 갱신하지 않는다(https://docs.nav2.org/configuration/packages/configuring-amcl.html, U: 이번에 다시 열어 보지 않음).
+  → 1번의 표준 답은 "적재 정지 잡음을 측정해 정한다"이다. #376의 비적재 규칙(정지 RMS 1 mm)을 보정 분할 자료에 그대로 적용하고,
+  손으로 값을 맞추지 않는다.
+- Bar-Shalom, Li, Kirubarajan, *Estimation with Applications to Tracking and Navigation* (Wiley 2001) NEES 일관성 검정(절·쪽 U).
+  Odelson, Rajamani, Rawlings, "A new autocovariance least-squares method for estimating noise covariances", *Automatica* 42(2), 2006(U).
+  Chen, Heckman, Julier, Ahmed, "Weak in the NEES?: Auto-tuning Kalman Filters with Bayesian Optimization", FUSION 2018,
+  https://arxiv.org/abs/1807.08855 — NEES/NIS를 목적함수로 잡음 모수를 자료에서 정한다(확인함). → 3번: 잡음은 보정 분할에서 정하고
+  유보 분할 NEES로 확인한다. 이 탐침 통과를 근거로 삼지 않는다.
+- Censi, "On achievable accuracy for range-finder localization", ICRA 2007, pp. 4170–4175, DOI 10.1109/ROBOT.2007.364120(확인함):
+  위치 추정의 피셔 정보는 보이는 면의 방향에 달렸고, 정보 행렬이 특이하면 그 방향이 불확실하다. Zhang, Kaess, Singh,
+  "On degeneracy of optimization-based state estimation problems", ICRA 2016(U). → 2번: 정지 위치마다 둘러보기 정보량이 다를 수 있다.
+- Burgard, Fox, Thrun, "Active mobile robot localization", IJCAI 1997, Fox, Burgard, Thrun, "Active Markov localization for mobile robots",
+  RAS 25, 1998(U), Chaplot et al., "Active Neural Localization", ICLR 2018(U): 기대 정보가 큰 쪽을 보도록 시선·위치를 고른다.
+  Prentice, Roy, "The Belief Roadmap", IJRR 28, 2009, Bry, Roy, "Rapidly-exploring Random Belief Trees", ICRA 2011(U): 경로·체크포인트를
+  예측 공분산으로 미리 계획한다. → 4번, E2E 뒤 설계 후보.
+
+**제안(구현하지 않음, 조정자 결정, 바뀌면 새 번들):**
+- (가) 1번: 적재 `rest_noise`를 측정 규칙으로 정한다. 보정 분할의 적재 정지 구간(정답은 평가에만)에 #376 규칙을 적용하고,
+  유보 분할 NEES로 확인한다. 이 실행의 정답 수치로 정하지 않는다. 효과의 크기만 어림하면, 마지막 정지에서 고정 σ 0.0424로 재개했을 때
+  예측은 √(0.0424² + 0.0504²) ≈ 0.066이다. 이것은 크기 감각일 뿐이며 목표값이 아니다.
+- (나) 2번: 기록 프레임·명령으로 r1·r2 PF만 오프라인 재생해, 둘러보기마다 정보량을 나눈다(측정 스캔 수, 유효 열, 반복 감쇠 지수).
+  시뮬은 쓰지 않는다.
+- (다) 4번: 다리 길이·체크포인트를 예측 공분산으로 미리 정하는 계획(믿음 공간 계획)은 E2E 뒤 후보로 남긴다. 이슈 #379에만 기록(조정자 결정).
+- **(나) 결과(오프라인 PF 재생, 2026-10-05).**
+  - 재생: 실행 당시 코드 `a3415342`로 r1·r2 PF를 다시 돌렸다. `loaded_gate_check` r1 2239건, r2 2285건 모두 σ·위치가 기록의 반올림 한계 안에서 같다(최대 차 5 µm). 재추출 입자 해시도 같다.
+  - x≈3.45에서 둘러보기가 약했던 원인:
+    1. **기하.** 가까운 칸막이가 x≈2.70에서는 0.45 m 앞이라 44열이 보였다. x≈3.45에서는 1.1–1.5 m 앞이라 1–7열뿐이다. 쓰인 pan 1500은 정면 벽만 보므로 y 정보가 없다(퇴화).
+    2. **검출 수율.** 모서리 단차 게이트를 통과한 열은 정지 3에서 54열 중 7열, 정지 4에서 85열 중 3열이다.
+  - 같은 시야 반복 감쇠(tempering)는 두 위치에서 비슷해 원인이 아니다.
+  - 둘러보기가 정보가 더 많은 pan(1770·2030)을 보기 전에 수락해 멈췄다(조기 수락). refix·pregrasp는 같은 pan을 반복했다.
+  - 표준 방법으로는 정보 이득 기반 시야 선택, 퇴화 방향을 보는 수락 검사(Censi 2007 CRB)가 있다. 이 둘은 다음 실패 원인이 같으면 그때 다룬다.
+  - 출력 `outputs/v98-look-info-replay-20261005/`(analysis/SHA256SUMS.txt). 한 실행, 한 시드다.
+- 예산·문턱·σ·잡음 수치는 바꾸지 않았다. 탐침 통과용 조정은 하지 않는다.
+
 ### 독립 재검토 4차 대응 — 검토 범위 1e0476ba..a3415342 (아스트라, 2026-10-05)
 
 검토 보고 `outputs/review-363-delta4-20261005/report.md`: P0 없음, P1 1개, P2 2개. 검토자는 시계 v2의 누적 오차 제거, GO 전 준비 철회,

@@ -203,9 +203,9 @@ def test_v96_registry_retired_byte_identical_and_v98_differs_only_by_ids():
                        'provider_id', 'frame_gate', 'blind_final_approach', 'case_cap'}
     # case_cap: v98-cap-3 (user 2026-10-04) 3x300 -> 3x900; the v96 record keeps v96-cap-2.
     assert (old['case_cap']['sim_cap_s'], new['case_cap']['sim_cap_s']) == (300., 900.)
-    # v98 additionally admits the measured unloaded calibration C (zone-final-environment-gaincal-v101); the v96 admission stays a strict prefix.
+    # v98 additionally admits the measured unloaded calibration C (zone-final-environment-gaincal-v101) the measured loaded calibration (zone-final-pair-loaded-gaincal-v102) and its v104 rest_noise copy (zone-final-pair-loaded-restcal-v104); the v96 admission stays a strict prefix.
     assert {k for k in old['dev_pilot'] if old['dev_pilot'][k] != new['dev_pilot'][k]} == {
         'tensorboard_cohort', 'admitted_calibration_sha256', 'admitted_source'}
     admitted = new['dev_pilot']['admitted_calibration_sha256']
     assert admitted[:len(old['dev_pilot']['admitted_calibration_sha256'])] == old['dev_pilot']['admitted_calibration_sha256']
-    assert len(admitted) == 2 and {k: new['dev_pilot']['admitted_source'][k] for k in old['dev_pilot']['admitted_source']} == old['dev_pilot']['admitted_source']
+    assert len(admitted) == 4 and {k: new['dev_pilot']['admitted_source'][k] for k in old['dev_pilot']['admitted_source']} == old['dev_pilot']['admitted_source']
