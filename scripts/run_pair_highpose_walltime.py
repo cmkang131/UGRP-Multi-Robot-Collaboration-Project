@@ -6,7 +6,7 @@ The runner itself is unchanged and stays the default path. This wrapper runs the
 manifest or other output byte changes). Same arguments, locks and slots as the runner::
 
     .venv-sim-worker-mac/bin/python scripts/run_pair_highpose_walltime.py [--walltime-window-sim-s 10] \
-        [--no-monitor] [--speedups none|v98-exact-v1|v98-exact-v2|v98-exact-v3] -- \
+        [--no-monitor] [--speedups none|v98-exact-v1|v98-exact-v2|v98-exact-v3|v98-exact-v4] -- \
         --check carry --map-id ... --expected-source-sha ... --output /abs/outputs/<run> --execute ...
 
 ``--speedups`` installs harness.zone_pair_highpose_exact_speedups (default 'none' = original path) and
