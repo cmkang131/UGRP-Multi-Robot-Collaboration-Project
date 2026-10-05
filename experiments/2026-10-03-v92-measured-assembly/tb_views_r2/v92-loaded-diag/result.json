@@ -1,0 +1,71 @@
+{
+  "schema": "ugrp.offline_audit_view.v1",
+  "derived_view_only": true,
+  "run_id": "v92-loaded-diag",
+  "family": "calibration-assembly",
+  "policy": "v92-d5",
+  "case": "loaded",
+  "condition": "frozen-Bpp-257953ec",
+  "split": "calibration",
+  "seed": 911,
+  "outcome": "DIAGNOSTIC_BOUNDARY",
+  "source_sha": "257953ec",
+  "offline_source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v92-measured-20261003T091812Z/diagnostic-loaded-optimizer/diagnostic.json",
+    "sha256": "2ca2d6359248f3e88396960f7c03ec7457cba270b75310844ca395d89f686b55"
+  },
+  "offline_scalar_scope": "DIAGNOSTIC ONLY (not a calibration result): same-settings replay of the loaded shared fit at 257953ec that reproduced the recorded error and selection; dumps optimizer state that the assembler discarded.",
+  "offline_scalars": {
+    "offline/opt_status": 2.0,
+    "offline/opt_nfev": 11.0,
+    "offline/opt_rank": 13.0,
+    "offline/params_at_bound": 3.0,
+    "offline/c0_forward": 4.0517232641155646e-33,
+    "offline/c0_left": 3.388536352230367e-20,
+    "offline/c0_turn": 0.006000000000000001,
+    "offline/u1_forward": 0.026556708946871406,
+    "offline/u1_left": 0.028235672588055663,
+    "offline/u1_turn": 0.029699927687659257,
+    "offline/tau_stop": 0.08522320483050172
+  },
+  "hparam_metrics": [
+    "offline/params_at_bound",
+    "offline/opt_status"
+  ],
+  "scope": "diagnostic; explains rejection only",
+  "texts": {
+    "notes/diagnosis": {
+      "message": "`ftol` termination condition is satisfied.",
+      "success": true,
+      "at_bound": {
+        "c0_forward": {
+          "raw": 4.0517232641155646e-33,
+          "value": 4.0517232641155646e-33,
+          "lower": 0.0,
+          "upper": 0.015,
+          "dist_lower_raw": 4.0517232641155646e-33,
+          "dist_upper_raw": 0.015,
+          "active_mask": -1
+        },
+        "c0_left": {
+          "raw": 3.388536352230367e-20,
+          "value": 3.388536352230367e-20,
+          "lower": 0.0,
+          "upper": 0.015,
+          "dist_lower_raw": 3.388536352230367e-20,
+          "dist_upper_raw": 0.015,
+          "active_mask": -1
+        },
+        "c0_turn": {
+          "raw": 0.006000000000000001,
+          "value": 0.006000000000000001,
+          "lower": 0.006,
+          "upper": 0.015,
+          "dist_lower_raw": 8.673617379884035e-19,
+          "dist_upper_raw": 0.008999999999999998,
+          "active_mask": -1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+.FF                                                                      [100%]
+=================================== FAILURES ===================================
+_ test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.15-ABORTED] _
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+at = 0.15, expected = 'ABORTED'
+
+    @pytest.mark.parametrize('at, expected', [(.149, 'FOLLOW'), (.15, 'ABORTED'), (.151, 'ABORTED')])
+    def test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state(static, at, expected):
+        t = Trace(plan(static, pair=True), 'r1')
+        t.tick(delivered=(wire(t),))
+        d = t.tick(now=at)
+>       assert d.state == expected
+E       AssertionError: assert 'FOLLOW' == 'ABORTED'
+E         
+E         - ABORTED
+E         + FOLLOW
+
+tests/test_zone_own_executor_corridor_control.py:283: AssertionError
+_ test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.151-ABORTED] _
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+at = 0.151, expected = 'ABORTED'
+
+    @pytest.mark.parametrize('at, expected', [(.149, 'FOLLOW'), (.15, 'ABORTED'), (.151, 'ABORTED')])
+    def test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state(static, at, expected):
+        t = Trace(plan(static, pair=True), 'r1')
+        t.tick(delivered=(wire(t),))
+        d = t.tick(now=at)
+>       assert d.state == expected
+E       AssertionError: assert 'FOLLOW' == 'ABORTED'
+E         
+E         - ABORTED
+E         + FOLLOW
+
+tests/test_zone_own_executor_corridor_control.py:283: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_corridor_control.py::test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.15-ABORTED]
+FAILED tests/test_zone_own_executor_corridor_control.py::test_heartbeat_boundary_uses_actual_delivery_not_private_partner_state[0.151-ABORTED]
+2 failed, 1 passed in 0.33s

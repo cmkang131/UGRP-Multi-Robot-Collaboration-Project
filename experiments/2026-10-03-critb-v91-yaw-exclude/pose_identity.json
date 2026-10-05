@@ -1,0 +1,52 @@
+{
+  "recorded_utc": "2026-10-03T07:02:21.084587+00:00",
+  "verification_scope": "Path identity, byte length and SHA-256 only. No pose parsing, metrics, contact inspection or validator execution.",
+  "training_poses": {
+    "r1": {
+      "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3/eval_only/r1/pose.jsonl",
+      "sha256": "7eea9447212e3de1ffea9a61876e3234c2d348bc38de7962cca0cc169b86b216",
+      "bytes": 3858858
+    },
+    "r2": {
+      "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3/eval_only/r2/pose.jsonl",
+      "sha256": "d38c0eccffc035258b46144278f73d092593594f83655e69fb6d83a6f2c5a79e",
+      "bytes": 3874007
+    }
+  },
+  "v91_poses": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_corridor_final_v3/zone_wide_corridor_final_v3/eval_only/r1/pose.jsonl",
+      "sha256": "4232b334728ea659e73ecf7a032d7f6a165d41746b0a4595642d9c3f7a0dce71",
+      "bytes": 3858875,
+      "map_id": "zone_wide_corridor_final_v3",
+      "robot_id": "r1",
+      "matches_training_pose": false
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_corridor_final_v3/zone_wide_corridor_final_v3/eval_only/r2/pose.jsonl",
+      "sha256": "a0d16e6dba9f9b3d624df01f02ce16d8dc87b78bb19fad54e25e02911c3d711f",
+      "bytes": 3874024,
+      "map_id": "zone_wide_corridor_final_v3",
+      "robot_id": "r2",
+      "matches_training_pose": false
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_door_geometry_v3/zone_wide_door_geometry_v3/eval_only/r1/pose.jsonl",
+      "sha256": "7eea9447212e3de1ffea9a61876e3234c2d348bc38de7962cca0cc169b86b216",
+      "bytes": 3858858,
+      "map_id": "zone_wide_door_geometry_v3",
+      "robot_id": "r1",
+      "matches_training_pose": true
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-04043e27-20261003/zone_wide_door_geometry_v3/zone_wide_door_geometry_v3/eval_only/r2/pose.jsonl",
+      "sha256": "d38c0eccffc035258b46144278f73d092593594f83655e69fb6d83a6f2c5a79e",
+      "bytes": 3874007,
+      "map_id": "zone_wide_door_geometry_v3",
+      "robot_id": "r2",
+      "matches_training_pose": true
+    }
+  ],
+  "training_r1_in_frozen_r5_prior": true,
+  "real_v91_scored": false
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "ugrp.measurement_clearance_review.v1",
+  "status": "BLOCKED_UNBOUNDED_MOTION",
+  "bounds": null,
+  "independent_bound_evidence": null,
+  "missing_bounds": [
+    "positive and negative gain ranges",
+    "drive and stop tau ranges",
+    "initial position and velocity errors after reset",
+    "world-axis speed error including transverse motion, yaw, slip and model mismatch"
+  ],
+  "reason": "Neither #346 fits nor the single #348 collection bound this plant. Keep the recorded command bytes, reject future execution before backend construction.",
+  "review_source": "cfc562da:experiments/2026-10-01-final-env-measurement-v2/REVIEW_347.md",
+  "nominal_models": {
+    "forward": [1.78459, 1.44, 0.08],
+    "left": [2.40680, 3.0, 0.05]
+  },
+  "unexcluded_v1_models": {
+    "forward": [5.529315179303428, 5.0, 0.05],
+    "left": [21.774200852931983, 30.0, 0.05]
+  }
+}

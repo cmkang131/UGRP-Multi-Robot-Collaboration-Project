@@ -1,0 +1,336 @@
+diff -ruN a/harness/zone_pair_highpose_dr_checkpoint.py b/harness/zone_pair_highpose_dr_checkpoint.py
+--- a/harness/zone_pair_highpose_dr_checkpoint.py	2026-10-04 20:38:21
++++ b/harness/zone_pair_highpose_dr_checkpoint.py	2026-10-04 20:38:41
+@@ -41,18 +41,24 @@
+ 
+ 
+ def decide(report, now, started, fix_after, min_stop_s):
+-    """('wait' | 'fix' | 'dr' | 'over', detail). Pure; ``detail`` is None without a usable report."""
+-    if not (report is not None and pose_report_fresh(report, now) and report.initialized
+-            and report.last_fix_t is not None):
++    """('wait' | 'fix' | 'dr' | 'over', detail). Pure; ``detail`` is None without a usable report.
++
++    ``last_fix_t is None`` on an initialized fresh report means "no fix since the stop": the runtime's
++    checkpoint calls ``begin_relocalization`` (vision_pose_source_p03), which keeps the predicted belief and
++    its sigma but sets ``_pf.last_scan_t = None`` to void the previous fix receipt. That is a DR report.
++    """
++    if not (report is not None and pose_report_fresh(report, now) and report.initialized):
+         return 'wait', None
++    fix_t = report.last_fix_t
+     sxy, syaw = float(report.std_xy_m), float(report.std_yaw_rad)
+-    detail = {'std_xy_m': sxy, 'std_yaw_rad': syaw, 'fix_t': float(report.last_fix_t),
+-              'fix_age_s': float(now)-float(report.last_fix_t), 'report_t_est': float(report.t_est),
++    detail = {'std_xy_m': sxy, 'std_yaw_rad': syaw, 'fix_t': None if fix_t is None else float(fix_t),
++              'fix_age_s': None if fix_t is None else float(now)-float(fix_t),
++              'fix_receipt_voided': fix_t is None, 'report_t_est': float(report.t_est),
+               'stop_s': float(now)-float(started)}
+     within = (math.isfinite(sxy) and math.isfinite(syaw)
+               and sxy <= BUDGET_XY_M and syaw <= BUDGET_YAW_RAD)
+     if float(now)-float(started) < min_stop_s:
+         return 'wait', detail
+-    if report.last_fix_t > fix_after:
++    if fix_t is not None and fix_t > fix_after:
+         return ('fix' if within else 'wait'), detail
+     return ('dr' if within else 'over'), detail
+diff -ruN a/tests/fixtures/v98_dr_checkpoint_align_to_carry_1f7fb800.json b/tests/fixtures/v98_dr_checkpoint_align_to_carry_1f7fb800.json
+--- a/tests/fixtures/v98_dr_checkpoint_align_to_carry_1f7fb800.json	1970-01-01 09:00:00
++++ b/tests/fixtures/v98_dr_checkpoint_align_to_carry_1f7fb800.json	2026-10-04 21:09:48
+@@ -0,0 +1,169 @@
++{
++  "schema": "ugrp.test_fixture.v98_dr_checkpoint_record.v1",
++  "source": {
++    "path": "/Users/changmin/projects/ugrp/outputs/v98-dev-probe-align_to_carry-1f7fb800/zone_wide_door_geometry_v3/student_record.json",
++    "sha256": "a609368e4e7b44361ea2cc011c0ad668aef4351466e17b9ebef6a75d9fdda2e2",
++    "run": "v98-dev-probe-align_to_carry-1f7fb800 (DEV_PILOT FUNCTIONAL_DEV, seed 911, full route)"
++  },
++  "note": "Copied verbatim from the own controller/provider record; no ground truth.",
++  "robots": {
++    "r1": {
++      "begin_relocalization": {
++        "event": "begin_relocalization",
++        "t": 101.73999999931836,
++        "previous_fix_t": 51.95000000015704,
++        "belief_preserved": true,
++        "before": {
++          "pf_id": 4650160096,
++          "particles_sha256": "0493f998366b0f94bb5eb5723b0cd0ec324e0f54e5509bbaef5a02be13f44ee2",
++          "std": [
++            [
++              0.00079077,
++              1.953e-05,
++              -6.925e-05
++            ],
++            [
++              1.953e-05,
++              0.0005548,
++              8.682e-05
++            ],
++            [
++              -6.925e-05,
++              8.682e-05,
++              0.00040865
++            ]
++          ],
++          "last_scan_t": 51.95000000015704
++        },
++        "after": {
++          "pf_id": 4650160096,
++          "particles_sha256": "0493f998366b0f94bb5eb5723b0cd0ec324e0f54e5509bbaef5a02be13f44ee2",
++          "last_scan_t": null
++        }
++      },
++      "last_loaded_gate_check": {
++        "robot_id": "r1",
++        "event": "loaded_gate_check",
++        "sim_s": 101.29999999933254,
++        "state": "carry",
++        "seg": 0,
++        "report_t_est": 101.14,
++        "std_xy_m": 0.0364,
++        "std_yaw_rad": 0.020076,
++        "std_yaw_deg": 1.15,
++        "fix_age_s": 49.19,
++        "gate_state": "ok",
++        "gate_ok": true,
++        "profile": "loaded",
++        "high_xy_m": 0.07,
++        "low_xy_m": 0.06,
++        "high_yaw_rad": 0.05235987755982989,
++        "low_yaw_rad": 0.04363323129985824,
++        "classify": "low",
++        "moving": true,
++        "passed": true,
++        "terminal": false
++      },
++      "checkpoint_high_stop": {
++        "robot_id": "r1",
++        "event": "checkpoint_high_stop",
++        "sim_s": 101.89999999931835,
++        "seg": 1,
++        "high": true,
++        "opened": false,
++        "epoch": 1
++      },
++      "job_failed": {
++        "schema": "ugrp.zone_own_executor_event.v1",
++        "robot_id": "r1",
++        "event": "job_failed",
++        "sim_s": 110.0,
++        "job_id": "r1-job-003",
++        "job_kind": "pair_carry",
++        "detail": {
++          "reason": "HIGH_CHECKPOINT_REOBSERVE_TIMEOUT"
++        },
++        "scheduler_trigger": "failure"
++      }
++    },
++    "r2": {
++      "begin_relocalization": {
++        "event": "begin_relocalization",
++        "t": 101.73999999931836,
++        "previous_fix_t": 58.05000000018617,
++        "belief_preserved": true,
++        "before": {
++          "pf_id": 4652757888,
++          "particles_sha256": "2de979f3dc8592a94c85d4ef062455d35e904cb307e2b411126a6b0f898c5cde",
++          "std": [
++            [
++              0.00073073,
++              5.23e-06,
++              -1.85e-06
++            ],
++            [
++              5.23e-06,
++              0.00080111,
++              0.00025383
++            ],
++            [
++              -1.85e-06,
++              0.00025383,
++              0.00039468
++            ]
++          ],
++          "last_scan_t": 58.05000000018617
++        },
++        "after": {
++          "pf_id": 4652757888,
++          "particles_sha256": "2de979f3dc8592a94c85d4ef062455d35e904cb307e2b411126a6b0f898c5cde",
++          "last_scan_t": null
++        }
++      },
++      "last_loaded_gate_check": {
++        "robot_id": "r2",
++        "event": "loaded_gate_check",
++        "sim_s": 101.29999999933254,
++        "state": "carry",
++        "seg": 0,
++        "report_t_est": 101.14,
++        "std_xy_m": 0.0388,
++        "std_yaw_rad": 0.019699,
++        "std_yaw_deg": 1.129,
++        "fix_age_s": 43.09,
++        "gate_state": "ok",
++        "gate_ok": true,
++        "profile": "loaded",
++        "high_xy_m": 0.07,
++        "low_xy_m": 0.06,
++        "high_yaw_rad": 0.05235987755982989,
++        "low_yaw_rad": 0.04363323129985824,
++        "classify": "low",
++        "moving": true,
++        "passed": true,
++        "terminal": false
++      },
++      "checkpoint_high_stop": {
++        "robot_id": "r2",
++        "event": "checkpoint_high_stop",
++        "sim_s": 101.89999999931835,
++        "seg": 1,
++        "high": true,
++        "opened": false,
++        "epoch": 1
++      },
++      "job_failed": {
++        "schema": "ugrp.zone_own_executor_event.v1",
++        "robot_id": "r2",
++        "event": "job_failed",
++        "sim_s": 110.0,
++        "job_id": "r2-job-003",
++        "job_kind": "pair_carry",
++        "detail": {
++          "reason": "PARTNER_ABORT"
++        },
++        "scheduler_trigger": "failure"
++      }
++    }
++  }
++}
+diff -ruN a/tests/test_highpose_dr_checkpoint.py b/tests/test_highpose_dr_checkpoint.py
+--- a/tests/test_highpose_dr_checkpoint.py	2026-10-04 20:38:21
++++ b/tests/test_highpose_dr_checkpoint.py	2026-10-04 21:10:04
+@@ -50,17 +50,36 @@
+ def test_decide_without_a_usable_report_waits():
+     assert dc.decide(None, 11.3, 10., 10., MIN) == ('wait', None)
+     assert dc.decide(rep(10.0, fix_t=2., sxy=.01, syaw_deg=.5), 11.3, 10., 10., MIN) == ('wait', None)  # stale
+-    assert dc.decide(rep(11.3, fix_t=None, sxy=.01, syaw_deg=.5), 11.3, 10., 10., MIN) == ('wait', None)
+     assert dc.decide(rep(11.3, fix_t=2., sxy=.01, syaw_deg=.5, initialized=False), 11.3, 10., 10., MIN) == ('wait', None)
+ 
+ 
+-def run_dr(ctls, *, until, sxy, syaw_deg, only=None):
++def test_decide_treats_a_voided_receipt_as_dr_not_wait():
++    # vision_pose_source_p03.begin_relocalization (called at checkpoint_high_stop) keeps the belief and sigma
++    # but sets last_scan_t -> last_fix_t to None. Before this rule decide() waited 8 s and timed out
++    # (1f7fb800 align_to_carry r1: sigma 36 mm / 1.15 deg, HIGH_CHECKPOINT_REOBSERVE_TIMEOUT at +8.1 s).
++    kind, detail = dc.decide(rep(11.3, fix_t=None, sxy=.0364, syaw_deg=1.15), 11.3, 10., 10., MIN)
++    assert kind == 'dr' and detail['fix_receipt_voided'] and detail['fix_t'] is None
++    assert dc.decide(rep(11.3, fix_t=None, sxy=.0591, syaw_deg=1.), 11.3, 10., 10., MIN)[0] == 'over'
++    assert dc.decide(rep(10.5, fix_t=None, sxy=.01, syaw_deg=.5), 10.5, 10., 10., MIN)[0] == 'wait'
++
++
++def test_real_provider_reset_voids_last_fix_t():
++    # The real p03 provider path the v98 HighPoseSource inherits: begin_relocalization sets last_scan_t None.
++    import inspect
++    from harness import vision_pose_source_p03 as p03
++    from harness.vision_pose_source_highpose import HighPoseSource
++    assert issubclass(HighPoseSource, p03.VisionPoseSource)
++    src = inspect.getsource(p03.VisionPoseSource.begin_relocalization)
++    assert 'self.loc._pf.last_scan_t = None' in src
++
++
++def run_dr(ctls, *, until, sxy, syaw_deg, only=None, voided=False):
+     """Real tick() + arm ticks; from each checkpoint stop on, the own report is DR only (last fix before the stop)."""
+     for i in range(int(round(until/.1))+1):
+         now = round(i*.1, 8)
+         for c in ctls:
+             if getattr(c, 'checkpoint_fix_after', None) is not None and (only is None or c.rid in only):
+-                c.port.own.last_report = rep(now, fix_t=c.checkpoint_fix_after-30., sxy=sxy[c.rid],
++                c.port.own.last_report = rep(now, fix_t=None if voided else c.checkpoint_fix_after-30., sxy=sxy[c.rid],
+                                              syaw_deg=syaw_deg[c.rid])
+             if c.state not in ('failed', 'released', 'done'):
+                 c.tick(now)
+@@ -70,15 +89,20 @@
+     return ctls
+ 
+ 
+-def test_dr_receipt_resumes_at_high_without_lowering_or_a_reobserve_event():
++import pytest
++
++
++@pytest.mark.parametrize('voided', [False, True])
++def test_dr_receipt_resumes_at_high_without_lowering_or_a_reobserve_event(voided):
+     _, ctls = pair(segments=(.1, .1))
+-    run_dr(ctls, until=60., sxy={'r1': .0424, 'r2': .0423}, syaw_deg={'r1': 1.38, 'r2': 1.22})
++    run_dr(ctls, until=60., sxy={'r1': .0424, 'r2': .0423}, syaw_deg={'r1': 1.38, 'r2': 1.22}, voided=voided)
+     for c in ctls:
+         assert c.failure is None and c.state == 'released'
+         stop = next(e['t'] for e in c.events if e['event'] == 'checkpoint_high_stop')
+         got = [e for e in c.events if e['event'] == dc.DR_EVENT]
+         assert len(got) == 1 and got[0]['seg'] == 1 and got[0]['t']-stop >= MIN-1e-8
+-        assert got[0]['std_xy_m'] <= dc.BUDGET_XY_M and got[0]['fix_age_s'] > 30.
++        assert got[0]['std_xy_m'] <= dc.BUDGET_XY_M
++        assert (got[0]['fix_age_s'] is None and got[0]['fix_receipt_voided']) if voided else got[0]['fix_age_s'] > 30.
+         assert not [e for e in c.events if e['event'] == dc.FIX_EVENT]      # never labelled as a re-observation
+         assert not [a for t, a in c.issued_log if stop <= t <= got[0]['t'] and a['kind'] == 'arm']
+         assert any(e['event'] == 'barrier_go' and e['barrier'] == 'carry' and e['t'] > got[0]['t'] for e in c.events)
+@@ -121,3 +145,61 @@
+     r = dc.record()
+     assert r['budget_xy_m'] == .05 and math.isclose(r['budget_yaw_rad'], math.radians(3.))
+     assert r['events'] == [dc.FIX_EVENT, dc.DR_EVENT, dc.OVER_EVENT]
++
++
++# ---- record-derived (2026-10-04 coordinator practice: feed new rules values from a real recorded run) ----
++import json
++from pathlib import Path
++
++RECORD = Path(__file__).with_name('fixtures')/'v98_dr_checkpoint_align_to_carry_1f7fb800.json'
++
++
++def _recorded():
++    return json.loads(RECORD.read_text())
++
++
++def test_recorded_checkpoint_reset_voids_the_receipt_and_keeps_the_belief():
++    rec = _recorded()
++    assert rec['source']['sha256'].startswith('a609368e')
++    for rid, r in rec['robots'].items():
++        lc = r['begin_relocalization']
++        assert lc['before']['last_scan_t'] == lc['previous_fix_t'] is not None      # a fix existed (before HIGH)
++        assert lc['after']['last_scan_t'] is None                                    # receipt voided by the reset
++        assert lc['belief_preserved'] and lc['before']['particles_sha256'] == lc['after']['particles_sha256']
++        assert lc['previous_fix_t'] < 64.8 < r['checkpoint_high_stop']['sim_s']    # no fix at HIGH before the stop
++
++
++def test_recorded_checkpoint_values_give_dr_with_the_proposal_and_wait_with_the_old_rule():
++    rec = _recorded()
++    for rid, r in rec['robots'].items():
++        cov = r['begin_relocalization']['before']['std']
++        sxy = math.sqrt(cov[0][0]+cov[1][1])                                        # owncam std_xy_m (trace)
++        syaw_deg = math.degrees(math.sqrt(cov[2][2]))
++        stop = r['checkpoint_high_stop']['sim_s']
++        now = stop+MIN
++        report = rep(now-.16, fix_t=None, sxy=sxy, syaw_deg=syaw_deg)              # 0.16 s pose delay, fresh
++        kind, detail = dc.decide(report, now, stop, stop, MIN)
++        assert kind == 'dr' and detail['fix_receipt_voided'], (rid, sxy, syaw_deg)
++        # the old rule treated last_fix_t None as "no usable report": the recorded run timed out / partner abort
++        assert r['job_failed']['detail']['reason'] in ('HIGH_CHECKPOINT_REOBSERVE_TIMEOUT', 'PARTNER_ABORT')
++    assert rec['robots']['r1']['job_failed']['detail']['reason'] == 'HIGH_CHECKPOINT_REOBSERVE_TIMEOUT'
++
++
++def test_real_provider_reset_feeds_decide_a_voided_dr_report(tmp_path, monkeypatch):
++    from tests.test_zone_final_pair_highpose import synthetic, MAPS, c
++    from tests.test_highpose_pf_consistency import _scan
++    from harness.vision_pose_source_highpose import HighPoseSource
++    path, _ = synthetic(tmp_path, monkeypatch)
++    servo = {1: 2000, **pose.grasp_postures()[1][-1]}
++    src = HighPoseSource(c.resolve(MAPS[0])[0], path, c.base.sha(path))
++    src.init_prior((1., 0., 0.), (.01, .01, .01), source='synthetic public dock')
++    pf = src.loc._pf
++    pf.apply_scan(1., _scan(src, servo), servo)
++    before = src.report(2.)
++    src.begin_relocalization(2., servo)
++    after = src.report(2.)
++    assert after.initialized and after.last_fix_t is None
++    assert math.isclose(after.std_xy_m, before.std_xy_m) and math.isclose(after.std_yaw_rad, before.std_yaw_rad)
++    kind, detail = dc.decide(after, 2., 2.-MIN, 2.-MIN, MIN)
++    assert kind in ('dr', 'over') and detail['fix_receipt_voided']
++    assert kind == ('dr' if after.std_xy_m <= dc.BUDGET_XY_M and after.std_yaw_rad <= dc.BUDGET_YAW_RAD else 'over')

@@ -1,0 +1,74 @@
+{
+  "schema": "ugrp.zone_e2e_plan_verification.v1",
+  "verified_utc": "2026-09-30T11:52:56.096761+00:00",
+  "scope": "static_offline_only_not_physical",
+  "python": "3.12.13",
+  "planning_base_sha": "d17ca4345affef8cf027e121cf1f3197b36c23e0",
+  "audit_main_sha": "a8094cc14e098a55483f53a3c49bf6a0b116043d",
+  "pytest": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "267",
+    "time": "83.760",
+    "timestamp": "2026-09-30T20:51:24.508596+09:00",
+    "deselected": 1,
+    "protection": "scripts.run_ci_tests.run_locked/local_lock_root",
+    "threads": 1,
+    "excluded": "test_registered_speech_caps_and_llm_driver_are_pinned_in_the_run_bundle (real temporary SQLite DB forbidden)",
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/e2e-p07-manifest/verification-20260930T1133/pytest-final.xml",
+    "junit_sha256": "51934e98c52d0985a1b77bae44037287f11eb68ea149f3bab353dd49b47b3922",
+    "lock_path": "/Users/changmin/projects/ugrp/outputs/e2e-p07-manifest/verification-20260930T1133/lock-during-final.json"
+  },
+  "initial_pytest": {
+    "passed": 258,
+    "failed": 1,
+    "deselected": 1,
+    "failure": "ON dynamic sim/ultrasonic_input.py missing from source closure; fixed with AST literal RUNTIME_MODULES",
+    "junit_path": "/Users/changmin/projects/ugrp/outputs/e2e-p07-manifest/verification-20260930T1133/pytest-initial.xml",
+    "junit_sha256": "30f646536ef874d7b10687afa0935adc0bac177dabd9c25903b891362e5c495a"
+  },
+  "tested_files_sha256": {
+    "harness/zone_e2e_manifest.py": "8d237bb596b8b2b918b9680e47940c62c4ba1d8a328605c1fcb0db2659b0756e",
+    "scripts/plan_zone_e2e.py": "24b52277a4b31ecd236567aea9450674739614b3832b1c83002a1031c55e3198",
+    "configs/zone_e2e_plan/claims_v1.json": "8735b755aa4b91391b5694087f86c2d6b1c7382b22f91f3cc4e893fbfb8a4792",
+    "tests/test_zone_e2e_manifest.py": "d18f265c998b09a18ab0dc4ee08325e1a5c71be3889693d87ec2a33d7448bd85",
+    "scripts/run_ci_tests.py": "be210c9d82a41323a51492e92ecf6e824650d52e0e0432768e6c40ea61503a1d",
+    "tests/test_zone_study_source_pinning.py": "98b1f59ce0af4c81102612ee9e8d9e1a12912e1635341cb7b439c920738ad1ef",
+    "tests/test_zone_pair_authorization.py": "9dca16ba41cc4648f49dff93564f87d00f5499df7a8d6a2a276161d580f4f1cf",
+    "tests/test_ci_sharding.py": "19708060b0085d4ed255e08fe2d73abb2318e74bcaa87a15e94bbbddadf629b1"
+  },
+  "protected_files": {
+    "count": 60,
+    "unchanged": true,
+    "path": "/Users/changmin/projects/ugrp/outputs/e2e-p07-manifest/verification-20260930T1133/protected_files.json",
+    "sha256": "147d2a2570e326ab34cc54fd26521239aa1258930870a0f51a4c91beef9be739"
+  },
+  "manifest": {
+    "file_sha256": "85e7e867e0b163009ffdfc2b8ec2b9eebbd19993177ca3f7c2359fedc48be4b9",
+    "draft_content_sha256": "cfe281b0b7cd0d776dc78cb8d0b975ad46fe2d4a433f8efbf658de987933c01f",
+    "runtime_pins": 267,
+    "evidence_pins": 73,
+    "claims": 23
+  },
+  "dry_run": {
+    "exit_code": 3,
+    "file_sha256": "d0d6f1b3dc4dae9133a21a4ea6db815f380b5e547bf650aa61623ed66d27e9b2",
+    "planned_runs": [
+      4,
+      4,
+      24,
+      72
+    ],
+    "total_sim_cap_s": 212250,
+    "raw_destinations": 228,
+    "raw_plan_root_created": false,
+    "unmet_conditions": 37
+  },
+  "actual_experiment_sim_s": 0,
+  "execution_approval": null,
+  "sealed": false,
+  "merged": false,
+  "remote_ci": "Historical initial submission skipped CI; this interpretation is superseded. Normal GitHub CI is required after the review fix; never cancel or skip CI. See REVIEW_FIXES.md for current verification."
+}

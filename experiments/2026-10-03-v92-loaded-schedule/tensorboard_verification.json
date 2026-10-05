@@ -1,0 +1,95 @@
+{
+  "snapshot": "/Users/changmin/projects/ugrp/outputs/tensorboard/1003-v92-loaded-design-r2",
+  "runs": [
+    {
+      "run": "1003-v92-loaded-design-r2/motion",
+      "scalars": {
+        "offline/full_collection_complete": 0.0,
+        "offline/rendered_frames": 0.0,
+        "offline/controller_edge_columns": 0.0,
+        "offline/lifted_selected_samples": 1240.0,
+        "offline/selected_samples": 1240.0,
+        "offline/r1_yaw_positive_rad_s": 0.03637951239943504,
+        "offline/r2_yaw_positive_rad_s": 0.03637712448835373,
+        "offline/beam_yaw_positive_rad_s": 0.0363212488591671,
+        "offline/r1_yaw_negative_rad_s": -0.036398995667696,
+        "offline/r2_yaw_negative_rad_s": -0.03640354052186012,
+        "offline/beam_yaw_negative_rad_s": -0.036290474236011505,
+        "result/sim_s": 70.0,
+        "result/commands": 908.0,
+        "result/model_calls": 0.0
+      },
+      "api_controller_edge_columns": 0.0,
+      "hparams_plugin_events": [
+        "experiment",
+        "session_start_info",
+        "session_end_info"
+      ]
+    },
+    {
+      "run": "1003-v92-loaded-design-r2/posture",
+      "scalars": {
+        "offline/full_collection_complete": 0.0,
+        "offline/rendered_frames": 0.0,
+        "offline/controller_edge_columns": 0.0,
+        "offline/candidate_edge_columns": 90.0,
+        "offline/lifted_selected_samples": 1160.0,
+        "offline/selected_samples": 1160.0,
+        "result/sim_s": 66.0,
+        "result/commands": 52.0,
+        "result/model_calls": 0.0
+      },
+      "api_controller_edge_columns": 0.0,
+      "hparams_plugin_events": [
+        "experiment",
+        "session_start_info",
+        "session_end_info"
+      ]
+    }
+  ],
+  "video_registrations": 0,
+  "scope": "headless checks; no rendered RGB or full collection",
+  "server_logdir": "/Users/changmin/projects/ugrp/outputs/tensorboard",
+  "ui_verified": true,
+  "initial_failed_export": "1003-v92-loaded-design: helper syntax error, no source folders; failed manifest preserved",
+  "url": "http://127.0.0.1:6006/?runFilter=%5E1003-v92-loaded-design-r2%2F&tagFilter=%5E%28result%2F%28sim_s%7Ccommands%7Cmodel_calls%29%7Coffline%2F%28controller_edge_columns%7Ccandidate_edge_columns%7Cbeam_yaw_positive_rad_s%29%29%24&pinnedCards=%5B%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fsim_s%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fcommands%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22result%2Fmodel_calls%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcontroller_edge_columns%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fcandidate_edge_columns%22%7D%2C%7B%22plugin%22%3A%22scalars%22%2C%22tag%22%3A%22offline%2Fbeam_yaw_positive_rad_s%22%7D%5D&scalarSmoothing=0#timeseries",
+  "pinned_tags": [
+    "result/sim_s",
+    "result/commands",
+    "result/model_calls",
+    "offline/controller_edge_columns",
+    "offline/candidate_edge_columns",
+    "offline/beam_yaw_positive_rad_s"
+  ],
+  "hparams_visible_columns": [
+    "outcome",
+    "result/wall_s",
+    "result/commands",
+    "result/model_calls"
+  ],
+  "ui_scope": "Chrome 강/kcm0127@gmail.com; Time Series values and six pin states checked; HParams four default column headers applied. HParams new rows not individually verified.",
+  "ui_values": {
+    "sim_s": [
+      70,
+      66
+    ],
+    "commands": [
+      908,
+      52
+    ],
+    "model_calls": [
+      0,
+      0
+    ],
+    "controller_edge_columns": 0,
+    "candidate_edge_columns": 90,
+    "beam_yaw_positive_rad_s": 0.0363212
+  },
+  "ui_final_restore": "Final navigation failed: clipboard timeout, then cgWindowNotFound. Earlier card and column observations retained.",
+  "hparams_row_ui_verified": false,
+  "wall_time": "not measured; absent rather than zero-filled",
+  "model_response_time": "not applicable: 0 model calls",
+  "baseline": "Current controller hover edge columns 0 versus separate candidate pose 90, both in the posture short check; not pooled with v88 training collections.",
+  "video_status": "0 new videos; rendering prohibited for this task",
+  "server_changed": false
+}

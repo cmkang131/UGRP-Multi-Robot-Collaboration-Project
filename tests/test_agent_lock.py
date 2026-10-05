@@ -15,6 +15,7 @@ def test_second_agent_cannot_acquire_a_held_lock(tmp_path):
     _acquire(tmp_path)
     held = agent_lock.status(tmp_path)
     assert held['owner'] == 'claude' and held['pid_alive'] is True
+    assert held['timing_sensitive'] is False
     with pytest.raises(RuntimeError, match='lock held'):
         _acquire(tmp_path, owner='codex')
 
@@ -47,3 +48,25 @@ def test_cli_status_acquire_release(tmp_path, capsys):
     assert agent_lock.main(['--root', str(tmp_path), 'acquire', '--owner', 'claude', '--branch', 'b',
                             '--purpose', 'p', '--pid', str(os.getpid()), '--expected-minutes', '5']) == 1
     assert agent_lock.main(['--root', str(tmp_path), 'release', '--owner', 'codex']) == 0
+
+
+def test_timing_sensitive_cli_flag_is_persisted_and_reported(tmp_path, capsys):
+    assert agent_lock.main(['--root', str(tmp_path), 'acquire', '--owner', 'codex', '--branch', 'b',
+                           '--purpose', 'wall timing', '--pid', str(os.getpid()),
+                           '--expected-minutes', '5', '--timing-sensitive']) == 0
+    assert json.loads(capsys.readouterr().out)['timing_sensitive'] is True
+    assert json.loads((tmp_path / 'physics/owner.json').read_text())['timing_sensitive'] is True
+    assert agent_lock.main(['--root', str(tmp_path), 'status']) == 0
+    assert json.loads(capsys.readouterr().out)['timing_sensitive'] is True
+    agent_lock.release(tmp_path, owner='codex')
+
+
+def test_legacy_lock_defaults_to_not_timing_sensitive_without_rewriting(tmp_path):
+    _acquire(tmp_path)
+    path = tmp_path / 'physics/owner.json'
+    record = json.loads(path.read_text())
+    record.pop('timing_sensitive')
+    path.write_text(json.dumps(record))
+    before = path.read_bytes()
+    assert agent_lock.status(tmp_path)['timing_sensitive'] is False
+    assert path.read_bytes() == before

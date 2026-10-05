@@ -172,11 +172,11 @@ def test_research_scenarios_and_bundle_use_study_wide_profile():
     assert bundle['contact_profile_expected']['noslip_iterations'] == 10
     assert bundle['contact_profile_expected']['timestep_s'] == .00025
     assert bundle['perception_delay_s'] == .16
-    assert bundle['execution_bundle_id'] == 'zone-pair-v81-carry-dr-general'
+    assert bundle['execution_bundle_id'] == 'zone-pair-v83-carry-door-gain'
     workflow = next(w for w in json.loads((ROOT / 'configs/simulation_workflows.json').read_text())['workflows']
                     if w['id'] == 'zone-study-integration-run')
-    # v81 (b-v6g carry stage probe, assigned by the coordinator) = v80 + opt-in b-v6g; workflow 2.14.0.
-    assert workflow['version'] == '2.14.0'
+    # v83 (pre-seal b-v6h1 candidate) = v81 + five opt-in options; workflow 2.16.0.
+    assert workflow['version'] == '2.16.0'
     assert bundle['pose_provider']['label']['research_result'] is False
     assert bundle['pose_provider']['spec']['calibration'] == pre['student']['calibration']
     from scripts.zone_pair_dev_runtime import make_scene

@@ -1,0 +1,36 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+____ test_solo_entry_translation_full_exit_not_waypoint_or_delivery[False] _____
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+reverse = False
+
+    @pytest.mark.parametrize('reverse', [False, True])
+    def test_solo_entry_translation_full_exit_not_waypoint_or_delivery(static, reverse):
+        t = Trace(plan(static, reverse=reverse))
+        first = t.tick()
+>       assert first.command.forward_m_s * (-1 if reverse else 1) > 0
+E       AssertionError: assert (0.0 * 1) > 0
+E        +  where 0.0 = Command(robot_id='r3', issued_at_s=0.0, duration_s=0.05, forward_m_s=0.0, left_m_s=0.0, yaw_rad_s=0.0).forward_m_s
+E        +    where Command(robot_id='r3', issued_at_s=0.0, duration_s=0.05, forward_m_s=0.0, left_m_s=0.0, yaw_rad_s=0.0) = Decision(state='ENTER', reason='await_own_rgb', command=Command(robot_id='r3', issued_at_s=0.0, duration_s=0.05, forwa..._at_s': None, 'frame_id': None, 'ready_until_s': None},), issued=True, passage_observed=False, delivery_complete=False).command
+
+tests/test_zone_own_executor_corridor_control.py:94: AssertionError
+_____ test_solo_entry_translation_full_exit_not_waypoint_or_delivery[True] _____
+
+static = {'robot_model': 'masterpi_v3', 'bounds_m': [-4.0, 5.0, -3.0, 3.0], 'obstacles': [], 'passages': [{'id': 'corridor_1', ...'x', 'center_m': [0.0, 0.0], ...}, {'id': 'bay_1', 'kind': 'passing_bay', 'axis': 'y', 'opens_to': 'corridor_1', ...}]}
+reverse = True
+
+    @pytest.mark.parametrize('reverse', [False, True])
+    def test_solo_entry_translation_full_exit_not_waypoint_or_delivery(static, reverse):
+        t = Trace(plan(static, reverse=reverse))
+        first = t.tick()
+>       assert first.command.forward_m_s * (-1 if reverse else 1) > 0
+E       AssertionError: assert (0.0 * -1) > 0
+E        +  where 0.0 = Command(robot_id='r3', issued_at_s=0.0, duration_s=0.05, forward_m_s=0.0, left_m_s=0.0, yaw_rad_s=0.0).forward_m_s
+E        +    where Command(robot_id='r3', issued_at_s=0.0, duration_s=0.05, forward_m_s=0.0, left_m_s=0.0, yaw_rad_s=0.0) = Decision(state='ENTER', reason='await_own_rgb', command=Command(robot_id='r3', issued_at_s=0.0, duration_s=0.05, forwa..._at_s': None, 'frame_id': None, 'ready_until_s': None},), issued=True, passage_observed=False, delivery_complete=False).command
+
+tests/test_zone_own_executor_corridor_control.py:94: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_zone_own_executor_corridor_control.py::test_solo_entry_translation_full_exit_not_waypoint_or_delivery[False]
+FAILED tests/test_zone_own_executor_corridor_control.py::test_solo_entry_translation_full_exit_not_waypoint_or_delivery[True]
+2 failed in 0.28s

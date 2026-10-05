@@ -1,0 +1,229 @@
+{
+  "seal_commit": "5be4330eca9b23d2cbde3657dcbb215ee1923b25",
+  "registration_sha256": "487950b61e0207e6634e8e2895b8f2b8b79dc91c50aded2bd26c23064f807d57",
+  "status": "ANALYSED",
+  "summary": {
+    "n_cases": 72,
+    "n_attempts": 72,
+    "n_adjudicated_attempt_slots": 72,
+    "n_placements": 60,
+    "n_classified_primary": 60,
+    "primary_seed": 941,
+    "counts": {
+      "PASS_CLEAN": 60,
+      "PASS_CONTACT_RECOVERED": 0,
+      "BLOCKED_BY_CONTACT": 0,
+      "FAIL": 0,
+      "FAIL_HARD_LIMIT": 0
+    },
+    "pass_placements": 60,
+    "wilson95_primary_classified": [
+      0.9398260695220669,
+      0.9999999999999999
+    ],
+    "unclassified_cases": [],
+    "unclassified_placements": [],
+    "hard_limit_chain_cases": 0,
+    "hard_limit_attempt_case_ids": [],
+    "hard_limit_chain_placements_any_seed": 0,
+    "case_counts": {
+      "PASS_CLEAN": 72
+    },
+    "cases_pass": 72,
+    "placements_all_recorded_seeds_pass": 60,
+    "placements_any_recorded_seed_pass": 60,
+    "criterion": {
+      "minimum_pass": 48,
+      "required_placements": 60,
+      "maximum_hard_limit_cases": 0,
+      "evaluable": true,
+      "verdict": "PASS_OBSERVED_CRITERION",
+      "mode": "confirmatory",
+      "scope": "Observed criterion A + whole-chain safety; see separate sigma_criterion_B in confirmatory mode."
+    },
+    "probability_observed_count_criterion_n60": {
+      "0.7": 0.056770682002336884,
+      "0.75": 0.23155763368805587,
+      "0.8": 0.5764403014458759,
+      "0.85": 0.8937539990224598
+    },
+    "sigma_criterion_B": {
+      "primary_seed": 941,
+      "weighting": "two equal robot samples per reached primary placement/leg",
+      "sample_max_age_s": 0.3,
+      "secondary_seed_943": {
+        "L0": {
+          "n_samples": 24,
+          "n_observed_placements": 12,
+          "unreached_placements": [],
+          "missing_pf_placements": [],
+          "cov2sigma_samples_xyyaw": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mean_z2_xyyaw": [
+            0.026469706364557588,
+            0.5062840580115314,
+            0.356309555890191
+          ],
+          "axis_pass_xyyaw": [
+            true,
+            true,
+            true
+          ],
+          "covered_placements_xyyaw": [
+            12,
+            12,
+            12
+          ],
+          "wilson95_placements_nominal": [
+            [
+              0.7574992425007574,
+              1.0
+            ],
+            [
+              0.7574992425007574,
+              1.0
+            ],
+            [
+              0.7574992425007574,
+              1.0
+            ]
+          ],
+          "verdict": "PASS"
+        },
+        "L1": {
+          "n_samples": 24,
+          "n_observed_placements": 12,
+          "unreached_placements": [],
+          "missing_pf_placements": [],
+          "cov2sigma_samples_xyyaw": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mean_z2_xyyaw": [
+            0.060536387928427415,
+            0.15832982832090353,
+            0.03755669798590199
+          ],
+          "axis_pass_xyyaw": [
+            true,
+            true,
+            true
+          ],
+          "covered_placements_xyyaw": [
+            12,
+            12,
+            12
+          ],
+          "wilson95_placements_nominal": [
+            [
+              0.7574992425007574,
+              1.0
+            ],
+            [
+              0.7574992425007574,
+              1.0
+            ],
+            [
+              0.7574992425007574,
+              1.0
+            ]
+          ],
+          "verdict": "PASS"
+        }
+      },
+      "legs": {
+        "L0": {
+          "n_samples": 120,
+          "n_observed_placements": 60,
+          "unreached_placements": [],
+          "missing_pf_placements": [],
+          "cov2sigma_samples_xyyaw": [
+            1.0,
+            0.9916666666666667,
+            0.9916666666666667
+          ],
+          "mean_z2_xyyaw": [
+            0.028519343540422137,
+            0.45506791371004773,
+            0.35325288315678804
+          ],
+          "axis_pass_xyyaw": [
+            true,
+            true,
+            true
+          ],
+          "covered_placements_xyyaw": [
+            60,
+            59,
+            59
+          ],
+          "wilson95_placements_nominal": [
+            [
+              0.9398260695220669,
+              0.9999999999999999
+            ],
+            [
+              0.9114466177322051,
+              0.9970519161391262
+            ],
+            [
+              0.9114466177322051,
+              0.9970519161391262
+            ]
+          ],
+          "verdict": "PASS"
+        },
+        "L1": {
+          "n_samples": 120,
+          "n_observed_placements": 60,
+          "unreached_placements": [],
+          "missing_pf_placements": [],
+          "cov2sigma_samples_xyyaw": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "mean_z2_xyyaw": [
+            0.05360685119466732,
+            0.23866369001924082,
+            0.04038095779453118
+          ],
+          "axis_pass_xyyaw": [
+            true,
+            true,
+            true
+          ],
+          "covered_placements_xyyaw": [
+            60,
+            60,
+            60
+          ],
+          "wilson95_placements_nominal": [
+            [
+              0.9398260695220669,
+              0.9999999999999999
+            ],
+            [
+              0.9398260695220669,
+              0.9999999999999999
+            ],
+            [
+              0.9398260695220669,
+              0.9999999999999999
+            ]
+          ],
+          "verdict": "PASS"
+        }
+      },
+      "verdict": "PASS"
+    },
+    "cohort_evidence_issues": [],
+    "full_verdict": "PASS_A_B_SAFETY",
+    "registration_timing": "analysis_sealed_after_blinded_recording",
+    "recorded_admission": "unsealed_stage_probe (no --prereg; prereg_v6h.json not yet sealed); cases byte-equal to build_prereg_v6h.build() cases minus registration_run_id"
+  }
+}

@@ -1,0 +1,340 @@
+........................................................................ [ 13%]
+........................................................................ [ 26%]
+........................................................................ [ 39%]
+........................................................................ [ 52%]
+........................................................................ [ 65%]
+.FFFFFFFF............................................................... [ 78%]
+........................................................................ [ 91%]
+.................................................                        [100%]
+=================================== FAILURES ===================================
+_ test_execution_forwards_only_selected_files_and_preserves_failure_code[None-False] _
+
+index = None, locked = False
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x107a1cc80>
+
+    @pytest.mark.parametrize("locked", [False, True])
+    @pytest.mark.parametrize("index", [None, 0, 1, 2])
+    def test_execution_forwards_only_selected_files_and_preserves_failure_code(index, locked, monkeypatch):
+        files = [f"tests/test_{i}.py" for i in range(7)]
+        monkeypatch.setattr(runner, "collect_test_files", lambda *_: files)
+        lock = Path("fixture-lock") if locked else None
+        monkeypatch.setattr(runner, "local_lock_root", lambda: lock)
+        calls = []
+    
+        def execute(command, *, cwd, env):
+            calls.append(command)
+            assert cwd == runner.ROOT
+            assert env["CI"] == "true"
+            return 7
+    
+        def execute_locked(command, env, lock_root):
+            assert lock_root == lock
+            return execute(command, cwd=runner.ROOT, env=env)
+    
+        monkeypatch.setattr(runner.subprocess, "call", execute)
+        monkeypatch.setattr(runner, "run_locked", execute_locked)
+        argv = [] if index is None else ["--shard-count", "3", "--shard-index", str(index)]
+>       assert runner.main([*argv, "--host-lock", "--junitxml", "report.xml"]) == 7
+E       AssertionError: assert 2 == 7
+E        +  where 2 = <function main at 0x1082314e0>(['--host-lock', '--junitxml', 'report.xml'])
+E        +    where <function main at 0x1082314e0> = runner.main
+
+tests/test_ci_sharding.py:173: AssertionError
+----------------------------- Captured stderr call -----------------------------
+CI preflight: required frozen fixtures are missing:
+  experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+Sparse checkout may exclude experiments/**/*.gz. Restore the tracked fixtures before retrying; do not skip their tests. In a sparse worktree run:
+  git sparse-checkout add /experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+_ test_execution_forwards_only_selected_files_and_preserves_failure_code[None-True] _
+
+index = None, locked = True
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x107a1e930>
+
+    @pytest.mark.parametrize("locked", [False, True])
+    @pytest.mark.parametrize("index", [None, 0, 1, 2])
+    def test_execution_forwards_only_selected_files_and_preserves_failure_code(index, locked, monkeypatch):
+        files = [f"tests/test_{i}.py" for i in range(7)]
+        monkeypatch.setattr(runner, "collect_test_files", lambda *_: files)
+        lock = Path("fixture-lock") if locked else None
+        monkeypatch.setattr(runner, "local_lock_root", lambda: lock)
+        calls = []
+    
+        def execute(command, *, cwd, env):
+            calls.append(command)
+            assert cwd == runner.ROOT
+            assert env["CI"] == "true"
+            return 7
+    
+        def execute_locked(command, env, lock_root):
+            assert lock_root == lock
+            return execute(command, cwd=runner.ROOT, env=env)
+    
+        monkeypatch.setattr(runner.subprocess, "call", execute)
+        monkeypatch.setattr(runner, "run_locked", execute_locked)
+        argv = [] if index is None else ["--shard-count", "3", "--shard-index", str(index)]
+>       assert runner.main([*argv, "--host-lock", "--junitxml", "report.xml"]) == 7
+E       AssertionError: assert 2 == 7
+E        +  where 2 = <function main at 0x1082314e0>(['--host-lock', '--junitxml', 'report.xml'])
+E        +    where <function main at 0x1082314e0> = runner.main
+
+tests/test_ci_sharding.py:173: AssertionError
+----------------------------- Captured stderr call -----------------------------
+CI preflight: required frozen fixtures are missing:
+  experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+Sparse checkout may exclude experiments/**/*.gz. Restore the tracked fixtures before retrying; do not skip their tests. In a sparse worktree run:
+  git sparse-checkout add /experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+_ test_execution_forwards_only_selected_files_and_preserves_failure_code[0-False] _
+
+index = 0, locked = False
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x107a1d580>
+
+    @pytest.mark.parametrize("locked", [False, True])
+    @pytest.mark.parametrize("index", [None, 0, 1, 2])
+    def test_execution_forwards_only_selected_files_and_preserves_failure_code(index, locked, monkeypatch):
+        files = [f"tests/test_{i}.py" for i in range(7)]
+        monkeypatch.setattr(runner, "collect_test_files", lambda *_: files)
+        lock = Path("fixture-lock") if locked else None
+        monkeypatch.setattr(runner, "local_lock_root", lambda: lock)
+        calls = []
+    
+        def execute(command, *, cwd, env):
+            calls.append(command)
+            assert cwd == runner.ROOT
+            assert env["CI"] == "true"
+            return 7
+    
+        def execute_locked(command, env, lock_root):
+            assert lock_root == lock
+            return execute(command, cwd=runner.ROOT, env=env)
+    
+        monkeypatch.setattr(runner.subprocess, "call", execute)
+        monkeypatch.setattr(runner, "run_locked", execute_locked)
+        argv = [] if index is None else ["--shard-count", "3", "--shard-index", str(index)]
+>       assert runner.main([*argv, "--host-lock", "--junitxml", "report.xml"]) == 7
+E       AssertionError: assert 2 == 7
+E        +  where 2 = <function main at 0x1082314e0>(['--shard-count', '3', '--shard-index', '0', '--host-lock', '--junitxml', ...])
+E        +    where <function main at 0x1082314e0> = runner.main
+
+tests/test_ci_sharding.py:173: AssertionError
+----------------------------- Captured stderr call -----------------------------
+CI preflight: required frozen fixtures are missing:
+  experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+Sparse checkout may exclude experiments/**/*.gz. Restore the tracked fixtures before retrying; do not skip their tests. In a sparse worktree run:
+  git sparse-checkout add /experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+_ test_execution_forwards_only_selected_files_and_preserves_failure_code[0-True] _
+
+index = 0, locked = True
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x107a1e120>
+
+    @pytest.mark.parametrize("locked", [False, True])
+    @pytest.mark.parametrize("index", [None, 0, 1, 2])
+    def test_execution_forwards_only_selected_files_and_preserves_failure_code(index, locked, monkeypatch):
+        files = [f"tests/test_{i}.py" for i in range(7)]
+        monkeypatch.setattr(runner, "collect_test_files", lambda *_: files)
+        lock = Path("fixture-lock") if locked else None
+        monkeypatch.setattr(runner, "local_lock_root", lambda: lock)
+        calls = []
+    
+        def execute(command, *, cwd, env):
+            calls.append(command)
+            assert cwd == runner.ROOT
+            assert env["CI"] == "true"
+            return 7
+    
+        def execute_locked(command, env, lock_root):
+            assert lock_root == lock
+            return execute(command, cwd=runner.ROOT, env=env)
+    
+        monkeypatch.setattr(runner.subprocess, "call", execute)
+        monkeypatch.setattr(runner, "run_locked", execute_locked)
+        argv = [] if index is None else ["--shard-count", "3", "--shard-index", str(index)]
+>       assert runner.main([*argv, "--host-lock", "--junitxml", "report.xml"]) == 7
+E       AssertionError: assert 2 == 7
+E        +  where 2 = <function main at 0x1082314e0>(['--shard-count', '3', '--shard-index', '0', '--host-lock', '--junitxml', ...])
+E        +    where <function main at 0x1082314e0> = runner.main
+
+tests/test_ci_sharding.py:173: AssertionError
+----------------------------- Captured stderr call -----------------------------
+CI preflight: required frozen fixtures are missing:
+  experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+Sparse checkout may exclude experiments/**/*.gz. Restore the tracked fixtures before retrying; do not skip their tests. In a sparse worktree run:
+  git sparse-checkout add /experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+_ test_execution_forwards_only_selected_files_and_preserves_failure_code[1-False] _
+
+index = 1, locked = False
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x107a1d520>
+
+    @pytest.mark.parametrize("locked", [False, True])
+    @pytest.mark.parametrize("index", [None, 0, 1, 2])
+    def test_execution_forwards_only_selected_files_and_preserves_failure_code(index, locked, monkeypatch):
+        files = [f"tests/test_{i}.py" for i in range(7)]
+        monkeypatch.setattr(runner, "collect_test_files", lambda *_: files)
+        lock = Path("fixture-lock") if locked else None
+        monkeypatch.setattr(runner, "local_lock_root", lambda: lock)
+        calls = []
+    
+        def execute(command, *, cwd, env):
+            calls.append(command)
+            assert cwd == runner.ROOT
+            assert env["CI"] == "true"
+            return 7
+    
+        def execute_locked(command, env, lock_root):
+            assert lock_root == lock
+            return execute(command, cwd=runner.ROOT, env=env)
+    
+        monkeypatch.setattr(runner.subprocess, "call", execute)
+        monkeypatch.setattr(runner, "run_locked", execute_locked)
+        argv = [] if index is None else ["--shard-count", "3", "--shard-index", str(index)]
+>       assert runner.main([*argv, "--host-lock", "--junitxml", "report.xml"]) == 7
+E       AssertionError: assert 2 == 7
+E        +  where 2 = <function main at 0x1082314e0>(['--shard-count', '3', '--shard-index', '1', '--host-lock', '--junitxml', ...])
+E        +    where <function main at 0x1082314e0> = runner.main
+
+tests/test_ci_sharding.py:173: AssertionError
+----------------------------- Captured stderr call -----------------------------
+CI preflight: required frozen fixtures are missing:
+  experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+Sparse checkout may exclude experiments/**/*.gz. Restore the tracked fixtures before retrying; do not skip their tests. In a sparse worktree run:
+  git sparse-checkout add /experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+_ test_execution_forwards_only_selected_files_and_preserves_failure_code[1-True] _
+
+index = 1, locked = True
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x107a1e180>
+
+    @pytest.mark.parametrize("locked", [False, True])
+    @pytest.mark.parametrize("index", [None, 0, 1, 2])
+    def test_execution_forwards_only_selected_files_and_preserves_failure_code(index, locked, monkeypatch):
+        files = [f"tests/test_{i}.py" for i in range(7)]
+        monkeypatch.setattr(runner, "collect_test_files", lambda *_: files)
+        lock = Path("fixture-lock") if locked else None
+        monkeypatch.setattr(runner, "local_lock_root", lambda: lock)
+        calls = []
+    
+        def execute(command, *, cwd, env):
+            calls.append(command)
+            assert cwd == runner.ROOT
+            assert env["CI"] == "true"
+            return 7
+    
+        def execute_locked(command, env, lock_root):
+            assert lock_root == lock
+            return execute(command, cwd=runner.ROOT, env=env)
+    
+        monkeypatch.setattr(runner.subprocess, "call", execute)
+        monkeypatch.setattr(runner, "run_locked", execute_locked)
+        argv = [] if index is None else ["--shard-count", "3", "--shard-index", str(index)]
+>       assert runner.main([*argv, "--host-lock", "--junitxml", "report.xml"]) == 7
+E       AssertionError: assert 2 == 7
+E        +  where 2 = <function main at 0x1082314e0>(['--shard-count', '3', '--shard-index', '1', '--host-lock', '--junitxml', ...])
+E        +    where <function main at 0x1082314e0> = runner.main
+
+tests/test_ci_sharding.py:173: AssertionError
+----------------------------- Captured stderr call -----------------------------
+CI preflight: required frozen fixtures are missing:
+  experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+Sparse checkout may exclude experiments/**/*.gz. Restore the tracked fixtures before retrying; do not skip their tests. In a sparse worktree run:
+  git sparse-checkout add /experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+_ test_execution_forwards_only_selected_files_and_preserves_failure_code[2-False] _
+
+index = 2, locked = False
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x107a1ca70>
+
+    @pytest.mark.parametrize("locked", [False, True])
+    @pytest.mark.parametrize("index", [None, 0, 1, 2])
+    def test_execution_forwards_only_selected_files_and_preserves_failure_code(index, locked, monkeypatch):
+        files = [f"tests/test_{i}.py" for i in range(7)]
+        monkeypatch.setattr(runner, "collect_test_files", lambda *_: files)
+        lock = Path("fixture-lock") if locked else None
+        monkeypatch.setattr(runner, "local_lock_root", lambda: lock)
+        calls = []
+    
+        def execute(command, *, cwd, env):
+            calls.append(command)
+            assert cwd == runner.ROOT
+            assert env["CI"] == "true"
+            return 7
+    
+        def execute_locked(command, env, lock_root):
+            assert lock_root == lock
+            return execute(command, cwd=runner.ROOT, env=env)
+    
+        monkeypatch.setattr(runner.subprocess, "call", execute)
+        monkeypatch.setattr(runner, "run_locked", execute_locked)
+        argv = [] if index is None else ["--shard-count", "3", "--shard-index", str(index)]
+>       assert runner.main([*argv, "--host-lock", "--junitxml", "report.xml"]) == 7
+E       AssertionError: assert 2 == 7
+E        +  where 2 = <function main at 0x1082314e0>(['--shard-count', '3', '--shard-index', '2', '--host-lock', '--junitxml', ...])
+E        +    where <function main at 0x1082314e0> = runner.main
+
+tests/test_ci_sharding.py:173: AssertionError
+----------------------------- Captured stderr call -----------------------------
+CI preflight: required frozen fixtures are missing:
+  experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+Sparse checkout may exclude experiments/**/*.gz. Restore the tracked fixtures before retrying; do not skip their tests. In a sparse worktree run:
+  git sparse-checkout add /experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+_ test_execution_forwards_only_selected_files_and_preserves_failure_code[2-True] _
+
+index = 2, locked = True
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x109808170>
+
+    @pytest.mark.parametrize("locked", [False, True])
+    @pytest.mark.parametrize("index", [None, 0, 1, 2])
+    def test_execution_forwards_only_selected_files_and_preserves_failure_code(index, locked, monkeypatch):
+        files = [f"tests/test_{i}.py" for i in range(7)]
+        monkeypatch.setattr(runner, "collect_test_files", lambda *_: files)
+        lock = Path("fixture-lock") if locked else None
+        monkeypatch.setattr(runner, "local_lock_root", lambda: lock)
+        calls = []
+    
+        def execute(command, *, cwd, env):
+            calls.append(command)
+            assert cwd == runner.ROOT
+            assert env["CI"] == "true"
+            return 7
+    
+        def execute_locked(command, env, lock_root):
+            assert lock_root == lock
+            return execute(command, cwd=runner.ROOT, env=env)
+    
+        monkeypatch.setattr(runner.subprocess, "call", execute)
+        monkeypatch.setattr(runner, "run_locked", execute_locked)
+        argv = [] if index is None else ["--shard-count", "3", "--shard-index", str(index)]
+>       assert runner.main([*argv, "--host-lock", "--junitxml", "report.xml"]) == 7
+E       AssertionError: assert 2 == 7
+E        +  where 2 = <function main at 0x1082314e0>(['--shard-count', '3', '--shard-index', '2', '--host-lock', '--junitxml', ...])
+E        +    where <function main at 0x1082314e0> = runner.main
+
+tests/test_ci_sharding.py:173: AssertionError
+----------------------------- Captured stderr call -----------------------------
+CI preflight: required frozen fixtures are missing:
+  experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz
+  experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+Sparse checkout may exclude experiments/**/*.gz. Restore the tracked fixtures before retrying; do not skip their tests. In a sparse worktree run:
+  git sparse-checkout add /experiments/2026-09-26-zone-study-offline-smoke/v3/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v4/example_trial_record.json.gz /experiments/2026-09-26-zone-study-offline-smoke/v5/example_trial_record.json.gz
+Nonphysical suite guard: {'physical_step_attempts': 0, 'real_vision_worker_attempts': 0, 'network_attempts': 0}
+=========================== short test summary info ============================
+FAILED tests/test_ci_sharding.py::test_execution_forwards_only_selected_files_and_preserves_failure_code[None-False]
+FAILED tests/test_ci_sharding.py::test_execution_forwards_only_selected_files_and_preserves_failure_code[None-True]
+FAILED tests/test_ci_sharding.py::test_execution_forwards_only_selected_files_and_preserves_failure_code[0-False]
+FAILED tests/test_ci_sharding.py::test_execution_forwards_only_selected_files_and_preserves_failure_code[0-True]
+FAILED tests/test_ci_sharding.py::test_execution_forwards_only_selected_files_and_preserves_failure_code[1-False]
+FAILED tests/test_ci_sharding.py::test_execution_forwards_only_selected_files_and_preserves_failure_code[1-True]
+FAILED tests/test_ci_sharding.py::test_execution_forwards_only_selected_files_and_preserves_failure_code[2-False]
+FAILED tests/test_ci_sharding.py::test_execution_forwards_only_selected_files_and_preserves_failure_code[2-True]
+8 failed, 545 passed in 431.73s (0:07:11)

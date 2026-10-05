@@ -183,9 +183,9 @@ raise SystemExit(3 if a.fail else 0)
         self.assertEqual(row["status"], "launcher_failed")
         self.assertEqual(row["exit_code"], 2)
 
-    def test_catalog_has_thirty_selectable_workflows_and_distinct_adapters(self):
+    def test_catalog_has_registered_workflows_and_distinct_adapters(self):
         data, digest = wm.catalog(PROJECT)
-        self.assertEqual(len(data["workflows"]), 41)
+        self.assertEqual(len(data["workflows"]), 51)
         self.assertEqual(len(digest), 64)
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "dispatch-skills")["runner"], "scripts.run_dispatch_e2e")
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "communication")["output_kind"]["prepare"], "file")
@@ -235,13 +235,24 @@ raise SystemExit(3 if a.fail else 0)
             "zone-owncam-loop-run": ["--prereg", str(source)],
             "zone-m2-pair": ["--seed", "701", "--status-channel", "off"],
             "zone-m1-owncam-run": ["--prereg", str(source)],
-            "zone-study-integration-run": ["--prereg", str(source), "--episode", "smoke-i700",
+            "zone-study-integration-run": ["--prereg", str(PROJECT / "configs/zone_study_integration/pair_dev_DRAFT.json"),
+                                           "--episode", "pair-integration-dev",
                                            "--condition", "no_comm"],
             "zone-m1-owncam-memory-run": ["--prereg", str(source), "--condition", "memory_v2"],
             "zone-m1-owncam-memory-v3-run": ["--prereg", str(source), "--condition", "memory_v3"],
             "zone-pair-dev": ["--prereg", str(PROJECT / "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json"), "--run-id", "dev03"],
             "zone-pair-bootstrap-probe": ["--seeds", "911", "--policy", "b-boot"],
             "masterpi-v3-static-audit": [],
+            "zone-final-environment-check": ["--check", "p01", "--expected-source-sha", "0" * 40],
+            "zone-final-environment-floor-light-check": ["--check", "p01", "--expected-source-sha", "0" * 40],
+            "zone-final-pair-v3": ["--check", "calibration-loaded", "--expected-source-sha", "0" * 40],
+            "zone-final-pair-highpose-v98": ["--check", "p03", "--expected-source-sha", "0" * 40],
+            "zone-final-pair-highpose-v98-dev-checkpoint": ["compare", "--continuous", str(model), "--resumed", str(model), "--from-sim-s", "1"],
+            "zone-final-pair-heldout-v90": ["--check", "calibration-unloaded", "--map-id", "zone_wide_corridor_final_v3", "--expected-source-sha", "0" * 40],
+            "zone-final-pair-heldout-v91": ["--check", "calibration-unloaded", "--map-id", "zone_wide_corridor_final_v3", "--expected-source-sha", "0" * 40],
+            "zone-final-pair-loaded-v92": ["--check", "calibration-loaded", "--map-id", "zone_wide_two_doors_final_v3", "--expected-source-sha", "0" * 40],
+            "zone-final-environment-floor-light-v2-check": ["--check", "calibration-motion-v2", "--expected-source-sha", "0" * 40],
+            "zone-final-environment-gaincal-v101": ["--check", "calibration-gain-v101", "--run-id", "fitA1", "--seed", "1101", "--expected-source-sha", "0" * 40],
         }
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):

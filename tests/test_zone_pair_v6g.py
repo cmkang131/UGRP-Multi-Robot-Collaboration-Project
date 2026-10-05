@@ -45,7 +45,7 @@ def _run(loc, forward=0., left=0., seconds=14.):
 # ------------------------------------------------------------ policies
 def test_general_flag_and_inset_are_on_only_for_the_v6g_policies():
     on = {n for n, p in POLICIES.items() if p.carry_dr_general}
-    assert on == {'b-v6g', 'b-v6g-l7'}
+    assert on == {'b-v6g', 'b-v6g-l7', 'b-v6h1'}
     assert {n: p.carry_end_inset_m for n, p in POLICIES.items() if p.carry_end_inset_m} == {'b-v6g-l7': .10}
     e, g, l7 = (pair_policy(n) for n in ('b-v6e', 'b-v6g', 'b-v6g-l7'))
     skip = ('name', 'carry_dr_general', 'carry_end_inset_m')

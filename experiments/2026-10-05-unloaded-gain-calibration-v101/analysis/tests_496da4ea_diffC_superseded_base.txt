@@ -1,0 +1,17 @@
+........................................................................ [ 16%]
+........................................................................ [ 32%]
+...................................s.................................... [ 48%]
+........................................................................ [ 64%]
+........................................................................ [ 80%]
+........................................................................ [ 97%]
+.............                                                            [100%]
+============================= slowest 5 durations ==============================
+208.36s call     tests/test_highpose_dev_pilot.py::test_headless_nominal_replay_with_c0_zero_carry_leg
+150.24s setup    tests/test_highpose_relook.py::test_closed_loop_r2_is_admitted_after_the_extended_dock_look
+49.29s setup    tests/test_highpose_arrival_confirm.py::test_real_v98_runtime_drivers_are_configured_with_the_derived_bands
+45.18s call     tests/test_highpose_timing.py::test_plan_runs_all_three_cases_under_the_amended_cap
+38.11s call     tests/test_highpose_d5_gate.py::test_cli_and_direct_case_never_override_bundle_false[True]
+=========================== short test summary info ============================
+SKIPPED [1] tests/test_highpose_edge_fit.py:141: raw probe output not on this host
+444 passed, 1 skipped in 1050.47s (0:17:30)
+EXIT 0

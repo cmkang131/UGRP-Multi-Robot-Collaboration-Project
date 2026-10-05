@@ -98,6 +98,7 @@ INTEGRATION_SCHEMA = 'ugrp.zone_study_integration.v1'
 # v76; the study layer and the other pair policies are unchanged. v76 is retired.
 # v81 (carry stage probes v6e/v6g, workflow 2.14.0, coordinator-assigned) adds the opt-in carry flags (b-v6g) on top
 # of v80; the study layer and the other pair policies are unchanged. v80 is retired.
+# v83 / 2.16.0 is the b-v6h1 pre-seal candidate; v81 is retired. No physical inheritance.
 from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID
 RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pair-delay',
                       'zone-study-integration-v64-source-closure', 'zone-study-integration-v65-pair-close',
@@ -110,7 +111,8 @@ RETIRED_BUNDLE_IDS = ('zone-study-integration-v1', 'zone-study-integration-v2-pa
                       'zone-study-integration-v78-referee-hidden-events',
                       'zone-study-integration-v79-masterpi-v3',
                       'zone-pair-v76-fixclock-grasp-entry',
-                      'zone-pair-v80-align-widehue-finemotion')
+                      'zone-pair-v80-align-widehue-finemotion',
+                      'zone-pair-v81-carry-dr-general')
 PROVIDER_CONFIG = ROOT / 'configs' / 'zone_study_integration' / 'pose_providers.json'
 PROVIDER_SCHEMA = 'ugrp.zone_study_pose_providers.v1'
 PROVIDER_KEYS = ('factory', 'version', 'source_label_prefix', 'maps', 'calibration', 'source_files',

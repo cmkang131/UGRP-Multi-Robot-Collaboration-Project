@@ -1,0 +1,43 @@
+NOTE: 'SELF_POSE_UNCERTAIN gate_not_ok_dwell_or_hysteresis' in the first-failure column is the name the existing classifier (harness/pair_stage_probe.py ~855-868) gives an abort; the raw controller reason in these runs is POSE_UNCERTAIN_PROGRESS (ProgressMonitor no-progress stop), not a pose gate.
+
+== cC: b-v6h-gain-69c2a99a-cC n=24 load start/end=[10.9, 14.6, 15.5]/[12.1, 15.7, 15.3] source=69c2a99a changed=False
+case | L0: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | L1: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | first failure
+  F_hR2_04:s911:pPOST:VENV | PASS_CLEAN, 0.53/2.26, 78, 433.6/162.2 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  F_hR2_04:s913:pPOST:VENV | PASS_CLEAN, 0.57/2.28, 78, 434.1/163.1 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N01:s911:pPOST:VENV | PASS_CLEAN, 0.56/2.24, 18, 389.5/140.7 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N01:s913:pPOST:VENV | PASS_CLEAN, 0.56/2.27, 18, 389.5/140.8 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N02:s911:pPOST:VENV | PASS_CLEAN, 0.57/2.25, 21, 385.7/160.7 | PASS_CLEAN, 0.75/2.97, 59, 224.5/154.5 | -
+  N02:s913:pPOST:VENV | PASS_CLEAN, 0.59/2.26, 22, 385.3/160.0 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N03:s911:pPOST:VENV | PASS_CLEAN, 0.58/2.27, 39, 391.5/141.1 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N03:s913:pPOST:VENV | PASS_CLEAN, 0.59/2.25, 38, 392.3/142.6 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N04:s911:pPOST:VENV | PASS_CLEAN, 0.59/2.24, 48, 409.3/150.8 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N04:s913:pPOST:VENV | PASS_CLEAN, 0.57/2.28, 47, 410.0/152.1 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N05:s911:pPOST:VENV | PASS_CLEAN, 0.57/2.27, 18, 398.4/163.6 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N05:s913:pPOST:VENV | PASS_CLEAN, 0.56/2.29, 18, 398.4/163.6 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N06:s911:pPOST:VENV | PASS_CLEAN, 0.57/2.24, 35, 427.0/186.4 | PASS_CLEAN, 0.89/3.00, 18, 229.3/159.4 | -
+  N06:s913:pPOST:VENV | PASS_CLEAN, 0.55/2.28, 35, 426.9/186.7 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N07:s911:pPOST:VENV | PASS_CLEAN, 0.56/2.27, 36, 423.9/179.6 | PASS_CLEAN, 0.85/2.99, 15, 227.9/158.0 | -
+  N07:s913:pPOST:VENV | PASS_CLEAN, 0.56/2.27, 37, 423.2/178.2 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N08:s911:pPOST:VENV | PASS_CLEAN, 0.53/2.25, 34, 427.4/182.8 | PASS_CLEAN, 0.93/2.98, 23, 223.5/153.6 | -
+  N08:s913:pPOST:VENV | PASS_CLEAN, 0.56/2.26, 34, 427.1/183.2 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N09:s911:pPOST:VENV | PASS_CLEAN, 0.52/2.26, 49, 432.8/177.3 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N09:s913:pPOST:VENV | PASS_CLEAN, 0.53/2.26, 49, 432.1/175.9 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N10:s911:pPOST:VENV | PASS_CLEAN, 0.55/2.24, 48, 441.1/186.1 | PASS_CLEAN, 0.86/2.98, 23, 216.9/147.0 | -
+  N10:s913:pPOST:VENV | PASS_CLEAN, 0.58/2.26, 48, 441.8/187.4 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N11:s911:pPOST:VENV | PASS_CLEAN, 0.57/2.22, 29, 386.8/130.1 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+  N11:s913:pPOST:VENV | PASS_CLEAN, 0.56/2.27, 29, 386.8/130.1 | FAIL (not reached) | carry L1 SELF_POSE_UNCERTAIN yaw (controller)
+L0: n=24 PASS_CLEAN=24/24 [86-100%] PASS_any=24/24 [86-100%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=0
+L1: n=24 PASS_CLEAN=5/24 [9-40%] PASS_any=5/24 [9-40%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=19
+chain L0->L1 both legs pass: 5/24 [9-40%]
+hard limit (pen > 5 mm or tilt > 15 deg) anywhere in the run (all legs, set-down, regrasp): 0/24 cases
+PF honesty all at the leg ends (case-robot samples): n=58 meanNEES=0.52 median=0.36 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L0 at the leg ends (case-robot samples): n=48 meanNEES=0.58 median=0.37 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L1 at the leg ends (case-robot samples): n=10 meanNEES=0.23 median=0.11 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+L0: cases pass 24/24 [86-100%] (clean 24); independent units (placements) strict 12/12 [76-100%], any-seed 12/12 [76-100%]; classes {'PASS_CLEAN': 24}
+L1: cases pass 5/24 [9-40%] (clean 5); independent units (placements) strict 0/12 [0-24%], any-seed 5/12 [19-68%]; classes {'FAIL': 19, 'PASS_CLEAN': 5}
+chain L0->L1: cases 5/24 [9-40%]; units strict 0/12 [0-24%], any 5/12 [19-68%]
+honesty L0 (samples=48, observed placements=12/12): mean e x/y/yaw = -0.6 mm / +7.3 mm / +0.48 deg; mean z^2 x/y/yaw = [0.03, 0.36, 0.24]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 0.58
+  L0 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 12/12 [76-100%] / y 12/12 [76-100%] / yaw 12/12 [76-100%]; unverified placements: 0
+honesty L1 (samples=10, observed placements=5/12): mean e x/y/yaw = -3.1 mm / +14.5 mm / +0.62 deg; mean z^2 x/y/yaw = [0.03, 0.17, 0.05]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 0.23
+  L1 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 5/5 [57-100%] / y 5/5 [57-100%] / yaw 5/5 [57-100%]; UNVERIFIED (검증되지 않음) placements: 7 ['F_hR2_04', 'N01', 'N03', 'N04', 'N05', 'N09', 'N11']
+contact episodes (both legs): 0; first-failure codes: {'SELF_POSE_UNCERTAIN': 19}

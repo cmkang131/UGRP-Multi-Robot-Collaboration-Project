@@ -1,0 +1,204 @@
+{
+  "schema": "ugrp.motion_consumer_criterion.rotation_addendum.v1",
+  "id": "consumer_criterion_B_rotation",
+  "frozen_on": "2026-10-03",
+  "status": "FROZEN_CANDIDATE_BEFORE_V91_SCORING",
+  "authority": "2026-10-03 coordinator decision under delegated preregistration authority: add a training-only yaw candidate without changing B, r4 or frozen validator bytes.",
+  "original_criterion": {
+    "path": "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json",
+    "sha256": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
+    "text_and_thresholds_apply_unchanged_to_yaw": true
+  },
+  "original_r4": {
+    "path": "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_candidate_r4.json",
+    "sha256": "fa7d3aa2e791086a9e73280b2dd4122bff5186d82503b56e17d5be27ca9bf071",
+    "preserved_bytes": true,
+    "rotate_remains_permanently_null": true,
+    "forward_left_profiles_unchanged_in_r5": true
+  },
+  "frozen_validator": {
+    "path": "scripts/validate_consumer_criterion_b.py",
+    "sha256": "8d2a693a6e3bbca79a8214fd388bff79a0609400f07de831ad9be3cf22e85a88",
+    "preserved_bytes": true
+  },
+  "candidate": {
+    "path": "calibration_candidate_r5_yaw.json",
+    "sha256": "978727fcacc5e368efe2a0fdf6d9d8dc3756573c41e896e06ba11d78cf86fb97",
+    "status": "CANDIDATE_UNVALIDATED",
+    "consumer_fields": "candidate_axes.rotate.consumer_fields",
+    "all_axis_validation": null,
+    "active_params_motion": null
+  },
+  "training": {
+    "allowed_map": "zone_wide_two_doors_final_v3",
+    "v89_selection": "Exactly input_manifest_r4.json raw, hash-verified. Zero nonzero turn ticks: audited but contributes no yaw fit windows.",
+    "v88_selection": "calibration-unloaded, source 747d2b9f1eb43e21804ccef58fff4db241d1a844; signed steps+coasts and PRBS+coast, relative SIM seconds 242 to 326, robot r1.",
+    "inputs": [
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001/zone_wide_two_doors_final_v3/bundle.json",
+        "sha256": "6a6a42bf63b5fc81201e68916aa833cb761c5d1d1e84578bfcde73104a46c450",
+        "bytes": 34713
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001/zone_wide_two_doors_final_v3/result.json",
+        "sha256": "7d595850ee4ee94d0415ea8ddf19f3c134770010c1d2701c970c020bbdeff816",
+        "bytes": 547
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001/zone_wide_two_doors_final_v3/eval_only/r1/pose.jsonl",
+        "sha256": "f107f6afcf7a799fe3e13c8e79c12dd99bb874b8fd796583c044bfc80ea07b8b",
+        "bytes": 2327056
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/calib-motion-v89-eaeaaff0-20261001/zone_wide_two_doors_final_v3/robots/r1/commands.jsonl",
+        "sha256": "f74aa608c78871813ee03caf734f7691a6407cb3c2bdb367516f8bddec0536ca",
+        "bytes": 496264
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3/bundle.json",
+        "sha256": "6dad8384ccb74ed76dd7e8d85c9eab0fec02b198f6a59f1f5b94ccb767556104",
+        "bytes": 51166
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3/result.json",
+        "sha256": "0ce6e0a9530524e85031029758ebb8e4036cf5b225d56262c0a67cd42a83f970",
+        "bytes": 6387
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3/eval_only/r1/pose.jsonl",
+        "sha256": "7eea9447212e3de1ffea9a61876e3234c2d348bc38de7962cca0cc169b86b216",
+        "bytes": 3858858
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/zone_wide_two_doors_final_v3/robots/r1/commands.jsonl",
+        "sha256": "1d9f34b40445f4045bd8a14b667ff8ab01a1fbb37f21bae9e27d92f2c6085c15",
+        "bytes": 553699
+      },
+      {
+        "path": "/Users/changmin/projects/ugrp/outputs/final-pair-v88-cal-747d2b9f-20261001/calibration-unloaded/result.json",
+        "sha256": "afc724e96810b6e76a097ab06cff63a8a4a4bb1b3955f155c4d898fca7d187d6",
+        "bytes": 7366
+      }
+    ],
+    "manifest": {
+      "path": "input_manifest_r5_yaw.json",
+      "sha256": "75d23c90db6fea9a0b551b7a03a65a6759dd515d18aaa3f1be0af14915799955"
+    },
+    "frame_schema": "pose/commands use t; frames use sim_time. No frames/images are needed or read for yaw fitting."
+  },
+  "fit": {
+    "mean": {
+      "family": "sign-common gain, running tau, stop tau; three parameters per excited axis",
+      "law": "v_next=v+(1-exp(-dt/tau))*(gain*u-v); displacement=v_next*dt, as in the existing consumer. tau is running while any issued body command is nonzero, otherwise stop. Other-axis mean and cross gains are zero in an axis-only prediction, not fitted cross coupling.",
+      "fit": "Unweighted least squares of driven-component endpoint errors for all listed horizons, pooling all v89 step+stop and PRBS+stop windows. Positive log parameters, bounds gain [0.05,4], running tau [0.01,4] s, stop tau [0.005,0.5] s; initial [1,0.8,0.06].",
+      "initial_state": "Velocity starts at zero at recording start and is warmed ONLY by issued commands. Each window has an ideal start-pose fix. Measured velocity, future poses, contacts and simulator state are never predictor inputs."
+    },
+    "horizons_s": [
+      0.2,
+      0.5,
+      1.0,
+      2.0,
+      3.0,
+      3.2
+    ],
+    "pf_step_s": 0.05,
+    "windows": "Every 0.05 s start with a complete horizon within each signed step plus following coast, or the continuous PRBS plus following coast. Do not bridge these segments. Include onset, zero-command, reversal and stopping windows; do not thin or centre residuals. Gate every map/case/split separately, never pool away a failing group. Overlapping windows are descriptive, not independent samples.",
+    "noise_form": "sigma_velocity[j]=noise_rel[j]*abs(v_next[j])+noise_abs[j]",
+    "noise_floor_rel": [
+      0.3176,
+      0.4438,
+      0.1116
+    ],
+    "noise_floor_abs": [
+      0.01538,
+      0.00504,
+      0.01406
+    ],
+    "noise_propagation": "Independent per-tick velocity noise contributes diag((sigma_velocity*dt)^2). Propagate pose covariance with first-order heading coupling in the start-pose frame, using the existing Euler consumer mean. No initial pose, scale_std, scale_walk, reset, measurement, roughening or map-prior covariance is credited. This is a linearized process budget, not a full PF posterior test.",
+    "training_coverage_2sigma_min": 0.95,
+    "noise_lexicographic_order": [
+      "noise_rel[0]",
+      "noise_rel[1]",
+      "noise_rel[2]",
+      "noise_abs[2]",
+      "noise_abs[0]",
+      "noise_abs[1]"
+    ],
+    "rotation_noise_solution": "Pure-yaw mean has no translational heading Jacobian, but rotates body x/y noise. Vx=C*abs_x^2+S*abs_y^2, Vy=S*abs_x^2+C*abs_y^2, with C/S=sum(dt^2*cos/sin(pre-tick heading)^2). Minimize yaw quadratic, then forward allowing later left to increase, then left; group ceil(0.95*n) order statistics and 1e-12 slack only if inflated. Independently verify all coverage with frozen full-matrix Euler covariance.",
+    "noise_scope": "Yaw-only vector; original shared forward/left r4 vectors unchanged.",
+    "identifiability": "Both signed steps and signed PRBS, every horizon, optimizer success, Jacobian rank 3 and no parameter within 1e-4 log units of r4 bounds. Otherwise yaw stays null."
+  },
+  "held_out": {
+    "execution_bundle_id": "zone-final-pair-v91",
+    "source_sha": "04043e274af7351f3d35cb6be77d948cac1b8c6a",
+    "check": "calibration-unloaded",
+    "load_state": "unloaded",
+    "allowed_maps": [
+      "zone_wide_corridor_final_v3",
+      "zone_wide_door_geometry_v3"
+    ],
+    "collection_role": "HELD_OUT_VALIDATION",
+    "training_eligible": false,
+    "horizons_s": [
+      0.2,
+      0.5,
+      1.0,
+      2.0,
+      3.0,
+      3.2
+    ],
+    "components": [
+      "forward_m",
+      "left_m",
+      "yaw_rad"
+    ],
+    "windows": "Every 0.05 s start with a complete horizon within each signed step plus following coast, or the continuous PRBS plus following coast. Do not bridge these segments. Include onset, zero-command, reversal and stopping windows; do not thin or centre residuals. Gate every map/case/split separately, never pool away a failing group. Overlapping windows are descriptive, not independent samples.",
+    "axis_support": "Both signed step and signed PRBS commands are required on that axis, and at least one complete window per horizon in each split. A missing split, missing frozen mean or insufficient horizon support gives null for the axis. Missing axes cannot yield an overall pass.",
+    "acceptance": {
+      "every_horizon_component": true,
+      "normalized_abs_error_p95_max": 2.0,
+      "coverage_2sigma_min": 0.9,
+      "coverage_1sigma_informational_only": true,
+      "nees_informational_only": true,
+      "p95_definition": "Because sigma varies by window, p95(abs(error)/sigma) <= 2 (NumPy linear percentile). Also report p95 absolute error and sigma min/median/max in physical units; comparing two unrelated marginal percentiles is forbidden.",
+      "overall": "false if any validated axis fails; null if no failures but any axis is unvalidated; true only if all axes pass. Training reports always have null validation decisions."
+    },
+    "requirements": "Both maps, complete identity/source/schedule/command/pose audits and input hashes as in #356; use frozen evaluator, no pooling away any map/case/split/horizon/component failure. No refit, no fallback. Training/prior pose bytes ineligible. Malformed/incomplete inputs fail closed."
+  },
+  "ordering": {
+    "v91_already_collected": true,
+    "new_commitment_kind": "PRE_SCORING_NOT_PRE_ACQUISITION",
+    "public_commitment_required_before_first_v91_raw_access": true,
+    "coordinator_posts_candidate_and_addendum_sha256": true,
+    "public_commitment_receipt": "To be pinned and checked by the follow-up scoring PR after #356 merges; no receipt is fabricated here.",
+    "scope": "Original B/r4 yaw remains null. A separately labelled yaw-addendum result may use this pre-scoring authority; never claim that r5 was frozen before v91 acquisition."
+  },
+  "data_boundary": {
+    "declaration": "This work has not opened, read, hash-scanned or computed anything from /Users/changmin/projects/ugrp/outputs/final-pair-v91-heldout-*; v91 raw remains unseen and unscored by this work.",
+    "v91_raw_read": false,
+    "v91_raw_hashed": false,
+    "v91_scored": false
+  },
+  "limitations": [
+    "Criterion A remains FAILED_NOT_RESCORED.",
+    "No B/r4/validator mutation, no #356 branch changes.",
+    "No loader/controller implementation, mixed-axis support or MEASURED_SIM promotion.",
+    "Training coverage is descriptive on overlapping windows, not held-out success, PF posterior calibration, or robot/hardware success.",
+    "No physics, rendering, or model calls."
+  ],
+  "reference": {
+    "authors": [
+      "Sebastian Thrun",
+      "Wolfram Burgard",
+      "Dieter Fox"
+    ],
+    "title": "Probabilistic Robotics",
+    "year": 2005,
+    "chapters": [
+      4,
+      5
+    ],
+    "url": "https://robots.stanford.edu/probabilistic-robotics/",
+    "application": "Same process-noise/PF motivation as r4; the exact numerical thresholds and Euler/noise fitting rules are the frozen project criterion B."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "seal_verification": {
+    "status": "verified_sealed",
+    "execution_commit": "4c6b439f3f7c9a147c901f8b260a1e214d4eb396",
+    "execution_files": 274,
+    "analysis_files": 293,
+    "analysis_commit": "5be4330eca9b23d2cbde3657dcbb215ee1923b25",
+    "cases": 72,
+    "outcomes_read": false
+  },
+  "registration_file_sha256": "9a55365eb9edd7ef1f6291859a41d4c07779fe2d8cee054838353ab99425496a",
+  "usage_correction": "Explicit seal SHA replaces git log --diff-filter=A, which omits this merge commit. Run from the 5be4330e checkout, not the later instructions-only HEAD.",
+  "code_or_seal_changed_after_tests": false,
+  "only_followup_changes": [
+    "REGISTRATION_PLAN.md",
+    "analysis/seal_v2/README.md",
+    "analysis/seal_v2/postcommit_verification.json"
+  ],
+  "document_command_checks": "exact seal SHA + v2 prereg + --inventory present; unblinding command not executed",
+  "raw_or_real_inventory_access": false
+}

@@ -21,8 +21,10 @@ if __name__ == "__main__":
     sys.path.insert(0, str(ROOT))
 
 from scripts import agent_lock
+from scripts.check_ci_fixtures import check_fixtures
 
 TEST_PATTERNS = (
+    "tests/test_ci_fast_path.py",
     "tests/test_owncam_memory_v3.py",
     "tests/test_owncam_memory_time.py",
     "tests/test_record_owncam_time.py",
@@ -35,6 +37,11 @@ TEST_PATTERNS = (
     "tests/test_model_artifacts.py",
     "tests/test_simulation_session.py",
     "tests/test_agent_lock.py",
+    "tests/test_agent_sim_slots.py",
+    "tests/test_final_pair_fast_guard.py",
+    "tests/test_final_pair_fast_replay.py",
+    "tests/test_zone_final_pair_fast.py",
+    "tests/test_zone_final_pair_loaded.py",
     "tests/test_ci_host_lock.py",
     "tests/test_simulation_console.py",
     "tests/test_simulation_dispatch.py",
@@ -79,17 +86,85 @@ TEST_PATTERNS = (
     "tests/test_zone_teacher_fix.py",
     "tests/test_zone_cargo_perception_v2.py",
     "tests/test_zone_study_contract.py", "tests/test_zone_study_inputs.py",
+    "tests/test_zone_identity_jobs.py",  # T13a: own-RGB identity/count and target-job seam (fake only)
     "tests/test_zone_study_scenarios.py", "tests/test_zone_study_protocol.py",
     "tests/test_zone_final_env.py",
+    "tests/test_zone_environment_registry.py",
+    "tests/test_zone_final_environment_runnable.py",
+    "tests/test_zone_final_pair_v3.py",
+    "tests/test_zone_final_pair_highpose.py",
+    "tests/test_highpose_d5_gate.py",
+    "tests/test_highpose_starts.py",
+    "tests/test_highpose_timing.py",
+    "tests/test_highpose_transit.py",
+    "tests/test_highpose_blind_close.py",  # v98 blind final approach (recorded own frames, no simulator)
+    "tests/test_highpose_guard_veto_log.py",  # v98 pair-guard veto log (observation only)
+    "tests/test_highpose_start_relief.py",  # v98 start-state relief after a frozen sweep veto
+    "tests/test_highpose_start_exit_face.py",  # v98 start relief v2: inside-pair depth to the wall face facing the robot
+    "tests/test_highpose_edge_fit.py",  # v98 HIGH beam-edge consensus fit (recorded own frames)
+    "tests/test_highpose_final_veto.py",  # v98 same-tick final veto of terminal endpoints' motion (real runner, fake backend)
+    "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
+    "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
+    "tests/test_zone_final_pair_heldout.py",
+    "tests/test_review_352.py",
+    "tests/test_review_355.py",
+    "tests/test_highpose_carry_align.py",  # v98 door-align significance rule + loaded-gate check log
+    "tests/test_highpose_relook_posture_defer.py",  # v98 align re-look never starts mid arm transition (af2f7c2a replay)
+    "tests/test_highpose_dr_checkpoint.py",  # v98 HIGH checkpoint own-DR budget receipt
+    "tests/test_highpose_refix.py",  # v98 sigma-triggered set-down re-fix (prediction, pair decision, v3 path)
+    "tests/test_highpose_refix_hooks.py",  # v98 re-fix LLM hooks (#371): events, latched commands, rule default
+    "tests/test_highpose_hover_barrier.py",  # v98 re-fix hover@k+1 pair barrier before the blind descent (delta2 P1-1)
+    "tests/test_highpose_arrival_confirm.py",  # v98 arrival needs the beam in the expected image bands (1f7fb800 false/true arrival frames)
+    "tests/test_highpose_approach_looks.py",  # v98 unloaded approach no_fix look gated on own travel (r2 1f7fb800 record)
+    "tests/test_highpose_edge_uninformative.py",  # v98 HIGH edge = render near-clip trace: not used (znear live check)
+    "tests/test_highpose_grasp_receipt_carry.py",  # v98 grasp receipt kept across HIGH stops (1236c63d record)
+    "tests/test_highpose_receipt_nees.py",  # v98 eval-only NEES of HIGH checkpoint receipts (σ 예산 영수증), never fed to control
+    "tests/test_highpose_belief_expansion.py",  # v98 R2: one-shot belief expansion armed only by an arrival-view rejection
+    "tests/test_highpose_progress_arming.py",  # v98 loaded no-progress check: carry-leg reset + REQUIRED_MOVEMENT_M motion
+    "tests/test_highpose_host_clock.py",  # v98 host clock v2: integer substep SIM time (no float drift, no 612 s cliff)
+    "tests/test_highpose_pf_local_redraw.py",  # v98 R1 random poses redrawn locally next to walls (review #363 P1-2)
+    "tests/test_dev_pair_checkpoint.py",  # DEV-only checkpoint/resume for v98 stage probes (reducers, triggers, bit-identity gate)
+    "tests/test_zone_final_pair_review_fixes.py",
+    "tests/test_review_344*.py",
+    "tests/test_zone_final_environment_floor_light.py",
+    "tests/test_final_environment_unloaded_fit.py",
+    "tests/test_unloaded_hammerstein.py",
+    "tests/test_unloaded_consumer.py",
+    "tests/test_consumer_criterion_b.py",
+    "tests/test_consumer_criterion_b_v91.py",
+    "tests/test_consumer_criterion_b_v91_yaw.py",
+    "tests/test_consumer_criterion_b_rotation.py",
+    "tests/test_final_pair_calibration_assembly.py",
+    "tests/test_final_pair_calibration_v92.py",
+    "tests/test_review_351.py",
+    "tests/test_review_351b.py",
+    "tests/test_review_346.py",
+    "tests/test_final_environment_measurement_v2.py",
+    "tests/test_final_environment_gain_calibration_v101.py",
+    "tests/test_review_347.py",
+    "tests/test_review_e2e_batch_k.py",  # K1: final environment CI collection regression
+    "tests/test_scenario_capabilities_docs.py",
     "tests/test_zone_sim_cost.py", "tests/test_zone_event_scheduler.py",
     "tests/test_zone_study_eval.py", "tests/test_zone_study_offline.py",
     "tests/test_zone_study_review_fixes.py", "tests/test_zone_study_review_r5.py",
     "tests/test_zone_study_review_r6*.py", "tests/test_zone_study_review_r7*.py",
     "tests/test_zone_study_integration.py", "tests/test_zone_study_integration_seams.py",
     "tests/test_zone_study_integration_pair.py", "tests/test_zone_study_source_pinning.py",
+    "tests/test_zone_mixed_jobs.py",  # P02: pure inventory and independent fake-port mixed jobs
+    "tests/test_zone_e2e_manifest.py",  # P07: planning/admission only, runtime side effects forbidden
     "tests/test_zone_study_llm_driver.py",
     "tests/test_zone_study_pair_delay.py",
     "tests/test_zone_study_referee.py", "tests/test_zone_hidden_events.py",
+    "tests/test_zone_study_evidence.py",
+    "tests/test_zone_study_evidence_join.py",
+    "tests/test_zone_study_evidence_review_a303.py",
+    "tests/test_zone_study_evidence_review_f303.py",
+    "tests/test_review_303c.py",
+    "tests/test_review_303d.py",
+    "tests/test_review_303e.py",
+    "tests/test_zone_referee_ownership.py",
+    "tests/test_zone_referee_replay.py",
+    "tests/test_zone_study_evidence_review_c303.py",
     "tests/test_zone_study_multiturn.py",
     "tests/test_zone_study_review_r8*.py", "tests/test_zone_study_review_r9*.py",
     "tests/test_zone_study_review_r10*.py",
@@ -99,8 +174,14 @@ TEST_PATTERNS = (
     "tests/test_zone_own_perception.py", "tests/test_zone_own_perception_v2.py",
     "tests/test_zone_own_perception_v3.py", "tests/test_zone_own_perception_v3_1.py",
     "tests/test_zone_own_executor*.py",
+    "tests/test_review_325b.py",  # T03: mandatory independent loss/mode counterexamples
+    "tests/test_review_e2e_batch_i.py",  # T04/T09b: issued arm sweep and delayed own capture counterexamples
     "tests/test_zone_pair_executor.py", "tests/test_zone_pair_status.py", "tests/test_zone_pair_review.py",
+    "tests/test_zone_pair_role_exchange.py",  # T07: six explicit role assignments; fake ports only
+    "tests/test_stall_observation_contract.py",  # P08: synthetic observation/stop contract only
     "tests/test_zone_pair_review2.py",
+    "tests/test_zone_pair_rendezvous.py",
+    "tests/test_zone_pair_rendezvous_t07.py",
     "tests/test_zone_pair_review3.py",
     "tests/test_zone_pair_review4.py",
     "tests/test_zone_pair_review5.py",
@@ -112,23 +193,45 @@ TEST_PATTERNS = (
     "tests/test_zone_start_dock.py",
     "tests/test_zone_pair_admission.py",
     "tests/test_pair_chain_probe.py",
+    "tests/test_zone_pair_chain_contract.py",  # P04 fake-port transitions; no physics/models
     "tests/test_pair_passage_plan.py",  # 2026-09-29: opt-in corridor/door route planning for the pair carry (static geometry)
+    "tests/test_beam_initial_pose_plan.py",  # T08a: static north/south setup sheet and role geometry, no execution
     # 2026-09-29: v6 is audited as history; these guard its receipt and the current v6-family path.
     "tests/test_zone_pair_v6.py", "tests/test_zone_pair_registered_source.py",
+    "tests/test_execution_dependency_contract.py", "tests/test_seal_v2_review_301.py",
+    "tests/test_seal_v2_fail_closed.py", "tests/test_seal_runtime_provenance.py",
+    "tests/test_seal_v2_review_301b.py", "tests/test_seal_v2_review_301c.py",
+    "tests/test_seal_v2_review_301d.py", "tests/test_seal_runtime_outputs.py",
     "tests/test_owncam_bootstrap_v6b.py",
     "tests/test_zone_pair_v6c.py",  # v6c (bundle v76): exact PF fix clock + grasp-range entry
     "tests/test_zone_pair_v6d.py",  # v6d (bundle v80): wide-hue beam heading + M1 fine align motion
     "tests/test_zone_pair_v6e.py",  # v6e carry flags (dead-reckoning model, lateral lag); flags off = v6c
     "tests/test_zone_pair_v6f.py",  # v6f place flags (optical-black dark reference, bounded retreat); flags off = v6c
     "tests/test_zone_pair_v6e_yaw.py",  # v6e yaw flags (pair-mean plant yaw, beam-edge relative yaw); flags off = v6e
+    "tests/test_zone_pair_v6h.py",  # registered v6h flags: no physics/models
+    "tests/test_zone_pair_v6h_seal.py",  # separate commit pins, immutable seal, synthetic gate
+    "tests/test_review_seal_v6h1.py",  # independent review regressions; synthetic acquisition inputs
+    "tests/test_v6h_acquisition_reader.py",  # mandatory inventory byte boundary; no recorded raw
+    "tests/test_zone_pair_v6h_review_delta.py",  # sealed runtime data and dynamic-import pins
     "tests/test_zone_pair_v6g.py",  # v6g carry_dr_general (lateral breakaway ramp, cross-axis drift) + route end inset; flags off = v6e
     "tests/test_zone_pair_door_relax.py",  # b-v6h stage-probe door-guard relaxation (process-local; registered sources untouched)
     "tests/test_door_relax_envelope.py",  # envelope grid + chain early stop of the stage-probe runner (opt-in flags)
+    "tests/test_b_v6h_gain.py",  # b-v6h gain-fix tooling: PF forward gain x0.9483, p2f timing rule, k2 identity variant, placement list
     "tests/test_chain_analysis_hard_limit.py",  # chain_analysis leg_class: hard limit takes precedence over ordinary failure
+    "tests/test_v6h_classify_placements.py",  # eval-only prereg draft: placement contact classes + whole-chain hard-limit veto
+    "tests/test_v6h_blinded_run_manifest.py",  # committed metadata + synthetic records only; never blinded raw
+    "tests/test_classify_review_299.py",
+    "tests/test_classify_review_299b.py",
+    "tests/test_classify_review_299c.py",
+    "tests/test_classify_review_299d.py",
+    "tests/test_classify_review_299g.py",  # public/synthetic chronology; no blinded raw
+    "tests/test_v6h_recorder_contract.py",  # pinned recorder consumer contract; JSON only
+    "tests/test_v6h_classifier_properties.py",  # 10,000 seeded evidence chains; no physics
     "tests/test_render_pair_probe_video.py",  # stage-probe report video renderer (reads saved cases only)
     "tests/test_render_profile.py",  # opt-in shadow/reflection render profiles (default path unchanged)
     "tests/test_carry_relocalization_b1.py",  # 2026-09-29: offline B1 relocalization measurement (pure arithmetic/thresholds)
     "tests/test_stall_detector_d1.py",  # offline D1 draft reference: NumPy frames only, no controller/simulator
+    "tests/test_carry_lateral_error_model.py",  # offline endpoint extraction, grouped validation and paired prediction
     "tests/test_m2_pair_door_v3.py", "tests/test_pair_owncam_approach.py", "tests/test_zone_tagged_cargo_scene.py",
     "tests/test_owncam_localizer.py", "tests/test_zone_landmarks_sim.py",
     "tests/test_zone_eval_top.py",
@@ -287,7 +390,7 @@ def run_locked(command: list[str], env: dict, lock_root: Path) -> int:
     try:
         acquired = agent_lock.acquire(
             lock_root, owner=owner, branch=branch, purpose="local offline regression tests",
-            pid=os.getpid(), expected_minutes=10,
+            pid=os.getpid(), expected_minutes=10, timing_sensitive=True,
         )
     except RuntimeError as error:
         print(f"Tests not started: {error}", file=sys.stderr)
@@ -329,7 +432,19 @@ def run_locked(command: list[str], env: dict, lock_root: Path) -> int:
                 except ProcessLookupError:
                     pass
                 child.wait(timeout=5)
-            cleanup_verified = child is None or not ugrp_session.process_group_alive(child.pid)
+                # wait() reaps the leader, not the process group. In particular,
+                # macOS may still report an exiting group (including EPERM),
+                # and stop_group's last SIGKILL is asynchronous. Confirm actual
+                # disappearance with a bound; never unlock on an uncertain probe.
+                deadline = time.monotonic() + 5
+                while ugrp_session.process_group_alive(child.pid):
+                    if time.monotonic() >= deadline:
+                        break
+                    time.sleep(0.02)
+                else:
+                    cleanup_verified = True
+            else:
+                cleanup_verified = True
         finally:
             held = agent_lock.status(lock_root)
             ours = held and all(held.get(key) == acquired[key] for key in ("owner", "pid", "acquired_unix"))
@@ -409,6 +524,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--list-shards", action="store_true", help="print JSON without running pytest or taking a lock")
     parser.add_argument("--durations-json", type=Path, help="optional JSON mapping test paths to measured seconds")
     parser.add_argument("--junitxml", type=Path, help="save pytest results and per-test durations")
+    parser.add_argument("--host-lock", action="store_true", default=os.environ.get("UGRP_TEST_HOST_LOCK") == "1",
+                        help="opt into the exclusive local host lock (also UGRP_TEST_HOST_LOCK=1)")
     args = parser.parse_args(argv)
     if args.shard_count < 1:
         parser.error("--shard-count must be positive")
@@ -443,6 +560,9 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Shard {index}/{args.shard_count} has no test files", file=sys.stderr)
         return 2  # Never invoke pytest with no paths: that collects the whole repo.
 
+    if not check_fixtures(ROOT):
+        return 2  # Refuse before pytest or the shared host lock is started.
+
     env = os.environ.copy()
     for name in tuple(env):
         if name.endswith("_API_KEY") or name in {"GOOGLE_APPLICATION_CREDENTIALS"}:
@@ -454,7 +574,16 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Running {len(tests)} offline test modules (shard {index}/{args.shard_count})", flush=True)
     lock_root = local_lock_root()
     if lock_root is not None:
-        return run_locked(command, env, lock_root)
+        if args.host_lock:
+            return run_locked(command, env, lock_root)
+        try:
+            held = agent_lock.status(lock_root)
+        except (OSError, ValueError) as error:
+            print(f"Warning: cannot read host lock ({error}); running offline tests without it", file=sys.stderr)
+        else:
+            if held and held.get("timing_sensitive") is True:
+                print(f"Warning: timing-sensitive host lock held by {held.get('owner')}: "
+                      f"{held.get('purpose')}; running offline tests without the host lock", file=sys.stderr)
     return subprocess.call(command, cwd=ROOT, env=env)
 
 

@@ -37,6 +37,7 @@ def test_closure_follows_nested_relative_imports_initializers_and_config_roots(t
                                      'harness/zone_pair_status.py', 'harness/zone_pair_beam_track.py',
                                      'harness/zone_pair_align.py', 'harness/zone_study_decisions.py',
                                      'harness/zone_study_llm_driver.py', 'harness/zone_main_budget.py',
+                                     'harness/zone_study_llm_transport.py',
                                      'configs/zone_study_integration/llm_driver.json',
                                      'harness/visual_arm_v3.py', 'harness/zone_own_guards_v3.py',
                                      'sim/zone_masterpi_v3_scene.py', 'sim/zone_model_conventions.py',
@@ -52,7 +53,7 @@ def test_dependency_mutation_changes_the_actual_run_bundle(monkeypatch, changed)
     mutated = runner.run_bundle(pre, pre['episodes'][0])[0]
     assert mutated['runtime_files_sha256'][changed] == 'f' * 64
     assert runner.digest(original) != runner.digest(mutated)
-    assert original['execution_bundle_id'] == 'zone-pair-v81-carry-dr-general'
+    assert original['execution_bundle_id'] == 'zone-pair-v83-carry-door-gain'
 
 
 HEAD = '1' * 40

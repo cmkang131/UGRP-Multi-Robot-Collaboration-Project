@@ -1,0 +1,28 @@
+{
+  "external_evidence": true,
+  "source_receipts": [
+    {
+      "path": "experiments/2026-09-30-pair-v6h-carry/ACCEPTANCE_REPLAY.md",
+      "commit": "68219d91c1c635b746f7e12b9bf31b2c8b4b031b",
+      "sha256": "145a61a21ac6da5660b571ebf4abf246e71e3a32b4ddb66e820d3ed4a4954862"
+    },
+    {
+      "path": "experiments/2026-09-30-pair-v6h-carry/acceptance_replay.json",
+      "commit": "68219d91c1c635b746f7e12b9bf31b2c8b4b031b",
+      "sha256": "f302c672f2edf76443719182b978c6d4709c317c3af4bebc1e18e49b3e7ab876"
+    }
+  ],
+  "registered_source_sha": "3afc61b00f2c127ac3fbe2be5e7bb57da989b15a",
+  "verdict": "FAIL_DIVERGENCE",
+  "lag_on": {
+    "n": 10,
+    "bit_identical": 4,
+    "diverged": 6
+  },
+  "attribution": {
+    "result": "7/7 bit-identical (commands sha256, recorded legs, leg checks), incl. the lag-off sanity vs tX0",
+    "n": 7
+  },
+  "own_physics_runs": 0,
+  "new_sha_acceptance": "coordinator must rerun"
+}

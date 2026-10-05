@@ -34,11 +34,12 @@ class GuardedDriver(OwnCamDriverV2, SharedPoseDriver):
     an ok gate) and ``blocked`` (no progress after ``MAX_RECOVERIES`` back-off recoveries).
     """
 
-    def __init__(self, shared_loc, *args, gate: UncertaintyGate, guard: SweepGuard, **kwargs):
+    def __init__(self, shared_loc, *args, gate: UncertaintyGate, guard: SweepGuard, loaded_profile=None, **kwargs):
         self.loc = shared_loc
         super().__init__(*args, **kwargs)
         self.gate, self.guard = gate, guard
-        self.gate.set_profile(GATE_LOADED if self.loaded else GATE_UNLOADED)
+        self.loaded_profile = GATE_LOADED if loaded_profile is None else loaded_profile
+        self.gate.set_profile(self.loaded_profile if self.loaded else GATE_UNLOADED)
         self.monitor = ProgressMonitor()
         self.gate_looks = 0
         self.recoveries = 0

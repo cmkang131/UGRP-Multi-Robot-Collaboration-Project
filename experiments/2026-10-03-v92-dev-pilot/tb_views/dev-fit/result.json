@@ -1,0 +1,48 @@
+{
+  "schema": "ugrp.offline_audit_view.v1",
+  "derived_view_only": true,
+  "family": "calibration-assembly",
+  "policy": "v92-dev-pilot",
+  "case": "loaded",
+  "condition": "DEV_PILOT_C0_ZERO_v1",
+  "split": "calibration",
+  "seed": 911,
+  "source_sha": "6a91737c",
+  "scope": "NON-CONFIRMATORY dev pilot; not MEASURED_SIM; no task success",
+  "run_id": "dev-fit",
+  "outcome": "DEV_MOTION_ACCEPTED",
+  "offline_source": {
+    "path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/fit_report_dev.json",
+    "sha256": "36da4d466d443281e5d30d647323906f01ea31d30e580ee2f03184c165e12614"
+  },
+  "offline_scalars": {
+    "gate/dev_motion_accepted": 1.0,
+    "offline/opt_rank": 10.0,
+    "offline/opt_rmse": 0.001869147158967602,
+    "offline/opt_nfev": 8.0,
+    "offline/train_rows_pass": 36.0,
+    "offline/train_rows": 36.0,
+    "offline/val_rows_pass": 36.0,
+    "offline/val_rows": 36.0,
+    "offline/tau_stop_s": 0.08517977552355656,
+    "gate/spread_accepted": 1.0,
+    "gate/pair_accepted": 1.0,
+    "offline/pair_ratio": 1.1066809450069606,
+    "offline/pair_rows": 18.0,
+    "offline/u1_forward": 0.026556708949971457,
+    "offline/gain_forward": 1.3550711149042434,
+    "offline/u1_left": 0.028235672526345113,
+    "offline/gain_left": 0.9642052319923683,
+    "offline/u1_turn": 0.031909184676893604,
+    "offline/gain_turn": 0.9073154343172743
+  },
+  "offline_scalar_scope": "Loaded refit with c0 fixed 0 (DEV_PILOT_C0_ZERO_v1) on already-inspected v92 data; unchanged B-double-prime PRBS gates; exploratory.",
+  "model_calls": 0.0,
+  "hparam_metrics": [
+    "gate/dev_motion_accepted",
+    "offline/val_rows_pass"
+  ],
+  "texts": {
+    "notes/dev_rule": "c0=0 fixed all axes; deadband support without stop level; everything else unchanged. Not confirmatory."
+  }
+}

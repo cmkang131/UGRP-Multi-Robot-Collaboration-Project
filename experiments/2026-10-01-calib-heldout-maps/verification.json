@@ -1,0 +1,165 @@
+{
+  "schema": "ugrp.offline_implementation_verification.v1",
+  "checked_at": "2026-10-01T03:50:36.548288+00:00",
+  "base_sha": "2523269857596ffdd1a8cda9814a6e92f399f1da",
+  "branch": "codex/calib-heldout-maps",
+  "execution_bundle_id": "zone-final-pair-v90",
+  "workflow_id": "zone-final-pair-heldout-v90",
+  "workflow_version": "3.2.0",
+  "scope": "Registration and fake/offline regressions only; no physical experiment, rendering, real model calls, calibration fit or criterion B acceptance.",
+  "environment": {
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "pytest": "9.1.1",
+    "numpy": "2.5.2"
+  },
+  "preserved_previous_attempt": {
+    "junit": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-resume-tests.xml",
+    "junit_sha256": "9cdba405d127217a00f8cd84f9e8e66f5d968cc9a45f11acc1afe7a6cc810676",
+    "log": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-resume-tests.log",
+    "log_sha256": "90cb8f7aeb12372859c7758245df6ac3fb7e8b49f27a5f771ec87827b65599c3",
+    "tests": 369,
+    "failures": 2,
+    "errors": 0,
+    "failed_test_ids": [
+      "tests.test_simulation_workflow_manager.WorkflowManagerTests::test_parent_exit_cleans_background_child",
+      "tests.test_ci_sharding::test_committed_durations_are_valid_and_balance_the_real_file_list"
+    ],
+    "scope": "Preserved run before this resumption; 367 passed / 2 failed; command selection reconstructed from JUnit.",
+    "test_files": [
+      "tests/test_ci_sharding.py",
+      "tests/test_final_environment_measurement_v2.py",
+      "tests/test_review_344.py",
+      "tests/test_review_344_envelope.py",
+      "tests/test_review_344b.py",
+      "tests/test_simulation_workflow_manager.py",
+      "tests/test_zone_final_environment_floor_light.py",
+      "tests/test_zone_final_pair_heldout.py",
+      "tests/test_zone_final_pair_review_fixes.py",
+      "tests/test_zone_final_pair_v3.py"
+    ]
+  },
+  "ci_fix_attempt": {
+    "junit": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-ci-fix-tests.xml",
+    "junit_sha256": "1e91621ca8352a87bbdf82e8bed021925f7c7bd3634a8df112e5739527dbb46c",
+    "log": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-ci-fix-tests.log",
+    "log_sha256": "6243076db7e0c7dced0a3244001c11b5fd3a836661ebfe0219cbc63c401e8fcf",
+    "tests": 85,
+    "failures": 1,
+    "errors": 0,
+    "failed_test_ids": [
+      "tests.test_simulation_workflow_manager.WorkflowManagerTests::test_interactive_prompt_is_tee_d_before_child_waits_for_input"
+    ],
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_ci_sharding.py tests/test_simulation_workflow_manager.py -k 'not parent_exit_cleans_background_child' -p no:cacheprovider --junitxml=/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-ci-fix-tests.xml",
+    "scope": "84 passed / 1 failed / 1 deselected. All 68 CI sharding tests passed. Interactive prompt test hit its existing 3 s readiness timeout under host load; no test threshold changed."
+  },
+  "interactive_prompt_retry": {
+    "junit": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-prompt-retry.xml",
+    "junit_sha256": "2fc92fce5e8f399ba2bd1074c2cd3e979ee6ecb4853f63c03fefce67cfa7d156",
+    "log": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-prompt-retry.log",
+    "log_sha256": "57be52af4623aba7a288aead2dd5009536a86c289e7cfad4320fe4586d4c738b",
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "failed_test_ids": [],
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_interactive_prompt_is_tee_d_before_child_waits_for_input -p no:cacheprovider --junitxml=/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-prompt-retry.xml",
+    "scope": "1 passed in 1.09 s, unchanged test and production source."
+  },
+  "targeted_recheck": {
+    "status": "PASS",
+    "command": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_zone_final_pair_heldout.py tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py -p no:cacheprovider",
+    "tests": 106,
+    "failures": 0,
+    "exit_code": 0,
+    "wall_s": 659.74,
+    "summary_file": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-targeted-recheck-summary.txt",
+    "summary_sha256": "b44696d269d758066d1c1c4a0db89ec6428579737fd8b64429a244c8a4f05ec3"
+  },
+  "ci_duration_fix": {
+    "file": "tests/test_zone_final_pair_heldout.py",
+    "seconds": 146.14,
+    "source_junit": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-resume-tests.xml",
+    "coverage_before": "367/408",
+    "coverage_after": "368/408",
+    "other_duration_entries_unchanged": true
+  },
+  "ci_registration": {
+    "command": "python scripts/run_ci_tests.py --shard-count 8 --durations-json configs/ci_test_durations.json --list-shards",
+    "file": "/Users/changmin/projects/ugrp/outputs/calib-heldout-maps-final-shards.json",
+    "sha256": "2620e19f4cbcef8ba3c5e02f0ca868d606403f9914132554637f9ad86655b5cd",
+    "total_files": 408,
+    "shard_count": 8,
+    "coverage_verified": true,
+    "new_test_occurrences": 1
+  },
+  "check_only_plans": {
+    "file": "experiments/2026-10-01-calib-heldout-maps/check_only_plans.json",
+    "sha256": "856ea75523ea8e56f4dabb28389d32d515734380a2d7673e32917f7c59c2ed76",
+    "maps": [
+      "zone_wide_door_geometry_v3",
+      "zone_wide_corridor_final_v3"
+    ],
+    "runnable": true,
+    "execution_started": false
+  },
+  "preservation": {
+    "file": "preserved_files.json",
+    "files_verified_against_base": 12,
+    "original_handoff_suffix_byte_identical": true
+  },
+  "required_static_checks": [
+    {
+      "command": "python scripts/check_ci_fixtures.py",
+      "result": "3 frozen fixtures present"
+    },
+    {
+      "command": "python -m harness.rgb_execution_bundle verify-current --id rgb-standard-dispatch-v63",
+      "result": "PASS; static manifest and source hashes only"
+    },
+    {
+      "command": "python -m harness.rgb_execution_bundle verify-registry --base 2523269857596ffdd1a8cda9814a6e92f399f1da",
+      "result": "registry immutable against base"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "remaining_checks": [
+    {
+      "test": "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_parent_exit_cleans_background_child",
+      "reason": "Existing sandbox PermissionError: [Errno 1] Operation not permitted: ps. Kept unchanged in CI; excluded only from the local retry."
+    },
+    {
+      "scope": "consumer criterion B",
+      "reason": "Frozen criterion and validator still require v88; explicit follow-up is required before accepting v90. No raw relabelling or acceptance claim."
+    }
+  ],
+  "tensorboard": "No new experiment/training/evaluation cohort; no conversion or viewer startup.",
+  "temporary_extractions": "No extraction directories belonging to this task found under /private/tmp at resumption; none created during this resumption.",
+  "source_sha256": {
+    "PHYSICS_HANDOFF.md": "34f4dbb9f9bcf2c51cfb81d9f31914a3403b0679a36b380ff3054750dce69e0f",
+    "configs/ci_test_durations.json": "5e97235067bdf385e58177f52c0c9f703185c345565c2f7373b50502a1f4c2c8",
+    "configs/simulation_workflows.d/final_pair_v90.json": "d603750fcb19fd2c2c07681b8a3c56ff5a2b0680a04f84a9ccc50b1438614d8b",
+    "configs/zone_final_pair_v90.json": "7eb3112d30e7b4bc1769849071577a0edc7c37aede2f1f3b7c6c84a77b8c9972",
+    "harness/zone_final_pair_clearance.py": "73dcc9bbb527acb26d184d54659dbb11502643f165e96fd92518573f98fcf9d8",
+    "harness/zone_final_pair_contract.py": "7d504f7865d8e1b139b6ee1d99211852d47f3f8d65f56bfa8b1627e3c25626f9",
+    "harness/zone_final_pair_heldout.py": "38f474d3868aaa44e3c6b5c42870be4ff8b7e6a25e22c8af3195891d143ece25",
+    "scripts/run_ci_tests.py": "0ed916e2ac4c73409a6f153117bcf2638d829b65d884a8e2aa2ef7d57788a90a",
+    "scripts/run_final_pair_heldout.py": "29ee665ba8f7ab8ecb6a9132b85129684f4a346f00267ac9a9b30fd7e0b8f879",
+    "scripts/run_final_pair_v3.py": "f4dea353ebb176c499676acea90e6da778d10a6b5d250b8cf55edc7a5b810b43",
+    "sim/final_pair_v3.py": "2afd28bfbe5c7402ac4bee965cb9dac562acf5e2e97a204b05dd0d5d39502dc5",
+    "tests/test_simulation_workflow_manager.py": "68565bf67b0dd0bcafe5d630c2e9f231d9836206556d1b93c5dc9344c4eb9fdd",
+    "tests/test_zone_final_pair_heldout.py": "a74eb6e9fc9110e535d1c64c6eefb2d22c9e6f01a124a461ac79b06252d2de65",
+    "tests/test_zone_final_pair_review_fixes.py": "5d82374bfcbf08eb5cbde19642c9122b5cc1d98bce296dcae59fbdf70d8f52d1"
+  },
+  "totals": {
+    "current_resumption_unique_passed": 191,
+    "including_preserved_previous_attempt_unique_passed": 368,
+    "unverified_due_to_sandbox": 1,
+    "physical_experiments": 0,
+    "renders": 0,
+    "real_model_calls": 0,
+    "note": "Do not add repeated runs. Previously failing CI coverage was fixed; transient interactive prompt timeout passed unchanged on retry."
+  }
+}

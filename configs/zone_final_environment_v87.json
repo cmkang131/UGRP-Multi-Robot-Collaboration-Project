@@ -1,0 +1,86 @@
+{
+  "schema": "ugrp.final_environment.v87",
+  "execution_bundle_id": "zone-final-environment-v87",
+  "status": "DRAFT_UNSEALED",
+  "runnable": true,
+  "research_result": false,
+  "physical_ready": false,
+  "workflow_id": "zone-final-environment-floor-light-check",
+  "workflow_version": "2.20.0",
+  "provider_id": "vision_zero_tag_final_v3_p03",
+  "parent_provider": "vision_zero_tag_v2_p03_v1",
+  "maps": {
+    "zone_wide_door_geometry_v3": {
+      "file": "maps/zones/zone_wide_door_geometry_v3.json",
+      "sha256": "be9a571beb90e8d49977dde5e2faf43b6f9b2a122a840dab961afee8ce3ddf17",
+      "static_map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d",
+      "parent_file": "maps/zones/zone_wide_door_geometry_v2.json",
+      "parent_sha256": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+      "scene_factory": "sim.zone_final_v3_scene:FinalV3Scene",
+      "robot_model": "masterpi_v3",
+      "provider_id": "vision_zero_tag_final_v3_p03",
+      "calibration_contract": "configs/calibration/zone_final_v3_floor_light_contract.json",
+      "calibration_contract_sha256": "6666b23b72db5e7243af337b85f87ce469c389709e59852d8fa963dd92c0ebb6"
+    },
+    "zone_wide_two_doors_final_v3": {
+      "file": "maps/zones_final_v3/zone_wide_two_doors_final_v3.json",
+      "sha256": "b6a61f7e748b995f13800aa0e4c3a0ec4a50dcd152fc75815225115d0354a41b",
+      "static_map_sha256": "ecbed849464b3dcc7c5f3679dffed419069391b4e72dc53276ed04dca2d64af5",
+      "parent_file": "maps/zones_final/zone_wide_two_doors_final_v1.json",
+      "parent_sha256": "e93bce155c01aef3cc7c8418c4d921aee1e50b9539167fb7b9f94cdd2a29d888",
+      "scene_factory": "sim.zone_final_v3_scene:FinalV3Scene",
+      "robot_model": "masterpi_v3",
+      "provider_id": "vision_zero_tag_final_v3_p03",
+      "calibration_contract": "configs/calibration/zone_final_v3_floor_light_contract.json",
+      "calibration_contract_sha256": "6666b23b72db5e7243af337b85f87ce469c389709e59852d8fa963dd92c0ebb6"
+    },
+    "zone_wide_corridor_final_v3": {
+      "file": "maps/zones_final_v3/zone_wide_corridor_final_v3.json",
+      "sha256": "6973f0a74dc4339c5a3981af9bf58eefde7c878f891808c1baefa818a0f472f2",
+      "static_map_sha256": "0429b535107feda865a02821e4ceb2b695b58cd0c06c07e2fde96320bd2d9b0e",
+      "parent_file": "maps/zones_final/zone_wide_corridor_final_v1.json",
+      "parent_sha256": "f968251ae0e9a3af3e2198fdce850ed649b06f370bf4c8b526c921903faef4fc",
+      "scene_factory": "sim.zone_final_v3_scene:FinalV3Scene",
+      "robot_model": "masterpi_v3",
+      "provider_id": "vision_zero_tag_final_v3_p03",
+      "calibration_contract": "configs/calibration/zone_final_v3_floor_light_contract.json",
+      "calibration_contract_sha256": "6666b23b72db5e7243af337b85f87ce469c389709e59852d8fa963dd92c0ebb6"
+    }
+  },
+  "weld": "off",
+  "render_profile": "floor_light_v1",
+  "contact_profile": "cargo_noslip_v1",
+  "sensors": {
+    "ultrasonic_front": "off"
+  },
+  "checks": {
+    "p01": {
+      "cases": 3,
+      "per_case_sim_cap_s": 30,
+      "total_sim_cap_s": 90,
+      "student_control": false
+    },
+    "calibration": {
+      "cases": 3,
+      "per_case_sim_cap_s": 120,
+      "total_sim_cap_s": 360,
+      "student_control": false
+    },
+    "p03": {
+      "cases": 3,
+      "per_case_sim_cap_s": 120,
+      "total_sim_cap_s": 360,
+      "student_control": true,
+      "checkpoints": [
+        "before_door",
+        "after_door",
+        "before_destination"
+      ],
+      "requires": [
+        "measured_final_v3_calibration",
+        "qualified_final_v3_pair_chain_adapter"
+      ],
+      "map_id": "zone_wide_door_geometry_v3"
+    }
+  }
+}

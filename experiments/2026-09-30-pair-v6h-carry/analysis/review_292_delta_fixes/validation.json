@@ -1,0 +1,50 @@
+{
+  "baseline_head": "3c4fe30e2197518443b195392212b0341507ac59",
+  "review_head": "8f37388b848dec69ee7b5a5389323256e64d0146",
+  "pin_count": 274,
+  "test_command": "python -m pytest -q -p no:cacheprovider -p tests.pose_provider_no_physics -p no_render tests/test_zone_pair_v6h.py tests/test_zone_pair_registered_source.py tests/test_zone_pair_v6h_review_delta.py tests/test_ci_sharding.py --junitxml=/Users/changmin/projects/ugrp/outputs/v6h-register-delta-fixes-20260930/pytest.xml",
+  "result": {
+    "passed": 250,
+    "failed": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "by_file": {
+      "tests.test_zone_pair_v6h": 140,
+      "tests.test_zone_pair_registered_source": 24,
+      "tests.test_zone_pair_v6h_review_delta": 20,
+      "tests.test_ci_sharding": 66
+    }
+  },
+  "guards": {
+    "render_attempts": 0,
+    "physical_step_attempts": 0,
+    "real_vision_worker_attempts": 0,
+    "network_attempts": 0
+  },
+  "prior_attempt": {
+    "passed": 182,
+    "failed": 1,
+    "failure": "Actual Scene input audit found maps/zones/zone_wide_door.json outside the pins; added pin without changing map bytes",
+    "original_review_counterexamples": "both passed after xfail removal"
+  },
+  "tested_file_sha256": {
+    "scripts/zone_pair_v6_contract.py": "cb3702bc78f760cacce910b709c78b9eb3cbf23b5d1e1e9b8dca112cf176f559",
+    "scripts/run_ci_tests.py": "a261c154bda3ae5fca8923cbd1dda70730722cbac24013ae1f1d2159d72a3190",
+    "configs/simulation_workflows.json": "fc5bdf913a9f672bb3adb9597e1925b88a163a7ce1a1b30fb4fed9cf7ad0c813",
+    "docs/zone_study_integration.md": "a5c7523e75cd20295301530e591e31bfea1d838d041a0da0085b743ea39fb8b0",
+    "tests/test_zone_pair_v6h_review_delta.py": "ebd5c6bf018fcc23ca952b87879e875481f949932a9afbbd68c5e5ce5caaabec",
+    "experiments/2026-09-30-pair-v6h-carry/source_changes_UNSEALED.json": "e4f8b0844b817e3bac45ce5b9d851b9201c55492c29837a20483dfd92fd79352"
+  },
+  "raw_root": "/Users/changmin/projects/ugrp/outputs/v6h-register-delta-fixes-20260930",
+  "raw_sha256": {
+    "pytest.log": "ee238a41055d44f883d10e701d0de33c58a120ef8230ccd0567ab7b4466567f8",
+    "pytest.xml": "f3ecd1e3e3ffd3f7b9cb4236f2b5f8aac0ab99c0ba1f9e1255bc5406942b3566",
+    "pytest-first.log": "4a6932511fb9067dc637b9fd67b7943a29b40ce5a614a604d58ac4377a9a9073",
+    "pytest-first.xml": "ed8c1783c7a53368f048259e3ebf962018f4798b51114352f373f8b6256cb734",
+    "run_tests.py": "753141a651bcfc48654f22339b2c6ff1faf36d0123ca83508743618a7c42435d",
+    "no_render.py": "61d625a9616d526414f995ce1db38c19466fb7293395232489aa06007f1134c6",
+    "audit_static.py": "c514f4ec82df5e13544e8e48b6b32f758bb7b98b486a3ba3f738169456154b0e"
+  },
+  "scope": "Offline admission, static XML and fake/PF regression only; no new physical replay, model call, confirmatory result, seal or merge",
+  "deferred": "PR #299 classifier and input schema/coverage integration; pin after reviewed merge"
+}

@@ -170,7 +170,7 @@ def test_execution_forwards_only_selected_files_and_preserves_failure_code(index
     monkeypatch.setattr(runner.subprocess, "call", execute)
     monkeypatch.setattr(runner, "run_locked", execute_locked)
     argv = [] if index is None else ["--shard-count", "3", "--shard-index", str(index)]
-    assert runner.main([*argv, "--junitxml", "report.xml"]) == 7
+    assert runner.main([*argv, "--host-lock", "--junitxml", "report.xml"]) == 7
     selected = files if index is None else runner.shard_test_files(files, 3)[index]
     assert calls == [[runner.sys.executable, "-m", "pytest", "-q", *selected,
                       "--junitxml=report.xml", "-o", "junit_family=legacy"]]
@@ -193,9 +193,37 @@ def test_required_status_gate_rejects_every_non_success_result(shards, checks):
     workflow = (runner.ROOT / ".github/workflows/tests.yml").read_text()
     gate = workflow.split("  offline-regressions:\n", 1)[1].split("\n  ubuntu-simulation-runtime:", 1)[0]
     assert "    name: offline-regressions\n" in gate
-    assert "    needs: [offline-regression-shards, offline-regression-checks]\n" in gate
+    assert "    needs: [ci-preflight, offline-regression-shards, offline-regression-checks]\n" in gate
     assert "    if: ${{ always() }}\n" in gate
     script = textwrap.dedent(gate.split("        run: |\n", 1)[1])
     result = subprocess.run(["sh", "-eu", "-c", script],
-                            env={"SHARDS_RESULT": shards, "CHECKS_RESULT": checks})
+                            env={"PREFLIGHT_RESULT": "success", "FULL_SUITE": "true",
+                                 "SHARDS_RESULT": shards, "CHECKS_RESULT": checks})
     assert (result.returncode == 0) == (shards == checks == "success")
+
+
+DURATIONS_FILE = runner.ROOT / "configs" / "ci_test_durations.json"
+
+
+def test_committed_durations_are_valid_and_balance_the_real_file_list():
+    durations = json.loads(DURATIONS_FILE.read_text())
+    files = runner.collect_test_files(runner.ROOT, runner.TEST_PATTERNS)
+    known = [path for path in files if path in durations]
+    assert len(known) >= 0.9 * len(files), "durations file is badly out of date; refresh it"
+    shards = runner.shard_test_files(files, 8, durations)
+    assert shards == runner.shard_test_files(files[::-1], 8, durations)
+    assert Counter(path for shard in shards for path in shard) == Counter(files)
+    fallback = sorted(durations[path] for path in known)[len(known) // 2]
+    loads = [sum(durations.get(path, fallback) for path in shard) for shard in shards]
+    # Greedy longest-first keeps every shard within one longest file of the mean.
+    assert max(loads) - min(loads) <= max(durations[path] for path in known)
+    count_loads = [sum(durations.get(path, fallback) for path in runner.shard_test_files(files, 8)[i])
+                   for i in range(8)]
+    assert max(loads) <= max(count_loads)
+
+
+def test_workflow_passes_the_committed_durations_to_every_shard_command():
+    workflow = (runner.ROOT / ".github" / "workflows" / "tests.yml").read_text()
+    commands = [line for line in workflow.splitlines() if "run_ci_tests.py" in line and "--shard-count 8" in line]
+    assert len(commands) == 2  # the shard run and the coverage listing
+    assert all("--durations-json configs/ci_test_durations.json" in line for line in commands)

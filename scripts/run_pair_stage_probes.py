@@ -394,6 +394,11 @@ def contact_outcome(row, result):
 
 def run_case(case, out):
     """One staged case in THIS process. Returns the result row."""
+    if 'registration_run_id' in case and 'registration' not in case:
+        raise ValueError('sealed worker case requires its registration receipt')
+    if 'registration' in case:
+        from scripts.zone_pair_v6h_admission import validate_worker_case
+        validate_worker_case(case, out)  # fail before importing/creating any physics
     import mujoco
     import numpy as np
 
@@ -680,6 +685,10 @@ def run_case(case, out):
                 result['max_tilt_deg'] = host.max_tilt
                 result['min_lift_after_first_lift_m'] = host.min_lift_after
                 result['door_relax_overrides'] = list(door_relax.EVENTS)
+                if case.get('pair_policy') == 'b-v6h1':
+                    result['progress_moved_fix'] = {r: {'armed': ep.command_guard.monitor.armed_count,
+                                                       'ignored': ep.command_guard.monitor.ignored_count}
+                                                     for s in sessions for r, ep in s['endpoints'].items()}
                 if case.get('contact_track'):
                     close_wall_episodes(wall_track)
                     result['wall_contact'] = {'episodes': wall_track['episodes'], 'steps': wall_track['steps'],
@@ -896,29 +905,45 @@ def with_render_profile(cases, name):
     return [{**c, 'render_profile': name} for c in cases]
 
 
-def envelope_cases(stage, args, policy, leg):
+def envelope_cases(stage, args, policy, leg, *, placements=None):
     """Opt-in envelope grid: one case per (beam y, beam heading, prior bias) with the TRUE beam at (x, y, heading) and the
     coarse order sheet fixed at the base sheet, so the controller's route (door axis y = 0.05) does not move with the placement.
     Robots stand at the stations of the true beam. The start prior is the RECORDED PF posterior of one hR2 sample
     (std and error), optionally shifted by a stated bias (--env-bias-y-m / --env-bias-yaw-deg) to test estimator error."""
-    smp = {s['id']: s for s in json.loads(sp.SAMPLE_FILES['hR2'].read_text())['samples']}[args.env_prior]
+    samples = {s['id']: s for s in json.loads(sp.SAMPLE_FILES['hR2'].read_text())['samples']}
+    if placements is not None or getattr(args, 'env_placements', None):
+        entries = [(float(e['y']), float(e['yaw_deg']), e.get('prior', args.env_prior), e.get('name'),
+                    float(e.get('x', args.env_x)), e.get('sheet', 'base'))
+                   for e in (placements if placements is not None else json.loads(args.env_placements.read_text()))]
+    else:
+        entries = [(float(y), float(yaw), args.env_prior, None, float(args.env_x), 'base')
+                   for y in args.env_y for yaw in args.env_yaw_deg]
     out = []
-    for y in args.env_y:
-        for yaw_deg in args.env_yaw_deg:
-            for by in args.env_bias_y_m:
-                for byaw in args.env_bias_yaw_deg:
-                    prior_err = copy.deepcopy(smp['prior_err'])
-                    for rid in sp.PARTICIPANTS:
-                        e = prior_err[rid]['mean_err_xyyaw']
-                        prior_err[rid]['mean_err_xyyaw'] = [e[0], e[1] + by, e[2] + math.radians(byaw)]
-                    name = f'E_y{y:+.3f}_h{yaw_deg:+.1f}'
-                    if by or byaw:
-                        name += f'_b{by:+.3f}_{byaw:+.1f}'
-                    setup = {'beam_xyyaw': [args.env_x, float(y), math.radians(float(yaw_deg))],
-                             'coarse_order_sheet': copy.deepcopy(sp.BASE_SETUP['coarse_order_sheet']), 'variant': 'ENV'}
-                    out += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds), setup=setup,
-                                            policy=policy, prior_std=args.prior_std, leg=leg, door_relax=args.door_relax, chain_stop_leg=args.chain_stop_leg,
-                                            rows=[(name, (0, 0, 0), (0, 0, 0), prior_err)])
+    for y, yaw_deg, prior_id, given_name, x, sheet in entries:
+        smp = samples[prior_id]
+        if sheet not in ('base', 'coarse'):
+            raise ValueError('envelope placement sheet must be base or coarse')
+        if not all(math.isfinite(v) for v in (x, y, yaw_deg)):
+            raise ValueError('envelope placement must be finite')
+        for by in args.env_bias_y_m:
+            for byaw in args.env_bias_yaw_deg:
+                prior_err = copy.deepcopy(smp['prior_err'])
+                for rid in sp.PARTICIPANTS:
+                    e = prior_err[rid]['mean_err_xyyaw']
+                    prior_err[rid]['mean_err_xyyaw'] = [e[0], e[1] + by, e[2] + math.radians(byaw)]
+                name = given_name or f'E_y{y:+.3f}_h{yaw_deg:+.1f}'
+                if by or byaw:
+                    name += f'_b{by:+.3f}_{byaw:+.1f}'
+                beam = [x, float(y), math.radians(float(yaw_deg))]
+                if sheet == 'coarse':
+                    from harness.pair_owncam_approach import coarse_order_sheet
+                    order_sheet, variant = coarse_order_sheet(beam), 'ENVS'
+                else:
+                    order_sheet, variant = copy.deepcopy(sp.BASE_SETUP['coarse_order_sheet']), 'ENV'
+                setup = {'beam_xyyaw': beam, 'coarse_order_sheet': order_sheet, 'variant': variant}
+                out += sp.teacher_cases(stage, seeds=tuple(args.seeds), nominal_seeds=tuple(args.nominal_seeds), setup=setup,
+                                        policy=policy, prior_std=args.prior_std, leg=leg, door_relax=args.door_relax, chain_stop_leg=args.chain_stop_leg,
+                                        rows=[(name, (0, 0, 0), (0, 0, 0), prior_err)])
     return out
 
 
@@ -940,7 +965,7 @@ def build_cases(args):
         for policy in args.policies:
             if 'teacher' in args.sources:
                 for leg in (args.legs or [None]):
-                    if args.env_y:      # opt-in envelope grid (2026-09-30): true beam at (x, y, heading) on the fixed base sheet
+                    if args.env_y or args.env_placements:  # fixed grid or explicitly preserved placement list
                         cases += envelope_cases(stage, args, policy, leg)
                         continue
                     if args.setup_variant in sp.SAMPLE_FILES:      # entries sampled from recorded stage end states
@@ -1129,6 +1154,9 @@ def parser():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument('--stage', nargs='+', choices=[s for s, v in sp.STAGES.items() if v['implemented']])
     p.add_argument('--output', type=Path)
+    p.add_argument('--prereg', type=Path, help='sealed v6h 60+12 confirmatory plan; all worker options must match')
+    p.add_argument('--run-id', help='one sealed run (required with registered --execute authorization)')
+    p.add_argument('--expected-source-sha', help='full committed HEAD for sealed --execute')
     p.add_argument('--sources', nargs='+', default=['teacher', 'e2e'], choices=['teacher', 'e2e', 'boundary'])
     p.add_argument('--diag-patch', choices=sorted(sp.DIAG_PATCHES),
                    help='probe-only DIAGNOSTIC controller patch (case ids get :diag-<name>; not the registered v6)')
@@ -1140,6 +1168,8 @@ def parser():
                         'name and hash go to manifest.json and every result row.')
     p.add_argument('--policies', nargs='+', default=['v5h'], choices=list(sp.POLICIES) + list(sp.PROBE_ONLY_POLICIES),
                    help='harness.zone_pair_v6_policy policies; there is no A-only policy on main')
+    p.add_argument('--env-placements', type=Path,
+                   help='explicit envelope JSON [{name,x,y,yaw_deg,prior,sheet:base|coarse}]; setup only')
     p.add_argument('--door-relax', choices=sorted(door_relax_variants()),
                    help='with --policies b-v6h: the door-guard relaxation variant (harness/zone_pair_door_relax.py). '
                         'b-v6h is the registered b-v6g plus a process-local relaxation of the loaded-carry inflation; '
@@ -1185,6 +1215,35 @@ def parser():
     return p
 
 
+def prepare_cases(args):
+    """Pure preparation shared by CLI tests and execution, before output/physics."""
+    args.unavailable = []
+    if args.prereg is not None:
+        from scripts.zone_pair_v6h_admission import prepare_cases as prepare_registered
+        return prepare_registered(args)
+    if args.run_id or args.expected_source_sha:
+        raise ValueError('--run-id/--expected-source-sha require --prereg')
+    cases = build_cases(args)
+    if args.pf_track:
+        for c in cases:
+            c['pf_track'] = True
+    if args.contact_track:
+        for c in cases:
+            c['contact_track'] = True
+    if args.progress_relax:
+        if args.policies != ['b-v6h']:
+            raise ValueError('--progress-relax applies to --policies b-v6h only')
+        for c in cases:
+            c['progress_relax'] = args.progress_relax
+            c['case_id'] = c['case_id'].replace(f".{c['door_relax']}:", f".{c['door_relax']}+{args.progress_relax}:", 1)
+    if args.chain_stop_leg is not None:
+        if args.stage != ['chain']:
+            raise ValueError('--chain-stop-leg applies to --stage chain only')
+        for c in cases:
+            c['chain_stop_leg'] = int(args.chain_stop_leg)
+    return None, cases
+
+
 def main(argv=None):
     p = parser()
     args = p.parse_args(argv)
@@ -1201,25 +1260,10 @@ def main(argv=None):
         p.error('workers must be 1..8')
     if not 1 <= args.omp_threads <= 8:
         p.error('omp-threads must be 1..8')
-    args.unavailable = []
-    cases = build_cases(args)
-    if args.pf_track:
-        for c in cases:
-            c['pf_track'] = True
-    if args.contact_track:
-        for c in cases:
-            c['contact_track'] = True
-    if args.progress_relax:
-        if args.policies != ['b-v6h']:
-            p.error('--progress-relax applies to --policies b-v6h only')
-        for c in cases:
-            c['progress_relax'] = args.progress_relax
-            c['case_id'] = c['case_id'].replace(f".{c['door_relax']}:", f".{c['door_relax']}+{args.progress_relax}:", 1)
-    if args.chain_stop_leg is not None:
-        if args.stage != ['chain']:
-            p.error('--chain-stop-leg applies to --stage chain only')
-        for c in cases:
-            c['chain_stop_leg'] = int(args.chain_stop_leg)
+    try:
+        prereg, cases = prepare_cases(args)
+    except (ValueError, OSError) as exc:
+        p.error(str(exc))
     if len({c['case_id'] for c in cases}) != len(cases):
         p.error('duplicate case ids')
     from sim.workflow_manager import environment_identity, git_identity, source_fingerprint
@@ -1231,6 +1275,7 @@ def main(argv=None):
                 'environment': {**environment_identity(), 'loadavg_at_start': list(os.getloadavg())},
                 'workers': args.workers, 'omp_num_threads_per_worker': args.omp_threads, 'pf_track': bool(args.pf_track),
                 'cases': len(cases), 'cases_sha256': sp.digest(cases), 'unavailable_e2e': args.unavailable,
+                'admission': 'sealed_v6h' if prereg is not None else 'unsealed_stage_probe',
                 'state': 'planned'}
     if args.render_profile:
         from sim import render_profile as rp
@@ -1247,9 +1292,14 @@ def main(argv=None):
     held = agent_lock.status(primary_root() / 'outputs/agent-locks')
     if not held or not held['pid_alive'] or held['owner'] != args.lock_owner:
         p.error('a live agent_lock held by --lock-owner is required for the probe grid')
-    if git('status', '--porcelain', '--untracked-files=no'):
+    if prereg is None and git('status', '--porcelain', '--untracked-files=no'):
         p.error('tracked source must be clean (commit the probe source first)')
     manifest['lock'] = held
+    if prereg is not None:
+        from scripts.zone_pair_v6h_admission import authorize_execution
+        manifest['registration'] = authorize_execution(args, prereg)
+        cases = [{**c, 'registration': manifest['registration']} for c in cases]
+        manifest['cases_sha256'] = sp.digest(cases)
     args.output.mkdir(parents=True)
     (args.output / 'cases').mkdir()
     write_json(args.output / 'plan.json', {'labels': sp.LABELS, 'cases': cases})

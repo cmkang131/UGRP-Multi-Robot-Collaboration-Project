@@ -45,6 +45,36 @@ PAIR_FIT = 'experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json'
 GENERAL_FIT = 'experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json'
 # Axes whose open-loop leg length uses the lag model (flag ``carry_lateral_lag``).
 LAG_AXES = ('lateral',)
+FWD_GAIN_FIT = 'experiments/2026-09-30-pair-v6h-carry/proposed_carry_fwd_gain_fit.json'
+FWD_GAIN_FIT_SHA256 = '02884b59026d34710473e97a154e8ffff6132dd388d36f8c893b0f2a616a2f56'
+FWD_GAIN = 0.9483378899463337
+
+
+def forward_gain_receipt(multiplier):
+    """Fixed calibration input, not a live observation or a fitted runtime value."""
+    if multiplier == 1.0:
+        return None
+    raw = (ROOT/FWD_GAIN_FIT).read_bytes()
+    if hashlib.sha256(raw).hexdigest() != FWD_GAIN_FIT_SHA256:
+        raise ValueError('carry_fwd_gain fit hash mismatch')
+    if multiplier != FWD_GAIN or json.loads(raw)['kappa_M1'] != multiplier:
+        raise ValueError('carry_fwd_gain must equal the fixed PR #284 calibration')
+    return {'source': FWD_GAIN_FIT, 'file_sha256': FWD_GAIN_FIT_SHA256, 'kappa': multiplier}
+
+
+def scaled_gain(gain, multiplier):
+    rows = [list(map(float, row)) for row in gain]
+    rows[0][0] *= multiplier
+    return rows
+
+
+def timing_calibration(calibration, axis, multiplier=1.0):
+    """Axial lag must invert the PF's corrected plant; lateral remains untouched."""
+    if axis != 'axial' or multiplier == 1.0:
+        return calibration
+    forward_gain_receipt(multiplier)
+    mp = calibration['motion_loaded']
+    return {**calibration, 'motion_loaded': {**mp, 'gain': scaled_gain(mp['gain'], multiplier)}}
 
 
 def _digest(value):
@@ -99,7 +129,7 @@ def load_pair_fit(general=False):
     return fit, {'source': path, 'file_sha256': hashlib.sha256(raw).hexdigest()}
 
 
-def enable_provider(provider, pair_yaw=False, beam_edge=False, general=False):
+def enable_provider(provider, pair_yaw=False, beam_edge=False, general=False, carry_fwd_gain=1.0):
     """Give this provider's PF the calibrated loaded profile (idempotent; other providers are untouched).
 
     ``pair_yaw`` / ``beam_edge`` (yaw flags) select the estimator variant: the per-particle yaw-rate bias std is the
@@ -111,12 +141,15 @@ def enable_provider(provider, pair_yaw=False, beam_edge=False, general=False):
     inner, pf = _pf(provider)
     variant = variant_key(pair_yaw, beam_edge)
     if getattr(inner, 'carry_dr_v6e', None) is not None:
-        if getattr(inner, 'carry_variant_v6e', '') != variant or bool(getattr(inner, 'carry_general_v6e', False)) != bool(general):
+        if (getattr(inner, 'carry_variant_v6e', '') != variant
+                or bool(getattr(inner, 'carry_general_v6e', False)) != bool(general)
+                or getattr(inner, 'carry_fwd_gain_v6h', 1.0) != carry_fwd_gain):
             raise ValueError(f'pose provider is bound to carry variant {getattr(inner, "carry_variant_v6e", "")!r}'
                              f'{" +general" if getattr(inner, "carry_general_v6e", False) else ""}; '
                              f'{variant!r}{" +general" if general else ""} needs a fresh provider')
         return inner.carry_dr_v6e
     unloaded = pf.params['motion']['scale_std']
+    gain_receipt = forward_gain_receipt(carry_fwd_gain)
     profile, info = load_profile(unloaded)
     if general:
         gfit, gfit_info = load_pair_fit(general=True)
@@ -144,6 +177,14 @@ def enable_provider(provider, pair_yaw=False, beam_edge=False, general=False):
     pf.params = {**pf.params, 'motion_loaded': {**pf.params['motion_loaded'], **copy.deepcopy(profile)}}
     if pf.initialized and pf.load.loaded:
         pf._draw_plant_state(True)
+    # Match the exploratory wrapper's order: profile rebind / plant-state draw
+    # first, then copy only gain[0][0]. Do not multiply again on provider reuse.
+    if gain_receipt is not None:
+        before = [list(map(float, row)) for row in pf.params['motion_loaded']['gain']]
+        after = scaled_gain(before, carry_fwd_gain)
+        pf.params = {**pf.params, 'motion_loaded': {**pf.params['motion_loaded'], 'gain': after}}
+        info['gain_fix'] = {**gain_receipt, 'gain_before': before, 'gain_after': after}
+        inner.carry_fwd_gain_v6h = carry_fwd_gain
     inner.carry_dr_v6e = info
     inner.carry_variant_v6e = variant
     inner.carry_general_v6e = bool(general)
