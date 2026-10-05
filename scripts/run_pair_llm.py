@@ -46,6 +46,8 @@ def parser():
     p.add_argument('--stub-policy', choices=('cooperative',), default='cooperative')
     p.add_argument('--synthetic-plumbing-calibration', action='store_true',
                    help='fabricated, plumbing-only calibration (the controller is blind; no carry result)')
+    p.add_argument('--dev-single-arm', action='store_true',
+                   help='dev-pilot no_comm only: run one LLM arm without the rule-first cohort order')
     p.add_argument('--admission', choices=('measured-sim', 'dev-pilot'), default='measured-sim',
                    help='dev-pilot: #363 exact registered calibration; FUNCTIONAL_DEV, never promotable')
     p.add_argument('--calibration', type=Path)
@@ -210,7 +212,8 @@ def run_live(args, plan, calibration, provider_factory, primary, budget_path) ->
         cohort_id=args.cohort_id, backend_factory=PhysicsBackend, calibration=calibration['path'],
         calibration_sha=calibration['sha256'], provider_factory=provider_factory,
         synthetic_calibration=args.synthetic_plumbing_calibration, source_sha=args.expected_source_sha,
-        proxy_pid=args.proxy_pid, peer_measurement=measurement, admission_mode=plan['admission_mode'])
+        proxy_pid=args.proxy_pid, peer_measurement=measurement, admission_mode=plan['admission_mode'],
+        dev_single_arm=args.dev_single_arm)
     write(args.output / 'result.json', {
         'status': record['status'], 'condition': args.condition, 'failure': record.get('failure'),
         'failure_class': record.get('failure_class'), 'attempts': attempts, 'case': record['metrics'],

@@ -148,3 +148,18 @@ def test_rule_cli_accepts_cohort_parameters_for_read_only_plan(tmp_path, capsys)
         '--create-budget', '--synthetic-plumbing-calibration']) == 0
     assert json.loads(capsys.readouterr().out)['execution_started'] is False
     assert not (tmp_path/'budget.sqlite').exists()
+
+
+def test_dev_single_arm_admits_no_comm_alone_and_only_no_comm(budget):
+    row = begin(budget, 'no_comm', dev_single_arm=True)
+    assert row['dev_single_arm'] is True and row['ordinal'] == 1
+    with pytest.raises(admission.AdmissionRefused, match='COHORT_ORDER_VIOLATION'):
+        begin(budget, 'peer_nl', peer_measurement=peer_receipt(), dev_single_arm=True)
+
+
+def test_dev_single_arm_needs_the_dev_pilot_admission(tmp_path, budget):
+    from harness import pair_llm_live as live
+    with pytest.raises(ValueError, match='DEV pilot'):
+        live.run_pair_live(tmp_path, condition='no_comm', seed=911, cap_s=10., profile={}, budget=budget,
+                           cohort_id='c', backend_factory=lambda *a: pytest.fail('backend'), calibration=None,
+                           calibration_sha=None, source_sha=SOURCE, dev_single_arm=True)

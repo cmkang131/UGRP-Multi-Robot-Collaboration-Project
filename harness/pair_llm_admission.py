@@ -68,7 +68,10 @@ def _table(db):
                'PRIMARY KEY(cohort_id, condition))')
 
 
-def begin_case(budget, cohort_id, *, condition, seed, source_sha, peer_measurement=None):
+def begin_case(budget, cohort_id, *, condition, seed, source_sha, peer_measurement=None, dev_single_arm=False):
+    """``dev_single_arm``: DEV pilot only (10/5 user: run one LLM arm alone); no_comm without the rule-first order."""
+    if dev_single_arm and condition != 'no_comm':
+        raise AdmissionRefused('COHORT_ORDER_VIOLATION', 'dev single arm is no_comm only')
     if condition not in ORDER:
         raise AdmissionRefused('COHORT_ORDER_VIOLATION', 'unknown condition')
     cohort = budget.cohort(cohort_id)
@@ -79,7 +82,7 @@ def begin_case(budget, cohort_id, *, condition, seed, source_sha, peer_measureme
         _table(db)
         previous = [json.loads(r[0]) for r in db.execute(
             'SELECT record FROM pair_llm_admissions WHERE cohort_id=? ORDER BY rowid', (cohort_id,))]
-        expected = list(ORDER[:ORDER.index(condition)])
+        expected = [] if dev_single_arm else list(ORDER[:ORDER.index(condition)])
         if [r['condition'] for r in previous] != expected or any(r['status'] != 'completed' for r in previous):
             raise AdmissionRefused('COHORT_ORDER_VIOLATION', 'complete rule -> no_comm -> peer_nl, once per cohort')
         if any(r['seed'] != seed or r['source_sha'] != source_sha for r in previous):
@@ -104,7 +107,7 @@ def begin_case(budget, cohort_id, *, condition, seed, source_sha, peer_measureme
         row = {'condition': condition, 'seed': seed, 'source_sha': source_sha, 'status': 'running',
                'cohort_id': cohort_id, 'bundle_id': contract.BUNDLE_ID, 'ordinal': len(previous) + 1,
                'remaining_tokens_at_start': remaining, 'required_tokens': required,
-               'no_comm_measurement': measurement, 'peer_increment': increment}
+               'no_comm_measurement': measurement, 'peer_increment': increment, 'dev_single_arm': bool(dev_single_arm)}
         db.execute('INSERT INTO pair_llm_admissions VALUES (?,?,?)', (cohort_id, condition, canonical(row)))
     return row
 

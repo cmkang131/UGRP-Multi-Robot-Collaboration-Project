@@ -220,7 +220,8 @@ def driver_record(ledger, profile, budget, cohort_id) -> dict:
 
 def run_pair_live(out_root, *, condition, seed, cap_s, profile, budget, cohort_id, backend_factory, calibration,
                   calibration_sha, provider_factory=None, synthetic_calibration=False, source_sha='unknown',
-                  proxy_pid=None, wire=None, peer_measurement=None, root=contract.ROOT, admission_mode='MEASURED_SIM'):
+                  proxy_pid=None, wire=None, peer_measurement=None, root=contract.ROOT, admission_mode='MEASURED_SIM',
+                  dev_single_arm=False):
     """One live case through the study's retry rule. Returns ``(record, attempts)``.
 
     ``out_root/<condition>`` is attempt 1; ``<condition>-attempt2`` exists only after a pre-request host error.
@@ -231,8 +232,10 @@ def run_pair_live(out_root, *, condition, seed, cap_s, profile, budget, cohort_i
         raise ValueError('the rule arm makes no model call; it has no live path')
     if not 0 < float(cap_s) <= LIVE_MAX_CAP_S:
         raise ValueError(f'a live case is capped at {LIVE_MAX_CAP_S:g} SIM s (a longer one is a separate decision)')
+    if dev_single_arm and admission_mode != 'DEV_PILOT':
+        raise ValueError('dev single arm needs the DEV pilot admission')
     admitted = admission.begin_case(budget, cohort_id, condition=condition, seed=seed, source_sha=source_sha,
-                                    peer_measurement=peer_measurement)
+                                    peer_measurement=peer_measurement, dev_single_arm=dev_single_arm)
     out_root = Path(out_root)
     write(out_root / 'admission.json', admitted)
     if peer_measurement is not None:
