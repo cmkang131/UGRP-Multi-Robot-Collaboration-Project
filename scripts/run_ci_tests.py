@@ -124,6 +124,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_progress_arming.py",  # v98 loaded no-progress check: carry-leg reset + REQUIRED_MOVEMENT_M motion
     "tests/test_highpose_host_clock.py",  # v98 host clock v2: integer substep SIM time (no float drift, no 612 s cliff)
     "tests/test_highpose_pf_local_redraw.py",  # v98 R1 random poses redrawn locally next to walls (review #363 P1-2)
+    "tests/test_dev_pair_checkpoint.py",  # DEV-only checkpoint/resume for v98 stage probes (reducers, triggers, bit-identity gate)
     "tests/test_zone_final_pair_review_fixes.py",
     "tests/test_review_344*.py",
     "tests/test_zone_final_environment_floor_light.py",
