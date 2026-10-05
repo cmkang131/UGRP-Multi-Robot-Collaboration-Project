@@ -41,6 +41,7 @@ WEIGHT_FLOOR_M = .10                  # residual / max(|D_truth|, 0.10 m)  (adde
 BEAM_Z_MIN_M, SEPARATION_M, SEPARATION_TOL_M = .10, .944, .02
 ACCEPT = {'step_rel': .03, 'leg_rel': .025, 'min_d_m': .10, 'rms_ratio': 1.5}
 BOUNDS = {'g': (.05, 4.), 'tau': (.03, 3.), 'tau_stop': (.01, .5), 'u1': (1e-3, .2), 'c0': (0., .05), 'u0': (0., .05)}
+RAMP_OFF_U1 = 1e-6                    # v6g ramp width on an affine axis: clip(|u|/1e-6, 0, 1) == 1 for any effective |u| >= 1e-6
 INTERIOR_FRAC = .005                  # a variable closer than this fraction of its range to a bound is not interior
 FCC_LEFT_LEG_M = .7698                # recorded fcc5215f left leg (-0.0622, 128 ticks), r1 local-left displacement
 CURRENT_LOADED = {'gain': {'forward': 1.3550711149042434, 'left': .9642052319923683},
@@ -484,7 +485,7 @@ def stage_product(args):
         gain[i][i], tau_axis[i] = a['g'], a['tau']
         tau_stop.append(ts)
         if form == 'A':
-            u0[i], c0[i], u1[i] = a['shape']['u0'], 0., 0.     # subtract-u0 form; ramp disabled for this axis
+            u0[i], c0[i], u1[i] = a['shape']['u0'], 0., RAMP_OFF_U1   # subtract-u0 form; ramp numerically disabled (u1 > 0 is required by the DEV contract)
         elif form == 'R0':
             c0[i], u1[i] = 0., a['shape']['u1']
         else:
@@ -535,7 +536,7 @@ def main(argv=None):
     q.add_argument('--heldout', required=True, type=Path)
     q.add_argument('--base', required=True, type=Path)
     q.add_argument('--base-sha256', required=True)
-    q.add_argument('--rule', default='DEV_PILOT_LOADED_GAIN_V102_v1')
+    q.add_argument('--rule', default='DEV_PILOT_C0_ZERO_v1')   # the admitted PF rule key (c0 == 0, u1 > 0); the v102 identity is in loaded_gain_calibration
     q.add_argument('--output', required=True, type=Path)
     args = p.parse_args(argv)
     {'fit': stage_fit, 'evaluate': stage_evaluate, 'product': stage_product}[args.stage](args)

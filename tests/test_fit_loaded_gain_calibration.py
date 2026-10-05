@@ -131,7 +131,7 @@ def test_product_replaces_only_the_registered_loaded_fields_and_never_overwrites
         pytest.skip('base calibration not present in this checkout')
     class A: pass
     a = A(); a.fit = tmp_path / 'fit' / 'fit.json'; a.heldout = tmp_path / 'held' / 'heldout.json'; a.base = base
-    a.base_sha256 = fit.sha_file(base); a.rule = 'DEV_PILOT_LOADED_GAIN_V102_v1'; a.output = tmp_path / 'prod'
+    a.base_sha256 = fit.sha_file(base); a.rule = 'DEV_PILOT_C0_ZERO_v1'; a.output = tmp_path / 'prod'
     fit.stage_product(a)
     cal = json.loads((tmp_path / 'prod' / 'calibration_dev_pilot_loaded_v102.json').read_text())
     old = json.loads(base.read_text())
@@ -140,9 +140,9 @@ def test_product_replaces_only_the_registered_loaded_fields_and_never_overwrites
         assert new_ml[key] == old_ml[key]
     assert new_ml['gain'][2] == old_ml['gain'][2] and new_ml['tau_axis_s'][2] == old_ml['tau_axis_s'][2]
     assert new_ml['deadband']['u1'][2] == old_ml['deadband']['u1'][2]                  # turn axis unchanged
-    assert new_ml['deadband']['u0'][0] > 0 and new_ml['deadband']['c0'][:2] == [0., 0.] and new_ml['deadband']['u1'][:2] == [0., 0.]
+    assert new_ml['deadband']['u0'][0] > 0 and new_ml['deadband']['c0'][:2] == [0., 0.] and new_ml['deadband']['u1'][:2] == [fit.RAMP_OFF_U1] * 2
     assert cal['params']['motion'] == old['params']['motion'] and cal['camera_models'] == old['camera_models']
-    assert cal['dev_rule'] == 'DEV_PILOT_LOADED_GAIN_V102_v1' and cal['confirmatory'] is False and cal['status'] == 'DEV_PILOT'
+    assert cal['dev_rule'] == 'DEV_PILOT_C0_ZERO_v1' and cal['loaded_gain_calibration']['bundle_id'] == env.BUNDLE_ID and cal['confirmatory'] is False and cal['status'] == 'DEV_PILOT'
     with pytest.raises(FileExistsError):
         fit.stage_product(a)
     with pytest.raises(FileExistsError):
