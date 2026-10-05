@@ -66,6 +66,26 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   **그 뒤에는:** (1) 이전 v98 기록과 결과를 합산하지 않는다(SHA로 구분). (2) 이 README의 오프라인 NEES 표를 다시 만든다.
   (3) σ 문턱(짝 입장 0.05 m, 도착 확인의 허용 오차 경계)을 다시 검증한다. σ가 정직해지면 같은 문턱의 의미가 바뀌기 때문이다.
 
+### 렌더 근거리 절단면 floor_light_nearclip_v1 (사용자 발견, 2026-10-05)
+
+- 발견(사용자): HIGH로 들면 자기 카메라 화면에서 짐이 뚫려 바닥이 보인다. 원인: 카메라가 빔 윗면에서 약 13 mm 위인데
+  렌더의 근거리 절단면(near clipping plane)이 `vis.map.znear 0.002 × extent 11.11 m = 22.2 mm`라 22 mm 안쪽 빔이 잘렸다.
+  실제 카메라라면 빔이 화면을 가린다. 즉 시뮬레이터가 실물보다 많이 보여 줬다(sim2real 차이).
+- 수정: 새 렌더 프로필 `floor_light_nearclip_v1` = floor_light_v1 + `<visual><map znear="0.0004">`(0.0004 × 11.112 m = 4.44 mm,
+  목표 5 mm 이하). 모듈 `sim/final_pair_highpose_nearclip.py`, 프로필 sha256 `1b1edce2…`(번들 `render_nearclip`에 이름·해시 기록).
+  v98 호스트(`PhysicsBackend`, `StagedBackend`)만 생성자 동안 `make_scene`을 감싸 floor_light_v1 다음에 적용한다.
+  `sim/render_profile.py`·`sim/final_pair_v3.py`와 기존 번들·과거 장면 바이트는 그대로다. 실행마다 `eval_only/render_nearclip.json`에
+  실제 컴파일 값(float32 znear, extent, near_m)을 기록하고 5 mm를 넘으면 시작하지 않는다.
+- 검증(렌더 전용, 물리 진행 없음, `outputs/v105-nearclip-check-20261005/`): light6 t=301.8 r1. 수정 전 렌더가 기록 프레임과
+  바이트 단위로 같다(`1b0f2362…`). 수정 후 빔 윗면이 화면을 거의 채운다(`cc430af3…`, 감싼 장면을 실제 컴파일해 다시 그려도 같은 해시).
+  깊이 정밀도 문제(z-fighting)는 눈으로 보이지 않았다. 전후 비교 그림: `r1_t301.80_before_after.jpg`, `r1_t250.00_before_after.jpg`.
+- 위치 추정 영향(같은 OpenCV 벽 관측기, light6 상태): HIGH 자세(896/2035/1894)에서는 수정 전에도 벽 열이 0/96이라 바뀌지 않는다
+  (짐 든 동안 위치는 원래 자기 명령+DR). 짐 내려놓기 전 먼 시야(t=20·60·100)는 벽 열 수가 같다(r1 61·62·68, r2 84·58·33),
+  화소 차이 최대 2~40 수준. 다른 짐 든 자세(981/891/807/1269 등)는 보정이 없어 관측기가 측정하지 않는다.
+- 남은 위험: 빔 위 잡기 자세(t≥180, 짐 들기 전)와 운반 전체에서 화면의 약 19만/30.7만 화소가 바뀐다. 잘린 화면에서 맞춘 잡기 전
+  확인(pregrasp hover)·빔 색 마스크·기록 전용 grip 관계(`zone_pair_highpose_grip`의 고정 near_m 22.2 mm)는 새 화면에서 다르게 동작할 수
+  있다. light7(39919479)·light8(seed 912)은 이전 렌더 그대로이고, 이 프로필은 그다음 실행부터 적용한다. 이전 결과와 합산하지 않는다.
+
 ### v105 DEV 라이트: 보수적 정지를 기록 전용으로 (사용자 결정, 2026-10-05)
 
 - **사용자 결정 원문:**
@@ -1622,6 +1642,15 @@ TensorBoard 새 스냅샷 `1003-pair-highpose-v93/high-hold`에 같은 진단의
 0으로 채우지 않는다. [대시보드 검증과 고정 링크](tensorboard_verification.json)를 따른다.
 
 ## 참고 자료
+
+### 렌더 근거리 절단면 (floor_light_nearclip_v1)
+
+- MuJoCo XML reference, `visual/map` `znear`/`zfar`: 근거리 절단면 거리 = model extent × znear. 너무 가까우면 깊이 버퍼 해상도가 크게
+  떨어지고, 너무 멀면 가까운 물체가 잘린다(2026-10-05 Context7로 문서 확인).
+- MuJoCo changelog: reversed-Z 렌더링으로 깊이 정밀도 개선(`mjtDepthMap`, PR #978, Levi Burner). 확인(같은 경로). 이번 4.44 mm에서
+  눈으로 z-fighting 없음.
+- Reed, "Depth Precision Visualized", NVIDIA Developer Blog, 2015. reversed-Z + 부동소수 깊이가 가까운 near plane에서도 정밀도를
+  유지한다는 설명. **미확인**(이번 작업에서 원문을 다시 읽지 않음).
 
 ### HIGH 운반 빔 경계 맞춤 (v98, 처방 제안의 출처)
 

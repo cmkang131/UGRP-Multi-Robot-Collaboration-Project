@@ -122,6 +122,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_belief_expansion.py",  # v98 R2: one-shot belief expansion armed only by an arrival-view rejection
     "tests/test_highpose_progress_arming.py",  # v98 loaded no-progress check: carry-leg reset + REQUIRED_MOVEMENT_M motion
     "tests/test_highpose_host_clock.py",  # v98 host clock v2: integer substep SIM time (no float drift, no 612 s cliff)
+    "tests/test_highpose_nearclip.py",  # v98 render near-clip floor_light_nearclip_v1 (znear 0.0004 x extent = 4.4 mm)
     "tests/test_highpose_pf_local_redraw.py",  # v98 R1 random poses redrawn locally next to walls (review #363 P1-2)
     "tests/test_deadband_u0_v102.py",
     "tests/test_dev_pair_checkpoint.py",  # DEV-only checkpoint/resume for v98 stage probes (reducers, triggers, bit-identity gate)
