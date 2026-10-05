@@ -41,9 +41,10 @@ CASE_CAP_S = 900.
 COLLISION_GUARD_MODE = 'log_only'
 COLLISION_GUARD_BUNDLE_LABEL = 'zone-final-pair-highpose-v105-collision-log-only'
 # DEV light mode (user 2026-10-05 17:3x KST "다 라이트 하게 줄여"): conservative stops in CommandGuard.check and the
-# re-fix horizon check are logged ('dev_light_would_stop') instead of stopping. Real physical failures (drop, tilt
-# limit, GO barrier, grip loss) and execution errors still stop. DEV_PILOT only; must be False for any formal E2E or
-# study cohort. Runs carry COLLISION_GUARD_BUNDLE_LABEL + dev_light and are never pooled with earlier runs.
+# re-fix horizon check are logged ('dev_light_would_stop') instead of stopping. GO barrier mismatches and execution
+# errors still stop. Drop, tilt and grip loss are NOT detected during the run in this version (independent review #383
+# P2-b): they are evaluation-only judgements written after the run, never an in-run stop. DEV_PILOT only; a formal
+# (non-DEV_PILOT) run is refused while it is on (require_dev_only_flags). Runs carry COLLISION_GUARD_BUNDLE_LABEL + dev_light and are never pooled with earlier runs.
 DEV_LIGHT = True
 DEV_LIGHT_SOFT_STOPS = frozenset({'PAIR_COLLISION_GUARD', 'POSE_UNCERTAIN', 'POSE_UNCERTAIN_PROGRESS',
                                   'SELF_POSE_UNCERTAIN', 'GLOBAL_ENVELOPE_BLOCKED', 'REFIX_HORIZON_INFEASIBLE',
@@ -55,11 +56,11 @@ DEV_LIGHT_SOFT_STOPS = frozenset({'PAIR_COLLISION_GUARD', 'POSE_UNCERTAIN', 'POS
                                   # light v3: an align re-look without an accepted fix resumes on the own estimate
                                   'ALIGN_RELOOK_NO_FIX', 'ALIGN_RELOOK_FIX_EXPIRED',
                                   'ALIGN_TIMEOUT'})
-# Not softened (real physical failure or impossible to continue): drop/tilt/grip loss, GO barrier mismatch
-# (BARRIER_*), PARTNER_ABORT, own command/clock/provider errors, LOADED_BASE_MOTION_REQUIRES_HIGH,
+# Not softened (impossible to continue): GO barrier mismatch (BARRIER_*), PARTNER_ABORT, own command/clock/provider errors, LOADED_BASE_MOTION_REQUIRES_HIGH,
 # PAIR_RELOOK_WHILE_GRIPPED, HIGH_CARRY_VIEW_REQUIRED, frozen approach-driver failures (APPROACH_* from the driver,
 # DOOR_POSE_NOT_LOCALIZED: the frozen driver is already in its failed phase, so a retry cannot proceed).
-DEV_LIGHT_VERSION = 'dev_light_v5'
+DEV_LIGHT_VERSION = 'dev_light_v6'
+DEV_LIGHT_REPEAT_LIMIT = 20          # same soft controller reason more than 20 times for one robot -> real failure (#383 P2-a)
 DEV_LIGHT_LOG_EVERY = 50              # a soft stop repeated every tick is logged at its 1st, 51st, ... occurrence
 DEV_LIGHT_EVENT = 'dev_light_would_stop'
 # Partial-fix provider (claude/llm-eye ec0215f3, harness/zone_pair_highpose_partial_fix: fix receipt needs the SECOND
@@ -361,6 +362,29 @@ def require_runnable(value):
         return
     if registry()['runnable'] is not True or value.get('runnable') is not True:
         raise ValueError(REGISTRY_BLOCK)
+    require_dev_only_flags(value.get('admission_mode', MEASURED_SIM))   # #383 P1 (after the registry block)
+
+
+DEV_ONLY_FLAGS_BLOCK = 'DEV_ONLY_FLAGS_IN_FORMAL_MODE'
+
+
+def dev_only_flags():
+    """The DEV-only switches that are on (module defaults are DEV values; independent review #383 P1)."""
+    on = []
+    if DEV_LIGHT:
+        on.append('DEV_LIGHT')
+    if PARTIAL_FIX:
+        on.append('PARTIAL_FIX')
+    if COLLISION_GUARD_MODE != 'enforce':
+        on.append(f'COLLISION_GUARD_MODE={COLLISION_GUARD_MODE}')
+    return on
+
+
+def require_dev_only_flags(mode):
+    """Refuse a formal (non-DEV_PILOT) run while any DEV-only switch is on."""
+    on = dev_only_flags()
+    if mode != DEV_PILOT and on:
+        raise ValueError(f'{DEV_ONLY_FLAGS_BLOCK}:{mode}:{",".join(on)}')
 
 
 def cases(check, map_id=None):
@@ -410,9 +434,10 @@ def bundle(map_id, check, admission=MEASURED_SIM):
         calibration_selection='D5 v92 loader v2 + registered complete measurement evidence; HIGH only',
         collision_guard={'mode': COLLISION_GUARD_MODE, 'bundle_label': COLLISION_GUARD_BUNDLE_LABEL},
         render_nearclip=_nearclip_record(),
+        dev_only_flags={'on': dev_only_flags(), 'formal_runs': 'refused while any is on (require_dev_only_flags)'},
         partial_fix={'enabled': PARTIAL_FIX, 'module': 'harness/zone_pair_highpose_partial_fix.py'},
         dev_light={'enabled': DEV_LIGHT, 'version': DEV_LIGHT_VERSION, 'soft_stops': sorted(DEV_LIGHT_SOFT_STOPS),
-                   'event': DEV_LIGHT_EVENT,
+                   'event': DEV_LIGHT_EVENT, 'repeat_limit': DEV_LIGHT_REPEAT_LIMIT,
                    'scope': 'CommandGuard.check/before_control/_stationary_reobserve aborts, refix horizon check, '
                             'HIGH checkpoint DR budget/timeout (proceed as DR), edge reference timeout (proceed), '
                             'controller fail() of the listed reasons (retry next tick)'})

@@ -1119,7 +1119,13 @@ def main():
     p.add_argument('--media-port', type=int, default=6007)
     p.add_argument('--coverage-audit', type=Path, action='append', default=[],
                    help='External ACT request coverage JSON; repeat per audited --source, mapped by source_raw')
+    p.add_argument('--allow-removed-request-images', action='store_true',
+                   help='zone-study runs: pass when request image files were removed under the AGENTS.md retention '
+                        'rule; the request rows and image sha256 must still be present (counted as request_images_hash_only)')
     args = p.parse_args()
+    if args.allow_removed_request_images:
+        from scripts.tensorboard_tools import zone_study
+        zone_study.ALLOW_REMOVED_REQUEST_IMAGES = True
     if not 0 <= args.max_images <= 100: p.error('--max-images must be in 0..100')
     if not 1 <= args.media_port <= 65535: p.error('invalid media port')
     sources = list(dict.fromkeys(x.resolve() for x in args.source))

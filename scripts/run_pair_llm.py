@@ -124,7 +124,7 @@ def _main(argv=None, speedups=None):
                                   synthetic_calibration=args.synthetic_plumbing_calibration, admission_mode=mode)
     plan = {'execution_bundle_id': contract.BUNDLE_ID, 'workflow_version': contract.WORKFLOW_VERSION,
             'status': 'DRAFT_UNSEALED', 'condition': args.condition, 'arm': contract.ARMS[args.condition],
-            **contract.admission_record(mode), **contract.physics_profile(contract.physics_bundle(admission_mode=mode)),
+            **contract.admission_record(mode, args.synthetic_plumbing_calibration), **contract.physics_profile(contract.physics_bundle(admission_mode=mode)),
             'execution_started': False,
             'host_clock': host_clock_record(), 'model_kind': kind if args.condition != 'rule' else 'none',
             'cap_s': args.cap_s, 'seed': args.seed, 'source_sha': args.expected_source_sha,
@@ -198,7 +198,7 @@ def _main(argv=None, speedups=None):
         completion = admission.finish_case(budget, args.cohort_id, condition='rule', result=result)
         write(args.output / 'admission_completion.json', completion)
     write(args.output / 'result.json', {'status': result['status'], 'condition': args.condition,
-                                        **contract.admission_record(mode), **contract.physics_profile(
+                                        **contract.admission_record(mode, args.synthetic_plumbing_calibration), **contract.physics_profile(
                                             contract.physics_bundle(admission_mode=mode)),
                                         'case': result['metrics'], 'host_clock': result['host_clock'], 'research_result': False,
                                         'physical_success': None})
@@ -236,7 +236,7 @@ def run_live(args, plan, calibration, provider_factory, primary, budget_path) ->
     write(args.output / 'result.json', {
         'status': record['status'], 'condition': args.condition, 'failure': record.get('failure'),
         'failure_class': record.get('failure_class'), 'attempts': attempts, 'case': record['metrics'],
-        'host_clock': record['host_clock'], **contract.admission_record(plan['admission_mode']),
+        'host_clock': record['host_clock'], **contract.admission_record(plan['admission_mode'], args.synthetic_plumbing_calibration),
         **contract.physics_profile(contract.physics_bundle(admission_mode=plan['admission_mode'])),
         'cohort_usage': budget.usage(args.cohort_id), 'research_result': False, 'physical_success': None,
         'note': 'live smoke: plumbing and connectivity only, not a carry or model-performance result'})
