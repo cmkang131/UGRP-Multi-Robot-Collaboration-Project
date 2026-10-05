@@ -4,12 +4,15 @@ Profiles are versioned and never change meaning once published:
 
 ``all_v1``
     Write every frame as an original JPEG. This is the behaviour of every runner before 2026-09-27 and of every
-    past pre-registration. Runs whose frames fall in the AGENTS.md keep categories (model-request images, active
-    work, pre-registered study cohorts) must choose it explicitly.
+    past pre-registration. Runs whose frames fall in the AGENTS.md keep categories (active work, the last 3 days,
+    pre-registered study cohorts) must choose it explicitly.
 ``none_v1``
-    No frame bytes, only one sha256 row per frame. The default for ``dev``/``diag`` runs that do not need frames.
+    No frame bytes, only one sha256 row per frame. The default (profile omitted) for ``smoke`` runs only.
 ``mp4_v1``
-    One H.264 mp4 per stream plus the sha256 list (viewing copy; the hashes are those of the original JPEGs).
+    One H.264 mp4 per stream plus the sha256 list. Lossy: the original JPEGs are not kept.
+
+``none_v1`` and ``mp4_v1`` leave no original image, so they are allowed for ``dev``/``diag``/``smoke`` only. A run
+whose frames fall in a keep category chooses ``all_v1`` (or a reduced dev profile) and a ``cap_mib``.
 ``dev_1hz_decisions_v1``
     Development and diagnostic runs only. Per stream (one robot camera, or the TOP camera), write a
     periodic frame when at least 1.0 SIM s has passed since the last periodic frame written, and always
@@ -18,7 +21,9 @@ Profiles are versioned and never change meaning once published:
     periodic clock.
 
 The policy only decides whether the JPEG *file* is written. The caller still records every frame's
-SIM time and sha256 in its frame log, so a skipped frame is known by hash. Retention after writing follows
+SIM time and sha256 in its frame log, so a skipped frame is known by hash. This module covers camera frames
+only. Model-request images (LLM, ACT, trained students) do not go through ``FrameSink``; the runner keeps them
+with the request text. Retention after writing follows
 AGENTS.md "보존": text, ledgers, logs and sha256 lists are always kept; image bytes only for active work and open
 PRs, the last 3 days, version representative videos and pre-registered study cohorts; anything else goes to the
 Trash with a record in outputs/cleanup-records/ (scripts/pack_frames.py --trash-originals). A run whose images
@@ -57,7 +62,9 @@ PROFILES: dict[str, FrameProfile] = {
     "mp4_v1": FrameProfile("mp4_v1", None, False, "one H.264 mp4 per stream + per-frame sha256 list", "mp4"),
 }
 DEFAULT_PROFILE = "none_v1"       # used only when the split is one of DEFAULT_SPLITS
-DEFAULT_SPLITS = ("dev", "diag", "smoke")
+DEFAULT_SPLITS = ("smoke",)       # throwaway smoke runs: nothing to keep. dev/diag name their profile
+NO_ORIGINAL_SPLITS = ("dev", "diag", "smoke")   # none_v1 / mp4_v1 leave no original JPEG
+NO_ORIGINAL_PROFILES = ("none_v1", "mp4_v1")
 REDUCED_SPLITS = ("dev", "diag")
 
 
@@ -65,9 +72,10 @@ REDUCED_SPLITS = ("dev", "diag")
 class FrameStoragePolicy:
     """Per-run policy; one instance per episode. ``split`` must be given for a reduced profile.
 
-    ``profile=None`` means the default (``none_v1``) and is allowed only for dev/diag/smoke runs. Any other run
-    (test or pre-registered cohort, unknown split) must name its profile, so a run that needs its frames never
-    loses them by omission."""
+    ``profile=None`` means the default (``none_v1``) and is allowed only for ``smoke`` runs. Any other run
+    (dev/diag, test or pre-registered cohort, unknown split) must name its profile, so a run whose images are in a
+    keep category (active work, last 3 days, cohort) never loses them by omission. ``none_v1``/``mp4_v1`` keep no
+    original JPEG and are refused outside dev/diag/smoke."""
 
     profile: str | None = None
     split: str | None = None
@@ -82,6 +90,9 @@ class FrameStoragePolicy:
             self.profile = DEFAULT_PROFILE
         if self.profile not in PROFILES:
             raise ValueError(f"unknown frame profile {self.profile!r}; known: {sorted(PROFILES)}")
+        if self.profile in NO_ORIGINAL_PROFILES and self.split not in NO_ORIGINAL_SPLITS:
+            raise ValueError(f"frame profile {self.profile!r} keeps no original JPEG; allowed splits "
+                             f"{NO_ORIGINAL_SPLITS}, not {self.split!r} (cohort/test runs use all_v1)")
         if PROFILES[self.profile].reduced and self.split not in REDUCED_SPLITS:
             raise ValueError(f"frame profile {self.profile!r} is for splits {REDUCED_SPLITS}, not {self.split!r};"
                              " test cohorts and pre-registered runs name all_v1 explicitly")
@@ -141,7 +152,8 @@ class _Mp4Stream:
         self.proc = subprocess.Popen(
             [ffmpeg, "-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", f"{fps:g}", "-c:v", "mjpeg",
              "-i", "-", "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", str(MP4_CRF),
-             "-pix_fmt", "yuv420p", "-vf", "pad=ceil(iw/2)*2:ceil(ih/2)*2", "-movflags", "+faststart", str(dest)],
+             "-pix_fmt", "yuv420p", "-vf", "pad=ceil(iw/2)*2:ceil(ih/2)*2",
+             "-movflags", "frag_keyframe+empty_moov", str(dest)],     # playable even if the run aborts
             stdin=subprocess.PIPE)
 
     def write(self, jpeg: bytes) -> None:
@@ -171,12 +183,21 @@ class FrameSink:
     HASH_LIST = "frames.sha256.jsonl"
 
     def __init__(self, out_dir, profile: str | None = None, *, split: str | None = None,
-                 cap_mib: float = DEFAULT_WRITE_CAP_MIB, fps: float = 5.0):
-        if cap_mib is None or cap_mib <= 0:
+                 cap_mib: float | None = None, fps: float = 5.0):
+        self.policy = FrameStoragePolicy(profile, split=split)
+        if cap_mib is None:
+            if self.policy.split in NO_ORIGINAL_SPLITS:
+                cap_mib = DEFAULT_WRITE_CAP_MIB
+            else:
+                raise ValueError("a cohort/test run must state cap_mib (sized from its pre-registration); the "
+                                 f"{DEFAULT_WRITE_CAP_MIB:g} MiB dev default would stop it mid-run")
+        if cap_mib <= 0:
             raise ValueError("a positive per-run frame write cap (MiB) is required; there is no unlimited mode")
         self.out = Path(out_dir)
         self.out.mkdir(parents=True, exist_ok=True)
-        self.policy = FrameStoragePolicy(profile, split=split)
+        if (self.out / self.HASH_LIST).exists():
+            raise FileExistsError(f"{self.out / self.HASH_LIST} exists: a FrameSink needs a fresh directory so "
+                                  "earlier frames and their hash list are never overwritten")
         self.cap_bytes = int(cap_mib * 2**20)
         self.cap_mib, self.fps = float(cap_mib), float(fps)
         self.bytes_written = 0
@@ -198,6 +219,8 @@ class FrameSink:
                 f"(profile {self.policy.profile}); raise the cap in the run config or store fewer frames")
 
     def add(self, stream: str, t: float, jpeg: bytes, *, decision: bool = False, reason: str | None = None) -> dict:
+        if self.cap_exceeded:   # latched: after the cap no further bytes are written, even if the caller swallowed the error
+            raise FrameWriteCapExceeded(f"frame write cap of {self.cap_mib:g} MiB already exceeded")
         index = self._index.get(stream, 0)
         self._index[stream] = index + 1
         verdict = self.policy.decide(stream, t, decision=decision, reason=reason)

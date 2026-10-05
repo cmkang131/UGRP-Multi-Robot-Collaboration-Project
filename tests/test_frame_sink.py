@@ -38,7 +38,7 @@ def rows(out):
 
 def test_default_stores_no_bytes_but_logs_every_hash(tmp_path):
     frames = [jpeg(i) for i in range(6)]
-    with FrameSink(tmp_path, split="dev") as sink:
+    with FrameSink(tmp_path, "none_v1", split="dev") as sink:
         for i, data in enumerate(frames):
             assert sink.add("r1", i * 0.2, data)["stored"] is None
     assert not list(tmp_path.rglob("*.jpg")) and not list(tmp_path.glob("*.mp4"))
@@ -50,36 +50,46 @@ def test_default_stores_no_bytes_but_logs_every_hash(tmp_path):
 
 def test_jpeg_profile_is_capped_and_stops_the_run(tmp_path):
     data = [jpeg(i) for i in range(4)]
-    sink = FrameSink(tmp_path, "all_v1", cap_mib=(sum(len(b) for b in data[:3]) + 1) / 2**20)
+    sink = FrameSink(tmp_path, "all_v1", split="dev", cap_mib=(sum(len(b) for b in data[:3]) + 1) / 2**20)
     for i in range(3):
         assert sink.add("r1", i, data[i])["stored"] == "jpeg"
     with pytest.raises(FrameWriteCapExceeded) as err:
         sink.add("r1", 3, data[3])
     assert err.value.errno is None and isinstance(err.value, OSError)
+    with pytest.raises(FrameWriteCapExceeded):      # latched: nothing more is written even if the caller swallowed it
+        sink.add("r1", 4, data[0])
     sink.close()
     assert sink.record()["cap_exceeded"] is True
     assert len(rows(tmp_path)) == 4                      # the crossing frame is still listed by hash
+    with pytest.raises(FileExistsError):                 # a second sink never appends to / overwrites this run
+        FrameSink(tmp_path, "all_v1", split="dev")
 
 
-def test_runs_outside_dev_must_name_their_profile(tmp_path):
-    for split in (None, "test", "cohort"):
+def test_only_smoke_runs_may_omit_the_profile_and_cohorts_must_state_a_cap(tmp_path):
+    for split in (None, "dev", "diag", "test", "cohort"):
         with pytest.raises(ValueError):
             FrameSink(tmp_path / str(split), split=split)
-    sink = FrameSink(tmp_path / "ok", "all_v1", split="test")      # explicit choice keeps the JPEGs
+    assert FrameSink(tmp_path / "smoke", split="smoke").record()["profile"] == "none_v1"
+    for profile in ("none_v1", "mp4_v1"):                              # no original JPEG: not for cohorts
+        with pytest.raises(ValueError):
+            FrameSink(tmp_path / f"c-{profile}", profile, split="test", cap_mib=500)
+    with pytest.raises(ValueError, match="cap_mib"):
+        FrameSink(tmp_path / "nocap", "all_v1", split="test")
+    sink = FrameSink(tmp_path / "ok", "all_v1", split="test", cap_mib=500)   # explicit choice keeps the JPEGs
     assert sink.add("r1", 0.0, jpeg(1))["stored"] == "jpeg"
     sink.close()
 
 
 def test_no_unlimited_mode(tmp_path):
-    for bad in (0, -1, None):
+    for bad in (0, -1):
         with pytest.raises(ValueError):
-            FrameSink(tmp_path, split="dev", cap_mib=bad)
+            FrameSink(tmp_path, "none_v1", split="dev", cap_mib=bad)
 
 
 @pytest.mark.skipif(not FFMPEG, reason="ffmpeg not installed")
 def test_mp4_profile_packs_a_stream_and_keeps_the_hash_list(tmp_path):
     frames = [jpeg(i) for i in range(10)]
-    with FrameSink(tmp_path, "mp4_v1", cap_mib=5) as sink:
+    with FrameSink(tmp_path, "mp4_v1", split="dev", cap_mib=5) as sink:
         for i, data in enumerate(frames):
             assert sink.add("r1", i * 0.2, data)["stored"] == "mp4"
     assert (tmp_path / "r1.mp4").stat().st_size > 0 and not list(tmp_path.rglob("*.jpg"))
@@ -118,9 +128,18 @@ def test_pack_frames_dry_run_then_verified_pack_then_trash_with_record(tmp_path)
     assert not list(d.glob("*.jpg"))
     # moved, not deleted: every original is in the Trash with identical bytes, and a record says where
     record = json.loads(next(records.glob("pack-frames-*.json")).read_text())
-    assert record["reason"] == "past dev run, no keep category" and len(record["files"]) == 8
-    assert sorted(hashlib.sha256(Path(m["trash"]).read_bytes()).hexdigest() for m in record["files"]) == \
+    assert record["reason"] == "past dev run, no keep category" and len(record["planned_files"]) == 8
+    assert record["status"] == "done"
+    trashed = [Path(record["trash_dir"]) / m["path"].lstrip("/") for m in record["planned_files"]]
+    assert sorted(hashlib.sha256(t.read_bytes()).hexdigest() for t in trashed) == \
         sorted(hashlib.sha256(b).hexdigest() for b in data)
+    # packing again without trashing is refused (earlier mp4 / hash list never overwritten), and a changed
+    # directory no longer matches the earlier list so the trash step refuses it too
+    (d / "00000.jpg").write_bytes(data[0])
+    assert pack.main([str(tmp_path), "--execute"]) == pack.EXIT_REFUSED
+    (d / "00000.jpg").write_bytes(data[1])
+    assert pack.main([str(tmp_path), "--execute", "--trash-originals", "--reason", "x",
+                      "--trash-root", str(trash), "--record-dir", str(records)]) == pack.EXIT_REFUSED
 
 
 @pytest.mark.skipif(not FFMPEG, reason="ffmpeg not installed")
@@ -128,7 +147,8 @@ def test_pack_frames_refuses_to_trash_frames_from_the_last_three_days(tmp_path):
     pack = load("pack_frames")
     d, _ = _frames_dir(tmp_path, age_days=1.0)
     assert pack.main([str(tmp_path), "--execute", "--trash-originals", "--reason", "x",
-                      "--trash-root", str(tmp_path / "trash"), "--record-dir", str(tmp_path / "records")]) == 0
+                      "--trash-root", str(tmp_path / "trash"), "--record-dir", str(tmp_path / "records")]) \
+        == pack.EXIT_REFUSED
     assert len(list(d.glob("*.jpg"))) == 8 and not (tmp_path / "records").exists()
     assert not (tmp_path / "frames.mp4").exists()
 
@@ -184,11 +204,15 @@ def _record(sha):
             "request_archive": [{"request_id": "q1", "image_refs": [{"label": "own", "bytes_sha256": sha}]}]}
 
 
-def test_tensorboard_zone_study_accepts_hash_only_request_images_but_rejects_a_mismatch():
+def test_tensorboard_zone_study_hash_only_request_images_needs_the_explicit_flag(monkeypatch):
+    from scripts.tensorboard_tools import zone_study
     from scripts.tensorboard_tools.zone_study import request_images
     sha = "a" * 64
+    with pytest.raises(ValueError, match="Missing"):                        # default: a missing image is rejected
+        request_images(_Src({}), _record(sha), _Writer(), 4)
+    monkeypatch.setattr(zone_study, "ALLOW_REMOVED_REQUEST_IMAGES", True)
     writer = _Writer()
-    assert request_images(_Src({}), _record(sha), writer, 4) == (1, 1)        # image not stored: hash only
+    assert request_images(_Src({}), _record(sha), writer, 4) == (1, 1)        # removed by the retention rule: hash only
     assert writer.images == []
     stored = {f"study/request_images/{sha}.jpg": {"sha256": sha}}
     writer = _Writer()

@@ -20,15 +20,18 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import os
 import hashlib
 import json
 import shutil
 import subprocess
 import sys
 import time
+import uuid
 from pathlib import Path
 
 CRF = 28
+EXIT_REFUSED = 2
 DEFAULT_MIN_AGE_DAYS = 3.0
 DEFAULT_RECORD_DIR = Path("/Users/changmin/projects/ugrp/outputs/cleanup-records")
 
@@ -91,33 +94,75 @@ def move_to_trash(files: list[Path], trash_dir: Path) -> list[dict]:
     return moved
 
 
+def git_tracked(files: list[Path]) -> list[Path]:
+    """JPEGs tracked by git (test fixtures, committed evidence) are in the 'tests use them' keep category."""
+    if not files:
+        return []
+    out = subprocess.run(["git", "-C", str(files[0].parent), "ls-files", "--", *[str(f) for f in files]],
+                         capture_output=True, text=True)
+    return files if out.returncode == 0 and out.stdout.strip() else []
+
+
 def pack(directory: Path, fps: float, *, trash: bool = False, reason: str = "", min_age_days: float = DEFAULT_MIN_AGE_DAYS,
          trash_root: Path | None = None, record_dir: Path = DEFAULT_RECORD_DIR) -> dict:
     files = sorted(directory.glob("*.jpg"))
     mp4 = directory.parent / f"{directory.name}.mp4"
     lst = directory.parent / f"{directory.name}.sha256.jsonl"
     before = sum(f.stat().st_size for f in files)
-    recent = too_recent(files, min_age_days) if trash else []
-    if recent:   # refuse before writing anything: this directory is inside the "last 3 days" keep category
+    refusal = None
+    reuse = False   # an earlier --execute already wrote and may be re-verified for the trash step
+    if mp4.exists() or lst.exists():
+        if trash and mp4.exists() and lst.exists():
+            now_rows = hash_rows(files)
+            listed = [json.loads(x) for x in lst.read_text().splitlines()]
+            if listed == now_rows and decoded_frames(mp4) == len(files):
+                reuse = True
+            else:
+                refusal = f"existing {mp4.name}/{lst.name} do not match the current JPEGs (never overwritten)"
+        else:
+            refusal = f"{mp4.name} or {lst.name} already exists (an earlier pack; never overwritten)"
+    if refusal is None and trash:
+        recent = too_recent(files, min_age_days)
+        if recent:
+            refusal = f"{len(recent)} JPEG(s) newer than {min_age_days:g} days (AGENTS.md 보존: last 3 days)"
+        elif git_tracked(files):
+            refusal = "JPEGs tracked by git (tests/evidence use them: AGENTS.md 보존)"
+        else:
+            try:
+                record_dir.mkdir(parents=True, exist_ok=True)
+                probe = record_dir / f".write-probe-{uuid.uuid4().hex}"
+                probe.write_text("")
+                probe.unlink()
+            except OSError as exc:
+                refusal = f"cleanup record dir {record_dir} not writable: {exc}"
+    if refusal:   # refuse before writing anything
         return {"dir": str(directory), "frames": len(files), "jpeg_bytes": before, "mp4_bytes": 0, "mp4": None,
-                "hash_list": None, "verified": False, "originals_moved_to_trash": False,
-                "refused": f"{len(recent)} JPEG(s) newer than {min_age_days:g} days (AGENTS.md 보존: last 3 days)"}
+                "hash_list": None, "verified": False, "originals_moved_to_trash": False, "refused": refusal}
     rows = hash_rows(files)
-    encode(files, mp4, fps)
-    lst.write_text("".join(json.dumps(r, separators=(",", ":")) + "\n" for r in rows))
+    if not reuse:
+        encode(files, mp4, fps)
+        lst.write_text("".join(json.dumps(r, separators=(",", ":")) + "\n" for r in rows))
     verified = (len(lst.read_text().splitlines()) == len(files) and decoded_frames(mp4) == len(files))
     moved = False
     if trash and verified:
         stamp = dt.datetime.now().strftime("%Y%m%d-%H%M%S")
-        trash_dir = (trash_root or Path.home() / ".Trash") / f"ugrp-pack-frames-{stamp}"
-        moves = move_to_trash(files, trash_dir)
-        record_dir.mkdir(parents=True, exist_ok=True)
+        tag = hashlib.sha256(str(directory.resolve()).encode()).hexdigest()[:8]
+        trash_dir = (trash_root or Path.home() / ".Trash") / f"ugrp-pack-frames-{stamp}-{tag}"
         record = {"schema": "ugrp.pack_frames_cleanup.v1", "date": stamp, "dir": str(directory.resolve()),
                   "reason": reason, "rule": "AGENTS.md 보존 (2026-10-04): hash list and mp4 kept, JPEGs moved to Trash",
                   "hash_list": str(lst.resolve()), "mp4": str(mp4.resolve()), "trash_dir": str(trash_dir),
-                  "min_age_days": min_age_days, "files": moves,
-                  "restore": "move each trash path back to its path"}
-        (record_dir / f"pack-frames-{stamp}-{directory.name}.json").write_text(json.dumps(record, indent=1))
+                  "min_age_days": min_age_days, "status": "planned",
+                  "planned_files": [{"path": str(f.resolve()), "bytes": f.stat().st_size,
+                                     "sha256": rows[i]["sha256"]} for i, f in enumerate(files)],
+                  "restore": "move each file under trash_dir/<original absolute path> back to its path"}
+        record_path = record_dir / f"pack-frames-{stamp}-{tag}-{directory.name}.json"
+        with open(record_path, "x") as handle:       # the plan is on disk BEFORE anything moves
+            handle.write(json.dumps(record, indent=1))
+        move_to_trash(files, trash_dir)
+        record["status"] = "done"
+        tmp = record_path.with_suffix(".tmp")
+        tmp.write_text(json.dumps(record, indent=1))
+        os.replace(tmp, record_path)
         moved = True
     return {"dir": str(directory), "frames": len(files), "jpeg_bytes": before, "mp4_bytes": mp4.stat().st_size,
             "mp4": str(mp4), "hash_list": str(lst), "verified": verified, "originals_moved_to_trash": moved}
@@ -141,11 +186,14 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--trash-originals needs --execute")
     if args.trash_originals and not args.reason.strip():
         parser.error("--trash-originals needs --reason")
+    if args.trash_originals and args.trash_root is None and sys.platform != "darwin":
+        parser.error("--trash-originals without --trash-root needs macOS (~/.Trash is a real Trash only there)")
     dirs = frame_dirs(args.path)
     if not dirs:
         print(f"no *.jpg under {args.path}")
         return 0
     results = []
+    refused_any = False
     for d in dirs:
         if not args.execute:
             n = len(list(d.glob("*.jpg")))
@@ -157,6 +205,7 @@ def main(argv: list[str] | None = None) -> int:
         r = results[-1]
         if r.get("refused"):
             print(f"refused {r['dir']}: {r['refused']}")
+            refused_any = True
             continue
         print(f"packed {r['dir']}: {r['frames']} frames {r['jpeg_bytes'] / 2**20:.2f} -> {r['mp4_bytes'] / 2**20:.2f} MiB "
               f"verified={r['verified']} trashed={r['originals_moved_to_trash']}")
@@ -165,7 +214,9 @@ def main(argv: list[str] | None = None) -> int:
                           "mp4_bytes": sum(r["mp4_bytes"] for r in results),
                           "all_verified": all(r["verified"] for r in results if not r.get("refused")),
                           "refused": sum(1 for r in results if r.get("refused"))}))
-        return 0 if all(r["verified"] or r.get("refused") for r in results) else 1
+        if not all(r["verified"] for r in results if not r.get("refused")):
+            return 1
+        return EXIT_REFUSED if refused_any else 0     # nothing moved for a refused directory: not a clean success
     return 0
 
 

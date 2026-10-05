@@ -16,6 +16,9 @@ from scripts import zone_study_evidence_join as join
 
 RUN_SCHEMA = 'ugrp.zone_study_integration_run.v1'
 MEDIA_SCHEMA = 'ugrp.zone_study_media.v1'
+# Off by default: a missing request image fails the conversion. Set by `export.py --allow-removed-request-images`
+# when the images were removed under the AGENTS.md retention rule (hashes stay in the request rows).
+ALLOW_REMOVED_REQUEST_IMAGES = False
 REQUIRED = {'result.json', 'study/trial_record.json', 'eval_only/evaluation.json',
             'study/frozen_plan.json', 'study/record_index.json'}
 
@@ -80,8 +83,10 @@ def request_images(src, record, w, max_images):
             if sha is None:
                 raise ValueError('Model request image reference has no bytes_sha256')
             if relative not in src.files:
-                # 2026-10-01 disk policy: original request JPEGs are no longer required. The request row and
-                # the image hash stay (the hash identifies the image); only the preview image is absent.
+                if not ALLOW_REMOVED_REQUEST_IMAGES:
+                    raise ValueError(f'Missing/hash-mismatched original model request image: {relative}')
+                # The image was removed under the AGENTS.md retention rule and the caller said so explicitly. The
+                # request row and the image hash stay (the hash identifies the image); only the preview is absent.
                 hash_only += 1
                 continue
             if src.files[relative].get('sha256') != sha:

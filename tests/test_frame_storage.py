@@ -8,17 +8,17 @@ def times(hz, seconds):
     return [i * step for i in range(int(round(seconds * hz)) + 1)]
 
 
-def test_default_writes_no_frame_file_only_for_dev_diag_smoke():
+def test_default_writes_no_frame_file_only_for_smoke():
     assert DEFAULT_PROFILE == "none_v1"
-    for split in ("dev", "diag", "smoke"):
+    for split in ("smoke",):
         policy = FrameStoragePolicy(split=split)
         assert not any(policy.decide("r1", t)["saved"] for t in times(5, 10))
         assert policy.record()["streams"]["r1"] == {"frames": 51, "saved": 0, "decision": 0, "periodic": 0}
         assert policy.record()["store"] == "none"
 
 
-@pytest.mark.parametrize("split", [None, "test", "holdout", "final", "cohort"])
-def test_no_default_profile_outside_dev_so_a_cohort_never_loses_frames_by_omission(split):
+@pytest.mark.parametrize("split", [None, "dev", "diag", "test", "holdout", "final", "cohort"])
+def test_no_default_profile_outside_smoke_so_a_cohort_never_loses_frames_by_omission(split):
     with pytest.raises(ValueError):
         FrameStoragePolicy(split=split)
     assert FrameStoragePolicy("all_v1", split=split).profile == "all_v1"
