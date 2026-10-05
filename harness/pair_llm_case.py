@@ -183,10 +183,15 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
     llm = condition != 'rule'
     if llm and adapter_factory is None:
         raise ValueError('an LLM arm needs a model adapter')
+    mode = bundle.get('admission_mode', contract.high_skill.MEASURED_SIM)
+    if mode == contract.high_skill.DEV_PILOT:
+        from harness.zone_pair_highpose_starts import require_dev_seed
+        require_dev_seed(seed)
+        contract.high_skill.calibration_for(mode, calibration, calibration_sha, bundle['map_id'])
     out = Path(out)
     out.mkdir(parents=True, exist_ok=False)
     write(out / 'bundle.json', bundle)
-    physics = {**contract.physics_bundle(root=root)}
+    physics = {**contract.physics_bundle(root=root, admission_mode=mode)}
     physics['case'] = {**physics['case'], 'sim_cap_s': float(cap_s)}
     scenario = contract.scenario(root=root)
     target = scenario['orders'][0]['destination_zone']
@@ -196,7 +201,10 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
               'case_sim_cap_s': float(cap_s), 'registered_case_cap_s': contract.CAP_S,
               'bundle_sha256': digest(bundle), 'physics_bundle_sha256': digest(physics),
               'loadavg_start': list(os.getloadavg()), 'failure': None,
-              'failure_class': None}
+              'failure_class': None, **contract.admission_record(mode)}
+    from sim import final_pair_highpose_clock as clock
+    # Identify the actual host, including failed attempts; fake/legacy hosts must not claim clock v2.
+    result['host_clock'] = clock.record() if getattr(backend_factory, 'host_clock', None) == clock.ID else None
     backend = runtime = trial = static = None
     links, wire, adapter, counts = {}, None, None, {r: {} for r in PAIR_ROBOTS}
     stops = {}

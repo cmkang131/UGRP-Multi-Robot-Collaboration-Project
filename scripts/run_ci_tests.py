@@ -122,6 +122,8 @@ TEST_PATTERNS = (
     "tests/test_highpose_receipt_nees.py",  # v98 eval-only NEES of HIGH checkpoint receipts (σ 예산 영수증), never fed to control
     "tests/test_highpose_belief_expansion.py",  # v98 R2: one-shot belief expansion armed only by an arrival-view rejection
     "tests/test_highpose_progress_arming.py",  # v98 loaded no-progress check: carry-leg reset + REQUIRED_MOVEMENT_M motion
+    "tests/test_highpose_host_clock.py",  # v98 host clock v2: integer substep SIM time (no float drift, no 612 s cliff)
+    "tests/test_highpose_pf_local_redraw.py",  # v98 R1 random poses redrawn locally next to walls (review #363 P1-2)
     "tests/test_zone_final_pair_review_fixes.py",
     "tests/test_review_344*.py",
     "tests/test_zone_final_environment_floor_light.py",

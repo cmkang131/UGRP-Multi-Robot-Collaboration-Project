@@ -220,7 +220,7 @@ def driver_record(ledger, profile, budget, cohort_id) -> dict:
 
 def run_pair_live(out_root, *, condition, seed, cap_s, profile, budget, cohort_id, backend_factory, calibration,
                   calibration_sha, provider_factory=None, synthetic_calibration=False, source_sha='unknown',
-                  proxy_pid=None, wire=None, peer_measurement=None, root=contract.ROOT):
+                  proxy_pid=None, wire=None, peer_measurement=None, root=contract.ROOT, admission_mode='MEASURED_SIM'):
     """One live case through the study's retry rule. Returns ``(record, attempts)``.
 
     ``out_root/<condition>`` is attempt 1; ``<condition>-attempt2`` exists only after a pre-request host error.
@@ -238,7 +238,8 @@ def run_pair_live(out_root, *, condition, seed, cap_s, profile, budget, cohort_i
     if peer_measurement is not None:
         write(out_root / 'peer_token_measurements.json', peer_measurement)
     bundle = contract.bundle(condition, kind='live', calibration={'path': calibration, 'sha256': calibration_sha},
-                             synthetic_calibration=synthetic_calibration, source_sha=source_sha, root=root)
+                             synthetic_calibration=synthetic_calibration, source_sha=source_sha, root=root,
+                             admission_mode=admission_mode)
     bundle_sha = digest(bundle)
     run_id = f'{condition}-s{seed}'
 

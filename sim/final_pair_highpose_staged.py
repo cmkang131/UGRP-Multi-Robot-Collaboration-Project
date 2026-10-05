@@ -4,6 +4,7 @@ Robots spawn at the catalogue grasp stations of the case beam pose (v3
 station_offset convention, as the v92 teacher stations). Everything else is
 the unchanged sim.final_pair_v3 backend (floor_light_v1, weld off). The
 staging record goes to eval_only/setup.json (setup_only) and the run record.
+2026-10-05: host clock v2 (sim.final_pair_highpose_clock: integer substep time).
 """
 from __future__ import annotations
 
@@ -11,9 +12,10 @@ import math
 from pathlib import Path
 
 from sim.final_pair_v3 import PhysicsBackend as V3Backend, make_scene
+from sim.final_pair_highpose_clock import IntegerClock
 
 
-class StagedBackend(V3Backend):
+class StagedBackend(IntegerClock, V3Backend):
     def __init__(self, bundle, out, *, seed, stations):
         from harness.zone_final_pair_clearance import require_collection_clearance
         require_collection_clearance(bundle)

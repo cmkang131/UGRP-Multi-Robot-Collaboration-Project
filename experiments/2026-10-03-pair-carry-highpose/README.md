@@ -66,6 +66,137 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   **그 뒤에는:** (1) 이전 v98 기록과 결과를 합산하지 않는다(SHA로 구분). (2) 이 README의 오프라인 NEES 표를 다시 만든다.
   (3) σ 문턱(짝 입장 0.05 m, 도착 확인의 허용 오차 경계)을 다시 검증한다. σ가 정직해지면 같은 문턱의 의미가 바뀌기 때문이다.
 
+### 독립 재검토 4차 대응 — 검토 범위 1e0476ba..a3415342 (아스트라, 2026-10-05)
+
+검토 보고 `outputs/review-363-delta4-20261005/report.md`: P0 없음, P1 1개, P2 2개. 검토자는 시계 v2의 누적 오차 제거, GO 전 준비 철회,
+국소 재추출, #376 병합 보존을 확인했다. 코드만 고쳤고 시뮬레이션은 돌리지 않았다.
+
+- **P1-1 직접 호출 진입점의 seed 검사:** `student_run_case()`에 seed 검사가 없어서, 직접 부르면 912·913·확인 seed가 `probe=None`으로
+  전체 사례(`COLLECTED_UNQUALIFIED`)까지 갈 수 있었다. 이전부터 있던 경로이고 승격 반례는 없었다. 고침: 공통 규칙 `seed_admission()`을
+  CLI 계획과 `student_run_case()`가 함께 쓴다(`run_case()`는 계속 911만). 911은 어디서나, 912·913은 DEV_PILOT 단계 검사에서만 허용한다.
+  나머지는 출력 폴더와 호스트를 만들기 전에 거절한다. `result.json`에 `seed`·`extra_dev_seed`를 기록한다. 시험
+  (`tests/test_highpose_dev_pilot.py`): 912/913/9301001/914 직접 호출은 거절되고 폴더·호스트가 생기지 않는다. 912가 MEASURED_SIM이나
+  단계 검사로 들어와도 거절된다. 912 DEV 단계 검사는 표시가 붙고 승격되지 않는다.
+- **P2-1 GO 겹침 남은 위험:** 실패 프레임이 GO 틱과 겹치는 경우를 실제 실행기 검사(`zone_pair_executor.py` 331–335행 GO 상호 확인 `PARTNER_MISSED_GO`)를
+  연결해 16조건(처리 순서 2 × 실패 로봇 2 × 회복/지속 2 × 제어 간격 0.05/0.1초)으로 다시 쟀다. 상대가 먼저 GO를 소비한 8조건은 모두
+  11.85초에 `PARTNER_MISSED_GO` → `PARTNER_ABORT`였고 하강 예약은 0건이었다. 실패한 쪽이 먼저 철회하면 그 틱에 아무도 GO를 소비하지
+  않는다. 한 프레임 뒤 회복하면 12.1/12.2초에 둘이 함께 GO를 받고, 실패가 이어지면 12.75/12.7초에 `PREGRASP_HOVER_UNCONFIRMED`와
+  `PARTNER_ABORT`로 멈춘다. 어느 경우에도 close 장벽은 없었고 채널 거절도 0건이었다. 따라서 "한쪽만 GO를 소비하면 abort, 한쪽만 닫는
+  경우 없음"이다. 앞의 "0.85초 단독 하강 / 20초 close 대기"는 대역 결과라 지웠다. 시험: 잔여 위험 시험 2개를 실제
+  `PairExecution.check/abort` 16조건 시험으로 바꾸고, 대역 루프에서만 단독 하강이 생기고 실제 검사는 막는다는 안내 시험 1개를 더했다
+  (hover_barrier·blind_close·refix 91 passed). 영상 판정과 팔은 여전히 대역이라 물리 접촉 결과는 주장하지 않는다.
+- **P2-2 국소 재추출 소진 대체의 의미(동작 불변, 문서·시험만):** 소진된 자리는 지도상 유효한 기존 입자의 가중치대로 복원
+  추출한다(두 모드면 가중치 비율대로 나뉜다). 유효 가중치가 0이면 제한 없는 가중치로 뽑으므로 지도 밖·벽 안 자세도 복사될 수 있다.
+  유효 입자가 1개면 모든 자리가 같은 자세가 되어 다양성이 한 점으로 무너질 수 있다. 자세만 복사하고 scale·stuck·잠재 상태는 새로
+  뽑는다. 주입 행은 roughening에서 빠진다. 정확한 규칙은 `harness/zone_pair_highpose_pf_local_redraw.py` 문서 문자열에 있다.
+  시험 8개를 더했다(`tests/test_highpose_pf_local_redraw.py` 24개, 관련 PF 50 passed). 균형 2모드·가중치 비례, 0/1개 유효 붕괴를
+  현재 동작으로 명시했다. 변이 "항상 입자 0 복사"는 6개, 다른 두 변이는 각 2개 실패로 잡힌다. 참고 자료: Nav2/ROS AMCL `pf.c`·`amcl_node.cpp`
+  `uniformPoseGenerator`(확인), LNPR `expansion_reset_mcl.py`(확인), emcl2 `ExpResetMcl2.cpp`·Thrun 등 2005 8.3절 세부(U).
+- **알려진 한계(조정자 결정 2026-10-05):** 소진 대체 규칙은 이번 묶음에서 바꾸지 않는다(합성 경계 사례에서만 확인했고 실제 발생 빈도는
+  모르며, 바꾸면 새 번들과 재검증이 든다). 실행 결과를 분류할 때 `pf.stats`의 `local_redraw_exhausted`를 항상 확인한다. 실제 실행에서
+  0보다 크면 표준 방식으로 바꾸는 안을 올린다: 유효 지지가 2개 미만이면 주입을 생략하고 `recovery_unavailable`을 기록하고, 복제할 때는
+  자세와 상태를 함께 복사한다(AMCL `pf_update_resample`과 일치).
+
+### 호스트 시계 v2 첫 실행 4개 (`7194637e`) — 사용자 지시로 중단, 결과 아님 (2026-10-05)
+
+05:35–05:36 UTC에 SIM 시간 병렬로 `align_to_carry` seed 911/912/913(912·913은 DEV 추가 seed, 증거·합산 아님)과 전체 사례 `carry` seed 911을
+시작했다. 사용자 지시("시뮬 다 멈추고, 시뮬 빨라지게 정상화시킨 다음에 다시 진행")로 조정자가 `ugrp_session stop`으로 모두 멈췄다
+(exit 143, 약 06:00 UTC). 멈출 때 SIM 시각은 81.6 / 77.3 / 75.4 / 40.7초였고, 부하 평균은 시작 16 → 끝 160이었다. **결과로 쓰지 않는다.**
+부분 기록은 `outputs/v98-dev-{align_to_carry,case-carry}-7194637e-s91*`(각 폴더 `STOPPED_BY_USER.json`)와 `outputs/v98-probe-tools/logs/`에
+보존한다. 재개 SHA는 속도 정상화 뒤 정한다.
+
+**우선순위(nice) 주석(2026-10-05 조정자 발견):** 실행기 `outputs/v98-probe-tools/launch_v98_probes.sh`·`launch_v98_runs.sh`는 zsh `BG_NICE`
+기본값 때문에 `( … ) &` 실행을 nice 5로 띄웠다(사용자 규칙 "우선순위 낮추지 마" 위반; 같은 셸에서 재현 확인: 기본 5, `NO_BG_NICE` 0).
+그래서 이 실행기로 띄운 이전 v98 단계 검사(`399bf87d`·`fcc5215f`·`14ba8b5e`·`7194637e` 등)는 nice 5였을 가능성이 높다. SIM 시간 결과(행동·판정·명령
+수)에는 영향이 없고, wall 시간 기록에만 해당한다. 두 실행기에 `setopt NO_BG_NICE`를 넣었고, 실행 시작 직후 `ps -o ni`를
+`logs/<이름>.nice.txt`에 남기며 0이 아니면 경고한다. 열린 루프 재생(`outputs/v98-host-clock-v2-20261005`)은 이 실행기와 `&`를 쓰지 않았지만 nice 값은 기록하지 않았다(wall 시간은 쓰지 않음).
+
+### 독립 재검토 3차 대응 — 검토 범위 11f6d7c3..14ba8b5e (아스트라, 2026-10-05)
+
+검토 보고 `outputs/review-363-delta3-20261005/report.md`: P0 없음, P1 2개, P2 2개. 호스트 시계 v2와 한 묶음으로 처리했다.
+
+- **P1-2 R1 "국소 회복"이 벽 근처에서 지도 전체로 뛰었다.** 동결 `vision_pf._random_poses`는 벽 안(여유 포함)에 떨어진 후보를
+  `_uniform_free()`(지도 전체 균등 추출)로 바꾼다. 보정 C·지도 v3·seed 911 합성 믿음 (2.20, 0.05, 0)에서 후보 2000개 중 101개가
+  전역으로 갔다(최대 4.22 m). (1.0, 1.1, 0)에서는 16개, 최대 5.57 m였다. 고침은 v98 전용 `harness/zone_pair_highpose_pf_local_redraw.py`
+  (공급자 `vision_pose_source_highpose.py`에서 설치; runtime_contract `pf_local_redraw`)다. 벽 안이거나 6σ 상자 밖인 후보만 같은 국소
+  가우시안(0.1 m / 0.1 m / 0.2 rad, 값 불변)에서 최대 16회 다시 뽑는다. 그래도 남으면 기존 유효 입자를 가중 추출한다(k행 계약 유지).
+  `_uniform_free` 호출은 0이고, 벽에 걸린 후보가 없으면 동결 메서드와 비트 단위로 같다. `uniform_share ≠ 0`이면 설치를 거절한다.
+  동결 PF 파일은 main과 바이트가 같다. 재현 결과는 수정 뒤 전역 0개, 최대 0.39 m / 0.38 m다. 시험 `tests/test_highpose_pf_local_redraw.py`
+  16개다. 변이 시험에서 고침을 끄면 8개가 실패하고, 주입을 0으로 하면 `test_r1_is_active`가 실패한다(R1이 실제로 동작한다는 증거).
+  **이것은 합성 믿음에서 PF 단위만 본 검사다.** 실제 프레임에서의 발생률과 폐루프 성능은 측정하지 않았다.
+  출처: Thrun·Burgard·Fox, Probabilistic Robotics(2005) 표 8.3 augmented MCL, Nav2/ROS AMCL `pf_update_resample`(확인),
+  Ueda·Arai·Sakamoto IROS 2004 expansion resetting / emcl2. emcl2·Nav2가 점유 칸에 떨어진 확장 추출을 어떻게 처리하는지는 미확인(U).
+- **P1-1 호버 확인 실패 프레임이 준비를 거두지 않았다.** `blind_close.py` 323–331행은 실패 프레임에서 그냥 돌아가고
+  `refix.py`는 `ready=True`만 보냈다. 채널은 준비를 0.6초 동안 유지하므로(`zone_pair_status.py` 117–125행), 실제 `HoverConfirm`과
+  `PairStatusChannel` 조합에서 4번 중 4번 상대만 GO를 받아 하강을 예약했다. 고침: 실패 프레임에서 `hover_barrier_withdraw` 훅이
+  기존 장벽 보고 `report(ready=False)`로 즉시 `not_ready`를 보낸다(`SigmaRefix.hover_barrier_withdraw`). 실패가 이어지는 동안 한 번만
+  보내고, GO 뒤나 재고정이 아닐 때는 보내지 않는다. 사건 이름은 `refix_hover_ready_withdrawn`이다. 실제 Channel/Endpoint/PairStudent
+  4조합에서 단독 GO는 0번이었고, 회복하면 12.3초에 두 로봇이 함께 GO를 받았다. 훅을 끄면 7개 시험이 실패한다(대역 루프에서 11.8초
+  단독 GO와 하강 예약이 재현됨; 실행기 GO 상호 확인이 없는 대역 결과다 — 4차 검토 P2-1, 아래).
+  제목과 달리 취소를 보지 않던 기존 시험(101–112행)도 고쳤다. `tests/test_highpose_hover_barrier.py`는 17개다.
+  **남은 위험:** 처음에 적은 "약 0.85초 혼자 하강 / `close@k+1` 최대 20초 대기"는 실행기의 GO 상호 확인을 뺀 대역 결과였다.
+  4차 검토 P2-1에서 실제 실행기 검사를 넣어 고쳐 적었다(아래 "독립 재검토 4차 대응").
+- **P2-1:** 위 `hover@k+1` 절에 30초 기준 영상 나이를 함께 적었다. 실제 추적기를 연결한 긴 대기 시험: 29.9초는 통과하고 30.1초는
+  거절된다(`blind_hover_check`에 `reference.age_s/max_age_s/expired` 기록).
+- **P2-2:** `runtime.py` 337–340행 주석과 `carry_align.py` 문서 문자열을 v2("항상 0, would_*는 기록만", v1은 이력)로 고쳤다.
+- **시작 자세 정답 확인:** 단계 검사의 `test_setup_ground_truth`(시작 자세 사전 평균)는 이번 변경 밖이다. 이 결과를 정답 없는 E2E
+  성공으로 쓰지 않는다는 문구는 아래 "시험 준비 정답 표시" 절에 이미 있다.
+- **번들:** `blind_close`·`refix`·PF 공급자·호스트 소스가 바뀌었다. 이 뒤의 실행은 기존 v98 DEV 표시(FUNCTIONAL_DEV, 승격 불가)로
+  계속하고, 확증 코호트 전에 한 번에 새 번들로 등록한다(무효화 목록의 "새 번들 필요"와 같은 일). **예약 번호: v103**(2026-10-05 확인: v100은 #371, v101은 #376, v102는 적재 보정 #378이 코드·설정과 실제 수집 원본에 먼저 등록. #363의 v102는 README 예약뿐이었으므로 규칙(실행된 번들은 보존, 나중 쪽이 새 ID)에 따라 v103으로 바꿈, 조정자 결정).
+- **참고 자료(P1-1):** Java `Phaser.arriveAndDeregister`(장벽에서 참가 철회; 확인), 2단계 커밋(Wikipedia, 2차 자료로 확인),
+  Bernstein·Hadzilacos·Goodman 1987 7장, Gray 1978(U, 원문 미확인).
+
+### 호스트 시계 v2: SIM 시각을 정수 물리 단계로 센다 (조정자 결정 2026-10-05)
+
+- **재검사 `align_to_carry`@`14ba8b5e`(짝 중립 v2 뒤) 결과:** 조건은 fcc5215f와 같다(DEV_PILOT·FUNCTIONAL_DEV, seed 911, 보정 C, weld off,
+  floor_light_v1, 모델 호출 0). CI 37257458375 33개 작업 모두 성공. 부하 평균 시작 13.9 / 끝 23.6. STAGE_PROBE_FAILED 495.8 SIM초,
+  명령 r1 11089 / r2 11254(합 22343), 운반 GO 6회. **다리 6 통과**(`POSE_UNCERTAIN` 없음; `door_align_gate` 로봇당 6건, `would_keep_lateral`
+  참은 r1 1건뿐이고 낸 명령은 모두 0). 내려놓기 재고정 4회, 다시 잡기 3회 성공. 정지 6의 다시 잡기(close@6)에서 r1
+  `BARRIER_CLOSE_ABORT`, r2 `PARTNER_ABORT`. 평가 전용: 영수증 10개 NEES 최대 2.07(fcc5215f와 같은 값, 이 지점까지 같은 궤적),
+  운반 평균 (e/σ)² r1 0.47 / r2 0.77, yaw 0.08 / 0.15. 원본 `outputs/v98-dev-probe-align_to_carry-14ba8b5e`(result `22a8cd6c…`,
+  student_record `a67c4483…`). TensorBoard `outputs/tensorboard/1005e-v98-dev-probe-align-to-carry-14ba8b5e`(1005c·1005d와 같은 추정기
+  코호트, 다른 제어기 SHA, 이전 호스트 시계).
+- **무엇이 깨졌나(기록과 코드로 확인):** 두 로봇이 496.7499999899814초에 `close_ready_6`를 보냈다. 장벽 GO는 0.1초 격자 497.0이고,
+  r1의 다음 확인은 497.0499999899743 > GO + EPS(1e-8)라서 동결 `zone_pair_status._StatusBarrier.authorize`가
+  `LATE_OR_EXPIRED_GO` → ABORT를 냈다. 왜 0.05초 위상이었나: 호스트는 시각을 `float(world.data.time)`으로 읽고 MuJoCo는
+  `data.time += 0.00025`를 틱당 200번 더한다. 이 누적 오차가 496.0초에 격자보다 1e-8 넘게 작아졌다(183.5초 2.6e-9, 398.8초 7.7e-9).
+  그 뒤로는 동결 `zone_pair_executor`의 `control_due = now + EPS >= next_control`이 정확한 격자점(예 496.7)에서 거짓이 되어
+  제어 틱이 다음 팔 틱(+0.05)으로 밀린다. 이전 다시 잡기 세 번은 모두 0.1 격자(183.5, 307.7, 398.8)에서 들어가 GO를 제때 받았다.
+  같은 누적은 부호를 바꿔 612.05초에 격자보다 1e-8 넘게 커진다. 그러면 공유 호스트의 `while now + dt <= t + 1e-8`이 한 단계
+  모자라게 멈추고 `inexact SIM advance` HOST_ERROR를 낸다. **제어기를 고쳐도 900초 사례는 끝까지 갈 수 없었다**(시계 추적 하위
+  작업자 재현: 기록된 사건 시각 4600개 중 4587개가 바이트 단위로 같다. 나머지 13개는 `round(now, 4)`로 기록된 행이다).
+- **고침(v98 전용 `sim/final_pair_highpose_clock.py`, ID `v98_host_clock_v2_integer_substeps`):** 정수 물리 단계 수 N을 세고
+  물리 단계마다 `data.time = round(N·timestep, 9)`로 정수에서 다시 계산한다(누적 덧셈 없음). 전진은 정수 단계 수
+  `round(t/timestep) − N`만큼 하므로 누적 시각 비교가 없다. reset 뒤 정착 시각(1.3000000000000178)을 격자 1.3으로 맞추고, 명령
+  포트를 격자 시각에서 다시 만든다(V3 reset이 하던 대로; 그대로 두면 포트가 "시각이 뒤로 감"으로 거부 — 열린 루프 재생에서 찾음).
+  `StagedBackend`(단계 검사)와 v98 사례 호스트(`PhysicsBackend`) 둘 다 쓴다. 실행 기록 `result.json`에 `host_clock`을 남긴다.
+  이렇게 하면 `backend.now`, 자기 카메라 프레임 `sim_time`, 명령 행 `t`, 포트 tick이 모두 같은 격자 값이다. 그래서 동결 파일의
+  EPS·부호 검사가 900초 상한 전체에서 설계대로 동작하고, 진입점 반올림이나 EPS 재정의가 필요 없다. 공유 `sim/` 파일과 동결
+  하네스 파일은 바이트 그대로다. 같은 EPS 가정을 쓰는 동결 쪽 자리(고치지 않고 목록만): `zone_pair_executor.py` 328·331·334·356·
+  358·373행, `zone_pair_status.py` 72·79–80·104·122·126·184–199행.
+- **원인표:** `BARRIER_CLOSE_ABORT`·`BARRIER_CLOSE_TIMEOUT` → 새 평가 표시 `PAIR_BARRIER_CLOSE`(이전에는 UNCLASSIFIED;
+  `scripts/run_pair_highpose.py`).
+- **검증:** (a) 열린 루프 재생(`outputs/v98-host-clock-v2-20261005/replay_physics.py` `b313c9fa…`): 14ba8b5e에서 기록된 명령
+  3110개를 처음 60 SIM초 동안 그대로 다시 넣었다. 이전 시계 재생은 기록된 궤적(`trajectory.jsonl`)과 1201틱 모두 비트 단위로 같다
+  (재생이 충실함). MuJoCo `data.time`만 격자 값으로 바꾸고 호스트 Python 시각은 그대로 둔 변형도 1201틱 모두 같다
+  (`replay_60s_mujoco_only.json` `8c6c82a5…`) → **MuJoCo 동역학은 `data.time`을 읽지 않는다.** 시계 v2 전체는 1.35초 첫 틱부터
+  달라지고 60초까지 qpos 최대 0.95 mm, qvel 최대 0.058 차이다(`replay_60s_v2.json` `187c36e5…`). 출처는 호스트 명령 포트
+  (`CameraRobotPort`)의 시각 계산이다: 구동 만료 `now >= expires_at`, 서보 이동량 `2000·Δt`가 받는 시각 값이 바뀐다. 이것이 이번
+  고침이 의도한 행동 변화다. (b)~(c) `tests/test_highpose_host_clock.py` 8개: 누적 모델이 기록 시각을 바이트 단위로 재현(496.0초 +,
+  612.05초 − 경계), 이전 호스트는 612.05초에 한 단계 모자라 멈춤, 새 호스트는 901.3초까지 모든 틱·모든 물리 단계가 격자 값이고
+  예외 없음, reset 뒤 포트 재생성, 동결 실행기 규칙 + 실제 상태 장벽으로 이번 장면 재생(이전 시계: 496.7499999899814 보고 →
+  497.0 GO → 497.0499999899743 ABORT, 새 시계: 496.8 보고 → 497.0 정시 GO).
+- **기록·합산:** 호스트 시계 v2는 호스트 변경이다. 이 뒤 실행은 기록에 "호스트 시계 v2"로 표시하고 이전 실행과 합산하지 않는다.
+  같은 시계를 쓰는 #371 LLM 층 담당에게 PR 코멘트로 알린다.
+- **참고 자료:** ROS 2 `rcl/time.h` — 시각과 시간 간격을 정수 나노초로 둔다(원문 확인,
+  https://github.com/ros2/rcl/blob/rolling/rcl/include/rcl/time.h). MuJoCo 문서 Simulation — `mj_step`이 `data.time`을 timestep만큼
+  더한다(검색 요약으로 확인, https://mujoco.readthedocs.io/en/stable/programming/simulation.html). Python 자습서 "Floating-Point
+  Arithmetic: Issues and Limitations" — 0.1을 거듭 더하면 정확하지 않다(원문 확인, https://docs.python.org/3/tutorial/floatingpoint.html).
+  G. Fiedler, "Fix Your Timestep!" — 고정 단계 누산기 `t += dt`(원문 확인; 부동소수 누적 오차는 다루지 않음,
+  https://gafferongames.com/post/fix_your_timestep/). D. Goldberg, "What Every Computer Scientist Should Know About Floating-Point
+  Arithmetic", ACM Computing Surveys 23(1), 1991(U, 원문 미확인). 고정 단계 시뮬레이터의 정수 단계 계수기 관행(예: Gazebo의
+  반복 횟수 기반 시각)(U, 원문 미확인).
+
 ### 적재 중 문 축 정렬은 두 로봇 모두 0 (짝 중립 v2, 조정자 결정 2026-10-05)
 
 - **무엇이 깨졌나(align_to_carry@fcc5215f, 아래 "진행 검사 고친 뒤 재검사"):** 다리 6(seg 5) 시작 6초 정렬 창(419.5–425.5초)에서
@@ -249,6 +380,9 @@ v4부터 창은 제외) + 둘러본 뒤 창 2 × 10(첫 창 + look_again 1회) +
 - **기다림 한도 123.94초**(`refix.hover_barrier_limit_s()`, 항은 `record()['hover_barrier']['limit_terms']`): 정렬 60 + 둘러본 뒤 창
   2 × 10 + 둘러보기 예산 40 + 호버 이동 1.0 + 정착 0.3 + 호버 확인 1.0 + 하강 1.14 + 격자 여유 0.5. 넘으면
   `REFIX_HOVER_BARRIER_TIMEOUT`, 장벽 ABORT는 `REFIX_HOVER_BARRIER_ABORT`(원인 표 `PAIR_BARRIER_WAIT`). look_again은 유지했다.
+  (2026-10-05 재검토 3차 P2-1) 123.94초는 상대 예산의 합일 뿐이다. 기다리는 쪽의 동결 빔 추적기는 기준 영상 나이 30초
+  (`zone_pair_beam_track.py` 18·169–177행)를 넘으면 먼저 거절할 수 있다(30.1초 → `PREGRASP_HOVER_UNCONFIRMED` + not_ready). 두 값은
+  `record()['hover_barrier']['limits_two_different_things']`에 따로 적었고 30초는 늘리지 않았다.
   `wait_verdict` 재묶음은 필요 없어졌다.
 - **시험:** `tests/test_highpose_hover_barrier.py`(실제 `HoverConfirm` 호버 확인 위에서: 재고정 아니면 그대로, GO 뒤 새 확인 필요,
   GO 뒤 재확인 실패 → 기존 코드로 멈춤·하강 없음, 기다리는 중 실패 → 준비 거둠·제한된 재시도 뒤 멈춤, 한도 초과 코드, ABORT

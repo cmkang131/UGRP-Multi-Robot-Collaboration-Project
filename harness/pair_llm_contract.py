@@ -56,8 +56,8 @@ def _closure(root, entries) -> tuple:
 
 
 @lru_cache(maxsize=4)
-def _high_bundle(map_id):
-    return high_skill.bundle(map_id, 'carry')
+def _high_bundle(map_id, admission_mode):
+    return high_skill.bundle(map_id, 'carry', admission_mode)
 
 
 def read_registry(*, root=ROOT) -> dict:
@@ -106,10 +106,10 @@ def driver_profile(*, root=ROOT) -> dict:
     return {**profile, 'profile_id': reg['driver_profile'], 'sha256': base.digest(profile)}
 
 
-def physics_bundle(*, root=ROOT) -> dict:
+def physics_bundle(*, root=ROOT, admission_mode=high_skill.MEASURED_SIM) -> dict:
     """The #363 v98 physics/skill bundle shared by all three arms, capped at 900 SIM seconds."""
     reg = read_registry(root=root)
-    row = copy.deepcopy(_high_bundle(reg['map_id']))
+    row = copy.deepcopy(_high_bundle(reg['map_id'], admission_mode))
     return {**row, 'case': {'id': 'pair_llm', 'map_id': reg['map_id'], 'checkpoint': None, 'sim_cap_s': CAP_S}}
 
 
@@ -155,8 +155,17 @@ def model_record(condition, *, kind, root=ROOT) -> dict:
             'seed': None, 'seed_statement': reg['seed_statement']}
 
 
+def admission_record(mode):
+    """Reuse #363's labels; DEV results never become MEASURED_SIM evidence."""
+    if mode == high_skill.DEV_PILOT:
+        return dict(high_skill.DEV_PILOT_LABELS)
+    if mode != high_skill.MEASURED_SIM:
+        raise ValueError('unknown admission mode')
+    return {'admission_mode': mode}
+
+
 def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=False, source_sha=None,
-           root=ROOT) -> dict:
+           root=ROOT, admission_mode=high_skill.MEASURED_SIM) -> dict:
     """The run bundle of one arm. ``calibration`` is ``{'path', 'sha256'}`` or None (plan only)."""
     from harness.pair_llm_dispatch import PAIR_ACTION_KINDS, PAIR_POLICY
     from harness.pair_llm_prompts_ko import (PROMPT_VERSION, STUDY_SPEC, fixed_prompt_reference_tokens,
@@ -165,7 +174,10 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
     if condition not in CONDITIONS:
         raise ValueError(f'{condition!r} is not one of {CONDITIONS}')
     reg = read_registry(root=root)
-    physics = physics_bundle(root=root)
+    if synthetic_calibration and admission_mode == high_skill.DEV_PILOT:
+        raise ValueError('DEV_PILOT requires the exact admitted calibration, not synthetic plumbing')
+    admission_record(admission_mode)
+    physics = physics_bundle(root=root, admission_mode=admission_mode)
     cost = cost_params()
     llm = condition != 'rule'
     paths = set(_closure(str(root), SOURCE_ENTRIES)) | set(CONFIG_FILES)
@@ -175,6 +187,7 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
         'schema': BUNDLE_SCHEMA, 'execution_bundle_id': BUNDLE_ID, 'workflow_id': WORKFLOW_ID,
         'workflow_version': WORKFLOW_VERSION, 'status': 'DRAFT_UNSEALED', 'research_result': False,
         'condition': condition, 'arm': ARMS[condition], 'llm': llm, 'source_sha': source_sha,
+        **admission_record(admission_mode),
         'scenario': {'file': SCENARIO, 'sha256': base.sha(Path(root) / SCENARIO),
                      'scenario_id': scenario(root=root)['scenario_id']},
         'map_id': reg['map_id'], 'map_sha256': physics['map_sha256'], 'robots': list(skill_layer.ROBOTS),
@@ -187,7 +200,8 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
             'path': str(calibration['path']), 'sha256': calibration['sha256'],
             'synthetic_plumbing_only': bool(synthetic_calibration),
             'note': ('SYNTHETIC plumbing-only calibration: the controller is blind; no carry result'
-                     if synthetic_calibration else 'admitted measured HIGH calibration')},
+                     if synthetic_calibration else ('admitted DEV_PILOT HIGH calibration; FUNCTIONAL_DEV, never promotable'
+                     if admission_mode == high_skill.DEV_PILOT else 'admitted measured HIGH calibration'))},
         'model': model_record(condition, kind=kind, root=root),
         'prompt': None if not llm else {
             'version': PROMPT_VERSION, 'template_sha256': prompt_template_sha256(),

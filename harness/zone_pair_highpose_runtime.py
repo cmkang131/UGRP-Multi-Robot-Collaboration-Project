@@ -335,8 +335,10 @@ class HighController:
         return super()._wait_carry(now, arm_idle)
 
     def door_schedule(self, t0):
-        # v98 (zone_pair_highpose_carry_align): the parent's schedule with the door-axis align components whose own
-        # estimated correction is not significant (two-sided 95 %) set to zero; timing and pair_plan unchanged.
+        # v98 (zone_pair_highpose_carry_align) pair-neutral v2: the parent's schedule with the loaded door-axis align
+        # command ALWAYS zero for BOTH robots (no lateral/yaw correction while loaded). The own significance test
+        # (two-sided 95 %) and the command it would have issued are only logged (would_*); timing and pair_plan are
+        # the parent's, unchanged. (v1, per-robot significance, is superseded: see the carry_align history note.)
         return carry_align.gate_schedule(self, super().door_schedule(t0), t0)
 
     def _wait_lower(self, now, arm_idle):

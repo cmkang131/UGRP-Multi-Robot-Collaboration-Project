@@ -118,7 +118,13 @@ FAILURE_CAUSE_TEXT['PAIR_DECISION_EXCHANGE'] = ('re-fix decision exchange failed
                                                 'never seen in the window, or the re-fix echo did not come)')
 FAILURE_CAUSE_TEXT['PAIR_BARRIER_WAIT'] = ('re-fix hover@k+1 pair barrier: the partner did not become hover ready within '
                                            'its own derived limits, or the barrier aborted')
+# 2026-10-05: the close barrier of a pair re-grasp (runtime _wait_close) had no label (14ba8b5e probe ->
+# UNCLASSIFIED). Its stop is a pair-coordination stop like the hover barrier, so it gets its own label too.
+FAILURE_CAUSE_TEXT['PAIR_BARRIER_CLOSE'] = ('close pair barrier (wait_close) before the jaws close: the barrier aborted'
+                                            ' (e.g. LATE_OR_EXPIRED_GO, own poll after the shared GO time) or timed out')
 V98_FAILURE_TO_CAUSE = {
+    'BARRIER_CLOSE_ABORT': 'PAIR_BARRIER_CLOSE',
+    'BARRIER_CLOSE_TIMEOUT': 'PAIR_BARRIER_CLOSE',
     'REFIX_HOVER_BARRIER_TIMEOUT': 'PAIR_BARRIER_WAIT',
     'REFIX_HOVER_BARRIER_ABORT': 'PAIR_BARRIER_WAIT',
     'HIGH_CHECKPOINT_DR_BUDGET_EXCEEDED': 'SELF_POSE_UNCERTAIN',
@@ -196,6 +202,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
     # #2): the calibration must match the bundle's own admission mode, so a DEV
     # file can never run inside a MEASURED_SIM (unlabelled) bundle.
     mode = bundle.get('admission_mode', contract.MEASURED_SIM)
+    seed_record = seed_admission(seed, probe, mode)    # before the output folder and the backend (delta4 P1-1)
     contract.calibration_for(mode, calibration, calibration_sha, bundle['map_id'])
     contract.require_runnable(bundle)
     out = Path(out)
@@ -224,7 +231,8 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
                           **staging.TEST_SETUP_GT}
         real_backend = backend_factory
         from sim.final_pair_v3 import PhysicsBackend as _V3
-        if real_backend is _V3:
+        from sim.final_pair_highpose_clock import PhysicsBackend as _V3Clock
+        if real_backend in (_V3, _V3Clock):   # StagedBackend carries host clock v2 itself
             from sim.final_pair_highpose_staged import StagedBackend
             backend_factory = lambda b, o, *, seed: StagedBackend(b, o, seed=seed, stations=stations)
         if runtime_factory is Runtime:
@@ -243,9 +251,13 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
               'protocol_complete': False, 'physical_success': None, 'research_result': False,
               'student_control': True, 'reset_sim_cap_s': contract.RESET_CAP_S, 'check_sim_cap_s': cap,
               'timing': bundle['timing'], 'clearance_preflight': None, 'calibration_sha256': calibration_sha,
-              'loadavg_start': list(os.getloadavg()), 'failure': None}
+              'loadavg_start': list(os.getloadavg()), 'failure': None, **seed_record}
     try:
         backend = backend_factory(bundle, out, seed=seed)
+        # 2026-10-05: which SIM clock the host used (host clock v2 = integer substeps; never pooled with earlier runs).
+        from sim import final_pair_highpose_clock as host_clock
+        result['host_clock'] = (host_clock.record() if getattr(backend, 'host_clock', None) == host_clock.ID
+                                else {'id': 'float_running_sum_v1'})
         reset = backend.reset(contract.RESET_CAP_S)
         if not 0 <= reset <= contract.RESET_CAP_S+1e-8:
             raise RuntimeError('RESET_SIM_CAP_EXCEEDED')
@@ -348,8 +360,38 @@ def admission_mode(args):
     return contract.DEV_PILOT if args.admission == 'dev-pilot' else contract.MEASURED_SIM
 
 
+# 2026-10-05 coordinator (speed): extra DEV stage-probe seeds to find more failure types at once. Stage probes only,
+# DEV_PILOT only, labelled in the plan; never evidence, never pooled with seed 911 or a case result.
+STAGE_PROBE_DEV_EXTRA_SEEDS = (912, 913)
+
+
+def seed_admission(seed, probe, mode):
+    """One seed rule for every execution entry point (CLI plan, run_case, student_run_case; review delta4 P1-1).
+
+    Seed 911 (FUNCTIONAL_DEV replay) everywhere; 912/913 only for a DEV_PILOT stage probe. Anything else, including
+    the confirmation seeds, is refused before an output folder or a backend exists. Returns the record for result.json.
+    """
+    confirmation = {row['seed'] for row in starts.registration()['confirmation_starts']}
+    if set(STAGE_PROBE_DEV_EXTRA_SEEDS) & (confirmation | {starts.DEV_SEED}):
+        raise ValueError('extra DEV seeds must differ from the dev and confirmation seeds')
+    extra = (seed != starts.DEV_SEED and seed in STAGE_PROBE_DEV_EXTRA_SEEDS
+             and probe is not None and mode == contract.DEV_PILOT)
+    if not extra:
+        starts.require_dev_seed(seed)
+    return {'seed': seed, 'extra_dev_seed': ({'seeds': list(STAGE_PROBE_DEV_EXTRA_SEEDS), 'evidence': False,
+                                              'pooled': False} if extra else None)}
+
+
+def extra_dev_seed(args):
+    mode = contract.DEV_PILOT if args.admission == 'dev-pilot' else contract.MEASURED_SIM
+    try:
+        return seed_admission(args.seed, args.stage_probe, mode)['extra_dev_seed'] is not None
+    except ValueError:
+        return False
+
+
 def plan(args):
-    starts.require_dev_seed(args.seed)
+    seed_admission(args.seed, args.stage_probe, admission_mode(args))
     starts.registration()
     cases = contract.cases(args.check, args.map_id)
     if args.case_id is not None:
@@ -382,7 +424,9 @@ def plan(args):
         'runnable': not blocked, 'blocked_on': blocked,
         'precondition': contract.DEV_PILOT_PRECONDITION if mode == contract.DEV_PILOT else contract.PRECONDITION,
         'calibration_sha256': args.calibration_sha256, 'source_sha': args.expected_source_sha,
-        'seed': args.seed, 'bundles_sha256': [contract.base.digest(b) for b in bundles],
+        'seed': args.seed, 'extra_dev_seed': ({'seeds': list(STAGE_PROBE_DEV_EXTRA_SEEDS), 'evidence': False,
+                                                'pooled': False} if extra_dev_seed(args) else None),
+        'bundles_sha256': [contract.base.digest(b) for b in bundles],
         'case_selection': args.case_id, 'registered_denominator': len(contract.cases(args.check, args.map_id)),
         'stage_probe': ({'stage': args.stage_probe, **STAGE_PROBES[args.stage_probe], 'case_result': False}
                         if args.stage_probe else None),
@@ -418,7 +462,7 @@ def main(argv=None):
         if (not held or not held['pid_alive'] or held['owner'] != args.lock_owner
                 or held['branch'] != branch or sim_holders(DEFAULT_ROOT)):
             raise ValueError('live owned host lock for this branch required')
-    from sim.final_pair_v3 import PhysicsBackend
+    from sim.final_pair_highpose_clock import PhysicsBackend   # v98 host clock v2 (integer substep time)
     args.output.mkdir(parents=True)
     admission.update(execution_started=True, host_start=sim_snapshot(DEFAULT_ROOT))
     write(args.output/'plan.json', admission)

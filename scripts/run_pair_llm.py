@@ -46,6 +46,8 @@ def parser():
     p.add_argument('--stub-policy', choices=('cooperative',), default='cooperative')
     p.add_argument('--synthetic-plumbing-calibration', action='store_true',
                    help='fabricated, plumbing-only calibration (the controller is blind; no carry result)')
+    p.add_argument('--admission', choices=('measured-sim', 'dev-pilot'), default='measured-sim',
+                   help='dev-pilot: #363 exact registered calibration; FUNCTIONAL_DEV, never promotable')
     p.add_argument('--calibration', type=Path)
     p.add_argument('--calibration-sha256')
     p.add_argument('--sim-slot', help='SIM slot name (scripts.agent_sim_slots) held by --lock-owner')
@@ -82,6 +84,7 @@ def primary_checkout():
 
 def main(argv=None):
     args = parser().parse_args(argv)
+    from sim.final_pair_highpose_clock import record as host_clock_record
     if args.live:
         check_live_args(args)
     elif args.budget_db is not None:
@@ -93,12 +96,17 @@ def main(argv=None):
         raise ValueError(f'--cap-s must be in (0, {contract.CAP_S:g}]')
     if args.synthetic_plumbing_calibration == bool(args.calibration):
         raise ValueError('give exactly one of --synthetic-plumbing-calibration or --calibration')
+    mode = contract.high_skill.DEV_PILOT if args.admission == 'dev-pilot' else contract.high_skill.MEASURED_SIM
+    if mode == contract.high_skill.DEV_PILOT:
+        from harness.zone_pair_highpose_starts import require_dev_seed
+        require_dev_seed(args.seed)
     kind = 'live' if args.live else 'stub'
     plan_bundle = contract.bundle(args.condition, kind=kind, source_sha=args.expected_source_sha,
-                                  synthetic_calibration=args.synthetic_plumbing_calibration)
+                                  synthetic_calibration=args.synthetic_plumbing_calibration, admission_mode=mode)
     plan = {'execution_bundle_id': contract.BUNDLE_ID, 'workflow_version': contract.WORKFLOW_VERSION,
             'status': 'DRAFT_UNSEALED', 'condition': args.condition, 'arm': contract.ARMS[args.condition],
-            'execution_started': False, 'model_kind': kind if args.condition != 'rule' else 'none',
+            **contract.admission_record(mode), 'execution_started': False,
+            'host_clock': host_clock_record(), 'model_kind': kind if args.condition != 'rule' else 'none',
             'cap_s': args.cap_s, 'seed': args.seed, 'source_sha': args.expected_source_sha,
             'bundle_sha256': contract.base.digest(plan_bundle),
             'synthetic_plumbing_calibration': args.synthetic_plumbing_calibration, 'research_result': False,
@@ -108,7 +116,7 @@ def main(argv=None):
         return 0
     from harness import zone_pair_highpose_contract as skill_layer
     if args.calibration:
-        skill_layer.measured_calibration(args.calibration, args.calibration_sha256, plan_bundle['map_id'])
+        skill_layer.calibration_for(mode, args.calibration, args.calibration_sha256, plan_bundle['map_id'])
     check_source(args.expected_source_sha)
     primary = primary_checkout()
     if not args.output.is_absolute() or not args.output.resolve().is_relative_to((primary / 'outputs').resolve()):
@@ -125,7 +133,7 @@ def main(argv=None):
     snapshot = require_sim_slot(DEFAULT_ROOT, slot=args.sim_slot, owner=args.lock_owner, branch=branch)
     from harness.pair_llm_case import run_pair_case, stub_adapter
     from harness.pair_llm_stub import cooperative_model
-    from sim.final_pair_v3 import PhysicsBackend
+    from sim.final_pair_highpose_clock import PhysicsBackend
     if args.live or args.budget_db is not None:
         budget_path = args.budget_db.resolve()
         if not budget_path.is_relative_to((primary / 'outputs').resolve()):
@@ -143,7 +151,7 @@ def main(argv=None):
         calibration = {'path': args.calibration, 'sha256': args.calibration_sha256}
     bundle = contract.bundle(args.condition, kind=kind, calibration=calibration,
                              synthetic_calibration=args.synthetic_plumbing_calibration,
-                             source_sha=args.expected_source_sha)
+                             source_sha=args.expected_source_sha, admission_mode=mode)
     write(args.output / 'plan.json', {**plan, 'bundle_sha256': contract.base.digest(bundle),
                                       'sim_slot': args.sim_slot, 'host_snapshot': snapshot})
     if args.live:
@@ -168,7 +176,8 @@ def main(argv=None):
         completion = admission.finish_case(budget, args.cohort_id, condition='rule', result=result)
         write(args.output / 'admission_completion.json', completion)
     write(args.output / 'result.json', {'status': result['status'], 'condition': args.condition,
-                                        'case': result['metrics'], 'research_result': False,
+                                        **contract.admission_record(mode),
+                                        'case': result['metrics'], 'host_clock': result['host_clock'], 'research_result': False,
                                         'physical_success': None})
     return int(result['status'] == 'HOST_ERROR')
 
@@ -189,7 +198,7 @@ def cohort_budget(args, budget_path):
 def run_live(args, plan, calibration, provider_factory, primary, budget_path) -> int:
     """One admitted live case, then the study's retry rule around that case."""
     from harness import pair_llm_live as live
-    from sim.final_pair_v3 import PhysicsBackend
+    from sim.final_pair_highpose_clock import PhysicsBackend
     budget = cohort_budget(args, budget_path)
     measurement = (json.loads(args.peer_token_measurements.read_text())
                    if args.peer_token_measurements is not None else None)
@@ -199,10 +208,11 @@ def run_live(args, plan, calibration, provider_factory, primary, budget_path) ->
         cohort_id=args.cohort_id, backend_factory=PhysicsBackend, calibration=calibration['path'],
         calibration_sha=calibration['sha256'], provider_factory=provider_factory,
         synthetic_calibration=args.synthetic_plumbing_calibration, source_sha=args.expected_source_sha,
-        proxy_pid=args.proxy_pid, peer_measurement=measurement)
+        proxy_pid=args.proxy_pid, peer_measurement=measurement, admission_mode=plan['admission_mode'])
     write(args.output / 'result.json', {
         'status': record['status'], 'condition': args.condition, 'failure': record.get('failure'),
         'failure_class': record.get('failure_class'), 'attempts': attempts, 'case': record['metrics'],
+        'host_clock': record['host_clock'], **contract.admission_record(plan['admission_mode']),
         'cohort_usage': budget.usage(args.cohort_id), 'research_result': False, 'physical_success': None,
         'note': 'live smoke: plumbing and connectivity only, not a carry or model-performance result'})
     return int(record['status'] == 'HOST_ERROR' or record.get('failure_class') is not None)
