@@ -180,3 +180,11 @@ def test_runner_default_is_unchanged_signature():
     import inspect
     from scripts import run_pair_highpose as rph
     assert inspect.signature(rph.student_run_case).parameters['dev_checkpoint'].default is None
+
+
+def test_compare_ignore_event_key_is_only_for_cross_probe(tmp_path):
+    rows = [{'t': 1.0 + .05 * k} for k in range(100)]
+    cont = _case(tmp_path / 'c', rows, {}, [{'event': 'stage_probe_entry', 'sim_s': 1.0, 'stage': 'align_to_carry'}])
+    short = _case(tmp_path / 's', rows[:80], {}, [{'event': 'stage_probe_entry', 'sim_s': 1.0, 'stage': 'raise_high_align'}])
+    assert not dpc.compare(cont, short, 0., 3.)['divergences'] == []
+    assert dpc.compare(cont, short, 0., 3., ignore_event_keys=('stage',))['divergences'] == []

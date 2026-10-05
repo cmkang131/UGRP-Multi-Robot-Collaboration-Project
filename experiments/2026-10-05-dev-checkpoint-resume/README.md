@@ -86,18 +86,23 @@ Refs #363. 브랜치 `claude/v98-checkpoint`(기준 `codex/pair-carry-highpose`)
 
 `experiments/2026-10-05-dev-checkpoint-resume/run_gate.sh`(물리 프로세스 동시 1개, 조정자 지시 2026-10-05).
 
-- T1 = 운반 다리 안(첫 운반 GO + 5 SIM초), T2 = 운반 전(그 앞의 25초 주기 체크포인트, 파지·들기 구간).
-- 각 T에서 이어간 실행을 T+62 SIM초까지 돌리고, 연속 실행과 비교한다(60 SIM초 이상).
-- 기본 꺼짐 확인: 이 브랜치의 실행기(체크포인트 없음)로 짧은 `raise_high_align`을 돌려 #363 HEAD(`7194637e`)의 연속
-  `align_to_carry` s911 실행과 비교(HIGH까지 같은 궤적). 저장 켠 연속 실행도 같은 HEAD 실행과 비교.
+- 0단계: 최신 #363 head를 가져와 이 브랜치가 그것을 포함하는지, HEAD 기준 worktree(`ugrp-wt/v98-ckpt-headbase`)가 정확히
+  그 SHA인지 확인한다(아니면 거절).
+- 기본 꺼짐: #363 HEAD 실행기와 이 브랜치 실행기(체크포인트 없음)로 같은 짧은 `raise_high_align`을 돌려 바이트 비교.
+- 저장 켠 연속 `align_to_carry`(165 SIM초 DEV 멈춤)를 HEAD 짧은 실행과 비교(HIGH까지 같은 궤적; 단계 이름이 들어 있는
+  `stage_probe_entry` 이벤트의 `stage` 키 하나만 `--ignore-event-key stage`로 제외, 스트림·프레임은 전부 비교).
+- T1 = 운반 다리 안(첫 운반 GO + 5 SIM초), T2 = 운반 전(그 앞의 25초 주기 체크포인트, 파지·들기 구간). 각 T에서 이어간
+  실행을 T+62 SIM초까지 돌리고 연속 실행과 비교(60 SIM초 이상).
+- #363 담당의 s911 `align_to_carry` 실행(`outputs/v98-dev-align_to_carry-7194637e-s911`)은 사용자 중단으로 81.55초에 멈춰
+  기준으로 쓰지 않는다. 다른 단계 검사끼리 비교하면 `stage_probe_entry` 행이 다르므로 기본 꺼짐 확인은 같은 단계 검사로 한다.
 
 결과: **아직 실행 안 함.** 2026-10-05 15시 무렵 기계 과부하(부하 평균 135–234, CPU 8개, 스왑 5.2/6 GiB)로 조정자가
 먼저 물리 동시 1개·#363 실행 우선, 이어서 사용자 지시로 시뮬레이션 전부 중단을 전달했다. 재개 지시 뒤
-`run_gate.sh <outputs/v98-ckpt-gate-<SHA8>> /Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s911/zone_wide_door_geometry_v3`
+`run_gate.sh /Users/changmin/projects/ugrp/outputs/v98-ckpt-gate-<SHA8>`
 로 실행한다. **게이트 통과 전에는 이 도구로 진단하지 않는다.**
 
 지금까지의 증거(게이트 아님):
-- 단위 시험 `tests/test_dev_pair_checkpoint.py` 10개 통과. 관련 시험 119개 통과(dev_pilot·final_veto·timing·highpose·워크플로).
+- 단위 시험 `tests/test_dev_pair_checkpoint.py` 11개 통과. 관련 시험 119개 통과(dev_pilot·final_veto·timing·highpose·워크플로).
 - 개발 루프(재기반 전 코드, 직접 `student_run_case` 호출, align_to_carry seed 911): 1.5 SIM초에 저장, 3.0초까지 연속 vs
   새 프로세스에서 이어감 → 모든 jsonl 스트림 바이트 접두·프레임 30장×2 sha256·이벤트 목록 동일(지평 1.45초뿐).
   `outputs/v98-ckpt-dev-20261005/loop1_compare.json` sha256 `337c5888…`, 체크포인트 `73fe4e3a…`(3.5 MB 압축).

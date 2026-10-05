@@ -269,10 +269,20 @@ def module_table():
     return {'sys_path': list(sys.path), 'modules': table}
 
 
+def vis3_frozen():
+    """sha256 of the pinned VIS3 files when the path-loaded VIS3 modules are in use (None otherwise)."""
+    if 'harness.vision_loc_protocol' not in sys.modules:
+        return None
+    return sys.modules['harness.vision_loc_protocol'].check_frozen()
+
+
 def load_module_table(table):
     """Recreate the import state a checkpoint's by-reference pickles need (before unpickling)."""
     import importlib
     import importlib.util
+    if 'vision_loc' in table['modules'] or 'vision_pf' in table['modules']:
+        from harness import vision_loc_protocol
+        vision_loc_protocol.check_frozen()     # same pinned-hash gate as the original path load (load_vis3)
     missing = [p for p in table['sys_path'] if p not in sys.path]
     sys.path[0:0] = missing
     loaded = []
@@ -397,7 +407,7 @@ class DevCheckpoint:
                'check_sim_s': backend.now - start, 'start_sim_s': start, 'frame': backend.frame,
                'triggers': reasons, 'case_dir': str(out), 'streams': streams, 'files': files,
                'commands_issued': dict(commands), 'code': code_identity(), 'versions': versions(),
-               'imports': state['imports'],
+               'imports': state['imports'], 'vis3_frozen_sha256': vis3_frozen(),
                'loadavg': list(os.getloadavg()), 'save_wall_s': round(time.perf_counter() - t0, 3),
                'boundary': 'top of tick i: before eval_sample/capture/step of tick i',
                'use': 'DEV diagnostics only; a resumed run is never evidence and never pooled'}
@@ -513,6 +523,20 @@ def cmd_run(args, rest):
         code = rph.main(rest)
     finally:
         rph.student_run_case = original
+    if '--execute' in rest and (out / 'result.json').is_file():
+        marker = {'schema': SCHEMA + '.run', 'checkpoints': dc.saved, 'checkpoint_dir': str(out / 'checkpoints'),
+                  'stop_at_sim_s': args.stop_at_sim_s, 'every_s': args.every_s, 'at_sim_s': args.at_sim_s,
+                  'after_carry_go_s': args.after_carry_go_s,
+                  'note': ('continuous run through the unchanged runner main(); checkpoints saved at loop boundaries. '
+                           'With stop_at_sim_s the stage status is a DEV horizon stop, not a probe outcome.')}
+        from scripts.run_final_environment_checks import write
+        write(out / 'dev_checkpoint.json', marker)
+        top = json.loads((out / 'result.json').read_text())
+        top['dev_checkpoint_run'] = marker
+        if args.stop_at_sim_s is not None:
+            top['dev_horizon_stopped'] = True
+            top['tensorboard_cohort'] = 'v98-dev-checkpoint-horizon-stop'
+        write(out / 'result.json', top)
     print(json.dumps({'checkpoints': dc.saved}, ensure_ascii=False, indent=1))
     return code
 
@@ -587,9 +611,13 @@ def cmd_resume(args):
 WALL_KEYS = ('wall',)
 
 
+IGNORED_KEYS = set()
+
+
 def _strip_wall(value):
     if isinstance(value, dict):
-        return {k: _strip_wall(v) for k, v in value.items() if not any(w in k.lower() for w in WALL_KEYS)}
+        return {k: _strip_wall(v) for k, v in value.items()
+                if k not in IGNORED_KEYS and not any(w in k.lower() for w in WALL_KEYS)}
     if isinstance(value, list):
         return [_strip_wall(v) for v in value]
     return value
@@ -630,10 +658,17 @@ def _list_prefix_diffs(cont, res, path, out, from_sim_s):
                 _list_prefix_diffs(a, b, f'{path}[{index}]', out, from_sim_s)
 
 
-def compare(continuous, resumed, from_sim_s, min_horizon_s=60.):
-    """Bit-identity gate: resumed case dir vs the continuous case dir after SIM time T (from_sim_s)."""
+def compare(continuous, resumed, from_sim_s, min_horizon_s=60., ignore_event_keys=()):
+    """Bit-identity gate: resumed case dir vs the continuous case dir after SIM time T (from_sim_s).
+
+    ignore_event_keys: only for a cross-probe check (e.g. raise_high_align vs align_to_carry, whose
+    stage_probe_entry rows differ by their 'stage' name); streams and frames are always compared whole.
+    """
     continuous, resumed = Path(continuous), Path(resumed)
+    IGNORED_KEYS.clear()
+    IGNORED_KEYS.update(ignore_event_keys)
     report = {'schema': SCHEMA + '.compare', 'continuous': str(continuous), 'resumed': str(resumed),
+              'ignored_event_keys': sorted(ignore_event_keys),
               'from_sim_s': from_sim_s, 'min_horizon_s': min_horizon_s, 'streams': {}, 'frames': {},
               'record': {}, 'divergences': []}
     last_t = None
@@ -688,7 +723,7 @@ def compare(continuous, resumed, from_sim_s, min_horizon_s=60.):
 
 
 def cmd_compare(args):
-    report = compare(args.continuous, args.resumed, args.from_sim_s, args.min_horizon_s)
+    report = compare(args.continuous, args.resumed, args.from_sim_s, args.min_horizon_s, args.ignore_event_key or ())
     text = json.dumps(report, ensure_ascii=False, indent=1, allow_nan=False) + '\n'
     if args.report:
         Path(args.report).write_text(text)
@@ -723,6 +758,8 @@ def parser():
     cmp_.add_argument('--from-sim-s', required=True, type=float, help='checkpoint SIM time T')
     cmp_.add_argument('--min-horizon-s', type=float, default=60.)
     cmp_.add_argument('--report', type=Path)
+    cmp_.add_argument('--ignore-event-key', action='append',
+                      help='cross-probe check only: drop this key from record event rows (e.g. stage)')
     return p
 
 
