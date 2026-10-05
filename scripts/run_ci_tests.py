@@ -105,6 +105,7 @@ TEST_PATTERNS = (
     "tests/test_highpose_final_veto.py",  # v98 same-tick final veto of terminal endpoints' motion (real runner, fake backend)
     "tests/test_highpose_pf_consistency.py",  # v98 PF consistency (one stationary view counts once)
     "tests/test_highpose_relook.py",  # v98 dock look pans + bounded look recovery (synthetic closed loop)
+    "tests/test_pair_llm_*.py",  # v100 pair LLM layer: stub model only, fake physics
     "tests/test_zone_final_pair_heldout.py",
     "tests/test_review_352.py",
     "tests/test_review_355.py",
