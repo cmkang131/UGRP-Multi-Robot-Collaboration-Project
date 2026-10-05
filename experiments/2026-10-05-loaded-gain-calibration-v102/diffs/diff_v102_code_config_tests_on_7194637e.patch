@@ -1,0 +1,363 @@
+diff --git a/configs/zone_pair_highpose_v98.json b/configs/zone_pair_highpose_v98.json
+index 6810288..2d1d01c 100644
+--- a/configs/zone_pair_highpose_v98.json
++++ b/configs/zone_pair_highpose_v98.json
+@@ -81,7 +81,8 @@
+     "rule": "DEV_PILOT_C0_ZERO_v1",
+     "admitted_calibration_sha256": [
+       "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5",
+-      "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4"
++      "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4",
++      "ce447ada62295d24c7f7a5929ce878e70fa297651e16ca192536f4a403cd8c5f"
+     ],
+     "runnable": true,
+     "run_status": "FUNCTIONAL_DEV",
+@@ -174,6 +175,20 @@
+         "heldout": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/heldout/heldout.json",
+         "parent": {"path": "/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json",
+                    "sha256": "398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5"}
++      },
++      "ce447ada62295d24c7f7a5929ce878e70fa297651e16ca192536f4a403cd8c5f": {
++        "path": "experiments/2026-10-05-loaded-gain-calibration-v102/products/loaded_v102/calibration_dev_pilot_loaded_v102.json",
++        "pr": 363,
++        "rule": "DEV_PILOT_C0_ZERO_v1",
++        "admitted_by": "coordinator task 2026-10-05 (measured loaded motion model, classic calibrate-then-correct, Borenstein and Feng 1996)",
++        "calibration_bundle": "zone-final-pair-loaded-gaincal-v102",
++        "calibration_variant": "A (measured loaded gain/lag with an affine dead zone u0 on forward and left; turn, noise, load transition, drift and the unloaded profile unchanged from the parent)",
++        "fills": "params.motion_loaded gain diagonals (forward, left), tau_s, tau_axis_s (forward, left), tau_stop_s and deadband (u0 added; u1 = 1e-6 switches the v6g ramp off on affine axes)",
++        "heldout_status": "VALIDATED_DEV (mean model only; held-out steps at most 0.36 percent, legs at most 0.21 percent; not MEASURED_SIM, not a confirmation sample)",
++        "fit": "experiments/2026-10-05-loaded-gain-calibration-v102/products/fit/fit.json",
++        "heldout": "experiments/2026-10-05-loaded-gain-calibration-v102/products/heldout/heldout.json",
++        "parent": {"path": "experiments/2026-10-05-unloaded-gain-calibration-v101/products/C/calibration_dev_pilot_unloaded_v101.json",
++                   "sha256": "aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4"}
+       }
+     }
+   },
+diff --git a/harness/vision_pose_source_pair_v3.py b/harness/vision_pose_source_pair_v3.py
+index 57a08d4..d1bac08 100644
+--- a/harness/vision_pose_source_pair_v3.py
++++ b/harness/vision_pose_source_pair_v3.py
+@@ -14,6 +14,7 @@ import numpy as np
+ 
+ from harness import owncam_localizer as motion
+ from harness import vision_loc_protocol as vp
++from harness import zone_pair_deadband as deadband
+ from harness import zone_final_pair_contract as contract
+ from harness.vision_motion_init import motion_module
+ from harness.vision_pose_source_p03 import VisionPoseSource, FailClosedLoc
+@@ -46,8 +47,20 @@ def pair_motion_module():
+             # Frozen prediction applies deadband to own commands but expects
+             # the partner operand to be effective before multiplying gain.
+             db = self.params['motion_loaded']['deadband']
+-            c0, u1 = (np.asarray(db[k], float) for k in ('c0', 'u1'))
+-            return raw*np.where(u1 > c0, np.clip((abs(raw)-c0)/np.maximum(u1-c0, 1e-9), 0., 1.), 1.)
++            return deadband.effective(raw, db)
++
++        def predict_to(self, t):
++            # v102 affine dead zone of the loaded plant: the sealed base predictor applies only the ramp, so a loaded
++            # prediction sees the affine-effective command (identity without params.motion_loaded.deadband.u0).
++            db = (self.params.get('motion_loaded') or {}).get('deadband') if self.load.loaded else None
++            if not deadband.has_affine(db):
++                return super().predict_to(t)
++            issued = self.cmd
++            self.cmd = deadband.affine(issued, db)
++            try:
++                return super().predict_to(t)
++            finally:
++                self.cmd = issued
+ 
+     return SimpleNamespace(**{**vars(motion), 'OwnCamLocalizer': PairMotion})
+ 
+diff --git a/harness/zone_final_pair_skill.py b/harness/zone_final_pair_skill.py
+index 9120ca8..ff66ae6 100644
+--- a/harness/zone_final_pair_skill.py
++++ b/harness/zone_final_pair_skill.py
+@@ -13,6 +13,7 @@ import numpy as np
+ 
+ from harness import zone_pair_executor as pair
+ from harness import pair_passage_plan as passage
++from harness import zone_pair_deadband as deadband
+ from harness import visual_arm_v3 as arm
+ from harness.zone_final_pair_binding import bind
+ from harness.zone_final_pair_guards import CommandGuard
+@@ -114,7 +115,7 @@ def motor_command(profile, velocity):
+     for i, value in enumerate(effective):
+         if 0 < abs(value) < u1[i] and u1[i] > c0[i]:
+             raw[i] = math.copysign((c0[i]+math.sqrt(c0[i]**2+4*abs(value)*(u1[i]-c0[i])))/2, value)
+-    return raw
++    return deadband.inverse_affine(raw, profile['deadband'])      # v102 affine dead zone: sits before the ramp forward, added back last
+ 
+ 
+ class V3Controller:
+diff --git a/harness/zone_pair_deadband.py b/harness/zone_pair_deadband.py
+new file mode 100644
+index 0000000..61bd6a3
+--- /dev/null
++++ b/harness/zone_pair_deadband.py
+@@ -0,0 +1,44 @@
++"""Static map from an issued command to the effective command of the loaded pair plant (v102 affine dead zone).
++
++The loaded steady speed measured in experiments/2026-10-05-loaded-gain-calibration-v102 is affine in the command above a
++small dead zone, ``v = g*sign(u)*max(|u| - u0, 0)`` per axis [forward, left, turn]. ``params.motion_loaded.deadband`` may
++carry ``u0`` (three nonnegative values). It acts BEFORE the earlier v6g ramp (``c0``, ``u1``; the PF predictor applies the
++ramp itself), so a calibration without ``u0`` -- every calibration before v102 -- keeps its exact prediction, bit for bit.
++``harness/owncam_localizer.py`` is sealed by hash pins, so the PF subclass in ``vision_pose_source_pair_v3`` applies
++``affine`` around the unchanged base ``predict_to`` instead of editing it.
++"""
++from __future__ import annotations
++
++import numpy as np
++
++
++def has_affine(db) -> bool:
++    return bool(db) and 'u0' in db and bool(np.any(np.asarray(db['u0'], float) > 0))
++
++
++def affine(u, db):
++    """sign(u)*max(|u| - u0, 0); the identity (same array) without ``u0``."""
++    if not has_affine(db):
++        return u
++    u = np.asarray(u, float)
++    return np.sign(u)*np.maximum(np.abs(u) - np.asarray(db['u0'], float), 0.)
++
++
++def ramp(u, db):
++    """The v6g ramp exactly as the PF predictor applies it."""
++    u = np.asarray(u, float)
++    c0, u1 = np.asarray(db['c0'], float), np.asarray(db['u1'], float)
++    return u*np.where(u1 > c0, np.clip((np.abs(u) - c0)/np.maximum(u1 - c0, 1e-9), 0., 1.), 1.)
++
++
++def effective(u, db):
++    """Issued command -> effective command (affine dead zone, then ramp)."""
++    return ramp(affine(u, db), db)
++
++
++def inverse_affine(raw, db):
++    """Add the dead zone back to a nonzero effective command (the inverse of ``affine`` for |u| > u0)."""
++    if not has_affine(db):
++        return raw
++    raw = np.asarray(raw, float)
++    return np.where(raw != 0, raw + np.sign(raw)*np.asarray(db['u0'], float), raw)
+diff --git a/harness/zone_pair_highpose_contract.py b/harness/zone_pair_highpose_contract.py
+index 5ed69c6..1509de4 100644
+--- a/harness/zone_pair_highpose_contract.py
++++ b/harness/zone_pair_highpose_contract.py
+@@ -117,6 +117,10 @@ def dev_pilot_calibration(path, expected_sha, map_id):
+             or not isinstance(u1, list) or len(u1) != 3
+             or not all(math.isfinite(float(v)) and float(v) > 0 for v in u1)):
+         raise ValueError('DEV_PILOT_C0_ZERO_v1 requires c0 == [0,0,0] and u1 > 0')
++    u0 = deadband.get('u0')                  # optional v102 affine dead zone; absent == identity (all earlier calibrations)
++    if u0 is not None and (not isinstance(u0, list) or len(u0) != 3
++                           or not all(math.isfinite(float(v)) and float(v) >= 0 for v in u0)):
++        raise ValueError('deadband.u0 must be three finite nonnegative values')
+     fill = dev['unloaded_motion_fill']
+     missing = [row['field'] if isinstance(row, dict) else row for row in cal.get('missing', [])]
+     motion = cal['params'].get('motion') or {}
+diff --git a/tests/test_deadband_u0_v102.py b/tests/test_deadband_u0_v102.py
+new file mode 100644
+index 0000000..8d438e9
+--- /dev/null
++++ b/tests/test_deadband_u0_v102.py
+@@ -0,0 +1,126 @@
++"""v102 affine dead zone ``deadband.u0`` for the loaded pair plant (simulator-free).
++
++The measured loaded steady speed is affine in the command above a small dead zone, v = g*sign(u)*max(|u| - u0, 0)
++(experiments/2026-10-05-loaded-gain-calibration-v102). The shared static map ``deadband_effective`` is used by the PF
++predictor, the partner operand and (inverted) by ``motor_command``. Without ``u0`` every earlier calibration keeps its
++exact prediction, bit for bit.
++"""
++import copy
++import math
++
++import numpy as np
++import pytest
++
++from harness import zone_final_pair_skill as skill
++from harness.zone_pair_deadband import effective as deadband_effective
++from harness.vision_pose_source_pair_v3 import pair_motion_module
++from tests.test_zone_pair_v6e import V6
++
++RAMP = {'c0': [0., 0., 0.], 'u1': [0.026556708949971457, 0.028235672526345113, 0.031909184676893604]}
++AFFINE = {'c0': [0., 0., 0.], 'u1': [1e-6, 1e-6, 0.031909184676893604], 'u0': [0.0056, 0.0072, 0.]}
++GAIN = [[1.57, 0., 0.], [0., 1.175, 0.], [0., 0., 0.9073]]
++TAU = [0.97, 0.97, 0.6555]
++
++
++def old_ramp(u, db):
++    """The pre-v102 expression, copied verbatim (bit-for-bit reference)."""
++    u = np.asarray(u, float)
++    c0, u1 = np.asarray(db['c0'], float), np.asarray(db['u1'], float)
++    return u*np.where(u1 > c0, np.clip((np.abs(u) - c0)/np.maximum(u1 - c0, 1e-9), 0., 1.), 1.)
++
++
++def test_without_u0_the_static_map_is_bit_identical_to_the_old_ramp():
++    rng = np.random.default_rng(3)
++    for _ in range(300):
++        u = rng.normal(size=3)*rng.choice([.001, .02, .08, .15])
++        assert np.array_equal(deadband_effective(u, RAMP), old_ramp(u, RAMP))
++        db = {**RAMP, 'u0': [0., 0., 0.]}                              # u0 == 0 is also exactly the identity
++        assert np.array_equal(deadband_effective(u, db), old_ramp(u, RAMP))
++    assert np.array_equal(deadband_effective(np.zeros(3), RAMP), np.zeros(3))
++
++
++def test_affine_dead_zone_subtracts_u0_symmetrically_and_leaves_the_turn_axis_alone():
++    u = np.array([.05, -.0622, .1])
++    eff = deadband_effective(u, AFFINE)
++    assert eff[0] == pytest.approx(.05 - .0056, abs=2e-6) and eff[1] == pytest.approx(-(.0622 - .0072), abs=2e-6)
++    assert eff[2] == old_ramp(u, RAMP)[2]                                            # u0 = 0 on the turn axis
++    assert np.all(deadband_effective(np.array([.005, -.007, 0.]), AFFINE) == 0.)       # inside the dead zone: no motion
++    assert np.array_equal(deadband_effective(-u, AFFINE), -deadband_effective(u, AFFINE))
++
++
++@pytest.mark.parametrize('profile_db', [RAMP, AFFINE])
++def test_motor_command_inverts_the_forward_static_map(profile_db):
++    profile = {'gain': GAIN, 'deadband': copy.deepcopy(profile_db)}
++    assert np.array_equal(skill.motor_command(profile, np.zeros(3)), np.zeros(3))
++    for speed in np.linspace(.004, .09, 15):
++        for sign in (-1., 1.):
++            v = np.array([sign*speed, -sign*speed*.7, sign*speed*.5])
++            u = skill.motor_command(profile, v)
++            assert np.all(np.isfinite(u))
++            reached = np.asarray(GAIN) @ deadband_effective(u, profile['deadband'])
++            np.testing.assert_allclose(reached, v, atol=1e-6)
++    if 'u0' in profile_db:      # at the carry speed the command is the dead zone plus v/g: 0.06/1.175 + 0.0072
++        assert skill.motor_command(profile, np.array([0., .06, 0.]))[1] == pytest.approx(.06/1.175 + .0072, abs=2e-6)
++
++
++def _pair_cloud(db, seed=7):
++    """The registered pair PF subclass (``PairMotion``) with a fixed loaded particle cloud (no fix ever arrives)."""
++    loc = pair_motion_module().OwnCamLocalizer(V6['map'], V6['params'], seed=seed)
++    rng = np.random.default_rng(99)
++    loc.px = np.stack([.6 + .03*rng.normal(size=loc.n), .03*rng.normal(size=loc.n), .05*rng.normal(size=loc.n)], 1)
++    loc.scale = 1. + rng.normal(size=(loc.n, 3))*loc.params['motion']['scale_std']
++    loc.logw = np.zeros(loc.n)
++    loc.initialized = True
++    loc.load.loaded = True
++    loc.params = {**loc.params, 'motion_loaded': {**loc.params['motion_loaded'], 'gain': GAIN, 'tau_axis_s': TAU,
++                                                  'tau_s': TAU[0], 'tau_stop_s': .085, 'deadband': copy.deepcopy(db)}}
++    return loc
++
++
++def _affine_cloud(command, db=AFFINE):
++    loc = _pair_cloud(db)
++    loc.predict_to(3.)
++    loc.command({'t': 3., 'kind': 'mecanum', 'forward': 0., 'left': command, 'turn': 0., 'duration_s': 30.})
++    return loc
++
++
++def test_pf_predictor_steady_speed_follows_the_affine_map():
++    for u in (.025, .0622):
++        loc = _affine_cloud(u)
++        loc.predict_to(33.)
++        assert float(loc.vel[1]) == pytest.approx(1.175*(u - .0072), rel=1e-3)
++    # a command inside the dead zone gives no motion and the shared stop lag, not the drive lag
++    loc = _affine_cloud(.006)
++    loc.predict_to(13.)
++    assert abs(float(loc.vel[1])) < 1e-12
++    assert float(loc.cmd[1]) == .006                      # the issued command is restored after the loaded prediction
++
++
++def test_pf_predictor_without_u0_is_the_unchanged_ramp_prediction():
++    plain, ramp_only = _affine_cloud(.0622, RAMP), _affine_cloud(.0622, {**RAMP, 'u0': [0., 0., 0.]})
++    for loc in (plain, ramp_only):
++        loc.predict_to(20.)
++    assert np.array_equal(plain.px, ramp_only.px) and np.array_equal(plain.vel, ramp_only.vel)
++    assert float(plain.vel[1]) == pytest.approx(1.175*.0622*min(1., .0622/RAMP['u1'][1]), rel=1e-3)
++
++
++def test_dev_validator_accepts_u0_and_rejects_malformed_values(tmp_path, monkeypatch):
++    from tests.test_highpose_dev_pilot import MAPS, admit, dev_file
++    from harness import zone_pair_highpose_contract as c
++
++    def ok(cal):
++        cal['params']['motion_loaded']['deadband'].update(u0=[.0056, .0072, 0.], u1=[1e-6, 1e-6, .0319])
++    path, _ = dev_file(tmp_path, mutate=ok)
++    admit(monkeypatch, c.base.sha(path))
++    cal = c.dev_pilot_calibration(path, c.base.sha(path), MAPS[0])
++    assert cal['params']['motion_loaded']['deadband']['u0'] == [.0056, .0072, 0.]
++    for i, bad in enumerate(([.0056, .0072], [-.001, 0., 0.], ['a', 0., 0.], 'x')):
++        def mutate(cal, bad=bad):
++            ok(cal)
++            cal['params']['motion_loaded']['deadband']['u0'] = bad
++        folder = tmp_path/f'bad{i}'
++        folder.mkdir()
++        path, _ = dev_file(folder, mutate=mutate)
++        admit(monkeypatch, c.base.sha(path))
++        with pytest.raises(ValueError):
++            c.dev_pilot_calibration(path, c.base.sha(path), MAPS[0])
+diff --git a/tests/test_highpose_dev_pilot.py b/tests/test_highpose_dev_pilot.py
+index f28e26d..dcd8dfc 100644
+--- a/tests/test_highpose_dev_pilot.py
++++ b/tests/test_highpose_dev_pilot.py
+@@ -25,6 +25,9 @@ UNLOADED = ['gain', 'tau_s', 'tau_axis_s', 'tau_stop_s', 'noise_rel', 'noise_abs
+ REAL = Path('/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json')
+ REAL_SHA = '398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5'
+ C_SHA = 'aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4'
++V102_SHA = 'ce447ada62295d24c7f7a5929ce878e70fa297651e16ca192536f4a403cd8c5f'
++V102_PATH = (Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-loaded-gain-calibration-v102'/'products'
++             /'loaded_v102'/'calibration_dev_pilot_loaded_v102.json')
+ V101 = Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-unloaded-gain-calibration-v101'/'products'
+ C_PATH = V101/'C'/'calibration_dev_pilot_unloaded_v101.json'
+ BASE_COPY = Path(__file__).resolve().parents[1]/'experiments'/'2026-10-03-v92-dev-pilot'/'calibration_dev_pilot.json'
+@@ -61,7 +64,7 @@ def test_registry_keeps_measured_list_empty_and_admits_one_exact_dev_sha():
+     adm, _ = c.d5_admission()
+     assert adm['completed_measurements'] == [] and c.registry()['runnable'] is False
+     dev = c.registry()['dev_pilot']
+-    assert dev['admitted_calibration_sha256'] == [REAL_SHA, C_SHA]
++    assert dev['admitted_calibration_sha256'] == [REAL_SHA, C_SHA, V102_SHA]
+     assert dev['promotable'] is False and dev['run_status'] == 'FUNCTIONAL_DEV'
+     assert dev['tensorboard_cohort'] != 'FUNCTIONAL_DEV_REPLAY' and dev['cohort_role'] != 'FUNCTIONAL_DEV_REPLAY'
+ 
+@@ -713,3 +716,35 @@ def test_extra_dev_seeds_only_for_dev_pilot_stage_probes():
+         assert not run.extra_dev_seed(args)
+         with pytest.raises(ValueError, match='SEED_911'):
+             run.plan(args)
++
++
++# ---- measured loaded calibration v102 (zone-final-pair-loaded-gaincal-v102, coordinator task 2026-10-05)
++def test_measured_loaded_calibration_v102_is_admitted_by_its_exact_sha():
++    dev = c.registry()['dev_pilot']
++    source = dev['admitted_source'][V102_SHA]
++    assert (Path(__file__).resolve().parents[1]/source['path']) == V102_PATH and c.base.sha(V102_PATH) == V102_SHA
++    assert source['heldout_status'].startswith('VALIDATED_DEV') and 'not MEASURED_SIM' in source['heldout_status']
++    assert source['parent']['sha256'] == C_SHA
++    cal = c.admitted_calibration(str(V102_PATH), V102_SHA, MAPS[0])
++    assert cal['missing'] == [] and cal['status'] == c.DEV_PILOT and cal['dev_rule'] == c.DEV_PILOT_RULE
++    db = cal['params']['motion_loaded']['deadband']
++    assert db['c0'] == [0., 0., 0.] and len(db['u0']) == 3 and db['u0'][2] == 0. and db['u0'][0] > 0 and db['u0'][1] > 0
++    assert db['u1'][0] == db['u1'][1] == 1e-6                     # ramp numerically off on the two affine axes
++    with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
++        c.require_promotable({'calibration_sha256': V102_SHA})
++
++
++def test_measured_loaded_calibration_v102_differs_from_its_parent_only_in_the_registered_fields():
++    cal, base = json.loads(V102_PATH.read_text()), json.loads(C_PATH.read_text())
++    assert c.base.sha(C_PATH) == C_SHA and cal['parent_calibration']['sha256'] == C_SHA
++    changed = {k for k in set(cal) | set(base) if cal.get(k) != base.get(k)}
++    assert changed == {'params', 'field_provenance', 'source_sha', 'dev_manifest_sha256',
++                       'loaded_gain_calibration', 'parent_calibration'}
++    assert {k for k in cal['params'] if cal['params'][k] != base['params'][k]} == {'motion_loaded'}
++    new, old = cal['params']['motion_loaded'], base['params']['motion_loaded']
++    assert {k for k in set(new) | set(old) if new.get(k) != old.get(k)} == {'gain', 'tau_s', 'tau_axis_s', 'tau_stop_s', 'deadband'}
++    assert new['gain'][2] == old['gain'][2] and new['tau_axis_s'][2] == old['tau_axis_s'][2]       # turn axis untouched
++    assert new['deadband']['u1'][2] == old['deadband']['u1'][2]
++    assert all(new['gain'][i][j] == old['gain'][i][j] for i in range(3) for j in range(3) if i != j or i == 2)
++    assert cal['params']['motion'] == base['params']['motion'] and cal['camera_models'] == base['camera_models']
++    assert cal['loaded_gain_calibration']['heldout_status'] == 'VALIDATED_DEV' and cal['confirmatory'] is False
+diff --git a/tests/test_zone_final_pair_highpose.py b/tests/test_zone_final_pair_highpose.py
+index 552187c..2ab4339 100644
+--- a/tests/test_zone_final_pair_highpose.py
++++ b/tests/test_zone_final_pair_highpose.py
+@@ -203,9 +203,9 @@ def test_v96_registry_retired_byte_identical_and_v98_differs_only_by_ids():
+                        'provider_id', 'frame_gate', 'blind_final_approach', 'case_cap'}
+     # case_cap: v98-cap-3 (user 2026-10-04) 3x300 -> 3x900; the v96 record keeps v96-cap-2.
+     assert (old['case_cap']['sim_cap_s'], new['case_cap']['sim_cap_s']) == (300., 900.)
+-    # v98 additionally admits the measured unloaded calibration C (zone-final-environment-gaincal-v101); the v96 admission stays a strict prefix.
++    # v98 additionally admits the measured unloaded calibration C (zone-final-environment-gaincal-v101) and the measured loaded calibration (zone-final-pair-loaded-gaincal-v102); the v96 admission stays a strict prefix.
+     assert {k for k in old['dev_pilot'] if old['dev_pilot'][k] != new['dev_pilot'][k]} == {
+         'tensorboard_cohort', 'admitted_calibration_sha256', 'admitted_source'}
+     admitted = new['dev_pilot']['admitted_calibration_sha256']
+     assert admitted[:len(old['dev_pilot']['admitted_calibration_sha256'])] == old['dev_pilot']['admitted_calibration_sha256']
+-    assert len(admitted) == 2 and {k: new['dev_pilot']['admitted_source'][k] for k in old['dev_pilot']['admitted_source']} == old['dev_pilot']['admitted_source']
++    assert len(admitted) == 3 and {k: new['dev_pilot']['admitted_source'][k] for k in old['dev_pilot']['admitted_source']} == old['dev_pilot']['admitted_source']
