@@ -46,6 +46,11 @@ PF, its random stream or any frozen file. A set is chosen by name; 'none' is the
     P=2000 call, 110 inputs and a 400-frame replay byte-equal.
 
 ``v98-exact-v4`` = v1 + ``render_pipeline`` + ``pf_geometry_shared`` (the v2 and v3 candidates together, one run)
+
+``v98-exact-v5`` = v4 + ``opencv_exact`` (CANDIDATE): ``harness.zone_pair_highpose_opencv_exact`` caches the
+    image-independent part of the frozen ``detect_boundaries`` per camera model, gathers window sums by flat
+    index, and returns the previous ``ColumnObs`` for a byte-identical repeated frame. Offline: 215 recorded
+    frame x camera-model pairs bit-equal, 12.2 -> 9.0 ms per detection.
 """
 from __future__ import annotations
 
@@ -56,7 +61,9 @@ import numpy as np
 SETS = {'none': (), 'v98-exact-v1': ('expected_memo', 'drive_kernel', 'schedule_memo'),
         'v98-exact-v2': ('expected_memo', 'drive_kernel', 'schedule_memo', 'render_pipeline'),
         'v98-exact-v3': ('expected_memo', 'drive_kernel', 'schedule_memo', 'pf_geometry_shared'),
-        'v98-exact-v4': ('expected_memo', 'drive_kernel', 'schedule_memo', 'render_pipeline', 'pf_geometry_shared')}
+        'v98-exact-v4': ('expected_memo', 'drive_kernel', 'schedule_memo', 'render_pipeline', 'pf_geometry_shared'),
+        'v98-exact-v5': ('expected_memo', 'drive_kernel', 'schedule_memo', 'render_pipeline', 'pf_geometry_shared',
+                         'opencv_exact')}
 VERSION = 'ugrp.v98_exact_speedups.v1'
 # sha256 of inspect.getsource(sim.final_pair_v3.PhysicsBackend.capture) whose per-robot body render_pipeline copies
 CAPTURE_SOURCE_SHA256 = 'fd76fe25a67bd1a9dc1c2cf80eee900a6912bc85fc0b0fd1e01a8882cf1d0cad'
@@ -145,6 +152,9 @@ def install(name, record=None):
     if 'pf_geometry_shared' in items:
         from harness import zone_pair_highpose_pf_geometry_shared as geometry
         undo.append(geometry.install(record))
+    if 'opencv_exact' in items:
+        from harness import zone_pair_highpose_opencv_exact as opencv_exact
+        undo.append(opencv_exact.install(record))
 
     def uninstall():
         while undo:
@@ -154,9 +164,15 @@ def install(name, record=None):
 
 def summary(record):
     """JSON-safe counters (memo hits/misses per provider) for a sidecar or manifest."""
-    out = {k: v for k, v in record.items() if k != 'expected_memo'}
+    out = {k: v for k, v in record.items() if k not in ('expected_memo', 'opencv_exact')}
     if 'expected_memo' in record:
         out['expected_memo'] = [{'hits': m.hits, 'misses': m.misses} for m in record['expected_memo']]
+    if 'opencv_exact' in record:
+        ox = record['opencv_exact']
+        out['opencv_exact'] = {k: v for k, v in ox.items() if k not in ('cache', 'memo')}
+        for k in ('cache', 'memo'):
+            if k in ox:
+                out['opencv_exact'][k] = {'hits': ox[k].hits, 'misses': ox[k].misses}
     return out
 
 

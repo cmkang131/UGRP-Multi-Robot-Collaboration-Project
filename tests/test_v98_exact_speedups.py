@@ -111,3 +111,43 @@ def test_render_pipeline_refuses_when_the_copied_capture_body_changed(monkeypatc
     assert vars(final_pair_v3.PhysicsBackend)['capture'] is before['capture']
     undo()
     assert dict(vars(final_pair_v3.PhysicsBackend)) == before
+
+
+def test_opencv_exact_installs_restores_and_refuses_changed_source(monkeypatch):
+    from harness import opencv_wall_observation as ow
+    from harness import vision_loc_protocol as vp
+    from harness import zone_pair_highpose_opencv_exact as ox
+    vl, _ = vp.load_vis3()
+    before = (vl.mp.detect_boundaries, ow.observations)
+    rec, undo = sp.install('v98-exact-v5')
+    assert rec['opencv_exact']['installed'] and vl.mp.detect_boundaries is not before[0]
+    assert sp.summary(rec)['opencv_exact']['memo'] == {'hits': 0, 'misses': 0}
+    undo()
+    assert (vl.mp.detect_boundaries, ow.observations) == before
+    monkeypatch.setattr(ox, 'PINNED', {k: '0'*64 for k in ox.PINNED})
+    rec, undo = sp.install('v98-exact-v5')
+    assert not rec['opencv_exact']['installed'] and (vl.mp.detect_boundaries, ow.observations) == before
+    undo()
+
+
+def test_observation_memo_returns_the_previous_value_only_for_identical_inputs():
+    from harness import zone_pair_highpose_opencv_exact as ox
+    calls = []
+
+    class Cam:
+        def __init__(self, v):
+            self.columns = np.arange(4.) + v
+
+    def original(vl, bgr, camera, gates=None):
+        calls.append(1)
+        return {'sum': float(bgr.sum()), 'cam': camera.columns.copy()}
+    memo = ox.ObservationMemo(original)
+    img = np.zeros((4, 4, 3), np.uint8)
+    a = memo(None, img, Cam(0))
+    b = memo(None, img.copy(), Cam(0))
+    assert a == {'sum': 0., 'cam': a['cam']} and len(calls) == 1 and np.array_equal(b['cam'], a['cam'])
+    b['cam'][:] = 9                       # caller mutation does not reach the memo
+    assert memo(None, img, Cam(0))['cam'][0] == 0 and len(calls) == 1
+    img2 = img.copy(); img2[0, 0, 0] = 1
+    memo(None, img2, Cam(0)); memo(None, img2, Cam(1)); memo(None, img2, Cam(1), {'g': 1})
+    assert len(calls) == 4 and memo.hits == 2
