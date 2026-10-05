@@ -407,8 +407,10 @@ def seed_admission(seed, probe, mode):
     confirmation = {row['seed'] for row in starts.registration()['confirmation_starts']}
     if set(STAGE_PROBE_DEV_EXTRA_SEEDS) & (confirmation | {starts.DEV_SEED}):
         raise ValueError('extra DEV seeds must differ from the dev and confirmation seeds')
-    extra = (seed != starts.DEV_SEED and seed in STAGE_PROBE_DEV_EXTRA_SEEDS
-             and probe is not None and mode == contract.DEV_PILOT)
+    # DEV light (coordinator 2026-10-05 18:5x): the same extra DEV seeds also for a full case while DEV_LIGHT is on
+    # (never confirmation seeds; never pooled; formal runs keep the stage-probe-only rule).
+    extra = (seed != starts.DEV_SEED and seed in STAGE_PROBE_DEV_EXTRA_SEEDS and mode == contract.DEV_PILOT
+             and (probe is not None or contract.DEV_LIGHT))
     if not extra:
         starts.require_dev_seed(seed)
     return {'seed': seed, 'extra_dev_seed': ({'seeds': list(STAGE_PROBE_DEV_EXTRA_SEEDS), 'evidence': False,

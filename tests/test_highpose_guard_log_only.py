@@ -226,3 +226,12 @@ def test_partial_fix_provider_follows_the_flag(monkeypatch):
         with pytest.raises(StopIteration):
             rt_.Runtime(None, None, None, seed=0)
         assert seen['factory'] is want
+
+
+def test_extra_dev_seed_for_full_case_only_in_dev_light(monkeypatch):
+    from scripts import run_pair_highpose as runner
+    assert runner.seed_admission(912, None, c.DEV_PILOT)['extra_dev_seed']['pooled'] is False
+    monkeypatch.setattr(c, 'DEV_LIGHT', False)
+    with pytest.raises(Exception):
+        runner.seed_admission(912, None, c.DEV_PILOT)
+    assert runner.seed_admission(912, 'align_to_carry', c.DEV_PILOT)['extra_dev_seed'] is not None
