@@ -65,7 +65,7 @@ def no_disk_probe(monkeypatch):
     monkeypatch.setattr(llm, 'check_disk', lambda path, *, min_free_gib: 1)
 
 
-def budget_for(tmp_path, *, cap=300000, charge=12000):
+def budget_for(tmp_path, *, cap=1100000, charge=12000):
     budget = MainStudyBudget.create(tmp_path / 'budget.sqlite')
     budget.register_cohort(COHORT, token_cap=cap, unknown_usage_charge_tokens=charge, prereg_sha256='p' * 64,
                            source={'test': True})
@@ -74,13 +74,18 @@ def budget_for(tmp_path, *, cap=300000, charge=12000):
 
 def run_live(tmp_path, wire, *, condition='peer_nl', cap_s=12., budget=None, name='live', backend=FakeBackend):
     budget = budget or budget_for(tmp_path)
+    from tests.pair_llm_admission_fakes import complete_rule, measured_no_comm, peer_receipt
+    complete_rule(budget, COHORT)
+    if condition == 'peer_nl':
+        measured_no_comm(budget, COHORT)
     cal = synthetic_cal(tmp_path, f'cal-{name}')
     out_root = Path(tmp_path) / name
     out_root.mkdir()
     record, attempts = live.run_pair_live(
         out_root, condition=condition, seed=911, cap_s=cap_s, profile=contract.driver_profile(), budget=budget,
         cohort_id=COHORT, backend_factory=backend, calibration=cal['path'], calibration_sha=cal['sha256'],
-        provider_factory=plumbing.blind_provider_factory, synthetic_calibration=True, source_sha='0' * 40, wire=wire)
+        provider_factory=plumbing.blind_provider_factory, synthetic_calibration=True, source_sha='0' * 40, wire=wire,
+        peer_measurement=peer_receipt() if condition == 'peer_nl' else None)
     return record, attempts, out_root / condition, budget
 
 
@@ -119,16 +124,16 @@ def test_a_clean_run_records_every_post_with_tokens_latency_and_hashes(clean):
 
 def test_the_budget_ledger_has_one_settled_row_per_post_and_matches_the_run_records(clean):
     record, _, out, budget, wire = clean
-    requests = budget.requests()
+    requests = budget.requests('peer_nl-s911#a1')
     assert len(requests) == len(wire.requests) > 0
     assert all(r['status'] == 'response_received' and r['usage_known'] and r['total_tokens'] == 3170 for r in requests)
-    assert budget.usage(COHORT)['known_tokens'] == 3170 * len(requests)
+    assert budget.usage(COHORT)['known_tokens'] == 3170 * (len(requests) + 1)
     assert budget.usage(COHORT)['usage_unknown_requests'] == 0
     run = budget.run('peer_nl-s911#a1')
     assert run['status'] == 'finished' and run['model_requests'] == len(requests) and run['bundle_id'] == contract.BUNDLE_ID
     driver = json.loads((out / 'llm' / 'live_driver.json').read_text())
-    assert driver['cohort_usage']['requests'] == len(requests) and driver['live'] is False   # the wire was replaced
-    assert driver['budget_ledger_id'] == budget.meta['ledger_id'] and driver['cohort']['token_cap'] == 300000
+    assert driver['cohort_usage']['requests'] == len(requests) + 1 and driver['live'] is False   # the wire was replaced
+    assert driver['budget_ledger_id'] == budget.meta['ledger_id'] and driver['cohort']['token_cap'] == 1100000
     assert driver['proxy_identity'] == {'profile': None, 'runtime': None} and driver['run_key'] == 'peer_nl-s911#a1'
     hashed = json.loads((out / 'artifacts.sha256.json').read_text())
     assert 'llm/live_driver.json' in hashed and 'llm/model_calls.jsonl' in hashed and 'bundle.json' in hashed
@@ -193,13 +198,16 @@ def test_a_rate_limit_or_quota_answer_stops_the_run_as_RATE_LIMIT_and_is_never_r
 
 
 def test_an_ordinary_server_error_is_an_api_failure_but_does_not_stop_a_run_that_already_has_replies(tmp_path):
-    wire = LiveShapedWire(faults={4: lambda: http_error(500, b'internal error')})
+    wire = LiveShapedWire(faults={2: lambda: http_error(500, b'internal error')})
     record, attempts, out, _ = run_live(tmp_path, wire)
     assert record['status'] == 'COLLECTED_UNQUALIFIED' and record['protocol_complete'] is True
     assert record['failure_class'] == llm.API_ERROR                    # the study rule: any API error invalidates
     assert record['metrics']['model_usage']['api_clean'] is False
     assert record['metrics']['model_usage']['failure_classes'] == {llm.API_ERROR: 1}
-    assert attempts[0]['retried'] is False and len(wire.requests) > 5
+    assert attempts[0]['retried'] is False and len(wire.requests) > 3
+    calls = rows(out / 'llm' / 'model_calls.jsonl')
+    assert calls[2]['http_status'] == 500
+    assert any(r['failure_class'] is None and r['status'] == 'sent' for r in calls[3:])
     bad = [r for r in rows(out / 'llm' / 'model_calls.jsonl') if r['http_status'] == 500]
     assert bad and bad[0]['rate_limit'] is False and bad[0]['error_response']['bytes'] == len(b'internal error')
 
@@ -212,9 +220,15 @@ def test_a_run_whose_every_reply_failed_is_an_api_failure(tmp_path):
 
 
 def test_the_cohort_token_cap_stops_the_run_before_the_next_request(tmp_path):
-    budget = budget_for(tmp_path, cap=3000)                              # one reply (3170 tokens) exceeds it
+    budget = budget_for(tmp_path)
+    # Keep the registered 1.1M cap; only 3000 tokens remain before this case.
+    budget.start_run('prior', cohort_id=COHORT, bundle_id=contract.BUNDLE_ID, bundle_sha256='0'*64, record={})
+    row = budget.record_request('prior', {})
+    budget.settle_request(row['id'], status='response_received',
+                          provider_usage={'prompt_tokens': 1097000, 'completion_tokens': 0, 'total_tokens': 1097000})
+    budget.finish_run('prior', status='finished')
     wire = LiveShapedWire()
-    record, _, out, _ = run_live(tmp_path, wire, budget=budget)
+    record, _, out, _ = run_live(tmp_path, wire, budget=budget, condition='no_comm')
     assert record['status'] == 'HOST_ERROR' and record['failure_class'] == llm.API_ERROR
     assert 'cap' in record['failure']['message'].lower()
     assert len(wire.requests) <= 2
@@ -305,7 +319,7 @@ def test_cli_live_refusals_need_no_network_or_filesystem(capsys):
     assert json.loads(capsys.readouterr().out)['model_kind'] == 'live'
     with pytest.raises(ValueError, match='needs --proxy-pid, --budget-db, --cohort-id, --cohort-token-cap'):
         cli.main(base + ['--execute'])
-    full = ['--proxy-pid', '1', '--cohort-id', 'c', '--cohort-token-cap', '300000']
+    full = ['--proxy-pid', '1', '--cohort-id', 'c', '--cohort-token-cap', '1100000']
     with pytest.raises(ValueError, match='absolute path'):
         cli.main(base + ['--execute', '--budget-db', 'relative.sqlite', *full])
     with pytest.raises(ValueError, match='positive int'):

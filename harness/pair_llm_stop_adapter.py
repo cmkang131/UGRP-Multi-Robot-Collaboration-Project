@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 
 from harness import pair_llm_decisions as contract
+from harness import pair_llm_clock as clock
 from harness.zone_study_contract import ContractViolation
 
 BELIEF_ENUMS = {
@@ -37,7 +38,8 @@ def window_violations(value, now):
     start, end, cutoff = (value[k] for k in ('opened_at_sim_s', 'decide_at_sim_s', 'latch_until_sim_s'))
     if any(type(t) not in (int, float) or not math.isfinite(t) for t in (start, end, cutoff, now)):
         return ['decision_window needs finite times']
-    if not (start <= now < end and start <= cutoff <= end and 0 < end-start <= contract.DECISION_WINDOW_S+1e-6):
+    start, end, cutoff, now = (clock.ticks(t) for t in (start, end, cutoff, now))
+    if not (start <= now < end and start <= cutoff <= end and 0 < end-start <= clock.WINDOW):
         return ['decision_window is not open on the harness clock']
     return []
 
@@ -91,12 +93,10 @@ class StopAdapter:
                     raise ContractViolation('unknown #363 hook event')
                 self.events.append({'robot_id': self.executor.robot_id, **copy.deepcopy(row)})
                 if ctl is active:
-                    detail = {'kind': row['event']}
-                    for key in ('decide_at_s', 'latch_until_s', 'window_until_s'):
-                        if key in row:
-                            detail[key] = row[key]
+                    sim_s, times = clock.hook_times(row)
+                    detail = {'kind': row['event'], **times}
                     deliveries.append({'robot_id': self.executor.robot_id, 'event': 'pair_progress',
-                                       'sim_s': row['sim_s'], 'job_kind': 'pair_carry', 'job_id': None,
+                                       'sim_s': sim_s, 'job_kind': 'pair_carry', 'job_id': None,
                                        'scheduler_trigger': None, 'detail': detail})
             self._event_marks[id(ctl)] = len(rows)
             look = getattr(ctl, 'refix_look', {})
@@ -111,13 +111,13 @@ class StopAdapter:
                         for field in ('sim_s', 'decided_s', 'rule_decided_s', 'executed_s'):
                             if rec.get(field) is not None:
                                 rec[field+'_absolute'] = rec[field]
-                                rec[field] = round(rec[field]-self.origin_s, 6)
+                                rec[field] = clock.relative(rec[field], self.origin_s)
                         self.decisions.append(rec)
         return deliveries
 
     def command(self, api, choice, *, absolute_now, window_ref):
         ctl = self.controller()
-        now = float(absolute_now)-self.origin_s
+        now = clock.relative(absolute_now, self.origin_s)
         w = self.window.snapshot(now)
         reason = None
         if self.condition == 'rule' or ctl is None:
@@ -126,7 +126,7 @@ class StopAdapter:
             reason = 'UNKNOWN_CHOICE'
         elif window_ref is None or window_ref != self.window.reference(now) or w['kind'] != api:
             reason = 'DEADLINE_PASSED'
-        elif choice == 'set_down' and now > w['latch_until_sim_s']+1e-8:
+        elif choice == 'set_down' and clock.ticks(now) > clock.ticks(w['latch_until_sim_s']):
             reason = 'DEADLINE_PASSED'
         if reason:
             return {'accepted': False, 'own_status': reason}

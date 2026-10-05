@@ -185,7 +185,11 @@ raise SystemExit(3 if a.fail else 0)
 
     def test_catalog_has_registered_workflows_and_distinct_adapters(self):
         data, digest = wm.catalog(PROJECT)
-        self.assertEqual(len(data["workflows"]), 50)
+        self.assertEqual(len(data["workflows"]), 51)
+        ids = [row["id"] for row in data["workflows"]]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertTrue({"zone-final-environment-gaincal-v101", "zone-pair-llm-v100",
+                         "zone-final-pair-highpose-v98"}.issubset(ids))
         self.assertEqual(len(digest), 64)
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "dispatch-skills")["runner"], "scripts.run_dispatch_e2e")
         self.assertEqual(next(r for r in data["workflows"] if r["id"] == "communication")["output_kind"]["prepare"], "file")
@@ -252,6 +256,7 @@ raise SystemExit(3 if a.fail else 0)
             "zone-final-pair-loaded-v92": ["--check", "calibration-loaded", "--map-id", "zone_wide_two_doors_final_v3", "--expected-source-sha", "0" * 40],
             "zone-final-environment-floor-light-v2-check": ["--check", "calibration-motion-v2", "--expected-source-sha", "0" * 40],
             "zone-pair-llm-v100": ["--condition", "no_comm", "--expected-source-sha", "0" * 40],
+            "zone-final-environment-gaincal-v101": ["--check", "calibration-gain-v101", "--run-id", "fitA1", "--seed", "1101", "--expected-source-sha", "0" * 40],
         }
         with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
              mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):

@@ -1,6 +1,6 @@
 """Pair-owned stop-decision contract; no scheduler, estimator or simulator edits."""
 
-import math
+from harness import pair_llm_clock as clock
 
 from harness.zone_study_contract import ContractViolation
 
@@ -44,19 +44,19 @@ class DecisionWindow:
         else:
             return False
         start = event.get('sim_s')
-        if any(type(t) not in (int, float) or not math.isfinite(t) for t in (start, end, cutoff)):
-            raise ContractViolation('decision window needs finite controller-clock timestamps')
-        if not (start <= cutoff <= end and 0 < end-start <= DECISION_WINDOW_S+1e-6):
+        start, end, cutoff = (clock.ticks(t) for t in (start, end, cutoff))
+        origin = clock.ticks(origin_s)
+        if not (start <= cutoff <= end and 0 < end-start <= clock.WINDOW):
             raise ContractViolation('invalid decision window interval')
         self.serial += 1
-        self.current = {'kind': command, 'opened_at_sim_s': round(start-origin_s, 6),
-                        'decide_at_sim_s': round(end-origin_s, 6),
-                        'latch_until_sim_s': round(cutoff-origin_s, 6)}
+        self.current = {'kind': command, 'opened_at_sim_s': clock.seconds(start-origin),
+                        'decide_at_sim_s': clock.seconds(end-origin),
+                        'latch_until_sim_s': clock.seconds(cutoff-origin)}
         return True
 
     def is_open(self, now):
         w = self.current
-        return w is not None and w['opened_at_sim_s']-1e-9 <= now < w['decide_at_sim_s']-1e-9
+        return w is not None and clock.ticks(w['opened_at_sim_s']) <= clock.ticks(now) < clock.ticks(w['decide_at_sim_s'])
 
     def snapshot(self, now):
         return dict(self.current) if self.is_open(now) else None

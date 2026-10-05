@@ -156,3 +156,109 @@ HIGH의 자동 재관측이 거절보다 최신이면 모델에 최신 자기 �
 보완 후 입력 파일·판단 창 파일 전체와 위 세 회귀 검사 **42 passed**(47.10초, exit 0).
 앞 118개 결과와 중복되는 검사가 있으므로 합계 성공 건수로 더하지 않는다.
 실제 모델 호출·물리·렌더링·병합 없음.
+
+## 5. 독립 구현 검토 수정 (3327a0ea 기준)
+
+대상: 로컬 `outputs/review-371-impl-20261005/report.md`, 재현 시험과 모든 `.log`를 읽었다.
+요청 범위는 수정·오프라인 검증·push·PR 답변이다. live LLM·물리·MuJoCo 렌더링은 실행하지 않는다.
+
+- **P1-1:** `pair_llm_clock`에서 정수 나노초를 사용하고 외부 SIM초는 9자리로 정규화한다.
+  #363 원시 4자리 사건/6자리 마감은 바꾸지 않는다. 레거시 사건의 반올림 셀과 마감의 반올림 셀을
+  합친 50.5 µs 안에서만 시작을 `end-10`으로 앞으로 옮긴다. 마감/보관 마감은 늘리지 않는다.
+  10.001초의 잘못된 창은 계속 거절하고 9.9초의 실제 정지 창은 유지한다. 창 검사·원점 변환·프레임
+  시각은 같은 정밀도를 쓴다. 두 창 × 임의 원점 4개 × substep 위상 4개 × float/v2 시계,
+  실제 post-look opener의 55.20025 반례, 마지막 나노초/마감 경계를 검사한다.
+- **P1-2:** `pair_llm_admission`이 같은 예산 DB의 자기 테이블에서 `BEGIN IMMEDIATE`로 승인한다.
+  cap=1,100,000 일치, rule→no_comm→peer_nl 완료 순서, 같은 seed·소스, 실패/실행 중/중복 사례 차단,
+  rule 성공, no_comm 제공자 사용량 완전성을 검사한다. 증분은 양 조건 archived 요청 본문의 토큰을
+  다시 계수한 최대 차이로 기록한다. `ceil(1.15*72*(no_comm total/calls + increment))`와 잔액을
+  정확한 유리수/정수로 비교한다. 잔액 1토큰 부족·정확히 일치·1토큰 여유를 시험한다.
+  `COHORT_CAP_MISMATCH`, `COHORT_ORDER_VIOLATION`, `RULE_BASELINE_FAILED`,
+  `NO_COMM_MEASUREMENT_REQUIRED`, `PEER_MEASUREMENT_REQUIRED`, `PEER_TOKEN_GATE` 등 명시적 라벨로
+  실행 전 거절한다. 기존 요청별 원장 상한과 host 오류의 사례 내부 1회 재시도도 유지한다.
+- **P1-3:** 기준을 `3327a0ea686cf15dc56d118fe89bf736b93ba284` Git archive에 고정했다.
+  e1 정지 깨움 전 `a7bb0ec1`과의 동일성을 주장하지 않는다. `tests/fixtures/pair_llm_3327a0ea/`에
+  실제 HIGH controller의 비어 있지 않은 issued_log와 스케줄러 fixture의 조건별 480행 명령을 보존했다.
+  no_comm 깨움 0.1초 지연 변이는 고정 기준과 15.3초에서 hold→drive로 갈라져 검사에 걸린다.
+  종전 availability-only 비교가 두 쪽에 같은 변이를 적용해 놓치던 문제를 제거했다.
+- **P1-4:** 상태 시험은 조건별 프롬프트의 SIM 비용 차이를 허용하면서 로봇별 상태 순서를 모두 비교한다.
+  HTTP 500은 실제 도달하는 세 번째 요청에 넣고 정확히 한 번 분류됨·후속 정상 요청·재시도 없음까지
+  확인한다. 다섯 번째 요청이 존재한다고 가정하지 않는다.
+- **P2-5:** 먼저 `origin/main=8604462120d0c658e5dedec0a6f33ff5ccdf7ef1`을 `--no-commit` 병합했다.
+  충돌은 CI 시간 자료(공통 키는 최신 main, 브랜치 전용 키 보존), 실험 인덱스(양쪽 행 보존),
+  workflow 수(51개)였다. v98/v100/v101 등록의 존재·ID 중복 없음도 검사한다.
+  은퇴 v97/v99 번들 바이트와 #363/봉인 파일은 수정하지 않는다. 테스트가 모두 통과한 뒤에만 커밋한다.
+- **P2-6:** 정지 창은 **“예정된 정지 종료부터 10초(10 s from the scheduled stop end)”**다.
+  #363 `zone_pair_highpose_refix.py:942-959`의 `schedule[-1][1]+10`을 그대로 따른다.
+  0.1초 fixture에서 예정 종료 17.7, 사건 17.8, 전달 17.9, 보관 마감 27.5, 결정 마감 27.7:
+  사건부터 9.9초/전달부터 9.8초이며 set_down 보관 여유는 9.7초/9.6초다.
+  post-look은 사건 52.4, 전달 52.5, 마감 62.4다. 세 조건의 실제 훅을 통해 이 값을 고정한다.
+  실제 0.05초 제어 경로의 지연은 별도이며 이 fixture 수치를 일반화하지 않는다.
+  기존 프롬프트의 “10초”는 예정 종료 기준의 명목값으로 읽고 실제 요청의 마감 필드를 따른다.
+  프롬프트 변경은 SIM 비용·기준 궤적을 바꿀 수 있어 이번 수정에는 포함하지 않았다.
+
+### 코호트 사용 경로
+
+rule을 같은 `--budget-db`, `--cohort-id`, `--cohort-token-cap 1100000`으로 실행해 완료 기록을 만든다
+(첫 DB만 `--create-budget`). 이후 같은 source/seed의 no_comm을 `--live`로 실행한다.
+peer_nl은 여기에 `--peer-token-measurements <JSON>`을 더한다. JSON은
+`{"pairs": [{"no_comm": <archive_request 행>, "peer_nl": <archive_request 행>}, ...]}` 형식이다.
+요청 본문·토큰·이미지 청구 해시를 검증하며 임의 토큰 평균 숫자를 받지 않는다.
+실행 시작 잔액·필요량·측정 요청 ID·증분 자료 해시를 `admission.json`과 예산 DB에 남기고
+종료 결과를 `admission_completion.json`에 남긴다. 프로세스가 죽어 running 상태가 남으면 다음 사례를
+자동으로 시작하지 않는다. stub LLM plumbing은 측정 코호트의 선행 no_comm으로 인정하지 않는다.
+이 문단은 사용법이며 이번 작업에서 해당 실제 실행을 하지 않았다.
+
+### 확인한 표준 방법·출처
+
+- [Python 부동소수 설명](https://docs.python.org/3/tutorial/floatingpoint.html): 반올림한 float의
+  뺄셈도 정확한 십진 연산이 아님을 확인했다. 경계/원점 계산은 정수 단위로 한다.
+- [SQLite transaction 문서](https://www.sqlite.org/lang_transaction.html): 읽고 승인하는 사이의
+  경쟁을 막기 위해 즉시 쓰기 transaction을 사용한다. 봉인 원장 구현은 수정하지 않는다.
+- [pytest monkeypatch 문서](https://docs.pytest.org/en/stable/how-to/monkeypatch.html): 변이는 시험 안에서만
+  설치하고 원복한다. 최신 도구의 공식 방법을 사용하며 이 수정에 연구 알고리즘을 추가하지 않았다.
+
+원본 리뷰·중간 실패·기준 생성 스크립트·최종 로그는 기본 checkout의
+`outputs/fix-371-20261005/`에 보존한다. 기준 생성 자체는 지정 Python의 pytest **1 passed in 54.52s**였다.
+첫 집중 묶음은 **7 failed, 91 passed in 21.57s**: 새 시험 helper가 `window` 대신
+`dialogue_window` 인자를 잘못 쓴 문제였고 helper를 고쳤다. 이 실패도 그대로 보존한다.
+
+두 번째 집중 묶음: **24 passed in 330.06s**. 원래 실패했던 상태/HTTP 500 시험, 실제 HIGH 훅의
+세 조건 마감 시각, admission 경계/누락·위조 측정/직접 live 진입 거절을 포함한다.
+전체 묶음 첫 수집에서 workflow 시험의 두 번째 충돌 블록을 잘못 치환한 문법 오류 1개를 발견했다
+(**1 error in 11.13s**, 시험 실행 전). 계획용 인자 사전의 v100/v101 행을 모두 복원했고 전체 묶음을
+다시 시작했다. 기존 실패 로그는 덮어쓰지 않는다.
+
+
+### 최종 검증
+
+**365 passed, 280 subtests passed in 1230.95s (0:20:30)**, exit 0.
+제품 코드를 고정한 하나의 전체 묶음 결과다. pytest는 동시 실행하지 않았다.
+
+```sh
+/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q -p no:cacheprovider --tb=short \
+  tests/test_pair_llm_*.py tests/test_highpose_refix_hooks.py \
+  tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_catalog_has_registered_workflows_and_distinct_adapters \
+  tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan \
+  tests/test_ci_fast_path.py \
+  tests/test_zone_study_llm_driver.py::test_no_cap_never_blocks_and_cap_stops_only_at_the_registered_value \
+  tests/test_zone_study_llm_driver.py::test_unknown_usage_is_charged_the_registered_amount_not_zero \
+  /Users/changmin/projects/ugrp/outputs/review-371-impl-20261005/test_review_probes.py::test_real_hook_timestamp_accepts_a_ten_second_window \
+  /Users/changmin/projects/ugrp/outputs/review-371-impl-20261005/test_review_probes.py::test_cli_rejects_cohort_cap_different_from_registered_value
+```
+
+최종 로그: `outputs/fix-371-20261005/related-full-2.log`.
+기준 no_comm 스케줄러 SHA-256 `22e354f86d3f4a2a2d6f6d225814df44445e45b986b421f94be0989aaa9e18a6`는
+리뷰어의 원본 witness 해시와도 같다. rule/no_comm 각각 480행 스케줄러 명령과 실제 HIGH 명령
+4,503개(r1 2,252, r2 2,251)가 `3327a0ea`와 바이트 동일하다. 0.1초 깨움 지연 변이는 검사에 걸린다.
+봉인/#363 5개 파일과 은퇴 등록 4개는 원본과 같으며 `preserved-source.json`에 전체 해시를 남겼다.
+
+6개 지적의 수정은 완료했다. 실제 LLM·물리·MuJoCo 렌더링은 0회이며,
+실제 provider M2, host clock v2의 물리 통합, 전체 운반, 원격 CI와 수정 후 독립 재검토는 별도다.
+새 운반/학습/평가 결과가 아니므로 TensorBoard 변환은 하지 않는다. UGRP 예외에 따라 Drive도 쓰지 않는다.
+
+
+커밋 전 공백 검사: 이번 수정 경로의 `git diff --cached --check 3327a0ea -- <변경 경로>`는 통과했다.
+전체 병합 diff에는 main #376의 보존된 `.patch`와 기존 #363 `.proposal.diff`의 공백 경고가 있다.
+이는 양 부모에 이미 있던 원문이며 #363/기록 보존 범위이므로 바꾸지 않았다. 전체 diff의 공백 무경고를
+주장하지 않는다. 충돌 미해결 파일과 unstaged 변경은 없음을 확인했다.

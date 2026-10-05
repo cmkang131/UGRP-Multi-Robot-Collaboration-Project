@@ -463,7 +463,10 @@ def test_a_waiting_robots_job_that_ends_without_a_partner_submission_is_queue_em
         reason = failed[0]['detail']['reason']
         wire = ' '.join(r['system'] + r['user'] for r in rows(out / 'llm' / 'requests.jsonl'))
         assert reason not in wire                                                  # the raw reason never reaches the model
-    assert traces['no_comm'] == traces['peer_nl']
+    # Condition prompts incur different SIM costs: compare ordered own states, not call timestamps.
+    for rid in ('r1', 'r2'):
+        states = {arm: [s for r, _, s in trace if r == rid] for arm, trace in traces.items()}
+        assert states['no_comm'] and states['no_comm'] == states['peer_nl']
     final = [s for r, _, s in traces['no_comm'] if r == 'r1'][-1]
     assert final['last_outcome'] == 'pair_job_ended' and final['reason'] == 'queue_empty'
 

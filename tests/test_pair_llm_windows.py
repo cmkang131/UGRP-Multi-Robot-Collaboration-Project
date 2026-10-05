@@ -1,12 +1,29 @@
 """Approved window-scoped message wake deviation; real scheduler, fake controller only."""
 import hashlib
 import json
+from pathlib import Path
+import inspect
+import textwrap
 
 import pytest
 
 from harness.pair_llm_decisions import DecisionWindow, HOOK_EVENTS
 from tests.pair_llm_fakes import offline_only  # noqa: F401
 from tests.pair_llm_window_replay import event, replay
+
+FROZEN = Path(__file__).parent / 'fixtures' / 'pair_llm_3327a0ea'
+
+
+def scripted_stop(rid, index, body, _):
+    return ({'kind': 'release', 'order_id': 'cargoX'} if index == 1 else {'kind': 'continue'}), []
+
+
+def assert_frozen_commands(data, name):
+    expected = (FROZEN / name).read_bytes()
+    manifest = json.loads((FROZEN / 'manifest.json').read_text())
+    assert manifest['source_sha'] == '3327a0ea686cf15dc56d118fe89bf736b93ba284'
+    assert hashlib.sha256(expected).hexdigest() == manifest['files'][name]['sha256']
+    assert json.loads(data) and data == expected, 'command trajectory differs from 3327a0ea'
 
 
 def talk(rid, index, body, _):
@@ -41,15 +58,31 @@ def test_text_outside_a_window_does_not_wake_a_busy_robot(tmp_path):
 
 
 @pytest.mark.parametrize('condition', ['rule', 'no_comm'])
-def test_rule_and_no_comm_command_bytes_match_before_and_after_deviation(tmp_path, condition):
-    def scripted_stop(rid, index, body, _):
-        return ({'kind': 'release', 'order_id': 'cargoX'} if index == 1 else {'kind': 'continue'}), []
+def test_rule_and_no_comm_command_bytes_match_3327a0ea(tmp_path, condition):
     new, new_bytes = replay(tmp_path/'new', condition=condition, policy=scripted_stop)
-    old, old_bytes = replay(tmp_path/'old', condition=condition, policy=scripted_stop, legacy=True)
-    assert new_bytes == old_bytes and hashlib.sha256(new_bytes).digest() == hashlib.sha256(old_bytes).digest()
+    assert len(json.loads(new_bytes)) == 480
+    assert_frozen_commands(new_bytes, condition + '-scheduler.json')
     if new is not None:
-        assert new.dispatch_log == old.dispatch_log
         assert any(r['api'] == 'abort' for r in new.dispatch_log)   # the replay's command path actually changes
+
+
+def test_frozen_trajectory_detects_reviewers_no_comm_wake_delay(tmp_path, monkeypatch):
+    from harness import pair_llm_dispatch as mod
+    source = textwrap.dedent(inspect.getsource(mod.PairTrial.on_executor_event))
+    old = "self.scheduler.trigger(event['robot_id'], 'idle', at=at_s)"
+    assert source.count(old) == 1
+    source = source.replace(old, "self.scheduler.trigger(event['robot_id'], 'idle', "
+                            "at=at_s + (0.1 if self.arm == 'no_comm' else 0.0))")
+    namespace = dict(vars(mod))
+    exec(compile(source, '<review-wake-delay>', 'exec'), namespace)
+    monkeypatch.setattr(mod.PairTrial, 'on_executor_event', namespace['on_executor_event'])
+    _, data = replay(tmp_path, condition='no_comm', policy=scripted_stop)
+    with pytest.raises(AssertionError, match='command trajectory differs'):
+        assert_frozen_commands(data, 'no_comm-scheduler.json')
+    before, after = json.loads((FROZEN / 'no_comm-scheduler.json').read_bytes()), json.loads(data)
+    first = next((a, b) for a, b in zip(before, after) if a != b)
+    assert first[0][0] == first[1][0] == 15.3
+    assert first[0][2]['kind'] == 'hold' and first[1][2]['kind'] == 'drive'
 
 
 @pytest.mark.parametrize('origin', [0., 1.3, 2.6, 7.])

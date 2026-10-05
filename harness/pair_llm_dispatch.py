@@ -25,6 +25,7 @@ import types
 from collections.abc import Mapping
 
 from harness import pair_llm_billing as billing
+from harness import pair_llm_clock as clock
 from harness import pair_llm_decisions as decisions
 from harness import pair_llm_inputs as pi
 from harness import pair_llm_status as status
@@ -158,7 +159,7 @@ class PairLink:
         self._abs_now = float(abs_now)
 
     def clock(self):
-        return round(self._abs_now - self.origin_s, 6)
+        return clock.relative(self._abs_now, self.origin_s)
 
     def observe(self, obs) -> None:
         """Keep the robot's OWN latest ``robot_cam`` JPEG (hash-checked against its observation)."""
@@ -169,7 +170,7 @@ class PairLink:
         digest_hex = hashlib.sha256(jpeg).hexdigest()
         if digest_hex != obs['sha256']:
             raise ContractViolation(f'{rid}: frame bytes do not hash to the observation sha256')
-        self._frames.append(zi.OwnFrame(int(obs['frame_id']), round(float(obs['sim_time']) - self.origin_s, 4),
+        self._frames.append(zi.OwnFrame(int(obs['frame_id']), clock.relative(float(obs['sim_time']), self.origin_s),
                                         jpeg, digest_hex))
         self._abs_now = float(obs['sim_time'])
 

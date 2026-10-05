@@ -220,17 +220,23 @@ def driver_record(ledger, profile, budget, cohort_id) -> dict:
 
 def run_pair_live(out_root, *, condition, seed, cap_s, profile, budget, cohort_id, backend_factory, calibration,
                   calibration_sha, provider_factory=None, synthetic_calibration=False, source_sha='unknown',
-                  proxy_pid=None, wire=None, root=contract.ROOT):
+                  proxy_pid=None, wire=None, peer_measurement=None, root=contract.ROOT):
     """One live case through the study's retry rule. Returns ``(record, attempts)``.
 
     ``out_root/<condition>`` is attempt 1; ``<condition>-attempt2`` exists only after a pre-request host error.
     """
     from harness.pair_llm_case import run_pair_case, write
+    from harness import pair_llm_admission as admission
     if condition == 'rule':
         raise ValueError('the rule arm makes no model call; it has no live path')
     if not 0 < float(cap_s) <= LIVE_MAX_CAP_S:
         raise ValueError(f'a live case is capped at {LIVE_MAX_CAP_S:g} SIM s (a longer one is a separate decision)')
+    admitted = admission.begin_case(budget, cohort_id, condition=condition, seed=seed, source_sha=source_sha,
+                                    peer_measurement=peer_measurement)
     out_root = Path(out_root)
+    write(out_root / 'admission.json', admitted)
+    if peer_measurement is not None:
+        write(out_root / 'peer_token_measurements.json', peer_measurement)
     bundle = contract.bundle(condition, kind='live', calibration={'path': calibration, 'sha256': calibration_sha},
                              synthetic_calibration=synthetic_calibration, source_sha=source_sha, root=root)
     bundle_sha = digest(bundle)
@@ -262,6 +268,8 @@ def run_pair_live(out_root, *, condition, seed, cap_s, profile, budget, cohort_i
         return result, None
 
     record, exc, attempts = llm.run_attempts(attempt_fn, budget=budget, run_id=run_id, start=start)
+    completion = admission.finish_case(budget, cohort_id, condition=condition, result=record, attempts=attempts)
+    write(out_root / 'admission_completion.json', completion)
     write(out_root / 'attempts.json', {'schema': LIVE_VERSION, 'run_id': run_id, 'bundle_sha256': bundle_sha,
                                        'attempts': attempts, 'retry_policy': profile['retry_policy'],
                                        'cohort_id': cohort_id, 'cohort_usage': budget.usage(cohort_id),

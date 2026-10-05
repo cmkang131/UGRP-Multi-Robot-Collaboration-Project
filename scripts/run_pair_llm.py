@@ -39,6 +39,8 @@ def parser():
     p.add_argument('--create-budget', action='store_true', help='create --budget-db (never created implicitly)')
     p.add_argument('--cohort-id')
     p.add_argument('--cohort-token-cap', type=int, help='explicit cap on charged provider tokens of the cohort')
+    p.add_argument('--peer-token-measurements', type=Path,
+                   help='JSON pairs of archived no_comm/peer_nl requests; recounted before peer_nl admission')
     p.add_argument('--unknown-usage-charge-tokens', type=int, default=12000,
                    help='tokens charged against the cap for a request whose usage is unknown')
     p.add_argument('--stub-policy', choices=('cooperative',), default='cooperative')
@@ -67,6 +69,8 @@ def check_live_args(args) -> None:
         raise ValueError(f'--live --execute needs {", ".join(missing)}')
     if args.cohort_token_cap < 1 or args.unknown_usage_charge_tokens < 0:
         raise ValueError('--cohort-token-cap must be a positive int and --unknown-usage-charge-tokens >= 0')
+    from harness.pair_llm_admission import check_cap
+    check_cap(args.cohort_token_cap)
     if not args.budget_db.is_absolute():
         raise ValueError('--budget-db must be an absolute path under the primary checkout outputs/')
 
@@ -80,6 +84,11 @@ def main(argv=None):
     args = parser().parse_args(argv)
     if args.live:
         check_live_args(args)
+    elif args.budget_db is not None:
+        from harness.pair_llm_admission import check_cap
+        check_cap(args.cohort_token_cap)
+        if args.condition != "rule" or not args.cohort_id or not args.budget_db.is_absolute():
+            raise ValueError("cohort rule needs --condition rule, --cohort-id and an absolute --budget-db")
     if not 0 < args.cap_s <= contract.CAP_S:
         raise ValueError(f'--cap-s must be in (0, {contract.CAP_S:g}]')
     if args.synthetic_plumbing_calibration == bool(args.calibration):
@@ -117,7 +126,7 @@ def main(argv=None):
     from harness.pair_llm_case import run_pair_case, stub_adapter
     from harness.pair_llm_stub import cooperative_model
     from sim.final_pair_v3 import PhysicsBackend
-    if args.live:
+    if args.live or args.budget_db is not None:
         budget_path = args.budget_db.resolve()
         if not budget_path.is_relative_to((primary / 'outputs').resolve()):
             raise ValueError('--budget-db must be under the primary checkout outputs/')
@@ -139,6 +148,15 @@ def main(argv=None):
                                       'sim_slot': args.sim_slot, 'host_snapshot': snapshot})
     if args.live:
         return run_live(args, plan, calibration, provider_factory, primary, budget_path)
+    budget = None
+    if args.budget_db is not None:
+        if args.condition != 'rule':
+            raise ValueError('only rule or --live cases belong to a measured cohort')
+        from harness import pair_llm_admission as admission
+        budget = cohort_budget(args, budget_path)
+        admitted = admission.begin_case(budget, args.cohort_id, condition='rule', seed=args.seed,
+                                        source_sha=args.expected_source_sha)
+        write(args.output / 'admission.json', admitted)
     model = cooperative_model()
     result = run_pair_case(
         bundle, args.output / args.condition, condition=args.condition, seed=args.seed,
@@ -146,30 +164,42 @@ def main(argv=None):
         provider_factory=provider_factory, cap_s=args.cap_s, kind='stub',
         adapter_factory=(lambda out: stub_adapter(model, out / 'llm' / 'ledger')) if args.condition != 'rule' else None,
         source_sha=args.expected_source_sha)
+    if budget is not None:
+        completion = admission.finish_case(budget, args.cohort_id, condition='rule', result=result)
+        write(args.output / 'admission_completion.json', completion)
     write(args.output / 'result.json', {'status': result['status'], 'condition': args.condition,
                                         'case': result['metrics'], 'research_result': False,
                                         'physical_success': None})
     return int(result['status'] == 'HOST_ERROR')
 
 
-def run_live(args, plan, calibration, provider_factory, primary, budget_path) -> int:
-    """One live smoke case: budget ledger + cohort, then the study's retry rule around the case."""
-    from harness import pair_llm_live as live
+def cohort_budget(args, budget_path):
+    from harness.pair_llm_admission import check_cap
     from harness.zone_main_budget import MainStudyBudget
-    from sim.final_pair_v3 import PhysicsBackend
+    check_cap(args.cohort_token_cap)
     budget = MainStudyBudget.create(budget_path) if args.create_budget else MainStudyBudget(budget_path)
     registry_sha = contract.base.sha(contract.ROOT / contract.REGISTRY)
     budget.register_cohort(args.cohort_id, token_cap=args.cohort_token_cap,
                            unknown_usage_charge_tokens=args.unknown_usage_charge_tokens, prereg_sha256=registry_sha,
                            source={'code_sha': args.expected_source_sha, 'execution_bundle_id': contract.BUNDLE_ID,
                                    'note': 'live smoke of the pair LLM layer; no preregistration'})
+    return budget
+
+
+def run_live(args, plan, calibration, provider_factory, primary, budget_path) -> int:
+    """One admitted live case, then the study's retry rule around that case."""
+    from harness import pair_llm_live as live
+    from sim.final_pair_v3 import PhysicsBackend
+    budget = cohort_budget(args, budget_path)
+    measurement = (json.loads(args.peer_token_measurements.read_text())
+                   if args.peer_token_measurements is not None else None)
     profile = contract.driver_profile()
     record, attempts = live.run_pair_live(
         args.output, condition=args.condition, seed=args.seed, cap_s=args.cap_s, profile=profile, budget=budget,
         cohort_id=args.cohort_id, backend_factory=PhysicsBackend, calibration=calibration['path'],
         calibration_sha=calibration['sha256'], provider_factory=provider_factory,
         synthetic_calibration=args.synthetic_plumbing_calibration, source_sha=args.expected_source_sha,
-        proxy_pid=args.proxy_pid)
+        proxy_pid=args.proxy_pid, peer_measurement=measurement)
     write(args.output / 'result.json', {
         'status': record['status'], 'condition': args.condition, 'failure': record.get('failure'),
         'failure_class': record.get('failure_class'), 'attempts': attempts, 'case': record['metrics'],

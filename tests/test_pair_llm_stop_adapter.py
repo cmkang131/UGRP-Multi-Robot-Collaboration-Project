@@ -57,6 +57,9 @@ def test_polling_actual_hooks_preserves_nonempty_rule_trajectory_bytes(condition
     after = json.dumps([c.issued_log for c in ctls], sort_keys=True).encode()
     assert all(c.issued_log for c in ctls) and before == after
     assert hashlib.sha256(before).digest() == hashlib.sha256(after).digest()
+    from tests.test_pair_llm_windows import assert_frozen_commands
+    frozen_bytes = json.dumps([c.issued_log for c in ctls], sort_keys=True, separators=(',', ':')).encode()
+    assert_frozen_commands(frozen_bytes, condition + '-hooks.json')
     assert all(c.state == 'released' and c.failure is None for c in ctls)
     rows = [r for a in adapters.values() for r in a.decisions]
     assert len(rows) == 2 and all(r['decided_by'] == 'rule_default' for r in rows)
@@ -280,3 +283,33 @@ def test_reply_choices_use_the_sealed_validator_and_do_not_expand_its_vocabulary
     for wrong in ({**action, 'choice': 'wait'}, {**action, 'choice': 'give_up'}, {**action, 'rule_would_do': choice}):
         with pytest.raises(ProtocolError):
             validate_reply(reply(wrong), **kw)
+
+
+@pytest.mark.parametrize('condition', ['rule', 'no_comm', 'peer_nl'])
+def test_stop_deadline_is_ten_seconds_from_scheduled_end_not_event(look_team, condition):
+    _, ctls = look_team()
+    adapters = attach(ctls, condition)
+    deliveries = []
+    for i in range(701):
+        now = i / 10.
+        for a in adapters.values():
+            for row in a.poll():
+                deliveries.append((now, row))
+                a.window.on_event(row, origin_s=0.)
+        base.run_one(ctls, now)
+    carry = [(t, e) for t, e in deliveries if e['detail']['kind'] == 'carry_stop_reached']
+    post = [(t, e) for t, e in deliveries if e['detail']['kind'] == 'relook_result']
+    assert len(carry) == len(post) == 2
+    for delivered, e in carry:
+        assert e['sim_s'] == 17.8
+        assert delivered == 17.9                       # next-tick delivery
+        assert e['detail']['decide_at_s'] == 27.7       # scheduled end 17.7 + 10
+        assert e['detail']['latch_until_s'] == 27.5
+        assert e['detail']['decide_at_s'] - e['sim_s'] == pytest.approx(9.9)
+        assert e['detail']['decide_at_s'] - delivered == pytest.approx(9.8)
+    for delivered, e in post:
+        assert e['sim_s'] == 52.4 and delivered == 52.5
+        assert e['detail']['window_until_s'] == 62.4
+    decisions = [r for a in adapters.values() for r in a.decisions]
+    assert all(r['decided_by'] == 'rule_default' for r in decisions)
+    assert {r['executed_s'] for r in decisions} == {27.7, 62.4}
