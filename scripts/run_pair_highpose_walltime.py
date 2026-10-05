@@ -9,7 +9,7 @@ manifest or other output byte changes). Same arguments, locks and slots as the r
         [--no-monitor] [--speedups none|v98-exact-v1|v98-exact-v2|v98-exact-v3|v98-exact-v4|v98-exact-v5|v98-exact-v6] -- \
         --check carry --map-id ... --expected-source-sha ... --output /abs/outputs/<run> --execute ...
 
-``--speedups`` installs harness.zone_pair_highpose_exact_speedups (default 'none' = original path) and
+``--speedups`` installs harness.zone_pair_highpose_exact_speedups (default v98-exact-v6, the same as the runner; none = original path) and
 records the set, item status and cache counters in ``<--output>/speedups.json`` (run root). Equivalence of
 a set on a run: ``python scripts/compare_v98_runs.py <caseA> <caseB>``.
 
@@ -31,7 +31,8 @@ def split_argv(argv):
     p = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     p.add_argument('--walltime-window-sim-s', type=float, default=10.)
     p.add_argument('--no-monitor', action='store_true', help='speedups only, no walltime_profile.jsonl')
-    p.add_argument('--speedups', default='none', help='harness.zone_pair_highpose_exact_speedups set name')
+    p.add_argument('--speedups', default='v98-exact-v6',
+                   help='harness.zone_pair_highpose_exact_speedups set name (default: the runner default; none = original path)')
     if '--' in argv:
         i = argv.index('--')
         own, rest = argv[:i], argv[i + 1:]
@@ -52,6 +53,7 @@ def main(argv=None):
     existed = out.exists()      # the runner refuses an existing output; never write into it
     from harness import zone_pair_highpose_exact_speedups as speed
     record, undo = speed.install(own.speedups)
+    rest = [*rest, '--speedups', 'none']    # this wrapper installs the set; the runner must not install it a second time
     monitor = None if own.no_monitor else WalltimeMonitor(
         sidecar, window_sim_s=own.walltime_window_sim_s).install_v98(runner)
     rc = None
@@ -63,7 +65,7 @@ def main(argv=None):
             monitor.close()
         undo()
         if out.is_dir() and not existed:
-            (out / 'speedups.json').write_text(json.dumps({'schema': 'ugrp.v98_run_speedups.v1', 'monitor': monitor is not None,
+            (out / speed.SIDECAR).write_text(json.dumps({'schema': 'ugrp.v98_run_speedups.v1', 'monitor': monitor is not None,
                 'speedups': speed.summary(record), 'runner_rc': rc}, indent=1) + '\n')
         if sidecar.is_file() and not existed:
             print(json.dumps({'walltime_profile': str(sidecar), **summarize(sidecar)}), file=sys.stderr)

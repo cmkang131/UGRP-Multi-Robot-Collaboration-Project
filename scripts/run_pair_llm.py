@@ -32,6 +32,8 @@ def parser():
     p.add_argument('--cap-s', type=float, default=contract.CAP_S,
                    help=f'per-case SIM cap (registered {contract.CAP_S:g}; a stub smoke uses <= {contract.SMOKE_MAX_S:g})')
     p.add_argument('--seed', type=int, default=911)
+    p.add_argument('--speedups', default='v98-exact-v6',
+                   help='bit-exact wall-time set (harness.zone_pair_highpose_exact_speedups); none = original path')
     p.add_argument('--live', action='store_true',
                    help='real model calls through the study live driver (LLM condition, cap <= 900 SIM s)')
     p.add_argument('--proxy-pid', type=int, help='PID of the already running local subscription proxy (read-only check)')
@@ -86,6 +88,21 @@ def primary_checkout():
 
 def main(argv=None):
     args = parser().parse_args(argv)
+    if not args.execute:
+        return _main(argv)
+    from harness import zone_pair_highpose_exact_speedups as speed
+    speed.resolve(args.speedups)    # unknown set name: refuse before anything runs
+    run = speed.RunSpeedups(args.speedups, args.output)
+    rc = None
+    try:
+        rc = _main(argv, run)
+        return rc
+    finally:
+        run.finish(rc)
+
+
+def _main(argv=None, speedups=None):
+    args = parser().parse_args(argv)
     from sim.final_pair_highpose_clock import record as host_clock_record
     if args.live:
         check_live_args(args)
@@ -134,6 +151,8 @@ def main(argv=None):
     from scripts.agent_sim_slots import require_sim_slot
     branch = subprocess.check_output(['git', 'branch', '--show-current'], cwd=contract.ROOT, text=True).strip()
     snapshot = require_sim_slot(DEFAULT_ROOT, slot=args.sim_slot, owner=args.lock_owner, branch=branch)
+    if speedups is not None:
+        speedups.start()    # bit-exact wall-time set (--speedups); undone by main()
     from harness.pair_llm_case import run_pair_case, stub_adapter
     from harness.pair_llm_stub import cooperative_model
     from sim.final_pair_highpose_clock import PhysicsBackend

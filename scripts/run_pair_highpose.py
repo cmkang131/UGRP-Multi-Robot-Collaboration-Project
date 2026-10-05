@@ -382,6 +382,8 @@ def parser():
     p.add_argument('--calibration', type=Path)
     p.add_argument('--calibration-sha256')
     p.add_argument('--seed', type=int, default=911)
+    p.add_argument('--speedups', default='v98-exact-v6',
+                   help='bit-exact wall-time set (harness.zone_pair_highpose_exact_speedups); none = original path')
     p.add_argument('--admission', choices=('measured-sim', 'dev-pilot'), default='measured-sim',
                    help='dev-pilot: exact registered sha256 only; FUNCTIONAL_DEV, never promotable')
     p.add_argument('--sim-slot', help='owned sim-* slot under a non-timing SIM coordinator; omitted uses exclusive physics lock')
@@ -474,6 +476,21 @@ def plan(args):
 
 def main(argv=None):
     args = parser().parse_args(argv)
+    if not args.execute:
+        return _main(argv)
+    from harness import zone_pair_highpose_exact_speedups as speed
+    speed.resolve(args.speedups)    # unknown set name: refuse before anything runs
+    run = speed.RunSpeedups(args.speedups, args.output)
+    rc = None
+    try:
+        rc = _main(argv, run)
+        return rc
+    finally:
+        run.finish(rc)
+
+
+def _main(argv=None, speedups=None):
+    args = parser().parse_args(argv)
     admission, bundles = plan(args)
     if not args.execute:
         print(json.dumps(admission, ensure_ascii=False, indent=2))
@@ -499,6 +516,8 @@ def main(argv=None):
         if (not held or not held['pid_alive'] or held['owner'] != args.lock_owner
                 or held['branch'] != branch or sim_holders(DEFAULT_ROOT)):
             raise ValueError('live owned host lock for this branch required')
+    if speedups is not None:
+        speedups.start()    # bit-exact wall-time set (--speedups); undone by main()
     from sim.final_pair_highpose_clock import PhysicsBackend   # v98 host clock v2 (integer substep time)
     args.output.mkdir(parents=True)
     admission.update(execution_started=True, host_start=sim_snapshot(DEFAULT_ROOT))
