@@ -350,7 +350,10 @@ class HighController:
         # command ALWAYS zero for BOTH robots (no lateral/yaw correction while loaded). The own significance test
         # (two-sided 95 %) and the command it would have issued are only logged (would_*); timing and pair_plan are
         # the parent's, unchanged. (v1, per-robot significance, is superseded: see the carry_align history note.)
-        return carry_align.gate_schedule(self, super().door_schedule(t0), t0)
+        from harness.zone_pair_highpose_motion_v102 import shared_motor_command
+        with shared_motor_command():     # v102 affine dead zone without editing the hash-pinned shared skill
+            schedule = super().door_schedule(t0)
+        return carry_align.gate_schedule(self, schedule, t0)
 
     def _wait_lower(self, now, arm_idle):
         # v98 (zone_pair_highpose_refix): a decided sigma re-fix takes the final set-down path at this stop.

@@ -332,7 +332,7 @@ def horizon(plan, j):
 def leg_plan(plan, k, rid, motion_loaded):
     """Leg k's own command and duration with the formulas of ``V3Controller.door_schedule`` (no align part)."""
     from harness.owncam_carry_v6e import lag_duration
-    from harness.zone_final_pair_skill import motor_command
+    from harness.zone_pair_highpose_motion_v102 import motor_command
     from harness.zone_pair_executor import carry_role_sign
     from scripts.study_owncam_pair_beam import SPEED_M_S
 
@@ -352,7 +352,7 @@ def leg_plan(plan, k, rid, motion_loaded):
 # ---------------------------------------------------------------- bounded look move (coordinator decision 3)
 def _command(motion, velocity):
     """The PF's own gain inverted (``motor_command``); profiles without a deadband are a plain gain."""
-    from harness.zone_final_pair_skill import motor_command
+    from harness.zone_pair_highpose_motion_v102 import motor_command
     if motion.get('deadband') is None:
         return np.linalg.solve(np.asarray(motion['gain'], float), velocity)
     return motor_command(motion, velocity)

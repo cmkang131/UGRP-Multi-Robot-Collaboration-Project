@@ -13,7 +13,6 @@ import numpy as np
 
 from harness import zone_pair_executor as pair
 from harness import pair_passage_plan as passage
-from harness import zone_pair_deadband as deadband
 from harness import visual_arm_v3 as arm
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_guards import CommandGuard
@@ -115,7 +114,7 @@ def motor_command(profile, velocity):
     for i, value in enumerate(effective):
         if 0 < abs(value) < u1[i] and u1[i] > c0[i]:
             raw[i] = math.copysign((c0[i]+math.sqrt(c0[i]**2+4*abs(value)*(u1[i]-c0[i])))/2, value)
-    return deadband.inverse_affine(raw, profile['deadband'])      # v102 affine dead zone: sits before the ramp forward, added back last
+    return raw
 
 
 class V3Controller:

@@ -12,6 +12,7 @@ import numpy as np
 import pytest
 
 from harness import zone_final_pair_skill as skill
+from harness import zone_pair_highpose_motion_v102 as mv
 from harness.zone_pair_deadband import effective as deadband_effective
 from harness.vision_pose_source_pair_v3 import pair_motion_module
 from tests.test_zone_pair_v6e import V6
@@ -51,21 +52,21 @@ def test_affine_dead_zone_subtracts_u0_symmetrically_and_leaves_the_turn_axis_al
 @pytest.mark.parametrize('profile_db', [RAMP, AFFINE])
 def test_motor_command_inverts_the_forward_static_map(profile_db):
     profile = {'gain': GAIN, 'deadband': copy.deepcopy(profile_db)}
-    assert np.array_equal(skill.motor_command(profile, np.zeros(3)), np.zeros(3))
+    assert np.array_equal(mv.motor_command(profile, np.zeros(3)), np.zeros(3))
     for speed in np.linspace(.004, .09, 15):
         for sign in (-1., 1.):
             v = np.array([sign*speed, -sign*speed*.7, sign*speed*.5])
-            u = skill.motor_command(profile, v)
+            u = mv.motor_command(profile, v)
             assert np.all(np.isfinite(u))
             reached = np.asarray(GAIN) @ deadband_effective(u, profile['deadband'])
             np.testing.assert_allclose(reached, v, atol=1e-6)
     if 'u0' in profile_db:      # at the carry speed the command is the dead zone plus v/g: 0.06/1.175 + 0.0072
-        assert skill.motor_command(profile, np.array([0., .06, 0.]))[1] == pytest.approx(.06/1.175 + .0072, abs=2e-6)
+        assert mv.motor_command(profile, np.array([0., .06, 0.]))[1] == pytest.approx(.06/1.175 + .0072, abs=2e-6)
 
 
 def _pair_cloud(db, seed=7):
     """The registered pair PF subclass (``PairMotion``) with a fixed loaded particle cloud (no fix ever arrives)."""
-    loc = pair_motion_module().OwnCamLocalizer(V6['map'], V6['params'], seed=seed)
+    loc = mv.motion_module().OwnCamLocalizer(V6['map'], V6['params'], seed=seed)
     rng = np.random.default_rng(99)
     loc.px = np.stack([.6 + .03*rng.normal(size=loc.n), .03*rng.normal(size=loc.n), .05*rng.normal(size=loc.n)], 1)
     loc.scale = 1. + rng.normal(size=(loc.n, 3))*loc.params['motion']['scale_std']
@@ -124,3 +125,13 @@ def test_dev_validator_accepts_u0_and_rejects_malformed_values(tmp_path, monkeyp
         admit(monkeypatch, c.base.sha(path))
         with pytest.raises(ValueError):
             c.dev_pilot_calibration(path, c.base.sha(path), MAPS[0])
+
+
+def test_shared_sources_are_main_bytes_and_swap_is_scoped():
+    import subprocess
+    for path in ('harness/zone_final_pair_skill.py', 'harness/vision_pose_source_pair_v3.py'):
+        assert subprocess.run(['git', 'diff', '--quiet', 'origin/main', '--', path]).returncode == 0, path
+    shared = skill.motor_command
+    with mv.shared_motor_command():
+        assert skill.motor_command is not shared
+    assert skill.motor_command is shared
