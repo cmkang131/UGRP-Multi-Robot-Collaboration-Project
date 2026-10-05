@@ -81,7 +81,7 @@ RELEASE_PHASES = frozenset({'cp_open', 'released'})
 
 def record():
     return {'profile': PROFILE, 'version': VERSION, 'verdict': VERDICT, 'module': 'harness/zone_pair_highpose_own_load_occlusion.py',
-            'events': [EVENT_START, EVENT_END], 'monitor_row_tag': {'own_image': VERDICT},
+            'events': [EVENT_START, EVENT_END], 'monitor_row_note': {'own_image': VERDICT},
             'loaded_phases': sorted(LOADED_PHASES), 'release_phases': sorted(RELEASE_PHASES),
             'loaded_requires': 'own controller phase in loaded_phases AND own grasp receipt held '
                                '(beam_grasp_confirmed: current segment, issued gripper pulse closed)',
@@ -188,7 +188,7 @@ class OwnLoadOcclusion:
                duration_s=round(now-episode['start_s'], 4), frames=episode['frames'], phases=list(episode['phases']),
                last_frame_id=episode['last_frame_id'])
 
-    def tag_row(self, row):
+    def note_row(self, row):
         """Extra fields of a grip-monitor row: the frame it reads was occluded by the own load."""
         return {'own_image': VERDICT} if row.get('frame_id') in self.frame_ids else {}
 

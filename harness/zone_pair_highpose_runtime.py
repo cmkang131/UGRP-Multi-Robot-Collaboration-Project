@@ -677,7 +677,7 @@ class Execution(previous.Execution):
         ctl.high_raising, ctl.high_ready = False, False
         ctl.grip_epoch, ctl.pose_anchors, ctl.transit = 0, {}, None
         ctl.floor_return_verified = False
-        ctl.grip_monitor = grip.GripMonitorLog(tag=self.own_load_occlusion.tag_row)   # occluded frames are tagged
+        ctl.grip_monitor = grip.GripMonitorLog(annotate=self.own_load_occlusion.note_row)   # occluded frames are annotated
         ctl.grip_closed_epoch = None
         ctl.v98_measured_camera_keys = posture_defer.measured_keys(kwargs['calibration'])  # static calibration
         self.command_guard = CommandGuard(self, self.vision)

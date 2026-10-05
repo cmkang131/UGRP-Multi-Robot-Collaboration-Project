@@ -144,8 +144,8 @@ def test_occluded_frame_is_accepted_logged_once_per_episode_and_ends_on_the_next
     assert end['frames'] == 2 and end['duration_s'] == pytest.approx(.1) and end['last_frame_id'] == 6737
     export = o.export()
     assert export['occluded_frames'] == 2 and export['episodes'][0]['open_at_job_end'] is False
-    assert o.tag_row({'frame_id': 6736}) == {'own_image': occ.VERDICT} and o.tag_row({'frame_id': 6738}) == {}
-    assert o.tag_row({'kind': 'anchor'}) == {}
+    assert o.note_row({'frame_id': 6736}) == {'own_image': occ.VERDICT} and o.note_row({'frame_id': 6738}) == {}
+    assert o.note_row({'kind': 'anchor'}) == {}
 
 
 def test_everything_else_is_left_to_the_unchanged_gate():
@@ -294,7 +294,7 @@ def test_release_window_keeps_an_occluded_view_open_until_the_queued_arm_motion_
 def test_grip_monitor_rows_of_an_occluded_frame_are_tagged_and_other_rows_are_not():
     o = occ.OwnLoadOcclusion(fake_ep('lower', obs=at(OCCLUDED, 338.05, fid=6736)))
     assert o.accepts(338.05)
-    log = grip.GripMonitorLog(tag=o.tag_row)
+    log = grip.GripMonitorLog(annotate=o.note_row)
     log.record('r1', 'transit_view', 338.05, frame_id=6736, relation={'ok': False})
     log.record('r1', 'transit_view', 338.0, frame_id=6735)
     log.record('r1', 'anchor', 338.0)

@@ -69,14 +69,14 @@ def _plain(value):
 class GripMonitorLog:
     """Write-only eval/audit sink. Controllers append; only records() exports."""
 
-    def __init__(self, tag=None):
+    def __init__(self, annotate=None):
         self._rows = []
-        self.tag = tag      # row -> extra fields (own_load_occlusion marks a frame the own load occluded)
+        self.annotate = annotate      # row -> extra fields (own_load_occlusion marks a frame the own load occluded)
 
     def record(self, rid, kind, now, **values):
         row = {'robot_id': rid, 'kind': kind, 'sim_s': float(now), 'scope': MONITOR_SCOPE, **_plain(values)}
-        if self.tag is not None:
-            row.update(self.tag(row))
+        if self.annotate is not None:
+            row.update(self.annotate(row))
         self._rows.append(row)
 
     def export(self):
