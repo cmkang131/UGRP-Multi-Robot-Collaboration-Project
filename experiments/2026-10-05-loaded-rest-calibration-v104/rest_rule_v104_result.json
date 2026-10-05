@@ -1,0 +1,61 @@
+{
+ "schema": "ugrp.loaded_rest_rule.v104",
+ "raw": "/Users/changmin/projects/ugrp/outputs/calib-loaded-rest-v104-835c8fcd-20261005T0736Z",
+ "rule": "Rule (scripts/fit_unloaded_gain_calibration.py ``rest_rms`` + ``ACCEPT['rest_noise_rms_m'] = .001``): over fit-split blocks, windows start ``ceil(5 * tau_stop / DT)`` samples after the step end, last 1 s (20 samples) and slide by one sample; value = norm of the model-free xy displacement (eval-only truth pose) over the window; rest = RMS over all windows; rest_noise = rest >= 1 mm. tau_stop = the selected v102 loaded stop lag (form A, 0.10035 s). Usage: rest_rule_v104.py <raw_dir> <out.json> ",
+ "tau_stop_s": 0.10035335696344526,
+ "threshold_m": 0.001,
+ "runs": {
+  "restL": {
+   "trajectory_sha256": "a00daeef6c5eee4fdd9475568dbb98490d2736fd9e667ac6e1871cee073644a3",
+   "rows": 1161,
+   "t0": 1.3000000000000178,
+   "r1": {
+    "n_windows": 210,
+    "rms_m": 1.1250306733958795e-06,
+    "max_m": 1.6985790032657376e-06,
+    "step_end_t": 44.30000000012051,
+    "block_end_t": 56.30000000017781
+   },
+   "r2": {
+    "n_windows": 210,
+    "rms_m": 1.1381300474575913e-06,
+    "max_m": 1.762130849936128e-06,
+    "step_end_t": 44.30000000012051,
+    "block_end_t": 56.30000000017781
+   }
+  },
+  "restF": {
+   "trajectory_sha256": "6904c8639f6b3a068f3f2b349e2b3be657ce6a8a5618fe8731c90d40133bfa19",
+   "rows": 1161,
+   "t0": 1.3000000000000178,
+   "r1": {
+    "n_windows": 210,
+    "rms_m": 1.0314675738563653e-06,
+    "max_m": 2.555558947113793e-06,
+    "step_end_t": 44.30000000012051,
+    "block_end_t": 56.30000000017781
+   },
+   "r2": {
+    "n_windows": 210,
+    "rms_m": 1.0628392061424042e-06,
+    "max_m": 3.4614206672243144e-06,
+    "step_end_t": 44.30000000012051,
+    "block_end_t": 56.30000000017781
+   }
+  }
+ },
+ "r1": {
+  "n_windows": 420,
+  "rms_m": 1.0792634923869896e-06,
+  "rest_noise": false
+ },
+ "r2": {
+  "n_windows": 420,
+  "rms_m": 1.1011283265449206e-06,
+  "rest_noise": false
+ },
+ "decision": {
+  "rest_noise": false,
+  "note": "rest_noise true if either carrier reaches the 1 mm RMS (one shared motion_loaded profile)"
+ }
+}
