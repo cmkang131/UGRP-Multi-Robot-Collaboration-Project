@@ -91,7 +91,21 @@ Refs #363. 브랜치 `claude/v98-checkpoint`(기준 `codex/pair-carry-highpose`)
 - 기본 꺼짐 확인: 이 브랜치의 실행기(체크포인트 없음)로 짧은 `raise_high_align`을 돌려 #363 HEAD(`7194637e`)의 연속
   `align_to_carry` s911 실행과 비교(HIGH까지 같은 궤적). 저장 켠 연속 실행도 같은 HEAD 실행과 비교.
 
-결과: (게이트 실행 뒤 채움)
+결과: **아직 실행 안 함.** 2026-10-05 15시 무렵 기계 과부하(부하 평균 135–234, CPU 8개, 스왑 5.2/6 GiB)로 조정자가
+먼저 물리 동시 1개·#363 실행 우선, 이어서 사용자 지시로 시뮬레이션 전부 중단을 전달했다. 재개 지시 뒤
+`run_gate.sh <outputs/v98-ckpt-gate-<SHA8>> /Users/changmin/projects/ugrp/outputs/v98-dev-align_to_carry-7194637e-s911/zone_wide_door_geometry_v3`
+로 실행한다. **게이트 통과 전에는 이 도구로 진단하지 않는다.**
+
+지금까지의 증거(게이트 아님):
+- 단위 시험 `tests/test_dev_pair_checkpoint.py` 10개 통과. 관련 시험 119개 통과(dev_pilot·final_veto·timing·highpose·워크플로).
+- 개발 루프(재기반 전 코드, 직접 `student_run_case` 호출, align_to_carry seed 911): 1.5 SIM초에 저장, 3.0초까지 연속 vs
+  새 프로세스에서 이어감 → 모든 jsonl 스트림 바이트 접두·프레임 30장×2 sha256·이벤트 목록 동일(지평 1.45초뿐).
+  `outputs/v98-ckpt-dev-20261005/loop1_compare.json` sha256 `337c5888…`, 체크포인트 `73fe4e3a…`(3.5 MB 압축).
+- 중단한 실행(증거 아님): `outputs/v98-ckpt-dev-20261005/aborted-gate-7dbcd627-stopped-at-5s`(연속 저장 실행, 5 SIM초에 멈춤),
+  `aborted-head-7194637e-overload`(HEAD 짧은 실행, 4 SIM초에 멈춤).
+
+벽시계 속도: 아직 측정 못 함. 예상은 이어가기 준비(역피클 + 모듈 163개 + GL 렌더러) 수십 초 + (실패 시각 − T)의 물리 시간,
+연속 실행은 0초부터 실패 시각까지. 게이트의 `gate_log.jsonl`(단계별 unix 시각·부하 평균)로 측정해 채운다.
 
 ## 한계
 
