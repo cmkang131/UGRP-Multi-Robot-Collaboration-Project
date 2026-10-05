@@ -66,6 +66,81 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   **그 뒤에는:** (1) 이전 v98 기록과 결과를 합산하지 않는다(SHA로 구분). (2) 이 README의 오프라인 NEES 표를 다시 만든다.
   (3) σ 문턱(짝 입장 0.05 m, 도착 확인의 허용 오차 경계)을 다시 검증한다. σ가 정직해지면 같은 문턱의 의미가 바뀌기 때문이다.
 
+### 든 상태 진행 검사: 다리마다 다시 시작 + 0.10 m 이동 뒤 고정만 (안 A + 안 B, 조정자 결정 2026-10-05)
+
+- **무엇이 깨졌나(align_to_carry@399bf87d, 아래 "PF 통합 뒤 단계 검사 3개"):** 다섯째 운반 다리(seg 4) 341.5초에 r2가
+  `POSE_UNCERTAIN_PROGRESS`로 멈췄다(r1 `PARTNER_ABORT`). 든 상태 진행 검사(`MovedFixMonitor`, p2f 규칙: 첫 고정이 첫 이동
+  명령보다 늦어야 기준점을 잡음)가 seg 4에서만 기준점을 잡았다. 과정(진단 담당 재구성, 재현 스크립트
+  `outputs/v98-progress-arming-diag-20261005/replay_monitor.py`): seg 4 첫 정렬 검사에서 늦게 다시 시작(297.25초,
+  `zone_pair_guards.py` 742–744행) → 정렬이 3.5 mm 이동 명령 한 번(298.0초) → 크기와 상관없이 `move_t0` 설정
+  (`zone_final_pair_guards.py` 72–77행) → 멈춘 채 다시 잡기 전 고정(300.55초)이 "이동 뒤 고정"으로 기준점이 됨(82–93행) →
+  HIGH에 든 채로는 자기 카메라 고정이 없음(정지 때 고정 나이 40.8초) → 명령 이동 0.404 m에서 `needs_check` 발동
+  (`zone_own_guards.py` 503–511행). seg 2는 같은 구간에 이동 명령 행이 0개라 기준점이 없었다. 지금까지 다리를 지난 것은
+  "검사해서 통과"가 아니라 "기준점이 없어서 검사를 안 함"이었다(p2f 코호트 208건 0회 무장과 같은 모습). seg 0도 기준점을
+  잡은 채 0.372 m로 아슬아슬했다. 2026-09-30 발견(`harness/zone_pair_progress_relax.py` 설명)과 뿌리가 같다.
+- **고침(v98 전용 `harness/zone_pair_highpose_progress.py`, 공유 guard 파일은 main과 바이트 동일):**
+  - **A:** 운반 다리마다 첫 guard 검사에서 진행 검사를 다시 시작한다(Nav2 `ControllerServer`가 새 경로마다
+    `SimpleProgressChecker::reset()`을 부르는 방식). 다리 구분은 상태 변화가 아니라 제어기 seg로 한다(다리마다 seg가 달라서,
+    사이 상태에서 검사가 돌지 않아도 놓치지 않음). 사건 `progress_monitor_leg_reset`으로 다시 시작 전 상태를 남긴다.
+  - **B:** "이동"은 마지막 다시 시작 뒤 자기 명령 이동 합이 기존 상수 `REQUIRED_MOVEMENT_M` 0.10 m 이상일 때다(새 상수 없음).
+    그보다 늦은 고정만 기준점이 된다. `STALL_COMMANDED_M` 0.40 m, `TRUSTED_FIX_AGE_S` 0.3초 등 guard 한도는 그대로다.
+- **사실로 적어 둠(성공 근거로 쓰지 않음):** HIGH에 든 운반 다리에는 독립 근거(자기 카메라 고정)가 없어서, 고친 뒤에는 든
+  상태 정지(stall) 감지가 사실상 없다. 다리를 지났다는 것은 막혔을 때 알아챘을 것이라는 근거가 아니다. 이후 사전 등록에도
+  같은 문장을 넣는다. 자기 카메라 시각 주행거리(VO) 기반 미끄러짐 검사(안 C)는 #366, E2E 뒤.
+- **시험:** `tests/test_highpose_progress_arming.py` 12개 — 고정 상수 불변, 3.5 mm는 이동 아님·0.10 m 경계, 비유한 시각·hold 행
+  무시, seg 4 순서에서 동결 클래스는 발동·새 클래스는 발동 안 함, 진짜 이동 뒤 고정이 있으면 정지 감지 유지, 다리마다 한 번만
+  다시 시작(같은 다리 반복 없음, 접근 중 없음), `zone_pair_guards.MovedFixMonitor`의 하위 클래스가 아님(이중 계산 방지),
+  `__init__` 없이 만든 guard는 건드리지 않음, seg 0 아슬아슬 경우, 기록 재생(고정본
+  `tests/fixtures/v98_progress_arming_align_to_carry_399bf87d.json` 167 KB, 155–342초 자기 명령·`loaded_gate_check`만, 정답 없음):
+  동결 의미로는 r2가 seg 4 341.5초 0.40 m 이상에서 발동, A + B로는 두 로봇 모두 발동 없음.
+- **참고 자료(진단 담당 표기 그대로):** Nav2 `nav2_controller/plugins/simple_progress_checker.cpp`(required_movement_radius 0.5 m,
+  movement_time_allowance 10초) — 확인; Nav2 `nav2_controller/src/controller_server.cpp`(새 경로마다 reset, 실패 시
+  FAILED_TO_MAKE_PROGRESS) — 확인; Nav2 `nav2_behavior_tree/plugins/condition/is_stuck_condition.cpp`(odom 속도 이력 기반, 위치
+  고정에 기대지 않음) — 확인; ROS `move_base/src/move_base.cpp`(oscillation_distance·timeout, 새 목표·복구 뒤 타이머 reset) —
+  확인(기본값 0.0=꺼짐은 위키 검색 결과로만); Nav2 문서 기본값 — 부분 확인(검색 결과만); Maimone, Cheng, Matthies, "Two years
+  of Visual Odometry on the Mars Exploration Rovers", J. Field Robotics 2007 — 초록만, 미확인(미끄러짐 검사·keep-out 언급).
+  든 상태 정지 감지에 대한 최근 논문은 찾지 못함(미확인).
+
+### PF 통합 뒤 단계 검사 3개 (`399bf87d`, 2026-10-05)
+
+DEV_PILOT·FUNCTIONAL_DEV, seed 911, 확인 범위 carry(전체 경로), `zone_wide_door_geometry_v3`, 보정 C `aba4ac58…`(비적재 이득
+v101, 승격 불가), weld off, floor_light_v1, 모델 호출 0. SIM 시간 병렬 실행, 부하 평균 시작 8.0–8.9 / 끝 10.4–15.8.
+원본 `outputs/v98-dev-probe-<단계>-399bf87d`. 위치 오차·NEES·σ 정직성은 평가 전용 정답으로 낸 값이고 제어에 들어가지 않았다
+(`outputs/v98-probe-tools/sigma_honesty_399bf87d.py`, 결과 `outputs/v98-probe-tools/nees/`). **새 위치 추정기 코호트다: 1236c63d·
+1f7fb800 등 이전 v98 결과와 합산하지 않는다.** TensorBoard `outputs/tensorboard/1005c-v98-dev-probes-399bf87d`(1005a는 다른
+코호트 기준선으로 함께 표시). CI 37244287292 33개 작업 모두 성공.
+
+| 검사 | 상태 | SIM초 | 명령 r1/r2 | 끝 | result / student_record sha256 |
+|---|---|---|---|---|---|
+| dock_approach (staged 아님) | REACHED | 133.85 | 536/1985 | 두 로봇 `wait_approach`(도착 화면 확인 통과) | `c34b011a…` / `b2bffca1…` |
+| raise_high_align (staged) | REACHED | 85.05 | 2031/2355 | 두 로봇 HIGH, `wait_carry` | `2deb2bba…` / `af76684c…` |
+| align_to_carry (staged) | FAILED | 340.25 | 7117/7407 | 다리 5/8(seg 4) r2 `POSE_UNCERTAIN_PROGRESS`, r1 `PARTNER_ABORT` | `3442096a…` / `c90d6a18…` |
+
+- **dock_approach — 실제 도크에서 처음 통과.** r1은 1회 둘러본 뒤 32.2초에 도착 화면 확인으로 도착(추정 오차 4.2 mm, σ 12.5 mm,
+  실제 위치와 목표 차이 26.5 mm, 평가 전용). 1236c63d의 184 mm 지나침(이득 편향)이 보정 C로 사라졌다. r2는 둘러보기 8회
+  (진행 확인 1, 고정 없음 2, 제자리 돌기 단계 3 + 돌기 끝 1, 도착 확인 1)로 135.1초 도착(추정 오차 32.0 mm 대 σ 17.0 mm,
+  e/σ 1.88, χ² 95 % 위 99.9 % 아래; 실제와 목표 차이 55.3 mm). 도착 거절 0회라 R2 믿음 넓히기는 한 번도 발동하지 않았고,
+  R1 입자 주입도 0회였다. 둘 다 이 실행으로는 물리 확인이 안 됐다.
+- **raise_high_align:** 85.05초에 두 로봇 HIGH. r2 재둘러보기 5회(고정 거절 8회는 `fix_age_valid` 등 새 고정 없음), r1은
+  닫기 장벽에서 12.5초 기다림(20초 안). 준비된 시작이라 PF 사전 평균이 실제 시작 자세에 있어 아래 σ 값은 낙관적이다.
+- **align_to_carry — 내려놓기 재고정이 물리에서 처음 끝까지 작동.** 다리 1 → HIGH 정지(DR 영수증) → 다리 2 → 정지 2에서 예측
+  끝 σ 73/78 mm > 예산 67.43 mm라 내려놓기 → 놓기 → 재둘러보기(σ 64 mm로 첫 고정 거절, 다음에 고정) → `hover@2` 장벽(기다림
+  r1 0.2초, r2 0.2초) → 새 호버 확인 → 다시 잡기 → HIGH → 다리 3 → 정지 3 영수증 → 다리 4 → 정지 4 내려놓기(예측 81/82 mm) →
+  `hover@4`(r1 0.2초, r2 3.0초) → 다시 잡기 → 다리 5에서 위 진행 검사로 멈춤. 영수증 8개(DR 4, 바닥 재고정 4) xy NEES
+  0.04–0.76, 실제 오차 5–31 mm(평가 전용).
+- **σ 문턱 재검증(조정 없음, 평가 전용 정답 대조):** `std_xy_m`은 √trace라 정직하면 (e/σ)² 평균이 1이다.
+  - 운반(HIGH 든 채): 평균 (e/σ)² r1 0.26, r2 0.36, χ² 99.9 % 위 0건 — σ가 실제보다 크다(보수적). 최대 실제 오차 r1 65.2 mm,
+    r2 56.8 mm.
+  - 내려놓기 직후(lower/cp_open): r1 평균 0.67, 최대 실제 오차 67.3 mm(σ 63.6 mm) — DR 예산 67.43 mm에 거의 닿았으므로
+    정지 2·4의 내려놓기 판단은 맞았다. 정지 1·3(예측 56–65 mm, 계속)의 실제 오차는 17–23 mm.
+  - 정렬·다시 잡기: 평균 0.23–0.86, 보지 않는 닫기 문턱(50 mm / 3°) 아래에서 σ 36–44 mm, 실제 오차 31 mm 이하로 닫음.
+  - 재관측 문턱(0.055 m / 2.5°): 내려놓은 직후 σ 64 mm 보고를 거절하고 다음 고정을 받음(의도대로).
+  - 둘러보기 수락: 도크 접근 고정 σ 11–28 mm, 도착 시점 실제 추정 오차 4/32 mm.
+  - 운반 정렬 유의성(z 1.96): 다리 5개 모두 `door_align_gate` 기록.
+  - `SIGMA_CAP_XY_M` 0.15 m / `SIGMA_CAP_YAW_RAD` 0.20 rad: 최대 σ 64 mm로 닿지 않음(검증 안 됨).
+  - 짝 입장 0.05 m: 이 세 검사에서 입장 시도 기록 0건(검증 안 됨).
+  결론: 문턱은 바꾸지 않는다. σ는 운반 중 보수적이고 내려놓기 근처에서 정직하다. 같은 판단을 확증하려면 새 코호트(새 번들)가 필요하다.
+
 ### PF 통합 C → R1 → R2 (PF 담당 diff, 조정자 결정 2026-10-05) — 이 뒤로 무효가 되는 것
 
 - **입력:** `outputs/pf-gaincal-v101-20261005/diffs/`(PR #376 `claude/calib-unloaded-gain`의 `experiments/2026-10-05-unloaded-gain-calibration-v101/diffs/`와

@@ -20,6 +20,7 @@ from harness import zone_pair_highpose_dr_checkpoint as dr_checkpoint
 from harness import zone_pair_highpose_approach_looks as approach_looks
 from harness import zone_pair_highpose_arrival_confirm as arrival_confirm
 from harness import zone_pair_highpose_refix as refix
+from harness import zone_pair_highpose_progress as progress
 from harness.zone_final_pair_binding import bind
 from harness.zone_final_pair_runtime import Runtime as PreviousRuntime
 from harness.zone_final_pair_guards import CommandGuard as PreviousGuard
@@ -399,6 +400,10 @@ class CommandGuard(PreviousGuard):
 
     veto_trace = None                    # v98 evidence log + start-state relief (guardlog, start_relief): set only in check()
 
+    def __init__(self, execution, vision):
+        super().__init__(execution, vision)
+        progress.install(self)           # v98: loaded no-progress check, motion = REQUIRED_MOVEMENT_M commanded (B)
+
     def sweep_guard(self):
         return start_relief.install(super().sweep_guard(), self.veto_trace)
 
@@ -408,6 +413,7 @@ class CommandGuard(PreviousGuard):
         if moving and self.carrying_beam and not pose.at_high(self.ep.own.servo):
             self.ep.abort(now, 'LOADED_BASE_MOTION_REQUIRES_HIGH')
             return [{'kind': 'hold'}]
+        progress.leg_reset(self, now)    # v98: reset the loaded no-progress check at each carry leg start (A)
         before, issued = len(self.ep.own.events), copy.deepcopy(commands)
         self.veto_trace = trace = guardlog.Trace()
         try:
