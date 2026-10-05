@@ -62,6 +62,10 @@ DEV_LIGHT_SOFT_STOPS = frozenset({'PAIR_COLLISION_GUARD', 'POSE_UNCERTAIN', 'POS
 DEV_LIGHT_VERSION = 'dev_light_v5'
 DEV_LIGHT_LOG_EVERY = 50              # a soft stop repeated every tick is logged at its 1st, 51st, ... occurrence
 DEV_LIGHT_EVENT = 'dev_light_would_stop'
+# Partial-fix provider (claude/llm-eye ec0215f3, harness/zone_pair_highpose_partial_fix: fix receipt needs the SECOND
+# eigenvalue of the information matrix > 1 instead of the smallest; Zhang, Kaess & Singh 2016). On with DEV light
+# (coordinator 2026-10-05 18:1x); formal runs need a separate decision.
+PARTIAL_FIX = DEV_LIGHT
 CAP_PREREG_VERSION = 'v98-cap-3'
 CAP_DECISION = 'experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md'
 # Coordinator DEV_PILOT admission (2026-10-03): a non-confirmatory functional
@@ -400,6 +404,7 @@ def bundle(map_id, check, admission=MEASURED_SIM):
         timing=execution_timing(check), high_pose=pose.record(), calibration_contract=contract,
         calibration_selection='D5 v92 loader v2 + registered complete measurement evidence; HIGH only',
         collision_guard={'mode': COLLISION_GUARD_MODE, 'bundle_label': COLLISION_GUARD_BUNDLE_LABEL},
+        partial_fix={'enabled': PARTIAL_FIX, 'module': 'harness/zone_pair_highpose_partial_fix.py'},
         dev_light={'enabled': DEV_LIGHT, 'version': DEV_LIGHT_VERSION, 'soft_stops': sorted(DEV_LIGHT_SOFT_STOPS),
                    'event': DEV_LIGHT_EVENT,
                    'scope': 'CommandGuard.check/before_control/_stationary_reobserve aborts, refix horizon check, '
@@ -412,7 +417,7 @@ def bundle(map_id, check, admission=MEASURED_SIM):
                      'cap_prereg_version': CAP_PREREG_VERSION}
     entries = ['scripts/run_pair_highpose.py', 'harness/zone_pair_highpose_runtime.py',
                'harness/vision_pose_source_highpose.py', 'harness/zone_pair_highpose_staging.py',
-               'sim/final_pair_highpose_staged.py']
+               'sim/final_pair_highpose_staged.py', 'harness/zone_pair_highpose_partial_fix.py']
     paths = set(value['source_sha256']) | set(source_closure(ROOT, entries)) | {REGISTRY, WORKFLOW, CALIBRATION_CONTRACT, D5_ADMISSION, OWN_IMAGE_GATES, CAP_DECISION,
         'configs/zone_final_pair_v92_schedule.json.gz',
         'configs/zone_pair_highpose_confirmation_v96.json',

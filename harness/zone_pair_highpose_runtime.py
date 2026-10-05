@@ -693,6 +693,8 @@ def adopt_look_recovery(runtime):
 class Runtime(PreviousRuntime):
     def __init__(self, static, calibration_path, calibration_sha, *, seed, provider_factory=None):
         from harness.vision_pose_source_highpose import build_provider
+        if hp_contract.PARTIAL_FIX:      # DEV light: second-eigenvalue fix receipt (zone_pair_highpose_partial_fix)
+            from harness.zone_pair_highpose_partial_fix import build_provider
         initialize = bind(PreviousRuntime.__init__, Team=Team)
         initialize(self, static, calibration_path, calibration_sha, seed=seed,
                    provider_factory=provider_factory or build_provider)

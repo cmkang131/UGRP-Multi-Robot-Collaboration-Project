@@ -210,3 +210,19 @@ def test_align_timeout_opens_a_new_window_in_light_mode():
     ctl = type('C', (LightFail, B), {})()
     ctl.fail('ALIGN_TIMEOUT', 70.)
     assert ctl.failed == [] and ctl.state == 'align' and ctl.state_t == ctl.align_started_at == 70.
+
+
+def test_partial_fix_provider_follows_the_flag(monkeypatch):
+    import harness.zone_pair_highpose_partial_fix as pfix
+    import harness.vision_pose_source_highpose as vph
+    from harness import zone_pair_highpose_runtime as rt_
+    seen = {}
+    def fake_init(self, static, cal, sha, *, seed, provider_factory=None):
+        seen['factory'] = provider_factory
+        raise StopIteration
+    monkeypatch.setattr(rt_, 'bind', lambda f, **k: fake_init)
+    for flag, want in ((True, pfix.build_provider), (False, vph.build_provider)):
+        monkeypatch.setattr(c, 'PARTIAL_FIX', flag)
+        with pytest.raises(StopIteration):
+            rt_.Runtime(None, None, None, seed=0)
+        assert seen['factory'] is want

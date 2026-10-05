@@ -95,6 +95,13 @@ v98(`zone-final-pair-highpose-v98`, workflow 3.10.0)에 두 가지를 넣었다.
   - 바꾼 것 두 가지(라이트 모드, 잡음 값)를 함께 넣었으므로 결과의 원인을 하나로 나누지 않는다.
   - 출력: `outputs/v98-dev-case-carry-a6fec250-s911-v105light/`.
 
+- **부분 고정(light6부터, 2026-10-05 조정자):**
+  - claude/llm-eye `ec0215f3`의 `harness/zone_pair_highpose_partial_fix.py`를 병합했다. 고정 수락 조건이 정보행렬의 가장 작은 고유값 > 1에서 두 번째 고유값 > 1로 바뀐다(Zhang·Kaess·Singh 2016).
+  - `PARTIAL_FIX = DEV_LIGHT`로 연결했다. 정식 실행에 쓸지는 따로 정한다.
+  - 원인: 직선 벽 하나만 보이면 고정이 항상 거절되던 문제(light2~4의 r1 정렬 재관측 NO_FIX).
+  - 오프라인 확인(그 작업자): 수용률 0.23 → 0.64, 오차 악화 0~1 %.
+  - **기록만 남기는 후속 후보:** 바닥 파지 자세에서 카메라가 바닥을 볼 때, 바닥 타일선을 벽 밑단으로 잘못 본 열이 77개 있었다. 자세 게이트 후보이며 이번에는 고치지 않는다.
+
 ### v103a 결과 → 적재 과정 잡음 측정 규칙 적용 (2026-10-05)
 
 - **v103a 실행** (`f2a426e7`, 보정 `a04371f6…`, 가속 `v98-exact-v6`, nice 0): `STAGE_PROBE_FAILED`, 477.1 SIM초. 원본 `outputs/v98-dev-align_to_carry-f2a426e7-s911-v103a/`.
