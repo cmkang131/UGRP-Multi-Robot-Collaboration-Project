@@ -168,6 +168,40 @@ def install(name, record=None):
     return record, uninstall
 
 
+DEFAULT_SET = 'v98-exact-v6'
+SIDECAR = 'speedups.json'
+
+
+class RunSpeedups:
+    """A runner's ``--speedups`` choice, installed late and undone at the end.
+
+    ``start()`` is called by the runner right before the simulation is built (after every argument, source, slot and
+    output check, so those refusals need no simulator). ``finish(rc)`` undoes the set and writes
+    ``<output>/speedups.json`` (run root, never a case directory) when ``start()`` ran and created the output.
+    """
+
+    def __init__(self, name, output):
+        self.name, self.output, self.record, self.undo, self.existed = name, output, None, None, None
+
+    def start(self):
+        from pathlib import Path
+        if self.undo is None:
+            self.existed = Path(self.output).exists()
+            self.record, self.undo = install(self.name)
+
+    def finish(self, rc=None):
+        import json
+        from pathlib import Path
+        if self.undo is None:
+            return
+        undo, self.undo = self.undo, None
+        undo()
+        out = Path(self.output)
+        if out.is_dir() and not self.existed:
+            (out / SIDECAR).write_text(json.dumps({'schema': 'ugrp.run_speedups.v1', 'speedups': summary(self.record),
+                                                   'runner_rc': rc}, indent=1) + '\n')
+
+
 def summary(record):
     """JSON-safe counters (memo hits/misses per provider) for a sidecar or manifest."""
     out = {k: v for k, v in record.items() if k not in ('expected_memo', 'opencv_exact')}
