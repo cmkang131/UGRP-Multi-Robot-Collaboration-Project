@@ -383,7 +383,9 @@ class SpyRig(Rig):
 def test_step_runs_the_look_recovery_hooks_and_the_final_veto_in_one_override(tmp_path, dev_bundle, first_motion_s):
     # The dock/re-look diff and this diff each defined ``Runtime.step``; a second ``def step`` would silently
     # shadow the first. One override must run both: look-recovery bookkeeping/filter, then the final veto.
-    assert sum(1 for line in Path(v98.__file__).read_text().splitlines() if line.startswith('    def step(')) == 1
+    source = Path(v98.__file__).read_text()                  # ``Execution.step`` (own-image gate dispatch) is another class
+    runtime_source = source[source.index('\nclass Runtime('):]
+    assert sum(1 for line in runtime_source.splitlines() if line.startswith('    def step(')) == 1
     order, aborter = ('r1', 'r2'), 'r2'
     _, rt, physics = drive(dev_bundle, tmp_path, 'spy', SpyRig, order, FakeM2, abort_plan('step', aborter, first_motion_s))
     assert SpyRig.calls['pre_step'] > 0 and SpyRig.calls['pre_step'] == SpyRig.calls['filter']

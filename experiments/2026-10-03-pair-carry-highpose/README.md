@@ -1672,6 +1672,31 @@ TensorBoard 새 스냅샷 `1003-pair-highpose-v93/high-hold`에 같은 진단의
 - Reed, "Depth Precision Visualized", NVIDIA Developer Blog, 2015. reversed-Z + 부동소수 깊이가 가까운 near plane에서도 정밀도를
   유지한다는 설명. **미확인**(이번 작업에서 원문을 다시 읽지 않음).
 
+### 자기 하중 가림 (own_load_occlusion_v1, 2026-10-05)
+
+- 문제: 근거리 절단면(4.4 mm)을 켜자 든 빔이 r1 자기 카메라를 꽉 채워 `INVALID_OWN_IMAGE`로 abort(첫 LLM DEV 실행
+  `pair-llm-DEV-v103b-light-s911-8a1acdad-fast1` no_comm, SIM 338.05, r2는 PARTNER_ABORT). 얼어 있는 자기 영상 문턱은 그대로다.
+- 처방: 이 로봇이 자기 하중 구간(`lift`~`wait_open`이면서 자기 파지 영수증이 닫힘, 또는 열기 명령 뒤 자기 팔 동작이 끝나기 전)에
+  있을 때, 신선하고 해독되고 480x640인 프레임이 대비/어둠 규칙만 못 넘으면 `OCCLUDED_BY_OWN_LOAD`(관측 없음)로 기록하고
+  명령 이력 그대로 이어 간다. 낡은·해독 불가·모양 틀린 프레임, 하중 구간 밖의 어두운 프레임은 여전히 `INVALID_OWN_IMAGE`.
+  입력은 자기 영상·자기 명령·자기 단계뿐. 정식·DEV 모두 적용(DEV_LIGHT 소프트 정지가 아니다). 번들 기록: `own_load_occlusion`
+  (`zone_pair_own_load_occlusion_v1_v98`). 구현: `harness/zone_pair_highpose_own_load_occlusion.py`, 얼어 있는 실행기는 v98 이중 바인딩으로만 우회.
+- 근거 영상: `tests/fixtures/own_load_occlusion/` (r1 6705, 6736), 실패 프레임 6736은 값 퍼짐 0(문턱 1.0), 표준편차 0.2244(문턱 0.22 이상이지만 퍼짐 규칙에서 탈락).
+- 근거리 절단면 부작용 감사(저장 프레임만, 시뮬레이션 없음, `nearclip_side_effect_audit.py`). 비교 = 절단면 전 `v98-dev-case-carry-56c17715-s911-v105light6`(18:47)
+  대 절단면 후 LLM 실행 no_comm(r1, r2):
+  - **깨진 것(고침)**: 자기 영상 문턱. 실행 전체에서 문턱을 못 넘은 프레임은 r1 338.1~341.0의 30장뿐이고 내려놓는 끝(팔을 낮춰 빔이 시야를 채움)에만 있다. 위 처방으로 처리.
+  - **깨진 것(기록 전용이라 안 고침)**: 파지 관계(`GRIP_RELATION_LOST_OR_UNOBSERVABLE`). 절단면 전 light6도 관계 행 1326개 중 통과 0(중앙 coverage 0.48, 기준 0.65)이었고,
+    절단면 뒤 LLM 실행은 중앙 coverage 0.27(r1)/0.31(r2)다. 든 빔의 가까운 면이 이제 어두운 몸체로 그려져 시야 대부분을 채우고(밝은 띠는 맨 위 하나) 기대 지지 영역(빔 전체)은 그대로라
+    "양의 빔 색" 마스크가 40 % 줄었다. `in_run_grip_loss_detection: false`라 제어에 영향 없음. 켜기 전에 기대 영역/색 모델 재보정이 필요하다.
+  - **영향 없음 확인**: 파지 `near_m`=22.2 mm — 이 실행의 서로 다른 팔 자세 325개 모두에서 기대 지지 영역이 near_m 22.2/4.4/0 mm에서 같다(차이 0). 사전 파지 호버 점검 — 호버 자세 프레임의
+    `observe_beam`이 전후 같다(BAND_CLIPPED, 점 약 26,600개, 길이 0.096 m, `stationary_beam_estimate` 없음 — 절단면 이전부터 같은 상태). 쥔 채 유지 검사(`hold_iou`)는 중앙 0.99 이상으로 안정.
+    운반·들기·내리기 중 신선한 비전 보정(fix_age < 1 s)은 전후 모두 0행이라 위치 추정이 이 프레임을 쓰지 않는다(운반 중 추측 항법).
+  - **위험(미수정, 목록)**: 집게가 빔을 물기 직전(`wait_close`/`grasp`, 파지 영수증이 아직 없어 하중 구간 밖)에도 시야가 거의 한 색이다. r1 157.5~160.7에서 퍼짐 최소 2.0(문턱 1.0),
+    표준편차 최소 0.74(문턱 0.22)로 통과는 했지만 한 단계 차이다. 이 단계에서 퍼짐 0이 나오면 `INVALID_OWN_IMAGE`로 abort하므로, 실제로 나오면 하중 구간을 파지 단계(자기 닫기 명령 발행 뒤)로 넓힌다.
+  - 파지 시점 `close_grip_view`의 `dark_fraction`이 0.0에서 1.0으로 바뀌고 `bottom_beam_fraction`은 0이라 `seen`은 전후 모두 False다(기록 전용, dev 613 보정값 0.60~0.96/0.067~0.144와 안 맞음).
+- 출처 표기: 칼만 필터/robot_localization `sensor_timeout`은 관측이 없으면 갱신을 건너뛰고 예측만 한다 [F]; MoveIt 인식 파이프라인의 자기 필터링 [F];
+  EyeRobot 2.0(arXiv 2610.03710, 쥔 물체가 손목 카메라를 가림) [F 초록만]. 자세한 표기는 모듈 docstring 참조.
+
 ### HIGH 운반 빔 경계 맞춤 (v98, 처방 제안의 출처)
 
 - Fischler, Bolles, "Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis and Automated
