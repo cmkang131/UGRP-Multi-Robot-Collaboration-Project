@@ -53,7 +53,7 @@ Refs #363. 조정자 요청(2026-10-05): #363 `align_to_carry`(fcc5215f)에서 �
 - 번들·작업 흐름: `zone-final-pair-loaded-gaincal-v102` 1.0.0, 점검 `calibration-loaded`. `scripts/sim_cli workflow run`을 `ugrp_session.py run`으로 실행했고 `collect.sh`가 `agent_sim_slots`로
   비타이밍 SIM 슬롯을 잡았다. 실행 당시 다른 에이전트의 물리 조정자가 살아 있어 그 PID를 공유하는 선택(`V102_COORD_PID`)을 썼다(동시 최대 2).
 - **번호 예약 충돌(미해결, 조정자 판단 필요):** 이 수집은 v102로 예약해 커밋(2026-10-05 12:04 KST, dee341e3)·푸시하고 12:06–12:38 KST에 실행해 원본 기록(`bundle.json`)이 v102로 남았다. #363은 14:19 KST(커밋 1e0476ba)에
-  README에 "예약 번호: v102"를 적었다(번들 코드는 아직 없음; 그 시점 확인은 "열린 PR"만 봤고 이 브랜치는 PR이 없었다). 마지막 확인(PR 작성 직전): main과 열린 PR 10개의 코드·설정에 `v103`은 없고 `v102`는 이 브랜치와 #363의 예약 문장뿐이다.
+  README에 "예약 번호: v102"를 적었다(번들 코드는 아직 없음; 그 시점 확인은 "열린 PR"만 봤고 이 브랜치는 PR이 없었다). 마지막 확인(PR 작성 직전): main과 열린 PR 11개의 코드·설정(`configs harness sim scripts docs`와 파일 이름)에 `v103`은 없고 `v102`는 이 브랜치와 #363의 예약 문장뿐이다.
   AGENTS의 번호 예약 규칙("실행 기록이 쓴 번들은 바이트 그대로 보존, 나중에 병합되는 쪽이 새 ID로 다시 등록")에 따라 **실행된 v102 기록과 소스(274a6206)는 이름을 바꾸지 않았다.** 조정자는 v103으로 옮기라고 안내했으나(실행 기록이 이미 v102로 남아 있어 이름만 바꿔도 과거 기록은
   바뀌지 않는다), 이 PR은 새 번들을 만들지 않으므로 번호를 더 가져가지 않았다. 권고: #363의 예약을 v103 이후로 한 줄 고친다. 반대로 이 쪽을 옮기라면 등록 workflow ID만 새 번호로 다시 등록하고 v102 기록은 은퇴 목록에 둔다(산출 파일의 해시가 바뀌므로 diff·재생·승인 sha를 다시 만들어야 한다).
 - 소스 SHA `274a6206cbfae194a318f5b0eb4e7495e3a7c89b`(깨끗한 커밋, 모든 실행 `source_unchanged: true`, 가드는 v91 중단 전용).
@@ -171,8 +171,7 @@ nomeas(모든 프레임 거부, 순수 추측항법). 지표 d_err는 leg 동안
 - **보정 모듈 밖의 미적용:** `owncam_carry_v6e.steady_speed/leg_duration`은 데드존을 반영하지 않는다(기존 한계). 이 PR은 고치지 않았다.
 - **R1 사용 불가**, v102 결과는 `DEV_PILOT`이며 `MEASURED_SIM`·확증이 아니다.
 - **새 임무 성공은 아니다.** 재생은 개발 자료(fcc5215f)에 대한 열린 고리 점검이다.
-- **미해결(재개 순서, 시뮬레이션 재개가 허용된 뒤):** (1) 7194637e 기준 재생을 새로 돌린다: `analysis/replay_tools/`의 `throttled_launch.sh`를 `OUTDIR=…/replay7194 TASKS="leg_tasks7194.txt leg_tasks_nomeas7194.txt" MAX=1`로, `OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1`을
-  붙여 한 번에 1개(결과 바이트가 바뀌지 않는지는 이 PR에서 확인하지 못했다). 거기서 `leg_ens_summary.py`·`window_summary.py`(`REPLAY_DIR=…/replay7194`)를 돌리고 TB를 새 스냅샷으로 추가한다. (2) 7194637e 사본에서 관련 시험을 돌린다.
+- **미해결(재개 순서, 시뮬레이션 재개가 허용된 뒤):** (1) 7194637e 기준 재생을 새로 돌린다: `analysis/replay_tools/`의 `throttled_launch.sh`를 `OUTDIR=…/replay7194 TASKS="leg_tasks7194.txt leg_tasks_nomeas7194.txt" MAX=1`로, 한 번에 1개로 돌린다. 스레드 제한(`OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1`)은 조정자 조건대로 **먼저 같은 재생 하나를 제한 있이/없이 돌려 jsonl을 `cmp`로 비교해 바이트가 같을 때만** 붙인다(이 PR에서는 확인하지 못했다). 거기서 `leg_ens_summary.py`·`window_summary.py`(`REPLAY_DIR=…/replay7194`)를 돌리고 TB를 새 스냅샷으로 추가한다. (2) 7194637e 사본에서 관련 시험을 돌린다.
   (3) 계획 장착 순수 추측항법(`--nomeasure --partner-plan`)을 만들어 등록 기준 1을 라이브에 충실한 조건에서 다시 판정한다.
 - **관찰(확인 범위 한정):** `owncam_carry_v6e.set_partner_plan(provider, …)`는 `loc.pair_plan`을 감싸개(`FailClosedLoc`)에 쓰고 감싸개는 `__setattr__`을 전달하지 않아 PF에 닿지 않는다(재생 도구에서 이 함수를 썼을 때 일치 틱이 0이었음).
   HIGH 경로의 라이브 계획은 `harness/zone_final_pair_skill.py:202`가 `provider.loc._pf.pair_plan`을 직접 쓰므로 영향이 없다. 같은 함수를 쓰는 `harness/zone_pair_executor.py:228`·`harness/zone_pair_role_executor.py:180`의 `provider.loc` 구성(감싸개 여부)은 확인하지 않았다(`hasattr(loc,'pair_plan')`은 감싸개의 `__getattr__` 때문에 참이어서 오류 없이 지나간다).
@@ -207,4 +206,4 @@ nomeas(모든 프레임 거부, 순수 추측항법). 지표 d_err는 leg 동안
   완료된 재생 파일 57개의 sha256은 [analysis/replay_files.sha256](analysis/replay_files.sha256), 요약은 `analysis/leg_ens_summary_replay_*.{json,txt}`·`window_summary_replay_*.{json,txt}`, 도구는 `analysis/replay_tools/`.
   `replay_noplan/aborted/stub_rec_r2_s103_meas.log`(7바이트 `EXIT 0`)는 재생 중 한 번 내 도구가 만든 자리표시 로그로, 실제 로그·jsonl은 완료본이 `replay_noplan/`에 있다(요약에 포함).
 - 부하: 수집은 §3 표. 재생 로그에는 부하를 기록하지 않았다(재생 도구가 시각만 남김). 이 문서를 마무리하던 시점의 호스트 부하 평균은 8.8/39.9/83.9(1/5/15분)였고 다른 작업의 부하가 겹쳤다. 재생은 같은 입력의 결정적 PF 계산이라 결과는 부하와 무관하지만 wall 시간은 속도 결론으로 쓰지 않는다. 사용자 지시로 중단한 뒤 시뮬레이션·재생은 시작하지 않았다.
-- 코드 SHA: 수집 274a6206, 적합·산출 b0718c1d, 이 문서 작성 시점 브랜치 HEAD는 PR에 적는다.
+- 코드 SHA: 수집 274a6206, 적합·산출 b0718c1d, 이 문서가 들어간 마지막 커밋은 `git log -1 -- experiments/2026-10-05-loaded-gain-calibration-v102`로 확인하고, PR 병합 직전 HEAD는 PR 본문에 적는다(문서가 자기 커밋 SHA를 담을 수 없다).
