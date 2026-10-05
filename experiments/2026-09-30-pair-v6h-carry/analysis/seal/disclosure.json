@@ -1,0 +1,41 @@
+{
+  "coordinator_decision": "2026-10-01 resume instruction after PR 292 preflight stop: separate execution and analysis pins; prereg owner authorizes this seal, independent review still required",
+  "recording_before_seal": "The 60 seed-941 primary and first-12 seed-943 sensitivity cases were recorded BEFORE this seal, blinded, at source 4c6b439f. No outcome was computed/viewed by this seal task. RUN_MANIFEST.json records no outcome inspection during recording.",
+  "driver": "The committed metadata reports a thin driver calling the same scripts.run_pair_stage_probes worker entry point through unsealed_stage_probe admission, without --prereg because prereg_v6h.json was not yet sealed. The driver bytes and raw were not read here; its SHA-256 is metadata-attested, not independently recomputed.",
+  "case_equivalence": "The builder's cases, excluding only registration_run_id, match the literal committed plan.json cases bytes. The builder emits chain_stop_leg after contact_track to match the recorded JSON key order; no field value, placement, command option, or controller byte changes.",
+  "classifier_blinding": "Final classifier/recorder adapter and D1-D5 definitions were fixed at 1f0e4eb5 after reviews 299-299g without viewing blinded outcomes. This seal adds a separate gate binding the fixed classifier to the coordinator's later blinded-analysis registration.",
+  "main_changes": "The coordinator authorized main versions of zone_main_budget.py, zone_study_llm_driver.py, zone_study_llm_transport.py and agent_lock.py in the working tree. The cohort made zero model calls; agent_lock is host tooling. The EXECUTION closure always verifies the 4c6b439f blobs, so newer analysis-tree bytes do not replace executed bytes.",
+  "reexecution": "Checkout 4c6b439f for re-execution of the recorded controller. The seal tree is for analysis/registration. This seal grants no new physical run and does not invent a prior registration receipt for the recorded cohort.",
+  "interpretation": "Sealed while outcomes remain blinded, after data recording; not prospectively sealed before execution. Neither metadata completion nor passing offline checks is a task-success result.",
+  "references": [
+    {
+      "title": "ICH E9(R1), estimands and sensitivity analysis (2019)",
+      "url": "https://database.ich.org/sites/default/files/E9-R1_Step4_Guideline_2019_1203.pdf",
+      "use": "Prespecify the primary analysis and sensitivity analysis; cited by analogy, not as clinical-trial compliance."
+    },
+    {
+      "title": "CONSORT 2025, item 3: Access to trial protocol and statistical analysis plan",
+      "url": "https://www.consort-spirit.org/item3-accesstotrialprotocol",
+      "use": "Finalize the analysis plan before analysis, publish versions and explain changes. This does not make a post-recording seal prospective."
+    }
+  ],
+  "commands": {
+    "verify": "python -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify-seal --seal-commit \"$V6H_SEAL_COMMIT\"",
+    "apply_after_review_and_unblinding": "python -m experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis --seal-commit \"$V6H_SEAL_COMMIT\" --prereg experiments/2026-09-30-pair-v6h-carry/prereg_v6h.json --raw /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 --output /Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-NEW"
+  },
+  "main_merge": {
+    "commit": "f5cd3a2b7754236a7b416cca1e1f9fe76fe8dd14",
+    "authorization_basis": "Coordinator A(1) fixes all execution bytes at 4c6b439f; B replaces original stop step 3 with normal origin/main merge. These fifth/sixth files arrived after the four-file preflight; they are disclosed separately, not represented as one of the explicitly named four.",
+    "execution_effect": "Working-tree change only: execution receipt and replay checkout remain 4c6b439f.",
+    "additional_files": [
+      {
+        "path": "harness/vision_loc_protocol.py",
+        "change": "Require response seq to be an int and reject bool before comparing request seq. Main commit b38c1d5905fdf798dcfd34d215c7e82d0a0cf296."
+      },
+      {
+        "path": "sim/workflow_manager.py",
+        "change": "zone-study-integration-run now checks require_study_runtime before records/subprocesses; main merge f5cd3a2b includes the admission module and corridor dependency."
+      }
+    ]
+  }
+}

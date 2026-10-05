@@ -1,0 +1,21 @@
+NOTE: 'SELF_POSE_UNCERTAIN gate_not_ok_dwell_or_hysteresis' in the first-failure column is the name the existing classifier (harness/pair_stage_probe.py ~855-868) gives an abort; the raw controller reason in these runs is POSE_UNCERTAIN_PROGRESS (ProgressMonitor no-progress stop), not a pose gate.
+
+== tX1b: b-v6h-gain-5bfd95f0-tX1b n=2 load start/end=[20.4, 18.2, 20.7]/[22.8, 18.9, 20.6] source=5bfd95f0 changed=False
+case | L0: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | L1: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | first failure
+  X06:s911:pPOST:VENVS | PASS_CLEAN, 0.54/2.30, 49, 364.5/107.7 | PASS_CLEAN, 0.86/2.98, 62, 180.0/102.4 | -
+  X06:s913:pPOST:VENVS | PASS_CLEAN, 0.58/2.25, 49, 364.8/108.3 | PASS_CLEAN, 0.93/2.88, 61, 181.0/103.0 | -
+L0: n=2 PASS_CLEAN=2/2 [34-100%] PASS_any=2/2 [34-100%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=0
+L1: n=2 PASS_CLEAN=2/2 [34-100%] PASS_any=2/2 [34-100%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=0
+chain L0->L1 both legs pass: 2/2 [34-100%]
+hard limit (pen > 5 mm or tilt > 15 deg) anywhere in the run (all legs, set-down, regrasp): 0/2 cases
+PF honesty all at the leg ends (case-robot samples): n=8 meanNEES=0.80 median=0.91 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L0 at the leg ends (case-robot samples): n=4 meanNEES=1.25 median=1.22 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L1 at the leg ends (case-robot samples): n=4 meanNEES=0.36 median=0.33 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+L0: cases pass 2/2 [34-100%] (clean 2); independent units (placements) strict 1/1 [21-100%], any-seed 1/1 [21-100%]; classes {'PASS_CLEAN': 2}
+L1: cases pass 2/2 [34-100%] (clean 2); independent units (placements) strict 1/1 [21-100%], any-seed 1/1 [21-100%]; classes {'PASS_CLEAN': 2}
+chain L0->L1: cases 2/2 [34-100%]; units strict 1/1 [21-100%], any 1/1 [21-100%]
+honesty L0 (samples=4, observed placements=1/1): mean e x/y/yaw = +0.1 mm / +15.5 mm / +1.89 deg; mean z^2 x/y/yaw = [0.0, 0.65, 0.74]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 1.25
+  L0 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 1/1 [21-100%] / y 1/1 [21-100%] / yaw 1/1 [21-100%]; unverified placements: 0
+honesty L1 (samples=4, observed placements=1/1): mean e x/y/yaw = -9.6 mm / +18.7 mm / +0.75 deg; mean z^2 x/y/yaw = [0.1, 0.26, 0.07]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 0.36
+  L1 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 1/1 [21-100%] / y 1/1 [21-100%] / yaw 1/1 [21-100%]; unverified placements: 0
+contact episodes (both legs): 0; first-failure codes: {}

@@ -43,9 +43,9 @@ PROTOTYPE = {'box_00': {'kind': 'cyan', 'body_name': 'cargo_box_00', 'joint_name
     'scripts/run_zone_study_integration.py',
 ])
 def test_b1_mixed_adapter_keeps_registered_source_bytes(path):
-    """B1: opt-in additions must not rewrite the current v6e source pins."""
-    prereg = json.loads((ROOT / 'experiments/2026-09-29-pair-v6e-carry/prereg_v6e.json').read_text())
-    assert hashlib.sha256((ROOT / path).read_bytes()).hexdigest() == prereg['v6_contract']['source_sha256'][path]
+    """B1: preserve historical v6e and the independently sealed v6h successor."""
+    from tests.v6h_successor_pins import successor_blob, successor_pins
+    assert hashlib.sha256(successor_blob(path)).hexdigest() == successor_pins()[path]
 
 
 @pytest.fixture(autouse=True)

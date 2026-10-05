@@ -12,6 +12,45 @@ from scripts.tensorboard_tools.export import Source, inside, redact, sample_indi
 from scripts.tensorboard_tools.media import media_registry, make_server
 
 
+def test_p06_adversarial_event_readback_with_real_tensorboard(tmp_path):
+    """The optional-tooling CI job must run all D303 cases with real events."""
+    pytest.importorskip('tensorboard')
+    from tests import test_review_303d as d
+    cases = [
+        (d.test_late_redelivery_cannot_resurrect_a_departed_delivery, (v,)) for v in (10.1, 11.)
+    ] + [(d.test_failed_final_referee_cannot_join_an_earlier_success_window, (v,)) for v in (4., 5.)]
+    cases += [(d.test_other_referee_policy_cannot_use_the_original_frozen_bundle, (field, value))
+              for field, value in [('settle_s', .1), ('on_floor_max_z_m', .5),
+                                   ('settled_speed_m_s', .5), ('held_depart_s', 10.)]]
+    cases += [(d.test_confirmation_cannot_be_shorter_than_its_pinned_settle_window, (v,)) for v in (0., .1, 1.9)]
+    cases += [(d.test_normal_redelivery_at_or_before_cap_and_reordering_remain_valid, (v, reverse))
+              for v in (9., 10.) for reverse in (False, True)]
+    cases += [(d.test_missing_and_duplicate_sources_keep_the_external_denominator, ())]
+    for i, (check, args) in enumerate(cases):
+        root = tmp_path / str(i)
+        root.mkdir()
+        check(root, *args)
+        assert list((root / 'events').glob('events*')), (check.__name__, args)
+
+
+def test_p06_rejected_owners_with_real_tensorboard(tmp_path):
+    """Run E303's eight regressions in the existing optional-tooling CI job."""
+    pytest.importorskip('tensorboard')
+    from tests import test_review_303e as e
+    from tests import test_zone_referee_ownership as o
+    for damage in ('policy_hash', 'profile', 'events', 'summary'):
+        for reverse in (False, True):
+            root = tmp_path / f'{damage}-{reverse}'
+            e.test_invalidating_duplicate_replay_cannot_increase_cohort_success(root, damage, reverse)
+            for stage in ('before', 'after'):
+                assert list((root / stage).glob('events*'))
+    for target in ('event', 'file', 'manifest', 'identity'):
+        for rejected in (False, True):
+            root = tmp_path / f'{target}-{rejected}'
+            o.test_key_source_disagreement_invalidates_both_trials(root, target, rejected)
+            assert list((root / 'events').glob('events*'))
+
+
 def put(root, name, value):
     p=root/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(value));return p
 
@@ -811,3 +850,77 @@ def test_gpu_probe_reports_devices_without_robot_success(tmp_path, export_api):
     assert events.Scalars('hardware/internet_http_status')[0].value == 200
     assert 'evaluation/reported_success' not in events.Tags()['scalars']
     assert manifest['metadata']['outcome'] == 'gpu_available'
+
+
+@pytest.mark.parametrize('damage', ['file_hash', 'trial_id', 'scenario', 'seed', 'order_id',
+                                   'terminal_result', 'terminal_manifest'])
+def test_zone_study_terminal_manifest_readback_without_runtime(tmp_path, export_api, damage):
+    """Optional TensorBoard CI lane: pure JSON evidence, no robot imports."""
+    from harness.zone_study_contract import digest, scenario_ref
+    from harness.zone_study_eval import PROVISIONAL_SCHEMA, efficiency_metrics
+    from scripts.tensorboard_tools.zone_study import RUN_SCHEMA
+    from scripts.zone_study_evidence_contract import identity_for, per_order_evaluation
+    convert, EA = export_api
+    src = tmp_path / 'synthetic'
+    record = {'schema': PROVISIONAL_SCHEMA, 'trial_id': 'fake-host-error', 'condition': 'no_comm',
+              'scenario': 'synthetic', 'seed': 1, 'robots': ['r1', 'r2', 'r3'],
+              'budget': {'sim_horizon_s': 120.}, 't0_sim_s': 0., 'end_sim_s': 0.,
+              'end_reason': 'host_error', 'failure_class': 'infra:HOST_ERROR',
+              'orders': [{'order_id': 'o1', 'item_ids': ['i1'], 'kind': 'cyan',
+                          'count': 1, 'destination_zone': 'A'}],
+              'referee': {'status': 'not_evaluated', 'deliveries': []}, 'record_complete': False}
+    from harness.zone_study_referee import profile
+    bundle = {'referee': profile(), 'host_spec': {'order_sheet': {'scenario_id': scenario_ref(record['scenario']),
+                                          'orders': record['orders']}}}
+    identity = identity_for(run_id='fake-host-error', trial_id=record['trial_id'], episode_id='fake',
+                            attempt=1, condition='no_comm', scenario='synthetic', seed=1, bundle=bundle)
+    record['evidence_identity'] = identity
+    put(src, 'study/trial_record.json', record)
+    put(src, 'eval_only/evaluation.json', {**efficiency_metrics(record),
+        'orders': per_order_evaluation(record), 'evidence_identity': identity})
+    put(src, 'result.json', {'schema': RUN_SCHEMA, 'run_id': 'fake-host-error', 'condition': 'no_comm',
+                            'scenario': 'synthetic', 'seed': 1, 'episode': 'fake', 'sim_horizon_s': 120.,
+                            'evidence_identity': identity,
+                            'evidence_kind': 'synthetic', 'terminal': True, 'bundle_sha256': digest(bundle),
+                            'failure_class': 'infra:HOST_ERROR',
+                            'study': {'end_reason': 'host_error', 'end_sim_s': 0., 'record_complete': False}})
+    put(src, 'manifest.json', {'schema': RUN_SCHEMA, 'run_id': 'fake-host-error', 'bundle': bundle,
+                              'evidence_identity': identity,
+                              'terminal': {'record_complete': False, 'end_reason': 'host_error',
+                                           'end_sim_s': 0., 'sim_horizon_s': 120., 'failure_class': 'infra:HOST_ERROR'},
+                              'bundle_sha256': digest(bundle), 'files': {
+                                  str(p.relative_to(src)): hashlib.sha256(p.read_bytes()).hexdigest()
+                                  for p in src.rglob('*.json')}})
+    from scripts.zone_study_evidence_contract import seal_new_evidence
+    from scripts.zone_study_evidence_join import admission, freeze_plan
+    plan = freeze_plan([admission(identity, record['orders'])])
+    seal_new_evidence(src, plan, digest(plan))
+    manifest = convert(src, tmp_path / 'events', max_images=0, allow_synthetic=True)
+    ea = EA(str(tmp_path / 'events')).Reload()
+    assert ea.Scalars('evaluation/reported_success')[0].value == 0.
+    assert ea.Scalars('result/par_makespan_sim_s')[0].value == 240.
+    assert ea.Scalars('cohort/trials')[0].value == 1.
+    assert 'result/tokens_total' not in ea.Tags()['scalars']
+    assert 'result/delivery_rate' not in ea.Tags()['scalars']
+    assert manifest['metadata']['failure_class'] == 'infra:HOST_ERROR'
+    if damage == 'file_hash':
+        (src / 'study/trial_record.json').write_text('{}')
+    else:
+        if damage.startswith('terminal_'):
+            name = damage.removeprefix('terminal_') + '.json'
+            row = json.loads((src / name).read_text())
+            row.pop('terminal')
+            put(src, name, row)
+        else:
+            if damage == 'order_id':
+                record['orders'][0]['order_id'] = 'foreign'
+            else:
+                record[damage] = 987654 if damage == 'seed' else 'foreign'
+            put(src, 'study/trial_record.json', record)
+        raw = json.loads((src / 'manifest.json').read_text())
+        raw['files'] = {str(p.relative_to(src)): hashlib.sha256(p.read_bytes()).hexdigest()
+                        for p in src.rglob('*') if p.is_file() and p != src / 'manifest.json'}
+        put(src, 'manifest.json', raw)
+    with pytest.raises(ValueError):
+        convert(src, tmp_path / 'rejected', max_images=0, allow_synthetic=True)
+    assert not list((tmp_path / 'rejected').glob('events*'))

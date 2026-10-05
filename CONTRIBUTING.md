@@ -48,14 +48,27 @@ python scripts/run_ci_tests.py --shard-count 8 --list-shards
 ```
 
 한 shard 실행은 `--shard-count 8 --shard-index 0`처럼 지정한다(번호 0–7).
-옵션을 생략하면 기존처럼 전체 목록을 실행한다. 현재는 파일 수 기준으로 균등 분할한다.
-파일별 측정 시간이 생기면 `--durations-json <파일>`로
-`{"tests/test_example.py": 12.5}` 형태의 초 단위 JSON을 모든 shard에 동일하게
-전달할 수 있다. 긴 파일부터 누적 시간이 가장 작은 shard에 배치하고 새 파일에는
-현재 목록에서 측정된 시간의 중앙값을 쓴다. 같은 입력은 항상 같은 분할을 만든다.
-CI의 `offline-shard-*` JUnit artifact에는 파일 경로와 테스트별 setup/call/teardown
-합산 시간이 남는다. 시간 자료를 갱신할 때 파일별로 합산하고 실행 SHA·환경도 기록한다.
-파일 수 균등은 시간 균등을 보장하지 않으므로 실제 shard 실행 시간을 확인한다.
+옵션을 생략하면 기존처럼 전체 목록을 실행한다. `--durations-json <파일>`은
+`{"tests/test_example.py": 12.5}` 형태의 초 단위 JSON으로, 긴 파일부터 누적 시간이
+가장 작은 shard에 배치하고(pytest-split의 least_duration 방식) 새 파일에는 측정된 시간의
+중앙값을 쓴다. 같은 입력은 항상 같은 분할을 만든다. 옵션이 없으면 파일 수로 나눈다.
+CI의 shard 실행과 전체 shard 목록 검사는 모두 `configs/ci_test_durations.json`을
+전달한다(2026-09-30: 파일 수 분할에서 shard 하나가 10분 제한에 걸려 도입). 파일 수 균등은
+시간 균등을 보장하지 않는다. 제한 시간 25분(2026-10-02에 15분에서 늘림)은 여유이고 균형은 이 시간 자료가 맡는다.
+
+시간 자료 갱신은 사람이 필요할 때 실행한다(예약 자동화 없음). 성공·실패 실행 모두
+`offline-shard-*` JUnit artifact가 남으므로, 최근 main 실행 몇 개를 받아 합친다.
+
+```sh
+for run in <run-id> <run-id>; do
+  gh run download "$run" -D "outputs/ci-durations/$run" -p 'offline-shard-*'
+done
+python3 scripts/refresh_ci_durations.py outputs/ci-durations/* --output configs/ci_test_durations.json
+```
+
+파일별로 테스트 시간을 합산하고 실행 사이 최댓값을 쓴다. 현재 목록에 없는 파일은 버리고,
+측정이 없는 파일(시간 초과로 JUnit이 남지 않은 shard 등)은 경고로 알리며 중앙값이 쓰인다.
+갱신한 JSON에 사용한 실행 ID를 PR 본문에 적는다.
 
 CI는 feature branch의 push 대신 PR에서 실행하고, main push에서도 전체 검사를
 유지한다. 같은 PR의 새 커밋은 이전 실행을 취소한다. `ci-preflight`는 의존성

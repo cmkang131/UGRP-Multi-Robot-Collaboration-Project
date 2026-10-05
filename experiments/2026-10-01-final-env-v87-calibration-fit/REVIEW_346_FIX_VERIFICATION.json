@@ -1,0 +1,120 @@
+{
+  "date": "2026-10-01",
+  "pr": 346,
+  "base_head": "65ce28cf7da3c8c33de97a03b19cd1665b45f831",
+  "review_sha": "612e7cbc28cfead3d26782897573da374fb7bb2e",
+  "origin_main": "2c45b137c480eecff3dac871277cf48914dd5cf4",
+  "scope": "R1-R4 offline validator fixes only; no recalibration or new held-out evidence",
+  "findings": {
+    "R1": "diagnostic-only until acquisition chronology can be verified; validation decisions null",
+    "R2": "cross-record condition/map identities and collection completion required even for case paths",
+    "R3": "all scheduled command ticks required, including zero/coast; initial hold exempt",
+    "R4": "root/case completion and CLI frozen inputs included in manifest and post-score hash checks"
+  },
+  "before": {
+    "passed": 10,
+    "strict_xfailed": 7
+  },
+  "after": {
+    "tests": 402,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "review_tests": {
+    "passed": 17,
+    "strict_xfailed": 0
+  },
+  "pytest_files": [
+    "tests/test_ci_sharding.py",
+    "tests/test_consumer_criterion_b.py",
+    "tests/test_final_environment_measurement_v2.py",
+    "tests/test_final_environment_unloaded_fit.py",
+    "tests/test_owncam_localizer/DriverLookTriggerTests.py",
+    "tests/test_owncam_localizer/GeometryTests.py",
+    "tests/test_owncam_localizer/LoopV2Tests.py",
+    "tests/test_owncam_localizer/RuntimeBoundaryTests.py",
+    "tests/test_owncam_localizer/TaggedMapTests.py",
+    "tests/test_review_346.py",
+    "tests/test_review_347.py",
+    "tests/test_unloaded_consumer.py",
+    "tests/test_unloaded_hammerstein.py",
+    "tests/test_vision_pose_source.py",
+    "tests/test_zone_final_environment_floor_light.py",
+    "tests/test_zone_final_environment_runnable.py"
+  ],
+  "shards": {
+    "coverage_verified": true,
+    "total_files": 387,
+    "shard_count": 8,
+    "balance": "durations"
+  },
+  "preserved_existing_records": {
+    "experiments/2026-10-01-final-env-v87-calibration-fit/MAIN_SYNC_VERIFICATION.json": "c2be0c7fe26cc8e87f634740c1e1dc16206fba79e05ce3d321ae27d4cd880f9f",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_candidate_r4.json": "fa7d3aa2e791086a9e73280b2dd4122bff5186d82503b56e17d5be27ca9bf071",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_partial.json": "e44f2306da3879c54402357b005597939ad5aecf41b65a0b8786569781a0d93a",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_partial_r2.json": "0b5d0c6b693fb7ead37c406dc2ae88d87f52c194058f58faf922cad8d12a5ba1",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/calibration_partial_r3.json": "ab07da27ac44e204d4fc2c2a16721a4d53d684020895a618ccb216b53be516bb",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_B.json": "74c312b5eff11e27be2b30d103f6d955f03b0c4b91595dfc9843c366b2c49b5f",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_criterion_r3.json": "49b7ffbbc07425dda3d2f2410c480ea6ee1315a1c831f97e75efc6989164391c",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_report_r3.json": "2decbf42c326eb16cf91fbb19d4ab8b7d51270ad49718c3e060df7521e65d5f1",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/consumer_report_r4.json": "31212635a8c16fff78e0dbd6966fd0d2d3d94e3ea12f07e3e1ca883cd7441e85",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/fit_report.json": "051c2c3c4ded1eb0dc1170f63418e3451f4ce50889b432856395f49c10688526",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/hammerstein_method.md": "8dcf9f6f51c055a53d4dd35ffd4c02befffbae75ce639e45bc2eb61d2ea7e4fd",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/hammerstein_report.json": "f3d9a882ae4a9c5fa9f3e5a031cd4fef5adb0eea656ba7dc36afd69fada1a21b",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/input_manifest.tsv": "ac3c19050985ce833a79f4e638c88394c32cce3a5dfdf8cf267f5d00d7994cb8",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/input_manifest_r3.json": "b12c03ea3e6181ee35035d678016e8eecc29f9143ec9476b3093071ab3da5720",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/input_manifest_r4.json": "af4221cf5177438ba33693e4fffe2b250fe4640125241dea7d783b856c57610a",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/input_manifest_v89.json": "13a9108f6ca22166055dccc90de65212b080afda9ac1b9b23093460502841414",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/tensorboard_record.json": "a59ce5faccbd7bc935a3d2a47118f056ce51326d62229e9b6df381ae6d3abc43",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/tensorboard_record_r3.json": "5a1634443851b1942d69d902f8d40e663bcc14866ae42b012cf35d085eba281f",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/tensorboard_record_r4.json": "b6417697325019a805dc964d54c1c178399f84fb4d0f61f72be94267ab1a397c",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/tensorboard_record_v89.json": "a912d85aebc4ca63a052a37bcc7a7cc7ed61f175304a6cff16b50a5e35070d07",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/validation.json": "24a28436bcbe728c4d85aba76babeac07b9a81c77cd0477f557deaacdabc27ab",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/validation_r3.json": "6d172b463f54daab54db5396c6ef9999804129af3b811ecc88a9785cb8762942",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/validation_r4.json": "86312da19a13409c7228c5893a8315345086d34bc6c380680c89e5834a601384",
+    "experiments/2026-10-01-final-env-v87-calibration-fit/validation_v89.json": "bf16d1f4095e3394aab3679c6f6939c49d993a363403cea188f192af513764c9"
+  },
+  "source_sha256": {
+    "scripts/validate_consumer_criterion_b.py": "8d2a693a6e3bbca79a8214fd388bff79a0609400f07de831ad9be3cf22e85a88",
+    "scripts/run_ci_tests.py": "3b11ec31e41a28f17efed027e2f6ee37f976ab360f9e96268e0fac6f49884152",
+    "tests/test_consumer_criterion_b.py": "f1f236c7bc7119ee3718d7d79b8023e8cf6f59db68dc54827ba28dd04062d5fd",
+    "tests/test_review_346.py": "a39bf7dc1ef27ed9c50776ec867ff2aba7497e5868508efe4c7f850afc36aff2"
+  },
+  "logs": "/Users/changmin/projects/ugrp/outputs/pr346-review-fixes-20261001",
+  "log_sha256": {
+    "before.xml": "dba1a9c3e9342aa79cf74133e07c1b12240a89bdc29b14fdd4c6ec1ee44ee93b",
+    "focused.xml": "06bfd13e1f237c0e4562b58d3944aee792a3552619120c6d85a74730a7f914f0",
+    "offline.xml": "69a9c5141d5a969354fad659ed9c7ccc5bdfc1567e9f5aa745d95e17c2d509fc",
+    "preserved.json": "aabef891afa22e11669f9247bcd1ccbf88a23b0caea2274b374cb81d16bafe0f",
+    "shards.json": "f22afe9f4d3ef91d917c84c1ff1ef7ee166b6468aeb0e5ae4aea93af1d85d3d9",
+    "v89-smoke.json": "f53cb22fc9557f3ac935d4dcd6bef8e2be917c398b3515cdcdc188c900a15d7d"
+  },
+  "v89_cli": {
+    "exit_code": 2,
+    "scope": "TRAINING_SMOKE",
+    "axis_pass": {
+      "forward": null,
+      "left": null,
+      "rotate": null
+    },
+    "pass": null,
+    "saved_r4_axis_metrics_and_decisions": "exactly equal",
+    "unique_input_paths": 8
+  },
+  "revision_decision": "No r5: existing numerical revisions need no correction; r1-r4 remain byte-identical",
+  "local_physics_runs": 0,
+  "local_render_runs": 0,
+  "model_calls": 0,
+  "extraction_dirs_created": [],
+  "extraction_dirs_remaining": [],
+  "changes_excluded": [
+    "harness",
+    "sim",
+    ".github/workflows",
+    "configs/ci_test_durations.json"
+  ],
+  "remote_ci": "pending push; exact-head outcome to be saved in local ci-final.json and one PR comment",
+  "no_merge": true,
+  "scientific_status": "criterion A FAILED_NOT_RESCORED; r4 CANDIDATE_UNVALIDATED; acquisition proof unimplemented, no B held-out validation"
+}

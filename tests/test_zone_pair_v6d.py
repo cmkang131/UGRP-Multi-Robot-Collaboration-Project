@@ -379,14 +379,15 @@ def test_probe_and_views_know_the_new_policy():
     assert views._pol('b-v6d') == 'D-'
 
 
-def test_execution_bundle_and_workflow_move_on_to_v81_and_v6d_is_historical():
+def test_execution_bundle_v83_and_separate_v6h_analysis_seal():
     from harness.zone_pair_v6_policy import EXECUTION_BUNDLE_ID
     from harness.zone_study_integration import RETIRED_BUNDLE_IDS
-    from scripts.zone_pair_v6_contract import CURRENT_REVISION, HISTORICAL_REVISIONS, verify_v6_historical
+    from scripts.zone_pair_v6_contract import CURRENT_REVISION, PENDING_REVISION, HISTORICAL_REVISIONS, verify_v6_historical
     catalog = {w['id']: w for w in json.loads((ROOT/'configs/simulation_workflows.json').read_text())['workflows']}
-    assert catalog['zone-study-integration-run']['version'] == '2.14.0'
-    assert EXECUTION_BUNDLE_ID == 'zone-pair-v81-carry-dr-general'
+    assert catalog['zone-study-integration-run']['version'] == '2.16.0'
+    assert EXECUTION_BUNDLE_ID == 'zone-pair-v83-carry-door-gain'
     assert {'zone-pair-v76-fixclock-grasp-entry', 'zone-pair-v80-align-widehue-finemotion'} <= set(RETIRED_BUNDLE_IDS)
-    assert CURRENT_REVISION == 'v6e' and {'v6c', 'v6d'} <= set(HISTORICAL_REVISIONS)
+    assert CURRENT_REVISION == 'v6h' and PENDING_REVISION is None
+    assert {'v6c', 'v6d', 'v6e'} <= set(HISTORICAL_REVISIONS)
     assert verify_v6_historical(revision='v6c')['execution_bundle_id'] == 'zone-pair-v76-fixclock-grasp-entry'
     assert verify_v6_historical(revision='v6d')['execution_bundle_id'] == 'zone-pair-v80-align-widehue-finemotion'

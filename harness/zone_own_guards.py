@@ -31,7 +31,7 @@ from __future__ import annotations
 
 import math
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 import numpy as np
 
@@ -66,6 +66,16 @@ GATE_LOADED = GateProfile('loaded', M1_LIMITS['nav_loaded'].max_std_xy_m, M1_LIM
                           LOADED_FIX_STD_XY_M, math.radians(2.5))
 for _p in (GATE_UNLOADED, GATE_LOADED):
     assert _p.low_xy_m < _p.high_xy_m and _p.low_yaw_rad < _p.high_yaw_rad, _p
+
+
+def loaded_gate_profile(yaw_deg=None):
+    """Instance-scoped loaded gate; the registered singleton stays unchanged."""
+    if yaw_deg is None:
+        return GATE_LOADED
+    high, low = yaw_deg
+    if not (math.isfinite(high) and math.isfinite(low) and 0 < low < high):
+        raise ValueError('loaded yaw gate needs finite 0 < LOW < HIGH')
+    return replace(GATE_LOADED, high_yaw_rad=math.radians(high), low_yaw_rad=math.radians(low))
 
 
 def _finite(*values) -> bool:
@@ -253,14 +263,21 @@ class OwnPose:
 class SweepGuard:
     """Static-map collision check for own arm/finger/box sweeps and whole-body back-offs."""
 
-    def __init__(self, static_map: Mapping, *, mount_xyz_m=BODY_MOUNT_XYZ_M, residual_m=BODY_COVERAGE_RESIDUAL_M):
+    def __init__(self, static_map: Mapping, *, mount_xyz_m=BODY_MOUNT_XYZ_M, residual_m=BODY_COVERAGE_RESIDUAL_M,
+                 loaded_k_xy=K_SIGMA, loaded_k_yaw=K_SIGMA, door_relax_sigma_scope='loaded_base_motion'):
         self.boxes = static_boxes(static_map)
         self.mount = tuple(float(v) for v in mount_xyz_m)
         self.residual = float(residual_m)
+        self.loaded_k_xy, self.loaded_k_yaw = float(loaded_k_xy), float(loaded_k_yaw)
+        if door_relax_sigma_scope not in ('loaded_base_motion', 'probe_all_sweeps'):
+            raise ValueError('unknown door-relax sigma scope')
+        self.door_relax_sigma_scope = door_relax_sigma_scope
 
-    def margin(self, pose: OwnPose, lever_m: float) -> float:
+    def margin(self, pose: OwnPose, lever_m: float, *, loaded=False) -> float:
         sxy, syaw = min(pose.std_xy, SIGMA_CAP_XY_M), min(pose.std_yaw, SIGMA_CAP_YAW_RAD)
-        return BASE_MARGIN_M + self.residual + K_SIGMA * sxy + K_SIGMA * syaw * lever_m
+        relaxed = loaded or self.door_relax_sigma_scope == 'probe_all_sweeps'
+        kxy, kyaw = (self.loaded_k_xy, self.loaded_k_yaw) if relaxed else (K_SIGMA, K_SIGMA)
+        return BASE_MARGIN_M + self.residual + kxy * sxy + kyaw * syaw * lever_m
 
     def arm_clearance(self, servo: Mapping, pose: OwnPose, *, loaded: bool) -> tuple[float, str | None]:
         """Smallest (distance - radius - margin) of any body sphere to any wall/post it is not above."""

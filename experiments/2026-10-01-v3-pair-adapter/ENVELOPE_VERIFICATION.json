@@ -1,0 +1,97 @@
+{
+  "schema": "ugrp.v88_envelope_verification.v1",
+  "date": "2026-10-01",
+  "candidate_parent_sha": "46330db99dcfda74b3509dd785fbaedd8c50d321",
+  "bundle": "zone-final-pair-v88",
+  "unexecuted_bundle_revised_in_place": true,
+  "coordinator_decision": "Simulation-only teacher calibration: runtime every-substep/command/0.05s interlock is primary; hits invalidate data. Conservative disc preflight replaces exact rotation/multi-body swept-path proof.",
+  "physics_steps": 0,
+  "native_model_compiles": 0,
+  "render_calls": 0,
+  "model_calls": 0,
+  "host_lock_used": false,
+  "sign_cancellation": "none, including equal step pairs and PRBS",
+  "preflight_receipts": "envelope_plans.json",
+  "registered_collections_runnable": {
+    "unloaded": false,
+    "fine": false,
+    "loaded": false
+  },
+  "tests": {
+    "results_in_order": [
+      {
+        "report": "envelope_initial_tests.xml",
+        "pass": 66,
+        "fail": 2,
+        "skip": 0
+      },
+      {
+        "report": "envelope_offline_tests.xml",
+        "pass": 551,
+        "fail": 1,
+        "skip": 0
+      },
+      {
+        "report": "envelope_final_tests.xml",
+        "pass": 145,
+        "fail": 0,
+        "skip": 0
+      }
+    ],
+    "unique_latest_passed": 553,
+    "excluded": [
+      "test_parent_exit_cleans_background_child: existing sandbox ps permission restriction; retained in normal CI"
+    ],
+    "initial_failures": "Two synthetic fixtures exceeded the existing raw command range; fixed with legal smaller commands and more leases preserving total impulse. Full suite then found one tangent-wall rounding admission (2.22e-16 m); 1e-10 m conservative guard fixes it. All 145 related PR344 tests rerun successfully, including a new positive CLI admission test.",
+    "environment": "Python 3.12.13, existing .venv-sim-worker-mac, OPENBLAS_NUM_THREADS=1, PYTHONDONTWRITEBYTECODE=1",
+    "commands": [
+      "OPENBLAS_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_review_344_envelope.py tests/test_zone_final_pair_review_fixes.py --junitxml=experiments/2026-10-01-v3-pair-adapter/envelope_initial_tests.xml",
+      "OPENBLAS_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_review_344.py tests/test_review_344b.py tests/test_review_344_envelope.py tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py tests/test_final_environment_measurement_v2.py tests/test_review_347.py tests/test_zone_final_environment_runnable.py tests/test_zone_final_environment_floor_light.py tests/test_zone_pair_registered_source.py tests/test_zone_study_source_pinning.py tests/test_zone_pair_executor.py tests/test_zone_pair_grasp.py tests/test_pair_passage_plan.py tests/test_simulation_workflow_manager.py tests/test_vision_loc_p03_source_pinning.py tests/test_ci_sharding.py -k \"not test_parent_exit_cleans_background_child\" --junitxml=experiments/2026-10-01-v3-pair-adapter/envelope_offline_tests.xml",
+      "OPENBLAS_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 /Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python -m pytest -q tests/test_review_344.py tests/test_review_344b.py tests/test_review_344_envelope.py tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py --junitxml=experiments/2026-10-01-v3-pair-adapter/envelope_final_tests.xml"
+    ]
+  },
+  "checks": {
+    "frozen_fixtures": 3,
+    "ci_shard_files": 387,
+    "ci_shards": 8,
+    "ci_coverage_verified": true,
+    "v63_manifest_and_registry": "PASS: rgb-standard-dispatch-v63; registry immutable against origin/main 2c45b137",
+    "runtime_files_unchanged": {
+      "sim/final_pair_v3.py": "5d5b9097ec041559276688fd9f851457d86ae2df09c527ab305f8b00a6925477",
+      "harness/final_environment_measurement_v2.py": "0d971eeaf9c0bc9051bf90cbbc2f424fd77831b09037cd706535d3c00e693822",
+      "sim/final_environment_measurement_v2.py": "0a9acf0c7246314eaa3b5b5d9cc775874c97e474c2e8effe99595c5bb3f1b784",
+      "harness/zone_final_pair_excitation.py": "618da65836acf0bc79e72d71b9e6d9415ad0e85924fb5769b2339f62cca9b258",
+      "harness/zone_final_pair_calibration.py": "4a54f79930b0897559cef659c8949ba6ae4aed9b6414e54ed79351cf80dea025"
+    },
+    "runtime_sphere_clearances_ast_unchanged": true,
+    "github_workflows_unchanged": true,
+    "rotate_source_hash_and_largest_estimate_verified": true,
+    "git_diff_check": "PASS excluding envelope_initial_tests.txt/xml: original pytest failure traces contain trailing whitespace and are preserved byte-for-byte."
+  },
+  "source_sha256": {
+    "PHYSICS_HANDOFF.md": "087b1f7ea1d8e47f54e3fd139cdaa86adcf95d9c06deaa776b1158a74c37b3eb",
+    "configs/zone_final_pair_v88_clearance.json": "e4a27102f2264acfa8a27de9cfa384ecde34ec99b3495197651e87bcb146e99f",
+    "experiments/2026-10-01-v3-pair-adapter/README.md": "f83971c544b5b698f765375845a2be4b7ef0df18597418d1961258c9e3e6ab72",
+    "harness/zone_final_pair_clearance.py": "bd712ac2dd1d490d83a0d0d949d03ddaefbc8ee150050e8fc8df9b6d0f019f56",
+    "scripts/run_ci_tests.py": "62fef6a0560de7210ebd9420b94954ab6983e687a4c72c1c91df491cb0185cb2",
+    "scripts/run_final_pair_v3.py": "0d92d47d9a04d7f2fe56d1238a41258c6242ce27e930fa505631de226f4cee26",
+    "tests/test_review_344_envelope.py": "faea81fcc207de3218a13945b4e74bb6760ec0d15f2d9ea9cddb9b8588a14e99",
+    "tests/test_review_344b.py": "854a374c09483d99abacee0e5b2d5ac333bdac0878bcecd565daa094de6afe02",
+    "tests/test_zone_final_pair_review_fixes.py": "3c3b603abcf8bc85288fce92e646d6c8a67c1c9dee53cb1727b2541c7e807363"
+  },
+  "artifact_sha256": {
+    "envelope_final_tests.txt": "5d2ae0f0b0850e942065df8090f68a83ece8f30e90ff5e5d776c409de1d45c2f",
+    "envelope_final_tests.xml": "4e30bebc6603e5adde9de67dfe82a27cf7754b66951a4ba188e98ae185019ad7",
+    "envelope_initial_tests.txt": "6ff668b1fa82cedfa74f2b6bf66d7a22bce044ec4b9d8d8a66997b951ea0476a",
+    "envelope_initial_tests.xml": "0a36572fcb5c292c13cf89a0f78439ca9d652570d959f3105c3937bef33c0048",
+    "envelope_offline_tests.txt": "ae38c0b4b9b71f2899be021be52c198a09de767b3637bf3ea2b8553ca4cb63ce",
+    "envelope_offline_tests.xml": "69aaaa4506c8782ae375b2e9a7f07ee21a57cbfdde1d8848de4736a4358f3fc1",
+    "envelope_plans.json": "7c6e866ca4fff02fdc53c097ab117919cd74854bff8c56598f5a93289ce7773d",
+    "envelope_shards.json": "e530a8783babab642c346731c31aac7fbcb019184998760267ec8d16706711b5"
+  },
+  "temp_extraction_dirs_created": [],
+  "temp_extraction_dirs_remaining": [],
+  "tensorboard": "No new physics/training/evaluation cohort; no conversion or viewer started.",
+  "review_status": "Author implementation; independent rereview of changed policy pending.",
+  "publication_scope": "Commit/push/comment verified separately; keep draft and do not merge."
+}

@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="1" tests="72" time="4.337" timestamp="2026-10-01T05:50:28.161516+09:00" hostname="gangchangmin-ui-MacBookAir.local"><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_act_finalization_requires_original_assets_and_pinned_hashes" time="0.010" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_act_workflows_require_explicit_suite_and_training_shape" time="0.007" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_catalog_has_thirty_selectable_workflows_and_distinct_adapters" time="0.002"><failure message="AssertionError: 44 != 43">self = &lt;test_simulation_workflow_manager.WorkflowManagerTests testMethod=test_catalog_has_thirty_selectable_workflows_and_distinct_adapters&gt;
+
+    def test_catalog_has_thirty_selectable_workflows_and_distinct_adapters(self):
+        data, digest = wm.catalog(PROJECT)
+&gt;       self.assertEqual(len(data["workflows"]), 43)
+E       AssertionError: 44 != 43
+
+tests/test_simulation_workflow_manager.py:188: AssertionError</failure></testcase><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_custom_record_is_queryable_and_never_overwritten" time="0.104" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_dispatch_skills_cannot_switch_to_raw" time="0.002" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_every_catalog_workflow_has_a_read_only_explicit_plan" time="0.116"><failure message="KeyError: 'zone-final-environment-floor-light-v2-check'">self = &lt;test_simulation_workflow_manager.WorkflowManagerTests testMethod=test_every_catalog_workflow_has_a_read_only_explicit_plan&gt;
+
+    def test_every_catalog_workflow_has_a_read_only_explicit_plan(self):
+        data, _ = wm.catalog(PROJECT)
+        source = self.root / "source.json"
+        source.write_text('{}')
+        model = self.root / "model"
+        model.mkdir()
+        (model / "weights.bin").write_bytes(b"fixture")
+        samples = {
+            "zone-study-pilot": [],
+            "local": ["run", str(PROJECT / "configs/simulation/drive.json"), "--headless"], "dispatch": ["--headless"],
+            "dispatch-skills": ["--plan-replay", str(source), "--grasp-model-dir", str(model), "--stage-model-dir", str(model)],
+            "communication": ["prepare", "--protocol", str(source)],
+            "multi-object": ["--model", "fixture"],
+            "navigation": ["--map-file", str(source), "--case-json", "{}"],
+            "pair-navigation": ["--map", str(source), "--grasp-model-dir", str(model)],
+            "camera-pair": [], "rgb-traffic": ["--scenario", "crossing"],
+            "act": ["--act-python", str(source), "--mjpython", str(source), "--grasp", str(model), "--stages", str(model)],
+            "teacher": ["--grasp-model-dir", str(model), "--cases-json", str(source)],
+            "act-map-suite": ["--spec", str(PROJECT / "maps/act_generalization/suite_v1.json")],
+            "act-training": ["--dataset", str(model)],
+            "act-input-training": ["--dataset", str(source), "--size", "128", "--history", "1",
+                                   "--steps", "100", "--device", "cpu", "--seed", "18"],
+            "act-input-finalization": ["--failed-run", str(model), "--dataset", str(source),
+                                       "--source-freeze", str(source),
+                                       "--expected-manifest-sha256", "0"*64,
+                                       "--expected-report-sha256", "1"*64,
+                                       "--expected-checkpoint-sha256", "2"*64,
+                                       "--expected-source-freeze-sha256", "3"*64],
+            "jev": ["--execute", "--mjpython", str(source)], "stage-sync": [],
+            "physical": [str(model)], "worker": ["--url", "ws://localhost/fixture"],
+            "tensorboard": ["--source", str(model)],
+            "communication-study": ["prepare", "--config", str(source)],
+            "communication-cloud-submit": ["--evidence-root", str(model), "--inventory", str(source)],
+            "zone-dispatch": ["--mode", "fixture", "--coordination", "dynamic"],
+            "zone-teacher-fix": ["--mode", "fixture", "--coordination", "dynamic"],
+            "zone-cargo-probe": ["--probe", "pair_crate"], "zone-cargo-catalogue": [],
+            "zone-team-jobs-smoke": ["--probe", "pair_beam"],
+            "zone-color-eval": ["render", "--split", "dev"],
+            "zone-cargo-perception-eval": ["render", "--split", "dev"],
+            "zone-rgb-outcome-eval": ["track", "--split", "dev_v2"],
+            "zone-owncam-loc-record": ["--episodes", str(source)],
+            "zone-owncam-loop-run": ["--prereg", str(source)],
+            "zone-m2-pair": ["--seed", "701", "--status-channel", "off"],
+            "zone-m1-owncam-run": ["--prereg", str(source)],
+            "zone-study-integration-run": ["--prereg", str(PROJECT / "configs/zone_study_integration/pair_dev_DRAFT.json"),
+                                           "--episode", "pair-integration-dev",
+                                           "--condition", "no_comm"],
+            "zone-m1-owncam-memory-run": ["--prereg", str(source), "--condition", "memory_v2"],
+            "zone-m1-owncam-memory-v3-run": ["--prereg", str(source), "--condition", "memory_v3"],
+            "zone-pair-dev": ["--prereg", str(PROJECT / "experiments/2026-09-27-zone-pair-dev/prereg_v2_DRAFT.json"), "--run-id", "dev03"],
+            "zone-pair-bootstrap-probe": ["--seeds", "911", "--policy", "b-boot"],
+            "masterpi-v3-static-audit": [],
+            "zone-final-environment-check": ["--check", "p01", "--expected-source-sha", "0" * 40],
+            "zone-final-environment-floor-light-check": ["--check", "p01", "--expected-source-sha", "0" * 40],
+        }
+        with mock.patch.dict(os.environ, {"UGRP_SIM_TOKEN": "secret"}), \
+             mock.patch.object(subprocess, "Popen", side_effect=AssertionError("planning launched a child")):
+&gt;           plans = {row["id"]: wm.plan(PROJECT, row["id"], samples[row["id"]]) for row in data["workflows"]}
+                                                            ^^^^^^^^^^^^^^^^^^
+E           KeyError: 'zone-final-environment-floor-light-v2-check'
+
+tests/test_simulation_workflow_manager.py:251: KeyError</failure></testcase><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_inprocess_finalizes_on_exception" time="0.051" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_interactive_prompt_is_tee_d_before_child_waits_for_input" time="0.197" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_output_collision_and_duplicate_flag_fail_before_record" time="0.002" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_parent_exit_cleans_background_child" time="0.228"><failure message="PermissionError: [Errno 1] Operation not permitted: 'ps'">self = &lt;test_simulation_workflow_manager.WorkflowManagerTests testMethod=test_parent_exit_cleans_background_child&gt;
+
+    def test_parent_exit_cleans_background_child(self):
+        record = wm.run_workflow(self.root, "fixture", ["--spawn"])
+        pid = int((record / "artifacts" / "grandchild.pid").read_text())
+&gt;       result = subprocess.run(["ps", "-o", "stat=", "-p", str(pid)], text=True, capture_output=True)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/test_simulation_workflow_manager.py:107:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py:548: in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py:1026: in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;Popen: returncode: 255 args: ['ps', '-o', 'stat=', '-p', '7936']&gt;
+args = ['ps', '-o', 'stat=', '-p', '7936'], executable = b'ps'
+preexec_fn = None, close_fds = True, pass_fds = (), cwd = None, env = None
+startupinfo = None, creationflags = 0, shell = False, p2cread = -1
+p2cwrite = -1, c2pread = 11, c2pwrite = 12, errread = 13, errwrite = 14
+restore_signals = True, gid = None, gids = None, uid = None, umask = -1
+start_new_session = False, process_group = -1
+
+    def _execute_child(self, args, executable, preexec_fn, close_fds,
+                       pass_fds, cwd, env,
+                       startupinfo, creationflags, shell,
+                       p2cread, p2cwrite,
+                       c2pread, c2pwrite,
+                       errread, errwrite,
+                       restore_signals,
+                       gid, gids, uid, umask,
+                       start_new_session, process_group):
+        """Execute program (POSIX version)"""
+
+        if isinstance(args, (str, bytes)):
+            args = [args]
+        elif isinstance(args, os.PathLike):
+            if shell:
+                raise TypeError('path-like args is not allowed when '
+                                'shell is true')
+            args = [args]
+        else:
+            args = list(args)
+
+        if shell:
+            # On Android the default shell is at '/system/bin/sh'.
+            unix_shell = ('/system/bin/sh' if
+                      hasattr(sys, 'getandroidapilevel') else '/bin/sh')
+            args = [unix_shell, "-c"] + args
+            if executable:
+                args[0] = executable
+
+        if executable is None:
+            executable = args[0]
+
+        sys.audit("subprocess.Popen", executable, args, cwd, env)
+
+        if (_USE_POSIX_SPAWN
+                and os.path.dirname(executable)
+                and preexec_fn is None
+                and not close_fds
+                and not pass_fds
+                and cwd is None
+                and (p2cread == -1 or p2cread &gt; 2)
+                and (c2pwrite == -1 or c2pwrite &gt; 2)
+                and (errwrite == -1 or errwrite &gt; 2)
+                and not start_new_session
+                and process_group == -1
+                and gid is None
+                and gids is None
+                and uid is None
+                and umask &lt; 0):
+            self._posix_spawn(args, executable, env, restore_signals,
+                              p2cread, p2cwrite,
+                              c2pread, c2pwrite,
+                              errread, errwrite)
+            return
+
+        orig_executable = executable
+
+        # For transferring possible exec failure from child to parent.
+        # Data format: "exception name:hex errno:description"
+        # Pickle is not used; it is complex and involves memory allocation.
+        errpipe_read, errpipe_write = os.pipe()
+        # errpipe_write must not be in the standard io 0, 1, or 2 fd range.
+        low_fds_to_close = []
+        while errpipe_write &lt; 3:
+            low_fds_to_close.append(errpipe_write)
+            errpipe_write = os.dup(errpipe_write)
+        for low_fd in low_fds_to_close:
+            os.close(low_fd)
+        try:
+            try:
+                # We must avoid complex work that could involve
+                # malloc or free in the child process to avoid
+                # potential deadlocks, thus we do all this here.
+                # and pass it to fork_exec()
+
+                if env is not None:
+                    env_list = []
+                    for k, v in env.items():
+                        k = os.fsencode(k)
+                        if b'=' in k:
+                            raise ValueError("illegal environment variable name")
+                        env_list.append(k + b'=' + os.fsencode(v))
+                else:
+                    env_list = None  # Use execv instead of execve.
+                executable = os.fsencode(executable)
+                if os.path.dirname(executable):
+                    executable_list = (executable,)
+                else:
+                    # This matches the behavior of os._execvpe().
+                    executable_list = tuple(
+                        os.path.join(os.fsencode(dir), executable)
+                        for dir in os.get_exec_path(env))
+                fds_to_keep = set(pass_fds)
+                fds_to_keep.add(errpipe_write)
+                self.pid = _fork_exec(
+                        args, executable_list,
+                        close_fds, tuple(sorted(map(int, fds_to_keep))),
+                        cwd, env_list,
+                        p2cread, p2cwrite, c2pread, c2pwrite,
+                        errread, errwrite,
+                        errpipe_read, errpipe_write,
+                        restore_signals, start_new_session,
+                        process_group, gid, gids, uid, umask,
+                        preexec_fn, _USE_VFORK)
+                self._child_created = True
+            finally:
+                # be sure the FD is closed no matter what
+                os.close(errpipe_write)
+
+            self._close_pipe_fds(p2cread, p2cwrite,
+                                 c2pread, c2pwrite,
+                                 errread, errwrite)
+
+            # Wait for exec to fail or succeed; possibly raising an
+            # exception (limited in size)
+            errpipe_data = bytearray()
+            while True:
+                part = os.read(errpipe_read, 50000)
+                errpipe_data += part
+                if not part or len(errpipe_data) &gt; 50000:
+                    break
+        finally:
+            # be sure the FD is closed no matter what
+            os.close(errpipe_read)
+
+        if errpipe_data:
+            try:
+                pid, sts = os.waitpid(self.pid, 0)
+                if pid == self.pid:
+                    self._handle_exitstatus(sts)
+                else:
+                    self.returncode = sys.maxsize
+            except ChildProcessError:
+                pass
+
+            try:
+                exception_name, hex_errno, err_msg = (
+                        errpipe_data.split(b':', 2))
+                # The encoding here should match the encoding
+                # written in by the subprocess implementations
+                # like _posixsubprocess
+                err_msg = err_msg.decode()
+            except ValueError:
+                exception_name = b'SubprocessError'
+                hex_errno = b'0'
+                err_msg = 'Bad exception data from child: {!r}'.format(
+                              bytes(errpipe_data))
+            child_exception_type = getattr(
+                    builtins, exception_name.decode('ascii'),
+                    SubprocessError)
+            if issubclass(child_exception_type, OSError) and hex_errno:
+                errno_num = int(hex_errno, 16)
+                if err_msg == "noexec:chdir":
+                    err_msg = ""
+                    # The error must be from chdir(cwd).
+                    err_filename = cwd
+                elif err_msg == "noexec":
+                    err_msg = ""
+                    err_filename = None
+                else:
+                    err_filename = orig_executable
+                if errno_num != 0:
+                    err_msg = os.strerror(errno_num)
+                if err_filename is not None:
+&gt;                   raise child_exception_type(errno_num, err_msg, err_filename)
+E                   PermissionError: [Errno 1] Operation not permitted: 'ps'
+
+/opt/homebrew/Cellar/python@3.12/3.12.13/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py:1955: PermissionError</failure></testcase><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_physical_rejects_copy_into_own_trace_and_worker_token_argv" time="0.004" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_plan_is_read_only_and_resolves_default_artifact" time="0.001" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_redacts_secret_argv_and_tracks_input_hash" time="0.001" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_run_records_source_inputs_exit_and_physical_evidence" time="0.112" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_source_fingerprint_includes_calibration_requirements_and_sparse_absence" time="0.059" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_standard_run_and_dispatch_record_selected_workflow" time="0.116" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_timeout_terminates_child" time="0.260" /><testcase classname="tests.test_simulation_workflow_manager.WorkflowManagerTests" name="test_worker_plan_redacts_entire_url_query" time="0.003" /><testcase classname="tests.test_camera_robot_port.CameraRobotPortTests" name="test_capture_is_fresh_owned_rgb_and_reports_only_commands" time="0.000" /><testcase classname="tests.test_camera_robot_port.CameraRobotPortTests" name="test_drive_uses_forward_and_yaw_patterns_and_expires" time="0.000" /><testcase classname="tests.test_camera_robot_port.CameraRobotPortTests" name="test_look_and_arm_use_physical_servo_channels" time="0.000" /><testcase classname="tests.test_camera_robot_port.CameraRobotPortTests" name="test_mecanum_bounds_reverse_and_exact_schema" time="0.001" /><testcase classname="tests.test_camera_robot_port.CameraRobotPortTests" name="test_mecanum_is_opt_in_uses_verified_patterns_and_expires" time="0.000" /><testcase classname="tests.test_camera_robot_port.CameraRobotPortTests" name="test_rejects_unknown_missing_nonfinite_and_out_of_range_fields" time="0.001" /><testcase classname="tests.test_camera_robot_port.CameraRobotPortTests" name="test_reverse_is_explicit_opt_in_and_still_bounded" time="0.000" /><testcase classname="tests.test_camera_robot_port.CameraRobotPortTests" name="test_servo_rate_is_independent_of_subpulse_tick_size" time="0.002" /><testcase classname="tests.test_camera_robot_port.CameraRobotPortTests" name="test_wait_and_stop_stop_only_own_wheels" time="0.000" /><testcase classname="tests.test_render_profile" name="test_profile_hashes_are_pinned_and_default_equals_shadows_v1" time="0.000" /><testcase classname="tests.test_render_profile" name="test_unknown_profile_name_fails_closed" time="0.000" /><testcase classname="tests.test_render_profile" name="test_default_and_shadows_v1_return_the_same_string_object" time="0.000" /><testcase classname="tests.test_render_profile" name="test_noshadow_v1_xml_edit_touches_only_castshadow_and_reflectance" time="0.001" /><testcase classname="tests.test_render_profile" name="test_noshadow_bright_v1_xml_edit_scales_light_colours_and_makes_point_lights" time="0.000" /><testcase classname="tests.test_render_profile" name="test_floor_light_v1_edits_only_the_named_floor_texture_on_top_of_noshadow_bright_v1" time="0.000" /><testcase classname="tests.test_render_profile" name="test_install_is_noop_without_a_name_and_records_after_the_inner_manifest_rebuild" time="0.000" /><testcase classname="tests.test_render_profile" name="test_default_scene_has_four_shadow_lights_and_a_reflective_floor" time="1.880" /><testcase classname="tests.test_render_profile" name="test_shadows_v1_leaves_the_compiled_model_and_xml_bytes_unchanged" time="0.007" /><testcase classname="tests.test_render_profile" name="test_noshadow_v1_changes_exactly_light_castshadow_and_mat_reflectance" time="0.003" /><testcase classname="tests.test_render_profile" name="test_noshadow_bright_v1_changes_only_lights_and_reflectance_never_physics" time="0.008" /><testcase classname="tests.test_render_profile" name="test_floor_light_v1_changes_only_the_floor_texture_relative_to_noshadow_bright_v1" time="0.007" /><testcase classname="tests.test_render_profile" name="test_noshadow_bright_v1_verify_fails_closed_when_spot_lights_remain" time="0.002" /><testcase classname="tests.test_render_profile" name="test_verify_model_fails_closed_when_the_profile_is_missing" time="0.001" /><testcase classname="tests.test_render_profile" name="test_scene_manifest_carries_name_hash_and_both_xml_hashes" time="0.001" /><testcase classname="tests.test_render_profile" name="test_default_output_pixels_are_identical_and_noshadow_changes_them" time="0.050"><skipped type="pytest.skip" message="no offscreen renderer: invalid CoreGraphics connection">/Users/changmin/projects/ugrp-wt/calib-measure-v2/tests/test_render_profile.py:263: no offscreen renderer: invalid CoreGraphics connection</skipped></testcase><testcase classname="tests.test_render_profile" name="test_probe_flag_is_off_by_default_and_marks_cases_only_when_given" time="0.050" /><testcase classname="tests.test_render_profile" name="test_probe_plan_mode_with_the_flag_stays_simulator_free" time="0.745" /></testsuite></testsuites>

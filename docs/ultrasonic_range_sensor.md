@@ -276,7 +276,7 @@ PR #249는 도면 비율로 로봇을 다시 모델링한다(측정값 아님). 
 | 잡음 seed | `sensor_seed(trial_seed, robot_id)`. 조건과 호출 횟수에 무관하므로 네 조건이 같은 SIM 시각에 같은 잡음을 받는다 |
 | 물리 영향 | 없음. ray cast는 읽기 전용이고 `mj_step`·`mj_forward`를 부르지 않는다. 직전 step이 남긴 상태를 읽는다(자세는 최대 한 timestep 이전). 렌더 프로필·카메라와 무관하다(충돌 geom group 기준 ray) |
 | 정답 누출 | 없음. 어댑터는 `measure`(판독)만 쓰고 `measure_diagnostic`(맞은 geom, 원인)은 쓰지 않는다. 테스트가 제어기·스킬 모듈이 값을 참조하지 않는지, 판독 표면에 대상 이름이 없는지 확인한다 |
-| 실행 기록 | `robots/<rid>/inputs/range.jsonl`(헤더: 모델·spec 해시·잡음 seed, 행: `t, range_m, valid, status`)와 `sensors.json`. 둘 다 manifest가 해시한다. 모델 요청 이미지·텍스트 보존과 같은 방식이다 |
+| 실행 기록 | `robots/<rid>/inputs/range.jsonl`(헤더: 모델·spec 해시·잡음 seed, 행: `t, range_m, valid, status`)와 `sensors.json`. 둘 다 manifest가 해시한다. 모델 요청 텍스트와 이미지 해시 보존과 같은 방식이다 |
 | 제어기 쪽 통로 | 각 로봇 실행기에 `range_provider`(자기 provider)가 붙는다. `harness.ultrasonic_input.range_report(executor, now)`가 최신 보고를 돌려준다. 아무 스킬도 읽지 않는다 |
 
 **끔일 때 동일성.** 어댑터는 고정 소스(`zone_own_executor.py`, `zone_own_team_host.py`, `run_zone_study_integration.py`)를 고치지 않고 감싼다. 그래서 꺼진 실행은 소스·번들·해시·출력이 바이트 단위로 같다(`pair_dev_DRAFT`의 `--bundle` 출력이 main과 동일함을 확인). v6d DRAFT 같은 소스 고정 기록도 깨지지 않는다.

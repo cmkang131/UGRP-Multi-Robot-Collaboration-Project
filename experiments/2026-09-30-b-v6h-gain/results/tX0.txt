@@ -1,0 +1,33 @@
+NOTE: 'SELF_POSE_UNCERTAIN gate_not_ok_dwell_or_hysteresis' in the first-failure column is the name the existing classifier (harness/pair_stage_probe.py ~855-868) gives an abort; the raw controller reason in these runs is POSE_UNCERTAIN_PROGRESS (ProgressMonitor no-progress stop), not a pose gate.
+
+== tX0: b-v6h-gain-5bfd95f0-tX0 n=14 load start/end=[15.7, 13.6, 14.4]/[12.8, 14.4, 14.3] source=5bfd95f0 changed=False
+case | L0: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | L1: class, sigma_yaw start/end deg, end_err mm, min clr beam/chassis mm | first failure
+  X00_F_hR2_04:s911:pPOST:VENVS | PASS_CLEAN, 0.53/2.52, 67, 332.5/99.4 | FAIL, 0.87/3.02, 109, 186.9/98.1 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  X00_F_hR2_04:s913:pPOST:VENVS | PASS_CLEAN, 0.57/2.54, 66, 333.3/101.1 | FAIL, 0.87/3.01, 103, 198.3/99.9 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  X01:s911:pPOST:VENVS | PASS_CLEAN, 0.58/2.48, 69, 325.6/93.2 | FAIL, 1.08/3.10, 124, 178.3/92.3 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  X01:s913:pPOST:VENVS | PASS_CLEAN, 0.56/2.51, 69, 325.6/93.2 | FAIL, 1.06/3.11, 123, 180.4/92.3 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  X02:s911:pPOST:VENVS | PASS_CLEAN, 0.55/2.51, 72, 326.9/95.0 | FAIL, 0.94/3.06, 120, 175.8/94.1 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  X02:s913:pPOST:VENVS | PASS_CLEAN, 0.57/2.54, 72, 327.2/95.7 | FAIL, 0.98/3.03, 119, 176.7/94.9 | carry L1 MOTION_ERROR end_error (gt_criterion)
+  X03:s911:pPOST:VENVS | FAIL (not reached) | FAIL (not reached) | carry L0 COLLISION_GUARD  (controller)
+  X03:s913:pPOST:VENVS | PASS_CLEAN, 0.57/2.51, 53, 343.5/113.0 | PASS_CLEAN, 1.01/3.05, 95, 214.6/111.4 | -
+  X04:s911:pPOST:VENVS | PASS_CLEAN, 0.53/2.27, 24, 419.2/182.9 | PASS_CLEAN, 0.80/2.99, 26, 231.2/161.2 | -
+  X04:s913:pPOST:VENVS | PASS_CLEAN, 0.55/2.26, 24, 418.2/181.0 | PASS_CLEAN, 0.78/3.06, 27, 231.5/161.6 | -
+  X05:s911:pPOST:VENVS | PASS_CLEAN, 0.57/2.26, 29, 421.8/175.4 | PASS_CLEAN, 0.85/3.00, 24, 221.6/151.7 | -
+  X05:s913:pPOST:VENVS | PASS_CLEAN, 0.54/2.27, 29, 421.8/175.5 | PASS_CLEAN, 0.86/3.08, 24, 221.5/151.6 | -
+  X06:s911:pPOST:VENVS | PASS_CLEAN, 0.54/2.34, 55, 350.8/100.6 | PASS_CLEAN, 0.71/2.96, 94, 179.6/96.6 | -
+  X06:s913:pPOST:VENVS | PASS_CLEAN, 0.58/2.28, 54, 351.1/101.2 | PASS_CLEAN, 0.77/3.11, 92, 183.6/97.3 | -
+L0: n=14 PASS_CLEAN=13/14 [69-99%] PASS_any=13/14 [69-99%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=1
+L1: n=14 PASS_CLEAN=7/14 [27-73%] PASS_any=7/14 [27-73%] PASS_CONTACT_RECOVERED=0 FAIL_HARD_LIMIT=0 FAIL=7
+chain L0->L1 both legs pass: 7/14 [27-73%]
+hard limit (pen > 5 mm or tilt > 15 deg) anywhere in the run (all legs, set-down, regrasp): 0/14 cases
+PF honesty all at the leg ends (case-robot samples): n=52 meanNEES=0.69 median=0.42 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L0 at the leg ends (case-robot samples): n=26 meanNEES=0.99 median=0.81 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+PF honesty L1 at the leg ends (case-robot samples): n=26 meanNEES=0.39 median=0.26 cov2sigma x/y/yaw=[1.0, 1.0, 1.0]
+L0: cases pass 13/14 [69-99%] (clean 13); independent units (placements) strict 6/7 [49-97%], any-seed 7/7 [65-100%]; classes {'PASS_CLEAN': 13, 'FAIL': 1}
+L1: cases pass 7/14 [27-73%] (clean 7); independent units (placements) strict 3/7 [16-75%], any-seed 4/7 [25-84%]; classes {'FAIL': 7, 'PASS_CLEAN': 7}
+chain L0->L1: cases 7/14 [27-73%]; units strict 3/7 [16-75%], any 4/7 [25-84%]
+honesty L0 (samples=26, observed placements=7/7): mean e x/y/yaw = -0.9 mm / +14.6 mm / +1.33 deg; mean z^2 x/y/yaw = [0.02, 0.58, 0.54]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 0.99
+  L0 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 7/7 [65-100%] / y 7/7 [65-100%] / yaw 7/7 [65-100%]; unverified placements: 0
+honesty L1 (samples=26, observed placements=7/7): mean e x/y/yaw = -8.9 mm / +17.9 mm / +0.45 deg; mean z^2 x/y/yaw = [0.1, 0.25, 0.04]; +-2sigma coverage (samples) [1.0, 1.0, 1.0]; NEES3 mean 0.39
+  L1 placement-level +-2sigma coverage (covered = all samples of the placement inside; n = observed placements): x 7/7 [65-100%] / y 7/7 [65-100%] / yaw 7/7 [65-100%]; unverified placements: 0
+contact episodes (both legs): 0; first-failure codes: {'MOTION_ERROR': 6, 'COLLISION_GUARD': 1}

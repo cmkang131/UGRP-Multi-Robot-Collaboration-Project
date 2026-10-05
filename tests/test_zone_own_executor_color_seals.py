@@ -32,6 +32,13 @@ def _candidate(path):
     return ((Path(tree) if tree else ROOT) / path).read_bytes()
 
 
+def _successor_candidate(path):
+    from tests.v6h_successor_pins import successor_blob
+    if os.environ.get('REVIEW_E2E_G_PR325_TREE'):
+        return _candidate(path)
+    return successor_blob(path)
+
+
 @pytest.mark.parametrize('path', CHANGED_PINNED_SOURCES)
 def test_pr325_preserves_current_v6e_source_bytes(path):
     """Expected: opt-in color support leaves the existing sealed source intact."""
@@ -42,11 +49,21 @@ def test_pr325_preserves_current_v6e_source_bytes(path):
     assert actual == expected, f'{path}: v6e={expected}, candidate={actual}'
 
 
-def test_complete_current_registration_stays_pinned():
-    pins = json.loads(_candidate(REGISTRATION))
+def test_historical_registration_and_sealed_successor_stay_pinned():
+    from tests.v6h_successor_pins import successor_pins
+    assert _candidate(REGISTRATION) == (ROOT / REGISTRATION).read_bytes()
     for contract in ('v6_contract', 'scene_contract'):
-        for path, expected in pins[contract]['source_sha256'].items():
-            assert hashlib.sha256(_candidate(path)).hexdigest() == expected, path
+        for path, expected in successor_pins(contract).items():
+            assert hashlib.sha256(_successor_candidate(path)).hexdigest() == expected, path
+
+
+@pytest.mark.parametrize('source', ['harness/zone_own_driver.py', 'harness/zone_own_team_host.py'])
+def test_successor_pin_audit_rejects_changed_and_unchanged_v6e_sources(monkeypatch, source):
+    original = _successor_candidate
+    monkeypatch.setitem(globals(), '_successor_candidate', lambda path:
+                        original(path) + b'\n' if path == source else original(path))
+    with pytest.raises(AssertionError, match=source):
+        test_historical_registration_and_sealed_successor_stay_pinned()
 
 
 def test_sealed_entrypoint_cannot_import_color_extension():

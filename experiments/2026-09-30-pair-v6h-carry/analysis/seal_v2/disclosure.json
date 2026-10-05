@@ -1,0 +1,33 @@
+{
+  "revision": "v2",
+  "supersedes_analysis_seal": "266118d2c2337bbf1cff507690da131c63e2db11",
+  "old_seal_preserved": [
+    "prereg_v6h.json",
+    "analysis/seal/"
+  ],
+  "reason": "REVIEW_SEAL_v6h1_astra.md at 77b6b94c: acquisition inventory was not bound to consumed analysis inputs. Revision v2 adds a mandatory byte-hash boundary before classification and no gate verdict on integrity failure.",
+  "blinding": "No listing, reading, hashing or analysis of the recorded raw. Tests use synthetic evidence and committed outcome-free metadata only. No physics, rendering or model calls.",
+  "execution": "The complete 274-file execution pin set remains byte-identical to the original seal and bound to 4c6b439f3f7c9a147c901f8b260a1e214d4eb396. No execution authorization.",
+  "classifier_change": "Only an explicit EvidenceReader injection and matching-root check are added to analyse(). Classification, recorder, thresholds and gate calculations are unchanged. Acquisition checks run through a strict EvidenceReader in apply_sealed_analysis.",
+  "recording_before_seal": "The 60 seed-941 primary and first-12 seed-943 sensitivity cases were recorded BEFORE this seal, blinded, at source 4c6b439f. No outcome was computed/viewed by this seal task. RUN_MANIFEST.json records no outcome inspection during recording.",
+  "interpretation": "Sealed while outcomes remain blinded, after data recording; not prospectively sealed before execution. Neither metadata completion nor passing offline checks is a task-success result.",
+  "main_merge": {
+    "commit": "78ce79162d907d88d38ef3afcfc0c62e4a72aaba",
+    "scope": "Latest origin/main merged before revision validation; working-tree differences from executed 4c6b439f are disclosed separately by per-file hashes. No authored .github/workflows changes."
+  },
+  "commands": {
+    "verify": "python -m experiments.2026-09-30-pair-v6h-carry.build_prereg_v6h --verify-seal --seal-revision v2 --seal-commit \"$V6H_SEAL_V2_COMMIT\"",
+    "apply_after_review_and_unblinding": "python -m experiments.2026-09-30-pair-v6h-carry.analysis.apply_sealed_analysis --seal-commit \"$V6H_SEAL_V2_COMMIT\" --prereg experiments/2026-09-30-pair-v6h-carry/analysis/seal_v2/prereg_v6h.json --raw /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930 --inventory /Users/changmin/projects/ugrp/outputs/v6h1-confirm-4c6b439f-20260930-inventory/acquisition_inventory.json --output /Users/changmin/projects/ugrp/outputs/v6h1-sealed-analysis-v2-NEW"
+  },
+  "acquisition_inventory": {
+    "metadata_commit": "0b77ae4b9a3500de29adad74c7ecd0439ccdf545",
+    "inventory_sha256": "d7ceca9824d4098956c7bfc5cbd7298ee5b0cfa5dacdb12586d07c2ee07ec03f",
+    "file_count": 104415,
+    "total_bytes": 1916385247,
+    "raw_manifest_sha256": "07f623b7b30374da25cd0a8d2df62a70bbfdcae47b80279be6e310d7def27950",
+    "timing": "The recorder wrote only a run-status manifest, not per-file hashes. The coordinator created the acquisition inventory AFTER recording but BEFORE unblinding. It does not prove the exact bytes at recording time.",
+    "supporting_evidence": "Committed pointer reports file count/bytes equal RUN_MANIFEST.raw and all mtimes <= driver end + 0.11 s (reported maximum 0.1016 s). Supporting evidence, not proof; no independent access to raw or real inventory by this implementer.",
+    "generator_tolerance": "The committed generator files_modified_after_driver_end counter uses +1.0 s; the tighter +0.11 s claim comes from the separately reported maximum mtime difference, not from the zero counter.",
+    "consumption": "Inventory bytes, schema, raw path, count and total bytes are checked before classification. Every consumed raw JSON/JSONL file, including manifest.json, is required in the inventory with an exact SHA-256. Run-status manifest also matches the separately sealed 07f623b7 digest. Integrity failure emits INVALID/NOT_ANALYSED with reason, no gate verdict. Mid-analysis change checks remain."
+  }
+}

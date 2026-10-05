@@ -61,7 +61,7 @@ PROBE_VERSION = '0.11.1'  # 0.2.0: pair_policy axis, align-tolerance boundary se
 #                                 image_valid_off also forces valid_frame_ob; run_pair_stage_probes --omp-threads
 LABELS = ['stage_probe', 'not_e2e_success', 'dev', '연구 결과 아님']
 PARTICIPANTS = ('r1', 'r2')
-POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e-base', 'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6g', 'b-v6g-l7', 'b-v6f-a', 'b-v6f-b', 'b-v6f')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
+POLICIES = ('v5h', 'b-only', 'a+b', 'b-v6c', 'b-v6d', 'b-v6e-dr', 'b-v6e-lag', 'b-v6e-base', 'b-v6e', 'b-v6e-pm', 'b-v6e-edge', 'b-v6g', 'b-v6g-l7', 'b-v6h1', 'b-v6f-a', 'b-v6f-b', 'b-v6f')   # harness.zone_pair_v6_policy.POLICIES (no A-only policy exists)
 # Probe-only names that are NOT in harness.zone_pair_v6_policy.POLICIES: b-v6h = registered b-v6g + a process-local door-guard relaxation.
 PROBE_ONLY_POLICIES = ('b-v6h',)
 DOOR_RELAX_STAGES = ('carry', 'setdown')     # the stages b-v6h was defined and measured for (it patches SweepGuard process-wide)

@@ -1,0 +1,817 @@
+{
+  "schema": "ugrp.t08b.review_fixes.offline.v1",
+  "date": "2026-10-01",
+  "finding": "H333-1",
+  "review_sha": "d17327aeacf858108179ebbad2a85d0a9e357608",
+  "reviewed_candidate": "cb0735efcd79ebaefd511eb7cd123979512dd0ed",
+  "pre_fix_integration_head": "0a8f0d4c35e3aa908595b4cd68d8f4d46e8feee3",
+  "merged_main": "394f9cda5d67a9d1b94ad1688f39f5616fc00e7b",
+  "t08a_head": "86847071f0332c23e5858c93607e2b0bbeb6dc98",
+  "t08a_state": "OPEN",
+  "t08a_merge_commit": null,
+  "source_sha256": {
+    "harness/beam_approach.py": "334e5403542b4d9f3ab9c1ade4d7ebaa64422e9e69c134893ad7f322aacea959",
+    "harness/beam_initial_pose_plan.py": "532ec0718114c117a2df1ce5fb2ad17bb3379a51ba9c3a213ac6db0936bf6f64",
+    "tests/test_pair_navigation_beam_approach.py": "eb8ed0984c3f688ebc69a4cfbf824ea533ace35bf2d9b1adff030551caec03d5",
+    "tests/test_review_e2e_batch_h.py": "ee72315076b2504b83943f503835c9db0cf5b643dd9124a9fe28878e8adc2715",
+    "tests/test_pair_navigation_beam_initial_pose_plan.py": "736c0fef5df6a6c1e2a8e344d5e39ca0dcbac0140138e0af26124e0468f03b88",
+    "tests/test_beam_initial_pose_plan.py": "ae7b5bd41bd69f526938912704d51f1cb3c75f0f65cef36c0d7b4c918986de49",
+    "experiments/2026-09-30-beam-approach/mutation_check.py": "567580cdb3206a4ac5c3558a5c661cde9443f05d04ed59f9dac8f484099bfa93",
+    "experiments/2026-09-30-beam-approach/offline_guard.py": "dcfd16f1629864b84c7763aee95ef3241774b70f52aaab0d164cd4530550583f"
+  },
+  "environment": {
+    "python": "3.12.13 (main, Mar  3 2026, 12:39:30) [Clang 17.0.0 (clang-1700.6.3.2)]",
+    "executable": "/Users/changmin/Project-Runtimes/ugrp/.venv-sim-worker-mac/bin/python",
+    "platform": "macOS-27.2-arm64-arm-64bit",
+    "pytest": "9.1.1",
+    "numpy": "2.5.2",
+    "opencv": "5.0.0",
+    "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "offline_guard": true,
+    "host_lock_used": false
+  },
+  "physics_sim_render_model_calls": 0,
+  "physical_ready": false,
+  "delivery_success": null,
+  "test_runs": {
+    "baseline": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "by_module": {
+        "tests.test_review_e2e_batch_h": 1
+      }
+    },
+    "candidate": {
+      "tests": 124,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "by_module": {
+        "tests.test_pair_navigation_beam_approach": 124
+      }
+    },
+    "reviewer-fixed": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "by_module": {
+        "tests.test_review_e2e_batch_h": 1
+      }
+    },
+    "related": {
+      "tests": 316,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "by_module": {
+        "tests.test_pair_navigation_beam_approach": 124,
+        "tests.test_pair_navigation_beam_initial_pose_plan": 64,
+        "tests.test_zone_pair_registered_source": 22,
+        "tests.test_zone_study_source_pinning": 34,
+        "tests.test_pair_owncam_approach": 12,
+        "tests.test_pair_passage_plan": 44,
+        "tests.test_zone_pair_status": 16
+      }
+    },
+    "reviewer-final": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "by_module": {
+        "tests.test_review_e2e_batch_h": 1
+      }
+    }
+  },
+  "related_unique_passed": 316,
+  "related_files": [
+    "tests/test_pair_navigation_beam_approach.py",
+    "tests/test_pair_navigation_beam_initial_pose_plan.py",
+    "tests/test_zone_pair_registered_source.py",
+    "tests/test_zone_study_source_pinning.py",
+    "tests/test_pair_owncam_approach.py",
+    "tests/test_pair_passage_plan.py",
+    "tests/test_zone_pair_status.py"
+  ],
+  "mutation_check": {
+    "source_sha256": "334e5403542b4d9f3ab9c1ade4d7ebaa64422e9e69c134893ad7f322aacea959",
+    "test_sha256": "eb8ed0984c3f688ebc69a4cfbf824ea533ace35bf2d9b1adff030551caec03d5",
+    "production_bytes_unchanged": true,
+    "physics_sim_render_model_calls": 0,
+    "host_lock_used": false,
+    "detected": 15,
+    "total_mutations": 15,
+    "runs": [
+      {
+        "mutation": "normal",
+        "exit_code": 0,
+        "tests": 124,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "4b002ab9fd36a9498264bff09989cad2027266d104e2e278c8ad43a34d99eaf6"
+      },
+      {
+        "mutation": "navigation_removed",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 41,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "cbdcfa9fafd379d6884ce8970a6e18a81a3ff57eabe1166362bc5bcab6c5d5ee"
+      },
+      {
+        "mutation": "pose_gate_removed",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 8,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "cca2d15dc53fd26c1506ff5b00df042ef172a964446ca05ee9b28739b4eb1c2d"
+      },
+      {
+        "mutation": "relative_alignment_removed",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 33,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "df28570f56b3a5f45a4395366603bea3b29661e5ad3e396d8b7fcd52bd82e852"
+      },
+      {
+        "mutation": "handoff_posterior_reinitialized",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 22,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "d45ce820a14682a5a553a161780f0da65299f460d101fad213dca9adb64deb94"
+      },
+      {
+        "mutation": "command_guard_removed",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 26,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "aacd2154ba4043d28df0a48c6c771440d7b4feb59c66fce24c4f29e59f0b3c33"
+      },
+      {
+        "mutation": "image_hash_check_removed",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "2fde62f3166caef1748be727cf530f891494d93a0fe152212d161109d2a9146b"
+      },
+      {
+        "mutation": "delivered_abort_check_removed",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "d5b188a4648f890e248538ea4a6f91fd96445a17796fe337b4e048b0b0029000"
+      },
+      {
+        "mutation": "sim_cap_boundary_weakened",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "000b9df19ca9a4f11dbe3dcd7ac4bb3d9d70991debbdc61c5d00f1e7b2f013df"
+      },
+      {
+        "mutation": "legacy_pwm_units_restored",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 103,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "a949cdfe3e2510d4449225306f79d8c12a3ab422838ef2d07b8a3f15a13123b7"
+      },
+      {
+        "mutation": "inactive_channel_2_required",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 114,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "d0e63aa8cf0c57db5f06b08a1ad29b20c3188f816033acc80339bed5fa76e943"
+      },
+      {
+        "mutation": "search_gripper_open_check_removed",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "6886769f8a7057300a9f72f75336deec6a8f235370fdc124c8ea879db59da24b"
+      },
+      {
+        "mutation": "current_gripper_open_check_removed",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "ca740f7a34853b090de295e4544a59436ba8d081c7d4d248cd0471ab030aa99f"
+      },
+      {
+        "mutation": "issued_pwm_rescaled",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 84,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "5563566a1369211420c4e400f2d6efe50fd043c9ce9bfc9bdfd6caa31d4dec4e"
+      },
+      {
+        "mutation": "issued_servo_ack_removed",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 17,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "3208e1b0509d4c92cf62ba0bab1b296336fde903bb8463832bc16489e07e63bf"
+      },
+      {
+        "mutation": "pan_pwm_rescaled",
+        "exit_code": 1,
+        "tests": 124,
+        "failures": 16,
+        "errors": 0,
+        "skipped": 0,
+        "log_sha256": "61798bce320ceb61ee43d734034cb321db3db033dde04c76fb9cafe43e8a0230"
+      }
+    ]
+  },
+  "preservation": {
+    "sealed_v6e": {
+      "harness/owncam_memory.py": {
+        "expected": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a",
+        "actual": "7bd8caa80e035db4a17da2e68e72e5b23aff85bfbccd3e6ce347d9ecb21d2c2a"
+      },
+      "harness/owncam_memory_time.py": {
+        "expected": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0",
+        "actual": "c527d63698474dc346ffa0d2508fe18eb8b9229466e139870ba99d20976ad2d0"
+      },
+      "harness/owncam_delivery_shared.py": {
+        "expected": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba",
+        "actual": "b1e025625f0671adc5d6da794fafdde4085abc5e2ceae30cc8eb76c94bbdf1ba"
+      },
+      "harness/owncam_memory_delivery.py": {
+        "expected": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50",
+        "actual": "986ecabb7ca07bfab54ea0edf4b529437b043bcb1d9c1816be8176d41c115a50"
+      },
+      "harness/owncam_memory_inputs.py": {
+        "expected": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83",
+        "actual": "7cc072cf18b13b790e4f03ec8bdee2f0cfaef89c4b9481e89444e14d3bc2ea83"
+      },
+      "harness/owncam_pose_guard_provider.py": {
+        "expected": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1",
+        "actual": "95ea139155a6ee41df39548c2b086b50757975c6f8cc76782d8dfc7f0f6100e1"
+      },
+      "harness/owncam_pose_guard_v3.py": {
+        "expected": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6",
+        "actual": "035db19886b687cb64d5b11e74bfaf4b43ef66f088c4aaf93d3e94be1571f4a6"
+      },
+      "configs/zone_pair_authorization.json": {
+        "expected": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e",
+        "actual": "8ab7e83e18850205804f9837cd8409a6472ecb0260c21f1c41134a59659a308e"
+      },
+      "harness/owncam_drive_mem_v3.py": {
+        "expected": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425",
+        "actual": "771dee9697630686ed68595a5e09dcd27c42d2283b5f5f44d9db4373ba3bf425"
+      },
+      "harness/m1_owncam_memory_v3.py": {
+        "expected": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2",
+        "actual": "ff31821b6e685ce72cd49dc69a3ccc0a14fa3e28b3dbb327114eea40ebddede2"
+      },
+      "harness/vision_motion_init.py": {
+        "expected": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316",
+        "actual": "4cc94461fb869f7589711ca9f3da357d40e6159094e5a0f40df1b873c4009316"
+      },
+      "harness/m2_provider_adapter.py": {
+        "expected": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624",
+        "actual": "3802711add344c2911cd28c45e4ab597305dc8d9a2728ec5b916ce709534b624"
+      },
+      "harness/zone_own_deliver.py": {
+        "expected": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab",
+        "actual": "0f347000d39642b24630bccc86d70433ce96329e959867ce0b09ce3d409e2bab"
+      },
+      "harness/zone_own_team_host.py": {
+        "expected": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64",
+        "actual": "eecf5a1c87acb396464b1e9d39494df08dfb009644ce380811c5ea56641fca64"
+      },
+      "scripts/zone_pair_authorization.py": {
+        "expected": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649",
+        "actual": "14770bc564bc14ff0e8d00bb0fb0fd1a961e2a7b1a09415c6f924fc72efbc649"
+      },
+      "scripts/run_zone_study_integration.py": {
+        "expected": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd",
+        "actual": "85508cc58e1cba0f1fc11e3b7ef656c0c7648202ff1086c274c3dbaa64a99edd"
+      },
+      "scripts/run_m1_owncam_memory_v3.py": {
+        "expected": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8",
+        "actual": "7b1d233ba04e4e05e151bc0b16398d62c15df0227c571a9108b2d97c8941f1b8"
+      },
+      "sim/zone_geometry_scene.py": {
+        "expected": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0",
+        "actual": "39e2644d7650eed49417978df01b9eb5f1601664371b81c418e9d689e949e4b0"
+      },
+      "configs/zone_study_integration/pose_providers.json": {
+        "expected": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d",
+        "actual": "7d05c622d91e4229ba7707bffff32b4e4191f39af59d7b3fa94c48a3be13365d"
+      },
+      "maps/zones/zone_wide_door_geometry_v2.json": {
+        "expected": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf",
+        "actual": "0a8f5fdc3b3ad01710971a9f5caf020eb76c7e90f3da5713e669d035b4e7ebaf"
+      },
+      "harness/pose_provider.py": {
+        "expected": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2",
+        "actual": "362ccd8e06600e0f7046a10ae00caa252ef17d46d7c86afd305081776e1717a2"
+      },
+      "harness/vision_pose_source.py": {
+        "expected": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7",
+        "actual": "dc5d5f8d0c0eafae500992ef82635ee6810ba1f71e49f04dc21a298955f6aba7"
+      },
+      "harness/zone_study_pose_delay.py": {
+        "expected": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894",
+        "actual": "5d8cdca5f4b734b640945c49a3e6aeb519b207c4dfb80cb72982ae0c066d2894"
+      },
+      "harness/zone_own_driver.py": {
+        "expected": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d",
+        "actual": "69d6a9ea8d3b40c52754a53e8950a202ee16c9baa50fa251bc234c764d0b146d"
+      },
+      "harness/owncam_drive_shared.py": {
+        "expected": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792",
+        "actual": "e624d57b842637a226480efc59e2a18106a4dfdebc5a0e26fa953d55351f1792"
+      },
+      "sim/zone_own_scene_provider.py": {
+        "expected": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b",
+        "actual": "68b3f649b957af34db30ebec39b93ee45d8f7aee7b84c479154cd2ffc833e48b"
+      },
+      "harness/owncam_time.py": {
+        "expected": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4",
+        "actual": "64a1dd738de3ed73f44f21b8709af3f81efd54c8e8d5fd721d3ab9f7368fe5d4"
+      },
+      "harness/zone_own_contract.py": {
+        "expected": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301",
+        "actual": "afb3fdfab54d7ae34cff050a99a84959308608ba5eb4bbee8354c9f3cc374301"
+      },
+      "harness/zone_own_executor.py": {
+        "expected": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5",
+        "actual": "55ed01bba2271a647e5df1718b6876f3b887c33e1d9b0617e43d52cc46fbb4c5"
+      },
+      "harness/zone_own_status.py": {
+        "expected": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3",
+        "actual": "cf7ad337830461a9cc23096ccbd74b44639257d87019628b53e6807e5504f6e3"
+      },
+      "harness/zone_own_perception.py": {
+        "expected": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff",
+        "actual": "07f8cbf959555bd49f12b3f8a5f93ef14ee5bb559d9385e236d7e8ecd0d694ff"
+      },
+      "harness/zone_pair_obstruction.py": {
+        "expected": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd",
+        "actual": "f40bd166ec152436a7d30938f16aee4acfb21b5ead569cc660769143e963a0dd"
+      },
+      "harness/zone_pair_grasp.py": {
+        "expected": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565",
+        "actual": "c8dc5418406655009fc9bdedc061edc85d5ca9714455afe2711621cd250f9565"
+      },
+      "harness/zone_pair_executor.py": {
+        "expected": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465",
+        "actual": "36813f20315e6e9cd7640a7e6fb47bbb9741df69ba027e576e8171b2e6a90465"
+      },
+      "harness/zone_pair_beam_track.py": {
+        "expected": "7b0870a80a200ee6eaa99d6ca86653094d420dd527bf7b8fcf385b2ff030ce9e",
+        "actual": "7b0870a80a200ee6eaa99d6ca86653094d420dd527bf7b8fcf385b2ff030ce9e"
+      },
+      "harness/zone_pair_align.py": {
+        "expected": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e",
+        "actual": "54080303b5d0ae7cb6991dc9ea04435a6dc927c9d8ca9eda3c86c29820fa320e"
+      },
+      "harness/zone_pair_guards.py": {
+        "expected": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde",
+        "actual": "cf1dfc6efa374ffd7b9efca4e349e2bacd5df5cb81f949e4cebd84a3b5cb9fde"
+      },
+      "harness/zone_pair_geometry.py": {
+        "expected": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d",
+        "actual": "5a58e32eb04a5fbbd4bd2e75aceb0d8a33cfd750470224408f4d43f0f458471d"
+      },
+      "harness/zone_pair_status.py": {
+        "expected": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646",
+        "actual": "99bd02f2f3be227ccc84e4903bb5c0d1a37d92d6b382dc5edd5dbce44dd68646"
+      },
+      "harness/zone_pair_vision.py": {
+        "expected": "cce72504edf01d119aafbefc8cb4ea1aa5a407196f9809f6cb5b8ec0bfecc9fc",
+        "actual": "cce72504edf01d119aafbefc8cb4ea1aa5a407196f9809f6cb5b8ec0bfecc9fc"
+      },
+      "harness/owncam_pose_source.py": {
+        "expected": "b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e",
+        "actual": "b5c151742ba8d716c2f83423ce64a06cf07bdff8e8cf08b278ff84903529074e"
+      },
+      "harness/owncam_localizer.py": {
+        "expected": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347",
+        "actual": "9793f74b008b96d4b6659a5251bde7374c697ac7d4bbb23758d5433098402347"
+      },
+      "harness/owncam_pair_beam.py": {
+        "expected": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6",
+        "actual": "6bc959a766676ba62fe9126e2d90fcfa62c7353ee79f83fa1ac8caeb4eae82d6"
+      },
+      "harness/owncam_pair_beam_v2.py": {
+        "expected": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97",
+        "actual": "b4dad971e241542460a9f7ae259356039033d18c9d4f16c940b2370ced388f97"
+      },
+      "harness/owncam_view.py": {
+        "expected": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260",
+        "actual": "d8dbda447e9ec2a4ccd96e5a19d751bf80676b18ff4e636002724528cdd97260"
+      },
+      "harness/zone_own_guards.py": {
+        "expected": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e",
+        "actual": "dbf49db31b8c24d2f1358105aee5a8474190d624f1ebf01709ac65226324ec0e"
+      },
+      "scripts/run_zone_pair_dev.py": {
+        "expected": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec",
+        "actual": "3e812ead33db3e2c0b214f2ee829954ceca371057eeaf9e2d57b033c1439f6ec"
+      },
+      "scripts/zone_pair_dev_runtime.py": {
+        "expected": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877",
+        "actual": "d51af5954094cbd019047455fd5c36f7cdc3d1b00ec3379bfd24ad38e1b80877"
+      },
+      "scripts/zone_pair_grasp_contract.py": {
+        "expected": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85",
+        "actual": "60549476ff1c2bafd5429674bd6c16e68ab7da87af0e70eb6607b2bba352fa85"
+      },
+      "scripts/evaluate_zone_pair_dev.py": {
+        "expected": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53",
+        "actual": "f331dbea28c14572cd8055d68a7d3cdf2c00217b5da744b6f2589feb70606b53"
+      },
+      "configs/simulation_workflows.json": {
+        "expected": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140",
+        "actual": "d0b0d57f6c02902743a8124e6e162ba8af7c5a477c06faeee692878a0d0be140"
+      },
+      "sim/zone_start_dock.py": {
+        "expected": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4",
+        "actual": "6a1977ed99bd9f92a5b4dcda3f9e96dbee28fd7957f6c709a242f8b1dfe1bdb4"
+      },
+      "sim/zone_dock_scene.py": {
+        "expected": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498",
+        "actual": "8f6c5a27e9dd546238d34d0b1b2f5b64519e72cbb7c096d89c16a6e27a7a0498"
+      },
+      "sim/zone_arena.py": {
+        "expected": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8",
+        "actual": "191c1aac15b2796514ea21a290be1b2e5b497754c12abd6f7d15df614a1630c8"
+      },
+      "sim/zone_landmarks.py": {
+        "expected": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1",
+        "actual": "2de8bf3a32673c5305d87639894e90deb9932ac015b697ddb8a05dcccf56e5f1"
+      },
+      "sim/zone_scene.py": {
+        "expected": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714",
+        "actual": "ca814adfdd02ff9ac09b7288f45d10b249306d7a0e98e9c159ebe63a328ba714"
+      },
+      "sim/zone_tagged_cargo_scene.py": {
+        "expected": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7",
+        "actual": "c979b48b97b67abf42ba3bd024dc46569e79b1ec7565bfc7400bf7fb480c8cb7"
+      },
+      "scripts/zone_pair_dev_contract.py": {
+        "expected": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e",
+        "actual": "7af8cd28af9559bcd4ec39aeaa6ae3fd07a2649f1623f8722c58c087c446cd1e"
+      },
+      "harness/zone_study_integration.py": {
+        "expected": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06",
+        "actual": "5997f0b431fa85c4d5df51f96297924c7f0c9df63b052d853f963662ad997d06"
+      },
+      "harness/zone_pair_v6_policy.py": {
+        "expected": "dcf1d3804f3ccf02622fc8410d00478b171975a0e1f0b299fdd46d2e323ee9bd",
+        "actual": "dcf1d3804f3ccf02622fc8410d00478b171975a0e1f0b299fdd46d2e323ee9bd"
+      },
+      "harness/zone_pair_relative.py": {
+        "expected": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af",
+        "actual": "63471d200f1da274ec653d0bb17ce6a7d9cbef6ba200d40b14e299812f8fe7af"
+      },
+      "harness/zone_pair_global.py": {
+        "expected": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed",
+        "actual": "4bd00fd86703baf4874c4c333f3d3580166aca95e26ab99337fc2a85cdce16ed"
+      },
+      "harness/owncam_recovery_v6.py": {
+        "expected": "3909f45ecc856ca2f666f9e3c3ee2327ad813c15449f0b0b0f04173492c92f67",
+        "actual": "3909f45ecc856ca2f666f9e3c3ee2327ad813c15449f0b0b0f04173492c92f67"
+      },
+      "harness/owncam_observability_v6.py": {
+        "expected": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d",
+        "actual": "04c3bd8cc85b4e77f6a413f140542714251573adb38863a57f139443c0b80f0d"
+      },
+      "scripts/zone_pair_v6_contract.py": {
+        "expected": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b",
+        "actual": "eee037e6a9a64bf0ac9c1448275aee958bdc70a40b9b79040ee7133639483e8b"
+      },
+      "harness/zone_own_sweep.py": {
+        "expected": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6",
+        "actual": "130534457cedb5eb238e650fdf9100358cf6a81bc2262905abd190243887faa6"
+      },
+      "harness/pair_owncam_approach.py": {
+        "expected": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184",
+        "actual": "75058e95ff0f78dc388e9e34deba59f0524ef0647fb4e8a2597852ae0440f184"
+      },
+      "harness/owncam_drive.py": {
+        "expected": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82",
+        "actual": "a8aede7813956e2de12c25b139b02f48e11dab5be8cbf82a2d25344547d51e82"
+      },
+      "scripts/run_m2_pair.py": {
+        "expected": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783",
+        "actual": "3432df1fbefd4779921dc89a20f60fb67299fcdd02aa4568c6ecd14e27978783"
+      },
+      "scripts/study_owncam_pair_beam.py": {
+        "expected": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00",
+        "actual": "6f3b7776b17804269fe9060bb355d5fecb17172c10c343672394bc7f1d771a00"
+      },
+      "harness/visual_arm.py": {
+        "expected": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a",
+        "actual": "f60e4829fb734da2cdf52619a5e38c0de87da6137bac6fd42516560361de527a"
+      },
+      "harness/m1_owncam_delivery.py": {
+        "expected": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09",
+        "actual": "767cda1a6b523e19c0f7ef0f32e6b453799978e623b8e37bfa493b23f9993e09"
+      },
+      "harness/owncam_bootstrap_v6b.py": {
+        "expected": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90",
+        "actual": "58156479838caf17318f2b91858e931c5a54360b2c4af45c2db624277ada7b90"
+      },
+      "harness/owncam_recovery_v6c.py": {
+        "expected": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd",
+        "actual": "1a1c1a421be2b4dc38f73a7287a23aec1f6edb00b15e6cb1a04e79c9683534dd"
+      },
+      "harness/zone_pair_grasp_entry_v6c.py": {
+        "expected": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e",
+        "actual": "b757d7350b0afd9b7f236e32a1d21e85b93247906ce3f45baef49313bc777c7e"
+      },
+      "harness/owncam_pair_beam_v6d.py": {
+        "expected": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12",
+        "actual": "cfa4eb80fd0c9402f0effe5e3f9125a488438f03143ffd495b51f4d8787faa12"
+      },
+      "harness/owncam_align_motion_v6d.py": {
+        "expected": "4ac391e60c0d3930576c9daacbd066495fad8f9bb5863dc3ce8eaab6cff8d879",
+        "actual": "4ac391e60c0d3930576c9daacbd066495fad8f9bb5863dc3ce8eaab6cff8d879"
+      },
+      "experiments/2026-09-26-zone-m1-owncam/calibration_m1_dev.json": {
+        "expected": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72",
+        "actual": "126cadaa9265ed2ae2b034f675e67c227193a2e1678f6b0c82dd53b186e6fc72"
+      },
+      "harness/owncam_carry_v6e.py": {
+        "expected": "ec3b42b3502e21491585360bc588663f89003f8e6ed09ab829ae617d867737ec",
+        "actual": "ec3b42b3502e21491585360bc588663f89003f8e6ed09ab829ae617d867737ec"
+      },
+      "harness/own_beam_edge.py": {
+        "expected": "f72118c5c1faeb91094347469dd15fa6059dd99bd6acede4760eec96411f3e8d",
+        "actual": "f72118c5c1faeb91094347469dd15fa6059dd99bd6acede4760eec96411f3e8d"
+      },
+      "experiments/2026-09-29-pair-v6e-carry/carry_dr_fit_cal1.json": {
+        "expected": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d",
+        "actual": "5788d0893dfa419af6cee4f40c85f8725f665b406d9d797de226eb3177805a5d"
+      },
+      "experiments/2026-09-29-pair-v6e-carry/carry_pair_fit.json": {
+        "expected": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b",
+        "actual": "5dfa75587ae19fbe7278f8fd783cfb71638b160f3aa7247f91ca416f6ff7a88b"
+      },
+      "experiments/2026-09-29-pair-v6e-carry/carry_general_fit.json": {
+        "expected": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b",
+        "actual": "9603ce32924b2778943d8232a39ce48237e2881b4d0e2dbdd5310a108fad4a0b"
+      },
+      "sim/zone_masterpi_v3_scene.py": {
+        "expected": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca",
+        "actual": "ae0a95499a40d6522f59fd628bce7ae1262b3e1a0bf9a62acd312e565e783fca"
+      },
+      "sim/zone_model_conventions.py": {
+        "expected": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff",
+        "actual": "a7f72b9bdf07eff6e2ec945984b7f1a1c1bc0e2a57cc4d10fdd8bf41aaab7aff"
+      }
+    },
+    "sealed_count": 85,
+    "protected_sha256": {
+      "tests/test_zone_pair_registered_source.py": "4884b81bb2c31eba434a0fca6e021a34eafae31082a90f4281509132f56d67fb",
+      "tests/test_zone_study_source_pinning.py": "757ab9ffcf6d00322a46dba23d08af6b56a6b4594e86c6f76b3a601fff9697b5",
+      ".github/workflows/tests.yml": "8831e19de2f6afa377d9d1835445917804821519e1eb572f4483d1f66bb7f866",
+      "scripts/run_ci_tests.py": "3f5691627b5bd84e4b0551edc94dda919cbbb7f541fcb1de740d6b5426b294b6"
+    },
+    "ci_entries": [
+      "tests/test_pair_navigation_beam_approach.py",
+      "tests/test_pair_navigation_beam_initial_pose_plan.py"
+    ],
+    "ci_shards": {
+      "tests/test_pair_navigation_beam_approach.py": 3,
+      "tests/test_pair_navigation_beam_initial_pose_plan.py": 4
+    },
+    "h333_counterexample_body_unchanged": true,
+    "workflow_tree_object": "d16776ce7b241a0ab49132f65bfa6a5ac17895e7",
+    "new_extraction_directories": []
+  },
+  "raw_location": "/Users/changmin/projects/ugrp/outputs/t08b-review-fixes-20261001",
+  "raw_remote_backup": false,
+  "raw_artifacts": {
+    "baseline.log": {
+      "bytes": 1685,
+      "sha256": "c426c8703ceba0682cb981164fbd9109200cd276dcf5f29b41005e51c709bd6c"
+    },
+    "baseline.xml": {
+      "bytes": 1798,
+      "sha256": "ee87f0abd40bc9c5b9e5d4092ef2869b9b13924ff1b73fd295e7182e492ddee7"
+    },
+    "candidate.log": {
+      "bytes": 180,
+      "sha256": "314da15393ea9717ae7519180aa1e9eaac9d4d47508f4480b5b8e0ef6fd90cd0"
+    },
+    "candidate.xml": {
+      "bytes": 19683,
+      "sha256": "eec41cc144fef9b5c0dea1074f10d30c87b280c0f428e9bfd0e30c85ea568950"
+    },
+    "ci-collection.log": {
+      "bytes": 22584,
+      "sha256": "07d0f159ba7815c22e0f9655408a6b610a75c6a2af8be42c5823d230f6519c35"
+    },
+    "mutations/command_guard_removed.txt": {
+      "bytes": 73404,
+      "sha256": "aacd2154ba4043d28df0a48c6c771440d7b4feb59c66fce24c4f29e59f0b3c33"
+    },
+    "mutations/command_guard_removed.xml": {
+      "bytes": 90876,
+      "sha256": "7a0e1f17b2adc6abf264064cb4b4a541aea1bb3a2e46825a40543dd617134948"
+    },
+    "mutations/current_gripper_open_check_removed.txt": {
+      "bytes": 2738,
+      "sha256": "ca740f7a34853b090de295e4544a59436ba8d081c7d4d248cd0471ab030aa99f"
+    },
+    "mutations/current_gripper_open_check_removed.xml": {
+      "bytes": 21710,
+      "sha256": "b459a556eb528989d299b041ddf1f806fc4eb696cd9069058836b3d7ab6f3373"
+    },
+    "mutations/delivered_abort_check_removed.txt": {
+      "bytes": 1373,
+      "sha256": "d5b188a4648f890e248538ea4a6f91fd96445a17796fe337b4e048b0b0029000"
+    },
+    "mutations/delivered_abort_check_removed.xml": {
+      "bytes": 20654,
+      "sha256": "ff7e8d6534e8ac1ab4ec2c63d42e00610554d2b9477bb9c3e489fa91a2d208c9"
+    },
+    "mutations/handoff_posterior_reinitialized.txt": {
+      "bytes": 71378,
+      "sha256": "d45ce820a14682a5a553a161780f0da65299f460d101fad213dca9adb64deb94"
+    },
+    "mutations/handoff_posterior_reinitialized.xml": {
+      "bytes": 96829,
+      "sha256": "85a628a5d9bfe0198423822ab5046750d774f99f02797dcb87a0ef822f54ce20"
+    },
+    "mutations/image_hash_check_removed.txt": {
+      "bytes": 1784,
+      "sha256": "2fde62f3166caef1748be727cf530f891494d93a0fe152212d161109d2a9146b"
+    },
+    "mutations/image_hash_check_removed.xml": {
+      "bytes": 21188,
+      "sha256": "cd9f8b2c20a642967504d88c9d3390d86eadf14bff097ec6fad5e4d62969247c"
+    },
+    "mutations/inactive_channel_2_required.txt": {
+      "bytes": 197305,
+      "sha256": "d0e63aa8cf0c57db5f06b08a1ad29b20c3188f816033acc80339bed5fa76e943"
+    },
+    "mutations/inactive_channel_2_required.xml": {
+      "bytes": 206730,
+      "sha256": "0affd1bd2a3f25f5517103457e3518d2b3fa7b2329c1dc80bce9813cddf99287"
+    },
+    "mutations/issued_pwm_rescaled.txt": {
+      "bytes": 293285,
+      "sha256": "5563566a1369211420c4e400f2d6efe50fd043c9ce9bfc9bdfd6caa31d4dec4e"
+    },
+    "mutations/issued_pwm_rescaled.xml": {
+      "bytes": 305764,
+      "sha256": "345f6bd2c1b2e8418d9dd63942b673bd3590cf400787814344753aab46771d7f"
+    },
+    "mutations/issued_servo_ack_removed.txt": {
+      "bytes": 40775,
+      "sha256": "3208e1b0509d4c92cf62ba0bab1b296336fde903bb8463832bc16489e07e63bf"
+    },
+    "mutations/issued_servo_ack_removed.xml": {
+      "bytes": 60081,
+      "sha256": "245b4b611fbdc4e0f997e973ccb716ff21bf656cd6016c92636a115e62f1b6b1"
+    },
+    "mutations/legacy_pwm_units_restored.txt": {
+      "bytes": 206654,
+      "sha256": "a949cdfe3e2510d4449225306f79d8c12a3ab422838ef2d07b8a3f15a13123b7"
+    },
+    "mutations/legacy_pwm_units_restored.xml": {
+      "bytes": 215040,
+      "sha256": "6e05ac92d2b24d67f0e78bcf2f771388f4205e1a69f29199a4eebbb22077d930"
+    },
+    "mutations/navigation_removed.txt": {
+      "bytes": 68351,
+      "sha256": "cbdcfa9fafd379d6884ce8970a6e18a81a3ff57eabe1166362bc5bcab6c5d5ee"
+    },
+    "mutations/navigation_removed.xml": {
+      "bytes": 84456,
+      "sha256": "9ce115a36d717a28a2e03bd2c75a950b09b942907784009ca0caad1785be3fd1"
+    },
+    "mutations/normal.txt": {
+      "bytes": 180,
+      "sha256": "4b002ab9fd36a9498264bff09989cad2027266d104e2e278c8ad43a34d99eaf6"
+    },
+    "mutations/normal.xml": {
+      "bytes": 19683,
+      "sha256": "0125f462ac775f26a9d01eda5dcf1e90fe4166a895a809e7fde9f75ead457984"
+    },
+    "mutations/pan_pwm_rescaled.txt": {
+      "bytes": 39477,
+      "sha256": "61798bce320ceb61ee43d734034cb321db3db033dde04c76fb9cafe43e8a0230"
+    },
+    "mutations/pan_pwm_rescaled.xml": {
+      "bytes": 59504,
+      "sha256": "9208cd1df0c0d5a3f41d6d59a6f1eddbfd7e55116cae9a87552b8f7b090cc7c8"
+    },
+    "mutations/pose_gate_removed.txt": {
+      "bytes": 8839,
+      "sha256": "cca2d15dc53fd26c1506ff5b00df042ef172a964446ca05ee9b28739b4eb1c2d"
+    },
+    "mutations/pose_gate_removed.xml": {
+      "bytes": 27601,
+      "sha256": "73b0720557c0ceaf8d90647485a4ab9839a4cc143da7d15cafe203ebb437b52e"
+    },
+    "mutations/relative_alignment_removed.txt": {
+      "bytes": 79760,
+      "sha256": "df28570f56b3a5f45a4395366603bea3b29661e5ad3e396d8b7fcd52bd82e852"
+    },
+    "mutations/relative_alignment_removed.xml": {
+      "bytes": 98984,
+      "sha256": "0aea23ea1e7bcb0d59f95706ab77a4aa5eb18765373947aedd71c1c4f252f279"
+    },
+    "mutations/results.json": {
+      "bytes": 44904,
+      "sha256": "920029c51f0315ab6035df9cb2e873abea299819d617b44a9e42b77676170549"
+    },
+    "mutations/search_gripper_open_check_removed.txt": {
+      "bytes": 2732,
+      "sha256": "6886769f8a7057300a9f72f75336deec6a8f235370fdc124c8ea879db59da24b"
+    },
+    "mutations/search_gripper_open_check_removed.xml": {
+      "bytes": 21707,
+      "sha256": "4cde290295cad66f92b23c40a541268433335884d4c6f38d5b0bf347865787f8"
+    },
+    "mutations/sim_cap_boundary_weakened.txt": {
+      "bytes": 1215,
+      "sha256": "000b9df19ca9a4f11dbe3dcd7ac4bb3d9d70991debbdc61c5d00f1e7b2f013df"
+    },
+    "mutations/sim_cap_boundary_weakened.xml": {
+      "bytes": 20605,
+      "sha256": "cb39a677331ce8ad4018ef2f2dcda477070c2ae6fedca642e5ae9a89904f15b0"
+    },
+    "preservation.json": {
+      "bytes": 19344,
+      "sha256": "accd2be8961d46da0bd09a92e17faf67a8c152444969f0ae6ecbc40d2fe06153"
+    },
+    "related.log": {
+      "bytes": 432,
+      "sha256": "49eb280cefc2a5ae58e7f2db9a6dfa2be5e155e40c7552997e844a4c3224c7f5"
+    },
+    "related.xml": {
+      "bytes": 48669,
+      "sha256": "228205e2ae3aeef2b7de981d1e347bb720630329dfaa496bafa7add1f0237bf7"
+    },
+    "review_counterexamples_original.py": {
+      "bytes": 5087,
+      "sha256": "415edd801fa5bc923119aa76a0790484916394d6e0a79ffb641f8c8ea81885fc"
+    },
+    "reviewer-final.log": {
+      "bytes": 98,
+      "sha256": "8afe2471606046b386cbefd7224d475f9d94ddb804d914ca3a5b3472c14d8f5c"
+    },
+    "reviewer-final.xml": {
+      "bytes": 407,
+      "sha256": "5074b91c10d0af611ce6c47c25bb6583f1b242f08aa1ce7d57f2436e51764b98"
+    },
+    "reviewer-fixed.log": {
+      "bytes": 98,
+      "sha256": "7ccf0fd814bf75a35db28acedc1714736804ec6b943ff25b8e07969d5631a02d"
+    },
+    "reviewer-fixed.xml": {
+      "bytes": 407,
+      "sha256": "1a46def1271c13ee81172180c99018aa953d860ea56ad0ac3d7e8c33642e587c"
+    },
+    "verification-generation.log": {
+      "bytes": 1443,
+      "sha256": "4c747b132ab3a55b1a857aeef531d6f4ad811c0119a1745ce5ef916c07666794"
+    },
+    "write_verification.py": {
+      "bytes": 5549,
+      "sha256": "e858685ef3da353f80e7d8965317346713195fc460d47621462618d45dd74880"
+    }
+  },
+  "tensorboard": "No new physical/training/evaluation result; no snapshot or viewer changes.",
+  "git_delivery": "Normal PR CI after push; keep draft, do not merge. See PR comment for final SHA and checks.",
+  "tmp_extraction_directories_created": []
+}

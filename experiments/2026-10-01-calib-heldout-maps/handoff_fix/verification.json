@@ -1,0 +1,69 @@
+{
+  "source_base": "fa2119ca6926a66a317a455701cbc389d7d3fb58",
+  "review_source": "3a6070b30dd3e2608b7ffb6cf6ad95d460452a6c",
+  "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "command_prefix": "PYTHONDONTWRITEBYTECODE=1 <python> experiments/2026-10-01-calib-heldout-maps/review_fixes/guarded_pytest.py -q -p no:cacheprovider",
+  "runs": [
+    {
+      "name": "before",
+      "tests": [
+        "tests/test_review_352.py::test_documented_direct_preview_actually_accepts_both_maps"
+      ],
+      "expected_failures": 2,
+      "purpose": "Reproduce R3 against unchanged PHYSICS_HANDOFF.md before the fix"
+    },
+    {
+      "name": "review",
+      "tests": [
+        "tests/test_review_352.py"
+      ],
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0,
+      "xfail": 0,
+      "command_suffix": " --junitxml=experiments/2026-10-01-calib-heldout-maps/handoff_fix/review.xml > experiments/2026-10-01-calib-heldout-maps/handoff_fix/review.log 2>&1"
+    },
+    {
+      "name": "related",
+      "tests": [
+        "tests/test_zone_final_pair_heldout.py",
+        "tests/test_zone_final_pair_v3.py",
+        "tests/test_zone_final_pair_review_fixes.py",
+        "tests/test_ci_sharding.py",
+        "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_catalog_has_thirty_selectable_workflows_and_distinct_adapters",
+        "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_every_catalog_workflow_has_a_read_only_explicit_plan",
+        "tests/test_simulation_workflow_manager.py::WorkflowManagerTests::test_plan_is_read_only_and_resolves_default_artifact"
+      ],
+      "passed": 182,
+      "failed": 0,
+      "skipped": 0,
+      "xfail": 0,
+      "command_suffix": " --junitxml=experiments/2026-10-01-calib-heldout-maps/handoff_fix/related.xml > experiments/2026-10-01-calib-heldout-maps/handoff_fix/related.log 2>&1"
+    }
+  ],
+  "scope": "Offline parser, plan, fake-backend and source preservation checks; no physics, rendering or model calls.",
+  "shared_outputs_access": "Denied by existing audit hook during all pytest runs; no intentional access.",
+  "frozen_fixtures": "3 present; scripts/check_ci_fixtures.py exit 0",
+  "extraction_directories_created": [],
+  "extraction_directories_remaining": [],
+  "pr_policy": "Keep draft; no merge; CI timeout belongs to PR #354",
+  "total_passed": 207,
+  "failed": 0,
+  "skipped": 0,
+  "xfail": 0,
+  "source_sha256": {
+    "PHYSICS_HANDOFF.md": "1d9bc3515239b48d69101a29163f365fde83e655412f539ed138c6d58da182fd",
+    "tests/test_review_352.py": "c54366b03508867786e54e5079e55e3e69b3bdcdf21f7f2b8fdf3e960837e0bd",
+    "experiments/2026-10-01-calib-heldout-maps/handoff_fix/verify_preservation.py": "0d9c521234a2ba4af78907d8a19eae1330e4262325b9328190bae4a62dc365de"
+  },
+  "evidence_sha256": {
+    "README.md": "b29bf1ec15c1dec489d86a74a379855c5d97e6c5bd79236090644292197bf507",
+    "before.log": "6d64c3cf5715a6b4e6ffc8eff6bfcf99504f5e5ecd2efbeab539e328f7eb182e",
+    "preservation.json": "3ba48a5d9e0d13283f10490735f026ea44599022ed7f6526c71d7878fa24eb43",
+    "related.log": "61b468706d4b86503cacdc0708f92131cd6f0ca791c874781c0de9d38bd03590",
+    "related.xml": "e3e63100f4c18a6957d9bb1ee4d36c68014267076b93d161211da3c21ca8ed27",
+    "review.log": "a391d3b7ac45e247439ee8cd17d59fff6cdb189a6f5158b4da1f3fcc830e00c6",
+    "review.xml": "66251e72a021d4ca39bab2ae900b6923ad9746641ffba9bda5958d4a8ad36e01",
+    "verify_preservation.py": "0d9c521234a2ba4af78907d8a19eae1330e4262325b9328190bae4a62dc365de"
+  }
+}

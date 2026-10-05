@@ -122,7 +122,7 @@ def test_speech_caps_are_registered_per_bundle_and_ad_hoc_limits_are_refused():
         llm.speech_caps('main_pilot_10_30', bundle_id='zone-study-integration-v69-multiturn-landmark-agnostic')
     with pytest.raises(ContractViolation, match='not registered in'):
         llm.speech_caps('v66_default', bundle_id='zone-study-integration-v99-unknown')
-    assert zi.EXECUTION_BUNDLE_ID == 'zone-pair-v81-carry-dr-general'   # b-v6g carry stage probe (v80 + opt-in b-v6g)
+    assert zi.EXECUTION_BUNDLE_ID == 'zone-pair-v83-carry-door-gain'   # b-v6h1 pre-seal candidate (v81 + five opt-in options)
     assert 'zone-study-integration-v69-multiturn-landmark-agnostic' in zi.RETIRED_BUNDLE_IDS
 
 
@@ -844,14 +844,13 @@ def test_p05_usage_agrees_from_raw_through_scheduler_and_result(tmp_path, usage,
         assert result.actions
 
 
-def test_p05_preserves_current_v6e_source_bytes():
-    """B1: driver usage handling must not rewrite any source pinned by current v6e."""
-    from scripts.zone_pair_v6_contract import PREREG_V6E
-    registration = json.loads(PREREG_V6E.read_bytes())
-    expected = registration['v6_contract']['source_sha256']
+def test_p05_preserves_historical_v6e_and_sealed_successor_source_bytes():
+    """B1: usage handling must preserve both versioned source receipts."""
+    from tests.v6h_successor_pins import successor_blob, successor_pins
+    expected = successor_pins()
     assert 'harness/zone_study_integration.py' in expected
     for path, sha in expected.items():
-        assert hashlib.sha256((llm.ROOT / path).read_bytes()).hexdigest() == sha, path
+        assert hashlib.sha256(successor_blob(path)).hexdigest() == sha, path
 
 
 def test_p05_callreply_readonly_usage_is_known():

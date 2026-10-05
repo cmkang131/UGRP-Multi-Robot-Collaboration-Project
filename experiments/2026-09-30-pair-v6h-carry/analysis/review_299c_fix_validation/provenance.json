@@ -1,0 +1,138 @@
+{
+  "base_head": "e85e00a213c52b06655a65162c80a55bc0684c3a",
+  "source_before": {
+    "experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3",
+    "experiments/2026-09-30-door-relax-envelope/analysis/chain_analysis.py": "62ff145d9016f61aa2f6f71d588ba7dab5b35d9aabb2b19ca15a934bafc0d2e5",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/check_299c_mutations.py": "17505edef5f2c51c28947cbeef5a088545bdefec4ee1c8cd11121b1392349913",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "03dad4ee901ccecbcc3df7daf650a2de05e0db44f648561f11cd2ba743e22000",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/recorder_v4c6b.py": "c7a120dc23e1d1368014cd50754fd25a89cbbb22ca1a56c1b13bdacfd0fbbe8e",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py": "e22ee8f93c21061aa4a0594350962caefba06d855fcc83f8c737d6e3bb8be403",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/verify_recorder_contract.py": "7a8f7c77ce1fa91ad8e5eaa5d74735e6ab88fd8860a19c1ddcb67e7aa831c412",
+    "harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+    "scripts/run_ci_tests.py": "f5ee7272b6914c53564f923dcb263ade1b7a47d59c28394705dc1e043c728dff",
+    "tests/fixtures/v6h_recorder_v4c6b/README.md": "c2aebaa68d19302f1bd2c514b69957aa62f787c26fac8ffec7488e15d3bd0379",
+    "tests/fixtures/v6h_recorder_v4c6b/case_00.json": "4d4f650b4617baeac0f4349011e20353c117ef9de8088519334e82a882e4afb0",
+    "tests/fixtures/v6h_recorder_v4c6b/case_01.json": "2b48617fea01470c65c06ef72ed8da13a0d32bcec46e33cc7947b96d6791acf0",
+    "tests/fixtures/v6h_recorder_v4c6b/case_02.json": "9e14250b8f9ca9fc7c9b9c00f038f54db57eadafa4e2c22b4a9a42ace93b5084",
+    "tests/fixtures/v6h_recorder_v4c6b/case_03.json": "8eac5721261c2bd7a7fc5ea2d7f8896870af1c634f689d7b8cb9ed659863adb9",
+    "tests/fixtures/v6h_recorder_v4c6b/case_04.json": "3bd3f9d7fc546d571f451377055c4d6e9202068ea30c2955d3dbb05616b088f2",
+    "tests/fixtures/v6h_recorder_v4c6b/case_05.json": "bfccfdf3d5cda2127abe8f38c9093985292c50ff88a3ca37941dda42162d2c23",
+    "tests/fixtures/v6h_recorder_v4c6b/case_06.json": "56588c31e3f8ae598196da78958d584953bbe0d7c64e74e0772a93b7eb0372f8",
+    "tests/fixtures/v6h_recorder_v4c6b/case_07.json": "6ad9a4b0b2449ce6a66059bc349638e75797d50318db2d6d87f03fa824a62be5",
+    "tests/fixtures/v6h_recorder_v4c6b/case_08.json": "a7310c01cf4c494d93665a37ef4aba7cef94f88e8e73ae7de6d172f11467c0d1",
+    "tests/fixtures/v6h_recorder_v4c6b/case_09.json": "17142a0c772cb3dcff06ecdca49d803a90862091d91d1dbf4c2e572f8ec99000",
+    "tests/fixtures/v6h_recorder_v4c6b/case_10.json": "ad5320f73344ca876dffaf19bc7f12e095fdc657c90eb7a33193f2d262f603bf",
+    "tests/fixtures/v6h_recorder_v4c6b/provenance.json": "178cdcc91877d47ae1f73b89ef5a6a6ca758c33130f7bb170b357ca323b70cd6",
+    "tests/test_b_v6h_gain.py": "ca0a7143901db334df61bda51e1b760708cd422f50899f723215fa64a99d61ce",
+    "tests/test_chain_analysis_hard_limit.py": "4e285e6abbd264c73f2f9c6339fb07de309b0fab652f7ee65aa9dc3f8785647a",
+    "tests/test_ci_sharding.py": "7ce9a79d7bf9cb413169cdf9239014873ba5474b81e2485c8384e0e6ff9cbcca",
+    "tests/test_classify_review_299.py": "4cff2297f428d3735c373d395791275645df8dbe2bff406523325ea43e65647f",
+    "tests/test_classify_review_299b.py": "6ace1e5298a629e22fee7701e68a188c9826be6e0bccef7c261f62d95dd0ddb3",
+    "tests/test_classify_review_299c.py": "c0d862485b5d059dce109e424ef1f9bb4e36be6f0dc0a4f9969287dd7d599cb8",
+    "tests/test_pair_chain_probe.py": "10d9b3963cfc5c295b395670baf105b13542649e523dd6dcb7f6733d601170f6",
+    "tests/test_v6h_classifier_properties.py": "cf0718a9bf74008a81fd0ddf1cdfc84bbd4123a4099ec4357e80b4d6a04c6b97",
+    "tests/test_v6h_classify_placements.py": "7e6453cb08413f90567c9f0a0fa40ebd3b0fcfb2796763971f43494fe2fa4054",
+    "tests/test_v6h_recorder_contract.py": "d8aceed981172e91874d48cdafa6013b0f2fd71343c1bccdf967ef30e31e0282"
+  },
+  "source_after": {
+    "experiments/2026-09-30-b-v6h-gain/analysis/gain_cohort_analysis.py": "4d9faf976469ccac7f4fec0df9fcde810e7101909a804952d8fb2ba162a57df3",
+    "experiments/2026-09-30-door-relax-envelope/analysis/chain_analysis.py": "62ff145d9016f61aa2f6f71d588ba7dab5b35d9aabb2b19ca15a934bafc0d2e5",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/check_299c_mutations.py": "17505edef5f2c51c28947cbeef5a088545bdefec4ee1c8cd11121b1392349913",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/classify_placements.py": "03dad4ee901ccecbcc3df7daf650a2de05e0db44f648561f11cd2ba743e22000",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/recorder_v4c6b.py": "c7a120dc23e1d1368014cd50754fd25a89cbbb22ca1a56c1b13bdacfd0fbbe8e",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py": "e22ee8f93c21061aa4a0594350962caefba06d855fcc83f8c737d6e3bb8be403",
+    "experiments/2026-09-30-pair-v6h-carry/analysis/verify_recorder_contract.py": "7a8f7c77ce1fa91ad8e5eaa5d74735e6ab88fd8860a19c1ddcb67e7aa831c412",
+    "harness/pair_chain_probe.py": "2b3082da0b97da2db0ddf1f06b3478b550853489d90c5400f9acc936358c59d4",
+    "scripts/run_ci_tests.py": "f5ee7272b6914c53564f923dcb263ade1b7a47d59c28394705dc1e043c728dff",
+    "tests/fixtures/v6h_recorder_v4c6b/README.md": "c2aebaa68d19302f1bd2c514b69957aa62f787c26fac8ffec7488e15d3bd0379",
+    "tests/fixtures/v6h_recorder_v4c6b/case_00.json": "4d4f650b4617baeac0f4349011e20353c117ef9de8088519334e82a882e4afb0",
+    "tests/fixtures/v6h_recorder_v4c6b/case_01.json": "2b48617fea01470c65c06ef72ed8da13a0d32bcec46e33cc7947b96d6791acf0",
+    "tests/fixtures/v6h_recorder_v4c6b/case_02.json": "9e14250b8f9ca9fc7c9b9c00f038f54db57eadafa4e2c22b4a9a42ace93b5084",
+    "tests/fixtures/v6h_recorder_v4c6b/case_03.json": "8eac5721261c2bd7a7fc5ea2d7f8896870af1c634f689d7b8cb9ed659863adb9",
+    "tests/fixtures/v6h_recorder_v4c6b/case_04.json": "3bd3f9d7fc546d571f451377055c4d6e9202068ea30c2955d3dbb05616b088f2",
+    "tests/fixtures/v6h_recorder_v4c6b/case_05.json": "bfccfdf3d5cda2127abe8f38c9093985292c50ff88a3ca37941dda42162d2c23",
+    "tests/fixtures/v6h_recorder_v4c6b/case_06.json": "56588c31e3f8ae598196da78958d584953bbe0d7c64e74e0772a93b7eb0372f8",
+    "tests/fixtures/v6h_recorder_v4c6b/case_07.json": "6ad9a4b0b2449ce6a66059bc349638e75797d50318db2d6d87f03fa824a62be5",
+    "tests/fixtures/v6h_recorder_v4c6b/case_08.json": "a7310c01cf4c494d93665a37ef4aba7cef94f88e8e73ae7de6d172f11467c0d1",
+    "tests/fixtures/v6h_recorder_v4c6b/case_09.json": "17142a0c772cb3dcff06ecdca49d803a90862091d91d1dbf4c2e572f8ec99000",
+    "tests/fixtures/v6h_recorder_v4c6b/case_10.json": "ad5320f73344ca876dffaf19bc7f12e095fdc657c90eb7a33193f2d262f603bf",
+    "tests/fixtures/v6h_recorder_v4c6b/provenance.json": "178cdcc91877d47ae1f73b89ef5a6a6ca758c33130f7bb170b357ca323b70cd6",
+    "tests/test_b_v6h_gain.py": "ca0a7143901db334df61bda51e1b760708cd422f50899f723215fa64a99d61ce",
+    "tests/test_chain_analysis_hard_limit.py": "4e285e6abbd264c73f2f9c6339fb07de309b0fab652f7ee65aa9dc3f8785647a",
+    "tests/test_ci_sharding.py": "7ce9a79d7bf9cb413169cdf9239014873ba5474b81e2485c8384e0e6ff9cbcca",
+    "tests/test_classify_review_299.py": "4cff2297f428d3735c373d395791275645df8dbe2bff406523325ea43e65647f",
+    "tests/test_classify_review_299b.py": "6ace1e5298a629e22fee7701e68a188c9826be6e0bccef7c261f62d95dd0ddb3",
+    "tests/test_classify_review_299c.py": "c0d862485b5d059dce109e424ef1f9bb4e36be6f0dc0a4f9969287dd7d599cb8",
+    "tests/test_pair_chain_probe.py": "10d9b3963cfc5c295b395670baf105b13542649e523dd6dcb7f6733d601170f6",
+    "tests/test_v6h_classifier_properties.py": "cf0718a9bf74008a81fd0ddf1cdfc84bbd4123a4099ec4357e80b4d6a04c6b97",
+    "tests/test_v6h_classify_placements.py": "7e6453cb08413f90567c9f0a0fa40ebd3b0fcfb2796763971f43494fe2fa4054",
+    "tests/test_v6h_recorder_contract.py": "d8aceed981172e91874d48cdafa6013b0f2fd71343c1bccdf967ef30e31e0282"
+  },
+  "source_unchanged": true,
+  "commands": [
+    {
+      "name": "related_tests",
+      "argv": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_v6h_classify_placements.py",
+        "tests/test_classify_review_299.py",
+        "tests/test_classify_review_299b.py",
+        "tests/test_classify_review_299c.py",
+        "tests/test_v6h_recorder_contract.py",
+        "tests/test_v6h_classifier_properties.py",
+        "tests/test_ci_sharding.py",
+        "tests/test_chain_analysis_hard_limit.py",
+        "tests/test_pair_chain_probe.py",
+        "tests/test_b_v6h_gain.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 649.426
+    },
+    {
+      "name": "acceptance",
+      "argv": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-09-30-pair-v6h-carry/analysis/verify_recorder_contract.py",
+        "--output",
+        "/Users/changmin/projects/ugrp/outputs/v6h-classifier-299c-fix/final-v4/acceptance.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.75
+    },
+    {
+      "name": "mutations",
+      "argv": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-09-30-pair-v6h-carry/analysis/check_299c_mutations.py",
+        "--output",
+        "/Users/changmin/projects/ugrp/outputs/v6h-classifier-299c-fix/final-v4/mutations.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.043
+    },
+    {
+      "name": "published",
+      "argv": [
+        "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+        "experiments/2026-09-30-pair-v6h-carry/analysis/revalidate_published.py",
+        "--output",
+        "/Users/changmin/projects/ugrp/outputs/v6h-classifier-299c-fix/final-v4/published"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.749
+    }
+  ],
+  "python": "Python 3.12.13",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1"
+  },
+  "scope": "Offline JSON/numeric tests only. No physics/render/models/blinded raw."
+}

@@ -1,0 +1,523 @@
+offline-regression-shard (6/8)	UNKNOWN STEP	﻿2026-10-02T18:28:26.6150804Z Current runner version: '2.337.0'
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6187316Z ##[group]Runner Image Provisioner
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6188621Z Hosted Compute Agent
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6189645Z Version: 20260901.588
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6190691Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6191980Z Build Date: 2026-09-01T19:56:44Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6193679Z Worker ID: {c08e4508-6416-49b4-a50b-1da531ffbaa1}
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6194967Z Azure Region: eastus
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6196017Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6198292Z ##[group]Operating System
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6199369Z Ubuntu
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6200324Z 24.04.5
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6201126Z LTS
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6202014Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6202970Z ##[group]Runner Image
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6204502Z Image: ubuntu-24.04
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6205623Z Version: 20260927.320.1
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6207831Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260927.320/images/ubuntu/Ubuntu2404-Readme.md
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6210638Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260927.320
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6212466Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6214699Z ##[group]GITHUB_TOKEN Permissions
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6217571Z Contents: read
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6218519Z Metadata: read
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6219444Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6222577Z Secret source: Actions
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6224430Z Cache mode: write
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6225651Z Prepare workflow directory
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6807195Z Prepare all required actions
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.6880359Z Getting action download info
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:26.9364834Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.0519250Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.2792502Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.4823086Z Complete job name: offline-regression-shard (6/8)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5611212Z ##[group]Run actions/checkout@v4
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5612148Z with:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5612570Z   fetch-depth: 0
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5613169Z   repository: cmkang131/UGRP-Multi-Robot-Collaboration-Project
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5617659Z   token: ***
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5618095Z   ssh-strict: true
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5618574Z   ssh-user: git
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5619021Z   persist-credentials: true
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5619559Z   clean: true
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5620003Z   sparse-checkout-cone-mode: true
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5620518Z   fetch-tags: false
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5620957Z   show-progress: true
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5621410Z   lfs: false
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5621834Z   submodules: false
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5622285Z   set-safe-directory: true
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5622797Z   allow-unsafe-pr-checkout: false
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5623813Z env:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5624535Z   APT_RENDER_PACKAGES: libosmesa6 libgl1 libglfw3 xvfb xauth ffmpeg fonts-noto-cjk
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5625393Z   OMP_NUM_THREADS: 2
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.5625851Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.6774010Z Syncing repository: cmkang131/UGRP-Multi-Robot-Collaboration-Project
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.6776965Z ##[group]Getting Git version info
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.6778819Z Working directory is '/home/runner/work/UGRP-Multi-Robot-Collaboration-Project/UGRP-Multi-Robot-Collaboration-Project'
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.6781201Z [command]/usr/bin/git version
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.6895308Z git version 2.55.0
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.6898162Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.6916307Z Temporarily overriding HOME='/home/runner/work/_temp/de918744-70ef-4ef7-8a3e-9d70738c702a' before making global git config changes
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.6918596Z Adding repository directory to the temporary git global config as a safe directory
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.6922003Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/UGRP-Multi-Robot-Collaboration-Project/UGRP-Multi-Robot-Collaboration-Project
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.6980878Z Deleting the contents of '/home/runner/work/UGRP-Multi-Robot-Collaboration-Project/UGRP-Multi-Robot-Collaboration-Project'
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7004921Z ##[group]Initializing the repository
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7006911Z [command]/usr/bin/git init /home/runner/work/UGRP-Multi-Robot-Collaboration-Project/UGRP-Multi-Robot-Collaboration-Project
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7105383Z hint: Using 'master' as the name for the initial branch. This default branch name
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7107349Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7113933Z hint: to use in all of your new repositories, which will suppress this warning,
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7115999Z hint: call:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7117059Z hint:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7118330Z hint: 	git config --global init.defaultBranch <name>
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7119723Z hint:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7120927Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7122736Z hint: 'development'. The just-created branch can be renamed via this command:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7124601Z hint:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7125586Z hint: 	git branch -m <name>
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7126644Z hint:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7128058Z hint: Disable this message with "git config set advice.defaultBranchName false"
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7131106Z Initialized empty Git repository in /home/runner/work/UGRP-Multi-Robot-Collaboration-Project/UGRP-Multi-Robot-Collaboration-Project/.git/
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7135651Z [command]/usr/bin/git remote add origin https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7183087Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7184638Z ##[group]Disabling automatic garbage collection
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7188159Z [command]/usr/bin/git config --local gc.auto 0
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7231156Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7231895Z ##[group]Setting up auth
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7232647Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7270518Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7639044Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7681823Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7917751Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.7956989Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.8187588Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.8234812Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.8235897Z ##[group]Fetching the repository
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:27.8245805Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +2919e4503e3d3042acf527379953a3fce6d0db66:refs/remotes/pull/356/merge
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1097574Z From https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1100068Z  * [new branch]        claude/archive-v6c-fixtest-0929          -> origin/claude/archive-v6c-fixtest-0929
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1102501Z  * [new branch]        claude/busy-pasteur-lioq74               -> origin/claude/busy-pasteur-lioq74
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1105378Z  * [new branch]        claude/claude-md-reference-first         -> origin/claude/claude-md-reference-first
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1107429Z  * [new branch]        claude/frame-storage-policy              -> origin/claude/frame-storage-policy
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1109553Z  * [new branch]        claude/team-recovery-longer-backoff      -> origin/claude/team-recovery-longer-backoff
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1112025Z  * [new branch]        claude/v6h1-acceptance-run               -> origin/claude/v6h1-acceptance-run
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1114253Z  * [new branch]        claude/v6h1-confirm-run                  -> origin/claude/v6h1-confirm-run
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1116185Z  * [new branch]        claude/zone-dispatch-validation          -> origin/claude/zone-dispatch-validation
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1118149Z  * [new branch]        claude/zone-team-a2-dev                  -> origin/claude/zone-team-a2-dev
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1120087Z  * [new branch]        codex/act-render-speed                   -> origin/codex/act-render-speed
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1121919Z  * [new branch]        codex/advanced-rgb-clock-validation      -> origin/codex/advanced-rgb-clock-validation
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1124097Z  * [new branch]        codex/advanced-rgb-validation            -> origin/codex/advanced-rgb-validation
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1126022Z  * [new branch]        codex/archive-a3-fresh-audit-755dca3-0926 -> origin/codex/archive-a3-fresh-audit-755dca3-0926
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1128169Z  * [new branch]        codex/archive-a3-fresh-audit-de69eb3-0926 -> origin/codex/archive-a3-fresh-audit-de69eb3-0926
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1129946Z  * [new branch]        codex/archive-communication-observer-0926 -> origin/codex/archive-communication-observer-0926
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1131243Z  * [new branch]        codex/archive-dispatch-process-perception-0926 -> origin/codex/archive-dispatch-process-perception-0926
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1132550Z  * [new branch]        codex/archive-dispatch-top-pipeline-0926 -> origin/codex/archive-dispatch-top-pipeline-0926
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1134329Z  * [new branch]        codex/archive-pr137-main-integration-0926 -> origin/codex/archive-pr137-main-integration-0926
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1136168Z  * [new branch]        codex/archive-realtime-owner-commit-0926 -> origin/codex/archive-realtime-owner-commit-0926
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1138236Z  * [new branch]        codex/archive-realtime-stage-continuity-0926 -> origin/codex/archive-realtime-stage-continuity-0926
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1140098Z  * [new branch]        codex/archive-rgb-common-physical-recovery-0926 -> origin/codex/archive-rgb-common-physical-recovery-0926
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1141508Z  * [new branch]        codex/critb-v91                          -> origin/codex/critb-v91
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1142918Z  * [new branch]        codex/d3-local-validation                -> origin/codex/d3-local-validation
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1144705Z  * [new branch]        codex/direct-gemini-api-key              -> origin/codex/direct-gemini-api-key
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1146260Z  * [new branch]        codex/dispatch-adaptive-recovery         -> origin/codex/dispatch-adaptive-recovery
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1147709Z  * [new branch]        codex/integ-target-backend               -> origin/codex/integ-target-backend
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1149165Z  * [new branch]        codex/local-gemini-proxy                 -> origin/codex/local-gemini-proxy
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1150664Z  * [new branch]        codex/outputs-retention                  -> origin/codex/outputs-retention
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1152382Z  * [new branch]        codex/pair-grasp-endurance               -> origin/codex/pair-grasp-endurance
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1154070Z  * [new branch]        codex/pair-grasp-spacing                 -> origin/codex/pair-grasp-spacing
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1155585Z  * [new branch]        codex/pair-loaded-navigation             -> origin/codex/pair-loaded-navigation
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1157083Z  * [new branch]        codex/pair-terrain-examples              -> origin/codex/pair-terrain-examples
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1158593Z  * [new branch]        codex/pair-transport-robustness          -> origin/codex/pair-transport-robustness
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1160081Z  * [new branch]        codex/pair-vision-recovery               -> origin/codex/pair-vision-recovery
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1161585Z  * [new branch]        codex/repository-organization            -> origin/codex/repository-organization
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1163147Z  * [new branch]        codex/review-292                         -> origin/codex/review-292
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1165006Z  * [new branch]        codex/review-292b                        -> origin/codex/review-292b
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1166619Z  * [new branch]        codex/review-293-294                     -> origin/codex/review-293-294
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1167951Z  * [new branch]        codex/review-299                         -> origin/codex/review-299
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1169295Z  * [new branch]        codex/review-299b                        -> origin/codex/review-299b
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1170615Z  * [new branch]        codex/review-299c                        -> origin/codex/review-299c
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1171948Z  * [new branch]        codex/review-299d                        -> origin/codex/review-299d
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1173446Z  * [new branch]        codex/review-301                         -> origin/codex/review-301
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1174894Z  * [new branch]        codex/review-301b                        -> origin/codex/review-301b
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1176210Z  * [new branch]        codex/review-301c                        -> origin/codex/review-301c
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1177524Z  * [new branch]        codex/review-301d                        -> origin/codex/review-301d
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1178882Z  * [new branch]        codex/review-303c                        -> origin/codex/review-303c
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1180211Z  * [new branch]        codex/review-303d                        -> origin/codex/review-303d
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1181509Z  * [new branch]        codex/review-303e                        -> origin/codex/review-303e
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1182824Z  * [new branch]        codex/review-303f                        -> origin/codex/review-303f
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1184269Z  * [new branch]        codex/review-323b                        -> origin/codex/review-323b
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1185399Z  * [new branch]        codex/review-325b                        -> origin/codex/review-325b
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1186940Z  * [new branch]        codex/review-342                         -> origin/codex/review-342
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1188171Z  * [new branch]        codex/review-344                         -> origin/codex/review-344
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1189007Z  * [new branch]        codex/review-346                         -> origin/codex/review-346
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1259687Z  * [new branch]        codex/review-347                         -> origin/codex/review-347
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1261274Z  * [new branch]        codex/review-351                         -> origin/codex/review-351
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1262108Z  * [new branch]        codex/review-352                         -> origin/codex/review-352
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1262794Z  * [new branch]        codex/review-355                         -> origin/codex/review-355
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1263847Z  * [new branch]        codex/review-e2e-batch-g                 -> origin/codex/review-e2e-batch-g
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1264727Z  * [new branch]        codex/review-e2e-batch-h                 -> origin/codex/review-e2e-batch-h
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1266261Z  * [new branch]        codex/review-e2e-batch-i                 -> origin/codex/review-e2e-batch-i
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1267515Z  * [new branch]        codex/review-e2e-batch-j                 -> origin/codex/review-e2e-batch-j
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1268640Z  * [new branch]        codex/review-e2e-batch-k                 -> origin/codex/review-e2e-batch-k
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1269849Z  * [new branch]        codex/review-fixes-1                     -> origin/codex/review-fixes-1
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1270999Z  * [new branch]        codex/review-fixes-2                     -> origin/codex/review-fixes-2
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1272168Z  * [new branch]        codex/review-retention                   -> origin/codex/review-retention
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1273895Z  * [new branch]        codex/review-seal-v6h1                   -> origin/codex/review-seal-v6h1
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1275702Z  * [new branch]        codex/rgb-common-physical-recovery       -> origin/codex/rgb-common-physical-recovery
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1277354Z  * [new branch]        codex/rgb-varied-start-tolerance         -> origin/codex/rgb-varied-start-tolerance
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1278758Z  * [new branch]        codex/stall-d1-prereg                    -> origin/codex/stall-d1-prereg
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1280005Z  * [new branch]        codex/v6h1-acceptance                    -> origin/codex/v6h1-acceptance
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1281104Z  * [new branch]        main                                     -> origin/main
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1282168Z  * [new tag]           experiment/markerless-n7-20260909        -> experiment/markerless-n7-20260909
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1283672Z  * [new tag]           models-20260923-v1                       -> models-20260923-v1
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1284901Z  * [new tag]           models-20260924-action-act-v1            -> models-20260924-action-act-v1
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1286180Z  * [new tag]           models-20260927-vision-loc-v1            -> models-20260927-vision-loc-v1
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1287380Z  * [new ref]           2919e4503e3d3042acf527379953a3fce6d0db66 -> pull/356/merge
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1289534Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1290455Z ##[group]Determining the checkout info
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1291493Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1292150Z [command]/usr/bin/git sparse-checkout disable
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1294325Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1295852Z ##[group]Checking out the ref
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:43.1296389Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/356/merge
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.1826512Z Updating files:   9% (842/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.1874637Z Updating files:  10% (920/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.1964793Z Updating files:  11% (1012/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.2010568Z Updating files:  12% (1104/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.2061790Z Updating files:  13% (1196/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.2176669Z Updating files:  14% (1288/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.2238620Z Updating files:  15% (1380/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.2296704Z Updating files:  16% (1472/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.5564185Z Updating files:  17% (1564/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.6190309Z Updating files:  18% (1656/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.6373811Z Updating files:  19% (1748/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.6701744Z Updating files:  20% (1840/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.7057936Z Updating files:  21% (1932/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.7342271Z Updating files:  22% (2024/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.7723834Z Updating files:  23% (2116/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.8004974Z Updating files:  24% (2208/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.8193168Z Updating files:  25% (2300/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.8711853Z Updating files:  26% (2392/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.9166795Z Updating files:  27% (2484/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.9274507Z Updating files:  28% (2576/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.9341397Z Updating files:  29% (2668/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.9487872Z Updating files:  30% (2760/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.9660347Z Updating files:  31% (2852/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.9769854Z Updating files:  32% (2944/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:44.9884090Z Updating files:  33% (3036/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.0194571Z Updating files:  34% (3128/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.0275555Z Updating files:  35% (3220/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.0359475Z Updating files:  36% (3312/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.0462078Z Updating files:  37% (3404/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.0742034Z Updating files:  38% (3496/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.1039179Z Updating files:  39% (3588/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.1252887Z Updating files:  40% (3680/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.1309667Z Updating files:  41% (3772/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.1389308Z Updating files:  42% (3864/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.1426339Z Updating files:  42% (3932/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.1501368Z Updating files:  43% (3956/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.1590342Z Updating files:  44% (4048/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.1698487Z Updating files:  45% (4140/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.1768792Z Updating files:  46% (4232/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.1861278Z Updating files:  47% (4324/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.1996284Z Updating files:  48% (4416/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.2134627Z Updating files:  49% (4508/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.2203271Z Updating files:  50% (4600/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.2270167Z Updating files:  51% (4692/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.2385200Z Updating files:  52% (4784/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.2483915Z Updating files:  53% (4876/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.2580226Z Updating files:  54% (4968/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.2652612Z Updating files:  55% (5060/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.2779346Z Updating files:  56% (5152/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.2858878Z Updating files:  57% (5244/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.2927679Z Updating files:  58% (5336/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.2993897Z Updating files:  59% (5428/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.3112303Z Updating files:  60% (5520/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.3187058Z Updating files:  61% (5612/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.3270819Z Updating files:  62% (5704/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.3334663Z Updating files:  63% (5796/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.3391255Z Updating files:  64% (5888/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.3538346Z Updating files:  65% (5980/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.3606053Z Updating files:  66% (6072/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.3686052Z Updating files:  67% (6164/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.3797338Z Updating files:  68% (6256/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.3878661Z Updating files:  69% (6348/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.4837644Z Updating files:  70% (6440/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.5494606Z Updating files:  71% (6532/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.5787159Z Updating files:  72% (6624/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.6578099Z Updating files:  73% (6716/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.6659649Z Updating files:  74% (6808/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.6739556Z Updating files:  75% (6900/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.6836859Z Updating files:  76% (6992/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.6934365Z Updating files:  77% (7084/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.7002223Z Updating files:  78% (7176/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.7065802Z Updating files:  79% (7268/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.7151078Z Updating files:  80% (7360/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.7233256Z Updating files:  81% (7452/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.7325666Z Updating files:  82% (7544/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.7410750Z Updating files:  83% (7636/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.7529125Z Updating files:  84% (7728/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.7730522Z Updating files:  85% (7820/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.7985138Z Updating files:  86% (7912/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.8169319Z Updating files:  87% (8004/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.8244293Z Updating files:  88% (8096/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.8337833Z Updating files:  89% (8188/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.8480216Z Updating files:  90% (8280/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.8710897Z Updating files:  91% (8372/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.8825386Z Updating files:  92% (8464/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.8889585Z Updating files:  93% (8556/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.8958216Z Updating files:  94% (8648/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9029535Z Updating files:  95% (8740/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9099098Z Updating files:  96% (8832/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9179209Z Updating files:  97% (8924/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9261301Z Updating files:  98% (9016/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9356645Z Updating files:  99% (9108/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9357473Z Updating files: 100% (9199/9199)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9357938Z Updating files: 100% (9199/9199), done.
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9455789Z Note: switching to 'refs/remotes/pull/356/merge'.
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9456210Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9456553Z You are in 'detached HEAD' state. You can look around, make experimental
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9457259Z changes and commit them, and you can discard any commits you make in this
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9457820Z state without impacting any branches by switching back to a branch.
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9458102Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9458301Z If you want to create a new branch to retain commits you create, you may
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9458753Z do so (now or later) by using -c with the switch command. Example:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9459335Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9459455Z   git switch -c <new-branch-name>
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9459633Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9459731Z Or undo this operation with:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9459891Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9459973Z   git switch -
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9460100Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9460320Z Turn off this advice by setting config variable advice.detachedHead to false
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9460628Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9460991Z HEAD is now at 2919e450 Merge 1dd9f0e7d0dcf1864cbe6b23dee76b99af1335cf into 0bf41800272ec4c4bfa035cfc5609af8850e3e48
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9615939Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9671019Z [command]/usr/bin/git log -1 --format=%H
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9700465Z 2919e4503e3d3042acf527379953a3fce6d0db66
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9967855Z ##[group]Run actions/setup-python@v5
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9968175Z with:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9968382Z   python-version: 3.12
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9968608Z   cache: pip
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9968848Z   cache-dependency-path: requirements-test.txt
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9969178Z   check-latest: false
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9971932Z   token: ***
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9972159Z   update-environment: true
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9972412Z   allow-prereleases: false
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9972647Z   freethreaded: false
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9972857Z env:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9973186Z   APT_RENDER_PACKAGES: libosmesa6 libgl1 libglfw3 xvfb xauth ffmpeg fonts-noto-cjk
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9973787Z   OMP_NUM_THREADS: 2
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:45.9973998Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:46.1338740Z ##[group]Installed versions
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:46.1426524Z (node:2331) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:46.1428047Z (Use `node --trace-deprecation ...` to show where the warning was created)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:46.1428655Z Successfully set up CPython (3.12.14)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:46.1429332Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:46.1756030Z [command]/opt/hostedtoolcache/Python/3.12.14/x64/bin/pip cache dir
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:46.4916393Z /home/runner/.cache/pip
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:46.5807902Z Cache hit for: setup-python-Linux-x64-24.04-Ubuntu-python-3.12.14-pip-3f6a490f64c3edd5868c0c91549f1bffb9e8a1f4a11c7af92bab11a55adf446e
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:46.5921416Z (node:2331) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:47.6277319Z Received 222298112 of 464075556 (47.9%), 210.1 MBs/sec
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:48.5099056Z Received 464075556 of 464075556 (100.0%), 234.0 MBs/sec
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:48.5100421Z Cache Size: ~443 MB (464075556 B)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:48.5224658Z [command]/usr/bin/tar -xf /home/runner/work/_temp/7dbc153b-983d-4464-903b-38fb401b0a81/cache.tzst -P -C /home/runner/work/UGRP-Multi-Robot-Collaboration-Project/UGRP-Multi-Robot-Collaboration-Project --use-compress-program unzstd
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.1214202Z Cache restored successfully
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.1417700Z Cache restored from key: setup-python-Linux-x64-24.04-Ubuntu-python-3.12.14-pip-3f6a490f64c3edd5868c0c91549f1bffb9e8a1f4a11c7af92bab11a55adf446e
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5343131Z ##[group]Run python -m pip install --requirement requirements-test.txt
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5344300Z ^[[36;1mpython -m pip install --requirement requirements-test.txt^[[0m
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5628818Z shell: /usr/bin/bash -e {0}
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5629225Z env:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5629787Z   APT_RENDER_PACKAGES: libosmesa6 libgl1 libglfw3 xvfb xauth ffmpeg fonts-noto-cjk
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5630473Z   OMP_NUM_THREADS: 2
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5630933Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5631647Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5632338Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5632959Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5633875Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5634729Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:49.5635302Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:50.6962097Z Collecting numpy==2.5.2 (from -r requirements-test.txt (line 3))
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:50.6978593Z   Using cached numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:50.8124789Z Collecting scipy==1.17.1 (from -r requirements-test.txt (line 4))
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:50.8140022Z   Using cached scipy-1.17.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:50.8729377Z Collecting opencv-python-headless==5.0.0.93 (from -r requirements-test.txt (line 5))
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:50.8743264Z   Using cached opencv_python_headless-5.0.0.93-cp37-abi3-manylinux_2_28_x86_64.whl.metadata (19 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:50.8967649Z Collecting pytest==9.1.1 (from -r requirements-test.txt (line 6))
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:50.8980945Z   Using cached pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.0539899Z Collecting pillow==12.3.0 (from -r requirements-test.txt (line 7))
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.0554415Z   Using cached pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (9.1 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.0712511Z Collecting iniconfig>=1.0.1 (from pytest==9.1.1->-r requirements-test.txt (line 6))
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.0725247Z   Using cached iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.0848679Z Collecting packaging>=22 (from pytest==9.1.1->-r requirements-test.txt (line 6))
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.0860982Z   Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.0958560Z Collecting pluggy<2,>=1.5 (from pytest==9.1.1->-r requirements-test.txt (line 6))
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.0971180Z   Using cached pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.1120949Z Collecting pygments>=2.7.2 (from pytest==9.1.1->-r requirements-test.txt (line 6))
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.1133361Z   Using cached pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.1174387Z Using cached numpy-2.5.2-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.1250983Z Using cached scipy-1.17.1-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.2 MB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.1393204Z Using cached opencv_python_headless-5.0.0.93-cp37-abi3-manylinux_2_28_x86_64.whl (61.2 MB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.1630868Z Using cached pytest-9.1.1-py3-none-any.whl (386 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.1643951Z Using cached pillow-12.3.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (6.9 MB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.1682073Z Using cached pluggy-1.6.0-py3-none-any.whl (20 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.1693385Z Using cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.1705124Z Using cached packaging-26.3-py3-none-any.whl (129 kB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.1717575Z Using cached pygments-2.21.0-py3-none-any.whl (1.3 MB)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:51.3804679Z Installing collected packages: pygments, pluggy, pillow, packaging, numpy, iniconfig, scipy, pytest, opencv-python-headless
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.7453738Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.7471460Z Successfully installed iniconfig-2.3.0 numpy-2.5.2 opencv-python-headless-5.0.0.93 packaging-26.3 pillow-12.3.0 pluggy-1.6.0 pygments-2.21.0 pytest-9.1.1 scipy-1.17.1
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8217865Z ##[group]Run python scripts/run_ci_tests.py --shard-index 6 --shard-count 8 --durations-json configs/ci_test_durations.json --junitxml outputs/ci-offline/shard-6.xml
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8219154Z ^[[36;1mpython scripts/run_ci_tests.py --shard-index 6 --shard-count 8 --durations-json configs/ci_test_durations.json --junitxml outputs/ci-offline/shard-6.xml^[[0m
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8285215Z shell: /usr/bin/bash -e {0}
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8285519Z env:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8285935Z   APT_RENDER_PACKAGES: libosmesa6 libgl1 libglfw3 xvfb xauth ffmpeg fonts-noto-cjk
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8286466Z   OMP_NUM_THREADS: 2
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8286820Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8287540Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8288065Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8288538Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8289045Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8289523Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:28:59.8289929Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:29:00.1514688Z Running 48 offline test modules (shard 6/8)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:29:11.1859381Z .....................F.................................................. [  6%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:29:12.0404714Z ......................................................... [ 10%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:29:19.1375404Z ........................................................................ [ 16%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:31:04.9425239Z ........................................................................ [ 22%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:31:49.6792655Z .................................................................................................................. [ 32%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:32:04.5208817Z .................................................... [ 36%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:32:41.0025752Z ........................ss.............................................. [ 42%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:32:45.8207686Z ......................................................................ss [ 48%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:34:18.6716968Z ss................................................................... [ 54%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:34:42.6515510Z ........................................................................ [ 60%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:35:00.4327749Z ................................................................sss.s... [ 66%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:37:36.6719661Z ........................................................................ [ 72%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:40:26.3132055Z ........................................................................ [ 78%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:40:34.5058938Z ........................................................................ [ 84%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:40:39.4816256Z ........................................................................ [ 90%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:03.8203703Z ........................................................................ [ 96%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6302101Z ......................................                                   [100%]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6306765Z =================================== FAILURES ===================================
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6307633Z ________________ test_concurrent_admissions_cannot_both_succeed ________________
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6308197Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6308619Z tmp_path = PosixPath('/tmp/pytest-of-runner/pytest-0/test_concurrent_admissions_can0')
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6309261Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6309551Z     def test_concurrent_admissions_cannot_both_succeed(tmp_path):
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6310163Z         barrier = threading.Barrier(2)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6310611Z         def attempt(fn):
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6311018Z             barrier.wait()
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6311383Z             try:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6311725Z                 fn(tmp_path)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6312102Z                 return True
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6312477Z             except RuntimeError:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6313600Z                 return False
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6314058Z         with ThreadPoolExecutor(2) as pool:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6314612Z             futures = [pool.submit(attempt, fn) for fn in (physics, slot)]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6315208Z >           assert sum(f.result() for f in futures) == 1
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6315681Z                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6315977Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6316139Z tests/test_agent_sim_slots.py:76:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6316617Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6317155Z tests/test_agent_sim_slots.py:76: in <genexpr>
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6317635Z     assert sum(f.result() for f in futures) == 1
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6318341Z                ^^^^^^^^^^
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6318961Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/concurrent/futures/_base.py:449: in result
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6319648Z     return self.__get_result()
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6319991Z            ^^^^^^^^^^^^^^^^^^^
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6320632Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/concurrent/futures/_base.py:401: in __get_result
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6321347Z     raise self._exception
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6321934Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/concurrent/futures/thread.py:59: in run
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6322633Z     result = self.fn(*self.args, **self.kwargs)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6323068Z              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6323703Z tests/test_agent_sim_slots.py:70: in attempt
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6324107Z     fn(tmp_path)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6324427Z tests/test_agent_sim_slots.py:14: in slot
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6325003Z     return lock.acquire_sim_slot(root, slot=name, owner='codex', branch=branch,
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6325671Z scripts/agent_sim_slots.py:104: in acquire_sim_slot
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6326171Z     held = _require_physics(root, owner, pid)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6326610Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6327069Z scripts/agent_sim_slots.py:72: in _require_physics
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6327534Z     held = legacy.status(root)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6327887Z            ^^^^^^^^^^^^^^^^^^^
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6328267Z scripts/agent_lock.py:39: in status
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6328686Z     owner = json.loads(path.read_text())
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6329092Z             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6329669Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/__init__.py:346: in loads
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6330285Z     return _default_decoder.decode(s)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6330670Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6331234Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py:338: in decode
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6331901Z     obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6332336Z                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6332810Z _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6333170Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6333650Z self = <json.decoder.JSONDecoder object at 0x7f541b581760>, s = '', idx = 0
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6334088Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6334227Z     def raw_decode(self, s, idx=0):
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6334708Z         """Decode a JSON document from ``s`` (a ``str`` beginning with
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6335282Z         a JSON document) and return a 2-tuple of the Python
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6335879Z         representation and the index in ``s`` where the document ended.
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6336393Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6336800Z         This can be used to decode a JSON document from a string that may
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6337352Z         have extraneous data at the end.
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6337739Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6338005Z         """
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6338285Z         try:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6338611Z             obj, end = self.scan_once(s, idx)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6339055Z         except StopIteration as err:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6339826Z >           raise JSONDecodeError("Expecting value", s, err.value) from None
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6340605Z E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6341089Z
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6341483Z /opt/hostedtoolcache/Python/3.12.14/x64/lib/python3.12/json/decoder.py:356: JSONDecodeError
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6342258Z =========================== short test summary info ============================
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6343784Z FAILED tests/test_agent_sim_slots.py::test_concurrent_admissions_cannot_both_succeed - json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.6344976Z 1 failed, 1183 passed, 10 skipped, 140 subtests passed in 732.87s (0:12:12)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8004632Z ##[error]Process completed with exit code 1.
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8089511Z ##[group]Run actions/upload-artifact@v4
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8089827Z with:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8090030Z   name: offline-shard-6
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8090271Z   path: outputs/ci-offline/
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8090529Z   if-no-files-found: error
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8090761Z   retention-days: 14
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8090978Z   compression-level: 6
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8091191Z   overwrite: false
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8091407Z   include-hidden-files: false
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8091642Z env:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8091975Z   APT_RENDER_PACKAGES: libosmesa6 libgl1 libglfw3 xvfb xauth ffmpeg fonts-noto-cjk
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8092396Z   OMP_NUM_THREADS: 2
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8092681Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8093110Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8093732Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8094157Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8094543Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8094929Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.8095257Z ##[endgroup]
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.9772249Z (node:4125) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.9773395Z (Use `node --trace-deprecation ...` to show where the warning was created)
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.9831262Z With the provided path, there will be 1 file uploaded
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.9837438Z Artifact name is valid!
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:13.9838333Z Root directory input is valid!
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.2226206Z Beginning upload of artifact content to blob storage
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.2492232Z (node:4125) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.3014558Z Uploaded bytes 29932
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.3201698Z Finished uploading artifact content to blob storage!
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.3202718Z SHA256 digest of uploaded artifact zip is 948acc5f13b5f256b4d19d40c0f5cdd4f5e33bfe6f760b7ec283c033c50f34ff
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.3205294Z Finalizing artifact upload
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.5406625Z Artifact offline-shard-6.zip successfully finalized. Artifact ID 11246050908
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.5408130Z Artifact offline-shard-6 has been successfully uploaded! Final size is 29932 bytes. Artifact ID is 11246050908
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.5414698Z Artifact download URL: https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/actions/runs/37047591093/artifacts/11246050908
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.5618981Z Post job cleanup.
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.6486085Z [command]/usr/bin/git version
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.6533999Z git version 2.55.0
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.6572773Z Temporarily overriding HOME='/home/runner/work/_temp/c5b856ca-a5db-44d9-9c08-824a036ed7c2' before making global git config changes
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.6574417Z Adding repository directory to the temporary git global config as a safe directory
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.6579185Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/UGRP-Multi-Robot-Collaboration-Project/UGRP-Multi-Robot-Collaboration-Project
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.6620483Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.6658996Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.6946928Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.6993518Z http.https://github.com/.extraheader
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.6994578Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.7027597Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.7320836Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.7361703Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.7797592Z Cleaning up orphan processes
+offline-regression-shard (6/8)	UNKNOWN STEP	2026-10-02T18:41:14.8117981Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

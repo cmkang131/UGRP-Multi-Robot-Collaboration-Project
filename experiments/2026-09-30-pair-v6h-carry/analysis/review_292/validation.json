@@ -1,0 +1,136 @@
+{
+  "status": "offline review fixes validated; UNSEALED; no merge",
+  "reviewed_base": "2c863fda3fd2de2f0fc714c2367c3e81b440b530",
+  "review_branch_sha": "eb7589750a32b1df40ed3e246947d7daaf46cb14",
+  "python": "/Users/changmin/projects/ugrp/.venv-sim-worker-mac/bin/python",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1"
+  },
+  "pytest_args": [
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_zone_pair_v6h.py",
+    "tests/test_zone_pair_v6.py",
+    "tests/test_zone_pair_registered_source.py",
+    "tests/test_pair_stage_probe.py",
+    "tests/test_pair_chain_probe.py",
+    "tests/test_ci_sharding.py"
+  ],
+  "final": {
+    "passed": 309,
+    "failed": 0,
+    "elapsed_s": 114.19,
+    "performance_claim": false
+  },
+  "mutations": {
+    "M3_original_params_before": {
+      "passed": 64,
+      "failed": 0,
+      "detected": false
+    },
+    "M3_original_params_after": {
+      "passed": 101,
+      "failed": 3,
+      "detected": true
+    },
+    "unpin_ArmSequence": {
+      "failed": 1,
+      "deselected": 104,
+      "detected": true
+    },
+    "old_scope_docs": {
+      "failed": 1,
+      "deselected": 104,
+      "detected": true
+    }
+  },
+  "mutations_scope": "in-memory module/reader replacement only; no repository controller mutation",
+  "preview": {
+    "runs": 72,
+    "primary_seed": 941,
+    "primary_n": 60,
+    "sensitivity_seed": 943,
+    "sensitivity_n": 12,
+    "source_pins": 268
+  },
+  "acceptance_reference": {
+    "source": "PR #294",
+    "cases": 5,
+    "command_case_result_hashes_matched": 15,
+    "replayed": false,
+    "X01_source": "tX1, not tX1b"
+  },
+  "remaining": [
+    "finding 2 classifier/definitions merge and pin",
+    "independent re-review",
+    "coordinator acceptance replay/decision",
+    "coordinator seal"
+  ],
+  "physical_runs": 0,
+  "model_calls": 0,
+  "repository_seals_written": 0,
+  "files": {
+    "before.txt": {
+      "bytes": 3740,
+      "sha256": "072a55e0193032ea9a0f0f069e7cb471e61e607161a8e457b9be7cfc37523a27"
+    },
+    "final.txt": {
+      "bytes": 432,
+      "sha256": "b721c3226b49d06c9a45d6d85f8f35f90fa89c5741f0f639c7b8bc380eb0e1af"
+    },
+    "final.xml": {
+      "bytes": 42309,
+      "sha256": "23552d678a0dff37b0a34cf074eda4e150896a1739d8757bb7061ce6105b549a"
+    },
+    "mutate_pin.py": {
+      "bytes": 445,
+      "sha256": "2197115a32fb7cb1e487f24b6cfd0cd94be32a11f33746ff3af18bde77c9f515"
+    },
+    "mutate_scope_docs.py": {
+      "bytes": 646,
+      "sha256": "82d7bcd095065e4467585b8d6ec075e5236f634aeb1f2bbc830c75c9fad81185"
+    },
+    "mutate_timing.py": {
+      "bytes": 374,
+      "sha256": "31baf169b5b2fc34bcf9f6795e6e1541179b52a6d4477191e654dcb5490e0831"
+    },
+    "mutation-after.txt.json": {
+      "bytes": 7059,
+      "sha256": "7b3cb05f25f0a72249c752d2d252fbc9faabb76b637e89658410f7c242afd0d4"
+    },
+    "mutation-after.xml.json": {
+      "bytes": 22162,
+      "sha256": "9e109980a7c804127a4d98365c61a5c97ddec9b38b2705689b2e12153f9628bd"
+    },
+    "mutation-before.txt": {
+      "bytes": 99,
+      "sha256": "27b5ed09470bec92ebce25795e7936c4f2671cee5f309172eb876b9730d0baec"
+    },
+    "mutation-before.xml": {
+      "bytes": 9220,
+      "sha256": "7dce9c369024561e175ff59d658010c3f227c9055371961322b56c71fe1f11f9"
+    },
+    "mutation-pin.txt": {
+      "bytes": 1546,
+      "sha256": "7336a0d2af4043e5a0268f8360efb378005f8cd5630b90519949aea9c4fa2c58"
+    },
+    "mutation-pin.xml": {
+      "bytes": 1828,
+      "sha256": "d8250714b5987e59937716d0fda3bd3c46a0d17c73afe4a112bc1842c0d77c31"
+    },
+    "mutation-scope.txt": {
+      "bytes": 2498,
+      "sha256": "f303f969e3c1b3f6d20ba2e54c6926eb3e2b959a1b64c441c8bbf66e45d0d86c"
+    },
+    "mutation-scope.xml": {
+      "bytes": 2984,
+      "sha256": "e642b400fe89f3018eda623fc9a5d8c98e224191f21259f6e0ead54b34395d9e"
+    }
+  },
+  "log_storage_note": "mutation-after stdout/JUnit are lossless UTF-8 strings in JSON containers; original bytes and SHA-256 preserved (pytest trailing whitespace)."
+}
