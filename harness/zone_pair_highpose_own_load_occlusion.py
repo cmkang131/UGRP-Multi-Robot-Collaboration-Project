@@ -14,7 +14,9 @@ dark-fraction / contrast rule (``FrameGate.assess`` verdict ``CONTENT_ONLY``) is
 ``own_image_occlusion_ended`` at its end, counts in the record) and the step goes on: the commanded motion (arm
 lowering, wait for the partner barrier, release) continues from the controller's own command history, and the frame is
 marked ``own_image = OCCLUDED_BY_OWN_LOAD`` in every grip-monitor row that carries its ``frame_id``, i.e. it is no
-observation. Nothing is inferred from the occluded frame.
+observation. This module infers nothing from the occluded frame; the pose source and the beam-edge tracker still read it
+with their own thresholds (a uniform frame gives them no edge to update on), and the occlusion label is inferred from the
+own phase, not measured (a dark frame in the loaded phase from another cause is labelled the same).
 
 Loaded phase = both of the controller's own signals agree: its phase is one of ``LOADED_PHASES`` (grip closed and
 held from the lift to the final-release barrier, including the sigma decision stop and the set-down) and its own
