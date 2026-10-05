@@ -694,3 +694,22 @@ def test_measured_unloaded_calibration_c_pins_its_fit_and_heldout_records():
     assert held['status'] == cal['heldout_status'] == 'VALIDATED_DEV' and held['fit_sha256'] == cal['fit_sha256']
     assert cal['bundle_id'] == 'zone-final-environment-gaincal-v101' and cal['variant'] == 'C'
     assert 'NOT MEASURED_SIM' in cal['qualification']
+
+
+def test_extra_dev_seeds_only_for_dev_pilot_stage_probes():
+    """2026-10-05 coordinator: seeds 912/913 for DEV stage probes only (more failure types), labelled, never evidence."""
+    from harness import zone_pair_highpose_starts as starts
+    conf = {r['seed'] for r in starts.registration()['confirmation_starts']}
+    assert not set(run.STAGE_PROBE_DEV_EXTRA_SEEDS) & (conf | {starts.DEV_SEED})
+    base = ['--check', 'carry', '--map-id', 'zone_wide_door_geometry_v3', '--expected-source-sha', 'a'*40,
+            '--output', '/nonexistent', '--case-id', 'zone_wide_door_geometry_v3']
+    probe = run.parser().parse_args(base + ['--seed', '912', '--admission', 'dev-pilot', '--stage-probe', 'align_to_carry'])
+    assert run.extra_dev_seed(probe)
+    for argv in (base + ['--seed', '912', '--admission', 'dev-pilot'],                      # full case: 911 only
+                 base + ['--seed', '912', '--stage-probe', 'align_to_carry'],               # measured-sim admission
+                 base + ['--seed', '914', '--admission', 'dev-pilot', '--stage-probe', 'align_to_carry'],
+                 base + ['--seed', str(min(conf)), '--admission', 'dev-pilot', '--stage-probe', 'align_to_carry']):
+        args = run.parser().parse_args(argv)
+        assert not run.extra_dev_seed(args)
+        with pytest.raises(ValueError, match='SEED_911'):
+            run.plan(args)

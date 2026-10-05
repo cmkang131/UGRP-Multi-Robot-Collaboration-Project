@@ -359,8 +359,22 @@ def admission_mode(args):
     return contract.DEV_PILOT if args.admission == 'dev-pilot' else contract.MEASURED_SIM
 
 
+# 2026-10-05 coordinator (speed): extra DEV stage-probe seeds to find more failure types at once. Stage probes only,
+# DEV_PILOT only, labelled in the plan; never evidence, never pooled with seed 911 or a case result.
+STAGE_PROBE_DEV_EXTRA_SEEDS = (912, 913)
+
+
+def extra_dev_seed(args):
+    confirmation = {row['seed'] for row in starts.registration()['confirmation_starts']}
+    if set(STAGE_PROBE_DEV_EXTRA_SEEDS) & (confirmation | {starts.DEV_SEED}):
+        raise ValueError('extra DEV seeds must differ from the dev and confirmation seeds')
+    return (args.seed != starts.DEV_SEED and args.seed in STAGE_PROBE_DEV_EXTRA_SEEDS
+            and args.stage_probe is not None and args.admission == 'dev-pilot')
+
+
 def plan(args):
-    starts.require_dev_seed(args.seed)
+    if not extra_dev_seed(args):
+        starts.require_dev_seed(args.seed)
     starts.registration()
     cases = contract.cases(args.check, args.map_id)
     if args.case_id is not None:
@@ -393,7 +407,9 @@ def plan(args):
         'runnable': not blocked, 'blocked_on': blocked,
         'precondition': contract.DEV_PILOT_PRECONDITION if mode == contract.DEV_PILOT else contract.PRECONDITION,
         'calibration_sha256': args.calibration_sha256, 'source_sha': args.expected_source_sha,
-        'seed': args.seed, 'bundles_sha256': [contract.base.digest(b) for b in bundles],
+        'seed': args.seed, 'extra_dev_seed': ({'seeds': list(STAGE_PROBE_DEV_EXTRA_SEEDS), 'evidence': False,
+                                                'pooled': False} if extra_dev_seed(args) else None),
+        'bundles_sha256': [contract.base.digest(b) for b in bundles],
         'case_selection': args.case_id, 'registered_denominator': len(contract.cases(args.check, args.map_id)),
         'stage_probe': ({'stage': args.stage_probe, **STAGE_PROBES[args.stage_probe], 'case_result': False}
                         if args.stage_probe else None),
