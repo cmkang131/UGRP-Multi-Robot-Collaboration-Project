@@ -14,6 +14,8 @@ from harness import zone_pair_highpose_guardlog as guardlog
 from harness import zone_pair_highpose_lookaround as lookaround
 from harness import zone_pair_highpose_relook as relook
 from harness import zone_pair_highpose_start_relief as start_relief
+from harness import zone_pair_highpose_guard_log_only as guard_log_only
+from harness import zone_pair_highpose_contract as hp_contract
 from harness import zone_pair_highpose_carry_align as carry_align
 from harness import zone_pair_highpose_posture_defer as posture_defer
 from harness import zone_pair_highpose_dr_checkpoint as dr_checkpoint
@@ -407,6 +409,8 @@ class CommandGuard(PreviousGuard):
         progress.install(self)           # v98: loaded no-progress check, motion = REQUIRED_MOVEMENT_M commanded (B)
 
     def sweep_guard(self):
+        if hp_contract.COLLISION_GUARD_MODE == 'log_only':     # user 2026-10-05: PAIR_COLLISION_GUARD log only
+            return guard_log_only.install(super().sweep_guard(), self.veto_trace)
         return start_relief.install(super().sweep_guard(), self.veto_trace)
 
     def check(self, now, commands):
@@ -418,12 +422,36 @@ class CommandGuard(PreviousGuard):
         progress.leg_reset(self, now)    # v98: reset the loaded no-progress check at each carry leg start (A)
         before, issued = len(self.ep.own.events), copy.deepcopy(commands)
         self.veto_trace = trace = guardlog.Trace()
+        soft, ep = [], self.ep
+        shadowed, real_abort = 'abort' in vars(ep), getattr(ep, 'abort', None)
+        light = hp_contract.DEV_LIGHT and real_abort is not None
+        if light:        # user 2026-10-05 "다 라이트 하게 줄여": conservative stops are logged only
+            def abort(t, reason):
+                if reason in hp_contract.DEV_LIGHT_SOFT_STOPS:
+                    soft.append(reason)
+                    return None
+                return real_abort(t, reason)
+            ep.abort = abort
         try:
             out = super().check(now, commands)
         finally:
             self.veto_trace = None
+            if light:
+                if shadowed:
+                    ep.abort = real_abort
+                else:
+                    del ep.abort
+        if soft:
+            try:
+                report = guardlog._report(ep.own.last_report)
+            except Exception as exc:
+                report = {'error': repr(exc)}
+            ep.log(ep.own.robot_id, hp_contract.DEV_LIGHT_EVENT, now, would_reason=soft[0], reasons=soft,
+                   site='CommandGuard.check', commands=issued, estimate=report, loaded=bool(self.carrying_beam))
+            out = commands
         start_relief.log_reliefs(self, now, trace)
         guardlog.log_veto(self, now, issued, before, trace)
+        guard_log_only.log_would_veto(self, now, issued, trace)
         carry_align.log_gate_check(self, now, issued, out)     # observation only (sigma, yaw sigma, gate values)
         return out
 

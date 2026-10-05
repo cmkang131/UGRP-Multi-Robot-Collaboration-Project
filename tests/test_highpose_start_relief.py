@@ -25,6 +25,14 @@ from tests.test_zone_final_pair_v3 import MAPS
 HIGH = {1: 2000, 3: 1072, 4: 2400, 5: 1482, 6: 1500}
 
 
+
+@pytest.fixture(autouse=True)
+def _enforce_collision_guard(monkeypatch):
+    """These tests cover the enforcing guard; the v105 log-only mode has its own test file."""
+    from harness import zone_pair_highpose_contract as _c
+    monkeypatch.setattr(_c, 'COLLISION_GUARD_MODE', 'enforce')
+    monkeypatch.setattr(_c, 'DEV_LIGHT', False)
+
 @pytest.fixture(scope='module')
 def arm():
     return PairArmGuard(c.resolve(MAPS[0])[0])

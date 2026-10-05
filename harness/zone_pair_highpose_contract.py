@@ -35,6 +35,19 @@ camera_record = previous.camera_record
 # v98-cap-3 (user 2026-10-04 "시간 상한도 늘리셈"): 3x300 -> 3x900 DEV ceiling, not a target. The full route with
 # sigma-triggered set-down re-fixes is estimated at 351-517 s (>= 41.4 s per re-fix); 900 s ~ 1.75x the upper estimate.
 CASE_CAP_S = 900.
+# User decision 2026-10-05 17:2x KST ("걍 충돌 방지를 빼. 충돌 하면 다시 생각하면 되잖아"): PAIR_COLLISION_GUARD is
+# log-only (harness/zone_pair_highpose_guard_log_only). 'enforce' restores the earlier behaviour. Runs with
+# 'log_only' carry bundle label v105 and are never pooled with earlier runs.
+COLLISION_GUARD_MODE = 'log_only'
+COLLISION_GUARD_BUNDLE_LABEL = 'zone-final-pair-highpose-v105-collision-log-only'
+# DEV light mode (user 2026-10-05 17:3x KST "다 라이트 하게 줄여"): conservative stops in CommandGuard.check and the
+# re-fix horizon check are logged ('dev_light_would_stop') instead of stopping. Real physical failures (drop, tilt
+# limit, GO barrier, grip loss) and execution errors still stop. DEV_PILOT only; must be False for any formal E2E or
+# study cohort. Runs carry COLLISION_GUARD_BUNDLE_LABEL + dev_light and are never pooled with earlier runs.
+DEV_LIGHT = True
+DEV_LIGHT_SOFT_STOPS = frozenset({'PAIR_COLLISION_GUARD', 'POSE_UNCERTAIN', 'POSE_UNCERTAIN_PROGRESS',
+                                  'SELF_POSE_UNCERTAIN', 'GLOBAL_ENVELOPE_BLOCKED', 'REFIX_HORIZON_INFEASIBLE'})
+DEV_LIGHT_EVENT = 'dev_light_would_stop'
 CAP_PREREG_VERSION = 'v98-cap-3'
 CAP_DECISION = 'experiments/2026-10-03-pair-carry-highpose/fix363/COORDINATOR_DECISION.md'
 # Coordinator DEV_PILOT admission (2026-10-03): a non-confirmatory functional
@@ -371,7 +384,10 @@ def bundle(map_id, check, admission=MEASURED_SIM):
         controller_variant='b-v6h1-v3-highpose-opencv', revision='D1 new candidate; no inherited acceptance',
         localization='OpenCV wall-band detector + static map particle filter; no learned segmentation',
         timing=execution_timing(check), high_pose=pose.record(), calibration_contract=contract,
-        calibration_selection='D5 v92 loader v2 + registered complete measurement evidence; HIGH only')
+        calibration_selection='D5 v92 loader v2 + registered complete measurement evidence; HIGH only',
+        collision_guard={'mode': COLLISION_GUARD_MODE, 'bundle_label': COLLISION_GUARD_BUNDLE_LABEL},
+        dev_light={'enabled': DEV_LIGHT, 'soft_stops': sorted(DEV_LIGHT_SOFT_STOPS), 'event': DEV_LIGHT_EVENT,
+                   'scope': 'CommandGuard.check aborts + refix horizon check; before_control/controller fails unchanged'})
     # Independent review #363 P1-4: the inherited parent ``caps`` (per_case_s 120) contradicted the applied
     # v98-cap-3 case cap; the executor reads ``timing``, but the record must state the applied value.
     reset_s = value['caps']['reset_per_case_s']

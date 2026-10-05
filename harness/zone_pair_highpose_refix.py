@@ -1148,6 +1148,9 @@ class SigmaRefix:
                             **_receipt_estimate(report))
             self.refix_phase = None
             if check is not None and check['prediction']['over']:
-                return self._transit_abort(INFEASIBLE, now)
+                from harness import zone_pair_highpose_contract as hp_contract
+                if not hp_contract.DEV_LIGHT:
+                    return self._transit_abort(INFEASIBLE, now)
+                self._refix_log(hp_contract.DEV_LIGHT_EVENT, now, would_reason=INFEASIBLE, horizon_check=check)
             self._hook_emit('carry_resumed', now, sigma_band=sigma_band(self.port.own.last_report))
         return out
