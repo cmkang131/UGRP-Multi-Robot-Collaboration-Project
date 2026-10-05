@@ -174,3 +174,19 @@ def test_case_end_needs_every_robot_pair_job_ended():
     assert runner.jobs_ended_all(rt_(r1=[look, pair], r2=[look])) is False
     assert runner.jobs_ended_all(rt_(r1=[pair])) is False
     assert runner.jobs_ended_all(NS(actors={})) is False
+
+
+def test_align_relook_no_fix_resumes_in_light_mode(monkeypatch):
+    from harness.zone_pair_highpose_runtime import LightFail
+    queued = []
+    class B(_Base):
+        state, align_resume_name = 'align_relook', 'cp_align'
+        arm = type('A', (), {'queue': lambda self, *a, **k: queued.append(a)})()
+        def set(self, state, now, **d):
+            self.state = state
+    ctl = type('C', (LightFail, B), {})()
+    import harness.owncam_pair_beam_v2 as pb
+    monkeypatch.setattr(pb, 'pose_of', lambda name: {'name': name})
+    ctl.fail('ALIGN_RELOOK_NO_FIX', 5.)
+    assert ctl.state == 'align_relook_return' and ctl.failed == [] and queued
+    assert ctl.logged[-1]['would_reason'] == 'ALIGN_RELOOK_NO_FIX'

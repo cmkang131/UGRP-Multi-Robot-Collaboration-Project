@@ -320,7 +320,7 @@ def student_run_case(bundle, out, *, seed, backend_factory, runtime_factory=Runt
                       'STAGE_PROBE_NOT_REACHED')
             result.update(status=status, stage_progress=progress, check_sim_s=backend.now-start)
         else:
-            if abs(backend.now-start-cap) > 1e-7:
+            if abs(backend.now-start-cap) > 1e-7 and result.get('case_end') is None:
                 raise RuntimeError('INCOMPLETE_BOUNDED_PROTOCOL')
             result.update(protocol_complete=True, status='COLLECTED_UNQUALIFIED', check_sim_s=backend.now-start)
     except Exception as exc:

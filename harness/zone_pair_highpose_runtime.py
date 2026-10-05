@@ -481,6 +481,14 @@ class LightFail:
 
     def fail(self, reason, now):
         if self._light_soft(reason, now, 'controller.fail'):
+            if reason == 'ALIGN_RELOOK_NO_FIX' and self.state == 'align_relook':
+                # Retrying would stay in align_relook with no pans left: resume exactly like the accepted-fix branch
+                # of zone_pair_align._align_relook (own estimate as it is; logged as dev_light_would_stop).
+                from harness.owncam_pair_beam_v2 import pose_of
+                self.arm.queue(pose_of(self.align_resume_name), now, duration=.6, settle=.3)
+                from harness.zone_pair_align import PairAlignRelook
+                setter = super(PairAlignRelook, self) if isinstance(self, PairAlignRelook) else super()
+                return setter.set('align_relook_return', now)
             return None
         return super().fail(reason, now)
 
