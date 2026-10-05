@@ -1,0 +1,184 @@
+{
+  "schema": "ugrp.bundle_reservation_scan.v1",
+  "scanned_utc": "2026-10-03T08:35:58Z",
+  "base_sha": "cc8364e21eb99ecfaf350c854c2e348ae7265e07",
+  "method": "git grep zone-*-vNN in configs/harness/scripts/sim and workflow versions in configs/simulation_workflows.json + simulation_workflows.d on origin/main and every open PR head (RUNNABLE_ID in harness/rgb_execution_bundle.py is rgb-standard-dispatch-v63 on all refs, unrelated namespace)",
+  "refs": [
+    {
+      "ref": "main",
+      "sha": "cc8364e21eb99ecfaf350c854c2e348ae7265e07",
+      "max_bundle": 91,
+      "max_workflow_version": "3.3.0"
+    },
+    {
+      "ref": "codex/pair-carry-highpose",
+      "sha": "081f18d86b61322c94ede8c926936b5471052596",
+      "max_bundle": 93,
+      "max_workflow_version": "3.5.0"
+    },
+    {
+      "ref": "codex/v92-loaded-schedule",
+      "sha": "257953ec36353c37acc61c4cb86563db7c937de2",
+      "max_bundle": 92,
+      "max_workflow_version": "3.4.0"
+    },
+    {
+      "ref": "codex/diag-loaded-v88",
+      "sha": "f2fc0cc3d2315e8b4441028a1713a1ba5af23175",
+      "max_bundle": 91,
+      "max_workflow_version": "3.3.0"
+    },
+    {
+      "ref": "claude/frame-storage-policy",
+      "sha": "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f",
+      "max_bundle": 89,
+      "max_workflow_version": "3.1.0"
+    },
+    {
+      "ref": "codex/integ-target-backend",
+      "sha": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+      "max_bundle": 86,
+      "max_workflow_version": "3.0.0"
+    },
+    {
+      "ref": "codex/outputs-retention",
+      "sha": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+      "max_bundle": 81,
+      "max_workflow_version": "3.0.0"
+    },
+    {
+      "ref": "codex/stall-d1-prereg",
+      "sha": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+      "max_bundle": 81,
+      "max_workflow_version": "3.0.0"
+    }
+  ],
+  "open_prs": [
+    {
+      "number": 363,
+      "headRefName": "codex/pair-carry-highpose",
+      "headRefOid": "081f18d86b61322c94ede8c926936b5471052596"
+    },
+    {
+      "number": 361,
+      "headRefName": "codex/v92-loaded-schedule",
+      "headRefOid": "257953ec36353c37acc61c4cb86563db7c937de2"
+    },
+    {
+      "number": 359,
+      "headRefName": "codex/diag-loaded-v88",
+      "headRefOid": "f2fc0cc3d2315e8b4441028a1713a1ba5af23175"
+    },
+    {
+      "number": 353,
+      "headRefName": "claude/frame-storage-policy",
+      "headRefOid": "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f"
+    },
+    {
+      "number": 339,
+      "headRefName": "codex/integ-target-backend",
+      "headRefOid": "9912bb15bb492bab0f9278fc493feed1547ff8ee"
+    },
+    {
+      "number": 309,
+      "headRefName": "codex/outputs-retention",
+      "headRefOid": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc"
+    },
+    {
+      "number": 293,
+      "headRefName": "codex/stall-d1-prereg",
+      "headRefOid": "d86cc82eedbe0c6693eaf808c54ce43387723f1d"
+    }
+  ],
+  "previous_max_bundle": 93,
+  "previous_max_workflow_version": "3.5.0",
+  "skipped": {
+    "bundle": "v94",
+    "workflow_version": "3.6.0",
+    "reason": "coordinator note 2026-10-03: PR #363 (zone-final-pair-highpose-v93 / 3.5.0) may take v94 / 3.6.0 next; an earlier draft of this branch used v94 and was renamed before merge or collection"
+  },
+  "reserved_bundle": "zone-final-pair-v95",
+  "reserved_workflow_version": "3.7.0",
+  "reserved_workflow_id": "zone-final-pair-heldout-v95",
+  "refresh_2026_10_03": {
+    "scanned_utc": "2026-10-03T11:39:25Z",
+    "base_sha": "798198798aa829cbf7c8c64b7c72be8784c0fda5",
+    "refs": [
+      {
+        "ref": "main",
+        "sha": "798198798aa829cbf7c8c64b7c72be8784c0fda5",
+        "max_bundle": 92,
+        "max_workflow_version": "3.4.0"
+      },
+      {
+        "ref": "codex/pair-carry-highpose",
+        "sha": "9d7c70e8b4906ae82e43ea661c315daf96111bfa",
+        "max_bundle": 96,
+        "max_workflow_version": "3.8.0"
+      },
+      {
+        "ref": "codex/diag-loaded-v88",
+        "sha": "f2fc0cc3d2315e8b4441028a1713a1ba5af23175",
+        "max_bundle": 91,
+        "max_workflow_version": "3.3.0"
+      },
+      {
+        "ref": "claude/frame-storage-policy",
+        "sha": "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f",
+        "max_bundle": 89,
+        "max_workflow_version": "3.1.0"
+      },
+      {
+        "ref": "codex/integ-target-backend",
+        "sha": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+        "max_bundle": 86,
+        "max_workflow_version": "3.0.0"
+      },
+      {
+        "ref": "codex/outputs-retention",
+        "sha": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+        "max_bundle": 81,
+        "max_workflow_version": "3.0.0"
+      },
+      {
+        "ref": "codex/stall-d1-prereg",
+        "sha": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+        "max_bundle": 81,
+        "max_workflow_version": "3.0.0"
+      }
+    ],
+    "open_prs": [
+      {
+        "number": 363,
+        "headRefName": "codex/pair-carry-highpose",
+        "headRefOid": "9d7c70e8b4906ae82e43ea661c315daf96111bfa"
+      },
+      {
+        "number": 359,
+        "headRefName": "codex/diag-loaded-v88",
+        "headRefOid": "f2fc0cc3d2315e8b4441028a1713a1ba5af23175"
+      },
+      {
+        "number": 353,
+        "headRefName": "claude/frame-storage-policy",
+        "headRefOid": "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f"
+      },
+      {
+        "number": 339,
+        "headRefName": "codex/integ-target-backend",
+        "headRefOid": "9912bb15bb492bab0f9278fc493feed1547ff8ee"
+      },
+      {
+        "number": 309,
+        "headRefName": "codex/outputs-retention",
+        "headRefOid": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc"
+      },
+      {
+        "number": 293,
+        "headRefName": "codex/stall-d1-prereg",
+        "headRefOid": "d86cc82eedbe0c6693eaf808c54ce43387723f1d"
+      }
+    ],
+    "finding": "Review #365 finding 3: the original scan text is stale. #361 (v92/3.4.0) is merged; #363 now uses v96/3.8.0 (its old v93/3.5.0 config remains). v94/3.6.0 are unused by anyone. v95/3.7.0 remains unique to this PR. The original scan above is kept as recorded at reservation time."
+  }
+}

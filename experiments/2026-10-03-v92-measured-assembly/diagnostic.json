@@ -1,0 +1,464 @@
+{
+  "label": "DIAGNOSTIC ONLY - not a calibration result; identical settings to assembler run",
+  "selection": {
+    "not_lifted": 475,
+    "lifted": 13926
+  },
+  "error": "fit convergence/rank/boundary failure: rank 13/13",
+  "optimizer": {
+    "status": 2,
+    "message": "`ftol` termination condition is satisfied.",
+    "success": true,
+    "nfev": 11,
+    "njev": 11,
+    "cost": 0.14494283805870342,
+    "rmse": 0.001889263699984933,
+    "rank": 13,
+    "count": 13,
+    "optimality": 2.0783561746818674e-07,
+    "params": {
+      "gain_forward": {
+        "raw": 0.30385175686605015,
+        "value": 1.3550681616484304,
+        "lower": 0.05000000000000001,
+        "upper": 4.0,
+        "dist_lower_raw": 3.299584030420041,
+        "dist_upper_raw": 1.0824426042538404,
+        "active_mask": 0
+      },
+      "gain_left": {
+        "raw": -0.036453301342982594,
+        "value": 0.9642031198357787,
+        "lower": 0.05000000000000001,
+        "upper": 4.0,
+        "dist_lower_raw": 2.9592789722110084,
+        "dist_upper_raw": 1.4227476624628732,
+        "active_mask": 0
+      },
+      "gain_turn": {
+        "raw": -0.09723063790593156,
+        "value": 0.907346713452843,
+        "lower": 0.05000000000000001,
+        "upper": 4.0,
+        "dist_lower_raw": 2.898501635648059,
+        "dist_upper_raw": 1.4835249990258221,
+        "active_mask": 0
+      },
+      "tau_axis_forward": {
+        "raw": -0.03469521286147739,
+        "value": 0.9658997652239405,
+        "lower": 0.010000000000000005,
+        "upper": 4.0,
+        "dist_lower_raw": 4.570474973126614,
+        "dist_upper_raw": 1.420989573981368,
+        "active_mask": 0
+      },
+      "tau_axis_left": {
+        "raw": -0.03275025038327252,
+        "value": 0.967780232151017,
+        "lower": 0.010000000000000005,
+        "upper": 4.0,
+        "dist_lower_raw": 4.5724199356048185,
+        "dist_upper_raw": 1.4190446115031632,
+        "active_mask": 0
+      },
+      "tau_axis_turn": {
+        "raw": -0.4213386572834044,
+        "value": 0.6561678477566076,
+        "lower": 0.010000000000000005,
+        "upper": 4.0,
+        "dist_lower_raw": 4.183831528704687,
+        "dist_upper_raw": 1.807633018403295,
+        "active_mask": 0
+      },
+      "tau_stop": {
+        "raw": -2.4624815250638337,
+        "value": 0.08522320483050172,
+        "lower": 0.005000000000000002,
+        "upper": 0.5,
+        "dist_lower_raw": 2.8358358414842026,
+        "dist_upper_raw": 1.7693343445038883,
+        "active_mask": 0
+      },
+      "c0_forward": {
+        "raw": 4.0517232641155646e-33,
+        "value": 4.0517232641155646e-33,
+        "lower": 0.0,
+        "upper": 0.015,
+        "dist_lower_raw": 4.0517232641155646e-33,
+        "dist_upper_raw": 0.015,
+        "active_mask": -1
+      },
+      "c0_left": {
+        "raw": 3.388536352230367e-20,
+        "value": 3.388536352230367e-20,
+        "lower": 0.0,
+        "upper": 0.015,
+        "dist_lower_raw": 3.388536352230367e-20,
+        "dist_upper_raw": 0.015,
+        "active_mask": -1
+      },
+      "c0_turn": {
+        "raw": 0.006000000000000001,
+        "value": 0.006000000000000001,
+        "lower": 0.006,
+        "upper": 0.015,
+        "dist_lower_raw": 8.673617379884035e-19,
+        "dist_upper_raw": 0.008999999999999998,
+        "active_mask": -1
+      },
+      "u1_forward": {
+        "raw": 0.026556708946871406,
+        "value": 0.026556708946871406,
+        "lower": 0.025,
+        "upper": 0.04,
+        "dist_lower_raw": 0.0015567089468714046,
+        "dist_upper_raw": 0.013443291053128595,
+        "active_mask": 0
+      },
+      "u1_left": {
+        "raw": 0.028235672588055663,
+        "value": 0.028235672588055663,
+        "lower": 0.025,
+        "upper": 0.04,
+        "dist_lower_raw": 0.0032356725880556617,
+        "dist_upper_raw": 0.011764327411944338,
+        "active_mask": 0
+      },
+      "u1_turn": {
+        "raw": 0.029699927687659257,
+        "value": 0.029699927687659257,
+        "lower": 0.025,
+        "upper": 0.04,
+        "dist_lower_raw": 0.0046999276876592555,
+        "dist_upper_raw": 0.010300072312340744,
+        "active_mask": 0
+      }
+    }
+  },
+  "axis_candidates_r4_fit_mean": [
+    {
+      "forward": {
+        "parameters": {
+          "gain": 1.2674437509535423,
+          "tau_s": 0.9587214976229331,
+          "tau_stop_s": 0.0948376203478356
+        },
+        "consumer_fields": {
+          "gain": [
+            [
+              1.2674437509535423,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "tau_s": 0.9587214976229331,
+          "tau_stop_s": 0.0948376203478356,
+          "noise_rel": [
+            0.3176,
+            0.4438,
+            0.1116
+          ],
+          "noise_abs": [
+            0.01538,
+            0.00504,
+            0.01406
+          ],
+          "scale_std": 0.0,
+          "scale_walk": 0.0,
+          "use_scale": false,
+          "rest_noise": true
+        },
+        "scope": "axis-only unloaded; other mean axes set to zero, not calibrated",
+        "allowed_command_axis": "forward",
+        "optimizer": {
+          "success": true,
+          "rank": 3,
+          "boundary": [],
+          "nfev": 6,
+          "residual_count": 15792,
+          "rmse": 0.005717352898320049
+        },
+        "validation": null
+      },
+      "left": {
+        "parameters": {
+          "gain": 0.8784764973444805,
+          "tau_s": 0.9647432048050896,
+          "tau_stop_s": 0.09190273136176419
+        },
+        "consumer_fields": {
+          "gain": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.8784764973444805,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "tau_s": 0.9647432048050896,
+          "tau_stop_s": 0.09190273136176419,
+          "noise_rel": [
+            0.3176,
+            0.4438,
+            0.1116
+          ],
+          "noise_abs": [
+            0.01538,
+            0.00504,
+            0.01406
+          ],
+          "scale_std": 0.0,
+          "scale_walk": 0.0,
+          "use_scale": false,
+          "rest_noise": true
+        },
+        "scope": "axis-only unloaded; other mean axes set to zero, not calibrated",
+        "allowed_command_axis": "left",
+        "optimizer": {
+          "success": true,
+          "rank": 3,
+          "boundary": [],
+          "nfev": 6,
+          "residual_count": 15792,
+          "rmse": 0.005701200597244292
+        },
+        "validation": null
+      },
+      "rotate": {
+        "parameters": {
+          "gain": 0.8025691673389457,
+          "tau_s": 0.6554157675293361,
+          "tau_stop_s": 0.05219268311999696
+        },
+        "consumer_fields": {
+          "gain": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.8025691673389457
+            ]
+          ],
+          "tau_s": 0.6554157675293361,
+          "tau_stop_s": 0.05219268311999696,
+          "noise_rel": [
+            0.3176,
+            0.4438,
+            0.1116
+          ],
+          "noise_abs": [
+            0.01538,
+            0.00504,
+            0.01406
+          ],
+          "scale_std": 0.0,
+          "scale_walk": 0.0,
+          "use_scale": false,
+          "rest_noise": true
+        },
+        "scope": "axis-only unloaded; other mean axes set to zero, not calibrated",
+        "allowed_command_axis": "turn",
+        "optimizer": {
+          "success": true,
+          "rank": 3,
+          "boundary": [],
+          "nfev": 6,
+          "residual_count": 9024,
+          "rmse": 0.008046106672846897
+        },
+        "validation": null
+      }
+    },
+    {
+      "forward": {
+        "parameters": {
+          "gain": 1.2674442374696324,
+          "tau_s": 0.958718471947608,
+          "tau_stop_s": 0.09484166130927421
+        },
+        "consumer_fields": {
+          "gain": [
+            [
+              1.2674442374696324,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "tau_s": 0.958718471947608,
+          "tau_stop_s": 0.09484166130927421,
+          "noise_rel": [
+            0.3176,
+            0.4438,
+            0.1116
+          ],
+          "noise_abs": [
+            0.01538,
+            0.00504,
+            0.01406
+          ],
+          "scale_std": 0.0,
+          "scale_walk": 0.0,
+          "use_scale": false,
+          "rest_noise": true
+        },
+        "scope": "axis-only unloaded; other mean axes set to zero, not calibrated",
+        "allowed_command_axis": "forward",
+        "optimizer": {
+          "success": true,
+          "rank": 3,
+          "boundary": [],
+          "nfev": 6,
+          "residual_count": 15792,
+          "rmse": 0.00571731552166011
+        },
+        "validation": null
+      },
+      "left": {
+        "parameters": {
+          "gain": 0.8785174798497295,
+          "tau_s": 0.9645495108045777,
+          "tau_stop_s": 0.0919637437059113
+        },
+        "consumer_fields": {
+          "gain": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.8785174798497295,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ]
+          ],
+          "tau_s": 0.9645495108045777,
+          "tau_stop_s": 0.0919637437059113,
+          "noise_rel": [
+            0.3176,
+            0.4438,
+            0.1116
+          ],
+          "noise_abs": [
+            0.01538,
+            0.00504,
+            0.01406
+          ],
+          "scale_std": 0.0,
+          "scale_walk": 0.0,
+          "use_scale": false,
+          "rest_noise": true
+        },
+        "scope": "axis-only unloaded; other mean axes set to zero, not calibrated",
+        "allowed_command_axis": "left",
+        "optimizer": {
+          "success": true,
+          "rank": 3,
+          "boundary": [],
+          "nfev": 6,
+          "residual_count": 15792,
+          "rmse": 0.005693280930885906
+        },
+        "validation": null
+      },
+      "rotate": {
+        "parameters": {
+          "gain": 0.802628225210172,
+          "tau_s": 0.6556284530708564,
+          "tau_stop_s": 0.05247499396220593
+        },
+        "consumer_fields": {
+          "gain": [
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.0,
+              0.802628225210172
+            ]
+          ],
+          "tau_s": 0.6556284530708564,
+          "tau_stop_s": 0.05247499396220593,
+          "noise_rel": [
+            0.3176,
+            0.4438,
+            0.1116
+          ],
+          "noise_abs": [
+            0.01538,
+            0.00504,
+            0.01406
+          ],
+          "scale_std": 0.0,
+          "scale_walk": 0.0,
+          "use_scale": false,
+          "rest_noise": true
+        },
+        "scope": "axis-only unloaded; other mean axes set to zero, not calibrated",
+        "allowed_command_axis": "turn",
+        "optimizer": {
+          "success": true,
+          "rank": 3,
+          "boundary": [],
+          "nfev": 6,
+          "residual_count": 9024,
+          "rmse": 0.008041563347613056
+        },
+        "validation": null
+      }
+    }
+  ],
+  "reproduces_recorded_run": true
+}

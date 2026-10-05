@@ -38,7 +38,7 @@ def rows(out):
 
 def test_default_stores_no_bytes_but_logs_every_hash(tmp_path):
     frames = [jpeg(i) for i in range(6)]
-    with FrameSink(tmp_path) as sink:
+    with FrameSink(tmp_path, split="dev") as sink:
         for i, data in enumerate(frames):
             assert sink.add("r1", i * 0.2, data)["stored"] is None
     assert not list(tmp_path.rglob("*.jpg")) and not list(tmp_path.glob("*.mp4"))
@@ -61,10 +61,19 @@ def test_jpeg_profile_is_capped_and_stops_the_run(tmp_path):
     assert len(rows(tmp_path)) == 4                      # the crossing frame is still listed by hash
 
 
+def test_runs_outside_dev_must_name_their_profile(tmp_path):
+    for split in (None, "test", "cohort"):
+        with pytest.raises(ValueError):
+            FrameSink(tmp_path / str(split), split=split)
+    sink = FrameSink(tmp_path / "ok", "all_v1", split="test")      # explicit choice keeps the JPEGs
+    assert sink.add("r1", 0.0, jpeg(1))["stored"] == "jpeg"
+    sink.close()
+
+
 def test_no_unlimited_mode(tmp_path):
     for bad in (0, -1, None):
         with pytest.raises(ValueError):
-            FrameSink(tmp_path, cap_mib=bad)
+            FrameSink(tmp_path, split="dev", cap_mib=bad)
 
 
 @pytest.mark.skipif(not FFMPEG, reason="ffmpeg not installed")
@@ -79,28 +88,57 @@ def test_mp4_profile_packs_a_stream_and_keeps_the_hash_list(tmp_path):
     assert pack.decoded_frames(tmp_path / "r1.mp4") == 10
 
 
-@pytest.mark.skipif(not FFMPEG, reason="ffmpeg not installed")
-def test_pack_frames_dry_run_then_verified_pack_then_remove(tmp_path):
-    pack = load("pack_frames")
+def _frames_dir(tmp_path, n=8, age_days=10.0):
+    import os
+    import time
     d = tmp_path / "frames"
     d.mkdir()
-    data = [jpeg(i) for i in range(8)]
+    data = [jpeg(i) for i in range(n)]
     for i, b in enumerate(data):
-        (d / f"{i:05d}.jpg").write_bytes(b)
+        f = d / f"{i:05d}.jpg"
+        f.write_bytes(b)
+        old = time.time() - age_days * 86400
+        os.utime(f, (old, old))
+    return d, data
+
+
+@pytest.mark.skipif(not FFMPEG, reason="ffmpeg not installed")
+def test_pack_frames_dry_run_then_verified_pack_then_trash_with_record(tmp_path):
+    pack = load("pack_frames")
+    d, data = _frames_dir(tmp_path)
     assert pack.main([str(tmp_path)]) == 0
     assert not (tmp_path / "frames.mp4").exists() and len(list(d.glob("*.jpg"))) == 8
     assert pack.main([str(tmp_path), "--execute"]) == 0
     assert len(list(d.glob("*.jpg"))) == 8
     listed = [json.loads(x) for x in (tmp_path / "frames.sha256.jsonl").read_text().splitlines()]
     assert [r["sha256"] for r in listed] == [hashlib.sha256(b).hexdigest() for b in data]
-    assert pack.main([str(tmp_path), "--execute", "--remove-originals"]) == 0
+    trash, records = tmp_path / "trash", tmp_path / "records"
+    assert pack.main([str(tmp_path), "--execute", "--trash-originals", "--reason", "past dev run, no keep category",
+                      "--trash-root", str(trash), "--record-dir", str(records)]) == 0
     assert not list(d.glob("*.jpg"))
+    # moved, not deleted: every original is in the Trash with identical bytes, and a record says where
+    record = json.loads(next(records.glob("pack-frames-*.json")).read_text())
+    assert record["reason"] == "past dev run, no keep category" and len(record["files"]) == 8
+    assert sorted(hashlib.sha256(Path(m["trash"]).read_bytes()).hexdigest() for m in record["files"]) == \
+        sorted(hashlib.sha256(b).hexdigest() for b in data)
 
 
-def test_pack_frames_refuses_remove_without_execute(tmp_path):
+@pytest.mark.skipif(not FFMPEG, reason="ffmpeg not installed")
+def test_pack_frames_refuses_to_trash_frames_from_the_last_three_days(tmp_path):
+    pack = load("pack_frames")
+    d, _ = _frames_dir(tmp_path, age_days=1.0)
+    assert pack.main([str(tmp_path), "--execute", "--trash-originals", "--reason", "x",
+                      "--trash-root", str(tmp_path / "trash"), "--record-dir", str(tmp_path / "records")]) == 0
+    assert len(list(d.glob("*.jpg"))) == 8 and not (tmp_path / "records").exists()
+    assert not (tmp_path / "frames.mp4").exists()
+
+
+def test_pack_frames_trash_needs_execute_and_a_reason(tmp_path):
     pack = load("pack_frames")
     with pytest.raises(SystemExit):
-        pack.main([str(tmp_path), "--remove-originals"])
+        pack.main([str(tmp_path), "--trash-originals", "--reason", "x"])
+    with pytest.raises(SystemExit):
+        pack.main([str(tmp_path), "--execute", "--trash-originals"])
 
 
 def test_write_cap_guard_stops_a_growing_run_and_writes_a_receipt(tmp_path):

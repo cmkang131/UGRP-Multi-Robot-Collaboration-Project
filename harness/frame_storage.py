@@ -3,8 +3,13 @@
 Profiles are versioned and never change meaning once published:
 
 ``all_v1``
-    Write every frame. This is the behaviour of every runner before 2026-09-27, of every test cohort and of
-    every past pre-registration. It is the default.
+    Write every frame as an original JPEG. This is the behaviour of every runner before 2026-09-27 and of every
+    past pre-registration. Runs whose frames fall in the AGENTS.md keep categories (model-request images, active
+    work, pre-registered study cohorts) must choose it explicitly.
+``none_v1``
+    No frame bytes, only one sha256 row per frame. The default for ``dev``/``diag`` runs that do not need frames.
+``mp4_v1``
+    One H.264 mp4 per stream plus the sha256 list (viewing copy; the hashes are those of the original JPEGs).
 ``dev_1hz_decisions_v1``
     Development and diagnostic runs only. Per stream (one robot camera, or the TOP camera), write a
     periodic frame when at least 1.0 SIM s has passed since the last periodic frame written, and always
@@ -13,8 +18,11 @@ Profiles are versioned and never change meaning once published:
     periodic clock.
 
 The policy only decides whether the JPEG *file* is written. The caller still records every frame's
-SIM time and sha256 in its frame log, so a skipped frame is known by hash. Model-request images (LLM, ACT,
-trained students) are not camera frames in this sense and are always kept byte for byte (AGENTS.md).
+SIM time and sha256 in its frame log, so a skipped frame is known by hash. Retention after writing follows
+AGENTS.md "보존": text, ledgers, logs and sha256 lists are always kept; image bytes only for active work and open
+PRs, the last 3 days, version representative videos and pre-registered study cohorts; anything else goes to the
+Trash with a record in outputs/cleanup-records/ (scripts/pack_frames.py --trash-originals). A run whose images
+fall in a keep category must say so by choosing ``all_v1`` (or ``mp4_v1``) and its cap explicitly.
 """
 
 from __future__ import annotations
@@ -41,32 +49,42 @@ class FrameProfile:
 
 
 PROFILES: dict[str, FrameProfile] = {
-    "all_v1": FrameProfile("all_v1", None, False, "every frame as original JPEG (explicit opt-in; capped)"),
+    "all_v1": FrameProfile("all_v1", None, False, "every frame as original JPEG (explicit choice; capped)"),
     "dev_1hz_decisions_v1": FrameProfile(
         "dev_1hz_decisions_v1", 1.0, True,
         "dev/diagnostic only: 1 periodic frame per SIM s per stream + every decision frame"),
-    "none_v1": FrameProfile("none_v1", None, False, "default: no frame bytes, per-frame sha256 list only", "none"),
+    "none_v1": FrameProfile("none_v1", None, False, "no frame bytes, per-frame sha256 list only (dev/diag default)", "none"),
     "mp4_v1": FrameProfile("mp4_v1", None, False, "one H.264 mp4 per stream + per-frame sha256 list", "mp4"),
 }
-DEFAULT_PROFILE = "none_v1"
+DEFAULT_PROFILE = "none_v1"       # used only when the split is one of DEFAULT_SPLITS
+DEFAULT_SPLITS = ("dev", "diag", "smoke")
 REDUCED_SPLITS = ("dev", "diag")
 
 
 @dataclass
 class FrameStoragePolicy:
-    """Per-run policy; one instance per episode. ``split`` must be given for a reduced profile."""
+    """Per-run policy; one instance per episode. ``split`` must be given for a reduced profile.
 
-    profile: str = DEFAULT_PROFILE
+    ``profile=None`` means the default (``none_v1``) and is allowed only for dev/diag/smoke runs. Any other run
+    (test or pre-registered cohort, unknown split) must name its profile, so a run that needs its frames never
+    loses them by omission."""
+
+    profile: str | None = None
     split: str | None = None
     _last_periodic: dict[str, float] = field(default_factory=dict)
     _counts: dict[str, dict[str, int]] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
+        if self.profile is None:
+            if self.split not in DEFAULT_SPLITS:
+                raise ValueError(f"split {self.split!r} has no default frame profile; name one explicitly "
+                                 f"(all_v1 keeps the JPEGs, none_v1/mp4_v1 do not). Default only for {DEFAULT_SPLITS}")
+            self.profile = DEFAULT_PROFILE
         if self.profile not in PROFILES:
             raise ValueError(f"unknown frame profile {self.profile!r}; known: {sorted(PROFILES)}")
         if PROFILES[self.profile].reduced and self.split not in REDUCED_SPLITS:
             raise ValueError(f"frame profile {self.profile!r} is for splits {REDUCED_SPLITS}, not {self.split!r};"
-                             " test cohorts and pre-registered runs keep every frame (all_v1)")
+                             " test cohorts and pre-registered runs name all_v1 explicitly")
 
     def decide(self, stream: str, t: float, *, decision: bool = False, reason: str | None = None) -> dict:
         """Return ``{'saved': bool, 'why': str}`` for one frame of ``stream`` at SIM time ``t``."""
@@ -152,7 +170,7 @@ class FrameSink:
 
     HASH_LIST = "frames.sha256.jsonl"
 
-    def __init__(self, out_dir, profile: str = DEFAULT_PROFILE, *, split: str | None = None,
+    def __init__(self, out_dir, profile: str | None = None, *, split: str | None = None,
                  cap_mib: float = DEFAULT_WRITE_CAP_MIB, fps: float = 5.0):
         if cap_mib is None or cap_mib <= 0:
             raise ValueError("a positive per-run frame write cap (MiB) is required; there is no unlimited mode")

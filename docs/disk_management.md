@@ -107,12 +107,12 @@
 
 ## 4. raw 보존 등급 (사용자가 등급마다 결정)
 
-AGENTS.md에 따라 raw 삭제·압축·이동은 사용자가 정한다. 크기는 16:05 측정이다(줄기별 T4–T7만 15:26). 폴더 이름 기반 분류라 추정치다. "기록 참조"는 origin/main의 `experiments/`·`docs/`·`configs/`가 그 폴더를 가리키는지를 뜻한다. `python3 scripts/disk_report.py --sections outputs,retention`이 최신 목록과 참조 여부를 보여 준다.
+AGENTS.md에 따라 raw 삭제·압축·이동은 사용자가 정한다(이미지 원본 중 5절 보존 규칙에 해당하지 않는 것은 2026-10-04 결정으로 휴지통 이동 가능). 크기는 16:05 측정이다(줄기별 T4–T7만 15:26). 폴더 이름 기반 분류라 추정치다. "기록 참조"는 origin/main의 `experiments/`·`docs/`·`configs/`가 그 폴더를 가리키는지를 뜻한다. `python3 scripts/disk_report.py --sections outputs,retention`이 최신 목록과 참조 여부를 보여 준다.
 
 | 등급 | 대상 | GiB | 제안 |
 |---|---|---|---|
 | T0 기반 자료 | `tensorboard*`, `agent-locks`, 모델 설치본 | 0.47 | 유지 |
-| T1 test 코호트 raw | 이름에 test·final·holdout·cohort가 있는 폴더 | 8.53 (기록 참조 6.11, 참조 없음 2.41) | **기존 raw는 그대로 유지**(봉인 inventory 고정). 앞으로의 코호트는 5절 정책 |
+| T1 test 코호트 raw | 이름에 test·final·holdout·cohort가 있는 폴더 | 8.53 (기록 참조 6.11, 참조 없음 2.41) | 텍스트·로그·해시는 유지. 과거 실행의 이미지 원본은 5절 보존 규칙에 따라 정리할 수 있다(2026-10-04 결정). 앞으로의 본 연구 코호트는 사전 등록의 보존 기간 |
 | T2 dev·진단 raw | 이름에 dev·diag·pilot·probe·smoke·sweep이 있는 폴더 | 12.07 (기록 참조 6.63, 참조 없음 5.45) | 기록 참조분은 솎기 또는 외부 보관. 참조 없음분은 열린 PR의 기록인지 먼저 확인 |
 | T3 이전 worktree 보관분 | `retired-worktrees/` | 13.07 (오늘 이동분 포함) | 외부 보관 뒤 로컬 삭제 |
 | T4 퇴역 연구 raw | 실시간·시뮬레이션 속도 (9/23–24) | 5.92 | 외부 보관 또는 삭제 |
@@ -123,60 +123,85 @@ AGENTS.md에 따라 raw 삭제·압축·이동은 사용자가 정한다. 크기
 - 외부로 옮기기 전에 해당 기록의 `raw_index`·manifest 해시와 대조한다. 옮긴 뒤 새 위치를 기록에 추가한다. 로컬 사본만으로는 백업이 아니다.
 - T1–T7은 겹칠 수 있다(T6·T7 안에도 test·dev 폴더가 있다). 결정은 폴더 목록 단위로 한다.
 
-## 5. 프레임 저장 (2026-10-01 정책)
+## 5. 캡처 설정 (앞으로의 실행)
 
-2026-10-01 사용자 지시("80기가가 쌓이는 게 말이 안 된다")로 **원본 JPEG 프레임 보존 의무를 어떤 등급에도 두지 않는다.** 확증 코호트도 예외가 아니다. 삭제한 문장과 사유는 AGENTS.md의 "지침 변경 이력"에 있다. 이 절이 2026-09-27의 옛 5절(프레임 용도별 표, dev 1 Hz 솎기 결정)을 대체한다. `dev_1hz_decisions_v1`은 과거 실행의 재현용으로 코드에 남아 있다.
+AGENTS.md는 모델 요청·응답 **텍스트, 원장, 결과·trace 로그와 제거한 이미지의 sha256 목록을 항상** 보존하고, 이미지 원본(모델 요청 이미지·제어기 입력 프레임·원본 영상)은 보존 규칙 4가지(진행 중 작업·열린 PR·테스트가 쓰는 자료, 최근 3일 실행, 버전별 대표 영상, 사전 등록한 본 연구 코호트)에 해당할 때만 둔다고 정한다(2026-10-04 사용자 결정. 과거 실행은 연구 결과가 아니라 플랫폼 개발 과정이므로 이미지 원본을 지울 수 있다. 이전의 "모델 요청 이미지 전부 보존" 규칙은 폐기). 해당하지 않는 이미지 원본은 목록을 쓴 뒤 휴지통으로 옮기고 `outputs/cleanup-records/`에 기록하며, 휴지통은 사용자가 비운다. 아래 표는 러너가 **쓰는 시점**의 기준이고, 쓴 뒤의 정리는 이 규칙을 따른다. 먼저 프레임의 용도를 나눈다.
 
-### 5.1 등급별로 남기는 것
+| 종류 | 예 | test 코호트 | dev·진단 |
+|---|---|---|---|
+| 모델 요청 입력 (LLM·ACT·학습 학생) | `team/*-request.json`, ACT 입력 | 바이트 그대로 전부(본 연구 코호트는 사전 등록의 보존 기간, 보존 규칙 4) | 쓰는 시점엔 전부. 텍스트·해시는 항상 보존하고 이미지 원본은 보존 규칙에 따라 정리 |
+| 규칙 기반 제어 입력 프레임 | 자기 카메라 추정기·RGB 스킬의 5 Hz JPEG | 전부 | 1 Hz 표본 + 결정·단계 전환 프레임. 나머지는 해시만 |
+| 평가 전용 추가 캡처 | TOP·개관 이미지, `eval_only/` 렌더 | 저해상도 영상 1개 + 요약 프레임 | 영상만 |
+| 실행 영상 | `execution.mp4` | 유지(약 2 MB) | 유지 |
 
-| 남기는 것 | 확증·봉인 코호트 | dev·smoke·진단 |
+- 같은 이미지를 요청 JSON(base64)과 프레임 폴더에 두 번 저장하지 않는다. 한쪽은 해시로 가리킨다.
+- 추정 효과: M1형 dev 에피소드는 36 → 약 8–10 MiB, 3대 dispatch형 dev 실행은 224 → 약 40–60 MiB다.
+- 러너는 각 주인의 파일이므로 이 문서는 기준만 정한다. 적용 여부는 사용자와 러너 주인이 정한다.
+
+### 5.1 2026-09-27 결정과 공용 프로필
+
+코디네이터가 전달한 2026-09-27 사용자 결정은 "dev만 1초 1장, test는 5장 유지, 결정 시점 프레임은 항상 저장"이다. 이를 `harness/frame_storage.py`의 버전 고정 프로필로 만들었다(테스트 `tests/test_frame_storage.py`).
+
+| 프로필 | 쓰는 파일 | 허용 split |
 |---|---|---|
-| 결과 JSON, 모델 요청·응답 텍스트 | 전부 | 전부 |
-| 프레임별 sha256 목록 (`frames.sha256.jsonl`) | 전부 | 전부 |
-| 실행 영상 (`execution.mp4`) 등 mp4 | 유지(약 2 MB) | 유지 |
-| 프레임 묶음 mp4 (`mp4_v1`) | 필요할 때 선택 | 필요할 때 선택 |
-| 원본 JPEG 프레임 | **저장하지 않는다.** 필요한 실행만 `all_v1`을 명시하고 상한을 적는다 | 저장하지 않는다 |
-| 쓰기 상한 (실행당) | 기본 64 MiB(프레임 쓰기), 번들·설정에 명시 | 같음 |
+| `all_v1` | 원본 JPEG 전부. 09-27 이전 모든 러너, 과거 사전 등록의 동작이다. 보존 규칙 4가지(진행 중 작업·최근 3일·대표 영상·본 연구 코호트)에 해당하는 이미지를 쓰는 실행은 이것을 **명시적으로** 고른다 | 모두 |
+| `dev_1hz_decisions_v1` | 스트림(로봇 카메라·TOP)마다 1.0 SIM s에 주기 프레임 1장, 그리고 모든 결정 프레임 | `dev`, `diag`만. 그 밖의 split은 생성 시 `ValueError`로 거부 |
+| `none_v1` (dev·diag·smoke의 기본값) | 프레임 바이트 없음. 프레임마다 `{stream, index, t, sha256, bytes}` 한 줄만 쓴다 | 모두. 프로필 이름을 생략할 수 있는 것은 `dev`·`diag`·`smoke`뿐이다 |
+| `mp4_v1` | 스트림마다 H.264 mp4 하나(원본 JPEG을 ffmpeg로 보냄, crf 28) + 같은 해시 목록. 해시는 원본 JPEG의 것 | 모두 |
 
-- 프레임 sha256이 있으면 나중에 같은 이미지가 다시 나왔는지 대조할 수 있다. 이미지 자체를 복원하지는 못한다. 복원이 필요한 분석은 같은 소스·seed로 재생성한다.
-- **이미 봉인된 코호트가 고정한 inventory(sha256/size/mtime)는 과거 증거다.** 이 정책은 그 목록과 원본 파일을 바꾸지 않는다. 이미 쌓인 `outputs/`의 정리는 이 정책과 별개로 사용자 결정이며(AGENTS.md "보존"), 아래 5.4의 도구는 새 실행에만 쓴다.
-- TensorBoard 변환(`scripts/tensorboard_tools/zone_study.py`)은 요청 이미지 파일이 없어도 요청 행과 이미지 해시만으로 통과한다(`request_images_hash_only`로 개수 기록). 파일이 있는데 해시가 다르면 여전히 거절한다.
+- 결정 프레임은 세 가지다: 제어기가 요청한 capture, macro 뒤의 capture, 제어기가 이벤트를 내거나 단계를 바꾼 프레임. 결정 프레임은 주기 시계를 움직이지 않는다.
+- 파일을 쓰지 않은 프레임도 러너의 프레임 로그에 SIM 시간·sha256을 남긴다.
+- 모델 요청 이미지(LLM·ACT·학습 학생)는 이 프로필의 솎기 대상이 아니다. 쓴 뒤의 정리는 AGENTS.md 보존 규칙(텍스트·원장·로그·해시 항상, 이미지 원본은 4가지 조건)을 따른다.
+- 러너는 실행 기록(manifest)에 `FrameStoragePolicy.record()`를 넣는다. 프로필 이름이 실행 번들 조건의 일부가 된다([실행 버전 관리](execution_versioning.md)).
+- 예: `policy = FrameStoragePolicy('dev_1hz_decisions_v1', split='dev')`로 만든 뒤 프레임마다 `policy.decide(rid, now, decision=..., reason=...)['saved']`가 참일 때만 JPEG를 쓴다.
 
-### 5.2 프로필 (`harness/frame_storage.py`)
+**공용 기록 계층 조사 결과:** 모든 러너가 거치는 공용 프레임 기록 계층은 main에 없다. 러너마다 JPEG를 직접 쓴다. 이번 변경은 정책 모듈과 테스트만 넣었고, 어느 러너의 기본 동작도 바꾸지 않았다. 러너별 연결은 아래 순서로 주인이 한다.
 
-| 프로필 | 쓰는 것 | 비고 |
-|---|---|---|
-| `none_v1` (**기본값**) | 프레임 바이트 없음. 프레임마다 `{stream, index, t, sha256, bytes}` 한 줄 | 모든 split |
-| `mp4_v1` | 스트림마다 H.264 mp4 하나(원본 JPEG을 ffmpeg로 보냄, crf 28) + 같은 해시 목록 | 시청용(손실 압축). 해시는 원본 JPEG의 것 |
-| `all_v1` | 원본 JPEG 전부 (09-27 이전 러너의 동작) | **명시 선택만.** 상한은 그대로 적용 |
-| `dev_1hz_decisions_v1` | 1 Hz 표본 + 결정 프레임 JPEG | 과거 재현용, `dev`·`diag`만 |
+| 러너 (프레임을 쓰는 곳) | 쓰임 | 연결 방법 | 상태 |
+|---|---|---|---|
+| `harness/zone_own_team_host.py` `_capture_raw` (`frames_dir/<rid>/NNNNN.jpg`, 5 Hz) | 자기 카메라 실행기 3대 host: own-executor 스모크, vision-worker, 통합 러너(#229), 공동 운반(#235) | `OwnCamTeamHost(..., frame_profile=, split=)` 인자 추가. 주기 capture(`_physics_until`)는 `decision=False`로 넘긴다. `_decide_raw`의 capture와 macro 뒤 capture는 `decision=True`로 넘긴다. `on_frame` 중 `executor.events`가 늘어도 `decision=True`로 처리한다 | **보류**: 열린 PR #235(Codex)·#229(Kiro)가 이 파일을 고치는 중이라 병합 뒤 연결한다 |
+| `scripts/run_m1_owncam.py` (`frames/NNNNN.jpg`) | M1 1대 배달 dev·test | `--frame-profile`(기본 `all_v1`)과 `--split`. test 사전 등록 명령은 바꾸지 않는다 | 미연결 |
+| `scripts/run_zone_pair_dev.py`, `zone_pair_dev_runtime.py` (Codex 브랜치) | M2 공동 운반 dev | 위 host와 같은 방식 | **이번에 수정 금지**(Codex가 `ugrp-wt/codex-pair-grasp`에서 수정 중). 목록에만 남긴다 |
+| `harness/rgb_skill_execution.py` (`rgb/<oid>-<label>.jpg`) | 3대 dispatch RGB 스킬(`plan-guidance` 등) | 관측 id를 스트림으로 쓴다. 스킬 단계 전환·LLM 결정 직전 관측은 결정 프레임 | 미연결 |
+| `harness/task_stage_execution.py` (`rgb/<request>-<label>.jpg`) | 단계 요청 실행 | 요청마다 쓰는 이미지는 모델 요청 입력이라 **전부 쓴다**(프로필 대상 아님. 쓴 뒤 정리는 보존 규칙) | 해당 없음 |
+| `harness/rgb_communication_runtime.py`, `harness/camera_runtime.py` | RGB 대화·카메라 런타임(모델 요청) | 모델 요청 이미지라 **전부 쓴다**(쓴 뒤 정리는 보존 규칙) | 해당 없음 |
+| `scripts/record_owncam_localization.py`, `experiments/2026-09-26-vision-loc/run_vl_teacher_render.py` | 위치 추정 학습·평가 데이터 | 학습 표본이라 **전부 유지** | 해당 없음 |
+| `scripts/eval_zone_*`, `probe_*` | 인식 평가 렌더·진단 | 평가 표본은 전부 유지. 진단 probe는 러너 주인이 판단한다 | 미연결 |
 
-- `FrameSink(out_dir, profile, split=, cap_mib=, fps=)`가 프로필 적용·해시 목록·상한을 한곳에서 처리한다. `add(stream, t, jpeg, decision=, reason=)`로 프레임을 넣고 `close()`가 mp4를 마무리하며 manifest 블록(`ugrp.frame-storage.v2`: 프로필, 상한, 쓴 바이트, 상한 초과 여부)을 돌려준다. 러너는 이 블록을 실행 기록에 넣는다. 프로필 이름과 상한은 실행 번들 조건의 일부다([실행 버전 관리](execution_versioning.md)).
-- 상한 초과는 `FrameWriteCapExceeded`(OSError 하위, errno 없음)로 실행을 멈춘다. 과제 실패도 ENOSPC(HOST_ERROR)도 아니고 **설정된 상한 때문에 중단한 실행**이다. 사전 등록에는 이 종류를 따로 적는다(8절의 `host_error`와 구분).
-- 상한은 "무제한" 모드가 없다. 더 필요하면 번들·설정에 새 값을 적고 PR 본문과 기록에 이유를 남긴다.
-- 예(러너에 연결할 때): `sink = FrameSink(run_dir / 'frames', 'none_v1', split='dev', cap_mib=64)`; 캡처마다 `row = sink.add(rid, now, jpeg)`; 종료 시 `manifest['frame_storage'] = sink.close()`.
+- 효과(추정, 5 Hz 기준): 결정 프레임이 적은 구간에서 dev 프레임 파일은 약 1/5가 된다. M1형 dev 에피소드는 36 → 약 8–12 MiB다. 실제 비율은 연결 뒤 `record()`의 `saved/frames`로 확인한다.
 
-### 5.3 러너와 무관한 안전망
+### 5.2 쓰기 상한과 `FrameSink` (2026-10-01)
 
-`scripts/write_cap_guard.py`는 어떤 명령이든 감싸서 감시 폴더의 **증가분**(할당 바이트)이 상한을 넘으면 프로세스 그룹에 SIGTERM(그레이스 뒤 SIGKILL)을 보내고 `write-cap.json`을 남기며 종료 코드 3으로 끝난다. 상한 기본 512 MiB이며 무제한은 없다.
+2026-10-01 사용자 지시("80기가가 쌓이는 게 말이 안 된다")에 따라 **프레임을 쓰는 시점**에 양을 줄이는 도구를 넣었다. 이 도구는 위 보존 규칙(AGENTS.md "보존")을 바꾸지 않는다. 텍스트·원장·로그·sha256 목록은 항상 남기고, 이미지 원본은 보존 규칙 4가지에 해당할 때만 둔다. 쓰는 쪽은 **프레임이 필요 없는 실행에서 아예 쓰지 않거나 상한을 거는 것**만 한다.
+
+- `FrameSink(out_dir, profile, split=, cap_mib=, fps=)`가 프로필 적용·해시 목록(`frames.sha256.jsonl`, 프레임마다 flush)·실행당 쓰기 상한을 한곳에서 처리한다. `add(stream, t, jpeg, decision=, reason=)`로 프레임을 넣고 `close()`가 mp4를 마무리하며 manifest 블록(`ugrp.frame-storage.v2`)을 돌려준다. 프로필 이름과 상한은 실행 번들 조건의 일부다([실행 버전 관리](execution_versioning.md)).
+- 프로필을 생략하면 `none_v1`이지만 `dev`·`diag`·`smoke`일 때만이다. test·본 연구 코호트 등 그 밖의 split은 프로필을 반드시 적어야 하므로, 이미지가 필요한 실행이 생략 때문에 프레임을 잃는 일이 없다.
+- 상한은 기본 64 MiB이고 "무제한" 모드가 없다. 보존 규칙 4가지에 해당하는 실행이 더 필요하면 번들·설정(본 연구는 사전 등록)에 새 값을 적는다. 넘으면 `FrameWriteCapExceeded`(OSError 하위, errno 없음)로 멈춘다. 과제 실패도 ENOSPC(HOST_ERROR)도 아니고 **설정된 상한 때문에 중단한 실행**이므로 사전 등록에 따로 적는다(8절의 `host_error`와 구분).
+- 예: `sink = FrameSink(run_dir / 'frames', 'none_v1', split='dev', cap_mib=64)`; 캡처마다 `sink.add(rid, now, jpeg)`; 종료 시 `manifest['frame_storage'] = sink.close()`.
+- TensorBoard 변환(`scripts/tensorboard_tools/zone_study.py`)은 요청 이미지 파일이 보존 규칙에 따라 정리돼 없어도 요청 행과 이미지 sha256만으로 통과한다(`request_images_hash_only`로 개수 기록). 파일이 있는데 해시가 다르면 여전히 거절하고, 파일이 있으면 지금처럼 이미지를 올린다.
+
+### 5.3 러너와 무관한 안전망 (`scripts/write_cap_guard.py`)
+
+어떤 명령이든 감싸서 감시 폴더의 **증가분**(할당 바이트)이 상한을 넘으면 프로세스 그룹에 SIGTERM(그레이스 뒤 SIGKILL)을 보내고 `write-cap.json`을 남기며 종료 코드 3으로 끝난다. 상한 기본 512 MiB이고 무제한은 없다. 이 스크립트는 파일을 지우거나 옮기지 않는다.
 
 ```sh
 python3 scripts/ugrp_session.py run m1-dev -- \
   python3 scripts/write_cap_guard.py --watch /Users/changmin/projects/ugrp/outputs/<run> --max-mib 256 -- <실행 명령>
 ```
 
-`ugrp_session.py`·`harness/zone_own_team_host.py` 등 봉인된 의존성에 들어 있는 파일은 고치지 않았다(번들 해시·봉인 보존). 그래서 안전망이 별도 스크립트다.
+`ugrp_session.py`·`harness/zone_own_team_host.py` 등 봉인된 의존성에 들어 있는 파일은 고치지 않았다(번들 해시·봉인 보존). 그래서 안전망이 별도 스크립트다. 본 연구 코호트에 쓰면 상한을 사전 등록 크기에 맞춰 넉넉하게 정한다.
 
 ### 5.4 묶기 도구 (`scripts/pack_frames.py`)
 
 ```sh
 python3 scripts/pack_frames.py <실행 폴더>                       # 계획만 (프레임 수·크기)
 python3 scripts/pack_frames.py <실행 폴더> --execute              # mp4 + sha256 목록 쓰고 검증
-python3 scripts/pack_frames.py <실행 폴더> --execute --remove-originals   # 검증된 폴더의 JPEG만 삭제
+python3 scripts/pack_frames.py <실행 폴더> --execute --trash-originals --reason "<보존 4가지에 해당하지 않는 이유>"
 ```
 
-- `*.jpg`가 있는 폴더마다 옆에 `<폴더명>.mp4`와 `<폴더명>.sha256.jsonl`을 쓴다. 검증은 목록 행 수 = 파일 수, ffprobe가 읽은 프레임 수 = 파일 수다. 검증을 통과한 폴더만 `--remove-originals`로 지운다.
-- 삭제는 raw 삭제이므로 **사용자가 정한 대상에만** 쓴다(AGENTS.md "보존"). 봉인된 과거 코호트에는 쓰지 않는다.
+- `*.jpg`가 있는 폴더마다 옆에 `<폴더명>.mp4`와 `<폴더명>.sha256.jsonl`을 쓴다. 검증은 목록 행 수 = 파일 수, ffprobe가 읽은 프레임 수 = 파일 수다.
+- `--trash-originals`는 검증을 통과한 폴더의 JPEG을 **삭제하지 않고 휴지통(`~/.Trash/ugrp-pack-frames-<시각>/`)으로 옮기며**, 원래 경로·바이트가 든 기록을 `outputs/cleanup-records/pack-frames-<시각>-<폴더>.json`에 남긴다. 휴지통은 사용자가 비운다.
+- 최근 3일 안에 바뀐 JPEG이 있는 폴더는 거절한다(`--min-age-days`, 기본 3). `--reason`에 그 폴더가 진행 중 작업·열린 PR·버전별 대표 영상·사전 등록한 본 연구 코호트에 해당하지 않는 이유를 적어야 한다. 이 판단은 호출하는 사람의 책임이다. 봉인된 코호트가 고정한 inventory(sha256/size/mtime)가 가리키는 파일에는 쓰지 않는다.
 
 ### 5.5 측정 (2026-10-01, 실제 프레임 묶음 1회씩)
 
@@ -185,22 +210,8 @@ python3 scripts/pack_frames.py <실행 폴더> --execute --remove-originals   # 
 | M1 dev 에피소드 `m1-owncam-20260926/dev-a1/m1dev-s91/frames` (1,214장, 자기 카메라 5 Hz) | 18.7 MiB(`du`) / 16.38 MiB(논리) | 2.19 MiB (mp4 1.99 + 목록 0.18) → **88% 감소** | 0.18 MiB → **99% 감소** |
 | 3대 dispatch 실행 `plan-guidance-20260925/legacy-1/rgb` (3,406장, 자기·TOP 섞임) | 187.3 MiB(`du`) / 181.30 MiB(논리) | 24.19 MiB (mp4 23.6 + 목록 0.52) → **87% 감소** | 0.52 MiB → **99.7% 감소** |
 
-- 원본은 읽기만 했고 복사본(스크래치)에서 묶었다. 두 표본 모두 `pack_frames.py --execute` 검증이 통과했다(목록 행 수·디코딩 프레임 수 일치). 표의 수치는 `FrameSink`(실제 구현)에 같은 프레임을 넣어 잰 폴더 합계다(`pack_frames.py`의 목록은 필드가 적어 더 작다). 감소율은 `du` 기준이다.
-- 이 수치는 프레임 파일만이다. 같은 실행의 결과 JSON·모델 요청 텍스트·영상은 그대로 남는다(옛 5절 기준 dev M1 36 MiB 중 프레임이 약 23–43 MiB).
-- 러너 연결 전에는 위 효과가 자동으로 나타나지 않는다. 아래 5.6 참고.
-
-### 5.6 러너 연결 상태
-
-공용 프레임 기록 계층은 main에 없고 러너마다 JPEG을 직접 쓴다. 아래 러너는 봉인된 실행 번들·의존성 해시에 들어 있어, 고치면 새 번들 ID와 재검증이 필요하다. 이 PR은 번들 ID를 쓰지 않았고 러너 동작을 바꾸지 않았다. 각 러너의 주인이 다음 새 번들 등록 때 `FrameSink`를 연결한다.
-
-| 러너 (프레임을 쓰는 곳) | 연결 방법 |
-|---|---|
-| `harness/zone_own_team_host.py` `_capture_raw` (5 Hz, M2는 `frames_dir` 필수 검사 포함) | `FrameSink.add`로 교체, M2의 "frames_dir 필수" 검사를 "FrameSink 필수"로 바꾼다 |
-| `scripts/run_m1_owncam.py` | 위와 같음 |
-| `harness/rgb_skill_execution.py` `save_observation`, `harness/task_stage_execution.py`, `harness/rgb_communication_runtime.py` | 모델 요청 이미지도 원본 JPEG 의무가 없다. 요청 텍스트·해시 목록은 유지 |
-| `scripts/eval_zone_*`, `probe_*` | 평가 렌더도 기본은 `none_v1`/`mp4_v1`; 평가 표본 이미지가 필요한 분석은 `all_v1`과 상한을 명시 |
-
-그때까지 새 dev·smoke 실행은 5.3의 안전망으로 실행당 쓰기량을 막고, 끝난 실행은 5.4로 묶는다.
+- 원본은 읽기만 했고 복사본(스크래치)에서 묶었다. 두 표본 모두 `pack_frames.py --execute` 검증이 통과했다(목록 행 수·디코딩 프레임 수 일치). 수치는 `FrameSink`에 같은 프레임을 넣어 잰 폴더 합계이고 감소율은 `du` 기준이다. 프레임 파일만의 수치이며 결과 JSON·요청 텍스트·영상은 그대로 남는다.
+- `FrameSink`를 러너에 연결하기 전에는 이 절감이 자동으로 나타나지 않는다. 위 5.1 표의 러너들이 봉인된 번들 해시에 들어 있어, 주인이 다음 새 번들 등록 때 연결한다(`FrameSink.add`로 교체). 그때까지 새 dev·smoke 실행은 5.3의 안전망으로 쓰기량을 막고, 끝난 실행은 5.4로 묶되 보존 규칙 4가지에 해당하지 않을 때만 JPEG를 휴지통으로 옮긴다.
 
 ## 6. 예산 (제안, 사용자 확정 필요)
 
@@ -227,7 +238,7 @@ python3 scripts/pack_frames.py <실행 폴더> --execute --remove-originals   # 
    - `git worktree remove`를 직접 쓰지 않는다. `--force`는 쓰지 않는다. `git status --porcelain`만 보고 지우지 않는다(무시 파일이 안 보인다).
    - 다른 에이전트의 worktree는 주인이나 사용자가 정한다.
    - Codex-app worktree(`~/.codex/worktrees/<이름>/ugrp`)도 같은 절차이며, 은퇴 폴더 이름은 `codex-<이름>`이다.
-4. **Git 미디어:** `experiments/`에는 기록(JSON·Markdown·작은 그림)만 둔다. 영상·큰 로그는 `outputs/`에 두고 sha256을 기록한다. 원본 JPEG 프레임은 기본으로 저장하지 않는다(5절). 경고는 `scripts/check_media_size.py`(pre-commit·CI)가 낸다.
+4. **Git 미디어:** `experiments/`에는 기록(JSON·Markdown·작은 그림)만 둔다. raw 프레임·영상·큰 로그는 `outputs/`에 두고 sha256을 기록한다. 경고는 `scripts/check_media_size.py`(pre-commit·CI)가 낸다.
 5. **확인:** `python3 scripts/disk_report.py`(읽기 전용, 약 2–3분)로 사용량·예산·은퇴 후보를 본다.
 
 ## 8. 사전 등록 지침: 디스크 부족은 HOST_ERROR

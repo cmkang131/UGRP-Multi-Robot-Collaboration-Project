@@ -1,0 +1,133 @@
+{
+  "implementation_sha": "fb3f23b5077d8be29d1c87832c9a0d1ba3595c32",
+  "unique_latest_results": {
+    "passed": 507
+  },
+  "junit_reports_in_supersession_order": [
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/guard.xml",
+      "sha256": "3f98698d3312bdc13f126ba3c30193dd5159713ad704eee515b327901b3103f6",
+      "tests": 32,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 37.718
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/registration.xml",
+      "sha256": "5f4a547dea2994112b54cb99aff7d3eb0730ca02a2ec609286b1ba575e98048f",
+      "tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 65.59
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/related.xml",
+      "sha256": "0e93a9d2db0e28fe8a222011f65a80113472855d06a29446fb28f522d654ac9b",
+      "tests": 315,
+      "failures": 1,
+      "errors": 0,
+      "seconds": 344.269
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/ci.xml",
+      "sha256": "272d275c9cb890b3b95654424bc7dfc303979e59661a3ec7f9bf097e019380f3",
+      "tests": 92,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 9.557
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/final-delta.xml",
+      "sha256": "e3c456aba735c54fb1c495293a272a9dd83bb765ae426168f3c57b3eb429f244",
+      "tests": 32,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 4.846
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/legacy-successor.xml",
+      "sha256": "d0b8e28fb172decd9defc61befd8f0b7fdfc3a57e7076218fafcb7ff65482654",
+      "tests": 25,
+      "failures": 1,
+      "errors": 0,
+      "seconds": 110.842
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/handoff.xml",
+      "sha256": "58deaada9ddfef225273be4b309b75fe461d8b8a1d950c3212f17d1e4a16defb",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 0.407
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/final.xml",
+      "sha256": "eaab0aa9080c1e62a7020bda4725d6b50d7d1e785feaaed60f8a10f37765b76b",
+      "tests": 88,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 144.458
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/replay-final-junit/replay.xml",
+      "sha256": "c08b8a6192b6b9564307b3a1240354e0c326bc3787c05e02fa101f0a15475871",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 67.721
+    },
+    {
+      "path": "/Users/changmin/projects/ugrp/outputs/calib-fast-guard-validation/local-junit/ci-final.xml",
+      "sha256": "6c0e3a5e0609932c3aeab46a8546059a5c7f0c58f3da79329dd296da183cb19e",
+      "tests": 92,
+      "failures": 0,
+      "errors": 0,
+      "seconds": 8.599
+    }
+  ],
+  "ci_duration_coverage": {
+    "known": 413,
+    "total": 416
+  },
+  "known_exclusion": "test_parent_exit_cleans_background_child (existing unrelated process cleanup); remains in CI",
+  "checks": [
+    "3 frozen fixtures present",
+    "v63 verify-current passed",
+    "verify-registry against 6f8460ad passed",
+    "check_media_size against 6f8460ad passed",
+    "git diff --check passed"
+  ],
+  "rendering": false,
+  "new_collection_runs": 0,
+  "extraction_directories_created": [],
+  "verified_code_sha": "1cbb1ad4f0a38c1b08f0c559419f5339612eb8ed",
+  "verified_files_sha256": {
+    "configs/ci_test_durations.json": "b345c7f19247972e874d7d6466f918d54d35d745dd05e53ebfdd7dabedf5ef1a",
+    "configs/simulation_workflows.d/final_pair_v91.json": "dbaf9a21f988a52d324db0c89b5013594e8c12eeaedcd549d9ee537d75697737",
+    "configs/zone_final_pair_v91.json": "a07d412ced2e5e301c327a07f61ca5ab6bc4cfe1f2c8b7b7f33740e4b3a29307",
+    "harness/zone_final_pair_fast.py": "1c81b0f3b4987222532773b35db120d21761c668ee9e21c3703b8062946d1da8",
+    "harness/zone_final_pair_fast_clearance.py": "98c076b73bf1829307f05dc075f4a30f3caaebdc31d1a9af38be4c06a9ff1050",
+    "scripts/agent_lock.py": "9fd7ef3dc9a2f781b542342c81a4067be88a001c1b01a4fd83c26dbd48adc458",
+    "scripts/run_ci_tests.py": "ad3e63b6b7783eb7d7b755d22d6cee3237b4c7e525fb790d2141f8c6302301f2",
+    "scripts/run_final_pair_fast.py": "8b46f7fbb8a2693529ec5a92787d37afa413f44a82693b2d31983dd932ebd196",
+    "scripts/verify_final_pair_fast_guard.py": "adfcf6da72d873ee55e82c2cc490c78e06d54922af11ffdfd7b71479c5a744f2",
+    "sim/final_pair_fast.py": "c7cbd1cd2fa891cc5475d8ad7876842611ab1eb363b243aa0d37ba4bbf804080",
+    "sim/final_pair_fast_guard.py": "c93c5f0216ef1666f9ddb31733e90de3e4d9d4827a2702c4c3de237cf164cdc7",
+    "tests/agent_lock_successor.py": "b7b97c12064a31acc989e1fc1a4d1b9377a8fd1504d14c28948ea12eedb3030a",
+    "tests/test_agent_sim_slots.py": "e2eb82d305aea9079e160e7f7d7f52d1677e27f0bedb5d6f54ad6083cfb7522f",
+    "tests/test_final_environment_measurement_v2.py": "09454f029b08f59ef6b70ff5cd38393dfe02f741369f28fd80394c712530b7fa",
+    "tests/test_final_pair_fast_guard.py": "982debefd0d0c2e6799fbee2a1df295fcd1ccc211de6a1a986ad661abdc944ea",
+    "tests/test_final_pair_fast_replay.py": "70957330b7883e8d67373c09926fedfa8df5c7519dbba9630defa97ddb6579b5",
+    "tests/test_review_352.py": "f566581373c03c15f47201fd814935724066f7ac61569e2af1a06907aa9e6f0d",
+    "tests/test_simulation_workflow_manager.py": "7955626423a173716365d3d33edb7976e0dafe1eb437aca31f9a6e1762d37e7f",
+    "tests/test_zone_final_environment_floor_light.py": "ce0a3d3f056632e25eeeb39e0bc13fd73eb48db55eee207f326a24fcd2a9e890",
+    "tests/test_zone_final_pair_fast.py": "9c7fd8397274a42e38c845b6a68e1e0e6ba34979d8482d0602b765bf16c3b9c0",
+    "tests/test_zone_final_pair_heldout.py": "0e640c7c818323af5ab98756317c2eb9fa84750f4bb60730dff201188acc9b07"
+  },
+  "ci_duration_estimates_provenance": {
+    "new_files": "local-junit/guard.xml and registration.xml",
+    "replay_update": "replay-final-junit/replay.xml",
+    "script": "scripts/refresh_ci_durations.py",
+    "existing_CI_values": "unchanged"
+  }
+}

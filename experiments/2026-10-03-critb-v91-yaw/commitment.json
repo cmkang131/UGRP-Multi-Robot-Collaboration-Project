@@ -1,0 +1,15 @@
+{
+  "id": 5966135675,
+  "html_url": "https://github.com/cmkang131/UGRP-Multi-Robot-Collaboration-Project/issues/219#issuecomment-5966135675",
+  "created_at": "2026-10-03T05:56:19Z",
+  "updated_at": "2026-10-03T05:56:19Z",
+  "body": "## 회전(yaw) 후보 고정 기록 — v91 채점 전 (2026-10-03T05:56:17Z)\n\nv91 held-out 원자료는 아직 채점·열람하지 않았다. 아래 두 파일을 채점 전에 고정한다 (PR #360, 커밋 `c3af0783`).\n\n| 파일 | sha256 |\n|---|---|\n| `experiments/2026-10-03-critb-rotation/consumer_criterion_B_rotation.json` (부록) | `6129f144c840510535de053ffcce325ef934e8192c6adf777b2df8d976f5da08` |\n| `calibration_candidate_r5_yaw.json` (회전 후보) | `978727fcacc5e368efe2a0fdf6d9d8dc3756573c41e896e06ba11d78cf86fb97` |\n\n- 학습 자료만 사용: r4의 v89 + 훈련 지도 `zone_wide_two_doors_final_v3`의 v88 unloaded.\n- 적합값: yaw gain 1.0725221566, 주행/정지 tau 0.1677086867 / 0.0373672116 s, 잡음 rel/abs 0.1116 / 0.01546114077. 훈련 최저 2σ 포함률 95.0106% (895/942).\n- 판정 규칙은 동결 B 그대로 (모든 시간·성분 p95(|e|/σ) ≤ 2, 2σ 포함률 ≥ 90%). 검증 자료는 v91 corridor + door-geometry (앞선 고정 기록 #219 comment 5958329647).\n- 결과가 실패여도 그대로 기록하고 v91로 다시 적합하지 않는다.\n\nRefs #219 #344 #360\n",
+  "schema": "ugrp.criterion_B_v91_yaw_commitment.v1",
+  "body_sha256": "a878f54a20b27db812bac783b82545bcb0047c0dc0c26b9b4390728ba784dbc7",
+  "listed_sha256": {
+    "experiments/2026-10-03-critb-rotation/consumer_criterion_B_rotation.json": "6129f144c840510535de053ffcce325ef934e8192c6adf777b2df8d976f5da08",
+    "experiments/2026-10-03-critb-rotation/calibration_candidate_r5_yaw.json": "978727fcacc5e368efe2a0fdf6d9d8dc3756573c41e896e06ba11d78cf86fb97"
+  },
+  "ordering_kind": "PRE_SCORING_AND_READING_NOT_PRE_COLLECTION",
+  "collection_precedes_commitment": true
+}

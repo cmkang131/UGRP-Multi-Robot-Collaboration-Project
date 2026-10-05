@@ -1,0 +1,128 @@
+{
+ "schema": "ugrp.highpose_arrival_confirm_fixture.v1",
+ "posture_key": "740,2320,1320,1500",
+ "frames": {
+  "false_arrival_r1_t118p50": {
+   "file": "false_arrival_r1_t118p50.jpg",
+   "robot": "r1",
+   "sim_time": 118.49999999892582,
+   "frame_id": 2345,
+   "sha256": "c6cd878999377df6a7cab18eb0a609c00ecac8df4bec3f89d39d26647d5330ce",
+   "frames_jsonl_sha256": "c6cd878999377df6a7cab18eb0a609c00ecac8df4bec3f89d39d26647d5330ce",
+   "commanded_servo": {
+    "1": 2000,
+    "3": 740,
+    "4": 2320,
+    "5": 1320,
+    "6": 1500
+   },
+   "source": "outputs/v98-dev-probe-raise_high-1f7fb800/zone_wide_door_geometry_v3/robots/r1/rgb/02344.jpg"
+  },
+  "stop_r1_t31p30": {
+   "file": "stop_r1_t31p30.jpg",
+   "robot": "r1",
+   "sim_time": 31.30000000005844,
+   "frame_id": 601,
+   "sha256": "1291a1efc81cee0d76a7061eb0a698287a3832cd2d1cf8433f9329dc1f2dd690",
+   "frames_jsonl_sha256": "1291a1efc81cee0d76a7061eb0a698287a3832cd2d1cf8433f9329dc1f2dd690",
+   "commanded_servo": {
+    "1": 2000,
+    "3": 740,
+    "4": 2320,
+    "5": 1320,
+    "6": 1500
+   },
+   "source": "outputs/v98-dev-probe-raise_high-1f7fb800/zone_wide_door_geometry_v3/robots/r1/rgb/00600.jpg"
+  },
+  "dock_r1_t10p20": {
+   "file": "dock_r1_t10p20.jpg",
+   "robot": "r1",
+   "sim_time": 10.199999999998903,
+   "frame_id": 179,
+   "sha256": "318f11d98fe0cc1d22c9b0e01e00a499326eee0a2494892ff396dbf77c8ec018",
+   "frames_jsonl_sha256": "318f11d98fe0cc1d22c9b0e01e00a499326eee0a2494892ff396dbf77c8ec018",
+   "commanded_servo": {
+    "1": 2000,
+    "3": 740,
+    "4": 2320,
+    "5": 1320,
+    "6": 1500
+   },
+   "source": "outputs/v98-dev-probe-raise_high_align-1f7fb800/zone_wide_door_geometry_v3/robots/r1/rgb/00178.jpg"
+  },
+  "dock_r2_t10p10": {
+   "file": "dock_r2_t10p10.jpg",
+   "robot": "r2",
+   "sim_time": 10.099999999999136,
+   "frame_id": 177,
+   "sha256": "29c60c732b23e53c658d06df286913eff8ca8dd8798ed125614bb965f1022975",
+   "frames_jsonl_sha256": "29c60c732b23e53c658d06df286913eff8ca8dd8798ed125614bb965f1022975",
+   "commanded_servo": {
+    "1": 2000,
+    "3": 740,
+    "4": 2320,
+    "5": 1320,
+    "6": 1500
+   },
+   "source": "outputs/v98-dev-probe-raise_high_align-1f7fb800/zone_wide_door_geometry_v3/robots/r2/rgb/00176.jpg"
+  }
+ },
+ "plan": {
+  "sheet": {
+   "beam_xyyaw": [
+    1.0,
+    0.0,
+    0.0
+   ],
+   "grid": {
+    "xy_m": 0.1,
+    "yaw_rad": 0.174533
+   },
+   "source": "coarse order sheet (setup pose rounded to the sheet grid; static, fixed before the run)"
+  },
+  "beam_geometry": {
+   "center_m": [
+    0.0,
+    0.0,
+    0.016
+   ],
+   "half_extents_m": [
+    0.3,
+    0.02,
+    0.016
+   ],
+   "grasps": {
+    "end_neg": {
+     "xyz_m": [
+      -0.27,
+      0.0,
+      0.024
+     ],
+     "yaw_rad": 0.0
+    },
+    "end_pos": {
+     "xyz_m": [
+      0.27,
+      0.0,
+      0.024
+     ],
+     "yaw_rad": 3.141592653589793
+    }
+   }
+  },
+  "prestations": {
+   "r1": [
+    0.22679999999999995,
+    0.0,
+    0.0
+   ],
+   "r2": [
+    1.7732,
+    -6.16242269330948e-17,
+    3.141592653589793
+   ]
+  },
+  "map_sha256": "2302d273bcd30a9cc9d3166c753f2d40fcf3f03654369d23cd00324b4ca4688d"
+ },
+ "source_note": "frames copied unchanged from the DEV stage probes at 1f7fb800; plan = student_record plan of the same run (static order sheet, beam spec, pre-stations)"
+}

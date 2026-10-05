@@ -1,0 +1,128 @@
+{
+  "open_prs": [
+    {
+      "headRefName": "claude/frame-storage-policy",
+      "headRefOid": "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f",
+      "number": 353
+    },
+    {
+      "headRefName": "codex/calib-heldout-maps",
+      "headRefOid": "d92efd8d7381a270ff266c01d7534dc8ab1c89f8",
+      "number": 352
+    },
+    {
+      "headRefName": "codex/calib-measured-v88",
+      "headRefOid": "9134d7e12de1d4748a85904dee63c12b682f2dca",
+      "number": 351
+    },
+    {
+      "headRefName": "codex/integ-target-backend",
+      "headRefOid": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+      "number": 339
+    },
+    {
+      "headRefName": "codex/outputs-retention",
+      "headRefOid": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+      "number": 309
+    },
+    {
+      "headRefName": "codex/stall-d1-prereg",
+      "headRefOid": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+      "number": 293
+    }
+  ],
+  "branches": [
+    {
+      "ref": "origin/main",
+      "sha": "11e9aa26954d3f1ce58c5116ddd14ec2b2738037",
+      "runnable_ids": [
+        "origin/main:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/main:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/main:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/main:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/main:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "v90": []
+    },
+    {
+      "ref": "origin/claude/frame-storage-policy",
+      "sha": "6fc4b415634c9b2d5362a419bb1a1b5b50b6c37f",
+      "runnable_ids": [
+        "origin/claude/frame-storage-policy:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/claude/frame-storage-policy:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/claude/frame-storage-policy:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/claude/frame-storage-policy:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/claude/frame-storage-policy:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "v90": []
+    },
+    {
+      "ref": "origin/codex/calib-heldout-maps",
+      "sha": "d92efd8d7381a270ff266c01d7534dc8ab1c89f8",
+      "runnable_ids": [
+        "origin/codex/calib-heldout-maps:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/calib-heldout-maps:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/calib-heldout-maps:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/calib-heldout-maps:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/calib-heldout-maps:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "v90": [
+        "origin/codex/calib-heldout-maps:configs/simulation_workflows.d/final_pair_v90.json:5:      \"id\": \"zone-final-pair-heldout-v90\",",
+        "origin/codex/calib-heldout-maps:configs/simulation_workflows.d/final_pair_v90.json:6:      \"version\": \"3.2.0\",",
+        "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:3:  \"execution_bundle_id\": \"zone-final-pair-v90\",",
+        "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:5:  \"workflow_id\": \"zone-final-pair-heldout-v90\",",
+        "origin/codex/calib-heldout-maps:configs/zone_final_pair_v90.json:6:  \"workflow_version\": \"3.2.0\",",
+        "origin/codex/calib-heldout-maps:harness/zone_final_pair_heldout.py:9:BUNDLE_ID = 'zone-final-pair-v90'",
+        "origin/codex/calib-heldout-maps:harness/zone_final_pair_heldout.py:12:WORKFLOW_ID = 'zone-final-pair-heldout-v90'"
+      ]
+    },
+    {
+      "ref": "origin/codex/calib-measured-v88",
+      "sha": "9134d7e12de1d4748a85904dee63c12b682f2dca",
+      "runnable_ids": [
+        "origin/codex/calib-measured-v88:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/calib-measured-v88:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/calib-measured-v88:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/calib-measured-v88:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/calib-measured-v88:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "v90": []
+    },
+    {
+      "ref": "origin/codex/integ-target-backend",
+      "sha": "9912bb15bb492bab0f9278fc493feed1547ff8ee",
+      "runnable_ids": [
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/integ-target-backend:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "v90": []
+    },
+    {
+      "ref": "origin/codex/outputs-retention",
+      "sha": "c8379bbe16492687af9d7b2d04f85e4ae4c610cc",
+      "runnable_ids": [
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/outputs-retention:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "v90": []
+    },
+    {
+      "ref": "origin/codex/stall-d1-prereg",
+      "sha": "d86cc82eedbe0c6693eaf808c54ce43387723f1d",
+      "runnable_ids": [
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:22:RUNNABLE_ID = \"rgb-standard-dispatch-v63\"",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:129:    if bundle_id not in {RUNNABLE_ID, BASELINE_ID, *RETIRED_IDS}:",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:138:    if require_runnable and (bundle_id != RUNNABLE_ID or value[\"status\"] != \"experimental_unqualified\"):",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:144:    if bundle_id == RUNNABLE_ID and set(value.get(\"identity_binding\", [])) != REQUIRED_IDENTITY_BINDING:",
+        "origin/codex/stall-d1-prereg:harness/rgb_execution_bundle.py:147:    if bundle_id == RUNNABLE_ID:"
+      ],
+      "v90": []
+    }
+  ]
+}

@@ -67,6 +67,14 @@ python3 scripts/ugrp_session.py run kiro-m1 -- python3 scripts/sim_slots.py run 
 
 제어기가 지정 단계(`phase_times` 키 형식)에 들어가면 다음 결정 전에 끝낸다. 그 전까지는 전체 임무와 같은 궤적·명령·프레임이다. 출력에 `DEV_SLICE_NOT_A_RESULT.txt`가 생기며 M1 결과로 보고하지 않는다. 동결·시험 판단은 전체 임무로 한다. 문 통과·배치 같은 뒤쪽 단계부터 시작하는 slice는 제어기 진입점이 필요해 아직 없다(실험 기록 참조).
 
+## 5a. v98 pair 경로: 감시 장치와 `v98-exact-v6` (2026-10-05)
+
+- `scripts/run_pair_highpose_walltime.py --speedups v98-exact-v6 -- <run_pair_highpose.py 인자>`가 연구 실행용 비트 동일 세트다(v1 + `pf_geometry_shared` + `opencv_exact`). `render_pipeline`은 끈다.
+- 감시 장치(`sim/walltime_monitor.py`)는 SIM 10초 창마다 단계별 wall/CPU, 부하, swap을 실행 루트 `walltime_profile.jsonl`에 쓴다. macOS `perf_counter`는 수면 시간을 빼므로 `clock_wall_s`를 함께 본다.
+- 두 실행 폴더의 바이트 비교: `scripts/compare_v98_runs.py`(정확한 허용 경로만).
+- zsh 실행기에는 `setopt NO_BG_NICE`를 넣는다(기본값이면 `&` 작업이 nice 5). 실행은 한 번에 1개, nice 0.
+- 근거·측정: [실험 기록](../experiments/2026-10-05-sim-walltime-monitor/README.md).
+
 ## 6. 원격 병렬 코호트(실행하지 않음)
 
 | 경로 | 병렬성·비용 | 절차·주의 |

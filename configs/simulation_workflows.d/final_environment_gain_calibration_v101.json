@@ -1,0 +1,19 @@
+{
+  "schema": "ugrp.local_workflow_catalog.v1",
+  "workflows": [
+    {
+      "id": "zone-final-environment-gaincal-v101",
+      "version": "1.0.0",
+      "purpose": "DEV unloaded gain/lag calibration (v101): open-loop forward/left/turn steps at the approach command amplitudes and held-out mixed/replay commands; teacher ground truth for offline calibration only",
+      "entry": "scripts/run_final_environment_gain_calibration_v101.py",
+      "runner": "scripts.run_final_environment_gain_calibration_v101",
+      "docs": "experiments/2026-10-05-unloaded-gain-calibration-v101/PREREGISTRATION.md",
+      "requires": "Committed expected SHA; owned non-exclusive --sim-slot or exclusive host lock; unloaded diagnostic only; static-map abort interlock plus corner preflight; no student/model; one registered run per invocation",
+      "output_flag": "--output",
+      "output_kind": "directory",
+      "required_inputs": ["--check", "--run-id", "--expected-source-sha", "--seed"],
+      "side_effect": "local_simulation",
+      "adapter": "managed_legacy_cli"
+    }
+  ]
+}

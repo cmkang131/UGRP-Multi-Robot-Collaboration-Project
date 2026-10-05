@@ -1,0 +1,23 @@
+{
+  "source_head": "61a965f913fff879b965dfc4c120e2284dc6ba16",
+  "origin_main": "11e9aa26954d3f1ce58c5116ddd14ec2b2738037",
+  "scope": "Synthetic offline regressions only; no physics, rendering, model calls or shared outputs access.",
+  "related": {
+    "file": "related-final.xml",
+    "summary": {
+      "name": "pytest",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "tests": "338",
+      "time": "335.823",
+      "timestamp": "2026-10-02T14:06:57.428096+09:00",
+      "hostname": "gangchangmin-ui-MacBookAir.local"
+    },
+    "original_sha256": "ba9d17e61d2ffe4221603b3528320e9aa23dde307ea77ca4063a80256235096a",
+    "saved_sha256": "21ac58e3bc72d2f3b6f53c029b7c79c3b760d14f307ee906f0f4fe4e1c71b9f9"
+  },
+  "command": "OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 /opt/anaconda3/bin/python3 -m pytest -q tests/test_final_pair_calibration_assembly.py tests/test_review_351.py tests/test_consumer_criterion_b.py tests/test_final_environment_unloaded_fit.py tests/test_zone_final_pair_v3.py tests/test_zone_final_pair_review_fixes.py --basetemp=/private/tmp/ugrp-fix-351-resume-tests --junitxml=/private/tmp/ugrp-fix-351-resume-related.xml",
+  "frozen_criteria_equal_to": "87aa99c337f700586f01039e40c6ad4dce410afa",
+  "review_copy_equal_to": "ef1320b164f337afa7f9d1a43967f8c5d86f46df"
+}

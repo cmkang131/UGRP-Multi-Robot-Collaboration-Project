@@ -1,0 +1,335 @@
+{
+  "qualification": "Working-tree offline plans; source_sha is base HEAD, not a physics execution SHA",
+  "plans": {
+    "zone_wide_door_geometry_v3": {
+      "execution_bundle_id": "zone-final-pair-v90",
+      "status": "DRAFT_UNSEALED",
+      "check": "calibration-unloaded",
+      "collection_role": "HELD_OUT_VALIDATION",
+      "training_eligible": false,
+      "teacher_only": true,
+      "execution_started": false,
+      "cases": [
+        {
+          "id": "zone_wide_door_geometry_v3",
+          "map_id": "zone_wide_door_geometry_v3",
+          "checkpoint": null,
+          "sim_cap_s": 370.0
+        }
+      ],
+      "denominator": 1,
+      "runnable": true,
+      "blocked_on": [],
+      "source_sha": "2523269857596ffdd1a8cda9814a6e92f399f1da",
+      "seed": 911,
+      "bundles_sha256": [
+        "fb4320cf55158b431fd495aca34c89741834d80ebf8526aa7713855b13c86e81"
+      ],
+      "physical_success": null,
+      "clearance_preflight": [
+        {
+          "admitted": true,
+          "envelope_policy": "ADVISORY",
+          "scope": "SIMULATION_ONLY_TEACHER_CALIBRATION",
+          "decision": "2026-10-01 coordinator decision 2",
+          "reason": "START_POSE_CLEAR_INTERLOCK_REQUIRED",
+          "start_pose_check": {
+            "admitted": true,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "body_radius_bound_m": 0.4,
+                "required_wall_distance_m": 0.7,
+                "wall_distance_from_start_m": 1.025,
+                "remaining_clearance_m": 0.32499999999999996,
+                "admitted": true
+              }
+            }
+          },
+          "runtime_interlock": {
+            "required": true,
+            "minimum_m": 0.3,
+            "abort_buffer_m": 0.05,
+            "robot_radius_bound_m": 0.4,
+            "max_substep_displacement_m": 0.01,
+            "checks": [
+              "before_substep",
+              "after_substep",
+              "before_command",
+              "eval_0.05_s"
+            ],
+            "invalid_geometry": "hold_then_HOST_ERROR",
+            "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+          },
+          "no_cancellation_bound": {
+            "admitted": false,
+            "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+            "method": "whole_schedule_absolute_command_integral",
+            "sign_cancellation": "none",
+            "qualification": "ADVISORY_CONDITIONAL_NO_CANCELLATION_BOUND",
+            "sim_window_s": [
+              0.0,
+              370.0
+            ],
+            "gain_upper": {
+              "forward": 2.62,
+              "left": 1.86,
+              "turn": 2.299928292866358
+            },
+            "robot_radius_bound_m": 0.4,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "absolute_command_integral_s": {
+                  "forward": 1.51,
+                  "left": 1.51,
+                  "turn": 1.51
+                },
+                "translation_bound_m": 6.764800000000001,
+                "absolute_yaw_bound_rad": 3.4728917222282,
+                "tip_radius_from_chassis_m": 0.4,
+                "yaw_tip_excursion_bound_m": 0.8,
+                "excursion_bound_m": 7.564800000000001,
+                "beam_radius_added_m": 0.0,
+                "disc_radius_m": 8.264800000000001,
+                "wall_distance_from_start_m": 1.0250000000000004,
+                "remaining_clearance_m": -7.239800000000001,
+                "wall_free": false
+              }
+            }
+          },
+          "pair_cancellation_estimate": {
+            "admitted": false,
+            "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+            "method": "peak_signed_steps_plus_absolute_prbs",
+            "sign_cancellation": "within_robot_step_pairs_only",
+            "qualification": "ADVISORY_ESTIMATE_NOT_A_MOTION_BOUND; symmetric fixed-axis step response assumed",
+            "sim_window_s": [
+              0.0,
+              370.0
+            ],
+            "gain_upper": {
+              "forward": 2.62,
+              "left": 1.86,
+              "turn": 2.299928292866358
+            },
+            "robot_radius_bound_m": 0.4,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "translation_bound_m": 2.732800000000001,
+                "absolute_yaw_bound_rad": 1.4029562586484787,
+                "tip_radius_from_chassis_m": 0.4,
+                "yaw_tip_excursion_bound_m": 0.5611825034593915,
+                "excursion_bound_m": 3.2939825034593926,
+                "beam_radius_added_m": 0.0,
+                "disc_radius_m": 3.9939825034593923,
+                "estimated_excursion_integral_s": {
+                  "forward": 0.6100000000000002,
+                  "left": 0.6100000000000002,
+                  "turn": 0.6100000000000002
+                },
+                "step_peak_integral_s": {
+                  "forward": 0.3000000000000002,
+                  "left": 0.3000000000000002,
+                  "turn": 0.3000000000000002
+                },
+                "step_net_integral_s": {
+                  "forward": -3.7730235602495554e-17,
+                  "left": -3.7730235602495554e-17,
+                  "turn": -3.7730235602495554e-17
+                },
+                "wall_distance_from_start_m": 1.025,
+                "remaining_clearance_m": -2.9689825034593924,
+                "wall_free": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "zone_wide_corridor_final_v3": {
+      "execution_bundle_id": "zone-final-pair-v90",
+      "status": "DRAFT_UNSEALED",
+      "check": "calibration-unloaded",
+      "collection_role": "HELD_OUT_VALIDATION",
+      "training_eligible": false,
+      "teacher_only": true,
+      "execution_started": false,
+      "cases": [
+        {
+          "id": "zone_wide_corridor_final_v3",
+          "map_id": "zone_wide_corridor_final_v3",
+          "checkpoint": null,
+          "sim_cap_s": 370.0
+        }
+      ],
+      "denominator": 1,
+      "runnable": true,
+      "blocked_on": [],
+      "source_sha": "2523269857596ffdd1a8cda9814a6e92f399f1da",
+      "seed": 911,
+      "bundles_sha256": [
+        "f09d8728e5dbd18807e7aeeda1a64c62baec9758100490357016d10d9ac453dd"
+      ],
+      "physical_success": null,
+      "clearance_preflight": [
+        {
+          "admitted": true,
+          "envelope_policy": "ADVISORY",
+          "scope": "SIMULATION_ONLY_TEACHER_CALIBRATION",
+          "decision": "2026-10-01 coordinator decision 2",
+          "reason": "START_POSE_CLEAR_INTERLOCK_REQUIRED",
+          "start_pose_check": {
+            "admitted": true,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "body_radius_bound_m": 0.4,
+                "required_wall_distance_m": 0.7,
+                "wall_distance_from_start_m": 1.025,
+                "remaining_clearance_m": 0.32499999999999996,
+                "admitted": true
+              }
+            }
+          },
+          "runtime_interlock": {
+            "required": true,
+            "minimum_m": 0.3,
+            "abort_buffer_m": 0.05,
+            "robot_radius_bound_m": 0.4,
+            "max_substep_displacement_m": 0.01,
+            "checks": [
+              "before_substep",
+              "after_substep",
+              "before_command",
+              "eval_0.05_s"
+            ],
+            "invalid_geometry": "hold_then_HOST_ERROR",
+            "trip": "hold_then_HOST_ERROR_keep_partial_invalid"
+          },
+          "no_cancellation_bound": {
+            "admitted": false,
+            "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+            "method": "whole_schedule_absolute_command_integral",
+            "sign_cancellation": "none",
+            "qualification": "ADVISORY_CONDITIONAL_NO_CANCELLATION_BOUND",
+            "sim_window_s": [
+              0.0,
+              370.0
+            ],
+            "gain_upper": {
+              "forward": 2.62,
+              "left": 1.86,
+              "turn": 2.299928292866358
+            },
+            "robot_radius_bound_m": 0.4,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "absolute_command_integral_s": {
+                  "forward": 1.51,
+                  "left": 1.51,
+                  "turn": 1.51
+                },
+                "translation_bound_m": 6.764800000000001,
+                "absolute_yaw_bound_rad": 3.4728917222282,
+                "tip_radius_from_chassis_m": 0.4,
+                "yaw_tip_excursion_bound_m": 0.8,
+                "excursion_bound_m": 7.564800000000001,
+                "beam_radius_added_m": 0.0,
+                "disc_radius_m": 8.264800000000001,
+                "wall_distance_from_start_m": 1.0250000000000004,
+                "remaining_clearance_m": -7.239800000000001,
+                "wall_free": false
+              }
+            }
+          },
+          "pair_cancellation_estimate": {
+            "admitted": false,
+            "reason": "CONSERVATIVE_ENVELOPE_EXCEEDS_WALLS",
+            "method": "peak_signed_steps_plus_absolute_prbs",
+            "sign_cancellation": "within_robot_step_pairs_only",
+            "qualification": "ADVISORY_ESTIMATE_NOT_A_MOTION_BOUND; symmetric fixed-axis step response assumed",
+            "sim_window_s": [
+              0.0,
+              370.0
+            ],
+            "gain_upper": {
+              "forward": 2.62,
+              "left": 1.86,
+              "turn": 2.299928292866358
+            },
+            "robot_radius_bound_m": 0.4,
+            "wall_margin_m": 0.3,
+            "numeric_guard_m": 1e-10,
+            "bodies": {
+              "r1": {
+                "start_xy_yaw": [
+                  3.25,
+                  -0.85,
+                  0.0
+                ],
+                "translation_bound_m": 2.732800000000001,
+                "absolute_yaw_bound_rad": 1.4029562586484787,
+                "tip_radius_from_chassis_m": 0.4,
+                "yaw_tip_excursion_bound_m": 0.5611825034593915,
+                "excursion_bound_m": 3.2939825034593926,
+                "beam_radius_added_m": 0.0,
+                "disc_radius_m": 3.9939825034593923,
+                "estimated_excursion_integral_s": {
+                  "forward": 0.6100000000000002,
+                  "left": 0.6100000000000002,
+                  "turn": 0.6100000000000002
+                },
+                "step_peak_integral_s": {
+                  "forward": 0.3000000000000002,
+                  "left": 0.3000000000000002,
+                  "turn": 0.3000000000000002
+                },
+                "step_net_integral_s": {
+                  "forward": -3.7730235602495554e-17,
+                  "left": -3.7730235602495554e-17,
+                  "turn": -3.7730235602495554e-17
+                },
+                "wall_distance_from_start_m": 1.025,
+                "remaining_clearance_m": -2.9689825034593924,
+                "wall_free": false
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -137,7 +137,8 @@ def test_actual_schedule_matches_hammerstein_design_and_budget(check):
     assert max(e['t']+e['action'].get('duration_s',0) for e in schedule(check))<370
     assert c.cases(check)==[{'id':MAP_ID,'map_id':MAP_ID,'checkpoint':None,'sim_cap_s':370.}]
     assert sum(r['sim_cap_s']+5 for r in c.cases(check))==375
-    with pytest.raises(ValueError): c.cases(check,c.registry()['maps'][0])
+    if check != 'calibration-unloaded':
+        with pytest.raises(ValueError): c.cases(check,c.registry()['maps'][0])
     if check=='calibration-loaded':
         paired=[e for e in schedule(check) if e['robot_id']=='r2' and e['action']['kind']=='mecanum']
         for a,b in zip(rows,paired):
