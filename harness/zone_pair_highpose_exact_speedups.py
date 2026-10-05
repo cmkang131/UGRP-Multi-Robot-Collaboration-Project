@@ -51,6 +51,11 @@ PF, its random stream or any frozen file. A set is chosen by name; 'none' is the
     image-independent part of the frozen ``detect_boundaries`` per camera model, gathers window sums by flat
     index, and returns the previous ``ColumnObs`` for a byte-identical repeated frame. Offline: 215 recorded
     frame x camera-model pairs bit-equal, 12.2 -> 9.0 ms per detection.
+
+``v98-exact-v6`` = v1 + ``pf_geometry_shared`` + ``opencv_exact`` (no ``render_pipeline``): the set for research runs
+    (coordinator 2026-10-05: render_pipeline off, its GIL contention makes the gain doubtful). v1 is full-run
+    byte-identical to ``none`` (align_to_carry s911, 382.65 SIM s); the two added items are proven offline
+    (recorded inputs and a 400-frame replay byte-equal).
 """
 from __future__ import annotations
 
@@ -63,7 +68,8 @@ SETS = {'none': (), 'v98-exact-v1': ('expected_memo', 'drive_kernel', 'schedule_
         'v98-exact-v3': ('expected_memo', 'drive_kernel', 'schedule_memo', 'pf_geometry_shared'),
         'v98-exact-v4': ('expected_memo', 'drive_kernel', 'schedule_memo', 'render_pipeline', 'pf_geometry_shared'),
         'v98-exact-v5': ('expected_memo', 'drive_kernel', 'schedule_memo', 'render_pipeline', 'pf_geometry_shared',
-                         'opencv_exact')}
+                         'opencv_exact'),
+        'v98-exact-v6': ('expected_memo', 'drive_kernel', 'schedule_memo', 'pf_geometry_shared', 'opencv_exact')}
 VERSION = 'ugrp.v98_exact_speedups.v1'
 # sha256 of inspect.getsource(sim.final_pair_v3.PhysicsBackend.capture) whose per-robot body render_pipeline copies
 CAPTURE_SOURCE_SHA256 = 'fd76fe25a67bd1a9dc1c2cf80eee900a6912bc85fc0b0fd1e01a8882cf1d0cad'

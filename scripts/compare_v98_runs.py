@@ -10,8 +10,10 @@ normalised to ``[]``), each with the source line that makes it differ between an
 * ``student_record.json``  ``/robots/<r>/provider/provider/lifecycle[]/{before,after}/pf_id``: ``id(pf)``
   (harness/vision_pose_source_pair_v3.py, relocalization lifecycle)
 * ``student_record.json``  ``/robots/<r>/provider/provider/inference_wall_ms/{p50,p90,max}``: wall clock
-* ``eval_only/dr_receipt_nees.json``  ``/source/student_record`` (absolute path of the run) and
-  ``/source/student_record_sha256`` (hash of a record that contains the fields above)
+* ``eval_only/dr_receipt_nees.json``  ``/source/student_record`` (absolute path of the run),
+  ``/source/student_record_sha256`` (hash of a record that contains the fields above) and
+  ``/truth_files/{r1,r2}/path`` (absolute path of the run; their ``sha256``/``rows`` must still match)
+  (scripts/eval_highpose_receipt_nees.py)
 * ``artifacts.sha256.json``: only the entries of files whose own differences are all allowed
 
 Anything else (a command, a frame byte, an event, a count, a missing file) is a BEHAVIOUR difference.
@@ -34,7 +36,8 @@ ALLOWED = {
         *(f'/robots/{r}/provider/provider/lifecycle[]/{s}/pf_id' for r in ('r1', 'r2') for s in ('before', 'after')),
         *(f'/robots/{r}/provider/provider/inference_wall_ms/{k}' for r in ('r1', 'r2') for k in ('p50', 'p90', 'max')),
     },
-    'eval_only/dr_receipt_nees.json': {'/source/student_record', '/source/student_record_sha256'},
+    'eval_only/dr_receipt_nees.json': {'/source/student_record', '/source/student_record_sha256',
+                                       '/truth_files/r1/path', '/truth_files/r2/path'},
 }
 
 

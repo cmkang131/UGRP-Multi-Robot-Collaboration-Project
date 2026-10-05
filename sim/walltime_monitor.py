@@ -215,14 +215,14 @@ class WalltimeMonitor:
         """Call after each SIM advance; writes one row per completed window."""
         sim_t = float(sim_t)
         self._last_sim = sim_t
-        now = (sim_t, time.perf_counter(), _process_cpu_s(), self._snapshot())
+        now = (sim_t, time.perf_counter(), _process_cpu_s(), self._snapshot(), time.time())
         if self._prev is None:
             self._prev, self._next = now, sim_t + self.window
             return
         if sim_t + 1e-9 < self._next and not force:
             return
-        t0, w0, c0, s0 = self._prev
-        _, w1, c1, s1 = now
+        t0, w0, c0, s0, u0 = self._prev
+        _, w1, c1, s1, u1 = now
         dsim = sim_t - t0
         if dsim <= 0:
             return
@@ -235,6 +235,8 @@ class WalltimeMonitor:
         dwall = w1 - w0
         top = sum(phases.get(k, {}).get('wall_per_sim_s', 0.) for k in TOP_LEVEL)
         row = {'schema': SCHEMA, 'sim_t0': round(t0, 4), 'sim_t1': round(sim_t, 4), 'wall_s': round(dwall, 3),
+               # perf_counter (mach_absolute_time) stops while macOS sleeps; the host clock does not
+               'clock_wall_s': round(u1 - u0, 3),
                'wall_per_sim_s': round(dwall / dsim, 4), 'process_cpu_per_sim_s': round((c1 - c0) / dsim, 4),
                'cpu_util_pct': round(100 * (c1 - c0) / dwall, 1) if dwall > 0 else None,
                'other_wall_per_sim_s': round(dwall / dsim - top, 4), 'phases': phases,
