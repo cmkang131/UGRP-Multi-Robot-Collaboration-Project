@@ -561,10 +561,12 @@ def cmd_resume(args):
               'by_value_code_note': 'closures pickled by value (e.g. staging tick wrappers, cap_world_steps) keep '
                                     'the checkpoint code even when module code changed'}
     output.mkdir(parents=True)
-    calibration = output / 'dev_pilot_calibration.json'
-    shutil.copyfile(source_run / 'dev_pilot_calibration.json', calibration)
-    if sha256_file(calibration) != plan['calibration_sha256']:
-        raise ValueError('source calibration copy sha256 differs from the plan')
+    # The admitted calibration file itself (its sibling DEV manifest is part of the admission check).
+    calibration = Path(args.calibration).absolute()
+    if sha256_file(calibration) != plan['calibration_sha256'] or \
+            sha256_file(source_run / 'dev_pilot_calibration.json') != plan['calibration_sha256']:
+        raise ValueError('--calibration sha256 differs from the source run plan')
+    shutil.copyfile(calibration, output / 'dev_pilot_calibration.json')
     host_start = sim_snapshot(DEFAULT_ROOT)
     write(output / 'plan.json', {**plan, **RESUMED_LABELS, 'dev_resumed': labels, 'execution_started': True,
                                  'host_start': host_start, 'sim_slot': args.sim_slot, 'lock_mode': 'sim_slot'})
@@ -708,6 +710,8 @@ def parser():
     resume = sub.add_parser('resume', help='resume a saved checkpoint into a new output directory')
     resume.add_argument('--checkpoint', required=True, type=Path)
     resume.add_argument('--output', required=True, type=Path)
+    resume.add_argument('--calibration', required=True, type=Path,
+                        help='the admitted DEV_PILOT calibration file of the source run (same sha256 as its plan)')
     resume.add_argument('--lock-owner', required=True, choices=('codex', 'claude', 'kiro'))
     resume.add_argument('--sim-slot', required=True)
     resume.add_argument('--stop-at-sim-s', type=float, help='DEV horizon: stop before the first tick >= this SIM time')
