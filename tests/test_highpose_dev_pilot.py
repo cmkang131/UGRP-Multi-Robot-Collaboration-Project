@@ -25,6 +25,12 @@ UNLOADED = ['gain', 'tau_s', 'tau_axis_s', 'tau_stop_s', 'noise_rel', 'noise_abs
 REAL = Path('/Users/changmin/projects/ugrp/outputs/v92-dev-pilot-c0zero-20261003T104043Z/result/calibration_dev_pilot.json')
 REAL_SHA = '398372ae6b9b0fef7344d7f29146ce75b309d334b3ce31af527bc071c0e582f5'
 C_SHA = 'aba4ac586b2554844ad5b4b17efe968a4247278664ffb433f83f6785ca1769c4'
+V102_SHA = 'ce447ada62295d24c7f7a5929ce878e70fa297651e16ca192536f4a403cd8c5f'
+V102_PATH = (Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-loaded-gain-calibration-v102'/'products'
+             /'loaded_v102'/'calibration_dev_pilot_loaded_v102.json')
+V104_SHA = 'a04371f614bd7f6f7583ef4f4121abce1c337fd5652899dbfe0fe6df1703f926'
+V104_PATH = (Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-loaded-rest-calibration-v104'/'products'
+             /'calibration_dev_pilot_loaded_v102_rest_v104.json')
 V101 = Path(__file__).resolve().parents[1]/'experiments'/'2026-10-05-unloaded-gain-calibration-v101'/'products'
 C_PATH = V101/'C'/'calibration_dev_pilot_unloaded_v101.json'
 BASE_COPY = Path(__file__).resolve().parents[1]/'experiments'/'2026-10-03-v92-dev-pilot'/'calibration_dev_pilot.json'
@@ -61,7 +67,7 @@ def test_registry_keeps_measured_list_empty_and_admits_one_exact_dev_sha():
     adm, _ = c.d5_admission()
     assert adm['completed_measurements'] == [] and c.registry()['runnable'] is False
     dev = c.registry()['dev_pilot']
-    assert dev['admitted_calibration_sha256'] == [REAL_SHA, C_SHA]
+    assert dev['admitted_calibration_sha256'] == [REAL_SHA, C_SHA, V102_SHA, V104_SHA]
     assert dev['promotable'] is False and dev['run_status'] == 'FUNCTIONAL_DEV'
     assert dev['tensorboard_cohort'] != 'FUNCTIONAL_DEV_REPLAY' and dev['cohort_role'] != 'FUNCTIONAL_DEV_REPLAY'
 
@@ -755,3 +761,66 @@ def test_direct_student_run_case_extra_seed_stage_probe_is_labelled(tmp_path, mo
         runtime_factory=lambda *a, **k: _ProbeRuntime(*a, t_event=1e9, **k),
         calibration=path, calibration_sha=sha, probe='align_to_carry')
     assert dev['seed'] == 911 and dev['extra_dev_seed'] is None
+
+
+# ---- measured loaded calibration v102 (zone-final-pair-loaded-gaincal-v102, coordinator task 2026-10-05)
+def test_measured_loaded_calibration_v102_is_admitted_by_its_exact_sha():
+    dev = c.registry()['dev_pilot']
+    source = dev['admitted_source'][V102_SHA]
+    assert (Path(__file__).resolve().parents[1]/source['path']) == V102_PATH and c.base.sha(V102_PATH) == V102_SHA
+    assert source['heldout_status'].startswith('VALIDATED_DEV') and 'not MEASURED_SIM' in source['heldout_status']
+    assert source['parent']['sha256'] == C_SHA
+    cal = c.admitted_calibration(str(V102_PATH), V102_SHA, MAPS[0])
+    assert cal['missing'] == [] and cal['status'] == c.DEV_PILOT and cal['dev_rule'] == c.DEV_PILOT_RULE
+    db = cal['params']['motion_loaded']['deadband']
+    assert db['c0'] == [0., 0., 0.] and len(db['u0']) == 3 and db['u0'][2] == 0. and db['u0'][0] > 0 and db['u0'][1] > 0
+    assert db['u1'][0] == db['u1'][1] == 1e-6                     # ramp numerically off on the two affine axes
+    with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
+        c.require_promotable({'calibration_sha256': V102_SHA})
+
+
+def test_measured_loaded_calibration_v102_differs_from_its_parent_only_in_the_registered_fields():
+    cal, base = json.loads(V102_PATH.read_text()), json.loads(C_PATH.read_text())
+    assert c.base.sha(C_PATH) == C_SHA and cal['parent_calibration']['sha256'] == C_SHA
+    changed = {k for k in set(cal) | set(base) if cal.get(k) != base.get(k)}
+    assert changed == {'params', 'field_provenance', 'source_sha', 'dev_manifest_sha256',
+                       'loaded_gain_calibration', 'parent_calibration'}
+    assert {k for k in cal['params'] if cal['params'][k] != base['params'][k]} == {'motion_loaded'}
+    new, old = cal['params']['motion_loaded'], base['params']['motion_loaded']
+    assert {k for k in set(new) | set(old) if new.get(k) != old.get(k)} == {'gain', 'tau_s', 'tau_axis_s', 'tau_stop_s', 'deadband'}
+    assert new['gain'][2] == old['gain'][2] and new['tau_axis_s'][2] == old['tau_axis_s'][2]       # turn axis untouched
+    assert new['deadband']['u1'][2] == old['deadband']['u1'][2]
+    assert all(new['gain'][i][j] == old['gain'][i][j] for i in range(3) for j in range(3) if i != j or i == 2)
+    assert cal['params']['motion'] == base['params']['motion'] and cal['camera_models'] == base['camera_models']
+    assert cal['loaded_gain_calibration']['heldout_status'] == 'VALIDATED_DEV' and cal['confirmatory'] is False
+
+
+# ---- loaded rest_noise by the unchanged v101 rule (zone-final-pair-loaded-restcal-v104, #363 (가), 2026-10-05)
+def test_loaded_rest_v104_calibration_is_admitted_by_its_exact_sha():
+    source = c.registry()['dev_pilot']['admitted_source'][V104_SHA]
+    assert (Path(__file__).resolve().parents[1]/source['path']) == V104_PATH and c.base.sha(V104_PATH) == V104_SHA
+    assert source['parent']['sha256'] == V102_SHA and 'not MEASURED_SIM' in source['heldout_status']
+    cal = c.admitted_calibration(str(V104_PATH), V104_SHA, MAPS[0])
+    assert cal['missing'] == [] and cal['status'] == c.DEV_PILOT and cal['params']['motion_loaded']['rest_noise'] is False
+    with pytest.raises(ValueError, match=c.NOT_PROMOTABLE):
+        c.require_promotable({'calibration_sha256': V104_SHA})
+
+
+def test_loaded_rest_v104_differs_from_v102_only_in_rest_noise_and_its_record():
+    cal, base = json.loads(V104_PATH.read_text()), json.loads(V102_PATH.read_text())
+    changed = {k for k in set(cal) | set(base) if cal.get(k) != base.get(k)}
+    assert changed == {'params', 'field_provenance', 'parent_calibration', 'loaded_rest_calibration', 'source_sha',
+                       'dev_manifest_sha256'}
+    assert cal['source_sha'] == '835c8fcdb7c05cd69cf18f6a9c9bfc942b1ae63e'           # the v104 collection source
+    assert {k for k in cal['params'] if cal['params'][k] != base['params'][k]} == {'motion_loaded'}
+    new, old = cal['params']['motion_loaded'], base['params']['motion_loaded']
+    assert {k for k in set(new) | set(old) if new.get(k) != old.get(k)} == {'rest_noise'}
+    assert (old['rest_noise'], new['rest_noise']) == (True, False)
+    assert new['noise_abs'] == old['noise_abs'] and new['noise_rel'] == old['noise_rel']   # unmeasured, unchanged
+    prov = {k for k in set(cal['field_provenance']) | set(base['field_provenance'])
+            if cal['field_provenance'].get(k) != base['field_provenance'].get(k)}
+    assert prov == {'params.motion_loaded.rest_noise'}
+    rec = cal['loaded_rest_calibration']
+    assert rec['rest_noise'] is False and all(rec['result'][r]['rms_m'] < 1e-3 for r in ('r1', 'r2'))
+    assert cal['parent_calibration'] == {'path': str(V102_PATH.relative_to(Path(__file__).resolve().parents[1])),
+                                         'sha256': V102_SHA}

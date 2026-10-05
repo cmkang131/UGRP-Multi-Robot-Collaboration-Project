@@ -117,6 +117,10 @@ def dev_pilot_calibration(path, expected_sha, map_id):
             or not isinstance(u1, list) or len(u1) != 3
             or not all(math.isfinite(float(v)) and float(v) > 0 for v in u1)):
         raise ValueError('DEV_PILOT_C0_ZERO_v1 requires c0 == [0,0,0] and u1 > 0')
+    u0 = deadband.get('u0')                  # optional v102 affine dead zone; absent == identity (all earlier calibrations)
+    if u0 is not None and (not isinstance(u0, list) or len(u0) != 3
+                           or not all(math.isfinite(float(v)) and float(v) >= 0 for v in u0)):
+        raise ValueError('deadband.u0 must be three finite nonnegative values')
     fill = dev['unloaded_motion_fill']
     missing = [row['field'] if isinstance(row, dict) else row for row in cal.get('missing', [])]
     motion = cal['params'].get('motion') or {}
