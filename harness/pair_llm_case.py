@@ -201,7 +201,7 @@ def run_pair_case(bundle, out, *, condition, seed, backend_factory, calibration,
               'case_sim_cap_s': float(cap_s), 'registered_case_cap_s': contract.CAP_S,
               'bundle_sha256': digest(bundle), 'physics_bundle_sha256': digest(physics),
               'loadavg_start': list(os.getloadavg()), 'failure': None,
-              'failure_class': None, **contract.admission_record(mode),
+              'failure_class': None, **contract.admission_record(mode, bool((bundle.get('calibration') or {}).get('synthetic_plumbing_only'))),
               **contract.physics_profile(physics)}
     from sim import final_pair_highpose_clock as clock
     # Identify the actual host, including failed attempts; fake/legacy hosts must not claim clock v2.

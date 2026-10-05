@@ -164,12 +164,18 @@ def model_record(condition, *, kind, root=ROOT) -> dict:
             'seed': None, 'seed_statement': reg['seed_statement']}
 
 
-def admission_record(mode):
-    """Reuse #363's labels; DEV results never become MEASURED_SIM evidence."""
+def admission_record(mode, synthetic=False):
+    """Reuse #363's labels; DEV results never become MEASURED_SIM evidence.
+
+    A MEASURED_SIM label is refused while any DEV-only switch is on (#363 ``require_dev_only_flags``, review #371 P2),
+    except for a synthetic plumbing run, which stays MEASURED_SIM-shaped but is marked never promotable."""
     if mode == high_skill.DEV_PILOT:
         return dict(high_skill.DEV_PILOT_LABELS)
     if mode != high_skill.MEASURED_SIM:
         raise ValueError('unknown admission mode')
+    if synthetic:
+        return {'admission_mode': mode, 'promotable': False, 'measured_sim_evidence': False}
+    high_skill.require_dev_only_flags(mode)
     return {'admission_mode': mode}
 
 
@@ -185,7 +191,7 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
     reg = read_registry(root=root)
     if synthetic_calibration and admission_mode == high_skill.DEV_PILOT:
         raise ValueError('DEV_PILOT requires the exact admitted calibration, not synthetic plumbing')
-    admission_record(admission_mode)
+    admission_record(admission_mode, synthetic_calibration)
     physics = physics_bundle(root=root, admission_mode=admission_mode)
     cost = cost_params()
     llm = condition != 'rule'
@@ -196,7 +202,7 @@ def bundle(condition, *, kind='stub', calibration=None, synthetic_calibration=Fa
         'schema': BUNDLE_SCHEMA, 'execution_bundle_id': BUNDLE_ID, 'workflow_id': WORKFLOW_ID,
         'workflow_version': WORKFLOW_VERSION, 'status': 'DRAFT_UNSEALED', 'research_result': False,
         'condition': condition, 'arm': ARMS[condition], 'llm': llm, 'source_sha': source_sha,
-        **admission_record(admission_mode), **physics_profile(physics),
+        **admission_record(admission_mode, synthetic_calibration), **physics_profile(physics),
         'scenario': {'file': SCENARIO, 'sha256': base.sha(Path(root) / SCENARIO),
                      'scenario_id': scenario(root=root)['scenario_id']},
         'map_id': reg['map_id'], 'map_sha256': physics['map_sha256'], 'robots': list(skill_layer.ROBOTS),
