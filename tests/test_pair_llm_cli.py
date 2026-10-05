@@ -39,7 +39,7 @@ def test_cli_routes_every_arm_to_integer_clock_and_records_it(tmp_path, monkeypa
     monkeypatch.setattr(pair_llm_case, 'run_pair_case', lambda *a, **k: result_for(k))
     monkeypatch.setattr(pair_llm_live, 'run_pair_live', lambda *a, **k: (result_for(k), []))
     argv = ['--condition', condition, '--expected-source-sha', 'a'*40, '--output', str(out),
-            '--synthetic-plumbing-calibration', '--sim-slot', 'sim-test-clock', '--lock-owner', 'codex', '--execute']
+            '--synthetic-plumbing-calibration', '--sim-slot', 'sim-test-clock', '--lock-owner', 'codex', '--execute', '--speedups', 'none']
     if dev:
         from tests.test_highpose_dev_pilot import dev_file, admit
         from harness import zone_pair_highpose_contract as high
@@ -160,7 +160,7 @@ def test_cli_measured_default_still_refuses_dev_file_before_start(tmp_path, monk
     admit(monkeypatch, sha)
     out = tmp_path/'never-created'
     argv = ['--condition', 'rule', '--seed', '911', '--expected-source-sha', 'a'*40,
-            '--output', str(out), '--calibration', str(cal), '--calibration-sha256', sha, '--execute']
+            '--output', str(out), '--calibration', str(cal), '--calibration-sha256', sha, '--execute', '--speedups', 'none']
     monkeypatch.setattr(cli, 'check_source', lambda *a: pytest.fail('source check reached after bad calibration'))
     with pytest.raises(ValueError):
         cli.main(argv)

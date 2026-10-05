@@ -153,6 +153,15 @@ def install(pf, vl):
     pf.apply_scan, pf.update_obs = apply_scan, update_obs
 
 
+def mark_partial(report, quality):
+    """Add ``partial``/``observed_rank``/``weakest_direction_xy_yaw`` of the last fix receipt to observation_quality."""
+    from dataclasses import replace
+    q = quality or {}
+    return replace(report, observation_quality={**(report.observation_quality or {}),
+        'partial': bool(q.get('partial', False)), 'observed_rank': q.get('observed_rank'),
+        'weakest_direction_xy_yaw': q.get('weakest_direction_xy_yaw'), 'partial_fix_rule': ID})
+
+
 def build_source_class():
     from harness.vision_pose_source_highpose import HighPoseSource
 
@@ -164,6 +173,11 @@ def build_source_class():
             from harness import vision_loc_protocol as vp
             install(self.loc._pf, vp.load_vis3()[0])
             self.m1_calibration = {**self.m1_calibration, 'partial_fix': record()}
+
+        def report(self, now):
+            """#383 P3: consumers see whether 'informative' was a partial (rank-2) fix and its weak direction."""
+            return mark_partial(super().report(now), self.loc._pf.v3_last_fix_quality)
+
 
     return PartialFixHighPoseSource
 
